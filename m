@@ -2,60 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229C0703F64
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 23:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7CAF703F67
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 23:11:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyfQq-0003vq-IE; Mon, 15 May 2023 17:08:36 -0400
+	id 1pyfTC-0005h4-7Z; Mon, 15 May 2023 17:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfQn-0003vD-QZ
- for qemu-devel@nongnu.org; Mon, 15 May 2023 17:08:33 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfT4-0005go-NI
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 17:10:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfQm-0003D6-7D
- for qemu-devel@nongnu.org; Mon, 15 May 2023 17:08:33 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfT3-0003qc-9y
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 17:10:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684184911;
+ s=mimecast20190719; t=1684185052;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=kXgTAdweOMK6lCMrcls9n/rwH7LSgsW8Sy6wJmkatc4=;
- b=NBMeUjyVQw+vfidCDcHDu01cv5gLEfzEFPTT4LUe1c7EUDv4t1rRGgm6zCtGTh1/yY6u+N
- 4m/jR+BE4MPAjMttU/y3KgWCMmQq0Urs3swFUugSiXJqxo65sHR35ify1wtz+COoYlytxx
- BZdTAlroaVQaWkoydSusVccNqPAyRpE=
+ bh=86Gr6cARM4kV+3V/YZ6pYkOF7YuLYUz+zTyZg/Ak1bY=;
+ b=TnzVQ/G0UdZH5GCIQkMhPUi73dec5dArlvRoK4zAznVTg97PurdzfbDuQRdTWcnmnq39Fu
+ drUt2sV3e3p9OEQrHf9CsBekxh6CsiNj0OC3QnsTR2P0uiJccAlJLhTfu6ZITaXCzyFW8K
+ 5e8xH31ZXlICxKH7w+A8ow6TLVyn8gk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-620-vRBXbp4MP3OA1uFFSZ6Wxg-1; Mon, 15 May 2023 17:08:28 -0400
-X-MC-Unique: vRBXbp4MP3OA1uFFSZ6Wxg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-540-X8KCXnVvPkq8ARl2dA47xw-1; Mon, 15 May 2023 17:10:49 -0400
+X-MC-Unique: X8KCXnVvPkq8ARl2dA47xw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 032FF87DC00;
- Mon, 15 May 2023 21:08:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B1E288B76F;
+ Mon, 15 May 2023 21:10:49 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.57])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 091D4492B00;
- Mon, 15 May 2023 21:08:26 +0000 (UTC)
-Date: Mon, 15 May 2023 16:08:25 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 663CB2166B29;
+ Mon, 15 May 2023 21:10:48 +0000 (UTC)
+Date: Mon, 15 May 2023 16:10:46 -0500
 From: Eric Blake <eblake@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, stefanha@redhat.com, 
- f.ebner@proxmox.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/8] block: Call .bdrv_co_create(_opts) unlocked
-Message-ID: <ontdxyk424kxb7ax7ca2jcwjphzodefzrr6rbe46irvirkfa6h@shlcwuhtfsur>
-References: <20230510203601.418015-1-kwolf@redhat.com>
- <20230510203601.418015-2-kwolf@redhat.com>
- <lqumtxeofbejjvf5f45zf5ywdrae2wckhgwrud5ggly4jganfz@sbb23gf53wbg>
- <ZGJbnbx9vjXVEUuv@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v3 2/3] docs/interop/qmp-spec: Update error description
+ for parsing errors
+Message-ID: <5k4jg7cieukf2max27bodbab3neeoflmlxi63fbalx4clnclqs@p75pxc7s3fbn>
+References: <20230515162245.3964307-1-peter.maydell@linaro.org>
+ <20230515162245.3964307-3-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZGJbnbx9vjXVEUuv@redhat.com>
+In-Reply-To: <20230515162245.3964307-3-peter.maydell@linaro.org>
 User-Agent: NeoMutt/20230512
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,64 +79,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On Mon, May 15, 2023 at 06:19:41PM +0200, Kevin Wolf wrote:
-> > > @@ -3724,8 +3726,10 @@ qcow2_co_create(BlockdevCreateOptions *create_options, Error **errp)
-> > >          goto out;
-> > >      }
-> > >  
-> > > +    bdrv_graph_co_rdlock();
-> > >      ret = qcow2_alloc_clusters(blk_bs(blk), 3 * cluster_size);
-> > >      if (ret < 0) {
-> > > +        bdrv_graph_co_rdunlock();
-> > >          error_setg_errno(errp, -ret, "Could not allocate clusters for qcow2 "
-> > >                           "header and refcount table");
-> > >          goto out;
-> > > @@ -3743,6 +3747,8 @@ qcow2_co_create(BlockdevCreateOptions *create_options, Error **errp)
-> > >  
-> > >      /* Create a full header (including things like feature table) */
-> > >      ret = qcow2_update_header(blk_bs(blk));
-> > > +    bdrv_graph_co_rdunlock();
-> > > +
-> > 
-> > If we ever inject any 'goto out' in the elided lines, we're in
-> > trouble.  Would this be any safer by wrapping the intervening
-> > statements in a scope-guarded lock?
+On Mon, May 15, 2023 at 05:22:44PM +0100, Peter Maydell wrote:
 > 
-> TSA doesn't understand these guards, which is why they are only
-> annotated as assertions (I think we talked about this in my previous
-> series), at the cost of leaving unlocking unchecked. So in cases where
-> the scope isn't the full function, individual calls are better at the
-> moment. Once clang implements support for __attribute__((cleanup)), we
-> can maybe change this.
-
-Yeah, LOTS of people are waiting on clang __attribute__((cleanup))
-analysis sanity ;)
-
+> The description text for a parsing error has changed since the
+> spec doc was first written; update the example in the docs.
 > 
-> Of course, TSA solves the very maintenance problem you're concerned
-> about: With a 'goto out' added, compilation on clang fails because it
-> sees that there is a code path that doesn't unlock. So at least it makes
-> the compromise not terrible.
-> 
-> For example, if I comment out the unlock in the error case in the first,
-> this is what I get:
-> 
-> ../block/qcow2.c:3825:5: error: mutex 'graph_lock' is not held on every path through here [-Werror,-Wthread-safety-analysis]
->     blk_co_unref(blk);
->     ^
-> ../block/qcow2.c:3735:5: note: mutex acquired here
->     bdrv_graph_co_rdlock();
->     ^
-> 1 error generated.
+> Suggested-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  docs/interop/qmp-spec.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm sold!  The very reason you can't use a cleanup scope-guard
-(because clang can't see through the annotation) is also the reason
-why clang is able to flag your error if you don't properly clean up by
-hand.  So while it is more tedious to maintain, we've finally got
-compiler assistance to something that used to be human-only, which is
-a step forwards even if it is more to type in the short term.
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-Thanks for testing that.
+You mentioned elsewhere in the series about keeping my other R-b
+because the changes were minor; I agree with that decision.
 
 -- 
 Eric Blake, Principal Software Engineer
