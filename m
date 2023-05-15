@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4E3703DC0
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 21:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 007A6703DD4
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 21:48:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pydso-0005wX-DY; Mon, 15 May 2023 15:29:22 -0400
+	id 1pyeAM-0003a4-S5; Mon, 15 May 2023 15:47:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nieklinnenbank@gmail.com>)
- id 1pydsl-0005vq-Sc; Mon, 15 May 2023 15:29:19 -0400
-Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
+ id 1pyeAK-0003ZM-Ew; Mon, 15 May 2023 15:47:28 -0400
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nieklinnenbank@gmail.com>)
- id 1pydsh-0006kl-MJ; Mon, 15 May 2023 15:29:19 -0400
-Received: by mail-yb1-xb2b.google.com with SMTP id
- 3f1490d57ef6-ba6e90e9199so6252369276.0; 
- Mon, 15 May 2023 12:29:14 -0700 (PDT)
+ id 1pyeAF-0002am-Ht; Mon, 15 May 2023 15:47:28 -0400
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-b9a6eec8611so266808276.0; 
+ Mon, 15 May 2023 12:47:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684178954; x=1686770954;
+ d=gmail.com; s=20221208; t=1684180042; x=1686772042;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=esHYvXeZJkqQw7R9rg1TW90ziSNlIv2BfMZaFHwa4iE=;
- b=lUuqZEuGzLUZP9obiFXXNNmkgoLjeBpbsSl1G2y4UoaE/Qq1zkc6cskCJKiartf/nv
- HavPJ0Ien8JqBKL4rrbK9nXSxSDU8xqJn+IS0/fis07ynhiIrEYgulrTyfQke19eGZm6
- z24lFuWZqxFwUCDaaZhTiK9Opj0s0yBwd0Qlt00US6WJ4uQ4wlG/9HwL63yT56OzziA7
- Zw1AORxoEe5KQJ7v62Un3kPOzJ3xE7SuAbRkXD1Y1jkvFg0m7Eor5NjjEj1b64YvNvu2
- yhpfE2CgKAOTcQYUt0hLei9Ul1akKUr5rPugA6K60WLSCA9Zmr9OCslk3/1v2W42sxM3
- NI4Q==
+ bh=Kxl3zOejX+ZQZMiafy25bZbF2KthLgLnyX+j5weXIO8=;
+ b=aqgwYfjuCNE2gO5uE2KEJKR3vSRyYyhO0JoVE3qshv8VxHw+XKdsJxKq0nBisqdqy7
+ 8B88BCYbOP0ExVUINDlIDrDPeUJaOXbRjglJTifx5LetwtRAXAIzqLHvyxZ7pDIhMUNJ
+ xmhjWz5/sLnttRklKYPKOQWsd6tJOOxKOivkvoHWwx7ajC3TxcrFpMnV3dc1GpOqbQ0P
+ /5y8nb7fXg5ssZ3tV4d/1x4Q7rftR17+507Q2l3GpFdntOzcoKx5109gaayc/O6F95nM
+ 6B4w4HuWAqQbluv1gE+atUePkyAInBpbs39s6cLIRstcYHHDxZlPJwXZzTsLsTiuYy3/
+ LEag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684178954; x=1686770954;
+ d=1e100.net; s=20221208; t=1684180042; x=1686772042;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=esHYvXeZJkqQw7R9rg1TW90ziSNlIv2BfMZaFHwa4iE=;
- b=drthhejGcrTu0Ebv8l6Dvw73GE5JcpvRqTK3cYdjLzhf5W/mLXp3qTHtoDC+zBz+qh
- N+eixIw6dhG4H2j8+/2KmdldU4eKXfxMAJP5R/XEKmTLKs7gfeEESlps42flw2MSjXCs
- GQf8J6qr/UCNo8ddryW1vrcHO5IhpzCBtwdBiLuGtx9Ab4EVH339uAbxlxX3hO8AfR2V
- Jv6p8t179b6V28KvhUTvP75kidorEaPShfsnC1MJc1x8t4L+C0mN7GMTOIJgnB43TsMS
- BeRyKoA5fMqgKtqoahcx+Nuv9gzcxcpbEVs+aj300/SeWczy2Hehj0XEHrfoNQcyJJKY
- DSPQ==
-X-Gm-Message-State: AC+VfDzs4i+eETNyB2d0hBc1apTQCJlXBBW4DHWAtGgcDAZQZ6NB8Q8T
- aS/6Zja5bdzuM2QPqUFJGc1T775dPsrUMqdbBzY=
-X-Google-Smtp-Source: ACHHUZ6bJj6+pIiFk/DuRwURx/TBXgW4g5tVly1ZgISWAR8PKV/5vs20QFYww6LYRWB3nKmOxLhpaVD6w1sc2IKyOXY=
-X-Received: by 2002:a25:ae9a:0:b0:ba7:5181:9f92 with SMTP id
- b26-20020a25ae9a000000b00ba751819f92mr7367768ybj.34.1684178953678; Mon, 15
- May 2023 12:29:13 -0700 (PDT)
+ bh=Kxl3zOejX+ZQZMiafy25bZbF2KthLgLnyX+j5weXIO8=;
+ b=PuyXUijetUetRoYv3FrTF/VVXzr/7ycvbJ3/TcNa9MoIeZ2KWtnbFhKfJrjuBjUTqh
+ YjsIrUxinr0Z0C3itn3je6cOx6Zg2yvazm058ZSoJlZ/W2twwZJF0p7DLqIGI2gg5Bn2
+ LxMqU/NpyZFifP2NEA0r8sXjXhKwBX53oaeHjzjt+GzQMoYWo1YBSjJgdQoTWUWdGSAP
+ x3qIU/BmxmHu/M4Yh19hUkqyTbs7ai6KkSTWQSBo47wJwZwbyHN+6ZH3gNkrb9Zwtzd1
+ VJ91RHWIR/L4/Jm3SX7uX/x4/RxCMeZWld+Na8GE9iEoL3W3EINSUGwRMOMfGuGEsqq8
+ kf0A==
+X-Gm-Message-State: AC+VfDxRIZwl69K5BcdBckiqlj+5V0khHY0khRFcIzB2CzXG7ZK8rHwY
+ V/Vr35E0zNkR3AZ0jtkV6JDqBcyQBcvtciDgk1A=
+X-Google-Smtp-Source: ACHHUZ4S6ECQteC0mxpmCMc8vjNC9MYBZMzfh4skwv/+Q4suaAsABOTqqaoWZiU2/FC7RWg9+WFWOPOkN6bL5w33lDA=
+X-Received: by 2002:a25:3452:0:b0:b9e:6d19:306a with SMTP id
+ b79-20020a253452000000b00b9e6d19306amr33883278yba.16.1684180042066; Mon, 15
+ May 2023 12:47:22 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230510103004.30015-1-qianfanguijin@163.com>
- <20230510103004.30015-6-qianfanguijin@163.com>
-In-Reply-To: <20230510103004.30015-6-qianfanguijin@163.com>
+ <20230510103004.30015-7-qianfanguijin@163.com>
+In-Reply-To: <20230510103004.30015-7-qianfanguijin@163.com>
 From: Niek Linnenbank <nieklinnenbank@gmail.com>
-Date: Mon, 15 May 2023 21:29:02 +0200
-Message-ID: <CAPan3Woc64177GOYyn+mYapc6Ntq+T_u_4bf-hZQ9_61qRiHKQ@mail.gmail.com>
-Subject: Re: [PATCH v4 05/11] hw/misc: Rename axp209 to axp22x and add support
- AXP221 PMU
+Date: Mon, 15 May 2023 21:47:11 +0200
+Message-ID: <CAPan3Wq_yziM62Z6Y6RCwUqUS7NgOPiMD3jVOukSEHr4XyFW7Q@mail.gmail.com>
+Subject: Re: [PATCH v4 06/11] hw/arm/allwinner-r40: add SDRAM controller device
 To: qianfanguijin@163.com
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, 
  Beniamino Galvani <b.galvani@gmail.com>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="00000000000045b6e405fbc0782c"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2b;
- envelope-from=nieklinnenbank@gmail.com; helo=mail-yb1-xb2b.google.com
+Content-Type: multipart/alternative; boundary="00000000000025308b05fbc0b99d"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=nieklinnenbank@gmail.com; helo=mail-yb1-xb2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,699 +87,672 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000045b6e405fbc0782c
+--00000000000025308b05fbc0b99d
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-
-Hi Qianfan,
-
-Good idea indeed to turn this driver into a more generic one. If possible,
-its best to re-use code rather than adding new.
 
 On Wed, May 10, 2023 at 12:30=E2=80=AFPM <qianfanguijin@163.com> wrote:
 
 > From: qianfan Zhao <qianfanguijin@163.com>
 >
-> This patch adds minimal support for AXP-221 PMU and connect it to
-> bananapi M2U board.
+> Types of memory that the SDRAM controller supports are DDR2/DDR3
+> and capacities of up to 2GiB. This commit adds emulation support
+> of the Allwinner R40 SDRAM controller.
+>
+> This driver only support 256M, 512M and 1024M memory now.
 >
 > Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
 > ---
->  hw/arm/Kconfig        |   3 +-
->  hw/arm/bananapi_m2u.c |   6 +
->  hw/misc/Kconfig       |   2 +-
->  hw/misc/axp209.c      | 238 -----------------------------------
->  hw/misc/axp2xx.c      | 283 ++++++++++++++++++++++++++++++++++++++++++
->  hw/misc/meson.build   |   2 +-
->  hw/misc/trace-events  |   8 +-
->  7 files changed, 297 insertions(+), 245 deletions(-)
->  delete mode 100644 hw/misc/axp209.c
->  create mode 100644 hw/misc/axp2xx.c
+>  hw/arm/allwinner-r40.c                |  21 +-
+>  hw/arm/bananapi_m2u.c                 |   7 +
+>  hw/misc/allwinner-r40-dramc.c         | 513 ++++++++++++++++++++++++++
+>  hw/misc/meson.build                   |   1 +
+>  hw/misc/trace-events                  |  14 +
+>  include/hw/arm/allwinner-r40.h        |  13 +-
+>  include/hw/misc/allwinner-r40-dramc.h | 108 ++++++
+>  7 files changed, 674 insertions(+), 3 deletions(-)
+>  create mode 100644 hw/misc/allwinner-r40-dramc.c
+>  create mode 100644 include/hw/misc/allwinner-r40-dramc.h
 >
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index b7a84f6e3f..bad4ea158c 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -355,7 +355,7 @@ config ALLWINNER_A10
->      select ALLWINNER_WDT
->      select ALLWINNER_EMAC
->      select ALLWINNER_I2C
-> -    select AXP209_PMU
-> +    select AXP2XX_PMU
->      select SERIAL
->      select UNIMP
->
-> @@ -378,6 +378,7 @@ config ALLWINNER_R40
->      bool
->      default y if TCG && ARM
->      select ALLWINNER_A10_PIT
-> +    select AXP2XX_PMU
->      select SERIAL
->      select ARM_TIMER
->      select ARM_GIC
-> diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c
-> index 1d49a006b5..9c5360a41b 100644
-> --- a/hw/arm/bananapi_m2u.c
-> +++ b/hw/arm/bananapi_m2u.c
-> @@ -23,6 +23,7 @@
->  #include "qapi/error.h"
->  #include "qemu/error-report.h"
->  #include "hw/boards.h"
-> +#include "hw/i2c/i2c.h"
->  #include "hw/qdev-properties.h"
+> diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
+> index 4bc582630c..0e4542d35f 100644
+> --- a/hw/arm/allwinner-r40.c
+> +++ b/hw/arm/allwinner-r40.c
+> @@ -31,6 +31,7 @@
+>  #include "hw/loader.h"
+>  #include "sysemu/sysemu.h"
 >  #include "hw/arm/allwinner-r40.h"
+> +#include "hw/misc/allwinner-r40-dramc.h"
 >
-> @@ -61,6 +62,7 @@ static void bpim2u_init(MachineState *machine)
->  {
->      bool bootroom_loaded =3D false;
->      AwR40State *r40;
-> +    I2CBus *i2c;
->
->      /* BIOS is not supported by this board */
->      if (machine->firmware) {
-> @@ -104,6 +106,10 @@ static void bpim2u_init(MachineState *machine)
->          }
+>  /* Memory map */
+>  const hwaddr allwinner_r40_memmap[] =3D {
+> @@ -53,6 +54,9 @@ const hwaddr allwinner_r40_memmap[] =3D {
+>      [AW_R40_DEV_UART6]      =3D 0x01c29800,
+>      [AW_R40_DEV_UART7]      =3D 0x01c29c00,
+>      [AW_R40_DEV_TWI0]       =3D 0x01c2ac00,
+> +    [AW_R40_DEV_DRAMCOM]    =3D 0x01c62000,
+> +    [AW_R40_DEV_DRAMCTL]    =3D 0x01c63000,
+> +    [AW_R40_DEV_DRAMPHY]    =3D 0x01c65000,
+>      [AW_R40_DEV_GIC_DIST]   =3D 0x01c81000,
+>      [AW_R40_DEV_GIC_CPU]    =3D 0x01c82000,
+>      [AW_R40_DEV_GIC_HYP]    =3D 0x01c84000,
+> @@ -129,8 +133,6 @@ static struct AwR40Unimplemented r40_unimplemented[] =
+=3D
+> {
+>      { "gpu",        0x01c40000, 64 * KiB },
+>      { "gmac",       0x01c50000, 64 * KiB },
+>      { "hstmr",      0x01c60000, 4 * KiB },
+> -    { "dram-com",   0x01c62000, 4 * KiB },
+> -    { "dram-ctl",   0x01c63000, 4 * KiB },
+>      { "tcon-top",   0x01c70000, 4 * KiB },
+>      { "lcd0",       0x01c71000, 4 * KiB },
+>      { "lcd1",       0x01c72000, 4 * KiB },
+> @@ -273,6 +275,12 @@ static void allwinner_r40_init(Object *obj)
 >      }
 >
-> +    /* Connect AXP221 */
-> +    i2c =3D I2C_BUS(qdev_get_child_bus(DEVICE(&r40->i2c0), "i2c"));
-> +    i2c_slave_create_simple(i2c, "axp221_pmu", 0x34);
+>      object_initialize_child(obj, "twi0", &s->i2c0, TYPE_AW_I2C_SUN6I);
 > +
->      /* SDRAM */
->      memory_region_add_subregion(get_system_memory(),
->                                  r40->memmap[AW_R40_DEV_SDRAM],
-> machine->ram);
-> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
-> index 2ef5781ef8..efeb430a6c 100644
-> --- a/hw/misc/Kconfig
-> +++ b/hw/misc/Kconfig
-> @@ -176,7 +176,7 @@ config ALLWINNER_A10_CCM
->  config ALLWINNER_A10_DRAMC
->      bool
+> +    object_initialize_child(obj, "dramc", &s->dramc, TYPE_AW_R40_DRAMC);
+> +    object_property_add_alias(obj, "ram-addr", OBJECT(&s->dramc),
+> +                             "ram-addr");
+> +    object_property_add_alias(obj, "ram-size", OBJECT(&s->dramc),
+> +                              "ram-size");
+>  }
 >
-> -config AXP209_PMU
-> +config AXP2XX_PMU
->      bool
->      depends on I2C
+>  static void allwinner_r40_realize(DeviceState *dev, Error **errp)
+> @@ -425,6 +433,15 @@ static void allwinner_r40_realize(DeviceState *dev,
+> Error **errp)
+>      sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c0), 0,
+>                         qdev_get_gpio_in(DEVICE(&s->gic),
+> AW_R40_GIC_SPI_TWI0));
 >
-> diff --git a/hw/misc/axp209.c b/hw/misc/axp209.c
-> deleted file mode 100644
-> index 2908ed99a6..0000000000
-> --- a/hw/misc/axp209.c
-> +++ /dev/null
-> @@ -1,238 +0,0 @@
-> -/*
-> - * AXP-209 PMU Emulation
-> - *
-> - * Copyright (C) 2022 Strahinja Jankovic <strahinja.p.jankovic@gmail.com=
+> +    /* DRAMC */
+> +    sysbus_realize(SYS_BUS_DEVICE(&s->dramc), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(&s->dramc), 0,
+> +                    s->memmap[AW_R40_DEV_DRAMCOM]);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(&s->dramc), 1,
+> +                    s->memmap[AW_R40_DEV_DRAMCTL]);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(&s->dramc), 2,
+> +                    s->memmap[AW_R40_DEV_DRAMPHY]);
+> +
+>      /* Unimplemented devices */
+>      for (i =3D 0; i < ARRAY_SIZE(r40_unimplemented); i++) {
+>          create_unimplemented_device(r40_unimplemented[i].device_name,
+> diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c
+> index 9c5360a41b..20a4550c68 100644
+> --- a/hw/arm/bananapi_m2u.c
+> +++ b/hw/arm/bananapi_m2u.c
+> @@ -85,6 +85,13 @@ static void bpim2u_init(MachineState *machine)
+>      object_property_set_int(OBJECT(r40), "clk1-freq", 24 * 1000 * 1000,
+>                              &error_abort);
 >
-> - *
-> - * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> - * copy of this software and associated documentation files (the
-> "Software"),
-> - * to deal in the Software without restriction, including without
-> limitation
-> - * the rights to use, copy, modify, merge, publish, distribute,
-> sublicense,
-> - * and/or sell copies of the Software, and to permit persons to whom the
-> - * Software is furnished to do so, subject to the following conditions:
-> - *
-> - * The above copyright notice and this permission notice shall be
-> included in
-> - * all copies or substantial portions of the Software.
-> - *
-> - * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-> EXPRESS OR
-> - * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-> MERCHANTABILITY,
-> - * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
-> SHALL THE
-> - * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHE=
-R
-> - * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> - * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-> - * DEALINGS IN THE SOFTWARE.
-> - *
-> - * SPDX-License-Identifier: MIT
-> - */
-> -
-> -#include "qemu/osdep.h"
-> -#include "qemu/log.h"
-> -#include "trace.h"
-> -#include "hw/i2c/i2c.h"
-> -#include "migration/vmstate.h"
-> -
-> -#define TYPE_AXP209_PMU "axp209_pmu"
-> -
-> -#define AXP209(obj) \
-> -    OBJECT_CHECK(AXP209I2CState, (obj), TYPE_AXP209_PMU)
-> -
-> -/* registers */
-> -enum {
-> -    REG_POWER_STATUS =3D 0x0u,
-> -    REG_OPERATING_MODE,
-> -    REG_OTG_VBUS_STATUS,
-> -    REG_CHIP_VERSION,
-> -    REG_DATA_CACHE_0,
-> -    REG_DATA_CACHE_1,
-> -    REG_DATA_CACHE_2,
-> -    REG_DATA_CACHE_3,
-> -    REG_DATA_CACHE_4,
-> -    REG_DATA_CACHE_5,
-> -    REG_DATA_CACHE_6,
-> -    REG_DATA_CACHE_7,
-> -    REG_DATA_CACHE_8,
-> -    REG_DATA_CACHE_9,
-> -    REG_DATA_CACHE_A,
-> -    REG_DATA_CACHE_B,
-> -    REG_POWER_OUTPUT_CTRL =3D 0x12u,
-> -    REG_DC_DC2_OUT_V_CTRL =3D 0x23u,
-> -    REG_DC_DC2_DVS_CTRL =3D 0x25u,
-> -    REG_DC_DC3_OUT_V_CTRL =3D 0x27u,
-> -    REG_LDO2_4_OUT_V_CTRL,
-> -    REG_LDO3_OUT_V_CTRL,
-> -    REG_VBUS_CH_MGMT =3D 0x30u,
-> -    REG_SHUTDOWN_V_CTRL,
-> -    REG_SHUTDOWN_CTRL,
-> -    REG_CHARGE_CTRL_1,
-> -    REG_CHARGE_CTRL_2,
-> -    REG_SPARE_CHARGE_CTRL,
-> -    REG_PEK_KEY_CTRL,
-> -    REG_DC_DC_FREQ_SET,
-> -    REG_CHR_TEMP_TH_SET,
-> -    REG_CHR_HIGH_TEMP_TH_CTRL,
-> -    REG_IPSOUT_WARN_L1,
-> -    REG_IPSOUT_WARN_L2,
-> -    REG_DISCHR_TEMP_TH_SET,
-> -    REG_DISCHR_HIGH_TEMP_TH_CTRL,
-> -    REG_IRQ_BANK_1_CTRL =3D 0x40u,
-> -    REG_IRQ_BANK_2_CTRL,
-> -    REG_IRQ_BANK_3_CTRL,
-> -    REG_IRQ_BANK_4_CTRL,
-> -    REG_IRQ_BANK_5_CTRL,
-> -    REG_IRQ_BANK_1_STAT =3D 0x48u,
-> -    REG_IRQ_BANK_2_STAT,
-> -    REG_IRQ_BANK_3_STAT,
-> -    REG_IRQ_BANK_4_STAT,
-> -    REG_IRQ_BANK_5_STAT,
-> -    REG_ADC_ACIN_V_H =3D 0x56u,
-> -    REG_ADC_ACIN_V_L,
-> -    REG_ADC_ACIN_CURR_H,
-> -    REG_ADC_ACIN_CURR_L,
-> -    REG_ADC_VBUS_V_H,
-> -    REG_ADC_VBUS_V_L,
-> -    REG_ADC_VBUS_CURR_H,
-> -    REG_ADC_VBUS_CURR_L,
-> -    REG_ADC_INT_TEMP_H,
-> -    REG_ADC_INT_TEMP_L,
-> -    REG_ADC_TEMP_SENS_V_H =3D 0x62u,
-> -    REG_ADC_TEMP_SENS_V_L,
-> -    REG_ADC_BAT_V_H =3D 0x78u,
-> -    REG_ADC_BAT_V_L,
-> -    REG_ADC_BAT_DISCHR_CURR_H,
-> -    REG_ADC_BAT_DISCHR_CURR_L,
-> -    REG_ADC_BAT_CHR_CURR_H,
-> -    REG_ADC_BAT_CHR_CURR_L,
-> -    REG_ADC_IPSOUT_V_H,
-> -    REG_ADC_IPSOUT_V_L,
-> -    REG_DC_DC_MOD_SEL =3D 0x80u,
-> -    REG_ADC_EN_1,
-> -    REG_ADC_EN_2,
-> -    REG_ADC_SR_CTRL,
-> -    REG_ADC_IN_RANGE,
-> -    REG_GPIO1_ADC_IRQ_RISING_TH,
-> -    REG_GPIO1_ADC_IRQ_FALLING_TH,
-> -    REG_TIMER_CTRL =3D 0x8au,
-> -    REG_VBUS_CTRL_MON_SRP,
-> -    REG_OVER_TEMP_SHUTDOWN =3D 0x8fu,
-> -    REG_GPIO0_FEAT_SET,
-> -    REG_GPIO_OUT_HIGH_SET,
-> -    REG_GPIO1_FEAT_SET,
-> -    REG_GPIO2_FEAT_SET,
-> -    REG_GPIO_SIG_STATE_SET_MON,
-> -    REG_GPIO3_SET,
-> -    REG_COULOMB_CNTR_CTRL =3D 0xb8u,
-> -    REG_POWER_MEAS_RES,
-> -    NR_REGS
-> -};
-> -
-> -#define AXP209_CHIP_VERSION_ID             (0x01)
-> -#define AXP209_DC_DC2_OUT_V_CTRL_RESET     (0x16)
-> -#define AXP209_IRQ_BANK_1_CTRL_RESET       (0xd8)
-> -
-> -/* A simple I2C slave which returns values of ID or CNT register. */
-> -typedef struct AXP209I2CState {
-> -    /*< private >*/
-> -    I2CSlave i2c;
-> -    /*< public >*/
-> -    uint8_t regs[NR_REGS];  /* peripheral registers */
-> -    uint8_t ptr;            /* current register index */
-> -    uint8_t count;          /* counter used for tx/rx */
-> -} AXP209I2CState;
-> -
-> -/* Reset all counters and load ID register */
-> -static void axp209_reset_enter(Object *obj, ResetType type)
-> -{
-> -    AXP209I2CState *s =3D AXP209(obj);
-> -
-> -    memset(s->regs, 0, NR_REGS);
-> -    s->ptr =3D 0;
-> -    s->count =3D 0;
-> -    s->regs[REG_CHIP_VERSION] =3D AXP209_CHIP_VERSION_ID;
-> -    s->regs[REG_DC_DC2_OUT_V_CTRL] =3D AXP209_DC_DC2_OUT_V_CTRL_RESET;
-> -    s->regs[REG_IRQ_BANK_1_CTRL] =3D AXP209_IRQ_BANK_1_CTRL_RESET;
-> -}
-> -
-> -/* Handle events from master. */
-> -static int axp209_event(I2CSlave *i2c, enum i2c_event event)
-> -{
-> -    AXP209I2CState *s =3D AXP209(i2c);
-> -
-> -    s->count =3D 0;
-> -
-> -    return 0;
-> -}
-> -
-> -/* Called when master requests read */
-> -static uint8_t axp209_rx(I2CSlave *i2c)
-> -{
-> -    AXP209I2CState *s =3D AXP209(i2c);
-> -    uint8_t ret =3D 0xff;
-> -
-> -    if (s->ptr < NR_REGS) {
-> -        ret =3D s->regs[s->ptr++];
-> -    }
-> -
-> -    trace_axp209_rx(s->ptr - 1, ret);
-> -
-> -    return ret;
-> -}
-> -
-> -/*
-> - * Called when master sends write.
-> - * Update ptr with byte 0, then perform write with second byte.
-> - */
-> -static int axp209_tx(I2CSlave *i2c, uint8_t data)
-> -{
-> -    AXP209I2CState *s =3D AXP209(i2c);
-> -
-> -    if (s->count =3D=3D 0) {
-> -        /* Store register address */
-> -        s->ptr =3D data;
-> -        s->count++;
-> -        trace_axp209_select(data);
-> -    } else {
-> -        trace_axp209_tx(s->ptr, data);
-> -        if (s->ptr =3D=3D REG_DC_DC2_OUT_V_CTRL) {
-> -            s->regs[s->ptr++] =3D data;
-> -        }
-> -    }
-> -
-> -    return 0;
-> -}
-> -
-> -static const VMStateDescription vmstate_axp209 =3D {
-> -    .name =3D TYPE_AXP209_PMU,
-> -    .version_id =3D 1,
-> -    .fields =3D (VMStateField[]) {
-> -        VMSTATE_UINT8_ARRAY(regs, AXP209I2CState, NR_REGS),
-> -        VMSTATE_UINT8(count, AXP209I2CState),
-> -        VMSTATE_UINT8(ptr, AXP209I2CState),
-> -        VMSTATE_END_OF_LIST()
-> -    }
-> -};
-> -
-> -static void axp209_class_init(ObjectClass *oc, void *data)
-> -{
-> -    DeviceClass *dc =3D DEVICE_CLASS(oc);
-> -    I2CSlaveClass *isc =3D I2C_SLAVE_CLASS(oc);
-> -    ResettableClass *rc =3D RESETTABLE_CLASS(oc);
-> -
-> -    rc->phases.enter =3D axp209_reset_enter;
-> -    dc->vmsd =3D &vmstate_axp209;
-> -    isc->event =3D axp209_event;
-> -    isc->recv =3D axp209_rx;
-> -    isc->send =3D axp209_tx;
-> -}
-> -
-> -static const TypeInfo axp209_info =3D {
-> -    .name =3D TYPE_AXP209_PMU,
-> -    .parent =3D TYPE_I2C_SLAVE,
-> -    .instance_size =3D sizeof(AXP209I2CState),
-> -    .class_init =3D axp209_class_init
-> -};
-> -
-> -static void axp209_register_devices(void)
-> -{
-> -    type_register_static(&axp209_info);
-> -}
-> -
-> -type_init(axp209_register_devices);
-> diff --git a/hw/misc/axp2xx.c b/hw/misc/axp2xx.c
+> +    /* DRAMC */
+> +    r40->ram_size =3D machine->ram_size / MiB;
+> +    object_property_set_uint(OBJECT(r40), "ram-addr",
+> +                             r40->memmap[AW_R40_DEV_SDRAM], &error_abort=
+);
+> +    object_property_set_int(OBJECT(r40), "ram-size",
+> +                            r40->ram_size, &error_abort);
+> +
+>      /* Mark R40 object realized */
+>      qdev_realize(DEVICE(r40), NULL, &error_abort);
+>
+> diff --git a/hw/misc/allwinner-r40-dramc.c b/hw/misc/allwinner-r40-dramc.=
+c
 > new file mode 100644
-> index 0000000000..52a6ffc7f3
+> index 0000000000..b102bcdaba
 > --- /dev/null
-> +++ b/hw/misc/axp2xx.c
-> @@ -0,0 +1,283 @@
+> +++ b/hw/misc/allwinner-r40-dramc.c
+> @@ -0,0 +1,513 @@
 > +/*
-> + * AXP-2XX PMU Emulation, supported lists:
-> + *   AXP209
-> + *   AXP221
+> + * Allwinner R40 SDRAM Controller emulation
 > + *
-> + * Copyright (C) 2022 Strahinja Jankovic <strahinja.p.jankovic@gmail.com=
->
-> + * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
+> + * CCopyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
 > + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the
-> "Software"),
-> + * to deal in the Software without restriction, including without
-> limitation
-> + * the rights to use, copy, modify, merge, publish, distribute,
-> sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
+> + * This program is free software: you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation, either version 2 of the License, or
+> + * (at your option) any later version.
 > + *
-> + * The above copyright notice and this permission notice shall be
-> included in
-> + * all copies or substantial portions of the Software.
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
 > + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-> EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-> MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
-> SHALL THE
-> + * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHE=
-R
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-> + * DEALINGS IN THE SOFTWARE.
-> + *
-> + * SPDX-License-Identifier: MIT
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 > + */
 > +
 > +#include "qemu/osdep.h"
-> +#include "qemu/log.h"
-> +#include "qom/object.h"
-> +#include "trace.h"
-> +#include "hw/i2c/i2c.h"
+> +#include "qemu/units.h"
+> +#include "qemu/error-report.h"
+> +#include "hw/sysbus.h"
 > +#include "migration/vmstate.h"
+> +#include "qemu/log.h"
+> +#include "qemu/module.h"
+> +#include "exec/address-spaces.h"
+> +#include "hw/qdev-properties.h"
+> +#include "qapi/error.h"
+> +#include "qemu/bitops.h"
+> +#include "hw/misc/allwinner-r40-dramc.h"
+> +#include "trace.h"
 > +
-> +#define TYPE_AXP2XX     "axp2xx_pmu"
-> +#define TYPE_AXP209_PMU "axp209_pmu"
-> +#define TYPE_AXP221_PMU "axp221_pmu"
+> +#define REG_INDEX(offset)    (offset / sizeof(uint32_t))
 > +
-> +OBJECT_DECLARE_TYPE(AXP2xxI2CState, AXP2xxClass, AXP2XX)
+> +/* DRAMCOM register offsets */
+> +enum {
+> +    REG_DRAMCOM_CR    =3D 0x0000, /* Control Register */
+> +};
 > +
-> +#define NR_REGS                            (0xff)
+> +/* DRAMCOMM register flags */
+> +enum {
+> +    REG_DRAMCOM_CR_DUAL_RANK =3D (1 << 0),
+> +};
 > +
-> +/* A simple I2C slave which returns values of ID or CNT register. */
-> +typedef struct AXP2xxI2CState {
-> +    /*< private >*/
-> +    I2CSlave i2c;
-> +    /*< public >*/
-> +    uint8_t regs[NR_REGS];  /* peripheral registers */
-> +    uint8_t ptr;            /* current register index */
-> +    uint8_t count;          /* counter used for tx/rx */
-> +} AXP2xxI2CState;
+> +/* DRAMCTL register offsets */
+> +enum {
+> +    REG_DRAMCTL_PIR   =3D 0x0000, /* PHY Initialization Register */
+> +    REG_DRAMCTL_PGSR  =3D 0x0010, /* PHY General Status Register */
+> +    REG_DRAMCTL_STATR =3D 0x0018, /* Status Register */
+> +    REG_DRAMCTL_PGCR  =3D 0x0100, /* PHY general configuration registers=
+ */
+> +};
 > +
-> +typedef struct AXP2xxClass {
-> +    /*< private >*/
-> +    I2CSlaveClass parent_class;
-> +    /*< public >*/
-> +    void (*reset_enter)(AXP2xxI2CState *s, ResetType type);
-> +} AXP2xxClass;
+> +/* DRAMCTL register flags */
+> +enum {
+> +    REG_DRAMCTL_PGSR_INITDONE =3D (1 << 0),
+> +    REG_DRAMCTL_PGSR_READ_TIMEOUT =3D (1 << 13),
+> +    REG_DRAMCTL_PGCR_ENABLE_READ_TIMEOUT =3D (1 << 25),
+> +};
 > +
-> +#define AXP209_CHIP_VERSION_ID             (0x01)
-> +#define AXP209_DC_DC2_OUT_V_CTRL_RESET     (0x16)
+> +enum {
+> +    REG_DRAMCTL_STATR_ACTIVE  =3D (1 << 0),
+> +};
 > +
-> +/* Reset all counters and load ID register */
-> +static void axp209_reset_enter(AXP2xxI2CState *s, ResetType type)
-> +{
-> +    memset(s->regs, 0, NR_REGS);
-> +    s->ptr =3D 0;
-> +    s->count =3D 0;
+> +#define DRAM_MAX_ROW_BITS       16
+> +#define DRAM_MAX_COL_BITS       13  /* 8192 */
+> +#define DRAM_MAX_BANK            3
 > +
-> +    s->regs[0x03] =3D AXP209_CHIP_VERSION_ID;
-> +    s->regs[0x23] =3D AXP209_DC_DC2_OUT_V_CTRL_RESET;
-> +
-> +    s->regs[0x30] =3D 0x60;
-> +    s->regs[0x32] =3D 0x46;
-> +    s->regs[0x34] =3D 0x41;
-> +    s->regs[0x35] =3D 0x22;
-> +    s->regs[0x36] =3D 0x5d;
-> +    s->regs[0x37] =3D 0x08;
-> +    s->regs[0x38] =3D 0xa5;
-> +    s->regs[0x39] =3D 0x1f;
-> +    s->regs[0x3a] =3D 0x68;
-> +    s->regs[0x3b] =3D 0x5f;
-> +    s->regs[0x3c] =3D 0xfc;
-> +    s->regs[0x3d] =3D 0x16;
-> +    s->regs[0x40] =3D 0xd8;
-> +    s->regs[0x42] =3D 0xff;
-> +    s->regs[0x43] =3D 0x3b;
-> +    s->regs[0x80] =3D 0xe0;
-> +    s->regs[0x82] =3D 0x83;
-> +    s->regs[0x83] =3D 0x80;
-> +    s->regs[0x84] =3D 0x32;
-> +    s->regs[0x86] =3D 0xff;
-> +    s->regs[0x90] =3D 0x07;
-> +    s->regs[0x91] =3D 0xa0;
-> +    s->regs[0x92] =3D 0x07;
-> +    s->regs[0x93] =3D 0x07;
-> +}
-> +
-> +#define AXP221_PWR_STATUS_ACIN_PRESENT          BIT(7)
-> +#define AXP221_PWR_STATUS_ACIN_AVAIL            BIT(6)
-> +#define AXP221_PWR_STATUS_VBUS_PRESENT          BIT(5)
-> +#define AXP221_PWR_STATUS_VBUS_USED             BIT(4)
-> +#define AXP221_PWR_STATUS_BAT_CHARGING          BIT(2)
-> +#define AXP221_PWR_STATUS_ACIN_VBUS_POWERED     BIT(1)
-> +
-> +/* Reset all counters and load ID register */
-> +static void axp221_reset_enter(AXP2xxI2CState *s, ResetType type)
-> +{
-> +    memset(s->regs, 0, NR_REGS);
-> +    s->ptr =3D 0;
-> +    s->count =3D 0;
-> +
-> +    /* input power status register */
-> +    s->regs[0x00] =3D AXP221_PWR_STATUS_ACIN_PRESENT
-> +                    | AXP221_PWR_STATUS_ACIN_AVAIL
-> +                    | AXP221_PWR_STATUS_ACIN_VBUS_POWERED;
-> +
-> +    s->regs[0x01] =3D 0x00; /* no battery is connected */
-> +
-> +    /*
-> +     * CHIPID register, no documented on datasheet, but it is checked in
-> +     * u-boot spl. I had read it from AXP221s and got 0x06 value.
-> +     * So leave 06h here.
-> +     */
-> +    s->regs[0x03] =3D 0x06;
-> +
-> +    s->regs[0x10] =3D 0xbf;
-> +    s->regs[0x13] =3D 0x01;
-> +    s->regs[0x30] =3D 0x60;
-> +    s->regs[0x31] =3D 0x03;
-> +    s->regs[0x32] =3D 0x43;
-> +    s->regs[0x33] =3D 0xc6;
-> +    s->regs[0x34] =3D 0x45;
-> +    s->regs[0x35] =3D 0x0e;
-> +    s->regs[0x36] =3D 0x5d;
-> +    s->regs[0x37] =3D 0x08;
-> +    s->regs[0x38] =3D 0xa5;
-> +    s->regs[0x39] =3D 0x1f;
-> +    s->regs[0x3c] =3D 0xfc;
-> +    s->regs[0x3d] =3D 0x16;
-> +    s->regs[0x80] =3D 0x80;
-> +    s->regs[0x82] =3D 0xe0;
-> +    s->regs[0x84] =3D 0x32;
-> +    s->regs[0x8f] =3D 0x01;
-> +
-> +    s->regs[0x90] =3D 0x07;
-> +    s->regs[0x91] =3D 0x1f;
-> +    s->regs[0x92] =3D 0x07;
-> +    s->regs[0x93] =3D 0x1f;
-> +
-> +    s->regs[0x40] =3D 0xd8;
-> +    s->regs[0x41] =3D 0xff;
-> +    s->regs[0x42] =3D 0x03;
-> +    s->regs[0x43] =3D 0x03;
-> +
-> +    s->regs[0xb8] =3D 0xc0;
-> +    s->regs[0xb9] =3D 0x64;
-> +    s->regs[0xe6] =3D 0xa0;
->
-
-Would it be possible to change this array to be more human readable?
-
-Perhaps using the register names from the datasheet (if available or some
-other source) as the names for defines / enums or just as comments can help=
-.
-That way we can know what the contents mean.
-
-
-> +}
-> +
-> +static void axp2xx_reset_enter(Object *obj, ResetType type)
-> +{
-> +    AXP2xxI2CState *s =3D AXP2XX(obj);
-> +    AXP2xxClass *sc =3D AXP2XX_GET_CLASS(s);
-> +
-> +    sc->reset_enter(s, type);
-> +}
-> +
-> +/* Handle events from master. */
-> +static int axp2xx_event(I2CSlave *i2c, enum i2c_event event)
-> +{
-> +    AXP2xxI2CState *s =3D AXP2XX(i2c);
-> +
-> +    s->count =3D 0;
-> +
-> +    return 0;
-> +}
-> +
-> +/* Called when master requests read */
-> +static uint8_t axp2xx_rx(I2CSlave *i2c)
-> +{
-> +    AXP2xxI2CState *s =3D AXP2XX(i2c);
-> +    uint8_t ret =3D 0xff;
-> +
-> +    if (s->ptr < NR_REGS) {
-> +        ret =3D s->regs[s->ptr++];
-> +    }
-> +
-> +    trace_axp2xx_rx(s->ptr - 1, ret);
-> +
-> +    return ret;
-> +}
+> +static uint64_t dram_autodetect_cells[DRAM_MAX_ROW_BITS]
+> +                                     [DRAM_MAX_BANK]
+> +                                     [DRAM_MAX_COL_BITS];
+> +struct VirtualDDRChip {
+> +    uint32_t    ram_size;
+> +    uint8_t     bank_bits;
+> +    uint8_t     row_bits;
+> +    uint8_t     col_bits;
+> +};
 > +
 > +/*
-> + * Called when master sends write.
-> + * Update ptr with byte 0, then perform write with second byte.
+> + * Only power of 2 RAM sizes from 256MiB up to 2048MiB are supported,
+> + * 2GiB memory is not supported due to dual rank feature.
 > + */
-> +static int axp2xx_tx(I2CSlave *i2c, uint8_t data)
-> +{
-> +    AXP2xxI2CState *s =3D AXP2XX(i2c);
+> +static const struct VirtualDDRChip dummy_ddr_chips[] =3D {
+> +    {
+> +        .ram_size   =3D 256,
+> +        .bank_bits  =3D 3,
+> +        .row_bits   =3D 12,
+> +        .col_bits   =3D 13,
+> +    }, {
+> +        .ram_size   =3D 512,
+> +        .bank_bits  =3D 3,
+> +        .row_bits   =3D 13,
+> +        .col_bits   =3D 13,
+> +    }, {
+> +        .ram_size   =3D 1024,
+> +        .bank_bits  =3D 3,
+> +        .row_bits   =3D 14,
+> +        .col_bits   =3D 13,
+> +    }, {
+> +        0
+> +    }
+> +};
 > +
-> +    if (s->count =3D=3D 0) {
-> +        /* Store register address */
-> +        s->ptr =3D data;
-> +        s->count++;
-> +        trace_axp2xx_select(data);
+> +static const struct VirtualDDRChip *get_match_ddr(uint32_t ram_size)
+> +{
+> +    const struct VirtualDDRChip *ddr;
+> +
+> +    for (ddr =3D &dummy_ddr_chips[0]; ddr->ram_size; ddr++) {
+> +        if (ddr->ram_size =3D=3D ram_size) {
+> +            return ddr;
+> +        }
+> +    }
+> +
+> +    return NULL;
+> +}
+> +
+> +static uint64_t *address_to_autodetect_cells(AwR40DramCtlState *s,
+> +                                             const struct VirtualDDRChip
+> *ddr,
+> +                                             uint32_t offset)
+> +{
+> +    int row_index =3D 0, bank_index =3D 0, col_index =3D 0;
+> +    uint32_t row_addr, bank_addr, col_addr;
+> +
+> +    row_addr =3D extract32(offset, s->set_col_bits + s->set_bank_bits,
+> +                         s->set_row_bits);
+> +    bank_addr =3D extract32(offset, s->set_col_bits, s->set_bank_bits);
+> +    col_addr =3D extract32(offset, 0, s->set_col_bits);
+> +
+> +    for (int i =3D 0; i < ddr->row_bits; i++) {
+> +        if (row_addr & BIT(i)) {
+> +            row_index =3D i;
+> +        }
+> +    }
+> +
+> +    for (int i =3D 0; i < ddr->bank_bits; i++) {
+> +        if (bank_addr & BIT(i)) {
+> +            bank_index =3D i;
+> +        }
+> +    }
+> +
+> +    for (int i =3D 0; i < ddr->col_bits; i++) {
+> +        if (col_addr & BIT(i)) {
+> +            col_index =3D i;
+> +        }
+> +    }
+> +
+> +    trace_allwinner_r40_dramc_offset_to_cell(offset, row_index,
+> bank_index,
+> +                                             col_index);
+> +    return &dram_autodetect_cells[row_index][bank_index][col_index];
+> +}
+> +
+> +static void allwinner_r40_dramc_map_rows(AwR40DramCtlState *s, uint8_t
+> row_bits,
+> +                                         uint8_t bank_bits, uint8_t
+> col_bits)
+> +{
+> +    const struct VirtualDDRChip *ddr =3D get_match_ddr(s->ram_size);
+> +    bool enable_detect_cells;
+> +
+> +    trace_allwinner_r40_dramc_map_rows(row_bits, bank_bits, col_bits);
+> +
+> +    if (!ddr) {
+> +        return;
+> +    }
+> +
+> +    s->set_row_bits =3D row_bits;
+> +    s->set_bank_bits =3D bank_bits;
+> +    s->set_col_bits =3D col_bits;
+> +
+> +    enable_detect_cells =3D ddr->bank_bits !=3D bank_bits
+> +                        || ddr->row_bits !=3D row_bits
+> +                        || ddr->col_bits !=3D col_bits;
+> +
+> +    if (enable_detect_cells) {
+> +        trace_allwinner_r40_dramc_detect_cells_enable();
 > +    } else {
-> +        trace_axp2xx_tx(s->ptr, data);
-> +        s->regs[s->ptr++] =3D data;
+> +        trace_allwinner_r40_dramc_detect_cells_disable();
+> +    }
+> +
+> +    memory_region_set_enabled(&s->detect_cells, enable_detect_cells);
+> +}
+> +
+> +static uint64_t allwinner_r40_dramcom_read(void *opaque, hwaddr offset,
+> +                                           unsigned size)
+> +{
+> +    const AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    const uint32_t idx =3D REG_INDEX(offset);
+> +
+> +    if (idx >=3D AW_R40_DRAMCOM_REGS_NUM) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset
+> 0x%04x\n",
+> +                      __func__, (uint32_t)offset);
+> +        return 0;
+> +    }
+> +
+> +    trace_allwinner_r40_dramcom_read(offset, s->dramcom[idx], size);
+> +    return s->dramcom[idx];
+> +}
+> +
+> +static void allwinner_r40_dramcom_write(void *opaque, hwaddr offset,
+> +                                        uint64_t val, unsigned size)
+> +{
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    const uint32_t idx =3D REG_INDEX(offset);
+> +
+> +    trace_allwinner_r40_dramcom_write(offset, val, size);
+> +
+> +    if (idx >=3D AW_R40_DRAMCOM_REGS_NUM) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset
+> 0x%04x\n",
+> +                      __func__, (uint32_t)offset);
+> +        return;
+> +    }
+> +
+> +    switch (offset) {
+> +    case REG_DRAMCOM_CR:   /* Control Register */
+> +        if (!(val & REG_DRAMCOM_CR_DUAL_RANK)) {
+> +            allwinner_r40_dramc_map_rows(s, ((val >> 4) & 0xf) + 1,
+> +                                         ((val >> 2) & 0x1) + 2,
+> +                                         (((val >> 8) & 0xf) + 3));
+> +        }
+> +        break;
+> +    };
+> +
+> +    s->dramcom[idx] =3D (uint32_t) val;
+> +}
+> +
+> +static uint64_t allwinner_r40_dramctl_read(void *opaque, hwaddr offset,
+> +                                           unsigned size)
+> +{
+> +    const AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    const uint32_t idx =3D REG_INDEX(offset);
+> +
+> +    if (idx >=3D AW_R40_DRAMCTL_REGS_NUM) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset
+> 0x%04x\n",
+> +                      __func__, (uint32_t)offset);
+> +        return 0;
+> +    }
+> +
+> +    trace_allwinner_r40_dramctl_read(offset, s->dramctl[idx], size);
+> +    return s->dramctl[idx];
+> +}
+> +
+> +static void allwinner_r40_dramctl_write(void *opaque, hwaddr offset,
+> +                                        uint64_t val, unsigned size)
+> +{
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    const uint32_t idx =3D REG_INDEX(offset);
+> +
+> +    trace_allwinner_r40_dramctl_write(offset, val, size);
+> +
+> +    if (idx >=3D AW_R40_DRAMCTL_REGS_NUM) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset
+> 0x%04x\n",
+> +                      __func__, (uint32_t)offset);
+> +        return;
+> +    }
+> +
+> +    switch (offset) {
+> +    case REG_DRAMCTL_PIR:    /* PHY Initialization Register */
+> +        s->dramctl[REG_INDEX(REG_DRAMCTL_PGSR)] |=3D
+> REG_DRAMCTL_PGSR_INITDONE;
+> +        s->dramctl[REG_INDEX(REG_DRAMCTL_STATR)] |=3D
+> REG_DRAMCTL_STATR_ACTIVE;
+> +        break;
+> +    }
+> +
+> +    s->dramctl[idx] =3D (uint32_t) val;
+> +}
+> +
+> +static uint64_t allwinner_r40_dramphy_read(void *opaque, hwaddr offset,
+> +                                           unsigned size)
+> +{
+> +    const AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    const uint32_t idx =3D REG_INDEX(offset);
+> +
+> +    if (idx >=3D AW_R40_DRAMPHY_REGS_NUM) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset
+> 0x%04x\n",
+> +                      __func__, (uint32_t)offset);
+> +        return 0;
+> +    }
+> +
+> +    trace_allwinner_r40_dramphy_read(offset, s->dramphy[idx], size);
+> +    return s->dramphy[idx];
+> +}
+> +
+> +static void allwinner_r40_dramphy_write(void *opaque, hwaddr offset,
+> +                                        uint64_t val, unsigned size)
+> +{
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    const uint32_t idx =3D REG_INDEX(offset);
+> +
+> +    trace_allwinner_r40_dramphy_write(offset, val, size);
+> +
+> +    if (idx >=3D AW_R40_DRAMPHY_REGS_NUM) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset
+> 0x%04x\n",
+> +                      __func__, (uint32_t)offset);
+> +        return;
+> +    }
+> +
+> +    s->dramphy[idx] =3D (uint32_t) val;
+> +}
+> +
+> +static const MemoryRegionOps allwinner_r40_dramcom_ops =3D {
+> +    .read =3D allwinner_r40_dramcom_read,
+> +    .write =3D allwinner_r40_dramcom_write,
+> +    .endianness =3D DEVICE_NATIVE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 4,
+> +        .max_access_size =3D 4,
+> +    },
+> +    .impl.min_access_size =3D 4,
+> +};
+> +
+> +static const MemoryRegionOps allwinner_r40_dramctl_ops =3D {
+> +    .read =3D allwinner_r40_dramctl_read,
+> +    .write =3D allwinner_r40_dramctl_write,
+> +    .endianness =3D DEVICE_NATIVE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 4,
+> +        .max_access_size =3D 4,
+> +    },
+> +    .impl.min_access_size =3D 4,
+> +};
+> +
+> +static const MemoryRegionOps allwinner_r40_dramphy_ops =3D {
+> +    .read =3D allwinner_r40_dramphy_read,
+> +    .write =3D allwinner_r40_dramphy_write,
+> +    .endianness =3D DEVICE_NATIVE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 4,
+> +        .max_access_size =3D 4,
+> +    },
+> +    .impl.min_access_size =3D 4,
+> +};
+> +
+> +static uint64_t allwinner_r40_detect_read(void *opaque, hwaddr offset,
+> +                                          unsigned size)
+> +{
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    const struct VirtualDDRChip *ddr =3D get_match_ddr(s->ram_size);
+> +    uint64_t data =3D 0;
+> +
+> +    if (ddr) {
+> +        data =3D *address_to_autodetect_cells(s, ddr, (uint32_t)offset);
+> +    }
+> +
+> +    trace_allwinner_r40_dramc_detect_cell_read(offset, data);
+> +    return data;
+> +}
+> +
+> +static void allwinner_r40_detect_write(void *opaque, hwaddr offset,
+> +                                       uint64_t data, unsigned size)
+> +{
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    const struct VirtualDDRChip *ddr =3D get_match_ddr(s->ram_size);
+> +
+> +    if (ddr) {
+> +        uint64_t *cell =3D address_to_autodetect_cells(s, ddr,
+> (uint32_t)offset);
+> +        trace_allwinner_r40_dramc_detect_cell_write(offset, data);
+> +        *cell =3D data;
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps allwinner_r40_detect_ops =3D {
+> +    .read =3D allwinner_r40_detect_read,
+> +    .write =3D allwinner_r40_detect_write,
+> +    .endianness =3D DEVICE_NATIVE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 4,
+> +        .max_access_size =3D 4,
+> +    },
+> +    .impl.min_access_size =3D 4,
+> +};
+> +
+> +/*
+> + * mctl_r40_detect_rank_count in u-boot will write the high 1G of DDR
+> + * to detect wether the board support dual_rank or not. Create a virtual
+> memory
+> + * if the board's ram_size less or equal than 1G, and set read time out
+> flag of
+> + * REG_DRAMCTL_PGSR when the user touch this high dram.
+> + */
+> +static uint64_t allwinner_r40_dualrank_detect_read(void *opaque, hwaddr
+> offset,
+> +                                                   unsigned size)
+> +{
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);
+> +    uint32_t reg;
+> +
+> +    reg =3D s->dramctl[REG_INDEX(REG_DRAMCTL_PGCR)];
+> +    if (reg & REG_DRAMCTL_PGCR_ENABLE_READ_TIMEOUT) { /* Enable read tim=
+e
+> out */
+> +        /*
+> +         * this driver only support one rank, mark READ_TIMEOUT when try
+> +         * read the second rank.
+> +         */
+> +        s->dramctl[REG_INDEX(REG_DRAMCTL_PGSR)]
+> +                                |=3D REG_DRAMCTL_PGSR_READ_TIMEOUT;
 > +    }
 > +
 > +    return 0;
 > +}
 > +
-> +static const VMStateDescription vmstate_axp2xx =3D {
-> +    .name =3D TYPE_AXP209_PMU,
+> +static const MemoryRegionOps allwinner_r40_dualrank_detect_ops =3D {
+> +    .read =3D allwinner_r40_dualrank_detect_read,
+> +    .endianness =3D DEVICE_NATIVE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 4,
+> +        .max_access_size =3D 4,
+> +    },
+> +    .impl.min_access_size =3D 4,
+> +};
+> +
+> +static void allwinner_r40_dramc_reset(DeviceState *dev)
+> +{
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(dev);
+> +
+> +    /* Set default values for registers */
+> +    memset(&s->dramcom, 0, sizeof(s->dramcom));
+> +    memset(&s->dramctl, 0, sizeof(s->dramctl));
+> +    memset(&s->dramphy, 0, sizeof(s->dramphy));
+> +}
+> +
+> +static void allwinner_r40_dramc_realize(DeviceState *dev, Error **errp)
+> +{
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(dev);
+> +
+> +    if (!get_match_ddr(s->ram_size)) {
+> +        error_report("%s: ram-size %u MiB is not supported",
+> +                        __func__, s->ram_size);
+> +        exit(1);
+> +    }
+> +
+> +    /* detect_cells */
+> +    sysbus_mmio_map_overlap(SYS_BUS_DEVICE(s), 3, s->ram_addr, 10);
+> +    memory_region_set_enabled(&s->detect_cells, false);
+> +
+> +    if (s->ram_size < 2048) {
+>
+Since the driver only supports up to 1GiB, you could decide to just remove
+this if(..).
+
+
+> +        /* the high memory used for dualrank detect, index 4 */
+> +        memory_region_init_io(&s->dram_high, OBJECT(s),
+> +                              &allwinner_r40_dualrank_detect_ops, s,
+> +                              "DRAMHIGH", KiB);
+> +        sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->dram_high);
+> +
+> +        sysbus_mmio_map(SYS_BUS_DEVICE(s), 4, s->ram_addr + GiB);
+> +    }
+> +}
+> +
+> +static void allwinner_r40_dramc_init(Object *obj)
+> +{
+> +    SysBusDevice *sbd =3D SYS_BUS_DEVICE(obj);
+> +    AwR40DramCtlState *s =3D AW_R40_DRAMC(obj);
+> +
+> +    /* DRAMCOM registers, index 0 */
+> +    memory_region_init_io(&s->dramcom_iomem, OBJECT(s),
+> +                          &allwinner_r40_dramcom_ops, s,
+> +                          "DRAMCOM", 4 * KiB);
+> +    sysbus_init_mmio(sbd, &s->dramcom_iomem);
+> +
+> +    /* DRAMCTL registers, index 1 */
+> +    memory_region_init_io(&s->dramctl_iomem, OBJECT(s),
+> +                          &allwinner_r40_dramctl_ops, s,
+> +                          "DRAMCTL", 4 * KiB);
+> +    sysbus_init_mmio(sbd, &s->dramctl_iomem);
+> +
+> +    /* DRAMPHY registers. index 2 */
+> +    memory_region_init_io(&s->dramphy_iomem, OBJECT(s),
+> +                          &allwinner_r40_dramphy_ops, s,
+> +                          "DRAMPHY", 4 * KiB);
+> +    sysbus_init_mmio(sbd, &s->dramphy_iomem);
+> +
+> +    /* R40 support max 2GiB dram memory, index 3 */
+> +    memory_region_init_io(&s->detect_cells, OBJECT(s),
+> +                          &allwinner_r40_detect_ops, s,
+> +                          "DRAMCELLS", 2 * GiB);
+> +    sysbus_init_mmio(sbd, &s->detect_cells);
 >
 
-Should the .name value be TYPE_AXP2xx_PMU instead, since we're describing
-the new generic axp2xx here?
+Same here: since only up to 1GiB is supported, do we need the DRAMCELLS
+lines?
 
-+    .version_id =3D 1,
++}
+> +
+> +static Property allwinner_r40_dramc_properties[] =3D {
+> +    DEFINE_PROP_UINT64("ram-addr", AwR40DramCtlState, ram_addr, 0x0),
+> +    DEFINE_PROP_UINT32("ram-size", AwR40DramCtlState, ram_size, 256), /*
+> MiB */
+> +    DEFINE_PROP_END_OF_LIST()
+> +};
+> +
+> +static const VMStateDescription allwinner_r40_dramc_vmstate =3D {
+> +    .name =3D "allwinner-r40-dramc",
+> +    .version_id =3D 1,
+> +    .minimum_version_id =3D 1,
 > +    .fields =3D (VMStateField[]) {
-> +        VMSTATE_UINT8_ARRAY(regs, AXP2xxI2CState, NR_REGS),
-> +        VMSTATE_UINT8(count, AXP2xxI2CState),
-> +        VMSTATE_UINT8(ptr, AXP2xxI2CState),
->
-
-In the 'struct AXPxxI2CState'  definition above, the order of definition
-is: regs, ptr, count. For consistency, ptr and count should then be swapped
-here to match.
-
-
+> +        VMSTATE_UINT32_ARRAY(dramcom, AwR40DramCtlState,
+> +                             AW_R40_DRAMCOM_REGS_NUM),
+> +        VMSTATE_UINT32_ARRAY(dramctl, AwR40DramCtlState,
+> +                             AW_R40_DRAMCTL_REGS_NUM),
+> +        VMSTATE_UINT32_ARRAY(dramphy, AwR40DramCtlState,
+> +                             AW_R40_DRAMPHY_REGS_NUM),
 > +        VMSTATE_END_OF_LIST()
->
-
-Another question that comes to my mind here: is it allowed by the migration
-API to have a new axp2xx device
-show up while the previous axp209 disappears? (in case for the allwinner
-A10 cubieboard).
-
-My expectation with this code would be that during such a migration, any
-current state of the axp209 device would be lost
-and a new fresh device would show up to the guest.
-
-I don't know enough about the migration support to tell if this is OK or
-not.
-If another reviewer could help clarify, that would be great.
-
-
 > +    }
 > +};
 > +
-> +static void axp2xx_class_init(ObjectClass *oc, void *data)
+> +static void allwinner_r40_dramc_class_init(ObjectClass *klass, void *dat=
+a)
 > +{
-> +    DeviceClass *dc =3D DEVICE_CLASS(oc);
-> +    I2CSlaveClass *isc =3D I2C_SLAVE_CLASS(oc);
-> +    ResettableClass *rc =3D RESETTABLE_CLASS(oc);
+> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
 > +
-> +    rc->phases.enter =3D axp2xx_reset_enter;
-> +    dc->vmsd =3D &vmstate_axp2xx;
-> +    isc->event =3D axp2xx_event;
-> +    isc->recv =3D axp2xx_rx;
-> +    isc->send =3D axp2xx_tx;
+> +    dc->reset =3D allwinner_r40_dramc_reset;
+> +    dc->vmsd =3D &allwinner_r40_dramc_vmstate;
+> +    dc->realize =3D allwinner_r40_dramc_realize;
+> +    device_class_set_props(dc, allwinner_r40_dramc_properties);
 > +}
 > +
-> +static const TypeInfo axp2xx_info =3D {
-> +    .name =3D TYPE_AXP2XX,
-> +    .parent =3D TYPE_I2C_SLAVE,
-> +    .instance_size =3D sizeof(AXP2xxI2CState),
-> +    .class_size =3D sizeof(AXP2xxClass),
-> +    .class_init =3D axp2xx_class_init,
-> +    .abstract =3D true,
+> +static const TypeInfo allwinner_r40_dramc_info =3D {
+> +    .name          =3D TYPE_AW_R40_DRAMC,
+> +    .parent        =3D TYPE_SYS_BUS_DEVICE,
+> +    .instance_init =3D allwinner_r40_dramc_init,
+> +    .instance_size =3D sizeof(AwR40DramCtlState),
+> +    .class_init    =3D allwinner_r40_dramc_class_init,
 > +};
 > +
-> +static void axp209_class_init(ObjectClass *oc, void *data)
+> +static void allwinner_r40_dramc_register(void)
 > +{
-> +    AXP2xxClass *sc =3D AXP2XX_CLASS(oc);
-> +
-> +    sc->reset_enter =3D axp209_reset_enter;
+> +    type_register_static(&allwinner_r40_dramc_info);
 > +}
 > +
-> +static const TypeInfo axp209_info =3D {
-> +    .name =3D TYPE_AXP209_PMU,
-> +    .parent =3D TYPE_AXP2XX,
-> +    .class_init =3D axp209_class_init
-> +};
-> +
-> +static void axp221_class_init(ObjectClass *oc, void *data)
-> +{
-> +    AXP2xxClass *sc =3D AXP2XX_CLASS(oc);
-> +
-> +    sc->reset_enter =3D axp221_reset_enter;
-> +}
-> +
-> +static const TypeInfo axp221_info =3D {
-> +    .name =3D TYPE_AXP221_PMU,
-> +    .parent =3D TYPE_AXP2XX,
-> +    .class_init =3D axp221_class_init,
-> +};
-> +
-> +static void axp2xx_register_devices(void)
-> +{
-> +    type_register_static(&axp2xx_info);
-> +    type_register_static(&axp209_info);
-> +    type_register_static(&axp221_info);
-> +}
-> +
-> +type_init(axp2xx_register_devices);
+> +type_init(allwinner_r40_dramc_register)
 > diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-> index 96e35f1cdb..1db0343333 100644
+> index 1db0343333..b04d43e05a 100644
 > --- a/hw/misc/meson.build
 > +++ b/hw/misc/meson.build
-> @@ -45,7 +45,7 @@ softmmu_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true:
+> @@ -45,6 +45,7 @@ softmmu_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true:
 > files('allwinner-h3-dramc.c
 >  softmmu_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true:
 > files('allwinner-h3-sysctrl.c'))
@@ -788,759 +760,1046 @@ If another reviewer could help clarify, that would be great.
 > files('allwinner-sid.c'))
 >  softmmu_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true:
 > files('allwinner-r40-ccu.c'))
-> -softmmu_ss.add(when: 'CONFIG_AXP209_PMU', if_true: files('axp209.c'))
-> +softmmu_ss.add(when: 'CONFIG_AXP2XX_PMU', if_true: files('axp2xx.c'))
+> +softmmu_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true:
+> files('allwinner-r40-dramc.c'))
+>  softmmu_ss.add(when: 'CONFIG_AXP2XX_PMU', if_true: files('axp2xx.c'))
 >  softmmu_ss.add(when: 'CONFIG_REALVIEW', if_true: files('arm_sysctl.c'))
 >  softmmu_ss.add(when: 'CONFIG_NSERIES', if_true: files('cbus.c'))
->  softmmu_ss.add(when: 'CONFIG_ECCMEMCTL', if_true: files('eccmemctl.c'))
 > diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-> index c47876a902..24cdec83fe 100644
+> index 24cdec83fe..8b68f07765 100644
 > --- a/hw/misc/trace-events
 > +++ b/hw/misc/trace-events
-> @@ -23,10 +23,10 @@ allwinner_sid_write(uint64_t offset, uint64_t data,
-> unsigned size) "offset 0x%"
->  avr_power_read(uint8_t value) "power_reduc read value:%u"
->  avr_power_write(uint8_t value) "power_reduc write value:%u"
+> @@ -15,6 +15,20 @@ allwinner_h3_dramctl_write(uint64_t offset, uint64_t
+> data, unsigned size) "Write
+>  allwinner_h3_dramphy_read(uint64_t offset, uint64_t data, unsigned size)
+> "Read: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+>  allwinner_h3_dramphy_write(uint64_t offset, uint64_t data, unsigned size=
+)
+> "write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
 >
-> -# axp209.c
-> -axp209_rx(uint8_t reg, uint8_t data) "Read reg 0x%" PRIx8 " : 0x%" PRIx8
-> -axp209_select(uint8_t reg) "Accessing reg 0x%" PRIx8
-> -axp209_tx(uint8_t reg, uint8_t data) "Write reg 0x%" PRIx8 " : 0x%" PRIx=
-8
-> +# axp2xx
-> +axp2xx_rx(uint8_t reg, uint8_t data) "Read reg 0x%" PRIx8 " : 0x%" PRIx8
-> +axp2xx_select(uint8_t reg) "Accessing reg 0x%" PRIx8
-> +axp2xx_tx(uint8_t reg, uint8_t data) "Write reg 0x%" PRIx8 " : 0x%" PRIx=
-8
+> +# allwinner-r40-dramc.c
+> +allwinner_r40_dramc_detect_cells_disable(void) "Disable detect cells"
+> +allwinner_r40_dramc_detect_cells_enable(void) "Enable detect cells"
+> +allwinner_r40_dramc_map_rows(uint8_t row_bits, uint8_t bank_bits, uint8_=
+t
+> col_bits) "DRAM layout: row_bits %d, bank_bits %d, col_bits %d"
+> +allwinner_r40_dramc_offset_to_cell(uint64_t offset, int row, int bank,
+> int col) "offset 0x%" PRIx64 " row %d bank %d col %d"
+> +allwinner_r40_dramc_detect_cell_write(uint64_t offset, uint64_t data)
+> "offset 0x%" PRIx64 " data 0x%" PRIx64 ""
+> +allwinner_r40_dramc_detect_cell_read(uint64_t offset, uint64_t data)
+> "offset 0x%" PRIx64 " data 0x%" PRIx64 ""
+> +allwinner_r40_dramcom_read(uint64_t offset, uint64_t data, unsigned size=
+)
+> "Read: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+> +allwinner_r40_dramcom_write(uint64_t offset, uint64_t data, unsigned
+> size) "Write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+> +allwinner_r40_dramctl_read(uint64_t offset, uint64_t data, unsigned size=
+)
+> "Read: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+> +allwinner_r40_dramctl_write(uint64_t offset, uint64_t data, unsigned
+> size) "Write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+> +allwinner_r40_dramphy_read(uint64_t offset, uint64_t data, unsigned size=
+)
+> "Read: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+> +allwinner_r40_dramphy_write(uint64_t offset, uint64_t data, unsigned
+> size) "write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+> +
+>  # allwinner-sid.c
+>  allwinner_sid_read(uint64_t offset, uint64_t data, unsigned size) "offse=
+t
+> 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+>  allwinner_sid_write(uint64_t offset, uint64_t data, unsigned size)
+> "offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+> diff --git a/include/hw/arm/allwinner-r40.h
+> b/include/hw/arm/allwinner-r40.h
+> index 95366f4eee..8243e8903b 100644
+> --- a/include/hw/arm/allwinner-r40.h
+> +++ b/include/hw/arm/allwinner-r40.h
+> @@ -26,6 +26,7 @@
+>  #include "hw/intc/arm_gic.h"
+>  #include "hw/sd/allwinner-sdhost.h"
+>  #include "hw/misc/allwinner-r40-ccu.h"
+> +#include "hw/misc/allwinner-r40-dramc.h"
+>  #include "hw/i2c/allwinner-i2c.h"
+>  #include "target/arm/cpu.h"
+>  #include "sysemu/block-backend.h"
+> @@ -54,7 +55,10 @@ enum {
+>      AW_R40_DEV_GIC_CPU,
+>      AW_R40_DEV_GIC_HYP,
+>      AW_R40_DEV_GIC_VCPU,
+> -    AW_R40_DEV_SDRAM
+> +    AW_R40_DEV_SDRAM,
+> +    AW_R40_DEV_DRAMCOM,
+> +    AW_R40_DEV_DRAMCTL,
+> +    AW_R40_DEV_DRAMPHY,
+>  };
 >
->  # eccmemctl.c
->  ecc_mem_writel_mer(uint32_t val) "Write memory enable 0x%08x"
+>  #define AW_R40_NUM_CPUS      (4)
+> @@ -86,11 +90,18 @@ struct AwR40State {
+>      DeviceState parent_obj;
+>      /*< public >*/
+>
+> +    /** Physical base address for start of RAM */
+> +    hwaddr ram_addr;
+> +
+> +    /** Total RAM size in megabytes */
+> +    uint32_t ram_size;
+> +
+>      ARMCPU cpus[AW_R40_NUM_CPUS];
+>      const hwaddr *memmap;
+>      AwA10PITState timer;
+>      AwSdHostState mmc[AW_R40_NUM_MMCS];
+>      AwR40ClockCtlState ccu;
+> +    AwR40DramCtlState dramc;
+>      AWI2CState i2c0;
+>      GICState gic;
+>      MemoryRegion sram_a1;
+> diff --git a/include/hw/misc/allwinner-r40-dramc.h
+> b/include/hw/misc/allwinner-r40-dramc.h
+> new file mode 100644
+> index 0000000000..6a1a3a7893
+> --- /dev/null
+> +++ b/include/hw/misc/allwinner-r40-dramc.h
+> @@ -0,0 +1,108 @@
+> +/*
+> + * Allwinner R40 SDRAM Controller emulation
+> + *
+> + * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
+> + *
+> + * This program is free software: you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation, either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef HW_MISC_ALLWINNER_R40_DRAMC_H
+> +#define HW_MISC_ALLWINNER_R40_DRAMC_H
+> +
+> +#include "qom/object.h"
+> +#include "hw/sysbus.h"
+> +#include "exec/hwaddr.h"
+> +
+> +/**
+> + * Constants
+> + * @{
+> + */
+> +
+> +/** Highest register address used by DRAMCOM module */
+> +#define AW_R40_DRAMCOM_REGS_MAXADDR  (0x804)
+> +
+> +/** Total number of known DRAMCOM registers */
+> +#define AW_R40_DRAMCOM_REGS_NUM      (AW_R40_DRAMCOM_REGS_MAXADDR / \
+> +                                     sizeof(uint32_t))
+> +
+> +/** Highest register address used by DRAMCTL module */
+> +#define AW_R40_DRAMCTL_REGS_MAXADDR  (0x88c)
+> +
+> +/** Total number of known DRAMCTL registers */
+> +#define AW_R40_DRAMCTL_REGS_NUM      (AW_R40_DRAMCTL_REGS_MAXADDR / \
+> +                                     sizeof(uint32_t))
+> +
+> +/** Highest register address used by DRAMPHY module */
+> +#define AW_R40_DRAMPHY_REGS_MAXADDR  (0x4)
+> +
+> +/** Total number of known DRAMPHY registers */
+> +#define AW_R40_DRAMPHY_REGS_NUM      (AW_R40_DRAMPHY_REGS_MAXADDR / \
+> +                                     sizeof(uint32_t))
+> +
+> +/** @} */
+> +
+> +/**
+> + * Object model
+> + * @{
+> + */
+> +
+> +#define TYPE_AW_R40_DRAMC "allwinner-r40-dramc"
+> +OBJECT_DECLARE_SIMPLE_TYPE(AwR40DramCtlState, AW_R40_DRAMC)
+> +
+> +/** @} */
+> +
+> +/**
+> + * Allwinner R40 SDRAM Controller object instance state.
+> + */
+> +struct AwR40DramCtlState {
+> +    /*< private >*/
+> +    SysBusDevice parent_obj;
+> +    /*< public >*/
+> +
+> +    /** Physical base address for start of RAM */
+> +    hwaddr ram_addr;
+> +
+> +    /** Total RAM size in megabytes */
+> +    uint32_t ram_size;
+> +
+> +    uint8_t set_row_bits;
+> +    uint8_t set_bank_bits;
+> +    uint8_t set_col_bits;
+> +
+> +    /**
+> +     * @name Memory Regions
+> +     * @{
+> +     */
+> +    MemoryRegion dramcom_iomem;    /**< DRAMCOM module I/O registers */
+> +    MemoryRegion dramctl_iomem;    /**< DRAMCTL module I/O registers */
+> +    MemoryRegion dramphy_iomem;    /**< DRAMPHY module I/O registers */
+> +    MemoryRegion dram_high;        /**< The high 1G dram for dualrank
+> detect */
+> +    MemoryRegion detect_cells;     /**< DRAM memory cells for auto detec=
+t
+> */
+> +
+> +    /** @} */
+> +
+> +    /**
+> +     * @name Hardware Registers
+> +     * @{
+> +     */
+> +
+> +    uint32_t dramcom[AW_R40_DRAMCOM_REGS_NUM]; /**< DRAMCOM registers */
+> +    uint32_t dramctl[AW_R40_DRAMCTL_REGS_NUM]; /**< DRAMCTL registers */
+> +    uint32_t dramphy[AW_R40_DRAMPHY_REGS_NUM] ;/**< DRAMPHY registers */
+> +
+> +    /** @} */
+> +
+> +};
+> +
+> +#endif /* HW_MISC_ALLWINNER_R40_DRAMC_H */
 > --
 > 2.25.1
 >
 >
+Looks good to me.
+
+Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
 
 --=20
 Niek Linnenbank
 
---00000000000045b6e405fbc0782c
+--00000000000025308b05fbc0b99d
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi Qianfan,<br></div><div><br></div><div>=
-Good idea indeed to turn this driver into a more generic one. If possible, =
-its best to re-use code rather than adding new.<br></div><div><br></div><di=
-v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 1=
-0, 2023 at 12:30=E2=80=AFPM &lt;<a href=3D"mailto:qianfanguijin@163.com">qi=
-anfanguijin@163.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
-;padding-left:1ex">From: qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@1=
-63.com" target=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 10, 2023 at 12:30=E2=80=
+=AFPM &lt;<a href=3D"mailto:qianfanguijin@163.com">qianfanguijin@163.com</a=
+>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px=
+ 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Fro=
+m: qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163.com" target=3D"_bla=
+nk">qianfanguijin@163.com</a>&gt;<br>
 <br>
-This patch adds minimal support for AXP-221 PMU and connect it to<br>
-bananapi M2U board.<br>
+Types of memory that the SDRAM controller supports are DDR2/DDR3<br>
+and capacities of up to 2GiB. This commit adds emulation support<br>
+of the Allwinner R40 SDRAM controller.<br>
+<br>
+This driver only support 256M, 512M and 1024M memory now.<br>
 <br>
 Signed-off-by: qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163.com" ta=
 rget=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
 ---<br>
-=C2=A0hw/arm/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A03 +-<br>
-=C2=A0hw/arm/bananapi_m2u.c |=C2=A0 =C2=A06 +<br>
-=C2=A0hw/misc/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A02 +-<br>
-=C2=A0hw/misc/axp209.c=C2=A0 =C2=A0 =C2=A0 | 238 --------------------------=
----------<br>
-=C2=A0hw/misc/axp2xx.c=C2=A0 =C2=A0 =C2=A0 | 283 ++++++++++++++++++++++++++=
-++++++++++++++++<br>
-=C2=A0hw/misc/meson.build=C2=A0 =C2=A0|=C2=A0 =C2=A02 +-<br>
-=C2=A0hw/misc/trace-events=C2=A0 |=C2=A0 =C2=A08 +-<br>
-=C2=A07 files changed, 297 insertions(+), 245 deletions(-)<br>
-=C2=A0delete mode 100644 hw/misc/axp209.c<br>
-=C2=A0create mode 100644 hw/misc/axp2xx.c<br>
+=C2=A0hw/arm/allwinner-r40.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 |=C2=A0 21 +-<br>
+=C2=A0hw/arm/bananapi_m2u.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0|=C2=A0 =C2=A07 +<br>
+=C2=A0hw/misc/allwinner-r40-dramc.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 513 =
+++++++++++++++++++++++++++<br>
+=C2=A0hw/misc/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A01 +<br>
+=C2=A0hw/misc/trace-events=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 |=C2=A0 14 +<br>
+=C2=A0include/hw/arm/allwinner-r40.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 13 =
++-<br>
+=C2=A0include/hw/misc/allwinner-r40-dramc.h | 108 ++++++<br>
+=C2=A07 files changed, 674 insertions(+), 3 deletions(-)<br>
+=C2=A0create mode 100644 hw/misc/allwinner-r40-dramc.c<br>
+=C2=A0create mode 100644 include/hw/misc/allwinner-r40-dramc.h<br>
 <br>
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig<br>
-index b7a84f6e3f..bad4ea158c 100644<br>
---- a/hw/arm/Kconfig<br>
-+++ b/hw/arm/Kconfig<br>
-@@ -355,7 +355,7 @@ config ALLWINNER_A10<br>
-=C2=A0 =C2=A0 =C2=A0select ALLWINNER_WDT<br>
-=C2=A0 =C2=A0 =C2=A0select ALLWINNER_EMAC<br>
-=C2=A0 =C2=A0 =C2=A0select ALLWINNER_I2C<br>
--=C2=A0 =C2=A0 select AXP209_PMU<br>
-+=C2=A0 =C2=A0 select AXP2XX_PMU<br>
-=C2=A0 =C2=A0 =C2=A0select SERIAL<br>
-=C2=A0 =C2=A0 =C2=A0select UNIMP<br>
-<br>
-@@ -378,6 +378,7 @@ config ALLWINNER_R40<br>
-=C2=A0 =C2=A0 =C2=A0bool<br>
-=C2=A0 =C2=A0 =C2=A0default y if TCG &amp;&amp; ARM<br>
-=C2=A0 =C2=A0 =C2=A0select ALLWINNER_A10_PIT<br>
-+=C2=A0 =C2=A0 select AXP2XX_PMU<br>
-=C2=A0 =C2=A0 =C2=A0select SERIAL<br>
-=C2=A0 =C2=A0 =C2=A0select ARM_TIMER<br>
-=C2=A0 =C2=A0 =C2=A0select ARM_GIC<br>
-diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c<br>
-index 1d49a006b5..9c5360a41b 100644<br>
---- a/hw/arm/bananapi_m2u.c<br>
-+++ b/hw/arm/bananapi_m2u.c<br>
-@@ -23,6 +23,7 @@<br>
-=C2=A0#include &quot;qapi/error.h&quot;<br>
-=C2=A0#include &quot;qemu/error-report.h&quot;<br>
-=C2=A0#include &quot;hw/boards.h&quot;<br>
-+#include &quot;hw/i2c/i2c.h&quot;<br>
-=C2=A0#include &quot;hw/qdev-properties.h&quot;<br>
+diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c<br>
+index 4bc582630c..0e4542d35f 100644<br>
+--- a/hw/arm/allwinner-r40.c<br>
++++ b/hw/arm/allwinner-r40.c<br>
+@@ -31,6 +31,7 @@<br>
+=C2=A0#include &quot;hw/loader.h&quot;<br>
+=C2=A0#include &quot;sysemu/sysemu.h&quot;<br>
 =C2=A0#include &quot;hw/arm/allwinner-r40.h&quot;<br>
++#include &quot;hw/misc/allwinner-r40-dramc.h&quot;<br>
 <br>
-@@ -61,6 +62,7 @@ static void bpim2u_init(MachineState *machine)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0bool bootroom_loaded =3D false;<br>
-=C2=A0 =C2=A0 =C2=A0AwR40State *r40;<br>
-+=C2=A0 =C2=A0 I2CBus *i2c;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0/* BIOS is not supported by this board */<br>
-=C2=A0 =C2=A0 =C2=A0if (machine-&gt;firmware) {<br>
-@@ -104,6 +106,10 @@ static void bpim2u_init(MachineState *machine)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0/* Memory map */<br>
+=C2=A0const hwaddr allwinner_r40_memmap[] =3D {<br>
+@@ -53,6 +54,9 @@ const hwaddr allwinner_r40_memmap[] =3D {<br>
+=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_UART6]=C2=A0 =C2=A0 =C2=A0 =3D 0x01c29800,<=
+br>
+=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_UART7]=C2=A0 =C2=A0 =C2=A0 =3D 0x01c29c00,<=
+br>
+=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_TWI0]=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x01c2a=
+c00,<br>
++=C2=A0 =C2=A0 [AW_R40_DEV_DRAMCOM]=C2=A0 =C2=A0 =3D 0x01c62000,<br>
++=C2=A0 =C2=A0 [AW_R40_DEV_DRAMCTL]=C2=A0 =C2=A0 =3D 0x01c63000,<br>
++=C2=A0 =C2=A0 [AW_R40_DEV_DRAMPHY]=C2=A0 =C2=A0 =3D 0x01c65000,<br>
+=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_GIC_DIST]=C2=A0 =C2=A0=3D 0x01c81000,<br>
+=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_GIC_CPU]=C2=A0 =C2=A0 =3D 0x01c82000,<br>
+=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_GIC_HYP]=C2=A0 =C2=A0 =3D 0x01c84000,<br>
+@@ -129,8 +133,6 @@ static struct AwR40Unimplemented r40_unimplemented[] =
+=3D {<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;gpu&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x01c4000=
+0, 64 * KiB },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;gmac&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c5000=
+0, 64 * KiB },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;hstmr&quot;,=C2=A0 =C2=A0 =C2=A0 0x01c60000, 4 =
+* KiB },<br>
+-=C2=A0 =C2=A0 { &quot;dram-com&quot;,=C2=A0 =C2=A00x01c62000, 4 * KiB },<b=
+r>
+-=C2=A0 =C2=A0 { &quot;dram-ctl&quot;,=C2=A0 =C2=A00x01c63000, 4 * KiB },<b=
+r>
+=C2=A0 =C2=A0 =C2=A0{ &quot;tcon-top&quot;,=C2=A0 =C2=A00x01c70000, 4 * KiB=
+ },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;lcd0&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c7100=
+0, 4 * KiB },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;lcd1&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c7200=
+0, 4 * KiB },<br>
+@@ -273,6 +275,12 @@ static void allwinner_r40_init(Object *obj)<br>
 =C2=A0 =C2=A0 =C2=A0}<br>
 <br>
-+=C2=A0 =C2=A0 /* Connect AXP221 */<br>
-+=C2=A0 =C2=A0 i2c =3D I2C_BUS(qdev_get_child_bus(DEVICE(&amp;r40-&gt;i2c0)=
-, &quot;i2c&quot;));<br>
-+=C2=A0 =C2=A0 i2c_slave_create_simple(i2c, &quot;axp221_pmu&quot;, 0x34);<=
-br>
+=C2=A0 =C2=A0 =C2=A0object_initialize_child(obj, &quot;twi0&quot;, &amp;s-&=
+gt;i2c0, TYPE_AW_I2C_SUN6I);<br>
 +<br>
-=C2=A0 =C2=A0 =C2=A0/* SDRAM */<br>
-=C2=A0 =C2=A0 =C2=A0memory_region_add_subregion(get_system_memory(),<br>
++=C2=A0 =C2=A0 object_initialize_child(obj, &quot;dramc&quot;, &amp;s-&gt;d=
+ramc, TYPE_AW_R40_DRAMC);<br>
++=C2=A0 =C2=A0 object_property_add_alias(obj, &quot;ram-addr&quot;, OBJECT(=
+&amp;s-&gt;dramc),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;ram-addr&quot;);<br>
++=C2=A0 =C2=A0 object_property_add_alias(obj, &quot;ram-size&quot;, OBJECT(=
+&amp;s-&gt;dramc),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;ram-size&quot;);<br>
+=C2=A0}<br>
+<br>
+=C2=A0static void allwinner_r40_realize(DeviceState *dev, Error **errp)<br>
+@@ -425,6 +433,15 @@ static void allwinner_r40_realize(DeviceState *dev, Er=
+ror **errp)<br>
+=C2=A0 =C2=A0 =C2=A0sysbus_connect_irq(SYS_BUS_DEVICE(&amp;s-&gt;i2c0), 0,<=
+br>
 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0r40-&gt;memmap[AW_R40_DEV_SDRA=
-M], machine-&gt;ram);<br>
-diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig<br>
-index 2ef5781ef8..efeb430a6c 100644<br>
---- a/hw/misc/Kconfig<br>
-+++ b/hw/misc/Kconfig<br>
-@@ -176,7 +176,7 @@ config ALLWINNER_A10_CCM<br>
-=C2=A0config ALLWINNER_A10_DRAMC<br>
-=C2=A0 =C2=A0 =C2=A0bool<br>
+=A0 =C2=A0 qdev_get_gpio_in(DEVICE(&amp;s-&gt;gic), AW_R40_GIC_SPI_TWI0));<=
+br>
 <br>
--config AXP209_PMU<br>
-+config AXP2XX_PMU<br>
-=C2=A0 =C2=A0 =C2=A0bool<br>
-=C2=A0 =C2=A0 =C2=A0depends on I2C<br>
++=C2=A0 =C2=A0 /* DRAMC */<br>
++=C2=A0 =C2=A0 sysbus_realize(SYS_BUS_DEVICE(&amp;s-&gt;dramc), &amp;error_=
+fatal);<br>
++=C2=A0 =C2=A0 sysbus_mmio_map(SYS_BUS_DEVICE(&amp;s-&gt;dramc), 0,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&g=
+t;memmap[AW_R40_DEV_DRAMCOM]);<br>
++=C2=A0 =C2=A0 sysbus_mmio_map(SYS_BUS_DEVICE(&amp;s-&gt;dramc), 1,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&g=
+t;memmap[AW_R40_DEV_DRAMCTL]);<br>
++=C2=A0 =C2=A0 sysbus_mmio_map(SYS_BUS_DEVICE(&amp;s-&gt;dramc), 2,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&g=
+t;memmap[AW_R40_DEV_DRAMPHY]);<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0/* Unimplemented devices */<br>
+=C2=A0 =C2=A0 =C2=A0for (i =3D 0; i &lt; ARRAY_SIZE(r40_unimplemented); i++=
+) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0create_unimplemented_device(r40_unimpleme=
+nted[i].device_name,<br>
+diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c<br>
+index 9c5360a41b..20a4550c68 100644<br>
+--- a/hw/arm/bananapi_m2u.c<br>
++++ b/hw/arm/bananapi_m2u.c<br>
+@@ -85,6 +85,13 @@ static void bpim2u_init(MachineState *machine)<br>
+=C2=A0 =C2=A0 =C2=A0object_property_set_int(OBJECT(r40), &quot;clk1-freq&qu=
+ot;, 24 * 1000 * 1000,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&amp;error_abort);<br>
 <br>
-diff --git a/hw/misc/axp209.c b/hw/misc/axp209.c<br>
-deleted file mode 100644<br>
-index 2908ed99a6..0000000000<br>
---- a/hw/misc/axp209.c<br>
-+++ /dev/null<br>
-@@ -1,238 +0,0 @@<br>
--/*<br>
-- * AXP-209 PMU Emulation<br>
-- *<br>
-- * Copyright (C) 2022 Strahinja Jankovic &lt;<a href=3D"mailto:strahinja.p=
-.jankovic@gmail.com" target=3D"_blank">strahinja.p.jankovic@gmail.com</a>&g=
-t;<br>
-- *<br>
-- * Permission is hereby granted, free of charge, to any person obtaining a=
-<br>
-- * copy of this software and associated documentation files (the &quot;Sof=
-tware&quot;),<br>
-- * to deal in the Software without restriction, including without limitati=
-on<br>
-- * the rights to use, copy, modify, merge, publish, distribute, sublicense=
-,<br>
-- * and/or sell copies of the Software, and to permit persons to whom the<b=
++=C2=A0 =C2=A0 /* DRAMC */<br>
++=C2=A0 =C2=A0 r40-&gt;ram_size =3D machine-&gt;ram_size / MiB;<br>
++=C2=A0 =C2=A0 object_property_set_uint(OBJECT(r40), &quot;ram-addr&quot;,<=
+br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0r40-&gt;memmap[AW_R40_DEV_SDRAM], &amp;error=
+_abort);<br>
++=C2=A0 =C2=A0 object_property_set_int(OBJECT(r40), &quot;ram-size&quot;,<b=
 r>
-- * Software is furnished to do so, subject to the following conditions:<br=
->
-- *<br>
-- * The above copyright notice and this permission notice shall be included=
- in<br>
-- * all copies or substantial portions of the Software.<br>
-- *<br>
-- * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIN=
-D, EXPRESS OR<br>
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY=
-,<br>
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL=
- THE<br>
-- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<=
-br>
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING=
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 r40-&gt;ram_size, &amp;error_abort);<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0/* Mark R40 object realized */<br>
+=C2=A0 =C2=A0 =C2=A0qdev_realize(DEVICE(r40), NULL, &amp;error_abort);<br>
 <br>
-- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER<br>
-- * DEALINGS IN THE SOFTWARE.<br>
-- *<br>
-- * SPDX-License-Identifier: MIT<br>
-- */<br>
--<br>
--#include &quot;qemu/osdep.h&quot;<br>
--#include &quot;qemu/log.h&quot;<br>
--#include &quot;trace.h&quot;<br>
--#include &quot;hw/i2c/i2c.h&quot;<br>
--#include &quot;migration/vmstate.h&quot;<br>
--<br>
--#define TYPE_AXP209_PMU &quot;axp209_pmu&quot;<br>
--<br>
--#define AXP209(obj) \<br>
--=C2=A0 =C2=A0 OBJECT_CHECK(AXP209I2CState, (obj), TYPE_AXP209_PMU)<br>
--<br>
--/* registers */<br>
--enum {<br>
--=C2=A0 =C2=A0 REG_POWER_STATUS =3D 0x0u,<br>
--=C2=A0 =C2=A0 REG_OPERATING_MODE,<br>
--=C2=A0 =C2=A0 REG_OTG_VBUS_STATUS,<br>
--=C2=A0 =C2=A0 REG_CHIP_VERSION,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_0,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_1,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_2,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_3,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_4,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_5,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_6,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_7,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_8,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_9,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_A,<br>
--=C2=A0 =C2=A0 REG_DATA_CACHE_B,<br>
--=C2=A0 =C2=A0 REG_POWER_OUTPUT_CTRL =3D 0x12u,<br>
--=C2=A0 =C2=A0 REG_DC_DC2_OUT_V_CTRL =3D 0x23u,<br>
--=C2=A0 =C2=A0 REG_DC_DC2_DVS_CTRL =3D 0x25u,<br>
--=C2=A0 =C2=A0 REG_DC_DC3_OUT_V_CTRL =3D 0x27u,<br>
--=C2=A0 =C2=A0 REG_LDO2_4_OUT_V_CTRL,<br>
--=C2=A0 =C2=A0 REG_LDO3_OUT_V_CTRL,<br>
--=C2=A0 =C2=A0 REG_VBUS_CH_MGMT =3D 0x30u,<br>
--=C2=A0 =C2=A0 REG_SHUTDOWN_V_CTRL,<br>
--=C2=A0 =C2=A0 REG_SHUTDOWN_CTRL,<br>
--=C2=A0 =C2=A0 REG_CHARGE_CTRL_1,<br>
--=C2=A0 =C2=A0 REG_CHARGE_CTRL_2,<br>
--=C2=A0 =C2=A0 REG_SPARE_CHARGE_CTRL,<br>
--=C2=A0 =C2=A0 REG_PEK_KEY_CTRL,<br>
--=C2=A0 =C2=A0 REG_DC_DC_FREQ_SET,<br>
--=C2=A0 =C2=A0 REG_CHR_TEMP_TH_SET,<br>
--=C2=A0 =C2=A0 REG_CHR_HIGH_TEMP_TH_CTRL,<br>
--=C2=A0 =C2=A0 REG_IPSOUT_WARN_L1,<br>
--=C2=A0 =C2=A0 REG_IPSOUT_WARN_L2,<br>
--=C2=A0 =C2=A0 REG_DISCHR_TEMP_TH_SET,<br>
--=C2=A0 =C2=A0 REG_DISCHR_HIGH_TEMP_TH_CTRL,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_1_CTRL =3D 0x40u,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_2_CTRL,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_3_CTRL,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_4_CTRL,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_5_CTRL,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_1_STAT =3D 0x48u,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_2_STAT,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_3_STAT,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_4_STAT,<br>
--=C2=A0 =C2=A0 REG_IRQ_BANK_5_STAT,<br>
--=C2=A0 =C2=A0 REG_ADC_ACIN_V_H =3D 0x56u,<br>
--=C2=A0 =C2=A0 REG_ADC_ACIN_V_L,<br>
--=C2=A0 =C2=A0 REG_ADC_ACIN_CURR_H,<br>
--=C2=A0 =C2=A0 REG_ADC_ACIN_CURR_L,<br>
--=C2=A0 =C2=A0 REG_ADC_VBUS_V_H,<br>
--=C2=A0 =C2=A0 REG_ADC_VBUS_V_L,<br>
--=C2=A0 =C2=A0 REG_ADC_VBUS_CURR_H,<br>
--=C2=A0 =C2=A0 REG_ADC_VBUS_CURR_L,<br>
--=C2=A0 =C2=A0 REG_ADC_INT_TEMP_H,<br>
--=C2=A0 =C2=A0 REG_ADC_INT_TEMP_L,<br>
--=C2=A0 =C2=A0 REG_ADC_TEMP_SENS_V_H =3D 0x62u,<br>
--=C2=A0 =C2=A0 REG_ADC_TEMP_SENS_V_L,<br>
--=C2=A0 =C2=A0 REG_ADC_BAT_V_H =3D 0x78u,<br>
--=C2=A0 =C2=A0 REG_ADC_BAT_V_L,<br>
--=C2=A0 =C2=A0 REG_ADC_BAT_DISCHR_CURR_H,<br>
--=C2=A0 =C2=A0 REG_ADC_BAT_DISCHR_CURR_L,<br>
--=C2=A0 =C2=A0 REG_ADC_BAT_CHR_CURR_H,<br>
--=C2=A0 =C2=A0 REG_ADC_BAT_CHR_CURR_L,<br>
--=C2=A0 =C2=A0 REG_ADC_IPSOUT_V_H,<br>
--=C2=A0 =C2=A0 REG_ADC_IPSOUT_V_L,<br>
--=C2=A0 =C2=A0 REG_DC_DC_MOD_SEL =3D 0x80u,<br>
--=C2=A0 =C2=A0 REG_ADC_EN_1,<br>
--=C2=A0 =C2=A0 REG_ADC_EN_2,<br>
--=C2=A0 =C2=A0 REG_ADC_SR_CTRL,<br>
--=C2=A0 =C2=A0 REG_ADC_IN_RANGE,<br>
--=C2=A0 =C2=A0 REG_GPIO1_ADC_IRQ_RISING_TH,<br>
--=C2=A0 =C2=A0 REG_GPIO1_ADC_IRQ_FALLING_TH,<br>
--=C2=A0 =C2=A0 REG_TIMER_CTRL =3D 0x8au,<br>
--=C2=A0 =C2=A0 REG_VBUS_CTRL_MON_SRP,<br>
--=C2=A0 =C2=A0 REG_OVER_TEMP_SHUTDOWN =3D 0x8fu,<br>
--=C2=A0 =C2=A0 REG_GPIO0_FEAT_SET,<br>
--=C2=A0 =C2=A0 REG_GPIO_OUT_HIGH_SET,<br>
--=C2=A0 =C2=A0 REG_GPIO1_FEAT_SET,<br>
--=C2=A0 =C2=A0 REG_GPIO2_FEAT_SET,<br>
--=C2=A0 =C2=A0 REG_GPIO_SIG_STATE_SET_MON,<br>
--=C2=A0 =C2=A0 REG_GPIO3_SET,<br>
--=C2=A0 =C2=A0 REG_COULOMB_CNTR_CTRL =3D 0xb8u,<br>
--=C2=A0 =C2=A0 REG_POWER_MEAS_RES,<br>
--=C2=A0 =C2=A0 NR_REGS<br>
--};<br>
--<br>
--#define AXP209_CHIP_VERSION_ID=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0(0x01)<br>
--#define AXP209_DC_DC2_OUT_V_CTRL_RESET=C2=A0 =C2=A0 =C2=A0(0x16)<br>
--#define AXP209_IRQ_BANK_1_CTRL_RESET=C2=A0 =C2=A0 =C2=A0 =C2=A0(0xd8)<br>
--<br>
--/* A simple I2C slave which returns values of ID or CNT register. */<br>
--typedef struct AXP209I2CState {<br>
--=C2=A0 =C2=A0 /*&lt; private &gt;*/<br>
--=C2=A0 =C2=A0 I2CSlave i2c;<br>
--=C2=A0 =C2=A0 /*&lt; public &gt;*/<br>
--=C2=A0 =C2=A0 uint8_t regs[NR_REGS];=C2=A0 /* peripheral registers */<br>
--=C2=A0 =C2=A0 uint8_t ptr;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* cur=
-rent register index */<br>
--=C2=A0 =C2=A0 uint8_t count;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* counter =
-used for tx/rx */<br>
--} AXP209I2CState;<br>
--<br>
--/* Reset all counters and load ID register */<br>
--static void axp209_reset_enter(Object *obj, ResetType type)<br>
--{<br>
--=C2=A0 =C2=A0 AXP209I2CState *s =3D AXP209(obj);<br>
--<br>
--=C2=A0 =C2=A0 memset(s-&gt;regs, 0, NR_REGS);<br>
--=C2=A0 =C2=A0 s-&gt;ptr =3D 0;<br>
--=C2=A0 =C2=A0 s-&gt;count =3D 0;<br>
--=C2=A0 =C2=A0 s-&gt;regs[REG_CHIP_VERSION] =3D AXP209_CHIP_VERSION_ID;<br>
--=C2=A0 =C2=A0 s-&gt;regs[REG_DC_DC2_OUT_V_CTRL] =3D AXP209_DC_DC2_OUT_V_CT=
-RL_RESET;<br>
--=C2=A0 =C2=A0 s-&gt;regs[REG_IRQ_BANK_1_CTRL] =3D AXP209_IRQ_BANK_1_CTRL_R=
-ESET;<br>
--}<br>
--<br>
--/* Handle events from master. */<br>
--static int axp209_event(I2CSlave *i2c, enum i2c_event event)<br>
--{<br>
--=C2=A0 =C2=A0 AXP209I2CState *s =3D AXP209(i2c);<br>
--<br>
--=C2=A0 =C2=A0 s-&gt;count =3D 0;<br>
--<br>
--=C2=A0 =C2=A0 return 0;<br>
--}<br>
--<br>
--/* Called when master requests read */<br>
--static uint8_t axp209_rx(I2CSlave *i2c)<br>
--{<br>
--=C2=A0 =C2=A0 AXP209I2CState *s =3D AXP209(i2c);<br>
--=C2=A0 =C2=A0 uint8_t ret =3D 0xff;<br>
--<br>
--=C2=A0 =C2=A0 if (s-&gt;ptr &lt; NR_REGS) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D s-&gt;regs[s-&gt;ptr++];<br>
--=C2=A0 =C2=A0 }<br>
--<br>
--=C2=A0 =C2=A0 trace_axp209_rx(s-&gt;ptr - 1, ret);<br>
--<br>
--=C2=A0 =C2=A0 return ret;<br>
--}<br>
--<br>
--/*<br>
-- * Called when master sends write.<br>
-- * Update ptr with byte 0, then perform write with second byte.<br>
-- */<br>
--static int axp209_tx(I2CSlave *i2c, uint8_t data)<br>
--{<br>
--=C2=A0 =C2=A0 AXP209I2CState *s =3D AXP209(i2c);<br>
--<br>
--=C2=A0 =C2=A0 if (s-&gt;count =3D=3D 0) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Store register address */<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;ptr =3D data;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;count++;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_axp209_select(data);<br>
--=C2=A0 =C2=A0 } else {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_axp209_tx(s-&gt;ptr, data);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (s-&gt;ptr =3D=3D REG_DC_DC2_OUT_V_CTRL) {<=
+diff --git a/hw/misc/allwinner-r40-dramc.c b/hw/misc/allwinner-r40-dramc.c<=
 br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;regs[s-&gt;ptr++] =3D data=
-;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
--=C2=A0 =C2=A0 }<br>
--<br>
--=C2=A0 =C2=A0 return 0;<br>
--}<br>
--<br>
--static const VMStateDescription vmstate_axp209 =3D {<br>
--=C2=A0 =C2=A0 .name =3D TYPE_AXP209_PMU,<br>
--=C2=A0 =C2=A0 .version_id =3D 1,<br>
--=C2=A0 =C2=A0 .fields =3D (VMStateField[]) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT8_ARRAY(regs, AXP209I2CState, NR_R=
-EGS),<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT8(count, AXP209I2CState),<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT8(ptr, AXP209I2CState),<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_END_OF_LIST()<br>
--=C2=A0 =C2=A0 }<br>
--};<br>
--<br>
--static void axp209_class_init(ObjectClass *oc, void *data)<br>
--{<br>
--=C2=A0 =C2=A0 DeviceClass *dc =3D DEVICE_CLASS(oc);<br>
--=C2=A0 =C2=A0 I2CSlaveClass *isc =3D I2C_SLAVE_CLASS(oc);<br>
--=C2=A0 =C2=A0 ResettableClass *rc =3D RESETTABLE_CLASS(oc);<br>
--<br>
--=C2=A0 =C2=A0 rc-&gt;phases.enter =3D axp209_reset_enter;<br>
--=C2=A0 =C2=A0 dc-&gt;vmsd =3D &amp;vmstate_axp209;<br>
--=C2=A0 =C2=A0 isc-&gt;event =3D axp209_event;<br>
--=C2=A0 =C2=A0 isc-&gt;recv =3D axp209_rx;<br>
--=C2=A0 =C2=A0 isc-&gt;send =3D axp209_tx;<br>
--}<br>
--<br>
--static const TypeInfo axp209_info =3D {<br>
--=C2=A0 =C2=A0 .name =3D TYPE_AXP209_PMU,<br>
--=C2=A0 =C2=A0 .parent =3D TYPE_I2C_SLAVE,<br>
--=C2=A0 =C2=A0 .instance_size =3D sizeof(AXP209I2CState),<br>
--=C2=A0 =C2=A0 .class_init =3D axp209_class_init<br>
--};<br>
--<br>
--static void axp209_register_devices(void)<br>
--{<br>
--=C2=A0 =C2=A0 type_register_static(&amp;axp209_info);<br>
--}<br>
--<br>
--type_init(axp209_register_devices);<br>
-diff --git a/hw/misc/axp2xx.c b/hw/misc/axp2xx.c<br>
 new file mode 100644<br>
-index 0000000000..52a6ffc7f3<br>
+index 0000000000..b102bcdaba<br>
 --- /dev/null<br>
-+++ b/hw/misc/axp2xx.c<br>
-@@ -0,0 +1,283 @@<br>
++++ b/hw/misc/allwinner-r40-dramc.c<br>
+@@ -0,0 +1,513 @@<br>
 +/*<br>
-+ * AXP-2XX PMU Emulation, supported lists:<br>
-+ *=C2=A0 =C2=A0AXP209<br>
-+ *=C2=A0 =C2=A0AXP221<br>
++ * Allwinner R40 SDRAM Controller emulation<br>
 + *<br>
-+ * Copyright (C) 2022 Strahinja Jankovic &lt;<a href=3D"mailto:strahinja.p=
-.jankovic@gmail.com" target=3D"_blank">strahinja.p.jankovic@gmail.com</a>&g=
-t;<br>
-+ * Copyright (C) 2023 qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163=
-.com" target=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
++ * CCopyright (C) 2023 qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@16=
+3.com" target=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
 + *<br>
-+ * Permission is hereby granted, free of charge, to any person obtaining a=
-<br>
-+ * copy of this software and associated documentation files (the &quot;Sof=
-tware&quot;),<br>
-+ * to deal in the Software without restriction, including without limitati=
-on<br>
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense=
-,<br>
-+ * and/or sell copies of the Software, and to permit persons to whom the<b=
-r>
-+ * Software is furnished to do so, subject to the following conditions:<br=
++ * This program is free software: you can redistribute it and/or modify<br=
 >
++ * it under the terms of the GNU General Public License as published by<br=
+>
++ * the Free Software Foundation, either version 2 of the License, or<br>
++ * (at your option) any later version.<br>
 + *<br>
-+ * The above copyright notice and this permission notice shall be included=
- in<br>
-+ * all copies or substantial portions of the Software.<br>
++ * This program is distributed in the hope that it will be useful,<br>
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of<br>
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See the<br>
++ * GNU General Public License for more details.<br>
 + *<br>
-+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIN=
-D, EXPRESS OR<br>
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY=
-,<br>
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL=
- THE<br>
-+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<=
-br>
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING=
-<br>
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER<br>
-+ * DEALINGS IN THE SOFTWARE.<br>
-+ *<br>
-+ * SPDX-License-Identifier: MIT<br>
++ * You should have received a copy of the GNU General Public License<br>
++ * along with this program.=C2=A0 If not, see &lt;<a href=3D"http://www.gn=
+u.org/licenses/" rel=3D"noreferrer" target=3D"_blank">http://www.gnu.org/li=
+censes/</a>&gt;.<br>
 + */<br>
 +<br>
 +#include &quot;qemu/osdep.h&quot;<br>
-+#include &quot;qemu/log.h&quot;<br>
-+#include &quot;qom/object.h&quot;<br>
-+#include &quot;trace.h&quot;<br>
-+#include &quot;hw/i2c/i2c.h&quot;<br>
++#include &quot;qemu/units.h&quot;<br>
++#include &quot;qemu/error-report.h&quot;<br>
++#include &quot;hw/sysbus.h&quot;<br>
 +#include &quot;migration/vmstate.h&quot;<br>
++#include &quot;qemu/log.h&quot;<br>
++#include &quot;qemu/module.h&quot;<br>
++#include &quot;exec/address-spaces.h&quot;<br>
++#include &quot;hw/qdev-properties.h&quot;<br>
++#include &quot;qapi/error.h&quot;<br>
++#include &quot;qemu/bitops.h&quot;<br>
++#include &quot;hw/misc/allwinner-r40-dramc.h&quot;<br>
++#include &quot;trace.h&quot;<br>
 +<br>
-+#define TYPE_AXP2XX=C2=A0 =C2=A0 =C2=A0&quot;axp2xx_pmu&quot;<br>
-+#define TYPE_AXP209_PMU &quot;axp209_pmu&quot;<br>
-+#define TYPE_AXP221_PMU &quot;axp221_pmu&quot;<br>
++#define REG_INDEX(offset)=C2=A0 =C2=A0 (offset / sizeof(uint32_t))<br>
 +<br>
-+OBJECT_DECLARE_TYPE(AXP2xxI2CState, AXP2xxClass, AXP2XX)<br>
++/* DRAMCOM register offsets */<br>
++enum {<br>
++=C2=A0 =C2=A0 REG_DRAMCOM_CR=C2=A0 =C2=A0 =3D 0x0000, /* Control Register =
+*/<br>
++};<br>
 +<br>
-+#define NR_REGS=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 (0xff)<br>
++/* DRAMCOMM register flags */<br>
++enum {<br>
++=C2=A0 =C2=A0 REG_DRAMCOM_CR_DUAL_RANK =3D (1 &lt;&lt; 0),<br>
++};<br>
 +<br>
-+/* A simple I2C slave which returns values of ID or CNT register. */<br>
-+typedef struct AXP2xxI2CState {<br>
-+=C2=A0 =C2=A0 /*&lt; private &gt;*/<br>
-+=C2=A0 =C2=A0 I2CSlave i2c;<br>
-+=C2=A0 =C2=A0 /*&lt; public &gt;*/<br>
-+=C2=A0 =C2=A0 uint8_t regs[NR_REGS];=C2=A0 /* peripheral registers */<br>
-+=C2=A0 =C2=A0 uint8_t ptr;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* cur=
-rent register index */<br>
-+=C2=A0 =C2=A0 uint8_t count;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* counter =
-used for tx/rx */<br>
-+} AXP2xxI2CState;<br>
++/* DRAMCTL register offsets */<br>
++enum {<br>
++=C2=A0 =C2=A0 REG_DRAMCTL_PIR=C2=A0 =C2=A0=3D 0x0000, /* PHY Initializatio=
+n Register */<br>
++=C2=A0 =C2=A0 REG_DRAMCTL_PGSR=C2=A0 =3D 0x0010, /* PHY General Status Reg=
+ister */<br>
++=C2=A0 =C2=A0 REG_DRAMCTL_STATR =3D 0x0018, /* Status Register */<br>
++=C2=A0 =C2=A0 REG_DRAMCTL_PGCR=C2=A0 =3D 0x0100, /* PHY general configurat=
+ion registers */<br>
++};<br>
 +<br>
-+typedef struct AXP2xxClass {<br>
-+=C2=A0 =C2=A0 /*&lt; private &gt;*/<br>
-+=C2=A0 =C2=A0 I2CSlaveClass parent_class;<br>
-+=C2=A0 =C2=A0 /*&lt; public &gt;*/<br>
-+=C2=A0 =C2=A0 void (*reset_enter)(AXP2xxI2CState *s, ResetType type);<br>
-+} AXP2xxClass;<br>
++/* DRAMCTL register flags */<br>
++enum {<br>
++=C2=A0 =C2=A0 REG_DRAMCTL_PGSR_INITDONE =3D (1 &lt;&lt; 0),<br>
++=C2=A0 =C2=A0 REG_DRAMCTL_PGSR_READ_TIMEOUT =3D (1 &lt;&lt; 13),<br>
++=C2=A0 =C2=A0 REG_DRAMCTL_PGCR_ENABLE_READ_TIMEOUT =3D (1 &lt;&lt; 25),<br=
+>
++};<br>
 +<br>
-+#define AXP209_CHIP_VERSION_ID=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0(0x01)<br>
-+#define AXP209_DC_DC2_OUT_V_CTRL_RESET=C2=A0 =C2=A0 =C2=A0(0x16)<br>
++enum {<br>
++=C2=A0 =C2=A0 REG_DRAMCTL_STATR_ACTIVE=C2=A0 =3D (1 &lt;&lt; 0),<br>
++};<br>
 +<br>
-+/* Reset all counters and load ID register */<br>
-+static void axp209_reset_enter(AXP2xxI2CState *s, ResetType type)<br>
-+{<br>
-+=C2=A0 =C2=A0 memset(s-&gt;regs, 0, NR_REGS);<br>
-+=C2=A0 =C2=A0 s-&gt;ptr =3D 0;<br>
-+=C2=A0 =C2=A0 s-&gt;count =3D 0;<br>
++#define DRAM_MAX_ROW_BITS=C2=A0 =C2=A0 =C2=A0 =C2=A016<br>
++#define DRAM_MAX_COL_BITS=C2=A0 =C2=A0 =C2=A0 =C2=A013=C2=A0 /* 8192 */<br=
+>
++#define DRAM_MAX_BANK=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 3<br>
 +<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x03] =3D AXP209_CHIP_VERSION_ID;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x23] =3D AXP209_DC_DC2_OUT_V_CTRL_RESET;<br>
-+<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x30] =3D 0x60;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x32] =3D 0x46;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x34] =3D 0x41;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x35] =3D 0x22;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x36] =3D 0x5d;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x37] =3D 0x08;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x38] =3D 0xa5;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x39] =3D 0x1f;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x3a] =3D 0x68;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x3b] =3D 0x5f;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x3c] =3D 0xfc;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x3d] =3D 0x16;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x40] =3D 0xd8;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x42] =3D 0xff;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x43] =3D 0x3b;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x80] =3D 0xe0;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x82] =3D 0x83;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x83] =3D 0x80;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x84] =3D 0x32;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x86] =3D 0xff;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x90] =3D 0x07;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x91] =3D 0xa0;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x92] =3D 0x07;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x93] =3D 0x07;<br>
-+}<br>
-+<br>
-+#define AXP221_PWR_STATUS_ACIN_PRESENT=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 B=
-IT(7)<br>
-+#define AXP221_PWR_STATUS_ACIN_AVAIL=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 BIT(6)<br>
-+#define AXP221_PWR_STATUS_VBUS_PRESENT=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 B=
-IT(5)<br>
-+#define AXP221_PWR_STATUS_VBUS_USED=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0BIT(4)<br>
-+#define AXP221_PWR_STATUS_BAT_CHARGING=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 B=
-IT(2)<br>
-+#define AXP221_PWR_STATUS_ACIN_VBUS_POWERED=C2=A0 =C2=A0 =C2=A0BIT(1)<br>
-+<br>
-+/* Reset all counters and load ID register */<br>
-+static void axp221_reset_enter(AXP2xxI2CState *s, ResetType type)<br>
-+{<br>
-+=C2=A0 =C2=A0 memset(s-&gt;regs, 0, NR_REGS);<br>
-+=C2=A0 =C2=A0 s-&gt;ptr =3D 0;<br>
-+=C2=A0 =C2=A0 s-&gt;count =3D 0;<br>
-+<br>
-+=C2=A0 =C2=A0 /* input power status register */<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x00] =3D AXP221_PWR_STATUS_ACIN_PRESENT<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | AX=
-P221_PWR_STATUS_ACIN_AVAIL<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | AX=
-P221_PWR_STATUS_ACIN_VBUS_POWERED;<br>
-+<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x01] =3D 0x00; /* no battery is connected */<br>
-+<br>
-+=C2=A0 =C2=A0 /*<br>
-+=C2=A0 =C2=A0 =C2=A0* CHIPID register, no documented on datasheet, but it =
-is checked in<br>
-+=C2=A0 =C2=A0 =C2=A0* u-boot spl. I had read it from AXP221s and got 0x06 =
-value.<br>
-+=C2=A0 =C2=A0 =C2=A0* So leave 06h here.<br>
-+=C2=A0 =C2=A0 =C2=A0*/<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x03] =3D 0x06;<br>
-+<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x10] =3D 0xbf;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x13] =3D 0x01;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x30] =3D 0x60;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x31] =3D 0x03;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x32] =3D 0x43;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x33] =3D 0xc6;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x34] =3D 0x45;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x35] =3D 0x0e;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x36] =3D 0x5d;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x37] =3D 0x08;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x38] =3D 0xa5;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x39] =3D 0x1f;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x3c] =3D 0xfc;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x3d] =3D 0x16;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x80] =3D 0x80;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x82] =3D 0xe0;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x84] =3D 0x32;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x8f] =3D 0x01;<br>
-+<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x90] =3D 0x07;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x91] =3D 0x1f;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x92] =3D 0x07;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x93] =3D 0x1f;<br>
-+<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x40] =3D 0xd8;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x41] =3D 0xff;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x42] =3D 0x03;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0x43] =3D 0x03;<br>
-+<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0xb8] =3D 0xc0;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0xb9] =3D 0x64;<br>
-+=C2=A0 =C2=A0 s-&gt;regs[0xe6] =3D 0xa0;<br></blockquote><div><br></div><d=
-iv>Would it be possible to change this array to be more human readable?</di=
-v><div><br></div><div>Perhaps using the register names from the datasheet (=
-if available or some other source) as the names for defines / enums or just=
- as comments can help.</div><div>That way we can know what the contents mea=
-n.<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">
-+}<br>
-+<br>
-+static void axp2xx_reset_enter(Object *obj, ResetType type)<br>
-+{<br>
-+=C2=A0 =C2=A0 AXP2xxI2CState *s =3D AXP2XX(obj);<br>
-+=C2=A0 =C2=A0 AXP2xxClass *sc =3D AXP2XX_GET_CLASS(s);<br>
-+<br>
-+=C2=A0 =C2=A0 sc-&gt;reset_enter(s, type);<br>
-+}<br>
-+<br>
-+/* Handle events from master. */<br>
-+static int axp2xx_event(I2CSlave *i2c, enum i2c_event event)<br>
-+{<br>
-+=C2=A0 =C2=A0 AXP2xxI2CState *s =3D AXP2XX(i2c);<br>
-+<br>
-+=C2=A0 =C2=A0 s-&gt;count =3D 0;<br>
-+<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
-+<br>
-+/* Called when master requests read */<br>
-+static uint8_t axp2xx_rx(I2CSlave *i2c)<br>
-+{<br>
-+=C2=A0 =C2=A0 AXP2xxI2CState *s =3D AXP2XX(i2c);<br>
-+=C2=A0 =C2=A0 uint8_t ret =3D 0xff;<br>
-+<br>
-+=C2=A0 =C2=A0 if (s-&gt;ptr &lt; NR_REGS) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D s-&gt;regs[s-&gt;ptr++];<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 trace_axp2xx_rx(s-&gt;ptr - 1, ret);<br>
-+<br>
-+=C2=A0 =C2=A0 return ret;<br>
-+}<br>
++static uint64_t dram_autodetect_cells[DRAM_MAX_ROW_BITS]<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0[DRAM_MAX_BANK]<=
+br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0[DRAM_MAX_COL_BI=
+TS];<br>
++struct VirtualDDRChip {<br>
++=C2=A0 =C2=A0 uint32_t=C2=A0 =C2=A0 ram_size;<br>
++=C2=A0 =C2=A0 uint8_t=C2=A0 =C2=A0 =C2=A0bank_bits;<br>
++=C2=A0 =C2=A0 uint8_t=C2=A0 =C2=A0 =C2=A0row_bits;<br>
++=C2=A0 =C2=A0 uint8_t=C2=A0 =C2=A0 =C2=A0col_bits;<br>
++};<br>
 +<br>
 +/*<br>
-+ * Called when master sends write.<br>
-+ * Update ptr with byte 0, then perform write with second byte.<br>
++ * Only power of 2 RAM sizes from 256MiB up to 2048MiB are supported,<br>
++ * 2GiB memory is not supported due to dual rank feature.<br>
 + */<br>
-+static int axp2xx_tx(I2CSlave *i2c, uint8_t data)<br>
-+{<br>
-+=C2=A0 =C2=A0 AXP2xxI2CState *s =3D AXP2XX(i2c);<br>
++static const struct VirtualDDRChip dummy_ddr_chips[] =3D {<br>
++=C2=A0 =C2=A0 {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .ram_size=C2=A0 =C2=A0=3D 256,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .bank_bits=C2=A0 =3D 3,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .row_bits=C2=A0 =C2=A0=3D 12,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .col_bits=C2=A0 =C2=A0=3D 13,<br>
++=C2=A0 =C2=A0 }, {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .ram_size=C2=A0 =C2=A0=3D 512,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .bank_bits=C2=A0 =3D 3,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .row_bits=C2=A0 =C2=A0=3D 13,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .col_bits=C2=A0 =C2=A0=3D 13,<br>
++=C2=A0 =C2=A0 }, {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .ram_size=C2=A0 =C2=A0=3D 1024,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .bank_bits=C2=A0 =3D 3,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .row_bits=C2=A0 =C2=A0=3D 14,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .col_bits=C2=A0 =C2=A0=3D 13,<br>
++=C2=A0 =C2=A0 }, {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 0<br>
++=C2=A0 =C2=A0 }<br>
++};<br>
 +<br>
-+=C2=A0 =C2=A0 if (s-&gt;count =3D=3D 0) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Store register address */<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;ptr =3D data;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;count++;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_axp2xx_select(data);<br>
++static const struct VirtualDDRChip *get_match_ddr(uint32_t ram_size)<br>
++{<br>
++=C2=A0 =C2=A0 const struct VirtualDDRChip *ddr;<br>
++<br>
++=C2=A0 =C2=A0 for (ddr =3D &amp;dummy_ddr_chips[0]; ddr-&gt;ram_size; ddr+=
++) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ddr-&gt;ram_size =3D=3D ram_size) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return ddr;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 return NULL;<br>
++}<br>
++<br>
++static uint64_t *address_to_autodetect_cells(AwR40DramCtlState *s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0const struct VirtualDDRChip *ddr,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0uint32_t offset)<br>
++{<br>
++=C2=A0 =C2=A0 int row_index =3D 0, bank_index =3D 0, col_index =3D 0;<br>
++=C2=A0 =C2=A0 uint32_t row_addr, bank_addr, col_addr;<br>
++<br>
++=C2=A0 =C2=A0 row_addr =3D extract32(offset, s-&gt;set_col_bits + s-&gt;se=
+t_bank_bits,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0s-&gt;set_row_bits);<br>
++=C2=A0 =C2=A0 bank_addr =3D extract32(offset, s-&gt;set_col_bits, s-&gt;se=
+t_bank_bits);<br>
++=C2=A0 =C2=A0 col_addr =3D extract32(offset, 0, s-&gt;set_col_bits);<br>
++<br>
++=C2=A0 =C2=A0 for (int i =3D 0; i &lt; ddr-&gt;row_bits; i++) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (row_addr &amp; BIT(i)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 row_index =3D i;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 for (int i =3D 0; i &lt; ddr-&gt;bank_bits; i++) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (bank_addr &amp; BIT(i)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bank_index =3D i;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 for (int i =3D 0; i &lt; ddr-&gt;col_bits; i++) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (col_addr &amp; BIT(i)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 col_index =3D i;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramc_offset_to_cell(offset, row_index, =
+bank_index,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0col_index);<br>
++=C2=A0 =C2=A0 return &amp;dram_autodetect_cells[row_index][bank_index][col=
+_index];<br>
++}<br>
++<br>
++static void allwinner_r40_dramc_map_rows(AwR40DramCtlState *s, uint8_t row=
+_bits,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ui=
+nt8_t bank_bits, uint8_t col_bits)<br>
++{<br>
++=C2=A0 =C2=A0 const struct VirtualDDRChip *ddr =3D get_match_ddr(s-&gt;ram=
+_size);<br>
++=C2=A0 =C2=A0 bool enable_detect_cells;<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramc_map_rows(row_bits, bank_bits, col_=
+bits);<br>
++<br>
++=C2=A0 =C2=A0 if (!ddr) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 s-&gt;set_row_bits =3D row_bits;<br>
++=C2=A0 =C2=A0 s-&gt;set_bank_bits =3D bank_bits;<br>
++=C2=A0 =C2=A0 s-&gt;set_col_bits =3D col_bits;<br>
++<br>
++=C2=A0 =C2=A0 enable_detect_cells =3D ddr-&gt;bank_bits !=3D bank_bits<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 || ddr-&gt;row_bits !=3D row_bits<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 || ddr-&gt;col_bits !=3D col_bits;<br>
++<br>
++=C2=A0 =C2=A0 if (enable_detect_cells) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_allwinner_r40_dramc_detect_cells_enable(=
+);<br>
 +=C2=A0 =C2=A0 } else {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_axp2xx_tx(s-&gt;ptr, data);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;regs[s-&gt;ptr++] =3D data;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_allwinner_r40_dramc_detect_cells_disable=
+();<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 memory_region_set_enabled(&amp;s-&gt;detect_cells, enable_de=
+tect_cells);<br>
++}<br>
++<br>
++static uint64_t allwinner_r40_dramcom_read(void *opaque, hwaddr offset,<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0unsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 const AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 const uint32_t idx =3D REG_INDEX(offset);<br>
++<br>
++=C2=A0 =C2=A0 if (idx &gt;=3D AW_R40_DRAMCOM_REGS_NUM) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset 0x%04x\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 __func__, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramcom_read(offset, s-&gt;dramcom[idx],=
+ size);<br>
++=C2=A0 =C2=A0 return s-&gt;dramcom[idx];<br>
++}<br>
++<br>
++static void allwinner_r40_dramcom_write(void *opaque, hwaddr offset,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 uint64_t=
+ val, unsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 const uint32_t idx =3D REG_INDEX(offset);<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramcom_write(offset, val, size);<br>
++<br>
++=C2=A0 =C2=A0 if (idx &gt;=3D AW_R40_DRAMCOM_REGS_NUM) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset 0x%04x\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 __func__, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 switch (offset) {<br>
++=C2=A0 =C2=A0 case REG_DRAMCOM_CR:=C2=A0 =C2=A0/* Control Register */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!(val &amp; REG_DRAMCOM_CR_DUAL_RANK)) {<b=
+r>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 allwinner_r40_dramc_map_rows(s, =
+((val &gt;&gt; 4) &amp; 0xf) + 1,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0((=
+val &gt;&gt; 2) &amp; 0x1) + 2,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0((=
+(val &gt;&gt; 8) &amp; 0xf) + 3));<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 };<br>
++<br>
++=C2=A0 =C2=A0 s-&gt;dramcom[idx] =3D (uint32_t) val;<br>
++}<br>
++<br>
++static uint64_t allwinner_r40_dramctl_read(void *opaque, hwaddr offset,<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0unsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 const AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 const uint32_t idx =3D REG_INDEX(offset);<br>
++<br>
++=C2=A0 =C2=A0 if (idx &gt;=3D AW_R40_DRAMCTL_REGS_NUM) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset 0x%04x\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 __func__, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramctl_read(offset, s-&gt;dramctl[idx],=
+ size);<br>
++=C2=A0 =C2=A0 return s-&gt;dramctl[idx];<br>
++}<br>
++<br>
++static void allwinner_r40_dramctl_write(void *opaque, hwaddr offset,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 uint64_t=
+ val, unsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 const uint32_t idx =3D REG_INDEX(offset);<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramctl_write(offset, val, size);<br>
++<br>
++=C2=A0 =C2=A0 if (idx &gt;=3D AW_R40_DRAMCTL_REGS_NUM) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset 0x%04x\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 __func__, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 switch (offset) {<br>
++=C2=A0 =C2=A0 case REG_DRAMCTL_PIR:=C2=A0 =C2=A0 /* PHY Initialization Reg=
+ister */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;dramctl[REG_INDEX(REG_DRAMCTL_PGSR)] |=
+=3D REG_DRAMCTL_PGSR_INITDONE;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;dramctl[REG_INDEX(REG_DRAMCTL_STATR)] |=
+=3D REG_DRAMCTL_STATR_ACTIVE;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 s-&gt;dramctl[idx] =3D (uint32_t) val;<br>
++}<br>
++<br>
++static uint64_t allwinner_r40_dramphy_read(void *opaque, hwaddr offset,<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0unsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 const AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 const uint32_t idx =3D REG_INDEX(offset);<br>
++<br>
++=C2=A0 =C2=A0 if (idx &gt;=3D AW_R40_DRAMPHY_REGS_NUM) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset 0x%04x\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 __func__, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramphy_read(offset, s-&gt;dramphy[idx],=
+ size);<br>
++=C2=A0 =C2=A0 return s-&gt;dramphy[idx];<br>
++}<br>
++<br>
++static void allwinner_r40_dramphy_write(void *opaque, hwaddr offset,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 uint64_t=
+ val, unsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 const uint32_t idx =3D REG_INDEX(offset);<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramphy_write(offset, val, size);<br>
++<br>
++=C2=A0 =C2=A0 if (idx &gt;=3D AW_R40_DRAMPHY_REGS_NUM) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset 0x%04x\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 __func__, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 s-&gt;dramphy[idx] =3D (uint32_t) val;<br>
++}<br>
++<br>
++static const MemoryRegionOps allwinner_r40_dramcom_ops =3D {<br>
++=C2=A0 =C2=A0 .read =3D allwinner_r40_dramcom_read,<br>
++=C2=A0 =C2=A0 .write =3D allwinner_r40_dramcom_write,<br>
++=C2=A0 =C2=A0 .endianness =3D DEVICE_NATIVE_ENDIAN,<br>
++=C2=A0 =C2=A0 .valid =3D {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .min_access_size =3D 4,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .max_access_size =3D 4,<br>
++=C2=A0 =C2=A0 },<br>
++=C2=A0 =C2=A0 .impl.min_access_size =3D 4,<br>
++};<br>
++<br>
++static const MemoryRegionOps allwinner_r40_dramctl_ops =3D {<br>
++=C2=A0 =C2=A0 .read =3D allwinner_r40_dramctl_read,<br>
++=C2=A0 =C2=A0 .write =3D allwinner_r40_dramctl_write,<br>
++=C2=A0 =C2=A0 .endianness =3D DEVICE_NATIVE_ENDIAN,<br>
++=C2=A0 =C2=A0 .valid =3D {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .min_access_size =3D 4,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .max_access_size =3D 4,<br>
++=C2=A0 =C2=A0 },<br>
++=C2=A0 =C2=A0 .impl.min_access_size =3D 4,<br>
++};<br>
++<br>
++static const MemoryRegionOps allwinner_r40_dramphy_ops =3D {<br>
++=C2=A0 =C2=A0 .read =3D allwinner_r40_dramphy_read,<br>
++=C2=A0 =C2=A0 .write =3D allwinner_r40_dramphy_write,<br>
++=C2=A0 =C2=A0 .endianness =3D DEVICE_NATIVE_ENDIAN,<br>
++=C2=A0 =C2=A0 .valid =3D {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .min_access_size =3D 4,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .max_access_size =3D 4,<br>
++=C2=A0 =C2=A0 },<br>
++=C2=A0 =C2=A0 .impl.min_access_size =3D 4,<br>
++};<br>
++<br>
++static uint64_t allwinner_r40_detect_read(void *opaque, hwaddr offset,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 u=
+nsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 const struct VirtualDDRChip *ddr =3D get_match_ddr(s-&gt;ram=
+_size);<br>
++=C2=A0 =C2=A0 uint64_t data =3D 0;<br>
++<br>
++=C2=A0 =C2=A0 if (ddr) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 data =3D *address_to_autodetect_cells(s, ddr, =
+(uint32_t)offset);<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_r40_dramc_detect_cell_read(offset, data);<br=
+>
++=C2=A0 =C2=A0 return data;<br>
++}<br>
++<br>
++static void allwinner_r40_detect_write(void *opaque, hwaddr offset,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0uint64_t =
+data, unsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 const struct VirtualDDRChip *ddr =3D get_match_ddr(s-&gt;ram=
+_size);<br>
++<br>
++=C2=A0 =C2=A0 if (ddr) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 uint64_t *cell =3D address_to_autodetect_cells=
+(s, ddr, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_allwinner_r40_dramc_detect_cell_write(of=
+fset, data);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 *cell =3D data;<br>
++=C2=A0 =C2=A0 }<br>
++}<br>
++<br>
++static const MemoryRegionOps allwinner_r40_detect_ops =3D {<br>
++=C2=A0 =C2=A0 .read =3D allwinner_r40_detect_read,<br>
++=C2=A0 =C2=A0 .write =3D allwinner_r40_detect_write,<br>
++=C2=A0 =C2=A0 .endianness =3D DEVICE_NATIVE_ENDIAN,<br>
++=C2=A0 =C2=A0 .valid =3D {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .min_access_size =3D 4,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .max_access_size =3D 4,<br>
++=C2=A0 =C2=A0 },<br>
++=C2=A0 =C2=A0 .impl.min_access_size =3D 4,<br>
++};<br>
++<br>
++/*<br>
++ * mctl_r40_detect_rank_count in u-boot will write the high 1G of DDR<br>
++ * to detect wether the board support dual_rank or not. Create a virtual m=
+emory<br>
++ * if the board&#39;s ram_size less or equal than 1G, and set read time ou=
+t flag of<br>
++ * REG_DRAMCTL_PGSR when the user touch this high dram.<br>
++ */<br>
++static uint64_t allwinner_r40_dualrank_detect_read(void *opaque, hwaddr of=
+fset,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned size)<br>
++{<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(opaque);<br>
++=C2=A0 =C2=A0 uint32_t reg;<br>
++<br>
++=C2=A0 =C2=A0 reg =3D s-&gt;dramctl[REG_INDEX(REG_DRAMCTL_PGCR)];<br>
++=C2=A0 =C2=A0 if (reg &amp; REG_DRAMCTL_PGCR_ENABLE_READ_TIMEOUT) { /* Ena=
+ble read time out */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* this driver only support one rank, mar=
+k READ_TIMEOUT when try<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* read the second rank.<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;dramctl[REG_INDEX(REG_DRAMCTL_PGSR)]<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=3D REG_DRAMCTL_PGSR_READ_TIMEOUT;<=
+br>
 +=C2=A0 =C2=A0 }<br>
 +<br>
 +=C2=A0 =C2=A0 return 0;<br>
 +}<br>
 +<br>
-+static const VMStateDescription vmstate_axp2xx =3D {<br>
-+=C2=A0 =C2=A0 .name =3D TYPE_AXP209_PMU,<br></blockquote><br></div><div cl=
-ass=3D"gmail_quote">Should the .name value be TYPE_AXP2xx_PMU instead, sinc=
-e we&#39;re describing the new generic axp2xx here?</div><div class=3D"gmai=
-l_quote"><br><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
++static const MemoryRegionOps allwinner_r40_dualrank_detect_ops =3D {<br>
++=C2=A0 =C2=A0 .read =3D allwinner_r40_dualrank_detect_read,<br>
++=C2=A0 =C2=A0 .endianness =3D DEVICE_NATIVE_ENDIAN,<br>
++=C2=A0 =C2=A0 .valid =3D {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .min_access_size =3D 4,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .max_access_size =3D 4,<br>
++=C2=A0 =C2=A0 },<br>
++=C2=A0 =C2=A0 .impl.min_access_size =3D 4,<br>
++};<br>
++<br>
++static void allwinner_r40_dramc_reset(DeviceState *dev)<br>
++{<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(dev);<br>
++<br>
++=C2=A0 =C2=A0 /* Set default values for registers */<br>
++=C2=A0 =C2=A0 memset(&amp;s-&gt;dramcom, 0, sizeof(s-&gt;dramcom));<br>
++=C2=A0 =C2=A0 memset(&amp;s-&gt;dramctl, 0, sizeof(s-&gt;dramctl));<br>
++=C2=A0 =C2=A0 memset(&amp;s-&gt;dramphy, 0, sizeof(s-&gt;dramphy));<br>
++}<br>
++<br>
++static void allwinner_r40_dramc_realize(DeviceState *dev, Error **errp)<br=
+>
++{<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(dev);<br>
++<br>
++=C2=A0 =C2=A0 if (!get_match_ddr(s-&gt;ram_size)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report(&quot;%s: ram-size %u MiB is not =
+supported&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 __func__, s-&gt;ram_size);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1);<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 /* detect_cells */<br>
++=C2=A0 =C2=A0 sysbus_mmio_map_overlap(SYS_BUS_DEVICE(s), 3, s-&gt;ram_addr=
+, 10);<br>
++=C2=A0 =C2=A0 memory_region_set_enabled(&amp;s-&gt;detect_cells, false);<b=
+r>
++<br>
++=C2=A0 =C2=A0 if (s-&gt;ram_size &lt; 2048) {<br></blockquote><div>Since t=
+he driver only supports up to 1GiB, you could decide to just remove this if=
+(..).<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"=
+margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-lef=
+t:1ex">
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* the high memory used for dualrank detect, i=
+ndex 4 */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 memory_region_init_io(&amp;s-&gt;dram_high, OB=
+JECT(s),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &amp;allwinner_r40_dualrank_detect_ops, s,<=
+br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;DRAMHIGH&quot;, KiB);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 sysbus_init_mmio(SYS_BUS_DEVICE(s), &amp;s-&gt=
+;dram_high);<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 sysbus_mmio_map(SYS_BUS_DEVICE(s), 4, s-&gt;ra=
+m_addr + GiB);<br>
++=C2=A0 =C2=A0 }<br>
++}<br>
++<br>
++static void allwinner_r40_dramc_init(Object *obj)<br>
++{<br>
++=C2=A0 =C2=A0 SysBusDevice *sbd =3D SYS_BUS_DEVICE(obj);<br>
++=C2=A0 =C2=A0 AwR40DramCtlState *s =3D AW_R40_DRAMC(obj);<br>
++<br>
++=C2=A0 =C2=A0 /* DRAMCOM registers, index 0 */<br>
++=C2=A0 =C2=A0 memory_region_init_io(&amp;s-&gt;dramcom_iomem, OBJECT(s),<b=
+r>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &amp;allwinner_r40_dramcom_ops, s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &quot;DRAMCOM&quot;, 4 * KiB);<br>
++=C2=A0 =C2=A0 sysbus_init_mmio(sbd, &amp;s-&gt;dramcom_iomem);<br>
++<br>
++=C2=A0 =C2=A0 /* DRAMCTL registers, index 1 */<br>
++=C2=A0 =C2=A0 memory_region_init_io(&amp;s-&gt;dramctl_iomem, OBJECT(s),<b=
+r>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &amp;allwinner_r40_dramctl_ops, s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &quot;DRAMCTL&quot;, 4 * KiB);<br>
++=C2=A0 =C2=A0 sysbus_init_mmio(sbd, &amp;s-&gt;dramctl_iomem);<br>
++<br>
++=C2=A0 =C2=A0 /* DRAMPHY registers. index 2 */<br>
++=C2=A0 =C2=A0 memory_region_init_io(&amp;s-&gt;dramphy_iomem, OBJECT(s),<b=
+r>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &amp;allwinner_r40_dramphy_ops, s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &quot;DRAMPHY&quot;, 4 * KiB);<br>
++=C2=A0 =C2=A0 sysbus_init_mmio(sbd, &amp;s-&gt;dramphy_iomem);<br>
++<br>
++=C2=A0 =C2=A0 /* R40 support max 2GiB dram memory, index 3 */<br>
++=C2=A0 =C2=A0 memory_region_init_io(&amp;s-&gt;detect_cells, OBJECT(s),<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &amp;allwinner_r40_detect_ops, s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 &quot;DRAMCELLS&quot;, 2 * GiB);<br>
++=C2=A0 =C2=A0 sysbus_init_mmio(sbd, &amp;s-&gt;detect_cells);<br></blockqu=
+ote><div><br></div><div>Same here: since only up to 1GiB is supported, do w=
+e need the DRAMCELLS lines?<br></div><div><br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">
++}<br>
++<br>
++static Property allwinner_r40_dramc_properties[] =3D {<br>
++=C2=A0 =C2=A0 DEFINE_PROP_UINT64(&quot;ram-addr&quot;, AwR40DramCtlState, =
+ram_addr, 0x0),<br>
++=C2=A0 =C2=A0 DEFINE_PROP_UINT32(&quot;ram-size&quot;, AwR40DramCtlState, =
+ram_size, 256), /* MiB */<br>
++=C2=A0 =C2=A0 DEFINE_PROP_END_OF_LIST()<br>
++};<br>
++<br>
++static const VMStateDescription allwinner_r40_dramc_vmstate =3D {<br>
++=C2=A0 =C2=A0 .name =3D &quot;allwinner-r40-dramc&quot;,<br>
 +=C2=A0 =C2=A0 .version_id =3D 1,<br>
++=C2=A0 =C2=A0 .minimum_version_id =3D 1,<br>
 +=C2=A0 =C2=A0 .fields =3D (VMStateField[]) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT8_ARRAY(regs, AXP2xxI2CState, NR_R=
-EGS),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT8(count, AXP2xxI2CState),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT8(ptr, AXP2xxI2CState),<br></block=
-quote><div><br></div><div>In the &#39;struct AXPxxI2CState&#39;=C2=A0 defin=
-ition above, the order of definition is: regs, ptr, count. For consistency,=
- ptr and count should then be swapped here to match.<br></div><div>=C2=A0</=
-div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bor=
-der-left:1px solid rgb(204,204,204);padding-left:1ex">
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_END_OF_LIST()<br></blockquote><div><br=
-></div><div><div>Another question that comes to my mind here: is it allowed=
- by the migration API to have a new axp2xx device</div><div>show up while t=
-he previous axp209 disappears? (in case for the allwinner A10 cubieboard).<=
-/div><div><br></div><div>My expectation with this code would be that during=
- such a migration, any current state of the axp209 device would be lost</di=
-v><div>and a new fresh device would show up to the guest.</div><div><br></d=
-iv><div>I don&#39;t know enough about the migration support to tell if this=
- is OK or not.</div><div>If another reviewer could help clarify, that would=
- be great.<br></div></div><div>=C2=A0</div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT32_ARRAY(dramcom, AwR40DramCtlStat=
+e,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0AW_R40_DRAMCOM_REGS_NUM),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT32_ARRAY(dramctl, AwR40DramCtlStat=
+e,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0AW_R40_DRAMCTL_REGS_NUM),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT32_ARRAY(dramphy, AwR40DramCtlStat=
+e,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0AW_R40_DRAMPHY_REGS_NUM),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_END_OF_LIST()<br>
 +=C2=A0 =C2=A0 }<br>
 +};<br>
 +<br>
-+static void axp2xx_class_init(ObjectClass *oc, void *data)<br>
++static void allwinner_r40_dramc_class_init(ObjectClass *klass, void *data)=
+<br>
 +{<br>
-+=C2=A0 =C2=A0 DeviceClass *dc =3D DEVICE_CLASS(oc);<br>
-+=C2=A0 =C2=A0 I2CSlaveClass *isc =3D I2C_SLAVE_CLASS(oc);<br>
-+=C2=A0 =C2=A0 ResettableClass *rc =3D RESETTABLE_CLASS(oc);<br>
++=C2=A0 =C2=A0 DeviceClass *dc =3D DEVICE_CLASS(klass);<br>
 +<br>
-+=C2=A0 =C2=A0 rc-&gt;phases.enter =3D axp2xx_reset_enter;<br>
-+=C2=A0 =C2=A0 dc-&gt;vmsd =3D &amp;vmstate_axp2xx;<br>
-+=C2=A0 =C2=A0 isc-&gt;event =3D axp2xx_event;<br>
-+=C2=A0 =C2=A0 isc-&gt;recv =3D axp2xx_rx;<br>
-+=C2=A0 =C2=A0 isc-&gt;send =3D axp2xx_tx;<br>
++=C2=A0 =C2=A0 dc-&gt;reset =3D allwinner_r40_dramc_reset;<br>
++=C2=A0 =C2=A0 dc-&gt;vmsd =3D &amp;allwinner_r40_dramc_vmstate;<br>
++=C2=A0 =C2=A0 dc-&gt;realize =3D allwinner_r40_dramc_realize;<br>
++=C2=A0 =C2=A0 device_class_set_props(dc, allwinner_r40_dramc_properties);<=
+br>
 +}<br>
 +<br>
-+static const TypeInfo axp2xx_info =3D {<br>
-+=C2=A0 =C2=A0 .name =3D TYPE_AXP2XX,<br>
-+=C2=A0 =C2=A0 .parent =3D TYPE_I2C_SLAVE,<br>
-+=C2=A0 =C2=A0 .instance_size =3D sizeof(AXP2xxI2CState),<br>
-+=C2=A0 =C2=A0 .class_size =3D sizeof(AXP2xxClass),<br>
-+=C2=A0 =C2=A0 .class_init =3D axp2xx_class_init,<br>
-+=C2=A0 =C2=A0 .abstract =3D true,<br>
++static const TypeInfo allwinner_r40_dramc_info =3D {<br>
++=C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_R40_DRAM=
+C,<br>
++=C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_SYS_BUS_DEVICE,<=
+br>
++=C2=A0 =C2=A0 .instance_init =3D allwinner_r40_dramc_init,<br>
++=C2=A0 =C2=A0 .instance_size =3D sizeof(AwR40DramCtlState),<br>
++=C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D allwinner_r40_dramc_class_init,=
+<br>
 +};<br>
 +<br>
-+static void axp209_class_init(ObjectClass *oc, void *data)<br>
++static void allwinner_r40_dramc_register(void)<br>
 +{<br>
-+=C2=A0 =C2=A0 AXP2xxClass *sc =3D AXP2XX_CLASS(oc);<br>
-+<br>
-+=C2=A0 =C2=A0 sc-&gt;reset_enter =3D axp209_reset_enter;<br>
++=C2=A0 =C2=A0 type_register_static(&amp;allwinner_r40_dramc_info);<br>
 +}<br>
 +<br>
-+static const TypeInfo axp209_info =3D {<br>
-+=C2=A0 =C2=A0 .name =3D TYPE_AXP209_PMU,<br>
-+=C2=A0 =C2=A0 .parent =3D TYPE_AXP2XX,<br>
-+=C2=A0 =C2=A0 .class_init =3D axp209_class_init<br>
-+};<br>
-+<br>
-+static void axp221_class_init(ObjectClass *oc, void *data)<br>
-+{<br>
-+=C2=A0 =C2=A0 AXP2xxClass *sc =3D AXP2XX_CLASS(oc);<br>
-+<br>
-+=C2=A0 =C2=A0 sc-&gt;reset_enter =3D axp221_reset_enter;<br>
-+}<br>
-+<br>
-+static const TypeInfo axp221_info =3D {<br>
-+=C2=A0 =C2=A0 .name =3D TYPE_AXP221_PMU,<br>
-+=C2=A0 =C2=A0 .parent =3D TYPE_AXP2XX,<br>
-+=C2=A0 =C2=A0 .class_init =3D axp221_class_init,<br>
-+};<br>
-+<br>
-+static void axp2xx_register_devices(void)<br>
-+{<br>
-+=C2=A0 =C2=A0 type_register_static(&amp;axp2xx_info);<br>
-+=C2=A0 =C2=A0 type_register_static(&amp;axp209_info);<br>
-+=C2=A0 =C2=A0 type_register_static(&amp;axp221_info);<br>
-+}<br>
-+<br>
-+type_init(axp2xx_register_devices);<br>
++type_init(allwinner_r40_dramc_register)<br>
 diff --git a/hw/misc/meson.build b/hw/misc/meson.build<br>
-index 96e35f1cdb..1db0343333 100644<br>
+index 1db0343333..b04d43e05a 100644<br>
 --- a/hw/misc/meson.build<br>
 +++ b/hw/misc/meson.build<br>
-@@ -45,7 +45,7 @@ softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_H3&#39;, if_tr=
+@@ -45,6 +45,7 @@ softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_H3&#39;, if_tr=
 ue: files(&#39;allwinner-h3-dramc.c<br>
 =C2=A0softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_H3&#39;, if_true: files(&#=
 39;allwinner-h3-sysctrl.c&#39;))<br>
@@ -1548,49 +1807,256 @@ ue: files(&#39;allwinner-h3-dramc.c<br>
 39;allwinner-sid.c&#39;))<br>
 =C2=A0softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_R40&#39;, if_true: files(&=
 #39;allwinner-r40-ccu.c&#39;))<br>
--softmmu_ss.add(when: &#39;CONFIG_AXP209_PMU&#39;, if_true: files(&#39;axp2=
-09.c&#39;))<br>
-+softmmu_ss.add(when: &#39;CONFIG_AXP2XX_PMU&#39;, if_true: files(&#39;axp2=
-xx.c&#39;))<br>
++softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_R40&#39;, if_true: files(&#39;a=
+llwinner-r40-dramc.c&#39;))<br>
+=C2=A0softmmu_ss.add(when: &#39;CONFIG_AXP2XX_PMU&#39;, if_true: files(&#39=
+;axp2xx.c&#39;))<br>
 =C2=A0softmmu_ss.add(when: &#39;CONFIG_REALVIEW&#39;, if_true: files(&#39;a=
 rm_sysctl.c&#39;))<br>
 =C2=A0softmmu_ss.add(when: &#39;CONFIG_NSERIES&#39;, if_true: files(&#39;cb=
 us.c&#39;))<br>
-=C2=A0softmmu_ss.add(when: &#39;CONFIG_ECCMEMCTL&#39;, if_true: files(&#39;=
-eccmemctl.c&#39;))<br>
 diff --git a/hw/misc/trace-events b/hw/misc/trace-events<br>
-index c47876a902..24cdec83fe 100644<br>
+index 24cdec83fe..8b68f07765 100644<br>
 --- a/hw/misc/trace-events<br>
 +++ b/hw/misc/trace-events<br>
-@@ -23,10 +23,10 @@ allwinner_sid_write(uint64_t offset, uint64_t data, uns=
-igned size) &quot;offset 0x%&quot;<br>
-=C2=A0avr_power_read(uint8_t value) &quot;power_reduc read value:%u&quot;<b=
+@@ -15,6 +15,20 @@ allwinner_h3_dramctl_write(uint64_t offset, uint64_t dat=
+a, unsigned size) &quot;Write<br>
+=C2=A0allwinner_h3_dramphy_read(uint64_t offset, uint64_t data, unsigned si=
+ze) &quot;Read: offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot;=
+ size %&quot; PRIu32<br>
+=C2=A0allwinner_h3_dramphy_write(uint64_t offset, uint64_t data, unsigned s=
+ize) &quot;write: offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quo=
+t; size %&quot; PRIu32<br>
+<br>
++# allwinner-r40-dramc.c<br>
++allwinner_r40_dramc_detect_cells_disable(void) &quot;Disable detect cells&=
+quot;<br>
++allwinner_r40_dramc_detect_cells_enable(void) &quot;Enable detect cells&qu=
+ot;<br>
++allwinner_r40_dramc_map_rows(uint8_t row_bits, uint8_t bank_bits, uint8_t =
+col_bits) &quot;DRAM layout: row_bits %d, bank_bits %d, col_bits %d&quot;<b=
 r>
-=C2=A0avr_power_write(uint8_t value) &quot;power_reduc write value:%u&quot;=
++allwinner_r40_dramc_offset_to_cell(uint64_t offset, int row, int bank, int=
+ col) &quot;offset 0x%&quot; PRIx64 &quot; row %d bank %d col %d&quot;<br>
++allwinner_r40_dramc_detect_cell_write(uint64_t offset, uint64_t data) &quo=
+t;offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot;&quot;<br>
++allwinner_r40_dramc_detect_cell_read(uint64_t offset, uint64_t data) &quot=
+;offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot;&quot;<br>
++allwinner_r40_dramcom_read(uint64_t offset, uint64_t data, unsigned size) =
+&quot;Read: offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; siz=
+e %&quot; PRIu32<br>
++allwinner_r40_dramcom_write(uint64_t offset, uint64_t data, unsigned size)=
+ &quot;Write: offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; s=
+ize %&quot; PRIu32<br>
++allwinner_r40_dramctl_read(uint64_t offset, uint64_t data, unsigned size) =
+&quot;Read: offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; siz=
+e %&quot; PRIu32<br>
++allwinner_r40_dramctl_write(uint64_t offset, uint64_t data, unsigned size)=
+ &quot;Write: offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; s=
+ize %&quot; PRIu32<br>
++allwinner_r40_dramphy_read(uint64_t offset, uint64_t data, unsigned size) =
+&quot;Read: offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; siz=
+e %&quot; PRIu32<br>
++allwinner_r40_dramphy_write(uint64_t offset, uint64_t data, unsigned size)=
+ &quot;write: offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; s=
+ize %&quot; PRIu32<br>
++<br>
+=C2=A0# allwinner-sid.c<br>
+=C2=A0allwinner_sid_read(uint64_t offset, uint64_t data, unsigned size) &qu=
+ot;offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; size %&quot;=
+ PRIu32<br>
+=C2=A0allwinner_sid_write(uint64_t offset, uint64_t data, unsigned size) &q=
+uot;offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; size %&quot=
+; PRIu32<br>
+diff --git a/include/hw/arm/allwinner-r40.h b/include/hw/arm/allwinner-r40.=
+h<br>
+index 95366f4eee..8243e8903b 100644<br>
+--- a/include/hw/arm/allwinner-r40.h<br>
++++ b/include/hw/arm/allwinner-r40.h<br>
+@@ -26,6 +26,7 @@<br>
+=C2=A0#include &quot;hw/intc/arm_gic.h&quot;<br>
+=C2=A0#include &quot;hw/sd/allwinner-sdhost.h&quot;<br>
+=C2=A0#include &quot;hw/misc/allwinner-r40-ccu.h&quot;<br>
++#include &quot;hw/misc/allwinner-r40-dramc.h&quot;<br>
+=C2=A0#include &quot;hw/i2c/allwinner-i2c.h&quot;<br>
+=C2=A0#include &quot;target/arm/cpu.h&quot;<br>
+=C2=A0#include &quot;sysemu/block-backend.h&quot;<br>
+@@ -54,7 +55,10 @@ enum {<br>
+=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_GIC_CPU,<br>
+=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_GIC_HYP,<br>
+=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_GIC_VCPU,<br>
+-=C2=A0 =C2=A0 AW_R40_DEV_SDRAM<br>
++=C2=A0 =C2=A0 AW_R40_DEV_SDRAM,<br>
++=C2=A0 =C2=A0 AW_R40_DEV_DRAMCOM,<br>
++=C2=A0 =C2=A0 AW_R40_DEV_DRAMCTL,<br>
++=C2=A0 =C2=A0 AW_R40_DEV_DRAMPHY,<br>
+=C2=A0};<br>
 <br>
+=C2=A0#define AW_R40_NUM_CPUS=C2=A0 =C2=A0 =C2=A0 (4)<br>
+@@ -86,11 +90,18 @@ struct AwR40State {<br>
+=C2=A0 =C2=A0 =C2=A0DeviceState parent_obj;<br>
+=C2=A0 =C2=A0 =C2=A0/*&lt; public &gt;*/<br>
 <br>
--# axp209.c<br>
--axp209_rx(uint8_t reg, uint8_t data) &quot;Read reg 0x%&quot; PRIx8 &quot;=
- : 0x%&quot; PRIx8<br>
--axp209_select(uint8_t reg) &quot;Accessing reg 0x%&quot; PRIx8<br>
--axp209_tx(uint8_t reg, uint8_t data) &quot;Write reg 0x%&quot; PRIx8 &quot=
-; : 0x%&quot; PRIx8<br>
-+# axp2xx<br>
-+axp2xx_rx(uint8_t reg, uint8_t data) &quot;Read reg 0x%&quot; PRIx8 &quot;=
- : 0x%&quot; PRIx8<br>
-+axp2xx_select(uint8_t reg) &quot;Accessing reg 0x%&quot; PRIx8<br>
-+axp2xx_tx(uint8_t reg, uint8_t data) &quot;Write reg 0x%&quot; PRIx8 &quot=
-; : 0x%&quot; PRIx8<br>
-<br>
-=C2=A0# eccmemctl.c<br>
-=C2=A0ecc_mem_writel_mer(uint32_t val) &quot;Write memory enable 0x%08x&quo=
-t;<br>
++=C2=A0 =C2=A0 /** Physical base address for start of RAM */<br>
++=C2=A0 =C2=A0 hwaddr ram_addr;<br>
++<br>
++=C2=A0 =C2=A0 /** Total RAM size in megabytes */<br>
++=C2=A0 =C2=A0 uint32_t ram_size;<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0ARMCPU cpus[AW_R40_NUM_CPUS];<br>
+=C2=A0 =C2=A0 =C2=A0const hwaddr *memmap;<br>
+=C2=A0 =C2=A0 =C2=A0AwA10PITState timer;<br>
+=C2=A0 =C2=A0 =C2=A0AwSdHostState mmc[AW_R40_NUM_MMCS];<br>
+=C2=A0 =C2=A0 =C2=A0AwR40ClockCtlState ccu;<br>
++=C2=A0 =C2=A0 AwR40DramCtlState dramc;<br>
+=C2=A0 =C2=A0 =C2=A0AWI2CState i2c0;<br>
+=C2=A0 =C2=A0 =C2=A0GICState gic;<br>
+=C2=A0 =C2=A0 =C2=A0MemoryRegion sram_a1;<br>
+diff --git a/include/hw/misc/allwinner-r40-dramc.h b/include/hw/misc/allwin=
+ner-r40-dramc.h<br>
+new file mode 100644<br>
+index 0000000000..6a1a3a7893<br>
+--- /dev/null<br>
++++ b/include/hw/misc/allwinner-r40-dramc.h<br>
+@@ -0,0 +1,108 @@<br>
++/*<br>
++ * Allwinner R40 SDRAM Controller emulation<br>
++ *<br>
++ * Copyright (C) 2023 qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163=
+.com" target=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
++ *<br>
++ * This program is free software: you can redistribute it and/or modify<br=
+>
++ * it under the terms of the GNU General Public License as published by<br=
+>
++ * the Free Software Foundation, either version 2 of the License, or<br>
++ * (at your option) any later version.<br>
++ *<br>
++ * This program is distributed in the hope that it will be useful,<br>
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of<br>
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See the<br>
++ * GNU General Public License for more details.<br>
++ *<br>
++ * You should have received a copy of the GNU General Public License<br>
++ * along with this program.=C2=A0 If not, see &lt;<a href=3D"http://www.gn=
+u.org/licenses/" rel=3D"noreferrer" target=3D"_blank">http://www.gnu.org/li=
+censes/</a>&gt;.<br>
++ */<br>
++<br>
++#ifndef HW_MISC_ALLWINNER_R40_DRAMC_H<br>
++#define HW_MISC_ALLWINNER_R40_DRAMC_H<br>
++<br>
++#include &quot;qom/object.h&quot;<br>
++#include &quot;hw/sysbus.h&quot;<br>
++#include &quot;exec/hwaddr.h&quot;<br>
++<br>
++/**<br>
++ * Constants<br>
++ * @{<br>
++ */<br>
++<br>
++/** Highest register address used by DRAMCOM module */<br>
++#define AW_R40_DRAMCOM_REGS_MAXADDR=C2=A0 (0x804)<br>
++<br>
++/** Total number of known DRAMCOM registers */<br>
++#define AW_R40_DRAMCOM_REGS_NUM=C2=A0 =C2=A0 =C2=A0 (AW_R40_DRAMCOM_REGS_M=
+AXADDR / \<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(uint32_t)=
+)<br>
++<br>
++/** Highest register address used by DRAMCTL module */<br>
++#define AW_R40_DRAMCTL_REGS_MAXADDR=C2=A0 (0x88c)<br>
++<br>
++/** Total number of known DRAMCTL registers */<br>
++#define AW_R40_DRAMCTL_REGS_NUM=C2=A0 =C2=A0 =C2=A0 (AW_R40_DRAMCTL_REGS_M=
+AXADDR / \<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(uint32_t)=
+)<br>
++<br>
++/** Highest register address used by DRAMPHY module */<br>
++#define AW_R40_DRAMPHY_REGS_MAXADDR=C2=A0 (0x4)<br>
++<br>
++/** Total number of known DRAMPHY registers */<br>
++#define AW_R40_DRAMPHY_REGS_NUM=C2=A0 =C2=A0 =C2=A0 (AW_R40_DRAMPHY_REGS_M=
+AXADDR / \<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(uint32_t)=
+)<br>
++<br>
++/** @} */<br>
++<br>
++/**<br>
++ * Object model<br>
++ * @{<br>
++ */<br>
++<br>
++#define TYPE_AW_R40_DRAMC &quot;allwinner-r40-dramc&quot;<br>
++OBJECT_DECLARE_SIMPLE_TYPE(AwR40DramCtlState, AW_R40_DRAMC)<br>
++<br>
++/** @} */<br>
++<br>
++/**<br>
++ * Allwinner R40 SDRAM Controller object instance state.<br>
++ */<br>
++struct AwR40DramCtlState {<br>
++=C2=A0 =C2=A0 /*&lt; private &gt;*/<br>
++=C2=A0 =C2=A0 SysBusDevice parent_obj;<br>
++=C2=A0 =C2=A0 /*&lt; public &gt;*/<br>
++<br>
++=C2=A0 =C2=A0 /** Physical base address for start of RAM */<br>
++=C2=A0 =C2=A0 hwaddr ram_addr;<br>
++<br>
++=C2=A0 =C2=A0 /** Total RAM size in megabytes */<br>
++=C2=A0 =C2=A0 uint32_t ram_size;<br>
++<br>
++=C2=A0 =C2=A0 uint8_t set_row_bits;<br>
++=C2=A0 =C2=A0 uint8_t set_bank_bits;<br>
++=C2=A0 =C2=A0 uint8_t set_col_bits;<br>
++<br>
++=C2=A0 =C2=A0 /**<br>
++=C2=A0 =C2=A0 =C2=A0* @name Memory Regions<br>
++=C2=A0 =C2=A0 =C2=A0* @{<br>
++=C2=A0 =C2=A0 =C2=A0*/<br>
++=C2=A0 =C2=A0 MemoryRegion dramcom_iomem;=C2=A0 =C2=A0 /**&lt; DRAMCOM mod=
+ule I/O registers */<br>
++=C2=A0 =C2=A0 MemoryRegion dramctl_iomem;=C2=A0 =C2=A0 /**&lt; DRAMCTL mod=
+ule I/O registers */<br>
++=C2=A0 =C2=A0 MemoryRegion dramphy_iomem;=C2=A0 =C2=A0 /**&lt; DRAMPHY mod=
+ule I/O registers */<br>
++=C2=A0 =C2=A0 MemoryRegion dram_high;=C2=A0 =C2=A0 =C2=A0 =C2=A0 /**&lt; T=
+he high 1G dram for dualrank detect */<br>
++=C2=A0 =C2=A0 MemoryRegion detect_cells;=C2=A0 =C2=A0 =C2=A0/**&lt; DRAM m=
+emory cells for auto detect */<br>
++<br>
++=C2=A0 =C2=A0 /** @} */<br>
++<br>
++=C2=A0 =C2=A0 /**<br>
++=C2=A0 =C2=A0 =C2=A0* @name Hardware Registers<br>
++=C2=A0 =C2=A0 =C2=A0* @{<br>
++=C2=A0 =C2=A0 =C2=A0*/<br>
++<br>
++=C2=A0 =C2=A0 uint32_t dramcom[AW_R40_DRAMCOM_REGS_NUM]; /**&lt; DRAMCOM r=
+egisters */<br>
++=C2=A0 =C2=A0 uint32_t dramctl[AW_R40_DRAMCTL_REGS_NUM]; /**&lt; DRAMCTL r=
+egisters */<br>
++=C2=A0 =C2=A0 uint32_t dramphy[AW_R40_DRAMPHY_REGS_NUM] ;/**&lt; DRAMPHY r=
+egisters */<br>
++<br>
++=C2=A0 =C2=A0 /** @} */<br>
++<br>
++};<br>
++<br>
++#endif /* HW_MISC_ALLWINNER_R40_DRAMC_H */<br>
 -- <br>
 2.25.1<br>
 <br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"l=
-tr"><div>Niek Linnenbank<br><br></div></div></div></div>
+</blockquote></div><div><br></div><div>Looks good to me.</div><div><br></di=
+v><div>Reviewed-by: Niek Linnenbank &lt;<a href=3D"mailto:nieklinnenbank@gm=
+ail.com">nieklinnenbank@gmail.com</a>&gt;<br></div><br><span class=3D"gmail=
+_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"=
+><div dir=3D"ltr"><div>Niek Linnenbank<br><br></div></div></div></div>
 
---00000000000045b6e405fbc0782c--
+--00000000000025308b05fbc0b99d--
 
