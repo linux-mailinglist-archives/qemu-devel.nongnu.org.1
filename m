@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBB3703E05
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 21:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1971703E0C
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 22:00:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyeLF-00025B-7J; Mon, 15 May 2023 15:58:45 -0400
+	id 1pyeLI-0002bs-Gt; Mon, 15 May 2023 15:58:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pyeKz-0001ci-Jv
- for qemu-devel@nongnu.org; Mon, 15 May 2023 15:58:30 -0400
+ id 1pyeL4-0001oM-4h
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 15:58:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pyeKx-0005ZV-U6
- for qemu-devel@nongnu.org; Mon, 15 May 2023 15:58:29 -0400
+ id 1pyeL2-0005aY-06
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 15:58:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684180707;
+ s=mimecast20190719; t=1684180711;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U0xWEIKpsTavsJwcCEf3C5p/wD4gGvVFo6Epfs0gtWE=;
- b=iUPgC9lSQQah4tlzVMr6wns+LwTCiNM7KSxS4Y3O6Z7BhySQTcTFEIURjuEwgb+/8yaL2Y
- teBp8lH/brZhPH6SIqwkVJluDf7GeSy/zqNG8c7G39mlblprpH1p9YVaF2CAyyVMQ+xi+w
- RT2E9joemnS6kz4BkByN2s4DOGF/wTc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rv0OW6U2taWTBZp3ks0AuejA0Q/nSmNZ/Pvn3eecT5c=;
+ b=S9JMN6LxiW/EuhRSwfzUhrd6YpdpaFBQ526U8Hm4iShuYLGXhnxIolOXYK/1Sz2Ef5yVvM
+ 5QQWq/3J7AS9H0FBzH0scNL7OUB8KV4C58YxoDWpcbQLQK0gyE5h3ZugEWTxAgc2egPl1B
+ dSNHukkEf73g0IAsRmPu39lVT6zRidE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-189-5GcHYF1xN-mPvOKZ2K3nSg-1; Mon, 15 May 2023 15:58:24 -0400
-X-MC-Unique: 5GcHYF1xN-mPvOKZ2K3nSg-1
+ us-mta-501-Tu5HA8yyPMy551Q7mUAx1g-1; Mon, 15 May 2023 15:58:28 -0400
+X-MC-Unique: Tu5HA8yyPMy551Q7mUAx1g-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 142A5868900;
- Mon, 15 May 2023 19:58:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B4FA2999B29;
+ Mon, 15 May 2023 19:58:27 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.171])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3AE2D492B02;
- Mon, 15 May 2023 19:58:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5B80E492B00;
+ Mon, 15 May 2023 19:58:23 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Greg Kurz <groug@kaod.org>,
@@ -60,10 +60,10 @@ Cc: Peter Xu <peterx@redhat.com>, Greg Kurz <groug@kaod.org>,
  Eric Blake <eblake@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH v2 15/16] migration/rdma: Simplify the function that saves a
- page
-Date: Mon, 15 May 2023 21:57:08 +0200
-Message-Id: <20230515195709.63843-16-quintela@redhat.com>
+Subject: [PATCH v2 16/16] migration/multifd: Compute transferred bytes
+ correctly
+Date: Mon, 15 May 2023 21:57:09 +0200
+Message-Id: <20230515195709.63843-17-quintela@redhat.com>
 In-Reply-To: <20230515195709.63843-1-quintela@redhat.com>
 References: <20230515195709.63843-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -93,157 +93,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we sent a page through QEMUFile hooks (RDMA) there are three
-posiblities:
-- We are not using RDMA. return RAM_SAVE_CONTROL_DELAYED and
-  control_save_page() returns false to let anything else to proceed.
-- There is one error but we are using RDMA.  Then we return a negative
-  value, control_save_page() needs to return true.
-- Everything goes well and RDMA start the sent of the page
-  asynchronously.  It returns RAM_SAVE_CONTROL_DELAYED and we need to
-  return 1 for ram_save_page_legacy.
-
-Clear?
-
-I know, I know, the interfaz is as bad as it gets.  I think that now
-it is a bit clearer, but this needs to be done some other way.
+In the past, we had to put the in the main thread all the operations
+related with sizes due to qemu_file not beeing thread safe.  As now
+all counters are atomic, we can update the counters just after the
+do the write.  As an aditional bonus, we are able to use the right
+value for the compression methods.  Right now we were assuming that
+there were no compression at all.
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/qemu-file.h | 14 ++++++--------
- migration/qemu-file.c | 12 ++++++------
- migration/ram.c       | 10 +++-------
- migration/rdma.c      | 19 +++----------------
- 4 files changed, 18 insertions(+), 37 deletions(-)
+ migration/multifd.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-index 37f42315c7..ed77996201 100644
---- a/migration/qemu-file.h
-+++ b/migration/qemu-file.h
-@@ -49,11 +49,10 @@ typedef int (QEMURamHookFunc)(QEMUFile *f, uint64_t flags, void *data);
-  * This function allows override of where the RAM page
-  * is saved (such as RDMA, for example.)
-  */
--typedef size_t (QEMURamSaveFunc)(QEMUFile *f,
--                                 ram_addr_t block_offset,
--                                 ram_addr_t offset,
--                                 size_t size,
--                                 uint64_t *bytes_sent);
-+typedef int (QEMURamSaveFunc)(QEMUFile *f,
-+                              ram_addr_t block_offset,
-+                              ram_addr_t offset,
-+                              size_t size);
- 
- typedef struct QEMUFileHooks {
-     QEMURamHookFunc *before_ram_iterate;
-@@ -146,9 +145,8 @@ void ram_control_load_hook(QEMUFile *f, uint64_t flags, void *data);
- #define RAM_SAVE_CONTROL_NOT_SUPP -1000
- #define RAM_SAVE_CONTROL_DELAYED  -2000
- 
--size_t ram_control_save_page(QEMUFile *f, ram_addr_t block_offset,
--                             ram_addr_t offset, size_t size,
--                             uint64_t *bytes_sent);
-+int ram_control_save_page(QEMUFile *f, ram_addr_t block_offset,
-+                          ram_addr_t offset, size_t size);
- QIOChannel *qemu_file_get_ioc(QEMUFile *file);
- 
- #endif
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 72e130631d..32ef5e9651 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -336,14 +336,14 @@ void ram_control_load_hook(QEMUFile *f, uint64_t flags, void *data)
-     }
- }
- 
--size_t ram_control_save_page(QEMUFile *f, ram_addr_t block_offset,
--                             ram_addr_t offset, size_t size,
--                             uint64_t *bytes_sent)
-+int ram_control_save_page(QEMUFile *f, ram_addr_t block_offset,
-+                          ram_addr_t offset, size_t size)
+diff --git a/migration/multifd.c b/migration/multifd.c
+index aabf9b6d98..0bf5958a9c 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -175,6 +175,7 @@ void multifd_register_ops(int method, MultiFDMethods *ops)
+ static int multifd_send_initial_packet(MultiFDSendParams *p, Error **errp)
  {
-     if (f->hooks && f->hooks->save_page) {
--        int ret = f->hooks->save_page(f, block_offset,
--                                      offset, size, bytes_sent);
--
-+        int ret = f->hooks->save_page(f, block_offset, offset, size);
-+        /*
-+         * RAM_SAVE_CONTROL_* are negative values
-+         */
-         if (ret != RAM_SAVE_CONTROL_DELAYED &&
-             ret != RAM_SAVE_CONTROL_NOT_SUPP) {
-             if (ret < 0) {
-diff --git a/migration/ram.c b/migration/ram.c
-index 2d3927a15f..f9fcbb3bb8 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1173,23 +1173,19 @@ static int save_zero_page(PageSearchStatus *pss, QEMUFile *f, RAMBlock *block,
- static bool control_save_page(PageSearchStatus *pss, RAMBlock *block,
-                               ram_addr_t offset, int *pages)
- {
--    uint64_t bytes_xmit = 0;
+     MultiFDInit_t msg = {};
++    size_t size = sizeof(msg);
      int ret;
  
--    *pages = -1;
-     ret = ram_control_save_page(pss->pss_channel, block->offset, offset,
--                                TARGET_PAGE_SIZE, &bytes_xmit);
-+                                TARGET_PAGE_SIZE);
-     if (ret == RAM_SAVE_CONTROL_NOT_SUPP) {
-         return false;
-     }
+     msg.magic = cpu_to_be32(MULTIFD_MAGIC);
+@@ -182,10 +183,12 @@ static int multifd_send_initial_packet(MultiFDSendParams *p, Error **errp)
+     msg.id = p->id;
+     memcpy(msg.uuid, &qemu_uuid.data, sizeof(msg.uuid));
  
--    if (bytes_xmit) {
--        *pages = 1;
--    }
--
-     if (ret == RAM_SAVE_CONTROL_DELAYED) {
-+        *pages = 1;
-         return true;
+-    ret = qio_channel_write_all(p->c, (char *)&msg, sizeof(msg), errp);
++    ret = qio_channel_write_all(p->c, (char *)&msg, size, errp);
+     if (ret != 0) {
+         return -1;
      }
-+    *pages = ret;
-     return true;
++    stat64_add(&mig_stats.multifd_bytes, size);
++    stat64_add(&mig_stats.transferred, size);
+     return 0;
  }
  
-diff --git a/migration/rdma.c b/migration/rdma.c
-index 416dec00a2..12d3c23fdc 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -3239,13 +3239,12 @@ qio_channel_rdma_shutdown(QIOChannel *ioc,
-  *
-  *    @size : Number of bytes to transfer
-  *
-- *    @bytes_sent : User-specificed pointer to indicate how many bytes were
-+ *    @pages_sent : User-specificed pointer to indicate how many pages were
-  *                  sent. Usually, this will not be more than a few bytes of
-  *                  the protocol because most transfers are sent asynchronously.
-  */
--static size_t qemu_rdma_save_page(QEMUFile *f,
--                                  ram_addr_t block_offset, ram_addr_t offset,
--                                  size_t size, uint64_t *bytes_sent)
-+static int qemu_rdma_save_page(QEMUFile *f, ram_addr_t block_offset,
-+                               ram_addr_t offset, size_t size)
- {
-     QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(qemu_file_get_ioc(f));
-     RDMAContext *rdma;
-@@ -3277,18 +3276,6 @@ static size_t qemu_rdma_save_page(QEMUFile *f,
-         goto err;
-     }
+@@ -395,7 +398,6 @@ static int multifd_send_pages(QEMUFile *f)
+     static int next_channel;
+     MultiFDSendParams *p = NULL; /* make happy gcc */
+     MultiFDPages_t *pages = multifd_send_state->pages;
+-    uint64_t transferred;
  
--    /*
--     * We always return 1 bytes because the RDMA
--     * protocol is completely asynchronous. We do not yet know
--     * whether an  identified chunk is zero or not because we're
--     * waiting for other pages to potentially be merged with
--     * the current chunk. So, we have to call qemu_update_position()
--     * later on when the actual write occurs.
--     */
--    if (bytes_sent) {
--        *bytes_sent = 1;
--    }
--
-     /*
-      * Drain the Completion Queue if possible, but do not block,
-      * just poll.
+     if (qatomic_read(&multifd_send_state->exiting)) {
+         return -1;
+@@ -430,10 +432,7 @@ static int multifd_send_pages(QEMUFile *f)
+     p->packet_num = multifd_send_state->packet_num++;
+     multifd_send_state->pages = p->pages;
+     p->pages = pages;
+-    transferred = ((uint64_t) pages->num) * p->page_size + p->packet_len;
+     qemu_mutex_unlock(&p->mutex);
+-    stat64_add(&mig_stats.transferred, transferred);
+-    stat64_add(&mig_stats.multifd_bytes, transferred);
+     qemu_sem_post(&p->sem);
+ 
+     return 1;
+@@ -715,6 +714,8 @@ static void *multifd_send_thread(void *opaque)
+                 if (ret != 0) {
+                     break;
+                 }
++                stat64_add(&mig_stats.multifd_bytes, p->packet_len);
++                stat64_add(&mig_stats.transferred, p->packet_len);
+             } else {
+                 /* Send header using the same writev call */
+                 p->iov[0].iov_len = p->packet_len;
+@@ -727,6 +728,8 @@ static void *multifd_send_thread(void *opaque)
+                 break;
+             }
+ 
++            stat64_add(&mig_stats.multifd_bytes, p->next_packet_size);
++            stat64_add(&mig_stats.transferred, p->next_packet_size);
+             qemu_mutex_lock(&p->mutex);
+             p->pending_job--;
+             qemu_mutex_unlock(&p->mutex);
 -- 
 2.40.1
 
