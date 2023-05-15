@@ -2,57 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51960703F57
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 23:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 229C0703F64
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 23:09:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyfNd-0002wh-NI; Mon, 15 May 2023 17:05:17 -0400
+	id 1pyfQq-0003vq-IE; Mon, 15 May 2023 17:08:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfNX-0002wJ-Gq
- for qemu-devel@nongnu.org; Mon, 15 May 2023 17:05:11 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfQn-0003vD-QZ
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 17:08:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfNV-0002mC-8k
- for qemu-devel@nongnu.org; Mon, 15 May 2023 17:05:11 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfQm-0003D6-7D
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 17:08:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684184708;
+ s=mimecast20190719; t=1684184911;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=1TJYVGVJEjIIq4FpOlDD2A+7M/5GSm5fRKqIa81p+1o=;
- b=Tr0xvtwvt6F7nF0LrS4nSPrrz0O2NKEr2Y+qjBXotp8gMcC9+FAQW5wFlI9HQ0gmmZKJbD
- OlSGLYm2uwRDtyYJfO08YUF0EfU80UB28xqFcbDYq9bFhtjxu8R82ljFI5F8k4Qw/p5T/L
- N6fqqEE4sZxRZEJ5AE3wDL7JJ753YK0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kXgTAdweOMK6lCMrcls9n/rwH7LSgsW8Sy6wJmkatc4=;
+ b=NBMeUjyVQw+vfidCDcHDu01cv5gLEfzEFPTT4LUe1c7EUDv4t1rRGgm6zCtGTh1/yY6u+N
+ 4m/jR+BE4MPAjMttU/y3KgWCMmQq0Urs3swFUugSiXJqxo65sHR35ify1wtz+COoYlytxx
+ BZdTAlroaVQaWkoydSusVccNqPAyRpE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-368-WzmrsDO-Pv6SUOpWh2oKfg-1; Mon, 15 May 2023 17:05:04 -0400
-X-MC-Unique: WzmrsDO-Pv6SUOpWh2oKfg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-620-vRBXbp4MP3OA1uFFSZ6Wxg-1; Mon, 15 May 2023 17:08:28 -0400
+X-MC-Unique: vRBXbp4MP3OA1uFFSZ6Wxg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4FE03380673F;
- Mon, 15 May 2023 21:05:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 032FF87DC00;
+ Mon, 15 May 2023 21:08:28 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.57])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AA37F2166B26;
- Mon, 15 May 2023 21:05:03 +0000 (UTC)
-Date: Mon, 15 May 2023 16:05:01 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 091D4492B00;
+ Mon, 15 May 2023 21:08:26 +0000 (UTC)
+Date: Mon, 15 May 2023 16:08:25 -0500
 From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Cc: libguestfs@redhat.com, vsementsov@yandex-team.ru
-Subject: Re: [Libguestfs] [PATCH v3 00/14] qemu patches for 64-bit NBD
- extensions
-Message-ID: <kt4izbtzgddwv6ud6i7qldaq2nj22trnglfylvaqhbaexdhn2q@vq6uob27ipno>
-References: <20230515195343.1915857-1-eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, stefanha@redhat.com, 
+ f.ebner@proxmox.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/8] block: Call .bdrv_co_create(_opts) unlocked
+Message-ID: <ontdxyk424kxb7ax7ca2jcwjphzodefzrr6rbe46irvirkfa6h@shlcwuhtfsur>
+References: <20230510203601.418015-1-kwolf@redhat.com>
+ <20230510203601.418015-2-kwolf@redhat.com>
+ <lqumtxeofbejjvf5f45zf5ywdrae2wckhgwrud5ggly4jganfz@sbb23gf53wbg>
+ <ZGJbnbx9vjXVEUuv@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230515195343.1915857-1-eblake@redhat.com>
+In-Reply-To: <ZGJbnbx9vjXVEUuv@redhat.com>
 User-Agent: NeoMutt/20230512
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -78,44 +81,64 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Adding qemu-block for the cover letter (not sure how I missed that the
-first time).
-
-On Mon, May 15, 2023 at 02:53:29PM -0500, Eric Blake wrote:
+On Mon, May 15, 2023 at 06:19:41PM +0200, Kevin Wolf wrote:
+> > > @@ -3724,8 +3726,10 @@ qcow2_co_create(BlockdevCreateOptions *create_options, Error **errp)
+> > >          goto out;
+> > >      }
+> > >  
+> > > +    bdrv_graph_co_rdlock();
+> > >      ret = qcow2_alloc_clusters(blk_bs(blk), 3 * cluster_size);
+> > >      if (ret < 0) {
+> > > +        bdrv_graph_co_rdunlock();
+> > >          error_setg_errno(errp, -ret, "Could not allocate clusters for qcow2 "
+> > >                           "header and refcount table");
+> > >          goto out;
+> > > @@ -3743,6 +3747,8 @@ qcow2_co_create(BlockdevCreateOptions *create_options, Error **errp)
+> > >  
+> > >      /* Create a full header (including things like feature table) */
+> > >      ret = qcow2_update_header(blk_bs(blk));
+> > > +    bdrv_graph_co_rdunlock();
+> > > +
+> > 
+> > If we ever inject any 'goto out' in the elided lines, we're in
+> > trouble.  Would this be any safer by wrapping the intervening
+> > statements in a scope-guarded lock?
 > 
-> v2 was here:
-> https://lists.gnu.org/archive/html/qemu-devel/2022-11/msg02340.html
+> TSA doesn't understand these guards, which is why they are only
+> annotated as assertions (I think we talked about this in my previous
+> series), at the cost of leaving unlocking unchecked. So in cases where
+> the scope isn't the full function, individual calls are better at the
+> moment. Once clang implements support for __attribute__((cleanup)), we
+> can maybe change this.
+
+Yeah, LOTS of people are waiting on clang __attribute__((cleanup))
+analysis sanity ;)
+
 > 
-> Since then:
->  - upstream NBD has accepted the extension on a branch; once multiple
->    implementations interoperate based on that spec, it will be promoted
->    to mainline (my plan: qemu with this series, libnbd nearly ready to
->    go, nbdkit a bit further out)
->  - rebase to block changes in meantime
->  - drop RFC patches for 64-bit NBD_CMD_READ (NBD spec did not take them)
->  - per upstream spec decision, extended headers now mandates use of
->    NBD_REPLY_TYPE_BLOCK_STATUS_EXT rather than server choice based on
->    reply size, which in turn required rearranging server patches a bit
->  - other changes that I noticed while testing with parallel changes
->    being added to libnbd (link to those patches to follow in the next
->    week or so)
+> Of course, TSA solves the very maintenance problem you're concerned
+> about: With a 'goto out' added, compilation on clang fails because it
+> sees that there is a code path that doesn't unlock. So at least it makes
+> the compromise not terrible.
+> 
+> For example, if I comment out the unlock in the error case in the first,
+> this is what I get:
+> 
+> ../block/qcow2.c:3825:5: error: mutex 'graph_lock' is not held on every path through here [-Werror,-Wthread-safety-analysis]
+>     blk_co_unref(blk);
+>     ^
+> ../block/qcow2.c:3735:5: note: mutex acquired here
+>     bdrv_graph_co_rdlock();
+>     ^
+> 1 error generated.
 
-If it helps review, I compared to my v2 posting as follows:
+I'm sold!  The very reason you can't use a cleanup scope-guard
+(because clang can't see through the annotation) is also the reason
+why clang is able to flag your error if you don't properly clean up by
+hand.  So while it is more tedious to maintain, we've finally got
+compiler assistance to something that used to be human-only, which is
+a step forwards even if it is more to type in the short term.
 
-001/14:[0007] [FC] 'nbd/client: Use smarter assert'
-002/14:[----] [--] 'nbd/client: Add safety check on chunk payload length'
-003/14:[----] [-C] 'nbd/server: Prepare for alternate-size headers'
-004/14:[0099] [FC] 'nbd: Prepare for 64-bit request effect lengths'
-005/14:[0002] [FC] 'nbd: Add types for extended headers'
-006/14:[0012] [FC] 'nbd/server: Refactor handling of request payload'
-007/14:[0026] [FC] 'nbd/server: Refactor to pass full request around'
-008/14:[0052] [FC] 'nbd/server: Support 64-bit block status'
-009/14:[0032] [FC] 'nbd/server: Initial support for extended headers'
-010/14:[0020] [FC] 'nbd/client: Initial support for extended headers'
-011/14:[0015] [FC] 'nbd/client: Accept 64-bit block status chunks'
-012/14:[0042] [FC] 'nbd/client: Request extended headers during negotiation'
-013/14:[0005] [FC] 'nbd/server: Prepare for per-request filtering of BLOCK_STATUS'
-014/14:[0004] [FC] 'nbd/server: Add FLAG_PAYLOAD support to CMD_BLOCK_STATUS'
+Thanks for testing that.
 
 -- 
 Eric Blake, Principal Software Engineer
