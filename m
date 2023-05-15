@@ -2,80 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C40703243
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C51F703259
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:09:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyaiK-0006Ef-GM; Mon, 15 May 2023 12:06:20 -0400
+	id 1pyakn-00018P-GY; Mon, 15 May 2023 12:08:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1pyahy-0005NG-83
- for qemu-devel@nongnu.org; Mon, 15 May 2023 12:05:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1pyakl-00014f-2G; Mon, 15 May 2023 12:08:51 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1pyahu-0002Ab-1I
- for qemu-devel@nongnu.org; Mon, 15 May 2023 12:05:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684166753;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YTcjmxqtSvVPGQaZ0SXB++FKN48c2ec24jCxFpCBrLs=;
- b=Fqwe5wpacpFJzOsqLVFe7s1oUifxM/N3kl7xChzak+aBoK2vJbDEc867pi7WZ75e4nGAf3
- 8t9QCfe/R0Vhmw69J1xzessAD5k30gtIWaT26gsnkQF1eTRz6GPha5XOx3olvXDcnPupzn
- AFM37y1fezOxGzVjiHaagP9gJEB15R0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-416-QRnZstKdPvKDqMrWGTrxOw-1; Mon, 15 May 2023 12:05:50 -0400
-X-MC-Unique: QRnZstKdPvKDqMrWGTrxOw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC0D32812944;
- Mon, 15 May 2023 16:05:48 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.179])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 28B2BC15BA0;
- Mon, 15 May 2023 16:05:47 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <rth@twiddle.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Julia Suvorova <jusual@redhat.com>, Aarushi Mehta <mehta.aaru20@gmail.com>,
- Kevin Wolf <kwolf@redhat.com>, kvm@vger.kernel.org,
- Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>, qemu-block@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Fam Zheng <fam@euphon.net>,
- Sam Li <faithilikerun@gmail.com>
-Subject: [PULL v2 16/16] docs/zoned-storage:add zoned emulation use case
-Date: Mon, 15 May 2023 12:05:06 -0400
-Message-Id: <20230515160506.1776883-17-stefanha@redhat.com>
-In-Reply-To: <20230515160506.1776883-1-stefanha@redhat.com>
-References: <20230515160506.1776883-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1pyakj-0002c6-1T; Mon, 15 May 2023 12:08:50 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 1BC236021;
+ Mon, 15 May 2023 19:08:47 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id F0E1C55A7;
+ Mon, 15 May 2023 19:08:45 +0300 (MSK)
+Message-ID: <147b4e5e-009a-7ab8-7dfc-ea7735319c97@msgid.tls.msk.ru>
+Date: Mon, 15 May 2023 19:08:45 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3] hw/pvrdma: Protect against buggy or malicious guest
+ driver
+Content-Language: en-US
+To: Laurent Vivier <laurent@vivier.eu>, Thomas Huth <thuth@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@redhat.com>,
+ QEMU Trivial <qemu-trivial@nongnu.org>
+Cc: Claudio Fontana <cfontana@suse.de>,
+ qemu devel list <qemu-devel@nongnu.org>,
+ Peter Maydell <peter.maydell@linaro.org>, wxhusst@gmail.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20220403095234.2210-1-yuval.shaia.ml@gmail.com>
+ <CAC_L=vXsKpai6Wr0Fi2r5sr4U+tshPB9VizqntDppqE=1_FbVQ@mail.gmail.com>
+ <339b8c7d-1f54-a515-8854-c22d10f79d1d@suse.de>
+ <CAMPkWoOFXfyx=ZOv8i6AJ8Lv2GFKt11gnXYZ2W_4roS9UP9m5w@mail.gmail.com>
+ <CAC_L=vUD2vVNSaP7UcDuRUCyd8XNmb4iRY_LXK0UNEE-+Rr4TQ@mail.gmail.com>
+ <6cd36e7e-dae7-6258-736a-44630cee9010@redhat.com>
+ <5779382f-9f8d-439e-b474-1ac1606d65a5@vivier.eu>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <5779382f-9f8d-439e-b474-1ac1606d65a5@vivier.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -106
+X-Spam_score: -10.7
+X-Spam_bar: ----------
+X-Spam_report: (-10.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.811,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,48 +73,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sam Li <faithilikerun@gmail.com>
+16.01.2023 20:50, Laurent Vivier wrote:
+> Le 28/12/2022 à 20:32, Thomas Huth a écrit :
+>> On 19/12/2022 12.21, Marcel Apfelbaum wrote:
+>>> On Mon, Dec 19, 2022 at 10:57 AM Yuval Shaia <yuval.shaia.ml@gmail.com> wrote:
+>>>>
+>>>> Can anyone else pick this one?
+>>>
+>>> Adding Thomas,
+>>>
+>>> I dropped the ball with this one, I am sorry about that, maybe it
+>>> doesn't worth a Pull Request only for it.
+>>
+>> Why not? Pull request for single patches aren't that uncommon.
+>>
+>>> Maybe it can go through the Misc tree?
+>>
+>> hw/rdma/ is really not my turf, but since the patch is small, it sounds like a good candidate for qemu-trivial, I think.
+> 
+> Applied to my trivial-patches branch.
 
-Add the documentation about the example of using virtio-blk driver
-to pass the zoned block devices through to the guest.
+Has it been forgotten again? :)
 
-Signed-off-by: Sam Li <faithilikerun@gmail.com>
-Message-id: 20230508051916.178322-5-faithilikerun@gmail.com
-[Fix pre-formatted code syntax
---Stefan]
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- docs/devel/zoned-storage.rst | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/docs/devel/zoned-storage.rst b/docs/devel/zoned-storage.rst
-index da78db2783..30296d3c85 100644
---- a/docs/devel/zoned-storage.rst
-+++ b/docs/devel/zoned-storage.rst
-@@ -41,3 +41,22 @@ APIs for zoned storage emulation or testing.
- For example, to test zone_report on a null_blk device using qemu-io is::
- 
-   $ path/to/qemu-io --image-opts -n driver=host_device,filename=/dev/nullb0 -c "zrp offset nr_zones"
-+
-+To expose the host's zoned block device through virtio-blk, the command line
-+can be (includes the -device parameter)::
-+
-+  -blockdev node-name=drive0,driver=host_device,filename=/dev/nullb0,cache.direct=on \
-+  -device virtio-blk-pci,drive=drive0
-+
-+Or only use the -drive parameter::
-+
-+  -driver driver=host_device,file=/dev/nullb0,if=virtio,cache.direct=on
-+
-+Additionally, QEMU has several ways of supporting zoned storage, including:
-+(1) Using virtio-scsi: --device scsi-block allows for the passing through of
-+SCSI ZBC devices, enabling the attachment of ZBC or ZAC HDDs to QEMU.
-+(2) PCI device pass-through: While NVMe ZNS emulation is available for testing
-+purposes, it cannot yet pass through a zoned device from the host. To pass on
-+the NVMe ZNS device to the guest, use VFIO PCI pass the entire NVMe PCI adapter
-+through to the guest. Likewise, an HDD HBA can be passed on to QEMU all HDDs
-+attached to the HBA.
--- 
-2.40.1
-
+/mjt
 
