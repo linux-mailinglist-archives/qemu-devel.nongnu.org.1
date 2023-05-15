@@ -2,55 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3057770325F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 583BF703287
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:14:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyalh-0003kP-UC; Mon, 15 May 2023 12:09:50 -0400
+	id 1pyapL-0007Cm-3F; Mon, 15 May 2023 12:13:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pyalf-0003iJ-KM; Mon, 15 May 2023 12:09:47 -0400
+ id 1pyapD-0007CR-QI; Mon, 15 May 2023 12:13:27 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pyale-0002gt-2e; Mon, 15 May 2023 12:09:47 -0400
+ id 1pyapC-0003by-3H; Mon, 15 May 2023 12:13:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 12FDF6023;
- Mon, 15 May 2023 19:09:44 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 4D68F6025;
+ Mon, 15 May 2023 19:13:09 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EEB6455AA;
- Mon, 15 May 2023 19:09:42 +0300 (MSK)
-Message-ID: <7e96e406-1467-56da-0e7c-3351692c35f8@msgid.tls.msk.ru>
-Date: Mon, 15 May 2023 19:09:42 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 19C6555AC;
+ Mon, 15 May 2023 19:13:08 +0300 (MSK)
+Message-ID: <810d20a1-4af7-ab16-0f38-a4b56dc27f97@msgid.tls.msk.ru>
+Date: Mon, 15 May 2023 19:13:08 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v3] hw/pvrdma: Protect against buggy or malicious guest
+Subject: Re: [PATCH v1] hw/pvrdma: Protect against buggy or malicious guest
  driver
 Content-Language: en-US
+To: Yuval Shaia <yuval.shaia.ml@gmail.com>, qemu-devel@nongnu.org,
+ soulchen8650@gmail.com, secalert@redhat.com, mcascell@redhat.com,
+ qemu-security@nongnu.org, marcel.apfelbaum@gmail.com,
+ Laurent Vivier <laurent@vivier.eu>
+References: <20230301142926.18686-1-yuval.shaia.ml@gmail.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-To: Laurent Vivier <laurent@vivier.eu>, Thomas Huth <thuth@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yuval Shaia <yuval.shaia.ml@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@redhat.com>,
- QEMU Trivial <qemu-trivial@nongnu.org>
-Cc: Claudio Fontana <cfontana@suse.de>,
- qemu devel list <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>, wxhusst@gmail.com,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20220403095234.2210-1-yuval.shaia.ml@gmail.com>
- <CAC_L=vXsKpai6Wr0Fi2r5sr4U+tshPB9VizqntDppqE=1_FbVQ@mail.gmail.com>
- <339b8c7d-1f54-a515-8854-c22d10f79d1d@suse.de>
- <CAMPkWoOFXfyx=ZOv8i6AJ8Lv2GFKt11gnXYZ2W_4roS9UP9m5w@mail.gmail.com>
- <CAC_L=vUD2vVNSaP7UcDuRUCyd8XNmb4iRY_LXK0UNEE-+Rr4TQ@mail.gmail.com>
- <6cd36e7e-dae7-6258-736a-44630cee9010@redhat.com>
- <5779382f-9f8d-439e-b474-1ac1606d65a5@vivier.eu>
- <147b4e5e-009a-7ab8-7dfc-ea7735319c97@tls.msk.ru>
-In-Reply-To: <147b4e5e-009a-7ab8-7dfc-ea7735319c97@tls.msk.ru>
+In-Reply-To: <20230301142926.18686-1-yuval.shaia.ml@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -106
@@ -74,32 +62,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-15.05.2023 19:08, Michael Tokarev пишет:
-> 16.01.2023 20:50, Laurent Vivier wrote:
->> Le 28/12/2022 à 20:32, Thomas Huth a écrit :
->>> On 19/12/2022 12.21, Marcel Apfelbaum wrote:
->>>> On Mon, Dec 19, 2022 at 10:57 AM Yuval Shaia <yuval.shaia.ml@gmail.com> wrote:
->>>>>
->>>>> Can anyone else pick this one?
->>>>
->>>> Adding Thomas,
->>>>
->>>> I dropped the ball with this one, I am sorry about that, maybe it
->>>> doesn't worth a Pull Request only for it.
->>>
->>> Why not? Pull request for single patches aren't that uncommon.
->>>
->>>> Maybe it can go through the Misc tree?
->>>
->>> hw/rdma/ is really not my turf, but since the patch is small, it sounds like a good candidate for qemu-trivial, I think.
->>
->> Applied to my trivial-patches branch.
+01.03.2023 17:29, Yuval Shaia wrote:
+> Guest driver allocates and initialize page tables to be used as a ring
+> of descriptors for CQ and async events.
+> The page table that represents the ring, along with the number of pages
+> in the page table is passed to the device.
+> Currently our device supports only one page table for a ring.
 > 
-> Has it been forgotten again? :)
+> Let's make sure that the number of page table entries the driver
+> reports, do not exceeds the one page table size.
+> 
+> Reported-by: Soul Chen <soulchen8650@gmail.com>
+> Signed-off-by: Yuval Shaia <yuval.shaia.ml@gmail.com>
+> ---
+> v0 -> v1:
+> 	* Take ring-state into account
+> 	* Add Reported-by
+> ---
+>   hw/rdma/vmw/pvrdma_main.c | 16 +++++++++++++++-
+>   1 file changed, 15 insertions(+), 1 deletion(-)
 
-Ah nope. There are 2 patches with the same subject, always confusing.
-This one is applied.
+Fixes: CVE-2023-1544
+
+Ping ^2?
+Laurent, maybe you can take this one too?
+I understand the fact you picked up the previous one in this area
+does not make you pvrdma maintainer, but it is definitely being stuck.. :)
 
 /mjt
-
 
