@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1EF27030C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 16:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D6C7030F2
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 17:05:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyZem-00010A-4h; Mon, 15 May 2023 10:58:36 -0400
+	id 1pyZkE-000544-TR; Mon, 15 May 2023 11:04:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1pyZek-0000zj-Fq
- for qemu-devel@nongnu.org; Mon, 15 May 2023 10:58:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1)
+ (envelope-from <prvs=492829998=anthony.perard@citrix.com>)
+ id 1pyZkC-00050a-1a
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 11:04:12 -0400
+Received: from esa6.hc3370-68.iphmx.com ([216.71.155.175])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1pyZeh-0003Pl-2u
- for qemu-devel@nongnu.org; Mon, 15 May 2023 10:58:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684162710;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LtEeD1lZdj/JRM4eeIhOQLuHrkKi82+Ry6jE6QeODg8=;
- b=OqMhechHh/B5iIdg/8ypQmn8DI6TUMwfK34ys8xb2plahO4R+cd+/bW90E3w+QbzLoSZga
- 73hb3NFcMVNfaM0KB6p3NUK8xPeOzoE8oHf/JG5ujRiAgJXgJvCWejeBZR8pklfWpnSVfB
- sxNR/6H+OloY0Mbh4qcQFEc6ZuoqD6o=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-301-5YioyWUsMu6YlhfFZmeaYg-1; Mon, 15 May 2023 10:58:27 -0400
-X-MC-Unique: 5YioyWUsMu6YlhfFZmeaYg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C4CB686BF46;
- Mon, 15 May 2023 14:58:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.48])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D98E3492B00;
- Mon, 15 May 2023 14:58:20 +0000 (UTC)
-Date: Mon, 15 May 2023 15:58:16 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
- dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-Subject: Re: [PATCH v4 4/8] migration: converts rdma backend to accept
- MigrateAddress struct
-Message-ID: <ZGJIiJADoEOrLUVn@redhat.com>
-References: <20230512143240.192504-1-het.gala@nutanix.com>
- <20230512143240.192504-5-het.gala@nutanix.com>
- <ZGIIVc83VbEMgUhB@redhat.com>
- <ae609793-7d9b-a305-d0bf-e8e9eb59d66c@nutanix.com>
+ (Exim 4.90_1)
+ (envelope-from <prvs=492829998=anthony.perard@citrix.com>)
+ id 1pyZk8-0004ld-Vt
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 11:04:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=citrix.com; s=securemail; t=1684163048;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=bQrXqaeJcD+jm1ccN670onl+ctwTMzM6NSMGay6Q+zI=;
+ b=WYEmuYHDI/Pz+ZqvIRp1vm85CjeKAqPPamuUhDbyQl1sMKqdQT8CdFvs
+ o3M4kvJfixVXvoUJ2p82orbYxQet9gv/c0piFBf/GPpuK2gIfF+s0/P/t
+ FHjMykRiHryZLKZDvCRA6R3SEUJtc2beGKb/QjEf934jCBI6Utx44CvSK g=;
+Authentication-Results: esa6.hc3370-68.iphmx.com;
+ dkim=none (message not signed) header.i=none
+X-SBRS: 4.0
+X-MesageID: 108418728
+X-Ironport-Server: esa6.hc3370-68.iphmx.com
+X-Remote-IP: 162.221.156.123
+X-Policy: $RELAYED
+IronPort-Data: A9a23:li/UNq6hV1ZED69X2GkIewxRtM7HchMFZxGqfqrLsTDasY5as4F+v
+ jQYUW2Obv+JNmbxe98gbonk9xkEucPWzNc1QQs/qSszHi5G8cbLO4+Ufxz6V8+wwm8vb2o8t
+ plDNYOQRCwQZiWBzvt4GuG59RGQ7YnRGvynTraCYnsrLeNdYH9JoQp5nOIkiZJfj9G8Agec0
+ fv/uMSaM1K+s9JOGjt8B5mr9VU+7ZwehBtC5gZlPa0S4QeE/5UoJMl3yZ+ZfiOQrrZ8RoZWd
+ 86bpJml82XQ+QsaC9/Nut4XpWVTH9Y+lSDX4pZnc/DKbipq/0Te4Y5iXBYoUm9Fii3hojxE4
+ I4lWapc6+seFvakdOw1C3G0GszlVEFM0OevzXOX6aR/w6BaGpdFLjoH4EweZOUlFuhL7W5m9
+ 9gxCm0EShq5pueKmoqiF6pXl+V+BZy+VG8fkikIITDxCP8nRdbIQrnQ5M8e1zA17ixMNa+AP
+ YxDM2MpNUmeJUQVYT/7C7pn9AusrnD5bz1frkPTvact6nLf5AdwzKLsIJzefdniqcB9xx7I+
+ juWoD6pav0cHNWOwzeUyGuJuu2VlBL3f4Y3T4KoyuE/1TV/wURMUUZLBDNXu8KRj0ekXttFJ
+ k88+ywwrLMz/kimUtn8WRKjpHeO+BUbXrJ4CuA/9USBx7TZ5y6fAW4LSCMHb8Yp3Oc/XTEw3
+ 0WFt8/oDzdo9raSTBq15rqS6D+/JyURBWsDfjMfCxsI5cH5p4M+hQ6JScxseIa3h9v5AyDtw
+ BiFqSE/g/MYistj/76g4VnNjjaop57IZg04/APaWiSi9AwRTJaseoiA+VXdq/FaI+6kokKp5
+ SZe3ZLEtaZXUM/LzXbWKAkQIF23z/ShGR+BiHplJbgky26V4iPgRpFxvRgrcS+FLf04UTPuZ
+ UbSvyZY65lSIGamYMdLXm6hNyg55fO+TIq4D5g4evILO8EsL1HfoEmCcGbKhwjQfF4QfbbT0
+ HtxWeKlFj4kBKtu11JarM9NgOZwlkjSKY4+LK0XLihLM5LEPhZ5qp9fajNii9zVC4vayDg5C
+ /4Fa6O3J+x3CYUSmBX//48JNkwtJnMmH53woME/XrfdclY+SDB7VKSBmutJl2lZc0N9x4/1E
+ oyVABcEmDITe1WdQel1VpyTQOy2BssuxZ7KFSctIUypyxAeXGpb149GL8FfVeB+pIReIQtcE
+ 6FtlzOoXq4eFVwqOl01MfHAkWCVXE721FPTYXD0PGBXklwJb1Whx+IItzDHrEEmZhdbf+Nny
+ 1F8/ms3maY+ejk=
+IronPort-HdrOrdr: A9a23:v0sOLqzlO1N3/Ee+W/DGKrPw8L1zdoMgy1knxilNoH1uA7elfq
+ WV98jzuiWbtN98YhwdcJO7Sc29qArnlKKduLNwAV7AZniFhILLFvAb0WKK+VSJcREWkNQtsJ
+ uIGJIQNDSfNzRHZInBkW6F+nsbsb+62bHtr933i11qSRhua6lm5Qs8MACGCUd7LTM2ZqbRUK
+ Dsn/Z6mw==
+X-Talos-CUID: 9a23:cdAeUmAjf/2nCvr6EytD3WxJE+QvSFzY8C3oOhL7MndIFZTAHA==
+X-Talos-MUID: 9a23:wQwRawsYw9+IUEQAfs2njSBoOdZS+oGSChoEoJkhv+zfCjxMJGLI
+X-IronPort-AV: E=Sophos;i="5.99,277,1677560400"; d="scan'208";a="108418728"
+Date: Mon, 15 May 2023 16:03:55 +0100
+To: Jason Andryuk <jandryuk@gmail.com>
+CC: Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>, 
+ <xen-devel@lists.xenproject.org>, Marek
+ =?iso-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+ <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] xen: Fix host pci for stubdom
+Message-ID: <48c55d33-aa16-4867-a477-f6df45c7d9d9@perard>
+References: <20230320000554.8219-1-jandryuk@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ae609793-7d9b-a305-d0bf-e8e9eb59d66c@nutanix.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20230320000554.8219-1-jandryuk@gmail.com>
+Received-SPF: pass client-ip=216.71.155.175;
+ envelope-from=prvs=492829998=anthony.perard@citrix.com;
+ helo=esa6.hc3370-68.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,73 +96,85 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  Anthony PERARD <anthony.perard@citrix.com>
+From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 15, 2023 at 08:08:57PM +0530, Het Gala wrote:
-> 
-> On 15/05/23 3:54 pm, Daniel P. Berrangé wrote:
-> > On Fri, May 12, 2023 at 02:32:36PM +0000, Het Gala wrote:
-> > > RDMA based transport backend for 'migrate'/'migrate-incoming' QAPIs
-> > > accept new wire protocol of MigrateAddress struct.
-> > > 
-> > > It is achived by parsing 'uri' string and storing migration parameters
-> > > required for RDMA connection into well defined InetSocketAddress struct.
-> > > 
-> > > Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> > > Signed-off-by: Het Gala <het.gala@nutanix.com>
-> > > ---
-> > >   migration/migration.c |  8 ++++----
-> > >   migration/rdma.c      | 38 ++++++++++++++++----------------------
-> > >   migration/rdma.h      |  6 ++++--
-> > >   3 files changed, 24 insertions(+), 28 deletions(-)
-> > > 
-> > > @@ -3360,10 +3346,12 @@ static int qemu_rdma_accept(RDMAContext *rdma)
-> > >                                               .private_data_len = sizeof(cap),
-> > >                                            };
-> > >       RDMAContext *rdma_return_path = NULL;
-> > > +    InetSocketAddress *isock = g_new0(InetSocketAddress, 1);
-> > >       struct rdma_cm_event *cm_event;
-> > >       struct ibv_context *verbs;
-> > >       int ret = -EINVAL;
-> > >       int idx;
-> > > +    char arr[8];
-> > >       ret = rdma_get_cm_event(rdma->channel, &cm_event);
-> > >       if (ret) {
-> > > @@ -3375,13 +3363,17 @@ static int qemu_rdma_accept(RDMAContext *rdma)
-> > >           goto err_rdma_dest_wait;
-> > >       }
-> > > +    isock->host = rdma->host;
-> > > +    sprintf(arr,"%d", rdma->port);
-> > > +    isock->port = arr;
-> > While Inet ports are 16-bit, and so 65535 fits in a char[8], nothing
-> > at the QAPI parser level is enforcing this.
-> > 
-> > IOW, someone can pass QEMU a QAPI config with port = 235252353253253253232
-> > and casue this sprintf to smash the stack.
-> > 
-> > Also this is assigning a stack variable to isock->port which
-> > expects a heap variable. qapi_free_InetSocketAddress() will
-> > call free(isock->port) which will again crash.
-> > 
-> > Just do
-> > 
-> >    g_autoptr(InetSocketAddress) isock = g_new0(InetSocketAddress, 1);
-> > 
-> >    isock->port = g_strdup_printf("%d", rdma->port);
-> Thanks Daniel. Will change this in next version of patchset. Is a protection
-> for isock->host and isock->port needed here ?
+On Sun, Mar 19, 2023 at 08:05:54PM -0400, Jason Andryuk wrote:
+> diff --git a/hw/xen/xen-host-pci-device.c b/hw/xen/xen-host-pci-device.c
+> index 8c6e9a1716..51a72b432d 100644
+> --- a/hw/xen/xen-host-pci-device.c
+> +++ b/hw/xen/xen-host-pci-device.c
+> @@ -33,13 +34,101 @@
+>  #define IORESOURCE_PREFETCH     0x00001000      /* No side effects */
+>  #define IORESOURCE_MEM_64       0x00100000
+>  
+> +/*
+> + * Non-passthrough (dom0) accesses are local PCI devices and use the given BDF
+> + * Passthough (stubdom) accesses are through PV frontend PCI device.  Those
+> + * either have a BDF identical to the backend's BFD (xen-backend.passthrough=1)
+> + * or a local virtual BDF (xen-backend.passthrough=0)
+> + *
+> + * We are always given the backend's BDF and need to lookup the appropriate
+> + * local BDF for sysfs access.
+> + */
+> +static void xen_host_pci_fill_local_addr(XenHostPCIDevice *d, Error **errp)
+> +{
+> +    unsigned int num_devs, len, i;
+> +    unsigned int domain, bus, dev, func;
+> +    char *be_path;
+> +    char path[80];
+> +    char *msg;
+> +
+> +    be_path = qemu_xen_xs_read(xenstore, 0, "device/pci/0/backend", &len);
+> +    if (!be_path) {
+> +        /*
+> +         * be_path doesn't exist, so we are dealing with a local
+> +         * (non-passthough) device.
+> +         */
+> +        d->local_domain = d->domain;
+> +        d->local_bus = d->bus;
+> +        d->local_dev = d->dev;
+> +        d->local_func = d->func;
+> +
+> +        return;
+> +    }
+> +
+> +    snprintf(path, sizeof(path), "%s/num_devs", be_path);
 
-This will be validated later by getaddrinfo() so IMHO QEMU doesn't
-need todo anythgin
+Is 80 bytes for `path` enough?
+What if the path is truncated due to the limit?
 
 
-With regards,
-Daniel
+There's xs_node_scanf() which might be useful. It does the error
+handling and call scanf(). But I'm not sure if it can be used here, in
+this file.
+
+> +    msg = qemu_xen_xs_read(xenstore, 0, path, &len);
+> +    if (!msg) {
+> +        goto err_out;
+> +    }
+> +
+> +    if (sscanf(msg, "%u", &num_devs) != 1) {
+
+libxl writes `num_devs` as "%d". So I think qemu should read a %d.
+
+
+> +        error_setg(errp, "Failed to parse %s (%s)", msg, path);
+> +        goto err_out;
+> +    }
+> +    free(msg);
+> +
+> +    for (i = 0; i < num_devs; i++) {
+> +        snprintf(path, sizeof(path), "%s/dev-%u", be_path, i);
+
+Same here, the path is written with a %d, even if that doesn't change the
+result.
+
+
+Thanks,
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Anthony PERARD
 
