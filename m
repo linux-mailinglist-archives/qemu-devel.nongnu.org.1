@@ -2,160 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FEA70315A
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 17:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C832A703166
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 17:20:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyZyD-0006bz-T2; Mon, 15 May 2023 11:18:42 -0400
+	id 1pyZzg-0007iV-GY; Mon, 15 May 2023 11:20:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1pyZxX-0006bF-ED
- for qemu-devel@nongnu.org; Mon, 15 May 2023 11:17:59 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1pyZxV-0008Jb-MS
- for qemu-devel@nongnu.org; Mon, 15 May 2023 11:17:59 -0400
-Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34FAPfAP016874; Mon, 15 May 2023 08:17:56 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=proofpoint20171006;
- bh=EGMB/1qyYX2gkYRfnqu7wgpLC38V5CJDOxGoNR5ytHE=;
- b=gcTmd7p3GYd70lpKJl2EOBe5rkV2spcLn/Nc3jiuYsuw3B9oVSyRK4BGffFpzZ4RBXW+
- qzAMVOits3xCyRJpVAXRTR3vDN7tlHQTkWktAt/LfYjRS0hVw6PG4FIZPCEsabQH7HYP
- tnES6bsHktiedopI10IXsE1tPxJd/n6TZ3m0n2hB2ZPX8Xb+LmhofmuYQnUkiVATldfT
- 31DLc468+EjYRmeeAmgB27pNu7CXWqhpUyd5v4SZcWsRKMOQ9PdQFOS+EIo6jFmpFhod
- 1GxkhyMHjqOYc0xAVUthqY1BYn7zA/3usyNpp4YvGnX+NG76HemEQISLDhAm1DrKjV8l xQ== 
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2172.outbound.protection.outlook.com [104.47.57.172])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3qj9vebtq0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 May 2023 08:17:55 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JY4AWd0+n/HKaBjAQFj1yEoVkex+D+smdBgDyswElU0YONCyrtWk/6DWeijllRubpY+iXsLUbmSxY3aszDYTDOaA7IlStlUtIG6uwgpcuiPWm5A2QJr3gRtX6Maa5jYUX7FkAJo82Q9emNLgdSPvNPvjSxkwszN+w7zvkSibbjVJd5STZnnGCFyUoqZV2Ey/h6aniuzkKokmryHExJrf+lqPAAiBRQX9oI23hme8yQKemS7NQYWvWYdTQbLWAGxB890o2in5+H7DfbJm4xSECqoWC72XnkaL2A5+r50TnfJViCuw3npL8aTT30/5Z5eJYFX7Kcw8DxgL2bamhAu3JA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EGMB/1qyYX2gkYRfnqu7wgpLC38V5CJDOxGoNR5ytHE=;
- b=WR45KLVKb/tIfex3LVElXWgY0fZF3Almp63um9lowROjPmU9Wx5YPPO6N5ro9znCHsWV9Pwdznok0JhIhHTfRg+Wjz0z/eOsWIHrumkp1P7R1q7Kco9xWqk0WLonwYhacZVp71zRzC2xfVevliNYyDL2ZpHzjbRRmLg3GIIubpWeUuJbBc5VhZKQFGdSk8JMxiPQ8yhW+FdnmA6iH510tk9bDx77xtCzHXi/gNsKNMZJvt8dMqmDo4q2O1N1HiFM7hzb0OQZUxL/EGT/EwCJ2MGs0ss0QnDX/PnY4w5sWwr6ywq61iRjY9KzGWhXlO6auQzzGh00UlVzDDiVUexF2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EGMB/1qyYX2gkYRfnqu7wgpLC38V5CJDOxGoNR5ytHE=;
- b=Qg/ipBTlV1lZgOkuIoA/KeQHudai4XhxXEWE53QAkMtBJKnm3xLfDTJCsxJ8ekMN7dtNtCaKE36ILy5zvXBTzSzNSJ/r5ZQx23LBIhyBCDMx8Z1am4/bO1GelxM0opqtW2CqePUcT338xQe3ntD8oO+1oLLilqtjRCuXJmasyHg8qX+0JLymPblsw6VSKtXhVPh2xAyw7FH+cpEfXdzSrc8qD9o267Awx1vZzsLEsJ1Xs4s9lpYz9o6vysNxiv5dYShKixDow4MmbqGck2ok5c+cRJS/X65JKpvzsnDw8+lRWHVyUWc+FO4nL29x3iQNPyGmI8JAr286Ppn0kLYopQ==
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com (2603:10b6:a03:57::18)
- by IA1PR02MB9017.namprd02.prod.outlook.com (2603:10b6:208:3ab::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.31; Mon, 15 May
- 2023 15:17:53 +0000
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::4500:569:a3d6:71c9]) by BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::4500:569:a3d6:71c9%6]) with mapi id 15.20.6387.030; Mon, 15 May 2023
- 15:17:53 +0000
-Message-ID: <ef0e47ea-4860-8842-07f4-26d6a3144631@nutanix.com>
-Date: Mon, 15 May 2023 20:47:42 +0530
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH v4 4/8] migration: converts rdma backend to accept
- MigrateAddress struct
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
- dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-References: <20230512143240.192504-1-het.gala@nutanix.com>
- <20230512143240.192504-5-het.gala@nutanix.com> <ZGIIVc83VbEMgUhB@redhat.com>
- <ae609793-7d9b-a305-d0bf-e8e9eb59d66c@nutanix.com>
- <ZGJIiJADoEOrLUVn@redhat.com>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <ZGJIiJADoEOrLUVn@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0093.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ae::20) To BYAPR02MB4343.namprd02.prod.outlook.com
- (2603:10b6:a03:57::18)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4343:EE_|IA1PR02MB9017:EE_
-X-MS-Office365-Filtering-Correlation-Id: 569f179d-db49-4692-fa14-08db55578dba
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Mux/fPQ6VwC3fj3x/8SGLbGhDKX8k7lULBL6zUgTWlADP5acdVMtlXVtPhQZrpm/z1Cx0HVpaZyX9bBWDs6WbZTKgtqfrBevI7sLcYCihUkoQYC1KEH43AikeU630b+3TlEj3Bnoq7vyWiK/SPQR/JU5UulRWA0VDNlQuClv9I6YkZaePrPRBxfLKWXkYZgjM37XiO0/ek56ICN86v66GEjn0UUDUh+MBvirvhzItIw9m1CECtRv22F9GSJCStxduBlSTZY9fVPYuNxskZAtNZfDqxJ4nzXFVqCTh+ShC9QmdNWYSL4A76xi+c6wCL8yUWw4GcS21f1oiEsEOKHQs3Jjh9VFFrypfqOngWCQ0mShmX/cZ5WW4ymBZUAqR0BuM1aPFG3G4h7Hxp6xwgdM5Tjs3lOnDMYwjuOfVdVLQ6zr4zvbvY/FRptZMBu8d3FXc1OGDnLzMre6uwjePB08rtDF+zYIDv8wg53Scw8g8mdehR3AFyGzHCO6naBcUrTIr5YiingaN3K7BNnlW5TpidiV/a7PaYbCCaPUqoTcARtyaumA9GNL5FtM82mIp9XNSko/hrREVWe1fQeOyveK9wEPs41WTzoEBfs69bi9zaB0xCoZSR/ZLGEAatBdtgxVaceOVrPs51469QNa58c0Rg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR02MB4343.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(366004)(396003)(136003)(39860400002)(346002)(451199021)(2906002)(6512007)(26005)(6506007)(53546011)(2616005)(186003)(6666004)(316002)(66946007)(66476007)(41300700001)(8676002)(8936002)(66556008)(6486002)(4326008)(31696002)(36756003)(31686004)(38100700002)(86362001)(107886003)(83380400001)(6916009)(5660300002)(44832011)(478600001)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NTk0bmZBVXFKNFJ2aE5zaUlEL2YzMHRLMlRkTUlhZjdLQ1d5eDFJcVB5ZHhC?=
- =?utf-8?B?dTYzWGJydisybmhYODhZcEM5MkZPSTFLR0tNVmdnWTVXczQ0cTA2S1NGb1la?=
- =?utf-8?B?RTAvaktPa1BkMmt5aTcvV0Fmb0RRSjVOWVM3QS9vVHhpU2pjU1QzbGZMcDJD?=
- =?utf-8?B?TlYvWTlMOUlIclFlTUVJR3ozV3dhTFdHdFFsczlwa3pxU0JMbjZCSjVyNmww?=
- =?utf-8?B?WHJReFlqVjB1UytMOGI1SW9hVDVqT3N2cDNtMHdZNWxOcUw5ZjRYSGlKSUFT?=
- =?utf-8?B?bWlESXNEWW9PeVRSSHZPbmMrZ05TU2dYUmtIa2swQzdzdGxTbGFyd1VVNlJR?=
- =?utf-8?B?RzJ0SVg5cHpRbk5jMWV4c0kzOEJhamh2T25UNk56YzhtMlVUdVVpakRyQ250?=
- =?utf-8?B?Nkd4aXVhNTVLRnFZOUE2NmtxNzFFSkRMa2RsOEFqTmhYV3o3WHUyOEJHTEQ5?=
- =?utf-8?B?aHFjeHJ5OFNVOUp2MVM1Q3RpY3VvWUNSWldmUDRjajl6R3F0cDJFV2xKTEYx?=
- =?utf-8?B?Ujg5WWFiNTF4OGdsVjAwdEFGbmY0TEluY1JMWUxRT2ZLc1VkSElHL0V2OXpn?=
- =?utf-8?B?alU0MisyRU82UitjSGNKUDdVTmhabHllUldEb0plY1oxZ3NHM2dPRW1CdnZo?=
- =?utf-8?B?cVI3TEY5dzJZUFBLUTVkRTJqbDZvc1pPb1RJdEFPSkJRZkhDWDB5eEY2YmFw?=
- =?utf-8?B?UW45WVBtV3p1L2FJNXRiOE5zTEppYU0zSEk1OHJPNVU5dDhzazBGY1V4ZjI0?=
- =?utf-8?B?a1Rqb2NmOXZQSURnN25mRzBUVEJIWnMxdlRuN3JvbWxpUkJpdVhNWGJiNC80?=
- =?utf-8?B?amdQSmVDaXZZemRjYmhzZHRWWm9vc1ZJMFpjdVJJNnBzQ2liejNzVFVibDNr?=
- =?utf-8?B?N25kcUxVSHhvN3p4YmVLVUIzajZUQnpuZkVvRWU0QlZHOG1BSXdUNVo0Wi90?=
- =?utf-8?B?RW0rcGVBTUFsRFFjcGpwN1V4N1MyVlhTTjFJUERtRWlZaVR2UjlTUVlaUE1J?=
- =?utf-8?B?RG1qVENhTWJiTmRoSVRlZFAxSDh5aWVVRWgwTFVwU2lSQmh2UmRqT0dnRmVD?=
- =?utf-8?B?SE4wbWZidU9Jdjl6VS9rQVBORlF2REFoR01qQngzV09RSDc1c1J5UnZ6NmN0?=
- =?utf-8?B?dGNMR25pUEcrOHQ4OVNQRlV6MCtDUkV5Y3o0ZmFPOXFXY3FWaVNhMGhZeFJr?=
- =?utf-8?B?T1lTUDVJcDRib3I0VmI2N3pQNi9mR0JVdEtEa1VjNXc5T1NnQ1pEU05NcEpt?=
- =?utf-8?B?U20yWFBKelpaL3ZFNVovS0hBc2M5dTNraEtxckRINUxIZHpYbVhvNmxuSVBa?=
- =?utf-8?B?cEtaTmEzMU0zZ21PUDE5QTYxZTdvZSs1elNHbDdWOEc3TmNxVDV3WmUrMy9o?=
- =?utf-8?B?SlM0OHNzTWRyMnpUQUhFQVFyaDFObmh3RzdCdTJDMmllNlJselFjS3VwSEVq?=
- =?utf-8?B?MGJOb21ZM1crM1F1azFmamFrRTNUTGRTL045d090c0RiRHhnL0h2SEsvenRJ?=
- =?utf-8?B?TFZmSFltY2ZrRnZiV25zNlFnZURiK1oxVzR5UGNLYWR0bCtzMXNJZ2tMZUNQ?=
- =?utf-8?B?bEZjeU1zN1E5aXJrSm91dFUySU15bFg4aUs1VWJ2WUEyZUJRbTBLWUN1Tnhp?=
- =?utf-8?B?SEJjL0tJaFRoYW41VkpvSm9ZTjN5WEJrUzZxeFNnRlpJWUp6ekV1cjJIT0sw?=
- =?utf-8?B?U01UN0NGQjhNNjlUK2NZWEVmUlo1R2s2MnRGUzY5VUtjRVk2d2JvU0RmU1lO?=
- =?utf-8?B?S05kOHRRZ2RTNmFONi8zQ1BiRko1cDZUWHQ2b3FWVDVjY2JEd0Z4N294NXhm?=
- =?utf-8?B?c3hqUEVLTmZwRHg5eHdLbWZhSnZqZVliUXhhd0M1ckNlYkdNbjBvRmsrK01I?=
- =?utf-8?B?TUpSbEZtTGxDMlIvblZIU1FaMEtLaEIxY2RNTDJEOWZ1N2tDWU0rK1EyOGZt?=
- =?utf-8?B?RHhxUldsc1VLTjVtNVA4TDJ0STVLRHQ1Zk1ZQVkxNnJVb0NjVmF1YlhtY0VC?=
- =?utf-8?B?bUM1aTFNNXIwZFEzWlJwQXF4bGZvM1krSWJFL29rWDM2OWNwdStxMjM1MVZw?=
- =?utf-8?B?S1k0bDF6VG9KZERnajZ0Mk9Gbzd4QjBlSk9FSWRqVFQzYXpURUJybzV6WHIz?=
- =?utf-8?Q?vy6y6OC+d6OY/4Hs7z46YVhy1?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 569f179d-db49-4692-fa14-08db55578dba
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4343.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2023 15:17:53.5307 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bRW/oVjNinp1E1l/eAEPWMHd3/9BKVkp7azeyOQsj5tQy1nKC4cctaxAH0W8lWGf3UJyPLkkcQGnGbJKsR2o9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR02MB9017
-X-Proofpoint-ORIG-GUID: mJaWxxuY99C6n0JC8J3MOs7EH0zB-Ykt
-X-Proofpoint-GUID: mJaWxxuY99C6n0JC8J3MOs7EH0zB-Ykt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-15_12,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.811, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1pyZzG-0007ZS-4i; Mon, 15 May 2023 11:19:48 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1pyZzD-00008t-7U; Mon, 15 May 2023 11:19:45 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-24decf5cc03so8798535a91.0; 
+ Mon, 15 May 2023 08:19:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1684163981; x=1686755981;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kuYcl5ovq7mHOIJNJABMIQ3RPuhAUMBwNBlArNXFCww=;
+ b=UVM0358yY2yA/skPAHOLAAnV8IDMp/LHVyePbEYZmXGC2wjPkqpnWcoL17JzBNDiEj
+ qnIZa0VVWRE2s1uAMFRM7sA1TQcEESErvmAMcxzgdrMzO0dDFIfsFQKZ5RDZDgPa1oyJ
+ yL/6xAo0MM7ak1DWlMRr3KY3X32XOLz7HcWvZKsyidZYinldFwh2z4k0ehxDbgJEOT/q
+ 7k+nuqsjepLanzQYBFy5qa5DdW/9Zw8SfaWrTKWCpMugmP+h6pEQQ/rFWtP0Dg8KMur6
+ Q4BIIGTrlcSPZLsBVqjeq1XYriPDapvShGdK6sm5E755tteGyA7RG7I801Jhf0zWkNqc
+ 3eqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684163981; x=1686755981;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=kuYcl5ovq7mHOIJNJABMIQ3RPuhAUMBwNBlArNXFCww=;
+ b=Qy14nNEynDNJmKWVKUCvGVnmn+jEBKFzktsif64nhZr1SEG8ZpkU3EZq1RY/EgGngy
+ EhtuPyTg/QuoOs69GNbT52Tv6YeKcQElDbMUzvOi13hEI6OTYVJnXlUL5B7rHt3q2Nbe
+ QhEaTQXQyaS1yNbgPd1odPOJVDe6NZSVmaCXNEJcxiWltCBfOgu9BJdI6UJZNMi1bI7u
+ FIaqyJm6GlwZSHQbsnWPb/dvgrx83M+bTnIroU+Hk2+ZPXt0Cs7CMEIV57ybNDrxKchO
+ PEil2p9OiSzxaCGWTmFUcydoaihpfok3YDpSVehvji7gT2xZPFx82fMvhIvldLg1MdA3
+ lDKg==
+X-Gm-Message-State: AC+VfDw7DF0d+DYOuQzzs7LQAvdbqCk8dLmzCGbcTsRN9eJcT0Z2vQLO
+ h8YyXbu4BJfj2tM+U12V290=
+X-Google-Smtp-Source: ACHHUZ76C5QkVRj5EyTV+WbetJ6Q5puN3iCe0JI73ibzaamA9+o2tRJvhACCPWoGu3mGSuUAtaGdXA==
+X-Received: by 2002:a17:90a:fc90:b0:24b:c580:1ab8 with SMTP id
+ ci16-20020a17090afc9000b0024bc5801ab8mr32963645pjb.40.1684163981236; 
+ Mon, 15 May 2023 08:19:41 -0700 (PDT)
+Received: from localhost ([202.168.30.146]) by smtp.gmail.com with ESMTPSA id
+ kx6-20020a17090b228600b002477dda66d2sm21942800pjb.37.2023.05.15.08.19.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 15 May 2023 08:19:40 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 May 2023 01:19:36 +1000
+Message-Id: <CSMYAXLT8B9P.1D85SFBUZQ9ZC@wheely>
+Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
+ <dbarboza@ventanamicro.com>
+Subject: Re: [PATCH v3 1/9] target/ppc: Fix width of some 32-bit SPRs
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Mark Cave-Ayland" <mark.cave-ayland@ilande.co.uk>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.14.0
+References: <20230515092655.171206-1-npiggin@gmail.com>
+ <20230515092655.171206-2-npiggin@gmail.com>
+ <4cefbbd6-6ab2-cd55-4468-4066b464c99c@ilande.co.uk>
+In-Reply-To: <4cefbbd6-6ab2-cd55-4468-4066b464c99c@ilande.co.uk>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1031.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -172,65 +92,255 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon May 15, 2023 at 10:03 PM AEST, Mark Cave-Ayland wrote:
+> On 15/05/2023 10:26, Nicholas Piggin wrote:
+>
+> > Some 32-bit SPRs are incorrectly implemented as 64-bits on 64-bit
+> > targets.
+> >=20
+> > This changes VRSAVE, DSISR, HDSISR, DAWRX0, PIDR, LPIDR, DEXCR,
+> > HDEXCR, CTRL, TSCR, MMCRH, and PMC[1-6] from to be 32-bit registers.
+> >=20
+> > This only goes by the 32/64 classification in the architecture, it
+> > does not try to implement finer details of SPR implementation (e.g.,
+> > not all bits implemented as simple read/write storage).
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> > Since v2: no change.
+> >=20
+> >   target/ppc/cpu_init.c    | 18 +++++++++---------
+> >   target/ppc/helper_regs.c |  2 +-
+> >   target/ppc/misc_helper.c |  4 ++--
+> >   target/ppc/power8-pmu.c  |  2 +-
+> >   target/ppc/translate.c   |  2 +-
+> >   5 files changed, 14 insertions(+), 14 deletions(-)
+> >=20
+> > diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> > index 0ce2e3c91d..5aa0b3f0f1 100644
+> > --- a/target/ppc/cpu_init.c
+> > +++ b/target/ppc/cpu_init.c
+> > @@ -5085,8 +5085,8 @@ static void register_book3s_altivec_sprs(CPUPPCSt=
+ate *env)
+> >       }
+> >  =20
+> >       spr_register_kvm(env, SPR_VRSAVE, "VRSAVE",
+> > -                     &spr_read_generic, &spr_write_generic,
+> > -                     &spr_read_generic, &spr_write_generic,
+> > +                     &spr_read_generic, &spr_write_generic32,
+> > +                     &spr_read_generic, &spr_write_generic32,
+> >                        KVM_REG_PPC_VRSAVE, 0x00000000);
+> >  =20
+> >   }
+> > @@ -5120,7 +5120,7 @@ static void register_book3s_207_dbg_sprs(CPUPPCSt=
+ate *env)
+> >       spr_register_kvm_hv(env, SPR_DAWRX0, "DAWRX0",
+> >                           SPR_NOACCESS, SPR_NOACCESS,
+> >                           SPR_NOACCESS, SPR_NOACCESS,
+> > -                        &spr_read_generic, &spr_write_generic,
+> > +                        &spr_read_generic, &spr_write_generic32,
+> >                           KVM_REG_PPC_DAWRX, 0x00000000);
+> >       spr_register_kvm_hv(env, SPR_CIABR, "CIABR",
+> >                           SPR_NOACCESS, SPR_NOACCESS,
+> > @@ -5376,7 +5376,7 @@ static void register_book3s_ids_sprs(CPUPPCState =
+*env)
+> >       spr_register_hv(env, SPR_TSCR, "TSCR",
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> > -                 &spr_read_generic, &spr_write_generic,
+> > +                 &spr_read_generic, &spr_write_generic32,
+> >                    0x00000000);
+> >       spr_register_hv(env, SPR_HMER, "HMER",
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> > @@ -5406,7 +5406,7 @@ static void register_book3s_ids_sprs(CPUPPCState =
+*env)
+> >       spr_register_hv(env, SPR_MMCRC, "MMCRC",
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> > -                 &spr_read_generic, &spr_write_generic,
+> > +                 &spr_read_generic, &spr_write_generic32,
+> >                    0x00000000);
+> >       spr_register_hv(env, SPR_MMCRH, "MMCRH",
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> > @@ -5441,7 +5441,7 @@ static void register_book3s_ids_sprs(CPUPPCState =
+*env)
+> >       spr_register_hv(env, SPR_HDSISR, "HDSISR",
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> > -                 &spr_read_generic, &spr_write_generic,
+> > +                 &spr_read_generic, &spr_write_generic32,
+> >                    0x00000000);
+> >       spr_register_hv(env, SPR_HRMOR, "HRMOR",
+> >                    SPR_NOACCESS, SPR_NOACCESS,
+> > @@ -5665,7 +5665,7 @@ static void register_power7_book4_sprs(CPUPPCStat=
+e *env)
+> >                        KVM_REG_PPC_ACOP, 0);
+> >       spr_register_kvm(env, SPR_BOOKS_PID, "PID",
+> >                        SPR_NOACCESS, SPR_NOACCESS,
+> > -                     &spr_read_generic, &spr_write_generic,
+> > +                     &spr_read_generic, &spr_write_generic32,
+> >                        KVM_REG_PPC_PID, 0);
+> >   #endif
+> >   }
+> > @@ -5730,7 +5730,7 @@ static void register_power10_dexcr_sprs(CPUPPCSta=
+te *env)
+> >   {
+> >       spr_register(env, SPR_DEXCR, "DEXCR",
+> >               SPR_NOACCESS, SPR_NOACCESS,
+> > -            &spr_read_generic, &spr_write_generic,
+> > +            &spr_read_generic, &spr_write_generic32,
+> >               0);
+> >  =20
+> >       spr_register(env, SPR_UDEXCR, "DEXCR",
+> > @@ -5741,7 +5741,7 @@ static void register_power10_dexcr_sprs(CPUPPCSta=
+te *env)
+> >       spr_register_hv(env, SPR_HDEXCR, "HDEXCR",
+> >               SPR_NOACCESS, SPR_NOACCESS,
+> >               SPR_NOACCESS, SPR_NOACCESS,
+> > -            &spr_read_generic, &spr_write_generic,
+> > +            &spr_read_generic, &spr_write_generic32,
+> >               0);
+> >  =20
+> >       spr_register(env, SPR_UHDEXCR, "HDEXCR",
+> > diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
+> > index 779e7db513..fb351c303f 100644
+> > --- a/target/ppc/helper_regs.c
+> > +++ b/target/ppc/helper_regs.c
+> > @@ -448,7 +448,7 @@ void register_non_embedded_sprs(CPUPPCState *env)
+> >       /* Exception processing */
+> >       spr_register_kvm(env, SPR_DSISR, "DSISR",
+> >                        SPR_NOACCESS, SPR_NOACCESS,
+> > -                     &spr_read_generic, &spr_write_generic,
+> > +                     &spr_read_generic, &spr_write_generic32,
+> >                        KVM_REG_PPC_DSISR, 0x00000000);
+> >       spr_register_kvm(env, SPR_DAR, "DAR",
+> >                        SPR_NOACCESS, SPR_NOACCESS,
+> > diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+> > index a9bc1522e2..40ddc5c08c 100644
+> > --- a/target/ppc/misc_helper.c
+> > +++ b/target/ppc/misc_helper.c
+> > @@ -190,13 +190,13 @@ void helper_store_dpdes(CPUPPCState *env, target_=
+ulong val)
+> >  =20
+> >   void helper_store_pidr(CPUPPCState *env, target_ulong val)
+> >   {
+> > -    env->spr[SPR_BOOKS_PID] =3D val;
+> > +    env->spr[SPR_BOOKS_PID] =3D (uint32_t)val;
+> >       tlb_flush(env_cpu(env));
+> >   }
+> >  =20
+> >   void helper_store_lpidr(CPUPPCState *env, target_ulong val)
+> >   {
+> > -    env->spr[SPR_LPIDR] =3D val;
+> > +    env->spr[SPR_LPIDR] =3D (uint32_t)val;
+> >  =20
+> >       /*
+> >        * We need to flush the TLB on LPID changes as we only tag HV vs
+> > diff --git a/target/ppc/power8-pmu.c b/target/ppc/power8-pmu.c
+> > index 1381072b9e..64a64865d7 100644
+> > --- a/target/ppc/power8-pmu.c
+> > +++ b/target/ppc/power8-pmu.c
+> > @@ -272,7 +272,7 @@ void helper_store_pmc(CPUPPCState *env, uint32_t sp=
+rn, uint64_t value)
+> >   {
+> >       pmu_update_cycles(env);
+> >  =20
+> > -    env->spr[sprn] =3D value;
+> > +    env->spr[sprn] =3D (uint32_t)value;
+> >  =20
+> >       pmc_update_overflow_timer(env, sprn);
+> >   }
+> > diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> > index f603f1a939..c03a6bdc9a 100644
+> > --- a/target/ppc/translate.c
+> > +++ b/target/ppc/translate.c
+> > @@ -413,7 +413,7 @@ void spr_write_generic(DisasContext *ctx, int sprn,=
+ int gprn)
+> >  =20
+> >   void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
+> >   {
+> > -    spr_write_generic(ctx, sprn, gprn);
+> > +    spr_write_generic32(ctx, sprn, gprn);
+> >  =20
+> >       /*
+> >        * SPR_CTRL writes must force a new translation block,
+>
+> Just out of curiosity, is this the same as the problem described at [1] f=
+or DECAR?
+>
+>
+> ATB,
+>
+> Mark.
+>
+> [1] https://lists.nongnu.org/archive/html/qemu-ppc/2023-03/msg00451.html
 
-On 15/05/23 8:28 pm, Daniel P. Berrangé wrote:
-> On Mon, May 15, 2023 at 08:08:57PM +0530, Het Gala wrote:
->> On 15/05/23 3:54 pm, Daniel P. Berrangé wrote:
->>> On Fri, May 12, 2023 at 02:32:36PM +0000, Het Gala wrote:
->>>> RDMA based transport backend for 'migrate'/'migrate-incoming' QAPIs
->>>> accept new wire protocol of MigrateAddress struct.
->>>>
->>>> It is achived by parsing 'uri' string and storing migration parameters
->>>> required for RDMA connection into well defined InetSocketAddress struct.
->>>>
->>>> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
->>>> Signed-off-by: Het Gala <het.gala@nutanix.com>
->>>> ---
->>>>    migration/migration.c |  8 ++++----
->>>>    migration/rdma.c      | 38 ++++++++++++++++----------------------
->>>>    migration/rdma.h      |  6 ++++--
->>>>    3 files changed, 24 insertions(+), 28 deletions(-)
->>>>
->>>> @@ -3360,10 +3346,12 @@ static int qemu_rdma_accept(RDMAContext *rdma)
->>>>                                                .private_data_len = sizeof(cap),
->>>>                                             };
->>>>        RDMAContext *rdma_return_path = NULL;
->>>> +    InetSocketAddress *isock = g_new0(InetSocketAddress, 1);
->>>>        struct rdma_cm_event *cm_event;
->>>>        struct ibv_context *verbs;
->>>>        int ret = -EINVAL;
->>>>        int idx;
->>>> +    char arr[8];
->>>>        ret = rdma_get_cm_event(rdma->channel, &cm_event);
->>>>        if (ret) {
->>>> @@ -3375,13 +3363,17 @@ static int qemu_rdma_accept(RDMAContext *rdma)
->>>>            goto err_rdma_dest_wait;
->>>>        }
->>>> +    isock->host = rdma->host;
->>>> +    sprintf(arr,"%d", rdma->port);
->>>> +    isock->port = arr;
->>> While Inet ports are 16-bit, and so 65535 fits in a char[8], nothing
->>> at the QAPI parser level is enforcing this.
->>>
->>> IOW, someone can pass QEMU a QAPI config with port = 235252353253253253232
->>> and casue this sprintf to smash the stack.
->>>
->>> Also this is assigning a stack variable to isock->port which
->>> expects a heap variable. qapi_free_InetSocketAddress() will
->>> call free(isock->port) which will again crash.
->>>
->>> Just do
->>>
->>>     g_autoptr(InetSocketAddress) isock = g_new0(InetSocketAddress, 1);
->>>
->>>     isock->port = g_strdup_printf("%d", rdma->port);
->> Thanks Daniel. Will change this in next version of patchset. Is a protection
->> for isock->host and isock->port needed here ?
-> This will be validated later by getaddrinfo() so IMHO QEMU doesn't
-> need todo anythgin
-Yes. I will keep it as it is for now. Thanks
-> With regards,
-> Daniel
-Regards,
-Het Gala
+Oh if it's a 64-bit target running in 32-bit mode, then the compiled
+code might use something like li reg,-1 to set the 0xffffffff value,
+but that gets sign extended to 64-bits. Storing that to DECAR then
+does cause it to get stored to DECR. So DECAR should use
+spr_write_generic32.
+
+But all the store_decr calculations are unsigned and DECR gets clamped
+to 32-bits, at least when reading it back. The problem seems to be the
+timer ends up getting set for a negative expire time.
+
+So storing to DECR directly seems like it would have the same problems
+as via DECAR. This should help.
+
+Thanks,
+Nick
+---
+
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index 4e816c68c7..35a1410c4d 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -794,14 +794,18 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uin=
+t64_t *nextp,
+     CPUPPCState *env =3D &cpu->env;
+     ppc_tb_t *tb_env =3D env->tb_env;
+     uint64_t now, next;
++    uint64_t unsigned_value;
++    uint64_t unsigned_decr;
+     int64_t signed_value;
+     int64_t signed_decr;
+=20
+     /* Truncate value to decr_width and sign extend for simplicity */
++    unsigned_value =3D extract64(value, 0, nr_bits);
++    unsigned_decr =3D extract64(decr, 0, nr_bits);
+     signed_value =3D sextract64(value, 0, nr_bits);
+     signed_decr =3D sextract64(decr, 0, nr_bits);
+=20
+-    trace_ppc_decr_store(nr_bits, decr, value);
++    trace_ppc_decr_store(nr_bits, unsigned_decr, unsigned_value);
+=20
+     if (kvm_enabled()) {
+         /* KVM handles decrementer exceptions, we don't need our own timer=
+ */
+@@ -821,7 +825,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint6=
+4_t *nextp,
+      * On MSB edge based DEC implementations the MSB going from 0 -> 1 tri=
+ggers
+      * an edge interrupt, so raise it here too.
+      */
+-    if ((value < 3) ||
++    if ((unsigned_value < 3) ||
+         ((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) |=
+|
+         ((tb_env->flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_value < =
+0
+           && signed_decr >=3D 0)) {
+@@ -836,7 +840,8 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint6=
+4_t *nextp,
+=20
+     /* Calculate the next timer event */
+     now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-    next =3D now + muldiv64(value, NANOSECONDS_PER_SECOND, tb_env->decr_fr=
+eq);
++    next =3D now + muldiv64(unsigned_value, NANOSECONDS_PER_SECOND,
++                          tb_env->decr_freq);
+     *nextp =3D next;
+=20
+     /* Adjust timer */
 
