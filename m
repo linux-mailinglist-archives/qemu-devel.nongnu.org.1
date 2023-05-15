@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6690C703233
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E82870324B
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:07:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyahg-00053m-1U; Mon, 15 May 2023 12:05:40 -0400
+	id 1pyahe-00051V-7u; Mon, 15 May 2023 12:05:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1pyahW-0004xA-Ui
+ id 1pyahX-0004xD-80
  for qemu-devel@nongnu.org; Mon, 15 May 2023 12:05:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1pyahU-0001yL-3u
+ id 1pyahV-00020J-1y
  for qemu-devel@nongnu.org; Mon, 15 May 2023 12:05:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684166725;
+ s=mimecast20190719; t=1684166726;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=//Vr5N3SfQof5WE5FH7PKpp0qFXqOLYU2hE6CeR8cW4=;
- b=A/aZ2w2lj5fQKkqKrW70hLHDfJUcaJRGV00r5vD5LfktfzrlAMscH8IYtFyEYKMe22A+YZ
- izSNasSwQy0XjKmxyO28d82f0Y4y6I0Q0YrpcdvbOMN3vnE9uqRlVayUrRNXy9RR4RhzWS
- uJN+mLCi74xhLYJoaLAVf1/1gKboC3s=
+ bh=t4XglBp+AArdJCAv1QMcFpgnhrNm8LqNhqaQFWT3gsg=;
+ b=In++5ciXgFQbla/D8MolzLPMMqK5isZuykyP1lVqP6TlhoFk+6+F4Y1QZDytVmRATtsF1j
+ 6+0KyCVdwQXvOdBWDBW/EYkyPbOYU2RGWz8WLlu8JKdvna5cT6VpnW3JI8AUNNIbTcSxOe
+ 8NNLPwUF7G2FPuZEAmc1XL8RUCqqWz8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-528-vqgaXlh2M7KOlEELt_PUGQ-1; Mon, 15 May 2023 12:05:21 -0400
-X-MC-Unique: vqgaXlh2M7KOlEELt_PUGQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-319-A80ktyeeMLy1Mmua3PJXTw-1; Mon, 15 May 2023 12:05:24 -0400
+X-MC-Unique: A80ktyeeMLy1Mmua3PJXTw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B3F5857FB2;
- Mon, 15 May 2023 16:05:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF2CE87DC08;
+ Mon, 15 May 2023 16:05:23 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.179])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9BE631410DD5;
- Mon, 15 May 2023 16:05:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 86909C15BA0;
+ Mon, 15 May 2023 16:05:22 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <rth@twiddle.net>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -57,25 +57,24 @@ Cc: Richard Henderson <rth@twiddle.net>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>, Fam Zheng <fam@euphon.net>,
- Sam Li <faithilikerun@gmail.com>
-Subject: [PULL v2 06/16] iotests: test new zone operations
-Date: Mon, 15 May 2023 12:04:56 -0400
-Message-Id: <20230515160506.1776883-7-stefanha@redhat.com>
+ Sam Li <faithilikerun@gmail.com>, Dmitry Fomichev <dmitry.fomichev@wdc.com>
+Subject: [PULL v2 07/16] block: add some trace events for new block layer APIs
+Date: Mon, 15 May 2023 12:04:57 -0400
+Message-Id: <20230515160506.1776883-8-stefanha@redhat.com>
 In-Reply-To: <20230515160506.1776883-1-stefanha@redhat.com>
 References: <20230515160506.1776883-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,182 +92,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sam Li <faithilikerun@gmail.com>
 
-The new block layer APIs of zoned block devices can be tested by:
-$ tests/qemu-iotests/check zoned
-Run each zone operation on a newly created null_blk device
-and see whether it outputs the same zone information.
-
 Signed-off-by: Sam Li <faithilikerun@gmail.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
 Acked-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-id: 20230508045533.175575-7-faithilikerun@gmail.com
-Message-id: 20230324090605.28361-7-faithilikerun@gmail.com
-[Adjust commit message prefix as suggested by Philippe Mathieu-Daudé
-<philmd@linaro.org>.
---Stefan]
+Message-id: 20230508045533.175575-8-faithilikerun@gmail.com
+Message-id: 20230324090605.28361-8-faithilikerun@gmail.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- tests/qemu-iotests/tests/zoned     | 89 ++++++++++++++++++++++++++++++
- tests/qemu-iotests/tests/zoned.out | 53 ++++++++++++++++++
- 2 files changed, 142 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/zoned
- create mode 100644 tests/qemu-iotests/tests/zoned.out
+ block/file-posix.c | 3 +++
+ block/trace-events | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/tests/qemu-iotests/tests/zoned b/tests/qemu-iotests/tests/zoned
-new file mode 100755
-index 0000000000..56f60616b5
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned
-@@ -0,0 +1,89 @@
-+#!/usr/bin/env bash
-+#
-+# Test zone management operations.
-+#
-+
-+seq="$(basename $0)"
-+echo "QA output created by $seq"
-+status=1 # failure is the default!
-+
-+_cleanup()
-+{
-+  _cleanup_test_img
-+  sudo -n rmmod null_blk
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+. ../common.rc
-+. ../common.filter
-+. ../common.qemu
-+
-+# This test only runs on Linux hosts with raw image files.
-+_supported_fmt raw
-+_supported_proto file
-+_supported_os Linux
-+
-+sudo -n true || \
-+    _notrun 'Password-less sudo required'
-+
-+IMG="--image-opts -n driver=host_device,filename=/dev/nullb0"
-+QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT
-+
-+echo "Testing a null_blk device:"
-+echo "case 1: if the operations work"
-+sudo -n modprobe null_blk nr_devices=1 zoned=1
-+sudo -n chmod 0666 /dev/nullb0
-+
-+echo "(1) report the first zone:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "report the first 10 zones"
-+$QEMU_IO $IMG -c "zrp 0 10"
-+echo
-+echo "report the last zone:"
-+$QEMU_IO $IMG -c "zrp 0x3e70000000 2" # 0x3e70000000 / 512 = 0x1f380000
-+echo
-+echo
-+echo "(2) opening the first zone"
-+$QEMU_IO $IMG -c "zo 0 268435456"  # 268435456 / 512 = 524288
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "opening the second zone"
-+$QEMU_IO $IMG -c "zo 268435456 268435456" #
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 268435456 1"
-+echo
-+echo "opening the last zone"
-+$QEMU_IO $IMG -c "zo 0x3e70000000 268435456"
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0x3e70000000 2"
-+echo
-+echo
-+echo "(3) closing the first zone"
-+$QEMU_IO $IMG -c "zc 0 268435456"
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "closing the last zone"
-+$QEMU_IO $IMG -c "zc 0x3e70000000 268435456"
-+echo "report after:"
-+$QEMU_IO $IMG -c "zrp 0x3e70000000 2"
-+echo
-+echo
-+echo "(4) finishing the second zone"
-+$QEMU_IO $IMG -c "zf 268435456 268435456"
-+echo "After finishing a zone:"
-+$QEMU_IO $IMG -c "zrp 268435456 1"
-+echo
-+echo
-+echo "(5) resetting the second zone"
-+$QEMU_IO $IMG -c "zrs 268435456 268435456"
-+echo "After resetting a zone:"
-+$QEMU_IO $IMG -c "zrp 268435456 1"
-+
-+# success, all done
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/zoned.out b/tests/qemu-iotests/tests/zoned.out
-new file mode 100644
-index 0000000000..b2d061da49
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned.out
-@@ -0,0 +1,53 @@
-+QA output created by zoned
-+Testing a null_blk device:
-+case 1: if the operations work
-+(1) report the first zone:
-+start: 0x0, len 0x80000, cap 0x80000, wptr 0x0, zcond:1, [type: 2]
-+
-+report the first 10 zones
-+start: 0x0, len 0x80000, cap 0x80000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x80000, len 0x80000, cap 0x80000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0x100000, len 0x80000, cap 0x80000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x180000, len 0x80000, cap 0x80000, wptr 0x180000, zcond:1, [type: 2]
-+start: 0x200000, len 0x80000, cap 0x80000, wptr 0x200000, zcond:1, [type: 2]
-+start: 0x280000, len 0x80000, cap 0x80000, wptr 0x280000, zcond:1, [type: 2]
-+start: 0x300000, len 0x80000, cap 0x80000, wptr 0x300000, zcond:1, [type: 2]
-+start: 0x380000, len 0x80000, cap 0x80000, wptr 0x380000, zcond:1, [type: 2]
-+start: 0x400000, len 0x80000, cap 0x80000, wptr 0x400000, zcond:1, [type: 2]
-+start: 0x480000, len 0x80000, cap 0x80000, wptr 0x480000, zcond:1, [type: 2]
-+
-+report the last zone:
-+start: 0x1f380000, len 0x80000, cap 0x80000, wptr 0x1f380000, zcond:1, [type: 2]
-+
-+
-+(2) opening the first zone
-+report after:
-+start: 0x0, len 0x80000, cap 0x80000, wptr 0x0, zcond:3, [type: 2]
-+
-+opening the second zone
-+report after:
-+start: 0x80000, len 0x80000, cap 0x80000, wptr 0x80000, zcond:3, [type: 2]
-+
-+opening the last zone
-+report after:
-+start: 0x1f380000, len 0x80000, cap 0x80000, wptr 0x1f380000, zcond:3, [type: 2]
-+
-+
-+(3) closing the first zone
-+report after:
-+start: 0x0, len 0x80000, cap 0x80000, wptr 0x0, zcond:1, [type: 2]
-+
-+closing the last zone
-+report after:
-+start: 0x1f380000, len 0x80000, cap 0x80000, wptr 0x1f380000, zcond:1, [type: 2]
-+
-+
-+(4) finishing the second zone
-+After finishing a zone:
-+start: 0x80000, len 0x80000, cap 0x80000, wptr 0x100000, zcond:14, [type: 2]
-+
-+
-+(5) resetting the second zone
-+After resetting a zone:
-+start: 0x80000, len 0x80000, cap 0x80000, wptr 0x80000, zcond:1, [type: 2]
-+*** done
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 9a52ad4c65..e143de8217 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -3267,6 +3267,7 @@ static int coroutine_fn raw_co_zone_report(BlockDriverState *bs, int64_t offset,
+         },
+     };
+ 
++    trace_zbd_zone_report(bs, *nr_zones, offset >> BDRV_SECTOR_BITS);
+     return raw_thread_pool_submit(handle_aiocb_zone_report, &acb);
+ }
+ #endif
+@@ -3333,6 +3334,8 @@ static int coroutine_fn raw_co_zone_mgmt(BlockDriverState *bs, BlockZoneOp op,
+         },
+     };
+ 
++    trace_zbd_zone_mgmt(bs, op_name, offset >> BDRV_SECTOR_BITS,
++                        len >> BDRV_SECTOR_BITS);
+     ret = raw_thread_pool_submit(handle_aiocb_zone_mgmt, &acb);
+     if (ret != 0) {
+         error_report("ioctl %s failed %d", op_name, ret);
+diff --git a/block/trace-events b/block/trace-events
+index 48dbf10c66..3f4e1d088a 100644
+--- a/block/trace-events
++++ b/block/trace-events
+@@ -209,6 +209,8 @@ file_FindEjectableOpticalMedia(const char *media) "Matching using %s"
+ file_setup_cdrom(const char *partition) "Using %s as optical disc"
+ file_hdev_is_sg(int type, int version) "SG device found: type=%d, version=%d"
+ file_flush_fdatasync_failed(int err) "errno %d"
++zbd_zone_report(void *bs, unsigned int nr_zones, int64_t sector) "bs %p report %d zones starting at sector offset 0x%" PRIx64 ""
++zbd_zone_mgmt(void *bs, const char *op_name, int64_t sector, int64_t len) "bs %p %s starts at sector offset 0x%" PRIx64 " over a range of 0x%" PRIx64 " sectors"
+ 
+ # ssh.c
+ sftp_error(const char *op, const char *ssh_err, int ssh_err_code, int sftp_err_code) "%s failed: %s (libssh error code: %d, sftp error code: %d)"
 -- 
 2.40.1
 
