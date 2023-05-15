@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E885970324A
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A2A703248
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:07:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyahf-00052l-BJ; Mon, 15 May 2023 12:05:39 -0400
+	id 1pyahe-00051S-4J; Mon, 15 May 2023 12:05:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1pyahV-0004x3-EH
+ id 1pyahV-0004x2-EN
  for qemu-devel@nongnu.org; Mon, 15 May 2023 12:05:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1pyahO-0001ug-Eb
- for qemu-devel@nongnu.org; Mon, 15 May 2023 12:05:25 -0400
+ id 1pyahP-0001wK-Oq
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 12:05:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684166721;
+ s=mimecast20190719; t=1684166722;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7pNBV4406RzkQiMSeQmN5tQ6SY0WnmQUdmgPQO5jOT8=;
- b=NdfKFUCc/+gR+ulK1SMWeUcBwY/TaEb2PBLY62hsX8difyHKJIhvYJXEqn+Kxm4VJ/cufE
- NtoFeH25xLMSp3UiyrGwNPs+WcxCP1F7StSY8hTvFY8KmvRjxyKTps1aUdaUcCL6rewB6p
- naKbgspzMn33EMBtMGJOHw6IUHHBNB8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fRJ5wDu/XQf+K43V/+3W2iP5sB65Uh6siY5KRijP0Jo=;
+ b=Y9VgXUx4Nm9Jue90HdMdBcQA3EcCsVJ4MhTrHILrpn3ZhEN/lonyIUYX2LneZxiph7dp/4
+ qsHa5PqqvqqpCGPVDVj3BmqpvT+0svaR0RkPDgIQ6zCrpsnb4YTxT8LrlA0i8uikx5LHWR
+ p061gfKG5A+ypwZBeUxXBBbiTmpfcl4=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-640-4Mz5LsiiN0WpNX8fd3kMaA-1; Mon, 15 May 2023 12:05:18 -0400
-X-MC-Unique: 4Mz5LsiiN0WpNX8fd3kMaA-1
+ us-mta-341-Dy2sOWFpOteCR2jJC_IbAw-1; Mon, 15 May 2023 12:05:19 -0400
+X-MC-Unique: Dy2sOWFpOteCR2jJC_IbAw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 148D087DC04;
- Mon, 15 May 2023 16:05:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 015C03C0F19A;
+ Mon, 15 May 2023 16:05:19 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.179])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7425240C2063;
- Mon, 15 May 2023 16:05:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 74BDD40C2063;
+ Mon, 15 May 2023 16:05:18 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <rth@twiddle.net>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -57,28 +57,26 @@ Cc: Richard Henderson <rth@twiddle.net>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>, Fam Zheng <fam@euphon.net>,
- Sam Li <faithilikerun@gmail.com>,
- Damien Le Moal <damien.lemoal@opensource.wdc.com>,
- Hannes Reinecke <hare@suse.de>, Dmitry Fomichev <dmitry.fomichev@wdc.com>
-Subject: [PULL v2 04/16] block/raw-format: add zone operations to pass through
- requests
-Date: Mon, 15 May 2023 12:04:54 -0400
-Message-Id: <20230515160506.1776883-5-stefanha@redhat.com>
+ Sam Li <faithilikerun@gmail.com>, Hannes Reinecke <hare@suse.de>,
+ Dmitry Fomichev <dmitry.fomichev@wdc.com>
+Subject: [PULL v2 05/16] block: add zoned BlockDriver check to block layer
+Date: Mon, 15 May 2023 12:04:55 -0400
+Message-Id: <20230515160506.1776883-6-stefanha@redhat.com>
 In-Reply-To: <20230515160506.1776883-1-stefanha@redhat.com>
 References: <20230515160506.1776883-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,61 +94,110 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sam Li <faithilikerun@gmail.com>
 
-raw-format driver usually sits on top of file-posix driver. It needs to
-pass through requests of zone commands.
+Putting zoned/non-zoned BlockDrivers on top of each other is not
+allowed.
 
 Signed-off-by: Sam Li <faithilikerun@gmail.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 Reviewed-by: Dmitry Fomichev <dmitry.fomichev@wdc.com>
 Acked-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-id: 20230508045533.175575-5-faithilikerun@gmail.com
-Message-id: 20230324090605.28361-5-faithilikerun@gmail.com
+Message-id: 20230508045533.175575-6-faithilikerun@gmail.com
+Message-id: 20230324090605.28361-6-faithilikerun@gmail.com
 [Adjust commit message prefix as suggested by Philippe Mathieu-Daudé
-<philmd@linaro.org>.
+<philmd@linaro.org> and clarify that the check is about zoned
+BlockDrivers.
 --Stefan]
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- block/raw-format.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ include/block/block_int-common.h |  5 +++++
+ block.c                          | 19 +++++++++++++++++++
+ block/file-posix.c               | 12 ++++++++++++
+ block/raw-format.c               |  1 +
+ 4 files changed, 37 insertions(+)
 
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index b2612f06ec..e6975d3933 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -137,6 +137,11 @@ struct BlockDriver {
+      */
+     bool is_format;
+ 
++    /*
++     * Set to true if the BlockDriver supports zoned children.
++     */
++    bool supports_zoned_children;
++
+     /*
+      * Drivers not implementing bdrv_parse_filename nor bdrv_open should have
+      * this field set to true, except ones that are defined only by their
+diff --git a/block.c b/block.c
+index dad9a4fa43..f04a6ad4e8 100644
+--- a/block.c
++++ b/block.c
+@@ -7982,6 +7982,25 @@ void bdrv_add_child(BlockDriverState *parent_bs, BlockDriverState *child_bs,
+         return;
+     }
+ 
++    /*
++     * Non-zoned block drivers do not follow zoned storage constraints
++     * (i.e. sequential writes to zones). Refuse mixing zoned and non-zoned
++     * drivers in a graph.
++     */
++    if (!parent_bs->drv->supports_zoned_children &&
++        child_bs->bl.zoned == BLK_Z_HM) {
++        /*
++         * The host-aware model allows zoned storage constraints and random
++         * write. Allow mixing host-aware and non-zoned drivers. Using
++         * host-aware device as a regular device.
++         */
++        error_setg(errp, "Cannot add a %s child to a %s parent",
++                   child_bs->bl.zoned == BLK_Z_HM ? "zoned" : "non-zoned",
++                   parent_bs->drv->supports_zoned_children ?
++                   "support zoned children" : "not support zoned children");
++        return;
++    }
++
+     if (!QLIST_EMPTY(&child_bs->parents)) {
+         error_setg(errp, "The node %s already has a parent",
+                    child_bs->node_name);
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 11eaa780df..9a52ad4c65 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -776,6 +776,18 @@ static int raw_open_common(BlockDriverState *bs, QDict *options,
+             goto fail;
+         }
+     }
++#ifdef CONFIG_BLKZONED
++    /*
++     * The kernel page cache does not reliably work for writes to SWR zones
++     * of zoned block device because it can not guarantee the order of writes.
++     */
++    if ((bs->bl.zoned != BLK_Z_NONE) &&
++        (!(s->open_flags & O_DIRECT))) {
++        error_setg(errp, "The driver supports zoned devices, and it requires "
++                         "cache.direct=on, which was not specified.");
++        return -EINVAL; /* No host kernel page cache */
++    }
++#endif
+ 
+     if (S_ISBLK(st.st_mode)) {
+ #ifdef __linux__
 diff --git a/block/raw-format.c b/block/raw-format.c
-index fd9e61f58e..6c11b7235f 100644
+index 6c11b7235f..bbb644cd95 100644
 --- a/block/raw-format.c
 +++ b/block/raw-format.c
-@@ -317,6 +317,21 @@ raw_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
-     return bdrv_co_pdiscard(bs->file, offset, bytes);
- }
- 
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_zone_report(BlockDriverState *bs, int64_t offset,
-+                   unsigned int *nr_zones,
-+                   BlockZoneDescriptor *zones)
-+{
-+    return bdrv_co_zone_report(bs->file->bs, offset, nr_zones, zones);
-+}
-+
-+static int coroutine_fn GRAPH_RDLOCK
-+raw_co_zone_mgmt(BlockDriverState *bs, BlockZoneOp op,
-+                 int64_t offset, int64_t len)
-+{
-+    return bdrv_co_zone_mgmt(bs->file->bs, op, offset, len);
-+}
-+
- static int64_t coroutine_fn GRAPH_RDLOCK
- raw_co_getlength(BlockDriverState *bs)
- {
-@@ -619,6 +634,8 @@ BlockDriver bdrv_raw = {
-     .bdrv_co_pwritev      = &raw_co_pwritev,
-     .bdrv_co_pwrite_zeroes = &raw_co_pwrite_zeroes,
-     .bdrv_co_pdiscard     = &raw_co_pdiscard,
-+    .bdrv_co_zone_report  = &raw_co_zone_report,
-+    .bdrv_co_zone_mgmt  = &raw_co_zone_mgmt,
-     .bdrv_co_block_status = &raw_co_block_status,
-     .bdrv_co_copy_range_from = &raw_co_copy_range_from,
-     .bdrv_co_copy_range_to  = &raw_co_copy_range_to,
+@@ -623,6 +623,7 @@ static void raw_child_perm(BlockDriverState *bs, BdrvChild *c,
+ BlockDriver bdrv_raw = {
+     .format_name          = "raw",
+     .instance_size        = sizeof(BDRVRawState),
++    .supports_zoned_children = true,
+     .bdrv_probe           = &raw_probe,
+     .bdrv_reopen_prepare  = &raw_reopen_prepare,
+     .bdrv_reopen_commit   = &raw_reopen_commit,
 -- 
 2.40.1
 
