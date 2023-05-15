@@ -2,67 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781D870312E
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA3D70312F
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 17:12:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyZr2-00026R-4y; Mon, 15 May 2023 11:11:16 -0400
+	id 1pyZre-0002io-T3; Mon, 15 May 2023 11:11:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pyZqz-00025L-Mo
- for qemu-devel@nongnu.org; Mon, 15 May 2023 11:11:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pyZqy-0006dQ-Bf
- for qemu-devel@nongnu.org; Mon, 15 May 2023 11:11:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684163471;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=EANE680KCQPcbbJzoMDcabCOGmn3aOXht0lVvwmHAQU=;
- b=P28y8KPej5VwM19KXf7FSRGwHAramXYY208bnjY2+xXgXNJlttAEJLQNMyaYa0N4Ze7pV2
- tx1MUJCKtNK54Hg6LbAz2DyOtlp5KyAWPq7ZTSz0uoR66dhjw8arWUKgGoS/PtwpaN/rgC
- 2WDyVZkfGXuZIPb0UERRq+0fbOI22nA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-517-0Gdtwye0PEyNjdAKD8Wjwg-1; Mon, 15 May 2023 11:11:06 -0400
-X-MC-Unique: 0Gdtwye0PEyNjdAKD8Wjwg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C97280B2BB;
- Mon, 15 May 2023 15:11:05 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 77EC4492B00;
- Mon, 15 May 2023 15:11:05 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8ADE021E6806; Mon, 15 May 2023 17:11:04 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: atar4qemu@gmail.com, mark.cave-ayland@ilande.co.uk,
- =?UTF-8?q?Jakub=20Jerm=C3=A1=C5=99?= <jakub@jermar.eu>,
- qemu-stable@nongnu.org
-Subject: [PATCH] Revert "hw/sparc64/niagara: Use blk_name() instead of
- open-coding it"
-Date: Mon, 15 May 2023 17:11:04 +0200
-Message-Id: <20230515151104.1350155-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1pyZrc-0002iT-QU
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 11:11:52 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1pyZra-0006li-Qh
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 11:11:52 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3062b101ae1so8423361f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 15 May 2023 08:11:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684163509; x=1686755509;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wldi7SZBf0ZVtxp2Y7J/5g3LhFRoQE7xPIC3ZwsnZBA=;
+ b=QL/EzOwngUQ3w3/kY0LPuuHUxVm04b04IA3Vqsgi1Fl6MHyFscBasKVDCiZEPxw99e
+ sXTo4tearh0hxCDo3jpbPt01EI8O8uFoNT4fJbXHsBQf+iWAGQT5KYvJ143+RoPs7YdI
+ MaK0IvFRGztEGBgL84rdca3Rt70Pn1gtnbmdmm5IkJ2LWW8lFZZqoB4YEeiR+EcSBALg
+ JddIaAGaZT0HVH6YgvkNsfL3g9D7pUNxYaaVBx+u7qpPQ/RAEV3QO/yh+U6SaTIorCJG
+ SugpXAxpehx6THQ/aLhh8sgirMtKXRl69ocj3FjwcMdsjqYVfCAedIqcsVsy4UxcNCam
+ XiaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684163509; x=1686755509;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wldi7SZBf0ZVtxp2Y7J/5g3LhFRoQE7xPIC3ZwsnZBA=;
+ b=aLjRCYDCYs2nw/aWjud4haB9WmQf+fEDSJVCiYJ3HC6x0D2WvVKgvz3k6+ls3GrJkM
+ 4IhdfWNfDUYEcZusLFoM0v9Jz4P+x000+THc8K4ePgPDelbquhpsrZT2jHfyU+eDo954
+ T8StI474jHVASGE1XazunQNKldeQymhkUT5VInE6gqsxf7qXnZiQohssjT0PLoe7XMCf
+ X3Np6d2gNnNCEJYrGOUYIL/50cff3uFOl8l0rOcWHrCa+31+TigxeQ2pnrBGIuVH58lU
+ h14ZqPEb4wvfZ4xXn/jcsTlxXCkfGO6UrpmXTG36BBbDTImfJrs/N+AnF3neeGM3QagX
+ y1UQ==
+X-Gm-Message-State: AC+VfDzkN7fJdbhINmnLoTFRFf3xn0hoUeB+BAfKUy52mMcQOLlnDTok
+ d7M3a+ktVMEIsFpPJJDjGq/HCg==
+X-Google-Smtp-Source: ACHHUZ55UR8NWh8ySDiClBucg2yohP0sTWjC0+nwVYjNHhvRvCz2w0rQPDMC6B6SUYQOdbCM+/NgaQ==
+X-Received: by 2002:adf:ea85:0:b0:307:834f:7159 with SMTP id
+ s5-20020adfea85000000b00307834f7159mr25273036wrm.4.1684163509207; 
+ Mon, 15 May 2023 08:11:49 -0700 (PDT)
+Received: from [192.168.30.216] ([81.0.6.76]) by smtp.gmail.com with ESMTPSA id
+ h4-20020adff4c4000000b003078bb639bdsm34225wrp.68.2023.05.15.08.11.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 15 May 2023 08:11:48 -0700 (PDT)
+Message-ID: <38957cc8-4f57-167b-2ad3-35a7dc0af0f0@linaro.org>
+Date: Mon, 15 May 2023 17:11:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.1
+Subject: Re: [PATCH] Maintainers: add myself as reviewer for sbsa-ref
+Content-Language: en-US
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230515143753.365591-1-marcin.juszkiewicz@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230515143753.365591-1-marcin.juszkiewicz@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.811,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,45 +92,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 1881f336a33a8a99cb17ab1c57ed953682e8e107.
+On 15/5/23 16:37, Marcin Juszkiewicz wrote:
+> At Linaro I work on sbsa-ref, know direction it goes.
+> 
+> May not get code details each time.
+> 
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 
-This commit breaks "-drive if=pflash,readonly=on,file=image.iso".  It
-claims to merely replace an open-coded version of blk_name() by a
-call, but that's not the case.  Sorry for the inconvenience!
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Reported-by: Jakub Jermář <jakub@jermar.eu>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- hw/sparc64/niagara.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/hw/sparc64/niagara.c b/hw/sparc64/niagara.c
-index 6725cc61fd..ab3c4ec346 100644
---- a/hw/sparc64/niagara.c
-+++ b/hw/sparc64/niagara.c
-@@ -23,6 +23,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "block/block_int-common.h"
- #include "qemu/units.h"
- #include "cpu.h"
- #include "hw/boards.h"
-@@ -143,9 +144,10 @@ static void niagara_init(MachineState *machine)
-             memory_region_add_subregion(get_system_memory(),
-                                         NIAGARA_VDISK_BASE, &s->vdisk_ram);
-             dinfo->is_default = 1;
--            rom_add_file_fixed(blk_name(blk), NIAGARA_VDISK_BASE, -1);
-+            rom_add_file_fixed(blk_bs(blk)->filename, NIAGARA_VDISK_BASE, -1);
-         } else {
--            error_report("could not load ram disk '%s'", blk_name(blk));
-+            error_report("could not load ram disk '%s'",
-+                         blk_bs(blk)->filename);
-             exit(1);
-         }
-     }
--- 
-2.39.2
 
 
