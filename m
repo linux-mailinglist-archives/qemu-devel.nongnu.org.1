@@ -2,98 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7F0703083
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 16:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7663670308D
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 16:50:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyZTa-0005UN-CW; Mon, 15 May 2023 10:47:02 -0400
+	id 1pyZVu-0007qh-Nc; Mon, 15 May 2023 10:49:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pyZTT-0005OK-If
- for qemu-devel@nongnu.org; Mon, 15 May 2023 10:46:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pyZTR-0000Ic-Jo
- for qemu-devel@nongnu.org; Mon, 15 May 2023 10:46:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684162012;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8eYpI1k425YxQ9UcEiblzAPI8OJZf/BFrlHagvmmPOw=;
- b=b5i1xmoiGb5o+jeAemhjA9e6SayAVfFgxwHEZWKreZP4qlPYfzTte6c8SNOOvVSnpZVCxR
- TmAJwGlqj1C/qjNcQvkcFJMKaODulVnBdYAyjT4T5z7N8e04ETINSrXjAW7eizyL9Ekq9c
- lcAx/oiZRz9nMOm/79TH4uCWL84cjKQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-625-FjW90b5dO6Gg1DLXpp_-ig-1; Mon, 15 May 2023 10:46:50 -0400
-X-MC-Unique: FjW90b5dO6Gg1DLXpp_-ig-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3078df8ae31so6001485f8f.0
- for <qemu-devel@nongnu.org>; Mon, 15 May 2023 07:46:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tmaillart@freebox.fr>)
+ id 1pyZVr-0007jp-I1
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 10:49:24 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tmaillart@freebox.fr>)
+ id 1pyZVp-0000yS-2z
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 10:49:23 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-50bd2d7ba74so112292724a12.1
+ for <qemu-devel@nongnu.org>; Mon, 15 May 2023 07:49:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=freebox-fr.20221208.gappssmtp.com; s=20221208; t=1684162158; x=1686754158;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Nju3Jftg/AVDDi6UwK1+X3zvy7gPm/PrdljsjoeCPhY=;
+ b=TYBg8v+702gMTkYChpm0S0GuGZ10+Nqr0TSrJpoa0GUMRlFPZjh5gJ0xAd7rGGDrE2
+ GgI7xT55bzlqQlOF1zwsdko1R2tWGrSUNNrl9ut3BxZ4e2XFtHYlcgrtDs6Pd3/3Quap
+ yI9v3Zmzx+94eA0OoO6wg1DRsMat3Zxh3BdUR7d3K5RmsPDhG8t8ugeGyMsGaUL+k6mh
+ rM0QGJRQ9RPKyH6wTa31qnZfMiHQlMihMc8RBzs2hHeECUj6sbxtEkB8QWYX620eDIsY
+ NKmahju1HpvxDT/F2LXwl/Otkrpenp8B8xQjEeuU+DojzvtzG8dRNzQhkeXUTqFf+9+b
+ E0sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684162009; x=1686754009;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8eYpI1k425YxQ9UcEiblzAPI8OJZf/BFrlHagvmmPOw=;
- b=VVPSyJW2SiuSDrLudMsKadfBygfTY2jn+F3XWPHG7Wpmy7mvWJXK5GPl5qWyxiyRoQ
- +VRVeOxU5ApIz6cZJI3XuZEHJ1WyLwKD3TClUghLYiUbV56CWEl7FTXXMuztHviOoEAv
- 1SDadnCywIB2WFBynPeCiBTU0rKtZjBh9fDE9TDC6n+mw0sIjKqiMra7Qgngibhh/5Vy
- bODZNYvEO4CXyNmGIJxp17xgCRmVtNInDGDGYy9UIZJKqurH8ErWUk5cwgbfODKGqqYD
- oSACJLINvofU8hSMHOzj2bRfPyfz5qFLkAxNSuWRlKlj5zjw5sV6WESiqhNoBwaS3arv
- q9Lg==
-X-Gm-Message-State: AC+VfDwdyxTMsyaS/uBu6uJLxJCSB0dLf8dPPZrvgHCFXWkqcEurMJXK
- Cr2uhixkwOfiezBhBo406luCqbb84/g7g+WAEcHbdMpLWVrInhMigSyOEnMjFVSxyj0iKY3xWJg
- bhvQh+gnSNiIjnsA=
-X-Received: by 2002:adf:e547:0:b0:2e4:bfa0:8c30 with SMTP id
- z7-20020adfe547000000b002e4bfa08c30mr25566316wrm.47.1684162009488; 
- Mon, 15 May 2023 07:46:49 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5gACjbOfd6ff2/ByGOqZzSJzUkHDdzoeVgttoPzt76v0jjCAouZFEZ87LZz6HbF/MNSA63dA==
-X-Received: by 2002:adf:e547:0:b0:2e4:bfa0:8c30 with SMTP id
- z7-20020adfe547000000b002e4bfa08c30mr25566296wrm.47.1684162009155; 
- Mon, 15 May 2023 07:46:49 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- b12-20020adfee8c000000b00304832cd960sm22120wro.10.2023.05.15.07.46.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 May 2023 07:46:48 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org,
- prerna.saxena@nutanix.com,  dgilbert@redhat.com,  pbonzini@redhat.com,
- armbru@redhat.com,  eblake@redhat.com,  manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-Subject: Re: [PATCH v4 3/8] migration: converts socket backend to accept
- MigrateAddress struct
-In-Reply-To: <71658ac2-6aa9-cde3-0eb9-82dae3c7ed0b@nutanix.com> (Het Gala's
- message of "Mon, 15 May 2023 19:52:54 +0530")
-References: <20230512143240.192504-1-het.gala@nutanix.com>
- <20230512143240.192504-4-het.gala@nutanix.com>
- <ZGIGxf5WaHwasY1p@redhat.com>
- <71658ac2-6aa9-cde3-0eb9-82dae3c7ed0b@nutanix.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Mon, 15 May 2023 16:46:47 +0200
-Message-ID: <87wn19y7mw.fsf@secure.mitica>
+ d=1e100.net; s=20221208; t=1684162158; x=1686754158;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Nju3Jftg/AVDDi6UwK1+X3zvy7gPm/PrdljsjoeCPhY=;
+ b=UCOd2IGS7RBXojfHEuC49jYjfXQBWRkB1SwmlLhK1CxvBvSId2CQ2kWogyZw1QWY3c
+ U9NwDdkQb6EDROOE8H559zWqw7OSrBi9pzAczJS+gNdi3WgJTeSEPvOiGxQ/Y0v654Dv
+ DoYxRpn3LedMKI5zfBrP/CFAH6UCCThItzBFLjCvjXL6OIJP37WpF9PfeQiJovOgNbuD
+ DQiwGMGJpYgMikXFojJtHwCMLXE4MUYqyLU49r5GGI/aEOBf7uuAMpO2NgQ593bJmmi2
+ 50QkV4GxHgVvag804l8ixtCw3UG/jSc4MSpe1kpjQ+9njFC2quGpvJV5lJZnStV7u+fL
+ gpLQ==
+X-Gm-Message-State: AC+VfDzzR1N9TZYJBrQIM3VnW4ddzZDAo2jekz/y0y5zU8V7oGnrmhPt
+ nI3NSWtoJjrGhZP8EeJWaw+YyXt0u2bcUUqrf0J2tA==
+X-Google-Smtp-Source: ACHHUZ4hpWx3LVyPvMZs7vnGRlPAn1XySDqNP4EtXHiIqlA7D/YZyGnlsz/KbOEf++tsXtO40efjoLx6nL98sVrHmmg=
+X-Received: by 2002:a17:907:1691:b0:94e:b3a1:a3d5 with SMTP id
+ hc17-20020a170907169100b0094eb3a1a3d5mr31555504ejc.21.1684162158631; Mon, 15
+ May 2023 07:49:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20230515135823.382388-1-pbonzini@redhat.com>
+In-Reply-To: <20230515135823.382388-1-pbonzini@redhat.com>
+From: =?UTF-8?Q?Th=C3=A9o_Maillart?= <tmaillart@freebox.fr>
+Date: Mon, 15 May 2023 16:49:07 +0200
+Message-ID: <CANDNypxvFYQSeXyFg=wqqHNpghoAoU=FtJYMpZt5QzbXLJ6=jw@mail.gmail.com>
+Subject: Re: [PATCH] scsi-generic: fix buffer overflow on block limits inquiry
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=tmaillart@freebox.fr; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,110 +83,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> wrote:
-> On 15/05/23 3:47 pm, Daniel P. Berrang=C3=A9 wrote:
->> On Fri, May 12, 2023 at 02:32:35PM +0000, Het Gala wrote:
->>> Socket transport backend for 'migrate'/'migrate-incoming' QAPIs accept
->>> new wire protocol of MigrateAddress struct.
->>>
->>> It is achived by parsing 'uri' string and storing migration parameters
->>> required for socket connection into well defined SocketAddress struct.
->>>
->>> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
->>> Signed-off-by: Het Gala <het.gala@nutanix.com>
->>> ---
->>>   migration/exec.c      |  4 ++--
->>>   migration/exec.h      |  4 ++++
->>>   migration/migration.c | 44 +++++++++++++++++++++++++++++++------------
->>>   migration/socket.c    | 34 +++++----------------------------
->>>   migration/socket.h    |  7 ++++---
->>>   5 files changed, 47 insertions(+), 46 deletions(-)
->>>
->>> diff --git a/migration/exec.c b/migration/exec.c
->>> index 2bf882bbe1..c4a3293246 100644
->>> --- a/migration/exec.c
->>> +++ b/migration/exec.c
->>> @@ -27,7 +27,6 @@
->>>   #include "qemu/cutils.h"
->>>     #ifdef WIN32
->>> -const char *exec_get_cmd_path(void);
->>>   const char *exec_get_cmd_path(void)
-> Even this, I will shift it to the 2nd patch, where I need to move
-> exec_get_cmd_path() out accross other file (migration.c).
+From my perspective r->buflen can be more than 16 bytes, The Block limits V=
+PD
+page length is 0x3c (paragraph 5.4.5 page 475 from SCSI Commands Reference
+Manual, Rev. J).
 
-great.
-
->>>   {
->>>       g_autofree char *detected_path =3D g_new(char, MAX_PATH);
->>> @@ -40,7 +39,8 @@ const char *exec_get_cmd_path(void)
->>>   }
->>>   #endif
->>>   -void exec_start_outgoing_migration(MigrationState *s, const char
->>> *command, Error **errp)
->>> +void exec_start_outgoing_migration(MigrationState *s, const char *comm=
-and,
->>> +                                   Error **errp)
->>>   {
->>>       QIOChannel *ioc;
-> Sure, Juan. Will change this in the 2nd patch itself instead of
-> here. I am not very convinved why should we have a different patch all
-> together for this, because we are just using this code outside this
-> file in my opinion? But if you still think so, I can make a different
-> patch for that.
-
-It is up to you.
-
-
-> Juan, I get your point. But I think, we won't be needing local_err at
-> all, if I use g_autoptr for 'channel' and 'saddr' is a part of
-> 'channel'. Let me have a v2 patchset and if it is still not
-> convinving, we can have a discussion on this.
->> THis leaks 'channel', and free's 'saddr' which actually  belongs
->> to channel.
->>
->> With my comments on the previous patch suggesting g_autoptr for
->> 'channel', we don't need any free calls for 'saddr' or 'channel'.
+On Mon, May 15, 2023 at 3:58=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
 >
-> Right. With g_autoptr used for freeing 'channel' in last patch, we
-> wont have to worry about freeing 'saddr' at all. Thanks Daniel
+> Using linux 6.x guest, at boot time, an inquiry on a scsi-generic
+> device makes qemu crash.  This is caused by a buffer overflow when
+> scsi-generic patches the block limits VPD page.
 >
-> if (local_err) {
-> =C2=A0=C2=A0=C2=A0 qapi_free_SocketAddress(saddr);
-> =C2=A0=C2=A0=C2=A0 error_propagate(errp, local_err);
-> =C2=A0=C2=A0=C2=A0 return;
-> }
-> And after changing the position for assigning 'saddr' and using
-> g_autoptr for 'channel' I believe we can get rid of 'local_error'
-> variable too and replace it with 'errp'. Please suggest if I am
-> missing something here. TIA!
+> Do the operations on a temporary on-stack buffer that is guaranteed
+> to be large enough.
+>
+> Reported-by: Th=C3=A9o Maillart <tmaillart@freebox.fr>
+> Analyzed-by: Th=C3=A9o Maillart <tmaillart@freebox.fr>
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  hw/scsi/scsi-generic.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+>
+> diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
+> index ac9fa662b4e3..373fab0a2a61 100644
+> --- a/hw/scsi/scsi-generic.c
+> +++ b/hw/scsi/scsi-generic.c
+> @@ -191,12 +191,15 @@ static int scsi_handle_inquiry_reply(SCSIGenericReq=
+ *r, SCSIDevice *s, int len)
+>      if ((s->type =3D=3D TYPE_DISK || s->type =3D=3D TYPE_ZBC) &&
+>          (r->req.cmd.buf[1] & 0x01)) {
+>          page =3D r->req.cmd.buf[2];
+> -        if (page =3D=3D 0xb0) {
+> +        if (page =3D=3D 0xb0 && r->buflen >=3D 8) {
 
-great.  That is much better.
+r->buflen > 8 because if r->buflen =3D=3D 8, the final memcpy will be vain =
+?
 
->>>   -void socket_start_outgoing_migration(MigrationState *s,
->>> -                                     const char *str,
->>> -                                     Error **errp)
->>> -{
->>> -    Error *err =3D NULL;
->>> -    SocketAddress *saddr =3D socket_parse(str, &err);
->>> -    if (!err) {
->>> -        socket_start_outgoing_migration_internal(s, saddr, &err);
->>> -    }
->>> -    error_propagate(errp, err);
->>> -}
->>> -
-> Actually Juan. I don't need this function at all, because parsing of
-> uri into socketAddress using socket_parse is already done. So there is
-> no use of having this function in the first place, so I decided to
-> delete this fucntion all together. Same with incoming function.
+> +            uint8_t buf[16] =3D {};
+>              uint64_t max_transfer =3D calculate_max_transfer(s);
+> -            stl_be_p(&r->buf[8], max_transfer);
+> -            /* Also take care of the opt xfer len. */
+> -            stl_be_p(&r->buf[12],
+> -                    MIN_NON_ZERO(max_transfer, ldl_be_p(&r->buf[12])));
+> +
+> +            memcpy(buf, r->buf, r->buflen);
 
-What I mean is that this code was already there.  And it was doing it
-wrong.  The parts that I corrected you were using this pattern, chcking
-that err was NULL, intsead of cheking that saddr is NULL.
+Should be memcpy(buf, r->buf, MIN(r->buflen, 16)); ?
 
-Later, Juan.
+> +            stl_be_p(&buf[8], max_transfer);
+> +            stl_be_p(&buf[12], MIN_NON_ZERO(max_transfer, ldl_be_p(&buf[=
+12])));
+> +            memcpy(r->buf + 8, buf + 8, r->buflen - 8);
 
+Idem memcpy(r->buf + 8, buf + 8, MIN(r->buflen - 8, 8)); ?
+
+> +
+>          } else if (s->needs_vpd_bl_emulation && page =3D=3D 0x00 && r->b=
+uflen >=3D 4) {
+>              /*
+>               * Now we're capable of supplying the VPD Block Limits
+> --
+> 2.40.1
+>
 
