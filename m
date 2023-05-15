@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BCD703F6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 23:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA72704165
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 01:26:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyfWg-0007YN-7U; Mon, 15 May 2023 17:14:38 -0400
+	id 1pyhYp-0006ud-LY; Mon, 15 May 2023 19:24:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pyfWb-0007Y8-Kt
- for qemu-devel@nongnu.org; Mon, 15 May 2023 17:14:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pyfWa-0004NS-46
- for qemu-devel@nongnu.org; Mon, 15 May 2023 17:14:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684185270;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8HdHnQybcSxHrUD+D7wdF13Kxj6juAgcy2F3yicFs6A=;
- b=KJ3wmgNM8JXmLsfIAz//tEHSpyie5lVUA0WBPOf6QBf2Bfutp6V3MGFnJQATGEpbFWJuwh
- 8D9vHFtjSW04cp3ivQSpzn6lGNmpSuj6BB6ELEuJv/2RMvPCEN8xEd0lSZKGGFIhNyLWWa
- 33EIbfLcZ4tjGLyb1q1suBV2K+ubTHs=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-rri_AjXgNA25mVJoJj9DUQ-1; Mon, 15 May 2023 17:14:29 -0400
-X-MC-Unique: rri_AjXgNA25mVJoJj9DUQ-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-643a18db9efso7100774b3a.0
- for <qemu-devel@nongnu.org>; Mon, 15 May 2023 14:14:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pyhYn-0006u6-Ic
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 19:24:57 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pyhYj-0001eD-UM
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 19:24:57 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6434e65d808so14191632b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 15 May 2023 16:24:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684193092; x=1686785092;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ErmvmWZRvra71DStvOlkrRkcQHRr4QERu5Rb/NcH9Ek=;
+ b=KwV1gm05spJzW9sPKWzgxiHq4Sf2tcNqz7PbleaFwreHfhTa9Etrttn9LliC5TWOlP
+ kT4SOfO38ld9cSCkOHSIKaeEAAvnIRmXHWzy2h2xxU1OKnKgiYMb+gdcM9mymkzmD4d7
+ nLxWqR+rZs0DvlNG6WlHT6x1w26yLxTXIt/m6O051H2ZmS46MhVVQfSs4N/HTcWF6Ing
+ AV6ZNbdCrPbiTxc+JojyHq13sT4Y90gEkJWYEO5UBdAp74OyMuIYiBJExf7BOcnZBu79
+ prPJSpFvyx9/f3vPW4+fxdw3c1EkY4srzBCyUAACoiYn3HSzpPZzoXwjV4ogFSIGcD7t
+ YFmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684185268; x=1686777268;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8HdHnQybcSxHrUD+D7wdF13Kxj6juAgcy2F3yicFs6A=;
- b=W/TNwtBu2GN4EvDH/jdgvvT6Q59RpV5F1gFP7/bzkPmqPsUXSggo1BVfDMcpqWr1Lf
- jrok57oGxPBX3Sgkc1LPPQTtIRNrvCW1GmaF2DYVE+abvaok3oLw7Jy2/9H+5P0gYMMv
- fXFI1z26hXTkqBRZhiG7BC60vPEQeb/hkbQqkSowI8MZyY37/Ll4WI5xxQN92me/GfbH
- i+ocf5JuAzE3UsRCJlLZ3Em/GspaM5PZnPfiX9XaQKLiSaED7HUZuqTWQF6HSaoWeYAC
- U3DpsvvVwiOIm6Q0VA4jHXkrILH5xEjSDqclnIUssceftLeTx4f88AE17LGN7241mmuI
- NLiQ==
-X-Gm-Message-State: AC+VfDy1mdygVy2CcdrU7W59x+dLpiPizU1zyGD7DItG+0H45a2Nh1BY
- qTaVcDwF1bzjkRZ04MuYnqWcG+wppWCLYl1spjKdE1aAY02IIjWGBVQqQPbGAlNqd6f6WXOMCeL
- RkSB/1To43T/BiFPo5ELjlDDo1jzlq1k=
-X-Received: by 2002:a05:6a00:1390:b0:646:3162:31a2 with SMTP id
- t16-20020a056a00139000b00646316231a2mr37365420pfg.17.1684185268605; 
- Mon, 15 May 2023 14:14:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4vFqKausuEC+c8OLrCofAOS+tM7/GOepsBqCi59RPxaKTUC1PixJjNoSJDVECV3uewytODaKqQP/Hac9RxLwU=
-X-Received: by 2002:a05:6a00:1390:b0:646:3162:31a2 with SMTP id
- t16-20020a056a00139000b00646316231a2mr37365385pfg.17.1684185268149; Mon, 15
- May 2023 14:14:28 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684193092; x=1686785092;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ErmvmWZRvra71DStvOlkrRkcQHRr4QERu5Rb/NcH9Ek=;
+ b=Y9Ued/c6aOW6JJtcmiNM8p75q73221IGsgOfXcYe02WNvX4og9T0BF15wkhBmJ2NhA
+ 1VUaCdMu1YqaAt0db4T0LTEpnH3j+dNM8zCufD8BcPANegFgc0XaXPb3llNadwrRYddp
+ WiScduWzez245hS9mLRZUpbdSLaY0RQytDw7KHIaJGYclY2bpg7EEgeGcLKEKSugEygM
+ dtG9Pr+iLICSLWJJcc04RDfxqGwEb8+cdpKNaHG3/aJfKJeGJR8Bn2kN6sf8xszHl1+u
+ omJ9QRvCwWMSbvF2SiNhRLjKEhEaHxaLlX0y5CqmdMkwRadiZTqynQYUf0gp1b0wg/Dp
+ eCoA==
+X-Gm-Message-State: AC+VfDxgGkVxWFgcgfI0b8qcCoPraJBwWdZOEiPVLSVSeYQb/9Nfiiwv
+ Kll2EYrycSS8Epu2kSI2Nub9RQ==
+X-Google-Smtp-Source: ACHHUZ6aVLeCz8/8NT9MndLZRdE0l1uYcSLZSC6h+BL9CvA4LB4RhPnFXx06L8Lr5uJdtyHpwOGerA==
+X-Received: by 2002:a05:6a00:a21:b0:62a:d752:acc5 with SMTP id
+ p33-20020a056a000a2100b0062ad752acc5mr48912601pfh.32.1684193092114; 
+ Mon, 15 May 2023 16:24:52 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:9902:96ac:8d8c:4366?
+ ([2602:ae:1598:4c01:9902:96ac:8d8c:4366])
+ by smtp.gmail.com with ESMTPSA id
+ r19-20020a62e413000000b0063799398eb9sm12285075pfh.58.2023.05.15.16.24.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 15 May 2023 16:24:51 -0700 (PDT)
+Message-ID: <9b20442b-72de-7323-ca0b-c66e49a4c4d8@linaro.org>
+Date: Mon, 15 May 2023 16:24:49 -0700
 MIME-Version: 1.0
-References: <20230320105404.637661-1-berrange@redhat.com>
- <00341422-35d7-7091-5be4-808e1431f113@yandex-team.ru>
- <CAFn=p-bFgZYJO5bMbAXXJkdtov5CiEC2YAx6AN_DOF0B_i+OKg@mail.gmail.com>
-In-Reply-To: <CAFn=p-bFgZYJO5bMbAXXJkdtov5CiEC2YAx6AN_DOF0B_i+OKg@mail.gmail.com>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 15 May 2023 17:14:17 -0400
-Message-ID: <CAFn=p-bgcKVQhyU2sNHy6HoPJimAEhG_97XjsTX26AV32dXVXw@mail.gmail.com>
-Subject: Re: [PATCH] python: honour message limit when using pre-opened socket
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v5 02/54] accel/tcg: Honor atomicity of loads
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
+References: <20230515143313.734053-1-richard.henderson@linaro.org>
+ <20230515143313.734053-3-richard.henderson@linaro.org>
+ <CAFEAcA_KaYWE+Yh+vberVqk6hV=3R1Xm2V2Po+jrS54i6S1Quw@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA_KaYWE+Yh+vberVqk6hV=3R1Xm2V2Po+jrS54i6S1Quw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.811,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,53 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 20, 2023 at 8:27=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
->
-> On Mon, Mar 20, 2023 at 8:20=E2=80=AFAM Vladimir Sementsov-Ogievskiy
-> <vsementsov@yandex-team.ru> wrote:
-> >
-> > On 20.03.23 13:54, Daniel P. Berrang=C3=A9 wrote:
-> > > The default message recv limit in asyncio is smaller than our needs, =
-so
-> > > when opening connections we override it. This was done when opening a
-> > > connection using a socket address, but was missed when using a
-> > > pre-opened socket file descriptor.
-> > >
-> > > This latent bug was exposed when the QEMUMachine class was enhanced t=
-o
-> > > use socketpair() when no socket address was passed by:
-> > >
-> > >    commit bd4c0ef409140bd1be393407c04005ac077d4574
-> > >    Author: Marc-Andr=C3=A9 Lureau<marcandre.lureau@redhat.com>
-> > >    Date:   Wed Jan 11 12:01:01 2023 +0400
-> > >
-> > >      python/qemu/machine: use socketpair() for QMP by default
-> > >
-> > > Signed-off-by: Daniel P. Berrang=C3=A9<berrange@redhat.com>
-> >
-> > Tested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> >
-> > Thanks!
-> >
-> > --
-> > Best regards,
-> > Vladimir
-> >
->
-> Thanks x3. Will stage in both places.
->
+On 5/15/23 09:43, Peter Maydell wrote:
+>> +static uint16_t load_atom_2(CPUArchState *env, uintptr_t ra,
+>> +                            void *pv, MemOp memop)
+>> +{
+>> +    uintptr_t pi = (uintptr_t)pv;
+>> +    int atmax;
+>> +
+>> +    if (likely((pi & 1) == 0)) {
+>> +        return load_atomic2(pv);
+>> +    }
+>> +    if (HAVE_al16_fast) {
+>> +        return load_atom_extract_al16_or_al8(pv, 2);
+>> +    }
+>> +
+>> +    atmax = required_atomicity(env, pi, memop);
+>> +    switch (atmax) {
+>> +    case MO_8:
+>> +        return lduw_he_p(pv);
+>> +    case MO_16:
+>> +        /* The only case remaining is MO_ATOM_WITHIN16. */
+>> +        if (!HAVE_al8_fast && (pi & 3) == 1) {
+>> +            /* Big or little endian, we want the middle two bytes. */
+>> +            return load_atomic4(pv - 1) >> 8;
+>> +        }
+>> +        if (unlikely((pi & 15) != 7)) {
+> 
+> Why is this the unlikely case ?
 
-... Realizing I let the two codebases diverge a bit more than I had
-meant to allow, and the "open with socket" rewrite I made never got
-brought back to qemu.git, tch. I believe this bug only exists in
-qemu.git because of that. I need to backport my changes to qemu.git
-and ensure that there isn't a problem with the revised code as it
-exists in qemu.qmp.
+Ug, it's not.  Assuming random distribution of misalignment, this is 6 of 7 cases.
+I'll remove all markup, as it doesn't enhance understanding.
 
-I'll have to fix that *before* I drop qemu.qmp from the qemu.git repo,
-which I am hoping will be soon after Paolo takes the new Python
-patches that create a venv during configure time.
 
---js
-
+r~
 
