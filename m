@@ -2,80 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C832A703166
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 17:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6E0703175
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 17:23:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyZzg-0007iV-GY; Mon, 15 May 2023 11:20:12 -0400
+	id 1pya1r-0000yN-KS; Mon, 15 May 2023 11:22:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1pyZzG-0007ZS-4i; Mon, 15 May 2023 11:19:48 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1pyZzD-00008t-7U; Mon, 15 May 2023 11:19:45 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-24decf5cc03so8798535a91.0; 
- Mon, 15 May 2023 08:19:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684163981; x=1686755981;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kuYcl5ovq7mHOIJNJABMIQ3RPuhAUMBwNBlArNXFCww=;
- b=UVM0358yY2yA/skPAHOLAAnV8IDMp/LHVyePbEYZmXGC2wjPkqpnWcoL17JzBNDiEj
- qnIZa0VVWRE2s1uAMFRM7sA1TQcEESErvmAMcxzgdrMzO0dDFIfsFQKZ5RDZDgPa1oyJ
- yL/6xAo0MM7ak1DWlMRr3KY3X32XOLz7HcWvZKsyidZYinldFwh2z4k0ehxDbgJEOT/q
- 7k+nuqsjepLanzQYBFy5qa5DdW/9Zw8SfaWrTKWCpMugmP+h6pEQQ/rFWtP0Dg8KMur6
- Q4BIIGTrlcSPZLsBVqjeq1XYriPDapvShGdK6sm5E755tteGyA7RG7I801Jhf0zWkNqc
- 3eqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684163981; x=1686755981;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=kuYcl5ovq7mHOIJNJABMIQ3RPuhAUMBwNBlArNXFCww=;
- b=Qy14nNEynDNJmKWVKUCvGVnmn+jEBKFzktsif64nhZr1SEG8ZpkU3EZq1RY/EgGngy
- EhtuPyTg/QuoOs69GNbT52Tv6YeKcQElDbMUzvOi13hEI6OTYVJnXlUL5B7rHt3q2Nbe
- QhEaTQXQyaS1yNbgPd1odPOJVDe6NZSVmaCXNEJcxiWltCBfOgu9BJdI6UJZNMi1bI7u
- FIaqyJm6GlwZSHQbsnWPb/dvgrx83M+bTnIroU+Hk2+ZPXt0Cs7CMEIV57ybNDrxKchO
- PEil2p9OiSzxaCGWTmFUcydoaihpfok3YDpSVehvji7gT2xZPFx82fMvhIvldLg1MdA3
- lDKg==
-X-Gm-Message-State: AC+VfDw7DF0d+DYOuQzzs7LQAvdbqCk8dLmzCGbcTsRN9eJcT0Z2vQLO
- h8YyXbu4BJfj2tM+U12V290=
-X-Google-Smtp-Source: ACHHUZ76C5QkVRj5EyTV+WbetJ6Q5puN3iCe0JI73ibzaamA9+o2tRJvhACCPWoGu3mGSuUAtaGdXA==
-X-Received: by 2002:a17:90a:fc90:b0:24b:c580:1ab8 with SMTP id
- ci16-20020a17090afc9000b0024bc5801ab8mr32963645pjb.40.1684163981236; 
- Mon, 15 May 2023 08:19:41 -0700 (PDT)
-Received: from localhost ([202.168.30.146]) by smtp.gmail.com with ESMTPSA id
- kx6-20020a17090b228600b002477dda66d2sm21942800pjb.37.2023.05.15.08.19.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 May 2023 08:19:40 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 May 2023 01:19:36 +1000
-Message-Id: <CSMYAXLT8B9P.1D85SFBUZQ9ZC@wheely>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>
-Subject: Re: [PATCH v3 1/9] target/ppc: Fix width of some 32-bit SPRs
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Mark Cave-Ayland" <mark.cave-ayland@ilande.co.uk>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.14.0
-References: <20230515092655.171206-1-npiggin@gmail.com>
- <20230515092655.171206-2-npiggin@gmail.com>
- <4cefbbd6-6ab2-cd55-4468-4066b464c99c@ilande.co.uk>
-In-Reply-To: <4cefbbd6-6ab2-cd55-4468-4066b464c99c@ilande.co.uk>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1031.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1pya1o-0000yD-C4
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 11:22:24 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1pya1k-0000or-C6
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 11:22:24 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QKjkh4JzHz67lp8;
+ Mon, 15 May 2023 23:21:16 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 15 May
+ 2023 16:22:13 +0100
+Date: Mon, 15 May 2023 16:22:12 +0100
+To: Fan Ni <fan.ni@samsung.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "gregory.price@memverge.com" <gregory.price@memverge.com>,
+ "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
+ "cbrowy@avery-design.com" <cbrowy@avery-design.com>, "ira.weiny@intel.com"
+ <ira.weiny@intel.com>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>, 
+ Adam Manzanares <a.manzanares@samsung.com>, "dave@stgolabs.net"
+ <dave@stgolabs.net>, "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>, 
+ "nifan@outlook.com" <nifan@outlook.com>
+Subject: Re: [RFC 7/7] hw/mem/cxl_type3: add read/write support to dynamic
+ capacity
+Message-ID: <20230515162212.0000275c@Huawei.com>
+In-Reply-To: <20230511175609.2091136-8-fan.ni@samsung.com>
+References: <20230511175609.2091136-1-fan.ni@samsung.com>
+ <CGME20230511175642uscas1p2c037608a1dd26b19cf970f97ce434c6d@uscas1p2.samsung.com>
+ <20230511175609.2091136-8-fan.ni@samsung.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,258 +72,713 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon May 15, 2023 at 10:03 PM AEST, Mark Cave-Ayland wrote:
-> On 15/05/2023 10:26, Nicholas Piggin wrote:
->
-> > Some 32-bit SPRs are incorrectly implemented as 64-bits on 64-bit
-> > targets.
-> >=20
-> > This changes VRSAVE, DSISR, HDSISR, DAWRX0, PIDR, LPIDR, DEXCR,
-> > HDEXCR, CTRL, TSCR, MMCRH, and PMC[1-6] from to be 32-bit registers.
-> >=20
-> > This only goes by the 32/64 classification in the architecture, it
-> > does not try to implement finer details of SPR implementation (e.g.,
-> > not all bits implemented as simple read/write storage).
-> >=20
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> > Since v2: no change.
-> >=20
-> >   target/ppc/cpu_init.c    | 18 +++++++++---------
-> >   target/ppc/helper_regs.c |  2 +-
-> >   target/ppc/misc_helper.c |  4 ++--
-> >   target/ppc/power8-pmu.c  |  2 +-
-> >   target/ppc/translate.c   |  2 +-
-> >   5 files changed, 14 insertions(+), 14 deletions(-)
-> >=20
-> > diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> > index 0ce2e3c91d..5aa0b3f0f1 100644
-> > --- a/target/ppc/cpu_init.c
-> > +++ b/target/ppc/cpu_init.c
-> > @@ -5085,8 +5085,8 @@ static void register_book3s_altivec_sprs(CPUPPCSt=
-ate *env)
-> >       }
-> >  =20
-> >       spr_register_kvm(env, SPR_VRSAVE, "VRSAVE",
-> > -                     &spr_read_generic, &spr_write_generic,
-> > -                     &spr_read_generic, &spr_write_generic,
-> > +                     &spr_read_generic, &spr_write_generic32,
-> > +                     &spr_read_generic, &spr_write_generic32,
-> >                        KVM_REG_PPC_VRSAVE, 0x00000000);
-> >  =20
-> >   }
-> > @@ -5120,7 +5120,7 @@ static void register_book3s_207_dbg_sprs(CPUPPCSt=
-ate *env)
-> >       spr_register_kvm_hv(env, SPR_DAWRX0, "DAWRX0",
-> >                           SPR_NOACCESS, SPR_NOACCESS,
-> >                           SPR_NOACCESS, SPR_NOACCESS,
-> > -                        &spr_read_generic, &spr_write_generic,
-> > +                        &spr_read_generic, &spr_write_generic32,
-> >                           KVM_REG_PPC_DAWRX, 0x00000000);
-> >       spr_register_kvm_hv(env, SPR_CIABR, "CIABR",
-> >                           SPR_NOACCESS, SPR_NOACCESS,
-> > @@ -5376,7 +5376,7 @@ static void register_book3s_ids_sprs(CPUPPCState =
-*env)
-> >       spr_register_hv(env, SPR_TSCR, "TSCR",
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> > -                 &spr_read_generic, &spr_write_generic,
-> > +                 &spr_read_generic, &spr_write_generic32,
-> >                    0x00000000);
-> >       spr_register_hv(env, SPR_HMER, "HMER",
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> > @@ -5406,7 +5406,7 @@ static void register_book3s_ids_sprs(CPUPPCState =
-*env)
-> >       spr_register_hv(env, SPR_MMCRC, "MMCRC",
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> > -                 &spr_read_generic, &spr_write_generic,
-> > +                 &spr_read_generic, &spr_write_generic32,
-> >                    0x00000000);
-> >       spr_register_hv(env, SPR_MMCRH, "MMCRH",
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> > @@ -5441,7 +5441,7 @@ static void register_book3s_ids_sprs(CPUPPCState =
-*env)
-> >       spr_register_hv(env, SPR_HDSISR, "HDSISR",
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> > -                 &spr_read_generic, &spr_write_generic,
-> > +                 &spr_read_generic, &spr_write_generic32,
-> >                    0x00000000);
-> >       spr_register_hv(env, SPR_HRMOR, "HRMOR",
-> >                    SPR_NOACCESS, SPR_NOACCESS,
-> > @@ -5665,7 +5665,7 @@ static void register_power7_book4_sprs(CPUPPCStat=
-e *env)
-> >                        KVM_REG_PPC_ACOP, 0);
-> >       spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-> >                        SPR_NOACCESS, SPR_NOACCESS,
-> > -                     &spr_read_generic, &spr_write_generic,
-> > +                     &spr_read_generic, &spr_write_generic32,
-> >                        KVM_REG_PPC_PID, 0);
-> >   #endif
-> >   }
-> > @@ -5730,7 +5730,7 @@ static void register_power10_dexcr_sprs(CPUPPCSta=
-te *env)
-> >   {
-> >       spr_register(env, SPR_DEXCR, "DEXCR",
-> >               SPR_NOACCESS, SPR_NOACCESS,
-> > -            &spr_read_generic, &spr_write_generic,
-> > +            &spr_read_generic, &spr_write_generic32,
-> >               0);
-> >  =20
-> >       spr_register(env, SPR_UDEXCR, "DEXCR",
-> > @@ -5741,7 +5741,7 @@ static void register_power10_dexcr_sprs(CPUPPCSta=
-te *env)
-> >       spr_register_hv(env, SPR_HDEXCR, "HDEXCR",
-> >               SPR_NOACCESS, SPR_NOACCESS,
-> >               SPR_NOACCESS, SPR_NOACCESS,
-> > -            &spr_read_generic, &spr_write_generic,
-> > +            &spr_read_generic, &spr_write_generic32,
-> >               0);
-> >  =20
-> >       spr_register(env, SPR_UHDEXCR, "HDEXCR",
-> > diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-> > index 779e7db513..fb351c303f 100644
-> > --- a/target/ppc/helper_regs.c
-> > +++ b/target/ppc/helper_regs.c
-> > @@ -448,7 +448,7 @@ void register_non_embedded_sprs(CPUPPCState *env)
-> >       /* Exception processing */
-> >       spr_register_kvm(env, SPR_DSISR, "DSISR",
-> >                        SPR_NOACCESS, SPR_NOACCESS,
-> > -                     &spr_read_generic, &spr_write_generic,
-> > +                     &spr_read_generic, &spr_write_generic32,
-> >                        KVM_REG_PPC_DSISR, 0x00000000);
-> >       spr_register_kvm(env, SPR_DAR, "DAR",
-> >                        SPR_NOACCESS, SPR_NOACCESS,
-> > diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-> > index a9bc1522e2..40ddc5c08c 100644
-> > --- a/target/ppc/misc_helper.c
-> > +++ b/target/ppc/misc_helper.c
-> > @@ -190,13 +190,13 @@ void helper_store_dpdes(CPUPPCState *env, target_=
-ulong val)
-> >  =20
-> >   void helper_store_pidr(CPUPPCState *env, target_ulong val)
-> >   {
-> > -    env->spr[SPR_BOOKS_PID] =3D val;
-> > +    env->spr[SPR_BOOKS_PID] =3D (uint32_t)val;
-> >       tlb_flush(env_cpu(env));
-> >   }
-> >  =20
-> >   void helper_store_lpidr(CPUPPCState *env, target_ulong val)
-> >   {
-> > -    env->spr[SPR_LPIDR] =3D val;
-> > +    env->spr[SPR_LPIDR] =3D (uint32_t)val;
-> >  =20
-> >       /*
-> >        * We need to flush the TLB on LPID changes as we only tag HV vs
-> > diff --git a/target/ppc/power8-pmu.c b/target/ppc/power8-pmu.c
-> > index 1381072b9e..64a64865d7 100644
-> > --- a/target/ppc/power8-pmu.c
-> > +++ b/target/ppc/power8-pmu.c
-> > @@ -272,7 +272,7 @@ void helper_store_pmc(CPUPPCState *env, uint32_t sp=
-rn, uint64_t value)
-> >   {
-> >       pmu_update_cycles(env);
-> >  =20
-> > -    env->spr[sprn] =3D value;
-> > +    env->spr[sprn] =3D (uint32_t)value;
-> >  =20
-> >       pmc_update_overflow_timer(env, sprn);
-> >   }
-> > diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> > index f603f1a939..c03a6bdc9a 100644
-> > --- a/target/ppc/translate.c
-> > +++ b/target/ppc/translate.c
-> > @@ -413,7 +413,7 @@ void spr_write_generic(DisasContext *ctx, int sprn,=
- int gprn)
-> >  =20
-> >   void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-> >   {
-> > -    spr_write_generic(ctx, sprn, gprn);
-> > +    spr_write_generic32(ctx, sprn, gprn);
-> >  =20
-> >       /*
-> >        * SPR_CTRL writes must force a new translation block,
->
-> Just out of curiosity, is this the same as the problem described at [1] f=
-or DECAR?
->
->
-> ATB,
->
-> Mark.
->
-> [1] https://lists.nongnu.org/archive/html/qemu-ppc/2023-03/msg00451.html
+On Thu, 11 May 2023 17:56:40 +0000
+Fan Ni <fan.ni@samsung.com> wrote:
 
-Oh if it's a 64-bit target running in 32-bit mode, then the compiled
-code might use something like li reg,-1 to set the 0xffffffff value,
-but that gets sign extended to 64-bits. Storing that to DECAR then
-does cause it to get stored to DECR. So DECAR should use
-spr_write_generic32.
+> From: Fan Ni <nifan@outlook.com>
+> 
+> Before the change, read from or write to dynamic capacity of the memory
+> device is not support as 1) no host backed file/memory is provided for
+> it; 2) no address space is created for the dynamic capacity.
 
-But all the store_decr calculations are unsigned and DECR gets clamped
-to 32-bits, at least when reading it back. The problem seems to be the
-timer ends up getting set for a negative expire time.
+Ah nice. I should have read ahead.  Probably makes sense to reorder things
+so that when we present DCD region it will work.
 
-So storing to DECR directly seems like it would have the same problems
-as via DECAR. This should help.
+> 
+> With the change, add code to support following:
+> 1. add a new property to type3 device "dc-memdev" to point to host
+>    memory backend for dynamic capacity;
+> 2. add a bitmap for each region to track whether a block is host backed,
+> which will be used for address check when read/write dynamic capacity;
+> 3. add namespace for dynamic capacity for read/write support;
+> 4. create cdat entries for each dynamic capacity region;
+> 
+> Signed-off-by: Fan Ni <fan.ni@samsung.com>
+> ---
+>  hw/cxl/cxl-mailbox-utils.c  |  21 ++-
+>  hw/mem/cxl_type3.c          | 336 +++++++++++++++++++++++++++++-------
+>  include/hw/cxl/cxl_device.h |   8 +-
+>  3 files changed, 298 insertions(+), 67 deletions(-)
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 7212934627..efe61e67fb 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -391,9 +391,11 @@ static CXLRetCode cmd_firmware_update_get_info(struct cxl_cmd *cmd,
+>          char fw_rev4[0x10];
+>      } QEMU_PACKED *fw_info;
+>      QEMU_BUILD_BUG_ON(sizeof(*fw_info) != 0x50);
+> +	CXLType3Dev *ct3d = container_of(cxl_dstate, CXLType3Dev, cxl_dstate);
+>  
+>      if ((cxl_dstate->vmem_size < CXL_CAPACITY_MULTIPLIER) ||
+> -        (cxl_dstate->pmem_size < CXL_CAPACITY_MULTIPLIER)) {
+> +			(cxl_dstate->pmem_size < CXL_CAPACITY_MULTIPLIER) ||
 
-Thanks,
-Nick
----
+Keep old alignment
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 4e816c68c7..35a1410c4d 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -794,14 +794,18 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uin=
-t64_t *nextp,
-     CPUPPCState *env =3D &cpu->env;
-     ppc_tb_t *tb_env =3D env->tb_env;
-     uint64_t now, next;
-+    uint64_t unsigned_value;
-+    uint64_t unsigned_decr;
-     int64_t signed_value;
-     int64_t signed_decr;
-=20
-     /* Truncate value to decr_width and sign extend for simplicity */
-+    unsigned_value =3D extract64(value, 0, nr_bits);
-+    unsigned_decr =3D extract64(decr, 0, nr_bits);
-     signed_value =3D sextract64(value, 0, nr_bits);
-     signed_decr =3D sextract64(decr, 0, nr_bits);
-=20
--    trace_ppc_decr_store(nr_bits, decr, value);
-+    trace_ppc_decr_store(nr_bits, unsigned_decr, unsigned_value);
-=20
-     if (kvm_enabled()) {
-         /* KVM handles decrementer exceptions, we don't need our own timer=
- */
-@@ -821,7 +825,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint6=
-4_t *nextp,
-      * On MSB edge based DEC implementations the MSB going from 0 -> 1 tri=
-ggers
-      * an edge interrupt, so raise it here too.
-      */
--    if ((value < 3) ||
-+    if ((unsigned_value < 3) ||
-         ((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) |=
-|
-         ((tb_env->flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_value < =
-0
-           && signed_decr >=3D 0)) {
-@@ -836,7 +840,8 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint6=
-4_t *nextp,
-=20
-     /* Calculate the next timer event */
-     now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    next =3D now + muldiv64(value, NANOSECONDS_PER_SECOND, tb_env->decr_fr=
-eq);
-+    next =3D now + muldiv64(unsigned_value, NANOSECONDS_PER_SECOND,
-+                          tb_env->decr_freq);
-     *nextp =3D next;
-=20
-     /* Adjust timer */
+> +		(ct3d->dc.total_dynamic_capicity < CXL_CAPACITY_MULTIPLIER)) {
+
+We should think about the separation between what goes in cxl_dstate and directly
+in ct3d. That boundary has been blurring for a while and getting some review
+comments.
+
+>          return CXL_MBOX_INTERNAL_ERROR;
+>      }
+>  
+> @@ -534,7 +536,9 @@ static CXLRetCode cmd_identify_memory_device(struct cxl_cmd *cmd,
+>      CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
+>  
+>      if ((!QEMU_IS_ALIGNED(cxl_dstate->vmem_size, CXL_CAPACITY_MULTIPLIER)) ||
+> -        (!QEMU_IS_ALIGNED(cxl_dstate->pmem_size, CXL_CAPACITY_MULTIPLIER))) {
+> +		(!QEMU_IS_ALIGNED(cxl_dstate->pmem_size, CXL_CAPACITY_MULTIPLIER)) ||
+> +		(!QEMU_IS_ALIGNED(ct3d->dc.total_dynamic_capicity,
+> +						CXL_CAPACITY_MULTIPLIER))) {
+>          return CXL_MBOX_INTERNAL_ERROR;
+>      }
+>  
+> @@ -543,7 +547,8 @@ static CXLRetCode cmd_identify_memory_device(struct cxl_cmd *cmd,
+>  
+>      snprintf(id->fw_revision, 0x10, "BWFW VERSION %02d", 0);
+>  
+> -    stq_le_p(&id->total_capacity, cxl_dstate->mem_size / CXL_CAPACITY_MULTIPLIER);
+> +	stq_le_p(&id->total_capacity,
+> +			cxl_dstate->static_mem_size / CXL_CAPACITY_MULTIPLIER);
+
+Pull the rename out as a precursor patch.
+
+>      stq_le_p(&id->persistent_capacity, cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
+>      stq_le_p(&id->volatile_capacity, cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
+>      stl_le_p(&id->lsa_size, cvc->get_lsa_size(ct3d));
+> @@ -568,9 +573,12 @@ static CXLRetCode cmd_ccls_get_partition_info(struct cxl_cmd *cmd,
+>          uint64_t next_pmem;
+>      } QEMU_PACKED *part_info = (void *)cmd->payload;
+>      QEMU_BUILD_BUG_ON(sizeof(*part_info) != 0x20);
+> +	CXLType3Dev *ct3d = container_of(cxl_dstate, CXLType3Dev, cxl_dstate);
+>  
+>      if ((!QEMU_IS_ALIGNED(cxl_dstate->vmem_size, CXL_CAPACITY_MULTIPLIER)) ||
+> -        (!QEMU_IS_ALIGNED(cxl_dstate->pmem_size, CXL_CAPACITY_MULTIPLIER))) {
+> +		(!QEMU_IS_ALIGNED(cxl_dstate->pmem_size, CXL_CAPACITY_MULTIPLIER)) ||
+> +		(!QEMU_IS_ALIGNED(ct3d->dc.total_dynamic_capicity,
+> +						CXL_CAPACITY_MULTIPLIER))) {
+>          return CXL_MBOX_INTERNAL_ERROR;
+>      }
+>  
+> @@ -881,9 +889,8 @@ static CXLRetCode cmd_media_clear_poison(struct cxl_cmd *cmd,
+>      struct clear_poison_pl *in = (void *)cmd->payload;
+>  
+>      dpa = ldq_le_p(&in->dpa);
+> -    if (dpa + 64 > cxl_dstate->mem_size) {
+> -        return CXL_MBOX_INVALID_PA;
+> -    }
+> +	if (dpa + 64 > cxl_dstate->static_mem_size && ct3d->dc.num_regions == 0)
+
+This test will need expanding to include DPAs in DC regions.
+
+> +		return CXL_MBOX_INVALID_PA;
+>  
+>      QLIST_FOREACH(ent, poison_list, node) {
+>          /*
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index 70d47d43b9..334660bd0f 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -33,8 +33,8 @@ enum {
+>  };
+>  
+>  static int ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
+> -                                         int dsmad_handle, MemoryRegion *mr,
+> -                                         bool is_pmem, uint64_t dpa_base)
+> +		int dsmad_handle, uint8_t flags,
+> +		uint64_t dpa_base, uint64_t size)
+>  {
+>      g_autofree CDATDsmas *dsmas = NULL;
+>      g_autofree CDATDslbis *dslbis0 = NULL;
+> @@ -53,9 +53,9 @@ static int ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
+>              .length = sizeof(*dsmas),
+>          },
+>          .DSMADhandle = dsmad_handle,
+> -        .flags = is_pmem ? CDAT_DSMAS_FLAG_NV : 0,
+> +		.flags = flags,
+>          .DPA_base = dpa_base,
+> -        .DPA_length = int128_get64(mr->size),
+> +		.DPA_length = size,
+>      };
+>  
+>      /* For now, no memory side cache, plausiblish numbers */
+> @@ -137,9 +137,9 @@ static int ct3_build_cdat_entries_for_mr(CDATSubHeader **cdat_table,
+>           * NV: Reserved - the non volatile from DSMAS matters
+>           * V: EFI_MEMORY_SP
+>           */
+> -        .EFI_memory_type_attr = is_pmem ? 2 : 1,
+> +		.EFI_memory_type_attr = flags ? 2 : 1,
+
+Fix all these alignment changes (spaces vs tabs)
+
+>          .DPA_offset = 0,
+> -        .DPA_length = int128_get64(mr->size),
+> +		.DPA_length = size,
+>      };
+>  
+>      /* Header always at start of structure */
+> @@ -158,14 +158,15 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+>      g_autofree CDATSubHeader **table = NULL;
+>      CXLType3Dev *ct3d = priv;
+>      MemoryRegion *volatile_mr = NULL, *nonvolatile_mr = NULL;
+> +	MemoryRegion *dc_mr = NULL;
+>      int dsmad_handle = 0;
+>      int cur_ent = 0;
+>      int len = 0;
+>      int rc, i;
+> +	uint64_t vmr_size = 0, pmr_size = 0;
+>  
+> -    if (!ct3d->hostpmem && !ct3d->hostvmem) {
+> -        return 0;
+> -    }
+> +	if (!ct3d->hostpmem && !ct3d->hostvmem && !ct3d->dc.num_regions)
+> +		return 0;
+>  
+>      if (ct3d->hostvmem) {
+>          volatile_mr = host_memory_backend_get_memory(ct3d->hostvmem);
+> @@ -173,6 +174,7 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+>              return -EINVAL;
+>          }
+>          len += CT3_CDAT_NUM_ENTRIES;
+> +		vmr_size = volatile_mr->size;
+>      }
+>  
+>      if (ct3d->hostpmem) {
+> @@ -181,7 +183,19 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+>              return -EINVAL;
+>          }
+>          len += CT3_CDAT_NUM_ENTRIES;
+> -    }
+> +		pmr_size = nonvolatile_mr->size;
+> +	}
+> +
+> +	if (ct3d->dc.num_regions) {
+> +		if (ct3d->dc.host_dc) {
+> +			dc_mr = host_memory_backend_get_memory(ct3d->dc.host_dc);
+> +			if (!dc_mr)
+> +				return -EINVAL;
+> +			len += CT3_CDAT_NUM_ENTRIES * ct3d->dc.num_regions;
+> +		} else {
+> +			return -EINVAL;
+> +		}
+> +	}
+>  
+>      table = g_malloc0(len * sizeof(*table));
+>      if (!table) {
+> @@ -189,23 +203,45 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+>      }
+>  
+>      /* Now fill them in */
+> -    if (volatile_mr) {
+> -        rc = ct3_build_cdat_entries_for_mr(table, dsmad_handle++, volatile_mr,
+> -                                           false, 0);
+> -        if (rc < 0) {
+> -            return rc;
+> -        }
+> -        cur_ent = CT3_CDAT_NUM_ENTRIES;
+> -    }
+> +	if (volatile_mr) {
+> +		rc = ct3_build_cdat_entries_for_mr(table, dsmad_handle++,
+> +				0, 0, vmr_size);
+> +		if (rc < 0)
+> +			return rc;
+Without the tabs / spaces accidental conversion this diff should look a lot
+clearer..
+> +		cur_ent = CT3_CDAT_NUM_ENTRIES;
+> +	}
+> +
+> +	if (nonvolatile_mr) {
+> +		rc = ct3_build_cdat_entries_for_mr(&(table[cur_ent]), dsmad_handle++,
+> +				CDAT_DSMAS_FLAG_NV, vmr_size, pmr_size);
+> +		if (rc < 0)
+> +			goto error_cleanup;
+> +		cur_ent += CT3_CDAT_NUM_ENTRIES;
+> +	}
+> +
+> +	if (dc_mr) {
+> +		uint64_t region_base = vmr_size + pmr_size;
+> +
+> +		/*
+> +		 * Currently we create cdat entries for each region, should we only
+> +		 * create dsmas table instead??
+
+I don't think it does any harm to have a lot of similar entries. We may want to reconsider
+this in the longer term to make sure that more complex code paths are handled where
+things are shared.  What combinations does the spec allow?
+One entry for all regions with them all sharing a single dsmad handle?
+
+
+> +		 * We assume all dc regions are non-volatile for now.
+> +		 *
+> +		 */
+> +		for (i = 0; i < ct3d->dc.num_regions; i++) {
+> +			rc = ct3_build_cdat_entries_for_mr(&(table[cur_ent])
+> +					, dsmad_handle++
+> +					, CDAT_DSMAS_FLAG_NV|CDAT_DSMAS_FLAG_DYNAMIC_CAP
+> +					, region_base, ct3d->dc.regions[i].len);
+> +			if (rc < 0)
+> +				goto error_cleanup;
+> +			ct3d->dc.regions[i].dsmadhandle = dsmad_handle-1;
+> +
+> +			cur_ent += CT3_CDAT_NUM_ENTRIES;
+> +			region_base += ct3d->dc.regions[i].len;
+> +		}
+> +	}
+>  
+> -    if (nonvolatile_mr) {
+> -        rc = ct3_build_cdat_entries_for_mr(&(table[cur_ent]), dsmad_handle++,
+> -                nonvolatile_mr, true, (volatile_mr ? volatile_mr->size : 0));
+> -        if (rc < 0) {
+> -            goto error_cleanup;
+> -        }
+> -        cur_ent += CT3_CDAT_NUM_ENTRIES;
+> -    }
+>      assert(len == cur_ent);
+>  
+>      *cdat_table = g_steal_pointer(&table);
+> @@ -706,6 +742,11 @@ static int cxl_create_toy_regions(CXLType3Dev *ct3d)
+>  		/* dsmad_handle is set when creating cdat table entries */
+>  		region->flags = 0;
+>  
+> +		region->blk_bitmap = bitmap_new(region->len / region->block_size);
+> +		if (!region->blk_bitmap)
+> +			return -1;
+> +		bitmap_zero(region->blk_bitmap, region->len / region->block_size);
+> +
+>  		region_base += region->len;
+>  	}
+>  	QTAILQ_INIT(&ct3d->dc.extents);
+> @@ -713,11 +754,24 @@ static int cxl_create_toy_regions(CXLType3Dev *ct3d)
+>  	return 0;
+>  }
+>  
+> +static void cxl_destroy_toy_regions(CXLType3Dev *ct3d)
+
+Why toy?  They work after this so no longer toys ;)
+
+> +{
+> +	int i;
+> +	struct CXLDCD_Region *region;
+> +
+> +	for (i = 0; i < ct3d->dc.num_regions; i++) {
+> +		region = &ct3d->dc.regions[i];
+> +		if (region->blk_bitmap)
+> +			g_free(region->blk_bitmap);
+Why is check needed? Is there a path where we call this function
+without the bitmap having been allocated successfully?
+
+> +	}
+> +}
+> +
+>  static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
+>  {
+>      DeviceState *ds = DEVICE(ct3d);
+>  
+> -    if (!ct3d->hostmem && !ct3d->hostvmem && !ct3d->hostpmem) {
+> +	if (!ct3d->hostmem && !ct3d->hostvmem && !ct3d->hostpmem
+> +			&& !ct3d->dc.num_regions) {
+>          error_setg(errp, "at least one memdev property must be set");
+>          return false;
+>      } else if (ct3d->hostmem && ct3d->hostpmem) {
+> @@ -754,7 +808,7 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
+>          }
+>          address_space_init(&ct3d->hostvmem_as, vmr, v_name);
+>          ct3d->cxl_dstate.vmem_size = vmr->size;
+> -        ct3d->cxl_dstate.mem_size += vmr->size;
+> +		ct3d->cxl_dstate.static_mem_size += vmr->size;
+>          g_free(v_name);
+>      }
+>  
+> @@ -777,12 +831,47 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
+>          }
+>          address_space_init(&ct3d->hostpmem_as, pmr, p_name);
+>          ct3d->cxl_dstate.pmem_size = pmr->size;
+> -        ct3d->cxl_dstate.mem_size += pmr->size;
+> +		ct3d->cxl_dstate.static_mem_size += pmr->size;
+>          g_free(p_name);
+>      }
+>  
+> -	if (cxl_create_toy_regions(ct3d))
+> -		return false;
+> +	ct3d->dc.total_dynamic_capicity = 0;
+> +	if (ct3d->dc.host_dc) {
+> +		MemoryRegion *dc_mr;
+> +		char *dc_name;
+> +		uint64_t total_region_size = 0;
+> +		int i;
+> +
+> +		dc_mr = host_memory_backend_get_memory(ct3d->dc.host_dc);
+> +		if (!dc_mr) {
+> +			error_setg(errp, "dynamic capacity must have backing device");
+> +			return false;
+
+> +		}
+> +		/* FIXME: set dc as nonvolatile for now */
+That's fine. I think to do anything else we'll want multiple backends anyway.
+Perhaps rename the parameter to reflect that it's volatile for now though otherwise
+we'll end up deprecating another memory region command line parameter and people will
+begin to get grumpy ;)
+
+> +		memory_region_set_nonvolatile(dc_mr, true);
+> +		memory_region_set_enabled(dc_mr, true);
+> +		host_memory_backend_set_mapped(ct3d->dc.host_dc, true);
+> +		if (ds->id) {
+> +			dc_name = g_strdup_printf("cxl-dcd-dpa-dc-space:%s", ds->id);
+> +		} else {
+> +			dc_name = g_strdup("cxl-dcd-dpa-dc-space");
+> +		}
+> +		address_space_init(&ct3d->dc.host_dc_as, dc_mr, dc_name);
+> +
+> +		if (cxl_create_toy_regions(ct3d)) {
+> +			return false;
+> +		}
+> +
+> +		for (i = 0; i < ct3d->dc.num_regions; i++) {
+> +			total_region_size += ct3d->dc.regions[i].len;
+> +		}
+> +		/* Make sure the host backend is large enough to cover all dc range */
+> +		assert(total_region_size <= dc_mr->size);
+> +		assert(dc_mr->size % (256*1024*1024) == 0);
+> +
+> +		ct3d->dc.total_dynamic_capicity = total_region_size;
+> +		g_free(dc_name);
+> +	}
+>  
+>      return true;
+>  }
+> @@ -890,6 +979,10 @@ err_release_cdat:
+>  err_free_special_ops:
+>      g_free(regs->special_ops);
+>  err_address_space_free:
+> +	if (ct3d->dc.host_dc) {
+> +		cxl_destroy_toy_regions(ct3d);
+> +		address_space_destroy(&ct3d->dc.host_dc_as);
+> +	}
+>      if (ct3d->hostpmem) {
+>          address_space_destroy(&ct3d->hostpmem_as);
+>      }
+> @@ -909,6 +1002,10 @@ static void ct3_exit(PCIDevice *pci_dev)
+>      cxl_doe_cdat_release(cxl_cstate);
+>      spdm_sock_fini(ct3d->doe_spdm.socket);
+>      g_free(regs->special_ops);
+> +	if (ct3d->dc.host_dc) {
+> +		cxl_destroy_toy_regions(ct3d);
+> +		address_space_destroy(&ct3d->dc.host_dc_as);
+> +	}
+>      if (ct3d->hostpmem) {
+>          address_space_destroy(&ct3d->hostpmem_as);
+>      }
+> @@ -917,6 +1014,100 @@ static void ct3_exit(PCIDevice *pci_dev)
+>      }
+>  }
+>  
+> +static void set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+> +		uint64_t len)
+> +{
+> +	int i;
+> +	CXLDCD_Region *region = NULL;
+> +
+> +	if (dpa < ct3d->dc.regions[0].base
+> +		|| dpa >= ct3d->dc.regions[0].base + ct3d->dc.total_dynamic_capicity)
+> +		return;
+> +
+> +	/*
+> +	 * spec 3.0 9.13.3: Regions are used in increasing-DPA order, with
+> +	 * Region 0 being used for the lowest DPA of Dynamic Capacity and
+> +	 * Region 7 for the highest DPA.
+> +	 * So we check from the last region to find where the dpa belongs.
+> +	 * access across multiple regions is not allowed.
+> +	 **/
+> +	for (i = ct3d->dc.num_regions-1; i >= 0; i--) {
+> +		region = &ct3d->dc.regions[i];
+> +		if (dpa >= region->base)
+> +			break;
+> +	}
+> +
+> +	bitmap_set(region->blk_bitmap, (dpa-region->base)/region->block_size,
+> +			len/region->block_size);
+> +}
+> +
+> +static bool test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+> +		uint64_t len)
+> +{
+> +	int i;
+> +	CXLDCD_Region *region = NULL;
+> +	uint64_t nbits;
+> +	long nr;
+> +
+> +	if (dpa < ct3d->dc.regions[0].base
+> +		   || dpa >= ct3d->dc.regions[0].base + ct3d->dc.total_dynamic_capicity)
+> +		return false;
+> +
+> +	/*
+> +	 * spec 3.0 9.13.3: Regions are used in increasing-DPA order, with
+> +	 * Region 0 being used for the lowest DPA of Dynamic Capacity and
+> +	 * Region 7 for the highest DPA.
+> +	 * So we check from the last region to find where the dpa belongs.
+> +	 * access across multiple regions is not allowed.
+> +	 **/
+> +	for (i = ct3d->dc.num_regions-1; i >= 0; i--) {
+> +		region = &ct3d->dc.regions[i];
+> +		if (dpa >= region->base)
+> +			break;
+> +	}
+> +
+> +	nr = (dpa-region->base)/region->block_size;
+> +	nbits = (len + region->block_size-1)/region->block_size;
+> +	if (find_next_zero_bit(region->blk_bitmap, nr+nbits, nr)
+> +			>= nr+nbits)
+> +		return true;
+> +
+> +	return false;
+
+return find_next_zero_bit(...) >= nr + nbits;
+
+> +}
+> +
+> +static void clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+> +		uint64_t len)
+> +{
+> +	int i;
+> +	CXLDCD_Region *region = NULL;
+> +	uint64_t nbits;
+> +	long nr;
+> +
+> +	if (dpa < ct3d->dc.regions[0].base
+> +		|| dpa >= ct3d->dc.regions[0].base + ct3d->dc.total_dynamic_capicity)
+> +		return;
+> +
+> +	/*
+> +	 * spec 3.0 9.13.3: Regions are used in increasing-DPA order, with
+> +	 * Region 0 being used for the lowest DPA of Dynamic Capacity and
+> +	 * Region 7 for the highest DPA.
+> +	 * So we check from the last region to find where the dpa belongs.
+> +	 * access across multiple regions is not allowed.
+> +	 **/
+> +	for (i = ct3d->dc.num_regions-1; i >= 0; i--) {
+> +		region = &ct3d->dc.regions[i];
+> +		if (dpa >= region->base)
+> +			break;
+> +	}
+> +
+> +	nr = (dpa-region->base) / region->block_size;
+> +	nbits = (len + region->block_size-1) / region->block_size;
+
+Why handle non precise multiple?  
+
+> +	for (i = 0; i < nbits; i++) {
+> +		clear_bit(nr, region->blk_bitmap);
+> +		nr++;
+> +	}
+
+bitmap_clear()?
+
+
+
+> +
+>  static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
+>  {
+>      uint32_t *cache_mem = ct3d->cxl_cstate.crb.cache_mem_registers;
+> @@ -973,16 +1164,24 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
+>                                         AddressSpace **as,
+>                                         uint64_t *dpa_offset)
+>  {
+> -    MemoryRegion *vmr = NULL, *pmr = NULL;
+> +	MemoryRegion *vmr = NULL, *pmr = NULL, *dc_mr = NULL;
+> +	uint64_t vmr_size = 0, pmr_size = 0, dc_size = 0;
+>  
+>      if (ct3d->hostvmem) {
+>          vmr = host_memory_backend_get_memory(ct3d->hostvmem);
+> +		vmr_size = int128_get64(vmr->size);
+>      }
+>      if (ct3d->hostpmem) {
+>          pmr = host_memory_backend_get_memory(ct3d->hostpmem);
+> +		pmr_size = int128_get64(pmr->size);
+>      }
+> +	if (ct3d->dc.host_dc) {
+> +		dc_mr = host_memory_backend_get_memory(ct3d->dc.host_dc);
+> +		/* Do we want dc_size to be dc_mr->size or not?? */
+> +		dc_size = ct3d->dc.total_dynamic_capicity;
+> +	}
+>  
+> -    if (!vmr && !pmr) {
+> +	if (!vmr && !pmr && !dc_mr) {
+>          return -ENODEV;
+>      }
+>  
+> @@ -990,20 +1189,22 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
+>          return -EINVAL;
+>      }
+>  
+> -    if (*dpa_offset > int128_get64(ct3d->cxl_dstate.mem_size)) {
+> +    if (*dpa_offset >= vmr_size + pmr_size + dc_size ||
+> +       (*dpa_offset >= vmr_size + pmr_size && ct3d->dc.num_regions == 0)) {
+>          return -EINVAL;
+>      }
+>  
+> -    if (vmr) {
+> -        if (*dpa_offset < int128_get64(vmr->size)) {
+> -            *as = &ct3d->hostvmem_as;
+> -        } else {
+> -            *as = &ct3d->hostpmem_as;
+> -            *dpa_offset -= vmr->size;
+> -        }
+> -    } else {
+> -        *as = &ct3d->hostpmem_as;
+> -    }
+> +	if (*dpa_offset < vmr_size)
+> +		*as = &ct3d->hostvmem_as;
+> +	else if (*dpa_offset < vmr_size + pmr_size) {
+> +		*as = &ct3d->hostpmem_as;
+> +		*dpa_offset -= vmr_size;
+> +	} else {
+> +		if (!test_region_block_backed(ct3d, *dpa_offset, size))
+> +			return -ENODEV;
+> +		*as = &ct3d->dc.host_dc_as;
+> +		*dpa_offset -= (vmr_size + pmr_size);
+> +	}
+>  
+>      return 0;
+>  }
+> @@ -1069,6 +1270,8 @@ static Property ct3_props[] = {
+>      DEFINE_PROP_STRING("cdat", CXLType3Dev, cxl_cstate.cdat.filename),
+>      DEFINE_PROP_UINT16("spdm", CXLType3Dev, spdm_port, 0),
+>  	DEFINE_PROP_UINT8("num-dc-regions", CXLType3Dev, dc.num_regions, 0),
+> +	DEFINE_PROP_LINK("dc-memdev", CXLType3Dev, dc.host_dc,
+> +					TYPE_MEMORY_BACKEND, HostMemoryBackend *),
+
+Perhaps volatile-dc-memdev?  leaves us space for a persistent one in future.
+If anyone every cares that is ;)
+
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+>  
+> @@ -1135,34 +1338,41 @@ static void set_lsa(CXLType3Dev *ct3d, const void *buf, uint64_t size,
+>  
+>  static bool set_cacheline(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data)
+>  {
+> -    MemoryRegion *vmr = NULL, *pmr = NULL;
+> +	MemoryRegion *vmr = NULL, *pmr = NULL, *dc_mr = NULL;
+>      AddressSpace *as;
+> +	uint64_t vmr_size = 0, pmr_size = 0, dc_size = 0;
+>  
+>      if (ct3d->hostvmem) {
+>          vmr = host_memory_backend_get_memory(ct3d->hostvmem);
+> +		vmr_size = int128_get64(vmr->size);
+>      }
+>      if (ct3d->hostpmem) {
+>          pmr = host_memory_backend_get_memory(ct3d->hostpmem);
+> +		pmr_size = int128_get64(pmr->size);
+>      }
+> +	if (ct3d->dc.host_dc) {
+> +		dc_mr = host_memory_backend_get_memory(ct3d->dc.host_dc);
+> +		dc_size = ct3d->dc.total_dynamic_capicity;
+> +	}
+>  
+> -    if (!vmr && !pmr) {
+> +    if (!vmr && !pmr && !dc_mr) {
+>          return false;
+>      }
+>  
+> -    if (dpa_offset + 64 > int128_get64(ct3d->cxl_dstate.mem_size)) {
+> -        return false;
+> -    }
+> +	if (dpa_offset >= vmr_size + pmr_size + dc_size)
+> +		return false;
+> +	if (dpa_offset + 64 >= vmr_size + pmr_size && ct3d->dc.num_regions == 0)
+> +		return false;
+>  
+> -    if (vmr) {
+> -        if (dpa_offset <= int128_get64(vmr->size)) {
+> -            as = &ct3d->hostvmem_as;
+> -        } else {
+> -            as = &ct3d->hostpmem_as;
+> -            dpa_offset -= vmr->size;
+> -        }
+> -    } else {
+> -        as = &ct3d->hostpmem_as;
+> -    }
+> +	if (dpa_offset < vmr_size) {
+> +		as = &ct3d->hostvmem_as;
+> +	} else if (dpa_offset < vmr_size + pmr_size) {
+> +		as = &ct3d->hostpmem_as;
+> +		dpa_offset -= vmr->size;
+> +	} else {
+> +		as = &ct3d->dc.host_dc_as;
+> +		dpa_offset -= (vmr_size + pmr_size);
+> +	}
+>  
+>      address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, &data, 64);
+>      return true;
+> @@ -1711,6 +1921,14 @@ static void qmp_cxl_process_dynamic_capacity_event(const char *path, CxlEventLog
+>  		memcpy(&dCap.dynamic_capacity_extent, &extents[i]
+>  				, sizeof(CXLDCExtent_raw));
+>  
+> +		if (dCap.type == 0x0)
+
+Enum values as suggested in earlier patch.
+
+> +			set_region_block_backed(dcd, extents[i].start_dpa, extents[i].len);
+> +		else if (dCap.type == 0x1)
+> +			clear_region_block_backed(dcd, extents[i].start_dpa,
+> +					extents[i].len);
+> +		else
+> +			error_setg(errp, "DC event not support yet, no bitmap op");
+> +
+>  		if (cxl_event_insert(cxlds, CXL_EVENT_TYPE_DYNAMIC_CAP,
+>  					(CXLEventRecordRaw *)&dCap)) {
+>  			;
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index c0c8fcc24b..d9b6776e2c 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -211,7 +211,7 @@ typedef struct cxl_device_state {
+>      } timestamp;
+>  
+>      /* memory region size, HDM */
+> -    uint64_t mem_size;
+> +	uint64_t static_mem_size;
+>      uint64_t pmem_size;
+>      uint64_t vmem_size;
+>  
+> @@ -412,6 +412,7 @@ typedef struct CXLDCD_Region {
+>  	uint64_t block_size;
+>  	uint32_t dsmadhandle;
+>  	uint8_t flags;
+> +	unsigned long *blk_bitmap;
+>  } CXLDCD_Region;
+>  
+>  struct CXLType3Dev {
+> @@ -447,12 +448,17 @@ struct CXLType3Dev {
+>      uint64_t poison_list_overflow_ts;
+>  
+>  	struct dynamic_capacity {
+> +		HostMemoryBackend *host_dc;
+> +		AddressSpace host_dc_as;
+> +
+> +		uint8_t num_hosts; //Table 7-55
+
+Not visible here as far as I can see. So leave it for now.
+
+>  		uint8_t num_regions; // 1-8
+>  		struct CXLDCD_Region regions[DCD_MAX_REGION_NUM];
+>  		CXLDCDExtentList extents;
+>  
+>  		uint32_t total_extent_count;
+>  		uint32_t ext_list_gen_seq;
+> +		uint64_t total_dynamic_capicity; // 256M aligned
+capacity
+
+>  	} dc;
+>  };
+>  
+
 
