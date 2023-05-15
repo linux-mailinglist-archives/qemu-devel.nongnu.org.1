@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F5B703E04
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 21:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3018703E1E
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 22:07:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyeMA-0004ET-Tg; Mon, 15 May 2023 15:59:42 -0400
+	id 1pyeRu-000727-A4; Mon, 15 May 2023 16:05:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nieklinnenbank@gmail.com>)
- id 1pyeLU-0003tX-Gu; Mon, 15 May 2023 15:59:02 -0400
-Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ id 1pyeRo-00071G-Ks; Mon, 15 May 2023 16:05:32 -0400
+Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nieklinnenbank@gmail.com>)
- id 1pyeLR-0005gO-SA; Mon, 15 May 2023 15:59:00 -0400
-Received: by mail-yb1-xb2a.google.com with SMTP id
- 3f1490d57ef6-b9e27684b53so11820805276.0; 
- Mon, 15 May 2023 12:58:57 -0700 (PDT)
+ id 1pyeRl-0007V2-C2; Mon, 15 May 2023 16:05:32 -0400
+Received: by mail-yb1-xb33.google.com with SMTP id
+ 3f1490d57ef6-ba6e90e9199so6306197276.0; 
+ Mon, 15 May 2023 13:05:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684180736; x=1686772736;
+ d=gmail.com; s=20221208; t=1684181128; x=1686773128;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=yeGedGxTXKQGoJ5NtayjQQSI1e5eybzJylh11Xp/p2c=;
- b=nSJI30s6sI7eH/dKtEwytbPbHkTTz5uKgBetR9Md8gHmsAwJ/OC6mWtOzwLFQiv5Kt
- 1TLBepH3pnvFt2UxY2MXj0h/dcn7uejPuQILSAICWJoNfnx0pk9MyJDxmnC5MxMY6vaY
- KjAl1kXrWo0CGHX9x10pqZV1QVafGAyD5G39hX7K89QvoSbPVn3/06eICy4xDc4zXIJ2
- Gt0Zz0doG3pzPjt1vBDHExcWoZWIbMP6Gc8uwoNll7IsIgpwFJyX7UzMfrydQyrm9kzr
- 0UuoofGJes77rIcPf7JK2oeVKK9076AUxlUa+i4PFKxRE+wo9WZT17EFPIquI55z5SD0
- WJyA==
+ bh=8M+3oWSs/3H3TR+BKjYWbe3RKqmDAvFi2t4Wr8AOUA4=;
+ b=hXcx47SmeiX+FpqTJQPb2AHJk4y+cs099XOt/G0Q0GPU/W3i6s2ruGuOPLzCw+mdef
+ Gff57wPhm85m2P1nnuyEty8fnhtNkF+ywd0pkVi8lXG/ZvJY1YrdgIZmzz0LXyNYwnyX
+ wqKX2wrdrYNRs1F0YqTmPp3M5IaWDenpgDbGgrjdid3W2CVuAcwiA/vMCFMbAkUN86P0
+ gG86tx7SrAga+c/kQX099EugoBma6S/T4RRiKt9QDziVk+1+WmiXAOTIWoT+xCPWGNJs
+ 0O7aFOpT+KGQ2zHVim4fjF/XZKh1UCnu5KsuUg3eQmJ1A7S0k9d6pV20pvLTODifmADM
+ wdFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684180736; x=1686772736;
+ d=1e100.net; s=20221208; t=1684181128; x=1686773128;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=yeGedGxTXKQGoJ5NtayjQQSI1e5eybzJylh11Xp/p2c=;
- b=af+dHBmzMlJh+sLNQtRfoRUiGfRdeMA+HjVZlxvQU9FZ4QzK84yBNgunmUMTe5chNu
- bnUe5AK7rNHOG2W7nQwcUE9H+AsO34EeTUhK5o8V24CJ/EOYvWmLI6NWUEW8YBObjQgF
- aBmgD7gu+5KRQrsYpwQvhRKIjd2HbJvRpBQW5Kr9dgHjBYgLFIyw5lo4Ehqt8hkdzQT5
- PnFeElPJzwEJrOCeftEZ8KJWci5RTtLQsVLkO+xe0Sg/qr+WRXdckwNNLNiEFUn+lbiJ
- fk3dfxDTiZ/CWMf//xSH3uR8BkJjqbBtRHmxTFAASVnUdWw/OlvQ4G1WLtItGb/EHN7W
- f4DQ==
-X-Gm-Message-State: AC+VfDzSStydC4oPLN6eCF0y86uOyg3noPWvDDKsphR694xZDaR7NvRQ
- p53abMHQs3ia2yNyMkUlFuSx/cPDKtaRb9HMkMk=
-X-Google-Smtp-Source: ACHHUZ4mjMW+KRMJyceyRjMrQu7ILdZlGG3Evj+PA1Zi3xRZt+mqNfjzJm+DHr2QzYkFc8LhLCKs1S3AEgYabwXLzlo=
-X-Received: by 2002:a25:4c6:0:b0:ba6:1084:9a2f with SMTP id
- 189-20020a2504c6000000b00ba610849a2fmr19879290ybe.16.1684180736617; Mon, 15
- May 2023 12:58:56 -0700 (PDT)
+ bh=8M+3oWSs/3H3TR+BKjYWbe3RKqmDAvFi2t4Wr8AOUA4=;
+ b=gR8TYV/qG30AJ99u2PYRdvKmVeTL4/753DlvqD9quZx5k54htuk448wW94WZrEvyTo
+ dkzw2yk4CUuVPU3mUtciVpf37Bb2u3i/fZVDsZmEdBs++RPSCYv1xG5zd0DxFjmosBFx
+ SpyOfKOAlc7n7afPg7AfpYgdOVqDv4rVDSFce2aQzr301JL4D2RS9iyqQvR3LOnfnCEJ
+ ROq3M9+/UUB0Wnw96TzkYwj4yAzdz9Ud5DV/grdIKLkVdFlDN3Sfru3A95T44bo5cvrO
+ y7vJtuI/l1xEHMOKrD09ufTDK4sI6UE9domsZTs9i8hdGUNKGPIuK8JSDRMHaT7y66wj
+ JJKA==
+X-Gm-Message-State: AC+VfDx1TbpfiIFFLbvLs0aWlXVunZIfh7/GpmiSCbiNX/OMf6S/quIE
+ mFViRshpk70pt3RIxVcMhlySkpskgOLBiuzrLC0=
+X-Google-Smtp-Source: ACHHUZ5eT5UbSNROP1HRQHS8M+bvfJ/STz050eJG+QHGT9RYgglHVZaV0vVB7ZaDVWBxxEaFKDS93t1ukg3dAJHs6x8=
+X-Received: by 2002:a05:6902:154f:b0:ba1:7cb6:7212 with SMTP id
+ r15-20020a056902154f00b00ba17cb67212mr38423143ybu.47.1684181126303; Mon, 15
+ May 2023 13:05:26 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230510103004.30015-1-qianfanguijin@163.com>
- <20230510103004.30015-9-qianfanguijin@163.com>
-In-Reply-To: <20230510103004.30015-9-qianfanguijin@163.com>
+ <20230510103004.30015-10-qianfanguijin@163.com>
+In-Reply-To: <20230510103004.30015-10-qianfanguijin@163.com>
 From: Niek Linnenbank <nieklinnenbank@gmail.com>
-Date: Mon, 15 May 2023 21:58:45 +0200
-Message-ID: <CAPan3WrCDAvfoUnc5jhjyvheiQnASE-oLcbDqQ8OGnHPQ7xmPg@mail.gmail.com>
-Subject: Re: [PATCH v4 08/11] hw: arm: allwinner-r40: Add emac and gmac support
+Date: Mon, 15 May 2023 22:05:15 +0200
+Message-ID: <CAPan3WrL72uH+2rA8eBE50V31ZfYSEDH22yABfC3+LGY0UnL_Q@mail.gmail.com>
+Subject: Re: [PATCH v4 09/11] hw: arm: allwinner-sramc: Add SRAM Controller
+ support for R40
 To: qianfanguijin@163.com
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, 
  Beniamino Galvani <b.galvani@gmail.com>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="0000000000008b335c05fbc0e2e7"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
- envelope-from=nieklinnenbank@gmail.com; helo=mail-yb1-xb2a.google.com
+Content-Type: multipart/alternative; boundary="000000000000c554c805fbc0f972"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
+ envelope-from=nieklinnenbank@gmail.com; helo=mail-yb1-xb33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,482 +88,957 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008b335c05fbc0e2e7
+--000000000000c554c805fbc0f972
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-
-Hi Qianfan,
 
 On Wed, May 10, 2023 at 12:30=E2=80=AFPM <qianfanguijin@163.com> wrote:
 
 > From: qianfan Zhao <qianfanguijin@163.com>
 >
-> R40 has two ethernet controllers named as emac and gmac. The emac is
-> compatibled with A10, and the GMAC is compatibled with H3.
+> Only a few important registers are added, especially the SRAM_VER
+> register.
 >
 > Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
-> ---
->  hw/arm/allwinner-r40.c         | 50 ++++++++++++++++++++++++++++++++--
->  hw/arm/bananapi_m2u.c          |  3 ++
->  include/hw/arm/allwinner-r40.h |  6 ++++
->  3 files changed, 57 insertions(+), 2 deletions(-)
 >
+Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+
+
+> ---
+>  hw/arm/Kconfig                    |   1 +
+>  hw/arm/allwinner-r40.c            |   7 +-
+>  hw/misc/Kconfig                   |   3 +
+>  hw/misc/allwinner-sramc.c         | 184 ++++++++++++++++++++++++++++++
+>  hw/misc/meson.build               |   1 +
+>  hw/misc/trace-events              |   4 +
+>  include/hw/arm/allwinner-r40.h    |   3 +
+>  include/hw/misc/allwinner-sramc.h |  69 +++++++++++
+>  8 files changed, 271 insertions(+), 1 deletion(-)
+>  create mode 100644 hw/misc/allwinner-sramc.c
+>  create mode 100644 include/hw/misc/allwinner-sramc.h
+>
+> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> index bad4ea158c..ae6f3911c5 100644
+> --- a/hw/arm/Kconfig
+> +++ b/hw/arm/Kconfig
+> @@ -377,6 +377,7 @@ config ALLWINNER_H3
+>  config ALLWINNER_R40
+>      bool
+>      default y if TCG && ARM
+> +    select ALLWINNER_SRAMC
+>      select ALLWINNER_A10_PIT
+>      select AXP2XX_PMU
+>      select SERIAL
 > diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
-> index b148c56449..c018ad231a 100644
+> index c018ad231a..7d29eb224f 100644
 > --- a/hw/arm/allwinner-r40.c
 > +++ b/hw/arm/allwinner-r40.c
 > @@ -39,6 +39,7 @@ const hwaddr allwinner_r40_memmap[] =3D {
 >      [AW_R40_DEV_SRAM_A2]    =3D 0x00004000,
 >      [AW_R40_DEV_SRAM_A3]    =3D 0x00008000,
 >      [AW_R40_DEV_SRAM_A4]    =3D 0x0000b400,
-> +    [AW_R40_DEV_EMAC]       =3D 0x01c0b000,
+> +    [AW_R40_DEV_SRAMC]      =3D 0x01c00000,
+>      [AW_R40_DEV_EMAC]       =3D 0x01c0b000,
 >      [AW_R40_DEV_MMC0]       =3D 0x01c0f000,
 >      [AW_R40_DEV_MMC1]       =3D 0x01c10000,
->      [AW_R40_DEV_MMC2]       =3D 0x01c11000,
-> @@ -54,6 +55,7 @@ const hwaddr allwinner_r40_memmap[] =3D {
->      [AW_R40_DEV_UART6]      =3D 0x01c29800,
->      [AW_R40_DEV_UART7]      =3D 0x01c29c00,
->      [AW_R40_DEV_TWI0]       =3D 0x01c2ac00,
-> +    [AW_R40_DEV_GMAC]       =3D 0x01c50000,
->      [AW_R40_DEV_DRAMCOM]    =3D 0x01c62000,
->      [AW_R40_DEV_DRAMCTL]    =3D 0x01c63000,
->      [AW_R40_DEV_DRAMPHY]    =3D 0x01c65000,
-> @@ -82,7 +84,6 @@ static struct AwR40Unimplemented r40_unimplemented[] =
-=3D {
->      { "spi1",       0x01c06000, 4 * KiB },
->      { "cs0",        0x01c09000, 4 * KiB },
->      { "keymem",     0x01c0a000, 4 * KiB },
-> -    { "emac",       0x01c0b000, 4 * KiB },
->      { "usb0-otg",   0x01c13000, 4 * KiB },
->      { "usb0-host",  0x01c14000, 4 * KiB },
->      { "crypto",     0x01c15000, 4 * KiB },
-> @@ -131,7 +132,6 @@ static struct AwR40Unimplemented r40_unimplemented[] =
-=3D
-> {
->      { "tvd2",       0x01c33000, 4 * KiB },
->      { "tvd3",       0x01c34000, 4 * KiB },
->      { "gpu",        0x01c40000, 64 * KiB },
-> -    { "gmac",       0x01c50000, 64 * KiB },
->      { "hstmr",      0x01c60000, 4 * KiB },
->      { "tcon-top",   0x01c70000, 4 * KiB },
->      { "lcd0",       0x01c71000, 4 * KiB },
-> @@ -180,6 +180,8 @@ enum {
->      AW_R40_GIC_SPI_MMC1      =3D 33,
->      AW_R40_GIC_SPI_MMC2      =3D 34,
->      AW_R40_GIC_SPI_MMC3      =3D 35,
-> +    AW_R40_GIC_SPI_EMAC      =3D 55,
-> +    AW_R40_GIC_SPI_GMAC      =3D 85,
->  };
->
->  /* Allwinner R40 general constants */
-> @@ -276,6 +278,11 @@ static void allwinner_r40_init(Object *obj)
->
->      object_initialize_child(obj, "twi0", &s->i2c0, TYPE_AW_I2C_SUN6I);
->
-> +    object_initialize_child(obj, "emac", &s->emac, TYPE_AW_EMAC);
-> +    object_initialize_child(obj, "gmac", &s->gmac, TYPE_AW_SUN8I_EMAC);
-> +    object_property_add_alias(obj, "gmac-phy-addr",
-> +                              OBJECT(&s->gmac), "phy-addr");
-> +
->      object_initialize_child(obj, "dramc", &s->dramc, TYPE_AW_R40_DRAMC);
->      object_property_add_alias(obj, "ram-addr", OBJECT(&s->dramc),
+> @@ -76,7 +77,6 @@ struct AwR40Unimplemented {
+>  static struct AwR40Unimplemented r40_unimplemented[] =3D {
+>      { "d-engine",   0x01000000, 4 * MiB },
+>      { "d-inter",    0x01400000, 128 * KiB },
+> -    { "sram-c",     0x01c00000, 4 * KiB },
+>      { "dma",        0x01c02000, 4 * KiB },
+>      { "nfdc",       0x01c03000, 4 * KiB },
+>      { "ts",         0x01c04000, 4 * KiB },
+> @@ -288,6 +288,8 @@ static void allwinner_r40_init(Object *obj)
 >                               "ram-addr");
-> @@ -285,6 +292,7 @@ static void allwinner_r40_init(Object *obj)
+>      object_property_add_alias(obj, "ram-size", OBJECT(&s->dramc),
+>                                "ram-size");
+> +
+> +    object_initialize_child(obj, "sramc", &s->sramc,
+> TYPE_AW_SRAMC_SUN8I_R40);
+>  }
 >
 >  static void allwinner_r40_realize(DeviceState *dev, Error **errp)
->  {
-> +    const char *r40_nic_models[] =3D { "gmac", "emac", NULL };
->      AwR40State *s =3D AW_R40(dev);
->      unsigned i;
->
-> @@ -442,6 +450,44 @@ static void allwinner_r40_realize(DeviceState *dev,
+> @@ -382,6 +384,9 @@ static void allwinner_r40_realize(DeviceState *dev,
 > Error **errp)
->      sysbus_mmio_map(SYS_BUS_DEVICE(&s->dramc), 2,
->                      s->memmap[AW_R40_DEV_DRAMPHY]);
+>                         AW_R40_GIC_SPI_TIMER1));
 >
-> +    /* nic support gmac and emac */
-> +    for (int i =3D 0; i < ARRAY_SIZE(r40_nic_models) - 1; i++) {
-> +        NICInfo *nic =3D &nd_table[i];
+>      /* SRAM */
+> +    sysbus_realize(SYS_BUS_DEVICE(&s->sramc), &error_fatal);
+> +    sysbus_mmio_map(SYS_BUS_DEVICE(&s->sramc), 0,
+> s->memmap[AW_R40_DEV_SRAMC]);
 > +
-> +        if (!nic->used) {
-> +            continue;
-> +        }
+>      memory_region_init_ram(&s->sram_a1, OBJECT(dev), "sram A1",
+>                              16 * KiB, &error_abort);
+>      memory_region_init_ram(&s->sram_a2, OBJECT(dev), "sram A2",
+> diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+> index efeb430a6c..e4c2149175 100644
+> --- a/hw/misc/Kconfig
+> +++ b/hw/misc/Kconfig
+> @@ -170,6 +170,9 @@ config VIRT_CTRL
+>  config LASI
+>      bool
 >
-
-Could you please clarify the lines below here? I'm not seeing the function
-call 'qemu_show_nic_models()' in any of the other machines / soc
-implementations.
-
-Also, if you intend to catch a possible input error here, probably its best
-to log/print the error for the user before calling exit()?
-
-
-> +        if (qemu_show_nic_models(nic->model, r40_nic_models)) {
-> +            exit(0);
->
-+        }
+> +config ALLWINNER_SRAMC
+> +    bool
 > +
-> +        switch (qemu_find_nic_model(nic, r40_nic_models,
-> r40_nic_models[0])) {
-> +        case 0: /* gmac */
-> +            qdev_set_nic_properties(DEVICE(&s->gmac), nic);
-> +            break;
-> +        case 1: /* emac */
-> +            qdev_set_nic_properties(DEVICE(&s->emac), nic);
-> +            break;
-> +        default:
-> +            exit(1);
-> +            break;
+>  config ALLWINNER_A10_CCM
+>      bool
+>
+> diff --git a/hw/misc/allwinner-sramc.c b/hw/misc/allwinner-sramc.c
+> new file mode 100644
+> index 0000000000..a8b731f8f2
+> --- /dev/null
+> +++ b/hw/misc/allwinner-sramc.c
+> @@ -0,0 +1,184 @@
+> +/*
+> + * Allwinner R40 SRAM controller emulation
+> + *
+> + * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
+> + *
+> + * This program is free software: you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation, either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/units.h"
+> +#include "hw/sysbus.h"
+> +#include "migration/vmstate.h"
+> +#include "qemu/log.h"
+> +#include "qemu/module.h"
+> +#include "qapi/error.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/qdev-properties-system.h"
+> +#include "hw/misc/allwinner-sramc.h"
+> +#include "trace.h"
+> +
+> +/*
+> + * register offsets
+> + * https://linux-sunxi.org/SRAM_Controller_Register_Guide
+> + */
+> +enum {
+> +    REG_SRAM_CTL1_CFG               =3D 0x04, /* SRAM Control register 1=
+ */
+> +    REG_SRAM_VER                    =3D 0x24, /* SRAM Version register *=
+/
+> +    REG_SRAM_R40_SOFT_ENTRY_REG0    =3D 0xbc,
+> +};
+> +
+> +/* REG_SRAMC_VERSION bit defines */
+> +#define SRAM_VER_READ_ENABLE            (1 << 15)
+> +#define SRAM_VER_VERSION_SHIFT          16
+> +#define SRAM_VERSION_SUN8I_R40          0x1701
+> +
+> +static uint64_t allwinner_sramc_read(void *opaque, hwaddr offset,
+> +                                     unsigned size)
+> +{
+> +    AwSRAMCState *s =3D AW_SRAMC(opaque);
+> +    AwSRAMCClass *sc =3D AW_SRAMC_GET_CLASS(s);
+> +    uint64_t val =3D 0;
+> +
+> +    switch (offset) {
+> +    case REG_SRAM_CTL1_CFG:
+> +        val =3D s->sram_ctl1;
+> +        break;
+> +    case REG_SRAM_VER:
+> +        /* bit15: lock bit, set this bit before reading this register */
+> +        if (s->sram_ver & SRAM_VER_READ_ENABLE) {
+> +            val =3D SRAM_VER_READ_ENABLE |
+> +                    (sc->sram_version_code << SRAM_VER_VERSION_SHIFT);
 > +        }
+> +        break;
+> +    case REG_SRAM_R40_SOFT_ENTRY_REG0:
+> +        val =3D s->sram_soft_entry_reg0;
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset
+> 0x%04x\n",
+> +                      __func__, (uint32_t)offset);
+> +        return 0;
 > +    }
 > +
-> +    /* GMAC */
-> +    object_property_set_link(OBJECT(&s->gmac), "dma-memory",
-> +                                     OBJECT(get_system_memory()),
-> &error_fatal);
-> +    sysbus_realize(SYS_BUS_DEVICE(&s->gmac), &error_fatal);
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(&s->gmac), 0,
-> s->memmap[AW_R40_DEV_GMAC]);
-> +    sysbus_connect_irq(SYS_BUS_DEVICE(&s->gmac), 0,
-> +                       qdev_get_gpio_in(DEVICE(&s->gic),
-> AW_R40_GIC_SPI_GMAC));
+> +    trace_allwinner_sramc_read(offset, val);
 > +
-> +    /* EMAC */
-> +    sysbus_realize(SYS_BUS_DEVICE(&s->emac), &error_fatal);
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(&s->emac), 0,
-> s->memmap[AW_R40_DEV_EMAC]);
-> +    sysbus_connect_irq(SYS_BUS_DEVICE(&s->emac), 0,
-> +                       qdev_get_gpio_in(DEVICE(&s->gic),
-> AW_R40_GIC_SPI_EMAC));
+> +    return val;
+> +}
 > +
->      /* Unimplemented devices */
->      for (i =3D 0; i < ARRAY_SIZE(r40_unimplemented); i++) {
->          create_unimplemented_device(r40_unimplemented[i].device_name,
-> diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c
-> index 20a4550c68..74121d8966 100644
-> --- a/hw/arm/bananapi_m2u.c
-> +++ b/hw/arm/bananapi_m2u.c
-> @@ -92,6 +92,9 @@ static void bpim2u_init(MachineState *machine)
->      object_property_set_int(OBJECT(r40), "ram-size",
->                              r40->ram_size, &error_abort);
+> +static void allwinner_sramc_write(void *opaque, hwaddr offset,
+> +                                  uint64_t val, unsigned size)
+> +{
+> +    AwSRAMCState *s =3D AW_SRAMC(opaque);
+> +
+> +    trace_allwinner_sramc_write(offset, val);
+> +
+> +    switch (offset) {
+> +    case REG_SRAM_CTL1_CFG:
+> +        s->sram_ctl1 =3D val;
+> +        break;
+> +    case REG_SRAM_VER:
+> +        /* Only the READ_ENABLE bit is writeable */
+> +        s->sram_ver =3D val & SRAM_VER_READ_ENABLE;
+> +        break;
+> +    case REG_SRAM_R40_SOFT_ENTRY_REG0:
+> +        s->sram_soft_entry_reg0 =3D val;
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset
+> 0x%04x\n",
+> +                      __func__, (uint32_t)offset);
+> +        break;
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps allwinner_sramc_ops =3D {
+> +    .read =3D allwinner_sramc_read,
+> +    .write =3D allwinner_sramc_write,
+> +    .endianness =3D DEVICE_NATIVE_ENDIAN,
+> +    .valid =3D {
+> +        .min_access_size =3D 4,
+> +        .max_access_size =3D 4,
+> +    },
+> +    .impl.min_access_size =3D 4,
+> +};
+> +
+> +static const VMStateDescription allwinner_sramc_vmstate =3D {
+> +    .name =3D "allwinner-sramc",
+> +    .version_id =3D 1,
+> +    .minimum_version_id =3D 1,
+> +    .fields =3D (VMStateField[]) {
+> +        VMSTATE_UINT32(sram_ver, AwSRAMCState),
+> +        VMSTATE_UINT32(sram_soft_entry_reg0, AwSRAMCState),
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+> +
+> +static void allwinner_sramc_reset(DeviceState *dev)
+> +{
+> +    AwSRAMCState *s =3D AW_SRAMC(dev);
+> +    AwSRAMCClass *sc =3D AW_SRAMC_GET_CLASS(s);
+> +
+> +    switch (sc->sram_version_code) {
+> +    case SRAM_VERSION_SUN8I_R40:
+> +        s->sram_ctl1 =3D 0x1300;
+> +        break;
+> +    }
+> +}
+> +
+> +static void allwinner_sramc_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
+> +
+> +    dc->reset =3D allwinner_sramc_reset;
+> +    dc->vmsd =3D &allwinner_sramc_vmstate;
+> +}
+> +
+> +static void allwinner_sramc_init(Object *obj)
+> +{
+> +    SysBusDevice *sbd =3D SYS_BUS_DEVICE(obj);
+> +    AwSRAMCState *s =3D AW_SRAMC(obj);
+> +
+> +    /* Memory mapping */
+> +    memory_region_init_io(&s->iomem, OBJECT(s), &allwinner_sramc_ops, s,
+> +                           TYPE_AW_SRAMC, 1 * KiB);
+> +    sysbus_init_mmio(sbd, &s->iomem);
+> +}
+> +
+> +static const TypeInfo allwinner_sramc_info =3D {
+> +    .name          =3D TYPE_AW_SRAMC,
+> +    .parent        =3D TYPE_SYS_BUS_DEVICE,
+> +    .instance_init =3D allwinner_sramc_init,
+> +    .instance_size =3D sizeof(AwSRAMCState),
+> +    .class_init    =3D allwinner_sramc_class_init,
+> +};
+> +
+> +static void allwinner_r40_sramc_class_init(ObjectClass *klass, void *dat=
+a)
+> +{
+> +    AwSRAMCClass *sc =3D AW_SRAMC_CLASS(klass);
+> +
+> +    sc->sram_version_code =3D SRAM_VERSION_SUN8I_R40;
+> +}
+> +
+> +static const TypeInfo allwinner_r40_sramc_info =3D {
+> +    .name          =3D TYPE_AW_SRAMC_SUN8I_R40,
+> +    .parent        =3D TYPE_AW_SRAMC,
+> +    .class_init    =3D allwinner_r40_sramc_class_init,
+> +};
+> +
+> +static void allwinner_sramc_register(void)
+> +{
+> +    type_register_static(&allwinner_sramc_info);
+> +    type_register_static(&allwinner_r40_sramc_info);
+> +}
+> +
+> +type_init(allwinner_sramc_register)
+> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+> index b04d43e05a..78ca857c9d 100644
+> --- a/hw/misc/meson.build
+> +++ b/hw/misc/meson.build
+> @@ -37,6 +37,7 @@ subdir('macio')
 >
-> +    /* GMAC PHY */
-> +    object_property_set_uint(OBJECT(r40), "gmac-phy-addr", 1,
-> &error_abort);
-> +
->      /* Mark R40 object realized */
->      qdev_realize(DEVICE(r40), NULL, &error_abort);
+>  softmmu_ss.add(when: 'CONFIG_IVSHMEM_DEVICE', if_true: files('ivshmem.c'=
+))
 >
+> +softmmu_ss.add(when: 'CONFIG_ALLWINNER_SRAMC', if_true:
+> files('allwinner-sramc.c'))
+>  softmmu_ss.add(when: 'CONFIG_ALLWINNER_A10_CCM', if_true:
+> files('allwinner-a10-ccm.c'))
+>  softmmu_ss.add(when: 'CONFIG_ALLWINNER_A10_DRAMC', if_true:
+> files('allwinner-a10-dramc.c'))
+>  softmmu_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true:
+> files('allwinner-h3-ccu.c'))
+> diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+> index 8b68f07765..4d1a0e17af 100644
+> --- a/hw/misc/trace-events
+> +++ b/hw/misc/trace-events
+> @@ -33,6 +33,10 @@ allwinner_r40_dramphy_write(uint64_t offset, uint64_t
+> data, unsigned size) "writ
+>  allwinner_sid_read(uint64_t offset, uint64_t data, unsigned size) "offse=
+t
+> 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+>  allwinner_sid_write(uint64_t offset, uint64_t data, unsigned size)
+> "offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+>
+> +# allwinner-sramc.c
+> +allwinner_sramc_read(uint64_t offset, uint64_t data) "offset 0x%" PRIx64
+> " data 0x%" PRIx64
+> +allwinner_sramc_write(uint64_t offset, uint64_t data) "offset 0x%" PRIx6=
+4
+> " data 0x%" PRIx64
+> +
+>  # avr_power.c
+>  avr_power_read(uint8_t value) "power_reduc read value:%u"
+>  avr_power_write(uint8_t value) "power_reduc write value:%u"
 > diff --git a/include/hw/arm/allwinner-r40.h
 > b/include/hw/arm/allwinner-r40.h
-> index 8243e8903b..5f2d08489e 100644
+> index 5f2d08489e..72710d3edc 100644
 > --- a/include/hw/arm/allwinner-r40.h
 > +++ b/include/hw/arm/allwinner-r40.h
-> @@ -28,6 +28,8 @@
+> @@ -27,6 +27,7 @@
+>  #include "hw/sd/allwinner-sdhost.h"
 >  #include "hw/misc/allwinner-r40-ccu.h"
 >  #include "hw/misc/allwinner-r40-dramc.h"
+> +#include "hw/misc/allwinner-sramc.h"
 >  #include "hw/i2c/allwinner-i2c.h"
-> +#include "hw/net/allwinner_emac.h"
-> +#include "hw/net/allwinner-sun8i-emac.h"
->  #include "target/arm/cpu.h"
->  #include "sysemu/block-backend.h"
->
-> @@ -36,6 +38,7 @@ enum {
+>  #include "hw/net/allwinner_emac.h"
+>  #include "hw/net/allwinner-sun8i-emac.h"
+> @@ -38,6 +39,7 @@ enum {
 >      AW_R40_DEV_SRAM_A2,
 >      AW_R40_DEV_SRAM_A3,
 >      AW_R40_DEV_SRAM_A4,
-> +    AW_R40_DEV_EMAC,
+> +    AW_R40_DEV_SRAMC,
+>      AW_R40_DEV_EMAC,
 >      AW_R40_DEV_MMC0,
 >      AW_R40_DEV_MMC1,
->      AW_R40_DEV_MMC2,
-> @@ -51,6 +54,7 @@ enum {
->      AW_R40_DEV_UART6,
->      AW_R40_DEV_UART7,
->      AW_R40_DEV_TWI0,
-> +    AW_R40_DEV_GMAC,
->      AW_R40_DEV_GIC_DIST,
->      AW_R40_DEV_GIC_CPU,
->      AW_R40_DEV_GIC_HYP,
-> @@ -103,6 +107,8 @@ struct AwR40State {
+> @@ -102,6 +104,7 @@ struct AwR40State {
+>
+>      ARMCPU cpus[AW_R40_NUM_CPUS];
+>      const hwaddr *memmap;
+> +    AwSRAMCState sramc;
+>      AwA10PITState timer;
+>      AwSdHostState mmc[AW_R40_NUM_MMCS];
 >      AwR40ClockCtlState ccu;
->      AwR40DramCtlState dramc;
->      AWI2CState i2c0;
-> +    AwEmacState emac;
-> +    AwSun8iEmacState gmac;
->      GICState gic;
->      MemoryRegion sram_a1;
->      MemoryRegion sram_a2;
+> diff --git a/include/hw/misc/allwinner-sramc.h
+> b/include/hw/misc/allwinner-sramc.h
+> new file mode 100644
+> index 0000000000..66b01b8d04
+> --- /dev/null
+> +++ b/include/hw/misc/allwinner-sramc.h
+> @@ -0,0 +1,69 @@
+> +/*
+> + * Allwinner SRAM controller emulation
+> + *
+> + * Copyright (C) 2023 qianfan Zhao <qianfanguijin@163.com>
+> + *
+> + * This program is free software: you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation, either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef HW_MISC_ALLWINNER_SRAMC_H
+> +#define HW_MISC_ALLWINNER_SRAMC_H
+> +
+> +#include "qom/object.h"
+> +#include "hw/sysbus.h"
+> +#include "qemu/uuid.h"
+> +
+> +/**
+> + * Object model
+> + * @{
+> + */
+> +#define TYPE_AW_SRAMC               "allwinner-sramc"
+> +#define TYPE_AW_SRAMC_SUN8I_R40     TYPE_AW_SRAMC "-sun8i-r40"
+> +OBJECT_DECLARE_TYPE(AwSRAMCState, AwSRAMCClass, AW_SRAMC)
+> +
+> +/** @} */
+> +
+> +/**
+> + * Allwinner SRAMC object instance state
+> + */
+> +struct AwSRAMCState {
+> +    /*< private >*/
+> +    SysBusDevice parent_obj;
+> +    /*< public >*/
+> +
+> +    /** Maps I/O registers in physical memory */
+> +    MemoryRegion iomem;
+> +
+> +    /* registers */
+> +    uint32_t sram_ctl1;
+> +    uint32_t sram_ver;
+> +    uint32_t sram_soft_entry_reg0;
+> +};
+> +
+> +/**
+> + * Allwinner SRAM Controller class-level struct.
+> + *
+> + * This struct is filled by each sunxi device specific code
+> + * such that the generic code can use this struct to support
+> + * all devices.
+> + */
+> +struct AwSRAMCClass {
+> +    /*< private >*/
+> +    SysBusDeviceClass parent_class;
+> +    /*< public >*/
+> +
+> +    uint32_t sram_version_code;
+> +};
+> +
+> +#endif /* HW_MISC_ALLWINNER_SRAMC_H */
 > --
 > 2.25.1
 >
 >
-Regards,
-Niek
+
 --=20
 Niek Linnenbank
 
---0000000000008b335c05fbc0e2e7
+--000000000000c554c805fbc0f972
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div><div dir=3D"ltr">Hi Qianfan,<br></div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 10, 2023=
- at 12:30=E2=80=AFPM &lt;<a href=3D"mailto:qianfanguijin@163.com">qianfangu=
-ijin@163.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">From: qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163.com"=
- target=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 10, 2023 at 12:30=E2=80=
+=AFPM &lt;<a href=3D"mailto:qianfanguijin@163.com">qianfanguijin@163.com</a=
+>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px=
+ 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Fro=
+m: qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163.com" target=3D"_bla=
+nk">qianfanguijin@163.com</a>&gt;<br>
 <br>
-R40 has two ethernet controllers named as emac and gmac. The emac is<br>
-compatibled with A10, and the GMAC is compatibled with H3.<br>
+Only a few important registers are added, especially the SRAM_VER<br>
+register.<br>
 <br>
 Signed-off-by: qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163.com" ta=
-rget=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
+rget=3D"_blank">qianfanguijin@163.com</a>&gt;<br></blockquote><div>Reviewed=
+-by: Niek Linnenbank &lt;<a href=3D"mailto:nieklinnenbank@gmail.com">niekli=
+nnenbank@gmail.com</a>&gt;<br></div><div>=C2=A0</div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">
 ---<br>
-=C2=A0hw/arm/allwinner-r40.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 50 ++++++++=
-++++++++++++++++++++++++--<br>
-=C2=A0hw/arm/bananapi_m2u.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 3 ++<=
-br>
-=C2=A0include/hw/arm/allwinner-r40.h |=C2=A0 6 ++++<br>
-=C2=A03 files changed, 57 insertions(+), 2 deletions(-)<br>
+=C2=A0hw/arm/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 |=C2=A0 =C2=A01 +<br>
+=C2=A0hw/arm/allwinner-r40.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=
+=A0 =C2=A07 +-<br>
+=C2=A0hw/misc/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A03 +<br>
+=C2=A0hw/misc/allwinner-sramc.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 184 ++++=
+++++++++++++++++++++++++++<br>
+=C2=A0hw/misc/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0|=C2=A0 =C2=A01 +<br>
+=C2=A0hw/misc/trace-events=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+|=C2=A0 =C2=A04 +<br>
+=C2=A0include/hw/arm/allwinner-r40.h=C2=A0 =C2=A0 |=C2=A0 =C2=A03 +<br>
+=C2=A0include/hw/misc/allwinner-sramc.h |=C2=A0 69 +++++++++++<br>
+=C2=A08 files changed, 271 insertions(+), 1 deletion(-)<br>
+=C2=A0create mode 100644 hw/misc/allwinner-sramc.c<br>
+=C2=A0create mode 100644 include/hw/misc/allwinner-sramc.h<br>
 <br>
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig<br>
+index bad4ea158c..ae6f3911c5 100644<br>
+--- a/hw/arm/Kconfig<br>
++++ b/hw/arm/Kconfig<br>
+@@ -377,6 +377,7 @@ config ALLWINNER_H3<br>
+=C2=A0config ALLWINNER_R40<br>
+=C2=A0 =C2=A0 =C2=A0bool<br>
+=C2=A0 =C2=A0 =C2=A0default y if TCG &amp;&amp; ARM<br>
++=C2=A0 =C2=A0 select ALLWINNER_SRAMC<br>
+=C2=A0 =C2=A0 =C2=A0select ALLWINNER_A10_PIT<br>
+=C2=A0 =C2=A0 =C2=A0select AXP2XX_PMU<br>
+=C2=A0 =C2=A0 =C2=A0select SERIAL<br>
 diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c<br>
-index b148c56449..c018ad231a 100644<br>
+index c018ad231a..7d29eb224f 100644<br>
 --- a/hw/arm/allwinner-r40.c<br>
 +++ b/hw/arm/allwinner-r40.c<br>
 @@ -39,6 +39,7 @@ const hwaddr allwinner_r40_memmap[] =3D {<br>
 =C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_SRAM_A2]=C2=A0 =C2=A0 =3D 0x00004000,<br>
 =C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_SRAM_A3]=C2=A0 =C2=A0 =3D 0x00008000,<br>
 =C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_SRAM_A4]=C2=A0 =C2=A0 =3D 0x0000b400,<br>
-+=C2=A0 =C2=A0 [AW_R40_DEV_EMAC]=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x01c0b000,<=
-br>
++=C2=A0 =C2=A0 [AW_R40_DEV_SRAMC]=C2=A0 =C2=A0 =C2=A0 =3D 0x01c00000,<br>
+=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_EMAC]=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x01c0b=
+000,<br>
 =C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_MMC0]=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x01c0f=
 000,<br>
 =C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_MMC1]=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x01c10=
 000,<br>
-=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_MMC2]=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x01c11=
-000,<br>
-@@ -54,6 +55,7 @@ const hwaddr allwinner_r40_memmap[] =3D {<br>
-=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_UART6]=C2=A0 =C2=A0 =C2=A0 =3D 0x01c29800,<=
-br>
-=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_UART7]=C2=A0 =C2=A0 =C2=A0 =3D 0x01c29c00,<=
-br>
-=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_TWI0]=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x01c2a=
-c00,<br>
-+=C2=A0 =C2=A0 [AW_R40_DEV_GMAC]=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x01c50000,<=
-br>
-=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_DRAMCOM]=C2=A0 =C2=A0 =3D 0x01c62000,<br>
-=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_DRAMCTL]=C2=A0 =C2=A0 =3D 0x01c63000,<br>
-=C2=A0 =C2=A0 =C2=A0[AW_R40_DEV_DRAMPHY]=C2=A0 =C2=A0 =3D 0x01c65000,<br>
-@@ -82,7 +84,6 @@ static struct AwR40Unimplemented r40_unimplemented[] =3D =
-{<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;spi1&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c0600=
-0, 4 * KiB },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;cs0&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x01c0900=
-0, 4 * KiB },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;keymem&quot;,=C2=A0 =C2=A0 =C2=A00x01c0a000, 4 =
-* KiB },<br>
--=C2=A0 =C2=A0 { &quot;emac&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c0b000, 4 =
-* KiB },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;usb0-otg&quot;,=C2=A0 =C2=A00x01c13000, 4 * KiB=
+@@ -76,7 +77,6 @@ struct AwR40Unimplemented {<br>
+=C2=A0static struct AwR40Unimplemented r40_unimplemented[] =3D {<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;d-engine&quot;,=C2=A0 =C2=A00x01000000, 4 * MiB=
  },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;usb0-host&quot;,=C2=A0 0x01c14000, 4 * KiB },<b=
-r>
-=C2=A0 =C2=A0 =C2=A0{ &quot;crypto&quot;,=C2=A0 =C2=A0 =C2=A00x01c15000, 4 =
-* KiB },<br>
-@@ -131,7 +132,6 @@ static struct AwR40Unimplemented r40_unimplemented[] =
-=3D {<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;tvd2&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c3300=
-0, 4 * KiB },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;tvd3&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c3400=
-0, 4 * KiB },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;gpu&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x01c4000=
-0, 64 * KiB },<br>
--=C2=A0 =C2=A0 { &quot;gmac&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c50000, 64=
- * KiB },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;hstmr&quot;,=C2=A0 =C2=A0 =C2=A0 0x01c60000, 4 =
-* KiB },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;tcon-top&quot;,=C2=A0 =C2=A00x01c70000, 4 * KiB=
+=C2=A0 =C2=A0 =C2=A0{ &quot;d-inter&quot;,=C2=A0 =C2=A0 0x01400000, 128 * K=
+iB },<br>
+-=C2=A0 =C2=A0 { &quot;sram-c&quot;,=C2=A0 =C2=A0 =C2=A00x01c00000, 4 * KiB=
  },<br>
-=C2=A0 =C2=A0 =C2=A0{ &quot;lcd0&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c7100=
+=C2=A0 =C2=A0 =C2=A0{ &quot;dma&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x01c0200=
 0, 4 * KiB },<br>
-@@ -180,6 +180,8 @@ enum {<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_GIC_SPI_MMC1=C2=A0 =C2=A0 =C2=A0 =3D 33,<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_GIC_SPI_MMC2=C2=A0 =C2=A0 =C2=A0 =3D 34,<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_GIC_SPI_MMC3=C2=A0 =C2=A0 =C2=A0 =3D 35,<br>
-+=C2=A0 =C2=A0 AW_R40_GIC_SPI_EMAC=C2=A0 =C2=A0 =C2=A0 =3D 55,<br>
-+=C2=A0 =C2=A0 AW_R40_GIC_SPI_GMAC=C2=A0 =C2=A0 =C2=A0 =3D 85,<br>
-=C2=A0};<br>
-<br>
-=C2=A0/* Allwinner R40 general constants */<br>
-@@ -276,6 +278,11 @@ static void allwinner_r40_init(Object *obj)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0object_initialize_child(obj, &quot;twi0&quot;, &amp;s-&=
-gt;i2c0, TYPE_AW_I2C_SUN6I);<br>
-<br>
-+=C2=A0 =C2=A0 object_initialize_child(obj, &quot;emac&quot;, &amp;s-&gt;em=
-ac, TYPE_AW_EMAC);<br>
-+=C2=A0 =C2=A0 object_initialize_child(obj, &quot;gmac&quot;, &amp;s-&gt;gm=
-ac, TYPE_AW_SUN8I_EMAC);<br>
-+=C2=A0 =C2=A0 object_property_add_alias(obj, &quot;gmac-phy-addr&quot;,<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 OBJECT(&amp;s-&gt;gmac), &quot;phy-addr&quo=
-t;);<br>
-+<br>
-=C2=A0 =C2=A0 =C2=A0object_initialize_child(obj, &quot;dramc&quot;, &amp;s-=
-&gt;dramc, TYPE_AW_R40_DRAMC);<br>
-=C2=A0 =C2=A0 =C2=A0object_property_add_alias(obj, &quot;ram-addr&quot;, OB=
-JECT(&amp;s-&gt;dramc),<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;nfdc&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A00x01c0300=
+0, 4 * KiB },<br>
+=C2=A0 =C2=A0 =C2=A0{ &quot;ts&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A00x01=
+c04000, 4 * KiB },<br>
+@@ -288,6 +288,8 @@ static void allwinner_r40_init(Object *obj)<br>
 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
 =A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;ram-addr&quot;);<br>
-@@ -285,6 +292,7 @@ static void allwinner_r40_init(Object *obj)<br>
+=C2=A0 =C2=A0 =C2=A0object_property_add_alias(obj, &quot;ram-size&quot;, OB=
+JECT(&amp;s-&gt;dramc),<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;ram-size&quot;);<br>
++<br>
++=C2=A0 =C2=A0 object_initialize_child(obj, &quot;sramc&quot;, &amp;s-&gt;s=
+ramc, TYPE_AW_SRAMC_SUN8I_R40);<br>
+=C2=A0}<br>
 <br>
 =C2=A0static void allwinner_r40_realize(DeviceState *dev, Error **errp)<br>
-=C2=A0{<br>
-+=C2=A0 =C2=A0 const char *r40_nic_models[] =3D { &quot;gmac&quot;, &quot;e=
-mac&quot;, NULL };<br>
-=C2=A0 =C2=A0 =C2=A0AwR40State *s =3D AW_R40(dev);<br>
-=C2=A0 =C2=A0 =C2=A0unsigned i;<br>
-<br>
-@@ -442,6 +450,44 @@ static void allwinner_r40_realize(DeviceState *dev, Er=
-ror **errp)<br>
-=C2=A0 =C2=A0 =C2=A0sysbus_mmio_map(SYS_BUS_DEVICE(&amp;s-&gt;dramc), 2,<br=
->
+@@ -382,6 +384,9 @@ static void allwinner_r40_realize(DeviceState *dev, Err=
+or **errp)<br>
 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0s-&gt;memmap[AW_R40_DEV_DRAMPHY]);<br>
+=A0 =C2=A0 AW_R40_GIC_SPI_TIMER1));<br>
 <br>
-+=C2=A0 =C2=A0 /* nic support gmac and emac */<br>
-+=C2=A0 =C2=A0 for (int i =3D 0; i &lt; ARRAY_SIZE(r40_nic_models) - 1; i++=
-) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 NICInfo *nic =3D &amp;nd_table[i];<br>
+=C2=A0 =C2=A0 =C2=A0/* SRAM */<br>
++=C2=A0 =C2=A0 sysbus_realize(SYS_BUS_DEVICE(&amp;s-&gt;sramc), &amp;error_=
+fatal);<br>
++=C2=A0 =C2=A0 sysbus_mmio_map(SYS_BUS_DEVICE(&amp;s-&gt;sramc), 0, s-&gt;m=
+emmap[AW_R40_DEV_SRAMC]);<br>
 +<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!nic-&gt;used) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 continue;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br></blockquote><div><br></div><div>Could yo=
-u please clarify the lines below here? I&#39;m not seeing the function call=
- &#39;qemu_show_nic_models()&#39; in any of the other machines / soc implem=
-entations.</div><div><br></div><div>Also, if you intend to catch a possible=
- input error here, probably its best to log/print the error for the user be=
-fore calling exit()?<br></div><div>=C2=A0</div><blockquote class=3D"gmail_q=
-uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
-04);padding-left:1ex">
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (qemu_show_nic_models(nic-&gt;model, r40_ni=
-c_models)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(0); <br></blockquote><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex">
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0memory_region_init_ram(&amp;s-&gt;sram_a1, OBJECT(dev),=
+ &quot;sram A1&quot;,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A016 * KiB, &amp;error_abort);<br>
+=C2=A0 =C2=A0 =C2=A0memory_region_init_ram(&amp;s-&gt;sram_a2, OBJECT(dev),=
+ &quot;sram A2&quot;,<br>
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig<br>
+index efeb430a6c..e4c2149175 100644<br>
+--- a/hw/misc/Kconfig<br>
++++ b/hw/misc/Kconfig<br>
+@@ -170,6 +170,9 @@ config VIRT_CTRL<br>
+=C2=A0config LASI<br>
+=C2=A0 =C2=A0 =C2=A0bool<br>
+<br>
++config ALLWINNER_SRAMC<br>
++=C2=A0 =C2=A0 bool<br>
 +<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 switch (qemu_find_nic_model(nic, r40_nic_model=
-s, r40_nic_models[0])) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 case 0: /* gmac */<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qdev_set_nic_properties(DEVICE(&=
-amp;s-&gt;gmac), nic);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 case 1: /* emac */<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qdev_set_nic_properties(DEVICE(&=
-amp;s-&gt;emac), nic);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 default:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+=C2=A0config ALLWINNER_A10_CCM<br>
+=C2=A0 =C2=A0 =C2=A0bool<br>
+<br>
+diff --git a/hw/misc/allwinner-sramc.c b/hw/misc/allwinner-sramc.c<br>
+new file mode 100644<br>
+index 0000000000..a8b731f8f2<br>
+--- /dev/null<br>
++++ b/hw/misc/allwinner-sramc.c<br>
+@@ -0,0 +1,184 @@<br>
++/*<br>
++ * Allwinner R40 SRAM controller emulation<br>
++ *<br>
++ * Copyright (C) 2023 qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163=
+.com" target=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
++ *<br>
++ * This program is free software: you can redistribute it and/or modify<br=
+>
++ * it under the terms of the GNU General Public License as published by<br=
+>
++ * the Free Software Foundation, either version 2 of the License, or<br>
++ * (at your option) any later version.<br>
++ *<br>
++ * This program is distributed in the hope that it will be useful,<br>
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of<br>
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See the<br>
++ * GNU General Public License for more details.<br>
++ *<br>
++ * You should have received a copy of the GNU General Public License<br>
++ * along with this program.=C2=A0 If not, see &lt;<a href=3D"http://www.gn=
+u.org/licenses/" rel=3D"noreferrer" target=3D"_blank">http://www.gnu.org/li=
+censes/</a>&gt;.<br>
++ */<br>
++<br>
++#include &quot;qemu/osdep.h&quot;<br>
++#include &quot;qemu/units.h&quot;<br>
++#include &quot;hw/sysbus.h&quot;<br>
++#include &quot;migration/vmstate.h&quot;<br>
++#include &quot;qemu/log.h&quot;<br>
++#include &quot;qemu/module.h&quot;<br>
++#include &quot;qapi/error.h&quot;<br>
++#include &quot;hw/qdev-properties.h&quot;<br>
++#include &quot;hw/qdev-properties-system.h&quot;<br>
++#include &quot;hw/misc/allwinner-sramc.h&quot;<br>
++#include &quot;trace.h&quot;<br>
++<br>
++/*<br>
++ * register offsets<br>
++ * <a href=3D"https://linux-sunxi.org/SRAM_Controller_Register_Guide" rel=
+=3D"noreferrer" target=3D"_blank">https://linux-sunxi.org/SRAM_Controller_R=
+egister_Guide</a><br>
++ */<br>
++enum {<br>
++=C2=A0 =C2=A0 REG_SRAM_CTL1_CFG=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0=3D 0x04, /* SRAM Control register 1 */<br>
++=C2=A0 =C2=A0 REG_SRAM_VER=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =3D 0x24, /* SRAM Version register */<br>
++=C2=A0 =C2=A0 REG_SRAM_R40_SOFT_ENTRY_REG0=C2=A0 =C2=A0 =3D 0xbc,<br>
++};<br>
++<br>
++/* REG_SRAMC_VERSION bit defines */<br>
++#define SRAM_VER_READ_ENABLE=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 (1 &=
+lt;&lt; 15)<br>
++#define SRAM_VER_VERSION_SHIFT=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 16<br>
++#define SRAM_VERSION_SUN8I_R40=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0x1701<br=
+>
++<br>
++static uint64_t allwinner_sramc_read(void *opaque, hwaddr offset,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned size)<b=
+r>
++{<br>
++=C2=A0 =C2=A0 AwSRAMCState *s =3D AW_SRAMC(opaque);<br>
++=C2=A0 =C2=A0 AwSRAMCClass *sc =3D AW_SRAMC_GET_CLASS(s);<br>
++=C2=A0 =C2=A0 uint64_t val =3D 0;<br>
++<br>
++=C2=A0 =C2=A0 switch (offset) {<br>
++=C2=A0 =C2=A0 case REG_SRAM_CTL1_CFG:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 val =3D s-&gt;sram_ctl1;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 case REG_SRAM_VER:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* bit15: lock bit, set this bit before readin=
+g this register */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (s-&gt;sram_ver &amp; SRAM_VER_READ_ENABLE)=
+ {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 val =3D SRAM_VER_READ_ENABLE |<b=
+r>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 (sc-=
+&gt;sram_version_code &lt;&lt; SRAM_VER_VERSION_SHIFT);<br>
 +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 case REG_SRAM_R40_SOFT_ENTRY_REG0:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 val =3D s-&gt;sram_soft_entry_reg0;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 default:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset 0x%04x\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 __func__, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
 +=C2=A0 =C2=A0 }<br>
 +<br>
-+=C2=A0 =C2=A0 /* GMAC */<br>
-+=C2=A0 =C2=A0 object_property_set_link(OBJECT(&amp;s-&gt;gmac), &quot;dma-=
-memory&quot;,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0OBJECT(get_syste=
-m_memory()), &amp;error_fatal);<br>
-+=C2=A0 =C2=A0 sysbus_realize(SYS_BUS_DEVICE(&amp;s-&gt;gmac), &amp;error_f=
-atal);<br>
-+=C2=A0 =C2=A0 sysbus_mmio_map(SYS_BUS_DEVICE(&amp;s-&gt;gmac), 0, s-&gt;me=
-mmap[AW_R40_DEV_GMAC]);<br>
-+=C2=A0 =C2=A0 sysbus_connect_irq(SYS_BUS_DEVICE(&amp;s-&gt;gmac), 0,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0qdev_get_gpio_in(DEVICE(&amp;s-&gt;gic), AW_R40_GIC_SPI_GMAC));<b=
-r>
++=C2=A0 =C2=A0 trace_allwinner_sramc_read(offset, val);<br>
 +<br>
-+=C2=A0 =C2=A0 /* EMAC */<br>
-+=C2=A0 =C2=A0 sysbus_realize(SYS_BUS_DEVICE(&amp;s-&gt;emac), &amp;error_f=
-atal);<br>
-+=C2=A0 =C2=A0 sysbus_mmio_map(SYS_BUS_DEVICE(&amp;s-&gt;emac), 0, s-&gt;me=
-mmap[AW_R40_DEV_EMAC]);<br>
-+=C2=A0 =C2=A0 sysbus_connect_irq(SYS_BUS_DEVICE(&amp;s-&gt;emac), 0,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0qdev_get_gpio_in(DEVICE(&amp;s-&gt;gic), AW_R40_GIC_SPI_EMAC));<b=
-r>
++=C2=A0 =C2=A0 return val;<br>
++}<br>
 +<br>
-=C2=A0 =C2=A0 =C2=A0/* Unimplemented devices */<br>
-=C2=A0 =C2=A0 =C2=A0for (i =3D 0; i &lt; ARRAY_SIZE(r40_unimplemented); i++=
-) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0create_unimplemented_device(r40_unimpleme=
-nted[i].device_name,<br>
-diff --git a/hw/arm/bananapi_m2u.c b/hw/arm/bananapi_m2u.c<br>
-index 20a4550c68..74121d8966 100644<br>
---- a/hw/arm/bananapi_m2u.c<br>
-+++ b/hw/arm/bananapi_m2u.c<br>
-@@ -92,6 +92,9 @@ static void bpim2u_init(MachineState *machine)<br>
-=C2=A0 =C2=A0 =C2=A0object_property_set_int(OBJECT(r40), &quot;ram-size&quo=
-t;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0r40-&gt;ram_size, &amp;error_abort);<br>
++static void allwinner_sramc_write(void *opaque, hwaddr offset,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 uint64_t val, unsigned size)<=
+br>
++{<br>
++=C2=A0 =C2=A0 AwSRAMCState *s =3D AW_SRAMC(opaque);<br>
++<br>
++=C2=A0 =C2=A0 trace_allwinner_sramc_write(offset, val);<br>
++<br>
++=C2=A0 =C2=A0 switch (offset) {<br>
++=C2=A0 =C2=A0 case REG_SRAM_CTL1_CFG:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;sram_ctl1 =3D val;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 case REG_SRAM_VER:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Only the READ_ENABLE bit is writeable */<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;sram_ver =3D val &amp; SRAM_VER_READ_ENA=
+BLE;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 case REG_SRAM_R40_SOFT_ENTRY_REG0:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;sram_soft_entry_reg0 =3D val;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 default:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset 0x%04x\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 __func__, (uint32_t)offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 }<br>
++}<br>
++<br>
++static const MemoryRegionOps allwinner_sramc_ops =3D {<br>
++=C2=A0 =C2=A0 .read =3D allwinner_sramc_read,<br>
++=C2=A0 =C2=A0 .write =3D allwinner_sramc_write,<br>
++=C2=A0 =C2=A0 .endianness =3D DEVICE_NATIVE_ENDIAN,<br>
++=C2=A0 =C2=A0 .valid =3D {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .min_access_size =3D 4,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 .max_access_size =3D 4,<br>
++=C2=A0 =C2=A0 },<br>
++=C2=A0 =C2=A0 .impl.min_access_size =3D 4,<br>
++};<br>
++<br>
++static const VMStateDescription allwinner_sramc_vmstate =3D {<br>
++=C2=A0 =C2=A0 .name =3D &quot;allwinner-sramc&quot;,<br>
++=C2=A0 =C2=A0 .version_id =3D 1,<br>
++=C2=A0 =C2=A0 .minimum_version_id =3D 1,<br>
++=C2=A0 =C2=A0 .fields =3D (VMStateField[]) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT32(sram_ver, AwSRAMCState),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT32(sram_soft_entry_reg0, AwSRAMCSt=
+ate),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_END_OF_LIST()<br>
++=C2=A0 =C2=A0 }<br>
++};<br>
++<br>
++static void allwinner_sramc_reset(DeviceState *dev)<br>
++{<br>
++=C2=A0 =C2=A0 AwSRAMCState *s =3D AW_SRAMC(dev);<br>
++=C2=A0 =C2=A0 AwSRAMCClass *sc =3D AW_SRAMC_GET_CLASS(s);<br>
++<br>
++=C2=A0 =C2=A0 switch (sc-&gt;sram_version_code) {<br>
++=C2=A0 =C2=A0 case SRAM_VERSION_SUN8I_R40:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;sram_ctl1 =3D 0x1300;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 }<br>
++}<br>
++<br>
++static void allwinner_sramc_class_init(ObjectClass *klass, void *data)<br>
++{<br>
++=C2=A0 =C2=A0 DeviceClass *dc =3D DEVICE_CLASS(klass);<br>
++<br>
++=C2=A0 =C2=A0 dc-&gt;reset =3D allwinner_sramc_reset;<br>
++=C2=A0 =C2=A0 dc-&gt;vmsd =3D &amp;allwinner_sramc_vmstate;<br>
++}<br>
++<br>
++static void allwinner_sramc_init(Object *obj)<br>
++{<br>
++=C2=A0 =C2=A0 SysBusDevice *sbd =3D SYS_BUS_DEVICE(obj);<br>
++=C2=A0 =C2=A0 AwSRAMCState *s =3D AW_SRAMC(obj);<br>
++<br>
++=C2=A0 =C2=A0 /* Memory mapping */<br>
++=C2=A0 =C2=A0 memory_region_init_io(&amp;s-&gt;iomem, OBJECT(s), &amp;allw=
+inner_sramc_ops, s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0TYPE_AW_SRAMC, 1 * KiB);<br>
++=C2=A0 =C2=A0 sysbus_init_mmio(sbd, &amp;s-&gt;iomem);<br>
++}<br>
++<br>
++static const TypeInfo allwinner_sramc_info =3D {<br>
++=C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_SRAMC,<b=
+r>
++=C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_SYS_BUS_DEVICE,<=
+br>
++=C2=A0 =C2=A0 .instance_init =3D allwinner_sramc_init,<br>
++=C2=A0 =C2=A0 .instance_size =3D sizeof(AwSRAMCState),<br>
++=C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D allwinner_sramc_class_init,<br>
++};<br>
++<br>
++static void allwinner_r40_sramc_class_init(ObjectClass *klass, void *data)=
 <br>
-+=C2=A0 =C2=A0 /* GMAC PHY */<br>
-+=C2=A0 =C2=A0 object_property_set_uint(OBJECT(r40), &quot;gmac-phy-addr&qu=
-ot;, 1, &amp;error_abort);<br>
++{<br>
++=C2=A0 =C2=A0 AwSRAMCClass *sc =3D AW_SRAMC_CLASS(klass);<br>
 +<br>
-=C2=A0 =C2=A0 =C2=A0/* Mark R40 object realized */<br>
-=C2=A0 =C2=A0 =C2=A0qdev_realize(DEVICE(r40), NULL, &amp;error_abort);<br>
++=C2=A0 =C2=A0 sc-&gt;sram_version_code =3D SRAM_VERSION_SUN8I_R40;<br>
++}<br>
++<br>
++static const TypeInfo allwinner_r40_sramc_info =3D {<br>
++=C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_SRAMC_SU=
+N8I_R40,<br>
++=C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_SRAMC,<br>
++=C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D allwinner_r40_sramc_class_init,=
+<br>
++};<br>
++<br>
++static void allwinner_sramc_register(void)<br>
++{<br>
++=C2=A0 =C2=A0 type_register_static(&amp;allwinner_sramc_info);<br>
++=C2=A0 =C2=A0 type_register_static(&amp;allwinner_r40_sramc_info);<br>
++}<br>
++<br>
++type_init(allwinner_sramc_register)<br>
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build<br>
+index b04d43e05a..78ca857c9d 100644<br>
+--- a/hw/misc/meson.build<br>
++++ b/hw/misc/meson.build<br>
+@@ -37,6 +37,7 @@ subdir(&#39;macio&#39;)<br>
+<br>
+=C2=A0softmmu_ss.add(when: &#39;CONFIG_IVSHMEM_DEVICE&#39;, if_true: files(=
+&#39;ivshmem.c&#39;))<br>
+<br>
++softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_SRAMC&#39;, if_true: files(&#39=
+;allwinner-sramc.c&#39;))<br>
+=C2=A0softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_A10_CCM&#39;, if_true: fil=
+es(&#39;allwinner-a10-ccm.c&#39;))<br>
+=C2=A0softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_A10_DRAMC&#39;, if_true: f=
+iles(&#39;allwinner-a10-dramc.c&#39;))<br>
+=C2=A0softmmu_ss.add(when: &#39;CONFIG_ALLWINNER_H3&#39;, if_true: files(&#=
+39;allwinner-h3-ccu.c&#39;))<br>
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events<br>
+index 8b68f07765..4d1a0e17af 100644<br>
+--- a/hw/misc/trace-events<br>
++++ b/hw/misc/trace-events<br>
+@@ -33,6 +33,10 @@ allwinner_r40_dramphy_write(uint64_t offset, uint64_t da=
+ta, unsigned size) &quot;writ<br>
+=C2=A0allwinner_sid_read(uint64_t offset, uint64_t data, unsigned size) &qu=
+ot;offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; size %&quot;=
+ PRIu32<br>
+=C2=A0allwinner_sid_write(uint64_t offset, uint64_t data, unsigned size) &q=
+uot;offset 0x%&quot; PRIx64 &quot; data 0x%&quot; PRIx64 &quot; size %&quot=
+; PRIu32<br>
+<br>
++# allwinner-sramc.c<br>
++allwinner_sramc_read(uint64_t offset, uint64_t data) &quot;offset 0x%&quot=
+; PRIx64 &quot; data 0x%&quot; PRIx64<br>
++allwinner_sramc_write(uint64_t offset, uint64_t data) &quot;offset 0x%&quo=
+t; PRIx64 &quot; data 0x%&quot; PRIx64<br>
++<br>
+=C2=A0# avr_power.c<br>
+=C2=A0avr_power_read(uint8_t value) &quot;power_reduc read value:%u&quot;<b=
+r>
+=C2=A0avr_power_write(uint8_t value) &quot;power_reduc write value:%u&quot;=
 <br>
 diff --git a/include/hw/arm/allwinner-r40.h b/include/hw/arm/allwinner-r40.=
 h<br>
-index 8243e8903b..5f2d08489e 100644<br>
+index 5f2d08489e..72710d3edc 100644<br>
 --- a/include/hw/arm/allwinner-r40.h<br>
 +++ b/include/hw/arm/allwinner-r40.h<br>
-@@ -28,6 +28,8 @@<br>
+@@ -27,6 +27,7 @@<br>
+=C2=A0#include &quot;hw/sd/allwinner-sdhost.h&quot;<br>
 =C2=A0#include &quot;hw/misc/allwinner-r40-ccu.h&quot;<br>
 =C2=A0#include &quot;hw/misc/allwinner-r40-dramc.h&quot;<br>
++#include &quot;hw/misc/allwinner-sramc.h&quot;<br>
 =C2=A0#include &quot;hw/i2c/allwinner-i2c.h&quot;<br>
-+#include &quot;hw/net/allwinner_emac.h&quot;<br>
-+#include &quot;hw/net/allwinner-sun8i-emac.h&quot;<br>
-=C2=A0#include &quot;target/arm/cpu.h&quot;<br>
-=C2=A0#include &quot;sysemu/block-backend.h&quot;<br>
-<br>
-@@ -36,6 +38,7 @@ enum {<br>
+=C2=A0#include &quot;hw/net/allwinner_emac.h&quot;<br>
+=C2=A0#include &quot;hw/net/allwinner-sun8i-emac.h&quot;<br>
+@@ -38,6 +39,7 @@ enum {<br>
 =C2=A0 =C2=A0 =C2=A0AW_R40_DEV_SRAM_A2,<br>
 =C2=A0 =C2=A0 =C2=A0AW_R40_DEV_SRAM_A3,<br>
 =C2=A0 =C2=A0 =C2=A0AW_R40_DEV_SRAM_A4,<br>
-+=C2=A0 =C2=A0 AW_R40_DEV_EMAC,<br>
++=C2=A0 =C2=A0 AW_R40_DEV_SRAMC,<br>
+=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_EMAC,<br>
 =C2=A0 =C2=A0 =C2=A0AW_R40_DEV_MMC0,<br>
 =C2=A0 =C2=A0 =C2=A0AW_R40_DEV_MMC1,<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_MMC2,<br>
-@@ -51,6 +54,7 @@ enum {<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_UART6,<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_UART7,<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_TWI0,<br>
-+=C2=A0 =C2=A0 AW_R40_DEV_GMAC,<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_GIC_DIST,<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_GIC_CPU,<br>
-=C2=A0 =C2=A0 =C2=A0AW_R40_DEV_GIC_HYP,<br>
-@@ -103,6 +107,8 @@ struct AwR40State {<br>
+@@ -102,6 +104,7 @@ struct AwR40State {<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0ARMCPU cpus[AW_R40_NUM_CPUS];<br>
+=C2=A0 =C2=A0 =C2=A0const hwaddr *memmap;<br>
++=C2=A0 =C2=A0 AwSRAMCState sramc;<br>
+=C2=A0 =C2=A0 =C2=A0AwA10PITState timer;<br>
+=C2=A0 =C2=A0 =C2=A0AwSdHostState mmc[AW_R40_NUM_MMCS];<br>
 =C2=A0 =C2=A0 =C2=A0AwR40ClockCtlState ccu;<br>
-=C2=A0 =C2=A0 =C2=A0AwR40DramCtlState dramc;<br>
-=C2=A0 =C2=A0 =C2=A0AWI2CState i2c0;<br>
-+=C2=A0 =C2=A0 AwEmacState emac;<br>
-+=C2=A0 =C2=A0 AwSun8iEmacState gmac;<br>
-=C2=A0 =C2=A0 =C2=A0GICState gic;<br>
-=C2=A0 =C2=A0 =C2=A0MemoryRegion sram_a1;<br>
-=C2=A0 =C2=A0 =C2=A0MemoryRegion sram_a2;<br>
+diff --git a/include/hw/misc/allwinner-sramc.h b/include/hw/misc/allwinner-=
+sramc.h<br>
+new file mode 100644<br>
+index 0000000000..66b01b8d04<br>
+--- /dev/null<br>
++++ b/include/hw/misc/allwinner-sramc.h<br>
+@@ -0,0 +1,69 @@<br>
++/*<br>
++ * Allwinner SRAM controller emulation<br>
++ *<br>
++ * Copyright (C) 2023 qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163=
+.com" target=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
++ *<br>
++ * This program is free software: you can redistribute it and/or modify<br=
+>
++ * it under the terms of the GNU General Public License as published by<br=
+>
++ * the Free Software Foundation, either version 2 of the License, or<br>
++ * (at your option) any later version.<br>
++ *<br>
++ * This program is distributed in the hope that it will be useful,<br>
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of<br>
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See the<br>
++ * GNU General Public License for more details.<br>
++ *<br>
++ * You should have received a copy of the GNU General Public License<br>
++ * along with this program.=C2=A0 If not, see &lt;<a href=3D"http://www.gn=
+u.org/licenses/" rel=3D"noreferrer" target=3D"_blank">http://www.gnu.org/li=
+censes/</a>&gt;.<br>
++ */<br>
++<br>
++#ifndef HW_MISC_ALLWINNER_SRAMC_H<br>
++#define HW_MISC_ALLWINNER_SRAMC_H<br>
++<br>
++#include &quot;qom/object.h&quot;<br>
++#include &quot;hw/sysbus.h&quot;<br>
++#include &quot;qemu/uuid.h&quot;<br>
++<br>
++/**<br>
++ * Object model<br>
++ * @{<br>
++ */<br>
++#define TYPE_AW_SRAMC=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0&quot;allwinner-sramc&quot;<br>
++#define TYPE_AW_SRAMC_SUN8I_R40=C2=A0 =C2=A0 =C2=A0TYPE_AW_SRAMC &quot;-su=
+n8i-r40&quot;<br>
++OBJECT_DECLARE_TYPE(AwSRAMCState, AwSRAMCClass, AW_SRAMC)<br>
++<br>
++/** @} */<br>
++<br>
++/**<br>
++ * Allwinner SRAMC object instance state<br>
++ */<br>
++struct AwSRAMCState {<br>
++=C2=A0 =C2=A0 /*&lt; private &gt;*/<br>
++=C2=A0 =C2=A0 SysBusDevice parent_obj;<br>
++=C2=A0 =C2=A0 /*&lt; public &gt;*/<br>
++<br>
++=C2=A0 =C2=A0 /** Maps I/O registers in physical memory */<br>
++=C2=A0 =C2=A0 MemoryRegion iomem;<br>
++<br>
++=C2=A0 =C2=A0 /* registers */<br>
++=C2=A0 =C2=A0 uint32_t sram_ctl1;<br>
++=C2=A0 =C2=A0 uint32_t sram_ver;<br>
++=C2=A0 =C2=A0 uint32_t sram_soft_entry_reg0;<br>
++};<br>
++<br>
++/**<br>
++ * Allwinner SRAM Controller class-level struct.<br>
++ *<br>
++ * This struct is filled by each sunxi device specific code<br>
++ * such that the generic code can use this struct to support<br>
++ * all devices.<br>
++ */<br>
++struct AwSRAMCClass {<br>
++=C2=A0 =C2=A0 /*&lt; private &gt;*/<br>
++=C2=A0 =C2=A0 SysBusDeviceClass parent_class;<br>
++=C2=A0 =C2=A0 /*&lt; public &gt;*/<br>
++<br>
++=C2=A0 =C2=A0 uint32_t sram_version_code;<br>
++};<br>
++<br>
++#endif /* HW_MISC_ALLWINNER_SRAMC_H */<br>
 -- <br>
 2.25.1<br>
 <br>
-</blockquote></div><br clear=3D"all"></div><div>Regards,</div><div>Niek<br>=
-</div><div><span class=3D"gmail_signature_prefix">-- </span><br><div dir=3D=
-"ltr" class=3D"gmail_signature"><div dir=3D"ltr"><div>Niek Linnenbank<br><b=
-r></div></div></div></div></div>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"l=
+tr"><div>Niek Linnenbank<br><br></div></div></div></div>
 
---0000000000008b335c05fbc0e2e7--
+--000000000000c554c805fbc0f972--
 
