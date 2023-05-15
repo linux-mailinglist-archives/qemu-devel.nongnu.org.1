@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A09B703E00
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 21:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49917703DFC
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 21:58:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyeKS-0007mP-AH; Mon, 15 May 2023 15:57:56 -0400
+	id 1pyeKS-0007nM-Es; Mon, 15 May 2023 15:57:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pyeK9-0007RM-QI
- for qemu-devel@nongnu.org; Mon, 15 May 2023 15:57:40 -0400
+ id 1pyeKE-0007S5-SS
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 15:57:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pyeK3-0005I2-Sc
- for qemu-devel@nongnu.org; Mon, 15 May 2023 15:57:37 -0400
+ id 1pyeKD-0005Lm-Ii
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 15:57:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684180651;
+ s=mimecast20190719; t=1684180661;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Lb+aY3qgzi/sGzNZ53b4636ejNtUkewYSRIjO76Ct1I=;
- b=GWCpd0V9/dvPGatxlwN9/AjfNnzMWrRs3K3GTDeRhVx+hpi7858seVRjAgGuz7r3Qz0Hoq
- UMWkhXk0z+EDRv1k+sMPSIIi9CFZJx7iY739kQcFseMTHahTl2TrWVJjnki9VM+IsrNWSV
- NXKossh/jfzg7zY4pJnNd84+LBPlBCw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xlYe2Rxwb69cnr45U0hOL4Ulmyl99p21DIV2iWrX2EA=;
+ b=DJ7IG9u28cfPa3KXRjX5gvZsTSb8AlW3BIS21kId4T6uTeaQhSbtSqZN7mpJXykPK+d+nt
+ 8C6hFwNaoOITlqrASRdMWiF/RyOABZLcc1HRSpAguzUUY1CyF5WBUliizfLRC+VxRD9obp
+ Nt3n0jD2lqETrRBywcceMOn8eZPFF8w=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-313-_Sm7NKe3NCm8R68sj51zSg-1; Mon, 15 May 2023 15:57:28 -0400
-X-MC-Unique: _Sm7NKe3NCm8R68sj51zSg-1
+ us-mta-443-E8pRzP5MMpap5hb0VvPL6A-1; Mon, 15 May 2023 15:57:38 -0400
+X-MC-Unique: E8pRzP5MMpap5hb0VvPL6A-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50EA2101A553;
- Mon, 15 May 2023 19:57:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DEB69380671E;
+ Mon, 15 May 2023 19:57:37 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.171])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5AC4E492B00;
- Mon, 15 May 2023 19:57:23 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9655E492B00;
+ Mon, 15 May 2023 19:57:27 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Greg Kurz <groug@kaod.org>,
@@ -60,9 +60,10 @@ Cc: Peter Xu <peterx@redhat.com>, Greg Kurz <groug@kaod.org>,
  Eric Blake <eblake@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH v2 03/16] migration: Move setup_time to mig_stats
-Date: Mon, 15 May 2023 21:56:56 +0200
-Message-Id: <20230515195709.63843-4-quintela@redhat.com>
+Subject: [PATCH v2 04/16] qemu-file: Account for rate_limit usage on
+ qemu_fflush()
+Date: Mon, 15 May 2023 21:56:57 +0200
+Message-Id: <20230515195709.63843-5-quintela@redhat.com>
 In-Reply-To: <20230515195709.63843-1-quintela@redhat.com>
 References: <20230515195709.63843-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -93,129 +94,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is a time that needs to be cleaned each time cancel migration.
-Once there create migration_time_since() to calculate how time since a
-time in the past.
+That is the moment we know we have transferred something.
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 ---
+ migration/qemu-file.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Rename to migration_time_since (cédric)
----
- migration/migration-stats.h | 13 +++++++++++++
- migration/migration.h       |  1 -
- migration/migration-stats.c |  7 +++++++
- migration/migration.c       |  9 ++++-----
- 4 files changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/migration/migration-stats.h b/migration/migration-stats.h
-index e782f1b0df..21402af9e4 100644
---- a/migration/migration-stats.h
-+++ b/migration/migration-stats.h
-@@ -75,6 +75,10 @@ typedef struct {
-      * Number of bytes sent during precopy stage.
-      */
-     Stat64 precopy_bytes;
-+    /*
-+     * How long has the setup stage took.
-+     */
-+    Stat64 setup_time;
-     /*
-      * Total number of bytes transferred.
-      */
-@@ -87,4 +91,13 @@ typedef struct {
+diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+index 4bc875b452..956bd2a580 100644
+--- a/migration/qemu-file.c
++++ b/migration/qemu-file.c
+@@ -302,7 +302,9 @@ void qemu_fflush(QEMUFile *f)
+                                    &local_error) < 0) {
+             qemu_file_set_error_obj(f, -EIO, local_error);
+         } else {
+-            f->total_transferred += iov_size(f->iov, f->iovcnt);
++            uint64_t size = iov_size(f->iov, f->iovcnt);
++            qemu_file_acct_rate_limit(f, size);
++            f->total_transferred += size;
+         }
  
- extern MigrationAtomicStats mig_stats;
- 
-+/**
-+ * migration_time_since: Calculate how much time has passed
-+ *
-+ * @stats: migration stats
-+ * @since: reference time since we want to calculate
-+ *
-+ * Returns: Nothing.  The time is stored in val.
-+ */
-+void migration_time_since(MigrationAtomicStats *stats, int64_t since);
- #endif
-diff --git a/migration/migration.h b/migration/migration.h
-index 48a46123a0..27aa3b1035 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -316,7 +316,6 @@ struct MigrationState {
-     int64_t downtime;
-     int64_t expected_downtime;
-     bool capabilities[MIGRATION_CAPABILITY__MAX];
--    int64_t setup_time;
-     /*
-      * Whether guest was running when we enter the completion stage.
-      * If migration is interrupted by any reason, we need to continue
-diff --git a/migration/migration-stats.c b/migration/migration-stats.c
-index 2f2cea965c..3431453c90 100644
---- a/migration/migration-stats.c
-+++ b/migration/migration-stats.c
-@@ -12,6 +12,13 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/stats64.h"
-+#include "qemu/timer.h"
- #include "migration-stats.h"
- 
- MigrationAtomicStats mig_stats;
-+
-+void migration_time_since(MigrationAtomicStats *stats, int64_t since)
-+{
-+    int64_t now = qemu_clock_get_ms(QEMU_CLOCK_HOST);
-+    stat64_set(&stats->setup_time, now - since);
-+}
-diff --git a/migration/migration.c b/migration/migration.c
-index c41c7491bb..e9466273bb 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -887,7 +887,7 @@ static void populate_time_info(MigrationInfo *info, MigrationState *s)
- {
-     info->has_status = true;
-     info->has_setup_time = true;
--    info->setup_time = s->setup_time;
-+    info->setup_time = stat64_get(&mig_stats.setup_time);
- 
-     if (s->state == MIGRATION_STATUS_COMPLETED) {
-         info->has_total_time = true;
-@@ -1390,7 +1390,6 @@ void migrate_init(MigrationState *s)
-     s->pages_per_second = 0.0;
-     s->downtime = 0;
-     s->expected_downtime = 0;
--    s->setup_time = 0;
-     s->start_postcopy = false;
-     s->postcopy_after_devices = false;
-     s->migration_thread_running = false;
-@@ -2647,7 +2646,7 @@ static void migration_calculate_complete(MigrationState *s)
-         s->downtime = end_time - s->downtime_start;
+         qemu_iovec_release_ram(f);
+@@ -519,7 +521,6 @@ void qemu_put_buffer_async(QEMUFile *f, const uint8_t *buf, size_t size,
+         return;
      }
  
--    transfer_time = s->total_time - s->setup_time;
-+    transfer_time = s->total_time - stat64_get(&mig_stats.setup_time);
-     if (transfer_time) {
-         s->mbps = ((double) bytes * 8.0) / transfer_time / 1000;
+-    f->rate_limit_used += size;
+     add_to_iovec(f, buf, size, may_free);
+ }
+ 
+@@ -537,7 +538,6 @@ void qemu_put_buffer(QEMUFile *f, const uint8_t *buf, size_t size)
+             l = size;
+         }
+         memcpy(f->buf + f->buf_index, buf, l);
+-        f->rate_limit_used += l;
+         add_buf_to_iovec(f, l);
+         if (qemu_file_get_error(f)) {
+             break;
+@@ -554,7 +554,6 @@ void qemu_put_byte(QEMUFile *f, int v)
      }
-@@ -2969,7 +2968,7 @@ static void *migration_thread(void *opaque)
-     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
-                                MIGRATION_STATUS_ACTIVE);
  
--    s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
-+    migration_time_since(&mig_stats, setup_start);
+     f->buf[f->buf_index] = v;
+-    f->rate_limit_used++;
+     add_buf_to_iovec(f, 1);
+ }
  
-     trace_migration_thread_setup_complete();
- 
-@@ -3081,7 +3080,7 @@ static void *bg_migration_thread(void *opaque)
-     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
-                                MIGRATION_STATUS_ACTIVE);
- 
--    s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
-+    migration_time_since(&mig_stats, setup_start);
- 
-     trace_migration_thread_setup_complete();
-     s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
 -- 
 2.40.1
 
