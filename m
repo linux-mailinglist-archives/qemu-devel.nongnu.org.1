@@ -2,158 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF46703067
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 16:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8919703073
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 16:47:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyZM9-0002xH-Uy; Mon, 15 May 2023 10:39:21 -0400
+	id 1pyZOw-0007gH-8E; Mon, 15 May 2023 10:42:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1pyZM6-0002de-VS
- for qemu-devel@nongnu.org; Mon, 15 May 2023 10:39:19 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1pyZM2-0006SP-OM
- for qemu-devel@nongnu.org; Mon, 15 May 2023 10:39:17 -0400
-Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34FD2O6c031691; Mon, 15 May 2023 07:39:12 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=proofpoint20171006;
- bh=I68iekHOXdsVEW1sEbC5llReAJMI5gnVlYpKe4hV0bQ=;
- b=vPPKJ4UsoeXJMAXYKr/1lVA4oCkuwflovXxS/H139VlPJ1rgzu2HkgpvvxGyFlDZj2n1
- pfdiugV5AW8BUNOz/R+1Ls2kp+9us94FhVow+eeYjy95vNKk7Mh0Ekf0EEZflYSquEQP
- OdQ2MmggUJqMsKaR42y6wb42jVVvRh9yULzPk7VXvk2u7TVqAkGGoWql1xzXG5nYhySZ
- nnZt0ZP8ST1wCfzE/2j2A3PBoS1aSyqlU+M0hn+DzzcdszwMmznWwlwPhBx7HxOVCpuq
- 1bgKyuvf6FIdff6P03/YbLVuORykX6+JzodDWN6yQne+hbg6U2jpLECAAEJI7xJy0dk7 5w== 
-Received: from nam10-bn7-obe.outbound.protection.outlook.com
- (mail-bn7nam10lp2101.outbound.protection.outlook.com [104.47.70.101])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3qja3wk11y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 May 2023 07:39:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=facUC3zOypVuU+DB114hvVEWu8N7sTfLgu8+MY7cPeQAg5ercM6Vskzdp553SxjzW5RIjUGlaNLfLb//qOqaJS4ZChdKRs3tq/lt44odeZvWBgkLphYbEGT71aKcvkG6aLsJsIthIlmcu0TPagvZRyUeEbeE/LezkpKzcOvoqySJFrdEva+TKtRwhVvLgLuFn7jjBbOIjVcgIqaQP019wyWRSXBsC7z90ccqvKYOwk5TVmvzV7yYEhbZ1nz9e1gPL2jXh/AtBAvMDXrS2XK3qjvqb3cVn590dgHtxujO1wxT/keSJ+9wRnMgviqrRhARBx8+ODSqdHSmtq9/Z+Yo1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I68iekHOXdsVEW1sEbC5llReAJMI5gnVlYpKe4hV0bQ=;
- b=e6GJobBsdMX6ewK+LXS9IF2K9dM1FPEqXTo2+A5r3cB65C1BoC97fsyGLT1r4pGdSQFWPA3X/qXBmlsWnn0JAgHWhO4A3ewwswOOygzHK4g5qJBqY8b19sls2EVS9tWR0tzYl+y0sxokgI1aPTCnLs6zWRMntdv9AfQk1Laszq6LSzVxb+A0deauS6LMpuVWYtRiB88b696Pdmxix3/T/wx/Vcsqk79+Lp1M7vSh33Odnc5X113eOUAVt2yWPneqk6Udp2g+jXGn+vIoTbvXoe7OWxbdWoPafFlEZYv2ZB9/4MzcuqXan6fZXsEX2A4cmJb0QSEgdnhvB7ekyP2r+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I68iekHOXdsVEW1sEbC5llReAJMI5gnVlYpKe4hV0bQ=;
- b=wijJdKkBdQUe6eKZrjUjl5p/YgwBsBO3r1aGNLT6nFW6JIKttbwaXvwQcuY1yPFbLcozDg2uizR0n+hM9QntcBm2oJw4dWUcKHgCUpRjZooIOeREPZltGhSVy5bf5rxiCzNRN/CLdJYFrEVw7hTzt+ajg/8nJux+OZu6ICMudoJNcfX2YjQYYTbJMXpbYMemaUlV1wELv8wDgXfQ6UW0MFayW7gfyek5rkQUbXY/f8r/sB5JhWZJ2EygdJKa4fusj5/eWE9eylOSLWT00gVbhYLUeLg7ai8SRCETLmyrrdV13xbOIBJeYdBl50P+FQZxOz9/39LemWZBpDzD/Dgdcg==
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com (2603:10b6:a03:57::18)
- by CH2PR02MB7048.namprd02.prod.outlook.com (2603:10b6:610:5d::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.30; Mon, 15 May
- 2023 14:39:09 +0000
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::4500:569:a3d6:71c9]) by BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::4500:569:a3d6:71c9%6]) with mapi id 15.20.6387.030; Mon, 15 May 2023
- 14:39:09 +0000
-Message-ID: <ae609793-7d9b-a305-d0bf-e8e9eb59d66c@nutanix.com>
-Date: Mon, 15 May 2023 20:08:57 +0530
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH v4 4/8] migration: converts rdma backend to accept
- MigrateAddress struct
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
- dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-References: <20230512143240.192504-1-het.gala@nutanix.com>
- <20230512143240.192504-5-het.gala@nutanix.com> <ZGIIVc83VbEMgUhB@redhat.com>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <ZGIIVc83VbEMgUhB@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0020.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:b8::8) To BYAPR02MB4343.namprd02.prod.outlook.com
- (2603:10b6:a03:57::18)
+ (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
+ id 1pyZOn-0007WX-8n
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 10:42:05 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
+ id 1pyZOk-0006zV-SH
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 10:42:04 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1aaf2ede38fso124359665ad.2
+ for <qemu-devel@nongnu.org>; Mon, 15 May 2023 07:42:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1684161721; x=1686753721;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3XMl/4hE9MVAxodhxUQfas2HkhWZAFZbnfixZTTNXFI=;
+ b=KFEtzwaSFvXOQAI5uqHvvInIb+m7SobCQTuXzqz8v9ibxrJ3YbJ8TwwU3XDxcVtDAs
+ v+WWZ6nx93rs1uSZDtDqLLH5p4vcROZQ6Y1NM5dg3BmN8JS10fMpXREJnL+RHG237rN1
+ 7TbdIy0CEZlMDJRNEVT0Nd2rSqOiiFYEJxGof0hDZIIkCUGtviGFBzHNm0hKvaQSSjDS
+ 7O1z/AVB7B0QV2vjU95kWD6pRm6QWZFLwL63NQoSR2cDgnBXR7Iahdn7G8g2goyS0mMp
+ JGSVVrz/dMvICAs117d/1wSXt+loQJxiTdxU9vh1lfoTCaLSa9ENoY2qoTKHUHdNh7Av
+ x5uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684161721; x=1686753721;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3XMl/4hE9MVAxodhxUQfas2HkhWZAFZbnfixZTTNXFI=;
+ b=hFo6qCHxjJfuJ1QgEydbLiZiZbJuqmRz/dwEAUnqw2hB8okFZh9TB7IxtniOaCabrf
+ kM7Q6Zd9SeOQXuw370uFdYUy7ny4T7QL6x+K4nlOYG0TUeHCsGw90NL07d5K3Iw2F/rO
+ YvhXZON5THwkIg3OneTIaqZDKQ+ba3F2HqjBIFMRiZi2XkgQ3seTLx0EvheCEWwNvQO5
+ WW1IwyPGWfzI/cZD9z7RE+5QntSj9g14UB9zoKsej5SZLjbSwZMjqmPgZrHu5Ne9NswS
+ 0fzxNuu+uJuWHLrViWTKhzhCfDKpV481I1l5gy4eH+xt7kOBBoZ8+zCEEsUMTU4AVoE+
+ nlcA==
+X-Gm-Message-State: AC+VfDx8wi9p9TfzjSlZJrJSUXseKAX5DK0Ms1+ETP56HPtUPZBwOYzg
+ oYeZxkKtthuVschJNIRJuRQ=
+X-Google-Smtp-Source: ACHHUZ4ZJoqerGRH0a5uZQ9j+g3XnEF09R5I5+0hGgS2xaUYW2zD0OScg4eWx8L9LIsa9bu84fGJoQ==
+X-Received: by 2002:a17:902:d304:b0:1a9:21bc:65f8 with SMTP id
+ b4-20020a170902d30400b001a921bc65f8mr35534852plc.11.1684161721030; 
+ Mon, 15 May 2023 07:42:01 -0700 (PDT)
+Received: from [192.168.0.115] ([113.173.119.15])
+ by smtp.gmail.com with ESMTPSA id
+ p15-20020a1709027ecf00b001a1a07d04e6sm13700246plb.77.2023.05.15.07.41.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 15 May 2023 07:42:00 -0700 (PDT)
+Message-ID: <3cee23fd-fae1-458b-2b8b-656a2ff3195b@gmail.com>
+Date: Mon, 15 May 2023 21:41:55 +0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4343:EE_|CH2PR02MB7048:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8998c68a-9f6d-482f-32a2-08db5552245e
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: A2IQuYJfnNPsBHzvhm2OXtSgEKyLTOkoWwtYJqc2yCM7oHXS8oEs/TaVx+/6foi8lLWeos1+mJflfJhLJeYWm5JnPv7rJYbkiv7pnLeHwtbqrpKWrYoNJFBhg8ndps/7X2q6UxSWngFi7JEeIUUrtFYdZzCitXpc76JQLbheO8tudvFY+oVbhvZryFrR26A2JG14UYt0My3ItJRM7FNpRGqzISjYzXlkS+29SPjCJW0aiwE926W61KKUbAmXU9BDScYj+Hle+YOxFOWEI55UJCdvHSZNeDtgq6X6okwLieOXQ5Ert1j/ff3U/MRzRRyIDXgkoaa5BanFqsi4E7fxSXrnWwLO/Bb96ujl4gsu/D8BU+EeMzsXdxlJntKNBNUO5jNcMxbMIoZxSggzzkFxOBdIjXkr6qhTyPWgCDaqWZl7nxRL0dB3+Fdr6pn3HLMkc4KecJoFwscoSW5ESlSyrzOak/BG9WobSQEbesN+qInzkrO/p7nJ3b3rg7TARW/KI9T3pMX4J6o6SQ8HMQdXexHSEE6ct7u3k7YfE6nboXVz05rLh+N8Qz7pt1npisRMcvvxy+Lp9YMGhP/Y4G3ddUfnDg/HDqGeLGz0eI/0O3LViYljdykawSbtctWp9nvm3mcA26L2WDRwbzrSIt1FtA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR02MB4343.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(376002)(346002)(366004)(136003)(39860400002)(451199021)(2906002)(5660300002)(44832011)(36756003)(31696002)(86362001)(38100700002)(31686004)(107886003)(66556008)(4326008)(66946007)(66476007)(2616005)(6916009)(316002)(186003)(478600001)(26005)(53546011)(6666004)(6506007)(6512007)(6486002)(83380400001)(41300700001)(8676002)(8936002)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VVByTUo5QVdPTTNnOTJwY0YwOE1NSXlva0UxWStITmJqT0hiSUd5cmt1bTk2?=
- =?utf-8?B?Wmlka3lDdjdueTF0RGw0MTZpdTR2VjdnbHVpeFZWTHlPMXF4NjBEVUNVMG42?=
- =?utf-8?B?VHFGMXVDWnFMeTh0OUFuY0R0VExWTnhDc0JieU5FSlRuWTRzeGRkMlFIa0Ns?=
- =?utf-8?B?NUxnYTJScEsrajVqbFV0VldEbmlmU1FVaS9OSk15UExqeVIwZFFIWmF6dEI4?=
- =?utf-8?B?UndPKzV4SWJiYnQ3aDV1NWxsU2NTb3J6V2Zybk1rd2xPKzNMd1NYSTJJYzBs?=
- =?utf-8?B?K1hiNFFnTmJWbWJmVndEUmQ0VUJ5clAyNklycFNrWXpPejlVQjl3clkrRjZ4?=
- =?utf-8?B?Uzc5bW5QNEMyTGNOU2ZVWEVHSWNRL3lsQTRDbjlQK2hFUUUrWGtRMXBiUlRM?=
- =?utf-8?B?Q3FnOGVrWFJWeWVrK2VtcjFkdUg5TnE5YkFEZVdYTDZScVNFMys5aW5iMjNa?=
- =?utf-8?B?cEV3aFV2R1FTODFrR2dJNnRTdVIyU3RIbDE5eElKbDJwM0NKRVFaM1M1YjQ2?=
- =?utf-8?B?QktKaXZoaGk3WUZpR1RUeVJFaHpsM3ZYVjNGS0RYbzNvUkR6eUY1UHd5NGZz?=
- =?utf-8?B?aDNnZDZvQjRGUktLOHdpN3BVejdoMEhmZ0toY0J6K09laXUzMFZEZXo2SlVX?=
- =?utf-8?B?KzF1YU9wdzNkYzJSZ0gvT1VRU3ZhdWRIaGhMcG5OcndOb3FmY0doeXFRYmlD?=
- =?utf-8?B?OHd3MlBxQnNEZE4xVXpjS1p5Z2pzaVZ1VXlYTDJqazdkK2RhcnRCUU1KalZS?=
- =?utf-8?B?cnkzS2hEdTJkQStidVlMM2NPSklISGFhR3I5V0tYMjA3WXkwenJmcVZSaVpJ?=
- =?utf-8?B?UXF4QnR5VWtMeDlSeTllaGJJYmFmMTkyd0l6M2hhT3o5VWhUZ2xqcHF1aC9L?=
- =?utf-8?B?V1p0K2Q4dzhGNXRNbVc0TGR0NWNSTWtxVlZLT2NDYW1PeVI2cC8xdC9DUXp5?=
- =?utf-8?B?K1FSeDU4U2h1VVl3VkRqQ1dSRUpNN0NPVjVyR3R6YzFnUVhwRjlhKzNrQkR0?=
- =?utf-8?B?cHJocHhSNVRrWmd0NXkyOTFKMGIwMVdDVGdURFMwTHY1MTRyRXBsaDVvOUJj?=
- =?utf-8?B?TW9UY1BkbThjM1JnRHkvdERQWUJPLzZxUVJHUmdNQ0ZVSk9lbnNhWXlsdjhV?=
- =?utf-8?B?TzlVbzdZNFNRQUtOWHBHUmRNWlJ5YldMa1JHOERxa2hSNmNEeFh3b2JTSUpH?=
- =?utf-8?B?MWJRYjZabHNhNnJrOXNPVkY5TTJPdGdianM4T3A3OTUvMWtxVDcxYjNXUXZN?=
- =?utf-8?B?MzFvd09PUnJvYzRyMGphbXFaazl4TC9hanhFZlNBKy84Rk82Nm1aVlgyQUZx?=
- =?utf-8?B?MjcwUC9aU1B4TzFKaTBSNFdvUDdtOWZkS2lhTnI2NGVyMXJvYzFRVkltdUtC?=
- =?utf-8?B?NUtpYjFSZXN3dWxDdWE2WEZEeCtwRXZ2ZUtPTUxCMnR6MFowYmJvMGVacTJn?=
- =?utf-8?B?MUFaUEtPS2pmR3o2QTZMSU05V08yT0hMT1N6T2p2aGc4K3dCeWtvc3VNckxR?=
- =?utf-8?B?Uzk1T3AzTVFqK3A1RDdiblhLNnlLcXdjdGpVam9MY1hhQ01wcE00M2lKQnM2?=
- =?utf-8?B?RklZOVNvcXpnd1dkMTRzdktxbkVZRFRXcWRyZzFWL3ZIMEQ0VkpxRWxJcEJR?=
- =?utf-8?B?blg3d3NJdE1NT3BZVVhrdmlQTXBxUEhxWnhQYVpRcHgzcDdUdUgydHdMY3Z0?=
- =?utf-8?B?RzllMjRDZk9EaHQ0L0s5dDRQbEl2U2thcDEwYTUxZGF5TVpnZU1pVjRaNGJK?=
- =?utf-8?B?a1pXWmM4ck5ZK0t2cmkyZHlmWjloZHF6SlRLQXJIVHVocG1vQnB0WjBwUE9v?=
- =?utf-8?B?QWxKc2dVYXJWcDJkOU9QcDhlbER6ci84UDJEYXlKcTh4Zzc5R2pYQVFtT05v?=
- =?utf-8?B?LzVBdkFMNDNhVFBNM2VUelNFSzZON2pNZUsyMjMzNGFHOWErRmd3b3BKU2xU?=
- =?utf-8?B?UjJqQTdIZUY4YmVlanFOTGUxTEl2ZEVpcHZFY0xsRnJ1dVZ0THc0Ti9FZjZX?=
- =?utf-8?B?SDJrTEFZSEhDbzNqWG1CLzhMWHZoaVdKTHArbW5LalR1VktwM2hET2kxaDFC?=
- =?utf-8?B?UWpNM1Z6Y0d3b2ZyQzVlS3dEaDFDSERrbkVsZTcrNG4vNVl1dXZBSCtHSlBa?=
- =?utf-8?Q?jpFEBAdfo5L9/NcAk9OSox0bR?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8998c68a-9f6d-482f-32a2-08db5552245e
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4343.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2023 14:39:09.3037 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qfbb5/a5bNhHu4HYLq6PoMPDOhwKmMm3Ktj1VspAXa4BAO/PnlSfDDzy3Qg2PwbOlM9A1DgugO8dnObYRN/wrQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB7048
-X-Proofpoint-GUID: --5pKphuCI0No5YwUO4Bm_tkE87FigEY
-X-Proofpoint-ORIG-GUID: --5pKphuCI0No5YwUO4Bm_tkE87FigEY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-15_11,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
- helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [REPOST PATCH v3 5/5] amd_iommu: report x2APIC support to the
+ operating system
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+References: <20230411142440.8018-1-minhquangbui99@gmail.com>
+ <20230411142440.8018-6-minhquangbui99@gmail.com>
+ <20230512102159-mutt-send-email-mst@kernel.org>
+ <252a0071-2ffa-87c6-a72e-d27975ddecd5@gmail.com>
+ <20230514164040-mutt-send-email-mst@kernel.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+In-Reply-To: <20230514164040-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -56
+X-Spam_score: -5.7
 X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.811, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-3.811,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -170,134 +106,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 5/15/23 03:44, Michael S. Tsirkin wrote:
+> On Sun, May 14, 2023 at 03:55:11PM +0700, Bui Quang Minh wrote:
+>> On 5/12/23 21:39, Michael S. Tsirkin wrote:
+>>> On Tue, Apr 11, 2023 at 09:24:40PM +0700, Bui Quang Minh wrote:
+>>>> This commit adds XTSup configuration to let user choose to whether enable
+>>>> this feature or not. When XTSup is enabled, additional bytes in IRTE with
+>>>> enabled guest virtual VAPIC are used to support 32-bit destination id.
+>>>>
+>>>> Additionally, this commit changes to use IVHD type 0x11 in ACPI table for
+>>>> feature report to operating system. This is because Linux does not use
+>>>> XTSup in IOMMU Feature Reporting field of IVHD type 0x10 but only use XTSup
+>>>> bit in EFR Register Image of IVHD 0x11 to indicate x2APIC support (see
+>>>> init_iommu_one in linux/drivers/iommu/amd/init.c)
+>>>>
+>>>> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+>>>
+>>> I'm concerned that switching to type 11 will break some older guests.
+>>> It would be better if we could export both type 10 and type 11
+>>> ivhd. A question however would be how does this interact
+>>> with older guests. For example:
+>>> https://lists.linuxfoundation.org/pipermail/iommu/2016-January/015310.html
+>>> it looks like linux before 2016 only expected one ivhd entry?
+>>
+>> Export both type 0x10 and 0x11 looks reasonable to me. Before the above
+>> commit, I see that Linux still loops through multiple ivhd but only handles
+>> one with type 0x10. On newer kernel, it will choose to handle the type that
+>> appears last corresponding the first devid, which is weird in my opinion.
+>> +static u8 get_highest_supported_ivhd_type(struct acpi_table_header *ivrs)
+>> +{
+>> +	u8 *base = (u8 *)ivrs;
+>> +	struct ivhd_header *ivhd = (struct ivhd_header *)
+>> +					(base + IVRS_HEADER_LENGTH);
+>> +	u8 last_type = ivhd->type;
+>> +	u16 devid = ivhd->devid;
+>> +
+>> +	while (((u8 *)ivhd - base < ivrs->length) &&
+>> +	       (ivhd->type <= ACPI_IVHD_TYPE_MAX_SUPPORTED)) {
+>> +		u8 *p = (u8 *) ivhd;
+>> +
+>> +		if (ivhd->devid == devid)
+>> +			last_type = ivhd->type;
+>> +		ivhd = (struct ivhd_header *)(p + ivhd->length);
+>> +	}
+>> +
+>> +	return last_type;
+>> +}
+> 
+> Yes I don't get the logic here either.
+> Talk to kernel devs who wrote this?
+> 
+> commit 8c7142f56fedfc6824b5bca56fee1f443e01746b
+> Author: Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>
+> Date:   Fri Apr 1 09:05:59 2016 -0400
+> 
+>      iommu/amd: Use the most comprehensive IVHD type that the driver can support
+>      
+>      The IVRS in more recent AMD system usually contains multiple
+>      IVHD block types (e.g. 0x10, 0x11, and 0x40) for each IOMMU.
+>      The newer IVHD types provide more information (e.g. new features
+>      specified in the IOMMU spec), while maintain compatibility with
+>      the older IVHD type.
+>      
+>      Having multiple IVHD type allows older IOMMU drivers to still function
+>      (e.g. using the older IVHD type 0x10) while the newer IOMMU driver can use
+>      the newer IVHD types (e.g. 0x11 and 0x40). Therefore, the IOMMU driver
+>      should only make use of the newest IVHD type that it can support.
+>      
+>      This patch adds new logic to determine the highest level of IVHD type
+>      it can support, and use it throughout the to initialize the driver.
+>      This requires adding another pass to the IVRS parsing to determine
+>      appropriate IVHD type (see function get_highest_supported_ivhd_type())
+>      before parsing the contents.
+>      
+>      [Vincent: fix the build error of IVHD_DEV_ACPI_HID flag not found]
+>      
+>      Signed-off-by: Wan Zongshun <vincent.wan@amd.com>
+>      Signed-off-by: Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>
+>      Signed-off-by: Joerg Roedel <jroedel@suse.de>
 
-On 15/05/23 3:54 pm, Daniel P. Berrangé wrote:
-> On Fri, May 12, 2023 at 02:32:36PM +0000, Het Gala wrote:
->> RDMA based transport backend for 'migrate'/'migrate-incoming' QAPIs
->> accept new wire protocol of MigrateAddress struct.
->>
->> It is achived by parsing 'uri' string and storing migration parameters
->> required for RDMA connection into well defined InetSocketAddress struct.
->>
->> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
->> Signed-off-by: Het Gala <het.gala@nutanix.com>
->> ---
->>   migration/migration.c |  8 ++++----
->>   migration/rdma.c      | 38 ++++++++++++++++----------------------
->>   migration/rdma.h      |  6 ++++--
->>   3 files changed, 24 insertions(+), 28 deletions(-)
->>
->> @@ -3360,10 +3346,12 @@ static int qemu_rdma_accept(RDMAContext *rdma)
->>                                               .private_data_len = sizeof(cap),
->>                                            };
->>       RDMAContext *rdma_return_path = NULL;
->> +    InetSocketAddress *isock = g_new0(InetSocketAddress, 1);
->>       struct rdma_cm_event *cm_event;
->>       struct ibv_context *verbs;
->>       int ret = -EINVAL;
->>       int idx;
->> +    char arr[8];
->>   
->>       ret = rdma_get_cm_event(rdma->channel, &cm_event);
->>       if (ret) {
->> @@ -3375,13 +3363,17 @@ static int qemu_rdma_accept(RDMAContext *rdma)
->>           goto err_rdma_dest_wait;
->>       }
->>   
->> +    isock->host = rdma->host;
->> +    sprintf(arr,"%d", rdma->port);
->> +    isock->port = arr;
-> While Inet ports are 16-bit, and so 65535 fits in a char[8], nothing
-> at the QAPI parser level is enforcing this.
->
-> IOW, someone can pass QEMU a QAPI config with port = 235252353253253253232
-> and casue this sprintf to smash the stack.
->
-> Also this is assigning a stack variable to isock->port which
-> expects a heap variable. qapi_free_InetSocketAddress() will
-> call free(isock->port) which will again crash.
->
-> Just do
->
->    g_autoptr(InetSocketAddress) isock = g_new0(InetSocketAddress, 1);
->
->    isock->port = g_strdup_printf("%d", rdma->port);
-Thanks Daniel. Will change this in next version of patchset. Is a 
-protection for isock->host and isock->port needed here ?
->> +
->>       /*
->>        * initialize the RDMAContext for return path for postcopy after first
->>        * connection request reached.
->>        */
->>       if ((migrate_postcopy() || migrate_return_path())
->>           && !rdma->is_return_path) {
->> -        rdma_return_path = qemu_rdma_data_init(rdma->host_port, NULL);
->> +        rdma_return_path = qemu_rdma_data_init(isock, NULL);
->>           if (rdma_return_path == NULL) {
->>               rdma_ack_cm_event(cm_event);
->>               goto err_rdma_dest_wait;
->> @@ -3506,6 +3498,8 @@ static int qemu_rdma_accept(RDMAContext *rdma)
->>   err_rdma_dest_wait:
->>       rdma->error_state = ret;
->>       qemu_rdma_cleanup(rdma);
->> +    qapi_free_InetSocketAddress(isock);
->> +    g_free(arr);
-> Free'ing a stack variable
-Ack, will delete both statements from here.
->>       g_free(rdma_return_path);
->>       return ret;
->>   }
->> @@ -4114,7 +4108,8 @@ static void rdma_accept_incoming_migration(void *opaque)
->>       }
->>   }
->>   
->> -void rdma_start_incoming_migration(const char *host_port, Error **errp)
->> +void rdma_start_incoming_migration(InetSocketAddress *host_port,
->> +                                   Error **errp)
->>   {
->>       int ret;
->>       RDMAContext *rdma;
->> @@ -4160,13 +4155,12 @@ err:
->>       error_propagate(errp, local_err);
->>       if (rdma) {
->>           g_free(rdma->host);
->> -        g_free(rdma->host_port);
->>       }
->>       g_free(rdma);
->>   }
->>   
->>   void rdma_start_outgoing_migration(void *opaque,
->> -                            const char *host_port, Error **errp)
->> +                            InetSocketAddress *host_port, Error **errp)
->>   {
->>       MigrationState *s = opaque;
->>       RDMAContext *rdma_return_path = NULL;
->> diff --git a/migration/rdma.h b/migration/rdma.h
->> index de2ba09dc5..ee89296555 100644
->> --- a/migration/rdma.h
->> +++ b/migration/rdma.h
->> @@ -14,12 +14,14 @@
->>    *
->>    */
->>   
->> +#include "qemu/sockets.h"
->> +
->>   #ifndef QEMU_MIGRATION_RDMA_H
->>   #define QEMU_MIGRATION_RDMA_H
->>   
->> -void rdma_start_outgoing_migration(void *opaque, const char *host_port,
->> +void rdma_start_outgoing_migration(void *opaque, InetSocketAddress *host_port,
->>                                      Error **errp);
->>   
->> -void rdma_start_incoming_migration(const char *host_port, Error **errp);
->> +void rdma_start_incoming_migration(InetSocketAddress *host_port, Error **errp);
->>   
->>   #endif
->> -- 
->> 2.22.3
->>
-> With regards,
-> Daniel
-Regards,
-Het Gala
+I've sent a email to talk to kernel developers about this function. Here 
+is the link to the email: 
+https://lore.kernel.org/all/e8a87c2b-a29a-ccf9-49c6-3cfceaa208bb@gmail.com/
 
