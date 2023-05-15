@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43584703EE9
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 22:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51960703F57
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 23:06:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyfCT-0000jq-Bb; Mon, 15 May 2023 16:53:45 -0400
+	id 1pyfNd-0002wh-NI; Mon, 15 May 2023 17:05:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyfCR-0000jY-G2
- for qemu-devel@nongnu.org; Mon, 15 May 2023 16:53:43 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyfCP-0000sn-0o
- for qemu-devel@nongnu.org; Mon, 15 May 2023 16:53:43 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-64359d9c531so9918401b3a.3
- for <qemu-devel@nongnu.org>; Mon, 15 May 2023 13:53:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684184019; x=1686776019;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=M5TKo8pXkTCaPYGgNf/VlZvtmdVGY9K3mZy2YMddxXM=;
- b=rdAP1NPg8Bl/7irQHpNX9Zt08TOssWfI3PuJgCz+hKLFEPiPKNutfh+Y3F6TLJjLEM
- Qk7qBBQdvBsY46ETpTp5etXFxC2MwqECLO+1hmTQbTsh93i/Hq19fEMj4Bt1i13OVNi/
- 63fXCzbt05TwnQYetPospvSxqvb5Ndv97A/HU3KnR5GsZgIixVsLrcyZxkcQuIIKPSy7
- udGBRCBZIlIFRaXKa7OLOKAP2nBykHLQmkHQNDf/e3S/4uqEKAmjmjg3XiBgnybyS/SO
- a6ySf+qy3CTWRa7BLsLa4+g7WNlNyDW4tgO83VOvf00NSKFEIGq3xKJBgB8mJK0D99xj
- uD7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684184019; x=1686776019;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=M5TKo8pXkTCaPYGgNf/VlZvtmdVGY9K3mZy2YMddxXM=;
- b=b8cZt+Yf1uRcVddtXWlTCai1urTNaKXr2cQ+c55HXo4V67qp70Oe2p2lh9jZvBShH2
- JqW2A+qObJ2C1vV/cFuQW2XrOTx+LBSZSE7VFTGPM74lY/7BQMVk/ItqsHu1ljCc7PQT
- dp1WL7KQTePNjvIdlu9CxV+E7OecJSUk95yMHONepX7Iau6pq3yIuwNhgzRZ5qnwG8R0
- 1riQ27QLX/prl1pLbdNB/Ycw8Q7MYgzIUqHr+k00CB0kxRegucMzukM0lOF++jOCGCw6
- f+kJne1N2syhNff8a4BvC2ya06wPpRplFtdmQmLhH9YYinbMkZlnnSCw2dZ40WsP/HXE
- AB9g==
-X-Gm-Message-State: AC+VfDyAFVcmSWiHVfygNI6ytyKAVxWPQdYlKk+kZQ5unILTFC/0bzJi
- ZV6leQdViXfP0KG5fl+IgLkYp+pvdBl717NxGok=
-X-Google-Smtp-Source: ACHHUZ6e5SaI2h8vDTMWedIiDByNjldz9FJeYJsojFuZS3yoUZKJY1YL26VjB9JVYqZG4bjJrDPyyA==
-X-Received: by 2002:a05:6a00:139b:b0:64c:b8bd:4192 with SMTP id
- t27-20020a056a00139b00b0064cb8bd4192mr1977205pfg.6.1684184019646; 
- Mon, 15 May 2023 13:53:39 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:9902:96ac:8d8c:4366?
- ([2602:ae:1598:4c01:9902:96ac:8d8c:4366])
- by smtp.gmail.com with ESMTPSA id
- n23-20020a62e517000000b0064398fe3451sm12061516pff.217.2023.05.15.13.53.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 May 2023 13:53:39 -0700 (PDT)
-Message-ID: <5f7ffa1f-1c97-64f6-959b-52086b887fd5@linaro.org>
-Date: Mon, 15 May 2023 13:53:37 -0700
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfNX-0002wJ-Gq
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 17:05:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyfNV-0002mC-8k
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 17:05:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684184708;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1TJYVGVJEjIIq4FpOlDD2A+7M/5GSm5fRKqIa81p+1o=;
+ b=Tr0xvtwvt6F7nF0LrS4nSPrrz0O2NKEr2Y+qjBXotp8gMcC9+FAQW5wFlI9HQ0gmmZKJbD
+ OlSGLYm2uwRDtyYJfO08YUF0EfU80UB28xqFcbDYq9bFhtjxu8R82ljFI5F8k4Qw/p5T/L
+ N6fqqEE4sZxRZEJ5AE3wDL7JJ753YK0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-368-WzmrsDO-Pv6SUOpWh2oKfg-1; Mon, 15 May 2023 17:05:04 -0400
+X-MC-Unique: WzmrsDO-Pv6SUOpWh2oKfg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4FE03380673F;
+ Mon, 15 May 2023 21:05:04 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AA37F2166B26;
+ Mon, 15 May 2023 21:05:03 +0000 (UTC)
+Date: Mon, 15 May 2023 16:05:01 -0500
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org, qemu-block@nongnu.org
+Cc: libguestfs@redhat.com, vsementsov@yandex-team.ru
+Subject: Re: [Libguestfs] [PATCH v3 00/14] qemu patches for 64-bit NBD
+ extensions
+Message-ID: <kt4izbtzgddwv6ud6i7qldaq2nj22trnglfylvaqhbaexdhn2q@vq6uob27ipno>
+References: <20230515195343.1915857-1-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PULL 00/21] Tests, docs, s390x and misc patches
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-References: <20230515130233.418183-1-thuth@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230515130233.418183-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.811,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230515195343.1915857-1-eblake@redhat.com>
+User-Agent: NeoMutt/20230512
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,39 +77,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/15/23 06:02, Thomas Huth wrote:
->   Hi Richard!
-> 
-> The following changes since commit 8844bb8d896595ee1d25d21c770e6e6f29803097:
-> 
->    Merge tag 'or1k-pull-request-20230513' ofhttps://github.com/stffrdhrn/qemu  into staging (2023-05-13 11:23:14 +0100)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/thuth/qemu.git  tags/pull-request-2023-05-15
-> 
-> for you to fetch changes up to 055eb1d7de455ecb6b2f5f978b2d12529e09f795:
-> 
->    tests/tcg/s390x: Test EXECUTE of relative branches (2023-05-15 14:50:35 +0200)
-> 
-> ----------------------------------------------------------------
-> * Various small test updates
-> * Some small doc updates
-> * Introduce replacement for -async-teardown that shows up in the QAPI
-> * Make machine-qmp-cmds.c and xilinx_ethlite.c target-independent
-> * Fix s390x LDER instruction
-> * Fix s390x EXECUTE instruction with relative branches
 
-This needs to be rebased after Juan's migration patches.  Something in the #include 
-simplification has caused multiple build errors, e.g.
+Adding qemu-block for the cover letter (not sure how I missed that the
+first time).
 
-https://gitlab.com/qemu-project/qemu/-/jobs/4288929197#L2526
+On Mon, May 15, 2023 at 02:53:29PM -0500, Eric Blake wrote:
+> 
+> v2 was here:
+> https://lists.gnu.org/archive/html/qemu-devel/2022-11/msg02340.html
+> 
+> Since then:
+>  - upstream NBD has accepted the extension on a branch; once multiple
+>    implementations interoperate based on that spec, it will be promoted
+>    to mainline (my plan: qemu with this series, libnbd nearly ready to
+>    go, nbdkit a bit further out)
+>  - rebase to block changes in meantime
+>  - drop RFC patches for 64-bit NBD_CMD_READ (NBD spec did not take them)
+>  - per upstream spec decision, extended headers now mandates use of
+>    NBD_REPLY_TYPE_BLOCK_STATUS_EXT rather than server choice based on
+>    reply size, which in turn required rearranging server patches a bit
+>  - other changes that I noticed while testing with parallel changes
+>    being added to libnbd (link to those patches to follow in the next
+>    week or so)
 
-../migration/dirtyrate.c: In function ‘record_dirtypages’:
-../migration/dirtyrate.c:68:24: error: invalid use of incomplete typedef ‘CPUState’
-    68 |         dirty_pages[cpu->cpu_index].start_pages = cpu->dirty_pages;
-       |                        ^~
+If it helps review, I compared to my v2 posting as follows:
 
+001/14:[0007] [FC] 'nbd/client: Use smarter assert'
+002/14:[----] [--] 'nbd/client: Add safety check on chunk payload length'
+003/14:[----] [-C] 'nbd/server: Prepare for alternate-size headers'
+004/14:[0099] [FC] 'nbd: Prepare for 64-bit request effect lengths'
+005/14:[0002] [FC] 'nbd: Add types for extended headers'
+006/14:[0012] [FC] 'nbd/server: Refactor handling of request payload'
+007/14:[0026] [FC] 'nbd/server: Refactor to pass full request around'
+008/14:[0052] [FC] 'nbd/server: Support 64-bit block status'
+009/14:[0032] [FC] 'nbd/server: Initial support for extended headers'
+010/14:[0020] [FC] 'nbd/client: Initial support for extended headers'
+011/14:[0015] [FC] 'nbd/client: Accept 64-bit block status chunks'
+012/14:[0042] [FC] 'nbd/client: Request extended headers during negotiation'
+013/14:[0005] [FC] 'nbd/server: Prepare for per-request filtering of BLOCK_STATUS'
+014/14:[0004] [FC] 'nbd/server: Add FLAG_PAYLOAD support to CMD_BLOCK_STATUS'
 
-r~
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
+
 
