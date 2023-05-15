@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C66D7032A7
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6103E7032AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 18:17:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyarU-0000ao-6T; Mon, 15 May 2023 12:15:48 -0400
+	id 1pyat2-0002Ll-Et; Mon, 15 May 2023 12:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pyarL-0000ad-97
- for qemu-devel@nongnu.org; Mon, 15 May 2023 12:15:39 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pyasy-0002LG-Le
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 12:17:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pyarG-000471-Is
- for qemu-devel@nongnu.org; Mon, 15 May 2023 12:15:39 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pyasw-0004QU-TF
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 12:17:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 635C56026;
- Mon, 15 May 2023 19:15:31 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 6EED26029;
+ Mon, 15 May 2023 19:17:18 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 46E6155AD;
- Mon, 15 May 2023 19:15:30 +0300 (MSK)
-Message-ID: <e1dbf758-d7b5-756c-2fff-576d651d6d7e@msgid.tls.msk.ru>
-Date: Mon, 15 May 2023 19:15:30 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4F0E255AF;
+ Mon, 15 May 2023 19:17:17 +0300 (MSK)
+Message-ID: <92ab3277-0017-7f47-f5e9-a81636ec9fec@msgid.tls.msk.ru>
+Date: Mon, 15 May 2023 19:17:17 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH qemu] timer/i8254: Fix one shot PIT mode
+Subject: Re: [PATCH 1/1] ui/gtk: Launching GTK UI with OpenGL on causes the
+ refreshrate update to not run
 Content-Language: en-US
-To: Damien Zammit <damien@zamaudio.com>, qemu-devel@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20230226015755.52624-1-damien@zamaudio.com>
+To: Nikola Pavlica <pavlica.nikola@gmail.com>, qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, f4bug@amsat.org
+References: <55ZWKQ.X7E8ESP709H31@gmail.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230226015755.52624-1-damien@zamaudio.com>
+In-Reply-To: <55ZWKQ.X7E8ESP709H31@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -106
 X-Spam_score: -10.7
 X-Spam_bar: ----------
 X-Spam_report: (-10.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.811,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,42 +60,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-26.02.2023 04:58, Damien Zammit wrote:
-> Currently, the one-shot (mode 1) PIT expires far too quickly,
-> due to the output being set under the wrong logic.
-> This change fixes the one-shot PIT mode to behave similarly to mode 0.
+06.12.2020 13:43, Nikola Pavlica wrote:
+> I've discussed this issue back January and September. But it still occurs on my machine, despite the two patches. This time, the issue is that the UI 
+> refresh rate doesn't get updated when I launch QEMU with gl=on. My fix for this issue is to move the code for updating the refresh rate above the code 
+> that checks for OpenGL.
 > 
-> TESTED: using the one-shot PIT mode to calibrate a local apic timer.
+> Or because OpenGL is meant to be called back with the "render" callback, should we instead add the refresh
+> rate checking code there?
+> 
+> Anyway, regardless of method, I'm happy with any solution that just fixes the issue.
 
-Has this been forgotten, or is it not needed anymore?
+Is this change not needed anymore?
+
+Nikola, your patch email is html-garbled, at the very least you have to send it as
+plain text.
 
 Thanks,
 
 /mjt
 
->   hw/timer/i8254_common.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/hw/timer/i8254_common.c b/hw/timer/i8254_common.c
-> index 050875b497..9164576ca9 100644
-> --- a/hw/timer/i8254_common.c
-> +++ b/hw/timer/i8254_common.c
-> @@ -52,10 +52,8 @@ int pit_get_out(PITChannelState *s, int64_t current_time)
->       switch (s->mode) {
->       default:
->       case 0:
-> -        out = (d >= s->count);
-> -        break;
->       case 1:
-> -        out = (d < s->count);
-> +        out = (d >= s->count);
->           break;
->       case 2:
->           if ((d % s->count) == 0 && d != 0) {
-> --
-> 2.39.0
-> 
-> 
-> 
+> Signed-off-by: Nikola Pavlica (pavlica.nikola@gmail.com)---
+> diff --git a/ui/gtk.c b/ui/gtk.c
+> index a752aa22be..74287edde8 100644
+> --- a/ui/gtk.c
+> +++ b/ui/gtk.c
+> @@ -776,18 +776,6 @@ static gboolean gd_draw_event(GtkWidget *widget, cairo_t *cr, void *opaque)
+>       int fbw, fbh;
+>       int refresh_rate_millihz;
+> -#if defined(CONFIG_OPENGL)
+> -    if (vc->gfx.gls) {
+> -        if (gtk_use_gl_area) {
+> -            /* invoke render callback please */
+> -            return FALSE;
+> -        } else {
+> -            gd_egl_draw(vc);
+> -            return TRUE;
+> -        }
+> -    }
+> -#endif
+> -
+>       if (!gtk_widget_get_realized(widget)) {
+>           return FALSE;
+>       }
+> @@ -801,6 +789,18 @@ static gboolean gd_draw_event(GtkWidget *widget, cairo_t *cr, void *opaque)
+>           vc->gfx.dcl.update_interval = MILLISEC_PER_SEC / refresh_rate_millihz;
+>       }
+> +#if defined(CONFIG_OPENGL)
+> +    if (vc->gfx.gls) {
+> +        if (gtk_use_gl_area) {
+> +            /* invoke render callback please */
+> +            return FALSE;
+> +        } else {
+> +            gd_egl_draw(vc);
+> +            return TRUE;
+> +        }
+> +    }
+> +#endif
+> +
+>       fbw = surface_width(vc->gfx.ds);
+>       fbh = surface_height(vc->gfx.ds);
+> -- 
+> 2.21.1
 
 
