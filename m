@@ -2,69 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD94B703DE4
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 21:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2789703DE7
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 May 2023 21:55:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyeGn-00059e-1f; Mon, 15 May 2023 15:54:09 -0400
+	id 1pyeHK-0005tA-EG; Mon, 15 May 2023 15:54:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyeGk-00058r-JN
- for qemu-devel@nongnu.org; Mon, 15 May 2023 15:54:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pyeGi-0004ED-8Z
- for qemu-devel@nongnu.org; Mon, 15 May 2023 15:54:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684180443;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=boSSI/YDdblYcrGKrdhBCknEpg9sI18JmzzhJNN0hZs=;
- b=H83tKAwONnnOktplJ3UY5Jsy9awoevY6JJ0/4w3sdffQk7elViVI1o8JtQnm8DKyvcIhYN
- dl1oYBRAhP1htrlTtNLiDncxUwRmBE4nGGpWgQLZWkRFrXDnJ/Kb2uAyCDtVIxuy9z4uGf
- DDDYD1fPDeE2Tb1SvewzhTC3HgMNTGQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-660-XOZ_WcFZOuCOuv2QIQY0xA-1; Mon, 15 May 2023 15:53:57 -0400
-X-MC-Unique: XOZ_WcFZOuCOuv2QIQY0xA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D2F5D867957;
- Mon, 15 May 2023 19:53:56 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.57])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 44AC0141511D;
- Mon, 15 May 2023 19:53:56 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: libguestfs@redhat.com, vsementsov@yandex-team.ru,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org (open list:Network Block Dev...)
-Subject: [PATCH v3 14/14] nbd/server: Add FLAG_PAYLOAD support to
- CMD_BLOCK_STATUS
-Date: Mon, 15 May 2023 14:53:43 -0500
-Message-Id: <20230515195343.1915857-15-eblake@redhat.com>
-In-Reply-To: <20230515195343.1915857-1-eblake@redhat.com>
-References: <20230515195343.1915857-1-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <nieklinnenbank@gmail.com>)
+ id 1pyeHH-0005pw-VY; Mon, 15 May 2023 15:54:39 -0400
+Received: from mail-yb1-xb2a.google.com ([2607:f8b0:4864:20::b2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nieklinnenbank@gmail.com>)
+ id 1pyeHF-0004NO-3f; Mon, 15 May 2023 15:54:39 -0400
+Received: by mail-yb1-xb2a.google.com with SMTP id
+ 3f1490d57ef6-ba76528fe31so211636276.1; 
+ Mon, 15 May 2023 12:54:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1684180475; x=1686772475;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hSJ84WBWRFdA0KAY4YSVO2Toewk4qdopM1R9Gge++kQ=;
+ b=TT0P8XAcmcDvdBpWzCGiN8JfjpjTfmXOsAEDfOUDtSIXdixDjPNatyi0wUfBnMPGA0
+ o9dHftVY5qs0THdxj9OFnIDZqvlt82PCxdpkj3kGf52PNlveD0kpXmPOJJQJvVniFQdz
+ 5wXKAI2W3nyIZUP/XHRMSEU785jnw6VtWGAG8xs7gyBXqgUB+0bDKgFoOJEi467TiucU
+ wU0IBscqe6ho0zTdGdciXu99TwFKwLwlW3xmP8WgCMqoZAeJuDNE9etJUpnyrtu/r7sC
+ 7UFuoVwV/jFN+QzxKsLDWK+ne4MqfrPEqeWYYdUVfmujt1Z4r4FA5PhxkHbua8WkJNhL
+ TpMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684180475; x=1686772475;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hSJ84WBWRFdA0KAY4YSVO2Toewk4qdopM1R9Gge++kQ=;
+ b=FziC8Ew9zKWn+CeDe0Vj205ZSOqe7l1GwSOQeR6H42+Zz4cWvuYEvIWd551mAgnRWk
+ z3SomgC0j1JLJC3jiWEa8Qx6blf2NM6yAKDM/o+MLmShoMaOkGaqV/qSartrwmpz9BGd
+ M3+CvghSgPTKP9kqOT2Ap2xoKZU+UJXqglOPaHnuWq1QAAYdRdq5neUy25SmIuMkEYBp
+ MJ/Nqm1l8oBlJmC+g8sxxctsHyPtYpCtHQa2g9aaZ2/6DJuXeuKo3rf4ir14EYG65C6n
+ PPZQju6q0r59Xp+auc4FyHcdfkFi7NYgti5tf3YPeOnWihqmzE5EkEKIq3OshrfuwkFO
+ 9vTw==
+X-Gm-Message-State: AC+VfDytXGv/uotc5B13ReYTr5mwOSTJqwiHsCbORxssXyfDpel+g3Te
+ eit5XLsTRAW7njK3jbb5dDbeQDym5bgNqH5GObk=
+X-Google-Smtp-Source: ACHHUZ58k5iIv5YXUfP1fnMDV0knSYIBu395fdXZFU4ZPub3GQCCjBFZMp1T3C1Yi24Wrq5/8OH7R950RepRNCt4avM=
+X-Received: by 2002:a05:6902:1107:b0:ba8:a3b:8e26 with SMTP id
+ o7-20020a056902110700b00ba80a3b8e26mr757913ybu.16.1684180475401; Mon, 15 May
+ 2023 12:54:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230510103004.30015-1-qianfanguijin@163.com>
+ <20230510103004.30015-8-qianfanguijin@163.com>
+In-Reply-To: <20230510103004.30015-8-qianfanguijin@163.com>
+From: Niek Linnenbank <nieklinnenbank@gmail.com>
+Date: Mon, 15 May 2023 21:54:24 +0200
+Message-ID: <CAPan3WrwJLpGAFf=wwoxFhdjom7yAogcBB2JC_kmCz54SR7Tmg@mail.gmail.com>
+Subject: Re: [PATCH v4 07/11] hw: sd: allwinner-sdhost: Add sun50i-a64 SoC
+ support
+To: qianfanguijin@163.com
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Beniamino Galvani <b.galvani@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000f9657605fbc0d2fc"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2a;
+ envelope-from=nieklinnenbank@gmail.com; helo=mail-yb1-xb2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,427 +88,597 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow a client to request a subset of negotiated meta contexts.  For
-example, a client may ask to use a single connection to learn about
-both block status and dirty bitmaps, but where the dirty bitmap
-queries only need to be performed on a subset of the disk; forcing the
-server to compute that information on block status queries in the rest
-of the disk is wasted effort (both at the server, and on the amount of
-traffic sent over the wire to be parsed and ignored by the client).
+--000000000000f9657605fbc0d2fc
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Qemu as an NBD client never requests to use more than one meta
-context, so it has no need to use block status payloads.  Testing this
-instead requires support from libnbd, which CAN access multiple meta
-contexts in parallel from a single NBD connection; an interop test
-submitted to the libnbd project at the same time as this patch
-demonstrates the feature working, as well as testing some corner cases
-(for example, when the payload length is longer than the export
-length), although other corner cases (like passing the same id
-duplicated) requires a protocol fuzzer because libnbd is not wired up
-to break the protocol that badly.
+On Wed, May 10, 2023 at 12:30=E2=80=AFPM <qianfanguijin@163.com> wrote:
 
-This also includes tweaks to 'qemu-nbd --list' to show when a server
-is advertising the capability, and to the testsuite to reflect the
-addition to that output.
+> From: qianfan Zhao <qianfanguijin@163.com>
+>
+> A64's sd register was similar to H3, and it introduced a new register
+> named SAMP_DL_REG location at 0x144. The dma descriptor buffer size of
+> mmc2 is only 8K and the other mmc controllers has 64K.
+>
+> Also fix allwinner-r40's mmc controller type.
+>
+> Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+> ---
+>  hw/arm/allwinner-r40.c           |  2 +-
+>  hw/sd/allwinner-sdhost.c         | 70 ++++++++++++++++++++++++++++++--
+>  include/hw/sd/allwinner-sdhost.h |  9 ++++
+>  3 files changed, 77 insertions(+), 4 deletions(-)
+>
+> diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
+> index 0e4542d35f..b148c56449 100644
+> --- a/hw/arm/allwinner-r40.c
+> +++ b/hw/arm/allwinner-r40.c
+> @@ -271,7 +271,7 @@ static void allwinner_r40_init(Object *obj)
+>
+>      for (int i =3D 0; i < AW_R40_NUM_MMCS; i++) {
+>          object_initialize_child(obj, mmc_names[i], &s->mmc[i],
+> -                                TYPE_AW_SDHOST_SUN5I);
+> +                                TYPE_AW_SDHOST_SUN50I_A64);
+>      }
+>
+>      object_initialize_child(obj, "twi0", &s->i2c0, TYPE_AW_I2C_SUN6I);
+> diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
+> index 92a0f42708..f4fa2d179b 100644
+> --- a/hw/sd/allwinner-sdhost.c
+> +++ b/hw/sd/allwinner-sdhost.c
+> @@ -77,6 +77,7 @@ enum {
+>      REG_SD_DATA1_CRC  =3D 0x12C, /* CRC Data 1 from card/eMMC */
+>      REG_SD_DATA0_CRC  =3D 0x130, /* CRC Data 0 from card/eMMC */
+>      REG_SD_CRC_STA    =3D 0x134, /* CRC status from card/eMMC during wri=
+te
+> */
+> +    REG_SD_SAMP_DL    =3D 0x144, /* Sample Delay Control (sun50i-a64) */
+>      REG_SD_FIFO       =3D 0x200, /* Read/Write FIFO */
+>  };
+>
+> @@ -158,6 +159,7 @@ enum {
+>      REG_SD_RES_CRC_RST      =3D 0x0,
+>      REG_SD_DATA_CRC_RST     =3D 0x0,
+>      REG_SD_CRC_STA_RST      =3D 0x0,
+> +    REG_SD_SAMPLE_DL_RST    =3D 0x00002000,
+>      REG_SD_FIFO_RST         =3D 0x0,
+>  };
+>
+> @@ -459,6 +461,7 @@ static uint64_t allwinner_sdhost_read(void *opaque,
+> hwaddr offset,
+>  {
+>      AwSdHostState *s =3D AW_SDHOST(opaque);
+>      AwSdHostClass *sc =3D AW_SDHOST_GET_CLASS(s);
+> +    bool out_of_bounds =3D false;
+>      uint32_t res =3D 0;
+>
+>      switch (offset) {
+> @@ -577,13 +580,24 @@ static uint64_t allwinner_sdhost_read(void *opaque,
+> hwaddr offset,
+>      case REG_SD_FIFO:      /* Read/Write FIFO */
+>          res =3D allwinner_sdhost_fifo_read(s);
+>          break;
+> +    case REG_SD_SAMP_DL: /* Sample Delay */
+> +        if (sc->can_calibrate) {
+> +            res =3D s->sample_delay;
+> +        } else {
+> +            out_of_bounds =3D true;
+> +        }
+> +        break;
+>      default:
+> -        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset %"
+> -                      HWADDR_PRIx"\n", __func__, offset);
+> +        out_of_bounds =3D true;
+>          res =3D 0;
+>          break;
+>      }
+>
+> +    if (out_of_bounds) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset %"
+> +                      HWADDR_PRIx"\n", __func__, offset);
+> +    }
+> +
+>      trace_allwinner_sdhost_read(offset, res, size);
+>      return res;
+>  }
+> @@ -602,6 +616,7 @@ static void allwinner_sdhost_write(void *opaque,
+> hwaddr offset,
+>  {
+>      AwSdHostState *s =3D AW_SDHOST(opaque);
+>      AwSdHostClass *sc =3D AW_SDHOST_GET_CLASS(s);
+> +    bool out_of_bounds =3D false;
+>
+>      trace_allwinner_sdhost_write(offset, value, size);
+>
+> @@ -725,10 +740,21 @@ static void allwinner_sdhost_write(void *opaque,
+> hwaddr offset,
+>      case REG_SD_DATA0_CRC: /* CRC Data 0 from card/eMMC */
+>      case REG_SD_CRC_STA:   /* CRC status from card/eMMC in write
+> operation */
+>          break;
+> +    case REG_SD_SAMP_DL: /* Sample delay control */
+> +        if (sc->can_calibrate) {
+> +            s->sample_delay =3D value;
+> +        } else {
+> +            out_of_bounds =3D true;
+> +        }
+> +        break;
+>      default:
+> +        out_of_bounds =3D true;
+> +        break;
+> +    }
+> +
+> +    if (out_of_bounds) {
+>          qemu_log_mask(LOG_GUEST_ERROR, "%s: out-of-bounds offset %"
+>                        HWADDR_PRIx"\n", __func__, offset);
+> -        break;
+>      }
+>  }
+>
+> @@ -777,6 +803,7 @@ static const VMStateDescription
+> vmstate_allwinner_sdhost =3D {
+>          VMSTATE_UINT32(response_crc, AwSdHostState),
+>          VMSTATE_UINT32_ARRAY(data_crc, AwSdHostState, 8),
+>          VMSTATE_UINT32(status_crc, AwSdHostState),
+> +        VMSTATE_UINT32(sample_delay, AwSdHostState),
+>          VMSTATE_END_OF_LIST()
+>      }
+>  };
+> @@ -815,6 +842,7 @@ static void allwinner_sdhost_realize(DeviceState *dev=
+,
+> Error **errp)
+>  static void allwinner_sdhost_reset(DeviceState *dev)
+>  {
+>      AwSdHostState *s =3D AW_SDHOST(dev);
+> +    AwSdHostClass *sc =3D AW_SDHOST_GET_CLASS(s);
+>
+>      s->global_ctl =3D REG_SD_GCTL_RST;
+>      s->clock_ctl =3D REG_SD_CKCR_RST;
+> @@ -855,6 +883,10 @@ static void allwinner_sdhost_reset(DeviceState *dev)
+>      }
+>
+>      s->status_crc =3D REG_SD_CRC_STA_RST;
+> +
+> +    if (sc->can_calibrate) {
+> +        s->sample_delay =3D REG_SD_SAMPLE_DL_RST;
+> +    }
+>  }
+>
+>  static void allwinner_sdhost_bus_class_init(ObjectClass *klass, void
+> *data)
+> @@ -888,6 +920,24 @@ static void
+> allwinner_sdhost_sun5i_class_init(ObjectClass *klass, void *data)
+>      sc->is_sun4i =3D false;
+>  }
+>
+> +static void allwinner_sdhost_sun50i_a64_class_init(ObjectClass *klass,
+> +                                                   void *data)
+> +{
+> +    AwSdHostClass *sc =3D AW_SDHOST_CLASS(klass);
+> +    sc->max_desc_size =3D 64 * KiB;
+> +    sc->is_sun4i =3D false;
+> +    sc->can_calibrate =3D true;
+>
 
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
- docs/interop/nbd.txt                          |   2 +-
- include/block/nbd.h                           |  32 ++++--
- nbd/server.c                                  | 106 +++++++++++++++++-
- qemu-nbd.c                                    |   1 +
- nbd/trace-events                              |   1 +
- tests/qemu-iotests/223.out                    |  12 +-
- tests/qemu-iotests/307.out                    |  10 +-
- .../tests/nbd-qemu-allocation.out             |   2 +-
- 8 files changed, 136 insertions(+), 30 deletions(-)
+For the existing functions allwinner_sdhost_sun4i_class_init() and
+allwinner_sdhost_sun5i_class_init(), could you please add
+'sc->can_calibrate =3D false'?
+That way, we make it explicit that those types do not support the sample
+delay register.
 
-diff --git a/docs/interop/nbd.txt b/docs/interop/nbd.txt
-index abaf4c28a96..83d85ce8d13 100644
---- a/docs/interop/nbd.txt
-+++ b/docs/interop/nbd.txt
-@@ -69,4 +69,4 @@ NBD_CMD_BLOCK_STATUS for "qemu:dirty-bitmap:", NBD_CMD_CACHE
- NBD_CMD_FLAG_FAST_ZERO
- * 5.2: NBD_CMD_BLOCK_STATUS for "qemu:allocation-depth"
- * 7.1: NBD_FLAG_CAN_MULTI_CONN for shareable writable exports
--* 8.1: NBD_OPT_EXTENDED_HEADERS
-+* 8.1: NBD_OPT_EXTENDED_HEADERS, NBD_FLAG_BLOCK_STATUS_PAYLOAD
-diff --git a/include/block/nbd.h b/include/block/nbd.h
-index 6696d61bd59..3d8d7150121 100644
---- a/include/block/nbd.h
-+++ b/include/block/nbd.h
-@@ -175,6 +175,12 @@ typedef struct NBDExtentExt {
-     uint64_t flags; /* NBD_STATE_* */
- } QEMU_PACKED NBDExtentExt;
+With that resolved, the code looks good to me:
 
-+/* Client payload for limiting NBD_CMD_BLOCK_STATUS reply */
-+typedef struct NBDBlockStatusPayload {
-+    uint64_t effect_length;
-+    /* uint32_t ids[] follows, array length implied by header */
-+} QEMU_PACKED NBDBlockStatusPayload;
-+
- /* Transmission (export) flags: sent from server to client during handshake,
-    but describe what will happen during transmission */
- enum {
-@@ -191,20 +197,22 @@ enum {
-     NBD_FLAG_SEND_RESIZE_BIT        =  9, /* Send resize */
-     NBD_FLAG_SEND_CACHE_BIT         = 10, /* Send CACHE (prefetch) */
-     NBD_FLAG_SEND_FAST_ZERO_BIT     = 11, /* FAST_ZERO flag for WRITE_ZEROES */
-+    NBD_FLAG_BLOCK_STAT_PAYLOAD_BIT = 12, /* PAYLOAD flag for BLOCK_STATUS */
- };
+Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
 
--#define NBD_FLAG_HAS_FLAGS         (1 << NBD_FLAG_HAS_FLAGS_BIT)
--#define NBD_FLAG_READ_ONLY         (1 << NBD_FLAG_READ_ONLY_BIT)
--#define NBD_FLAG_SEND_FLUSH        (1 << NBD_FLAG_SEND_FLUSH_BIT)
--#define NBD_FLAG_SEND_FUA          (1 << NBD_FLAG_SEND_FUA_BIT)
--#define NBD_FLAG_ROTATIONAL        (1 << NBD_FLAG_ROTATIONAL_BIT)
--#define NBD_FLAG_SEND_TRIM         (1 << NBD_FLAG_SEND_TRIM_BIT)
--#define NBD_FLAG_SEND_WRITE_ZEROES (1 << NBD_FLAG_SEND_WRITE_ZEROES_BIT)
--#define NBD_FLAG_SEND_DF           (1 << NBD_FLAG_SEND_DF_BIT)
--#define NBD_FLAG_CAN_MULTI_CONN    (1 << NBD_FLAG_CAN_MULTI_CONN_BIT)
--#define NBD_FLAG_SEND_RESIZE       (1 << NBD_FLAG_SEND_RESIZE_BIT)
--#define NBD_FLAG_SEND_CACHE        (1 << NBD_FLAG_SEND_CACHE_BIT)
--#define NBD_FLAG_SEND_FAST_ZERO    (1 << NBD_FLAG_SEND_FAST_ZERO_BIT)
-+#define NBD_FLAG_HAS_FLAGS          (1 << NBD_FLAG_HAS_FLAGS_BIT)
-+#define NBD_FLAG_READ_ONLY          (1 << NBD_FLAG_READ_ONLY_BIT)
-+#define NBD_FLAG_SEND_FLUSH         (1 << NBD_FLAG_SEND_FLUSH_BIT)
-+#define NBD_FLAG_SEND_FUA           (1 << NBD_FLAG_SEND_FUA_BIT)
-+#define NBD_FLAG_ROTATIONAL         (1 << NBD_FLAG_ROTATIONAL_BIT)
-+#define NBD_FLAG_SEND_TRIM          (1 << NBD_FLAG_SEND_TRIM_BIT)
-+#define NBD_FLAG_SEND_WRITE_ZEROES  (1 << NBD_FLAG_SEND_WRITE_ZEROES_BIT)
-+#define NBD_FLAG_SEND_DF            (1 << NBD_FLAG_SEND_DF_BIT)
-+#define NBD_FLAG_CAN_MULTI_CONN     (1 << NBD_FLAG_CAN_MULTI_CONN_BIT)
-+#define NBD_FLAG_SEND_RESIZE        (1 << NBD_FLAG_SEND_RESIZE_BIT)
-+#define NBD_FLAG_SEND_CACHE         (1 << NBD_FLAG_SEND_CACHE_BIT)
-+#define NBD_FLAG_SEND_FAST_ZERO     (1 << NBD_FLAG_SEND_FAST_ZERO_BIT)
-+#define NBD_FLAG_BLOCK_STAT_PAYLOAD (1 << NBD_FLAG_BLOCK_STAT_PAYLOAD_BIT)
 
- /* New-style handshake (global) flags, sent from server to client, and
-    control what will happen during handshake phase. */
-diff --git a/nbd/server.c b/nbd/server.c
-index db550c82cd2..ce11285c0d7 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -442,9 +442,9 @@ static int nbd_negotiate_handle_list(NBDClient *client, Error **errp)
-     return nbd_negotiate_send_rep(client, NBD_REP_ACK, errp);
- }
+> +}
+> +
+> +static void allwinner_sdhost_sun50i_a64_emmc_class_init(ObjectClass
+> *klass,
+> +                                                        void *data)
+> +{
+> +    AwSdHostClass *sc =3D AW_SDHOST_CLASS(klass);
+> +    sc->max_desc_size =3D 8 * KiB;
+> +    sc->is_sun4i =3D false;
+> +    sc->can_calibrate =3D true;
+> +}
+> +
+>  static const TypeInfo allwinner_sdhost_info =3D {
+>      .name          =3D TYPE_AW_SDHOST,
+>      .parent        =3D TYPE_SYS_BUS_DEVICE,
+> @@ -910,6 +960,18 @@ static const TypeInfo allwinner_sdhost_sun5i_info =
+=3D {
+>      .class_init    =3D allwinner_sdhost_sun5i_class_init,
+>  };
+>
+> +static const TypeInfo allwinner_sdhost_sun50i_a64_info =3D {
+> +    .name          =3D TYPE_AW_SDHOST_SUN50I_A64,
+> +    .parent        =3D TYPE_AW_SDHOST,
+> +    .class_init    =3D allwinner_sdhost_sun50i_a64_class_init,
+> +};
+> +
+> +static const TypeInfo allwinner_sdhost_sun50i_a64_emmc_info =3D {
+> +    .name          =3D TYPE_AW_SDHOST_SUN50I_A64_EMMC,
+> +    .parent        =3D TYPE_AW_SDHOST,
+> +    .class_init    =3D allwinner_sdhost_sun50i_a64_emmc_class_init,
+> +};
+> +
+>  static const TypeInfo allwinner_sdhost_bus_info =3D {
+>      .name =3D TYPE_AW_SDHOST_BUS,
+>      .parent =3D TYPE_SD_BUS,
+> @@ -922,6 +984,8 @@ static void allwinner_sdhost_register_types(void)
+>      type_register_static(&allwinner_sdhost_info);
+>      type_register_static(&allwinner_sdhost_sun4i_info);
+>      type_register_static(&allwinner_sdhost_sun5i_info);
+> +    type_register_static(&allwinner_sdhost_sun50i_a64_info);
+> +    type_register_static(&allwinner_sdhost_sun50i_a64_emmc_info);
+>      type_register_static(&allwinner_sdhost_bus_info);
+>  }
+>
+> diff --git a/include/hw/sd/allwinner-sdhost.h
+> b/include/hw/sd/allwinner-sdhost.h
+> index 30c1e60404..1b951177dd 100644
+> --- a/include/hw/sd/allwinner-sdhost.h
+> +++ b/include/hw/sd/allwinner-sdhost.h
+> @@ -38,6 +38,12 @@
+>  /** Allwinner sun5i family and newer (A13, H2+, H3, etc) */
+>  #define TYPE_AW_SDHOST_SUN5I TYPE_AW_SDHOST "-sun5i"
+>
+> +/** Allwinner sun50i-a64 */
+> +#define TYPE_AW_SDHOST_SUN50I_A64 TYPE_AW_SDHOST "-sun50i-a64"
+> +
+> +/** Allwinner sun50i-a64 emmc */
+> +#define TYPE_AW_SDHOST_SUN50I_A64_EMMC  TYPE_AW_SDHOST "-sun50i-a64-emmc=
+"
+> +
+>  /** @} */
+>
+>  /**
+> @@ -110,6 +116,7 @@ struct AwSdHostState {
+>      uint32_t startbit_detect;   /**< eMMC DDR Start Bit Detection Contro=
+l
+> */
+>      uint32_t response_crc;      /**< Response CRC */
+>      uint32_t data_crc[8];       /**< Data CRC */
+> +    uint32_t sample_delay;      /**< Sample delay control */
+>      uint32_t status_crc;        /**< Status CRC */
+>
+>      /** @} */
+> @@ -132,6 +139,8 @@ struct AwSdHostClass {
+>      size_t max_desc_size;
+>      bool   is_sun4i;
+>
+> +    /** does the IP block support autocalibration? */
+> +    bool can_calibrate;
+>  };
+>
+>  #endif /* HW_SD_ALLWINNER_SDHOST_H */
+> --
+> 2.25.1
+>
+>
 
--static void nbd_check_meta_export(NBDClient *client)
-+static void nbd_check_meta_export(NBDClient *client, NBDExport *exp)
- {
--    if (client->exp != client->context_exp) {
-+    if (exp != client->context_exp) {
-         client->contexts.count = 0;
-     }
- }
-@@ -491,11 +491,15 @@ static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
-         error_setg(errp, "export not found");
-         return -EINVAL;
-     }
-+    nbd_check_meta_export(client, client->exp);
+--=20
+Niek Linnenbank
 
-     myflags = client->exp->nbdflags;
-     if (client->header_style >= NBD_HEADER_STRUCTURED) {
-         myflags |= NBD_FLAG_SEND_DF;
-     }
-+    if (client->extended_headers && client->contexts.count) {
-+        myflags |= NBD_FLAG_BLOCK_STAT_PAYLOAD;
-+    }
-     trace_nbd_negotiate_new_style_size_flags(client->exp->size, myflags);
-     stq_be_p(buf, client->exp->size);
-     stw_be_p(buf + 8, myflags);
-@@ -508,7 +512,6 @@ static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
+--000000000000f9657605fbc0d2fc
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-     QTAILQ_INSERT_TAIL(&client->exp->clients, client, next);
-     blk_exp_ref(&client->exp->common);
--    nbd_check_meta_export(client);
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 10, 2023 at 12:30=E2=80=
+=AFPM &lt;<a href=3D"mailto:qianfanguijin@163.com">qianfanguijin@163.com</a=
+>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px=
+ 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Fro=
+m: qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163.com" target=3D"_bla=
+nk">qianfanguijin@163.com</a>&gt;<br>
+<br>
+A64&#39;s sd register was similar to H3, and it introduced a new register<b=
+r>
+named SAMP_DL_REG location at 0x144. The dma descriptor buffer size of<br>
+mmc2 is only 8K and the other mmc controllers has 64K.<br>
+<br>
+Also fix allwinner-r40&#39;s mmc controller type.<br>
+<br>
+Signed-off-by: qianfan Zhao &lt;<a href=3D"mailto:qianfanguijin@163.com" ta=
+rget=3D"_blank">qianfanguijin@163.com</a>&gt;<br>
+---<br>
+=C2=A0hw/arm/allwinner-r40.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
+=A0 2 +-<br>
+=C2=A0hw/sd/allwinner-sdhost.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 70 ++++++=
+++++++++++++++++++++++++--<br>
+=C2=A0include/hw/sd/allwinner-sdhost.h |=C2=A0 9 ++++<br>
+=C2=A03 files changed, 77 insertions(+), 4 deletions(-)<br>
+<br>
+diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c<br>
+index 0e4542d35f..b148c56449 100644<br>
+--- a/hw/arm/allwinner-r40.c<br>
++++ b/hw/arm/allwinner-r40.c<br>
+@@ -271,7 +271,7 @@ static void allwinner_r40_init(Object *obj)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0for (int i =3D 0; i &lt; AW_R40_NUM_MMCS; i++) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0object_initialize_child(obj, mmc_names[i]=
+, &amp;s-&gt;mmc[i],<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 TYPE_AW_SDHOST_SUN5I);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 TYPE_AW_SDHOST_SUN50I_A64);<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0object_initialize_child(obj, &quot;twi0&quot;, &amp;s-&=
+gt;i2c0, TYPE_AW_I2C_SUN6I);<br>
+diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c<br>
+index 92a0f42708..f4fa2d179b 100644<br>
+--- a/hw/sd/allwinner-sdhost.c<br>
++++ b/hw/sd/allwinner-sdhost.c<br>
+@@ -77,6 +77,7 @@ enum {<br>
+=C2=A0 =C2=A0 =C2=A0REG_SD_DATA1_CRC=C2=A0 =3D 0x12C, /* CRC Data 1 from ca=
+rd/eMMC */<br>
+=C2=A0 =C2=A0 =C2=A0REG_SD_DATA0_CRC=C2=A0 =3D 0x130, /* CRC Data 0 from ca=
+rd/eMMC */<br>
+=C2=A0 =C2=A0 =C2=A0REG_SD_CRC_STA=C2=A0 =C2=A0 =3D 0x134, /* CRC status fr=
+om card/eMMC during write */<br>
++=C2=A0 =C2=A0 REG_SD_SAMP_DL=C2=A0 =C2=A0 =3D 0x144, /* Sample Delay Contr=
+ol (sun50i-a64) */<br>
+=C2=A0 =C2=A0 =C2=A0REG_SD_FIFO=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x200, /* Rea=
+d/Write FIFO */<br>
+=C2=A0};<br>
+<br>
+@@ -158,6 +159,7 @@ enum {<br>
+=C2=A0 =C2=A0 =C2=A0REG_SD_RES_CRC_RST=C2=A0 =C2=A0 =C2=A0 =3D 0x0,<br>
+=C2=A0 =C2=A0 =C2=A0REG_SD_DATA_CRC_RST=C2=A0 =C2=A0 =C2=A0=3D 0x0,<br>
+=C2=A0 =C2=A0 =C2=A0REG_SD_CRC_STA_RST=C2=A0 =C2=A0 =C2=A0 =3D 0x0,<br>
++=C2=A0 =C2=A0 REG_SD_SAMPLE_DL_RST=C2=A0 =C2=A0 =3D 0x00002000,<br>
+=C2=A0 =C2=A0 =C2=A0REG_SD_FIFO_RST=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D 0x=
+0,<br>
+=C2=A0};<br>
+<br>
+@@ -459,6 +461,7 @@ static uint64_t allwinner_sdhost_read(void *opaque, hwa=
+ddr offset,<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0AwSdHostState *s =3D AW_SDHOST(opaque);<br>
+=C2=A0 =C2=A0 =C2=A0AwSdHostClass *sc =3D AW_SDHOST_GET_CLASS(s);<br>
++=C2=A0 =C2=A0 bool out_of_bounds =3D false;<br>
+=C2=A0 =C2=A0 =C2=A0uint32_t res =3D 0;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0switch (offset) {<br>
+@@ -577,13 +580,24 @@ static uint64_t allwinner_sdhost_read(void *opaque, h=
+waddr offset,<br>
+=C2=A0 =C2=A0 =C2=A0case REG_SD_FIFO:=C2=A0 =C2=A0 =C2=A0 /* Read/Write FIF=
+O */<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0res =3D allwinner_sdhost_fifo_read(s);<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
++=C2=A0 =C2=A0 case REG_SD_SAMP_DL: /* Sample Delay */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (sc-&gt;can_calibrate) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 res =3D s-&gt;sample_delay;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 out_of_bounds =3D true;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+=C2=A0 =C2=A0 =C2=A0default:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset %&quot;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 HWADDR_PRIx&quot;\n&quot;, __func__, offset);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 out_of_bounds =3D true;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0res =3D 0;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
++=C2=A0 =C2=A0 if (out_of_bounds) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: out-o=
+f-bounds offset %&quot;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 HWADDR_PRIx&quot;\n&quot;, __func__, offset);<br>
++=C2=A0 =C2=A0 }<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0trace_allwinner_sdhost_read(offset, res, size);<br>
+=C2=A0 =C2=A0 =C2=A0return res;<br>
+=C2=A0}<br>
+@@ -602,6 +616,7 @@ static void allwinner_sdhost_write(void *opaque, hwaddr=
+ offset,<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0AwSdHostState *s =3D AW_SDHOST(opaque);<br>
+=C2=A0 =C2=A0 =C2=A0AwSdHostClass *sc =3D AW_SDHOST_GET_CLASS(s);<br>
++=C2=A0 =C2=A0 bool out_of_bounds =3D false;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0trace_allwinner_sdhost_write(offset, value, size);<br>
+<br>
+@@ -725,10 +740,21 @@ static void allwinner_sdhost_write(void *opaque, hwad=
+dr offset,<br>
+=C2=A0 =C2=A0 =C2=A0case REG_SD_DATA0_CRC: /* CRC Data 0 from card/eMMC */<=
+br>
+=C2=A0 =C2=A0 =C2=A0case REG_SD_CRC_STA:=C2=A0 =C2=A0/* CRC status from car=
+d/eMMC in write operation */<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
++=C2=A0 =C2=A0 case REG_SD_SAMP_DL: /* Sample delay control */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (sc-&gt;can_calibrate) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;sample_delay =3D value;<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 out_of_bounds =3D true;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+=C2=A0 =C2=A0 =C2=A0default:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 out_of_bounds =3D true;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 if (out_of_bounds) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qemu_log_mask(LOG_GUEST_ERROR, &quot;%s: =
+out-of-bounds offset %&quot;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0HWADDR_PRIx&quot;\n&quot;, __func__, offset);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0}<br>
+<br>
+@@ -777,6 +803,7 @@ static const VMStateDescription vmstate_allwinner_sdhos=
+t =3D {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VMSTATE_UINT32(response_crc, AwSdHostStat=
+e),<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VMSTATE_UINT32_ARRAY(data_crc, AwSdHostSt=
+ate, 8),<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VMSTATE_UINT32(status_crc, AwSdHostState)=
+,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_UINT32(sample_delay, AwSdHostState),<b=
+r>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VMSTATE_END_OF_LIST()<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0};<br>
+@@ -815,6 +842,7 @@ static void allwinner_sdhost_realize(DeviceState *dev, =
+Error **errp)<br>
+=C2=A0static void allwinner_sdhost_reset(DeviceState *dev)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0AwSdHostState *s =3D AW_SDHOST(dev);<br>
++=C2=A0 =C2=A0 AwSdHostClass *sc =3D AW_SDHOST_GET_CLASS(s);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0s-&gt;global_ctl =3D REG_SD_GCTL_RST;<br>
+=C2=A0 =C2=A0 =C2=A0s-&gt;clock_ctl =3D REG_SD_CKCR_RST;<br>
+@@ -855,6 +883,10 @@ static void allwinner_sdhost_reset(DeviceState *dev)<b=
+r>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0s-&gt;status_crc =3D REG_SD_CRC_STA_RST;<br>
++<br>
++=C2=A0 =C2=A0 if (sc-&gt;can_calibrate) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;sample_delay =3D REG_SD_SAMPLE_DL_RST;<b=
+r>
++=C2=A0 =C2=A0 }<br>
+=C2=A0}<br>
+<br>
+=C2=A0static void allwinner_sdhost_bus_class_init(ObjectClass *klass, void =
+*data)<br>
+@@ -888,6 +920,24 @@ static void allwinner_sdhost_sun5i_class_init(ObjectCl=
+ass *klass, void *data)<br>
+=C2=A0 =C2=A0 =C2=A0sc-&gt;is_sun4i =3D false;<br>
+=C2=A0}<br>
+<br>
++static void allwinner_sdhost_sun50i_a64_class_init(ObjectClass *klass,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0void *data)<br>
++{<br>
++=C2=A0 =C2=A0 AwSdHostClass *sc =3D AW_SDHOST_CLASS(klass);<br>
++=C2=A0 =C2=A0 sc-&gt;max_desc_size =3D 64 * KiB;<br>
++=C2=A0 =C2=A0 sc-&gt;is_sun4i =3D false;<br>
++=C2=A0 =C2=A0 sc-&gt;can_calibrate =3D true;<br></blockquote><div><br></di=
+v><div>For the existing functions allwinner_sdhost_sun4i_class_init() and a=
+llwinner_sdhost_sun5i_class_init(), could you please add &#39;sc-&gt;can_ca=
+librate =3D false&#39;?</div><div>That way, we make it explicit that those =
+types do not support the sample delay register.</div><div><br></div><div>Wi=
+th that resolved, the code looks good to me:</div><div><br></div><div>Revie=
+wed-by: Niek Linnenbank &lt;<a href=3D"mailto:nieklinnenbank@gmail.com">nie=
+klinnenbank@gmail.com</a>&gt;<br></div><div>=C2=A0</div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">
++}<br>
++<br>
++static void allwinner_sdhost_sun50i_a64_emmc_class_init(ObjectClass *klass=
+,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 void *data)<br>
++{<br>
++=C2=A0 =C2=A0 AwSdHostClass *sc =3D AW_SDHOST_CLASS(klass);<br>
++=C2=A0 =C2=A0 sc-&gt;max_desc_size =3D 8 * KiB;<br>
++=C2=A0 =C2=A0 sc-&gt;is_sun4i =3D false;<br>
++=C2=A0 =C2=A0 sc-&gt;can_calibrate =3D true;<br>
++}<br>
++<br>
+=C2=A0static const TypeInfo allwinner_sdhost_info =3D {<br>
+=C2=A0 =C2=A0 =C2=A0.name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_SDH=
+OST,<br>
+=C2=A0 =C2=A0 =C2=A0.parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_SYS_BUS_DEV=
+ICE,<br>
+@@ -910,6 +960,18 @@ static const TypeInfo allwinner_sdhost_sun5i_info =3D =
+{<br>
+=C2=A0 =C2=A0 =C2=A0.class_init=C2=A0 =C2=A0 =3D allwinner_sdhost_sun5i_cla=
+ss_init,<br>
+=C2=A0};<br>
+<br>
++static const TypeInfo allwinner_sdhost_sun50i_a64_info =3D {<br>
++=C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_SDHOST_S=
+UN50I_A64,<br>
++=C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_SDHOST,<br>
++=C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D allwinner_sdhost_sun50i_a64_cla=
+ss_init,<br>
++};<br>
++<br>
++static const TypeInfo allwinner_sdhost_sun50i_a64_emmc_info =3D {<br>
++=C2=A0 =C2=A0 .name=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_SDHOST_S=
+UN50I_A64_EMMC,<br>
++=C2=A0 =C2=A0 .parent=C2=A0 =C2=A0 =C2=A0 =C2=A0 =3D TYPE_AW_SDHOST,<br>
++=C2=A0 =C2=A0 .class_init=C2=A0 =C2=A0 =3D allwinner_sdhost_sun50i_a64_emm=
+c_class_init,<br>
++};<br>
++<br>
+=C2=A0static const TypeInfo allwinner_sdhost_bus_info =3D {<br>
+=C2=A0 =C2=A0 =C2=A0.name =3D TYPE_AW_SDHOST_BUS,<br>
+=C2=A0 =C2=A0 =C2=A0.parent =3D TYPE_SD_BUS,<br>
+@@ -922,6 +984,8 @@ static void allwinner_sdhost_register_types(void)<br>
+=C2=A0 =C2=A0 =C2=A0type_register_static(&amp;allwinner_sdhost_info);<br>
+=C2=A0 =C2=A0 =C2=A0type_register_static(&amp;allwinner_sdhost_sun4i_info);=
+<br>
+=C2=A0 =C2=A0 =C2=A0type_register_static(&amp;allwinner_sdhost_sun5i_info);=
+<br>
++=C2=A0 =C2=A0 type_register_static(&amp;allwinner_sdhost_sun50i_a64_info);=
+<br>
++=C2=A0 =C2=A0 type_register_static(&amp;allwinner_sdhost_sun50i_a64_emmc_i=
+nfo);<br>
+=C2=A0 =C2=A0 =C2=A0type_register_static(&amp;allwinner_sdhost_bus_info);<b=
+r>
+=C2=A0}<br>
+<br>
+diff --git a/include/hw/sd/allwinner-sdhost.h b/include/hw/sd/allwinner-sdh=
+ost.h<br>
+index 30c1e60404..1b951177dd 100644<br>
+--- a/include/hw/sd/allwinner-sdhost.h<br>
++++ b/include/hw/sd/allwinner-sdhost.h<br>
+@@ -38,6 +38,12 @@<br>
+=C2=A0/** Allwinner sun5i family and newer (A13, H2+, H3, etc) */<br>
+=C2=A0#define TYPE_AW_SDHOST_SUN5I TYPE_AW_SDHOST &quot;-sun5i&quot;<br>
+<br>
++/** Allwinner sun50i-a64 */<br>
++#define TYPE_AW_SDHOST_SUN50I_A64 TYPE_AW_SDHOST &quot;-sun50i-a64&quot;<b=
+r>
++<br>
++/** Allwinner sun50i-a64 emmc */<br>
++#define TYPE_AW_SDHOST_SUN50I_A64_EMMC=C2=A0 TYPE_AW_SDHOST &quot;-sun50i-=
+a64-emmc&quot;<br>
++<br>
+=C2=A0/** @} */<br>
+<br>
+=C2=A0/**<br>
+@@ -110,6 +116,7 @@ struct AwSdHostState {<br>
+=C2=A0 =C2=A0 =C2=A0uint32_t startbit_detect;=C2=A0 =C2=A0/**&lt; eMMC DDR =
+Start Bit Detection Control */<br>
+=C2=A0 =C2=A0 =C2=A0uint32_t response_crc;=C2=A0 =C2=A0 =C2=A0 /**&lt; Resp=
+onse CRC */<br>
+=C2=A0 =C2=A0 =C2=A0uint32_t data_crc[8];=C2=A0 =C2=A0 =C2=A0 =C2=A0/**&lt;=
+ Data CRC */<br>
++=C2=A0 =C2=A0 uint32_t sample_delay;=C2=A0 =C2=A0 =C2=A0 /**&lt; Sample de=
+lay control */<br>
+=C2=A0 =C2=A0 =C2=A0uint32_t status_crc;=C2=A0 =C2=A0 =C2=A0 =C2=A0 /**&lt;=
+ Status CRC */<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0/** @} */<br>
+@@ -132,6 +139,8 @@ struct AwSdHostClass {<br>
+=C2=A0 =C2=A0 =C2=A0size_t max_desc_size;<br>
+=C2=A0 =C2=A0 =C2=A0bool=C2=A0 =C2=A0is_sun4i;<br>
+<br>
++=C2=A0 =C2=A0 /** does the IP block support autocalibration? */<br>
++=C2=A0 =C2=A0 bool can_calibrate;<br>
+=C2=A0};<br>
+<br>
+=C2=A0#endif /* HW_SD_ALLWINNER_SDHOST_H */<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"l=
+tr"><div>Niek Linnenbank<br><br></div></div></div></div>
 
-     return 0;
- }
-@@ -628,6 +631,9 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-                                           errp, "export '%s' not present",
-                                           sane_name);
-     }
-+    if (client->opt == NBD_OPT_GO) {
-+        nbd_check_meta_export(client, exp);
-+    }
-
-     /* Don't bother sending NBD_INFO_NAME unless client requested it */
-     if (sendname) {
-@@ -681,6 +687,10 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-     if (client->header_style >= NBD_HEADER_STRUCTURED) {
-         myflags |= NBD_FLAG_SEND_DF;
-     }
-+    if (client->extended_headers &&
-+        (client->contexts.count || client->opt == NBD_OPT_INFO)) {
-+        myflags |= NBD_FLAG_BLOCK_STAT_PAYLOAD;
-+    }
-     trace_nbd_negotiate_new_style_size_flags(exp->size, myflags);
-     stq_be_p(buf, exp->size);
-     stw_be_p(buf + 8, myflags);
-@@ -716,7 +726,6 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-         client->check_align = check_align;
-         QTAILQ_INSERT_TAIL(&client->exp->clients, client, next);
-         blk_exp_ref(&client->exp->common);
--        nbd_check_meta_export(client);
-         rc = 1;
-     }
-     return rc;
-@@ -2415,6 +2424,83 @@ static int coroutine_fn nbd_co_send_bitmap(NBDClient *client,
-     return nbd_co_send_extents(client, request, ea, last, context_id, errp);
- }
-
-+/*
-+ * nbd_co_block_status_payload_read
-+ * Called when a client wants a subset of negotiated contexts via a
-+ * BLOCK_STATUS payload.  Check the payload for valid length and
-+ * contents.  On success, return 0 with request updated to effective
-+ * length.  If request was invalid but payload consumed, return 0 with
-+ * request->len and request->contexts.count set to 0 (which will
-+ * trigger an appropriate NBD_EINVAL response later on).  On I/O
-+ * error, return -EIO.
-+ */
-+static int
-+nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
-+                                 Error **errp)
-+{
-+    int payload_len = request->len;
-+    g_autofree char *buf = NULL;
-+    g_autofree bool *bitmaps = NULL;
-+    size_t count, i;
-+    uint32_t id;
-+
-+    assert(request->len <= NBD_MAX_BUFFER_SIZE);
-+    if (payload_len % sizeof(uint32_t) ||
-+        payload_len < sizeof(NBDBlockStatusPayload) ||
-+        payload_len > (sizeof(NBDBlockStatusPayload) +
-+                       sizeof(id) * client->contexts.count)) {
-+        goto skip;
-+    }
-+
-+    buf = g_malloc(payload_len);
-+    if (nbd_read(client->ioc, buf, payload_len,
-+                 "CMD_BLOCK_STATUS data", errp) < 0) {
-+        return -EIO;
-+    }
-+    trace_nbd_co_receive_request_payload_received(request->handle,
-+                                                  payload_len);
-+    memset(&request->contexts, 0, sizeof(request->contexts));
-+    request->contexts.nr_bitmaps = client->context_exp->nr_export_bitmaps;
-+    bitmaps = g_new0(bool, request->contexts.nr_bitmaps);
-+    count = (payload_len - sizeof(NBDBlockStatusPayload)) / sizeof(id);
-+    payload_len = 0;
-+
-+    for (i = 0; i < count; i++) {
-+
-+        id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
-+        if (id == NBD_META_ID_BASE_ALLOCATION) {
-+            if (request->contexts.base_allocation) {
-+                goto skip;
-+            }
-+            request->contexts.base_allocation = true;
-+        } else if (id == NBD_META_ID_ALLOCATION_DEPTH) {
-+            if (request->contexts.allocation_depth) {
-+                goto skip;
-+            }
-+            request->contexts.allocation_depth = true;
-+        } else {
-+            if (id - NBD_META_ID_DIRTY_BITMAP >
-+                request->contexts.nr_bitmaps ||
-+                bitmaps[id - NBD_META_ID_DIRTY_BITMAP]) {
-+                goto skip;
-+            }
-+            bitmaps[id - NBD_META_ID_DIRTY_BITMAP] = true;
-+        }
-+    }
-+
-+    request->len = ldq_be_p(buf);
-+    request->contexts.count = count;
-+    request->contexts.bitmaps = bitmaps;
-+    bitmaps = NULL;
-+    return 0;
-+
-+ skip:
-+    trace_nbd_co_receive_block_status_payload_compliance(request->from,
-+                                                         request->len);
-+    request->len = request->contexts.count = 0;
-+    return nbd_drop(client->ioc, payload_len, errp);
-+}
-+
- /* nbd_co_receive_request
-  * Collect a client request. Return 0 if request looks valid, -EIO to drop
-  * connection right away, -EAGAIN to indicate we were interrupted and the
-@@ -2461,7 +2547,14 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
-
-         if (request->type == NBD_CMD_WRITE || extended_with_payload) {
-             payload_len = request->len;
--            if (request->type != NBD_CMD_WRITE) {
-+            if (request->type == NBD_CMD_BLOCK_STATUS) {
-+                payload_len = nbd_co_block_status_payload_read(client,
-+                                                               request,
-+                                                               errp);
-+                if (payload_len < 0) {
-+                    return -EIO;
-+                }
-+            } else if (request->type != NBD_CMD_WRITE) {
-                 /*
-                  * For now, we don't support payloads on other
-                  * commands; but we can keep the connection alive.
-@@ -2540,6 +2633,9 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
-         valid_flags |= NBD_CMD_FLAG_NO_HOLE | NBD_CMD_FLAG_FAST_ZERO;
-     } else if (request->type == NBD_CMD_BLOCK_STATUS) {
-         valid_flags |= NBD_CMD_FLAG_REQ_ONE;
-+        if (client->extended_headers && client->contexts.count) {
-+            valid_flags |= NBD_CMD_FLAG_PAYLOAD_LEN;
-+        }
-     }
-     if (request->flags & ~valid_flags) {
-         error_setg(errp, "unsupported flags for command %s (got 0x%x)",
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index 8c35442626a..b7ab0fdc791 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -222,6 +222,7 @@ static int qemu_nbd_client_list(SocketAddress *saddr, QCryptoTLSCreds *tls,
-                 [NBD_FLAG_SEND_RESIZE_BIT]          = "resize",
-                 [NBD_FLAG_SEND_CACHE_BIT]           = "cache",
-                 [NBD_FLAG_SEND_FAST_ZERO_BIT]       = "fast-zero",
-+                [NBD_FLAG_BLOCK_STAT_PAYLOAD_BIT]   = "block-status-payload",
-             };
-
-             printf("  size:  %" PRIu64 "\n", list[i].size);
-diff --git a/nbd/trace-events b/nbd/trace-events
-index c20df33a431..da92fe1b56b 100644
---- a/nbd/trace-events
-+++ b/nbd/trace-events
-@@ -70,6 +70,7 @@ nbd_co_send_structured_read(uint64_t handle, uint64_t offset, void *data, size_t
- nbd_co_send_structured_read_hole(uint64_t handle, uint64_t offset, size_t size) "Send structured read hole reply: handle = %" PRIu64 ", offset = %" PRIu64 ", len = %zu"
- nbd_co_send_extents(uint64_t handle, unsigned int extents, uint32_t id, uint64_t length, int last) "Send block status reply: handle = %" PRIu64 ", extents = %u, context = %d (extents cover %" PRIu64 " bytes, last chunk = %d)"
- nbd_co_send_structured_error(uint64_t handle, int err, const char *errname, const char *msg) "Send structured error reply: handle = %" PRIu64 ", error = %d (%s), msg = '%s'"
-+nbd_co_receive_block_status_payload_compliance(uint64_t from, int len) "client sent unusable block status payload: from=0x%" PRIx64 ", len=0x%x"
- nbd_co_receive_request_decode_type(uint64_t handle, uint16_t type, const char *name) "Decoding type: handle = %" PRIu64 ", type = %" PRIu16 " (%s)"
- nbd_co_receive_request_payload_received(uint64_t handle, uint64_t len) "Payload received: handle = %" PRIu64 ", len = %" PRIu64
- nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
-diff --git a/tests/qemu-iotests/223.out b/tests/qemu-iotests/223.out
-index b98582c38ea..b38f0b7963b 100644
---- a/tests/qemu-iotests/223.out
-+++ b/tests/qemu-iotests/223.out
-@@ -83,7 +83,7 @@ exports available: 0
- exports available: 3
-  export: 'n'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -94,7 +94,7 @@ exports available: 3
-  export: 'n2'
-   description: some text
-   size:  4194304
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -104,7 +104,7 @@ exports available: 3
-    qemu:dirty-bitmap:b2
-  export: 'n3'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -205,7 +205,7 @@ exports available: 0
- exports available: 3
-  export: 'n'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -216,7 +216,7 @@ exports available: 3
-  export: 'n2'
-   description: some text
-   size:  4194304
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -226,7 +226,7 @@ exports available: 3
-    qemu:dirty-bitmap:b2
-  export: 'n3'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-diff --git a/tests/qemu-iotests/307.out b/tests/qemu-iotests/307.out
-index 2b9a6a67a1a..f645f3315f8 100644
---- a/tests/qemu-iotests/307.out
-+++ b/tests/qemu-iotests/307.out
-@@ -15,7 +15,7 @@ wrote 4096/4096 bytes at offset 0
- exports available: 1
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -44,7 +44,7 @@ exports available: 1
- exports available: 1
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -76,7 +76,7 @@ exports available: 1
- exports available: 2
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -86,7 +86,7 @@ exports available: 2
-  export: 'export1'
-   description: This is the writable second export
-   size:  67108864
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -113,7 +113,7 @@ exports available: 1
-  export: 'export1'
-   description: This is the writable second export
-   size:  67108864
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-diff --git a/tests/qemu-iotests/tests/nbd-qemu-allocation.out b/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-index 659276032b0..794d1bfce62 100644
---- a/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-+++ b/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-@@ -17,7 +17,7 @@ wrote 2097152/2097152 bytes at offset 1048576
- exports available: 1
-  export: ''
-   size:  4194304
--  flags: 0x48f ( readonly flush fua df cache )
-+  flags: 0x148f ( readonly flush fua df cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
--- 
-2.40.1
-
+--000000000000f9657605fbc0d2fc--
 
