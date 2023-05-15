@@ -2,79 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA72704165
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 01:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4717F70416E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 01:38:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyhYp-0006ud-LY; Mon, 15 May 2023 19:24:59 -0400
+	id 1pyhkc-0002Dt-BD; Mon, 15 May 2023 19:37:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyhYn-0006u6-Ic
- for qemu-devel@nongnu.org; Mon, 15 May 2023 19:24:57 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1pyhka-0002Dj-U6
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 19:37:08 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyhYj-0001eD-UM
- for qemu-devel@nongnu.org; Mon, 15 May 2023 19:24:57 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6434e65d808so14191632b3a.3
- for <qemu-devel@nongnu.org>; Mon, 15 May 2023 16:24:53 -0700 (PDT)
+ id 1pyhkZ-0003nt-5W
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 19:37:08 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6439bbc93b6so9476917b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 15 May 2023 16:37:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684193092; x=1686785092;
+ d=linaro.org; s=google; t=1684193825; x=1686785825;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ErmvmWZRvra71DStvOlkrRkcQHRr4QERu5Rb/NcH9Ek=;
- b=KwV1gm05spJzW9sPKWzgxiHq4Sf2tcNqz7PbleaFwreHfhTa9Etrttn9LliC5TWOlP
- kT4SOfO38ld9cSCkOHSIKaeEAAvnIRmXHWzy2h2xxU1OKnKgiYMb+gdcM9mymkzmD4d7
- nLxWqR+rZs0DvlNG6WlHT6x1w26yLxTXIt/m6O051H2ZmS46MhVVQfSs4N/HTcWF6Ing
- AV6ZNbdCrPbiTxc+JojyHq13sT4Y90gEkJWYEO5UBdAp74OyMuIYiBJExf7BOcnZBu79
- prPJSpFvyx9/f3vPW4+fxdw3c1EkY4srzBCyUAACoiYn3HSzpPZzoXwjV4ogFSIGcD7t
- YFmg==
+ bh=1Aurf2e1xga4E1VZRAAjM7qHxekmbNCzjHV7M/l0zJs=;
+ b=kJlbrT9sHPqZiy8sBy5yjrnnr95vWb+Y76dx38wwa/koRXHdxlott2XRlThTgSSIL9
+ mDF6S6HLUECwvEjol+rIcSAB5/33Dc7r3bDmclZ4vFpDbHBREP1pYutAB3fITZEme5bF
+ iIttQj6Ra8+fn1gCEAoLcm58k+8OrhVOThfrVohBBPnYnORUJ1xToAEhSNWdMUWLS5ea
+ Mex70lzgsagN5TXxaI6QGHTwR5l7FPacGoGhNh9+i18ha6l/J6Rj8nETcRu3CyaDFNqu
+ liR52nAaI2W9eJYCFcf0EgLWKn/4S9aCJfvcMfQqk3PUaXCLBPTvRjUmjcW33VPlRFRc
+ 3Zkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684193092; x=1686785092;
+ d=1e100.net; s=20221208; t=1684193825; x=1686785825;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ErmvmWZRvra71DStvOlkrRkcQHRr4QERu5Rb/NcH9Ek=;
- b=Y9Ued/c6aOW6JJtcmiNM8p75q73221IGsgOfXcYe02WNvX4og9T0BF15wkhBmJ2NhA
- 1VUaCdMu1YqaAt0db4T0LTEpnH3j+dNM8zCufD8BcPANegFgc0XaXPb3llNadwrRYddp
- WiScduWzez245hS9mLRZUpbdSLaY0RQytDw7KHIaJGYclY2bpg7EEgeGcLKEKSugEygM
- dtG9Pr+iLICSLWJJcc04RDfxqGwEb8+cdpKNaHG3/aJfKJeGJR8Bn2kN6sf8xszHl1+u
- omJ9QRvCwWMSbvF2SiNhRLjKEhEaHxaLlX0y5CqmdMkwRadiZTqynQYUf0gp1b0wg/Dp
- eCoA==
-X-Gm-Message-State: AC+VfDxgGkVxWFgcgfI0b8qcCoPraJBwWdZOEiPVLSVSeYQb/9Nfiiwv
- Kll2EYrycSS8Epu2kSI2Nub9RQ==
-X-Google-Smtp-Source: ACHHUZ6aVLeCz8/8NT9MndLZRdE0l1uYcSLZSC6h+BL9CvA4LB4RhPnFXx06L8Lr5uJdtyHpwOGerA==
-X-Received: by 2002:a05:6a00:a21:b0:62a:d752:acc5 with SMTP id
- p33-20020a056a000a2100b0062ad752acc5mr48912601pfh.32.1684193092114; 
- Mon, 15 May 2023 16:24:52 -0700 (PDT)
+ bh=1Aurf2e1xga4E1VZRAAjM7qHxekmbNCzjHV7M/l0zJs=;
+ b=HRusleqhzhkwt8bJ9JeVUEYeM90Cjd+PvEvoZ9k+BlTAbApLDaJA6JomgW44AE8CX3
+ 9F152p+p743teRX6qw8EiCTGb4Xx6HfG6a24/LYZDgBLdSu01hnVoGHZl/9a0Df1e+Ph
+ k9hSSvm9uFsbnbKHmUT0ct6leQorjTEzbNuTZIWeGDguNBgR5Tj3bEhpRdnRmPp0NtcP
+ iybwX2iuBx9POl6V7wdd639w/uY7gPfRD3b1fDyBOWONWkP7xyWNdQTPEf0QO4pHa2M3
+ fxdsA0moBQUnriUHwYXMzN/l0D/UN0TWI5Ch4u4AdV/xLEBdOlnGYYiY7GfSE+Zs18r6
+ SkBg==
+X-Gm-Message-State: AC+VfDzbF8f1fpiqzUAQcrDWr9ZKBmPk2WmC/0ZtbhPlj/DZG2wz0+jD
+ Bb6ZAnyBIckL3SLtziDaHaYX4ubYnHQpsuDCqRY=
+X-Google-Smtp-Source: ACHHUZ6y7JbU2oqv2WBkKDZfDfWIxaDuzV8iVU2zUO4rKM3lEahN7rdtcHFNoexVrAFrgz/A2rkotQ==
+X-Received: by 2002:a05:6a20:12cf:b0:104:1016:dd4d with SMTP id
+ v15-20020a056a2012cf00b001041016dd4dmr20493931pzg.57.1684193825150; 
+ Mon, 15 May 2023 16:37:05 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:9902:96ac:8d8c:4366?
  ([2602:ae:1598:4c01:9902:96ac:8d8c:4366])
  by smtp.gmail.com with ESMTPSA id
- r19-20020a62e413000000b0063799398eb9sm12285075pfh.58.2023.05.15.16.24.50
+ t19-20020a17090b019300b002448f08b177sm163702pjs.22.2023.05.15.16.37.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 May 2023 16:24:51 -0700 (PDT)
-Message-ID: <9b20442b-72de-7323-ca0b-c66e49a4c4d8@linaro.org>
-Date: Mon, 15 May 2023 16:24:49 -0700
+ Mon, 15 May 2023 16:37:04 -0700 (PDT)
+Message-ID: <356b996c-310a-858f-5987-a698654fec8b@linaro.org>
+Date: Mon, 15 May 2023 16:37:02 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v5 02/54] accel/tcg: Honor atomicity of loads
+Subject: Re: [PULL v2 00/16] Block patches
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-References: <20230515143313.734053-1-richard.henderson@linaro.org>
- <20230515143313.734053-3-richard.henderson@linaro.org>
- <CAFEAcA_KaYWE+Yh+vberVqk6hV=3R1Xm2V2Po+jrS54i6S1Quw@mail.gmail.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Richard Henderson <rth@twiddle.net>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Julia Suvorova <jusual@redhat.com>,
+ Aarushi Mehta <mehta.aaru20@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ kvm@vger.kernel.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>, qemu-block@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Fam Zheng <fam@euphon.net>
+References: <20230515160506.1776883-1-stefanha@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA_KaYWE+Yh+vberVqk6hV=3R1Xm2V2Po+jrS54i6S1Quw@mail.gmail.com>
+In-Reply-To: <20230515160506.1776883-1-stefanha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -58
 X-Spam_score: -5.9
 X-Spam_bar: -----
@@ -97,37 +106,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/15/23 09:43, Peter Maydell wrote:
->> +static uint16_t load_atom_2(CPUArchState *env, uintptr_t ra,
->> +                            void *pv, MemOp memop)
->> +{
->> +    uintptr_t pi = (uintptr_t)pv;
->> +    int atmax;
->> +
->> +    if (likely((pi & 1) == 0)) {
->> +        return load_atomic2(pv);
->> +    }
->> +    if (HAVE_al16_fast) {
->> +        return load_atom_extract_al16_or_al8(pv, 2);
->> +    }
->> +
->> +    atmax = required_atomicity(env, pi, memop);
->> +    switch (atmax) {
->> +    case MO_8:
->> +        return lduw_he_p(pv);
->> +    case MO_16:
->> +        /* The only case remaining is MO_ATOM_WITHIN16. */
->> +        if (!HAVE_al8_fast && (pi & 3) == 1) {
->> +            /* Big or little endian, we want the middle two bytes. */
->> +            return load_atomic4(pv - 1) >> 8;
->> +        }
->> +        if (unlikely((pi & 15) != 7)) {
+On 5/15/23 09:04, Stefan Hajnoczi wrote:
+> The following changes since commit 8844bb8d896595ee1d25d21c770e6e6f29803097:
 > 
-> Why is this the unlikely case ?
+>    Merge tag 'or1k-pull-request-20230513' ofhttps://github.com/stffrdhrn/qemu  into staging (2023-05-13 11:23:14 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/stefanha/qemu.git  tags/block-pull-request
+> 
+> for you to fetch changes up to 01562fee5f3ad4506d57dbcf4b1903b565eceec7:
+> 
+>    docs/zoned-storage:add zoned emulation use case (2023-05-15 08:19:04 -0400)
+> 
+> ----------------------------------------------------------------
+> Pull request
+> 
+> This pull request contain's Sam Li's zoned storage support in the QEMU block
+> layer and virtio-blk emulation.
+> 
+> v2:
+> - Sam fixed the CI failures. CI passes for me now. [Richard]
 
-Ug, it's not.  Assuming random distribution of misalignment, this is 6 of 7 cases.
-I'll remove all markup, as it doesn't enhance understanding.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
 r~
+
 
