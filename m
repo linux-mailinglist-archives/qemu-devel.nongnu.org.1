@@ -2,74 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE2E704E06
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 14:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1656F704E10
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 14:50:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyu5q-00046p-RI; Tue, 16 May 2023 08:47:54 -0400
+	id 1pyu6K-0004MA-Ak; Tue, 16 May 2023 08:48:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1pyu5k-00045x-AL; Tue, 16 May 2023 08:47:48 -0400
-Received: from smtpout3.mo529.mail-out.ovh.net ([46.105.54.81])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6G-0004Jm-Gj
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:20 -0400
+Received: from mout.kundenserver.de ([212.227.126.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>)
- id 1pyu5h-0005rS-RV; Tue, 16 May 2023 08:47:48 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.108.16.163])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 5CAAF20CEC;
- Tue, 16 May 2023 12:47:41 +0000 (UTC)
-Received: from kaod.org (37.59.142.109) by DAG4EX2.mxp5.local (172.16.2.32)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 16 May
- 2023 14:47:39 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-109S0037f621e71-1566-4433-b06d-2998b5eee22b,
- 2678E99B74C30C5B30CC52F7B2AE97E44E35CB91) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <ee1979b4-1a64-607d-8fbd-4bfd9c5b317b@kaod.org>
-Date: Tue, 16 May 2023 14:47:38 +0200
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu69-00061s-Vj
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:20 -0400
+Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue012
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1Mm9NA-1qPPA33jKi-00i9dY; Tue, 16
+ May 2023 14:48:12 +0200
+From: Laurent Vivier <laurent@vivier.eu>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 0/9] Linux user for 8.1 patches
+Date: Tue, 16 May 2023 14:48:01 +0200
+Message-Id: <20230516124810.90494-1-laurent@vivier.eu>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 01/16] migration: Don't use INT64_MAX for unlimited rate
-Content-Language: en-US
-To: <quintela@redhat.com>, David Edmondson <david.edmondson@oracle.com>
-CC: <qemu-devel@nongnu.org>, Peter Xu <peterx@redhat.com>, Greg Kurz
- <groug@kaod.org>, <qemu-s390x@nongnu.org>, Fam Zheng <fam@euphon.net>, Ilya
- Leoshkevich <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, John Snow
- <jsnow@redhat.com>, <qemu-ppc@nongnu.org>, Daniel Henrique Barboza
- <danielhb413@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, Richard Henderson
- <richard.henderson@linaro.org>, David Gibson <david@gibson.dropbear.id.au>,
- David Hildenbrand <david@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Eric Farman <farman@linux.ibm.com>, <qemu-block@nongnu.org>, Eric Blake
- <eblake@redhat.com>, Leonardo Bras <leobras@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-References: <20230515195709.63843-1-quintela@redhat.com>
- <20230515195709.63843-2-quintela@redhat.com> <m2fs7w4p0u.fsf@oracle.com>
- <874jocy6gb.fsf@secure.mitica>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <874jocy6gb.fsf@secure.mitica>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [37.59.142.109]
-X-ClientProxiedBy: DAG7EX1.mxp5.local (172.16.2.61) To DAG4EX2.mxp5.local
- (172.16.2.32)
-X-Ovh-Tracer-GUID: 06c71433-82a7-4e1e-8a11-fe56431b2bcf
-X-Ovh-Tracer-Id: 8893764840525106076
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehledgheeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgihesthejredttdefjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeuuddtteelgeejhfeikeegffekhfelvefgfeejveffjeeiveegfeehgfdtgfeitdenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtledpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegtlhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepqhhuihhnthgvlhgrsehrvgguhhgrthdrtghomhdplhgvohgsrhgrshesrhgvughhrghtrdgtohhmpdgvsghlrghkvgesrhgvughhrghtrdgtohhmpdhqvghmuhdqsghlohgtkhesnhhonhhgnhhurdhorhhgpdhfrghrmhgrnheslhhinhhugidrihgsmhdrtghomhdpshhtvghfrghnhhgrsehrvgguhhgrthdrtghomhdpuggrvhhiugesrhgvughhrghtrdgtohhmpdgurghvihgusehgihgsshhonhdrughrohhpsggvrghrrdhiugdrrghupdhrih
- gthhgrrhgurdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdpsghorhhnthhrrggvghgvrheslhhinhhugidrihgsmhdrtghomhdphhgrrhhshhhpsgeslhhinhhugidrihgsmhdrtghomhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdpjhhsnhhofiesrhgvughhrghtrdgtohhmpdhprghsihgtsehlihhnuhigrdhisghmrdgtohhmpdhiihhisehlihhnuhigrdhisghmrdgtohhmpdhfrghmsegvuhhphhhonhdrnhgvthdpqhgvmhhuqdhsfeeltdigsehnohhnghhnuhdrohhrghdpphgvthgvrhigsehrvgguhhgrthdrtghomhdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpuggrvhhiugdrvggumhhonhgushhonhesohhrrggtlhgvrdgtohhmpdhthhhuthhhsehrvgguhhgrthdrtghomhdpvhhsvghmvghnthhsohhvseihrghnuggvgidqthgvrghmrdhruhdpghhrohhugheskhgrohgurdhorhhgpdfovfetjfhoshhtpehmohehvdelpdhmohguvgepshhmthhpohhuth
-Received-SPF: pass client-ip=46.105.54.81; envelope-from=clg@kaod.org;
- helo=smtpout3.mo529.mail-out.ovh.net
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.666,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:JjjP0mGBjGmx13ZWCcLD4onP/eDmyhu1pzaVRQvgLYdZu7Ketv2
+ gxHDQVTMJhd8Tco/FeEQmUlEXPDamtquRWM5W+MkGExrg9KcoavX5gwmH2m+50u54KEiK3d
+ p0dzBCjQSxW5Vw47EJNn2kz8uTWEXY25nqfcKQVv7NU/AxzV6+xP9xr3BoWqwBj8uqFdzQw
+ wC70HvgHwX0lDnAS4cc4A==
+UI-OutboundReport: notjunk:1;M01:P0:JESgLJpBdlM=;xZGvayY9fSlOZd6gNdw3O4pwInR
+ IVNaR6uHBuO+WzyHzsCA302NPELFVGpFlcLOqHoMnoIk7bLahr6yzQYugj1Xip9Ox6YIumVYW
+ +UUgLJa5Ot0B17xk/P59hgCsEwwUy0ixRWKAcP/oCpAK+s93r6RgrSJe3AtODqi23qt5sv2WB
+ A4D8AigOIjsiSfegnQctBnc0OjZyfg80HSH4/oHVIi10Pk1UYdjG7UASwEdTb/P2qzkQsI+UW
+ FEA/kRMva5/vrZWgnQ6MLHvWZWtD5tCzw03TqWFK+Ypt+Bm02Fap22wul2fhVcEMOxpKZqy9H
+ lZw4NoTut6y2JsOqDXKp3WkfU/IVIXK+IsuPRwHpgj1xTL2ttrOLvdv+I7BiNrsegn/tu8rTO
+ 5Eey8EJmKGBke99zI9He6PDdLLQheSC6alGcnhbls6S4XNnrvfHGGhVWgHK3L9LRiIijOsEsz
+ kTIHOnq+QUS/YF/AOoa1Ve5ihVHEfRkRBYy49GOhUathUjTKhO7kyis5lG33Fi0yRhgk7iIho
+ iUyShe/QAStewr+KxYciRjeHrCBB0+fjlgjci1KJo5ruWeBlmXT/llvHd9hXUXbjoL5oyJXJ/
+ vELPjrTlR91/3g82egtlQ+GoNxGog1Lq2NDImTjzIdJGATpHS++6qb7PhIpUEsvoR/7T6q8fa
+ P4kOHX1Dn5zU54QFxMMQQQGX8riaKe72ZPqSwizeVw==
+Received-SPF: none client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,26 +67,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/16/23 11:24, Juan Quintela wrote:
-> David Edmondson <david.edmondson@oracle.com> wrote:
->> Juan Quintela <quintela@redhat.com> writes:
->>
->>> Define and use RATE_LIMIT_MAX instead.
->>
->> Suggest "RATE_LIMIT_MAX_NONE".
-> 
-> Then even better
-> 
-> RATE_LIMIT_DISABLED?
+The following changes since commit 7c18f2d663521f1b31b821a13358ce38075eaf7d:
 
-I'd vote for RATE_LIMIT_DISABLED.
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-04-29 23:07:17 +0100)
 
-> RATE_LIMIT_NONE?
-> 
-> Using MAX and NONE at the same time looks strange.
+are available in the Git repository at:
 
-Cheers,
+  https://github.com/vivier/qemu.git tags/linux-user-for-8.1-pull-request
 
-C.
+for you to fetch changes up to c490496e85047d516b31f93ea0e14819e0ab5cf5:
+
+  linux-user: fix getgroups/setgroups allocations (2023-05-16 12:48:09 +0200)
+
+----------------------------------------------------------------
+linux-user pull request 20230512-v3
+
+add open_tree(), move_mount()
+add /proc/cpuinfo for riscv
+fixes and cleanup
+
+----------------------------------------------------------------
+
+Afonso Bordado (1):
+  linux-user: Emulate /proc/cpuinfo output for riscv
+
+Daniil Kovalev (1):
+  linux-user: Fix mips fp64 executables loading
+
+Michael Tokarev (1):
+  linux-user: fix getgroups/setgroups allocations
+
+Thomas Huth (1):
+  linux-user/main: Use list_cpus() instead of cpu_list()
+
+Thomas Weißschuh (5):
+  linux-user: report ENOTTY for unknown ioctls
+  linux-user: Add move_mount() syscall
+  linux-user: Add open_tree() syscall
+  linux-user: Add new flag VERIFY_NONE
+  linux-user: Don't require PROT_READ for mincore
+
+ linux-user/main.c                 |   5 +-
+ linux-user/mips/cpu_loop.c        |   5 +-
+ linux-user/qemu.h                 |   1 +
+ linux-user/syscall.c              | 207 ++++++++++++++++++++++++------
+ tests/tcg/riscv64/Makefile.target |   1 +
+ tests/tcg/riscv64/cpuinfo.c       |  31 +++++
+ 6 files changed, 208 insertions(+), 42 deletions(-)
+ create mode 100644 tests/tcg/riscv64/cpuinfo.c
+
+-- 
+2.40.1
 
 
