@@ -2,104 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB6E704810
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 10:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DB6704817
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 10:46:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyqHy-0001M0-9r; Tue, 16 May 2023 04:44:10 -0400
+	id 1pyqJF-00026f-6d; Tue, 16 May 2023 04:45:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1pyqHo-0001Kr-9p; Tue, 16 May 2023 04:44:00 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1pyqIt-000260-Je
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 04:45:08 -0400
+Received: from smtpout3.mo529.mail-out.ovh.net ([46.105.54.81])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1pyqHi-0008S8-Hx; Tue, 16 May 2023 04:44:00 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34G8WfpP024613; Tue, 16 May 2023 08:43:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=TWYcnf/9Tb40jdDaASyz2PZOpuwdsphWUvHvq1PXx+4=;
- b=iPSgP1hjZvcPqkw8Z8RHdZAuory1aa8sJdGO8sts0jrY19uPnbqxwru6jYNBVwgHV+al
- bSC2kTPlT6DF7XA4ml4whPMR84yd46ZoQcRPy+8kRAp1H3UgONU6hy7SUytFMBm0yTuQ
- MIUCKBk4lVNXGcc3hXi0CmE+KUJtREzoQEEfpVv1n+R/JrhwCu3QebzzHJbbpXwX7AKf
- wugknlZOq578TUBIW7aNXEgTd6a6qZ0WKaFHPwfuY5b5Fc6WPEQN83gfaV4BV4gt+STr
- QPY0oGCbweXP3M5W8tEd5gtT2m3efMfp9zJ5+Nuuyq0qUZQLU++Coi3ghT5YJkvx9Auz Sg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm6dm8jy1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 08:43:51 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34G8gvDD020125;
- Tue, 16 May 2023 08:43:51 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm6dm8jxw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 08:43:51 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34G827j2000665;
- Tue, 16 May 2023 08:43:50 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
- by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3qj265ke77-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 08:43:50 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34G8hnM365536256
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 May 2023 08:43:49 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5475F58066;
- Tue, 16 May 2023 08:43:49 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9BA3A58059;
- Tue, 16 May 2023 08:43:47 +0000 (GMT)
-Received: from [9.109.242.129] (unknown [9.109.242.129])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 16 May 2023 08:43:47 +0000 (GMT)
-Message-ID: <4b1147e0-498d-e3ae-d97a-4063055099b1@linux.ibm.com>
-Date: Tue, 16 May 2023 14:13:45 +0530
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1pyqIp-0000If-Rx
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 04:45:07 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.146.56])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id C4B7220BFD;
+ Tue, 16 May 2023 08:44:53 +0000 (UTC)
+Received: from kaod.org (37.59.142.99) by DAG4EX2.mxp5.local (172.16.2.32)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 16 May
+ 2023 10:44:53 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-99G0030a062745-1dc4-42f7-bc2a-3ad5cbe880ab,
+ 2678E99B74C30C5B30CC52F7B2AE97E44E35CB91) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <5b7f36b4-99f5-cba5-9c16-fc03457137b5@kaod.org>
+Date: Tue, 16 May 2023 10:44:50 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH] target/ppc: Use SMT4 small core chip type in POWER9/10
- PVRs
+Subject: Re: [PATCH v4] target/ppc: Add POWER9 DD2.2 model
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20230515160131.394562-1-npiggin@gmail.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230515160131.394562-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: NYmuFUC27F-FUvJ5L32klNw8X_HiiY_q
-X-Proofpoint-GUID: hgDt-NLcS8nMvYCq5hwQFVukR11HciMf
+To: Nicholas Piggin <npiggin@gmail.com>, <qemu-ppc@nongnu.org>
+CC: <qemu-devel@nongnu.org>, Harsh Prateek Bora <harsh@linux.vnet.ibm.com>
+References: <20230515160201.394587-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230515160201.394587-1-npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-16_02,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=888
- suspectscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 impostorscore=0
- malwarescore=0 clxscore=1015 priorityscore=1501 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
- definitions=main-2305160072
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
+X-Originating-IP: [37.59.142.99]
+X-ClientProxiedBy: DAG2EX2.mxp5.local (172.16.2.12) To DAG4EX2.mxp5.local
+ (172.16.2.32)
+X-Ovh-Tracer-GUID: b3e3b827-18fb-4ba5-8f31-bf646a36887d
+X-Ovh-Tracer-Id: 4793237379548482528
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehledgtdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgihesthejredttdefjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeuuddtteelgeejhfeikeegffekhfelvefgfeejveffjeeiveegfeehgfdtgfeitdenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddrleelpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeotghlgheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehnphhighhgihhnsehgmhgrihhlrdgtohhmpdhqvghmuhdqphhptgesnhhonhhgnhhurdhorhhgpdhqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhhrghrshhhsehlihhnuhigrdhvnhgvthdrihgsmhdrtghomhdpoffvtefjohhsthepmhhohedvledpmhhouggvpehsmhhtphhouhht
+Received-SPF: pass client-ip=46.105.54.81; envelope-from=clg@kaod.org;
+ helo=smtpout3.mo529.mail-out.ovh.net
+X-Spam_score_int: -56
+X-Spam_score: -5.7
 X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.811,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.811,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,57 +72,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-<correcting my email id in CC>
+On 5/15/23 18:02, Nicholas Piggin wrote:
+> POWER9 DD2.1 and earlier had significant limitations when running KVM,
+> including lack of "mixed mode" MMU support (ability to run HPT and RPT
+> mode on threads of the same core), and a translation prefetch issue
+> which is worked around by disabling "AIL" mode for the guest.
+> 
+> These processors are not widely available, and it's difficult to deal
+> with all these quirks in qemu +/- KVM, so create a POWER9 DD2.2 CPU
+> and make it the default POWER9 CPU.
 
-On 5/15/23 21:31, Nicholas Piggin wrote:
-> QEMU's PVR value for POWER9 DD2.0 has chip type 1, which is the SMT4
-> "small core" type that OpenPOWER processors use. QEMU's PVR for all
-> other POWER9/10 have chip type 0, which "enterprise" systems use.
-> 
-> The difference does not really matter to QEMU (because it does not care
-> about SMT mode in the target), but for consistency all PVRs should use
-> the same chip type. We'll go with the SMT4 OpenPOWER type.
-> 
+I would remove power9_v1.0 and power9_v2.0 (not shipped AFAIK) and maybe
+add power9_v2.3 since it has a little more features.
+
+It can be done as a followup.
+
+Thanks,
+
+C.
+
+
+
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
-> This is a replacement for
-> 
-> https://lists.gnu.org/archive/html/qemu-ppc/2022-03/msg00227.html
-> 
-> But the chip type is changed to 1 instead of 0, because that's the
-> more familiar SM4 / small core CPU.
+> This is unchanged since v3, just reposting.
 > 
 > Thanks,
 > Nick
 > 
->   target/ppc/cpu-models.h | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   hw/ppc/pnv.c                   |  2 +-
+>   hw/ppc/pnv_core.c              |  2 +-
+>   hw/ppc/spapr.c                 |  2 +-
+>   hw/ppc/spapr_cpu_core.c        |  1 +
+>   include/hw/ppc/pnv.h           |  2 +-
+>   target/ppc/cpu-models.c        |  4 +++-
+>   target/ppc/cpu-models.h        |  1 +
+>   target/ppc/cpu_init.c          | 21 +++++++++++++++++++--
+>   tests/qtest/device-plug-test.c |  4 ++--
+>   9 files changed, 30 insertions(+), 9 deletions(-)
 > 
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 11cb48af2f..590fc64b32 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -2171,7 +2171,7 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
+>       };
+>   
+>       mc->desc = "IBM PowerNV (Non-Virtualized) POWER9";
+> -    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.0");
+> +    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
+>       compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
+>   
+>       xfc->match_nvt = pnv_match_nvt;
+> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+> index 410f31bdf8..0bc3ad41c8 100644
+> --- a/hw/ppc/pnv_core.c
+> +++ b/hw/ppc/pnv_core.c
+> @@ -348,7 +348,7 @@ static const TypeInfo pnv_core_infos[] = {
+>       DEFINE_PNV_CORE_TYPE(power8, "power8e_v2.1"),
+>       DEFINE_PNV_CORE_TYPE(power8, "power8_v2.0"),
+>       DEFINE_PNV_CORE_TYPE(power8, "power8nvl_v1.0"),
+> -    DEFINE_PNV_CORE_TYPE(power9, "power9_v2.0"),
+> +    DEFINE_PNV_CORE_TYPE(power9, "power9_v2.2"),
+>       DEFINE_PNV_CORE_TYPE(power10, "power10_v2.0"),
+>   };
+>   
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index ddc9c7b1a1..b58e69afd7 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -4631,7 +4631,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+>   
+>       smc->dr_lmb_enabled = true;
+>       smc->update_dt_enabled = true;
+> -    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.0");
+> +    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
+>       mc->has_hotpluggable_cpus = true;
+>       mc->nvdimm_supported = true;
+>       smc->resize_hpt_default = SPAPR_RESIZE_HPT_ENABLED;
+> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+> index 8a4861f45a..9b88dd549a 100644
+> --- a/hw/ppc/spapr_cpu_core.c
+> +++ b/hw/ppc/spapr_cpu_core.c
+> @@ -390,6 +390,7 @@ static const TypeInfo spapr_cpu_core_type_infos[] = {
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power8nvl_v1.0"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power9_v1.0"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.0"),
+> +    DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.2"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power10_v1.0"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power10_v2.0"),
+>   #ifdef CONFIG_KVM
+> diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
+> index 409f3bf763..7e5fef7c43 100644
+> --- a/include/hw/ppc/pnv.h
+> +++ b/include/hw/ppc/pnv.h
+> @@ -48,7 +48,7 @@ DECLARE_INSTANCE_CHECKER(PnvChip, PNV_CHIP_POWER8,
+>   DECLARE_INSTANCE_CHECKER(PnvChip, PNV_CHIP_POWER8NVL,
+>                            TYPE_PNV_CHIP_POWER8NVL)
+>   
+> -#define TYPE_PNV_CHIP_POWER9 PNV_CHIP_TYPE_NAME("power9_v2.0")
+> +#define TYPE_PNV_CHIP_POWER9 PNV_CHIP_TYPE_NAME("power9_v2.2")
+>   DECLARE_INSTANCE_CHECKER(PnvChip, PNV_CHIP_POWER9,
+>                            TYPE_PNV_CHIP_POWER9)
+>   
+> diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
+> index 912b037c63..7dbb47de64 100644
+> --- a/target/ppc/cpu-models.c
+> +++ b/target/ppc/cpu-models.c
+> @@ -732,6 +732,8 @@
+>                   "POWER9 v1.0")
+>       POWERPC_DEF("power9_v2.0",   CPU_POWERPC_POWER9_DD20,            POWER9,
+>                   "POWER9 v2.0")
+> +    POWERPC_DEF("power9_v2.2",   CPU_POWERPC_POWER9_DD22,            POWER9,
+> +                "POWER9 v2.2")
+>       POWERPC_DEF("power10_v1.0",  CPU_POWERPC_POWER10_DD1,            POWER10,
+>                   "POWER10 v1.0")
+>       POWERPC_DEF("power10_v2.0",  CPU_POWERPC_POWER10_DD20,           POWER10,
+> @@ -907,7 +909,7 @@ PowerPCCPUAlias ppc_cpu_aliases[] = {
+>       { "power8e", "power8e_v2.1" },
+>       { "power8", "power8_v2.0" },
+>       { "power8nvl", "power8nvl_v1.0" },
+> -    { "power9", "power9_v2.0" },
+> +    { "power9", "power9_v2.2" },
+>       { "power10", "power10_v2.0" },
+>   #endif
+>   
 > diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
-> index 1326493a9a..a77e036b3a 100644
+> index a77e036b3a..572b5e553a 100644
 > --- a/target/ppc/cpu-models.h
 > +++ b/target/ppc/cpu-models.h
-> @@ -348,11 +348,11 @@ enum {
->       CPU_POWERPC_POWER8NVL_BASE     = 0x004C0000,
->       CPU_POWERPC_POWER8NVL_v10      = 0x004C0100,
+> @@ -350,6 +350,7 @@ enum {
 >       CPU_POWERPC_POWER9_BASE        = 0x004E0000,
-> -    CPU_POWERPC_POWER9_DD1         = 0x004E0100,
-> +    CPU_POWERPC_POWER9_DD1         = 0x004E1100,
-
-Could you please point me to the doc location you are referring here?
-The P9 UM document that I have access to mentions this bit (0/1) for 
-12/24 cores. Not sure if this change is intended here.
-
-regards,
-Harsh
-
+>       CPU_POWERPC_POWER9_DD1         = 0x004E1100,
 >       CPU_POWERPC_POWER9_DD20        = 0x004E1200,
+> +    CPU_POWERPC_POWER9_DD22        = 0x004E1202,
 >       CPU_POWERPC_POWER10_BASE       = 0x00800000,
-> -    CPU_POWERPC_POWER10_DD1        = 0x00800100,
-> -    CPU_POWERPC_POWER10_DD20       = 0x00800200,
-> +    CPU_POWERPC_POWER10_DD1        = 0x00801100,
-> +    CPU_POWERPC_POWER10_DD20       = 0x00801200,
->       CPU_POWERPC_970_v22            = 0x00390202,
->       CPU_POWERPC_970FX_v10          = 0x00391100,
->       CPU_POWERPC_970FX_v20          = 0x003C0200,
+>       CPU_POWERPC_POWER10_DD1        = 0x00801100,
+>       CPU_POWERPC_POWER10_DD20       = 0x00801200,
+> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> index 0ce2e3c91d..6775828dfc 100644
+> --- a/target/ppc/cpu_init.c
+> +++ b/target/ppc/cpu_init.c
+> @@ -6284,9 +6284,26 @@ static bool ppc_pvr_match_power9(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
+>           return false;
+>       }
+>   
+> -    if ((pvr & 0x0f00) == (pcc->pvr & 0x0f00)) {
+> -        /* Major DD version matches to power9_v1.0 and power9_v2.0 */
+> +    if ((pvr & 0x0f00) != (pcc->pvr & 0x0f00)) {
+> +        /* Major DD version does not match */
+> +        return false;
+> +    }
+> +
+> +    if ((pvr & 0x0f00) == 0x100) {
+> +        /* DD1.x always matches power9_v1.0 */
+>           return true;
+> +    } else if ((pvr & 0x0f00) == 0x200) {
+> +        if ((pvr & 0xf) < 2) {
+> +            /* DD2.0, DD2.1 match power9_v2.0 */
+> +            if ((pcc->pvr & 0xf) == 0) {
+> +                return true;
+> +            }
+> +        } else {
+> +            /* DD2.2, DD2.3 match power9_v2.2 */
+> +            if ((pcc->pvr & 0xf) == 2) {
+> +                return true;
+> +            }
+> +        }
+>       }
+>   
+>       return false;
+> diff --git a/tests/qtest/device-plug-test.c b/tests/qtest/device-plug-test.c
+> index 01cecd6e20..165ca13f8c 100644
+> --- a/tests/qtest/device-plug-test.c
+> +++ b/tests/qtest/device-plug-test.c
+> @@ -168,8 +168,8 @@ static void test_spapr_cpu_unplug_request(void)
+>   {
+>       QTestState *qtest;
+>   
+> -    qtest = qtest_initf("-cpu power9_v2.0 -smp 1,maxcpus=2 "
+> -                        "-device power9_v2.0-spapr-cpu-core,core-id=1,id=dev0");
+> +    qtest = qtest_initf("-cpu power9_v2.2 -smp 1,maxcpus=2 "
+> +                        "-device power9_v2.2-spapr-cpu-core,core-id=1,id=dev0");
+
+
+>   
+>       /* similar to test_pci_unplug_request */
+>       process_device_remove(qtest, "dev0");
+
 
