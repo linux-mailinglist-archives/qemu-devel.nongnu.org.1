@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240CE7058EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 22:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC737058EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 22:35:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz1NA-00069i-Tg; Tue, 16 May 2023 16:34:16 -0400
+	id 1pz1NC-0006Aa-25; Tue, 16 May 2023 16:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3uehjZAgKCkQysuyzglgmuumrk.iuswks0-jk1krtutmt0.uxm@flex--smostafa.bounces.google.com>)
- id 1pz1N2-00067g-Mv
- for qemu-devel@nongnu.org; Tue, 16 May 2023 16:34:08 -0400
-Received: from mail-wm1-x34a.google.com ([2a00:1450:4864:20::34a])
+ <3vOhjZAgKCkc1vx12jojpxxpun.lxvznv3-mn4nuwxwpw3.x0p@flex--smostafa.bounces.google.com>)
+ id 1pz1N8-00068X-6d
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 16:34:14 -0400
+Received: from mail-wr1-x449.google.com ([2a00:1450:4864:20::449])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3uehjZAgKCkQysuyzglgmuumrk.iuswks0-jk1krtutmt0.uxm@flex--smostafa.bounces.google.com>)
- id 1pz1Mx-0006hC-6P
- for qemu-devel@nongnu.org; Tue, 16 May 2023 16:34:05 -0400
-Received: by mail-wm1-x34a.google.com with SMTP id
- 5b1f17b1804b1-3f433a2308bso30034815e9.0
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 13:34:02 -0700 (PDT)
+ <3vOhjZAgKCkc1vx12jojpxxpun.lxvznv3-mn4nuwxwpw3.x0p@flex--smostafa.bounces.google.com>)
+ id 1pz1N2-0006hd-MP
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 16:34:10 -0400
+Received: by mail-wr1-x449.google.com with SMTP id
+ ffacd0b85a97d-3079c6648e3so6552378f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 13:34:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1684269241; x=1686861241;
+ d=google.com; s=20221208; t=1684269244; x=1686861244;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=pNT0WOs6k/XqftPt0Z9q2o0o81E21wgS8ZFzFsCVzd0=;
- b=YULJmFMGxtvV71cN8cmlIPAwfB2XrsZCQPcUbCRMrkbAaj3jfzc3B1Znq+FyJllb/+
- QSLADAUaBOnb8n3g5AKhqQHQ2NoUg4eP2WjIDRv4cPd0DtbtFn+K9ophMR8/FxyR9LKz
- sYk6sscda77mo0bRkVH8Lr+BB+Fb2Wp1i7iQ1i/M7zWJN+VsVhmXSeAr8TmfmXzZijD6
- 5UhCrp5t5EN3TOBl4XNu0Rmd8ra58lwxpklQ1DLruBTc5MtrmWkwVxP8EHk7mYkRSrcn
- 9ODKmCgjp42aFb/r+hn9OICandXddl1B4yRzDeQLzAkfd4x4Tb0LadUXM3fy6d9B0j7s
- jslA==
+ bh=1LRhuIIedCQoBI/b1HAoDeqfYBbKFIGEZ4vF5g3pmys=;
+ b=65RlrJlF9k0iNKhdXe6KQzDRI2Wkahwzpo9AOtmaM3h42jpVGQACOnm3IHMPkX3ts5
+ eMjvIe7C70DVUJooys+yMETbLAyJ/JnIHhWGQdoHeIRfhWtDrQAlmEqi0VrAI9xerYt8
+ PmDZK5IE/1bgZk+cb4Ow/rCYlccOUHywnapzxddyWFnlU3tXKxbJ2Rbk9I55xkCma8kX
+ d89Y7tT99N56MCUqK6txbqB9XjJNUn46UKqtncWA2vl06cM4HNUPQ/RvJUhD9sm9PgYZ
+ mtQd4FINC9b++YdcXr2WeQ/BwKe4GEzgQLgws9t/SUGEduPJMvImg2fowW7pFQ8TnUyV
+ 7Nig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684269241; x=1686861241;
+ d=1e100.net; s=20221208; t=1684269244; x=1686861244;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pNT0WOs6k/XqftPt0Z9q2o0o81E21wgS8ZFzFsCVzd0=;
- b=EY+LQb05CMJTTt2faysTyV8uyulLZSmiDO/0RAztZ0mZhmAX1qVGDUlGhqMSVunTqp
- if4tTbiFWZZ5UWDpxUyxwShHfZJr47Gu6pdLqOUzgzZVKlGGn0NQaAXolkJBrGG8b709
- 6K6oig4H2tz4jznrDoujS08J4aVXmdCKManbT6Jwqsb2+mY+bRcplpa4TwWPYdclGfM6
- E3NtnZ66SQqLvUpeBGw4QRCT38Nfbj0qO3gEdEyW65TDWkiDDLyt7e9AJysZn9y9z2bz
- Cu8Xf2JcGisycRAhFIw7PH96lD+VgKM/dNOnSt8/UM8rpgmMSyVVaJeEvLrbFqzcv+00
- 3LQA==
-X-Gm-Message-State: AC+VfDzaJOO9pJdYsz+QP/sR3AIBCFwgdkKR1cRRO3iP6ikGEXoI3CBQ
- E5Kt3u3+FZ1UTTfoW7UFXjIuX0AzeA0m4g+LyumxIoTZNTD6sKvxHlPsBEcNkbv8K+gjrP/Hz0U
- PcRTbcnnYDyo1mJigVzX4W5g5HwUWLtGvVHGLfejbYAYJ59hVBOytfx8nXtHDh2WLQA==
-X-Google-Smtp-Source: ACHHUZ4YlQRKQTySrzZGffNFTMasPCc5VXthhEMg9hPRPqWd0vNF/WDwV+BPNsBofsPmAMifGyt+0IYXcZ/ScA==
+ bh=1LRhuIIedCQoBI/b1HAoDeqfYBbKFIGEZ4vF5g3pmys=;
+ b=GiZgNQCvUyB/S7zMP55+xWmbtZ1GykUvY0fysZYHbivdcZOBBzLhoBaIO37KAdwwIT
+ 0BWdvHUIDbf5e6g+QZlT4eWwujCoaLKDzEvede3WCxy3XycJ436/YMkLXggY0M+KclJG
+ 4LtY/Hp+ZyqL46xUe4eb67blVwk204DWkKYMEII9aKODuZR+HMMwMauo5R4dan5nejVS
+ PsQKpbuxsq5IwfXq6xcLHIAlBfNwfDBrmW53jGR0geO8sI5iOaYP4fmEVvO0BCj5u3pL
+ ToGYbpXGxOAj+Xc6Bns1J71Swn536uZL8WpR9efwzgGptQl61JP8meeeS6KjpOLn4jOv
+ L4vw==
+X-Gm-Message-State: AC+VfDyAaOCVj4dmA0cMRJujzdtTPnu9RD1CJgJLDD1SRWj5mnEP6MkR
+ uvKkRATebRl5rayMfBKmIVqIqgA9C0zmjF7kpR+90i6vcwSzXxkNt1kttWxGRh/LJS0rZeZ14Wg
+ Qa0FDgcnHDpY8yVHBAczUxZRy6jldsgR5N8XPl0V9plOQww+7Jpe7iRlNuGYrr27GpA==
+X-Google-Smtp-Source: ACHHUZ7ed2h532caor46Oi+ZyKbtXBbg3lLH0JdOjYtcdj6Lj4EqiGt5/ozHnUWsS3Or2sGWjZdFp5+ywtFEYQ==
 X-Received: from mostafa.c.googlers.com
  ([fda3:e722:ac3:cc00:28:9cb1:c0a8:333c])
- (user=smostafa job=sendgmr) by 2002:a5d:4fcc:0:b0:2f9:ae41:5b15 with SMTP id
- h12-20020a5d4fcc000000b002f9ae415b15mr18800wrw.0.1684269241701; Tue, 16 May
- 2023 13:34:01 -0700 (PDT)
-Date: Tue, 16 May 2023 20:33:11 +0000
+ (user=smostafa job=sendgmr) by 2002:adf:e8c7:0:b0:309:3be4:d3e8 with SMTP id
+ k7-20020adfe8c7000000b003093be4d3e8mr218964wrn.4.1684269244167; Tue, 16 May
+ 2023 13:34:04 -0700 (PDT)
+Date: Tue, 16 May 2023 20:33:12 +0000
 In-Reply-To: <20230516203327.2051088-1-smostafa@google.com>
 Mime-Version: 1.0
 References: <20230516203327.2051088-1-smostafa@google.com>
 X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
-Message-ID: <20230516203327.2051088-5-smostafa@google.com>
-Subject: [PATCH v4 04/10] hw/arm/smmuv3: Add page table walk for stage-2
+Message-ID: <20230516203327.2051088-6-smostafa@google.com>
+Subject: [PATCH v4 05/10] hw/arm/smmuv3: Parse STE config for stage-2
 From: Mostafa Saleh <smostafa@google.com>
 To: qemu-devel@nongnu.org
 Cc: jean-philippe@linaro.org, eric.auger@redhat.com, peter.maydell@linaro.org, 
  qemu-arm@nongnu.org, richard.henderson@linaro.org, 
  Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::34a;
- envelope-from=3uehjZAgKCkQysuyzglgmuumrk.iuswks0-jk1krtutmt0.uxm@flex--smostafa.bounces.google.com;
- helo=mail-wm1-x34a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::449;
+ envelope-from=3vOhjZAgKCkc1vx12jojpxxpun.lxvznv3-mn4nuwxwpw3.x0p@flex--smostafa.bounces.google.com;
+ helo=mail-wr1-x449.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -93,286 +93,345 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation for adding stage-2 support, add Stage-2 PTW code.
-Only Aarch64 format is supported as stage-1.
+Parse stage-2 configuration from STE and populate it in SMMUS2Cfg.
+Validity of field values are checked when possible.
 
-Nesting stage-1 and stage-2 is not supported right now.
+Only AA64 tables are supported and Small Translation Tables (STT) are
+not supported.
 
-HTTU is not supported, SW is expected to maintain the Access flag.
-This is described in the SMMUv3 manual(IHI 0070.E.a)
-"5.2. Stream Table Entry" in "[181] S2AFFD".
-This flag determines the behavior on access of a stage-2 page whose
-descriptor has AF == 0:
-- 0b0: An Access flag fault occurs (stall not supported).
-- 0b1: An Access flag fault never occurs.
-An Access fault takes priority over a Permission fault.
+According to SMMUv3 UM(IHI0070E) "5.2 Stream Table Entry": All fields
+with an S2 prefix (with the exception of S2VMID) are IGNORED when
+stage-2 bypasses translation (Config[1] == 0).
 
-There are 3 address size checks for stage-2 according to
-(IHI 0070.E.a) in "3.4. Address sizes".
-- As nesting is not supported, input address is passed directly to
-stage-2, and is checked against IAS.
-We use cfg->oas to hold the OAS when stage-1 is not used, this is set
-in the next patch.
-This check is done outside of smmu_ptw_64_s2 as it is not part of
-stage-2(it throws stage-1 fault), and the stage-2 function shouldn't
-change it's behavior when nesting is supported.
-When nesting is supported and we figure out how to combine TLB for
-stage-1 and stage-2 we can move this check into the stage-1 function
-as described in ARM DDI0487I.a in pseudocode
-aarch64/translation/vmsa_translation/AArch64.S1Translate
-aarch64/translation/vmsa_translation/AArch64.S1DisabledOutput
+Which means that VMID can be used(for TLB tagging) even if stage-2 is
+bypassed, so we parse it unconditionally when S2P exists. Otherwise
+it is set to -1.(only S1P)
 
-- Input to stage-2 is checked against s2t0sz, and throws stage-2
-transaltion fault if exceeds it.
+As stall is not supported, if S2S is set the translation would abort.
+For S2R, we reuse the same code used for stage-1 with flag
+record_faults. However when nested translation is supported we would
+need to separate stage-1 and stage-2 faults.
 
-- Output of stage-2 is checked against effective PA output range.
+Fix wrong shift in STE_S2HD, STE_S2HA, STE_S2S.
 
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
-Changes in v4:
-- Collected Reviewed-by tag
-- s/IHI 0070.E/IHI 0070.E.a
-Changes in v3:
-- Fix IPA address size check.
-- s2cfg.oas renamed to s2cfg.eff_ps.
-- s/iova/ipa
-- s/ap/s2ap
-- s/gran/granule_sz
-- use level_shift instead of inline code.
-- Add missing brackets in is_permission_fault_s2.
-- Use new VMSA_* macros and functions instead of SMMU_*
-- Rename pgd_idx to pgd_concat_idx.
-- Move SMMU_MAX_S2_CONCAT to STE patch as it is not used here.
-Changes in v2:
-- Squash S2AFF PTW code.
-- Use common functions between stage-1 and stage-2.
-- Add checks for IPA and out PA.
+Changes in V4:
+- Rename and simplify PTW_FAULT_ALLOWED
+- Fix comment indent
+Changes in V3:
+- Separate fault handling.
+- Fix shift in STE_S2HD, STE_S2HA, STE_S2S, STE_S2R.
+- Rename t0sz_valid to s2t0sz_valid.
+- separate stage-2 STE parsing in decode_ste_s2_cfg.
+- Add a log for invalid S2ENDI and S2TTB.
+- Set default value for stage-1 OAS.
+- Move and rename SMMU_MAX_S2_CONCAT to VMSA_MAX_S2_CONCAT.
+Changes in V2:
+- Parse S2PS and S2ENDI
+- Squash with S2VMID parsing patch
+- Squash with S2AFF parsing
+- Squash with fault reporting patch
+- Add check for S2T0SZ
+- Renaming and refactoring code
 ---
- hw/arm/smmu-common.c   | 142 ++++++++++++++++++++++++++++++++++++++++-
- hw/arm/smmu-internal.h |  35 ++++++++++
- 2 files changed, 176 insertions(+), 1 deletion(-)
+ hw/arm/smmuv3-internal.h     |  10 +-
+ hw/arm/smmuv3.c              | 181 +++++++++++++++++++++++++++++++++--
+ include/hw/arm/smmu-common.h |   1 +
+ include/hw/arm/smmuv3.h      |   3 +
+ 4 files changed, 185 insertions(+), 10 deletions(-)
 
-diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-index 50391a8c94..3e82eab741 100644
---- a/hw/arm/smmu-common.c
-+++ b/hw/arm/smmu-common.c
-@@ -363,6 +363,127 @@ error:
-     return -EINVAL;
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index 183d5ac8dc..6d1c1edab7 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -526,9 +526,13 @@ typedef struct CD {
+ #define STE_S2TG(x)        extract32((x)->word[5], 14, 2)
+ #define STE_S2PS(x)        extract32((x)->word[5], 16, 3)
+ #define STE_S2AA64(x)      extract32((x)->word[5], 19, 1)
+-#define STE_S2HD(x)        extract32((x)->word[5], 24, 1)
+-#define STE_S2HA(x)        extract32((x)->word[5], 25, 1)
+-#define STE_S2S(x)         extract32((x)->word[5], 26, 1)
++#define STE_S2ENDI(x)      extract32((x)->word[5], 20, 1)
++#define STE_S2AFFD(x)      extract32((x)->word[5], 21, 1)
++#define STE_S2HD(x)        extract32((x)->word[5], 23, 1)
++#define STE_S2HA(x)        extract32((x)->word[5], 24, 1)
++#define STE_S2S(x)         extract32((x)->word[5], 25, 1)
++#define STE_S2R(x)         extract32((x)->word[5], 26, 1)
++
+ #define STE_CTXPTR(x)                                           \
+     ({                                                          \
+         unsigned long addr;                                     \
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index 4e90343996..27840f2d66 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -33,6 +33,9 @@
+ #include "smmuv3-internal.h"
+ #include "smmu-internal.h"
+ 
++#define PTW_RECORD_FAULT(cfg)   (((cfg)->stage == 1) ? (cfg)->record_faults : \
++                                 (cfg)->s2cfg.record_faults)
++
+ /**
+  * smmuv3_trigger_irq - pulse @irq if enabled and update
+  * GERROR register in case of GERROR interrupt
+@@ -329,11 +332,141 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
+     return 0;
  }
  
-+/**
-+ * smmu_ptw_64_s2 - VMSAv8-64 Walk of the page tables for a given ipa
-+ * for stage-2.
-+ * @cfg: translation config
-+ * @ipa: ipa to translate
-+ * @perm: access type
-+ * @tlbe: SMMUTLBEntry (out)
-+ * @info: handle to an error info
-+ *
-+ * Return 0 on success, < 0 on error. In case of error, @info is filled
-+ * and tlbe->perm is set to IOMMU_NONE.
-+ * Upon success, @tlbe is filled with translated_addr and entry
-+ * permission rights.
++/*
++ * Max valid value is 39 when SMMU_IDR3.STT == 0.
++ * In architectures after SMMUv3.0:
++ * - If STE.S2TG selects a 4KB or 16KB granule, the minimum valid value for this
++ *   field is MAX(16, 64-IAS)
++ * - If STE.S2TG selects a 64KB granule, the minimum valid value for this field
++ *   is (64-IAS).
++ * As we only support AA64, IAS = OAS.
 + */
-+static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
-+                          dma_addr_t ipa, IOMMUAccessFlags perm,
-+                          SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info)
++static bool s2t0sz_valid(SMMUTransCfg *cfg)
 +{
-+    const int stage = 2;
-+    int granule_sz = cfg->s2cfg.granule_sz;
-+    /* ARM DDI0487I.a: Table D8-7. */
-+    int inputsize = 64 - cfg->s2cfg.tsz;
-+    int level = get_start_level(cfg->s2cfg.sl0, granule_sz);
-+    int stride = VMSA_STRIDE(granule_sz);
-+    int idx = pgd_concat_idx(level, granule_sz, ipa);
-+    /*
-+     * Get the ttb from concatenated structure.
-+     * The offset is the idx * size of each ttb(number of ptes * (sizeof(pte))
-+     */
-+    uint64_t baseaddr = extract64(cfg->s2cfg.vttb, 0, 48) + (1 << stride) *
-+                                  idx * sizeof(uint64_t);
-+    dma_addr_t indexmask = VMSA_IDXMSK(inputsize, stride, level);
-+
-+    baseaddr &= ~indexmask;
-+
-+    /*
-+     * On input, a stage 2 Translation fault occurs if the IPA is outside the
-+     * range configured by the relevant S2T0SZ field of the STE.
-+     */
-+    if (ipa >= (1ULL << inputsize)) {
-+        info->type = SMMU_PTW_ERR_TRANSLATION;
-+        goto error;
++    if (cfg->s2cfg.tsz > 39) {
++        return false;
 +    }
 +
-+    while (level < VMSA_LEVELS) {
-+        uint64_t subpage_size = 1ULL << level_shift(level, granule_sz);
-+        uint64_t mask = subpage_size - 1;
-+        uint32_t offset = iova_level_offset(ipa, inputsize, level, granule_sz);
-+        uint64_t pte, gpa;
-+        dma_addr_t pte_addr = baseaddr + offset * sizeof(pte);
-+        uint8_t s2ap;
-+
-+        if (get_pte(baseaddr, offset, &pte, info)) {
-+                goto error;
-+        }
-+        trace_smmu_ptw_level(stage, level, ipa, subpage_size,
-+                             baseaddr, offset, pte);
-+        if (is_invalid_pte(pte) || is_reserved_pte(pte, level)) {
-+            trace_smmu_ptw_invalid_pte(stage, level, baseaddr,
-+                                       pte_addr, offset, pte);
-+            break;
-+        }
-+
-+        if (is_table_pte(pte, level)) {
-+            baseaddr = get_table_pte_address(pte, granule_sz);
-+            level++;
-+            continue;
-+        } else if (is_page_pte(pte, level)) {
-+            gpa = get_page_pte_address(pte, granule_sz);
-+            trace_smmu_ptw_page_pte(stage, level, ipa,
-+                                    baseaddr, pte_addr, pte, gpa);
-+        } else {
-+            uint64_t block_size;
-+
-+            gpa = get_block_pte_address(pte, level, granule_sz,
-+                                        &block_size);
-+            trace_smmu_ptw_block_pte(stage, level, baseaddr,
-+                                     pte_addr, pte, ipa, gpa,
-+                                     block_size >> 20);
-+        }
-+
-+        /*
-+         * If S2AFFD and PTE.AF are 0 => fault. (5.2. Stream Table Entry)
-+         * An Access fault takes priority over a Permission fault.
-+         */
-+        if (!PTE_AF(pte) && !cfg->s2cfg.affd) {
-+            info->type = SMMU_PTW_ERR_ACCESS;
-+            goto error;
-+        }
-+
-+        s2ap = PTE_AP(pte);
-+        if (is_permission_fault_s2(s2ap, perm)) {
-+            info->type = SMMU_PTW_ERR_PERMISSION;
-+            goto error;
-+        }
-+
-+        /*
-+         * The address output from the translation causes a stage 2 Address
-+         * Size fault if it exceeds the effective PA output range.
-+         */
-+        if (gpa >= (1ULL << cfg->s2cfg.eff_ps)) {
-+            info->type = SMMU_PTW_ERR_ADDR_SIZE;
-+            goto error;
-+        }
-+
-+        tlbe->entry.translated_addr = gpa;
-+        tlbe->entry.iova = ipa & ~mask;
-+        tlbe->entry.addr_mask = mask;
-+        tlbe->entry.perm = s2ap;
-+        tlbe->level = level;
-+        tlbe->granule = granule_sz;
-+        return 0;
-+    }
-+    info->type = SMMU_PTW_ERR_TRANSLATION;
-+
-+error:
-+    info->stage = 2;
-+    tlbe->entry.perm = IOMMU_NONE;
-+    return -EINVAL;
-+}
-+
- /**
-  * smmu_ptw - Walk the page tables for an IOVA, according to @cfg
-  *
-@@ -377,7 +498,26 @@ error:
- int smmu_ptw(SMMUTransCfg *cfg, dma_addr_t iova, IOMMUAccessFlags perm,
-              SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info)
- {
--    return smmu_ptw_64_s1(cfg, iova, perm, tlbe, info);
-+    if (cfg->stage == 1) {
-+        return smmu_ptw_64_s1(cfg, iova, perm, tlbe, info);
-+    } else if (cfg->stage == 2) {
-+        /*
-+         * If bypassing stage 1(or unimplemented), the input address is passed
-+         * directly to stage 2 as IPA. If the input address of a transaction
-+         * exceeds the size of the IAS, a stage 1 Address Size fault occurs.
-+         * For AA64, IAS = OAS according to (IHI 0070.E.a) "3.4 Address sizes"
-+         */
-+        if (iova >= (1ULL << cfg->oas)) {
-+            info->type = SMMU_PTW_ERR_ADDR_SIZE;
-+            info->stage = 1;
-+            tlbe->entry.perm = IOMMU_NONE;
-+            return -EINVAL;
-+        }
-+
-+        return smmu_ptw_64_s2(cfg, iova, perm, tlbe, info);
++    if (cfg->s2cfg.granule_sz == 16) {
++        return (cfg->s2cfg.tsz >= 64 - oas2bits(SMMU_IDR5_OAS));
 +    }
 +
-+    g_assert_not_reached();
- }
- 
- /**
-diff --git a/hw/arm/smmu-internal.h b/hw/arm/smmu-internal.h
-index 2d75b31953..a9454f914e 100644
---- a/hw/arm/smmu-internal.h
-+++ b/hw/arm/smmu-internal.h
-@@ -66,6 +66,8 @@
- #define PTE_APTABLE(pte) \
-     (extract64(pte, 61, 2))
- 
-+#define PTE_AF(pte) \
-+    (extract64(pte, 10, 1))
- /*
-  * TODO: At the moment all transactions are considered as privileged (EL1)
-  * as IOMMU translation callback does not pass user/priv attributes.
-@@ -73,6 +75,9 @@
- #define is_permission_fault(ap, perm) \
-     (((perm) & IOMMU_WO) && ((ap) & 0x2))
- 
-+#define is_permission_fault_s2(s2ap, perm) \
-+    (!(((s2ap) & (perm)) == (perm)))
-+
- #define PTE_AP_TO_PERM(ap) \
-     (IOMMU_ACCESS_FLAG(true, !((ap) & 0x2)))
- 
-@@ -96,6 +101,36 @@ uint64_t iova_level_offset(uint64_t iova, int inputsize,
-             MAKE_64BIT_MASK(0, gsz - 3);
- }
- 
-+/* FEAT_LPA2 and FEAT_TTST are not implemented. */
-+static inline int get_start_level(int sl0 , int granule_sz)
-+{
-+    /* ARM DDI0487I.a: Table D8-12. */
-+    if (granule_sz == 12) {
-+        return 2 - sl0;
-+    }
-+    /* ARM DDI0487I.a: Table D8-22 and Table D8-31. */
-+    return 3 - sl0;
++    return (cfg->s2cfg.tsz >= MAX(64 - oas2bits(SMMU_IDR5_OAS), 16));
 +}
 +
 +/*
-+ * Index in a concatenated first level stage-2 page table.
-+ * ARM DDI0487I.a: D8.2.2 Concatenated translation tables.
++ * Return true if s2 page table config is valid.
++ * This checks with the configured start level, ias_bits and granularity we can
++ * have a valid page table as described in ARM ARM D8.2 Translation process.
++ * The idea here is to see for the highest possible number of IPA bits, how
++ * many concatenated tables we would need, if it is more than 16, then this is
++ * not possible.
 + */
-+static inline int pgd_concat_idx(int start_level, int granule_sz,
-+                                 dma_addr_t ipa)
++static bool s2_pgtable_config_valid(uint8_t sl0, uint8_t t0sz, uint8_t gran)
 +{
-+    uint64_t ret;
-+    /*
-+     * Get the number of bits handled by next levels, then any extra bits in
-+     * the address should index the concatenated tables. This relation can be
-+     * deduced from tables in ARM DDI0487I.a: D8.2.7-9
-+     */
-+    int shift =  level_shift(start_level - 1, granule_sz);
++    int level = get_start_level(sl0, gran);
++    uint64_t ipa_bits = 64 - t0sz;
++    uint64_t max_ipa = (1ULL << ipa_bits) - 1;
++    int nr_concat = pgd_concat_idx(level, gran, max_ipa) + 1;
 +
-+    ret = ipa >> shift;
-+    return ret;
++    return nr_concat <= VMSA_MAX_S2_CONCAT;
 +}
 +
- #define SMMU_IOTLB_ASID(key) ((key).asid)
++static int decode_ste_s2_cfg(SMMUTransCfg *cfg, STE *ste)
++{
++    cfg->stage = 2;
++
++    if (STE_S2AA64(ste) == 0x0) {
++        qemu_log_mask(LOG_UNIMP,
++                      "SMMUv3 AArch32 tables not supported\n");
++        g_assert_not_reached();
++    }
++
++    switch (STE_S2TG(ste)) {
++    case 0x0: /* 4KB */
++        cfg->s2cfg.granule_sz = 12;
++        break;
++    case 0x1: /* 64KB */
++        cfg->s2cfg.granule_sz = 16;
++        break;
++    case 0x2: /* 16KB */
++        cfg->s2cfg.granule_sz = 14;
++        break;
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "SMMUv3 bad STE S2TG: %x\n", STE_S2TG(ste));
++        goto bad_ste;
++    }
++
++    cfg->s2cfg.vttb = STE_S2TTB(ste);
++
++    cfg->s2cfg.sl0 = STE_S2SL0(ste);
++    /* FEAT_TTST not supported. */
++    if (cfg->s2cfg.sl0 == 0x3) {
++        qemu_log_mask(LOG_UNIMP, "SMMUv3 S2SL0 = 0x3 has no meaning!\n");
++        goto bad_ste;
++    }
++
++    /* For AA64, The effective S2PS size is capped to the OAS. */
++    cfg->s2cfg.eff_ps = oas2bits(MIN(STE_S2PS(ste), SMMU_IDR5_OAS));
++    /*
++     * It is ILLEGAL for the address in S2TTB to be outside the range
++     * described by the effective S2PS value.
++     */
++    if (cfg->s2cfg.vttb & ~(MAKE_64BIT_MASK(0, cfg->s2cfg.eff_ps))) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "SMMUv3 S2TTB too large 0x%lx, effective PS %d bits\n",
++                      cfg->s2cfg.vttb,  cfg->s2cfg.eff_ps);
++        goto bad_ste;
++    }
++
++    cfg->s2cfg.tsz = STE_S2T0SZ(ste);
++
++    if (!s2t0sz_valid(cfg)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "SMMUv3 bad STE S2T0SZ = %d\n",
++                      cfg->s2cfg.tsz);
++        goto bad_ste;
++    }
++
++    if (!s2_pgtable_config_valid(cfg->s2cfg.sl0, cfg->s2cfg.tsz,
++                                    cfg->s2cfg.granule_sz)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "SMMUv3 STE stage 2 config not valid!\n");
++        goto bad_ste;
++    }
++
++    /* Only LE supported(IDR0.TTENDIAN). */
++    if (STE_S2ENDI(ste)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "SMMUv3 STE_S2ENDI only supports LE!\n");
++        goto bad_ste;
++    }
++
++    cfg->s2cfg.affd = STE_S2AFFD(ste);
++
++    cfg->s2cfg.record_faults = STE_S2R(ste);
++    /* As stall is not supported. */
++    if (STE_S2S(ste)) {
++        qemu_log_mask(LOG_UNIMP, "SMMUv3 Stall not implemented!\n");
++        goto bad_ste;
++    }
++
++    /* This is still here as stage 2 has not been fully enabled yet. */
++    qemu_log_mask(LOG_UNIMP, "SMMUv3 does not support stage 2 yet\n");
++    goto bad_ste;
++
++    return 0;
++
++bad_ste:
++    return -EINVAL;
++}
++
+ /* Returns < 0 in case of invalid STE, 0 otherwise */
+ static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
+                       STE *ste, SMMUEventInfo *event)
+ {
+     uint32_t config;
++    int ret;
  
- typedef struct SMMUIOTLBPageInvInfo {
+     if (!STE_VALID(ste)) {
+         if (!event->inval_ste_allowed) {
+@@ -354,11 +487,39 @@ static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
+         return 0;
+     }
+ 
+-    if (STE_CFG_S2_ENABLED(config)) {
+-        qemu_log_mask(LOG_UNIMP, "SMMUv3 does not support stage 2 yet\n");
++    /*
++     * If a stage is enabled in SW while not advertised, throw bad ste
++     * according to user manual(IHI0070E) "5.2 Stream Table Entry".
++     */
++    if (!STAGE1_SUPPORTED(s) && STE_CFG_S1_ENABLED(config)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "SMMUv3 S1 used but not supported.\n");
++        goto bad_ste;
++    }
++    if (!STAGE2_SUPPORTED(s) && STE_CFG_S2_ENABLED(config)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "SMMUv3 S2 used but not supported.\n");
+         goto bad_ste;
+     }
+ 
++    if (STAGE2_SUPPORTED(s)) {
++        /* VMID is considered even if s2 is disabled. */
++        cfg->s2cfg.vmid = STE_S2VMID(ste);
++    } else {
++        /* Default to -1 */
++        cfg->s2cfg.vmid = -1;
++    }
++
++    if (STE_CFG_S2_ENABLED(config)) {
++        /*
++         * Stage-1 OAS defaults to OAS even if not enabled as it would be used
++         * in input address check for stage-2.
++         */
++        cfg->oas = oas2bits(SMMU_IDR5_OAS);
++        ret = decode_ste_s2_cfg(cfg, ste);
++        if (ret) {
++            goto bad_ste;
++        }
++    }
++
+     if (STE_S1CDMAX(ste) != 0) {
+         qemu_log_mask(LOG_UNIMP,
+                       "SMMUv3 does not support multiple context descriptors yet\n");
+@@ -702,7 +863,13 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+     if (cached_entry) {
+         if ((flag & IOMMU_WO) && !(cached_entry->entry.perm & IOMMU_WO)) {
+             status = SMMU_TRANS_ERROR;
+-            if (cfg->record_faults) {
++            /*
++             * We know that the TLB only contains either stage-1 or stage-2 as
++             * nesting is not supported. So it is sufficient to check the
++             * translation stage to know the TLB stage for now.
++             */
++            event.u.f_walk_eabt.s2 = (cfg->stage == 2);
++            if (PTW_RECORD_FAULT(cfg)) {
+                 event.type = SMMU_EVT_F_PERMISSION;
+                 event.u.f_permission.addr = addr;
+                 event.u.f_permission.rnw = flag & 0x1;
+@@ -728,28 +895,28 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+             event.u.f_walk_eabt.addr2 = ptw_info.addr;
+             break;
+         case SMMU_PTW_ERR_TRANSLATION:
+-            if (cfg->record_faults) {
++            if (PTW_RECORD_FAULT(cfg)) {
+                 event.type = SMMU_EVT_F_TRANSLATION;
+                 event.u.f_translation.addr = addr;
+                 event.u.f_translation.rnw = flag & 0x1;
+             }
+             break;
+         case SMMU_PTW_ERR_ADDR_SIZE:
+-            if (cfg->record_faults) {
++            if (PTW_RECORD_FAULT(cfg)) {
+                 event.type = SMMU_EVT_F_ADDR_SIZE;
+                 event.u.f_addr_size.addr = addr;
+                 event.u.f_addr_size.rnw = flag & 0x1;
+             }
+             break;
+         case SMMU_PTW_ERR_ACCESS:
+-            if (cfg->record_faults) {
++            if (PTW_RECORD_FAULT(cfg)) {
+                 event.type = SMMU_EVT_F_ACCESS;
+                 event.u.f_access.addr = addr;
+                 event.u.f_access.rnw = flag & 0x1;
+             }
+             break;
+         case SMMU_PTW_ERR_PERMISSION:
+-            if (cfg->record_faults) {
++            if (PTW_RECORD_FAULT(cfg)) {
+                 event.type = SMMU_EVT_F_PERMISSION;
+                 event.u.f_permission.addr = addr;
+                 event.u.f_permission.rnw = flag & 0x1;
+diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+index 97cea8ea06..4f1405d4e4 100644
+--- a/include/hw/arm/smmu-common.h
++++ b/include/hw/arm/smmu-common.h
+@@ -29,6 +29,7 @@
+ 
+ /* VMSAv8-64 Translation constants and functions */
+ #define VMSA_LEVELS                         4
++#define VMSA_MAX_S2_CONCAT                  16
+ 
+ #define VMSA_STRIDE(gran)                   ((gran) - VMSA_LEVELS + 1)
+ #define VMSA_BIT_LVL(isz, strd, lvl)        ((isz) - (strd) * \
+diff --git a/include/hw/arm/smmuv3.h b/include/hw/arm/smmuv3.h
+index a0c026402e..6031d7d325 100644
+--- a/include/hw/arm/smmuv3.h
++++ b/include/hw/arm/smmuv3.h
+@@ -83,4 +83,7 @@ struct SMMUv3Class {
+ #define TYPE_ARM_SMMUV3   "arm-smmuv3"
+ OBJECT_DECLARE_TYPE(SMMUv3State, SMMUv3Class, ARM_SMMUV3)
+ 
++#define STAGE1_SUPPORTED(s)      FIELD_EX32(s->idr[0], IDR0, S1P)
++#define STAGE2_SUPPORTED(s)      FIELD_EX32(s->idr[0], IDR0, S2P)
++
+ #endif
 -- 
 2.40.1.606.ga4b1b128d6-goog
 
