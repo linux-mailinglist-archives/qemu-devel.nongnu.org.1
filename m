@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74F370500C
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 15:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C99705018
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 16:00:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyvBE-00010Q-KJ; Tue, 16 May 2023 09:57:32 -0400
+	id 1pyvDA-0001wC-1J; Tue, 16 May 2023 09:59:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1pyvBB-0000zs-Bo
- for qemu-devel@nongnu.org; Tue, 16 May 2023 09:57:29 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pyvD8-0001w3-9B
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 09:59:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1pyvB8-0005vr-GF
- for qemu-devel@nongnu.org; Tue, 16 May 2023 09:57:29 -0400
-Received: from lhrpeml100004.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QLHnM1gtXz6DB59;
- Tue, 16 May 2023 21:55:35 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- lhrpeml100004.china.huawei.com (7.191.162.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 16 May 2023 14:57:22 +0100
-Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
- lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.023; 
- Tue, 16 May 2023 14:57:22 +0100
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: Avihai Horon <avihaih@nvidia.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Alex Williamson <alex.williamson@redhat.com>, "Juan
- Quintela" <quintela@redhat.com>, "Dr. David Alan Gilbert"
- <dgilbert@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck
- <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Vladimir
- Sementsov-Ogievskiy" <vsementsov@yandex-team.ru>,
- =?iso-8859-1?Q?C=E9dric_Le_Goater?= <clg@redhat.com>, Yishai Hadas
- <yishaih@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>, Kirti Wankhede
- <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>, Joao Martins
- <joao.m.martins@oracle.com>
-Subject: RE: [PATCH v11 05/11] vfio/migration: Block multiple devices migration
-Thread-Topic: [PATCH v11 05/11] vfio/migration: Block multiple devices
- migration
-Thread-Index: AQHZQhQ7Fuj3Zst8rUyBXFad0ORVja9dM+pwgAAS8oCAAC6S0A==
-Date: Tue, 16 May 2023 13:57:22 +0000
-Message-ID: <c61606fdcb074dc88b29ae459dbdc0df@huawei.com>
-References: <20230216143630.25610-1-avihaih@nvidia.com>
- <20230216143630.25610-6-avihaih@nvidia.com>
- <e333783cc59647ed93d944b05f12fe68@huawei.com> <ZGNwK+6HmM8lPjAU@nvidia.com>
-In-Reply-To: <ZGNwK+6HmM8lPjAU@nvidia.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.227.178]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pyvD3-000666-4i
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 09:59:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684245564;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=S02nB1jjQ0NVNUpG11U8n9l5spFfzxltOChCcjgcSbs=;
+ b=U0n0AUZWhnQZYrjJEsnSFs4y/oBIZ19kBW6BQlqcnKp/Ru57eq2aqwb8COUF+BKsl/bWd1
+ ROe/6NCg2+9j7LHFs4TYQhvvz3UcwV5DnBE9m5HHwt5WzWFsNBA/9F9Zh/SDHM9xbwyFCY
+ 2lvqZxqIG7ETFgtKTdmViXGq7NrvmYo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-438-IkKtMUaRO36AKtcYzVy_hA-1; Tue, 16 May 2023 09:59:22 -0400
+X-MC-Unique: IkKtMUaRO36AKtcYzVy_hA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3C5E488B767;
+ Tue, 16 May 2023 13:59:22 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F374A400F5A;
+ Tue, 16 May 2023 13:59:21 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id CBD9721E681C; Tue, 16 May 2023 15:59:20 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,  Juan Quintela
+ <quintela@redhat.com>
+Subject: Re: [PULL v2 12/17] qapi: Rewrite parsing of doc comment section
+ symbols and tags
+References: <20230510081224.3588673-1-armbru@redhat.com>
+ <20230510081224.3588673-2-armbru@redhat.com>
+ <20230516140707.30f02a68@imammedo.users.ipa.redhat.com>
+Date: Tue, 16 May 2023 15:59:20 +0200
+In-Reply-To: <20230516140707.30f02a68@imammedo.users.ipa.redhat.com> (Igor
+ Mammedov's message of "Tue, 16 May 2023 14:07:07 +0200")
+Message-ID: <87o7mkpebr.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,69 +80,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Igor Mammedov <imammedo@redhat.com> writes:
 
+> On Wed, 10 May 2023 10:12:22 +0200
+> Markus Armbruster <armbru@redhat.com> wrote:
+>
+>> To recognize a line starting with a section symbol and or tag, we
+>> first split it at the first space, then examine the part left of the
+>> space.  We can just as well examine the unsplit line, so do that.
+>
+> this makes build fail on RHEL8.9 (Python 3.6.8)
+> with:
+>  configure --target-list=x86_64-softmmu --disable-docs
+>  make -j32
+>  ...
+>  /usr/bin/python3 /builds/qemu/scripts/qapi-gen.py -o qapi -b ../../builds/qemu/qapi/qapi-schema.json
 
-> -----Original Message-----
-> From: Jason Gunthorpe [mailto:jgg@nvidia.com]
-> Sent: 16 May 2023 13:00
-> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> Cc: Avihai Horon <avihaih@nvidia.com>; qemu-devel@nongnu.org; Alex
-> Williamson <alex.williamson@redhat.com>; Juan Quintela
-> <quintela@redhat.com>; Dr. David Alan Gilbert <dgilbert@redhat.com>;
-> Michael S. Tsirkin <mst@redhat.com>; Cornelia Huck <cohuck@redhat.com>;
-> Paolo Bonzini <pbonzini@redhat.com>; Vladimir Sementsov-Ogievskiy
-> <vsementsov@yandex-team.ru>; C=E9dric Le Goater <clg@redhat.com>; Yishai
-> Hadas <yishaih@nvidia.com>; Maor Gottlieb <maorg@nvidia.com>; Kirti
-> Wankhede <kwankhede@nvidia.com>; Tarun Gupta <targupta@nvidia.com>;
-> Joao Martins <joao.m.martins@oracle.com>
-> Subject: Re: [PATCH v11 05/11] vfio/migration: Block multiple devices
-> migration
->=20
-> On Tue, May 16, 2023 at 10:03:54AM +0000, Shameerali Kolothum Thodi
-> wrote:
->=20
-> > > Currently VFIO migration doesn't implement some kind of intermediate
-> > > quiescent state in which P2P DMAs are quiesced before stopping or
-> > > running the device. This can cause problems in multi-device migration
-> > > where the devices are doing P2P DMAs, since the devices are not stopp=
-ed
-> > > together at the same time.
-> > >
-> > > Until such support is added, block migration of multiple devices.
-> >
-> > Missed this one. Currently this blocks even if the attached devices are=
- not
-> > capable of P2P DMAs. eg; HiSilicon ACC devices. These are integrated en=
-d
-> point
-> > devices without any P2P capability between them. Is it Ok to check for
-> > VFIO_MIGRATION_P2P flag and allow if the devices are not supporting
-> that?
->=20
-> Lacking VFIO_MIGRATION_P2P doesn't mean the device is incapable of
-> P2P, it means the migration can't support P2P.
->=20
-> We'd need some kind of new flag to check and such devices should be
-> blocked from creating P2P mappings. Basically we don't currently
-> fully support devices that are incapable of P2P operations.
+[...]
 
-Ok. I will take a look.
+>   File "/builds/qemu/scripts/qapi/parser.py", line 563, in QAPIDoc               
+>     def _match_at_name_colon(string: str) -> re.Match:                           
+> AttributeError: module 're' has no attribute 'Match'   
 
-> What happens on your platform if a guest tries to do P2P? Does the
-> platform crash?
+Working on it.  First attempt "[PATCH] qapi/parser: Fix type hints"
+failed.
 
-I am not sure. Since the devices are behind SMMU, I was under the assumptio=
-n
-that we do have the guarantee of isolation here(grouping). Or this is somet=
-hing
-we are worried only during migration?
+Thanks!
 
-Thanks,
-Shameer
-=20
 
