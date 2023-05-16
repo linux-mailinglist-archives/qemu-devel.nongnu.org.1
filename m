@@ -2,112 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CF3704937
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48506704960
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:34:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyqxl-0002jn-M1; Tue, 16 May 2023 05:27:21 -0400
+	id 1pyr2r-0004yo-UO; Tue, 16 May 2023 05:32:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1pyqxg-0002jQ-Ot
- for qemu-devel@nongnu.org; Tue, 16 May 2023 05:27:19 -0400
-Received: from esa15.hc2706-39.iphmx.com ([216.71.140.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1pyqxe-0003rb-PB
- for qemu-devel@nongnu.org; Tue, 16 May 2023 05:27:16 -0400
-X-IronPort-RemoteIP: 209.85.160.197
-X-IronPort-MID: 276227558
-X-IronPort-Reputation: None
-X-IronPort-Listener: OutgoingMail
-X-IronPort-SenderGroup: RELAY_GSUITE
-X-IronPort-MailFlowPolicy: $RELAYED
-IronPort-Data: A9a23:MkxuqazTv4L3hoqTQVJ6t+eJxCrEfRIJ4+MujC+fZmUNrF6WrkUGy
- zZLCm+COviDZGamet91PNux8hsF7cPWmINjTQU9/y00HyNBpPSeOdnIdU2Y0wF+jyHgoOCLy
- +1EN7Es+ehtFie0Si+Fa+Sn9j8kk/nTHNIQMcacUghpXwhoVSw9vhxqnu89k+ZAjMOwRgiAo
- rsemeWGULOe82MyYzN8B56r8ks156yv4W1A5zTSWNgQ1LPgvyhNZH4gDfzpR5fIatE8NvK3Q
- e/F0Ia48gvxl/v6Ior4+lpTWhRiro/6ZGBiuFIPM0SRqkEqShgJ70oOHKF0hXG7Ktm+t4sZJ
- N1l7fRcQOqyV0HGsL11vxJwSkmSMUDakVNuzLfWXcG7liX7n3XQL/pGN2snAIhCo7hNKE5z6
- MEDORwjZTy+rrfjqF67YrEEasULKcDqOMYGpiglw2iIUrApRpfMR6iM7thdtNsyrpoWTLCOO
- oxAN2IpNUWfC/FMEg5/5JYWleO4gHXlWzdF7l+ZuMLb5kCJk1IriuewbYq9ltqiW+NTvEWdu
- Uj/9nnFJjpdOuGGymGH7Sf57gPItWahMG4IL5Wh+/t3xVGe2GEXIBsRU1S9vL++kEHWZj5EA
- 0kd+y5rtLRrsULyH4a7UBq/r3qJ+BUbXrK8DtEH1e1E8YKMiy7xO4TOZm4phAAO3CPueQEX6
- w==
-IronPort-HdrOrdr: A9a23:1V5xt6m/3rXG3vsci/g+dkMlpCLpDfL63DAbv31ZSRFFG/FwWf
- re+8jz8SWE9Qr5OUtQ4+xoXZPrfZqyz+8W3WB8B8bGYOCighrVEGgA1/qY/9SDIVyGygc178
- 4JGNkcNDSzNykDsS+T2mmF+r0bsb+6Gc6T9IPj5kYoZy1RL49b0ydFJjCyLnBWLTM2eqbR16
- Dx2iOEnVedkLgsAPhTz0NrPtT+mw==
-X-Talos-CUID: =?us-ascii?q?9a23=3AwuhPWmiUv02+9f/P3Yp2T4ymoTJuSVfM8XKKehG?=
- =?us-ascii?q?CIElUVYCOWHO+849Zup87?=
-X-Talos-MUID: 9a23:jXX56QgisKtm+ERxpxzQPcMpKuFuwaerF2o0mIg6n+LDOxFpOGyfk2Hi
-Received: from mail-qt1-f197.google.com ([209.85.160.197])
- by ob1.hc2706-39.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
- 16 May 2023 05:27:09 -0400
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-3f38b6a2682so60895861cf.1
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 02:27:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1pyr2p-0004ya-L3; Tue, 16 May 2023 05:32:36 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1pyr2o-0004wf-5b; Tue, 16 May 2023 05:32:35 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6ab1a20aa12so5601208a34.1; 
+ Tue, 16 May 2023 02:32:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bu.edu; s=s1gsbu; t=1684229229; x=1686821229;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=mkcQpzNPUsf1UDzPMa3DyXG5IZEbjmhueLFrtAMJibg=;
- b=JSHafoEc7bRYwwX32dOlsCXtL7jVldWkY6SqQ3SxuaufjPVl2boAAPlmvWv4DpKPrw
- gIPzs8OtPYdCq7hSNCzC2NkMHeiEM3oP+MnUz4mYTS9IOlRWlls8PbzWazDnMZ5u69fE
- PMpzx+M0Ywh65oqyLJMCbveNSvGcPCm8m6NdOpbE9IHmm5kV3Wi0c1J+kToFXUpyHD0q
- lfKEnb/iYjHpB81XEOmY9hZ8dToRTvRpE21V/c/UZo0eIc4BgEOtqlq1uF/mSsKzc2Es
- E/UW2k0EDVL2g8I3GIJhtKRcVKnXtSlAkkwSUFKu1orqkXhNzfx1i5GWM5jpk70ILHyQ
- SXCA==
+ d=gmail.com; s=20221208; t=1684229552; x=1686821552;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=i2uSHFsybPikPn4UgoCj36ah0HqSDvBLHaM/hSL8Bwo=;
+ b=K7MG3N9ZZVBQ/w/xJ11/37Sa9HIydLcFLWkLYjB6hS21SbQ2IBm4mTZmyi/iGZo9GL
+ a8nsFIGtfNAPx46PZ+KWyieBfhEqacO1uEHV1SVPnRS/D7Sk9K1GUiRVqX/CS5gy7mK2
+ ytCiKKdmNu4XnhihD9XROEJ9A0fRbY8FrXUsWo/aQdW6e1dVgR0IYSeLaVTDyPZjCo4K
+ HeJSq41P2GMzgjKj+Eorts4NXQwiTjZCSVJrthIOx76J9PTDoaVEK60fYxdwIRqvyvQo
+ xUzOtaBzPY5UQZfb/ZBmoy0afBmO0b7UfF8xrbOfWqJCctVpdtfTXqPPg3uV2wwFPRCK
+ tpxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684229229; x=1686821229;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mkcQpzNPUsf1UDzPMa3DyXG5IZEbjmhueLFrtAMJibg=;
- b=E/ksSzyrxB94AG87lqG4r+ocIiWI1+Wb28af4xDJTFA9yM9bfBKdPjf0geQS/2oWO0
- scmdlWGMxT7WOINOhnVq0jKbgMVYMhkxAfFY9O7BkEtkLVn5g55NDbOb1JGfG/vuJIGt
- nC/BRPSQPo9SKs0qtlYGfBvOOlwgsSy1s4f8jI0SKZj+36B2o31vlSxuGkk9eFEzDZy3
- zAu2/LYSfoUGl6gQvLrqtA8rG0Jtfsn4fcJSTJpcXYFOPQtcZz/K0NFi7CveW9vWBITD
- px1r8d1pSF+uRS7JQm4M2PR8L16pwFtm1CavODKRCHFXdY8AK1Iz2/ztZxigbS1QMl/T
- ucWQ==
-X-Gm-Message-State: AC+VfDx2odfzclErJu2yGfAhJD2p6LZltW+JAVFh6Cjgiq5HYmZxLI9C
- IGxV7KrlZ9ElS1uAcdGc+KAdQXDYfHbYRZG61Njdpgh2iSUnxjDYZ71qswqgK9FXX59s3oVh1jU
- qUMpKnx4wa6XtUB3Ufgqw17iBBE3PqA==
-X-Received: by 2002:ac8:5890:0:b0:3f4:e1e3:5ba with SMTP id
- t16-20020ac85890000000b003f4e1e305bamr30077766qta.68.1684229229041; 
- Tue, 16 May 2023 02:27:09 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6hY1LNXJ41YzB0qIG1FCEwchz2czByuWAJcaOqDUd8h3hWWx7TlRwL5RXqUf4lKrhwDIE31g==
-X-Received: by 2002:ac8:5890:0:b0:3f4:e1e3:5ba with SMTP id
- t16-20020ac85890000000b003f4e1e305bamr30077751qta.68.1684229228806; 
- Tue, 16 May 2023 02:27:08 -0700 (PDT)
-Received: from mozz.bu.edu (mozz.bu.edu. [128.197.127.33])
- by smtp.gmail.com with ESMTPSA id
- a17-20020ac80011000000b003df7d7bbc8csm6074751qtg.75.2023.05.16.02.27.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 02:27:08 -0700 (PDT)
-Date: Tue, 16 May 2023 05:27:05 -0400
-From: Alexander Bulekov <alxndr@bu.edu>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- qemu-devel@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Darren Kenny <darren.kenny@oracle.com>
-Subject: Re: [PATCH] lsi53c895a: disable reentrancy detection for MMIO
- region, too
-Message-ID: <20230516092705.pdn5zs2yag5pvfgk@mozz.bu.edu>
-References: <20230516090556.553813-1-thuth@redhat.com>
+ d=1e100.net; s=20221208; t=1684229552; x=1686821552;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=i2uSHFsybPikPn4UgoCj36ah0HqSDvBLHaM/hSL8Bwo=;
+ b=kKesG70WzWpZ6PcmPLaqBusfbYhk+uHUyRZ4QQoIrx3xFBJq6YL437q3EomXjZDebI
+ DJGYSRnmounyZXVarUIsx/od4RrjN+P/rOjvyHLa5LXzTlglOFo4aRPwLiVGrr2AR3Wr
+ jptW39ppyYWMJXWA9nm7P/UNkMdBz0s3AcPiHNUWYpXSNHZ9/YvWsEJb2Yh84Xo796uc
+ NXhhDLFC8aZEX2/ADsJAhhpB31i/++xJFnNX1H0OVWIhukYZg82s1eqOwwXfsVBCvP7/
+ QzWitgH5iJFl34Md8AaEhi7zBBJP/1RV/UotcqXPpisg697C01fugX92vIVOEjxdnm7S
+ x83g==
+X-Gm-Message-State: AC+VfDw/xafa8SceUHXkM+DoCDwVFiaPJMa8nNLyq4Nh/b7v9vOv+gzK
+ OUaU1vC7MaVWqUrQ3xI6lws=
+X-Google-Smtp-Source: ACHHUZ5lYwZpHIYZ/qwluaXk/lGS0pvWdUbNR31TiK3jRtmxpmoanCYfnlg6rFWTHOCzpzPPjt2XXA==
+X-Received: by 2002:a05:6830:200d:b0:6a6:3a73:95e with SMTP id
+ e13-20020a056830200d00b006a63a73095emr14068486otp.35.1684229552411; 
+ Tue, 16 May 2023 02:32:32 -0700 (PDT)
+Received: from [192.168.68.107] (189-46-207-53.dsl.telesp.net.br.
+ [189.46.207.53]) by smtp.gmail.com with ESMTPSA id
+ r19-20020a4ae513000000b0051ffe0fe11bsm11671513oot.6.2023.05.16.02.32.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 May 2023 02:32:32 -0700 (PDT)
+Message-ID: <4b7c4c7b-d374-766b-48f1-c6769805f0bc@gmail.com>
+Date: Tue, 16 May 2023 06:32:28 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230516090556.553813-1-thuth@redhat.com>
-X-CES-GSUITE_AUTH: bf3aNvsZpxl8
-Received-SPF: pass client-ip=216.71.140.200; envelope-from=alxndr@bu.edu;
- helo=esa15.hc2706-39.iphmx.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 2/9] target/ppc: Fix PMU MMCR0[PMCjCE] bit in hflags
+ calculation
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20230515092655.171206-1-npiggin@gmail.com>
+ <20230515092655.171206-3-npiggin@gmail.com>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230515092655.171206-3-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32c.google.com
+X-Spam_score_int: -56
+X-Spam_score: -5.7
+X-Spam_bar: -----
+X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-3.811,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,41 +95,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 230516 1105, Thomas Huth wrote:
-> While trying to use a SCSI disk on the LSI controller with an
-> older version of Fedora (25), I'm getting:
-> 
->  qemu: warning: Blocked re-entrant IO on MemoryRegion: lsi-mmio at addr: 0x34
 
-Do you have a gdb backtrace for this one or is there some easy way to
-reproduce with just a LiveCD or something? Marking mmio_io re-entrancy
-safe would bring back https://gitlab.com/qemu-project/qemu/-/issues/1563
-Maybe there is some other workaround here?
--Alex
 
+On 5/15/23 06:26, Nicholas Piggin wrote:
+> A store to MMCR0 with PMCjCE=1 fails to update hflags correctly and
+> results in hflags mismatch:
 > 
-> and the SCSI controller is not usable. Seems like we have to
-> disable the reentrancy checker for the MMIO region, too, to
-> get this working again.
+>    qemu: fatal: TCG hflags mismatch (current:0x2408003d rebuilt:0x240a003d)
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> This can be reproduced by running perf on a recent machine.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  hw/scsi/lsi53c895a.c | 1 +
->  1 file changed, 1 insertion(+)
+
+Fixes: c2eff582a32f ("target/ppc: PMU basic cycle count for pseries TCG")
+
+(not sure why I didn't hit this back in 2021)
+
+
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+
+
+
+> Since v2: new patch.
 > 
-> diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-> index db27872963..048436352b 100644
-> --- a/hw/scsi/lsi53c895a.c
-> +++ b/hw/scsi/lsi53c895a.c
-> @@ -2307,6 +2307,7 @@ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
->       * re-entrancy guard.
->       */
->      s->ram_io.disable_reentrancy_guard = true;
-> +    s->mmio_io.disable_reentrancy_guard = true;
->  
->      address_space_init(&s->pci_io_as, pci_address_space_io(dev), "lsi-pci-io");
->      qdev_init_gpio_out(d, &s->ext_irq, 1);
-> -- 
-> 2.31.1
+>   target/ppc/power8-pmu.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
+> diff --git a/target/ppc/power8-pmu.c b/target/ppc/power8-pmu.c
+> index 64a64865d7..29e0012ed6 100644
+> --- a/target/ppc/power8-pmu.c
+> +++ b/target/ppc/power8-pmu.c
+> @@ -236,14 +236,16 @@ void helper_store_mmcr0(CPUPPCState *env, target_ulong value)
+>   {
+>       bool hflags_pmcc0 = (value & MMCR0_PMCC0) != 0;
+>       bool hflags_pmcc1 = (value & MMCR0_PMCC1) != 0;
+> +    bool hflags_pmcjce = (value & MMCR0_PMCjCE) != 0;
+>   
+>       pmu_update_cycles(env);
+>   
+>       env->spr[SPR_POWER_MMCR0] = value;
+>   
+> -    /* MMCR0 writes can change HFLAGS_PMCC[01] and HFLAGS_INSN_CNT */
+> +    /* MMCR0 writes can change HFLAGS_PMCC[01], PMCjCE, and HFLAGS_INSN_CNT */
+>       env->hflags = deposit32(env->hflags, HFLAGS_PMCC0, 1, hflags_pmcc0);
+>       env->hflags = deposit32(env->hflags, HFLAGS_PMCC1, 1, hflags_pmcc1);
+> +    env->hflags = deposit32(env->hflags, HFLAGS_PMCJCE, 1, hflags_pmcjce);
+>   
+>       pmu_update_summaries(env);
+>   
 
