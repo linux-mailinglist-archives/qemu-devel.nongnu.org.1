@@ -2,96 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC64705315
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 18:06:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F125070534E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 18:12:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyxAT-0008Pv-IU; Tue, 16 May 2023 12:04:53 -0400
+	id 1pyxH9-0001z0-O3; Tue, 16 May 2023 12:11:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jjongsma@redhat.com>)
- id 1pyxAL-0008Ot-Md
- for qemu-devel@nongnu.org; Tue, 16 May 2023 12:04:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1pyxH7-0001yi-O5
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 12:11:46 -0400
+Received: from mail-co1nam11on20620.outbound.protection.outlook.com
+ ([2a01:111:f400:7eab::620]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jjongsma@redhat.com>)
- id 1pyxAH-0006CC-9I
- for qemu-devel@nongnu.org; Tue, 16 May 2023 12:04:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684253075;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cLGU7KNPeQurLyotGO1Y2rN63Iu1bXv4fuEcktRQ5NE=;
- b=bskpX/ji4OPfpxIx1kOvr0pxpxFJaFqkVTJb1sDWDfU+tjzXsjwFpMrYnu3fGluEbPEfjT
- xlyGXLB44ryqW3hbnLyTgcmUwR89B3p+7cOq8JnIP6klBob9p11JRsT/YblJR6vxgz46MG
- yhj/3wI5owOwRTigOaTotH7UTe6ZL9Y=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-P5NEXBPAOaaNqL7NTFyzmA-1; Tue, 16 May 2023 12:04:32 -0400
-X-MC-Unique: P5NEXBPAOaaNqL7NTFyzmA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7578369dff3so411952485a.0
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 09:04:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684253063; x=1686845063;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cLGU7KNPeQurLyotGO1Y2rN63Iu1bXv4fuEcktRQ5NE=;
- b=L0w0L0MbKPnhYWkQJyoOYQqX6AIJaC4iPxrviJwu1WKjK546oooteObqg3SV5qwXzN
- 7K/TEEnLMB7tnVxuLmcWp4ju74sOwvI6ZFkY4qgfp4zmLl33Wlwkcc9SQbYvN0X6FlJY
- Fnm1KvTUOGvrqkUFecdYYlwGnfbbUmWW2V4DVYiGatfbVJYWlzUna7yR21igOOmNUR4c
- w1am3xlOYPWh12uSTo3UdEJnUxKdE21+fiCA3oQOi0CKSAyY9mPrDEIAbF11oHAO7hRC
- 40yosNECoovWT/ppFcR8DucsI5dARVQdPcmmwDURZp8nxSkDUiad4EsjCxDpc7LTXE19
- XOow==
-X-Gm-Message-State: AC+VfDzyP/P352xiJgf1NNbtJMx83NASQoNScsxx++HDdF3zv64eW7S2
- omL9LF+nnUix+Pe0ApJGw9ffiHdM87nBm67NsCaZlkmFNtX3pOe1itqwXw4kHFmGnLA/SveQlxa
- 4TUvdH1o+7OGuBM4=
-X-Received: by 2002:a05:622a:151:b0:3f5:1d97:1922 with SMTP id
- v17-20020a05622a015100b003f51d971922mr16947778qtw.2.1684253063413; 
- Tue, 16 May 2023 09:04:23 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4e7kTN28K6xsOC1wpSt9dOM/uNg/K0GtPvVPd2e7BLQ01tTpPrKQwbZazJzCUJXbsIrNV1Fg==
-X-Received: by 2002:a05:622a:151:b0:3f5:1d97:1922 with SMTP id
- v17-20020a05622a015100b003f51d971922mr16947727qtw.2.1684253063117; 
- Tue, 16 May 2023 09:04:23 -0700 (PDT)
-Received: from [192.168.0.245] (207-153-48-138.fttp.usinternet.com.
- [207.153.48.138]) by smtp.gmail.com with ESMTPSA id
- h4-20020a37c444000000b007595df328dcsm675416qkm.115.2023.05.16.09.04.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 May 2023 09:04:22 -0700 (PDT)
-Message-ID: <e8fcb4cf-3667-2bdf-a163-d81bdfb71bfa@redhat.com>
-Date: Tue, 16 May 2023 11:04:21 -0500
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1pyxGy-0007dx-2s
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 12:11:45 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cKQkWsYQKZd2bzqsosL2i5vK015sBWIuYQ5kPxRAUcbO+AkADYAJvYnPtId4nh1ZM5eQERDNerlKBfZ7ZoaOCIiq30g3czaAx1eVS9vKfaZ6KfLc6oCnHo4fsnmBBoxZhOJRoimAkBo4hkNKxsYaJ0KTzgiUWdciRJnQQ6azTxyD9qewMgKBr0dx7+Hbl87SqUw0QtuZYpQ9uFDS5RCpMVIsteOMZq6UTNslpSWbkegcRAef/NMs81Fr1GHeBOMj2TjsAgyTKYwiW53ORfBqG9uOM9RpHGf/yvo6tYelY6km7EAQM5ivNEPgRS7++h5NfgdPydgiEj1dZxQpP5jP3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EthyKZiYPyz5TU8wpK9XJjQ05R3yMZyNKl1oZjoDEtM=;
+ b=O7RJug+PtpfEgg75/X6NH4ekH1tkFMo8UW4LGwTO1NLpo67iQla6qD25rRSoBVPvFbTE2GGYXoTOnHrxUH+kQjTzq1DjS6a4KI5pl7rJI8niB2u+/PWkL62dYs8WjjGXqDuLzDqjxMXQzEjUEFCJwuOeuyWYJuZwMWviHigjsOq12VgtwTzdjEf1bsnp9W0jRcYLcmcQrhFRoUFwkYjb0gMDdqrAfv4xTlHqXlfeJXG7HAFIyoDVDxOthkb3G339PlaG7ExsSSnG8uj418r4lsloJldHM+NIeUCcEPVnFtVkFjk0O/Ric9EG9WlbAfRtw69gj4xqPRMfq4SWfa8NDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EthyKZiYPyz5TU8wpK9XJjQ05R3yMZyNKl1oZjoDEtM=;
+ b=RyLndlvxrzcJyEseP0auLONRIer9C8PEgoEnDQItrdnRB8DRbwPAfVPJoJqYpFrbDVi++a+crKJ5J2EllwBXPelPqmPwd+OM5hdEn6wJBDqGReuWbHJ7e0xAS9WlxEmG29uh3ggC8KtYvfuCnereBNtiyaPMvYDJCsr11qT6H18arTaoX1IXaPHO6dHV+6djM1bVAJy97nTHmZrNNdko06pnLjLM2NQXS3zRWoTMERPLzyQz9Uyer70bXiz02OLoQVHE/u4OH3UzyE95mdbB6l0rvI6U3dYVbsSej/Zla8igpMVQG4Mzy8bVLmeHzo5Wtz0BtRv59evl57cgdAO4sQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DM4PR12MB5769.namprd12.prod.outlook.com (2603:10b6:8:60::6) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6387.25; Tue, 16 May 2023 16:11:32 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6387.030; Tue, 16 May 2023
+ 16:11:31 +0000
+Date: Tue, 16 May 2023 13:11:30 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Juan Quintela <quintela@redhat.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Yishai Hadas <yishaih@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH v11 05/11] vfio/migration: Block multiple devices migration
+Message-ID: <ZGOrMk1FPRH2/B3C@nvidia.com>
+References: <20230216143630.25610-1-avihaih@nvidia.com>
+ <20230216143630.25610-6-avihaih@nvidia.com>
+ <e333783cc59647ed93d944b05f12fe68@huawei.com>
+ <ZGNwK+6HmM8lPjAU@nvidia.com>
+ <c61606fdcb074dc88b29ae459dbdc0df@huawei.com>
+ <20230516082732.702e8788.alex.williamson@redhat.com>
+ <a48c5d11dbcd470f93633aae721b2d18@huawei.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a48c5d11dbcd470f93633aae721b2d18@huawei.com>
+X-ClientProxiedBy: MN2PR22CA0009.namprd22.prod.outlook.com
+ (2603:10b6:208:238::14) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 1/1] block/blkio: use qemu_open() to support fd passing
- for virtio-blk
-Content-Language: en-US
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>
-References: <20230511091527.46620-1-sgarzare@redhat.com>
- <20230511091527.46620-2-sgarzare@redhat.com>
- <1a89ee2e-2368-4051-f9ec-018641721484@redhat.com>
- <q2odwrndg3gt6z25hdxb3t2xxavd64hkp4b23zhzycevhrwx64@25r5r6sidyok>
-From: Jonathon Jongsma <jjongsma@redhat.com>
-In-Reply-To: <q2odwrndg3gt6z25hdxb3t2xxavd64hkp4b23zhzycevhrwx64@25r5r6sidyok>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jjongsma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM4PR12MB5769:EE_
+X-MS-Office365-Filtering-Correlation-Id: b57f5970-2400-4213-70b1-08db56283692
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: NUHmQdb7fFsBxtEzyzZkjpDenS1Tg4R7TC+HZekibwzs1Lm3bUxexvpKvyyv+A9bpIDce52elMySANlkicj16esMFHrGRFbtX6wtVRak+QdPCHVdg+tILGkZxUkVWZ/nxRviYdOZorMDRDvVbSQJ8wbTN64KlnYk0zzm230DHidkBhV/MpzzYs8Mp0JL5NbCv2oT4itp7g0wVD0oOVayk5I/ilM7KtW5xwghgyXGM6Cv1fOdVd/wkjaouBrFWtqqjwJFFEtZxEC8hxtisUJInBYO6GIywFegtlTSQaHItKeHOEpp/kRGpfh8bMxWre49MrrRSEyhAdL1E1DbpTpNsrS8fgL073Mbf1W0L9Uga9XHK+202u3ZEZHuZHV0fwtdDSVFWGG2iV3ig8eV+EOIt+xh/6QimRxWDGkjhj8oolcf5dC8hdgieKzZwh0kAKmX7iYV/5DTNxXDd9lI/+IcG40eaFQ9cVfUCOK47h2Q83/pUp/+FarBLWZEnWxFXKhxxP8TsxloEoOWB61rpQQ5Z5KBzgLisx69MTxwBgzudCQ81NOWyxUU9VQ0azj1G5Bm
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(376002)(366004)(39860400002)(396003)(346002)(451199021)(478600001)(54906003)(8676002)(316002)(8936002)(86362001)(7416002)(5660300002)(36756003)(2906002)(4744005)(66946007)(6916009)(4326008)(66476007)(66556008)(41300700001)(38100700002)(2616005)(186003)(83380400001)(6506007)(6512007)(26005)(6486002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4mg8pFyTL1sluq8AiLueq74e/spBMMMSSJwm7NYJFzYKui1M4AtWpLvx4AVC?=
+ =?us-ascii?Q?Ovz3oHNLZGZtggjo/wMzrYz+y3DXvY3WTtEXVbYKpL+aXcT5IF6MvoPMXI4u?=
+ =?us-ascii?Q?SucKSoOXjy9bdB5w5vnuGBxhCRQeXFjde4VWaivZI2Nrmxq6lMIG6JpWXak1?=
+ =?us-ascii?Q?4xaW3Hb7VKY5V70dt35dx11FsCGaCeGt95h12rNoRDawNtMRZ9gnNDlGRGbB?=
+ =?us-ascii?Q?CyvUbphAoq8WlyxUuVkRLGlZOETABjvfa9+FB/W4lw3Y5N/gE+muSxOkL9cu?=
+ =?us-ascii?Q?Q6VfySyNam9MqoF3MLvOg+oeQZHBuJTC242BzXBtTFZhIGPeXD6OgeyEEbtK?=
+ =?us-ascii?Q?j6w9VlTcgpMq7Sst0W3h1lqJUmcVHJGHSc1VDH9FARZeqXxJszsRWKHLrNfA?=
+ =?us-ascii?Q?6D9P5sfUrDDc1QWmSbP3PxB/lQDXge49VnZw8CjB+41VYX5ECwLhyHTyMiPA?=
+ =?us-ascii?Q?chku3aracUloD3tezvRUqgQ+mjU0JVr+wWnVIqYUivLaIm8SHalvftxy78Rr?=
+ =?us-ascii?Q?8DHn1dfQ60iwMP20xPtsTtztyBMQWEUHfFAIUssUQiBi4DfFDAqfTudF3Ryc?=
+ =?us-ascii?Q?zFKJ9YpdNcBzQRDHFM4Va7C1mp2dCNkatPqp/+jQHLG8lu7Q0mtc0cVOUH4E?=
+ =?us-ascii?Q?LGRhFvBeN4v5hiD8GM4eAUZeze3EQcQ3YtgvS7IP5rLj6LGfEpMU8WT3ILT0?=
+ =?us-ascii?Q?OxD3PG29jgs85AnCj0tK68UoPIj8rZaXnUqWksLPFn7G2tHhwA1eHuPoxjVc?=
+ =?us-ascii?Q?ZQt8BJvoCYIQEmo+IIfgUlYLdkFxavBi7+K2rVlYpt3DDW2ujPmXJikHNHCz?=
+ =?us-ascii?Q?pZLQ7oOQNIAwbdRIL+JROdBC+7jTzwBE94F6KuJuJuYocYEbpijuAKLFmxWd?=
+ =?us-ascii?Q?xmr0lR76dhlCl2uihc/RI/VO0ExSyFGsAaK3osXV7J2n1dgGz1oOkivBtuT6?=
+ =?us-ascii?Q?XcilIis6VYQJxh8jb+wZrVhrZhcEDDSe5ZbBxdtbgKSsJW7PcPfdV4ef8cZD?=
+ =?us-ascii?Q?52iqz/jZMOPgvuFwrCXbhd1hetXlQs/U1jnE+424PRbJBKsz2oa8slOuScxt?=
+ =?us-ascii?Q?0wFPj4bDw7s8+1kg1LhbA2AZLq/0zWi1c3dR8AXvrlMLd758soaNTc42il1h?=
+ =?us-ascii?Q?JBoaDfWxj5JZ00JmTqgDRR+pSV7R9XSlz0PQRLnWcaqAd/woWr+7Vw6m4IRK?=
+ =?us-ascii?Q?rSg9DUwq37bJuJXeJeNCn5XzWbSlaVX85v7NRMLL75BYBs3kP4EFoIn4u+7r?=
+ =?us-ascii?Q?0gsh5puw4dAOZTmmMWzR2YWXEQ38lYa4efPzG8crqi6nokrYh3edJSubYb15?=
+ =?us-ascii?Q?Wz2dOHFCER3xvbf412aRgS6CVJqNPwGllToX7QHWzxbQ1rhGc7gtV8I3C43i?=
+ =?us-ascii?Q?W6TIL7ez7x72DLbRTcb1WF0TB8YFWbx6iulFBxNkIKI7fvLK7gs6PPPLer7J?=
+ =?us-ascii?Q?rfwO4fYgf2/ql7iy/Zzjuh7wC5Ro+SE1lW2Wy664hOJbpFnOL/hJ3XmyBDFI?=
+ =?us-ascii?Q?QaOKVWoqTQCBW+PzzU+uzEkMliTte2W1CZQIURD809Xpz/KGL8tbROpMJmrk?=
+ =?us-ascii?Q?0XkB3rhdIIaX8rC7f3pyZ1LbnTkM9n6Msn6Hms74?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b57f5970-2400-4213-70b1-08db56283692
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2023 16:11:31.8956 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PJJ1DEdbHYmfRUp8SuCWYSOOJkVdYx4bofpAJQeFtcxPVm8/sXeTFsky6KxAsZke
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5769
+Received-SPF: softfail client-ip=2a01:111:f400:7eab::620;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.666, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,82 +149,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/15/23 5:10 AM, Stefano Garzarella wrote:
-> On Thu, May 11, 2023 at 11:03:22AM -0500, Jonathon Jongsma wrote:
->> On 5/11/23 4:15 AM, Stefano Garzarella wrote:
->>> The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the new
->>> 'fd' property. Let's expose this to the user, so the management layer
->>> can pass the file descriptor of an already opened vhost-vdpa character
->>> device. This is useful especially when the device can only be accessed
->>> with certain privileges.
->>>
->>> If the libblkio virtio-blk driver supports fd passing, let's always
->>> use qemu_open() to open the `path`, so we can handle fd passing
->>> from the management layer through the "/dev/fdset/N" special path.
->>>
->>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->>> ---
->>>
->>> Notes:
->>>     v3:
->>>     - use qemu_open() on `path` to simplify libvirt code [Jonathon]
->>
->>
->> Thanks
->>
->> The one drawback now is that it doesn't seem possible for libvirt to 
->> introspect whether or not qemu supports passing an fd to the driver or 
->> not.
-> 
-> Yep, this was because the libblkio library did not support this new way.
-> 
->> When I was writing my initial patch (before I realized that it was 
->> missing fd-passing), I just checked for the existence of the 
->> virtio-blk-vhost-vdpa device. But we actually need to know both that 
->> this device exists and supports fd passing.
-> 
-> Yep, this was one of the advantages of using the new `fd` parameter.
-> Can't libvirt handle the later failure?
+On Tue, May 16, 2023 at 02:35:21PM +0000, Shameerali Kolothum Thodi wrote:
 
-Not very well. libvirt tries to provide useful errors to the user. So 
-for example if the qemu executable doesn't support a device, we would 
-want to provide an error indicating that the device is not supported 
-rather than a possibly-inscrutable qemu error.
+> Ok. Got it. So it depends on what SMMU does for that mapping and is not
+> related to migration per se and has the potential to crash the system if 
+> SMMU go ahead with that memory access. Isn't it a more generic problem
+> then when we have multiple devices attached to the VM? 
 
-For example, in this scenario, we would want an error such as:
+It is, and I am hoping to solve it when I get P2P support into iommufd
 
-error: unsupported configuration: vhostvdpa disk is not supported with 
-this QEMU binary
+> I need to check if there is anything in SMMU spec that forbids this
+> access.
 
-Instead of:
+There isn't, it is up to the integration how it handles 'hairpin'
+traffic. A good implementation will work correctly as Intel and other
+CPUs do. A very bad implementation will crash. Medium is to return
+error tlps.
 
-error: internal error: qemu unexpectedly closed the monitor: 
-2023-05-16T15:17:36.666129Z qemu-system-x86_64: -blockdev 
-{"driver":"virtio-blk-vhost-vdpa","path":"/dev/fdset/0","node-name":"libvirt-1-storage","cache":{"direct":true,"no-flush":false},"auto-read-only":true,"discard":"unmap"}: 
-blkio_connect failed: Failed to connect to vDPA device: Input/output error
-
-And we can only do that if we can determine that the binary has the 
-proper support for fds.
-
-> 
->> As far as I can tell, versions 7.2.0 and 8.0.0 include this device but 
->> won't accept fds.
-> 
-> Right.
-> 
-> How do you suggest to proceed?
-
-I need some way to determine that the particular qemu binary can accept 
-a /dev/fdset/ path for vdpa block devices. libvirt uses a variety of 
-methods to determine capabilities for a given qemu binary, including 
-querying the qmp schema, commands, object types, specific device/object 
-properties, etc. For example, right now I can determine (via querying 
-the qmp schema) whether virtio-blk-vhost-vdpa is a valid type for the 
-blockdev-add command by querying the qmp schema. I need something more 
-than that but I'm not sure how to do it without introducing a separate 
-'fd' parameter. Any ideas?
-
-Thanks,
-Jonathon
-
+Jason
 
