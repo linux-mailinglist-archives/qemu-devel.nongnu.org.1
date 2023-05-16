@@ -2,99 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FBA705844
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 22:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E39270585F
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 22:09:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz0qf-0007EH-V8; Tue, 16 May 2023 16:00:47 -0400
+	id 1pz0yV-0000kK-9p; Tue, 16 May 2023 16:08:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1pz0qQ-0006oV-Dg; Tue, 16 May 2023 16:00:28 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1pz0qN-00071X-RF; Tue, 16 May 2023 16:00:26 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1684267214; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=oYjAOuo5XrCuEQR1W6/l+gMe8iW0/pRObAz3AXMdbMBAntXrf7eR3xWdGCEDgd5ejv
- 8luHseiXq2JYMjo6BbNsglvWUioUorZ/XaMfsQWvp5ICJUPL2RO1xodEJyHR129K1yD1
- zoGe9NRN391Q+qXpMprXqEmK4n2iqaG8BwlX9sWTi8uznAD0DPksWP8RTa2oq0s2v9gn
- 696rv2N8tmh/nGqGWobPJv1XoS+8nkf8oVPii2wp7FUwgZxBF2BwgIoFAgBPMJMzzE1S
- Tz5YwRhIqw4rOjEhAkABqrzraxm2i6xPuM5addxLuDimkwMqwEq6TidN4X+2vzld2qQs
- JbUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1684267214;
- s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=pS0Z4id9fKm2g4HFIaP4cyA8REoB+fljOJamATQiIKg=;
- b=NkTEOOvUULIQHeKXD/qBlLdSUlymDYKgU2w3ld2/D95sks4e1qYP8VPVq4UBrIIr63
- vE94G3LG07MnxIJ/1EZa8W1bMsfltVELjyAsi6wU/bLdppBbaBoehgvJr0TQhINESyg4
- weWFPYUkel/Cw8E2IbUZrZKxiTr8wVBL2fpTIjg2Hku6Wf3OOygon1Ih0DmmghrE3eWJ
- ejW8rajtT4YH1pCyqELfXSDu0NhnoGhSMnwZE/ubU4BAf1lgHE6QuUWLfqjdFTaF6In7
- BJdIRm7xJLdx3lxDudGbo/VoCHVNNdY+Bw0wSVaqcqETpiR6xDKU/WXOlJ67haX4HZWP
- rI1w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1684267214;
- s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=pS0Z4id9fKm2g4HFIaP4cyA8REoB+fljOJamATQiIKg=;
- b=LyXWqaWgSuG1JKysX34wy0K6ONnQlBaVJHC97d9voPDy8UJpk3QvOx27tV+Mqm1Yyj
- pbW8qfbpUrVRwBNM5lkL6gTPTPBOY9Y0tOlPE6ShOOCbJnDL8y5CmRqZ2bqHlbCMTpRX
- uqVwj9HHcBiFNxkKAEAkxI/iZke1GHRgkyH9qkj32ikXmLyNG9ARFIIFy07rAvwWN0bC
- axXKdHjZXxHS9nRh8WWJHeogvVJmkH619asQFMMFNnP5XG3WzXAOfMbSA1fltMCfzGMh
- MfMzrDRrLtGJx5nSTGpBr3dQ9IYFlllkx1EKYfJopQozQXA5dUoEQnE2QJXiY/atxVRI
- eqfw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1684267214;
- s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=pS0Z4id9fKm2g4HFIaP4cyA8REoB+fljOJamATQiIKg=;
- b=iVQJE14B1+56+wIw3G/ijmiRqUwL5q4Qd8Ue4aef6lOkHfwWhc2Z3y3afylkQkcFT0
- MtU+ri5Yn6x8XxH0KZBg==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QED/SSGq+wjGiUC4kV1cX/0jCNVp4ivfSTHw=="
-Received: from sender by smtp.strato.de (RZmta 49.4.0 AUTH)
- with ESMTPSA id x6987cz4GK0DYiy
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 16 May 2023 22:00:13 +0200 (CEST)
-Date: Tue, 16 May 2023 20:00:07 +0000
-From: Olaf Hering <olaf@aepfle.de>
-To: John Snow <jsnow@redhat.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>, Paolo Bonzini
- <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
- qemu-devel@nongnu.org, qemu-block@nongnu.org, Philippe =?UTF-8?B?TWF0aGll?=
- =?UTF-8?B?dS1EYXVkw6k=?= <f4bug@amsat.org>
-Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
-Message-ID: <20230516200007.4fa87c6a@sender>
-In-Reply-To: <CAFn=p-aFa_jFYuaYLMumkX=5zpn228ctBcV=Gch=BhmQs6i2dA@mail.gmail.com>
-References: <20210317070046.17860-1-olaf@aepfle.de>
- <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
- <20210325121219.7b5daf76.olaf@aepfle.de>
- <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
- <20230509225818.GA16290@aepfle.de>
- <20230510094719.26fb79e5.olaf@aepfle.de>
- <alpine.DEB.2.22.394.2305121411310.3748626@ubuntu-linux-20-04-desktop>
- <CAFn=p-aFa_jFYuaYLMumkX=5zpn228ctBcV=Gch=BhmQs6i2dA@mail.gmail.com>
-X-Mailer: Claws Mail 2023.04.19 (GTK 3.24.34; x86_64-suse-linux-gnu)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pz0yS-0000jA-4o
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 16:08:44 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pz0yQ-0000Dw-8D
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 16:08:43 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-528dd896165so10518542a12.2
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 13:08:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684267720; x=1686859720;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RZZrwKydEztHPKUbUlgJFMFYTLXdDDQeUM+//JvEi3Y=;
+ b=aDTJ+kfVRHJl4WRGjzu1SrcWkmJvAenEYhPkoFmM+eqbs8prG60232Rv8Uh+LbLaTn
+ Js81lTSbNnE8UxrqZmmElqVUHK/WhpvcLbMCFO0RBSiy1nfG1ykBMfywM1MisNKTpbm9
+ twAnWj7qIEV2huEnbUQ4Re4ZHSyFlw7RWOYkiqzW93KCr4xN9eadefMgMzDQJrGR2967
+ aHDFHIdMx+GQEVudANWhJ7hXLAPS1QVhh/LuZr+r0f/PD43MY+WE2kwrrA5RNPI6H3U0
+ 48SqoV63AjTEuCW2BNtaD3KSQe4utckR1hpHpoBA/PVmnzRBqEnWc1awrHXP18rVU0Dd
+ jqfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684267720; x=1686859720;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RZZrwKydEztHPKUbUlgJFMFYTLXdDDQeUM+//JvEi3Y=;
+ b=XN/9O2EXxknTMxky3o83bQta9jvBxUQFe88YTZ5A9iBE7dVhwbpmkE1dOE93fKjHq8
+ cS6vsflnOgrnKwkg63nKht2ek5nEZCU6432rjrxxudCVbB6hiUEGX+c1V8LMBv6aiYxY
+ RoYSiaZPYAULNXxkddm/VbMxca0bUuHsVc5U7YrS9whmoMq56kUOOfRlxo/cIsyZKPjM
+ NEP0DQxEfTQ7tT74OL1itHntCU0N4sFPuccxvJvBNU9gaaE5aivMN1PK3qwYlUpfDTZY
+ zU+QAnqc0GivJADf6tR7CPPd69/xkY+2b4U4T6tmqYJgB0vf2UlduSoeQfSkdZmBSNbt
+ qu6Q==
+X-Gm-Message-State: AC+VfDxJBpd7MM6QB0z/NQSkawR9KuegIJcox0VcsuBMevJLcWiJHJ3B
+ 4pZmkSWIj3kXCGvWSQSyT4lEm5cR35zLtxs/HlA=
+X-Google-Smtp-Source: ACHHUZ7QlXvYsHABuNDcvVpg6Goedry53nS6dTwN/1+iD0DMS+teyuY/qTbC+6BP6Ar3nMYg8ZCz1Q==
+X-Received: by 2002:a05:6a20:2452:b0:103:558c:516 with SMTP id
+ t18-20020a056a20245200b00103558c0516mr27504657pzc.55.1684267720384; 
+ Tue, 16 May 2023 13:08:40 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:ec81:440e:33a4:40b9?
+ ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
+ by smtp.gmail.com with ESMTPSA id
+ 63-20020a630142000000b0051303d3e3c5sm14065201pgb.42.2023.05.16.13.08.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 May 2023 13:08:39 -0700 (PDT)
+Message-ID: <b442ffa8-1a3a-660b-2924-4e63b0d6a77f@linaro.org>
+Date: Tue, 16 May 2023 13:08:38 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/11aB=ufI14REGukuAgcfB1H";
- protocol="application/pgp-signature"; micalg=pgp-sha1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] target/arm: allow DC CVA[D]P in user mode emulation
+Content-Language: en-US
+To: Zhuojia Shen <chaosdefinition@hotmail.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Beata Michalska <beata.michalska@linaro.org>, qemu-arm@nongnu.org
+References: <DS7PR12MB63094479AA92D99D8D777A95AC799@DS7PR12MB6309.namprd12.prod.outlook.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <DS7PR12MB63094479AA92D99D8D777A95AC799@DS7PR12MB6309.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=85.215.255.53; envelope-from=olaf@aepfle.de;
- helo=mo4-p01-ob.smtp.rzone.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.666,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,39 +96,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/11aB=ufI14REGukuAgcfB1H
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 5/15/23 20:59, Zhuojia Shen wrote:
+> DC CVAP and DC CVADP instructions can be executed in EL0 on Linux,
+> either directly when SCTLR_EL1.UCI == 1 or emulated by the kernel (see
+> user_cache_maint_handler() in arch/arm64/kernel/traps.c).  The Arm ARM
+> documents the semantics of the two instructions that they behave as
+> DC CVAC if the address pointed to by their register operand is not
+> persistent memory.
+> 
+> This patch enables execution of the two instructions in user mode
+> emulation as NOP while preserving their original emulation in full
+> system virtualization.
+> 
+> Signed-off-by: Zhuojia Shen <chaosdefinition@hotmail.com>
+> ---
+>   target/arm/helper.c               | 26 +++++++++++++-----
+>   tests/tcg/aarch64/Makefile.target | 11 ++++++++
+>   tests/tcg/aarch64/dcpodp.c        | 45 +++++++++++++++++++++++++++++++
+>   tests/tcg/aarch64/dcpop.c         | 45 +++++++++++++++++++++++++++++++
+>   4 files changed, 120 insertions(+), 7 deletions(-)
+>   create mode 100644 tests/tcg/aarch64/dcpodp.c
+>   create mode 100644 tests/tcg/aarch64/dcpop.c
+> 
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index 0b7fd2e7e6..eeba5e7978 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -7432,23 +7432,37 @@ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+>           }
+>       }
+>   }
+> +#endif /*CONFIG_USER_ONLY*/
+>   
+>   static const ARMCPRegInfo dcpop_reg[] = {
+>       { .name = "DC_CVAP", .state = ARM_CP_STATE_AA64,
+>         .opc0 = 1, .opc1 = 3, .crn = 7, .crm = 12, .opc2 = 1,
+> -      .access = PL0_W, .type = ARM_CP_NO_RAW | ARM_CP_SUPPRESS_TB_END,
+> +      .access = PL0_W,
+>         .fgt = FGT_DCCVAP,
+> -      .accessfn = aa64_cacheop_poc_access, .writefn = dccvap_writefn },
+> +      .accessfn = aa64_cacheop_poc_access,
+> +#ifdef CONFIG_USER_ONLY
+> +      .type = ARM_CP_NOP,
+> +#else
+> +      .type = ARM_CP_NO_RAW | ARM_CP_SUPPRESS_TB_END,
+> +      .writefn = dccvap_writefn,
+> +#endif
+> +    },
+>   };
 
-Am Tue, 16 May 2023 13:38:42 -0400
-schrieb John Snow <jsnow@redhat.com>:
+Not quite correct, as CVAP to an unmapped address should SIGSEGV.  That'll be done by the 
+probe_read within dccvap_writefn.
 
-> I haven't touched IDE or block code in quite a long while now -- I
-> don't think I can help land this fix, but I won't get in anyone's way,
-> either. Maybe just re-submit the patches with an improved commit
-> message / cover letter that helps collect the info from the previous
-> thread, the core issue, etc.
-
-I poked at it some more in the past days. Paolo was right in 2019, this
-issue needs to be debugged more to really understand why fiddling
-with one PCI devices breaks another, apparently unrelated PCI device.
-
-Once I know more, I will suggest a new change. The old one is
-stale, and needs to be rebased anyway.
+Need to make dccvap_writefn always present, ifdef out only the memory_region_from_host + 
+memory_region_writeback from there.  Need to set SCTLR_EL1.UCI in arm_cpu_reset_hold in 
+the CONFIG_USER_ONLY block.
 
 
-Olaf
+r~
 
---Sig_/11aB=ufI14REGukuAgcfB1H
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
+>   
+>   static const ARMCPRegInfo dcpodp_reg[] = {
+>       { .name = "DC_CVADP", .state = ARM_CP_STATE_AA64,
+>         .opc0 = 1, .opc1 = 3, .crn = 7, .crm = 13, .opc2 = 1,
+> -      .access = PL0_W, .type = ARM_CP_NO_RAW | ARM_CP_SUPPRESS_TB_END,
+> +      .access = PL0_W,
+>         .fgt = FGT_DCCVADP,
+> -      .accessfn = aa64_cacheop_poc_access, .writefn = dccvap_writefn },
+> +      .accessfn = aa64_cacheop_poc_access,
+> +#ifdef CONFIG_USER_ONLY
+> +      .type = ARM_CP_NOP,
+> +#else
+> +      .type = ARM_CP_NO_RAW | ARM_CP_SUPPRESS_TB_END,
+> +      .writefn = dccvap_writefn,
+> +#endif
+> +    },
+>   };
+> -#endif /*CONFIG_USER_ONLY*/
+>   
+>   static CPAccessResult access_aa64_tid5(CPUARMState *env, const ARMCPRegInfo *ri,
+>                                          bool isread)
+> @@ -9092,7 +9106,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+>       if (cpu_isar_feature(aa64_tlbios, cpu)) {
+>           define_arm_cp_regs(cpu, tlbios_reginfo);
+>       }
+> -#ifndef CONFIG_USER_ONLY
+>       /* Data Cache clean instructions up to PoP */
+>       if (cpu_isar_feature(aa64_dcpop, cpu)) {
+>           define_one_arm_cp_reg(cpu, dcpop_reg);
+> @@ -9101,7 +9114,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+>               define_one_arm_cp_reg(cpu, dcpodp_reg);
+>           }
+>       }
+> -#endif /*CONFIG_USER_ONLY*/
+>   
+>       /*
+>        * If full MTE is enabled, add all of the system registers.
+> diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+> index 0315795487..3430fd3cd8 100644
+> --- a/tests/tcg/aarch64/Makefile.target
+> +++ b/tests/tcg/aarch64/Makefile.target
+> @@ -21,12 +21,23 @@ config-cc.mak: Makefile
+>   	$(quiet-@)( \
+>   	    $(call cc-option,-march=armv8.1-a+sve,          CROSS_CC_HAS_SVE); \
+>   	    $(call cc-option,-march=armv8.1-a+sve2,         CROSS_CC_HAS_SVE2); \
+> +	    $(call cc-option,-march=armv8.2-a,              CROSS_CC_HAS_ARMV8_2); \
+>   	    $(call cc-option,-march=armv8.3-a,              CROSS_CC_HAS_ARMV8_3); \
+> +	    $(call cc-option,-march=armv8.5-a,              CROSS_CC_HAS_ARMV8_5); \
+>   	    $(call cc-option,-mbranch-protection=standard,  CROSS_CC_HAS_ARMV8_BTI); \
+>   	    $(call cc-option,-march=armv8.5-a+memtag,       CROSS_CC_HAS_ARMV8_MTE); \
+>   	    $(call cc-option,-march=armv9-a+sme,            CROSS_CC_HAS_ARMV9_SME)) 3> config-cc.mak
+>   -include config-cc.mak
+>   
+> +ifneq ($(CROSS_CC_HAS_ARMV8_2),)
+> +AARCH64_TESTS += dcpop
+> +dcpop: CFLAGS += -march=armv8.2-a
+> +endif
+> +ifneq ($(CROSS_CC_HAS_ARMV8_5),)
+> +AARCH64_TESTS += dcpodp
+> +dcpodp: CFLAGS += -march=armv8.5-a
+> +endif
+> +
+>   # Pauth Tests
+>   ifneq ($(CROSS_CC_HAS_ARMV8_3),)
+>   AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5
+> diff --git a/tests/tcg/aarch64/dcpodp.c b/tests/tcg/aarch64/dcpodp.c
+> new file mode 100644
+> index 0000000000..dad61ce78c
+> --- /dev/null
+> +++ b/tests/tcg/aarch64/dcpodp.c
+> @@ -0,0 +1,45 @@
+> +/* Test execution of DC CVADP instruction */
+> +
+> +#include <asm/hwcap.h>
+> +#include <sys/auxv.h>
+> +
+> +#include <signal.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +
+> +#ifndef HWCAP2_DCPODP
+> +#define HWCAP2_DCPODP (1 << 0)
+> +#endif
+> +
+> +static void sigill_handler(int sig)
+> +{
+> +    exit(EXIT_FAILURE);
+> +}
+> +
+> +static int do_dc_cvadp(void)
+> +{
+> +    struct sigaction sa = {
+> +        .sa_handler = sigill_handler,
+> +    };
+> +
+> +    if (sigaction(SIGILL, &sa, NULL) < 0) {
+> +        perror("sigaction");
+> +        return EXIT_FAILURE;
+> +    }
+> +
+> +    asm volatile("dc cvadp, %0\n\t" :: "r"(&sa));
+> +
+> +    return 0;
+> +}
+> +
+> +int main(void)
+> +{
+> +    if (getauxval(AT_HWCAP) & HWCAP2_DCPODP) {
+> +        return do_dc_cvadp();
+> +    } else {
+> +        printf("SKIP: no HWCAP2_DCPODP on this system\n");
+> +        return 0;
+> +    }
+> +
+> +    return 0;
+> +}
+> diff --git a/tests/tcg/aarch64/dcpop.c b/tests/tcg/aarch64/dcpop.c
+> new file mode 100644
+> index 0000000000..8b4ea7c91c
+> --- /dev/null
+> +++ b/tests/tcg/aarch64/dcpop.c
+> @@ -0,0 +1,45 @@
+> +/* Test execution of DC CVAP instruction */
+> +
+> +#include <asm/hwcap.h>
+> +#include <sys/auxv.h>
+> +
+> +#include <signal.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +
+> +#ifndef HWCAP_DCPOP
+> +#define HWCAP_DCPOP (1 << 16)
+> +#endif
+> +
+> +static void sigill_handler(int sig)
+> +{
+> +    exit(EXIT_FAILURE);
+> +}
+> +
+> +static int do_dc_cvap(void)
+> +{
+> +    struct sigaction sa = {
+> +        .sa_handler = sigill_handler,
+> +    };
+> +
+> +    if (sigaction(SIGILL, &sa, NULL) < 0) {
+> +        perror("sigaction");
+> +        return EXIT_FAILURE;
+> +    }
+> +
+> +    asm volatile("dc cvap, %0\n\t" :: "r"(&sa));
+> +
+> +    return 0;
+> +}
+> +
+> +int main(void)
+> +{
+> +    if (getauxval(AT_HWCAP) & HWCAP_DCPOP) {
+> +        return do_dc_cvap();
+> +    } else {
+> +        printf("SKIP: no HWCAP_DCPOP on this system\n");
+> +        return 0;
+> +    }
+> +
+> +    return 0;
+> +}
 
------BEGIN PGP SIGNATURE-----
-
-iF0EARECAB0WIQSkRyP6Rn//f03pRUBdQqD6ppg2fgUCZGPgxwAKCRBdQqD6ppg2
-fqLiAJ46FKHEwF2tggdoStt1IxPQ76JRyQCfZMuVO4l+1/a61bf/j2kZyfqYQlk=
-=aXMf
------END PGP SIGNATURE-----
-
---Sig_/11aB=ufI14REGukuAgcfB1H--
 
