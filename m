@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA20704250
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 02:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75768704283
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 02:55:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyiZv-0002YJ-IH; Mon, 15 May 2023 20:30:11 -0400
+	id 1pyix4-000829-4d; Mon, 15 May 2023 20:54:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyiZt-0002WR-T0
- for qemu-devel@nongnu.org; Mon, 15 May 2023 20:30:09 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyiZs-00054q-4i
- for qemu-devel@nongnu.org; Mon, 15 May 2023 20:30:09 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-64a9335a8e7so1710391b3a.0
- for <qemu-devel@nongnu.org>; Mon, 15 May 2023 17:30:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684197006; x=1686789006;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UapGSEkvKPnVTfbxD9E394XMi9ZiyqcTrl5BmMK4py8=;
- b=JYNCfnYG8EJt8rMqJNayPayXz+u5yGmFvvPyUhg/cTuqeNd/AjKIGuxelQfPKv4F7L
- GilZMBI/tLaNy2owS56LhPlVU4x+7Yj4kqa9sVW90+BFRUaWWnSuceQODJ+zeg0rVrr1
- j+hFMm8TqjXrDn9FzSRgJlijsS8MB4X5X9kZVtqzovn9yc4hDAAoYug1YonxHG82FNlf
- cPdIfPhe+5Lp2fOAK1HCgkSJwnEuEpLf+wMmz3RlcIfzbZnGWNpJtqXtHqNrVwQyFSa2
- InDTiaAlmNBcb3Nw1gfNryZv0RpABSjkUt9+qjfshk9Q9MDXmpF4QA+53+LSaGZrOjGj
- v9NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684197006; x=1686789006;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UapGSEkvKPnVTfbxD9E394XMi9ZiyqcTrl5BmMK4py8=;
- b=GTlQomxCnb/oLpVY/NCF55HuHQEmb8ZIdDSXJacbmBMwi4s+OllHQW67xCv2YjE8Kf
- pT3Q2ry9QpSMAroLFE3NMH6dcgkMgwDn62dv/4tnMMqo4TP+BMjPG5ZV+aeBuxb1dhRD
- qu+X1T+JxPvdN48+4eZxgunXpTNGwrgDCVVBzU4a5TUPP3kwIB0a/Fioacb43yfiQCtY
- tMgLQbm2scGCNkLbTbX7H35eMZjVCgn6/UHa0sapTJL/TVgHfi+8L3S0JEPU+rMo8fX0
- JtUxrNPyvt8mmrX3cBS3OjBLID3jT9a1alxppZvnM1jHHW89omk2F5vgKkTRQ1rR2Jvu
- +H+Q==
-X-Gm-Message-State: AC+VfDymlDlAgSHwPFA7b6D5Rejub1DauP34Y42WuOttwaQTs0/FZf9j
- nXVDu2GjeNyp3jFR59c32HxNjg==
-X-Google-Smtp-Source: ACHHUZ6kzCGm5L//lg0nWm4n/kGzoDOgJnqQPmZ9PWSFwkPJzENLuLgkt2PMojtSizwDIuY9MgERsQ==
-X-Received: by 2002:a05:6a00:448e:b0:643:4608:7c2d with SMTP id
- cu14-20020a056a00448e00b0064346087c2dmr44362013pfb.12.1684197006216; 
- Mon, 15 May 2023 17:30:06 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:9902:96ac:8d8c:4366?
- ([2602:ae:1598:4c01:9902:96ac:8d8c:4366])
- by smtp.gmail.com with ESMTPSA id
- z15-20020aa785cf000000b005a8de0f4c64sm12336319pfn.82.2023.05.15.17.30.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 May 2023 17:30:05 -0700 (PDT)
-Message-ID: <cb6582b2-9542-4ebb-d188-34287f9fb3dd@linaro.org>
-Date: Mon, 15 May 2023 17:30:04 -0700
+ (Exim 4.90_1) (envelope-from <yin.wang@intel.com>)
+ id 1pyix1-00081U-ES; Mon, 15 May 2023 20:54:03 -0400
+Received: from mga09.intel.com ([134.134.136.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <yin.wang@intel.com>)
+ id 1pyiwy-0000fq-AN; Mon, 15 May 2023 20:54:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1684198440; x=1715734440;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xSCbnbCCWPUwbqrlSD72J834syto610gevXE+KzDwqg=;
+ b=jPDURD7DibSf/gHNvvhrwcSw+Kwe1lvXprA96pe6yo7LkrKnVKS6I5Pn
+ ipLnK5iiFZHrdh2CF3EJ53vqpyQq74+/3zpaoGNIXGVDNHDD+BTqZ3xnn
+ A2XqbapbNPnSGeREY4Jq9adLlXQhrdfNrfz791kjR82bzm2+rQjS7lQiN
+ f/zhd5ORBjjdF/TilUtyPROfRLtpKd55w66VYwLn5ypltUlmRZWIXbbYZ
+ XOaRwUY6Ok2p1zeB9Q0MV3gpIWKUrSqeBvcyV7aoMdOBdCZDxzynes+66
+ Y4SJaF94DXSX3+bl1q406V4reorp0QJvS6XzvQ7QbwS8fkSQ2f+1TVVcy g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="353622016"
+X-IronPort-AV: E=Sophos;i="5.99,277,1677571200"; d="scan'208";a="353622016"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2023 17:53:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10711"; a="766164069"
+X-IronPort-AV: E=Sophos;i="5.99,277,1677571200"; d="scan'208";a="766164069"
+Received: from yin-optiplex-7090.sh.intel.com ([10.239.160.32])
+ by fmsmga008.fm.intel.com with ESMTP; 15 May 2023 17:53:54 -0700
+From: Yin Wang <yin.wang@intel.com>
+To: qemu-devel@nongnu.org
+Cc: Yin Wang <yin.wang@intel.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
+Subject: [PATCH v4] hw/riscv: qemu crash when NUMA nodes exceed available CPUs
+Date: Tue, 16 May 2023 08:53:47 +0800
+Message-Id: <20230516005348.1440987-1-yin.wang@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] qapi/parser: Fix type hints
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: michael.roth@amd.com, jsnow@redhat.com
-References: <20230511111709.971477-1-armbru@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230511111709.971477-1-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.811,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=134.134.136.24; envelope-from=yin.wang@intel.com;
+ helo=mga09.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,40 +78,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/11/23 04:17, Markus Armbruster wrote:
-> Fixes: 3e32dca3f0d1 (qapi: Rewrite parsing of doc comment section symbols and tags)
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   scripts/qapi/parser.py | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-> index 4923a59d60..9315412ab2 100644
-> --- a/scripts/qapi/parser.py
-> +++ b/scripts/qapi/parser.py
-> @@ -563,11 +563,11 @@ def end_comment(self) -> None:
->           self._switch_section(QAPIDoc.NullSection(self._parser))
->   
->       @staticmethod
-> -    def _match_at_name_colon(string: str) -> re.Match:
-> +    def _match_at_name_colon(string: str) -> Optional[re.Match[str]]:
->           return re.match(r'@([^:]*): *', string)
->   
->       @staticmethod
-> -    def _match_section_tag(string: str) -> re.Match:
-> +    def _match_section_tag(string: str) -> Optional[re.Match[str]]:
->           return re.match(r'(Returns|Since|Notes?|Examples?|TODO): *', string)
->   
->       def _append_body_line(self, line: str) -> None:
+Command "qemu-system-riscv64 -machine virt
+-m 2G -smp 1 -numa node,mem=1G -numa node,mem=1G"
+would trigger this problem.Backtrace with:
+ #0  0x0000555555b5b1a4 in riscv_numa_get_default_cpu_node_id  at ../hw/riscv/numa.c:211
+ #1  0x00005555558ce510 in machine_numa_finish_cpu_init  at ../hw/core/machine.c:1230
+ #2  0x00005555558ce9d3 in machine_run_board_init  at ../hw/core/machine.c:1346
+ #3  0x0000555555aaedc3 in qemu_init_board  at ../softmmu/vl.c:2513
+ #4  0x0000555555aaf064 in qmp_x_exit_preconfig  at ../softmmu/vl.c:2609
+ #5  0x0000555555ab1916 in qemu_init  at ../softmmu/vl.c:3617
+ #6  0x000055555585463b in main  at ../softmmu/main.c:47
+This commit fixes the issue by adding parameter checks.
 
-Doesn't work:
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+Signed-off-by: Yin Wang <yin.wang@intel.com>
+---
+ hw/riscv/numa.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-https://gitlab.com/qemu-project/qemu/-/jobs/4289613692#L574
+diff --git a/hw/riscv/numa.c b/hw/riscv/numa.c
+index 4720102561..e0414d5b1b 100644
+--- a/hw/riscv/numa.c
++++ b/hw/riscv/numa.c
+@@ -207,6 +207,12 @@ int64_t riscv_numa_get_default_cpu_node_id(const MachineState *ms, int idx)
+ {
+     int64_t nidx = 0;
+ 
++    if (ms->numa_state->num_nodes > ms->smp.cpus) {
++        error_report("Number of NUMA nodes (%d)"
++                     " cannot exceed the number of available CPUs (%d).",
++                     ms->numa_state->num_nodes, ms->smp.max_cpus);
++        exit(EXIT_FAILURE);
++    }
+     if (ms->numa_state->num_nodes) {
+         nidx = idx / (ms->smp.cpus / ms->numa_state->num_nodes);
+         if (ms->numa_state->num_nodes <= nidx) {
+-- 
+2.34.1
 
-   File "/builds/qemu-project/qemu/scripts/qapi/parser.py", line 566, in QAPIDoc
-     def _match_at_name_colon(string: str) -> Optional[re.Match[str]]:
-TypeError: 'type' object is not subscriptable
-
-
-r~
 
