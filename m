@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4027F70486F
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4778E7048B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:11:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyqdV-0002d6-EB; Tue, 16 May 2023 05:06:25 -0400
+	id 1pyqiW-0004aX-TH; Tue, 16 May 2023 05:11:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1pyqdO-0002cU-DY
- for qemu-devel@nongnu.org; Tue, 16 May 2023 05:06:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyqiO-0004aI-Vi
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 05:11:29 -0400
+Received: from mout.kundenserver.de ([212.227.17.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1pyqdM-0007E4-W1
- for qemu-devel@nongnu.org; Tue, 16 May 2023 05:06:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684227972;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=xhfpK7PHMoIgMNdnenMvwmAXC84sSLaszoOeE7+Jn88=;
- b=jOYgUdF2OhsoLS28HyNEEGlmWImihCzM0giI+hxt2QJoA6MuBZ8g4togJxogpFckgR5P+K
- oQBWshWikjBCjWjHzYtvQU44ilCImvp+2X4WvxSox0DQDq/qDkxsQzqcD36vqCfw7xVDXZ
- k+dEBRh2oxVQ/9LtaIveT1cb3j4SEmg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-541-Wv3du_CUPZyWrytRi0BbZQ-1; Tue, 16 May 2023 05:06:09 -0400
-X-MC-Unique: Wv3du_CUPZyWrytRi0BbZQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 68F3189174B;
- Tue, 16 May 2023 09:06:09 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.193.48])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CC0CF1410F23;
- Tue, 16 May 2023 09:06:07 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Alexander Bulekov <alxndr@bu.edu>
-Cc: Fam Zheng <fam@euphon.net>, qemu-devel@nongnu.org,
- Fiona Ebner <f.ebner@proxmox.com>, Darren Kenny <darren.kenny@oracle.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH] lsi53c895a: disable reentrancy detection for MMIO region, too
-Date: Tue, 16 May 2023 11:05:56 +0200
-Message-Id: <20230516090556.553813-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyqiN-0008PT-2H
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 05:11:28 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue106 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1MZSym-1pdOEm2wZa-00WYBz; Tue, 16 May 2023 11:11:22 +0200
+Message-ID: <d36d5b46-fb6a-41bc-47e9-6a7ad0e2441f@vivier.eu>
+Date: Tue, 16 May 2023 11:11:21 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PULL 0/9] Linux user for 8.1 patches
+Content-Language: fr
+From: Laurent Vivier <laurent@vivier.eu>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Afonso Bordado <afonsobordado@gmail.com>
+References: <20230515083113.107056-1-laurent@vivier.eu>
+ <4a37146d-b3b7-206d-cc75-617dc2a3674a@linaro.org>
+ <c05bbb2e-2739-c8c8-33c5-908a8a2c36e1@vivier.eu>
+In-Reply-To: <c05bbb2e-2739-c8c8-33c5-908a8a2c36e1@vivier.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Provags-ID: V03:K1:8OOlBrMFl5Tp3MG9jjPm/o9XRh7gv8Cpy8aKWGXg2mRQjRmJ86X
+ MxuziVwReKzobY+ZGD8p42EMQBpX8zG4cgpW6OpnwKPQAGndbcp0TQClor06dzJ+HPC2Rdg
+ YdGA3ZAo7W4xL49jlybC+XyvYyPC8FK5eP3vC5VEyN0eJJxE2inbExhjkhOwrsVl7sfoxOH
+ cfOVoiiGlzIlU8DuaOV+A==
+UI-OutboundReport: notjunk:1;M01:P0:GZWTS181OwY=;A4319GvlnjkDCwCxQgy5f+NrtMi
+ wfMcz7X0eoylWFRI/VOuCqI622awHzRMvPchFcbTXJxb3VWklEl07puU+iJ9J9k4xRLFE7Woa
+ Bjq2iyxykeE9Yboa3+3psWbKV/f1IeBatblHyQ1eoJgPx3tQTXXru1lFPVYCFOVqS8bYVyZIO
+ h0l07149ASMBisH7bh4d+2CRpIx+OPmSvKiLkV2QwbggKiwVs56FuTHvNZuP2mUbDYWdKdzQs
+ m1qTl+BShPiOo7C7Vb/Iah+wGycNNj3j3zEi07lEsJ950gpBXyaAKvdQJBOW2af0XBBYKEZTQ
+ GzQ6Ndp0/NWidHc6j9amKr9D7bS/myStwtiVAuDrVNhWbJSMGcyNcTHqO2zi+C/GbRN35iTpb
+ KC4josyHN70lJnJ2JRyAbHsZ3hkgti3g9VEuGm4PbAt4Q+PzOBGHjfSFcOQrYd+vOzD7wN/2X
+ +76p3MiUYYYkaZ9LGWb3qizn1Ad12DGZqf348y81j8TWMNGYguhoS+Y2GHZMzlV/00aaJa/dZ
+ YPBkeYY35vu+YDVIoefcQN377dBcDcau7S2dkOBIZruo8GyD/bjmXt2b0sKc6U2Q3j/609Dyt
+ Sn7yr8xOFkfsFL5gBJ6apajdF6dFhZKhsOX57U/+/NmDpwn7khOgin7oUFagk2HS5z/pV5Gaj
+ gROFrjIusSzAABKhmcyT79KrzSdtkm+dat742hLfQw==
+Received-SPF: none client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -56
+X-Spam_score: -5.7
+X-Spam_bar: -----
+X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.811,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,33 +73,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While trying to use a SCSI disk on the LSI controller with an
-older version of Fedora (25), I'm getting:
+Le 15/05/2023 à 17:50, Laurent Vivier a écrit :
+> Le 15/05/2023 à 15:55, Richard Henderson a écrit :
+>> On 5/15/23 01:31, Laurent Vivier wrote:
+>>> The following changes since commit 7c18f2d663521f1b31b821a13358ce38075eaf7d:
+>>>
+>>>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-04-29 23:07:17 
+>>> +0100)
+>>>
+>>> are available in the Git repository at:
+>>>
+>>>    https://github.com/vivier/qemu.git tags/linux-user-for-8.1-pull-request
+>>>
+>>> for you to fetch changes up to 015ebc4aaa47612514a5c846b9db0d76b653b75f:
+>>>
+>>>    linux-user: fix getgroups/setgroups allocations (2023-05-14 18:08:04 +0200)
+>>>
+>>> ----------------------------------------------------------------
+>>> linux-user pull request 20230512-v2
+>>>
+>>> add open_tree(), move_mount()
+>>> add /proc/cpuinfo for riscv
+>>> fixes and cleanup
+>>
+>> The new test in patch 1 fails:
+>>
+>> https://gitlab.com/qemu-project/qemu/-/jobs/4285710689#L4825
+>>
+>>    TEST    cpuinfo on riscv64
+>> cpuinfo: /builds/qemu-project/qemu/tests/tcg/riscv64/cpuinfo.c:20: main: Assertion `strcmp(buffer, 
+>> "isa\t\t: rv64imafdc_zicsr_zifencei\n") == 0' failed.
+>> timeout: the monitored command dumped core
+>> Aborted
+>> make[1]: *** [Makefile:174: run-cpuinfo] Error 134
+>> make: *** [/builds/qemu-project/qemu/tests/Makefile.include:56: run-tcg-tests-riscv64-linux-user] 
+>> Error 2
+>> make: *** Waiting for unfinished jobs....
+>>
+>>
+>> r~
+> 
+> Strange, it worked for me:
+> 
+> https://gitlab.com/laurent_vivier/qemu/-/jobs/4281774977#L4844
+> 
 
- qemu: warning: Blocked re-entrant IO on MemoryRegion: lsi-mmio at addr: 0x34
+I think if the host has more than 12 processors there is a buffer overflow.
 
-and the SCSI controller is not usable. Seems like we have to
-disable the reentrancy checker for the MMIO region, too, to
-get this working again.
+something like this can mitigate avoid the problem:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- hw/scsi/lsi53c895a.c | 1 +
- 1 file changed, 1 insertion(+)
+diff --git a/tests/tcg/riscv64/cpuinfo.c b/tests/tcg/riscv64/cpuinfo.c
+index 296abd0a8cf9..5c2b79022e9c 100644
+--- a/tests/tcg/riscv64/cpuinfo.c
++++ b/tests/tcg/riscv64/cpuinfo.c
+@@ -22,6 +22,7 @@ int main(void)
+              assert(strcmp(buffer, "mmu\t\t: sv48\n") == 0);
+          } else if (strstr(buffer, "uarch") != NULL) {
+              assert(strcmp(buffer, "uarch\t\t: qemu\n") == 0);
++            break;
+          }
+      }
 
-diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-index db27872963..048436352b 100644
---- a/hw/scsi/lsi53c895a.c
-+++ b/hw/scsi/lsi53c895a.c
-@@ -2307,6 +2307,7 @@ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
-      * re-entrancy guard.
-      */
-     s->ram_io.disable_reentrancy_guard = true;
-+    s->mmio_io.disable_reentrancy_guard = true;
- 
-     address_space_init(&s->pci_io_as, pci_address_space_io(dev), "lsi-pci-io");
-     qdev_init_gpio_out(d, &s->ext_irq, 1);
--- 
-2.31.1
+Thanks,
+Laurent
 
 
