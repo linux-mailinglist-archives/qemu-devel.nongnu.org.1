@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFA1704FD3
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 15:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799DE704FE5
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 15:52:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyv4u-0005zE-RT; Tue, 16 May 2023 09:51:01 -0400
+	id 1pyv5z-0006qn-Ht; Tue, 16 May 2023 09:52:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyv4o-0005yU-44
- for qemu-devel@nongnu.org; Tue, 16 May 2023 09:50:54 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1pyv5x-0006qG-Bw
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 09:52:05 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyv4k-0004oM-Hk
- for qemu-devel@nongnu.org; Tue, 16 May 2023 09:50:53 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-5304d0d1eddso4727379a12.2
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 06:50:48 -0700 (PDT)
+ id 1pyv5s-0004yJ-Kd
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 09:52:05 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-24e0c29733fso12641656a91.2
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 06:52:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684245048; x=1686837048;
+ d=linaro.org; s=google; t=1684245119; x=1686837119;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=57MW2AM6RKbe/llk9WLHCI3L0KZQQn8HdJTDWDQuFfw=;
- b=wIU15ey424czJsEqP6MrCPaXlMmW0hg+tjMKmMUympSQmHcLQOvbFpyFY6LiLzkWT9
- Q/UUQU6Ankr58COZHndUW0+7OJ1gCTDOYp81GiAcDtZZiS9RieGQkGM31YmDUfxPQajL
- oJEubLSzpVL+qpxEPsPNO1qXP6rLfCA1yHHIXGlq7gAgtd+05Z6NqoAqKCtD2EuW5v4H
- 7S/U2LFMMWK1pvrwv8ZAm+XiW2x8XoJ+0/CdF0ZJMi6BmssPiH8thR+rD/Ldlw7zafyY
- H/GIx/LVhLNWWvfj3++mYxYs1xEsqNo1S2IRBMR2XGyvYXhvU7TtICD0bcVwI+UCVKiZ
- vcfg==
+ bh=isuqGXRqeLm3OlOI1iyHKmsTIxmfbDOsK8U2AZN/uXc=;
+ b=kWgMjrCKV+y3LlTNaJNfpHuOKQpfNSVPc0nGGH/cXvFHblLu5HH+0vwcmeDnPApcUh
+ MI2wSUp9z9davi//5Q3cLl7mCT3OwTPpplXMiWPFrAUk36/8gaNS9PNZ0THF1QKLdV/K
+ GMlYEKvcyQTVxZdl3LlEhKLFa+OcZAFmcgrvSRGtVAM0nGDjL4QTm0agXK8gAT0ZkllC
+ j5IEfmT3KExvbCEbnzHE2GPLUmzaPHXBs7RCTXEqPAdWhTTm+w8c+m5guqjg8g8D397d
+ jszqGepfwM0WgAhaRvt6VueDEga2DFRTKHn+0oPYM6TikrDs3JoewgGKqVurqgjh9yp1
+ 02ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684245048; x=1686837048;
+ d=1e100.net; s=20221208; t=1684245119; x=1686837119;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=57MW2AM6RKbe/llk9WLHCI3L0KZQQn8HdJTDWDQuFfw=;
- b=fTBTojXwstw+PbfmjDVkVGQi6JIRUKbLigCZs9rYGBDji9HXUNF2O5mNCKH0fu+sRR
- bmcI4SWLNGqKH2+VsC+dNx7y8fEvckB5PWVIPHz1VAb1jpRzrZGS4ToS/feBDwf0hDJA
- XhN2jW9VWW5cjABeRh4nhfFH0lK8/xOTrEKWrpxfMBdj8QJMKlWX/qSG5mRDoCN4g0X8
- KZtJ0sXiDZoKfxl48rNhQJ5vv87uaK2jU/Xo2Hfab7zfcW416KcuYixHeQ0XK5ODor2p
- nXR6yczMOzfJj3NylqQXiXMEotb78BvsmBmJpPpGIVBWc7P3+JCCVOXDO0s/zywBjVvu
- U4rA==
-X-Gm-Message-State: AC+VfDwTOel66/hEwzTYsOsc9+ABBaOl3oR3u9jSeOuY3Qm8mjCTrzTD
- Ml+kNAai9xsF1a6v1aWGT4+lMw==
-X-Google-Smtp-Source: ACHHUZ5fzCeFUUrAudnoS6QP2fezjeX+kJpkdmIoEG3xD/TOVrBYYFnyDT76+YEGR3IGN5uQ7NTupg==
-X-Received: by 2002:a17:902:bd06:b0:1ad:fc06:d7c0 with SMTP id
- p6-20020a170902bd0600b001adfc06d7c0mr12218404pls.1.1684245047806; 
- Tue, 16 May 2023 06:50:47 -0700 (PDT)
+ bh=isuqGXRqeLm3OlOI1iyHKmsTIxmfbDOsK8U2AZN/uXc=;
+ b=SKwHFlJJdMuQBoMwZKvEbP5ck/fTS3WD/Mp6g8neoVcjbpJ41RcXhxuNWcTEcw3wFg
+ jI5N8RyZ3ARADYJVg/g2U4lHnTy+5KwE1exvVNrsa5pag0KpVM5or/JDTE/1v7WBn/ku
+ QCVB1aFqQWjAsQB0ShJcu0OCwxsB61pl01DNLgVq8SG0qa2E5uT74FFSOiCIEOBIfx52
+ kdfrkkLuLfWBQDkdn+b5twNoYpnHNFb5qnsquDs7GVRtxNnGCDp1E/FrfOqLijJaX02b
+ xv2738JLI6d7lGY76K5ugOrL/LP5VPjdqkYg2roCdP/CMDqKfDkt2W44G0TurrqzjFbR
+ CFPA==
+X-Gm-Message-State: AC+VfDyUQW9FIbE6uGKnefDYnfhxO3TrBlNnuxdoJpqCkx2DB6zrPWLc
+ 8WA/PdketxX6vBq5nUqvl0diRg==
+X-Google-Smtp-Source: ACHHUZ7Qb2aefzi9zjaN5GuQNGthHUFy8OX2zHSSbYKbIzLOR4xvxPl97gue8itsZ7em5oIEqee65Q==
+X-Received: by 2002:a17:90b:3807:b0:24d:d7fd:86c3 with SMTP id
+ mq7-20020a17090b380700b0024dd7fd86c3mr36952708pjb.16.1684245119157; 
+ Tue, 16 May 2023 06:51:59 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:ec81:440e:33a4:40b9?
  ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
  by smtp.gmail.com with ESMTPSA id
- q6-20020a170902b10600b001ab06958770sm15578622plr.161.2023.05.16.06.50.46
+ z9-20020a17090ab10900b0024e07ae2cfesm1629357pjq.38.2023.05.16.06.51.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 May 2023 06:50:47 -0700 (PDT)
-Message-ID: <5d582ed2-c0df-9456-2089-45d053b81efd@linaro.org>
-Date: Tue, 16 May 2023 06:50:45 -0700
+ Tue, 16 May 2023 06:51:58 -0700 (PDT)
+Message-ID: <0e0a1d89-8d7f-5ad7-f920-b361a19c8ef9@linaro.org>
+Date: Tue, 16 May 2023 06:51:56 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v5 10/54] accel/tcg: Use have_atomic16 in
- ldst_atomicity.c.inc
+Subject: Re: [PATCH v5 11/54] accel/tcg: Add aarch64 specific support in
+ ldst_atomicity
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
 References: <20230515143313.734053-1-richard.henderson@linaro.org>
- <20230515143313.734053-11-richard.henderson@linaro.org>
- <CAFEAcA_6jHw5kvqZNNR+2c_ihdPgD9d1ByBH0fNvDr6tX88jyA@mail.gmail.com>
+ <20230515143313.734053-12-richard.henderson@linaro.org>
+ <CAFEAcA-En1=iy_M7o0Ky+5ZwOJ4TWxoNz7Yq27ftYgnbV9j8OA@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA_6jHw5kvqZNNR+2c_ihdPgD9d1ByBH0fNvDr6tX88jyA@mail.gmail.com>
+In-Reply-To: <CAFEAcA-En1=iy_M7o0Ky+5ZwOJ4TWxoNz7Yq27ftYgnbV9j8OA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
@@ -98,56 +98,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/16/23 03:38, Peter Maydell wrote:
-> On Mon, 15 May 2023 at 15:37, Richard Henderson
+On 5/16/23 06:29, Peter Maydell wrote:
+> On Mon, 15 May 2023 at 15:38, Richard Henderson
 > <richard.henderson@linaro.org> wrote:
 >>
->> Hosts using Intel and AMD AVX cpus are quite common.
->> Add fast paths through ldst_atomicity using this.
->>
->> Only enable with CONFIG_INT128; some older clang versions do not
->> support __int128_t, and the inline assembly won't work on structures.
+>> We have code in atomic128.h noting that through GCC 8, there
+>> was no support for atomic operations on __uint128.  This has
+>> been fixed in GCC 10.  But we can still improve over any
+>> basic compare-and-swap loop using the ldxp/stxp instructions.
 >>
 >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 >> ---
->>   accel/tcg/ldst_atomicity.c.inc | 76 +++++++++++++++++++++++++++-------
->>   1 file changed, 60 insertions(+), 16 deletions(-)
+>>   accel/tcg/ldst_atomicity.c.inc | 60 ++++++++++++++++++++++++++++++++--
+>>   1 file changed, 57 insertions(+), 3 deletions(-)
 >>
 >> diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
->> index dd387c9bdd..69c1c61997 100644
+>> index 69c1c61997..c3b2b35823 100644
 >> --- a/accel/tcg/ldst_atomicity.c.inc
 >> +++ b/accel/tcg/ldst_atomicity.c.inc
->> @@ -35,6 +35,14 @@
->>
->>   #if defined(CONFIG_ATOMIC128)
->>   # define HAVE_al16_fast    true
->> +#elif defined(CONFIG_TCG_INTERPRETER)
->> +/*
->> + * FIXME: host specific detection for this is in tcg/$host/,
->> + * but we're using tcg/tci/ instead.
->> + */
->> +# define HAVE_al16_fast    false
->> +#elif defined(__x86_64__) && defined(CONFIG_INT128)
->> +# define HAVE_al16_fast    likely(have_atomic16)
->>   #else
->>   # define HAVE_al16_fast    false
->>   #endif
->> @@ -178,6 +186,12 @@ load_atomic16(void *pv)
->>
->>       r.u = qatomic_read__nocheck(p);
->>       return r.s;
->> +#elif defined(__x86_64__) && defined(CONFIG_INT128)
->> +    Int128Alias r;
+>> @@ -263,7 +263,22 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+>>        * In system mode all guest pages are writable, and for user-only
+>>        * we have just checked writability.  Try cmpxchg.
+>>        */
+>> -#if defined(CONFIG_CMPXCHG128)
+>> +#if defined(__aarch64__)
+>> +    /* We can do better than cmpxchg for AArch64.  */
+>> +    {
+>> +        uint64_t l, h;
+>> +        uint32_t fail;
 >> +
->> +    /* Via HAVE_al16_fast, have_atomic16 is true. */
->> +    asm("vmovdqa %1, %0" : "=x" (r.u) : "m" (*(Int128 *)pv));
->> +    return r.s;
+>> +        /* The load must be paired with the store to guarantee not tearing. */
+>> +        asm("0: ldxp %0, %1, %3\n\t"
+>> +            "stxp %w2, %0, %1, %3\n\t"
+>> +            "cbnz %w2, 0b"
+>> +            : "=&r"(l), "=&r"(h), "=&r"(fail) : "Q"(*p));
+>> +
+>> +        qemu_build_assert(!HOST_BIG_ENDIAN);
+>> +        return int128_make128(l, h);
+>> +    }
 > 
-> This is a compile-time check, so why if we can do
-> 16-byte atomic loads would CONFIG_ATOMIC128 not be set?
+> The compiler (well, clang 11, anyway) seems able to generate equivalent
+> code to this inline asm:
 
-This is *not* a compile-time check: have_atomic16 is initialized in 
-tcg/i386/tcg-target.c.inc in patch 9.
+See above, where GCC 8 can do nothing, and that is still a supported compiler.
 
 
 r~
