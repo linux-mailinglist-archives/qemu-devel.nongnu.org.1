@@ -2,109 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4683F70480A
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 10:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB6E704810
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 10:44:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyqES-0008Cj-AZ; Tue, 16 May 2023 04:40:32 -0400
+	id 1pyqHy-0001M0-9r; Tue, 16 May 2023 04:44:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1pyqEP-0008CM-T3
- for qemu-devel@nongnu.org; Tue, 16 May 2023 04:40:29 -0400
-Received: from esa16.hc2706-39.iphmx.com ([216.71.140.205])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1pyqHo-0001Kr-9p; Tue, 16 May 2023 04:44:00 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1pyqEG-0006ta-2v
- for qemu-devel@nongnu.org; Tue, 16 May 2023 04:40:28 -0400
-X-IronPort-RemoteIP: 209.85.222.198
-X-IronPort-MID: 277439399
-X-IronPort-Reputation: None
-X-IronPort-Listener: OutgoingMail
-X-IronPort-SenderGroup: RELAY_GSUITE
-X-IronPort-MailFlowPolicy: $RELAYED
-IronPort-Data: A9a23:0awAza4i1l42NsqBww+BhQxRtIbFchMFZxGqfqrLsTDasY5as4F+v
- jcXWTjXa/6IZWT9fI90YY++8EwFsJ+HmtQ2GVFpqXxnEysa+MHIO4+lIxarNUt+DCFioGGLT
- Sk6QoOdRCzhZiaE/n9BCpC48T8nk/nOHuGmYAL9EngZbRd+Tys8gg5Ulec8g4p56fC0GArIs
- t7pyyHlEAbNNwVcbyRFuspvlDs15K6p4G5B4ARnDRx2lAS2e0c9Xcp3yZ6ZciOQrrl8RoaSW
- +vFxbelyWLVlz9F5gSNy+uTnuUiG9Y+DCDX4pZkc/HKbitq/0Te5p0G2M80Mi+7vdkoc+dZk
- 72hvbToIesg0zaldO41CnG0GAknVUFKFSOuzdFSfqV/wmWfG0YAzcmCA2kuYIc887ZYMVhX1
- tYZLg0KZSiIq+KPlefTpulE3qzPLeHuNYIb/2hjlHTXVKd2B5/ERKrO6JlT2zJYasJmR66PI
- ZpEL2A1NlKZMk0n1lQ/UfrSmM+hgmn5fydwok/TqKYqi4TW5FYuj+S2YYGEK7RmQ+1kuB7Do
- EiW4ljcOTcCZdqU9QO4/22V07qncSTTHdh6+KeD3udnhUDWymENBRk+U1y9rv+kzEmkVLpix
- 1c8/yMvqe0r9xXuQICsD1u3p3mLuhNaUN1VewEn1DywJmPvy17xLgA5ovRpMrTKaOdeqeQW6
- 2K0
-IronPort-HdrOrdr: A9a23:+0mhVa8y+0aLg8pRnnRuk+DlI+orL9Y04lQ7vn2YcXduA6mlfq
- GV7ZcmPHrP41wssR4b9OxoR5PwJ080maQY3WBzB9eftWvd1ldARbsKhbcKqAeAJ8SRzIFgPY
- AKSdkdNDXKZmIK6foT2WKDYrEdKdC8gdmVuds=
-X-Talos-CUID: =?us-ascii?q?9a23=3A4fCUHmi9E9b8yD1VlPs3mpPH6DJuaiDX6H6ADH+?=
- =?us-ascii?q?BEEVDSbuoTlSo849kqp87?=
-X-Talos-MUID: 9a23:v7hBFwrdvAw248AatNgezwBEbJxuyfSzNGU2t41XvcK4DBF9JA7I2Q==
-Received: from mail-qk1-f198.google.com ([209.85.222.198])
- by ob1.hc2706-39.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
- 16 May 2023 04:40:10 -0400
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7595c946411so171963785a.2
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 01:40:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bu.edu; s=s1gsbu; t=1684226409; x=1686818409;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=j2+mHMqAKKVm4KyyAEahzJ6RrZ5CZz48MfX4/78iWLg=;
- b=FGAmFUaEt8rs+XSZPNIY0bZADnf+fwNqAki5+MiAs8EXFzvyhjWw8EiCNjJHSJKv1c
- qyNh4O0SQbD0osHNvX/0CEF9sI43SU7c0V/zh7Lvf58PtIajAxACofLjDGIZA3OCzEoY
- cYz0P1i4GnhsLxh6CyfBGV3jR3SG1Jj0y5aPVsNkVm8L3j6g4ypFvXBU40yZrkoE2Ks3
- 32EivsebfP1CA8cqIjbDC9TonjRqpgSAmSMNqZhrYUAKZTD6uF/S1mT9Ne0EFGOEfu4j
- 3Z/NrtXD90hBnmI7ld/wXch/3nmWi41JlGEM1mCSU1EAluEi5NRH01QHCohs6e2xwG9n
- 3zDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684226409; x=1686818409;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j2+mHMqAKKVm4KyyAEahzJ6RrZ5CZz48MfX4/78iWLg=;
- b=JHdEggaoDr++NQmXjocAZAM7jYsLlKkJJ/ZRktu9fu6moVay+BVHDpMhhBhyXM+96p
- ukMKlb7AHIgCzNKQSZryLai2dr2STXfytRWA/8A7GGVlF8F0g0kmmVSyFAw4StugvcMd
- x4iqFD5nKRGRI1kd50L058aI1/DMk+650mCSGDynXGkfJylgIO+BY0s/yeV87HUD/rwD
- bkVAP9zne5P/v4EiN7gCOR6EQaDW/XhbbK7PVMMq/wthqBp8wYCHJkkLyjxd7cFy63Ba
- OAYT8VRkUsCKliWc72bd5SHMdw5jX584qUp6mMhwU1I3LRcCAn0pHlsIPC/F8E3kSWOP
- Eucg==
-X-Gm-Message-State: AC+VfDzz3mk0x/+tV56vguZzXOrrRClu6p53vct4qPh0e52qKTr10Shv
- xZM784F/T9y5Aq9J2M2qlcDFiFZgCpCPJpUQQOylhvvtTOLjcoZm46+KUXaQjugPzPyhSWLXhDP
- d/OdFOgWmHwJl49R98rygyowQ/DB4KdrDdCJwENsn
-X-Received: by 2002:ad4:5be9:0:b0:621:68e8:999f with SMTP id
- k9-20020ad45be9000000b0062168e8999fmr28364632qvc.33.1684226409486; 
- Tue, 16 May 2023 01:40:09 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7/DjKieXIpYEcufTArJSlQWfuCNYgUViZgVasxUJUlZ2S3FICBZgrkJ0QKwYYOBOcG+HU1Cw==
-X-Received: by 2002:ad4:5be9:0:b0:621:68e8:999f with SMTP id
- k9-20020ad45be9000000b0062168e8999fmr28364617qvc.33.1684226409222; 
- Tue, 16 May 2023 01:40:09 -0700 (PDT)
-Received: from mozz.bu.edu (mozz.bu.edu. [128.197.127.33])
- by smtp.gmail.com with ESMTPSA id
- g17-20020a0cf851000000b0061b7784b3basm5025852qvo.84.2023.05.16.01.40.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 01:40:08 -0700 (PDT)
-From: Alexander Bulekov <alxndr@bu.edu>
-To: qemu-devel@nongnu.org
-Cc: mcascell@redhat.com, Alexander Bulekov <alxndr@bu.edu>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] memory: stricter checks prior to unsetting engaged_in_io
-Date: Tue, 16 May 2023 04:40:02 -0400
-Message-Id: <20230516084002.3813836-1-alxndr@bu.edu>
-X-Mailer: git-send-email 2.39.0
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1pyqHi-0008S8-Hx; Tue, 16 May 2023 04:44:00 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34G8WfpP024613; Tue, 16 May 2023 08:43:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=TWYcnf/9Tb40jdDaASyz2PZOpuwdsphWUvHvq1PXx+4=;
+ b=iPSgP1hjZvcPqkw8Z8RHdZAuory1aa8sJdGO8sts0jrY19uPnbqxwru6jYNBVwgHV+al
+ bSC2kTPlT6DF7XA4ml4whPMR84yd46ZoQcRPy+8kRAp1H3UgONU6hy7SUytFMBm0yTuQ
+ MIUCKBk4lVNXGcc3hXi0CmE+KUJtREzoQEEfpVv1n+R/JrhwCu3QebzzHJbbpXwX7AKf
+ wugknlZOq578TUBIW7aNXEgTd6a6qZ0WKaFHPwfuY5b5Fc6WPEQN83gfaV4BV4gt+STr
+ QPY0oGCbweXP3M5W8tEd5gtT2m3efMfp9zJ5+Nuuyq0qUZQLU++Coi3ghT5YJkvx9Auz Sg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm6dm8jy1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 May 2023 08:43:51 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34G8gvDD020125;
+ Tue, 16 May 2023 08:43:51 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm6dm8jxw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 May 2023 08:43:51 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34G827j2000665;
+ Tue, 16 May 2023 08:43:50 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
+ by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3qj265ke77-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 May 2023 08:43:50 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34G8hnM365536256
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 May 2023 08:43:49 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5475F58066;
+ Tue, 16 May 2023 08:43:49 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9BA3A58059;
+ Tue, 16 May 2023 08:43:47 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 16 May 2023 08:43:47 +0000 (GMT)
+Message-ID: <4b1147e0-498d-e3ae-d97a-4063055099b1@linux.ibm.com>
+Date: Tue, 16 May 2023 14:13:45 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] target/ppc: Use SMT4 small core chip type in POWER9/10
+ PVRs
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20230515160131.394562-1-npiggin@gmail.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20230515160131.394562-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: NYmuFUC27F-FUvJ5L32klNw8X_HiiY_q
+X-Proofpoint-GUID: hgDt-NLcS8nMvYCq5hwQFVukR11HciMf
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CES-GSUITE_AUTH: bf3aNvsZpxl8
-Received-SPF: pass client-ip=216.71.140.205; envelope-from=alxndr@bu.edu;
- helo=esa16.hc2706-39.iphmx.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-16_02,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=888
+ suspectscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 impostorscore=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 mlxscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305160072
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.811,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,46 +115,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-engaged_in_io could be unset by an MR with re-entrancy checks disabled.
-Ensure that only MRs that can set the engaged_in_io flag can unset it.
+<correcting my email id in CC>
 
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/1563
-Reported-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
----
- softmmu/memory.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On 5/15/23 21:31, Nicholas Piggin wrote:
+> QEMU's PVR value for POWER9 DD2.0 has chip type 1, which is the SMT4
+> "small core" type that OpenPOWER processors use. QEMU's PVR for all
+> other POWER9/10 have chip type 0, which "enterprise" systems use.
+> 
+> The difference does not really matter to QEMU (because it does not care
+> about SMT mode in the target), but for consistency all PVRs should use
+> the same chip type. We'll go with the SMT4 OpenPOWER type.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> This is a replacement for
+> 
+> https://lists.gnu.org/archive/html/qemu-ppc/2022-03/msg00227.html
+> 
+> But the chip type is changed to 1 instead of 0, because that's the
+> more familiar SM4 / small core CPU.
+> 
+> Thanks,
+> Nick
+> 
+>   target/ppc/cpu-models.h | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+> index 1326493a9a..a77e036b3a 100644
+> --- a/target/ppc/cpu-models.h
+> +++ b/target/ppc/cpu-models.h
+> @@ -348,11 +348,11 @@ enum {
+>       CPU_POWERPC_POWER8NVL_BASE     = 0x004C0000,
+>       CPU_POWERPC_POWER8NVL_v10      = 0x004C0100,
+>       CPU_POWERPC_POWER9_BASE        = 0x004E0000,
+> -    CPU_POWERPC_POWER9_DD1         = 0x004E0100,
+> +    CPU_POWERPC_POWER9_DD1         = 0x004E1100,
 
-diff --git a/softmmu/memory.c b/softmmu/memory.c
-index b7b3386e9d..26424f1d78 100644
---- a/softmmu/memory.c
-+++ b/softmmu/memory.c
-@@ -534,6 +534,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
-     unsigned access_size;
-     unsigned i;
-     MemTxResult r = MEMTX_OK;
-+    bool reentrancy_guard_applied = false;
- 
-     if (!access_size_min) {
-         access_size_min = 1;
-@@ -552,6 +553,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
-             return MEMTX_ACCESS_ERROR;
-         }
-         mr->dev->mem_reentrancy_guard.engaged_in_io = true;
-+        reentrancy_guard_applied = true;
-     }
- 
-     /* FIXME: support unaligned access? */
-@@ -568,7 +570,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
-                         access_mask, attrs);
-         }
-     }
--    if (mr->dev) {
-+    if (mr->dev && reentrancy_guard_applied) {
-         mr->dev->mem_reentrancy_guard.engaged_in_io = false;
-     }
-     return r;
--- 
-2.39.0
+Could you please point me to the doc location you are referring here?
+The P9 UM document that I have access to mentions this bit (0/1) for 
+12/24 cores. Not sure if this change is intended here.
 
+regards,
+Harsh
+
+>       CPU_POWERPC_POWER9_DD20        = 0x004E1200,
+>       CPU_POWERPC_POWER10_BASE       = 0x00800000,
+> -    CPU_POWERPC_POWER10_DD1        = 0x00800100,
+> -    CPU_POWERPC_POWER10_DD20       = 0x00800200,
+> +    CPU_POWERPC_POWER10_DD1        = 0x00801100,
+> +    CPU_POWERPC_POWER10_DD20       = 0x00801200,
+>       CPU_POWERPC_970_v22            = 0x00390202,
+>       CPU_POWERPC_970FX_v10          = 0x00391100,
+>       CPU_POWERPC_970FX_v20          = 0x003C0200,
 
