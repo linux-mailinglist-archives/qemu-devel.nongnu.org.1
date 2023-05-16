@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700AA70498E
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 614D1704994
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:43:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyrBc-0000L4-Gd; Tue, 16 May 2023 05:41:40 -0400
+	id 1pyrCp-00014k-A7; Tue, 16 May 2023 05:42:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1pyrBV-0000KT-Fb; Tue, 16 May 2023 05:41:33 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1pyrCm-00013x-G9; Tue, 16 May 2023 05:42:52 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1pyrBT-0006uc-VM; Tue, 16 May 2023 05:41:33 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-64a9335a8e7so4232439b3a.0; 
- Tue, 16 May 2023 02:41:31 -0700 (PDT)
+ id 1pyrCk-00078z-EW; Tue, 16 May 2023 05:42:52 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1ab0c697c2bso128158055ad.1; 
+ Tue, 16 May 2023 02:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684230090; x=1686822090;
+ d=gmail.com; s=20221208; t=1684230168; x=1686822168;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gpWYZIIFK1mw+JyjCIPquJfP6DiJ/Yfvhv/uA5ae2b4=;
- b=dfX9XgHA1CUB63t9l+ZQINuImxXmmMn39mZ15TPpsnjemuTjUFJOFDDXcmexk8mkth
- +1tCgV37JGfjQj1ToD2uSr+BCUWCbwHPwXLb5tPGfpAvkrXzBzHdZgO001+pVLdoJqQS
- a21f1A8JIRyGv2GqaIK6ZQdbdWkaw77fWOb/vT9NsmuMN83Ghthc1Pd4I7249SsX8ed7
- xfQPO6YIFJmT0/WmIzcrxHDhQbawFgu+zFOzbFHrmgevqLi7Fk7kKJbf6wMUxp+xCXfs
- xkFVpfZFJek7FCoRWq0bUM2Dojwbvi0YJkbdzbEe0My9729vfsNxaY0HIf2XdDWxu6X6
- 48bA==
+ bh=KMMCWj0JpAwWKvsJb6kd9BsTeIAwK1j1iLbHKFhmZBU=;
+ b=L5qCpC8/KlWj1+RqBtmQ+vTG9a4pLavpgoiCxQ3bsJStiWbxGQu5XPp3hO3D15eXPC
+ qXgQP/g3EO7Tjh3E6oWgzHN3gPRU2pO6Z3cOq0VZEQHyL/IOGtmddj9mWb7UVIqi+QRl
+ AhnnRt5Ho46jGREM8cDHkSSLiyH0bKBrw9aFtd0yxAjM+QfNSYeN0wLv9gSZmSpIsWZU
+ flo58OziBeGTCe9pLJUgDYtb4V6dyDfRfxep7tmwmScDqNrASc8cJil0JuBG1DrrzOCl
+ 7teXNcFZ35YfrORKEr6ZIyKy4rp7lZBiDCgjT3+uJ89fd48Lh6wHka6e2AmXXY2x1jQc
+ CW2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684230090; x=1686822090;
+ d=1e100.net; s=20221208; t=1684230168; x=1686822168;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=gpWYZIIFK1mw+JyjCIPquJfP6DiJ/Yfvhv/uA5ae2b4=;
- b=YUVSks86nLeAFgpnuD+f+5QqmQpn/THw5zJ8ZsB4fqsSPJRgofG8wfbyAbbFCZXugv
- oi+ux9y49LgxTtdaei/ENQzCtjtRUCBPnFsAtxUkUT9JjMztCsJnIn2T+sqPmRSnRcAW
- WWc6vkBZbdSHJl27MkxTanEwn+G8mlktYXP6tVMXsAx2Pq1GhWSJ6ui3rSExuoN9I07y
- pOaMR1Ubk625EAhBusRGN/xlSTK8VB0QAp3BPPGdynUM/TCCfZnDAjS5VgBdZ6tkxczf
- alYN++uuR0jUSY2Ad//WZNlqLBXPyJ/zpOi8Bj6Te2P1Y5xj5AqKvG57VxC9JJPRjYyw
- IVfw==
-X-Gm-Message-State: AC+VfDyhaoqrDmIX30yZXObQTgWvFSVRlX/gyHqHIIx7hc9fdFMuKTgN
- b6aydzotO/Lq/1DggEq6m9Z4bO/uYr0=
-X-Google-Smtp-Source: ACHHUZ4zdvBX+3w86DC+BSKkFifvUPykT013uBLprODbsxMAlEabunAE9j37dvLdfFlxLydzm+djLQ==
-X-Received: by 2002:a17:903:1209:b0:1a9:7912:850e with SMTP id
- l9-20020a170903120900b001a97912850emr45407006plh.10.1684230090117; 
- Tue, 16 May 2023 02:41:30 -0700 (PDT)
+ bh=KMMCWj0JpAwWKvsJb6kd9BsTeIAwK1j1iLbHKFhmZBU=;
+ b=ZFrbywQK9re8H/E3IbAC6nAkZ+G6VdDNcBQOnI+feeoItV4fBOwLfDTtn32aMm0huD
+ fKwe8yGeCZGQCwodRKqeXAbh+2Dsaxask3+W2KtEOf22mMDRRw1vKOSjwQ/jWmiLHPjr
+ KNXdXXlyDoBwSl//ibE4l1D2MGC0aRd2rET0VvgRm5UzTNrYqXb8Q8qyMjzzxo4cmXl0
+ 45kjD2dP9uz3oy6HVcs/kbyB/oYx4v13tYAbok36g1vhUj36MY7Oi42CkGj4Ktl8KMGf
+ 6BptU3dd6eRIX7OaEyHl8IbcMqC/3UlXziDI7P8i+Zrho99PUWs3Xtc7iDBwcUScrgf6
+ Qmyw==
+X-Gm-Message-State: AC+VfDzSz+LvPnW0yQawk56D3iEYnuLJfMClYoucW9nJEGE0tJboxicF
+ +u6e9Rqi+qFujT+auz9z34f+6IJgJks=
+X-Google-Smtp-Source: ACHHUZ6NHFo4WfCktKP8hGknWIKLgN+wCzw3Bb/qWK7snFVCUmPaQxHY3zJv+JbpJiUQhlNQMMly0A==
+X-Received: by 2002:a17:903:244d:b0:1a5:2540:729 with SMTP id
+ l13-20020a170903244d00b001a525400729mr46947383pls.56.1684230168564; 
+ Tue, 16 May 2023 02:42:48 -0700 (PDT)
 Received: from localhost (203-219-189-129.tpgi.com.au. [203.219.189.129])
  by smtp.gmail.com with ESMTPSA id
- i6-20020a1709026ac600b001aadfdfcd06sm10356136plt.299.2023.05.16.02.41.27
+ y15-20020a17090264cf00b001ab01b909c9sm15147839pli.120.2023.05.16.02.42.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 May 2023 02:41:29 -0700 (PDT)
+ Tue, 16 May 2023 02:42:48 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 May 2023 19:41:24 +1000
-Message-Id: <CSNLQJHLOHZV.31DMA8N2797ZQ@wheely>
-Cc: <qemu-devel@nongnu.org>, "Harsh Prateek Bora" <harsh@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4] target/ppc: Add POWER9 DD2.2 model
+Date: Tue, 16 May 2023 19:42:43 +1000
+Message-Id: <CSNLRJWUDMA7.3OIG531AGZGVR@wheely>
+Cc: <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] target/ppc: Use SMT4 small core chip type in POWER9/10
+ PVRs
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Frederic Barrat" <fbarrat@linux.ibm.com>, <qemu-ppc@nongnu.org>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.14.0
-References: <20230515160201.394587-1-npiggin@gmail.com>
- <24568628-f3d8-6d14-6bd3-80fda8f45734@linux.ibm.com>
-In-Reply-To: <24568628-f3d8-6d14-6bd3-80fda8f45734@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+References: <20230515160131.394562-1-npiggin@gmail.com>
+ <4b1147e0-498d-e3ae-d97a-4063055099b1@linux.ibm.com>
+In-Reply-To: <4b1147e0-498d-e3ae-d97a-4063055099b1@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,26 +92,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue May 16, 2023 at 5:58 PM AEST, Frederic Barrat wrote:
+On Tue May 16, 2023 at 6:43 PM AEST, Harsh Prateek Bora wrote:
+> <correcting my email id in CC>
 >
->
-> On 15/05/2023 18:02, Nicholas Piggin wrote:
-> > POWER9 DD2.1 and earlier had significant limitations when running KVM,
-> > including lack of "mixed mode" MMU support (ability to run HPT and RPT
-> > mode on threads of the same core), and a translation prefetch issue
-> > which is worked around by disabling "AIL" mode for the guest.
+> On 5/15/23 21:31, Nicholas Piggin wrote:
+> > QEMU's PVR value for POWER9 DD2.0 has chip type 1, which is the SMT4
+> > "small core" type that OpenPOWER processors use. QEMU's PVR for all
+> > other POWER9/10 have chip type 0, which "enterprise" systems use.
 > >=20
-> > These processors are not widely available, and it's difficult to deal
-> > with all these quirks in qemu +/- KVM, so create a POWER9 DD2.2 CPU
-> > and make it the default POWER9 CPU.
+> > The difference does not really matter to QEMU (because it does not care
+> > about SMT mode in the target), but for consistency all PVRs should use
+> > the same chip type. We'll go with the SMT4 OpenPOWER type.
 > >=20
 > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > > ---
+> > This is a replacement for
+> >=20
+> > https://lists.gnu.org/archive/html/qemu-ppc/2022-03/msg00227.html
+> >=20
+> > But the chip type is changed to 1 instead of 0, because that's the
+> > more familiar SM4 / small core CPU.
+> >=20
+> > Thanks,
+> > Nick
+> >=20
+> >   target/ppc/cpu-models.h | 6 +++---
+> >   1 file changed, 3 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+> > index 1326493a9a..a77e036b3a 100644
+> > --- a/target/ppc/cpu-models.h
+> > +++ b/target/ppc/cpu-models.h
+> > @@ -348,11 +348,11 @@ enum {
+> >       CPU_POWERPC_POWER8NVL_BASE     =3D 0x004C0000,
+> >       CPU_POWERPC_POWER8NVL_v10      =3D 0x004C0100,
+> >       CPU_POWERPC_POWER9_BASE        =3D 0x004E0000,
+> > -    CPU_POWERPC_POWER9_DD1         =3D 0x004E0100,
+> > +    CPU_POWERPC_POWER9_DD1         =3D 0x004E1100,
 >
->
-> I almost forgot: the patch doesn't apply cleanly on latest upstream.
+> Could you please point me to the doc location you are referring here?
+> The P9 UM document that I have access to mentions this bit (0/1) for=20
+> 12/24 cores. Not sure if this change is intended here.
 
-Oh, some fuzz due to needing the PVR patch I think.
+Yes that's the one, OpenPOWER POWER9 User Manual lists it in PVR.
+POWER10 is the same.
 
 Thanks,
 Nick
