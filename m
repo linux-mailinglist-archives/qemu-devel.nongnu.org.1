@@ -2,76 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F0670502B
+	by mail.lfdr.de (Postfix) with ESMTPS id 843AE70502C
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 16:06:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyvIi-0003Lf-3q; Tue, 16 May 2023 10:05:16 -0400
+	id 1pyvIP-0003Cq-KG; Tue, 16 May 2023 10:04:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pyvIa-0003Jb-EO
- for qemu-devel@nongnu.org; Tue, 16 May 2023 10:05:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pyvIY-0007DY-La
- for qemu-devel@nongnu.org; Tue, 16 May 2023 10:05:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684245905;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PgJulrzMqYNd6jbtIUiixZc6s/hIvgkOlxp7QoT/Mec=;
- b=CcFDBH4FCG8baIgzHBWeVWzijhlqkpRXFTqmBXAmoNW2cWJ4XWiDQsdpl6VuW1iGCyMSys
- SOpsxOeUu+6pXyOKhNBR/tniI/XSKQtPuTB3tHUACFhHcMd7onXb0C/ntH6rlrbCva3GCc
- Kow5YdSCa6JiBJm8inQVHl6OZaBWu/4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-609-TWdRMHKoO5m5OAn675MNMg-1; Tue, 16 May 2023 10:04:48 -0400
-X-MC-Unique: TWdRMHKoO5m5OAn675MNMg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4BA67185A79C;
- Tue, 16 May 2023 14:04:41 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A03C492B00;
- Tue, 16 May 2023 14:04:41 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 02FCC21E6806; Tue, 16 May 2023 16:04:40 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Andrew Melnychenko <andrew@daynix.com>,  jasowang@redhat.com,
- mst@redhat.com,  eblake@redhat.com,  qemu-devel@nongnu.org,
- yuri.benditovich@daynix.com,  yan@daynix.com
-Subject: Re: [PATCH v2 5/6] qmp: Added new command to retrieve eBPF blob.
-References: <20230512122902.34345-1-andrew@daynix.com>
- <20230512122902.34345-6-andrew@daynix.com>
- <ZGIAUxfLmI6hm3VT@redhat.com> <87zg64u0g7.fsf@pond.sub.org>
- <ZGNE0bk2zCDpUkYS@redhat.com> <87ilcsshgf.fsf@pond.sub.org>
- <ZGNbHcbeN0klbBjU@redhat.com>
-Date: Tue, 16 May 2023 16:04:39 +0200
-In-Reply-To: <ZGNbHcbeN0klbBjU@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 16 May 2023 11:29:49 +0100")
-Message-ID: <87ilcspe2w.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pyvIH-00036d-Ay
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 10:04:50 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pyvIE-0006zp-AJ
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 10:04:49 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-643ac91c51fso9253687b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 07:04:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684245882; x=1686837882;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=h9rfEFJLku7TA/bVkyJ7MjJoo8u4gwNzndxMH7j+j9k=;
+ b=kpZe281GNbQAQM3WVZUGXCGXdXR04OOf3gV51aqA78kSiLzwW0F26DnzEobwwfiUm6
+ 3d1EQ/cPFv/wZobrCTWK5B4FRFFdbcPSTjkC40wMYxEyarKFLJAms362YzNxiU9bSCcB
+ iSIYH5sfOuJuqHYJfxsqbtADk67kOA2x6tYrDhLlLVlxC7oqTibrkOagZXbhSUjl7fHo
+ QLYNuVbLnnBrK2UytSclwcAcUtt+RJTNtzPdbh/rRss5caKonGs8tSzmaPzYIRtNee2K
+ 29b0Zot5wpUW79LbQlO158kT38euxeGFhM0zLBScheG2L1qsXl2KIR66pOb6RC9wVZU4
+ 0PoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684245882; x=1686837882;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=h9rfEFJLku7TA/bVkyJ7MjJoo8u4gwNzndxMH7j+j9k=;
+ b=I5J1gheDjXg+o9eKjMlrq9u/s1Gx/uZO1qXKj9eDHg8yWjojKk4G+d983+Y7YdYis1
+ jYX3NI3E9/uD6AyF8SB3MAIJQvWjqbcWmiHBHQDYJJynyL7BTIBhirJMJ33ECnF198BE
+ b2yGAvJm87mYp60F5ICSFhclwNNQvNQzadwSSmh9lOegotFdKeQKr3DqfVsUMmMDkhsV
+ UFGdWMk7ue6owb8lGigPE3jqQJJB4zTe1ley9CGmp+m4CtpdzmWRWXTKqQwrfND/iUXy
+ rcwuWzatsuHwvMBpWhtB42l+dsL9n567/phcQkiPvYXq0O9C1OTk3NGwuTlDDtLgKS/x
+ yogw==
+X-Gm-Message-State: AC+VfDzkGBAIdNXbLUO9+8/mjKZJzAM8YOQCTbKfwLEaO+8KD6W8HFDi
+ i6qH7NqxRixRnlqS2mr1QeETjg==
+X-Google-Smtp-Source: ACHHUZ5Xi+tkoxLGK17+YrcBLp0bmYByds6qpwrAHvuo4hLB0nfdzjpbDn5ts+gm12xmdCMaQl1qVQ==
+X-Received: by 2002:a05:6a00:2401:b0:63d:2c2f:e3a2 with SMTP id
+ z1-20020a056a00240100b0063d2c2fe3a2mr48662439pfh.18.1684245881889; 
+ Tue, 16 May 2023 07:04:41 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:ec81:440e:33a4:40b9?
+ ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
+ by smtp.gmail.com with ESMTPSA id
+ k18-20020aa792d2000000b0064cca73d911sm638173pfa.103.2023.05.16.07.04.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 May 2023 07:04:41 -0700 (PDT)
+Message-ID: <20ae05e8-19b3-232e-0c26-935e668932d2@linaro.org>
+Date: Tue, 16 May 2023 07:04:39 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v5 11/54] accel/tcg: Add aarch64 specific support in
+ ldst_atomicity
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
+References: <20230515143313.734053-1-richard.henderson@linaro.org>
+ <20230515143313.734053-12-richard.henderson@linaro.org>
+ <CAFEAcA-En1=iy_M7o0Ky+5ZwOJ4TWxoNz7Yq27ftYgnbV9j8OA@mail.gmail.com>
+ <0e0a1d89-8d7f-5ad7-f920-b361a19c8ef9@linaro.org>
+ <CAFEAcA-endaUPopDahNVGbe91=OfK0HPzKtsLBgpuScKAPc_og@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA-endaUPopDahNVGbe91=OfK0HPzKtsLBgpuScKAPc_og@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.666,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,46 +100,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On 5/16/23 06:56, Peter Maydell wrote:
+> On Tue, 16 May 2023 at 14:51, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> On 5/16/23 06:29, Peter Maydell wrote:
+>>> On Mon, 15 May 2023 at 15:38, Richard Henderson
+>>> <richard.henderson@linaro.org> wrote:
+>>>>
+>>>> We have code in atomic128.h noting that through GCC 8, there
+>>>> was no support for atomic operations on __uint128.  This has
+>>>> been fixed in GCC 10.  But we can still improve over any
+>>>> basic compare-and-swap loop using the ldxp/stxp instructions.
+>>>>
+>>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>>> ---
+>>>>    accel/tcg/ldst_atomicity.c.inc | 60 ++++++++++++++++++++++++++++++++--
+>>>>    1 file changed, 57 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+>>>> index 69c1c61997..c3b2b35823 100644
+>>>> --- a/accel/tcg/ldst_atomicity.c.inc
+>>>> +++ b/accel/tcg/ldst_atomicity.c.inc
+>>>> @@ -263,7 +263,22 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+>>>>         * In system mode all guest pages are writable, and for user-only
+>>>>         * we have just checked writability.  Try cmpxchg.
+>>>>         */
+>>>> -#if defined(CONFIG_CMPXCHG128)
+>>>> +#if defined(__aarch64__)
+>>>> +    /* We can do better than cmpxchg for AArch64.  */
+>>>> +    {
+>>>> +        uint64_t l, h;
+>>>> +        uint32_t fail;
+>>>> +
+>>>> +        /* The load must be paired with the store to guarantee not tearing. */
+>>>> +        asm("0: ldxp %0, %1, %3\n\t"
+>>>> +            "stxp %w2, %0, %1, %3\n\t"
+>>>> +            "cbnz %w2, 0b"
+>>>> +            : "=&r"(l), "=&r"(h), "=&r"(fail) : "Q"(*p));
+>>>> +
+>>>> +        qemu_build_assert(!HOST_BIG_ENDIAN);
+>>>> +        return int128_make128(l, h);
+>>>> +    }
+>>>
+>>> The compiler (well, clang 11, anyway) seems able to generate equivalent
+>>> code to this inline asm:
+>>
+>> See above, where GCC 8 can do nothing, and that is still a supported compiler.
+> 
+> Yeah, but it'll work fine even without the explicit inline
+> asm, right? 
 
-> On Tue, May 16, 2023 at 12:23:28PM +0200, Markus Armbruster wrote:
->> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->>=20
->> > On Tue, May 16, 2023 at 10:47:52AM +0200, Markus Armbruster wrote:
->>=20
->> [...]
->>=20
->> >> So, this is basically a way to retrieve an eBPF program by some
->> >> well-known name.
->> >>=20
->> >> Ignorant question: how are these programs desposited?
->> >
->> > The eBPF code blob is linked into QEMU at build time. THis API lets
->> > libvirt fetch it from QEMU, in base64 format. When libvirt later
->> > creates NICs, it can attach the eBPF code blob to the TAP device (which
->> > requires elevated privilleges that QEMU lacks). NB, libvirt would fetch
->> > the eBPF code from QEMU when probing capabilities, as once a VM is
->> > running it is untrusted.
->>=20
->> Okay, I can see how that helps.  I trust the blob is in a read-only
->> segment.  Ideally, libvirt fetches it before the guest runs.
->
-> Whether the blob is in a read-only segment or not isn't important,
-> because it transits writable memory in the QMP command marshalling.
+No, GCC < 10 does not support __sync_* or __atomic_* on __uint128_t at all.
 
-True.  We could bypass marshalling.  Unclean hack.  Or we could sign the
-bits cryptograhically.  Key management headaches.  Not worth it, because
-fetching it before QEMU becomes untrusted is easier.
+> Is the performance difference critical enough to justify
+> an inline asm implementation that's only needed for older
+> compilers ?
 
-However, I now wonder why we fetch it from QEMU.  Why not ship it with
-QEMU?
+Yes.  It's the difference between stop-the-world and not.
 
-> IOW, if we're trying to mitigate against compromised QEMU, we
-> *must* fetch it before vCPUs are started. If we're super paranoid,
-> we would want to fetch it before even opening untrusted disk images
-> too.  It might push towards fetching it while probing capabilities
-> from a throw-away QEMU with "-m none"
 
-[...]
+r~
 
 
