@@ -2,128 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B677051B0
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 17:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B99070502D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 16:06:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pywHq-0003Cc-16; Tue, 16 May 2023 11:08:26 -0400
+	id 1pyvHr-0002y7-FV; Tue, 16 May 2023 10:04:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1pywHn-0003CK-P2
- for qemu-devel@nongnu.org; Tue, 16 May 2023 11:08:23 -0400
-Received: from mail-bn7nam10on2062f.outbound.protection.outlook.com
- ([2a01:111:f400:7e8a::62f]
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1pyvHh-0002xj-6j
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 10:04:13 -0400
+Received: from mail-bn7nam10on20602.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8a::602]
  helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1pywHk-00036t-Ss
- for qemu-devel@nongnu.org; Tue, 16 May 2023 11:08:23 -0400
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1pyvHd-0006w3-P9
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 10:04:12 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nrmNx7ytfNHpqL+sQ3AZ4anr3cwVXlqMJ70SqyMtxjZi/4+vjGS4tskd3dFM2PTNb2sJE7iRyXaqtTQ1mnUpbEnv/QMm/B3AjeJHuAIuciOz8epoIYl/qm5Oh5bgPydpMuW2AwqVSJfiKPtvNxNc2QlN67QlprUVjprTb1NKf+B1HI+be2QjmXIlzG7ilWxvn3m2y158basUkFry6y4kAG0gAWCvI4CJWt78cDaF26RDk1GjioBPiFs8oiZ+lJPWb+V3VxMP1xKELGyS2XuwrAbyTdz+Yc+0YWZG9u0bhVjJPDj5MJYtdrqzKxu/wi2rSWPlcMcKCcvxfveonEWWbQ==
+ b=ihhR1ojZJUa83Yh+aMNm2AwO5cHZ2xpt/ZNFMYh6uwk3nXUtEMVAylckCrR4d1+u9XobSaqr9pnPe8sLksJ0xZnOq2QYTJow8POx0ekclLfgxevy8aQ1BDyfhQ+DLB7TYZ3q1Iqky8UQWQbzAmQOYlTXfJJoM+rbbkzt4Xxx0yK3jgSFkHkcDl3Ndx0xwNFbK8cnQ0KqdA/p+QRg9jZkRXtOtaqcRy/6eb7KCn4hg3m7c72z+pHnqJf1u8zdLEnezf1eJ3OJRpUYeFXiJjqjmzvhc8i1rtKrMk8CKU/hTpfZk6dBHRLPjcStJGl+LP6InwPYoRZfzoRILpFjbNtNug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M8GwUxStht/fm8Ro0QFImfn+AIrcVYSx4wQhuM9rzs8=;
- b=UMCqtB+zD+u/We+zt1h+J67SxL3pRaKTuDBe4bUQuZBU+6ad/KWRIlR81FcS43jnLEI9Yhet5xrZgB8wStvCVkewLhBQJpCyf4bjzF0aZnzurbwRnB7zhsMMfx/th6+u9LLfN0h2EESfuK/nxSCTjp5I1Mk0xYlriEIim4EyPrkr6WZaHhZHRq6gRE722ILQv421wwN72JXJL3llp5kDwNYuryDAWvVLHo3VpfG7ad0n2JAhPdNa5OCxoSQ4ZPGPhseiuwDPFtKT09eFMMTKbVSas8zxYSV7J6zs5BZ+v5o0Pmnn0o7KOCbva/EREzghXj4wTSVevh64z76w/0Xb+A==
+ bh=fKeP6GhXLC77+NlmrnFgMurgQP6lbEVR3YXl4KXRWAA=;
+ b=EGj5QNKFLvTNT1aGtmh7qpbOJDXOoTBlFbx4j4Ph34sP8wYz0V7KIQJLf36d6Cr55Ed3RfYDa5HxFwtSH6L7lLNI9wmOGXg9gxFyo+UVbm6cScXBXkd52D53KYem1nQk0risEx2JGNjKhiInAgCW8dcLWkIPU7Tb7X+GY1JLVIVStgbGPvcUAq59YHMAZdJrFhVgmH+gxFaqCR7ZpVDK0Ti2M8ciKM6I5MZzhFziQR+pmFVgXDYl+EWRRSrGlk8OJL6MYgzPJZEEhvJOcvvn9Ui4UXtiJNTOy3Iu8ZKPYkMAo1Dgjaz+1NFbC6uX4NpdV1IlsMeKY6ozKAHP+wjnOw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M8GwUxStht/fm8Ro0QFImfn+AIrcVYSx4wQhuM9rzs8=;
- b=xJ6lGaM9yPctFMOjptiIWgjN/m5niclk3VY+UnBavKNUawSRzMkABBnRbZP5SqcJPoL4Q8HtQsTM26ks6PLuS1wlvWu0AZQdEjOzgd88UgRAwzJgCHugvxirdaGLY9ixy/rlZWQthKboUR5joi49XBpR3ZI5UW/oGyKlqE8iwV8=
+ bh=fKeP6GhXLC77+NlmrnFgMurgQP6lbEVR3YXl4KXRWAA=;
+ b=LM5zjUl6egciZnG1oPx59MvqsRpi6OczmUjLXkdObpRGECJu1GNgzv8n6J598QGXsNbBVR/NKHe7/ZbLrpnijRiZ2FQrLVg/kXQfN3uFbAiW1vnrfe2BB+i0+2lFFIEl8MjeNiz/MA8h5s6S0ExaZ/lJNavNr2SqtZ97MZhm/B4mNqKYR+X1DlPdfCcE+U+0zeo5zNU2b9F/NsnlKQC+ajlK1VA8ukrmwKGrBiQ0dqCF41COoFhcEQbeZk+3BAwpJOasKwneTEK8OOpqbB27xcoq6onXbzYYlTL+Nl2imaX1j8xp6Lc+RaPOMGieEo0s1TJzT0A1ASrwz7JOnnIywQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by DS0PR17MB7061.namprd17.prod.outlook.com (2603:10b6:8:fc::20) with
- Microsoft SMTP Server (version=TLS1_2,
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by CY8PR12MB7316.namprd12.prod.outlook.com (2603:10b6:930:50::11)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.33; Tue, 16 May
- 2023 15:08:14 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::7b97:62c3:4602:b47a]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::7b97:62c3:4602:b47a%5]) with mapi id 15.20.6387.028; Tue, 16 May 2023
- 15:08:14 +0000
-Date: Tue, 16 May 2023 02:20:07 -0400
-From: Gregory Price <gregory.price@memverge.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
+ 2023 14:04:05 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6387.030; Tue, 16 May 2023
+ 14:04:04 +0000
+Date: Tue, 16 May 2023 11:04:03 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+Cc: Avihai Horon <avihaih@nvidia.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Vincent Hache <vhache@rambus.com>, Fan Ni <fan.ni@samsung.com>
-Subject: Re: [RFC] cxl: Multi-headed device design
-Message-ID: <ZGMglwWwZCP4FUtW@memverge.com>
-References: <ZBpe6btfLuuAS35g@memverge.com>
- <20230515171807.00006d8f@Huawei.com>
+ Alex Williamson <alex.williamson@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Yishai Hadas <yishaih@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH v11 05/11] vfio/migration: Block multiple devices migration
+Message-ID: <ZGONU2g8nxuvrB3v@nvidia.com>
+References: <20230216143630.25610-1-avihaih@nvidia.com>
+ <20230216143630.25610-6-avihaih@nvidia.com>
+ <e333783cc59647ed93d944b05f12fe68@huawei.com>
+ <ZGNwK+6HmM8lPjAU@nvidia.com>
+ <c61606fdcb074dc88b29ae459dbdc0df@huawei.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230515171807.00006d8f@Huawei.com>
-X-ClientProxiedBy: BL1P222CA0021.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:208:2c7::26) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+In-Reply-To: <c61606fdcb074dc88b29ae459dbdc0df@huawei.com>
+X-ClientProxiedBy: MN2PR07CA0002.namprd07.prod.outlook.com
+ (2603:10b6:208:1a0::12) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|DS0PR17MB7061:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd7c5724-5c16-4306-c18a-08db561f5f12
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|CY8PR12MB7316:EE_
+X-MS-Office365-Filtering-Correlation-Id: ead5e695-c526-4b28-2b54-08db5616688c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: F+98JeJ5jhqukGIjLUi+elhMHPzwxXlzwcEs+JQSJqu5tm2m4BT5bV2ARxfF8hNZtZVVxaSTw2Bt/UluqhgJTiBoXCJqDN47/7NKBVi4dR9D8JJ+07FiqhJR+DvRWmUoeRGUdvgX97iyzsxMqawhC82/m92flprJq5+9sXfa/IINO9DYYG/JxrBXzH808Gq3esu84dMuYL+fVknPqzcpdd2AsCypsnwvapaQQ4R9SiOvvwZUzgYTIu5G7t2W2+dizz5pexnPwu0JbysiBz6QoByTsvzW0O+jaqjlCPFYzLGAj05Cd1FXgt+AV99rjBcCxj/431rkg+Mig9g4WpQDYBBikXM3EmV+NR+6N+SXSBDqDiNbd6YNlK04RRR2vqvaiUCDKmyRkBkMJ2wnc862V+LV4vSGXqhz56fOIeEuVQVPOpwP4xzKhuAvLM1ijL0V26/3LKCl8DGqdwKU4Tz789o0RUtDPFPu5mhXMIvLmdi/vhcDyFTZ2qm1q4+E0KaUGnHry74pBMcq0la3aHBaIC4XmU9R/QN1+Sm4Dd+OAcMbEjo5OCkAhfEwU826WCK8
+X-Microsoft-Antispam-Message-Info: X4jd8u/iah7/MZ/v6NKlBRHRKFvbyS6b2EAovHBHT/AtuV3iTmKbMhrj+YypCB+L6n9uG2mOiu+BCh41IEQCWA4PPbHwVfl9CJGnh15mK/Q8g6HQ+o47QLUWB1h93XiKhxHnsStHH8sCisVW1BsDpyc4nmCysN6+q0pP99mUqGv4HPTkKV2Gk/fqaEG9kx4dBsvnKOwSBVrgKSS4/Hj5/E1Cx2zocv/QNbVk30l3+p7Ag7H2jX9rM4uzVsVZGJtQqjyCg9MsgVFKh2V8gJacHQ5wqQe3iI+v3ZmK2csCwzinYg9vGaGBy6cYn8Qk7WWUrzANHUpjCjUtuiYSs2DpkqPaRy0dEEa7Nu3GRe6C2kuwpUMbu/uJ75iQACQzbwtIguBKxlA06kGemD0qs54/g1+cWdlTig0muPunBm5C0+vIC4NdiZJBsNihyllUpAPf6bXO0/NKiRnHtgdUOIsqxEAAphfBU+Fs/ZQ1vLVqd3dSTdcMVSQa7KNN3A+MmrSiTJ2bc5nN8Fww/f0FquOaUe762DZcB8H/fIY8QzurQfL/bwqnizv9Oy2aLV+rI/xv
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(376002)(136003)(396003)(346002)(39840400004)(451199021)(86362001)(36756003)(54906003)(316002)(66946007)(66556008)(66476007)(6916009)(4326008)(478600001)(6666004)(8676002)(5660300002)(8936002)(41300700001)(30864003)(2906002)(44832011)(38100700002)(2616005)(6506007)(6512007)(186003)(26005)(83380400001)(6486002)(66899021);
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(376002)(396003)(366004)(346002)(39860400002)(451199021)(66946007)(66556008)(66476007)(6916009)(4326008)(478600001)(316002)(54906003)(86362001)(36756003)(6512007)(6506007)(26005)(186003)(2616005)(6486002)(41300700001)(5660300002)(4744005)(2906002)(7416002)(8676002)(8936002)(38100700002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DJrKWAHYpICckE8XYpnLKsdL3UMr/pjU+cyjTUT8gyR7xuLSCPPw4mnCEu4s?=
- =?us-ascii?Q?L8c7bVajAs6aA8jRAX0eV2FgKk+g5hyuUk9OU0qLRvZTZLXlC87sFxuuDPMV?=
- =?us-ascii?Q?oCi8n4Yz5zRhRswflfwfaF/UsoU+fx4LIIBriNpzuzK9mkDlGC2eos7d/eyn?=
- =?us-ascii?Q?04KtkbUgcnkSm6/qe3gzFTQxvfrSFCqnlgz1QLARDWELjGXIDIdAuY5WIMZP?=
- =?us-ascii?Q?1AAkmr/uazVzlLao6MM7zurhdsluGgMyNOASfgnYewy7aHlmjRrRSUBRWsBH?=
- =?us-ascii?Q?12KMYZ3045J7wZA4mV0EmFEjwrZtEzBG9ki54bDKqqxwU8WUlxcMM4gNcsaY?=
- =?us-ascii?Q?+T7vmBscJqSVkj+YEcS9TcH6G/ICOiQ5rpz8Ffkf+Dy2W04n2Tr7aT+iDhNA?=
- =?us-ascii?Q?HEtB/tek7Gi4AiA94rWWMibCY3PUxTJIm0tz5Dh1mRrdCsvwQ3UqsVIk7lUI?=
- =?us-ascii?Q?4OXrGTMROJufD3AxaSjiWDkIqQGYKCm6fG+uZM+67D5Tnap6J1U7fDND4jOV?=
- =?us-ascii?Q?oH7Ktz5/q2i+s0y87sK+8LuIEn7SxfmfClAJP5/yxnbfgPbyGR5n/tfJJyBr?=
- =?us-ascii?Q?kEKjxHwlfFEjTaRnQp6e3SlqlMY6fZb/RD08LRcMooSJ/JSTbjTyxjqc5vgE?=
- =?us-ascii?Q?vXTeXQf6soyQH9z1Rx/IN7LdGPvHUwguFSyWXjOEyc6mBIO3v3D4enkU3HlS?=
- =?us-ascii?Q?moWr+SMRqP9yWLAelos1c5/zz/suoJjbjXbnIVhRSo5+jDw7iIGM7po+QG+V?=
- =?us-ascii?Q?yWqEACMQJfOB+1to3VkffsOzOz976XBY3QZhCb1ZYPYwQXAgt07XZZEkcjfP?=
- =?us-ascii?Q?ExYRWCBBnbFsKpy2R+0JbMob0KZwUNstQpCyfZWIDch/B5utA4LUteXAUbM6?=
- =?us-ascii?Q?XFN0kj549lWaaob1VpaUdsBRrBkNzWSmt5v9NwbLqy6AKFYCDnUGmwVfmo+p?=
- =?us-ascii?Q?Ara0lljhpYgl4XH7VlgfNxYOW7VjTLw7bnAH1yzFUNkh2iXC2TZfUeKnhysd?=
- =?us-ascii?Q?cg3ebrGrwyMe349LtkmSiCT0JPs59kwnRydfr3bIDbgnxyaYc0JaYf99Ov55?=
- =?us-ascii?Q?0126OGPeJW2HKF4+RLTA6/Y4N0EkBFUU5D8ec+MDdw21Yxd5kw7LWDJismdJ?=
- =?us-ascii?Q?Mnw4HiFG7nvgv3DuH3AsoM9ByDFQM7UZZPLLOLORs/Jema32hmCz5baOzcOM?=
- =?us-ascii?Q?uvlmJvvnsv/TBGdU8N+mQYdLb1xeMvcaZ1e2oxKwLYninZIPdIHKJnnFB/ur?=
- =?us-ascii?Q?8lK7ROy8Fh3z6cmGas6jcEJ2fNK6Bapvj/HTP59IHTiiBtIM8V46qk3QYxlB?=
- =?us-ascii?Q?lVkGkBs1mo0XqqXCX1dcSHAtN8CSUIYvL7ozvXOFNSGcXMc0GQ2Gasvlhf5N?=
- =?us-ascii?Q?NUoGmGx2Vf8Zet3mExkgEipcXw0HWwuCdSQwo9a7POCES2gxtMZHVofrIpZP?=
- =?us-ascii?Q?7IeQncRzUgpj4u2UnsTYfHPDcliOcXW3reGFP81ItjE5QIUnd1LFHdiDMw9h?=
- =?us-ascii?Q?EwwEXwyo22DjJwC2S+oF8EMFnoCQ3DTOGKyb2bSgS0tYBh/Y7plVrv4B7JLi?=
- =?us-ascii?Q?Lh2VdtZSdJafrjsmYnq4LDjJh5tlm/OhM9ED78mwskB17QJOrlYuVcnMFxzE?=
- =?us-ascii?Q?Ow=3D=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd7c5724-5c16-4306-c18a-08db561f5f12
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?YJIWQSTCXTtIcFjC6M+vCuCwNSzJf4yxRMASDvByYqnvLGdp5Z099KxnE4D7?=
+ =?us-ascii?Q?gBuKqFmJIRA6JVtUhBglxUSzF/BmWWwN68Vj8hpysZ7pxb7qxqEWs+1fHfmb?=
+ =?us-ascii?Q?xFis3xnwayHG6ak7tLvb4GtsLRShWxDlTdYifkk6glXY/Kue3hgudZD9QBPE?=
+ =?us-ascii?Q?qu6TBTyt2r4PLqiQ/ExYfYHBU5Zbr/Qu+P2/BzkaG7G3TUQdd9HU2d3weXZM?=
+ =?us-ascii?Q?PkIPKv/QaXwoZAZbsAYOovLnogJJ8K+nR5ZEVzX4OL7pt6GXPO+MffJJRmOC?=
+ =?us-ascii?Q?vKA0EDmFqYHluA6oGgFVjxN1vH0adbjbmNlpQqBlKHxkCHFJ2t8Z+lujQGqK?=
+ =?us-ascii?Q?64FOHrP9u378TznTo1nPD7elDY3NqwuqOGhga/xKPTc7oQ3/kpY4B3x/zjaa?=
+ =?us-ascii?Q?j8UtOzeufHBhQOCz7E2AMge3zs2et83o/6ABeZ5irhub+ivA4lpwjDqCcSbm?=
+ =?us-ascii?Q?WpmWul/7DAIaHyu7+CfmURpCtPMRTpIqHcplQ36Lxa2zTeY0lVDqw8XWYTNi?=
+ =?us-ascii?Q?+2Gk9FAIHFsce/IicN9Wztw/Sw/r179QoBavH1dksgaVE+hqsiHo869Bk41u?=
+ =?us-ascii?Q?FGvbIL79U2TQGalQETORrgu3abT2A3Pm4kXK9XJQfkAMvTK/iBt1uaHcS+Cm?=
+ =?us-ascii?Q?rheVEUU4SAUVGThVPXmmzHmgWuYRZmjlaQj07giZ0ESSTB5hLV1pwSMzr1P9?=
+ =?us-ascii?Q?ToNoWvjti/sN62MWqu0HeA5uNCL9TvPtyjlvFT3KP5wphuUIube5IGi6UWkN?=
+ =?us-ascii?Q?L8uCfesSeKrVNFx4HZx8Rvqgoq8iyu4pnPEKKC0dwlVz3XtAVK+oKXQuaYqz?=
+ =?us-ascii?Q?mcyaAOV9WIlzIvoWzNwIBTy6Kwl+QGRb8DKLFk2uyKGCTPRDo0JY6ZQ4vKbg?=
+ =?us-ascii?Q?Hb+J5oTkURwFPoWUSK3LRdKSrJhs6m6IyRZg66nw8jrqif53Vl6de0Rjh3c9?=
+ =?us-ascii?Q?j5bJ+8NXmgMfw0/w82y+5VArR4+v5iE01Y0RIxrZVL9eFoFa+TrEHYK04hcp?=
+ =?us-ascii?Q?UxLRcCF6ZHA2CmnboWD1wy2XHJQzq1koPV9dbA1gUE5ZfAt8LJhML3OARRwA?=
+ =?us-ascii?Q?jZyGHi6EX7kHkuFylUzfp7AM9+D2ted+Cu49W0h/JHicQtAKfFksMdBWTh1w?=
+ =?us-ascii?Q?PT9w3ZK5opFA5IEvgCjGkjyJqP9pfYVJg5cRgTTQVav24LitcWy6M3fhJ7SK?=
+ =?us-ascii?Q?Ajdc33SsREJaYfIbzRwTX2qu7mTsZwk2KNF6xV+ybmyMKoStri+Bw5Z+32Us?=
+ =?us-ascii?Q?CzHs9zn6t6PyzbodoNmt9hYIeqnV3dlf82fDhCBbHuu6Af8YxW94dEpTAlxA?=
+ =?us-ascii?Q?mbeQbmu6ndj83Q4VMuG4dVvwph1UiOj7icNzEfLJU0pkVUiwQcv8xCKMPxAj?=
+ =?us-ascii?Q?6SELJqPYTQsP2wQIGAMdjtBgMPFAADgj3FUe56ETpCEHyfXccuqqYw+J1kUR?=
+ =?us-ascii?Q?SvvRWn/A8DnnfapSlYcjpr/Pb2ZrR0smsEtGazAEA9b3dy7TOuKdNh87O3sV?=
+ =?us-ascii?Q?bVZbZO15Kwi5hGE8OspFIeJsh/Hzyd30PiB0hsBTWXVZl0w9+Cx4S0E0vQwc?=
+ =?us-ascii?Q?OQYxDSdAJ59lPBaigFq+Z0dohEbaOyNsliefZo4K?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ead5e695-c526-4b28-2b54-08db5616688c
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2023 15:08:14.4135 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2023 14:04:04.8294 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /qxuDKACa420hicQmQ7QyeaK07dzYTXRM6DNjoC3IYFWE5HHRMAVSM4X0+Y43ugy0uZP2vO/VDx0/l2uWb/snPquNJq5c821b0OfPhNDiNc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR17MB7061
-Received-SPF: none client-ip=2a01:111:f400:7e8a::62f;
- envelope-from=gregory.price@memverge.com;
+X-MS-Exchange-CrossTenant-UserPrincipalName: hzQSAJmyxkP75GVb3jLJvFm39Tnj8D05A4BawVRhKH62KMgVTRy3NWzCvvAIc4Mk
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7316
+Received-SPF: softfail client-ip=2a01:111:f400:7e8a::602;
+ envelope-from=jgg@nvidia.com;
  helo=NAM10-BN7-obe.outbound.protection.outlook.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -139,297 +147,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 15, 2023 at 05:18:07PM +0100, Jonathan Cameron wrote:
-> On Tue, 21 Mar 2023 21:50:33 -0400
-> Gregory Price <gregory.price@memverge.com> wrote:
+On Tue, May 16, 2023 at 01:57:22PM +0000, Shameerali Kolothum Thodi wrote:
+
+> > What happens on your platform if a guest tries to do P2P? Does the
+> > platform crash?
 > 
-> > 
-> > Ambiguity #1:
-> > 
-> > * An SLD contains 1 Logical Device.
-> > * An MH-SLD presents multiple SLDs, one per head.
-> > 
-> > Ergo an MH-SLD contains multiple LDs which makes it an MLD according to the
-> > definition of LD, but not according to the definition of MLD, or MH-MLD.
-> 
-> I'd go with 'sort of'.  SLD is a presentation of a device to a host.
-> It can be a normal single headed MLD that has been plugged directly into a host.
-> 
-> So for extra fun points you can have one MH-MLD that has some ports connected
-> to switches and other directly to hosts. Thus it can present as SLD on some
-> upstream ports and as MLD on others.
->
+> I am not sure. Since the devices are behind SMMU, I was under the assumption
+> that we do have the guarantee of isolation here(grouping).
 
-I suppose this section of the email was really to just point out that
-what constitutions a "multi-headed", "logical", and "multi-logical"
-device is rather confusing from just reading the spec.  Since writing
-this, i've kind of settled on:
+That is not the case. The SMMU will contain an IOPTE with the the CPU
+address of the P2P memory and when the SMMU executes that operation
+the system does .. ??
 
-MH-* - anything with multiple heads, regardless of how it works
-SLD - one LD per head, but LD does not imply any particular command set
-MLD - multiple LD's per head, but those LD's may only attach to one head
-DCD - anything can technically be a DCD if it implements the commands
+Hopefully it responds back with error and keeps going, or it
+crashes..
 
-Trying to figure out, from the spec, "what commands an MH-SLD" should
-implement to be "Spec Compliance" was my frustration.  It's somewhat
-clear now that the answer is "Technically nothing... unless its an MLD".
-
-> > I want to make very close note of this.  SLD's are managed like SLDs
-> > SLDs, MLDs are managed like MLDs.  MH-SLDs, according to this, should be
-> > managed like SLDs from the perspective of each host.
-> 
-> True, but an MH-MLD device connected directly to a host will also 
-> be managed (at some level anyway) as an SLD on that particular port.
->
-
-The ambiguous part is... what commands relate specifically to an SLD?
-The spec isn't really written that way, and the answer is that an SLD is
-more of a lack of other functionality (specifically MLD functionality),
-rather than its own set of functionality.
-
-i.e. an SLD does not require an FM-Owned LD for management, but an MHD,
-MLD, and DCD all do (at least in theory).
-
-> > 
-> > 2.5.1 continues on to describe "LD Management in MH-MLDs" but just ignores
-> > that MH-SLDs (may) exist.  That's frustrating to say the least, but I
-> > suppose we can gather from context that MH-SLD's *MAY NOT* have LD
-> > management controls.
-> 
-> Hmm. In theory you could have an MH-SLD that used a config from flash or similar
-> but that would be odd.  We need some level of dynamic control to make these
-> devices useful.  Doesn't mean the spec should exclude dumb devices, but
-> we shouldn't concentrate on them for emulation.
-> 
-> One possible usecase would be a device that always shares all it's memory on
-> all ports. Yuk.
-> 
-
-I can say that the earliest forms of MH-SLD, and certainly pre-DCD, is
-likely to present all memory on all ports, and potentially provide some
-custom commands to help hosts enforce exclusivity.
-
-It's beyond the spec, but this can actually be emulated today with the
-MH-SLD setup I describe below.  Certainly I expected a yuk factor to
-proposing it, but I think the reality is on the path to 3.0 and DCD
-devices we should at least entertain that someone will probably do this
-with real hardware.
-
-> > For the simplest MH-SLD device, these fields would be immutable, and
-> > there would be a single LD for each head, where head_id == ld_id.
-> 
-> Agreed.
-> 
-> > 
-> > So summarizing, what I took away from this was the following:
-> > 
-> > In the simplest form of MH-SLD, there's is neither a switch, nor is
-> > there LD management.  So, presumably, we don't HAVE to implement the
-> > MHD commands to say we "have MH-SLD support".
-> 
-> Whilst theoretically possible - I don' think such a device is interesting.
-> Minimum I'd want to see is something with multiple upstream SLD ports
-> and a management LD with appropriate interface to poke it.
-> 
->
-> The MLD side of things is interesting only once we support MLDs in general
-> in QEMU CXL emulation and even then they are near invisible to a host
-> and are more interesting for emulating fabric management.
-> 
-> What you may want to do is take Fan's work on DCD and look at doing
-> a simple MH-SLD device that uses same cheat of just using QMP commands
-> to do the configuration.  That's an intermediate step to us getting
-> the FM-API and similar commands implemented.
-> 
-
-I actually think it's a good step to go from MH-SLD to MH-SLD+DCD while
-not having to worry about the complexity of MLD and switches.
-
-(I have not gotten the chance to review the DCD patch set yet, it's on
-my list for after ISC'23, I presume this is what has been done).
-
-My thoughts would be that you would have something like the following:
-
--device ct3d,... etc etc
--device cxl-dcd,type3-backend=mem0,manager=true
-
-the manager would be the owner of the FM-Owned LD, and therefore the
-system responsible for managing requests for memory.
-
-How we pass those messages between instances is then an exercise for the
-reader.
-
-
-What I have been doing is just creating a shared memory region with
-mkipc and using a separate program to initiate that shared state before
-launching the guests.  I'll talk about this a little further down.
-
-
-> > 
-> > ... snip ...
-> > 
-> > 3. MH-SLD w/ Pool CCI  (Implementing only Get Multi-Headed Info)
-> 
-> I'd do this + DCD.
-> 
-
-I concur, and it's what i was looking into next.
-
-I think your other notes on MH-* with switches is really where I was
-left scratching my head.
-
-When I look at Switch/MLD functionality vs DCD, I have a gut feeling the
-vast majority of early device vendors are going to skip right over
-switches and MLD setups and go directly to MH-SLD+DCD.
-
-> > =================================
-> > 2. MH-SLD No Switch, No Pool CCI.
-> > =================================
-> > 
-> > But it's also not very useful.  You can only use the memory in devdax
-> > mode, since it's a shared memory region. You could already do this via
-> > the /dev/shm interface, so it's not even new functionality.
-> > 
-> > In theory you could build a pooling service in software-only on top of
-> > memory blocks. That's an exercise left to the reader.
-> 
-> Yeah. Let's not do this step.
-> 
-
-To late :].  It was useful as a learning exercise, but it's definitely
-not upstream quality.  I may post it for the sake of the playground, but
-I too would recommend against this method of pooling in the long term.
-
-I made a proto-DCD command set that was reachable from each memdev
-character device, and exposed it to every qemu instance as part of ct3d
-(I'm still learning the QEMU ecosystem, so was easier to bodge it in
-than make a new device and link it up).
-
-Then I created a shared memory region with mkipc, and implemented a
-simple mutex in the space, as well as all the record keeping needed to
-manage sections/extents.
-
-> > shmid1=`ipcmk -M 4096 | grep -o -E '[0-9]+' | head -1`
-> > ./cxl_mhd_init 4 $shmid1
-> > -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0,mhd=true,mhd_head=0,mhd_shmid=$1
-> > 
-> > ./cxl_mhd_init would simply setup the nr_heads/lds field and such
-> > and set ldmap[0-3] to the values [0-3].  i.e. the head-to-ld mappings
-> > are static (head_id==ld_id).
-> > ... snip ...
-> >
-> > shmid1=`ipcmk -M 4096 | grep -o -E '[0-9]+' | head -1`
-> > ./cxl_mhd_init 4 $shmid1
-> > -device cxl-mhd-sld,bus=rp0,volatile-memdev=mem0,id=cxl-mem0,mhd_head=0,mhd_shmid=shmid
-
-The last step was a few extra lines in the read/write functions to
-ensure accesses to "Valid addresses" that "Aren't allocated" produce
-errors.
-
-At this point, each guest is capable basically using the device to do
-the coordination for you by simply calling the allocate/deallocate
-functions.
-
-And that's it, you've got pooling.  Each guest sees the full extent of
-the entire device, but must ask the device for access to a given
-section, and the section can be translated into a memory block number
-under the given numa node.
-
-
-Ok, now lets talk about why this is a bad and why you shouldn't do it
-this way:
-
-* Technically a number of bios/hardware interleave functionality can
-  bite you pretty hard when making the assumption that memory blocks are
-  physically contiguous hardware addresses. However, that assumption
-  holds if you simply don't turn those options on, so it might be useful
-  as an early-adopter platform.
-
-
-* The security posutre of a device like this is bad.  It requires each
-  attached host to clear the memory before releasing it.  There isn't
-  really a good way to do this in numa-mode, so you would have to
-  implement custom firmware commands to ensure it happens, and that
-  means custom drivers blah blah blah - not great.
-
-  Basically you're trusting each host to play nice.  Not great.
-  But potentially useful for early adopters regardless.
-
-
-* General compaitibility and being in-spec - this design requires a
-  number of non-spec extensions, so just generally not recommended,
-  certainly not here in QEMU.
-
-> 
-> A few different moving parts are needed and I think we'd end up with something that
-> looks like
-> 
-> -device cxl-mhd,volatile-memdev=mem0,id=backend
-> -device cxl-mhd-sld,mhd=backend,bus=rp0,mhd-head=0,id=dev1,tunnel=true
-> -device cxl-mhd-sld,mhd=backend,bus=rp1,mhd-head=1,id=dev2
-> 
-> dev1 provides the tunneling interface, but the actual implementation of
-> the pool CCI and actual memory mappings is in the backend. Note that backend
-> might be proxy to an external process, or a client/server approach between multiple
-> QEMU instances.
-
-I've hummed and hawwed over external process vs another QEMU instance and I
-still haven't come to a satisfying answer here.  It feels extremely
-heavy-handed to use an entirely separate QEMU instance just for this,
-but there's nothing to say you can't just host it in one of the
-head-attached instances.
-
-I basically skipped this and allowed each instance to send the command
-themselves, but serialized it with a mutex.  That way each instance can
-operate cleanly without directly coordinating with each other.  I could
-see a vendor implementing it this way on early devices.
-
-I don't have a good answer for this yet, but maybe once I review the DCD
-patch set I'll have more opinions.
-
-> 
-> or squish some parts and make a more extensible type3 device and have.
-> 
-> -device cxl-type3,volatile-memdev=mem0,bus=rp0,mhd-head=0,id=dev1,mhd-main=true
-> -device cxl-type3,mhd=dev1,bus=rp1,mhd-head=1,id=dev2
-> 
-
-I originally went this route, but the downside of this is "What happens
-when the main dies and has to restart".  There's all of kinds of
-badness associated with that.  It's why i moved the shared state into a
-separately created mkipc region.
-
-> 
-> To my mind there are a series of steps and questions here.
-> 
-> Which 'hotplug model'.
-> 1) LD model for moving capacity
->   - If doing LD model, do MLDs and configurable switches first. Needed as a step along the
->     path anyway.  Deal with all the mess that brings and come back to MHD - as you note it
->     only makes sense with a switch in the path, so MLDs are a subset of the functionality anyway.
-> 
-> 2) DCD model for moving cacapcity
->   - MH-SLD with a pool CCI used to do DCD operations on the LDs.  Extension of
->     what Fan Ni is looking at.  He's making an SLD pretend to be a device
->     where DCD makes sense - whilst still using the CXL type 3 device. We probably shouldn't
->     do that without figuring out how to do an MHD-SLD - or at least a head that we intend
->     to hang this new stuff off - potentially just using the existing type 3 device with
->     more parameters as one of the MH-SLD heads that doesn't have the control interface and
->     different parameters if it does have the tunnel to the Pool CCI.
-> 
-
-Personally I think we should focus on the DCD model.  In fact, I think
-we're already very close to this, as my personal prototype showed this
-can work fairly cleanly, and I imagine I'll have a quick MHD patch set
-once I get the change to review the DCD patch set.
-
-If I'm being the honest, the more I look at the LD model, the less I
-like it, but I understand that's how scale is going to be achieved.  I
-don't know if focusing on that design right now is going to produce
-adoption in the short term, since we're not likely to see those devices
-for a few years.
-
-MH-SLD+DCD is likely to show up much sooner, so I will target that.
-
-~Gregory
+Jason
 
