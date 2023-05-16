@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331B57057E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25180705825
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:59:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz0el-000339-Qz; Tue, 16 May 2023 15:48:23 -0400
+	id 1pz0fc-0005q0-1v; Tue, 16 May 2023 15:49:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0cU-0000hY-0c
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:46:02 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1pz0fM-0005mi-8a
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 15:49:02 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0cQ-0003qe-0L
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:46:01 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1ae4f28454bso402895ad.3
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:45:56 -0700 (PDT)
+ id 1pz0fK-0004Lg-NK
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 15:49:00 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1ab1ce53ca6so529945ad.0
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684266355; x=1686858355;
+ d=linaro.org; s=google; t=1684266537; x=1686858537;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Mg31tFrpqaSLWLouZqalEVgyQQeTv3Dfr7kkgOUM8nY=;
- b=wTW8P7YeA5Fly63x91sPNM8g0SRl/OogBYqWeajqbbLQKrZnFS/P6PojlSxQPCbO43
- za5TWZkpe7kbQpWxcVKelsrlAaG4L/ICP57wXJwlzF759uF6uPhUgbcwViOZSMNoJGpz
- itFg2CH1osDbqZO1VflKEAFvgN3F1G5Zaiuu1slV39+9+pLsz5qvVrtaFBAUswU/wD+j
- +8n6wIqfXqNu7bFJ+1t9cVi8XkFqnIZN1eQf+anZE08VEDVmYVeOxWiLbxEg5k1hHlIy
- ITpHGT07W9P2Lz0iM+tZXNaECYa0UJfDrX/bzPegd4/MuX+eNMDMdJ/5CjafOMvl9ERe
- 2+OQ==
+ bh=4zI9fsHzivwwTbDjNnN4jTG49Yza6ytpst3ZQDVjthU=;
+ b=g6JdDYWasT+SIIL3iUOf4qecqUOOxw5eor5KoNaKhzOZucpwwe8BcEm8NDVYutp01X
+ HRtBv9bILLXNvOS4px4PRwM6Q+lNSElbcqO3O2Yb8DFT2d6pU8Ykdp/Im69aA0lxZ56R
+ tPRsSO1XwWmKCCgbLCX8IcSTIITRY/zdzENzKnDGKitTbQFdVdXoPVO4BLf0DGO6cTmt
+ T2L73lMFNfQaP//bZJa6AXy1TxmDibED5Kn705WqlsMy5CzgAqkQBmq/2RcaFHleyuqn
+ RFO+9+mbbUWHwI9JVeG/qpwO+XB15F0NQLqtJcmr0o2cOugml7hB/r7UwOG1Vt4b2+yB
+ a9gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684266355; x=1686858355;
+ d=1e100.net; s=20221208; t=1684266537; x=1686858537;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Mg31tFrpqaSLWLouZqalEVgyQQeTv3Dfr7kkgOUM8nY=;
- b=bsLduWCmrZABSS7s0y3siFiEL91ReyzdZ1U9fUJXQg4UrJykRASXusl0qsTMCJmL6m
- NjRm1lPT20Q8uvzUj+HsrBDKl4A1DxKtv6qddwpMWjjUCV5hooV4REnv7T0ztclFsnWS
- YkcUias8pTEZMVzD9nZwylUXQ2YAvO3/mEq3snkBeFzy+WOtTmjf63Cj2q+ej12K0rMQ
- fSHsiIju/1YSI23Z7YhR/3OXXn8SNzXn5yMEMke28EwFhvE99jxYy9v6zW1kGIQX4sg7
- /yaq/O6QKzYFS7zS7MOi+vlrrWev2w8CJL9Ay2QNToxDkpraMdlR7hMk/l5zJjG6ZVbX
- Kg3w==
-X-Gm-Message-State: AC+VfDxyUgCpnmFhmFpaJqx6RZiRCraULroo0rg0pjbKLW4QdzT6MLMO
- OFe7xfiXtOl//O59DAocHh+Q7QrZJCW/gnw+cVo=
-X-Google-Smtp-Source: ACHHUZ67cFlkTy6a0Ugz+Ra3EVPI5ylHA34ILJ4dqnv5T+RBGVKl2g0FkIt45hd43ehaHbH2eypkYA==
-X-Received: by 2002:a17:90b:4c8c:b0:252:8910:db42 with SMTP id
- my12-20020a17090b4c8c00b002528910db42mr19930992pjb.1.1684266355747; 
- Tue, 16 May 2023 12:45:55 -0700 (PDT)
+ bh=4zI9fsHzivwwTbDjNnN4jTG49Yza6ytpst3ZQDVjthU=;
+ b=k41tp4HjDUvVZZ4uZJTx1c2qff5US3fPCf5Oaz1PqsNOM0lylbOMbcJlrbb44J60rK
+ WscPoUaioQIIBm7Fb8Y3E+xNmW0AJvQmKv+psuDuqIdEW3x7u0DaKFPCvbuudxRAlXdn
+ gLb3J6DzJOPqsvEasxAHgWm3m44gtNMpbLWIS8DFYrYW4R3jS1QoWC4Qdr76cARKV+Qq
+ TbCXaru/TK0Geawh/EcOBokWERKxJKgbw/JNhRhxvOe1tnBakwIna0v6hqH9FyEgbRvy
+ pcKWsBDjeg8md4ya7WWAcQmwxcTKOZVJZS8qxlPW8cl8Rw/6oLiJBvvEou9M4NzJNh2g
+ l7fA==
+X-Gm-Message-State: AC+VfDweEDmxjQI01gnGSzpGyXhYNRkvD7tEZ91TONDs1NLpyxqMX6HZ
+ 4S1l9pxmSRn6PnvshNHz/W02nzMZmMgac1aB1mY=
+X-Google-Smtp-Source: ACHHUZ5n93r2llhLSSBmJRyDSqYOvDGlb/QtpwHR8VYOtIyEsYrJ7z78OG073PPoflmbhmBekD2LnQ==
+X-Received: by 2002:a17:90a:bc88:b0:24f:13ec:ecac with SMTP id
+ x8-20020a17090abc8800b0024f13ececacmr37937326pjr.26.1684266537122; 
+ Tue, 16 May 2023 12:48:57 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
  by smtp.gmail.com with ESMTPSA id
- y12-20020a17090abd0c00b002508d73f4e8sm25555pjr.57.2023.05.16.12.45.55
+ 78-20020a630351000000b0051815eae23esm13843233pgd.27.2023.05.16.12.48.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 12:45:55 -0700 (PDT)
+ Tue, 16 May 2023 12:48:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PULL 79/80] tcg: Add tlb_dyn_max_bits to TCGContext
-Date: Tue, 16 May 2023 12:41:44 -0700
-Message-Id: <20230516194145.1749305-80-richard.henderson@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 80/80] tcg: Split out exec/user/guest-base.h
+Date: Tue, 16 May 2023 12:41:45 -0700
+Message-Id: <20230516194145.1749305-81-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230516194145.1749305-1-richard.henderson@linaro.org>
 References: <20230516194145.1749305-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,67 +91,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Disconnect guest tlb parameters from TCG compilation.
+TCG will need this declaration, without all of the other
+bits that come with cpu-all.h.
 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h            | 1 +
- accel/tcg/translate-all.c    | 1 +
- tcg/aarch64/tcg-target.c.inc | 2 +-
- tcg/i386/tcg-target.c.inc    | 2 +-
- 4 files changed, 4 insertions(+), 2 deletions(-)
+ include/exec/cpu-all.h         |  5 +----
+ include/exec/user/guest-base.h | 12 ++++++++++++
+ tcg/tcg.c                      |  3 +++
+ 3 files changed, 16 insertions(+), 4 deletions(-)
+ create mode 100644 include/exec/user/guest-base.h
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index db57c4d492..cd6327b175 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -563,6 +563,7 @@ struct TCGContext {
- #ifdef CONFIG_SOFTMMU
-     int page_mask;
-     uint8_t page_bits;
-+    uint8_t tlb_dyn_max_bits;
- #endif
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index ad824fee52..78d258af44 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -84,11 +84,8 @@
  
-     TCGRegSet reserved_regs;
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index ca306f67da..353849ca6d 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -360,6 +360,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
- #ifdef CONFIG_SOFTMMU
-     tcg_ctx->page_bits = TARGET_PAGE_BITS;
-     tcg_ctx->page_mask = TARGET_PAGE_MASK;
-+    tcg_ctx->tlb_dyn_max_bits = CPU_TLB_DYN_MAX_BITS;
- #endif
+ #if defined(CONFIG_USER_ONLY)
+ #include "exec/user/abitypes.h"
++#include "exec/user/guest-base.h"
  
-  tb_overflow:
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index 8b7c679349..b58b39a07f 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -1685,7 +1685,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     ldst->oi = oi;
-     ldst->addrlo_reg = addr_reg;
+-/* On some host systems the guest address space is reserved on the host.
+- * This allows the guest address space to be offset to a convenient location.
+- */
+-extern uintptr_t guest_base;
+ extern bool have_guest_base;
  
--    mask_type = (s->page_bits + CPU_TLB_DYN_MAX_BITS > 32
-+    mask_type = (s->page_bits + s->tlb_dyn_max_bits > 32
-                  ? TCG_TYPE_I64 : TCG_TYPE_I32);
+ /*
+diff --git a/include/exec/user/guest-base.h b/include/exec/user/guest-base.h
+new file mode 100644
+index 0000000000..afe2ab7fbb
+--- /dev/null
++++ b/include/exec/user/guest-base.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: LGPL-2.1-or-later */
++/*
++ * Declaration of guest_base.
++ *  Copyright (c) 2003 Fabrice Bellard
++ */
++
++#ifndef EXEC_USER_GUEST_BASE_H
++#define EXEC_USER_GUEST_BASE_H
++
++extern uintptr_t guest_base;
++
++#endif
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 4bd598c18b..6735d3f08d 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -63,6 +63,9 @@
+ #include "tcg/tcg-temp-internal.h"
+ #include "tcg-internal.h"
+ #include "accel/tcg/perf.h"
++#ifdef CONFIG_USER_ONLY
++#include "exec/user/guest-base.h"
++#endif
  
-     /* Load env_tlb(env)->f[mmu_idx].{mask,table} into {x0,x1}.  */
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index d766e8652c..51dfd18ab0 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -1979,7 +1979,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-         trexw = (ttype == TCG_TYPE_I32 ? 0 : P_REXW);
-         if (TCG_TYPE_PTR == TCG_TYPE_I64) {
-             hrexw = P_REXW;
--            if (s->page_bits + CPU_TLB_DYN_MAX_BITS > 32) {
-+            if (s->page_bits + s->tlb_dyn_max_bits > 32) {
-                 tlbtype = TCG_TYPE_I64;
-                 tlbrexw = P_REXW;
-             }
+ /* Forward declarations for functions declared in tcg-target.c.inc and
+    used here. */
 -- 
 2.34.1
 
