@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234DC705B70
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 01:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A09C0705B73
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 01:44:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz4HW-0002hE-U0; Tue, 16 May 2023 19:40:38 -0400
+	id 1pz4Kh-0003aZ-Tm; Tue, 16 May 2023 19:43:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pz4HR-0002e7-Hj
- for qemu-devel@nongnu.org; Tue, 16 May 2023 19:40:35 -0400
-Received: from mail-vs1-xe2b.google.com ([2607:f8b0:4864:20::e2b])
+ id 1pz4Kf-0003a4-OM
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 19:43:53 -0400
+Received: from mail-vk1-xa2d.google.com ([2607:f8b0:4864:20::a2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pz4HO-0005ZU-UA
- for qemu-devel@nongnu.org; Tue, 16 May 2023 19:40:33 -0400
-Received: by mail-vs1-xe2b.google.com with SMTP id
- ada2fe7eead31-43483fd0393so8683137.2
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 16:40:27 -0700 (PDT)
+ id 1pz4Kd-00060c-6q
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 19:43:52 -0400
+Received: by mail-vk1-xa2d.google.com with SMTP id
+ 71dfb90a1353d-44ffef66dabso154251e0c.2
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 16:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684280427; x=1686872427;
+ d=gmail.com; s=20221208; t=1684280630; x=1686872630;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YNbr2nB8Qzvgcq8cgEpSaDR2aNXWrgDQ9SBBxyTg0eQ=;
- b=YSmMdhOpLzpfJi1Q0SIXWjPYBd8mKB19hxaTkrLOLhUshzqzk9F0OLpMk6Ob5NbWC7
- LbtkYtsfkmZ5oqQfCuly8t7AsCtFlGR0+i65zMGtHswb2fFMkWM8grSkEpn72cH52/Tu
- neuOHTOqAz2AVZ5fjPMFxasadYTRcl+4rjXzfXHV9sSy/y1TVeHdVW82YP+yV4pEN+Jg
- /osQzo0xPkI1m/9+PTVzE1TM9OOwmXG1qOa3E+ehk2m0ach9/5DutJCqFZQHYzsNqqHp
- K8V9/VOO0ehJ95f229RL83iCsO2ThtM5IaHe5VAKa2wFxdlgej8NB9M0ud0VVQTe4Ye5
- wu6g==
+ bh=GqwbtlirN2QDP8ROIthD8b7X2XSBA1E7Xw0HLj5XXVw=;
+ b=CUZgdd5F3yGwJvB2b+PLElA0Fqrz1STBrkCWwdOYripSbDzsNO+rsszyL3wca2AjaO
+ sQDz8VGwi5ZuE8oSQZpe3+Z+RDDMxdisrhyBKY2VEKBlwQIVUEYWQil1L0Xh2vm9FqbY
+ MHFI4NY4ZRRGO5iQT7TslIj9WZIvOoJDyhrIlhPScmWg1d6xSxZTlrDknmu70b2neVK8
+ KiLIipko486HYy840tv7Qnf2GP4ZY3ahs7rYvSNh56sPlpmfoo1itGY8h5QPuSgQ4dsW
+ jV4BNn7drKZuD8kJz0zqZXT6puGhfHREkSNyQPN1BtIELTt4PkmsiuHnaSIqX3vJxBpe
+ RLFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684280427; x=1686872427;
+ d=1e100.net; s=20221208; t=1684280630; x=1686872630;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YNbr2nB8Qzvgcq8cgEpSaDR2aNXWrgDQ9SBBxyTg0eQ=;
- b=iXpEvjvCt6pZecTrWXj4EO3fISiNztN3o70jI5CEi8+dakOsKmehosA1h6KayYXU4L
- PRqdz2ZbUeAF8czRBiqNL3NPEgkVASD1Ao2JvDf6Q2f/bYG+bL3Pb+z8NpaaTUMMQ32Z
- WoRts0dI79t31sIdczJqkpXQE+4UUCvo9xo2UR/Cve3yhn2dReDRRSNOsNV7qpDtZ6Uy
- iGy6ETawP+zt+FY7kKsGMuFN8T5CodwUlCITjYTI6uJ80rgsIGyakbijsDB5EIXMkPfm
- saOCe+Ld5idqDeG74aNG36cl0aMqa/0NNurrKtW02Waavde04GuPMaY7iLpuytwomLv8
- xo5g==
-X-Gm-Message-State: AC+VfDxZgsLEuUsYnChHsXzou6kAfSbFf5KQMnerp9bgqiqyhDGnlyrE
- TDK34zScccgbOhUXEejxzrpVhmkz+h+yCar39AEG/6cmVKY=
-X-Google-Smtp-Source: ACHHUZ5UaVT3Ha833kvBHffbV9AOdIG+eRA9HJbC7vSv22Q2W6WCvH1KFyDMhHHorZDgr+3epHATAmIxvxO0wOR+rWo=
-X-Received: by 2002:a67:ad04:0:b0:42f:efb0:ae5 with SMTP id
- t4-20020a67ad04000000b0042fefb00ae5mr15879800vsl.24.1684280426647; Tue, 16
- May 2023 16:40:26 -0700 (PDT)
+ bh=GqwbtlirN2QDP8ROIthD8b7X2XSBA1E7Xw0HLj5XXVw=;
+ b=FRUt4ikyUNYUfAHXdBGLuPEqsaQeiClyGNrO7X+08zb0jnvGMnkPIReBpxE/ZhdJyK
+ 7O+XMGsiMKRnKKlk3iwc4DQj0O2cnOeTOXKCJJX6wh4Qv7jox4eD+JIds5/Zxutrpvxe
+ jNQqUQcBLH+Vl4QNfPiWbMdXQOgBNxtsNTtrSAo0PD5xb9UEU1+YLkrXSOHtMxYlQjji
+ EFuMjBOonZg4EeVnBWoE02x9X3IpC1PyxCmksQmACUffhxYbbF4RYufWN09+PWw1fEr2
+ zy1z3gTRggstkt4/ymtEbBuhVcZkMFx8RKCq/80ublcmrGN/K28atoFpSld1WtuMnshP
+ ijnQ==
+X-Gm-Message-State: AC+VfDyFh/MhFEQp7hTWVDGDEtnv/ZdjpQTxVgpjNBJz0G5rAUD6zVY7
+ mxM0tVCbhMKnuPMQtRclul7RWzVgUgwH27fzPEiZ8NUG30A=
+X-Google-Smtp-Source: ACHHUZ5yc7VlMZ7Pv+6JUTe8bo3zzkiW6f9+C6qV0BT/vKgTiXHHpxQd+lScDBrisjcLk+N/VvGzTaGvGWN66tdsmcw=
+X-Received: by 2002:a1f:4381:0:b0:44f:c794:42b with SMTP id
+ q123-20020a1f4381000000b0044fc794042bmr15062558vka.12.1684280630098; Tue, 16
+ May 2023 16:43:50 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230503085657.1814850-1-richard.henderson@linaro.org>
- <20230503085657.1814850-5-richard.henderson@linaro.org>
-In-Reply-To: <20230503085657.1814850-5-richard.henderson@linaro.org>
+ <20230503085657.1814850-6-richard.henderson@linaro.org>
+In-Reply-To: <20230503085657.1814850-6-richard.henderson@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 17 May 2023 09:40:00 +1000
-Message-ID: <CAKmqyKONtmAh8sWFJQ=aOzv_V7cDxWUe89phVY3f1U23XntZKw@mail.gmail.com>
-Subject: Re: [PATCH 04/11] tcg/riscv: Support ADD.UW, SEXT.B, SEXT.H, ZEXT.H
- from Zba+Zbb
+Date: Wed, 17 May 2023 09:43:24 +1000
+Message-ID: <CAKmqyKOWmH0oPzELTsyyB=25b+7khRusw5dLQpB_yJoSOYUzSA@mail.gmail.com>
+Subject: Re: [PATCH 05/11] tcg/riscv: Use ADD.UW for guest address generation
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, dbarboza@ventanamicro.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2b;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2d;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,8 +88,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 3, 2023 at 6:59=E2=80=AFPM Richard Henderson
+On Wed, May 3, 2023 at 6:58=E2=80=AFPM Richard Henderson
 <richard.henderson@linaro.org> wrote:
+>
+> The instruction is a combined zero-extend and add.
+> Use it for exactly that.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
@@ -99,67 +101,73 @@ Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  tcg/riscv/tcg-target.c.inc | 32 ++++++++++++++++++++++++--------
->  1 file changed, 24 insertions(+), 8 deletions(-)
+>  tcg/riscv/tcg-target.c.inc | 33 ++++++++++++++++++++++-----------
+>  1 file changed, 22 insertions(+), 11 deletions(-)
 >
 > diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-> index c5b060023f..53a7f97b29 100644
+> index 53a7f97b29..f64eaa8515 100644
 > --- a/tcg/riscv/tcg-target.c.inc
 > +++ b/tcg/riscv/tcg-target.c.inc
-> @@ -593,26 +593,42 @@ static void tcg_out_ext8u(TCGContext *s, TCGReg ret=
-, TCGReg arg)
+> @@ -1039,14 +1039,18 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGCon=
+text *s, TCGReg *pbase,
+>      tcg_out_opc_branch(s, OPC_BNE, TCG_REG_TMP0, TCG_REG_TMP1, 0);
 >
->  static void tcg_out_ext16u(TCGContext *s, TCGReg ret, TCGReg arg)
->  {
-> -    tcg_out_opc_imm(s, OPC_SLLIW, ret, arg, 16);
-> -    tcg_out_opc_imm(s, OPC_SRLIW, ret, ret, 16);
-> +    if (have_zbb) {
-> +        tcg_out_opc_reg(s, OPC_ZEXT_H, ret, arg, TCG_REG_ZERO);
+>      /* TLB Hit - translate address using addend.  */
+> -    addr_adj =3D addr_reg;
+> -    if (TARGET_LONG_BITS =3D=3D 32) {
+> -        addr_adj =3D TCG_REG_TMP0;
+> -        tcg_out_ext32u(s, addr_adj, addr_reg);
+> +    if (TARGET_LONG_BITS =3D=3D 64) {
+> +        tcg_out_opc_reg(s, OPC_ADD, TCG_REG_TMP0, addr_reg, TCG_REG_TMP2=
+);
+> +    } else if (have_zba) {
+> +        tcg_out_opc_reg(s, OPC_ADD_UW, TCG_REG_TMP0, addr_reg, TCG_REG_T=
+MP2);
 > +    } else {
-> +        tcg_out_opc_imm(s, OPC_SLLIW, ret, arg, 16);
-> +        tcg_out_opc_imm(s, OPC_SRLIW, ret, ret, 16);
-> +    }
->  }
+> +        tcg_out_ext32u(s, TCG_REG_TMP0, addr_reg);
+> +        tcg_out_opc_reg(s, OPC_ADD, TCG_REG_TMP0, TCG_REG_TMP0, TCG_REG_=
+TMP2);
+>      }
+> -    tcg_out_opc_reg(s, OPC_ADD, TCG_REG_TMP0, TCG_REG_TMP2, addr_adj);
+>      *pbase =3D TCG_REG_TMP0;
+>  #else
+> +    TCGReg base;
+> +
+>      if (a_mask) {
+>          ldst =3D new_ldst_label(s);
+>          ldst->is_ld =3D is_ld;
+> @@ -1061,14 +1065,21 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGCon=
+text *s, TCGReg *pbase,
+>          tcg_out_opc_branch(s, OPC_BNE, TCG_REG_TMP1, TCG_REG_ZERO, 0);
+>      }
 >
->  static void tcg_out_ext32u(TCGContext *s, TCGReg ret, TCGReg arg)
->  {
-> -    tcg_out_opc_imm(s, OPC_SLLI, ret, arg, 32);
-> -    tcg_out_opc_imm(s, OPC_SRLI, ret, ret, 32);
-> +    if (have_zba) {
-> +        tcg_out_opc_reg(s, OPC_ADD_UW, ret, arg, TCG_REG_ZERO);
+> -    TCGReg base =3D addr_reg;
+> -    if (TARGET_LONG_BITS =3D=3D 32) {
+> -        tcg_out_ext32u(s, TCG_REG_TMP0, base);
+> -        base =3D TCG_REG_TMP0;
+> -    }
+>      if (guest_base !=3D 0) {
+> -        tcg_out_opc_reg(s, OPC_ADD, TCG_REG_TMP0, TCG_GUEST_BASE_REG, ba=
+se);
+>          base =3D TCG_REG_TMP0;
+> +        if (TARGET_LONG_BITS =3D=3D 64) {
+> +            tcg_out_opc_reg(s, OPC_ADD, base, addr_reg, TCG_GUEST_BASE_R=
+EG);
+> +        } else if (have_zba) {
+> +            tcg_out_opc_reg(s, OPC_ADD_UW, base, addr_reg, TCG_GUEST_BAS=
+E_REG);
+> +        } else {
+> +            tcg_out_ext32u(s, base, addr_reg);
+> +            tcg_out_opc_reg(s, OPC_ADD, base, base, TCG_GUEST_BASE_REG);
+> +        }
+> +    } else if (TARGET_LONG_BITS =3D=3D 64) {
+> +        base =3D addr_reg;
 > +    } else {
-> +        tcg_out_opc_imm(s, OPC_SLLI, ret, arg, 32);
-> +        tcg_out_opc_imm(s, OPC_SRLI, ret, ret, 32);
-> +    }
->  }
->
->  static void tcg_out_ext8s(TCGContext *s, TCGType type, TCGReg ret, TCGRe=
-g arg)
->  {
-> -    tcg_out_opc_imm(s, OPC_SLLIW, ret, arg, 24);
-> -    tcg_out_opc_imm(s, OPC_SRAIW, ret, ret, 24);
-> +    if (have_zbb) {
-> +        tcg_out_opc_imm(s, OPC_SEXT_B, ret, arg, 0);
-> +    } else {
-> +        tcg_out_opc_imm(s, OPC_SLLIW, ret, arg, 24);
-> +        tcg_out_opc_imm(s, OPC_SRAIW, ret, ret, 24);
-> +    }
->  }
->
->  static void tcg_out_ext16s(TCGContext *s, TCGType type, TCGReg ret, TCGR=
-eg arg)
->  {
-> -    tcg_out_opc_imm(s, OPC_SLLIW, ret, arg, 16);
-> -    tcg_out_opc_imm(s, OPC_SRAIW, ret, ret, 16);
-> +    if (have_zbb) {
-> +        tcg_out_opc_imm(s, OPC_SEXT_H, ret, arg, 0);
-> +    } else {
-> +        tcg_out_opc_imm(s, OPC_SLLIW, ret, arg, 16);
-> +        tcg_out_opc_imm(s, OPC_SRAIW, ret, ret, 16);
-> +    }
->  }
->
->  static void tcg_out_ext32s(TCGContext *s, TCGReg ret, TCGReg arg)
+> +        base =3D TCG_REG_TMP0;
+> +        tcg_out_ext32u(s, base, addr_reg);
+>      }
+>      *pbase =3D base;
+>  #endif
 > --
 > 2.34.1
 >
