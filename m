@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAFAB705359
+	by mail.lfdr.de (Postfix) with ESMTPS id ED69870535A
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 18:16:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyxKJ-0003Hg-E2; Tue, 16 May 2023 12:15:03 -0400
+	id 1pyxKs-0003QS-8y; Tue, 16 May 2023 12:15:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1pyxKG-0003HB-VD
- for qemu-devel@nongnu.org; Tue, 16 May 2023 12:15:00 -0400
-Received: from mailout2.w2.samsung.com ([211.189.100.12])
+ id 1pyxKm-0003JN-Uo
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 12:15:35 -0400
+Received: from mailout1.w2.samsung.com ([211.189.100.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1pyxKB-0008QG-Hy
- for qemu-devel@nongnu.org; Tue, 16 May 2023 12:15:00 -0400
-Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
- by mailout2.w2.samsung.com (KnoxPortal) with ESMTP id
- 20230516161447usoutp0200ba3570f202bc1253a2411cbfe36d59~fq844W-rB1679816798usoutp025;
- Tue, 16 May 2023 16:14:47 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w2.samsung.com
- 20230516161447usoutp0200ba3570f202bc1253a2411cbfe36d59~fq844W-rB1679816798usoutp025
+ id 1pyxKi-0000G4-0M
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 12:15:29 -0400
+Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
+ by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230516161525usoutp01248ba9eaf531d8bc676241e1354ff35e~fq9boFRZA0240702407usoutp01H;
+ Tue, 16 May 2023 16:15:25 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
+ 20230516161525usoutp01248ba9eaf531d8bc676241e1354ff35e~fq9boFRZA0240702407usoutp01H
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1684253687;
- bh=K4rpJpoqAeXt8HedMEHnFOzeuG0FX2LpLghWBvJWMmc=;
+ s=mail20170921; t=1684253725;
+ bh=S9ITLPCpE/dPue0KRCyeZd6Ue227rUYGCwJpVfMJFpg=;
  h=From:To:CC:Subject:Date:In-Reply-To:References:From;
- b=loRl4VzjU7KkjY/FilePpbuMBg9m6DnI2n1ygFggux9CnAEn1f4USDH7PQovEptte
- gNWg74bAw8Ga9Z7v1vcQHUjnbfbZ/TTMW4gzerymmHEKtvUI2+695Us5DDa/O0D8q8
- 4kt4RPNXqrUBvZMLyLlBv7OPXoj37FH821YOetu0=
-Received: from ussmges3new.samsung.com (u112.gpu85.samsung.co.kr
- [203.254.195.112]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230516161447uscas1p1f5f033809ad8d72938fbddcf39b75878~fq84rb4A_0075500755uscas1p1j;
- Tue, 16 May 2023 16:14:47 +0000 (GMT)
-Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
- ussmges3new.samsung.com (USCPEMTA) with SMTP id 8F.46.62237.7FBA3646; Tue,
- 16 May 2023 12:14:47 -0400 (EDT)
-Received: from ussmgxs2new.samsung.com (u91.gpu85.samsung.co.kr
- [203.254.195.91]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230516161447uscas1p2655c105517bf73bdfc55bb972ed3693f~fq84RFYOj0757807578uscas1p2X;
- Tue, 16 May 2023 16:14:47 +0000 (GMT)
-X-AuditID: cbfec370-b17ff7000001f31d-e8-6463abf732af
-Received: from SSI-EX3.ssi.samsung.com ( [105.128.2.145]) by
- ussmgxs2new.samsung.com (USCPEXMTA) with SMTP id 1B.F1.44215.6FBA3646; Tue,
- 16 May 2023 12:14:47 -0400 (EDT)
+ b=QxwX4gF87Bo/x0wPu/9/C+zYDXZfNDr/j7oyU6RhocV1cN4ZtcJB8g3LlcZo6ok54
+ QbMy0X1a07en1z5aDya75KerJ4Q7gHHDqn8J5xQzqnbbn1Vj1YDyPGn53swwVIoJoC
+ BnIsK5utgTZWpuBk88fvyxC6LxW+9NIP+lO3Smlo=
+Received: from ussmges2new.samsung.com (u111.gpu85.samsung.co.kr
+ [203.254.195.111]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230516161525uscas1p23ce43e8b779a3563a5af663e19171dff~fq9bgh6YM0755207552uscas1p2F;
+ Tue, 16 May 2023 16:15:25 +0000 (GMT)
+Received: from uscas1p2.samsung.com ( [182.198.245.207]) by
+ ussmges2new.samsung.com (USCPEMTA) with SMTP id 53.E9.42611.C1CA3646; Tue,
+ 16 May 2023 12:15:24 -0400 (EDT)
+Received: from ussmgxs3new.samsung.com (u92.gpu85.samsung.co.kr
+ [203.254.195.92]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230516161524uscas1p1bba689b7fe90149e8d899b249d04bea0~fq9bKdJ-B0243702437uscas1p1h;
+ Tue, 16 May 2023 16:15:24 +0000 (GMT)
+X-AuditID: cbfec36f-fb1ff7000000a673-72-6463ac1c0545
+Received: from SSI-EX3.ssi.samsung.com ( [105.128.2.146]) by
+ ussmgxs3new.samsung.com (USCPEXMTA) with SMTP id 49.AB.64580.C1CA3646; Tue,
+ 16 May 2023 12:15:24 -0400 (EDT)
 Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
  SSI-EX3.ssi.samsung.com (105.128.2.228) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.2375.24; Tue, 16 May 2023 09:14:46 -0700
+ 15.1.2375.24; Tue, 16 May 2023 09:15:23 -0700
 Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
  SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
- 16 May 2023 09:14:46 -0700
+ 16 May 2023 09:15:23 -0700
 From: Fan Ni <fan.ni@samsung.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Peter Maydell
@@ -62,71 +62,71 @@ CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Peter Maydell
  Manzanares" <a.manzanares@samsung.com>, "dave@stgolabs.net"
  <dave@stgolabs.net>, "nmtadam.samsung@gmail.com"
  <nmtadam.samsung@gmail.com>, "nifan@outlook.com" <nifan@outlook.com>
-Subject: Re: [PATCH 1/2] hw/cxl: cdat: Fix open file not closed in
- ct3_load_cdat()
-Thread-Topic: [PATCH 1/2] hw/cxl: cdat: Fix open file not closed in
- ct3_load_cdat()
-Thread-Index: AQHZdFQmWtxYf0IZVEaMU8QImtL/669dr7sA
-Date: Tue, 16 May 2023 16:14:46 +0000
-Message-ID: <20230516161438.GA2139482@bgt-140510-bm03>
-In-Reply-To: <20230421132020.7408-2-Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 2/2] hw/cxl: cdat: Fix failure to free buffer in erorr
+ paths
+Thread-Topic: [PATCH 2/2] hw/cxl: cdat: Fix failure to free buffer in erorr
+ paths
+Thread-Index: AQHZdFQtKsjWjVfGuEKvcsMg4GMDpq9dr+yA
+Date: Tue, 16 May 2023 16:15:23 +0000
+Message-ID: <20230516161523.GB2139482@bgt-140510-bm03>
+In-Reply-To: <20230421132020.7408-3-Jonathan.Cameron@huawei.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [105.128.2.176]
 Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <0F519E5BF9774445A55F48224984E11D@ssi.samsung.com>
+Content-ID: <11E9A459FA6C9C44A2F9E87E1CF452E7@ssi.samsung.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-CFilter-Loop: Reflected
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTVxjGc+69vb3cWT3UBl7Uf6gsBN3q93IHjpBtJlcxDhNNFrPomnIF
- YkFs7cAlBIxiSFerqJjQWj4USYGCokSpgzoKG2U2moA2pcLEpYsI7ZwG5UPErVzJ+O933vM8
- 7/Oc5DCk/FfJCiYn76igy1NrlTRL3frt9f1PJ5s0metrWldxTYMOxDXW+miuu9VLcO9nxiTc
- s/JnBHe17k+Su+QdoTiHfTnXe7qd4tpbjUQayzstw1L+ZE9YwreVzpH8kK+D5oO+mwR/c3yU
- 5F+4HtF8hbU4g9nHbs0UtDk/CLp1qd+z2TVXGsn814pCb79fWoI8y4woigG8GUq6H9BGxDJy
- 3IDg7VCnVDyUEnC83CRZUI2+OkNHWI6bEdhqtCK/QuC5uEk01COo6J+eF9E4HlzG2/OswBvh
- b/85FBGR+BEJVfY781uX4z0wEhhBomgv1M2YiQWDc8BFGhHDUPhjsIcVkbEMfwaVpU3SCEfh
- NOh+0UZGGOEYmPzdMW8lcSwEgtWEWDoaLls7SJFjYO7OU1rkeHgy+Vwq6lXgr7hAR6JInAod
- 40fE8Vqorx0nxdho6KsMUqI1DrrsfiryFMAnosB1bfhD1tdgtV1HIq+Ed8P1RGQnYA00vmTF
- sRaq69o+7EmB2tlrxFmUYFnU2rKokeX/RpZFjSyLGtUgSSOKNej1uVmCflOeUKDSq3P1hrws
- leZw7g3030+7N9ed344CgZcqNyIY5EbAkEqFbLdZkymXZaqP/SjoDh/QGbSC3o1WMpQyVrbh
- iz6NHGepjwqHBCFf0C3cEkzUihJiu4Pb85cpzN1t6ZlNMFegdFoaylr93XmTKeWf20UToeda
- w6nCnl6nacmB5IkY65nQtoK+0ODF91Wss99yI5zh3WvqfGzzFH5TX+n8MiVpSP0gMFA+ebqf
- X79sNKE4aUfcFcWbdjtz/fOi/V0qW/yp5sumI8FqN0eVDWTbBhPXOXz+j1xJhmIzPzURdIeW
- ymcubfHx4RzhDWs9tyq9qirR9SRYRMX0bmFrx9I/iTukfHrVuTGpYw3pKY/rO9i1c8qVLGvw
- nmUfNu0nsn+ZYBRLEzvdXb37pg7eVd5nZ9ifUjMaju3KqDa37HIllw0Mqqdnp7Hnq93BP7zf
- Rh//WUnps9Ub1pA6vfpf6DTX69gDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrCIsWRmVeSWpSXmKPExsWS2cA0Uff76uQUg9+7WCxW31zDaLFq4TU2
- i8MbzzBZ/P/1itXi+cTnTBZLlzxitphz5gGLxZoVwhbHe3ewWOzY2MXkwOWxc9Zddo+WI29Z
- Pba0/mP2uHNtD5vHk2ubmTw2v37B7PF+31U2j6mz6wM4orhsUlJzMstSi/TtErgyFixexVzw
- VaTizKUb7A2MJ/i7GDk5JARMJF586mcDsYUEVjNKLDyv0cXIBWR/YpR4OKOdCcJZxiixYNth
- sCo2AUWJfV3bwWwRASOJdzcmMYIUMQtcZZY4c/wRM0hCWCBE4sGtB4wQRaES/ztWMcI07Ly8
- D6iGg4NFQFVixVsRkDCvgJnEzNbV7BBXlErMnvQAzOYUcJA4/H4L2EhGATGJ76fWMIHYzALi
- EreezGeC+EBAYsme88wQtqjEy8f/WCFsRYn731+yQ9TrSdyYOoUNZC2zgJ3EnteFEGFtiWUL
- XzNDnCAocXLmExaIVkmJgytusExglJiFZNssJJNmIUyahWTSLCSTFjCyrmIULy0uzk2vKDbK
- Sy3XK07MLS7NS9dLzs/dxAhMCKf/HY7ewXj71ke9Q4xMHIyHGCU4mJVEeAP7klOEeFMSK6tS
- i/Lji0pzUosPMUpzsCiJ876MmhgvJJCeWJKanZpakFoEk2Xi4JRqYGK00Nx9nF1ev4B3Q3Hj
- KuPgTY+ma2zX0tZlrZ2jbLq8TD3xI8OH65s/Pky2LV2jaSwboX0349dEFffjPyPv3AjL6M6r
- lZU0mm291CIx46LoC+4HzhKFr7baf7sqMUckgnFd+/QTPDd5haQFgWFq+WY5+92tieIV3Nqz
- PkjwTq01lj8vVPV+v3tYrmjmD9uHr78fc1L5vqGi29b2l6Fw5dkzW/Q71/d90Hq6IKiccZ69
- avDad+5dE9mdv4gd7vHc8iB7qfx36dKZLdmvhbz3neBJZA4xuW26cXXuvysl/XoLOVbbzrhR
- uT1kp3WyZ/EEwxvs7+qZbv/6oX+jJkiiI93uZVet4xLGyLfKTMeVWIozEg21mIuKEwG4w/9M
- dwMAAA==
-X-CMS-MailID: 20230516161447uscas1p2655c105517bf73bdfc55bb972ed3693f
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrJKsWRmVeSWpSXmKPExsWy7djX87oya5JTDHb8MLNYfXMNo8WqhdfY
+ LA5vPMNk8f/XK1aL5xOfM1ksXfKI2WLOmQcsFmtWCFsc793BYrFjYxeTA5fHzll32T1ajrxl
+ 9djS+o/Z4861PWweT65tZvLY/PoFs8f7fVfZPKbOrg/giOKySUnNySxLLdK3S+DK+L1zIVPB
+ Ha2K1q42pgbGTfJdjBwcEgImEr3HWbsYuTiEBFYySiybvYENwmllkng14x5QhhOs6MLeD8wQ
+ ibWMEh/eT4Wq+sQosWvKUXYIZxmjxJ9Fu9lAWtgEFCX2dW0Hs0UEjCTe3ZjECFLELHCVWWLe
+ il1gc4UFgiQedN9lhCgKlvh2aRMzTMOdNb/BbBYBVYkpJ46D2bwCZhL3J1wEG8op4CDx79YD
+ dhCbUUBM4vupNUwgNrOAuMStJ/OZIO4WlFg0ew8zhC0m8W/XQzYIW1Hi/veX7BD1ehI3pk5h
+ g7DtJLacvAVla0ssW/gaaq+gxMmZT1ggeiUlDq64wQLyjIRAM6fE58stjBAJF4l9Z25BLZaW
+ mL7mMgskhJMlVn3kggjnSMxfsgVqjrXEwj/rmSYwqsxCcvYsJCfNQnLSLCQnzUJy0gJG1lWM
+ 4qXFxbnpqcVGeanlesWJucWleel6yfm5mxiBqe30v8P5Oxiv3/qod4iRiYPxEKMEB7OSCG9g
+ X3KKEG9KYmVValF+fFFpTmrxIUZpDhYlcV5D25PJQgLpiSWp2ampBalFMFkmDk6pBqbab+J/
+ qoVvePr8sbXf0nx7NV/IyQNNZze3TIq7ueWRtkH/gnmm7w0S6yI8jb1OLHos6LaswyZjgh/7
+ 85UajdMjfzq/17eQ+8WT8vGX8S0eTSOGlWFXphfLd1rm5rp7B3V9X5eaE5QrK/nzt8Zi9hcm
+ JW0e+0Pcyks6UveeX8flfu7Aac+izcVsa5sbIrQyV9/ItZv48+1Me6OZNVXfHja67Ctbr/Tu
+ o8V1/rQk1nn7pnzXuaP7t7DY+tGsTpMXBa/iHh84x/U+tS/G35yhvVh+j7Ti/P02CqapLK96
+ BP6luWZvfnZMbhJPk6T0S/++D/VMu7XPv16f8/TR23rNM5L1z0Xr4prYNz8+svDATyWW4oxE
+ Qy3mouJEACok9WncAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrBIsWRmVeSWpSXmKPExsWS2cA0SVdmTXKKwdnvCharb65htFi18Bqb
+ xeGNZ5gs/v96xWrxfOJzJoulSx4xW8w584DFYs0KYYvjvTtYLHZs7GJy4PLYOesuu0fLkbes
+ Hlta/zF73Lm2h83jybXNTB6bX79g9ni/7yqbx9TZ9QEcUVw2Kak5mWWpRfp2CVwZv3cuZCq4
+ o1XR2tXG1MC4Sb6LkZNDQsBE4sLeD8xdjFwcQgKrGSVOzp0G5XxilJi2uI8dwlnGKLGl7Swj
+ SAubgKLEvq7tbCC2iICRxLsbkxhBipgFrjJLnDn+iBkkISwQJPGg+y4jRFGwRMf5g6wwDXfW
+ /AarYRFQlZhy4jiYzStgJnF/wkWwoUICpRJzl55mArE5BRwk/t16wA5iMwqISXw/tQYsziwg
+ LnHryXwmiB8EJJbsOc8MYYtKvHz8jxXCVpS4//0lO0S9nsSNqVPYIGw7iS0nb0HZ2hLLFr6G
+ ukFQ4uTMJywQvZISB1fcYJnAKDELybpZSEbNQjJqFpJRs5CMWsDIuopRvLS4ODe9otg4L7Vc
+ rzgxt7g0L10vOT93EyMwMZz+dzhmB+O9Wx/1DjEycTAeYpTgYFYS4Q3sS04R4k1JrKxKLcqP
+ LyrNSS0+xCjNwaIkzusROzFeSCA9sSQ1OzW1ILUIJsvEwSnVwGR6+6dysXIs46dvYvX2W5cf
+ ZFx6MDD34ozvWu5aK1673F62+e+66NUKlcwpXt26HZVagROm3NecI+z3bo/fqvbZfKsj8/yP
+ LJ3oMJHJadnWd6YvJ+zaEZ625e2dmT9nmytu5dH5Hh8YzxBbGJ+VLN6zznnT3tWfu+PjJnHF
+ 2+7hWH3TdPY19ouFO0+EnhLifih+9uFs13/Tf7mz7/gaJal0/EYed77Huy1/FTYseaIpsVNW
+ r4+5cM8m3lM3F/9uYjfNc10Zs95CPuVNCe+ver1A14yjuhFSc6z+CgXpBX8M/6ousOO3Rqim
+ 863/KofltiQviNQJk/V791CsaLGXmDnLsa18q+LFp/1+eXFdS58SS3FGoqEWc1FxIgA+lUfC
+ ewMAAA==
+X-CMS-MailID: 20230516161524uscas1p1bba689b7fe90149e8d899b249d04bea0
 CMS-TYPE: 301P
-X-CMS-RootMailID: 20230516161447uscas1p2655c105517bf73bdfc55bb972ed3693f
+X-CMS-RootMailID: 20230516161524uscas1p1bba689b7fe90149e8d899b249d04bea0
 References: <20230421132020.7408-1-Jonathan.Cameron@huawei.com>
- <20230421132020.7408-2-Jonathan.Cameron@huawei.com>
- <CGME20230516161447uscas1p2655c105517bf73bdfc55bb972ed3693f@uscas1p2.samsung.com>
-Received-SPF: pass client-ip=211.189.100.12; envelope-from=fan.ni@samsung.com;
- helo=mailout2.w2.samsung.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ <20230421132020.7408-3-Jonathan.Cameron@huawei.com>
+ <CGME20230516161524uscas1p1bba689b7fe90149e8d899b249d04bea0@uscas1p1.samsung.com>
+Received-SPF: pass client-ip=211.189.100.11; envelope-from=fan.ni@samsung.com;
+ helo=mailout1.w2.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -144,82 +144,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 21, 2023 at 02:20:19PM +0100, Jonathan Cameron via wrote:
-> From: Hao Zeng <zenghao@kylinos.cn>
+On Fri, Apr 21, 2023 at 02:20:20PM +0100, Jonathan Cameron via wrote:
+> The failure paths in CDAT file loading did not clear up properly.
+> Change to using g_auto_free and a local pointer for the buffer to
+> ensure this function has no side effects on error.
+> Also drop some unnecessary checks that can not fail.
 >=20
-> Open file descriptor not closed in error paths. Fix by replace
-> open coded handling of read of whole file into a buffer with
-> g_file_get_contents()
+> Cleanup properly after a failure to load a CDAT file.
 >=20
-> Fixes: aba578bdac ("hw/cxl: CDAT Data Object Exchange implementation")
-> Signed-off-by: Zeng Hao <zenghao@kylinos.cn>
-> Suggested-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
 > Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-> Suggested-by: Jonathan Cameron via <qemu-devel@nongnu.org>
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
 
 Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-> --
-> Changes since v5:
-> - Drop if guard on g_free() as per checkpatch warning.
 > ---
->  hw/cxl/cxl-cdat.c | 29 ++++++++---------------------
->  1 file changed, 8 insertions(+), 21 deletions(-)
+>  hw/cxl/cxl-cdat.c            | 33 ++++++++++++++++++---------------
+>  hw/mem/cxl_type3.c           |  4 ++++
+>  hw/pci-bridge/cxl_upstream.c |  3 +++
+>  3 files changed, 25 insertions(+), 15 deletions(-)
 >=20
 > diff --git a/hw/cxl/cxl-cdat.c b/hw/cxl/cxl-cdat.c
-> index 137abd0992..056711d63d 100644
+> index 056711d63d..d246d6885b 100644
 > --- a/hw/cxl/cxl-cdat.c
 > +++ b/hw/cxl/cxl-cdat.c
-> @@ -110,29 +110,18 @@ static void ct3_load_cdat(CDATObject *cdat, Error *=
-*errp)
+> @@ -108,6 +108,7 @@ static void ct3_build_cdat(CDATObject *cdat, Error **=
+errp)
+>  static void ct3_load_cdat(CDATObject *cdat, Error **errp)
+>  {
 >      g_autofree CDATEntry *cdat_st =3D NULL;
+> +    g_autofree char *buf =3D NULL;
 >      uint8_t sum =3D 0;
 >      int num_ent;
-> -    int i =3D 0, ent =3D 1, file_size =3D 0;
-> +    int i =3D 0, ent =3D 1;
-> +    gsize file_size =3D 0;
->      CDATSubHeader *hdr;
-> -    FILE *fp =3D NULL;
-> +    GError *error =3D NULL;
+>      int i =3D 0, ent =3D 1;
+> @@ -116,7 +117,7 @@ static void ct3_load_cdat(CDATObject *cdat, Error **e=
+rrp)
+>      GError *error =3D NULL;
 > =20
 >      /* Read CDAT file and create its cache */
-> -    fp =3D fopen(cdat->filename, "r");
-> -    if (!fp) {
-> -        error_setg(errp, "CDAT: Unable to open file");
-> +    if (!g_file_get_contents(cdat->filename, (gchar **)&cdat->buf,
-> +                             &file_size, &error)) {
-> +        error_setg(errp, "CDAT: File read failed: %s", error->message);
-> +        g_error_free(error);
+> -    if (!g_file_get_contents(cdat->filename, (gchar **)&cdat->buf,
+> +    if (!g_file_get_contents(cdat->filename, (gchar **)&buf,
+>                               &file_size, &error)) {
+>          error_setg(errp, "CDAT: File read failed: %s", error->message);
+>          g_error_free(error);
+> @@ -129,9 +130,17 @@ static void ct3_load_cdat(CDATObject *cdat, Error **=
+errp)
+>      i =3D sizeof(CDATTableHeader);
+>      num_ent =3D 1;
+>      while (i < file_size) {
+> -        hdr =3D (CDATSubHeader *)(cdat->buf + i);
+> +        hdr =3D (CDATSubHeader *)(buf + i);
+> +        if (i + sizeof(CDATSubHeader) > file_size) {
+> +            error_setg(errp, "CDAT: Truncated table");
+> +            return;
+> +        }
+>          cdat_len_check(hdr, errp);
+>          i +=3D hdr->length;
+> +        if (i > file_size) {
+> +            error_setg(errp, "CDAT: Truncated table");
+> +            return;
+> +        }
+>          num_ent++;
+>      }
+>      if (i !=3D file_size) {
+> @@ -139,33 +148,26 @@ static void ct3_load_cdat(CDATObject *cdat, Error *=
+*errp)
 >          return;
 >      }
-> -
-> -    fseek(fp, 0, SEEK_END);
-> -    file_size =3D ftell(fp);
-> -    fseek(fp, 0, SEEK_SET);
-> -    cdat->buf =3D g_malloc0(file_size);
-> -
-> -    if (fread(cdat->buf, file_size, 1, fp) =3D=3D 0) {
-> -        error_setg(errp, "CDAT: File read failed");
+> =20
+> -    cdat_st =3D g_malloc0(sizeof(*cdat_st) * num_ent);
+> -    if (!cdat_st) {
+> -        error_setg(errp, "CDAT: Failed to allocate entry array");
 > -        return;
 > -    }
-> -
-> -    fclose(fp);
-> -
->      if (file_size < sizeof(CDATTableHeader)) {
->          error_setg(errp, "CDAT: File too short");
->          return;
-> @@ -218,7 +207,5 @@ void cxl_doe_cdat_release(CXLComponentState *cxl_csta=
-te)
->          cdat->free_cdat_table(cdat->built_buf, cdat->built_buf_len,
->                                cdat->private);
+> +    cdat_st =3D g_new0(CDATEntry, num_ent);
+> =20
+>      /* Set CDAT header, Entry =3D 0 */
+> -    cdat_st[0].base =3D cdat->buf;
+> +    cdat_st[0].base =3D buf;
+>      cdat_st[0].length =3D sizeof(CDATTableHeader);
+>      i =3D 0;
+> =20
+>      while (i < cdat_st[0].length) {
+> -        sum +=3D cdat->buf[i++];
+> +        sum +=3D buf[i++];
 >      }
-> -    if (cdat->buf) {
-> -        free(cdat->buf);
-> -    }
-> +    g_free(cdat->buf);
+> =20
+>      /* Read CDAT structures */
+>      while (i < file_size) {
+> -        hdr =3D (CDATSubHeader *)(cdat->buf + i);
+> -        cdat_len_check(hdr, errp);
+> -
+> +        hdr =3D (CDATSubHeader *)(buf + i);
+>          cdat_st[ent].base =3D hdr;
+>          cdat_st[ent].length =3D hdr->length;
+> =20
+> -        while (cdat->buf + i <
+> -               (uint8_t *)cdat_st[ent].base + cdat_st[ent].length) {
+> +        while (buf + i < (char *)cdat_st[ent].base + cdat_st[ent].length=
+) {
+>              assert(i < file_size);
+> -            sum +=3D cdat->buf[i++];
+> +            sum +=3D buf[i++];
+>          }
+> =20
+>          ent++;
+> @@ -176,6 +178,7 @@ static void ct3_load_cdat(CDATObject *cdat, Error **e=
+rrp)
+>      }
+>      cdat->entry_len =3D num_ent;
+>      cdat->entry =3D g_steal_pointer(&cdat_st);
+> +    cdat->buf =3D g_steal_pointer(&buf);
 >  }
+> =20
+>  void cxl_doe_cdat_init(CXLComponentState *cxl_cstate, Error **errp)
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index abe60b362c..7647122cc6 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -593,6 +593,9 @@ static void ct3_realize(PCIDevice *pci_dev, Error **e=
+rrp)
+>      cxl_cstate->cdat.free_cdat_table =3D ct3_free_cdat_table;
+>      cxl_cstate->cdat.private =3D ct3d;
+>      cxl_doe_cdat_init(cxl_cstate, errp);
+> +    if (*errp) {
+> +        goto err_free_special_ops;
+> +    }
+> =20
+>      pcie_cap_deverr_init(pci_dev);
+>      /* Leave a bit of room for expansion */
+> @@ -605,6 +608,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **e=
+rrp)
+> =20
+>  err_release_cdat:
+>      cxl_doe_cdat_release(cxl_cstate);
+> +err_free_special_ops:
+>      g_free(regs->special_ops);
+>  err_address_space_free:
+>      address_space_destroy(&ct3d->hostmem_as);
+> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+> index 9df436cb73..ef47e5d625 100644
+> --- a/hw/pci-bridge/cxl_upstream.c
+> +++ b/hw/pci-bridge/cxl_upstream.c
+> @@ -346,6 +346,9 @@ static void cxl_usp_realize(PCIDevice *d, Error **err=
+p)
+>      cxl_cstate->cdat.free_cdat_table =3D free_default_cdat_table;
+>      cxl_cstate->cdat.private =3D d;
+>      cxl_doe_cdat_init(cxl_cstate, errp);
+> +    if (*errp) {
+> +        goto err_cap;
+> +    }
+> =20
+>      return;
+> =20
 > --=20
 > 2.37.2
 >=20
