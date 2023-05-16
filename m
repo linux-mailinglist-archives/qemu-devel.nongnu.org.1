@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA806705808
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8687057E0
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:48:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz0cW-0000Yu-5p; Tue, 16 May 2023 15:46:04 -0400
+	id 1pz0et-00035P-Lx; Tue, 16 May 2023 15:48:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0c6-0000As-S2
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:42 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1pz0c7-0000Ba-9O
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:44 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0c0-0003ic-Tl
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:34 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1adc913094aso583765ad.0
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:45:31 -0700 (PDT)
+ id 1pz0c1-0003jH-Ln
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:35 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-24e3a0aa408so58595a91.1
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:45:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684266330; x=1686858330;
+ d=linaro.org; s=google; t=1684266332; x=1686858332;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AMpow73dBXvGA9oYAQFRwfnfJJlscn+XdJ+q82cdRac=;
- b=xgAuzgNfbsiWQ6VdUoO8ug630/20Vr/OsFgH5R0/BdFzUaCAyHndivpq+Y8uqTaeno
- ezZlikzDoZ2ogLzIkUi1KwMGxUykW+32Neo5/icYqgesEpInzHOMWSis5zzdkrTuV3Xt
- 3LRKNSM606eJVH/dkKvkB3VJJ3i63q3l8L7VtesE8GAmBD9LFj9eQQzDEylRE6449gXM
- VLvwkJ5s1KfM+itJxkTBIkRlt+f4Vqj5SKQ/94jQ5ONQJd2EKPpOhuIHpfKYqTlW+0H0
- YcEQma5VKW7O10SgCajnrQMXee61sjmHdeTka2Zqz2PaNSzUh6b7ajaZbbsYZKGP2boh
- Od5g==
+ bh=S6zv6CFBl/KpfAciWHv+fKXujm15Kfs396M2WZzhU80=;
+ b=icy1VDCWgA3RxUGOdwxBJHDIhqtfvcW1ZHPQEKHvet8RDKxEMf4MaaTVoAfXLrSBQq
+ Np8FY5eBl3Ak1iJ+uNG8yC/SBxj7BS4Mgxi8rEepuD/LKN4YtJM6qbUvxMp3qiUbES0G
+ g1c02x3dzBo9gqoS2D1S2kthVrrboVOvDnwEqch93TDqxA49LPt7dDmA6j9NV18JIcLw
+ T8LtAcsviO0+3m76h+U5K43hhIfzXb/zKOgIlw8plwCBD4Ic4SSPF+8dT7Wa0dOn1IRl
+ pZXfZYpJVIsyLx2aDQku0PP97wl5wbzT7DPenGoX08FmOGQbyFvIL7lNaQ7HHbPj2FvJ
+ HSIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684266330; x=1686858330;
+ d=1e100.net; s=20221208; t=1684266332; x=1686858332;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AMpow73dBXvGA9oYAQFRwfnfJJlscn+XdJ+q82cdRac=;
- b=VOeMIt0RIAUqWk2n03K0eCL0HZTgGmKHgrI90X/efRYXS2rEeshmRyYTtyRnyH1fXn
- IB/Ztnh/Ep/zxtDABfNTdjBf/IMFrh5XwX37M47btxg0AAYPU9hsCFZHQvrNXnWU2qbq
- isrLJ9vL63KGmTMTWEEGuF+kW/a89TTFuQNefr9nBLVlg/GKW9nXgjEvPnz2AP1ceAA3
- V4gBT/puaI5p5cvAowtSx4W6kehJ/vrsyfnrXNh9lXcTdRy/VLC96h4iaGey+4589hCa
- BBx/DGxPfrAnVO1BXyUaW89MGfS2SmfLBy/ZcG9i7klGTBTcIXjnxzyrp5sg9AOE6COJ
- hgjQ==
-X-Gm-Message-State: AC+VfDy5EMjSvSprPIrv9NE2oUiTeEfmRyiCDSW3WHkVV7OeEIQ2tQHl
- qyhVlAk9RvJ5T3IkLXgtfxPQhu6v8JI9gpY4jsw=
-X-Google-Smtp-Source: ACHHUZ79jD4mPlxiNm8YdoLWm6pQaGPZuaSnVCK1vsbN+H/BpClBVVD4UVN+AYkrSnyYLu4NfQtnRw==
-X-Received: by 2002:a17:90b:3a8c:b0:247:40f1:79d7 with SMTP id
- om12-20020a17090b3a8c00b0024740f179d7mr37840475pjb.34.1684266330416; 
- Tue, 16 May 2023 12:45:30 -0700 (PDT)
+ bh=S6zv6CFBl/KpfAciWHv+fKXujm15Kfs396M2WZzhU80=;
+ b=YnYLhCnAsOD/DZV+63gkLWANm3x4s2bp/VBbFk2gnmyOd9Ha1z/m0YxmD7/7YM+oCS
+ tCoWMH7W3h1qR1YwXC2g8KG5+lW353USnxA8z2oP2QlUS/OIH+sdnAdJJRhKtEJ42oMN
+ cbynr3wPeVHp74Xo65iV3ddj7k1LRHlFjQ+VyeH+JTrlBt+CKVIp320W+xdUh8aSCdkO
+ 4RKV4zZdgZ5rb/t6myLKyAAYOQDP9VCtAElrNL+jLvngvaf20Nfkod8s4Qo/L97AF1eU
+ vIBXlrftTwCOKK0AF2fYq89uyfbUmQdWX0RqinFFAPdvJEnbMD66bpw2q/76EJAzFCDf
+ P1ow==
+X-Gm-Message-State: AC+VfDxotP9oD8sL9YQzMQ9+FLYmtFvrV4f5YufJcNz7btWxloJ+szVU
+ p6Ev0Y1sB4fVdkW1EzZgkQaGiS3nhTF/CFrYa4E=
+X-Google-Smtp-Source: ACHHUZ4zKdxGq8wipoi2Z8oAIBHraDdg7NddKVI+DboShhCEpPJ2MhogGCk5GBjDyWRCiIXvGBJGyA==
+X-Received: by 2002:a17:90a:65c6:b0:24e:4b1c:74d2 with SMTP id
+ i6-20020a17090a65c600b0024e4b1c74d2mr38679667pjs.32.1684266332206; 
+ Tue, 16 May 2023 12:45:32 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
  by smtp.gmail.com with ESMTPSA id
- y12-20020a17090abd0c00b002508d73f4e8sm25555pjr.57.2023.05.16.12.45.29
+ y12-20020a17090abd0c00b002508d73f4e8sm25555pjr.57.2023.05.16.12.45.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 12:45:30 -0700 (PDT)
+ Tue, 16 May 2023 12:45:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 48/80] tcg/i386: Support 128-bit load/store with have_atomic16
-Date: Tue, 16 May 2023 12:41:13 -0700
-Message-Id: <20230516194145.1749305-49-richard.henderson@linaro.org>
+Subject: [PULL 50/80] tcg/aarch64: Support 128-bit load/store
+Date: Tue, 16 May 2023 12:41:15 -0700
+Message-Id: <20230516194145.1749305-51-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230516194145.1749305-1-richard.henderson@linaro.org>
 References: <20230516194145.1749305-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,303 +91,322 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Use LDXP+STXP when LSE2 is not present and 16-byte atomicity is required,
+and LDP/STP otherwise.  This requires allocating a second general-purpose
+temporary, as Rs cannot overlap Rn in STXP.
+
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.h     |   3 +-
- tcg/i386/tcg-target.c.inc | 181 +++++++++++++++++++++++++++++++++++++-
- 2 files changed, 180 insertions(+), 4 deletions(-)
+ tcg/aarch64/tcg-target-con-set.h |   2 +
+ tcg/aarch64/tcg-target.h         |  11 +-
+ tcg/aarch64/tcg-target.c.inc     | 179 ++++++++++++++++++++++++++++++-
+ 3 files changed, 189 insertions(+), 3 deletions(-)
 
-diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
-index 943af6775e..7f69997e30 100644
---- a/tcg/i386/tcg-target.h
-+++ b/tcg/i386/tcg-target.h
-@@ -194,7 +194,8 @@ extern bool have_atomic16;
- #define TCG_TARGET_HAS_qemu_st8_i32     1
- #endif
+diff --git a/tcg/aarch64/tcg-target-con-set.h b/tcg/aarch64/tcg-target-con-set.h
+index d6c6866878..74065c7098 100644
+--- a/tcg/aarch64/tcg-target-con-set.h
++++ b/tcg/aarch64/tcg-target-con-set.h
+@@ -14,6 +14,7 @@ C_O0_I2(lZ, l)
+ C_O0_I2(r, rA)
+ C_O0_I2(rZ, r)
+ C_O0_I2(w, r)
++C_O0_I3(lZ, lZ, l)
+ C_O1_I1(r, l)
+ C_O1_I1(r, r)
+ C_O1_I1(w, r)
+@@ -33,4 +34,5 @@ C_O1_I2(w, w, wO)
+ C_O1_I2(w, w, wZ)
+ C_O1_I3(w, w, w, w)
+ C_O1_I4(r, r, rA, rZ, rZ)
++C_O2_I1(r, r, l)
+ C_O2_I4(r, r, rZ, rZ, rA, rMZ)
+diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
+index 74ee2ed255..2c079f21c2 100644
+--- a/tcg/aarch64/tcg-target.h
++++ b/tcg/aarch64/tcg-target.h
+@@ -129,7 +129,16 @@ extern bool have_lse2;
+ #define TCG_TARGET_HAS_muluh_i64        1
+ #define TCG_TARGET_HAS_mulsh_i64        1
  
 -#define TCG_TARGET_HAS_qemu_ldst_i128   0
-+#define TCG_TARGET_HAS_qemu_ldst_i128 \
-+    (TCG_TARGET_REG_BITS == 64 && have_atomic16)
++/*
++ * Without FEAT_LSE2, we must use LDXP+STXP to implement atomic 128-bit load,
++ * which requires writable pages.  We must defer to the helper for user-only,
++ * but in system mode all ram is writable for the host.
++ */
++#ifdef CONFIG_USER_ONLY
++#define TCG_TARGET_HAS_qemu_ldst_i128   have_lse2
++#else
++#define TCG_TARGET_HAS_qemu_ldst_i128   1
++#endif
  
- /* We do not support older SSE systems, only beginning with AVX1.  */
- #define TCG_TARGET_HAS_v64              have_avx1
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 0415ca2a4c..b66769952e 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -91,6 +91,8 @@ static const int tcg_target_reg_alloc_order[] = {
- #endif
- };
+ #define TCG_TARGET_HAS_v64              1
+ #define TCG_TARGET_HAS_v128             1
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index 1ed5be2c00..893b3514bb 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -81,6 +81,7 @@ bool have_lse;
+ bool have_lse2;
  
-+#define TCG_TMP_VEC  TCG_REG_XMM5
-+
- static const int tcg_target_call_iarg_regs[] = {
- #if TCG_TARGET_REG_BITS == 64
- #if defined(_WIN64)
-@@ -347,6 +349,8 @@ static bool tcg_target_const_match(int64_t val, TCGType type, int ct)
- #define OPC_PCMPGTW     (0x65 | P_EXT | P_DATA16)
- #define OPC_PCMPGTD     (0x66 | P_EXT | P_DATA16)
- #define OPC_PCMPGTQ     (0x37 | P_EXT38 | P_DATA16)
-+#define OPC_PEXTRD      (0x16 | P_EXT3A | P_DATA16)
-+#define OPC_PINSRD      (0x22 | P_EXT3A | P_DATA16)
- #define OPC_PMAXSB      (0x3c | P_EXT38 | P_DATA16)
- #define OPC_PMAXSW      (0xee | P_EXT | P_DATA16)
- #define OPC_PMAXSD      (0x3d | P_EXT38 | P_DATA16)
-@@ -1783,7 +1787,21 @@ typedef struct {
+ #define TCG_REG_TMP0 TCG_REG_X30
++#define TCG_REG_TMP1 TCG_REG_X17
+ #define TCG_VEC_TMP0 TCG_REG_V31
  
- bool tcg_target_has_memory_bswap(MemOp memop)
- {
--    return have_movbe;
-+    TCGAtomAlign aa;
+ #ifndef CONFIG_SOFTMMU
+@@ -404,6 +405,10 @@ typedef enum {
+     I3305_LDR_v64   = 0x5c000000,
+     I3305_LDR_v128  = 0x9c000000,
+ 
++    /* Load/store exclusive. */
++    I3306_LDXP      = 0xc8600000,
++    I3306_STXP      = 0xc8200000,
 +
-+    if (!have_movbe) {
-+        return false;
-+    }
-+    if ((memop & MO_SIZE) <= MO_64) {
-+        return true;
-+    }
+     /* Load/store register.  Described here as 3.3.12, but the helper
+        that emits them can transform to 3.3.10 or 3.3.13.  */
+     I3312_STRB      = 0x38000000 | LDST_ST << 22 | MO_8 << 30,
+@@ -468,6 +473,9 @@ typedef enum {
+     I3406_ADR       = 0x10000000,
+     I3406_ADRP      = 0x90000000,
+ 
++    /* Add/subtract extended register instructions. */
++    I3501_ADD       = 0x0b200000,
 +
-+    /*
-+     * Reject 16-byte memop with 16-byte atomicity, i.e. VMOVDQA,
-+     * but do allow a pair of 64-bit operations, i.e. MOVBEQ.
-+     */
-+    aa = atom_and_align_for_opc(tcg_ctx, memop, MO_ATOM_IFALIGN, true);
-+    return aa.atom <= MO_64;
+     /* Add/subtract shifted register instructions (without a shift).  */
+     I3502_ADD       = 0x0b000000,
+     I3502_ADDS      = 0x2b000000,
+@@ -638,6 +646,12 @@ static void tcg_out_insn_3305(TCGContext *s, AArch64Insn insn,
+     tcg_out32(s, insn | (imm19 & 0x7ffff) << 5 | rt);
  }
  
- /*
-@@ -1811,6 +1829,30 @@ static const TCGLdstHelperParam ldst_helper_param = {
- static const TCGLdstHelperParam ldst_helper_param = { };
- #endif
- 
-+static void tcg_out_vec_to_pair(TCGContext *s, TCGType type,
-+                                TCGReg l, TCGReg h, TCGReg v)
++static void tcg_out_insn_3306(TCGContext *s, AArch64Insn insn, TCGReg rs,
++                              TCGReg rt, TCGReg rt2, TCGReg rn)
 +{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+
-+    /* vpmov{d,q} %v, %l */
-+    tcg_out_vex_modrm(s, OPC_MOVD_EyVy + rexw, v, 0, l);
-+    /* vpextr{d,q} $1, %v, %h */
-+    tcg_out_vex_modrm(s, OPC_PEXTRD + rexw, v, 0, h);
-+    tcg_out8(s, 1);
++    tcg_out32(s, insn | rs << 16 | rt2 << 10 | rn << 5 | rt);
 +}
 +
-+static void tcg_out_pair_to_vec(TCGContext *s, TCGType type,
-+                                TCGReg v, TCGReg l, TCGReg h)
-+{
-+    int rexw = type == TCG_TYPE_I32 ? 0 : P_REXW;
-+
-+    /* vmov{d,q} %l, %v */
-+    tcg_out_vex_modrm(s, OPC_MOVD_VyEy + rexw, v, 0, l);
-+    /* vpinsr{d,q} $1, %h, %v, %v */
-+    tcg_out_vex_modrm(s, OPC_PINSRD + rexw, v, v, h);
-+    tcg_out8(s, 1);
-+}
-+
- /*
-  * Generate code for the slow path for a load at the end of block
-  */
-@@ -1900,6 +1942,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+ static void tcg_out_insn_3201(TCGContext *s, AArch64Insn insn, TCGType ext,
+                               TCGReg rt, int imm19)
  {
+@@ -720,6 +734,14 @@ static void tcg_out_insn_3406(TCGContext *s, AArch64Insn insn,
+     tcg_out32(s, insn | (disp & 3) << 29 | (disp & 0x1ffffc) << (5 - 2) | rd);
+ }
+ 
++static inline void tcg_out_insn_3501(TCGContext *s, AArch64Insn insn,
++                                     TCGType sf, TCGReg rd, TCGReg rn,
++                                     TCGReg rm, int opt, int imm3)
++{
++    tcg_out32(s, insn | sf << 31 | rm << 16 | opt << 13 |
++              imm3 << 10 | rn << 5 | rd);
++}
++
+ /* This function is for both 3.5.2 (Add/Subtract shifted register), for
+    the rare occasion when we actually want to supply a shift amount.  */
+ static inline void tcg_out_insn_3502S(TCGContext *s, AArch64Insn insn,
+@@ -1647,16 +1669,16 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     TCGType addr_type = TARGET_LONG_BITS == 64 ? TCG_TYPE_I64 : TCG_TYPE_I32;
      TCGLabelQemuLdst *ldst = NULL;
      MemOp opc = get_memop(oi);
 +    MemOp s_bits = opc & MO_SIZE;
      unsigned a_mask;
  
- #ifdef CONFIG_SOFTMMU
-@@ -1910,7 +1953,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     *h = x86_guest_base;
- #endif
-     h->base = addrlo;
--    h->aa = atom_and_align_for_opc(s, opc, MO_ATOM_IFALIGN, false);
-+    h->aa = atom_and_align_for_opc(s, opc, MO_ATOM_IFALIGN, s_bits == MO_128);
+     h->aa = atom_and_align_for_opc(s, opc,
+                                    have_lse2 ? MO_ATOM_WITHIN16
+                                              : MO_ATOM_IFALIGN,
+-                                   false);
++                                   s_bits == MO_128);
      a_mask = (1 << h->aa.align) - 1;
  
  #ifdef CONFIG_SOFTMMU
-@@ -1920,7 +1963,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     TCGType tlbtype = TCG_TYPE_I32;
-     int trexw = 0, hrexw = 0, tlbrexw = 0;
-     unsigned mem_index = get_mmuidx(oi);
 -    unsigned s_bits = opc & MO_SIZE;
-     unsigned s_mask = (1 << s_bits) - 1;
-     target_ulong tlb_mask;
+     unsigned s_mask = (1u << s_bits) - 1;
+     unsigned mem_index = get_mmuidx(oi);
+     TCGReg x3;
+@@ -1837,6 +1859,148 @@ static void tcg_out_qemu_st(TCGContext *s, TCGReg data_reg, TCGReg addr_reg,
+     }
+ }
  
-@@ -2115,6 +2157,69 @@ static void tcg_out_qemu_ld_direct(TCGContext *s, TCGReg datalo, TCGReg datahi,
-                                      h.base, h.index, 0, h.ofs + 4);
-         }
-         break;
++static TCGLabelQemuLdst *
++prepare_host_addr_base_only(TCGContext *s, HostAddress *h, TCGReg addr_reg,
++                            MemOpIdx oi, bool is_ld)
++{
++    TCGLabelQemuLdst *ldst;
 +
-+    case MO_128:
-+        {
-+            TCGLabel *l1 = NULL, *l2 = NULL;
-+            bool use_pair = h.aa.atom < MO_128;
++    ldst = prepare_host_addr(s, h, addr_reg, oi, true);
 +
-+            tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
++    /* Compose the final address, as LDP/STP have no indexing. */
++    if (h->index != TCG_REG_XZR) {
++        tcg_out_insn(s, 3501, ADD, TCG_TYPE_I64, TCG_REG_TMP0,
++                     h->base, h->index,
++                     h->index_ext == TCG_TYPE_I32 ? MO_32 : MO_64, 0);
++        h->base = TCG_REG_TMP0;
++        h->index = TCG_REG_XZR;
++        h->index_ext = TCG_TYPE_I64;
++    }
 +
-+            if (!use_pair) {
-+                tcg_debug_assert(!use_movbe);
-+                /*
-+                 * Atomicity requires that we use use VMOVDQA.
-+                 * If we've already checked for 16-byte alignment, that's all
-+                 * we need.  If we arrive here with lesser alignment, then we
-+                 * have determined that less than 16-byte alignment can be
-+                 * satisfied with two 8-byte loads.
-+                 */
-+                if (h.aa.align < MO_128) {
-+                    use_pair = true;
-+                    l1 = gen_new_label();
-+                    l2 = gen_new_label();
++    return ldst;
++}
 +
-+                    tcg_out_testi(s, h.base, 15);
-+                    tcg_out_jxx(s, JCC_JNE, l2, true);
-+                }
++static void tcg_out_qemu_ld128(TCGContext *s, TCGReg datalo, TCGReg datahi,
++                               TCGReg addr_reg, MemOpIdx oi)
++{
++    TCGLabelQemuLdst *ldst;
++    HostAddress h;
 +
-+                tcg_out_vex_modrm_sib_offset(s, OPC_MOVDQA_VxWx + h.seg,
-+                                             TCG_TMP_VEC, 0,
-+                                             h.base, h.index, 0, h.ofs);
-+                tcg_out_vec_to_pair(s, TCG_TYPE_I64, datalo,
-+                                    datahi, TCG_TMP_VEC);
++    ldst = prepare_host_addr_base_only(s, &h, addr_reg, oi, true);
 +
-+                if (use_pair) {
-+                    tcg_out_jxx(s, JCC_JMP, l1, true);
-+                    tcg_out_label(s, l2);
-+                }
-+            }
-+            if (use_pair) {
-+                if (use_movbe) {
-+                    TCGReg t = datalo;
-+                    datalo = datahi;
-+                    datahi = t;
-+                }
-+                if (h.base == datalo || h.index == datalo) {
-+                    tcg_out_modrm_sib_offset(s, OPC_LEA + P_REXW, datahi,
-+                                             h.base, h.index, 0, h.ofs);
-+                    tcg_out_modrm_offset(s, movop + P_REXW + h.seg,
-+                                         datalo, datahi, 0);
-+                    tcg_out_modrm_offset(s, movop + P_REXW + h.seg,
-+                                         datahi, datahi, 8);
-+                } else {
-+                    tcg_out_modrm_sib_offset(s, movop + P_REXW + h.seg, datalo,
-+                                             h.base, h.index, 0, h.ofs);
-+                    tcg_out_modrm_sib_offset(s, movop + P_REXW + h.seg, datahi,
-+                                             h.base, h.index, 0, h.ofs + 8);
-+                }
-+            }
-+            if (l1) {
-+                tcg_out_label(s, l1);
-+            }
++    if (h.aa.atom < MO_128 || have_lse2) {
++        tcg_out_insn(s, 3314, LDP, datalo, datahi, h.base, 0, 0, 0);
++    } else {
++        TCGLabel *l0, *l1 = NULL;
++
++        /*
++         * 16-byte atomicity without LSE2 requires LDXP+STXP loop:
++         * 1: ldxp lo,hi,[addr]
++         *    stxp tmp1,lo,hi,[addr]
++         *    cbnz tmp1, 1b
++         *
++         * If we have already checked for 16-byte alignment, that's all
++         * we need. Otherwise we have determined that misaligned atomicity
++         * may be handled with two 8-byte loads.
++         */
++        if (h.aa.align < MO_128) {
++            /*
++             * TODO: align should be MO_64, so we only need test bit 3,
++             * which means we could use TBNZ instead of AND+CBNE.
++             */
++            l1 = gen_new_label();
++            tcg_out_logicali(s, I3404_ANDI, 0, TCG_REG_TMP1, addr_reg, 15);
++            tcg_out_brcond(s, TCG_TYPE_I32, TCG_COND_NE,
++                           TCG_REG_TMP1, 0, 1, l1);
 +        }
-+        break;
 +
-     default:
-         g_assert_not_reached();
-     }
-@@ -2200,6 +2305,60 @@ static void tcg_out_qemu_st_direct(TCGContext *s, TCGReg datalo, TCGReg datahi,
-                                      h.base, h.index, 0, h.ofs + 4);
-         }
-         break;
++        l0 = gen_new_label();
++        tcg_out_label(s, l0);
 +
-+    case MO_128:
-+        {
-+            TCGLabel *l1 = NULL, *l2 = NULL;
-+            bool use_pair = h.aa.atom < MO_128;
++        tcg_out_insn(s, 3306, LDXP, TCG_REG_XZR, datalo, datahi, h.base);
++        tcg_out_insn(s, 3306, STXP, TCG_REG_TMP1, datalo, datahi, h.base);
++        tcg_out_brcond(s, TCG_TYPE_I32, TCG_COND_NE, TCG_REG_TMP1, 0, 1, l0);
 +
-+            tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
++        if (l1) {
++            TCGLabel *l2 = gen_new_label();
++            tcg_out_goto_label(s, l2);
 +
-+            if (!use_pair) {
-+                tcg_debug_assert(!use_movbe);
-+                /*
-+                 * Atomicity requires that we use use VMOVDQA.
-+                 * If we've already checked for 16-byte alignment, that's all
-+                 * we need.  If we arrive here with lesser alignment, then we
-+                 * have determined that less that 16-byte alignment can be
-+                 * satisfied with two 8-byte loads.
-+                 */
-+                if (h.aa.align < MO_128) {
-+                    use_pair = true;
-+                    l1 = gen_new_label();
-+                    l2 = gen_new_label();
++            tcg_out_label(s, l1);
++            tcg_out_insn(s, 3314, LDP, datalo, datahi, h.base, 0, 0, 0);
 +
-+                    tcg_out_testi(s, h.base, 15);
-+                    tcg_out_jxx(s, JCC_JNE, l2, true);
-+                }
-+
-+                tcg_out_pair_to_vec(s, TCG_TYPE_I64, TCG_TMP_VEC,
-+                                    datalo, datahi);
-+                tcg_out_vex_modrm_sib_offset(s, OPC_MOVDQA_WxVx + h.seg,
-+                                             TCG_TMP_VEC, 0,
-+                                             h.base, h.index, 0, h.ofs);
-+
-+                if (use_pair) {
-+                    tcg_out_jxx(s, JCC_JMP, l1, true);
-+                    tcg_out_label(s, l2);
-+                }
-+            }
-+            if (use_pair) {
-+                if (use_movbe) {
-+                    TCGReg t = datalo;
-+                    datalo = datahi;
-+                    datahi = t;
-+                }
-+                tcg_out_modrm_sib_offset(s, movop + P_REXW + h.seg, datalo,
-+                                         h.base, h.index, 0, h.ofs);
-+                tcg_out_modrm_sib_offset(s, movop + P_REXW + h.seg, datahi,
-+                                         h.base, h.index, 0, h.ofs + 8);
-+            }
-+            if (l1) {
-+                tcg_out_label(s, l1);
-+            }
++            tcg_out_label(s, l2);
 +        }
-+        break;
++    }
 +
-     default:
-         g_assert_not_reached();
-     }
-@@ -2523,6 +2682,10 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
-             tcg_out_qemu_ld(s, a0, a1, a2, args[3], args[4], TCG_TYPE_I64);
-         }
++    if (ldst) {
++        ldst->type = TCG_TYPE_I128;
++        ldst->datalo_reg = datalo;
++        ldst->datahi_reg = datahi;
++        ldst->raddr = tcg_splitwx_to_rx(s->code_ptr);
++    }
++}
++
++static void tcg_out_qemu_st128(TCGContext *s, TCGReg datalo, TCGReg datahi,
++                               TCGReg addr_reg, MemOpIdx oi)
++{
++    TCGLabelQemuLdst *ldst;
++    HostAddress h;
++
++    ldst = prepare_host_addr_base_only(s, &h, addr_reg, oi, false);
++
++    if (h.aa.atom < MO_128 || have_lse2) {
++        tcg_out_insn(s, 3314, STP, datalo, datahi, h.base, 0, 0, 0);
++    } else {
++        TCGLabel *l0, *l1 = NULL;
++
++        /*
++         * 16-byte atomicity without LSE2 requires LDXP+STXP loop:
++         * 1: ldxp xzr,tmp1,[addr]
++         *    stxp tmp1,lo,hi,[addr]
++         *    cbnz tmp1, 1b
++         *
++         * If we have already checked for 16-byte alignment, that's all
++         * we need. Otherwise we have determined that misaligned atomicity
++         * may be handled with two 8-byte stores.
++         */
++        if (h.aa.align < MO_128) {
++            /*
++             * TODO: align should be MO_64, so we only need test bit 3,
++             * which means we could use TBNZ instead of AND+CBNE.
++             */
++            l1 = gen_new_label();
++            tcg_out_logicali(s, I3404_ANDI, 0, TCG_REG_TMP1, addr_reg, 15);
++            tcg_out_brcond(s, TCG_TYPE_I32, TCG_COND_NE,
++                           TCG_REG_TMP1, 0, 1, l1);
++        }
++
++        l0 = gen_new_label();
++        tcg_out_label(s, l0);
++
++        tcg_out_insn(s, 3306, LDXP, TCG_REG_XZR,
++                     TCG_REG_XZR, TCG_REG_TMP1, h.base);
++        tcg_out_insn(s, 3306, STXP, TCG_REG_TMP1, datalo, datahi, h.base);
++        tcg_out_brcond(s, TCG_TYPE_I32, TCG_COND_NE, TCG_REG_TMP1, 0, 1, l0);
++
++        if (l1) {
++            TCGLabel *l2 = gen_new_label();
++            tcg_out_goto_label(s, l2);
++
++            tcg_out_label(s, l1);
++            tcg_out_insn(s, 3314, STP, datalo, datahi, h.base, 0, 0, 0);
++
++            tcg_out_label(s, l2);
++        }
++    }
++
++    if (ldst) {
++        ldst->type = TCG_TYPE_I128;
++        ldst->datalo_reg = datalo;
++        ldst->datahi_reg = datahi;
++        ldst->raddr = tcg_splitwx_to_rx(s->code_ptr);
++    }
++}
++
+ static const tcg_insn_unit *tb_ret_addr;
+ 
+ static void tcg_out_exit_tb(TCGContext *s, uintptr_t a0)
+@@ -2172,6 +2336,12 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_qemu_st_i64:
+         tcg_out_qemu_st(s, REG0(0), a1, a2, ext);
          break;
 +    case INDEX_op_qemu_ld_i128:
-+        tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
-+        tcg_out_qemu_ld(s, a0, a1, a2, -1, args[3], TCG_TYPE_I128);
++        tcg_out_qemu_ld128(s, a0, a1, a2, args[3]);
 +        break;
++    case INDEX_op_qemu_st_i128:
++        tcg_out_qemu_st128(s, REG0(0), REG0(1), a2, args[3]);
++        break;
+ 
+     case INDEX_op_bswap64_i64:
+         tcg_out_rev(s, TCG_TYPE_I64, MO_64, a0, a1);
+@@ -2809,9 +2979,13 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_qemu_ld_i32:
+     case INDEX_op_qemu_ld_i64:
+         return C_O1_I1(r, l);
++    case INDEX_op_qemu_ld_i128:
++        return C_O2_I1(r, r, l);
      case INDEX_op_qemu_st_i32:
-     case INDEX_op_qemu_st8_i32:
-         if (TCG_TARGET_REG_BITS >= TARGET_LONG_BITS) {
-@@ -2540,6 +2703,10 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
-             tcg_out_qemu_st(s, a0, a1, a2, args[3], args[4], TCG_TYPE_I64);
-         }
-         break;
+     case INDEX_op_qemu_st_i64:
+         return C_O0_I2(lZ, l);
 +    case INDEX_op_qemu_st_i128:
-+        tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
-+        tcg_out_qemu_st(s, a0, a1, a2, -1, args[3], TCG_TYPE_I128);
-+        break;
++        return C_O0_I3(lZ, lZ, l);
  
-     OP_32_64(mulu2):
-         tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_MUL, args[3]);
-@@ -3234,6 +3401,13 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-                 : TARGET_LONG_BITS <= TCG_TARGET_REG_BITS ? C_O0_I3(L, L, L)
-                 : C_O0_I4(L, L, L, L));
+     case INDEX_op_deposit_i32:
+     case INDEX_op_deposit_i64:
+@@ -2940,6 +3114,7 @@ static void tcg_target_init(TCGContext *s)
+     tcg_regset_set_reg(s->reserved_regs, TCG_REG_FP);
+     tcg_regset_set_reg(s->reserved_regs, TCG_REG_X18); /* platform register */
+     tcg_regset_set_reg(s->reserved_regs, TCG_REG_TMP0);
++    tcg_regset_set_reg(s->reserved_regs, TCG_REG_TMP1);
+     tcg_regset_set_reg(s->reserved_regs, TCG_VEC_TMP0);
+ }
  
-+    case INDEX_op_qemu_ld_i128:
-+        tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
-+        return C_O2_I1(r, r, L);
-+    case INDEX_op_qemu_st_i128:
-+        tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
-+        return C_O0_I3(L, L, L);
-+
-     case INDEX_op_brcond2_i32:
-         return C_O0_I4(r, r, ri, ri);
- 
-@@ -4090,6 +4264,7 @@ static void tcg_target_init(TCGContext *s)
- 
-     s->reserved_regs = 0;
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_CALL_STACK);
-+    tcg_regset_set_reg(s->reserved_regs, TCG_TMP_VEC);
- #ifdef _WIN64
-     /* These are call saved, and we don't save them, so don't use them. */
-     tcg_regset_set_reg(s->reserved_regs, TCG_REG_XMM6);
 -- 
 2.34.1
 
