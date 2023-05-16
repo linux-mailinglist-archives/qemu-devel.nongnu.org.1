@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D10705089
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 16:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 748D270508D
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 16:25:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyvbl-0002EF-Jn; Tue, 16 May 2023 10:24:57 -0400
+	id 1pyvcM-0003D1-07; Tue, 16 May 2023 10:25:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=4936e02c6=anthony.perard@citrix.com>)
- id 1pyvbI-00027r-Mi; Tue, 16 May 2023 10:24:29 -0400
-Received: from esa2.hc3370-68.iphmx.com ([216.71.145.153])
+ id 1pyvcI-0002vi-1u; Tue, 16 May 2023 10:25:30 -0400
+Received: from esa5.hc3370-68.iphmx.com ([216.71.155.168])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=4936e02c6=anthony.perard@citrix.com>)
- id 1pyvbG-0002CH-6j; Tue, 16 May 2023 10:24:28 -0400
+ id 1pyvcA-0002Vh-3z; Tue, 16 May 2023 10:25:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=citrix.com; s=securemail; t=1684247066;
+ d=citrix.com; s=securemail; t=1684247121;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=asvGL2SZQNz6yR0hbwCPfuEFQwUqbyPvuKCqorCCv1M=;
- b=UDG68AQpmK6p1K0Gov0x3SQGfgYjg3wkBQ/Tt+UZZ3XDrE8eXgvWrxqC
- VZP6PCOI4tfkCba3PRxH+S+hoScfbxsrkYH1VXbKTf/D4OUdMJMkXS3Cw
- 0PWLgii7Zr1co7G7sNV4WhH4MbUE8sMtN2di/Ms6xssttTpTUqT0R/BpJ w=;
-Authentication-Results: esa2.hc3370-68.iphmx.com;
+ bh=aGmtyziSnn1Gib25HiVVWwKSGRKb01gX2nE2o8MoFMc=;
+ b=UKbEmkEmnS4l2qBZznogsxK2xqqTkCaG93Q4nYnXdoQfo203jUs+1KPj
+ nAnSBWoD5DWqB4AL075i0bmlLuT87vxCMinWWnyVT6ffYMDiAx5MD5gej
+ SLlLU60QvyeHQ2k8NTGf8G8FTNwLjD02rE/U590kEQSVQ/NU66cPxpJNF w=;
+Authentication-Results: esa5.hc3370-68.iphmx.com;
  dkim=none (message not signed) header.i=none
 X-SBRS: 4.0
-X-MesageID: 109113447
-X-Ironport-Server: esa2.hc3370-68.iphmx.com
+X-MesageID: 107984133
+X-Ironport-Server: esa5.hc3370-68.iphmx.com
 X-Remote-IP: 162.221.156.123
 X-Policy: $RELAYED
-IronPort-Data: A9a23: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
- yCyDqqjjyiD6Rs=
-IronPort-HdrOrdr: A9a23:z43tZKxvSlFxxe6vbFJfKrPw6L1zdoMgy1knxilNoHxuH/Bw9v
- re+cjzsCWftN9/Yh4dcLy7VpVoIkmsl6Kdg7NwAV7KZmCP1FdARLsI0WKI+UyCJ8SRzI9gPa
- cLSdkFNDXzZ2IK8PoTNmODYqodKNrsytHWuQ/HpU0dKT2D88tbnn9E4gDwKDwQeCB2QaAXOb
- C7/cR9qz+paR0sH7+G7ilsZZmkmzXT/qiWGCI7Ow==
-X-Talos-CUID: 9a23:GF4hImzw9KnNAG9pY5TgBgUoJJAFLWLQ5UvXfU67EmhwRazJZxyPrfY=
-X-Talos-MUID: =?us-ascii?q?9a23=3ACR/MUg2a6hBlw4JObxbVBW9xTTUj36mvWHpdnY4?=
- =?us-ascii?q?95MS5MyNzGB6Enm2JTdpy?=
-X-IronPort-AV: E=Sophos;i="5.99,278,1677560400"; d="scan'208";a="109113447"
-Date: Tue, 16 May 2023 15:24:07 +0100
+IronPort-Data: A9a23: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
+ xRSG/9y
+IronPort-HdrOrdr: A9a23:oCFmuKHvnrN7vG7mpLqELMeALOsnbusQ8zAXPiBKJCC9E/bo8v
+ xG+c5w6faaslkssR0b9+xoW5PwI080l6QU3WB5B97LMDUO0FHCEGgI1/qA/9SPIUzDHu4279
+ YbT0B9YueAcGSTW6zBkXWF+9VL+qj5zEix792uq0uE1WtRGtldBwESMHf9LmRGADNoKLAeD5
+ Sm6s9Ot1ObCA8qhpTSPAhiYwDbzee77a7bXQ==
+X-Talos-CUID: 9a23:eNez+mDXUuJzIJD6ExN/8BYPF9J8Sy3iznryCRSqDjpQUrLAHA==
+X-Talos-MUID: 9a23:4bn87gqMVqthFqrvv+Yezzh5GN5QoJqNMk8in7Q5gNe+JA9yZyjI2Q==
+X-IronPort-AV: E=Sophos;i="5.99,278,1677560400"; d="scan'208";a="107984133"
+Date: Tue, 16 May 2023 15:25:09 +0100
 To: Stefan Hajnoczi <stefanha@redhat.com>
 CC: <qemu-devel@nongnu.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
  Aarushi Mehta <mehta.aaru20@gmail.com>, <qemu-block@nongnu.org>, Paul Durrant
@@ -87,17 +86,17 @@ CC: <qemu-devel@nongnu.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
  Juan Quintela <quintela@redhat.com>, "Richard W.M. Jones"
  <rjones@redhat.com>, Fam Zheng <fam@euphon.net>, Marcel Apfelbaum
  <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH v5 12/21] xen-block: implement BlockDevOps->drained_begin()
-Message-ID: <c760c8bd-49f3-4be0-b01c-9afd1efa619c@perard>
+Subject: Re: [PATCH v5 13/21] hw/xen: do not set is_external=true on evtchn fds
+Message-ID: <dec567c6-5850-48b5-89f9-676c0160389b@perard>
 References: <20230504195327.695107-1-stefanha@redhat.com>
- <20230504195327.695107-13-stefanha@redhat.com>
+ <20230504195327.695107-14-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20230504195327.695107-13-stefanha@redhat.com>
-Received-SPF: pass client-ip=216.71.145.153;
+In-Reply-To: <20230504195327.695107-14-stefanha@redhat.com>
+Received-SPF: pass client-ip=216.71.155.168;
  envelope-from=prvs=4936e02c6=anthony.perard@citrix.com;
- helo=esa2.hc3370-68.iphmx.com
+ helo=esa5.hc3370-68.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -122,31 +121,21 @@ From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 04, 2023 at 03:53:18PM -0400, Stefan Hajnoczi wrote:
-> Detach event channels during drained sections to stop I/O submission
-> from the ring. xen-block is no longer reliant on aio_disable_external()
-> after this patch. This will allow us to remove the
-> aio_disable_external() API once all other code that relies on it is
-> converted.
+On Thu, May 04, 2023 at 03:53:19PM -0400, Stefan Hajnoczi wrote:
+> is_external=true suspends fd handlers between aio_disable_external() and
+> aio_enable_external(). The block layer's drain operation uses this
+> mechanism to prevent new I/O from sneaking in between
+> bdrv_drained_begin() and bdrv_drained_end().
 > 
-> Extend xen_device_set_event_channel_context() to allow ctx=NULL. The
-> event channel still exists but the event loop does not monitor the file
-> descriptor. Event channel processing can resume by calling
-> xen_device_set_event_channel_context() with a non-NULL ctx.
+> The previous commit converted the xen-block device to use BlockDevOps
+> .drained_begin/end() callbacks. It no longer relies on is_external=true
+> so it is safe to pass is_external=false.
 > 
-> Factor out xen_device_set_event_channel_context() calls in
-> hw/block/dataplane/xen-block.c into attach/detach helper functions.
-> Incidentally, these don't require the AioContext lock because
-> aio_set_fd_handler() is thread-safe.
-> 
-> It's safer to register BlockDevOps after the dataplane instance has been
-> created. The BlockDevOps .drained_begin/end() callbacks depend on the
-> dataplane instance, so move the blk_set_dev_ops() call after
-> xen_block_dataplane_create().
+> This is part of ongoing work to remove the aio_disable_external() API.
 > 
 > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Reviewed-by: Anthony PERARD <anthony.perard@citrix.com>
+Acked-by: Anthony PERARD <anthony.perard@citrix.com>
 
 Thanks,
 
