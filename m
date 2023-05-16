@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810547051CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 17:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6FA7051F1
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 17:19:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pywOd-0006Hu-No; Tue, 16 May 2023 11:15:27 -0400
+	id 1pywS8-000779-Iv; Tue, 16 May 2023 11:19:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pywOa-0006Du-Q6
- for qemu-devel@nongnu.org; Tue, 16 May 2023 11:15:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1pywS6-000771-DY
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 11:19:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pywOW-0004aD-M2
- for qemu-devel@nongnu.org; Tue, 16 May 2023 11:15:24 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1pywS4-00054W-NY
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 11:19:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684250119;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1684250340;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a3JXF2DFKy4bpAq6R9EGgb4KNHEigIeAWcX6kxRrOp8=;
- b=HSP1MMGndgG/3Npi34gy1u4nuoZ4+3ioEtOpg7nC0TRYaqYdPpeonXtQWld6KkbLdQJQsK
- 3zKJ4kknmmVKKghUg9JN31M1jlEad3w58BTyklLJxILU1vC7J5RBx7TARK0BKvI9rWOTGz
- 02iFcQXm9AdX53jE/rDa0utt5j+l0ac=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=39ElDbbJmAQECZiz00X+GWlwWIds3zK2sWWcxrNPId4=;
+ b=ZGJwZn41/hP2E8hs0uPjMKB0/++su869cfMJsl8OBBVkdT5ZesNrgrfNTMM+PdryFSzi63
+ 2ObLw69X7WaFzZHk7IpB2ax7gh9fY9PBTDq5i1+pTc3dfGoS4dlYyvbAJJcBH/16KU0SOi
+ k39g9WINPVfJTkKHLu1v3wjCDMKVxw0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-648-9YLNAz8hN-O081yj7-_9Ow-1; Tue, 16 May 2023 11:15:18 -0400
-X-MC-Unique: 9YLNAz8hN-O081yj7-_9Ow-1
+ us-mta-175-ZF32yaK0N6SRPMJUgoQlLA-1; Tue, 16 May 2023 11:18:56 -0400
+X-MC-Unique: ZF32yaK0N6SRPMJUgoQlLA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DECDB1C0759C;
- Tue, 16 May 2023 15:15:17 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A200814171C0;
- Tue, 16 May 2023 15:15:17 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 937D621E66E3; Tue, 16 May 2023 17:15:16 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Sergio Lopez <slp@redhat.com>
-Cc: qemu-devel@nongnu.org,  Eric Blake <eblake@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Gerd
- Hoffmann <kraxel@redhat.com>,  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v4 2/6] ui: add the infrastructure to support MT events
-References: <20230509095345.42600-1-slp@redhat.com>
- <20230509095345.42600-3-slp@redhat.com>
-Date: Tue, 16 May 2023 17:15:16 +0200
-In-Reply-To: <20230509095345.42600-3-slp@redhat.com> (Sergio Lopez's message
- of "Tue, 9 May 2023 11:53:41 +0200")
-Message-ID: <87ilcsnw8r.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE1BC81DA1A;
+ Tue, 16 May 2023 15:18:55 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.190])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2B61A1410DD5;
+ Tue, 16 May 2023 15:18:53 +0000 (UTC)
+Date: Tue, 16 May 2023 16:18:50 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>, jasowang@redhat.com,
+ mst@redhat.com, eblake@redhat.com, qemu-devel@nongnu.org,
+ yuri.benditovich@daynix.com, yan@daynix.com
+Subject: Re: [PATCH v2 5/6] qmp: Added new command to retrieve eBPF blob.
+Message-ID: <ZGOe2i1ia1qdMuJm@redhat.com>
+References: <20230512122902.34345-1-andrew@daynix.com>
+ <20230512122902.34345-6-andrew@daynix.com>
+ <ZGIAUxfLmI6hm3VT@redhat.com> <87zg64u0g7.fsf@pond.sub.org>
+ <ZGNE0bk2zCDpUkYS@redhat.com> <87ilcsshgf.fsf@pond.sub.org>
+ <ZGNbHcbeN0klbBjU@redhat.com> <87ilcspe2w.fsf@pond.sub.org>
+ <ZGOUmRu0/Ckca6J6@redhat.com> <87lehonwnj.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87lehonwnj.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,190 +85,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sergio Lopez <slp@redhat.com> writes:
+On Tue, May 16, 2023 at 05:06:24PM +0200, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Tue, May 16, 2023 at 04:04:39PM +0200, Markus Armbruster wrote:
+> >> Daniel P. Berrangé <berrange@redhat.com> writes:
+> >> 
+> >> > On Tue, May 16, 2023 at 12:23:28PM +0200, Markus Armbruster wrote:
+> >> >> Daniel P. Berrangé <berrange@redhat.com> writes:
+> >> >> 
+> >> >> > On Tue, May 16, 2023 at 10:47:52AM +0200, Markus Armbruster wrote:
+> >> >> 
+> >> >> [...]
+> >> >> 
+> >> >> >> So, this is basically a way to retrieve an eBPF program by some
+> >> >> >> well-known name.
+> >> >> >> 
+> >> >> >> Ignorant question: how are these programs desposited?
+> >> >> >
+> >> >> > The eBPF code blob is linked into QEMU at build time. THis API lets
+> >> >> > libvirt fetch it from QEMU, in base64 format. When libvirt later
+> >> >> > creates NICs, it can attach the eBPF code blob to the TAP device (which
+> >> >> > requires elevated privilleges that QEMU lacks). NB, libvirt would fetch
+> >> >> > the eBPF code from QEMU when probing capabilities, as once a VM is
+> >> >> > running it is untrusted.
+> >> >> 
+> >> >> Okay, I can see how that helps.  I trust the blob is in a read-only
+> >> >> segment.  Ideally, libvirt fetches it before the guest runs.
+> >> >
+> >> > Whether the blob is in a read-only segment or not isn't important,
+> >> > because it transits writable memory in the QMP command marshalling.
+> >> 
+> >> True.  We could bypass marshalling.  Unclean hack.  Or we could sign the
+> >> bits cryptograhically.  Key management headaches.  Not worth it, because
+> >> fetching it before QEMU becomes untrusted is easier.
+> >> 
+> >> However, I now wonder why we fetch it from QEMU.  Why not ship it with
+> >> QEMU?
+> >
+> > Fetching it from QEMU gives us a strong guarantee that the eBPF
+> > code actually matches the QEMU binary we're talking to, which is
+> > useful if you're dealing with RPMs which can be upgraded behind
+> > your back, or have multiple parallel installs of QEMU.
+> 
+> Yes, but what makes this one different from all the other things that
+> need to match?
 
-> Add the required infrastructure to support generating multitouch events.
->
-> Signed-off-by: Sergio Lopez <slp@redhat.com>
-> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> ---
->  include/ui/input.h    |  3 +++
->  qapi/ui.json          | 58 ++++++++++++++++++++++++++++++++++++-------
->  replay/replay-input.c | 18 ++++++++++++++
->  ui/input.c            |  6 +++++
->  ui/trace-events       |  1 +
->  5 files changed, 77 insertions(+), 9 deletions(-)
->
-> diff --git a/include/ui/input.h b/include/ui/input.h
-> index c86219a1c1..2a3dffd417 100644
-> --- a/include/ui/input.h
-> +++ b/include/ui/input.h
-> @@ -8,9 +8,12 @@
->  #define INPUT_EVENT_MASK_BTN   (1<<INPUT_EVENT_KIND_BTN)
->  #define INPUT_EVENT_MASK_REL   (1<<INPUT_EVENT_KIND_REL)
->  #define INPUT_EVENT_MASK_ABS   (1<<INPUT_EVENT_KIND_ABS)
-> +#define INPUT_EVENT_MASK_MTT   (1<<INPUT_EVENT_KIND_MTT)
->=20=20
->  #define INPUT_EVENT_ABS_MIN    0x0000
->  #define INPUT_EVENT_ABS_MAX    0x7FFF
-> +#define INPUT_EVENT_SLOTS_MIN  0x0
-> +#define INPUT_EVENT_SLOTS_MAX  0xa
->=20=20
->  typedef struct QemuInputHandler QemuInputHandler;
->  typedef struct QemuInputHandlerState QemuInputHandlerState;
-> diff --git a/qapi/ui.json b/qapi/ui.json
-> index b5650974fc..d38143bbe1 100644
-> --- a/qapi/ui.json
-> +++ b/qapi/ui.json
-> @@ -1014,7 +1014,7 @@
+Many of the external resources QEMU uses don't need to be a precise
+match to a QEMU version, it is sufficient for them to be of "version
+X or newer".  eBPF programs need to be a precise match, because the
+QEMU code has assumptions about the eBPF code it uses, such as the
+configuration maps present.
 
-Doc part is missing:
+There is another example where a perfect match is needed - loadable
+.so modules. eg if you're running QEMU and trigger dlopen of a QEMU
+module, the loaded module needs to come from the perfect matching
+build. Most distros don't solve that, but there was something added
+a while back that let QEMU load modules from a specific location.
 
-   # @touch: bla bla (since 8.1)
+The idea was that the RPM/Deb package manager can upgrade the
+modules, but the modules from the previously installed QEMU would be
+kept in somewhere temporary like /var/run/...., so that pre-existing
+running QEMU could still load the exact matched .sos. While that hack
+kinda works it has too many moving parts for my liking, leaving failure
+scenarios open. IMHO, being able to directly fetch the resource 
+directly from QEMU is a better strategy for eBPF programs, as it
+eliminates more of the failure scenarios with very little effort.
 
->  ##
->  { 'enum'  : 'InputButton',
->    'data'  : [ 'left', 'middle', 'right', 'wheel-up', 'wheel-down', 'side=
-',
-> -  'extra', 'wheel-left', 'wheel-right' ] }
-> +  'extra', 'wheel-left', 'wheel-right', 'touch' ] }
->=20=20
->  ##
->  # @InputAxis:
-> @@ -1026,6 +1026,17 @@
->  { 'enum'  : 'InputAxis',
->    'data'  : [ 'x', 'y' ] }
->=20=20
-> +##
-> +# @InputMultiTouchType:
-> +#
-> +# Type of a multi-touch event.
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'enum'  : 'InputMultiTouchType',
-> +  'data'  : [ 'begin', 'update', 'end', 'cancel', 'data' ] }
-> +
-> +
->  ##
->  # @InputKeyEvent:
->  #
-> @@ -1069,13 +1080,38 @@
->    'data'  : { 'axis'    : 'InputAxis',
->                'value'   : 'int' } }
->=20=20
-> +##
-> +# @InputMultiTouchEvent:
-> +#
-> +# MultiTouch input event.
-> +#
-> +# @slot: Which slot has generated the event.
-> +# @tracking-id: ID to correlate this event with previously generated eve=
-nts.
-> +# @axis: Which axis is referenced by @value.
-> +# @value: Contact position.
-
-Please format like
-
-   # @slot: Which slot has generated the event.
-   #
-   # @tracking-id: ID to correlate this event with previously generated
-   #     events.
-   #
-   # @axis: Which axis is referenced by @value.
-   #
-   # @value: Contact position.
-
-to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-to conform to current conventions).
-
-The blank lines help with catching certain errors.  rST loves to
-surprise...
-
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'struct'  : 'InputMultiTouchEvent',
-> +  'data'  : { 'type'       : 'InputMultiTouchType',
-> +              'slot'       : 'int',
-> +              'tracking-id': 'int',
-> +              'axis'       : 'InputAxis',
-> +              'value'      : 'int' } }
-> +
->  ##
->  # @InputEventKind:
->  #
-> +# @key: a keyboard input event
-> +# @btn: a pointer button input event
-> +# @rel: a relative pointer motion input event
-> +# @abs: an absolute pointer motion input event
-> +# @mtt: a multi-touch input event
-
-Please format like
-
-   # @key: a keyboard input event
-   #
-   # @btn: a pointer button input event
-   #
-   # @rel: a relative pointer motion input event
-   #
-   # @abs: an absolute pointer motion input event
-   #
-   # @mtt: a multi-touch input event
-
-> +#
->  # Since: 2.0
->  ##
->  { 'enum': 'InputEventKind',
-> -  'data': [ 'key', 'btn', 'rel', 'abs' ] }
-> +  'data': [ 'key', 'btn', 'rel', 'abs', 'mtt' ] }
->=20=20
->  ##
->  # @InputKeyEventWrapper:
-> @@ -1101,17 +1137,20 @@
->  { 'struct': 'InputMoveEventWrapper',
->    'data': { 'data': 'InputMoveEvent' } }
->=20=20
-> +##
-> +# @InputMultiTouchEventWrapper:
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'struct': 'InputMultiTouchEventWrapper',
-> +  'data': { 'data': 'InputMultiTouchEvent' } }
-> +
->  ##
->  # @InputEvent:
->  #
->  # Input event union.
->  #
-> -# @type: the input type, one of:
-> -#
-> -#        - 'key': Input event of Keyboard
-> -#        - 'btn': Input event of pointer buttons
-> -#        - 'rel': Input event of relative pointer motion
-> -#        - 'abs': Input event of absolute pointer motion
-> +# @type: the type of input event
->  #
->  # Since: 2.0
->  ##
-> @@ -1121,7 +1160,8 @@
->    'data'  : { 'key'     : 'InputKeyEventWrapper',
->                'btn'     : 'InputBtnEventWrapper',
->                'rel'     : 'InputMoveEventWrapper',
-> -              'abs'     : 'InputMoveEventWrapper' } }
-> +              'abs'     : 'InputMoveEventWrapper',
-> +              'mtt'     : 'InputMultiTouchEventWrapper' } }
->=20=20
->  ##
->  # @input-send-event:
-
-With these minor doc improvements
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-
-[...]
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
