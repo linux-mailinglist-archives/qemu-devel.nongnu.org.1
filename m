@@ -2,52 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70925704E11
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 14:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7430704E1C
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 14:50:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyu6K-0004N2-H6; Tue, 16 May 2023 08:48:24 -0400
+	id 1pyu6I-0004Kp-I1; Tue, 16 May 2023 08:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6G-0004Jy-Iv
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6G-0004J7-5n
  for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:20 -0400
 Received: from mout.kundenserver.de ([212.227.126.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6C-00062x-Q0
- for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:20 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6C-000637-Sk
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:19 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue012
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MNOZO-1pnG4N1dus-00OrR4; Tue, 16
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1N79Ey-1qFPpB3OBA-017W6u; Tue, 16
  May 2023 14:48:13 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 2/9] linux-user: report ENOTTY for unknown ioctls
-Date: Tue, 16 May 2023 14:48:03 +0200
-Message-Id: <20230516124810.90494-3-laurent@vivier.eu>
+Subject: [PULL 3/9] linux-user: Add move_mount() syscall
+Date: Tue, 16 May 2023 14:48:04 +0200
+Message-Id: <20230516124810.90494-4-laurent@vivier.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230516124810.90494-1-laurent@vivier.eu>
 References: <20230516124810.90494-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:GPXyhX+uYm5k/ooyin6TkqR/fz5Fjrc2hhq+xNjzUXatTLXI2EL
- FiwX9IipQB4sg1XvDBm8AD7uZsGmMkKci+4z1pIo6Y39oMQDr26hA+FAoNfMHshQbEl/EA5
- IoE3WOQCiSuBs6JYnWddx8Ba09ts2R8Xa98tR9hO/8wVC1Gap9wuLY1XZQG9sNep32qUi/H
- 9JrSA/TiGXskfRKC3Fv8w==
-UI-OutboundReport: notjunk:1;M01:P0:tgSIl66WzM4=;5Th2TV7V614P7+dYtt4i8W3a4QE
- j5/xgU71N5MKCRb7Dqte0oXuMoD43DEAHVVaOChuqZ6Cf66UKbKB4J/jN7QRlqz9ls3lVIJpB
- rAGs58JuWikFgKMJa/okoYrxgwU3z1OCTLJodKDuXB9ygPkCZKbqCDYXCRq1pT8anrqKOTW9i
- xQvr7Z+K7HkycCfgkc/ix6X5VweVdiDmvieF4F+8/iGwboJVvUiuBLSx3LdkeKg/dMF6a+Q7m
- iSN4OrlySTAF9PMuB8mdHJFH9NwdUD1hiti4uDJYz6fPDx0mDnUjK1es3mhJeOC5W0SaDJA7Z
- /DoVAfsAZVi2LuAvCDf9mfv9TvpZC1RdBUa3nW9U8ow2/K1Mo1WfdNXLBobTjQDrP8X5c2iae
- RbGIXYWZvuw3u0ZFAt7tbpOHDgVIW3Xg/Fmz8+JKOind5CA8VLpfjO1lsFURtipn+bLHKzsMT
- FpIl9MIazrORjI3VxRSk6uRMVu9aJN1o0gMzzuBybHjl9tK/drf5/kT3Vlhkm/K3lGa8FOQYM
- UbM6BylS160Y9I+AaS+tC3HoKzloremjUtGLI1skkqy2QkrmpEDgvm52fXpsWHS4TjIo32ye7
- D3FHopoz8hDNHtsxlVZZtXzh7dsL1IcrFCy1YbvDtjA7GIWTzgvzcwGjK4pRJa6/GGUpPOWVR
- qYcvATN1I5/EJqy6/mXbL/k6JVFHNiHvPOhEeHRO1w==
+X-Provags-ID: V03:K1:NYdTDmcMxR00TOQabDtINyPvPAp04l/8GQs9/OP9Cc30x0ZJsqg
+ 9ysaoFeHikz55sEUSYKcBN1DCOHXPWans/s+41Q9QnmZb5Fom+CcRG5xKMeE0H/Fd+8ItEY
+ MHYnx354Fq45DFtSQV/QvUG5UdTMUaC7hZaOuJ7qkCU8AX2ox54J6npZOaf4ed4hmu2QmLZ
+ YNV38SaiZQ4BfImef5Asg==
+UI-OutboundReport: notjunk:1;M01:P0:ZmfdnubxP9k=;GNZOM4TNpp9pOcUKERTDSzd5nn4
+ Pwq03I6a/D1DWiff1ORjewaNss1WoaEfTdn4wNb450hq1LweycJFUEv0dzyX0HBZwJ5KocRSF
+ Hnov8wc1paPJHBc/ypOqD/q4pPSo/M+6yccYKKJiISuq5h89xDyhn59nQEYi/jzyW83dq4sxx
+ AC8HpQt0vQHtCt3xqdmRz+ix3WmZE0MQO6Nuy1HOYjcHOveaV0iyks+tGnHqN8zGrpF2/3od0
+ QmFipgucweIWg6aPPd6pDKOzdn8c93+CzLwcGRPDlxq6kQRc5w6c0I1UQ8tCFSqdtlCfbI6im
+ H+FXfhPOyHSfolH1JKSEdWa51xj1m6yTs0/yk1se0Lfly4YwoRnBccQi/PNjNHNcGxghq+631
+ Q2/kvUeD01egsb2YKRtZ6/odzlWvFAukB8GuFiNrOG0qri/56d8+w7TbC/EuWv2s/KYFmcDOH
+ 1yOMUK5pIe8syjeVoP6u0ELzpdqj1hmJMaAf+zUlQm2GKE1Br3LFi5snRPjksYvFqzoYv9fBE
+ LZZa5hr3gY0d0vs2Ntt6P5K3mwy6WALSJxevVdGcdB7I8amOj+yPhrUvUUJ9GALEWAh4MZkwU
+ ScZbk8X49f0+ZB2mDneEzMbHA0aUQBDfHKR4SM5swT6alm+iCGjHFHyRsfE5AT6yLC78URfh1
+ 0ko+B9Nph2EIIRwpmllypMBZEfBhi7O3h/Z5ge7BPg==
 Received-SPF: none client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
@@ -73,54 +72,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Weißschuh <thomas@t-8ch.de>
 
-The correct error number for unknown ioctls is ENOTTY.
-
-ENOSYS would mean that the ioctl() syscall itself is not implemented,
-which is very improbable and unexpected for userspace.
-
-ENOTTY means "Inappropriate ioctl for device". This is what the kernel
-returns on unknown ioctls, what qemu is trying to express and what
-userspace is prepared to handle.
-
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230426070659.80649-1-thomas@t-8ch.de>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+[lv: define syscall]
+Message-Id: <20230424153429.276788-1-thomas@t-8ch.de>
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/syscall.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ linux-user/syscall.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 085ce530213e..954ed14df4c0 100644
+index 954ed14df4c0..9a99e4557367 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -5747,7 +5747,7 @@ static abi_long do_ioctl(int fd, int cmd, abi_long arg)
-         if (ie->target_cmd == 0) {
-             qemu_log_mask(
-                 LOG_UNIMP, "Unsupported ioctl: cmd=0x%04lx\n", (long)cmd);
--            return -TARGET_ENOSYS;
-+            return -TARGET_ENOTTY;
-         }
-         if (ie->target_cmd == cmd)
-             break;
-@@ -5759,7 +5759,7 @@ static abi_long do_ioctl(int fd, int cmd, abi_long arg)
-     } else if (!ie->host_cmd) {
-         /* Some architectures define BSD ioctls in their headers
-            that are not implemented in Linux.  */
--        return -TARGET_ENOSYS;
-+        return -TARGET_ENOTTY;
-     }
+@@ -8776,6 +8776,12 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
+ _syscall2(int, pivot_root, const char *, new_root, const char *, put_old)
+ #endif
  
-     switch(arg_type[0]) {
-@@ -5817,7 +5817,7 @@ static abi_long do_ioctl(int fd, int cmd, abi_long arg)
-         qemu_log_mask(LOG_UNIMP,
-                       "Unsupported ioctl type: cmd=0x%04lx type=%d\n",
-                       (long)cmd, arg_type[0]);
--        ret = -TARGET_ENOSYS;
-+        ret = -TARGET_ENOTTY;
-         break;
-     }
-     return ret;
++#if defined(TARGET_NR_move_mount) && defined(__NR_move_mount)
++#define __NR_sys_move_mount __NR_move_mount
++_syscall5(int, sys_move_mount, int, __from_dfd, const char *, __from_pathname,
++           int, __to_dfd, const char *, __to_pathname, unsigned int, flag)
++#endif
++
+ /* This is an internal helper for do_syscall so that it is easier
+  * to have a single return point, so that actions, such as logging
+  * of syscall results, can be performed.
+@@ -9169,6 +9175,33 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         unlock_user(p, arg1, 0);
+         return ret;
+ #endif
++#if defined(TARGET_NR_move_mount) && defined(__NR_move_mount)
++    case TARGET_NR_move_mount:
++        {
++            void *p2, *p4;
++
++            if (!arg2 || !arg4) {
++                return -TARGET_EFAULT;
++            }
++
++            p2 = lock_user_string(arg2);
++            if (!p2) {
++                return -TARGET_EFAULT;
++            }
++
++            p4 = lock_user_string(arg4);
++            if (!p4) {
++                unlock_user(p2, arg2, 0);
++                return -TARGET_EFAULT;
++            }
++            ret = get_errno(sys_move_mount(arg1, p2, arg3, p4, arg5));
++
++            unlock_user(p2, arg2, 0);
++            unlock_user(p4, arg4, 0);
++
++            return ret;
++        }
++#endif
+ #ifdef TARGET_NR_stime /* not on alpha */
+     case TARGET_NR_stime:
+         {
 -- 
 2.40.1
 
