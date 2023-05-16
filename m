@@ -2,66 +2,203 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE85704BC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 13:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1385B704C05
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 13:12:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pysTH-0007DW-Mi; Tue, 16 May 2023 07:03:59 -0400
+	id 1pysal-0005gE-Pi; Tue, 16 May 2023 07:11:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1pysSp-0006wa-Rm
- for qemu-devel@nongnu.org; Tue, 16 May 2023 07:03:35 -0400
-Received: from mx.treblig.org ([46.235.229.95])
+ (Exim 4.90_1) (envelope-from <david.edmondson@oracle.com>)
+ id 1pysai-0005fJ-SI; Tue, 16 May 2023 07:11:40 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1pysSm-0000vu-Bv
- for qemu-devel@nongnu.org; Tue, 16 May 2023 07:03:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID
- :Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
- :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
- Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
- :List-Post:List-Owner:List-Archive;
- bh=oL7uufKHk2lX47uImdrWHC6tQg6XjYxtnLx2t0i4yjo=; b=bMurw0mkkvV1lenfqzEoYDgD0O
- LolVXs9+XClFZqeIOVq7w3i0sCBLjIV8ganIck38pHJ6b/WVX67Bjj4WPr5uyKtk8CA3dLlQpVHVP
- Uq4sNLn+azYykuXW8v9Z3Zl93rivpyGB+Oue9BzD1JjUhlwTLJeBVZ+wyW3nVLbP3GfQRe7PUcv/F
- 2HgIngfJvkYTXVZ4gZoX5saWeaujHEPM6M4p79lxKQX21msnXAMJgzzODw875xlhg2J/PsiG/FyOP
- hUgnZU80V+HEzvglMEHvKot+gEkb63QH5qh2KNiGpDzew7PVktNC8KWlqV/DK9XOmaPbyha6AbcEz
- hZm9TOaw==;
-Received: from dg by mx.treblig.org with local (Exim 4.94.2)
- (envelope-from <dg@treblig.org>)
- id 1pysSa-008tXv-Aw; Tue, 16 May 2023 11:03:16 +0000
-Date: Tue, 16 May 2023 11:03:16 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: "T.J. Alumbaugh" <talumbau@google.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- David Hildenbrand <david@redhat.com>, Yuanchu Xie <yuanchu@google.com>,
- Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
- Yu Zhao <yuzhao@google.com>
-Subject: Re: [RFC PATCH 1/1] virtio-balloon: Add Working Set Reporting feature
-Message-ID: <ZGNi9Bfy1SuLxqtA@gallifrey>
-References: <20230510143856.964541-1-talumbau@google.com>
- <20230510143856.964541-2-talumbau@google.com>
+ (Exim 4.90_1) (envelope-from <david.edmondson@oracle.com>)
+ id 1pysad-0003Yf-HG; Tue, 16 May 2023 07:11:40 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34G6TTXo003915; Tue, 16 May 2023 11:07:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : in-reply-to : references : date : message-id : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=RUKJ25HPYRwm7IH2NRWJF1hPdxtMyla7c1xABKz19G0=;
+ b=EbqXFBd3InUVrVY8oYtBSUak2DxDoLu1TWes72kNeRmiVKqxSWFJqctS2L9vpQrSEcWO
+ /pr6wYwhKnd+mAFqUVxEnDhLOlhlIR1PL7d+MLRS3po7pNFOpdQe7OqAsVjeoXN642I+
+ nNn/v9olacEVn6RsCrxSQHeJkIKfkgHsKB1UBcOaa1HOMhIrPHDzZB7GtfAVJX9Wu77O
+ nYgQ2VLzUz3GDlFitqLeSEpzK9uNxEdikJWYk8SuGZ4SI+gHWojdT+MZrltahPrJ3hCD
+ jSJXZzOutfOyGw3eEI2PPDBpQq23CE/wyULR1f3x5+3uygdUvhZtrP1Ksb17P9p3xLr5 VQ== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qj2eb2c92-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 May 2023 11:07:46 +0000
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 34G9FHEw017860; Tue, 16 May 2023 11:07:45 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2103.outbound.protection.outlook.com [104.47.58.103])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3qj104d5vu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 May 2023 11:07:43 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=huLJSsMkurrE5EA7/aEaLBYn/iTOVFVyavcH2JMnkNcbstA08SZICPy9S0+mxp40iqMA+QrtwWt33HqsIuI5Q1Kc1G5EyuiytW2XLLmVY77wZ2tG19r1dqRTX3yRypKvi05xvxMY30w5PeojSPJuV1QHBZ3U65Ue1a2eIsrVHaVEWhpzo9ztlUTDFYbDSaUq470Jl9XML++HheIt4At/eN9b270jLK47v0GsAYOp5Xe/d7RvWvSHRC/1TcIK3clJ4Zm2eqXuKnunOM6Jt7gX8AnXRac6jZReA52DHJtC/mEBv4v4Vd9d8CUXefrLGp3PdOViXFn71I4aeqPmoUVW5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RUKJ25HPYRwm7IH2NRWJF1hPdxtMyla7c1xABKz19G0=;
+ b=UxmbMlsaLnfGxILIo3cjiWu2n4x5UkDM5p4Tm41McfzWCDgnZluIipOdXeP/h/tNmrt21npASCEpIwbrDInc6YJGtIsqQWzhHafMzWv6Kt7f7zppTM4miyqEA9MzHLwKu79MuJ34C9MgWR4bb7lAlqNViwrENFxVt8DrzPomgjjy4KkGXHG8YuBTYFLBEGgYCHOHYwdJnrU2JnfHd5i6JR9k3B/FGDogSu5t7kVQwfyhIUczKRtSrxCplp8LNNjZ0qAbKCOwKTtYW72GwcFrg+TLCuAA1pTCPXenwm3v4Ix5S6WC6K1lVRDXe49v9ifbFzKoc9yZZPgiImCuCtDdDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RUKJ25HPYRwm7IH2NRWJF1hPdxtMyla7c1xABKz19G0=;
+ b=mRB4HZ/sQ+dg7OAX6bBWj1jgyMiyk/Y+jDANcmgdUBg65VDK9ld3rOLKlKu9MawW4D9wJ9psFWLVDUp9QSrpM++1aETe9MNZ/+FaxjVIX5b0WvVjLmwzCef1V3csnsNUrLOv+vqQZz+hRyR1FhblDa6oNZww4R/Q+cKNqgISUYs=
+Received: from BN0PR10MB4918.namprd10.prod.outlook.com (2603:10b6:408:12e::9)
+ by DS7PR10MB7321.namprd10.prod.outlook.com (2603:10b6:8:e5::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.32; Tue, 16 May
+ 2023 11:07:41 +0000
+Received: from BN0PR10MB4918.namprd10.prod.outlook.com
+ ([fe80::6e7c:fef1:7e91:b7ab]) by BN0PR10MB4918.namprd10.prod.outlook.com
+ ([fe80::6e7c:fef1:7e91:b7ab%2]) with mapi id 15.20.6387.033; Tue, 16 May 2023
+ 11:07:41 +0000
+From: David Edmondson <david.edmondson@oracle.com>
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Greg Kurz
+ <groug@kaod.org>, qemu-s390x@nongnu.org, Fam Zheng <fam@euphon.net>, Ilya
+ Leoshkevich <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, John
+ Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org, Daniel Henrique
+ Barboza <danielhb413@gmail.com>, Harsh Prateek Bora
+ <harshpb@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>, David Gibson
+ <david@gibson.dropbear.id.au>, David Hildenbrand <david@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>, qemu-block@nongnu.org,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Eric Blake <eblake@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Vladimir
+ Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH v2 03/16] migration: Move setup_time to mig_stats
+In-Reply-To: <871qjgh9oq.fsf@secure.mitica>
+References: <20230515195709.63843-1-quintela@redhat.com>
+ <20230515195709.63843-4-quintela@redhat.com> <m27ct84noj.fsf@oracle.com>
+ <871qjgh9oq.fsf@secure.mitica>
+Date: Tue, 16 May 2023 12:07:32 +0100
+Message-ID: <m2zg64356z.fsf@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: AM4PR0902CA0016.eurprd09.prod.outlook.com
+ (2603:10a6:200:9b::26) To BN0PR10MB4918.namprd10.prod.outlook.com
+ (2603:10b6:408:12e::9)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20230510143856.964541-2-talumbau@google.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/5.10.0-21-amd64 (x86_64)
-X-Uptime: 10:27:06 up 57 days, 21:01, 1 user, load average: 0.01, 0.01, 0.00
-User-Agent: Mutt/2.0.5 (2021-01-21)
-Received-SPF: pass client-ip=46.235.229.95; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN0PR10MB4918:EE_|DS7PR10MB7321:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0903ec7d-919e-4eec-23b9-08db55fdc3d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: eXGJafGaw1dkE2Bc3gH/RtQUnxPcb6vkX9Vb1EhtM5fyNiay2ktYpXi4iXJ0vkLMF1V58opfCfBzR+Kk4PZWsv+lTT2u5GF/34AGOjq52/ayhQ5jDuHB1ghYBeHTVXuJFtu156AgblCLH+d4IO5nbul/5k+KpxP7kBKmAjSaBZW1Nk2po97vAgrhbHGu3I0Z0xel1HtL1SUX0EjK29gQXF0Sn+PAEaGBGuKpwddSjzHrA3Dww/qK89DiSZu/wrh/NdYIo4g0NGWD4ONskkpWULuAax0m0a75erdj/2pS0TvI53W3urf4VXxzMq+ePaArF3IpSAEsLyiAzrn9NZGLVGC8aJDltYstqtjxfz/50YQc8eCpSnsHuMSBE60TcRhttho9FjSu72fGRysvo+Yvv1ATYvpwv/cGmEftN+2Gfq5UdvgBooylm5i9OwoXtNqKvLTpz17cWwIlSjdNQiW2/CL8G14TLSZyg6I77PkNv8XbpZmRnBOWfpCOeeEE9ISnhqFtUqMJ31nKEIMEbo0Z1Duw4VAf0rlvrqWAjPiT1HmuhFV8zTTNQkr8QSLDOIS0
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BN0PR10MB4918.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(396003)(39860400002)(136003)(366004)(346002)(376002)(451199021)(86362001)(36756003)(316002)(54906003)(4326008)(6916009)(66946007)(66476007)(66556008)(478600001)(5660300002)(8676002)(8936002)(41300700001)(44832011)(7416002)(6666004)(2906002)(38100700002)(6506007)(2616005)(26005)(186003)(6512007)(83380400001)(66574015)(6486002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SjNzcGRicTNROUF5TnhYa3BtNEtINFU4OHlGekczZXYxa0JMRzhudWNOWmtF?=
+ =?utf-8?B?NWFmeGJ2eERUQWRhVm1hTXJxcWtSMVlZbVdFS1ZGUEpFRUZaS2RKckoyaFJL?=
+ =?utf-8?B?MVZ1ci94di85dHZiRW0zWGRVWkZPMzZLUWdLbnVMQThHcDRsUUdqU2syM3dC?=
+ =?utf-8?B?dnZ0aS9ienhTWExKUnNtVzVROXJ0dkVvMHlrbkkzUFg1Z0JRNUR6d1FzdkNC?=
+ =?utf-8?B?ZVBBVFBBcmV6RmVmTHI3SkZUSVRRamZoQjE5VXFqb2c3Zk5aYm41L2crcmZ2?=
+ =?utf-8?B?aWJDS0N0OGwxSW5jejJPcHRFdmZ1cDhZTlJ4YmkvRnBFSFA2NUR6enZXQWJx?=
+ =?utf-8?B?ZjRYdTAvb3lTL0JqTUxKTGs0RW1temFtRGVtMDZoRmVJcW1SSlNjYVhDbitY?=
+ =?utf-8?B?MnhGMS9ZUmdVclBTcTl3RVVObWhBZ3pvL1VZQW8yNlozVzNOOXRyZWQrTzJ5?=
+ =?utf-8?B?VU5GL0xRWFlSSXJ1MW9LY3Z3UGpyemVqOEdITXErZzg2TnBWYWg5aHpYTjV2?=
+ =?utf-8?B?dzZUY1hRVlBaYkhIS1Qvb2VaQ3R5dzE5bTBEUnh0MWRjRU93Q3VWcWFKaklx?=
+ =?utf-8?B?cWYvQmNxM29XYVIrRlBSQ05vdmNKcExHcjNxNVRRUUhYN0V6R3lxSnFNTTVO?=
+ =?utf-8?B?M1NXUlpYME5WckNBWXdUUDdSdFRYU3JuNGRqZDlIaGVnZ05Jb3RFeFNTd2I4?=
+ =?utf-8?B?bVhQMlB5M0sySWZ6RXo5UzNPUWwzS1Z1V3JWdlgrbjlVUnhLTVB1amxXbGxD?=
+ =?utf-8?B?MVZLNjR3RFQ2alNYQnlLckRrUklrU0tlN09QM1FSU0FWS2o4QlJzQnk0djBo?=
+ =?utf-8?B?RVNLS1h2ak55K3dsOGtpOWtBZGliT0NXWGFjZlo1SWhRQW4rM0NyTkkySkYx?=
+ =?utf-8?B?dW5xUDI3MUkraU9hNis1WVNiVDZKeFkrbXZTVHA5OWdnd3VqZHJGWjRxSjg4?=
+ =?utf-8?B?dGVzNWJSYjh2Tm4yWVhYdHlDd1FyL3lyN1NDT2QyQ3pwaXdwK2lEWWZYZjNl?=
+ =?utf-8?B?UWZwQUdhM2RPOGQ5U0ErMUtSUFhNQWp6OW1TZURjRG1XejRWSC93N1JWTXVw?=
+ =?utf-8?B?VW5uYTFWdkFsWVg3bmFYQjVhaDk3SllVRFRVU2RBUEFCYU5VWXdxQlBRaXgr?=
+ =?utf-8?B?N0VzQzA2NWFvUmw4TmY4NklKMG1YZldkcHFJQUp3dSs0dnN6VDlwUWtmRDJD?=
+ =?utf-8?B?TGRJcVVwTURMVDNOMGtxeGZXRGRFcnU3VFF2dzJ0YVpMNjQ2QnVSWENJL3VU?=
+ =?utf-8?B?TzA2ZmJGTVJwa2lkYjVuV3ppc3FMU09Xemhndkp1MTJxcU5wVHEzWnpJYVhl?=
+ =?utf-8?B?SCt4anU4LzExS2xONlF1UmZmOUVkWjB6RWZpbEdWcnhzWHZkSEVUa0pnMXFh?=
+ =?utf-8?B?NzJzb0NyUzM4TElkZ2trOVd1RHRnamlCNlVvSVl6YnhvWTJMTkswUmtEdTRP?=
+ =?utf-8?B?UHBUaWpScnNrU1hsdWVZclNaLzhkMmVVeFVyYzEwN1VvdU43N0VWOFFlR1Rj?=
+ =?utf-8?B?bCs0NUVZY1JYSDZKdmdqVkxNN1l3T3VRMXlkK1hENmR3STU2bFpXcUFBR05Z?=
+ =?utf-8?B?QXNBWmxYOUtJSE1vcFNhMlNhM2xia3BZSmlha0xTRExSb1lCR010RlVKaFYz?=
+ =?utf-8?B?RFo1SzVBRUtQVHdrY2QvbWtIdG1menlvU0hweE40SEtwdjI5NXcycVZsNDlH?=
+ =?utf-8?B?OHJ4L01pU0JaSnZ2UTUxTFVySEt2Y2JQdTI3TTdmWGR6THE2R1dBaVhXbGcx?=
+ =?utf-8?B?TkVVUUlrb1Z1WWozM3F2RkxPQkE2dE92ekpuV1dDcS8vUlJVaTdpL2RtVEpK?=
+ =?utf-8?B?K3N4bGFLOEtsd3EwRXY5SENQSExKUElHNHpyU1M2NkZNa1RiNHRiSll1a1Rz?=
+ =?utf-8?B?NFYyVlUvMWthT3F5MWtGTHBHc1ltdFpXR0tZVTlqRE9mKzBkeVlLbmVoWG1O?=
+ =?utf-8?B?Q0prc0wwOEdLSDhSbVdwYXdYZmpHRHBXaHBMdzBFRkFKaldwRDMvaUFwTXJW?=
+ =?utf-8?B?cEkyMWVqT0RPK0JBY2dkMGVvbjJtUnIyTkhpTC82YVh3WDJ2bXB6WDJIUUtw?=
+ =?utf-8?B?a0Z3cmxBaHZ4dzl2Rm9BUFVwWjFhSVVJd0txL1hvZENaWDMxVGp1YVJNWWE4?=
+ =?utf-8?B?eWw0VUZpR1dtYzVHYitMQ1BoQm40TkpZdHcyUlJPTGN0NVlnU1IrWFdDR3Fh?=
+ =?utf-8?B?WlE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?UkFKWW9McGs3Z3NVMlVGeHZSaHZySnZzemUwMUE3Rm1Fcm96bXY3OEpuRlda?=
+ =?utf-8?B?L0JIc0pQSmxoRG91TzFqcVZzRmxPYnBTS1B1OHgvRm5BTE9mYjZzOE9YeGxO?=
+ =?utf-8?B?MFU2ejZhYXdZL085YlFqVStlbTZBbHRuQ3Y5dFRJMC9QeFpTR3YreDIrbmx3?=
+ =?utf-8?B?eEdCSmo0MTFmcS81V2FFZU1yYnpvYk9iMU5UMitjVnFPVDgrTzk0NG4wMC9N?=
+ =?utf-8?B?c2NzcE5sT2tmdlV5eGtVeVVSVzZKaEJjbWxNNXpTZElvZDlNR1h6Mi90SlJN?=
+ =?utf-8?B?ZDlOTVk3KzhRdUxPUmFnUEh4eUd1dzVGQWtVVnF1NHF0emdEM0xCc1dTQW94?=
+ =?utf-8?B?OWNJanNkQU0xaXgvRSs5cWpPeVQ3V2NZa1dIWHNEaEhPbENNMFVqMDRDNGR1?=
+ =?utf-8?B?ZWF3S2NYd1F3U1ZmckR2aURmR05FQXdQVnRFaUs0NlZ1cHhmeHAyMUliT21y?=
+ =?utf-8?B?MlFtbVlBQTlTQVZxV0RBYy9NdGhUVGZoVUFibTR1c2lJcVVGSDdqcE9nc3Uy?=
+ =?utf-8?B?UDFyTkY5VTRseUVGNGxpNDAyTVo0bjhrSUZBOTBBZk90MzZMU0tWVk5WdXFv?=
+ =?utf-8?B?dnVwQXYwbU1DYWpZaEpDMVVwSFVndFU2bENRQ0psS2xDVEk0bUVjRHg1L1ND?=
+ =?utf-8?B?dTJYTGxOWFB1dkVteXBaa2FjTDFGS0pCYXpDZHBIdEpIUitJcUczdFgvZmVo?=
+ =?utf-8?B?ZG83VnVRRy9qektRVkNSNlIrQ2tSVFpYS2QxaXR6RDRSV012WDF1UzdEaERK?=
+ =?utf-8?B?Y0dRdEI3ZU5jTUkyeEtTNzFEamgwbTBxL21peXJDR3JrK3Q5V2tUcFo1RUhP?=
+ =?utf-8?B?dWxxZDRXMEF5azdYanNvOGplUzJqTUhxMEFJK2M1ai9GZjMyVDdyVVdqWEZT?=
+ =?utf-8?B?ZjFTREFKQ3F0aXlpOGJMWXRIcVRHYzB2QnZIOUMzQ1IzbCs2NDFzaTE2Lzls?=
+ =?utf-8?B?b2V5VndaNWEwVmpUYlYzV0ZUWTBIdlE0WEducjdwUVFVbVRxQ1h0UlBjN2V4?=
+ =?utf-8?B?TG9uZkRweW5QcC9EdHJZOUZwelRBNmF1WFVnb1c2OXpLNDhHVHZZblZ2ZWZR?=
+ =?utf-8?B?K1BWZ2tCMXFFTzl3d0RBR3pMd1RPdlhZb0JEY0xwSmQzUWlCb1RwM3lIMytV?=
+ =?utf-8?B?U0hVNklBQytRVHdXbGlZcnl0WnBlR3dIbTMzQU4zajdqSUd0SmVlalVaMDYz?=
+ =?utf-8?B?SXpKUWlaV2tpUXAvSzYxaC8ySlg2Q3B3dVNkeVhCVU9KTTNua2ZJK3lveVdR?=
+ =?utf-8?B?anljS25ZK2dMMllNWkZ6aXNmU0VucEt3b3E5RVBiSTlLTW1jcGpMdjdjWkhq?=
+ =?utf-8?B?OEFSOUJlaXEybjQ0V2JmcHBBbENQZVBHUy9od2N4ZzNYNHdXUHRHeFU5K1lQ?=
+ =?utf-8?B?TEpleDRlY3FCVkE9PQ==?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0903ec7d-919e-4eec-23b9-08db55fdc3d7
+X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB4918.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2023 11:07:40.7031 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4mRZG0lqbDx/aqzQv/mRmwfoBgoX2L+6nhPxiHICy+WmE6THwJG3MAXtsO6JixSN/y/KI5s0RO7kXxKXD8sTtgj0ttkOGxGQDoaH6DiB01M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB7321
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-16_04,2023-05-16_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ phishscore=0 spamscore=0
+ bulkscore=0 suspectscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305160094
+X-Proofpoint-GUID: RcLs5Cm_uumrSwQlY-fenUrQfv99DQ4s
+X-Proofpoint-ORIG-GUID: RcLs5Cm_uumrSwQlY-fenUrQfv99DQ4s
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=david.edmondson@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,854 +215,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* T.J. Alumbaugh (talumbau@google.com) wrote:
->  Working Set Reporting supported in virtio-balloon.
->  - adds working set reporting and notification vqueues
->  - QMP API additions:
->    - guest-ws property on balloon
->    - generates QMP WS_EVENT when new reports available
->    - ws_config, ws_request commands
+Juan Quintela <quintela@redhat.com> writes:
 
-Hi,
-  1st it's probably best to split this patch up into a few 
-separate patches; something like:
-    1) Updating the virtio_balloon header
-    2) the main virtio-balloon code
-    3) Adding the qmp code
-    4) Adding the HMP code
-    5) The migration code
+> David Edmondson <david.edmondson@oracle.com> wrote:
+>> Juan Quintela <quintela@redhat.com> writes:
+>>
+>>> It is a time that needs to be cleaned each time cancel migration.
+>>> Once there create migration_time_since() to calculate how time since a
+>>> time in the past.
+>>>
+>>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>>>
+>>> ---
+>>>
+>>> Rename to migration_time_since (c=C3=A9dric)
+>>> ---
+>>>  migration/migration-stats.h | 13 +++++++++++++
+>>>  migration/migration.h       |  1 -
+>>>  migration/migration-stats.c |  7 +++++++
+>>>  migration/migration.c       |  9 ++++-----
+>>>  4 files changed, 24 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+>>> index e782f1b0df..21402af9e4 100644
+>>> --- a/migration/migration-stats.h
+>>> +++ b/migration/migration-stats.h
+>>> @@ -75,6 +75,10 @@ typedef struct {
+>>>       * Number of bytes sent during precopy stage.
+>>>       */
+>>>      Stat64 precopy_bytes;
+>>> +    /*
+>>> +     * How long has the setup stage took.
+>>> +     */
+>>> +    Stat64 setup_time;
+>>
+>> Is this really a Stat64? It doesn't appear to need the atomic update
+>> feature.
+>
+> What this whole Migration Atomic Counters series try to do is that
+> everything becomes atomic and then we can use everything everywhere.
+>
+> Before this series we had (I am simplifying here):
+>
+> - transferred, precopy_bytes, postcopy_bytes, downtime_bytes -> atomic,
+>   you can use it anywhere
+>
+> - qemu_file transferred -> you can only use it from the main migration
+>   thread
+>
+> - qemu_file rate_limit -> you can only use it from the main migration
+>   thread
+>
+> And we had to update the three counters in every place that we did a
+> write wehad to update all of them.
+>
+> You can see the contorsions that we go to to update the rate_limit and
+> the qemu_file transferred fields.
+>
+> After the series (you need to get what it is already on the tree, this
+> series, QEMUFileHooks cleanup, and another serie on my tree waiting for
+> this to be commited), you got three counters:
+>
+> - qemu_file: atomic, everytime we do a qemu_file write we update it
+> - multifd_bytes: atomic, everytime that we do a write in a multifd
+>   channel, we update it.
+> - rdma_bytes: atomic, everytime we do a write through RDMA we update it.
+>
+> And that is it.
+>
+> Both rate_limit and transferred are derived from these three counters:
+>
+> - at any point in time migration_transferred_bytes() returns the amount
+>   of bytes written since the start of the migration:
+>      qemu_file_bytes + multifd_bytes + rdma_bytes.
+>
+> - transferred on this period:
+>        at_start_of_period =3D migration_transferred_bytes().
+>        trasferred_in_this_period =3D migration_transferred_bytes() - at_s=
+tart_of_period;
+>
+> - Similar for precopy_bytes, postcopy_bytes and downtime_bytes.  When we
+>   move from one stage to the next, we store what is the value of the
+>   previous stage.
+>
+> The counters that we use to calculate the rate limit are updated around
+> 10 times per second (can be a bit bigger at the end of periods,
+> iterations, ...)  So performance is not extra critical.
+>
+> But as we have way less atomic operations (really one per real write),
+> we don't really care a lot if we do some atomic operations when a normal
+> operation will do.
+>
+> I.e. I think we have two options:
+>
+> - have the remaining counters that are only used in the main migration
+>   thread not be atomic.  Document them and remember to do the correct
+>   thing everytime we use it.  If we need to use it in another thread,
+>   just change it to atomic.
+>
+> - Make all counters atomic. No need to document anything.  And you can
+>   call any operation/counter/... in migration-stats.c from anywhere.
+>
+> I think that the second option is better.  But I can hear reasons from
+> people that think that the 1st one is better.
 
-    That would make it easier for people to review
-the bits they know.
+For the counters, no argument - making them all atomic seems like the
+right way forward.
 
-Also, please make sure migration works between a host
-without this feature and one which does; I suggest
-turning the feature off in older machine types, and
-also just checking that it works.
+start_time isn't a counter, and isn't manipulated at multiple points in
+the code by different actors.
 
-See more comments below.
+I don't hate it being a Stat64, it just seems odd when the other 'time'
+related variables are not.
 
-Dave
-
-> Signed-off-by: T.J. Alumbaugh <talumbau@google.com>
-> ---
->  hmp-commands.hx                               |  26 ++
->  hw/core/machine-hmp-cmds.c                    |  21 ++
->  hw/virtio/virtio-balloon-pci.c                |   2 +
->  hw/virtio/virtio-balloon.c                    | 225 +++++++++++++++++-
->  include/hw/virtio/virtio-balloon.h            |  17 +-
->  include/monitor/hmp.h                         |   2 +
->  .../standard-headers/linux/virtio_balloon.h   |  17 ++
->  include/sysemu/balloon.h                      |   8 +-
->  monitor/monitor.c                             |   1 +
->  qapi/machine.json                             |  66 +++++
->  qapi/misc.json                                |  26 ++
->  softmmu/balloon.c                             |  32 ++-
->  12 files changed, 437 insertions(+), 6 deletions(-)
-> 
-> diff --git a/hmp-commands.hx b/hmp-commands.hx
-> index 9afbb54a51..f3548a148f 100644
-> --- a/hmp-commands.hx
-> +++ b/hmp-commands.hx
-> @@ -1396,6 +1396,32 @@ SRST
->    Request VM to change its memory allocation to *value* (in MB).
->  ERST
->  
-> +    {
-> +        .name       = "ws_config",
-> +        .args_type  = "i0:i,i1:i,i2:i,refresh:i,report:i",
-> +        .params     = "bin intervals 0-2, refresh and report thresholds",
-> +        .help       = "Working Set intervals, refresh/report thresholds (ms)",
-> +        .cmd        = hmp_ws_config,
-> +    },
-> +
-> +SRST
-> +``ws_config``
-> +  Set the intervals (in ms), refresh, and report thresholds for WS reporting
-> +ERST
-> +
-> +    {
-> +        .name       = "ws_request",
-> +        .args_type  = "",
-> +        .params     = "",
-> +        .help       = "Request the Working Set of the guest.",
-> +        .cmd        = hmp_ws_request,
-> +    },
-> +
-> +SRST
-> +``wss_request``
-
-Typo 'ws*s*'
-
-Some other comments on that:
-  a) When you've split the hmp stuff out into a separate patch you can
-     give an example of the command (especially ws_config) in the
-     commit message.
-
-  b) Would it make sense to have a query-ws/info ws to display the last received
-     working set info?
-
-  c) Some may feel 'ws' is a bit terse and want the unabbreviated
-  version.  (Is it also general, or is it actually virtio balloon
-  specific, ie should the name include virtio or balloon?)
-
-  d) You've got 3 bin intervals; is that '3' set in stone or is it
-  likely to change in the future, in which case perhaps you want the
-  perameters to be more flexible.  I note your migration code
-  transfers a 'number of bins'.
-
-> +  Request the Working Set Size of the guest.
-> +ERST
-> +
->      {
->          .name       = "set_link",
->          .args_type  = "name:s,up:b",
-> diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-> index c3e55ef9e9..dd11865ddc 100644
-> --- a/hw/core/machine-hmp-cmds.c
-> +++ b/hw/core/machine-hmp-cmds.c
-> @@ -237,6 +237,27 @@ void hmp_balloon(Monitor *mon, const QDict *qdict)
->      hmp_handle_error(mon, err);
->  }
->  
-> +void hmp_ws_request(Monitor *mon, const QDict *qdict)
-> +{
-> +    Error *err = NULL;
-> +
-> +    qmp_ws_request(&err);
-> +    hmp_handle_error(mon, err);
-> +}
-> +
-> +void hmp_ws_config(Monitor *mon, const QDict *qdict)
-> +{
-> +    uint64_t i0 = qdict_get_int(qdict, "i0");
-> +    uint64_t i1 = qdict_get_int(qdict, "i1");
-> +    uint64_t i2 = qdict_get_int(qdict, "i2");
-> +    uint64_t refresh = qdict_get_int(qdict, "refresh");
-> +    uint64_t report = qdict_get_int(qdict, "report");
-> +    Error *err = NULL;
-> +
-> +    qmp_ws_config(i0, i1, i2, refresh, report, &err);
-> +    hmp_handle_error(mon, err);
-> +}
-> +
->  void hmp_info_memory_devices(Monitor *mon, const QDict *qdict)
->  {
->      Error *err = NULL;
-> diff --git a/hw/virtio/virtio-balloon-pci.c b/hw/virtio/virtio-balloon-pci.c
-> index ce2645ba71..92409de924 100644
-> --- a/hw/virtio/virtio-balloon-pci.c
-> +++ b/hw/virtio/virtio-balloon-pci.c
-> @@ -68,6 +68,8 @@ static void virtio_balloon_pci_instance_init(Object *obj)
->      object_property_add_alias(obj, "guest-stats-polling-interval",
->                                OBJECT(&dev->vdev),
->                                "guest-stats-polling-interval");
-> +    object_property_add_alias(obj, "guest-ws", OBJECT(&dev->vdev),
-> +                              "guest-ws");
->  }
->  
->  static const VirtioPCIDeviceTypeInfo virtio_balloon_pci_info = {
-> diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
-> index d004cf29d2..31b18435c8 100644
-> --- a/hw/virtio/virtio-balloon.c
-> +++ b/hw/virtio/virtio-balloon.c
-> @@ -27,6 +27,7 @@
->  #include "exec/address-spaces.h"
->  #include "qapi/error.h"
->  #include "qapi/qapi-events-machine.h"
-> +#include "qapi/qapi-visit-misc.h"
->  #include "qapi/visitor.h"
->  #include "trace.h"
->  #include "qemu/error-report.h"
-> @@ -169,6 +170,116 @@ static void balloon_deflate_page(VirtIOBalloon *balloon,
->      }
->  }
->  
-> +/*
-> + * reset_working_set - Mark all items in the array as unset
-> + *
-> + * This function needs to be called at device initialization and
-> + * whenever a new Working Set config is specified.
-> + */
-> +static inline void reset_working_set(VirtIOBalloon *dev)
-> +{
-> +    int i;
-> +    for (i = 0; i < VIRTIO_BALLOON_WS_NR_BINS; i++) {
-> +        dev->ws[i].idle_age = 0;
-> +        if (dev->ws[i].memory_size_bytes) {
-> +            dev->ws[i].memory_size_bytes->anon = 0;
-> +            dev->ws[i].memory_size_bytes->file = 0;
-> +        } else {
-> +            dev->ws[i].memory_size_bytes = g_malloc0(sizeof(MemoryBin));
-> +        }
-> +    }
-> +}
-> +
-> +static void virtio_balloon_receive_working_set(VirtIODevice *vdev, VirtQueue *vq)
-> +{
-> +    VirtIOBalloon *s = VIRTIO_BALLOON(vdev);
-> +    VirtQueueElement *elem;
-> +    VirtIOBalloonWS ws;
-> +    size_t offset = 0;
-> +    int count = 0;
-> +
-> +    elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-> +    if (!elem) {
-> +        return;
-> +    }
-> +
-> +    if (s->ws_vq_elem != NULL) {
-> +        /* This should never happen if the driver follows the spec. */
-> +        virtqueue_push(vq, s->ws_vq_elem, 0);
-> +        virtio_notify(vdev, vq);
-> +        g_free(s->ws_vq_elem);
-> +    }
-> +
-> +    s->ws_vq_elem = elem;
-> +
-> +    /* Initialize the Working Set to get rid of any stale values. */
-> +    reset_working_set(s);
-> +
-> +    while (iov_to_buf(elem->out_sg, elem->out_num, offset, &ws, sizeof(ws)) == sizeof(ws)) {
-> +        uint64_t idle_age_ms = virtio_tswap64(vdev, ws.idle_age_ms);
-> +        uint64_t bytes_anon = virtio_tswap64(vdev, ws.memory_size_bytes[0]);
-> +        uint64_t bytes_file = virtio_tswap64(vdev, ws.memory_size_bytes[1]);
-> +        s->ws[count].idle_age = idle_age_ms;
-> +        s->ws[count].memory_size_bytes->anon = bytes_anon;
-> +        s->ws[count].memory_size_bytes->file = bytes_file;
-> +        offset += sizeof(ws);
-> +        count++;
-> +    }
-> +    qapi_event_send_ws_event();
-> +}
-> +
-> +static void virtio_balloon_send_ws_request(VirtIODevice *vdev, VirtQueue *vq)
-> +{
-> +    VirtQueueElement *elem;
-> +    size_t sz = 0;
-> +    uint16_t tag = 0;
-> +
-> +    elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-> +    if (!elem) {
-> +        return;
-> +    }
-> +    tag = WS_REQUEST;
-> +    sz = iov_from_buf(elem->in_sg, elem->in_num, 0, &tag, sizeof(tag));
-> +    assert(sz == sizeof(tag));
-> +    virtqueue_push(vq, elem, sz);
-> +    virtio_notify(vdev, vq);
-> +    g_free(elem);
-> +}
-> +
-> +static void virtio_balloon_send_ws_config(VirtIODevice *vdev, VirtQueue *vq,
-> +                                          uint64_t i0, uint64_t i1, uint64_t i2,
-> +                                          uint64_t refresh, uint64_t report)
-> +{
-> +    VirtIOBalloon *s = VIRTIO_BALLOON(vdev);
-> +    VirtQueueElement *elem;
-> +    uint16_t tag = 0;
-> +    size_t sz = 0;
-> +    elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-> +    if (!elem) {
-> +        return;
-> +    }
-> +
-> +    tag = WS_CONFIG;
-> +    s->ws_intervals[0] = i0;
-> +    s->ws_intervals[1] = i1;
-> +    s->ws_intervals[2] = i2;
-> +    s->ws_refresh_threshold = refresh;
-> +    s->ws_report_threshold = report;
-> +
-> +    sz = iov_from_buf(elem->in_sg, elem->in_num, 0, &tag, sizeof(tag));
-> +    assert(sz == sizeof(uint16_t));
-> +    sz += iov_from_buf(elem->in_sg, elem->in_num, sz, s->ws_intervals,
-> +                       (VIRTIO_BALLOON_WS_NR_BINS - 1) * \
-> +                       sizeof(s->ws_intervals[0]));
-> +    sz += iov_from_buf(elem->in_sg, elem->in_num, sz, &s->ws_refresh_threshold,
-> +                       sizeof(uint64_t));
-> +    sz += iov_from_buf(elem->in_sg, elem->in_num, sz, &s->ws_report_threshold,
-> +                       sizeof(uint64_t));
-> +    virtqueue_push(vq, elem, sz);
-> +    virtio_notify(vdev, vq);
-> +    g_free(elem);
-> +}
-> +
->  static const char *balloon_stat_names[] = {
->     [VIRTIO_BALLOON_S_SWAP_IN] = "stat-swap-in",
->     [VIRTIO_BALLOON_S_SWAP_OUT] = "stat-swap-out",
-> @@ -237,6 +348,43 @@ static void balloon_stats_poll_cb(void *opaque)
->      virtio_notify(vdev, s->svq);
->      g_free(s->stats_vq_elem);
->      s->stats_vq_elem = NULL;
-> +
-> +}
-> +
-> +static void balloon_ws_get_all(Object *obj, Visitor *v, const char *name,
-> +                               void *opaque, Error **errp)
-> +{
-> +    Error *err = NULL;
-> +    VirtIOBalloon *s = VIRTIO_BALLOON(obj);
-> +    char ws_buf[4];
-> +    WorkingSetInfo *wsinfo;
-> +    int i;
-> +
-> +    if (!visit_start_struct(v, name, NULL, 0, &err)) {
-> +        goto out;
-> +    }
-> +
-> +    if (!visit_start_struct(v, "ws", NULL, 0, &err)) {
-> +        goto out_end;
-> +    }
-> +    for (i = 0; i < VIRTIO_BALLOON_WS_NR_BINS; i++) {
-> +        wsinfo = s->ws + i;
-> +        sprintf(ws_buf, "ws%d", i);
-> +        if (!visit_type_WorkingSetInfo(v, ws_buf, &wsinfo, &err)) {
-> +            goto out_nested;
-> +        }
-> +    }
-> +    visit_check_struct(v, &err);
-> +out_nested:
-> +    visit_end_struct(v, NULL);
-> +
-> +    if (!err) {
-> +        visit_check_struct(v, &err);
-> +    }
-> +out_end:
-> +    visit_end_struct(v, NULL);
-> +out:
-> +    error_propagate(errp, err);
->  }
->  
->  static void balloon_stats_get_all(Object *obj, Visitor *v, const char *name,
-> @@ -697,8 +845,11 @@ static size_t virtio_balloon_config_size(VirtIOBalloon *s)
->      if (s->qemu_4_0_config_size) {
->          return sizeof(struct virtio_balloon_config);
->      }
-> +    if (virtio_has_feature(features, VIRTIO_BALLOON_F_WS_REPORTING)) {
-> +        return sizeof(struct virtio_balloon_config);
-> +    }
->      if (virtio_has_feature(features, VIRTIO_BALLOON_F_PAGE_POISON)) {
-> -        return sizeof(struct virtio_balloon_config);
-> +        return offsetof(struct virtio_balloon_config, ws_num_bins);
->      }
->      if (virtio_has_feature(features, VIRTIO_BALLOON_F_FREE_PAGE_HINT)) {
->          return offsetof(struct virtio_balloon_config, poison_val);
-> @@ -714,6 +865,7 @@ static void virtio_balloon_get_config(VirtIODevice *vdev, uint8_t *config_data)
->      config.num_pages = cpu_to_le32(dev->num_pages);
->      config.actual = cpu_to_le32(dev->actual);
->      config.poison_val = cpu_to_le32(dev->poison_val);
-> +    config.ws_num_bins = cpu_to_le32(VIRTIO_BALLOON_WS_NR_BINS);
->  
->      if (dev->free_page_hint_status == FREE_PAGE_HINT_S_REQUESTED) {
->          config.free_page_hint_cmd_id =
-> @@ -748,6 +900,14 @@ static bool virtio_balloon_page_poison_support(void *opaque)
->      return virtio_vdev_has_feature(vdev, VIRTIO_BALLOON_F_PAGE_POISON);
->  }
->  
-> +static bool virtio_balloon_ws_reporting_support(void *opaque)
-> +{
-> +    VirtIOBalloon *s = opaque;
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(s);
-> +
-> +    return virtio_vdev_has_feature(vdev, VIRTIO_BALLOON_F_WS_REPORTING);
-> +}
-> +
->  static void virtio_balloon_set_config(VirtIODevice *vdev,
->                                        const uint8_t *config_data)
->  {
-> @@ -766,6 +926,10 @@ static void virtio_balloon_set_config(VirtIODevice *vdev,
->      if (virtio_balloon_page_poison_support(dev)) {
->          dev->poison_val = le32_to_cpu(config.poison_val);
->      }
-> +    dev->ws_num_bins = 0;
-> +    if (virtio_balloon_ws_reporting_support(dev)) {
-> +        dev->ws_num_bins = le32_to_cpu(config.ws_num_bins);
-> +    }
->      trace_virtio_balloon_set_config(dev->actual, oldactual);
->  }
->  
-> @@ -775,6 +939,7 @@ static uint64_t virtio_balloon_get_features(VirtIODevice *vdev, uint64_t f,
->      VirtIOBalloon *dev = VIRTIO_BALLOON(vdev);
->      f |= dev->host_features;
->      virtio_add_feature(&f, VIRTIO_BALLOON_F_STATS_VQ);
-> +    virtio_add_feature(&f, VIRTIO_BALLOON_F_WS_REPORTING);
->  
->      return f;
->  }
-> @@ -786,6 +951,24 @@ static void virtio_balloon_stat(void *opaque, BalloonInfo *info)
->                                               VIRTIO_BALLOON_PFN_SHIFT);
->  }
->  
-> +static void virtio_balloon_ws_request(void *opaque)
-> +{
-> +    VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +
-> +    virtio_balloon_send_ws_request(vdev, dev->cvq);
-> +}
-> +
-> +static void virtio_balloon_ws_config(void *opaque, uint64_t i0, uint64_t i1,
-> +                                      uint64_t i2, uint64_t refresh, uint64_t report)
-> +{
-> +    VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +
-> +    printf("VIRTIO-BALLOON: ws config");
-
-Left over debug! Turn it into a trace_ 
-
-> +    virtio_balloon_send_ws_config(vdev, dev->cvq, i0, i1, i2, refresh, report);
-> +}
-> +
->  static void virtio_balloon_to_target(void *opaque, ram_addr_t target)
->  {
->      VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
-> @@ -835,6 +1018,17 @@ static const VMStateDescription vmstate_virtio_balloon_page_poison = {
->      }
->  };
->  
-> +static const VMStateDescription vmstate_virtio_balloon_ws_reporting = {
-> +    .name = "virtio-balloon-device/working-set-report",
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .needed = virtio_balloon_ws_reporting_support,
-> +    .fields = (VMStateField[]) {
-> +        VMSTATE_UINT32(ws_num_bins, VirtIOBalloon),
-> +        VMSTATE_END_OF_LIST()
-> +    }
-> +};
-> +
->  static const VMStateDescription vmstate_virtio_balloon_device = {
->      .name = "virtio-balloon-device",
->      .version_id = 1,
-> @@ -848,6 +1042,7 @@ static const VMStateDescription vmstate_virtio_balloon_device = {
->      .subsections = (const VMStateDescription * []) {
->          &vmstate_virtio_balloon_free_page_hint,
->          &vmstate_virtio_balloon_page_poison,
-> +        &vmstate_virtio_balloon_ws_reporting,
->          NULL
->      }
->  };
-> @@ -861,7 +1056,9 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
->      virtio_init(vdev, VIRTIO_ID_BALLOON, virtio_balloon_config_size(s));
->  
->      ret = qemu_add_balloon_handler(virtio_balloon_to_target,
-> -                                   virtio_balloon_stat, s);
-> +                                   virtio_balloon_stat,
-> +                                   virtio_balloon_ws_request,
-> +                                   virtio_balloon_ws_config, s);
->  
->      if (ret < 0) {
->          error_setg(errp, "Only one balloon device is supported");
-> @@ -896,7 +1093,11 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
->                                             virtio_balloon_handle_report);
->      }
->  
-> +    s->wvq = virtio_add_queue(vdev, 128, virtio_balloon_receive_working_set);
-> +    s->cvq = virtio_add_queue(vdev, 128, NULL);
-> +
->      reset_stats(s);
-> +    reset_working_set(s);
->  }
->  
->  static void virtio_balloon_device_unrealize(DeviceState *dev)
-> @@ -922,6 +1123,8 @@ static void virtio_balloon_device_unrealize(DeviceState *dev)
->      if (s->reporting_vq) {
->          virtio_delete_queue(s->reporting_vq);
->      }
-> +    virtio_delete_queue(s->wvq);
-> +    virtio_delete_queue(s->cvq);
->      virtio_cleanup(vdev);
->  }
->  
-> @@ -939,6 +1142,12 @@ static void virtio_balloon_device_reset(VirtIODevice *vdev)
->          s->stats_vq_elem = NULL;
->      }
->  
-> +    if (s->ws_vq_elem != NULL) {
-> +        virtqueue_unpop(s->wvq, s->ws_vq_elem, 0);
-> +        g_free(s->ws_vq_elem);
-> +        s->ws_vq_elem = NULL;
-> +    }
-> +
->      s->poison_val = 0;
->  }
->  
-> @@ -953,6 +1162,13 @@ static void virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
->          virtio_balloon_receive_stats(vdev, s->svq);
->      }
->  
-> +    if (!s->ws_vq_elem && vdev->vm_running &&
-> +        (status & VIRTIO_CONFIG_S_DRIVER_OK) && virtqueue_rewind(s->wvq, 1)) {
-> +        /* poll ws queue for the element we have discarded when the VM
-> +         * was stopped */
-> +        virtio_balloon_receive_working_set(vdev, s->wvq);
-> +    }
-> +
->      if (virtio_balloon_free_page_support(s)) {
->          /*
->           * The VM is woken up and the iothread was blocked, so signal it to
-> @@ -983,6 +1199,9 @@ static void virtio_balloon_instance_init(Object *obj)
->      s->free_page_hint_cmd_id = VIRTIO_BALLOON_FREE_PAGE_HINT_CMD_ID_MIN;
->      s->free_page_hint_notify.notify = virtio_balloon_free_page_hint_notify;
->  
-> +    object_property_add(obj, "guest-ws", "guest working set",
-> +                        balloon_ws_get_all, NULL, NULL, NULL);
-> +
->      object_property_add(obj, "guest-stats", "guest statistics",
->                          balloon_stats_get_all, NULL, NULL, NULL);
->  
-> @@ -1011,6 +1230,8 @@ static Property virtio_balloon_properties[] = {
->                      VIRTIO_BALLOON_F_PAGE_POISON, true),
->      DEFINE_PROP_BIT("free-page-reporting", VirtIOBalloon, host_features,
->                      VIRTIO_BALLOON_F_REPORTING, false),
-> +    DEFINE_PROP_BIT("working-set", VirtIOBalloon, host_features,
-> +                    VIRTIO_BALLOON_F_WS_REPORTING, true),
->      /* QEMU 4.0 accidentally changed the config size even when free-page-hint
->       * is disabled, resulting in QEMU 3.1 migration incompatibility.  This
->       * property retains this quirk for QEMU 4.1 machine types.
-> diff --git a/include/hw/virtio/virtio-balloon.h b/include/hw/virtio/virtio-balloon.h
-> index 5139cf8ab6..99a1a5ca85 100644
-> --- a/include/hw/virtio/virtio-balloon.h
-> +++ b/include/hw/virtio/virtio-balloon.h
-> @@ -17,6 +17,7 @@
->  
->  #include "standard-headers/linux/virtio_balloon.h"
->  #include "hw/virtio/virtio.h"
-> +#include "qapi/qapi-types-misc.h"
->  #include "sysemu/iothread.h"
->  #include "qom/object.h"
->  
-> @@ -25,7 +26,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(VirtIOBalloon, VIRTIO_BALLOON)
->  
->  #define VIRTIO_BALLOON_FREE_PAGE_HINT_CMD_ID_MIN 0x80000000
->  
-> +#define VIRTIO_BALLOON_WS_NR_BINS	4  /* Number of bins in WS report */
-> +
->  typedef struct virtio_balloon_stat VirtIOBalloonStat;
-> +typedef struct virtio_balloon_ws VirtIOBalloonWS;
->  
->  typedef struct virtio_balloon_stat_modern {
->         uint16_t tag;
-> @@ -40,15 +44,25 @@ enum virtio_balloon_free_page_hint_status {
->      FREE_PAGE_HINT_S_DONE = 3,
->  };
->  
-> +enum virtio_balloon_ws_operation {
-> +    WS_REQUEST = 1,
-> +    WS_CONFIG = 2,
-> +};
-> +
->  struct VirtIOBalloon {
->      VirtIODevice parent_obj;
-> -    VirtQueue *ivq, *dvq, *svq, *free_page_vq, *reporting_vq;
-> +    VirtQueue *ivq, *dvq, *svq, *free_page_vq, *reporting_vq, *wvq, *cvq;
->      uint32_t free_page_hint_status;
->      uint32_t num_pages;
->      uint32_t actual;
->      uint32_t free_page_hint_cmd_id;
->      uint64_t stats[VIRTIO_BALLOON_S_NR];
-> +    WorkingSetInfo ws[VIRTIO_BALLOON_WS_NR_BINS];
-> +    uint64_t ws_intervals[VIRTIO_BALLOON_WS_NR_BINS-1];
-> +    uint64_t ws_refresh_threshold;
-> +    uint64_t ws_report_threshold;
->      VirtQueueElement *stats_vq_elem;
-> +    VirtQueueElement *ws_vq_elem;
->      size_t stats_vq_offset;
->      QEMUTimer *stats_timer;
->      IOThread *iothread;
-> @@ -71,6 +85,7 @@ struct VirtIOBalloon {
->  
->      bool qemu_4_0_config_size;
->      uint32_t poison_val;
-> +    uint32_t ws_num_bins;
->  };
->  
->  #endif
-> diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
-> index 13f9a2dedb..ad3184112f 100644
-> --- a/include/monitor/hmp.h
-> +++ b/include/monitor/hmp.h
-> @@ -59,6 +59,8 @@ void hmp_nmi(Monitor *mon, const QDict *qdict);
->  void hmp_info_network(Monitor *mon, const QDict *qdict);
->  void hmp_set_link(Monitor *mon, const QDict *qdict);
->  void hmp_balloon(Monitor *mon, const QDict *qdict);
-> +void hmp_ws_config(Monitor *mon, const QDict *qdict);
-> +void hmp_ws_request(Monitor *mon, const QDict *qdict);
->  void hmp_loadvm(Monitor *mon, const QDict *qdict);
->  void hmp_savevm(Monitor *mon, const QDict *qdict);
->  void hmp_delvm(Monitor *mon, const QDict *qdict);
-> diff --git a/include/standard-headers/linux/virtio_balloon.h b/include/standard-headers/linux/virtio_balloon.h
-> index f343bfefd8..8d489a2ebd 100644
-> --- a/include/standard-headers/linux/virtio_balloon.h
-> +++ b/include/standard-headers/linux/virtio_balloon.h
-> @@ -37,6 +37,7 @@
->  #define VIRTIO_BALLOON_F_FREE_PAGE_HINT	3 /* VQ to report free pages */
->  #define VIRTIO_BALLOON_F_PAGE_POISON	4 /* Guest is using page poisoning */
->  #define VIRTIO_BALLOON_F_REPORTING	5 /* Page reporting virtqueue */
-> +#define VIRTIO_BALLOON_F_WS_REPORTING	6 /* Working set report virtqueues */
->  
->  /* Size of a PFN in the balloon interface. */
->  #define VIRTIO_BALLOON_PFN_SHIFT 12
-> @@ -59,6 +60,8 @@ struct virtio_balloon_config {
->  	};
->  	/* Stores PAGE_POISON if page poisoning is in use */
->  	uint32_t poison_val;
-> +	/* Stores the number of histogram bins if WS reporting in use */
-> +	uint32_t ws_num_bins;
->  };
->  
->  #define VIRTIO_BALLOON_S_SWAP_IN  0   /* Amount of memory swapped in */
-> @@ -116,4 +119,18 @@ struct virtio_balloon_stat {
->  	__virtio64 val;
->  } QEMU_PACKED;
->  
-> +enum virtio_balloon_ws_op {
-> +    VIRTIO_BALLOON_WS_REQUEST = 1, // a Working Set request from the host
-> +    VIRTIO_BALLOON_WS_CONFIG = 2,  // a WS config update from the host
-> +};
-> +
-> +struct virtio_balloon_ws {
-> +        __virtio16 tag;
-> +        __virtio16 node_id;
-> +        uint8_t reserved[4];
-> +	__virtio64 idle_age_ms;
-> +	// Track separately for ANON_AND_FILE.
-> +	__virtio64 memory_size_bytes[2];
-> +} QEMU_PACKED;
-> +
->  #endif /* _LINUX_VIRTIO_BALLOON_H */
-> diff --git a/include/sysemu/balloon.h b/include/sysemu/balloon.h
-> index 867687b73a..fb1de215d9 100644
-> --- a/include/sysemu/balloon.h
-> +++ b/include/sysemu/balloon.h
-> @@ -18,10 +18,16 @@
->  #include "qapi/qapi-types-machine.h"
->  
->  typedef void (QEMUBalloonEvent)(void *opaque, ram_addr_t target);
-> +typedef void (QEMUBalloonWSRequest)(void *opaque);
->  typedef void (QEMUBalloonStatus)(void *opaque, BalloonInfo *info);
-> +typedef void (QEMUBalloonWSConfig)(void *opaque, uint64_t i0, uint64_t i1,
-> +                                   uint64_t i2, uint64_t refresh,
-> +                                   uint64_t report);
->  
->  int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
-> -                             QEMUBalloonStatus *stat_func, void *opaque);
-> +                             QEMUBalloonStatus *stat_func,
-> +                             QEMUBalloonWSRequest *wss_func,
-> +                             QEMUBalloonWSConfig *config_func, void *opaque);
->  void qemu_remove_balloon_handler(void *opaque);
->  
->  #endif
-> diff --git a/monitor/monitor.c b/monitor/monitor.c
-> index 602535696c..52ac7c4599 100644
-> --- a/monitor/monitor.c
-> +++ b/monitor/monitor.c
-> @@ -329,6 +329,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
->      [QAPI_EVENT_RTC_CHANGE]        = { 1000 * SCALE_MS },
->      [QAPI_EVENT_WATCHDOG]          = { 1000 * SCALE_MS },
->      [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
-> +    [QAPI_EVENT_WS_EVENT]          = { 1000 * SCALE_MS },
->      [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
->      [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
->      [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index fcd69965e5..5810f7c3fa 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -1048,6 +1048,57 @@
->  ##
->  { 'command': 'balloon', 'data': {'value': 'int'} }
->  
-> +##
-> +# @ws-config:
-> +#
-> +# Specify the config parameters for Working Set reporting.
-> +#
-> +# @i0: the endpoint of the first interval (in ms)
-> +#
-> +# @i1: the endpoint of the second interval (in ms)
-> +#
-> +# @i2: the endpoint of the third interval (in ms)
-> +#
-> +# @refresh: the refresh threshold (in ms) for Working Set reporting
-> +#
-> +# @report: the report threshold (in ms) for Working Set reporting
-> +#
-> +# Returns: - Nothing on success
-> +#          - If no balloon device is present, DeviceNotActive
-> +#
-> +# Example:
-> +#
-> +# -> { "execute": "ws-config",
-> +#                 "arguments": { "i0": 100,
-> +#                                "i1": 500,
-> +#                                "i2": 2000,
-> +#                                "refresh": 750,
-> +#                                "report": 1000 } }
-> +# <- { "return": {} }
-> +#
-> +##
-> +{ 'command': 'ws-config', 'data': {'i0': 'uint64',
-> +                                       'i1': 'uint64',
-> +                                       'i2': 'uint64',
-> +                                       'refresh': 'uint64',
-> +                                       'report': 'uint64'} }
-> +##
-> +# @ws-request:
-> +#
-> +# Request the Working Set report from the guest.
-> +#
-> +# Returns: - Nothing on success
-> +#          - If no balloon device is present, DeviceNotActive
-> +#
-> +# Example:
-> +#
-> +# -> { "execute": "ws-request", "arguments": {} }
-> +# <- { "return": {} }
-> +#
-> +##
-> +{ 'command': 'ws-request', 'data': {} }
-> +
-> +
->  ##
->  # @BalloonInfo:
->  #
-> @@ -1106,6 +1157,21 @@
->  { 'event': 'BALLOON_CHANGE',
->    'data': { 'actual': 'int' } }
->  
-> +##
-> +# @WS_EVENT:
-> +#
-> +# Emitted when the guest sends a new Working Set report.
-> +#
-> +# Note: this event is rate-limited.
-> +#
-> +# Example:
-> +#
-> +# <- { "event": "WS_EVENT",
-> +#      "timestamp": { "seconds": 1267020223, "microseconds": 435656 } }
-> +#
-> +##
-> +{ 'event': 'WS_EVENT' }
-> +
->  ##
->  # @MemoryInfo:
->  #
-> diff --git a/qapi/misc.json b/qapi/misc.json
-> index 4afaee7fe7..b1da595c80 100644
-> --- a/qapi/misc.json
-> +++ b/qapi/misc.json
-> @@ -523,6 +523,32 @@
->  { 'struct': 'CommandLineOptionInfo',
->    'data': { 'option': 'str', 'parameters': ['CommandLineParameterInfo'] } }
->  
-> +##
-> +# @MemoryBin:
-> +#
-> +# A bin of memory with a size in bytes. File-backed and
-> +# anonymous memory are tracked separately.
-> +#
-> +# @anon: number of bytes of anonymous memory
-> +# @file: number of bytes of file-backed memory
-> +##
-> +{ 'struct': 'MemoryBin',
-> +  'data': { 'anon': 'uint64',
-> +            'file': 'uint64' } }
-> +
-> +##
-> +# @WorkingSetInfo:
-> +#
-> +# A bin of memory of the given size that has been idle at most `idle-age` ms
-> +#
-> +# @idle-age: guest-relative time (in milliseconds)
-> +#
-> +# @memory-size-bytes: A MemoryBin with file and anon info.
-> +##
-> +{ 'struct': 'WorkingSetInfo',
-> +  'data': { 'idle-age': 'uint64',
-> +            'memory-size-bytes': 'MemoryBin' } }
-> +
->  ##
->  # @query-command-line-options:
->  #
-> diff --git a/softmmu/balloon.c b/softmmu/balloon.c
-> index e0e8969a4b..8ff30fe43b 100644
-> --- a/softmmu/balloon.c
-> +++ b/softmmu/balloon.c
-> @@ -35,6 +35,8 @@
->  
->  static QEMUBalloonEvent *balloon_event_fn;
->  static QEMUBalloonStatus *balloon_stat_fn;
-> +static QEMUBalloonWSRequest *balloon_ws_request_fn;
-> +static QEMUBalloonWSConfig *balloon_ws_config_fn;
->  static void *balloon_opaque;
->  
->  static bool have_balloon(Error **errp)
-> @@ -53,9 +55,12 @@ static bool have_balloon(Error **errp)
->  }
->  
->  int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
-> -                             QEMUBalloonStatus *stat_func, void *opaque)
-> +                             QEMUBalloonStatus *stat_func,
-> +                             QEMUBalloonWSRequest *ws_request_func,
-> +                             QEMUBalloonWSConfig *ws_config_func, void *opaque)
->  {
-> -    if (balloon_event_fn || balloon_stat_fn || balloon_opaque) {
-> +    if (balloon_event_fn || balloon_stat_fn || balloon_ws_request_fn \
-> +        || balloon_ws_config_fn || balloon_opaque) {
->          /* We're already registered one balloon handler.  How many can
->           * a guest really have?
->           */
-> @@ -63,6 +68,8 @@ int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
->      }
->      balloon_event_fn = event_func;
->      balloon_stat_fn = stat_func;
-> +    balloon_ws_request_fn = ws_request_func;
-> +    balloon_ws_config_fn = ws_config_func;
->      balloon_opaque = opaque;
->      return 0;
->  }
-> @@ -74,6 +81,8 @@ void qemu_remove_balloon_handler(void *opaque)
->      }
->      balloon_event_fn = NULL;
->      balloon_stat_fn = NULL;
-> +    balloon_ws_request_fn = NULL;
-> +    balloon_ws_config_fn = NULL;
->      balloon_opaque = NULL;
->  }
->  
-> @@ -104,3 +113,22 @@ void qmp_balloon(int64_t target, Error **errp)
->      trace_balloon_event(balloon_opaque, target);
->      balloon_event_fn(balloon_opaque, target);
->  }
-> +
-> +void qmp_ws_request(Error **errp)
-> +{
-> +    if (!have_balloon(errp)) {
-> +        return;
-> +    }
-> +
-> +    balloon_ws_request_fn(balloon_opaque);
-> +}
-> +
-> +void qmp_ws_config(uint64_t i0, uint64_t i1, uint64_t i2, uint64_t refresh,
-> +                       uint64_t report, Error **errp)
-> +{
-> +    if (!have_balloon(errp)) {
-> +        return;
-> +    }
-> +
-> +    balloon_ws_config_fn(balloon_opaque, i0, i1, i2, refresh, report);
-> +}
-> -- 
-> 2.40.1.521.gf1e218fcd8-goog
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+> Comments?
+>
+> Later, Juan.
+--=20
+You can't hide from the flipside.
 
