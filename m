@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4717F70416E
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 01:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA20704250
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 02:31:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyhkc-0002Dt-BD; Mon, 15 May 2023 19:37:10 -0400
+	id 1pyiZv-0002YJ-IH; Mon, 15 May 2023 20:30:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyhka-0002Dj-U6
- for qemu-devel@nongnu.org; Mon, 15 May 2023 19:37:08 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1pyiZt-0002WR-T0
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 20:30:09 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyhkZ-0003nt-5W
- for qemu-devel@nongnu.org; Mon, 15 May 2023 19:37:08 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6439bbc93b6so9476917b3a.1
- for <qemu-devel@nongnu.org>; Mon, 15 May 2023 16:37:06 -0700 (PDT)
+ id 1pyiZs-00054q-4i
+ for qemu-devel@nongnu.org; Mon, 15 May 2023 20:30:09 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-64a9335a8e7so1710391b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 15 May 2023 17:30:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684193825; x=1686785825;
+ d=linaro.org; s=google; t=1684197006; x=1686789006;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1Aurf2e1xga4E1VZRAAjM7qHxekmbNCzjHV7M/l0zJs=;
- b=kJlbrT9sHPqZiy8sBy5yjrnnr95vWb+Y76dx38wwa/koRXHdxlott2XRlThTgSSIL9
- mDF6S6HLUECwvEjol+rIcSAB5/33Dc7r3bDmclZ4vFpDbHBREP1pYutAB3fITZEme5bF
- iIttQj6Ra8+fn1gCEAoLcm58k+8OrhVOThfrVohBBPnYnORUJ1xToAEhSNWdMUWLS5ea
- Mex70lzgsagN5TXxaI6QGHTwR5l7FPacGoGhNh9+i18ha6l/J6Rj8nETcRu3CyaDFNqu
- liR52nAaI2W9eJYCFcf0EgLWKn/4S9aCJfvcMfQqk3PUaXCLBPTvRjUmjcW33VPlRFRc
- 3Zkg==
+ bh=UapGSEkvKPnVTfbxD9E394XMi9ZiyqcTrl5BmMK4py8=;
+ b=JYNCfnYG8EJt8rMqJNayPayXz+u5yGmFvvPyUhg/cTuqeNd/AjKIGuxelQfPKv4F7L
+ GilZMBI/tLaNy2owS56LhPlVU4x+7Yj4kqa9sVW90+BFRUaWWnSuceQODJ+zeg0rVrr1
+ j+hFMm8TqjXrDn9FzSRgJlijsS8MB4X5X9kZVtqzovn9yc4hDAAoYug1YonxHG82FNlf
+ cPdIfPhe+5Lp2fOAK1HCgkSJwnEuEpLf+wMmz3RlcIfzbZnGWNpJtqXtHqNrVwQyFSa2
+ InDTiaAlmNBcb3Nw1gfNryZv0RpABSjkUt9+qjfshk9Q9MDXmpF4QA+53+LSaGZrOjGj
+ v9NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684193825; x=1686785825;
+ d=1e100.net; s=20221208; t=1684197006; x=1686789006;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1Aurf2e1xga4E1VZRAAjM7qHxekmbNCzjHV7M/l0zJs=;
- b=HRusleqhzhkwt8bJ9JeVUEYeM90Cjd+PvEvoZ9k+BlTAbApLDaJA6JomgW44AE8CX3
- 9F152p+p743teRX6qw8EiCTGb4Xx6HfG6a24/LYZDgBLdSu01hnVoGHZl/9a0Df1e+Ph
- k9hSSvm9uFsbnbKHmUT0ct6leQorjTEzbNuTZIWeGDguNBgR5Tj3bEhpRdnRmPp0NtcP
- iybwX2iuBx9POl6V7wdd639w/uY7gPfRD3b1fDyBOWONWkP7xyWNdQTPEf0QO4pHa2M3
- fxdsA0moBQUnriUHwYXMzN/l0D/UN0TWI5Ch4u4AdV/xLEBdOlnGYYiY7GfSE+Zs18r6
- SkBg==
-X-Gm-Message-State: AC+VfDzbF8f1fpiqzUAQcrDWr9ZKBmPk2WmC/0ZtbhPlj/DZG2wz0+jD
- Bb6ZAnyBIckL3SLtziDaHaYX4ubYnHQpsuDCqRY=
-X-Google-Smtp-Source: ACHHUZ6y7JbU2oqv2WBkKDZfDfWIxaDuzV8iVU2zUO4rKM3lEahN7rdtcHFNoexVrAFrgz/A2rkotQ==
-X-Received: by 2002:a05:6a20:12cf:b0:104:1016:dd4d with SMTP id
- v15-20020a056a2012cf00b001041016dd4dmr20493931pzg.57.1684193825150; 
- Mon, 15 May 2023 16:37:05 -0700 (PDT)
+ bh=UapGSEkvKPnVTfbxD9E394XMi9ZiyqcTrl5BmMK4py8=;
+ b=GTlQomxCnb/oLpVY/NCF55HuHQEmb8ZIdDSXJacbmBMwi4s+OllHQW67xCv2YjE8Kf
+ pT3Q2ry9QpSMAroLFE3NMH6dcgkMgwDn62dv/4tnMMqo4TP+BMjPG5ZV+aeBuxb1dhRD
+ qu+X1T+JxPvdN48+4eZxgunXpTNGwrgDCVVBzU4a5TUPP3kwIB0a/Fioacb43yfiQCtY
+ tMgLQbm2scGCNkLbTbX7H35eMZjVCgn6/UHa0sapTJL/TVgHfi+8L3S0JEPU+rMo8fX0
+ JtUxrNPyvt8mmrX3cBS3OjBLID3jT9a1alxppZvnM1jHHW89omk2F5vgKkTRQ1rR2Jvu
+ +H+Q==
+X-Gm-Message-State: AC+VfDymlDlAgSHwPFA7b6D5Rejub1DauP34Y42WuOttwaQTs0/FZf9j
+ nXVDu2GjeNyp3jFR59c32HxNjg==
+X-Google-Smtp-Source: ACHHUZ6kzCGm5L//lg0nWm4n/kGzoDOgJnqQPmZ9PWSFwkPJzENLuLgkt2PMojtSizwDIuY9MgERsQ==
+X-Received: by 2002:a05:6a00:448e:b0:643:4608:7c2d with SMTP id
+ cu14-20020a056a00448e00b0064346087c2dmr44362013pfb.12.1684197006216; 
+ Mon, 15 May 2023 17:30:06 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:9902:96ac:8d8c:4366?
  ([2602:ae:1598:4c01:9902:96ac:8d8c:4366])
  by smtp.gmail.com with ESMTPSA id
- t19-20020a17090b019300b002448f08b177sm163702pjs.22.2023.05.15.16.37.04
+ z15-20020aa785cf000000b005a8de0f4c64sm12336319pfn.82.2023.05.15.17.30.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 May 2023 16:37:04 -0700 (PDT)
-Message-ID: <356b996c-310a-858f-5987-a698654fec8b@linaro.org>
-Date: Mon, 15 May 2023 16:37:02 -0700
+ Mon, 15 May 2023 17:30:05 -0700 (PDT)
+Message-ID: <cb6582b2-9542-4ebb-d188-34287f9fb3dd@linaro.org>
+Date: Mon, 15 May 2023 17:30:04 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PULL v2 00/16] Block patches
+Subject: Re: [PATCH] qapi/parser: Fix type hints
 Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Richard Henderson <rth@twiddle.net>, Paolo Bonzini <pbonzini@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Julia Suvorova <jusual@redhat.com>,
- Aarushi Mehta <mehta.aaru20@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
- kvm@vger.kernel.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>, qemu-block@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Fam Zheng <fam@euphon.net>
-References: <20230515160506.1776883-1-stefanha@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: michael.roth@amd.com, jsnow@redhat.com
+References: <20230511111709.971477-1-armbru@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230515160506.1776883-1-stefanha@redhat.com>
+In-Reply-To: <20230511111709.971477-1-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -58
 X-Spam_score: -5.9
 X-Spam_bar: -----
@@ -106,31 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/15/23 09:04, Stefan Hajnoczi wrote:
-> The following changes since commit 8844bb8d896595ee1d25d21c770e6e6f29803097:
+On 5/11/23 04:17, Markus Armbruster wrote:
+> Fixes: 3e32dca3f0d1 (qapi: Rewrite parsing of doc comment section symbols and tags)
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>   scripts/qapi/parser.py | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
->    Merge tag 'or1k-pull-request-20230513' ofhttps://github.com/stffrdhrn/qemu  into staging (2023-05-13 11:23:14 +0100)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/stefanha/qemu.git  tags/block-pull-request
-> 
-> for you to fetch changes up to 01562fee5f3ad4506d57dbcf4b1903b565eceec7:
-> 
->    docs/zoned-storage:add zoned emulation use case (2023-05-15 08:19:04 -0400)
-> 
-> ----------------------------------------------------------------
-> Pull request
-> 
-> This pull request contain's Sam Li's zoned storage support in the QEMU block
-> layer and virtio-blk emulation.
-> 
-> v2:
-> - Sam fixed the CI failures. CI passes for me now. [Richard]
+> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+> index 4923a59d60..9315412ab2 100644
+> --- a/scripts/qapi/parser.py
+> +++ b/scripts/qapi/parser.py
+> @@ -563,11 +563,11 @@ def end_comment(self) -> None:
+>           self._switch_section(QAPIDoc.NullSection(self._parser))
+>   
+>       @staticmethod
+> -    def _match_at_name_colon(string: str) -> re.Match:
+> +    def _match_at_name_colon(string: str) -> Optional[re.Match[str]]:
+>           return re.match(r'@([^:]*): *', string)
+>   
+>       @staticmethod
+> -    def _match_section_tag(string: str) -> re.Match:
+> +    def _match_section_tag(string: str) -> Optional[re.Match[str]]:
+>           return re.match(r'(Returns|Since|Notes?|Examples?|TODO): *', string)
+>   
+>       def _append_body_line(self, line: str) -> None:
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+Doesn't work:
+
+https://gitlab.com/qemu-project/qemu/-/jobs/4289613692#L574
+
+   File "/builds/qemu-project/qemu/scripts/qapi/parser.py", line 566, in QAPIDoc
+     def _match_at_name_colon(string: str) -> Optional[re.Match[str]]:
+TypeError: 'type' object is not subscriptable
 
 
 r~
-
 
