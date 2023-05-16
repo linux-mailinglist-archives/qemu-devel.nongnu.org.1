@@ -2,69 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0C957049FB
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 12:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9027049FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 12:05:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyrXd-0001IO-Kf; Tue, 16 May 2023 06:04:25 -0400
+	id 1pyrYb-0002ax-99; Tue, 16 May 2023 06:05:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1pyrXO-0001Dy-DW
- for qemu-devel@nongnu.org; Tue, 16 May 2023 06:04:13 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1pyrXL-0003Ub-Bl
- for qemu-devel@nongnu.org; Tue, 16 May 2023 06:04:10 -0400
-Received: from lhrpeml100003.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QLBbz4LFGz6D9LG;
- Tue, 16 May 2023 18:02:07 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 16 May 2023 11:03:54 +0100
-Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
- lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.023; 
- Tue, 16 May 2023 11:03:54 +0100
-To: Avihai Horon <avihaih@nvidia.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: Alex Williamson <alex.williamson@redhat.com>, Juan Quintela
- <quintela@redhat.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Vladimir Sementsov-Ogievskiy
- <vsementsov@yandex-team.ru>, =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?=
- <clg@redhat.com>, Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe
- <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>, Kirti Wankhede
- <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>, Joao Martins
- <joao.m.martins@oracle.com>
-Subject: RE: [PATCH v11 05/11] vfio/migration: Block multiple devices migration
-Thread-Topic: [PATCH v11 05/11] vfio/migration: Block multiple devices
- migration
-Thread-Index: AQHZQhQ7Fuj3Zst8rUyBXFad0ORVja9dM+pw
-Date: Tue, 16 May 2023 10:03:54 +0000
-Message-ID: <e333783cc59647ed93d944b05f12fe68@huawei.com>
-References: <20230216143630.25610-1-avihaih@nvidia.com>
- <20230216143630.25610-6-avihaih@nvidia.com>
-In-Reply-To: <20230216143630.25610-6-avihaih@nvidia.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.202.227.178]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1pyrYZ-0002aO-Fw
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 06:05:23 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1pyrYX-0003oc-Tx
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 06:05:23 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-50b383222f7so20350035a12.3
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 03:05:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684231520; x=1686823520;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=QzxgDcYwQp88v2YbsYtCLeF15hP9kQIN6nEJJnHCTe4=;
+ b=x1t9D3vlq9I+g4TfXU6j2z6h/droLBDqntcLRGTmnxobM4tz/IuqjeH3bq9jAWid5r
+ uUEFRsU2ECymnl2jQ9zILm9TOkrMaUNIvtf0UPeKsTYgoJ86A7CPaxywkNQTvfGVFC0f
+ /bhGzdskK59rA+2nUHmAHu+CIVcKZ/A2RRhsqTEHfkS+nn0yK2/E8LtF3K0Or1hIB4DF
+ IEAbC/UB5CXyTHpOeIExK9c2QBxA3bNPjSYjIdC/iOQqeC0S3juI/+fBCy13e3tkcIHZ
+ qWVP0HZWHsCHfyjvqaR8V39dnogheDTFDOf7TU9cqhjO9z524scB5O4mQLVo0hS4ZjPN
+ NVXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684231520; x=1686823520;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QzxgDcYwQp88v2YbsYtCLeF15hP9kQIN6nEJJnHCTe4=;
+ b=fOfXcbbalQn3YBgsQ2Hf7oB2HkWVBWCUaW+pdPEXCQ7SDsaJFWjVtS2h5zt26hC3wE
+ h9K7FW0wYqKgfRlM+0+UnzR7vo3EhWYoTv7cRuH9fwsgCSSxgdcUFud1DAqH1b1Vf4lk
+ U60fv+obcCWiSdsxbI+HVmVGAF/DNlyRIXtq48RAHPuRqc9u5DbLLYJZojxCyLdFdxeI
+ 1/h7Cj2dS3trPFzIdB3ie6lSqjlSMsrrMIS5V68eSonXZVh9o6w069HWRTutrHfNBZkM
+ ehvNC8boBC6nFCpVLl40KbaKNSoOzIULdRj/GpH6K7ElNnqFfJcNIYprHH/B+wPXsKnv
+ VcDQ==
+X-Gm-Message-State: AC+VfDx2KFHgkJ0cY5Jn0wPazWxcpkLXwFKGvbZDXa/6TYiZNtA0XAPA
+ 8O5X3hRrnvcHSkjHOxn9JngvNm+dQM2T2Axo2Lyd7A==
+X-Google-Smtp-Source: ACHHUZ7WnPKLnUV64qqXmyWVy15/mhO3M5ubjBFeoo2zj4a7igsUe+leNrPdUHhwZ6N9npp3GBGHsNsjWMxSWNpk6u4=
+X-Received: by 2002:a05:6402:352:b0:50b:c804:46c2 with SMTP id
+ r18-20020a056402035200b0050bc80446c2mr28656087edw.23.1684231520096; Tue, 16
+ May 2023 03:05:20 -0700 (PDT)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230515143313.734053-1-richard.henderson@linaro.org>
+ <20230515143313.734053-38-richard.henderson@linaro.org>
+In-Reply-To: <20230515143313.734053-38-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 16 May 2023 11:05:09 +0100
+Message-ID: <CAFEAcA-oFi3Mq6V77PAksyeNfvT5erj_Vwsu6a1xCrLcxei+Fw@mail.gmail.com>
+Subject: Re: [PATCH v5 37/54] tcg: Merge tcg_out_helper_load_regs into caller
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,109 +82,20 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbToNCj4gcWVtdS1kZXZlbC1i
-b3VuY2VzK3NoYW1lZXJhbGkua29sb3RodW0udGhvZGk9aHVhd2VpLmNvbUBub25nbnUub3JnDQo+
-IFttYWlsdG86cWVtdS1kZXZlbC1ib3VuY2VzK3NoYW1lZXJhbGkua29sb3RodW0udGhvZGk9aHVh
-d2VpLmNvbUBub25nDQo+IG51Lm9yZ10gT24gQmVoYWxmIE9mIEF2aWhhaSBIb3Jvbg0KPiBTZW50
-OiAxNiBGZWJydWFyeSAyMDIzIDE0OjM2DQo+IFRvOiBxZW11LWRldmVsQG5vbmdudS5vcmcNCj4g
-Q2M6IEFsZXggV2lsbGlhbXNvbiA8YWxleC53aWxsaWFtc29uQHJlZGhhdC5jb20+OyBKdWFuIFF1
-aW50ZWxhDQo+IDxxdWludGVsYUByZWRoYXQuY29tPjsgRHIuIERhdmlkIEFsYW4gR2lsYmVydCA8
-ZGdpbGJlcnRAcmVkaGF0LmNvbT47DQo+IE1pY2hhZWwgUy4gVHNpcmtpbiA8bXN0QHJlZGhhdC5j
-b20+OyBDb3JuZWxpYSBIdWNrIDxjb2h1Y2tAcmVkaGF0LmNvbT47DQo+IFBhb2xvIEJvbnppbmkg
-PHBib256aW5pQHJlZGhhdC5jb20+OyBWbGFkaW1pciBTZW1lbnRzb3YtT2dpZXZza2l5DQo+IDx2
-c2VtZW50c292QHlhbmRleC10ZWFtLnJ1PjsgQ8OpZHJpYyBMZSBHb2F0ZXIgPGNsZ0ByZWRoYXQu
-Y29tPjsgWWlzaGFpDQo+IEhhZGFzIDx5aXNoYWloQG52aWRpYS5jb20+OyBKYXNvbiBHdW50aG9y
-cGUgPGpnZ0BudmlkaWEuY29tPjsgTWFvcg0KPiBHb3R0bGllYiA8bWFvcmdAbnZpZGlhLmNvbT47
-IEF2aWhhaSBIb3JvbiA8YXZpaGFpaEBudmlkaWEuY29tPjsgS2lydGkNCj4gV2Fua2hlZGUgPGt3
-YW5raGVkZUBudmlkaWEuY29tPjsgVGFydW4gR3VwdGEgPHRhcmd1cHRhQG52aWRpYS5jb20+Ow0K
-PiBKb2FvIE1hcnRpbnMgPGpvYW8ubS5tYXJ0aW5zQG9yYWNsZS5jb20+DQo+IFN1YmplY3Q6IFtQ
-QVRDSCB2MTEgMDUvMTFdIHZmaW8vbWlncmF0aW9uOiBCbG9jayBtdWx0aXBsZSBkZXZpY2VzIG1p
-Z3JhdGlvbg0KPiANCj4gQ3VycmVudGx5IFZGSU8gbWlncmF0aW9uIGRvZXNuJ3QgaW1wbGVtZW50
-IHNvbWUga2luZCBvZiBpbnRlcm1lZGlhdGUNCj4gcXVpZXNjZW50IHN0YXRlIGluIHdoaWNoIFAy
-UCBETUFzIGFyZSBxdWllc2NlZCBiZWZvcmUgc3RvcHBpbmcgb3INCj4gcnVubmluZyB0aGUgZGV2
-aWNlLiBUaGlzIGNhbiBjYXVzZSBwcm9ibGVtcyBpbiBtdWx0aS1kZXZpY2UgbWlncmF0aW9uDQo+
-IHdoZXJlIHRoZSBkZXZpY2VzIGFyZSBkb2luZyBQMlAgRE1Bcywgc2luY2UgdGhlIGRldmljZXMg
-YXJlIG5vdCBzdG9wcGVkDQo+IHRvZ2V0aGVyIGF0IHRoZSBzYW1lIHRpbWUuDQo+IA0KPiBVbnRp
-bCBzdWNoIHN1cHBvcnQgaXMgYWRkZWQsIGJsb2NrIG1pZ3JhdGlvbiBvZiBtdWx0aXBsZSBkZXZp
-Y2VzLg0KDQpNaXNzZWQgdGhpcyBvbmUuIEN1cnJlbnRseSB0aGlzIGJsb2NrcyBldmVuIGlmIHRo
-ZSBhdHRhY2hlZCBkZXZpY2VzIGFyZSBub3QNCmNhcGFibGUgb2YgUDJQIERNQXMuIGVnOyBIaVNp
-bGljb24gQUNDIGRldmljZXMuIFRoZXNlIGFyZSBpbnRlZ3JhdGVkIGVuZCBwb2ludA0KZGV2aWNl
-cyB3aXRob3V0IGFueSBQMlAgY2FwYWJpbGl0eSBiZXR3ZWVuIHRoZW0uIElzIGl0IE9rIHRvIGNo
-ZWNrIGZvcg0KVkZJT19NSUdSQVRJT05fUDJQIGZsYWcgYW5kIGFsbG93IGlmIHRoZSBkZXZpY2Vz
-IGFyZSBub3Qgc3VwcG9ydGluZyB0aGF0Pw0KDQpJIGNhbiBzZW50IGEgcGF0Y2ggaWYgdGhhdOKA
-mXMgZmluZS4NCg0KVGhhbmtzLA0KU2hhbWVlcg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQXZpaGFp
-IEhvcm9uIDxhdmloYWloQG52aWRpYS5jb20+DQo+IFJldmlld2VkLWJ5OiBDw6lkcmljIExlIEdv
-YXRlciA8Y2xnQHJlZGhhdC5jb20+DQo+IFJldmlld2VkLWJ5OiBKdWFuIFF1aW50ZWxhIDxxdWlu
-dGVsYUByZWRoYXQuY29tPg0KPiAtLS0NCj4gIGluY2x1ZGUvaHcvdmZpby92ZmlvLWNvbW1vbi5o
-IHwgIDIgKysNCj4gIGh3L3ZmaW8vY29tbW9uLmMgICAgICAgICAgICAgIHwgNTMNCj4gKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gIGh3L3ZmaW8vbWlncmF0aW9uLmMgICAg
-ICAgICAgIHwgIDYgKysrKw0KPiAgMyBmaWxlcyBjaGFuZ2VkLCA2MSBpbnNlcnRpb25zKCspDQo+
-IA0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody92ZmlvL3ZmaW8tY29tbW9uLmgNCj4gYi9pbmNs
-dWRlL2h3L3ZmaW8vdmZpby1jb21tb24uaA0KPiBpbmRleCBlNTczZjVhOWYxLi41NmIxNjgzODI0
-IDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2h3L3ZmaW8vdmZpby1jb21tb24uaA0KPiArKysgYi9p
-bmNsdWRlL2h3L3ZmaW8vdmZpby1jb21tb24uaA0KPiBAQCAtMjE4LDYgKzIxOCw4IEBAIHR5cGVk
-ZWYgUUxJU1RfSEVBRChWRklPR3JvdXBMaXN0LCBWRklPR3JvdXApDQo+IFZGSU9Hcm91cExpc3Q7
-DQo+ICBleHRlcm4gVkZJT0dyb3VwTGlzdCB2ZmlvX2dyb3VwX2xpc3Q7DQo+IA0KPiAgYm9vbCB2
-ZmlvX21pZ19hY3RpdmUodm9pZCk7DQo+ICtpbnQgdmZpb19ibG9ja19tdWx0aXBsZV9kZXZpY2Vz
-X21pZ3JhdGlvbihFcnJvciAqKmVycnApOw0KPiArdm9pZCB2ZmlvX3VuYmxvY2tfbXVsdGlwbGVf
-ZGV2aWNlc19taWdyYXRpb24odm9pZCk7DQo+ICBpbnQ2NF90IHZmaW9fbWlnX2J5dGVzX3RyYW5z
-ZmVycmVkKHZvaWQpOw0KPiANCj4gICNpZmRlZiBDT05GSUdfTElOVVgNCj4gZGlmZiAtLWdpdCBh
-L2h3L3ZmaW8vY29tbW9uLmMgYi9ody92ZmlvL2NvbW1vbi5jDQo+IGluZGV4IDNhMzVmNGFmYWQu
-LmZlODBjY2Y5MTQgMTAwNjQ0DQo+IC0tLSBhL2h3L3ZmaW8vY29tbW9uLmMNCj4gKysrIGIvaHcv
-dmZpby9jb21tb24uYw0KPiBAQCAtNDEsNiArNDEsNyBAQA0KPiAgI2luY2x1ZGUgInFhcGkvZXJy
-b3IuaCINCj4gICNpbmNsdWRlICJtaWdyYXRpb24vbWlncmF0aW9uLmgiDQo+ICAjaW5jbHVkZSAi
-bWlncmF0aW9uL21pc2MuaCINCj4gKyNpbmNsdWRlICJtaWdyYXRpb24vYmxvY2tlci5oIg0KPiAg
-I2luY2x1ZGUgInN5c2VtdS90cG0uaCINCj4gDQo+ICBWRklPR3JvdXBMaXN0IHZmaW9fZ3JvdXBf
-bGlzdCA9DQo+IEBAIC0zMzcsNiArMzM4LDU4IEBAIGJvb2wgdmZpb19taWdfYWN0aXZlKHZvaWQp
-DQo+ICAgICAgcmV0dXJuIHRydWU7DQo+ICB9DQo+IA0KPiArc3RhdGljIEVycm9yICptdWx0aXBs
-ZV9kZXZpY2VzX21pZ3JhdGlvbl9ibG9ja2VyOw0KPiArDQo+ICtzdGF0aWMgdW5zaWduZWQgaW50
-IHZmaW9fbWlncmF0YWJsZV9kZXZpY2VfbnVtKHZvaWQpDQo+ICt7DQo+ICsgICAgVkZJT0dyb3Vw
-ICpncm91cDsNCj4gKyAgICBWRklPRGV2aWNlICp2YmFzZWRldjsNCj4gKyAgICB1bnNpZ25lZCBp
-bnQgZGV2aWNlX251bSA9IDA7DQo+ICsNCj4gKyAgICBRTElTVF9GT1JFQUNIKGdyb3VwLCAmdmZp
-b19ncm91cF9saXN0LCBuZXh0KSB7DQo+ICsgICAgICAgIFFMSVNUX0ZPUkVBQ0godmJhc2VkZXYs
-ICZncm91cC0+ZGV2aWNlX2xpc3QsIG5leHQpIHsNCj4gKyAgICAgICAgICAgIGlmICh2YmFzZWRl
-di0+bWlncmF0aW9uKSB7DQo+ICsgICAgICAgICAgICAgICAgZGV2aWNlX251bSsrOw0KPiArICAg
-ICAgICAgICAgfQ0KPiArICAgICAgICB9DQo+ICsgICAgfQ0KPiArDQo+ICsgICAgcmV0dXJuIGRl
-dmljZV9udW07DQo+ICt9DQo+ICsNCj4gK2ludCB2ZmlvX2Jsb2NrX211bHRpcGxlX2RldmljZXNf
-bWlncmF0aW9uKEVycm9yICoqZXJycCkNCj4gK3sNCj4gKyAgICBpbnQgcmV0Ow0KPiArDQo+ICsg
-ICAgaWYgKG11bHRpcGxlX2RldmljZXNfbWlncmF0aW9uX2Jsb2NrZXIgfHwNCj4gKyAgICAgICAg
-dmZpb19taWdyYXRhYmxlX2RldmljZV9udW0oKSA8PSAxKSB7DQo+ICsgICAgICAgIHJldHVybiAw
-Ow0KPiArICAgIH0NCj4gKw0KPiArICAgIGVycm9yX3NldGcoJm11bHRpcGxlX2RldmljZXNfbWln
-cmF0aW9uX2Jsb2NrZXIsDQo+ICsgICAgICAgICAgICAgICAiTWlncmF0aW9uIGlzIGN1cnJlbnRs
-eSBub3Qgc3VwcG9ydGVkIHdpdGggbXVsdGlwbGUgIg0KPiArICAgICAgICAgICAgICAgIlZGSU8g
-ZGV2aWNlcyIpOw0KPiArICAgIHJldCA9IG1pZ3JhdGVfYWRkX2Jsb2NrZXIobXVsdGlwbGVfZGV2
-aWNlc19taWdyYXRpb25fYmxvY2tlciwgZXJycCk7DQo+ICsgICAgaWYgKHJldCA8IDApIHsNCj4g
-KyAgICAgICAgZXJyb3JfZnJlZShtdWx0aXBsZV9kZXZpY2VzX21pZ3JhdGlvbl9ibG9ja2VyKTsN
-Cj4gKyAgICAgICAgbXVsdGlwbGVfZGV2aWNlc19taWdyYXRpb25fYmxvY2tlciA9IE5VTEw7DQo+
-ICsgICAgfQ0KPiArDQo+ICsgICAgcmV0dXJuIHJldDsNCj4gK30NCj4gKw0KPiArdm9pZCB2Zmlv
-X3VuYmxvY2tfbXVsdGlwbGVfZGV2aWNlc19taWdyYXRpb24odm9pZCkNCj4gK3sNCj4gKyAgICBp
-ZiAoIW11bHRpcGxlX2RldmljZXNfbWlncmF0aW9uX2Jsb2NrZXIgfHwNCj4gKyAgICAgICAgdmZp
-b19taWdyYXRhYmxlX2RldmljZV9udW0oKSA+IDEpIHsNCj4gKyAgICAgICAgcmV0dXJuOw0KPiAr
-ICAgIH0NCj4gKw0KPiArICAgIG1pZ3JhdGVfZGVsX2Jsb2NrZXIobXVsdGlwbGVfZGV2aWNlc19t
-aWdyYXRpb25fYmxvY2tlcik7DQo+ICsgICAgZXJyb3JfZnJlZShtdWx0aXBsZV9kZXZpY2VzX21p
-Z3JhdGlvbl9ibG9ja2VyKTsNCj4gKyAgICBtdWx0aXBsZV9kZXZpY2VzX21pZ3JhdGlvbl9ibG9j
-a2VyID0gTlVMTDsNCj4gK30NCj4gKw0KPiAgc3RhdGljIGJvb2wgdmZpb19kZXZpY2VzX2FsbF9k
-aXJ0eV90cmFja2luZyhWRklPQ29udGFpbmVyICpjb250YWluZXIpDQo+ICB7DQo+ICAgICAgVkZJ
-T0dyb3VwICpncm91cDsNCj4gZGlmZiAtLWdpdCBhL2h3L3ZmaW8vbWlncmF0aW9uLmMgYi9ody92
-ZmlvL21pZ3JhdGlvbi5jDQo+IGluZGV4IGU1NmVlZjFlZTguLjhlOTY5OTk2NjkgMTAwNjQ0DQo+
-IC0tLSBhL2h3L3ZmaW8vbWlncmF0aW9uLmMNCj4gKysrIGIvaHcvdmZpby9taWdyYXRpb24uYw0K
-PiBAQCAtODc4LDYgKzg3OCwxMSBAQCBpbnQgdmZpb19taWdyYXRpb25fcHJvYmUoVkZJT0Rldmlj
-ZSAqdmJhc2VkZXYsDQo+IEVycm9yICoqZXJycCkNCj4gICAgICAgICAgZ290byBhZGRfYmxvY2tl
-cjsNCj4gICAgICB9DQo+IA0KPiArICAgIHJldCA9IHZmaW9fYmxvY2tfbXVsdGlwbGVfZGV2aWNl
-c19taWdyYXRpb24oZXJycCk7DQo+ICsgICAgaWYgKHJldCkgew0KPiArICAgICAgICByZXR1cm4g
-cmV0Ow0KPiArICAgIH0NCj4gKw0KPiAgICAgIHRyYWNlX3ZmaW9fbWlncmF0aW9uX3Byb2JlKHZi
-YXNlZGV2LT5uYW1lLCBpbmZvLT5pbmRleCk7DQo+ICAgICAgZ19mcmVlKGluZm8pOw0KPiAgICAg
-IHJldHVybiAwOw0KPiBAQCAtOTA0LDYgKzkwOSw3IEBAIHZvaWQgdmZpb19taWdyYXRpb25fZmlu
-YWxpemUoVkZJT0RldmljZSAqdmJhc2VkZXYpDQo+ICAgICAgICAgIHFlbXVfZGVsX3ZtX2NoYW5n
-ZV9zdGF0ZV9oYW5kbGVyKG1pZ3JhdGlvbi0+dm1fc3RhdGUpOw0KPiAgICAgICAgICB1bnJlZ2lz
-dGVyX3NhdmV2bShWTVNUQVRFX0lGKHZiYXNlZGV2LT5kZXYpLCAidmZpbyIsDQo+IHZiYXNlZGV2
-KTsNCj4gICAgICAgICAgdmZpb19taWdyYXRpb25fZXhpdCh2YmFzZWRldik7DQo+ICsgICAgICAg
-IHZmaW9fdW5ibG9ja19tdWx0aXBsZV9kZXZpY2VzX21pZ3JhdGlvbigpOw0KPiAgICAgIH0NCj4g
-DQo+ICAgICAgaWYgKHZiYXNlZGV2LT5taWdyYXRpb25fYmxvY2tlcikgew0KPiAtLQ0KPiAyLjI2
-LjMNCj4gDQoNCg==
+On Mon, 15 May 2023 at 15:38, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Now that tcg_out_helper_load_regs is not recursive, we can
+> merge it into its only caller, tcg_out_helper_load_slots.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
