@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8153A7057C4
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB127057C5
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:46:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz0Yp-0006jq-E1; Tue, 16 May 2023 15:42:15 -0400
+	id 1pz0Yo-0006je-0g; Tue, 16 May 2023 15:42:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0Ym-0006it-8R
+ id 1pz0Ym-0006j5-Lj
  for qemu-devel@nongnu.org; Tue, 16 May 2023 15:42:12 -0400
 Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0Yk-0002rh-Pv
+ id 1pz0Yl-0002jW-5O
  for qemu-devel@nongnu.org; Tue, 16 May 2023 15:42:12 -0400
 Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-643b7b8f8ceso8505297b3a.1
+ d2e1a72fcca58-643a6f993a7so9345452b3a.1
  for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:42:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684266129; x=1686858129;
+ d=linaro.org; s=google; t=1684266130; x=1686858130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XQUAkxU919ge4RGYSTop1y6/iu8bQJHk3fDtn7Q1o1I=;
- b=hroZJ+bFaghd8BJA3lzEDbSM74IXlbqDpdkbpZCNyhCIcheowu2G00stjncumD6/s0
- CgymDeIHU/6m+Pja9F8djsFE5RBNZHDeCABjSElUsPrMgk+i3Mu3+TY0vUBxcV0DN88T
- DciiGWTFoUJqSrodZxemM+8wXdy4mpo2NVgcic1WMsfG4U9CLvO5lldprdIfbxaKwVAG
- gtV1FwsZRN4Q5SgEM0ztTdxvVkEVj2eS83W4og1yoOPuoUc59+Ecuh0EnAj1KfPHxF5c
- dSYBj2IMSH4yWj1ySiRjricq1YSnM2k5VvEETNZE64DoJMqBpAuFgjHD5Ctu9WVIcxDV
- L98w==
+ bh=5+dVuSBLTF8ePfEeAWZlWoNLu6H+GdqE/W0YcabdOx4=;
+ b=a1bs5mhY0ROnk5///ulxqVXpro91VUTPz/6pBcL4Geuf4cjiJrBHDv3PyUfuzGcCWU
+ SyvZDJ1EGhiVWYfc5WuvpPLw2Z+NKQyl0Mr/sv/MBr9x8FBexTqcr+Kz/BmNn54esiZN
+ yDjTLsx3SG1AEvcFTqNifja3bskPV/wzbL1dosVK36DJDRmfTBMvgXgucGflG2yLe4Mp
+ hODzD0r51r9VRT8XXTm2YWf1i0KuRR1r/t1eE/saHO5xbfFIMsWiQvNY9Cbr5CA3c1ZO
+ 69m2YtsGew5qHSmHW4wVHOVoP6Nu0u85cltAGCmVEQ/nd5lZE7LyKwy90jW6IcL22ePf
+ ibjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684266129; x=1686858129;
+ d=1e100.net; s=20221208; t=1684266130; x=1686858130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XQUAkxU919ge4RGYSTop1y6/iu8bQJHk3fDtn7Q1o1I=;
- b=CUs7yj/MsGUtvids3biXek4M9jkTW9LI2Sq3mrsv83qCZynX+GZYm+tb70NljwuzIw
- V1EMAx+R/O9Kx03+Lb+10BEbTpggz7Rh8MP1SdkFuF9lUJBxlDucyy8FfwFwxg5TTMOo
- GBMD+FE5KKQUuXqq3GQIN0DU0EQxfQaKCpRSeIkM2dFEJMov35itRzahCEJzmihV+Ebp
- VmV7bqr99WpFTonq5mJwBcV5U2d4PEYR4lqXXPzB5nVFnca0aAkIZ+aByx6PbA9VZaDC
- BD1m7GRdQZjZY26OXOPUeksCfplwvOJ7tenlBsPXTGOJBRmMb5KzqAifqBBtlCeo3TV9
- 7XiA==
-X-Gm-Message-State: AC+VfDwb+cVfp8VHKhoAeMzhgxga59qkHpmaE3j408SJysEpoOKlAGvR
- Jy5H+x6xjU1WMApoYuP7bpWfPYku8mWhLOxvsNs=
-X-Google-Smtp-Source: ACHHUZ7iB5yosRTKdNEtUUFh0HDgIVtq44MLDuztdrn3MGtDpM5dLK74SmZzO4wRUsFR5xN0PjBIBg==
-X-Received: by 2002:a05:6a00:c82:b0:64a:a1ba:50fd with SMTP id
- a2-20020a056a000c8200b0064aa1ba50fdmr21449002pfv.22.1684266129518; 
- Tue, 16 May 2023 12:42:09 -0700 (PDT)
+ bh=5+dVuSBLTF8ePfEeAWZlWoNLu6H+GdqE/W0YcabdOx4=;
+ b=YOrPV9rjvLLsCnZ3/oBmiPd8EQpiIzgK5sRDdlDDojaHskpuWDjDaeXVuZARxfVoR3
+ zdnAuWO3abbOFsjW/UoCVzgQO7Klpb5HuKD/8vZpnk1iH0vEjQD4E0/69KPD8AXubd4y
+ /1IWWJozGkZQmHZbNVcn7Bq39BGxbMV0WkK1Cv+NFoixoIvzezy0Xpmw1uRhx86mZYoR
+ +/isJwHDKfhAJ6hyHAPETr1Os8t9UMAFx9FEFbKxQrYEZvxQKrIoJwFcvptLV0qkFNnC
+ PuEQLwMLibIUEv4DpKNAGNefOaVDKQNJHY/5G6UehN6L1DUvLJ0nWUH4NK+2FZIKndsv
+ IEuw==
+X-Gm-Message-State: AC+VfDzRgMo2ms8y839T35G6PKfCI6xuAIuvxytHeWBFhcr16SNpstqQ
+ YOVLrCoP2DeH+Tra/+IPUSzancEb6cGBOC4112M=
+X-Google-Smtp-Source: ACHHUZ6cT7n+3y27e0ob23bPg6GjLl/B8rrXm49E+llBBj+ICW2GAG4jaeKZqrAjEn243LGu3dvbcg==
+X-Received: by 2002:a05:6a00:10d2:b0:643:96bc:b292 with SMTP id
+ d18-20020a056a0010d200b0064396bcb292mr41983348pfu.5.1684266130414; 
+ Tue, 16 May 2023 12:42:10 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
  by smtp.gmail.com with ESMTPSA id
- z21-20020aa791d5000000b006260526cf0csm13771165pfa.116.2023.05.16.12.42.08
+ z21-20020aa791d5000000b006260526cf0csm13771165pfa.116.2023.05.16.12.42.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 12:42:09 -0700 (PDT)
+ Tue, 16 May 2023 12:42:10 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 25/80] tcg/sparc64: Rename tcg_out_movi_imm32 to
- tcg_out_movi_u32
-Date: Tue, 16 May 2023 12:40:50 -0700
-Message-Id: <20230516194145.1749305-26-richard.henderson@linaro.org>
+Subject: [PULL 26/80] tcg/sparc64: Split out tcg_out_movi_s32
+Date: Tue, 16 May 2023 12:40:51 -0700
+Message-Id: <20230516194145.1749305-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230516194145.1749305-1-richard.henderson@linaro.org>
 References: <20230516194145.1749305-1-richard.henderson@linaro.org>
@@ -92,56 +91,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Emphasize that the constant is unsigned.
-
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/sparc64/tcg-target.c.inc | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tcg/sparc64/tcg-target.c.inc | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index 2689599fd6..e244209890 100644
+index e244209890..4375a06377 100644
 --- a/tcg/sparc64/tcg-target.c.inc
 +++ b/tcg/sparc64/tcg-target.c.inc
-@@ -405,9 +405,9 @@ static void tcg_out_movi_s13(TCGContext *s, TCGReg ret, int32_t arg)
+@@ -405,6 +405,13 @@ static void tcg_out_movi_s13(TCGContext *s, TCGReg ret, int32_t arg)
      tcg_out_arithi(s, ret, TCG_REG_G0, arg, ARITH_OR);
  }
  
--static void tcg_out_movi_imm32(TCGContext *s, TCGReg ret, int32_t arg)
-+/* A 32-bit constant zero-extended to 64 bits.  */
-+static void tcg_out_movi_u32(TCGContext *s, TCGReg ret, uint32_t arg)
++/* A 32-bit constant sign-extended to 64 bits.  */
++static void tcg_out_movi_s32(TCGContext *s, TCGReg ret, int32_t arg)
++{
++    tcg_out_sethi(s, ret, ~arg);
++    tcg_out_arithi(s, ret, ret, (arg & 0x3ff) | -0x400, ARITH_XOR);
++}
++
+ /* A 32-bit constant zero-extended to 64 bits.  */
+ static void tcg_out_movi_u32(TCGContext *s, TCGReg ret, uint32_t arg)
  {
--    /* A 32-bit constant zero-extended to 64 bits.  */
-     tcg_out_sethi(s, ret, arg);
-     if (arg & 0x3ff) {
-         tcg_out_arithi(s, ret, ret, arg & 0x3ff, ARITH_OR);
-@@ -429,7 +429,7 @@ static void tcg_out_movi_int(TCGContext *s, TCGType type, TCGReg ret,
+@@ -444,8 +451,7 @@ static void tcg_out_movi_int(TCGContext *s, TCGType type, TCGReg ret,
  
-     /* A 32-bit constant, or 32-bit zero-extended to 64-bits.  */
-     if (type == TCG_TYPE_I32 || arg == (uint32_t)arg) {
--        tcg_out_movi_imm32(s, ret, arg);
-+        tcg_out_movi_u32(s, ret, arg);
+     /* A 32-bit constant sign-extended to 64-bits.  */
+     if (arg == lo) {
+-        tcg_out_sethi(s, ret, ~arg);
+-        tcg_out_arithi(s, ret, ret, (arg & 0x3ff) | -0x400, ARITH_XOR);
++        tcg_out_movi_s32(s, ret, arg);
          return;
      }
  
-@@ -473,13 +473,13 @@ static void tcg_out_movi_int(TCGContext *s, TCGType type, TCGReg ret,
-     /* A 64-bit constant decomposed into 2 32-bit pieces.  */
-     if (check_fit_i32(lo, 13)) {
-         hi = (arg - lo) >> 32;
--        tcg_out_movi_imm32(s, ret, hi);
-+        tcg_out_movi_u32(s, ret, hi);
-         tcg_out_arithi(s, ret, ret, 32, SHIFT_SLLX);
-         tcg_out_arithi(s, ret, ret, lo, ARITH_ADD);
-     } else {
-         hi = arg >> 32;
--        tcg_out_movi_imm32(s, ret, hi);
--        tcg_out_movi_imm32(s, scratch, lo);
-+        tcg_out_movi_u32(s, ret, hi);
-+        tcg_out_movi_u32(s, scratch, lo);
-         tcg_out_arithi(s, ret, ret, 32, SHIFT_SLLX);
-         tcg_out_arith(s, ret, ret, scratch, ARITH_OR);
-     }
 -- 
 2.34.1
 
