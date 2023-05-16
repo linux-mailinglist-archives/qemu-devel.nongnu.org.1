@@ -2,102 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE6470491A
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4132170491E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:25:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyquP-000119-Bf; Tue, 16 May 2023 05:23:53 -0400
+	id 1pyqvS-0001hA-9O; Tue, 16 May 2023 05:25:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1pyquM-00010v-VJ; Tue, 16 May 2023 05:23:51 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pyqvJ-0001dc-5c
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 05:24:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1pyquK-0002oO-Ls; Tue, 16 May 2023 05:23:50 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34G9CN2s007740; Tue, 16 May 2023 09:23:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=FCcBnfTTXpL1Ger6q2GgLVfX08RkcNqh1+6QYOQ6xyM=;
- b=qhYzrJ0SCmrdm308M18YiV9j3VE+YMYgDhec+2g6Nik6yMcv8WiVNHAd6E3UMB4hX+8H
- gVIU6tO0Fwnm7wIqvQ8+iM9F8+GyAr5d+wQ6V1qatDoMfe3RjRwh1dn31Vi4Sk7Wfw/d
- kF2edW2reff+l36M7plglZhMAGqWluBUgNrI5+zZrSjMBu0bCa70s3NDm36DKqnSsWfr
- XfwqKUrGXSvp2vvXCIArRWkvSrF1ASbWGdfPCMOwldwq1oyrqpYkZX8VpyTGH+aC4hyA
- LovS2xt4dnfJnSzrvzYw07avQRBVnYxsUWBdLqdwA1PEBfhXyXU/DmMYYGrUxKMtn6Vh UQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm6mxrrhh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 09:23:46 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34G9N6LN014839;
- Tue, 16 May 2023 09:23:46 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm6mxrrh2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 09:23:46 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34G8TbOZ000686;
- Tue, 16 May 2023 09:23:45 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
- by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3qj265km8d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 09:23:45 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34G9Ni4J62259530
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 May 2023 09:23:44 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4F5EB58063;
- Tue, 16 May 2023 09:23:44 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BA8EC58055;
- Tue, 16 May 2023 09:23:42 +0000 (GMT)
-Received: from [9.109.242.129] (unknown [9.109.242.129])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 16 May 2023 09:23:42 +0000 (GMT)
-Message-ID: <f9167007-ca18-eef6-5973-64da0ff4fedc@linux.ibm.com>
-Date: Tue, 16 May 2023 14:53:41 +0530
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pyqvD-00032u-0a
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 05:24:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684229081;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=L7cLN1CPzKkJXBFROj2Ytl4mz0sGYvz/N3yBWh6sYaI=;
+ b=YIxQgX+HTFJdEycf1+I2QwXc7OACMcI3qt+hegZzJViRS8L2XIfWZ7L1CSIBHlB6lC1prX
+ 0dAjo7ofra2hvaISc1zoaqlYxzeMoUX5R9UNob0lYIHFR7Ybe0CoOHvZjFZc6u3So8OYxw
+ XPjivC31Jov1lU7SGImi9qs6EFRzGkA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-UYh3Fs5kNI-PGRJpPpw2Sw-1; Tue, 16 May 2023 05:24:39 -0400
+X-MC-Unique: UYh3Fs5kNI-PGRJpPpw2Sw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-306489b7585so4870009f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 02:24:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684229079; x=1686821079;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=L7cLN1CPzKkJXBFROj2Ytl4mz0sGYvz/N3yBWh6sYaI=;
+ b=hcEwmcq2GFFuS8fNv8Xe22iMeFSAtMeppQou23EoAyjeXX/Ab1zfp+OlzhdhDVF8IV
+ J8W5N4J/TcWfkcSxVt3ZrpBX4JVJOLEqgGlkVRvVW1JBzn+AJlZMrshpnFb/zt2mnrAI
+ X/CNnIFJdo+r3Zqe4xuq/arzxNmVjOrvqbH3vDisBgGFjKBpO/i0IC4eAdj3zbRL01JX
+ QXsyfYcsAcoRDQePnujXWFsqOCZRcTHgt7RHur6walz8HI0KWEtcP247n7AtyB/93n3Y
+ FWKGB0pvIl8i/o1hK+yBh3WmDf1F9saHaNazmhlDEtSBcVIav2HHjaenrOvwuhZnp1nG
+ Kz6g==
+X-Gm-Message-State: AC+VfDwABfbNTbxuOuWq6byidbG0KHWrubstjr/kYB4qIiBstevioJiR
+ q6TDDN3hfH14ti57oDbMreRE9GyiemTWOT9/NQeCKfbScpYbcRIyHB1TssN6r04CNuEQy2TTFeI
+ NCUT9r+jYRcQHxsU=
+X-Received: by 2002:a05:6000:c:b0:306:32fa:6737 with SMTP id
+ h12-20020a056000000c00b0030632fa6737mr25878969wrx.8.1684229078789; 
+ Tue, 16 May 2023 02:24:38 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7BeHs5PAAu9IMZah+h065ETQAdJoamNSRRZoWOeTOD01tw0zHypC56cjEV33F2AUScc5bn+Q==
+X-Received: by 2002:a05:6000:c:b0:306:32fa:6737 with SMTP id
+ h12-20020a056000000c00b0030632fa6737mr25878941wrx.8.1684229078431; 
+ Tue, 16 May 2023 02:24:38 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ d1-20020a056000114100b003062d815fa6sm1899902wrx.85.2023.05.16.02.24.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 May 2023 02:24:37 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: David Edmondson <david.edmondson@oracle.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Greg Kurz
+ <groug@kaod.org>,  qemu-s390x@nongnu.org,  Fam Zheng <fam@euphon.net>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,  Halil Pasic <pasic@linux.ibm.com>,
+ John Snow <jsnow@redhat.com>,  qemu-ppc@nongnu.org,  Daniel Henrique
+ Barboza <danielhb413@gmail.com>,  Harsh Prateek Bora
+ <harshpb@linux.ibm.com>,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  David Gibson
+ <david@gibson.dropbear.id.au>,  David Hildenbrand <david@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,  Eric Farman
+ <farman@linux.ibm.com>,  qemu-block@nongnu.org,  =?utf-8?Q?C=C3=A9dric?= Le
+ Goater <clg@kaod.org>,  Eric Blake <eblake@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Vladimir
+ Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH v2 01/16] migration: Don't use INT64_MAX for unlimited rate
+In-Reply-To: <m2fs7w4p0u.fsf@oracle.com> (David Edmondson's message of "Tue,
+ 16 May 2023 10:13:53 +0100")
+References: <20230515195709.63843-1-quintela@redhat.com>
+ <20230515195709.63843-2-quintela@redhat.com>
+ <m2fs7w4p0u.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Tue, 16 May 2023 11:24:36 +0200
+Message-ID: <874jocy6gb.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v4] target/ppc: Add POWER9 DD2.2 model
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20230515160201.394587-1-npiggin@gmail.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230515160201.394587-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: avE7NHYr_k82HE8XCLnWXoG0Qsp_4671
-X-Proofpoint-GUID: V_Uqsa9ZfosmWS-ovXWki8j7re8PL9fH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-16_02,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015
- lowpriorityscore=0 priorityscore=1501 spamscore=0 mlxlogscore=999
- impostorscore=0 adultscore=0 suspectscore=0 phishscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305160076
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.811,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,110 +110,124 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-<correcting my email in CC>
+David Edmondson <david.edmondson@oracle.com> wrote:
+> Juan Quintela <quintela@redhat.com> writes:
+>
+>> Define and use RATE_LIMIT_MAX instead.
+>
+> Suggest "RATE_LIMIT_MAX_NONE".
 
-On 5/15/23 21:32, Nicholas Piggin wrote:
-> POWER9 DD2.1 and earlier had significant limitations when running KVM,
-> including lack of "mixed mode" MMU support (ability to run HPT and RPT
-> mode on threads of the same core), and a translation prefetch issue
-> which is worked around by disabling "AIL" mode for the guest.
-> 
-> These processors are not widely available, and it's difficult to deal
-> with all these quirks in qemu +/- KVM, so create a POWER9 DD2.2 CPU
-> and make it the default POWER9 CPU.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> This is unchanged since v3, just reposting.
-> 
-> Thanks,
-> Nick
-> 
->   hw/ppc/pnv.c                   |  2 +-
->   hw/ppc/pnv_core.c              |  2 +-
->   hw/ppc/spapr.c                 |  2 +-
->   hw/ppc/spapr_cpu_core.c        |  1 +
->   include/hw/ppc/pnv.h           |  2 +-
->   target/ppc/cpu-models.c        |  4 +++-
->   target/ppc/cpu-models.h        |  1 +
->   target/ppc/cpu_init.c          | 21 +++++++++++++++++++--
->   tests/qtest/device-plug-test.c |  4 ++--
->   9 files changed, 30 insertions(+), 9 deletions(-)
-> 
+Then even better
 
-<snip>
+RATE_LIMIT_DISABLED?
+RATE_LIMIT_NONE?
 
+Using MAX and NONE at the same time looks strange.
 
-> diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
-> index a77e036b3a..572b5e553a 100644
-> --- a/target/ppc/cpu-models.h
-> +++ b/target/ppc/cpu-models.h
-> @@ -350,6 +350,7 @@ enum {
->       CPU_POWERPC_POWER9_BASE        = 0x004E0000,
->       CPU_POWERPC_POWER9_DD1         = 0x004E1100,
->       CPU_POWERPC_POWER9_DD20        = 0x004E1200,
-> +    CPU_POWERPC_POWER9_DD22        = 0x004E1202,
->       CPU_POWERPC_POWER10_BASE       = 0x00800000,
->       CPU_POWERPC_POWER10_DD1        = 0x00801100,
->       CPU_POWERPC_POWER10_DD20       = 0x00801200,
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index 0ce2e3c91d..6775828dfc 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -6284,9 +6284,26 @@ static bool ppc_pvr_match_power9(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
->           return false;
->       }
->   
-> -    if ((pvr & 0x0f00) == (pcc->pvr & 0x0f00)) {
-> -        /* Major DD version matches to power9_v1.0 and power9_v2.0 */
-> +    if ((pvr & 0x0f00) != (pcc->pvr & 0x0f00)) {
-> +        /* Major DD version does not match */
-> +        return false;
-> +    }
-> +
-> +    if ((pvr & 0x0f00) == 0x100) {
-> +        /* DD1.x always matches power9_v1.0 */
->           return true;
-> +    } else if ((pvr & 0x0f00) == 0x200) {
-> +        if ((pvr & 0xf) < 2) {
-> +            /* DD2.0, DD2.1 match power9_v2.0 */
-> +            if ((pcc->pvr & 0xf) == 0) {
-> +                return true;
-> +            }
-> +        } else {
-> +            /* DD2.2, DD2.3 match power9_v2.2 */
-> +            if ((pcc->pvr & 0xf) == 2) {
-The comment is futuristic about DD2.3 although the condition checks only 
-for DD2.2, may be update comment for now and another patch later along 
-with other changes needed to support 2.3?
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> ---
+>>  migration/migration-stats.h | 6 ++++++
+>>  migration/migration.c       | 4 ++--
+>>  migration/qemu-file.c       | 6 +++++-
+>>  3 files changed, 13 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+>> index cf8a4f0410..e782f1b0df 100644
+>> --- a/migration/migration-stats.h
+>> +++ b/migration/migration-stats.h
+>> @@ -15,6 +15,12 @@
+>>  
+>>  #include "qemu/stats64.h"
+>>  
+>> +/*
+>> + * If rate_limit_max is 0, there is special code to remove the rate
+>> + * limit.
+>> + */
+>> +#define RATE_LIMIT_MAX 0
+>> +
+>>  /*
+>>   * These are the ram migration statistic counters.  It is loosely
+>>   * based on MigrationStats.  We change to Stat64 any counter that
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index 039bba4804..c41c7491bb 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -2304,7 +2304,7 @@ static void migration_completion(MigrationState *s)
+>>                   * them if migration fails or is cancelled.
+>>                   */
+>>                  s->block_inactive = !migrate_colo();
+>> -                qemu_file_set_rate_limit(s->to_dst_file, INT64_MAX);
+>> +                qemu_file_set_rate_limit(s->to_dst_file, RATE_LIMIT_MAX);
+>>                  ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
+>>                                                           s->block_inactive);
+>>              }
+>> @@ -3048,7 +3048,7 @@ static void *bg_migration_thread(void *opaque)
+>>      rcu_register_thread();
+>>      object_ref(OBJECT(s));
+>>  
+>> -    qemu_file_set_rate_limit(s->to_dst_file, INT64_MAX);
+>> +    qemu_file_set_rate_limit(s->to_dst_file, RATE_LIMIT_MAX);
+>>  
+>>      setup_start = qemu_clock_get_ms(QEMU_CLOCK_HOST);
+>>      /*
+>> diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+>> index 597054759d..4bc875b452 100644
+>> --- a/migration/qemu-file.c
+>> +++ b/migration/qemu-file.c
+>> @@ -27,6 +27,7 @@
+>>  #include "qemu/error-report.h"
+>>  #include "qemu/iov.h"
+>>  #include "migration.h"
+>> +#include "migration-stats.h"
+>>  #include "qemu-file.h"
+>>  #include "trace.h"
+>>  #include "options.h"
+>> @@ -732,7 +733,10 @@ int qemu_file_rate_limit(QEMUFile *f)
+>
+> Given that qemu_file_rate_limit() is really a boolean, could it be
+> declared as such?
 
-Otherwise, looks fine to me.
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+I wanted to do on this patch justn $Subject.
 
-regards,
-Harsh
-> +                return true;
-> +            }
-> +        }
->       }
->   
->       return false;
-> diff --git a/tests/qtest/device-plug-test.c b/tests/qtest/device-plug-test.c
-> index 01cecd6e20..165ca13f8c 100644
-> --- a/tests/qtest/device-plug-test.c
-> +++ b/tests/qtest/device-plug-test.c
-> @@ -168,8 +168,8 @@ static void test_spapr_cpu_unplug_request(void)
->   {
->       QTestState *qtest;
->   
-> -    qtest = qtest_initf("-cpu power9_v2.0 -smp 1,maxcpus=2 "
-> -                        "-device power9_v2.0-spapr-cpu-core,core-id=1,id=dev0");
-> +    qtest = qtest_initf("-cpu power9_v2.2 -smp 1,maxcpus=2 "
-> +                        "-device power9_v2.2-spapr-cpu-core,core-id=1,id=dev0");
->   
->       /* similar to test_pci_unplug_request */
->       process_device_remove(qtest, "dev0");
+You can see that when I move this function to
+migration/migration-stats.c already do the type change.
+
+That is patch:
+
+[PATCH v2 05/16] migration: Move rate_limit_max and rate_limit_used to
+migration_stats
+
+diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+index 3431453c90..1b16edae7d 100644
+--- a/migration/migration-stats.c
++++ b/migration/migration-stats.c
+@@ -22,3 +23,46 @@ void migration_time_since(MigrationAtomicStats *stats, int64_t since)
+     int64_t now = qemu_clock_get_ms(QEMU_CLOCK_HOST);
+     stat64_set(&stats->setup_time, now - since);
+ }
++
++bool migration_rate_exceeded(QEMUFile *f)
++{
++    if (qemu_file_get_error(f)) {
++        return true;
++    }
++
++    uint64_t rate_limit_used = stat64_get(&mig_stats.rate_limit_used);
++    uint64_t rate_limit_max = stat64_get(&mig_stats.rate_limit_max);
++
++    if (rate_limit_max == RATE_LIMIT_MAX) {
++        return false;
++    }
++    if (rate_limit_max > 0 && rate_limit_used > rate_limit_max) {
++        return true;
++    }
++    return false;
++}
+
+Thanks, Juan.
+
 
