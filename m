@@ -2,79 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D511D7047E6
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 10:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4683F70480A
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 10:41:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyq6c-0005Q2-A0; Tue, 16 May 2023 04:32:26 -0400
+	id 1pyqES-0008Cj-AZ; Tue, 16 May 2023 04:40:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=0500723a60=gmuthukrishn@marvell.com>)
- id 1pyq6Z-0005P9-AP
- for qemu-devel@nongnu.org; Tue, 16 May 2023 04:32:23 -0400
-Received: from mx0b-0016f401.pphosted.com ([67.231.156.173])
+ (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1pyqEP-0008CM-T3
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 04:40:29 -0400
+Received: from esa16.hc2706-39.iphmx.com ([216.71.140.205])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=0500723a60=gmuthukrishn@marvell.com>)
- id 1pyq6U-00052m-4a
- for qemu-devel@nongnu.org; Tue, 16 May 2023 04:32:22 -0400
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
- by mx0b-0016f401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34G87rvg027636; Tue, 16 May 2023 01:31:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=pfpt0220;
- bh=Qy004BX2Bg5qE7CViMzB1c70IMQHoggNAt6QGQXKph4=;
- b=idQakg/BZ+Sg0TBWYCQUiGh5iGwoXH328nWl6F92F1M80Zz8ThW8GdxCL989CEVYrNZs
- mchCD8b+k2A6WFVtMSMJG5wwRdr//A+CbZCMzLD6X1VamBZg0jLidpwdm9d1oAYKJJHJ
- nNjPVEy/M9jg9+iDOhmRhzHxRXph4L8ZnrIeMwLK1VN+DcVpOm+lfb42MBJcDu4p748F
- qCSIbYjsHX99xYOqwLx4q3gXfWHVG4yJz233YWx1dpt1JyBxQUfbV5kAn5sufcSIyxBX
- 6YroSVWAL98lTpmzKKbiX2KifxqDUUgnbqe8iKuOAJwYNFO8/xYU0oJnRltOgbwszVhg pg== 
-Received: from dc5-exch01.marvell.com ([199.233.59.181])
- by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3qja2jrfnr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 01:31:47 -0700
-Received: from DC5-EXCH01.marvell.com (10.69.176.38) by DC5-EXCH01.marvell.com
- (10.69.176.38) with Microsoft SMTP Server (TLS) id 15.0.1497.48;
- Tue, 16 May 2023 01:31:45 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH01.marvell.com
- (10.69.176.38) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
- Transport; Tue, 16 May 2023 01:31:45 -0700
-Received: from localhost.localdomain (unknown [10.28.34.38])
- by maili.marvell.com (Postfix) with ESMTP id 2D29F3F7043;
- Tue, 16 May 2023 01:31:42 -0700 (PDT)
-From: Gowrishankar Muthukrishnan <gmuthukrishn@marvell.com>
-To: <qemu-devel@nongnu.org>
-CC: Gonglei <arei.gonglei@huawei.com>, Zhenwei Pi <pizhenwei@bytedance.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Anoob Joseph <anoobj@marvell.com>,
- Gowrishankar Muthukrishnan <gmuthukrishn@marvell.com>
-Subject: [PATCH v2] cryptodev-vhost-user: add asymmetric crypto support
-Date: Tue, 16 May 2023 14:01:39 +0530
-Message-ID: <20230516083139.2349744-1-gmuthukrishn@marvell.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230514065519.2335265-1-gmuthukrishn@marvell.com>
-References: <20230514065519.2335265-1-gmuthukrishn@marvell.com>
+ (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1pyqEG-0006ta-2v
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 04:40:28 -0400
+X-IronPort-RemoteIP: 209.85.222.198
+X-IronPort-MID: 277439399
+X-IronPort-Reputation: None
+X-IronPort-Listener: OutgoingMail
+X-IronPort-SenderGroup: RELAY_GSUITE
+X-IronPort-MailFlowPolicy: $RELAYED
+IronPort-Data: A9a23:0awAza4i1l42NsqBww+BhQxRtIbFchMFZxGqfqrLsTDasY5as4F+v
+ jcXWTjXa/6IZWT9fI90YY++8EwFsJ+HmtQ2GVFpqXxnEysa+MHIO4+lIxarNUt+DCFioGGLT
+ Sk6QoOdRCzhZiaE/n9BCpC48T8nk/nOHuGmYAL9EngZbRd+Tys8gg5Ulec8g4p56fC0GArIs
+ t7pyyHlEAbNNwVcbyRFuspvlDs15K6p4G5B4ARnDRx2lAS2e0c9Xcp3yZ6ZciOQrrl8RoaSW
+ +vFxbelyWLVlz9F5gSNy+uTnuUiG9Y+DCDX4pZkc/HKbitq/0Te5p0G2M80Mi+7vdkoc+dZk
+ 72hvbToIesg0zaldO41CnG0GAknVUFKFSOuzdFSfqV/wmWfG0YAzcmCA2kuYIc887ZYMVhX1
+ tYZLg0KZSiIq+KPlefTpulE3qzPLeHuNYIb/2hjlHTXVKd2B5/ERKrO6JlT2zJYasJmR66PI
+ ZpEL2A1NlKZMk0n1lQ/UfrSmM+hgmn5fydwok/TqKYqi4TW5FYuj+S2YYGEK7RmQ+1kuB7Do
+ EiW4ljcOTcCZdqU9QO4/22V07qncSTTHdh6+KeD3udnhUDWymENBRk+U1y9rv+kzEmkVLpix
+ 1c8/yMvqe0r9xXuQICsD1u3p3mLuhNaUN1VewEn1DywJmPvy17xLgA5ovRpMrTKaOdeqeQW6
+ 2K0
+IronPort-HdrOrdr: A9a23:+0mhVa8y+0aLg8pRnnRuk+DlI+orL9Y04lQ7vn2YcXduA6mlfq
+ GV7ZcmPHrP41wssR4b9OxoR5PwJ080maQY3WBzB9eftWvd1ldARbsKhbcKqAeAJ8SRzIFgPY
+ AKSdkdNDXKZmIK6foT2WKDYrEdKdC8gdmVuds=
+X-Talos-CUID: =?us-ascii?q?9a23=3A4fCUHmi9E9b8yD1VlPs3mpPH6DJuaiDX6H6ADH+?=
+ =?us-ascii?q?BEEVDSbuoTlSo849kqp87?=
+X-Talos-MUID: 9a23:v7hBFwrdvAw248AatNgezwBEbJxuyfSzNGU2t41XvcK4DBF9JA7I2Q==
+Received: from mail-qk1-f198.google.com ([209.85.222.198])
+ by ob1.hc2706-39.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
+ 16 May 2023 04:40:10 -0400
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7595c946411so171963785a.2
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 01:40:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bu.edu; s=s1gsbu; t=1684226409; x=1686818409;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=j2+mHMqAKKVm4KyyAEahzJ6RrZ5CZz48MfX4/78iWLg=;
+ b=FGAmFUaEt8rs+XSZPNIY0bZADnf+fwNqAki5+MiAs8EXFzvyhjWw8EiCNjJHSJKv1c
+ qyNh4O0SQbD0osHNvX/0CEF9sI43SU7c0V/zh7Lvf58PtIajAxACofLjDGIZA3OCzEoY
+ cYz0P1i4GnhsLxh6CyfBGV3jR3SG1Jj0y5aPVsNkVm8L3j6g4ypFvXBU40yZrkoE2Ks3
+ 32EivsebfP1CA8cqIjbDC9TonjRqpgSAmSMNqZhrYUAKZTD6uF/S1mT9Ne0EFGOEfu4j
+ 3Z/NrtXD90hBnmI7ld/wXch/3nmWi41JlGEM1mCSU1EAluEi5NRH01QHCohs6e2xwG9n
+ 3zDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684226409; x=1686818409;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=j2+mHMqAKKVm4KyyAEahzJ6RrZ5CZz48MfX4/78iWLg=;
+ b=JHdEggaoDr++NQmXjocAZAM7jYsLlKkJJ/ZRktu9fu6moVay+BVHDpMhhBhyXM+96p
+ ukMKlb7AHIgCzNKQSZryLai2dr2STXfytRWA/8A7GGVlF8F0g0kmmVSyFAw4StugvcMd
+ x4iqFD5nKRGRI1kd50L058aI1/DMk+650mCSGDynXGkfJylgIO+BY0s/yeV87HUD/rwD
+ bkVAP9zne5P/v4EiN7gCOR6EQaDW/XhbbK7PVMMq/wthqBp8wYCHJkkLyjxd7cFy63Ba
+ OAYT8VRkUsCKliWc72bd5SHMdw5jX584qUp6mMhwU1I3LRcCAn0pHlsIPC/F8E3kSWOP
+ Eucg==
+X-Gm-Message-State: AC+VfDzz3mk0x/+tV56vguZzXOrrRClu6p53vct4qPh0e52qKTr10Shv
+ xZM784F/T9y5Aq9J2M2qlcDFiFZgCpCPJpUQQOylhvvtTOLjcoZm46+KUXaQjugPzPyhSWLXhDP
+ d/OdFOgWmHwJl49R98rygyowQ/DB4KdrDdCJwENsn
+X-Received: by 2002:ad4:5be9:0:b0:621:68e8:999f with SMTP id
+ k9-20020ad45be9000000b0062168e8999fmr28364632qvc.33.1684226409486; 
+ Tue, 16 May 2023 01:40:09 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7/DjKieXIpYEcufTArJSlQWfuCNYgUViZgVasxUJUlZ2S3FICBZgrkJ0QKwYYOBOcG+HU1Cw==
+X-Received: by 2002:ad4:5be9:0:b0:621:68e8:999f with SMTP id
+ k9-20020ad45be9000000b0062168e8999fmr28364617qvc.33.1684226409222; 
+ Tue, 16 May 2023 01:40:09 -0700 (PDT)
+Received: from mozz.bu.edu (mozz.bu.edu. [128.197.127.33])
+ by smtp.gmail.com with ESMTPSA id
+ g17-20020a0cf851000000b0061b7784b3basm5025852qvo.84.2023.05.16.01.40.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 May 2023 01:40:08 -0700 (PDT)
+From: Alexander Bulekov <alxndr@bu.edu>
+To: qemu-devel@nongnu.org
+Cc: mcascell@redhat.com, Alexander Bulekov <alxndr@bu.edu>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] memory: stricter checks prior to unsetting engaged_in_io
+Date: Tue, 16 May 2023 04:40:02 -0400
+Message-Id: <20230516084002.3813836-1-alxndr@bu.edu>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: QTLgMPl06XpQAB9rCP8VHhBEGetKM2qy
-X-Proofpoint-ORIG-GUID: QTLgMPl06XpQAB9rCP8VHhBEGetKM2qy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-16_02,2023-05-05_01,2023-02-09_01
-Received-SPF: pass client-ip=67.231.156.173;
- envelope-from=prvs=0500723a60=gmuthukrishn@marvell.com;
- helo=mx0b-0016f401.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-CES-GSUITE_AUTH: bf3aNvsZpxl8
+Received-SPF: pass client-ip=216.71.140.205; envelope-from=alxndr@bu.edu;
+ helo=esa16.hc2706-39.iphmx.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,168 +120,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add asymmetric crypto support in vhost_user backend.
+engaged_in_io could be unset by an MR with re-entrancy checks disabled.
+Ensure that only MRs that can set the engaged_in_io flag can unset it.
 
-Signed-off-by: Gowrishankar Muthukrishnan <gmuthukrishn@marvell.com>
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/1563
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
 ---
-v2:
- - added buffer length check before memcpy.
+ softmmu/memory.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
----
- backends/cryptodev-vhost-user.c |  9 ++--
- hw/virtio/vhost-user.c          | 75 +++++++++++++++++++++++++++------
- 2 files changed, 66 insertions(+), 18 deletions(-)
-
-diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.c
-index b1d9eb735f..c3283ba84a 100644
---- a/backends/cryptodev-vhost-user.c
-+++ b/backends/cryptodev-vhost-user.c
-@@ -232,9 +232,9 @@ static void cryptodev_vhost_user_init(
-     backend->conf.max_auth_key_len = VHOST_USER_MAX_AUTH_KEY_LEN;
- }
+diff --git a/softmmu/memory.c b/softmmu/memory.c
+index b7b3386e9d..26424f1d78 100644
+--- a/softmmu/memory.c
++++ b/softmmu/memory.c
+@@ -534,6 +534,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
+     unsigned access_size;
+     unsigned i;
+     MemTxResult r = MEMTX_OK;
++    bool reentrancy_guard_applied = false;
  
--static int64_t cryptodev_vhost_user_sym_create_session(
-+static int64_t cryptodev_vhost_user_crypto_create_session(
-            CryptoDevBackend *backend,
--           CryptoDevBackendSymSessionInfo *sess_info,
-+           CryptoDevBackendSessionInfo *sess_info,
-            uint32_t queue_index, Error **errp)
- {
-     CryptoDevBackendClient *cc =
-@@ -266,18 +266,17 @@ static int cryptodev_vhost_user_create_session(
-            void *opaque)
- {
-     uint32_t op_code = sess_info->op_code;
--    CryptoDevBackendSymSessionInfo *sym_sess_info;
-     int64_t ret;
-     Error *local_error = NULL;
-     int status;
- 
-     switch (op_code) {
-     case VIRTIO_CRYPTO_CIPHER_CREATE_SESSION:
-+    case VIRTIO_CRYPTO_AKCIPHER_CREATE_SESSION:
-     case VIRTIO_CRYPTO_HASH_CREATE_SESSION:
-     case VIRTIO_CRYPTO_MAC_CREATE_SESSION:
-     case VIRTIO_CRYPTO_AEAD_CREATE_SESSION:
--        sym_sess_info = &sess_info->u.sym_sess_info;
--        ret = cryptodev_vhost_user_sym_create_session(backend, sym_sess_info,
-+        ret = cryptodev_vhost_user_crypto_create_session(backend, sess_info,
-                    queue_index, &local_error);
-         break;
- 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index e5285df4ba..eaac1dc174 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -11,6 +11,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/virtio/vhost.h"
-+#include "hw/virtio/virtio-crypto.h"
- #include "hw/virtio/vhost-user.h"
- #include "hw/virtio/vhost-backend.h"
- #include "hw/virtio/virtio.h"
-@@ -173,13 +174,24 @@ typedef struct VhostUserConfig {
- 
- #define VHOST_CRYPTO_SYM_HMAC_MAX_KEY_LEN    512
- #define VHOST_CRYPTO_SYM_CIPHER_MAX_KEY_LEN  64
-+#define VHOST_CRYPTO_ASYM_MAX_KEY_LEN  1024
- 
- typedef struct VhostUserCryptoSession {
-+    uint64_t op_code;
-+    union {
-+        struct {
-+            CryptoDevBackendSymSessionInfo session_setup_data;
-+            uint8_t key[VHOST_CRYPTO_SYM_CIPHER_MAX_KEY_LEN];
-+            uint8_t auth_key[VHOST_CRYPTO_SYM_HMAC_MAX_KEY_LEN];
-+        } sym;
-+        struct {
-+            CryptoDevBackendAsymSessionInfo session_setup_data;
-+            uint8_t key[VHOST_CRYPTO_ASYM_MAX_KEY_LEN];
-+        } asym;
-+    } u;
-+
-     /* session id for success, -1 on errors */
-     int64_t session_id;
--    CryptoDevBackendSymSessionInfo session_setup_data;
--    uint8_t key[VHOST_CRYPTO_SYM_CIPHER_MAX_KEY_LEN];
--    uint8_t auth_key[VHOST_CRYPTO_SYM_HMAC_MAX_KEY_LEN];
- } VhostUserCryptoSession;
- 
- static VhostUserConfig c __attribute__ ((unused));
-@@ -2366,7 +2378,7 @@ static int vhost_user_crypto_create_session(struct vhost_dev *dev,
-     int ret;
-     bool crypto_session = virtio_has_feature(dev->protocol_features,
-                                        VHOST_USER_PROTOCOL_F_CRYPTO_SESSION);
--    CryptoDevBackendSymSessionInfo *sess_info = session_info;
-+    CryptoDevBackendSessionInfo *backend_info = session_info;
-     VhostUserMsg msg = {
-         .hdr.request = VHOST_USER_CREATE_CRYPTO_SESSION,
-         .hdr.flags = VHOST_USER_VERSION,
-@@ -2380,16 +2392,53 @@ static int vhost_user_crypto_create_session(struct vhost_dev *dev,
-         return -ENOTSUP;
+     if (!access_size_min) {
+         access_size_min = 1;
+@@ -552,6 +553,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
+             return MEMTX_ACCESS_ERROR;
+         }
+         mr->dev->mem_reentrancy_guard.engaged_in_io = true;
++        reentrancy_guard_applied = true;
      }
  
--    memcpy(&msg.payload.session.session_setup_data, sess_info,
--              sizeof(CryptoDevBackendSymSessionInfo));
--    if (sess_info->key_len) {
--        memcpy(&msg.payload.session.key, sess_info->cipher_key,
--               sess_info->key_len);
--    }
--    if (sess_info->auth_key_len > 0) {
--        memcpy(&msg.payload.session.auth_key, sess_info->auth_key,
--               sess_info->auth_key_len);
-+    if (backend_info->op_code == VIRTIO_CRYPTO_AKCIPHER_CREATE_SESSION) {
-+        CryptoDevBackendAsymSessionInfo *sess_info = &backend_info->u.asym_sess_info;
-+        size_t keylen;
-+
-+        memcpy(&msg.payload.session.u.asym.session_setup_data, sess_info,
-+               sizeof(CryptoDevBackendAsymSessionInfo));
-+        if (sess_info->keylen) {
-+            keylen = sizeof(msg.payload.session.u.asym.key);
-+            if (sess_info->keylen > keylen) {
-+                error_report("Unsupported asymmetric key size");
-+                return -ENOTSUP;
-+            }
-+
-+            memcpy(&msg.payload.session.u.asym.key, sess_info->key,
-+                   sess_info->keylen);
-+        }
-+    } else {
-+        CryptoDevBackendSymSessionInfo *sess_info = &backend_info->u.sym_sess_info;
-+        size_t keylen;
-+
-+        memcpy(&msg.payload.session.u.sym.session_setup_data, sess_info,
-+               sizeof(CryptoDevBackendSymSessionInfo));
-+        if (sess_info->key_len) {
-+            keylen = sizeof(msg.payload.session.u.sym.key);
-+            if (sess_info->key_len > keylen) {
-+                error_report("Unsupported cipher key size");
-+                return -ENOTSUP;
-+            }
-+
-+            memcpy(&msg.payload.session.u.sym.key, sess_info->cipher_key,
-+                   sess_info->key_len);
-+        }
-+
-+        if (sess_info->auth_key_len > 0) {
-+            keylen = sizeof(msg.payload.session.u.sym.auth_key);
-+            if (sess_info->auth_key_len > keylen) {
-+                error_report("Unsupported auth key size");
-+                return -ENOTSUP;
-+            }
-+
-+            memcpy(&msg.payload.session.u.sym.auth_key, sess_info->auth_key,
-+                   sess_info->auth_key_len);
-+        }
+     /* FIXME: support unaligned access? */
+@@ -568,7 +570,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
+                         access_mask, attrs);
+         }
      }
-+
-+    msg.payload.session.op_code = backend_info->op_code;
-+    msg.payload.session.session_id = backend_info->session_id;
-     ret = vhost_user_write(dev, &msg, NULL, 0);
-     if (ret < 0) {
-         error_report("vhost_user_write() return %d, create session failed",
+-    if (mr->dev) {
++    if (mr->dev && reentrancy_guard_applied) {
+         mr->dev->mem_reentrancy_guard.engaged_in_io = false;
+     }
+     return r;
 -- 
-2.25.1
+2.39.0
 
 
