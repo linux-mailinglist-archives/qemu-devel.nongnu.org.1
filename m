@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C337D7054B6
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 19:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 367597054D6
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 19:18:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyyAM-0007JT-VT; Tue, 16 May 2023 13:08:50 -0400
+	id 1pyyIY-0001N6-Gk; Tue, 16 May 2023 13:17:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyyAH-0007J5-OB
- for qemu-devel@nongnu.org; Tue, 16 May 2023 13:08:46 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1pyyIS-0001Mn-Gr
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 13:17:12 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pyyAF-00039X-U4
- for qemu-devel@nongnu.org; Tue, 16 May 2023 13:08:45 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6438d95f447so10011148b3a.3
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 10:08:42 -0700 (PDT)
+ id 1pyyIQ-00058v-OB
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 13:17:12 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1ae4e264e03so489915ad.2
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 10:17:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684256920; x=1686848920;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1684257429; x=1686849429;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fCEmR0N87NDQm7ekh6bMAQBrJNmgX8Adn0cOQE2lWzw=;
- b=r9/EWFJKrSFF52o8ar7r+xB/0eiPgaeuLAG/fWs2vHVgiKaF1OAh/T9105yvvca+qA
- gsjdKtOzXgmcHNG+aYNpOk2sa3bCdyX/1dqOMqY5Dyoz70yVwnDZub2DD2fYdXr/Mhw/
- SHoy4IZy4U9GmNUI+AbXuYqWC44mXeNJmb+BXWQaMYukgEhr2WC40KX8/eZ9xOjEmVAP
- aIY7hkkWAT5kXFE5n9W2ag8y6Walh6pkIUzn9+Jg4WGybakKN0q/q9YA+ohy/RKyPc4J
- y8miEOkfSMeANqoZajbi/hq6vpgodtG/MNW+xsWZLjWi1PK9cac3ipbB/Jjx54260rxT
- cQQA==
+ bh=lx8c71/C3XmqckflJmXp7Zgaa4gNO9RTjqKFnRaPNSA=;
+ b=MGWSPZCzYZw9To5wr7TH1AvSvpHKME2LMQbHS1nLdT/MPr4vhUxN97fe7dgw2yPXnP
+ TwZor6PsduRz1qaYZSVqCI6PUZQ1UUnd7ojHWHxxZkgm/R+yG6Xh+FeQr2y0OcTDKf+g
+ oqOgk2Jy8QbK4tlvHSSRumRhZJbSHSrU6SKSTdb+PchezhxgRQbuzV+b+U1FD9yw5Hza
+ bCn7TZat0Xe6EzyVTWGQjesy1PjiRa3o6VwuOTX4ZkHiD2wclCU0flW2UI2Grg13Xs7R
+ b99mMy3OGg/Sx2Y7NMpmTD11m84L4GIG2InGX2eFeT/aoB0Z/q51PWPzMheLoJpVtJE3
+ zc2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684256920; x=1686848920;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1684257429; x=1686849429;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fCEmR0N87NDQm7ekh6bMAQBrJNmgX8Adn0cOQE2lWzw=;
- b=BKQuDVQRCzki5s39Du9NJMFojMN0xTeI0u8c6f8Dk3qY4JjlRTyebHnzVuCR7QWIf8
- 9pPTbimqqlCC/MPnT9Wfk+MqcwVjiH3+8o/LmrUd/kmoAr5vz/WAITqoHv4GG/xQZXuF
- ebYu90RJ/v23vwBMRbBGuvdzPRfwd0InUwizBZ1sBsytY19+B/5gPX+pYgswPJU2BLaP
- 0apA3d955Q+azqFFlfWw3bhSnB0lhSIqc37o+/+QM4PlRhjXKZ/oDNu98oNm8wHO0W5Y
- cxNOQ4Ynb0lbkcJNuNiLccUX4PO+kdpkIPY8FYNjUenEEEnYF3p1EEEGwqMqH85kn55o
- ldWg==
-X-Gm-Message-State: AC+VfDx2CHUG8fe0ARG7pnrbNJFYPTxPlH3Zzdb6pThs3cbS1xCezSWk
- OWJOlSV0Ngjt6ZwU9J/GBKq4VA==
-X-Google-Smtp-Source: ACHHUZ6h9m4UcurWpHplDnzgdr3z3xm2NUPEK1uSVcDZKgFSuAOr1QUPzsa8mhBiv8hvEib/hfaTpQ==
-X-Received: by 2002:a05:6a00:2d0e:b0:63d:2680:94dd with SMTP id
- fa14-20020a056a002d0e00b0063d268094ddmr53186420pfb.6.1684256920468; 
- Tue, 16 May 2023 10:08:40 -0700 (PDT)
+ bh=lx8c71/C3XmqckflJmXp7Zgaa4gNO9RTjqKFnRaPNSA=;
+ b=YEUfvB/Kp2teoEYwf4Hkcv/pIyyv3wrjP/80wldLQBVuCJ3XkQTxpyTthA6jxxa4ep
+ lnjcCyeYCDXwr76wzIcPHkV33+i7a3G/s+OlVLiuWCbshJGWetjC6bezYkSe4ZaoFrHU
+ QRYihyMDZPU/+k51MHj9Gg6/4lTb1xKi9tSZquXVSudsnppdufirfZ1qoxli4aZ95pPU
+ HNnMzg1awrmEB8S+MUz3xDhBwHuvvdShpfLdo7d456ksjvawy52kGFOrfAsZYwUP/Tbd
+ VlqfCKHcuhn7ZcEhPrwycD0YtkoC8ZkkpwZ59RQTB2SZ+AuWgET1IqM3NwlM4SLNJWkL
+ vmBQ==
+X-Gm-Message-State: AC+VfDxIyOKKtb+SyzNIaxNXxPKSzEuqNqri6rykl+EiO1jpaNU2YVVO
+ /l1884raHXssJquGg4dW0RXUhQ==
+X-Google-Smtp-Source: ACHHUZ6quyT9yZq76AVWPKYFAeboQGFZ1Q/DQh4pzMZ0AOD38fr+Z+Ev3p3qko20h0iReHvgQ8FLpA==
+X-Received: by 2002:a17:902:e80b:b0:1aa:ffed:652c with SMTP id
+ u11-20020a170902e80b00b001aaffed652cmr51278400plg.64.1684257428930; 
+ Tue, 16 May 2023 10:17:08 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:ec81:440e:33a4:40b9?
  ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
  by smtp.gmail.com with ESMTPSA id
- c12-20020aa781cc000000b00640e14330d8sm13764822pfn.28.2023.05.16.10.08.39
+ n10-20020a170902d2ca00b001aaf13db1acsm15718953plc.276.2023.05.16.10.17.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 May 2023 10:08:39 -0700 (PDT)
-Message-ID: <2377b180-797c-9057-114a-d9d3b61f5caf@linaro.org>
-Date: Tue, 16 May 2023 10:08:38 -0700
+ Tue, 16 May 2023 10:17:08 -0700 (PDT)
+Message-ID: <03994a55-ead7-4a17-f5d4-78ff6f5bf101@linaro.org>
+Date: Tue, 16 May 2023 10:17:06 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PULL 0/9] Linux user for 8.1 patches
+Subject: Re: [PULL 0/4] 9p queue 2023-05-16
 Content-Language: en-US
-To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
-References: <20230516124810.90494-1-laurent@vivier.eu>
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: Greg Kurz <groug@kaod.org>, Thomas Huth <thuth@redhat.com>,
+ Peter Foley <pefoley@google.com>, Jason Andryuk <jandryuk@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>
+References: <cover.1684250463.git.qemu_oss@crudebyte.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230516124810.90494-1-laurent@vivier.eu>
+In-Reply-To: <cover.1684250463.git.qemu_oss@crudebyte.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -47
 X-Spam_score: -4.8
 X-Spam_bar: ----
@@ -94,33 +98,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/16/23 05:48, Laurent Vivier wrote:
-> The following changes since commit 7c18f2d663521f1b31b821a13358ce38075eaf7d:
+On 5/16/23 08:21, Christian Schoenebeck wrote:
+> The following changes since commit ab4c44d657aeca7e1da6d6dcb1741c8e7d357b8b:
 > 
->    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-04-29 23:07:17 +0100)
+>    Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-05-15 13:54:33 -0700)
 > 
 > are available in the Git repository at:
 > 
->    https://github.com/vivier/qemu.git tags/linux-user-for-8.1-pull-request
+>    https://github.com/cschoenebeck/qemu.git tags/pull-9p-20230516
 > 
-> for you to fetch changes up to c490496e85047d516b31f93ea0e14819e0ab5cf5:
+> for you to fetch changes up to 3887702e5f8995638c98f9d9326b4913fb107be7:
 > 
->    linux-user: fix getgroups/setgroups allocations (2023-05-16 12:48:09 +0200)
+>    configure: make clear that VirtFS is 9p (2023-05-16 16:21:54 +0200)
 > 
 > ----------------------------------------------------------------
-> linux-user pull request 20230512-v3
+> 9pfs: fixes
 > 
-> add open_tree(), move_mount()
-> add /proc/cpuinfo for riscv
-> fixes and cleanup
+> * Fixes for Xen, configure and a theoretical leak.
 
-The new test still fails.
-
-https://gitlab.com/qemu-project/qemu/-/jobs/4295127220#L4423
-
-cpuinfo: /builds/qemu-project/qemu/tests/tcg/riscv64/cpuinfo.c:20: main: Assertion 
-`strcmp(buffer, "isa\t\t: rv64imafdc_zicsr_zifencei\n") == 0' failed.
+The public key I have for you is expired.
+Have you pushed a refresh of it somewhere?
 
 
 r~
+
+> 
+> ----------------------------------------------------------------
+> Christian Schoenebeck (2):
+>        tests/9p: fix potential leak in v9fs_rreaddir()
+>        configure: make clear that VirtFS is 9p
+> 
+> Jason Andryuk (1):
+>        9pfs/xen: Fix segfault on shutdown
+> 
+> Peter Foley (1):
+>        Don't require libcap-ng for virtfs support
+> 
+>   hw/9pfs/trace-events                  |  6 ++++++
+>   hw/9pfs/xen-9p-backend.c              | 35 ++++++++++++++++++++++-------------
+>   meson.build                           | 14 ++++++++++----
+>   meson_options.txt                     |  2 ++
+>   scripts/meson-buildoptions.sh         |  4 ++++
+>   tests/qtest/libqos/virtio-9p-client.c |  5 +++++
+>   6 files changed, 49 insertions(+), 17 deletions(-)
+> 
+
 
