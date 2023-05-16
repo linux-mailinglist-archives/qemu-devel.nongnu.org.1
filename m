@@ -2,94 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E564F70513C
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 16:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 739F170520E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 17:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyw0I-0005Rv-47; Tue, 16 May 2023 10:50:18 -0400
+	id 1pywZC-00017P-43; Tue, 16 May 2023 11:26:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1pyw0F-0005R3-A6
- for qemu-devel@nongnu.org; Tue, 16 May 2023 10:50:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1pyw0D-0007Ei-74
- for qemu-devel@nongnu.org; Tue, 16 May 2023 10:50:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684248611;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ku16nIkGubV/sJ57wz87jeJMSyPV3uCEKZOnf6nNlVY=;
- b=g1u7s2ObZSs6ZNHsH+J89rPZZ8crMzq6jcdIEcdnni+r1vFxjgI7cFXwgaeaOc+YBRSjQ3
- xZ/eTUW1eLtOeYiUiM0kxXBXRzi1Wf3SHRui1H1uPqFTDd/LX4uJ84CaKpOEWwjCPT8Upf
- xgdjwl1XlGCfgymAXK//ILO29XHEBL0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-25-NlElenYfNnKu4IQwVrIlKQ-1; Tue, 16 May 2023 10:50:10 -0400
-X-MC-Unique: NlElenYfNnKu4IQwVrIlKQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-306362a1607so8977074f8f.1
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 07:50:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1pywZ9-00016g-TF
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 11:26:19 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1pywZ4-0006g0-01
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 11:26:19 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3f435658d23so79064625e9.3
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 08:26:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684250772; x=1686842772;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JCBhqmMnQF7+7yeGpvflXqQLkYT++++ihnLJPNWJRJ8=;
+ b=iN5eUFWySZjxH5s5ItqiQLpGh7OPGtV97PFWOivnwTFknuJif6MTujpgX7/nO5Kfbl
+ k0ULppVHhU2N3t2sToWwLqS8duEiadCembEgavQckIBwBiCU/O5hSGZ1LYjCjsVr5IVK
+ olRVgPn/hGEOsXAdMD/rgMSmDijoHBwhgafpff+6aUW0kwPtvDCqbFTuO26TN1hQ573m
+ fWeg8eBxBPb7ba+qdbfEtF5v5C+Bx2DvQp+YovHMkwTCrqiiUtUJayBigdlkRyAMKvrw
+ ADGCszeD4lvwTyp7L8eoaKepxrLgxYbck8CSJPTgp8VWSWGakV/R0SLLPOOyBkrbbaA+
+ SXIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684248609; x=1686840609;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ku16nIkGubV/sJ57wz87jeJMSyPV3uCEKZOnf6nNlVY=;
- b=KiD3sP6wJURMptXppDFCKa/eJG4/LGCav5XOxKtckSNnccomXp1dW8dbiyY7WYKXQX
- WMI3TPb6Mr9IRvHXv3j65TJsJUoGXE3ki8YuDeI3mg0iCVGDt2dDulhs/SLvuaELP32a
- EXwPzXAbE0lNg80Q1ztlzcU+lK+K/97Ww4L3BoKUd0BFPNkuW9TPmFyaoMNQwdF6OlEq
- amwraXIbzEy8Q9kYH+KhdNVDnBbizTikxCgfsMWz5MkyGdpvZCujJJ0tA0VuXbhuwrKv
- ydBU1UV6DvhBLXTqPZHGWDeTfdNtZ5TpTpgDpDdBoT8Gki08/pISc/0UEkZh7iWY9vRu
- T2PQ==
-X-Gm-Message-State: AC+VfDxYlIpqW3QIyV0HlU71BO68pD6wnPERWpwSHB4qQtYnL8xVwzgd
- LqsAHOjcWUhrE0NO1YJon1OZ2N009MGeF9B/+HENrMDw2u3vCvuKJOv1DcTqCp947ln4pUxI8KH
- WI0MvBGh+Ss+Hu0I=
-X-Received: by 2002:a5d:6309:0:b0:304:7eaa:b196 with SMTP id
- i9-20020a5d6309000000b003047eaab196mr27902293wru.24.1684248609524; 
- Tue, 16 May 2023 07:50:09 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ69AHmjCIdcl9PRZEGmT+Y1Sn/DhnkwaxMrelVIAfjoNXusxwNIbSKJ6eC2d6pzPmgMWXQ0Kg==
-X-Received: by 2002:a5d:6309:0:b0:304:7eaa:b196 with SMTP id
- i9-20020a5d6309000000b003047eaab196mr27902277wru.24.1684248609176; 
- Tue, 16 May 2023 07:50:09 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-177-218.web.vodafone.de.
- [109.43.177.218]) by smtp.gmail.com with ESMTPSA id
- s15-20020a5d69cf000000b0030796e103a1sm2975561wrw.5.2023.05.16.07.50.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 May 2023 07:50:08 -0700 (PDT)
-Message-ID: <1eb9b297-9a59-1baa-ce9c-123b62861f10@redhat.com>
-Date: Tue, 16 May 2023 16:50:07 +0200
+ d=1e100.net; s=20221208; t=1684250772; x=1686842772;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=JCBhqmMnQF7+7yeGpvflXqQLkYT++++ihnLJPNWJRJ8=;
+ b=h3QPurz/MpNLJjS3/EopOK3EUhUyiFMYdXBxrgegBeMJzLn0xCRmzSHf0437ei1rhG
+ Nn6VF1UD5FTV3oT5fLK9OdCMsSPY+gNAC9YYqtqvpLarn54Lh2aSyJOuT3S2cSsRQ5Ox
+ se1EvvTzyIcfDAsLic5Hyvw/+IIehgy2UESOcFKmcHBipNVYhGaZaawoGdbecHsYN0HN
+ s1P4AThaFjkRIvSwJIcrckrOBwbd9tUvZwyLkzF4jwrZhOXy6XgyMo4hvPDAqd6VQgtc
+ xr77DdlAdQw5JkA5+NKdRyB03wdppdqaFzKkv5lgnIwUFkzQ+kHDKi4ja9W8a9rX/CX5
+ 6XQg==
+X-Gm-Message-State: AC+VfDyNwJw0XUiCUWrXOTEExP1rCJt4TuejDlOZHYiwWeZhgt+XJRc4
+ Ro9ZJX/+Iy8mdMfvo1wRHc8QYBkSIIQMBuAMSV+ftw==
+X-Google-Smtp-Source: ACHHUZ4znaWUTn9ivZvsmJFg0GGREl4qmYhjq1dBZCuzfcccWDg9aHEFNP2hg8bCPG98cobbZxs1Xw==
+X-Received: by 2002:a5d:58c1:0:b0:306:41d4:475a with SMTP id
+ o1-20020a5d58c1000000b0030641d4475amr27047629wrf.19.1684250772198; 
+ Tue, 16 May 2023 08:26:12 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n12-20020a5d484c000000b00307b5376b2csm381961wrs.90.2023.05.16.08.26.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 May 2023 08:26:11 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 3368E1FFBB;
+ Tue, 16 May 2023 16:26:11 +0100 (BST)
+References: <CAM2a4uxjURNAUcMemWj+mJOvNjgHbXQ-KgiRdRghByM7pBVROw@mail.gmail.com>
+ <875y8tbt2y.fsf@linaro.org>
+ <CAM2a4uyhfJdDjvk3+VfTtwF=h4WBC+MiMWq58LTSwi0s2-nHkg@mail.gmail.com>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Gautam Bhat <mindentropy@gmail.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: Resources on deeper understanding of Translation blocks
+Date: Tue, 16 May 2023 15:56:22 +0100
+In-reply-to: <CAM2a4uyhfJdDjvk3+VfTtwF=h4WBC+MiMWq58LTSwi0s2-nHkg@mail.gmail.com>
+Message-ID: <87ttwcnvqk.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
- Fam Zheng <fam@euphon.net>, qemu-devel@nongnu.org,
- Bandan Das <bsd@redhat.com>, Darren Kenny <darren.kenny@oracle.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
- qemu-stable@nongnu.org
-References: <20230516102016.581877-1-thuth@redhat.com>
- <CAJSP0QUMB51Y_FFx4KozwwDVJAFYmCdHvfEpNz3+aD8r0PmSng@mail.gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] hw/scsi/lsi53c895a: Fix reentrancy issues in the LSI
- controller (CVE-2023-0330)
-In-Reply-To: <CAJSP0QUMB51Y_FFx4KozwwDVJAFYmCdHvfEpNz3+aD8r0PmSng@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.666, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,52 +97,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/05/2023 15.40, Stefan Hajnoczi wrote:
-> On Tue, 16 May 2023 at 06:20, Thomas Huth <thuth@redhat.com> wrote:
->>
->> We cannot use the generic reentrancy guard in the LSI code, so
->> we have to manually prevent endless reentrancy here. The problematic
->> lsi_execute_script() function has already a way to detect whether
->> too many instructions have been executed - we just have to slightly
->> change the logic here that it also takes into account if the function
->> has been called too often in a reentrant way.
->>
->> The code in fuzz-lsi53c895a-test.c has been taken from an earlier
->> patch by Mauro Matteo Cascella.
->>
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1563
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   hw/scsi/lsi53c895a.c               |  7 ++++++-
->>   tests/qtest/fuzz-lsi53c895a-test.c | 33 ++++++++++++++++++++++++++++++
->>   2 files changed, 39 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
->> index 048436352b..8b34199ab8 100644
->> --- a/hw/scsi/lsi53c895a.c
->> +++ b/hw/scsi/lsi53c895a.c
->> @@ -1134,10 +1134,13 @@ static void lsi_execute_script(LSIState *s)
->>       uint32_t addr, addr_high;
->>       int opcode;
->>       int insn_processed = 0;
->> +    static int reentrancy_level;
->> +
->> +    reentrancy_level++;
->>
->>       s->istat1 |= LSI_ISTAT1_SRUN;
->>   again:
->> -    if (++insn_processed > LSI_MAX_INSN) {
->> +    if (++insn_processed > LSI_MAX_INSN || reentrancy_level > 8) {
-> 
-> Why 8 and not some other number?
 
-It's just a random number which seemed to be a good compromise to me. We 
-need at least 2 to be able to boot Linux. And if I add some debug printf and 
-use it with the reproducer from the bug ticket, QEMU crashes after it 
-reached level 1569. Anything in between should be OK at a first glance, but 
-I'd take at least 3 or 4 to be one the safe side for some exotic use cases. 
-8 should really cover all real life cases, I guess. Or what would you suggest?
+Gautam Bhat <mindentropy@gmail.com> writes:
 
-  Thomas
+> On Mon, May 15, 2023 at 7:22=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@lin=
+aro.org> wrote:
+>>
+>>
+>> Gautam Bhat <mindentropy@gmail.com> writes:
+>>
+>> > Hi,
+>> >
+>> > I am going through some translation code for existing targets.
+>> >
+>> > I would like to know if there are any good resources on deeper
+>> > understanding of translation blocks? Also some advice on the best way
+>> > to read code related to translation in Qemu and trying it out maybe
+>> > using the debugger, printing etc? I am getting lost trying to make
+>> > sense of the translation code.
+>>
+>> We have a section in the developers manual that gives an overview of the
+>> translator and how it goes together:
+>>
+>>   https://qemu.readthedocs.io/en/latest/devel/index-tcg.html
+>>
+<snip>
+>
+> Thanks for the resources. I have been going through the documentation
+> and also running it using a debugger to analyze the code. I am still
+> not there with the op code emulation.
+> I am more or less stuck understanding how to handle translator_ops
+> callbacks and disassembly
+>
+> I will be specific.
+>
+> 1. Could you please explain what the state machine should be for the
+> tb_stop(...) callback? I am looking at code from AVR
+> and Microblaze architecture and I see the following cases:
+> DISAS_NORETURN, DISAS_NEXT, DISAS_TOO_MANY, DISAS_LOOKUP and
+> DISAS_EXIT.  Is there some documentation on how to handle these cases
+> and how the disassembly goes through these states?
 
+The core documentation is in translator.h
+
+  /**
+   * DisasJumpType:
+   * @DISAS_NEXT: Next instruction in program order.
+   * @DISAS_TOO_MANY: Too many instructions translated.
+   * @DISAS_NORETURN: Following code is dead.
+   * @DISAS_TARGET_*: Start of target-specific conditions.
+   *
+   * What instruction to disassemble next.
+   */
+
+but as you can see the various frontends define there own target
+specific end cases. Currently you have to look at target specific code
+to see what it is handling.
+
+Broadly there are two types of exit:
+
+  - goto_tb + exit_tb
+
+  We create an exit block with two exit cases, typically the two legs of
+  a conditional branch. Initially these slots are empty which forces an
+  exit to the main loop. Then the translated block matching the next PC
+  is looked up and patched into the source TB so next time we jump
+  directly.
+
+  - lookup_and_goto_ptr
+
+  We don't know what PC we might reach at the end of the block so we
+  need to dynamically find the next TB based on what the PC is at
+  execution time. If we can't find a TB we trigger an exit to the main
+  loop so one can be translated.
+
+The other cases are various special cases. For example we might not be
+executing a branch and just falling through to the next instruction
+(DISAS_NEXT). We might know the helper will never return, for example
+because and exception is triggered, in which case we return to the main
+loop and process it there.
+=20
+
+> 2. How should the callback for translate_insn be handled?
+
+It is called for each instruction in a block.
+
+> 3. Do you have more information or a visual diagram of sorts for
+> TARGET_PAGE_* and PAGE_* and the relation between translation blocks
+> and pages? Also how
+> should one handle where architectures don't have any paging?
+
+All system emulation is handled by page size because that is the
+fundamental granularity of the softmmu TLB which looks up a translation
+from guest address to offset into the memory region. It is not directly
+related to if the guest is using paging to implement virtual memory.
+
+>
+> Thanks,
+> Gautam.
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
