@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0CD704672
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D23704673
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 09:32:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyp9A-0005Ad-V8; Tue, 16 May 2023 03:31:01 -0400
+	id 1pyp9E-0005Un-OK; Tue, 16 May 2023 03:31:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <m.elsayed4420@gmail.com>)
- id 1pyp8p-0004c4-Pi; Tue, 16 May 2023 03:30:40 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1pyp8v-0004mn-Ik; Tue, 16 May 2023 03:30:51 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <m.elsayed4420@gmail.com>)
- id 1pyp8m-0000CQ-Nj; Tue, 16 May 2023 03:30:39 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-307c040797bso4452587f8f.3; 
- Tue, 16 May 2023 00:30:35 -0700 (PDT)
+ id 1pyp8o-00005g-Dx; Tue, 16 May 2023 03:30:45 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f509ec3196so13892045e9.1; 
+ Tue, 16 May 2023 00:30:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684222234; x=1686814234;
+ d=gmail.com; s=20221208; t=1684222236; x=1686814236;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9/ptQJIeZsFPo0bnmorIDJFHDHElt04/hD816Kn9Pkk=;
- b=pnxbe4X1EVDywfoNLpYb6H6nqOmOnlWiAxhFrEOfmKktLpvf+3JTlsrUKI4Ps890r0
- oo4afWKd5SQNQKe1HlZX6xdmdVE8y5mZG7SfOdJZ1vU+tkPkR9jXh6kOvPtfBWdYX9Jt
- vbzsfetdgmeUxRhf+lQCfl9siZpjtbrIiM8wGHnKIPeRJRziFeHnjsHtaJMN24+42s84
- C20UCWqWvspkv1aq0ZCbh4JUAziH3g5p3cY/o9mKMEmW+EpNuPuX2MBTAi7ivnAaiap5
- Kw54r/rBGO+pgBHijelFnxZXcLnUJ1D/0AYhxgH936WSAej8+J9yk/KAe1kJPEV7fEv0
- btRw==
+ bh=SEml0GErhel0ml9Ii8awK5BwqiSZJZmHxWuaMIWAew0=;
+ b=NbYrhxdEtQuiE6u5t5W+m+/zKGG32k4wsqI6w0MO4/MkoBvUSAHf6EBgYnjCmj4W+M
+ VOXn0XJD3XGoepa9A6xJEI0RvlG/Qr8i+jtBsAOiEcdYl+/vxkAEj4k6oQWwxMVlptKs
+ AItMluTLQ5WUqd+iaw1Fjlmr5ZtkP0J2jtMz0nM4fsFPVvhRrqsoBquI9SVFv7wTnaxx
+ v+/AMD1xva28MbWTrH95ZYoLZrhDlSLz59Df7olN5TpuwacTRUW2nUkagRXtbgoI29W6
+ se6G1OjmrEgaqVhTiGCsTg5D+YiCX5lY9uka4XwMXEB2soXhk8pdA0vzxzY1qHhbO07+
+ 0Ujg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684222234; x=1686814234;
+ d=1e100.net; s=20221208; t=1684222236; x=1686814236;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9/ptQJIeZsFPo0bnmorIDJFHDHElt04/hD816Kn9Pkk=;
- b=bC2MjJGKTXWS827qJEXnVg+82+q6HVUrVxGqpmLnLNzRjdB+rFu5VcxsXtjT9wac84
- Yyduzk19shtGPFIe+J1Hp2KWATiNeVA3cBq8sX8I0xlNwgnCMh4NJE1mq/jANkl04f6K
- NtWvambUOJVxLlKO2cbbvIFvI0icP+jrfKcBLC8i7s/ncAXWbyK9SGOigTqwGOqKaWhF
- NUGXPZOo8ATbMBqW78lA/8ZeyOhcdPg68xXDIcLE0nR0sq0tUpIWQyJ6qdXa9XbpUkcO
- 3xDFpt4POZZ/Xlv14JM7ic7m5ucWhgo/2OXetWPRo641Jfa0moMc9Ciw+E6uCOp6qLE6
- 0efQ==
-X-Gm-Message-State: AC+VfDx8oE/6EOpFJYDrS+ElAZK2FzF42qKA+GIrGUoGBGk5g496Rihj
- AiGJHiDkX8JQBxxq9RNIlwDhQtuuGhVqtw==
-X-Google-Smtp-Source: ACHHUZ5IkSnnKRk/D+O3jg9+D6rq132SKqHJh+7NMBSFzxkZD9YECWLoXR0LJzbgpCxTBfMXQH6dXw==
-X-Received: by 2002:a5d:5589:0:b0:307:8666:a50e with SMTP id
- i9-20020a5d5589000000b003078666a50emr23438028wrv.67.1684222234007; 
- Tue, 16 May 2023 00:30:34 -0700 (PDT)
+ bh=SEml0GErhel0ml9Ii8awK5BwqiSZJZmHxWuaMIWAew0=;
+ b=L0GH0bLNjl0ChcRVcsS9cPtU2Zgk0BFB+YBx72y5MhOQOdcbsEKHwCeZ8SbCdiShaG
+ M4PSRU/EelnWmX0ewKoaGM+4wPd07BD4SVPP8eY15UpYrC3F0Mia0YNihL6hyi9a20Vx
+ lodj6g9hCxjdHldKTi8hLgOWfykYIqrZvniPYRWPQKTE9seqGuEKnj2+epntyJFbujXf
+ VZeTkOr66DLaOkjsTcTleUmsQhdnwtUtPqDFH6cUddfldhvgdRsBpXzUAX4k1NVqsJ/a
+ 4wQ6y759hLj6nWzcOCE4j9nGT1AC8EHDRF3p/keubYhxnwOb7AWDI1YJymEMVg2Hn495
+ kkfw==
+X-Gm-Message-State: AC+VfDyeNmxnzNhw8CjgIAJd+ojl+2oRrDhY4iV93lMFXRy+r3O4sEeQ
+ lyE5STTaJiTS7KeR46rgsK4caVYBSZ/RZg==
+X-Google-Smtp-Source: ACHHUZ6+quyTbmttw2KdXLvJcUMvpZQKMX6MgQ7Sb3H1NzaZzTf8RZJ06ghrw56c+wojiI7/UhkdKA==
+X-Received: by 2002:adf:f84b:0:b0:309:3860:8d23 with SMTP id
+ d11-20020adff84b000000b0030938608d23mr253986wrq.16.1684222235629; 
+ Tue, 16 May 2023 00:30:35 -0700 (PDT)
 Received: from i.. ([41.236.82.205]) by smtp.gmail.com with ESMTPSA id
- y12-20020a5d614c000000b003062c609115sm1559997wrt.21.2023.05.16.00.30.32
+ y12-20020a5d614c000000b003062c609115sm1559997wrt.21.2023.05.16.00.30.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 00:30:33 -0700 (PDT)
+ Tue, 16 May 2023 00:30:35 -0700 (PDT)
 From: Mohamed ElSayed <m.elsayed4420@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Mohamed ElSayed <m.elsayed4420@gmail.com>
-Subject: [PULL 6/8] tivac watchdog timers implementation
-Date: Tue, 16 May 2023 10:29:57 +0300
-Message-Id: <20230516072959.49994-7-m.elsayed4420@gmail.com>
+Subject: [PULL 7/8] editing the meson and KConfig files to add tivac to qemu
+ build system
+Date: Tue, 16 May 2023 10:29:58 +0300
+Message-Id: <20230516072959.49994-8-m.elsayed4420@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230516072959.49994-1-m.elsayed4420@gmail.com>
 References: <20230516072959.49994-1-m.elsayed4420@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=m.elsayed4420@gmail.com; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=m.elsayed4420@gmail.com; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,419 +93,449 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Mohamed ElSayed <m.elsayed4420@gmail.com>
 ---
- hw/watchdog/tm4c123_watchdog.c         | 298 +++++++++++++++++++++++++
- include/hw/watchdog/tm4c123_watchdog.h |  97 ++++++++
- 2 files changed, 395 insertions(+)
- create mode 100644 hw/watchdog/tm4c123_watchdog.c
- create mode 100644 include/hw/watchdog/tm4c123_watchdog.h
+ .gitignore                              |   1 +
+ README.rst                              | 150 ++----------------------
+ configs/devices/arm-softmmu/default.mak |   1 +
+ hw/arm/Kconfig                          |  13 ++
+ hw/arm/meson.build                      |   3 +
+ hw/char/Kconfig                         |   3 +
+ hw/char/meson.build                     |   1 +
+ hw/char/trace-events                    |   4 +
+ hw/gpio/Kconfig                         |   3 +
+ hw/gpio/meson.build                     |   1 +
+ hw/gpio/trace-events                    |   4 +
+ hw/misc/Kconfig                         |   3 +
+ hw/misc/meson.build                     |   1 +
+ hw/misc/trace-events                    |   5 +
+ hw/timer/Kconfig                        |   3 +
+ hw/timer/meson.build                    |   1 +
+ hw/timer/trace-events                   |   5 +
+ hw/watchdog/Kconfig                     |   3 +
+ hw/watchdog/meson.build                 |   1 +
+ hw/watchdog/trace-events                |   3 +
+ 20 files changed, 72 insertions(+), 137 deletions(-)
 
-diff --git a/hw/watchdog/tm4c123_watchdog.c b/hw/watchdog/tm4c123_watchdog.c
-new file mode 100644
-index 0000000000..cd064c5343
---- /dev/null
-+++ b/hw/watchdog/tm4c123_watchdog.c
-@@ -0,0 +1,298 @@
-+/*
-+ * TM4C123 Watchdog Timers
-+ *
-+ * Copyright (c) 2023 Mohamed ElSayed <m.elsayed4420@gmail.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
+diff --git a/.gitignore b/.gitignore
+index 1ea59f4819..009ab2ee4b 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -10,6 +10,7 @@
+ .gdb_history
+ cscope.*
+ tags
++compile_commands.json
+ TAGS
+ GPATH
+ GRTAGS
+diff --git a/README.rst b/README.rst
+index 21df79ef43..37ea8cb56c 100644
+--- a/README.rst
++++ b/README.rst
+@@ -1,46 +1,8 @@
+ ===========
+-QEMU README
++QEMU_TivaC README
+ ===========
+ 
+-QEMU is a generic and open source machine & userspace emulator and
+-virtualizer.
+-
+-QEMU is capable of emulating a complete machine in software without any
+-need for hardware virtualization support. By using dynamic translation,
+-it achieves very good performance. QEMU can also integrate with the Xen
+-and KVM hypervisors to provide emulated hardware while allowing the
+-hypervisor to manage the CPU. With hypervisor support, QEMU can achieve
+-near native performance for CPUs. When QEMU emulates CPUs directly it is
+-capable of running operating systems made for one machine (e.g. an ARMv7
+-board) on a different machine (e.g. an x86_64 PC board).
+-
+-QEMU is also capable of providing userspace API virtualization for Linux
+-and BSD kernel interfaces. This allows binaries compiled against one
+-architecture ABI (e.g. the Linux PPC64 ABI) to be run on a host using a
+-different architecture ABI (e.g. the Linux x86_64 ABI). This does not
+-involve any hardware emulation, simply CPU and syscall emulation.
+-
+-QEMU aims to fit into a variety of use cases. It can be invoked directly
+-by users wishing to have full control over its behaviour and settings.
+-It also aims to facilitate integration into higher level management
+-layers, by providing a stable command line interface and monitor API.
+-It is commonly invoked indirectly via the libvirt library when using
+-open source applications such as oVirt, OpenStack and virt-manager.
+-
+-QEMU as a whole is released under the GNU General Public License,
+-version 2. For full licensing details, consult the LICENSE file.
+-
+-
+-Documentation
+-=============
+-
+-Documentation can be found hosted online at
+-`<https://www.qemu.org/documentation/>`_. The documentation for the
+-current development version that is available at
+-`<https://www.qemu.org/docs/master/>`_ is generated from the ``docs/``
+-folder in the source tree, and is built by `Sphinx
+-<https://www.sphinx-doc.org/en/master/>`_.
+-
++QEMU_TivaC aims to provide a TivaC support for the QEMU project. The project is far from being complete (so far) but im working on it.
+ 
+ Building
+ ========
+@@ -52,9 +14,11 @@ of other UNIX targets. The simple steps to build QEMU are:
+ 
+ .. code-block:: shell
+ 
++  git clone git@github.com:moesay/qemu_TivaC.git
++  cd qemu_TivaC
+   mkdir build
+   cd build
+-  ../configure
++  ../configure --target-list=arm-softmmu
+   make
+ 
+ Additional information can also be found online via the QEMU website:
+@@ -64,108 +28,20 @@ Additional information can also be found online via the QEMU website:
+ * `<https://wiki.qemu.org/Hosts/W32>`_
+ 
+ 
+-Submitting patches
+-==================
+-
+-The QEMU source code is maintained under the GIT version control system.
+-
+-.. code-block:: shell
+-
+-   git clone https://gitlab.com/qemu-project/qemu.git
+-
+-When submitting patches, one common approach is to use 'git
+-format-patch' and/or 'git send-email' to format & send the mail to the
+-qemu-devel@nongnu.org mailing list. All patches submitted must contain
+-a 'Signed-off-by' line from the author. Patches should follow the
+-guidelines set out in the `style section
+-<https://www.qemu.org/docs/master/devel/style.html>`_ of
+-the Developers Guide.
+-
+-Additional information on submitting patches can be found online via
+-the QEMU website
+-
+-* `<https://wiki.qemu.org/Contribute/SubmitAPatch>`_
+-* `<https://wiki.qemu.org/Contribute/TrivialPatches>`_
++Usage
++=====
+ 
+-The QEMU website is also maintained under source control.
++After building QEMU_TivaC, you can use it with gdb through the provided gdbstub.
+ 
+ .. code-block:: shell
+ 
+-  git clone https://gitlab.com/qemu-project/qemu-web.git
++   qemu-system-arm -M tivac -kernel <your elf file path> -s -S -D log_file.txt -d unimp -serial file:qemu_serial_op.txt -monitor stdio -nographic
+ 
+-* `<https://www.qemu.org/2017/02/04/the-new-qemu-website-is-up/>`_
+-
+-A 'git-publish' utility was created to make above process less
+-cumbersome, and is highly recommended for making regular contributions,
+-or even just for sending consecutive patch series revisions. It also
+-requires a working 'git send-email' setup, and by default doesn't
+-automate everything, so you may want to go through the above steps
+-manually for once.
+-
+-For installation instructions, please go to
+-
+-*  `<https://github.com/stefanha/git-publish>`_
+-
+-The workflow with 'git-publish' is:
++Now, QEMU_TivaC is ready to be attached to gdb. In a different terminal run arm gdb and attach QEMU_TivaC to it.
+ 
+ .. code-block:: shell
+ 
+-  $ git checkout master -b my-feature
+-  $ # work on new commits, add your 'Signed-off-by' lines to each
+-  $ git publish
+-
+-Your patch series will be sent and tagged as my-feature-v1 if you need to refer
+-back to it in the future.
+-
+-Sending v2:
+-
+-.. code-block:: shell
+-
+-  $ git checkout my-feature # same topic branch
+-  $ # making changes to the commits (using 'git rebase', for example)
+-  $ git publish
+-
+-Your patch series will be sent with 'v2' tag in the subject and the git tip
+-will be tagged as my-feature-v2.
+-
+-Bug reporting
+-=============
+-
+-The QEMU project uses GitLab issues to track bugs. Bugs
+-found when running code built from QEMU git or upstream released sources
+-should be reported via:
+-
+-* `<https://gitlab.com/qemu-project/qemu/-/issues>`_
+-
+-If using QEMU via an operating system vendor pre-built binary package, it
+-is preferable to report bugs to the vendor's own bug tracker first. If
+-the bug is also known to affect latest upstream code, it can also be
+-reported via GitLab.
+-
+-For additional information on bug reporting consult:
+-
+-* `<https://wiki.qemu.org/Contribute/ReportABug>`_
+-
+-
+-ChangeLog
+-=========
+-
+-For version history and release notes, please visit
+-`<https://wiki.qemu.org/ChangeLog/>`_ or look at the git history for
+-more detailed information.
+-
+-
+-Contact
+-=======
+-
+-The QEMU community can be contacted in a number of ways, with the two
+-main methods being email and IRC
+-
+-* `<mailto:qemu-devel@nongnu.org>`_
+-* `<https://lists.nongnu.org/mailman/listinfo/qemu-devel>`_
+-* #qemu on irc.oftc.net
+-
+-Information on additional methods of contacting the community can be
+-found online via the QEMU website:
++   arm-none-eabi-gdb <your elf file path>
++   (gdb) target remote :1234
+ 
+-* `<https://wiki.qemu.org/Contribute/StartHere>`_
++For the original QEMU readme, go to `<https://github.com/qemu/qemu>`_
+diff --git a/configs/devices/arm-softmmu/default.mak b/configs/devices/arm-softmmu/default.mak
+index 1b49a7830c..d3490f6d11 100644
+--- a/configs/devices/arm-softmmu/default.mak
++++ b/configs/devices/arm-softmmu/default.mak
+@@ -43,3 +43,4 @@ CONFIG_FSL_IMX6UL=y
+ CONFIG_SEMIHOSTING=y
+ CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
+ CONFIG_ALLWINNER_H3=y
++CONFIG_TIVAC=y
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index b53bd7f0b2..ef8046ab1b 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -581,3 +581,16 @@ config ARMSSE
+     select UNIMP
+     select SSE_COUNTER
+     select SSE_TIMER
 +
-+#include "qemu/osdep.h"
-+#include "hw/watchdog/tm4c123_watchdog.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/qdev-clock.h"
-+#include "sysemu/runstate.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "hw/nmi.h"
-+#include "trace.h"
++config TM4C123GH6PM_SOC
++    bool
++    select ARM_V7M
++    select TM4C123_USART
++    select TM4C123_SYSCTL
++    select TM4C123_GPIO
++    select TM4C123_WDT
++    select TM4C123_GPTM
 +
-+#define READONLY LOG("0x%"HWADDR_PRIx" is a readonly field\n.", addr)
-+#define LOG(fmt, args...) qemu_log("%s: " fmt, __func__, ## args)
++config TIVAC
++    bool
++    select TM4C123GH6PM_SOC
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index b545ba0e4f..29503388a5 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -62,10 +62,13 @@ arm_ss.add(when: 'CONFIG_FSL_IMX7', if_true: files('fsl-imx7.c', 'mcimx7d-sabre.
+ arm_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
+ arm_ss.add(when: 'CONFIG_FSL_IMX6UL', if_true: files('fsl-imx6ul.c', 'mcimx6ul-evk.c'))
+ arm_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_soc.c'))
++arm_ss.add(when: 'CONFIG_TM4C123GH6PM_SOC', if_true: files('tm4c123gh6pm_soc.c'))
++arm_ss.add(when: 'CONFIG_TIVAC', if_true: files('tivac.c'))
+ 
+ softmmu_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
+ softmmu_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4_boards.c'))
+ softmmu_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_peripherals.c'))
+ softmmu_ss.add(when: 'CONFIG_TOSA', if_true: files('tosa.c'))
+ 
 +
-+static bool locked = false;
+ hw_arch += {'arm': arm_ss}
+diff --git a/hw/char/Kconfig b/hw/char/Kconfig
+index 6b6cf2fc1d..88da979b75 100644
+--- a/hw/char/Kconfig
++++ b/hw/char/Kconfig
+@@ -71,3 +71,6 @@ config GOLDFISH_TTY
+ 
+ config SHAKTI_UART
+     bool
 +
-+static void tm4c123_wdt_expired(void *opaque)
-+{
-+    TM4C123WatchdogState *s = opaque;
-+    /*if this is the first timeout/the ris is not cleared */
-+    if (!test_bit(0, (const unsigned long*)&s->wdt_mis)) {
-+        set_bit(0, (unsigned long*)&s->wdt_mis);
-+        nmi_monitor_handle(0, NULL);
-+        qemu_irq_pulse(s->irq);
-+    }
-+    else {
-+        if (test_bit(1, (const unsigned long*)&s->wdt_ctl))
-+            qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-+        else {
-+            nmi_monitor_handle(0, NULL);
-+            qemu_irq_pulse(s->irq);
-+        }
-+    }
-+}
++config TM4C123_USART
++    bool
+diff --git a/hw/char/meson.build b/hw/char/meson.build
+index 0807e00ae4..8461748c8d 100644
+--- a/hw/char/meson.build
++++ b/hw/char/meson.build
+@@ -33,6 +33,7 @@ softmmu_ss.add(when: 'CONFIG_SH_SCI', if_true: files('sh_serial.c'))
+ softmmu_ss.add(when: 'CONFIG_STM32F2XX_USART', if_true: files('stm32f2xx_usart.c'))
+ softmmu_ss.add(when: 'CONFIG_MCHP_PFSOC_MMUART', if_true: files('mchp_pfsoc_mmuart.c'))
+ softmmu_ss.add(when: 'CONFIG_HTIF', if_true: files('riscv_htif.c'))
++softmmu_ss.add(when: 'CONFIG_TM4C123_USART', if_true: files('tm4c123_usart.c'))
+ softmmu_ss.add(when: 'CONFIG_GOLDFISH_TTY', if_true: files('goldfish_tty.c'))
+ 
+ specific_ss.add(when: 'CONFIG_TERMINAL3270', if_true: files('terminal3270.c'))
+diff --git a/hw/char/trace-events b/hw/char/trace-events
+index 2ecb36232e..47b7e3b772 100644
+--- a/hw/char/trace-events
++++ b/hw/char/trace-events
+@@ -1,5 +1,9 @@
+ # See docs/devel/tracing.rst for syntax documentation.
+ 
++# tm4c123_usart.c
++tm4c123_usart_read(uint64_t offset) " offset: 0x%" PRIu64
++tm4c123_usart_write(uint64_t offset, uint64_t value) " offset: 0x%" PRIu64 " - value: 0x%" PRIu64
 +
-+static bool wdt_clock_enabled(TM4C123SysCtlState *s, hwaddr addr)
-+{
-+    switch(addr) {
-+        case WDT_0:
-+            return (s->sysctl_rcgcwd & (1 << 0));
-+            break;
-+        case WDT_1:
-+            return (s->sysctl_rcgcwd & (1 << 1));
-+            break;
-+    }
-+    return false;
-+}
+ # parallel.c
+ parallel_ioport_read(const char *desc, uint16_t addr, uint8_t value) "read [%s] addr 0x%02x val 0x%02x"
+ parallel_ioport_write(const char *desc, uint16_t addr, uint8_t value) "write [%s] addr 0x%02x val 0x%02x"
+diff --git a/hw/gpio/Kconfig b/hw/gpio/Kconfig
+index d2cf3accc8..1b843d669a 100644
+--- a/hw/gpio/Kconfig
++++ b/hw/gpio/Kconfig
+@@ -16,3 +16,6 @@ config GPIO_PWR
+ 
+ config SIFIVE_GPIO
+     bool
 +
-+static void tm4c123_wdt_reset(DeviceState *dev)
-+{
-+    TM4C123WatchdogState *s = TM4C123_WATCHDOG(dev);
++config TM4C123_GPIO
++    bool
+diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
+index b726e6d27a..b253e8ce67 100644
+--- a/hw/gpio/meson.build
++++ b/hw/gpio/meson.build
+@@ -12,3 +12,4 @@ softmmu_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_gpio.c'))
+ softmmu_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_gpio.c'))
+ softmmu_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_gpio.c'))
+ softmmu_ss.add(when: 'CONFIG_SIFIVE_GPIO', if_true: files('sifive_gpio.c'))
++softmmu_ss.add(when: 'CONFIG_TM4C123_GPIO', if_true: files('tm4c123_gpio.c'))
+diff --git a/hw/gpio/trace-events b/hw/gpio/trace-events
+index 9736b362ac..22d282495d 100644
+--- a/hw/gpio/trace-events
++++ b/hw/gpio/trace-events
+@@ -1,5 +1,9 @@
+ # See docs/devel/tracing.rst for syntax documentation.
+ 
++# tm4c123_gpio.c
++tm4c123_gpio_read(uint64_t offset) " offset: 0x%" PRIx64
++tm4c123_gpio_write(uint64_t offset, uint64_t value) " offset: 0x%" PRIx64 " - value: 0x%" PRIx64
 +
-+    s->wdt_load = 0xFFFFFFFF;
-+    s->wdt_value = 0xFFFFFFFF;
-+    s->wdt_ctl = (s->mmio.addr == WDT_0 ? 0x00000000 : 0x80000000);
-+    s->wdt_icr = 0x00000000;
-+    s->wdt_ris = 0x00000000;
-+    s->wdt_mis = 0x00000000;
-+    s->wdt_test = 0x00000000;
-+    s->wdt_lock = 0x00000000;
-+    s->wdt_per_id4 = 0x00000000;
-+    s->wdt_per_id5 = 0x00000000;
-+    s->wdt_per_id6 = 0x00000000;
-+    s->wdt_per_id7 = 0x00000000;
-+    s->wdt_per_id0 = 0x00000005;
-+    s->wdt_per_id1 = 0x00000018;
-+    s->wdt_per_id2 = 0x00000018;
-+    s->wdt_per_id3 = 0x00000001;
-+    s->wdt_pcell_id0 = 0x0000000D;
-+    s->wdt_pcell_id1 = 0x000000F0;
-+    s->wdt_pcell_id2 = 0x00000006;
-+    s->wdt_pcell_id3 = 0x000000B1;
-+}
+ # npcm7xx_gpio.c
+ npcm7xx_gpio_read(const char *id, uint64_t offset, uint64_t value) " %s offset: 0x%04" PRIx64 " value 0x%08" PRIx64
+ npcm7xx_gpio_write(const char *id, uint64_t offset, uint64_t value) "%s offset: 0x%04" PRIx64 " value 0x%08" PRIx64
+diff --git a/hw/misc/Kconfig b/hw/misc/Kconfig
+index 2ef5781ef8..c8be9ae285 100644
+--- a/hw/misc/Kconfig
++++ b/hw/misc/Kconfig
+@@ -180,4 +180,7 @@ config AXP209_PMU
+     bool
+     depends on I2C
+ 
++config TM4C123_SYSCTL
++    bool
 +
-+static uint64_t tm4c123_wdt_read(void *opaque, hwaddr addr, unsigned int size)
-+{
-+    TM4C123WatchdogState *s = opaque;
+ source macio/Kconfig
+diff --git a/hw/misc/meson.build b/hw/misc/meson.build
+index a40245ad44..95ddb4b1b4 100644
+--- a/hw/misc/meson.build
++++ b/hw/misc/meson.build
+@@ -141,3 +141,4 @@ softmmu_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa_ec.c'))
+ 
+ # HPPA devices
+ softmmu_ss.add(when: 'CONFIG_LASI', if_true: files('lasi.c'))
++softmmu_ss.add(when: 'CONFIG_TM4C123_SYSCTL', if_true: files('tm4c123_sysctl.c'))
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index c47876a902..0c40b49457 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -1,5 +1,10 @@
+ # See docs/devel/tracing.rst for syntax documentation.
+ 
++# tm4c123_sysctl.c
++tm4c123_sysctl_read(uint64_t offset) " offset: 0x%" PRIu64
++tm4c123_sysctl_write(uint64_t offset, uint64_t value) " offset: 0x%" PRIu64 " - value: 0x%"PRIu64
++tm4c123_sysctl_update_system_clock(uint32_t value) "New clock value = %"PRIu32" Hz"
 +
-+    if (!wdt_clock_enabled(s->sysctl, s->mmio.addr)) {
-+        hw_error("Watchdog timer module clock is not enabled");
-+    }
+ # allwinner-cpucfg.c
+ allwinner_cpucfg_cpu_reset(uint8_t cpu_id, uint32_t reset_addr) "id %u, reset_addr 0x%" PRIx32
+ allwinner_cpucfg_read(uint64_t offset, uint64_t data, unsigned size) "offset 0x%" PRIx64 " data 0x%" PRIx64 " size %" PRIu32
+diff --git a/hw/timer/Kconfig b/hw/timer/Kconfig
+index 010be7ed1f..aaf42e3f3f 100644
+--- a/hw/timer/Kconfig
++++ b/hw/timer/Kconfig
+@@ -60,3 +60,6 @@ config STELLARIS_GPTM
+ 
+ config AVR_TIMER16
+     bool
 +
-+    switch(addr) {
-+        case WDT_LOAD:
-+            return s->wdt_load;
-+        case WDT_VALUE:
-+            return ptimer_get_count(s->timer);
-+        case WDT_CTL:
-+            return s->wdt_ctl;
-+        case WDT_ICR:
-+            return s->wdt_icr;
-+        case WDT_RIS:
-+            return s->wdt_ris;
-+        case WDT_MIS:
-+            return s->wdt_mis;
-+        case WDT_TEST:
-+            return s->wdt_test;
-+        case WDT_LOCK:
-+            return s->wdt_lock;
-+        case WDT_PER_ID4:
-+            return s->wdt_per_id4;
-+        case WDT_PER_ID5:
-+            return s->wdt_per_id5;
-+        case WDT_PER_ID6:
-+            return s->wdt_per_id6;
-+        case WDT_PER_ID7:
-+            return s->wdt_per_id7;
-+        case WDT_PER_ID0:
-+            return s->wdt_per_id0;
-+        case WDT_PER_ID1:
-+            return s->wdt_per_id1;
-+        case WDT_PER_ID2:
-+            return s->wdt_per_id2;
-+        case WDT_PER_ID3:
-+            return s->wdt_per_id3;
-+        case WDT_PCELL_ID0:
-+            return s->wdt_pcell_id0;
-+        case WDT_PCELL_ID1:
-+            return s->wdt_pcell_id1;
-+        case WDT_PCELL_ID2:
-+            return s->wdt_pcell_id2;
-+        case WDT_PCELL_ID3:
-+            return s->wdt_pcell_id3;
-+        default:
-+            LOG("Bad address 0x%"HWADDR_PRIx"\n", addr);
-+    }
-+    return 0;
-+}
++config TM4C123_GPTM
++    bool
+diff --git a/hw/timer/meson.build b/hw/timer/meson.build
+index 03092e2ceb..118593e959 100644
+--- a/hw/timer/meson.build
++++ b/hw/timer/meson.build
+@@ -36,5 +36,6 @@ softmmu_ss.add(when: 'CONFIG_STM32F2XX_TIMER', if_true: files('stm32f2xx_timer.c
+ softmmu_ss.add(when: 'CONFIG_XILINX', if_true: files('xilinx_timer.c'))
+ specific_ss.add(when: 'CONFIG_IBEX', if_true: files('ibex_timer.c'))
+ softmmu_ss.add(when: 'CONFIG_SIFIVE_PWM', if_true: files('sifive_pwm.c'))
++softmmu_ss.add(when: 'CONFIG_TM4C123_GPTM', if_true: files('tm4c123_gptm.c'))
+ 
+ specific_ss.add(when: 'CONFIG_AVR_TIMER16', if_true: files('avr_timer16.c'))
+diff --git a/hw/timer/trace-events b/hw/timer/trace-events
+index 3eccef8385..e40b445630 100644
+--- a/hw/timer/trace-events
++++ b/hw/timer/trace-events
+@@ -1,5 +1,10 @@
+ # See docs/devel/tracing.rst for syntax documentation.
+ 
++# tm4c123_gptm.c
++tm4c123_gptm_read(uint32_t offset) "offset: 0x%"PRIx32
++tm4c123_gptm_write(uint32_t offset, uint32_t value) "offset: 0x%"PRIx32" - value: 0x%"PRIx32
++tm4c123_gptm_build_interval_value(uint32_t talir, uint32_t tblir, uint64_t result) "TALIR: 0x%"PRIx32" - TBLIR: 0x%"PRIx32" - value: 0x%"PRIx64
 +
-+static void tm4c123_wdt_write(void *opaque, hwaddr addr, uint64_t val64, unsigned int size)
-+{
-+    TM4C123WatchdogState *s = opaque;
-+    uint32_t val32 = val64;
+ # slavio_timer.c
+ slavio_timer_get_out(uint64_t limit, uint32_t counthigh, uint32_t count) "limit 0x%"PRIx64" count 0x%x0x%08x"
+ slavio_timer_irq(uint32_t counthigh, uint32_t count) "callback: count 0x%x0x%08x"
+diff --git a/hw/watchdog/Kconfig b/hw/watchdog/Kconfig
+index 861fd00334..ada7163055 100644
+--- a/hw/watchdog/Kconfig
++++ b/hw/watchdog/Kconfig
+@@ -24,3 +24,6 @@ config WDT_SBSA
+ config ALLWINNER_WDT
+     bool
+     select PTIMER
 +
-+    trace_tm4c123_wdt_write(addr, val64);
-+    if (!wdt_clock_enabled(s->sysctl, s->mmio.addr)) {
-+        hw_error("Watchdog module clock is not enabled");
-+    }
++config TM4C123_WDT
++    bool
+diff --git a/hw/watchdog/meson.build b/hw/watchdog/meson.build
+index 5dcd4fbe2f..cc48d2dec9 100644
+--- a/hw/watchdog/meson.build
++++ b/hw/watchdog/meson.build
+@@ -7,4 +7,5 @@ softmmu_ss.add(when: 'CONFIG_WDT_DIAG288', if_true: files('wdt_diag288.c'))
+ softmmu_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('wdt_aspeed.c'))
+ softmmu_ss.add(when: 'CONFIG_WDT_IMX2', if_true: files('wdt_imx2.c'))
+ softmmu_ss.add(when: 'CONFIG_WDT_SBSA', if_true: files('sbsa_gwdt.c'))
++softmmu_ss.add(when: 'CONFIG_TM4C123_WDT', if_true: files('tm4c123_watchdog.c'))
+ specific_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr_watchdog.c'))
+diff --git a/hw/watchdog/trace-events b/hw/watchdog/trace-events
+index 2739570652..802aed4a6f 100644
+--- a/hw/watchdog/trace-events
++++ b/hw/watchdog/trace-events
+@@ -1,5 +1,8 @@
+ # See docs/devel/tracing.rst for syntax documentation.
+ 
++# tm4c123_wdt.c
++tm4c123_wdt_write(uint64_t offset, uint64_t data) "TM4C123-WDT Write: [ Offset 0x%" PRIx64 " - Data 0x%" PRIx64 "]"
 +
-+    switch(addr) {
-+        case WDT_LOAD:
-+            s->wdt_load = val32;
-+            locked = true;
-+            s->wdt_ctl |= WDT_CTL_INTEN;
-+            ptimer_transaction_begin(s->timer);
-+            ptimer_set_count(s->timer, s->wdt_load);
-+            ptimer_set_limit(s->timer, s->wdt_load, 1);
-+            ptimer_run(s->timer, 0);
-+            ptimer_transaction_commit(s->timer);
-+            break;
-+        case WDT_VALUE:
-+            READONLY;
-+            break;
-+        case WDT_CTL:
-+            s->wdt_ctl = val32;
-+            break;
-+        case WDT_ICR:
-+            ptimer_transaction_begin(s->timer);
-+            ptimer_set_limit(s->timer, s->wdt_load, 1);
-+            ptimer_transaction_commit(s->timer);
-+            clear_bit(0, (unsigned long*)&s->wdt_ris);
-+            clear_bit(0, (unsigned long*)&s->wdt_mis);
-+            s->wdt_icr = val32;
-+            break;
-+        case WDT_RIS:
-+            READONLY;
-+            break;
-+        case WDT_MIS:
-+            READONLY;
-+            break;
-+        case WDT_TEST:
-+            s->wdt_test = val32;
-+            break;
-+        case WDT_LOCK:
-+            /* The actual hardware never locks the module */
-+            if (val32 == UNLOCK_VALUE) {
-+                locked = false;
-+                s->wdt_lock = 0;
-+            }
-+            break;
-+        case WDT_PER_ID4:
-+            READONLY;
-+            break;
-+        case WDT_PER_ID5:
-+            READONLY;
-+            break;
-+        case WDT_PER_ID6:
-+            READONLY;
-+            break;
-+        case WDT_PER_ID7:
-+            READONLY;
-+            break;
-+        case WDT_PER_ID0:
-+            READONLY;
-+            break;
-+        case WDT_PER_ID1:
-+            READONLY;
-+            break;
-+        case WDT_PER_ID2:
-+            READONLY;
-+            break;
-+        case WDT_PER_ID3:
-+            READONLY;
-+            break;
-+        case WDT_PCELL_ID0:
-+            READONLY;
-+            break;
-+        case WDT_PCELL_ID1:
-+            READONLY;
-+            break;
-+        case WDT_PCELL_ID2:
-+            READONLY;
-+            break;
-+        case WDT_PCELL_ID3:
-+            READONLY;
-+            break;
-+        default:
-+            LOG("Bad address 0x%"HWADDR_PRIx"\n", addr);
-+    }
-+}
-+
-+const struct MemoryRegionOps tm4c123_wdt_ops = {
-+    .read = tm4c123_wdt_read,
-+    .write = tm4c123_wdt_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static void tm4c123_wdt_init(Object *obj)
-+{
-+    TM4C123WatchdogState *s = TM4C123_WATCHDOG(obj);
-+
-+    s->wdt_clock = qdev_init_clock_in(DEVICE(s), "wdt_clock", NULL, NULL, 0);
-+
-+    sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
-+    memory_region_init_io(&s->mmio, obj, &tm4c123_wdt_ops, s, TYPE_TM4C123_WATCHDOG, 0xFFF);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+}
-+
-+static void tm4c123_wdt_realize(DeviceState *dev, Error **errp)
-+{
-+    TM4C123WatchdogState *s = TM4C123_WATCHDOG(dev);
-+    qdev_connect_clock_in(dev, "wdt_clock", qdev_get_clock_out(DEVICE(s->sysctl), "outclk"));
-+
-+    s->timer = ptimer_init(tm4c123_wdt_expired, s,
-+                           PTIMER_POLICY_NO_IMMEDIATE_RELOAD |
-+                           PTIMER_POLICY_NO_COUNTER_ROUND_DOWN);
-+
-+    ptimer_transaction_begin(s->timer);
-+    ptimer_set_period_from_clock(s->timer, s->wdt_clock, 1);
-+    ptimer_set_limit(s->timer, 0xFFFFFFFF, 0);
-+    ptimer_transaction_commit(s->timer);
-+}
-+
-+static void tm4c123_wdt_class_init(ObjectClass *kclass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(kclass);
-+    dc->realize = tm4c123_wdt_realize;
-+    dc->reset = tm4c123_wdt_reset;
-+}
-+
-+static const TypeInfo tm4c123_wdt_info = {
-+    .name = TYPE_TM4C123_WATCHDOG,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(TM4C123WatchdogState),
-+    .instance_init = tm4c123_wdt_init,
-+    .class_init = tm4c123_wdt_class_init,
-+};
-+
-+static void tm4c123_wdt_register_types(void)
-+{
-+    type_register_static(&tm4c123_wdt_info);
-+}
-+
-+type_init(tm4c123_wdt_register_types)
-diff --git a/include/hw/watchdog/tm4c123_watchdog.h b/include/hw/watchdog/tm4c123_watchdog.h
-new file mode 100644
-index 0000000000..2621b5d805
---- /dev/null
-+++ b/include/hw/watchdog/tm4c123_watchdog.h
-@@ -0,0 +1,97 @@
-+/*
-+ * TM4C123 Watchdog Timers
-+ *
-+ * Copyright (c) 2023 Mohamed ElSayed <m.elsayed4420@gmail.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#ifndef HW_ARM_TM4C123_WATCHDOG_H
-+#define HW_ARM_TM4C123_WATCHDOG_H
-+
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+#include "hw/misc/tm4c123_sysctl.h"
-+#include "hw/ptimer.h"
-+
-+#define WDT_0 0x40000000
-+#define WDT_1 0x40001000
-+
-+#define WDT_LOAD 0x000
-+#define WDT_VALUE 0x004
-+#define WDT_CTL 0x008
-+#define WDT_ICR 0x00C
-+#define WDT_RIS 0x010
-+#define WDT_MIS 0x014
-+#define WDT_TEST 0x418
-+#define WDT_LOCK 0xC00
-+#define WDT_PER_ID4 0xFD0
-+#define WDT_PER_ID5 0xFD4
-+#define WDT_PER_ID6 0xFD8
-+#define WDT_PER_ID7 0xFDC
-+#define WDT_PER_ID0 0xFE0
-+#define WDT_PER_ID1 0xFE4
-+#define WDT_PER_ID2 0xFE8
-+#define WDT_PER_ID3 0xFEC
-+#define WDT_PCELL_ID0 0xFF0
-+#define WDT_PCELL_ID1 0xFF4
-+#define WDT_PCELL_ID2 0xFF8
-+#define WDT_PCELL_ID3 0xFFC
-+
-+#define UNLOCK_VALUE 0x1ACCE551
-+
-+#define WDT_CTL_INTEN (1 << 0)
-+#define WDT_CTL_INTTYPE (1 << 2)
-+
-+#define TYPE_TM4C123_WATCHDOG "tm4c123-watchdog"
-+
-+OBJECT_DECLARE_SIMPLE_TYPE(TM4C123WatchdogState, TM4C123_WATCHDOG)
-+
-+struct TM4C123WatchdogState {
-+    SysBusDevice parent_obj;
-+    MemoryRegion mmio;
-+    qemu_irq irq;
-+    struct ptimer_state *timer;
-+    TM4C123SysCtlState* sysctl;
-+
-+    uint32_t wdt_load;
-+    uint32_t wdt_value;
-+    uint32_t wdt_ctl;
-+    uint32_t wdt_icr;
-+    uint32_t wdt_ris;
-+    uint32_t wdt_mis;
-+    uint32_t wdt_test;
-+    uint32_t wdt_lock;
-+    uint32_t wdt_per_id4;
-+    uint32_t wdt_per_id5;
-+    uint32_t wdt_per_id6;
-+    uint32_t wdt_per_id7;
-+    uint32_t wdt_per_id0;
-+    uint32_t wdt_per_id1;
-+    uint32_t wdt_per_id2;
-+    uint32_t wdt_per_id3;
-+    uint32_t wdt_pcell_id0;
-+    uint32_t wdt_pcell_id1;
-+    uint32_t wdt_pcell_id2;
-+    uint32_t wdt_pcell_id3;
-+
-+    Clock* wdt_clock;
-+};
-+
-+#endif
+ # allwinner-wdt.c
+ allwinner_wdt_read(uint64_t offset, uint64_t data, unsigned size) "Allwinner watchdog read: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %u"
+ allwinner_wdt_write(uint64_t offset, uint64_t data, unsigned size) "Allwinner watchdog write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %u"
 -- 
 2.34.1
 
