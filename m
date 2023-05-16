@@ -2,52 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6686E704E0B
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 14:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78896704E08
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 14:49:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyu6J-0004Lp-Ga; Tue, 16 May 2023 08:48:23 -0400
+	id 1pyu6M-0004TR-8r; Tue, 16 May 2023 08:48:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6G-0004J6-5H
- for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:20 -0400
-Received: from mout.kundenserver.de ([212.227.126.130])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6I-0004LJ-CC
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:22 -0400
+Received: from mout.kundenserver.de ([212.227.126.135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6C-000639-To
- for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:19 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pyu6G-00063u-GB
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 08:48:22 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue012
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1N4vFE-1q8qFO0tT2-010vTY; Tue, 16
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1Mdf3x-1qXxjb342D-00ZfC5; Tue, 16
  May 2023 14:48:14 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+Cc: Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 4/9] linux-user: Add open_tree() syscall
-Date: Tue, 16 May 2023 14:48:05 +0200
-Message-Id: <20230516124810.90494-5-laurent@vivier.eu>
+Subject: [PULL 5/9] linux-user/main: Use list_cpus() instead of cpu_list()
+Date: Tue, 16 May 2023 14:48:06 +0200
+Message-Id: <20230516124810.90494-6-laurent@vivier.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230516124810.90494-1-laurent@vivier.eu>
 References: <20230516124810.90494-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:yrFHViysuoukes5YHDi9LbE5vvNH/XF2b4wFuDLm4mhSoNfn4Tv
- Lf7DV8hj387zyIvHx80Dfb1p8oWSHQvPIKQR5/85NtgVoJogRoIOXTrE7ZeNp+k6jr1KqYF
- xdIOio5r+337OqpjFEJtWJg4K/oU75T6uMaSqGTIb4RHsboUwBPteM1bBSdB6w0RC7xrK11
- GK59nKvU9mz1kLXlYgUVA==
-UI-OutboundReport: notjunk:1;M01:P0:ZTPCWqekgTg=;QDk23tZart92XMSC5XdNe5bXo64
- c82vCopVxUy7VJlb6Cop+s9PRB3RvVNcRABUiSBCSggwy8iQmqIGQdhbjP3v35Dw6xtImy7D/
- BEJ5ft5sq1Fu3EdN+59KWXgR/ES71uPpaQbEIrH5whYFbMTl4vX60R6dSDHPJbWNxLhI4Y4nq
- xhptFFEvyUDtSTl3QcceSWZNOSLdMgBuDKcKffcdogVCSOPxonTHlig1oMz06iimQE8elP5Xs
- VfFeD5aRodDdFMNWaqy6ajgccYnBHjb4dQOklzC8zK65J6zCCfuEAqh6YJ0tUVO2CIWGNhM23
- 63J9F74VzKJmpfeamGz4lWbH+OfGcYc63xFvdf2wV4fa4q6MVxSqWC81hq23e9OUxDENroVkA
- nQf+7yUXRR+RLB7D0g9QR8ofeK5T38Ufojb6zqLQs8yOTk39dU5tlOTOjdu7kCOki9k1aMjLE
- ed17ZzSBnGvgmIRN3LU+KT1/iJs9DEKvXhyNqLjMF11Xa/bgnYgbaFAwUVvEcJgKB4qGTyrA7
- JvZ51zI0Wj+U9mp2C+9Gc8Yr1YNYCWKp/8G15ZKDlaEwA6c4OSwaOOUohYA4Zvjh+rIUweYwA
- GaTKch6o2c5GQY75DZjJKKeMqXQSdRt21w1lJEy+A53FA9G9PAX7y4LR6ZPSEf3QvsNhtxGfq
- ERCV8z8nWkbE+z6PZL2ICKdqda5K4QbFw5wh/HOvfg==
-Received-SPF: none client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:oPBDiUyh/dXjYMGyATPj7Fk/g2VeGSfktkQFIloMdH8Po+PViqf
+ OCM0rm89dM62xlvlx+C3t1Rajy+bFq+NgMEjjyWbRE8AryFHh/01A1K6KZkNjn3gtiVybFb
+ th34r1tlLo/LD0R+xuvZEebyyQ1q6WOpjd9q8MPUVIGSb6OIt5jkAtUajWHl2+sQIaQRUHm
+ 7Jzea8f82xu6Gu/8luzgg==
+UI-OutboundReport: notjunk:1;M01:P0:R69Mj1iWK90=;rJwe7ScUWbmHlnOE22aX50oKi3c
+ k+8AIFvBLXh+XqxGTtiHSmeWZtLYduNdYfsR+pGtw3jvwkQSe5FYR3hiXcRXIPC+odTYVJ61+
+ BVVXPROMzBNX1PQ99ihv0lWxCtdchaqm6OQgBZe3kcXsdFlzGDdbwx/7EeMztTWKaMEvgXXAN
+ GeNKrsq7S7/QQlCNy1eRUZ3Cz3i1JsiE5yhI3/qwmK21bM6sQ0KRPfKZLR7x4jNEyp5n73NPp
+ 0/LbRTvIHezXL7FcrTohKlIkmMm8I4BfU6Ebjkzmi5eo5KcOCSj3Mw4KWIq4n4sL/Zv4RQDgZ
+ ru0SYwSxu8xCNa9JNI02mLJ8/MetvX5Qd18ZegUsPpQhZV+xC+lvFequnsBxeofSPOtaNkYNL
+ MnEo22GtADB52ktTfC73B9VkoIWbz7YQYP5VdrJhsI4io27Pj5vOMlLpPua5EGP6eQ/GbgFJo
+ q8cCGFTXtQBRZuVUT/kvFfJBrm+QU9k8Gslo0xmOYaSrLo+HLmeOlexb2Ain8lmQw8rZ/0/y9
+ ZYIqJy6XfgT4AoMK6vEiWJC6VdKEgBMedNPtuArSPWN+wPDhEY6Kgt84Lf1lViLzdhnc10fx6
+ E35scS1sOwRuBHei5dZ9h3c/zdElBl5b+w3vQb+zLONvxM+MBa/yuxjRPk6mMwlnp1y1+aMqb
+ l9Idej3AR/pFToM89AM7vC9Zo1/ZUvuzKmCR+yWs8A==
+Received-SPF: none client-ip=212.227.126.135; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -70,69 +72,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Weißschuh <thomas@t-8ch.de>
+From: Thomas Huth <thuth@redhat.com>
 
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Message-Id: <20230424153429.276788-2-thomas@t-8ch.de>
-[lv: move declaration at the beginning of the block,
-     define syscall]
+This way we can get rid of the if'deffery and the XXX comment
+here (it's repeated in the list_cpus() function anyway).
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230424122126.236586-1-thuth@redhat.com>
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/syscall.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ linux-user/main.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 9a99e4557367..00a779797efb 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8776,6 +8776,12 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
- _syscall2(int, pivot_root, const char *, new_root, const char *, put_old)
- #endif
- 
-+#if defined(TARGET_NR_open_tree) && defined(__NR_open_tree)
-+#define __NR_sys_open_tree __NR_open_tree
-+_syscall3(int, sys_open_tree, int, __dfd, const char *, __filename,
-+          unsigned int, __flags)
-+#endif
-+
- #if defined(TARGET_NR_move_mount) && defined(__NR_move_mount)
- #define __NR_sys_move_mount __NR_move_mount
- _syscall5(int, sys_move_mount, int, __from_dfd, const char *, __from_pathname,
-@@ -9202,6 +9208,33 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             return ret;
-         }
- #endif
-+#if defined(TARGET_NR_open_tree) && defined(__NR_open_tree)
-+    case TARGET_NR_open_tree:
-+        {
-+            void *p2;
-+            int host_flags;
-+
-+            if (!arg2) {
-+                return -TARGET_EFAULT;
-+            }
-+
-+            p2 = lock_user_string(arg2);
-+            if (!p2) {
-+                return -TARGET_EFAULT;
-+            }
-+
-+            host_flags = arg3 & ~TARGET_O_CLOEXEC;
-+            if (arg3 & TARGET_O_CLOEXEC) {
-+                host_flags |= O_CLOEXEC;
-+            }
-+
-+            ret = get_errno(sys_open_tree(arg1, p2, host_flags));
-+
-+            unlock_user(p2, arg2, 0);
-+
-+            return ret;
-+        }
-+#endif
- #ifdef TARGET_NR_stime /* not on alpha */
-     case TARGET_NR_stime:
-         {
+diff --git a/linux-user/main.c b/linux-user/main.c
+index fe03293516a5..aece4d9e9119 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -359,10 +359,7 @@ static void handle_arg_cpu(const char *arg)
+ {
+     cpu_model = strdup(arg);
+     if (cpu_model == NULL || is_help_option(cpu_model)) {
+-        /* XXX: implement xxx_cpu_list for targets that still miss it */
+-#if defined(cpu_list)
+-        cpu_list();
+-#endif
++        list_cpus();
+         exit(EXIT_FAILURE);
+     }
+ }
 -- 
 2.40.1
 
