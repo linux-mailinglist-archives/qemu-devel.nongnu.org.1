@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA7C704B4A
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 13:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46400704BCA
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 13:07:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pysPF-0001S6-Kp; Tue, 16 May 2023 06:59:49 -0400
+	id 1pysP8-0001NC-If; Tue, 16 May 2023 06:59:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pysP6-0001JU-AC
+ id 1pysP6-0001JI-9B
  for qemu-devel@nongnu.org; Tue, 16 May 2023 06:59:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pysOm-00085v-8f
- for qemu-devel@nongnu.org; Tue, 16 May 2023 06:59:39 -0400
+ id 1pysOn-00086C-S9
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 06:59:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684234759;
+ s=mimecast20190719; t=1684234760;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6b0+bnZkKtxie9s9t4csc1mAslPRHvp5lMn0BqGXUxg=;
- b=L7EodiltoKFOYp8Uxq04XWaL9DMofC5V7+s7Ld1N//MqAbJYiKppBlGr3vNiMpO6qBWM1V
- NFTB6GsfXAP0WJcitFP+dqkSgwF2NUSCB+Za7sqYOUxb5IVTsAJWqJ9OY7climNzuTBonw
- hd8Of8817EBqpUvBXxpnvk1QYWKsOjo=
+ bh=/qn6PlyQcXFRCYERcyV1KhfQHEErS0+OCHV6WwgxD0s=;
+ b=ToaWDJS8Vt7nohhASi1l8gtTzxFGOVE6VXVzkWDBmIEfkR5S7/JpdSF7sgtmqYC2yIusFO
+ 7I8QFjLDqxm1MMUN7vwJkva6i1qdY0vVNEokXU7npVbOvg8AgJGgoCsarobVwe+pHSuaHO
+ Ynz1ljJ/lzb+OASzwpYAcyk/Jj51YSk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-499-ht_lHB0KP7yfDkYW8U9huQ-1; Tue, 16 May 2023 06:59:16 -0400
-X-MC-Unique: ht_lHB0KP7yfDkYW8U9huQ-1
+ us-mta-621-4HrD3lkMNlWEmGL1knFHmQ-1; Tue, 16 May 2023 06:59:17 -0400
+X-MC-Unique: 4HrD3lkMNlWEmGL1knFHmQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D7B36800047;
- Tue, 16 May 2023 10:59:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1315485C073;
+ Tue, 16 May 2023 10:59:17 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.71])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 004A9492B00;
- Tue, 16 May 2023 10:59:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 300E7492B00;
+ Tue, 16 May 2023 10:59:16 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com,
 	philmd@linaro.org,
 	berrange@redhat.com
-Subject: [PATCH v2 05/27] mkvenv: add nested venv workaround
-Date: Tue, 16 May 2023 12:58:46 +0200
-Message-Id: <20230516105908.527838-5-pbonzini@redhat.com>
+Subject: [PATCH v2 06/27] mkvenv: add ensure subcommand
+Date: Tue, 16 May 2023 12:58:47 +0200
+Message-Id: <20230516105908.527838-6-pbonzini@redhat.com>
 In-Reply-To: <20230516105908.527838-1-pbonzini@redhat.com>
 References: <20230516105908.527838-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -63,7 +63,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,175 +82,279 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Python virtual environments do not typically nest; they may inherit from
-the top-level system packages or not at all.
+This command is to be used to add various packages (or ensure they're
+already present) into the configure-provided venv in a modular fashion.
 
-For our purposes, it would be convenient to emulate "nested" virtual
-environments to allow callers of the configure script to install
-specific versions of python utilities in order to test build system
-features, utility version compatibility, etc.
+Examples:
 
-While it is possible to install packages into the system environment
-(say, by using the --user flag), it's nicer to install test packages
-into a totally isolated environment instead.
+mkvenv ensure --online --dir "${source_dir}/python/wheels/" "meson>=0.61.5"
+mkvenv ensure --online "sphinx>=1.6.0"
+mkvenv ensure "qemu.qmp==0.0.2"
 
-As detailed in https://www.qemu.org/2023/03/24/python/, Emulate a nested
-venv environment by using .pth files installed into the site-packages
-folder that points to the parent environment when appropriate.
+It's designed to look for packages in three places, in order:
+
+(1) In system packages, if the version installed is already good
+enough. This way your distribution-provided meson, sphinx, etc are
+always used as first preference.
+
+(2) In a vendored packages directory. Here I am suggesting
+qemu.git/python/wheels/ as that directory. This is intended to serve as
+a replacement for vendoring the meson source for QEMU tarballs. It is
+also highly likely to be extremely useful for packaging the "qemu.qmp"
+package in source distributions for platforms that do not yet package
+qemu.qmp separately.
+
+(3) Online, via PyPI, ***only when "--online" is passed***. This is only
+ever used as a fallback if the first two sources do not have an
+appropriate package that meets the requirement. The ability to build
+QEMU and run tests *completely offline* is not impinged.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-Id: <20230511035435.734312-6-jsnow@redhat.com>
+Message-Id: <20230511035435.734312-7-jsnow@redhat.com>
+[Use distlib to lookup distributions. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- python/scripts/mkvenv.py | 91 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 86 insertions(+), 5 deletions(-)
+ python/scripts/mkvenv.py | 135 ++++++++++++++++++++++++++++++++++++++-
+ python/setup.cfg         |  10 +++
+ python/tests/minreqs.txt |   3 +
+ 3 files changed, 145 insertions(+), 3 deletions(-)
 
 diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index 09a6f300d541..2a3d73a51db4 100644
+index 2a3d73a51db4..fd4b62c70ffa 100644
 --- a/python/scripts/mkvenv.py
 +++ b/python/scripts/mkvenv.py
-@@ -38,8 +38,10 @@
- import logging
- import os
- from pathlib import Path
-+import site
- import subprocess
+@@ -11,6 +11,7 @@
+ Commands:
+   command     Description
+     create    create a venv
++    ensure    Ensure that the specified package is installed.
+ 
+ --------------------------------------------------
+ 
+@@ -22,6 +23,18 @@
+ options:
+   -h, --help  show this help message and exit
+ 
++--------------------------------------------------
++
++usage: mkvenv ensure [-h] [--online] [--dir DIR] dep_spec...
++
++positional arguments:
++  dep_spec    PEP 508 Dependency specification, e.g. 'meson>=0.61.5'
++
++options:
++  -h, --help  show this help message and exit
++  --online    Install packages from PyPI, if necessary.
++  --dir DIR   Path to vendored packages where we may install from.
++
+ """
+ 
+ # Copyright (C) 2022-2023 Red Hat, Inc.
+@@ -43,8 +56,17 @@
  import sys
-+import sysconfig
+ import sysconfig
  from types import SimpleNamespace
- from typing import Any, Optional, Union
+-from typing import Any, Optional, Union
++from typing import (
++    Any,
++    Optional,
++    Sequence,
++    Union,
++)
  import venv
-@@ -52,6 +54,11 @@
- logger = logging.getLogger("mkvenv")
++import warnings
++
++import distlib.database
++import distlib.version
  
  
-+def inside_a_venv() -> bool:
-+    """Returns True if it is executed inside of a virtual environment."""
-+    return sys.prefix != sys.base_prefix
+ # Do not add any mandatory dependencies from outside the stdlib:
+@@ -309,6 +331,77 @@ def _stringify(data: Union[str, bytes]) -> str:
+     print(builder.get_value("env_exe"))
+ 
+ 
++def pip_install(
++    args: Sequence[str],
++    online: bool = False,
++    wheels_dir: Optional[Union[str, Path]] = None,
++) -> None:
++    """
++    Use pip to install a package or package(s) as specified in @args.
++    """
++    loud = bool(
++        os.environ.get("DEBUG")
++        or os.environ.get("GITLAB_CI")
++        or os.environ.get("V")
++    )
++
++    full_args = [
++        sys.executable,
++        "-m",
++        "pip",
++        "install",
++        "--disable-pip-version-check",
++        "-v" if loud else "-q",
++    ]
++    if not online:
++        full_args += ["--no-index"]
++    if wheels_dir:
++        full_args += ["--find-links", f"file://{str(wheels_dir)}"]
++    full_args += list(args)
++    subprocess.run(
++        full_args,
++        check=True,
++    )
 +
 +
- class Ouch(RuntimeError):
-     """An Exception class we can't confuse with a builtin."""
- 
-@@ -60,10 +67,9 @@ class QemuEnvBuilder(venv.EnvBuilder):
-     """
-     An extension of venv.EnvBuilder for building QEMU's configure-time venv.
- 
--    As of this commit, it does not yet do anything particularly
--    different than the standard venv-creation utility. The next several
--    commits will gradually change that in small commits that highlight
--    each feature individually.
-+    The primary difference is that it emulates a "nested" virtual
-+    environment when invoked from inside of an existing virtual
-+    environment by including packages from the parent.
- 
-     Parameters for base class init:
-       - system_site_packages: bool = False
-@@ -78,6 +84,18 @@ class QemuEnvBuilder(venv.EnvBuilder):
-     def __init__(self, *args: Any, **kwargs: Any) -> None:
-         logger.debug("QemuEnvBuilder.__init__(...)")
- 
-+        # For nested venv emulation:
-+        self.use_parent_packages = False
-+        if inside_a_venv():
-+            # Include parent packages only if we're in a venv and
-+            # system_site_packages was True.
-+            self.use_parent_packages = kwargs.pop(
-+                "system_site_packages", False
-+            )
-+            # Include system_site_packages only when the parent,
-+            # The venv we are currently in, also does so.
-+            kwargs["system_site_packages"] = sys.base_prefix in site.PREFIXES
++def ensure(
++    dep_specs: Sequence[str],
++    online: bool = False,
++    wheels_dir: Optional[Union[str, Path]] = None,
++) -> None:
++    """
++    Use pip to ensure we have the package specified by @dep_specs.
 +
-         if kwargs["with_pip"]:
-             check_ensurepip()
- 
-@@ -86,11 +104,71 @@ def __init__(self, *args: Any, **kwargs: Any) -> None:
-         # Make the context available post-creation:
-         self._context: Optional[SimpleNamespace] = None
- 
-+    def get_parent_libpath(self) -> Optional[str]:
-+        """Return the libpath of the parent venv, if applicable."""
-+        if self.use_parent_packages:
-+            return sysconfig.get_path("purelib")
-+        return None
++    If the package is already installed, do nothing. If online and
++    wheels_dir are both provided, prefer packages found in wheels_dir
++    first before connecting to PyPI.
 +
-+    @staticmethod
-+    def compute_venv_libpath(context: SimpleNamespace) -> str:
-+        """
-+        Compatibility wrapper for context.lib_path for Python < 3.12
-+        """
-+        # Python 3.12+, not strictly necessary because it's documented
-+        # to be the same as 3.10 code below:
-+        if sys.version_info >= (3, 12):
-+            return context.lib_path
-+
-+        # Python 3.10+
-+        if "venv" in sysconfig.get_scheme_names():
-+            lib_path = sysconfig.get_path(
-+                "purelib", scheme="venv", vars={"base": context.env_dir}
-+            )
-+            assert lib_path is not None
-+            return lib_path
-+
-+        # For Python <= 3.9 we need to hardcode this. Fortunately the
-+        # code below was the same in Python 3.6-3.10, so there is only
-+        # one case.
-+        if sys.platform == "win32":
-+            return os.path.join(context.env_dir, "Lib", "site-packages")
-+        return os.path.join(
-+            context.env_dir,
-+            "lib",
-+            "python%d.%d" % sys.version_info[:2],
-+            "site-packages",
++    :param dep_specs:
++        PEP 508 dependency specifications. e.g. ['meson>=0.61.5'].
++    :param online: If True, fall back to PyPI.
++    :param wheels_dir: If specified, search this path for packages.
++    """
++    with warnings.catch_warnings():
++        warnings.filterwarnings(
++            "ignore", category=UserWarning, module="distlib"
 +        )
++        dist_path = distlib.database.DistributionPath(include_egg=True)
++        absent = []
++        for spec in dep_specs:
++            matcher = distlib.version.LegacyMatcher(spec)
++            dist = dist_path.get_distribution(matcher.name)
++            if dist is None or not matcher.match(dist.version):
++                absent.append(spec)
++            else:
++                logger.info("found %s", dist)
 +
-     def ensure_directories(self, env_dir: DirType) -> SimpleNamespace:
-         logger.debug("ensure_directories(env_dir=%s)", env_dir)
-         self._context = super().ensure_directories(env_dir)
-         return self._context
- 
-+    def create(self, env_dir: DirType) -> None:
-+        logger.debug("create(env_dir=%s)", env_dir)
-+        super().create(env_dir)
-+        assert self._context is not None
-+        self.post_post_setup(self._context)
++    if absent:
++        # Some packages are missing or aren't a suitable version,
++        # install a suitable (possibly vendored) package.
++        print(f"mkvenv: installing {', '.join(absent)}", file=sys.stderr)
++        pip_install(args=absent, online=online, wheels_dir=wheels_dir)
 +
-+    def post_post_setup(self, context: SimpleNamespace) -> None:
-+        """
-+        The final, final hook. Enter the venv and run commands inside of it.
-+        """
-+        if self.use_parent_packages:
-+            # We're inside of a venv and we want to include the parent
-+            # venv's packages.
-+            parent_libpath = self.get_parent_libpath()
-+            assert parent_libpath is not None
-+            logger.debug("parent_libpath: %s", parent_libpath)
 +
-+            our_libpath = self.compute_venv_libpath(context)
-+            logger.debug("our_libpath: %s", our_libpath)
-+
-+            pth_file = os.path.join(our_libpath, "nested.pth")
-+            with open(pth_file, "w", encoding="UTF-8") as file:
-+                file.write(parent_libpath + os.linesep)
-+
-     def get_value(self, field: str) -> str:
-         """
-         Get a string value from the context namespace after a call to build.
-@@ -183,9 +261,12 @@ def make_venv(  # pylint: disable=too-many-arguments
+ def _add_create_subcommand(subparsers: Any) -> None:
+     subparser = subparsers.add_parser("create", help="create a venv")
+     subparser.add_argument(
+@@ -319,13 +412,42 @@ def _add_create_subcommand(subparsers: Any) -> None:
      )
  
-     style = "non-isolated" if builder.system_site_packages else "isolated"
-+    nested = ""
-+    if builder.use_parent_packages:
-+        nested = f"(with packages from '{builder.get_parent_libpath()}') "
-     print(
-         f"mkvenv: Creating {style} virtual environment"
--        f" at '{str(env_dir)}'",
-+        f" {nested}at '{str(env_dir)}'",
-         file=sys.stderr,
+ 
++def _add_ensure_subcommand(subparsers: Any) -> None:
++    subparser = subparsers.add_parser(
++        "ensure", help="Ensure that the specified package is installed."
++    )
++    subparser.add_argument(
++        "--online",
++        action="store_true",
++        help="Install packages from PyPI, if necessary.",
++    )
++    subparser.add_argument(
++        "--dir",
++        type=str,
++        action="store",
++        help="Path to vendored packages where we may install from.",
++    )
++    subparser.add_argument(
++        "dep_specs",
++        type=str,
++        action="store",
++        help="PEP 508 Dependency specification, e.g. 'meson>=0.61.5'",
++        nargs="+",
++    )
++
++
+ def main() -> int:
+     """CLI interface to make_qemu_venv. See module docstring."""
+     if os.environ.get("DEBUG") or os.environ.get("GITLAB_CI"):
+         # You're welcome.
+         logging.basicConfig(level=logging.DEBUG)
+-    elif os.environ.get("V"):
+-        logging.basicConfig(level=logging.INFO)
++    else:
++        if os.environ.get("V"):
++            logging.basicConfig(level=logging.INFO)
++
++        # These are incredibly noisy even for V=1
++        logging.getLogger("distlib.metadata").addFilter(lambda record: False)
++        logging.getLogger("distlib.database").addFilter(lambda record: False)
+ 
+     parser = argparse.ArgumentParser(
+         prog="mkvenv",
+@@ -339,6 +461,7 @@ def main() -> int:
      )
+ 
+     _add_create_subcommand(subparsers)
++    _add_ensure_subcommand(subparsers)
+ 
+     args = parser.parse_args()
+     try:
+@@ -348,6 +471,12 @@ def main() -> int:
+                 system_site_packages=True,
+                 clear=True,
+             )
++        if args.command == "ensure":
++            ensure(
++                dep_specs=args.dep_specs,
++                online=args.online,
++                wheels_dir=args.dir,
++            )
+         logger.debug("mkvenv.py %s: exiting", args.command)
+     except Ouch as exc:
+         print("\n*** Ouch! ***\n", file=sys.stderr)
+diff --git a/python/setup.cfg b/python/setup.cfg
+index 5b25f810fa8b..d680374b2950 100644
+--- a/python/setup.cfg
++++ b/python/setup.cfg
+@@ -36,6 +36,7 @@ packages =
+ # Remember to update tests/minreqs.txt if changing anything below:
+ devel =
+     avocado-framework >= 90.0
++    distlib >= 0.3.6
+     flake8 >= 3.6.0
+     fusepy >= 2.0.4
+     isort >= 5.1.2
+@@ -112,6 +113,15 @@ ignore_missing_imports = True
+ [mypy-pkg_resources]
+ ignore_missing_imports = True
+ 
++[mypy-distlib]
++ignore_missing_imports = True
++
++[mypy-distlib.database]
++ignore_missing_imports = True
++
++[mypy-distlib.version]
++ignore_missing_imports = True
++
+ [pylint.messages control]
+ # Disable the message, report, category or checker with the given id(s). You
+ # can either give multiple identifiers separated by comma (,) or put this
+diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
+index dfb8abb155f4..7ecf5e7fe483 100644
+--- a/python/tests/minreqs.txt
++++ b/python/tests/minreqs.txt
+@@ -16,6 +16,9 @@ urwid==2.1.2
+ urwid-readline==0.13
+ Pygments==2.9.0
+ 
++# Dependencies for mkvenv
++distlib==0.3.6
++
+ # Dependencies for FUSE support for qom-fuse
+ fusepy==2.0.4
  
 -- 
 2.40.1
