@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32571704AE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 12:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B36B6704B01
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 12:45:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pys4e-00015Y-3T; Tue, 16 May 2023 06:38:32 -0400
+	id 1pysAM-0003Fy-3f; Tue, 16 May 2023 06:44:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pys4b-00014S-I9
- for qemu-devel@nongnu.org; Tue, 16 May 2023 06:38:29 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1pysAA-0003Ex-0G; Tue, 16 May 2023 06:44:14 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pys4a-0003iL-2e
- for qemu-devel@nongnu.org; Tue, 16 May 2023 06:38:29 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-96b4ed40d97so314080166b.0
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 03:38:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1pysA8-0004f2-F8; Tue, 16 May 2023 06:44:13 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6439df6c268so9142106b3a.0; 
+ Tue, 16 May 2023 03:44:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684233506; x=1686825506;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=MA77nGVbeznvJo3CFRKaUeMAlOrz/uJ33UG0RZGl2ig=;
- b=sIu1bo0Gx+eVlYvkVHEe8fI8/lDDkf503dFZ7Fq+2+z6EvLj5K7zek3gWx9zfASxYm
- uRK79C2LWl/3vnyMtThFN+Toj8n/icUg31CD+oO/I5qLORMpKE0LpyoSMx+3pNF+UZ/z
- vUB1yAaaOjVJuLzeYvzFFD1ySIc1S+nPPiX3AX5jIPy7QYdeMRxMI8/6LeC5qnStIgvL
- lMszTVIhgPE8sBJjr+5GDONZSCRVdEqNAMKBr9wiV7gWvSxVAm7nTCS1LphRVQmVYTM+
- fSGSenEmxTR9A7aYHvfNn/YIUaJsjhWk9r1jiWxpRHwPUso4szpd6+acOqXMO/tY3xOF
- MQKw==
+ d=gmail.com; s=20221208; t=1684233850; x=1686825850;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qdFTZOZBeYUG7n5gh7osRECrBynopvDPpp5Mdm4vbOQ=;
+ b=npQuPDsppQ8E0cup3A4OGB0qmL3OHTbG05V9f+hPqh9jUh+KtJ5lasbLKY7YGQrtvG
+ 882sF3jWQTxQoHPpLkr+xaz7iihIVjmdpL/l6D3ri/oJBvrNCYKqyMPzjM2xfnIEUYh9
+ 0SvDuCsS2nsiiHhEZAApESsB3T5utEmhpPwzVV3lWYUzCKFAmkfcZCpcEvlkZ1JNvLEY
+ UfMAbn6SXfBFUi/ZDUt7CUjcCQ1hy7XQH7XHNfDmtiQ59aderlLdDZ6rNktvFyf82UOZ
+ 6h6TXw+9QBKxDjUAMP8XxLeh1iLU0CsNwY8fJuhK98aTvLqm+AHT06KloaeioqMfxIXt
+ GBTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684233506; x=1686825506;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MA77nGVbeznvJo3CFRKaUeMAlOrz/uJ33UG0RZGl2ig=;
- b=GzP0kURLHqb/lm2Fd7eMLluy5qdyZ+5P8Gy5vR6l/CUW2Bu7Cx+nbAttn0a+7A7/7G
- xvQa4XkRNbbcUQZihnov+OD18HgiM1DG3U7yDmloeX8XeR/5XBse6E5PtZj7IUUUP+cA
- gQGr30/sv9+PAHYhQeG9xgdVfkjmEx3fzFMonZ/+u+AIKpn4Q46XRZcHKoQ1+otsOqxy
- qjT3sB+u/zaPx7QmoQ8ZSRY+pJt6IxDIGufre+Inr5ayCiQ9RWysPeSdEP7bP0Gccn1Q
- KuDIFc3WQ9AHwPogu1JN+omJhcHwyIeCwtGzyb7E8HIOYYRhjvW/c5GfdctyUYUhq6Y1
- 1vRw==
-X-Gm-Message-State: AC+VfDyAyHVnxHA0p3KFO8akQ9b9xElZJ948jrOlsZ3wWGzzrlEqMTn/
- PG2TSddhzlvgjQ/4VkRE0ITjoVrPZTQhXOXY5bu76g==
-X-Google-Smtp-Source: ACHHUZ4xD+40G/HphU4u9r9WvFYIr+uSv0HIFBWFWewZpxnPswCALxnSm+eR+iTYQ82FA2jASpgfTSCyVTq3dYg/RUU=
-X-Received: by 2002:a17:907:9703:b0:966:265d:edc9 with SMTP id
- jg3-20020a170907970300b00966265dedc9mr31701470ejc.74.1684233506244; Tue, 16
- May 2023 03:38:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230515143313.734053-1-richard.henderson@linaro.org>
- <20230515143313.734053-11-richard.henderson@linaro.org>
-In-Reply-To: <20230515143313.734053-11-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 16 May 2023 11:38:15 +0100
-Message-ID: <CAFEAcA_6jHw5kvqZNNR+2c_ihdPgD9d1ByBH0fNvDr6tX88jyA@mail.gmail.com>
-Subject: Re: [PATCH v5 10/54] accel/tcg: Use have_atomic16 in
- ldst_atomicity.c.inc
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62f.google.com
+ d=1e100.net; s=20221208; t=1684233850; x=1686825850;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=qdFTZOZBeYUG7n5gh7osRECrBynopvDPpp5Mdm4vbOQ=;
+ b=kDqvDAZe9fB3MN9/2HK/kpHUFPOAVupvfD+pu32SkVFB3U/yOBYeAN1pJ105Z+B5Ep
+ oFb27mFpK4DEuk8x73ZNQMjvoPEQf9ulSBfF8gYmi16iemuBG91dryGfaxTS5Wegez+C
+ Oyjayzj5WtXRd91o14XyRE/sWCzQ3gfP1TwBYjwGq5T3K9nmIPwBWCutvRDssiEUxoRC
+ tH5FKr6DLDYL8UP2ntHl0fc97Dl3/1dJgumEEC7E6iaEHi10BphBDr9PJpYkorRZg/Y7
+ 8QumE+DXZIJUboitX35FjJ3xZ5ewWLPOTk20E4Wq5JC3qKq1BEsLwPcXEKZy/yhtIqqo
+ ITmA==
+X-Gm-Message-State: AC+VfDzEDn0vBXUbQdwOF6h1DJOW2eQPT2H4lEKtQTvBaQiwArT5LPoQ
+ Lo7ESw+fUDPtlZks/aaIFBrahPm5X5w=
+X-Google-Smtp-Source: ACHHUZ7JjL+AbPbdd4p+YQu6MkzG9DGom+0rnzikBsjiLea/vAI+9BB4HLaGYJVRtAvQ/Cx7nO+ObA==
+X-Received: by 2002:a05:6a00:ac2:b0:63d:2f13:200 with SMTP id
+ c2-20020a056a000ac200b0063d2f130200mr48052337pfl.16.1684233850661; 
+ Tue, 16 May 2023 03:44:10 -0700 (PDT)
+Received: from localhost (203-219-189-129.tpgi.com.au. [203.219.189.129])
+ by smtp.gmail.com with ESMTPSA id
+ c4-20020aa78804000000b006439ad979cbsm11640579pfo.152.2023.05.16.03.44.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 May 2023 03:44:10 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 May 2023 20:44:05 +1000
+Message-Id: <CSNN2JCJ9ZUZ.3U1FM12NO5AIQ@wheely>
+Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
+ <dbarboza@ventanamicro.com>
+Subject: Re: [PATCH v3 2/9] target/ppc: Fix PMU MMCR0[PMCjCE] bit in hflags
+ calculation
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.14.0
+References: <20230515092655.171206-1-npiggin@gmail.com>
+ <20230515092655.171206-3-npiggin@gmail.com>
+ <4b7c4c7b-d374-766b-48f1-c6769805f0bc@gmail.com>
+In-Reply-To: <4b7c4c7b-d374-766b-48f1-c6769805f0bc@gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,82 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 15 May 2023 at 15:37, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Tue May 16, 2023 at 7:32 PM AEST, Daniel Henrique Barboza wrote:
 >
-> Hosts using Intel and AMD AVX cpus are quite common.
-> Add fast paths through ldst_atomicity using this.
 >
-> Only enable with CONFIG_INT128; some older clang versions do not
-> support __int128_t, and the inline assembly won't work on structures.
+> On 5/15/23 06:26, Nicholas Piggin wrote:
+> > A store to MMCR0 with PMCjCE=3D1 fails to update hflags correctly and
+> > results in hflags mismatch:
+> >=20
+> >    qemu: fatal: TCG hflags mismatch (current:0x2408003d rebuilt:0x240a0=
+03d)
+> >=20
+> > This can be reproduced by running perf on a recent machine.
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  accel/tcg/ldst_atomicity.c.inc | 76 +++++++++++++++++++++++++++-------
->  1 file changed, 60 insertions(+), 16 deletions(-)
->
-> diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-> index dd387c9bdd..69c1c61997 100644
-> --- a/accel/tcg/ldst_atomicity.c.inc
-> +++ b/accel/tcg/ldst_atomicity.c.inc
-> @@ -35,6 +35,14 @@
->
->  #if defined(CONFIG_ATOMIC128)
->  # define HAVE_al16_fast    true
-> +#elif defined(CONFIG_TCG_INTERPRETER)
-> +/*
-> + * FIXME: host specific detection for this is in tcg/$host/,
-> + * but we're using tcg/tci/ instead.
-> + */
-> +# define HAVE_al16_fast    false
-> +#elif defined(__x86_64__) && defined(CONFIG_INT128)
-> +# define HAVE_al16_fast    likely(have_atomic16)
->  #else
->  # define HAVE_al16_fast    false
->  #endif
-> @@ -178,6 +186,12 @@ load_atomic16(void *pv)
->
->      r.u = qatomic_read__nocheck(p);
->      return r.s;
-> +#elif defined(__x86_64__) && defined(CONFIG_INT128)
-> +    Int128Alias r;
-> +
-> +    /* Via HAVE_al16_fast, have_atomic16 is true. */
-> +    asm("vmovdqa %1, %0" : "=x" (r.u) : "m" (*(Int128 *)pv));
-> +    return r.s;
+> Fixes: c2eff582a32f ("target/ppc: PMU basic cycle count for pseries TCG")
 
-This is a compile-time check, so why if we can do
-16-byte atomic loads would CONFIG_ATOMIC128 not be set?
+Or is it this one? 0625c7760d54 ("target/ppc: do not call
+hreg_compute_hflags() in helper_store_mmcr0()")
 
->  #else
->      qemu_build_not_reached();
->  #endif
-> @@ -399,6 +413,24 @@ load_atom_extract_al16_or_al8(void *pv, int s)
->          r = qatomic_read__nocheck(p16);
->      }
->      return r >> shr;
-> +#elif defined(__x86_64__) && defined(CONFIG_INT128)
-> +    uintptr_t pi = (uintptr_t)pv;
-> +    int shr = (pi & 7) * 8;
-> +    uint64_t a, b;
-> +
-> +    /* Via HAVE_al16_fast, have_atomic16 is true. */
-> +    pv = (void *)(pi & ~7);
-> +    if (pi & 8) {
-> +        uint64_t *p8 = __builtin_assume_aligned(pv, 16, 8);
-> +        a = qatomic_read__nocheck(p8);
-> +        b = qatomic_read__nocheck(p8 + 1);
-> +    } else {
-> +        asm("vmovdqa %2, %0\n\tvpextrq $1, %0, %1"
-> +            : "=x"(a), "=r"(b) : "m" (*(__uint128_t *)pv));
-> +    }
-> +    asm("shrd %b2, %1, %0" : "+r"(a) : "r"(b), "c"(shr));
-> +
-> +    return a;
+Ah, neither! It looks like 8b3d1c49a9f0 ("target/ppc: Add new PMC
+HFLAGS"). But that shows I have probably missed HFLAGS_PMC_OTHER
+here.
 
-Similarly this seems to just be an asm version of
-the CONFIG_ATOMIC128 code.
+Let me do a bit more investigation and send an updated patch if
+necessary.
 
-thanks
--- PMM
+Thanks,
+Nick
+
+>
+> (not sure why I didn't hit this back in 2021)
+>
+>
+> Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 
