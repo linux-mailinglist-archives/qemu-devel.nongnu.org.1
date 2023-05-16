@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D182705805
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 112A770582B
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz0eJ-0002Uz-8L; Tue, 16 May 2023 15:47:55 -0400
+	id 1pz0ek-0002pA-Bc; Tue, 16 May 2023 15:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0cK-0000O9-HT
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:53 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1pz0cM-0000Tr-Jk
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:54 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0cE-0003ls-7a
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:50 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-24df161f84bso39447a91.3
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:45:45 -0700 (PDT)
+ id 1pz0cF-0003m9-D0
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:54 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-517ab9a4a13so13458209a12.1
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:45:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684266344; x=1686858344;
+ d=linaro.org; s=google; t=1684266345; x=1686858345;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UxwdqiALkoPj7zCiSvoG+AA0MPWC8VroDhK0qwZ8X3s=;
- b=K7iw/zdQrBnI8GDVFlyQx6tBh+Un2TcFnqQxCv6RsR8WjJbUaCdj+TX1fXibI/zqJY
- aPARHzdP46BCxbj8nDdvdYliXHXlCOH9gIPuxKI/YfbWHlEFyD/Hniu/UJgj7aga4tTV
- V+CuucMQYCgb1S9nPt2bBdmK5F42+yYpeN5vbzqbpZzCPwojXCB9dMH6IKXbLZBbU18M
- V8uOXnVuwHDEL4vSpujZ12rAsfJAplHu9TGph/mI+v5ZyVR6RcfLjbTVs7PnN9ZeQGTx
- ULUxcASSCeauZ64ZcwhuDRHpwijeAwDqYXEKVb6aRwmp1auuO5NIDUz/jRklkr8j+kDR
- 4Y/g==
+ bh=lAxhKYsfUhN14zHRtzkICtce/Ie7f8eMZfNOpwXVrjE=;
+ b=PHC1RDK6KZW9AsGBZ7PpfUIPnh3uO1CapEcp+f4GRlRoAFaU7z4nKPJXqXaGEBM5uB
+ EMu8C2dBNMUixGLxR7c9gMgy7iIXGQca83lwYqR7Lr20wrj3WSYQHC3XMmhgBr+/zAI3
+ Z8WksBeL0b+gJPpV8f1ls3JHeRHe3sHZQxOd0iDmFhdYWnloCw1rpANBHG8h5TIukVMn
+ /DG/TBj1XD7aXlUK6pR9dVC/Pc+tCtcH+VcdTZ7fSWOx9QuGmwsFCSCaug8Yrevgf/Tc
+ IMiewGJCLogV4T+IGUUb48y9vbil84VIt4Gffkd+I/4wE2x7NipI6QEI0yDFrLuQhw8W
+ NR5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684266344; x=1686858344;
+ d=1e100.net; s=20221208; t=1684266345; x=1686858345;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UxwdqiALkoPj7zCiSvoG+AA0MPWC8VroDhK0qwZ8X3s=;
- b=VgLgXAyUqFg6qu3TDTmkiAgXbv6nLZXoXRaNXPfLswWirseXs0QW46HDUduiLjb0dV
- FtgaKrEu22x9Au+yI55SGwWglPvIhiwN5pQrblurQ91E+3Rc3z3K/q7Y3XyRFqj/bjKN
- At+6Yz2DHVtyBpICvvmq+8NZcEpGEQDczp/cdcDhZsLBtBPaB8dtMdiLKHvn02eoNBhO
- ztL09tJaD5VjrMa26u6wLXoXhkUWNhGp9ykR4Y504peOT/bjdmb65PbxR/vOEke7+CpM
- Yy06qdntWgFfY1RrTgx+YQVMqlbJGnvhecsNYNODFF/yuRRkG1nren/JjmnTjGki0K0D
- 4QyA==
-X-Gm-Message-State: AC+VfDw77S3X56UyEWyxuZ62IoBVxy++hcq3Cv3uMYeQfv30aYOzqxBe
- qTiW+716RMrU9+UZ2ZUElU4ow/r7PncIu/N7Ov8=
-X-Google-Smtp-Source: ACHHUZ5tkTCAFMYR7AwtkQpELeyYQ+CYqcWzi8f2qAn5txSzsBLoI+Y7M/ruA/epm5ySc6sWp7jXUA==
-X-Received: by 2002:a17:90a:4611:b0:23d:3549:82b7 with SMTP id
- w17-20020a17090a461100b0023d354982b7mr36673367pjg.46.1684266344398; 
- Tue, 16 May 2023 12:45:44 -0700 (PDT)
+ bh=lAxhKYsfUhN14zHRtzkICtce/Ie7f8eMZfNOpwXVrjE=;
+ b=UlwdlK2v7uIn8DsB/v4mQ9NJEKYBQGd8pBLjilMMPiJ215OfOJeZ3Lha9Y8pDtUoxk
+ hC57MqqDU6sqGH4ZnOwd/H7yqIcmnLQrPy3YY3n8sZEZFI0CnT91kVfoyvqD9g9QOGKC
+ Zx+KxLp6gndlbR77yaiIkBAOpVcGPrsEV4wud9uSYLbQB/IOMrEFZz36/G9joQWxPPv2
+ N5qKE+kMsHYYcB5y2XmtKv0MJuRe3YkZ9xZOw+ADgzTMcHOiosmKZlLI9BnPN8JeQApw
+ UQnETYJeFgsVvLDFMYMKhBvoazaIp5KpMNPAUxPXlOaXOF1dd8KVH2ctGaW2H85V4Nbt
+ pL9Q==
+X-Gm-Message-State: AC+VfDydauRmBcdhUAkS2qgTLviNXUTpuoAzLxmiMkYd9YLBTHpULGvn
+ 72t2Z36610p6IwQ7Binvlfddst3QEQJsnTIwfWk=
+X-Google-Smtp-Source: ACHHUZ6ojEiN+5RGs3qDqtD8brZHidrkMJGjjNfrh/8zy1BlIZkS6xH89oDCa+X9esnJF0GCzBIaFg==
+X-Received: by 2002:a17:90b:354d:b0:253:2927:4a22 with SMTP id
+ lt13-20020a17090b354d00b0025329274a22mr2156829pjb.48.1684266345171; 
+ Tue, 16 May 2023 12:45:45 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
  by smtp.gmail.com with ESMTPSA id
- y12-20020a17090abd0c00b002508d73f4e8sm25555pjr.57.2023.05.16.12.45.43
+ y12-20020a17090abd0c00b002508d73f4e8sm25555pjr.57.2023.05.16.12.45.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 16 May 2023 12:45:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 65/80] tcg: Remove TCGv from tcg_gen_atomic_*
-Date: Tue, 16 May 2023 12:41:30 -0700
-Message-Id: <20230516194145.1749305-66-richard.henderson@linaro.org>
+Subject: [PULL 66/80] tcg: Split INDEX_op_qemu_{ld, st}* for guest address size
+Date: Tue, 16 May 2023 12:41:31 -0700
+Message-Id: <20230516194145.1749305-67-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230516194145.1749305-1-richard.henderson@linaro.org>
 References: <20230516194145.1749305-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,613 +92,1326 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expand from TCGv to TCGTemp inline in the translators,
-and validate that the size matches tcg_ctx->addr_type.
+For 32-bit hosts, we cannot simply rely on TCGContext.addr_bits,
+as we need one or two host registers to represent the guest address.
+
+Create the new opcodes and update all users.  Since we have not
+yet eliminated TARGET_LONG_BITS, only one of the two opcodes will
+ever be used, so we can get away with treating them the same in
+the backends.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg-op.h | 184 ++++++++++++++++++++++++++++++----------
- tcg/tcg-op-ldst.c    | 198 ++++++++++++++++++++++++++++---------------
- 2 files changed, 267 insertions(+), 115 deletions(-)
+ include/tcg/tcg-opc.h            | 35 ++++++++----
+ tcg/optimize.c                   | 19 +++++--
+ tcg/tcg-op-ldst.c                | 83 ++++++++++++++++++++++-------
+ tcg/tcg.c                        | 42 ++++++++++-----
+ tcg/tci.c                        | 32 +++++++----
+ tcg/aarch64/tcg-target.c.inc     | 36 ++++++++-----
+ tcg/arm/tcg-target.c.inc         | 83 +++++++++++++++--------------
+ tcg/i386/tcg-target.c.inc        | 91 ++++++++++++++++++++------------
+ tcg/loongarch64/tcg-target.c.inc | 24 ++++++---
+ tcg/mips/tcg-target.c.inc        | 66 ++++++++++++++---------
+ tcg/ppc/tcg-target.c.inc         | 91 +++++++++++++++++++-------------
+ tcg/riscv/tcg-target.c.inc       | 24 ++++++---
+ tcg/s390x/tcg-target.c.inc       | 36 ++++++++-----
+ tcg/sparc64/tcg-target.c.inc     | 24 ++++++---
+ tcg/tci/tcg-target.c.inc         | 44 ++++++++-------
+ 15 files changed, 468 insertions(+), 262 deletions(-)
 
-diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-index e556450ba9..35c5700183 100644
---- a/include/tcg/tcg-op.h
-+++ b/include/tcg/tcg-op.h
-@@ -858,56 +858,148 @@ tcg_gen_qemu_st_i128(TCGv_i128 v, TCGv a, TCGArg i, MemOp m)
-     tcg_gen_qemu_st_i128_chk(v, tcgv_tl_temp(a), i, m, TCG_TYPE_TL);
- }
+diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
+index 29216366d2..21594c1590 100644
+--- a/include/tcg/tcg-opc.h
++++ b/include/tcg/tcg-opc.h
+@@ -186,7 +186,6 @@ DEF(muls2_i64, 2, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_muls2_i64))
+ DEF(muluh_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_muluh_i64))
+ DEF(mulsh_i64, 1, 2, 0, IMPL64 | IMPL(TCG_TARGET_HAS_mulsh_i64))
  
--void tcg_gen_atomic_cmpxchg_i32(TCGv_i32, TCGv, TCGv_i32, TCGv_i32,
--                                TCGArg, MemOp);
--void tcg_gen_atomic_cmpxchg_i64(TCGv_i64, TCGv, TCGv_i64, TCGv_i64,
--                                TCGArg, MemOp);
--void tcg_gen_atomic_cmpxchg_i128(TCGv_i128, TCGv, TCGv_i128, TCGv_i128,
--                                 TCGArg, MemOp);
-+void tcg_gen_atomic_cmpxchg_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32, TCGv_i32,
-+                                    TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_cmpxchg_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64, TCGv_i64,
-+                                    TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_cmpxchg_i128_chk(TCGv_i128, TCGTemp *, TCGv_i128,
-+                                     TCGv_i128, TCGArg, MemOp, TCGType);
+-#define TLADDR_ARGS  (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS ? 1 : 2)
+ #define DATA64_ARGS  (TCG_TARGET_REG_BITS == 64 ? 1 : 2)
  
--void tcg_gen_nonatomic_cmpxchg_i32(TCGv_i32, TCGv, TCGv_i32, TCGv_i32,
--                                   TCGArg, MemOp);
--void tcg_gen_nonatomic_cmpxchg_i64(TCGv_i64, TCGv, TCGv_i64, TCGv_i64,
--                                   TCGArg, MemOp);
--void tcg_gen_nonatomic_cmpxchg_i128(TCGv_i128, TCGv, TCGv_i128, TCGv_i128,
--                                    TCGArg, MemOp);
-+void tcg_gen_nonatomic_cmpxchg_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_nonatomic_cmpxchg_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_nonatomic_cmpxchg_i128_chk(TCGv_i128, TCGTemp *, TCGv_i128,
-+                                        TCGv_i128, TCGArg, MemOp, TCGType);
+ /* QEMU specific */
+@@ -199,25 +198,44 @@ DEF(goto_ptr, 0, 1, 0, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
+ DEF(plugin_cb_start, 0, 0, 3, TCG_OPF_NOT_PRESENT)
+ DEF(plugin_cb_end, 0, 0, 0, TCG_OPF_NOT_PRESENT)
  
--void tcg_gen_atomic_xchg_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_xchg_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
-+void tcg_gen_atomic_xchg_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                 TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_xchg_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                 TCGArg, MemOp, TCGType);
+-DEF(qemu_ld_i32, 1, TLADDR_ARGS, 1,
++/* Replicate ld/st ops for 32 and 64-bit guest addresses. */
++DEF(qemu_ld_a32_i32, 1, 1, 1,
+     TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS)
+-DEF(qemu_st_i32, 0, TLADDR_ARGS + 1, 1,
++DEF(qemu_st_a32_i32, 0, 1 + 1, 1,
+     TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS)
+-DEF(qemu_ld_i64, DATA64_ARGS, TLADDR_ARGS, 1,
++DEF(qemu_ld_a32_i64, DATA64_ARGS, 1, 1,
+     TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS | TCG_OPF_64BIT)
+-DEF(qemu_st_i64, 0, TLADDR_ARGS + DATA64_ARGS, 1,
++DEF(qemu_st_a32_i64, 0, DATA64_ARGS + 1, 1,
++    TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS | TCG_OPF_64BIT)
++
++DEF(qemu_ld_a64_i32, 1, DATA64_ARGS, 1,
++    TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS)
++DEF(qemu_st_a64_i32, 0, 1 + DATA64_ARGS, 1,
++    TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS)
++DEF(qemu_ld_a64_i64, DATA64_ARGS, DATA64_ARGS, 1,
++    TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS | TCG_OPF_64BIT)
++DEF(qemu_st_a64_i64, 0, DATA64_ARGS + DATA64_ARGS, 1,
+     TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS | TCG_OPF_64BIT)
  
--void tcg_gen_atomic_fetch_add_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_add_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_and_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_and_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_or_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_or_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_xor_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_xor_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_smin_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_smin_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_umin_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_umin_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_smax_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_smax_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_umax_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_fetch_umax_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
-+void tcg_gen_atomic_fetch_add_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_add_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_and_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_and_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_or_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                     TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_or_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                     TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_xor_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_xor_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_smin_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_smin_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_umin_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_umin_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_smax_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_smax_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_umax_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_fetch_umax_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
+ /* Only used by i386 to cope with stupid register constraints. */
+-DEF(qemu_st8_i32, 0, TLADDR_ARGS + 1, 1,
++DEF(qemu_st8_a32_i32, 0, 1 + 1, 1,
++    TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS |
++    IMPL(TCG_TARGET_HAS_qemu_st8_i32))
++DEF(qemu_st8_a64_i32, 0, 1 + DATA64_ARGS, 1,
+     TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS |
+     IMPL(TCG_TARGET_HAS_qemu_st8_i32))
  
--void tcg_gen_atomic_add_fetch_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_add_fetch_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_and_fetch_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_and_fetch_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_or_fetch_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_or_fetch_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_xor_fetch_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_xor_fetch_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_smin_fetch_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_smin_fetch_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_umin_fetch_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_umin_fetch_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_smax_fetch_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_smax_fetch_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
--void tcg_gen_atomic_umax_fetch_i32(TCGv_i32, TCGv, TCGv_i32, TCGArg, MemOp);
--void tcg_gen_atomic_umax_fetch_i64(TCGv_i64, TCGv, TCGv_i64, TCGArg, MemOp);
-+void tcg_gen_atomic_add_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_add_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_and_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_and_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_or_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                     TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_or_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                     TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_xor_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_xor_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                      TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_smin_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_smin_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_umin_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_umin_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_smax_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_smax_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_umax_fetch_i32_chk(TCGv_i32, TCGTemp *, TCGv_i32,
-+                                       TCGArg, MemOp, TCGType);
-+void tcg_gen_atomic_umax_fetch_i64_chk(TCGv_i64, TCGTemp *, TCGv_i64,
-+                                       TCGArg, MemOp, TCGType);
-+
-+#define DEF_ATOMIC2(N, S)                                               \
-+    static inline void N##_##S(TCGv_##S r, TCGv a, TCGv_##S v,          \
-+                               TCGArg i, MemOp m)                       \
-+    { N##_##S##_chk(r, tcgv_tl_temp(a), v, i, m, TCG_TYPE_TL); }
-+
-+#define DEF_ATOMIC3(N, S)                                               \
-+    static inline void N##_##S(TCGv_##S r, TCGv a, TCGv_##S o,          \
-+                               TCGv_##S n, TCGArg i, MemOp m)           \
-+    { N##_##S##_chk(r, tcgv_tl_temp(a), o, n, i, m, TCG_TYPE_TL); }
-+
-+DEF_ATOMIC3(tcg_gen_atomic_cmpxchg, i32)
-+DEF_ATOMIC3(tcg_gen_atomic_cmpxchg, i64)
-+DEF_ATOMIC3(tcg_gen_atomic_cmpxchg, i128)
-+
-+DEF_ATOMIC3(tcg_gen_nonatomic_cmpxchg, i32)
-+DEF_ATOMIC3(tcg_gen_nonatomic_cmpxchg, i64)
-+DEF_ATOMIC3(tcg_gen_nonatomic_cmpxchg, i128)
-+
-+DEF_ATOMIC2(tcg_gen_atomic_xchg, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_xchg, i64)
-+
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_add, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_add, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_and, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_and, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_or, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_or, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_xor, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_xor, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_smin, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_smin, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_umin, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_umin, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_smax, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_smax, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_umax, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_fetch_umax, i64)
-+
-+DEF_ATOMIC2(tcg_gen_atomic_add_fetch, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_add_fetch, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_and_fetch, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_and_fetch, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_or_fetch, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_or_fetch, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_xor_fetch, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_xor_fetch, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_smin_fetch, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_smin_fetch, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_umin_fetch, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_umin_fetch, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_smax_fetch, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_smax_fetch, i64)
-+DEF_ATOMIC2(tcg_gen_atomic_umax_fetch, i32)
-+DEF_ATOMIC2(tcg_gen_atomic_umax_fetch, i64)
-+
-+#undef DEF_ATOMIC2
-+#undef DEF_ATOMIC3
+ /* Only for 64-bit hosts at the moment. */
+-DEF(qemu_ld_i128, 2, 1, 1,
++DEF(qemu_ld_a32_i128, 2, 1, 1,
+     TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS | TCG_OPF_64BIT |
+     IMPL(TCG_TARGET_HAS_qemu_ldst_i128))
+-DEF(qemu_st_i128, 0, 3, 1,
++DEF(qemu_ld_a64_i128, 2, 1, 1,
++    TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS | TCG_OPF_64BIT |
++    IMPL(TCG_TARGET_HAS_qemu_ldst_i128))
++DEF(qemu_st_a32_i128, 0, 3, 1,
++    TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS | TCG_OPF_64BIT |
++    IMPL(TCG_TARGET_HAS_qemu_ldst_i128))
++DEF(qemu_st_a64_i128, 0, 3, 1,
+     TCG_OPF_CALL_CLOBBER | TCG_OPF_SIDE_EFFECTS | TCG_OPF_64BIT |
+     IMPL(TCG_TARGET_HAS_qemu_ldst_i128))
  
- void tcg_gen_mov_vec(TCGv_vec, TCGv_vec);
- void tcg_gen_dup_i32_vec(unsigned vece, TCGv_vec, TCGv_i32);
+@@ -291,7 +309,6 @@ DEF(tci_movi, 1, 0, 1, TCG_OPF_NOT_PRESENT)
+ DEF(tci_movl, 1, 0, 1, TCG_OPF_NOT_PRESENT)
+ #endif
+ 
+-#undef TLADDR_ARGS
+ #undef DATA64_ARGS
+ #undef IMPL
+ #undef IMPL64
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index 9614fa3638..bf975a3a6c 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -2184,13 +2184,22 @@ void tcg_optimize(TCGContext *s)
+         CASE_OP_32_64_VEC(orc):
+             done = fold_orc(&ctx, op);
+             break;
+-        case INDEX_op_qemu_ld_i32:
+-        case INDEX_op_qemu_ld_i64:
++        case INDEX_op_qemu_ld_a32_i32:
++        case INDEX_op_qemu_ld_a64_i32:
++        case INDEX_op_qemu_ld_a32_i64:
++        case INDEX_op_qemu_ld_a64_i64:
++        case INDEX_op_qemu_ld_a32_i128:
++        case INDEX_op_qemu_ld_a64_i128:
+             done = fold_qemu_ld(&ctx, op);
+             break;
+-        case INDEX_op_qemu_st_i32:
+-        case INDEX_op_qemu_st8_i32:
+-        case INDEX_op_qemu_st_i64:
++        case INDEX_op_qemu_st8_a32_i32:
++        case INDEX_op_qemu_st8_a64_i32:
++        case INDEX_op_qemu_st_a32_i32:
++        case INDEX_op_qemu_st_a64_i32:
++        case INDEX_op_qemu_st_a32_i64:
++        case INDEX_op_qemu_st_a64_i64:
++        case INDEX_op_qemu_st_a32_i128:
++        case INDEX_op_qemu_st_a64_i128:
+             done = fold_qemu_st(&ctx, op);
+             break;
+         CASE_OP_32_64(rem):
 diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index 84a03bf6ed..281a80db41 100644
+index 281a80db41..1ee21f68fc 100644
 --- a/tcg/tcg-op-ldst.c
 +++ b/tcg/tcg-op-ldst.c
-@@ -443,22 +443,21 @@ static void canonicalize_memop_i128_as_i64(MemOp ret[2], MemOp orig)
-     ret[1] = mop_2;
- }
+@@ -164,6 +164,7 @@ static void tcg_gen_qemu_ld_i32_int(TCGv_i32 val, TCGTemp *addr,
+     MemOp orig_memop;
+     MemOpIdx orig_oi, oi;
+     TCGv_i64 copy_addr;
++    TCGOpcode opc;
  
--static TCGv_i64 maybe_extend_addr64(TCGv addr)
-+static TCGv_i64 maybe_extend_addr64(TCGTemp *addr)
- {
--#if TARGET_LONG_BITS == 32
--    TCGv_i64 a64 = tcg_temp_ebb_new_i64();
--    tcg_gen_extu_i32_i64(a64, addr);
--    return a64;
--#else
--    return addr;
--#endif
-+    if (tcg_ctx->addr_type == TCG_TYPE_I32) {
-+        TCGv_i64 a64 = tcg_temp_ebb_new_i64();
-+        tcg_gen_extu_i32_i64(a64, temp_tcgv_i32(addr));
-+        return a64;
-+    }
-+    return temp_tcgv_i64(addr);
- }
- 
- static void maybe_free_addr64(TCGv_i64 a64)
- {
--#if TARGET_LONG_BITS == 32
--    tcg_temp_free_i64(a64);
--#endif
-+    if (tcg_ctx->addr_type == TCG_TYPE_I32) {
-+        tcg_temp_free_i64(a64);
-+    }
- }
- 
- static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
-@@ -742,17 +741,18 @@ static void * const table_cmpxchg[(MO_SIZE | MO_BSWAP) + 1] = {
-     WITH_ATOMIC128([MO_128 | MO_BE] = gen_helper_atomic_cmpxchgo_be)
- };
- 
--void tcg_gen_nonatomic_cmpxchg_i32(TCGv_i32 retv, TCGv addr, TCGv_i32 cmpv,
--                                   TCGv_i32 newv, TCGArg idx, MemOp memop)
-+static void tcg_gen_nonatomic_cmpxchg_i32_int(TCGv_i32 retv, TCGTemp *addr,
-+                                              TCGv_i32 cmpv, TCGv_i32 newv,
-+                                              TCGArg idx, MemOp memop)
- {
-     TCGv_i32 t1 = tcg_temp_ebb_new_i32();
-     TCGv_i32 t2 = tcg_temp_ebb_new_i32();
- 
-     tcg_gen_ext_i32(t2, cmpv, memop & MO_SIZE);
- 
--    tcg_gen_qemu_ld_i32(t1, addr, idx, memop & ~MO_SIGN);
-+    tcg_gen_qemu_ld_i32_int(t1, addr, idx, memop & ~MO_SIGN);
-     tcg_gen_movcond_i32(TCG_COND_EQ, t2, t1, t2, newv, t1);
--    tcg_gen_qemu_st_i32(t2, addr, idx, memop);
-+    tcg_gen_qemu_st_i32_int(t2, addr, idx, memop);
-     tcg_temp_free_i32(t2);
- 
-     if (memop & MO_SIGN) {
-@@ -763,15 +763,26 @@ void tcg_gen_nonatomic_cmpxchg_i32(TCGv_i32 retv, TCGv addr, TCGv_i32 cmpv,
-     tcg_temp_free_i32(t1);
- }
- 
--void tcg_gen_atomic_cmpxchg_i32(TCGv_i32 retv, TCGv addr, TCGv_i32 cmpv,
--                                TCGv_i32 newv, TCGArg idx, MemOp memop)
-+void tcg_gen_nonatomic_cmpxchg_i32_chk(TCGv_i32 retv, TCGTemp *addr,
-+                                       TCGv_i32 cmpv, TCGv_i32 newv,
-+                                       TCGArg idx, MemOp memop,
-+                                       TCGType addr_type)
-+{
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);
-+    tcg_debug_assert((memop & MO_SIZE) <= MO_32);
-+    tcg_gen_nonatomic_cmpxchg_i32_int(retv, addr, cmpv, newv, idx, memop);
-+}
-+
-+static void tcg_gen_atomic_cmpxchg_i32_int(TCGv_i32 retv, TCGTemp *addr,
-+                                           TCGv_i32 cmpv, TCGv_i32 newv,
-+                                           TCGArg idx, MemOp memop)
- {
-     gen_atomic_cx_i32 gen;
-     TCGv_i64 a64;
-     MemOpIdx oi;
- 
-     if (!(tcg_ctx->gen_tb->cflags & CF_PARALLEL)) {
--        tcg_gen_nonatomic_cmpxchg_i32(retv, addr, cmpv, newv, idx, memop);
-+        tcg_gen_nonatomic_cmpxchg_i32_int(retv, addr, cmpv, newv, idx, memop);
-         return;
+     tcg_gen_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
+     orig_memop = memop = tcg_canonicalize_memop(memop, 0, 0);
+@@ -179,7 +180,12 @@ static void tcg_gen_qemu_ld_i32_int(TCGv_i32 val, TCGTemp *addr,
      }
  
-@@ -789,14 +800,25 @@ void tcg_gen_atomic_cmpxchg_i32(TCGv_i32 retv, TCGv addr, TCGv_i32 cmpv,
-     }
- }
+     copy_addr = plugin_maybe_preserve_addr(addr);
+-    gen_ldst(INDEX_op_qemu_ld_i32, tcgv_i32_temp(val), NULL, addr, oi);
++    if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++        opc = INDEX_op_qemu_ld_a32_i32;
++    } else {
++        opc = INDEX_op_qemu_ld_a64_i32;
++    }
++    gen_ldst(opc, tcgv_i32_temp(val), NULL, addr, oi);
+     plugin_gen_mem_callbacks(copy_addr, addr, orig_oi, QEMU_PLUGIN_MEM_R);
  
--void tcg_gen_nonatomic_cmpxchg_i64(TCGv_i64 retv, TCGv addr, TCGv_i64 cmpv,
--                                   TCGv_i64 newv, TCGArg idx, MemOp memop)
-+void tcg_gen_atomic_cmpxchg_i32_chk(TCGv_i32 retv, TCGTemp *addr,
-+                                    TCGv_i32 cmpv, TCGv_i32 newv,
-+                                    TCGArg idx, MemOp memop,
-+                                    TCGType addr_type)
-+{
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);
-+    tcg_debug_assert((memop & MO_SIZE) <= MO_32);
-+    tcg_gen_atomic_cmpxchg_i32_int(retv, addr, cmpv, newv, idx, memop);
-+}
-+
-+static void tcg_gen_nonatomic_cmpxchg_i64_int(TCGv_i64 retv, TCGTemp *addr,
-+                                              TCGv_i64 cmpv, TCGv_i64 newv,
-+                                              TCGArg idx, MemOp memop)
- {
-     TCGv_i64 t1, t2;
+     if ((orig_memop ^ memop) & MO_BSWAP) {
+@@ -235,9 +241,17 @@ static void tcg_gen_qemu_st_i32_int(TCGv_i32 val, TCGTemp *addr,
+     }
+ 
+     if (TCG_TARGET_HAS_qemu_st8_i32 && (memop & MO_SIZE) == MO_8) {
+-        opc = INDEX_op_qemu_st8_i32;
++        if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++            opc = INDEX_op_qemu_st8_a32_i32;
++        } else {
++            opc = INDEX_op_qemu_st8_a64_i32;
++        }
+     } else {
+-        opc = INDEX_op_qemu_st_i32;
++        if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++            opc = INDEX_op_qemu_st_a32_i32;
++        } else {
++            opc = INDEX_op_qemu_st_a64_i32;
++        }
+     }
+     gen_ldst(opc, tcgv_i32_temp(val), NULL, addr, oi);
+     plugin_gen_mem_callbacks(NULL, addr, orig_oi, QEMU_PLUGIN_MEM_W);
+@@ -261,6 +275,7 @@ static void tcg_gen_qemu_ld_i64_int(TCGv_i64 val, TCGTemp *addr,
+     MemOp orig_memop;
+     MemOpIdx orig_oi, oi;
+     TCGv_i64 copy_addr;
++    TCGOpcode opc;
  
      if (TCG_TARGET_REG_BITS == 32 && (memop & MO_SIZE) < MO_64) {
--        tcg_gen_nonatomic_cmpxchg_i32(TCGV_LOW(retv), addr, TCGV_LOW(cmpv),
--                                      TCGV_LOW(newv), idx, memop);
-+        tcg_gen_nonatomic_cmpxchg_i32_int(TCGV_LOW(retv), addr, TCGV_LOW(cmpv),
-+                                          TCGV_LOW(newv), idx, memop);
-         if (memop & MO_SIGN) {
-             tcg_gen_sari_i32(TCGV_HIGH(retv), TCGV_LOW(retv), 31);
-         } else {
-@@ -810,9 +832,9 @@ void tcg_gen_nonatomic_cmpxchg_i64(TCGv_i64 retv, TCGv addr, TCGv_i64 cmpv,
- 
-     tcg_gen_ext_i64(t2, cmpv, memop & MO_SIZE);
- 
--    tcg_gen_qemu_ld_i64(t1, addr, idx, memop & ~MO_SIGN);
-+    tcg_gen_qemu_ld_i64_int(t1, addr, idx, memop & ~MO_SIGN);
-     tcg_gen_movcond_i64(TCG_COND_EQ, t2, t1, t2, newv, t1);
--    tcg_gen_qemu_st_i64(t2, addr, idx, memop);
-+    tcg_gen_qemu_st_i64_int(t2, addr, idx, memop);
-     tcg_temp_free_i64(t2);
- 
-     if (memop & MO_SIGN) {
-@@ -823,11 +845,22 @@ void tcg_gen_nonatomic_cmpxchg_i64(TCGv_i64 retv, TCGv addr, TCGv_i64 cmpv,
-     tcg_temp_free_i64(t1);
- }
- 
--void tcg_gen_atomic_cmpxchg_i64(TCGv_i64 retv, TCGv addr, TCGv_i64 cmpv,
--                                TCGv_i64 newv, TCGArg idx, MemOp memop)
-+void tcg_gen_nonatomic_cmpxchg_i64_chk(TCGv_i64 retv, TCGTemp *addr,
-+                                       TCGv_i64 cmpv, TCGv_i64 newv,
-+                                       TCGArg idx, MemOp memop,
-+                                       TCGType addr_type)
-+{
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);
-+    tcg_debug_assert((memop & MO_SIZE) <= MO_64);
-+    tcg_gen_nonatomic_cmpxchg_i64_int(retv, addr, cmpv, newv, idx, memop);
-+}
-+
-+static void tcg_gen_atomic_cmpxchg_i64_int(TCGv_i64 retv, TCGTemp *addr,
-+                                           TCGv_i64 cmpv, TCGv_i64 newv,
-+                                           TCGArg idx, MemOp memop)
- {
-     if (!(tcg_ctx->gen_tb->cflags & CF_PARALLEL)) {
--        tcg_gen_nonatomic_cmpxchg_i64(retv, addr, cmpv, newv, idx, memop);
-+        tcg_gen_nonatomic_cmpxchg_i64_int(retv, addr, cmpv, newv, idx, memop);
-         return;
+         tcg_gen_qemu_ld_i32_int(TCGV_LOW(val), addr, idx, memop);
+@@ -286,7 +301,12 @@ static void tcg_gen_qemu_ld_i64_int(TCGv_i64 val, TCGTemp *addr,
      }
  
-@@ -856,8 +889,8 @@ void tcg_gen_atomic_cmpxchg_i64(TCGv_i64 retv, TCGv addr, TCGv_i64 cmpv,
+     copy_addr = plugin_maybe_preserve_addr(addr);
+-    gen_ldst_i64(INDEX_op_qemu_ld_i64, val, addr, oi);
++    if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++        opc = INDEX_op_qemu_ld_a32_i64;
++    } else {
++        opc = INDEX_op_qemu_ld_a64_i64;
++    }
++    gen_ldst_i64(opc, val, addr, oi);
+     plugin_gen_mem_callbacks(copy_addr, addr, orig_oi, QEMU_PLUGIN_MEM_R);
+ 
+     if ((orig_memop ^ memop) & MO_BSWAP) {
+@@ -322,6 +342,7 @@ static void tcg_gen_qemu_st_i64_int(TCGv_i64 val, TCGTemp *addr,
+ {
+     TCGv_i64 swap = NULL;
+     MemOpIdx orig_oi, oi;
++    TCGOpcode opc;
+ 
+     if (TCG_TARGET_REG_BITS == 32 && (memop & MO_SIZE) < MO_64) {
+         tcg_gen_qemu_st_i32_int(TCGV_LOW(val), addr, idx, memop);
+@@ -352,7 +373,12 @@ static void tcg_gen_qemu_st_i64_int(TCGv_i64 val, TCGTemp *addr,
+         oi = make_memop_idx(memop, idx);
      }
  
-     if (TCG_TARGET_REG_BITS == 32) {
--        tcg_gen_atomic_cmpxchg_i32(TCGV_LOW(retv), addr, TCGV_LOW(cmpv),
--                                   TCGV_LOW(newv), idx, memop);
-+        tcg_gen_atomic_cmpxchg_i32_int(TCGV_LOW(retv), addr, TCGV_LOW(cmpv),
-+                                       TCGV_LOW(newv), idx, memop);
-         if (memop & MO_SIGN) {
-             tcg_gen_sari_i32(TCGV_HIGH(retv), TCGV_LOW(retv), 31);
-         } else {
-@@ -870,7 +903,8 @@ void tcg_gen_atomic_cmpxchg_i64(TCGv_i64 retv, TCGv addr, TCGv_i64 cmpv,
+-    gen_ldst_i64(INDEX_op_qemu_st_i64, val, addr, oi);
++    if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++        opc = INDEX_op_qemu_st_a32_i64;
++    } else {
++        opc = INDEX_op_qemu_st_a64_i64;
++    }
++    gen_ldst_i64(opc, val, addr, oi);
+     plugin_gen_mem_callbacks(NULL, addr, orig_oi, QEMU_PLUGIN_MEM_W);
  
-         tcg_gen_extrl_i64_i32(c32, cmpv);
-         tcg_gen_extrl_i64_i32(n32, newv);
--        tcg_gen_atomic_cmpxchg_i32(r32, addr, c32, n32, idx, memop & ~MO_SIGN);
-+        tcg_gen_atomic_cmpxchg_i32_int(r32, addr, c32, n32,
-+                                       idx, memop & ~MO_SIGN);
-         tcg_temp_free_i32(c32);
-         tcg_temp_free_i32(n32);
- 
-@@ -883,8 +917,18 @@ void tcg_gen_atomic_cmpxchg_i64(TCGv_i64 retv, TCGv addr, TCGv_i64 cmpv,
-     }
- }
- 
--void tcg_gen_nonatomic_cmpxchg_i128(TCGv_i128 retv, TCGv addr, TCGv_i128 cmpv,
--                                    TCGv_i128 newv, TCGArg idx, MemOp memop)
-+void tcg_gen_atomic_cmpxchg_i64_chk(TCGv_i64 retv, TCGTemp *addr,
-+                                    TCGv_i64 cmpv, TCGv_i64 newv,
-+                                    TCGArg idx, MemOp memop, TCGType addr_type)
-+{
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);
-+    tcg_debug_assert((memop & MO_SIZE) <= MO_64);
-+    tcg_gen_atomic_cmpxchg_i64_int(retv, addr, cmpv, newv, idx, memop);
-+}
-+
-+static void tcg_gen_nonatomic_cmpxchg_i128_int(TCGv_i128 retv, TCGTemp *addr,
-+                                               TCGv_i128 cmpv, TCGv_i128 newv,
-+                                               TCGArg idx, MemOp memop)
+     if (swap) {
+@@ -465,6 +491,7 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
  {
-     if (TCG_TARGET_REG_BITS == 32) {
-         /* Inline expansion below is simply too large for 32-bit hosts. */
-@@ -892,12 +936,8 @@ void tcg_gen_nonatomic_cmpxchg_i128(TCGv_i128 retv, TCGv addr, TCGv_i128 cmpv,
-                                   ? gen_helper_nonatomic_cmpxchgo_le 
-                                   : gen_helper_nonatomic_cmpxchgo_be);
-         MemOpIdx oi = make_memop_idx(memop, idx);
--        TCGv_i64 a64;
-+        TCGv_i64 a64 = maybe_extend_addr64(addr);
+     const MemOpIdx orig_oi = make_memop_idx(memop, idx);
+     TCGv_i64 ext_addr = NULL;
++    TCGOpcode opc;
  
--        tcg_debug_assert((memop & MO_SIZE) == MO_128);
--        tcg_debug_assert((memop & MO_SIGN) == 0);
--
--        a64 = maybe_extend_addr64(addr);
-         gen(retv, cpu_env, a64, cmpv, newv, tcg_constant_i32(oi));
-         maybe_free_addr64(a64);
-     } else {
-@@ -907,7 +947,7 @@ void tcg_gen_nonatomic_cmpxchg_i128(TCGv_i128 retv, TCGv addr, TCGv_i128 cmpv,
-         TCGv_i64 t1 = tcg_temp_ebb_new_i64();
-         TCGv_i64 z = tcg_constant_i64(0);
+     tcg_gen_req_mo(TCG_MO_LD_LD | TCG_MO_ST_LD);
  
--        tcg_gen_qemu_ld_i128(oldv, addr, idx, memop);
-+        tcg_gen_qemu_ld_i128_int(oldv, addr, idx, memop);
+@@ -484,8 +511,12 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
+             hi = TCGV128_HIGH(val);
+         }
  
-         /* Compare i128 */
-         tcg_gen_xor_i64(t0, TCGV128_LOW(oldv), TCGV128_LOW(cmpv));
-@@ -921,7 +961,7 @@ void tcg_gen_nonatomic_cmpxchg_i128(TCGv_i128 retv, TCGv addr, TCGv_i128 cmpv,
-                             TCGV128_HIGH(newv), TCGV128_HIGH(oldv));
- 
-         /* Unconditional writeback. */
--        tcg_gen_qemu_st_i128(tmpv, addr, idx, memop);
-+        tcg_gen_qemu_st_i128_int(tmpv, addr, idx, memop);
-         tcg_gen_mov_i128(retv, oldv);
- 
-         tcg_temp_free_i64(t0);
-@@ -931,20 +971,28 @@ void tcg_gen_nonatomic_cmpxchg_i128(TCGv_i128 retv, TCGv addr, TCGv_i128 cmpv,
-     }
- }
- 
--void tcg_gen_atomic_cmpxchg_i128(TCGv_i128 retv, TCGv addr, TCGv_i128 cmpv,
--                                 TCGv_i128 newv, TCGArg idx, MemOp memop)
-+void tcg_gen_nonatomic_cmpxchg_i128_chk(TCGv_i128 retv, TCGTemp *addr,
-+                                        TCGv_i128 cmpv, TCGv_i128 newv,
-+                                        TCGArg idx, MemOp memop,
-+                                        TCGType addr_type)
-+{
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);
-+    tcg_debug_assert((memop & (MO_SIZE | MO_SIGN)) == MO_128);
-+    tcg_gen_nonatomic_cmpxchg_i128_int(retv, addr, cmpv, newv, idx, memop);
-+}
-+
-+static void tcg_gen_atomic_cmpxchg_i128_int(TCGv_i128 retv, TCGTemp *addr,
-+                                            TCGv_i128 cmpv, TCGv_i128 newv,
-+                                            TCGArg idx, MemOp memop)
- {
-     gen_atomic_cx_i128 gen;
- 
-     if (!(tcg_ctx->gen_tb->cflags & CF_PARALLEL)) {
--        tcg_gen_nonatomic_cmpxchg_i128(retv, addr, cmpv, newv, idx, memop);
-+        tcg_gen_nonatomic_cmpxchg_i128_int(retv, addr, cmpv, newv, idx, memop);
-         return;
-     }
- 
--    tcg_debug_assert((memop & MO_SIZE) == MO_128);
--    tcg_debug_assert((memop & MO_SIGN) == 0);
-     gen = table_cmpxchg[memop & (MO_SIZE | MO_BSWAP)];
--
-     if (gen) {
-         MemOpIdx oi = make_memop_idx(memop, idx);
-         TCGv_i64 a64 = maybe_extend_addr64(addr);
-@@ -964,7 +1012,17 @@ void tcg_gen_atomic_cmpxchg_i128(TCGv_i128 retv, TCGv addr, TCGv_i128 cmpv,
-     tcg_gen_movi_i64(TCGV128_HIGH(retv), 0);
- }
- 
--static void do_nonatomic_op_i32(TCGv_i32 ret, TCGv addr, TCGv_i32 val,
-+void tcg_gen_atomic_cmpxchg_i128_chk(TCGv_i128 retv, TCGTemp *addr,
-+                                     TCGv_i128 cmpv, TCGv_i128 newv,
-+                                     TCGArg idx, MemOp memop,
-+                                     TCGType addr_type)
-+{
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);
-+    tcg_debug_assert((memop & (MO_SIZE | MO_SIGN)) == MO_128);
-+    tcg_gen_atomic_cmpxchg_i128_int(retv, addr, cmpv, newv, idx, memop);
-+}
-+
-+static void do_nonatomic_op_i32(TCGv_i32 ret, TCGTemp *addr, TCGv_i32 val,
-                                 TCGArg idx, MemOp memop, bool new_val,
-                                 void (*gen)(TCGv_i32, TCGv_i32, TCGv_i32))
- {
-@@ -973,17 +1031,17 @@ static void do_nonatomic_op_i32(TCGv_i32 ret, TCGv addr, TCGv_i32 val,
- 
-     memop = tcg_canonicalize_memop(memop, 0, 0);
- 
--    tcg_gen_qemu_ld_i32(t1, addr, idx, memop);
-+    tcg_gen_qemu_ld_i32_int(t1, addr, idx, memop);
-     tcg_gen_ext_i32(t2, val, memop);
-     gen(t2, t1, t2);
--    tcg_gen_qemu_st_i32(t2, addr, idx, memop);
-+    tcg_gen_qemu_st_i32_int(t2, addr, idx, memop);
- 
-     tcg_gen_ext_i32(ret, (new_val ? t2 : t1), memop);
-     tcg_temp_free_i32(t1);
-     tcg_temp_free_i32(t2);
- }
- 
--static void do_atomic_op_i32(TCGv_i32 ret, TCGv addr, TCGv_i32 val,
-+static void do_atomic_op_i32(TCGv_i32 ret, TCGTemp *addr, TCGv_i32 val,
-                              TCGArg idx, MemOp memop, void * const table[])
- {
-     gen_atomic_op_i32 gen;
-@@ -1005,7 +1063,7 @@ static void do_atomic_op_i32(TCGv_i32 ret, TCGv addr, TCGv_i32 val,
-     }
- }
- 
--static void do_nonatomic_op_i64(TCGv_i64 ret, TCGv addr, TCGv_i64 val,
-+static void do_nonatomic_op_i64(TCGv_i64 ret, TCGTemp *addr, TCGv_i64 val,
-                                 TCGArg idx, MemOp memop, bool new_val,
-                                 void (*gen)(TCGv_i64, TCGv_i64, TCGv_i64))
- {
-@@ -1014,40 +1072,36 @@ static void do_nonatomic_op_i64(TCGv_i64 ret, TCGv addr, TCGv_i64 val,
- 
-     memop = tcg_canonicalize_memop(memop, 1, 0);
- 
--    tcg_gen_qemu_ld_i64(t1, addr, idx, memop);
-+    tcg_gen_qemu_ld_i64_int(t1, addr, idx, memop);
-     tcg_gen_ext_i64(t2, val, memop);
-     gen(t2, t1, t2);
--    tcg_gen_qemu_st_i64(t2, addr, idx, memop);
-+    tcg_gen_qemu_st_i64_int(t2, addr, idx, memop);
- 
-     tcg_gen_ext_i64(ret, (new_val ? t2 : t1), memop);
-     tcg_temp_free_i64(t1);
-     tcg_temp_free_i64(t2);
- }
- 
--static void do_atomic_op_i64(TCGv_i64 ret, TCGv addr, TCGv_i64 val,
-+static void do_atomic_op_i64(TCGv_i64 ret, TCGTemp *addr, TCGv_i64 val,
-                              TCGArg idx, MemOp memop, void * const table[])
- {
-     memop = tcg_canonicalize_memop(memop, 1, 0);
- 
-     if ((memop & MO_SIZE) == MO_64) {
--#ifdef CONFIG_ATOMIC64
--        gen_atomic_op_i64 gen;
--        TCGv_i64 a64;
--        MemOpIdx oi;
-+        gen_atomic_op_i64 gen = table[memop & (MO_SIZE | MO_BSWAP)];
- 
--        gen = table[memop & (MO_SIZE | MO_BSWAP)];
--        tcg_debug_assert(gen != NULL);
-+        if (gen) {
-+            MemOpIdx oi = make_memop_idx(memop & ~MO_SIGN, idx);
-+            TCGv_i64 a64 = maybe_extend_addr64(addr);
-+            gen(ret, cpu_env, a64, val, tcg_constant_i32(oi));
-+            maybe_free_addr64(a64);
-+            return;
+-        gen_ldst(INDEX_op_qemu_ld_i128, tcgv_i64_temp(lo),
+-                 tcgv_i64_temp(hi), addr, oi);
++        if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++            opc = INDEX_op_qemu_ld_a32_i128;
++        } else {
++            opc = INDEX_op_qemu_ld_a64_i128;
 +        }
++        gen_ldst(opc, tcgv_i64_temp(lo), tcgv_i64_temp(hi), addr, oi);
  
--        oi = make_memop_idx(memop & ~MO_SIGN, idx);
--        a64 = maybe_extend_addr64(addr);
--        gen(ret, cpu_env, a64, val, tcg_constant_i32(oi));
--        maybe_free_addr64(a64);
--#else
-         gen_helper_exit_atomic(cpu_env);
-         /* Produce a result, so that we have a well-formed opcode stream
-            with respect to uses of the result in the (dead) code following.  */
-         tcg_gen_movi_i64(ret, 0);
--#endif /* CONFIG_ATOMIC64 */
+         if (need_bswap) {
+             tcg_gen_bswap64_i64(lo, lo);
+@@ -501,6 +532,12 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
+         canonicalize_memop_i128_as_i64(mop, memop);
+         need_bswap = (mop[0] ^ memop) & MO_BSWAP;
+ 
++        if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++            opc = INDEX_op_qemu_ld_a32_i64;
++        } else {
++            opc = INDEX_op_qemu_ld_a64_i64;
++        }
++
+         /*
+          * Since there are no global TCGv_i128, there is no visible state
+          * changed if the second load faults.  Load directly into the two
+@@ -515,7 +552,7 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
+         }
+ 
+         oi = make_memop_idx(mop[0], idx);
+-        gen_ldst_i64(INDEX_op_qemu_ld_i64, x, addr, oi);
++        gen_ldst_i64(opc, x, addr, oi);
+ 
+         if (need_bswap) {
+             tcg_gen_bswap64_i64(x, x);
+@@ -531,7 +568,7 @@ static void tcg_gen_qemu_ld_i128_int(TCGv_i128 val, TCGTemp *addr,
+             addr_p8 = tcgv_i64_temp(t);
+         }
+ 
+-        gen_ldst_i64(INDEX_op_qemu_ld_i64, y, addr_p8, oi);
++        gen_ldst_i64(opc, y, addr_p8, oi);
+         tcg_temp_free_internal(addr_p8);
+ 
+         if (need_bswap) {
+@@ -564,6 +601,7 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
+ {
+     const MemOpIdx orig_oi = make_memop_idx(memop, idx);
+     TCGv_i64 ext_addr = NULL;
++    TCGOpcode opc;
+ 
+     tcg_gen_req_mo(TCG_MO_ST_LD | TCG_MO_ST_ST);
+ 
+@@ -586,8 +624,12 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
+             hi = TCGV128_HIGH(val);
+         }
+ 
+-        gen_ldst(INDEX_op_qemu_st_i128, tcgv_i64_temp(lo),
+-                 tcgv_i64_temp(hi), addr, oi);
++        if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++            opc = INDEX_op_qemu_st_a32_i128;
++        } else {
++            opc = INDEX_op_qemu_st_a64_i128;
++        }
++        gen_ldst(opc, tcgv_i64_temp(lo), tcgv_i64_temp(hi), addr, oi);
+ 
+         if (need_bswap) {
+             tcg_temp_free_i64(lo);
+@@ -600,6 +642,12 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
+ 
+         canonicalize_memop_i128_as_i64(mop, memop);
+ 
++        if (tcg_ctx->addr_type == TCG_TYPE_I32) {
++            opc = INDEX_op_qemu_st_a32_i64;
++        } else {
++            opc = INDEX_op_qemu_st_a64_i64;
++        }
++
+         if ((memop & MO_BSWAP) == MO_LE) {
+             x = TCGV128_LOW(val);
+             y = TCGV128_HIGH(val);
+@@ -613,8 +661,8 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
+             tcg_gen_bswap64_i64(b, x);
+             x = b;
+         }
+-        gen_ldst_i64(INDEX_op_qemu_st_i64, x, addr,
+-                     make_memop_idx(mop[0], idx));
++
++        gen_ldst_i64(opc, x, addr, make_memop_idx(mop[0], idx));
+ 
+         if (tcg_ctx->addr_type == TCG_TYPE_I32) {
+             TCGv_i32 t = tcg_temp_ebb_new_i32();
+@@ -628,13 +676,10 @@ static void tcg_gen_qemu_st_i128_int(TCGv_i128 val, TCGTemp *addr,
+ 
+         if (b) {
+             tcg_gen_bswap64_i64(b, y);
+-            y = b;
+-        }
+-        gen_ldst_i64(INDEX_op_qemu_st_i64, y, addr_p8,
+-                     make_memop_idx(mop[1], idx));
+-
+-        if (b) {
++            gen_ldst_i64(opc, b, addr_p8, make_memop_idx(mop[1], idx));
+             tcg_temp_free_i64(b);
++        } else {
++            gen_ldst_i64(opc, y, addr_p8, make_memop_idx(mop[1], idx));
+         }
+         tcg_temp_free_internal(addr_p8);
      } else {
-         TCGv_i32 v32 = tcg_temp_ebb_new_i32();
-         TCGv_i32 r32 = tcg_temp_ebb_new_i32();
-@@ -1075,9 +1129,12 @@ static void * const table_##NAME[(MO_SIZE | MO_BSWAP) + 1] = {          \
-     WITH_ATOMIC64([MO_64 | MO_LE] = gen_helper_atomic_##NAME##q_le)     \
-     WITH_ATOMIC64([MO_64 | MO_BE] = gen_helper_atomic_##NAME##q_be)     \
- };                                                                      \
--void tcg_gen_atomic_##NAME##_i32                                        \
--    (TCGv_i32 ret, TCGv addr, TCGv_i32 val, TCGArg idx, MemOp memop)    \
-+void tcg_gen_atomic_##NAME##_i32_chk(TCGv_i32 ret, TCGTemp *addr,       \
-+                                     TCGv_i32 val, TCGArg idx,          \
-+                                     MemOp memop, TCGType addr_type)    \
- {                                                                       \
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);                  \
-+    tcg_debug_assert((memop & MO_SIZE) <= MO_32);                       \
-     if (tcg_ctx->gen_tb->cflags & CF_PARALLEL) {                        \
-         do_atomic_op_i32(ret, addr, val, idx, memop, table_##NAME);     \
-     } else {                                                            \
-@@ -1085,9 +1142,12 @@ void tcg_gen_atomic_##NAME##_i32                                        \
-                             tcg_gen_##OP##_i32);                        \
-     }                                                                   \
- }                                                                       \
--void tcg_gen_atomic_##NAME##_i64                                        \
--    (TCGv_i64 ret, TCGv addr, TCGv_i64 val, TCGArg idx, MemOp memop)    \
-+void tcg_gen_atomic_##NAME##_i64_chk(TCGv_i64 ret, TCGTemp *addr,       \
-+                                     TCGv_i64 val, TCGArg idx,          \
-+                                     MemOp memop, TCGType addr_type)    \
- {                                                                       \
-+    tcg_debug_assert(addr_type == tcg_ctx->addr_type);                  \
-+    tcg_debug_assert((memop & MO_SIZE) <= MO_64);                       \
-     if (tcg_ctx->gen_tb->cflags & CF_PARALLEL) {                        \
-         do_atomic_op_i64(ret, addr, val, idx, memop, table_##NAME);     \
-     } else {                                                            \
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index dfe5dde63d..5a2b2b1371 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -1839,17 +1839,24 @@ bool tcg_op_supported(TCGOpcode op)
+     case INDEX_op_exit_tb:
+     case INDEX_op_goto_tb:
+     case INDEX_op_goto_ptr:
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_st_i32:
+-    case INDEX_op_qemu_ld_i64:
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         return true;
+ 
+-    case INDEX_op_qemu_st8_i32:
++    case INDEX_op_qemu_st8_a32_i32:
++    case INDEX_op_qemu_st8_a64_i32:
+         return TCG_TARGET_HAS_qemu_st8_i32;
+ 
+-    case INDEX_op_qemu_ld_i128:
+-    case INDEX_op_qemu_st_i128:
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         return TCG_TARGET_HAS_qemu_ldst_i128;
+ 
+     case INDEX_op_mov_i32:
+@@ -2464,13 +2471,20 @@ static void tcg_dump_ops(TCGContext *s, FILE *f, bool have_prefs)
+                 }
+                 i = 1;
+                 break;
+-            case INDEX_op_qemu_ld_i32:
+-            case INDEX_op_qemu_st_i32:
+-            case INDEX_op_qemu_st8_i32:
+-            case INDEX_op_qemu_ld_i64:
+-            case INDEX_op_qemu_st_i64:
+-            case INDEX_op_qemu_ld_i128:
+-            case INDEX_op_qemu_st_i128:
++            case INDEX_op_qemu_ld_a32_i32:
++            case INDEX_op_qemu_ld_a64_i32:
++            case INDEX_op_qemu_st_a32_i32:
++            case INDEX_op_qemu_st_a64_i32:
++            case INDEX_op_qemu_st8_a32_i32:
++            case INDEX_op_qemu_st8_a64_i32:
++            case INDEX_op_qemu_ld_a32_i64:
++            case INDEX_op_qemu_ld_a64_i64:
++            case INDEX_op_qemu_st_a32_i64:
++            case INDEX_op_qemu_st_a64_i64:
++            case INDEX_op_qemu_ld_a32_i128:
++            case INDEX_op_qemu_ld_a64_i128:
++            case INDEX_op_qemu_st_a32_i128:
++            case INDEX_op_qemu_st_a64_i128:
+                 {
+                     const char *s_al, *s_op, *s_at;
+                     MemOpIdx oi = op->args[k++];
+diff --git a/tcg/tci.c b/tcg/tci.c
+index 15f2f8c463..742c791726 100644
+--- a/tcg/tci.c
++++ b/tcg/tci.c
+@@ -922,7 +922,8 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
+             tb_ptr = ptr;
+             break;
+ 
+-        case INDEX_op_qemu_ld_i32:
++        case INDEX_op_qemu_ld_a32_i32:
++        case INDEX_op_qemu_ld_a64_i32:
+             if (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS) {
+                 tci_args_rrm(insn, &r0, &r1, &oi);
+                 taddr = regs[r1];
+@@ -934,7 +935,8 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
+             regs[r0] = tmp32;
+             break;
+ 
+-        case INDEX_op_qemu_ld_i64:
++        case INDEX_op_qemu_ld_a32_i64:
++        case INDEX_op_qemu_ld_a64_i64:
+             if (TCG_TARGET_REG_BITS == 64) {
+                 tci_args_rrm(insn, &r0, &r1, &oi);
+                 taddr = regs[r1];
+@@ -954,7 +956,8 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
+             }
+             break;
+ 
+-        case INDEX_op_qemu_st_i32:
++        case INDEX_op_qemu_st_a32_i32:
++        case INDEX_op_qemu_st_a64_i32:
+             if (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS) {
+                 tci_args_rrm(insn, &r0, &r1, &oi);
+                 taddr = regs[r1];
+@@ -966,7 +969,8 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
+             tci_qemu_st(env, taddr, tmp32, oi, tb_ptr);
+             break;
+ 
+-        case INDEX_op_qemu_st_i64:
++        case INDEX_op_qemu_st_a32_i64:
++        case INDEX_op_qemu_st_a64_i64:
+             if (TCG_TARGET_REG_BITS == 64) {
+                 tci_args_rrm(insn, &r0, &r1, &oi);
+                 taddr = regs[r1];
+@@ -1251,15 +1255,21 @@ int print_insn_tci(bfd_vma addr, disassemble_info *info)
+                            str_r(r3), str_r(r4), str_r(r5));
+         break;
+ 
+-    case INDEX_op_qemu_ld_i64:
+-    case INDEX_op_qemu_st_i64:
+-        len = DIV_ROUND_UP(64, TCG_TARGET_REG_BITS);
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_st_a32_i32:
++        len = 1 + 1;
++        goto do_qemu_ldst;
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_st_a64_i32:
++        len = 1 + DIV_ROUND_UP(64, TCG_TARGET_REG_BITS);
++        goto do_qemu_ldst;
++    case INDEX_op_qemu_ld_a64_i64:
++    case INDEX_op_qemu_st_a64_i64:
++        len = 2 * DIV_ROUND_UP(64, TCG_TARGET_REG_BITS);
+         goto do_qemu_ldst;
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_st_i32:
+-        len = 1;
+     do_qemu_ldst:
+-        len += DIV_ROUND_UP(TARGET_LONG_BITS, TCG_TARGET_REG_BITS);
+         switch (len) {
+         case 2:
+             tci_args_rrm(insn, &r0, &r1, &oi);
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index 893b3514bb..cc0f55623b 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -2328,18 +2328,24 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_insn(s, 3506, CSEL, ext, a0, REG0(3), REG0(4), args[5]);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         tcg_out_qemu_ld(s, a0, a1, a2, ext);
+         break;
+-    case INDEX_op_qemu_st_i32:
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         tcg_out_qemu_st(s, REG0(0), a1, a2, ext);
+         break;
+-    case INDEX_op_qemu_ld_i128:
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
+         tcg_out_qemu_ld128(s, a0, a1, a2, args[3]);
+         break;
+-    case INDEX_op_qemu_st_i128:
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         tcg_out_qemu_st128(s, REG0(0), REG0(1), a2, args[3]);
+         break;
+ 
+@@ -2976,15 +2982,21 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_movcond_i64:
+         return C_O1_I4(r, r, rA, rZ, rZ);
+ 
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         return C_O1_I1(r, l);
+-    case INDEX_op_qemu_ld_i128:
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
+         return C_O2_I1(r, r, l);
+-    case INDEX_op_qemu_st_i32:
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         return C_O0_I2(lZ, l);
+-    case INDEX_op_qemu_st_i128:
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         return C_O0_I3(lZ, lZ, l);
+ 
+     case INDEX_op_deposit_i32:
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index add8cc1fd5..47f3ff18fa 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -1985,41 +1985,36 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+                         ARITH_MOV, args[0], 0, 0);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        if (TARGET_LONG_BITS == 32) {
+-            tcg_out_qemu_ld(s, args[0], -1, args[1], -1,
+-                            args[2], TCG_TYPE_I32);
+-        } else {
+-            tcg_out_qemu_ld(s, args[0], -1, args[1], args[2],
+-                            args[3], TCG_TYPE_I32);
+-        }
++    case INDEX_op_qemu_ld_a32_i32:
++        tcg_out_qemu_ld(s, args[0], -1, args[1], -1, args[2], TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_ld_i64:
+-        if (TARGET_LONG_BITS == 32) {
+-            tcg_out_qemu_ld(s, args[0], args[1], args[2], -1,
+-                            args[3], TCG_TYPE_I64);
+-        } else {
+-            tcg_out_qemu_ld(s, args[0], args[1], args[2], args[3],
+-                            args[4], TCG_TYPE_I64);
+-        }
++    case INDEX_op_qemu_ld_a64_i32:
++        tcg_out_qemu_ld(s, args[0], -1, args[1], args[2],
++                        args[3], TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_st_i32:
+-        if (TARGET_LONG_BITS == 32) {
+-            tcg_out_qemu_st(s, args[0], -1, args[1], -1,
+-                            args[2], TCG_TYPE_I32);
+-        } else {
+-            tcg_out_qemu_st(s, args[0], -1, args[1], args[2],
+-                            args[3], TCG_TYPE_I32);
+-        }
++    case INDEX_op_qemu_ld_a32_i64:
++        tcg_out_qemu_ld(s, args[0], args[1], args[2], -1,
++                        args[3], TCG_TYPE_I64);
+         break;
+-    case INDEX_op_qemu_st_i64:
+-        if (TARGET_LONG_BITS == 32) {
+-            tcg_out_qemu_st(s, args[0], args[1], args[2], -1,
+-                            args[3], TCG_TYPE_I64);
+-        } else {
+-            tcg_out_qemu_st(s, args[0], args[1], args[2], args[3],
+-                            args[4], TCG_TYPE_I64);
+-        }
++    case INDEX_op_qemu_ld_a64_i64:
++        tcg_out_qemu_ld(s, args[0], args[1], args[2], args[3],
++                        args[4], TCG_TYPE_I64);
++        break;
++
++    case INDEX_op_qemu_st_a32_i32:
++        tcg_out_qemu_st(s, args[0], -1, args[1], -1, args[2], TCG_TYPE_I32);
++        break;
++    case INDEX_op_qemu_st_a64_i32:
++        tcg_out_qemu_st(s, args[0], -1, args[1], args[2],
++                        args[3], TCG_TYPE_I32);
++        break;
++    case INDEX_op_qemu_st_a32_i64:
++        tcg_out_qemu_st(s, args[0], args[1], args[2], -1,
++                        args[3], TCG_TYPE_I64);
++        break;
++    case INDEX_op_qemu_st_a64_i64:
++        tcg_out_qemu_st(s, args[0], args[1], args[2], args[3],
++                        args[4], TCG_TYPE_I64);
+         break;
+ 
+     case INDEX_op_bswap16_i32:
+@@ -2160,14 +2155,22 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_setcond2_i32:
+         return C_O1_I4(r, r, r, rI, rI);
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        return TARGET_LONG_BITS == 32 ? C_O1_I1(r, q) : C_O1_I2(r, q, q);
+-    case INDEX_op_qemu_ld_i64:
+-        return TARGET_LONG_BITS == 32 ? C_O2_I1(e, p, q) : C_O2_I2(e, p, q, q);
+-    case INDEX_op_qemu_st_i32:
+-        return TARGET_LONG_BITS == 32 ? C_O0_I2(q, q) : C_O0_I3(q, q, q);
+-    case INDEX_op_qemu_st_i64:
+-        return TARGET_LONG_BITS == 32 ? C_O0_I3(Q, p, q) : C_O0_I4(Q, p, q, q);
++    case INDEX_op_qemu_ld_a32_i32:
++        return C_O1_I1(r, q);
++    case INDEX_op_qemu_ld_a64_i32:
++        return C_O1_I2(r, q, q);
++    case INDEX_op_qemu_ld_a32_i64:
++        return C_O2_I1(e, p, q);
++    case INDEX_op_qemu_ld_a64_i64:
++        return C_O2_I2(e, p, q, q);
++    case INDEX_op_qemu_st_a32_i32:
++        return C_O0_I2(q, q);
++    case INDEX_op_qemu_st_a64_i32:
++        return C_O0_I3(q, q, q);
++    case INDEX_op_qemu_st_a32_i64:
++        return C_O0_I3(Q, p, q);
++    case INDEX_op_qemu_st_a64_i64:
++        return C_O0_I4(Q, p, q, q);
+ 
+     case INDEX_op_st_vec:
+         return C_O0_I2(w, r);
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index b66769952e..647c31fa23 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -2666,44 +2666,62 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_NOT, a0);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        if (TCG_TARGET_REG_BITS >= TARGET_LONG_BITS) {
+-            tcg_out_qemu_ld(s, a0, -1, a1, -1, a2, TCG_TYPE_I32);
+-        } else {
++    case INDEX_op_qemu_ld_a64_i32:
++        if (TCG_TARGET_REG_BITS == 32) {
+             tcg_out_qemu_ld(s, a0, -1, a1, a2, args[3], TCG_TYPE_I32);
++            break;
+         }
++        /* fall through */
++    case INDEX_op_qemu_ld_a32_i32:
++        tcg_out_qemu_ld(s, a0, -1, a1, -1, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i64:
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_qemu_ld(s, a0, -1, a1, -1, a2, TCG_TYPE_I64);
+-        } else if (TARGET_LONG_BITS == 32) {
++        } else {
+             tcg_out_qemu_ld(s, a0, a1, a2, -1, args[3], TCG_TYPE_I64);
++        }
++        break;
++    case INDEX_op_qemu_ld_a64_i64:
++        if (TCG_TARGET_REG_BITS == 64) {
++            tcg_out_qemu_ld(s, a0, -1, a1, -1, a2, TCG_TYPE_I64);
+         } else {
+             tcg_out_qemu_ld(s, a0, a1, a2, args[3], args[4], TCG_TYPE_I64);
+         }
+         break;
+-    case INDEX_op_qemu_ld_i128:
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
+         tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
+         tcg_out_qemu_ld(s, a0, a1, a2, -1, args[3], TCG_TYPE_I128);
+         break;
+-    case INDEX_op_qemu_st_i32:
+-    case INDEX_op_qemu_st8_i32:
+-        if (TCG_TARGET_REG_BITS >= TARGET_LONG_BITS) {
+-            tcg_out_qemu_st(s, a0, -1, a1, -1, a2, TCG_TYPE_I32);
+-        } else {
++
++    case INDEX_op_qemu_st_a64_i32:
++    case INDEX_op_qemu_st8_a64_i32:
++        if (TCG_TARGET_REG_BITS == 32) {
+             tcg_out_qemu_st(s, a0, -1, a1, a2, args[3], TCG_TYPE_I32);
++            break;
+         }
++        /* fall through */
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st8_a32_i32:
++        tcg_out_qemu_st(s, a0, -1, a1, -1, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i64:
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_qemu_st(s, a0, -1, a1, -1, a2, TCG_TYPE_I64);
+-        } else if (TARGET_LONG_BITS == 32) {
++        } else {
+             tcg_out_qemu_st(s, a0, a1, a2, -1, args[3], TCG_TYPE_I64);
++        }
++        break;
++    case INDEX_op_qemu_st_a64_i64:
++        if (TCG_TARGET_REG_BITS == 64) {
++            tcg_out_qemu_st(s, a0, -1, a1, -1, a2, TCG_TYPE_I64);
+         } else {
+             tcg_out_qemu_st(s, a0, a1, a2, args[3], args[4], TCG_TYPE_I64);
+         }
+         break;
+-    case INDEX_op_qemu_st_i128:
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
+         tcg_out_qemu_st(s, a0, a1, a2, -1, args[3], TCG_TYPE_I128);
+         break;
+@@ -3380,31 +3398,36 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_clz_i64:
+         return have_lzcnt ? C_N1_I2(r, r, rW) : C_N1_I2(r, r, r);
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        return (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS
+-                ? C_O1_I1(r, L) : C_O1_I2(r, L, L));
++    case INDEX_op_qemu_ld_a32_i32:
++        return C_O1_I1(r, L);
++    case INDEX_op_qemu_ld_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, L) : C_O1_I2(r, L, L);
+ 
+-    case INDEX_op_qemu_st_i32:
+-        return (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS
+-                ? C_O0_I2(L, L) : C_O0_I3(L, L, L));
+-    case INDEX_op_qemu_st8_i32:
+-        return (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS
+-                ? C_O0_I2(s, L) : C_O0_I3(s, L, L));
++    case INDEX_op_qemu_st_a32_i32:
++        return C_O0_I2(L, L);
++    case INDEX_op_qemu_st_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(L, L) : C_O0_I3(L, L, L);
++    case INDEX_op_qemu_st8_a32_i32:
++        return C_O0_I2(s, L);
++    case INDEX_op_qemu_st8_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(s, L) : C_O0_I3(s, L, L);
+ 
+-    case INDEX_op_qemu_ld_i64:
+-        return (TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, L)
+-                : TARGET_LONG_BITS <= TCG_TARGET_REG_BITS ? C_O2_I1(r, r, L)
+-                : C_O2_I2(r, r, L, L));
++    case INDEX_op_qemu_ld_a32_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, L) : C_O2_I1(r, r, L);
++    case INDEX_op_qemu_ld_a64_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, L) : C_O2_I2(r, r, L, L);
+ 
+-    case INDEX_op_qemu_st_i64:
+-        return (TCG_TARGET_REG_BITS == 64 ? C_O0_I2(L, L)
+-                : TARGET_LONG_BITS <= TCG_TARGET_REG_BITS ? C_O0_I3(L, L, L)
+-                : C_O0_I4(L, L, L, L));
++    case INDEX_op_qemu_st_a32_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(L, L) : C_O0_I3(L, L, L);
++    case INDEX_op_qemu_st_a64_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(L, L) : C_O0_I4(L, L, L, L);
+ 
+-    case INDEX_op_qemu_ld_i128:
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
+         tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
+         return C_O2_I1(r, r, L);
+-    case INDEX_op_qemu_st_i128:
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
+         return C_O0_I3(L, L, L);
+ 
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 07d35f92fa..0c4ef72d6f 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -1443,16 +1443,20 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_ldst(s, OPC_ST_D, a0, a1, a2);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
+         tcg_out_qemu_ld(s, a0, a1, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         tcg_out_qemu_ld(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
+-    case INDEX_op_qemu_st_i32:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
+ 
+@@ -1492,8 +1496,10 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_st32_i64:
+     case INDEX_op_st_i32:
+     case INDEX_op_st_i64:
+-    case INDEX_op_qemu_st_i32:
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         return C_O0_I2(rZ, r);
+ 
+     case INDEX_op_brcond_i32:
+@@ -1535,8 +1541,10 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_ld32u_i64:
+     case INDEX_op_ld_i32:
+     case INDEX_op_ld_i64:
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         return C_O1_I1(r, r);
+ 
+     case INDEX_op_andc_i32:
+diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
+index 3f3fe5b991..7ff4e2ff71 100644
+--- a/tcg/mips/tcg-target.c.inc
++++ b/tcg/mips/tcg-target.c.inc
+@@ -1954,34 +1954,49 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_setcond2(s, args[5], a0, a1, a2, args[3], args[4]);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        if (TCG_TARGET_REG_BITS >= TARGET_LONG_BITS) {
+-            tcg_out_qemu_ld(s, a0, 0, a1, 0, a2, TCG_TYPE_I32);
+-        } else {
++    case INDEX_op_qemu_ld_a64_i32:
++        if (TCG_TARGET_REG_BITS == 32) {
+             tcg_out_qemu_ld(s, a0, 0, a1, a2, args[3], TCG_TYPE_I32);
++            break;
+         }
++        /* fall through */
++    case INDEX_op_qemu_ld_a32_i32:
++        tcg_out_qemu_ld(s, a0, 0, a1, 0, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i64:
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_qemu_ld(s, a0, 0, a1, 0, a2, TCG_TYPE_I64);
+-        } else if (TARGET_LONG_BITS == 32) {
++        } else {
+             tcg_out_qemu_ld(s, a0, a1, a2, 0, args[3], TCG_TYPE_I64);
++        }
++        break;
++    case INDEX_op_qemu_ld_a64_i64:
++        if (TCG_TARGET_REG_BITS == 64) {
++            tcg_out_qemu_ld(s, a0, 0, a1, 0, a2, TCG_TYPE_I64);
+         } else {
+             tcg_out_qemu_ld(s, a0, a1, a2, args[3], args[4], TCG_TYPE_I64);
+         }
+         break;
+-    case INDEX_op_qemu_st_i32:
+-        if (TCG_TARGET_REG_BITS >= TARGET_LONG_BITS) {
+-            tcg_out_qemu_st(s, a0, 0, a1, 0, a2, TCG_TYPE_I32);
+-        } else {
++
++    case INDEX_op_qemu_st_a64_i32:
++        if (TCG_TARGET_REG_BITS == 32) {
+             tcg_out_qemu_st(s, a0, 0, a1, a2, args[3], TCG_TYPE_I32);
++            break;
+         }
++        /* fall through */
++    case INDEX_op_qemu_st_a32_i32:
++        tcg_out_qemu_st(s, a0, 0, a1, 0, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i64:
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_qemu_st(s, a0, 0, a1, 0, a2, TCG_TYPE_I64);
+-        } else if (TARGET_LONG_BITS == 32) {
++        } else {
+             tcg_out_qemu_st(s, a0, a1, a2, 0, args[3], TCG_TYPE_I64);
++        }
++        break;
++    case INDEX_op_qemu_st_a64_i64:
++        if (TCG_TARGET_REG_BITS == 64) {
++            tcg_out_qemu_st(s, a0, 0, a1, 0, a2, TCG_TYPE_I64);
+         } else {
+             tcg_out_qemu_st(s, a0, a1, a2, args[3], args[4], TCG_TYPE_I64);
+         }
+@@ -2140,19 +2155,22 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_brcond2_i32:
+         return C_O0_I4(rZ, rZ, rZ, rZ);
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        return (TCG_TARGET_REG_BITS == 64 || TARGET_LONG_BITS == 32
+-                ? C_O1_I1(r, r) : C_O1_I2(r, r, r));
+-    case INDEX_op_qemu_st_i32:
+-        return (TCG_TARGET_REG_BITS == 64 || TARGET_LONG_BITS == 32
+-                ? C_O0_I2(rZ, r) : C_O0_I3(rZ, r, r));
+-    case INDEX_op_qemu_ld_i64:
+-        return (TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r)
+-                : TARGET_LONG_BITS == 32 ? C_O2_I1(r, r, r)
+-                : C_O2_I2(r, r, r, r));
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_ld_a32_i32:
++        return C_O1_I1(r, r);
++    case INDEX_op_qemu_ld_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O1_I2(r, r, r);
++    case INDEX_op_qemu_st_a32_i32:
++        return C_O0_I2(rZ, r);
++    case INDEX_op_qemu_st_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(rZ, r) : C_O0_I3(rZ, r, r);
++    case INDEX_op_qemu_ld_a32_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O2_I1(r, r, r);
++    case INDEX_op_qemu_ld_a64_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O2_I2(r, r, r, r);
++    case INDEX_op_qemu_st_a32_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(rZ, r) : C_O0_I3(rZ, rZ, r);
++    case INDEX_op_qemu_st_a64_i64:
+         return (TCG_TARGET_REG_BITS == 64 ? C_O0_I2(rZ, r)
+-                : TARGET_LONG_BITS == 32 ? C_O0_I3(rZ, rZ, r)
+                 : C_O0_I4(rZ, rZ, r, r));
+ 
+     default:
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index c3a1527856..f74218b13f 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -2909,54 +2909,70 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out32(s, MODUD | TAB(args[0], args[1], args[2]));
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        if (TCG_TARGET_REG_BITS >= TARGET_LONG_BITS) {
+-            tcg_out_qemu_ld(s, args[0], -1, args[1], -1,
+-                            args[2], TCG_TYPE_I32);
+-        } else {
++    case INDEX_op_qemu_ld_a64_i32:
++        if (TCG_TARGET_REG_BITS == 32) {
+             tcg_out_qemu_ld(s, args[0], -1, args[1], args[2],
+                             args[3], TCG_TYPE_I32);
++            break;
+         }
++        /* fall through */
++    case INDEX_op_qemu_ld_a32_i32:
++        tcg_out_qemu_ld(s, args[0], -1, args[1], -1, args[2], TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i64:
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_qemu_ld(s, args[0], -1, args[1], -1,
+                             args[2], TCG_TYPE_I64);
+-        } else if (TARGET_LONG_BITS == 32) {
++        } else {
+             tcg_out_qemu_ld(s, args[0], args[1], args[2], -1,
+                             args[3], TCG_TYPE_I64);
++        }
++        break;
++    case INDEX_op_qemu_ld_a64_i64:
++        if (TCG_TARGET_REG_BITS == 64) {
++            tcg_out_qemu_ld(s, args[0], -1, args[1], -1,
++                            args[2], TCG_TYPE_I64);
+         } else {
+             tcg_out_qemu_ld(s, args[0], args[1], args[2], args[3],
+                             args[4], TCG_TYPE_I64);
+         }
+         break;
+-    case INDEX_op_qemu_ld_i128:
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
+         tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
+         tcg_out_qemu_ldst_i128(s, args[0], args[1], args[2], args[3], true);
+         break;
+ 
+-    case INDEX_op_qemu_st_i32:
+-        if (TCG_TARGET_REG_BITS >= TARGET_LONG_BITS) {
+-            tcg_out_qemu_st(s, args[0], -1, args[1], -1,
+-                            args[2], TCG_TYPE_I32);
+-        } else {
++    case INDEX_op_qemu_st_a64_i32:
++        if (TCG_TARGET_REG_BITS == 32) {
+             tcg_out_qemu_st(s, args[0], -1, args[1], args[2],
+                             args[3], TCG_TYPE_I32);
++            break;
+         }
++        /* fall through */
++    case INDEX_op_qemu_st_a32_i32:
++        tcg_out_qemu_st(s, args[0], -1, args[1], -1, args[2], TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i64:
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_qemu_st(s, args[0], -1, args[1], -1,
+                             args[2], TCG_TYPE_I64);
+-        } else if (TARGET_LONG_BITS == 32) {
++        } else {
+             tcg_out_qemu_st(s, args[0], args[1], args[2], -1,
+                             args[3], TCG_TYPE_I64);
++        }
++        break;
++    case INDEX_op_qemu_st_a64_i64:
++        if (TCG_TARGET_REG_BITS == 64) {
++            tcg_out_qemu_st(s, args[0], -1, args[1], -1,
++                            args[2], TCG_TYPE_I64);
+         } else {
+             tcg_out_qemu_st(s, args[0], args[1], args[2], args[3],
+                             args[4], TCG_TYPE_I64);
+         }
+         break;
+-    case INDEX_op_qemu_st_i128:
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         tcg_debug_assert(TCG_TARGET_REG_BITS == 64);
+         tcg_out_qemu_ldst_i128(s, args[0], args[1], args[2], args[3], false);
+         break;
+@@ -3775,29 +3791,28 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_sub2_i32:
+         return C_O2_I4(r, r, rI, rZM, r, r);
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        return (TCG_TARGET_REG_BITS == 64 || TARGET_LONG_BITS == 32
+-                ? C_O1_I1(r, r)
+-                : C_O1_I2(r, r, r));
+-
+-    case INDEX_op_qemu_st_i32:
+-        return (TCG_TARGET_REG_BITS == 64 || TARGET_LONG_BITS == 32
+-                ? C_O0_I2(r, r)
+-                : C_O0_I3(r, r, r));
+-
+-    case INDEX_op_qemu_ld_i64:
+-        return (TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r)
+-                : TARGET_LONG_BITS == 32 ? C_O2_I1(r, r, r)
+-                : C_O2_I2(r, r, r, r));
+-
+-    case INDEX_op_qemu_st_i64:
+-        return (TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r)
+-                : TARGET_LONG_BITS == 32 ? C_O0_I3(r, r, r)
+-                : C_O0_I4(r, r, r, r));
+-
+-    case INDEX_op_qemu_ld_i128:
++    case INDEX_op_qemu_ld_a32_i32:
++        return C_O1_I1(r, r);
++    case INDEX_op_qemu_ld_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O1_I2(r, r, r);
++    case INDEX_op_qemu_ld_a32_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O2_I1(r, r, r);
++    case INDEX_op_qemu_ld_a64_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O2_I2(r, r, r, r);
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
+         return C_O2_I1(o, m, r);
+-    case INDEX_op_qemu_st_i128:
++
++    case INDEX_op_qemu_st_a32_i32:
++        return C_O0_I2(r, r);
++    case INDEX_op_qemu_st_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r) : C_O0_I3(r, r, r);
++    case INDEX_op_qemu_st_a32_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r) : C_O0_I3(r, r, r);
++    case INDEX_op_qemu_st_a64_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r) : C_O0_I4(r, r, r, r);
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         return C_O0_I3(o, m, r);
+ 
+     case INDEX_op_add_vec:
+diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+index 1fc1a9199b..de61edb5df 100644
+--- a/tcg/riscv/tcg-target.c.inc
++++ b/tcg/riscv/tcg-target.c.inc
+@@ -1382,16 +1382,20 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_setcond(s, args[3], a0, a1, a2);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
+         tcg_out_qemu_ld(s, a0, a1, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         tcg_out_qemu_ld(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
+-    case INDEX_op_qemu_st_i32:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
+ 
+@@ -1533,11 +1537,15 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_sub2_i64:
+         return C_O2_I4(r, r, rZ, rZ, rM, rM);
+ 
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         return C_O1_I1(r, r);
+-    case INDEX_op_qemu_st_i32:
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         return C_O0_I2(rZ, r);
+ 
+     default:
+diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
+index 835daa51fa..7606073c81 100644
+--- a/tcg/s390x/tcg-target.c.inc
++++ b/tcg/s390x/tcg-target.c.inc
+@@ -2297,22 +2297,28 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
+                      args[2], const_args[2], args[3], const_args[3], args[4]);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
+         tcg_out_qemu_ld(s, args[0], args[1], args[2], TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         tcg_out_qemu_ld(s, args[0], args[1], args[2], TCG_TYPE_I64);
+         break;
+-    case INDEX_op_qemu_st_i32:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
+         tcg_out_qemu_st(s, args[0], args[1], args[2], TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         tcg_out_qemu_st(s, args[0], args[1], args[2], TCG_TYPE_I64);
+         break;
+-    case INDEX_op_qemu_ld_i128:
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
+         tcg_out_qemu_ldst_i128(s, args[0], args[1], args[2], args[3], true);
+         break;
+-    case INDEX_op_qemu_st_i128:
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         tcg_out_qemu_ldst_i128(s, args[0], args[1], args[2], args[3], false);
+         break;
+ 
+@@ -3186,15 +3192,21 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_ctpop_i64:
+         return C_O1_I1(r, r);
+ 
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         return C_O1_I1(r, r);
+-    case INDEX_op_qemu_st_i64:
+-    case INDEX_op_qemu_st_i32:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
+         return C_O0_I2(r, r);
+-    case INDEX_op_qemu_ld_i128:
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
+         return C_O2_I1(o, m, r);
+-    case INDEX_op_qemu_st_i128:
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
+         return C_O0_I3(o, m, r);
+ 
+     case INDEX_op_deposit_i32:
+diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
+index 9676b745a2..6e6c26d470 100644
+--- a/tcg/sparc64/tcg-target.c.inc
++++ b/tcg/sparc64/tcg-target.c.inc
+@@ -1376,16 +1376,20 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_arithi(s, a1, a0, 32, SHIFT_SRLX);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
+         tcg_out_qemu_ld(s, a0, a1, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         tcg_out_qemu_ld(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
+-    case INDEX_op_qemu_st_i32:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I32);
+         break;
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
+ 
+@@ -1507,8 +1511,10 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_extu_i32_i64:
+     case INDEX_op_extrl_i64_i32:
+     case INDEX_op_extrh_i64_i32:
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_ld_i64:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
+         return C_O1_I1(r, r);
+ 
+     case INDEX_op_st8_i32:
+@@ -1518,8 +1524,10 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_st_i32:
+     case INDEX_op_st32_i64:
+     case INDEX_op_st_i64:
+-    case INDEX_op_qemu_st_i32:
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         return C_O0_I2(rZ, r);
+ 
+     case INDEX_op_add_i32:
+diff --git a/tcg/tci/tcg-target.c.inc b/tcg/tci/tcg-target.c.inc
+index 41fbf042da..586b2e6a08 100644
+--- a/tcg/tci/tcg-target.c.inc
++++ b/tcg/tci/tcg-target.c.inc
+@@ -156,22 +156,22 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_setcond2_i32:
+         return C_O1_I4(r, r, r, r, r);
+ 
+-    case INDEX_op_qemu_ld_i32:
+-        return (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS
+-                ? C_O1_I1(r, r)
+-                : C_O1_I2(r, r, r));
+-    case INDEX_op_qemu_ld_i64:
+-        return (TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r)
+-                : TARGET_LONG_BITS <= TCG_TARGET_REG_BITS ? C_O2_I1(r, r, r)
+-                : C_O2_I2(r, r, r, r));
+-    case INDEX_op_qemu_st_i32:
+-        return (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS
+-                ? C_O0_I2(r, r)
+-                : C_O0_I3(r, r, r));
+-    case INDEX_op_qemu_st_i64:
+-        return (TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r)
+-                : TARGET_LONG_BITS <= TCG_TARGET_REG_BITS ? C_O0_I3(r, r, r)
+-                : C_O0_I4(r, r, r, r));
++    case INDEX_op_qemu_ld_a32_i32:
++        return C_O1_I1(r, r);
++    case INDEX_op_qemu_ld_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O1_I2(r, r, r);
++    case INDEX_op_qemu_ld_a32_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O2_I1(r, r, r);
++    case INDEX_op_qemu_ld_a64_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O1_I1(r, r) : C_O2_I2(r, r, r, r);
++    case INDEX_op_qemu_st_a32_i32:
++        return C_O0_I2(r, r);
++    case INDEX_op_qemu_st_a64_i32:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r) : C_O0_I3(r, r, r);
++    case INDEX_op_qemu_st_a32_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r) : C_O0_I3(r, r, r);
++    case INDEX_op_qemu_st_a64_i64:
++        return TCG_TARGET_REG_BITS == 64 ? C_O0_I2(r, r) : C_O0_I4(r, r, r, r);
+ 
+     default:
+         g_assert_not_reached();
+@@ -849,8 +849,10 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_op_rrrr(s, opc, args[0], args[1], args[2], args[3]);
+         break;
+ 
+-    case INDEX_op_qemu_ld_i32:
+-    case INDEX_op_qemu_st_i32:
++    case INDEX_op_qemu_ld_a32_i32:
++    case INDEX_op_qemu_ld_a64_i32:
++    case INDEX_op_qemu_st_a32_i32:
++    case INDEX_op_qemu_st_a64_i32:
+         if (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS) {
+             tcg_out_op_rrm(s, opc, args[0], args[1], args[2]);
+         } else {
+@@ -858,8 +860,10 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         }
+         break;
+ 
+-    case INDEX_op_qemu_ld_i64:
+-    case INDEX_op_qemu_st_i64:
++    case INDEX_op_qemu_ld_a32_i64:
++    case INDEX_op_qemu_ld_a64_i64:
++    case INDEX_op_qemu_st_a32_i64:
++    case INDEX_op_qemu_st_a64_i64:
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_op_rrm(s, opc, args[0], args[1], args[2]);
+         } else if (TARGET_LONG_BITS <= TCG_TARGET_REG_BITS) {
 -- 
 2.34.1
 
