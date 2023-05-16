@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062C8704728
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 09:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6023970473F
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 10:00:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pypY7-0007Ax-UV; Tue, 16 May 2023 03:56:47 -0400
+	id 1pypaR-0007wT-Dk; Tue, 16 May 2023 03:59:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1pypXz-00078e-Sg; Tue, 16 May 2023 03:56:42 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1pypaP-0007wH-Dv; Tue, 16 May 2023 03:59:09 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1pypXw-0005ql-Jq; Tue, 16 May 2023 03:56:38 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ id 1pypaN-0006Em-BD; Tue, 16 May 2023 03:59:09 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34G7qqxO006140; Tue, 16 May 2023 07:56:34 GMT
+ 34G7aY4v005280; Tue, 16 May 2023 07:59:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=z0kVYTXBmA66VZV2Ep9Y9Tpvy+Ey+0XKI6ArtN9qMao=;
- b=pBEMm2NyjYxDFnKucAZYoZjC9cPTN7j9UYSQAvGVzFJs5SgJI/yGOVSDV5mR4M3xodYm
- 8AZiLXchMZ5n4JD2DuXVMglpWqJdDzqMSNaxODA9TBvrjmBSmMCStaliKGh1S8Juo0r8
- nSg9P/NkrBhjWv7KqOLI+B3HRNZb5Koes2YyfmLR8eBK5BqJuvz3VAKyxnCCfpp9HnTZ
- QMHsORvMqJEW1SfJCp5wb6TwBfCy0N22kJqsUDHcF/H2DkO4t6TsWZoZP4kVu9S4Ypcf
- 0I1FAFJkCUijDF3lu86dUDuMfn18hBjh/ECaTm+HXk/VKqp0/vOL1mf9hNKqFiNmtm58 Qg== 
+ bh=rPejMqk48Oc0pPgUYB/QE24aXGNUN6geuieuOUWl69A=;
+ b=GfoKNTrKeaQ4xzrF/pbEvLONLrmSuVb50JrAUj68ex3RKurdJ0brp4plzSAV4lZJFvc9
+ nSlDRBzzfWZ9tmOiyjjuRaQWUX76BwovTYOKWsI9ncaORHsThZOsldj6oNzzB/3KdNn9
+ lr7jNQIpy+X/mBWXO6cpNotDxPc31/fTNJ5ziFIXFf27qPUoVSSK26wJabLsfuoPzPDf
+ Pz7ewpe9mb9JP8FEYGsGLymolrdC2WAJSb4iILFuNlzQ3riAn6Gy5u+69oQ055oFf7r4
+ oXYP8Livt3N6vL3EBUpxMiBzXyVpiZc/Jdi38e9MPMt/tOuU+GSHdBuAj7Cys8fe8TaK Tw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm5u4g32u-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm4y8j3j0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 07:56:34 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34G7r6nX007044;
- Tue, 16 May 2023 07:56:33 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm5u4g323-1
+ Tue, 16 May 2023 07:59:05 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34G7axAO008925;
+ Tue, 16 May 2023 07:59:04 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qm4y8j3h8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 07:56:33 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34G4SblD021227;
- Tue, 16 May 2023 07:56:32 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3qj264s838-1
+ Tue, 16 May 2023 07:59:04 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34G488vE030142;
+ Tue, 16 May 2023 07:59:02 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3qj1tds89g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 May 2023 07:56:31 +0000
+ Tue, 16 May 2023 07:59:02 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34G7uTYk17891988
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34G7wxoS9765582
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 May 2023 07:56:29 GMT
+ Tue, 16 May 2023 07:58:59 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 822C820040;
- Tue, 16 May 2023 07:56:29 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AE23320049;
+ Tue, 16 May 2023 07:58:59 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 35C4D20043;
- Tue, 16 May 2023 07:56:29 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 637C420040;
+ Tue, 16 May 2023 07:58:59 +0000 (GMT)
 Received: from [9.171.79.241] (unknown [9.171.79.241])
  by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 16 May 2023 07:56:29 +0000 (GMT)
-Message-ID: <efda933a-7a14-7157-887d-28137c872895@linux.ibm.com>
-Date: Tue, 16 May 2023 09:56:28 +0200
+ Tue, 16 May 2023 07:58:59 +0000 (GMT)
+Message-ID: <24568628-f3d8-6d14-6bd3-80fda8f45734@linux.ibm.com>
+Date: Tue, 16 May 2023 09:58:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Subject: Re: [PATCH v4] target/ppc: Add POWER9 DD2.2 model
+Content-Language: en-US
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harsh@linux.vnet.ibm.com>
 References: <20230515160201.394587-1-npiggin@gmail.com>
-Content-Language: en-US
 From: Frederic Barrat <fbarrat@linux.ibm.com>
 In-Reply-To: <20230515160201.394587-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ywdUQLHWEQE9qjwRQWb4CdAhDdO8WemN
-X-Proofpoint-GUID: N0sB-rTcUjZkGemIahc9JTYOT5kfSTmU
+X-Proofpoint-ORIG-GUID: g2PztSfjEMSUoZSgOpNWb41VtHqvVTFW
+X-Proofpoint-GUID: gLyASOQx0JqVosUrLlmtUSIjTuZAGMgb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-05-16_02,2023-05-05_01,2023-02-09_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- priorityscore=1501 suspectscore=0 clxscore=1015 mlxscore=0 impostorscore=0
- lowpriorityscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
- phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305160065
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ phishscore=0 mlxlogscore=999
+ clxscore=1015 spamscore=0 priorityscore=1501 malwarescore=0 adultscore=0
+ mlxscore=0 impostorscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305160065
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -57
 X-Spam_score: -5.8
 X-Spam_bar: -----
@@ -128,13 +128,8 @@ On 15/05/2023 18:02, Nicholas Piggin wrote:
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
 
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Which makes me wonder if the P9 DD1 and P10 DD1 cpu definitions are 
-worth keeping, since we don't really try emulating the differences and 
-we don't support them in firmware/skiboot. The only place where we seem 
-to bother is in target/ppc/kvm.c and that's precisely what this patch is 
-trying to avoid.
+I almost forgot: the patch doesn't apply cleanly on latest upstream.
 
    Fred
 
