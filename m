@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4D4704D2C
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 13:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2D8704F7A
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 15:38:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pytGq-0006t1-QL; Tue, 16 May 2023 07:55:12 -0400
+	id 1pyurQ-0005Rq-P6; Tue, 16 May 2023 09:37:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1pytGn-0006sl-Jg
- for qemu-devel@nongnu.org; Tue, 16 May 2023 07:55:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1pytGj-0003OA-1U
- for qemu-devel@nongnu.org; Tue, 16 May 2023 07:55:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684238104;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=p8s4rW0YzekuCFsDuPriZP/9do+Pry4JL54Kvao8QoI=;
- b=cdY0olpULKaNcIp+65OUZqAvvxTWd+JxuwPRrAhz2PzPK1gjlQjIdQgFVDKG2c3bkQCq7x
- H4xedsb+G8e9FFhujvV7vE/TE3qEG0rYcVgnwGJecbEiuLX0JE5I8lFhyE0BlsBY2dIQej
- MESDjyqzxwWqvtZaMcmXHemhOxyC17g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-507-1ewadyONN0KwrA_a-d-k3Q-1; Tue, 16 May 2023 07:55:01 -0400
-X-MC-Unique: 1ewadyONN0KwrA_a-d-k3Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E5A584AF36;
- Tue, 16 May 2023 11:54:58 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.193.48])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9FEE7C15BA0;
- Tue, 16 May 2023 11:54:57 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 02/21] sysemu/kvm: Remove unused headers
-Date: Tue, 16 May 2023 13:54:55 +0200
-Message-Id: <20230516115455.599584-2-thuth@redhat.com>
-In-Reply-To: <20230516115455.599584-1-thuth@redhat.com>
-References: <20230516115455.599584-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <sidhartha@drut.io>) id 1pyrsE-0005ud-0H
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 06:25:43 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sidhartha@drut.io>) id 1pyrsB-0000xi-Oe
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 06:25:41 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-64ab2a37812so4383853b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 03:25:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=drut-io.20221208.gappssmtp.com; s=20221208; t=1684232733; x=1686824733;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=DC6gL4A336Rrj+81Wn4CSqITramG+K7uwC7L5/oB9cc=;
+ b=ixcIHoXtldCR6jpgtamg65RPYkd+HrupAa19ulvZwZHOBlFyOrZk6tbLaAzFjOPTvN
+ YfSF7hEaLEcP0DeqwKGMVT/MrLLyB+B37/kISM/P7+VCgzP4PRG1wUQWQ0fWbq6ndFn1
+ 3h62sj5It7UzkjhlxgRbAdJsxpXvSMpZHSmMVet2Pl1grNqBBZDsz7TduT981rLyMlXn
+ wtWoLi6m/+q3VdBdgB8y8FUI4SgKKHFk4shTYdIiwGY0yK5cE0lhPKD1TYS+5e/f/i/G
+ x9vfrLnBCmBQStdjvTiP+IxIBqjy7YL/soAU+4OtloytGpTzOAcexWGnsR4oCpf8fEJY
+ nq9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684232733; x=1686824733;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DC6gL4A336Rrj+81Wn4CSqITramG+K7uwC7L5/oB9cc=;
+ b=MzpzImI3GkFagglTcchrttcgRC7GipfC8YpdSGjqFdVuPLyVeE46PmIhY8L/sIj8Xn
+ 5CX4Lk6v5pVMoWWIsbcmvonhUCgGukg2AULbGfPu5H0s5N/ivB6CPzBIwcnPuYlDwDNq
+ QoVTPK1mhXlo/aHxWmgwWGZPrJ/1qVWVyigB3QbsCWTCAJX5JTidbb8xI7X8+RxvB8vu
+ 3ZGs41sTJ5k1HtezvUnYMnHS2zns2zdJNDnR7UbMWaF3AMe7wCownYXCDy9FpWeEZW+9
+ GxRTEunFRwQxi/FD1srw0X5aSVad8SqAul8yajfOyvrzpNOOsb3yuF2fPBerGfuuFmzr
+ WYvQ==
+X-Gm-Message-State: AC+VfDye/HSP4QMjTps2A4xxATxlyKvE+P2YhsHlvP3SwP+qfBRJuYM2
+ h8LTrToQSxq6X7ou2KYB3PotSI2VyU4qQQKKQazshRuzDYQWBlaNsAvH
+X-Google-Smtp-Source: ACHHUZ4NlEkLp+1cXODZAZxLlKBXnRkPgktWQJyLoVH0GrFW+MyhJ5R9nV1ckS5qeDEMlg7yNRHTIgdEdPn4VKDUjEA=
+X-Received: by 2002:a17:90a:5d13:b0:252:7372:460c with SMTP id
+ s19-20020a17090a5d1300b002527372460cmr22744551pji.4.1684232732991; Tue, 16
+ May 2023 03:25:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Sidhartha Reddy Kaliki <sidhartha@drut.io>
+Date: Tue, 16 May 2023 15:55:21 +0530
+Message-ID: <CADfM=uvE+DdOAVU-WZmNgiAPom0isN9OFUeky0pPqPbtFmvyRw@mail.gmail.com>
+Subject: How to communicate 2 guest machines over serial in qemu?
+To: openbmc@lists.ozlabs.org
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=sidhartha@drut.io; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 16 May 2023 09:37:02 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,46 +79,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hi,
 
-All types used are forward-declared in "qemu/typedefs.h".
+We have 2 independent devices running openbmc software on each of
+them. These devices can communicate with each other over a serial line
+using SLIP protocol. Now we would like to emulate the same using qemu.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230405160454.97436-2-philmd@linaro.org>
-[thuth: Add hw/core/cpu.h to migration/dirtyrate.c to fix compile failure]
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- include/sysemu/kvm.h  | 3 ---
- migration/dirtyrate.c | 1 +
- 2 files changed, 1 insertion(+), 3 deletions(-)
+Do we have any provision to communicate 2 guest machines over a serial
+interface using SLIP protocol?
 
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index c8281c07a7..88f5ccfbce 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -14,9 +14,6 @@
- #ifndef QEMU_KVM_H
- #define QEMU_KVM_H
- 
--#include "qemu/queue.h"
--#include "hw/core/cpu.h"
--#include "exec/memattrs.h"
- #include "qemu/accel.h"
- #include "qom/object.h"
- 
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index c06f12c39d..0220db82ec 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -13,6 +13,7 @@
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
- #include <zlib.h>
-+#include "hw/core/cpu.h"
- #include "qapi/error.h"
- #include "exec/ramblock.h"
- #include "exec/target_page.h"
--- 
-2.31.1
+We have tried a few options which are not helpful to solve our purpose.
+It will be really helpful if you can provide us some guidance on this.
 
+Thanks
 
