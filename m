@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6801370597A
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 23:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06ECD705983
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 23:33:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz2EY-0000CX-Fm; Tue, 16 May 2023 17:29:26 -0400
+	id 1pz2HQ-0001Kq-8L; Tue, 16 May 2023 17:32:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pz2EW-0000CI-DQ
- for qemu-devel@nongnu.org; Tue, 16 May 2023 17:29:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pz2HO-0001KH-3C
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 17:32:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pz2EU-00034g-V0
- for qemu-devel@nongnu.org; Tue, 16 May 2023 17:29:24 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pz2HM-0003pD-2r
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 17:32:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684272562;
+ s=mimecast20190719; t=1684272739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+HJ+Hcs9GVRA0rbVMaeJkPWmF8gcN3qMAGNbfh1BJXg=;
- b=WxkCXC1o8psgd2lIF7mDpO2PneOXlGb5Sa/zobuv80fflX0mzky+6Z5ReJla5/x03uDcuJ
- H+9V9xN8gVHVD6uwmwD2O1QjKrpugbpJui5WXcm55EVdQEBc9GDkU/qlgkg1uvYzK9WBuS
- cRRIbVGBxxGeBQfkJCybbjosOSnli4o=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7juesrT79hBoh6wMjcWCHtPvyqBAUsG7WJWIbmiApic=;
+ b=OXv38wUPwC6KuAkd+k8p+sWXqGHAv7gIcE9AxlTXw4wffMw25sEoaRX4K/qhuVdYvxeO4Y
+ Pl0P1B0U8iWpYYGM7cZvRDREDXWHvGJNEvNRV0ZCy4VWlwXqAPjibrdXYVUHCM97vzaTaZ
+ t9MP1w6ijjEPPZiqroIZf4e6hA7LgDo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-346-ub32tCvEOmy2UGw3KcqSZA-1; Tue, 16 May 2023 17:29:20 -0400
-X-MC-Unique: ub32tCvEOmy2UGw3KcqSZA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-665-PEU8-2XeNV-2cCEq3VML3Q-1; Tue, 16 May 2023 17:32:17 -0400
+X-MC-Unique: PEU8-2XeNV-2cCEq3VML3Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B2913850543;
- Tue, 16 May 2023 21:29:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D49B870820;
+ Tue, 16 May 2023 21:32:17 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.57])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B375EC15BA0;
- Tue, 16 May 2023 21:29:19 +0000 (UTC)
-Date: Tue, 16 May 2023 16:29:18 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C18C22026DFD;
+ Tue, 16 May 2023 21:32:16 +0000 (UTC)
+Date: Tue, 16 May 2023 16:32:15 -0500
 From: Eric Blake <eblake@redhat.com>
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, 
- qemu-devel@nongnu.org, berrange@redhat.com, yuri.benditovich@daynix.com,
- yan@daynix.com
-Subject: Re: [PATCH v2 6/6] ebpf: Updated eBPF program and skeleton.
-Message-ID: <cpbx5qe2joehuvljvn5cuvazp66k3od2rgvw3vmuwlhjcwxvsr@pecplll2l5dg>
-References: <20230512122902.34345-1-andrew@daynix.com>
- <20230512122902.34345-7-andrew@daynix.com>
+To: ~akihirosuda <suda.kyoto@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ akihiro.suda.cz@hco.ntt.co.jp
+Subject: Re: [PATCH qemu] docs/interop/qcow2.txt: fix description about
+ "zlib" clusters
+Message-ID: <vjg4r5ikuypvaholisxbdzhxokhb55zu5qa5jae3xu2jmwh24y@w4kxdch6i4hr>
+References: <168424874322.11954.1340942046351859521-0@git.sr.ht>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230512122902.34345-7-andrew@daynix.com>
+In-Reply-To: <168424874322.11954.1340942046351859521-0@git.sr.ht>
 User-Agent: NeoMutt/20230512
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,43 +80,53 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On Fri, May 12, 2023 at 03:29:02PM +0300, Andrew Melnychenko wrote:
+On Tue, May 16, 2023 at 11:32:27PM +0900, ~akihirosuda wrote:
 > 
-> Updated section name, so libbpf should init/gues proper
-> program type without specifications during open/load.
+> From: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
 > 
-> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+> "zlib" clusters are actually raw deflate (RFC1951) clusters without
+> zlib headers.
+> 
+> Signed-off-by: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
 > ---
->  ebpf/rss.bpf.skeleton.h | 1469 ++++++++++++++++++++-------------------
->  tools/ebpf/rss.bpf.c    |    2 +-
->  2 files changed, 741 insertions(+), 730 deletions(-)
+>  docs/interop/qcow2.txt | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+
+Seems like a useful clarification to me (there's a difference between
+the encoding name and the program used to create/parse that encoding).
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
+
 > 
-> diff --git a/ebpf/rss.bpf.skeleton.h b/ebpf/rss.bpf.skeleton.h
-> index 18eb2adb12c..41b84aea44c 100644
-> --- a/ebpf/rss.bpf.skeleton.h
-> +++ b/ebpf/rss.bpf.skeleton.h
-> @@ -176,162 +176,162 @@ err:
+> diff --git a/docs/interop/qcow2.txt b/docs/interop/qcow2.txt
+> index f7dc304ff6..e7f036c286 100644
+> --- a/docs/interop/qcow2.txt
+> +++ b/docs/interop/qcow2.txt
+> @@ -214,14 +214,18 @@ version 2.
+>                      type.
 >  
->  static inline const void *rss_bpf__elf_bytes(size_t *sz)
->  {
-> -	*sz = 20440;
-> +	*sz = 20720;
->  	return (const void *)"\
->  \x7f\x45\x4c\x46\x02\x01\x01\0\0\0\0\0\0\0\0\0\x01\0\xf7\0\x01\0\0\0\0\0\0\0\0\
-> -\0\0\0\0\0\0\0\0\0\0\0\x98\x4c\0\0\0\0\0\0\0\0\0\0\x40\0\0\0\0\0\x40\0\x0d\0\
-
-Appears to be pre-existing, and looking at the broader context, I see
-this comment earlier in the file:
-
-/* SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause) */
-
-/* THIS FILE IS AUTOGENERATED BY BPFTOOL! */
-
-but a suggestion to improve things: tweak the comment produced by the
-generator to also output the name of the source file (not just the
-bpftool generator), to make it easier to figure out how to map this
-binary blob of data back to human-readable source and instructions on
-how to regenerate it should I want to edit those sources.
+>                      If the incompatible bit "Compression type" is set: the field
+> -                    must be present and non-zero (which means non-zlib
+> +                    must be present and non-zero (which means non-deflate
+>                      compression type). Otherwise, this field must not be present
+> -                    or must be zero (which means zlib).
+> +                    or must be zero (which means deflate).
+>  
+>                      Available compression type values:
+> -                        0: zlib <https://www.zlib.net/>
+> +                        0: deflate <https://www.ietf.org/rfc/rfc1951.txt>
+>                          1: zstd <http://github.com/facebook/zstd>
+>  
+> +                    The deflate compression type is called "zlib"
+> +                    <https://www.zlib.net/> in QEMU. However, clusters with the
+> +                    deflate compression type do not have zlib headers.
+> +
+>  
+>  === Header padding ===
+>  
+> -- 
+> 2.38.4
+> 
 
 -- 
 Eric Blake, Principal Software Engineer
