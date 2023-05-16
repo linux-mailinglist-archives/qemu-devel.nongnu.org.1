@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A557055BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 20:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D184F7055F8
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 20:28:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyz9h-0006YS-MM; Tue, 16 May 2023 14:12:13 -0400
+	id 1pyzON-0000eN-6D; Tue, 16 May 2023 14:27:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pyz9f-0006XZ-Nd
- for qemu-devel@nongnu.org; Tue, 16 May 2023 14:12:11 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pyzOL-0000eD-CF
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 14:27:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pyz9b-0000A0-GB
- for qemu-devel@nongnu.org; Tue, 16 May 2023 14:12:11 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pyzOI-0002sQ-Gy
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 14:27:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684260725;
+ s=mimecast20190719; t=1684261637;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OlJuuSmbhCtiohBTeloUV/9tDmWfssw49jL9DY7atWI=;
- b=e8Fqv93wURRrYETC0fQFZqdA2QYVzkuwBqmkzLTpi9kYnsWOMgST4p+9E6ngnp9xP5/Nph
- FuBHOf33SLsLC6cgjx6KjqDkOLzXYVh/xplnEX1AjbaedK5QclXk1w1f9zx2WOcrqHxbga
- l6CLfYpb6w1xdvdYXe9Ph+Z0DnR7i88=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nhSBiKxceejTWbkCfg3H4F+MXC/KGq0moE9fyhF5FJU=;
+ b=Ezllc2O1azFQztIkFAi/Wemu200EY/VPf+UChjwDM7nw+jGbbzS2zImN023UJC++vtPAH7
+ GPLPK2FW8VLRGJ2h6h6MkhCca9kmJm2X1ZMG7fQt9xhPFJfQbJ+fsIxM2QHJSTjYv+w7a6
+ i3XbWbDfbIPxd8VY/eg2ObcBNipCOuo=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-mqBBhROnO2KRKIrGl_63-g-1; Tue, 16 May 2023 14:12:03 -0400
-X-MC-Unique: mqBBhROnO2KRKIrGl_63-g-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-643fdfb437aso6411312b3a.0
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 11:12:03 -0700 (PDT)
+ us-mta-10-ln7mIC_VNGqu2-bnpAmbYg-1; Tue, 16 May 2023 14:27:14 -0400
+X-MC-Unique: ln7mIC_VNGqu2-bnpAmbYg-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6434e3d1975so8482107b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 11:27:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684260719; x=1686852719;
+ d=1e100.net; s=20221208; t=1684261633; x=1686853633;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OlJuuSmbhCtiohBTeloUV/9tDmWfssw49jL9DY7atWI=;
- b=YmXwPXFGCmRA2RxEAkEKb4v+EGn1XpNCqRnv/3jUWB4dO5cMw6hg3mSWO9ZT8w4yAo
- DaYgYkotJt/2+h9YE4mjEk8swNi6CYji2tJrCcwwiClEai+KbBl/jpe523IssSVnoTtv
- W6no9D43itM7L+q/GDKhuMkyXvq7aJOoNtxpHi2ERA5M16xlAQBnnS3mVRtDr0Js4izb
- ikyDVtAgjOFpf/JwLjM67KP5YqXnnYwHcaroNPq/Mn41Yy8p3JgA1FHM8GwxmWpUbRvx
- eO46sLl3v5Y6T/s2U7gAmI1PNXlNtSUjT2R2s1j5QXN96SqARNWmZKRKIRi5NvHOGeIW
- hPzw==
-X-Gm-Message-State: AC+VfDxHQWDsd14Av5j6AJdyowYG7JqCfY9nkRImF10R+KZC9Go1UtU8
- Bqd/6iamDQjV5J8pHC05QRUuWCwFSobIRXe8Db8aHzfBftqMTpPfBO+voEgL8D6LDM924iX4Fwk
- mhtenh03LFy7WxC1PUMXZyjQOMDllK1s=
-X-Received: by 2002:a05:6a00:1f10:b0:63f:32ed:92b1 with SMTP id
- be16-20020a056a001f1000b0063f32ed92b1mr44620361pfb.7.1684260719423; 
- Tue, 16 May 2023 11:11:59 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5K945UVMZRmSqRTeiLiJ89uBiwYIJ5E3qSJJhjsXlEUil+dL6ukdiF75vAQ+V4CKlV32WXIYnxFINSpD9wj78=
-X-Received: by 2002:a05:6a00:1f10:b0:63f:32ed:92b1 with SMTP id
- be16-20020a056a001f1000b0063f32ed92b1mr44620336pfb.7.1684260718917; Tue, 16
- May 2023 11:11:58 -0700 (PDT)
+ bh=nhSBiKxceejTWbkCfg3H4F+MXC/KGq0moE9fyhF5FJU=;
+ b=J25C0xLXy49lW8mIxJ47IIu0tohTmbEnx5gf6BUPn4UYuGyo+8bIA8hBP++MKefTdW
+ wb9KEpYCPVLckfpn0Q7H7t/g/PYovAnDySRSYsw9FFN45vmNYR2D1AbFz3NUAJTtcYmq
+ ItgywA8m2rY7Cmn15+5EGNpETR+oix7PHlodNHIitaggQxb58yNDI4Ctb06vfBKZtvDV
+ /c06nTvVc/n1ccO80Zoj7c/EiLLO6W/R9BfQgC+DXb5VLht9F4OrUXuBfRYTrOw2PsrV
+ Y89xgJL7tP4iUDBkLY1Y4/vwpydGxslleN2shfW3UDUYQFPDCL0btX1mveVYgJo8dalQ
+ CfUQ==
+X-Gm-Message-State: AC+VfDyX9kq27QVCDCuKmhdoVqaEDFwnA/8HRY58v47GWYwWLnd5Q8IV
+ 6eIh0SMP5YxuWeik+uuqKJj1bjeAHb8fGyCf4rRKuw6LYgfcJjb3qdLZC86C2hQ4ICI//mGf8B/
+ vSw8dVCNcT8xellvs771Vo+bpBXH9QZouSrT2kyc=
+X-Received: by 2002:a05:6a00:17a5:b0:63b:1708:10aa with SMTP id
+ s37-20020a056a0017a500b0063b170810aamr55874443pfg.34.1684261632705; 
+ Tue, 16 May 2023 11:27:12 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7+LqLciexJNmmyIXBd3rl6hm+ozql68g0GsJwiMGKu3RuEKuthy4GcGgSS3TbZvvxOrIZBT4RuPKps6ztWsro=
+X-Received: by 2002:a05:6a00:17a5:b0:63b:1708:10aa with SMTP id
+ s37-20020a056a0017a500b0063b170810aamr55874427pfg.34.1684261632289; Tue, 16
+ May 2023 11:27:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230516105738.526631-1-pbonzini@redhat.com>
- <20230516105738.526631-2-pbonzini@redhat.com>
-In-Reply-To: <20230516105738.526631-2-pbonzini@redhat.com>
+References: <20230516105908.527838-1-pbonzini@redhat.com>
+ <20230516105908.527838-7-pbonzini@redhat.com>
+In-Reply-To: <20230516105908.527838-7-pbonzini@redhat.com>
 From: John Snow <jsnow@redhat.com>
-Date: Tue, 16 May 2023 14:11:47 -0400
-Message-ID: <CAFn=p-bUsfB2gXyStFFT2LE9SjtDwL0WT22zr++bPDTtSB8g2g@mail.gmail.com>
-Subject: Re: [PATCH v2 00/27] configure: create a python venv and ensure
- meson, sphinx
+Date: Tue, 16 May 2023 14:27:01 -0400
+Message-ID: <CAFn=p-be3oyTDFszUH24dOGw2EqbfRyTPxxvq+v3h=nGZVEMKA@mail.gmail.com>
+Subject: Re: [PATCH v2 07/27] mkvenv: add --diagnose option to explain
+ "ensure" failures
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, philmd@linaro.org, berrange@redhat.com
 Content-Type: text/plain; charset="UTF-8"
@@ -93,165 +93,277 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 16, 2023 at 6:57=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
+On Tue, May 16, 2023 at 6:59=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
  wrote:
 >
-> This patch series creates a mandatory python virtual environment
-> ("venv") during configure time and uses it to ensure the availability of
-> meson and sphinx.
+> From: John Snow <jsnow@redhat.com>
 >
-> See https://www.qemu.org/2023/03/24/python/ for motivations. The summary
-> is that the goal of this series is to ensure that the `python` used to
-> run meson is the same `python` used to run Sphinx, tests, and any
-> build-time python scripting we have. As it stands, meson and sphinx (and
-> their extensions) *may* run in a different python environment than the
-> one configured and chosen by the user at configure/build time.
+> This is a routine that is designed to print some usable info for human
+> beings back out to the terminal if/when "mkvenv ensure" fails to locate
+> or install a package during configure time, such as meson or sphinx.
 >
-> The effective change of this series is that QEMU will now
-> unconditionally create a venv at configure-time and will ensure that
-> meson (and sphinx, if docs are enabled) are available through that venv.
+> Since we are requiring that "meson" and "sphinx" are installed to the
+> same Python environment as QEMU is configured to build with, this can
+> produce some surprising failures when things are mismatched. This method
+> is here to try and ease that sting by offering some actionable
+> diagnosis.
 >
-> Some important points as a pre-emptive "FAQ":
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> Message-Id: <20230511035435.734312-8-jsnow@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  python/scripts/mkvenv.py | 170 ++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 169 insertions(+), 1 deletion(-)
 >
-> - Works for Python 3.6 and up, on Fedora, OpenSuSE, Red Hat, CentOS,
->   Alpine, Debian, Ubuntu, NetBSD, OpenBSD, and hopefully everywhere
->   No new dependencies (...for most platforms. Debian and NetBSD get an
->   asterisk, see patch 4).
->
-> - The venv is unconditionally created and lives at {build_dir}/pyvenv.
->   The python interpreter used by this venv is always the one identified
->   by configure. (Which in turn is always the one specified by --python
->   or $PYTHON).  --meson and --sphinx-build disappear.
->
-> - *almost* all python scripts in qemu.git executed as part of the build
->   system, meson, sphinx, avocado tests, vm tests or CI are always
->   executed within this venv.  iotests are not yet integrated.
->
-> - Missing dependencies, when possible, are fetched and installed
->   on-demand automatically to make developer environments "just work".
->   However, it remains possible to build and test fully offline.  Right
->   now, online behavior is only triggered by --enable-docs, and even
->   in that case...
->
-> - ... distribution packaged 'meson' and 'sphinx' are still utilized
->   whenever possible as the highest preference.
->
-> - The bundled 'meson' takes the shape of a .whl file, replacing the
->   git submodule.  qemu-qmp will follow suit, while Sphinx will not be
->   bundled just like it already isn't.
->
-> - about 13% of the mkvenv.py script is devoted to supporting Python
->   3.7 and Debian 10. =C2=AF\_(=E3=83=84)_/=C2=AF
->
-
-I like that you measured this. It feels like more than 13%, but I'm
-going to trust this oddly specific number.
-
-> Tested with "make check-minreqs" after every patch and with GitLab at
-> https://gitlab.com/bonzini/qemu/-/pipelines/868627762.
-
-For v1, I also tested with "make check-minreqs && make check-tox" and
-also started checking/formatting with black --line-length=3D79. I
-haven't added black into the linters yet because there's surely a ton
-of code that needs observed before I do that, but Dan suggested it and
-I liked it enough to start using it myself to take the ambiguity out
-of how to handle long lines.
-
-(Not worth a respin if black isn't happy, I didn't check. Just mentioning i=
-t.)
-
->
-> Enjoy!
->
-> John and Paolo
->
-> v1->v2:
-> - integrate distlib for script generation and also to look up
->   installed packages
-
-Thanks :)
-
-> - print a more precise error for --diagnose when running in an
->   isolated venv
-> - reorganized code to avoid ensurepip, so that it is not spread
->   across multiple patches
-> - made non-fatal errors a bit less scary
-
-"Oops" =3D> "Oopsies!!"
-
+> diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
+> index fd4b62c70ffa..5ac22f584fab 100644
+> --- a/python/scripts/mkvenv.py
+> +++ b/python/scripts/mkvenv.py
+> @@ -51,6 +51,8 @@
+>  import logging
+>  import os
+>  from pathlib import Path
+> +import re
+> +import shutil
+>  import site
+>  import subprocess
+>  import sys
+> @@ -60,6 +62,7 @@
+>      Any,
+>      Optional,
+>      Sequence,
+> +    Tuple,
+>      Union,
+>  )
+>  import venv
+> @@ -331,6 +334,128 @@ def _stringify(data: Union[str, bytes]) -> str:
+>      print(builder.get_value("env_exe"))
 >
 >
-> John Snow (23):
->   python: update pylint configuration
->   python: add mkvenv.py
->   mkvenv: add better error message for broken or missing ensurepip
->   mkvenv: add nested venv workaround
->   mkvenv: add ensure subcommand
->   mkvenv: add --diagnose option to explain "ensure" failures
->   mkvenv: add console script entry point generation
->   mkvenv: use pip's vendored distlib as a fallback
->   mkvenv: avoid ensurepip if pip is installed
->   mkvenv: work around broken pip installations on Debian 10
->   tests/docker: add python3-venv dependency
->   tests/vm: Configure netbsd to use Python 3.10
->   tests/vm: add py310-expat to NetBSD
->   python: add vendor.py utility
->   configure: create a python venv unconditionally
->   python/wheels: add vendored meson package
->   configure: use 'mkvenv ensure meson' to bootstrap meson
->   qemu.git: drop meson git submodule
->   tests: Use configure-provided pyvenv for tests
->   configure: move --enable-docs and --disable-docs back to configure
->   configure: bootstrap sphinx with mkvenv
->   configure: add --enable-pypi and --disable-pypi
->   configure: Add courtesy hint to Python version failure message
+> +def pkgname_from_depspec(dep_spec: str) -> str:
+> +    """
+> +    Parse package name out of a PEP-508 depspec.
+> +
+> +    See https://peps.python.org/pep-0508/#names
+> +    """
+> +    match =3D re.match(
+> +        r"^([A-Z0-9]([A-Z0-9._-]*[A-Z0-9])?)", dep_spec, re.IGNORECASE
+> +    )
+> +    if not match:
+> +        raise ValueError(
+> +            f"dep_spec '{dep_spec}'"
+> +            " does not appear to contain a valid package name"
+> +        )
+> +    return match.group(0)
+> +
+> +
+> +def diagnose(
+> +    dep_spec: str,
+> +    online: bool,
+> +    wheels_dir: Optional[Union[str, Path]],
+> +    prog: Optional[str],
+> +) -> Tuple[str, bool]:
+> +    """
+> +    Offer a summary to the user as to why a package failed to be install=
+ed.
+> +
+> +    :param dep_spec: The package we tried to ensure, e.g. 'meson>=3D0.61=
+.5'
+> +    :param online: Did we allow PyPI access?
+> +    :param prog:
+> +        Optionally, a shell program name that can be used as a
+> +        bellwether to detect if this program is installed elsewhere on
+> +        the system. This is used to offer advice when a program is
+> +        detected for a different python version.
+> +    :param wheels_dir:
+> +        Optionally, a directory that was searched for vendored packages.
+> +    """
+> +    # pylint: disable=3Dtoo-many-branches
+> +
+> +    # Some errors are not particularly serious
+> +    bad =3D False
+> +
+> +    pkg_name =3D pkgname_from_depspec(dep_spec)
+> +    pkg_version =3D None
+> +
+> +    has_importlib =3D False
+> +    try:
+> +        # Python 3.8+ stdlib
+> +        # pylint: disable=3Dimport-outside-toplevel
+> +        # pylint: disable=3Dno-name-in-module
+> +        # pylint: disable=3Dimport-error
+> +        from importlib.metadata import (  # type: ignore
+> +            PackageNotFoundError,
+> +            version,
+> +        )
+> +
+> +        has_importlib =3D True
+> +        try:
+> +            pkg_version =3D version(pkg_name)
+> +        except PackageNotFoundError:
+> +            pass
+> +    except ModuleNotFoundError:
+> +        pass
+> +
+> +    lines =3D []
+> +
+> +    if pkg_version:
+> +        lines.append(
+> +            f"Python package '{pkg_name}' version '{pkg_version}' was fo=
+und,"
+> +            " but isn't suitable."
+> +        )
+> +    elif has_importlib:
+> +        lines.append(
+> +            f"Python package '{pkg_name}' was not found nor installed."
+> +        )
+> +    else:
+> +        lines.append(
+> +            f"Python package '{pkg_name}' is either not found or"
+> +            " not a suitable version."
+> +        )
+> +
+> +    if wheels_dir:
+> +        lines.append(
+> +            "No suitable version found in, or failed to install from"
+> +            f" '{wheels_dir}'."
+> +        )
+> +        bad =3D True
+> +
+> +    if online:
+> +        lines.append("A suitable version could not be obtained from PyPI=
+.")
+> +        bad =3D True
+> +    else:
+> +        lines.append(
+> +            "mkvenv was configured to operate offline and did not check =
+PyPI."
+> +        )
+> +
+> +    if prog and not pkg_version:
+> +        which =3D shutil.which(prog)
+> +        if which:
+> +            if sys.base_prefix in site.PREFIXES:
+> +                pypath =3D Path(sys.executable).resolve()
+> +                lines.append(
+> +                    f"'{prog}' was detected on your system at '{which}',=
+ "
+> +                    f"but the Python package '{pkg_name}' was not found =
+by "
+> +                    f"this Python interpreter ('{pypath}'). "
+> +                    f"Typically this means that '{prog}' has been instal=
+led "
+> +                    "against a different Python interpreter on your syst=
+em."
+> +                )
+> +            else:
+> +                lines.append(
+> +                    f"'{prog}' was detected on your system at '{which}',=
+ "
+> +                    "but the build is using an isolated virtual environm=
+ent."
+> +                )
+> +            bad =3D True
+> +
+> +    lines =3D [f" =E2=80=A2 {line}" for line in lines]
+> +    if bad:
+> +        lines.insert(0, f"Could not provide build dependency '{dep_spec}=
+':")
+> +    else:
+> +        lines.insert(0, f"'{dep_spec}' not found:")
+> +    return os.linesep.join(lines), bad
+> +
+> +
+>  def pip_install(
+>      args: Sequence[str],
+>      online: bool =3D False,
+> @@ -364,7 +489,7 @@ def pip_install(
+>      )
 >
-> Paolo Bonzini (4):
->   python: shut up "pip install" during "make check-minreqs"
->   Python: Drop support for Python 3.6
->   mkvenv: mark command as required
->   python: bump some of the dependencies
 >
->  .gitlab-ci.d/buildtest-template.yml           |   4 +-
->  .gitlab-ci.d/buildtest.yml                    |   6 +-
->  .gitmodules                                   |   3 -
->  configure                                     | 152 +--
->  docs/about/build-platforms.rst                |   2 +-
->  docs/conf.py                                  |   9 -
->  docs/devel/acpi-bits.rst                      |   6 +-
->  docs/devel/testing.rst                        |  14 +-
->  docs/meson.build                              |   2 +-
->  meson                                         |   1 -
->  meson_options.txt                             |   2 -
->  python/Makefile                               |  19 +-
->  python/scripts/mkvenv.py                      | 897 ++++++++++++++++++
->  python/scripts/vendor.py                      |  74 ++
->  python/setup.cfg                              |  46 +-
->  python/tests/flake8.sh                        |   1 +
->  python/tests/isort.sh                         |   1 +
->  python/tests/minreqs.txt                      |  19 +-
->  python/tests/mypy.sh                          |   1 +
->  python/tests/pylint.sh                        |   1 +
->  python/wheels/meson-0.61.5-py3-none-any.whl   | Bin 0 -> 862509 bytes
->  .../org.centos/stream/8/x86_64/test-avocado   |   4 +-
->  scripts/device-crash-test                     |   2 +-
->  scripts/meson-buildoptions.sh                 |   3 -
->  scripts/qapi/mypy.ini                         |   2 +-
->  tests/Makefile.include                        |  10 +-
->  .../dockerfiles/debian-all-test-cross.docker  |   3 +-
->  .../dockerfiles/debian-hexagon-cross.docker   |   3 +-
->  .../dockerfiles/debian-riscv64-cross.docker   |   3 +-
->  .../dockerfiles/debian-tricore-cross.docker   |   3 +-
->  tests/requirements.txt                        |   7 +-
->  tests/vm/netbsd                               |   2 +
->  32 files changed, 1167 insertions(+), 135 deletions(-)
->  delete mode 160000 meson
->  create mode 100644 python/scripts/mkvenv.py
->  create mode 100755 python/scripts/vendor.py
->  create mode 100644 python/wheels/meson-0.61.5-py3-none-any.whl
+> -def ensure(
+> +def _do_ensure(
+>      dep_specs: Sequence[str],
+>      online: bool =3D False,
+>      wheels_dir: Optional[Union[str, Path]] =3D None,
+> @@ -402,6 +527,39 @@ def ensure(
+>          pip_install(args=3Dabsent, online=3Donline, wheels_dir=3Dwheels_=
+dir)
 >
+>
+> +def ensure(
+> +    dep_specs: Sequence[str],
+> +    online: bool =3D False,
+> +    wheels_dir: Optional[Union[str, Path]] =3D None,
+> +    prog: Optional[str] =3D None,
+> +) -> None:
+> +    """
+> +    Use pip to ensure we have the package specified by @dep_specs.
+> +
+> +    If the package is already installed, do nothing. If online and
+> +    wheels_dir are both provided, prefer packages found in wheels_dir
+> +    first before connecting to PyPI.
+> +
+> +    :param dep_specs:
+> +        PEP 508 dependency specifications. e.g. ['meson>=3D0.61.5'].
+> +    :param online: If True, fall back to PyPI.
+> +    :param wheels_dir: If specified, search this path for packages.
+> +    :param prog:
+> +        If specified, use this program name for error diagnostics that w=
+ill
+> +        be presented to the user. e.g., 'sphinx-build' can be used as a
+> +        bellwether for the presence of 'sphinx'.
+> +    """
+> +    print(f"mkvenv: checking for {', '.join(dep_specs)}", file=3Dsys.std=
+err)
+> +    try:
+> +        _do_ensure(dep_specs, online, wheels_dir)
+> +    except subprocess.CalledProcessError as exc:
+> +        # Well, that's not good.
+> +        msg, bad =3D diagnose(dep_specs[0], online, wheels_dir, prog)
+> +        if bad:
+> +            raise Ouch(msg) from exc
+> +        raise SystemExit(f"\n{msg}\n\n") from exc
+> +
+> +
+>  def _add_create_subcommand(subparsers: Any) -> None:
+>      subparser =3D subparsers.add_parser("create", help=3D"create a venv"=
+)
+>      subparser.add_argument(
+> @@ -427,6 +585,15 @@ def _add_ensure_subcommand(subparsers: Any) -> None:
+>          action=3D"store",
+>          help=3D"Path to vendored packages where we may install from.",
+>      )
+> +    subparser.add_argument(
+> +        "--diagnose",
+> +        type=3Dstr,
+> +        action=3D"store",
+> +        help=3D(
+> +            "Name of a shell utility to use for "
+> +            "diagnostics if this command fails."
+> +        ),
+> +    )
+>      subparser.add_argument(
+>          "dep_specs",
+>          type=3Dstr,
+> @@ -476,6 +643,7 @@ def main() -> int:
+>                  dep_specs=3Dargs.dep_specs,
+>                  online=3Dargs.online,
+>                  wheels_dir=3Dargs.dir,
+> +                prog=3Dargs.diagnose,
+>              )
+>          logger.debug("mkvenv.py %s: exiting", args.command)
+>      except Ouch as exc:
 > --
 > 2.40.1
 >
+>
+
+ACK, seems good.
+
+(What a lot of work for an error diagnose function that I hope nobody
+ever sees, haha!)
+
+--js
 
 
