@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE7370464C
+	by mail.lfdr.de (Postfix) with ESMTPS id CBDFB70464B
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 09:26:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyp3v-0002FM-Qu; Tue, 16 May 2023 03:25:35 -0400
+	id 1pyp4N-0002Ne-Jt; Tue, 16 May 2023 03:26:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ani@anisinha.ca>) id 1pyp3u-0002Ex-2M
- for qemu-devel@nongnu.org; Tue, 16 May 2023 03:25:34 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <ani@anisinha.ca>) id 1pyp4K-0002Kx-KN
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 03:26:00 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ani@anisinha.ca>) id 1pyp3s-0007aJ-Ae
- for qemu-devel@nongnu.org; Tue, 16 May 2023 03:25:33 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3f41d087bd3so70076825e9.3
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 00:25:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ani@anisinha.ca>) id 1pyp4I-0007dU-Tv
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 03:26:00 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3f42c86543bso54846735e9.3
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 00:25:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=anisinha-ca.20221208.gappssmtp.com; s=20221208; t=1684221930; x=1686813930; 
+ d=anisinha-ca.20221208.gappssmtp.com; s=20221208; t=1684221957; x=1686813957; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LWOCyyIV2btvZAvfYFkoh+ctTip8VAimAdpfAKKDpYA=;
- b=sR6sKjFCvhO1mE5oa7stZYAnUJmKnnMzl8M97hoUXfjOgLH/h8ktWSKnHvO0xi6MZj
- 0plDmWgCvLzThRH0to8qu0H8jVmxXg1tpd07dhLfcCy2rQI6/UHCGV3NR672pSxKHcRI
- LQl+fJE4x9+yjpkXmom0GI9lAFPPelezGtJuFswtS/Zb+7jGKPlhtECBeURkVsdoOc1s
- Cz1fha58GfarlcbYHecGYHcqU5Fzugxoqqk6jJ5twL5qUCdwUJvUF+yYBf/Y4tAYcqnA
- xoJBXS+vhPFrwKhcykTQGeWgaDn7dbS02/9MCrYhNLySNXgdBDwX+kP0yVv5ZcEBUMfv
- 4P7A==
+ bh=ezlM8Es+XSXRFIHZdp4OqyXuLK6zFFQqlNU9vq/9klA=;
+ b=BbI5Hrdn53lZMZT8u4v+LqXfsi3mdPP3WEKdYO9WMD9Ra8fY0ccupCisGG5kROL9ew
+ HVDZ8laKeOFBwrXMvyLvqy1uqPa2/7/kX+2WdNlxgg6Q8UBPzBzSEeTff0UcH4bmslTR
+ EgcIxJknyN/V8QkFEoXGpOFIu11pdBmylbzUzX4W+brfQ1Clmzk66UxOIcUFjaKvBD6I
+ TErZ0vNeH9WrwEoYeFXTzlXQIFdTtZnpdmd02JyN+sljIe+KuzNFGOJDkQ82o/G+xPKx
+ nDEMP1H4PSgl7MUsNB7re1tw3qSO+Kc49nviVQH9bjwvD1zICWGUiPuxWcXLeGhzK5Mi
+ giHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684221930; x=1686813930;
+ d=1e100.net; s=20221208; t=1684221957; x=1686813957;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LWOCyyIV2btvZAvfYFkoh+ctTip8VAimAdpfAKKDpYA=;
- b=L0E4EJneRk4QmrqSSDhker0Wdg3rwmPTZKotfdWG4/1CPN5yrW315LEJEh6hIl509c
- GIupd6x4yWORvnE2VY0kmrmtdiTmf+z3xuyqaf+p0PrmJPJcdy4ac7FVatE8Wf/XKfLO
- xxbsdCINqec6EvSuwiQxS5NJz/nOi8KQnYkdCRTDpOOHL/a2+dzrV8J7fnMBZ4pGTrmJ
- hrKFZS1dsrQRcV/zdbNADov35/UkgvFpn3rW20GyWdhrKydGydkRF4ItwtGhq6cfPVS9
- wnlorCe0eELcZzhmxFTahEtXFIzM37CU6QEH/9+GbiK7msgwsbP0HskenU7ziQduFmVE
- ElKA==
-X-Gm-Message-State: AC+VfDy+pPNyGBX0JPmb6X00UDQ4rr9wqG7RKG9lGDrg+8JpDGzoWBvv
- qs2MrO9SoBCKGEGrazdIT/cToBqJk1asWymu9zNh2A==
-X-Google-Smtp-Source: ACHHUZ42STl2WpztoGbVjl1vHu/wm5osgI47JimrxhR9yvs57tnlLEDiYR3dA2To8gcTumQloU9E5l5jzYPQDk4A6lc=
-X-Received: by 2002:adf:fe05:0:b0:306:f6c:1063 with SMTP id
- n5-20020adffe05000000b003060f6c1063mr25557630wrr.38.1684221929969; Tue, 16
- May 2023 00:25:29 -0700 (PDT)
+ bh=ezlM8Es+XSXRFIHZdp4OqyXuLK6zFFQqlNU9vq/9klA=;
+ b=HLmb51FCuhI+3/yP1QPieTXyBIofR5tA8iwNRbkDovvitas9DgfIo1+oJt2QiTF1CE
+ rZJJ6Z6WFOkB1/HLRtXd+OGWGkdS6x05Rxo8HhI0Fux+S3/qlscr+/MXiGspUZplvhWc
+ ogSanNfIAYXnWlctbkO8WBF1GXE0O6pNk+FnhnvgpmbPZMo7d4EKpNWVHAUzoFlS1qsF
+ 1DBEctB5jjmq7kEq8QPBfVgNux6j81HHELrqZ12wd1xKxYkYEt1/xHDG0/MMVmjE7s/e
+ n5DojsOEDigkqyPPzAEfGgkRKlJuRMny4ek05IwfLbjDhBtkFNXh8WvEMaBDxxMZw2hd
+ Hd/A==
+X-Gm-Message-State: AC+VfDwlJhmC6IUbl6bDNO8qGRqwKMYiX1IjUz6PXZI6KpwV7HQspB4F
+ JHLoR+TF25o7HD8zit/X/E+JtkBYGQryEw7XaODysQ==
+X-Google-Smtp-Source: ACHHUZ47r/RrDjjVOitJKG/pu/Ul3CKaNuZqlYIKhfPl9bVcXJTpTvCzxaYXyuZaEBrzRNQEfITvdkKsRuVICK06frA=
+X-Received: by 2002:adf:dc04:0:b0:307:a33d:d054 with SMTP id
+ t4-20020adfdc04000000b00307a33dd054mr17502713wri.49.1684221957408; Tue, 16
+ May 2023 00:25:57 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230515203311.2139-1-eric.devolder@oracle.com>
- <20230515203311.2139-2-eric.devolder@oracle.com>
-In-Reply-To: <20230515203311.2139-2-eric.devolder@oracle.com>
+ <20230515203311.2139-3-eric.devolder@oracle.com>
+In-Reply-To: <20230515203311.2139-3-eric.devolder@oracle.com>
 From: Ani Sinha <ani@anisinha.ca>
-Date: Tue, 16 May 2023 12:55:18 +0530
-Message-ID: <CAARzgwzJRbcUnHspiUMO7qNUp6ypwxMJxxJ_RXRHKzN6BY2q_Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ACPI: bios-tables-test.c step 2 (allowed-diff entries)
+Date: Tue, 16 May 2023 12:55:46 +0530
+Message-ID: <CAARzgwyNkKh_2PWe+ca1FKgtUKy22d3n7TMKRFpQcZkcaAnhQA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ACPI: i386: bump to MADT to revision 3
 To: Eric DeVolder <eric.devolder@oracle.com>
 Cc: qemu-devel@nongnu.org, shannon.zhaosl@gmail.com, mst@redhat.com, 
  imammedo@redhat.com, peter.maydell@linaro.org, qemu-arm@nongnu.org, 
@@ -64,8 +64,8 @@ Cc: qemu-devel@nongnu.org, shannon.zhaosl@gmail.com, mst@redhat.com,
  eduardo@habkost.net, boris.ostrovsky@oracle.com, miguel.luis@oracle.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: none client-ip=2a00:1450:4864:20::32a;
- envelope-from=ani@anisinha.ca; helo=mail-wm1-x32a.google.com
+Received-SPF: none client-ip=2a00:1450:4864:20::332;
+ envelope-from=ani@anisinha.ca; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -87,32 +87,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 16, 2023 at 2:03=E2=80=AFAM Eric DeVolder <eric.devolder@oracle=
+On Tue, May 16, 2023 at 2:04=E2=80=AFAM Eric DeVolder <eric.devolder@oracle=
 .com> wrote:
 >
-> Following the guidelines in tests/qtest/bios-tables-test.c,
-> set up bios-tables-test-allowed-diff.h to exclude the
-> imminent changes to the APIC tables, per step 2.
+> Currently i386 QEMU generates MADT revision 3, and reports
+> MADT revision 1. Set .revision to 3 to match reality.
 >
+> Link: https://lore.kernel.org/linux-acpi/20230327191026.3454-1-eric.devol=
+der@ora
+> cle.com/T/#t
 > Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
 
-Acked-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 
 > ---
->  tests/qtest/bios-tables-test-allowed-diff.h | 4 ++++
->  1 file changed, 4 insertions(+)
+>  hw/i386/acpi-common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bi=
-os-tables-test-allowed-diff.h
-> index dfb8523c8b..1e5e354ecf 100644
-> --- a/tests/qtest/bios-tables-test-allowed-diff.h
-> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
-> @@ -1 +1,5 @@
->  /* List of comma-separated changed AML files to ignore */
-> +"tests/data/acpi/pc/APIC",
-> +"tests/data/acpi/q35/APIC",
-> +"tests/data/acpi/microvm/APIC",
-> +"tests/data/acpi/virt/APIC",
+> diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
+> index 52e5c1439a..8a0932fe84 100644
+> --- a/hw/i386/acpi-common.c
+> +++ b/hw/i386/acpi-common.c
+> @@ -102,7 +102,7 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *=
+linker,
+>      MachineClass *mc =3D MACHINE_GET_CLASS(x86ms);
+>      const CPUArchIdList *apic_ids =3D mc->possible_cpu_arch_ids(MACHINE(=
+x86ms));
+>      AcpiDeviceIfClass *adevc =3D ACPI_DEVICE_IF_GET_CLASS(adev);
+> -    AcpiTable table =3D { .sig =3D "APIC", .rev =3D 1, .oem_id =3D oem_i=
+d,
+> +    AcpiTable table =3D { .sig =3D "APIC", .rev =3D 3, .oem_id =3D oem_i=
+d,
+>                          .oem_table_id =3D oem_table_id };
+>
+>      acpi_table_begin(&table, table_data);
 > --
 > 2.31.1
 >
