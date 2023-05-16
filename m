@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC89704984
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 700AA70498E
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 11:42:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyr9v-0007uz-Dy; Tue, 16 May 2023 05:39:55 -0400
+	id 1pyrBc-0000L4-Gd; Tue, 16 May 2023 05:41:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1pyr9t-0007ub-BH; Tue, 16 May 2023 05:39:53 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1pyrBV-0000KT-Fb; Tue, 16 May 2023 05:41:33 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1pyr9r-0006Q6-58; Tue, 16 May 2023 05:39:53 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-53202149ae2so2336843a12.3; 
- Tue, 16 May 2023 02:39:50 -0700 (PDT)
+ id 1pyrBT-0006uc-VM; Tue, 16 May 2023 05:41:33 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-64a9335a8e7so4232439b3a.0; 
+ Tue, 16 May 2023 02:41:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684229989; x=1686821989;
+ d=gmail.com; s=20221208; t=1684230090; x=1686822090;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oTkwl7FefwMPiYG2Myk/d9ViI+BSFNR0Iw1vf8VZRNU=;
- b=nj6++uR1ZIZrbYaGVMcH1pkVMbhShYkEfxNWfIwBi+G9sDVJqhcB8o71+yogtmcjJF
- m9n3wixI05Q3NM/WF8p7jG9THSbZXUNfYZInbuCzz/1alzkFi0CIH4G+YxkGsKVJIFMj
- KniGPT/LrDZ7MPWI0SeAtFITueGFe8Pxh6MzS0se7iNHxIIRqBLJSnDzZsaQ/U8oLbtP
- WhuDMkEycCaSEyV8/LnE5sJNPYremn3NTB5/TomLveZXtRYeHGq81pkh2ptJ6qbYREpZ
- BLVMzo9NCzNQgk+ee9F/xiEowjoxvcfFwiYS3qbtzrueia0T1deBIN5DUTagZPU9YDno
- 079A==
+ bh=gpWYZIIFK1mw+JyjCIPquJfP6DiJ/Yfvhv/uA5ae2b4=;
+ b=dfX9XgHA1CUB63t9l+ZQINuImxXmmMn39mZ15TPpsnjemuTjUFJOFDDXcmexk8mkth
+ +1tCgV37JGfjQj1ToD2uSr+BCUWCbwHPwXLb5tPGfpAvkrXzBzHdZgO001+pVLdoJqQS
+ a21f1A8JIRyGv2GqaIK6ZQdbdWkaw77fWOb/vT9NsmuMN83Ghthc1Pd4I7249SsX8ed7
+ xfQPO6YIFJmT0/WmIzcrxHDhQbawFgu+zFOzbFHrmgevqLi7Fk7kKJbf6wMUxp+xCXfs
+ xkFVpfZFJek7FCoRWq0bUM2Dojwbvi0YJkbdzbEe0My9729vfsNxaY0HIf2XdDWxu6X6
+ 48bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684229989; x=1686821989;
+ d=1e100.net; s=20221208; t=1684230090; x=1686822090;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=oTkwl7FefwMPiYG2Myk/d9ViI+BSFNR0Iw1vf8VZRNU=;
- b=Q6wxdLw7pAV3G8JQYwFt24T6ALd6UZ/ieYMb2gea6f87DlD1PZK/enwDzGXBLysGUQ
- fzo23OWUxHXrGvxac0k/Bcm4MpwLKNjMy++rJ4mtd33VwIvbJHv9C40GcYH9MxuoOH7f
- axRV6VKkgLSil+D2ofbgPfUOSEi2YOrrvPCT+6NpMi94Bb7Pfnq3TdoxM7P+gpOdWCZl
- kcxQgD5DPsOSIMPVPG35SfgLBMnIy6qQPhFuwPwkbG3nlRIR+xhcMqyMWnSIyuWk30JN
- ZZfkI7moVKfMQvxLa1HEHgadF18aATvEmheJnmO12C1PGJ0vf8xLuHvy62hqtSXF9Nz4
- 8Dng==
-X-Gm-Message-State: AC+VfDxhnStcuQ8ILXj6or1lhSZv3bl79CRNYgACuNBKV/7fCPdy8uOF
- rpCiL5yKvIcymnEPfCl1TVI=
-X-Google-Smtp-Source: ACHHUZ6byGBFUY/mX0QTla5BpxdIzoZFu1BzfhAsUkHeP6sjLBRCVaJYJand6DfAyankxsTlJOuw0w==
-X-Received: by 2002:a05:6a20:8416:b0:ec:d7cf:bcf7 with SMTP id
- c22-20020a056a20841600b000ecd7cfbcf7mr45943977pzd.17.1684229988956; 
- Tue, 16 May 2023 02:39:48 -0700 (PDT)
+ bh=gpWYZIIFK1mw+JyjCIPquJfP6DiJ/Yfvhv/uA5ae2b4=;
+ b=YUVSks86nLeAFgpnuD+f+5QqmQpn/THw5zJ8ZsB4fqsSPJRgofG8wfbyAbbFCZXugv
+ oi+ux9y49LgxTtdaei/ENQzCtjtRUCBPnFsAtxUkUT9JjMztCsJnIn2T+sqPmRSnRcAW
+ WWc6vkBZbdSHJl27MkxTanEwn+G8mlktYXP6tVMXsAx2Pq1GhWSJ6ui3rSExuoN9I07y
+ pOaMR1Ubk625EAhBusRGN/xlSTK8VB0QAp3BPPGdynUM/TCCfZnDAjS5VgBdZ6tkxczf
+ alYN++uuR0jUSY2Ad//WZNlqLBXPyJ/zpOi8Bj6Te2P1Y5xj5AqKvG57VxC9JJPRjYyw
+ IVfw==
+X-Gm-Message-State: AC+VfDyhaoqrDmIX30yZXObQTgWvFSVRlX/gyHqHIIx7hc9fdFMuKTgN
+ b6aydzotO/Lq/1DggEq6m9Z4bO/uYr0=
+X-Google-Smtp-Source: ACHHUZ4zdvBX+3w86DC+BSKkFifvUPykT013uBLprODbsxMAlEabunAE9j37dvLdfFlxLydzm+djLQ==
+X-Received: by 2002:a17:903:1209:b0:1a9:7912:850e with SMTP id
+ l9-20020a170903120900b001a97912850emr45407006plh.10.1684230090117; 
+ Tue, 16 May 2023 02:41:30 -0700 (PDT)
 Received: from localhost (203-219-189-129.tpgi.com.au. [203.219.189.129])
  by smtp.gmail.com with ESMTPSA id
- r11-20020a63fc4b000000b0050be8e0b94csm13028676pgk.90.2023.05.16.02.39.43
+ i6-20020a1709026ac600b001aadfdfcd06sm10356136plt.299.2023.05.16.02.41.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 May 2023 02:39:46 -0700 (PDT)
+ Tue, 16 May 2023 02:41:29 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 May 2023 19:39:41 +1000
-Message-Id: <CSNLP7YW3JRO.2T6XQ53OH122R@wheely>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>, <sdicaro@DDCI.com>
-Subject: Re: [PATCH v3 1/9] target/ppc: Fix width of some 32-bit SPRs
+Date: Tue, 16 May 2023 19:41:24 +1000
+Message-Id: <CSNLQJHLOHZV.31DMA8N2797ZQ@wheely>
+Cc: <qemu-devel@nongnu.org>, "Harsh Prateek Bora" <harsh@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4] target/ppc: Add POWER9 DD2.2 model
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Mark Cave-Ayland" <mark.cave-ayland@ilande.co.uk>, <qemu-ppc@nongnu.org>
+To: "Frederic Barrat" <fbarrat@linux.ibm.com>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.14.0
-References: <20230515092655.171206-1-npiggin@gmail.com>
- <20230515092655.171206-2-npiggin@gmail.com>
- <4cefbbd6-6ab2-cd55-4468-4066b464c99c@ilande.co.uk>
- <CSMYAXLT8B9P.1D85SFBUZQ9ZC@wheely>
- <aa23194e-04ca-1ec7-4e4c-d66b40c7358b@ilande.co.uk>
-In-Reply-To: <aa23194e-04ca-1ec7-4e4c-d66b40c7358b@ilande.co.uk>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x533.google.com
+References: <20230515160201.394587-1-npiggin@gmail.com>
+ <24568628-f3d8-6d14-6bd3-80fda8f45734@linux.ibm.com>
+In-Reply-To: <24568628-f3d8-6d14-6bd3-80fda8f45734@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,272 +91,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue May 16, 2023 at 5:02 PM AEST, Mark Cave-Ayland wrote:
-> On 15/05/2023 16:19, Nicholas Piggin wrote:
+On Tue May 16, 2023 at 5:58 PM AEST, Frederic Barrat wrote:
 >
-> > On Mon May 15, 2023 at 10:03 PM AEST, Mark Cave-Ayland wrote:
-> >> On 15/05/2023 10:26, Nicholas Piggin wrote:
-> >>
-> >>> Some 32-bit SPRs are incorrectly implemented as 64-bits on 64-bit
-> >>> targets.
-> >>>
-> >>> This changes VRSAVE, DSISR, HDSISR, DAWRX0, PIDR, LPIDR, DEXCR,
-> >>> HDEXCR, CTRL, TSCR, MMCRH, and PMC[1-6] from to be 32-bit registers.
-> >>>
-> >>> This only goes by the 32/64 classification in the architecture, it
-> >>> does not try to implement finer details of SPR implementation (e.g.,
-> >>> not all bits implemented as simple read/write storage).
-> >>>
-> >>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> >>> ---
-> >>> Since v2: no change.
-> >>>
-> >>>    target/ppc/cpu_init.c    | 18 +++++++++---------
-> >>>    target/ppc/helper_regs.c |  2 +-
-> >>>    target/ppc/misc_helper.c |  4 ++--
-> >>>    target/ppc/power8-pmu.c  |  2 +-
-> >>>    target/ppc/translate.c   |  2 +-
-> >>>    5 files changed, 14 insertions(+), 14 deletions(-)
-> >>>
-> >>> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> >>> index 0ce2e3c91d..5aa0b3f0f1 100644
-> >>> --- a/target/ppc/cpu_init.c
-> >>> +++ b/target/ppc/cpu_init.c
-> >>> @@ -5085,8 +5085,8 @@ static void register_book3s_altivec_sprs(CPUPPC=
-State *env)
-> >>>        }
-> >>>   =20
-> >>>        spr_register_kvm(env, SPR_VRSAVE, "VRSAVE",
-> >>> -                     &spr_read_generic, &spr_write_generic,
-> >>> -                     &spr_read_generic, &spr_write_generic,
-> >>> +                     &spr_read_generic, &spr_write_generic32,
-> >>> +                     &spr_read_generic, &spr_write_generic32,
-> >>>                         KVM_REG_PPC_VRSAVE, 0x00000000);
-> >>>   =20
-> >>>    }
-> >>> @@ -5120,7 +5120,7 @@ static void register_book3s_207_dbg_sprs(CPUPPC=
-State *env)
-> >>>        spr_register_kvm_hv(env, SPR_DAWRX0, "DAWRX0",
-> >>>                            SPR_NOACCESS, SPR_NOACCESS,
-> >>>                            SPR_NOACCESS, SPR_NOACCESS,
-> >>> -                        &spr_read_generic, &spr_write_generic,
-> >>> +                        &spr_read_generic, &spr_write_generic32,
-> >>>                            KVM_REG_PPC_DAWRX, 0x00000000);
-> >>>        spr_register_kvm_hv(env, SPR_CIABR, "CIABR",
-> >>>                            SPR_NOACCESS, SPR_NOACCESS,
-> >>> @@ -5376,7 +5376,7 @@ static void register_book3s_ids_sprs(CPUPPCStat=
-e *env)
-> >>>        spr_register_hv(env, SPR_TSCR, "TSCR",
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>> -                 &spr_read_generic, &spr_write_generic,
-> >>> +                 &spr_read_generic, &spr_write_generic32,
-> >>>                     0x00000000);
-> >>>        spr_register_hv(env, SPR_HMER, "HMER",
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>> @@ -5406,7 +5406,7 @@ static void register_book3s_ids_sprs(CPUPPCStat=
-e *env)
-> >>>        spr_register_hv(env, SPR_MMCRC, "MMCRC",
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>> -                 &spr_read_generic, &spr_write_generic,
-> >>> +                 &spr_read_generic, &spr_write_generic32,
-> >>>                     0x00000000);
-> >>>        spr_register_hv(env, SPR_MMCRH, "MMCRH",
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>> @@ -5441,7 +5441,7 @@ static void register_book3s_ids_sprs(CPUPPCStat=
-e *env)
-> >>>        spr_register_hv(env, SPR_HDSISR, "HDSISR",
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>> -                 &spr_read_generic, &spr_write_generic,
-> >>> +                 &spr_read_generic, &spr_write_generic32,
-> >>>                     0x00000000);
-> >>>        spr_register_hv(env, SPR_HRMOR, "HRMOR",
-> >>>                     SPR_NOACCESS, SPR_NOACCESS,
-> >>> @@ -5665,7 +5665,7 @@ static void register_power7_book4_sprs(CPUPPCSt=
-ate *env)
-> >>>                         KVM_REG_PPC_ACOP, 0);
-> >>>        spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-> >>>                         SPR_NOACCESS, SPR_NOACCESS,
-> >>> -                     &spr_read_generic, &spr_write_generic,
-> >>> +                     &spr_read_generic, &spr_write_generic32,
-> >>>                         KVM_REG_PPC_PID, 0);
-> >>>    #endif
-> >>>    }
-> >>> @@ -5730,7 +5730,7 @@ static void register_power10_dexcr_sprs(CPUPPCS=
-tate *env)
-> >>>    {
-> >>>        spr_register(env, SPR_DEXCR, "DEXCR",
-> >>>                SPR_NOACCESS, SPR_NOACCESS,
-> >>> -            &spr_read_generic, &spr_write_generic,
-> >>> +            &spr_read_generic, &spr_write_generic32,
-> >>>                0);
-> >>>   =20
-> >>>        spr_register(env, SPR_UDEXCR, "DEXCR",
-> >>> @@ -5741,7 +5741,7 @@ static void register_power10_dexcr_sprs(CPUPPCS=
-tate *env)
-> >>>        spr_register_hv(env, SPR_HDEXCR, "HDEXCR",
-> >>>                SPR_NOACCESS, SPR_NOACCESS,
-> >>>                SPR_NOACCESS, SPR_NOACCESS,
-> >>> -            &spr_read_generic, &spr_write_generic,
-> >>> +            &spr_read_generic, &spr_write_generic32,
-> >>>                0);
-> >>>   =20
-> >>>        spr_register(env, SPR_UHDEXCR, "HDEXCR",
-> >>> diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-> >>> index 779e7db513..fb351c303f 100644
-> >>> --- a/target/ppc/helper_regs.c
-> >>> +++ b/target/ppc/helper_regs.c
-> >>> @@ -448,7 +448,7 @@ void register_non_embedded_sprs(CPUPPCState *env)
-> >>>        /* Exception processing */
-> >>>        spr_register_kvm(env, SPR_DSISR, "DSISR",
-> >>>                         SPR_NOACCESS, SPR_NOACCESS,
-> >>> -                     &spr_read_generic, &spr_write_generic,
-> >>> +                     &spr_read_generic, &spr_write_generic32,
-> >>>                         KVM_REG_PPC_DSISR, 0x00000000);
-> >>>        spr_register_kvm(env, SPR_DAR, "DAR",
-> >>>                         SPR_NOACCESS, SPR_NOACCESS,
-> >>> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-> >>> index a9bc1522e2..40ddc5c08c 100644
-> >>> --- a/target/ppc/misc_helper.c
-> >>> +++ b/target/ppc/misc_helper.c
-> >>> @@ -190,13 +190,13 @@ void helper_store_dpdes(CPUPPCState *env, targe=
-t_ulong val)
-> >>>   =20
-> >>>    void helper_store_pidr(CPUPPCState *env, target_ulong val)
-> >>>    {
-> >>> -    env->spr[SPR_BOOKS_PID] =3D val;
-> >>> +    env->spr[SPR_BOOKS_PID] =3D (uint32_t)val;
-> >>>        tlb_flush(env_cpu(env));
-> >>>    }
-> >>>   =20
-> >>>    void helper_store_lpidr(CPUPPCState *env, target_ulong val)
-> >>>    {
-> >>> -    env->spr[SPR_LPIDR] =3D val;
-> >>> +    env->spr[SPR_LPIDR] =3D (uint32_t)val;
-> >>>   =20
-> >>>        /*
-> >>>         * We need to flush the TLB on LPID changes as we only tag HV =
-vs
-> >>> diff --git a/target/ppc/power8-pmu.c b/target/ppc/power8-pmu.c
-> >>> index 1381072b9e..64a64865d7 100644
-> >>> --- a/target/ppc/power8-pmu.c
-> >>> +++ b/target/ppc/power8-pmu.c
-> >>> @@ -272,7 +272,7 @@ void helper_store_pmc(CPUPPCState *env, uint32_t =
-sprn, uint64_t value)
-> >>>    {
-> >>>        pmu_update_cycles(env);
-> >>>   =20
-> >>> -    env->spr[sprn] =3D value;
-> >>> +    env->spr[sprn] =3D (uint32_t)value;
-> >>>   =20
-> >>>        pmc_update_overflow_timer(env, sprn);
-> >>>    }
-> >>> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> >>> index f603f1a939..c03a6bdc9a 100644
-> >>> --- a/target/ppc/translate.c
-> >>> +++ b/target/ppc/translate.c
-> >>> @@ -413,7 +413,7 @@ void spr_write_generic(DisasContext *ctx, int spr=
-n, int gprn)
-> >>>   =20
-> >>>    void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-> >>>    {
-> >>> -    spr_write_generic(ctx, sprn, gprn);
-> >>> +    spr_write_generic32(ctx, sprn, gprn);
-> >>>   =20
-> >>>        /*
-> >>>         * SPR_CTRL writes must force a new translation block,
-> >>
-> >> Just out of curiosity, is this the same as the problem described at [1=
-] for DECAR?
-> >>
-> >>
-> >> ATB,
-> >>
-> >> Mark.
-> >>
-> >> [1] https://lists.nongnu.org/archive/html/qemu-ppc/2023-03/msg00451.ht=
-ml
+>
+> On 15/05/2023 18:02, Nicholas Piggin wrote:
+> > POWER9 DD2.1 and earlier had significant limitations when running KVM,
+> > including lack of "mixed mode" MMU support (ability to run HPT and RPT
+> > mode on threads of the same core), and a translation prefetch issue
+> > which is worked around by disabling "AIL" mode for the guest.
 > >=20
-> > Oh if it's a 64-bit target running in 32-bit mode, then the compiled
-> > code might use something like li reg,-1 to set the 0xffffffff value,
-> > but that gets sign extended to 64-bits. Storing that to DECAR then
-> > does cause it to get stored to DECR. So DECAR should use
-> > spr_write_generic32.
+> > These processors are not widely available, and it's difficult to deal
+> > with all these quirks in qemu +/- KVM, so create a POWER9 DD2.2 CPU
+> > and make it the default POWER9 CPU.
 > >=20
-> > But all the store_decr calculations are unsigned and DECR gets clamped
-> > to 32-bits, at least when reading it back. The problem seems to be the
-> > timer ends up getting set for a negative expire time.
-> >=20
-> > So storing to DECR directly seems like it would have the same problems
-> > as via DECAR. This should help.
-> >=20
-> > Thanks,
-> > Nick
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > > ---
-> >=20
-> > diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> > index 4e816c68c7..35a1410c4d 100644
-> > --- a/hw/ppc/ppc.c
-> > +++ b/hw/ppc/ppc.c
-> > @@ -794,14 +794,18 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu,=
- uint64_t *nextp,
-> >       CPUPPCState *env =3D &cpu->env;
-> >       ppc_tb_t *tb_env =3D env->tb_env;
-> >       uint64_t now, next;
-> > +    uint64_t unsigned_value;
-> > +    uint64_t unsigned_decr;
-> >       int64_t signed_value;
-> >       int64_t signed_decr;
-> >  =20
-> >       /* Truncate value to decr_width and sign extend for simplicity */
-> > +    unsigned_value =3D extract64(value, 0, nr_bits);
-> > +    unsigned_decr =3D extract64(decr, 0, nr_bits);
-> >       signed_value =3D sextract64(value, 0, nr_bits);
-> >       signed_decr =3D sextract64(decr, 0, nr_bits);
-> >  =20
-> > -    trace_ppc_decr_store(nr_bits, decr, value);
-> > +    trace_ppc_decr_store(nr_bits, unsigned_decr, unsigned_value);
-> >  =20
-> >       if (kvm_enabled()) {
-> >           /* KVM handles decrementer exceptions, we don't need our own =
-timer */
-> > @@ -821,7 +825,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, u=
-int64_t *nextp,
-> >        * On MSB edge based DEC implementations the MSB going from 0 -> =
-1 triggers
-> >        * an edge interrupt, so raise it here too.
-> >        */
-> > -    if ((value < 3) ||
-> > +    if ((unsigned_value < 3) ||
-> >           ((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value <=
- 0) ||
-> >           ((tb_env->flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_val=
-ue < 0
-> >             && signed_decr >=3D 0)) {
-> > @@ -836,7 +840,8 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, u=
-int64_t *nextp,
-> >  =20
-> >       /* Calculate the next timer event */
-> >       now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-> > -    next =3D now + muldiv64(value, NANOSECONDS_PER_SECOND, tb_env->dec=
-r_freq);
-> > +    next =3D now + muldiv64(unsigned_value, NANOSECONDS_PER_SECOND,
-> > +                          tb_env->decr_freq);
-> >       *nextp =3D next;
-> >  =20
-> >       /* Adjust timer */
 >
-> Thanks Nick! I've added the original reporter on CC to see if they can pr=
-ovide=20
-> testing and feedback.
+>
+> I almost forgot: the patch doesn't apply cleanly on latest upstream.
 
-Oops, thanks. To be clear making DECAR a 32-bit register did also solve
-the problem I could reproduce by avoiding that sign extended GPR setting
-it to -1LL. But if the test case didn't use DECAR instead wrote -1 to
-DEC in the interrupt handler, I think the above patch is needed. So we
-should do both patches (assuming this fixes for sdicaro@).
+Oh, some fuzz due to needing the PVR patch I think.
 
 Thanks,
 Nick
