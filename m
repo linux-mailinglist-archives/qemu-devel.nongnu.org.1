@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C39704675
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 09:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0CD704672
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 09:32:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyp9A-00059W-Mn; Tue, 16 May 2023 03:31:00 -0400
+	id 1pyp9A-0005Ad-V8; Tue, 16 May 2023 03:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <m.elsayed4420@gmail.com>)
- id 1pyp8r-0004fv-OZ; Tue, 16 May 2023 03:30:42 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1pyp8p-0004c4-Pi; Tue, 16 May 2023 03:30:40 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <m.elsayed4420@gmail.com>)
- id 1pyp8m-0000Bi-Mk; Tue, 16 May 2023 03:30:41 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3f50020e0f8so14373895e9.0; 
- Tue, 16 May 2023 00:30:34 -0700 (PDT)
+ id 1pyp8m-0000CQ-Nj; Tue, 16 May 2023 03:30:39 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-307c040797bso4452587f8f.3; 
+ Tue, 16 May 2023 00:30:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684222233; x=1686814233;
+ d=gmail.com; s=20221208; t=1684222234; x=1686814234;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FaVaq0ogVQz6AaNwSZ4SiMLr5WtmJewxbPsnZ0SWxUE=;
- b=oNNDbHA5ElDS4Tmf3EdQpd94hALk38X8ZjI1w1fDkfFl66X+T5KBuTMdZJJX3zc3nn
- IA5EyqHR2J5JOhMeMSKOGsS9fhXrQS9E4J5SKy5I71lT27NJH33rfqnDWc/84CK2eLPR
- 0fVm/h8mFAVabQI5nJSca1pIEwVJOFfy3sD7wctfCzmcaQStY/GX8HZxIKIVJbpCsIez
- 024vtgaCdImE3gywVzLXmuwYm10EN7L3s+D/TMI46AgLHbQFTPmMToO1wM8s2llmJYm3
- sx/RscSLdhhf9tOxSiubWaF8xGwPUFG5LbbjHCugeqj6Gs4N6DJdTUHFCh8JtZs8eJ/z
- uOfw==
+ bh=9/ptQJIeZsFPo0bnmorIDJFHDHElt04/hD816Kn9Pkk=;
+ b=pnxbe4X1EVDywfoNLpYb6H6nqOmOnlWiAxhFrEOfmKktLpvf+3JTlsrUKI4Ps890r0
+ oo4afWKd5SQNQKe1HlZX6xdmdVE8y5mZG7SfOdJZ1vU+tkPkR9jXh6kOvPtfBWdYX9Jt
+ vbzsfetdgmeUxRhf+lQCfl9siZpjtbrIiM8wGHnKIPeRJRziFeHnjsHtaJMN24+42s84
+ C20UCWqWvspkv1aq0ZCbh4JUAziH3g5p3cY/o9mKMEmW+EpNuPuX2MBTAi7ivnAaiap5
+ Kw54r/rBGO+pgBHijelFnxZXcLnUJ1D/0AYhxgH936WSAej8+J9yk/KAe1kJPEV7fEv0
+ btRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684222233; x=1686814233;
+ d=1e100.net; s=20221208; t=1684222234; x=1686814234;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FaVaq0ogVQz6AaNwSZ4SiMLr5WtmJewxbPsnZ0SWxUE=;
- b=EWbgVAxfQBpNG3N9LYtHuaTDlbVjy//MpHOYKxZnrqBqUnHuVmREb62o5lORwNSziR
- Xv23Cxv+kiY3PHkTEw60Pyb1x4eEzQjOk3fq+XqIKK7+DaB6ha98DSunouiRsOt9tk9H
- kod9mOad7CphtIQVl7qbZzwy9kb8UijcsQiDI46pjrj08ftkyUs18LShtN/HVHeEWS3B
- ZN1MmpyEMJdp71/vGyVGCelMe4qPd7vjY01a3r00B5/J2h3xlaaQjFwsgOO2CqETLsWz
- yG8i4GHzwCDX1Rb9WDAZpWX3i8gYTOyKF2vdQuFNqzrW++UoGvd0jJd2qJT6mKQu9IrU
- 75zg==
-X-Gm-Message-State: AC+VfDyR77/afF0i5TM0MIpRx6hT+d4q0NfHrfyA+so6fgWsA8SnV9oS
- imiqE3kWdWWqvGFWoNFEz6VUuMByeCQ5eg==
-X-Google-Smtp-Source: ACHHUZ4YdwlQhxOiHaMyCjw6kDjBkSZFMHB6rkyDFDM2XhuI1u3B9t3mqNaWzeMBAwlUwd2M2SLZmg==
-X-Received: by 2002:adf:fdd1:0:b0:306:2ff1:5227 with SMTP id
- i17-20020adffdd1000000b003062ff15227mr25934737wrs.23.1684222232360; 
- Tue, 16 May 2023 00:30:32 -0700 (PDT)
+ bh=9/ptQJIeZsFPo0bnmorIDJFHDHElt04/hD816Kn9Pkk=;
+ b=bC2MjJGKTXWS827qJEXnVg+82+q6HVUrVxGqpmLnLNzRjdB+rFu5VcxsXtjT9wac84
+ Yyduzk19shtGPFIe+J1Hp2KWATiNeVA3cBq8sX8I0xlNwgnCMh4NJE1mq/jANkl04f6K
+ NtWvambUOJVxLlKO2cbbvIFvI0icP+jrfKcBLC8i7s/ncAXWbyK9SGOigTqwGOqKaWhF
+ NUGXPZOo8ATbMBqW78lA/8ZeyOhcdPg68xXDIcLE0nR0sq0tUpIWQyJ6qdXa9XbpUkcO
+ 3xDFpt4POZZ/Xlv14JM7ic7m5ucWhgo/2OXetWPRo641Jfa0moMc9Ciw+E6uCOp6qLE6
+ 0efQ==
+X-Gm-Message-State: AC+VfDx8oE/6EOpFJYDrS+ElAZK2FzF42qKA+GIrGUoGBGk5g496Rihj
+ AiGJHiDkX8JQBxxq9RNIlwDhQtuuGhVqtw==
+X-Google-Smtp-Source: ACHHUZ5IkSnnKRk/D+O3jg9+D6rq132SKqHJh+7NMBSFzxkZD9YECWLoXR0LJzbgpCxTBfMXQH6dXw==
+X-Received: by 2002:a5d:5589:0:b0:307:8666:a50e with SMTP id
+ i9-20020a5d5589000000b003078666a50emr23438028wrv.67.1684222234007; 
+ Tue, 16 May 2023 00:30:34 -0700 (PDT)
 Received: from i.. ([41.236.82.205]) by smtp.gmail.com with ESMTPSA id
- y12-20020a5d614c000000b003062c609115sm1559997wrt.21.2023.05.16.00.30.30
+ y12-20020a5d614c000000b003062c609115sm1559997wrt.21.2023.05.16.00.30.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 00:30:31 -0700 (PDT)
+ Tue, 16 May 2023 00:30:33 -0700 (PDT)
 From: Mohamed ElSayed <m.elsayed4420@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Mohamed ElSayed <m.elsayed4420@gmail.com>
-Subject: [PULL 5/8] tivac general purpose timers implementation
-Date: Tue, 16 May 2023 10:29:56 +0300
-Message-Id: <20230516072959.49994-6-m.elsayed4420@gmail.com>
+Subject: [PULL 6/8] tivac watchdog timers implementation
+Date: Tue, 16 May 2023 10:29:57 +0300
+Message-Id: <20230516072959.49994-7-m.elsayed4420@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230516072959.49994-1-m.elsayed4420@gmail.com>
 References: <20230516072959.49994-1-m.elsayed4420@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=m.elsayed4420@gmail.com; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=m.elsayed4420@gmail.com; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,20 +92,20 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Mohamed ElSayed <m.elsayed4420@gmail.com>
 ---
- hw/timer/tm4c123_gptm.c         | 529 ++++++++++++++++++++++++++++++++
- include/hw/timer/tm4c123_gptm.h | 131 ++++++++
- 2 files changed, 660 insertions(+)
- create mode 100644 hw/timer/tm4c123_gptm.c
- create mode 100644 include/hw/timer/tm4c123_gptm.h
+ hw/watchdog/tm4c123_watchdog.c         | 298 +++++++++++++++++++++++++
+ include/hw/watchdog/tm4c123_watchdog.h |  97 ++++++++
+ 2 files changed, 395 insertions(+)
+ create mode 100644 hw/watchdog/tm4c123_watchdog.c
+ create mode 100644 include/hw/watchdog/tm4c123_watchdog.h
 
-diff --git a/hw/timer/tm4c123_gptm.c b/hw/timer/tm4c123_gptm.c
+diff --git a/hw/watchdog/tm4c123_watchdog.c b/hw/watchdog/tm4c123_watchdog.c
 new file mode 100644
-index 0000000000..69f84ee0ec
+index 0000000000..cd064c5343
 --- /dev/null
-+++ b/hw/timer/tm4c123_gptm.c
-@@ -0,0 +1,529 @@
++++ b/hw/watchdog/tm4c123_watchdog.c
+@@ -0,0 +1,298 @@
 +/*
-+ * TM4C123 General purpose timers
++ * TM4C123 Watchdog Timers
 + *
 + * Copyright (c) 2023 Mohamed ElSayed <m.elsayed4420@gmail.com>
 + *
@@ -128,424 +128,220 @@ index 0000000000..69f84ee0ec
 + * THE SOFTWARE.
 + */
 +
-+#include "hw/timer/tm4c123_gptm.h"
++#include "qemu/osdep.h"
++#include "hw/watchdog/tm4c123_watchdog.h"
 +#include "hw/irq.h"
++#include "hw/qdev-properties.h"
++#include "hw/qdev-clock.h"
++#include "sysemu/runstate.h"
++#include "qemu/log.h"
++#include "qemu/module.h"
++#include "hw/nmi.h"
 +#include "trace.h"
-+#include "qemu/timer.h"
-+#include <time.h>
 +
-+#define LOG(fmt, args...) qemu_log("%s: " fmt, __func__, ## args)
 +#define READONLY LOG("0x%"HWADDR_PRIx" is a readonly field\n.", addr)
++#define LOG(fmt, args...) qemu_log("%s: " fmt, __func__, ## args)
 +
-+static uint64_t ns_to_ticks(void *opaque, uint64_t ns, uint32_t prescaler)
++static bool locked = false;
++
++static void tm4c123_wdt_expired(void *opaque)
 +{
-+    TM4C123GPTMState *s = opaque;
-+
-+    uint32_t freq = clock_get_hz(s->clk) / prescaler;
-+    float sec = (float)ns / (float)NANOSECONDS_PER_SECOND;
-+    return sec * freq;
-+}
-+
-+static unsigned long ticks_to_time_ns(void *opaque, uint64_t ticks, uint32_t prescaler)
-+{
-+    TM4C123GPTMState *s = opaque;
-+    uint32_t freq = clock_get_hz(s->clk) / prescaler;
-+    return (((float)ticks / (float)freq) * NANOSECONDS_PER_SECOND);
-+}
-+
-+static void log_message(const char *message)
-+{
-+    uint64_t ns = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
-+    time_t seconds = ns / 1000000000;
-+    struct tm *timeinfo = localtime(&seconds);
-+    char buffer[80];
-+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
-+    LOG("[%s] %s\n", buffer, message);
-+}
-+
-+static uint16_t get_timer_width(void *opaque)
-+{
-+    TM4C123GPTMState *s = opaque;
-+    switch(s->mmio.addr) {
-+        case TIMER0_32...TIMER5_32:
-+            return TIMER_WIDTH_32;
-+        case TIMER0_64...TIMER5_64:
-+            return TIMER_WIDTH_64;
++    TM4C123WatchdogState *s = opaque;
++    /*if this is the first timeout/the ris is not cleared */
++    if (!test_bit(0, (const unsigned long*)&s->wdt_mis)) {
++        set_bit(0, (unsigned long*)&s->wdt_mis);
++        nmi_monitor_handle(0, NULL);
++        qemu_irq_pulse(s->irq);
 +    }
-+    return 0;
-+}
-+
-+static uint64_t build_interval_value(void *opaque)
-+{
-+    TM4C123GPTMState *s = opaque;
-+    uint16_t timer_width = get_timer_width(s);
-+    uint64_t interval_value = 0;
-+    if (timer_width == TIMER_WIDTH_32) {
-+        /* timer is in 32 bit mode or 32bit rtc*/
-+        uint16_t upper16 = extract32(s->gptm_talir, 16, 16);
-+        uint16_t lower16 = extract32(s->gptm_tblir, 0, 16);
-+        interval_value = ((uint32_t)lower16 << 16) + upper16;
-+    }
-+    else if (timer_width == TIMER_WIDTH_64) {
-+        interval_value = ((uint64_t)s->gptm_talir << 32) + s->gptm_tblir;
-+    }
-+
-+    trace_tm4c123_gptm_build_interval_value(s->gptm_talir, s->gptm_tblir, interval_value);
-+    return interval_value;
-+}
-+
-+static void set_timers(void *opaque)
-+{
-+    TM4C123GPTMState *s = opaque;
-+    uint64_t interval_value;
-+    uint16_t timer_width;
-+    if (s->gptm_ctl & GPTM_TACTL_EN) {
-+        timer_width = get_timer_width(s);
-+        if (timer_width == TIMER_WIDTH_32) {
-+            /* What is the mode of the timer? 16/32 */
-+            if (s->gptm_cfg == 0x4) {
-+                /* 16 bit mode */
-+                interval_value = extract32(s->gptm_talir, 0, 16);
-+                /* Start the timer? */
-+                timer_mod(s->a, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + ticks_to_time_ns(s, interval_value, s->gptm_tapr));
-+                LOG("Timer A/16 is running\n");
-+            }
-+            else if (s->gptm_cfg == 0x1) {
-+                /* 32 bit mode rtc */
-+                interval_value = build_interval_value(s);
-+                timer_mod(s->a, qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + ticks_to_time_ns(s, interval_value, s->gptm_tapr));
-+                LOG("Timer A/32 RTC is running\n");
-+            }
-+            else if (s->gptm_cfg == 0x0) {
-+                /* 32 bit mode rtc */
-+                interval_value = build_interval_value(s);
-+                timer_mod(s->a, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + ticks_to_time_ns(s, interval_value, s->gptm_tapr));
-+                LOG("Timer A/32 is running\n");
-+            }
-+        }
-+        else if (timer_width == TIMER_WIDTH_64) {
-+            /* What is the mode of the timer? 32/64 */
-+            if (s->gptm_cfg == 0) {
-+                /* 64 bit mode */
-+                interval_value = build_interval_value(s);
-+                timer_mod(s->a, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + ticks_to_time_ns(s, interval_value, s->gptm_tapr));
-+                LOG("Timer A/64 is running\n");
-+            }
-+            else if (s->gptm_cfg == 0x1) {
-+                /* 64 bit mode */
-+                interval_value = build_interval_value(s);
-+                timer_mod(s->a, qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + ticks_to_time_ns(s, interval_value, s->gptm_tapr));
-+                LOG("Timer A/64 RTC is running\n");
-+            }
-+            else if (s->gptm_cfg == 0x4) {
-+                interval_value = s->gptm_talir;
-+                timer_mod(s->a, qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + ticks_to_time_ns(s, interval_value, s->gptm_tapr));
-+                LOG("Timer A/32 RTC is running\n");
-+            }
-+        }
-+    }
-+    else if (s->gptm_ctl & GPTM_TBCTL_EN) {
-+        timer_width = get_timer_width(s);
-+        if (timer_width == TIMER_WIDTH_32) {
-+            /* What is the mode of the timer? 16/32 */
-+            if (s->gptm_cfg == 0x4) {
-+                /* 16 bit mode */
-+                interval_value = extract32(s->gptm_tblir, 0, 16);
-+                /* Start the timer? */
-+                timer_mod(s->b, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + ticks_to_time_ns(s, interval_value, s->gptm_tbpr));
-+                LOG("Timer B/16 is running\n");
-+            }
-+            else if (s->gptm_cfg == 0x01) {
-+                /* 32 bit mode rtc */
-+                interval_value = build_interval_value(s);
-+                timer_mod(s->b, qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + ticks_to_time_ns(s, interval_value, s->gptm_tbpr));
-+                LOG("Timer B/32 RTC is running\n");
-+            }
-+            else if (s->gptm_cfg == 0x00) {
-+                /* 32 bit mode rtc */
-+                interval_value = build_interval_value(s);
-+                timer_mod(s->b, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + ticks_to_time_ns(s, interval_value, s->gptm_tbpr));
-+                LOG("Timer B/32 RTC is running\n");
-+            }
-+        }
-+        else if (timer_width == TIMER_WIDTH_64) {
-+            /* What is the mode of the timer? 32/64 */
-+            if (s->gptm_cfg == 0) {
-+                /* 64 bit mode */
-+                interval_value = build_interval_value(s);
-+                timer_mod(s->b, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + ticks_to_time_ns(s, interval_value, s->gptm_tbpr));
-+                LOG("Timer A/64 is running\n");
-+            }
-+            else if (s->gptm_cfg == 0x1) {
-+                /* 64 bit mode */
-+                interval_value = build_interval_value(s);
-+                timer_mod(s->b, qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + ticks_to_time_ns(s, interval_value, s->gptm_tbpr));
-+                LOG("Timer A/64 RTC is running\n");
-+            }
-+            else if (s->gptm_cfg == 0x4) {
-+                interval_value = s->gptm_tblir;
-+                timer_mod(s->b, qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + ticks_to_time_ns(s, interval_value, s->gptm_tbpr));
-+                LOG("Timer A/32 RTC is running\n");
-+            }
++    else {
++        if (test_bit(1, (const unsigned long*)&s->wdt_ctl))
++            qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
++        else {
++            nmi_monitor_handle(0, NULL);
++            qemu_irq_pulse(s->irq);
 +        }
 +    }
 +}
 +
-+static bool gptm_clock_enabled(TM4C123SysCtlState *s, hwaddr addr)
++static bool wdt_clock_enabled(TM4C123SysCtlState *s, hwaddr addr)
 +{
 +    switch(addr) {
-+        case TIMER0_32:
-+            return test_bit(0, (const unsigned long*)&s->sysctl_rcgctimer);
++        case WDT_0:
++            return (s->sysctl_rcgcwd & (1 << 0));
 +            break;
-+        case TIMER1_32:
-+            return test_bit(1, (const unsigned long*)&s->sysctl_rcgctimer);
-+            break;
-+        case TIMER2_32:
-+            return test_bit(2, (const unsigned long*)&s->sysctl_rcgctimer);
-+            break;
-+        case TIMER3_32:
-+            return test_bit(3, (const unsigned long*)&s->sysctl_rcgctimer);
-+            break;
-+        case TIMER4_32:
-+            return test_bit(4, (const unsigned long*)&s->sysctl_rcgctimer);
-+            break;
-+        case TIMER5_32:
-+            return test_bit(5, (const unsigned long*)&s->sysctl_rcgctimer);
-+            break;
-+        case TIMER0_64:
-+            return test_bit(0, (const unsigned long*)&s->sysctl_rcgcwtimer);
-+            break;
-+        case TIMER1_64:
-+            return test_bit(1, (const unsigned long*)&s->sysctl_rcgcwtimer);
-+            break;
-+        case TIMER2_64:
-+            return test_bit(2, (const unsigned long*)&s->sysctl_rcgcwtimer);
-+            break;
-+        case TIMER3_64:
-+            return test_bit(3, (const unsigned long*)&s->sysctl_rcgcwtimer);
-+            break;
-+        case TIMER4_64:
-+            return test_bit(4, (const unsigned long*)&s->sysctl_rcgcwtimer);
-+            break;
-+        case TIMER5_64:
-+            return test_bit(5, (const unsigned long*)&s->sysctl_rcgcwtimer);
++        case WDT_1:
++            return (s->sysctl_rcgcwd & (1 << 1));
 +            break;
 +    }
 +    return false;
 +}
 +
-+static void tm4c123_gptm_reset(DeviceState* dev)
++static void tm4c123_wdt_reset(DeviceState *dev)
 +{
-+    TM4C123GPTMState *s = TM4C123_GPTM(dev);
++    TM4C123WatchdogState *s = TM4C123_WATCHDOG(dev);
 +
-+    s->gptm_cfg = 0x00000000;
-+    s->gptm_amr = 0x00000000;
-+    s->gptm_bmr = 0x00000000;
-+    s->gptm_ctl = 0x00000000;
-+    s->gptm_sync = 0x00000000;
-+    s->gptm_imr = 0x00000000;
-+    s->gptm_ris = 0x00000000;
-+    s->gptm_mis = 0x00000000;
-+    s->gptm_icr = 0x00000000;
-+    s->gptm_talir = 0xFFFFFFFF;
-+    s->gptm_tblir = 0x00000000;
-+    s->gptm_tamatchr = 0xFFFFFFFF;
-+    s->gptm_tbmatchr = 0x00000000;
-+    s->gptm_tapr = 0x00000000;
-+    s->gptm_tbpr = 0x00000000;
-+    s->gptm_tapmr = 0x00000000;
-+    s->gptm_tbpmr = 0x00000000;
-+    s->gptm_tar = 0xFFFFFFFF;
-+    s->gptm_tbr = 0x00000000;
-+    s->gptm_tav = 0xFFFFFFFF;
-+    s->gptm_tbv = 0x00000000;
-+    s->gptm_rtcpd = 0x00007FFF;
-+    s->gptm_taps = 0x00000000;
-+    s->gptm_tbps = 0x00000000;
-+    s->gptm_tapv = 0x00000000;
-+    s->gptm_tbpv = 0x00000000;
-+    s->gptm_pp = 0x00000000;
++    s->wdt_load = 0xFFFFFFFF;
++    s->wdt_value = 0xFFFFFFFF;
++    s->wdt_ctl = (s->mmio.addr == WDT_0 ? 0x00000000 : 0x80000000);
++    s->wdt_icr = 0x00000000;
++    s->wdt_ris = 0x00000000;
++    s->wdt_mis = 0x00000000;
++    s->wdt_test = 0x00000000;
++    s->wdt_lock = 0x00000000;
++    s->wdt_per_id4 = 0x00000000;
++    s->wdt_per_id5 = 0x00000000;
++    s->wdt_per_id6 = 0x00000000;
++    s->wdt_per_id7 = 0x00000000;
++    s->wdt_per_id0 = 0x00000005;
++    s->wdt_per_id1 = 0x00000018;
++    s->wdt_per_id2 = 0x00000018;
++    s->wdt_per_id3 = 0x00000001;
++    s->wdt_pcell_id0 = 0x0000000D;
++    s->wdt_pcell_id1 = 0x000000F0;
++    s->wdt_pcell_id2 = 0x00000006;
++    s->wdt_pcell_id3 = 0x000000B1;
 +}
 +
-+static uint64_t tm4c123_gptm_read(void *opaque, hwaddr addr, unsigned int size)
++static uint64_t tm4c123_wdt_read(void *opaque, hwaddr addr, unsigned int size)
 +{
-+    TM4C123GPTMState *s = opaque;
++    TM4C123WatchdogState *s = opaque;
 +
-+    if (!gptm_clock_enabled(s->sysctl, s->mmio.addr)) {
-+        hw_error("GPTM module clock is not enabled");
++    if (!wdt_clock_enabled(s->sysctl, s->mmio.addr)) {
++        hw_error("Watchdog timer module clock is not enabled");
 +    }
 +
-+    trace_tm4c123_gptm_read(addr);
-+
 +    switch(addr) {
-+        case GPTM_CFG:
-+            return s->gptm_cfg;
-+        case GPTM_AMR:
-+            return s->gptm_amr;
-+        case GPTM_BMR:
-+            return s->gptm_bmr;
-+        case GPTM_CTL:
-+            return s->gptm_ctl;
-+        case GPTM_SYNC:
-+            return s->gptm_sync;
-+        case GPTM_IMR:
-+            return s->gptm_imr;
-+        case GPTM_RIS:
-+            return s->gptm_ris;
-+        case GPTM_MIS:
-+            return s->gptm_mis;
-+        case GPTM_ICR:
-+            return s->gptm_icr;
-+        case GPTM_TALIR:
-+            return s->gptm_talir;
-+        case GPTM_TBLIR:
-+            return s->gptm_tblir;
-+        case GPTM_TAMATCHR:
-+            return s->gptm_tamatchr;
-+        case GPTM_TBMATCHR:
-+            return s->gptm_tbmatchr;
-+        case GPTM_TAPR:
-+            return s->gptm_tapr;
-+        case GPTM_TBPR:
-+            return s->gptm_tbpr;
-+        case GPTM_TAPMR:
-+            return s->gptm_tapmr;
-+        case GPTM_TBPMR:
-+            return s->gptm_tbpmr;
-+        case GPTM_TAR:
-+            return s->gptm_tar;
-+        case GPTM_TBR:
-+            return s->gptm_tbr;
-+        case GPTM_TAV:
-+            if (get_timer_width(s) == TIMER_WIDTH_64 && s->gptm_cfg == 0) {
-+                return extract64(
-+                        ns_to_ticks(s, s->a->expire_time - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), s->gptm_tapr),
-+                        0, 31);
-+            }
-+            else {
-+                return ns_to_ticks(s, s->a->expire_time - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), s->gptm_tapr);
-+            }
-+        case GPTM_TBV:
-+            if (get_timer_width(s) == TIMER_WIDTH_64 && s->gptm_cfg == 0) {
-+                return extract64(
-+                        ns_to_ticks(s, s->a->expire_time - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), s->gptm_tapr),
-+                        32, 64);
-+            }
-+            else {
-+                return ns_to_ticks(s, s->b->expire_time - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), s->gptm_tabr);
-+            }
-+        case GPTM_RTCPD:
-+            return s->gptm_rtcpd;
-+        case GPTM_TAPS:
-+            return s->gptm_taps;
-+        case GPTM_TBPS:
-+            return s->gptm_tbps;
-+        case GPTM_TAPV:
-+            return s->gptm_tapv;
-+        case GPTM_TBPV:
-+            return s->gptm_tbpv;
-+        case GPTM_PP:
-+            return s->gptm_pp;
++        case WDT_LOAD:
++            return s->wdt_load;
++        case WDT_VALUE:
++            return ptimer_get_count(s->timer);
++        case WDT_CTL:
++            return s->wdt_ctl;
++        case WDT_ICR:
++            return s->wdt_icr;
++        case WDT_RIS:
++            return s->wdt_ris;
++        case WDT_MIS:
++            return s->wdt_mis;
++        case WDT_TEST:
++            return s->wdt_test;
++        case WDT_LOCK:
++            return s->wdt_lock;
++        case WDT_PER_ID4:
++            return s->wdt_per_id4;
++        case WDT_PER_ID5:
++            return s->wdt_per_id5;
++        case WDT_PER_ID6:
++            return s->wdt_per_id6;
++        case WDT_PER_ID7:
++            return s->wdt_per_id7;
++        case WDT_PER_ID0:
++            return s->wdt_per_id0;
++        case WDT_PER_ID1:
++            return s->wdt_per_id1;
++        case WDT_PER_ID2:
++            return s->wdt_per_id2;
++        case WDT_PER_ID3:
++            return s->wdt_per_id3;
++        case WDT_PCELL_ID0:
++            return s->wdt_pcell_id0;
++        case WDT_PCELL_ID1:
++            return s->wdt_pcell_id1;
++        case WDT_PCELL_ID2:
++            return s->wdt_pcell_id2;
++        case WDT_PCELL_ID3:
++            return s->wdt_pcell_id3;
 +        default:
 +            LOG("Bad address 0x%"HWADDR_PRIx"\n", addr);
 +    }
-+
 +    return 0;
 +}
 +
-+static void tm4c123_gptm_write(void *opaque, hwaddr addr, uint64_t val64, unsigned int size)
++static void tm4c123_wdt_write(void *opaque, hwaddr addr, uint64_t val64, unsigned int size)
 +{
-+    TM4C123GPTMState *s = opaque;
++    TM4C123WatchdogState *s = opaque;
 +    uint32_t val32 = val64;
 +
-+    if (!gptm_clock_enabled(s->sysctl, s->mmio.addr)) {
-+        hw_error("GPTM module clock is not enabled");
++    trace_tm4c123_wdt_write(addr, val64);
++    if (!wdt_clock_enabled(s->sysctl, s->mmio.addr)) {
++        hw_error("Watchdog module clock is not enabled");
 +    }
 +
-+    trace_tm4c123_gptm_write(addr, val32);
-+
 +    switch(addr) {
-+        case GPTM_CFG:
-+            s->gptm_cfg = val32;
++        case WDT_LOAD:
++            s->wdt_load = val32;
++            locked = true;
++            s->wdt_ctl |= WDT_CTL_INTEN;
++            ptimer_transaction_begin(s->timer);
++            ptimer_set_count(s->timer, s->wdt_load);
++            ptimer_set_limit(s->timer, s->wdt_load, 1);
++            ptimer_run(s->timer, 0);
++            ptimer_transaction_commit(s->timer);
 +            break;
-+        case GPTM_AMR:
-+            s->gptm_amr = val32;
-+            break;
-+        case GPTM_BMR:
-+            s->gptm_bmr = val32;
-+            break;
-+        case GPTM_CTL:
-+            s->gptm_ctl = val32;
-+            set_timers(s);
-+            break;
-+        case GPTM_SYNC:
-+            s->gptm_sync = val32;
-+            break;
-+        case GPTM_IMR:
-+            s->gptm_imr = val32;
-+            break;
-+        case GPTM_RIS:
++        case WDT_VALUE:
 +            READONLY;
 +            break;
-+        case GPTM_MIS:
-+            s->gptm_mis = val32;
++        case WDT_CTL:
++            s->wdt_ctl = val32;
 +            break;
-+        case GPTM_ICR:
-+            s->gptm_ris &= ~val32;
-+            s->gptm_mis &= ~val32;
++        case WDT_ICR:
++            ptimer_transaction_begin(s->timer);
++            ptimer_set_limit(s->timer, s->wdt_load, 1);
++            ptimer_transaction_commit(s->timer);
++            clear_bit(0, (unsigned long*)&s->wdt_ris);
++            clear_bit(0, (unsigned long*)&s->wdt_mis);
++            s->wdt_icr = val32;
 +            break;
-+        case GPTM_TALIR:
-+            s->gptm_talir = val32;
-+            break;
-+        case GPTM_TBLIR:
-+            s->gptm_tblir = val32;
-+            break;
-+        case GPTM_TAMATCHR:
-+            s->gptm_tamatchr = val32;
-+            break;
-+        case GPTM_TBMATCHR:
-+            s->gptm_tbmatchr = val32;
-+            break;
-+        case GPTM_TAPR:
-+            s->gptm_tapr = val32;
-+            break;
-+        case GPTM_TBPR:
-+            s->gptm_tbpr = val32;
-+            break;
-+        case GPTM_TAPMR:
-+            s->gptm_tapmr = val32;
-+            break;
-+        case GPTM_TBPMR:
-+            s->gptm_tbpmr = val32;
-+            break;
-+        case GPTM_TAR:
++        case WDT_RIS:
 +            READONLY;
 +            break;
-+        case GPTM_TBR:
++        case WDT_MIS:
 +            READONLY;
 +            break;
-+        case GPTM_TAV:
-+            s->gptm_tav = val32;
++        case WDT_TEST:
++            s->wdt_test = val32;
 +            break;
-+        case GPTM_TBV:
-+            s->gptm_tbv = val32;
++        case WDT_LOCK:
++            /* The actual hardware never locks the module */
++            if (val32 == UNLOCK_VALUE) {
++                locked = false;
++                s->wdt_lock = 0;
++            }
 +            break;
-+        case GPTM_RTCPD:
++        case WDT_PER_ID4:
 +            READONLY;
 +            break;
-+        case GPTM_TAPS:
++        case WDT_PER_ID5:
 +            READONLY;
 +            break;
-+        case GPTM_TBPS:
++        case WDT_PER_ID6:
 +            READONLY;
 +            break;
-+        case GPTM_TAPV:
++        case WDT_PER_ID7:
 +            READONLY;
 +            break;
-+        case GPTM_TBPV:
++        case WDT_PER_ID0:
 +            READONLY;
 +            break;
-+        case GPTM_PP:
++        case WDT_PER_ID1:
++            READONLY;
++            break;
++        case WDT_PER_ID2:
++            READONLY;
++            break;
++        case WDT_PER_ID3:
++            READONLY;
++            break;
++        case WDT_PCELL_ID0:
++            READONLY;
++            break;
++        case WDT_PCELL_ID1:
++            READONLY;
++            break;
++        case WDT_PCELL_ID2:
++            READONLY;
++            break;
++        case WDT_PCELL_ID3:
 +            READONLY;
 +            break;
 +        default:
@@ -553,94 +349,67 @@ index 0000000000..69f84ee0ec
 +    }
 +}
 +
-+static const MemoryRegionOps tm4c123_gptm_ops = {
-+    .read = tm4c123_gptm_read,
-+    .write = tm4c123_gptm_write,
++const struct MemoryRegionOps tm4c123_wdt_ops = {
++    .read = tm4c123_wdt_read,
++    .write = tm4c123_wdt_write,
 +    .endianness = DEVICE_NATIVE_ENDIAN,
 +};
 +
-+static void timer_a_callback(void *opaque)
++static void tm4c123_wdt_init(Object *obj)
 +{
-+    TM4C123GPTMState *s = opaque;
++    TM4C123WatchdogState *s = TM4C123_WATCHDOG(obj);
 +
-+    log_message("timer A\n");
++    s->wdt_clock = qdev_init_clock_in(DEVICE(s), "wdt_clock", NULL, NULL, 0);
 +
-+    if (test_bit(0, (unsigned long*)&s->gptm_imr)) {
-+        qemu_irq_pulse(s->irq_a);
-+        set_bit(0, (unsigned long*)&s->gptm_mis);
-+    }
-+    set_bit(0, (unsigned long*)&s->gptm_ris);
-+    if ((s->gptm_amr & 0x0000000F) == 0x2) {
-+        set_timers(s);
-+    }
-+}
-+
-+static void timer_b_callback(void *opaque)
-+{
-+    TM4C123GPTMState *s = opaque;
-+    log_message("timer B\n");
-+
-+    if (test_bit(8, (unsigned long*)&s->gptm_imr)) {
-+        qemu_irq_pulse(s->irq_b);
-+        set_bit(8, (unsigned long*)&s->gptm_mis);
-+    }
-+    set_bit(8, (unsigned long*)&s->gptm_ris);
-+    if ((s->gptm_bmr & 0x0000000F) == 0x2) {
-+        set_timers(s);
-+    }
-+}
-+
-+static void tm4c123_gptm_init(Object *obj)
-+{
-+    TM4C123GPTMState*s = TM4C123_GPTM(obj);
-+    s->clk = qdev_init_clock_in(DEVICE(s), "gptm_clock", NULL, NULL, 0);
-+    s->a = timer_new_ns(QEMU_CLOCK_VIRTUAL, timer_a_callback, s);
-+    s->b = timer_new_ns(QEMU_CLOCK_VIRTUAL, timer_b_callback, s);
-+    timer_init_ns(s->a, QEMU_CLOCK_VIRTUAL, timer_a_callback, s);
-+    timer_init_ns(s->b, QEMU_CLOCK_VIRTUAL, timer_b_callback, s);
-+
-+    sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq_a);
-+    sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq_b);
-+    memory_region_init_io(&s->mmio, obj, &tm4c123_gptm_ops, s, TYPE_TM4C123_GPTM, 0xFFF);
++    sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
++    memory_region_init_io(&s->mmio, obj, &tm4c123_wdt_ops, s, TYPE_TM4C123_WATCHDOG, 0xFFF);
 +    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
 +}
 +
-+static void tm4c123_gptm_realize(DeviceState *dev, Error **errp)
++static void tm4c123_wdt_realize(DeviceState *dev, Error **errp)
 +{
-+    TM4C123GPTMState *s = TM4C123_GPTM(dev);
-+    qdev_connect_clock_in(dev, "gptm_clock", qdev_get_clock_out(DEVICE(s->sysctl), "outclk"));
++    TM4C123WatchdogState *s = TM4C123_WATCHDOG(dev);
++    qdev_connect_clock_in(dev, "wdt_clock", qdev_get_clock_out(DEVICE(s->sysctl), "outclk"));
 +
++    s->timer = ptimer_init(tm4c123_wdt_expired, s,
++                           PTIMER_POLICY_NO_IMMEDIATE_RELOAD |
++                           PTIMER_POLICY_NO_COUNTER_ROUND_DOWN);
++
++    ptimer_transaction_begin(s->timer);
++    ptimer_set_period_from_clock(s->timer, s->wdt_clock, 1);
++    ptimer_set_limit(s->timer, 0xFFFFFFFF, 0);
++    ptimer_transaction_commit(s->timer);
 +}
 +
-+static void tm4c123_gptm_class_init(ObjectClass *kclass, void *data)
++static void tm4c123_wdt_class_init(ObjectClass *kclass, void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(kclass);
-+    dc->reset = tm4c123_gptm_reset;
-+    dc->realize = tm4c123_gptm_realize;
++    dc->realize = tm4c123_wdt_realize;
++    dc->reset = tm4c123_wdt_reset;
 +}
 +
-+static const TypeInfo tm4c123_gptm_info = {
-+    .name = TYPE_TM4C123_GPTM,
++static const TypeInfo tm4c123_wdt_info = {
++    .name = TYPE_TM4C123_WATCHDOG,
 +    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(TM4C123GPTMState),
-+    .instance_init = tm4c123_gptm_init,
-+    .class_init = tm4c123_gptm_class_init,
++    .instance_size = sizeof(TM4C123WatchdogState),
++    .instance_init = tm4c123_wdt_init,
++    .class_init = tm4c123_wdt_class_init,
 +};
 +
-+static void tm4c123_gptm_register_types(void)
++static void tm4c123_wdt_register_types(void)
 +{
-+    type_register_static(&tm4c123_gptm_info);
++    type_register_static(&tm4c123_wdt_info);
 +}
 +
-+type_init(tm4c123_gptm_register_types)
-diff --git a/include/hw/timer/tm4c123_gptm.h b/include/hw/timer/tm4c123_gptm.h
++type_init(tm4c123_wdt_register_types)
+diff --git a/include/hw/watchdog/tm4c123_watchdog.h b/include/hw/watchdog/tm4c123_watchdog.h
 new file mode 100644
-index 0000000000..e86049f5c1
+index 0000000000..2621b5d805
 --- /dev/null
-+++ b/include/hw/timer/tm4c123_gptm.h
-@@ -0,0 +1,131 @@
++++ b/include/hw/watchdog/tm4c123_watchdog.h
+@@ -0,0 +1,97 @@
 +/*
-+ * TM4C123 General purpose timers
++ * TM4C123 Watchdog Timers
 + *
 + * Copyright (c) 2023 Mohamed ElSayed <m.elsayed4420@gmail.com>
 + *
@@ -663,110 +432,76 @@ index 0000000000..e86049f5c1
 + * THE SOFTWARE.
 + */
 +
-+#ifndef HW_ARM_TM4C123_GPTM_H
-+#define HW_ARM_TM4C123_GPTM_H
++#ifndef HW_ARM_TM4C123_WATCHDOG_H
++#define HW_ARM_TM4C123_WATCHDOG_H
 +
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "qemu/module.h"
-+#include "hw/misc/tm4c123_sysctl.h"
-+#include "qemu/bitops.h"
 +#include "hw/sysbus.h"
-+#include "hw/irq.h"
 +#include "qom/object.h"
++#include "hw/misc/tm4c123_sysctl.h"
++#include "hw/ptimer.h"
 +
-+#define TIMER_WIDTH_32 0x32B
-+#define TIMER_WIDTH_64 0x64B
++#define WDT_0 0x40000000
++#define WDT_1 0x40001000
 +
-+#define TIMER0_32 0x40030000
-+#define TIMER1_32 0x40031000
-+#define TIMER2_32 0x40032000
-+#define TIMER3_32 0x40033000
-+#define TIMER4_32 0x40034000
-+#define TIMER5_32 0x40035000
++#define WDT_LOAD 0x000
++#define WDT_VALUE 0x004
++#define WDT_CTL 0x008
++#define WDT_ICR 0x00C
++#define WDT_RIS 0x010
++#define WDT_MIS 0x014
++#define WDT_TEST 0x418
++#define WDT_LOCK 0xC00
++#define WDT_PER_ID4 0xFD0
++#define WDT_PER_ID5 0xFD4
++#define WDT_PER_ID6 0xFD8
++#define WDT_PER_ID7 0xFDC
++#define WDT_PER_ID0 0xFE0
++#define WDT_PER_ID1 0xFE4
++#define WDT_PER_ID2 0xFE8
++#define WDT_PER_ID3 0xFEC
++#define WDT_PCELL_ID0 0xFF0
++#define WDT_PCELL_ID1 0xFF4
++#define WDT_PCELL_ID2 0xFF8
++#define WDT_PCELL_ID3 0xFFC
 +
-+#define TIMER0_64 0x40036000
-+#define TIMER1_64 0x40037000
-+#define TIMER2_64 0x4003C000
-+#define TIMER3_64 0x4003D000
-+#define TIMER4_64 0x4003E000
-+#define TIMER5_64 0x4003F000
++#define UNLOCK_VALUE 0x1ACCE551
 +
-+#define GPTM_CFG 0x000
-+#define GPTM_AMR 0x004
-+#define GPTM_BMR 0x008
-+#define GPTM_CTL 0x00C
-+#define GPTM_SYNC 0x010
-+#define GPTM_IMR 0x018
-+#define GPTM_RIS 0x01C
-+#define GPTM_MIS 0x020
-+#define GPTM_ICR 0x024
-+#define GPTM_TALIR 0x028
-+#define GPTM_TBLIR 0x02C
-+#define GPTM_TAMATCHR 0x030
-+#define GPTM_TBMATCHR 0x034
-+#define GPTM_TAPR 0x038
-+#define GPTM_TBPR 0x03C
-+#define GPTM_TAPMR 0x040
-+#define GPTM_TBPMR 0x044
-+#define GPTM_TAR 0x048
-+#define GPTM_TBR 0x04C
-+#define GPTM_TAV 0x050
-+#define GPTM_TBV 0x054
-+#define GPTM_RTCPD 0x058
-+#define GPTM_TAPS 0x05C
-+#define GPTM_TBPS 0x060
-+#define GPTM_TAPV 0x064
-+#define GPTM_TBPV 0x068
-+#define GPTM_PP 0xFC0
++#define WDT_CTL_INTEN (1 << 0)
++#define WDT_CTL_INTTYPE (1 << 2)
 +
-+#define GPTM_TACTL_EN (1 << 0)
-+#define GPTM_TBCTL_EN (1 << 8)
-+#define GPTM_TAM_CD   (1 << 4)
-+#define GPTM_TAM_MODE_ONESHOT (1 << 1)
-+#define GPTM_TAM_PERIODIC (1 << 2)
++#define TYPE_TM4C123_WATCHDOG "tm4c123-watchdog"
 +
-+#define TYPE_TM4C123_GPTM "tm4c123-gptm"
++OBJECT_DECLARE_SIMPLE_TYPE(TM4C123WatchdogState, TM4C123_WATCHDOG)
 +
-+OBJECT_DECLARE_SIMPLE_TYPE(TM4C123GPTMState, TM4C123_GPTM)
-+
-+struct TM4C123GPTMState {
++struct TM4C123WatchdogState {
 +    SysBusDevice parent_obj;
 +    MemoryRegion mmio;
-+    qemu_irq irq_a;
-+    qemu_irq irq_b;
-+    TM4C123SysCtlState *sysctl;
++    qemu_irq irq;
++    struct ptimer_state *timer;
++    TM4C123SysCtlState* sysctl;
 +
-+    uint32_t gptm_cfg;
-+    uint32_t gptm_amr;
-+    uint32_t gptm_bmr;
-+    uint32_t gptm_ctl;
-+    uint32_t gptm_sync;
-+    uint32_t gptm_imr;
-+    uint32_t gptm_ris;
-+    uint32_t gptm_mis;
-+    uint32_t gptm_icr;
-+    uint32_t gptm_talir;
-+    uint32_t gptm_tblir;
-+    uint32_t gptm_tamatchr;
-+    uint32_t gptm_tbmatchr;
-+    uint32_t gptm_tapr;
-+    uint32_t gptm_tbpr;
-+    uint32_t gptm_tapmr;
-+    uint32_t gptm_tbpmr;
-+    uint32_t gptm_tar;
-+    uint32_t gptm_tbr;
-+    uint32_t gptm_tav;
-+    uint32_t gptm_tbv;
-+    uint32_t gptm_rtcpd;
-+    uint32_t gptm_taps;
-+    uint32_t gptm_tbps;
-+    uint32_t gptm_tapv;
-+    uint32_t gptm_tbpv;
-+    uint32_t gptm_pp;
-+    QEMUTimer *a;
-+    QEMUTimer *b;
-+    Clock* clk;
++    uint32_t wdt_load;
++    uint32_t wdt_value;
++    uint32_t wdt_ctl;
++    uint32_t wdt_icr;
++    uint32_t wdt_ris;
++    uint32_t wdt_mis;
++    uint32_t wdt_test;
++    uint32_t wdt_lock;
++    uint32_t wdt_per_id4;
++    uint32_t wdt_per_id5;
++    uint32_t wdt_per_id6;
++    uint32_t wdt_per_id7;
++    uint32_t wdt_per_id0;
++    uint32_t wdt_per_id1;
++    uint32_t wdt_per_id2;
++    uint32_t wdt_per_id3;
++    uint32_t wdt_pcell_id0;
++    uint32_t wdt_pcell_id1;
++    uint32_t wdt_pcell_id2;
++    uint32_t wdt_pcell_id3;
++
++    Clock* wdt_clock;
 +};
 +
 +#endif
