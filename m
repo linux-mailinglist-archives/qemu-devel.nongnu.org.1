@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B69C70520A
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 17:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40170705253
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 17:36:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pywWq-00084x-Ja; Tue, 16 May 2023 11:23:56 -0400
+	id 1pywhY-0002i1-Db; Tue, 16 May 2023 11:35:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1pywWi-00084M-KM; Tue, 16 May 2023 11:23:48 -0400
-Received: from mail-yb1-xb36.google.com ([2607:f8b0:4864:20::b36])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1pywhW-0002hU-8y
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 11:34:58 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1pywWg-0005xQ-QI; Tue, 16 May 2023 11:23:48 -0400
-Received: by mail-yb1-xb36.google.com with SMTP id
- 3f1490d57ef6-ba2362d4ea9so10510554276.3; 
- Tue, 16 May 2023 08:23:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1pywhU-00081m-RK
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 11:34:58 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-510b154559fso555518a12.3
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 08:34:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684250625; x=1686842625;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5uAojLvnK0PZ6/mxvHq7LeHYsEaEBfEVJNbZtHOUt9k=;
- b=pUvp8g0DNe1znNqPaDp2eVi3as6YjKS9Dd3T8gbY3AqYU8SYNaXXRU8eqkVvPHRD5K
- 5clPXKxm1VFj0v1s1YItLT6Pp1ZDHkfWrob1GSmVd1UM8Mzq9oik+HAsguK5N+jSmrb/
- +/6rqlLlydD3jKxE5pzpuZ8mdheRe/rH/te6sDFE/eH/K6K9RbQXs/BVBRB1dzQKX+lW
- fF+ogQqNQISng1Ca8vvoMu9R+YpG8JE7ujK+yTyfJkOEK1pPRp8zT7//OOcxxyqE7eOv
- YrjNZAX+C0Ua/+gwKyyxcK07NuXAbkvRvxphXaGp5I0GV0+9jDs4G45tLsV1pey4DwJn
- yP7Q==
+ d=linaro.org; s=google; t=1684251295; x=1686843295;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jU0td6g3mE7lml4bS7aOHyXUtlzCJZhqRiZSBio2fU8=;
+ b=ZWDyl2bM9RSn2d24g+xRuvS2uHvJ4vNicw9NHDBsfn8rjPgvTID8niUhG5Wunt8vRA
+ RK0bciQoHme5+zEgSYS59LgaELmpBEcnl5nGWQXnUrXmg0z42lkdheXF0kIXgHXoVbM/
+ xywIglwbJqPV9U9h0y6YhsMrqYQL7r5DxpN9vcX8mwtvW0QuZlL6mLQa6U4r2YstwrXt
+ dvq8pQeC+Ug0ligFrww3IotR1yJ1C9bZ0stTv8MqUyuYFfyAYr42GtvwVWmmiuiqStvI
+ dhRQq5VawqBpv8sLWCK/pLUTj72M/0wIkTxGgX2fps+KGS2F68GJaezSty9BcFjlwwUU
+ UfPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684250625; x=1686842625;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5uAojLvnK0PZ6/mxvHq7LeHYsEaEBfEVJNbZtHOUt9k=;
- b=Eh4HTPL37XXTblFVffU9f0cC6m7OJVorXlY4LjKZ9g6sy06jXN+/VYW6iQn8ajY3Ks
- TqZT0sqx5She5uVlArmMo3yLa2jkHRxfLzNbLRRCQJRriQ3JpfB4p3tKaDz09q7QvOpa
- /rbXJOqkxn5JBfu9o/hmmjtpvoaeMSQDTSeHp5884aIhb7kbyA1O7YVHeB6n6A40geH3
- UhvsXDzAuU1Eov3S2vOxqpIYy/kICyMctpsDDCpREIJN8nW0lz4jde4KBEuZhvs7ZkjG
- psHq+PX0fjTkSNFSn1uAch7tJtoFOlMKEVnP0EYFY0hk1l9Ftt8p7MwAjIqK/moko1jN
- 3DKg==
-X-Gm-Message-State: AC+VfDw6lQ1AddInCyRguiegHTop/9SnlTMFkBwShHx8wrVTW33b6y33
- 5dtf6JufhDFU8DjRxFhcvC9Mq2qizKJIcVYxtRc=
-X-Google-Smtp-Source: ACHHUZ7dfkiyV/+0sH97zacRbnnyhM3cRBM6fTIallqwj61N+Ui/BxvAJjLe4O8nv763ikV/a9D7hWJl9d2lUN2p2h4=
-X-Received: by 2002:a25:cc5:0:b0:b9a:663b:eced with SMTP id
- 188-20020a250cc5000000b00b9a663becedmr29000221ybm.36.1684250625310; Tue, 16
- May 2023 08:23:45 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684251295; x=1686843295;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jU0td6g3mE7lml4bS7aOHyXUtlzCJZhqRiZSBio2fU8=;
+ b=OJRQO4kfJ64cVeAd0BCoWd3iFZs5jbWtnbz/2BArNEDhVe3EVuaCGvuD1tZg9izFPT
+ GlDFGYJzNxKAZWcMROw4r9909jkqpIb7pFuz5iznAQhCUwx1IdlQkyJsDHg2lunAUeUO
+ lKBwZDY+p+C7M9JROHtnZrIg8HAwndZSuDCTJ0W+OxMHrW7r4UF7CgA5SX1FVz2F79n0
+ p0GzBZ59IoullUnCl+f9gA+sm9+CZ4vb8akT2hqxfPzMFj3vpbqoBr8WdFkJQbxn/ZfA
+ JLGi1uNCK4pA9+vK8OtVqs+fz7/fTK/38dNJDOmmLiyDvHfwjGqMVIlkjP2TcAUXDkry
+ ZCkQ==
+X-Gm-Message-State: AC+VfDwuIFYAUmO950DZmE+RPfz/NKmjJZr1USjuudPCQDfud/evu8vb
+ 1O5yzATqtLitazCKHo3qMMhc5iMt7dQlQIHsuq+TesxXZ7ojcq7x
+X-Google-Smtp-Source: ACHHUZ7RDa54QYSZqjl+9xdpr6urxTGwq8ZjlRIOQA3SPy+QK5xW4sEPf0yM7gv0/uBdh8cn1CrrIGpBAQrLyk7tMG8=
+X-Received: by 2002:aa7:d54c:0:b0:4fd:2b04:6e8b with SMTP id
+ u12-20020aa7d54c000000b004fd2b046e8bmr32481538edr.29.1684251294779; Tue, 16
+ May 2023 08:34:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230516102016.581877-1-thuth@redhat.com>
- <CAJSP0QUMB51Y_FFx4KozwwDVJAFYmCdHvfEpNz3+aD8r0PmSng@mail.gmail.com>
- <1eb9b297-9a59-1baa-ce9c-123b62861f10@redhat.com>
-In-Reply-To: <1eb9b297-9a59-1baa-ce9c-123b62861f10@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 16 May 2023 11:23:32 -0400
-Message-ID: <CAJSP0QV=sqD+Y5gjb7tWJQJoSB8xZ-wgUZjCrV4wrtQN5CKHjA@mail.gmail.com>
-Subject: Re: [PATCH] hw/scsi/lsi53c895a: Fix reentrancy issues in the LSI
- controller (CVE-2023-0330)
-To: Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
- Fam Zheng <fam@euphon.net>, 
- qemu-devel@nongnu.org, Bandan Das <bsd@redhat.com>, 
- Darren Kenny <darren.kenny@oracle.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
- Qiuhao Li <Qiuhao.Li@outlook.com>, qemu-stable@nongnu.org
+References: <CAM2a4uxjURNAUcMemWj+mJOvNjgHbXQ-KgiRdRghByM7pBVROw@mail.gmail.com>
+ <875y8tbt2y.fsf@linaro.org>
+ <CAM2a4uyhfJdDjvk3+VfTtwF=h4WBC+MiMWq58LTSwi0s2-nHkg@mail.gmail.com>
+ <87ttwcnvqk.fsf@linaro.org>
+In-Reply-To: <87ttwcnvqk.fsf@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 16 May 2023 16:34:43 +0100
+Message-ID: <CAFEAcA8HST4nG-ogs7TeVxQ7YtCikP8PjutDLLxc4dLC=CchpA@mail.gmail.com>
+Subject: Re: Resources on deeper understanding of Translation blocks
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: Gautam Bhat <mindentropy@gmail.com>, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b36;
- envelope-from=stefanha@gmail.com; helo=mail-yb1-xb36.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,57 +89,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 16 May 2023 at 10:50, Thomas Huth <thuth@redhat.com> wrote:
+On Tue, 16 May 2023 at 16:27, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+> Gautam Bhat <mindentropy@gmail.com> writes:
+> > 3. Do you have more information or a visual diagram of sorts for
+> > TARGET_PAGE_* and PAGE_* and the relation between translation blocks
+> > and pages? Also how
+> > should one handle where architectures don't have any paging?
 >
-> On 16/05/2023 15.40, Stefan Hajnoczi wrote:
-> > On Tue, 16 May 2023 at 06:20, Thomas Huth <thuth@redhat.com> wrote:
-> >>
-> >> We cannot use the generic reentrancy guard in the LSI code, so
-> >> we have to manually prevent endless reentrancy here. The problematic
-> >> lsi_execute_script() function has already a way to detect whether
-> >> too many instructions have been executed - we just have to slightly
-> >> change the logic here that it also takes into account if the function
-> >> has been called too often in a reentrant way.
-> >>
-> >> The code in fuzz-lsi53c895a-test.c has been taken from an earlier
-> >> patch by Mauro Matteo Cascella.
-> >>
-> >> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1563
-> >> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> >> ---
-> >>   hw/scsi/lsi53c895a.c               |  7 ++++++-
-> >>   tests/qtest/fuzz-lsi53c895a-test.c | 33 ++++++++++++++++++++++++++++++
-> >>   2 files changed, 39 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-> >> index 048436352b..8b34199ab8 100644
-> >> --- a/hw/scsi/lsi53c895a.c
-> >> +++ b/hw/scsi/lsi53c895a.c
-> >> @@ -1134,10 +1134,13 @@ static void lsi_execute_script(LSIState *s)
-> >>       uint32_t addr, addr_high;
-> >>       int opcode;
-> >>       int insn_processed = 0;
-> >> +    static int reentrancy_level;
-> >> +
-> >> +    reentrancy_level++;
-> >>
-> >>       s->istat1 |= LSI_ISTAT1_SRUN;
-> >>   again:
-> >> -    if (++insn_processed > LSI_MAX_INSN) {
-> >> +    if (++insn_processed > LSI_MAX_INSN || reentrancy_level > 8) {
-> >
-> > Why 8 and not some other number?
->
-> It's just a random number which seemed to be a good compromise to me. We
-> need at least 2 to be able to boot Linux. And if I add some debug printf and
-> use it with the reproducer from the bug ticket, QEMU crashes after it
-> reached level 1569. Anything in between should be OK at a first glance, but
-> I'd take at least 3 or 4 to be one the safe side for some exotic use cases.
-> 8 should really cover all real life cases, I guess. Or what would you suggest?
+> All system emulation is handled by page size because that is the
+> fundamental granularity of the softmmu TLB which looks up a translation
+> from guest address to offset into the memory region. It is not directly
+> related to if the guest is using paging to implement virtual memory.
 
-Please add a comment explaining that 8 is an arbitrary number that
-should be sufficient for all legitimate guest drivers.
+Also, each target defines a TARGET_PAGE_BITS even if the
+target architecture doesn't have the concept of paging.
+This specifies the minimum granularity at which you can
+change things like r/w protection on addresses, so if your
+target architecture has an MPU that might affect what
+you want to set it to. If yo uhave neither an MPU nor an MMU,
+you could look at what granularity/spacing typical systems
+have between devices and particularly between devices and RAM.
+If you have no pressing reason to set it to something as
+a result of thinking about all that, then 4K pages is
+probably as good a value as any.
 
-Thanks,
-Stefan
+-- PMM
 
