@@ -2,80 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40052705849
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 22:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FBA705844
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 22:04:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz0en-0002qH-8q; Tue, 16 May 2023 15:48:25 -0400
+	id 1pz0qf-0007EH-V8; Tue, 16 May 2023 16:00:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0cE-0000HZ-IG
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:49 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0cA-0003kY-Dd
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:45:45 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1aaff9c93a5so433675ad.2
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:45:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684266339; x=1686858339;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LtDld2gFk+pS05MnfqGIihYYTTfEqLTj2+RJM8YOMsA=;
- b=FTaIJf7bNpCRrBz0i6HQSxKfZPSKGA1lFQd60j0qTIIQPvklnkoWwHmWWZRuGet2XV
- Cwv1iuckqLtKhg4vJ/IO4eaw+g1KcAKcCDqS0mLji94rlNbhxP+EtSe/Y9qFpJO4jzSX
- 3ACQdMn/HFwUSq+VIopmKpIdsIvRL2W6+dYrIUlCdgWAWOe1zHmm8GYCRLMHjjIxIKo5
- IO2XbeI5k/pcizPtxsGaykdPis5pMNfUDIXCGeBOis6gRs4MLHRpZEUUlTR+atK4vttp
- 3urFgdSRZBKTVOJ+7/2jkN+KA/HD/dPcALF+g4GFO98UFUQ27NLmKp9nb+70Q+OCXyXH
- sqyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684266339; x=1686858339;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LtDld2gFk+pS05MnfqGIihYYTTfEqLTj2+RJM8YOMsA=;
- b=kM0kGNkXzOu7zD89RTS/zxC92BMEr4eY/K+MntH1bYSxbBlsTFqI2Ug7S7/Fp6hzSx
- W5tMI9eDWlgPZF1PkluG+ZAY6lxLXQfLwQv/+agx0TSDmswe3jTG0kKiVPwE1nDxG21D
- TRAy1JwqykjwDq4QvYWvIn2ZQKLrhpelUZeHRZV4QWhhqpOmXS3gg20+luOccEthvlaA
- FRB4QCd14zegWIcxCgVJJ7lS+ixdGDJUmF0yA8DkbGj4WUw+GIgrt1VCM1IzLce09lyL
- QkNuVyUyxkFLfJBKoS84RYx8e2aRYQTyPaSeb707+tuyoIsz8BKSkS/o+U3y+BhiFB4/
- TSeg==
-X-Gm-Message-State: AC+VfDzK756xgyeJMFjI96JPZRPI0kEMYE6D5vF279ps8UJXCVUA7Xm8
- aOU0BbuWCvS7LsO/oduubNthnZT0kJmmFM+OjnE=
-X-Google-Smtp-Source: ACHHUZ7ZLdsTqviLx0uG98CtEEX4UEqzC+/vQRBPWUpJ0Wngocc6vpxFMEeUxDhKy1dEKoXwoOy6SA==
-X-Received: by 2002:a17:902:6ac3:b0:1ac:93ba:a5ec with SMTP id
- i3-20020a1709026ac300b001ac93baa5ecmr24773619plt.52.1684266338805; 
- Tue, 16 May 2023 12:45:38 -0700 (PDT)
-Received: from stoup.. ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
- by smtp.gmail.com with ESMTPSA id
- y12-20020a17090abd0c00b002508d73f4e8sm25555pjr.57.2023.05.16.12.45.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 12:45:38 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 58/80] tcg: Widen tcg_gen_code pc_start argument to uint64_t
-Date: Tue, 16 May 2023 12:41:23 -0700
-Message-Id: <20230516194145.1749305-59-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230516194145.1749305-1-richard.henderson@linaro.org>
-References: <20230516194145.1749305-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
+ id 1pz0qQ-0006oV-Dg; Tue, 16 May 2023 16:00:28 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
+ id 1pz0qN-00071X-RF; Tue, 16 May 2023 16:00:26 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1684267214; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=oYjAOuo5XrCuEQR1W6/l+gMe8iW0/pRObAz3AXMdbMBAntXrf7eR3xWdGCEDgd5ejv
+ 8luHseiXq2JYMjo6BbNsglvWUioUorZ/XaMfsQWvp5ICJUPL2RO1xodEJyHR129K1yD1
+ zoGe9NRN391Q+qXpMprXqEmK4n2iqaG8BwlX9sWTi8uznAD0DPksWP8RTa2oq0s2v9gn
+ 696rv2N8tmh/nGqGWobPJv1XoS+8nkf8oVPii2wp7FUwgZxBF2BwgIoFAgBPMJMzzE1S
+ Tz5YwRhIqw4rOjEhAkABqrzraxm2i6xPuM5addxLuDimkwMqwEq6TidN4X+2vzld2qQs
+ JbUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1684267214;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=pS0Z4id9fKm2g4HFIaP4cyA8REoB+fljOJamATQiIKg=;
+ b=NkTEOOvUULIQHeKXD/qBlLdSUlymDYKgU2w3ld2/D95sks4e1qYP8VPVq4UBrIIr63
+ vE94G3LG07MnxIJ/1EZa8W1bMsfltVELjyAsi6wU/bLdppBbaBoehgvJr0TQhINESyg4
+ weWFPYUkel/Cw8E2IbUZrZKxiTr8wVBL2fpTIjg2Hku6Wf3OOygon1Ih0DmmghrE3eWJ
+ ejW8rajtT4YH1pCyqELfXSDu0NhnoGhSMnwZE/ubU4BAf1lgHE6QuUWLfqjdFTaF6In7
+ BJdIRm7xJLdx3lxDudGbo/VoCHVNNdY+Bw0wSVaqcqETpiR6xDKU/WXOlJ67haX4HZWP
+ rI1w==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1684267214;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=pS0Z4id9fKm2g4HFIaP4cyA8REoB+fljOJamATQiIKg=;
+ b=LyXWqaWgSuG1JKysX34wy0K6ONnQlBaVJHC97d9voPDy8UJpk3QvOx27tV+Mqm1Yyj
+ pbW8qfbpUrVRwBNM5lkL6gTPTPBOY9Y0tOlPE6ShOOCbJnDL8y5CmRqZ2bqHlbCMTpRX
+ uqVwj9HHcBiFNxkKAEAkxI/iZke1GHRgkyH9qkj32ikXmLyNG9ARFIIFy07rAvwWN0bC
+ axXKdHjZXxHS9nRh8WWJHeogvVJmkH619asQFMMFNnP5XG3WzXAOfMbSA1fltMCfzGMh
+ MfMzrDRrLtGJx5nSTGpBr3dQ9IYFlllkx1EKYfJopQozQXA5dUoEQnE2QJXiY/atxVRI
+ eqfw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1684267214;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=pS0Z4id9fKm2g4HFIaP4cyA8REoB+fljOJamATQiIKg=;
+ b=iVQJE14B1+56+wIw3G/ijmiRqUwL5q4Qd8Ue4aef6lOkHfwWhc2Z3y3afylkQkcFT0
+ MtU+ri5Yn6x8XxH0KZBg==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QED/SSGq+wjGiUC4kV1cX/0jCNVp4ivfSTHw=="
+Received: from sender by smtp.strato.de (RZmta 49.4.0 AUTH)
+ with ESMTPSA id x6987cz4GK0DYiy
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Tue, 16 May 2023 22:00:13 +0200 (CEST)
+Date: Tue, 16 May 2023 20:00:07 +0000
+From: Olaf Hering <olaf@aepfle.de>
+To: John Snow <jsnow@redhat.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, xen-devel@lists.xenproject.org,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, Philippe =?UTF-8?B?TWF0aGll?=
+ =?UTF-8?B?dS1EYXVkw6k=?= <f4bug@amsat.org>
+Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
+Message-ID: <20230516200007.4fa87c6a@sender>
+In-Reply-To: <CAFn=p-aFa_jFYuaYLMumkX=5zpn228ctBcV=Gch=BhmQs6i2dA@mail.gmail.com>
+References: <20210317070046.17860-1-olaf@aepfle.de>
+ <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
+ <20210325121219.7b5daf76.olaf@aepfle.de>
+ <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
+ <20230509225818.GA16290@aepfle.de>
+ <20230510094719.26fb79e5.olaf@aepfle.de>
+ <alpine.DEB.2.22.394.2305121411310.3748626@ubuntu-linux-20-04-desktop>
+ <CAFn=p-aFa_jFYuaYLMumkX=5zpn228ctBcV=Gch=BhmQs6i2dA@mail.gmail.com>
+X-Mailer: Claws Mail 2023.04.19 (GTK 3.24.34; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Content-Type: multipart/signed; boundary="Sig_/11aB=ufI14REGukuAgcfB1H";
+ protocol="application/pgp-signature"; micalg=pgp-sha1
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=85.215.255.53; envelope-from=olaf@aepfle.de;
+ helo=mo4-p01-ob.smtp.rzone.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,40 +110,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/tcg/tcg.h | 2 +-
- tcg/tcg.c         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+--Sig_/11aB=ufI14REGukuAgcfB1H
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index f40de4177d..42a3c05607 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -852,7 +852,7 @@ void tcg_register_thread(void);
- void tcg_prologue_init(TCGContext *s);
- void tcg_func_start(TCGContext *s);
- 
--int tcg_gen_code(TCGContext *s, TranslationBlock *tb, target_ulong pc_start);
-+int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start);
- 
- void tb_target_set_jmp_target(const TranslationBlock *, int,
-                               uintptr_t, uintptr_t);
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index cdd194639e..800dcba159 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -5947,7 +5947,7 @@ int64_t tcg_cpu_exec_time(void)
- #endif
- 
- 
--int tcg_gen_code(TCGContext *s, TranslationBlock *tb, target_ulong pc_start)
-+int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
- {
- #ifdef CONFIG_PROFILER
-     TCGProfile *prof = &s->prof;
--- 
-2.34.1
+Am Tue, 16 May 2023 13:38:42 -0400
+schrieb John Snow <jsnow@redhat.com>:
 
+> I haven't touched IDE or block code in quite a long while now -- I
+> don't think I can help land this fix, but I won't get in anyone's way,
+> either. Maybe just re-submit the patches with an improved commit
+> message / cover letter that helps collect the info from the previous
+> thread, the core issue, etc.
+
+I poked at it some more in the past days. Paolo was right in 2019, this
+issue needs to be debugged more to really understand why fiddling
+with one PCI devices breaks another, apparently unrelated PCI device.
+
+Once I know more, I will suggest a new change. The old one is
+stale, and needs to be rebased anyway.
+
+
+Olaf
+
+--Sig_/11aB=ufI14REGukuAgcfB1H
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EARECAB0WIQSkRyP6Rn//f03pRUBdQqD6ppg2fgUCZGPgxwAKCRBdQqD6ppg2
+fqLiAJ46FKHEwF2tggdoStt1IxPQ76JRyQCfZMuVO4l+1/a61bf/j2kZyfqYQlk=
+=aXMf
+-----END PGP SIGNATURE-----
+
+--Sig_/11aB=ufI14REGukuAgcfB1H--
 
