@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A471705B5F
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 01:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E92705B68
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 01:36:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz4Ar-0007ea-BA; Tue, 16 May 2023 19:33:45 -0400
+	id 1pz4DI-0000ho-HP; Tue, 16 May 2023 19:36:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pz4Ap-0007eL-Eo
- for qemu-devel@nongnu.org; Tue, 16 May 2023 19:33:43 -0400
-Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
+ id 1pz4DG-0000hV-D2
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 19:36:14 -0400
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pz4Ao-000421-0q
- for qemu-devel@nongnu.org; Tue, 16 May 2023 19:33:43 -0400
-Received: by mail-vk1-xa32.google.com with SMTP id
- 71dfb90a1353d-44fc48d993fso86733e0c.1
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 16:33:41 -0700 (PDT)
+ id 1pz4DE-0004XV-Lp
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 19:36:14 -0400
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-783ef1c0cfdso2929414241.0
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 16:36:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684280020; x=1686872020;
+ d=gmail.com; s=20221208; t=1684280171; x=1686872171;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9jvGmBLyo8pIoHvtncQypO9VBm17/51MxUk8A1UYCGU=;
- b=KueyrdwbAUyKpqZia25FC0/jSaoir9j+EnWVi/MfeaPS3AlOllQypOxYlTHaRoLhHl
- +Sh6Ut4Yd09LIARu+yarwj7jirPzzw/QQyQsxJke4J4UY2njc90EiC774uSgkAOzm3QU
- glxgAsMFI6BYwgYEp+uHGL1Zy06l9t31OlcPq9jcm7NLZECWzB4N0OyzBfZyHT5vdawK
- 9AR2uBQfB3wrP0QJ0fMh+apT2LqVagbu12kxvvetfEVzCXCQ7CUnvO8hdS9QqgJpnmKa
- ev7xTPHHlvx33OXRGbGEz9Sq7xW8I2rRleZcQCLohfliIUV6T3B+wfJvUKfsYGAnze20
- ME0A==
+ bh=+ujd0OZng2QQNZy33wnAf8SsL8rA1t6H97jIIJeK1dI=;
+ b=FEFCttHtBsVJZodhXwSIL0htxFbGealxJVqdJQAigBrzrniHyVSdxba2YXbxy6ccj2
+ 99S4hnLOKMZJBInLxHN5G8EMSonJyOmM7Y5+TJZxCMCaBjbkXg3MVwoHugmSnD0YQlae
+ 8cHdzIaPmFe+p4hisBU2V49P2BHel3FHkp0C1WTlrSYLa1nhof36BQ86UljqaeWuHAet
+ pndSTCGqts910rNQCwfebhjRVW0VO85MuH+CQPDbqknWJWRZVqjsEhPGxN/bCNmc4irY
+ h28pQOr+PvNOweZsOqDSuGFotyIyKF+IS3df6D9jE3A8Lyy6KGcFqal7pN5BNbP+pVs3
+ F9vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684280020; x=1686872020;
+ d=1e100.net; s=20221208; t=1684280171; x=1686872171;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9jvGmBLyo8pIoHvtncQypO9VBm17/51MxUk8A1UYCGU=;
- b=TI/+JSshaTeAVjwUB0bigH+xmyiaxr19fDNeIolcjGJzwm3fyeGobF3YLnzfF163GV
- FNwq0ct/R5pI6DpJ7gFQXQk4zEseN+4CJnlsPJ/DEzIpVQItW01Xk3C6yd9Bzd1FoGuy
- 5Bbc9KkvQP/Q8JMxrA+MLtzLGJYROKvQpkuxDNSG5OD9m8pG4i57pion+tCZRyk3QnEL
- m2Etp8lOZ35CgOYL05kP+EGaxrK3dSSzEeF1WTY1Shrfjl48otSBHpeGHsfqrp76jnMq
- k3rL8/sHrZm4VFakgZgkZwr0SPutMqcFE75Jcq/hLdnJ7r7runVPBeFNydZlFFbqVUyG
- exmA==
-X-Gm-Message-State: AC+VfDyjSFsKh1InlqQdQvquA1tfZxMDXOfD0H4y0QWLlSUd1puDhP1Z
- Rn4URJ+0vAzYtcuNr/p4TrtAmjm5QLlPduO1XGk=
-X-Google-Smtp-Source: ACHHUZ4JL3R2Cx3sM8nZxUGCegmvZVV/4WKZbFbljAh2JLXssOY2031rdQmTbL898s2TSZVVJV6rmRugMY7WaiybmoI=
-X-Received: by 2002:a1f:5e56:0:b0:43f:cadf:9ef3 with SMTP id
- s83-20020a1f5e56000000b0043fcadf9ef3mr13149435vkb.8.1684280020567; Tue, 16
- May 2023 16:33:40 -0700 (PDT)
+ bh=+ujd0OZng2QQNZy33wnAf8SsL8rA1t6H97jIIJeK1dI=;
+ b=Xjxg9CtsQg7n7TNPG0qTQo1RPKiarI8Mq2sYmLNP6/TDXc9cGVP8hl3uWOAX5o2j2m
+ ikezhNn39uvn9G2UMF8Frx2dXVEXDdF7BN3CTuQbrTVHRzyOzXv7aTxrXiSRitDi8kLa
+ g9Hy0Q28UYlycAILCG1+haqG8jAMv94iM9rhI3D5LqIAJ+ZppPoE+Cnztobwwjim87JH
+ feA7ThgCBy5F6b25sWiCSFAZiylVkfOkrmrS3Y4TbuLAWqoaatPUMzyq9UYPmuLStpZl
+ 70c+9W/ekmV7fV0HAWuMAK1E9sRyMitwRL9faugUY9PFyHkNiJ5Szu7GOCT5AU9l7V/l
+ 3Fqw==
+X-Gm-Message-State: AC+VfDz4WkXQ7YFDfPUR051XtaJTrkE3VNjvJ8wETB5dlbi29M7y3uZC
+ eSSlQwAYPTHpRr9oesziEWsFic1omoex0EUXHDKu4tKrsVI=
+X-Google-Smtp-Source: ACHHUZ5w0SEf+H3UWtoxhCMz1jLWBJXyZ/AgFhjDmcpcUof7QF89wfzoObfyj8ZXn4SLXyLuu405WPAcgiX7h8BGoJA=
+X-Received: by 2002:a1f:4315:0:b0:44f:c1a7:ceff with SMTP id
+ q21-20020a1f4315000000b0044fc1a7ceffmr154341vka.6.1684280170515; Tue, 16 May
+ 2023 16:36:10 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230503085657.1814850-1-richard.henderson@linaro.org>
- <20230503085657.1814850-2-richard.henderson@linaro.org>
-In-Reply-To: <20230503085657.1814850-2-richard.henderson@linaro.org>
+ <20230503085657.1814850-3-richard.henderson@linaro.org>
+In-Reply-To: <20230503085657.1814850-3-richard.henderson@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 17 May 2023 09:33:14 +1000
-Message-ID: <CAKmqyKPeKSF12gSchSDKepXK=Po8=3Lup8qwua9RVBJD8D9NrA@mail.gmail.com>
-Subject: Re: [PATCH 01/11] disas/riscv: Decode czero.{eqz,nez}
+Date: Wed, 17 May 2023 09:35:44 +1000
+Message-ID: <CAKmqyKOBNBkoEpftTST3LPac=8WpbP6vPPfUtTXGJGaXEOe6hA@mail.gmail.com>
+Subject: Re: [PATCH 02/11] tcg/riscv: Probe for Zba, Zbb, Zicond extensions
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, dbarboza@ventanamicro.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x936.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,6 +91,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Wed, May 3, 2023 at 6:59=E2=80=AFPM Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
+> Define a useful subset of the extensions.  Probe for them
+> via compiler pre-processor feature macros and SIGILL.
+>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
@@ -98,48 +101,151 @@ Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Alistair
 
 > ---
->  disas/riscv.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  tcg/riscv/tcg-target.h     |  6 +++
+>  tcg/riscv/tcg-target.c.inc | 96 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 102 insertions(+)
 >
-> diff --git a/disas/riscv.c b/disas/riscv.c
-> index d6b0fbe5e8..c0a8b1006a 100644
-> --- a/disas/riscv.c
-> +++ b/disas/riscv.c
-> @@ -935,6 +935,8 @@ typedef enum {
->      rv_op_vsetvli =3D 766,
->      rv_op_vsetivli =3D 767,
->      rv_op_vsetvl =3D 768,
-> +    rv_op_czero_eqz =3D 769,
-> +    rv_op_czero_nez =3D 770,
->  } rv_op;
+> diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
+> index 494c986b49..863ac8ba2f 100644
+> --- a/tcg/riscv/tcg-target.h
+> +++ b/tcg/riscv/tcg-target.h
+> @@ -90,6 +90,12 @@ typedef enum {
+>  #define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
+>  #define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
 >
->  /* structures */
-> @@ -2066,7 +2068,9 @@ const rv_opcode_data opcode_data[] =3D {
->      { "vsext.vf8", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, rv_op_vsext_vf8=
-, rv_op_vsext_vf8, 0 },
->      { "vsetvli", rv_codec_vsetvli, rv_fmt_vsetvli, NULL, rv_op_vsetvli, =
-rv_op_vsetvli, 0 },
->      { "vsetivli", rv_codec_vsetivli, rv_fmt_vsetivli, NULL, rv_op_vsetiv=
-li, rv_op_vsetivli, 0 },
-> -    { "vsetvl", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, rv_op_vsetvl, rv_op=
-_vsetvl, 0 }
-> +    { "vsetvl", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, rv_op_vsetvl, rv_op=
-_vsetvl, 0 },
-> +    { "czero.eqz", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
-> +    { "czero.nez", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
+> +#if defined(__riscv_arch_test) && defined(__riscv_zbb)
+> +# define have_zbb true
+> +#else
+> +extern bool have_zbb;
+> +#endif
+> +
+>  /* optional instructions */
+>  #define TCG_TARGET_HAS_movcond_i32      0
+>  #define TCG_TARGET_HAS_div_i32          1
+> diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
+> index 4dd33c73e8..49ff9c8b9d 100644
+> --- a/tcg/riscv/tcg-target.c.inc
+> +++ b/tcg/riscv/tcg-target.c.inc
+> @@ -113,6 +113,20 @@ static const int tcg_target_call_iarg_regs[] =3D {
+>      TCG_REG_A7,
 >  };
 >
->  /* CSR names */
-> @@ -2792,6 +2796,8 @@ static void decode_inst_opcode(rv_decode *dec, rv_i=
-sa isa)
->              case 45: op =3D rv_op_minu; break;
->              case 46: op =3D rv_op_max; break;
->              case 47: op =3D rv_op_maxu; break;
-> +            case 075: op =3D rv_op_czero_eqz; break;
-> +            case 077: op =3D rv_op_czero_nez; break;
->              case 130: op =3D rv_op_sh1add; break;
->              case 132: op =3D rv_op_sh2add; break;
->              case 134: op =3D rv_op_sh3add; break;
+> +#ifndef have_zbb
+> +bool have_zbb;
+> +#endif
+> +#if defined(__riscv_arch_test) && defined(__riscv_zba)
+> +# define have_zba true
+> +#else
+> +static bool have_zba;
+> +#endif
+> +#if defined(__riscv_arch_test) && defined(__riscv_zicond)
+> +# define have_zicond true
+> +#else
+> +static bool have_zicond;
+> +#endif
+> +
+>  static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
+>  {
+>      tcg_debug_assert(kind =3D=3D TCG_CALL_RET_NORMAL);
+> @@ -234,6 +248,34 @@ typedef enum {
+>
+>      OPC_FENCE =3D 0x0000000f,
+>      OPC_NOP   =3D OPC_ADDI,   /* nop =3D addi r0,r0,0 */
+> +
+> +    /* Zba: Bit manipulation extension, address generation */
+> +    OPC_ADD_UW =3D 0x0800003b,
+> +
+> +    /* Zbb: Bit manipulation extension, basic bit manipulaton */
+> +    OPC_ANDN   =3D 0x40007033,
+> +    OPC_CLZ    =3D 0x60001013,
+> +    OPC_CLZW   =3D 0x6000101b,
+> +    OPC_CPOP   =3D 0x60201013,
+> +    OPC_CPOPW  =3D 0x6020101b,
+> +    OPC_CTZ    =3D 0x60101013,
+> +    OPC_CTZW   =3D 0x6010101b,
+> +    OPC_ORN    =3D 0x40006033,
+> +    OPC_REV8   =3D 0x6b805013,
+> +    OPC_ROL    =3D 0x60001033,
+> +    OPC_ROLW   =3D 0x6000103b,
+> +    OPC_ROR    =3D 0x60005033,
+> +    OPC_RORW   =3D 0x6000503b,
+> +    OPC_RORI   =3D 0x60005013,
+> +    OPC_RORIW  =3D 0x6000501b,
+> +    OPC_SEXT_B =3D 0x60401013,
+> +    OPC_SEXT_H =3D 0x60501013,
+> +    OPC_XNOR   =3D 0x40004033,
+> +    OPC_ZEXT_H =3D 0x0800403b,
+> +
+> +    /* Zicond: integer conditional operations */
+> +    OPC_CZERO_EQZ =3D 0x0e005033,
+> +    OPC_CZERO_NEZ =3D 0x0e007033,
+>  } RISCVInsn;
+>
+>  /*
+> @@ -1612,8 +1654,62 @@ static void tcg_target_qemu_prologue(TCGContext *s=
+)
+>      tcg_out_opc_imm(s, OPC_JALR, TCG_REG_ZERO, TCG_REG_RA, 0);
+>  }
+>
+> +static volatile sig_atomic_t got_sigill;
+> +
+> +static void sigill_handler(int signo, siginfo_t *si, void *data)
+> +{
+> +    /* Skip the faulty instruction */
+> +    ucontext_t *uc =3D (ucontext_t *)data;
+> +    uc->uc_mcontext.__gregs[REG_PC] +=3D 4;
+> +
+> +    got_sigill =3D 1;
+> +}
+> +
+> +static void tcg_target_detect_isa(void)
+> +{
+> +#if !defined(have_zba) || !defined(have_zbb) || !defined(have_zicond)
+> +    /*
+> +     * TODO: It is expected that this will be determinable via
+> +     * linux riscv_hwprobe syscall, not yet merged.
+> +     * In the meantime, test via sigill.
+> +     */
+> +
+> +    struct sigaction sa_old, sa_new;
+> +
+> +    memset(&sa_new, 0, sizeof(sa_new));
+> +    sa_new.sa_flags =3D SA_SIGINFO;
+> +    sa_new.sa_sigaction =3D sigill_handler;
+> +    sigaction(SIGILL, &sa_new, &sa_old);
+> +
+> +#ifndef have_zba
+> +    /* Probe for Zba: add.uw zero,zero,zero. */
+> +    got_sigill =3D 0;
+> +    asm volatile(".insn %0" : : "i"(OPC_ADD_UW) : "memory");
+> +    have_zba =3D !got_sigill;
+> +#endif
+> +
+> +#ifndef have_zbb
+> +    /* Probe for Zba: andn zero,zero,zero. */
+> +    got_sigill =3D 0;
+> +    asm volatile(".insn %0" : : "i"(OPC_ANDN) : "memory");
+> +    have_zbb =3D !got_sigill;
+> +#endif
+> +
+> +#ifndef have_zicond
+> +    /* Probe for Zicond: czero.eqz zero,zero,zero. */
+> +    got_sigill =3D 0;
+> +    asm volatile(".insn %0" : : "i"(OPC_CZERO_EQZ) : "memory");
+> +    have_zicond =3D !got_sigill;
+> +#endif
+> +
+> +    sigaction(SIGILL, &sa_old, NULL);
+> +#endif
+> +}
+> +
+>  static void tcg_target_init(TCGContext *s)
+>  {
+> +    tcg_target_detect_isa();
+> +
+>      tcg_target_available_regs[TCG_TYPE_I32] =3D 0xffffffff;
+>      tcg_target_available_regs[TCG_TYPE_I64] =3D 0xffffffff;
+>
 > --
 > 2.34.1
 >
