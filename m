@@ -2,60 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5C67053F1
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 18:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D7870546A
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 18:56:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pyxb3-0007VG-9g; Tue, 16 May 2023 12:32:21 -0400
+	id 1pyxx3-0004Od-Ef; Tue, 16 May 2023 12:55:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1pyxay-0007Uy-Lc
- for qemu-devel@nongnu.org; Tue, 16 May 2023 12:32:16 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1pyxx1-0004OH-2Y
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 12:55:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1pyxav-0003qD-Fz
- for qemu-devel@nongnu.org; Tue, 16 May 2023 12:32:16 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QLMDg0Czsz67QqC;
- Wed, 17 May 2023 00:30:59 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 16 May
- 2023 17:31:58 +0100
-Date: Tue, 16 May 2023 17:31:56 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>
-CC: <linux-cxl@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, "Alison
- Schofield" <alison.schofield@intel.com>, Michael Roth <michael.roth@amd.com>, 
- Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, "Daniel P .
- =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, Thomas
- Huth <thuth@redhat.com>
-Subject: Re: [PATCH v5 0/7] QEMU CXL Provide mock CXL events and irq support
-Message-ID: <20230516173116.00007c8d@huawei.com>
-In-Reply-To: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
-References: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1pyxwx-00007m-CL
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 12:55:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684256098;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ca3dQSJb+MyW969LT2Ng1q+RetYHAk4vRlko153CLaI=;
+ b=EBHqsSSWuNgFqL4vj9hQ+7hWDWjcm6zzWbaM6aL41fzSoV8g16sRd5nY3craHRI4ZAXh+k
+ Ypq0QEdZMKldAs4zKmtv/g6dQOjt2zI9DYwvH7kYJjg5GpqyTDxWi2DqapUpIaqFJznP3R
+ GJ41ZuedJVluNtWpJTrdLF873IzpxGc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-294-znPykhoJMNOekz0df0QAiw-1; Tue, 16 May 2023 12:54:56 -0400
+X-MC-Unique: znPykhoJMNOekz0df0QAiw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f42b36733aso32046185e9.3
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 09:54:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684256095; x=1686848095;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ca3dQSJb+MyW969LT2Ng1q+RetYHAk4vRlko153CLaI=;
+ b=cdcssZDTPyEtIGy7dfJ3uP6bBfP3sp2Zs156oPUdKtH340YmbUHnx9s/KtXKGHZupP
+ Ut/TKLmOJFi4q53R4WCQmXYr2+MN/K3X6UgWdK+mzCSHDqRtXlu2j87yLgWIHpmu8s+5
+ ceiqs9fqS8V1m5atlCVm99LWd67p+GozF3L8GoID7bwy2fUGTInfZ2kShGBQE++04Gl7
+ dihInUSZjGZ8hU1fccqL5hEvkWprJM/60axYSCpmYaFVBrh3RiJRPhxbfgRiR4mMmLev
+ 87lMD4GVLHH9HN8OeINOHix2o6jUX4w9vtAcqTw/NKdUzJzr2sR4pLSOtouYM5mEg4kt
+ SjrA==
+X-Gm-Message-State: AC+VfDxwmKpNuwjw7ybSYUnwlhxOYl6pHZhK8GvZ0B3Fx7vI2L8AvwxK
+ JKSYqAeW+0karfXkUKhPs2i7QZmYzcKAS6CUAph9azhhozBwwJmQUg6L/N7smFIyUC5e63v++ZI
+ vwYbVHZzgwGwnwuE=
+X-Received: by 2002:adf:facc:0:b0:306:30e8:eb34 with SMTP id
+ a12-20020adffacc000000b0030630e8eb34mr29142635wrs.48.1684256095514; 
+ Tue, 16 May 2023 09:54:55 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5e8bL993DxBZpg8M+LhCHBLAJ0z6k8ecHtNmO0pI3dWnhrBmnEQBn5vrxv2TWJ0VgUll/p6Q==
+X-Received: by 2002:adf:facc:0:b0:306:30e8:eb34 with SMTP id
+ a12-20020adffacc000000b0030630e8eb34mr29142617wrs.48.1684256095222; 
+ Tue, 16 May 2023 09:54:55 -0700 (PDT)
+Received: from [192.168.8.104] (tmo-064-10.customers.d1-online.com.
+ [80.187.64.10]) by smtp.gmail.com with ESMTPSA id
+ e1-20020a056000120100b003077a19cf75sm3174607wrx.60.2023.05.16.09.54.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 May 2023 09:54:53 -0700 (PDT)
+Message-ID: <48906545-7fdb-effb-8819-485a66226e2d@redhat.com>
+Date: Tue, 16 May 2023 18:54:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] docs: Convert u2f.txt to rST
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20230421163734.1152076-1-peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230421163734.1152076-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-2.666, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,163 +98,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 23 Apr 2023 17:51:33 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On 21/04/2023 18.37, Peter Maydell wrote:
+> Convert the u2f.txt file to rST, and place it in the right place
+> in our manual layout. The old text didn't fit very well into our
+> manual style, so the new version ends up looking like a rewrite,
+> although some of the original text is preserved:
+> 
+>   * the 'building' section of the old file is removed, since we
+>     generally assume that users have already built QEMU
+>   * some rather verbose text has been cut back
+>   * document the passthrough device first, on the assumption
+>     that's most likely to be of interest to users
+>   * cut back on the duplication of text between sections
+>   * format example command lines etc with rST
+> 
+> As it's a short document it seemed simplest to do this all
+> in one go rather than try to do a minimal syntactic conversion
+> and then clean up the wording and layout.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/system/device-emulation.rst |   1 +
+>   docs/system/devices/usb-u2f.rst  |  93 ++++++++++++++++++++++++++
+>   docs/system/devices/usb.rst      |   2 +-
+>   docs/u2f.txt                     | 110 -------------------------------
+>   4 files changed, 95 insertions(+), 111 deletions(-)
+>   create mode 100644 docs/system/devices/usb-u2f.rst
+>   delete mode 100644 docs/u2f.txt
 
-> v5: Rebase including version number updates to 8.1
+I'm not an expert at all in this area, but your changes look sane to me, so:
 
-Hi Michael,
-
-I asked a few people to look at the remaining couple of patches where
-there were only my tags so now I think all the following have
-had some review and I'm not aware of any outstanding issues with them
-
-I did postpone one piece of general feedback from Philippe for future
-work as it wasn't specific to the patch but more general feedback on
-older code. For reference, the question concerned why we have
-cxl_dstate as a structure in the CXLType3Dev rather than using the 
-QEMU device model and inheriting from it.
-
-Majority of what we have in these 6 sets (including this one)
-came from other contributors so I've reviewed and tested all those
-as part of adding my SOB when gathering them up.
-
-Anything you'd like to see in the way of additional review on these?
-
-We have a number of other series, that will hopefully be in a position
-to post for possible merge soon, but I'm guessing you'd rather we didn't
-stack more than this in one go.
-
-Other than fixes, this is all stuff left over from previous cycle.
-
-Thanks,
-
-Jonathan
-
-> 
-> Depends on 
-> [PATCH 0/2] hw/cxl: CDAT file handling fixes.
-> [PATCH v2 0/3] hw/cxl: Fix decoder commit and uncommit handling
-> [PATCH 0/3] docs/cxl: Gathering of fixes for 8.0 CXL docs.
-> [PATCH v5 0/3] hw/mem: CXL Type-3 Volatile Memory Support
-> [PATCH v5 0/6] hw/cxl: Poison get, inject, clear
-> 
-> Based on: Message-ID: 20230421132020.7408-1-Jonathan.Cameron@huawei.com
-> Based on: Message-ID: 20230421135906.3515-1-Jonathan.Cameron@huawei.com
-> Based on: Message-ID: 20230421134507.26842-1-Jonathan.Cameron@huawei.com
-> Based on: Message-ID: 20230421160827.2227-1-Jonathan.Cameron@huawei.com
-> Based on: Message-ID: 20230423162013.4535-1-Jonathan.Cameron@huawei.com
-> 
-> Cover letter from earlier version
-> 
-> One challenge here is striking the right balance between lots of constraints
-> in the injection code to enforce particular reserved bits etc by breaking
-> out all the flags as individual parameters vs having a reasonably concise
-> API.  I think this set strikes the right balance but others may well
-> disagree :)   Note that Ira raised the question of whether we should be
-> automatically establishing the volatile flag based on the Device Physical
-> Address of the injected error. My proposal is to not do so for now, but
-> to possibly revisit tightening the checking of injected errors in future.
-> Whilst the volatile flag is straight forwards, some of the other flags that
-> could be automatically set (or perhaps checked for validiaty) are much more
-> complex. Adding verification at this stage would greatly increase the
-> complexity of the patch + we are missing other elements that would interact
-> with this.  I'm not concerned about potential breaking of backwards compatibility
-> if it only related to the injection of errors that make no sense for a real
-> device.
-> 
-> CXL Event records inform the OS of various CXL device events.  Thus far CXL
-> memory devices are emulated and therefore don't naturally generate events.
-> 
-> Add an event infrastructure and mock event injection.  Previous versions
-> included a bulk insertion of lots of events.  However, this series focuses on
-> providing the ability to inject individual events through QMP.  Only the
-> General Media Event is included in this series as an example.  Other events can
-> be added pretty easily once the infrastructure is acceptable.
-> 
-> In addition, this version updates the code to be in line with the
-> specification based on discussions around the kernel patches.
-> 
-> Injection examples;
-> 
-> { "execute": "cxl-inject-gen-media-event",
->     "arguments": {
->         "path": "/machine/peripheral/cxl-mem0",
->         "log": "informational",
->         "flags": 1,
->         "physaddr": 1000,
->         "descriptor": 3,
->         "type": 3,
->         "transaction-type": 192,
->         "channel": 3,
->         "device": 5,
->         "component-id": "iras mem"
->     }}
-> 
-> 
-> { "execute": "cxl-inject-dram-event",
->     "arguments": {
->         "path": "/machine/peripheral/cxl-mem0",
->         "log": "informational",
->         "flags": 1,
->         "physaddr": 1000,
->         "descriptor": 3,
->         "type": 3,
->         "transaction-type": 192,
->         "channel": 3,
->         "rank": 17,
->         "nibble-mask": 37421234,
->         "bank-group": 7,
->         "bank": 11,
->         "row": 2,
->         "column": 77,
->         "correction-mask": [33, 44, 55, 66]
->     }}
-> 
-> { "execute": "cxl-inject-memory-module-event",
->   "arguments": {
->     "path": "/machine/peripheral/cxl-mem0",
->     "log": "informational",
->     "flags": 1,
->     "type": 3,
->     "health-status": 3,
->     "media-status": 7,
->     "additional-status": 33,
->     "life-used": 30,
->     "temperature": -15,
->     "dirty-shutdown-count": 4,
->     "corrected-volatile-error-count": 3233,
->     "corrected-persistent-error-count": 1300
->   }}
-> 
-> Ira Weiny (4):
->   hw/cxl/events: Add event status register
->   hw/cxl/events: Wire up get/clear event mailbox commands
->   hw/cxl/events: Add event interrupt support
->   hw/cxl/events: Add injection of General Media Events
-> 
-> Jonathan Cameron (3):
->   hw/cxl: Move CXLRetCode definition to cxl_device.h
->   hw/cxl/events: Add injection of DRAM events
->   hw/cxl/events: Add injection of Memory Module Events
-> 
->  hw/cxl/cxl-device-utils.c   |  43 +++++-
->  hw/cxl/cxl-events.c         | 248 ++++++++++++++++++++++++++++++
->  hw/cxl/cxl-mailbox-utils.c  | 166 ++++++++++++++------
->  hw/cxl/meson.build          |   1 +
->  hw/mem/cxl_type3.c          | 292 +++++++++++++++++++++++++++++++++++-
->  hw/mem/cxl_type3_stubs.c    |  35 +++++
->  include/hw/cxl/cxl_device.h |  80 +++++++++-
->  include/hw/cxl/cxl_events.h | 168 +++++++++++++++++++++
->  qapi/cxl.json               | 120 +++++++++++++++
->  9 files changed, 1097 insertions(+), 56 deletions(-)
->  create mode 100644 hw/cxl/cxl-events.c
->  create mode 100644 include/hw/cxl/cxl_events.h
-> 
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
