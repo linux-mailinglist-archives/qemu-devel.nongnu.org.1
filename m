@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C9C7057FC
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C84170581B
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 May 2023 21:58:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz0Yt-0006lr-Kc; Tue, 16 May 2023 15:42:19 -0400
+	id 1pz0Ys-0006m6-Va; Tue, 16 May 2023 15:42:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0Yq-0006ks-1B
+ id 1pz0Yq-0006lF-TR
  for qemu-devel@nongnu.org; Tue, 16 May 2023 15:42:16 -0400
 Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pz0Yn-0002jw-V2
- for qemu-devel@nongnu.org; Tue, 16 May 2023 15:42:15 -0400
+ id 1pz0Yp-0002su-8a
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 15:42:16 -0400
 Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-64ab2a37812so8110268b3a.1
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:42:13 -0700 (PDT)
+ d2e1a72fcca58-64a9335a8e7so8218593b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 12:42:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684266133; x=1686858133;
+ d=linaro.org; s=google; t=1684266134; x=1686858134;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wb0Auln9ncK1FIC00yKgRrVnu9FaIzhjuMCmgHUtjOQ=;
- b=ReEUNC0sIAIqj9J9LzHnMiJpJA2tuMeubm3vwilclHc5a7p6wk4c2axs7/sSCq/NUg
- lDEz+pE2kyjj3VKPdUwZNAnBbQfhfWDJ89+8mW9ey8b0LVtmr2C9tggG8WlETB0fI+t6
- z0kZz1CvnHi7lutjmZyZlp9cBPT9VGg/W4f0di/xoovTuRpm9XiTlsenrfEK5byF7E7Q
- 3WCRzzo7sR8EWF3TJytPP06bsRWc9zIQJ9eA5iGP8GrJAF56xXVgaGqn032vAt13aD0r
- x3brpq5nMopRRP+LZK7AjEwKSvJmqlQ8lIIotICJX2LWu6OhSFmACpCSn2wsrP7SI4yJ
- +mlg==
+ bh=4qhfCxW8nZ+AIzOPAndxpM5sZuukyWLZqrgdNp4ChwI=;
+ b=zMKX732xEa5SPswvvFk1EloHDtswzovT+7ivlvjr0R7evVBzi6cVTqOUmT6+BpEKfS
+ ubmh674OUeyGVPX2rh1KXHOi0bXjm4yMoWlFOqHNd8ZIqOu8f6sJp6/YLNaad2wuzzPa
+ O5i1mm0fUnjLYmAvQdpEkmQLuc768o8R+v/qaYMHZxef/8XPRlFa1jEO1OjVofmuSQAZ
+ 2y/tCMQpIhMQk5NupOp5IlN9LYjHpVJuWGv260skCRjFgPaJNXWElboPyVL9MtQo/Yir
+ 8X3q0qjAvuzI1l5pGMpFTi3l7jtn9J/yJdjT2iQcawcuB7nAPqAc667FC+PNOHU/N7EF
+ Jx/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684266133; x=1686858133;
+ d=1e100.net; s=20221208; t=1684266134; x=1686858134;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wb0Auln9ncK1FIC00yKgRrVnu9FaIzhjuMCmgHUtjOQ=;
- b=H3PMXU4tsvlTXtY36a55fEi5vKYNXyjMhs5N91IDMkX3Q9YskJeLwx2CehqxuQMGFu
- +eOLteMJKutEqGzXOgdp9zwZwMBtdtgko0uZ5llwkFcMJ2KTmm87jGcx5J0+4pHPdGc1
- 6I3MEJvFRuLqhHuGVuflPpaZchPKTgWwMTvxi2XyRK1/ZR52VwL6yXWF26v6ts/FvLoq
- lwjiVWLj1AR36SHPa/yzngTQCb+UBfg4FI89UyRMWWcfzqUTCvR5kOLljWDnL7I/tcD4
- 1jK2iFFU7IIqmejgFZTY8JwC6VMoQBoYnUI70r5iiEWi9nv9Mn7whHhnRLyjt/ziG8/9
- DnbQ==
-X-Gm-Message-State: AC+VfDw4Cm4S+p0Dey7q/R4G+PjZnMDPkhg1bVNDpSTMtSqAtmvu3/6Z
- M3O2g16mQk3MfoyXf//cWCeEohv/TBfATd8+TPg=
-X-Google-Smtp-Source: ACHHUZ4mE2TbzJDueSEub/DX+L3AvzGQEL8udvtwReEwoXf17nmFc/EeMRRrl9iFDTnDmTKpSYGjXw==
-X-Received: by 2002:a05:6a20:a115:b0:100:c3fe:a653 with SMTP id
- q21-20020a056a20a11500b00100c3fea653mr35368928pzk.29.1684266133258; 
- Tue, 16 May 2023 12:42:13 -0700 (PDT)
+ bh=4qhfCxW8nZ+AIzOPAndxpM5sZuukyWLZqrgdNp4ChwI=;
+ b=Dru8Wk6EKt0GXAER2rpC8mvxKQ7xmCQWFvfYni+sQLPeeoxyNM8Y7hrIt2MGy/ycLS
+ 5g3L5/TTrkmNEKyH7ybi+XcU/psaPFDh5RdQUn0pxKTbWIrGwf9NhqKwqwwJizTQfop0
+ RE5qj/c+DTw1QMJwHQlHwHupgJL0LYHU53PXho661qQPXJ4346li9R9h3aN7++aSwrw1
+ BjoBjB3EV6UnW5FoaQ6LY8FDRDajrQztNewopMhbN4tHC2pBne9JtPeo7TSKFMIHHGjD
+ 4/F56JpDraZhC26SKzrgHjDoal0FleoD5F5byp/f4bUFBMRiLpqKnVWcFzYYIObFJhnF
+ Szgg==
+X-Gm-Message-State: AC+VfDzVGNF5vaW7Uct/lDvUlRdyOG9crdVcJBdC/lRKdZArqZ7ZoLWV
+ UyaLurIXAiMmKC3vnmaxJAua1QzHlWQv+l+cpNo=
+X-Google-Smtp-Source: ACHHUZ6+MdhcYZyEr14zfKZTMldJ4ZQEJq7n3mQ4YK43wVOQE983cERQ6QqGI0LzkAjqS2kXqxBddQ==
+X-Received: by 2002:a05:6a00:b45:b0:63d:3c39:ecc2 with SMTP id
+ p5-20020a056a000b4500b0063d3c39ecc2mr46827241pfo.12.1684266134012; 
+ Tue, 16 May 2023 12:42:14 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:ec81:440e:33a4:40b9])
  by smtp.gmail.com with ESMTPSA id
- z21-20020aa791d5000000b006260526cf0csm13771165pfa.116.2023.05.16.12.42.12
+ z21-20020aa791d5000000b006260526cf0csm13771165pfa.116.2023.05.16.12.42.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 12:42:12 -0700 (PDT)
+ Tue, 16 May 2023 12:42:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 29/80] tcg/loongarch64: Check the host supports unaligned
- accesses
-Date: Tue, 16 May 2023 12:40:54 -0700
-Message-Id: <20230516194145.1749305-30-richard.henderson@linaro.org>
+Subject: [PULL 30/80] tcg/loongarch64: Support softmmu unaligned accesses
+Date: Tue, 16 May 2023 12:40:55 -0700
+Message-Id: <20230516194145.1749305-31-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230516194145.1749305-1-richard.henderson@linaro.org>
 References: <20230516194145.1749305-1-richard.henderson@linaro.org>
@@ -92,41 +91,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This should be true of all loongarch64 running Linux.
+Test the final byte of an unaligned access.
+Use BSTRINS.D to clear the range of bits, rather than AND.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/loongarch64/tcg-target.c.inc | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tcg/loongarch64/tcg-target.c.inc | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index e651ec5c71..33d8e67513 100644
+index 33d8e67513..7d0165349d 100644
 --- a/tcg/loongarch64/tcg-target.c.inc
 +++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -30,6 +30,7 @@
-  */
+@@ -848,7 +848,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     int fast_ofs = TLB_MASK_TABLE_OFS(mem_index);
+     int mask_ofs = fast_ofs + offsetof(CPUTLBDescFast, mask);
+     int table_ofs = fast_ofs + offsetof(CPUTLBDescFast, table);
+-    tcg_target_long compare_mask;
  
- #include "../tcg-ldst.c.inc"
-+#include <asm/hwcap.h>
+     ldst = new_ldst_label(s);
+     ldst->is_ld = is_ld;
+@@ -872,14 +871,20 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP2, TCG_REG_TMP2,
+                offsetof(CPUTLBEntry, addend));
  
- #ifdef CONFIG_DEBUG_TCG
- static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
-@@ -1674,6 +1675,14 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+-    /* We don't support unaligned accesses.  */
++    /*
++     * For aligned accesses, we check the first byte and include the alignment
++     * bits within the address.  For unaligned access, we check that we don't
++     * cross pages using the address of the last byte of the access.
++     */
+     if (a_bits < s_bits) {
+-        a_bits = s_bits;
++        unsigned a_mask = (1u << a_bits) - 1;
++        unsigned s_mask = (1u << s_bits) - 1;
++        tcg_out_addi(s, TCG_TYPE_TL, TCG_REG_TMP1, addr_reg, s_mask - a_mask);
++    } else {
++        tcg_out_mov(s, TCG_TYPE_TL, TCG_REG_TMP1, addr_reg);
+     }
+-    /* Clear the non-page, non-alignment bits from the address.  */
+-    compare_mask = (tcg_target_long)TARGET_PAGE_MASK | ((1 << a_bits) - 1);
+-    tcg_out_movi(s, TCG_TYPE_TL, TCG_REG_TMP1, compare_mask);
+-    tcg_out_opc_and(s, TCG_REG_TMP1, TCG_REG_TMP1, addr_reg);
++    tcg_out_opc_bstrins_d(s, TCG_REG_TMP1, TCG_REG_ZERO,
++                          a_bits, TARGET_PAGE_BITS - 1);
  
- static void tcg_target_init(TCGContext *s)
- {
-+    unsigned long hwcap = qemu_getauxval(AT_HWCAP);
-+
-+    /* Server and desktop class cpus have UAL; embedded cpus do not. */
-+    if (!(hwcap & HWCAP_LOONGARCH_UAL)) {
-+        error_report("TCG: unaligned access support required; exiting");
-+        exit(EXIT_FAILURE);
-+    }
-+
-     tcg_target_available_regs[TCG_TYPE_I32] = ALL_GENERAL_REGS;
-     tcg_target_available_regs[TCG_TYPE_I64] = ALL_GENERAL_REGS;
- 
+     /* Compare masked address with the TLB entry.  */
+     ldst->label_ptr[0] = s->code_ptr;
 -- 
 2.34.1
 
