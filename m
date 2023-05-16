@@ -2,75 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB27705B7C
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E51705B7E
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 01:51:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz4Ry-0005il-D5; Tue, 16 May 2023 19:51:26 -0400
+	id 1pz4Rq-0005PP-NG; Tue, 16 May 2023 19:51:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pz4Rv-0005iB-Pz
- for qemu-devel@nongnu.org; Tue, 16 May 2023 19:51:23 -0400
-Received: from mail-vk1-xa2a.google.com ([2607:f8b0:4864:20::a2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pz4Ru-0007PP-8k
- for qemu-devel@nongnu.org; Tue, 16 May 2023 19:51:23 -0400
-Received: by mail-vk1-xa2a.google.com with SMTP id
- 71dfb90a1353d-44fa585ad7aso174443e0c.0
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 16:51:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684281081; x=1686873081;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=J4pqTZTNEFXKSm2zrjAO8/dtAOSli3TDLNgI1m/iJzw=;
- b=AM4zARFpgOEUTS0B+Lak4vjM3KmA98r8KjczYcgt5htNMFsrUn54FMGuDJB6yQf+2z
- KSkqbPSeUVOA7LFyl9WJhKg2B7JFo6rfWco604EmKkIg9GLsRRds3txnI/T7Gd1mPXRn
- YrIUT49dtLipLlJ0duf3xE/1GpeqqK66FmvHi1MOnaoOpGV/9pAY5y7HrZEFNQ30+Jgu
- QQ0J6Z2KlTNZrAsGC6PIHaJI/hRodJ11GeAQekPDzpZDP2fZpBzXbuUVQfAm5wE0B2PI
- YMVBar0h1TWMP5mmucANLBrg00io45hBDbnT0RFOiEhQYby+9H0ep1GT8MZHnU0Yo/6D
- El+Q==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1pz4Ro-0005Oq-4B
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 19:51:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1pz4Rm-0007Le-3D
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 19:51:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684281073;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=P8zJ2X79j9lr9cLFcBS6ceffx4XwhVU40APwvTvXmy4=;
+ b=FPSXaTPaazYg3UL0WUpymh9jshBhbxRdMmIK3t1+2AQQ3l9pWjN1U+FnmtOoznjfBwEpX5
+ H88F6J7ruUC9m9tNas48iwglyK4P6xDm/sawGnfhu0VWj01ecFlzn2w4sNjF613FZBj63Z
+ DFTrpw2JxZ5cY+lqfMoialy7jSPgTaY=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-567-YKebpDQvO3qLv80saKtFqA-1; Tue, 16 May 2023 19:51:11 -0400
+X-MC-Unique: YKebpDQvO3qLv80saKtFqA-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-621189941cdso168616d6.1
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 16:51:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684281081; x=1686873081;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=J4pqTZTNEFXKSm2zrjAO8/dtAOSli3TDLNgI1m/iJzw=;
- b=PpPHvKgRitsxlzJZ6QuC5mHp92uCw/UA3oU517UweesM6gdWYvbKUaOq9aLsM9jLAZ
- 8+3fj8140bpgl8PebJqI4daGJlGr76XLeG6LLn1nANjsRvCbP7asVDbsyj5jaKFMUo0Z
- 2XEUQbFS6FGVJBksgT+ZqopBTU1KSlSlIGCXU1bUrChEgwiksfPXsM8bGAEQ737/O+oR
- kLdSpHDVVvZJqbUIvB9DO/xu0cetkUFAM755QWYAndwM5zcXFL8N/nFe3oQb9UhYvt0x
- gOF0TGXvnLRkWbw6RXpglh0ZP6swizrq2u1crBNWr4Hy2+7PE16RLDE56pyEnwBAkrBC
- eRHw==
-X-Gm-Message-State: AC+VfDywuzpfkKSLoWDuvxC7YYqGTiKZvyFBDXHHU6nPmOwfnK/FomvQ
- fOqzx14zTq3bvZK/jmipPnq1HZEKKXzNB/jkbBc8rb2VGLs=
-X-Google-Smtp-Source: ACHHUZ6c76qslT5EVraW5zQWJ89kJ3bcgkKo4VWZkfcFpQibY4tDXzt7/AMsi6NzlZ0JC7SrPwmpIbPT1QRiFN1RWTs=
-X-Received: by 2002:a1f:5f46:0:b0:440:8b67:dba6 with SMTP id
- t67-20020a1f5f46000000b004408b67dba6mr17125028vkb.4.1684281081357; Tue, 16
- May 2023 16:51:21 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684281071; x=1686873071;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=P8zJ2X79j9lr9cLFcBS6ceffx4XwhVU40APwvTvXmy4=;
+ b=hgAY2sCwv4CQ2XKVbjiXlaOAouksflH52/FF/semz1eylKLPKulUL46aPHdAWOuMXL
+ YKUbqQsjJGH56F5AB9onhQRPwwjDxYt/Dv727UizysJnNa0xJo4pAYpos3YwpkRaX5pZ
+ 1iR5pGSFXaOlpyNqkEZfenAaMt1KquffswqMyrZZJBQ30p09PtSvOHoLliirVCS4VTq8
+ 2RzpnSYGeScmo922CG36lIkmmE2Nny4Jybzl6W+eDBpvgCAXkxD1St3C6ZCUiqGfNZpB
+ xM5Y4DFmQBFLCF33B1bOgL3T3qRft5M1VcBMy8h3nah1ba4krNnknWlWHiDZSCPA2jJX
+ hz4w==
+X-Gm-Message-State: AC+VfDzw2VcGHkPggsNW114fJV8kmy+jDiFY7xCTJUoGMdKNBwhqAUeL
+ gDwNZXt3EOiLfeJ4yZynAqoeAwsTmOhnJ9nJDER3oBaVRjID6wGZX1q1XYmRR7WZBISayAWKwzU
+ nMHTtJEfaIcUp9+Y=
+X-Received: by 2002:a05:6214:cc8:b0:61b:6b8e:16e0 with SMTP id
+ 8-20020a0562140cc800b0061b6b8e16e0mr2099090qvx.1.1684281071224; 
+ Tue, 16 May 2023 16:51:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ46vKfoOtVaC1EceicOfIDV1SCnBWxDh3H8hxq2d6Ghb4xyMz8VVoXuxR5xBQKmOuF6tFJPTw==
+X-Received: by 2002:a05:6214:cc8:b0:61b:6b8e:16e0 with SMTP id
+ 8-20020a0562140cc800b0061b6b8e16e0mr2099066qvx.1.1684281070955; 
+ Tue, 16 May 2023 16:51:10 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ c21-20020ac85a95000000b003ef33e02eb9sm6580177qtc.83.2023.05.16.16.51.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 May 2023 16:51:10 -0700 (PDT)
+Date: Tue, 16 May 2023 19:51:09 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Jiri Denemark <jdenemar@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Fiona Ebner <f.ebner@proxmox.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH v3 2/3] migration/docs: How to migrate when hosts have
+ different features
+Message-ID: <ZGQW7W8i+y9/KpO1@x1n>
+References: <20230515083201.55060-1-quintela@redhat.com>
+ <20230515083201.55060-3-quintela@redhat.com>
 MIME-Version: 1.0
-References: <20230503085657.1814850-1-richard.henderson@linaro.org>
- <20230503085657.1814850-9-richard.henderson@linaro.org>
-In-Reply-To: <20230503085657.1814850-9-richard.henderson@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 17 May 2023 09:50:55 +1000
-Message-ID: <CAKmqyKOgP6yAZHZ6ThGJ18ShNtX4WQxj5rzN=kE2-Ye0ORMWtQ@mail.gmail.com>
-Subject: Re: [PATCH 08/11] tcg/riscv: Support CPOP from Zbb
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, dbarboza@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2a;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230515083201.55060-3-quintela@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,73 +100,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 3, 2023 at 6:58=E2=80=AFPM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
+On Mon, May 15, 2023 at 10:32:00AM +0200, Juan Quintela wrote:
+> Sometimes devices have different features depending of things outside
+> of qemu.  For instance the kernel.  Document how to handle that cases.
+> 
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> 
 > ---
->  tcg/riscv/tcg-target.h     | 4 ++--
->  tcg/riscv/tcg-target.c.inc | 9 +++++++++
->  2 files changed, 11 insertions(+), 2 deletions(-)
->
-> diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
-> index 8e327afc3a..e0b23006c4 100644
-> --- a/tcg/riscv/tcg-target.h
-> +++ b/tcg/riscv/tcg-target.h
-> @@ -127,7 +127,7 @@ extern bool have_zbb;
->  #define TCG_TARGET_HAS_nor_i32          0
->  #define TCG_TARGET_HAS_clz_i32          0
->  #define TCG_TARGET_HAS_ctz_i32          0
-> -#define TCG_TARGET_HAS_ctpop_i32        0
-> +#define TCG_TARGET_HAS_ctpop_i32        have_zbb
->  #define TCG_TARGET_HAS_brcond2          1
->  #define TCG_TARGET_HAS_setcond2         1
->  #define TCG_TARGET_HAS_qemu_st8_i32     0
-> @@ -161,7 +161,7 @@ extern bool have_zbb;
->  #define TCG_TARGET_HAS_nor_i64          0
->  #define TCG_TARGET_HAS_clz_i64          0
->  #define TCG_TARGET_HAS_ctz_i64          0
-> -#define TCG_TARGET_HAS_ctpop_i64        0
-> +#define TCG_TARGET_HAS_ctpop_i64        have_zbb
->  #define TCG_TARGET_HAS_add2_i64         1
->  #define TCG_TARGET_HAS_sub2_i64         1
->  #define TCG_TARGET_HAS_mulu2_i64        0
-> diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-> index 9cbefb2833..044ddfb160 100644
-> --- a/tcg/riscv/tcg-target.c.inc
-> +++ b/tcg/riscv/tcg-target.c.inc
-> @@ -1512,6 +1512,13 @@ static void tcg_out_op(TCGContext *s, TCGOpcode op=
-c,
->          }
->          break;
->
-> +    case INDEX_op_ctpop_i32:
-> +        tcg_out_opc_imm(s, OPC_CPOPW, a0, a1, 0);
-> +        break;
-> +    case INDEX_op_ctpop_i64:
-> +        tcg_out_opc_imm(s, OPC_CPOP, a0, a1, 0);
-> +        break;
+> 
+> If you have some example to put here, I am all ears.  I guess that
+> virtio-* with some features that are on qemu but not on all kernel
+> would do the trick, but I am not a virtio guru myself.  Patches
+> welcome.
+> ---
+>  docs/devel/migration.rst | 93 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 93 insertions(+)
+> 
+> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+> index b4c4f3ec35..95e797ee60 100644
+> --- a/docs/devel/migration.rst
+> +++ b/docs/devel/migration.rst
+> @@ -357,6 +357,99 @@ machine types to have the right value: ::
+>           ...
+>       };
+>  
+> +A device with diferent features on both sides
+> +---------------------------------------------
 > +
->      case INDEX_op_add2_i32:
->          tcg_out_addsub2(s, a0, a1, a2, args[3], args[4], args[5],
->                          const_args[4], const_args[5], false, true);
-> @@ -1634,6 +1641,8 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGO=
-pcode op)
->      case INDEX_op_bswap16_i64:
->      case INDEX_op_bswap32_i64:
->      case INDEX_op_bswap64_i64:
-> +    case INDEX_op_ctpop_i32:
-> +    case INDEX_op_ctpop_i64:
->          return C_O1_I1(r, r);
->
->      case INDEX_op_st8_i32:
-> --
-> 2.34.1
->
->
+> +Let's assume that we are using the same QEMU binary on both sides,
+> +just to make the things easier.  But we have a device that has
+> +different features on both sides of the migration.  That can be
+> +because the devices are different, because the kernel driver of both
+> +devices have different features, whatever.
+> +
+> +How can we get this to work with migration.  The way to do that is
+> +"theoretically" easy.  You have to get the features that the device
+> +has in the source of the migration.  The features that the device has
+> +on the target of the migration, you get the intersection of the
+> +features of both sides, and that is the way that you should launch
+> +qemu.
+> +
+> +Notice that this is not completely related to qemu.  The most
+> +important thing here is that this should be handle by the managing
+> +application that launches qemu.  If qemu is configured correctly, the
+> +migration will suceeed.
+> +
+> +Once that we have defined that, doing this is complicated.  Almost all
+> +devices are bad at being able to be launched with only some features
+> +enabled.  With one big exception: cpus.
+> +
+> +You can read the documentation for QEMU x86 cpu models here:
+> +
+> +https://qemu-project.gitlab.io/qemu/system/qemu-cpu-models.html
+> +
+> +See when they talk about migration they recommend that one chooses the
+> +newest cpu model that is supported for all cpus.
+> +
+> +Let's say that we have:
+> +
+> +Host A:
+> +
+> +Device X has the feature Y
+> +
+> +Host B:
+> +
+> +Device X has not the feature Y
+> +
+> +If we try to migrate without any care from host A to host B, it will
+> +fail because when migration tries to load the feature Y on
+> +destination, it will find that the hardware is not there.
+> +
+> +Doing this would be the equivalent of doing with cpus:
+> +
+> +Host A:
+> +
+> +$ qemu-system-x86_64 -cpu host
+> +
+> +Host B:
+> +
+> +$ qemu-system-x86_64 -cpu host
+> +
+> +When both hosts have different cpu features this is waranteed to fail.
+> +Especially if Host B has less features than host A.  If host A has
+> +less features than host B, sometimes it works.  Important word of last
+> +sentence is "sometimes".
+> +
+> +So, forgetting about cpu models and continuing with the -cpu host
+> +example, let's see that the differences of the cpus is that Host A and
+> +B have the following features:
+> +
+> +Features:   'pcid'  'stibp' 'taa-no'
+> +Host A:        X       X
+> +Host B:                        X
+> +
+> +And we want to migrate between them, the way configure both qemu cpu
+> +will be:
+> +
+> +Host A:
+> +
+> +$ qemu-system-x86_64 -cpu host,pcid=off,stibp=off
+> +
+> +Host B:
+> +
+> +$ qemu-system-x86_64 -cpu host,taa-no=off
+
+Since we're using cpu as example, shall we at least mention at the end that
+we don't suggest using -cpu host if migration is needed?
+
+> +
+> +And you would be able to migrate between them.  It is responsability
+> +of the management application or of the user to make sure that the
+> +configuration is correct.  QEMU don't know how to look at this kind of
+> +features in general.
+> +
+> +Other devices have worse control about individual features.  If they
+> +want to be able to migrate between hosts that show different features,
+> +the device needs a way to configure which ones it is going to use.
+> +
+> +In this section we have considered that we are using the same QEMU
+> +binary in both sides of the migration.  If we use different QEMU
+> +versions process, then we need to have into account all other
+> +differences and the examples become even more complicated.
+
+Mostly good to me.  What I worry is how much help this will bring to
+developers - I'd assume developers working on these will be aware of this.
+But I guess it's always good to have any documentation than nothing.
+
+Acked-by: Peter Xu <peterx@redhat.com>
+
+-- 
+Peter Xu
+
 
