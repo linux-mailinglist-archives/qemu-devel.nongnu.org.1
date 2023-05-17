@@ -2,76 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC328706ED7
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 18:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E890706F0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:08:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzKR5-0008HH-He; Wed, 17 May 2023 12:55:35 -0400
+	id 1pzKbe-0001fZ-J0; Wed, 17 May 2023 13:06:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzKR2-0008Gv-RV
- for qemu-devel@nongnu.org; Wed, 17 May 2023 12:55:32 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzKbY-0001ei-S7
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:06:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzKR1-0002WN-3m
- for qemu-devel@nongnu.org; Wed, 17 May 2023 12:55:32 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzKbW-0004hm-3e
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:06:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684342530;
+ s=mimecast20190719; t=1684343181;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sjqpwHZx2lyvxrVxSL/WoIB+/eVWIlUfP/kNVgGLeZk=;
- b=MF97Ti6o+B1W+BxiNK3LkIuoMsVeydmVTVIBNb9Ze3K8i2R2a+uKVh6prg0bN8pZLg0BYx
- ux3Bx9YK0N4DgzkmNqvGUG6aT7KivNsFs9VNSIeODFrAUtkUoiNrp+aGPdLZjfFMlNGwcU
- adEBYG8unWzDTXn54o+EqHydJ7Yxfn0=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=V8wFFpXJ5pNgzAZu3GVCuTahYgOyLaDI0F+rRTx7G/I=;
+ b=aIZWJo+k+TCtN0O0rB83Cx7IFZXIQBU5ynNs1eSEcHyRa4OmBTjXXURMmwrS1eKCDgO5+a
+ CBG9mtpqjGej3x/kX7n1hgxZg343VKPZrgIkWCzVbmK4Le2+tCpACOsRYslhK8w0hm5bnZ
+ tCg0B6DircjFiBaa2KjJHWpStwlB77o=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-85-bJH-z2p5OrO_YI7jfT_-tQ-1; Wed, 17 May 2023 12:55:29 -0400
-X-MC-Unique: bJH-z2p5OrO_YI7jfT_-tQ-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-25338b76f79so676780a91.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 09:55:29 -0700 (PDT)
+ us-mta-639-aJMwx9sxOtSpX9p3ldN2QQ-1; Wed, 17 May 2023 13:06:18 -0400
+X-MC-Unique: aJMwx9sxOtSpX9p3ldN2QQ-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2533b1e6e66so709891a91.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:06:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684342528; x=1686934528;
+ d=1e100.net; s=20221208; t=1684343177; x=1686935177;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sjqpwHZx2lyvxrVxSL/WoIB+/eVWIlUfP/kNVgGLeZk=;
- b=NdyAASF6rjuPK/sHg5NyoU16hQWafqqlw3X8ssjBgq0JNSObyA+lMovxTEuY+KElMU
- P1Xm1YR/Jjq1vLVFz30GnERm/sdPu2GXFXmRBp8TLTdrkj24pS+7eY8hDpadS6qGct91
- ZW9eIUxFs9tKzgv4VEk4hW9LbyW86vGdDe1P92ZuMldcpckLt4BN0fKo3+Cji7LRwKBN
- 5sRS8AdnnyigLCnC6gS+dmKAATloRdmB3/RDcqNsNlpmIhRTtvuuPxHvmOqmHfz1w9vk
- U+WxRCTwX/WQOaMIBA+6R9XsBD86Rp1JC2AwU8H8I0GrVXWdBsFJMGcf1YVTK2mnEfYI
- vz4A==
-X-Gm-Message-State: AC+VfDxzIB/RFlrkBEhj0tIaQ7H/IftvC6/pYfZU9rJL7S7AiIddmxM0
- HWYNje/H5R8iqVRBv0x2TXep7kj9jVwcQEbVWZU3qy/njtW7qR7BR2MRGVjCWA+teWhqyvelWgP
- vjzxmUeeCd26PLVWDVuDHeH+6+A3TS5I=
-X-Received: by 2002:a17:90a:7506:b0:252:e7e2:fefe with SMTP id
- q6-20020a17090a750600b00252e7e2fefemr379482pjk.2.1684342528164; 
- Wed, 17 May 2023 09:55:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4DPnLtIvhEh2Gl+8Q+ZxIvXKP7UcR9sctuoCnHRB9ilUQYa5Y2jh7ljTRPJ4qcn80NyQQjCoHL9BxNxrtbQAo=
-X-Received: by 2002:a17:90a:7506:b0:252:e7e2:fefe with SMTP id
- q6-20020a17090a750600b00252e7e2fefemr379458pjk.2.1684342527790; Wed, 17 May
- 2023 09:55:27 -0700 (PDT)
+ bh=V8wFFpXJ5pNgzAZu3GVCuTahYgOyLaDI0F+rRTx7G/I=;
+ b=TDUnsidC+VRzpH6DSlWCHwGbAjj9h8GxlgfsoZwgWUSRb6K6ZJT9jmjQwKurM51VIl
+ Xju93RmJ1wvVtHJPZqmick4jIsFgbrVfwV3HB3I6B7p2PA2OWagtJsuisNKcQlh8oc6T
+ TJzaFtpK2m02+kayh6mLW5eWqBe4IeD8FAH81I5I2Tz1Ml+CAmw4dxkOjqh9fMhijtNy
+ PZbvUTc+1fN6KMECKWjSZDoFXDa9FjksWWyQHxJoV15O1YG+SephYhfsNHDBd0i85Sby
+ 3DAUrW4bYq39iJQ12X3Z8N5NshuFBMkztcTVTsZHZe1gu1g08OlLcHpIBu8VEasbGCOj
+ CnpQ==
+X-Gm-Message-State: AC+VfDw7QkAwSeCnzJIpvyk4pJrjuurjzgmIh40CvtjQCKc1gnnaX+3Z
+ nyMc+tZXPnvLCaLfdrI72L3wkdjCzZs0g6R9VzrroBWVdgFMKHwN14iojRP06bSO/J1ATZMZdJW
+ YPmr4BdLziK4bvnIDx0nMreeT6gOMq28=
+X-Received: by 2002:a17:90a:e612:b0:250:ca6c:d7a8 with SMTP id
+ j18-20020a17090ae61200b00250ca6cd7a8mr354643pjy.29.1684343177552; 
+ Wed, 17 May 2023 10:06:17 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4YvWfdPHGYz/5d/DdJM87CUwJuyp64vCnjYy3pstt9wvQo4jat8T1VjBBVGhLhHrlr617Qorh1IYXNZyhf25k=
+X-Received: by 2002:a17:90a:e612:b0:250:ca6c:d7a8 with SMTP id
+ j18-20020a17090ae61200b00250ca6cd7a8mr354622pjy.29.1684343177245; Wed, 17 May
+ 2023 10:06:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230504211101.1386-1-mat.krawczuk@gmail.com>
-In-Reply-To: <20230504211101.1386-1-mat.krawczuk@gmail.com>
+References: <20230428132124.670840-1-nks@flawful.org>
+In-Reply-To: <20230428132124.670840-1-nks@flawful.org>
 From: John Snow <jsnow@redhat.com>
-Date: Wed, 17 May 2023 12:55:16 -0400
-Message-ID: <CAFn=p-aKy7onDCH7bQyvcS3jXngcQAF0K_zrkZorePxdA4s1xA@mail.gmail.com>
-Subject: Re: [PATCH v2] Add information how to fix common build error on
- Windows in symlink-install-tree
-To: Mateusz Krawczuk <mat.krawczuk@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Cleber Rosa <crosa@redhat.com>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
+Date: Wed, 17 May 2023 13:06:06 -0400
+Message-ID: <CAFn=p-Zk37sNFjHd5e77UCqeCUczZmEOvFQ2QKZcE3eQJau5Nw@mail.gmail.com>
+Subject: Re: [PATCH 0/9] misc AHCI cleanups
+To: Niklas Cassel <nks@flawful.org>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
@@ -82,7 +76,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,102 +92,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 4, 2023 at 5:11=E2=80=AFPM Mateusz Krawczuk <mat.krawczuk@gmail=
-.com> wrote:
+On Fri, Apr 28, 2023 at 9:22=E2=80=AFAM Niklas Cassel <nks@flawful.org> wro=
+te:
 >
-> By default, Windows doesn't allow to create soft links for user account a=
-nd only administrator is allowed to do this. To fix this problem you have t=
-o raise your permissions or enable Developer Mode, which available since Wi=
-ndows 10. Additional explanation when build fails will allow developer to f=
-ix the problem on his computer faster.
+> From: Niklas Cassel <niklas.cassel@wdc.com>
 >
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1386
-> Signed-off-by: Mateusz Krawczuk <mat.krawczuk@gmail.com>
+> Hello John,
 >
-> v2:
->   Removed unnecessary newlines to be consistent with QEMU coding styles.
 
-I don't think you actually did this, but it's maybe fine. If you
-wanted to be careful about it, you could use pylint and flake8 to
-check the formatting of this script, though it isn't perfect to start:
+Hi Niklas!
 
-jsnow@scv ~/s/q/scripts (python-socket-connect)> pylint symlink-install-tre=
-e.py
-************* Module symlink-install-tree
-symlink-install-tree.py:1:0: C0114: Missing module docstring
-(missing-module-docstring)
-symlink-install-tree.py:1:0: C0103: Module name "symlink-install-tree"
-doesn't conform to snake_case naming style (invalid-name)
-symlink-install-tree.py:10:0: C0116: Missing function or method
-docstring (missing-function-docstring)
-symlink-install-tree.py:10:17: C0103: Argument name "d1" doesn't
-conform to snake_case naming style (invalid-name)
-symlink-install-tree.py:10:26: C0103: Argument name "d2" doesn't
-conform to snake_case naming style (invalid-name)
-symlink-install-tree.py:29:11: W0703: Catching too general exception
-BaseException (broad-except)
-symlink-install-tree.py:30:41: E1101: Instance of 'BaseException' has
-no 'errno' member (no-member)
+I haven't been actively involved with AHCI for a while, so I am not
+sure I can find the time to give this a deep scrub. I'm going to
+assume based on '@wdc.com` that you probably know a thing or two more
+about AHCI than I do, though. Can you tell me what testing you've
+performed on this? As long as it doesn't cause any obvious
+regressions, we might be able to push it through, but it might not be
+up to me anymore. I can give it a review on technical merit, but with
+regards to "correctness" I have to admit I am flying blind.
 
-jsnow@scv ~/s/q/scripts (python-socket-connect) [22]> flake8
-symlink-install-tree.py
-symlink-install-tree.py:10:1: E302 expected 2 blank lines, found 1
-symlink-install-tree.py:16:1: E305 expected 2 blank lines after class
-or function definition, found 1
+(I haven't looked at the patches yet, but if in your commit messages
+you can point to the relevant sections of the relevant specifications,
+that'd help immensely.)
 
-jsnow@scv ~/s/q/scripts (python-socket-connect) [1]> isort -c
-symlink-install-tree.py
-ERROR: /home/jsnow/src/qemu/scripts/symlink-install-tree.py Imports
-are incorrectly sorted and/or formatted.
-
-As long as you don't make the spacing *worse*, it's fine - but any
-fixes to existing code should go in its own patch.
-
-> Signed-off-by: Mateusz Krawczuk <mat.krawczuk@gmail.com>
-> ---
->  scripts/symlink-install-tree.py | 5 +++++
->  1 file changed, 5 insertions(+)
+> Here comes some misc AHCI cleanups.
 >
-> diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tr=
-ee.py
-> index 67cb86dd52..62fd609f32 100644
-> --- a/scripts/symlink-install-tree.py
-> +++ b/scripts/symlink-install-tree.py
-> @@ -7,12 +7,14 @@
->  import subprocess
->  import sys
+> Most are related to error handling.
+
+I've always found this the most difficult part to verify. In a real
+system, the registers between AHCI and the actual hard disk are
+*physically separate*, and they update at specific times based on the
+transmission of the FIS packets. The model in QEMU doesn't bother with
+a perfect reproduction of that, and so it's been a little tough to
+verify correctness. I tried to improve it a bit back in the day, but
+my understanding has always been a bit limited :)
+
+Are there any vendor tools you're aware of that have test suites we
+could use to verify behavior? Our AHCI tests are very rudimentary - I
+wrote them straight out of undergrad as my first project at RH - and
+likely gloss over and misunderstand many things about the
+ATA/SATA/AHCI specifications.
+
 >
-> +
->  def destdir_join(d1: str, d2: str) -> str:
->      if not d1:
->          return d2
->      # c:\destdir + c:\prefix must produce c:\destdir\prefix
->      return str(PurePath(d1, *PurePath(d2).parts[1:]))
+> Please review.
 >
-> +
->  introspect =3D os.environ.get('MESONINTROSPECT')
->  out =3D subprocess.run([*introspect.split(' '), '--installed'],
->                       stdout=3Dsubprocess.PIPE, check=3DTrue).stdout
-> @@ -28,5 +30,8 @@ def destdir_join(d1: str, d2: str) -> str:
->          os.symlink(source, bundle_dest)
->      except BaseException as e:
->          if not isinstance(e, OSError) or e.errno !=3D errno.EEXIST:
-> +            if os.name =3D=3D 'nt':
-> +                print('Please enable Developer Mode to support soft link=
- '
-> +                      'without Administrator permission')
+> (I'm also working on a second series which will add support for
+> READ LOG EXT and READ LOG DMA EXT, but I will send that one out
+> once it is ready.)
 
-Use file=3Dsys.stderr here, too, though. If you resubmitted a patch that
-omitted all whitespace changes and fixed this part, I think that'd be
-sufficient. Thanks for the patch!
+Wow!
 
---js
+A question for you: is it worth solidifying which ATA specification we
+conform to? I don't believe we adhere to any one specific model,
+because a lot of the code is shared between PATA and SATA, and we "in
+theory" support IDE hard drives for fairly old guest operating systems
+that may or may not predate the DMA extensions. As a result, the
+actual device emulation is kind of a mish-mash of different ATA
+specifications, generally whichever version provided the
+least-abstracted detail and was easy to implement.
 
->              print(f'error making symbolic link {dest}', file=3Dsys.stder=
-r)
->              raise e
+If you're adding the logging features, that seems to push us towards
+the newer end of the spectrum, but I'm not sure if this causes any
+problems for guest operating systems doing probing to guess what kind
+of device they're talking to.
+
+Any input?
+
+>
+>
+> Kind regards,
+> Niklas
+>
+>
+> Niklas Cassel (9):
+>   hw/ide/ahci: remove stray backslash
+>   hw/ide/core: set ERR_STAT in unsupported command completion
+>   hw/ide/ahci: write D2H FIS on when processing NCQ command
+>   hw/ide/ahci: simplify and document PxCI handling
+>   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
+>   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
+>   hw/ide/ahci: trigger either error IRQ or regular IRQ, not both
+>   hw/ide/ahci: fix ahci_write_fis_sdb()
+>   hw/ide/ahci: fix broken SError handling
+>
+>  hw/ide/ahci.c | 111 +++++++++++++++++++++++++++++++++++---------------
+>  hw/ide/core.c |   2 +-
+>  2 files changed, 80 insertions(+), 33 deletions(-)
+>
 > --
-> 2.40.1
+> 2.40.0
 >
 
 
