@@ -2,95 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB4E7060FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 09:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E44E070611C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 09:29:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzBRh-0001Yu-Tc; Wed, 17 May 2023 03:19:37 -0400
+	id 1pzBZk-0003QB-Ag; Wed, 17 May 2023 03:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1pzBRf-0001Ye-SU
- for qemu-devel@nongnu.org; Wed, 17 May 2023 03:19:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1pzBZi-0003Pv-0a
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 03:27:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1pzBRd-000169-UM
- for qemu-devel@nongnu.org; Wed, 17 May 2023 03:19:35 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1pzBZf-0002nm-L5
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 03:27:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684307972;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1684308471;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fifagQl0X5L/DSsYeJNDhEKZnnX3Y08uGE17t7/KKHE=;
- b=SYE6SB/R6W8UuhF0HUOOuYaaRB4ht4+C1N/h1v6odmKt9gXw0b4MVyvYY6ede7oAMvoEuB
- Lvp/crlk6CLzuNg+u6mb+4NBdq+9AERXgmT6b36C+C4jcur/bnkUdIlohQh0jjHuwW1fye
- 4/vmha93j+BAfk2PfLKLxZd100Bq2N0=
+ bh=O6K/TfKZE7IzpLZKOq2YKESOPYL2SR6py+vyn4dwzBU=;
+ b=Pjvn2U7W3fjF7f/jueBqGLztaZpm5A9PfDs4sCGHFi3vI4fl9/sYrHQZf+SQEBGtGQtpxV
+ SuQyKV7PWxjg0pq1yJMniPCThLvAdcFPZsSq5LGs4JLCEm0U5jsXjr+Gq/MMHntAJ7QYb4
+ trxD7uCIyYqcNGbW4/OZbG+L9MV2yEc=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-YW-cJvZnOPWN20n4GRUqVQ-1; Wed, 17 May 2023 03:19:31 -0400
-X-MC-Unique: YW-cJvZnOPWN20n4GRUqVQ-1
+ us-mta-331-7sLB6q3NPb6BsynSlihy9Q-1; Wed, 17 May 2023 03:27:47 -0400
+X-MC-Unique: 7sLB6q3NPb6BsynSlihy9Q-1
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3062e5d0cd3so148657f8f.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 00:19:31 -0700 (PDT)
+ ffacd0b85a97d-3076fc5c278so266750f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 00:27:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684307970; x=1686899970;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fifagQl0X5L/DSsYeJNDhEKZnnX3Y08uGE17t7/KKHE=;
- b=PplStGLwTwaBA5JeZImhcT4skrbq/7mg3ihI3xFOfEP+fLWkn+22lx6ZqXPk657rpq
- T1hTK31wV5ZuYfg59rdPK7S2VWWd+qSORIlM3RXC4NH7HwqrCu26c8o6RHO493S04z2k
- j0II5x7cIfI6LaaLldm+yRh/zsJyQ7T9c1Bjw1SZjxPxETUPj0/LX69zV78IXYArPK7E
- gVYQ0nmlBmC1FisL1+u6XrBdzIuR7eAgYn5bJyf0r1SJfFoA1S7YGLCaVdqHnm4X9rmx
- XE6bDpoKCAwOyRRBEmXpKPpmmG80MamNq4U3kcU36t9zfp9b5CO8zGJalhcPGfputQXh
- 2/zw==
-X-Gm-Message-State: AC+VfDyznEVOlFytedbMtfUZzgnozd/yh30PgsLJjsOXq7G35ppKjYNi
- kR2dUE+nQNNR0IBVpzJyNG5MZoQC0E8Yv70oPuSlYP0ScNQlhERxczsrbWkbuK6c3tlLPbdAm0P
- HTrt4eOUjPTEf+l3l2ORdAek=
-X-Received: by 2002:adf:fecf:0:b0:306:4125:8bc0 with SMTP id
- q15-20020adffecf000000b0030641258bc0mr27017802wrs.29.1684307970212; 
- Wed, 17 May 2023 00:19:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6o1rvXX+keYRWIPNyyJfHNPuLgzUH1iiWZ10IcGDzQ5U75Qu90AMeIV5OUz8Wr6E1xHtkVJw==
-X-Received: by 2002:adf:fecf:0:b0:306:4125:8bc0 with SMTP id
- q15-20020adffecf000000b0030641258bc0mr27017785wrs.29.1684307969915; 
- Wed, 17 May 2023 00:19:29 -0700 (PDT)
-Received: from sgarzare-redhat (93-43-155-175.ip92.fastwebnet.it.
- [93.43.155.175]) by smtp.gmail.com with ESMTPSA id
- h13-20020a5d688d000000b003062b57ffd1sm1711011wru.50.2023.05.17.00.19.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 00:19:29 -0700 (PDT)
-Date: Wed, 17 May 2023 09:19:26 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jonathon Jongsma <jjongsma@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v3 1/1] block/blkio: use qemu_open() to support fd
- passing for virtio-blk
-Message-ID: <vcinivshe3tf4iod7ys236fq5ovzhyhei5zvo2uf636fpb2vtr@swcn25px5h5z>
-References: <20230511091527.46620-1-sgarzare@redhat.com>
- <20230511091527.46620-2-sgarzare@redhat.com>
- <1a89ee2e-2368-4051-f9ec-018641721484@redhat.com>
- <q2odwrndg3gt6z25hdxb3t2xxavd64hkp4b23zhzycevhrwx64@25r5r6sidyok>
- <e8fcb4cf-3667-2bdf-a163-d81bdfb71bfa@redhat.com>
+ d=1e100.net; s=20221208; t=1684308466; x=1686900466;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=O6K/TfKZE7IzpLZKOq2YKESOPYL2SR6py+vyn4dwzBU=;
+ b=MYOEBkvJptPufCqxSuegUHl99vRTqeNFneGcMLpzwTFoOX71rQW8skQB2Rk9dCY4QE
+ axVIR+J7zb0w54nI+HDs5QzrkfxSpqu+WnfgRd8LGMhlHnoFUfKznEHC+99CgLqTgTqG
+ PPcXEHrI9TAVb1JnkOGemKL/IYqYPUIbu08sbDMd8qS3w/kqpy4YDYtF//j6usIEBmjx
+ Ee366UG5WakyvC+JulwGrnxeJeTUyAPPpeO5dC7+IfhlwOBVTgJKgDf4C0jtMaQbtk7h
+ IbjRIl1NEvjmZVeqTri2sYaBIZ0ZFkgSCCnm9oendaPJwdYNpop663lnyz8two+xAbPY
+ MGjg==
+X-Gm-Message-State: AC+VfDzmmh1wOA5Ko8EjMBgikDCM6pH6N/n5N+7Y1QYMmzYZznsQnkk0
+ VcC3RVD3fMJ4vUc0ZNTg2diAoQyvD/H9ZBc2pU0USYwYEEI6FInISqrSLEvBRCFM4gct8OSnndp
+ cFtZa36YYoWRgb6E=
+X-Received: by 2002:adf:fccd:0:b0:2f5:7e67:9c68 with SMTP id
+ f13-20020adffccd000000b002f57e679c68mr33209127wrs.30.1684308465971; 
+ Wed, 17 May 2023 00:27:45 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4xBpIJTS2DG3It2K3PkzBUoBM/r2bIGK+CWVIG5V0Bz8X6mzoWZDEj0gZ88b9J2UmPmRZyHw==
+X-Received: by 2002:adf:fccd:0:b0:2f5:7e67:9c68 with SMTP id
+ f13-20020adffccd000000b002f57e679c68mr33209112wrs.30.1684308465602; 
+ Wed, 17 May 2023 00:27:45 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ p1-20020a5d4e01000000b003078c535277sm1745151wrt.91.2023.05.17.00.27.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 May 2023 00:27:45 -0700 (PDT)
+Message-ID: <7d69b5f1-b1dc-5ad6-ba3e-da90d669bb1d@redhat.com>
+Date: Wed, 17 May 2023 09:27:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e8fcb4cf-3667-2bdf-a163-d81bdfb71bfa@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v4 05/10] hw/arm/smmuv3: Parse STE config for stage-2
+Content-Language: en-US
+To: Mostafa Saleh <smostafa@google.com>, qemu-devel@nongnu.org
+Cc: jean-philippe@linaro.org, peter.maydell@linaro.org, qemu-arm@nongnu.org,
+ richard.henderson@linaro.org
+References: <20230516203327.2051088-1-smostafa@google.com>
+ <20230516203327.2051088-6-smostafa@google.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20230516203327.2051088-6-smostafa@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ NICE_REPLY_A=-2.666, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,102 +103,354 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CCing Markus for some advice.
+Hi Mostafa,
 
-On Tue, May 16, 2023 at 11:04:21AM -0500, Jonathon Jongsma wrote:
->On 5/15/23 5:10 AM, Stefano Garzarella wrote:
->>On Thu, May 11, 2023 at 11:03:22AM -0500, Jonathon Jongsma wrote:
->>>On 5/11/23 4:15 AM, Stefano Garzarella wrote:
->>>>The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the new
->>>>'fd' property. Let's expose this to the user, so the management layer
->>>>can pass the file descriptor of an already opened vhost-vdpa character
->>>>device. This is useful especially when the device can only be accessed
->>>>with certain privileges.
->>>>
->>>>If the libblkio virtio-blk driver supports fd passing, let's always
->>>>use qemu_open() to open the `path`, so we can handle fd passing
->>>>from the management layer through the "/dev/fdset/N" special path.
->>>>
->>>>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->>>>---
->>>>
->>>>Notes:
->>>>    v3:
->>>>    - use qemu_open() on `path` to simplify libvirt code [Jonathon]
->>>
->>>
->>>Thanks
->>>
->>>The one drawback now is that it doesn't seem possible for libvirt 
->>>to introspect whether or not qemu supports passing an fd to the 
->>>driver or not.
->>
->>Yep, this was because the libblkio library did not support this new way.
->>
->>>When I was writing my initial patch (before I realized that it was 
->>>missing fd-passing), I just checked for the existence of the 
->>>virtio-blk-vhost-vdpa device. But we actually need to know both 
->>>that this device exists and supports fd passing.
->>
->>Yep, this was one of the advantages of using the new `fd` parameter.
->>Can't libvirt handle the later failure?
+On 5/16/23 22:33, Mostafa Saleh wrote:
+> Parse stage-2 configuration from STE and populate it in SMMUS2Cfg.
+> Validity of field values are checked when possible.
 >
->Not very well. libvirt tries to provide useful errors to the user. So 
->for example if the qemu executable doesn't support a device, we would 
->want to provide an error indicating that the device is not supported 
->rather than a possibly-inscrutable qemu error.
+> Only AA64 tables are supported and Small Translation Tables (STT) are
+> not supported.
 >
->For example, in this scenario, we would want an error such as:
+> According to SMMUv3 UM(IHI0070E) "5.2 Stream Table Entry": All fields
+> with an S2 prefix (with the exception of S2VMID) are IGNORED when
+> stage-2 bypasses translation (Config[1] == 0).
 >
->error: unsupported configuration: vhostvdpa disk is not supported with 
->this QEMU binary
+> Which means that VMID can be used(for TLB tagging) even if stage-2 is
+> bypassed, so we parse it unconditionally when S2P exists. Otherwise
+> it is set to -1.(only S1P)
 >
->Instead of:
+> As stall is not supported, if S2S is set the translation would abort.
+> For S2R, we reuse the same code used for stage-1 with flag
+> record_faults. However when nested translation is supported we would
+> need to separate stage-1 and stage-2 faults.
 >
->error: internal error: qemu unexpectedly closed the monitor: 
->2023-05-16T15:17:36.666129Z qemu-system-x86_64: -blockdev {"driver":"virtio-blk-vhost-vdpa","path":"/dev/fdset/0","node-name":"libvirt-1-storage","cache":{"direct":true,"no-flush":false},"auto-read-only":true,"discard":"unmap"}: 
->blkio_connect failed: Failed to connect to vDPA device: Input/output 
->error
+> Fix wrong shift in STE_S2HD, STE_S2HA, STE_S2S.
 >
->And we can only do that if we can determine that the binary has the 
->proper support for fds.
+> Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-I see the problem, thanks for explaining this!
-
+Eric
+> ---
+> Changes in V4:
+> - Rename and simplify PTW_FAULT_ALLOWED
+> - Fix comment indent
+> Changes in V3:
+> - Separate fault handling.
+> - Fix shift in STE_S2HD, STE_S2HA, STE_S2S, STE_S2R.
+> - Rename t0sz_valid to s2t0sz_valid.
+> - separate stage-2 STE parsing in decode_ste_s2_cfg.
+> - Add a log for invalid S2ENDI and S2TTB.
+> - Set default value for stage-1 OAS.
+> - Move and rename SMMU_MAX_S2_CONCAT to VMSA_MAX_S2_CONCAT.
+> Changes in V2:
+> - Parse S2PS and S2ENDI
+> - Squash with S2VMID parsing patch
+> - Squash with S2AFF parsing
+> - Squash with fault reporting patch
+> - Add check for S2T0SZ
+> - Renaming and refactoring code
+> ---
+>  hw/arm/smmuv3-internal.h     |  10 +-
+>  hw/arm/smmuv3.c              | 181 +++++++++++++++++++++++++++++++++--
+>  include/hw/arm/smmu-common.h |   1 +
+>  include/hw/arm/smmuv3.h      |   3 +
+>  4 files changed, 185 insertions(+), 10 deletions(-)
 >
->>
->>>As far as I can tell, versions 7.2.0 and 8.0.0 include this device 
->>>but won't accept fds.
->>
->>Right.
->>
->>How do you suggest to proceed?
->
->I need some way to determine that the particular qemu binary can 
->accept a /dev/fdset/ path for vdpa block devices. libvirt uses a 
->variety of methods to determine capabilities for a given qemu binary, 
->including querying the qmp schema, commands, object types, specific 
->device/object properties, etc. For example, right now I can determine 
->(via querying the qmp schema) whether virtio-blk-vhost-vdpa is a valid 
->type for the blockdev-add command by querying the qmp schema. I need 
->something more than that but I'm not sure how to do it without 
->introducing a separate 'fd' parameter. Any ideas?
-
-The only thing I can think of is to make a mix between v2 and v3. I mean 
-add both the new `fd` parameter, and support qemu_open() on `path`.
-
-That way libvirt (or other users) can check that fd passing is supported 
-and use `fd` or fdset with `path`.
-
-Obviously I would have liked to implement only one of the two methods, 
-but if this helps, maybe it makes sense to support both.
-
-What do you think?
-
-Thanks,
-Stefano
+> diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+> index 183d5ac8dc..6d1c1edab7 100644
+> --- a/hw/arm/smmuv3-internal.h
+> +++ b/hw/arm/smmuv3-internal.h
+> @@ -526,9 +526,13 @@ typedef struct CD {
+>  #define STE_S2TG(x)        extract32((x)->word[5], 14, 2)
+>  #define STE_S2PS(x)        extract32((x)->word[5], 16, 3)
+>  #define STE_S2AA64(x)      extract32((x)->word[5], 19, 1)
+> -#define STE_S2HD(x)        extract32((x)->word[5], 24, 1)
+> -#define STE_S2HA(x)        extract32((x)->word[5], 25, 1)
+> -#define STE_S2S(x)         extract32((x)->word[5], 26, 1)
+> +#define STE_S2ENDI(x)      extract32((x)->word[5], 20, 1)
+> +#define STE_S2AFFD(x)      extract32((x)->word[5], 21, 1)
+> +#define STE_S2HD(x)        extract32((x)->word[5], 23, 1)
+> +#define STE_S2HA(x)        extract32((x)->word[5], 24, 1)
+> +#define STE_S2S(x)         extract32((x)->word[5], 25, 1)
+> +#define STE_S2R(x)         extract32((x)->word[5], 26, 1)
+> +
+>  #define STE_CTXPTR(x)                                           \
+>      ({                                                          \
+>          unsigned long addr;                                     \
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 4e90343996..27840f2d66 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -33,6 +33,9 @@
+>  #include "smmuv3-internal.h"
+>  #include "smmu-internal.h"
+>  
+> +#define PTW_RECORD_FAULT(cfg)   (((cfg)->stage == 1) ? (cfg)->record_faults : \
+> +                                 (cfg)->s2cfg.record_faults)
+> +
+>  /**
+>   * smmuv3_trigger_irq - pulse @irq if enabled and update
+>   * GERROR register in case of GERROR interrupt
+> @@ -329,11 +332,141 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
+>      return 0;
+>  }
+>  
+> +/*
+> + * Max valid value is 39 when SMMU_IDR3.STT == 0.
+> + * In architectures after SMMUv3.0:
+> + * - If STE.S2TG selects a 4KB or 16KB granule, the minimum valid value for this
+> + *   field is MAX(16, 64-IAS)
+> + * - If STE.S2TG selects a 64KB granule, the minimum valid value for this field
+> + *   is (64-IAS).
+> + * As we only support AA64, IAS = OAS.
+> + */
+> +static bool s2t0sz_valid(SMMUTransCfg *cfg)
+> +{
+> +    if (cfg->s2cfg.tsz > 39) {
+> +        return false;
+> +    }
+> +
+> +    if (cfg->s2cfg.granule_sz == 16) {
+> +        return (cfg->s2cfg.tsz >= 64 - oas2bits(SMMU_IDR5_OAS));
+> +    }
+> +
+> +    return (cfg->s2cfg.tsz >= MAX(64 - oas2bits(SMMU_IDR5_OAS), 16));
+> +}
+> +
+> +/*
+> + * Return true if s2 page table config is valid.
+> + * This checks with the configured start level, ias_bits and granularity we can
+> + * have a valid page table as described in ARM ARM D8.2 Translation process.
+> + * The idea here is to see for the highest possible number of IPA bits, how
+> + * many concatenated tables we would need, if it is more than 16, then this is
+> + * not possible.
+> + */
+> +static bool s2_pgtable_config_valid(uint8_t sl0, uint8_t t0sz, uint8_t gran)
+> +{
+> +    int level = get_start_level(sl0, gran);
+> +    uint64_t ipa_bits = 64 - t0sz;
+> +    uint64_t max_ipa = (1ULL << ipa_bits) - 1;
+> +    int nr_concat = pgd_concat_idx(level, gran, max_ipa) + 1;
+> +
+> +    return nr_concat <= VMSA_MAX_S2_CONCAT;
+> +}
+> +
+> +static int decode_ste_s2_cfg(SMMUTransCfg *cfg, STE *ste)
+> +{
+> +    cfg->stage = 2;
+> +
+> +    if (STE_S2AA64(ste) == 0x0) {
+> +        qemu_log_mask(LOG_UNIMP,
+> +                      "SMMUv3 AArch32 tables not supported\n");
+> +        g_assert_not_reached();
+> +    }
+> +
+> +    switch (STE_S2TG(ste)) {
+> +    case 0x0: /* 4KB */
+> +        cfg->s2cfg.granule_sz = 12;
+> +        break;
+> +    case 0x1: /* 64KB */
+> +        cfg->s2cfg.granule_sz = 16;
+> +        break;
+> +    case 0x2: /* 16KB */
+> +        cfg->s2cfg.granule_sz = 14;
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "SMMUv3 bad STE S2TG: %x\n", STE_S2TG(ste));
+> +        goto bad_ste;
+> +    }
+> +
+> +    cfg->s2cfg.vttb = STE_S2TTB(ste);
+> +
+> +    cfg->s2cfg.sl0 = STE_S2SL0(ste);
+> +    /* FEAT_TTST not supported. */
+> +    if (cfg->s2cfg.sl0 == 0x3) {
+> +        qemu_log_mask(LOG_UNIMP, "SMMUv3 S2SL0 = 0x3 has no meaning!\n");
+> +        goto bad_ste;
+> +    }
+> +
+> +    /* For AA64, The effective S2PS size is capped to the OAS. */
+> +    cfg->s2cfg.eff_ps = oas2bits(MIN(STE_S2PS(ste), SMMU_IDR5_OAS));
+> +    /*
+> +     * It is ILLEGAL for the address in S2TTB to be outside the range
+> +     * described by the effective S2PS value.
+> +     */
+> +    if (cfg->s2cfg.vttb & ~(MAKE_64BIT_MASK(0, cfg->s2cfg.eff_ps))) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "SMMUv3 S2TTB too large 0x%lx, effective PS %d bits\n",
+> +                      cfg->s2cfg.vttb,  cfg->s2cfg.eff_ps);
+> +        goto bad_ste;
+> +    }
+> +
+> +    cfg->s2cfg.tsz = STE_S2T0SZ(ste);
+> +
+> +    if (!s2t0sz_valid(cfg)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "SMMUv3 bad STE S2T0SZ = %d\n",
+> +                      cfg->s2cfg.tsz);
+> +        goto bad_ste;
+> +    }
+> +
+> +    if (!s2_pgtable_config_valid(cfg->s2cfg.sl0, cfg->s2cfg.tsz,
+> +                                    cfg->s2cfg.granule_sz)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "SMMUv3 STE stage 2 config not valid!\n");
+> +        goto bad_ste;
+> +    }
+> +
+> +    /* Only LE supported(IDR0.TTENDIAN). */
+> +    if (STE_S2ENDI(ste)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "SMMUv3 STE_S2ENDI only supports LE!\n");
+> +        goto bad_ste;
+> +    }
+> +
+> +    cfg->s2cfg.affd = STE_S2AFFD(ste);
+> +
+> +    cfg->s2cfg.record_faults = STE_S2R(ste);
+> +    /* As stall is not supported. */
+> +    if (STE_S2S(ste)) {
+> +        qemu_log_mask(LOG_UNIMP, "SMMUv3 Stall not implemented!\n");
+> +        goto bad_ste;
+> +    }
+> +
+> +    /* This is still here as stage 2 has not been fully enabled yet. */
+> +    qemu_log_mask(LOG_UNIMP, "SMMUv3 does not support stage 2 yet\n");
+> +    goto bad_ste;
+> +
+> +    return 0;
+> +
+> +bad_ste:
+> +    return -EINVAL;
+> +}
+> +
+>  /* Returns < 0 in case of invalid STE, 0 otherwise */
+>  static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
+>                        STE *ste, SMMUEventInfo *event)
+>  {
+>      uint32_t config;
+> +    int ret;
+>  
+>      if (!STE_VALID(ste)) {
+>          if (!event->inval_ste_allowed) {
+> @@ -354,11 +487,39 @@ static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
+>          return 0;
+>      }
+>  
+> -    if (STE_CFG_S2_ENABLED(config)) {
+> -        qemu_log_mask(LOG_UNIMP, "SMMUv3 does not support stage 2 yet\n");
+> +    /*
+> +     * If a stage is enabled in SW while not advertised, throw bad ste
+> +     * according to user manual(IHI0070E) "5.2 Stream Table Entry".
+> +     */
+> +    if (!STAGE1_SUPPORTED(s) && STE_CFG_S1_ENABLED(config)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "SMMUv3 S1 used but not supported.\n");
+> +        goto bad_ste;
+> +    }
+> +    if (!STAGE2_SUPPORTED(s) && STE_CFG_S2_ENABLED(config)) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "SMMUv3 S2 used but not supported.\n");
+>          goto bad_ste;
+>      }
+>  
+> +    if (STAGE2_SUPPORTED(s)) {
+> +        /* VMID is considered even if s2 is disabled. */
+> +        cfg->s2cfg.vmid = STE_S2VMID(ste);
+> +    } else {
+> +        /* Default to -1 */
+> +        cfg->s2cfg.vmid = -1;
+> +    }
+> +
+> +    if (STE_CFG_S2_ENABLED(config)) {
+> +        /*
+> +         * Stage-1 OAS defaults to OAS even if not enabled as it would be used
+> +         * in input address check for stage-2.
+> +         */
+> +        cfg->oas = oas2bits(SMMU_IDR5_OAS);
+> +        ret = decode_ste_s2_cfg(cfg, ste);
+> +        if (ret) {
+> +            goto bad_ste;
+> +        }
+> +    }
+> +
+>      if (STE_S1CDMAX(ste) != 0) {
+>          qemu_log_mask(LOG_UNIMP,
+>                        "SMMUv3 does not support multiple context descriptors yet\n");
+> @@ -702,7 +863,13 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+>      if (cached_entry) {
+>          if ((flag & IOMMU_WO) && !(cached_entry->entry.perm & IOMMU_WO)) {
+>              status = SMMU_TRANS_ERROR;
+> -            if (cfg->record_faults) {
+> +            /*
+> +             * We know that the TLB only contains either stage-1 or stage-2 as
+> +             * nesting is not supported. So it is sufficient to check the
+> +             * translation stage to know the TLB stage for now.
+> +             */
+> +            event.u.f_walk_eabt.s2 = (cfg->stage == 2);
+> +            if (PTW_RECORD_FAULT(cfg)) {
+>                  event.type = SMMU_EVT_F_PERMISSION;
+>                  event.u.f_permission.addr = addr;
+>                  event.u.f_permission.rnw = flag & 0x1;
+> @@ -728,28 +895,28 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+>              event.u.f_walk_eabt.addr2 = ptw_info.addr;
+>              break;
+>          case SMMU_PTW_ERR_TRANSLATION:
+> -            if (cfg->record_faults) {
+> +            if (PTW_RECORD_FAULT(cfg)) {
+>                  event.type = SMMU_EVT_F_TRANSLATION;
+>                  event.u.f_translation.addr = addr;
+>                  event.u.f_translation.rnw = flag & 0x1;
+>              }
+>              break;
+>          case SMMU_PTW_ERR_ADDR_SIZE:
+> -            if (cfg->record_faults) {
+> +            if (PTW_RECORD_FAULT(cfg)) {
+>                  event.type = SMMU_EVT_F_ADDR_SIZE;
+>                  event.u.f_addr_size.addr = addr;
+>                  event.u.f_addr_size.rnw = flag & 0x1;
+>              }
+>              break;
+>          case SMMU_PTW_ERR_ACCESS:
+> -            if (cfg->record_faults) {
+> +            if (PTW_RECORD_FAULT(cfg)) {
+>                  event.type = SMMU_EVT_F_ACCESS;
+>                  event.u.f_access.addr = addr;
+>                  event.u.f_access.rnw = flag & 0x1;
+>              }
+>              break;
+>          case SMMU_PTW_ERR_PERMISSION:
+> -            if (cfg->record_faults) {
+> +            if (PTW_RECORD_FAULT(cfg)) {
+>                  event.type = SMMU_EVT_F_PERMISSION;
+>                  event.u.f_permission.addr = addr;
+>                  event.u.f_permission.rnw = flag & 0x1;
+> diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+> index 97cea8ea06..4f1405d4e4 100644
+> --- a/include/hw/arm/smmu-common.h
+> +++ b/include/hw/arm/smmu-common.h
+> @@ -29,6 +29,7 @@
+>  
+>  /* VMSAv8-64 Translation constants and functions */
+>  #define VMSA_LEVELS                         4
+> +#define VMSA_MAX_S2_CONCAT                  16
+>  
+>  #define VMSA_STRIDE(gran)                   ((gran) - VMSA_LEVELS + 1)
+>  #define VMSA_BIT_LVL(isz, strd, lvl)        ((isz) - (strd) * \
+> diff --git a/include/hw/arm/smmuv3.h b/include/hw/arm/smmuv3.h
+> index a0c026402e..6031d7d325 100644
+> --- a/include/hw/arm/smmuv3.h
+> +++ b/include/hw/arm/smmuv3.h
+> @@ -83,4 +83,7 @@ struct SMMUv3Class {
+>  #define TYPE_ARM_SMMUV3   "arm-smmuv3"
+>  OBJECT_DECLARE_TYPE(SMMUv3State, SMMUv3Class, ARM_SMMUV3)
+>  
+> +#define STAGE1_SUPPORTED(s)      FIELD_EX32(s->idr[0], IDR0, S1P)
+> +#define STAGE2_SUPPORTED(s)      FIELD_EX32(s->idr[0], IDR0, S2P)
+> +
+>  #endif
 
 
