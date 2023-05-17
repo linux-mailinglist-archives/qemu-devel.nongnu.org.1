@@ -2,83 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC581705F30
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 07:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 386C1705F92
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 07:48:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz9cN-0001kM-VC; Wed, 17 May 2023 01:22:31 -0400
+	id 1pzA01-000591-0A; Wed, 17 May 2023 01:46:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1pz9cI-0001kA-7T
- for qemu-devel@nongnu.org; Wed, 17 May 2023 01:22:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1pz9zr-00054Q-2B
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 01:46:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1pz9cF-0004it-ON
- for qemu-devel@nongnu.org; Wed, 17 May 2023 01:22:25 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1pz9zp-0000je-4g
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 01:46:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684300942;
+ s=mimecast20190719; t=1684302403;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0YBFvPO+51c1oOuMxe/QumeMeteVb69tOjZq2b5Vun4=;
- b=MZF4GDb3RgR316OJo0+QJDXCOfvSuafBYQTP9YLRS/L06yj0OcjFvLmGTphLktC8PMKV63
- Vs9uu3CzG0x47HzFbuxQIdnrtqNU6DBkCs1r4wTnzmkUbEJ/5g5QtVJEfGcqPPBV4UF5DL
- 24SpKdCtV3S163m4EJso3S+EzwTZyuE=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uLJvxUc8QYWDiE1yiMmwGLrslnhOylQKotD9gfXcAgM=;
+ b=c16ZnjorU/nvNMB2MDM+PyZsvWs6Dj6YCh7Xv+ncEOleip+63P47LFfBpbjVwQmsiw9QHO
+ l+eG4IGqib/LIW0dMI4Jghgs/8K3NWgdRHlUivOi9Kb/X3WgOYK4ve3Hpk/pYBXE7nsfE+
+ InwUo4+MZV4GeJIWAEAqL6YrQsmGnfI=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-198-V910r-2nPZ2FyGb8Le_UmQ-1; Wed, 17 May 2023 01:22:19 -0400
-X-MC-Unique: V910r-2nPZ2FyGb8Le_UmQ-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2ad94975f84so1441581fa.1
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 22:22:19 -0700 (PDT)
+ us-mta-207-FdUD14aNO-qHIcEofbOebA-1; Wed, 17 May 2023 01:46:41 -0400
+X-MC-Unique: FdUD14aNO-qHIcEofbOebA-1
+Received: by mail-yw1-f200.google.com with SMTP id
+ 00721157ae682-560ee0df572so4386807b3.0
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 22:46:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684300938; x=1686892938;
+ d=1e100.net; s=20221208; t=1684302401; x=1686894401;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0YBFvPO+51c1oOuMxe/QumeMeteVb69tOjZq2b5Vun4=;
- b=NUFsVePHzo7bKs/2RO40wM2VMRRUxYIR4SFIvy2RWOMcUGdCnwy3C0jn9thZbscEMD
- r8kZOSxEfMjHoo88HO39UUUALLrjW2Rlf/j8BiE6xhMb1wE+5NYha8spoaXa+amfDBaO
- pOgsiAtQijnnwqUy9n/XZFknTpNBpCit7x44LLYtR6d4E1ikY5LF/em3z3MGrupsR2vw
- NCIGAF5hGGa3qi6W1BB8f5KdRr4wKoX73Kkj7HrN7oxmza0LQjq76shz0HcbXgc6S3gk
- ZS9YP6MXb9pKlUDcD/OtxdfzbBOfjHFpsOHsxzY03GGtK90Xi5Qc2oOVgkBFfOFLc+Iv
- Tueg==
-X-Gm-Message-State: AC+VfDwdnK9tKtH3OlDasaeHFdWnxQ7PPj+wdIiTAjS04tt/b+WCbt7u
- loiUxVo+vEMfsvbOQmuqCA8JbulYfGwLEsU1HZDgdsP2Qs9eN+WOnbhsFe/IRvbtoVp8BAJnJpv
- a6az7RTzfbL5nVlnBPomK+U+slng5TQ0=
-X-Received: by 2002:ac2:4e63:0:b0:4f0:1a32:ca23 with SMTP id
- y3-20020ac24e63000000b004f01a32ca23mr7723490lfs.40.1684300938415; 
- Tue, 16 May 2023 22:22:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5OmZucQp8UmLTaLuPPauANSId9MnTMA/+YZXpPccy5tapUEAc9GqDQ3SJHplAchHK/BhUBFH4sfL3Wme6+omg=
-X-Received: by 2002:ac2:4e63:0:b0:4f0:1a32:ca23 with SMTP id
- y3-20020ac24e63000000b004f01a32ca23mr7723481lfs.40.1684300938015; Tue, 16 May
- 2023 22:22:18 -0700 (PDT)
+ bh=uLJvxUc8QYWDiE1yiMmwGLrslnhOylQKotD9gfXcAgM=;
+ b=H/oxDRjeHvfRfHDnNUCFoxsJxYy6rt1V5ET7RSHMnHo/phPl+yz560PKR4WKxFlPUk
+ a2HaiKa+8XFuD7HH4PorDiZzCgkPgNJRgAGjdXUBQR29aA7iBqvGrHHqmE2NUnhZEMJA
+ wGkYbKBCeEUTJuA8/Q+ttLmruBdevuk47DZtW51I1/LOrd/Q4EieUFVAEXRBb7EpDgVW
+ gGg1tJ/YqUxFIs4g854FpzVTvW7+x/OWpwWtYNA4vQt05RZXkfEMS+AApoGoJQ6ZDELq
+ /T+dqSTlJ6eHi8Qv1WPNPvZG+Uyh0fD5l8gfwD8GGkcBue6lftHAKJ3cxpSw3ed77QxQ
+ WpzA==
+X-Gm-Message-State: AC+VfDyfd03UtsXtH4vN42R+g9bifU1jqxOehmmExF2hXtA6GSX+ZI2H
+ 1MWb02m1hSHQcLTy3j6AOSMACbmeqPvSnNgGkZKJHTzE+W9h6hAAuwZsWhKeWiSz2dY87b+S/j0
+ rHihYCKfclGmrVLox5RJ4ymdbB4x4AnI=
+X-Received: by 2002:a81:a144:0:b0:561:baab:fd22 with SMTP id
+ y65-20020a81a144000000b00561baabfd22mr1654554ywg.3.1684302401116; 
+ Tue, 16 May 2023 22:46:41 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ76P4YcyvKKcFwyZqMALuJ6F1XMVvAoVsBAQumO6oaTFkwmtp+2xaEOvDR/EUwgiTP4YsX5RvLYDj3fC69bSTw=
+X-Received: by 2002:a81:a144:0:b0:561:baab:fd22 with SMTP id
+ y65-20020a81a144000000b00561baabfd22mr1654540ywg.3.1684302400834; Tue, 16 May
+ 2023 22:46:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1683371965.git.yin31149@gmail.com>
- <7d800315d04359d0bb91f61ec348eda1bdb972be.1683371965.git.yin31149@gmail.com>
-In-Reply-To: <7d800315d04359d0bb91f61ec348eda1bdb972be.1683371965.git.yin31149@gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 17 May 2023 13:22:06 +0800
-Message-ID: <CACGkMEuj=HY0YWHoXcw+qBLm4ctfTgj3P5cfWbueVFrOP1B2uQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] vdpa: send CVQ state load commands in parallel
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: eperezma@redhat.com, 18801353760@163.com, qemu-devel@nongnu.org
+References: <20230509154435.1410162-1-eperezma@redhat.com>
+ <20230509154435.1410162-3-eperezma@redhat.com>
+ <CACGkMEufH7ZvJxKzbSXpv8G5RodKeh_WHj6iTe=YqG9pdp45nQ@mail.gmail.com>
+In-Reply-To: <CACGkMEufH7ZvJxKzbSXpv8G5RodKeh_WHj6iTe=YqG9pdp45nQ@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Wed, 17 May 2023 07:46:04 +0200
+Message-ID: <CAJaqyWebY4Ft9cTO8FpWeGiYRik60530HYONTgKy7RtZTDJ6-A@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] vdpa: add vhost_vdpa_reset_status_fd
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Parav Pandit <parav@mellanox.com>, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, longpeng2@huawei.com, 
+ Stefano Garzarella <sgarzare@redhat.com>, Gautam Dawar <gdawar@xilinx.com>, 
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Harpreet Singh Anand <hanand@xilinx.com>, alvaro.karsz@solid-run.com, 
+ Liuxiangdong <liuxiangdong5@huawei.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ si-wei.liu@oracle.com, 
+ Shannon Nelson <snelson@pensando.io>, Lei Yang <leiyang@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Cindy Lu <lulu@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,281 +104,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, May 6, 2023 at 10:07=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
+On Wed, May 17, 2023 at 5:14=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
 >
-> This patch introduces the vhost_vdpa_net_cvq_add() and
-> refactors the vhost_vdpa_net_load*(), so that QEMU can
-> send CVQ state load commands in parallel.
->
-> To be more specific, this patch introduces vhost_vdpa_net_cvq_add()
-> to add SVQ control commands to SVQ and kick the device,
-> but does not poll the device used buffers. QEMU will not
-> poll and check the device used buffers in vhost_vdpa_net_load()
-> until all CVQ state load commands have been sent to the device.
->
-> What's more, in order to avoid buffer overwriting caused by
-> using `svq->cvq_cmd_out_buffer` and `svq->status` as the
-> buffer for all CVQ state load commands when sending
-> CVQ state load commands in parallel, this patch introduces
-> `out_cursor` and `in_cursor` in vhost_vdpa_net_load(),
-> pointing to the available buffer for in descriptor and
-> out descriptor, so that different CVQ state load commands can
-> use their unique buffer.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
->  net/vhost-vdpa.c | 152 +++++++++++++++++++++++++++++++++++++----------
->  1 file changed, 120 insertions(+), 32 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 10804c7200..14e31ca5c5 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -590,6 +590,44 @@ static void vhost_vdpa_net_cvq_stop(NetClientState *=
-nc)
->      vhost_vdpa_net_client_stop(nc);
->  }
->
-> +/**
-> + * vhost_vdpa_net_cvq_add() adds SVQ control commands to SVQ,
-> + * kicks the device but does not poll the device used buffers.
-> + *
-> + * Return the number of elements added to SVQ if success.
-> + */
-> +static int vhost_vdpa_net_cvq_add(VhostVDPAState *s,
-> +                                void **out_cursor, size_t out_len,
-
-Can we track things like cursors in e.g VhostVDPAState ?
-
-> +                                virtio_net_ctrl_ack **in_cursor, size_t =
-in_len)
-> +{
-> +    /* Buffers for the device */
-> +    const struct iovec out =3D {
-> +        .iov_base =3D *out_cursor,
-> +        .iov_len =3D out_len,
-> +    };
-> +    const struct iovec in =3D {
-> +        .iov_base =3D *in_cursor,
-> +        .iov_len =3D sizeof(virtio_net_ctrl_ack),
-> +    };
-> +    VhostShadowVirtqueue *svq =3D g_ptr_array_index(s->vhost_vdpa.shadow=
-_vqs, 0);
-> +    int r;
-> +
-> +    r =3D vhost_svq_add(svq, &out, 1, &in, 1, NULL);
-> +    if (unlikely(r !=3D 0)) {
-> +        if (unlikely(r =3D=3D -ENOSPC)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR, "%s: No space on device queue=
-\n",
-> +                          __func__);
-> +        }
-> +        return r;
-> +    }
-> +
-> +    /* Update the cursor */
-> +    *out_cursor +=3D out_len;
-> +    *in_cursor +=3D 1;
-> +
-> +    return 1;
-> +}
-> +
->  /**
->   * vhost_vdpa_net_cvq_add_and_wait() adds SVQ control commands to SVQ,
->   * kicks the device and polls the device used buffers.
-> @@ -628,69 +666,82 @@ static ssize_t vhost_vdpa_net_cvq_add_and_wait(Vhos=
-tVDPAState *s,
->      return vhost_svq_poll(svq);
->  }
->
-> -static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
-> -                                       uint8_t cmd, const void *data,
-> -                                       size_t data_size)
-> +
-> +/**
-> + * vhost_vdpa_net_load_cmd() restores the NIC state through SVQ.
-> + *
-> + * Return the number of elements added to SVQ if success.
-> + */
-> +static int vhost_vdpa_net_load_cmd(VhostVDPAState *s,
-> +                                void **out_cursor, uint8_t class, uint8_=
-t cmd,
-> +                                const void *data, size_t data_size,
-> +                                virtio_net_ctrl_ack **in_cursor)
->  {
->      const struct virtio_net_ctrl_hdr ctrl =3D {
->          .class =3D class,
->          .cmd =3D cmd,
->      };
->
-> -    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl))=
-;
-> +    assert(sizeof(ctrl) < vhost_vdpa_net_cvq_cmd_page_len() -
-> +                          (*out_cursor - s->cvq_cmd_out_buffer));
-> +    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl) =
--
-> +                       (*out_cursor - s->cvq_cmd_out_buffer));
->
-> -    memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
-> -    memcpy(s->cvq_cmd_out_buffer + sizeof(ctrl), data, data_size);
-> +    memcpy(*out_cursor, &ctrl, sizeof(ctrl));
-> +    memcpy(*out_cursor + sizeof(ctrl), data, data_size);
->
-> -    return vhost_vdpa_net_cvq_add_and_wait(s, sizeof(ctrl) + data_size,
-> -                                  sizeof(virtio_net_ctrl_ack));
-> +    return vhost_vdpa_net_cvq_add(s, out_cursor, sizeof(ctrl) + data_siz=
-e,
-> +                                  in_cursor, sizeof(virtio_net_ctrl_ack)=
+> On Tue, May 9, 2023 at 11:44=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redh=
+at.com> wrote:
+> >
+> > This allows to reset a vhost-vdpa device from external subsystems like
+> > vhost-net, since it does not have any struct vhost_dev by the time we
+> > need to use it.
+> >
+> > It is used in subsequent patches to negotiate features
+> > and probe for CVQ ASID isolation.
+> >
+> > Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> > ---
+> >  include/hw/virtio/vhost-vdpa.h |  1 +
+> >  hw/virtio/vhost-vdpa.c         | 58 +++++++++++++++++++++++-----------
+> >  2 files changed, 41 insertions(+), 18 deletions(-)
+> >
+> > diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-v=
+dpa.h
+> > index c278a2a8de..28de7da91e 100644
+> > --- a/include/hw/virtio/vhost-vdpa.h
+> > +++ b/include/hw/virtio/vhost-vdpa.h
+> > @@ -54,6 +54,7 @@ typedef struct vhost_vdpa {
+> >      VhostVDPAHostNotifier notifier[VIRTIO_QUEUE_MAX];
+> >  } VhostVDPA;
+> >
+> > +void vhost_vdpa_reset_status_fd(int fd);
+> >  int vhost_vdpa_get_iova_range(int fd, struct vhost_vdpa_iova_range *io=
+va_range);
+> >
+> >  int vhost_vdpa_dma_map(struct vhost_vdpa *v, uint32_t asid, hwaddr iov=
+a,
+> > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> > index bbabea18f3..7a2053b8d9 100644
+> > --- a/hw/virtio/vhost-vdpa.c
+> > +++ b/hw/virtio/vhost-vdpa.c
+> > @@ -335,38 +335,45 @@ static const MemoryListener vhost_vdpa_memory_lis=
+tener =3D {
+> >      .region_del =3D vhost_vdpa_listener_region_del,
+> >  };
+> >
+> > -static int vhost_vdpa_call(struct vhost_dev *dev, unsigned long int re=
+quest,
+> > -                             void *arg)
+> > +static int vhost_vdpa_dev_fd(const struct vhost_dev *dev)
+> >  {
+> >      struct vhost_vdpa *v =3D dev->opaque;
+> > -    int fd =3D v->device_fd;
+> > -    int ret;
+> >
+> >      assert(dev->vhost_ops->backend_type =3D=3D VHOST_BACKEND_TYPE_VDPA=
 );
->  }
+> > +    return v->device_fd;
+> > +}
 >
-> -static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n=
+> Nit: unless the vhost_dev structure is opaque to the upper layer, I
+> don't see any advantage for having a dedicated indirect helper to get
+> device_fd.
+>
+
+The purpose was to not duplicate the assert, but sure it's not mandatory.
+
+> > +
+> > +static int vhost_vdpa_call_fd(int fd, unsigned long int request, void =
+*arg)
+> > +{
+> > +    int ret =3D ioctl(fd, request, arg);
+> >
+> > -    ret =3D ioctl(fd, request, arg);
+> >      return ret < 0 ? -errno : ret;
+> >  }
+> >
+> > -static int vhost_vdpa_add_status(struct vhost_dev *dev, uint8_t status=
 )
-> +/**
-> + * vhost_vdpa_net_load_mac() restores the NIC mac through SVQ.
-> + *
-> + * Return the number of elements added to SVQ if success.
-> + */
-> +static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n=
-,
-> +                            void **out_cursor, virtio_net_ctrl_ack **in_=
-cursor)
->  {
->      uint64_t features =3D n->parent_obj.guest_features;
->      if (features & BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR)) {
-> -        ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CT=
-RL_MAC,
-> -                                                  VIRTIO_NET_CTRL_MAC_AD=
-DR_SET,
-> -                                                  n->mac, sizeof(n->mac)=
-);
-> -        if (unlikely(dev_written < 0)) {
-> -            return dev_written;
-> -        }
-> -
-> -        return *s->status !=3D VIRTIO_NET_OK;
-> +        return vhost_vdpa_net_load_cmd(s, out_cursor, VIRTIO_NET_CTRL_MA=
-C,
-> +                                       VIRTIO_NET_CTRL_MAC_ADDR_SET,
-> +                                       n->mac, sizeof(n->mac), in_cursor=
-);
->      }
+> > +static int vhost_vdpa_call(struct vhost_dev *dev, unsigned long int re=
+quest,
+> > +                           void *arg)
+> > +{
+> > +    return vhost_vdpa_call_fd(vhost_vdpa_dev_fd(dev), request, arg);
+> > +}
+> > +
+> > +static int vhost_vdpa_add_status_fd(int fd, uint8_t status)
+> >  {
+> >      uint8_t s;
+> >      int ret;
+> >
+> > -    trace_vhost_vdpa_add_status(dev, status);
+> > -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_GET_STATUS, &s);
+> > +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_GET_STATUS, &s);
+> >      if (ret < 0) {
+> >          return ret;
+> >      }
+> >
+> >      s |=3D status;
+> >
+> > -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &s);
+> > +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_SET_STATUS, &s);
+> >      if (ret < 0) {
+> >          return ret;
+> >      }
+> >
+> > -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_GET_STATUS, &s);
+> > +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_GET_STATUS, &s);
+> >      if (ret < 0) {
+> >          return ret;
+> >      }
+> > @@ -378,6 +385,12 @@ static int vhost_vdpa_add_status(struct vhost_dev =
+*dev, uint8_t status)
+> >      return 0;
+> >  }
+> >
+> > +static int vhost_vdpa_add_status(struct vhost_dev *dev, uint8_t status=
+)
+> > +{
+> > +    trace_vhost_vdpa_add_status(dev, status);
+> > +    return vhost_vdpa_add_status_fd(vhost_vdpa_dev_fd(dev), status);
+> > +}
+> > +
+> >  int vhost_vdpa_get_iova_range(int fd, struct vhost_vdpa_iova_range *io=
+va_range)
+> >  {
+> >      int ret =3D ioctl(fd, VHOST_VDPA_GET_IOVA_RANGE, iova_range);
+> > @@ -709,16 +722,20 @@ static int vhost_vdpa_get_device_id(struct vhost_=
+dev *dev,
+> >      return ret;
+> >  }
+> >
+> > +static int vhost_vdpa_reset_device_fd(int fd)
+> > +{
+> > +    uint8_t status =3D 0;
+> > +
+> > +    return vhost_vdpa_call_fd(fd, VHOST_VDPA_SET_STATUS, &status);
+> > +}
+> > +
+> >  static int vhost_vdpa_reset_device(struct vhost_dev *dev)
+> >  {
+> >      struct vhost_vdpa *v =3D dev->opaque;
+> > -    int ret;
+> > -    uint8_t status =3D 0;
+> >
+> > -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &status);
+> > -    trace_vhost_vdpa_reset_device(dev);
+> >      v->suspended =3D false;
+> > -    return ret;
+> > +    trace_vhost_vdpa_reset_device(dev);
+> > +    return vhost_vdpa_reset_device_fd(vhost_vdpa_dev_fd(dev));
+> >  }
+> >
+> >  static int vhost_vdpa_get_vq_index(struct vhost_dev *dev, int idx)
+> > @@ -1170,6 +1187,13 @@ static int vhost_vdpa_dev_start(struct vhost_dev=
+ *dev, bool started)
+> >      return 0;
+> >  }
+> >
+> > +void vhost_vdpa_reset_status_fd(int fd)
+> > +{
+> > +    vhost_vdpa_reset_device_fd(fd);
+> > +    vhost_vdpa_add_status_fd(fd, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+> > +                                 VIRTIO_CONFIG_S_DRIVER);
 >
->      return 0;
->  }
+> I would like to rename this function since it does more than just reset.
 >
-> -static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-> -                                  const VirtIONet *n)
-> +/**
-> + * vhost_vdpa_net_load_mac() restores the NIC mq state through SVQ.
-> + *
-> + * Return the number of elements added to SVQ if success.
-> + */
-> +static int vhost_vdpa_net_load_mq(VhostVDPAState *s, const VirtIONet *n,
-> +                            void **out_cursor, virtio_net_ctrl_ack **in_=
-cursor)
->  {
->      struct virtio_net_ctrl_mq mq;
->      uint64_t features =3D n->parent_obj.guest_features;
-> -    ssize_t dev_written;
->
->      if (!(features & BIT_ULL(VIRTIO_NET_F_MQ))) {
->          return 0;
->      }
->
->      mq.virtqueue_pairs =3D cpu_to_le16(n->curr_queue_pairs);
-> -    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MQ,
-> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SE=
-T, &mq,
-> -                                          sizeof(mq));
-> -    if (unlikely(dev_written < 0)) {
-> -        return dev_written;
-> -    }
-> -
-> -    return *s->status !=3D VIRTIO_NET_OK;
-> +    return vhost_vdpa_net_load_cmd(s, out_cursor, VIRTIO_NET_CTRL_MQ,
-> +                                   VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
-> +                                   &mq, sizeof(mq), in_cursor);
->  }
->
->  static int vhost_vdpa_net_load(NetClientState *nc)
->  {
->      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> +    VhostShadowVirtqueue *svq;
-> +    void *out_cursor;
-> +    virtio_net_ctrl_ack *in_cursor;
->      struct vhost_vdpa *v =3D &s->vhost_vdpa;
->      const VirtIONet *n;
-> -    int r;
-> +    ssize_t cmds_in_flight =3D 0, dev_written, r;
->
->      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
->
-> @@ -699,14 +750,51 @@ static int vhost_vdpa_net_load(NetClientState *nc)
->      }
->
->      n =3D VIRTIO_NET(v->dev->vdev);
-> -    r =3D vhost_vdpa_net_load_mac(s, n);
-> +    out_cursor =3D s->cvq_cmd_out_buffer;
-> +    in_cursor =3D s->status;
-> +
-> +    r =3D vhost_vdpa_net_load_mac(s, n, &out_cursor, &in_cursor);
->      if (unlikely(r < 0))
->          return r;
->      }
-> -    r =3D vhost_vdpa_net_load_mq(s, n);
-> -    if (unlikely(r)) {
-> +    cmds_in_flight +=3D r;
-> +
-> +    r =3D vhost_vdpa_net_load_mq(s, n, &out_cursor, &in_cursor);
-> +    if (unlikely(r < 0)) {
->          return r;
->      }
-> +    cmds_in_flight +=3D r;
-> +
-> +    /* Poll for all used buffer from device */
-> +    svq =3D g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
-> +    while (cmds_in_flight > 0) {
-> +        /*
-> +         * We can poll here since we've had BQL from the time we sent th=
-e
-> +         * descriptor. Also, we need to take the answer before SVQ pulls
-> +         * by itself, when BQL is released
-> +         */
-> +        dev_written =3D vhost_svq_poll(svq);
 
-I'd tweak vhost_svq_poll to accept cmds_in_flight.
+vhost_vdpa_set_ready?
 
-Thanks
+Thanks!
 
-> +
-> +        if (unlikely(!dev_written)) {
-> +            /*
-> +             * vhost_svq_poll() return 0 when something wrong, such as
-> +             * QEMU waits for too long time or no available used buffer
-> +             * from device, and there is no need to continue polling
-> +             * in this case.
-> +             */
-> +            return -EINVAL;
-> +        }
-> +
-> +        --cmds_in_flight;
-> +    }
-> +
-> +    /* Check the buffers written by device */
-> +    for (virtio_net_ctrl_ack *status =3D s->status; status < in_cursor;
-> +         ++status) {
-> +        if (*status !=3D VIRTIO_NET_OK) {
-> +            return -EINVAL;
-> +        }
-> +    }
+> Thanks
 >
->      return 0;
->  }
-> --
-> 2.25.1
+> > +}
+> > +
+> >  static void vhost_vdpa_reset_status(struct vhost_dev *dev)
+> >  {
+> >      struct vhost_vdpa *v =3D dev->opaque;
+> > @@ -1178,9 +1202,7 @@ static void vhost_vdpa_reset_status(struct vhost_=
+dev *dev)
+> >          return;
+> >      }
+> >
+> > -    vhost_vdpa_reset_device(dev);
+> > -    vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+> > -                               VIRTIO_CONFIG_S_DRIVER);
+> > +    vhost_vdpa_reset_status_fd(vhost_vdpa_dev_fd(dev));
+> >      memory_listener_unregister(&v->listener);
+> >  }
+> >
+> > --
+> > 2.31.1
+> >
 >
 
 
