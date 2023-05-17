@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E494C706245
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF650706232
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:07:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC6C-0001wB-FC; Wed, 17 May 2023 04:01:28 -0400
+	id 1pzC6d-0002Sb-Dc; Wed, 17 May 2023 04:01:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC61-0001si-2Q; Wed, 17 May 2023 04:01:21 -0400
+ id 1pzC6H-00021H-Gf; Wed, 17 May 2023 04:01:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5t-0000Yj-MQ; Wed, 17 May 2023 04:01:15 -0400
+ id 1pzC6E-0000Yg-Oj; Wed, 17 May 2023 04:01:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4285B6753;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6738E6754;
  Wed, 17 May 2023 11:00:58 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id BCDD85E0B;
+ by tsrv.corpit.ru (Postfix) with SMTP id E343F5E0C;
  Wed, 17 May 2023 11:00:57 +0300 (MSK)
-Received: (nullmailer pid 3624108 invoked by uid 1000);
+Received: (nullmailer pid 3624111 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v8.0.1 10/36] hw/net/msf2-emac: Don't modify descriptor
- in-place in emac_store_desc()
-Date: Wed, 17 May 2023 11:00:30 +0300
-Message-Id: <20230517080056.3623993-10-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v8.0.1 11/36] hw/arm/boot: Make write_bootloader() public as
+ arm_write_bootloader()
+Date: Wed, 17 May 2023 11:00:31 +0300
+Message-Id: <20230517080056.3623993-11-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,70 +62,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Cédric Le Goater <clg@kaod.org>
 
-The msf2-emac ethernet controller has functions emac_load_desc() and
-emac_store_desc() which read and write the in-memory descriptor
-blocks and handle conversion between guest and host endianness.
+The arm boot.c code includes a utility function write_bootloader()
+which assists in writing a boot-code fragment into guest memory,
+including handling endianness and fixing it up with entry point
+addresses and similar things.  This is useful not just for the boot.c
+code but also in board model code, so rename it to
+arm_write_bootloader() and make it globally visible.
 
-As currently written, emac_store_desc() does the endianness
-conversion in-place; this means that it effectively consumes the
-input EmacDesc struct, because on a big-endian host the fields will
-be overwritten with the little-endian versions of their values.
-Unfortunately, in all the callsites the code continues to access
-fields in the EmacDesc struct after it has called emac_store_desc()
--- specifically, it looks at the d.next field.
-
-The effect of this is that on a big-endian host networking doesn't
-work because the address of the next descriptor is corrupted.
-
-We could fix this by making the callsite avoid using the struct; but
-it's more robust to have emac_store_desc() leave its input alone.
-
-(emac_load_desc() also does an in-place conversion, but here this is
-fine, because the function is supposed to be initializing the
-struct.)
+Since we are making it public, make its API a little neater: move the
+AddressSpace* argument to be next to the hwaddr argument, and allow
+the fixupcontext array to be const, since we never modify it in this
+function.
 
 Cc: qemu-stable@nongnu.org
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Tested-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20230424151919.1333299-1-peter.maydell@linaro.org
-(cherry picked from commit d565f58b38424e9a390a7ea33ff7477bab693fda)
+Message-id: 20230424152717.1333930-2-peter.maydell@linaro.org
+[PMM: Split out from another patch by Cédric, added doc comment]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 0fe43f0abf19bbe24df3dbf0613bb47ed55f1482)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/net/msf2-emac.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ hw/arm/boot.c         | 35 +++++++------------------------
+ include/hw/arm/boot.h | 49 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+), 27 deletions(-)
 
-diff --git a/hw/net/msf2-emac.c b/hw/net/msf2-emac.c
-index 7ccd3e5142..db3a04deb1 100644
---- a/hw/net/msf2-emac.c
-+++ b/hw/net/msf2-emac.c
-@@ -118,14 +118,18 @@ static void emac_load_desc(MSF2EmacState *s, EmacDesc *d, hwaddr desc)
-     d->next = le32_to_cpu(d->next);
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 54f6a3e0b3..720f22531a 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -60,26 +60,6 @@ AddressSpace *arm_boot_address_space(ARMCPU *cpu,
+     return cpu_get_address_space(cs, asidx);
  }
  
--static void emac_store_desc(MSF2EmacState *s, EmacDesc *d, hwaddr desc)
-+static void emac_store_desc(MSF2EmacState *s, const EmacDesc *d, hwaddr desc)
- {
--    /* Convert from host endianness into LE. */
--    d->pktaddr = cpu_to_le32(d->pktaddr);
--    d->pktsize = cpu_to_le32(d->pktsize);
--    d->next = cpu_to_le32(d->next);
+-typedef enum {
+-    FIXUP_NONE = 0,     /* do nothing */
+-    FIXUP_TERMINATOR,   /* end of insns */
+-    FIXUP_BOARDID,      /* overwrite with board ID number */
+-    FIXUP_BOARD_SETUP,  /* overwrite with board specific setup code address */
+-    FIXUP_ARGPTR_LO,    /* overwrite with pointer to kernel args */
+-    FIXUP_ARGPTR_HI,    /* overwrite with pointer to kernel args (high half) */
+-    FIXUP_ENTRYPOINT_LO, /* overwrite with kernel entry point */
+-    FIXUP_ENTRYPOINT_HI, /* overwrite with kernel entry point (high half) */
+-    FIXUP_GIC_CPU_IF,   /* overwrite with GIC CPU interface address */
+-    FIXUP_BOOTREG,      /* overwrite with boot register address */
+-    FIXUP_DSB,          /* overwrite with correct DSB insn for cpu */
+-    FIXUP_MAX,
+-} FixupType;
 -
--    address_space_write(&s->dma_as, desc, MEMTXATTRS_UNSPECIFIED, d, sizeof *d);
-+    EmacDesc outd;
-+    /*
-+     * Convert from host endianness into LE. We use a local struct because
-+     * calling code may still want to look at the fields afterwards.
-+     */
-+    outd.pktaddr = cpu_to_le32(d->pktaddr);
-+    outd.pktsize = cpu_to_le32(d->pktsize);
-+    outd.next = cpu_to_le32(d->next);
-+
-+    address_space_write(&s->dma_as, desc, MEMTXATTRS_UNSPECIFIED, &outd, sizeof outd);
+-typedef struct ARMInsnFixup {
+-    uint32_t insn;
+-    FixupType fixup;
+-} ARMInsnFixup;
+-
+ static const ARMInsnFixup bootloader_aarch64[] = {
+     { 0x580000c0 }, /* ldr x0, arg ; Load the lower 32-bits of DTB */
+     { 0xaa1f03e1 }, /* mov x1, xzr */
+@@ -150,9 +130,10 @@ static const ARMInsnFixup smpboot[] = {
+     { 0, FIXUP_TERMINATOR }
+ };
+ 
+-static void write_bootloader(const char *name, hwaddr addr,
+-                             const ARMInsnFixup *insns, uint32_t *fixupcontext,
+-                             AddressSpace *as)
++void arm_write_bootloader(const char *name,
++                          AddressSpace *as, hwaddr addr,
++                          const ARMInsnFixup *insns,
++                          const uint32_t *fixupcontext)
+ {
+     /* Fix up the specified bootloader fragment and write it into
+      * guest memory using rom_add_blob_fixed(). fixupcontext is
+@@ -214,8 +195,8 @@ static void default_write_secondary(ARMCPU *cpu,
+         fixupcontext[FIXUP_DSB] = CP15_DSB_INSN;
+     }
+ 
+-    write_bootloader("smpboot", info->smp_loader_start,
+-                     smpboot, fixupcontext, as);
++    arm_write_bootloader("smpboot", as, info->smp_loader_start,
++                         smpboot, fixupcontext);
  }
  
- static void msf2_dma_tx(MSF2EmacState *s)
+ void arm_write_secure_board_setup_dummy_smc(ARMCPU *cpu,
+@@ -1186,8 +1167,8 @@ static void arm_setup_direct_kernel_boot(ARMCPU *cpu,
+         fixupcontext[FIXUP_ENTRYPOINT_LO] = entry;
+         fixupcontext[FIXUP_ENTRYPOINT_HI] = entry >> 32;
+ 
+-        write_bootloader("bootloader", info->loader_start,
+-                         primary_loader, fixupcontext, as);
++        arm_write_bootloader("bootloader", as, info->loader_start,
++                             primary_loader, fixupcontext);
+ 
+         if (info->write_board_setup) {
+             info->write_board_setup(cpu, info);
+diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
+index f18cc3064f..80c492d742 100644
+--- a/include/hw/arm/boot.h
++++ b/include/hw/arm/boot.h
+@@ -183,4 +183,53 @@ void arm_write_secure_board_setup_dummy_smc(ARMCPU *cpu,
+                                             const struct arm_boot_info *info,
+                                             hwaddr mvbar_addr);
+ 
++typedef enum {
++    FIXUP_NONE = 0,     /* do nothing */
++    FIXUP_TERMINATOR,   /* end of insns */
++    FIXUP_BOARDID,      /* overwrite with board ID number */
++    FIXUP_BOARD_SETUP,  /* overwrite with board specific setup code address */
++    FIXUP_ARGPTR_LO,    /* overwrite with pointer to kernel args */
++    FIXUP_ARGPTR_HI,    /* overwrite with pointer to kernel args (high half) */
++    FIXUP_ENTRYPOINT_LO, /* overwrite with kernel entry point */
++    FIXUP_ENTRYPOINT_HI, /* overwrite with kernel entry point (high half) */
++    FIXUP_GIC_CPU_IF,   /* overwrite with GIC CPU interface address */
++    FIXUP_BOOTREG,      /* overwrite with boot register address */
++    FIXUP_DSB,          /* overwrite with correct DSB insn for cpu */
++    FIXUP_MAX,
++} FixupType;
++
++typedef struct ARMInsnFixup {
++    uint32_t insn;
++    FixupType fixup;
++} ARMInsnFixup;
++
++/**
++ * arm_write_bootloader - write a bootloader to guest memory
++ * @name: name of the bootloader blob
++ * @as: AddressSpace to write the bootloader
++ * @addr: guest address to write it
++ * @insns: the blob to be loaded
++ * @fixupcontext: context to be used for any fixups in @insns
++ *
++ * Write a bootloader to guest memory at address @addr in the address
++ * space @as. @name is the name to use for the resulting ROM blob, so
++ * it should be unique in the system and reasonably identifiable for debugging.
++ *
++ * @insns must be an array of ARMInsnFixup structs, each of which has
++ * one 32-bit value to be written to the guest memory, and a fixup to be
++ * applied to the value. FIXUP_NONE (do nothing) is value 0, so effectively
++ * the fixup is optional when writing a struct initializer.
++ * The final entry in the array must be { 0, FIXUP_TERMINATOR }.
++ *
++ * All other supported fixup types have the semantics "ignore insn
++ * and instead use the value from the array element @fixupcontext[fixup]".
++ * The caller should therefore provide @fixupcontext as an array of
++ * size FIXUP_MAX whose elements have been initialized for at least
++ * the entries that @insns refers to.
++ */
++void arm_write_bootloader(const char *name,
++                          AddressSpace *as, hwaddr addr,
++                          const ARMInsnFixup *insns,
++                          const uint32_t *fixupcontext);
++
+ #endif /* HW_ARM_BOOT_H */
 -- 
 2.39.2
 
