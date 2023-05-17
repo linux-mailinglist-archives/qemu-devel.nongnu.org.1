@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AC77063B9
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 788337063A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:11:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDBM-00007T-UM; Wed, 17 May 2023 05:10:53 -0400
+	id 1pzDBO-00008y-Rv; Wed, 17 May 2023 05:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDBK-000068-TG; Wed, 17 May 2023 05:10:50 -0400
+ id 1pzDBL-00006H-0i; Wed, 17 May 2023 05:10:51 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDBJ-0006N7-8X; Wed, 17 May 2023 05:10:50 -0400
+ id 1pzDBJ-0006N8-9I; Wed, 17 May 2023 05:10:50 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BCC42682B;
+ by isrv.corpit.ru (Postfix) with ESMTP id DE201682C;
  Wed, 17 May 2023 12:10:43 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2FA285EF7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4DAC15EF8;
  Wed, 17 May 2023 12:10:43 +0300 (MSK)
-Received: (nullmailer pid 3626681 invoked by uid 1000);
+Received: (nullmailer pid 3626684 invoked by uid 1000);
  Wed, 17 May 2023 09:10:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v7.2.3 05/30] docs/about/deprecated.rst: Add "since 7.1" tag
- to dtb-kaslr-seed deprecation
-Date: Wed, 17 May 2023 12:10:17 +0300
-Message-Id: <20230517091042.3626593-5-mjt@msgid.tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v7.2.3 06/30] target/arm: Initialize debug capabilities only
+ once
+Date: Wed, 17 May 2023 12:10:18 +0300
+Message-Id: <20230517091042.3626593-6-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
 References: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
@@ -62,40 +62,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-In commit 5242876f37ca we deprecated the dtb-kaslr-seed property of
-the virt board, but forgot the "since n.n" tag in the documentation
-of this in deprecated.rst.
+kvm_arm_init_debug() used to be called several times on a SMP system as
+kvm_arch_init_vcpu() calls it. Move the call to kvm_arch_init() to make
+sure it will be called only once; otherwise it will overwrite pointers
+to memory allocated with the previous call and leak it.
 
-This deprecation note first appeared in the 7.1 release, so
-retrospectively add the correct "since 7.1" annotation to it.
-
+Fixes: e4482ab7e3 ("target-arm: kvm - add support for HW assisted debug")
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-id: 20230405153644.25300-1-akihiko.odaki@daynix.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20230420122256.1023709-1-peter.maydell@linaro.org
-(cherry picked from commit ac64ebbecf80f6bc764d120f85fe9fa28fbd9e85)
+(cherry picked from commit ad5c6ddea327758daa9f0e6edd916be39dce7dca)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- docs/about/deprecated.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/arm/kvm.c     |  2 ++
+ target/arm/kvm64.c   | 18 ++++--------------
+ target/arm/kvm_arm.h |  8 ++++++++
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 93affe3669..0b26c01da0 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -233,8 +233,8 @@ Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
- System emulator machines
- ------------------------
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index f022c644d2..84da49332c 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -280,6 +280,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         }
+     }
  
--Arm ``virt`` machine ``dtb-kaslr-seed`` property
--''''''''''''''''''''''''''''''''''''''''''''''''
-+Arm ``virt`` machine ``dtb-kaslr-seed`` property (since 7.1)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++    kvm_arm_init_debug(s);
++
+     return ret;
+ }
  
- The ``dtb-kaslr-seed`` property on the ``virt`` board has been
- deprecated; use the new name ``dtb-randomness`` instead. The new name
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index 1197253d12..810db33ccb 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -74,24 +74,16 @@ GArray *hw_breakpoints, *hw_watchpoints;
+ #define get_hw_bp(i)    (&g_array_index(hw_breakpoints, HWBreakpoint, i))
+ #define get_hw_wp(i)    (&g_array_index(hw_watchpoints, HWWatchpoint, i))
+ 
+-/**
+- * kvm_arm_init_debug() - check for guest debug capabilities
+- * @cs: CPUState
+- *
+- * kvm_check_extension returns the number of debug registers we have
+- * or 0 if we have none.
+- *
+- */
+-static void kvm_arm_init_debug(CPUState *cs)
++void kvm_arm_init_debug(KVMState *s)
+ {
+-    have_guest_debug = kvm_check_extension(cs->kvm_state,
++    have_guest_debug = kvm_check_extension(s,
+                                            KVM_CAP_SET_GUEST_DEBUG);
+ 
+-    max_hw_wps = kvm_check_extension(cs->kvm_state, KVM_CAP_GUEST_DEBUG_HW_WPS);
++    max_hw_wps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
+     hw_watchpoints = g_array_sized_new(true, true,
+                                        sizeof(HWWatchpoint), max_hw_wps);
+ 
+-    max_hw_bps = kvm_check_extension(cs->kvm_state, KVM_CAP_GUEST_DEBUG_HW_BPS);
++    max_hw_bps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_BPS);
+     hw_breakpoints = g_array_sized_new(true, true,
+                                        sizeof(HWBreakpoint), max_hw_bps);
+     return;
+@@ -920,8 +912,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     }
+     cpu->mp_affinity = mpidr & ARM64_AFFINITY_MASK;
+ 
+-    kvm_arm_init_debug(cs);
+-
+     /* Check whether user space can specify guest syndrome value */
+     kvm_arm_init_serror_injection(cs);
+ 
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 99017b635c..330fbe5c72 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -18,6 +18,14 @@
+ #define KVM_ARM_VGIC_V2   (1 << 0)
+ #define KVM_ARM_VGIC_V3   (1 << 1)
+ 
++/**
++ * kvm_arm_init_debug() - initialize guest debug capabilities
++ * @s: KVMState
++ *
++ * Should be called only once before using guest debug capabilities.
++ */
++void kvm_arm_init_debug(KVMState *s);
++
+ /**
+  * kvm_arm_vcpu_init:
+  * @cs: CPUState
 -- 
 2.39.2
 
