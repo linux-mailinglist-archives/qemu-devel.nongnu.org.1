@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C3C707002
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C042170701F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:55:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLF8-00029X-DP; Wed, 17 May 2023 13:47:20 -0400
+	id 1pzLFo-0003C6-0K; Wed, 17 May 2023 13:48:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEY-0000Jn-A6
+ id 1pzLEY-0000JA-8D
  for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEW-0004NO-Nj
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:42 -0400
+ id 1pzLEW-0004NL-NS
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1684345600;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zJN2jANxJFA4WG6/RjjsAlRU9ohw2knjG165asZhq/Q=;
- b=L7+aquQoJyFaJThQe7m215qtu5keHy/Wl5G8XcvMHh8beqDOZa01oOoNGPRBHwDCAB2k5f
- WHw7zLFKud8ZRLTIlbbnRwmGk9JaECQk82XnARCpY2S13I3OlBb6+6rKfLCIP0jYmnR8Gp
- 8BZGmNpRA1/9ywFe13JWytMkh4HSdRo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wZLbxMCZ5/pZsSEQbytFR8Ifx73pTURrqmwPuyeAL9Q=;
+ b=QSYeWDhDJtJSQXTWvAcmRf2kcNmVX+xWXyliCsw6YF+K5KonkKAf4ZxPeNFuDV0sufn6r4
+ rO4lXrbG8Hd8tIC4yEuOXKJBKm62mg+K9h9b459jpd3X0hi6lPa3jp0uBMYdzr/4ch8Zsv
+ Vog+WWNnPjAHZT0wm1hMXQy7fWEqMaI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-8-t4SnR1jiPFaoFv6F82LmuQ-1; Wed, 17 May 2023 13:46:37 -0400
-X-MC-Unique: t4SnR1jiPFaoFv6F82LmuQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30479b764f9so451450f8f.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:37 -0700 (PDT)
+ us-mta-518-TBK0aT3qOTuEqQyaGkPU8g-1; Wed, 17 May 2023 13:46:38 -0400
+X-MC-Unique: TBK0aT3qOTuEqQyaGkPU8g-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f42b36733aso4440135e9.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345595; x=1686937595;
+ d=1e100.net; s=20221208; t=1684345597; x=1686937597;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zJN2jANxJFA4WG6/RjjsAlRU9ohw2knjG165asZhq/Q=;
- b=MyVACe7heE5Wq1ZhULv6Pr2jlBjF03B0m55es8h1FN7GXJjGdUYl9x96KwZNrq7npc
- bhZ5fRO6abKVRvZIcZPaQS2GmtBnl4lgLmVg+ohvXyu/2mjQ/cSlo1ghd5zrHFnT/XQK
- rFJ39joW+0aUtxhRaWubPSvoG1Nn004NpldQT0A4M+lHfrjZ3dUHFmCjfsKrV7H7v+s7
- U29v5Ne8aMhLPQPw7wIPVw853w1KBQogRRrczaB2M2VI5dnlc/DDD/vIO3eg0vbD3p9+
- k/JIXVZIIOTsPmAmudFPiBv9FVQIRPGDqnGmoh7ArkjnWk4d/7JO3Hs8Y7SlO0XRWi0q
- OVTQ==
-X-Gm-Message-State: AC+VfDwQaW2LVj8zApmE7oVvQ9936UtfK1xc8OhSt08m6ydyd2o7WaLV
- Cg7Hcw/RDRfvdmR/pDWv76n+ulOz2PC4h78fsjmV2jj9i/j+97sMoENkbZL+IEdmLpxLwmRMXlt
- +eIOSpwac5pcuzCPoRsP50Z20DM71oSedFdzmweyFysU4BNNb3gm11RXXEj+0KfMs60qh2z9qxQ
- g=
-X-Received: by 2002:a05:6000:12cc:b0:2fe:6b1e:3818 with SMTP id
- l12-20020a05600012cc00b002fe6b1e3818mr1274583wrx.51.1684345595600; 
- Wed, 17 May 2023 10:46:35 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ739Ri/uf7NjcD04MzY4r/F7HLDiA40TYeqtd4MxUm+eWe5jUJPiGemAZhAf/8OHf/4x3s3cQ==
-X-Received: by 2002:a05:6000:12cc:b0:2fe:6b1e:3818 with SMTP id
- l12-20020a05600012cc00b002fe6b1e3818mr1274573wrx.51.1684345595243; 
- Wed, 17 May 2023 10:46:35 -0700 (PDT)
+ bh=wZLbxMCZ5/pZsSEQbytFR8Ifx73pTURrqmwPuyeAL9Q=;
+ b=Uv7IB5lXvDtO82r/vfBPoUmOIA/Vz5ZWGr70iPE6nVobX/L20p1azAJcEpGGTHI5ss
+ jiszeudv9xr7hUTzl7v1Jw2pq+OjZWvW77zyhtuYU2mnU+xwhnojLuRX3fmaONm1pVH3
+ dfl/wlgkArNVC4uy0I1qc0fPRzlz3xYaM49XtzvhmzLgOG57p/6jjIfKYVHj5PBXr1VX
+ Tms4/T4uQvcRn5IMxNc/Lb55Z0CRetzMeahO1rMjIS/6U/rG7ObC5oGy8IrIYg5k1tec
+ 4L1RMjsOxhYpoYsvPKWslSjMDoNZWlgHm8jdBXQnGoDVSEb4tXiMeLHSklaWKitlaxus
+ +Q/Q==
+X-Gm-Message-State: AC+VfDxM3n5F7OdmMX9pLEhUZN4km5vkWubqTagc3kxG3xwSpeGWS1Wk
+ 1vBZcxvRUy2gec1v5hGctn+VviqGVxrk6R2Yt3oZBQK1RwzNM1B8CJoHmC63SkmD4vG3ezlds8a
+ sVBTudFLUW0CJgtzEy/gHpcyXhgydnIbCf6e0PaK/rRsjqofaD7O0B1aK+2fTKx/kYiLdkoEOU5
+ s=
+X-Received: by 2002:a05:600c:d2:b0:3f4:28db:f609 with SMTP id
+ u18-20020a05600c00d200b003f428dbf609mr23676636wmm.36.1684345596970; 
+ Wed, 17 May 2023 10:46:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5qwsBZFt0MtydiRx4MfRDbu1I5zSDM8gAHa/XfB0selH0sbILOx3G31FgFAm0xz0+gf8boEQ==
+X-Received: by 2002:a05:600c:d2:b0:3f4:28db:f609 with SMTP id
+ u18-20020a05600c00d200b003f428dbf609mr23676628wmm.36.1684345596646; 
+ Wed, 17 May 2023 10:46:36 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- e2-20020a5d4e82000000b00309257ad16csm3383089wru.29.2023.05.17.10.46.34
+ o4-20020a5d4a84000000b003068f5cca8csm3386711wrq.94.2023.05.17.10.46.35
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:34 -0700 (PDT)
+ Wed, 17 May 2023 10:46:35 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>
-Subject: [PULL 44/68] python: bump some of the dependencies
-Date: Wed, 17 May 2023 19:44:56 +0200
-Message-Id: <20230517174520.887405-45-pbonzini@redhat.com>
+Subject: [PULL 45/68] meson: regenerate meson-buildoptions.sh
+Date: Wed, 17 May 2023 19:44:57 +0200
+Message-Id: <20230517174520.887405-46-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -100,93 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The version of pyflakes that is listed in python/tests/minreqs.txt
-breaks on Python 3.8 with the following message:
-
-  AttributeError: 'FlakesChecker' object has no attribute 'CONSTANT'
-
-Now that we do not support EOL'd Python versions anymore, we can
-update to newer, fixed versions.  It is a good time to do so, before
-Python packages start dropping support for Python 3.7 as well!
-
-The new mypy is also a bit smarter about which packages are actually
-being used, so remove the now-unnecessary sections from setup.cfg.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: John Snow <jsnow@redhat.com>
-Message-Id: <20230511035435.734312-27-jsnow@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- python/setup.cfg         | 10 ++--------
- python/tests/minreqs.txt | 14 +++++++-------
- 2 files changed, 9 insertions(+), 15 deletions(-)
+ scripts/meson-buildoptions.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/python/setup.cfg b/python/setup.cfg
-index 55c0993e70b3..5abb7d30ad42 100644
---- a/python/setup.cfg
-+++ b/python/setup.cfg
-@@ -36,11 +36,11 @@ packages =
- devel =
-     avocado-framework >= 90.0
-     distlib >= 0.3.6
--    flake8 >= 3.6.0
-+    flake8 >= 5.0.4
-     fusepy >= 2.0.4
-     isort >= 5.1.2
-     mypy >= 0.780
--    pylint >= 2.8.0
-+    pylint >= 2.17.3
-     tox >= 3.18.0
-     urwid >= 2.1.2
-     urwid-readline >= 0.13
-@@ -124,12 +124,6 @@ ignore_missing_imports = True
- [mypy-distlib.version]
- ignore_missing_imports = True
- 
--[mypy-pip]
--ignore_missing_imports = True
--
--[mypy-pip._vendor]
--ignore_missing_imports = True
--
- [mypy-pip._vendor.distlib]
- ignore_missing_imports = True
- 
-diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
-index 10b181d43a6b..1ce72cef6d80 100644
---- a/python/tests/minreqs.txt
-+++ b/python/tests/minreqs.txt
-@@ -26,23 +26,23 @@ fusepy==2.0.4
- avocado-framework==90.0
- 
- # Linters
--flake8==3.6.0
-+flake8==5.0.4
- isort==5.1.2
- mypy==0.780
--pylint==2.8.0
-+pylint==2.17.3
- 
- # Transitive flake8 dependencies
--mccabe==0.6.0
--pycodestyle==2.4.0
--pyflakes==2.0.0
-+mccabe==0.7.0
-+pycodestyle==2.9.1
-+pyflakes==2.5.0
- 
- # Transitive mypy dependencies
- mypy-extensions==0.4.3
- typed-ast==1.4.0
--typing-extensions==3.7.4
-+typing-extensions==4.5.0
- 
- # Transitive pylint dependencies
--astroid==2.5.4
-+astroid==2.15.4
- lazy-object-proxy==1.4.0
- toml==0.10.0
- wrapt==1.12.1
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index fedb93ada69e..10c4969a013e 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -1,8 +1,8 @@
+ # This file is generated by meson-buildoptions.py, do not edit!
+ meson_options_help() {
+-  printf "%s\n" '  --audio-drv-list=CHOICES Set audio driver list [default] (choices: al'
+-  printf "%s\n" '                           sa/coreaudio/default/dsound/jack/oss/pa/'
+-  printf "%s\n" '                           pipewire/sdl/sndio)'
++  printf "%s\n" '  --audio-drv-list=CHOICES Set audio driver list [default] (choices: alsa/co'
++  printf "%s\n" '                           reaudio/default/dsound/jack/oss/pa/pipewire/sdl/s'
++  printf "%s\n" '                           ndio)'
+   printf "%s\n" '  --block-drv-ro-whitelist=VALUE'
+   printf "%s\n" '                           set block driver read-only whitelist (by default'
+   printf "%s\n" '                           affects only QEMU, not tools like qemu-img)'
 -- 
 2.40.1
 
