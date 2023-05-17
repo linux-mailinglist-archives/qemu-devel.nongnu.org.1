@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE049706226
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA130706261
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:11:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC70-0003SA-NJ; Wed, 17 May 2023 04:02:18 -0400
+	id 1pzC6y-0003JT-BL; Wed, 17 May 2023 04:02:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6i-0002jy-GU; Wed, 17 May 2023 04:02:00 -0400
+ id 1pzC6m-0002nW-4J; Wed, 17 May 2023 04:02:04 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6f-0000lh-Eo; Wed, 17 May 2023 04:02:00 -0400
+ id 1pzC6i-0000m5-F0; Wed, 17 May 2023 04:02:03 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3AA736769;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5F73D676A;
  Wed, 17 May 2023 11:01:01 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id BA5565E21;
+ by tsrv.corpit.ru (Postfix) with SMTP id DB47E5E22;
  Wed, 17 May 2023 11:01:00 +0300 (MSK)
-Received: (nullmailer pid 3624175 invoked by uid 1000);
+Received: (nullmailer pid 3624178 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org,
+Cc: qemu-devel@nongnu.org, Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Lucas Mateus Castro <lucas.araujo@eldorado.org.br>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v8.0.1 32/36] async: Suppress GCC13 false positive in
- aio_bh_poll()
-Date: Wed, 17 May 2023 11:00:52 +0300
-Message-Id: <20230517080056.3623993-32-mjt@msgid.tls.msk.ru>
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: [PATCH v8.0.1 33/36] tcg: ppc64: Fix mask generation for vextractdm
+Date: Wed, 17 May 2023 11:00:53 +0300
+Message-Id: <20230517080056.3623993-33-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
@@ -66,69 +64,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@redhat.com>
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 
-GCC13 reports an error :
+In function do_extractm() the mask is calculated as
+dup_const(1 << (element_width - 1)). '1' being signed int
+works fine for MO_8,16,32. For MO_64, on PPC64 host
+this ends up becoming 0 on compilation. The vextractdm
+uses MO_64, and it ends up having mask as 0.
 
-../util/async.c: In function ‘aio_bh_poll’:
-include/qemu/queue.h:303:22: error: storing the address of local variable ‘slice’ in ‘*ctx.bh_slice_list.sqh_last’ [-Werror=dangling-pointer=]
-  303 |     (head)->sqh_last = &(elm)->field.sqe_next;                          \
-      |     ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
-../util/async.c:169:5: note: in expansion of macro ‘QSIMPLEQ_INSERT_TAIL’
-  169 |     QSIMPLEQ_INSERT_TAIL(&ctx->bh_slice_list, &slice, next);
-      |     ^~~~~~~~~~~~~~~~~~~~
-../util/async.c:161:17: note: ‘slice’ declared here
-  161 |     BHListSlice slice;
-      |                 ^~~~~
-../util/async.c:161:17: note: ‘ctx’ declared here
+Explicitly use 1ULL instead of signed int 1 like its
+used everywhere else.
 
-But the local variable 'slice' is removed from the global context list
-in following loop of the same routine. Add a pragma to silent GCC.
-
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Tested-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-Id: <20230420202939.1982044-1-clg@kaod.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit d66ba6dc1cce914673bd8a89fca30a7715ea70d1)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1536
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Lucas Mateus Castro <lucas.araujo@eldorado.org.br>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Message-Id: <168319292809.1159309.5817546227121323288.stgit@ltc-boston1.aus.stglabs.ibm.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+(cherry picked from commit 6a5d81b17201ab8a95539bad94c8a6c08a42e076)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: cherry-picked to stable-8.0 to eliminate CI failures on win*)
 ---
- util/async.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ target/ppc/translate/vmx-impl.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/util/async.c b/util/async.c
-index 21016a1ac7..856e1a8a33 100644
---- a/util/async.c
-+++ b/util/async.c
-@@ -164,7 +164,21 @@ int aio_bh_poll(AioContext *ctx)
+diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
+index 112233b541..c8712dd7d8 100644
+--- a/target/ppc/translate/vmx-impl.c.inc
++++ b/target/ppc/translate/vmx-impl.c.inc
+@@ -2058,7 +2058,7 @@ static bool trans_VEXPANDQM(DisasContext *ctx, arg_VX_tb *a)
+ static bool do_vextractm(DisasContext *ctx, arg_VX_tb *a, unsigned vece)
+ {
+     const uint64_t elem_width = 8 << vece, elem_count_half = 8 >> vece,
+-                   mask = dup_const(vece, 1 << (elem_width - 1));
++                   mask = dup_const(vece, 1ULL << (elem_width - 1));
+     uint64_t i, j;
+     TCGv_i64 lo, hi, t0, t1;
  
-     /* Synchronizes with QSLIST_INSERT_HEAD_ATOMIC in aio_bh_enqueue().  */
-     QSLIST_MOVE_ATOMIC(&slice.bh_list, &ctx->bh_list);
-+
-+    /*
-+     * GCC13 [-Werror=dangling-pointer=] complains that the local variable
-+     * 'slice' is being stored in the global 'ctx->bh_slice_list' but the
-+     * list is emptied before this function returns.
-+     */
-+#if !defined(__clang__)
-+#pragma GCC diagnostic push
-+#pragma GCC diagnostic ignored "-Wpragmas"
-+#pragma GCC diagnostic ignored "-Wdangling-pointer="
-+#endif
-     QSIMPLEQ_INSERT_TAIL(&ctx->bh_slice_list, &slice, next);
-+#if !defined(__clang__)
-+#pragma GCC diagnostic pop
-+#endif
- 
-     while ((s = QSIMPLEQ_FIRST(&ctx->bh_slice_list))) {
-         QEMUBH *bh;
 -- 
 2.39.2
 
