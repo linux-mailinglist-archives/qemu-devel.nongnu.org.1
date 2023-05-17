@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8780706FDE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDB9707031
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:57:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLES-0008F5-UK; Wed, 17 May 2023 13:46:37 -0400
+	id 1pzLEC-00081J-2N; Wed, 17 May 2023 13:46:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLE6-0007eE-CM
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:15 -0400
+ id 1pzLE7-0007hL-NO
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLE4-0004H6-Fq
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:14 -0400
+ id 1pzLE5-0004HP-V8
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345572;
+ s=mimecast20190719; t=1684345573;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3IN3vpyWO0eLzaYR0wBWQOI2Q29IOE8Vh96ivvWrrr8=;
- b=KQmw0EFf9WIz4rM//fzRG9u9ZUBHJX2H2jqCMCT4YPDiQg2g5yq2bNK4uRK9btVHAsdmds
- bGJMr/yhulO9u4IBOsUZOJJUqqAdydhlVMB7ld6/1i8+E60jdYmDaknw0Tinfaxf/G4fD2
- AnZ5j/WuY5uniduFtnl5KA1jKgL3Mhs=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tlEc08hsHfooO7rQikJ5l6wNa9dPNHYDs4dAyWzQnhQ=;
+ b=LPuOuvAW7kXitgpLkQ7kin+dTCx0a2W13HxoJszDbtLEotNo1ahD9Huvzb8sVdU5a2nVe+
+ AimXIjDMklReGqsVNY9qNiYs54WnSZqqPKDk6W7H8ep8JcLpXeAX9J51tpoR6+fY3WIqZT
+ /w8yAtFa9mRKBGisNi63stIJmJEMT8c=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-142-cApT83a9PKW4nRKENi5Nsw-1; Wed, 17 May 2023 13:46:10 -0400
-X-MC-Unique: cApT83a9PKW4nRKENi5Nsw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f41a04a297so4361895e9.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:09 -0700 (PDT)
+ us-mta-480-zZOHHL5lM86OqkTXTXsohw-1; Wed, 17 May 2023 13:46:12 -0400
+X-MC-Unique: zZOHHL5lM86OqkTXTXsohw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f42867b47dso6595495e9.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345568; x=1686937568;
+ d=1e100.net; s=20221208; t=1684345570; x=1686937570;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3IN3vpyWO0eLzaYR0wBWQOI2Q29IOE8Vh96ivvWrrr8=;
- b=EEAAbjYQsFd3O87d7SYYtVPLNCuT+zjFdRUmaD8e2IIm7ryCjDXsh0WXkjGJLbRJLp
- w8tkr2DEbRu3bbFqlscgGaEYT2Qm07dJ0qa1Tw7F2HAD4CI3XOpz5NCR9mlISmkV577p
- OqePGU9F5yMYxzhgZV63TKcGSbbTGVxTl8X4kj0qkOKxUXEFhgSkxa9QdHm2aEETB3Id
- CyqqJfw/Gk1RwY8tSft+xWRDrvsTmM8GZysrlCRCUTL6ESiLjRlKfeAvHPEPBD2SHWJS
- 5SvdXBG5RJTvSYFtxU1uA5bWmqSUyc3ewu/iI6MvyxQrSgV3egoLcQqNkyygTdK8r2f8
- LhEg==
-X-Gm-Message-State: AC+VfDzBUFqgTwjPX5HQobDT8sybD0ODXbpHjzihX79Wja0sf693P2Gk
- zDjVydlLAaGKsRW7KQ2sjIs0qo9Ko5MBs51iFKjOptTIyAcs7eyFimn+poR4YkawrR2VcBgRYzb
- wNpIdgDRqrTcYjxeuOl4Nl2gyiN4eZNSupxxKiPYbGWSFzEt9UW3OjkNQCkLPt3XUG1nJOEuA6J
- M=
-X-Received: by 2002:a05:600c:2059:b0:3f4:2492:a91f with SMTP id
- p25-20020a05600c205900b003f42492a91fmr25003479wmg.27.1684345568420; 
- Wed, 17 May 2023 10:46:08 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5pTxnHgPnjekIOSuQ4zSf8iwj79v10T4rk46Sp7LaTnWVpRIYaxVwFR2wMfF14X5Z0TY5o2Q==
-X-Received: by 2002:a05:600c:2059:b0:3f4:2492:a91f with SMTP id
- p25-20020a05600c205900b003f42492a91fmr25003471wmg.27.1684345568117; 
- Wed, 17 May 2023 10:46:08 -0700 (PDT)
+ bh=tlEc08hsHfooO7rQikJ5l6wNa9dPNHYDs4dAyWzQnhQ=;
+ b=FeP6VVvcYEvYf37OR5PP75U/srzZx9JANU0RyNNwvmB5hIf1CDvasNVR0f+ikP8x1y
+ QVPMLtGhoBUWsBNIpchgD5vhbOe4D0/Bymw6fHDgJFasGmMmOUn12lrApwMIvTBZK6UL
+ kX8DtEDrXCfCwsJcWW4Kqowj0MnQusDfPhjvi4A8Ewq+SnXl6qvxmshPYpwHwtNbqFPP
+ +AqIZbko1A9HOlfOHMrwq3pOf+m5DUMbsiFbf6vBp4dCiyKCYZOG2uu2Zk0gH3sappj6
+ QQxm5Uv25cs5O+je+q3wTunYJUdzEZDI8cKKSs5U3LNdGBthvVIg8FJyetnPn5NYWC5x
+ JYvg==
+X-Gm-Message-State: AC+VfDy5Fb/4aM0GYl1JCRnR5DCZAXdW1HPfFqHTtXqojiOLCXYj3o7s
+ L8T5tihSwy6LdtF73GozO0Qje9WUXutfLGns7F9XHpomBcV5BPgn4Pdi0EPxy8oXMInOztAfukD
+ RxpSj9kGr4/Ns7T/7rRymKpeHVhrcZV70N6ilNFNyFriFo5+TPNJvBnC20phq/S0pJaKdB9Sh7H
+ U=
+X-Received: by 2002:a7b:c5d6:0:b0:3f1:969f:c9d0 with SMTP id
+ n22-20020a7bc5d6000000b003f1969fc9d0mr30995808wmk.4.1684345570281; 
+ Wed, 17 May 2023 10:46:10 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7C9McPTBZwF21I//SvuoO91O5rjbWK50HlGFvBj2d7RK4TrP4siB1PcrSlQVwNkKyl1Z+rbA==
+X-Received: by 2002:a7b:c5d6:0:b0:3f1:969f:c9d0 with SMTP id
+ n22-20020a7bc5d6000000b003f1969fc9d0mr30995785wmk.4.1684345569717; 
+ Wed, 17 May 2023 10:46:09 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- o4-20020a5d4a84000000b002c54c9bd71fsm3390013wrq.93.2023.05.17.10.46.06
+ z4-20020a05600c220400b003f4069417absm2849765wml.24.2023.05.17.10.46.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:07 -0700 (PDT)
+ Wed, 17 May 2023 10:46:09 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>
-Subject: [PULL 27/68] mkvenv: avoid ensurepip if pip is installed
-Date: Wed, 17 May 2023 19:44:39 +0200
-Message-Id: <20230517174520.887405-28-pbonzini@redhat.com>
+Subject: [PULL 28/68] mkvenv: work around broken pip installations on Debian 10
+Date: Wed, 17 May 2023 19:44:40 +0200
+Message-Id: <20230517174520.887405-29-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -102,152 +102,143 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
+This is a workaround intended for Debian 10, where the debian-patched
+pip does not function correctly if accessed from within a virtual
+environment.
+
+We don't support Debian 10 as a build platform any longer, though we do
+still utilize it for our build-tricore-softmmu CI test. It's also
+possible that this bug might appear on other derivative platforms and
+this workaround may prove useful.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: John Snow <jsnow@redhat.com>
+Message-Id: <20230511035435.734312-11-jsnow@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- python/scripts/mkvenv.py | 67 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 64 insertions(+), 3 deletions(-)
+ python/scripts/mkvenv.py | 72 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 56 insertions(+), 16 deletions(-)
 
 diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index fb91f922d2b9..a9c566029e6f 100644
+index a9c566029e6f..558619910efd 100644
 --- a/python/scripts/mkvenv.py
 +++ b/python/scripts/mkvenv.py
-@@ -11,6 +11,8 @@
- Commands:
-   command     Description
-     create    create a venv
-+    post_init
-+              post-venv initialization
-     ensure    Ensure that the specified package is installed.
- 
- --------------------------------------------------
-@@ -25,6 +27,13 @@
- 
- --------------------------------------------------
- 
-+usage: mkvenv post_init [-h]
-+
-+options:
-+  -h, --help         show this help message and exit
-+
-+--------------------------------------------------
-+
- usage: mkvenv ensure [-h] [--online] [--dir DIR] dep_spec...
- 
- positional arguments:
-@@ -111,7 +120,9 @@ class QemuEnvBuilder(venv.EnvBuilder):
- 
-     The primary difference is that it emulates a "nested" virtual
-     environment when invoked from inside of an existing virtual
--    environment by including packages from the parent.
-+    environment by including packages from the parent.  Also,
-+    "ensurepip" is replaced if possible with just recreating pip's
-+    console_scripts inside the virtual environment.
- 
-     Parameters for base class init:
-       - system_site_packages: bool = False
-@@ -138,8 +149,19 @@ def __init__(self, *args: Any, **kwargs: Any) -> None:
-             # The venv we are currently in, also does so.
-             kwargs["system_site_packages"] = sys.base_prefix in site.PREFIXES
- 
--        if kwargs.get("with_pip", False):
--            check_ensurepip()
-+        # ensurepip is slow: venv creation can be very fast for cases where
-+        # we allow the use of system_site_packages. Therefore, ensurepip is
-+        # replaced with our own script generation once the virtual environment
-+        # is setup.
-+        self.want_pip = kwargs.get("with_pip", False)
-+        if self.want_pip:
-+            if (
-+                kwargs.get("system_site_packages", False)
-+                and not need_ensurepip()
-+            ):
-+                kwargs["with_pip"] = False
-+            else:
-+                check_ensurepip()
+@@ -161,7 +161,7 @@ def __init__(self, *args: Any, **kwargs: Any) -> None:
+             ):
+                 kwargs["with_pip"] = False
+             else:
+-                check_ensurepip()
++                check_ensurepip(suggest_remedy=True)
  
          super().__init__(*args, **kwargs)
  
-@@ -211,6 +233,14 @@ def post_post_setup(self, context: SimpleNamespace) -> None:
-             with open(pth_file, "w", encoding="UTF-8") as file:
-                 file.write(parent_libpath + os.linesep)
- 
-+        if self.want_pip:
-+            args = [
-+                context.env_exe,
-+                __file__,
-+                "post_init",
-+            ]
-+            subprocess.run(args, check=True)
-+
-     def get_value(self, field: str) -> str:
-         """
-         Get a string value from the context namespace after a call to build.
-@@ -223,6 +253,19 @@ def get_value(self, field: str) -> str:
-         return ret
+@@ -266,7 +266,7 @@ def need_ensurepip() -> bool:
+     return True
  
  
-+def need_ensurepip() -> bool:
+-def check_ensurepip() -> None:
++def check_ensurepip(prefix: str = "", suggest_remedy: bool = False) -> None:
+     """
+     Check that we have ensurepip.
+ 
+@@ -277,12 +277,15 @@ def check_ensurepip() -> None:
+             "Python's ensurepip module is not found.\n"
+             "It's normally part of the Python standard library, "
+             "maybe your distribution packages it separately?\n"
+-            "Either install ensurepip, or alleviate the need for it in the "
+-            "first place by installing pip and setuptools for "
+-            f"'{sys.executable}'.\n"
+-            "(Hint: Debian puts ensurepip in its python3-venv package.)"
++            "(Debian puts ensurepip in its python3-venv package.)\n"
+         )
+-        raise Ouch(msg)
++        if suggest_remedy:
++            msg += (
++                "Either install ensurepip, or alleviate the need for it in the"
++                " first place by installing pip and setuptools for "
++                f"'{sys.executable}'.\n"
++            )
++        raise Ouch(prefix + msg)
+ 
+     # ensurepip uses pyexpat, which can also go missing on us:
+     if not find_spec("pyexpat"):
+@@ -290,12 +293,15 @@ def check_ensurepip() -> None:
+             "Python's pyexpat module is not found.\n"
+             "It's normally part of the Python standard library, "
+             "maybe your distribution packages it separately?\n"
+-            "Either install pyexpat, or alleviate the need for it in the "
+-            "first place by installing pip and setuptools for "
+-            f"'{sys.executable}'.\n\n"
+-            "(Hint: NetBSD's pkgsrc debundles this to e.g. 'py310-expat'.)"
++            "(NetBSD's pkgsrc debundles this to e.g. 'py310-expat'.)\n"
+         )
+-        raise Ouch(msg)
++        if suggest_remedy:
++            msg += (
++                "Either install pyexpat, or alleviate the need for it in the "
++                "first place by installing pip and setuptools for "
++                f"'{sys.executable}'.\n"
++            )
++        raise Ouch(prefix + msg)
+ 
+ 
+ def make_venv(  # pylint: disable=too-many-arguments
+@@ -501,6 +507,38 @@ def _get_entry_points() -> Iterator[str]:
+             logger.debug("wrote console_script '%s'", filename)
+ 
+ 
++def checkpip() -> bool:
 +    """
-+    Tests for the presence of setuptools and pip.
++    Debian10 has a pip that's broken when used inside of a virtual environment.
 +
-+    :return: `True` if we do not detect both packages.
++    We try to detect and correct that case here.
 +    """
-+    # Don't try to actually import them, it's fraught with danger:
-+    # https://github.com/pypa/setuptools/issues/2993
-+    if find_spec("setuptools") and find_spec("pip"):
++    try:
++        # pylint: disable=import-outside-toplevel,unused-import,import-error
++        # pylint: disable=redefined-outer-name
++        import pip._internal  # type: ignore  # noqa: F401
++
++        logger.debug("pip appears to be working correctly.")
 +        return False
++    except ModuleNotFoundError as exc:
++        if exc.name == "pip._internal":
++            # Uh, fair enough. They did say "internal".
++            # Let's just assume it's fine.
++            return False
++        logger.warning("pip appears to be malfunctioning: %s", str(exc))
++
++    check_ensurepip("pip appears to be non-functional, and ")
++
++    logger.debug("Attempting to repair pip ...")
++    subprocess.run(
++        (sys.executable, "-m", "ensurepip"),
++        stdout=subprocess.DEVNULL,
++        check=True,
++    )
++    logger.debug("Pip is now (hopefully) repaired!")
 +    return True
 +
 +
- def check_ensurepip() -> None:
+ def pkgname_from_depspec(dep_spec: str) -> str:
      """
-     Check that we have ensurepip.
-@@ -693,6 +736,17 @@ def ensure(
-         raise SystemExit(f"\n{msg}\n\n") from exc
+     Parse package name out of a PEP-508 depspec.
+@@ -741,10 +779,12 @@ def post_venv_setup() -> None:
+     This is intended to be run *inside the venv* after it is created.
+     """
+     logger.debug("post_venv_setup()")
+-    # Generate a 'pip' script so the venv is usable in a normal
+-    # way from the CLI. This only happens when we inherited pip from a
+-    # parent/system-site and haven't run ensurepip in some way.
+-    generate_console_scripts(["pip"])
++    # Test for a broken pip (Debian 10 or derivative?) and fix it if needed
++    if not checkpip():
++        # Finally, generate a 'pip' script so the venv is usable in a normal
++        # way from the CLI. This only happens when we inherited pip from a
++        # parent/system-site and haven't run ensurepip in some way.
++        generate_console_scripts(["pip"])
  
  
-+def post_venv_setup() -> None:
-+    """
-+    This is intended to be run *inside the venv* after it is created.
-+    """
-+    logger.debug("post_venv_setup()")
-+    # Generate a 'pip' script so the venv is usable in a normal
-+    # way from the CLI. This only happens when we inherited pip from a
-+    # parent/system-site and haven't run ensurepip in some way.
-+    generate_console_scripts(["pip"])
-+
-+
  def _add_create_subcommand(subparsers: Any) -> None:
-     subparser = subparsers.add_parser("create", help="create a venv")
-     subparser.add_argument(
-@@ -703,6 +757,10 @@ def _add_create_subcommand(subparsers: Any) -> None:
-     )
- 
- 
-+def _add_post_init_subcommand(subparsers: Any) -> None:
-+    subparsers.add_parser("post_init", help="post-venv initialization")
-+
-+
- def _add_ensure_subcommand(subparsers: Any) -> None:
-     subparser = subparsers.add_parser(
-         "ensure", help="Ensure that the specified package is installed."
-@@ -761,6 +819,7 @@ def main() -> int:
-     )
- 
-     _add_create_subcommand(subparsers)
-+    _add_post_init_subcommand(subparsers)
-     _add_ensure_subcommand(subparsers)
- 
-     args = parser.parse_args()
-@@ -771,6 +830,8 @@ def main() -> int:
-                 system_site_packages=True,
-                 clear=True,
-             )
-+        if args.command == "post_init":
-+            post_venv_setup()
-         if args.command == "ensure":
-             ensure(
-                 dep_specs=args.dep_specs,
 -- 
 2.40.1
 
