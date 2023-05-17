@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53FF70625C
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F89B70625D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:10:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC6u-0002uF-62; Wed, 17 May 2023 04:02:12 -0400
+	id 1pzC6p-0002nV-6R; Wed, 17 May 2023 04:02:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6f-0002eZ-59; Wed, 17 May 2023 04:01:57 -0400
+ id 1pzC6d-0002d7-Qa; Wed, 17 May 2023 04:01:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6b-0000ks-U9; Wed, 17 May 2023 04:01:56 -0400
+ id 1pzC6b-0000kp-OY; Wed, 17 May 2023 04:01:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7B8B96763;
+ by isrv.corpit.ru (Postfix) with ESMTP id A03856764;
  Wed, 17 May 2023 11:01:00 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 091F35E1B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2853C5E1C;
  Wed, 17 May 2023 11:01:00 +0300 (MSK)
-Received: (nullmailer pid 3624157 invoked by uid 1000);
+Received: (nullmailer pid 3624160 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Bin Meng <bmeng@tinylab.org>,
- Fei Wu <fei2.wu@intel.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, Alistair Francis <alistair.francis@wdc.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v8.0.1 26/36] target/riscv: Restore the predicate() NULL check
- behavior
-Date: Wed, 17 May 2023 11:00:46 +0300
-Message-Id: <20230517080056.3623993-26-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PATCH v8.0.1 27/36] hw/pci-bridge: pci_expander_bridge fix type in
+ pxb_cxl_dev_reset()
+Date: Wed, 17 May 2023 11:00:47 +0300
+Message-Id: <20230517080056.3623993-27-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
@@ -63,66 +61,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bin Meng <bmeng@tinylab.org>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-When reading a non-existent CSR QEMU should raise illegal instruction
-exception, but currently it just exits due to the g_assert() check.
+Reproduce issue with
 
-This actually reverts commit 0ee342256af9205e7388efdf193a6d8f1ba1a617.
-Some comments are also added to indicate that predicate() must be
-provided for an implemented CSR.
+configure --enable-qom-cast-debug ...
 
-Reported-by: Fei Wu <fei2.wu@intel.com>
-Signed-off-by: Bin Meng <bmeng@tinylab.org>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-Id: <20230417043054.3125614-1-bmeng@tinylab.org>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit eae04c4c131a8d95087c8568eb2cac1988262f25)
-(mjt: context edit after ce3af0bbbcdfa "target/riscv: add support for Zcmt extension")
+qemu-system-x86_64 -display none -machine q35,cxl=on -device pxb-cxl,bus=pcie.0
+
+  hw/pci-bridge/pci_expander_bridge.c:54:PXB_DEV: Object 0x5570e0b1ada0 is not an instance of type pxb
+  Aborted
+
+The type conversion results in the right state structure, but PXB_DEV is
+not a parent of PXB_CXL_DEV hence the error. Rather than directly
+cleaning up the inheritance, this is the minimal fix which will be
+followed by the cleanup.
+
+Fixes: 154070eaf6 ("hw/pxb-cxl: Support passthrough HDM Decoders unless overridden")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20230420142750.6950-2-Jonathan.Cameron@huawei.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 9136f661c7277777a2f85a7e98438f4fe6472fdc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- target/riscv/csr.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ hw/pci-bridge/pci_expander_bridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index d522efc0b6..736ab64275 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -3797,6 +3797,11 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-         return RISCV_EXCP_ILLEGAL_INST;
-     }
- 
-+    /* ensure CSR is implemented by checking predicate */
-+    if (!csr_ops[csrno].predicate) {
-+        return RISCV_EXCP_ILLEGAL_INST;
-+    }
-+
-     /* privileged spec version check */
-     if (env->priv_ver < csr_min_priv) {
-         return RISCV_EXCP_ILLEGAL_INST;
-@@ -3814,7 +3819,6 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
-      * illegal instruction exception should be triggered instead of virtual
-      * instruction exception. Hence this comes after the read / write check.
+diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
+index ead33f0c05..a78327b5f2 100644
+--- a/hw/pci-bridge/pci_expander_bridge.c
++++ b/hw/pci-bridge/pci_expander_bridge.c
+@@ -311,7 +311,7 @@ static void pxb_cxl_dev_reset(DeviceState *dev)
+      * The CXL specification allows for host bridges with no HDM decoders
+      * if they only have a single root port.
       */
--    g_assert(csr_ops[csrno].predicate != NULL);
-     RISCVException ret = csr_ops[csrno].predicate(env, csrno);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
-@@ -3991,7 +3995,10 @@ RISCVException riscv_csrrw_debug(CPURISCVState *env, int csrno,
-     return ret;
- }
- 
--/* Control and Status Register function table */
-+/*
-+ * Control and Status Register function table
-+ * riscv_csr_operations::predicate() must be provided for an implemented CSR
-+ */
- riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     /* User Floating-Point CSRs */
-     [CSR_FFLAGS]   = { "fflags",   fs,     read_fflags,  write_fflags },
+-    if (!PXB_DEV(dev)->hdm_for_passthrough) {
++    if (!PXB_CXL_DEV(dev)->hdm_for_passthrough) {
+         dsp_count = pcie_count_ds_ports(hb->bus);
+     }
+     /* Initial reset will have 0 dsp so wait until > 0 */
 -- 
 2.39.2
 
