@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66937706278
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C365A706240
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:09:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC6v-000301-9X; Wed, 17 May 2023 04:02:13 -0400
+	id 1pzC6h-0002h3-Sg; Wed, 17 May 2023 04:01:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6O-00023r-CQ; Wed, 17 May 2023 04:01:42 -0400
+ id 1pzC6S-00025C-K0; Wed, 17 May 2023 04:01:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6L-0000aq-3d; Wed, 17 May 2023 04:01:39 -0400
+ id 1pzC6L-0000ar-BE; Wed, 17 May 2023 04:01:44 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F15666758;
- Wed, 17 May 2023 11:00:58 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 344176759;
+ Wed, 17 May 2023 11:00:59 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 835E55E10;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9D9A15E11;
  Wed, 17 May 2023 11:00:58 +0300 (MSK)
-Received: (nullmailer pid 3624123 invoked by uid 1000);
+Received: (nullmailer pid 3624126 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v8.0.1 15/36] target/arm: Define and use new
- load_cpu_field_low32()
-Date: Wed, 17 May 2023 11:00:35 +0300
-Message-Id: <20230517080056.3623993-15-mjt@msgid.tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v8.0.1 16/36] hw/sd/allwinner-sdhost: Correctly byteswap
+ descriptor fields
+Date: Wed, 17 May 2023 11:00:36 +0300
+Message-Id: <20230517080056.3623993-16-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,73 +65,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In several places in the 32-bit Arm translate.c, we try to use
-load_cpu_field() to load from a CPUARMState field into a TCGv_i32
-where the field is actually 64-bit. This works on little-endian
-hosts, but gives the wrong half of the register on big-endian.
+In allwinner_sdhost_process_desc() we just read directly from
+guest memory into a host TransferDescriptor struct and back.
+This only works on little-endian hosts. Abstract the reading
+and writing of descriptors into functions that handle the
+byte-swapping so that TransferDescriptor structs as seen by
+the rest of the code are always in host-order.
 
-Add a new load_cpu_field_low32() which loads the low 32 bits
-of a 64-bit field into a TCGv_i32. The new macro includes a
-compile-time check against accidentally using it on a field
-of the wrong size. Use it to fix the two places in the code
-where we were using load_cpu_field() on a 64-bit field.
-
-This fixes a bug where on big-endian hosts the guest would
-crash after executing an ERET instruction, and a more corner
-case one where some UNDEFs for attempted accesses to MSR
-banked registers from Secure EL1 might go to the wrong EL.
+This fixes a failure of one of the avocado tests on s390.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230424153909.1419369-2-peter.maydell@linaro.org
-(cherry picked from commit 7f3a3d3dc433dc06c0adb480729af80f9c8e3739)
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230424165053.1428857-2-peter.maydell@linaro.org
+(cherry picked from commit 3e20d90824c262de6887aa1bc52af94db69e4310)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- target/arm/tcg/translate.c | 4 ++--
- target/arm/translate-a32.h | 7 +++++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ hw/sd/allwinner-sdhost.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 3c8401e908..7468476724 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -2816,7 +2816,7 @@ static bool msr_banked_access_decode(DisasContext *s, int r, int sysm, int rn,
-             if (arm_dc_feature(s, ARM_FEATURE_AARCH64) &&
-                 dc_isar_feature(aa64_sel2, s)) {
-                 /* Target EL is EL<3 minus SCR_EL3.EEL2> */
--                tcg_el = load_cpu_field(cp15.scr_el3);
-+                tcg_el = load_cpu_field_low32(cp15.scr_el3);
-                 tcg_gen_sextract_i32(tcg_el, tcg_el, ctz32(SCR_EEL2), 1);
-                 tcg_gen_addi_i32(tcg_el, tcg_el, 3);
-             } else {
-@@ -6396,7 +6396,7 @@ static bool trans_ERET(DisasContext *s, arg_ERET *a)
+diff --git a/hw/sd/allwinner-sdhost.c b/hw/sd/allwinner-sdhost.c
+index 51e5e90830..92a0f42708 100644
+--- a/hw/sd/allwinner-sdhost.c
++++ b/hw/sd/allwinner-sdhost.c
+@@ -302,6 +302,30 @@ static void allwinner_sdhost_auto_stop(AwSdHostState *s)
      }
-     if (s->current_el == 2) {
-         /* ERET from Hyp uses ELR_Hyp, not LR */
--        tmp = load_cpu_field(elr_el[2]);
-+        tmp = load_cpu_field_low32(elr_el[2]);
-     } else {
-         tmp = load_reg(s, 14);
-     }
-diff --git a/target/arm/translate-a32.h b/target/arm/translate-a32.h
-index 5339c22f1e..99eea85fa8 100644
---- a/target/arm/translate-a32.h
-+++ b/target/arm/translate-a32.h
-@@ -61,6 +61,13 @@ static inline TCGv_i32 load_cpu_offset(int offset)
+ }
  
- #define load_cpu_field(name) load_cpu_offset(offsetof(CPUARMState, name))
- 
-+/* Load from the low half of a 64-bit field to a TCGv_i32 */
-+#define load_cpu_field_low32(name)                                      \
-+    ({                                                                  \
-+        QEMU_BUILD_BUG_ON(sizeof_field(CPUARMState, name) != 8);        \
-+        load_cpu_offset(offsetoflow32(CPUARMState, name));              \
-+    })
++static void read_descriptor(AwSdHostState *s, hwaddr desc_addr,
++                            TransferDescriptor *desc)
++{
++    uint32_t desc_words[4];
++    dma_memory_read(&s->dma_as, desc_addr, &desc_words, sizeof(desc_words),
++                    MEMTXATTRS_UNSPECIFIED);
++    desc->status = le32_to_cpu(desc_words[0]);
++    desc->size = le32_to_cpu(desc_words[1]);
++    desc->addr = le32_to_cpu(desc_words[2]);
++    desc->next = le32_to_cpu(desc_words[3]);
++}
 +
- void store_cpu_offset(TCGv_i32 var, int offset, int size);
++static void write_descriptor(AwSdHostState *s, hwaddr desc_addr,
++                             const TransferDescriptor *desc)
++{
++    uint32_t desc_words[4];
++    desc_words[0] = cpu_to_le32(desc->status);
++    desc_words[1] = cpu_to_le32(desc->size);
++    desc_words[2] = cpu_to_le32(desc->addr);
++    desc_words[3] = cpu_to_le32(desc->next);
++    dma_memory_write(&s->dma_as, desc_addr, &desc_words, sizeof(desc_words),
++                     MEMTXATTRS_UNSPECIFIED);
++}
++
+ static uint32_t allwinner_sdhost_process_desc(AwSdHostState *s,
+                                               hwaddr desc_addr,
+                                               TransferDescriptor *desc,
+@@ -312,9 +336,7 @@ static uint32_t allwinner_sdhost_process_desc(AwSdHostState *s,
+     uint32_t num_bytes = max_bytes;
+     uint8_t buf[1024];
  
- #define store_cpu_field(var, name)                              \
+-    /* Read descriptor */
+-    dma_memory_read(&s->dma_as, desc_addr, desc, sizeof(*desc),
+-                    MEMTXATTRS_UNSPECIFIED);
++    read_descriptor(s, desc_addr, desc);
+     if (desc->size == 0) {
+         desc->size = klass->max_desc_size;
+     } else if (desc->size > klass->max_desc_size) {
+@@ -356,8 +378,7 @@ static uint32_t allwinner_sdhost_process_desc(AwSdHostState *s,
+ 
+     /* Clear hold flag and flush descriptor */
+     desc->status &= ~DESC_STATUS_HOLD;
+-    dma_memory_write(&s->dma_as, desc_addr, desc, sizeof(*desc),
+-                     MEMTXATTRS_UNSPECIFIED);
++    write_descriptor(s, desc_addr, desc);
+ 
+     return num_done;
+ }
 -- 
 2.39.2
 
