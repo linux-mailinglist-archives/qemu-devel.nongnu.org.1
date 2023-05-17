@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72DB707029
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87046707058
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 20:01:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLEg-0000tr-Ke; Wed, 17 May 2023 13:46:50 -0400
+	id 1pzLGi-00043V-Vj; Wed, 17 May 2023 13:49:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEA-0007xS-Ob
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:18 -0400
+ id 1pzLEW-00009Z-Vj
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLE8-0004Hu-K8
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:17 -0400
+ id 1pzLER-0004Lk-1Q
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345576;
+ s=mimecast20190719; t=1684345594;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GKBaLoWGdZ0RkyXEDY1BFQu3+SJiQML2IvZoS6F7Z0o=;
- b=ScyNVaqOpF7LcJpg/K5WblayG3hFqIZdYvdFc7LSaB4o5GxfXGfubW8mOIB78vH66lr1ED
- g8idDUNVDsJvQIA1JXZhpsZmOnN4/tOsJBIS2msivgsNnAPu1kUcR1dutd4KgvALlDHRM6
- P2fAkczAyfxfK48OOuCRw2l0tjd2z9U=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kYwBoQfoPq8gzyxMAjFuE9dhgscDIFH9kaTNoAGSNNY=;
+ b=V1FHgvdtU/ngN64inz5RE6YXcACvro7pnC9NHWExS5uSEzxjM49v3w+QmBGTbD75AMnVzb
+ ulIBXTSvab62yKsYwCy3U8a5LdoUHnUj78augoyU6dY9/hL25ww7JK6EFVSblUYvz0FUMi
+ m4HPjkvFDycHYDi7klnyEnKRYuHlM+g=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-7e4fBP5oPsGReDbtn9-HFQ-1; Wed, 17 May 2023 13:46:14 -0400
-X-MC-Unique: 7e4fBP5oPsGReDbtn9-HFQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f426d4944fso4322815e9.1
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:14 -0700 (PDT)
+ us-mta-39-72vcZyboO_6QyNr0qwUkng-1; Wed, 17 May 2023 13:46:20 -0400
+X-MC-Unique: 72vcZyboO_6QyNr0qwUkng-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30629b36d9bso471568f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345573; x=1686937573;
+ d=1e100.net; s=20221208; t=1684345575; x=1686937575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GKBaLoWGdZ0RkyXEDY1BFQu3+SJiQML2IvZoS6F7Z0o=;
- b=JzjIkbmgTZEW3DGYDuRBkU1qprDYgIJF1FEGGwp1GTMhOBZowoyqI71gfA1jeeZ2zo
- XAp9stCYnzjAQ7A+VvbfR2FDc9E3waOmAPEHk+JxWZzURNbUPNkppTVMaqbF7TIzLrWf
- /OlCc8trGp/BZDl4WNb8J24t5iV3owuLFsRSpajlg9eqQWN/SOdLQBSmNxVlF6yVjf1L
- OsnNviZU5zUBW6XX299B35MNj2K1NPkhYgbGniWGM1rjPkpbsJUqP238QCQfLqll7VTi
- y/AxerJX89/6NLFxhs73vBQaWf+8atj5M7J9us56EqIs5g7f8GRZ0GGAz5xWKDlweNN0
- wk5w==
-X-Gm-Message-State: AC+VfDyHRZl6MISrRXbrL1keKV5IKHYv+KwW49j32HFMpx5Vj5Mkf1uR
- OK/+hRxvlCergkwol1IWRXa2qgIS5RIq3A/iD6yAzDpC11RvuFoQCp+/RwKmWwF5c8sTO6R0k9g
- VKBnV3eST9pKYr1/D2Cjr3uTddq/uH0Blm87kyZKLyQW9m62XEo1PDGHceNOKjCfqcSp/BUqNBB
- 4=
-X-Received: by 2002:a05:600c:2313:b0:3f4:2266:8cf0 with SMTP id
- 19-20020a05600c231300b003f422668cf0mr23818606wmo.10.1684345573375; 
- Wed, 17 May 2023 10:46:13 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ46qK7StXan5/bvyLrSVW/8o6eQMBdepyJm9zeLXtBxUk6shOoqkazbc9JWuCSoUd4G1miQlA==
-X-Received: by 2002:a05:600c:2313:b0:3f4:2266:8cf0 with SMTP id
- 19-20020a05600c231300b003f422668cf0mr23818595wmo.10.1684345573109; 
- Wed, 17 May 2023 10:46:13 -0700 (PDT)
+ bh=kYwBoQfoPq8gzyxMAjFuE9dhgscDIFH9kaTNoAGSNNY=;
+ b=IgtyPw3OYJDRjkz8gp7tjfjSo9JK1PWxZf2CyJhZ60PAsDMqTux/qAgsgkYAFkeiyX
+ rxxG+ynEcKcSY/Yf7JTvUGTPJ13CYQdS6h+mXRNG7Cg8JwPx8sGASaPQP2JwnlePCZnl
+ 6IyuCoC7N60vHUrjbu1hdn+VNNUSRhnbu+aLduJA3O3/SfRxZxk7/cFptZnptkAR+VKC
+ e2+RZ2w6qyPF62MA0Li6EFHehWpbD0YsGZor2Y0eBrpUjyloX5CK2dLFb31IM7PMyIzb
+ z+o/rzMQKzTE+bkifgTEJx1ORnU6pcR765xUvrcCG/ipTweleHwzaAHgZNXQTYwfdZ2x
+ 45KQ==
+X-Gm-Message-State: AC+VfDyfiThSw+NBDXySDzNhTKKqAADAlqURrEGowgdvwzKOvWxgOOY5
+ GKO2PXXRi6G6hmnIjY26TY3mjLTv8gqqNum6iAK7IpOf/kSJxxXm7Iep0uMME189sCpLW7Esn6A
+ IWJvHR9kusqY2TQAaRq3m88zPEYQWU7g6nrRmb1emc5+TxqwaIthtSN5PosPQZMmbyPcYGBg20B
+ Y=
+X-Received: by 2002:a5d:5409:0:b0:309:3b8d:16a8 with SMTP id
+ g9-20020a5d5409000000b003093b8d16a8mr1106139wrv.50.1684345574869; 
+ Wed, 17 May 2023 10:46:14 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ43oBVghnPH+heaC9c21i6x4e9GytlK3+gmTauN/1EMHrl/hADM3ALyJSmJVsk5wOnsZE93ew==
+X-Received: by 2002:a5d:5409:0:b0:309:3b8d:16a8 with SMTP id
+ g9-20020a5d5409000000b003093b8d16a8mr1106130wrv.50.1684345574553; 
+ Wed, 17 May 2023 10:46:14 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- h2-20020a1ccc02000000b003f421979398sm2854775wmb.26.2023.05.17.10.46.11
+ h14-20020adffd4e000000b00304aba2cfcbsm3478111wrs.7.2023.05.17.10.46.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:12 -0700 (PDT)
+ Wed, 17 May 2023 10:46:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 30/68] tests/vm: Configure netbsd to use Python 3.10
-Date: Wed, 17 May 2023 19:44:42 +0200
-Message-Id: <20230517174520.887405-31-pbonzini@redhat.com>
+Subject: [PULL 31/68] tests/vm: add py310-expat to NetBSD
+Date: Wed, 17 May 2023 19:44:43 +0200
+Message-Id: <20230517174520.887405-32-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -104,26 +104,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-NetBSD removes some packages from the Python stdlib, but only
-re-packages them for Python 3.10. Switch to using Python 3.10.
+NetBSD cannot successfully run "ensurepip" without access to the pyexpat
+module, which NetBSD debundles. Like the Debian patch, it would be
+strictly faster long term to install pip/setuptools, and I recommend
+developers at their workstations take that approach instead.
+
+For the purposes of a throwaway VM, there's not really a speed
+difference for who is responsible for installing pip; us (needs
+py310-pip) or Python (needs py310-expat).
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230511035435.734312-13-jsnow@redhat.com>
+Message-Id: <20230511035435.734312-14-jsnow@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
  tests/vm/netbsd | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/tests/vm/netbsd b/tests/vm/netbsd
-index 0b9536ca17bf..13eae109c042 100755
+index 13eae109c042..c7e3f1e7357f 100755
 --- a/tests/vm/netbsd
 +++ b/tests/vm/netbsd
-@@ -30,6 +30,7 @@ class NetBSDVM(basevm.BaseVM):
-         "git-base",
+@@ -31,6 +31,7 @@ class NetBSDVM(basevm.BaseVM):
          "pkgconf",
          "xz",
-+        "python310",
+         "python310",
++        "py310-expat",
          "ninja-build",
  
          # gnu tools
