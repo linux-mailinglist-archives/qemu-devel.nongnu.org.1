@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0613707432
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FFAF70745A
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzOfN-0002Fl-02; Wed, 17 May 2023 17:26:37 -0400
+	id 1pzOlo-0003tK-79; Wed, 17 May 2023 17:33:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOfL-0002Fd-Dz
- for qemu-devel@nongnu.org; Wed, 17 May 2023 17:26:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOll-0003t1-PU
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:33:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOfH-00015O-J6
- for qemu-devel@nongnu.org; Wed, 17 May 2023 17:26:34 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOlk-0002PW-0c
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:33:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684358790;
+ s=mimecast20190719; t=1684359190;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ckfguxV11jLGFMsfJ7ffg4yBHuOa1JEDjq1sB4aAb80=;
- b=O4M9jxTWjV2WE3FmYAtUi641vxN2J74v1QcKvpRVmdEU7Gyd5KqzOBvYoVv35vkRhALjtp
- FcJhWi/3TOjcxOSINgPQ+oWiWc8IsDdVxfL716cT8QQ6iWz4J4wdMaEf6KP/HoKF6jvnvY
- XFn/3MAXIErQCCBSaG1Et1k8Zu5f7Qg=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yCMXFeI5aCvin78SFUUvbPKyYODaHY90bYpsrewDrR4=;
+ b=AP/benz/zyI/NzMhZ3hrPRG20TKjZbSKEccrDZLF0juZpbp/kAQpulvSEZt3DX+/olZG9Y
+ B53Yd+VihbPB/85NLH0XOMQ+Ie+f9R7p4MfIaipjS9PPmuC9ga5PhS8TLCyDDjwaXfNECA
+ 2J+DR2AA3vaA10vkA8ASDxLE0EJrFeA=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-jgVjto74Ps6kpI0foIvCow-1; Wed, 17 May 2023 17:26:29 -0400
-X-MC-Unique: jgVjto74Ps6kpI0foIvCow-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1aaf311e517so2580325ad.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:26:29 -0700 (PDT)
+ us-mta-450-zwbWBfSjMcWfq_9l7JUDZg-1; Wed, 17 May 2023 17:33:09 -0400
+X-MC-Unique: zwbWBfSjMcWfq_9l7JUDZg-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-24e147c206eso833594a91.0
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:33:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684358788; x=1686950788;
+ d=1e100.net; s=20221208; t=1684359188; x=1686951188;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ckfguxV11jLGFMsfJ7ffg4yBHuOa1JEDjq1sB4aAb80=;
- b=Sp9wDfXDS4RabBKejKIn0MSuhJHMr9BBYmyJiFKKPHmq3SqbJyqxhVarZQGqgpu0iO
- rUJMEbXlClVA+edcpNNdi6sZN6uA9rEKhmzBWWk6guCOee9QvMyfyCT2W/xpfgUcEuUt
- t1n+aJYJhB/8QUVQvrtKHhG2zPP2+Fm4RQ3DqBToj0eF2jHN7cUc/8XeqAMYuc4zK3mt
- 3QVDcbFneBoah8X/ndqtvettOzL0Brc/Hk4Mnr8cHSzyBg97e8KjNQGMrtuAVsgNYamz
- NbFoGu6DH2VUUWU/jZG6mGpg1UE6GVC6aSZ+1XyPLLqV9QnPAoyJJZQPn7KAxgE4QUcu
- 2c9A==
-X-Gm-Message-State: AC+VfDw4dtvQUeL8CoNq6FZ+qGqnTRzZyRRUzah1rozNHLwpdvdeRxFo
- 7AY5F9+WsEj5DyMmC5F1DbRzkt7QyWlF4TS7SyJWiKlHnoutpWl0YxLaf9mUp6/JDqq60orZB9H
- qYhnt6jcZMzegbtcvEIRrwI+LsylaubY=
-X-Received: by 2002:a17:90a:bd94:b0:23f:962e:825d with SMTP id
- z20-20020a17090abd9400b0023f962e825dmr29561pjr.1.1684358788373; 
- Wed, 17 May 2023 14:26:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4/2dsbo5P5gOSPb5i9CgIJWJe5AgV+0bUqbEAX4QGeJwUeTxkaKkBqm/TFTrfm3hgi/MORl8QU6z+8WxQh1YQ=
-X-Received: by 2002:a17:90a:bd94:b0:23f:962e:825d with SMTP id
- z20-20020a17090abd9400b0023f962e825dmr29547pjr.1.1684358788092; Wed, 17 May
- 2023 14:26:28 -0700 (PDT)
+ bh=yCMXFeI5aCvin78SFUUvbPKyYODaHY90bYpsrewDrR4=;
+ b=Qd8dI3QaDh5kCsNL4FnM2G736NcSPY6jFEvuqkXveyysGD50g8pJ8cM8qRVhiJZ2Cc
+ In37ZIsSgZqtBd7RejZNJS77crR7VO89clYFXElhhavnvU5staA8Lyy7wGm9II6qHeL8
+ QmBAfBDMjzcAGKBhCvZiPHsd+xxaw+bxmX6ExrHpawrwbl7WVlD2r3vZsl+Kmj/Bghlj
+ rAf6VntsSZF2duGGzE1tp9uWqt4YAs2O6qDuLPxrwBFhFPS3pRdXr0fPdKh2CuS41cIe
+ URdl5Y5y8RFk4o+c1jBXf9PDaNyLKWD0h7zzTZXRiiFVkaDQNXr5SttQSHD4B/JJdDGj
+ wqUw==
+X-Gm-Message-State: AC+VfDw5Axtdsk5YVPVElksM4W53QE9vwTmpBfba6871e8P1IlUzIm/L
+ JHGzFskn812D+K8blkCCw5ZBFCoWmDmaPs9S63xFYupKuYNWTAM3PC+9ovINddFa3pB6QUr4xZ1
+ 5gDuOdqhJwtzeEWE0T+kh6CFbZbqYevw=
+X-Received: by 2002:a17:90a:1b0c:b0:253:2a56:3831 with SMTP id
+ q12-20020a17090a1b0c00b002532a563831mr250485pjq.34.1684359188167; 
+ Wed, 17 May 2023 14:33:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ46StApNgwfc8T4kqJsfCY9/5EtDyMmH/aNQcjODqIeFLaRiGv7T8jEOf++g0jJEsl1oIdy0stGlJxhUhWXg1k=
+X-Received: by 2002:a17:90a:1b0c:b0:253:2a56:3831 with SMTP id
+ q12-20020a17090a1b0c00b002532a563831mr250472pjq.34.1684359187909; Wed, 17 May
+ 2023 14:33:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230428132124.670840-1-nks@flawful.org>
- <20230428132124.670840-10-nks@flawful.org>
-In-Reply-To: <20230428132124.670840-10-nks@flawful.org>
+References: <20230416222838.36642-1-mateusz.p.albecki@gmail.com>
+ <20230416222838.36642-2-mateusz.p.albecki@gmail.com>
+In-Reply-To: <20230416222838.36642-2-mateusz.p.albecki@gmail.com>
 From: John Snow <jsnow@redhat.com>
-Date: Wed, 17 May 2023 17:26:17 -0400
-Message-ID: <CAFn=p-YXdRWF4gd1sP=ZJHv-fvqwckVQsuKD5aVgtEM90WYzkA@mail.gmail.com>
-Subject: Re: [PATCH 9/9] hw/ide/ahci: fix broken SError handling
-To: Niklas Cassel <nks@flawful.org>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
+Date: Wed, 17 May 2023 17:32:56 -0400
+Message-ID: <CAFn=p-bcAW9aMymmWeVSMeyuT88YDZ2iYVh-t1GoogbBBPFjSw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/ide/core.c: fix handling of unsupported commands
+To: Mateusz Albecki <mateusz.p.albecki@gmail.com>
+Cc: qemu-devel@nongnu.org, Mateusz Albecki <mateusz.albecki@outlook.com>, 
+ Niklas Cassel <niklas.cassel@wdc.com>, Niklas Cassel <nks@flawful.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,66 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 28, 2023 at 9:23=E2=80=AFAM Niklas Cassel <nks@flawful.org> wro=
-te:
+On Sun, Apr 16, 2023 at 6:29=E2=80=AFPM Mateusz Albecki
+<mateusz.p.albecki@gmail.com> wrote:
 >
-> From: Niklas Cassel <niklas.cassel@wdc.com>
+> From: Mateusz Albecki <mateusz.albecki@outlook.com>
 >
-> When encountering an NCQ error, you should not write the NCQ tag to the
-> SError register. This is completely wrong.
-
-Mea culpa ... !
-
+> Current code will not call ide_cmd_done when aborting the unsupported
+> command which will lead to the command timeout on the driver side instead
+> of getting a D2H FIS with ABRT indication. This can lead to problems on t=
+he
+> driver side as the spec mandates that device should return a D2H FIS with
+> ABRT bit set in ERR register(from SATA 3.1 section 16.3.3.8.6)
 >
-> The SError register has a clear definition, where each bit represents a
-> different error, see PxSERR definition in AHCI 1.3.1.
->
-> If we write a random value (like the NCQ tag) in SError, e.g. Linux will
-> read SError, and will trigger arbitrary error handling depending on the
-> NCQ tag that happened to be executing.
->
-> In case of success, ncq_cb() will call ncq_finish().
-> In case of error, ncq_cb() will call ncq_err() (which will clear
-> ncq_tfs->used), and then call ncq_finish(), thus using ncq_tfs->used is
-> sufficient to tell if finished should get set or not.
->
-> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-
-The bulk of this series looks good, I think I'd be happy to take it,
-the commit messages are extremely well written so if a regression
-happens to surface, we'll be able to track down what went awry.
-
-Want to rebase and resend it?
-
---js
-
+> Signed-off-by: Mateusz Albecki <mateusz.p.albecki@gmail.com>
 > ---
->  hw/ide/ahci.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  hw/ide/core.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-> index 4950d3575e..09a14408e3 100644
-> --- a/hw/ide/ahci.c
-> +++ b/hw/ide/ahci.c
-> @@ -1011,7 +1011,6 @@ static void ncq_err(NCQTransferState *ncq_tfs)
+> diff --git a/hw/ide/core.c b/hw/ide/core.c
+> index 45d14a25e9..d7027bbd4d 100644
+> --- a/hw/ide/core.c
+> +++ b/hw/ide/core.c
+> @@ -2146,6 +2146,7 @@ void ide_bus_exec_cmd(IDEBus *bus, uint32_t val)
 >
->      ide_state->error =3D ABRT_ERR;
->      ide_state->status =3D READY_STAT | ERR_STAT;
-> -    ncq_tfs->drive->port_regs.scr_err |=3D (1 << ncq_tfs->tag);
->      qemu_sglist_destroy(&ncq_tfs->sglist);
->      ncq_tfs->used =3D 0;
->  }
-> @@ -1021,7 +1020,7 @@ static void ncq_finish(NCQTransferState *ncq_tfs)
->      /* If we didn't error out, set our finished bit. Errored commands
->       * do not get a bit set for the SDB FIS ACT register, nor do they
->       * clear the outstanding bit in scr_act (PxSACT). */
-> -    if (!(ncq_tfs->drive->port_regs.scr_err & (1 << ncq_tfs->tag))) {
-> +    if (ncq_tfs->used) {
->          ncq_tfs->drive->finished |=3D (1 << ncq_tfs->tag);
+>      if (!ide_cmd_permitted(s, val)) {
+>          ide_abort_command(s);
+> +        ide_cmd_done(s);
+>          ide_bus_set_irq(s->bus);
+>          return;
 >      }
->
 > --
 > 2.40.0
 >
+
+I recently noticed that Niklas Cassel sent a patch to fix unsupported
+command handling:
+https://lists.gnu.org/archive/html/qemu-devel/2023-04/msg05552.html
+
+I suspect that his approach is the more technically correct one and
+that calling ide_cmd_done here is a heavy cudgel that may have
+unintended consequences. Am I mistaken?
+Can you check that Niklas's patch solves your issue? I think you're
+both solving the same problem. I've CC'd him on this patch as well.
+
+--js
 
 
