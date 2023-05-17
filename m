@@ -2,94 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35680706265
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB5B706276
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:13:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC7n-0004tv-FZ; Wed, 17 May 2023 04:03:07 -0400
+	id 1pzCGr-0005oV-20; Wed, 17 May 2023 04:12:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1pzC7j-0004kD-If
- for qemu-devel@nongnu.org; Wed, 17 May 2023 04:03:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1pzC7h-00013H-8Q
- for qemu-devel@nongnu.org; Wed, 17 May 2023 04:03:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684310580;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=crjoW7avdTpIm2XDBY8clW81TOXWziTWlWiauHdqJhg=;
- b=Q7KhIO0LscrG2qM8sX16OvZryKhsP93n1+5OLLNO3EdVwAID/LycIg5pY5e+04tFCUwykL
- ZGRdJYEbNQXm6QJLD02Xsfo/N4wqsAUseLrhMOGJ6tFVgvDFLMXUBRTvoCQDUgB1+BpV/P
- yfXdXX6O9v/JD/YKhUFVykoq8SudYM4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-anxfazdbM2CgJcroGrJWaQ-1; Wed, 17 May 2023 04:02:59 -0400
-X-MC-Unique: anxfazdbM2CgJcroGrJWaQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f509037a45so38861985e9.1
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 01:02:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <m.elsayed4420@gmail.com>)
+ id 1pzCGh-0005ig-UA; Wed, 17 May 2023 04:12:20 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <m.elsayed4420@gmail.com>)
+ id 1pzCGa-0003Hd-F7; Wed, 17 May 2023 04:12:18 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3f415a90215so4513435e9.0; 
+ Wed, 17 May 2023 01:12:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1684311130; x=1686903130;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GvLwPP3OlpsxnlaiQ9oet+iKjdJF8kobWIOEfKy9iIM=;
+ b=kGfslOCJTXqdlOOsn33bNrZoTRLF1Ab/VnoMR9zMdfWL0+fRQD8cNzZTfRto0xyv7l
+ cMbtu3JPOYtspt1EZwKyjHeTepHLBDDs/0LTNdWnr3F3q8XHuWRMxEDe/XWLAyCLWpnV
+ eB8PbNn9g36Hw/z7i9Bap6ZoLgTXKCWKoNqVU7V5KPI8Nv1jMSIB/HM3eRfArRwfTpK2
+ Egqw1qCkKG3g8hWT0FmxSNooe4NxOyHm7GekVRiVrFQFNHUAoQo+7Clav5rjjU2SV5rr
+ xlUPwjsXV6ljYqQcRJ2b5vpMo+58TSVjH13dZgNVU0Da9bFiW62X3e03AUtEMeyEVrTq
+ FYrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684310578; x=1686902578;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1684311130; x=1686903130;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=crjoW7avdTpIm2XDBY8clW81TOXWziTWlWiauHdqJhg=;
- b=Ud8+aL+unJ8mRnsD9FcqOGT3tUMA9I/QrfnNcK7dmHuj91EiQD/l5WU/mIAQGQHmTF
- ZBOEraUfLj/YYRl3tiZjFG1cKcV+pDQRKrzyg+ittLeaBFYMb0ZlZP2oRKcq5y3XAGSV
- oZM6QpT99C0D/8lUrp10Rt/4SQzO0Ipr/oA9zkKb8PP0aKJLzd97tzT48drWLkZncBKg
- umMHrT9BGGYKnoSBqsL4bXEY0Pvu2R48FtDtphgSv4CA/b9XjwxJTb8/581IWOHDEyn7
- bf9o84203kwHE91cxkzK8lzdWae2JIn5aLptjUMLMKmA14pK6awKKoFBahpVrUF5Lw/6
- Dbfg==
-X-Gm-Message-State: AC+VfDyETog++WAYg9SHN+/rmh8f67oSESAsN1zHOMzUsem+7BTPv6CJ
- 3q/RMFmceX0XBQbOTuixbJyGhX8QMEj/eNdngL3tYi9/TQ6RSLWwlJjpseuZ/rh9wFC8vyYsQLz
- 0kCjoZvqrAC+b4fU=
-X-Received: by 2002:a5d:595f:0:b0:307:869c:99ce with SMTP id
- e31-20020a5d595f000000b00307869c99cemr886904wri.21.1684310577723; 
- Wed, 17 May 2023 01:02:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6wp0eaV0bAXf/FCp8/BS2gZMkDmH/eOV9PUERB9eoQOCIJ/RlPcyIQ+OmpMqskax974a8Zxw==
-X-Received: by 2002:a5d:595f:0:b0:307:869c:99ce with SMTP id
- e31-20020a5d595f000000b00307869c99cemr886887wri.21.1684310577385; 
- Wed, 17 May 2023 01:02:57 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- j9-20020a5d4489000000b00301a351a8d6sm1928808wrq.84.2023.05.17.01.02.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 May 2023 01:02:56 -0700 (PDT)
-Message-ID: <52608fc3-8f52-9cdc-6d92-6b6534587277@redhat.com>
-Date: Wed, 17 May 2023 10:02:55 +0200
+ bh=GvLwPP3OlpsxnlaiQ9oet+iKjdJF8kobWIOEfKy9iIM=;
+ b=AfekONjBvWT3xoFcvVES61109lVBdf4+o9FFg+9zuwCWsvIWQvYKrBb4yQk4ceGOfj
+ BNK29AvV643+/n2wBX/138l42uaRaYXVdka8Q8IG+6i7wHbZDxnVehUVloCm8TdxDalv
+ f1YFIywyTqP3ITZTVLcmV4I5Y21MWTdgqqW3WxERp4z72FEBv2VQBEN+PalFCUxn50zH
+ Qj+CMn1km6RH5YgK73shaAW3IO/Umq/qUudKmSBZkvD2LQsgJ4OKeMzzdzRVGVnsa/dj
+ XhITRN1evzzJUBLvLw8+MBM7jDxN1cNtYzlxAB5dCj2ZcADPV0CkKaAvIUjGX5vQUutw
+ mP0g==
+X-Gm-Message-State: AC+VfDwnW1C1/eJP9PoTazXHFbWhRFvcplURKxFxzLBuEl9WzTWieHM+
+ gkvveWCfMvmfY/FJUuEx32I4mTgYuwEfRQ==
+X-Google-Smtp-Source: ACHHUZ4y3K9v7lWRe1B8JUh7beyjYWqcYiL7JoaZ/DJ01vz9JPVzXjZRNmIQ4emA/L1uKRcyjVnrXg==
+X-Received: by 2002:a7b:c449:0:b0:3f4:2d04:f3f0 with SMTP id
+ l9-20020a7bc449000000b003f42d04f3f0mr18186398wmi.39.1684311130021; 
+ Wed, 17 May 2023 01:12:10 -0700 (PDT)
+Received: from i.. ([41.236.82.205]) by smtp.gmail.com with ESMTPSA id
+ o24-20020a1c7518000000b003f42158288dsm1414942wmc.20.2023.05.17.01.12.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 May 2023 01:12:09 -0700 (PDT)
+From: Mohamed ElSayed <m.elsayed4420@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org,
+	Mohamed ElSayed <m.elsayed4420@gmail.com>
+Subject: [PATCH 0/8] Tiva C Implementation
+Date: Wed, 17 May 2023 11:11:56 +0300
+Message-Id: <20230517081204.30333-1-m.elsayed4420@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v4 00/10] Add stage-2 translation for SMMUv3
-Content-Language: en-US
-To: Mostafa Saleh <smostafa@google.com>, qemu-devel@nongnu.org
-Cc: jean-philippe@linaro.org, peter.maydell@linaro.org, qemu-arm@nongnu.org,
- richard.henderson@linaro.org
-References: <20230516203327.2051088-1-smostafa@google.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20230516203327.2051088-1-smostafa@google.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.666, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=m.elsayed4420@gmail.com; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,129 +84,73 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Mostafa,
+This contribution aims to add the Tiva C support into QEMU.
+The code could be found at https://github.com/moesay/qemu_TivaC
 
-On 5/16/23 22:33, Mostafa Saleh wrote:
-> This patch series adds stage-2 translation support for SMMUv3. It is
-> controlled by a new system property “arm-smmuv3.stage”.
-> - When set to “1”: Stage-1 only would be advertised and supported (default
-> behaviour)
-> - When set to “2”: Stage-2 only would be advertised and supported.
->
-> Features implemented in stage-2 are mostly synonymous with stage-1
-> - VMID16.
-> - Only AArch64 translation tables are supported.
-> - Only little endian translation table supported.
-> - Stall is not supported.
-> - HTTU is not supported, SW is expected to maintain the Access flag.
->
-> To make it easy to support nesting, a new structure(SMMUS2Cfg) is
-> embedded within SMMUTransCfg, to hold stage-2 configuration.
->
-> TLBs were updated to support VMID, where when stage-2 is used ASID is
-> set to -1 and ignored and when stage-1 is used VMID is set to -1 and
-> ignored.
-> As only one stage is supported at a time at the moment, TLB will
-> represent IPA=>PA translation with proper attributes(granularity and
-> t0sz) parsed from STEs for stage-2, and will represent VA=>PA
-> translation with proper attributes parsed from the CDs for stage-1.
->
-> New commands where added that are used with stage-2
-> - CMD_TLBI_S12_VMALL: Invalidate all translations for a VMID.
-> - CMD_TLBI_S2_IPA: Invalidate stage-2 by VMID and IPA
-> Some commands are illegal to be used from stage-2 were modified to
-> return CERROR_ILL.
->
-> This patch series can be used to run Linux pKVM SMMUv3 patches (currently on the list)
-> which controls stage-2 (from EL2) while providing a paravirtualized
-> interface the host(EL1)
-> https://lore.kernel.org/kvmarm/20230201125328.2186498-1-jean-philippe@linaro.org/
->
-> Looking forward, nesting is the next feature to go for, here are some
-> thoughts about this:
->
-> - TLB would require big changes for this, we can go either for a combined
-> implementation or per stage one. This would affect returns from PTW and
-> invalidation commands.
->
-> - Stage-1 data structures should be translated by stage-2 if enabled (as
-> context descriptors and ttb0/ttb1)
->
-> - Translated addresses from stage-1 should be translated by stage-2 if
-> enabled.
->
-> - Some existing commands(as CMD_TLBI_S2_IPA, CMD_TLBI_NH_ASID …) would be
-> modified and some of those would be based on the design of the TLBs.
->
-> - Currently, VMID is ignored when stage-1 is used as it can’t be used with
-> stage-2. However when nesting is advertised VMID shouldn’t be ignored
-> even if stage-2 is bypassed.
->
-> Changes in v4:
-> - Collected Reviewed-by tags
-> - Add SMMU_CMD_TLBI_S12_VMALL in a block to fix compilation issue
-> - Simplify record fault macro
-> - Remove references to "all" stage
->
-> Changes in v3:
-> - Collected Reviewed-by tags
-> - Separate stage-2 record faults from stage-1
-> - Fix input address check in stage-2 walk
-> - Fix shift in STE_S2HD, STE_S2HA, STE_S2S, STE_S2R
-> - Add more logs for illegal configs and commands.
-> - Rename SMMU translation macros to VMSA as they are not part of SMMU spec
-> - Rename stage-2 variables and functions (iova=>ipa, ap=>s2ap, ...)
-> - Rename oas in SMMUS2Cfg to eff_ps
-> - Improve comments (mention user manuals versions, field names)
->
-> Changes in v2:
-> -Collected Reviewed-by tags
-> -Add oas to SMMUS2Cfg, and use it in PTW
-> -Add stage member to to SMMUPTWEventInfo to differentiate stage-1 and
->  stage-2 PTW faults
-> -Move stage-2 knob to the last patch
-> -Add all STE parsing in one patch
-> -Pares and use S2PS and S2ENDI
-> -Split S2AFF patch over PTW and STE patches.
-> -Fix TLB aliasing issue
-> -Renaming and refactoring and rewording commits.
-> -Populate OAS based on PARANGE
-> -Add checks for stage-1 only commands
-> -Update trace events to hold translation stage, vmid when possible
-> -Remove feature flags for supported stages as they were redundant with IDR0
->
->
-> Mostafa Saleh (10):
->   hw/arm/smmuv3: Add missing fields for IDR0
->   hw/arm/smmuv3: Update translation config to hold stage-2
->   hw/arm/smmuv3: Refactor stage-1 PTW
->   hw/arm/smmuv3: Add page table walk for stage-2
->   hw/arm/smmuv3: Parse STE config for stage-2
->   hw/arm/smmuv3: Make TLB lookup work for stage-2
->   hw/arm/smmuv3: Add VMID to TLB tagging
->   hw/arm/smmuv3: Add CMDs related to stage-2
->   hw/arm/smmuv3: Add stage-2 support in iova notifier
->   hw/arm/smmuv3: Add knob to choose translation stage and enable stage-2
->
->  hw/arm/smmu-common.c         | 209 +++++++++++++++++---
->  hw/arm/smmu-internal.h       |  37 ++++
->  hw/arm/smmuv3-internal.h     |  12 +-
->  hw/arm/smmuv3.c              | 357 ++++++++++++++++++++++++++++++-----
->  hw/arm/trace-events          |  14 +-
->  include/hw/arm/smmu-common.h |  45 ++++-
->  include/hw/arm/smmuv3.h      |   4 +
->  7 files changed, 587 insertions(+), 91 deletions(-)
->
-I have tested the series against regression in S1 mode + migration.
-Feel free to add my
-Tested-by: Eric Auger <eric.auger@redhat.com>
+Mohamed ElSayed (8):
+  The tivac board initial machine definition
+  tiva c usart module implementation
+  tiva c gpio implementation
+  tiva c sysctl implementation
+  tiva c watchdog timers implementation
+  tiva c general purpose timers implementation
+  tiva c board documentation
+  adding tiva c to the qemu build system and adding my info to the
+    maintainers list
 
-Thanks
+ MAINTAINERS                             |   9 +
+ configs/devices/arm-softmmu/default.mak |   1 +
+ docs/system/arm/tivac.rst               |  47 ++
+ hw/arm/Kconfig                          |  13 +
+ hw/arm/meson.build                      |   3 +
+ hw/arm/tivac.c                          |  56 ++
+ hw/arm/tm4c123gh6pm_soc.c               | 275 +++++++
+ hw/char/Kconfig                         |   3 +
+ hw/char/meson.build                     |   1 +
+ hw/char/tm4c123_usart.c                 | 381 +++++++++
+ hw/char/trace-events                    |   4 +
+ hw/gpio/Kconfig                         |   3 +
+ hw/gpio/meson.build                     |   1 +
+ hw/gpio/tm4c123_gpio.c                  | 372 +++++++++
+ hw/gpio/trace-events                    |   4 +
+ hw/misc/Kconfig                         |   3 +
+ hw/misc/meson.build                     |   1 +
+ hw/misc/tm4c123_sysctl.c                | 989 ++++++++++++++++++++++++
+ hw/misc/trace-events                    |   5 +
+ hw/timer/Kconfig                        |   3 +
+ hw/timer/meson.build                    |   1 +
+ hw/timer/tm4c123_gptm.c                 | 495 ++++++++++++
+ hw/timer/trace-events                   |   5 +
+ hw/watchdog/Kconfig                     |   3 +
+ hw/watchdog/meson.build                 |   1 +
+ hw/watchdog/tm4c123_watchdog.c          | 297 +++++++
+ hw/watchdog/trace-events                |   3 +
+ include/hw/arm/tm4c123gh6pm_soc.h       |  71 ++
+ include/hw/char/tm4c123_usart.h         | 124 +++
+ include/hw/gpio/tm4c123_gpio.h          | 127 +++
+ include/hw/misc/tm4c123_sysctl.h        | 307 ++++++++
+ include/hw/timer/tm4c123_gptm.h         | 131 ++++
+ include/hw/watchdog/tm4c123_watchdog.h  |  97 +++
+ 33 files changed, 3836 insertions(+)
+ create mode 100644 docs/system/arm/tivac.rst
+ create mode 100644 hw/arm/tivac.c
+ create mode 100644 hw/arm/tm4c123gh6pm_soc.c
+ create mode 100644 hw/char/tm4c123_usart.c
+ create mode 100644 hw/gpio/tm4c123_gpio.c
+ create mode 100644 hw/misc/tm4c123_sysctl.c
+ create mode 100644 hw/timer/tm4c123_gptm.c
+ create mode 100644 hw/watchdog/tm4c123_watchdog.c
+ create mode 100644 include/hw/arm/tm4c123gh6pm_soc.h
+ create mode 100644 include/hw/char/tm4c123_usart.h
+ create mode 100644 include/hw/gpio/tm4c123_gpio.h
+ create mode 100644 include/hw/misc/tm4c123_sysctl.h
+ create mode 100644 include/hw/timer/tm4c123_gptm.h
+ create mode 100644 include/hw/watchdog/tm4c123_watchdog.h
 
-Eric
+-- 
+2.34.1
 
 
