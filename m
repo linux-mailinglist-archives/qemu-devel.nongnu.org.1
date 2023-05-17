@@ -2,92 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DEC3706B14
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 16:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1C9706B20
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 16:31:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzI8Z-00025n-2F; Wed, 17 May 2023 10:28:19 -0400
+	id 1pzIAi-0002os-NP; Wed, 17 May 2023 10:30:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1pzI8U-00025V-MI
- for qemu-devel@nongnu.org; Wed, 17 May 2023 10:28:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1pzIAh-0002ok-9c
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 10:30:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1pzI8S-0006aF-RB
- for qemu-devel@nongnu.org; Wed, 17 May 2023 10:28:14 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1pzIAf-0006xu-KC
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 10:30:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684333691;
+ s=mimecast20190719; t=1684333828;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jYhODo8C9QWR/d4uAyGye+NhkYx+qE32Nzt6QOe3T4c=;
- b=iqsEfGWvaUT9pBEcmfXLgNvYXXRFPw4yk8i3DmeZRQKO+LpIWR1Z07mpmwHTofVMFPPL1c
- oT15NBhRerMB3XN7za12JeCHfp5sWtN2+n9vtRXPCOjNjk2IGh4HLHu8QgKxqLLa2/PmNv
- G0vM9F4ZjjHyVV2yQFGwmH6t7riFuMQ=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-J-6aDT9ANZezAe9DypZvIA-1; Wed, 17 May 2023 10:28:01 -0400
-X-MC-Unique: J-6aDT9ANZezAe9DypZvIA-1
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-1ae5c32b7feso2125175ad.1
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 07:27:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684333678; x=1686925678;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jYhODo8C9QWR/d4uAyGye+NhkYx+qE32Nzt6QOe3T4c=;
- b=UTnJchdudMxlNA3aL2iUeQ0/lMMqVLic0yF86viC5wo6zuUhQEb0/GBGlxCSRGXeS1
- +Hy+H0xCSfpNyvKG8+EWyrsfjl3yQsfnBNfS8R6U7cdtKHkQaqA/9f8DsGMAJmMvJTjM
- 9E+LTYo6abWtnZlO4D3C0Pd8GNvB8kqn8E/t3lzCHTKp2qeEN8F4h9/aIlOQW4hQp/GX
- EWcS2lNko8gP8CX1iXYTwjxKmG4spq0/ccB2kc9OusI96W/ttvqytv3fNKKyS6V4XPPi
- sbkbiX+h5Jx9LoC5YW7sN6AUVyDyVpHrmpoAu+1kebcvntjcw9P/j6vdLBuemFWeORzk
- Bc0A==
-X-Gm-Message-State: AC+VfDzSnOc2oRNrHYSpAoDvh2pA6cH0K9YnqZI+EcFevZ9GQEx05mxT
- YtYNCVSEVEYhNpzVJZhb5YdntxBeOcCAqnl1YWT09jvhV0unT1e+8mWJhH17K0E3acLjBUjpEv6
- U7qsX7O6/NoNBwI4=
-X-Received: by 2002:a17:902:cece:b0:1a8:626:6d9d with SMTP id
- d14-20020a170902cece00b001a806266d9dmr54986458plg.62.1684333677953; 
- Wed, 17 May 2023 07:27:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Gvr5/D8nm/YNU62/bgDL0nseRZiUb3uC1NsSRZWCkmT6GYJtAcpoD6tj1rNMyyAgNx9EdlA==
-X-Received: by 2002:a17:902:cece:b0:1a8:626:6d9d with SMTP id
- d14-20020a170902cece00b001a806266d9dmr54986428plg.62.1684333677577; 
- Wed, 17 May 2023 07:27:57 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.105.155])
- by smtp.gmail.com with ESMTPSA id
- m4-20020a17090a7f8400b0024e37e0a67dsm1655918pjl.20.2023.05.17.07.27.55
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 17 May 2023 07:27:57 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
- for iasl location
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230517101523-mutt-send-email-mst@kernel.org>
-Date: Wed, 17 May 2023 19:57:53 +0530
-Cc: Igor Mammedov <imammedo@redhat.com>,
- qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B6AD0FB1-CF05-4B4C-B58D-279422895E4D@redhat.com>
-References: <20230517120751.14679-1-anisinha@redhat.com>
- <20230517101523-mutt-send-email-mst@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ bh=h/JSvZBTwYXFdQqosJsgiQJQOSj/T82ZMrZ7yTs7uXM=;
+ b=eLQvLce69T4Tw+Bp+g1HOnKcCOG2+k1f4/BqzBdSUFiQ7evrEnvWtJJvoKnu/bT7McnSXS
+ UOL3KjcFLo+PRhh6Npixx349MNJEoUjMAklRT8/l4JjUPRfzM/v4RB1wduwAbTYSe9V4Im
+ gV6Y+3FmkyYkLqyOIRil6kbP+5QGEpc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-500-SdCi8hbYM12F-nMUJ_5Qaw-1; Wed, 17 May 2023 10:30:27 -0400
+X-MC-Unique: SdCi8hbYM12F-nMUJ_5Qaw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E5823C0F384;
+ Wed, 17 May 2023 14:30:26 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.176])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4B8224078908;
+ Wed, 17 May 2023 14:30:25 +0000 (UTC)
+Date: Wed, 17 May 2023 10:30:23 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Jonathon Jongsma <jjongsma@redhat.com>, qemu-devel@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>, sgarzare@redhat.com
+Subject: Re: [PATCH v3 1/1] block/blkio: use qemu_open() to support fd
+ passing for virtio-blk
+Message-ID: <20230517143023.GA65838@fedora>
+References: <20230511091527.46620-1-sgarzare@redhat.com>
+ <20230511091527.46620-2-sgarzare@redhat.com>
+ <1a89ee2e-2368-4051-f9ec-018641721484@redhat.com>
+ <q2odwrndg3gt6z25hdxb3t2xxavd64hkp4b23zhzycevhrwx64@25r5r6sidyok>
+ <e8fcb4cf-3667-2bdf-a163-d81bdfb71bfa@redhat.com>
+ <vcinivshe3tf4iod7ys236fq5ovzhyhei5zvo2uf636fpb2vtr@swcn25px5h5z>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="l5BtPLUBOc+wpmLe"
+Content-Disposition: inline
+In-Reply-To: <vcinivshe3tf4iod7ys236fq5ovzhyhei5zvo2uf636fpb2vtr@swcn25px5h5z>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,132 +87,138 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--l5BtPLUBOc+wpmLe
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> On 17-May-2023, at 7:47 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+On Wed, May 17, 2023 at 09:19:26AM +0200, Stefano Garzarella wrote:
+> CCing Markus for some advice.
 >=20
-> On Wed, May 17, 2023 at 05:37:51PM +0530, Ani Sinha wrote:
->> Currently the meson based QEMU build process locates the iasl binary =
-from the
->> current PATH and other locations [1] and uses that to set CONFIG_IASL =
-which is
->> then used by the test.
->>=20
->> This has two disadvantages:
->> - If iasl was not previously installed in the PATH, one has to =
-install iasl
->>   and rebuild QEMU in order to pick up the iasl location. One cannot =
-simply
->>   use the existing bios-tables-test binary because CONFIG_IASL is =
-only set
->>   during the QEMU build time by meson and then bios-tables-test has =
-to be
->>   rebuilt with CONFIG_IASL set in order to use iasl.
->> - Sometimes, the stock iasl that comes with distributions is simply =
-not good
->>   enough because it does not support the latest ACPI changes - newly
->>   introduced tables or new table attributes etc. In order to test =
-ACPI code
->>   in QEMU, one has to clone the latest acpica upstream repository and
->>   rebuild iasl in order to get support for it. In those cases, one =
-may want
->>   the test to use the iasl binary from a non-standard location.
->>=20
->> In order to overcome the above two disadvantages, we introduce a new
->> environment variable IASL_PATH that can be set by the tester pointing =
-to an
->> possibly non-standard iasl binary location. Bios-tables-test then =
-uses this
->> environment variable to set its iasl location, possibly also =
-overriding the
->> location that was pointed to by CONFIG_IASL that was set by meson. =
-This way
->> developers can not only use this new environment variable to set iasl
->> location to quickly run bios-tables-test but also can point the test =
-to a
->> custom iasl if required.
->>=20
->> [1] =
-https://mesonbuild.com/Reference-manual_functions.html#find_program
->>=20
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> On Tue, May 16, 2023 at 11:04:21AM -0500, Jonathon Jongsma wrote:
+> > On 5/15/23 5:10 AM, Stefano Garzarella wrote:
+> > > On Thu, May 11, 2023 at 11:03:22AM -0500, Jonathon Jongsma wrote:
+> > > > On 5/11/23 4:15 AM, Stefano Garzarella wrote:
+> > > > > The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the n=
+ew
+> > > > > 'fd' property. Let's expose this to the user, so the management l=
+ayer
+> > > > > can pass the file descriptor of an already opened vhost-vdpa char=
+acter
+> > > > > device. This is useful especially when the device can only be acc=
+essed
+> > > > > with certain privileges.
+> > > > >=20
+> > > > > If the libblkio virtio-blk driver supports fd passing, let's alwa=
+ys
+> > > > > use qemu_open() to open the `path`, so we can handle fd passing
+> > > > > from the management layer through the "/dev/fdset/N" special path.
+> > > > >=20
+> > > > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> > > > > ---
+> > > > >=20
+> > > > > Notes:
+> > > > > =A0=A0=A0 v3:
+> > > > > =A0=A0=A0 - use qemu_open() on `path` to simplify libvirt code [J=
+onathon]
+> > > >=20
+> > > >=20
+> > > > Thanks
+> > > >=20
+> > > > The one drawback now is that it doesn't seem possible for
+> > > > libvirt to introspect whether or not qemu supports passing an fd
+> > > > to the driver or not.
+> > >=20
+> > > Yep, this was because the libblkio library did not support this new w=
+ay.
+> > >=20
+> > > > When I was writing my initial patch (before I realized that it
+> > > > was missing fd-passing), I just checked for the existence of the
+> > > > virtio-blk-vhost-vdpa device. But we actually need to know both
+> > > > that this device exists and supports fd passing.
+> > >=20
+> > > Yep, this was one of the advantages of using the new `fd` parameter.
+> > > Can't libvirt handle the later failure?
+> >=20
+> > Not very well. libvirt tries to provide useful errors to the user. So
+> > for example if the qemu executable doesn't support a device, we would
+> > want to provide an error indicating that the device is not supported
+> > rather than a possibly-inscrutable qemu error.
+> >=20
+> > For example, in this scenario, we would want an error such as:
+> >=20
+> > error: unsupported configuration: vhostvdpa disk is not supported with
+> > this QEMU binary
+> >=20
+> > Instead of:
+> >=20
+> > error: internal error: qemu unexpectedly closed the monitor:
+> > 2023-05-16T15:17:36.666129Z qemu-system-x86_64: -blockdev {"driver":"vi=
+rtio-blk-vhost-vdpa","path":"/dev/fdset/0","node-name":"libvirt-1-storage",=
+"cache":{"direct":true,"no-flush":false},"auto-read-only":true,"discard":"u=
+nmap"}:
+> > blkio_connect failed: Failed to connect to vDPA device: Input/output
+> > error
+> >=20
+> > And we can only do that if we can determine that the binary has the
+> > proper support for fds.
 >=20
-> Well I think the point was originally that meson can
-> also test the binary in a variety of ways.
-> Never surfaced so maybe never mind.
+> I see the problem, thanks for explaining this!
 >=20
-> Would it be easier to just look iasl up on path
+> >=20
+> > >=20
+> > > > As far as I can tell, versions 7.2.0 and 8.0.0 include this
+> > > > device but won't accept fds.
+> > >=20
+> > > Right.
+> > >=20
+> > > How do you suggest to proceed?
+> >=20
+> > I need some way to determine that the particular qemu binary can accept
+> > a /dev/fdset/ path for vdpa block devices. libvirt uses a variety of
+> > methods to determine capabilities for a given qemu binary, including
+> > querying the qmp schema, commands, object types, specific device/object
+> > properties, etc. For example, right now I can determine (via querying
+> > the qmp schema) whether virtio-blk-vhost-vdpa is a valid type for the
+> > blockdev-add command by querying the qmp schema. I need something more
+> > than that but I'm not sure how to do it without introducing a separate
+> > 'fd' parameter. Any ideas?
+>=20
+> The only thing I can think of is to make a mix between v2 and v3. I mean =
+add
+> both the new `fd` parameter, and support qemu_open() on `path`.
+>=20
+> That way libvirt (or other users) can check that fd passing is supported =
+and
+> use `fd` or fdset with `path`.
+>=20
+> Obviously I would have liked to implement only one of the two methods, but
+> if this helps, maybe it makes sense to support both.
+>=20
+> What do you think?
 
-But that=E2=80=99s what meson is also doing, only QEMU build time.
+Markus: Is a preferred way to make this new path handling behavior
+introspectable? I vaguely remember a way for QMP clients to query
+strings that describe QMP behavior that's not otherwise
+introspectable...
 
-> unless it was specified on command line?
->=20
->> ---
->> tests/qtest/bios-tables-test.c | 14 ++++++++++++++
->> 1 file changed, 14 insertions(+)
->>=20
->> sample runs:
->>=20
->> $ QTEST_QEMU_BINARY=3D./qemu-system-x86_64 V=3D2 =
-./tests/qtest/bios-tables-test
->> ...
->> acpi-test: Warning! APIC binary file mismatch. Actual =
-[aml:/tmp/aml-DLHA51], Expected [aml:tests/data/acpi/pc/APIC].
->> See source file tests/qtest/bios-tables-test.c for instructions on =
-how to update expected files.
->> Using iasl: /usr/bin/iasl
->> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-L9GA51.dsl, =
-aml:/tmp/aml-DLHA51], Expected [asl:/tmp/asl-10EA51.dsl, =
-aml:tests/data/acpi/pc/APIC].
->>=20
->> $ QTEST_QEMU_BINARY=3D./qemu-system-x86_64 V=3D2 =
-IASL_PATH=3D/home/anisinha/workspace/acpica/generate/unix/bin/iasl =
-./tests/qtest/bios-tables-test
->> ...
->> acpi-test: Warning! APIC binary file mismatch. Actual =
-[aml:/tmp/aml-5CQ341], Expected [aml:tests/data/acpi/pc/APIC].
->> See source file tests/qtest/bios-tables-test.c for instructions on =
-how to update expected files.
->> User has provided an iasl path, using that: =
-/home/anisinha/workspace/acpica/generate/unix/bin/iasl
->> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-2GQ341.dsl, =
-aml:/tmp/aml-5CQ341], Expected [asl:/tmp/asl-IBR341.dsl, =
-aml:tests/data/acpi/pc/APIC].
->>=20
->> diff --git a/tests/qtest/bios-tables-test.c =
-b/tests/qtest/bios-tables-test.c
->> index 7fd88b0e9c..37e8e484cb 100644
->> --- a/tests/qtest/bios-tables-test.c
->> +++ b/tests/qtest/bios-tables-test.c
->> @@ -440,7 +440,12 @@ static void test_acpi_asl(test_data *data)
->>     AcpiSdtTable *sdt, *exp_sdt;
->>     test_data exp_data =3D {};
->>     gboolean exp_err, err, all_tables_match =3D true;
->> +    const char *user_iasl_path =3D getenv("IASL_PATH");
->>=20
->> +    /* if user has provided a path to iasl, use that */
->> +    if (user_iasl_path) {
->> +        iasl =3D user_iasl_path;
->> +    }
->>     exp_data.tables =3D load_expected_aml(data);
->>     dump_aml_files(data, false);
->>     for (i =3D 0; i < data->tables->len; ++i) {
->> @@ -473,6 +478,15 @@ static void test_acpi_asl(test_data *data)
->>             continue;
->>         }
->>=20
->> +        if (verbosity_level >=3D 2) {
->> +            if (user_iasl_path) {
->> +                fprintf(stderr, "User has provided an iasl path," \
->> +                        "using that: %s\n", user_iasl_path);
->> +            } else {
->> +                fprintf(stderr, "Using iasl: %s\n", iasl);
->> +            }
->> +        }
->> +
->>         err =3D load_asl(data->tables, sdt);
->>         asl =3D normalize_asl(sdt->asl);
->>=20
->> --=20
->> 2.39.1
+Stefan
+
+--l5BtPLUBOc+wpmLe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRk5P8ACgkQnKSrs4Gr
+c8jpkggAohG+JkRQpYjRoNhM8BREJVa4SSh7T0v1Jnw7cnER/neC23EcLwfVGq7M
+Sr0713TdfK24V0oJ11TFMc6BppI/X/W37tmUv06xlykYLBDJbs50DfWjcSyB/tbl
+spJy5IRC6GvtCddbtqIIO9F7MqMeXnllw3o5n1EDPJgTV36W9TqBDpAM1E1hiKKW
+MQhzfERZEwnDiHnzmEqEil7VCEAG8EuYy9mhKwyQUiMrviet55wqzN4jrhM0aLKC
+tAvIBhTGdKMhm27jpEcsdmWej06Qq+f8IFL214NZy8Fq2xoGuW3TszV8S4XMLjvn
++bTThF2t4nz8Oz3aZk5TzcFqdXSUiA==
+=JU8/
+-----END PGP SIGNATURE-----
+
+--l5BtPLUBOc+wpmLe--
 
 
