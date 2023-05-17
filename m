@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A462F706CDE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B48C5706CD9
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:29:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJ5D-0002OU-CU; Wed, 17 May 2023 11:28:55 -0400
+	id 1pzJ5D-0002QA-TT; Wed, 17 May 2023 11:28:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ59-0002Md-Sy
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:51 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ5C-0002O6-4U
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ57-0000tn-Rb
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:51 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ5A-0000ug-Kq
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684337329;
+ s=mimecast20190719; t=1684337331;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=71BCgfGW3jfYqjQHSMUd2R17uTz6MCoIV8/vS9j2Si0=;
- b=KUWKR9AwdqXOE+EV+YmxjN5N38uQDjrHXuJyonRByNfgsAdJPtUINY8JSS68/MMLPm1v3m
- m4lzZ4ouwG19VVqRQD/ILfbwe/9AYsSg3/b8/Hc28XEklHp14G2xEI36DgDOK/SoTXL4+K
- K2hnPFrP0uVrniSvZ8841hUNeapWcKw=
+ bh=lFLcuMrJ88uqg8RrGhan+Qhyt2kDwpqYecyh3DxualQ=;
+ b=XGZZyklmTbseTMlS1WpKICpWtmG8sFIvhCU3GW6JZI+U49Ej1BAt9duXEQIVRWB0V8iJ6S
+ Ny0xm7yqcXmQ7j0g++SoOUBpp0+3gyDteYrYzI5XqV/S7GKKWJsgTg9GLC3ZX82ijjNYL4
+ vwhXR0rAdwfnkOpwC2ALZNCmBJ/3Kyw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-259-j0MOZfpPNIaX0vjPHNxrcA-1; Wed, 17 May 2023 11:28:47 -0400
-X-MC-Unique: j0MOZfpPNIaX0vjPHNxrcA-1
+ us-mta-39-RvarhIJpN2qEgRF8CoXPAw-1; Wed, 17 May 2023 11:28:50 -0400
+X-MC-Unique: RvarhIJpN2qEgRF8CoXPAw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43B458EFF1F;
- Wed, 17 May 2023 15:28:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C35AA87DC1E;
+ Wed, 17 May 2023 15:28:42 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E92631121315;
- Wed, 17 May 2023 15:28:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7BBF81121314;
+ Wed, 17 May 2023 15:28:41 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, mjt@tls.msk.ru,
  eblake@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org,
  qemu-stable@nongnu.org
-Subject: [PATCH 2/3] nbd/server: Fix drained_poll to wake coroutine in right
- AioContext
-Date: Wed, 17 May 2023 17:28:33 +0200
-Message-Id: <20230517152834.277483-3-kwolf@redhat.com>
+Subject: [PATCH 3/3] iotests: Test commit with iothreads and ongoing I/O
+Date: Wed, 17 May 2023 17:28:34 +0200
+Message-Id: <20230517152834.277483-4-kwolf@redhat.com>
 In-Reply-To: <20230517152834.277483-1-kwolf@redhat.com>
 References: <20230517152834.277483-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -62,7 +61,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,143 +77,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-nbd_drained_poll() generally runs in the main thread, not whatever
-iothread the NBD server coroutine is meant to run in, so it can't
-directly reenter the coroutines to wake them up.
+This tests exercises graph locking, draining, and graph modifications
+with AioContext switches a lot. Amongst others, it serves as a
+regression test for bdrv_graph_wrlock() deadlocking because it is called
+with a locked AioContext and for AioContext handling in the NBD server.
 
-The code seems to have the right intention, it specifies the correct
-AioContext when it calls qemu_aio_coroutine_enter(). However, this
-functions doesn't schedule the coroutine to run in that AioContext, but
-it assumes it is already called in the home thread of the AioContext.
-
-To fix this, add a new thread-safe qio_channel_wake_read() that can be
-called in the main thread to wake up the coroutine in its AioContext,
-and use this in nbd_drained_poll().
-
-Cc: qemu-stable@nongnu.org
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/io/channel.h | 10 ++++++++++
- io/channel.c         | 33 +++++++++++++++++++++++++++------
- nbd/server.c         |  3 +--
- 3 files changed, 38 insertions(+), 8 deletions(-)
+ tests/qemu-iotests/iotests.py                 |  4 ++
+ .../qemu-iotests/tests/graph-changes-while-io | 56 +++++++++++++++++--
+ .../tests/graph-changes-while-io.out          |  4 +-
+ 3 files changed, 58 insertions(+), 6 deletions(-)
 
-diff --git a/include/io/channel.h b/include/io/channel.h
-index 446a566e5e..229bf36910 100644
---- a/include/io/channel.h
-+++ b/include/io/channel.h
-@@ -757,6 +757,16 @@ void qio_channel_detach_aio_context(QIOChannel *ioc);
- void coroutine_fn qio_channel_yield(QIOChannel *ioc,
-                                     GIOCondition condition);
+diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
+index 3e82c634cf..7073579a7d 100644
+--- a/tests/qemu-iotests/iotests.py
++++ b/tests/qemu-iotests/iotests.py
+@@ -462,6 +462,10 @@ def qmp(self, cmd: str, args: Optional[Dict[str, object]] = None) \
+         assert self._qmp is not None
+         return self._qmp.cmd(cmd, args)
  
-+/**
-+ * qio_channel_wake_read:
-+ * @ioc: the channel object
-+ *
-+ * If qio_channel_yield() is currently waiting for the channel to become
-+ * readable, interrupt it and reenter immediately. This function is safe to call
-+ * from any thread.
-+ */
-+void qio_channel_wake_read(QIOChannel *ioc);
++    def get_qmp(self) -> QEMUMonitorProtocol:
++        assert self._qmp is not None
++        return self._qmp
 +
- /**
-  * qio_channel_wait:
-  * @ioc: the channel object
-diff --git a/io/channel.c b/io/channel.c
-index 375a130a39..72f0066af5 100644
---- a/io/channel.c
-+++ b/io/channel.c
-@@ -19,6 +19,7 @@
-  */
+     def stop(self, kill_signal=15):
+         self._p.send_signal(kill_signal)
+         self._p.wait()
+diff --git a/tests/qemu-iotests/tests/graph-changes-while-io b/tests/qemu-iotests/tests/graph-changes-while-io
+index 7664f33689..750e7d4d38 100755
+--- a/tests/qemu-iotests/tests/graph-changes-while-io
++++ b/tests/qemu-iotests/tests/graph-changes-while-io
+@@ -22,19 +22,19 @@
+ import os
+ from threading import Thread
+ import iotests
+-from iotests import imgfmt, qemu_img, qemu_img_create, QMPTestCase, \
+-        QemuStorageDaemon
++from iotests import imgfmt, qemu_img, qemu_img_create, qemu_io, \
++        QMPTestCase, QemuStorageDaemon
  
- #include "qemu/osdep.h"
-+#include "block/aio-wait.h"
- #include "io/channel.h"
- #include "qapi/error.h"
- #include "qemu/main-loop.h"
-@@ -514,7 +515,11 @@ int qio_channel_flush(QIOChannel *ioc,
- static void qio_channel_restart_read(void *opaque)
- {
-     QIOChannel *ioc = opaque;
--    Coroutine *co = ioc->read_coroutine;
-+    Coroutine *co = qatomic_xchg(&ioc->read_coroutine, NULL);
+ 
+ top = os.path.join(iotests.test_dir, 'top.img')
+ nbd_sock = os.path.join(iotests.sock_dir, 'nbd.sock')
+ 
+ 
+-def do_qemu_img_bench() -> None:
++def do_qemu_img_bench(count: int = 2000000) -> None:
+     """
+     Do some I/O requests on `nbd_sock`.
+     """
+-    qemu_img('bench', '-f', 'raw', '-c', '2000000',
++    qemu_img('bench', '-f', 'raw', '-c', str(count),
+              f'nbd+unix:///node0?socket={nbd_sock}')
+ 
+ 
+@@ -84,6 +84,54 @@ class TestGraphChangesWhileIO(QMPTestCase):
+ 
+         bench_thr.join()
+ 
++    def test_commit_while_io(self) -> None:
++        # Run qemu-img bench in the background
++        bench_thr = Thread(target=do_qemu_img_bench, args=(200000, ))
++        bench_thr.start()
 +
-+    if (!co) {
-+        return;
-+    }
- 
-     /* Assert that aio_co_wake() reenters the coroutine directly */
-     assert(qemu_get_current_aio_context() ==
-@@ -525,7 +530,11 @@ static void qio_channel_restart_read(void *opaque)
- static void qio_channel_restart_write(void *opaque)
- {
-     QIOChannel *ioc = opaque;
--    Coroutine *co = ioc->write_coroutine;
-+    Coroutine *co = qatomic_xchg(&ioc->write_coroutine, NULL);
++        qemu_io('-c', 'write 0 64k', top)
++        qemu_io('-c', 'write 128k 64k', top)
 +
-+    if (!co) {
-+        return;
-+    }
- 
-     /* Assert that aio_co_wake() reenters the coroutine directly */
-     assert(qemu_get_current_aio_context() ==
-@@ -568,7 +577,11 @@ void qio_channel_detach_aio_context(QIOChannel *ioc)
- void coroutine_fn qio_channel_yield(QIOChannel *ioc,
-                                     GIOCondition condition)
- {
-+    AioContext *ioc_ctx = ioc->ctx ?: qemu_get_aio_context();
++        result = self.qsd.qmp('blockdev-add', {
++            'driver': imgfmt,
++            'node-name': 'overlay',
++            'backing': None,
++            'file': {
++                'driver': 'file',
++                'filename': top
++            }
++        })
++        self.assert_qmp(result, 'return', {})
 +
-     assert(qemu_in_coroutine());
-+    assert(in_aio_context_home_thread(ioc_ctx));
++        result = self.qsd.qmp('blockdev-snapshot', {
++            'node': 'node0',
++            'overlay': 'overlay',
++        })
++        self.assert_qmp(result, 'return', {})
 +
-     if (condition == G_IO_IN) {
-         assert(!ioc->read_coroutine);
-         ioc->read_coroutine = qemu_coroutine_self();
-@@ -580,18 +593,26 @@ void coroutine_fn qio_channel_yield(QIOChannel *ioc,
-     }
-     qio_channel_set_aio_fd_handlers(ioc);
-     qemu_coroutine_yield();
-+    assert(in_aio_context_home_thread(ioc_ctx));
++        # While qemu-img bench is running, repeatedly commit overlay to node0
++        while bench_thr.is_alive():
++            result = self.qsd.qmp('block-commit', {
++                'job-id': 'job0',
++                'device': 'overlay',
++            })
++            self.assert_qmp(result, 'return', {})
++
++            result = self.qsd.qmp('block-job-cancel', {
++                'device': 'job0',
++            })
++            self.assert_qmp(result, 'return', {})
++
++            cancelled = False
++            while not cancelled:
++                for event in self.qsd.get_qmp().get_events(wait=10.0):
++                    if event['event'] != 'JOB_STATUS_CHANGE':
++                        continue
++                    if event['data']['status'] == 'null':
++                        cancelled = True
++
++        bench_thr.join()
++
+ if __name__ == '__main__':
+     # Format must support raw backing files
+     iotests.main(supported_fmts=['qcow', 'qcow2', 'qed'],
+diff --git a/tests/qemu-iotests/tests/graph-changes-while-io.out b/tests/qemu-iotests/tests/graph-changes-while-io.out
+index ae1213e6f8..fbc63e62f8 100644
+--- a/tests/qemu-iotests/tests/graph-changes-while-io.out
++++ b/tests/qemu-iotests/tests/graph-changes-while-io.out
+@@ -1,5 +1,5 @@
+-.
++..
+ ----------------------------------------------------------------------
+-Ran 1 tests
++Ran 2 tests
  
-     /* Allow interrupting the operation by reentering the coroutine other than
-      * through the aio_fd_handlers. */
--    if (condition == G_IO_IN && ioc->read_coroutine) {
--        ioc->read_coroutine = NULL;
-+    if (condition == G_IO_IN) {
-+        assert(ioc->read_coroutine == NULL);
-         qio_channel_set_aio_fd_handlers(ioc);
--    } else if (condition == G_IO_OUT && ioc->write_coroutine) {
--        ioc->write_coroutine = NULL;
-+    } else if (condition == G_IO_OUT) {
-+        assert(ioc->write_coroutine == NULL);
-         qio_channel_set_aio_fd_handlers(ioc);
-     }
- }
- 
-+void qio_channel_wake_read(QIOChannel *ioc)
-+{
-+    Coroutine *co = qatomic_xchg(&ioc->read_coroutine, NULL);
-+    if (co) {
-+        aio_co_wake(co);
-+    }
-+}
- 
- static gboolean qio_channel_wait_complete(QIOChannel *ioc,
-                                           GIOCondition condition,
-diff --git a/nbd/server.c b/nbd/server.c
-index e239c2890f..2664d43bff 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -1599,8 +1599,7 @@ static bool nbd_drained_poll(void *opaque)
-              * enter it here so we don't depend on the client to wake it up.
-              */
-             if (client->recv_coroutine != NULL && client->read_yielding) {
--                qemu_aio_coroutine_enter(exp->common.ctx,
--                                         client->recv_coroutine);
-+                qio_channel_wake_read(client->ioc);
-             }
- 
-             return true;
+ OK
 -- 
 2.40.1
 
