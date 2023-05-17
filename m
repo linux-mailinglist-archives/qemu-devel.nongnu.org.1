@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D13B7063B1
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 038E67063AC
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDBS-0000FW-SW; Wed, 17 May 2023 05:10:59 -0400
+	id 1pzDBn-0000wB-Jv; Wed, 17 May 2023 05:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDBO-0000C4-Rn; Wed, 17 May 2023 05:10:54 -0400
+ id 1pzDBi-0000uB-A9; Wed, 17 May 2023 05:11:14 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDBL-0006Nn-7K; Wed, 17 May 2023 05:10:53 -0400
+ id 1pzDBg-0006OU-Bx; Wed, 17 May 2023 05:11:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7F5E66830;
+ by isrv.corpit.ru (Postfix) with ESMTP id A3AD36831;
  Wed, 17 May 2023 12:10:44 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E905E5EFD;
- Wed, 17 May 2023 12:10:43 +0300 (MSK)
-Received: (nullmailer pid 3626696 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 15C8C5F01;
+ Wed, 17 May 2023 12:10:44 +0300 (MSK)
+Received: (nullmailer pid 3626699 invoked by uid 1000);
  Wed, 17 May 2023 09:10:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v7.2.3 10/30] hw/arm/raspi: Use arm_write_bootloader() to
- write boot code
-Date: Wed, 17 May 2023 12:10:22 +0300
-Message-Id: <20230517091042.3626593-10-mjt@msgid.tls.msk.ru>
+Subject: [PATCH v7.2.3 11/30] hw/intc/allwinner-a10-pic: Don't use
+ set_bit()/clear_bit()
+Date: Wed, 17 May 2023 12:10:23 +0300
+Message-Id: <20230517091042.3626593-11-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
 References: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
@@ -64,127 +64,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-When writing the secondary-CPU stub boot loader code to the guest,
-use arm_write_bootloader() instead of directly calling
-rom_add_blob_fixed().  This fixes a bug on big-endian hosts, because
-arm_write_bootloader() will correctly byte-swap the host-byte-order
-array values into the guest-byte-order to write into the guest
-memory.
+The Allwinner PIC model uses set_bit() and clear_bit() to update the
+values in its irq_pending[] array when an interrupt arrives.  However
+it is using these functions wrongly: they work on an array of type
+'long', and it is passing an array of type 'uint32_t'.  Because the
+code manually figures out the right array element, this works on
+little-endian hosts and on 32-bit big-endian hosts, where bits 0..31
+in a 'long' are in the same place as they are in a 'uint32_t'.
+However it breaks on 64-bit big-endian hosts.
+
+Remove the use of set_bit() and clear_bit() in favour of using
+deposit32() on the array element.  This fixes a bug where on
+big-endian 64-bit hosts the guest kernel would hang early on in
+bootup.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Tested-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230424152717.1333930-4-peter.maydell@linaro.org
-(cherry picked from commit 0acbdb4c4ab6b0a09f159bae4899b0737cf64242)
+Message-id: 20230424152833.1334136-1-peter.maydell@linaro.org
+(cherry picked from commit 2c5fa0778c3b4307f9f3af7f27886c46d129c62f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/arm/raspi.c | 64 +++++++++++++++++++++++++++-----------------------
- 1 file changed, 34 insertions(+), 30 deletions(-)
+ hw/intc/allwinner-a10-pic.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
-index 92d068d1f9..a7d287b1a8 100644
---- a/hw/arm/raspi.c
-+++ b/hw/arm/raspi.c
-@@ -16,6 +16,7 @@
- #include "qemu/units.h"
- #include "qemu/cutils.h"
- #include "qapi/error.h"
-+#include "hw/arm/boot.h"
- #include "hw/arm/bcm2836.h"
- #include "hw/registerfields.h"
- #include "qemu/error-report.h"
-@@ -124,20 +125,22 @@ static const char *board_type(uint32_t board_rev)
- 
- static void write_smpboot(ARMCPU *cpu, const struct arm_boot_info *info)
+diff --git a/hw/intc/allwinner-a10-pic.c b/hw/intc/allwinner-a10-pic.c
+index 8cca124807..4875e68ba6 100644
+--- a/hw/intc/allwinner-a10-pic.c
++++ b/hw/intc/allwinner-a10-pic.c
+@@ -49,12 +49,9 @@ static void aw_a10_pic_update(AwA10PICState *s)
+ static void aw_a10_pic_set_irq(void *opaque, int irq, int level)
  {
--    static const uint32_t smpboot[] = {
--        0xe1a0e00f, /*    mov     lr, pc */
--        0xe3a0fe00 + (BOARDSETUP_ADDR >> 4), /* mov pc, BOARDSETUP_ADDR */
--        0xee100fb0, /*    mrc     p15, 0, r0, c0, c0, 5;get core ID */
--        0xe7e10050, /*    ubfx    r0, r0, #0, #2       ;extract LSB */
--        0xe59f5014, /*    ldr     r5, =0x400000CC      ;load mbox base */
--        0xe320f001, /* 1: yield */
--        0xe7953200, /*    ldr     r3, [r5, r0, lsl #4] ;read mbox for our core*/
--        0xe3530000, /*    cmp     r3, #0               ;spin while zero */
--        0x0afffffb, /*    beq     1b */
--        0xe7853200, /*    str     r3, [r5, r0, lsl #4] ;clear mbox */
--        0xe12fff13, /*    bx      r3                   ;jump to target */
--        0x400000cc, /* (constant: mailbox 3 read/clear base) */
-+    static const ARMInsnFixup smpboot[] = {
-+        { 0xe1a0e00f }, /*    mov     lr, pc */
-+        { 0xe3a0fe00 + (BOARDSETUP_ADDR >> 4) }, /* mov pc, BOARDSETUP_ADDR */
-+        { 0xee100fb0 }, /*    mrc     p15, 0, r0, c0, c0, 5;get core ID */
-+        { 0xe7e10050 }, /*    ubfx    r0, r0, #0, #2       ;extract LSB */
-+        { 0xe59f5014 }, /*    ldr     r5, =0x400000CC      ;load mbox base */
-+        { 0xe320f001 }, /* 1: yield */
-+        { 0xe7953200 }, /*    ldr     r3, [r5, r0, lsl #4] ;read mbox for our core */
-+        { 0xe3530000 }, /*    cmp     r3, #0               ;spin while zero */
-+        { 0x0afffffb }, /*    beq     1b */
-+        { 0xe7853200 }, /*    str     r3, [r5, r0, lsl #4] ;clear mbox */
-+        { 0xe12fff13 }, /*    bx      r3                   ;jump to target */
-+        { 0x400000cc }, /* (constant: mailbox 3 read/clear base) */
-+        { 0, FIXUP_TERMINATOR }
-     };
-+    static const uint32_t fixupcontext[FIXUP_MAX] = { 0 };
+     AwA10PICState *s = opaque;
++    uint32_t *pending_reg = &s->irq_pending[irq / 32];
  
-     /* check that we don't overrun board setup vectors */
-     QEMU_BUILD_BUG_ON(SMPBOOT_ADDR + sizeof(smpboot) > MVBAR_ADDR);
-@@ -145,9 +148,8 @@ static void write_smpboot(ARMCPU *cpu, const struct arm_boot_info *info)
-     QEMU_BUILD_BUG_ON((BOARDSETUP_ADDR & 0xf) != 0
-                       || (BOARDSETUP_ADDR >> 4) >= 0x100);
- 
--    rom_add_blob_fixed_as("raspi_smpboot", smpboot, sizeof(smpboot),
--                          info->smp_loader_start,
--                          arm_boot_address_space(cpu, info));
-+    arm_write_bootloader("raspi_smpboot", arm_boot_address_space(cpu, info),
-+                         info->smp_loader_start, smpboot, fixupcontext);
+-    if (level) {
+-        set_bit(irq % 32, (void *)&s->irq_pending[irq / 32]);
+-    } else {
+-        clear_bit(irq % 32, (void *)&s->irq_pending[irq / 32]);
+-    }
++    *pending_reg = deposit32(*pending_reg, irq % 32, 1, level);
+     aw_a10_pic_update(s);
  }
  
- static void write_smpboot64(ARMCPU *cpu, const struct arm_boot_info *info)
-@@ -161,26 +163,28 @@ static void write_smpboot64(ARMCPU *cpu, const struct arm_boot_info *info)
-      * the primary CPU goes into the kernel. We put these variables inside
-      * a rom blob, so that the reset for ROM contents zeroes them for us.
-      */
--    static const uint32_t smpboot[] = {
--        0xd2801b05, /*        mov     x5, 0xd8 */
--        0xd53800a6, /*        mrs     x6, mpidr_el1 */
--        0x924004c6, /*        and     x6, x6, #0x3 */
--        0xd503205f, /* spin:  wfe */
--        0xf86678a4, /*        ldr     x4, [x5,x6,lsl #3] */
--        0xb4ffffc4, /*        cbz     x4, spin */
--        0xd2800000, /*        mov     x0, #0x0 */
--        0xd2800001, /*        mov     x1, #0x0 */
--        0xd2800002, /*        mov     x2, #0x0 */
--        0xd2800003, /*        mov     x3, #0x0 */
--        0xd61f0080, /*        br      x4 */
-+    static const ARMInsnFixup smpboot[] = {
-+        { 0xd2801b05 }, /*        mov     x5, 0xd8 */
-+        { 0xd53800a6 }, /*        mrs     x6, mpidr_el1 */
-+        { 0x924004c6 }, /*        and     x6, x6, #0x3 */
-+        { 0xd503205f }, /* spin:  wfe */
-+        { 0xf86678a4 }, /*        ldr     x4, [x5,x6,lsl #3] */
-+        { 0xb4ffffc4 }, /*        cbz     x4, spin */
-+        { 0xd2800000 }, /*        mov     x0, #0x0 */
-+        { 0xd2800001 }, /*        mov     x1, #0x0 */
-+        { 0xd2800002 }, /*        mov     x2, #0x0 */
-+        { 0xd2800003 }, /*        mov     x3, #0x0 */
-+        { 0xd61f0080 }, /*        br      x4 */
-+        { 0, FIXUP_TERMINATOR }
-     };
-+    static const uint32_t fixupcontext[FIXUP_MAX] = { 0 };
- 
-     static const uint64_t spintables[] = {
-         0, 0, 0, 0
-     };
- 
--    rom_add_blob_fixed_as("raspi_smpboot", smpboot, sizeof(smpboot),
--                          info->smp_loader_start, as);
-+    arm_write_bootloader("raspi_smpboot", as, info->smp_loader_start,
-+                         smpboot, fixupcontext);
-     rom_add_blob_fixed_as("raspi_spintables", spintables, sizeof(spintables),
-                           SPINTABLE_ADDR, as);
- }
 -- 
 2.39.2
 
