@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBE27063CA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B637063C8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:15:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDCm-0003H6-6z; Wed, 17 May 2023 05:12:20 -0400
+	id 1pzDCq-0003lr-3s; Wed, 17 May 2023 05:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDC4-0001Sb-Dz; Wed, 17 May 2023 05:11:36 -0400
+ id 1pzDC7-0001gR-Dx; Wed, 17 May 2023 05:11:39 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDC2-0006UF-FN; Wed, 17 May 2023 05:11:36 -0400
+ id 1pzDC4-0006V4-OF; Wed, 17 May 2023 05:11:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BCDCD6840;
+ by isrv.corpit.ru (Postfix) with ESMTP id EA61D6841;
  Wed, 17 May 2023 12:10:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2DA295F11;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5253F5F12;
  Wed, 17 May 2023 12:10:46 +0300 (MSK)
-Received: (nullmailer pid 3626745 invoked by uid 1000);
+Received: (nullmailer pid 3626748 invoked by uid 1000);
  Wed, 17 May 2023 09:10:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v7.2.3 26/30] target/s390x: Fix EXECUTE of relative branches
-Date: Wed, 17 May 2023 12:10:38 +0300
-Message-Id: <20230517091042.3626593-26-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Jason Andryuk <jandryuk@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>
+Subject: [PATCH v7.2.3 27/30] 9pfs/xen: Fix segfault on shutdown
+Date: Wed, 17 May 2023 12:10:39 +0300
+Message-Id: <20230517091042.3626593-27-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
 References: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
@@ -61,207 +60,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Jason Andryuk <jandryuk@gmail.com>
 
-Fix a problem similar to the one fixed by commit 703d03a4aaf3
-("target/s390x: Fix EXECUTE of relative long instructions"), but now
-for relative branches.
+xen_9pfs_free can't use gnttabdev since it is already closed and NULL-ed
+out when free is called.  Do the teardown in _disconnect().  This
+matches the setup done in _connect().
 
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit e8ecdfeb30f087574191cde523e846e023911c8d)
+trace-events are also added for the XenDevOps functions.
+
+Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+[C.S.: - Remove redundant return in xen_9pfs_free().
+       - Add comment to trace-events. ]
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+(cherry picked from commit 92e667f6fd5806a6a705a2a43e572bd9ec6819da)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: minor context conflict in hw/9pfs/xen-9p-backend.c)
 ---
- target/s390x/tcg/translate.c | 81 ++++++++++++++++++++++++++----------
- 1 file changed, 58 insertions(+), 23 deletions(-)
+ hw/9pfs/trace-events     |  6 ++++++
+ hw/9pfs/xen-9p-backend.c | 35 ++++++++++++++++++++++-------------
+ 2 files changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index e328aa5b97..0885bf2641 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -1585,18 +1585,51 @@ static DisasJumpType op_bal(DisasContext *s, DisasOps *o)
-     }
- }
- 
-+/*
-+ * Disassemble the target of a branch. The results are returned in a form
-+ * suitable for passing into help_branch():
-+ *
-+ * - bool IS_IMM reflects whether the target is fixed or computed. Non-EXECUTEd
-+ *   branches, whose DisasContext *S contains the relative immediate field RI,
-+ *   are considered fixed. All the other branches are considered computed.
-+ * - int IMM is the value of RI.
-+ * - TCGv_i64 CDEST is the address of the computed target.
-+ */
-+#define disas_jdest(s, ri, is_imm, imm, cdest) do {                            \
-+    if (have_field(s, ri)) {                                                   \
-+        if (unlikely(s->ex_value)) {                                           \
-+            cdest = tcg_temp_new_i64();                                        \
-+            tcg_gen_ld_i64(cdest, cpu_env, offsetof(CPUS390XState, ex_target));\
-+            tcg_gen_addi_i64(cdest, cdest, (int64_t)get_field(s, ri) * 2);     \
-+            is_imm = false;                                                    \
-+        } else {                                                               \
-+            is_imm = true;                                                     \
-+        }                                                                      \
-+    } else {                                                                   \
-+        is_imm = false;                                                        \
-+    }                                                                          \
-+    imm = is_imm ? get_field(s, ri) : 0;                                       \
-+} while (false)
+diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
+index 6c77966c0b..a12e55c165 100644
+--- a/hw/9pfs/trace-events
++++ b/hw/9pfs/trace-events
+@@ -48,3 +48,9 @@ v9fs_readlink(uint16_t tag, uint8_t id, int32_t fid) "tag %d id %d fid %d"
+ v9fs_readlink_return(uint16_t tag, uint8_t id, char* target) "tag %d id %d name %s"
+ v9fs_setattr(uint16_t tag, uint8_t id, int32_t fid, int32_t valid, int32_t mode, int32_t uid, int32_t gid, int64_t size, int64_t atime_sec, int64_t mtime_sec) "tag %u id %u fid %d iattr={valid %d mode %d uid %d gid %d size %"PRId64" atime=%"PRId64" mtime=%"PRId64" }"
+ v9fs_setattr_return(uint16_t tag, uint8_t id) "tag %u id %u"
 +
- static DisasJumpType op_basi(DisasContext *s, DisasOps *o)
- {
-+    DisasCompare c;
-+    bool is_imm;
-+    int imm;
++# xen-9p-backend.c
++xen_9pfs_alloc(char *name) "name %s"
++xen_9pfs_connect(char *name) "name %s"
++xen_9pfs_disconnect(char *name) "name %s"
++xen_9pfs_free(char *name) "name %s"
+diff --git a/hw/9pfs/xen-9p-backend.c b/hw/9pfs/xen-9p-backend.c
+index 65c4979c3c..ab1df8dd2f 100644
+--- a/hw/9pfs/xen-9p-backend.c
++++ b/hw/9pfs/xen-9p-backend.c
+@@ -24,6 +24,8 @@
+ #include "qemu/option.h"
+ #include "fsdev/qemu-fsdev.h"
+ 
++#include "trace.h"
 +
-     pc_to_link_info(o->out, s, s->pc_tmp);
--    return help_goto_direct(s, s->base.pc_next + (int64_t)get_field(s, i2) * 2);
+ #define VERSIONS "1"
+ #define MAX_RINGS 8
+ #define MAX_RING_ORDER 9
+@@ -335,6 +337,8 @@ static void xen_9pfs_disconnect(struct XenLegacyDevice *xendev)
+     Xen9pfsDev *xen_9pdev = container_of(xendev, Xen9pfsDev, xendev);
+     int i;
+ 
++    trace_xen_9pfs_disconnect(xendev->name);
 +
-+    disas_jdest(s, i2, is_imm, imm, o->in2);
-+    disas_jcc(s, &c, 0xf);
-+    return help_branch(s, &c, is_imm, imm, o->in2);
- }
- 
- static DisasJumpType op_bc(DisasContext *s, DisasOps *o)
- {
-     int m1 = get_field(s, m1);
--    bool is_imm = have_field(s, i2);
--    int imm = is_imm ? get_field(s, i2) : 0;
-     DisasCompare c;
-+    bool is_imm;
-+    int imm;
- 
-     /* BCR with R2 = 0 causes no branching */
-     if (have_field(s, r2) && get_field(s, r2) == 0) {
-@@ -1613,6 +1646,7 @@ static DisasJumpType op_bc(DisasContext *s, DisasOps *o)
-         return DISAS_NEXT;
-     }
- 
-+    disas_jdest(s, i2, is_imm, imm, o->in2);
-     disas_jcc(s, &c, m1);
-     return help_branch(s, &c, is_imm, imm, o->in2);
- }
-@@ -1620,10 +1654,10 @@ static DisasJumpType op_bc(DisasContext *s, DisasOps *o)
- static DisasJumpType op_bct32(DisasContext *s, DisasOps *o)
- {
-     int r1 = get_field(s, r1);
--    bool is_imm = have_field(s, i2);
--    int imm = is_imm ? get_field(s, i2) : 0;
-     DisasCompare c;
-+    bool is_imm;
-     TCGv_i64 t;
-+    int imm;
- 
-     c.cond = TCG_COND_NE;
-     c.is_64 = false;
-@@ -1638,6 +1672,7 @@ static DisasJumpType op_bct32(DisasContext *s, DisasOps *o)
-     tcg_gen_extrl_i64_i32(c.u.s32.a, t);
-     tcg_temp_free_i64(t);
- 
-+    disas_jdest(s, i2, is_imm, imm, o->in2);
-     return help_branch(s, &c, is_imm, imm, o->in2);
- }
- 
-@@ -1668,9 +1703,9 @@ static DisasJumpType op_bcth(DisasContext *s, DisasOps *o)
- static DisasJumpType op_bct64(DisasContext *s, DisasOps *o)
- {
-     int r1 = get_field(s, r1);
--    bool is_imm = have_field(s, i2);
--    int imm = is_imm ? get_field(s, i2) : 0;
-     DisasCompare c;
-+    bool is_imm;
-+    int imm;
- 
-     c.cond = TCG_COND_NE;
-     c.is_64 = true;
-@@ -1681,6 +1716,7 @@ static DisasJumpType op_bct64(DisasContext *s, DisasOps *o)
-     c.u.s64.a = regs[r1];
-     c.u.s64.b = tcg_const_i64(0);
- 
-+    disas_jdest(s, i2, is_imm, imm, o->in2);
-     return help_branch(s, &c, is_imm, imm, o->in2);
- }
- 
-@@ -1688,10 +1724,10 @@ static DisasJumpType op_bx32(DisasContext *s, DisasOps *o)
- {
-     int r1 = get_field(s, r1);
-     int r3 = get_field(s, r3);
--    bool is_imm = have_field(s, i2);
--    int imm = is_imm ? get_field(s, i2) : 0;
-     DisasCompare c;
-+    bool is_imm;
-     TCGv_i64 t;
-+    int imm;
- 
-     c.cond = (s->insn->data ? TCG_COND_LE : TCG_COND_GT);
-     c.is_64 = false;
-@@ -1707,6 +1743,7 @@ static DisasJumpType op_bx32(DisasContext *s, DisasOps *o)
-     store_reg32_i64(r1, t);
-     tcg_temp_free_i64(t);
- 
-+    disas_jdest(s, i2, is_imm, imm, o->in2);
-     return help_branch(s, &c, is_imm, imm, o->in2);
- }
- 
-@@ -1714,9 +1751,9 @@ static DisasJumpType op_bx64(DisasContext *s, DisasOps *o)
- {
-     int r1 = get_field(s, r1);
-     int r3 = get_field(s, r3);
--    bool is_imm = have_field(s, i2);
--    int imm = is_imm ? get_field(s, i2) : 0;
-     DisasCompare c;
-+    bool is_imm;
-+    int imm;
- 
-     c.cond = (s->insn->data ? TCG_COND_LE : TCG_COND_GT);
-     c.is_64 = true;
-@@ -1733,6 +1770,7 @@ static DisasJumpType op_bx64(DisasContext *s, DisasOps *o)
-     c.u.s64.a = regs[r1];
-     c.g1 = true;
- 
-+    disas_jdest(s, i2, is_imm, imm, o->in2);
-     return help_branch(s, &c, is_imm, imm, o->in2);
- }
- 
-@@ -1750,10 +1788,9 @@ static DisasJumpType op_cj(DisasContext *s, DisasOps *o)
-     c.u.s64.a = o->in1;
-     c.u.s64.b = o->in2;
- 
--    is_imm = have_field(s, i4);
--    if (is_imm) {
--        imm = get_field(s, i4);
--    } else {
-+    o->out = NULL;
-+    disas_jdest(s, i4, is_imm, imm, o->out);
-+    if (!is_imm && !o->out) {
-         imm = 0;
-         o->out = get_address(s, 0, get_field(s, b4),
-                              get_field(s, d4));
-@@ -5964,15 +6001,13 @@ static void in2_a2(DisasContext *s, DisasOps *o)
- 
- static TCGv gen_ri2(DisasContext *s)
- {
--    int64_t delta = (int64_t)get_field(s, i2) * 2;
--    TCGv ri2;
-+    TCGv ri2 = NULL;
-+    bool is_imm;
-+    int imm;
- 
--    if (unlikely(s->ex_value)) {
--        ri2 = tcg_temp_new_i64();
--        tcg_gen_ld_i64(ri2, cpu_env, offsetof(CPUS390XState, ex_target));
--        tcg_gen_addi_i64(ri2, ri2, delta);
--    } else {
--        ri2 = tcg_constant_i64(s->base.pc_next + delta);
-+    disas_jdest(s, i2, is_imm, imm, ri2);
-+    if (is_imm) {
-+        ri2 = tcg_constant_i64(s->base.pc_next + imm * 2);
+     for (i = 0; i < xen_9pdev->num_rings; i++) {
+         if (xen_9pdev->rings[i].evtchndev != NULL) {
+             qemu_set_fd_handler(xenevtchn_fd(xen_9pdev->rings[i].evtchndev),
+@@ -343,39 +347,40 @@ static void xen_9pfs_disconnect(struct XenLegacyDevice *xendev)
+                              xen_9pdev->rings[i].local_port);
+             xen_9pdev->rings[i].evtchndev = NULL;
+         }
+-    }
+-}
+-
+-static int xen_9pfs_free(struct XenLegacyDevice *xendev)
+-{
+-    Xen9pfsDev *xen_9pdev = container_of(xendev, Xen9pfsDev, xendev);
+-    int i;
+-
+-    if (xen_9pdev->rings[0].evtchndev != NULL) {
+-        xen_9pfs_disconnect(xendev);
+-    }
+-
+-    for (i = 0; i < xen_9pdev->num_rings; i++) {
+         if (xen_9pdev->rings[i].data != NULL) {
+             xen_be_unmap_grant_refs(&xen_9pdev->xendev,
+                                     xen_9pdev->rings[i].data,
+                                     (1 << xen_9pdev->rings[i].ring_order));
++            xen_9pdev->rings[i].data = NULL;
+         }
+         if (xen_9pdev->rings[i].intf != NULL) {
+             xen_be_unmap_grant_refs(&xen_9pdev->xendev,
+                                     xen_9pdev->rings[i].intf,
+                                     1);
++            xen_9pdev->rings[i].intf = NULL;
+         }
+         if (xen_9pdev->rings[i].bh != NULL) {
+             qemu_bh_delete(xen_9pdev->rings[i].bh);
++            xen_9pdev->rings[i].bh = NULL;
+         }
      }
  
-     return ri2;
+     g_free(xen_9pdev->id);
++    xen_9pdev->id = NULL;
+     g_free(xen_9pdev->tag);
++    xen_9pdev->tag = NULL;
+     g_free(xen_9pdev->path);
++    xen_9pdev->path = NULL;
+     g_free(xen_9pdev->security_model);
++    xen_9pdev->security_model = NULL;
+     g_free(xen_9pdev->rings);
++    xen_9pdev->rings = NULL;
++}
++
++static int xen_9pfs_free(struct XenLegacyDevice *xendev)
++{
++    trace_xen_9pfs_free(xendev->name);
++
+     return 0;
+ }
+ 
+@@ -387,6 +392,8 @@ static int xen_9pfs_connect(struct XenLegacyDevice *xendev)
+     V9fsState *s = &xen_9pdev->state;
+     QemuOpts *fsdev;
+ 
++    trace_xen_9pfs_connect(xendev->name);
++
+     if (xenstore_read_fe_int(&xen_9pdev->xendev, "num-rings",
+                              &xen_9pdev->num_rings) == -1 ||
+         xen_9pdev->num_rings > MAX_RINGS || xen_9pdev->num_rings < 1) {
+@@ -494,6 +501,8 @@ out:
+ 
+ static void xen_9pfs_alloc(struct XenLegacyDevice *xendev)
+ {
++    trace_xen_9pfs_alloc(xendev->name);
++
+     xenstore_write_be_str(xendev, "versions", VERSIONS);
+     xenstore_write_be_int(xendev, "max-rings", MAX_RINGS);
+     xenstore_write_be_int(xendev, "max-ring-page-order", MAX_RING_ORDER);
 -- 
 2.39.2
 
