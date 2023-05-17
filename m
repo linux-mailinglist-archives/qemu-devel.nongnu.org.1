@@ -2,66 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03BC706408
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C4B7063EE
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:18:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDNe-0007P9-8B; Wed, 17 May 2023 05:23:34 -0400
+	id 1pzDHf-0001k3-4C; Wed, 17 May 2023 05:17:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzDNa-0007NX-2Q; Wed, 17 May 2023 05:23:30 -0400
-Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzDNX-0001rP-JN; Wed, 17 May 2023 05:23:29 -0400
-Received: from localhost.localdomain (unknown [61.165.33.195])
- by APP-05 (Coremail) with SMTP id zQCowABnVxRam2Rks_XqJQ--.29147S14;
- Wed, 17 May 2023 17:16:19 +0800 (CST)
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- richard.henderson@linaro.org, wangjunqiang@iscas.ac.cn,
- lazyparser@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH v6 12/12] target/riscv: Deny access if access is partially
- inside the PMP entry
-Date: Wed, 17 May 2023 17:15:19 +0800
-Message-Id: <20230517091519.34439-13-liweiwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230517091519.34439-1-liweiwei@iscas.ac.cn>
-References: <20230517091519.34439-1-liweiwei@iscas.ac.cn>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzDHc-0001bu-71
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 05:17:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzDHa-00081U-2a
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 05:17:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684315036;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FJEksV5MXOCQLN8jdsdn2YjrCJOW5hcW4c5K1GURGjw=;
+ b=h+iokxWFn14sVfS6HXAXuqTP9sti19xeNcW3LDJ+1FDmauD/5lIWpKsyNc7yAi5zw71VGP
+ vhHldUVJ199LP4MZyK6Bbil5R0HMcaWHrlwqEE9IlRxLseerLgjydbtQRtny0EOGRM7mEw
+ I/uK9RrYnO9Ewe7gsjnkH+6km7oMelI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-595-3X3GGVD0PH6FlxCKy1mRIQ-1; Wed, 17 May 2023 05:17:15 -0400
+X-MC-Unique: 3X3GGVD0PH6FlxCKy1mRIQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E41A867946;
+ Wed, 17 May 2023 09:17:14 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5D9D414171C1;
+ Wed, 17 May 2023 09:17:14 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 561B821E6697; Wed, 17 May 2023 11:17:13 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Avihai Horon <avihaih@nvidia.com>
+Cc: <qemu-devel@nongnu.org>,  Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,  Juan Quintela
+ <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Yishai
+ Hadas <yishaih@nvidia.com>,  Jason Gunthorpe <jgg@nvidia.com>,  Maor
+ Gottlieb <maorg@nvidia.com>,  Kirti Wankhede <kwankhede@nvidia.com>,
+ Tarun Gupta <targupta@nvidia.com>,  Joao Martins
+ <joao.m.martins@oracle.com>
+Subject: Re: [PATCH 1/8] migration: Add precopy initial data capability
+References: <20230501140141.11743-1-avihaih@nvidia.com>
+ <20230501140141.11743-2-avihaih@nvidia.com>
+Date: Wed, 17 May 2023 11:17:13 +0200
+In-Reply-To: <20230501140141.11743-2-avihaih@nvidia.com> (Avihai Horon's
+ message of "Mon, 1 May 2023 17:01:34 +0300")
+Message-ID: <87lehn71wm.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowABnVxRam2Rks_XqJQ--.29147S14
-X-Coremail-Antispam: 1UD129KBjvdXoW7JFWDCF1DKr1kWrW3Zw1UKFg_yoWfZrg_Gr
- WIqF48J34DXa1vy3W8AF4UAryv934kGFsI9FZ7KF43KFy2krZ3Aw1DtF1DJ34j9a93u3s7
- CwnrAry7Cr15WjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUbkAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
- 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAVCq3wA2048vs2
- IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28E
- F7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr
- 1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
- 3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
- IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
- M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
- kIc2xKxwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
- Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
- CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0
- I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
- vEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIev
- Ja73UjIFyTuYvjfUeo7KDUUUU
-X-Originating-IP: [61.165.33.195]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,34 +88,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Access will fail if access is partially inside the PMP entry.
-However,only setting ret = false doesn't really mean pmp violation
-since pmp_hart_has_privs_default() may return true at the end of
-pmp_hart_has_privs().
+Avihai Horon <avihaih@nvidia.com> writes:
 
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/pmp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Migration downtime estimation is calculated based on bandwidth and
+> remaining migration data. This assumes that loading of migration data in
+> the destination takes a negligible amount of time and that downtime
+> depends only on network speed.
+>
+> While this may be true for RAM, it's not necessarily true for other
+> migration users. For example, loading the data of a VFIO device in the
+> destination might require from the device to allocate resources, prepare
+> internal data structures and so on. These operations can take a
+> significant amount of time which can increase migration downtime.
+>
+> This patch adds a new capability "precopy initial data" that allows the
+> source to send initial precopy data and the destination to ACK that this
+> data has been loaded. Migration will not attempt to stop the source VM
+> and complete the migration until this ACK is received.
+>
+> This will allow migration users to send initial precopy data which can
+> be used to reduce downtime (e.g., by pre-allocating resources), while
+> making sure that the source will stop the VM and complete the migration
+> only after this initial precopy data is sent and loaded in the
+> destination so it will have full effect.
+>
+> This new capability relies on the return path capability to communicate
+> from the destination back to the source.
+>
+> The actual implementation of the capability will be added in the
+> following patches.
+>
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> ---
+>  qapi/migration.json |  9 ++++++++-
+>  migration/options.h |  1 +
+>  migration/options.c | 20 ++++++++++++++++++++
+>  3 files changed, 29 insertions(+), 1 deletion(-)
+>
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 82000adce4..d496148386 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -478,6 +478,13 @@
+>  #                    should not affect the correctness of postcopy migration.
+>  #                    (since 7.1)
+>  #
+> +# @precopy-initial-data: If enabled, migration will not attempt to stop source
+> +#                        VM and complete the migration until an ACK is received
+> +#                        from the destination that initial precopy data has
+> +#                        been loaded. This can improve downtime if there are
+> +#                        migration users that support precopy initial data.
+> +#                        (since 8.1)
+> +#
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 90bde7609c..8b66b1bb7a 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -327,8 +327,8 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
-         if ((s + e) == 1) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "pmp violation - access is partially inside\n");
--            ret = false;
--            break;
-+            *allowed_privs = 0;
-+            return false;
-         }
- 
-         /* fully inside */
--- 
-2.25.1
+Please format like
+
+   # @precopy-initial-data: If enabled, migration will not attempt to
+   #     stop source VM and complete the migration until an ACK is
+   #     received from the destination that initial precopy data has been
+   #     loaded.  This can improve downtime if there are migration users
+   #     that support precopy initial data.  (since 8.1)
+
+to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
+to conform to current conventions).
+
+What do you mean by "if there are migration users that support precopy
+initial data"?
+
+Do I have to ensure the ACK comes by configuring the destination VM in a
+certain way, and if yes, how exactly?
+
+>  # Features:
+>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+>  #
+> @@ -492,7 +499,7 @@
+>             'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate',
+>             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+>             'validate-uuid', 'background-snapshot',
+> -           'zero-copy-send', 'postcopy-preempt'] }
+> +           'zero-copy-send', 'postcopy-preempt', 'precopy-initial-data'] }
+>  
+>  ##
+>  # @MigrationCapabilityStatus:
+> diff --git a/migration/options.h b/migration/options.h
+> index 3c322867cd..d004b6321e 100644
+> --- a/migration/options.h
+> +++ b/migration/options.h
+> @@ -44,6 +44,7 @@ bool migrate_pause_before_switchover(void);
+>  bool migrate_postcopy_blocktime(void);
+>  bool migrate_postcopy_preempt(void);
+>  bool migrate_postcopy_ram(void);
+> +bool migrate_precopy_initial_data(void);
+>  bool migrate_rdma_pin_all(void);
+>  bool migrate_release_ram(void);
+>  bool migrate_return_path(void);
+> diff --git a/migration/options.c b/migration/options.c
+> index 53b7fc5d5d..c4ef0c60c7 100644
+> --- a/migration/options.c
+> +++ b/migration/options.c
+> @@ -184,6 +184,8 @@ Property migration_properties[] = {
+>      DEFINE_PROP_MIG_CAP("x-zero-copy-send",
+>              MIGRATION_CAPABILITY_ZERO_COPY_SEND),
+>  #endif
+> +    DEFINE_PROP_MIG_CAP("x-precopy-initial-data",
+> +                        MIGRATION_CAPABILITY_PRECOPY_INITIAL_DATA),
+>  
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+> @@ -286,6 +288,13 @@ bool migrate_postcopy_ram(void)
+>      return s->capabilities[MIGRATION_CAPABILITY_POSTCOPY_RAM];
+>  }
+>  
+> +bool migrate_precopy_initial_data(void)
+> +{
+> +    MigrationState *s = migrate_get_current();
+> +
+> +    return s->capabilities[MIGRATION_CAPABILITY_PRECOPY_INITIAL_DATA];
+> +}
+> +
+>  bool migrate_rdma_pin_all(void)
+>  {
+>      MigrationState *s = migrate_get_current();
+> @@ -546,6 +555,17 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+>          }
+>      }
+>  
+> +    if (new_caps[MIGRATION_CAPABILITY_PRECOPY_INITIAL_DATA]) {
+> +        if (!new_caps[MIGRATION_CAPABILITY_RETURN_PATH]) {
+> +            error_setg(errp, "Precopy initial data requires return path");
+
+Shouldn't we mention this requirement in the docs?
+
+To make sense of the message, the user needs to make the connection from
+"Precopy initial data" to capability @precopy-initial-data, and from
+"return path" to capability @return-path.  More helpful, I think:
+"capability 'precopy-initial-data' requires capability 'return-path'".
+
+> +            return false;
+> +        }
+> +
+> +        /* Disable this capability until it's implemented */
+> +        error_setg(errp, "Precopy initial data is not implemented yet");
+> +        return false;
+> +    }
+> +
+>      return true;
+>  }
 
 
