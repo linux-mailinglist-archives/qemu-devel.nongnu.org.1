@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A15A707062
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 20:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EA070706F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 20:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLHA-0005Wn-EU; Wed, 17 May 2023 13:49:25 -0400
+	id 1pzLZG-0003Sb-0c; Wed, 17 May 2023 14:08:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLF1-00029M-OO
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:11 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzLZC-0003S9-Ci
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 14:08:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEz-0004ZY-UX
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:11 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzLZ7-0002WO-Sw
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 14:08:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345629;
+ s=mimecast20190719; t=1684346876;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xPou24ScysZCFeYkKf5HYVYev95mGveP+l81GewaT7I=;
- b=WaYCrJf55ACVqsAdXN4OWapjUyfBGxDrRuMeVduFRAfzkZp2loRlQ2YjkJv5ttQQyLYNQr
- fPk+gEtEuR8M/5rYo0azDT49/MuaRNhjnC/ZcoRagOx+Br6XQ01fj4WE+umFEfieH3wpDE
- BGvzRsAlucYDK+jIZkjR1AHPjB8pqC4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=L+UK5D+don4v4vbjMouA2r/3qMD173xfIhGlPm5WrbE=;
+ b=K36XyGyp8IDUYZQJtp/g2P61euDloBKsYBjEy9cOCCMQSSVxWILyPicdT9ySCqckhyoPKo
+ RoWOnPoH8VGgvygawYyWQ94Rk2ccoaD56UOlXBV1VMaS5TW9GSqpGRME/myb5qkgapxs7p
+ hRMHP0vTBs3ZvpzNl1r6xcmpuFQZWwo=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-_g_03CvhOAW8Y5Csm6wBrQ-1; Wed, 17 May 2023 13:47:08 -0400
-X-MC-Unique: _g_03CvhOAW8Y5Csm6wBrQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3062dedf7d9so753410f8f.2
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:47:07 -0700 (PDT)
+ us-mta-246-i7xd0CNpMnGlUP7xjTzpAQ-1; Wed, 17 May 2023 14:07:54 -0400
+X-MC-Unique: i7xd0CNpMnGlUP7xjTzpAQ-1
+Received: by mail-pg1-f197.google.com with SMTP id
+ 41be03b00d2f7-5308f5d8ac9so616285a12.0
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 11:07:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345626; x=1686937626;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1684346874; x=1686938874;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xPou24ScysZCFeYkKf5HYVYev95mGveP+l81GewaT7I=;
- b=hxcVBCKr4vNg69onB9WEqXq3Vn/DYckEeb+KWEdGGoqPuebgqJSpDES4x8od8Mr3gK
- h9XqTwUzM4ByPQlc02wEpowiW8WucVU8fdAv8u76qKAPzSYLJX1wGMzfIMhhdrMhcc6J
- NQq+8QJdGyScf6bYEXrmV9b+CstSZDxPH0r7GVGGsJ8Cv9C+VYVuMi4/iO4KWnBrCovz
- L6vPM+/ju7dBdC5n4mAdcM2awQUbruJHWOh1QdkUrh/s58BxQwvh93ToPI7qf7WxVdtt
- OVyEK7jtnnxWxcsWOc+vbi8ES9G+kGwO5ZCVjuEbvCxVVGfPFoLw45luCNIlrT67NFcC
- ajJw==
-X-Gm-Message-State: AC+VfDz7iGeXhpU5AobzO7XgPGreqXczFQ4WYK8sVMyyZ5ofpz4KCrqt
- 1PiI/AbvTqxPIdWGqVKd7CYzI3WXWIAbWALlFG8pfIYA2f/zTbUpAc8Nk1VZ6X3BxvmbS0t3xic
- 3yX8ARkh4D7MoD266uPu7Zy/bwCJxSJWxfk/9uU1vpD2wZ+B85f/3amgRefjpaM5UYhb5g+J1Er
- s=
-X-Received: by 2002:a5d:694a:0:b0:309:44ed:ccff with SMTP id
- r10-20020a5d694a000000b0030944edccffmr944218wrw.1.1684345626502; 
- Wed, 17 May 2023 10:47:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6dSrk1obeUsN4oXWhzS/eET2HCf8sVX4eiabZWU1wzr6KkrDz0+XqN8VgX307ySNpQ99gKtQ==
-X-Received: by 2002:a5d:694a:0:b0:309:44ed:ccff with SMTP id
- r10-20020a5d694a000000b0030944edccffmr944209wrw.1.1684345626150; 
- Wed, 17 May 2023 10:47:06 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.gmail.com with ESMTPSA id
- m7-20020a5d6a07000000b003062c0ef959sm3325432wru.69.2023.05.17.10.47.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:47:05 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 64/68] configure: do not rerun the tests with -Werror
-Date: Wed, 17 May 2023 19:45:16 +0200
-Message-Id: <20230517174520.887405-65-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
-References: <20230517174520.887405-1-pbonzini@redhat.com>
+ bh=L+UK5D+don4v4vbjMouA2r/3qMD173xfIhGlPm5WrbE=;
+ b=kEmtzN6Qkxr9uWFNTxPwvw7qOhdgR5kE4OSMIfYfdTIpZu8zrCjfY0EGqODMm7XA7h
+ o43wLpeS194dWcjX2xgvaZhhDSiXDY0FeLe3RUTJZ9bg0RF9alZ4lP8bgbG7/2DShKCX
+ Wk8aaGctDds5C/BC9as4jgAAOcjfXVn4BAsh1AhrUN9VIl4GN0mJrFdr15w76detznXz
+ OhlSViS6SNk4g/3ssrpZt2dm+T17u3QnCiKKpmsGAf0Vb1SiW01+shoCOfNdARYdLGc5
+ XowTVuFMNbJdjMZorwQjUxjBCZ9hvrdZbvHW5BVF56vkgOMOmoy/SNRbZ4ql/oHHCPF4
+ Q4/A==
+X-Gm-Message-State: AC+VfDzq0aLBUYAqfBKTUgqJJQTH/CPOuA7/JubzScHuvcQ/aHNa16WS
+ s+/ARyG3HgveRF0EOO+T+JybyQQRaynEC+IExgnFENnpzXBjjjYXh/pYzbhCcP3f2kxIxruUlDJ
+ UlCNNKzhQ8QjIDvJ9FS29BIBzrzYPSWk=
+X-Received: by 2002:a05:6a20:2584:b0:105:94e5:f5c2 with SMTP id
+ k4-20020a056a20258400b0010594e5f5c2mr18100546pzd.13.1684346873727; 
+ Wed, 17 May 2023 11:07:53 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5HWtsWdaWIe25VjyUC258XPsRQOJrypy28kapjjUcZHIIKMyD+AbzMROTpDYPG86nfWob5Z9X/SS31oT3TK/c=
+X-Received: by 2002:a05:6a20:2584:b0:105:94e5:f5c2 with SMTP id
+ k4-20020a056a20258400b0010594e5f5c2mr18100522pzd.13.1684346873413; Wed, 17
+ May 2023 11:07:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+References: <20230320105404.637661-1-berrange@redhat.com>
+ <00341422-35d7-7091-5be4-808e1431f113@yandex-team.ru>
+ <CAFn=p-bFgZYJO5bMbAXXJkdtov5CiEC2YAx6AN_DOF0B_i+OKg@mail.gmail.com>
+ <CAFn=p-bgcKVQhyU2sNHy6HoPJimAEhG_97XjsTX26AV32dXVXw@mail.gmail.com>
+In-Reply-To: <CAFn=p-bgcKVQhyU2sNHy6HoPJimAEhG_97XjsTX26AV32dXVXw@mail.gmail.com>
+From: John Snow <jsnow@redhat.com>
+Date: Wed, 17 May 2023 14:07:42 -0400
+Message-ID: <CAFn=p-YZWd51JxpaqAMw5Sxa0hRE61gdoTUBeSsX3UQ8s_CLwg@mail.gmail.com>
+Subject: Re: [PATCH] python: honour message limit when using pre-opened socket
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,64 +97,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tests run in configure are pretty trivial at this point, so
-do not bother with the extra complication of running tests
-both with and without -Werror.
+On Mon, May 15, 2023 at 5:14=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
+>
+> On Mon, Mar 20, 2023 at 8:27=E2=80=AFPM John Snow <jsnow@redhat.com> wrot=
+e:
+> >
+> > On Mon, Mar 20, 2023 at 8:20=E2=80=AFAM Vladimir Sementsov-Ogievskiy
+> > <vsementsov@yandex-team.ru> wrote:
+> > >
+> > > On 20.03.23 13:54, Daniel P. Berrang=C3=A9 wrote:
+> > > > The default message recv limit in asyncio is smaller than our needs=
+, so
+> > > > when opening connections we override it. This was done when opening=
+ a
+> > > > connection using a socket address, but was missed when using a
+> > > > pre-opened socket file descriptor.
+> > > >
+> > > > This latent bug was exposed when the QEMUMachine class was enhanced=
+ to
+> > > > use socketpair() when no socket address was passed by:
+> > > >
+> > > >    commit bd4c0ef409140bd1be393407c04005ac077d4574
+> > > >    Author: Marc-Andr=C3=A9 Lureau<marcandre.lureau@redhat.com>
+> > > >    Date:   Wed Jan 11 12:01:01 2023 +0400
+> > > >
+> > > >      python/qemu/machine: use socketpair() for QMP by default
+> > > >
+> > > > Signed-off-by: Daniel P. Berrang=C3=A9<berrange@redhat.com>
+> > >
+> > > Tested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> > >
+> > > Thanks!
+> > >
+> > > --
+> > > Best regards,
+> > > Vladimir
+> > >
+> >
+> > Thanks x3. Will stage in both places.
+> >
+>
+> ... Realizing I let the two codebases diverge a bit more than I had
+> meant to allow, and the "open with socket" rewrite I made never got
+> brought back to qemu.git, tch. I believe this bug only exists in
+> qemu.git because of that. I need to backport my changes to qemu.git
+> and ensure that there isn't a problem with the revised code as it
+> exists in qemu.qmp.
+>
+> I'll have to fix that *before* I drop qemu.qmp from the qemu.git repo,
+> which I am hoping will be soon after Paolo takes the new Python
+> patches that create a venv during configure time.
+>
+> --js
 
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure | 35 +----------------------------------
- 1 file changed, 1 insertion(+), 34 deletions(-)
+OK, I've just sent two series:
 
-diff --git a/configure b/configure
-index 4a986e6fa89c..d0febe7cdfea 100755
---- a/configure
-+++ b/configure
-@@ -124,41 +124,8 @@ lines: ${BASH_LINENO[*]}"
-   $compiler "$@" >> config.log 2>&1 || return $?
- }
- 
--do_compiler_werror() {
--    # Run the compiler, capturing its output to the log. First argument
--    # is compiler binary to execute.
--    compiler="$1"
--    shift
--    if test -n "$BASH_VERSION"; then eval '
--        echo >>config.log "
--funcs: ${FUNCNAME[*]}
--lines: ${BASH_LINENO[*]}"
--    '; fi
--    echo $compiler "$@" >> config.log
--    $compiler "$@" >> config.log 2>&1 || return $?
--    # Test passed. If this is an --enable-werror build, rerun
--    # the test with -Werror and bail out if it fails. This
--    # makes warning-generating-errors in configure test code
--    # obvious to developers.
--    if test "$werror" != "yes"; then
--        return 0
--    fi
--    # Don't bother rerunning the compile if we were already using -Werror
--    case "$*" in
--        *-Werror*)
--           return 0
--        ;;
--    esac
--    echo $compiler -Werror "$@" >> config.log
--    $compiler -Werror "$@" >> config.log 2>&1 && return $?
--    error_exit "configure test passed without -Werror but failed with -Werror." \
--        "This is probably a bug in the configure script. The failing command" \
--        "will be at the bottom of config.log." \
--        "You can run configure with --disable-werror to bypass this check."
--}
--
- do_cc() {
--    do_compiler_werror "$cc" $CPU_CFLAGS "$@"
-+    do_compiler "$cc" $CPU_CFLAGS "$@"
- }
- 
- compile_object() {
--- 
-2.40.1
+(1) A MR for python-qemu-qmp here, which backports a few misc fixes
+from qemu.git back over to python-qemu-qmp;
+https://gitlab.com/qemu-project/python-qemu-qmp/-/merge_requests/23
+This needs approval from at least one person. If you're interested in
+becoming a "reviewer" there, let me know and I'll add you if you
+aren't already.
+
+(2) A patchset for qemu.git that backports the socket changes that
+went into python-qemu-qmp.
+https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04285.html
+This should fix the bug described here in this series, and is
+necessary to merge before I swap the in-tree qemu.git for a vendored
+qemu.qmp package.
+Review welcomed, but any changes we need will need to happen on the
+python-qemu-qmp repo first.
+
+Dropping the in-tree qemu.qmp package is going to happen after the
+large series Paolo just sent a PR for,
+https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04330.html
+which adds a configure-time venv to the QEMU build system.
+
+Hoping to drop qemu.qmp *this dev cycle* and release v0.0.3 for
+qemu.qmp and vendor it to qemu.git as a .whl file.
+
+Thanks,
+--js
 
 
