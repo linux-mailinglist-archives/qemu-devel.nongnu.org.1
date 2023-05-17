@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D93E7063ED
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F80706407
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:24:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDHC-0008WR-Hp; Wed, 17 May 2023 05:16:54 -0400
+	id 1pzDNf-0007PA-1X; Wed, 17 May 2023 05:23:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzDH9-00085r-5s; Wed, 17 May 2023 05:16:51 -0400
+ id 1pzDNa-0007NY-39; Wed, 17 May 2023 05:23:30 -0400
 Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzDH1-0007mi-Cl; Wed, 17 May 2023 05:16:50 -0400
+ id 1pzDNX-0001rQ-K7; Wed, 17 May 2023 05:23:29 -0400
 Received: from localhost.localdomain (unknown [61.165.33.195])
- by APP-05 (Coremail) with SMTP id zQCowABnVxRam2Rks_XqJQ--.29147S12;
- Wed, 17 May 2023 17:16:18 +0800 (CST)
+ by APP-05 (Coremail) with SMTP id zQCowABnVxRam2Rks_XqJQ--.29147S13;
+ Wed, 17 May 2023 17:16:19 +0800 (CST)
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -26,19 +26,19 @@ Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  richard.henderson@linaro.org, wangjunqiang@iscas.ac.cn,
  lazyparser@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH v6 10/12] target/riscv: Flush TLB only when pmpcfg/pmpaddr
- really changes
-Date: Wed, 17 May 2023 17:15:17 +0800
-Message-Id: <20230517091519.34439-11-liweiwei@iscas.ac.cn>
+Subject: [PATCH v6 11/12] target/riscv: Separate pmp_update_rule() in
+ pmpcfg_csr_write
+Date: Wed, 17 May 2023 17:15:18 +0800
+Message-Id: <20230517091519.34439-12-liweiwei@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230517091519.34439-1-liweiwei@iscas.ac.cn>
 References: <20230517091519.34439-1-liweiwei@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowABnVxRam2Rks_XqJQ--.29147S12
-X-Coremail-Antispam: 1UD129KBjvJXoWxGFyDJFWftw43tw13Xr4DXFb_yoW5ZF4rpr
- WSkF92grW5t3ZrWayfJF17Xr15Cw1rKryIgrZrC3WF9F4fur18CF1qg3sFkr1DWayfZrWY
- vayDZ34UXFsFvFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID: zQCowABnVxRam2Rks_XqJQ--.29147S13
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw18uw43ZF15tw4xZryrZwb_yoW8tr13pr
+ WfCFZ7Kr47t3Wqq3Z3JF1UZr4UCa1rKry2vws7CFsYya15uw1rCF1qga4v9r15GayfZrWY
+ 9ayUAr4UAF47ZFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
  9KBjDU0xBIdaVrnRJUUUmF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
  rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
  kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
@@ -78,99 +78,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TLB needn't be flushed when pmpcfg/pmpaddr don't changes.
+Use pmp_update_rule_addr() and pmp_update_rule_nums() separately to
+update rule nums only once for each pmpcfg_csr_write. Then remove
+pmp_update_rule() since it become unused.
 
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 ---
- target/riscv/pmp.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ target/riscv/pmp.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
 diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 70fb2327f7..37b25e9b34 100644
+index 37b25e9b34..90bde7609c 100644
 --- a/target/riscv/pmp.c
 +++ b/target/riscv/pmp.c
-@@ -26,7 +26,7 @@
- #include "trace.h"
- #include "exec/exec-all.h"
- 
--static void pmp_write_cfg(CPURISCVState *env, uint32_t addr_index,
-+static bool pmp_write_cfg(CPURISCVState *env, uint32_t addr_index,
+@@ -29,7 +29,6 @@
+ static bool pmp_write_cfg(CPURISCVState *env, uint32_t addr_index,
                            uint8_t val);
  static uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t addr_index);
- static void pmp_update_rule(CPURISCVState *env, uint32_t pmp_index);
-@@ -83,7 +83,7 @@ static inline uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t pmp_index)
-  * Accessor to set the cfg reg for a specific PMP/HART
-  * Bounds checks and relevant lock bit.
-  */
--static void pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
-+static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
- {
-     if (pmp_index < MAX_RISCV_PMPS) {
-         bool locked = true;
-@@ -119,14 +119,17 @@ static void pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+-static void pmp_update_rule(CPURISCVState *env, uint32_t pmp_index);
  
-         if (locked) {
+ /*
+  * Accessor method to extract address matching type 'a field' from cfg reg
+@@ -121,7 +120,7 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
              qemu_log_mask(LOG_GUEST_ERROR, "ignoring pmpcfg write - locked\n");
--        } else {
-+        } else if (env->pmp_state.pmp[pmp_index].cfg_reg != val) {
+         } else if (env->pmp_state.pmp[pmp_index].cfg_reg != val) {
              env->pmp_state.pmp[pmp_index].cfg_reg = val;
-             pmp_update_rule(env, pmp_index);
-+            return true;
+-            pmp_update_rule(env, pmp_index);
++            pmp_update_rule_addr(env, pmp_index);
+             return true;
          }
      } else {
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "ignoring pmpcfg write - out of bounds\n");
+@@ -209,18 +208,6 @@ void pmp_update_rule_nums(CPURISCVState *env)
      }
-+
-+    return false;
  }
  
- static void pmp_decode_napot(target_ulong a, target_ulong *sa,
-@@ -467,16 +470,19 @@ void pmpcfg_csr_write(CPURISCVState *env, uint32_t reg_index,
-     int i;
-     uint8_t cfg_val;
-     int pmpcfg_nums = 2 << riscv_cpu_mxl(env);
-+    bool modified = false;
- 
-     trace_pmpcfg_csr_write(env->mhartid, reg_index, val);
- 
-     for (i = 0; i < pmpcfg_nums; i++) {
-         cfg_val = (val >> 8 * i)  & 0xff;
--        pmp_write_cfg(env, (reg_index * 4) + i, cfg_val);
-+        modified |= pmp_write_cfg(env, (reg_index * 4) + i, cfg_val);
-     }
+-/*
+- * Convert cfg/addr reg values here into simple 'sa' --> start address and 'ea'
+- *   end address values.
+- *   This function is called relatively infrequently whereas the check that
+- *   an address is within a pmp rule is called often, so optimise that one
+- */
+-static void pmp_update_rule(CPURISCVState *env, uint32_t pmp_index)
+-{
+-    pmp_update_rule_addr(env, pmp_index);
+-    pmp_update_rule_nums(env);
+-}
+-
+ static int pmp_is_in_range(CPURISCVState *env, int pmp_index,
+                            target_ulong addr)
+ {
+@@ -481,6 +468,7 @@ void pmpcfg_csr_write(CPURISCVState *env, uint32_t reg_index,
  
      /* If PMP permission of any addr has been changed, flush TLB pages. */
--    tlb_flush(env_cpu(env));
-+    if (modified) {
-+        tlb_flush(env_cpu(env));
-+    }
+     if (modified) {
++        pmp_update_rule_nums(env);
+         tlb_flush(env_cpu(env));
+     }
  }
- 
- 
-@@ -526,12 +532,14 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-         }
- 
-         if (!pmp_is_locked(env, addr_index)) {
--            env->pmp_state.pmp[addr_index].addr_reg = val;
--            pmp_update_rule_addr(env, addr_index);
--            if (is_next_cfg_tor) {
--                pmp_update_rule_addr(env, addr_index + 1);
-+            if (env->pmp_state.pmp[addr_index].addr_reg != val) {
-+                env->pmp_state.pmp[addr_index].addr_reg = val;
-+                pmp_update_rule_addr(env, addr_index);
-+                if (is_next_cfg_tor) {
-+                    pmp_update_rule_addr(env, addr_index + 1);
-+                }
-+                tlb_flush(env_cpu(env));
-             }
--            tlb_flush(env_cpu(env));
-         } else {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "ignoring pmpaddr write - locked\n");
 -- 
 2.25.1
 
