@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F4870740B
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FE470741F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:22:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzOYN-0007y9-Hd; Wed, 17 May 2023 17:19:23 -0400
+	id 1pzOat-0000Qh-PJ; Wed, 17 May 2023 17:21:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOYD-0007xZ-A2
- for qemu-devel@nongnu.org; Wed, 17 May 2023 17:19:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOaq-0000On-UG
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:21:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOYB-0007dn-Jg
- for qemu-devel@nongnu.org; Wed, 17 May 2023 17:19:13 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOao-0008Of-Qw
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:21:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684358350;
+ s=mimecast20190719; t=1684358513;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ObQ7/GNJd0ThM3/akh8idBTpnypKxXecnCNEgqTw0Bw=;
- b=CmZICOcXW7IfvWgPs+gnTcTfvRhPOSgkeQ7lDrrQvSQVUZ7LUpb7PksqEkOQM7w7zMEKpB
- +Cw1yFdQtatf2pThU/dvRIjxoovcVcDIs0cUOqV3hczpZWanujlR+HQVzxct71C/y6Ys+2
- LFfGfp7hlt/9aa5GtzfgWxBB1Zyr51k=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6NxqPrNiunR1N22HAV84oETohpAPzX1v46xAsVDBqKw=;
+ b=HiTgn0keAfr2yxEET6oh+7h0RpX+LDvuVDoc46jg3uQAYDH8Nm728MW9p8+IRAqVR+P0jZ
+ nau9rqB2dqUlnecx0xC2HIfFxFfoJic0VbShgdZAD4zJ2OM+5XUHHprmmPwnioEw+3Y1x0
+ MxOjVY+kuYIM5CvqOmBJE2bmhKmiDTI=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-467-uZ2u-dJ5PEezyViQdxaCGQ-1; Wed, 17 May 2023 17:19:07 -0400
-X-MC-Unique: uZ2u-dJ5PEezyViQdxaCGQ-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-24ffa913678so854839a91.2
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:19:07 -0700 (PDT)
+ us-mta-216-guLyFj8-PmKXZgjE-tNTZQ-1; Wed, 17 May 2023 17:21:51 -0400
+X-MC-Unique: guLyFj8-PmKXZgjE-tNTZQ-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1ae438721e2so8228505ad.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:21:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684358346; x=1686950346;
+ d=1e100.net; s=20221208; t=1684358511; x=1686950511;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ObQ7/GNJd0ThM3/akh8idBTpnypKxXecnCNEgqTw0Bw=;
- b=X47ElhPbr13tADNDfHDGj8kf6yvxzn0uJ9sPN9q4ecl83Ywnry6Fnhjo8eebIqKiD/
- pMZLqX7FMJ6WmqZAg5RU9XLL0TNEM41H6G/8j29WPe9XJO0zgi0zFDBpVoWANeOQ33MM
- e+zhi/bRQf5uFK8BzsYkzLtCLHvO26Y+TUEBkC9XjrL09K3iIe42AFpsMQOUBcRDwGRU
- RMUfFK/CHCJvvzqHGxiog71vRKVNYC0iOjywoNXaSJ+b4Jupnsvgd7ZRSx9y8vVIKLFL
- 3CsKk+7shetbH839BIfWmGNVjLMmK461M2Wo/4pBh88TaaJnvlKxApLtJEiL3iM9S1fd
- 5M0Q==
-X-Gm-Message-State: AC+VfDy7723WuL3GP7nHdvD/Jkvhz+mjC7nefyZZxdkI88fJmHp09/Bv
- i5C+tnPqSPNjtDlz8Hx1me3+rqGFUjyCH7Nh52Ndxn7hf59jPL4CLGReidMBipZuqbnQgrwmeSH
- jInA1btZCOlsoD2EBznbDpzMYjLReSrc=
-X-Received: by 2002:a17:90a:b94a:b0:24e:1a7:9976 with SMTP id
- f10-20020a17090ab94a00b0024e01a79976mr249239pjw.10.1684358346278; 
- Wed, 17 May 2023 14:19:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4CfAnM77chklBQIkwuHAE6ImutP3h8VJoeg5pC4F3EmeS79ISfUlrpHd7WvRA43qvdfXb0qZdWKKonPb4lhJo=
-X-Received: by 2002:a17:90a:b94a:b0:24e:1a7:9976 with SMTP id
- f10-20020a17090ab94a00b0024e01a79976mr249224pjw.10.1684358345963; Wed, 17 May
- 2023 14:19:05 -0700 (PDT)
+ bh=6NxqPrNiunR1N22HAV84oETohpAPzX1v46xAsVDBqKw=;
+ b=G7Mxmsz9ODuof6OqBxCguAYP45XuKI6cVW77BCuEtRtfDn0IPDXVMfL+AeOc27IRwR
+ Mk/xZFlZGRWfzSLt/SS333lGpzl2EVWMLWOfMsFY4JMDgJRDEby7hX8EpUVrDmGkxRVO
+ 9VC/kF3TLpZSi1nta8xkGvWSQQNNOtbt1aYNLTii6ESidzF9hETuWeaTL/vXlmjyV0zO
+ 8FiVq+eQBeJslrmTj1iTbpzMF2wXOd7tU2LMWpM5KsWVjUktpdoj/VK06ruqnS7n83NC
+ PNP27k/IrxVJ6HOmiii3pK+1UszLAj6eB/1/SgaAjNVe1fH6hgcRpfkEpugW7tfNby7h
+ 6ANA==
+X-Gm-Message-State: AC+VfDyQt8pUmCYah8I5cTs+a7vdn1E5+ycWpQWx+HG+ATJv29C30k8y
+ CAWKJPEmJiuPNDl46LZgd6FfjOXjT9/rFAmtaf3Zg6JshMJzMLmDvUWjjZK7cQnvsToZYHN+E2g
+ +VBTGWb33H36lG0GcWak9ZagraqaxVKI=
+X-Received: by 2002:a17:902:ec86:b0:1ad:e746:ca50 with SMTP id
+ x6-20020a170902ec8600b001ade746ca50mr280658plg.2.1684358510909; 
+ Wed, 17 May 2023 14:21:50 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4RQJrKMM32jOlD2In9ZyyRSm2jlMKi3LBD4SmPQEnAEiwJMEe5c+JQWnmIXOqsHhgBkWRG0lfWXYwT13owpHk=
+X-Received: by 2002:a17:902:ec86:b0:1ad:e746:ca50 with SMTP id
+ x6-20020a170902ec8600b001ade746ca50mr280644plg.2.1684358510635; Wed, 17 May
+ 2023 14:21:50 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230428132124.670840-1-nks@flawful.org>
- <20230428132124.670840-4-nks@flawful.org>
-In-Reply-To: <20230428132124.670840-4-nks@flawful.org>
+ <20230428132124.670840-7-nks@flawful.org>
+In-Reply-To: <20230428132124.670840-7-nks@flawful.org>
 From: John Snow <jsnow@redhat.com>
-Date: Wed, 17 May 2023 17:18:54 -0400
-Message-ID: <CAFn=p-b4wm2ZaFXnXkm22+tSExjQFWYMTrSy8zG4M-MzuLWtzQ@mail.gmail.com>
-Subject: Re: [PATCH 3/9] hw/ide/ahci: write D2H FIS on when processing NCQ
- command
+Date: Wed, 17 May 2023 17:21:39 -0400
+Message-ID: <CAFn=p-bHgKnFXfsTVoP9XotnNEV_oQ=tAqzh2SUDsYxeZBWXKg@mail.gmail.com>
+Subject: Re: [PATCH 6/9] hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST
+ is cleared
 To: Niklas Cassel <nks@flawful.org>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
  Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,126 +94,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 28, 2023 at 9:22=E2=80=AFAM Niklas Cassel <nks@flawful.org> wro=
+On Fri, Apr 28, 2023 at 9:23=E2=80=AFAM Niklas Cassel <nks@flawful.org> wro=
 te:
 >
 > From: Niklas Cassel <niklas.cassel@wdc.com>
 >
-> The way that BUSY + PxCI is cleared for NCQ (FPDMA QUEUED) commands is
-> described in SATA 3.5a Gold:
+> According to AHCI 1.3.1 definition of PxSACT:
+> This field is cleared when PxCMD.ST is written from a '1' to a '0' by
+> software. This field is not cleared by a COMRESET or a software reset.
 >
-> 11.15 FPDMA QUEUED command protocol
-> DFPDMAQ2: ClearInterfaceBsy
-> "Transmit Register Device to Host FIS with the BSY bit cleared to zero
-> and the DRQ bit cleared to zero and Interrupt bit cleared to zero to
-> mark interface ready for the next command."
+> According to AHCI 1.3.1 definition of PxCI:
+> This field is also cleared when PxCMD.ST is written from a '1' to a '0'
+> by software.
 >
-> PxCI is currently cleared by handle_cmd(), but we don't write the D2H
-> FIS to the FIS Receive Area that actually caused PxCI to be cleared.
+> Clearing PxCMD.ST is part of the error recovery procedure, see
+> AHCI 1.3.1, section "6.2 Error Recovery".
 >
-> Similar to how ahci_pio_transfer() calls ahci_write_fis_pio() with an
-> additional parameter to write a PIO Setup FIS without raising an IRQ,
-> add a parameter to ahci_write_fis_d2h() so that ahci_write_fis_d2h()
-> also can write the FIS to the FIS Receive Area without raising an IRQ.
->
-> Change process_ncq_command() to call ahci_write_fis_d2h() without
-> raising an IRQ (similar to ahci_pio_transfer()), such that the FIS
-> Receive Area is in sync with the PxTFD shadow register.
->
-> E.g. Linux reads status and error fields from the FIS Receive Area
-> directly, so it is wise to keep the FIS Receive Area and the PxTFD
-> shadow register in sync.
-
-I think for some time I wondered if this mattered, because I wasn't
-sure when the guest CPU would actually regain control to check an
-intermediate state in the memory area before we wrote the next FIS.
-But, trusting your quoted blurb, I think this is more obviously
-correct.
-
-ACK
-
-(Although, there seems to be a conflict on latest origin/master - can
-you rebase, please?)
-
+> If we don't clear PxCI on error recovery, the previous command will
+> incorrectly still be marked as pending after error recovery.
 >
 > Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+
+ACK.
+
 > ---
->  hw/ide/ahci.c | 17 +++++++++++------
->  1 file changed, 11 insertions(+), 6 deletions(-)
+>  hw/ide/ahci.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 >
 > diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-> index a36e3fb77c..62aebc8de7 100644
+> index 366929132b..2a59d0e0f5 100644
 > --- a/hw/ide/ahci.c
 > +++ b/hw/ide/ahci.c
-> @@ -43,7 +43,7 @@
->  static void check_cmd(AHCIState *s, int port);
->  static int handle_cmd(AHCIState *s, int port, uint8_t slot);
->  static void ahci_reset_port(AHCIState *s, int port);
-> -static bool ahci_write_fis_d2h(AHCIDevice *ad);
-> +static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i);
->  static void ahci_init_d2h(AHCIDevice *ad);
->  static int ahci_dma_prepare_buf(const IDEDMA *dma, int32_t limit);
->  static bool ahci_map_clb_address(AHCIDevice *ad);
-> @@ -618,7 +618,7 @@ static void ahci_init_d2h(AHCIDevice *ad)
->          return;
->      }
->
-> -    if (ahci_write_fis_d2h(ad)) {
-> +    if (ahci_write_fis_d2h(ad, true)) {
->          ad->init_d2h_sent =3D true;
->          /* We're emulating receiving the first Reg H2D Fis from the devi=
-ce;
->           * Update the SIG register, but otherwise proceed as normal. */
-> @@ -850,7 +850,7 @@ static void ahci_write_fis_pio(AHCIDevice *ad, uint16=
-_t len, bool pio_fis_i)
->      }
->  }
->
-> -static bool ahci_write_fis_d2h(AHCIDevice *ad)
-> +static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i)
->  {
->      AHCIPortRegs *pr =3D &ad->port_regs;
->      uint8_t *d2h_fis;
-> @@ -864,7 +864,7 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad)
->      d2h_fis =3D &ad->res_fis[RES_FIS_RFIS];
->
->      d2h_fis[0] =3D SATA_FIS_TYPE_REGISTER_D2H;
-> -    d2h_fis[1] =3D (1 << 6); /* interrupt bit */
-> +    d2h_fis[1] =3D d2h_fis_i ? (1 << 6) : 0; /* interrupt bit */
->      d2h_fis[2] =3D s->status;
->      d2h_fis[3] =3D s->error;
->
-> @@ -890,7 +890,10 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad)
->          ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_TFES);
->      }
->
-> -    ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
-> +    if (d2h_fis_i) {
-> +        ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
-> +    }
+> @@ -329,6 +329,11 @@ static void ahci_port_write(AHCIState *s, int port, =
+int offset, uint32_t val)
+>          ahci_check_irq(s);
+>          break;
+>      case AHCI_PORT_REG_CMD:
+> +        if ((pr->cmd & PORT_CMD_START) && !(val & PORT_CMD_START)) {
+> +            pr->scr_act =3D 0;
+> +            pr->cmd_issue =3D 0;
+> +        }
 > +
->      return true;
->  }
->
-> @@ -1120,6 +1123,8 @@ static void process_ncq_command(AHCIState *s, int p=
-ort, const uint8_t *cmd_fis,
->          return;
->      }
->
-> +    ahci_write_fis_d2h(ad, false);
-> +
->      ncq_tfs->used =3D 1;
->      ncq_tfs->drive =3D ad;
->      ncq_tfs->slot =3D slot;
-> @@ -1506,7 +1511,7 @@ static void ahci_cmd_done(const IDEDMA *dma)
->      }
->
->      /* update d2h status */
-> -    ahci_write_fis_d2h(ad);
-> +    ahci_write_fis_d2h(ad, true);
->
->      if (ad->port_regs.cmd_issue && !ad->check_bh) {
->          ad->check_bh =3D qemu_bh_new(ahci_check_cmd_bh, ad);
+>          /* Block any Read-only fields from being set;
+>           * including LIST_ON and FIS_ON.
+>           * The spec requires to set ICC bits to zero after the ICC chang=
+e
 > --
 > 2.40.0
 >
