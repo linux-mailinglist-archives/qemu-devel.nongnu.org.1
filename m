@@ -2,92 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3486F706B98
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 16:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0F4706C0A
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:03:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzITB-0008Px-1T; Wed, 17 May 2023 10:49:37 -0400
+	id 1pzIfQ-0002kN-B5; Wed, 17 May 2023 11:02:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1pzIT8-0008Pi-2i
- for qemu-devel@nongnu.org; Wed, 17 May 2023 10:49:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1pzIT5-0001qX-Nd
- for qemu-devel@nongnu.org; Wed, 17 May 2023 10:49:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684334970;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LKeG5hDPgsWQktVDbyJj7bzwPvdVYtcY03P2bb01++s=;
- b=do+yv82NonaSuRYUsizTp6HzWEPmb8FUpCcZDHDwuZdG6uEjZl8w4Kv+ouppb8dqfk8GEh
- 5kLtakT/IzVv84nC7shS+r6nogVlsEzUL0tBng4GLTsRQ+cw3Ps1aw3MG+6FEq6soSpPvl
- pnbSwvFfUgBRNf8I7Ciz8pYaho/XO0Y=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-77-L0xGO5_fP4OjgcoJR7JgOg-1; Wed, 17 May 2023 10:49:29 -0400
-X-MC-Unique: L0xGO5_fP4OjgcoJR7JgOg-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-2532da9e45bso46136a91.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 07:49:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1pzIfD-0002jn-Ca
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:02:06 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1pzIf7-0004Ko-DP
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:02:03 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2ac81d2bfbcso8366001fa.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 08:01:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1684335714; x=1686927714;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pO8+zDVG8DErvrwFGWSAEszt12Z4vDHvmD6IqUDRgG8=;
+ b=BaRKHKWoupQFswqFKmrMW61iItvjBmqh/bYjAaIFlwbMaBYVUqLfkY0T31sfnpgjQf
+ YLBRHgOzm0RbdmTgX6wPBsD4HQYbgLvzg4tvAtXyrwMVaeW/fM0vnZ9lDr4rsw5zuuI0
+ kgc4G6tU1ZSyAE7Z1kjcE98OrTaUeSRNQL48gsQWQh/GEbQkQTjNvCCukelu6R05mWtn
+ 9G74JLH4dT6m7opaxHH7NDCxBZ6MCx+BXg7UwsmkQdtRF3tAIvURbIhGE+EXkVUtIO1R
+ gZwnE1zElGeUTOtPbpoM8E+ON9+RmFcGR+qghtvIfBitPcgZP+IBA8muNLhX9ykdySDd
+ 2sCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684334968; x=1686926968;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1684335714; x=1686927714;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LKeG5hDPgsWQktVDbyJj7bzwPvdVYtcY03P2bb01++s=;
- b=h4P1cNUiNxGot9Jvg00sgTiquog/b3yuHgUMmdpa/ZTWhLjpVORqswTCn+OQsctVZV
- uPTxr1VF9Ts2stwzmVdOPbCWjAkodE8SsQIRGKQVy4gH67scpuhQcGRSxkK7cUYfzeK/
- FuBiB9fHt6fYh6EtfRNjQ+Gqj5Al5j7axGjJTxr0hRJXPpPiQraPTMKgLvOMGjGtwNNt
- iDz6+lhsoSm2T776xBc1+Mos/kd75sk/YuzZ6sTelmHFi4h9lEb6SYADe07R0+s+FWVD
- TRQCQOY7YrIdXnuag5IphimwIwXTZL4haSsyEQS0C/bffTdcXQjBMXw+Hmo1Q3E5BsFt
- HbyA==
-X-Gm-Message-State: AC+VfDz8rQW0hwJPavYtwlQyNvuRTdzU/9tFQWqPrVUxRwbp017gM99O
- kKxcEx9hc/NlvdiZ4rAG6bFJ5uoiCLNjPGtCEFqhY+e51nN/OI8yIs+5Jigma5BMcaJ1ARFsmxj
- utof1h4qpWqrKjtM=
-X-Received: by 2002:a17:90a:af8c:b0:253:3975:7a37 with SMTP id
- w12-20020a17090aaf8c00b0025339757a37mr3042273pjq.9.1684334968210; 
- Wed, 17 May 2023 07:49:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5bSh/rG2KUAbTLrDywjFxk2D6o2smdBoHyIP0c/j3Jmhr1fhSRRApx3ABO8nNXMEWFvL2ONA==
-X-Received: by 2002:a17:90a:af8c:b0:253:3975:7a37 with SMTP id
- w12-20020a17090aaf8c00b0025339757a37mr3042244pjq.9.1684334967764; 
- Wed, 17 May 2023 07:49:27 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.105.155])
- by smtp.gmail.com with ESMTPSA id
- t12-20020a17090a950c00b0024e227828a9sm1661604pjo.24.2023.05.17.07.49.25
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 17 May 2023 07:49:27 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
- for iasl location
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230517103522-mutt-send-email-mst@kernel.org>
-Date: Wed, 17 May 2023 20:19:23 +0530
-Cc: Igor Mammedov <imammedo@redhat.com>,
+ bh=pO8+zDVG8DErvrwFGWSAEszt12Z4vDHvmD6IqUDRgG8=;
+ b=h33679zxn48z/a39XyKRS45gFzhe7zKRGr91+jmkYmA02aK/FV9XE3Qytr4cgjnL9r
+ wUca1iueoO1ceLQJreyE15EzFcd+uOxxy+BQupoVM3MyDAQTxmfykvcZ2smej2HVf8ib
+ dQYcp5XlrUGf7kJQBPgcWNUkwY229nNGNCT4w6OqZEIbJ4emU4AwP4bCs3XZvoTK4D0X
+ JlrpJ+6D+42fthYb0FR4iXZGz2BGpyfk5MFRvdYt+3fArrXct23eIn8RUXj3uGM2lCqq
+ +oyQTQqG+rZ6zO4GhuBOxw/KoxA0HjR94e1klx0dL4ICzbUTq1XrxqGBSledhga07J8P
+ b0Gg==
+X-Gm-Message-State: AC+VfDxRQUPNtLAZaHTg5zh5flqgsrR6gtW+iWPfDodotcXtXdBSSnSr
+ 33dKFkziY1meFHCGwuUVhOBaYrR+6fEMrTNr+xM=
+X-Google-Smtp-Source: ACHHUZ7eb09pOmYv0B5ag73bF/TfjQxGOtjWonZs1AxymYWgWzxFtHYvoFaGjpxTaTBACDZlPiNVwP+TjHvo9lTfgh4=
+X-Received: by 2002:ac2:4143:0:b0:4f0:345:6ceb with SMTP id
+ c3-20020ac24143000000b004f003456cebmr327693lfi.14.1684335713497; Wed, 17 May
+ 2023 08:01:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1683371965.git.yin31149@gmail.com>
+ <7d800315d04359d0bb91f61ec348eda1bdb972be.1683371965.git.yin31149@gmail.com>
+ <CACGkMEuj=HY0YWHoXcw+qBLm4ctfTgj3P5cfWbueVFrOP1B2uQ@mail.gmail.com>
+ <CAJaqyWc2hHKb_F11ZCF0ewCk8bc7g5O-U08OxMHLWDx1erg8Sg@mail.gmail.com>
+In-Reply-To: <CAJaqyWc2hHKb_F11ZCF0ewCk8bc7g5O-U08OxMHLWDx1erg8Sg@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Wed, 17 May 2023 23:01:40 +0800
+Message-ID: <CAKrof1MCLXB4CG9umV4oTo_Wfkaw4ADXxyD925ej9NM0ccgjzg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] vdpa: send CVQ state load commands in parallel
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>, 18801353760@163.com,
  qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <ED522229-5A71-40C2-AF2C-5D921B0B5D54@redhat.com>
-References: <20230517120751.14679-1-anisinha@redhat.com>
- <20230517101523-mutt-send-email-mst@kernel.org>
- <B6AD0FB1-CF05-4B4C-B58D-279422895E4D@redhat.com>
- <20230517103522-mutt-send-email-mst@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,156 +91,325 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Sorry for forgetting cc when replying to the email.
 
-
-> On 17-May-2023, at 8:06 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->=20
-> On Wed, May 17, 2023 at 07:57:53PM +0530, Ani Sinha wrote:
->>=20
->>=20
->>> On 17-May-2023, at 7:47 PM, Michael S. Tsirkin <mst@redhat.com> =
+On Wed, 17 May 2023 at 16:22, Eugenio Perez Martin <eperezma@redhat.com> wr=
+ote:
+>
+> On Wed, May 17, 2023 at 7:22=E2=80=AFAM Jason Wang <jasowang@redhat.com> =
 wrote:
->>>=20
->>> On Wed, May 17, 2023 at 05:37:51PM +0530, Ani Sinha wrote:
->>>> Currently the meson based QEMU build process locates the iasl =
-binary from the
->>>> current PATH and other locations [1] and uses that to set =
-CONFIG_IASL which is
->>>> then used by the test.
->>>>=20
->>>> This has two disadvantages:
->>>> - If iasl was not previously installed in the PATH, one has to =
-install iasl
->>>>  and rebuild QEMU in order to pick up the iasl location. One cannot =
-simply
->>>>  use the existing bios-tables-test binary because CONFIG_IASL is =
-only set
->>>>  during the QEMU build time by meson and then bios-tables-test has =
-to be
->>>>  rebuilt with CONFIG_IASL set in order to use iasl.
->>>> - Sometimes, the stock iasl that comes with distributions is simply =
-not good
->>>>  enough because it does not support the latest ACPI changes - newly
->>>>  introduced tables or new table attributes etc. In order to test =
-ACPI code
->>>>  in QEMU, one has to clone the latest acpica upstream repository =
-and
->>>>  rebuild iasl in order to get support for it. In those cases, one =
-may want
->>>>  the test to use the iasl binary from a non-standard location.
->>>>=20
->>>> In order to overcome the above two disadvantages, we introduce a =
-new
->>>> environment variable IASL_PATH that can be set by the tester =
-pointing to an
->>>> possibly non-standard iasl binary location. Bios-tables-test then =
-uses this
->>>> environment variable to set its iasl location, possibly also =
-overriding the
->>>> location that was pointed to by CONFIG_IASL that was set by meson. =
-This way
->>>> developers can not only use this new environment variable to set =
-iasl
->>>> location to quickly run bios-tables-test but also can point the =
-test to a
->>>> custom iasl if required.
->>>>=20
->>>> [1] =
-https://mesonbuild.com/Reference-manual_functions.html#find_program
->>>>=20
->>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>>=20
->>> Well I think the point was originally that meson can
->>> also test the binary in a variety of ways.
->>> Never surfaced so maybe never mind.
->>>=20
->>> Would it be easier to just look iasl up on path
->>=20
->> But that=E2=80=99s what meson is also doing, only QEMU build time.
->=20
->=20
-> So you were unhappy it's build time because it is not really
-> part of build and you want flexibility, right?
+> >
+> > On Sat, May 6, 2023 at 10:07=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.=
+com> wrote:
+> > >
+> > > This patch introduces the vhost_vdpa_net_cvq_add() and
+> > > refactors the vhost_vdpa_net_load*(), so that QEMU can
+> > > send CVQ state load commands in parallel.
+> > >
+> > > To be more specific, this patch introduces vhost_vdpa_net_cvq_add()
+> > > to add SVQ control commands to SVQ and kick the device,
+> > > but does not poll the device used buffers. QEMU will not
+> > > poll and check the device used buffers in vhost_vdpa_net_load()
+> > > until all CVQ state load commands have been sent to the device.
+> > >
+> > > What's more, in order to avoid buffer overwriting caused by
+> > > using `svq->cvq_cmd_out_buffer` and `svq->status` as the
+> > > buffer for all CVQ state load commands when sending
+> > > CVQ state load commands in parallel, this patch introduces
+> > > `out_cursor` and `in_cursor` in vhost_vdpa_net_load(),
+> > > pointing to the available buffer for in descriptor and
+> > > out descriptor, so that different CVQ state load commands can
+> > > use their unique buffer.
+> > >
+> > > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
+> > > Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> > > ---
+> > >  net/vhost-vdpa.c | 152 +++++++++++++++++++++++++++++++++++++--------=
+--
+> > >  1 file changed, 120 insertions(+), 32 deletions(-)
+> > >
+> > > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> > > index 10804c7200..14e31ca5c5 100644
+> > > --- a/net/vhost-vdpa.c
+> > > +++ b/net/vhost-vdpa.c
+> > > @@ -590,6 +590,44 @@ static void vhost_vdpa_net_cvq_stop(NetClientSta=
+te *nc)
+> > >      vhost_vdpa_net_client_stop(nc);
+> > >  }
+> > >
+> > > +/**
+> > > + * vhost_vdpa_net_cvq_add() adds SVQ control commands to SVQ,
+> > > + * kicks the device but does not poll the device used buffers.
+> > > + *
+> > > + * Return the number of elements added to SVQ if success.
+> > > + */
+> > > +static int vhost_vdpa_net_cvq_add(VhostVDPAState *s,
+> > > +                                void **out_cursor, size_t out_len,
+> >
+> > Can we track things like cursors in e.g VhostVDPAState ?
+> >
+>
+> Cursors will only be used at device startup. After that, cursors are
+> always the full buffer. Do we want to "pollute" VhostVDPAState with
+> things that will not be used after the startup?
+>
+> Maybe we can create a struct for them and then pass just this struct?
 
-Hmm, maybe in that case, we might want to resurrect iasl_installed(), =
-basically reverting part of cc8fa0e80836c51ba644d910c.
+Yes, Currently, the new version of vhost_vdpa_net_cvq_add() is only
+called in vhost_vdpa_net_load() at startup, so these cursors will not be
+used after startup.
 
-To me its ok if I had to set IASL_PATH=3D`which iasl` before running the =
-test. I do not have strong opinions.
-=20
->=20
->=20
->>> unless it was specified on command line?
->>>=20
->>>> ---
->>>> tests/qtest/bios-tables-test.c | 14 ++++++++++++++
->>>> 1 file changed, 14 insertions(+)
->>>>=20
->>>> sample runs:
->>>>=20
->>>> $ QTEST_QEMU_BINARY=3D./qemu-system-x86_64 V=3D2 =
-./tests/qtest/bios-tables-test
->>>> ...
->>>> acpi-test: Warning! APIC binary file mismatch. Actual =
-[aml:/tmp/aml-DLHA51], Expected [aml:tests/data/acpi/pc/APIC].
->>>> See source file tests/qtest/bios-tables-test.c for instructions on =
-how to update expected files.
->>>> Using iasl: /usr/bin/iasl
->>>> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-L9GA51.dsl, =
-aml:/tmp/aml-DLHA51], Expected [asl:/tmp/asl-10EA51.dsl, =
-aml:tests/data/acpi/pc/APIC].
->>>>=20
->>>> $ QTEST_QEMU_BINARY=3D./qemu-system-x86_64 V=3D2 =
-IASL_PATH=3D/home/anisinha/workspace/acpica/generate/unix/bin/iasl =
-./tests/qtest/bios-tables-test
->>>> ...
->>>> acpi-test: Warning! APIC binary file mismatch. Actual =
-[aml:/tmp/aml-5CQ341], Expected [aml:tests/data/acpi/pc/APIC].
->>>> See source file tests/qtest/bios-tables-test.c for instructions on =
-how to update expected files.
->>>> User has provided an iasl path, using that: =
-/home/anisinha/workspace/acpica/generate/unix/bin/iasl
->>>> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-2GQ341.dsl, =
-aml:/tmp/aml-5CQ341], Expected [asl:/tmp/asl-IBR341.dsl, =
-aml:tests/data/acpi/pc/APIC].
->>>>=20
->>>> diff --git a/tests/qtest/bios-tables-test.c =
-b/tests/qtest/bios-tables-test.c
->>>> index 7fd88b0e9c..37e8e484cb 100644
->>>> --- a/tests/qtest/bios-tables-test.c
->>>> +++ b/tests/qtest/bios-tables-test.c
->>>> @@ -440,7 +440,12 @@ static void test_acpi_asl(test_data *data)
->>>>    AcpiSdtTable *sdt, *exp_sdt;
->>>>    test_data exp_data =3D {};
->>>>    gboolean exp_err, err, all_tables_match =3D true;
->>>> +    const char *user_iasl_path =3D getenv("IASL_PATH");
->>>>=20
->>>> +    /* if user has provided a path to iasl, use that */
->>>> +    if (user_iasl_path) {
->>>> +        iasl =3D user_iasl_path;
->>>> +    }
->>>>    exp_data.tables =3D load_expected_aml(data);
->>>>    dump_aml_files(data, false);
->>>>    for (i =3D 0; i < data->tables->len; ++i) {
->>>> @@ -473,6 +478,15 @@ static void test_acpi_asl(test_data *data)
->>>>            continue;
->>>>        }
->>>>=20
->>>> +        if (verbosity_level >=3D 2) {
->>>> +            if (user_iasl_path) {
->>>> +                fprintf(stderr, "User has provided an iasl path," =
-\
->>>> +                        "using that: %s\n", user_iasl_path);
->>>> +            } else {
->>>> +                fprintf(stderr, "Using iasl: %s\n", iasl);
->>>> +            }
->>>> +        }
->>>> +
->>>>        err =3D load_asl(data->tables, sdt);
->>>>        asl =3D normalize_asl(sdt->asl);
->>>>=20
->>>> --=20
->>>> 2.39.1
->=20
+If needed, we can create a `VhostVDPACursor` as suggested by Eugenio.
 
+>
+> Thanks!
+>
+> > > +                                virtio_net_ctrl_ack **in_cursor, siz=
+e_t in_len)
+> > > +{
+> > > +    /* Buffers for the device */
+> > > +    const struct iovec out =3D {
+> > > +        .iov_base =3D *out_cursor,
+> > > +        .iov_len =3D out_len,
+> > > +    };
+> > > +    const struct iovec in =3D {
+> > > +        .iov_base =3D *in_cursor,
+> > > +        .iov_len =3D sizeof(virtio_net_ctrl_ack),
+> > > +    };
+> > > +    VhostShadowVirtqueue *svq =3D g_ptr_array_index(s->vhost_vdpa.sh=
+adow_vqs, 0);
+> > > +    int r;
+> > > +
+> > > +    r =3D vhost_svq_add(svq, &out, 1, &in, 1, NULL);
+> > > +    if (unlikely(r !=3D 0)) {
+> > > +        if (unlikely(r =3D=3D -ENOSPC)) {
+> > > +            qemu_log_mask(LOG_GUEST_ERROR, "%s: No space on device q=
+ueue\n",
+> > > +                          __func__);
+> > > +        }
+> > > +        return r;
+> > > +    }
+> > > +
+> > > +    /* Update the cursor */
+> > > +    *out_cursor +=3D out_len;
+> > > +    *in_cursor +=3D 1;
+> > > +
+> > > +    return 1;
+> > > +}
+> > > +
+> > >  /**
+> > >   * vhost_vdpa_net_cvq_add_and_wait() adds SVQ control commands to SV=
+Q,
+> > >   * kicks the device and polls the device used buffers.
+> > > @@ -628,69 +666,82 @@ static ssize_t vhost_vdpa_net_cvq_add_and_wait(=
+VhostVDPAState *s,
+> > >      return vhost_svq_poll(svq);
+> > >  }
+> > >
+> > > -static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t cl=
+ass,
+> > > -                                       uint8_t cmd, const void *data=
+,
+> > > -                                       size_t data_size)
+> > > +
+> > > +/**
+> > > + * vhost_vdpa_net_load_cmd() restores the NIC state through SVQ.
+> > > + *
+> > > + * Return the number of elements added to SVQ if success.
+> > > + */
+> > > +static int vhost_vdpa_net_load_cmd(VhostVDPAState *s,
+> > > +                                void **out_cursor, uint8_t class, ui=
+nt8_t cmd,
+> > > +                                const void *data, size_t data_size,
+> > > +                                virtio_net_ctrl_ack **in_cursor)
+> > >  {
+> > >      const struct virtio_net_ctrl_hdr ctrl =3D {
+> > >          .class =3D class,
+> > >          .cmd =3D cmd,
+> > >      };
+> > >
+> > > -    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ct=
+rl));
+> > > +    assert(sizeof(ctrl) < vhost_vdpa_net_cvq_cmd_page_len() -
+> > > +                          (*out_cursor - s->cvq_cmd_out_buffer));
+> > > +    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ct=
+rl) -
+> > > +                       (*out_cursor - s->cvq_cmd_out_buffer));
+> > >
+> > > -    memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
+> > > -    memcpy(s->cvq_cmd_out_buffer + sizeof(ctrl), data, data_size);
+> > > +    memcpy(*out_cursor, &ctrl, sizeof(ctrl));
+> > > +    memcpy(*out_cursor + sizeof(ctrl), data, data_size);
+> > >
+> > > -    return vhost_vdpa_net_cvq_add_and_wait(s, sizeof(ctrl) + data_si=
+ze,
+> > > -                                  sizeof(virtio_net_ctrl_ack));
+> > > +    return vhost_vdpa_net_cvq_add(s, out_cursor, sizeof(ctrl) + data=
+_size,
+> > > +                                  in_cursor, sizeof(virtio_net_ctrl_=
+ack));
+> > >  }
+> > >
+> > > -static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONe=
+t *n)
+> > > +/**
+> > > + * vhost_vdpa_net_load_mac() restores the NIC mac through SVQ.
+> > > + *
+> > > + * Return the number of elements added to SVQ if success.
+> > > + */
+> > > +static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONe=
+t *n,
+> > > +                            void **out_cursor, virtio_net_ctrl_ack *=
+*in_cursor)
+> > >  {
+> > >      uint64_t features =3D n->parent_obj.guest_features;
+> > >      if (features & BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR)) {
+> > > -        ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NE=
+T_CTRL_MAC,
+> > > -                                                  VIRTIO_NET_CTRL_MA=
+C_ADDR_SET,
+> > > -                                                  n->mac, sizeof(n->=
+mac));
+> > > -        if (unlikely(dev_written < 0)) {
+> > > -            return dev_written;
+> > > -        }
+> > > -
+> > > -        return *s->status !=3D VIRTIO_NET_OK;
+> > > +        return vhost_vdpa_net_load_cmd(s, out_cursor, VIRTIO_NET_CTR=
+L_MAC,
+> > > +                                       VIRTIO_NET_CTRL_MAC_ADDR_SET,
+> > > +                                       n->mac, sizeof(n->mac), in_cu=
+rsor);
+> > >      }
+> > >
+> > >      return 0;
+> > >  }
+> > >
+> > > -static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+> > > -                                  const VirtIONet *n)
+> > > +/**
+> > > + * vhost_vdpa_net_load_mac() restores the NIC mq state through SVQ.
+> > > + *
+> > > + * Return the number of elements added to SVQ if success.
+> > > + */
+> > > +static int vhost_vdpa_net_load_mq(VhostVDPAState *s, const VirtIONet=
+ *n,
+> > > +                            void **out_cursor, virtio_net_ctrl_ack *=
+*in_cursor)
+> > >  {
+> > >      struct virtio_net_ctrl_mq mq;
+> > >      uint64_t features =3D n->parent_obj.guest_features;
+> > > -    ssize_t dev_written;
+> > >
+> > >      if (!(features & BIT_ULL(VIRTIO_NET_F_MQ))) {
+> > >          return 0;
+> > >      }
+> > >
+> > >      mq.virtqueue_pairs =3D cpu_to_le16(n->curr_queue_pairs);
+> > > -    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MQ,
+> > > -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIR=
+S_SET, &mq,
+> > > -                                          sizeof(mq));
+> > > -    if (unlikely(dev_written < 0)) {
+> > > -        return dev_written;
+> > > -    }
+> > > -
+> > > -    return *s->status !=3D VIRTIO_NET_OK;
+> > > +    return vhost_vdpa_net_load_cmd(s, out_cursor, VIRTIO_NET_CTRL_MQ=
+,
+> > > +                                   VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
+> > > +                                   &mq, sizeof(mq), in_cursor);
+> > >  }
+> > >
+> > >  static int vhost_vdpa_net_load(NetClientState *nc)
+> > >  {
+> > >      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> > > +    VhostShadowVirtqueue *svq;
+> > > +    void *out_cursor;
+> > > +    virtio_net_ctrl_ack *in_cursor;
+> > >      struct vhost_vdpa *v =3D &s->vhost_vdpa;
+> > >      const VirtIONet *n;
+> > > -    int r;
+> > > +    ssize_t cmds_in_flight =3D 0, dev_written, r;
+> > >
+> > >      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
+> > >
+> > > @@ -699,14 +750,51 @@ static int vhost_vdpa_net_load(NetClientState *=
+nc)
+> > >      }
+> > >
+> > >      n =3D VIRTIO_NET(v->dev->vdev);
+> > > -    r =3D vhost_vdpa_net_load_mac(s, n);
+> > > +    out_cursor =3D s->cvq_cmd_out_buffer;
+> > > +    in_cursor =3D s->status;
+> > > +
+> > > +    r =3D vhost_vdpa_net_load_mac(s, n, &out_cursor, &in_cursor);
+> > >      if (unlikely(r < 0))
+> > >          return r;
+> > >      }
+> > > -    r =3D vhost_vdpa_net_load_mq(s, n);
+> > > -    if (unlikely(r)) {
+> > > +    cmds_in_flight +=3D r;
+> > > +
+> > > +    r =3D vhost_vdpa_net_load_mq(s, n, &out_cursor, &in_cursor);
+> > > +    if (unlikely(r < 0)) {
+> > >          return r;
+> > >      }
+> > > +    cmds_in_flight +=3D r;
+> > > +
+> > > +    /* Poll for all used buffer from device */
+> > > +    svq =3D g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
+> > > +    while (cmds_in_flight > 0) {
+> > > +        /*
+> > > +         * We can poll here since we've had BQL from the time we sen=
+t the
+> > > +         * descriptor. Also, we need to take the answer before SVQ p=
+ulls
+> > > +         * by itself, when BQL is released
+> > > +         */
+> > > +        dev_written =3D vhost_svq_poll(svq);
+> >
+> > I'd tweak vhost_svq_poll to accept cmds_in_flight.
+
+That sounds great!
+I will refactor the code here and send the v2 patch after
+your patch.
+
+Thanks!
+
+> >
+> > Thanks
+> >
+> > > +
+> > > +        if (unlikely(!dev_written)) {
+> > > +            /*
+> > > +             * vhost_svq_poll() return 0 when something wrong, such =
+as
+> > > +             * QEMU waits for too long time or no available used buf=
+fer
+> > > +             * from device, and there is no need to continue polling
+> > > +             * in this case.
+> > > +             */
+> > > +            return -EINVAL;
+> > > +        }
+> > > +
+> > > +        --cmds_in_flight;
+> > > +    }
+> > > +
+> > > +    /* Check the buffers written by device */
+> > > +    for (virtio_net_ctrl_ack *status =3D s->status; status < in_curs=
+or;
+> > > +         ++status) {
+> > > +        if (*status !=3D VIRTIO_NET_OK) {
+> > > +            return -EINVAL;
+> > > +        }
+> > > +    }
+> > >
+> > >      return 0;
+> > >  }
+> > > --
+> > > 2.25.1
+> > >
+> >
+>
 
