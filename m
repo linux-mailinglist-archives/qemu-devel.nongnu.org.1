@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750E8707017
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E53706FEA
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:49:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLEc-0000i6-0H; Wed, 17 May 2023 13:46:46 -0400
+	id 1pzLFq-0003DT-HJ; Wed, 17 May 2023 13:48:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEF-0008Jg-3a
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:33 -0400
+ id 1pzLEG-0008Ob-OR
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLED-0004J1-Jt
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:22 -0400
+ id 1pzLEF-0004JL-6Y
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345581;
+ s=mimecast20190719; t=1684345582;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ktxuVoeCftsXoioRTwebbxI5P4dwKOFzWaEcjYs2LFM=;
- b=Iw945ZwTVbX1QaA1eU3RFGu+8lF4Byr3sUdh8G49aby9nVHHbJ/SYSPBk2o9AEVoQ3MPrH
- 2y05rTMNfFY7tNTFuu2G2bvCpk2ZyCe4BRyiwm1r5ziqkS3g1y43W8fV9Olhne0BLxHt1A
- OOAyyj8ILOE9pcmmntOzfDULQgCnCVc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=duMUMALcqKz2nMROTx+bWkd+2EM8rTwuu0z6XDzhroY=;
+ b=ZZH1lT6kcVTvOEg05V7hlLZSFDPPvP6I3tU+3L22hzhgfnANqYcUG+viu7g3n8Taz//1UW
+ cCvsaKmz7nvCaSmU9BqrXeFn2wjHIXnFh1PMgnYsmBEkl1HwYatRmGK/VN4C6EMFV15Aot
+ I0Lhucn+0n5bpM+8bB8dKyBfm2Yloio=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-b3jMMQWaM82NvAA1_Kwhjg-1; Wed, 17 May 2023 13:46:19 -0400
-X-MC-Unique: b3jMMQWaM82NvAA1_Kwhjg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f42b226871so4969275e9.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:19 -0700 (PDT)
+ us-mta-610-zscNjIxoNqajHJafxVJy6g-1; Wed, 17 May 2023 13:46:21 -0400
+X-MC-Unique: zscNjIxoNqajHJafxVJy6g-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f419a053c5so1705445e9.1
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345578; x=1686937578;
+ d=1e100.net; s=20221208; t=1684345580; x=1686937580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ktxuVoeCftsXoioRTwebbxI5P4dwKOFzWaEcjYs2LFM=;
- b=PyNAjJC4Qq9k0aKoWJZh1IDc/uiPfLO2DxAICadKtTQyXD9nv6MixEc0n/f4YjvTkg
- xLiw4KAEg3EMqblGZnDmFHYK72Uf1Dzm0IW+4nu2iuXQPXjoMic3Cn881FR2nzzYG/hX
- AOXXAEq6VIfGqlPl9XzwMrgkaVbP1NsCHlh0iK8wH74JJ4GsZsfmcpYX3pn0MM7IRl5i
- lPCozBFifgtEwqHUo2uob8JwYqT6f1DnWaqbbQ1aXwZ+CiObKlBARrF8McaGMs94kBi/
- QU0j/Kr5zhtPALuIjhHbj3JgnBK4Z7OAewN9jkrzQMm6BDZ6hO4CY/WMQ1asBbD7nZLZ
- 4A3Q==
-X-Gm-Message-State: AC+VfDwMYA4nM69/hNtInownGwNpIczvl+QMlyhqCNdZch+Zb3NKXyKH
- iFYCl7Og8kl1898vGO4o9s2b/mZLTBGahxVdpJR7wdaVVpglDGfLlGVhRDqWtUP2Hc+U21f8HBm
- mCPPCrdDCN7C2LH2pNG5jo2T1bm5lBr0jaVPmRV9SGolVklFwDNuLiwACTy0SIQAFAEb43JDYjl
+ bh=duMUMALcqKz2nMROTx+bWkd+2EM8rTwuu0z6XDzhroY=;
+ b=My5G5Mr36xpTtABcs5eB9LS8Kt7sRFYmNj8POal/sLqljMI6eEAVECFqVOJcAaIOe+
+ rGLxrbsD2P0azYy49cgyBeG8JaF80LjwVmJHRLz/zI/bvH0kuiq6TFjpiPq1igT7GZP0
+ 53mSQR7D6VqkYapSQMbuHpkK/QWS4jkoANWT8Ng+7ciOcFaX7MVcVX+t+xxM+dmOj2dd
+ FghSGPimB6HhhXewv4Of9j71FtC8vKU8gku8hdW7SfGNsCHadDP+yri7ShmgUmn3Tic0
+ XkbPQaGbeTySPZ4+ELENavrYi18VxbgnWIQsMGOuwkOn82RmB94MGh+JRKtlvF4tQAD7
+ Qhxg==
+X-Gm-Message-State: AC+VfDzDO5wtU8bSajKt1T/zJnIXaejEUKjSOdZHBEJsmtMzmRfyjBkS
+ Q/N67y0JtCDy5VK+RuQXak+3NpPDbjVC7Zo+odiBdC61GBtuw3aq4yAz+5BRZ/wEzzn0e3B5lUa
+ 5LvEi8JaM3vuWjtNy98DNTR2j977IHB5yrfPcNtKWKc4drS0FDHLNVDVCtCf1exyeg9Vk/0dU1g
  8=
-X-Received: by 2002:a05:600c:3787:b0:3f4:2bcd:5a6e with SMTP id
- o7-20020a05600c378700b003f42bcd5a6emr20206702wmr.30.1684345578028; 
- Wed, 17 May 2023 10:46:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4gFcnkxAvYj5CRIMh2ADqAV05VSrdfz4/VN5fkmL1lCv+BXdYe7MqA8hT1vZFl0IhmBokfFw==
-X-Received: by 2002:a05:600c:3787:b0:3f4:2bcd:5a6e with SMTP id
- o7-20020a05600c378700b003f42bcd5a6emr20206688wmr.30.1684345577704; 
- Wed, 17 May 2023 10:46:17 -0700 (PDT)
+X-Received: by 2002:a7b:c7c9:0:b0:3f4:2aeb:30d with SMTP id
+ z9-20020a7bc7c9000000b003f42aeb030dmr2432376wmk.4.1684345579697; 
+ Wed, 17 May 2023 10:46:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4pqlJsLz0cCmvHaoyzgtDSK9UuDwfcOVsibLj4ivq7VkDQepipyTeUqfro4/SY420eSUFD2g==
+X-Received: by 2002:a7b:c7c9:0:b0:3f4:2aeb:30d with SMTP id
+ z9-20020a7bc7c9000000b003f42aeb030dmr2432362wmk.4.1684345579344; 
+ Wed, 17 May 2023 10:46:19 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a05600c220200b003f42cc7aac4sm2885044wml.37.2023.05.17.10.46.16
+ 13-20020a05600c024d00b003f42813b315sm2835227wmj.32.2023.05.17.10.46.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:17 -0700 (PDT)
+ Wed, 17 May 2023 10:46:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>
-Subject: [PULL 33/68] configure: create a python venv unconditionally
-Date: Wed, 17 May 2023 19:44:45 +0200
-Message-Id: <20230517174520.887405-34-pbonzini@redhat.com>
+Subject: [PULL 34/68] python/wheels: add vendored meson package
+Date: Wed, 17 May 2023 19:44:46 +0200
+Message-Id: <20230517174520.887405-35-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -102,86 +102,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-This patch changes the configure script so that it always creates and
-uses a python virtual environment unconditionally.
+In preference to vendoring meson source, vendor a built distributable
+("bdist" in python parlance). This has some benefits:
 
-Meson bootstrapping is temporarily altered to force the use of meson
-from git or vendored source (as packaged in our source tarballs). A
-subsequent commit restores the use of distribution-vendored Meson.
+(1) We can get rid of a git submodule,
+(2) Installing built meson into a venv doesn't require any extra
+    dependencies (the python "wheel" package, chiefly.)
+(3) We don't treat meson any differently than we would any other python
+    package (we install it, end of story, done.)
+(4) All future tarball *and* developer checkouts will function offline;
+    No git or PyPI connection needed to fetch meson.
+
+Note that because mkvenv prefers vendored packages to PyPI, as mkvenv is
+currently written we will never consult PyPI for meson. (Do keep in mind
+that your distribution's meson will be preferred above the vendored
+version, though.)
+
+```
+jsnow@scv ~/s/q/python (python-configure-venv)> python3 scripts/vendor.py
+pip download --dest /home/jsnow/src/qemu/python/wheels --require-hashes -r /tmp/tmpvo5qav7i
+Collecting meson==0.61.5
+  Using cached meson-0.61.5-py3-none-any.whl (862 kB)
+Saved ./wheels/meson-0.61.5-py3-none-any.whl
+Successfully downloaded meson
+```
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-Id: <20230511035435.734312-16-jsnow@redhat.com>
+Message-Id: <20230511035435.734312-17-jsnow@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 34 +++++++++++++++++++++++++++++-----
- 1 file changed, 29 insertions(+), 5 deletions(-)
+ python/wheels/meson-0.61.5-py3-none-any.whl | Bin 0 -> 862509 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 python/wheels/meson-0.61.5-py3-none-any.whl
 
-diff --git a/configure b/configure
-index 243e2e0a0dbc..1d7db92ee3f9 100755
---- a/configure
-+++ b/configure
-@@ -625,7 +625,6 @@ check_py_version() {
- python=
- first_python=
- if test -z "${PYTHON}"; then
--    explicit_python=no
-     # A bare 'python' is traditionally python 2.x, but some distros
-     # have it as python 3.x, so check in both places.
-     for binary in python3 python python3.11 python3.10 python3.9 python3.8 python3.7 python3.6; do
-@@ -644,7 +643,6 @@ else
-     # Same as above, but only check the environment variable.
-     has "${PYTHON}" || error_exit "The PYTHON environment variable does not point to an executable"
-     python=$(command -v "$PYTHON")
--    explicit_python=yes
-     if check_py_version "$python"; then
-         # This one is good.
-         first_python=
-@@ -729,7 +727,7 @@ for opt do
-   ;;
-   --install=*)
-   ;;
--  --python=*) python="$optarg" ; explicit_python=yes
-+  --python=*) python="$optarg"
-   ;;
-   --skip-meson) skip_meson=yes
-   ;;
-@@ -1090,8 +1088,34 @@ if ! check_py_version "$python"; then
-       "Use --python=/path/to/python to specify a supported Python."
- fi
- 
--# Resolve PATH + suppress writing compiled files
--python="$(command -v "$python") -B"
-+# Resolve PATH
-+python="$(command -v "$python")"
-+explicit_python=yes
-+
-+# Create a Python virtual environment using our configured python.
-+# The stdout of this script will be the location of a symlink that
-+# points to the configured Python.
-+# Entry point scripts for pip, meson, and sphinx are generated if those
-+# packages are present.
-+
-+# Defaults assumed for now:
-+# - venv is cleared if it exists already;
-+# - venv is allowed to use system packages;
-+# - all setup is performed **offline**;
-+# - No packages are installed by default;
-+# - pip is not installed into the venv when possible,
-+#   but ensurepip is called as a fallback when necessary.
-+
-+echo "python determined to be '$python'"
-+echo "python version: $($python --version)"
-+
-+python="$($python -B "${source_path}/python/scripts/mkvenv.py" create pyvenv)"
-+if test "$?" -ne 0 ; then
-+    error_exit "python venv creation failed"
-+fi
-+
-+# Suppress writing compiled files
-+python="$python -B"
- 
- has_meson() {
-   local python_dir=$(dirname "$python")
 -- 
 2.40.1
 
