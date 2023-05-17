@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95110707315
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 22:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B46AF7073B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:14:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzNoB-00024K-9b; Wed, 17 May 2023 16:31:39 -0400
+	id 1pzOSf-0006h3-Dw; Wed, 17 May 2023 17:13:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pzNo9-000245-0v
- for qemu-devel@nongnu.org; Wed, 17 May 2023 16:31:37 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pzNo7-0007Bk-07
- for qemu-devel@nongnu.org; Wed, 17 May 2023 16:31:36 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1a516fb6523so12737675ad.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 13:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684355493; x=1686947493;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mAOg4wm0H6NZEoYxofU+jOHQiDiSplvRynYOZ5EWSCY=;
- b=srgWzqPoyffALTGTxVk2BKOj9QEnzQ8di7M8rOkHKWoSpyWhhmls9AOnQdCJ3RWFpZ
- EWFxmzLH0r6L3+Ujs4OLDgk9zBqNcgh+9kyjmmqXK+Vgaa8RUZwW9U4aLyVlBTayKuye
- dEqHKdzJPSTwmcZr0JmKjSK0swnyJLC+Jn20LwKnV90RXuvQ+V674pYOjk8tkWfNt2H5
- bdqvYq8x/qz0PmxnAzCd+wNz1WpC2OIxr220oTPTurAOh/v6jy1V3L7TKhKoiYOQQqxu
- xIW++pK3XJQjqW8uOtEjxVicdYJkwDgvtYNpV+uRQrHcd5+LZNtKPRQCvbc4bgUEegwn
- GpCA==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOSd-0006gg-LF
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:13:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOSQ-0006PY-HA
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:13:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684357993;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ykcDPuVoP5Nrhuhgw5V4FPS1V1oPVHdWwkMEzJUOHq4=;
+ b=Rs5zLRbnc/xMi9PC4u/jj43Q+6yxwId8RO1/PBDG0O5QGw2T2ZTc29r7zCSUuobmvNgi0F
+ 1n3G3kh7yXrF2TISD8LLCy2gUOucLOe0sgjzvAxdIROBcaTodgGn5/Oye2B0jsAix6UHUE
+ prgY7QYJ78gj/PmRUpdwq2fFIqUpOqU=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-R5nq-1-AO7OTCVDzqVEUMg-1; Wed, 17 May 2023 17:13:09 -0400
+X-MC-Unique: R5nq-1-AO7OTCVDzqVEUMg-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1ab28ec0facso8505195ad.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:13:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684355493; x=1686947493;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mAOg4wm0H6NZEoYxofU+jOHQiDiSplvRynYOZ5EWSCY=;
- b=Wo62UwDo/u24MaKw9Ak2v2+slGb/zKuWu19bEeDbJc7HVojjZPsk8GNi7YhkDcSpWU
- BPDFBc23T7aPa2iDZDVT/PnoSVy/t8xSQc4q3YWB+veIz5GpEuNVgiaDMxQt86lV3hJx
- ufAHXyuGFB/GyPV4cF5Jv1H+z7b9HaCXXwyLtFPUnfBqQn+X2W5XafuUhm2PdBUvCZKu
- /CIFWJFcwQNuq+6vasz+Oe/hHJlWLTxN77xzuDCTrsFwBhWBp5nXs/qfzFm8txtPz2w6
- b3hymSJA0a/9njoFdlradVrk9vxfDg1us3A4cYUA+Eu5pUeVHLVoosiP/bzaVRos/Lbq
- TR5w==
-X-Gm-Message-State: AC+VfDyH6bSxqUzosAGA0CZ9zf8IWJ2QG2iuveF4B/WwkMXhzfafsOYf
- GotI+Fk06TY4mVFuaVJZKBqYTw==
-X-Google-Smtp-Source: ACHHUZ6bwxPQLqc2r7bmPXkt9DE30+L1ZnLgF+FJDVjCVGjaJxMFKpObrAQwiYJ9CbTAwopKI3oIyQ==
-X-Received: by 2002:a17:902:8344:b0:1ae:3991:e4f9 with SMTP id
- z4-20020a170902834400b001ae3991e4f9mr5825892pln.61.1684355493293; 
- Wed, 17 May 2023 13:31:33 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:17a4:1aa0:c49d:e8f7?
- ([2602:ae:1598:4c01:17a4:1aa0:c49d:e8f7])
- by smtp.gmail.com with ESMTPSA id
- j6-20020a170902c3c600b001ac84f5559csm16254439plj.126.2023.05.17.13.31.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 May 2023 13:31:32 -0700 (PDT)
-Message-ID: <a7f23b7c-879f-36db-dabd-1891bda766e5@linaro.org>
-Date: Wed, 17 May 2023 13:31:30 -0700
+ d=1e100.net; s=20221208; t=1684357988; x=1686949988;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ykcDPuVoP5Nrhuhgw5V4FPS1V1oPVHdWwkMEzJUOHq4=;
+ b=JP+5wBoTdHdSgTnyq2TDJzMOn3Ff6/Iq1BaolRvvnwsq0Fyv+ITNDpmQoj05WAXNQs
+ y4I6aUhk66qHpR+oAJaxZPzuqVZyzW8WKqKZsjY9OlnUjS+9HoyRf8QywlLzCjsV6Nox
+ 8vq9bOlqw3E9d4Bw5nvMxU6C8po6yDucLreQC6FXe6P8OPb/Vc6qUkA5PREDQQeBKcJB
+ 5Dek6e4f03zfn7uTjMR8l8N/ohE7u3xp/vE+16pVneQ8CgwZzKUpYzVU5vP0GFLpmFw9
+ NC3pvN+qR8WIB3ISqIL4YXWZnQMJlsiuAMck/ZX2/l0uBZirBriMI5Jfj6xZQfK2kjoz
+ D1CA==
+X-Gm-Message-State: AC+VfDyA3j7K7PTwgqB7TpDpg/qorvRjQ8sjvEkyyqrqELDPA9Ju8Ob2
+ AoUXjcFuuB30MLvKPcT3mCTM8uAYsXow8uRIZ/Q42y8hYi7o+DSY58NLL1BB4RzUlSyLRQW7mHm
+ a+aT1xbfddwrZ2FrSk3BYPEAtzbl0QNU=
+X-Received: by 2002:a17:902:e751:b0:19e:6e00:4676 with SMTP id
+ p17-20020a170902e75100b0019e6e004676mr93322plf.61.1684357988531; 
+ Wed, 17 May 2023 14:13:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5WXyszlCsPfrLfL/S44eqMCbVXMIuomQPOI38gEZP4wsTzfdlBEX1sZfoeFQXtyHgbIS+1RP7cUcEl0fIB2zU=
+X-Received: by 2002:a17:902:e751:b0:19e:6e00:4676 with SMTP id
+ p17-20020a170902e75100b0019e6e004676mr93310plf.61.1684357988238; Wed, 17 May
+ 2023 14:13:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PULL 00/68] i386, build system, KVM changes for 2023-05-18
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20230517174520.887405-1-pbonzini@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.412,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230428132124.670840-1-nks@flawful.org>
+ <20230428132124.670840-3-nks@flawful.org>
+In-Reply-To: <20230428132124.670840-3-nks@flawful.org>
+From: John Snow <jsnow@redhat.com>
+Date: Wed, 17 May 2023 17:12:57 -0400
+Message-ID: <CAFn=p-adzHqAMvdYjiMvXpv1-Z3SE78LUErOD5v0yW+6ZZbumw@mail.gmail.com>
+Subject: Re: [PATCH 2/9] hw/ide/core: set ERR_STAT in unsupported command
+ completion
+To: Niklas Cassel <nks@flawful.org>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,133 +94,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/17/23 10:44, Paolo Bonzini wrote:
-> The following changes since commit ab4c44d657aeca7e1da6d6dcb1741c8e7d357b8b:
-> 
->    Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-05-15 13:54:33 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/bonzini/qemu.git tags/for-upstream
-> 
-> for you to fetch changes up to b98d6272e33a2ca8bab4c8087e8809e98400d2c5:
-> 
->    docs/devel: update build system docs (2023-05-17 16:55:09 +0200)
-> 
-> ----------------------------------------------------------------
-> * kvm: enable dirty ring for arm64
-> * target/i386: new features
-> * target/i386: AVX fixes
-> * configure: create a python venv unconditionally
-> * meson: bump to 0.63.0 and move tests from configure
-> * meson: Pass -j option to sphinx
-> * drop support for Python 3.6
-> * fix check-python-tox
-> * fix "make clean" in the source directory
-> 
-> ----------------------------------------------------------------
-> Emanuele Giuseppe Esposito (2):
->        target/i386: add support for FLUSH_L1D feature
->        target/i386: add support for FB_CLEAR feature
-> 
-> Fabiano Rosas (1):
->        meson: Pass -j option to sphinx
-> 
-> Gavin Shan (4):
->        migration: Add last stage indicator to global dirty log
->        kvm: Synchronize the backup bitmap in the last stage
->        kvm: Add helper kvm_dirty_ring_init()
->        kvm: Enable dirty ring for arm64
-> 
-> John Snow (23):
->        python: update pylint configuration
->        python: add mkvenv.py
->        mkvenv: add better error message for broken or missing ensurepip
->        mkvenv: add nested venv workaround
->        mkvenv: add ensure subcommand
->        mkvenv: add --diagnose option to explain "ensure" failures
->        mkvenv: add console script entry point generation
->        mkvenv: use pip's vendored distlib as a fallback
->        mkvenv: avoid ensurepip if pip is installed
->        mkvenv: work around broken pip installations on Debian 10
->        tests/docker: add python3-venv dependency
->        tests/vm: Configure netbsd to use Python 3.10
->        tests/vm: add py310-expat to NetBSD
->        python: add vendor.py utility
->        configure: create a python venv unconditionally
->        python/wheels: add vendored meson package
->        configure: use 'mkvenv ensure meson' to bootstrap meson
->        qemu.git: drop meson git submodule
->        tests: Use configure-provided pyvenv for tests
->        configure: move --enable-docs and --disable-docs back to configure
->        configure: bootstrap sphinx with mkvenv
->        configure: add --enable-pypi and --disable-pypi
->        configure: Add courtesy hint to Python version failure message
-> 
-> Paolo Bonzini (33):
->        target/i386: fix operand size for VCOMI/VUCOMI instructions
->        tests/tcg/i386: correct mask for VPERM2F128/VPERM2I128
->        tcg: round-robin: do not use mb_read for rr_current_cpu
->        coverity: the definitive COMPONENTS.md update
->        scsi-generic: fix buffer overflow on block limits inquiry
->        python: shut up "pip install" during "make check-minreqs"
->        Python: Drop support for Python 3.6
->        mkvenv: mark command as required
->        python: bump some of the dependencies
->        meson: regenerate meson-buildoptions.sh
->        meson: require 0.63.0
->        meson: use prefer_static option
->        meson: remove static_kwargs
->        meson: add more version numbers to the summary
->        meson: drop unnecessary declare_dependency()
->        build: move glib detection and workarounds to meson
->        configure: remove pkg-config functions
->        configure, meson: move --enable-modules to Meson
->        meson: prepare move of QEMU_CFLAGS to meson
->        build: move sanitizer tests to meson
->        build: move SafeStack tests to meson
->        build: move coroutine backend selection to meson
->        build: move stack protector flag selection to meson
->        build: move warning flag selection to meson
->        build: move remaining compiler flag tests to meson
->        build: move compiler version check to meson
->        build: move --disable-debug-info to meson
->        configure: remove compiler sanity check
->        configure: do not rerun the tests with -Werror
->        configure: remove unnecessary mkdir
->        configure: reorder option parsing code
->        configure: remove unnecessary check
->        docs/devel: update build system docs
-> 
-> Ricky Zhou (3):
->        target/i386: Fix and add some comments next to SSE/AVX instructions.
->        target/i386: Fix exception classes for SSE/AVX instructions.
->        target/i386: Fix exception classes for MOVNTPS/MOVNTPD.
-> 
-> Steve Sistare (1):
->        make: clean after distclean deletes source files
-> 
-> Xinyu Li (1):
->        target/i386: fix avx2 instructions vzeroall and vpermdq
+On Fri, Apr 28, 2023 at 9:22=E2=80=AFAM Niklas Cassel <nks@flawful.org> wro=
+te:
+>
+> From: Niklas Cassel <niklas.cassel@wdc.com>
+>
+> Currently, the first time sending an unsupported command
+> (e.g. READ LOG DMA EXT) will not have ERR_STAT set in the completion.
+> Sending the unsupported command again, will correctly have ERR_STAT set.
+>
+> When ide_cmd_permitted() returns false, it calls ide_abort_command().
+> ide_abort_command() first calls ide_transfer_stop(), which will call
+> ide_transfer_halt() and ide_cmd_done(), after that ide_abort_command()
+> sets ERR_STAT in status.
+>
+> ide_cmd_done() for AHCI will call ahci_write_fis_d2h() which writes the
+> current status in the FIS, and raises an IRQ. (The status here will not
+> have ERR_STAT set!).
+>
+> Thus, we cannot call ide_transfer_stop() before setting ERR_STAT, as
+> ide_transfer_stop() will result in the FIS being written and an IRQ
+> being raised.
+>
+> The reason why it works the second time, is that ERR_STAT will still
+> be set from the previous command, so when writing the FIS, the
+> completion will correctly have ERR_STAT set.
+>
+> Set ERR_STAT before writing the FIS (calling cmd_done), so that we will
+> raise an error IRQ correctly when receiving an unsupported command.
+>
+> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+> ---
+>  hw/ide/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/ide/core.c b/hw/ide/core.c
+> index 45d14a25e9..c144d1155d 100644
+> --- a/hw/ide/core.c
+> +++ b/hw/ide/core.c
+> @@ -531,9 +531,9 @@ BlockAIOCB *ide_issue_trim(
+>
+>  void ide_abort_command(IDEState *s)
+>  {
+> -    ide_transfer_stop(s);
+>      s->status =3D READY_STAT | ERR_STAT;
+>      s->error =3D ABRT_ERR;
+> +    ide_transfer_stop(s);
+>  }
+>
+>  static void ide_set_retry(IDEState *s)
+> --
+> 2.40.0
+>
 
-Failures:
+Seems OK at a glance. Does this change the behavior of
+ide_transfer_stop at all? I guess we've been using this order of
+operations since 2008 at least. I didn't know C then.
 
-https://gitlab.com/qemu-project/qemu/-/jobs/4304958487#L1887
+ACK
 
-Warning, treated as error:
-the sphinx_rtd_theme extension does not declare if it is safe for parallel reading, 
-assuming it isn't - please ask the extension author to check and make it explicit
-
-https://gitlab.com/qemu-project/qemu/-/jobs/4304958508#L2551
-
-/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/libc.a(init-first.o): 
-in function `__libc_init_first':
-(.text+0x10): relocation truncated to fit: R_AARCH64_LD64_GOTPAGE_LO15 against symbol 
-`__environ' defined in .bss section in 
-/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/libc.a(environ.o)
-/usr/bin/ld: (.text+0x10): warning: too many GOT entries for -fpic, please recompile with 
--fPIC
-
-
-r~
 
