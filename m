@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B637063C8
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD86E7063C9
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:15:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDCq-0003lr-3s; Wed, 17 May 2023 05:12:24 -0400
+	id 1pzDCp-0003iA-5d; Wed, 17 May 2023 05:12:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDC7-0001gR-Dx; Wed, 17 May 2023 05:11:39 -0400
+ id 1pzDC7-0001kK-Rw; Wed, 17 May 2023 05:11:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDC4-0006V4-OF; Wed, 17 May 2023 05:11:39 -0400
+ id 1pzDC4-0006V5-Q3; Wed, 17 May 2023 05:11:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EA61D6841;
- Wed, 17 May 2023 12:10:46 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 17B2A6842;
+ Wed, 17 May 2023 12:10:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5253F5F12;
+ by tsrv.corpit.ru (Postfix) with SMTP id 80E205F13;
  Wed, 17 May 2023 12:10:46 +0300 (MSK)
-Received: (nullmailer pid 3626748 invoked by uid 1000);
+Received: (nullmailer pid 3626751 invoked by uid 1000);
  Wed, 17 May 2023 09:10:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Jason Andryuk <jandryuk@gmail.com>,
+Cc: qemu-devel@nongnu.org, Chuck Zmudzinski <brchuckz@aol.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  Stefano Stabellini <sstabellini@kernel.org>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>
-Subject: [PATCH v7.2.3 27/30] 9pfs/xen: Fix segfault on shutdown
-Date: Wed, 17 May 2023 12:10:39 +0300
-Message-Id: <20230517091042.3626593-27-mjt@msgid.tls.msk.ru>
+ Anthony PERARD <anthony.perard@citrix.com>
+Subject: [PATCH v7.2.3 28/30] xen/pt: reserve PCI slot 2 for Intel igd-passthru
+Date: Wed, 17 May 2023 12:10:40 +0300
+Message-Id: <20230517091042.3626593-28-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
 References: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
@@ -60,135 +61,248 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jason Andryuk <jandryuk@gmail.com>
+From: Chuck Zmudzinski <brchuckz@aol.com>
 
-xen_9pfs_free can't use gnttabdev since it is already closed and NULL-ed
-out when free is called.  Do the teardown in _disconnect().  This
-matches the setup done in _connect().
+Intel specifies that the Intel IGD must occupy slot 2 on the PCI bus,
+as noted in docs/igd-assign.txt in the Qemu source code.
 
-trace-events are also added for the XenDevOps functions.
+Currently, when the xl toolstack is used to configure a Xen HVM guest with
+Intel IGD passthrough to the guest with the Qemu upstream device model,
+a Qemu emulated PCI device will occupy slot 2 and the Intel IGD will occupy
+a different slot. This problem often prevents the guest from booting.
 
-Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
+The only available workarounds are not good: Configure Xen HVM guests to
+use the old and no longer maintained Qemu traditional device model
+available from xenbits.xen.org which does reserve slot 2 for the Intel
+IGD or use the "pc" machine type instead of the "xenfv" machine type and
+add the xen platform device at slot 3 using a command line option
+instead of patching qemu to fix the "xenfv" machine type directly. The
+second workaround causes some degredation in startup performance such as
+a longer boot time and reduced resolution of the grub menu that is
+displayed on the monitor. This patch avoids that reduced startup
+performance when using the Qemu upstream device model for Xen HVM guests
+configured with the igd-passthru=on option.
+
+To implement this feature in the Qemu upstream device model for Xen HVM
+guests, introduce the following new functions, types, and macros:
+
+* XEN_PT_DEVICE_CLASS declaration, based on the existing TYPE_XEN_PT_DEVICE
+* XEN_PT_DEVICE_GET_CLASS macro helper function for XEN_PT_DEVICE_CLASS
+* typedef XenPTQdevRealize function pointer
+* XEN_PCI_IGD_SLOT_MASK, the value of slot_reserved_mask to reserve slot 2
+* xen_igd_reserve_slot and xen_igd_clear_slot functions
+
+Michael Tsirkin:
+* Introduce XEN_PCI_IGD_DOMAIN, XEN_PCI_IGD_BUS, XEN_PCI_IGD_DEV, and
+  XEN_PCI_IGD_FN - use them to compute the value of XEN_PCI_IGD_SLOT_MASK
+
+The new xen_igd_reserve_slot function uses the existing slot_reserved_mask
+member of PCIBus to reserve PCI slot 2 for Xen HVM guests configured using
+the xl toolstack with the gfx_passthru option enabled, which sets the
+igd-passthru=on option to Qemu for the Xen HVM machine type.
+
+The new xen_igd_reserve_slot function also needs to be implemented in
+hw/xen/xen_pt_stub.c to prevent FTBFS during the link stage for the case
+when Qemu is configured with --enable-xen and --disable-xen-pci-passthrough,
+in which case it does nothing.
+
+The new xen_igd_clear_slot function overrides qdev->realize of the parent
+PCI device class to enable the Intel IGD to occupy slot 2 on the PCI bus
+since slot 2 was reserved by xen_igd_reserve_slot when the PCI bus was
+created in hw/i386/pc_piix.c for the case when igd-passthru=on.
+
+Move the call to xen_host_pci_device_get, and the associated error
+handling, from xen_pt_realize to the new xen_igd_clear_slot function to
+initialize the device class and vendor values which enables the checks for
+the Intel IGD to succeed. The verification that the host device is an
+Intel IGD to be passed through is done by checking the domain, bus, slot,
+and function values as well as by checking that gfx_passthru is enabled,
+the device class is VGA, and the device vendor in Intel.
+
+Signed-off-by: Chuck Zmudzinski <brchuckz@aol.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-[C.S.: - Remove redundant return in xen_9pfs_free().
-       - Add comment to trace-events. ]
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-(cherry picked from commit 92e667f6fd5806a6a705a2a43e572bd9ec6819da)
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+(cherry picked from commit 4f67543bb8c5b031c2ad3785c1a2f3c255d72b25)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: minor context conflict in hw/9pfs/xen-9p-backend.c)
 ---
- hw/9pfs/trace-events     |  6 ++++++
- hw/9pfs/xen-9p-backend.c | 35 ++++++++++++++++++++++-------------
- 2 files changed, 28 insertions(+), 13 deletions(-)
+ hw/i386/pc_piix.c    |  1 +
+ hw/xen/xen_pt.c      | 64 ++++++++++++++++++++++++++++++++++++--------
+ hw/xen/xen_pt.h      | 20 ++++++++++++++
+ hw/xen/xen_pt_stub.c |  4 +++
+ 4 files changed, 78 insertions(+), 11 deletions(-)
 
-diff --git a/hw/9pfs/trace-events b/hw/9pfs/trace-events
-index 6c77966c0b..a12e55c165 100644
---- a/hw/9pfs/trace-events
-+++ b/hw/9pfs/trace-events
-@@ -48,3 +48,9 @@ v9fs_readlink(uint16_t tag, uint8_t id, int32_t fid) "tag %d id %d fid %d"
- v9fs_readlink_return(uint16_t tag, uint8_t id, char* target) "tag %d id %d name %s"
- v9fs_setattr(uint16_t tag, uint8_t id, int32_t fid, int32_t valid, int32_t mode, int32_t uid, int32_t gid, int64_t size, int64_t atime_sec, int64_t mtime_sec) "tag %u id %u fid %d iattr={valid %d mode %d uid %d gid %d size %"PRId64" atime=%"PRId64" mtime=%"PRId64" }"
- v9fs_setattr_return(uint16_t tag, uint8_t id) "tag %u id %u"
-+
-+# xen-9p-backend.c
-+xen_9pfs_alloc(char *name) "name %s"
-+xen_9pfs_connect(char *name) "name %s"
-+xen_9pfs_disconnect(char *name) "name %s"
-+xen_9pfs_free(char *name) "name %s"
-diff --git a/hw/9pfs/xen-9p-backend.c b/hw/9pfs/xen-9p-backend.c
-index 65c4979c3c..ab1df8dd2f 100644
---- a/hw/9pfs/xen-9p-backend.c
-+++ b/hw/9pfs/xen-9p-backend.c
-@@ -24,6 +24,8 @@
- #include "qemu/option.h"
- #include "fsdev/qemu-fsdev.h"
- 
-+#include "trace.h"
-+
- #define VERSIONS "1"
- #define MAX_RINGS 8
- #define MAX_RING_ORDER 9
-@@ -335,6 +337,8 @@ static void xen_9pfs_disconnect(struct XenLegacyDevice *xendev)
-     Xen9pfsDev *xen_9pdev = container_of(xendev, Xen9pfsDev, xendev);
-     int i;
- 
-+    trace_xen_9pfs_disconnect(xendev->name);
-+
-     for (i = 0; i < xen_9pdev->num_rings; i++) {
-         if (xen_9pdev->rings[i].evtchndev != NULL) {
-             qemu_set_fd_handler(xenevtchn_fd(xen_9pdev->rings[i].evtchndev),
-@@ -343,39 +347,40 @@ static void xen_9pfs_disconnect(struct XenLegacyDevice *xendev)
-                              xen_9pdev->rings[i].local_port);
-             xen_9pdev->rings[i].evtchndev = NULL;
-         }
--    }
--}
--
--static int xen_9pfs_free(struct XenLegacyDevice *xendev)
--{
--    Xen9pfsDev *xen_9pdev = container_of(xendev, Xen9pfsDev, xendev);
--    int i;
--
--    if (xen_9pdev->rings[0].evtchndev != NULL) {
--        xen_9pfs_disconnect(xendev);
--    }
--
--    for (i = 0; i < xen_9pdev->num_rings; i++) {
-         if (xen_9pdev->rings[i].data != NULL) {
-             xen_be_unmap_grant_refs(&xen_9pdev->xendev,
-                                     xen_9pdev->rings[i].data,
-                                     (1 << xen_9pdev->rings[i].ring_order));
-+            xen_9pdev->rings[i].data = NULL;
-         }
-         if (xen_9pdev->rings[i].intf != NULL) {
-             xen_be_unmap_grant_refs(&xen_9pdev->xendev,
-                                     xen_9pdev->rings[i].intf,
-                                     1);
-+            xen_9pdev->rings[i].intf = NULL;
-         }
-         if (xen_9pdev->rings[i].bh != NULL) {
-             qemu_bh_delete(xen_9pdev->rings[i].bh);
-+            xen_9pdev->rings[i].bh = NULL;
-         }
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 24616bf924..04f793cca1 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -405,6 +405,7 @@ static void pc_xen_hvm_init(MachineState *machine)
      }
  
-     g_free(xen_9pdev->id);
-+    xen_9pdev->id = NULL;
-     g_free(xen_9pdev->tag);
-+    xen_9pdev->tag = NULL;
-     g_free(xen_9pdev->path);
-+    xen_9pdev->path = NULL;
-     g_free(xen_9pdev->security_model);
-+    xen_9pdev->security_model = NULL;
-     g_free(xen_9pdev->rings);
-+    xen_9pdev->rings = NULL;
-+}
-+
-+static int xen_9pfs_free(struct XenLegacyDevice *xendev)
-+{
-+    trace_xen_9pfs_free(xendev->name);
-+
-     return 0;
+     pc_xen_hvm_init_pci(machine);
++    xen_igd_reserve_slot(pcms->bus);
+     pci_create_simple(pcms->bus, -1, "xen-platform");
+ }
+ #endif
+diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
+index 0ec7e52183..5dd706efbf 100644
+--- a/hw/xen/xen_pt.c
++++ b/hw/xen/xen_pt.c
+@@ -57,6 +57,7 @@
+ #include <sys/ioctl.h>
+ 
+ #include "hw/pci/pci.h"
++#include "hw/pci/pci_bus.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/qdev-properties-system.h"
+ #include "hw/xen/xen.h"
+@@ -780,15 +781,6 @@ static void xen_pt_realize(PCIDevice *d, Error **errp)
+                s->hostaddr.bus, s->hostaddr.slot, s->hostaddr.function,
+                s->dev.devfn);
+ 
+-    xen_host_pci_device_get(&s->real_device,
+-                            s->hostaddr.domain, s->hostaddr.bus,
+-                            s->hostaddr.slot, s->hostaddr.function,
+-                            errp);
+-    if (*errp) {
+-        error_append_hint(errp, "Failed to \"open\" the real pci device");
+-        return;
+-    }
+-
+     s->is_virtfn = s->real_device.is_virtfn;
+     if (s->is_virtfn) {
+         XEN_PT_LOG(d, "%04x:%02x:%02x.%d is a SR-IOV Virtual Function\n",
+@@ -803,8 +795,10 @@ static void xen_pt_realize(PCIDevice *d, Error **errp)
+     s->io_listener = xen_pt_io_listener;
+ 
+     /* Setup VGA bios for passthrough GFX */
+-    if ((s->real_device.domain == 0) && (s->real_device.bus == 0) &&
+-        (s->real_device.dev == 2) && (s->real_device.func == 0)) {
++    if ((s->real_device.domain == XEN_PCI_IGD_DOMAIN) &&
++        (s->real_device.bus == XEN_PCI_IGD_BUS) &&
++        (s->real_device.dev == XEN_PCI_IGD_DEV) &&
++        (s->real_device.func == XEN_PCI_IGD_FN)) {
+         if (!is_igd_vga_passthrough(&s->real_device)) {
+             error_setg(errp, "Need to enable igd-passthru if you're trying"
+                     " to passthrough IGD GFX");
+@@ -950,11 +944,58 @@ static void xen_pci_passthrough_instance_init(Object *obj)
+     PCI_DEVICE(obj)->cap_present |= QEMU_PCI_CAP_EXPRESS;
  }
  
-@@ -387,6 +392,8 @@ static int xen_9pfs_connect(struct XenLegacyDevice *xendev)
-     V9fsState *s = &xen_9pdev->state;
-     QemuOpts *fsdev;
- 
-+    trace_xen_9pfs_connect(xendev->name);
++void xen_igd_reserve_slot(PCIBus *pci_bus)
++{
++    if (!xen_igd_gfx_pt_enabled()) {
++        return;
++    }
 +
-     if (xenstore_read_fe_int(&xen_9pdev->xendev, "num-rings",
-                              &xen_9pdev->num_rings) == -1 ||
-         xen_9pdev->num_rings > MAX_RINGS || xen_9pdev->num_rings < 1) {
-@@ -494,6 +501,8 @@ out:
- 
- static void xen_9pfs_alloc(struct XenLegacyDevice *xendev)
++    XEN_PT_LOG(0, "Reserving PCI slot 2 for IGD\n");
++    pci_bus->slot_reserved_mask |= XEN_PCI_IGD_SLOT_MASK;
++}
++
++static void xen_igd_clear_slot(DeviceState *qdev, Error **errp)
++{
++    ERRP_GUARD();
++    PCIDevice *pci_dev = (PCIDevice *)qdev;
++    XenPCIPassthroughState *s = XEN_PT_DEVICE(pci_dev);
++    XenPTDeviceClass *xpdc = XEN_PT_DEVICE_GET_CLASS(s);
++    PCIBus *pci_bus = pci_get_bus(pci_dev);
++
++    xen_host_pci_device_get(&s->real_device,
++                            s->hostaddr.domain, s->hostaddr.bus,
++                            s->hostaddr.slot, s->hostaddr.function,
++                            errp);
++    if (*errp) {
++        error_append_hint(errp, "Failed to \"open\" the real pci device");
++        return;
++    }
++
++    if (!(pci_bus->slot_reserved_mask & XEN_PCI_IGD_SLOT_MASK)) {
++        xpdc->pci_qdev_realize(qdev, errp);
++        return;
++    }
++
++    if (is_igd_vga_passthrough(&s->real_device) &&
++        s->real_device.domain == XEN_PCI_IGD_DOMAIN &&
++        s->real_device.bus == XEN_PCI_IGD_BUS &&
++        s->real_device.dev == XEN_PCI_IGD_DEV &&
++        s->real_device.func == XEN_PCI_IGD_FN &&
++        s->real_device.vendor_id == PCI_VENDOR_ID_INTEL) {
++        pci_bus->slot_reserved_mask &= ~XEN_PCI_IGD_SLOT_MASK;
++        XEN_PT_LOG(pci_dev, "Intel IGD found, using slot 2\n");
++    }
++    xpdc->pci_qdev_realize(qdev, errp);
++}
++
+ static void xen_pci_passthrough_class_init(ObjectClass *klass, void *data)
  {
-+    trace_xen_9pfs_alloc(xendev->name);
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+ 
++    XenPTDeviceClass *xpdc = XEN_PT_DEVICE_CLASS(klass);
++    xpdc->pci_qdev_realize = dc->realize;
++    dc->realize = xen_igd_clear_slot;
+     k->realize = xen_pt_realize;
+     k->exit = xen_pt_unregister_device;
+     k->config_read = xen_pt_pci_read_config;
+@@ -977,6 +1018,7 @@ static const TypeInfo xen_pci_passthrough_info = {
+     .instance_size = sizeof(XenPCIPassthroughState),
+     .instance_finalize = xen_pci_passthrough_finalize,
+     .class_init = xen_pci_passthrough_class_init,
++    .class_size = sizeof(XenPTDeviceClass),
+     .instance_init = xen_pci_passthrough_instance_init,
+     .interfaces = (InterfaceInfo[]) {
+         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+diff --git a/hw/xen/xen_pt.h b/hw/xen/xen_pt.h
+index e7c4316a7d..292bdf7499 100644
+--- a/hw/xen/xen_pt.h
++++ b/hw/xen/xen_pt.h
+@@ -41,7 +41,20 @@ typedef struct XenPTReg XenPTReg;
+ #define TYPE_XEN_PT_DEVICE "xen-pci-passthrough"
+ OBJECT_DECLARE_SIMPLE_TYPE(XenPCIPassthroughState, XEN_PT_DEVICE)
+ 
++#define XEN_PT_DEVICE_CLASS(klass) \
++    OBJECT_CLASS_CHECK(XenPTDeviceClass, klass, TYPE_XEN_PT_DEVICE)
++#define XEN_PT_DEVICE_GET_CLASS(obj) \
++    OBJECT_GET_CLASS(XenPTDeviceClass, obj, TYPE_XEN_PT_DEVICE)
 +
-     xenstore_write_be_str(xendev, "versions", VERSIONS);
-     xenstore_write_be_int(xendev, "max-rings", MAX_RINGS);
-     xenstore_write_be_int(xendev, "max-ring-page-order", MAX_RING_ORDER);
++typedef void (*XenPTQdevRealize)(DeviceState *qdev, Error **errp);
++
++typedef struct XenPTDeviceClass {
++    PCIDeviceClass parent_class;
++    XenPTQdevRealize pci_qdev_realize;
++} XenPTDeviceClass;
++
+ uint32_t igd_read_opregion(XenPCIPassthroughState *s);
++void xen_igd_reserve_slot(PCIBus *pci_bus);
+ void igd_write_opregion(XenPCIPassthroughState *s, uint32_t val);
+ void xen_igd_passthrough_isa_bridge_create(XenPCIPassthroughState *s,
+                                            XenHostPCIDevice *dev);
+@@ -76,6 +89,13 @@ typedef int (*xen_pt_conf_byte_read)
+ 
+ #define XEN_PCI_INTEL_OPREGION 0xfc
+ 
++#define XEN_PCI_IGD_DOMAIN 0
++#define XEN_PCI_IGD_BUS 0
++#define XEN_PCI_IGD_DEV 2
++#define XEN_PCI_IGD_FN 0
++#define XEN_PCI_IGD_SLOT_MASK \
++    (1UL << PCI_SLOT(PCI_DEVFN(XEN_PCI_IGD_DEV, XEN_PCI_IGD_FN)))
++
+ typedef enum {
+     XEN_PT_GRP_TYPE_HARDWIRED = 0,  /* 0 Hardwired reg group */
+     XEN_PT_GRP_TYPE_EMU,            /* emul reg group */
+diff --git a/hw/xen/xen_pt_stub.c b/hw/xen/xen_pt_stub.c
+index 2d8cac8d54..5c108446a8 100644
+--- a/hw/xen/xen_pt_stub.c
++++ b/hw/xen/xen_pt_stub.c
+@@ -20,3 +20,7 @@ void xen_igd_gfx_pt_set(bool value, Error **errp)
+         error_setg(errp, "Xen PCI passthrough support not built in");
+     }
+ }
++
++void xen_igd_reserve_slot(PCIBus *pci_bus)
++{
++}
 -- 
 2.39.2
 
