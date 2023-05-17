@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00297063CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1AC77063B9
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:14:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDBM-00006R-3z; Wed, 17 May 2023 05:10:52 -0400
+	id 1pzDBM-00007T-UM; Wed, 17 May 2023 05:10:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDBI-0008U4-Rw; Wed, 17 May 2023 05:10:48 -0400
+ id 1pzDBK-000068-TG; Wed, 17 May 2023 05:10:50 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDBF-0006La-Ou; Wed, 17 May 2023 05:10:48 -0400
+ id 1pzDBJ-0006N7-8X; Wed, 17 May 2023 05:10:50 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 98CE2682A;
+ by isrv.corpit.ru (Postfix) with ESMTP id BCC42682B;
  Wed, 17 May 2023 12:10:43 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 034005EF6;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2FA285EF7;
  Wed, 17 May 2023 12:10:43 +0300 (MSK)
-Received: (nullmailer pid 3626678 invoked by uid 1000);
+Received: (nullmailer pid 3626681 invoked by uid 1000);
  Wed, 17 May 2023 09:10:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH v7.2.3 04/30] qemu-options: finesse the recommendations around
- -blockdev
-Date: Wed, 17 May 2023 12:10:16 +0300
-Message-Id: <20230517091042.3626593-4-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v7.2.3 05/30] docs/about/deprecated.rst: Add "since 7.1" tag
+ to dtb-kaslr-seed deprecation
+Date: Wed, 17 May 2023 12:10:17 +0300
+Message-Id: <20230517091042.3626593-5-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
 References: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
@@ -63,70 +62,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-We are a bit premature in recommending -blockdev/-device as the best
-way to configure block devices. It seems there are times the more
-human friendly -drive still makes sense especially when -snapshot is
-involved.
+In commit 5242876f37ca we deprecated the dtb-kaslr-seed property of
+the virt board, but forgot the "since n.n" tag in the documentation
+of this in deprecated.rst.
 
-Improve the language to hopefully make things clearer.
+This deprecation note first appeared in the 7.1 release, so
+retrospectively add the correct "since 7.1" annotation to it.
 
-Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit c1654c3e37c31fb638597efedcd07d071837b78b)
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-id: 20230420122256.1023709-1-peter.maydell@linaro.org
+(cherry picked from commit ac64ebbecf80f6bc764d120f85fe9fa28fbd9e85)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-options.hx | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ docs/about/deprecated.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 7f99d15b23..e52289479b 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -1140,10 +1140,22 @@ have gone through several iterations as the feature set and complexity
- of the block layer have grown. Many online guides to QEMU often
- reference older and deprecated options, which can lead to confusion.
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 93affe3669..0b26c01da0 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -233,8 +233,8 @@ Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
+ System emulator machines
+ ------------------------
  
--The recommended modern way to describe disks is to use a combination of
-+The most explicit way to describe disks is to use a combination of
- ``-device`` to specify the hardware device and ``-blockdev`` to
- describe the backend. The device defines what the guest sees and the
--backend describes how QEMU handles the data.
-+backend describes how QEMU handles the data. It is the only guaranteed
-+stable interface for describing block devices and as such is
-+recommended for management tools and scripting.
-+
-+The ``-drive`` option combines the device and backend into a single
-+command line option which is a more human friendly. There is however no
-+interface stability guarantee although some older board models still
-+need updating to work with the modern blockdev forms.
-+
-+Older options like ``-hda`` are essentially macros which expand into
-+``-drive`` options for various drive interfaces. The original forms
-+bake in a lot of assumptions from the days when QEMU was emulating a
-+legacy PC, they are not recommended for modern configurations.
+-Arm ``virt`` machine ``dtb-kaslr-seed`` property
+-''''''''''''''''''''''''''''''''''''''''''''''''
++Arm ``virt`` machine ``dtb-kaslr-seed`` property (since 7.1)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
  
- ERST
- 
-@@ -1636,6 +1648,14 @@ SRST
-     the raw disk image you use is not written back. You can however
-     force the write back by pressing C-a s (see the :ref:`disk images`
-     chapter in the System Emulation Users Guide).
-+
-+    .. warning::
-+       snapshot is incompatible with ``-blockdev`` (instead use qemu-img
-+       to manually create snapshot images to attach to your blockdev).
-+       If you have mixed ``-blockdev`` and ``-drive`` declarations you
-+       can use the 'snapshot' property on your drive declarations
-+       instead of this global option.
-+
- ERST
- 
- DEF("fsdev", HAS_ARG, QEMU_OPTION_fsdev,
+ The ``dtb-kaslr-seed`` property on the ``virt`` board has been
+ deprecated; use the new name ``dtb-randomness`` instead. The new name
 -- 
 2.39.2
 
