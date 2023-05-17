@@ -2,75 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F043705DD5
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 05:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 506A3705DDA
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 05:15:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz7aM-0004eP-4Y; Tue, 16 May 2023 23:12:18 -0400
+	id 1pz7cm-0005eK-IB; Tue, 16 May 2023 23:14:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pz7aI-0004dw-Lr; Tue, 16 May 2023 23:12:14 -0400
-Received: from mail-ua1-x92b.google.com ([2607:f8b0:4864:20::92b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pz7aG-0000lY-Pm; Tue, 16 May 2023 23:12:14 -0400
-Received: by mail-ua1-x92b.google.com with SMTP id
- a1e0cc1a2514c-783f7e82f28so40693241.1; 
- Tue, 16 May 2023 20:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684293131; x=1686885131;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=g/+cA0N3j+biczB4GD+AkRw/shxfKAFFALMlbU1C0FE=;
- b=b1PrJc3pV49eWSPQ/EMSssyRuuxEmnK8inlEXPmbbPjrM2l6O2pSIE4KnzOG3eR8Vg
- X7SgFd7PFP5sgkexjc01o8Kh9q8Loank/PIAWsOCss1tYVeMPB9AZucJyMAJ/p1FfSPW
- S4HL/SEigbCs1mYJECJDmc/mt07hzxwjDjcGOrk3vaiRmAwSA+D9LK9hcbjbodIisOZJ
- sgYHhvyvoEH2YCCoSor1oImVFEhFTk6vfTI8jzSjAFleDVeOzKmUXti0DRYANUc37A1h
- WekRuC6EDEsrV99esZTp6zXicNh/CvhtGh3tFxtJZY/bxdEavagWUSwrM/iI5mW4VAuW
- uDvw==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1pz7ck-0005e5-Cf
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 23:14:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1pz7ci-00011o-91
+ for qemu-devel@nongnu.org; Tue, 16 May 2023 23:14:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684293282;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1JTZM+A+yJo6qTil3WhMdJx3d5snBlhT9/JV8dBONNI=;
+ b=EZ/Yv+HcPwuEJoaFSnLsHaP4uMpqw61pMG68Z5fROHt2J2vBzuxb5Ms+yIB8WvubLRXKDu
+ PYAXEYAjFsZ/uEVQ55/E1QJKa32A9ke5dtbQL+XQWSM/Vg6edIiw+6yLNXLTFRiKDMorIy
+ c3MyD8LxVi7k94j1dEtI3XC7Ux2KMDA=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-361-YvonTPEWOwOxggJPM0JkHw-1; Tue, 16 May 2023 23:14:41 -0400
+X-MC-Unique: YvonTPEWOwOxggJPM0JkHw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4f19bffbc23so204534e87.1
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 20:14:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684293131; x=1686885131;
+ d=1e100.net; s=20221208; t=1684293279; x=1686885279;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g/+cA0N3j+biczB4GD+AkRw/shxfKAFFALMlbU1C0FE=;
- b=arSdyiUJk6sbctqCQo1EHL6OIcZGd5ZoTd0wS1EyRmJl7xdtdviI7nQo1bORm1imuj
- uTxkiazXGTfPib/9SBqAF3sVd4y0UqeLKL0l0qg0UhBUzr2WKZp6rxeUM9LF2nr3oZFp
- +XFT+rceFh3Hn4Qn3pTS6eXmoBRtpBinvElg3lOfetMTfXif30mbvsG2+F1Vxupp11pi
- tQvO6mc+9G7rTHJe0dVp1hXyhL/3036jDNBurCnZ31/lso574KjpbX0F2Nsx4uynUKOF
- W1HRy0LpD3VaVFjeit2PzSpu/qIvqcX8tPWfNxjR7hHcpxzjHA9Bnf0NXwTG762Wbjxw
- HUgg==
-X-Gm-Message-State: AC+VfDwmJeaYxAVs0XLRmH+0Jc3eESwDROp70bIFSpOBRAkhXRNJ7SCE
- eV27j7+DJxl8emLZdd+t1qdDsakeeTwWU0KqFo8=
-X-Google-Smtp-Source: ACHHUZ4o8Kot5pzYw3C0ftTdZt7EvTMwFoZ5XtcbsaKGCj+xlBTdcurXYEjNyjoNI2ehZ4e7ziCWdg/K9LICEbCpuAU=
-X-Received: by 2002:a05:6102:3672:b0:434:8632:e8ec with SMTP id
- bg18-20020a056102367200b004348632e8ecmr14313977vsb.5.1684293131320; Tue, 16
- May 2023 20:12:11 -0700 (PDT)
+ bh=1JTZM+A+yJo6qTil3WhMdJx3d5snBlhT9/JV8dBONNI=;
+ b=L1l2bZLJXbrn0NL8Fc7bY5Z8hJzHOWUJDlIJ2ve5hQmlOzXOszrd1p4CySqvkEEKi3
+ 7I+uhpTIxD+b262YG/2TFPjNc0NGTMDwoodJ8I0SiFYfBGrDoB8cqDwRNASAGwOu3y/a
+ 5caoUfJD1Mk3pghrxKXBSsxR8MXGHK4C9gg2va33eFzh/+PoYkILnqi1P1IotfZ2jglE
+ YP4jS1+uw0r4BjY5Bb7n+8Ii/uhtlGhcmUxy3PLQBFnzGhhvZucsvSNaGONGVHJrPHMx
+ CDxQAEsQMPhYyyBiICAiskR8rvxNVtI0LJupd5hMuHzgMM1NiVBuqKr9DetGoY0RMK4A
+ rWzA==
+X-Gm-Message-State: AC+VfDzR5IdhohbpYLnu782CtZoKYMiqv4ixUUA2rx01SdPb/TiXF3i4
+ FApSD3mYYE3NtaUJFHq0Zkyvj+kR9zALlLf+076FKX42uoaSicEQPS6IL1nO80s5ug2ySLRTU3O
+ lvCYYBf378GcmOxiNxP+LtFjn3iX76dU=
+X-Received: by 2002:ac2:488c:0:b0:4f1:4086:9384 with SMTP id
+ x12-20020ac2488c000000b004f140869384mr7448963lfc.61.1684293279511; 
+ Tue, 16 May 2023 20:14:39 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4K0F3MEj81WZ0vWt9XDXtEQLjhsfy0+1eClBS6Jp4L++0cCz9U7//7mxvsK8orv+lPr5Ipk8BsnvoTklQ4gyI=
+X-Received: by 2002:ac2:488c:0:b0:4f1:4086:9384 with SMTP id
+ x12-20020ac2488c000000b004f140869384mr7448948lfc.61.1684293279181; Tue, 16
+ May 2023 20:14:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230501140020.3667219-1-mchitale@ventanamicro.com>
- <20230501140020.3667219-2-mchitale@ventanamicro.com>
-In-Reply-To: <20230501140020.3667219-2-mchitale@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 17 May 2023 13:11:45 +1000
-Message-ID: <CAKmqyKN9vAAtXtRaUN3_im5k8kO+GoJ-V1mFbJPniSEdeswLnw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] target/riscv: smstateen check for fcsr
-To: Mayuresh Chitale <mchitale@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- Daniel Barboza <dbarboza@ventanamicro.com>, liweiwei@iscas.ac.cn, 
- Richard Henderson <richard.henderson@linaro.org>
+References: <20230509154435.1410162-1-eperezma@redhat.com>
+ <20230509154435.1410162-3-eperezma@redhat.com>
+In-Reply-To: <20230509154435.1410162-3-eperezma@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 17 May 2023 11:14:28 +0800
+Message-ID: <CACGkMEufH7ZvJxKzbSXpv8G5RodKeh_WHj6iTe=YqG9pdp45nQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] vdpa: add vhost_vdpa_reset_status_fd
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Parav Pandit <parav@mellanox.com>, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, longpeng2@huawei.com, 
+ Stefano Garzarella <sgarzare@redhat.com>, Gautam Dawar <gdawar@xilinx.com>, 
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Harpreet Singh Anand <hanand@xilinx.com>, alvaro.karsz@solid-run.com, 
+ Liuxiangdong <liuxiangdong5@huawei.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ si-wei.liu@oracle.com, 
+ Shannon Nelson <snelson@pensando.io>, Lei Yang <leiyang@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Cindy Lu <lulu@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92b;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,98 +103,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 2, 2023 at 12:00=E2=80=AFAM Mayuresh Chitale
-<mchitale@ventanamicro.com> wrote:
+On Tue, May 9, 2023 at 11:44=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redhat=
+.com> wrote:
 >
-> If smstateen is implemented and smtateen0.fcsr is clear and misa.F
-> is off then the floating point operations must return illegal
-> instruction exception or virtual instruction trap, if relevant.
-
-Do you mind re-wording this commit message? I can't get my head around
-it. You talk about returning an illegal instruction exception, but
-most of this patch is just adding SMSTATEEN0_FCSR to the write mask if
-floating point is disabled.
-
-It looks to me like you are returning an exception trying to access a
-floating pointer register if FP is off and SMSTATEEN0_FCSR is not set
-(which you describe) but also then only allow changing SMSTATEEN0_FCSR
-if the RVF is not enabled, which is where I'm confused.
-
-Your patch seems to be correct, I think the commit message and title
-just needs a small tweak. Maybe something like this:
-
-```
-target/riscv: smstateen add support for fcsr bit
-
-If smstateen is implemented and SMSTATEEN0.FCSR is zero floating point
-CSR access should raise an illegal instruction exception or virtual
-equivalent as required.
-
-We also allow the guest to set/unset the FCSR bit, but only if misa.F
-=3D=3D 0, as defined in the spec.
-```
-
-Alistair
-
+> This allows to reset a vhost-vdpa device from external subsystems like
+> vhost-net, since it does not have any struct vhost_dev by the time we
+> need to use it.
 >
-> Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
-> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> It is used in subsequent patches to negotiate features
+> and probe for CVQ ASID isolation.
+>
+> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 > ---
->  target/riscv/csr.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+>  include/hw/virtio/vhost-vdpa.h |  1 +
+>  hw/virtio/vhost-vdpa.c         | 58 +++++++++++++++++++++++-----------
+>  2 files changed, 41 insertions(+), 18 deletions(-)
 >
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index 4451bd1263..3f6b824bd2 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -82,6 +82,10 @@ static RISCVException fs(CPURISCVState *env, int csrno=
-)
->          !riscv_cpu_cfg(env)->ext_zfinx) {
->          return RISCV_EXCP_ILLEGAL_INST;
+> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdp=
+a.h
+> index c278a2a8de..28de7da91e 100644
+> --- a/include/hw/virtio/vhost-vdpa.h
+> +++ b/include/hw/virtio/vhost-vdpa.h
+> @@ -54,6 +54,7 @@ typedef struct vhost_vdpa {
+>      VhostVDPAHostNotifier notifier[VIRTIO_QUEUE_MAX];
+>  } VhostVDPA;
+>
+> +void vhost_vdpa_reset_status_fd(int fd);
+>  int vhost_vdpa_get_iova_range(int fd, struct vhost_vdpa_iova_range *iova=
+_range);
+>
+>  int vhost_vdpa_dma_map(struct vhost_vdpa *v, uint32_t asid, hwaddr iova,
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index bbabea18f3..7a2053b8d9 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -335,38 +335,45 @@ static const MemoryListener vhost_vdpa_memory_liste=
+ner =3D {
+>      .region_del =3D vhost_vdpa_listener_region_del,
+>  };
+>
+> -static int vhost_vdpa_call(struct vhost_dev *dev, unsigned long int requ=
+est,
+> -                             void *arg)
+> +static int vhost_vdpa_dev_fd(const struct vhost_dev *dev)
+>  {
+>      struct vhost_vdpa *v =3D dev->opaque;
+> -    int fd =3D v->device_fd;
+> -    int ret;
+>
+>      assert(dev->vhost_ops->backend_type =3D=3D VHOST_BACKEND_TYPE_VDPA);
+> +    return v->device_fd;
+> +}
+
+Nit: unless the vhost_dev structure is opaque to the upper layer, I
+don't see any advantage for having a dedicated indirect helper to get
+device_fd.
+
+> +
+> +static int vhost_vdpa_call_fd(int fd, unsigned long int request, void *a=
+rg)
+> +{
+> +    int ret =3D ioctl(fd, request, arg);
+>
+> -    ret =3D ioctl(fd, request, arg);
+>      return ret < 0 ? -errno : ret;
+>  }
+>
+> -static int vhost_vdpa_add_status(struct vhost_dev *dev, uint8_t status)
+> +static int vhost_vdpa_call(struct vhost_dev *dev, unsigned long int requ=
+est,
+> +                           void *arg)
+> +{
+> +    return vhost_vdpa_call_fd(vhost_vdpa_dev_fd(dev), request, arg);
+> +}
+> +
+> +static int vhost_vdpa_add_status_fd(int fd, uint8_t status)
+>  {
+>      uint8_t s;
+>      int ret;
+>
+> -    trace_vhost_vdpa_add_status(dev, status);
+> -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_GET_STATUS, &s);
+> +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_GET_STATUS, &s);
+>      if (ret < 0) {
+>          return ret;
 >      }
-> +
-> +    if (!env->debugger && !riscv_cpu_fp_enabled(env)) {
-> +        return smstateen_acc_ok(env, 0, SMSTATEEN0_FCSR);
-> +    }
->  #endif
->      return RISCV_EXCP_NONE;
->  }
-> @@ -2100,6 +2104,9 @@ static RISCVException write_mstateen0(CPURISCVState=
- *env, int csrno,
->                                        target_ulong new_val)
->  {
->      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
-> +    if (!riscv_has_ext(env, RVF)) {
-> +        wr_mask |=3D SMSTATEEN0_FCSR;
-> +    }
 >
->      return write_mstateen(env, csrno, wr_mask, new_val);
->  }
-> @@ -2173,6 +2180,10 @@ static RISCVException write_hstateen0(CPURISCVStat=
-e *env, int csrno,
->  {
->      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
+>      s |=3D status;
 >
-> +    if (!riscv_has_ext(env, RVF)) {
-> +        wr_mask |=3D SMSTATEEN0_FCSR;
-> +    }
-> +
->      return write_hstateen(env, csrno, wr_mask, new_val);
+> -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &s);
+> +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_SET_STATUS, &s);
+>      if (ret < 0) {
+>          return ret;
+>      }
+>
+> -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_GET_STATUS, &s);
+> +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_GET_STATUS, &s);
+>      if (ret < 0) {
+>          return ret;
+>      }
+> @@ -378,6 +385,12 @@ static int vhost_vdpa_add_status(struct vhost_dev *d=
+ev, uint8_t status)
+>      return 0;
 >  }
 >
-> @@ -2259,6 +2270,10 @@ static RISCVException write_sstateen0(CPURISCVStat=
-e *env, int csrno,
->  {
->      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
->
-> +    if (!riscv_has_ext(env, RVF)) {
-> +        wr_mask |=3D SMSTATEEN0_FCSR;
-> +    }
+> +static int vhost_vdpa_add_status(struct vhost_dev *dev, uint8_t status)
+> +{
+> +    trace_vhost_vdpa_add_status(dev, status);
+> +    return vhost_vdpa_add_status_fd(vhost_vdpa_dev_fd(dev), status);
+> +}
 > +
->      return write_sstateen(env, csrno, wr_mask, new_val);
+>  int vhost_vdpa_get_iova_range(int fd, struct vhost_vdpa_iova_range *iova=
+_range)
+>  {
+>      int ret =3D ioctl(fd, VHOST_VDPA_GET_IOVA_RANGE, iova_range);
+> @@ -709,16 +722,20 @@ static int vhost_vdpa_get_device_id(struct vhost_de=
+v *dev,
+>      return ret;
+>  }
+>
+> +static int vhost_vdpa_reset_device_fd(int fd)
+> +{
+> +    uint8_t status =3D 0;
+> +
+> +    return vhost_vdpa_call_fd(fd, VHOST_VDPA_SET_STATUS, &status);
+> +}
+> +
+>  static int vhost_vdpa_reset_device(struct vhost_dev *dev)
+>  {
+>      struct vhost_vdpa *v =3D dev->opaque;
+> -    int ret;
+> -    uint8_t status =3D 0;
+>
+> -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &status);
+> -    trace_vhost_vdpa_reset_device(dev);
+>      v->suspended =3D false;
+> -    return ret;
+> +    trace_vhost_vdpa_reset_device(dev);
+> +    return vhost_vdpa_reset_device_fd(vhost_vdpa_dev_fd(dev));
+>  }
+>
+>  static int vhost_vdpa_get_vq_index(struct vhost_dev *dev, int idx)
+> @@ -1170,6 +1187,13 @@ static int vhost_vdpa_dev_start(struct vhost_dev *=
+dev, bool started)
+>      return 0;
+>  }
+>
+> +void vhost_vdpa_reset_status_fd(int fd)
+> +{
+> +    vhost_vdpa_reset_device_fd(fd);
+> +    vhost_vdpa_add_status_fd(fd, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+> +                                 VIRTIO_CONFIG_S_DRIVER);
+
+I would like to rename this function since it does more than just reset.
+
+Thanks
+
+> +}
+> +
+>  static void vhost_vdpa_reset_status(struct vhost_dev *dev)
+>  {
+>      struct vhost_vdpa *v =3D dev->opaque;
+> @@ -1178,9 +1202,7 @@ static void vhost_vdpa_reset_status(struct vhost_de=
+v *dev)
+>          return;
+>      }
+>
+> -    vhost_vdpa_reset_device(dev);
+> -    vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+> -                               VIRTIO_CONFIG_S_DRIVER);
+> +    vhost_vdpa_reset_status_fd(vhost_vdpa_dev_fd(dev));
+>      memory_listener_unregister(&v->listener);
 >  }
 >
 > --
-> 2.34.1
+> 2.31.1
 >
+
 
