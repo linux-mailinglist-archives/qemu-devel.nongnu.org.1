@@ -2,143 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7405706E1A
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 18:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F105706E16
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 18:27:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJyc-0006Xc-DD; Wed, 17 May 2023 12:26:10 -0400
+	id 1pzJyf-0006Xv-VH; Wed, 17 May 2023 12:26:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.devolder@oracle.com>)
- id 1pzJya-0006XA-95
- for qemu-devel@nongnu.org; Wed, 17 May 2023 12:26:08 -0400
+ id 1pzJye-0006Xm-8d
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 12:26:12 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.devolder@oracle.com>)
- id 1pzJyY-0004uJ-Hq
- for qemu-devel@nongnu.org; Wed, 17 May 2023 12:26:08 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ id 1pzJyc-0004ut-55
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 12:26:12 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34HE5BZj030978; Wed, 17 May 2023 16:26:02 GMT
+ 34HE4e1q014520; Wed, 17 May 2023 16:26:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references :
  content-transfer-encoding : content-type : mime-version;
- s=corp-2023-03-30; bh=Dd8EXgiKZKdKw1PIz3jBGlnZ85OMy73Prq3hmaW5X6g=;
- b=3PrbrjPChq1211ki+hBVM8YlhhV512WD/gxt2jlvW1bgs8pMMPNWcavLaCZbbZVNA3xt
- G/jwFzvXERrvKjBtHnf/+KCQ2CKx5yhFniICifYCTUCq6F/tfLEIeqWHkRcOuwAbGrQL
- OdA44kD/6wpKWnURNNvOFmC8ULxF9H+RVRIZCjXQyQ9tMod6u5MQZ1WGlwPU4QEGx42I
- fQ046Gird50yFAdcmM6PTes28aD5w3ko4v0n/SNP/P+uugkWIMA0mVwpI9ThlyMlvjW5
- I2zL7JgcYBuTgGdHaFIKGe7rQiH6UZwi05fOFpw6/I03lB0E7972BTwk2gGz8H2nJZev lg== 
+ s=corp-2023-03-30; bh=PZ4Jc93d8o4Mu/EsagkUrRryEEGADLJMjEaF/3Vk9dI=;
+ b=AN1ORDj/yyZbed/Iqh1pmru24rQA9ABbhNjPF4ajUfBqqvxym3AFRLuJj4W7RfkZjYrM
+ AenUNQvdCWvztdr35kLQtmuM8QPtU1jObEx+jydK9DiAhEEDR76yqXPiewrscD3ueNgP
+ Gg6KzzmTrGjMJJO6CVBLSspjwlDgZvJCKvOR3YbKy+2g4t5dA0wBCVwjHn80kpoMAfuo
+ KmNL1cerIIW7WiFeQeKT5YyRTgTClbuqDtDPDtmMgjBjTWM1U3HMHLaK2vBzvupkGLLi
+ Rlf+Jv20UOjzx4l4P7bJ6GrqHdhMYwnJ21u7pshKbnfc4ZB0ZWyBmeuy2WgRQnxbUoWD ig== 
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qj1fc69y1-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qmx8j0qam-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 May 2023 16:26:02 +0000
+ Wed, 17 May 2023 16:26:06 +0000
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 34HF6LpG025089; Wed, 17 May 2023 16:26:01 GMT
+ with ESMTP id 34HFNMlO025109; Wed, 17 May 2023 16:26:05 GMT
 Received: from nam10-bn7-obe.outbound.protection.outlook.com
- (mail-bn7nam10lp2108.outbound.protection.outlook.com [104.47.70.108])
+ (mail-bn7nam10lp2105.outbound.protection.outlook.com [104.47.70.105])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3qj105n2vb-1
+ 3qj105n2xp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 May 2023 16:26:01 +0000
+ Wed, 17 May 2023 16:26:05 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gC3HZPA3TR8U8aV9he/e1p9d1C281JMFNHpb/D0v9M0hftYvc/TWd8VlObnouxblsqwU01tAzmQTaP0KDzzK+PbM5A9NCKmKINia2OajujUD57u4gkZhbtLC2se7F82xZtOcGPWraEbjvdUPGsVJ74V3+zwvE9FitfoSjkc8ZhcTrVVYYD50Ty+zTVO+CgXFTKDaDPR6A5JadAtGGWYIQbT6w4cHlMPrrEkKFf7A039mGb300djY4UrdFAWxBkq4rfe1TQf1PLm1f7qQuhS/1ltLuQYglYDMbzYXjGMh+hww5S8Kugwz6oLALFtsGQfUCRsSw7x32uVPULBQQbFaDw==
+ b=CVl+os6QdSYxUTo5AI/x7GT4BeklFdC2s5hNBjR1SsclsQ6qAAo/LaNBMkK00quOqMgfrws92ltMWuVjIWZCYQ8z+vYGNLJNgZMqpk7yUWVo02gzHdLje0VNpsE+ONQ8gXXR7245ZHierwVzb0iXLruTz0f7RKxUNatxSQp6UwpkLVVBi6gFT67I+w89W7l48JSqMlgy3EbQaCFftwsPzLoYvymCxE0vX1hiyjY9CeBfG5NMYI9ldeYDMovAJzR9hKfReDSxN8fWEYv9CXmEAffUZOl8htd9w0Ok1YUs5YRAghYeDd+lhLiEIfJchSKlc8LdkUKCOYczTqQ/LINcGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Dd8EXgiKZKdKw1PIz3jBGlnZ85OMy73Prq3hmaW5X6g=;
- b=crB6eqbVxUR10GvqyPwx2UwKV6F9LJyiXXBOUEkal8KxHhVb+xnVUzxuliHH8vTMrhDlfWCpl18lSaCUoIBd1ope4Isdjf0XxUGQUJ+cFEG71GyLQBJtHzXmnCp5V5jHVq59Vj3qCUDX40SKB1O5Juc2s/NicdV6hr+mAq19FhurLB1rekmdfQNPtGTGfYQNjy2apGxNo+weSdaR5hHraSNqPeGu606zpfFcODTyadVDegCoNatcvn9t23w+XddhRPGTFJMfaLaAqnsrSUBYIv0DZIC9aVlAweTjqjOPNlIxOyf8dx4uBUNJonfdoeM1CKSizdmFzY0q+Av//I/izw==
+ bh=PZ4Jc93d8o4Mu/EsagkUrRryEEGADLJMjEaF/3Vk9dI=;
+ b=hQXJcIG90ESTu1VoQJaDIMCTrKHimaxqJAuunWJBXNMLt8M15TqyvRXaHi7HDeYLY9owI4VHC3wAEDSXVYa+gupJnzZOBAhc3YwX0IJbvPd4YNXIck4yxfsPSahDnmzklt3MxgpKyqvpLHEzSb5Q4d7Pf3nviKQn/IMr+23CYrEv34Ax/tHWU5ho/VZgTekR5UQ1mnDs2Xdlyocj/8USfcmSXxbXFirv9USoS1L/9yjyXFy/GEfjr8HST/y/2yy5MlRoZxEa5zZEoXTyn4tUZvTZU0Etz1QFk/N/Zgu/GFzEZnORsww/GupM2n9JsE6x4LUNJ9+ytvqkUfDIa4PpKQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Dd8EXgiKZKdKw1PIz3jBGlnZ85OMy73Prq3hmaW5X6g=;
- b=LPneb9oZoIS7YgOKKyG1ECfqIXLps6l/eFOgCMxewhosO/A6rj3YndDXW6jOaeFnv0rNKzRSQppMapu0Yf4jVCVcCOGc8ItygFBpA/16ww+wQFQfnTNbq2+XiWAUKeJsiNy9Wb17HitVjXZ/+Z4QX0whVRRgpudlx2+ELzhjlk4=
+ bh=PZ4Jc93d8o4Mu/EsagkUrRryEEGADLJMjEaF/3Vk9dI=;
+ b=syRYIeSG73I3251CLEDUdrMS4552S7RDbfvmI50kovqnoBCrJzNO6dQmR4Zh2Qrg1oDxCy7KoFxY+ZBh8VTAbpdzUh15RuoJiwLIxDNSTw72qy4loMTiLcJFhxxEQ6cDBqZM7SiCpzBCSjJltjzqAqhscNgKcikqG51jgGpsDf0=
 Received: from CO1PR10MB4531.namprd10.prod.outlook.com (2603:10b6:303:6c::22)
  by BY5PR10MB4178.namprd10.prod.outlook.com (2603:10b6:a03:210::14)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.17; Wed, 17 May
- 2023 16:25:59 +0000
+ 2023 16:26:02 +0000
 Received: from CO1PR10MB4531.namprd10.prod.outlook.com
  ([fe80::ac1a:bf88:bdbf:2573]) by CO1PR10MB4531.namprd10.prod.outlook.com
  ([fe80::ac1a:bf88:bdbf:2573%5]) with mapi id 15.20.6411.017; Wed, 17 May 2023
- 16:25:59 +0000
+ 16:26:02 +0000
 From: Eric DeVolder <eric.devolder@oracle.com>
 To: qemu-devel@nongnu.org, mst@redhat.com, imammedo@redhat.com,
  anisinha@redhat.com, marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, eduardo@habkost.net
 Cc: boris.ostrovsky@oracle.com, miguel.luis@oracle.com,
  eric.devolder@oracle.com
-Subject: [PATCH v2 2/3] ACPI: i386: bump to MADT to revision 3
-Date: Wed, 17 May 2023 12:25:44 -0400
-Message-Id: <20230517162545.2191-3-eric.devolder@oracle.com>
+Subject: [PATCH v2 3/3] ACPI: bios-tables-test.c step 5 (update expected table
+ binaries)
+Date: Wed, 17 May 2023 12:25:45 -0400
+Message-Id: <20230517162545.2191-4-eric.devolder@oracle.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20230517162545.2191-1-eric.devolder@oracle.com>
 References: <20230517162545.2191-1-eric.devolder@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY3PR04CA0029.namprd04.prod.outlook.com
- (2603:10b6:a03:217::34) To CO1PR10MB4531.namprd10.prod.outlook.com
+X-ClientProxiedBy: BY5PR16CA0025.namprd16.prod.outlook.com
+ (2603:10b6:a03:1a0::38) To CO1PR10MB4531.namprd10.prod.outlook.com
  (2603:10b6:303:6c::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CO1PR10MB4531:EE_|BY5PR10MB4178:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23f5ac02-4a26-407f-ca16-08db56f365cc
+X-MS-Office365-Filtering-Correlation-Id: 5307642c-7d11-4fed-11d4-08db56f367b3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wjFEYZM0oB5ErfPLgNOas7tU7+aJoxjw80IRNj4KmUc2wsEkno4/Y1s7/DUecZ5KDQ4iVwnF/N5HJl7VpQFoRaARLhWIPzphwR5VHFCd2jckLZOif4b0z7xh1B70bTYfS3FjXP7LtJtiyGRklWAs5KLheXWBK/kI6JKnHDWo2Hg5flmLg0GhscSHdJEbt3U1ylNCFcXitSH1gQjto763lx7eFPbqdSCrHIwZFCwPcs9/xIBg1uBoh+GMxM3grEaoDWgGmRjBsG3g7K6NVLX5pRo9aeB2evbPZRfC8NLEjhcPK7uclHRsLWMpinqpFujGlTECpvMInIhmMdyG6JUb0eYjtoaEhKld4mz9rwBMkcP+29ky+P97VJGEWoXLzhg3xoX+A9SkgC7X3rBgOP9oL2RxLu5J4wR2/uAP34v5Jnw1CxobXtaucNzqiRz0coN7ZHt1cDt26sJaWlXtkw8RNhLxNqdF+x0D/Q6JHYt/mYEG9SdnAa7asBz1bvDGJ0Qlu2Ra/76jl7PoCBld8kY6SMOeN8GUBW3z8o39xF/c98sjnGCy3dl+ui2wFFY15m3zNmRgi7zOvx9sclyxXMhETxIGuGY7MOjfxx0R9ATblpllHsIsXWT/XUIn+G8qrtpd
+X-Microsoft-Antispam-Message-Info: mMEo5nT1aRp8eTiziZMjiOAQ4AYmnjeERzVv+yGceoiyir5nylEIi0NQZlm+7ZuSkcKUu95e1Qwq4mgmRlvMf3CdPwNkBi5VpgBm6aYeIVxhvhAdTKmaHA7WW7wwuTwjfDz4V65lrb+nzImEqaHmQf43f+SR1m+EXHijTK9Ps2IcBCVFw45JTU1rkPvw16xXlU26pHww3mp0Gmwr6Kwxfh1vO9UHRumTvEmeeeAzKv9HkzD7y5Ex7X40A8XrK3CIA5Cxlnl+W6blP1dfjmmVjwUVY/Mw0yim+RZQInsw8rEU9iIpjSj+VAxpx0MyDnnKJ9FdFdO8okWCTUXbCkJhnL/iJvBpIwskV3384604gqdP6Ysb9QNsnTy7q5OOM/zjjMmjQho7B27//DOsW4IPpq4e4JSkvJTeI6xaZdb9bDk7hgT89uWwijX3lhjTARghaxKyn4h97y5xR+Y4mJIJWBcbQjTMDnxSV3MzWZma1vEVQSnN2O2TQmp0yaGMQ9yldYepRFMph7rLZF2AUmBhtSIXiUewhiqOxuLKkyIjIFS7MVajP2A4TfDhzbAMBDplKkZAYFEuh0EjTrMj7TyJ/WqWHx7C/lmpcY+/hGPxBWI=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CO1PR10MB4531.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(39860400002)(346002)(396003)(376002)(366004)(136003)(451199021)(5660300002)(41300700001)(2906002)(36756003)(2616005)(83380400001)(86362001)(38100700002)(1076003)(26005)(186003)(6512007)(6506007)(8676002)(8936002)(107886003)(66556008)(66476007)(66946007)(478600001)(6666004)(966005)(6486002)(84970400001)(316002)(4326008);
+ SFS:(13230028)(39860400002)(346002)(396003)(376002)(366004)(136003)(451199021)(5660300002)(41300700001)(2906002)(36756003)(2616005)(83380400001)(86362001)(38100700002)(1076003)(26005)(186003)(6512007)(6506007)(8676002)(8936002)(107886003)(66556008)(66476007)(66946007)(478600001)(6666004)(6486002)(316002)(4326008);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yWbYDxXmcC5soi8klKBCn8woi69IrWnQSRSo3tc0Pzvq+Rg5MsVpfNF/k9Wi?=
- =?us-ascii?Q?wGGfDTfBLxRPT98o1xCe/IE31+OonGr9JVyA1nRp56R+i0MlV6rg3A2B/OWe?=
- =?us-ascii?Q?DOIH3oaIzNRrAlStU7NjND1y8DTR1XqkQultM454FsljQg3IsgJUmFT4Anaz?=
- =?us-ascii?Q?/ohDHv+vddcyQkxcrLbxPXXYxxzjALFAEKSUYAbFPO6WVupgqtetoXYDfEA7?=
- =?us-ascii?Q?pUGMXRRR6yGFpjUj9RD0Xo8W+/NfGsJxN2wqgTkZ6yh4EXQeciYhhuflXD1A?=
- =?us-ascii?Q?+GMZBIiXElJ2lxi6nFnZjwuCe9IGs1o52rxdFnz2XtasZSd+dWf0Z8O4oOXL?=
- =?us-ascii?Q?yesa13A+RT1BmxyS1uLEWdfS6b3jeFUxbwhnKCVVzjQGyeEgpJca7jCZ1g94?=
- =?us-ascii?Q?vG1rMfTDITxqG96hcEo2bN5cd3EY06YSx9BWYpc3IKF4G/JfoEY4T9Jbhka4?=
- =?us-ascii?Q?zp6G8HuYeZrYJDWVfLGfuAzsjUcBxIiyrvM9zPDm3ugCawtCxA1wzCY/JPkb?=
- =?us-ascii?Q?XZZGLHzERIwSIEPD0qg7/BjmzhAGgKaVTdelbT8xadN8bFL+/xwnb96fcKOV?=
- =?us-ascii?Q?oWzfeP37X3OewACDj6lEMrWlTJ7My28eEws5DQuaQxtDsv7qmsfKKpY77AyZ?=
- =?us-ascii?Q?yRUpGjqJQeLqtShgtKP4lV6OG9JqCbPTMXxqouNvXMMnbFDAdiYM0VrGAjbh?=
- =?us-ascii?Q?syaxSy2qw5QGCwE4/BF2tMFpiPSlk8lwlaU+gYifNaQiJqOmSq+Jz4WxrMWA?=
- =?us-ascii?Q?JfxJI4YUeQtbY8OU3w9lwzOXjp7PrUoYHz8LPpIKJv+AlqRMv3tseiFt/kkg?=
- =?us-ascii?Q?nWwqckxKmWS6xXV8CedjSomcSLxXcZ4uuZpj4sd7N96ukWngOagqqYJk8e+q?=
- =?us-ascii?Q?286mYNjOggYvgbl0KKpguYKTO7BdyMfytrAeAzJ84cG2/SSppYuUnCDCQLD8?=
- =?us-ascii?Q?S7tHcBrjpck0Sog5v58UnHHyJrwxVMg+w3zhkFXvSYxgLH9X32sfvXq7UMD8?=
- =?us-ascii?Q?gGueHbapDnp5hjb/DD65hHM7m+mjVPz1Q7MIOTOjOy3kmkgGoWXdPqlVIlc/?=
- =?us-ascii?Q?kGx5z5WfYs/RYsa6wZhSbPMmjR/CoJR3wujx2q9N74OAvZrubHqNoENtBzvR?=
- =?us-ascii?Q?u+AGMuCmB+lTK1/8o/MHn2SnFh2T8O9Yz2yseCyszlP3YJlmyPdg4LixuYTB?=
- =?us-ascii?Q?Hok2YWmnoB/ZsoLHyC3XT8obD9v9C4JXFWH4L6Q56tFbHM0a4V2Mr0PUCI1P?=
- =?us-ascii?Q?82Pft6FNDkGFVb1hjwbWpSQTba4pcSmUWOkX5U7Zxq4UDpytu42gcuyNL5zB?=
- =?us-ascii?Q?924Tlg0RzyczCbdbDn1XqlisqkC3LyXwA8skvzig2ulElRb5MRnf3UwWlDmz?=
- =?us-ascii?Q?ntjymIfr+hIihc2+3uzbQvQY/kjashzKPPKm8CsVK+23rO9cMwqHbbArPTi9?=
- =?us-ascii?Q?WzxhvRXafhfa/eh/UokdTOWikGRkzRjGTHxny3cmJ8jaewtG/EedC8L4RuIw?=
- =?us-ascii?Q?qs/D4F0NbNNxoVabo1QH7ZL59s9KhU7Ool7A/DwSuAkWEoO+QTEYaNyIH6CV?=
- =?us-ascii?Q?LAOWOo4jrDA8k1T8dxJdYJms+fl9fG3m6+JxOdYefR+LXw51UBjp1og19abU?=
- =?us-ascii?Q?MQ=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CdKVSQw9HlExe8W8BOwnwKbGlsg8qL9K/rSyG3bp/gG8CTJrUYwGuYxZhKzB?=
+ =?us-ascii?Q?MPqrVRXaTL13OwqrDIlAtT8RjeSR92i+cFxxYuWYgV1Y0NSX1cwOlxV3QIKV?=
+ =?us-ascii?Q?GsSG0lBNj1wt9OwtkY0rlMVqGACsf+2HzIcHUvljngYbFmpmU7KaN+hE4npK?=
+ =?us-ascii?Q?SG/VpA1zJ29A1pysKuB71Zdbw0tMw7NzNyXR1ppg26WxEXkzAOFYeaWgwF5X?=
+ =?us-ascii?Q?GKXR6XeAyiqH6/ZvduZrl1uXAuHSBeidknH2cphBhFgvCEYpiQefGzWUQPEh?=
+ =?us-ascii?Q?++nxCgS28PFMMetxQwvoI8n3h33NTFqVQoZtdPcDt7IESOjTJgmiFWeQPFz+?=
+ =?us-ascii?Q?mrufXv8VapJkw71DrHNiGOSlrrUuhiQQWo7DKyQwuVLaw7U7F9wohFYJLc7J?=
+ =?us-ascii?Q?OT6FssdZM0w70NiVNGz4HYswzqJKnITgfcErX0RMs8JJy9D1mylCmlIpX+Sq?=
+ =?us-ascii?Q?TzNfO64hxr3+rNCpX1SS5gsuvmLyxDxbpUZ8pOAjti/8OyNRLweV5oBynFSU?=
+ =?us-ascii?Q?bwlWsum8/+1valn/fTiooKAErzaViUPhSkEQ0DPqZQi832a02LbIftoouzj8?=
+ =?us-ascii?Q?IS7a9unuJEOE/JVx/lwKqkhcm/T87ysDSQH0ygKHXHG/mCWB7jNhEeObjos1?=
+ =?us-ascii?Q?UV8trcCULOvjboYgj2WC2muHSEv4NlP2hHGl+Z3Nfhc/g6aDPpglTeQBIccP?=
+ =?us-ascii?Q?E/OmSqVVGxpzfjfwBjztKmcUB1FPjm/i9WATqYY23og0cWshXrKivfSSJsCg?=
+ =?us-ascii?Q?kJGs3Xm6GR1Nh1nUYv9BEQx93X1DHPArTCYvcQeU+s9mB8AoCU9WtvycSkhF?=
+ =?us-ascii?Q?+BxcRVoeHED1qK87O2NRhL/fN9PsAzf+4al6V+CDx68S0iyP0weifSQXGcGH?=
+ =?us-ascii?Q?o1KN5WIpJzZQV9YQuuxQlPs1p5eh9mTzvO0j050Gof8gzEDawOpWAIDS5SpT?=
+ =?us-ascii?Q?wUs8NXr6ZXEfJAbvN2jnTMA0FqXR22zaghkPDuxSMj7XZKYO4VKlMFcQpFIZ?=
+ =?us-ascii?Q?tlAvf5ui/KTGPjXOpVdb64mM8XsCLj3vJvSF+nKy8AQPSMT3bD3Qv61XYPTL?=
+ =?us-ascii?Q?Ti2G35BsgYn2L1mv7HOj4fmyZooMv/9Tbjz7UrYMxdE2hgoosJngUSKEgzgy?=
+ =?us-ascii?Q?spqK40vim1uZavj96vxWx7bioY5+kn5fvqiYEdmdgOTRybMEuKgq8E33DrY+?=
+ =?us-ascii?Q?9q+3EBPZgfjtXWC1I0xKTTQL/FnwLw80dkRIdv8iyEXLUHgJqL9G6wBhXvBg?=
+ =?us-ascii?Q?J2Kr8LjPWMc+gvrhXrad0c62XZtX5WrksCSNkOE/+TmLCwfQ6nh+0WPP62WV?=
+ =?us-ascii?Q?NjwCol5OuQYxLsWLI9iT0ooznJoLckRWX8yp0dF62R2/b8+nAihHv6AZapAi?=
+ =?us-ascii?Q?7Ro2IkoLk5+kTS1EQEQZJvLHChheyNol8Pbx+sn3jF2qQ+aBdZKYFGu0VJ46?=
+ =?us-ascii?Q?bF229G2AayVYnylUgQmvC7bKzCJ5w8vXRJ5lq+VmHzidbWD8UNwfFQ5iVeTS?=
+ =?us-ascii?Q?I93cdzEUE0PFGAhNkc3JzwtEdmvTmTV4AWOYZTjoUYqq4uVc7GUfO/kGzQFG?=
+ =?us-ascii?Q?UlM8j/LoHrjvVRCF7oNDrp4bTc8wqKhms1IdD2aJd95mIlWOb2Z0JWGCevLj?=
+ =?us-ascii?Q?yQ=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: HxAY2nwxFTkWwJhQhWrOsDSPfkXnjJ5vKsGYk1lknoaQxBYoxbY00mCYhcYox5wudt5VFCTyrFd5wHOWVOxvqkAY5XgVrEUMQkba0GXOoWpRXVI+pozhMLo8zsxmHIxZNJwOoCI1VzhtaP6Uq+Omd/Jcwu47+KzqcixzLhzHj0NJ7FTh7ghieZYoe+s9c8vz7lCSFB/ejpprrKly+i34Ch6JyrIvs0ltR9nLoF4ewwQ6RmmJ2qOwalwwaSbBSfljNIN2Y7hr/ew4OLvRJpxzuPQZgCi96shRdJbDgoSzG9DFO1mm7J7czbZ3Dy3c+v4jViujcG1K+/BS/QMf503tMk7wCrIYlxaLMyjTvBwSAhD31II23Ko5L2CWzIYpDNwdM9eKIsJGqD2w30XqHIe+6B4xEFg+lKBJt28bG4AYBtbTC6tfNYZUtyc6gpRNX6trMve2bdLi9nTRALUuDgnCeGtZ3rcLBXUA9aPcdzSrHacUBkegbeuLDpve1wbshLSVmoq76trIw3wvM710ME8RPjmQTJo+iJF+Lm4MDkPBUPhgw6evBqzsBFwKHxYr/YHc/k/F5feSzNb3N2TSsth/cTUp5MrrF/M3IZKgma6M2NexqGl0WGsr8hlcnLgSsdTbEmLhK605xq9FFVGuQM/SPNNHeqiNYSaAekCb4v+C/YbiU7pg4rY7O1aOXYwLIfoLkfq32+IfxLCGtaWNReG5cAMJMyZy7+beXkkxRaDF/M9oP7U0YgoyGdlKmqYfU7pEAI5T9ElmsY1XtXWswismsBjVHrly2aRpdjnc47j7OyjXZfZ+/oyjUfAm6eSbESDNAIdWW9BZ5QBOOjsLKg0NbJR7II0/CeppbkRO7dRQe2g=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: J9N/hnNcJQhy1W5I+CiS5xhiniAftC8WNwpGeNB/bafmLcK7WJCd3IzM2sAAH8SFmZh7fh8v+JJjosuZgOFHIVVFp9SHp+cC9PNsvV27FfLZT7qZPYtl4+Gta7TiHaMwLW66/cWmxRlt3tGX73uD21U98pstqzXukZ4tFWZq7VDPUS6XTetrf9HasVHYhn07gYFZ79DtrLQkN14IBTGLXoSho5fI7MSnQ30+d+U+cENfZ8i1qY3jJHJQgne9HLkwuv58LXD6qLiQemH7XwwLB3TyvQZACq5qrzAReeQJ6Wc6Qx1WE7HT/c2tueREQkETlLQqibDYbb3c4LMHwfKII+bbNaqld40G42E6H2GpUhXiq+iAsqPK8uAfuuIa0xiV/P6tZontCEbUzeEvLDH63UoAM+YhXKnDIU5Yut4VXnj4RAr0MHrv0cVPgbMCHFc8rxjfigPEH360ZqpFO6nIRUlbPo3XJwbwid+EifGRf6Aby4CNbClPQW6vRw+6e/Tsn1R7r/1GDeQQfMvNXu13oEyfidpY2Y68R91hZZl9u8IGdPjjlMuZ+1vWDaUU1hWRr/VmR3BJcwBpCqZ4USfpWQu9dYzUCWnC1eRE2EoXUKat7admccDO7TXTGTnEe9P7ZIfDxUtgcEgvVqSsdSjNfcEO70qgYJQePc5iP1eRuNTAIirDUuHrclpaydd5NNLXii/k3C5hJLMmIk1VU66HY1aVWlFA22cfhJCj+p4+qH2pTx15+hm3Mras9s7z46feK0frmZ/ptA1UNkpLkTvAlinrNEtODvBspPLt79pZZuyhzYB8s8vtfLFvpkla8wQN/S0oq3vQXRjmi6DngQDZaN3R/uQBPMI2Af+37Et+spE=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23f5ac02-4a26-407f-ca16-08db56f365cc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5307642c-7d11-4fed-11d4-08db56f367b3
 X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB4531.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 16:25:59.0291 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 16:26:02.1547 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JVEjpPAxDafqeSyMr7yEdR//UB9Od/Arvc/1e+yrGTTJVwB/93elva7uFjK+6hTNJ20wgezHlN+b1+d5bJauqrQROiywgzF/QfLAnFRers4=
+X-MS-Exchange-CrossTenant-UserPrincipalName: AIns9uPV6sEjyU23shjVu0f0IRQXkpoSBZbNxGdWOQyo+EST+Xlbl8wZtElQnTfcAPIXw/YaMSPXgleTeTiXOxUOISLdyAF6KYtHlA/RCZE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4178
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
@@ -148,8 +149,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  mlxlogscore=999 spamscore=0 adultscore=0 malwarescore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
  definitions=main-2305170133
-X-Proofpoint-ORIG-GUID: xiUfWRFYBG1NPAXEOQ8CND4GWdpdbJne
-X-Proofpoint-GUID: xiUfWRFYBG1NPAXEOQ8CND4GWdpdbJne
+X-Proofpoint-GUID: ijevUeJznlohi-BVANxy8WcG137THwZX
+X-Proofpoint-ORIG-GUID: ijevUeJznlohi-BVANxy8WcG137THwZX
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=eric.devolder@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -174,30 +175,244 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently i386 QEMU generates MADT revision 3, and reports
-MADT revision 1. Set .revision to 3 to match reality.
+Following the guidelines in tests/qtest/bios-tables-test.c, this
+is step 5 and 6.
 
-Link: https://lore.kernel.org/linux-acpi/20230327191026.3454-1-eric.devolder@ora
-cle.com/T/#t
+An examination of all the files impacted (as listed in
+bios-tables-test-allowe-diff.h) shows only the MADT/APIC tables
+bumping revision from 1 to 3, and a corresponding change to
+the checksum. The below diff is typical:
+
+ --- /tmp/asl-1F9641.dsl	2023-05-16 15:18:31.292579156 -0400
+ +++ /tmp/asl-GVD741.dsl	2023-05-16 15:18:31.291579149 -0400
+ @@ -1,32 +1,32 @@
+  /*
+   * Intel ACPI Component Architecture
+   * AML/ASL+ Disassembler version 20230331 (64-bit version)
+   * Copyright (c) 2000 - 2023 Intel Corporation
+   *
+ - * Disassembly of tests/data/acpi/pc/APIC, Tue May 16 15:18:31 2023
+ + * Disassembly of /tmp/aml-R4D741, Tue May 16 15:18:31 2023
+   *
+   * ACPI Data Table [APIC]
+   *
+   * Format: [HexOffset DecimalOffset ByteLength]  FieldName : FieldValue (in hex)
+   */
+
+  [000h 0000 004h]                   Signature : "APIC"    [Multiple APIC Description Table (MADT)]
+  [004h 0004 004h]                Table Length : 00000078
+ -[008h 0008 001h]                    Revision : 01
+ -[009h 0009 001h]                    Checksum : 8A
+ +[008h 0008 001h]                    Revision : 03
+ +[009h 0009 001h]                    Checksum : 88
+  [00Ah 0010 006h]                      Oem ID : "BOCHS "
+  [010h 0016 008h]                Oem Table ID : "BXPC    "
+  [018h 0024 004h]                Oem Revision : 00000001
+  [01Ch 0028 004h]             Asl Compiler ID : "BXPC"
+  [020h 0032 004h]       Asl Compiler Revision : 00000001
+
+  [024h 0036 004h]          Local Apic Address : FEE00000
+  [028h 0040 004h]       Flags (decoded below) : 00000001
+                           PC-AT Compatibility : 1
+
+  [02Ch 0044 001h]               Subtable Type : 00 [Processor Local APIC]
+  [02Dh 0045 001h]                      Length : 08
+  [02Eh 0046 001h]                Processor ID : 00
+  [02Fh 0047 001h]               Local Apic ID : 00
+  [030h 0048 004h]       Flags (decoded below) : 00000001
+                             Processor Enabled : 1
+ @@ -81,24 +81,24 @@
+  [06Bh 0107 001h]                      Source : 0B
+  [06Ch 0108 004h]                   Interrupt : 0000000B
+  [070h 0112 002h]       Flags (decoded below) : 000D
+                                      Polarity : 1
+                                  Trigger Mode : 3
+
+  [072h 0114 001h]               Subtable Type : 04 [Local APIC NMI]
+  [073h 0115 001h]                      Length : 06
+  [074h 0116 001h]                Processor ID : FF
+  [075h 0117 002h]       Flags (decoded below) : 0000
+                                      Polarity : 0
+                                  Trigger Mode : 0
+  [077h 0119 001h]        Interrupt Input LINT : 01
+
+  Raw Table Data: Length 120 (0x78)
+
+ -    0000: 41 50 49 43 78 00 00 00 01 8A 42 4F 43 48 53 20  // APICx.....BOCHS
+ +    0000: 41 50 49 43 78 00 00 00 03 88 42 4F 43 48 53 20  // APICx.....BOCHS
+      0010: 42 58 50 43 20 20 20 20 01 00 00 00 42 58 50 43  // BXPC    ....BXPC
+      0020: 01 00 00 00 00 00 E0 FE 01 00 00 00 00 08 00 00  // ................
+      0030: 01 00 00 00 01 0C 00 00 00 00 C0 FE 00 00 00 00  // ................
+      0040: 02 0A 00 00 02 00 00 00 00 00 02 0A 00 05 05 00  // ................
+      0050: 00 00 0D 00 02 0A 00 09 09 00 00 00 0D 00 02 0A  // ................
+      0060: 00 0A 0A 00 00 00 0D 00 02 0A 00 0B 0B 00 00 00  // ................
+      0070: 0D 00 04 06 FF 00 00 01                          // ........
+
 Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
 ---
- hw/i386/acpi-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/data/acpi/microvm/APIC                  | Bin 70 -> 70 bytes
+ tests/data/acpi/microvm/APIC.ioapic2          | Bin 82 -> 82 bytes
+ tests/data/acpi/microvm/APIC.pcie             | Bin 110 -> 110 bytes
+ tests/data/acpi/pc/APIC                       | Bin 120 -> 120 bytes
+ tests/data/acpi/pc/APIC.acpihmat              | Bin 128 -> 128 bytes
+ tests/data/acpi/pc/APIC.cphp                  | Bin 160 -> 160 bytes
+ tests/data/acpi/pc/APIC.dimmpxm               | Bin 144 -> 144 bytes
+ tests/data/acpi/q35/APIC                      | Bin 120 -> 120 bytes
+ tests/data/acpi/q35/APIC.acpihmat             | Bin 128 -> 128 bytes
+ tests/data/acpi/q35/APIC.acpihmat-noinitiator | Bin 144 -> 144 bytes
+ tests/data/acpi/q35/APIC.core-count2          | Bin 2478 -> 2478 bytes
+ tests/data/acpi/q35/APIC.cphp                 | Bin 160 -> 160 bytes
+ tests/data/acpi/q35/APIC.dimmpxm              | Bin 144 -> 144 bytes
+ tests/data/acpi/q35/APIC.xapic                | Bin 2686 -> 2686 bytes
+ tests/qtest/bios-tables-test-allowed-diff.h   |  14 --------------
+ 15 files changed, 14 deletions(-)
 
-diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
-index 52e5c1439a..8a0932fe84 100644
---- a/hw/i386/acpi-common.c
-+++ b/hw/i386/acpi-common.c
-@@ -102,7 +102,7 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
-     MachineClass *mc = MACHINE_GET_CLASS(x86ms);
-     const CPUArchIdList *apic_ids = mc->possible_cpu_arch_ids(MACHINE(x86ms));
-     AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_GET_CLASS(adev);
--    AcpiTable table = { .sig = "APIC", .rev = 1, .oem_id = oem_id,
-+    AcpiTable table = { .sig = "APIC", .rev = 3, .oem_id = oem_id,
-                         .oem_table_id = oem_table_id };
- 
-     acpi_table_begin(&table, table_data);
+diff --git a/tests/data/acpi/microvm/APIC b/tests/data/acpi/microvm/APIC
+index 68dbd44a7e35a356083f086df60f70e424c4249f..672764e711d80402890902ba9ded10915770e84c 100644
+GIT binary patch
+delta 16
+XcmZ>B<8ln}barE4U|=qq$Ylcn95e$)
+
+delta 16
+XcmZ>B<8ln}barE4U|=kn$Ylcn95Mq&
+
+diff --git a/tests/data/acpi/microvm/APIC.ioapic2 b/tests/data/acpi/microvm/APIC.ioapic2
+index 3063c52cd3e9bbed29c06031b375900f4a49b9e0..6f24fdb12ce3f1c13df7ff835e475d8023e20d4a 100644
+GIT binary patch
+delta 16
+XcmWFv;&Ke|bPi%*U|?>X$mIb59$W*3
+
+delta 16
+XcmWFv;&Ke|bPi%*U|?*X$mIb59$Ev1
+
+diff --git a/tests/data/acpi/microvm/APIC.pcie b/tests/data/acpi/microvm/APIC.pcie
+index 4e8f6ed8d6a866429fc17aecdeafc3fb5ef65fa3..2239ca76a607fb1ff9d392298e2bd6461bba7ecf 100644
+GIT binary patch
+delta 16
+Xcmd1H<8ln}bk1X7U|_DA$dv*BBD@3c
+
+delta 16
+Xcmd1H<8ln}bk1X7U|_77$dv*BBDw?a
+
+diff --git a/tests/data/acpi/pc/APIC b/tests/data/acpi/pc/APIC
+index 208331db53b7dd5c6205cce0e95427636b86dd64..868a3432f0295257393e45b75483ef4bec455d74 100644
+GIT binary patch
+delta 16
+Xcmb=Z;BpM`bgp1vU|{Z;$dv~GB#s0m
+
+delta 16
+Xcmb=Z;BpM`bgp1vU|{T;$dv~GB#Z<k
+
+diff --git a/tests/data/acpi/pc/APIC.acpihmat b/tests/data/acpi/pc/APIC.acpihmat
+index 812c4603f2701494f6bb761570323158a20d4043..125d1ff0871f772bc8cfe3e2afbff70edf221291 100644
+GIT binary patch
+delta 18
+ZcmZo*Y+&Sa4DfVrU|?WiE}h6#1^_241Tz2t
+
+delta 18
+ZcmZo*Y+&Sa4DfVrU|?WiET70#1^_221Tz2t
+
+diff --git a/tests/data/acpi/pc/APIC.cphp b/tests/data/acpi/pc/APIC.cphp
+index 65cc4f4a9aa2676140a6525cdac1e838274b1e07..a2c2a24e5e3cf143b57a8932f78eeda6d7b8bbdb 100644
+GIT binary patch
+delta 18
+ZcmZ3$xPXz%F~HM#0RsaAv)DwgX#guQ1XKV3
+
+delta 18
+ZcmZ3$xPXz%F~HM#0RsaAqr^n6X#guO1XKV3
+
+diff --git a/tests/data/acpi/pc/APIC.dimmpxm b/tests/data/acpi/pc/APIC.dimmpxm
+index d904d4a70ddecbb79a83a267af8e26f925e9f4c6..9b5922bc72db1fe64819a3970d6ca95543da799e 100644
+GIT binary patch
+delta 18
+ZcmbQhIDwJNF~HM#0s{jBv*$#vHUKF+1V;b>
+
+delta 18
+ZcmbQhIDwJNF~HM#0s{jBqxVFvHUKF)1V;b>
+
+diff --git a/tests/data/acpi/q35/APIC b/tests/data/acpi/q35/APIC
+index 208331db53b7dd5c6205cce0e95427636b86dd64..868a3432f0295257393e45b75483ef4bec455d74 100644
+GIT binary patch
+delta 16
+Xcmb=Z;BpM`bgp1vU|{Z;$dv~GB#s0m
+
+delta 16
+Xcmb=Z;BpM`bgp1vU|{T;$dv~GB#Z<k
+
+diff --git a/tests/data/acpi/q35/APIC.acpihmat b/tests/data/acpi/q35/APIC.acpihmat
+index 812c4603f2701494f6bb761570323158a20d4043..125d1ff0871f772bc8cfe3e2afbff70edf221291 100644
+GIT binary patch
+delta 18
+ZcmZo*Y+&Sa4DfVrU|?WiE}h6#1^_241Tz2t
+
+delta 18
+ZcmZo*Y+&Sa4DfVrU|?WiET70#1^_221Tz2t
+
+diff --git a/tests/data/acpi/q35/APIC.acpihmat-noinitiator b/tests/data/acpi/q35/APIC.acpihmat-noinitiator
+index d904d4a70ddecbb79a83a267af8e26f925e9f4c6..9b5922bc72db1fe64819a3970d6ca95543da799e 100644
+GIT binary patch
+delta 18
+ZcmbQhIDwJNF~HM#0s{jBv*$#vHUKF+1V;b>
+
+delta 18
+ZcmbQhIDwJNF~HM#0s{jBqxVFvHUKF)1V;b>
+
+diff --git a/tests/data/acpi/q35/APIC.core-count2 b/tests/data/acpi/q35/APIC.core-count2
+index a255082ef5bc39f0d92d3e372b91f09dd6d0d9a1..f5da2eb1e8a93d961b39f665f2e8b02acf1aeb3c 100644
+GIT binary patch
+delta 19
+acmZ1{yiS<QF~HM#9VY_=^SO;&OE>{I`URQ*
+
+delta 19
+acmZ1{yiS<QF~HM#9VY_=<Ase}OE>{I_yw8(
+
+diff --git a/tests/data/acpi/q35/APIC.cphp b/tests/data/acpi/q35/APIC.cphp
+index 65cc4f4a9aa2676140a6525cdac1e838274b1e07..a2c2a24e5e3cf143b57a8932f78eeda6d7b8bbdb 100644
+GIT binary patch
+delta 18
+ZcmZ3$xPXz%F~HM#0RsaAv)DwgX#guQ1XKV3
+
+delta 18
+ZcmZ3$xPXz%F~HM#0RsaAqr^n6X#guO1XKV3
+
+diff --git a/tests/data/acpi/q35/APIC.dimmpxm b/tests/data/acpi/q35/APIC.dimmpxm
+index d904d4a70ddecbb79a83a267af8e26f925e9f4c6..9b5922bc72db1fe64819a3970d6ca95543da799e 100644
+GIT binary patch
+delta 18
+ZcmbQhIDwJNF~HM#0s{jBv*$#vHUKF+1V;b>
+
+delta 18
+ZcmbQhIDwJNF~HM#0s{jBqxVFvHUKF)1V;b>
+
+diff --git a/tests/data/acpi/q35/APIC.xapic b/tests/data/acpi/q35/APIC.xapic
+index c1969c35aa12b61d25e0134bbb8d2187ba42d663..83bd28325af9d6d7619015a9701866b8f3f1d754 100644
+GIT binary patch
+delta 19
+acmew-@=t`zF~HNgj*EeTS#2X%2^Ro9-UT)Q
+
+delta 19
+acmew-@=t`zF~HNgj*EeTQDY-l2^Ro9+yyoO
+
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 66ae44e6b9..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,15 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/microvm/APIC",
+-"tests/data/acpi/microvm/APIC.ioapic2",
+-"tests/data/acpi/microvm/APIC.pcie",
+-"tests/data/acpi/pc/APIC",
+-"tests/data/acpi/pc/APIC.acpihmat",
+-"tests/data/acpi/pc/APIC.cphp",
+-"tests/data/acpi/pc/APIC.dimmpxm",
+-"tests/data/acpi/q35/APIC",
+-"tests/data/acpi/q35/APIC.acpihmat",
+-"tests/data/acpi/q35/APIC.acpihmat-noinitiator",
+-"tests/data/acpi/q35/APIC.core-count2",
+-"tests/data/acpi/q35/APIC.cphp",
+-"tests/data/acpi/q35/APIC.dimmpxm",
+-"tests/data/acpi/q35/APIC.xapic",
 -- 
 2.31.1
 
