@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F14E706263
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E494C706245
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:09:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC6K-00022L-W9; Wed, 17 May 2023 04:01:37 -0400
+	id 1pzC6C-0001wB-FC; Wed, 17 May 2023 04:01:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5z-0001s1-4F; Wed, 17 May 2023 04:01:21 -0400
+ id 1pzC61-0001si-2Q; Wed, 17 May 2023 04:01:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5r-0000Yb-RZ; Wed, 17 May 2023 04:01:11 -0400
+ id 1pzC5t-0000Yj-MQ; Wed, 17 May 2023 04:01:15 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1B86B6752;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4285B6753;
  Wed, 17 May 2023 11:00:58 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7D6095E0A;
+ by tsrv.corpit.ru (Postfix) with SMTP id BCDD85E0B;
  Wed, 17 May 2023 11:00:57 +0300 (MSK)
-Received: (nullmailer pid 3624105 invoked by uid 1000);
+Received: (nullmailer pid 3624108 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v8.0.1 09/36] target/arm: Initialize debug capabilities only
- once
-Date: Wed, 17 May 2023 11:00:29 +0300
-Message-Id: <20230517080056.3623993-9-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v8.0.1 10/36] hw/net/msf2-emac: Don't modify descriptor
+ in-place in emac_store_desc()
+Date: Wed, 17 May 2023 11:00:30 +0300
+Message-Id: <20230517080056.3623993-10-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,101 +60,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-kvm_arm_init_debug() used to be called several times on a SMP system as
-kvm_arch_init_vcpu() calls it. Move the call to kvm_arch_init() to make
-sure it will be called only once; otherwise it will overwrite pointers
-to memory allocated with the previous call and leak it.
+The msf2-emac ethernet controller has functions emac_load_desc() and
+emac_store_desc() which read and write the in-memory descriptor
+blocks and handle conversion between guest and host endianness.
 
-Fixes: e4482ab7e3 ("target-arm: kvm - add support for HW assisted debug")
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-id: 20230405153644.25300-1-akihiko.odaki@daynix.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+As currently written, emac_store_desc() does the endianness
+conversion in-place; this means that it effectively consumes the
+input EmacDesc struct, because on a big-endian host the fields will
+be overwritten with the little-endian versions of their values.
+Unfortunately, in all the callsites the code continues to access
+fields in the EmacDesc struct after it has called emac_store_desc()
+-- specifically, it looks at the d.next field.
+
+The effect of this is that on a big-endian host networking doesn't
+work because the address of the next descriptor is corrupted.
+
+We could fix this by making the callsite avoid using the struct; but
+it's more robust to have emac_store_desc() leave its input alone.
+
+(emac_load_desc() also does an in-place conversion, but here this is
+fine, because the function is supposed to be initializing the
+struct.)
+
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit ad5c6ddea327758daa9f0e6edd916be39dce7dca)
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-id: 20230424151919.1333299-1-peter.maydell@linaro.org
+(cherry picked from commit d565f58b38424e9a390a7ea33ff7477bab693fda)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- target/arm/kvm.c     |  2 ++
- target/arm/kvm64.c   | 18 ++++--------------
- target/arm/kvm_arm.h |  8 ++++++++
- 3 files changed, 14 insertions(+), 14 deletions(-)
+ hw/net/msf2-emac.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index f022c644d2..84da49332c 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -280,6 +280,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         }
-     }
- 
-+    kvm_arm_init_debug(s);
-+
-     return ret;
+diff --git a/hw/net/msf2-emac.c b/hw/net/msf2-emac.c
+index 7ccd3e5142..db3a04deb1 100644
+--- a/hw/net/msf2-emac.c
++++ b/hw/net/msf2-emac.c
+@@ -118,14 +118,18 @@ static void emac_load_desc(MSF2EmacState *s, EmacDesc *d, hwaddr desc)
+     d->next = le32_to_cpu(d->next);
  }
  
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index 1197253d12..810db33ccb 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -74,24 +74,16 @@ GArray *hw_breakpoints, *hw_watchpoints;
- #define get_hw_bp(i)    (&g_array_index(hw_breakpoints, HWBreakpoint, i))
- #define get_hw_wp(i)    (&g_array_index(hw_watchpoints, HWWatchpoint, i))
- 
--/**
-- * kvm_arm_init_debug() - check for guest debug capabilities
-- * @cs: CPUState
-- *
-- * kvm_check_extension returns the number of debug registers we have
-- * or 0 if we have none.
-- *
-- */
--static void kvm_arm_init_debug(CPUState *cs)
-+void kvm_arm_init_debug(KVMState *s)
+-static void emac_store_desc(MSF2EmacState *s, EmacDesc *d, hwaddr desc)
++static void emac_store_desc(MSF2EmacState *s, const EmacDesc *d, hwaddr desc)
  {
--    have_guest_debug = kvm_check_extension(cs->kvm_state,
-+    have_guest_debug = kvm_check_extension(s,
-                                            KVM_CAP_SET_GUEST_DEBUG);
- 
--    max_hw_wps = kvm_check_extension(cs->kvm_state, KVM_CAP_GUEST_DEBUG_HW_WPS);
-+    max_hw_wps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
-     hw_watchpoints = g_array_sized_new(true, true,
-                                        sizeof(HWWatchpoint), max_hw_wps);
- 
--    max_hw_bps = kvm_check_extension(cs->kvm_state, KVM_CAP_GUEST_DEBUG_HW_BPS);
-+    max_hw_bps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_BPS);
-     hw_breakpoints = g_array_sized_new(true, true,
-                                        sizeof(HWBreakpoint), max_hw_bps);
-     return;
-@@ -920,8 +912,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
-     }
-     cpu->mp_affinity = mpidr & ARM64_AFFINITY_MASK;
- 
--    kvm_arm_init_debug(cs);
+-    /* Convert from host endianness into LE. */
+-    d->pktaddr = cpu_to_le32(d->pktaddr);
+-    d->pktsize = cpu_to_le32(d->pktsize);
+-    d->next = cpu_to_le32(d->next);
 -
-     /* Check whether user space can specify guest syndrome value */
-     kvm_arm_init_serror_injection(cs);
- 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 99017b635c..330fbe5c72 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -18,6 +18,14 @@
- #define KVM_ARM_VGIC_V2   (1 << 0)
- #define KVM_ARM_VGIC_V3   (1 << 1)
- 
-+/**
-+ * kvm_arm_init_debug() - initialize guest debug capabilities
-+ * @s: KVMState
-+ *
-+ * Should be called only once before using guest debug capabilities.
-+ */
-+void kvm_arm_init_debug(KVMState *s);
+-    address_space_write(&s->dma_as, desc, MEMTXATTRS_UNSPECIFIED, d, sizeof *d);
++    EmacDesc outd;
++    /*
++     * Convert from host endianness into LE. We use a local struct because
++     * calling code may still want to look at the fields afterwards.
++     */
++    outd.pktaddr = cpu_to_le32(d->pktaddr);
++    outd.pktsize = cpu_to_le32(d->pktsize);
++    outd.next = cpu_to_le32(d->next);
 +
- /**
-  * kvm_arm_vcpu_init:
-  * @cs: CPUState
++    address_space_write(&s->dma_as, desc, MEMTXATTRS_UNSPECIFIED, &outd, sizeof outd);
+ }
+ 
+ static void msf2_dma_tx(MSF2EmacState *s)
 -- 
 2.39.2
 
