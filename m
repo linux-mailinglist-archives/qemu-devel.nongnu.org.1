@@ -2,82 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DFE706D64
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E18706CA8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:26:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJSR-0003Ku-Vn; Wed, 17 May 2023 11:52:56 -0400
+	id 1pzJ1u-0004JU-Qc; Wed, 17 May 2023 11:25:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1pzJSO-0003Jj-3i
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:52:52 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1pzJSM-0005v0-EW
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:52:51 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3063433fa66so635563f8f.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 08:52:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684338768; x=1686930768;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:user-agent:from:to:cc:subject:date:message-id:reply-to;
- bh=2zgawbbiH3ZN+t5cl5i5se7wIX3B/JzZA+6PRyvIIdQ=;
- b=g5vI9spJJGk0AQg2nrDscgqmqP0hfliUsHdlmHIo3Us/3MCHru8MSL5VhuY5GT2/mq
- dRoS9rGKH+DSY0Pk6SGac+3nIrPcqrixW/J4kbvJqqzBVSCbZ8xOFTu/ib1xQ7zviDZk
- ibs2kc+8BOqHSss7aGDvVd5cDpfR14sdXJxylUPWqT/o/PqQ4hY9XSf+wHEmCaQh4q94
- FdFDSJGxvGseU3ZcQCFrHKeAwnWn++N0N3NhMWfDwCBhXlwgBEWuTh1Zzuy6AvkocsEa
- JF4hTrpK1NZCFMuLudbaFaQY4XnlK7TfXMkMNOZzzhktmkAMiz6g0Gc46Sl6Jd0zwx3/
- nMSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684338768; x=1686930768;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:user-agent:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2zgawbbiH3ZN+t5cl5i5se7wIX3B/JzZA+6PRyvIIdQ=;
- b=de2kcFJzbJEdGfbJ/au1QZmZx48mHg/CJyxkG8OxUe6siURZexhh/aLP0rqnk2GDTa
- nUyk/ichBIn9sh1xLqskYvv2UrcF/ajoy4Vmw/hc6MCx8061DkPWFjbAkKku7wsD9Ik6
- rpvYgnA1nchjxIygSm0ozPDPAFY+24EOtiMAIQxHYmumoJxoyPO0QXVMMJ1EomHxSYux
- Qx5NjphsPJ2piK23cyo2W9YL+1Fb+E4g0VFcSRT0DAdECIujISdo3btX6HqB82O3bEph
- GKbixsMyCYDLzEbaYf66WL2FtTiWYzs3SH99Mey4IpyIFaUxWYlsnO/M8I5LRdzPm4uA
- kZbQ==
-X-Gm-Message-State: AC+VfDzskmrx6nQgNWKlkuGI5+P/y+OtOvctIN5VfiypSvI90R+N917b
- cwlNKVyyZ6+nH2kJHH6FaukhL4XP/vPD+zLqUBzyEQ==
-X-Google-Smtp-Source: ACHHUZ7q2z3P6UZkiBWionaRCIoCzNwGj7Sy+we/QRxvSxXiETH9tC1liVIInk17lzo3LqqEPXPiVg==
-X-Received: by 2002:a5d:58e6:0:b0:309:33c4:52e1 with SMTP id
- f6-20020a5d58e6000000b0030933c452e1mr838763wrd.64.1684338767816; 
- Wed, 17 May 2023 08:52:47 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- j11-20020adff54b000000b003062c609115sm3235414wrp.21.2023.05.17.08.52.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 08:52:47 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 0148D1FFBB;
- Wed, 17 May 2023 16:52:47 +0100 (BST)
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, virtio-fs@redhat.com, Erik
- Schilling <erik.schilling@linaro.org>
-Subject: Status of DAX for virtio-fs/virtiofsd?
-Date: Wed, 17 May 2023 16:23:46 +0100
-Message-ID: <87v8grlzu9.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzJ1m-0004IB-SN
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:25:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzJ1k-0000CU-8D
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:25:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684337119;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=CHem1oZlaw1DyTScbVd3sK/4SBnmEdsiVu/lnPJP9wM=;
+ b=ZOwhz00gSE/6jr+jQrmZUGdwVxyveWwW00uNoJrexgCsWjAwIzS1PveJ1KmXio2ZWws0AS
+ jhl6KU0vbf9Gi4IAy2FiyCXjn/lDl4qcYH1ZZmEnzJ1SIVHff/j1S05KerCcUet45ddg6F
+ cEMYn000v+RA6nBMOJqF16BQ0QPjbtg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-382-ZRQN1iTxPu2_iNpJF2iF5g-1; Wed, 17 May 2023 11:25:17 -0400
+X-MC-Unique: ZRQN1iTxPu2_iNpJF2iF5g-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D7A310146E3;
+ Wed, 17 May 2023 15:25:17 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3BD12C15BA0;
+ Wed, 17 May 2023 15:25:17 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1EEC821E6806; Wed, 17 May 2023 17:25:16 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org
+Subject: [PULL 0/5] QAPI patches patches for 2023-05-17
+Date: Wed, 17 May 2023 17:25:10 +0200
+Message-Id: <20230517152516.1884640-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,53 +75,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The following changes since commit f9d58e0ca53b3f470b84725a7b5e47fcf446a2ea:
 
-I remember from the dim and distant past (probably a KVM Forum) that one
-of the touted features of virtio-fs was the ability to get memory
-efficiency savings by having a direct memory mapping the host pages into
-the guest address space.
+  Merge tag 'pull-9p-20230516' of https://github.com/cschoenebeck/qemu into staging (2023-05-16 10:21:44 -0700)
 
-AFAICT the kernel side was merged a while ago, see 22f3787 (virtiofs:
-set up virtio_fs dax_device) and related. However when investigating
-what would be needed to support this for Xen guests using virtio-fs we
-were confused as to what else was needed.
+are available in the Git repository at:
 
-There were some patches for the old C daemon:
+  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2023-05-17
 
-  Subject: [PATCH v3 00/26] virtiofs dax patches
-  Date: Wed, 28 Apr 2021 12:00:34 +0100	[thread overview]
-  Message-ID: <20210428110100.27757-1-dgilbert@redhat.com>
+for you to fetch changes up to 28d2a4f620db2bc327dbd3443b777890d39a0bf6:
 
-although they look like they were never merged and the C version of
-virtiofsd has since been dropped from tools.
+  qapi/parser: Drop two bad type hints for now (2023-05-17 15:49:22 +0200)
 
-Looking at the supporting rust code (vhost_user/message.rs) there are a
-number of additional messages:
+----------------------------------------------------------------
+QAPI patches patches for 2023-05-17
 
-    /// Virtio-fs draft: map file content into the window.
-    FS_MAP =3D 6,
-    /// Virtio-fs draft: unmap file content from the window.
-    FS_UNMAP =3D 7,
-    /// Virtio-fs draft: sync file content.
-    FS_SYNC =3D 8,
-    /// Virtio-fs draft: perform a read/write from an fd directly to GPA.
-    FS_IO =3D 9,
-    /// Upper bound of valid commands.
-    MAX_CMD =3D 10,
+----------------------------------------------------------------
+Markus Armbruster (2):
+      qapi: Improve error message for description following section
+      qapi/parser: Drop two bad type hints for now
 
-that don't appear in the current canonical vhost-user reference in the
-QEMU repository and the QEMU code certainly doesn't have implementations
-for any of them. So I have some questions:
+Peter Maydell (3):
+      docs/interop: Convert qmp-spec.txt to rST
+      docs/interop/qmp-spec: Update error description for parsing errors
+      docs/interop: Delete qmp-intro.txt
 
- * What VMM/daemon combinations has DAX been tested on?
- * Isn't it time the vhost-user spec is updated?
- * Is anyone picking up Dave's patches for the QEMU side of support?
+ docs/devel/qapi-code-gen.rst                  |   3 +-
+ docs/interop/index.rst                        |   1 +
+ docs/interop/qmp-intro.txt                    |  88 -------
+ docs/interop/{qmp-spec.txt => qmp-spec.rst}   | 337 ++++++++++++++------------
+ qapi/control.json                             |   4 +-
+ qapi/qapi-schema.json                         |   3 +-
+ qobject/json-lexer.c                          |   2 +-
+ python/qemu/qmp/models.py                     |   8 +-
+ python/qemu/qmp/qmp_client.py                 |   4 +-
+ qemu-options.hx                               |  28 ++-
+ scripts/qapi/parser.py                        |   8 +-
+ tests/qapi-schema/doc-interleaved-section.err |   2 +-
+ 12 files changed, 226 insertions(+), 262 deletions(-)
+ delete mode 100644 docs/interop/qmp-intro.txt
+ rename docs/interop/{qmp-spec.txt => qmp-spec.rst} (55%)
 
-Thanks,
+-- 
+2.39.2
 
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
