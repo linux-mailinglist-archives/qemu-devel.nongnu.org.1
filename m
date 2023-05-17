@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BD4706CAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 066EA706CA5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:26:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJ1v-0004Jc-7X; Wed, 17 May 2023 11:25:31 -0400
+	id 1pzJ25-0004Ks-Ff; Wed, 17 May 2023 11:25:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzJ1o-0004IJ-BY
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzJ1o-0004IK-Eo
  for qemu-devel@nongnu.org; Wed, 17 May 2023 11:25:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzJ1l-0000Cx-Lv
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzJ1l-0000Ct-Lm
  for qemu-devel@nongnu.org; Wed, 17 May 2023 11:25:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684337121;
+ s=mimecast20190719; t=1684337120;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GLoxcRGeGs2PLS+wGR+/bUKoIoL3qqDZwVwasugfdPo=;
- b=S3dJGNeJJSLagzChzNZ4mBceHm6ve3ZkuhjsCch/PMUrKhD0V71LmyMISeCf7kEexjO4YH
- Vt6DUCiyNHobeIIp6hIMsS33Cab2Tdi5bbbNrjO5wHg+DL4ypjnihCcd++Np1wfl5VBO72
- MxfB+kNDhGgUKb+be1qMunAQpzhrgss=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BMI7CZSXRo3W+b1jK1Xj5yQhN8tN2c5PtJoXQaigiHU=;
+ b=A4NIZFksGEtfy0Hvt3cjcdSbTPiFo7gdhCiwhkZNylYKT4FKj42KnKEX+0iLjk8Z7HGjiu
+ dlS+bFVLWrak9VRJkHAEqLs/4w2h/2iPxoM4D++nCglTD8Gv+ZZa/iXc7HXADmLWHYY2/L
+ cvsX4n7dNf6/tqQkINx+w6mwsFLR8zA=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-438-6GDMsWJGO4Gy9udRJsCvng-1; Wed, 17 May 2023 11:25:17 -0400
-X-MC-Unique: 6GDMsWJGO4Gy9udRJsCvng-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-536-B3VozZW5PEC-UgY2rIQmCw-1; Wed, 17 May 2023 11:25:19 -0400
+X-MC-Unique: B3VozZW5PEC-UgY2rIQmCw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E73C185A7A4;
- Wed, 17 May 2023 15:25:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B8CA01C12F91;
+ Wed, 17 May 2023 15:25:18 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3BD214078908;
- Wed, 17 May 2023 15:25:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7C9E663F7E;
+ Wed, 17 May 2023 15:25:18 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 275C721E669D; Wed, 17 May 2023 17:25:16 +0200 (CEST)
+ id 29B2B21F9816; Wed, 17 May 2023 17:25:16 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, Peter Maydell <peter.maydell@linaro.org>,
  Eric Blake <eblake@redhat.com>
-Subject: [PULL 3/5] docs/interop/qmp-spec: Update error description for
- parsing errors
-Date: Wed, 17 May 2023 17:25:14 +0200
-Message-Id: <20230517152516.1884640-5-armbru@redhat.com>
+Subject: [PULL 4/5] docs/interop: Delete qmp-intro.txt
+Date: Wed, 17 May 2023 17:25:15 +0200
+Message-Id: <20230517152516.1884640-6-armbru@redhat.com>
 In-Reply-To: <20230517152516.1884640-1-armbru@redhat.com>
 References: <20230517152516.1884640-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,32 +81,173 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-The description text for a parsing error has changed since the
-spec doc was first written; update the example in the docs.
+qmp-intro.txt is quite small and provides very little information
+that isn't already in the documentation elsewhere.  Fold the example
+command lines into qemu-options.hx, and delete the now-unneeded plain
+text document.
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230515162245.3964307-3-peter.maydell@linaro.org>
+While we're touching the qemu-options.hx documentation text,
+wordsmith it a little bit and improve the rST formatting.
+
 Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20230515162245.3964307-4-peter.maydell@linaro.org>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/interop/qmp-spec.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/interop/qmp-intro.txt | 88 --------------------------------------
+ qemu-options.hx            | 28 +++++++++---
+ 2 files changed, 22 insertions(+), 94 deletions(-)
+ delete mode 100644 docs/interop/qmp-intro.txt
 
-diff --git a/docs/interop/qmp-spec.rst b/docs/interop/qmp-spec.rst
-index bfad570a16..2609b3ff9b 100644
---- a/docs/interop/qmp-spec.rst
-+++ b/docs/interop/qmp-spec.rst
-@@ -307,7 +307,7 @@ This section provides some examples of real QMP usage, in all of them
-   .. code-block:: QMP
+diff --git a/docs/interop/qmp-intro.txt b/docs/interop/qmp-intro.txt
+deleted file mode 100644
+index 1c745a7af0..0000000000
+--- a/docs/interop/qmp-intro.txt
++++ /dev/null
+@@ -1,88 +0,0 @@
+-                          QEMU Machine Protocol
+-                          =====================
+-
+-Introduction
+-------------
+-
+-The QEMU Machine Protocol (QMP) allows applications to operate a
+-QEMU instance.
+-
+-QMP is JSON[1] based and features the following:
+-
+-- Lightweight, text-based, easy to parse data format
+-- Asynchronous messages support (ie. events)
+-- Capabilities Negotiation
+-
+-For detailed information on QMP's usage, please, refer to the following files:
+-
+-o qmp-spec.txt      QEMU Machine Protocol current specification
+-o qemu-qmp-ref.html QEMU QMP commands and events (auto-generated at build-time)
+-
+-[1] https://www.json.org
+-
+-Usage
+------
+-
+-You can use the -qmp option to enable QMP. For example, the following
+-makes QMP available on localhost port 4444:
+-
+-$ qemu [...] -qmp tcp:localhost:4444,server=on,wait=off
+-
+-However, for more flexibility and to make use of more options, the -mon
+-command-line option should be used. For instance, the following example
+-creates one HMP instance (human monitor) on stdio and one QMP instance
+-on localhost port 4444:
+-
+-$ qemu [...] -chardev stdio,id=mon0 -mon chardev=mon0,mode=readline \
+-             -chardev socket,id=mon1,host=localhost,port=4444,server=on,wait=off \
+-             -mon chardev=mon1,mode=control,pretty=on
+-
+-Please, refer to QEMU's manpage for more information.
+-
+-Simple Testing
+---------------
+-
+-To manually test QMP one can connect with telnet and issue commands by hand:
+-
+-$ telnet localhost 4444
+-Trying 127.0.0.1...
+-Connected to localhost.
+-Escape character is '^]'.
+-{
+-    "QMP": {
+-        "version": {
+-            "qemu": {
+-                "micro": 0,
+-                "minor": 0,
+-                "major": 3
+-            },
+-            "package": "v3.0.0"
+-        },
+-        "capabilities": [
+-            "oob"
+-        ]
+-    }
+-}
+-
+-{ "execute": "qmp_capabilities" }
+-{
+-    "return": {
+-    }
+-}
+-
+-{ "execute": "query-status" }
+-{
+-    "return": {
+-        "status": "prelaunch", 
+-        "singlestep": false, 
+-        "running": false
+-    }
+-}
+-
+-Please refer to docs/interop/qemu-qmp-ref.* for a complete command
+-reference, generated from qapi/qapi-schema.json.
+-
+-QMP wiki page
+--------------
+-
+-https://wiki.qemu.org/QMP
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 30690d9c3f..e4566149ee 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4170,26 +4170,42 @@ DEF("qmp", HAS_ARG, QEMU_OPTION_qmp, \
+     QEMU_ARCH_ALL)
+ SRST
+ ``-qmp dev``
+-    Like -monitor but opens in 'control' mode.
++    Like ``-monitor`` but opens in 'control' mode. For example, to make
++    QMP available on localhost port 4444::
++
++        -qmp tcp:localhost:4444,server=on,wait=off
++
++    Not all options are configurable via this syntax; for maximum
++    flexibility use the ``-mon`` option and an accompanying ``-chardev``.
++
+ ERST
+ DEF("qmp-pretty", HAS_ARG, QEMU_OPTION_qmp_pretty, \
+     "-qmp-pretty dev like -qmp but uses pretty JSON formatting\n",
+     QEMU_ARCH_ALL)
+ SRST
+ ``-qmp-pretty dev``
+-    Like -qmp but uses pretty JSON formatting.
++    Like ``-qmp`` but uses pretty JSON formatting.
+ ERST
  
-     -> { "execute": }
--    <- { "error": { "class": "GenericError", "desc": "Invalid JSON syntax" } }
-+    <- { "error": { "class": "GenericError", "desc": "JSON parse error, expecting value" } }
+ DEF("mon", HAS_ARG, QEMU_OPTION_mon, \
+     "-mon [chardev=]name[,mode=readline|control][,pretty[=on|off]]\n", QEMU_ARCH_ALL)
+ SRST
+ ``-mon [chardev=]name[,mode=readline|control][,pretty[=on|off]]``
+-    Setup monitor on chardev name. ``mode=control`` configures 
+-    a QMP monitor (a JSON RPC-style protocol) and it is not the
+-    same as HMP, the human monitor that has a "(qemu)" prompt.
+-    ``pretty`` is only valid when ``mode=control``, 
++    Set up a monitor connected to the chardev ``name``.
++    QEMU supports two monitors: the Human Monitor Protocol
++    (HMP; for human interaction), and the QEMU Monitor Protocol
++    (QMP; a JSON RPC-style protocol).
++    The default is HMP; ``mode=control`` selects QMP instead.
++    ``pretty`` is only valid when ``mode=control``,
+     turning on JSON pretty printing to ease
+     human reading and debugging.
++
++    For example::
++
++      -chardev socket,id=mon1,host=localhost,port=4444,server=on,wait=off \
++      -mon chardev=mon1,mode=control,pretty=on
++
++    enables the QMP monitor on localhost port 4444 with pretty-printing.
+ ERST
  
- .. admonition:: Example
- 
+ DEF("debugcon", HAS_ARG, QEMU_OPTION_debugcon, \
 -- 
 2.39.2
 
