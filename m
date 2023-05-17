@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAF5706228
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7730E706222
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:02:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC75-0003kx-Rk; Wed, 17 May 2023 04:02:23 -0400
+	id 1pzC6w-00038F-8u; Wed, 17 May 2023 04:02:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pzC6z-0003SB-Ui
- for qemu-devel@nongnu.org; Wed, 17 May 2023 04:02:17 -0400
-Received: from mout.kundenserver.de ([212.227.17.10])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pzC6i-0002jt-Ai
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 04:02:00 -0400
+Received: from mout.kundenserver.de ([217.72.192.73])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pzC6t-0000xD-Kp
- for qemu-devel@nongnu.org; Wed, 17 May 2023 04:02:17 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pzC6g-0000uD-6d
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 04:02:00 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue106
- [212.227.15.183]) with ESMTPSA (Nemesis) id 1MtfeD-1qIe4L1wnH-00v9US; Wed, 17
- May 2023 10:01:54 +0200
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1M2fQ9-1q17Fd4BOp-0049IS; Wed, 17
+ May 2023 10:01:55 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
-Cc: Afonso Bordado <afonsobordado@gmail.com>,
- Palmer Dabbelt <palmer@rivosinc.com>, Laurent Vivier <laurent@vivier.eu>,
- Alistair Francis <alistair.francis@wdc.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PULL 1/9] linux-user: Emulate /proc/cpuinfo output for riscv
-Date: Wed, 17 May 2023 10:01:44 +0200
-Message-Id: <20230517080152.108660-2-laurent@vivier.eu>
+Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 2/9] linux-user: report ENOTTY for unknown ioctls
+Date: Wed, 17 May 2023 10:01:45 +0200
+Message-Id: <20230517080152.108660-3-laurent@vivier.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517080152.108660-1-laurent@vivier.eu>
 References: <20230517080152.108660-1-laurent@vivier.eu>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:9Awxo4gQpL5xSuJ+eslw3xyRuWYvgpoLUuwpMFPopIKukzco+Oc
- o0KXumJVq8fNGiSp4LJpGIac+TlTnM6jNNRpdgXYyXsDQ/QtpIKDXdlH97hrn6magHivB9r
- 37dhIEZGdbvL6h2Apy1TTpYZyl4b0YKlGy/ZgwszbJa9ppsqlt2c68/a8dJxrFxCTg1lLDc
- 31kLdGdejmGWunwZW9Gdg==
-UI-OutboundReport: notjunk:1;M01:P0:DttOHe+P+HY=;u50JeHKqOOT8v0WjBD2zzUT2ebG
- veqz0tng5JIPF+r+W0fT/C5iWuBXig8RWKfpPZlvIATvb3lsnV2Qe5Uo9s4niVSPFVX27Tf23
- qwZ5Zf5iwf8z6zRHI6pq39UrtyS6tqr5Hkc6IvW7GfQvU7AHZaYeDAFkvjm+Eev1inBdw3x0e
- z0ciZ0QYpeav3r5DVdPlvuGrAbZu+ZDLZxdtA2Cw2vA0SvqndYIXALE9XvwLBP1SjX1BFzG+i
- SDy+WMglrARFZlpNK5cHCcFw6QCe3PBeOI5mOeJxT2vXeLnAZSeZgHUnNs7sIADilWm+PIoBe
- pQWtKDNV+TqjNrEa9Jz+kjdSBen6wzzBAT7taERseLQA33NBw/uIzlNFwPgqIOkPO0uVtWSxu
- XGmEeujs9LL5FcHKbc2Tjt7MsSXMAlYEusrImoT7z2fhLpNrtsKgEZAEw4KmLDwiglxKbXbJL
- tvF0Pnal+s91u9CrIGUsw/xnzPD+GnxywKVRcJAaG3s6pl+6CUUQDFByWFXpVlJQKMFWU0GwJ
- CQC3LQs+/0kiuBw/dpPiOL++WUZoyWj6xevL0Iw1wTOnfXEHLuVTm+5Ewt4Jdwt+hJ9shhc8R
- +9pG1knlby7F7VEXA2AuJ24pnl83b/Tq/dWr0dxvPe3qOpEvU2FMO6iviYoH3d7vwCN++uuPZ
- ZcfQvrR8DAhRl1WsMSKEBw91QMmoBdGsPaA0l8zjrA==
-Received-SPF: none client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:JHrf53yipW3GNGGa0qVyKTs8oj12+PKYR8ujgwXIXpD2Ly6vutP
+ UrOQMsq9YPsJraVwOhNZ3Rg6vLgumZVf5rU9Q/B+nSOfjbWdQP2cYwxmd5dSr+d2YKO6t8f
+ /iF1rp8in7ePPFdsmWoKhnF8m+o7jlNUoHJP/RtxnIS7ot/7lfPX3zVf+fbkh+IAkImR1f5
+ kHzQy47woJJ2jENJ0deww==
+UI-OutboundReport: notjunk:1;M01:P0:kt7MXMvMeyk=;n30AaN9Md5Nm90PbL6UyeWs1BsB
+ fSAceAFDQBzaGDX/xdG4B15RlHIpU2Qymiy+/3+r00aTkZETpPRlcMFBJs6GNUh1ebTzUVoRN
+ m+pbzHcuQzQYbdRIuoZHUEU3C875cDwr263CzYZI1rvq1SN7IVQOiux2uUlBJX04OBOuZGTTn
+ g2QcVKqUurdBk7k4PK2p62QPFSiO7+Wnf5jJemDwsqI61GQbvbgqajD/HCXZ1K1tZwjjb5cZe
+ XJwXUmM6TTUWHeRuWCCMzeWAmScwtTeg2E7DelRSSUi2U51Tmyul8BO95Y+DC0LIfeNAbz7iI
+ 3mb/iOXjomZR4DEm9ehIcyUeupf5TqClVFslT//07ShawS+DMLFNLi+D+TYNAAcbpVGETVoUF
+ wBmL2u6bolbHOn8giBLONicsjbGAR738I0u7+PvCrjyl82ziwamHIaq+mq9YZtFIygQGlyHUq
+ NpmYJzb3Yw40OGEI23HmxyrhiwuVf25V3PTYHD99ywmjzDxpLzTNUky4pL5lKeFXq/Uv5C5fj
+ vAqUj73nrRvW8Lr0Ba72/yvTKEVkWDx+4bsUdB1s4O5SvoMU1v4NF7UzbagFO2Dwnjl/A+FzS
+ ZfguFesdYk/P3x9Cs5GespGYA9l8l044dVy9OUSgcW9dMXzekLpIspkcZwxHUZQ1CkbbVRQoM
+ T4mrCLHVlNatM5AoIMzLH4Og8RK3XFIx645g07RYSA==
+Received-SPF: none client-ip=217.72.192.73; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -71,87 +71,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Afonso Bordado <afonsobordado@gmail.com>
+From: Thomas Weißschuh <thomas@t-8ch.de>
 
-RISC-V does not expose all extensions via hwcaps, thus some userspace
-applications may want to query these via /proc/cpuinfo.
+The correct error number for unknown ioctls is ENOTTY.
 
-Currently when querying this file the host's file is shown instead
-which is slightly confusing. Emulate a basic /proc/cpuinfo file
-with mmu info and an ISA string.
+ENOSYS would mean that the ioctl() syscall itself is not implemented,
+which is very improbable and unexpected for userspace.
 
-Signed-off-by: Afonso Bordado <afonsobordado@gmail.com>
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-Id: <167873059442.9885.15152085316575248452-0@git.sr.ht>
-[lv: removed the test that fails in CI for unknown reason]
+ENOTTY means "Inappropriate ioctl for device". This is what the kernel
+returns on unknown ioctls, what qemu is trying to express and what
+userspace is prepared to handle.
+
+Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230426070659.80649-1-thomas@t-8ch.de>
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/syscall.c | 34 ++++++++++++++++++++++++++++++++--
- 1 file changed, 32 insertions(+), 2 deletions(-)
+ linux-user/syscall.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 69f740ff98c8..085ce530213e 100644
+index 085ce530213e..954ed14df4c0 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -8231,7 +8231,8 @@ void target_exception_dump(CPUArchState *env, const char *fmt, int code)
- }
+@@ -5747,7 +5747,7 @@ static abi_long do_ioctl(int fd, int cmd, abi_long arg)
+         if (ie->target_cmd == 0) {
+             qemu_log_mask(
+                 LOG_UNIMP, "Unsupported ioctl: cmd=0x%04lx\n", (long)cmd);
+-            return -TARGET_ENOSYS;
++            return -TARGET_ENOTTY;
+         }
+         if (ie->target_cmd == cmd)
+             break;
+@@ -5759,7 +5759,7 @@ static abi_long do_ioctl(int fd, int cmd, abi_long arg)
+     } else if (!ie->host_cmd) {
+         /* Some architectures define BSD ioctls in their headers
+            that are not implemented in Linux.  */
+-        return -TARGET_ENOSYS;
++        return -TARGET_ENOTTY;
+     }
  
- #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN || \
--    defined(TARGET_SPARC) || defined(TARGET_M68K) || defined(TARGET_HPPA)
-+    defined(TARGET_SPARC) || defined(TARGET_M68K) || defined(TARGET_HPPA) || \
-+    defined(TARGET_RISCV)
- static int is_proc(const char *filename, const char *entry)
- {
-     return strcmp(filename, entry) == 0;
-@@ -8309,6 +8310,35 @@ static int open_cpuinfo(CPUArchState *cpu_env, int fd)
- }
- #endif
- 
-+#if defined(TARGET_RISCV)
-+static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-+{
-+    int i;
-+    int num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
-+    RISCVCPU *cpu = env_archcpu(cpu_env);
-+    const RISCVCPUConfig *cfg = riscv_cpu_cfg((CPURISCVState *) cpu_env);
-+    char *isa_string = riscv_isa_string(cpu);
-+    const char *mmu;
-+
-+    if (cfg->mmu) {
-+        mmu = (cpu_env->xl == MXL_RV32) ? "sv32"  : "sv48";
-+    } else {
-+        mmu = "none";
-+    }
-+
-+    for (i = 0; i < num_cpus; i++) {
-+        dprintf(fd, "processor\t: %d\n", i);
-+        dprintf(fd, "hart\t\t: %d\n", i);
-+        dprintf(fd, "isa\t\t: %s\n", isa_string);
-+        dprintf(fd, "mmu\t\t: %s\n", mmu);
-+        dprintf(fd, "uarch\t\t: qemu\n\n");
-+    }
-+
-+    g_free(isa_string);
-+    return 0;
-+}
-+#endif
-+
- #if defined(TARGET_M68K)
- static int open_hardware(CPUArchState *cpu_env, int fd)
- {
-@@ -8333,7 +8363,7 @@ static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int
- #if HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN
-         { "/proc/net/route", open_net_route, is_proc },
- #endif
--#if defined(TARGET_SPARC) || defined(TARGET_HPPA)
-+#if defined(TARGET_SPARC) || defined(TARGET_HPPA) || defined(TARGET_RISCV)
-         { "/proc/cpuinfo", open_cpuinfo, is_proc },
- #endif
- #if defined(TARGET_M68K)
+     switch(arg_type[0]) {
+@@ -5817,7 +5817,7 @@ static abi_long do_ioctl(int fd, int cmd, abi_long arg)
+         qemu_log_mask(LOG_UNIMP,
+                       "Unsupported ioctl type: cmd=0x%04lx type=%d\n",
+                       (long)cmd, arg_type[0]);
+-        ret = -TARGET_ENOSYS;
++        ret = -TARGET_ENOTTY;
+         break;
+     }
+     return ret;
 -- 
 2.40.1
 
