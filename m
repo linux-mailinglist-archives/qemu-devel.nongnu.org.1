@@ -2,161 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC13706AF8
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 16:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEC3706B14
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 16:29:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzI1r-0000lO-7r; Wed, 17 May 2023 10:21:23 -0400
+	id 1pzI8Z-00025n-2F; Wed, 17 May 2023 10:28:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <darren.kenny@oracle.com>)
- id 1pzI1o-0000kw-Ni
- for qemu-devel@nongnu.org; Wed, 17 May 2023 10:21:20 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1pzI8U-00025V-MI
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 10:28:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <darren.kenny@oracle.com>)
- id 1pzI1l-0005Uv-SN
- for qemu-devel@nongnu.org; Wed, 17 May 2023 10:21:20 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34HE5Btj030973; Wed, 17 May 2023 14:21:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : in-reply-to : references : date : message-id : content-type :
- mime-version; s=corp-2023-03-30;
- bh=E6zhLFGqdmVAeGUyGocrJIa05gI+DvxeZwSh0C86e5w=;
- b=s+ykixy3XLXdJJivNyv2wFp5nxy2VTxR5ZQNgacUQTNry2FXFSpo5PslncC4FzzWmKm9
- UuQq369QpmpqMv3dOkjA8NebnP1bFd1PfQ7q6SDJBaDHE/Z03aVS6P+tWiFGL1TeBnWO
- XdeKDuBvQCX9nbaVhFLmeOVIdHO/Nepn1Kd03GtHm6NLLjYsoD1BcdJEY1ANlkSXBSBU
- gkzgrcB53IJGWOySPiAOu9y9yER4Iv3x7YInjBSwb0qq0ewK8hW0zaOmnOOs79yKLV4Z
- TIHU82Qx9WmPjodokl/TLFhB2OjgeP8QXF1z4DwofUcaq49d7ZEQzN0PEQY07/qiYipD iw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qj1fc5xyr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 May 2023 14:21:12 +0000
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 34HCfdfF036175; Wed, 17 May 2023 14:21:10 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam12lp2047.outbound.protection.outlook.com [104.47.66.47])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3qmm02gafp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 May 2023 14:21:10 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QA0jgxOojurP2JGJPDEF1Aov7i3iaStIc9mSNZcC9zaZYIITPSkZlyN7YggIoGh95DaBbzg91mbTVjFzWyCRZguaCfqwUFwDdQKJ1P6ruAtqQbn9iylTILTK09gbYLwjUC+kbEAuMRKhvwYU3l5VR4pUm9E498ST6+fkBr9XGl+E7LpQyh3GdnTSTmPu5JB38UCR1EmgLGLB41XS4Gs4AX6SyilEjzZJGLGzFdnr4kavzVuzrtm8D4mOlgzTqyijvz8FGxk+1XX7h6BpVk8mTchKR90c0q1YPVj5SLhaSf0Axjs9RZBoxP0GhBA3j4FHEUeN3S2rgNhQF0gQvzLceA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E6zhLFGqdmVAeGUyGocrJIa05gI+DvxeZwSh0C86e5w=;
- b=B/D6K0kh9lQDefcN02K04S9QICCaJwwU7WDC5Cer1wefU91BEhXStyTaFeuq7G9bwdtwlG624iZiWWmORp7785UPFxMUmVhZNxHx9Cvd2zT1c5ay3OpO+0JrVHWs0MnWwD+CXoKZTj3DmDAz+5GbMIoS2ltgoEz9n0UpsyLfgnegAwHvQkzgPPs78Zz/hkPjp7gR0jYQc8bebS6NqG0TUDCAyPhCl+EKaxH3J7mNNDDubnmwO52wzPLoYAeLrAq6/AELOCBRqHUw5otU4sk1SjFpDLoiId9xF17KCw0+2B6DTscpl9xFaSDsYT1BtmIZJkFoRQfg6kWMpxLsbfBqyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E6zhLFGqdmVAeGUyGocrJIa05gI+DvxeZwSh0C86e5w=;
- b=xopO1g9ZPgKVtaOfBIwmNseDTOQlPLfjmxQFz+KZKvjlnJVtW4XXqCTn2i59VXdqUILBl4IxPTvaiu/fFumlV/aMbGSsmvvX0Tl14NP2oWkvoPkHgUicCXweNDvv8Fz6NNFlJGwpmexJ7+DffZ/f+QBxwvD34+cqpR2WfK2Numw=
-Received: from BLAPR10MB5138.namprd10.prod.outlook.com (2603:10b6:208:322::8)
- by MW4PR10MB6439.namprd10.prod.outlook.com (2603:10b6:303:218::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.34; Wed, 17 May
- 2023 14:21:08 +0000
-Received: from BLAPR10MB5138.namprd10.prod.outlook.com
- ([fe80::8ed9:9d1:444a:c3d1]) by BLAPR10MB5138.namprd10.prod.outlook.com
- ([fe80::8ed9:9d1:444a:c3d1%6]) with mapi id 15.20.6411.018; Wed, 17 May 2023
- 14:21:08 +0000
-From: Darren Kenny <darren.kenny@oracle.com>
-To: Alexander Bulekov <alxndr@bu.edu>, qemu-devel@nongnu.org
-Cc: mcascell@redhat.com, Alexander Bulekov <alxndr@bu.edu>, Thomas Huth
- <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu
- <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH] memory: stricter checks prior to unsetting engaged_in_io
-In-Reply-To: <20230516084002.3813836-1-alxndr@bu.edu>
-References: <20230516084002.3813836-1-alxndr@bu.edu>
-Date: Wed, 17 May 2023 15:21:04 +0100
-Message-ID: <m2v8grrqcv.fsf@oracle.com>
-Content-Type: text/plain
-X-ClientProxiedBy: DUZPR01CA0181.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b3::22) To BLAPR10MB5138.namprd10.prod.outlook.com
- (2603:10b6:208:322::8)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR10MB5138:EE_|MW4PR10MB6439:EE_
-X-MS-Office365-Filtering-Correlation-Id: 36b12539-f625-4966-e0d6-08db56e1f4f6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HeZ9IHlVaTDWFT6G29wpQveXf84O0el90c6TbZqqKKby0XOeyUGf+A0rL8yeXZ0xJEas0lMQRN3y008FJvaTceNUYlgjn5NW9ovnDm3S+ZvcpEk7ucvKm9ohlHtQWC4zc1LJbFtHPdT8V5X1lkGiyZen3125I8Vw4G1cxlbDS3AIk6aOVP+La7Eo4P1ldGeh2tTthvZMIXT+TuypHfkTWXmosBj4DLMf3uQqMkRjAHlAGbZbC+24jpc8HV5ufWPXi8ptXc8/Dy6pWeEhUpIP5TM+WHvafQOlj83Fgqx17PSUP/KRxEu0YU6vJUh1qDa2q7mQjvb2OE32fr/0dNbAqP2WbWNbNHBE2hbK0oMl9PB0H1uVxmAoXYFEeqobrGGQVRxQLgRspYjJEARq3ISo3IAJk1nwjYYgw3SigOPTyAf1pxijbZdBZ4OalrpcSCbbBrCAmPXHvYpwwI3h7EkIcjXAmWn9QmK1vXNvIrUG4ZfK//pHcUAPuYNVUuf8nKxPX51ibVhUi8Hs+aISpSuAAE0SklVcjtQm7O5Na5Bl+l8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BLAPR10MB5138.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(346002)(396003)(39860400002)(136003)(366004)(451199021)(66946007)(44832011)(66476007)(5660300002)(4326008)(66556008)(8676002)(8936002)(478600001)(54906003)(2906002)(6486002)(41300700001)(316002)(6666004)(966005)(26005)(6506007)(186003)(6512007)(2616005)(83380400001)(36756003)(38100700002)(86362001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?z2tmEWNqEIVYtBka7tMsK4X880KarSwHmla1LawzFqNG8G5IdIaBLK6MDy3X?=
- =?us-ascii?Q?ceVWW5buNMkM4SntDPBzoLuiNkUqfpdudeCV/K0deXyewQX43JCTioCHB07Z?=
- =?us-ascii?Q?YU9E3OjPyn8dJ7WkL9QdZg8ELRC2qOAnAcOBO0Qrw6M5i5tTS7Q8GlohDFIM?=
- =?us-ascii?Q?mDFOz5efHVCV4SxTpT8mVCgfJrsz2QlN+aMT+AuJ6giopwzB73lJMFRh5oLu?=
- =?us-ascii?Q?/1mheMP0Em1ofsGTLwDiw/t14vzA+GpEnDHn8ni0gmuGVi2qWsa4w30KzLd9?=
- =?us-ascii?Q?znOl+KT33Oi+P5dx9IPzZ+Uukf1hq8zuzeq0VcwbI2xfDrCyq/qtv9HXgbBM?=
- =?us-ascii?Q?NVeprtxjodllsCeurmgBH0FaqlwEDtKXYQy/frBmFurrGKUyCi4m5tOaxd7G?=
- =?us-ascii?Q?/d9YqId76xBSLKw5d9e0+VtarGjfMro6+bHLULfmScxwjgmRnWSwi7Xu9uaA?=
- =?us-ascii?Q?A4YDd18T5RMnZyiIz6levP/uRMpO/DKaQvVdLNXyoOxHY47OWm2yrOWRRdV9?=
- =?us-ascii?Q?mm3DMgI7ztAgmhst0veNn1ZIKAvH68846is/+Qx5qYP1jMG+oxd7PHzUJJS1?=
- =?us-ascii?Q?wd4Psj4xNQg9SVcd+oPcc9tuNCKtfQbVr8VHcToKp5lOXE/mJf5k1EY4bsxq?=
- =?us-ascii?Q?QnkmRSL9xg7mugcqSTARvPJbJXwSeDO+qrhKfzoYpDgBahY3mqeyPq31b9DB?=
- =?us-ascii?Q?4fHuDUeLdagezj/E4pV8WbCOqyxoNKXE+lLMzn49Rygqbtg9YMGPwKB+5yto?=
- =?us-ascii?Q?H0HE7UVZjMtM//ngku5ungwrq7t4gwQQXUpgBm2jvQyZSjoK8xBEEnmPk0zG?=
- =?us-ascii?Q?gP6Nazwe6avg+1ksxW6TEkBjn8hnno2bw1cbLi+trtgmL20FqfuKtbvLAhqZ?=
- =?us-ascii?Q?Pho2YKEKFtoC5LNgxHz6BBm965/puGfjAm+TRM7oNfenQX82WDA00skzy0sT?=
- =?us-ascii?Q?6MFlFP3aqVHIzWulMdyDfk4hfUcPPL4pu5lCqhR3DQjmLDHmnjbHN2TABlxS?=
- =?us-ascii?Q?BN7llRmsP9oUgucrDGlXmdvHqtnxDSc4HoB8To49uNJD0cbhe6E6jW5C47fq?=
- =?us-ascii?Q?lLoWDwC90MaJcb3eKFUDdrncobhRx4ZDzHeFW6ZZWXuLwMtG//RKeVLKv71u?=
- =?us-ascii?Q?N84zB3HomPNS/bEJ4o5C0tNOv4hzcVrir1GtZtz1rKW47dE/ofQrHkjBeS21?=
- =?us-ascii?Q?otL2gCxPmRgMIPBxYOLZRP55Rz4UayRCA+Iv97THZ0wfSvmlgd3Jsc5wPWBR?=
- =?us-ascii?Q?/RwBkU083cC8hQKY4JdFWv0dajp6LsUkZwzd+Z27rEg2YUgs0nslsXBtEA0c?=
- =?us-ascii?Q?C1ltapCRs58f+FJKvkzz6LtNfX0UUtA8dwgw+lqqrRF7yaxe7ru3TsAXzOQn?=
- =?us-ascii?Q?qd/Sv637frID8w/NVUelnylH/ptZbN6MIAMUfGXjwKSRCCllzfoFCyNXb1hJ?=
- =?us-ascii?Q?V6MbIDq49ZdxldX9Q89+LNW2k/0zZG1L1V16yRU7/JflFW24EswHdE+s+uG/?=
- =?us-ascii?Q?oNWFHsC0loer9SYU4BsV1IxBtrVZkXMf5EUXN72rwJ422OVOPfP0bS2CHx73?=
- =?us-ascii?Q?TiAwwfhb7JZzOz3bDlD7xffcgANrh5LFiyb1k5L/3MNiEX82kFsznfp2lM5q?=
- =?us-ascii?Q?7A=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: GNw1Qjz5Fttglyxmss9ESv+ts5pyuMc5yFAFQFqrcErT56OGKm5CYZ6jm/sRD+dcPLGiJebBMHdxoJHmlqfpMDPHNxlILo/TY6UN7L0L4B8kgZEmQokAi7jeHy2PBcghuf9HBUQKc/3tpspJGzjeVYhb49W5m+rhfm6HeUy8pkhgfJt/DMTNBL3YC1iOQvclrd418yeGBcu2yrmwJPcrVzv6EfLuO5w67DjnPFbpuLCr4fwB0yFy0QIirZXarIGUiebRTU5EdA4fuDAa4DDqEob6qcdQoI+Qyi1k9thabeem1/u9z7vn3TB++gnrG6O1Pxybu5nTJx04Y3tdLvRURZrnwCKSq0t9JQyWrdG/5HoqBeY+DARRyrAEctauRlMTgNg5ydaWIszL1nQHqPm7rbuJr2NsmTHZjkJMA4AEtCZwZBxNdjXnGzJFDgMsp7yWAaRLFNjqkLNqwSiLH7yiiRjsFbvS3/N1EfplBNc+t8X+/rECaxSpKk/ZxEwieAXnPNhWR7xfStBtFMWRPuM3r+Ads6wvizmF5krOru28SEkBdl5vAOuoyF+xL03FFX9nfHJZ0x5Xo84hlBN0Vg1upEyIhmeJ+im8IBvx2u78i13+U5QKHob5HLOVQ0KxcLcTQDdnM6x6vArN5SVHAQG5N6GaOealj+emlSQcKKjVAhRSRLFnA0KDlwEDxDe6bzwgVj3QeVZ34QuV1kC3n2lS1iMiDR9bzjGl51gF7Gn9KLHHTTLgNAvb0MN07QJPwauHSTfYe6Jt70nj5AOm7t6zVYPbhy+uDKyAJufo3JvjNS2FWvkHvmqqjFGPHhoKXqWAZxEjBfj9gi65jRTCS8Te0A==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 36b12539-f625-4966-e0d6-08db56e1f4f6
-X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB5138.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 14:21:08.3336 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QdercDEAsNdogoyNiYCzde6YVIyiWvrszgfI+WTW+TkLwUixYeAPcEeGoxJkG7jEasJtw4RBl4ldNv4i1EA24w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6439
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-17_02,2023-05-17_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0
- malwarescore=0 bulkscore=0 spamscore=0 phishscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305170117
-X-Proofpoint-ORIG-GUID: 2j4Xrb2fXrOtcJGi1xGtKbpMoVLKhsdD
-X-Proofpoint-GUID: 2j4Xrb2fXrOtcJGi1xGtKbpMoVLKhsdD
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=darren.kenny@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1pzI8S-0006aF-RB
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 10:28:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684333691;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jYhODo8C9QWR/d4uAyGye+NhkYx+qE32Nzt6QOe3T4c=;
+ b=iqsEfGWvaUT9pBEcmfXLgNvYXXRFPw4yk8i3DmeZRQKO+LpIWR1Z07mpmwHTofVMFPPL1c
+ oT15NBhRerMB3XN7za12JeCHfp5sWtN2+n9vtRXPCOjNjk2IGh4HLHu8QgKxqLLa2/PmNv
+ G0vM9F4ZjjHyVV2yQFGwmH6t7riFuMQ=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-407-J-6aDT9ANZezAe9DypZvIA-1; Wed, 17 May 2023 10:28:01 -0400
+X-MC-Unique: J-6aDT9ANZezAe9DypZvIA-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1ae5c32b7feso2125175ad.1
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 07:27:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684333678; x=1686925678;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jYhODo8C9QWR/d4uAyGye+NhkYx+qE32Nzt6QOe3T4c=;
+ b=UTnJchdudMxlNA3aL2iUeQ0/lMMqVLic0yF86viC5wo6zuUhQEb0/GBGlxCSRGXeS1
+ +Hy+H0xCSfpNyvKG8+EWyrsfjl3yQsfnBNfS8R6U7cdtKHkQaqA/9f8DsGMAJmMvJTjM
+ 9E+LTYo6abWtnZlO4D3C0Pd8GNvB8kqn8E/t3lzCHTKp2qeEN8F4h9/aIlOQW4hQp/GX
+ EWcS2lNko8gP8CX1iXYTwjxKmG4spq0/ccB2kc9OusI96W/ttvqytv3fNKKyS6V4XPPi
+ sbkbiX+h5Jx9LoC5YW7sN6AUVyDyVpHrmpoAu+1kebcvntjcw9P/j6vdLBuemFWeORzk
+ Bc0A==
+X-Gm-Message-State: AC+VfDzSnOc2oRNrHYSpAoDvh2pA6cH0K9YnqZI+EcFevZ9GQEx05mxT
+ YtYNCVSEVEYhNpzVJZhb5YdntxBeOcCAqnl1YWT09jvhV0unT1e+8mWJhH17K0E3acLjBUjpEv6
+ U7qsX7O6/NoNBwI4=
+X-Received: by 2002:a17:902:cece:b0:1a8:626:6d9d with SMTP id
+ d14-20020a170902cece00b001a806266d9dmr54986458plg.62.1684333677953; 
+ Wed, 17 May 2023 07:27:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Gvr5/D8nm/YNU62/bgDL0nseRZiUb3uC1NsSRZWCkmT6GYJtAcpoD6tj1rNMyyAgNx9EdlA==
+X-Received: by 2002:a17:902:cece:b0:1a8:626:6d9d with SMTP id
+ d14-20020a170902cece00b001a806266d9dmr54986428plg.62.1684333677577; 
+ Wed, 17 May 2023 07:27:57 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.105.155])
+ by smtp.gmail.com with ESMTPSA id
+ m4-20020a17090a7f8400b0024e37e0a67dsm1655918pjl.20.2023.05.17.07.27.55
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 17 May 2023 07:27:57 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
+ for iasl location
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20230517101523-mutt-send-email-mst@kernel.org>
+Date: Wed, 17 May 2023 19:57:53 +0530
+Cc: Igor Mammedov <imammedo@redhat.com>,
+ qemu-devel@nongnu.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B6AD0FB1-CF05-4B4C-B58D-279422895E4D@redhat.com>
+References: <20230517120751.14679-1-anisinha@redhat.com>
+ <20230517101523-mutt-send-email-mst@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -173,49 +104,132 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On Tuesday, 2023-05-16 at 04:40:02 -04, Alexander Bulekov wrote:
-> engaged_in_io could be unset by an MR with re-entrancy checks disabled.
-> Ensure that only MRs that can set the engaged_in_io flag can unset it.
->
-> Closes: https://gitlab.com/qemu-project/qemu/-/issues/1563
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
 
-Reviewed-by: Darren Kenny <darren.kenny@oracle.com>
+> On 17-May-2023, at 7:47 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>=20
+> On Wed, May 17, 2023 at 05:37:51PM +0530, Ani Sinha wrote:
+>> Currently the meson based QEMU build process locates the iasl binary =
+from the
+>> current PATH and other locations [1] and uses that to set CONFIG_IASL =
+which is
+>> then used by the test.
+>>=20
+>> This has two disadvantages:
+>> - If iasl was not previously installed in the PATH, one has to =
+install iasl
+>>   and rebuild QEMU in order to pick up the iasl location. One cannot =
+simply
+>>   use the existing bios-tables-test binary because CONFIG_IASL is =
+only set
+>>   during the QEMU build time by meson and then bios-tables-test has =
+to be
+>>   rebuilt with CONFIG_IASL set in order to use iasl.
+>> - Sometimes, the stock iasl that comes with distributions is simply =
+not good
+>>   enough because it does not support the latest ACPI changes - newly
+>>   introduced tables or new table attributes etc. In order to test =
+ACPI code
+>>   in QEMU, one has to clone the latest acpica upstream repository and
+>>   rebuild iasl in order to get support for it. In those cases, one =
+may want
+>>   the test to use the iasl binary from a non-standard location.
+>>=20
+>> In order to overcome the above two disadvantages, we introduce a new
+>> environment variable IASL_PATH that can be set by the tester pointing =
+to an
+>> possibly non-standard iasl binary location. Bios-tables-test then =
+uses this
+>> environment variable to set its iasl location, possibly also =
+overriding the
+>> location that was pointed to by CONFIG_IASL that was set by meson. =
+This way
+>> developers can not only use this new environment variable to set iasl
+>> location to quickly run bios-tables-test but also can point the test =
+to a
+>> custom iasl if required.
+>>=20
+>> [1] =
+https://mesonbuild.com/Reference-manual_functions.html#find_program
+>>=20
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>=20
+> Well I think the point was originally that meson can
+> also test the binary in a variety of ways.
+> Never surfaced so maybe never mind.
+>=20
+> Would it be easier to just look iasl up on path
 
-> ---
->  softmmu/memory.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/softmmu/memory.c b/softmmu/memory.c
-> index b7b3386e9d..26424f1d78 100644
-> --- a/softmmu/memory.c
-> +++ b/softmmu/memory.c
-> @@ -534,6 +534,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
->      unsigned access_size;
->      unsigned i;
->      MemTxResult r = MEMTX_OK;
-> +    bool reentrancy_guard_applied = false;
->  
->      if (!access_size_min) {
->          access_size_min = 1;
-> @@ -552,6 +553,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
->              return MEMTX_ACCESS_ERROR;
->          }
->          mr->dev->mem_reentrancy_guard.engaged_in_io = true;
-> +        reentrancy_guard_applied = true;
->      }
->  
->      /* FIXME: support unaligned access? */
-> @@ -568,7 +570,7 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
->                          access_mask, attrs);
->          }
->      }
-> -    if (mr->dev) {
-> +    if (mr->dev && reentrancy_guard_applied) {
->          mr->dev->mem_reentrancy_guard.engaged_in_io = false;
->      }
->      return r;
-> -- 
-> 2.39.0
+But that=E2=80=99s what meson is also doing, only QEMU build time.
+
+> unless it was specified on command line?
+>=20
+>> ---
+>> tests/qtest/bios-tables-test.c | 14 ++++++++++++++
+>> 1 file changed, 14 insertions(+)
+>>=20
+>> sample runs:
+>>=20
+>> $ QTEST_QEMU_BINARY=3D./qemu-system-x86_64 V=3D2 =
+./tests/qtest/bios-tables-test
+>> ...
+>> acpi-test: Warning! APIC binary file mismatch. Actual =
+[aml:/tmp/aml-DLHA51], Expected [aml:tests/data/acpi/pc/APIC].
+>> See source file tests/qtest/bios-tables-test.c for instructions on =
+how to update expected files.
+>> Using iasl: /usr/bin/iasl
+>> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-L9GA51.dsl, =
+aml:/tmp/aml-DLHA51], Expected [asl:/tmp/asl-10EA51.dsl, =
+aml:tests/data/acpi/pc/APIC].
+>>=20
+>> $ QTEST_QEMU_BINARY=3D./qemu-system-x86_64 V=3D2 =
+IASL_PATH=3D/home/anisinha/workspace/acpica/generate/unix/bin/iasl =
+./tests/qtest/bios-tables-test
+>> ...
+>> acpi-test: Warning! APIC binary file mismatch. Actual =
+[aml:/tmp/aml-5CQ341], Expected [aml:tests/data/acpi/pc/APIC].
+>> See source file tests/qtest/bios-tables-test.c for instructions on =
+how to update expected files.
+>> User has provided an iasl path, using that: =
+/home/anisinha/workspace/acpica/generate/unix/bin/iasl
+>> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-2GQ341.dsl, =
+aml:/tmp/aml-5CQ341], Expected [asl:/tmp/asl-IBR341.dsl, =
+aml:tests/data/acpi/pc/APIC].
+>>=20
+>> diff --git a/tests/qtest/bios-tables-test.c =
+b/tests/qtest/bios-tables-test.c
+>> index 7fd88b0e9c..37e8e484cb 100644
+>> --- a/tests/qtest/bios-tables-test.c
+>> +++ b/tests/qtest/bios-tables-test.c
+>> @@ -440,7 +440,12 @@ static void test_acpi_asl(test_data *data)
+>>     AcpiSdtTable *sdt, *exp_sdt;
+>>     test_data exp_data =3D {};
+>>     gboolean exp_err, err, all_tables_match =3D true;
+>> +    const char *user_iasl_path =3D getenv("IASL_PATH");
+>>=20
+>> +    /* if user has provided a path to iasl, use that */
+>> +    if (user_iasl_path) {
+>> +        iasl =3D user_iasl_path;
+>> +    }
+>>     exp_data.tables =3D load_expected_aml(data);
+>>     dump_aml_files(data, false);
+>>     for (i =3D 0; i < data->tables->len; ++i) {
+>> @@ -473,6 +478,15 @@ static void test_acpi_asl(test_data *data)
+>>             continue;
+>>         }
+>>=20
+>> +        if (verbosity_level >=3D 2) {
+>> +            if (user_iasl_path) {
+>> +                fprintf(stderr, "User has provided an iasl path," \
+>> +                        "using that: %s\n", user_iasl_path);
+>> +            } else {
+>> +                fprintf(stderr, "Using iasl: %s\n", iasl);
+>> +            }
+>> +        }
+>> +
+>>         err =3D load_asl(data->tables, sdt);
+>>         asl =3D normalize_asl(sdt->asl);
+>>=20
+>> --=20
+>> 2.39.1
+
 
