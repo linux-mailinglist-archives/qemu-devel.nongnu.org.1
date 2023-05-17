@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F851707034
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8267670701B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:55:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLHD-0005dw-6S; Wed, 17 May 2023 13:49:27 -0400
+	id 1pzLGO-0003yg-3o; Wed, 17 May 2023 13:48:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLFB-0002oz-EZ
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:24 -0400
+ id 1pzLF9-0002kJ-AO
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEx-0004XV-Ph
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:21 -0400
+ id 1pzLF7-0004dk-Ey
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345627;
+ s=mimecast20190719; t=1684345635;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YcHvFX9e7TrY62C9Kq986qOxDclbTbjX+dadAAdMczg=;
- b=HM6sxkrM6nGmqIWTDfjZeQ4grfIiLffKI0TTQsmrls8rS9Qq8mWulcwKMhIMze0taBliZl
- SQ0qN0Q6HppOKgDf8r+92L6QgjEOpYlP4lFRiiOJz3RNY6epMmz6CqgrKc8LbZnGWXU5zs
- JeFYoNuKZPtEki8geDb/KECBTBZoTyM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JI3T87pJOqojWyuspcbpOcfDTh2nH5bgx4dRWFwMvSc=;
+ b=C4r8ENdCYkc9qseI+5SsAWPebsck+aNMt3zggvrGiIjjGGCZkNpreq/tbd6yIsp4nvy3GJ
+ cW8p0b0foUsx7qutrHihd17aJMAKHfQ768JXdPuuWUpZF6Jw63ZWgTdRDsVNHaBm1Ij0WO
+ //gCQSWJS1pSoDUeCWXGjzzbwB5CciQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-z5dybUTkO2-K5Q_SWzqc0w-1; Wed, 17 May 2023 13:47:05 -0400
-X-MC-Unique: z5dybUTkO2-K5Q_SWzqc0w-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f33f8ffa95so4720915e9.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:47:05 -0700 (PDT)
+ us-mta-113-ALBaLvZPNyyRmSgLFZJagw-1; Wed, 17 May 2023 13:47:06 -0400
+X-MC-Unique: ALBaLvZPNyyRmSgLFZJagw-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3093b0cf714so448892f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:47:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345624; x=1686937624;
+ d=1e100.net; s=20221208; t=1684345625; x=1686937625;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YcHvFX9e7TrY62C9Kq986qOxDclbTbjX+dadAAdMczg=;
- b=Y0bShyE7ZVu1cOOC3e60iC60ZDtx8WglMsFfSY5SzciKs33DCLDYg0L/wEafzdJxqp
- qNVn+SrCSay/jO0LjrdQbn+qzKV+WghiUwK2B6qBK7vWEqnleKt+qG8QUXHGHMQQFTFh
- IbpWD5snw/K2CwiOU2vqx9/g+UvPF9wd8vvUnn6KVlPWX8o+j/Gz+CTh2ZmaLkegoz31
- YrXYYsL/ZXcWm87ProPQIqcfFJmoJNjgGoV3xJ8vaBU2qXiRq8Y8wB29fVL1pK0yCiXX
- WtFHeOOdtC2VbdiNanQXXBLrby7vXV2/9CtBz2atC6A8uF/nHa8ZM2ktzEermG3PVkpt
- 8X2A==
-X-Gm-Message-State: AC+VfDy2qmRGp2hVtoSPP3IFPWxbQ2BjgxIKIG32jeKPsvyebriscmzQ
- dlomcsA6kE2lj49s3P76JT5xiH5lZRYaAVGqdaGkr4+OVDz4EVRQ4YO7gURhJicawumPp8v+Rr6
- xOUVBcvFJYALLKYC1CJqkH28KfjAr7AZdxea5dSJiL044lp7WsBPF+vQc1nTVBl4rhYX2x5I/iS
+ bh=JI3T87pJOqojWyuspcbpOcfDTh2nH5bgx4dRWFwMvSc=;
+ b=iU03m9P86gIGppOLVAUhLB4QLUIlAwmiKsJU0cCWdNX8nN7+SmhGPgpw+Pg6fZwMMs
+ 2WocI71q4O1v4FQZjYY3oSA3UZMxBNmKSDb9oYyjPSbg6J/DYz1ysyO4TJ9vW0z7r8xR
+ oEgGgfvzWQcHdMelYb+QtvEmMjz2IkU+Y4MaXDEkevUdZEWusT6sPq0R5Uk3tkrZ1/YA
+ 2HZSm5TmaXY9XzhAg6vethOy/3FumOENH8BlBTJS7Bol8LiYM49YtnKKouxbgLSRMmMX
+ NEtvJ1394VYuvQO7sC4f2KiNuWWwfhby06KASx+i1zBKpz7Bqsco5ECd9rdVr1uMUjn7
+ RbQA==
+X-Gm-Message-State: AC+VfDzrUOfhVwkluHtmt9vnhhahcwdFjiT59WDvtlm6xjXI4Ckq5g/7
+ 4yTuQHJ2drLEbGHg3mIhhJ0I507nVIxTearmGyFKjxiPkkU08hoGtGfrdmMORc+x/qB5KAxRT6J
+ jcHjA1s9jRSKmk0PTmW6oGIEyFOQwXbUtpiTxmaEuQ5cg7Tw3qW2YsOemleNXH5CeiodEc0q6lj
  Y=
-X-Received: by 2002:a7b:ce95:0:b0:3f4:e853:6a1 with SMTP id
- q21-20020a7bce95000000b003f4e85306a1mr15122352wmj.38.1684345623918; 
- Wed, 17 May 2023 10:47:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7bys51F56a7U9Q/kcirC1FfsSPjMpH5excGxZUG4oRXkY2SFsHuTleUVKeEpYW2GwTb18+JA==
-X-Received: by 2002:a7b:ce95:0:b0:3f4:e853:6a1 with SMTP id
- q21-20020a7bce95000000b003f4e85306a1mr15122340wmj.38.1684345623533; 
- Wed, 17 May 2023 10:47:03 -0700 (PDT)
+X-Received: by 2002:adf:fa03:0:b0:307:a6bc:3baf with SMTP id
+ m3-20020adffa03000000b00307a6bc3bafmr1358519wrr.56.1684345625110; 
+ Wed, 17 May 2023 10:47:05 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7BhyD7ejqKYQlz3ZZ/grl+hZasgEmg76S/x5wUhhbqPYilsHIhV1c+Sorg8idHfvpEmXu4fg==
+X-Received: by 2002:adf:fa03:0:b0:307:a6bc:3baf with SMTP id
+ m3-20020adffa03000000b00307a6bc3bafmr1358510wrr.56.1684345624776; 
+ Wed, 17 May 2023 10:47:04 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- a3-20020a1cf003000000b003f4f9274d10sm2929813wmb.16.2023.05.17.10.47.02
+ a8-20020a056000100800b00307d20546e6sm3714622wrx.27.2023.05.17.10.47.04
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:47:02 -0700 (PDT)
+ Wed, 17 May 2023 10:47:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 62/68] build: move --disable-debug-info to meson
-Date: Wed, 17 May 2023 19:45:14 +0200
-Message-Id: <20230517174520.887405-63-pbonzini@redhat.com>
+Subject: [PULL 63/68] configure: remove compiler sanity check
+Date: Wed, 17 May 2023 19:45:15 +0200
+Message-Id: <20230517174520.887405-64-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -83,7 +83,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,77 +100,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The comment is not correct anymore, in that the usability test for
+the compiler and linker are done after probing $cpu, and Meson will
+redo them anyway.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                     | 5 -----
- scripts/meson-buildoptions.py | 2 ++
- scripts/meson-buildoptions.sh | 3 +++
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ configure | 14 --------------
+ 1 file changed, 14 deletions(-)
 
 diff --git a/configure b/configure
-index 0dc0395a848f..b2172b7b938e 100755
+index b2172b7b938e..4a986e6fa89c 100755
 --- a/configure
 +++ b/configure
-@@ -693,10 +693,6 @@ for opt do
-   ;;
-   --cross-prefix-*)
-   ;;
--  --enable-debug-info) meson_option_add -Ddebug=true
--  ;;
--  --disable-debug-info) meson_option_add -Ddebug=false
--  ;;
-   --enable-docs) docs=enabled
-   ;;
-   --disable-docs) docs=disabled
-@@ -972,7 +968,6 @@ cat << EOF
-   bsd-user        all BSD usermode emulation targets
-   pie             Position Independent Executables
-   debug-tcg       TCG debugging (default is disabled)
--  debug-info      debugging information
+@@ -1090,20 +1090,6 @@ if test -z "$ninja"; then
+     fi
+ fi
  
- NOTE: The object files are built at the place where configure is launched
- EOF
-diff --git a/scripts/meson-buildoptions.py b/scripts/meson-buildoptions.py
-index 4c7f13fdfc40..8d2e526132ae 100755
---- a/scripts/meson-buildoptions.py
-+++ b/scripts/meson-buildoptions.py
-@@ -36,6 +36,7 @@
-     "b_coverage": "gcov",
-     "b_lto": "lto",
-     "coroutine_backend": "with-coroutine",
-+    "debug": "debug-info",
-     "malloc": "enable-malloc",
-     "pkgversion": "with-pkgversion",
-     "qemu_firmwarepath": "firmwarepath",
-@@ -47,6 +48,7 @@
-     "b_coverage",
-     "b_lto",
-     "datadir",
-+    "debug",
-     "includedir",
-     "libdir",
-     "libexecdir",
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 28b6e8385bc1..d6223c5acdd1 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -11,6 +11,7 @@ meson_options_help() {
-   printf "%s\n" '                           affects only QEMU, not tools like qemu-img)'
-   printf "%s\n" '  --datadir=VALUE          Data file directory [share]'
-   printf "%s\n" '  --disable-coroutine-pool coroutine freelist (better performance)'
-+  printf "%s\n" '  --disable-debug-info     Enable debug symbols and other information'
-   printf "%s\n" '  --disable-hexagon-idef-parser'
-   printf "%s\n" '                           use idef-parser to automatically generate TCG'
-   printf "%s\n" '                           code for the Hexagon frontend'
-@@ -263,6 +264,8 @@ _meson_option_parse() {
-     --datadir=*) quote_sh "-Ddatadir=$2" ;;
-     --enable-dbus-display) printf "%s" -Ddbus_display=enabled ;;
-     --disable-dbus-display) printf "%s" -Ddbus_display=disabled ;;
-+    --enable-debug-info) printf "%s" -Ddebug=true ;;
-+    --disable-debug-info) printf "%s" -Ddebug=false ;;
-     --enable-debug-graph-lock) printf "%s" -Ddebug_graph_lock=true ;;
-     --disable-debug-graph-lock) printf "%s" -Ddebug_graph_lock=false ;;
-     --enable-debug-mutex) printf "%s" -Ddebug_mutex=true ;;
+-# Check that the C compiler works. Doing this here before testing
+-# the host CPU ensures that we had a valid CC to autodetect the
+-# $cpu var (and we should bail right here if that's not the case).
+-# It also allows the help message to be printed without a CC.
+-write_c_skeleton;
+-if compile_object ; then
+-  : C compiler works ok
+-else
+-    error_exit "\"$cc\" either does not exist or does not work"
+-fi
+-if ! compile_prog ; then
+-    error_exit "\"$cc\" cannot build an executable (is your linker broken?)"
+-fi
+-
+ # Consult white-list to determine whether to enable werror
+ # by default.  Only enable by default for git builds
+ if test -z "$werror" ; then
 -- 
 2.40.1
 
