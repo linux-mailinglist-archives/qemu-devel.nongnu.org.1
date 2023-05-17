@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE44E70627B
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9584D706247
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:09:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC6X-00023X-91; Wed, 17 May 2023 04:01:49 -0400
+	id 1pzC6b-0002Jf-A8; Wed, 17 May 2023 04:01:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5z-0001s7-7q; Wed, 17 May 2023 04:01:21 -0400
+ id 1pzC6G-00021G-7H; Wed, 17 May 2023 04:01:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5t-0000YX-Nz; Wed, 17 May 2023 04:01:13 -0400
+ id 1pzC6D-0000Yc-Ow; Wed, 17 May 2023 04:01:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 84675674F;
+ by isrv.corpit.ru (Postfix) with ESMTP id B26F86750;
  Wed, 17 May 2023 11:00:57 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 058F45E07;
+ by tsrv.corpit.ru (Postfix) with SMTP id 30CB85E08;
  Wed, 17 May 2023 11:00:57 +0300 (MSK)
-Received: (nullmailer pid 3624096 invoked by uid 1000);
+Received: (nullmailer pid 3624099 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Wang Liang <wangliangzz@inspur.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH v8.0.1 06/36] block/monitor: Fix crash when executing HMP
- commit
-Date: Wed, 17 May 2023 11:00:26 +0300
-Message-Id: <20230517080056.3623993-6-mjt@msgid.tls.msk.ru>
+Subject: [PATCH v8.0.1 07/36] qemu-options: finesse the recommendations around
+ -blockdev
+Date: Wed, 17 May 2023 11:00:27 +0300
+Message-Id: <20230517080056.3623993-7-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,51 +63,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wang Liang <wangliangzz@inspur.com>
+From: Alex Bennée <alex.bennee@linaro.org>
 
-hmp_commit() calls blk_is_available() from a non-coroutine context (and
-in the main loop). blk_is_available() is a co_wrapper_mixed_bdrv_rdlock
-function, and in the non-coroutine context it calls AIO_WAIT_WHILE(),
-which crashes if the aio_context lock is not taken before.
+We are a bit premature in recommending -blockdev/-device as the best
+way to configure block devices. It seems there are times the more
+human friendly -drive still makes sense especially when -snapshot is
+involved.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1615
-Signed-off-by: Wang Liang <wangliangzz@inspur.com>
-Message-Id: <20230424103902.45265-1-wangliangzz@126.com>
-Reviewed-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 8c1e8fb2e7fc2cbeb57703e143965a4cd3ad301a)
+Improve the language to hopefully make things clearer.
+
+Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>
+Cc: Kevin Wolf <kwolf@redhat.com>
+Message-Id: <20230424092249.58552-7-alex.bennee@linaro.org>
+(cherry picked from commit c1654c3e37c31fb638597efedcd07d071837b78b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- block/monitor/block-hmp-cmds.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ qemu-options.hx | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
-index 2846083546..ca2599de44 100644
---- a/block/monitor/block-hmp-cmds.c
-+++ b/block/monitor/block-hmp-cmds.c
-@@ -214,15 +214,17 @@ void hmp_commit(Monitor *mon, const QDict *qdict)
-             error_report("Device '%s' not found", device);
-             return;
-         }
--        if (!blk_is_available(blk)) {
--            error_report("Device '%s' has no medium", device);
--            return;
--        }
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 59bdf67a2c..4b8855a4f7 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -1143,10 +1143,22 @@ have gone through several iterations as the feature set and complexity
+ of the block layer have grown. Many online guides to QEMU often
+ reference older and deprecated options, which can lead to confusion.
  
-         bs = bdrv_skip_implicit_filters(blk_bs(blk));
-         aio_context = bdrv_get_aio_context(bs);
-         aio_context_acquire(aio_context);
- 
-+        if (!blk_is_available(blk)) {
-+            error_report("Device '%s' has no medium", device);
-+            aio_context_release(aio_context);
-+            return;
-+        }
+-The recommended modern way to describe disks is to use a combination of
++The most explicit way to describe disks is to use a combination of
+ ``-device`` to specify the hardware device and ``-blockdev`` to
+ describe the backend. The device defines what the guest sees and the
+-backend describes how QEMU handles the data.
++backend describes how QEMU handles the data. It is the only guaranteed
++stable interface for describing block devices and as such is
++recommended for management tools and scripting.
 +
-         ret = bdrv_commit(bs);
++The ``-drive`` option combines the device and backend into a single
++command line option which is a more human friendly. There is however no
++interface stability guarantee although some older board models still
++need updating to work with the modern blockdev forms.
++
++Older options like ``-hda`` are essentially macros which expand into
++``-drive`` options for various drive interfaces. The original forms
++bake in a lot of assumptions from the days when QEMU was emulating a
++legacy PC, they are not recommended for modern configurations.
  
-         aio_context_release(aio_context);
+ ERST
+ 
+@@ -1639,6 +1651,14 @@ SRST
+     the raw disk image you use is not written back. You can however
+     force the write back by pressing C-a s (see the :ref:`disk images`
+     chapter in the System Emulation Users Guide).
++
++    .. warning::
++       snapshot is incompatible with ``-blockdev`` (instead use qemu-img
++       to manually create snapshot images to attach to your blockdev).
++       If you have mixed ``-blockdev`` and ``-drive`` declarations you
++       can use the 'snapshot' property on your drive declarations
++       instead of this global option.
++
+ ERST
+ 
+ DEF("fsdev", HAS_ARG, QEMU_OPTION_fsdev,
 -- 
 2.39.2
 
