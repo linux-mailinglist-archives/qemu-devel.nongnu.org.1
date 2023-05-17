@@ -2,71 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F90705FD1
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 08:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F4F705FD6
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 08:22:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzAW0-0006Bw-Nc; Wed, 17 May 2023 02:20:00 -0400
+	id 1pzAXl-0007Kf-Eo; Wed, 17 May 2023 02:21:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzAVq-00067W-St
- for qemu-devel@nongnu.org; Wed, 17 May 2023 02:19:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pzAXf-0007K7-TL
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 02:21:45 -0400
+Received: from mout.kundenserver.de ([212.227.17.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzAVp-00067r-9W
- for qemu-devel@nongnu.org; Wed, 17 May 2023 02:19:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684304388;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KGDhZq6o+aMcsMoXZxC1345pm3ijUuJlLWZ/oUYb8go=;
- b=fCB61vQ4Ji4s0w8yJAoi7Wr7GXDH5u1ZVzsCvZX6d/LD4OIkR5xBzHdn5sdNgYsJ+um+1U
- EjUhDoLidU3J7hlOE6A5mH0tunm6aoSjB5KHyADfMYBWDMZDiPzlpQdkaJ6yw0U44QBDy5
- YgCDFMKFoLI388yjkuFpDd+lCCLsSbA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-479-kRsKXCIiOo2zmMzloQmL8g-1; Wed, 17 May 2023 02:19:44 -0400
-X-MC-Unique: kRsKXCIiOo2zmMzloQmL8g-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8279585A588;
- Wed, 17 May 2023 06:19:44 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 618181415304;
- Wed, 17 May 2023 06:19:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5632621E6806; Wed, 17 May 2023 08:19:43 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  michael.roth@amd.com,  jsnow@redhat.com,
- Igor Mammedov <imammedo@redhat.com>
-Subject: Re: [PATCH] qapi/parser: Fix type hints
-References: <20230511111709.971477-1-armbru@redhat.com>
- <cb6582b2-9542-4ebb-d188-34287f9fb3dd@linaro.org>
- <87sfbwx339.fsf@pond.sub.org>
- <d8faf35f-ec66-9bce-e34e-4bde0b4fcd24@linaro.org>
-Date: Wed, 17 May 2023 08:19:43 +0200
-In-Reply-To: <d8faf35f-ec66-9bce-e34e-4bde0b4fcd24@linaro.org> (Richard
- Henderson's message of "Tue, 16 May 2023 06:29:43 -0700")
-Message-ID: <87zg63jx8g.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1pzAXc-0006dz-2j
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 02:21:43 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue106 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1MS4ab-1pbhQx3um3-00TYWO; Wed, 17 May 2023 08:21:37 +0200
+Message-ID: <8d7a9c50-fa77-f23e-a450-3b53136834f0@vivier.eu>
+Date: Wed, 17 May 2023 08:21:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PULL 0/9] Linux user for 8.1 patches
+Content-Language: fr
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Afonso Bordado <afonsobordado@gmail.com>
+References: <20230516124810.90494-1-laurent@vivier.eu>
+ <2377b180-797c-9057-114a-d9d3b61f5caf@linaro.org>
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <2377b180-797c-9057-114a-d9d3b61f5caf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:mcorQYeJzkW38DCxyPkMIHFdL0oKE5hbiAPRry8E/NY4P1xcLUr
+ mLgr+yHOUbJD3+OIp7G1CEhCeVtW441i7Y2kdTTpEmQDZ2S6FgcoejnRExLepv/SwqsoT/7
+ 3sWfz5hUrUY0bx2shnUtumRoekPNMg4pLjD4hEFFR7RSL+1dbFgmTLd4/52JDyIZ2DpBJ3R
+ m95LkOSYn9QWOMVIHtf+Q==
+UI-OutboundReport: notjunk:1;M01:P0:lMwImfv4ZDc=;XhrINVQ+9zU93yr8GNEu4CWFoi4
+ m2p51JK1/ewbadY8j13KFjMFlHhQV/hCE1+LIqWJIrtvnj/Pn38FW5vzSBeX2tXHEDPQ9R1pJ
+ lxYgXcWJuiC0cFG3l1liRRwl+Jp5rd1ezKfMoMXL2O3P3zRn2+xjNaDvTpZZwFjJYiLHA1DCp
+ WDcARvHDrSJZUG57r3Vc2OsPDdZ9ZJfU6ERG7u3k/Yum1oDlnbKj6PwuXEvR29kuU1FpVjoFQ
+ 2RgOkhbV9rUlfXyPajk7T6rFLUsRXIWsiTfq7dmm/MKDs5fD9DmfqDH2WbWnh1vvC9ody/YmR
+ I/CmzqOoiYHpTKdZfrti7JFWCb4eJ/X1BaDcXBFp0PVU55vRqdVGTWCciIgD8tWt+sg9S9Ery
+ PKLUiKvMJnu+mZCG9pwG0TxDEtT6UpBIFSdmljmqew8rdPg/Dkk90AtpmajSQbigP9BpS4V9m
+ VCIgTYJHS5Z07lsUUOFK2aRbEm4GSRiSCKo8ydsYaVH2FUFqD6lBerLIlXKPanYKI1zEUc9We
+ PmgqfzLCpPZX8836h1TrTipJep+LaZ8chp/a75WYR/kNvmRLt+IXP5C0IPxwHK4C+j655Iz3Q
+ zs44mjftG6+zPqzbSRr8SXTdHxpoc8toZ2L9JmqPm1AGbbRVR4t7WYbVF8/85RRGIXzlCZgOQ
+ BO6DzEnTMPn2IzrtiItg3h6LPXBgeEqheQB+0Qms1Q==
+Received-SPF: none client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.666,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,26 +72,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+Le 16/05/2023 à 19:08, Richard Henderson a écrit :
+> On 5/16/23 05:48, Laurent Vivier wrote:
+>> The following changes since commit 7c18f2d663521f1b31b821a13358ce38075eaf7d:
+>>
+>>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-04-29 23:07:17 
+>> +0100)
+>>
+>> are available in the Git repository at:
+>>
+>>    https://github.com/vivier/qemu.git tags/linux-user-for-8.1-pull-request
+>>
+>> for you to fetch changes up to c490496e85047d516b31f93ea0e14819e0ab5cf5:
+>>
+>>    linux-user: fix getgroups/setgroups allocations (2023-05-16 12:48:09 +0200)
+>>
+>> ----------------------------------------------------------------
+>> linux-user pull request 20230512-v3
+>>
+>> add open_tree(), move_mount()
+>> add /proc/cpuinfo for riscv
+>> fixes and cleanup
+> 
+> The new test still fails.
+> 
+> https://gitlab.com/qemu-project/qemu/-/jobs/4295127220#L4423
+> 
+> cpuinfo: /builds/qemu-project/qemu/tests/tcg/riscv64/cpuinfo.c:20: main: Assertion `strcmp(buffer, 
+> "isa\t\t: rv64imafdc_zicsr_zifencei\n") == 0' failed.
+> 
 
-> On 5/15/23 22:22, Markus Armbruster wrote:
->>> https://gitlab.com/qemu-project/qemu/-/jobs/4289613692#L574
->>>
->>>    File "/builds/qemu-project/qemu/scripts/qapi/parser.py", line 566, in QAPIDoc
->>>      def _match_at_name_colon(string: str) -> Optional[re.Match[str]]:
->>> TypeError: 'type' object is not subscriptable
->> 
->> Life's too short for wrestling with such pigs.  Unless John has better
->> ideas, I'll *remove* these return type annotations.  Maybe these pigs
->> will behave after John's Python venv work lands.
->
-> That is exactly the idea that I had as well.
->
-> r~
+I'm going to remove the test as it's not clear why it fails...
 
-Sent:
-
-Subject: [PATCH] qapi/parser: Drop two bad type hints for now
-Message-Id: <20230517061600.1782455-1-armbru@redhat.com>
+Thanks,
+Laurent
 
 
