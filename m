@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0AD706CAF
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A235706CC8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:28:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJ3Q-0008Oh-8I; Wed, 17 May 2023 11:27:04 -0400
+	id 1pzJ48-0001EP-VZ; Wed, 17 May 2023 11:27:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pzJ3N-0008Bt-Hu
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:27:01 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pzJ46-0001EG-NB
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:27:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pzJ3L-0000Yy-G2
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:27:01 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pzJ44-0000hr-SD
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:27:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 23D436B83;
- Wed, 17 May 2023 18:26:58 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 777456B84;
+ Wed, 17 May 2023 18:27:44 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id F151E610E;
- Wed, 17 May 2023 18:26:56 +0300 (MSK)
-Message-ID: <8e6c152f-4349-f63e-9976-0f9cd412f8df@tls.msk.ru>
-Date: Wed, 17 May 2023 18:26:56 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 67B60610F;
+ Wed, 17 May 2023 18:27:43 +0300 (MSK)
+Message-ID: <87bd8223-9fc8-1e0e-c16d-d3bf2d4a6bd0@tls.msk.ru>
+Date: Wed, 17 May 2023 18:27:43 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 3/5] gitlab: stable staging branches publish containers in
- a separate tag
+Subject: Re: [PATCH 4/5] gitlab: avoid extra pipelines for tags and stable
+ branches
 Content-Language: en-US
 To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
@@ -37,9 +37,9 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
  <philmd@linaro.org>, Beraldo Leal <bleal@redhat.com>
 References: <20230517135448.262483-1-berrange@redhat.com>
- <20230517135448.262483-4-berrange@redhat.com>
+ <20230517135448.262483-5-berrange@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230517135448.262483-4-berrange@redhat.com>
+In-Reply-To: <20230517135448.262483-5-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -66,60 +66,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 17.05.2023 16:54, Daniel P. Berrangé wrote:
-> If the stable staging branches publish containers under the 'latest' tag
-> they will clash with containers published on the primary staging branch,
-> as well  as with each other. This introduces logic that overrides the
-> container tag when jobs run against the stable staging branches.
+> In upstream context we only run pipelines on staging branches, and
+> limited publishing jobs on the default branch.
 > 
-> The CI_COMMIT_REF_SLUG variable we use expands to the git branch name,
-> but with most special characters removed, such that it is valid as a
-> docker tag name. eg 'staging-8.0' will get a slug of 'staging-8-0'
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   .gitlab-ci.d/base.yml | 24 ++++++++++++++++++++++--
->   1 file changed, 22 insertions(+), 2 deletions(-)
-> 
-> diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
-> index a1d734267a..f379c182a7 100644
-> --- a/.gitlab-ci.d/base.yml
-> +++ b/.gitlab-ci.d/base.yml
-> @@ -1,7 +1,7 @@
->   
->   variables:
-> -  # On stable branches this needs changing. Should also be
-> -  # overridden per pipeline if running pipelines concurrently
-> +  # On stable branches this is changed by later rules. Should also
-> +  # be overridden per pipeline if running pipelines concurrently
->     # for different branches in contributor forks.
->     QEMU_CI_CONTAINER_TAG: latest
->   
-> @@ -16,6 +16,9 @@ variables:
->   # Thus we group them into a number of stages, ordered from
->   # most restrictive to least restrictive
->   #
-> +# For pipelines running for stable "staging-X.Y" branches
-> +# we must override QEMU_CI_CONTAINER_TAG
-> +#
->   .base_job_template:
->     variables:
->       # Each script line from will be in a collapsible section in the job output
-> @@ -61,11 +64,23 @@ variables:
->       #############################################################
->   
->       # Optional jobs should not be run unless manually triggered
-> +    - if: '$QEMU_JOB_OPTIONAL && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
-> +      when: manual
-> +      allow_failure: true
-> +      variables:
-> +        QEMU_CI_CONTAINER_TAG: $CI_COMMIT_REF_SLUG
-
-Here, it somehow feels better to use $CI_COMMIT_BRANCH instead of $CI_COMMIT_REF_SLUG.
-I know little about gitlab CI. It is REF_SLUG like a hashed value of COMMIT_BRANCH?
-
-Other than that (here and below),
+> We don't want to run pipelines on stable branches, or tags, because
+> the content will have already been tested on a staging branch before
+> getting pushed.
 
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
 /mjt
+
 
