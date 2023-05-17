@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2D1706FE9
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CA9706FF8
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:51:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLDk-00075s-Hh; Wed, 17 May 2023 13:45:52 -0400
+	id 1pzLDZ-0006zl-UF; Wed, 17 May 2023 13:45:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLDZ-00070D-NX
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:41 -0400
+ id 1pzLDV-0006sy-FO
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLDY-00041q-85
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:41 -0400
+ id 1pzLDT-00040o-RD
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345539;
+ s=mimecast20190719; t=1684345535;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MYIgHKkXiwxtH3/oSlQBUrXOjLZvBMixiKEGCXviiBE=;
- b=Z5oLmvPQvTFWJPfuyIdE+K2ldszBTdAWEmZ339RsqhWEOYBF+vegWZeIyIAar8ltpadKBj
- JKAhBfqxzuBLQFo/gNPMgPxMiR7xXFGYHyuib+m4wsmJ7+WZ96HVL1rm12O0yNByliOzf7
- kWmMUKsyEA7bPI3RGUaEaln/2khQDNA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=s3Rv+ESo7WNW5A9ZevmKZ3JyG2kyStdtRscAL+/MXEo=;
+ b=ePbc/7o5uPdJwdiaufTVH4hKF3CG//kzJylA9onq5sj6ZR/1/xzXuFcoKwkSiyUqW2F00X
+ 2i2GJzrNxt7RvI5nM8DEVkG4v7eKJ3JYqqTLgJE6h8LUF0F6/QAK8JWyiu0r+6GxID8/qu
+ 7lP/IwdL2AUHSy9yt5AYZzRHcpmWRGg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-RW43ElxfOIyMSPSVlpktGQ-1; Wed, 17 May 2023 13:45:31 -0400
-X-MC-Unique: RW43ElxfOIyMSPSVlpktGQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f4fa463282so7683745e9.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:45:31 -0700 (PDT)
+ us-mta-29-ztM8WjMzP2KFx3fIHdvmbg-1; Wed, 17 May 2023 13:45:33 -0400
+X-MC-Unique: ztM8WjMzP2KFx3fIHdvmbg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3063287f1c9so490262f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:45:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345530; x=1686937530;
+ d=1e100.net; s=20221208; t=1684345531; x=1686937531;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MYIgHKkXiwxtH3/oSlQBUrXOjLZvBMixiKEGCXviiBE=;
- b=Gtp/Fqh+jb9FnitS6g+N8fzxiA94QSiDUJYFr66dGgYa9mB8Gnjxa7Kgq8LW20qUK/
- CoWLl+3sJaJDr0SoiEg4uv+2aqGxOkiZS7oxX1sbiiOV7jzU6SEE9DLSzNWLtGTXrp13
- Fa2jrdR/JuY1F3AS36EHoXFeNIV1TIVBK0E7G9UyGPWEpiKszKXqnR4CKroBMt3gJdzL
- 2pq1Xy3wu+gUjkolnUtC77pQEvLW8e3nLN+kfprIUPoqWOene1GNPBlyfAerTAMBQsnZ
- FoZxnE1jOzKb+l2ZBx+rwvCzknB/3jhQXiRWBC+Zu3/MZtAi9V7SJTo1JOoSeGA+jqLk
- x7Pw==
-X-Gm-Message-State: AC+VfDzHwG14p2P6H1Ikbm8Z1WCRhulhZchEz51pFeKNBnRmtGpDPOuH
- wShszSNZtS6hKGMYA0i18/MQVrSfkYtljpcAvoC+6UeA+DtfF4C/VDA2B1478h3Ll3iWWEKSokv
- 9S8CjXmEXbXnLoc928N1VYLdLIYLaMK1K13gCQxLGhimD5pH3DiLQc4cNc/oLHtt1J/NIZ3XA3+
- A=
-X-Received: by 2002:a1c:750a:0:b0:3f4:2bce:eef8 with SMTP id
- o10-20020a1c750a000000b003f42bceeef8mr19346756wmc.16.1684345530076; 
- Wed, 17 May 2023 10:45:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4CQT7dIAZfym1JfMtFnZpmD20V6UFfDrKNwPIREmT9oD69qGEp2A3HkRQg1NVktn9uPxi+Cg==
-X-Received: by 2002:a1c:750a:0:b0:3f4:2bce:eef8 with SMTP id
- o10-20020a1c750a000000b003f42bceeef8mr19346739wmc.16.1684345529620; 
- Wed, 17 May 2023 10:45:29 -0700 (PDT)
+ bh=s3Rv+ESo7WNW5A9ZevmKZ3JyG2kyStdtRscAL+/MXEo=;
+ b=JFMLjJWWKMBvfAtUQEvum3avg/Mm/Wd+EmFG3Q44Q81IcOjZGPjrbGAZ5hqDik871g
+ QaVXznLMbtlHtHUJTIQpHeD72JQIK5UftG/4IgbcXfdA+NGvMu3HOY1lL+7VhR6XY7ea
+ /oxv62CowoDmj+svgOGmdTB+JuaonGKB7UA6HiuW/cMj525VXDjT/RAJMfl773fvRt9y
+ pRzBpE5j7O4Ht5+Oi1K/kmV9a8eV85fURvwCG5N4M6BwcvPu+lWPrmLnDamG7JjwXs2c
+ irKtYvsgxUgj3BqjYqMNhcMAAZCWJYi2Y8AZyLh1v1s8CbGhEn8dt+CpaxCmStVp12NV
+ Kxzw==
+X-Gm-Message-State: AC+VfDwCR3xI0aPWqqX3eSJaHLNGukLHYOluRO5OsxMmhY32xCuj5jC8
+ ReGbwfeYng9KvdvxrSh7Z0oQYOfDfvDmCItMP2mwjt0eZtfyMcKuR+fihnYY77eLM7zHFknnFDx
+ YYDh8r4n3ml03mzjHYlQFmFq2iXXtDJVdWIF0fcrzIhOMpYTEVtae7ZM034UhW2ERsij6tU//MX
+ w=
+X-Received: by 2002:a5d:6b4c:0:b0:306:339b:684 with SMTP id
+ x12-20020a5d6b4c000000b00306339b0684mr1178716wrw.65.1684345531681; 
+ Wed, 17 May 2023 10:45:31 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6atJmOk4XTZFh9HYGm14KZMk8YC0NzuLD7kknNU6lBi80SiTvKQbci6Rtloi9hbSN68USyiw==
+X-Received: by 2002:a5d:6b4c:0:b0:306:339b:684 with SMTP id
+ x12-20020a5d6b4c000000b00306339b0684mr1178704wrw.65.1684345531335; 
+ Wed, 17 May 2023 10:45:31 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- f26-20020a1c6a1a000000b003f4272c2d0csm2868598wmc.36.2023.05.17.10.45.28
+ m16-20020a7bce10000000b003f427687ba7sm2920254wmc.41.2023.05.17.10.45.30
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:45:28 -0700 (PDT)
+ Wed, 17 May 2023 10:45:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xinyu Li <lixinyu20s@ict.ac.cn>,
-	qemu-stable@nongnu.org
-Subject: [PULL 04/68] target/i386: fix avx2 instructions vzeroall and vpermdq
-Date: Wed, 17 May 2023 19:44:16 +0200
-Message-Id: <20230517174520.887405-5-pbonzini@redhat.com>
+Subject: [PULL 05/68] tests/tcg/i386: correct mask for VPERM2F128/VPERM2I128
+Date: Wed, 17 May 2023 19:44:17 +0200
+Message-Id: <20230517174520.887405-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -85,7 +84,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,52 +100,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xinyu Li <lixinyu20s@ict.ac.cn>
+The instructions also use bits 3 and 7 of their 8-byte immediate.
 
-vzeroall: xmm_regs should be used instead of xmm_t0
-vpermdq: bit 3 and 7 of imm should be considered
-
-Signed-off-by: Xinyu Li <lixinyu20s@ict.ac.cn>
-Message-Id: <20230510145222.586487-1-lixinyu20s@ict.ac.cn>
-Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/ops_sse.h      | 8 ++++++++
- target/i386/tcg/emit.c.inc | 2 +-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ tests/tcg/i386/test-avx.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index 0bd6bfad8a17..fb63af7afa21 100644
---- a/target/i386/ops_sse.h
-+++ b/target/i386/ops_sse.h
-@@ -2497,6 +2497,14 @@ void helper_vpermdq_ymm(Reg *d, Reg *v, Reg *s, uint32_t order)
-     d->Q(1) = r1;
-     d->Q(2) = r2;
-     d->Q(3) = r3;
-+    if (order & 0x8) {
-+        d->Q(0) = 0;
-+        d->Q(1) = 0;
-+    }
-+    if (order & 0x80) {
-+        d->Q(2) = 0;
-+        d->Q(3) = 0;
-+    }
- }
- 
- void helper_vpermq_ymm(Reg *d, Reg *s, uint32_t order)
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 95fb4f52fabe..4fe8dec42746 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -2285,7 +2285,7 @@ static void gen_VZEROALL(DisasContext *s, CPUX86State *env, X86DecodedInsn *deco
- {
-     TCGv_ptr ptr = tcg_temp_new_ptr();
- 
--    tcg_gen_addi_ptr(ptr, cpu_env, offsetof(CPUX86State, xmm_t0));
-+    tcg_gen_addi_ptr(ptr, cpu_env, offsetof(CPUX86State, xmm_regs));
-     gen_helper_memset(ptr, ptr, tcg_constant_i32(0),
-                       tcg_constant_ptr(CPU_NB_REGS * sizeof(ZMMReg)));
- }
+diff --git a/tests/tcg/i386/test-avx.py b/tests/tcg/i386/test-avx.py
+index d9ca00a49e6c..641a2ef69ebc 100755
+--- a/tests/tcg/i386/test-avx.py
++++ b/tests/tcg/i386/test-avx.py
+@@ -49,7 +49,7 @@
+     'VEXTRACT[FI]128': 0x01,
+     'VINSERT[FI]128': 0x01,
+     'VPBLENDD': 0xff,
+-    'VPERM2[FI]128': 0x33,
++    'VPERM2[FI]128': 0xbb,
+     'VPERMPD': 0xff,
+     'VPERMQ': 0xff,
+     'VPERMILPS': 0xff,
 -- 
 2.40.1
 
