@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B1370627C
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D45AC706284
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:14:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzCGk-0005iV-AD; Wed, 17 May 2023 04:12:22 -0400
+	id 1pzCGs-0005qQ-8U; Wed, 17 May 2023 04:12:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <m.elsayed4420@gmail.com>)
- id 1pzCGe-0005eN-T5; Wed, 17 May 2023 04:12:17 -0400
+ id 1pzCGm-0005nJ-Fu; Wed, 17 May 2023 04:12:24 -0400
 Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <m.elsayed4420@gmail.com>)
- id 1pzCGb-0003II-Sm; Wed, 17 May 2023 04:12:16 -0400
+ id 1pzCGf-0003JO-2e; Wed, 17 May 2023 04:12:23 -0400
 Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f42bcf5df1so4349095e9.3; 
- Wed, 17 May 2023 01:12:13 -0700 (PDT)
+ 5b1f17b1804b1-3f50020e0f8so53369115e9.0; 
+ Wed, 17 May 2023 01:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684311132; x=1686903132;
+ d=gmail.com; s=20221208; t=1684311133; x=1686903133;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+4H4TLD9Tgw1VSAkuUmuXqvaTIifJo+7xd82yABLyRs=;
- b=Q6CgS3RdJX4L3572tZ7hyDZT20H59gptV8LYkmDrFakNfF5OULVIRmIOSRlcrjH3B/
- Ytk0BLqDyKaQ0pIFqkkmuxmd87aPDvM4dGXINjlTm9RLyDdDSi0q1700Xm0O9v/z1SFr
- QOQC39ZSHq3CHfGA4XAtAZa2P9+9J3kStGRAMF/HAg2fS6FTXChV3rokLspND1L+xCcI
- AA6oCiuY6tb10YhK11n2DY/DxIj4t6HKCZpDFNSIBdRuY0TntCMsEd2OhoP1XcLxo74K
- drhYiMh2UTJUwdZsS0PfUqIZQm4hPVcob7x5wyXxg7rL6TbwgjrlLpNagvI2DCpRsQLH
- WQdg==
+ bh=FME8dFCXHhrLjbPwofbxFf6dtGoZ1sG2sL76yiqsucE=;
+ b=Y4/nwImEoziYQiSRkwrwumNpSRBWNGb4WP+2oJYT0YBxfkEneU3CLTx8sNgCNbID/q
+ ZAmdpkVXmrj21AEgpJz3qc2cMf85um6Ogrmb6y8jNSfVUB/NW2paxlrW7gKdAP7DCO6G
+ fKorcWu6jF2AukagEedLTuj14R6kPNva7BJ5aA515KvLIu70gpV0BUb1N++4zd6/jdDQ
+ Yh060r5HLaQZT8VMTzP8Rto44IIHKolpr9Bap0ADwEf81Lz4Y7XZmdktegXRO9PAOtus
+ Z5P9JgdsfZ7JSRPIHQZtWE5wdMKvawFKT6VigObq7pCQrIExePmvFXDqzW4hGJ5+ctkH
+ B2Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684311132; x=1686903132;
+ d=1e100.net; s=20221208; t=1684311133; x=1686903133;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+4H4TLD9Tgw1VSAkuUmuXqvaTIifJo+7xd82yABLyRs=;
- b=ktRr+Vl+jKzkncLrHKxCs5Yc2nTsE98E+l3KkM+nm7Rvmg+c8oCuGSscisfV6xOoVF
- +Uyo4eXFFNAMsXXZJxzavwmoyciZ6Ca3YeknKAZQwIYg02caYlSXocM9g+zCFNmZr0Oo
- ikK6O5ylpeYqI6sxI0nhcTdORLtf1H7UTw4HzTqSwmoCs0KLGhd7xgzjZHCAIoOG+p1p
- Kn75rMmYyZRa/TTHb2oc3e5DFPTvI1SUL+yTvymm2k7uzTt54fzzABzEYG6kwTj0U6MY
- frEE8XF+Gvp0I5dEq9zWg/Pw7nygoib51bLwI9gFG9GxkFaMBsMl6vKULbb9rhQeoZeo
- CF+w==
-X-Gm-Message-State: AC+VfDzXKIRYvUFcM20HqE5h2W2nINryqA2DgBlCxz17s66vq0IXvEg4
- G5WGsOtsJNOsE/kxgNfa/dUBdVPJpahnHA==
-X-Google-Smtp-Source: ACHHUZ6MvVvXolK68xNPIRc/MMQN7673B8iHiyyMbSTZLphXrvefN/+CqR3zyhTYREAMxBUDgjS3RQ==
-X-Received: by 2002:a05:600c:3787:b0:3f4:2775:3f89 with SMTP id
- o7-20020a05600c378700b003f427753f89mr21813453wmr.35.1684311131419; 
- Wed, 17 May 2023 01:12:11 -0700 (PDT)
+ bh=FME8dFCXHhrLjbPwofbxFf6dtGoZ1sG2sL76yiqsucE=;
+ b=Y4Oip3l74h07tiUdkjly41PfwiOQAamKSEm+Yk+5mrlpruKUnBqa1Aknom5BChSNJA
+ UyBxU1ZTAVoGa72tavX2ql5qFzHgPAPxToLpfU15uWLxz646lmtHm3x0dnFYKq0vsCd3
+ 7mfPbb4PVafjatTqwgrZxq7+w6VpqZfQ6ms31EpomyaDBYLuom0JepYKQNFlaCD5tgGM
+ zMrmNz+G188DtrkmlbDeBHAs3VUOeYYLCt4GLEoX+UYwFlGyHWFfGuzqsSmj7zvGJqJR
+ 0WtRzpdqW6Yx2GQWMpbWFY8rfzOqqEfFsxRuiiJjuWSpaw7gwAIi+JdQM+eLTb8LhmjQ
+ Y63g==
+X-Gm-Message-State: AC+VfDxmP9TuCI3XthDoGSugI0mwPDmRWGjajwNGzUHBJ8H+eXI0ncSP
+ vbGZnerSL4xN8TVU/FPpd/q/l8hgvg+RrA==
+X-Google-Smtp-Source: ACHHUZ7utJl2Zh8kcPhX4eFcD31oxshaRNNnKRvdqilLBPD3VA/Mz7kYrMweYrlO8UZytviyYz60Mg==
+X-Received: by 2002:a1c:7210:0:b0:3f1:8129:2c53 with SMTP id
+ n16-20020a1c7210000000b003f181292c53mr1060531wmc.16.1684311132872; 
+ Wed, 17 May 2023 01:12:12 -0700 (PDT)
 Received: from i.. ([41.236.82.205]) by smtp.gmail.com with ESMTPSA id
- o24-20020a1c7518000000b003f42158288dsm1414942wmc.20.2023.05.17.01.12.10
+ o24-20020a1c7518000000b003f42158288dsm1414942wmc.20.2023.05.17.01.12.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 01:12:11 -0700 (PDT)
+ Wed, 17 May 2023 01:12:12 -0700 (PDT)
 From: Mohamed ElSayed <m.elsayed4420@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Mohamed ElSayed <m.elsayed4420@gmail.com>
-Subject: [PATCH 1/8] The tivac board initial machine definition
-Date: Wed, 17 May 2023 11:11:57 +0300
-Message-Id: <20230517081204.30333-2-m.elsayed4420@gmail.com>
+Subject: [PATCH 2/8] tiva c usart module implementation
+Date: Wed, 17 May 2023 11:11:58 +0300
+Message-Id: <20230517081204.30333-3-m.elsayed4420@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230517081204.30333-1-m.elsayed4420@gmail.com>
 References: <20230517081204.30333-1-m.elsayed4420@gmail.com>
@@ -92,22 +92,21 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Mohamed ElSayed <m.elsayed4420@gmail.com>
 ---
- hw/arm/tivac.c                    |  56 ++++++
- hw/arm/tm4c123gh6pm_soc.c         | 275 ++++++++++++++++++++++++++++++
- include/hw/arm/tm4c123gh6pm_soc.h |  71 ++++++++
- 3 files changed, 402 insertions(+)
- create mode 100644 hw/arm/tivac.c
- create mode 100644 hw/arm/tm4c123gh6pm_soc.c
- create mode 100644 include/hw/arm/tm4c123gh6pm_soc.h
+ hw/char/tm4c123_usart.c         | 381 ++++++++++++++++++++++++++++++++
+ hw/char/trace-events            |   4 +
+ include/hw/char/tm4c123_usart.h | 124 +++++++++++
+ 3 files changed, 509 insertions(+)
+ create mode 100644 hw/char/tm4c123_usart.c
+ create mode 100644 include/hw/char/tm4c123_usart.h
 
-diff --git a/hw/arm/tivac.c b/hw/arm/tivac.c
+diff --git a/hw/char/tm4c123_usart.c b/hw/char/tm4c123_usart.c
 new file mode 100644
-index 0000000000..5d917a8f9e
+index 0000000000..21bfe781b0
 --- /dev/null
-+++ b/hw/arm/tivac.c
-@@ -0,0 +1,56 @@
++++ b/hw/char/tm4c123_usart.c
+@@ -0,0 +1,381 @@
 +/*
-+ * TivaC Board Implementation
++ * TM4C123 USART
 + *
 + * Copyright (c) 2023 Mohamed ElSayed <m.elsayed4420@gmail.com>
 + *
@@ -131,326 +130,384 @@ index 0000000000..5d917a8f9e
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/boards.h"
++#include "hw/char/tm4c123_usart.h"
++#include "hw/irq.h"
 +#include "hw/qdev-properties.h"
-+#include "hw/qdev-clock.h"
-+#include "qemu/error-report.h"
-+#include "hw/arm/tm4c123gh6pm_soc.h"
-+#include "hw/arm/boot.h"
-+
-+
-+/* Main SYSCLK frequency in Hz (24MHz) */
-+#define SYSCLK_FRQ 24000000ULL
-+
-+static void tivac_init(MachineState *machine)
-+{
-+    DeviceState *dev;
-+    dev = qdev_new(TYPE_TM4C123GH6PM_SOC);
-+
-+    qdev_prop_set_string(dev, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m4"));
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    armv7m_load_kernel(ARM_CPU(first_cpu),
-+            machine->kernel_filename,
-+            0, FLASH_SIZE);
-+}
-+
-+static void tivac_machine_init(MachineClass *mc)
-+{
-+    mc->desc = "Tiva C (Cortex-M4)";
-+    mc->init = tivac_init;
-+}
-+DEFINE_MACHINE("tivac", tivac_machine_init)
-diff --git a/hw/arm/tm4c123gh6pm_soc.c b/hw/arm/tm4c123gh6pm_soc.c
-new file mode 100644
-index 0000000000..3e61911bba
---- /dev/null
-+++ b/hw/arm/tm4c123gh6pm_soc.c
-@@ -0,0 +1,275 @@
-+/*
-+ * TM4C123GH6PM SoC
-+ *
-+ * Copyright (c) 2023 Mohamed ElSayed <m.elsayed4420@gmail.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
++#include "hw/qdev-properties-system.h"
++#include "qemu/log.h"
 +#include "qemu/module.h"
-+#include "hw/arm/boot.h"
-+#include "exec/address-spaces.h"
-+#include "hw/arm/tm4c123gh6pm_soc.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/qdev-clock.h"
-+#include "hw/misc/unimp.h"
-+#include "sysemu/sysemu.h"
++#include "trace.h"
 +
-+static const uint32_t gpio_addrs[GPIO_COUNT] = {
-+    0x40004000,
-+    0x40005000,
-+    0x40006000,
-+    0x40007000,
-+    0x40024000,
-+    0x40025000
-+};
++#define LOG(mask, fmt, args...) qemu_log_mask(mask, "%s: " fmt, __func__, ## args)
++#define READONLY LOG(LOG_GUEST_ERROR, "0x%"HWADDR_PRIx" is a readonly field\n.", addr)
 +
-+static const uint32_t usart_addrs[USART_COUNT] = {
-+    0x4000C000,
-+    0x4000D000,
-+    0x4000E000,
-+    0x4000F000,
-+    0x40010000,
-+    0x40011000,
-+    0x40012000,
-+    0x40013000
-+};
-+
-+static const uint32_t wdt_addrs[WDT_COUNT] = {
-+    0x40000000,
-+    0x40001000
-+};
-+
-+static const uint32_t gptm_addrs[GPTM_COUNT] = {
-+    0x40030000,
-+    0x40031000,
-+    0x40032000,
-+    0x40033000,
-+    0x40034000,
-+    0x40035000,
-+    0x40036000,
-+    0x40037000,
-+    0x4003C800,
-+    0x4003D000,
-+    0x4003E000,
-+    0x4003F000,
-+};
-+
-+static const uint16_t usart_irqs[USART_COUNT] = {5, 6, 33, 59, 60, 61, 62, 63};
-+static const uint16_t gpio_irqs[GPIO_COUNT] = {0, 1, 2, 3, 4, 30};
-+static const uint16_t wdt_irqs[WDT_COUNT] = {18, 18};
-+static const uint16_t gptm_irqs[GPTM_COUNT * 2] = {
-+    19, 20, 21, 22, 23, 24, 35, 36, 70, 71, 92, 93,
-+    94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105};
-+
-+static void tm4c123gh6pm_soc_initfn(Object *obj)
++static bool usart_clock_enabled(TM4C123SysCtlState *s, hwaddr addr)
 +{
-+    int i;
-+    TM4C123GH6PMState *s = TM4C123GH6PM_SOC(obj);
-+
-+    object_initialize_child(obj, "armv7m", &s->armv7m, TYPE_ARMV7M);
-+    object_initialize_child(obj, "sysctl", &s->sysctl, TYPE_TM4C123_SYSCTL);
-+
-+    for (i = 0; i < USART_COUNT; i++) {
-+        object_initialize_child(obj, "usart[*]",
-+                                &s->usart[i], TYPE_TM4C123_USART);
++    switch (addr) {
++        case USART_0:
++            return s->sysctl_rcgcuart & (1 << 0);
++            break;
++        case USART_1:
++            return s->sysctl_rcgcuart & (1 << 1);
++            break;
++        case USART_2:
++            return s->sysctl_rcgcuart & (1 << 2);
++            break;
++        case USART_3:
++            return s->sysctl_rcgcuart & (1 << 3);
++            break;
++        case USART_4:
++            return s->sysctl_rcgcuart & (1 << 4);
++            break;
++        case USART_5:
++            return s->sysctl_rcgcuart & (1 << 5);
++            break;
++        case USART_6:
++            return s->sysctl_rcgcuart & (1 << 6);
++            break;
++        case USART_7:
++            return s->sysctl_rcgcuart & (1 << 7);
++            break;
 +    }
-+
-+    for (i = 0; i < GPIO_COUNT; i++) {
-+        object_initialize_child(obj, "gpio[*]", &s->gpio[i], TYPE_TM4C123_GPIO);
-+    }
-+
-+    for (i = 0; i < WDT_COUNT; i++) {
-+        object_initialize_child(obj, "watchdog-timer[*]",
-+                                &s->wdt[i], TYPE_TM4C123_WATCHDOG);
-+    }
-+
-+    for (i = 0; i < GPTM_COUNT; i++) {
-+        object_initialize_child(obj, "gptm[*]", &s->gptm[i], TYPE_TM4C123_GPTM);
-+    }
++    return false;
 +}
 +
-+static void tm4c123gh6pm_soc_realize(DeviceState *dev_soc, Error **errp)
++
++static int tm4c123_usart_can_receive(void *opaque)
 +{
-+    TM4C123GH6PMState *s = TM4C123GH6PM_SOC(dev_soc);
-+    DeviceState *armv7m;
-+    DeviceState *dev;
-+    SysBusDevice *busdev;
-+    int i;
++    TM4C123USARTState *s = opaque;
 +
-+    MemoryRegion *system_memory = get_system_memory();
++    if (!(s->usart_fr & USART_FR_RXFF)) {
++        return 1;
++    }
++    return 0;
++}
 +
-+    /* init flash memory */
-+    memory_region_init_rom(
-+            &s->flash, OBJECT(dev_soc),
-+            "TM4C123GH6PM.flash", FLASH_SIZE, &error_fatal
-+            );
-+    memory_region_add_subregion(system_memory, FLASH_BASE_ADDRESS, &s->flash);
++static void tm4c123_usart_receive(void *opaque, const uint8_t *buf, int size)
++{
++    TM4C123USARTState *s = opaque;
 +
-+    /* init sram and the sram alias region */
-+    memory_region_init_ram(
-+            &s->sram, OBJECT(dev_soc),
-+            "TM4C123GH6PM.sram", SRAM_SIZE, &error_fatal);
-+    memory_region_add_subregion(system_memory, SRAM_BASE_ADDRESS, &s->sram);
-+
-+    /* Init ARMv7m */
-+    armv7m = DEVICE(&s->armv7m);
-+    qdev_prop_set_uint32(armv7m, "num-irq", 138);
-+    qdev_prop_set_string(armv7m, "cpu-type", s->cpu_type);
-+    qdev_prop_set_bit(armv7m, "enable-bitband", true);
-+    qdev_connect_clock_in(armv7m, "cpuclk", s->sysctl.mainclk);
-+    qdev_connect_clock_in(armv7m, "refclk", s->sysctl.mainclk);
-+    object_property_set_link(OBJECT(&s->armv7m), "memory",
-+            OBJECT(get_system_memory()), &error_abort);
-+
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->armv7m), errp)) {
++    if (!(s->usart_ctl & USART_CR_EN && s->usart_ctl & USART_CR_RXE)) {
++        LOG(LOG_GUEST_ERROR, "The module is not enbled\n");
 +        return;
 +    }
 +
-+    /* USART */
-+    for (i = 0; i < USART_COUNT; i++) {
-+        dev = DEVICE(&(s->usart[i]));
-+        s->usart[i].sysctl = &s->sysctl;
-+        qdev_prop_set_chr(dev, "chardev", serial_hd(i));
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->usart[i]), errp)) {
-+            return;
-+        }
-+        busdev = SYS_BUS_DEVICE(dev);
-+        sysbus_mmio_map(busdev, 0, usart_addrs[i]);
-+        sysbus_connect_irq(busdev, 0, qdev_get_gpio_in(armv7m, usart_irqs[i]));
++    s->usart_dr = *buf;
++    s->usart_ctl &= ~USART_FR_RXFE;
++
++    if (s->usart_im & USART_IM_RXIM) {
++        qemu_set_irq(s->irq, 1);
 +    }
-+
-+    /* GPIO */
-+    for (i = 0; i < GPIO_COUNT; i++) {
-+        dev = DEVICE(&(s->gpio[i]));
-+        s->gpio[i].sysctl = &s->sysctl;
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->gpio[i]), errp)) {
-+            return;
-+        }
-+        busdev = SYS_BUS_DEVICE(dev);
-+        sysbus_mmio_map(busdev, 0, gpio_addrs[i]);
-+        sysbus_connect_irq(busdev, 0, qdev_get_gpio_in(armv7m, gpio_irqs[i]));
-+    }
-+
-+    /* Watchdog Timers */
-+    for (i = 0; i < WDT_COUNT; i++) {
-+        dev = DEVICE(&(s->wdt[i]));
-+        s->wdt[i].sysctl = &s->sysctl;
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->wdt[i]), errp)) {
-+            return;
-+        }
-+        busdev = SYS_BUS_DEVICE(dev);
-+        sysbus_mmio_map(busdev, 0, wdt_addrs[i]);
-+        sysbus_connect_irq(busdev, 0, qdev_get_gpio_in(armv7m, wdt_irqs[i]));
-+    }
-+
-+    /* General purpose timers */
-+    int j = 0;
-+    for (i = 0, j = 0; i < GPTM_COUNT; i++, j += 2) {
-+        dev = DEVICE(&(s->gptm[i]));
-+        s->gptm[i].sysctl = &s->sysctl;
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->gptm[i]), errp)) {
-+            return;
-+        }
-+        busdev = SYS_BUS_DEVICE(dev);
-+        sysbus_mmio_map(busdev, 0, gptm_addrs[i]);
-+        sysbus_connect_irq(busdev, 0, qdev_get_gpio_in(armv7m, gptm_irqs[j]));
-+        sysbus_connect_irq(busdev, 1, qdev_get_gpio_in(armv7m, gptm_irqs[j + 1]));
-+    }
-+
-+    /* SYSCTL */
-+    dev = DEVICE(&(s->sysctl));
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->sysctl), errp)) {
-+        return;
-+    }
-+    busdev = SYS_BUS_DEVICE(dev);
-+    sysbus_mmio_map(busdev, 0, SYSCTL_ADDR);
-+
-+
-+    create_unimplemented_device("SSI_0", 0x40008000, 0xFFF);
-+    create_unimplemented_device("SSI_1", 0x40009000, 0xFFF);
-+    create_unimplemented_device("SSI_2", 0x4000A000, 0xFFF);
-+    create_unimplemented_device("SSI_3", 0x4000B000, 0xFFF);
-+
-+    create_unimplemented_device("I2C_0", 0x40020000, 0xFFF);
-+    create_unimplemented_device("I2C_1", 0x40021000, 0xFFF);
-+    create_unimplemented_device("I2C_2", 0x40022000, 0xFFF);
-+    create_unimplemented_device("I2C_3", 0x40023000, 0xFFF);
-+
-+    create_unimplemented_device("PWM_0", 0x40028000, 0xFFF);
-+    create_unimplemented_device("PWM_1", 0x40029000, 0xFFF);
-+
-+    create_unimplemented_device("QEI_0", 0x4002C000, 0xFFF);
-+    create_unimplemented_device("QEI_1", 0x4002D000, 0xFFF);
-+
-+    create_unimplemented_device("ADC_0", 0x40038000, 0xFFF);
-+    create_unimplemented_device("ADC_1", 0x40039000, 0xFFF);
-+
-+    create_unimplemented_device("ANALOG_CMP", 0x4003C000, 0xFFF);
-+
-+    create_unimplemented_device("CAN_0", 0x40040000, 0xFFF);
-+    create_unimplemented_device("CAN_1", 0x40041000, 0xFFF);
-+
-+    create_unimplemented_device("USB", 0x40050000, 0xFFF);
-+
-+    create_unimplemented_device("GPIO_A_AHB", 0x40058000, 0xFFF);
-+    create_unimplemented_device("GPIO_B_AHB", 0x40059000, 0xFFF);
-+    create_unimplemented_device("GPIO_C_AHB", 0x4005A000, 0xFFF);
-+    create_unimplemented_device("GPIO_D_AHB", 0x4005B000, 0xFFF);
-+    create_unimplemented_device("GPIO_E_AHB", 0x4005C000, 0xFFF);
-+    create_unimplemented_device("GPIO_F_AHB", 0x4005D000, 0xFFF);
-+
-+    create_unimplemented_device("EEPROM", 0x400AF000, 0xFFF);
-+    create_unimplemented_device("SYS_EXC", 0x400F9000, 0xFFF);
-+    create_unimplemented_device("HIBERNATION_MOD", 0x400FC000, 0xFFF);
-+    create_unimplemented_device("FLASH_CONT", 0x400FD000, 0xFFF);
-+    create_unimplemented_device("SYS_CONT", 0x400FE000, 0xFFF);
-+
-+    create_unimplemented_device("uDMA", 0x400FF000, 0xFFF);
 +}
 +
-+static Property tm4c123gh6pm_soc_properties[] = {
-+    DEFINE_PROP_STRING("cpu-type", TM4C123GH6PMState, cpu_type),
++static void tm4c123_usart_reset(DeviceState *dev)
++{
++    TM4C123USARTState *s = TM4C123_USART(dev);
++
++    s->usart_dr = 0x00000000;
++    s->usart_rsr = 0x00000000;
++    s->usart_fr = 0x00000090;
++    s->usart_ilpr = 0x00000000;
++    s->usart_ibrd = 0x00000000;
++    s->usart_fbrd = 0x00000000;
++    s->usart_lcrh = 0x00000000;
++    s->usart_ctl = 0x00000300;
++    s->usart_ifls = 0x00000012;
++    s->usart_im = 0x00000000;
++    s->usart_ris = 0x00000000;
++    s->usart_mis = 0x00000000;
++    s->usart_icr = 0x00000000;
++    s->usart_dma_ctl = 0x00000000;
++    s->usart_9bit_addr = 0x00000000;
++    s->usart_9bit_mask = 0x000000FF;
++    s->usart_pp = 0x00000003;
++    s->usart_cc = 0x00000000;
++    s->usart_per_id4 = 0x00000000;
++    s->usart_per_id5 = 0x00000000;
++    s->usart_per_id6 = 0x00000000;
++    s->usart_per_id7 = 0x00000000;
++    s->usart_per_id0 = 0x00000060;
++    s->usart_per_id1 = 0x00000000;
++    s->usart_per_id2 = 0x00000018;
++    s->usart_per_id3 = 0x00000001;
++    s->usart_pcell_id0 = 0x0000000D;
++    s->usart_pcell_id1 = 0x000000F0;
++    s->usart_pcell_id2 = 0x00000005;
++    s->usart_pcell_id3 = 0x000000B1;
++
++    qemu_set_irq(s->irq, 0);
++}
++
++static uint64_t tm4c123_usart_read(void *opaque, hwaddr addr, unsigned int size)
++{
++    TM4C123USARTState *s = opaque;
++
++    if (!usart_clock_enabled(s->sysctl, s->mmio.addr)) {
++        hw_error("USART module clock is not enabled");
++    }
++
++    trace_tm4c123_usart_read(addr);
++
++    switch (addr) {
++        case USART_DR:
++            return s->usart_dr;
++        case USART_RSR:
++            return s->usart_rsr;
++        case USART_FR:
++            return s->usart_fr;
++        case USART_ILPR:
++            return s->usart_ilpr;
++        case USART_IBRD:
++            return s->usart_ibrd;
++        case USART_FBRD:
++            return s->usart_fbrd;
++        case USART_LCRH:
++            return s->usart_lcrh;
++        case USART_CTL:
++            return s->usart_ctl;
++        case USART_IFLS:
++            return s->usart_ifls;
++        case USART_IM:
++            return s->usart_im;
++        case USART_RIS:
++            return s->usart_ris;
++        case USART_MIS:
++            return s->usart_mis;
++        case USART_ICR:
++            return s->usart_icr;
++        case USART_DMA_CTL:
++            return s->usart_dma_ctl;
++        case USART_9BIT_ADDR:
++            return s->usart_9bit_addr;
++        case USART_9BIT_MASK:
++            return s->usart_9bit_mask;
++        case USART_PP:
++            return s->usart_pp;
++        case USART_CC:
++            return s->usart_cc;
++        case USART_PER_ID4:
++            return s->usart_per_id4;
++        case USART_PER_ID5:
++            return s->usart_per_id5;
++        case USART_PER_ID6:
++            return s->usart_per_id6;
++        case USART_PER_ID7:
++            return s->usart_per_id7;
++        case USART_PER_ID0:
++            return s->usart_per_id0;
++        case USART_PER_ID1:
++            return s->usart_per_id1;
++        case USART_PER_ID2:
++            return s->usart_per_id2;
++        case USART_PER_ID3:
++            return s->usart_per_id3;
++        case USART_PCELL_ID0:
++            return s->usart_pcell_id0;
++        case USART_PCELL_ID1:
++            return s->usart_pcell_id1;
++        case USART_PCELL_ID2:
++            return s->usart_pcell_id2;
++        case USART_PCELL_ID3:
++            return s->usart_pcell_id3;
++        default:
++            LOG(LOG_GUEST_ERROR, "Bad address 0x%"HWADDR_PRIx"\n", addr);
++            return 0;
++    }
++
++    return 0;
++}
++
++static void tm4c123_usart_write(void *opaque, hwaddr addr, uint64_t val64, unsigned int size)
++{
++    TM4C123USARTState *s = opaque;
++    uint32_t val32 = val64;
++    unsigned char ch;
++
++    if (!usart_clock_enabled(s->sysctl, s->mmio.addr)) {
++        hw_error("USART module clock is not enabled");
++    }
++
++    trace_tm4c123_usart_write(addr, val32);
++
++    switch (addr) {
++        case USART_DR:
++            s->usart_dr = val32;
++            if (val32 < 0xF000) {
++                ch = val32;
++                qemu_chr_fe_write_all(&s->chr, &ch, 1);
++            }
++            break;
++        case USART_RSR:
++            s->usart_rsr = val32;
++            break;
++        case USART_FR:
++            READONLY;
++            break;
++        case USART_ILPR:
++            s->usart_ilpr = val32;
++            break;
++        case USART_IBRD:
++            s->usart_ibrd = val32;
++            break;
++        case USART_FBRD:
++            s->usart_fbrd = val32;
++            break;
++        case USART_LCRH:
++            s->usart_lcrh = val32;
++            break;
++        case USART_CTL:
++            s->usart_ctl = val32;
++            break;
++        case USART_IFLS:
++            s->usart_ifls = val32;
++            break;
++        case USART_IM:
++            s->usart_im = val32;
++            break;
++        case USART_RIS:
++            READONLY;
++            break;
++        case USART_MIS:
++            READONLY;
++            break;
++        case USART_ICR:
++            s->usart_icr = val32;
++            break;
++        case USART_DMA_CTL:
++            s->usart_dma_ctl = val32;
++            break;
++        case USART_9BIT_ADDR:
++            s->usart_9bit_addr = val32;
++            break;
++        case USART_9BIT_MASK:
++            s->usart_9bit_mask = val32;
++            break;
++        case USART_PP:
++            READONLY;
++            break;
++        case USART_CC:
++            s->usart_cc = val32;
++            break;
++        case USART_PER_ID4:
++            READONLY;
++            break;
++        case USART_PER_ID5:
++            READONLY;
++            break;
++        case USART_PER_ID6:
++            READONLY;
++            break;
++        case USART_PER_ID7:
++            READONLY;
++            break;
++        case USART_PER_ID0:
++            READONLY;
++            break;
++        case USART_PER_ID1:
++            READONLY;
++            break;
++        case USART_PER_ID2:
++            READONLY;
++            break;
++        case USART_PER_ID3:
++            READONLY;
++            break;
++        case USART_PCELL_ID0:
++            READONLY;
++            break;
++        case USART_PCELL_ID1:
++            READONLY;
++            break;
++        case USART_PCELL_ID2:
++            READONLY;
++            break;
++        case USART_PCELL_ID3:
++            READONLY;
++            break;
++        default:
++            LOG(LOG_GUEST_ERROR, "Bad address 0x%"HWADDR_PRIx"\n", addr);
++            return;
++    }
++
++    return;
++}
++
++static const MemoryRegionOps tm4c123_usart_ops = {
++    .read = tm4c123_usart_read,
++    .write = tm4c123_usart_write,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++};
++
++static Property tm4c123_usart_properties[] = {
++    DEFINE_PROP_CHR("chardev", TM4C123USARTState, chr),
 +    DEFINE_PROP_END_OF_LIST(),
 +};
 +
-+static void tm4c123gh6pm_soc_class_init(ObjectClass *klass, void *data)
++static void tm4c123_usart_init(Object *obj)
++{
++    TM4C123USARTState *s = TM4C123_USART(obj);
++
++    sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq);
++
++    memory_region_init_io(&s->mmio, obj, &tm4c123_usart_ops, s,
++            TYPE_TM4C123_USART, 0xFFF);
++    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
++}
++
++static void tm4c123_usart_realize(DeviceState *dev, Error **errp)
++{
++    TM4C123USARTState *s = TM4C123_USART(dev);
++
++    qemu_chr_fe_set_handlers(&s->chr, tm4c123_usart_can_receive,
++            tm4c123_usart_receive, NULL, NULL,
++            s, NULL, true);
++}
++
++static void tm4c123_usart_class_init(ObjectClass *klass, void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(klass);
 +
-+    dc->realize = tm4c123gh6pm_soc_realize;
-+    device_class_set_props(dc, tm4c123gh6pm_soc_properties);
++    dc->reset = tm4c123_usart_reset;
++    device_class_set_props(dc, tm4c123_usart_properties);
++    dc->realize = tm4c123_usart_realize;
 +}
 +
-+static const TypeInfo tm4c123gh6pm_soc_info = {
-+    .name          = TYPE_TM4C123GH6PM_SOC,
++static const TypeInfo tm4c123_usart_info = {
++    .name          = TYPE_TM4C123_USART,
 +    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(TM4C123GH6PMState),
-+    .instance_init = tm4c123gh6pm_soc_initfn,
-+    .class_init    = tm4c123gh6pm_soc_class_init,
++    .instance_size = sizeof(TM4C123USARTState),
++    .instance_init = tm4c123_usart_init,
++    .class_init    = tm4c123_usart_class_init,
 +};
 +
-+static void tm4c123gh6pm_soc_types(void)
++static void tm4c123_usart_register_types(void)
 +{
-+    type_register_static(&tm4c123gh6pm_soc_info);
++    type_register_static(&tm4c123_usart_info);
 +}
 +
-+type_init(tm4c123gh6pm_soc_types)
-diff --git a/include/hw/arm/tm4c123gh6pm_soc.h b/include/hw/arm/tm4c123gh6pm_soc.h
++type_init(tm4c123_usart_register_types)
+diff --git a/hw/char/trace-events b/hw/char/trace-events
+index 2ecb36232e..47b7e3b772 100644
+--- a/hw/char/trace-events
++++ b/hw/char/trace-events
+@@ -1,5 +1,9 @@
+ # See docs/devel/tracing.rst for syntax documentation.
+ 
++# tm4c123_usart.c
++tm4c123_usart_read(uint64_t offset) " offset: 0x%" PRIu64
++tm4c123_usart_write(uint64_t offset, uint64_t value) " offset: 0x%" PRIu64 " - value: 0x%" PRIu64
++
+ # parallel.c
+ parallel_ioport_read(const char *desc, uint16_t addr, uint8_t value) "read [%s] addr 0x%02x val 0x%02x"
+ parallel_ioport_write(const char *desc, uint16_t addr, uint8_t value) "write [%s] addr 0x%02x val 0x%02x"
+diff --git a/include/hw/char/tm4c123_usart.h b/include/hw/char/tm4c123_usart.h
 new file mode 100644
-index 0000000000..1841483a78
+index 0000000000..be98eb3948
 --- /dev/null
-+++ b/include/hw/arm/tm4c123gh6pm_soc.h
-@@ -0,0 +1,71 @@
++++ b/include/hw/char/tm4c123_usart.h
+@@ -0,0 +1,124 @@
 +/*
-+ * TM4C123GH6PM SoC
++ * TM4C123 USART
 + *
 + * Copyright (c) 2023 Mohamed ElSayed <m.elsayed4420@gmail.com>
 + *
@@ -473,50 +530,103 @@ index 0000000000..1841483a78
 + * THE SOFTWARE.
 + */
 +
-+#ifndef HW_ARM_TM4C123GH6PM_SOC_H
-+#define HW_ARM_TM4C123GH6PM_SOC_H
++#ifndef HW_ARM_TM4C123_USART_H
++#define HW_ARM_TM4C123_USART_H
 +
-+#include "hw/arm/armv7m.h"
++#include "hw/sysbus.h"
 +#include "qom/object.h"
-+#include "hw/clock.h"
-+#include "hw/char/tm4c123_usart.h"
++#include "chardev/char-fe.h"
 +#include "hw/misc/tm4c123_sysctl.h"
-+#include "hw/gpio/tm4c123_gpio.h"
-+#include "hw/watchdog/tm4c123_watchdog.h"
-+#include "hw/timer/tm4c123_gptm.h"
 +
-+#define TYPE_TM4C123GH6PM_SOC "tm4c123gh6pm-soc"
++#define USART_DR            0x000
++#define USART_RSR           0x004
++#define USART_FR            0x018
++#define USART_ILPR          0x020
++#define USART_IBRD          0x024
++#define USART_FBRD          0x028
++#define USART_LCRH          0x02C
++#define USART_CTL           0x030
++#define USART_IFLS          0x034
++#define USART_IM            0x038
++#define USART_RIS           0x03C
++#define USART_MIS           0x040
++#define USART_ICR           0x044
++#define USART_DMA_CTL       0x048
++#define USART_9BIT_ADDR     0x0A4
++#define USART_9BIT_MASK     0x0A8
++#define USART_PP            0xFC0
++#define USART_CC            0xFC8
++#define USART_PER_ID4       0x0FD0
++#define USART_PER_ID5       0xFD4
++#define USART_PER_ID6       0xFD8
++#define USART_PER_ID7       0xFDC
++#define USART_PER_ID0       0xFE0
++#define USART_PER_ID1       0xFE4
++#define USART_PER_ID2       0xFE8
++#define USART_PER_ID3       0xFEC
++#define USART_PCELL_ID0     0xFF0
++#define USART_PCELL_ID1     0xFF4
++#define USART_PCELL_ID2     0xFF8
++#define USART_PCELL_ID3     0xFFC
 +
-+OBJECT_DECLARE_SIMPLE_TYPE(TM4C123GH6PMState, TM4C123GH6PM_SOC)
++#define USART_FR_RXFF (1 << 6)
++#define USART_FR_TXFF (1 << 5)
++#define USART_FR_RXFE (1 << 4)
++#define USART_FR_BUSY (1 << 3)
++#define USART_CR_RXE  (1 << 9)
++#define USART_CR_EN   (1 << 0)
++#define USART_IM_RXIM (1 << 4)
 +
-+#define FLASH_BASE_ADDRESS 0x00000000
-+#define FLASH_SIZE (256 * 1024)
-+#define SRAM_BASE_ADDRESS 0x20000000
-+#define SRAM_SIZE (32 * 1024)
++#define USART_0 0x4000C000
++#define USART_1 0x4000D000
++#define USART_2 0x4000E000
++#define USART_3 0x4000F000
++#define USART_4 0x40010000
++#define USART_5 0x40011000
++#define USART_6 0x40012000
++#define USART_7 0x40013000
++#define TYPE_TM4C123_USART "tm4c123-usart"
 +
-+#define SYSCTL_ADDR 0x400FE000
++OBJECT_DECLARE_SIMPLE_TYPE(TM4C123USARTState, TM4C123_USART)
 +
-+#define USART_COUNT 8
-+#define GPIO_COUNT 6
-+#define WDT_COUNT 2
-+#define GPTM_COUNT 12
-+
-+struct TM4C123GH6PMState {
++struct TM4C123USARTState {
 +    SysBusDevice parent_obj;
++    MemoryRegion mmio;
 +
-+    char *cpu_type;
++    uint32_t usart_dr;
++    uint32_t usart_rsr;
++    uint32_t usart_fr;
++    uint32_t usart_ilpr;
++    uint32_t usart_ibrd;
++    uint32_t usart_fbrd;
++    uint32_t usart_lcrh;
++    uint32_t usart_ctl;
++    uint32_t usart_ifls;
++    uint32_t usart_im;
++    uint32_t usart_ris;
++    uint32_t usart_mis;
++    uint32_t usart_icr;
++    uint32_t usart_dma_ctl;
++    uint32_t usart_9bit_addr;
++    uint32_t usart_9bit_mask;
++    uint32_t usart_pp;
++    uint32_t usart_cc;
++    uint32_t usart_per_id4;
++    uint32_t usart_per_id5;
++    uint32_t usart_per_id6;
++    uint32_t usart_per_id7;
++    uint32_t usart_per_id0;
++    uint32_t usart_per_id1;
++    uint32_t usart_per_id2;
++    uint32_t usart_per_id3;
++    uint32_t usart_pcell_id0;
++    uint32_t usart_pcell_id1;
++    uint32_t usart_pcell_id2;
++    uint32_t usart_pcell_id3;
 +
-+    ARMv7MState armv7m;
-+
-+    TM4C123USARTState usart[USART_COUNT];
-+    TM4C123SysCtlState sysctl;
-+    TM4C123GPIOState gpio[GPIO_COUNT];
-+    TM4C123WatchdogState wdt[WDT_COUNT];
-+    TM4C123GPTMState gptm[GPTM_COUNT];
-+
-+    MemoryRegion sram;
-+    MemoryRegion alias_region;
-+    MemoryRegion flash;
++    CharBackend chr;
++    qemu_irq irq;
++    TM4C123SysCtlState *sysctl;
 +};
 +
 +#endif
