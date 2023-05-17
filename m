@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53A5707064
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 20:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A15A707062
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 20:03:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLH1-0004xb-Dv; Wed, 17 May 2023 13:49:15 -0400
+	id 1pzLHA-0005Wn-EU; Wed, 17 May 2023 13:49:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEm-0001qX-Do
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:00 -0400
+ id 1pzLF1-00029M-OO
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEk-0004RJ-En
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:56 -0400
+ id 1pzLEz-0004ZY-UX
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:47:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345613;
+ s=mimecast20190719; t=1684345629;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3Z22DnnWCfFDBaUJH5DlfNaapeEc3FSg7euNvn0EgDY=;
- b=J8Q/DodqT5NBFctgujHB7UaQJe0YsCTeUQ6c/4BhPNXoUW+GlamuXbBwIj/Jfoor9btOj0
- lkOgSul3e+fNKRWxp9A7H9gCTdFiP1tYxsCwnYBx3Ny+fPMRSiQF3eAY0btHkBfEDN1JKc
- ylEXHsXHNtD/xZwGWv0mjFAJxDHExng=
+ bh=xPou24ScysZCFeYkKf5HYVYev95mGveP+l81GewaT7I=;
+ b=WaYCrJf55ACVqsAdXN4OWapjUyfBGxDrRuMeVduFRAfzkZp2loRlQ2YjkJv5ttQQyLYNQr
+ fPk+gEtEuR8M/5rYo0azDT49/MuaRNhjnC/ZcoRagOx+Br6XQ01fj4WE+umFEfieH3wpDE
+ BGvzRsAlucYDK+jIZkjR1AHPjB8pqC4=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-tTOj0D6UO3GXJvYigjChSA-1; Wed, 17 May 2023 13:46:51 -0400
-X-MC-Unique: tTOj0D6UO3GXJvYigjChSA-1
+ us-mta-616-_g_03CvhOAW8Y5Csm6wBrQ-1; Wed, 17 May 2023 13:47:08 -0400
+X-MC-Unique: _g_03CvhOAW8Y5Csm6wBrQ-1
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3079d15b51dso166092f8f.1
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:51 -0700 (PDT)
+ ffacd0b85a97d-3062dedf7d9so753410f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:47:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345609; x=1686937609;
+ d=1e100.net; s=20221208; t=1684345626; x=1686937626;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3Z22DnnWCfFDBaUJH5DlfNaapeEc3FSg7euNvn0EgDY=;
- b=Hx3XfXncFQRgeOyuK3CLqmgwlRTm6CWOTNhVk7lgkIN2YMc0vef9DLHfqUALis2MC1
- 5HHpR88aVs7/w19B2aVPUCOMXel0tT/uwvAUvuOVQ6KqVvIABD7dJSqGzmMJQICNtia2
- hkOgFWJG4xzKyI6bnklblJOvqMWC7SyFw5yrSvhzmpxT9a8lft3roY6/zS1iCsu1cpGr
- /KuYPQmktz+o7Qn4EB/FI+v3rPn5qn3N2IDrxn7Y9DPX7NZvVa88FQUI+isjOlUnlaRe
- IN3URieT65sElTgQSQZrZtuaQsc+vtOhEG7QLcFaYTxs001RJgM/OrY5Bi+Z77mjRniG
- VnHg==
-X-Gm-Message-State: AC+VfDxPRg1S2llS1eSCehibf8DHqil08bSgTIm7//wW13ElmlJ3ec9y
- 3hpu3ZCl/niqT7oX9f/TM25chbjdYdShyWcJRH4MDvHmeI15RQvx75UeUgisVg3e77yoHd8+wDd
- /IxtpQ70N6mCwRbR6WMJyt5chfgDj8qh/Y48SM9MJ55AVpAabM8uASUmZU0bwAvN1OTJ8nybdJD
- w=
-X-Received: by 2002:a5d:4212:0:b0:306:45ef:9935 with SMTP id
- n18-20020a5d4212000000b0030645ef9935mr1479148wrq.13.1684345609444; 
- Wed, 17 May 2023 10:46:49 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4mA961CiSG6DeCgBMYWe8+ggHZOY2YcoNrntrlh9iP8yTI1l27hGORroY0dMGIbsNdJwMqFA==
-X-Received: by 2002:a5d:4212:0:b0:306:45ef:9935 with SMTP id
- n18-20020a5d4212000000b0030645ef9935mr1479136wrq.13.1684345609027; 
- Wed, 17 May 2023 10:46:49 -0700 (PDT)
+ bh=xPou24ScysZCFeYkKf5HYVYev95mGveP+l81GewaT7I=;
+ b=hxcVBCKr4vNg69onB9WEqXq3Vn/DYckEeb+KWEdGGoqPuebgqJSpDES4x8od8Mr3gK
+ h9XqTwUzM4ByPQlc02wEpowiW8WucVU8fdAv8u76qKAPzSYLJX1wGMzfIMhhdrMhcc6J
+ NQq+8QJdGyScf6bYEXrmV9b+CstSZDxPH0r7GVGGsJ8Cv9C+VYVuMi4/iO4KWnBrCovz
+ L6vPM+/ju7dBdC5n4mAdcM2awQUbruJHWOh1QdkUrh/s58BxQwvh93ToPI7qf7WxVdtt
+ OVyEK7jtnnxWxcsWOc+vbi8ES9G+kGwO5ZCVjuEbvCxVVGfPFoLw45luCNIlrT67NFcC
+ ajJw==
+X-Gm-Message-State: AC+VfDz7iGeXhpU5AobzO7XgPGreqXczFQ4WYK8sVMyyZ5ofpz4KCrqt
+ 1PiI/AbvTqxPIdWGqVKd7CYzI3WXWIAbWALlFG8pfIYA2f/zTbUpAc8Nk1VZ6X3BxvmbS0t3xic
+ 3yX8ARkh4D7MoD266uPu7Zy/bwCJxSJWxfk/9uU1vpD2wZ+B85f/3amgRefjpaM5UYhb5g+J1Er
+ s=
+X-Received: by 2002:a5d:694a:0:b0:309:44ed:ccff with SMTP id
+ r10-20020a5d694a000000b0030944edccffmr944218wrw.1.1684345626502; 
+ Wed, 17 May 2023 10:47:06 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6dSrk1obeUsN4oXWhzS/eET2HCf8sVX4eiabZWU1wzr6KkrDz0+XqN8VgX307ySNpQ99gKtQ==
+X-Received: by 2002:a5d:694a:0:b0:309:44ed:ccff with SMTP id
+ r10-20020a5d694a000000b0030944edccffmr944209wrw.1.1684345626150; 
+ Wed, 17 May 2023 10:47:06 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- s2-20020a1cf202000000b003f50876905dsm2876986wmc.6.2023.05.17.10.46.47
+ m7-20020a5d6a07000000b003062c0ef959sm3325432wru.69.2023.05.17.10.47.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:48 -0700 (PDT)
+ Wed, 17 May 2023 10:47:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 53/68] configure, meson: move --enable-modules to Meson
-Date: Wed, 17 May 2023 19:45:05 +0200
-Message-Id: <20230517174520.887405-54-pbonzini@redhat.com>
+Subject: [PULL 64/68] configure: do not rerun the tests with -Werror
+Date: Wed, 17 May 2023 19:45:16 +0200
+Message-Id: <20230517174520.887405-65-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -101,212 +101,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Tests run in configure are pretty trivial at this point, so
+do not bother with the extra complication of running tests
+both with and without -Werror.
+
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                     | 20 --------------------
- meson.build                   | 22 ++++++++++++++--------
- meson_options.txt             |  2 ++
- scripts/meson-buildoptions.sh |  3 +++
- tests/qtest/meson.build       |  2 +-
- 5 files changed, 20 insertions(+), 29 deletions(-)
+ configure | 35 +----------------------------------
+ 1 file changed, 1 insertion(+), 34 deletions(-)
 
 diff --git a/configure b/configure
-index 3267b1027970..5edd3765cd4e 100755
+index 4a986e6fa89c..d0febe7cdfea 100755
 --- a/configure
 +++ b/configure
-@@ -280,7 +280,6 @@ tsan="no"
- fortify_source="yes"
- docs="auto"
- EXESUF=""
--modules="no"
- prefix="/usr/local"
- qemu_suffix="qemu"
- softmmu="yes"
-@@ -751,12 +750,6 @@ for opt do
-   ;;
-   --disable-docs) docs=disabled
-   ;;
--  --enable-modules)
--      modules="yes"
--  ;;
--  --disable-modules)
--      modules="no"
--  ;;
-   --cpu=*)
-   ;;
-   --target-list=*) target_list="$optarg"
-@@ -1051,7 +1044,6 @@ cat << EOF
-   linux-user      all linux usermode emulation targets
-   bsd-user        all BSD usermode emulation targets
-   pie             Position Independent Executables
--  modules         modules support (non-Windows)
-   debug-tcg       TCG debugging (default is disabled)
-   debug-info      debugging information
-   safe-stack      SafeStack Stack Smash Protection. Depends on
-@@ -1342,16 +1334,7 @@ EOF
-   fi
- fi
+@@ -124,41 +124,8 @@ lines: ${BASH_LINENO[*]}"
+   $compiler "$@" >> config.log 2>&1 || return $?
+ }
  
--# Our module code doesn't support Windows
--if test "$modules" = "yes" && test "$mingw32" = "yes" ; then
--  error_exit "Modules are not available for Windows"
--fi
+-do_compiler_werror() {
+-    # Run the compiler, capturing its output to the log. First argument
+-    # is compiler binary to execute.
+-    compiler="$1"
+-    shift
+-    if test -n "$BASH_VERSION"; then eval '
+-        echo >>config.log "
+-funcs: ${FUNCNAME[*]}
+-lines: ${BASH_LINENO[*]}"
+-    '; fi
+-    echo $compiler "$@" >> config.log
+-    $compiler "$@" >> config.log 2>&1 || return $?
+-    # Test passed. If this is an --enable-werror build, rerun
+-    # the test with -Werror and bail out if it fails. This
+-    # makes warning-generating-errors in configure test code
+-    # obvious to developers.
+-    if test "$werror" != "yes"; then
+-        return 0
+-    fi
+-    # Don't bother rerunning the compile if we were already using -Werror
+-    case "$*" in
+-        *-Werror*)
+-           return 0
+-        ;;
+-    esac
+-    echo $compiler -Werror "$@" >> config.log
+-    $compiler -Werror "$@" >> config.log 2>&1 && return $?
+-    error_exit "configure test passed without -Werror but failed with -Werror." \
+-        "This is probably a bug in the configure script. The failing command" \
+-        "will be at the bottom of config.log." \
+-        "You can run configure with --disable-werror to bypass this check."
+-}
 -
--# Static linking is not possible with plugins, modules or PIE
- if test "$static" = "yes" ; then
--  if test "$modules" = "yes" ; then
--    error_exit "static and modules are mutually incompatible"
--  fi
-   if test "$plugins" = "yes"; then
-     error_exit "static and plugins are mutually incompatible"
-   else
-@@ -2308,9 +2291,6 @@ if test "$solaris" = "yes" ; then
- fi
- echo "SRC_PATH=$source_path" >> $config_host_mak
- echo "TARGET_DIRS=$target_list" >> $config_host_mak
--if test "$modules" = "yes"; then
--  echo "CONFIG_MODULES=y" >> $config_host_mak
--fi
+ do_cc() {
+-    do_compiler_werror "$cc" $CPU_CFLAGS "$@"
++    do_compiler "$cc" $CPU_CFLAGS "$@"
+ }
  
- # XXX: suppress that
- if [ "$bsd" = "yes" ] ; then
-diff --git a/meson.build b/meson.build
-index 50e36729eb67..531f7a84c9aa 100644
---- a/meson.build
-+++ b/meson.build
-@@ -17,7 +17,6 @@ fs = import('fs')
- targetos = host_machine.system()
- sh = find_program('sh')
- config_host = keyval.load(meson.current_build_dir() / 'config-host.mak')
--enable_modules = 'CONFIG_MODULES' in config_host
- 
- cc = meson.get_compiler('c')
- all_languages = ['c']
-@@ -84,6 +83,12 @@ have_ga = get_option('guest_agent') \
-   .require(targetos in ['sunos', 'linux', 'windows', 'freebsd', 'netbsd', 'openbsd'],
-            error_message: 'unsupported OS for QEMU guest agent') \
-   .allowed()
-+enable_modules = get_option('modules') \
-+  .require(targetos != 'windows',
-+           error_message: 'Modules are not available for Windows') \
-+  .require(not get_option('prefer_static'),
-+           error_message: 'Modules are incompatible with static linking') \
-+  .allowed()
- have_block = have_system or have_tools
- 
- python = import('python').find_installation()
-@@ -498,7 +503,7 @@ glib_req_ver = '>=2.56.0'
- glib_pc = dependency('glib-2.0', version: glib_req_ver, required: true,
-                     method: 'pkg-config')
- glib_cflags = []
--if config_host.has_key('CONFIG_MODULES')
-+if enable_modules
-   gmodule = dependency('gmodule-export-2.0', version: glib_req_ver, required: true,
-                        method: 'pkg-config')
- elif config_host.has_key('CONFIG_PLUGIN')
-@@ -1725,7 +1730,7 @@ if get_option('cfi')
-   if not get_option('b_lto')
-     error('Selected Control-Flow Integrity but LTO is disabled')
-   endif
--  if config_host.has_key('CONFIG_MODULES')
-+  if enable_modules
-     error('Selected Control-Flow Integrity is not compatible with modules')
-   endif
-   # Check for cfi flags. CFI requires LTO so we can't use
-@@ -1823,7 +1828,7 @@ config_host_data.set_quoted('CONFIG_QEMU_LOCALSTATEDIR', get_option('prefix') /
- config_host_data.set_quoted('CONFIG_QEMU_MODDIR', get_option('prefix') / qemu_moddir)
- config_host_data.set_quoted('CONFIG_SYSCONFDIR', get_option('prefix') / get_option('sysconfdir'))
- 
--if config_host.has_key('CONFIG_MODULES')
-+if enable_modules
-   config_host_data.set('CONFIG_STAMP', run_command(
-       meson.current_source_dir() / 'scripts/qemu-stamp.py',
-       meson.project_version(), get_option('pkgversion'), '--',
-@@ -1886,6 +1891,7 @@ config_host_data.set('CONFIG_LIBSSH', libssh.found())
- config_host_data.set('CONFIG_LINUX_AIO', libaio.found())
- config_host_data.set('CONFIG_LINUX_IO_URING', linux_io_uring.found())
- config_host_data.set('CONFIG_LIBPMEM', libpmem.found())
-+config_host_data.set('CONFIG_MODULES', enable_modules)
- config_host_data.set('CONFIG_NUMA', numa.found())
- if numa.found()
-   config_host_data.set('HAVE_NUMA_HAS_PREFERRED_MANY',
-@@ -3233,7 +3239,7 @@ foreach d, list : modules
-   endif
- 
-   foreach m, module_ss : list
--    if enable_modules and targetos != 'windows'
-+    if enable_modules
-       module_ss = module_ss.apply(config_all, strict: false)
-       sl = static_library(d + '-' + m, [genh, module_ss.sources()],
-                           dependencies: [modulecommon, module_ss.dependencies()], pic: true)
-@@ -3266,7 +3272,7 @@ endforeach
- 
- foreach d, list : target_modules
-   foreach m, module_ss : list
--    if enable_modules and targetos != 'windows'
-+    if enable_modules
-       foreach target : target_dirs
-         if target.endswith('-softmmu')
-           config_target = config_target_mak[target]
-@@ -3786,8 +3792,8 @@ summary_info += {'system-mode emulation': have_system}
- summary_info += {'user-mode emulation': have_user}
- summary_info += {'block layer':       have_block}
- summary_info += {'Install blobs':     get_option('install_blobs')}
--summary_info += {'module support':    config_host.has_key('CONFIG_MODULES')}
--if config_host.has_key('CONFIG_MODULES')
-+summary_info += {'module support':    enable_modules}
-+if enable_modules
-   summary_info += {'alternative module path': get_option('module_upgrades')}
- endif
- summary_info += {'fuzzing support':   get_option('fuzzing')}
-diff --git a/meson_options.txt b/meson_options.txt
-index a350520f6abf..a1240e0b2a59 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -42,6 +42,8 @@ option('fuzzing', type : 'boolean', value: false,
-        description: 'build fuzzing targets')
- option('gettext', type : 'feature', value : 'auto',
-        description: 'Localization of the GTK+ user interface')
-+option('modules', type : 'feature', value : 'disabled',
-+       description: 'modules support (non Windows)')
- option('module_upgrades', type : 'boolean', value : false,
-        description: 'try to load modules from alternate paths for upgrades')
- option('install_blobs', type : 'boolean', value : true,
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 10c4969a013e..43301864e395 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -127,6 +127,7 @@ meson_options_help() {
-   printf "%s\n" '  lzo             lzo compression support'
-   printf "%s\n" '  malloc-trim     enable libc malloc_trim() for memory optimization'
-   printf "%s\n" '  membarrier      membarrier system call (for Linux 4.14+ or Windows'
-+  printf "%s\n" '  modules         modules support (non Windows)'
-   printf "%s\n" '  mpath           Multipath persistent reservation passthrough'
-   printf "%s\n" '  multiprocess    Out of process device emulation support'
-   printf "%s\n" '  netmap          netmap network backend support'
-@@ -357,6 +358,8 @@ _meson_option_parse() {
-     --disable-membarrier) printf "%s" -Dmembarrier=disabled ;;
-     --enable-module-upgrades) printf "%s" -Dmodule_upgrades=true ;;
-     --disable-module-upgrades) printf "%s" -Dmodule_upgrades=false ;;
-+    --enable-modules) printf "%s" -Dmodules=enabled ;;
-+    --disable-modules) printf "%s" -Dmodules=disabled ;;
-     --enable-mpath) printf "%s" -Dmpath=enabled ;;
-     --disable-mpath) printf "%s" -Dmpath=disabled ;;
-     --enable-multiprocess) printf "%s" -Dmultiprocess=enabled ;;
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 48cd35b5b203..ab422772d310 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -23,7 +23,7 @@ qtests_generic = [
-   'readconfig-test',
-   'netdev-socket',
- ]
--if config_host.has_key('CONFIG_MODULES')
-+if enable_modules
-   qtests_generic += [ 'modules-test' ]
- endif
- 
+ compile_object() {
 -- 
 2.40.1
 
