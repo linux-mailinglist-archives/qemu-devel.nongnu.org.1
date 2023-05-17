@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FB370701A
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9E6707025
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:56:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLH2-00057j-49; Wed, 17 May 2023 13:49:16 -0400
+	id 1pzLH4-00058y-SG; Wed, 17 May 2023 13:49:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEf-0001bR-4y
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1pzLEg-0001d9-BP
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEc-0004PT-De
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:48 -0400
+ id 1pzLEe-0004Ps-Ij
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345605;
+ s=mimecast20190719; t=1684345608;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BTl8dz4S4KQFdMauiBtgxB/zEVjX+4oDG4c1HH7MeJg=;
- b=dROU/QQo/5Gqs+/SoI6CQDHdwQRg3vlDnGZU/M/WCMK2a7kKWFXrFimy4qZQgwnrQeZnw0
- C0QohA/BQyxFVCJXnxZyAYBFrBiq+r5e5/nTQtkI+Es/c1nCwp2mtAtOB/HvIrzw656xZP
- vv62RF0GoaX2Q3MYsEtlcLpbq8WWt3Y=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mG9RV/wEzHBntPeSF5MlucOTxAQIk0J7mP2S/5XHYJY=;
+ b=TwXO5fZfZOCf5HtxhTYtmk3K7F5TRaHDWtHU66AixDrgLeRlB9AEYjVOFkA0Wr4t+mFk2q
+ K+qCoT8E3aR+z7vZdY1SgIk/4YUyfxpZq7mD5cS1h1COjoG9qgJ5Axu5xGnCR3DePu9jp/
+ dGR+fAOD52C3+G46qJHdMeVTJcZpo30=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-178-qRe7LmtVPNGxYTivGFKGww-1; Wed, 17 May 2023 13:46:44 -0400
-X-MC-Unique: qRe7LmtVPNGxYTivGFKGww-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3063089cff4so679066f8f.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:44 -0700 (PDT)
+ us-mta-93-32UQ6sgCNP-TFDYWwV0BgQ-1; Wed, 17 May 2023 13:46:46 -0400
+X-MC-Unique: 32UQ6sgCNP-TFDYWwV0BgQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f426514683so4396355e9.1
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345603; x=1686937603;
+ d=1e100.net; s=20221208; t=1684345605; x=1686937605;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BTl8dz4S4KQFdMauiBtgxB/zEVjX+4oDG4c1HH7MeJg=;
- b=ZCSDDiISSkwAGmpJR81ovRK8tYOrch/D2xGJ5JqBE5IYwIm2wFK6F4PE5Eo51vwq+v
- qzugMaRellKqQSDaFzmmfZII/wn7OYqLIjkQwjzq81Q33BwmJ7WfP6UL+zWMeHlU+Mdy
- Ela/zPvNTJ9yB7kowhzs+3OIH11BkfLki5bjFMQvj9tlofLkOnSKFln6Txcf/cVcFr7d
- CqpkFFmbz0WTG9IQoBcGJCjeWc47ncI5CtGDRX4P2qyjhKRY1KLs2CvZ0nbNS4Lj+BOc
- iuWfSaocX9c+8f3re1hmBhZjUWji5wRNmmQISBSwD0sIZwC284bODthRRs6u+9eOxhmm
- pv3A==
-X-Gm-Message-State: AC+VfDxd5o+Mul97EZjaYjjql6Tap+VJWGeq1UKjeC67K3ZKC4+uIa+u
- yAFiol963fIU9L0g97uQGyy6Ze0LEBw/ni3Y5XDbayK6d/rPbS+f3HSCIdSW6sIxRMpduyJ8ZJg
- 9yK65l2cFeOrSPWIrEnuHp3TN2j9uTvyO9zmJj1JPBMBimH+SUyigMCMRkeBdsT7CUht+3qJAtq
- g=
-X-Received: by 2002:adf:df07:0:b0:307:34d4:7ec8 with SMTP id
- y7-20020adfdf07000000b0030734d47ec8mr1345097wrl.34.1684345603229; 
- Wed, 17 May 2023 10:46:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6gsIsnbUfO0XtbmZZJeYW+9/FbDq+OSTDmVx2Y3PM/3426MOo0jN3/Y2tnPUWCYcXyUyTtqA==
-X-Received: by 2002:adf:df07:0:b0:307:34d4:7ec8 with SMTP id
- y7-20020adfdf07000000b0030734d47ec8mr1345084wrl.34.1684345602894; 
- Wed, 17 May 2023 10:46:42 -0700 (PDT)
+ bh=mG9RV/wEzHBntPeSF5MlucOTxAQIk0J7mP2S/5XHYJY=;
+ b=UsIJm9DnlHkpIb3173/QYBtpOs28wiWWpEjhVgBDqa8IQzLgO8RTV5OEV/cCDO6M7Y
+ Lyv3LVH29hGAk+yX2n/9tu0myK7gWH2k6HRgUFlaBeQO6eYWyBBubW6DJkIOv7OnrFhb
+ 0XU+pHP1r806KWpKL6UTOU9BysJ/mPvAJVQFqSz1Gbl5N/Csfv2fhnbQVdpPsRmt2o/N
+ 5Ph+e0L3zfkOWyvGG17si6vftwnxEJGN8Fciaix3vStsMGbhSh6n9E4BzoXiLsw62kDx
+ C7L9buiFBgOTtmY/Fj49vYs7etNwvbBBPEkl6bJhYTHOCtN2+2Ig4onQ0u3Rcdp0Fkso
+ LSgg==
+X-Gm-Message-State: AC+VfDx6aZ8iVJefo5hUK9V0/swZfPUVVkCDRCEgBOyoaJXp5vb6z2kx
+ BO4TEbvkq7KnWcRysoqYNNcTBP/qbkEOh7eGCGG69auGN3ONnGwtta4oK+NbGaAupRIeeTLAbrA
+ +UGS/OvNnzbRjRvZRwSdy0sSdikrjJphtcciV9YrwKYC56NfCDdPGU/vILPhOcuF9pSR7C7rTad
+ s=
+X-Received: by 2002:a05:600c:2305:b0:3f5:d3c6:737d with SMTP id
+ 5-20020a05600c230500b003f5d3c6737dmr837810wmo.39.1684345604792; 
+ Wed, 17 May 2023 10:46:44 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6c55JgDR6IXneH1h0+ccVOIRHjDFr8ZIzCvs5LNfVJXZak9kb/JxXnY+GCfOKABZGwxHUlAQ==
+X-Received: by 2002:a05:600c:2305:b0:3f5:d3c6:737d with SMTP id
+ 5-20020a05600c230500b003f5d3c6737dmr837800wmo.39.1684345604386; 
+ Wed, 17 May 2023 10:46:44 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- o4-20020a5d4a84000000b003068f5cca8csm3386942wrq.94.2023.05.17.10.46.42
+ f6-20020a1c6a06000000b003f427cba193sm2812575wmc.41.2023.05.17.10.46.43
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:42 -0700 (PDT)
+ Wed, 17 May 2023 10:46:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 49/68] meson: add more version numbers to the summary
-Date: Wed, 17 May 2023 19:45:01 +0200
-Message-Id: <20230517174520.887405-50-pbonzini@redhat.com>
+Subject: [PULL 50/68] meson: drop unnecessary declare_dependency()
+Date: Wed, 17 May 2023 19:45:02 +0200
+Message-Id: <20230517174520.887405-51-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,66 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Whenever declare_dependency is used to add some compile flags or dependent
-libraries to the outcome of dependency(), the version of the original
-dependency is dropped in the summary.  Make sure that declare_dependency()
-has a version argument in those cases.
+The libvfio_user_dep variable of subprojects/libvfio-user/lib/meson.build
+is already a dependency, so there is no need to wrap it with another
+declare_dependency().
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ meson.build | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 132f309bdab2..464890d99ac0 100644
+index 464890d99ac0..88fba57cca81 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -888,7 +888,8 @@ if have_system and get_option('curses').allowed()
-   curses_compile_args = ['-DNCURSES_WIDECHAR=1']
-   if curses.found()
-     if cc.links(curses_test, args: curses_compile_args, dependencies: [curses])
--      curses = declare_dependency(compile_args: curses_compile_args, dependencies: [curses])
-+      curses = declare_dependency(compile_args: curses_compile_args, dependencies: [curses],
-+                                  version: curses.version())
-     else
-       msg = 'curses package not usable'
-       curses = not_found
-@@ -977,7 +978,8 @@ endif
- if sdl.found()
-   # work around 2.0.8 bug
-   sdl = declare_dependency(compile_args: '-Wno-undef',
--                           dependencies: sdl)
-+                           dependencies: sdl,
-+                           version: sdl.version())
-   sdl_image = dependency('SDL2_image', required: get_option('sdl_image'),
-                          method: 'pkg-config')
- else
-@@ -1198,9 +1200,10 @@ if not gnutls_crypto.found()
-     # as it "spreads unnecessary dependencies" which in
-     # turn breaks static builds...
-     if gcrypt.found() and get_option('prefer_static')
--      gcrypt = declare_dependency(dependencies: [
--        gcrypt,
--        cc.find_library('gpg-error', required: true)])
-+      gcrypt = declare_dependency(dependencies:
-+        [gcrypt,
-+         cc.find_library('gpg-error', required: true)],
-+        version: gcrypt.version())
-     endif
-   endif
-   if (not get_option('nettle').auto() or have_system) and not gcrypt.found()
-@@ -1234,7 +1237,8 @@ if not get_option('gtk').auto() or have_system
-     gtkx11 = dependency('gtk+-x11-3.0', version: '>=3.22.0',
-                         method: 'pkg-config',
-                         required: false)
--    gtk = declare_dependency(dependencies: [gtk, gtkx11])
-+    gtk = declare_dependency(dependencies: [gtk, gtkx11],
-+                             version: gtk.version())
+@@ -2720,9 +2720,7 @@ if have_system and vfio_user_server_allowed
  
-     if not get_option('vte').auto() or have_system
-       vte = dependency('vte-2.91',
+   libvfio_user_proj = subproject('libvfio-user')
+ 
+-  libvfio_user_lib = libvfio_user_proj.get_variable('libvfio_user_dep')
+-
+-  libvfio_user_dep = declare_dependency(dependencies: [libvfio_user_lib])
++  libvfio_user_dep = libvfio_user_proj.get_variable('libvfio_user_dep')
+ endif
+ 
+ fdt = not_found
 -- 
 2.40.1
 
