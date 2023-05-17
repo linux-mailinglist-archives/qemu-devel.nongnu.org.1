@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4107C706FE3
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A3370700D
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:54:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLEB-0007py-3N; Wed, 17 May 2023 13:46:19 -0400
+	id 1pzLDx-0007K9-4S; Wed, 17 May 2023 13:46:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLDt-0007Kv-Jf
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1pzLDp-0007I4-Vf
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLDl-00045m-JT
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:01 -0400
+ id 1pzLDm-00046x-Kv
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345551;
+ s=mimecast20190719; t=1684345552;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s4UDkO3Kdy5NCRIXg9Om8yA7mbqwupVdh0F2UuY1x8M=;
- b=G4ASfSl0uwAj7ZyB1YO3W6HuEkRHPyVBYxAcNbc+voCVIYuHQoPIJ4dGZUvFXJdQlj0luN
- VWfxUDmDO9ZXf8iOv1AFLRZFMDhwRhBt3J0UbiNHYENooWI9VBrF2UwaNnAsnAcelMcGez
- U2pslFr8059Yw08nIXVNOVD3pSQQ4Sk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=18IKHxyOv9PYot11dos7srKdbqWwToWb1XTwOxkQT8g=;
+ b=SyCGU3HvD8gutuR2crbTifM8yAVbpcnR3YmUcpgzuUzMTafr5mw+E20EGCDloAgj0q3G8c
+ grdTCc2X90RhIRh6C1X78aFZMIN8st5YzgRGrSo6nQUZvqms7TcMB2Nh/h/wdYfKXTppiM
+ wO5UhK0zGU5CG3XeDMoqbMY25qhU8ic=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-18-KuTnZ1d8NO25jygKnVz8lA-1; Wed, 17 May 2023 13:45:50 -0400
-X-MC-Unique: KuTnZ1d8NO25jygKnVz8lA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30479b764f9so451276f8f.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:45:50 -0700 (PDT)
+ us-mta-343-rUTxLOMSPfqNEiOXfzub9g-1; Wed, 17 May 2023 13:45:51 -0400
+X-MC-Unique: rUTxLOMSPfqNEiOXfzub9g-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-306281812d6so467173f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:45:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345548; x=1686937548;
+ d=1e100.net; s=20221208; t=1684345550; x=1686937550;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s4UDkO3Kdy5NCRIXg9Om8yA7mbqwupVdh0F2UuY1x8M=;
- b=iOx/92xCbxzjl7dPTN8hOvcZv1AzSsLZNLNnfw13pYUue7TX+2xODbCYeEmvoVc5Ce
- 0uhYfMNe5ZL7fNE0P34VmPuOI/Hmk1L9LXcQvAqNtLbev320RmUsDlu63fbWH14IJgUa
- xaehioyPO6iWkohcWzSI8w2/G6RdXbLl/tQdwyNUgMbgmBpHOh30uWvO7rdm7rwFTcFt
- o80LsMRR4/rW7YZsJD2s+V92Cb3BQIP9GYibk9bUlYyYrbyL8N3Mh16U0wwfdGbJVyFq
- 9X21HS5ZvFhBR3++AWoUpFzTUaj97CuYHf9rAOzq9+/u+qTJjXI54QN6VcnIs/mWjQ33
- zh6g==
-X-Gm-Message-State: AC+VfDzGbK8jmR3igjEyvFW7CGDn8dSAq8Y7G5wao4Aordx9olXxtcor
- 7wnpWOSwN0McjxXuMv/g//N4oggW/vrYr5Qaj7Ip5JHwIE/avIH2jcqq9mJcEAXXaTzgUgWPh3l
- 6KxC7MG6qWrKRh2TxBfaIvowrEhh4zkHzeCoG4JN93uQiDECjahNXleMv0pVN6+7tfWU0QkCr/U
- 4=
-X-Received: by 2002:adf:db8f:0:b0:306:4125:5f61 with SMTP id
- u15-20020adfdb8f000000b0030641255f61mr1209058wri.44.1684345548642; 
- Wed, 17 May 2023 10:45:48 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Cdjx7f+zrEroDbjYC6CWe3y/K2J2dmlQTjmNZ92jEZWmBuHToPvuIIhdsHZ1g/20azpeZRg==
-X-Received: by 2002:adf:db8f:0:b0:306:4125:5f61 with SMTP id
- u15-20020adfdb8f000000b0030641255f61mr1209048wri.44.1684345548137; 
- Wed, 17 May 2023 10:45:48 -0700 (PDT)
+ bh=18IKHxyOv9PYot11dos7srKdbqWwToWb1XTwOxkQT8g=;
+ b=NbEkEMltL0CAET0RkgIC+Hy5li1QHEZBIvtbYjAeOB/vB9kxNVYvlDjm70IvQS//Mj
+ NbUmryxpZNzDECf1IsiSAcen1VXXXGN+QEVQ3wsO0SSrgjFYqcUGEP7a4QMrTvJhpx8+
+ XV9B+hafwCMPwhb8Gdyc+UYIWSy+yINjLvX6IIwTAIDqKTmlJwZemfyAybfjqH7baYrH
+ qFOU2z3Iryb8P+P8zmywBt4vxahPthFjXzm5AnDD5WDyEnHqdbaDFFIE4BsfBX8GFh/f
+ bFoOdNIXR7xbn/xg5/E2GrMpR0bI2SBHBlF51Sel5MlEmqUxWk650mUJj8mX+fosZcW0
+ +I1g==
+X-Gm-Message-State: AC+VfDzYkNt34R1Na5H49aUZopfWIa4ONGkaOy5hkbr+SQnfZDiczJK6
+ +N+JgjF/DKBQBHpXYgF0o+sGJ8jaU1a13Iv4J9qzbLdnB8rOPf90wG0tEzVQyJjxZdO2ZpH+C28
+ xI0boVUf3JEfshfpccXRJrJ9CFelhNHDTtWQJZPo0xn7jrmOyIaNKjJtWVUyNAFmP9Qi/3Yj7eV
+ I=
+X-Received: by 2002:adf:f950:0:b0:309:22ba:dcdc with SMTP id
+ q16-20020adff950000000b0030922badcdcmr1479072wrr.42.1684345549915; 
+ Wed, 17 May 2023 10:45:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5ykN0hIn3upuUN45IinZOwFfVmOnKKEoNY8qS6xSDtEPZWezBKJ/T1/MRu9Mn3zOoppg1+xw==
+X-Received: by 2002:adf:f950:0:b0:309:22ba:dcdc with SMTP id
+ q16-20020adff950000000b0030922badcdcmr1479057wrr.42.1684345549647; 
+ Wed, 17 May 2023 10:45:49 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- z26-20020a7bc7da000000b003f50d6ee334sm2831493wmk.47.2023.05.17.10.45.47
- for <qemu-devel@nongnu.org>
+ p4-20020a05600c358400b003f1738d0d13sm3961048wmq.1.2023.05.17.10.45.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:45:47 -0700 (PDT)
+ Wed, 17 May 2023 10:45:49 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/68] coverity: the definitive COMPONENTS.md update
-Date: Wed, 17 May 2023 19:44:27 +0200
-Message-Id: <20230517174520.887405-16-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Th=C3=A9o=20Maillart?= <tmaillart@freebox.fr>,
+ qemu-stable@nongnu.org
+Subject: [PULL 16/68] scsi-generic: fix buffer overflow on block limits inquiry
+Date: Wed, 17 May 2023 19:44:28 +0200
+Message-Id: <20230517174520.887405-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,126 +102,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ordering here tries to be logical and matches the one in the
-website.
+Using linux 6.x guest, at boot time, an inquiry on a scsi-generic
+device makes qemu crash.  This is caused by a buffer overflow when
+scsi-generic patches the block limits VPD page.
 
+Do the operations on a temporary on-stack buffer that is guaranteed
+to be large enough.
+
+Reported-by: Théo Maillart <tmaillart@freebox.fr>
+Analyzed-by: Théo Maillart <tmaillart@freebox.fr>
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/coverity-scan/COMPONENTS.md | 45 +++++++++++++++++++----------
- 1 file changed, 30 insertions(+), 15 deletions(-)
+ hw/scsi/scsi-generic.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
-index 7c48e0f1d215..883da95aff22 100644
---- a/scripts/coverity-scan/COMPONENTS.md
-+++ b/scripts/coverity-scan/COMPONENTS.md
-@@ -24,6 +24,9 @@ hppa
- i386
-   ~ (/qemu)?((/include)?/hw/i386/.*|/target/i386/.*|/hw/intc/[^/]*apic[^/]*\.c)
- 
-+loongarch
-+  ~ (/qemu)?((/include)?/hw/(loongarch/.*|.*/loongarch.*)|/target/loongarch/.*)
+diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
+index ac9fa662b4e3..2417f0ad8479 100644
+--- a/hw/scsi/scsi-generic.c
++++ b/hw/scsi/scsi-generic.c
+@@ -191,12 +191,16 @@ static int scsi_handle_inquiry_reply(SCSIGenericReq *r, SCSIDevice *s, int len)
+     if ((s->type == TYPE_DISK || s->type == TYPE_ZBC) &&
+         (r->req.cmd.buf[1] & 0x01)) {
+         page = r->req.cmd.buf[2];
+-        if (page == 0xb0) {
++        if (page == 0xb0 && r->buflen >= 8) {
++            uint8_t buf[16] = {};
++            uint8_t buf_used = MIN(r->buflen, 16);
+             uint64_t max_transfer = calculate_max_transfer(s);
+-            stl_be_p(&r->buf[8], max_transfer);
+-            /* Also take care of the opt xfer len. */
+-            stl_be_p(&r->buf[12],
+-                    MIN_NON_ZERO(max_transfer, ldl_be_p(&r->buf[12])));
 +
- m68k
-   ~ (/qemu)?((/include)?/hw/m68k/.*|/target/m68k/.*|(/include)?/hw(/.*)?/mcf.*|(/include)?/hw/nubus/.*)
- 
-@@ -36,11 +39,14 @@ mips
- nios2
-   ~ (/qemu)?((/include)?/hw/nios2/.*|/target/nios2/.*)
- 
-+openrisc
-+  ~ (/qemu)?((/include)?/hw/openrisc/.*|/target/openrisc/.*)
++            memcpy(buf, r->buf, buf_used);
++            stl_be_p(&buf[8], max_transfer);
++            stl_be_p(&buf[12], MIN_NON_ZERO(max_transfer, ldl_be_p(&buf[12])));
++            memcpy(r->buf + 8, buf + 8, buf_used - 8);
 +
- ppc
-   ~ (/qemu)?((/include)?/hw/ppc/.*|/target/ppc/.*|/hw/pci-host/(uninorth.*|dec.*|prep.*|ppc.*)|/hw/misc/macio/.*|(/include)?/hw/.*/(xics|openpic|spapr).*)
- 
- riscv
--  ~ (/qemu)?((/include)?/hw/riscv/.*|/target/riscv/.*)
-+  ~ (/qemu)?((/include)?/hw/riscv/.*|/target/riscv/.*|/hw/.*/(riscv_|ibex_|sifive_).*)
- 
- rx
-   ~ (/qemu)?((/include)?/hw/rx/.*|/target/rx/.*)
-@@ -54,12 +60,12 @@ sh4
- sparc
-   ~ (/qemu)?((/include)?/hw/sparc(64)?.*|/target/sparc/.*|/hw/.*/grlib.*|/hw/display/cg3.c)
- 
--tilegx
--  ~ (/qemu)?(/target/tilegx/.*)
--
- tricore
-   ~ (/qemu)?((/include)?/hw/tricore/.*|/target/tricore/.*)
- 
-+xtensa
-+  ~ (/qemu)?((/include)?/hw/xtensa/.*|/target/xtensa/.*)
-+
- 9pfs
-   ~ (/qemu)?(/hw/9pfs/.*|/fsdev/.*)
- 
-@@ -73,7 +79,7 @@ char
-   ~ (/qemu)?(/qemu-char\.c|/include/sysemu/char\.h|(/include)?/hw/char/.*)
- 
- crypto
--  ~ (/qemu)?((/include)?/crypto/.*|/hw/.*/crypto.*)
-+  ~ (/qemu)?((/include)?/crypto/.*|/hw/.*/.*crypto.*|(/include/sysemu|/backends)/cryptodev.*)
- 
- disas
-   ~ (/qemu)?((/include)?/disas.*)
-@@ -100,7 +106,7 @@ net
-   ~ (/qemu)?((/include)?(/hw)?/(net|rdma)/.*)
- 
- pci
--  ~ (/qemu)?(/hw/pci.*|/include/hw/pci.*)
-+  ~ (/qemu)?(/include)?/hw/(cxl/|pci).*
- 
- qemu-ga
-   ~ (/qemu)?(/qga/.*)
-@@ -108,9 +114,6 @@ qemu-ga
- scsi
-   ~ (/qemu)?(/scsi/.*|/hw/scsi/.*|/include/hw/scsi/.*)
- 
--tcg
--  ~ (/qemu)?(/accel/tcg/.*|/replay/.*|/(.*/)?softmmu.*)
--
- trace
-   ~ (/qemu)?(/.*trace.*\.[ch])
- 
-@@ -126,9 +129,27 @@ user
- util
-   ~ (/qemu)?(/util/.*|/include/qemu/.*)
- 
-+vfio
-+  ~ (/qemu)?(/include)?/hw/vfio/.*
-+
-+virtio
-+  ~ (/qemu)?(/include)?/hw/virtio/.*
-+
- xen
-   ~ (/qemu)?(.*/xen.*)
- 
-+hvf
-+  ~ (/qemu)?(.*/hvf.*)
-+
-+kvm
-+  ~ (/qemu)?(.*/kvm.*)
-+
-+tcg
-+  ~ (/qemu)?(/accel/tcg|/replay|/tcg)/.*
-+
-+sysemu
-+  ~ (/qemu)?(/softmmu/.*|/accel/.*)
-+
- (headers)
-   ~ (/qemu)?(/include/.*)
- 
-@@ -137,9 +158,3 @@ testlibs
- 
- tests
-   ~ (/qemu)?(/tests/.*)
--
--loongarch
--  ~ (/qemu)?((/include)?/hw/(loongarch/.*|.*/loongarch.*)|/target/loongarch/.*)
--
--riscv
--  ~ (/qemu)?((/include)?/hw/riscv/.*|/target/riscv/.*|/hw/.*/(riscv_|ibex_|sifive_).*)
+         } else if (s->needs_vpd_bl_emulation && page == 0x00 && r->buflen >= 4) {
+             /*
+              * Now we're capable of supplying the VPD Block Limits
 -- 
 2.40.1
 
