@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0689C7063EB
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 609387063F1
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDGs-0005wk-Je; Wed, 17 May 2023 05:16:34 -0400
+	id 1pzDGu-00067e-3q; Wed, 17 May 2023 05:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzDGl-00056a-NQ; Wed, 17 May 2023 05:16:27 -0400
+ id 1pzDGm-0005LM-U4; Wed, 17 May 2023 05:16:29 -0400
 Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzDGh-0007lT-QA; Wed, 17 May 2023 05:16:27 -0400
+ id 1pzDGi-0007lV-FV; Wed, 17 May 2023 05:16:28 -0400
 Received: from localhost.localdomain (unknown [61.165.33.195])
- by APP-05 (Coremail) with SMTP id zQCowABnVxRam2Rks_XqJQ--.29147S9;
- Wed, 17 May 2023 17:16:16 +0800 (CST)
+ by APP-05 (Coremail) with SMTP id zQCowABnVxRam2Rks_XqJQ--.29147S10;
+ Wed, 17 May 2023 17:16:17 +0800 (CST)
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -26,33 +26,33 @@ Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  richard.henderson@linaro.org, wangjunqiang@iscas.ac.cn,
  lazyparser@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH v6 07/12] target/riscv: Flush TLB when MMWP or MML bits are
- changed
-Date: Wed, 17 May 2023 17:15:14 +0800
-Message-Id: <20230517091519.34439-8-liweiwei@iscas.ac.cn>
+Subject: [PATCH v6 08/12] target/riscv: Update the next rule addr in
+ pmpaddr_csr_write()
+Date: Wed, 17 May 2023 17:15:15 +0800
+Message-Id: <20230517091519.34439-9-liweiwei@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230517091519.34439-1-liweiwei@iscas.ac.cn>
 References: <20230517091519.34439-1-liweiwei@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowABnVxRam2Rks_XqJQ--.29147S9
-X-Coremail-Antispam: 1UD129KBjvdXoWrZF17KF15Zw4DXw4rWw43Awb_yoWftwc_Gr
- WI9F48W3y2gayvvFWrAF1rXw1UW3s5C3sFkFZ3Jr4fKFyjgr4fZ34UKFZ8JryjyanrWrn3
- Zwn7JryUCr1FgjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUbkxFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
- 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAVCq3wA2048vs2
- IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28E
- F7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr
- 1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
- 3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
- IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
- M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
- kIc2xKxwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
- Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
- CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0
- I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
- C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kfnx
- nUUI43ZEXa7VUjXAw3UUUUU==
+X-CM-TRANSID: zQCowABnVxRam2Rks_XqJQ--.29147S10
+X-Coremail-Antispam: 1UD129KBjvJXoW7urWUur4DJw47CF18XF4xZwb_yoW8Zry3pr
+ 4IkFyxKryrt3s8Way3JF1Uuw1rGw45Krn2v3yxC3W09Fs5Xw48CF1qqasxKF1UXrZavryY
+ ka1j9w18AFs29FJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUm014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+ kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+ z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
+ 4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE
+ 3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2I
+ x0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8
+ JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2
+ ka0xkIwI1lc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+ 6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
+ AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE
+ 2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
+ vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVj
+ vjDU0xZFpf9x0JUfl19UUUUU=
 X-Originating-IP: [61.165.33.195]
 X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
 Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
@@ -78,31 +78,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MMWP and MML bits may affect the allowed privs of PMP entries and the
-default privs, both of which may change the allowed privs of exsited
-TLB entries. So we need flush TLB when they are changed.
+Currently only the rule addr of the same index of pmpaddr is updated
+when pmpaddr CSR is modified. However, the rule addr of next PMP entry
+may also be affected if its A field is PMP_AMATCH_TOR. So we should
+also update it in this case.
+
+Write to pmpaddr CSR will not affect the rule nums, So we needn't update
+call pmp_update_rule_nums()  in pmpaddr_csr_write().
 
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/pmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/riscv/pmp.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 666fbb74b9..8cb8519b0c 100644
+index 8cb8519b0c..efe72afe29 100644
 --- a/target/riscv/pmp.c
 +++ b/target/riscv/pmp.c
-@@ -578,6 +578,9 @@ void mseccfg_csr_write(CPURISCVState *env, target_ulong val)
-     if (riscv_cpu_cfg(env)->epmp) {
-         /* Sticky bits */
-         val |= (env->mseccfg & (MSECCFG_MMWP | MSECCFG_MML));
-+        if ((val ^ env->mseccfg) & (MSECCFG_MMWP | MSECCFG_MML)) {
-+            tlb_flush(env_cpu(env));
-+        }
-     } else {
-         val &= ~(MSECCFG_MMWP | MSECCFG_MML | MSECCFG_RLB);
-     }
+@@ -507,6 +507,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
+                        target_ulong val)
+ {
+     trace_pmpaddr_csr_write(env->mhartid, addr_index, val);
++    bool is_next_cfg_tor = false;
+ 
+     if (addr_index < MAX_RISCV_PMPS) {
+         /*
+@@ -515,9 +516,9 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
+          */
+         if (addr_index + 1 < MAX_RISCV_PMPS) {
+             uint8_t pmp_cfg = env->pmp_state.pmp[addr_index + 1].cfg_reg;
++            is_next_cfg_tor = PMP_AMATCH_TOR == pmp_get_a_field(pmp_cfg);
+ 
+-            if (pmp_cfg & PMP_LOCK &&
+-                PMP_AMATCH_TOR == pmp_get_a_field(pmp_cfg)) {
++            if (pmp_cfg & PMP_LOCK && is_next_cfg_tor) {
+                 qemu_log_mask(LOG_GUEST_ERROR,
+                               "ignoring pmpaddr write - pmpcfg + 1 locked\n");
+                 return;
+@@ -526,7 +527,10 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
+ 
+         if (!pmp_is_locked(env, addr_index)) {
+             env->pmp_state.pmp[addr_index].addr_reg = val;
+-            pmp_update_rule(env, addr_index);
++            pmp_update_rule_addr(env, addr_index);
++            if (is_next_cfg_tor) {
++                pmp_update_rule_addr(env, addr_index + 1);
++            }
+         } else {
+             qemu_log_mask(LOG_GUEST_ERROR,
+                           "ignoring pmpaddr write - locked\n");
 -- 
 2.25.1
 
