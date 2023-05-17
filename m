@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED5F70712B
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 20:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C463170719E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 21:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzMCe-0002iU-El; Wed, 17 May 2023 14:48:48 -0400
+	id 1pzMYH-0006yB-IN; Wed, 17 May 2023 15:11:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzMCa-0002hX-Vv
- for qemu-devel@nongnu.org; Wed, 17 May 2023 14:48:46 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pzMYE-0006vV-00
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 15:11:06 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzMCX-000493-NF
- for qemu-devel@nongnu.org; Wed, 17 May 2023 14:48:44 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-510b7b6ef59so2063320a12.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 11:48:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pzMYA-000077-Sf
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 15:11:05 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1ae454844edso9491675ad.1
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 12:11:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684349319; x=1686941319;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=LX9wLiM9yAAxooiKOT7JezegrL3riEfeKVPFQxWEW1s=;
- b=v3bNpEpm2vkifpx5daH8e9ekINYIp/qCWhRBvnfwShWwxJtMAlV9sxKL1/a302K1DE
- iJJDElimGcxGud6NeGPnC0MHw0qsoNt2rYyqYEeEalUslkbRmUQ/m/aBGhutd6r5+tIN
- tIfDHLVz06vvjJFm0jaAintP5mVIkYm1LFiL5st4P91G3Ly0xCA4nJ4IKPDeG9rAjXif
- ZnhSLHWHnKQhPKqi58D8Q1AcWbk/lifjM9buvZYgWyEbfGTYguYBY2PcQmKAoUc1RjO6
- er0Fgy6k+oMfFaiHEidBtrUL3FFbEX7CKatQQJ4XOgj/7zrtfIZOraCHS1HoGruWE6IQ
- THbQ==
+ d=linaro.org; s=google; t=1684350661; x=1686942661;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RbL6qi/wj98SmsSl5gibOn+93osLkjRMxXeX+u0rzsI=;
+ b=GyeI37jsHREd7iT5WzVJNXv1mTFozBScKdRyB795rVinZw+pkf8g9n6f7SFJHEbEL5
+ re3Gr/cQtZjwMEwJxkVC5/vSuvWj67DH6pNVbvNZmW9lCIFyItljgQ1LGevEStJXGBT1
+ AlWPQ3+JbMeJNu7eq6ntsvtVSmThOqmdvPiQFcA/vR0mrGQa8EPKxrwy9qjdC1C/u2IH
+ GYVwxEKQTLXnAaRJeeiXG2OaK9wUhB05lCDhAjkZ4QDFSAOwOguEOqa2giPgbh76uV7s
+ GwI+9yariocBETdrW+PRakyYhKOUbkie1UY8qVc9VyPj9eGoxV/g/QXbqJPZiZ1w27w1
+ XUYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684349319; x=1686941319;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LX9wLiM9yAAxooiKOT7JezegrL3riEfeKVPFQxWEW1s=;
- b=OrxO+I0JaSKMuaZBGOAObAIMnajH5fzqocGUy6pJDJyMPs9wocAhL/1Gqg8MKjo6gR
- na4Oe/gSEA36ffpdKIVEdo+LOUsJ62oSKn90tavUvaj8XTVNKUQ4lsKJ8R1K8EFpl3xp
- 1a91eMzeFql+/ZryoD/Nflt9sASlR09hrvFN85rPNr6EDl7AQPTTqwk/wB/hAvIjnLzp
- XofEiB9/+79JcumfNU7SsqTwPv3OPfs+pE0R7v3In5BzaKTrSjSGp40LrGHcLH2+icRA
- 6rlFErfgfdEy/VyIKX603WsljV2Hy3MY7bW8MFZ3yeGFfK3ARkwXiTBXSevyo2LD95S1
- s2IQ==
-X-Gm-Message-State: AC+VfDyHVFNqFHESE44si+mTmcLesnH94GQnWi9JpWojW+kHffcitI87
- lIzf445dnefMhOLXdX11svMLTRtMhos8fI+RLRVTew==
-X-Google-Smtp-Source: ACHHUZ6FrlQxvWNSQx7KF/xnST80/iS/SbMndbyIenPDI8U2w29V72mqbZhloi/wUYOKT3GpP5eK83zs4oGnXLkKGgI=
-X-Received: by 2002:a50:ee99:0:b0:50b:f7b2:79d0 with SMTP id
- f25-20020a50ee99000000b0050bf7b279d0mr3316507edr.31.1684349319379; Wed, 17
- May 2023 11:48:39 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684350661; x=1686942661;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RbL6qi/wj98SmsSl5gibOn+93osLkjRMxXeX+u0rzsI=;
+ b=Ok8xrDqybq8NUYd8cwgkfPUZReRS4PEdsjFE38O2pavyMsW4xBdKZdD6bzOY1Rac9U
+ vkxfqk5ecfCIic6IywGSvdqrviFuqe0JXUknSLjaK4HzS4fAAu/RIJwk2x7y2kL+5Ulm
+ MbcTmS6392WU2jSKC9jDXMksr4c9JE5RCXHRtxiAmXax4PSNwSgHj7vhm6Y/shw1WKYu
+ yKI1qto3aLDFRo5SOLftlMIT3NiZbGEZ0DyQ5mw5kkZZmDvu1pYSyjNf9mu6+8CDkk//
+ 5dPr+7zyGTKPoLyxX+EHCtDr5UNo0fOny3eXeyeD4V2M2MtIz5wGXqRP/k1tZFAc31Wr
+ HseA==
+X-Gm-Message-State: AC+VfDztwjVe2S0E5+anUa2R7qQ6E6+93axLtwJO4msFXKAA60lHT6F1
+ CkIXCxV61JzuiJOBVxqy3L0M/A==
+X-Google-Smtp-Source: ACHHUZ5+38z8h1j3ok7B6fxZIox1eXgEqwLZDJX/4p4OBbSNCNYSXCpEkGbq4lG3CFHZOvzPWRdAZw==
+X-Received: by 2002:a17:902:6b03:b0:1a6:a1ec:53a3 with SMTP id
+ o3-20020a1709026b0300b001a6a1ec53a3mr40530341plk.3.1684350661291; 
+ Wed, 17 May 2023 12:11:01 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:17a4:1aa0:c49d:e8f7?
+ ([2602:ae:1598:4c01:17a4:1aa0:c49d:e8f7])
+ by smtp.gmail.com with ESMTPSA id
+ k10-20020a170902694a00b001aafa2e212esm17873559plt.52.2023.05.17.12.10.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 May 2023 12:10:59 -0700 (PDT)
+Message-ID: <1d53f391-7fa4-f60d-119c-0cacb14209d6@linaro.org>
+Date: Wed, 17 May 2023 12:10:57 -0700
 MIME-Version: 1.0
-References: <20230517174520.887405-1-pbonzini@redhat.com>
- <20230517174520.887405-64-pbonzini@redhat.com>
-In-Reply-To: <20230517174520.887405-64-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 17 May 2023 19:48:17 +0100
-Message-ID: <CAFEAcA8851_6Ye_sQ-wA85HSzwRTQvMw_Ahmh9E5XafyOwwq_g@mail.gmail.com>
-Subject: Re: [PULL 63/68] configure: remove compiler sanity check
-To: Paolo Bonzini <pbonzini@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PULL 18/18] tested: add test for nested aio_poll() in poll
+ handlers
+Content-Language: en-US
+To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+References: <20230517165116.475123-1-kwolf@redhat.com>
+ <20230517165116.475123-19-kwolf@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230517165116.475123-19-kwolf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.412,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,19 +97,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 May 2023 at 18:50, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> The comment is not correct anymore, in that the usability test for
-> the compiler and linker are done after probing $cpu, and Meson will
-> redo them anyway.
+On 5/17/23 09:51, Kevin Wolf wrote:
+> From: Stefan Hajnoczi <stefanha@redhat.com>
+> 
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Message-Id: <20230502184134.534703-3-stefanha@redhat.com>
+> Tested-by: Kevin Wolf <kwolf@redhat.com>
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>   tests/unit/test-nested-aio-poll.c | 130 ++++++++++++++++++++++++++++++
+>   tests/unit/meson.build            |   1 +
+>   2 files changed, 131 insertions(+)
+>   create mode 100644 tests/unit/test-nested-aio-poll.c
 
-The other thing this check is useful for, though, is
-providing a helpful error message rather than using
-a busted compiler for the other compile checks that
-configure does and then producing a confusing error message
-when some required-item test fails. (I think traditionally
-this was the GLIB_SIZEOF_SIZE_T check, but we may have put
-some other tests before that in the meantime.)
+This new test fails on windows:
 
--- PMM
+https://gitlab.com/qemu-project/qemu/-/jobs/4304413315#L3375
+https://gitlab.com/qemu-project/qemu/-/jobs/4304413313#L3357
+
+
+r~
 
