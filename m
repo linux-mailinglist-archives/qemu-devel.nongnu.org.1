@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC80C70701D
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7C270704C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 20:00:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLGG-0003nS-8y; Wed, 17 May 2023 13:48:28 -0400
+	id 1pzLFu-0003AO-IC; Wed, 17 May 2023 13:48:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLER-000050-9J
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:36 -0400
+ id 1pzLET-00005r-HM
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEN-0004LB-OE
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:35 -0400
+ id 1pzLEQ-0004Lg-OP
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345590;
+ s=mimecast20190719; t=1684345594;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=04MmlIKoOQC2vxWjCqSmC8U6PoC6qnjYxWljRrYw6JI=;
- b=G4cFkgQ+ZApvUocuz829tjuYA2QWl7L13WV8IAGACOtTK6BAiMtQscJ2hTRQiDF1HiEZd5
- ue8cFTRi0Q7IrReiEJA4SMbEsdSJzUY9ibhP7LBlt+Lj1U0OG11zNWTsrZPYJCn+EHlIXy
- EWNeHbwAYmWsrq0xv4LRjRAnH60u8R8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VUI5gP+VGMEuKYZHL551pN3vhWgbV23BFYT1rHteqTM=;
+ b=S5sidhsYN6WgkeOq/+70xDnhjZrTSc8NDKiimd8DM51DnunCbPCLM1Q7dZm4zC6M8yHoE1
+ oc4I59x5E9H0XLWfQRjM/CjF2ufj5i6n8gsCjvQsrpkj6cdIYFhEkB8DQ3G+oSiH1ptvtK
+ 5b13xU4LDw8uHketZDpHObuR07ROTMQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-mtQCqQONMOWv7nmpgY3hiQ-1; Wed, 17 May 2023 13:46:29 -0400
-X-MC-Unique: mtQCqQONMOWv7nmpgY3hiQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f420742d40so4452355e9.2
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:29 -0700 (PDT)
+ us-mta-623-OHKvPI4NMh6vyrkf0RmdNg-1; Wed, 17 May 2023 13:46:32 -0400
+X-MC-Unique: OHKvPI4NMh6vyrkf0RmdNg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3062dedf7d9so752973f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345587; x=1686937587;
+ d=1e100.net; s=20221208; t=1684345591; x=1686937591;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=04MmlIKoOQC2vxWjCqSmC8U6PoC6qnjYxWljRrYw6JI=;
- b=GGv9CmfZljTavOYdHc413GApgps3rcL/DYBo/U4xvkxUfmY/VY6o8tWtGRGoE/KOPf
- GmZn+XH48EOTwZQqkiNqiCA/nnoZhaVtL1uj/wtqqPTPJ+h3PmU2SJYouHcg7sC0wde3
- RiBGRBrLNPmYvy3maW6AMVgBCirvmEz6/VtxaoaBIzEXedrL8KFv3bL3mq8v8OcLiuNY
- dCC0HNVyanfyyUAP5FklgbfesDyBZMrRYvLwpVYAgsccU3t23xWP/pc6b2NX05kRvyAt
- UGwZq5n92SqlXv+O0WUvaChuImQk47lH2s/49Fiz1XKxZGe5B7v6G1suXBFQXq+AVN8L
- Ka8w==
-X-Gm-Message-State: AC+VfDzUPbEv58iUKKyfHwPVdMaoHswznqMxOviiNu+zqWmj7QWF1Lv7
- 7A6iOuK90PRdp5LwggbUMTaoZI47LXNOBsCWMsk27H26INFRWmALtOVeoY3aTS5k5Rw0YuDfmr1
- T1YvJdOc68oOHsn6qrQFT0t04OBRjokVCj4n2bH4oHMp1HdgCY1fx+T5pJUdl7BOtRfx5lJ55JE
- 0=
-X-Received: by 2002:a05:600c:2190:b0:3f4:2b13:f0fb with SMTP id
- e16-20020a05600c219000b003f42b13f0fbmr22790339wme.13.1684345587600; 
- Wed, 17 May 2023 10:46:27 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5IrYAKrofgknQzYm/T01ERVltDYL8Ph/Whs0cw9dBbFysDo33Czss0h031W0oPbuC+MQMTig==
-X-Received: by 2002:a05:600c:2190:b0:3f4:2b13:f0fb with SMTP id
- e16-20020a05600c219000b003f42b13f0fbmr22790326wme.13.1684345587261; 
- Wed, 17 May 2023 10:46:27 -0700 (PDT)
+ bh=VUI5gP+VGMEuKYZHL551pN3vhWgbV23BFYT1rHteqTM=;
+ b=X4lEKUBkgicrssPgd+Y9OEGE58m/B7CcESKKko0e0+qY6/kVIeLiZU+pJTXxmxb9B6
+ Y7qOQ/OYZbIxliIUalLzWdK8Plzif8wbcgLTm9ADnuvhUl5UzkKrYHPGwqCMEc+SLtCv
+ NZmUbeKDL9NJUITUUUVcrLFOoRrYwdtcDFtDG2k0TbZX8Q+SsQ/nBw98yJAj9GV9aPRe
+ 9OFA6ytC6Ey9q61jaVIR+G5yIxU1BpCNfmx8MpQ7SZxi9VdYbBHpwQzKsg6Qypsd6PCq
+ giMlbcxKQltZ/LpX4rcAbrqqdtvAAUE0W7y7ku2HHottscqJZTIvuhRZUimYB7YMENhO
+ paDw==
+X-Gm-Message-State: AC+VfDwVbCNEEQc3um0IVIKAGs61FXsxGykK+qd+39gIuZKalijKz8ti
+ maat27j4EpSCTWqjuYQxowCWZ0zV7/rudyIWUpPEmL6Yejk5hDoKrZ0jcuLuTORZO3qcOsrB/oQ
+ GX5oua3lidcIy/fX2gR4YozFHD6Gf43gRx6EOVwOWj3pq6SF6rDVR3/mfUfF9sh4vjTx6rHkciN
+ U=
+X-Received: by 2002:a5d:6e01:0:b0:2f8:3225:2bc2 with SMTP id
+ h1-20020a5d6e01000000b002f832252bc2mr1145756wrz.41.1684345590882; 
+ Wed, 17 May 2023 10:46:30 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6aAKGWc7z9keuDsu7vgic67FbU9a9ol295noQS6AOur4l/MFnec0T+fOxTAsrzTpkm8fWzWQ==
+X-Received: by 2002:a5d:6e01:0:b0:2f8:3225:2bc2 with SMTP id
+ h1-20020a5d6e01000000b002f832252bc2mr1145740wrz.41.1684345590456; 
+ Wed, 17 May 2023 10:46:30 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- l8-20020a1c7908000000b003f506e6ff83sm2873629wme.22.2023.05.17.10.46.26
+ s13-20020adff80d000000b00307bc4e39e5sm3473093wrp.117.2023.05.17.10.46.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:26 -0700 (PDT)
+ Wed, 17 May 2023 10:46:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>
-Subject: [PULL 39/68] configure: bootstrap sphinx with mkvenv
-Date: Wed, 17 May 2023 19:44:51 +0200
-Message-Id: <20230517174520.887405-40-pbonzini@redhat.com>
+Cc: John Snow <jsnow@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 41/68] Python: Drop support for Python 3.6
+Date: Wed, 17 May 2023 19:44:53 +0200
+Message-Id: <20230517174520.887405-42-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -100,129 +102,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Snow <jsnow@redhat.com>
+Python 3.6 was EOL 2021-12-31. Newer versions of upstream libraries have
+begun dropping support for this version and it is becoming more
+cumbersome to support. Avocado-framework and qemu.qmp each have their
+own reasons for wanting to drop Python 3.6, but won't until QEMU does.
 
-When docs are explicitly requested, require Sphinx>=1.6.0. When docs are
-explicitly disabled, don't bother to check for Sphinx at all. If docs
-are set to "auto", attempt to locate Sphinx, but continue onward if it
-wasn't located.
+Versions of Python available in our supported build platforms as of today,
+with optional versions available in parentheses:
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+openSUSE Leap 15.4: 3.6.15 (3.9.10, 3.10.2)
+CentOS Stream 8:    3.6.8  (3.8.13, 3.9.16)
+CentOS Stream 9:    3.9.13
+Fedora 36:          3.10
+Fedora 37:          3.11
+Debian 11:          3.9.2
+Alpine 3.14, 3.15:  3.9.16
+Alpine 3.16, 3.17:  3.10.10
+Ubuntu 20.04 LTS:   3.8.10
+Ubuntu 22.04 LTS:   3.10.4
+NetBSD 9.3:         3.9.13*
+FreeBSD 12.4:       3.9.16
+FreeBSD 13.1:       3.9.16
+OpenBSD 7.2:        3.9.16
+
+Note: Our VM tests install 3.9 explicitly for FreeBSD and 3.10 for
+NetBSD; the default for "python" or "python3" in FreeBSD is
+3.9.16. NetBSD does not appear to have a default meta-package, but
+offers several options, the lowest of which is 3.7.15. "python39"
+appears to be a pre-requisite to one of the other packages we request in
+tests/vm/netbsd. pip, ensurepip and other Python essentials are
+currently only available for Python 3.10 for NetBSD.
+
+CentOS and OpenSUSE support parallel installation of multiple Python
+interpreters, and binaries in /usr/bin will always use Python 3.6.  However,
+the newly introduced support for virtual environments ensures that all build
+steps that execute QEMU Python code use a single interpreter.
+
+Since it is safe to under our supported platform policy, bump our
+minimum supported version of Python to 3.7.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-Id: <20230511035435.734312-22-jsnow@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-Id: <20230511035435.734312-24-jsnow@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                     | 21 +++++++++++++++++++--
- docs/conf.py                  |  9 ---------
- docs/meson.build              |  2 +-
- meson_options.txt             |  2 --
- scripts/meson-buildoptions.sh |  3 ---
- 5 files changed, 20 insertions(+), 17 deletions(-)
+ configure                      | 10 +++++-----
+ docs/about/build-platforms.rst |  2 +-
+ python/Makefile                | 10 +++++-----
+ python/setup.cfg               |  7 +++----
+ python/tests/minreqs.txt       |  2 +-
+ scripts/qapi/mypy.ini          |  2 +-
+ 6 files changed, 16 insertions(+), 17 deletions(-)
 
 diff --git a/configure b/configure
-index f8308926bbc6..411140a306ff 100755
+index b92da9e6605b..22e31a46d115 100755
 --- a/configure
 +++ b/configure
-@@ -1115,9 +1115,9 @@ fi
+@@ -617,9 +617,9 @@ esac
  
- # Suppress writing compiled files
- python="$python -B"
-+mkvenv="$python ${source_path}/python/scripts/mkvenv.py"
  
--
--if ! $python "${source_path}/python/scripts/mkvenv.py" ensure \
-+if ! $mkvenv ensure \
-      --dir "${source_path}/python/wheels" \
-      --diagnose "meson" \
-      "meson>=0.61.5" ;
-@@ -1132,6 +1132,23 @@ fi
+ check_py_version() {
+-    # We require python >= 3.6.
++    # We require python >= 3.7.
+     # NB: a True python conditional creates a non-zero return code (Failure)
+-    "$1" -c 'import sys; sys.exit(sys.version_info < (3,6))'
++    "$1" -c 'import sys; sys.exit(sys.version_info < (3,7))'
+ }
  
- meson="$(cd pyvenv/bin; pwd)/meson"
+ python=
+@@ -628,7 +628,7 @@ first_python=
+ if test -z "${PYTHON}"; then
+     # A bare 'python' is traditionally python 2.x, but some distros
+     # have it as python 3.x, so check in both places.
+-    for binary in python3 python python3.11 python3.10 python3.9 python3.8 python3.7 python3.6; do
++    for binary in python3 python python3.11 python3.10 python3.9 python3.8 python3.7; do
+         if has "$binary"; then
+             python=$(command -v "$binary")
+             if check_py_version "$python"; then
+@@ -1077,7 +1077,7 @@ then
+     # If first_python is set, there was a binary somewhere even though
+     # it was not suitable.  Use it for the error message.
+     if test -n "$first_python"; then
+-        error_exit "Cannot use '$first_python', Python >= 3.6 is required." \
++        error_exit "Cannot use '$first_python', Python >= 3.7 is required." \
+             "Use --python=/path/to/python to specify a supported Python."
+     else
+         error_exit "Python not found. Use --python=/path/to/python"
+@@ -1090,7 +1090,7 @@ then
+ fi
  
-+# Conditionally ensure Sphinx is installed.
-+
-+if test "$docs" != "disabled" ; then
-+    if ! $mkvenv ensure \
-+         --diagnose "sphinx-build" \
-+         "sphinx>=1.6.0" sphinx-rtd-theme;
-+    then
-+        if test "$docs" = "enabled" ; then
-+            exit 1
-+        fi
-+        echo "Sphinx not found/usable, disabling docs."
-+        docs=disabled
-+    else
-+        docs=enabled
-+    fi
-+fi
-+
- # Probe for ninja
+ if ! check_py_version "$python"; then
+-  error_exit "Cannot use '$python', Python >= 3.6 is required." \
++  error_exit "Cannot use '$python', Python >= 3.7 is required." \
+       "Use --python=/path/to/python to specify a supported Python."
+ fi
  
- if test -z "$ninja"; then
-diff --git a/docs/conf.py b/docs/conf.py
-index 00767b0e24fb..c687ff266301 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -32,15 +32,6 @@
- from distutils.version import LooseVersion
- from sphinx.errors import ConfigError
+diff --git a/docs/about/build-platforms.rst b/docs/about/build-platforms.rst
+index 89cae5a6bb98..0e2cb9e770d5 100644
+--- a/docs/about/build-platforms.rst
++++ b/docs/about/build-platforms.rst
+@@ -98,7 +98,7 @@ Python runtime
+   option of the ``configure`` script to point QEMU to a supported
+   version of the Python runtime.
  
--# Make Sphinx fail cleanly if using an old Python, rather than obscurely
--# failing because some code in one of our extensions doesn't work there.
--# In newer versions of Sphinx this will display nicely; in older versions
--# Sphinx will also produce a Python backtrace but at least the information
--# gets printed...
--if sys.version_info < (3,6):
--    raise ConfigError(
--        "QEMU requires a Sphinx that uses Python 3.6 or better\n")
--
- # The per-manual conf.py will set qemu_docdir for a single-manual build;
- # otherwise set it here if this is an entire-manual-set build.
- # This is always the absolute path of the docs/ directory in the source tree.
-diff --git a/docs/meson.build b/docs/meson.build
-index 6d0986579e17..9040f860ae1a 100644
---- a/docs/meson.build
-+++ b/docs/meson.build
-@@ -1,4 +1,4 @@
--sphinx_build = find_program(get_option('sphinx_build'),
-+sphinx_build = find_program(fs.parent(python.full_path()) / 'sphinx-build',
-                             required: get_option('docs'))
+-  As of QEMU |version|, the minimum supported version of Python is 3.6.
++  As of QEMU |version|, the minimum supported version of Python is 3.7.
  
- # Check if tools are available to build documentation.
-diff --git a/meson_options.txt b/meson_options.txt
-index d8330a1f71e7..a350520f6abf 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -12,8 +12,6 @@ option('pkgversion', type : 'string', value : '',
-        description: 'use specified string as sub-version of the package')
- option('smbd', type : 'string', value : '',
-        description: 'Path to smbd for slirp networking')
--option('sphinx_build', type : 'string', value : 'sphinx-build',
--       description: 'Use specified sphinx-build for building document')
- option('iasl', type : 'string', value : '',
-        description: 'Path to ACPI disassembler')
- option('tls_priority', type : 'string', value : 'NORMAL',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 2805d1c14540..fedb93ada69e 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -57,8 +57,6 @@ meson_options_help() {
-   printf "%s\n" '  --localedir=VALUE        Locale data directory [share/locale]'
-   printf "%s\n" '  --localstatedir=VALUE    Localstate data directory [/var/local]'
-   printf "%s\n" '  --mandir=VALUE           Manual page directory [share/man]'
--  printf "%s\n" '  --sphinx-build=VALUE     Use specified sphinx-build for building document'
--  printf "%s\n" '                           [sphinx-build]'
-   printf "%s\n" '  --sysconfdir=VALUE       Sysconf data directory [etc]'
-   printf "%s\n" '  --tls-priority=VALUE     Default TLS protocol/cipher priority string'
-   printf "%s\n" '                           [NORMAL]'
-@@ -425,7 +423,6 @@ _meson_option_parse() {
-     --disable-sndio) printf "%s" -Dsndio=disabled ;;
-     --enable-sparse) printf "%s" -Dsparse=enabled ;;
-     --disable-sparse) printf "%s" -Dsparse=disabled ;;
--    --sphinx-build=*) quote_sh "-Dsphinx_build=$2" ;;
-     --enable-spice) printf "%s" -Dspice=enabled ;;
-     --disable-spice) printf "%s" -Dspice=disabled ;;
-     --enable-spice-protocol) printf "%s" -Dspice_protocol=enabled ;;
+ Python build dependencies
+   Some of QEMU's build dependencies are written in Python.  Usually these
+diff --git a/python/Makefile b/python/Makefile
+index 47560657d27e..7c70dcc8d144 100644
+--- a/python/Makefile
++++ b/python/Makefile
+@@ -9,14 +9,14 @@ help:
+ 	@echo "make check-minreqs:"
+ 	@echo "    Run tests in the minreqs virtual environment."
+ 	@echo "    These tests use the oldest dependencies."
+-	@echo "    Requires: Python 3.6"
+-	@echo "    Hint (Fedora): 'sudo dnf install python3.6'"
++	@echo "    Requires: Python 3.7"
++	@echo "    Hint (Fedora): 'sudo dnf install python3.7'"
+ 	@echo ""
+ 	@echo "make check-tox:"
+ 	@echo "    Run tests against multiple python versions."
+ 	@echo "    These tests use the newest dependencies."
+-	@echo "    Requires: Python 3.6 - 3.10, and tox."
+-	@echo "    Hint (Fedora): 'sudo dnf install python3-tox python3.10'"
++	@echo "    Requires: Python 3.7 - 3.11, and tox."
++	@echo "    Hint (Fedora): 'sudo dnf install python3-tox python3.11'"
+ 	@echo "    The variable QEMU_TOX_EXTRA_ARGS can be use to pass extra"
+ 	@echo "    arguments to tox".
+ 	@echo ""
+@@ -59,7 +59,7 @@ PIP_INSTALL = pip install --disable-pip-version-check
+ min-venv: $(QEMU_MINVENV_DIR) $(QEMU_MINVENV_DIR)/bin/activate
+ $(QEMU_MINVENV_DIR) $(QEMU_MINVENV_DIR)/bin/activate: setup.cfg tests/minreqs.txt
+ 	@echo "VENV $(QEMU_MINVENV_DIR)"
+-	@python3.6 -m venv $(QEMU_MINVENV_DIR)
++	@python3.7 -m venv $(QEMU_MINVENV_DIR)
+ 	@(								\
+ 		echo "ACTIVATE $(QEMU_MINVENV_DIR)";			\
+ 		. $(QEMU_MINVENV_DIR)/bin/activate;			\
+diff --git a/python/setup.cfg b/python/setup.cfg
+index fc3fae5b1076..55c0993e70b3 100644
+--- a/python/setup.cfg
++++ b/python/setup.cfg
+@@ -14,7 +14,6 @@ classifiers =
+     Natural Language :: English
+     Operating System :: OS Independent
+     Programming Language :: Python :: 3 :: Only
+-    Programming Language :: Python :: 3.6
+     Programming Language :: Python :: 3.7
+     Programming Language :: Python :: 3.8
+     Programming Language :: Python :: 3.9
+@@ -23,7 +22,7 @@ classifiers =
+     Typing :: Typed
+ 
+ [options]
+-python_requires = >= 3.6
++python_requires = >= 3.7
+ packages =
+     qemu.qmp
+     qemu.machine
+@@ -77,7 +76,7 @@ exclude = __pycache__,
+ 
+ [mypy]
+ strict = True
+-python_version = 3.6
++python_version = 3.7
+ warn_unused_configs = True
+ namespace_packages = True
+ warn_unused_ignores = False
+@@ -199,7 +198,7 @@ multi_line_output=3
+ # of python available on your system to run this test.
+ 
+ [tox:tox]
+-envlist = py36, py37, py38, py39, py310, py311
++envlist = py37, py38, py39, py310, py311
+ skip_missing_interpreters = true
+ 
+ [testenv]
+diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
+index 7ecf5e7fe483..10b181d43a6b 100644
+--- a/python/tests/minreqs.txt
++++ b/python/tests/minreqs.txt
+@@ -1,5 +1,5 @@
+ # This file lists the ***oldest possible dependencies*** needed to run
+-# "make check" successfully under ***Python 3.6***. It is used primarily
++# "make check" successfully under ***Python 3.7***. It is used primarily
+ # by GitLab CI to ensure that our stated minimum versions in setup.cfg
+ # are truthful and regularly validated.
+ #
+diff --git a/scripts/qapi/mypy.ini b/scripts/qapi/mypy.ini
+index 662535642974..3463307ddc72 100644
+--- a/scripts/qapi/mypy.ini
++++ b/scripts/qapi/mypy.ini
+@@ -1,7 +1,7 @@
+ [mypy]
+ strict = True
+ disallow_untyped_calls = False
+-python_version = 3.6
++python_version = 3.7
+ 
+ [mypy-qapi.schema]
+ disallow_untyped_defs = False
 -- 
 2.40.1
 
