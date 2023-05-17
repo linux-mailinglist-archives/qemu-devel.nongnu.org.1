@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435BF705E83
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 06:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E49705E91
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 06:10:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz8KB-0003U7-5R; Tue, 16 May 2023 23:59:39 -0400
+	id 1pz8TD-0005NL-8c; Wed, 17 May 2023 00:08:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1pz8K3-0003Tr-6g
- for qemu-devel@nongnu.org; Tue, 16 May 2023 23:59:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1pz8TB-0005Mu-Gy
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 00:08:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1pz8Jx-0001b0-MD
- for qemu-devel@nongnu.org; Tue, 16 May 2023 23:59:29 -0400
+ id 1pz8T7-0003yb-St
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 00:08:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684295964;
+ s=mimecast20190719; t=1684296532;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U16zZLQY2sTXTJ/TPcAZRK1ATEu815kpY+6679hcRzk=;
- b=L6M98RCwMjfy7O9JQ4Y2Y7/ayGqYVitKC/R24btYznwPl5wjQoJXShI5vr0qGhhf7/Avue
- RX1qR2hgTYawHRjFfqgBzMgjKgjUZ8ZlEXEjhn9CBTvua/YJyh7phH0lbSGL+3gJemCxiT
- cBvbHrfLIkegN6WBIw035PqYZiW6CXw=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Btu1VLWEz93nMGVVDHB47gvtBGEHWCIq6c1u+1ru/6o=;
+ b=C2LE63pPe88zShurYKJLzuuQyDHH1d/xe4Yu0RMd4uRJDeHCO6mKENekcc9Wagbc79pKbD
+ SkaPvKpmjJWlh1OWgauz3kv4cKpjvWfhHnzAH0KldmyO+6mHTM04wSKBz6zDv+TVXc4+bD
+ aIoVBeTezeilXbTqtakEk963I+O9MvA=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-383-Og-DUZ1AM5KXe_atJbTw4w-1; Tue, 16 May 2023 23:59:21 -0400
-X-MC-Unique: Og-DUZ1AM5KXe_atJbTw4w-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2ac8165cad0so814151fa.1
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 20:59:20 -0700 (PDT)
+ us-mta-502-xvHXrMT5MemqJCBwq-lQGg-1; Wed, 17 May 2023 00:08:51 -0400
+X-MC-Unique: xvHXrMT5MemqJCBwq-lQGg-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-1aaf5dcd999so4380415ad.1
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 21:08:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684295959; x=1686887959;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=U16zZLQY2sTXTJ/TPcAZRK1ATEu815kpY+6679hcRzk=;
- b=M8Wv0ATMHHqBsRxQKK6r8ryBCJNxQrKhJj5hQu2xVgGkwP6NxfpAEEtvzaVjEJJa1v
- +6KJpHeyZN003E/elZTwFmVr+eNiHxASa4q7T4pq1yZMOHcYabwfTQmwu/XrrBMnUDNm
- OdZjH8L0VB34Y1cq+efkwpHrgJPVJGHctrUipoCBbbWUqZ9AAf+EQRsNsbbUwX/XpQq9
- 0FYKd3HZMe922ISxXyqH21JbghX8O8y7M/xZF4h1Jhk97krE5pLEsVN3sh7OwC1bWnQY
- hMTO94kjSIyskPzrMECUQH58QjZ/LyXYN3q4uzWrnxAc3r6UuLkZqE6Mxj4tLa0snUH6
- BJGA==
-X-Gm-Message-State: AC+VfDzY3AbRI3U+wkrX1+amVWmcLcBXaez9Llkc+Dw4Btk3FfLrncTn
- 4UgLQtOszTDPR5nPiCti7nShSqlZ6j0HQ5WKo5NAIviYDkFCroSYAif1J33zkmPVb/cTbSq+TN2
- +scLLaJ5nf2BYXnB6BtafLHFrhXGydUU=
-X-Received: by 2002:a2e:7203:0:b0:2a8:a89c:bee0 with SMTP id
- n3-20020a2e7203000000b002a8a89cbee0mr8317189ljc.11.1684295959493; 
- Tue, 16 May 2023 20:59:19 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5VQNjFASOaDLXGdoePfD+C6io4/ZaLBehXZpnOxEDcZDFxi4ty19tmYXz6hJgPIanDkbI0M93ejf2bpxObY98=
-X-Received: by 2002:a2e:7203:0:b0:2a8:a89c:bee0 with SMTP id
- n3-20020a2e7203000000b002a8a89cbee0mr8317174ljc.11.1684295959067; Tue, 16 May
- 2023 20:59:19 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684296530; x=1686888530;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Btu1VLWEz93nMGVVDHB47gvtBGEHWCIq6c1u+1ru/6o=;
+ b=N9V85glyzFFDvL0ucgvc2PacJk2XyKDk2vjYGxrT8PfDan7gNchTnz6HUBBLnoalNR
+ WU1OOoPS4Ml1yqZB61he37L2eppAPO49yra8e9Ff+Osk5G5+n0dqOugGWQ2I+dIjFCnI
+ EGougJvDxcNwpq/i67OLDZHL8ZQn5MZqa6q89gfP+v6oFiXqail89lInoDEoWz1mzJ18
+ 4V1Yoyahh0DJcJLRJzK5AQiAxq23OgxxvgY5uFFyWfAMRq7VHv4hKjJFhviEMe0YtqF0
+ MH8nkmia08RYstYe86uIObmwBBM6JlpFATanDaDMtHs9GwUOlAvd9MTMrSWsCPdAo/ak
+ 2Upg==
+X-Gm-Message-State: AC+VfDy5BBi7Qvoy6wE7rrTHJrZnIuWil5mawSqVmiFxmueZMGCYIrnW
+ QLnLijDUFupMSJZ7PUxe2gFFcGlOhS67wUN7U8XFiwWQLYDT5R+Djp7xzdNxC4JBJLOxSfpa107
+ z+5ZBIeuSUBQ66VM=
+X-Received: by 2002:a17:902:d48d:b0:1ac:8835:b89b with SMTP id
+ c13-20020a170902d48d00b001ac8835b89bmr38768689plg.5.1684296529970; 
+ Tue, 16 May 2023 21:08:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7EwqeT+wp8EdZgPQHyIz6Fi0Kcz4hFf9LO58GZz+BFsi/RgTR8OPK13V0eCU5Mnq1byXfMjQ==
+X-Received: by 2002:a17:902:d48d:b0:1ac:8835:b89b with SMTP id
+ c13-20020a170902d48d00b001ac8835b89bmr38768673plg.5.1684296529590; 
+ Tue, 16 May 2023 21:08:49 -0700 (PDT)
+Received: from [10.72.12.65] ([209.132.188.80])
+ by smtp.gmail.com with ESMTPSA id
+ ha2-20020a17090af3c200b00250c753b889sm428908pjb.23.2023.05.16.21.08.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 May 2023 21:08:49 -0700 (PDT)
+Message-ID: <78ff94f4-ca26-dbab-f4c9-25b1e4889aab@redhat.com>
+Date: Wed, 17 May 2023 12:08:44 +0800
 MIME-Version: 1.0
-References: <20230509154435.1410162-1-eperezma@redhat.com>
- <20230509154435.1410162-6-eperezma@redhat.com>
-In-Reply-To: <20230509154435.1410162-6-eperezma@redhat.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH v2] vhost: fix possible wrap in SVQ descriptor ring
+Content-Language: en-US
+To: Hawkins Jiawei <yin31149@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>
+Cc: 18801353760@163.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+References: <20230509084817.3973-1-yin31149@gmail.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 17 May 2023 11:59:07 +0800
-Message-ID: <CACGkMEvujW-VFhrxk8FD0d76UeT0Q3osYC5odqMHntwoTHmizA@mail.gmail.com>
-Subject: Re: [PATCH v3 5/5] vdpa: move CVQ isolation check to
- net_init_vhost_vdpa
-To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, Parav Pandit <parav@mellanox.com>, 
- Zhu Lingshan <lingshan.zhu@intel.com>, longpeng2@huawei.com, 
- Stefano Garzarella <sgarzare@redhat.com>, Gautam Dawar <gdawar@xilinx.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Harpreet Singh Anand <hanand@xilinx.com>, alvaro.karsz@solid-run.com, 
- Liuxiangdong <liuxiangdong5@huawei.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- si-wei.liu@oracle.com, 
- Shannon Nelson <snelson@pensando.io>, Lei Yang <leiyang@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Cindy Lu <lulu@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+In-Reply-To: <20230509084817.3973-1-yin31149@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-2.666, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,341 +103,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 9, 2023 at 11:44=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redhat=
-.com> wrote:
->
-> Evaluating it at start time instead of initialization time may make the
-> guest capable of dynamically adding or removing migration blockers.
->
-> Also, moving to initialization reduces the number of ioctls in the
-> migration, reducing failure possibilities.
->
-> As a drawback we need to check for CVQ isolation twice: one time with no
-> MQ negotiated and another one acking it, as long as the device supports
-> it.  This is because Vring ASID / group management is based on vq
-> indexes, but we don't know the index of CVQ before negotiating MQ.
->
-> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> ---
-> v2: Take out the reset of the device from vhost_vdpa_cvq_is_isolated
-> v3: Only record cvq_isolated, true if the device have cvq isolated in
->     both !MQ and MQ configurations.
-> ---
->  net/vhost-vdpa.c | 178 +++++++++++++++++++++++++++++++++++------------
->  1 file changed, 135 insertions(+), 43 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 3fb833fe76..29054b77a9 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -43,6 +43,10 @@ typedef struct VhostVDPAState {
->
->      /* The device always have SVQ enabled */
->      bool always_svq;
-> +
-> +    /* The device can isolate CVQ in its own ASID */
-> +    bool cvq_isolated;
-> +
->      bool started;
->  } VhostVDPAState;
->
-> @@ -362,15 +366,8 @@ static NetClientInfo net_vhost_vdpa_info =3D {
->          .check_peer_type =3D vhost_vdpa_check_peer_type,
->  };
->
-> -/**
-> - * Get vring virtqueue group
-> - *
-> - * @device_fd  vdpa device fd
-> - * @vq_index   Virtqueue index
-> - *
-> - * Return -errno in case of error, or vq group if success.
-> - */
-> -static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_ind=
-ex)
-> +static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_ind=
-ex,
-> +                                          Error **errp)
->  {
->      struct vhost_vring_state state =3D {
->          .index =3D vq_index,
-> @@ -379,8 +376,7 @@ static int64_t vhost_vdpa_get_vring_group(int device_=
-fd, unsigned vq_index)
->
->      if (unlikely(r < 0)) {
->          r =3D -errno;
-> -        error_report("Cannot get VQ %u group: %s", vq_index,
-> -                     g_strerror(errno));
-> +        error_setg_errno(errp, errno, "Cannot get VQ %u group", vq_index=
-);
->          return r;
->      }
->
-> @@ -480,9 +476,9 @@ static int vhost_vdpa_net_cvq_start(NetClientState *n=
-c)
->  {
->      VhostVDPAState *s, *s0;
->      struct vhost_vdpa *v;
-> -    uint64_t backend_features;
->      int64_t cvq_group;
-> -    int cvq_index, r;
-> +    int r;
-> +    Error *err =3D NULL;
->
->      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
->
-> @@ -502,41 +498,22 @@ static int vhost_vdpa_net_cvq_start(NetClientState =
-*nc)
->      /*
->       * If we early return in these cases SVQ will not be enabled. The mi=
-gration
->       * will be blocked as long as vhost-vdpa backends will not offer _F_=
-LOG.
-> -     *
-> -     * Calling VHOST_GET_BACKEND_FEATURES as they are not available in v=
-->dev
-> -     * yet.
->       */
-> -    r =3D ioctl(v->device_fd, VHOST_GET_BACKEND_FEATURES, &backend_featu=
-res);
-> -    if (unlikely(r < 0)) {
-> -        error_report("Cannot get vdpa backend_features: %s(%d)",
-> -            g_strerror(errno), errno);
-> -        return -1;
-> +    if (!vhost_vdpa_net_valid_svq_features(v->dev->features, NULL)) {
-> +        return 0;
->      }
-> -    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID)) ||
-> -        !vhost_vdpa_net_valid_svq_features(v->dev->features, NULL)) {
-> +
-> +    if (!s->cvq_isolated) {
->          return 0;
->      }
->
-> -    /*
-> -     * Check if all the virtqueues of the virtio device are in a differe=
-nt vq
-> -     * than the last vq. VQ group of last group passed in cvq_group.
-> -     */
-> -    cvq_index =3D v->dev->vq_index_end - 1;
-> -    cvq_group =3D vhost_vdpa_get_vring_group(v->device_fd, cvq_index);
-> +    cvq_group =3D vhost_vdpa_get_vring_group(v->device_fd,
-> +                                           v->dev->vq_index_end - 1,
-> +                                           &err);
->      if (unlikely(cvq_group < 0)) {
-> +        error_report_err(err);
->          return cvq_group;
->      }
-> -    for (int i =3D 0; i < cvq_index; ++i) {
-> -        int64_t group =3D vhost_vdpa_get_vring_group(v->device_fd, i);
-> -
-> -        if (unlikely(group < 0)) {
-> -            return group;
-> -        }
-> -
-> -        if (group =3D=3D cvq_group) {
-> -            return 0;
-> -        }
-> -    }
->
->      r =3D vhost_vdpa_set_address_space_id(v, cvq_group, VHOST_VDPA_NET_C=
-VQ_ASID);
->      if (unlikely(r < 0)) {
-> @@ -799,6 +776,111 @@ static const VhostShadowVirtqueueOps vhost_vdpa_net=
-_svq_ops =3D {
->      .avail_handler =3D vhost_vdpa_net_handle_ctrl_avail,
->  };
->
-> +/**
-> + * Probe the device to check control virtqueue is isolated.
-> + *
-> + * @device_fd vhost-vdpa file descriptor
-> + * @features features to negotiate
-> + * @cvq_index Control vq index
-> + *
-> + * Returns -1 in case of error, 0 if false and 1 if true
-> + */
-> +static int vhost_vdpa_cvq_is_isolated(int device_fd, uint64_t features,
-> +                                      unsigned cvq_index, Error **errp)
-> +{
-> +    int64_t cvq_group;
-> +    int r;
-> +
-> +    r =3D vhost_vdpa_set_dev_features_fd(device_fd, features);
-> +    if (unlikely(r < 0)) {
-> +        error_setg_errno(errp, -r, "Cannot set device features");
-> +        return r;
-> +    }
-> +
-> +    cvq_group =3D vhost_vdpa_get_vring_group(device_fd, cvq_index, errp)=
-;
-> +    if (unlikely(cvq_group < 0)) {
-> +        return cvq_group;
-> +    }
-> +
-> +    for (int i =3D 0; i < cvq_index; ++i) {
-> +        int64_t group =3D vhost_vdpa_get_vring_group(device_fd, i, errp)=
-;
-> +
-> +        if (unlikely(group < 0)) {
-> +            return group;
-> +        }
-> +
-> +        if (group =3D=3D (int64_t)cvq_group) {
-> +            return 0;
-> +        }
-> +    }
-> +
-> +    return 1;
-> +}
-> +
-> +/**
-> + * Probe if CVQ is isolated when the device is MQ and when it is not MQ
-> + *
-> + * @device_fd         The vdpa device fd
-> + * @features          Features offered by the device.
-> + * @cvq_index         The control vq index if mq is negotiated. Ignored
-> + *                    otherwise.
-> + *
-> + * Returns <0 in case of failure, 0 if false and 1 if true.
-> + */
-> +static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t featur=
-es,
-> +                                          int cvq_index, Error **errp)
-> +{
-> +    uint64_t backend_features;
-> +    int r;
-> +
-> +    ERRP_GUARD();
-> +
-> +    r =3D ioctl(device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features=
-);
-> +    if (unlikely(r < 0)) {
-> +        error_setg_errno(errp, errno, "Cannot get vdpa backend_features"=
-);
-> +        return r;
-> +    }
-> +
-> +    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID))) {
-> +        return 0;
-> +    }
-> +
-> +    r =3D vhost_vdpa_cvq_is_isolated(device_fd,
-> +                                   features & ~BIT_ULL(VIRTIO_NET_F_MQ),=
- 2,
-> +                                   errp);
-> +    if (unlikely(r < 0)) {
-> +        if (r !=3D -ENOTSUP) {
-> +            return r;
-> +        }
-> +
-> +        /*
-> +         * The kernel report VHOST_BACKEND_F_IOTLB_ASID if the vdpa fron=
-tend
-> +         * support ASID even if the parent driver does not.  The CVQ can=
-not be
-> +         * isolated in this case.
-> +         */
-> +        error_free(*errp);
-> +        *errp =3D NULL;
-> +        return 0;
-> +    }
-> +
-> +    if (r =3D=3D 0) {
-> +        return 0;
-> +    }
-> +
-> +    vhost_vdpa_reset_status_fd(device_fd);
-> +    if (!(features & BIT_ULL(VIRTIO_NET_F_MQ))) {
-> +        return 0;
-> +    }
-> +
-> +    r =3D vhost_vdpa_cvq_is_isolated(device_fd, features, cvq_index * 2,=
- errp);
 
-I think checking this once should be sufficient. That is to say, it
-should be a bug if there's hardware that puts cvq in a dedicated group
-in MQ but not in SQ.
+在 2023/5/9 16:48, Hawkins Jiawei 写道:
+> QEMU invokes vhost_svq_add() when adding a guest's element
+> into SVQ. In vhost_svq_add(), it uses vhost_svq_available_slots()
+> to check whether QEMU can add the element into SVQ. If there is
+> enough space, then QEMU combines some out descriptors and some
+> in descriptors into one descriptor chain, and adds it into
+> `svq->vring.desc` by vhost_svq_vring_write_descs().
+>
+> Yet the problem is that, `svq->shadow_avail_idx - svq->shadow_used_idx`
+> in vhost_svq_available_slots() returns the number of occupied elements,
+> or the number of descriptor chains, instead of the number of occupied
+> descriptors, which may cause wrapping in SVQ descriptor ring.
+>
+> Here is an example. In vhost_handle_guest_kick(), QEMU forwards
+> as many available buffers to device by virtqueue_pop() and
+> vhost_svq_add_element(). virtqueue_pop() returns a guest's element,
+> and then this element is added into SVQ by vhost_svq_add_element(),
+> a wrapper to vhost_svq_add(). If QEMU invokes virtqueue_pop() and
+> vhost_svq_add_element() `svq->vring.num` times,
+> vhost_svq_available_slots() thinks QEMU just ran out of slots and
+> everything should work fine. But in fact, virtqueue_pop() returns
+> `svq->vring.num` elements or descriptor chains, more than
+> `svq->vring.num` descriptors due to guest memory fragmentation,
+> and this causes wrapping in SVQ descriptor ring.
+>
+> This bug is valid even before marking the descriptors used.
+> If the guest memory is fragmented, SVQ must add chains
+> so it can try to add more descriptors than possible.
+>
+> This patch solves it by adding `num_free` field in
+> VhostShadowVirtqueue structure and updating this field
+> in vhost_svq_add() and vhost_svq_get_buf(), to record
+> the number of free descriptors.
+>
+> Fixes: 100890f7ca ("vhost: Shadow virtqueue buffers forwarding")
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> Acked-by: Eugenio Pérez <eperezma@redhat.com>
+
+
+Acked-by: Jason Wang <jasowang@redhat.com>
 
 Thanks
 
-> +    if (unlikely(r < 0)) {
-> +        return r;
-> +    }
-> +
-> +    vhost_vdpa_reset_status_fd(device_fd);
-> +    return r;
-> +}
-> +
->  static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
->                                         const char *device,
->                                         const char *name,
-> @@ -808,16 +890,25 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
-tState *peer,
->                                         bool is_datapath,
->                                         bool svq,
->                                         struct vhost_vdpa_iova_range iova=
-_range,
-> -                                       uint64_t features)
-> +                                       uint64_t features,
-> +                                       Error **errp)
->  {
->      NetClientState *nc =3D NULL;
->      VhostVDPAState *s;
->      int ret =3D 0;
->      assert(name);
-> +    int cvq_isolated;
-> +
->      if (is_datapath) {
->          nc =3D qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
->                                   name);
->      } else {
-> +        cvq_isolated =3D vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, =
-features,
-> +                                                      queue_pair_index, =
-errp);
-> +        if (unlikely(cvq_isolated < 0)) {
-> +            return NULL;
-> +        }
-> +
->          nc =3D qemu_new_net_control_client(&net_vhost_vdpa_cvq_info, pee=
-r,
->                                           device, name);
->      }
-> @@ -844,6 +935,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientS=
-tate *peer,
+
+> ---
+> v2:
+>    - update the commit message
+>    - remove the unnecessary comment
+>    - add the Acked-by tag
 >
->          s->vhost_vdpa.shadow_vq_ops =3D &vhost_vdpa_net_svq_ops;
->          s->vhost_vdpa.shadow_vq_ops_opaque =3D s;
-> +        s->cvq_isolated =3D cvq_isolated;
+> v1: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg01727.html
 >
->          /*
->           * TODO: We cannot migrate devices with CVQ as there is no way t=
-o set
-> @@ -972,7 +1064,7 @@ int net_init_vhost_vdpa(const Netdev *netdev, const =
-char *name,
->      for (i =3D 0; i < queue_pairs; i++) {
->          ncs[i] =3D net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
->                                       vdpa_device_fd, i, 2, true, opts->x=
-_svq,
-> -                                     iova_range, features);
-> +                                     iova_range, features, errp);
->          if (!ncs[i])
->              goto err;
->      }
-> @@ -980,7 +1072,7 @@ int net_init_vhost_vdpa(const Netdev *netdev, const =
-char *name,
->      if (has_cvq) {
->          nc =3D net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
->                                   vdpa_device_fd, i, 1, false,
-> -                                 opts->x_svq, iova_range, features);
-> +                                 opts->x_svq, iova_range, features, errp=
-);
->          if (!nc)
->              goto err;
->      }
-> --
-> 2.31.1
+>   hw/virtio/vhost-shadow-virtqueue.c | 5 ++++-
+>   hw/virtio/vhost-shadow-virtqueue.h | 3 +++
+>   2 files changed, 7 insertions(+), 1 deletion(-)
 >
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+> index 8361e70d1b..bd7c12b6d3 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.c
+> +++ b/hw/virtio/vhost-shadow-virtqueue.c
+> @@ -68,7 +68,7 @@ bool vhost_svq_valid_features(uint64_t features, Error **errp)
+>    */
+>   static uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq)
+>   {
+> -    return svq->vring.num - (svq->shadow_avail_idx - svq->shadow_used_idx);
+> +    return svq->num_free;
+>   }
+>   
+>   /**
+> @@ -263,6 +263,7 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
+>           return -EINVAL;
+>       }
+>   
+> +    svq->num_free -= ndescs;
+>       svq->desc_state[qemu_head].elem = elem;
+>       svq->desc_state[qemu_head].ndescs = ndescs;
+>       vhost_svq_kick(svq);
+> @@ -449,6 +450,7 @@ static VirtQueueElement *vhost_svq_get_buf(VhostShadowVirtqueue *svq,
+>       last_used_chain = vhost_svq_last_desc_of_chain(svq, num, used_elem.id);
+>       svq->desc_next[last_used_chain] = svq->free_head;
+>       svq->free_head = used_elem.id;
+> +    svq->num_free += num;
+>   
+>       *len = used_elem.len;
+>       return g_steal_pointer(&svq->desc_state[used_elem.id].elem);
+> @@ -659,6 +661,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
+>       svq->iova_tree = iova_tree;
+>   
+>       svq->vring.num = virtio_queue_get_num(vdev, virtio_get_queue_index(vq));
+> +    svq->num_free = svq->vring.num;
+>       driver_size = vhost_svq_driver_area_size(svq);
+>       device_size = vhost_svq_device_area_size(svq);
+>       svq->vring.desc = qemu_memalign(qemu_real_host_page_size(), driver_size);
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
+> index 926a4897b1..6efe051a70 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.h
+> +++ b/hw/virtio/vhost-shadow-virtqueue.h
+> @@ -107,6 +107,9 @@ typedef struct VhostShadowVirtqueue {
+>   
+>       /* Next head to consume from the device */
+>       uint16_t last_used_idx;
+> +
+> +    /* Size of SVQ vring free descriptors */
+> +    uint16_t num_free;
+>   } VhostShadowVirtqueue;
+>   
+>   bool vhost_svq_valid_features(uint64_t features, Error **errp);
 
 
