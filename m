@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22647069D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 15:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CC8706A3F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 15:56:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzHDd-0007Ak-D4; Wed, 17 May 2023 09:29:29 -0400
+	id 1pzHcN-0005an-JP; Wed, 17 May 2023 09:55:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1pzHDb-0007Ac-Rj
- for qemu-devel@nongnu.org; Wed, 17 May 2023 09:29:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1pzHcI-0005aF-PN
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 09:54:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1pzHDa-0003DS-2C
- for qemu-devel@nongnu.org; Wed, 17 May 2023 09:29:27 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1pzHcH-0008EP-8B
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 09:54:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684330165;
+ s=mimecast20190719; t=1684331695;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Z0HjJBZfFbalmQk+/E5s2NCc60wE7ImQMAqU0QQPPLk=;
- b=H547RlJH25v4I8udxCQpeO9LBnsreyczmv+mZpbHWDJSoy/W3GlxitEy+3jTEr+hc0K+Oy
- 5StDb5kHs6w5wSySKcSaGL78hHxT0Z04R2otLLB5r9Qq6rqhwjKc0cCqoRBfq+VDuNrTJF
- q5u+E4pN8Ifz8pEwennPBe9/VxLU13Y=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-KJ05zuFgMYqf9byFYW2U_A-1; Wed, 17 May 2023 09:29:23 -0400
-X-MC-Unique: KJ05zuFgMYqf9byFYW2U_A-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-50bc46a14e8so765387a12.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 06:29:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684330162; x=1686922162;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Z0HjJBZfFbalmQk+/E5s2NCc60wE7ImQMAqU0QQPPLk=;
- b=QRt8hUiHjsyW4+CVslO53QacPYv3MIo1V1AiGS+kR27SEteIh08aWim9N2afnw+wU5
- zw6URTLpJGRXRDEk/SS3+YbpJxfxDRwR5l3MOuuQtHUQzse8awp/wI5chiTJkqwzcIcw
- ZfK8a8AbeVv2/Cw5bCnZpG0cc/t3pNu5klHhzqlrSt4zxEkoMnmv70nN8BJkfHeTF9Ws
- 4qASq9CljIZr9GorCRa8YDJyPxHA6ee4KwInUCTsi4OFUbqN5oZpFg0YlwzUcTJRHahP
- PH4lL/PyMj98kDFfCPTh5Y8JAcBumZf8qmeXXGnewfXVTfbVpzxpRybLulIPxvxjMEH0
- uXWA==
-X-Gm-Message-State: AC+VfDxRARPSmhfHW6FWIoaOTUBdJm6eQwqcZGApzPf2pdZKfjhVp40t
- tzGGihBZ71I5rxZNfO5IRRAb9SjMbuDUvp8cSx0vsXqOX0U60xJ+uhPik9k9lnKHTWaDITp9yy6
- DE7gFq+x7LW3T83A=
-X-Received: by 2002:aa7:d31a:0:b0:510:b4d0:251c with SMTP id
- p26-20020aa7d31a000000b00510b4d0251cmr1984029edq.17.1684330162611; 
- Wed, 17 May 2023 06:29:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7rHh5W3BaXnG4a/1la7/0OZkCEZj1GnIvCa5MBJrqEU4PnMPAI5yqCYk5xvfm4xsBDlpvjCw==
-X-Received: by 2002:aa7:d31a:0:b0:510:b4d0:251c with SMTP id
- p26-20020aa7d31a000000b00510b4d0251cmr1983999edq.17.1684330162108; 
- Wed, 17 May 2023 06:29:22 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- c7-20020aa7d607000000b0050bfeb15049sm9202108edr.60.2023.05.17.06.29.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 06:29:21 -0700 (PDT)
-Date: Wed, 17 May 2023 15:29:20 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, michael.roth@amd.com, jsnow@redhat.com,
- richard.henderson@linaro.org
-Subject: Re: [PATCH] qapi/parser: Drop two bad type hints for now
-Message-ID: <20230517152920.020dfa81@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230517061600.1782455-1-armbru@redhat.com>
-References: <20230517061600.1782455-1-armbru@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=zoNCTvZXlyoHJ7dp3jNqxbYL1C/OljOwT6rBlOqaG+U=;
+ b=abOWaRrpxbR0aYblVRPrbh/BMQOBKIA+6qdj/92vUFIVih5xY/Xo2ZXERDvKpdUM/SD9EK
+ Gq72XA29qmJl9b+tvRqVyfzug4zKlywBsG0NP1uiS2fzai6TopR3hr/3WR3OYNHbyG+zbE
+ 2hZJYR+otBChtMv58IET2BrEXMlRe1I=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-184-dIMAFz7eMmqtAdbA8ojplg-1; Wed, 17 May 2023 09:54:52 -0400
+X-MC-Unique: dIMAFz7eMmqtAdbA8ojplg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1769D280D598;
+ Wed, 17 May 2023 13:54:52 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.42.28.60])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8C674492C3F;
+ Wed, 17 May 2023 13:54:50 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/5] gitlab: improvements to handling of stable staging
+ branches
+Date: Wed, 17 May 2023 14:54:43 +0100
+Message-Id: <20230517135448.262483-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,41 +81,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 May 2023 08:16:00 +0200
-Markus Armbruster <armbru@redhat.com> wrote:
+We just (re)discovered that our gitlab rules don't work nicely with
+pipelines running from stable staging branches. Every pipeline gets
+published with the 'latest' tag, whether its the main staging branch
+or one of the stable staging branches. If pipelines for multiple
+staging branches run concurrently they'll get very confused and end
+up using the wrong container content. eg a 8.0 stable job will get
+run with a container from the development branch, or vica-verca.
 
-> Two type hints fail centos-stream-8-x86_64 CI.  They are actually
-> broken.  Changing them to Optional[re.Match[str]] fixes them locally
-> for me, but then CI fails differently.  Drop them for now.
-> 
-> Fixes: 3e32dca3f0d1 (qapi: Rewrite parsing of doc comment section symbols and tags)
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+With this series we dynamically change the tag so that the 'staging'
+branch still uses 'latest', but the stable 'staging-X.Y' branaches
+use a 'staging-X-Y' container tag.
 
-Fixes build failure for me on RHEL8
+We also let the container tag be set explicitly via the new variable
 
-Tested-by: Igor Mammedov <imammedo@redhat.com>
+  QEMU_CI_CONTAINER_TAG
 
-> ---
->  scripts/qapi/parser.py | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-> index 4923a59d60..1ff334e6a8 100644
-> --- a/scripts/qapi/parser.py
-> +++ b/scripts/qapi/parser.py
-> @@ -563,11 +563,11 @@ def end_comment(self) -> None:
->          self._switch_section(QAPIDoc.NullSection(self._parser))
->  
->      @staticmethod
-> -    def _match_at_name_colon(string: str) -> re.Match:
-> +    def _match_at_name_colon(string: str):
->          return re.match(r'@([^:]*): *', string)
->  
->      @staticmethod
-> -    def _match_section_tag(string: str) -> re.Match:
-> +    def _match_section_tag(string: str):
->          return re.match(r'(Returns|Since|Notes?|Examples?|TODO): *', string)
->  
->      def _append_body_line(self, line: str) -> None:
+to facilitate CI testing, the new variable
+
+  QEMU_CI_UPSTREAM
+
+can be set to the fork namespace, to allow contributors to run a
+pipeline as if their fork were upstream.
+
+Finally 'QEMU_CI=1' is also made to work in upstream, so that it is
+possible to re-run selective jobs on staging branches.
+
+Daniel P. Berrangé (5):
+  gitlab: centralize the container tag name
+  gitlab: allow overriding name of the upstream repository
+  gitlab: stable staging branches publish containers in a separate tag
+  gitlab: avoid extra pipelines for tags and stable branches
+  gitlab: support disabling job auto-run in upstream
+
+ .gitlab-ci.d/base.yml                | 63 ++++++++++++++++++++++++----
+ .gitlab-ci.d/buildtest-template.yml  |  4 +-
+ .gitlab-ci.d/buildtest.yml           |  4 +-
+ .gitlab-ci.d/container-template.yml  |  3 +-
+ .gitlab-ci.d/crossbuild-template.yml |  6 +--
+ .gitlab-ci.d/static_checks.yml       |  4 +-
+ docs/devel/ci-jobs.rst.inc           | 11 +++++
+ 7 files changed, 78 insertions(+), 17 deletions(-)
+
+-- 
+2.40.1
 
 
