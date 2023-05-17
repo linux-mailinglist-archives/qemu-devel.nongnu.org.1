@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473B8707024
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C3C707002
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:52:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLFj-0002Wy-Es; Wed, 17 May 2023 13:47:55 -0400
+	id 1pzLF8-00029X-DP; Wed, 17 May 2023 13:47:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLEV-00007G-LO
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:40 -0400
+ id 1pzLEY-0000Jn-A6
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLES-0004ME-QP
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:38 -0400
+ id 1pzLEW-0004NO-Nj
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345595;
+ s=mimecast20190719; t=1684345600;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=550I0xQYvIiLjv/UoYMa94GFX66P9Jea4TA9rxktSMU=;
- b=GevTjJH9F2I4SyV3Hz3FeW1AmMJ4x4zeGfFXHJLTBXkaJdB4nQEHvyczqs0eENipV60pU/
- cHvJS/p3e5BpGnmE4mPHJZ5KNhdXQ9DIwfe9zOqZ9cx33MAHoX9K92sflzJKUPzaFc5Brz
- Rp8kSTLf/fIMXa6LHoRhi32pn0dCIwQ=
+ bh=zJN2jANxJFA4WG6/RjjsAlRU9ohw2knjG165asZhq/Q=;
+ b=L7+aquQoJyFaJThQe7m215qtu5keHy/Wl5G8XcvMHh8beqDOZa01oOoNGPRBHwDCAB2k5f
+ WHw7zLFKud8ZRLTIlbbnRwmGk9JaECQk82XnARCpY2S13I3OlBb6+6rKfLCIP0jYmnR8Gp
+ 8BZGmNpRA1/9ywFe13JWytMkh4HSdRo=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-322-5QXc-1RYNF6JZ9IEVVSkBg-1; Wed, 17 May 2023 13:46:33 -0400
-X-MC-Unique: 5QXc-1RYNF6JZ9IEVVSkBg-1
+ us-mta-8-t4SnR1jiPFaoFv6F82LmuQ-1; Wed, 17 May 2023 13:46:37 -0400
+X-MC-Unique: t4SnR1jiPFaoFv6F82LmuQ-1
 Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30940b01998so428993f8f.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:33 -0700 (PDT)
+ ffacd0b85a97d-30479b764f9so451450f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345592; x=1686937592;
+ d=1e100.net; s=20221208; t=1684345595; x=1686937595;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=550I0xQYvIiLjv/UoYMa94GFX66P9Jea4TA9rxktSMU=;
- b=P3ggUi//21IrUWHLoZ3XpFtFxvaZj8NdaYefilQY88hkE6eMGINEx/C+F3NMppEJMD
- aPHyuM56jbL9rWlKDN1xkQrMKCBzftmoIRPtcvd/UTu5NFqK9TlP4roT4xIOgGF1mhdk
- UUZ1PhaAUM7cHdOoIifNCKUV9IBMoXhkdXezhC/CCAiOxxV4b8tHkVeuei6kypgVzRCC
- u/J2NzaIXT1cYIEVZWF1kgGCnfhP56YjjbMT3jfyajAp9vmueZo1XlPAvlp1MuHmQ5vo
- IyGAbzAobxmgiqu61muChZJ+LeWjHOY2/6wS4jfrUS6i0f3x5AslNkrVrD/Hg60aci4d
- B0cA==
-X-Gm-Message-State: AC+VfDwU0lZAIJhshNHjeBoNvwQFENswN/uc2xFqj1Kr3T3xjQcKIKqg
- 4h6HB6DRPLVxIGAhSjXE8d+sK7+XEd6Q41yqQlso3zUo11Og9ERu4EoyGxyPlUXz89x5PJWUREB
- umHoel7YMYbIISbPHor68CnkPROsiTUDhDSjENz9rD9HUI3AnGHwjnYiAO+FTlmr2l9G+xuiOHi
- s=
-X-Received: by 2002:adf:ef03:0:b0:306:b3f9:e2c9 with SMTP id
- e3-20020adfef03000000b00306b3f9e2c9mr1323190wro.6.1684345592496; 
- Wed, 17 May 2023 10:46:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7tjSzEia+SIEVBbOdjz5Wc4qAuxvQNa2FJo+vbdGpiViIF/0MP1XWF/X6OJqJyWucBiumqPg==
-X-Received: by 2002:adf:ef03:0:b0:306:b3f9:e2c9 with SMTP id
- e3-20020adfef03000000b00306b3f9e2c9mr1323175wro.6.1684345592181; 
- Wed, 17 May 2023 10:46:32 -0700 (PDT)
+ bh=zJN2jANxJFA4WG6/RjjsAlRU9ohw2knjG165asZhq/Q=;
+ b=MyVACe7heE5Wq1ZhULv6Pr2jlBjF03B0m55es8h1FN7GXJjGdUYl9x96KwZNrq7npc
+ bhZ5fRO6abKVRvZIcZPaQS2GmtBnl4lgLmVg+ohvXyu/2mjQ/cSlo1ghd5zrHFnT/XQK
+ rFJ39joW+0aUtxhRaWubPSvoG1Nn004NpldQT0A4M+lHfrjZ3dUHFmCjfsKrV7H7v+s7
+ U29v5Ne8aMhLPQPw7wIPVw853w1KBQogRRrczaB2M2VI5dnlc/DDD/vIO3eg0vbD3p9+
+ k/JIXVZIIOTsPmAmudFPiBv9FVQIRPGDqnGmoh7ArkjnWk4d/7JO3Hs8Y7SlO0XRWi0q
+ OVTQ==
+X-Gm-Message-State: AC+VfDwQaW2LVj8zApmE7oVvQ9936UtfK1xc8OhSt08m6ydyd2o7WaLV
+ Cg7Hcw/RDRfvdmR/pDWv76n+ulOz2PC4h78fsjmV2jj9i/j+97sMoENkbZL+IEdmLpxLwmRMXlt
+ +eIOSpwac5pcuzCPoRsP50Z20DM71oSedFdzmweyFysU4BNNb3gm11RXXEj+0KfMs60qh2z9qxQ
+ g=
+X-Received: by 2002:a05:6000:12cc:b0:2fe:6b1e:3818 with SMTP id
+ l12-20020a05600012cc00b002fe6b1e3818mr1274583wrx.51.1684345595600; 
+ Wed, 17 May 2023 10:46:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ739Ri/uf7NjcD04MzY4r/F7HLDiA40TYeqtd4MxUm+eWe5jUJPiGemAZhAf/8OHf/4x3s3cQ==
+X-Received: by 2002:a05:6000:12cc:b0:2fe:6b1e:3818 with SMTP id
+ l12-20020a05600012cc00b002fe6b1e3818mr1274573wrx.51.1684345595243; 
+ Wed, 17 May 2023 10:46:35 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- d3-20020adfe883000000b00306299be5a2sm3601283wrm.72.2023.05.17.10.46.30
+ e2-20020a5d4e82000000b00309257ad16csm3383089wru.29.2023.05.17.10.46.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:31 -0700 (PDT)
+ Wed, 17 May 2023 10:46:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 42/68] configure: Add courtesy hint to Python version failure
- message
-Date: Wed, 17 May 2023 19:44:54 +0200
-Message-Id: <20230517174520.887405-43-pbonzini@redhat.com>
+Cc: John Snow <jsnow@redhat.com>
+Subject: [PULL 44/68] python: bump some of the dependencies
+Date: Wed, 17 May 2023 19:44:56 +0200
+Message-Id: <20230517174520.887405-45-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -103,41 +100,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Snow <jsnow@redhat.com>
+The version of pyflakes that is listed in python/tests/minreqs.txt
+breaks on Python 3.8 with the following message:
 
-If we begin requiring Python 3.7+, a few platforms are going to need to
-install an additional Python interpreter package.
+  AttributeError: 'FlakesChecker' object has no attribute 'CONSTANT'
 
-As a courtesy to the user, suggest the optional package they might need
-to install. This will hopefully minimize any downtime caused by the
-change in Python dependency.
+Now that we do not support EOL'd Python versions anymore, we can
+update to newer, fixed versions.  It is a good time to do so, before
+Python packages start dropping support for Python 3.7 as well!
 
-Signed-off-by: John Snow <jsnow@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230221012456.2607692-3-jsnow@redhat.com>
+The new mypy is also a bit smarter about which packages are actually
+being used, so remove the now-unnecessary sections from setup.cfg.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-Id: <20230511035435.734312-25-jsnow@redhat.com>
+Signed-off-by: John Snow <jsnow@redhat.com>
+Message-Id: <20230511035435.734312-27-jsnow@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ python/setup.cfg         | 10 ++--------
+ python/tests/minreqs.txt | 14 +++++++-------
+ 2 files changed, 9 insertions(+), 15 deletions(-)
 
-diff --git a/configure b/configure
-index 22e31a46d115..52eca1cd4c53 100755
---- a/configure
-+++ b/configure
-@@ -1091,7 +1091,10 @@ fi
+diff --git a/python/setup.cfg b/python/setup.cfg
+index 55c0993e70b3..5abb7d30ad42 100644
+--- a/python/setup.cfg
++++ b/python/setup.cfg
+@@ -36,11 +36,11 @@ packages =
+ devel =
+     avocado-framework >= 90.0
+     distlib >= 0.3.6
+-    flake8 >= 3.6.0
++    flake8 >= 5.0.4
+     fusepy >= 2.0.4
+     isort >= 5.1.2
+     mypy >= 0.780
+-    pylint >= 2.8.0
++    pylint >= 2.17.3
+     tox >= 3.18.0
+     urwid >= 2.1.2
+     urwid-readline >= 0.13
+@@ -124,12 +124,6 @@ ignore_missing_imports = True
+ [mypy-distlib.version]
+ ignore_missing_imports = True
  
- if ! check_py_version "$python"; then
-   error_exit "Cannot use '$python', Python >= 3.7 is required." \
--      "Use --python=/path/to/python to specify a supported Python."
-+             "Use --python=/path/to/python to specify a supported Python." \
-+             "Maybe try:" \
-+             "  openSUSE Leap 15.3+: zypper install python39" \
-+             "  CentOS 8: dnf install python38"
- fi
+-[mypy-pip]
+-ignore_missing_imports = True
+-
+-[mypy-pip._vendor]
+-ignore_missing_imports = True
+-
+ [mypy-pip._vendor.distlib]
+ ignore_missing_imports = True
  
- # Resolve PATH
+diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
+index 10b181d43a6b..1ce72cef6d80 100644
+--- a/python/tests/minreqs.txt
++++ b/python/tests/minreqs.txt
+@@ -26,23 +26,23 @@ fusepy==2.0.4
+ avocado-framework==90.0
+ 
+ # Linters
+-flake8==3.6.0
++flake8==5.0.4
+ isort==5.1.2
+ mypy==0.780
+-pylint==2.8.0
++pylint==2.17.3
+ 
+ # Transitive flake8 dependencies
+-mccabe==0.6.0
+-pycodestyle==2.4.0
+-pyflakes==2.0.0
++mccabe==0.7.0
++pycodestyle==2.9.1
++pyflakes==2.5.0
+ 
+ # Transitive mypy dependencies
+ mypy-extensions==0.4.3
+ typed-ast==1.4.0
+-typing-extensions==3.7.4
++typing-extensions==4.5.0
+ 
+ # Transitive pylint dependencies
+-astroid==2.5.4
++astroid==2.15.4
+ lazy-object-proxy==1.4.0
+ toml==0.10.0
+ wrapt==1.12.1
 -- 
 2.40.1
 
