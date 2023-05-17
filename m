@@ -2,64 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A9D705D9A
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 05:01:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F043705DD5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 05:13:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz7Nr-0001xP-Bh; Tue, 16 May 2023 22:59:23 -0400
+	id 1pz7aM-0004eP-4Y; Tue, 16 May 2023 23:12:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1pz7Np-0001x4-26
- for qemu-devel@nongnu.org; Tue, 16 May 2023 22:59:21 -0400
-Received: from mga01.intel.com ([192.55.52.88])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1pz7Nm-0006nI-SK
- for qemu-devel@nongnu.org; Tue, 16 May 2023 22:59:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1684292358; x=1715828358;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Spr/pz6jp58URbpbwXjxPwoMCRRTGUMW008RTsKVYLc=;
- b=LV2HoFljpCErW6l6LCARVSZdZOM8NYC2iH56FsmNLd/23niHXG8VpgHS
- Ccbuv9zGAowWPALSXyJRQ5Fb5hvjTVOTdNhdxne24fRV5fFT3vFYo0Ra0
- NudtnJxqDKx4Nf8OONunwkll5dBNVR8N4Hlm1v6hW9/VwR+OnfVXMDY6i
- GnTkCcyTtg0FsZAF7M9wBzkHVrH5mp6Wo+0UbjUnnA2VvgzGxqsNPQHv4
- 7Z2NEYJajqa/CgZOEFK1Fh1tI1wzFcgPBtKntEQyUxv6brILIPPEBHJrn
- 12PPA0ryFeNWQ/O22mZCDqYWtqTtzLOn3c5ottGeH6d5Ni37z/ENnDaVc Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="379836935"
-X-IronPort-AV: E=Sophos;i="5.99,280,1677571200"; d="scan'208";a="379836935"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2023 19:59:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="948093988"
-X-IronPort-AV: E=Sophos;i="5.99,280,1677571200"; d="scan'208";a="948093988"
-Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2023 19:59:09 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: minwoo.im@samsung.com, alex.williamson@redhat.com, clg@redhat.com,
- chao.p.peng@intel.com
-Subject: [PATCH v2] vfio/pci: Fix a use-after-free issue
-Date: Wed, 17 May 2023 10:46:51 +0800
-Message-Id: <20230517024651.82248-1-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1pz7aI-0004dw-Lr; Tue, 16 May 2023 23:12:14 -0400
+Received: from mail-ua1-x92b.google.com ([2607:f8b0:4864:20::92b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1pz7aG-0000lY-Pm; Tue, 16 May 2023 23:12:14 -0400
+Received: by mail-ua1-x92b.google.com with SMTP id
+ a1e0cc1a2514c-783f7e82f28so40693241.1; 
+ Tue, 16 May 2023 20:12:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1684293131; x=1686885131;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=g/+cA0N3j+biczB4GD+AkRw/shxfKAFFALMlbU1C0FE=;
+ b=b1PrJc3pV49eWSPQ/EMSssyRuuxEmnK8inlEXPmbbPjrM2l6O2pSIE4KnzOG3eR8Vg
+ X7SgFd7PFP5sgkexjc01o8Kh9q8Loank/PIAWsOCss1tYVeMPB9AZucJyMAJ/p1FfSPW
+ S4HL/SEigbCs1mYJECJDmc/mt07hzxwjDjcGOrk3vaiRmAwSA+D9LK9hcbjbodIisOZJ
+ sgYHhvyvoEH2YCCoSor1oImVFEhFTk6vfTI8jzSjAFleDVeOzKmUXti0DRYANUc37A1h
+ WekRuC6EDEsrV99esZTp6zXicNh/CvhtGh3tFxtJZY/bxdEavagWUSwrM/iI5mW4VAuW
+ uDvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684293131; x=1686885131;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=g/+cA0N3j+biczB4GD+AkRw/shxfKAFFALMlbU1C0FE=;
+ b=arSdyiUJk6sbctqCQo1EHL6OIcZGd5ZoTd0wS1EyRmJl7xdtdviI7nQo1bORm1imuj
+ uTxkiazXGTfPib/9SBqAF3sVd4y0UqeLKL0l0qg0UhBUzr2WKZp6rxeUM9LF2nr3oZFp
+ +XFT+rceFh3Hn4Qn3pTS6eXmoBRtpBinvElg3lOfetMTfXif30mbvsG2+F1Vxupp11pi
+ tQvO6mc+9G7rTHJe0dVp1hXyhL/3036jDNBurCnZ31/lso574KjpbX0F2Nsx4uynUKOF
+ W1HRy0LpD3VaVFjeit2PzSpu/qIvqcX8tPWfNxjR7hHcpxzjHA9Bnf0NXwTG762Wbjxw
+ HUgg==
+X-Gm-Message-State: AC+VfDwmJeaYxAVs0XLRmH+0Jc3eESwDROp70bIFSpOBRAkhXRNJ7SCE
+ eV27j7+DJxl8emLZdd+t1qdDsakeeTwWU0KqFo8=
+X-Google-Smtp-Source: ACHHUZ4o8Kot5pzYw3C0ftTdZt7EvTMwFoZ5XtcbsaKGCj+xlBTdcurXYEjNyjoNI2ehZ4e7ziCWdg/K9LICEbCpuAU=
+X-Received: by 2002:a05:6102:3672:b0:434:8632:e8ec with SMTP id
+ bg18-20020a056102367200b004348632e8ecmr14313977vsb.5.1684293131320; Tue, 16
+ May 2023 20:12:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.88;
- envelope-from=zhenzhong.duan@intel.com; helo=mga01.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230501140020.3667219-1-mchitale@ventanamicro.com>
+ <20230501140020.3667219-2-mchitale@ventanamicro.com>
+In-Reply-To: <20230501140020.3667219-2-mchitale@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 17 May 2023 13:11:45 +1000
+Message-ID: <CAKmqyKN9vAAtXtRaUN3_im5k8kO+GoJ-V1mFbJPniSEdeswLnw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] target/riscv: smstateen check for fcsr
+To: Mayuresh Chitale <mchitale@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ Daniel Barboza <dbarboza@ventanamicro.com>, liweiwei@iscas.ac.cn, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92b;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,33 +88,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vbasedev->name is freed wrongly which leads to garbage VFIO trace log.
-Fix it by allocating a dup of vbasedev->name and then free the dup.
+On Tue, May 2, 2023 at 12:00=E2=80=AFAM Mayuresh Chitale
+<mchitale@ventanamicro.com> wrote:
+>
+> If smstateen is implemented and smtateen0.fcsr is clear and misa.F
+> is off then the floating point operations must return illegal
+> instruction exception or virtual instruction trap, if relevant.
 
-Fixes: 2dca1b37a7 ("vfio/pci: add support for VF token")
-Suggested-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
-v2: "toke" -> "token", Cedric
-    Update with Alex suggested change
+Do you mind re-wording this commit message? I can't get my head around
+it. You talk about returning an illegal instruction exception, but
+most of this patch is just adding SMSTATEEN0_FCSR to the write mask if
+floating point is disabled.
 
- hw/vfio/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It looks to me like you are returning an exception trying to access a
+floating pointer register if FP is off and SMSTATEEN0_FCSR is not set
+(which you describe) but also then only allow changing SMSTATEEN0_FCSR
+if the RVF is not enabled, which is where I'm confused.
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index bf27a3990564..73874a94de12 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2994,7 +2994,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-         qemu_uuid_unparse(&vdev->vf_token, uuid);
-         name = g_strdup_printf("%s vf_token=%s", vbasedev->name, uuid);
-     } else {
--        name = vbasedev->name;
-+        name = g_strdup(vbasedev->name);
-     }
- 
-     ret = vfio_get_device(group, name, vbasedev, errp);
--- 
-2.34.1
+Your patch seems to be correct, I think the commit message and title
+just needs a small tweak. Maybe something like this:
 
+```
+target/riscv: smstateen add support for fcsr bit
+
+If smstateen is implemented and SMSTATEEN0.FCSR is zero floating point
+CSR access should raise an illegal instruction exception or virtual
+equivalent as required.
+
+We also allow the guest to set/unset the FCSR bit, but only if misa.F
+=3D=3D 0, as defined in the spec.
+```
+
+Alistair
+
+>
+> Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> ---
+>  target/riscv/csr.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 4451bd1263..3f6b824bd2 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -82,6 +82,10 @@ static RISCVException fs(CPURISCVState *env, int csrno=
+)
+>          !riscv_cpu_cfg(env)->ext_zfinx) {
+>          return RISCV_EXCP_ILLEGAL_INST;
+>      }
+> +
+> +    if (!env->debugger && !riscv_cpu_fp_enabled(env)) {
+> +        return smstateen_acc_ok(env, 0, SMSTATEEN0_FCSR);
+> +    }
+>  #endif
+>      return RISCV_EXCP_NONE;
+>  }
+> @@ -2100,6 +2104,9 @@ static RISCVException write_mstateen0(CPURISCVState=
+ *env, int csrno,
+>                                        target_ulong new_val)
+>  {
+>      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
+> +    if (!riscv_has_ext(env, RVF)) {
+> +        wr_mask |=3D SMSTATEEN0_FCSR;
+> +    }
+>
+>      return write_mstateen(env, csrno, wr_mask, new_val);
+>  }
+> @@ -2173,6 +2180,10 @@ static RISCVException write_hstateen0(CPURISCVStat=
+e *env, int csrno,
+>  {
+>      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
+>
+> +    if (!riscv_has_ext(env, RVF)) {
+> +        wr_mask |=3D SMSTATEEN0_FCSR;
+> +    }
+> +
+>      return write_hstateen(env, csrno, wr_mask, new_val);
+>  }
+>
+> @@ -2259,6 +2270,10 @@ static RISCVException write_sstateen0(CPURISCVStat=
+e *env, int csrno,
+>  {
+>      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
+>
+> +    if (!riscv_has_ext(env, RVF)) {
+> +        wr_mask |=3D SMSTATEEN0_FCSR;
+> +    }
+> +
+>      return write_sstateen(env, csrno, wr_mask, new_val);
+>  }
+>
+> --
+> 2.34.1
+>
 
