@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7B0706CDA
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A462F706CDE
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:29:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJ5B-0002NZ-MA; Wed, 17 May 2023 11:28:53 -0400
+	id 1pzJ5D-0002OU-CU; Wed, 17 May 2023 11:28:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ59-0002Lo-1w
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ59-0002Md-Sy
  for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ57-0000tX-D3
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:50 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ57-0000tn-Rb
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684337328;
+ s=mimecast20190719; t=1684337329;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=307NFVhzkj0Ci6yzvP3eVZ7VIH69hx+a7JKtXTKt04s=;
- b=EP+3nV/eR6MqgUhFhHMAJ2fANcv7uiYbXmO63JAWmAplGYZMSw4bZEdiEuS62BV/kQO577
- iyR0qrlzZec2xAdDdQC9LKLWcU8nDfyn+b9zF5pglCSZNGsh+U3E3Kz9FXQv90bOVchSp7
- jZL0h8fWro0OTR3AyboUsdjRQNl2tXI=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=71BCgfGW3jfYqjQHSMUd2R17uTz6MCoIV8/vS9j2Si0=;
+ b=KUWKR9AwdqXOE+EV+YmxjN5N38uQDjrHXuJyonRByNfgsAdJPtUINY8JSS68/MMLPm1v3m
+ m4lzZ4ouwG19VVqRQD/ILfbwe/9AYsSg3/b8/Hc28XEklHp14G2xEI36DgDOK/SoTXL4+K
+ K2hnPFrP0uVrniSvZ8841hUNeapWcKw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-367-gPtw047NO421oFKpKj5ZrA-1; Wed, 17 May 2023 11:28:45 -0400
-X-MC-Unique: gPtw047NO421oFKpKj5ZrA-1
+ us-mta-259-j0MOZfpPNIaX0vjPHNxrcA-1; Wed, 17 May 2023 11:28:47 -0400
+X-MC-Unique: j0MOZfpPNIaX0vjPHNxrcA-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B1FF21C313B5;
- Wed, 17 May 2023 15:28:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43B458EFF1F;
+ Wed, 17 May 2023 15:28:41 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 33FC51121314;
- Wed, 17 May 2023 15:28:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E92631121315;
+ Wed, 17 May 2023 15:28:39 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, mjt@tls.msk.ru,
  eblake@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org,
  qemu-stable@nongnu.org
-Subject: [PATCH 1/3] graph-lock: Disable locking for now
-Date: Wed, 17 May 2023 17:28:32 +0200
-Message-Id: <20230517152834.277483-2-kwolf@redhat.com>
+Subject: [PATCH 2/3] nbd/server: Fix drained_poll to wake coroutine in right
+ AioContext
+Date: Wed, 17 May 2023 17:28:33 +0200
+Message-Id: <20230517152834.277483-3-kwolf@redhat.com>
 In-Reply-To: <20230517152834.277483-1-kwolf@redhat.com>
 References: <20230517152834.277483-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -77,127 +78,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In QEMU 8.0, we've been seeing deadlocks in bdrv_graph_wrlock(). They
-come from callers that hold an AioContext lock, which is not allowed
-during polling. In theory, we could temporarily release the lock, but
-callers are inconsistent about whether they hold a lock, and if they do,
-some are also confused about which one they hold. While all of this is
-fixable, it's not trivial, and the best course of action for 8.0.1 is
-probably just disabling the graph locking code temporarily.
+nbd_drained_poll() generally runs in the main thread, not whatever
+iothread the NBD server coroutine is meant to run in, so it can't
+directly reenter the coroutines to wake them up.
 
-We don't currently rely on graph locking yet. It is supposed to replace
-the AioContext lock eventually to enable multiqueue support, but as long
-as we still have the AioContext lock, it is sufficient without the graph
-lock. Once the AioContext lock goes away, the deadlock doesn't exist any
-more either and this commit can be reverted. (Of course, it can also be
-reverted while the AioContext lock still exists if the callers have been
-fixed.)
+The code seems to have the right intention, it specifies the correct
+AioContext when it calls qemu_aio_coroutine_enter(). However, this
+functions doesn't schedule the coroutine to run in that AioContext, but
+it assumes it is already called in the home thread of the AioContext.
+
+To fix this, add a new thread-safe qio_channel_wake_read() that can be
+called in the main thread to wake up the coroutine in its AioContext,
+and use this in nbd_drained_poll().
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/graph-lock.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ include/io/channel.h | 10 ++++++++++
+ io/channel.c         | 33 +++++++++++++++++++++++++++------
+ nbd/server.c         |  3 +--
+ 3 files changed, 38 insertions(+), 8 deletions(-)
 
-diff --git a/block/graph-lock.c b/block/graph-lock.c
-index 9c42bd9799..9806fd4ecb 100644
---- a/block/graph-lock.c
-+++ b/block/graph-lock.c
-@@ -30,8 +30,10 @@ BdrvGraphLock graph_lock;
- /* Protects the list of aiocontext and orphaned_reader_count */
- static QemuMutex aio_context_list_lock;
+diff --git a/include/io/channel.h b/include/io/channel.h
+index 446a566e5e..229bf36910 100644
+--- a/include/io/channel.h
++++ b/include/io/channel.h
+@@ -757,6 +757,16 @@ void qio_channel_detach_aio_context(QIOChannel *ioc);
+ void coroutine_fn qio_channel_yield(QIOChannel *ioc,
+                                     GIOCondition condition);
  
-+#if 0
- /* Written and read with atomic operations. */
- static int has_writer;
-+#endif
++/**
++ * qio_channel_wake_read:
++ * @ioc: the channel object
++ *
++ * If qio_channel_yield() is currently waiting for the channel to become
++ * readable, interrupt it and reenter immediately. This function is safe to call
++ * from any thread.
++ */
++void qio_channel_wake_read(QIOChannel *ioc);
++
+ /**
+  * qio_channel_wait:
+  * @ioc: the channel object
+diff --git a/io/channel.c b/io/channel.c
+index 375a130a39..72f0066af5 100644
+--- a/io/channel.c
++++ b/io/channel.c
+@@ -19,6 +19,7 @@
+  */
  
- /*
-  * A reader coroutine could move from an AioContext to another.
-@@ -88,6 +90,7 @@ void unregister_aiocontext(AioContext *ctx)
-     g_free(ctx->bdrv_graph);
- }
- 
-+#if 0
- static uint32_t reader_count(void)
+ #include "qemu/osdep.h"
++#include "block/aio-wait.h"
+ #include "io/channel.h"
+ #include "qapi/error.h"
+ #include "qemu/main-loop.h"
+@@ -514,7 +515,11 @@ int qio_channel_flush(QIOChannel *ioc,
+ static void qio_channel_restart_read(void *opaque)
  {
-     BdrvGraphRWlock *brdv_graph;
-@@ -105,10 +108,17 @@ static uint32_t reader_count(void)
-     assert((int32_t)rd >= 0);
-     return rd;
- }
-+#endif
+     QIOChannel *ioc = opaque;
+-    Coroutine *co = ioc->read_coroutine;
++    Coroutine *co = qatomic_xchg(&ioc->read_coroutine, NULL);
++
++    if (!co) {
++        return;
++    }
  
- void bdrv_graph_wrlock(void)
+     /* Assert that aio_co_wake() reenters the coroutine directly */
+     assert(qemu_get_current_aio_context() ==
+@@ -525,7 +530,11 @@ static void qio_channel_restart_read(void *opaque)
+ static void qio_channel_restart_write(void *opaque)
  {
-     GLOBAL_STATE_CODE();
-+    /*
-+     * TODO Some callers hold an AioContext lock when this is called, which
-+     * causes deadlocks. Reenable once the AioContext locking is cleaned up (or
-+     * AioContext locks are gone).
-+     */
-+#if 0
-     assert(!qatomic_read(&has_writer));
+     QIOChannel *ioc = opaque;
+-    Coroutine *co = ioc->write_coroutine;
++    Coroutine *co = qatomic_xchg(&ioc->write_coroutine, NULL);
++
++    if (!co) {
++        return;
++    }
  
-     /* Make sure that constantly arriving new I/O doesn't cause starvation */
-@@ -139,11 +149,13 @@ void bdrv_graph_wrlock(void)
-     } while (reader_count() >= 1);
- 
-     bdrv_drain_all_end();
-+#endif
- }
- 
- void bdrv_graph_wrunlock(void)
+     /* Assert that aio_co_wake() reenters the coroutine directly */
+     assert(qemu_get_current_aio_context() ==
+@@ -568,7 +577,11 @@ void qio_channel_detach_aio_context(QIOChannel *ioc)
+ void coroutine_fn qio_channel_yield(QIOChannel *ioc,
+                                     GIOCondition condition)
  {
-     GLOBAL_STATE_CODE();
-+#if 0
-     QEMU_LOCK_GUARD(&aio_context_list_lock);
-     assert(qatomic_read(&has_writer));
- 
-@@ -155,10 +167,13 @@ void bdrv_graph_wrunlock(void)
- 
-     /* Wake up all coroutine that are waiting to read the graph */
-     qemu_co_enter_all(&reader_queue, &aio_context_list_lock);
-+#endif
- }
- 
- void coroutine_fn bdrv_graph_co_rdlock(void)
- {
-+    /* TODO Reenable when wrlock is reenabled */
-+#if 0
-     BdrvGraphRWlock *bdrv_graph;
-     bdrv_graph = qemu_get_current_aio_context()->bdrv_graph;
- 
-@@ -218,10 +233,12 @@ void coroutine_fn bdrv_graph_co_rdlock(void)
-             qemu_co_queue_wait(&reader_queue, &aio_context_list_lock);
-         }
++    AioContext *ioc_ctx = ioc->ctx ?: qemu_get_aio_context();
++
+     assert(qemu_in_coroutine());
++    assert(in_aio_context_home_thread(ioc_ctx));
++
+     if (condition == G_IO_IN) {
+         assert(!ioc->read_coroutine);
+         ioc->read_coroutine = qemu_coroutine_self();
+@@ -580,18 +593,26 @@ void coroutine_fn qio_channel_yield(QIOChannel *ioc,
      }
-+#endif
- }
+     qio_channel_set_aio_fd_handlers(ioc);
+     qemu_coroutine_yield();
++    assert(in_aio_context_home_thread(ioc_ctx));
  
- void coroutine_fn bdrv_graph_co_rdunlock(void)
- {
-+#if 0
-     BdrvGraphRWlock *bdrv_graph;
-     bdrv_graph = qemu_get_current_aio_context()->bdrv_graph;
- 
-@@ -239,6 +256,7 @@ void coroutine_fn bdrv_graph_co_rdunlock(void)
-     if (qatomic_read(&has_writer)) {
-         aio_wait_kick();
+     /* Allow interrupting the operation by reentering the coroutine other than
+      * through the aio_fd_handlers. */
+-    if (condition == G_IO_IN && ioc->read_coroutine) {
+-        ioc->read_coroutine = NULL;
++    if (condition == G_IO_IN) {
++        assert(ioc->read_coroutine == NULL);
+         qio_channel_set_aio_fd_handlers(ioc);
+-    } else if (condition == G_IO_OUT && ioc->write_coroutine) {
+-        ioc->write_coroutine = NULL;
++    } else if (condition == G_IO_OUT) {
++        assert(ioc->write_coroutine == NULL);
+         qio_channel_set_aio_fd_handlers(ioc);
      }
-+#endif
  }
  
- void bdrv_graph_rdlock_main_loop(void)
-@@ -264,5 +282,8 @@ void assert_bdrv_graph_readable(void)
- void assert_bdrv_graph_writable(void)
- {
-     assert(qemu_in_main_thread());
-+    /* TODO Reenable when wrlock is reenabled */
-+#if 0
-     assert(qatomic_read(&has_writer));
-+#endif
- }
++void qio_channel_wake_read(QIOChannel *ioc)
++{
++    Coroutine *co = qatomic_xchg(&ioc->read_coroutine, NULL);
++    if (co) {
++        aio_co_wake(co);
++    }
++}
+ 
+ static gboolean qio_channel_wait_complete(QIOChannel *ioc,
+                                           GIOCondition condition,
+diff --git a/nbd/server.c b/nbd/server.c
+index e239c2890f..2664d43bff 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -1599,8 +1599,7 @@ static bool nbd_drained_poll(void *opaque)
+              * enter it here so we don't depend on the client to wake it up.
+              */
+             if (client->recv_coroutine != NULL && client->read_yielding) {
+-                qemu_aio_coroutine_enter(exp->common.ctx,
+-                                         client->recv_coroutine);
++                qio_channel_wake_read(client->ioc);
+             }
+ 
+             return true;
 -- 
 2.40.1
 
