@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AB1706224
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1004C706231
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:07:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC6J-0001yu-De; Wed, 17 May 2023 04:01:35 -0400
+	id 1pzC6f-0002eQ-KL; Wed, 17 May 2023 04:01:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5z-0001s8-7q; Wed, 17 May 2023 04:01:21 -0400
+ id 1pzC6M-00023c-Gd; Wed, 17 May 2023 04:01:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5t-0000Yh-Ma; Wed, 17 May 2023 04:01:12 -0400
+ id 1pzC6F-0000Zi-I3; Wed, 17 May 2023 04:01:38 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8F4426755;
+ by isrv.corpit.ru (Postfix) with ESMTP id B03E96756;
  Wed, 17 May 2023 11:00:58 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 13EBC5E0D;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3C8DA5E0E;
  Wed, 17 May 2023 11:00:58 +0300 (MSK)
-Received: (nullmailer pid 3624114 invoked by uid 1000);
+Received: (nullmailer pid 3624117 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v8.0.1 12/36] hw/arm/aspeed: Use arm_write_bootloader() to
- write the bootloader
-Date: Wed, 17 May 2023 11:00:32 +0300
-Message-Id: <20230517080056.3623993-12-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v8.0.1 13/36] hw/arm/raspi: Use arm_write_bootloader() to
+ write boot code
+Date: Wed, 17 May 2023 11:00:33 +0300
+Message-Id: <20230517080056.3623993-13-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
@@ -62,7 +62,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@kaod.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
 When writing the secondary-CPU stub boot loader code to the guest,
 use arm_write_bootloader() instead of directly calling
@@ -72,81 +72,119 @@ array values into the guest-byte-order to write into the guest
 memory.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Tested-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230424152717.1333930-3-peter.maydell@linaro.org
-[PMM: Moved the "make arm_write_bootloader() function public" part
- to its own patch; updated commit message to note that this fixes
- an actual bug; adjust to the API changes noted in previous commit]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 902bba549fc386b4b9805320ed1a2e5b68478bdd)
+Message-id: 20230424152717.1333930-4-peter.maydell@linaro.org
+(cherry picked from commit 0acbdb4c4ab6b0a09f159bae4899b0737cf64242)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/arm/aspeed.c | 42 ++++++++++++++++++++++--------------------
- 1 file changed, 22 insertions(+), 20 deletions(-)
+ hw/arm/raspi.c | 64 +++++++++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 30 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index c1f2b9cfca..0b29028fe1 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -200,33 +200,35 @@ struct AspeedMachineState {
- static void aspeed_write_smpboot(ARMCPU *cpu,
-                                  const struct arm_boot_info *info)
+diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
+index 92d068d1f9..a7d287b1a8 100644
+--- a/hw/arm/raspi.c
++++ b/hw/arm/raspi.c
+@@ -16,6 +16,7 @@
+ #include "qemu/units.h"
+ #include "qemu/cutils.h"
+ #include "qapi/error.h"
++#include "hw/arm/boot.h"
+ #include "hw/arm/bcm2836.h"
+ #include "hw/registerfields.h"
+ #include "qemu/error-report.h"
+@@ -124,20 +125,22 @@ static const char *board_type(uint32_t board_rev)
+ 
+ static void write_smpboot(ARMCPU *cpu, const struct arm_boot_info *info)
  {
--    static const uint32_t poll_mailbox_ready[] = {
-+    AddressSpace *as = arm_boot_address_space(cpu, info);
-+    static const ARMInsnFixup poll_mailbox_ready[] = {
-         /*
-          * r2 = per-cpu go sign value
-          * r1 = AST_SMP_MBOX_FIELD_ENTRY
-          * r0 = AST_SMP_MBOX_FIELD_GOSIGN
-          */
--        0xee100fb0,  /* mrc     p15, 0, r0, c0, c0, 5 */
--        0xe21000ff,  /* ands    r0, r0, #255          */
--        0xe59f201c,  /* ldr     r2, [pc, #28]         */
--        0xe1822000,  /* orr     r2, r2, r0            */
--
--        0xe59f1018,  /* ldr     r1, [pc, #24]         */
--        0xe59f0018,  /* ldr     r0, [pc, #24]         */
--
--        0xe320f002,  /* wfe                           */
--        0xe5904000,  /* ldr     r4, [r0]              */
--        0xe1520004,  /* cmp     r2, r4                */
--        0x1afffffb,  /* bne     <wfe>                 */
--        0xe591f000,  /* ldr     pc, [r1]              */
--        AST_SMP_MBOX_GOSIGN,
--        AST_SMP_MBOX_FIELD_ENTRY,
--        AST_SMP_MBOX_FIELD_GOSIGN,
-+        { 0xee100fb0 },  /* mrc     p15, 0, r0, c0, c0, 5 */
-+        { 0xe21000ff },  /* ands    r0, r0, #255          */
-+        { 0xe59f201c },  /* ldr     r2, [pc, #28]         */
-+        { 0xe1822000 },  /* orr     r2, r2, r0            */
-+
-+        { 0xe59f1018 },  /* ldr     r1, [pc, #24]         */
-+        { 0xe59f0018 },  /* ldr     r0, [pc, #24]         */
-+
-+        { 0xe320f002 },  /* wfe                           */
-+        { 0xe5904000 },  /* ldr     r4, [r0]              */
-+        { 0xe1520004 },  /* cmp     r2, r4                */
-+        { 0x1afffffb },  /* bne     <wfe>                 */
-+        { 0xe591f000 },  /* ldr     pc, [r1]              */
-+        { AST_SMP_MBOX_GOSIGN },
-+        { AST_SMP_MBOX_FIELD_ENTRY },
-+        { AST_SMP_MBOX_FIELD_GOSIGN },
+-    static const uint32_t smpboot[] = {
+-        0xe1a0e00f, /*    mov     lr, pc */
+-        0xe3a0fe00 + (BOARDSETUP_ADDR >> 4), /* mov pc, BOARDSETUP_ADDR */
+-        0xee100fb0, /*    mrc     p15, 0, r0, c0, c0, 5;get core ID */
+-        0xe7e10050, /*    ubfx    r0, r0, #0, #2       ;extract LSB */
+-        0xe59f5014, /*    ldr     r5, =0x400000CC      ;load mbox base */
+-        0xe320f001, /* 1: yield */
+-        0xe7953200, /*    ldr     r3, [r5, r0, lsl #4] ;read mbox for our core*/
+-        0xe3530000, /*    cmp     r3, #0               ;spin while zero */
+-        0x0afffffb, /*    beq     1b */
+-        0xe7853200, /*    str     r3, [r5, r0, lsl #4] ;clear mbox */
+-        0xe12fff13, /*    bx      r3                   ;jump to target */
+-        0x400000cc, /* (constant: mailbox 3 read/clear base) */
++    static const ARMInsnFixup smpboot[] = {
++        { 0xe1a0e00f }, /*    mov     lr, pc */
++        { 0xe3a0fe00 + (BOARDSETUP_ADDR >> 4) }, /* mov pc, BOARDSETUP_ADDR */
++        { 0xee100fb0 }, /*    mrc     p15, 0, r0, c0, c0, 5;get core ID */
++        { 0xe7e10050 }, /*    ubfx    r0, r0, #0, #2       ;extract LSB */
++        { 0xe59f5014 }, /*    ldr     r5, =0x400000CC      ;load mbox base */
++        { 0xe320f001 }, /* 1: yield */
++        { 0xe7953200 }, /*    ldr     r3, [r5, r0, lsl #4] ;read mbox for our core */
++        { 0xe3530000 }, /*    cmp     r3, #0               ;spin while zero */
++        { 0x0afffffb }, /*    beq     1b */
++        { 0xe7853200 }, /*    str     r3, [r5, r0, lsl #4] ;clear mbox */
++        { 0xe12fff13 }, /*    bx      r3                   ;jump to target */
++        { 0x400000cc }, /* (constant: mailbox 3 read/clear base) */
 +        { 0, FIXUP_TERMINATOR }
      };
 +    static const uint32_t fixupcontext[FIXUP_MAX] = { 0 };
  
--    rom_add_blob_fixed("aspeed.smpboot", poll_mailbox_ready,
--                       sizeof(poll_mailbox_ready),
--                       info->smp_loader_start);
-+    arm_write_bootloader("aspeed.smpboot", as, info->smp_loader_start,
-+                         poll_mailbox_ready, fixupcontext);
+     /* check that we don't overrun board setup vectors */
+     QEMU_BUILD_BUG_ON(SMPBOOT_ADDR + sizeof(smpboot) > MVBAR_ADDR);
+@@ -145,9 +148,8 @@ static void write_smpboot(ARMCPU *cpu, const struct arm_boot_info *info)
+     QEMU_BUILD_BUG_ON((BOARDSETUP_ADDR & 0xf) != 0
+                       || (BOARDSETUP_ADDR >> 4) >= 0x100);
+ 
+-    rom_add_blob_fixed_as("raspi_smpboot", smpboot, sizeof(smpboot),
+-                          info->smp_loader_start,
+-                          arm_boot_address_space(cpu, info));
++    arm_write_bootloader("raspi_smpboot", arm_boot_address_space(cpu, info),
++                         info->smp_loader_start, smpboot, fixupcontext);
  }
  
- static void aspeed_reset_secondary(ARMCPU *cpu,
+ static void write_smpboot64(ARMCPU *cpu, const struct arm_boot_info *info)
+@@ -161,26 +163,28 @@ static void write_smpboot64(ARMCPU *cpu, const struct arm_boot_info *info)
+      * the primary CPU goes into the kernel. We put these variables inside
+      * a rom blob, so that the reset for ROM contents zeroes them for us.
+      */
+-    static const uint32_t smpboot[] = {
+-        0xd2801b05, /*        mov     x5, 0xd8 */
+-        0xd53800a6, /*        mrs     x6, mpidr_el1 */
+-        0x924004c6, /*        and     x6, x6, #0x3 */
+-        0xd503205f, /* spin:  wfe */
+-        0xf86678a4, /*        ldr     x4, [x5,x6,lsl #3] */
+-        0xb4ffffc4, /*        cbz     x4, spin */
+-        0xd2800000, /*        mov     x0, #0x0 */
+-        0xd2800001, /*        mov     x1, #0x0 */
+-        0xd2800002, /*        mov     x2, #0x0 */
+-        0xd2800003, /*        mov     x3, #0x0 */
+-        0xd61f0080, /*        br      x4 */
++    static const ARMInsnFixup smpboot[] = {
++        { 0xd2801b05 }, /*        mov     x5, 0xd8 */
++        { 0xd53800a6 }, /*        mrs     x6, mpidr_el1 */
++        { 0x924004c6 }, /*        and     x6, x6, #0x3 */
++        { 0xd503205f }, /* spin:  wfe */
++        { 0xf86678a4 }, /*        ldr     x4, [x5,x6,lsl #3] */
++        { 0xb4ffffc4 }, /*        cbz     x4, spin */
++        { 0xd2800000 }, /*        mov     x0, #0x0 */
++        { 0xd2800001 }, /*        mov     x1, #0x0 */
++        { 0xd2800002 }, /*        mov     x2, #0x0 */
++        { 0xd2800003 }, /*        mov     x3, #0x0 */
++        { 0xd61f0080 }, /*        br      x4 */
++        { 0, FIXUP_TERMINATOR }
+     };
++    static const uint32_t fixupcontext[FIXUP_MAX] = { 0 };
+ 
+     static const uint64_t spintables[] = {
+         0, 0, 0, 0
+     };
+ 
+-    rom_add_blob_fixed_as("raspi_smpboot", smpboot, sizeof(smpboot),
+-                          info->smp_loader_start, as);
++    arm_write_bootloader("raspi_smpboot", as, info->smp_loader_start,
++                         smpboot, fixupcontext);
+     rom_add_blob_fixed_as("raspi_spintables", spintables, sizeof(spintables),
+                           SPINTABLE_ADDR, as);
+ }
 -- 
 2.39.2
 
