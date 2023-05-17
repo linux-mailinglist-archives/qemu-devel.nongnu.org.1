@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82F4706888
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 14:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA29A706981
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 15:17:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzGYI-0003ZW-Iw; Wed, 17 May 2023 08:46:46 -0400
+	id 1pzH0r-0002rL-T8; Wed, 17 May 2023 09:16:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pzGYH-0003ZO-Aq
- for qemu-devel@nongnu.org; Wed, 17 May 2023 08:46:45 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pzGYF-000308-6c
- for qemu-devel@nongnu.org; Wed, 17 May 2023 08:46:45 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1ae4e49727eso8660895ad.1
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 05:46:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684327601; x=1686919601;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3c7aK1Fw5whYzSjJDPqoYDDNN2Kume22sEgT1ts836s=;
- b=j5gjWhtcVCkeTUQAbWplyFEHNRB+JZFcmnwtNYUhajGvWdKkB5f0qHjKPVJfPIq7Zs
- ATCk6Roq/TEukw5GaJgFAk9vj+QAr+ylWHarzVZmsc/+ebjrewMJf0wGJiDdFGkTfKcA
- d//Jvh+uD0N9ksgNyfgmoFNzE2F0g62GYlyBhDuZ476oCk6woevs1TQfxiZsV8sf5Dr7
- mCeDCkf+f4f/m1ZtK1bRoxsI9Cv60kQ8GwR9NdztBYbvEzylsfIJbgCQ0L+JeyY3cWlK
- pd1yEHkh/1e5PkPJvnOZmjmC1lPyVjse9Q0L+uNdGvn0ESTxrctsuArOw/llq75gELxo
- Sd4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684327601; x=1686919601;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3c7aK1Fw5whYzSjJDPqoYDDNN2Kume22sEgT1ts836s=;
- b=lbm5JU7Okb6DV/U2JP8oAxqVbg696pv7mivuFZaiaYjY8xJObNR0wClTXI/Lahjfot
- kWiDzv5ioilMYCEZ+69kjc8mCDDW6U60iwQ5I9Vx8Y7z0GhxWUmctDAQmjIDLC/uOaot
- qBKydxSTzJ0r2dl8Az6aQ/Bi8xO3J/3BvPzorjYYBHaLeOqMwYZdXCULiK99rVt9njp0
- JudwrENDSd+G2EFsTZutLhqpbpU6K0yqlPibCi/z1IXrjVBTE6l+EVo8pOwszhr9ApRF
- xKvMgsxacHzMzuxegejBfsEW5Rq3RWSla97KAy1f6nOIGg3ckbCHPkfCMHwroVaLMRm3
- MR1g==
-X-Gm-Message-State: AC+VfDy7KVmx3RUqytPhmpJB41GtzV0pSzHsxgTb4XKnM2dqHY9TvqA7
- ICK3msNRppjn2ZTzTmIhEydIIoIwdfK5SbyOTWM=
-X-Google-Smtp-Source: ACHHUZ4c+SCZADB2T1wnhHzRT9kgmYrIDb0tsitx+oletr8wFcxhviVDjIlyuJMXcPyr1SVC99JfaA==
-X-Received: by 2002:a17:902:f7c9:b0:1ad:eb62:f617 with SMTP id
- h9-20020a170902f7c900b001adeb62f617mr19387790plw.45.1684327601688; 
- Wed, 17 May 2023 05:46:41 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:17a4:1aa0:c49d:e8f7?
- ([2602:ae:1598:4c01:17a4:1aa0:c49d:e8f7])
- by smtp.gmail.com with ESMTPSA id
- t12-20020a17090a950c00b0024e227828a9sm1480093pjo.24.2023.05.17.05.46.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 May 2023 05:46:41 -0700 (PDT)
-Message-ID: <57251407-7542-44c0-1752-9ec07a9ecd53@linaro.org>
-Date: Wed, 17 May 2023 05:46:38 -0700
+ (Exim 4.90_1) (envelope-from <madvenka@linux.microsoft.com>)
+ id 1pzGYy-0004I4-11
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 08:47:28 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <madvenka@linux.microsoft.com>) id 1pzGYw-0003Bj-B6
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 08:47:27 -0400
+Received: from [192.168.254.32] (unknown [47.186.50.133])
+ by linux.microsoft.com (Postfix) with ESMTPSA id D164820F069A;
+ Wed, 17 May 2023 05:47:21 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D164820F069A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1684327643;
+ bh=LhIkPpJhPvIClwJ39pJZmrIh6zoXx6jE68xfB8W+VWs=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=mumhyWRm4PGisYlV+6k79BLPaamhkccyeiIlh7D48PRTzPjbzjxh2vVIF5IMgB/kg
+ ffvKm60yYk2+lOntvrropzUTEW8F4BOwI+8ppjyBg+mNGMVj/ubDGGKoWDypVfUwG4
+ iLdY81ZYifmsEzXVwEDBYtRVqeqDXr8NLjfUncbw=
+Message-ID: <e8fcc1b8-6c0f-9556-a110-bd994d3fe3c6@linux.microsoft.com>
+Date: Wed, 17 May 2023 07:47:20 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] qapi/parser: Drop two bad type hints for now
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v1 3/9] virt: Implement Heki common code
+To: Wei Liu <wei.liu@kernel.org>, =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?=
+ <mic@digikod.net>
+Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>, Liran Alon
+ <liran.alon@oracle.com>, Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <20230505152046.6575-1-mic@digikod.net>
+ <20230505152046.6575-4-mic@digikod.net>
+ <ZFkxhWhjyIzrPkt8@liuwe-devbox-debian-v2>
 Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: michael.roth@amd.com, jsnow@redhat.com, imammedo@redhat.com
-References: <20230517061600.1782455-1-armbru@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230517061600.1782455-1-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.412,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+In-Reply-To: <ZFkxhWhjyIzrPkt8@liuwe-devbox-debian-v2>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=madvenka@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -211
+X-Spam_score: -21.2
+X-Spam_bar: ---------------------
+X-Spam_report: (-21.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ NICE_REPLY_A=-1.412, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 17 May 2023 09:15:45 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,18 +91,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/16/23 23:16, Markus Armbruster wrote:
-> Two type hints fail centos-stream-8-x86_64 CI.  They are actually
-> broken.  Changing them to Optional[re.Match[str]] fixes them locally
-> for me, but then CI fails differently.  Drop them for now.
+Sorry for the delay. See inline...
+
+On 5/8/23 12:29, Wei Liu wrote:
+> On Fri, May 05, 2023 at 05:20:40PM +0200, Mickaël Salaün wrote:
+>> From: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
+>>
+>> Hypervisor Enforced Kernel Integrity (Heki) is a feature that will use
+>> the hypervisor to enhance guest virtual machine security.
+>>
+>> Configuration
+>> =============
+>>
+>> Define the config variables for the feature. This feature depends on
+>> support from the architecture as well as the hypervisor.
+>>
+>> Enabling HEKI
+>> =============
+>>
+>> Define a kernel command line parameter "heki" to turn the feature on or
+>> off. By default, Heki is on.
 > 
-> Fixes: 3e32dca3f0d1 (qapi: Rewrite parsing of doc comment section symbols and tags)
-> Signed-off-by: Markus Armbruster<armbru@redhat.com>
-> ---
->   scripts/qapi/parser.py | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> For such a newfangled feature can we have it off by default? Especially
+> when there are unsolved issues around dynamically loaded code.
+> 
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Yes. We can certainly do that.
 
-r~
+>>
+> [...]
+>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+>> index 3604074a878b..5cf5a7a97811 100644
+>> --- a/arch/x86/Kconfig
+>> +++ b/arch/x86/Kconfig
+>> @@ -297,6 +297,7 @@ config X86
+>>  	select FUNCTION_ALIGNMENT_4B
+>>  	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+>>  	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
+>> +	select ARCH_SUPPORTS_HEKI		if X86_64
+> 
+> Why is there a restriction on X86_64?
+> 
+
+We want to get the PoC working and reviewed on X64 first. We have tested this only on X64 so far.
+
+>>  
+>>  config INSTRUCTION_DECODER
+>>  	def_bool y
+>> diff --git a/arch/x86/include/asm/sections.h b/arch/x86/include/asm/sections.h
+>> index a6e8373a5170..42ef1e33b8a5 100644
+>> --- a/arch/x86/include/asm/sections.h
+>> +++ b/arch/x86/include/asm/sections.h
+> [...]
+>>  
+>> +#ifdef CONFIG_HEKI
+>> +
+>> +/*
+>> + * Gather all of the statically defined sections so heki_late_init() can
+>> + * protect these sections in the host page table.
+>> + *
+>> + * The sections are defined under "SECTIONS" in vmlinux.lds.S
+>> + * Keep this array in sync with SECTIONS.
+>> + */
+> 
+> This seems a bit fragile, because it requires constant attention from
+> people who care about this functionality. Can this table be
+> automatically generated?
+> 
+
+We realize that. But I don't know of a way this can be automatically generated. Also, the permissions for
+each section is specific to the use of that section. The developer who introduces a new section is the
+one who will know what the permissions should be.
+
+If any one has any ideas of how we can generate this table automatically or even just add a build time check
+of some sort, please let us know.
+
+Thanks.
+
+Madhavan
+
+> Thanks,
+> Wei.
+> 
+>> +struct heki_va_range __initdata heki_va_ranges[] = {
+>> +	{
+>> +		.va_start = _stext,
+>> +		.va_end = _etext,
+>> +		.attributes = HEKI_ATTR_MEM_NOWRITE | HEKI_ATTR_MEM_EXEC,
+>> +	},
+>> +	{
+>> +		.va_start = __start_rodata,
+>> +		.va_end = __end_rodata,
+>> +		.attributes = HEKI_ATTR_MEM_NOWRITE,
+>> +	},
+>> +#ifdef CONFIG_UNWINDER_ORC
+>> +	{
+>> +		.va_start = __start_orc_unwind_ip,
+>> +		.va_end = __stop_orc_unwind_ip,
+>> +		.attributes = HEKI_ATTR_MEM_NOWRITE,
+>> +	},
+>> +	{
+>> +		.va_start = __start_orc_unwind,
+>> +		.va_end = __stop_orc_unwind,
+>> +		.attributes = HEKI_ATTR_MEM_NOWRITE,
+>> +	},
+>> +	{
+>> +		.va_start = orc_lookup,
+>> +		.va_end = orc_lookup_end,
+>> +		.attributes = HEKI_ATTR_MEM_NOWRITE,
+>> +	},
+>> +#endif /* CONFIG_UNWINDER_ORC */
+>> +};
+>> +
 
