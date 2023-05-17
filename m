@@ -2,36 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6C27063AE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E274D7063AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:12:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDC2-0001N1-JR; Wed, 17 May 2023 05:11:34 -0400
+	id 1pzDCW-0002Fs-Vp; Wed, 17 May 2023 05:12:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDBk-0000wJ-09; Wed, 17 May 2023 05:11:16 -0400
+ id 1pzDBl-0000z9-2J; Wed, 17 May 2023 05:11:17 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzDBh-0006Pb-Tm; Wed, 17 May 2023 05:11:15 -0400
+ id 1pzDBi-0006Q1-A1; Wed, 17 May 2023 05:11:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D6E32683A;
- Wed, 17 May 2023 12:10:45 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 05707683B;
+ Wed, 17 May 2023 12:10:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 51A865F0B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6C8A55F0C;
  Wed, 17 May 2023 12:10:45 +0300 (MSK)
-Received: (nullmailer pid 3626726 invoked by uid 1000);
+Received: (nullmailer pid 3626730 invoked by uid 1000);
  Wed, 17 May 2023 09:10:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v7.2.3 20/30] ui: Fix pixel colour channel order for PNG
- screenshots
-Date: Wed, 17 May 2023 12:10:32 +0300
-Message-Id: <20230517091042.3626593-20-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v7.2.3 21/30] async: Suppress GCC13 false positive in
+ aio_bh_poll()
+Date: Wed, 17 May 2023 12:10:33 +0300
+Message-Id: <20230517091042.3626593-21-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
 References: <cover.1684310574.git.mjt@msgid.tls.msk.ru>
@@ -61,78 +66,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Cédric Le Goater <clg@redhat.com>
 
-When we take a PNG screenshot the ordering of the colour channels in
-the data is not correct, resulting in the image having weird
-colouring compared to the actual display.  (Specifically, on a
-little-endian host the blue and red channels are swapped; on
-big-endian everything is wrong.)
+GCC13 reports an error :
 
-This happens because the pixman idea of the pixel data and the libpng
-idea differ.  PIXMAN_a8r8g8b8 defines that pixels are 32-bit values,
-with A in bits 24-31, R in bits 16-23, G in bits 8-15 and B in bits
-0-7.  This means that on little-endian systems the bytes in memory
-are
-   B G R A
-and on big-endian systems they are
-   A R G B
+../util/async.c: In function ‘aio_bh_poll’:
+include/qemu/queue.h:303:22: error: storing the address of local variable ‘slice’ in ‘*ctx.bh_slice_list.sqh_last’ [-Werror=dangling-pointer=]
+  303 |     (head)->sqh_last = &(elm)->field.sqe_next;                          \
+      |     ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+../util/async.c:169:5: note: in expansion of macro ‘QSIMPLEQ_INSERT_TAIL’
+  169 |     QSIMPLEQ_INSERT_TAIL(&ctx->bh_slice_list, &slice, next);
+      |     ^~~~~~~~~~~~~~~~~~~~
+../util/async.c:161:17: note: ‘slice’ declared here
+  161 |     BHListSlice slice;
+      |                 ^~~~~
+../util/async.c:161:17: note: ‘ctx’ declared here
 
-libpng, on the other hand, thinks of pixels as being a series of
-values for each channel, so its format PNG_COLOR_TYPE_RGB_ALPHA
-always wants bytes in the order
-   R G B A
+But the local variable 'slice' is removed from the global context list
+in following loop of the same routine. Add a pragma to silent GCC.
 
-This isn't the same as the pixman order for either big or little
-endian hosts.
-
-The alpha channel is also unnecessary bulk in the output PNG file,
-because there is no alpha information in a screenshot.
-
-To handle the endianness issue, we already define in ui/qemu-pixman.h
-various PIXMAN_BE_* and PIXMAN_LE_* values that give consistent
-byte-order pixel channel formats.  So we can use PIXMAN_BE_r8g8b8 and
-PNG_COLOR_TYPE_RGB, which both have an in-memory byte order of
-    R G B
-and 3 bytes per pixel.
-
-(PPM format screenshots get this right; they already use the
-PIXMAN_BE_r8g8b8 format.)
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1622
-Fixes: 9a0a119a382867 ("Added parameter to take screenshot with screendump as PNG")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-id: 20230502135548.2451309-1-peter.maydell@linaro.org
-(cherry picked from commit cd22a0f520f471e3bd33bc19cf3b2fa772cdb2a8)
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit d66ba6dc1cce914673bd8a89fca30a7715ea70d1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: cherry-picked to stable-7.2 to eliminate CI failures on win*)
 ---
- ui/console.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ util/async.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/ui/console.c b/ui/console.c
-index 3c0d9b061a..646202214a 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -307,7 +307,7 @@ static bool png_save(int fd, pixman_image_t *image, Error **errp)
-     png_struct *png_ptr;
-     png_info *info_ptr;
-     g_autoptr(pixman_image_t) linebuf =
--                            qemu_pixman_linebuf_create(PIXMAN_a8r8g8b8, width);
-+        qemu_pixman_linebuf_create(PIXMAN_BE_r8g8b8, width);
-     uint8_t *buf = (uint8_t *)pixman_image_get_data(linebuf);
-     FILE *f = fdopen(fd, "wb");
-     int y;
-@@ -337,7 +337,7 @@ static bool png_save(int fd, pixman_image_t *image, Error **errp)
-     png_init_io(png_ptr, f);
+diff --git a/util/async.c b/util/async.c
+index 63434ddae4..f449c3444e 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -158,7 +158,21 @@ int aio_bh_poll(AioContext *ctx)
+     int ret = 0;
  
-     png_set_IHDR(png_ptr, info_ptr, width, height, 8,
--                 PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
-+                 PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
-                  PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+     QSLIST_MOVE_ATOMIC(&slice.bh_list, &ctx->bh_list);
++
++    /*
++     * GCC13 [-Werror=dangling-pointer=] complains that the local variable
++     * 'slice' is being stored in the global 'ctx->bh_slice_list' but the
++     * list is emptied before this function returns.
++     */
++#if !defined(__clang__)
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wpragmas"
++#pragma GCC diagnostic ignored "-Wdangling-pointer="
++#endif
+     QSIMPLEQ_INSERT_TAIL(&ctx->bh_slice_list, &slice, next);
++#if !defined(__clang__)
++#pragma GCC diagnostic pop
++#endif
  
-     png_write_info(png_ptr, info_ptr);
+     while ((s = QSIMPLEQ_FIRST(&ctx->bh_slice_list))) {
+         QEMUBH *bh;
 -- 
 2.39.2
 
