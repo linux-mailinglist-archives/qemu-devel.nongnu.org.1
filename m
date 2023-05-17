@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97408706264
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A58706234
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:08:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC6g-0002fi-Tz; Wed, 17 May 2023 04:01:59 -0400
+	id 1pzC6f-0002e1-7g; Wed, 17 May 2023 04:01:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6O-00023p-Bp; Wed, 17 May 2023 04:01:42 -0400
+ id 1pzC6O-00023q-C7; Wed, 17 May 2023 04:01:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6L-0000b7-9g; Wed, 17 May 2023 04:01:39 -0400
+ id 1pzC6L-0000b3-AX; Wed, 17 May 2023 04:01:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BAA81675E;
- Wed, 17 May 2023 11:00:59 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 055BA675F;
+ Wed, 17 May 2023 11:01:00 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4C9055E16;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6759B5E17;
  Wed, 17 May 2023 11:00:59 +0300 (MSK)
-Received: (nullmailer pid 3624142 invoked by uid 1000);
+Received: (nullmailer pid 3624145 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
 Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v8.0.1 21/36] block: Fix use after free in
- blockdev_mark_auto_del()
-Date: Wed, 17 May 2023 11:00:41 +0300
-Message-Id: <20230517080056.3623993-21-mjt@msgid.tls.msk.ru>
+ Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH v8.0.1 22/36] block: Consistently call bdrv_activate() outside
+ coroutine
+Date: Wed, 17 May 2023 11:00:42 +0300
+Message-Id: <20230517080056.3623993-22-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
@@ -62,58 +62,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kevin Wolf <kwolf@redhat.com>
 
-job_cancel_locked() drops the job list lock temporarily and it may call
-aio_poll(). We must assume that the list has changed after this call.
-Also, with unlucky timing, it can end up freeing the job during
-job_completed_txn_abort_locked(), making the job pointer invalid, too.
+Migration code can call bdrv_activate() in coroutine context, whereas
+other callers call it outside of coroutines. As it calls other code that
+is not supposed to run in coroutines, standardise on running outside of
+coroutines.
 
-For both reasons, we can't just continue at block_job_next_locked(job).
-Instead, start at the head of the list again after job_cancel_locked()
-and skip those jobs that we already cancelled (or that are completing
-anyway).
+This adds a no_co_wrapper to switch to the main loop before calling
+bdrv_activate().
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-Id: <20230503140142.474404-1-kwolf@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20230504115750.54437-3-kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit e2626874a32602d4e52971c786ef5ffb4430629d)
+(cherry picked from commit da4afaff074e56b0fa0d25abf865784148018895)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- blockdev.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ block/block-backend.c              | 10 +++++++++-
+ include/block/block-global-state.h |  6 +++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/blockdev.c b/blockdev.c
-index d7b5c18f0a..2c1752a403 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -153,12 +153,22 @@ void blockdev_mark_auto_del(BlockBackend *blk)
+diff --git a/block/block-backend.c b/block/block-backend.c
+index 55efc735b4..d59f759daf 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -2018,7 +2018,15 @@ void blk_activate(BlockBackend *blk, Error **errp)
+         return;
+     }
  
-     JOB_LOCK_GUARD();
- 
--    for (job = block_job_next_locked(NULL); job;
--         job = block_job_next_locked(job)) {
--        if (block_job_has_bdrv(job, blk_bs(blk))) {
-+    do {
-+        job = block_job_next_locked(NULL);
-+        while (job && (job->job.cancelled ||
-+                       job->job.deferred_to_main_loop ||
-+                       !block_job_has_bdrv(job, blk_bs(blk))))
-+        {
-+            job = block_job_next_locked(job);
-+        }
-+        if (job) {
-+            /*
-+             * This drops the job lock temporarily and polls, so we need to
-+             * restart processing the list from the start after this.
-+             */
-             job_cancel_locked(&job->job, false);
-         }
--    }
-+    } while (job);
- 
-     dinfo->auto_del = 1;
+-    bdrv_activate(bs, errp);
++    /*
++     * Migration code can call this function in coroutine context, so leave
++     * coroutine context if necessary.
++     */
++    if (qemu_in_coroutine()) {
++        bdrv_co_activate(bs, errp);
++    } else {
++        bdrv_activate(bs, errp);
++    }
  }
+ 
+ bool coroutine_fn blk_co_is_inserted(BlockBackend *blk)
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index 399200a9a3..2c312cc774 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -166,7 +166,11 @@ int bdrv_amend_options(BlockDriverState *bs_new, QemuOpts *opts,
+ BlockDriverState *check_to_replace_node(BlockDriverState *parent_bs,
+                                         const char *node_name, Error **errp);
+ 
+-int bdrv_activate(BlockDriverState *bs, Error **errp);
++int no_coroutine_fn bdrv_activate(BlockDriverState *bs, Error **errp);
++
++int coroutine_fn no_co_wrapper
++bdrv_co_activate(BlockDriverState *bs, Error **errp);
++
+ void bdrv_activate_all(Error **errp);
+ int bdrv_inactivate_all(void);
+ 
 -- 
 2.39.2
 
