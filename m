@@ -2,174 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457F2706F37
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B3B707035
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:57:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzKnW-0002ae-Av; Wed, 17 May 2023 13:18:46 -0400
+	id 1pzLHG-0005w2-DN; Wed, 17 May 2023 13:49:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1pzKnU-0002ZR-MY
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:18:44 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <chaosdefinition@hotmail.com>)
+ id 1pzLFi-0003BD-7u; Wed, 17 May 2023 13:47:54 -0400
+Received: from mail-bn8nam12olkn20813.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5b::813]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1pzKnS-0006p8-EU
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:18:44 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34HE4Dbl032163; Wed, 17 May 2023 17:18:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=L125pYq/ylcDxaWm1Tsw/nk0sb84aoCPX6DaLoAGAQ0=;
- b=JLc6h7FiPPzwxzj3kF0XRQwgyu+Rn9Jb764POrwpXtpFEd9tTycSHtJhY9S3L+uNVqcy
- pKwMOPQoAF682k4W1g4DrQk62E0b9DOk5Kzcehc38WWwLE06VVt9OYyuoO1BmDTh30CB
- E877ehEdzqjRsjuFq+b4ZkxA4JfrQG/Qwo5KNx0OMgCQ2X4Po9wND44i7azaDW/Szy5Y
- 1jLoD+yXwddpD9Q1YXD8t7eFH4E5eDBbuVWvv3xQl+BYhQBVjp3Lic1G4K7ir8gHwJ7R
- PKpO9sxr+j28SzonKrktOecW4CdYylIx/A1tohi0TAY/c1tmOVWDCbj4/KNDL/cYFeQK gQ== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qj2kdpfwe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 May 2023 17:18:35 +0000
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 34HH23RZ004161; Wed, 17 May 2023 17:18:35 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3qj10c0bxn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 May 2023 17:18:34 +0000
+ (Exim 4.90_1) (envelope-from <chaosdefinition@hotmail.com>)
+ id 1pzLFY-0004jB-FG; Wed, 17 May 2023 13:47:49 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YR/+7NX0oknoF7wBlshBsFZlKCNUmSN9s6K95a/j8X61KjO1AZe3S0qsTGSFdyl4HFIywbCD3rW825fVEzM2gCCJ/Z5pGaQWFQyjbSAle5llYIkYHQ5gaAIBSCJDUzh2efrUZHFPO1+rV3tCLYnvvdQfnNqwVk3GIrLBA5s9VtS7fxvqPNKLLFGKgSrFVaFHC4umHx6nLoMci1JGXLMzwGGNvx4IQkb19jnFcs8qXT56tPwRCxihMeWSFkx+W/RzHtj1zS7BxHDvfHdTwCG3mb/7vq43KBqp7GN5DmJjR33JIqgN326ctePZPmb8bdOVy/bKDFtkUJ1d2B+Qj1PBDQ==
+ b=GJDAm7kNZa004Tj7YBn3o5BA28ax3qyFyn3IqcAAqC/AfOH7bOuiiw5lWf53176+CkYUm4eHvsvsP98wmAlLZ6f7NhpD37d6KCv4OPwHqnXaTzw+fTxBSCjbktMXSRu5O1/To2E6nQEw6xr3uAWBLJYTo1JzyOU4E78ZIEjUC2usTm0T0lBUnnTSmoXRRwH+vf6ep3JaUz+fY0OWqgqeK8NjTiXTiO6jSn+5/eS2y22k7vTLzVQQI8XA5t8zi3qYhTIGdQIOx8Ju96vb0qUHozp4wduh1tnAqbwhhWDjQX1HF0XOvRqlHvBXp6+H/oZEMJ08V9I+h5Q2QSBF1dE3sA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L125pYq/ylcDxaWm1Tsw/nk0sb84aoCPX6DaLoAGAQ0=;
- b=W9VqyHOG0Kj2+PheK2KieMaQ2cv3jGAtu4e7jyWVOMp9YKpqwXj7Jhh0eRcX21VWkwifo5aXs+5P4Y7fKakjXLxPMYPabMFWJ5iaAjB+aPMe6gGX5P7KftbR1bwCqu0SPJXfaVT6l1WXs4bZg11dSKoDVdDtQ/b70ma3I6Epjz7NZ8vi8pXADH/sWCO8VgGDxL8R3pa0+zUEtQlewLZyOTbn+ZkauGX8JZn/jcrnSBu/7RjYBVdWObCqaeeFLGocmBSTbp36/UWPEACL6I2OPVl/Z5iwtYaWYqSaOhX9mkN2dvDyseywvNGf508PT5VbV2msHt47D6pAtBBfAhWMCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ bh=TJdrIGUsz7xeLBGKe6oRhBqBOiNS7cAAc7JckcmdAns=;
+ b=LYZDgRb+O3XJcqftYVBm7aIyfcMxbVceflvEq8VbQqP4dnYyKluXJewN+/yV8kNfndCRUxKVA+W31CLJ0wkPDKXlxZsMFKIl8Zbg/TD/NEalOasmItJFIhKwpdV9TXgEUWyo4VqYjnlbJhbEUdxf1rnkrgkJjJ3kVffhvyeX7Jqaw0WsspDT0zKPRYKq4AH93uU6bqO8SY3KOh/szNgwoqApbnqv+lVSBpRz3P95MDRkc6szyHZlYVr4TTKfpB3R4s/r5u8WeQpii2nktI0kZR9mdkfvtwRvZGSyDN/ReXq3klZQTC5OxIwcI8qdAo7FvXmEh818Uggg6giL69EuJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L125pYq/ylcDxaWm1Tsw/nk0sb84aoCPX6DaLoAGAQ0=;
- b=Hx8M4tslnH9l7R+jFeocbFKe9Rg4qeqdC3QgYasUeRo3xTPz6Z6uuqB+Gphdrv6sEk1k5qWyAUGaQtREmT/Cd4bXcihPeOylItKDM8/UEqcz5JbmXJSUKRn+M1NjfKUvZ4XWXvpY9v7RfCYX1y7+dQ9aKJ3Z5TPrUwzjlsKffmM=
-Received: from BYAPR10MB2663.namprd10.prod.outlook.com (2603:10b6:a02:a9::20)
- by BL3PR10MB6018.namprd10.prod.outlook.com (2603:10b6:208:3b1::11)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=TJdrIGUsz7xeLBGKe6oRhBqBOiNS7cAAc7JckcmdAns=;
+ b=LsLH+h1bXxpb5G/TkB5ji7vI2882Zy9HD/8qvqxDC6rS8AhseQbFTj8oZSIyIhb3JbsjfVt9UYGglaMmv+DduIbkZMt24HRvQzVtJNQCi8U0GnHCXR2dQm2hhhu2APplq/R/T+yB2NuUY5Zwm5xKzPaRgLayxL8X1osb0KjKlg97niGgj789cUyC2vz63pgVzyFiG126+pqkPECUVOuRmnYTkBEQPUTcIjzmqIdjrcmhYWIu989OXsWaNN1tgva8iO85zbwSeZzv3UufAYXuGh5EZ3q7EVteLkrbbfVZC6Z9vUy9Uju5HCJQD+fLStmpqW2PH6hPORseFWMLvLZxdQ==
+Received: from DS7PR12MB6309.namprd12.prod.outlook.com (2603:10b6:8:96::19) by
+ BY5PR12MB4885.namprd12.prod.outlook.com (2603:10b6:a03:1de::20) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.33; Wed, 17 May
- 2023 17:18:30 +0000
-Received: from BYAPR10MB2663.namprd10.prod.outlook.com
- ([fe80::af8a:9631:5562:7dd0]) by BYAPR10MB2663.namprd10.prod.outlook.com
- ([fe80::af8a:9631:5562:7dd0%6]) with mapi id 15.20.6387.033; Wed, 17 May 2023
- 17:18:30 +0000
-Message-ID: <c8a583ee-60b9-c3c1-5b49-53c793ef58fb@oracle.com>
-Date: Wed, 17 May 2023 10:17:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] target/i386: Clear xsave pkru bit when KVM XCR0 not
- support
-To: Yuchen <yu.chen@h3c.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "rth@twiddle.net" <rth@twiddle.net>,
- "ehabkost@redhat.com" <ehabkost@redhat.com>,
- Chengchiwen <chengchiwen@h3c.com>
-References: <914d4bfc6901485c9f029ce26ceb7d10@h3c.com>
-Content-Language: en-US
-From: Dongli Zhang <dongli.zhang@oracle.com>
-In-Reply-To: <914d4bfc6901485c9f029ce26ceb7d10@h3c.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR06CA0102.namprd06.prod.outlook.com
- (2603:10b6:5:336::35) To BYAPR10MB2663.namprd10.prod.outlook.com
- (2603:10b6:a02:a9::20)
+ 2023 17:47:35 +0000
+Received: from DS7PR12MB6309.namprd12.prod.outlook.com
+ ([fe80::bf6e:1dc2:10ea:cc04]) by DS7PR12MB6309.namprd12.prod.outlook.com
+ ([fe80::bf6e:1dc2:10ea:cc04%3]) with mapi id 15.20.6387.033; Wed, 17 May 2023
+ 17:47:35 +0000
+From: Zhuojia Shen <chaosdefinition@hotmail.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Beata Michalska <beata.michalska@linaro.org>, qemu-arm@nongnu.org,
+ Zhuojia Shen <chaosdefinition@hotmail.com>
+Subject: [PATCH v2] target/arm: allow DC CVA[D]P in user mode emulation
+Date: Wed, 17 May 2023 10:31:06 -0700
+Message-ID: <DS7PR12MB6309A0F097FA4FB9D7CACB5BAC7E9@DS7PR12MB6309.namprd12.prod.outlook.com>
+X-Mailer: git-send-email 2.40.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [R15Mi9pr+3raxQX/bCsGfslvJ6xroVZJ]
+X-ClientProxiedBy: BY5PR17CA0043.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::20) To DS7PR12MB6309.namprd12.prod.outlook.com
+ (2603:10b6:8:96::19)
+X-Microsoft-Original-Message-ID: <20230517173106.190099-1-chaosdefinition@hotmail.com>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR10MB2663:EE_|BL3PR10MB6018:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdfac0a4-b170-489b-628d-08db56fabc43
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6309:EE_|BY5PR12MB4885:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44336afd-7347-4edf-0bca-08db56fecc40
+X-MS-Exchange-SLBlob-MailProps: ZILSnhm0P3nvAoS/oQTVQbRJURG4O0+HHAaFajDIEf9pSUQr8Bn9/tP7YVqhDzi2HCHchrBZX0Xc7qwhrnpRFlLJpfudOCxpwXErzKd4m5SoTGei9a8DXAP2XKIEvYD++ni6MB6fF4dwc7i9TJXGqriA4CKghGtXAX3K4cPAWOdFVNly/BL8qA5r0w0Ixk5Uxr3GjYymoY+YpGPMDX53lQ5lgeQ3xQEFsKMxCrYmtmCeK5JEgmB9jcf9L+8y/yc5ad9xLSCKkGOXoVrS0KgbYPVXJRI97IP5kEI8f8HK7/UE0KwvMODlDOrcxjjK4jsAGcRnGa8C0usstB194sC+2uj922dYQmiVNXGHJcpe9atk+psK/+OyQ4Pw1Wbp4sSVMYUbXBctTmvTAhWduD8T25s6d8RdbYMTo+Mur+jWva+3/4UyugVTn7Rk+8r7HPIWWtw34Wr872UVtoAu72dG5RxeZEj6O2NaMk1To1JFEShmNcALzuKtHf0oG4S96G09I/f01W7rFWLYbAr5rP3uA3gHdU4vlZ+Vqq1NrobOyCVsBd/Dw27ru2Cy5yIpf1Ha67trXJa90rtxvQtfT97Hs5EAGDEOP1OxP9d8Cd9duIgMtPYQrE591yY1pX6/xCkbCgk9abA9wJuyCIaKbwDLa2xXQctfWVp3sL/MrfPpU5MaUIRatqUjCH/yi4djXEOurmE1KkFcu+dVWkJzJEAST7ykxxZax2GXyy2jQ+HWF17Q3hp6GkHt7wOWz7OuKCwb/Pq8Y0jDfNtTX/u5TuyEE23EHXp1iS9e
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TuDVe37zv3pnMLdDy7pFpVi8W4ea/S/YFgWRBy9eZp1l5CfmcBYyuUnu+t4pvC3LbOD/3dAC5eOxdJELs1R4fhAQhjwQu5m5FWk5FFCf7IPND3HFvZu2eUhHHOh7qOY3yb5Dk/l8dAQIZcqZKsYBdgrDDkEtXcDFIFnhyT9IogTbJoLyk5ZyP8QWXPv0JXtMWYrmsvMok9FJEhfKp1F2bi1A8ZAFKJIMCuWtskMjRF8VjLYM0z9MXkmkBEhFMGOQNoi0f46SDrFk90uVe7w4FMzk9YzPsB2xLy2qKQ+KcqCRTmfN8Vj+l2sh9gM0jNwwqYXYNi2fjlqtIgXsYhs69qhx0nbb6dY0VNBSwMuls/a9zVWCxzKdHHo1QcO0ISkWHZSU5flfGLWsEpLUsU1ShA8YBDngvsss8dpYbywzgMnNBZQAAlW+OctiT5YjA/2nd83ZkmeI2Ef7oajNFJwym/tsEVmZprsLhMhZsMu8OsCEpId+Pro7D/iDV7uuUjKfwPDnCrABgEzeTI+IrsOpekNDalN6ccYJMQdynK6fojW2z/lZmUl6rKTNu0ayEa0/z8oejwu6+yNX0EBD3k3CJ5J8DWlv4t8WIpq1oI/xOuj5FTKufyDpRQJnZkygnhznijAP+baGCT88XGOwxwjLiw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR10MB2663.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(39860400002)(376002)(346002)(366004)(396003)(136003)(451199021)(5660300002)(8676002)(8936002)(86362001)(44832011)(2616005)(83380400001)(966005)(6506007)(186003)(6512007)(53546011)(38100700002)(26005)(41300700001)(110136005)(6486002)(6666004)(54906003)(478600001)(66946007)(31696002)(66556008)(36756003)(4326008)(316002)(66476007)(31686004)(2906002)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
+X-Microsoft-Antispam-Message-Info: aPKxfDVSQJc4t9gXANVGJ/9Blrn3AsQmuxmchi8H/NLrdHpog5N8ODVqpvtxcvJL3RiJfwalT10Wv6I7NETHwjizPFCdQufRmdYnlL456Qo2zpvIp0c2QvEfx2CIjt++QRFWThkhYShzbjN8NXmtDCk/XKma2lsdYftgIesehyZEv5YQl5OJccyyuu2U9Vohdya/l6rV5p4JBhLb4BfAm//QmbpfkDGlPiCbgKebZfOTFdHMXC/TPZGNPx9N/zYNTKr+Y0E9bk3Mq/xLwMxjphxK3J82NbJImxf6Q4V/us/+NIgHBVKuE/3mvGkO/lm48WmDdK9kaOWvq5lyE1b9ffgxPCeQqBLoA7zf/ofGSwd161ixT2rXOaBoRJIMCSze4VGaxpHSV0msMWkgKVZWS/FfV2JE0eliv1Yk9ns4kj/jZWF8N30EKld0NQqhTM0OY9Io6tHEuB4izRv5YSfH/ro9R8RIGcd9Bi2fdcso9sxoEJoP1rfspgY6vnzd75wsH8K4PGhTQbIaTkKKWp1lIzNWS9sTvP0X5ABPvubDoiS7kDeG2GC1DflKz+NQTPNYq8EcRRBcEdzqibjCYbmrUVn1Zz0OoTiIJvVpNrp2l3dhUl6u7k5rs2vys//2IXI3
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cDFiSmZnV2V6MlUrQS9jUHlSN0tkVHpuWlJleUNXOXBuMHhLL3VYSWZCK2sx?=
- =?utf-8?B?N2FhVHdLeHFwZkF2eVFLNnJCN09TWmY1WnQzcFRiejJBMHNUSjBrWGI2TW9r?=
- =?utf-8?B?MkpObE9Ob0svUmsxa0tPbmFvWWg5L2ZOeUYyUG1sTXl0eFpSUXJYbTNidDFI?=
- =?utf-8?B?bDF0bjJMRlcvbjJRTHpmOExkcUNzSkp1aEVJUmtETk5zWHliUmNvMjV1RTc3?=
- =?utf-8?B?UFB0Z3RWU3I5bGQrdk0waE8yVENSbjlOM08xV05vaU5kTzZGQ2JYUFhoQ2Fu?=
- =?utf-8?B?M1JFdlcySmJDVHVqUkFBbFFNQ2Fia3prOTNNRGhFNFgxSFF2enVUMllhSGJy?=
- =?utf-8?B?b0dFVHlTenVJaUNieFh3RFBHVUNlVzBINlN6RzJZdms1dG1LZ01XNlpaQlpt?=
- =?utf-8?B?ekxDMk1TWm5yZGJHYVJMdlhoVGV2OWhkZWhBblNCSmJ6T2ZmNXliU2FiN1Iw?=
- =?utf-8?B?M08yNWpUVlljUTcyRGJjd3hVSjU2ZmRqbDI5RnJEbnVsQWpBY3ZyNkJyZWJq?=
- =?utf-8?B?VkExUmRNSU1MOE5jc2tnYk0vZG9sT2NEUFJ5R0w0cGFUZzRNSFdSNlQrZHlH?=
- =?utf-8?B?ZFRKb0k4bU9YT2RFS0xpQlZJNDByektFY0RoSm56eTdVcUJYVFFyc1BFWUc5?=
- =?utf-8?B?Nmt0aFNXeG1qNHEvd3M2TFl1a3JTU281QmUzdThqekZLVXZIZkJSWVVidWxI?=
- =?utf-8?B?L0wyTmNMTFZnWEJvQTM0ZzVJRlpFMEF1bStpRTJ6NCtsZkp5ZEVlbml0NXVs?=
- =?utf-8?B?b09hSWl5VE5xWkJGMHBtdmxHN09qRUlJdVdUVzVnSXRvbzFVSzV1T1ZieXBJ?=
- =?utf-8?B?bXVGSWlDWEFYM1Naenk2S1RCaDh0S21sL2ZrMkRPUDFEWTdWbGR3YXVuZ3cz?=
- =?utf-8?B?aDA0NkF4Rmo2cDEwVEV2aGFWejBGUERvQ2tkb2dUNzdQQ042TERLcytGNjBi?=
- =?utf-8?B?eDNsdlhHSURoYURRS2FBdFFiYzlNQXp3Q0RSdTMwUHlXTjZpcFF5cjN0eXRl?=
- =?utf-8?B?RWFySUhmL0pPMGdudlBvOTZtQXpQd3lJRlFVb2drU1R4Y3puaU5FeXFQQnhu?=
- =?utf-8?B?N1lEUG9jWFd6YUZWWnM4WUR0dE1zbDVzNk5kbXdCVHhRVHhHcSsweURCenIv?=
- =?utf-8?B?enA2eTV2dGMrNjBiMngzNWNPK1BrYmlOdUtpaHllTGNnQ2M1Kzd6UmdtSDlt?=
- =?utf-8?B?c3RHU2hwd0gxZCszQTVjbGhkSjVWR3lVb0wvcEFESEZDbjM0MnlHUytjekZ2?=
- =?utf-8?B?K01ZbWh4NGlDcmhBdjZmQkFyZjNtamVIeXZ5dGl5U2c3ZW1Nc3d1UkIxN2Ev?=
- =?utf-8?B?bTdLZ0Y5MVQ2YzF1YXkwTC94R1lsOCtXNXRmR2NKTVNCdkt5bVVNS2FjSHYv?=
- =?utf-8?B?MFRMYlJjZitRUFFnT1ZRUkx3Ujd2YnhjOFdBV3FKUjdqVVpNa3hwZ2tjeS9t?=
- =?utf-8?B?enp3bWRVOW9LVzFBOTJUa2dVTUh0SmJqcjVNTm9qMStpc2V4KzJhUGdzZnZS?=
- =?utf-8?B?M3ZhSlh5MFdjUXNlcXF1TUZ2dEZQeUtyTXpab2tlMndSY0xla2tnT1dLRHBD?=
- =?utf-8?B?R3JMK3Zsb3NFRjdLMWl3YnloOU9MM3J0MlJKZDRKaXpLbmlyRlZTMlBEUyti?=
- =?utf-8?B?V3ZhUHZjR2VtNXV1VTlQdDVQZDVZc3loWmw4SWVwbzl4R05COWtzYTVSay9Q?=
- =?utf-8?B?OGl2T2tBNzJrSHk0cDBjT3BmQXg2K2NqbnhmaWh6aEFjWU5ZYmZvSVE4cDVU?=
- =?utf-8?B?OEZZc0IyRUpjZVAvbm1aYTgzNS9iYjRBRnZuSTNENzNjQkRGS1lqcWhmSHBD?=
- =?utf-8?B?WHdqMXJJZm55SXc2bVZrY1BBWWJaRmZUeld3YWw1QjBFWkVWTDlUWnRMUE03?=
- =?utf-8?B?ZDhiT3I4a0YrOUNxTC9qa29RUUYxdEFIOTFHNTFaTU5ERS91K1NlL09oMzFj?=
- =?utf-8?B?bGVtOWx1L1hTM2dsWTk1b2RYelpodnozazkwUHliOXh6R2tORW92RUNuV3hJ?=
- =?utf-8?B?TFRpTWRTbE5DS1YyMW83R2RlZW1XMVBNSk5aU0NscHpoVHlhY2g4RWtGUVR0?=
- =?utf-8?B?QkNTZGNPSWZDajI0TG1zN0xKVzROcktPMzVTTXZ2Vm5YR0RGcGR2SmJobGN3?=
- =?utf-8?Q?2wtB14uzVR3uXd2LWV7jpVz9O?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 5gMGcWCL0ugm6BbII5QbsDBEmmC2neCvskzBZdf/xND7eNB8AgF+UkdTntUGgoDY+8ZkXJjAnLk3qRkT6cbXNYJOrXiuLUhiF11qWNpIeXaiBL8WYkxB/IxskDElaArc6et/ewVltwcL7IAxQCwc+TntCTXfW4crafrVyx6RrdjB+LCsGr0EYGhIN1yuhYfpmvhvyZNyQt29s6IfqddCkWtk7PgNPN+wiaRmEXGndbNxFPhBhdRbrgJHm6SGPMKTzjhyb/HCf+18WdepAFddUuRJqlWJirFY4tlaBWd//Fm3FWR+1KAPWzIjqno3y+/uxCNOnyqlyEUS/n/WgzgucNtB+rPvsfjxdGtbIV0ZixsfUV9Lf1cGwlzYkrHFaD+BsvhzWlNGX80N1yOUyUeTK7AHVVa6AEAV1tHtxMH2FZzOqxPiR9KJ/XA2PB839CnB1n+8joOuIbQaHWDbRDbZyZ/UcUL35tEmB+BPPrsg/GfaofQi/hgNrgZNJD66N7VUb7MYtivvJQYdOPX9GiRsbzlviVfoBOcNeKEdKll8we4BpTF0/alSQN4W350nxabzqYVUS4QuKYkuVWeFP9jyWNF9GRu5aUp2gwQIq2ZQfYhRsIqAbk6UgdnfsMbnKLBIpJ67oeTL3WBgceH4qdsO1WWx9bv1RTgEowqTB1LF0qptm7zTkj034LBnEROy6aQj3Ap/7gWwDLobCHkcfcJsI/1OOmWqlqtYRnA9Ied1LYvKO0OrqunJMEd/Xxg1aN13cA6Zf14ugq1F4aPg8/eynnAryGnAugTQ+fc8I7lntCvQob7FD34RHvBjvb+iDohLJfxusYKqX9MKnJi8ugbG2A==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdfac0a4-b170-489b-628d-08db56fabc43
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2663.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mUBkf+1BpgXixD5j5HpcsV3VbedvsANPh6qhPuGLuncmtUcqQHdajDRhFeh4?=
+ =?us-ascii?Q?rPqRukVz0kWcRB4uf7Od0GZQrKem62aCdhutOP+sgu3ikTueD3g7A9pphEve?=
+ =?us-ascii?Q?FdN6Ave0VhIckC7J/MLP2siIlHF2qce3jf9SA7PxKsm/TcpVMB2uBeVdKYGm?=
+ =?us-ascii?Q?vXu8VI7HCTZxA09UyWBZY9LbTgqBJix7Bvvu1EbdzPu4t7sP98zISPxsnZ+N?=
+ =?us-ascii?Q?9m4XbKbWYhwX4LqGvnkxP1GcVpyJql6ZpS795XKJm05NogvKDWyjgwoRru2P?=
+ =?us-ascii?Q?dmzkKj5OAtSROL3EqbnsuGN4eNoz+576jodAyWpNdhOci38MkxuPpFrpaUU6?=
+ =?us-ascii?Q?+nwJtj23sqLxx6EX79Y68qkVgI1xRy5+D250h6mrpwOMhbLzmADEeqZzMD+a?=
+ =?us-ascii?Q?p16fUNq85dYB9G7nhiLeL3eaTvCpzNqu2QSEGE8dWuwbHzlBpYuc3R8hSq6+?=
+ =?us-ascii?Q?ieSlNmERsE9yl+TeAPqOyR1QsatnkDAdRP2sqKNbuYfJACbRfkx5UPIaXWt7?=
+ =?us-ascii?Q?IEyr/7uz0puC7OP2YtasolXtXFulv0m29V5dOYGacOPQfg0CwAIygV1fDx94?=
+ =?us-ascii?Q?ySm4EE08g4yTAgeMd29eV1GE39GVkb2gG8XkIPRYUuMTnxiPxt1HI6EKseJU?=
+ =?us-ascii?Q?qDm7rjg8d+zlssjju+hHaLCVBqFwnW54x5f8Y3cuC78LYElad7LAlyfnI/vJ?=
+ =?us-ascii?Q?EWgmVSiTsRhkHmfO1efTCCYrgZLlxT1q6M86wqDLuBC111WB7S81y7VXsdYR?=
+ =?us-ascii?Q?DlIIXtg2RXl89ctR/EniXQ3wc3qaJPxkmfbK0AUs9sElWSe+DYBt0N5Ud7jN?=
+ =?us-ascii?Q?2C69xICY5k28FG1Wsuh1bJLMB4uGZ8iRf3ZnD5TtDteb5TSM8wOyy8rLWqiV?=
+ =?us-ascii?Q?4qLIci/ZVNi9Q1jrWQy+Rij8PRBSkj+nEoF2QS1Zr8DfnTwDCqLHvtofFk0E?=
+ =?us-ascii?Q?NqeNqNUpogGXTo4mVLgLKv8ZeSScETbUmhUkNCG4M2CSAqqWObSrTwOD1rKs?=
+ =?us-ascii?Q?E/a7pNYLDm85ogXjKbsmhzpOJ2lEk81TQj/JPEfFafL4HIPJhxTJbrmxU0AH?=
+ =?us-ascii?Q?twAnWy8UyHmyawLmiLJVwMcIaQlSA4/VDZfHSpCJdfcQTjRu3ygpUW7y/BUA?=
+ =?us-ascii?Q?7gZjtiqsHUNdrLxQb9a9iXn6lezK0bH3x/a4s6DaOTz7uTJjxGjFWRnhnsOc?=
+ =?us-ascii?Q?R3D7L9wh412jxL2D2u4yUgGbPfo8El506/1pIFYYNIx9GtBjDrZVnisvmuQ?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-71ea3.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44336afd-7347-4edf-0bca-08db56fecc40
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6309.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 17:18:30.5612 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 17:47:35.6257 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9F+Swigk78KTXavRaFr/EUxXuWc05cxy29NmfXFaAewuYWpYlXgO9mjYKjN1d5lpc9nzWxAjSWliGdLhRP0HMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR10MB6018
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-17_02,2023-05-17_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- spamscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 adultscore=0 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305170142
-X-Proofpoint-GUID: pdSZrDNUF5zLHH-n9tGNj7DVZRtjRfME
-X-Proofpoint-ORIG-GUID: pdSZrDNUF5zLHH-n9tGNj7DVZRtjRfME
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.412,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4885
+Received-SPF: pass client-ip=2a01:111:f400:fe5b::813;
+ envelope-from=chaosdefinition@hotmail.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -185,74 +123,320 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Yuchen,
+DC CVAP and DC CVADP instructions can be executed in EL0 on Linux,
+either directly when SCTLR_EL1.UCI == 1 or emulated by the kernel (see
+user_cache_maint_handler() in arch/arm64/kernel/traps.c).
 
-On 5/17/23 03:55, Yuchen wrote:
-> Migrating guest from Intel new CPU (as Gold 6230) to old CPU (as
-> E5-2650 v4) will pause on the destination host. Because old CPU
-> not support xsave pkru feature, and KVM KVM_SET_XSAVE ioctl
-> return EINVAL.
-> 
-> This kernel commit introduces the problem:
-> ea4d6938d4c0 x86/fpu: Replace KVMs home brewed FPU copy from user
+This patch enables execution of the two instructions in user mode
+emulation.
 
-This kernel commit issue should be resolved by the below kernel commit.
+Signed-off-by: Zhuojia Shen <chaosdefinition@hotmail.com>
+---
+ target/arm/helper.c               |  6 ++--
+ tests/tcg/aarch64/Makefile.target | 11 ++++++++
+ tests/tcg/aarch64/dcpodp-1.c      | 47 +++++++++++++++++++++++++++++++
+ tests/tcg/aarch64/dcpodp-2.c      | 47 +++++++++++++++++++++++++++++++
+ tests/tcg/aarch64/dcpop-1.c       | 47 +++++++++++++++++++++++++++++++
+ tests/tcg/aarch64/dcpop-2.c       | 47 +++++++++++++++++++++++++++++++
+ 6 files changed, 201 insertions(+), 4 deletions(-)
+ create mode 100644 tests/tcg/aarch64/dcpodp-1.c
+ create mode 100644 tests/tcg/aarch64/dcpodp-2.c
+ create mode 100644 tests/tcg/aarch64/dcpop-1.c
+ create mode 100644 tests/tcg/aarch64/dcpop-2.c
 
-x86/kvm/fpu: Limit guest user_xfeatures to supported bits of XCR0
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 0b7fd2e7e6..d4bee43bd0 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -7405,7 +7405,6 @@ static const ARMCPRegInfo rndr_reginfo[] = {
+       .access = PL0_R, .readfn = rndr_readfn },
+ };
+ 
+-#ifndef CONFIG_USER_ONLY
+ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+                           uint64_t value)
+ {
+@@ -7420,6 +7419,7 @@ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+     /* This won't be crossing page boundaries */
+     haddr = probe_read(env, vaddr, dline_size, mem_idx, GETPC());
+     if (haddr) {
++#ifndef CONFIG_USER_ONLY
+ 
+         ram_addr_t offset;
+         MemoryRegion *mr;
+@@ -7430,6 +7430,7 @@ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
+         if (mr) {
+             memory_region_writeback(mr, offset, dline_size);
+         }
++#endif /*CONFIG_USER_ONLY*/
+     }
+ }
+ 
+@@ -7448,7 +7449,6 @@ static const ARMCPRegInfo dcpodp_reg[] = {
+       .fgt = FGT_DCCVADP,
+       .accessfn = aa64_cacheop_poc_access, .writefn = dccvap_writefn },
+ };
+-#endif /*CONFIG_USER_ONLY*/
+ 
+ static CPAccessResult access_aa64_tid5(CPUARMState *env, const ARMCPRegInfo *ri,
+                                        bool isread)
+@@ -9092,7 +9092,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+     if (cpu_isar_feature(aa64_tlbios, cpu)) {
+         define_arm_cp_regs(cpu, tlbios_reginfo);
+     }
+-#ifndef CONFIG_USER_ONLY
+     /* Data Cache clean instructions up to PoP */
+     if (cpu_isar_feature(aa64_dcpop, cpu)) {
+         define_one_arm_cp_reg(cpu, dcpop_reg);
+@@ -9101,7 +9100,6 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+             define_one_arm_cp_reg(cpu, dcpodp_reg);
+         }
+     }
+-#endif /*CONFIG_USER_ONLY*/
+ 
+     /*
+      * If full MTE is enabled, add all of the system registers.
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 0315795487..714a30355d 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -21,12 +21,23 @@ config-cc.mak: Makefile
+ 	$(quiet-@)( \
+ 	    $(call cc-option,-march=armv8.1-a+sve,          CROSS_CC_HAS_SVE); \
+ 	    $(call cc-option,-march=armv8.1-a+sve2,         CROSS_CC_HAS_SVE2); \
++	    $(call cc-option,-march=armv8.2-a,              CROSS_CC_HAS_ARMV8_2); \
+ 	    $(call cc-option,-march=armv8.3-a,              CROSS_CC_HAS_ARMV8_3); \
++	    $(call cc-option,-march=armv8.5-a,              CROSS_CC_HAS_ARMV8_5); \
+ 	    $(call cc-option,-mbranch-protection=standard,  CROSS_CC_HAS_ARMV8_BTI); \
+ 	    $(call cc-option,-march=armv8.5-a+memtag,       CROSS_CC_HAS_ARMV8_MTE); \
+ 	    $(call cc-option,-march=armv9-a+sme,            CROSS_CC_HAS_ARMV9_SME)) 3> config-cc.mak
+ -include config-cc.mak
+ 
++ifneq ($(CROSS_CC_HAS_ARMV8_2),)
++AARCH64_TESTS += dcpop-1 dcpop-2
++dcpop-1 dcpop-2: CFLAGS += -march=armv8.2-a
++endif
++ifneq ($(CROSS_CC_HAS_ARMV8_5),)
++AARCH64_TESTS += dcpodp-1 dcpodp-2
++dcpodp-1 dcpodp-2: CFLAGS += -march=armv8.5-a
++endif
++
+ # Pauth Tests
+ ifneq ($(CROSS_CC_HAS_ARMV8_3),)
+ AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5
+diff --git a/tests/tcg/aarch64/dcpodp-1.c b/tests/tcg/aarch64/dcpodp-1.c
+new file mode 100644
+index 0000000000..47c466a9bf
+--- /dev/null
++++ b/tests/tcg/aarch64/dcpodp-1.c
+@@ -0,0 +1,47 @@
++/* Test execution of DC CVADP instruction */
++
++#include <asm/hwcap.h>
++#include <sys/auxv.h>
++
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++#ifndef HWCAP2_DCPODP
++#define HWCAP2_DCPODP (1 << 0)
++#endif
++
++static void signal_handler(int sig)
++{
++    exit(EXIT_FAILURE);
++}
++
++static int do_dc_cvadp(void)
++{
++    struct sigaction sa = {
++        .sa_handler = signal_handler,
++    };
++
++    if (sigaction(SIGILL, &sa, NULL) < 0) {
++        perror("sigaction");
++        return EXIT_FAILURE;
++    }
++    if (sigaction(SIGSEGV, &sa, NULL) < 0) {
++        perror("sigaction");
++        return EXIT_FAILURE;
++    }
++
++    asm volatile("dc cvadp, %0\n\t" :: "r"(&sa));
++
++    return EXIT_SUCCESS;
++}
++
++int main(void)
++{
++    if (getauxval(AT_HWCAP) & HWCAP2_DCPODP) {
++        return do_dc_cvadp();
++    } else {
++        printf("SKIP: no HWCAP2_DCPODP on this system\n");
++        return EXIT_SUCCESS;
++    }
++}
+diff --git a/tests/tcg/aarch64/dcpodp-2.c b/tests/tcg/aarch64/dcpodp-2.c
+new file mode 100644
+index 0000000000..3245d7883d
+--- /dev/null
++++ b/tests/tcg/aarch64/dcpodp-2.c
+@@ -0,0 +1,47 @@
++/* Test execution of DC CVADP instruction on unmapped address */
++
++#include <asm/hwcap.h>
++#include <sys/auxv.h>
++
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++#ifndef HWCAP2_DCPODP
++#define HWCAP2_DCPODP (1 << 0)
++#endif
++
++static void signal_handler(int sig)
++{
++    exit(EXIT_SUCCESS);
++}
++
++static int do_dc_cvadp(void)
++{
++    struct sigaction sa = {
++        .sa_handler = signal_handler,
++    };
++
++    if (sigaction(SIGILL, &sa, NULL) < 0) {
++        perror("sigaction");
++        return EXIT_FAILURE;
++    }
++    if (sigaction(SIGSEGV, &sa, NULL) < 0) {
++        perror("sigaction");
++        return EXIT_FAILURE;
++    }
++
++    asm volatile("dc cvadp, %0\n\t" :: "r"(NULL));
++
++    return EXIT_FAILURE;
++}
++
++int main(void)
++{
++    if (getauxval(AT_HWCAP) & HWCAP2_DCPODP) {
++        return do_dc_cvadp();
++    } else {
++        printf("SKIP: no HWCAP2_DCPODP on this system\n");
++        return EXIT_SUCCESS;
++    }
++}
+diff --git a/tests/tcg/aarch64/dcpop-1.c b/tests/tcg/aarch64/dcpop-1.c
+new file mode 100644
+index 0000000000..c9fc5b7e57
+--- /dev/null
++++ b/tests/tcg/aarch64/dcpop-1.c
+@@ -0,0 +1,47 @@
++/* Test execution of DC CVAP instruction */
++
++#include <asm/hwcap.h>
++#include <sys/auxv.h>
++
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++#ifndef HWCAP_DCPOP
++#define HWCAP_DCPOP (1 << 16)
++#endif
++
++static void signal_handler(int sig)
++{
++    exit(EXIT_FAILURE);
++}
++
++static int do_dc_cvap(void)
++{
++    struct sigaction sa = {
++        .sa_handler = signal_handler,
++    };
++
++    if (sigaction(SIGILL, &sa, NULL) < 0) {
++        perror("sigaction");
++        return EXIT_FAILURE;
++    }
++    if (sigaction(SIGSEGV, &sa, NULL) < 0) {
++        perror("sigaction");
++        return EXIT_FAILURE;
++    }
++
++    asm volatile("dc cvap, %0\n\t" :: "r"(&sa));
++
++    return EXIT_SUCCESS;
++}
++
++int main(void)
++{
++    if (getauxval(AT_HWCAP) & HWCAP_DCPOP) {
++        return do_dc_cvap();
++    } else {
++        printf("SKIP: no HWCAP_DCPOP on this system\n");
++        return EXIT_SUCCESS;
++    }
++}
+diff --git a/tests/tcg/aarch64/dcpop-2.c b/tests/tcg/aarch64/dcpop-2.c
+new file mode 100644
+index 0000000000..8f8ed81720
+--- /dev/null
++++ b/tests/tcg/aarch64/dcpop-2.c
+@@ -0,0 +1,47 @@
++/* Test execution of DC CVAP instruction on unmapped address */
++
++#include <asm/hwcap.h>
++#include <sys/auxv.h>
++
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++#ifndef HWCAP_DCPOP
++#define HWCAP_DCPOP (1 << 16)
++#endif
++
++static void signal_handler(int sig)
++{
++    exit(EXIT_SUCCESS);
++}
++
++static int do_dc_cvap(void)
++{
++    struct sigaction sa = {
++        .sa_handler = signal_handler,
++    };
++
++    if (sigaction(SIGILL, &sa, NULL) < 0) {
++        perror("sigaction");
++        return EXIT_FAILURE;
++    }
++    if (sigaction(SIGSEGV, &sa, NULL) < 0) {
++        perror("sigaction");
++        return EXIT_FAILURE;
++    }
++
++    asm volatile("dc cvap, %0\n\t" :: "r"(NULL));
++
++    return EXIT_FAILURE;
++}
++
++int main(void)
++{
++    if (getauxval(AT_HWCAP) & HWCAP_DCPOP) {
++        return do_dc_cvap();
++    } else {
++        printf("SKIP: no HWCAP_DCPOP on this system\n");
++        return EXIT_SUCCESS;
++    }
++}
+-- 
+2.40.1
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ad856280ddea3401e1f5060ef20e6de9f6122c76
-
-Since the old target server does not support pkru, I assume the VM's cpu type
-should not support pkru. Therefore, the pkru should never be migrated away from
-source server.
-
-Dongli Zhang
-
-> 
-> Signed-off-by: YuChen <yu.chen@h3c.com>
-> ---
-> target/i386/xsave_helper.c | 8 ++++++++
-> 1 file changed, 8 insertions(+)
-> 
-> diff --git a/target/i386/xsave_helper.c b/target/i386/xsave_helper.c
-> index 996e9f3bfe..64e2b969fe 100644
-> --- a/target/i386/xsave_helper.c
-> +++ b/target/i386/xsave_helper.c
-> @@ -6,6 +6,8 @@
->  #include "cpu.h"
-> +static bool has_xsave_pkru;
-> +
-> void x86_cpu_xsave_all_areas(X86CPU *cpu, void *buf, uint32_t buflen)
-> {
->      CPUX86State *env = &cpu->env;
-> @@ -47,6 +49,9 @@ void x86_cpu_xsave_all_areas(X86CPU *cpu, void *buf, uint32_t buflen)
->          stq_p(xmm + 8, env->xmm_regs[i].ZMM_Q(1));
->      }
-> +    if (!has_xsave_pkru) {
-> +        env->xstate_bv &= ~XSTATE_PKRU_MASK;
-> +    }
->      header->xstate_bv = env->xstate_bv;
->      e = &x86_ext_save_areas[XSTATE_YMM_BIT];
-> @@ -181,6 +186,9 @@ void x86_cpu_xrstor_all_areas(X86CPU *cpu, const void *buf, uint32_t buflen)
->          env->xmm_regs[i].ZMM_Q(1) = ldq_p(xmm + 8);
->      }
-> +    if (xsave->header.xstate_bv & XSTATE_PKRU_MASK) {
-> +        has_xsave_pkru = true;
-> +    }
->      env->xstate_bv = header->xstate_bv;
->      e = &x86_ext_save_areas[XSTATE_YMM_BIT];
-> --
-> 2.34.1
-> -------------------------------------------------------------------------------------------------------------------------------------
-> ?????????????????????????????????
-> ????????????????????????????????????????
-> ????????????????????????????????????????
-> ???
-> This e-mail and its attachments contain confidential information from New H3C, which is
-> intended only for the person or entity whose address is listed above. Any use of the
-> information contained herein in any way (including, but not limited to, total or partial
-> disclosure, reproduction, or dissemination) by persons other than the intended
-> recipient(s) is prohibited. If you receive this e-mail in error, please notify the sender
-> by phone or email immediately and delete it!
-> 
 
