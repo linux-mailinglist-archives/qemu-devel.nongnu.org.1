@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2D4706F27
+	by mail.lfdr.de (Postfix) with ESMTPS id 6881D706F26
 	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:15:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzKjS-00069t-Ln; Wed, 17 May 2023 13:14:34 -0400
+	id 1pzKjq-0006mv-GD; Wed, 17 May 2023 13:14:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzKjQ-00069l-S2
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:14:32 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzKjo-0006jB-02
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:14:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzKjO-00061D-Ij
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:14:32 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzKjm-000642-JA
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:14:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684343669;
+ s=mimecast20190719; t=1684343693;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2S5KswpQaDdvOWJlFwe0hnuR1eN0vc6qt0NyzVd+xIg=;
- b=AAEe3uqHJYi8RHlngmH6F9/5jHhIlZjVvIzKqqwzZXF456DOCPUO9u2GFAoNQIkLd+tj1f
- CnF2nBBprLeO06qaJ34/bZaC4cMiJadPjERSzBpv3tdtG0YQo3JBodvIvPI6rDuIIr8vs8
- /Atnn91VYyG+cPD6L8OTKJ4+fYt2ZQg=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OsCler1ymSUdlCyB+s8I6e/eCiI2pZeq5O1Qx4xNk5c=;
+ b=DZGlP8vRVQxbeKjvZo9Zc5wiJmo2lSIOZwi6ya4ZIDZ7z/t2mYjmaC7RD2CE8oJwlK1zjy
+ rh5oWNsu9kDRaS4fAKygewMAvEhVGHe6Phq1oimTrscbS+ZnW6bJxQPfEc5cfPSjwksQWd
+ A2PhJ0V/dJn3YgP6EL3ZX8XbbDTvqLI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-_xCTibDRNtO8Uc8h2JikqA-1; Wed, 17 May 2023 13:14:27 -0400
-X-MC-Unique: _xCTibDRNtO8Uc8h2JikqA-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-5309b380b41so579390a12.1
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:14:27 -0700 (PDT)
+ us-mta-104-uocDmgsPOJKC4SbWCN-LRA-1; Wed, 17 May 2023 13:14:52 -0400
+X-MC-Unique: uocDmgsPOJKC4SbWCN-LRA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f33f8ffa37so4193035e9.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:14:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684343667; x=1686935667;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2S5KswpQaDdvOWJlFwe0hnuR1eN0vc6qt0NyzVd+xIg=;
- b=helZZcDSmcAEHQD9bwTyBIJdlhTomor0XsmWvZfWPFayWjLjtL9IvW9mBFakloamjr
- tDTgmnnCkFz6KQjhynVHINHSYw/rIuYHcZtCv88PVHZCxln8vUYQ/TqYxEwJE4D5U7/y
- Sls7s8olLAPuvgW0n201L0KW9DmITJFetAQcNUt0+HUI/y75kgGaGP3BOMWgJ3Q+G41b
- MVhB9VNmtvpTr/3h0NfLsw0S/0YBHPZ/e9TOz0Xd3PO1/uQN4EfAvqmJCGMzytTAunBd
- XDwv+EIjeBovvR1jdDHZ9X71832ozIUTwNX2RiIz82VkMNY/gxH8Dz6Q+ALV9PsjtCjO
- xQhA==
-X-Gm-Message-State: AC+VfDw2rx9OS77jFUNH0GEMGzntjyL9jBkMaTmUpxv4wtenh9Q3NOfi
- QYS+eDxh4F08+WfL21xH37i43noL1UO79CdGsS/Li0Ikl20VTjLGrYiI1mi2WXhYZKZHWWz67HX
- VOfJOVhyVJxUK6Owsz1UMVOkL+ECj6lM=
-X-Received: by 2002:a17:902:be01:b0:1a8:1c9a:f68 with SMTP id
- r1-20020a170902be0100b001a81c9a0f68mr41422909pls.36.1684343666869; 
- Wed, 17 May 2023 10:14:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7SamikufbWiWdgRE3I3oNnQHUcEAb0UEXhWJQA5Tri/H5YHf/6h4r7lTrZyr9xxTNktJg7mbxvLhfmn820uN4=
-X-Received: by 2002:a17:902:be01:b0:1a8:1c9a:f68 with SMTP id
- r1-20020a170902be0100b001a81c9a0f68mr41422892pls.36.1684343666577; Wed, 17
- May 2023 10:14:26 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684343690; x=1686935690;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OsCler1ymSUdlCyB+s8I6e/eCiI2pZeq5O1Qx4xNk5c=;
+ b=gwlIi38zo2gbhPvmfkIMfrq8cgWvD79vV+BiHkXa42A6hAzAP9fq0uAOEC0zpEAGTi
+ 2FIf/zB1daWiX52H1xSeKl+n456lVwE3gLgGmc/GRjsPZ4dUrL2RybbfwHwJQ1YfpLJm
+ xaEisA/04hYIyiTtNVZUb6KQ8bkZSDSQKKoCKU6m18bKTS+eNgKw82y3DbTcTsP+oob7
+ 7AqNFjhchIzDEU7vk4bXNfktFGpPBETte3DatjgkFikKHlyvGGtbOKib4XZNLQ3URSCu
+ w7jghf0i/H4JMz0Kim9qrQ6DZBUJJrj0enG4c2KoI6pbQ6DbbP4em903Eo8hiejj0VH8
+ 2Bog==
+X-Gm-Message-State: AC+VfDyQdo0cJ3DqBqq4T96OMxMV2992Sb8nTYzBUkonCNsqGFiWuKi2
+ ozJQhqXIy9QO86RPGQS8AEMsaUBR/pSTkLC+kgLuWDtJAz+oqBVATZGToI5knlvyqyhV5vYoNPl
+ i4vBRGhaILVVnM04=
+X-Received: by 2002:a7b:cb91:0:b0:3f4:e70c:219f with SMTP id
+ m17-20020a7bcb91000000b003f4e70c219fmr15073865wmi.6.1684343690324; 
+ Wed, 17 May 2023 10:14:50 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4bwdjjRwstQcESLF5nQ5josOxJZa/nhdJbVrFULSXe3J4HPGkWvuRob/VhUAy7LuWRtXlNzA==
+X-Received: by 2002:a7b:cb91:0:b0:3f4:e70c:219f with SMTP id
+ m17-20020a7bcb91000000b003f4e70c219fmr15073850wmi.6.1684343689971; 
+ Wed, 17 May 2023 10:14:49 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
+ ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.googlemail.com with ESMTPSA id
+ t1-20020a1c7701000000b003f4e4f51f64sm2835557wmi.7.2023.05.17.10.14.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 May 2023 10:14:49 -0700 (PDT)
+Message-ID: <053b071d-9a57-f4c5-b2bd-c2b26ff67c52@redhat.com>
+Date: Wed, 17 May 2023 19:14:48 +0200
 MIME-Version: 1.0
-References: <20230428132124.670840-1-nks@flawful.org>
- <20230428132124.670840-2-nks@flawful.org>
-In-Reply-To: <20230428132124.670840-2-nks@flawful.org>
-From: John Snow <jsnow@redhat.com>
-Date: Wed, 17 May 2023 13:14:15 -0400
-Message-ID: <CAFn=p-bSHeJJ6q9Zk8HP3PABwvJbHv1-HLRYbJ9iSLa7DHKqqg@mail.gmail.com>
-Subject: Re: [PATCH 1/9] hw/ide/ahci: remove stray backslash
-To: Niklas Cassel <nks@flawful.org>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] qapi/parser: Fix type hints
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, michael.roth@amd.com, jsnow@redhat.com
+References: <20230511111709.971477-1-armbru@redhat.com>
+ <cb6582b2-9542-4ebb-d188-34287f9fb3dd@linaro.org>
+ <87sfbwx339.fsf@pond.sub.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <87sfbwx339.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.412, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,36 +106,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 28, 2023 at 9:22=E2=80=AFAM Niklas Cassel <nks@flawful.org> wro=
-te:
->
-> From: Niklas Cassel <niklas.cassel@wdc.com>
->
-> This backslash obviously does not belong here, so remove it.
+On 5/16/23 07:22, Markus Armbruster wrote:
+>>    File "/builds/qemu-project/qemu/scripts/qapi/parser.py", line 566, in QAPIDoc
+>>      def _match_at_name_colon(string: str) -> Optional[re.Match[str]]:
+>> TypeError: 'type' object is not subscriptable
+> Life's too short for wrestling with such pigs.  Unless John has better
+> ideas, I'll*remove*  these return type annotations.  Maybe these pigs
+> will behave after John's Python venv work lands.
 
-Reviewed-by: John Snow <jsnow@redhat.com>
+re.Match[str] is new in 3.9.  However, typing.Match[str] should work.
 
->
-> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-> ---
->  hw/ide/ahci.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-> index 55902e1df7..a36e3fb77c 100644
-> --- a/hw/ide/ahci.c
-> +++ b/hw/ide/ahci.c
-> @@ -690,7 +690,7 @@ static void ahci_reset_port(AHCIState *s, int port)
->
->      s->dev[port].port_state =3D STATE_RUN;
->      if (ide_state->drive_kind =3D=3D IDE_CD) {
-> -        ahci_set_signature(d, SATA_SIGNATURE_CDROM);\
-> +        ahci_set_signature(d, SATA_SIGNATURE_CDROM);
->          ide_state->status =3D SEEK_STAT | WRERR_STAT | READY_STAT;
->      } else {
->          ahci_set_signature(d, SATA_SIGNATURE_DISK);
-> --
-> 2.40.0
->
+Paolo
 
 
