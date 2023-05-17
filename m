@@ -2,118 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730F6706D29
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE23706D2E
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:49:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJNR-0004lQ-Kd; Wed, 17 May 2023 11:47:45 -0400
+	id 1pzJOj-0006u8-CW; Wed, 17 May 2023 11:49:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
- id 1pzJN4-0004gm-6o
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:47:22 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1pzJOI-0006Gm-GC
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:48:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
- id 1pzJN1-0004gh-Ie
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:47:21 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
- by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
- 20230517154712euoutp0139656e044c836c3e3bc86c7955f89c20~f_OFay-5y0116201162euoutp01e
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 15:47:12 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
- 20230517154712euoutp0139656e044c836c3e3bc86c7955f89c20~f_OFay-5y0116201162euoutp01e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1684338432;
- bh=+EdCytTyEcIMBTi04ruCKz6tQx+pv46CQ6JPHaJIiNw=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=OoR6/RmXd6EzYc8b2jqVZf7A5S2YfkJcCJJncbdQcmdUDPUmcI/Aup9ei/990s+GN
- 7xlYKDZo0eWt1yCIBQ8rHJ7n25aiTsc5NOclyzIgmQkllmeovH6fY6dHL59P23PfVQ
- SdLhm54bS5/E9n5w+uzfup9mMDAz2KrcExYSNcmQ=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230517154712eucas1p2f225fdb41a9c730228bfd2b80fc78536~f_OFFP0922205122051eucas1p2w;
- Wed, 17 May 2023 15:47:12 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
- eusmges2new.samsung.com (EUCPMTA) with SMTP id DF.BB.35386.FF6F4646; Wed, 17
- May 2023 16:47:11 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
- eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
- 20230517154711eucas1p124a75ba193bf302825a2fa71d838725f~f_OErlz9E3180031800eucas1p1M;
- Wed, 17 May 2023 15:47:11 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
- eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20230517154711eusmtrp1926c6c0efd0f3faa3ad7638f0170483b~f_OErFR7C2897428974eusmtrp1L;
- Wed, 17 May 2023 15:47:11 +0000 (GMT)
-X-AuditID: cbfec7f4-cc9ff70000028a3a-b8-6464f6fff0a4
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
- eusmgms2.samsung.com (EUCPMTA) with SMTP id 1F.F8.14344.FF6F4646; Wed, 17
- May 2023 16:47:11 +0100 (BST)
-Received: from AMDN5139.EU.corp.samsungelectronics.net (unknown
- [106.210.135.112]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20230517154711eusmtip20c82b185f48ab13cd6ba7320f79e2dc0~f_OELld7q1009210092eusmtip2Z;
- Wed, 17 May 2023 15:47:11 +0000 (GMT)
-From: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
-To: qemu-devel@nongnu.org, akihiko.odaki@daynix.com
-Cc: sriram.yagnaraman@est.tech, jasowang@redhat.com, k.kwiecien@samsung.com,
- m.sochacki@samsung.com
-Subject: [PATCH v7 7/7] e1000e: rename e1000e_ba_state and
- e1000e_write_hdr_to_rx_buffers
-Date: Wed, 17 May 2023 17:47:02 +0200
-Message-Id: <20230517154702.4215-8-t.dzieciol@partner.samsung.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230517154702.4215-1-t.dzieciol@partner.samsung.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfVCLcRzA/fbs2Z7GeCx3fW/coa6ImtfTjrjkbdc5hM7RXZrtsbBebCXq
- RJIS0pW3VfSia113DWvtMqTmVKSQli5MCF0n7LZbpZTWs07/fX6f7/vdj8B453E+cSgqllJE
- ieXuLA5TXz/40nfULpUuHdCtFlqfV7CFpa1WhjC5IB8XVpkG2MKGS9VM4SVtDyOAJWrsq8NF
- rz63YKLu9kqG6FeNiSXK1JWjHfg+jr+Ukh86RimWrAvnRPzsnxZjmHO88UwLdhrZZ2QgFwLI
- laAt+MF2MI8sQ1Bt98lAnDG2IbjfqcfohxWBWleHJiq6cpJxOqBG8MhscZanMUDzDncwi1wF
- n223xpggZpErwJLm5tAYScHT4Tqmg13JUNDkZbAczCQ94YtmZNxzyUCoV39g0rPmgqq1f7y9
- C7kB0i01LDpnJjxTdTPpnnMhpSpvfFEgKwhQFZY6F90IRtswTrMr9Dbo2DTPgaaci84B8TDY
- rGfTxWcRPLya40xaA61Vg+MHYKQ33DEsofV6qC66gTk0kNOho28mvcN0yNZfd2oupJ/j0dk+
- YNeqWLTmQ1FHEq1FYNX8xbLQ/NxJx+ROOib3/9hChJUjNypOGSmjlMujqHiBUhypjIuSCSTR
- kVo09luaRhps1UjdaxEYEYNARgQE5j6LG5wpkfK4UvGJBEoRvV8RJ6eURjSbYLq7cRevfSbh
- kTJxLHWEomIoxUSUQbjwTzOOxpcsjWzt26TZUxmA71bzdZLNT5IkL7b9Xn9qNChBsN2cZ7hy
- k9Vil2U+iojJTO/0akZcY3RTSn9cS/5dc5Kq9kHzFL9RyZ/hEuKahTTJ08x7O5Wl36b2YudC
- ao/48+qjtw59KpydiL/fsvP7rdupemlFWLhHr+8F/aaun649nTOCX/IbDps9EwPutb15xZlq
- YCOfvK6hw0H3BC6PF5iKr9d6evkWlIsP9rzZ6Jfv0b7V5+SOwtg/e7zmhRRno8ZdBzipfpbX
- 8+zhOkVwqIRfLB9it7llvfW2ZfV9NNV8Wv41MMIjv2j1b8wQutBqU3VXrEkM1IbJprkurC8r
- uhxjdGcqI8TLFmEKpfgfSeb2CpwDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrFLMWRmVeSWpSXmKPExsVy+t/xe7r/v6WkGCxqVbL4fGotu8WyS5+Z
- LBrnz2G12Hr1B7vF8d4dLBa9m14wObB5nHh7kNXjwqNzzB5Prm1m8ni/7yqbR9+WVYwBrFF6
- NkX5pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6Ge++8xTs
- kqk40XSOuYHxG38XIyeHhICJxIPJjaxdjFwcQgJLGSWublnNBpGQktjX858dwhaW+HOtiw2i
- qJVJYtr278wgCTYBM4lHX+YBdXNwiAiYSjzbKwkSZhbIlDj9ah/YHGGBSIn509+BzWERUJV4
- vO4fC4jNK+AkcWz5XRaI+fISMy99B6vhFHCW6PgI0SsEVPPxWQcrRL2gxMmZT1gg5stLNG+d
- zTyBUWAWktQsJKkFjEyrGEVSS4tz03OLjfSKE3OLS/PS9ZLzczcxAiNh27GfW3Ywrnz1Ue8Q
- IxMH4yFGCQ5mJRHewL7kFCHelMTKqtSi/Pii0pzU4kOMpkB3T2SWEk3OB8ZiXkm8oZmBqaGJ
- maWBqaWZsZI4r2dBR6KQQHpiSWp2ampBahFMHxMHp1QDEzvLjqRNnSaf71rFGu0obWc+Y+oa
- Lvng3tHWP3P7YlQvarAX33hqpaCUp+86x8GdefU2gb2WOyUCu9kKFJ9t/X46ZtflTjn9vPZ5
- /dFtDwReBCT9+lByc/veaQ0ztpbPkfm4gcmdbeLM9/Wuzl1vpY5/DAk4KM2mXJIcyFNSxHp7
- 94a37yNZtCKO/X1S9CUm1ku0e5fvb5VHS+p3rKvn9tkavcHk3cS9P3bvWdt8Xr5yGX/rmj27
- /+xdLfGZg+FuxqGO1kfx14z4vxw89OLP97in/CfP1H/Y7Dmjxjp+U8J92wWW8ld99x9Pf8Nq
- 8uqRUHGAzYSv6xLfRJ/YbKvUqupuUajz7nN4zoQ1t1M5qpVYijMSDbWYi4oTAfCFploNAwAA
-X-CMS-MailID: 20230517154711eucas1p124a75ba193bf302825a2fa71d838725f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20230517154711eucas1p124a75ba193bf302825a2fa71d838725f
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20230517154711eucas1p124a75ba193bf302825a2fa71d838725f
-References: <20230517154702.4215-1-t.dzieciol@partner.samsung.com>
- <CGME20230517154711eucas1p124a75ba193bf302825a2fa71d838725f@eucas1p1.samsung.com>
-Received-SPF: none client-ip=210.118.77.11;
- envelope-from=t.dzieciol@partner.samsung.com; helo=mailout1.w1.samsung.com
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1pzJOA-0004sh-HE
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:48:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684338509;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ujy/7DA7zaNEYr1XrXM7cleJEibHuDmxiOzmkOP5/vY=;
+ b=ZQG6SscL6fwbGYrRYBqI3bPwfp/FtAmvSS2vF/DJoLa3n9kJV2KekrxlOB0nxNk8w03ziO
+ M4mCxrzU9hbt4iGQ284eeggcXnvyyGzgwqgGLvYahv5zIJ9J1UdIWdwr6l/wNGdbVsYHZz
+ 6AgPFRJRnwnYNHg/I/+k+eBcASxM0C0=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-MzylmPLJM_Wo6nDIMjaCdQ-1; Wed, 17 May 2023 11:48:28 -0400
+X-MC-Unique: MzylmPLJM_Wo6nDIMjaCdQ-1
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-1aaefadf45bso865225ad.1
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 08:48:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684338507; x=1686930507;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ujy/7DA7zaNEYr1XrXM7cleJEibHuDmxiOzmkOP5/vY=;
+ b=IuRsskcSkrVcsJrTjfRpcB5WintD0mFHkGH60nc43WYSO2ZdX0VSEyD5AgmTeF3xR2
+ 6JCVqRG8Q8zQdTEbMTyKGU5IxdgcbRpukKr46CYP7vrT067qC0p8XlCigsPFoEpkdOlL
+ E8evkbPdiRypa2rP8ndwR7rDHyJDfIQqYDybWKg7IfzOIblBnkxLxgRlBuTUHrVo1osN
+ l71oQHm+pEiBX07w4HE66qqJbHeXZprbWTR2or4/RwY5+CyBY5SpGWZfKB3xWCQrpqmS
+ NYV+ZRWj3gwJP8F4nhnJDpUdkUsCA//n/eBm2sgveT6HxlkbY6EN7Uo3sn7V10oDquXD
+ 8jDA==
+X-Gm-Message-State: AC+VfDyMc9c0/5sv2DEWelIgHT/sMQbLVsyq1rvO0eaB8KdCWpnXH6Xh
+ llKI3NPF0GM6O1aPxO7dEi57TMZGMoRY0I5Akci38PUmkUMdRZ59fddErDFDnCds/o9s27gZILJ
+ g8+d4TItiylebmaclzfv837Y=
+X-Received: by 2002:a17:903:1252:b0:1ae:10a5:8349 with SMTP id
+ u18-20020a170903125200b001ae10a58349mr3309948plh.23.1684338506745; 
+ Wed, 17 May 2023 08:48:26 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4NFG4F+X8DUcTOM+RCGGFWcDr7TaXxZI84R/hW5ia6Uhz8UNrPyJ06A7MjsfaNUVAuAaYMug==
+X-Received: by 2002:a17:903:1252:b0:1ae:10a5:8349 with SMTP id
+ u18-20020a170903125200b001ae10a58349mr3309920plh.23.1684338506429; 
+ Wed, 17 May 2023 08:48:26 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.105.155])
+ by smtp.gmail.com with ESMTPSA id
+ c2-20020a170902b68200b001ae0152d280sm8849188pls.193.2023.05.17.08.48.23
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 17 May 2023 08:48:25 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
+ for iasl location
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <87zg63m18g.fsf@linaro.org>
+Date: Wed, 17 May 2023 21:18:21 +0530
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ qemu-devel@nongnu.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A348B8F4-4F2E-4088-839E-270EB81066F2@redhat.com>
+References: <20230517120751.14679-1-anisinha@redhat.com>
+ <20230517101523-mutt-send-email-mst@kernel.org>
+ <B6AD0FB1-CF05-4B4C-B58D-279422895E4D@redhat.com>
+ <20230517103522-mutt-send-email-mst@kernel.org>
+ <ED522229-5A71-40C2-AF2C-5D921B0B5D54@redhat.com> <87zg63m18g.fsf@linaro.org>
+To: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,86 +106,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename e1000e_ba_state according and e1000e_write_hdr_to_rx_buffers for
-consistency with IGB.
 
-Signed-off-by: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
----
- hw/net/e1000e_core.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index f9ff31fd70..62c5dcfda5 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -1397,17 +1397,17 @@ e1000e_pci_dma_write_rx_desc(E1000ECore *core, dma_addr_t addr,
-     }
- }
- 
--typedef struct e1000e_ba_state_st {
-+typedef struct E1000EBAState {
-     uint16_t written[MAX_PS_BUFFERS];
-     uint8_t cur_idx;
--} e1000e_ba_state;
-+} E1000EBAState;
- 
- static inline void
--e1000e_write_hdr_to_rx_buffers(E1000ECore *core,
--                               hwaddr ba[MAX_PS_BUFFERS],
--                               e1000e_ba_state *bastate,
--                               const char *data,
--                               dma_addr_t data_len)
-+e1000e_write_hdr_frag_to_rx_buffers(E1000ECore *core,
-+                                    hwaddr ba[MAX_PS_BUFFERS],
-+                                    E1000EBAState *bastate,
-+                                    const char *data,
-+                                    dma_addr_t data_len)
- {
-     assert(data_len <= core->rxbuf_sizes[0] - bastate->written[0]);
- 
-@@ -1420,7 +1420,7 @@ e1000e_write_hdr_to_rx_buffers(E1000ECore *core,
- static void
- e1000e_write_payload_frag_to_rx_buffers(E1000ECore *core,
-                                         hwaddr ba[MAX_PS_BUFFERS],
--                                        e1000e_ba_state *bastate,
-+                                        E1000EBAState *bastate,
-                                         const char *data,
-                                         dma_addr_t data_len)
- {
-@@ -1530,7 +1530,7 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
- 
-     do {
-         hwaddr ba[MAX_PS_BUFFERS];
--        e1000e_ba_state bastate = { { 0 } };
-+        E1000EBAState bastate = { { 0 } };
-         bool is_last = false;
- 
-         desc_size = total_size - desc_offset;
-@@ -1568,8 +1568,10 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-                             iov_copy = MIN(ps_hdr_len - ps_hdr_copied,
-                                            iov->iov_len - iov_ofs);
- 
--                            e1000e_write_hdr_to_rx_buffers(core, ba, &bastate,
--                                                      iov->iov_base, iov_copy);
-+                            e1000e_write_hdr_frag_to_rx_buffers(core, ba,
-+                                                                &bastate,
-+                                                                iov->iov_base,
-+                                                                iov_copy);
- 
-                             copy_size -= iov_copy;
-                             ps_hdr_copied += iov_copy;
-@@ -1585,8 +1587,8 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-                     } else {
-                         /* Leave buffer 0 of each descriptor except first */
-                         /* empty as per spec 7.1.5.1                      */
--                        e1000e_write_hdr_to_rx_buffers(core, ba, &bastate,
--                                                       NULL, 0);
-+                        e1000e_write_hdr_frag_to_rx_buffers(core, ba, &bastate,
-+                                                            NULL, 0);
-                     }
-                 }
- 
--- 
-2.25.1
+> On 17-May-2023, at 8:46 PM, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
+wrote:
+>=20
+>=20
+> Ani Sinha <anisinha@redhat.com> writes:
+>=20
+>>> On 17-May-2023, at 8:06 PM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>>>=20
+>>> On Wed, May 17, 2023 at 07:57:53PM +0530, Ani Sinha wrote:
+>>>>=20
+>>>>=20
+>>>>> On 17-May-2023, at 7:47 PM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>>>>>=20
+>>>>> On Wed, May 17, 2023 at 05:37:51PM +0530, Ani Sinha wrote:
+>>>>>> Currently the meson based QEMU build process locates the iasl =
+binary from the
+>>>>>> current PATH and other locations [1] and uses that to set =
+CONFIG_IASL which is
+>>>>>> then used by the test.
+>>>>>>=20
+>>>>>> This has two disadvantages:
+>>>>>> - If iasl was not previously installed in the PATH, one has to =
+install iasl
+>>>>>> and rebuild QEMU in order to pick up the iasl location. One =
+cannot simply
+>>>>>> use the existing bios-tables-test binary because CONFIG_IASL is =
+only set
+>>>>>> during the QEMU build time by meson and then bios-tables-test has =
+to be
+>>>>>> rebuilt with CONFIG_IASL set in order to use iasl.
+>=20
+> Usually we work the other way by checking at configure time and =
+skipping
+> the feature if the prerequisites are not in place.
+
+I think this is too hard a requirement for something that is only used =
+for debugging aid. If iasl is absent, no big deal. We won=E2=80=99t get =
+nice asl diffs but the test will fail and let the users know which blobs =
+are in disagreement. For ACPI contributors and maintainers, in the =
+previous incarnation, one could quickly install iasl and rerun the same =
+bios-tables-test and get the asl diffs. Now we need an additional step =
+of recompiling QEMU which is completely useless, confusing and =
+burdensome.=20
+
+> We do this with gdb:
+>=20
+>  ../../configure =
+--gdb=3D/home/alex/src/tools/binutils-gdb.git/builds/all/install/bin/gdb
+>=20
+> which checks gdb is at least new enough to support the features we =
+need:
+>=20
+>  if test -n "$gdb_bin"; then
+>      gdb_version=3D$($gdb_bin --version | head -n 1)
+>      if version_ge ${gdb_version##* } 9.1; then
+>          echo "HAVE_GDB_BIN=3D$gdb_bin" >> $config_host_mak
+>          gdb_arches=3D$("$source_path/scripts/probe-gdb-support.py" =
+$gdb_bin)
+>      else
+>          gdb_bin=3D""
+>      fi
+>  fi
+>=20
+>>>>>> - Sometimes, the stock iasl that comes with distributions is =
+simply not good
+>>>>>> enough because it does not support the latest ACPI changes - =
+newly
+>>>>>> introduced tables or new table attributes etc. In order to test =
+ACPI code
+>>>>>> in QEMU, one has to clone the latest acpica upstream repository =
+and
+>>>>>> rebuild iasl in order to get support for it. In those cases, one =
+may want
+>>>>>> the test to use the iasl binary from a non-standard location.
+>=20
+> I think configure should be checking if iasl is new enough and =
+reporting
+> to the user at configure time they need to do something different. We
+> don't want to attempt to run tests that will fail unless the user has
+> added the right magic to their environment.
+
+Iasl is not used directly for the test. It is used to provide =
+disassembly of the acpi blobs when the test fails.
+What version is new enough? There has been occasions when someone added =
+tables that are new enough that only the upstream acpica git tree has =
+support for it and no officially released version does. When we want to =
+check their implementation in QEMU, we want to use that latest upstream =
+iasl directly compiled from the git tree.
+
+I think the current mechanism makes lives of ACPI contributors and =
+maintainers harder, not easier.
+ =20
+>=20
+>>>>>>=20
+>>>>>> In order to overcome the above two disadvantages, we introduce a =
+new
+>>>>>> environment variable IASL_PATH that can be set by the tester =
+pointing to an
+>>>>>> possibly non-standard iasl binary location. Bios-tables-test then =
+uses this
+>>>>>> environment variable to set its iasl location, possibly also =
+overriding the
+>>>>>> location that was pointed to by CONFIG_IASL that was set by =
+meson. This way
+>>>>>> developers can not only use this new environment variable to set =
+iasl
+>>>>>> location to quickly run bios-tables-test but also can point the =
+test to a
+>>>>>> custom iasl if required.
+>>>>>>=20
+>>>>>> [1] =
+https://mesonbuild.com/Reference-manual_functions.html#find_program
+>>>>>>=20
+>>>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>>>>>=20
+>>>>> Well I think the point was originally that meson can
+>>>>> also test the binary in a variety of ways.
+>>>>> Never surfaced so maybe never mind.
+>>>>>=20
+>>>>> Would it be easier to just look iasl up on path
+>>>>=20
+>>>> But that=E2=80=99s what meson is also doing, only QEMU build time.
+>>>=20
+>>>=20
+>>> So you were unhappy it's build time because it is not really
+>>> part of build and you want flexibility, right?
+>>=20
+>> Hmm, maybe in that case, we might want to resurrect iasl_installed(),
+>> basically reverting part of cc8fa0e80836c51ba644d910c.
+>>=20
+>> To me its ok if I had to set IASL_PATH=3D`which iasl` before running =
+the
+>> test. I do not have strong opinions.
+>=20
+> I don't think so - we should be using the tools configure found, after
+> all that is its job.
+>=20
+> --=20
+> Alex Benn=C3=A9e
+> Virtualisation Tech Lead @ Linaro
 
 
