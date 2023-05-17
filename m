@@ -2,68 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510CE706D77
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC47F706D31
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:49:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJXZ-00025u-8b; Wed, 17 May 2023 11:58:13 -0400
+	id 1pzJND-0004j9-OA; Wed, 17 May 2023 11:47:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
- id 1pzJXS-00025i-O7
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:58:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
+ id 1pzJN0-0004fj-OC
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:47:19 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
- id 1pzJXP-0007P7-0P
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:58:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684339081;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Mpk+pcUrbRk1zT8QA48E1neztZ+8oGXZnw7YYGeIV30=;
- b=OvLfOPSLpbBx0MiifcyGkEfe62/ChhDPdYh1rNEAnl9ThQj5f9f5VgrBo/Kc9IKt4gK31R
- VapIRUBktBsPXVerU950K3J80naJY5idMd1rA2OMG9KBLKHy3Ee5IZPnl3I+LKxcc1ZMvw
- rvG9QO+WHGTYSYi4NUAcF5zc9qOha9A=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-57-R7DNdf_oPx-CpSFqNocM_Q-1; Wed, 17 May 2023 11:56:30 -0400
-X-MC-Unique: R7DNdf_oPx-CpSFqNocM_Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5B9B33C10683
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 15:56:29 +0000 (UTC)
-Received: from tpad.localdomain (ovpn-112-3.gru2.redhat.com [10.97.112.3])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6941B2166B31;
- Wed, 17 May 2023 15:56:28 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
- id 014094050990A; Wed, 17 May 2023 12:43:59 -0300 (-03)
-Date: Wed, 17 May 2023 12:43:59 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Anthony Harivel <aharivel@redhat.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com
-Subject: Re: [RFC PATCH] Add support for RAPL MSRs in KVM/Qemu
-Message-ID: <ZGT2P6FNoUahrWxT@tpad>
-References: <20230517130730.85469-1-aharivel@redhat.com>
+ (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
+ id 1pzJMw-0004f9-Jd
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:47:17 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+ by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id
+ 20230517154708euoutp02ca0336b9adfb7444006660be41f4b0e2~f_OBzIGY00526605266euoutp02Y
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 15:47:08 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com
+ 20230517154708euoutp02ca0336b9adfb7444006660be41f4b0e2~f_OBzIGY00526605266euoutp02Y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1684338428;
+ bh=1r42ZLmEIdETKMiR78Uz4iFLyS1NYwb51A2ysIaD7aE=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=A95KG40h1+dKw+PKTCSQLujD5JaWosPy4aTgk7A+TfwO9qn36bXDNhh0JZYCNZMn1
+ JaxNRRld6v+6ljuO1kl92BhWWbZApAfABBMOQQD6UTqlKQwUCmf1CPt+qIIL3q4Fct
+ 4JJxe67s+vDslIk2J+PNCho8T+EW1nfvNf41SmcE=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230517154708eucas1p162fd50c1e5011d6fa2cc5ba2705e4cd5~f_OBmI2qk2624726247eucas1p1V;
+ Wed, 17 May 2023 15:47:08 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+ eusmges1new.samsung.com (EUCPMTA) with SMTP id D2.DD.42423.CF6F4646; Wed, 17
+ May 2023 16:47:08 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+ 20230517154707eucas1p17bfd3bbcece98f1eb900e75d09983169~f_OBRAc0b2624726247eucas1p1U;
+ Wed, 17 May 2023 15:47:07 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+ eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+ 20230517154707eusmtrp17633d064e864b9ecaa6c93356372b39a~f_OBQae112897228972eusmtrp1F;
+ Wed, 17 May 2023 15:47:07 +0000 (GMT)
+X-AuditID: cbfec7f2-a3bff7000002a5b7-45-6464f6fce9a6
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+ eusmgms1.samsung.com (EUCPMTA) with SMTP id BC.07.10549.BF6F4646; Wed, 17
+ May 2023 16:47:07 +0100 (BST)
+Received: from AMDN5139.EU.corp.samsungelectronics.net (unknown
+ [106.210.135.112]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+ 20230517154707eusmtip2be21e67ffe9d377f5386b6d69ed93102~f_OAud73k1593615936eusmtip2h;
+ Wed, 17 May 2023 15:47:07 +0000 (GMT)
+From: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
+To: qemu-devel@nongnu.org, akihiko.odaki@daynix.com
+Cc: sriram.yagnaraman@est.tech, jasowang@redhat.com, k.kwiecien@samsung.com,
+ m.sochacki@samsung.com
+Subject: [PATCH v7 0/7] igb: packet-split descriptors support
+Date: Wed, 17 May 2023 17:46:55 +0200
+Message-Id: <20230517154702.4215-1-t.dzieciol@partner.samsung.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230517130730.85469-1-aharivel@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mtosatti@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupileLIzCtJLcpLzFFi42LZduzned0/31JSDO5e4bP4fGotu8WyS5+Z
+ LBrnz2G12Hr1B7vF8d4dLBa9m14wObB5nHh7kNXjwqNzzB5Prm1m8ni/7yqbR9+WVYwBrFFc
+ NimpOZllqUX6dglcGTf+HmEvaOaomHh0OnsD4xa2LkZODgkBE4nZ8/YB2VwcQgIrGCVmXPjE
+ DOF8YZQ40/SKCcL5zCjx9cp+RpiWQ10vWSESyxkl3uyfCZYQEmhnkpjwjgnEZhMwk3j0ZR5Q
+ EQeHiICxxMd2cZAws0CqxNE/B1lAbGEBW4nDrRfAylkEVCW2rTnFCmLzCjhJ9F/exw6xS15i
+ 5qXv7BBxQYmTM5+wQMyRl2jeOhvsUgmBmRwScx8+YAHZJSHgIrGuvw6iV1ji1fEtUHNkJE5P
+ 7mGBsMslfp7dxg7R28IosWfqZKgia4lLW3+C3cwsoCmxfpc+RNhR4umuHnaI8XwSN94KQpzA
+ JzFp23RmiDCvREebEES1jsS3TTPZIMJSEgtvQB3jIdG86iUzJJxiJQ7vPc88gVFhFpK/ZiH5
+ axbCCQsYmVcxiqeWFuempxYb5qWW6xUn5haX5qXrJefnbmIEJpfT/45/2sE499VHvUOMTByM
+ hxglOJiVRHgD+5JThHhTEiurUovy44tKc1KLDzFKc7AoifNq255MFhJITyxJzU5NLUgtgsky
+ cXBKNTAVTlCYOzUhSdV16u0LPfIz/mlfqzjdknBzV3GdVk/+MZPU64tSWowYA+422z3VKmnl
+ ipx3L0QzyeDvmQ9chyWEynl59z5+Nv3M90jJO97y7WzHH07bnJ/bqtaTkpzJvVfI45b7oUcM
+ DRs1WvdG6R038j0xp/1mvTHLbtHlq931rl8K/8TEznHcUM9BcqZd3/917/8IKGktuHtUmNf0
+ PF9tg/5RgZn9PRIbGu+vmeDpdmTb/GW/D5y0ezNh8YKQLqeyHX9Fr+lcD7P0mbq5fEmP59U/
+ jMrzwmTviK263y73smF1+5nS/588WVvOzGsTElmw5rC7X9aJE4s7Ay/k6FiuKwhSf6hzO+1S
+ nZDJ4lglluKMREMt5qLiRABJCq6LnQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrMLMWRmVeSWpSXmKPExsVy+t/xe7q/v6WkGJw6Ymbx+dRadotllz4z
+ WTTOn8NqsfXqD3aL4707WCx6N71gcmDzOPH2IKvHhUfnmD2eXNvM5PF+31U2j74tqxgDWKP0
+ bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0Mm78PcJe
+ 0MxRMfHodPYGxi1sXYycHBICJhKHul6ydjFycQgJLGWU2PNnLgtEQkpiX89/dghbWOLPtS42
+ iKJWJondu6YwgiTYBMwkHn2ZB9TNwSEiYCrxbK8kSJhZIFPi9Kt9YAuEBWwlDrdeYAKxWQRU
+ JbatOcUKYvMKOEn0X94HNV9eYual7+wQcUGJkzOfsEDMkZdo3jqbeQIj3ywkqVlIUgsYmVYx
+ iqSWFuem5xYb6hUn5haX5qXrJefnbmIEhva2Yz8372Cc9+qj3iFGJg7GQ4wSHMxKIryBfckp
+ QrwpiZVVqUX58UWlOanFhxhNge6byCwlmpwPjK68knhDMwNTQxMzSwNTSzNjJXFez4KORCGB
+ 9MSS1OzU1ILUIpg+Jg5OqQYmfw7thByOje7tCSXLv+/X2/bnr4Z3Se/je1rs0yIv5UrcbL9V
+ O1VQUZT9etZ9I7XAO6mcQXla/7eeZjRfPNPWhuvOzmTJFy9vuR71sd+255hPUIbLs1+8TPHb
+ AwUkX9WJOa5+Iagtv3KjuWkwE9+r9wc1i8rd+v+oOFhznFlXLyVtfS7+j7acZZqoOW9y4/K7
+ H8zjfu28sMdTosMvOnb/1KIJvh8yDST14tkuMi7+dzr2ikpBipxVxf+NVXffKLSs1LPaNush
+ L2NFnfOmhEtyR7yWr7xyOubXjfzlrZfu+i/8fYvv94SmOe8b3mVF1Nu6V+skRv2YuK/h5tm3
+ V1tC/Hc9SrpbX+Px/W4G80olluKMREMt5qLiRAD48NKK9gIAAA==
+X-CMS-MailID: 20230517154707eucas1p17bfd3bbcece98f1eb900e75d09983169
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20230517154707eucas1p17bfd3bbcece98f1eb900e75d09983169
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20230517154707eucas1p17bfd3bbcece98f1eb900e75d09983169
+References: <CGME20230517154707eucas1p17bfd3bbcece98f1eb900e75d09983169@eucas1p1.samsung.com>
+Received-SPF: none client-ip=210.118.77.12;
+ envelope-from=t.dzieciol@partner.samsung.com; helo=mailout2.w1.samsung.com
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,750 +126,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 17, 2023 at 03:07:30PM +0200, Anthony Harivel wrote:
-> Starting with the "Sandy Bridge" generation, Intel CPUs provide a RAPL
-> interface (Running Average Power Limit) for advertising the accumulated
-> energy consumption of various power domains (e.g. CPU packages, DRAM,
-> etc.).
-> 
-> The consumption is reported via MSRs (model specific registers) like
-> MSR_PKG_ENERGY_STATUS for the CPU package power domain. These MSRs are
-> 64 bits registers that represent the accumulated energy consumption in
-> micro Joules. They are updated by microcode every ~1ms.
-> 
-> For now, KVM always returns 0 when the guest requests the value of
-> these MSRs. Use the KVM MSR filtering mechanism to allow QEMU handle
-> these MSRs dynamically in userspace.
-> 
-> To limit the amount of system calls for every MSR call, create a new
-> thread in QEMU that updates the "virtual" MSR values asynchronously.
-> 
-> Each vCPU has its own vMSR to reflect the independence of vCPUs. The
-> thread updates the vMSR values with the ratio of energy consumed of
-> the whole physical CPU package the vCPU thread runs on and the
-> thread's utime and stime values.
-> 
-> All other non-vCPU threads are also taken into account. Their energy
-> consumption is evenly distributed among all vCPUs threads running on
-> the same physical CPU package.
-> 
-> This feature is activated with -accel kvm,rapl=true.
-> 
-> Actual limitation:
-> - Works only on Intel host CPU because AMD CPUs are using different MSR
->   adresses.
-> 
-> - Only the Package Power-Plane (MSR_PKG_ENERGY_STATUS) is reported at
->   the moment.
-> 
-> - Since each vCPU has an independent vMSR value, the vCPU topology must
->   be changed to match that reality. There must be a single vCPU per
->   virtual socket (e.g.: -smp 4,sockets=4). Accessing pkg-0 energy will
->   give vCPU 0 energy, pkg-1 will give vCPU 1 energy, etc.
-> 
-> Signed-off-by: Anthony Harivel <aharivel@redhat.com>
-> ---
-> 
-> Notes:
->     Earlier this year, I've proposed a patch in linux KVM [1] in order to
->     bring energy awareness in VM.
->     
->     Thanks to the feedback, I've worked on another solution that requires
->     only a QEMU patch that make us of MSR filtering mecanism.
->     
->     This patch is proposed as an RFC at the moment in order to validate the
->     paradigm and see if the actual limitation could be adressed in a second
->     phase.
->     
->     Regards,
->     Anthony
->     
->     [1]: https://lore.kernel.org/kvm/20230118142123.461247-1-aharivel@redhat.com/
+Based-on: <20230423041833.5302-1-akihiko.odaki@daynix.com>
+("[PATCH v3 00/47] igb: Fix for DPDK")
 
-Hi Anthony,
-> 
->  accel/kvm/kvm-all.c           |  13 ++
->  include/sysemu/kvm_int.h      |  11 ++
->  target/i386/cpu.h             |   8 +
->  target/i386/kvm/kvm.c         | 273 ++++++++++++++++++++++++++++++++++
->  target/i386/kvm/meson.build   |   1 +
->  target/i386/kvm/vmsr_energy.c | 132 ++++++++++++++++
->  target/i386/kvm/vmsr_energy.h |  80 ++++++++++
->  7 files changed, 518 insertions(+)
->  create mode 100644 target/i386/kvm/vmsr_energy.c
->  create mode 100644 target/i386/kvm/vmsr_energy.h
-> 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index cf3a88d90e92..13bb2a523c5d 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -3699,6 +3699,12 @@ static void kvm_set_dirty_ring_size(Object *obj, Visitor *v,
->      s->kvm_dirty_ring_size = value;
->  }
->  
-> +static void kvm_set_kvm_rapl(Object *obj, bool value, Error **errp)
-> +{
-> +    KVMState *s = KVM_STATE(obj);
-> +    s->msr_energy.enable = value;
-> +}
-> +
->  static void kvm_accel_instance_init(Object *obj)
->  {
->      KVMState *s = KVM_STATE(obj);
-> @@ -3715,6 +3721,7 @@ static void kvm_accel_instance_init(Object *obj)
->      s->xen_version = 0;
->      s->xen_gnttab_max_frames = 64;
->      s->xen_evtchn_max_pirq = 256;
-> +    s->msr_energy.enable = false;
->  }
->  
->  /**
-> @@ -3755,6 +3762,12 @@ static void kvm_accel_class_init(ObjectClass *oc, void *data)
->      object_class_property_set_description(oc, "dirty-ring-size",
->          "Size of KVM dirty page ring buffer (default: 0, i.e. use bitmap)");
->  
-> +    object_class_property_add_bool(oc, "rapl",
-> +                                   NULL,
-> +                                   kvm_set_kvm_rapl);
-> +    object_class_property_set_description(oc, "rapl",
-> +        "Allow energy related MSRs for RAPL interface in Guest");
-> +
->      kvm_arch_accel_class_init(oc);
->  }
->  
-> diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-> index a641c974ea54..cf3a01f498d7 100644
-> --- a/include/sysemu/kvm_int.h
-> +++ b/include/sysemu/kvm_int.h
-> @@ -47,6 +47,16 @@ typedef struct KVMMemoryListener {
->  
->  #define KVM_MSI_HASHTAB_SIZE    256
->  
-> +struct KVMMsrEnergy {
-> +    bool enable;
-> +    QemuThread msr_thr;
-> +    int cpus;
-> +    uint64_t *msr_value;
-> +    uint64_t msr_unit;
-> +    uint64_t msr_limit;
-> +    uint64_t msr_info;
-> +};
-> +
->  enum KVMDirtyRingReaperState {
->      KVM_DIRTY_RING_REAPER_NONE = 0,
->      /* The reaper is sleeping */
-> @@ -116,6 +126,7 @@ struct KVMState
->      uint64_t kvm_dirty_ring_bytes;  /* Size of the per-vcpu dirty ring */
->      uint32_t kvm_dirty_ring_size;   /* Number of dirty GFNs per ring */
->      struct KVMDirtyRingReaper reaper;
-> +    struct KVMMsrEnergy msr_energy;
->      NotifyVmexitOption notify_vmexit;
->      uint32_t notify_window;
->      uint32_t xen_version;
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 8504aaac6807..14f9c2901680 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -396,6 +396,10 @@ typedef enum X86Seg {
->  #define MSR_IA32_TSX_CTRL		0x122
->  #define MSR_IA32_TSCDEADLINE            0x6e0
->  #define MSR_IA32_PKRS                   0x6e1
-> +#define MSR_RAPL_POWER_UNIT             0x00000606
-> +#define MSR_PKG_POWER_LIMIT             0x00000610
-> +#define MSR_PKG_ENERGY_STATUS           0x00000611
-> +#define MSR_PKG_POWER_INFO              0x00000614
+Purposes of this series of patches:
+* introduce packet-split RX descriptors support. This feature is used by Linux
+  VF driver for MTU values from 2048.
+* refactor RX descriptor handling for introduction of packet-split RX
+  descriptors support
+* fix descriptors flags handling
 
-Why only PKG and not all domains?
+Tomasz Dzieciol (7):
+  igb: remove TCP ACK detection
+  igb: rename E1000E_RingInfo_st
+  igb: RX descriptors guest writting refactoring
+  igb: RX payload guest writting refactoring
+  igb: add IPv6 extended headers traffic detection
+  igb: packet-split descriptors support
+  e1000e: rename e1000e_ba_state and e1000e_write_hdr_to_rx_buffers
 
->  #define MSR_ARCH_LBR_CTL                0x000014ce
->  #define MSR_ARCH_LBR_DEPTH              0x000014cf
->  #define MSR_ARCH_LBR_FROM_0             0x00001500
-> @@ -1757,6 +1761,10 @@ typedef struct CPUArchState {
->  
->      uintptr_t retaddr;
->  
-> +    /* RAPL MSR */
-> +    uint64_t msr_rapl_power_unit;
-> +    uint64_t msr_pkg_energy_status;
-> +
->      /* Fields up to this point are cleared by a CPU reset */
->      struct {} end_reset_fields;
->  
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index de531842f6b1..c79d6b811109 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -16,11 +16,16 @@
->  #include "qapi/qapi-events-run-state.h"
->  #include "qapi/error.h"
->  #include "qapi/visitor.h"
-> +#include <math.h>
-> +#include <stdint.h>
->  #include <sys/ioctl.h>
->  #include <sys/utsname.h>
->  #include <sys/syscall.h>
-> +#include <sys/resource.h>
-> +#include <sys/time.h>
->  
->  #include <linux/kvm.h>
-> +#include <unistd.h>
->  #include "standard-headers/asm-x86/kvm_para.h"
->  #include "hw/xen/interface/arch-x86/cpuid.h"
->  
-> @@ -35,6 +40,7 @@
->  #include "xen-emu.h"
->  #include "hyperv.h"
->  #include "hyperv-proto.h"
-> +#include "vmsr_energy.h"
->  
->  #include "exec/gdbstub.h"
->  #include "qemu/host-utils.h"
-> @@ -2518,6 +2524,49 @@ static bool kvm_rdmsr_core_thread_count(X86CPU *cpu, uint32_t msr,
->      return true;
->  }
->  
-> +static bool kvm_rdmsr_rapl_power_unit(X86CPU *cpu, uint32_t msr,
-> +                                        uint64_t *val)
-> +{
-> +
-> +    CPUState *cs = CPU(cpu);
-> +
-> +    *val = cs->kvm_state->msr_energy.msr_unit;
-> +
-> +    return true;
-> +}
-> +
-> +static bool kvm_rdmsr_pkg_power_limit(X86CPU *cpu, uint32_t msr,
-> +                                        uint64_t *val)
-> +{
-> +
-> +    CPUState *cs = CPU(cpu);
-> +
-> +    *val = cs->kvm_state->msr_energy.msr_limit;
-> +
-> +    return true;
-> +}
-> +
-> +static bool kvm_rdmsr_pkg_power_info(X86CPU *cpu, uint32_t msr,
-> +                                        uint64_t *val)
-> +{
-> +
-> +    CPUState *cs = CPU(cpu);
-> +
-> +    *val = cs->kvm_state->msr_energy.msr_info;
-> +
-> +    return true;
-> +}
-> +
-> +static bool kvm_rdmsr_pkg_energy_status(X86CPU *cpu, uint32_t msr,
-> +    uint64_t *val)
-> +{
-> +
-> +    CPUState *cs = CPU(cpu);
-> +    *val = cs->kvm_state->msr_energy.msr_value[cs->cpu_index];
-> +
-> +    return true;
-> +}
-> +
->  static Notifier smram_machine_done;
->  static KVMMemoryListener smram_listener;
->  static AddressSpace smram_address_space;
-> @@ -2552,6 +2601,190 @@ static void register_smram_listener(Notifier *n, void *unused)
->                                   &smram_address_space, 1, "kvm-smram");
->  }
->  
-> +static void *kvm_msr_energy_thread(void *data)
-> +{
-> +    KVMState *s = data;
-> +    struct KVMMsrEnergy *vmsr = &s->msr_energy;
-> +    unsigned int maxpkgs, maxcpus, maxticks;
-> +    package_energy_stat *pkg_stat;
-> +    int num_threads;
-> +    thread_stat *thd_stat;
-> +    CPUState *cpu;
-> +    pid_t pid;
-> +
-> +    rcu_register_thread();
-> +
-> +    /* Get QEMU PID*/
-> +    pid = getpid();
-> +
-> +    /* Assuming those values are the same accross physical system/packages */
-> +    maxcpus = get_maxcpus(0); /* Number of CPUS per packages */
-> +    maxpkgs = numa_max_node(); /* Number of Packages on the system */
-> +    /* Those MSR values should not change as well */
-> +    vmsr->msr_unit = read_msr(MSR_RAPL_POWER_UNIT, 0);
-> +    vmsr->msr_limit = read_msr(MSR_PKG_POWER_LIMIT, 0);
+ hw/net/e1000e_core.c     |  78 ++--
+ hw/net/igb_core.c        | 744 ++++++++++++++++++++++++++++-----------
+ hw/net/igb_regs.h        |  20 +-
+ hw/net/trace-events      |   6 +-
+ tests/qtest/libqos/igb.c |   5 +
+ 5 files changed, 602 insertions(+), 251 deletions(-)
 
-Power limit - MSR interfaces to specify power limit, time window; lock bit, clamp bit etc
-
-This one can change, right? And why expose the power limit to the guest?
-
-> +    vmsr->msr_info = read_msr(MSR_PKG_POWER_INFO, 0);
-> +
-> +    /* Allocate memory for each package energy status */
-> +    pkg_stat = (package_energy_stat *) calloc(maxpkgs + 1,
-> +                                              sizeof(package_energy_stat));
-> +
-> +    /*
-> +     * Max numbers of ticks per package
-> +     * time in second * number of ticks/second * Number of cores / package
-> +     * ex: for 100 ticks/second/CPU, 12 CPUs per Package gives 1200 ticks max
-> +     */
-> +    maxticks = (MSR_ENERGY_THREAD_SLEEP_US / 1000000)
-> +                    * sysconf(_SC_CLK_TCK) * maxcpus;
-> +
-> +    while (true) {
-> +
-> +        /* Get all qemu threads id */
-> +        pid_t *thread_ids = get_thread_ids(pid, &num_threads);
-> +
-> +        if (thread_ids == NULL) {
-> +            return NULL;
-> +        }
-> +
-> +        /* Allocate memory for each thread stats */
-> +        thd_stat = (thread_stat *) calloc(num_threads, sizeof(thread_stat));
-> +
-> +        /* Populate all the thread stats */
-> +        for (int i = 0; i < num_threads; i++) {
-> +            thd_stat[i].thread_id = thread_ids[i];
-> +            thd_stat[i].utime = calloc(2, sizeof(unsigned long long));
-> +            thd_stat[i].stime = calloc(2, sizeof(unsigned long long));
-> +            read_thread_stat(&thd_stat[i], pid, 0);
-> +            thd_stat[i].numa_node_id = numa_node_of_cpu(thd_stat[i].cpu_id);
-> +        }
-> +
-> +        /* Retrieve all packages power plane energy counter */
-> +        for (int i = 0; i <= maxpkgs; i++) {
-> +            for (int j = 0; j < num_threads; j++) {
-> +                /*
-> +                 * Use the first thread we found that ran on the CPU
-> +                 * of the package to read the packages energy counter
-> +                 */
-> +                if (thd_stat[j].numa_node_id == i) {
-> +                    pkg_stat[i].e_start = read_msr(MSR_PKG_ENERGY_STATUS, i);
-> +                    break;
-> +                }
-> +            }
-> +        }
-> +
-> +        /* Sleep a short period while the other threads are working */
-> +        usleep(MSR_ENERGY_THREAD_SLEEP_US);
-> +
-> +        /*
-> +         * Retrieve all packages power plane energy counter
-> +         * Calculate the delta of all packages
-> +         */
-> +        for (int i = 0; i <= maxpkgs; i++) {
-> +            for (int j = 0; j < num_threads; j++) {
-> +                /*
-> +                 * Use the first thread we found that ran on the CPU
-> +                 * of the package to read the packages energy counter
-> +                 */
-> +                if (thd_stat[j].numa_node_id == i) {
-> +                    pkg_stat[i].e_end =
-> +                        read_msr(MSR_PKG_ENERGY_STATUS, thd_stat[j].cpu_id);
-> +                    pkg_stat[i].e_delta =
-> +                        pkg_stat[i].e_end - pkg_stat[i].e_start;
-> +                    break;
-> +                }
-> +            }
-> +        }
-
-Don't get this: can you do a high level overview of how the emulated
-value is calculated? (fail to see what is the relation between whether
-a QEMU thread ran and whether to read or not MSR_PKG_ENERGY_STATUS).
-
-It seems this might be simplified, and reading every 1ms might be
-excessive overhead.
-
-Independent of this question (for whatever implementation): how
-accurate is the power information exposed to the guest vs actual
-power consumed (might be nice to have some notion of it).
-
-In general i think its useful to expose the information to guests.
-
-> +
-> +        /* Delta of ticks spend by each thread between the sample */
-> +        for (int i = 0; i < num_threads; i++) {
-> +            if (read_thread_stat(&thd_stat[i], pid, 1) != 0) {
-> +                /*
-> +                 * We don't count the dead thread
-> +                 * i.e threads that existed before the sleep
-> +                 * and not anymore
-> +                 */
-> +                thd_stat[i].delta_ticks = 0;
-> +            } else {
-> +                delta_ticks(thd_stat, i);
-> +            }
-> +        }
-> +
-> +        /*
-> +         * Identify the vCPU threads
-> +         * Calculate the Number of vCPU per package
-> +         */
-> +        CPU_FOREACH(cpu) {
-> +            for (int i = 0; i < num_threads; i++) {
-> +                if (cpu->thread_id == thd_stat[i].thread_id) {
-> +                    thd_stat[i].is_vcpu = true;
-> +                    thd_stat[i].vcpu_id = cpu->cpu_index;
-> +                    pkg_stat[thd_stat[i].numa_node_id].nb_vcpu++;
-> +                    break;
-> +                }
-> +            }
-> +        }
-> +
-> +        /* Calculate the total energy of all non-vCPU thread */
-> +        for (int i = 0; i < num_threads; i++) {
-> +            double temp;
-> +            if ((thd_stat[i].is_vcpu != true) &&
-> +                (thd_stat[i].delta_ticks > 0)) {
-> +                temp = get_ratio(pkg_stat, thd_stat, maxticks, i);
-> +                pkg_stat[thd_stat[i].numa_node_id].e_ratio
-> +                    += (uint64_t)lround(temp);
-> +            }
-> +        }
-> +
-> +        /* Calculate the ratio per non-vCPU thread of each package */
-> +        for (int i = 0; i <= maxpkgs; i++) {
-> +            if (pkg_stat[i].nb_vcpu > 0) {
-> +                pkg_stat[i].e_ratio = pkg_stat[i].e_ratio / pkg_stat[i].nb_vcpu;
-> +            }
-> +        }
-> +
-> +        /* Calculate the energy for each vCPU thread */
-> +        for (int i = 0; i < num_threads; i++) {
-> +            double temp;
-> +
-> +            if ((thd_stat[i].is_vcpu == true) &&
-> +                (thd_stat[i].delta_ticks > 0)) {
-> +                temp = get_ratio(pkg_stat, thd_stat, maxticks, i);
-> +                vmsr->msr_value[thd_stat[i].vcpu_id] += (uint64_t)lround(temp);
-> +                vmsr->msr_value[thd_stat[i].vcpu_id] \
-> +                    += pkg_stat[thd_stat[i].numa_node_id].e_ratio;
-> +            }
-> +        }
-> +
-> +        /* free all memory */
-> +        for (int i = 0; i < num_threads; i++) {
-> +            free(thd_stat[i].utime);
-> +            free(thd_stat[i].stime);
-> +        }
-> +        free(thd_stat);
-> +        free(thread_ids);
-> +    }
-> +
-> +    rcu_unregister_thread();
-> +    return NULL;
-> +}
-> +
-> +static int kvm_msr_energy_thread_init(KVMState *s, MachineState *ms)
-> +{
-> +    struct KVMMsrEnergy *r = &s->msr_energy;
-> +
-> +    /* Retrieve the number of vCPU */
-> +    r->cpus = ms->smp.cpus;
-> +
-> +    /* Allocate register memory (MSR_PKG_STATUS) for each vCPU */
-> +    r->msr_value = calloc(r->cpus, sizeof(r->msr_value));
-> +
-> +    qemu_thread_create(&r->msr_thr, "kvm-msr",
-> +                       kvm_msr_energy_thread,
-> +                       s, QEMU_THREAD_JOINABLE);
-> +
-> +    return 0;
-> +}
-> +
->  int kvm_arch_init(MachineState *ms, KVMState *s)
->  {
->      uint64_t identity_base = 0xfffbc000;
-> @@ -2765,6 +2998,46 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
->                           strerror(-ret));
->              exit(1);
->          }
-> +
-> +        if (s->msr_energy.enable == true) {
-> +
-> +            r = kvm_filter_msr(s, MSR_RAPL_POWER_UNIT,
-> +                               kvm_rdmsr_rapl_power_unit, NULL);
-> +            if (!r) {
-> +                error_report("Could not install MSR_RAPL_POWER_UNIT \
-> +                                handler: %s",
-> +                             strerror(-ret));
-> +                exit(1);
-> +            }
-> +
-> +            r = kvm_filter_msr(s, MSR_PKG_POWER_LIMIT,
-> +                               kvm_rdmsr_pkg_power_limit, NULL);
-> +            if (!r) {
-> +                error_report("Could not install MSR_PKG_POWER_LIMIT \
-> +                                handler: %s",
-> +                             strerror(-ret));
-> +                exit(1);
-> +            }
-> +
-> +            r = kvm_filter_msr(s, MSR_PKG_POWER_INFO,
-> +                               kvm_rdmsr_pkg_power_info, NULL);
-> +            if (!r) {
-> +                error_report("Could not install MSR_PKG_POWER_INFO \
-> +                                handler: %s",
-> +                             strerror(-ret));
-> +                exit(1);
-> +            }
-> +            r = kvm_filter_msr(s, MSR_PKG_ENERGY_STATUS,
-> +                               kvm_rdmsr_pkg_energy_status, NULL);
-> +            if (!r) {
-> +                error_report("Could not install MSR_PKG_ENERGY_STATUS \
-> +                                handler: %s",
-> +                             strerror(-ret));
-> +                exit(1);
-> +            } else {
-> +                kvm_msr_energy_thread_init(s, ms);
-> +            }
-> +        }
->      }
->  
->      return 0;
-> diff --git a/target/i386/kvm/meson.build b/target/i386/kvm/meson.build
-> index 322272091bce..9cdc93c6c439 100644
-> --- a/target/i386/kvm/meson.build
-> +++ b/target/i386/kvm/meson.build
-> @@ -5,6 +5,7 @@ i386_softmmu_kvm_ss = ss.source_set()
->  i386_softmmu_kvm_ss.add(files(
->    'kvm.c',
->    'kvm-cpu.c',
-> +  'vmsr_energy.c',
->  ))
->  
->  i386_softmmu_kvm_ss.add(when: 'CONFIG_XEN_EMU', if_true: files('xen-emu.c'))
-> diff --git a/target/i386/kvm/vmsr_energy.c b/target/i386/kvm/vmsr_energy.c
-> new file mode 100644
-> index 000000000000..8bd86b32becf
-> --- /dev/null
-> +++ b/target/i386/kvm/vmsr_energy.c
-> @@ -0,0 +1,132 @@
-> +/*
-> + * QEMU KVM support -- x86 virtual energy-related MSR.
-> + *
-> + * Copyright 2023 Red Hat, Inc. 2023
-> + *
-> + *  Author:
-> + *      Anthony Harivel <aharivel@redhat.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + *
-> + */
-> +
-> +#include "vmsr_energy.h"
-> +
-> +#define MAX_PATH_LEN 50
-> +#define MAX_LINE_LEN 500
-> +
-> +uint64_t read_msr(uint32_t reg, unsigned int cpu_id)
-> +{
-> +    int fd;
-> +    uint64_t data;
-> +
-> +    char path[MAX_PATH_LEN];
-> +    snprintf(path, MAX_PATH_LEN, "/dev/cpu/%u/msr", cpu_id);
-> +
-> +    fd = open(path , O_RDONLY);
-> +    if (fd < 0) {
-> +        return 0;
-> +    }
-> +    if (pread(fd, &data, sizeof data, reg) != sizeof data) {
-> +        data = 0;
-> +    }
-> +
-> +    close(fd);
-> +    return data;
-> +}
-> +
-> +/* Retrieve the number of physical CPU on the package */
-> +unsigned int get_maxcpus(unsigned int package_num)
-> +{
-> +    int k, ncpus;
-> +    unsigned int maxcpus;
-> +    struct bitmask *cpus;
-> +
-> +    cpus = numa_allocate_cpumask();
-> +    ncpus = cpus->size;
-> +
-> +    if (numa_node_to_cpus(package_num, cpus) < 0) {
-> +        printf("node %u failed to convert\n", package_num);
-> +    }
-> +
-> +    maxcpus = 0;
-> +    for (k = 0; k < ncpus; k++) {
-> +        if (numa_bitmask_isbitset(cpus, k)) {
-> +            maxcpus++;
-> +        }
-> +    }
-> +
-> +    return maxcpus;
-> +}
-> +
-> +int read_thread_stat(struct thread_stat *thread, int pid, int index)
-> +{
-> +    char path[MAX_PATH_LEN];
-> +    snprintf(path, MAX_PATH_LEN, "/proc/%u/task/%d/stat", pid, \
-> +             thread->thread_id);
-> +
-> +    FILE *file = fopen(path, "r");
-> +    if (file == NULL) {
-> +        return -1;
-> +    }
-> +
-> +    if (fscanf(file, "%*d (%*[^)]) %*c %*d %*d %*d %*d %*d %*u %*u %*u %*u %*u"
-> +        " %llu %llu %*d %*d %*d %*d %*d %*d %*u %*u %*d %*u %*u"
-> +        " %*u %*u %*u %*u %*u %*u %*u %*u %*u %*d %*u %*u %u",
-> +           &thread->utime[index], &thread->stime[index], &thread->cpu_id) != 3)
-> +        return -1;
-> +
-> +    fclose(file);
-> +    return 0;
-> +}
-> +
-> +/* Read QEMU stat task folder to retrieve all QEMU threads ID */
-> +pid_t *get_thread_ids(pid_t pid, int *num_threads)
-> +{
-> +    char path[100];
-> +    sprintf(path, "/proc/%d/task", pid);
-> +
-> +    DIR *dir = opendir(path);
-> +    if (dir == NULL) {
-> +        perror("opendir");
-> +        return NULL;
-> +    }
-> +
-> +    pid_t *thread_ids = NULL;
-> +    int thread_count = 0;
-> +
-> +    struct dirent *ent;
-> +    while ((ent = readdir(dir)) != NULL) {
-> +        if (ent->d_name[0] == '.') {
-> +            continue;
-> +        }
-> +        pid_t tid = atoi(ent->d_name);
-> +        if (pid != tid) {
-> +            thread_ids = realloc(thread_ids,
-> +                                 (thread_count + 1) * sizeof(pid_t));
-> +            thread_ids[thread_count] = tid;
-> +            thread_count++;
-> +        }
-> +    }
-> +
-> +    closedir(dir);
-> +
-> +    *num_threads = thread_count;
-> +    return thread_ids;
-> +}
-> +
-> +void delta_ticks(thread_stat *thd_stat, int i)
-> +{
-> +    thd_stat[i].delta_ticks = (thd_stat[i].utime[1] + thd_stat[i].stime[1])
-> +                            - (thd_stat[i].utime[0] + thd_stat[i].stime[0]);
-> +}
-> +
-> +double get_ratio(package_energy_stat *pkg_stat,
-> +                        thread_stat *thd_stat,
-> +                        int maxticks, int i) {
-> +
-> +    return (pkg_stat[thd_stat[i].numa_node_id].e_delta / 100.0)
-> +            * ((100.0 / maxticks) * thd_stat[i].delta_ticks);
-> +}
-> +
-> diff --git a/target/i386/kvm/vmsr_energy.h b/target/i386/kvm/vmsr_energy.h
-> new file mode 100644
-> index 000000000000..5f79d2cbe00d
-> --- /dev/null
-> +++ b/target/i386/kvm/vmsr_energy.h
-> @@ -0,0 +1,80 @@
-> +/*
-> + * QEMU KVM support -- x86 virtual energy-related MSR.
-> + *
-> + * Copyright 2023 Red Hat, Inc. 2023
-> + *
-> + *  Author:
-> + *      Anthony Harivel <aharivel@redhat.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + *
-> + */
-> +
-> +#ifndef VMSR_ENERGY_H
-> +#define VMSR_ENERGY_H
-> +
-> +#include "qemu/osdep.h"
-> +
-> +#include <numa.h>
-> +
-> +/*
-> + * Define the interval time in micro seconds between 2 samples of
-> + * energy related MSRs
-> + */
-> +#define MSR_ENERGY_THREAD_SLEEP_US 1000000.0
-> +
-> +/*
-> + * Thread statistic
-> + * @ thread_id: TID (thread ID)
-> + * @ is_vcpu: true is thread is vCPU thread
-> + * @ cpu_id: CPU number last executed on
-> + * @ vcpu_id: vCPU ID
-> + * @ numa_node_id:node number of the CPU
-> + * @ utime: amount of clock ticks the thread
-> + *          has been scheduled in User mode
-> + * @ stime: amount of clock ticks the thread
-> + *          has been scheduled in System mode
-> + * @ delta_ticks: delta of utime+stime between
-> + *          the two samples (before/after sleep)
-> + */
-> +struct thread_stat {
-> +    unsigned int thread_id;
-> +    bool is_vcpu;
-> +    unsigned int cpu_id;
-> +    unsigned int vcpu_id;
-> +    unsigned int numa_node_id;
-> +    unsigned long long *utime;
-> +    unsigned long long *stime;
-> +    unsigned long long delta_ticks;
-> +};
-> +
-> +/*
-> + * Package statistic
-> + * @ e_start: package energy counter before the sleep
-> + * @ e_end: package energy counter after the sleep
-> + * @ e_delta: delta of package energy counter
-> + * @ e_ratio: store the energy ratio of non-vCPU thread
-> + * @ nb_vcpu: number of vCPU running on this package
-> + */
-> +struct packge_energy_stat {
-> +    uint64_t e_start;
-> +    uint64_t e_end;
-> +    uint64_t e_delta;
-> +    uint64_t e_ratio;
-> +    unsigned int nb_vcpu;
-> +};
-> +
-> +typedef struct thread_stat thread_stat;
-> +typedef struct packge_energy_stat package_energy_stat;
-> +
-> +uint64_t read_msr(uint32_t reg, unsigned int cpu_id);
-> +void delta_ticks(thread_stat *thd_stat, int i);
-> +unsigned int get_maxcpus(unsigned int package_num);
-> +int read_thread_stat(struct thread_stat *thread, int pid, int index);
-> +pid_t *get_thread_ids(pid_t pid, int *num_threads);
-> +double get_ratio(package_energy_stat *pkg_stat,
-> +                        thread_stat *thd_stat,
-> +                        int maxticks, int i);
-> +
-> +#endif /* VMSR_ENERGY_H */
-> -- 
-> 2.40.1
-> 
-> 
+-- 
+2.25.1
 
 
