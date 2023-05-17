@@ -2,82 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA83705FD0
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 08:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F90705FD1
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 08:20:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzAVK-0005fT-4d; Wed, 17 May 2023 02:19:18 -0400
+	id 1pzAW0-0006Bw-Nc; Wed, 17 May 2023 02:20:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1pzAVE-0005df-8p
- for qemu-devel@nongnu.org; Wed, 17 May 2023 02:19:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzAVq-00067W-St
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 02:19:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1pzAVC-00063k-KY
- for qemu-devel@nongnu.org; Wed, 17 May 2023 02:19:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzAVp-00067r-9W
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 02:19:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684304349;
+ s=mimecast20190719; t=1684304388;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VG8JmIs+ILdLUsQrOVDjekpEu+90RQso2XEyLg+s4uM=;
- b=VyGR/DNMXJr+VUtK1q3RFJNI4DyMaqxGak3b4I+dOuXw42dOgeTkk/xDaZjS5kEMn0HHJd
- /jLxn5QlllgShtjUYt5X43W49dJtlieQoBmELuiv+K4nIB/wYSVyTwc9z8QV9NtkVZB5SX
- E9WFXPsY3COCU+GtlDGz5WC2nPRuv/I=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-171-RHT6_B_0PeekQeyrEWne-A-1; Wed, 17 May 2023 02:19:07 -0400
-X-MC-Unique: RHT6_B_0PeekQeyrEWne-A-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-969f12b2818so49248266b.1
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 23:19:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684304346; x=1686896346;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VG8JmIs+ILdLUsQrOVDjekpEu+90RQso2XEyLg+s4uM=;
- b=SiaVs42vKxri/uUhEms5bF9jcwxr7iM0AEusCMWun8I2lDgxYWeiPuHH3fJa55BLLl
- GVnF0SG69xAi857g7mafz4CEwwzPV+VWmYySTQb0nnBnAMLMdpXyQG021J1x+cjaHFFK
- PQiC8MyLV0HiIgR1gyO+P8BhpBmHxXtQ3az6vD9JExwNEJozgTyCXkGpVce27+6K95CD
- mB2Z5plSkNClxfgJSCQujDDyYJCi3GQqtHHNaB5EwETnPP+7sa1d5V6TSM7nvecuBl8x
- xEHQZB+FHVlPrFQ+rR5VrFyaLWnDGrQ6rdgIY0xlYIVN5MZ0olcEsx0K8Yc2fA6FKn12
- xTRQ==
-X-Gm-Message-State: AC+VfDyrCGey/RHoHxKHTYf/YMkmIifxT7S7HutZJziqkkM/V7GWFKXW
- 59J/OPBmG7zEaIb6pXHPemdOoZFNee3/9SRaNttS5KRQNGcw7GpviknNgDy5+QF6lygrUryt7cW
- 46CYbws7h1ocQfVxhipJiD8KzM6gHT/c=
-X-Received: by 2002:a17:907:629b:b0:94e:2db:533e with SMTP id
- nd27-20020a170907629b00b0094e02db533emr36158160ejc.49.1684304346733; 
- Tue, 16 May 2023 23:19:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ48SJk8TSu7NBZdyhl//bwE7ibKjuJYNeb9+URtafGjiBwo/5t8fjp6bdpPx21hY/5B0zRSvbkb4HbYWZgNYeY=
-X-Received: by 2002:a17:907:629b:b0:94e:2db:533e with SMTP id
- nd27-20020a170907629b00b0094e02db533emr36158128ejc.49.1684304346372; Tue, 16
- May 2023 23:19:06 -0700 (PDT)
+ bh=KGDhZq6o+aMcsMoXZxC1345pm3ijUuJlLWZ/oUYb8go=;
+ b=fCB61vQ4Ji4s0w8yJAoi7Wr7GXDH5u1ZVzsCvZX6d/LD4OIkR5xBzHdn5sdNgYsJ+um+1U
+ EjUhDoLidU3J7hlOE6A5mH0tunm6aoSjB5KHyADfMYBWDMZDiPzlpQdkaJ6yw0U44QBDy5
+ YgCDFMKFoLI388yjkuFpDd+lCCLsSbA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-479-kRsKXCIiOo2zmMzloQmL8g-1; Wed, 17 May 2023 02:19:44 -0400
+X-MC-Unique: kRsKXCIiOo2zmMzloQmL8g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8279585A588;
+ Wed, 17 May 2023 06:19:44 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 618181415304;
+ Wed, 17 May 2023 06:19:44 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5632621E6806; Wed, 17 May 2023 08:19:43 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,  michael.roth@amd.com,  jsnow@redhat.com,
+ Igor Mammedov <imammedo@redhat.com>
+Subject: Re: [PATCH] qapi/parser: Fix type hints
+References: <20230511111709.971477-1-armbru@redhat.com>
+ <cb6582b2-9542-4ebb-d188-34287f9fb3dd@linaro.org>
+ <87sfbwx339.fsf@pond.sub.org>
+ <d8faf35f-ec66-9bce-e34e-4bde0b4fcd24@linaro.org>
+Date: Wed, 17 May 2023 08:19:43 +0200
+In-Reply-To: <d8faf35f-ec66-9bce-e34e-4bde0b4fcd24@linaro.org> (Richard
+ Henderson's message of "Tue, 16 May 2023 06:29:43 -0700")
+Message-ID: <87zg63jx8g.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230509154435.1410162-1-eperezma@redhat.com>
-In-Reply-To: <20230509154435.1410162-1-eperezma@redhat.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Wed, 17 May 2023 14:18:29 +0800
-Message-ID: <CAPpAL=wG9pHL92kCaGYXUa2HSyUX0nhVX8yJpjA3KFvOK4EHKw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] Move ASID test to vhost-vdpa net initialization
-To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, Parav Pandit <parav@mellanox.com>, 
- Zhu Lingshan <lingshan.zhu@intel.com>, longpeng2@huawei.com, 
- Stefano Garzarella <sgarzare@redhat.com>, Gautam Dawar <gdawar@xilinx.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Harpreet Singh Anand <hanand@xilinx.com>, alvaro.karsz@solid-run.com, 
- Liuxiangdong <liuxiangdong5@huawei.com>, Dragos Tatulea <dtatulea@nvidia.com>, 
- Jason Wang <jasowang@redhat.com>, si-wei.liu@oracle.com, 
- Shannon Nelson <snelson@pensando.io>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Cindy Lu <lulu@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,69 +82,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QE tested this series with sanity testing on the vdpa_sim device,
-everything are works fine and there is no any new regression problems.
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+> On 5/15/23 22:22, Markus Armbruster wrote:
+>>> https://gitlab.com/qemu-project/qemu/-/jobs/4289613692#L574
+>>>
+>>>    File "/builds/qemu-project/qemu/scripts/qapi/parser.py", line 566, in QAPIDoc
+>>>      def _match_at_name_colon(string: str) -> Optional[re.Match[str]]:
+>>> TypeError: 'type' object is not subscriptable
+>> 
+>> Life's too short for wrestling with such pigs.  Unless John has better
+>> ideas, I'll *remove* these return type annotations.  Maybe these pigs
+>> will behave after John's Python venv work lands.
+>
+> That is exactly the idea that I had as well.
+>
+> r~
 
+Sent:
 
-
-On Tue, May 9, 2023 at 11:44=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redhat=
-.com> wrote:
->
-> QEMU v8.0 is able to switch dynamically between vhost-vdpa passthrough
-> and SVQ mode as long as the net device does not have CVQ.  The net device
-> state followed (and migrated) by CVQ requires special care.
->
-> A pre-requisite to add CVQ to that framework is to determine if devices w=
-ith
-> CVQ are migratable or not at initialization time.  The solution to it is =
-to
-> always shadow only CVQ, and vq groups and ASID are used for that.
->
-> However, current qemu version only checks ASID at device start (as "drive=
-r set
-> DRIVER_OK status bit"), not at device initialization.  A check at
-> initialization time is required.  Otherwise, the guest would be able to s=
-et
-> and remove migration blockers at will [1].
->
-> This series is a requisite for migration of vhost-vdpa net devices with C=
-VQ.
-> However it already makes sense by its own, as it reduces the number of io=
-ctls
-> at migration time, decreasing the error paths there.
->
-> [1] https://lore.kernel.org/qemu-devel/2616f0cd-f9e8-d183-ea78-db1be4825d=
-9c@redhat.com/
-> ---
-> v3:
-> * Only record cvq_isolated, true if the device have cvq isolated in both =
-!MQ
-> * and MQ configurations.
-> * Drop the cache of cvq group, it can be done on top
->
-> v2:
-> * Take out the reset of the device from vhost_vdpa_cvq_is_isolated
->   (reported by Lei Yang).
-> * Expand patch messages by Stefano G. questions.
->
-> Eugenio P=C3=A9rez (5):
->   vdpa: Remove status in reset tracing
->   vdpa: add vhost_vdpa_reset_status_fd
->   vdpa: add vhost_vdpa_set_dev_features_fd
->   vdpa: return errno in vhost_vdpa_get_vring_group error
->   vdpa: move CVQ isolation check to net_init_vhost_vdpa
->
->  include/hw/virtio/vhost-vdpa.h |   2 +
->  hw/virtio/vhost-vdpa.c         |  78 ++++++++++-----
->  net/vhost-vdpa.c               | 171 ++++++++++++++++++++++++++-------
->  hw/virtio/trace-events         |   2 +-
->  4 files changed, 192 insertions(+), 61 deletions(-)
->
-> --
-> 2.31.1
->
->
+Subject: [PATCH] qapi/parser: Drop two bad type hints for now
+Message-Id: <20230517061600.1782455-1-armbru@redhat.com>
 
 
