@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6299707011
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A4F70700F
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:55:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLDo-0007Eb-W1; Wed, 17 May 2023 13:45:57 -0400
+	id 1pzLDq-0007GP-Du; Wed, 17 May 2023 13:45:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLDi-00076J-ML
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:51 -0400
+ id 1pzLDl-0007Ac-RD
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLDd-00043E-H6
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:48 -0400
+ id 1pzLDh-00043e-JS
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345544;
+ s=mimecast20190719; t=1684345546;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=07U1cadvQKbzfwknVmjqtMv4mft3/FrIMkIP/Q4GVbo=;
- b=OsqZHbP6j1baL25V72UodafKsA14iSHxWD0s+tQB7to5xLOVcKFPMgMIwAkmJJ37jnK3T+
- uDxtsnrwILRmNU8LxpZ/DbbaG6JF/ckC/IHYeKoooDCMuLoB+hCs/J4IghrF+r4Ugm7L3Y
- pUNE3Ei+2ozh6TPABHSEKzuXNhADAjo=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wMzrIIUF3Z35KfZhCoLyC7JIwz17iRzsNwnLIod0RBw=;
+ b=aXMkclhxod42DEI+MuLBiYoFM5UbsqegF77XHPY30H4KPZwLIEdkYrAYnb8INNV+WY800J
+ tGWCKMSAVbP3+cpO7HYnZyB9YTcZBl7E+I8dwNJnYBteX2heBjVdFuCZ1ePksX2KaOarpr
+ yrBgh96vzuNuelYl3hLRF3om4tyfv5E=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-264-KVpDJ_fUMbWXl7RFM3v6tA-1; Wed, 17 May 2023 13:45:43 -0400
-X-MC-Unique: KVpDJ_fUMbWXl7RFM3v6tA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f453ff4cdfso4725255e9.2
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:45:43 -0700 (PDT)
+ us-mta-308-prQ43NXkO2uvc-zUNOoM7g-1; Wed, 17 May 2023 13:45:45 -0400
+X-MC-Unique: prQ43NXkO2uvc-zUNOoM7g-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30889491b4aso188242f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:45:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345542; x=1686937542;
+ d=1e100.net; s=20221208; t=1684345543; x=1686937543;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=07U1cadvQKbzfwknVmjqtMv4mft3/FrIMkIP/Q4GVbo=;
- b=eCBFsofXiNbxTvCDldW+0PXAjA1ivNmksmf6PZs1bv5pisKXQD+kSYFlkJJnEijtiC
- RHfPbms2SneHlWGytDYVBvPoKpKYfxr94Tqr1WhZ1/yNOCKfqnzmV1e6l28MgYXdq9bI
- EKXX9j7GnuVtUy7jcV1KE1qihu0FlBK7HYni8bQE5nQ7T19LcXSfYUigdKKvpY5lHCBU
- tRXKfmizTJC0d78K3aA2gK/o2ib565dJgPdnU6uleqc/Hdzbs0ilaRh0J5wUpBoVZw0/
- 4YbWkuKJHtYt6Zm7a3GtxAhfR3RhKnIakBGA3XfmyX6WjQ/nwvzCSQBYjsZcCj9sMaId
- LnyQ==
-X-Gm-Message-State: AC+VfDw+OFZ7d9ctKpm3Ubb/GQfF/ELb8Oxr5toGWFIB0C8omtWdgdgw
- ZLN0S1AUWIXp+h+cHeBWtp/qOX4QvToXUqflhkKYVRp9wOO94a4dmlt9hSG6FJ4DxNpLvL3fk0t
- kNH5ydWw+7tFsLlY/fxKUfLFxVfuyx59tUq4QkZNOmUIHOvCparMNSUxAsPIMFm+FKwqV5/uYEx
- o=
-X-Received: by 2002:a7b:cc15:0:b0:3f4:16bc:bd1b with SMTP id
- f21-20020a7bcc15000000b003f416bcbd1bmr26302778wmh.39.1684345542033; 
- Wed, 17 May 2023 10:45:42 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6zE7N0h4V8RuaLsugPrF4qqzvpFWGIMW5yvCWoNJL+zgYZ3wxYtuAeMg2dgQVOvcdsjQmY8Q==
-X-Received: by 2002:a7b:cc15:0:b0:3f4:16bc:bd1b with SMTP id
- f21-20020a7bcc15000000b003f416bcbd1bmr26302761wmh.39.1684345541632; 
- Wed, 17 May 2023 10:45:41 -0700 (PDT)
+ bh=wMzrIIUF3Z35KfZhCoLyC7JIwz17iRzsNwnLIod0RBw=;
+ b=EngO9LkGpZQRxigMUWTHEkzNy38bsZv+kpRtLZ0Ejets20wVDraMF4++6pZ3cnjGDG
+ MIea5djClTnRGlowI3I3fPk1Uw1uFyr8ZGWOwVhxRD94TJJ0KGyfPwEDGylwdpu+N84N
+ p8qa5Q5M1AAl1jfCkcHbLGAMcXOh48HhHuUnxdO8kQ8dx46UCBTvn2U4hq8RPTUFLQLt
+ aybgVFAwR9MjbbRkLjRxmUrxKXvSObeZjg0jdeRAEXUb5D3ZZjl1yR0T5EB/WbcuUaeI
+ dZIppZThS3MgJhYJhzt3LnEoZrYqg+5AC6EEciPzXEIA1avapF2Ss4OgRdMw0T+RNeJi
+ 0n6w==
+X-Gm-Message-State: AC+VfDwmATonyzCvj2gUXDogDyXSWrdRabG353gvMYnr7zv+rpp/ojDf
+ Yxtwn7Y9+str7uxxuqnBSa78uRFkgCka8IMRF4KE09fLL4gnuu7wh9MVR/CBGp/3OPrkvzML3HE
+ PuYp737wFBzIpmgtFhYEWF66iMV2qPvBtQbbLe/RG5y5fPVAUC5T7Om//Pbmh8MetIBFUHZU3ib
+ I=
+X-Received: by 2002:adf:fc52:0:b0:2fc:3596:7392 with SMTP id
+ e18-20020adffc52000000b002fc35967392mr1091589wrs.24.1684345543670; 
+ Wed, 17 May 2023 10:45:43 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6sJePfDAAezHaiFoFAvMw7V53hF6MTRDTPcUxIMpXWpHcumGZJrqaLoT5lUWcmDURGPHDH9Q==
+X-Received: by 2002:adf:fc52:0:b0:2fc:3596:7392 with SMTP id
+ e18-20020adffc52000000b002fc35967392mr1091571wrs.24.1684345543294; 
+ Wed, 17 May 2023 10:45:43 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a05600c311100b003f4283f5c1bsm5178025wmo.2.2023.05.17.10.45.40
+ j11-20020adff54b000000b003062c609115sm3469172wrp.21.2023.05.17.10.45.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:45:41 -0700 (PDT)
+ Wed, 17 May 2023 10:45:42 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gavin Shan <gshan@redhat.com>, Peter Xu <peterx@redhat.com>,
  Zhenyu Zhang <zhenyzha@redhat.com>
-Subject: [PULL 11/68] kvm: Synchronize the backup bitmap in the last stage
-Date: Wed, 17 May 2023 19:44:23 +0200
-Message-Id: <20230517174520.887405-12-pbonzini@redhat.com>
+Subject: [PULL 12/68] kvm: Add helper kvm_dirty_ring_init()
+Date: Wed, 17 May 2023 19:44:24 +0200
+Message-Id: <20230517174520.887405-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -103,67 +103,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gavin Shan <gshan@redhat.com>
 
-In the last stage of live migration or memory slot removal, the
-backup bitmap needs to be synchronized when it has been enabled.
+Due to multiple capabilities associated with the dirty ring for different
+architectures: KVM_CAP_DIRTY_{LOG_RING, LOG_RING_ACQ_REL} for x86 and
+arm64 separately. There will be more to be done in order to support the
+dirty ring for arm64.
+
+Lets add helper kvm_dirty_ring_init() to enable the dirty ring. With this,
+the code looks a bit clean.
+
+No functional change intended.
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
-Message-Id: <20230509022122.20888-3-gshan@redhat.com>
+Message-Id: <20230509022122.20888-4-gshan@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c      | 11 +++++++++++
- include/sysemu/kvm_int.h |  1 +
- 2 files changed, 12 insertions(+)
+ accel/kvm/kvm-all.c | 76 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 47 insertions(+), 29 deletions(-)
 
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 870abad82681..c3aaabf304d7 100644
+index c3aaabf304d7..5d0de9d0a8f8 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -1361,6 +1361,10 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
-                  */
-                 if (kvm_state->kvm_dirty_ring_size) {
-                     kvm_dirty_ring_reap_locked(kvm_state, NULL);
-+                    if (kvm_state->kvm_dirty_ring_with_bitmap) {
-+                        kvm_slot_sync_dirty_pages(mem);
-+                        kvm_slot_get_dirty_log(kvm_state, mem);
-+                    }
-                 } else {
-                     kvm_slot_get_dirty_log(kvm_state, mem);
-                 }
-@@ -1582,6 +1586,12 @@ static void kvm_log_sync_global(MemoryListener *l, bool last_stage)
-         mem = &kml->slots[i];
-         if (mem->memory_size && mem->flags & KVM_MEM_LOG_DIRTY_PAGES) {
-             kvm_slot_sync_dirty_pages(mem);
+@@ -1462,6 +1462,50 @@ static int kvm_dirty_ring_reaper_init(KVMState *s)
+     return 0;
+ }
+ 
++static int kvm_dirty_ring_init(KVMState *s)
++{
++    uint32_t ring_size = s->kvm_dirty_ring_size;
++    uint64_t ring_bytes = ring_size * sizeof(struct kvm_dirty_gfn);
++    int ret;
 +
-+            if (s->kvm_dirty_ring_with_bitmap && last_stage &&
-+                kvm_slot_get_dirty_log(s, mem)) {
-+                kvm_slot_sync_dirty_pages(mem);
-+            }
++    s->kvm_dirty_ring_size = 0;
++    s->kvm_dirty_ring_bytes = 0;
 +
-             /*
-              * This is not needed by KVM_GET_DIRTY_LOG because the
-              * ioctl will unconditionally overwrite the whole region.
-@@ -3710,6 +3720,7 @@ static void kvm_accel_instance_init(Object *obj)
-     s->kernel_irqchip_split = ON_OFF_AUTO_AUTO;
-     /* KVM dirty ring is by default off */
-     s->kvm_dirty_ring_size = 0;
-+    s->kvm_dirty_ring_with_bitmap = false;
-     s->notify_vmexit = NOTIFY_VMEXIT_OPTION_RUN;
-     s->notify_window = 0;
-     s->xen_version = 0;
-diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-index a641c974ea54..511b42bde5c4 100644
---- a/include/sysemu/kvm_int.h
-+++ b/include/sysemu/kvm_int.h
-@@ -115,6 +115,7 @@ struct KVMState
-     } *as;
-     uint64_t kvm_dirty_ring_bytes;  /* Size of the per-vcpu dirty ring */
-     uint32_t kvm_dirty_ring_size;   /* Number of dirty GFNs per ring */
-+    bool kvm_dirty_ring_with_bitmap;
-     struct KVMDirtyRingReaper reaper;
-     NotifyVmexitOption notify_vmexit;
-     uint32_t notify_window;
++    /* Bail if the dirty ring size isn't specified */
++    if (!ring_size) {
++        return 0;
++    }
++
++    /*
++     * Read the max supported pages. Fall back to dirty logging mode
++     * if the dirty ring isn't supported.
++     */
++    ret = kvm_vm_check_extension(s, KVM_CAP_DIRTY_LOG_RING);
++    if (ret <= 0) {
++        warn_report("KVM dirty ring not available, using bitmap method");
++        return 0;
++    }
++
++    if (ring_bytes > ret) {
++        error_report("KVM dirty ring size %" PRIu32 " too big "
++                     "(maximum is %ld).  Please use a smaller value.",
++                     ring_size, (long)ret / sizeof(struct kvm_dirty_gfn));
++        return -EINVAL;
++    }
++
++    ret = kvm_vm_enable_cap(s, KVM_CAP_DIRTY_LOG_RING, 0, ring_bytes);
++    if (ret) {
++        error_report("Enabling of KVM dirty ring failed: %s. "
++                     "Suggested minimum value is 1024.", strerror(-ret));
++        return -EIO;
++    }
++
++    s->kvm_dirty_ring_size = ring_size;
++    s->kvm_dirty_ring_bytes = ring_bytes;
++
++    return 0;
++}
++
+ static void kvm_region_add(MemoryListener *listener,
+                            MemoryRegionSection *section)
+ {
+@@ -2531,35 +2575,9 @@ static int kvm_init(MachineState *ms)
+      * Enable KVM dirty ring if supported, otherwise fall back to
+      * dirty logging mode
+      */
+-    if (s->kvm_dirty_ring_size > 0) {
+-        uint64_t ring_bytes;
+-
+-        ring_bytes = s->kvm_dirty_ring_size * sizeof(struct kvm_dirty_gfn);
+-
+-        /* Read the max supported pages */
+-        ret = kvm_vm_check_extension(s, KVM_CAP_DIRTY_LOG_RING);
+-        if (ret > 0) {
+-            if (ring_bytes > ret) {
+-                error_report("KVM dirty ring size %" PRIu32 " too big "
+-                             "(maximum is %ld).  Please use a smaller value.",
+-                             s->kvm_dirty_ring_size,
+-                             (long)ret / sizeof(struct kvm_dirty_gfn));
+-                ret = -EINVAL;
+-                goto err;
+-            }
+-
+-            ret = kvm_vm_enable_cap(s, KVM_CAP_DIRTY_LOG_RING, 0, ring_bytes);
+-            if (ret) {
+-                error_report("Enabling of KVM dirty ring failed: %s. "
+-                             "Suggested minimum value is 1024.", strerror(-ret));
+-                goto err;
+-            }
+-
+-            s->kvm_dirty_ring_bytes = ring_bytes;
+-         } else {
+-             warn_report("KVM dirty ring not available, using bitmap method");
+-             s->kvm_dirty_ring_size = 0;
+-        }
++    ret = kvm_dirty_ring_init(s);
++    if (ret < 0) {
++        goto err;
+     }
+ 
+     /*
 -- 
 2.40.1
 
