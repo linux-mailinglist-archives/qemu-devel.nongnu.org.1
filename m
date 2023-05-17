@@ -2,118 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2164E706D2C
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F48706D2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:48:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJN7-0004hy-BF; Wed, 17 May 2023 11:47:25 -0400
+	id 1pzJNS-0004ln-F5; Wed, 17 May 2023 11:47:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
- id 1pzJN2-0004gS-4G
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:47:20 -0400
+ id 1pzJNE-0004kR-5L
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:47:33 -0400
 Received: from mailout1.w1.samsung.com ([210.118.77.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
- id 1pzJMy-0004fF-S0
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:47:19 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+ id 1pzJMy-0004fG-S5
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:47:31 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
  by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
- 20230517154709euoutp018583439f12885475eb5ae0998a8f8387~f_OCyIVgy0282502825euoutp01E
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 15:47:09 +0000 (GMT)
+ 20230517154710euoutp01bf3683578853959d2d1c374687afb84e~f_ODY7IQb0235102351euoutp01Q
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 15:47:10 +0000 (GMT)
 DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
- 20230517154709euoutp018583439f12885475eb5ae0998a8f8387~f_OCyIVgy0282502825euoutp01E
+ 20230517154710euoutp01bf3683578853959d2d1c374687afb84e~f_ODY7IQb0235102351euoutp01Q
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1684338429;
- bh=EWsco+cJ7x7/FUF1IEPdzJA/MQGvkaw07RGP4KOVkTE=;
+ s=mail20170921; t=1684338430;
+ bh=84Izyxtoe0ZLd4hkuj/7JIPXuyS7G7dsSIvL3JsJP94=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BIQPBc/ySQg2qqThlDH9SMvNqXznMOkahTFIw2BIilXWdYnXxtsAr5nqzMd1GE3wI
- Xru1FOD/EBrDqchsmYnFu37BkFhLxxJYT1sg0K5zqx2i0y8DwN9cvy5YgsP9FZ4OYE
- +YdrxDV6bmx8l7nMV0LsqefPurp16YmfaAD4lC/g=
+ b=n2R1Dr5SrW+xdOaFxlk0txcBC44G1E0wcgOvpa8SaqxooAPxSHG80Vd/E6dczDrDP
+ vX5xU2RpBCLvg1cEJgTe8Ki7cuyA6IA4H9a8cjeih+vJD/YQcGCYjKNtyl/U/EZMb2
+ p2ntbbRGTwgkqy4kkT/EEA4fIuEod7UpfVW5ngd4=
 Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
  eucas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230517154709eucas1p19a6a50d3e9da8fe8b5415136d9dd6e7d~f_OCnP6z40470004700eucas1p1E;
+ 20230517154709eucas1p14874217ae6270c0a54e0c24f57230f20~f_ODFbErn3180031800eucas1p1J;
  Wed, 17 May 2023 15:47:09 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
- eusmges1new.samsung.com (EUCPMTA) with SMTP id E3.DD.42423.DF6F4646; Wed, 17
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+ eusmges1new.samsung.com (EUCPMTA) with SMTP id 25.DD.42423.DF6F4646; Wed, 17
  May 2023 16:47:09 +0100 (BST)
 Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
- 20230517154709eucas1p2713ef60e2e2d6dec68b72723a3f9abaf~f_OCSwc_U1901319013eucas1p2c;
+ eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+ 20230517154709eucas1p175f07cfb871664c854ce73663e7f5052~f_OCt-gST3180031800eucas1p1I;
  Wed, 17 May 2023 15:47:09 +0000 (GMT)
 Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
  eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20230517154709eusmtrp16df5a0ec2871310c2fdea5c834744913~f_OCSH-Wj2897428974eusmtrp1D;
+ 20230517154709eusmtrp17af48bc5acc7f50fa3a0af201a71b58e~f_OCtX-JB2897428974eusmtrp1E;
  Wed, 17 May 2023 15:47:09 +0000 (GMT)
-X-AuditID: cbfec7f2-a3bff7000002a5b7-49-6464f6fdd858
+X-AuditID: cbfec7f2-a51ff7000002a5b7-4e-6464f6fd4efd
 Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
- eusmgms1.samsung.com (EUCPMTA) with SMTP id 7E.07.10549.CF6F4646; Wed, 17
- May 2023 16:47:08 +0100 (BST)
+ eusmgms1.samsung.com (EUCPMTA) with SMTP id 0F.07.10549.DF6F4646; Wed, 17
+ May 2023 16:47:09 +0100 (BST)
 Received: from AMDN5139.EU.corp.samsungelectronics.net (unknown
  [106.210.135.112]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20230517154708eusmtip20c375172688db25e91a0ddf3ff7219d2~f_OBvg8Bb1593615936eusmtip2i;
+ 20230517154708eusmtip2aa751e981b03e561f588bec67272ba2e~f_OCNjiUP0867308673eusmtip2j;
  Wed, 17 May 2023 15:47:08 +0000 (GMT)
 From: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
 To: qemu-devel@nongnu.org, akihiko.odaki@daynix.com
 Cc: sriram.yagnaraman@est.tech, jasowang@redhat.com, k.kwiecien@samsung.com,
  m.sochacki@samsung.com
-Subject: [PATCH v7 2/7] igb: rename E1000E_RingInfo_st
-Date: Wed, 17 May 2023 17:46:57 +0200
-Message-Id: <20230517154702.4215-3-t.dzieciol@partner.samsung.com>
+Subject: [PATCH v7 3/7] igb: RX descriptors guest writting refactoring
+Date: Wed, 17 May 2023 17:46:58 +0200
+Message-Id: <20230517154702.4215-4-t.dzieciol@partner.samsung.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230517154702.4215-1-t.dzieciol@partner.samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01SfVDLcRz2/b1sv8bcr5nrcyMpdidLUo4dIfTHOOdyiUNktZ+KWtnkpTvU
- IZnKy061hYWoc+jsTV4q60pqZKbUebskcZ2QpXTe5zfHf8/zfJ7n+/k8d18KF+SRIipZuY1R
- KeUpARweYb0z3DLt+6BCEfLaIZC6mi9zpRecLkyabThJSi1tX7jSxvwqQppvfItFcGR3+2yk
- zNHVgsu6H5sw2YeaNo6swHwRRZFreeEKJiV5O6OaPn8jL6mz/jieXrhh58+OK2QWGl6qQV4U
- 0DPB1mNBGsSjBHQFAnt2J5clAwhabWUe4kKQVWjk/I08uPrQEylH8Km8zUMOYtDQeB25XRx6
- FnQNnCY1iKKEdBj0H/RxyzjNQMM3G+HGY35bik0nSTcmaDFUnLPibsynF8E7w2eMXeYHOucQ
- 14296MWQ21/DYT3e0KTrJtg3/WCfpQR33wC0mQJtk8MTjoScqlzP1WOgt9HMZfF4sGvzCBbv
- gOH7Vi4b3o/g1gmtxzQXnJbhPwVwOhAqb0xn5YXQU6/F3DLQo6Gjz5u9YTQctxbhrMyH3BwB
- 6w6CQaOOw8oiONOxh5VlcMJg4hxF/vr/yuj/K6P/t7YU4ReRD5OhTk1k1DOUzI5gtTxVnaFM
- DE5ISzWi3x/G/qPxUxU61dsfXIcwCtUhoPAAIX9FQYJCwFfId2UyqrQ4VUYKo65D4ygiwIcv
- mdeUIKAT5duYLQyTzqj+TjHKS5SFrSrxKvTfsz37SIVjxPL8uXn3a1+1rHwfEo138nRzJi+w
- +xZHPYs8OtYWq5U8f/XktCC2mztSvKks2RSaFnSmleyvCRzFbV/FRDbrjvXmOMULmPgeyaWY
- wIQsaYT16qEuYXPPYIQY9q7cLfp4uOippCadOh+uCH1ph/g0nmGd3vvr0NmRk9+WLUtfbdoc
- 27ApP/Ob3lAb13bk0YT2JQZetflZ9Od418CL1bd9Y8rXFJijbgr5xtDqsBaJGb2ZPUpw4KXG
- GfLEUZdpZ2q3ztGEr2tdLxZ1KIu0mJ9/eWnSg8dB1zRChW/zqXtaTcy82CGFq5KYVFl/z/J+
- 4hWyb0pnagChTpLPmIqr1PJfLgN3k58DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNLMWRmVeSWpSXmKPExsVy+t/xe7p/vqWkGEw7b2nx+dRadotllz4z
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupmleLIzCtJLcpLzFFi42LZduzned2/31JSDJa0Glt8PrWW3WLZpc9M
+ Fo3z57BabL36g93ieO8OFoveTS+YHNg8Trw9yOpx4dE5Zo8n1zYzebzfd5XNo2/LKsYA1igu
+ m5TUnMyy1CJ9uwSujKaJlxkLmoIrnrWsYGpgfGLZxcjJISFgIrFg9lzmLkYuDiGBFYwS62d+
+ YIVwvjBKLOw4zQZSJSTwmVFi7Z8CmI453U+gOpYzSky9eJwdwmlnkrgzfRkzSBWbgJnEoy/z
+ gEZxcIgIGEt8bBcHCTMLpEoc/XOQBcQWFnCTuHb/IyOIzSKgKrG7cTE7iM0r4CRx8N87Nohl
+ 8hIzL30Hi3MKOEt0fNzHBlEjKHFy5hMWiJnyEs1bZ4MdJCGwhUPi7vdWZohmF4ldS3dBDRKW
+ eHV8CzuELSNxenIPC4RdLvHz7DZ2iOYWRok9UydDFVlLXNr6E+wBZgFNifW79CHCjhJzzh1h
+ AglLCPBJ3HgrCHEDn8SkbdOZIcK8Eh1tQhDVOhLfNs1kgwhLSSy8UQcR9pD43rGaaQKj4iwk
+ z8xC8swshLULGJlXMYqnlhbnpqcWG+allusVJ+YWl+al6yXn525iBKaX0/+Of9rBOPfVR71D
+ jEwcjIcYJTiYlUR4A/uSU4R4UxIrq1KL8uOLSnNSiw8xSnOwKInzatueTBYSSE8sSc1OTS1I
+ LYLJMnFwSjUwNQUsk5ib+8SCz6vzyr+T9y5PZuBX3XfvmqsG+8sIpvdrDc89sXRgldu71HJN
+ /x+dbJPH+ZeXdWbmbj3My7suY9Oyq0cSCk7b1Jsukr889Y3ss5Xyc6VWfLlpvGfxz6o1/60l
+ drtqnv7alfzIqPt9TjyL4vbZsk2WH0NOTuN181/38M4sv4UXDrJZ9XvtPag8e/JJSU6JmeX5
+ MzLiY22rXRnMg4rdV82QVZ+5a0vD5d9yor/rnKeZcs56wV3H8+3kuY8zYucm+c3Z5/E5JHLp
+ A3nFrgmqL3r25P9qP+m3ptt1ZvmbaulT21z0KpYb3CzrP1XtXuegllz7c86n2bnl6RNYOWKy
+ 3jWF3ptYaL+YRYmlOCPRUIu5qDgRAEk/htieAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNLMWRmVeSWpSXmKPExsVy+t/xe7p/v6WkGFxfKm3x+dRadotllz4z
  WTTOn8NqsfXqD3aL4707WCx6N71gcmDzOPH2IKvHhUfnmD2eXNvM5PF+31U2j74tqxgDWKP0
- bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0Mh4cmcRc
- MC2u4v+NdawNjD+9uhg5OSQETCTOb7zI2MXIxSEksJRRouPuLCaIhJTEvp7/7BC2sMSfa11s
- EEWtTBI7n91iA0mwCZhJPPoyj7WLkYNDRMBU4tleSZAws0CmxOlX+8BKhIFKZmyewwpiswio
- SqxYvI0ZxOYVcJJ4M/8r1C55iZmXvoPt4hRwluj4CNErBFTz8VkHK0S9oMTJmU9YIObLSzRv
- nc08gVFgFpLULCSpBYxMqxhFUkuLc9Nziw31ihNzi0vz0vWS83M3MQJjYduxn5t3MM579VHv
- ECMTB+MhRgkOZiUR3sC+5BQh3pTEyqrUovz4otKc1OJDjKZAd09klhJNzgdGY15JvKGZgamh
- iZmlgamlmbGSOK9nQUeikEB6YklqdmpqQWoRTB8TB6dUA9P+Y5vNRPMz/u+0PqqxancBb7eA
- geHslHvuC03/6m6cGV9wqeRPZ7LZ9SUhnEot0lNYlY6+KJZaGP7KQNXDq+KJ/onelucmX7ha
- fGVeft7feKalYf/VPcF3pBgt5rz84SJ7LKJy076tPxLeqd0+fMjiZF+vk9b25mvyxuwVJfXT
- Vn+8WXZmhWDd5OAeU6uMvDlp+bed3kZP49yTlCj4PGlawAMbj+iDm1YxWR6I2brG3v2oV96r
- yDV5vw1YH7WdK846v/LNmjvmCzXffNzUG+3KJW71oX/KX/Mpa43Xy6mk1fDsNj8TvnWm+/dt
- kiLTfaYv65zR7tTrHHTnzy8RgV+vt5Rr1s3iqNwwWTrfKVKJpTgj0VCLuag4EQAizvYoDgMA
- AA==
-X-CMS-MailID: 20230517154709eucas1p2713ef60e2e2d6dec68b72723a3f9abaf
+ bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0MpomXmYs
+ aAqueNaygqmB8YllFyMnh4SAicSc7ifMXYxcHEICSxklzvavY4JISEns6/nPDmELS/y51sUG
+ UdTKJLHsYwMzSIJNwEzi0Zd5rF2MHBwiAqYSz/ZKgoSZBTIlTr/axwZiCwu4SVy7/5ERxGYR
+ UJXY3bgYbCavgJPEwX/v2CDmy0vMvPQdLM4p4CzR8RGiVwio5uOzDlaIekGJkzOfsEDMl5do
+ 3jqbeQKjwCwkqVlIUgsYmVYxiqSWFuem5xYb6hUn5haX5qXrJefnbmIExsK2Yz8372Cc9+qj
+ 3iFGJg7GQ4wSHMxKIryBfckpQrwpiZVVqUX58UWlOanFhxhNge6eyCwlmpwPjMa8knhDMwNT
+ QxMzSwNTSzNjJXFez4KORCGB9MSS1OzU1ILUIpg+Jg5OqQYmheQjS41Pf9wnILZT6f3co5GH
+ FjyXyt8ZsfRVUs614I3F57fWr25QjjsR+5A9NPPv9bS9ywTcdv4uY58zZVHTbdmzbwOWnc1e
+ KmtnHXVKy+e3JMuNsFkH7nyvfcj2V0Y+9eoVdWtFm2DR0xYiMlGyjGk/Jnhd65/wUf7hlo0e
+ AZtZpWQL2CuDgreLhebtneuous2g3+KTvYP4v78cz7ly81UnHPngffHiB46lXJfuTnbaKel5
+ U7Ikje3cFs70tnNWAgfeSgkf3frZpfftvnUzpM5dWV50sPGe87xyQ4aE0l2bHdp/t5rKdGdd
+ yBb5zfR3Or/K9/uLN/4IYr+ygtuydeMz2VfpIoIMSx932PrKKbEUZyQaajEXFScCALhVQPkO
+ AwAA
+X-CMS-MailID: 20230517154709eucas1p175f07cfb871664c854ce73663e7f5052
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20230517154709eucas1p2713ef60e2e2d6dec68b72723a3f9abaf
+X-RootMTR: 20230517154709eucas1p175f07cfb871664c854ce73663e7f5052
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20230517154709eucas1p2713ef60e2e2d6dec68b72723a3f9abaf
+X-CMS-RootMailID: 20230517154709eucas1p175f07cfb871664c854ce73663e7f5052
 References: <20230517154702.4215-1-t.dzieciol@partner.samsung.com>
- <CGME20230517154709eucas1p2713ef60e2e2d6dec68b72723a3f9abaf@eucas1p2.samsung.com>
+ <CGME20230517154709eucas1p175f07cfb871664c854ce73663e7f5052@eucas1p1.samsung.com>
 Received-SPF: none client-ip=210.118.77.11;
  envelope-from=t.dzieciol@partner.samsung.com; helo=mailout1.w1.samsung.com
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_HI=-5,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,336 +129,293 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename E1000E_RingInfo_st and E1000E_RingInfo according to qemu typdefs guide.
+Refactoring is done in preparation for support of multiple advanced
+descriptors RX modes, especially packet-split modes.
 
 Signed-off-by: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
 ---
- hw/net/e1000e_core.c | 34 +++++++++++++++++-----------------
- hw/net/igb_core.c    | 42 +++++++++++++++++++++---------------------
- 2 files changed, 38 insertions(+), 38 deletions(-)
+ hw/net/igb_core.c   | 176 ++++++++++++++++++++++----------------------
+ hw/net/igb_regs.h   |  10 +--
+ hw/net/trace-events |   6 +-
+ 3 files changed, 99 insertions(+), 93 deletions(-)
 
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index 78373d7db7..b2e54fe802 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -810,24 +810,24 @@ e1000e_txdesc_writeback(E1000ECore *core, dma_addr_t base,
-     return e1000e_tx_wb_interrupt_cause(core, queue_idx);
- }
- 
--typedef struct E1000E_RingInfo_st {
-+typedef struct E1000ERingInfo {
-     int dbah;
-     int dbal;
-     int dlen;
-     int dh;
-     int dt;
-     int idx;
--} E1000E_RingInfo;
-+} E1000ERingInfo;
- 
- static inline bool
--e1000e_ring_empty(E1000ECore *core, const E1000E_RingInfo *r)
-+e1000e_ring_empty(E1000ECore *core, const E1000ERingInfo *r)
- {
-     return core->mac[r->dh] == core->mac[r->dt] ||
-                 core->mac[r->dt] >= core->mac[r->dlen] / E1000_RING_DESC_LEN;
- }
- 
- static inline uint64_t
--e1000e_ring_base(E1000ECore *core, const E1000E_RingInfo *r)
-+e1000e_ring_base(E1000ECore *core, const E1000ERingInfo *r)
- {
-     uint64_t bah = core->mac[r->dbah];
-     uint64_t bal = core->mac[r->dbal];
-@@ -836,13 +836,13 @@ e1000e_ring_base(E1000ECore *core, const E1000E_RingInfo *r)
- }
- 
- static inline uint64_t
--e1000e_ring_head_descr(E1000ECore *core, const E1000E_RingInfo *r)
-+e1000e_ring_head_descr(E1000ECore *core, const E1000ERingInfo *r)
- {
-     return e1000e_ring_base(core, r) + E1000_RING_DESC_LEN * core->mac[r->dh];
- }
- 
- static inline void
--e1000e_ring_advance(E1000ECore *core, const E1000E_RingInfo *r, uint32_t count)
-+e1000e_ring_advance(E1000ECore *core, const E1000ERingInfo *r, uint32_t count)
- {
-     core->mac[r->dh] += count;
- 
-@@ -852,7 +852,7 @@ e1000e_ring_advance(E1000ECore *core, const E1000E_RingInfo *r, uint32_t count)
- }
- 
- static inline uint32_t
--e1000e_ring_free_descr_num(E1000ECore *core, const E1000E_RingInfo *r)
-+e1000e_ring_free_descr_num(E1000ECore *core, const E1000ERingInfo *r)
- {
-     trace_e1000e_ring_free_space(r->idx, core->mac[r->dlen],
-                                  core->mac[r->dh],  core->mac[r->dt]);
-@@ -871,19 +871,19 @@ e1000e_ring_free_descr_num(E1000ECore *core, const E1000E_RingInfo *r)
- }
- 
- static inline bool
--e1000e_ring_enabled(E1000ECore *core, const E1000E_RingInfo *r)
-+e1000e_ring_enabled(E1000ECore *core, const E1000ERingInfo *r)
- {
-     return core->mac[r->dlen] > 0;
- }
- 
- static inline uint32_t
--e1000e_ring_len(E1000ECore *core, const E1000E_RingInfo *r)
-+e1000e_ring_len(E1000ECore *core, const E1000ERingInfo *r)
- {
-     return core->mac[r->dlen];
- }
- 
- typedef struct E1000E_TxRing_st {
--    const E1000E_RingInfo *i;
-+    const E1000ERingInfo *i;
-     struct e1000e_tx *tx;
- } E1000E_TxRing;
- 
-@@ -896,7 +896,7 @@ e1000e_mq_queue_idx(int base_reg_idx, int reg_idx)
- static inline void
- e1000e_tx_ring_init(E1000ECore *core, E1000E_TxRing *txr, int idx)
- {
--    static const E1000E_RingInfo i[E1000E_NUM_QUEUES] = {
-+    static const E1000ERingInfo i[E1000E_NUM_QUEUES] = {
-         { TDBAH,  TDBAL,  TDLEN,  TDH,  TDT, 0 },
-         { TDBAH1, TDBAL1, TDLEN1, TDH1, TDT1, 1 }
-     };
-@@ -908,13 +908,13 @@ e1000e_tx_ring_init(E1000ECore *core, E1000E_TxRing *txr, int idx)
- }
- 
- typedef struct E1000E_RxRing_st {
--    const E1000E_RingInfo *i;
-+    const E1000ERingInfo *i;
- } E1000E_RxRing;
- 
- static inline void
- e1000e_rx_ring_init(E1000ECore *core, E1000E_RxRing *rxr, int idx)
- {
--    static const E1000E_RingInfo i[E1000E_NUM_QUEUES] = {
-+    static const E1000ERingInfo i[E1000E_NUM_QUEUES] = {
-         { RDBAH0, RDBAL0, RDLEN0, RDH0, RDT0, 0 },
-         { RDBAH1, RDBAL1, RDLEN1, RDH1, RDT1, 1 }
-     };
-@@ -930,7 +930,7 @@ e1000e_start_xmit(E1000ECore *core, const E1000E_TxRing *txr)
-     dma_addr_t base;
-     struct e1000_tx_desc desc;
-     bool ide = false;
--    const E1000E_RingInfo *txi = txr->i;
-+    const E1000ERingInfo *txi = txr->i;
-     uint32_t cause = E1000_ICS_TXQE;
- 
-     if (!(core->mac[TCTL] & E1000_TCTL_EN)) {
-@@ -960,7 +960,7 @@ e1000e_start_xmit(E1000ECore *core, const E1000E_TxRing *txr)
- }
- 
- static bool
--e1000e_has_rxbufs(E1000ECore *core, const E1000E_RingInfo *r,
-+e1000e_has_rxbufs(E1000ECore *core, const E1000ERingInfo *r,
-                   size_t total_size)
- {
-     uint32_t bufs = e1000e_ring_free_descr_num(core, r);
-@@ -1460,7 +1460,7 @@ e1000e_update_rx_stats(E1000ECore *core, size_t pkt_size, size_t pkt_fcs_size)
- }
- 
- static inline bool
--e1000e_rx_descr_threshold_hit(E1000ECore *core, const E1000E_RingInfo *rxi)
-+e1000e_rx_descr_threshold_hit(E1000ECore *core, const E1000ERingInfo *rxi)
- {
-     return e1000e_ring_free_descr_num(core, rxi) ==
-            e1000e_ring_len(core, rxi) >> core->rxbuf_min_shift;
-@@ -1521,7 +1521,7 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-     struct iovec *iov = net_rx_pkt_get_iovec(pkt);
-     size_t size = net_rx_pkt_get_total_len(pkt);
-     size_t total_size = size + e1000x_fcs_len(core->mac);
--    const E1000E_RingInfo *rxi;
-+    const E1000ERingInfo *rxi;
-     size_t ps_hdr_len = 0;
-     bool do_ps = e1000e_do_ps(core, pkt, &ps_hdr_len);
-     bool is_first = true;
 diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 012eb1e1b9..b6031dea24 100644
+index b6031dea24..774b34fc92 100644
 --- a/hw/net/igb_core.c
 +++ b/hw/net/igb_core.c
-@@ -694,24 +694,24 @@ static uint32_t igb_rx_wb_eic(IGBCore *core, int queue_idx)
-     return (ent & E1000_IVAR_VALID) ? BIT(ent & 0x1f) : 0;
- }
- 
--typedef struct E1000E_RingInfo_st {
-+typedef struct E1000ERingInfo {
-     int dbah;
-     int dbal;
-     int dlen;
-     int dh;
-     int dt;
-     int idx;
--} E1000E_RingInfo;
-+} E1000ERingInfo;
- 
- static inline bool
--igb_ring_empty(IGBCore *core, const E1000E_RingInfo *r)
-+igb_ring_empty(IGBCore *core, const E1000ERingInfo *r)
- {
-     return core->mac[r->dh] == core->mac[r->dt] ||
-                 core->mac[r->dt] >= core->mac[r->dlen] / E1000_RING_DESC_LEN;
- }
- 
- static inline uint64_t
--igb_ring_base(IGBCore *core, const E1000E_RingInfo *r)
-+igb_ring_base(IGBCore *core, const E1000ERingInfo *r)
- {
-     uint64_t bah = core->mac[r->dbah];
-     uint64_t bal = core->mac[r->dbal];
-@@ -720,13 +720,13 @@ igb_ring_base(IGBCore *core, const E1000E_RingInfo *r)
- }
- 
- static inline uint64_t
--igb_ring_head_descr(IGBCore *core, const E1000E_RingInfo *r)
-+igb_ring_head_descr(IGBCore *core, const E1000ERingInfo *r)
- {
-     return igb_ring_base(core, r) + E1000_RING_DESC_LEN * core->mac[r->dh];
- }
- 
- static inline void
--igb_ring_advance(IGBCore *core, const E1000E_RingInfo *r, uint32_t count)
-+igb_ring_advance(IGBCore *core, const E1000ERingInfo *r, uint32_t count)
- {
-     core->mac[r->dh] += count;
- 
-@@ -736,7 +736,7 @@ igb_ring_advance(IGBCore *core, const E1000E_RingInfo *r, uint32_t count)
- }
- 
- static inline uint32_t
--igb_ring_free_descr_num(IGBCore *core, const E1000E_RingInfo *r)
-+igb_ring_free_descr_num(IGBCore *core, const E1000ERingInfo *r)
- {
-     trace_e1000e_ring_free_space(r->idx, core->mac[r->dlen],
-                                  core->mac[r->dh],  core->mac[r->dt]);
-@@ -755,13 +755,13 @@ igb_ring_free_descr_num(IGBCore *core, const E1000E_RingInfo *r)
- }
- 
- static inline bool
--igb_ring_enabled(IGBCore *core, const E1000E_RingInfo *r)
-+igb_ring_enabled(IGBCore *core, const E1000ERingInfo *r)
- {
-     return core->mac[r->dlen] > 0;
- }
- 
- typedef struct IGB_TxRing_st {
--    const E1000E_RingInfo *i;
-+    const E1000ERingInfo *i;
-     struct igb_tx *tx;
- } IGB_TxRing;
- 
-@@ -774,7 +774,7 @@ igb_mq_queue_idx(int base_reg_idx, int reg_idx)
- static inline void
- igb_tx_ring_init(IGBCore *core, IGB_TxRing *txr, int idx)
- {
--    static const E1000E_RingInfo i[IGB_NUM_QUEUES] = {
-+    static const E1000ERingInfo i[IGB_NUM_QUEUES] = {
-         { TDBAH0, TDBAL0, TDLEN0, TDH0, TDT0, 0 },
-         { TDBAH1, TDBAL1, TDLEN1, TDH1, TDT1, 1 },
-         { TDBAH2, TDBAL2, TDLEN2, TDH2, TDT2, 2 },
-@@ -800,13 +800,13 @@ igb_tx_ring_init(IGBCore *core, IGB_TxRing *txr, int idx)
- }
- 
- typedef struct E1000E_RxRing_st {
--    const E1000E_RingInfo *i;
-+    const E1000ERingInfo *i;
- } E1000E_RxRing;
- 
- static inline void
- igb_rx_ring_init(IGBCore *core, E1000E_RxRing *rxr, int idx)
- {
--    static const E1000E_RingInfo i[IGB_NUM_QUEUES] = {
-+    static const E1000ERingInfo i[IGB_NUM_QUEUES] = {
-         { RDBAH0, RDBAL0, RDLEN0, RDH0, RDT0, 0 },
-         { RDBAH1, RDBAL1, RDLEN1, RDH1, RDT1, 1 },
-         { RDBAH2, RDBAL2, RDLEN2, RDH2, RDT2, 2 },
-@@ -833,7 +833,7 @@ igb_rx_ring_init(IGBCore *core, E1000E_RxRing *rxr, int idx)
- static uint32_t
- igb_txdesc_writeback(IGBCore *core, dma_addr_t base,
-                      union e1000_adv_tx_desc *tx_desc,
--                     const E1000E_RingInfo *txi)
-+                     const E1000ERingInfo *txi)
- {
-     PCIDevice *d;
-     uint32_t cmd_type_len = le32_to_cpu(tx_desc->read.cmd_type_len);
-@@ -866,7 +866,7 @@ igb_txdesc_writeback(IGBCore *core, dma_addr_t base,
- }
- 
- static inline bool
--igb_tx_enabled(IGBCore *core, const E1000E_RingInfo *txi)
-+igb_tx_enabled(IGBCore *core, const E1000ERingInfo *txi)
- {
-     bool vmdq = core->mac[MRQC] & 1;
-     uint16_t qn = txi->idx;
-@@ -883,7 +883,7 @@ igb_start_xmit(IGBCore *core, const IGB_TxRing *txr)
-     PCIDevice *d;
-     dma_addr_t base;
-     union e1000_adv_tx_desc desc;
--    const E1000E_RingInfo *txi = txr->i;
-+    const E1000ERingInfo *txi = txr->i;
-     uint32_t eic = 0;
- 
-     if (!igb_tx_enabled(core, txi)) {
-@@ -918,7 +918,7 @@ igb_start_xmit(IGBCore *core, const IGB_TxRing *txr)
- }
- 
- static uint32_t
--igb_rxbufsize(IGBCore *core, const E1000E_RingInfo *r)
-+igb_rxbufsize(IGBCore *core, const E1000ERingInfo *r)
- {
-     uint32_t srrctl = core->mac[E1000_SRRCTL(r->idx) >> 2];
-     uint32_t bsizepkt = srrctl & E1000_SRRCTL_BSIZEPKT_MASK;
-@@ -930,7 +930,7 @@ igb_rxbufsize(IGBCore *core, const E1000E_RingInfo *r)
- }
- 
- static bool
--igb_has_rxbufs(IGBCore *core, const E1000E_RingInfo *r, size_t total_size)
-+igb_has_rxbufs(IGBCore *core, const E1000ERingInfo *r, size_t total_size)
- {
-     uint32_t bufs = igb_ring_free_descr_num(core, r);
-     uint32_t bufsize = igb_rxbufsize(core, r);
-@@ -1522,7 +1522,7 @@ igb_write_to_rx_buffers(IGBCore *core,
+@@ -1281,15 +1281,11 @@ igb_verify_csum_in_sw(IGBCore *core,
  }
  
  static void
--igb_update_rx_stats(IGBCore *core, const E1000E_RingInfo *rxi,
-+igb_update_rx_stats(IGBCore *core, const E1000ERingInfo *rxi,
-                     size_t pkt_size, size_t pkt_fcs_size)
+-igb_build_rx_metadata(IGBCore *core,
+-                      struct NetRxPkt *pkt,
+-                      bool is_eop,
+-                      const E1000E_RSSInfo *rss_info, uint16_t etqf, bool ts,
+-                      uint16_t *pkt_info, uint16_t *hdr_info,
+-                      uint32_t *rss,
+-                      uint32_t *status_flags,
+-                      uint16_t *ip_id,
+-                      uint16_t *vlan_tag)
++igb_build_rx_metadata_common(IGBCore *core,
++                             struct NetRxPkt *pkt,
++                             bool is_eop,
++                             uint32_t *status_flags,
++                             uint16_t *vlan_tag)
  {
-     eth_pkt_types_e pkt_type = net_rx_pkt_get_packet_type(core->rx_pkt);
-@@ -1540,7 +1540,7 @@ igb_update_rx_stats(IGBCore *core, const E1000E_RingInfo *rxi,
+     struct virtio_net_hdr *vhdr;
+     bool hasip4, hasip6, csum_valid;
+@@ -1298,7 +1294,6 @@ igb_build_rx_metadata(IGBCore *core,
+     *status_flags = E1000_RXD_STAT_DD;
+ 
+     /* No additional metadata needed for non-EOP descriptors */
+-    /* TODO: EOP apply only to status so don't skip whole function. */
+     if (!is_eop) {
+         goto func_exit;
+     }
+@@ -1315,59 +1310,6 @@ igb_build_rx_metadata(IGBCore *core,
+         trace_e1000e_rx_metadata_vlan(*vlan_tag);
+     }
+ 
+-    /* Packet parsing results */
+-    if ((core->mac[RXCSUM] & E1000_RXCSUM_PCSD) != 0) {
+-        if (rss_info->enabled) {
+-            *rss = cpu_to_le32(rss_info->hash);
+-            trace_igb_rx_metadata_rss(*rss);
+-        }
+-    } else if (hasip4) {
+-            *status_flags |= E1000_RXD_STAT_IPIDV;
+-            *ip_id = cpu_to_le16(net_rx_pkt_get_ip_id(pkt));
+-            trace_e1000e_rx_metadata_ip_id(*ip_id);
+-    }
+-
+-    if (pkt_info) {
+-        *pkt_info = rss_info->enabled ? rss_info->type : 0;
+-
+-        if (etqf < 8) {
+-            *pkt_info |= BIT(11) | (etqf << 4);
+-        } else {
+-            if (hasip4) {
+-                *pkt_info |= E1000_ADVRXD_PKT_IP4;
+-            }
+-
+-            if (hasip6) {
+-                *pkt_info |= E1000_ADVRXD_PKT_IP6;
+-            }
+-
+-            switch (l4hdr_proto) {
+-            case ETH_L4_HDR_PROTO_TCP:
+-                *pkt_info |= E1000_ADVRXD_PKT_TCP;
+-                break;
+-
+-            case ETH_L4_HDR_PROTO_UDP:
+-                *pkt_info |= E1000_ADVRXD_PKT_UDP;
+-                break;
+-
+-            case ETH_L4_HDR_PROTO_SCTP:
+-                *pkt_info |= E1000_ADVRXD_PKT_SCTP;
+-                break;
+-
+-            default:
+-                break;
+-            }
+-        }
+-    }
+-
+-    if (hdr_info) {
+-        *hdr_info = 0;
+-    }
+-
+-    if (ts) {
+-        *status_flags |= BIT(16);
+-    }
+-
+     /* RX CSO information */
+     if (hasip6 && (core->mac[RFCTL] & E1000_RFCTL_IPV6_XSUM_DIS)) {
+         trace_e1000e_rx_metadata_ipv6_sum_disabled();
+@@ -1423,43 +1365,106 @@ func_exit:
+ static inline void
+ igb_write_lgcy_rx_descr(IGBCore *core, struct e1000_rx_desc *desc,
+                         struct NetRxPkt *pkt,
+-                        const E1000E_RSSInfo *rss_info, uint16_t etqf, bool ts,
++                        const E1000E_RSSInfo *rss_info,
+                         uint16_t length)
+ {
+-    uint32_t status_flags, rss;
+-    uint16_t ip_id;
++    uint32_t status_flags;
+ 
+     assert(!rss_info->enabled);
++
++    memset(desc, 0, sizeof(*desc));
+     desc->length = cpu_to_le16(length);
+-    desc->csum = 0;
++    igb_build_rx_metadata_common(core, pkt, pkt != NULL,
++                                 &status_flags,
++                                 &desc->special);
+ 
+-    igb_build_rx_metadata(core, pkt, pkt != NULL,
+-                          rss_info, etqf, ts,
+-                          NULL, NULL, &rss,
+-                          &status_flags, &ip_id,
+-                          &desc->special);
+     desc->errors = (uint8_t) (le32_to_cpu(status_flags) >> 24);
+     desc->status = (uint8_t) le32_to_cpu(status_flags);
  }
  
- static inline bool
--igb_rx_descr_threshold_hit(IGBCore *core, const E1000E_RingInfo *rxi)
-+igb_rx_descr_threshold_hit(IGBCore *core, const E1000ERingInfo *rxi)
++static uint16_t
++igb_rx_desc_get_packet_type(IGBCore *core, struct NetRxPkt *pkt, uint16_t etqf)
++{
++    uint16_t pkt_type = 0;
++    bool hasip4, hasip6;
++    EthL4HdrProto l4hdr_proto;
++
++    net_rx_pkt_get_protocols(pkt, &hasip4, &hasip6, &l4hdr_proto);
++
++    if (hasip6 && !(core->mac[RFCTL] & E1000_RFCTL_IPV6_DIS)) {
++        pkt_type |= E1000_ADVRXD_PKT_IP6;
++    } else if (hasip4) {
++        pkt_type = E1000_ADVRXD_PKT_IP4;
++    }
++
++    if (etqf < 8) {
++        pkt_type |= (BIT(11) >> 4) | etqf;
++        return pkt_type;
++    }
++
++    switch (l4hdr_proto) {
++    case ETH_L4_HDR_PROTO_TCP:
++        pkt_type |= E1000_ADVRXD_PKT_TCP;
++        break;
++    case ETH_L4_HDR_PROTO_UDP:
++        pkt_type |= E1000_ADVRXD_PKT_UDP;
++        break;
++    case ETH_L4_HDR_PROTO_SCTP:
++        pkt_type |= E1000_ADVRXD_PKT_SCTP;
++        break;
++    default:
++        break;
++    }
++
++    return pkt_type;
++}
++
+ static inline void
+-igb_write_adv_rx_descr(IGBCore *core, union e1000_adv_rx_desc *desc,
++igb_write_adv_rx_descr(IGBCore *core,
++                       union e1000_adv_rx_desc *d,
+                        struct NetRxPkt *pkt,
+-                       const E1000E_RSSInfo *rss_info, uint16_t etqf, bool ts,
++                       const E1000E_RSSInfo *rss_info,
++                       uint16_t etqf,
++                       bool ts,
+                        uint16_t length)
  {
-     return igb_ring_free_descr_num(core, rxi) ==
-            ((core->mac[E1000_SRRCTL(rxi->idx) >> 2] >> 20) & 31) * 16;
-@@ -1562,7 +1562,7 @@ igb_write_packet_to_guest(IGBCore *core, struct NetRxPkt *pkt,
-     struct iovec *iov = net_rx_pkt_get_iovec(pkt);
-     size_t size = net_rx_pkt_get_total_len(pkt);
-     size_t total_size = size + e1000x_fcs_len(core->mac);
--    const E1000E_RingInfo *rxi = rxr->i;
-+    const E1000ERingInfo *rxi = rxr->i;
-     size_t bufsize = igb_rxbufsize(core, rxi);
+-    memset(&desc->wb, 0, sizeof(desc->wb));
++    bool hasip4, hasip6;
++    EthL4HdrProto l4hdr_proto;
++    uint16_t rss_type = 0, pkt_type;
++    bool eop = (pkt != NULL);
++    memset(&d->wb, 0, sizeof(d->wb));
++
++    d->wb.upper.length = cpu_to_le16(length);
++    igb_build_rx_metadata_common(core, pkt, eop,
++                                 &d->wb.upper.status_error,
++                                 &d->wb.upper.vlan);
++
++    if (!eop) {
++        return;
++    }
++
++    net_rx_pkt_get_protocols(pkt, &hasip4, &hasip6, &l4hdr_proto);
  
-     d = pcie_sriov_get_vf_at_index(core->owner, rxi->idx % 8);
-@@ -1643,7 +1643,7 @@ igb_write_packet_to_guest(IGBCore *core, struct NetRxPkt *pkt,
+-    desc->wb.upper.length = cpu_to_le16(length);
++    if ((core->mac[RXCSUM] & E1000_RXCSUM_PCSD) != 0) {
++        if (rss_info->enabled) {
++            d->wb.lower.hi_dword.rss = cpu_to_le32(rss_info->hash);
++            rss_type = rss_info->type;
++            trace_igb_rx_metadata_rss(d->wb.lower.hi_dword.rss, rss_type);
++        }
++    } else if (hasip4) {
++            d->wb.upper.status_error |= E1000_RXD_STAT_IPIDV;
++            d->wb.lower.hi_dword.csum_ip.ip_id =
++                cpu_to_le16(net_rx_pkt_get_ip_id(pkt));
++            trace_e1000e_rx_metadata_ip_id(d->wb.lower.hi_dword.csum_ip.ip_id);
++    }
++
++    if (ts) {
++        d->wb.upper.status_error |= BIT(16);
++    }
+ 
+-    igb_build_rx_metadata(core, pkt, pkt != NULL,
+-                          rss_info, etqf, ts,
+-                          &desc->wb.lower.lo_dword.pkt_info,
+-                          &desc->wb.lower.lo_dword.hdr_info,
+-                          &desc->wb.lower.hi_dword.rss,
+-                          &desc->wb.upper.status_error,
+-                          &desc->wb.lower.hi_dword.csum_ip.ip_id,
+-                          &desc->wb.upper.vlan);
++    pkt_type = igb_rx_desc_get_packet_type(core, pkt, etqf);
++    trace_e1000e_rx_metadata_pkt_type(pkt_type);
++    d->wb.lower.lo_dword.pkt_info = cpu_to_le16(rss_type | (pkt_type << 4));
  }
  
- static bool
--igb_rx_strip_vlan(IGBCore *core, const E1000E_RingInfo *rxi)
-+igb_rx_strip_vlan(IGBCore *core, const E1000ERingInfo *rxi)
+ static inline void
+@@ -1468,8 +1473,7 @@ igb_write_rx_descr(IGBCore *core, union e1000_rx_desc_union *desc,
+                    uint16_t etqf, bool ts, uint16_t length)
  {
-     if (core->mac[MRQC] & 1) {
-         uint16_t pool = rxi->idx % IGB_NUM_VM_POOLS;
+     if (igb_rx_use_legacy_descriptor(core)) {
+-        igb_write_lgcy_rx_descr(core, &desc->legacy, pkt, rss_info,
+-                                etqf, ts, length);
++        igb_write_lgcy_rx_descr(core, &desc->legacy, pkt, rss_info, length);
+     } else {
+         igb_write_adv_rx_descr(core, &desc->adv, pkt, rss_info,
+                                etqf, ts, length);
+diff --git a/hw/net/igb_regs.h b/hw/net/igb_regs.h
+index 82ff195dfc..71a8833229 100644
+--- a/hw/net/igb_regs.h
++++ b/hw/net/igb_regs.h
+@@ -692,11 +692,11 @@ union e1000_adv_rx_desc {
+ 
+ #define E1000_STATUS_NUM_VFS_SHIFT 14
+ 
+-#define E1000_ADVRXD_PKT_IP4 BIT(4)
+-#define E1000_ADVRXD_PKT_IP6 BIT(6)
+-#define E1000_ADVRXD_PKT_TCP BIT(8)
+-#define E1000_ADVRXD_PKT_UDP BIT(9)
+-#define E1000_ADVRXD_PKT_SCTP BIT(10)
++#define E1000_ADVRXD_PKT_IP4  BIT(0)
++#define E1000_ADVRXD_PKT_IP6  BIT(2)
++#define E1000_ADVRXD_PKT_TCP  BIT(4)
++#define E1000_ADVRXD_PKT_UDP  BIT(5)
++#define E1000_ADVRXD_PKT_SCTP BIT(6)
+ 
+ static inline uint8_t igb_ivar_entry_rx(uint8_t i)
+ {
+diff --git a/hw/net/trace-events b/hw/net/trace-events
+index e4a98b2c7d..def651c186 100644
+--- a/hw/net/trace-events
++++ b/hw/net/trace-events
+@@ -277,9 +277,9 @@ igb_core_mdic_write_unhandled(uint32_t addr) "MDIC WRITE: PHY[%u] UNHANDLED"
+ igb_link_set_ext_params(bool asd_check, bool speed_select_bypass, bool pfrstd) "Set extended link params: ASD check: %d, Speed select bypass: %d, PF reset done: %d"
+ 
+ igb_rx_desc_buff_size(uint32_t b) "buffer size: %u"
+-igb_rx_desc_buff_write(uint64_t addr, uint16_t offset, const void* source, uint32_t len) "addr: 0x%"PRIx64", offset: %u, from: %p, length: %u"
++igb_rx_desc_buff_write(uint64_t addr, uint16_t offset, const void* source, uint32_t len) "buffer %u, addr: 0x%"PRIx64", offset: %u, from: %p, length: %u"
+ 
+-igb_rx_metadata_rss(uint32_t rss) "RSS data: 0x%X"
++igb_rx_metadata_rss(uint32_t rss, uint16_t rss_pkt_type) "RSS data: rss: 0x%X, rss_pkt_type: 0x%X"
+ 
+ igb_irq_icr_clear_gpie_nsicr(void) "Clearing ICR on read due to GPIE.NSICR enabled"
+ igb_irq_set_iam(uint32_t icr) "Update IAM: 0x%x"
+@@ -294,6 +294,8 @@ igb_irq_eitr_set(uint32_t eitr_num, uint32_t val) "EITR[%u] = 0x%x"
+ igb_set_pfmailbox(uint32_t vf_num, uint32_t val) "PFMailbox[%d]: 0x%x"
+ igb_set_vfmailbox(uint32_t vf_num, uint32_t val) "VFMailbox[%d]: 0x%x"
+ 
++igb_wrn_rx_desc_modes_not_supp(int desc_type) "Not supported descriptor type: %d"
++
+ # igbvf.c
+ igbvf_wrn_io_addr_unknown(uint64_t addr) "IO unknown register 0x%"PRIx64
+ 
 -- 
 2.25.1
 
