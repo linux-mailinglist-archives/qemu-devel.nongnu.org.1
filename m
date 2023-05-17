@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E960706DAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 18:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4A7706DA5
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 18:08:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJjj-0001Vm-0B; Wed, 17 May 2023 12:10:47 -0400
+	id 1pzJhA-0007zL-1u; Wed, 17 May 2023 12:08:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1pzJjf-0001VU-L7
- for qemu-devel@nongnu.org; Wed, 17 May 2023 12:10:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzJh7-0007z0-Ue
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 12:08:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1pzJjd-0001ih-B7
- for qemu-devel@nongnu.org; Wed, 17 May 2023 12:10:43 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzJh6-00016D-5a
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 12:08:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684339829;
+ s=mimecast20190719; t=1684339683;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Wga205fp0ir15na8p15CXKJTd/ZgoBNvVLhEfkZNq1E=;
- b=FIe+hlVpiV6jkib0NKrvRLqb91gmR0nxv4yV6A+ZNHvfJC5KAgqD1q3H05W+Ts5iK76O8R
- h7BFuqfd2GG568dFg8lmg0ZoZ06xwNu5TBazuUjLveTinMGZ7rUhCzsLhRYdZxU9Br1C/7
- bnY6BGoKCmpBfb0ipngMb6tXIrxo/iw=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CF5HnGBuKmKf4+ZT5nX31qPWafC16/r8+1bTNGX5eNc=;
+ b=RFJu0yaVs3on1zm4S94Y6QTOfM7AEiF1WL5cHKYadvonOvbAMJ77ETQPHERIVfhV3OKr3C
+ 0UuusJN6DGMtkpkced/NonBH8M9wz1hYEkEn7RwT5L/gFsmBmPoC1ijldi2rKBjNTYBWUX
+ sNH7xXvfqFq/UBhiex9qUiRQKnOXMTA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-0ZEuYi_4P8erPOnzYt-icQ-1; Wed, 17 May 2023 12:09:40 -0400
-X-MC-Unique: 0ZEuYi_4P8erPOnzYt-icQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-61b636b5f90so1890946d6.1
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 09:08:59 -0700 (PDT)
+ us-mta-662-FWhboEMmMiW3t08i1iBgMg-1; Wed, 17 May 2023 12:08:02 -0400
+X-MC-Unique: FWhboEMmMiW3t08i1iBgMg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30940b01998so388948f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 09:08:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684339675; x=1686931675;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Wga205fp0ir15na8p15CXKJTd/ZgoBNvVLhEfkZNq1E=;
- b=BLGPVfs6jNIcPGDmaL9tg312m0cvzXxWzfdBVysY9cBAmubKmRvC1IHy+L6+3JwNWq
- VyQshYjfMZToEKGTp/8wBabcwgYzKgFKCJBUGZyWvoK9jvggPUEimlI2JQYNBtn3Qb7C
- 9ItDjF3l68qlCXx5KSGqJju7bv1E7lOcBtla6h/ptxVFJI7oig+jZJ79w/Wc042lbxMu
- IjQ8IDQfcqWJqf1I03+MoGV3RkamDPY5XOAWQyTHnVmJFRsfg9MiAHAzrl4C+hSGbxMj
- XRSS51wfgSlqVqvexv8MfXMX2Vv2FkwEIKCYxFZhY1fCVTifrqLoaFuW9LisfBvM/tG3
- X/gA==
-X-Gm-Message-State: AC+VfDzPlYiJAGzV0iKXq2XnYjPCsSDzeXyFCpz8T37SHk72PxUnTAXs
- pAK0k+biQNHoJcEnRvD5tP6K03yZatmqTvbdrEjvNFKZKimUKifr7aBzzqdXpeGVR3eKWcGIJdB
- eFxymzL/JVJbWa8k=
-X-Received: by 2002:ad4:5be3:0:b0:5f1:31eb:1f0e with SMTP id
- k3-20020ad45be3000000b005f131eb1f0emr6018160qvc.4.1684339675580; 
- Wed, 17 May 2023 09:07:55 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5Y/5rSBc+l1jL7btpd1Ki4P7ZmcW2jTXL+B8g/VPXizUnUYkAG9sia7YUNUKtTmKyG3uh7QA==
-X-Received: by 2002:ad4:5be3:0:b0:5f1:31eb:1f0e with SMTP id
- k3-20020ad45be3000000b005f131eb1f0emr6018090qvc.4.1684339675246; 
- Wed, 17 May 2023 09:07:55 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- o5-20020a0ce405000000b0062382196588sm925081qvl.108.2023.05.17.09.07.53
+ d=1e100.net; s=20221208; t=1684339681; x=1686931681;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CF5HnGBuKmKf4+ZT5nX31qPWafC16/r8+1bTNGX5eNc=;
+ b=ihABlBUwcdV1/CXLqXLluRsHT7p+JOPk8DheEQMj4d/2f0pSmNChFEia6nQb9YLh2h
+ NzGmOiVkltHMx1g+49Lc/Yc7Ocl4NydGG/KSBartljb1oDH59bw4hdQ0CJ8rAjuwBSxh
+ ueYy27uQPvXgKgs+RSFlvUrO5b2zJxPVJN73VC3wkK70uvkCQX0eTIlSYGYTaNN/Ji3j
+ u2PZ3pB2ZoK5n7FtMneFavopdxWPr4sUsBzeU8S5MGSk2MKfdQJdZTBJKUof1q9/npvM
+ Oxo5/oZG0w/e96FXhO6wEh2jGqoTV6q3yOb0toDS71xdfXCOCkF/2Z0hqbQCZy9PaFc9
+ CT0w==
+X-Gm-Message-State: AC+VfDz7Ze7U5ppMmrnKN0LnjoxJekG9hEk/EeXUfdyyCJXAQw/YxSy6
+ s610O77dgdflC4+515sw/umIX0tIA7H3xr+fXvzSa44fhIdCfSL7+GPu3El+aXuu0ipg95j+zjY
+ IGWJqvLeCuGGT3dg=
+X-Received: by 2002:adf:f6c4:0:b0:2fe:c0ea:18b5 with SMTP id
+ y4-20020adff6c4000000b002fec0ea18b5mr1124153wrp.35.1684339681165; 
+ Wed, 17 May 2023 09:08:01 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5I39JS/K+wititmQzGu1w0TynL6FKZ/YqCkTIj01TH5f+CAQB6y9eh5M+4hKDk6Xw3g6+rcQ==
+X-Received: by 2002:adf:f6c4:0:b0:2fe:c0ea:18b5 with SMTP id
+ y4-20020adff6c4000000b002fec0ea18b5mr1124134wrp.35.1684339680783; 
+ Wed, 17 May 2023 09:08:00 -0700 (PDT)
+Received: from redhat.com ([109.253.194.87]) by smtp.gmail.com with ESMTPSA id
+ u10-20020adff88a000000b0030631dcbea6sm3160439wrp.77.2023.05.17.09.07.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 09:07:54 -0700 (PDT)
-Date: Wed, 17 May 2023 12:07:52 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Maor Gottlieb <maorg@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>,
- Tarun Gupta <targupta@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: Re: [PATCH v2 3/7] migration: Enable precopy initial data capability
-Message-ID: <ZGT72DLNTevauf9N@x1n>
-References: <20230517155219.10691-1-avihaih@nvidia.com>
- <20230517155219.10691-4-avihaih@nvidia.com>
+ Wed, 17 May 2023 09:08:00 -0700 (PDT)
+Date: Wed, 17 May 2023 12:07:55 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
+ for iasl location
+Message-ID: <20230517120710-mutt-send-email-mst@kernel.org>
+References: <20230517120751.14679-1-anisinha@redhat.com>
+ <20230517101523-mutt-send-email-mst@kernel.org>
+ <B6AD0FB1-CF05-4B4C-B58D-279422895E4D@redhat.com>
+ <20230517103522-mutt-send-email-mst@kernel.org>
+ <ED522229-5A71-40C2-AF2C-5D921B0B5D54@redhat.com>
+ <87zg63m18g.fsf@linaro.org>
+ <20230517112347-mutt-send-email-mst@kernel.org>
+ <87r0rflzd4.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230517155219.10691-4-avihaih@nvidia.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87r0rflzd4.fsf@linaro.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,51 +105,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 17, 2023 at 06:52:15PM +0300, Avihai Horon wrote:
-> Now that precopy initial data logic has been implemented, enable the
-> capability.
+On Wed, May 17, 2023 at 04:58:06PM +0100, Alex Bennée wrote:
 > 
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> ---
->  migration/options.c | 4 ----
->  1 file changed, 4 deletions(-)
+> "Michael S. Tsirkin" <mst@redhat.com> writes:
 > 
-> diff --git a/migration/options.c b/migration/options.c
-> index 0a31921a7a..3449ce4f14 100644
-> --- a/migration/options.c
-> +++ b/migration/options.c
-> @@ -561,10 +561,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
->                               "capability 'return-path'");
->              return false;
->          }
-> -
-> -        /* Disable this capability until it's implemented */
-> -        error_setg(errp, "'precopy-initial-data' is not implemented yet");
-> -        return false;
->      }
+> > On Wed, May 17, 2023 at 04:16:47PM +0100, Alex Bennée wrote:
+> >> 
+> >> Ani Sinha <anisinha@redhat.com> writes:
+> >> 
+> >> >> On 17-May-2023, at 8:06 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >> >> 
+> >> >> On Wed, May 17, 2023 at 07:57:53PM +0530, Ani Sinha wrote:
+> >> >>> 
+> >> >>> 
+> >> >>>> On 17-May-2023, at 7:47 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >> >>>> 
+> >> >>>> On Wed, May 17, 2023 at 05:37:51PM +0530, Ani Sinha wrote:
+> >> >>>>> Currently the meson based QEMU build process locates the iasl binary from the
+> >> >>>>> current PATH and other locations [1] and uses that to set CONFIG_IASL which is
+> >> >>>>> then used by the test.
+> >> >>>>> 
+> >> >>>>> This has two disadvantages:
+> >> >>>>> - If iasl was not previously installed in the PATH, one has to install iasl
+> >> >>>>>  and rebuild QEMU in order to pick up the iasl location. One cannot simply
+> >> >>>>>  use the existing bios-tables-test binary because CONFIG_IASL is only set
+> >> >>>>>  during the QEMU build time by meson and then bios-tables-test has to be
+> >> >>>>>  rebuilt with CONFIG_IASL set in order to use iasl.
+> >> 
+> >> Usually we work the other way by checking at configure time and skipping
+> >> the feature if the prerequisites are not in place. We do this with gdb:
+> >> 
+> >>   ../../configure --gdb=/home/alex/src/tools/binutils-gdb.git/builds/all/install/bin/gdb
+> >> 
+> >> which checks gdb is at least new enough to support the features we need:
+> >> 
+> >>   if test -n "$gdb_bin"; then
+> >>       gdb_version=$($gdb_bin --version | head -n 1)
+> >>       if version_ge ${gdb_version##* } 9.1; then
+> >>           echo "HAVE_GDB_BIN=$gdb_bin" >> $config_host_mak
+> >>           gdb_arches=$("$source_path/scripts/probe-gdb-support.py" $gdb_bin)
+> >>       else
+> >>           gdb_bin=""
+> >>       fi
+> >>   fi
+> >> 
+> >> >>>>> - Sometimes, the stock iasl that comes with distributions is simply not good
+> >> >>>>>  enough because it does not support the latest ACPI changes - newly
+> >> >>>>>  introduced tables or new table attributes etc. In order to test ACPI code
+> >> >>>>>  in QEMU, one has to clone the latest acpica upstream repository and
+> >> >>>>>  rebuild iasl in order to get support for it. In those cases, one may want
+> >> >>>>>  the test to use the iasl binary from a non-standard location.
+> >> 
+> >> I think configure should be checking if iasl is new enough and reporting
+> >> to the user at configure time they need to do something different. We
+> >> don't want to attempt to run tests that will fail unless the user has
+> >> added the right magic to their environment.
+> >
+> > iasl is a disassembler we trigger for user convenience in case tests
+> > fail. It will never cause tests to fail.
+> 
+> Fair enough. But I still think the place to report it is in configure.
+> Maybe something like:
+> 
+>     iasl                         : /usr/bin/iasl (version 20200925, might not handle all ACPI)           
+> 
+> in the Host Binaries section. Re-configuring shouldn't cause too much of
+> the build to be regenerated although we could certainly do better in
+> this regard.
 
-I'm always confused why we need this and not having this squashed into
-patch 1 (or say, never have these lines).
-
-The only thing it matters is when someone backports patch 1 but not
-backport the rest of the patches.  But that's really, really weird already
-as a backporter doing that, and I doubt its happening.
-
-Neither should we merge patch 1 without merging follow up patches to
-master, as we should just always merge the whole feature or just keep
-reworking on the list.
-
-I'd like to know if I missed something else..
-
-PS: sorry to be late on replying to your email for previous version due to
-travelling last week, I'll reply to your series instead.  Actually I was
-just writting up the reply to your previous version when receiving this
-one. :)
-
-Thanks,
+won't all of it be regenerated? a header everyone includes changes.
 
 -- 
-Peter Xu
+MST
 
 
