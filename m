@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FE470741F
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:22:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E582707421
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:23:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzOat-0000Qh-PJ; Wed, 17 May 2023 17:21:59 -0400
+	id 1pzObt-0001CY-TL; Wed, 17 May 2023 17:23:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOaq-0000On-UG
- for qemu-devel@nongnu.org; Wed, 17 May 2023 17:21:57 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzObq-0001BQ-SS
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:22:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOao-0008Of-Qw
- for qemu-devel@nongnu.org; Wed, 17 May 2023 17:21:56 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzObp-00005n-9l
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:22:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684358513;
+ s=mimecast20190719; t=1684358576;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6NxqPrNiunR1N22HAV84oETohpAPzX1v46xAsVDBqKw=;
- b=HiTgn0keAfr2yxEET6oh+7h0RpX+LDvuVDoc46jg3uQAYDH8Nm728MW9p8+IRAqVR+P0jZ
- nau9rqB2dqUlnecx0xC2HIfFxFfoJic0VbShgdZAD4zJ2OM+5XUHHprmmPwnioEw+3Y1x0
- MxOjVY+kuYIM5CvqOmBJE2bmhKmiDTI=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8AV0ew/yqwncql9ULAetFdGupKmGDn9jjOXcE5y7pQQ=;
+ b=Rdcayr8f+1lKL4TK7p+kT7zTE2vTAftuGPNts3jGcvngioQYyuzK5+7YSnfqWUieEyLQXl
+ zNJhSLZ+ZtnZit06tyVKXD9cybwp5sK/akvkj6E9FyZz5briyPxTv6QTrSJ4ocD8yi0Oc6
+ XUu1/SCbJEf+N4pnmkC/RUqLIXPqmkk=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-guLyFj8-PmKXZgjE-tNTZQ-1; Wed, 17 May 2023 17:21:51 -0400
-X-MC-Unique: guLyFj8-PmKXZgjE-tNTZQ-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1ae438721e2so8228505ad.2
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:21:51 -0700 (PDT)
+ us-mta-652-B6QoY1TpOaqlN25BnmZHiQ-1; Wed, 17 May 2023 17:22:54 -0400
+X-MC-Unique: B6QoY1TpOaqlN25BnmZHiQ-1
+Received: by mail-pg1-f197.google.com with SMTP id
+ 41be03b00d2f7-528cb2ec137so718554a12.0
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:22:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684358511; x=1686950511;
+ d=1e100.net; s=20221208; t=1684358573; x=1686950573;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6NxqPrNiunR1N22HAV84oETohpAPzX1v46xAsVDBqKw=;
- b=G7Mxmsz9ODuof6OqBxCguAYP45XuKI6cVW77BCuEtRtfDn0IPDXVMfL+AeOc27IRwR
- Mk/xZFlZGRWfzSLt/SS333lGpzl2EVWMLWOfMsFY4JMDgJRDEby7hX8EpUVrDmGkxRVO
- 9VC/kF3TLpZSi1nta8xkGvWSQQNNOtbt1aYNLTii6ESidzF9hETuWeaTL/vXlmjyV0zO
- 8FiVq+eQBeJslrmTj1iTbpzMF2wXOd7tU2LMWpM5KsWVjUktpdoj/VK06ruqnS7n83NC
- PNP27k/IrxVJ6HOmiii3pK+1UszLAj6eB/1/SgaAjNVe1fH6hgcRpfkEpugW7tfNby7h
- 6ANA==
-X-Gm-Message-State: AC+VfDyQt8pUmCYah8I5cTs+a7vdn1E5+ycWpQWx+HG+ATJv29C30k8y
- CAWKJPEmJiuPNDl46LZgd6FfjOXjT9/rFAmtaf3Zg6JshMJzMLmDvUWjjZK7cQnvsToZYHN+E2g
- +VBTGWb33H36lG0GcWak9ZagraqaxVKI=
-X-Received: by 2002:a17:902:ec86:b0:1ad:e746:ca50 with SMTP id
- x6-20020a170902ec8600b001ade746ca50mr280658plg.2.1684358510909; 
- Wed, 17 May 2023 14:21:50 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4RQJrKMM32jOlD2In9ZyyRSm2jlMKi3LBD4SmPQEnAEiwJMEe5c+JQWnmIXOqsHhgBkWRG0lfWXYwT13owpHk=
-X-Received: by 2002:a17:902:ec86:b0:1ad:e746:ca50 with SMTP id
- x6-20020a170902ec8600b001ade746ca50mr280644plg.2.1684358510635; Wed, 17 May
- 2023 14:21:50 -0700 (PDT)
+ bh=8AV0ew/yqwncql9ULAetFdGupKmGDn9jjOXcE5y7pQQ=;
+ b=a3uhMHQu6oRvfoxcb/rgz01TjRay8F3GlM5SDxAEwGGb1VpJyWVqCvgFcM/Bes8yqd
+ aILZCbmSugQafz6/DgyxmpqQLHyQhvKY5mc74yByen1qz9GLSZeWIK7HbEJBm3VWe1V2
+ Jvscdad/xJpVtbISWDiACVp3inleendkuikROtEFfhWTmwmoYwcbUYBHZ3nCIb2ALsTM
+ WDdmXyeXiMjLAfpNgRvQ/PDc/6UiUq3lJNwme6BWqsVPdrPFLXP0QSTrL3vZ4KReRZ+Y
+ /EE4+72tJOKrZKwAsD5jHha8INi8JOZnBsS5zxXKrVg9UD64AutDa3bsbSL3KtOfFetu
+ Nn0A==
+X-Gm-Message-State: AC+VfDz0EfpAuMDznHUyPGpnu7qSV3EuI8UQ5NS2jcqykFjWAu9ms02c
+ UAJjl4gYMOlm6NT1udn3wXiiH4qPlfBUX7UbtLMYe/yL9xMexLYKN0uogFa30vVNpyVRvX98Vsr
+ qNPi0eucN7ev0WSCZ2fhHW7trzsIcV5U=
+X-Received: by 2002:a05:6a20:1447:b0:103:9d9b:1ec6 with SMTP id
+ a7-20020a056a20144700b001039d9b1ec6mr31707946pzi.28.1684358573553; 
+ Wed, 17 May 2023 14:22:53 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6MRtzcoFcveFoTQZ51x8m+ZEL/ZZu7LOBumEX2UTEQmiwZiPstaF5GtGdUIKn7G61PEceJz4cIESK4jbVNBg0=
+X-Received: by 2002:a05:6a20:1447:b0:103:9d9b:1ec6 with SMTP id
+ a7-20020a056a20144700b001039d9b1ec6mr31707928pzi.28.1684358573284; Wed, 17
+ May 2023 14:22:53 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230428132124.670840-1-nks@flawful.org>
- <20230428132124.670840-7-nks@flawful.org>
-In-Reply-To: <20230428132124.670840-7-nks@flawful.org>
+ <20230428132124.670840-8-nks@flawful.org>
+In-Reply-To: <20230428132124.670840-8-nks@flawful.org>
 From: John Snow <jsnow@redhat.com>
-Date: Wed, 17 May 2023 17:21:39 -0400
-Message-ID: <CAFn=p-bHgKnFXfsTVoP9XotnNEV_oQ=tAqzh2SUDsYxeZBWXKg@mail.gmail.com>
-Subject: Re: [PATCH 6/9] hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST
- is cleared
+Date: Wed, 17 May 2023 17:22:42 -0400
+Message-ID: <CAFn=p-aotARJsZ-F8zCa56CLq2fzYUCQGCQzTq63bLPEGr2_KQ@mail.gmail.com>
+Subject: Re: [PATCH 7/9] hw/ide/ahci: trigger either error IRQ or regular IRQ, 
+ not both
 To: Niklas Cassel <nks@flawful.org>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
  Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
@@ -99,46 +99,41 @@ te:
 >
 > From: Niklas Cassel <niklas.cassel@wdc.com>
 >
-> According to AHCI 1.3.1 definition of PxSACT:
-> This field is cleared when PxCMD.ST is written from a '1' to a '0' by
-> software. This field is not cleared by a COMRESET or a software reset.
+> According to AHCI 1.3.1, 5.3.8.1 RegFIS:Entry, if ERR_STAT is set,
+> we jump to state ERR:FatalTaskfile, which will raise a TFES IRQ
+> unconditionally, regardless if the I bit is set in the FIS or not.
 >
-> According to AHCI 1.3.1 definition of PxCI:
-> This field is also cleared when PxCMD.ST is written from a '1' to a '0'
-> by software.
->
-> Clearing PxCMD.ST is part of the error recovery procedure, see
-> AHCI 1.3.1, section "6.2 Error Recovery".
->
-> If we don't clear PxCI on error recovery, the previous command will
-> incorrectly still be marked as pending after error recovery.
+> Thus, we should never raise a normal IRQ after having sent an error
+> IRQ.
 >
 > Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 
-ACK.
+ACK - and thanks for the spec pointers.
 
 > ---
->  hw/ide/ahci.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  hw/ide/ahci.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 >
 > diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-> index 366929132b..2a59d0e0f5 100644
+> index 2a59d0e0f5..d88961b4c0 100644
 > --- a/hw/ide/ahci.c
 > +++ b/hw/ide/ahci.c
-> @@ -329,6 +329,11 @@ static void ahci_port_write(AHCIState *s, int port, =
-int offset, uint32_t val)
->          ahci_check_irq(s);
->          break;
->      case AHCI_PORT_REG_CMD:
-> +        if ((pr->cmd & PORT_CMD_START) && !(val & PORT_CMD_START)) {
-> +            pr->scr_act =3D 0;
-> +            pr->cmd_issue =3D 0;
-> +        }
-> +
->          /* Block any Read-only fields from being set;
->           * including LIST_ON and FIS_ON.
->           * The spec requires to set ICC bits to zero after the ICC chang=
-e
+> @@ -891,11 +891,10 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad, bool=
+ d2h_fis_i)
+>      pr->tfdata =3D (ad->port.ifs[0].error << 8) |
+>          ad->port.ifs[0].status;
+>
+> +    /* TFES IRQ is always raised if ERR_STAT is set, regardless of I bit=
+. */
+>      if (d2h_fis[2] & ERR_STAT) {
+>          ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_TFES);
+> -    }
+> -
+> -    if (d2h_fis_i) {
+> +    } else if (d2h_fis_i) {
+>          ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
+>      }
+>
 > --
 > 2.40.0
 >
