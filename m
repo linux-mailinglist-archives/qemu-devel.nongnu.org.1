@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BE2706FDC
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8780706FDE
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:47:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLEY-0008JR-6M; Wed, 17 May 2023 13:46:42 -0400
+	id 1pzLES-0008F5-UK; Wed, 17 May 2023 13:46:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLE4-0007ay-DK
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:13 -0400
+ id 1pzLE6-0007eE-CM
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLE2-0004Gc-Nq
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:12 -0400
+ id 1pzLE4-0004H6-Fq
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345569;
+ s=mimecast20190719; t=1684345572;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WaYDq55qknnU8QMRXQL79aAwtuV8ftUSiPH6BPevf0s=;
- b=Vm9vkZpuuJF7WYKYvr6wyyZH06UAuxdoKF5qqzTcIG9X04IydA9afNgBucJ6+1SrhC4r0w
- uGODZEIq7I6gaSFvSpQHUHIftcTYKgS4O7a+D4y8nLpTEH2g3I3URkeCbsivjJvESwcVQu
- 5mxYDMxBdewAoAeIutiUFO9Sy52KfXs=
+ bh=3IN3vpyWO0eLzaYR0wBWQOI2Q29IOE8Vh96ivvWrrr8=;
+ b=KQmw0EFf9WIz4rM//fzRG9u9ZUBHJX2H2jqCMCT4YPDiQg2g5yq2bNK4uRK9btVHAsdmds
+ bGJMr/yhulO9u4IBOsUZOJJUqqAdydhlVMB7ld6/1i8+E60jdYmDaknw0Tinfaxf/G4fD2
+ AnZ5j/WuY5uniduFtnl5KA1jKgL3Mhs=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-10-NGa0J2yCP8ioLEW79B3ahw-1; Wed, 17 May 2023 13:46:08 -0400
-X-MC-Unique: NGa0J2yCP8ioLEW79B3ahw-1
+ us-mta-142-cApT83a9PKW4nRKENi5Nsw-1; Wed, 17 May 2023 13:46:10 -0400
+X-MC-Unique: cApT83a9PKW4nRKENi5Nsw-1
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f433a2308bso48200955e9.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:07 -0700 (PDT)
+ 5b1f17b1804b1-3f41a04a297so4361895e9.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345566; x=1686937566;
+ d=1e100.net; s=20221208; t=1684345568; x=1686937568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WaYDq55qknnU8QMRXQL79aAwtuV8ftUSiPH6BPevf0s=;
- b=IgxjKoQfctJ7uexwfkocoVMn5MmHQ7gofXPLwJP++K5UWFT05Bj5F6ivm/8Vvt16xq
- QPmvKU2aKTMpXK87XXyw7eama3L8wso+RZ1LRxdvLve4sOApJk7IHDYIQLoBBthmxnnY
- CU2GH/GdGOACKUqz6pwS3Th/FkJcVTQQevMtDra/M2pOpbu1cq6ZcxhtbeuFBCRbmAap
- 0vgwd9fgGgkBz2qCFVm5cki37bMROLYm2TeBek0oubFQHnZtpTsDnJ/u0FfsNnA11SGI
- JRY6Np7A585KRSlVRf45bcp8N8ynHfqSyj6S7+2znMbAf6pRkciAHHv9bb9UGkBdwn5q
- WYAw==
-X-Gm-Message-State: AC+VfDwloKVt89UdYRG4It8m3q4J2UNADe2xzm/iJKHGS2nvHsB63jYL
- F45MSXZd6R7KzxCyg4EE8w9HAPkwN//+654jp54q0F67E3vNqgqnVRZZJxTwIpuFl9Jx3qA+N+C
- /dKxVZ42gXxjXZL+G+EKHK9QJNIfwx2y93BDjcqkzXaGHEoobcngZk3v5D3HenM08fjdS15LvDq
- Q=
-X-Received: by 2002:a5d:5390:0:b0:309:43fe:1b9d with SMTP id
- d16-20020a5d5390000000b0030943fe1b9dmr1214808wrv.29.1684345566556; 
- Wed, 17 May 2023 10:46:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ53fv4UeWQam2w4euBseJK2xSLdTTcdMOZvg6DMmaF2K286raysJbe0OZrCAYWk+4QvKQ6rsg==
-X-Received: by 2002:a5d:5390:0:b0:309:43fe:1b9d with SMTP id
- d16-20020a5d5390000000b0030943fe1b9dmr1214798wrv.29.1684345566255; 
- Wed, 17 May 2023 10:46:06 -0700 (PDT)
+ bh=3IN3vpyWO0eLzaYR0wBWQOI2Q29IOE8Vh96ivvWrrr8=;
+ b=EEAAbjYQsFd3O87d7SYYtVPLNCuT+zjFdRUmaD8e2IIm7ryCjDXsh0WXkjGJLbRJLp
+ w8tkr2DEbRu3bbFqlscgGaEYT2Qm07dJ0qa1Tw7F2HAD4CI3XOpz5NCR9mlISmkV577p
+ OqePGU9F5yMYxzhgZV63TKcGSbbTGVxTl8X4kj0qkOKxUXEFhgSkxa9QdHm2aEETB3Id
+ CyqqJfw/Gk1RwY8tSft+xWRDrvsTmM8GZysrlCRCUTL6ESiLjRlKfeAvHPEPBD2SHWJS
+ 5SvdXBG5RJTvSYFtxU1uA5bWmqSUyc3ewu/iI6MvyxQrSgV3egoLcQqNkyygTdK8r2f8
+ LhEg==
+X-Gm-Message-State: AC+VfDzBUFqgTwjPX5HQobDT8sybD0ODXbpHjzihX79Wja0sf693P2Gk
+ zDjVydlLAaGKsRW7KQ2sjIs0qo9Ko5MBs51iFKjOptTIyAcs7eyFimn+poR4YkawrR2VcBgRYzb
+ wNpIdgDRqrTcYjxeuOl4Nl2gyiN4eZNSupxxKiPYbGWSFzEt9UW3OjkNQCkLPt3XUG1nJOEuA6J
+ M=
+X-Received: by 2002:a05:600c:2059:b0:3f4:2492:a91f with SMTP id
+ p25-20020a05600c205900b003f42492a91fmr25003479wmg.27.1684345568420; 
+ Wed, 17 May 2023 10:46:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5pTxnHgPnjekIOSuQ4zSf8iwj79v10T4rk46Sp7LaTnWVpRIYaxVwFR2wMfF14X5Z0TY5o2Q==
+X-Received: by 2002:a05:600c:2059:b0:3f4:2492:a91f with SMTP id
+ p25-20020a05600c205900b003f42492a91fmr25003471wmg.27.1684345568117; 
+ Wed, 17 May 2023 10:46:08 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- m39-20020a05600c3b2700b003f07ef4e3e0sm5341583wms.0.2023.05.17.10.46.04
+ o4-20020a5d4a84000000b002c54c9bd71fsm3390013wrq.93.2023.05.17.10.46.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:05 -0700 (PDT)
+ Wed, 17 May 2023 10:46:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>
-Subject: [PULL 26/68] mkvenv: use pip's vendored distlib as a fallback
-Date: Wed, 17 May 2023 19:44:38 +0200
-Message-Id: <20230517174520.887405-27-pbonzini@redhat.com>
+Subject: [PULL 27/68] mkvenv: avoid ensurepip if pip is installed
+Date: Wed, 17 May 2023 19:44:39 +0200
+Message-Id: <20230517174520.887405-28-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -102,94 +102,152 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-distlib is usually not installed on Linux distribution, but it is vendored
-into pip.  Because the virtual environment has pip via ensurepip, we
-can piggy-back on pip's vendored version.  This could break if they move
-our cheese in the future, but the fix would be simply to require distlib.
-
-If it is debundled, as it is on msys, it is simply available directly.
-
-Signed-off-by: John Snow <jsnow@redhat.com>
-[Move to toplevel. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- python/scripts/mkvenv.py | 25 ++++++++++++++++++++++---
- python/setup.cfg         | 18 ++++++++++++++++++
- 2 files changed, 40 insertions(+), 3 deletions(-)
+ python/scripts/mkvenv.py | 67 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 64 insertions(+), 3 deletions(-)
 
 diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index f17c3d3606ba..fb91f922d2b9 100644
+index fb91f922d2b9..a9c566029e6f 100644
 --- a/python/scripts/mkvenv.py
 +++ b/python/scripts/mkvenv.py
-@@ -69,10 +69,25 @@
- import venv
- import warnings
+@@ -11,6 +11,8 @@
+ Commands:
+   command     Description
+     create    create a venv
++    post_init
++              post-venv initialization
+     ensure    Ensure that the specified package is installed.
  
--import distlib.database
--import distlib.scripts
--import distlib.version
+ --------------------------------------------------
+@@ -25,6 +27,13 @@
  
-+# Try to load distlib, with a fallback to pip's vendored version.
-+# HAVE_DISTLIB is checked below, just-in-time, so that mkvenv does not fail
-+# outside the venv or before a potential call to ensurepip in checkpip().
-+HAVE_DISTLIB = True
-+try:
-+    import distlib.database
-+    import distlib.scripts
-+    import distlib.version
-+except ImportError:
-+    try:
-+        # Reach into pip's cookie jar.  pylint and flake8 don't understand
-+        # that these imports will be used via distlib.xxx.
-+        from pip._vendor import distlib
-+        import pip._vendor.distlib.database  # noqa, pylint: disable=unused-import
-+        import pip._vendor.distlib.scripts  # noqa, pylint: disable=unused-import
-+        import pip._vendor.distlib.version  # noqa, pylint: disable=unused-import
-+    except ImportError:
-+        HAVE_DISTLIB = False
+ --------------------------------------------------
  
- # Do not add any mandatory dependencies from outside the stdlib:
- # This script *must* be usable standalone!
-@@ -664,6 +679,10 @@ def ensure(
-         bellwether for the presence of 'sphinx'.
++usage: mkvenv post_init [-h]
++
++options:
++  -h, --help         show this help message and exit
++
++--------------------------------------------------
++
+ usage: mkvenv ensure [-h] [--online] [--dir DIR] dep_spec...
+ 
+ positional arguments:
+@@ -111,7 +120,9 @@ class QemuEnvBuilder(venv.EnvBuilder):
+ 
+     The primary difference is that it emulates a "nested" virtual
+     environment when invoked from inside of an existing virtual
+-    environment by including packages from the parent.
++    environment by including packages from the parent.  Also,
++    "ensurepip" is replaced if possible with just recreating pip's
++    console_scripts inside the virtual environment.
+ 
+     Parameters for base class init:
+       - system_site_packages: bool = False
+@@ -138,8 +149,19 @@ def __init__(self, *args: Any, **kwargs: Any) -> None:
+             # The venv we are currently in, also does so.
+             kwargs["system_site_packages"] = sys.base_prefix in site.PREFIXES
+ 
+-        if kwargs.get("with_pip", False):
+-            check_ensurepip()
++        # ensurepip is slow: venv creation can be very fast for cases where
++        # we allow the use of system_site_packages. Therefore, ensurepip is
++        # replaced with our own script generation once the virtual environment
++        # is setup.
++        self.want_pip = kwargs.get("with_pip", False)
++        if self.want_pip:
++            if (
++                kwargs.get("system_site_packages", False)
++                and not need_ensurepip()
++            ):
++                kwargs["with_pip"] = False
++            else:
++                check_ensurepip()
+ 
+         super().__init__(*args, **kwargs)
+ 
+@@ -211,6 +233,14 @@ def post_post_setup(self, context: SimpleNamespace) -> None:
+             with open(pth_file, "w", encoding="UTF-8") as file:
+                 file.write(parent_libpath + os.linesep)
+ 
++        if self.want_pip:
++            args = [
++                context.env_exe,
++                __file__,
++                "post_init",
++            ]
++            subprocess.run(args, check=True)
++
+     def get_value(self, field: str) -> str:
+         """
+         Get a string value from the context namespace after a call to build.
+@@ -223,6 +253,19 @@ def get_value(self, field: str) -> str:
+         return ret
+ 
+ 
++def need_ensurepip() -> bool:
++    """
++    Tests for the presence of setuptools and pip.
++
++    :return: `True` if we do not detect both packages.
++    """
++    # Don't try to actually import them, it's fraught with danger:
++    # https://github.com/pypa/setuptools/issues/2993
++    if find_spec("setuptools") and find_spec("pip"):
++        return False
++    return True
++
++
+ def check_ensurepip() -> None:
      """
-     print(f"mkvenv: checking for {', '.join(dep_specs)}", file=sys.stderr)
-+
-+    if not HAVE_DISTLIB:
-+        raise Ouch("a usable distlib could not be found, please install it")
-+
-     try:
-         _do_ensure(dep_specs, online, wheels_dir)
-     except subprocess.CalledProcessError as exc:
-diff --git a/python/setup.cfg b/python/setup.cfg
-index 826a2771ba5d..fc3fae5b1076 100644
---- a/python/setup.cfg
-+++ b/python/setup.cfg
-@@ -125,6 +125,24 @@ ignore_missing_imports = True
- [mypy-distlib.version]
- ignore_missing_imports = True
+     Check that we have ensurepip.
+@@ -693,6 +736,17 @@ def ensure(
+         raise SystemExit(f"\n{msg}\n\n") from exc
  
-+[mypy-pip]
-+ignore_missing_imports = True
+ 
++def post_venv_setup() -> None:
++    """
++    This is intended to be run *inside the venv* after it is created.
++    """
++    logger.debug("post_venv_setup()")
++    # Generate a 'pip' script so the venv is usable in a normal
++    # way from the CLI. This only happens when we inherited pip from a
++    # parent/system-site and haven't run ensurepip in some way.
++    generate_console_scripts(["pip"])
 +
-+[mypy-pip._vendor]
-+ignore_missing_imports = True
 +
-+[mypy-pip._vendor.distlib]
-+ignore_missing_imports = True
+ def _add_create_subcommand(subparsers: Any) -> None:
+     subparser = subparsers.add_parser("create", help="create a venv")
+     subparser.add_argument(
+@@ -703,6 +757,10 @@ def _add_create_subcommand(subparsers: Any) -> None:
+     )
+ 
+ 
++def _add_post_init_subcommand(subparsers: Any) -> None:
++    subparsers.add_parser("post_init", help="post-venv initialization")
 +
-+[mypy-pip._vendor.distlib.database]
-+ignore_missing_imports = True
 +
-+[mypy-pip._vendor.distlib.scripts]
-+ignore_missing_imports = True
-+
-+[mypy-pip._vendor.distlib.version]
-+ignore_missing_imports = True
-+
- [pylint.messages control]
- # Disable the message, report, category or checker with the given id(s). You
- # can either give multiple identifiers separated by comma (,) or put this
+ def _add_ensure_subcommand(subparsers: Any) -> None:
+     subparser = subparsers.add_parser(
+         "ensure", help="Ensure that the specified package is installed."
+@@ -761,6 +819,7 @@ def main() -> int:
+     )
+ 
+     _add_create_subcommand(subparsers)
++    _add_post_init_subcommand(subparsers)
+     _add_ensure_subcommand(subparsers)
+ 
+     args = parser.parse_args()
+@@ -771,6 +830,8 @@ def main() -> int:
+                 system_site_packages=True,
+                 clear=True,
+             )
++        if args.command == "post_init":
++            post_venv_setup()
+         if args.command == "ensure":
+             ensure(
+                 dep_specs=args.dep_specs,
 -- 
 2.40.1
 
