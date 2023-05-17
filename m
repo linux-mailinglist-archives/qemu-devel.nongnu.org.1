@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18368705F1B
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 07:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC581705F30
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 07:23:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pz9Pf-0008IL-Ai; Wed, 17 May 2023 01:09:23 -0400
+	id 1pz9cN-0001kM-VC; Wed, 17 May 2023 01:22:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1pz9PY-0008Fv-Si
- for qemu-devel@nongnu.org; Wed, 17 May 2023 01:09:17 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1pz9PX-0001uP-0N
- for qemu-devel@nongnu.org; Wed, 17 May 2023 01:09:16 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-38ede2e0e69so255807b6e.2
- for <qemu-devel@nongnu.org>; Tue, 16 May 2023 22:09:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1684300153; x=1686892153;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=0LGcXlH296J4+eFxjb/29PD902hho12arOh6Al/mKnE=;
- b=hYtKGH012tw5SwWPC8sHc6NJPJcOjshBUwPAVNS1Ynq2ch4qawDl7Sa19at0kavC4W
- N903pIyjDm4Oy1BOlDcfTRkBx5mCE2YalwM8KwmL0mNsdp8jkkL/G2Qnz91yVdJ4kEGQ
- kLzZYbilKD6pkj8/VUclJlJzSojTynA8ehTeRY6dUXEGY2AZWnzCBMRVmvTVv1Z/aMNY
- 3M03XcLWOlzJObZSvaozVjH2z66gvg9bTZHemtekQP8s1mUebZlslx3mD7+YkcdbRMPt
- BH7tdk3yNsvzqygqMgsnwODlaCkpCuuFkq1p8RSLvG7bYElfSC6JTbeFPRzMxUHc07TI
- PiVA==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1pz9cI-0001kA-7T
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 01:22:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1pz9cF-0004it-ON
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 01:22:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684300942;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0YBFvPO+51c1oOuMxe/QumeMeteVb69tOjZq2b5Vun4=;
+ b=MZF4GDb3RgR316OJo0+QJDXCOfvSuafBYQTP9YLRS/L06yj0OcjFvLmGTphLktC8PMKV63
+ Vs9uu3CzG0x47HzFbuxQIdnrtqNU6DBkCs1r4wTnzmkUbEJ/5g5QtVJEfGcqPPBV4UF5DL
+ 24SpKdCtV3S163m4EJso3S+EzwTZyuE=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-V910r-2nPZ2FyGb8Le_UmQ-1; Wed, 17 May 2023 01:22:19 -0400
+X-MC-Unique: V910r-2nPZ2FyGb8Le_UmQ-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ad94975f84so1441581fa.1
+ for <qemu-devel@nongnu.org>; Tue, 16 May 2023 22:22:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684300153; x=1686892153;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0LGcXlH296J4+eFxjb/29PD902hho12arOh6Al/mKnE=;
- b=cs1Hv8DwqbK0XI2IjypEkGUk0CrNBm2yvpJBop5JIBKHsR4XD5mHLz0tUrwwOPI3bJ
- z1ev7ReA1WIEO3yF4fpwyy0nWoEhAtjv9Z2hGATnXPgaB72yNjnQWPnNnlUXCtNw6oih
- CAHYzVrpI87heCYNZ7DKrPLZJS8z6Tr9nMOoyWDDVSEE7N8e4T+SR+Tg4oRR4HyPBWxW
- SVpEPMOuO/G1ZJsl0Xthey5LmWzJh8a65rom7/09jGYCbESKocTnmPHhYRU8JppulB/s
- Dqkk0hEFYdsX8zm3cocIEnwQJ14V+Nzu/g5c90Uug9pwZrm7NDH01DfF62lh0njqMk/v
- NzzQ==
-X-Gm-Message-State: AC+VfDzMoeOtHBYCKd/SjIx68U6+1+spbK+JXUFfpF2CKKQQ5OI9/ANu
- oiM1BytaibEBaDE02YVvtZuE5A==
-X-Google-Smtp-Source: ACHHUZ6pKllL7kBAc4W3GSq9Tvc9DCuWHBtj2wnNs0TymTEYx5mpWiiCiBc70kpm0kXMDbeAzmImQQ==
-X-Received: by 2002:aca:a888:0:b0:395:f73c:ce64 with SMTP id
- r130-20020acaa888000000b00395f73cce64mr4890497oie.3.1684300153383; 
- Tue, 16 May 2023 22:09:13 -0700 (PDT)
-Received: from sunil-laptop ([106.51.83.242]) by smtp.gmail.com with ESMTPSA id
- bm23-20020a056820189700b005525a7dfb22sm4197648oob.13.2023.05.16.22.09.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 May 2023 22:09:13 -0700 (PDT)
-Date: Wed, 17 May 2023 10:39:05 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Andrea Bolognani <abologna@redhat.com>,
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
- qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-Subject: Re: [PATCH v2] hw/riscv: virt: Assume M-mode FW in pflash0 only when
- "-bios none"
-Message-ID: <ZGRhcYO/2GlA3lnh@sunil-laptop>
-References: <20230425102545.162888-1-sunilvl@ventanamicro.com>
- <b520d913-27a9-dea5-53c8-af1cdd967ab2@canonical.com>
- <ZFiRr8d2zyAJlZJv@sunil-laptop>
- <CABJz62OTBEOMzcXLYc=DqRwH8N4DP=o0-kCfALwoREZVyOxLPg@mail.gmail.com>
- <ZFjbwh3CdljaHEZZ@sunil-laptop>
- <CABJz62P3u0d-ggQw-B_6AYTNu8Z9-TOs+UOn2vM8NNV0mQKR+Q@mail.gmail.com>
- <CAKmqyKMDf3F67=_Dq8oFOGG3Ft9hszfB6J2-U9DmSSvK0YKkMg@mail.gmail.com>
+ d=1e100.net; s=20221208; t=1684300938; x=1686892938;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0YBFvPO+51c1oOuMxe/QumeMeteVb69tOjZq2b5Vun4=;
+ b=NUFsVePHzo7bKs/2RO40wM2VMRRUxYIR4SFIvy2RWOMcUGdCnwy3C0jn9thZbscEMD
+ r8kZOSxEfMjHoo88HO39UUUALLrjW2Rlf/j8BiE6xhMb1wE+5NYha8spoaXa+amfDBaO
+ pOgsiAtQijnnwqUy9n/XZFknTpNBpCit7x44LLYtR6d4E1ikY5LF/em3z3MGrupsR2vw
+ NCIGAF5hGGa3qi6W1BB8f5KdRr4wKoX73Kkj7HrN7oxmza0LQjq76shz0HcbXgc6S3gk
+ ZS9YP6MXb9pKlUDcD/OtxdfzbBOfjHFpsOHsxzY03GGtK90Xi5Qc2oOVgkBFfOFLc+Iv
+ Tueg==
+X-Gm-Message-State: AC+VfDwdnK9tKtH3OlDasaeHFdWnxQ7PPj+wdIiTAjS04tt/b+WCbt7u
+ loiUxVo+vEMfsvbOQmuqCA8JbulYfGwLEsU1HZDgdsP2Qs9eN+WOnbhsFe/IRvbtoVp8BAJnJpv
+ a6az7RTzfbL5nVlnBPomK+U+slng5TQ0=
+X-Received: by 2002:ac2:4e63:0:b0:4f0:1a32:ca23 with SMTP id
+ y3-20020ac24e63000000b004f01a32ca23mr7723490lfs.40.1684300938415; 
+ Tue, 16 May 2023 22:22:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5OmZucQp8UmLTaLuPPauANSId9MnTMA/+YZXpPccy5tapUEAc9GqDQ3SJHplAchHK/BhUBFH4sfL3Wme6+omg=
+X-Received: by 2002:ac2:4e63:0:b0:4f0:1a32:ca23 with SMTP id
+ y3-20020ac24e63000000b004f01a32ca23mr7723481lfs.40.1684300938015; Tue, 16 May
+ 2023 22:22:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKmqyKMDf3F67=_Dq8oFOGG3Ft9hszfB6J2-U9DmSSvK0YKkMg@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-oi1-x235.google.com
+References: <cover.1683371965.git.yin31149@gmail.com>
+ <7d800315d04359d0bb91f61ec348eda1bdb972be.1683371965.git.yin31149@gmail.com>
+In-Reply-To: <7d800315d04359d0bb91f61ec348eda1bdb972be.1683371965.git.yin31149@gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 17 May 2023 13:22:06 +0800
+Message-ID: <CACGkMEuj=HY0YWHoXcw+qBLm4ctfTgj3P5cfWbueVFrOP1B2uQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] vdpa: send CVQ state load commands in parallel
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: eperezma@redhat.com, 18801353760@163.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,76 +94,281 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 17, 2023 at 02:57:12PM +1000, Alistair Francis wrote:
-> On Mon, May 8, 2023 at 9:45 PM Andrea Bolognani <abologna@redhat.com> wrote:
-> >
-> > On Mon, May 08, 2023 at 04:53:46PM +0530, Sunil V L wrote:
-> > > On Mon, May 08, 2023 at 03:00:02AM -0700, Andrea Bolognani wrote:
-> > > > I think that it's more important to align with other architectures.
-> 
-> That's true, ideally we want to match what people are already doing.
-> 
-> > > >
-> > > > The number of people currently running edk2 on RISC-V is probably
-> > > > vanishingly small, and in my opinion requiring them to tweak their
-> > > > command lines a bit is a fair price to pay to avoid having to carry a
-> > > > subtle difference between architectures for years to come.
-> > >
-> > > It is not just tweaking the command line. The current EDK2 will not work
-> > > anymore if code is moved to plfash 0 since EDK2 assumed its entry point
-> > > is in pflash1. I agree there may not be too many users but if we have
-> > > to align with other archs, there will be combinations of qemu and
-> > > edk2 versions which won't work.
-> >
-> > Right.
-> >
-> > > > With that in mind, my preference would be to go back to v1.
-> > >
-> > > Thanks!. If this is the preference,  we can request people to use proper
-> > > versions of EDK2 with different qemu versions.
-> >
-> > Yeah, in the (not so) long run this will just not matter, as the
-> > versions of edk2 and QEMU available to people will all implement the
-> > new behavior. Better to optimize for the long future ahead of us
-> > rather than causing ongoing pain for the sake of the few users of a
-> > work-in-progress board.
-> >
-> > > > Taking a step back, what is even the use case for having M-mode code
-> > > > in pflash0? If you want to use an M-mode firmware, can't you just use
-> > > > -bios instead? In other words, can we change the behavior so that
-> > > > pflash being present always mean loading S-mode firmware off it?
-> 
-> It was originally added to support Oreboot (the Rust version of
-> Coreboot). The idea was that Oreboot (ROM) would be in flash and then
-> go from there.
-> 
-> It also applies to other ROM code that a user might want to test that
-> runs before OpenSBI.
-> 
-> > >
-> > > TBH, I don't know. I am sure Alistair would know since it was added in
-> > > https://github.com/qemu/qemu/commit/1c20d3ff6004b600336c52cbef9f134fad3ccd94
-> > > I don't think opensbi can be launched from pflash. So, it may be some
-> > > other use case which I am now aware of.
-> > >
-> > > I will be happy if this can be avoided by using -bios.
-> >
-> > The actual commit would be [1], from late 2019. Things might have
-> > changed in the intervening ~3.5 years. Let's wait to hear from
-> > Alistair :)
-> 
-> Overall for this patch I don't feel strongly about following what ARM
-> does or continuing with what we already have. I would prefer to match
-> other archs if we can though.
-> 
-> Also, either way we should update the documentation in
-> docs/system/riscv/virt.rst to describe what happens.
-> 
-Thanks! Alistair. My reminder mail was sent just before seeing this
-response. Sorry about that.
+On Sat, May 6, 2023 at 10:07=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> This patch introduces the vhost_vdpa_net_cvq_add() and
+> refactors the vhost_vdpa_net_load*(), so that QEMU can
+> send CVQ state load commands in parallel.
+>
+> To be more specific, this patch introduces vhost_vdpa_net_cvq_add()
+> to add SVQ control commands to SVQ and kick the device,
+> but does not poll the device used buffers. QEMU will not
+> poll and check the device used buffers in vhost_vdpa_net_load()
+> until all CVQ state load commands have been sent to the device.
+>
+> What's more, in order to avoid buffer overwriting caused by
+> using `svq->cvq_cmd_out_buffer` and `svq->status` as the
+> buffer for all CVQ state load commands when sending
+> CVQ state load commands in parallel, this patch introduces
+> `out_cursor` and `in_cursor` in vhost_vdpa_net_load(),
+> pointing to the available buffer for in descriptor and
+> out descriptor, so that different CVQ state load commands can
+> use their unique buffer.
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> ---
+>  net/vhost-vdpa.c | 152 +++++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 120 insertions(+), 32 deletions(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 10804c7200..14e31ca5c5 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -590,6 +590,44 @@ static void vhost_vdpa_net_cvq_stop(NetClientState *=
+nc)
+>      vhost_vdpa_net_client_stop(nc);
+>  }
+>
+> +/**
+> + * vhost_vdpa_net_cvq_add() adds SVQ control commands to SVQ,
+> + * kicks the device but does not poll the device used buffers.
+> + *
+> + * Return the number of elements added to SVQ if success.
+> + */
+> +static int vhost_vdpa_net_cvq_add(VhostVDPAState *s,
+> +                                void **out_cursor, size_t out_len,
 
-Let me go back to v1 and also update the virt.rst and send v3.
+Can we track things like cursors in e.g VhostVDPAState ?
 
-Thanks!
-Sunil
+> +                                virtio_net_ctrl_ack **in_cursor, size_t =
+in_len)
+> +{
+> +    /* Buffers for the device */
+> +    const struct iovec out =3D {
+> +        .iov_base =3D *out_cursor,
+> +        .iov_len =3D out_len,
+> +    };
+> +    const struct iovec in =3D {
+> +        .iov_base =3D *in_cursor,
+> +        .iov_len =3D sizeof(virtio_net_ctrl_ack),
+> +    };
+> +    VhostShadowVirtqueue *svq =3D g_ptr_array_index(s->vhost_vdpa.shadow=
+_vqs, 0);
+> +    int r;
+> +
+> +    r =3D vhost_svq_add(svq, &out, 1, &in, 1, NULL);
+> +    if (unlikely(r !=3D 0)) {
+> +        if (unlikely(r =3D=3D -ENOSPC)) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "%s: No space on device queue=
+\n",
+> +                          __func__);
+> +        }
+> +        return r;
+> +    }
+> +
+> +    /* Update the cursor */
+> +    *out_cursor +=3D out_len;
+> +    *in_cursor +=3D 1;
+> +
+> +    return 1;
+> +}
+> +
+>  /**
+>   * vhost_vdpa_net_cvq_add_and_wait() adds SVQ control commands to SVQ,
+>   * kicks the device and polls the device used buffers.
+> @@ -628,69 +666,82 @@ static ssize_t vhost_vdpa_net_cvq_add_and_wait(Vhos=
+tVDPAState *s,
+>      return vhost_svq_poll(svq);
+>  }
+>
+> -static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
+> -                                       uint8_t cmd, const void *data,
+> -                                       size_t data_size)
+> +
+> +/**
+> + * vhost_vdpa_net_load_cmd() restores the NIC state through SVQ.
+> + *
+> + * Return the number of elements added to SVQ if success.
+> + */
+> +static int vhost_vdpa_net_load_cmd(VhostVDPAState *s,
+> +                                void **out_cursor, uint8_t class, uint8_=
+t cmd,
+> +                                const void *data, size_t data_size,
+> +                                virtio_net_ctrl_ack **in_cursor)
+>  {
+>      const struct virtio_net_ctrl_hdr ctrl =3D {
+>          .class =3D class,
+>          .cmd =3D cmd,
+>      };
+>
+> -    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl))=
+;
+> +    assert(sizeof(ctrl) < vhost_vdpa_net_cvq_cmd_page_len() -
+> +                          (*out_cursor - s->cvq_cmd_out_buffer));
+> +    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl) =
+-
+> +                       (*out_cursor - s->cvq_cmd_out_buffer));
+>
+> -    memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
+> -    memcpy(s->cvq_cmd_out_buffer + sizeof(ctrl), data, data_size);
+> +    memcpy(*out_cursor, &ctrl, sizeof(ctrl));
+> +    memcpy(*out_cursor + sizeof(ctrl), data, data_size);
+>
+> -    return vhost_vdpa_net_cvq_add_and_wait(s, sizeof(ctrl) + data_size,
+> -                                  sizeof(virtio_net_ctrl_ack));
+> +    return vhost_vdpa_net_cvq_add(s, out_cursor, sizeof(ctrl) + data_siz=
+e,
+> +                                  in_cursor, sizeof(virtio_net_ctrl_ack)=
+);
+>  }
+>
+> -static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n=
+)
+> +/**
+> + * vhost_vdpa_net_load_mac() restores the NIC mac through SVQ.
+> + *
+> + * Return the number of elements added to SVQ if success.
+> + */
+> +static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n=
+,
+> +                            void **out_cursor, virtio_net_ctrl_ack **in_=
+cursor)
+>  {
+>      uint64_t features =3D n->parent_obj.guest_features;
+>      if (features & BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR)) {
+> -        ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CT=
+RL_MAC,
+> -                                                  VIRTIO_NET_CTRL_MAC_AD=
+DR_SET,
+> -                                                  n->mac, sizeof(n->mac)=
+);
+> -        if (unlikely(dev_written < 0)) {
+> -            return dev_written;
+> -        }
+> -
+> -        return *s->status !=3D VIRTIO_NET_OK;
+> +        return vhost_vdpa_net_load_cmd(s, out_cursor, VIRTIO_NET_CTRL_MA=
+C,
+> +                                       VIRTIO_NET_CTRL_MAC_ADDR_SET,
+> +                                       n->mac, sizeof(n->mac), in_cursor=
+);
+>      }
+>
+>      return 0;
+>  }
+>
+> -static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+> -                                  const VirtIONet *n)
+> +/**
+> + * vhost_vdpa_net_load_mac() restores the NIC mq state through SVQ.
+> + *
+> + * Return the number of elements added to SVQ if success.
+> + */
+> +static int vhost_vdpa_net_load_mq(VhostVDPAState *s, const VirtIONet *n,
+> +                            void **out_cursor, virtio_net_ctrl_ack **in_=
+cursor)
+>  {
+>      struct virtio_net_ctrl_mq mq;
+>      uint64_t features =3D n->parent_obj.guest_features;
+> -    ssize_t dev_written;
+>
+>      if (!(features & BIT_ULL(VIRTIO_NET_F_MQ))) {
+>          return 0;
+>      }
+>
+>      mq.virtqueue_pairs =3D cpu_to_le16(n->curr_queue_pairs);
+> -    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MQ,
+> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SE=
+T, &mq,
+> -                                          sizeof(mq));
+> -    if (unlikely(dev_written < 0)) {
+> -        return dev_written;
+> -    }
+> -
+> -    return *s->status !=3D VIRTIO_NET_OK;
+> +    return vhost_vdpa_net_load_cmd(s, out_cursor, VIRTIO_NET_CTRL_MQ,
+> +                                   VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
+> +                                   &mq, sizeof(mq), in_cursor);
+>  }
+>
+>  static int vhost_vdpa_net_load(NetClientState *nc)
+>  {
+>      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> +    VhostShadowVirtqueue *svq;
+> +    void *out_cursor;
+> +    virtio_net_ctrl_ack *in_cursor;
+>      struct vhost_vdpa *v =3D &s->vhost_vdpa;
+>      const VirtIONet *n;
+> -    int r;
+> +    ssize_t cmds_in_flight =3D 0, dev_written, r;
+>
+>      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
+>
+> @@ -699,14 +750,51 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+>      }
+>
+>      n =3D VIRTIO_NET(v->dev->vdev);
+> -    r =3D vhost_vdpa_net_load_mac(s, n);
+> +    out_cursor =3D s->cvq_cmd_out_buffer;
+> +    in_cursor =3D s->status;
+> +
+> +    r =3D vhost_vdpa_net_load_mac(s, n, &out_cursor, &in_cursor);
+>      if (unlikely(r < 0))
+>          return r;
+>      }
+> -    r =3D vhost_vdpa_net_load_mq(s, n);
+> -    if (unlikely(r)) {
+> +    cmds_in_flight +=3D r;
+> +
+> +    r =3D vhost_vdpa_net_load_mq(s, n, &out_cursor, &in_cursor);
+> +    if (unlikely(r < 0)) {
+>          return r;
+>      }
+> +    cmds_in_flight +=3D r;
+> +
+> +    /* Poll for all used buffer from device */
+> +    svq =3D g_ptr_array_index(s->vhost_vdpa.shadow_vqs, 0);
+> +    while (cmds_in_flight > 0) {
+> +        /*
+> +         * We can poll here since we've had BQL from the time we sent th=
+e
+> +         * descriptor. Also, we need to take the answer before SVQ pulls
+> +         * by itself, when BQL is released
+> +         */
+> +        dev_written =3D vhost_svq_poll(svq);
+
+I'd tweak vhost_svq_poll to accept cmds_in_flight.
+
+Thanks
+
+> +
+> +        if (unlikely(!dev_written)) {
+> +            /*
+> +             * vhost_svq_poll() return 0 when something wrong, such as
+> +             * QEMU waits for too long time or no available used buffer
+> +             * from device, and there is no need to continue polling
+> +             * in this case.
+> +             */
+> +            return -EINVAL;
+> +        }
+> +
+> +        --cmds_in_flight;
+> +    }
+> +
+> +    /* Check the buffers written by device */
+> +    for (virtio_net_ctrl_ack *status =3D s->status; status < in_cursor;
+> +         ++status) {
+> +        if (*status !=3D VIRTIO_NET_OK) {
+> +            return -EINVAL;
+> +        }
+> +    }
+>
+>      return 0;
+>  }
+> --
+> 2.25.1
+>
+
 
