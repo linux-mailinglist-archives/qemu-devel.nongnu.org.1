@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89163706223
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59856706246
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:09:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC67-0001ok-73; Wed, 17 May 2023 04:01:23 -0400
+	id 1pzC6A-0001vw-JB; Wed, 17 May 2023 04:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5p-0001mm-Rq; Wed, 17 May 2023 04:01:05 -0400
+ id 1pzC5p-0001mp-Sb; Wed, 17 May 2023 04:01:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC5j-0000WP-Rn; Wed, 17 May 2023 04:01:02 -0400
+ id 1pzC5j-0000WO-VG; Wed, 17 May 2023 04:01:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A04326749;
+ by isrv.corpit.ru (Postfix) with ESMTP id CCD64674A;
  Wed, 17 May 2023 11:00:56 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 27F8A5E01;
+ by tsrv.corpit.ru (Postfix) with SMTP id 43B2E5E02;
  Wed, 17 May 2023 11:00:56 +0300 (MSK)
-Received: (nullmailer pid 3624076 invoked by uid 1000);
+Received: (nullmailer pid 3624081 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v8.0.1 00/36] Patch Round-up for stable 8.0.1,
- freeze on 2023-05-27
-Date: Wed, 17 May 2023 11:00:20 +0300
-Message-Id: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v8.0.1 01/36] vnc: avoid underflow when accessing
+ user-provided address
+Date: Wed, 17 May 2023 11:00:21 +0300
+Message-Id: <20230517080056.3623993-1-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
+References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,160 +59,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi everyone,
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-The following new patches are queued for QEMU stable v8.0.1:
+If hostlen is zero, there is a possibility that addrstr[hostlen - 1]
+underflows and, if a closing bracked is there, hostlen - 2 is passed
+to g_strndup() on the next line.  If websocket==false then
+addrstr[0] would be a colon, but if websocket==true this could in
+principle happen.
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.0
+Fix it by checking hostlen.
 
-Patch freeze is 2023-05-27, and the release is planned for 2023-06-29:
+Reported by Coverity.
 
-  https://wiki.qemu.org/Planning/8.0
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 3f9c41c5df9617510d8533cf6588172efb3df34b)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ ui/vnc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
-
-I'd like to include a few more changes in 8.0.1 release, for example
-https://lore.kernel.org/all/20230301142926.18686-1-yuval.shaia.ml@gmail.com/
-"hw/pvrdma: Protect against buggy or malicious guest driver", and especially
-https://lore.kernel.org/all/20230503002701.854329-1-leobras@redhat.com/
-"hw/pci: Disable PCI_ERR_UNCOR_MASK register for machine type < 8.0"
-and a few others, but we can wait forever.  I pinged patches which seems
-like should be in -stable.
-
-Thanks!
-
-------------------------------------------------------------------
-Akihiko Odaki (1):
-  target/arm: Initialize debug capabilities only once
-
-Alex Bennée (1):
-  qemu-options: finesse the recommendations around -blockdev
-
-Axel Heider (2):
-  hw/timer/imx_epit: don't shadow variable
-  hw/timer/imx_epit: fix limit check
-
-Bin Meng (1):
-  target/riscv: Restore the predicate() NULL check behavior
-
-Cédric Le Goater (3):
-  hw/arm/boot: Make write_bootloader() public as arm_write_bootloader()
-  hw/arm/aspeed: Use arm_write_bootloader() to write the bootloader
-  async: Suppress GCC13 false positive in aio_bh_poll()
-
-Igor Mammedov (1):
-  acpi: pcihp: allow repeating hot-unplug requests
-
-Ilya Leoshkevich (1):
-  target/s390x: Fix EXECUTE of relative branches
-
-Jason Andryuk (1):
-  9pfs/xen: Fix segfault on shutdown
-
-Jonathan Cameron (1):
-  hw/pci-bridge: pci_expander_bridge fix type in pxb_cxl_dev_reset()
-
-Kevin Wolf (4):
-  block: Fix use after free in blockdev_mark_auto_del()
-  block: Consistently call bdrv_activate() outside coroutine
-  block: bdrv/blk_co_unref() for calls in coroutine context
-  block: Don't call no_coroutine_fns in qmp_block_resize()
-
-LIU Zhiwei (1):
-  target/riscv: Fix itrigger when icount is used
-
-Paolo Bonzini (2):
-  vnc: avoid underflow when accessing user-provided address
-  meson: leave unnecessary modules out of the build
-
-Peter Maydell (10):
-  docs/about/deprecated.rst: Add "since 7.1" tag to dtb-kaslr-seed
-    deprecation
-  hw/net/msf2-emac: Don't modify descriptor in-place in
-    emac_store_desc()
-  hw/arm/raspi: Use arm_write_bootloader() to write boot code
-  hw/intc/allwinner-a10-pic: Don't use set_bit()/clear_bit()
-  target/arm: Define and use new load_cpu_field_low32()
-  hw/sd/allwinner-sdhost: Correctly byteswap descriptor fields
-  hw/net/allwinner-sun8i-emac: Correctly byteswap descriptor fields
-  target/arm: Fix handling of SW and NSW bits for stage 2 walks
-  ui: Fix pixel colour channel order for PNG screenshots
-  target/arm: Correct AArch64.S2MinTxSZ 32-bit EL1 input size check
-
-Richard Henderson (2):
-  accel/tcg: Fix atomic_mmu_lookup for reads
-  tcg/i386: Set P_REXW in tcg_out_addi_ptr
-
-Shivaprasad G Bhat (2):
-  softfloat: Fix the incorrect computation in float32_exp2
-  tcg: ppc64: Fix mask generation for vextractdm
-
-Stefan Hajnoczi (1):
-  block/export: call blk_set_dev_ops(blk, NULL, NULL)
-
-Wang Liang (1):
-  block/monitor: Fix crash when executing HMP commit
-
-Yang Zhong (1):
-  target/i386: Change wrong XFRM value in SGX CPUID leaf
-
- accel/tcg/cputlb.c                            |  2 +-
- block.c                                       |  2 +-
- block/block-backend.c                         | 10 ++-
- block/crypto.c                                |  6 +-
- block/export/export.c                         |  2 +
- block/export/vduse-blk.c                      |  1 -
- block/monitor/block-hmp-cmds.c                | 10 ++-
- block/parallels.c                             |  6 +-
- block/qcow.c                                  |  6 +-
- block/qcow2.c                                 | 14 +--
- block/qed.c                                   |  6 +-
- block/vdi.c                                   |  6 +-
- block/vhdx.c                                  |  6 +-
- block/vmdk.c                                  | 18 ++--
- block/vpc.c                                   |  6 +-
- blockdev.c                                    | 22 +++--
- docs/about/deprecated.rst                     |  4 +-
- fpu/softfloat.c                               |  2 +-
- hw/9pfs/trace-events                          |  6 ++
- hw/9pfs/xen-9p-backend.c                      | 35 +++++---
- hw/acpi/pcihp.c                               | 10 +++
- hw/arm/aspeed.c                               | 42 ++++-----
- hw/arm/boot.c                                 | 35 ++------
- hw/arm/raspi.c                                | 64 ++++++-------
- hw/intc/allwinner-a10-pic.c                   |  7 +-
- hw/net/allwinner-sun8i-emac.c                 | 22 +++--
- hw/net/msf2-emac.c                            | 18 ++--
- hw/pci-bridge/pci_expander_bridge.c           |  2 +-
- hw/sd/allwinner-sdhost.c                      | 31 +++++--
- hw/timer/imx_epit.c                           |  2 +-
- include/block/block-global-state.h            |  9 +-
- include/hw/arm/boot.h                         | 49 ++++++++++
- include/sysemu/block-backend-global-state.h   |  5 +-
- meson.build                                   |  4 +
- qemu-options.hx                               | 24 ++++-
- target/arm/gdbstub64.c                        |  2 +-
- target/arm/helper.c                           | 15 +++-
- target/arm/internals.h                        | 12 ++-
- target/arm/kvm.c                              |  2 +
- target/arm/kvm64.c                            | 18 +---
- target/arm/kvm_arm.h                          |  8 ++
- target/arm/ptw.c                              | 90 +++++++++++--------
- target/arm/tcg/pauth_helper.c                 |  6 +-
- target/arm/tcg/translate.c                    |  4 +-
- target/arm/translate-a32.h                    |  7 ++
- target/i386/cpu.c                             |  4 +-
- target/ppc/translate/vmx-impl.c.inc           |  2 +-
- target/riscv/csr.c                            | 11 ++-
- .../riscv/insn_trans/trans_privileged.c.inc   |  6 ++
- target/s390x/tcg/translate.c                  | 81 ++++++++++++-----
- tcg/i386/tcg-target.c.inc                     |  2 +-
- ui/console.c                                  |  4 +-
- ui/vnc.c                                      |  2 +-
- util/async.c                                  | 14 +++
- 54 files changed, 517 insertions(+), 267 deletions(-)
-
+diff --git a/ui/vnc.c b/ui/vnc.c
+index bbd8b6baae..9d8a24dd8a 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -3751,7 +3751,7 @@ static int vnc_display_get_address(const char *addrstr,
+ 
+         addr->type = SOCKET_ADDRESS_TYPE_INET;
+         inet = &addr->u.inet;
+-        if (addrstr[0] == '[' && addrstr[hostlen - 1] == ']') {
++        if (hostlen && addrstr[0] == '[' && addrstr[hostlen - 1] == ']') {
+             inet->host = g_strndup(addrstr + 1, hostlen - 2);
+         } else {
+             inet->host = g_strndup(addrstr, hostlen);
 -- 
 2.39.2
 
