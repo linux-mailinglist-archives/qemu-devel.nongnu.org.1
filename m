@@ -2,35 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04D470623E
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D53FF70625C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 10:10:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzC6l-0002mi-L0; Wed, 17 May 2023 04:02:03 -0400
+	id 1pzC6u-0002uF-62; Wed, 17 May 2023 04:02:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6f-0002ec-8c; Wed, 17 May 2023 04:01:57 -0400
+ id 1pzC6f-0002eZ-59; Wed, 17 May 2023 04:01:57 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzC6c-0000kt-3X; Wed, 17 May 2023 04:01:57 -0400
+ id 1pzC6b-0000ks-U9; Wed, 17 May 2023 04:01:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5CA8B6762;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7B8B96763;
  Wed, 17 May 2023 11:01:00 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E14DB5E1A;
- Wed, 17 May 2023 11:00:59 +0300 (MSK)
-Received: (nullmailer pid 3624154 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 091F35E1B;
+ Wed, 17 May 2023 11:01:00 +0300 (MSK)
+Received: (nullmailer pid 3624157 invoked by uid 1000);
  Wed, 17 May 2023 08:00:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-stable@nongnu.org
-Cc: qemu-devel@nongnu.org, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v8.0.1 25/36] target/riscv: Fix itrigger when icount is used
-Date: Wed, 17 May 2023 11:00:45 +0300
-Message-Id: <20230517080056.3623993-25-mjt@msgid.tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Bin Meng <bmeng@tinylab.org>,
+ Fei Wu <fei2.wu@intel.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Alistair Francis <alistair.francis@wdc.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v8.0.1 26/36] target/riscv: Restore the predicate() NULL check
+ behavior
+Date: Wed, 17 May 2023 11:00:46 +0300
+Message-Id: <20230517080056.3623993-26-mjt@msgid.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <<20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
 References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
@@ -59,50 +63,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+From: Bin Meng <bmeng@tinylab.org>
 
-When I boot a ubuntu image, QEMU output a "Bad icount read" message and exit.
-The reason is that when execute helper_mret or helper_sret, it will
-cause a call to icount_get_raw_locked (), which needs set can_do_io flag
-on cpustate.
+When reading a non-existent CSR QEMU should raise illegal instruction
+exception, but currently it just exits due to the g_assert() check.
 
-Thus we setting this flag when execute these two instructions.
+This actually reverts commit 0ee342256af9205e7388efdf193a6d8f1ba1a617.
+Some comments are also added to indicate that predicate() must be
+provided for an implemented CSR.
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reported-by: Fei Wu <fei2.wu@intel.com>
+Signed-off-by: Bin Meng <bmeng@tinylab.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230324064011.976-1-zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Message-Id: <20230417043054.3125614-1-bmeng@tinylab.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit df3ac6da476e346a17bad5bc843de1135a269229)
+(cherry picked from commit eae04c4c131a8d95087c8568eb2cac1988262f25)
+(mjt: context edit after ce3af0bbbcdfa "target/riscv: add support for Zcmt extension")
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- target/riscv/insn_trans/trans_privileged.c.inc | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/riscv/csr.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
-index 59501b2780..e3bee971c6 100644
---- a/target/riscv/insn_trans/trans_privileged.c.inc
-+++ b/target/riscv/insn_trans/trans_privileged.c.inc
-@@ -77,6 +77,9 @@ static bool trans_sret(DisasContext *ctx, arg_sret *a)
- #ifndef CONFIG_USER_ONLY
-     if (has_ext(ctx, RVS)) {
-         decode_save_opc(ctx);
-+        if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
-+            gen_io_start();
-+        }
-         gen_helper_sret(cpu_pc, cpu_env);
-         exit_tb(ctx); /* no chaining */
-         ctx->base.is_jmp = DISAS_NORETURN;
-@@ -93,6 +96,9 @@ static bool trans_mret(DisasContext *ctx, arg_mret *a)
- {
- #ifndef CONFIG_USER_ONLY
-     decode_save_opc(ctx);
-+    if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
-+        gen_io_start();
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index d522efc0b6..736ab64275 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -3797,6 +3797,11 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
+         return RISCV_EXCP_ILLEGAL_INST;
+     }
+ 
++    /* ensure CSR is implemented by checking predicate */
++    if (!csr_ops[csrno].predicate) {
++        return RISCV_EXCP_ILLEGAL_INST;
 +    }
-     gen_helper_mret(cpu_pc, cpu_env);
-     exit_tb(ctx); /* no chaining */
-     ctx->base.is_jmp = DISAS_NORETURN;
++
+     /* privileged spec version check */
+     if (env->priv_ver < csr_min_priv) {
+         return RISCV_EXCP_ILLEGAL_INST;
+@@ -3814,7 +3819,6 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
+      * illegal instruction exception should be triggered instead of virtual
+      * instruction exception. Hence this comes after the read / write check.
+      */
+-    g_assert(csr_ops[csrno].predicate != NULL);
+     RISCVException ret = csr_ops[csrno].predicate(env, csrno);
+     if (ret != RISCV_EXCP_NONE) {
+         return ret;
+@@ -3991,7 +3995,10 @@ RISCVException riscv_csrrw_debug(CPURISCVState *env, int csrno,
+     return ret;
+ }
+ 
+-/* Control and Status Register function table */
++/*
++ * Control and Status Register function table
++ * riscv_csr_operations::predicate() must be provided for an implemented CSR
++ */
+ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     /* User Floating-Point CSRs */
+     [CSR_FFLAGS]   = { "fflags",   fs,     read_fflags,  write_fflags },
 -- 
 2.39.2
 
