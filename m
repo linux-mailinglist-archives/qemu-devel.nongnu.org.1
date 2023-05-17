@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDB9707031
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 694E1706FF9
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:51:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLEC-00081J-2N; Wed, 17 May 2023 13:46:20 -0400
+	id 1pzLEc-0000lW-7b; Wed, 17 May 2023 13:46:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLE7-0007hL-NO
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:16 -0400
+ id 1pzLE9-0007mn-0X
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLE5-0004HP-V8
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:15 -0400
+ id 1pzLE7-0004Hg-5d
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345573;
+ s=mimecast20190719; t=1684345574;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tlEc08hsHfooO7rQikJ5l6wNa9dPNHYDs4dAyWzQnhQ=;
- b=LPuOuvAW7kXitgpLkQ7kin+dTCx0a2W13HxoJszDbtLEotNo1ahD9Huvzb8sVdU5a2nVe+
- AimXIjDMklReGqsVNY9qNiYs54WnSZqqPKDk6W7H8ep8JcLpXeAX9J51tpoR6+fY3WIqZT
- /w8yAtFa9mRKBGisNi63stIJmJEMT8c=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gagIyj+ohvBxTGckPPYIFm5V3ZHBPriTT/5noq/lqAw=;
+ b=KraDh1cfOLqjGrScnzHeW5+Lw+S5uSVJIZon9iETiXw/1cB/OL7DDP4OiBsMc5pzg+Tqia
+ pEqVexXV1rvcZpckSzl0Re3hzEgf00b0btNDClKuqVs1P85DslPg2fyZCYKxE9llRoBM5S
+ VhhfWhD4EJNX70SxgCO4iiyEfJqymTY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-480-zZOHHL5lM86OqkTXTXsohw-1; Wed, 17 May 2023 13:46:12 -0400
-X-MC-Unique: zZOHHL5lM86OqkTXTXsohw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f42867b47dso6595495e9.2
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:11 -0700 (PDT)
+ us-mta-248-GCwVbUYuPCKPRHZnCKxdrg-1; Wed, 17 May 2023 13:46:13 -0400
+X-MC-Unique: GCwVbUYuPCKPRHZnCKxdrg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f4245ffb03so6963025e9.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:46:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345570; x=1686937570;
+ d=1e100.net; s=20221208; t=1684345572; x=1686937572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tlEc08hsHfooO7rQikJ5l6wNa9dPNHYDs4dAyWzQnhQ=;
- b=FeP6VVvcYEvYf37OR5PP75U/srzZx9JANU0RyNNwvmB5hIf1CDvasNVR0f+ikP8x1y
- QVPMLtGhoBUWsBNIpchgD5vhbOe4D0/Bymw6fHDgJFasGmMmOUn12lrApwMIvTBZK6UL
- kX8DtEDrXCfCwsJcWW4Kqowj0MnQusDfPhjvi4A8Ewq+SnXl6qvxmshPYpwHwtNbqFPP
- +AqIZbko1A9HOlfOHMrwq3pOf+m5DUMbsiFbf6vBp4dCiyKCYZOG2uu2Zk0gH3sappj6
- QQxm5Uv25cs5O+je+q3wTunYJUdzEZDI8cKKSs5U3LNdGBthvVIg8FJyetnPn5NYWC5x
- JYvg==
-X-Gm-Message-State: AC+VfDy5Fb/4aM0GYl1JCRnR5DCZAXdW1HPfFqHTtXqojiOLCXYj3o7s
- L8T5tihSwy6LdtF73GozO0Qje9WUXutfLGns7F9XHpomBcV5BPgn4Pdi0EPxy8oXMInOztAfukD
- RxpSj9kGr4/Ns7T/7rRymKpeHVhrcZV70N6ilNFNyFriFo5+TPNJvBnC20phq/S0pJaKdB9Sh7H
- U=
-X-Received: by 2002:a7b:c5d6:0:b0:3f1:969f:c9d0 with SMTP id
- n22-20020a7bc5d6000000b003f1969fc9d0mr30995808wmk.4.1684345570281; 
- Wed, 17 May 2023 10:46:10 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7C9McPTBZwF21I//SvuoO91O5rjbWK50HlGFvBj2d7RK4TrP4siB1PcrSlQVwNkKyl1Z+rbA==
-X-Received: by 2002:a7b:c5d6:0:b0:3f1:969f:c9d0 with SMTP id
- n22-20020a7bc5d6000000b003f1969fc9d0mr30995785wmk.4.1684345569717; 
- Wed, 17 May 2023 10:46:09 -0700 (PDT)
+ bh=gagIyj+ohvBxTGckPPYIFm5V3ZHBPriTT/5noq/lqAw=;
+ b=ZO5E1KiXGT8qtN0Kof2Lag72LABHz6dzCiz90iuH02bOnqVeRrmVIqbleGGUQe7p/z
+ FoAsyL57tHL2bFr0t+0nJCTNyYFIv3u+b7j55inBIv4rZp/aQrVOQm9AOpgQsXYoGtqZ
+ D3C8pHKLwqYO68JsQY2HndRJvp9cl7LwzdmWxrjQAeZSXW2hgbejv3DxyyObXSBMc4yz
+ aySn4hgNs7B5AngvCGDsxf6jYPvWmWs5o2mN5U7hzvuhBYQ6TIbgbf4Xxni1OrBtKNsl
+ Vh7KwYNbUW8rrKEoxx2BUxqvggplABu5YP0RBESSlu7Pp4dBSlmP1knqAMUZUuE+mqXI
+ teiA==
+X-Gm-Message-State: AC+VfDwuFKR6izaaBaWY16Yr1UC9xZ2dbCKW8fMghPktnG3Ap68E5F9b
+ CtpHIl8kmSvsnyxux89BMInF6YuGidl/KQ+OWohNx30mr2eWNSboUM4imv7s9k3DA2UI+sJPw5k
+ 3c5+oF81Dm75wtVPo37PXDmhZYY0JqoBrr+Xemjc/LeCxiQpMrbaE4st2cNV4Th9QC6HLnVq2Qc
+ c=
+X-Received: by 2002:a05:600c:b4d:b0:3f4:253f:c3d9 with SMTP id
+ k13-20020a05600c0b4d00b003f4253fc3d9mr22313250wmr.25.1684345571780; 
+ Wed, 17 May 2023 10:46:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4Ud8wd/NgkrqMF7GGJXFch6Ul9+xLqTnzu9pAxGOtlLs3G3hx3QOt1D7yY/jXZkQgqxDUQuQ==
+X-Received: by 2002:a05:600c:b4d:b0:3f4:253f:c3d9 with SMTP id
+ k13-20020a05600c0b4d00b003f4253fc3d9mr22313238wmr.25.1684345571459; 
+ Wed, 17 May 2023 10:46:11 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- z4-20020a05600c220400b003f4069417absm2849765wml.24.2023.05.17.10.46.08
+ z26-20020a7bc7da000000b003f50d6ee334sm2832355wmk.47.2023.05.17.10.46.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:46:09 -0700 (PDT)
+ Wed, 17 May 2023 10:46:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>
-Subject: [PULL 28/68] mkvenv: work around broken pip installations on Debian 10
-Date: Wed, 17 May 2023 19:44:40 +0200
-Message-Id: <20230517174520.887405-29-pbonzini@redhat.com>
+Cc: John Snow <jsnow@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 29/68] tests/docker: add python3-venv dependency
+Date: Wed, 17 May 2023 19:44:41 +0200
+Message-Id: <20230517174520.887405-30-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -102,143 +104,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-This is a workaround intended for Debian 10, where the debian-patched
-pip does not function correctly if accessed from within a virtual
-environment.
+Several debian-based tests need the python3-venv dependency as a
+consequence of Debian debundling the "ensurepip" module normally
+included with Python.
 
-We don't support Debian 10 as a build platform any longer, though we do
-still utilize it for our build-tricore-softmmu CI test. It's also
-possible that this bug might appear on other derivative platforms and
-this workaround may prove useful.
+As mkvenv.py stands as of this commit, Debian requires EITHER:
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(A) setuptools and pip, or
+(B) ensurepip
+
+mkvenv is a few seconds faster if you have setuptools and pip, so
+developers should prefer the first requirement. For the purposes of CI,
+the time-save is a wash; it's only a matter of who is responsible for
+installing pip and when; the timing is about the same.
+
+Arbitrarily, I chose adding ensurepip to the test configuration because
+it is normally part of the Python stdlib, and always having it allows us
+a more consistent cross-platform environment.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
-Message-Id: <20230511035435.734312-11-jsnow@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20230511035435.734312-12-jsnow@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- python/scripts/mkvenv.py | 72 +++++++++++++++++++++++++++++++---------
- 1 file changed, 56 insertions(+), 16 deletions(-)
+ tests/docker/dockerfiles/debian-all-test-cross.docker | 3 ++-
+ tests/docker/dockerfiles/debian-hexagon-cross.docker  | 3 ++-
+ tests/docker/dockerfiles/debian-riscv64-cross.docker  | 3 ++-
+ tests/docker/dockerfiles/debian-tricore-cross.docker  | 3 ++-
+ 4 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index a9c566029e6f..558619910efd 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -161,7 +161,7 @@ def __init__(self, *args: Any, **kwargs: Any) -> None:
-             ):
-                 kwargs["with_pip"] = False
-             else:
--                check_ensurepip()
-+                check_ensurepip(suggest_remedy=True)
+diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
+index 981e9bdc7b0e..f9f401544a05 100644
+--- a/tests/docker/dockerfiles/debian-all-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+@@ -57,7 +57,8 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+         gcc-sh4-linux-gnu \
+         libc6-dev-sh4-cross \
+         gcc-sparc64-linux-gnu \
+-        libc6-dev-sparc64-cross
++        libc6-dev-sparc64-cross \
++        python3-venv
  
-         super().__init__(*args, **kwargs)
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+ ENV DEF_TARGET_LIST aarch64-linux-user,alpha-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sh4-linux-user,sparc64-linux-user
+diff --git a/tests/docker/dockerfiles/debian-hexagon-cross.docker b/tests/docker/dockerfiles/debian-hexagon-cross.docker
+index b99d99f94365..c2cfb6a5d0fa 100644
+--- a/tests/docker/dockerfiles/debian-hexagon-cross.docker
++++ b/tests/docker/dockerfiles/debian-hexagon-cross.docker
+@@ -20,7 +20,8 @@ RUN apt-get update && \
+         bison \
+         flex \
+         git \
+-        ninja-build && \
++        ninja-build \
++        python3-venv && \
+ # Install QEMU build deps for use in CI
+     DEBIAN_FRONTEND=noninteractive eatmydata \
+     apt build-dep -yy --arch-only qemu
+diff --git a/tests/docker/dockerfiles/debian-riscv64-cross.docker b/tests/docker/dockerfiles/debian-riscv64-cross.docker
+index 803afb957345..081404e01410 100644
+--- a/tests/docker/dockerfiles/debian-riscv64-cross.docker
++++ b/tests/docker/dockerfiles/debian-riscv64-cross.docker
+@@ -28,7 +28,8 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata apt install -yy \
+     libglib2.0-dev \
+     ninja-build \
+     pkg-config \
+-    python3
++    python3 \
++    python3-venv
  
-@@ -266,7 +266,7 @@ def need_ensurepip() -> bool:
-     return True
+ # Add ports and riscv64 architecture
+ RUN echo "deb http://ftp.ports.debian.org/debian-ports/ sid main" >> /etc/apt/sources.list
+diff --git a/tests/docker/dockerfiles/debian-tricore-cross.docker b/tests/docker/dockerfiles/debian-tricore-cross.docker
+index cfd2faf9a803..269bfa8d4230 100644
+--- a/tests/docker/dockerfiles/debian-tricore-cross.docker
++++ b/tests/docker/dockerfiles/debian-tricore-cross.docker
+@@ -33,7 +33,8 @@ RUN apt update && \
+        pkgconf \
+        python3-pip \
+        python3-setuptools \
+-       python3-wheel
++       python3-wheel \
++       python3-venv
  
- 
--def check_ensurepip() -> None:
-+def check_ensurepip(prefix: str = "", suggest_remedy: bool = False) -> None:
-     """
-     Check that we have ensurepip.
- 
-@@ -277,12 +277,15 @@ def check_ensurepip() -> None:
-             "Python's ensurepip module is not found.\n"
-             "It's normally part of the Python standard library, "
-             "maybe your distribution packages it separately?\n"
--            "Either install ensurepip, or alleviate the need for it in the "
--            "first place by installing pip and setuptools for "
--            f"'{sys.executable}'.\n"
--            "(Hint: Debian puts ensurepip in its python3-venv package.)"
-+            "(Debian puts ensurepip in its python3-venv package.)\n"
-         )
--        raise Ouch(msg)
-+        if suggest_remedy:
-+            msg += (
-+                "Either install ensurepip, or alleviate the need for it in the"
-+                " first place by installing pip and setuptools for "
-+                f"'{sys.executable}'.\n"
-+            )
-+        raise Ouch(prefix + msg)
- 
-     # ensurepip uses pyexpat, which can also go missing on us:
-     if not find_spec("pyexpat"):
-@@ -290,12 +293,15 @@ def check_ensurepip() -> None:
-             "Python's pyexpat module is not found.\n"
-             "It's normally part of the Python standard library, "
-             "maybe your distribution packages it separately?\n"
--            "Either install pyexpat, or alleviate the need for it in the "
--            "first place by installing pip and setuptools for "
--            f"'{sys.executable}'.\n\n"
--            "(Hint: NetBSD's pkgsrc debundles this to e.g. 'py310-expat'.)"
-+            "(NetBSD's pkgsrc debundles this to e.g. 'py310-expat'.)\n"
-         )
--        raise Ouch(msg)
-+        if suggest_remedy:
-+            msg += (
-+                "Either install pyexpat, or alleviate the need for it in the "
-+                "first place by installing pip and setuptools for "
-+                f"'{sys.executable}'.\n"
-+            )
-+        raise Ouch(prefix + msg)
- 
- 
- def make_venv(  # pylint: disable=too-many-arguments
-@@ -501,6 +507,38 @@ def _get_entry_points() -> Iterator[str]:
-             logger.debug("wrote console_script '%s'", filename)
- 
- 
-+def checkpip() -> bool:
-+    """
-+    Debian10 has a pip that's broken when used inside of a virtual environment.
-+
-+    We try to detect and correct that case here.
-+    """
-+    try:
-+        # pylint: disable=import-outside-toplevel,unused-import,import-error
-+        # pylint: disable=redefined-outer-name
-+        import pip._internal  # type: ignore  # noqa: F401
-+
-+        logger.debug("pip appears to be working correctly.")
-+        return False
-+    except ModuleNotFoundError as exc:
-+        if exc.name == "pip._internal":
-+            # Uh, fair enough. They did say "internal".
-+            # Let's just assume it's fine.
-+            return False
-+        logger.warning("pip appears to be malfunctioning: %s", str(exc))
-+
-+    check_ensurepip("pip appears to be non-functional, and ")
-+
-+    logger.debug("Attempting to repair pip ...")
-+    subprocess.run(
-+        (sys.executable, "-m", "ensurepip"),
-+        stdout=subprocess.DEVNULL,
-+        check=True,
-+    )
-+    logger.debug("Pip is now (hopefully) repaired!")
-+    return True
-+
-+
- def pkgname_from_depspec(dep_spec: str) -> str:
-     """
-     Parse package name out of a PEP-508 depspec.
-@@ -741,10 +779,12 @@ def post_venv_setup() -> None:
-     This is intended to be run *inside the venv* after it is created.
-     """
-     logger.debug("post_venv_setup()")
--    # Generate a 'pip' script so the venv is usable in a normal
--    # way from the CLI. This only happens when we inherited pip from a
--    # parent/system-site and haven't run ensurepip in some way.
--    generate_console_scripts(["pip"])
-+    # Test for a broken pip (Debian 10 or derivative?) and fix it if needed
-+    if not checkpip():
-+        # Finally, generate a 'pip' script so the venv is usable in a normal
-+        # way from the CLI. This only happens when we inherited pip from a
-+        # parent/system-site and haven't run ensurepip in some way.
-+        generate_console_scripts(["pip"])
- 
- 
- def _add_create_subcommand(subparsers: Any) -> None:
+ RUN curl -#SL https://github.com/bkoppelmann/package_940/releases/download/tricore-toolchain-9.40/tricore-toolchain-9.4.0.tar.gz \
+     | tar -xzC /usr/local/
 -- 
 2.40.1
 
