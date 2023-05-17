@@ -2,51 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D860706CDD
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7B0706CDA
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 17:29:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzJ5B-0002Mg-Fo; Wed, 17 May 2023 11:28:53 -0400
+	id 1pzJ5B-0002NZ-MA; Wed, 17 May 2023 11:28:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ58-0002LI-IO
- for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:50 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ59-0002Lo-1w
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ56-0000tT-TN
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1pzJ57-0000tX-D3
  for qemu-devel@nongnu.org; Wed, 17 May 2023 11:28:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1684337328;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=1GOwuXx+vVYH5xsoNIz2zJtDzC60xs9qvpzMRg5W5Ao=;
- b=O7MyK6OI5ZvxweHfmbMLCpWsygqRuqzJD/4k62jbdZfJH7ASgG+Bh9XiRO71qGR6lh2Yjs
- 8PwxYiz0eFMUDSd9CeueOll+B2/upVKqNznqRPjUEAJeZNfmilJ/543u4gWJShhjJzLxic
- FfOLVCnWH3hkh35XAJexAGEi21diryE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=307NFVhzkj0Ci6yzvP3eVZ7VIH69hx+a7JKtXTKt04s=;
+ b=EP+3nV/eR6MqgUhFhHMAJ2fANcv7uiYbXmO63JAWmAplGYZMSw4bZEdiEuS62BV/kQO577
+ iyR0qrlzZec2xAdDdQC9LKLWcU8nDfyn+b9zF5pglCSZNGsh+U3E3Kz9FXQv90bOVchSp7
+ jZL0h8fWro0OTR3AyboUsdjRQNl2tXI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-325-0k7ZXQKZNN-CXoaX7HqdKw-1; Wed, 17 May 2023 11:28:44 -0400
-X-MC-Unique: 0k7ZXQKZNN-CXoaX7HqdKw-1
+ us-mta-367-gPtw047NO421oFKpKj5ZrA-1; Wed, 17 May 2023 11:28:45 -0400
+X-MC-Unique: gPtw047NO421oFKpKj5ZrA-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F054B85CD72;
- Wed, 17 May 2023 15:28:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B1FF21C313B5;
+ Wed, 17 May 2023 15:28:39 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A5C681121314;
- Wed, 17 May 2023 15:28:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 33FC51121314;
+ Wed, 17 May 2023 15:28:38 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, mjt@tls.msk.ru,
  eblake@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org,
  qemu-stable@nongnu.org
-Subject: [PATCH 0/3] block/graph-lock: Disable locking for now
-Date: Wed, 17 May 2023 17:28:31 +0200
-Message-Id: <20230517152834.277483-1-kwolf@redhat.com>
+Subject: [PATCH 1/3] graph-lock: Disable locking for now
+Date: Wed, 17 May 2023 17:28:32 +0200
+Message-Id: <20230517152834.277483-2-kwolf@redhat.com>
+In-Reply-To: <20230517152834.277483-1-kwolf@redhat.com>
+References: <20230517152834.277483-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
@@ -74,36 +77,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tl;dr is that graph locking introduced deadlocks in 8.0, and disabling
-it for now fixes them again. See patch 1 for the details.
+In QEMU 8.0, we've been seeing deadlocks in bdrv_graph_wrlock(). They
+come from callers that hold an AioContext lock, which is not allowed
+during polling. In theory, we could temporarily release the lock, but
+callers are inconsistent about whether they hold a lock, and if they do,
+some are also confused about which one they hold. While all of this is
+fixable, it's not trivial, and the best course of action for 8.0.1 is
+probably just disabling the graph locking code temporarily.
 
-I still intend the fix this properly before we remove the AioContext
-lock (which is when the deadlock would be automatically solved), but
-it's not trivial enough for something that would be ready now and
-backportable to stable versions. Let's try the real thing again in 8.1
-and fix 8.0 with this stopgap solution.
+We don't currently rely on graph locking yet. It is supposed to replace
+the AioContext lock eventually to enable multiqueue support, but as long
+as we still have the AioContext lock, it is sufficient without the graph
+lock. Once the AioContext lock goes away, the deadlock doesn't exist any
+more either and this commit can be reverted. (Of course, it can also be
+reverted while the AioContext lock still exists if the callers have been
+fixed.)
 
-Patch 2 is a prerequisite for the test case. Instead of reproducing the
-deadlock problem (which it unfortunately doesn't do reliably anyway, the
-timing seems hard to get right), I got NBD server crashes without it. I
-actually made some more NBD changes to fix the crashes before this one,
-but it seems to be stable with only this. Maybe the rest only fixed
-symptoms of the same root cause, I'll have another look at them.
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ block/graph-lock.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-Kevin Wolf (3):
-  graph-lock: Disable locking for now
-  nbd/server: Fix drained_poll to wake coroutine in right AioContext
-  iotests: Test commit with iothreads and ongoing I/O
-
- include/io/channel.h                          | 10 ++++
- block/graph-lock.c                            | 21 +++++++
- io/channel.c                                  | 33 +++++++++--
- nbd/server.c                                  |  3 +-
- tests/qemu-iotests/iotests.py                 |  4 ++
- .../qemu-iotests/tests/graph-changes-while-io | 56 +++++++++++++++++--
- .../tests/graph-changes-while-io.out          |  4 +-
- 7 files changed, 117 insertions(+), 14 deletions(-)
-
+diff --git a/block/graph-lock.c b/block/graph-lock.c
+index 9c42bd9799..9806fd4ecb 100644
+--- a/block/graph-lock.c
++++ b/block/graph-lock.c
+@@ -30,8 +30,10 @@ BdrvGraphLock graph_lock;
+ /* Protects the list of aiocontext and orphaned_reader_count */
+ static QemuMutex aio_context_list_lock;
+ 
++#if 0
+ /* Written and read with atomic operations. */
+ static int has_writer;
++#endif
+ 
+ /*
+  * A reader coroutine could move from an AioContext to another.
+@@ -88,6 +90,7 @@ void unregister_aiocontext(AioContext *ctx)
+     g_free(ctx->bdrv_graph);
+ }
+ 
++#if 0
+ static uint32_t reader_count(void)
+ {
+     BdrvGraphRWlock *brdv_graph;
+@@ -105,10 +108,17 @@ static uint32_t reader_count(void)
+     assert((int32_t)rd >= 0);
+     return rd;
+ }
++#endif
+ 
+ void bdrv_graph_wrlock(void)
+ {
+     GLOBAL_STATE_CODE();
++    /*
++     * TODO Some callers hold an AioContext lock when this is called, which
++     * causes deadlocks. Reenable once the AioContext locking is cleaned up (or
++     * AioContext locks are gone).
++     */
++#if 0
+     assert(!qatomic_read(&has_writer));
+ 
+     /* Make sure that constantly arriving new I/O doesn't cause starvation */
+@@ -139,11 +149,13 @@ void bdrv_graph_wrlock(void)
+     } while (reader_count() >= 1);
+ 
+     bdrv_drain_all_end();
++#endif
+ }
+ 
+ void bdrv_graph_wrunlock(void)
+ {
+     GLOBAL_STATE_CODE();
++#if 0
+     QEMU_LOCK_GUARD(&aio_context_list_lock);
+     assert(qatomic_read(&has_writer));
+ 
+@@ -155,10 +167,13 @@ void bdrv_graph_wrunlock(void)
+ 
+     /* Wake up all coroutine that are waiting to read the graph */
+     qemu_co_enter_all(&reader_queue, &aio_context_list_lock);
++#endif
+ }
+ 
+ void coroutine_fn bdrv_graph_co_rdlock(void)
+ {
++    /* TODO Reenable when wrlock is reenabled */
++#if 0
+     BdrvGraphRWlock *bdrv_graph;
+     bdrv_graph = qemu_get_current_aio_context()->bdrv_graph;
+ 
+@@ -218,10 +233,12 @@ void coroutine_fn bdrv_graph_co_rdlock(void)
+             qemu_co_queue_wait(&reader_queue, &aio_context_list_lock);
+         }
+     }
++#endif
+ }
+ 
+ void coroutine_fn bdrv_graph_co_rdunlock(void)
+ {
++#if 0
+     BdrvGraphRWlock *bdrv_graph;
+     bdrv_graph = qemu_get_current_aio_context()->bdrv_graph;
+ 
+@@ -239,6 +256,7 @@ void coroutine_fn bdrv_graph_co_rdunlock(void)
+     if (qatomic_read(&has_writer)) {
+         aio_wait_kick();
+     }
++#endif
+ }
+ 
+ void bdrv_graph_rdlock_main_loop(void)
+@@ -264,5 +282,8 @@ void assert_bdrv_graph_readable(void)
+ void assert_bdrv_graph_writable(void)
+ {
+     assert(qemu_in_main_thread());
++    /* TODO Reenable when wrlock is reenabled */
++#if 0
+     assert(qatomic_read(&has_writer));
++#endif
+ }
 -- 
 2.40.1
 
