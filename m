@@ -2,78 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814ED70679A
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 14:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B52A57067FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 14:23:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzFxA-0007Rx-Q9; Wed, 17 May 2023 08:08:24 -0400
+	id 1pzGAa-0002eq-J6; Wed, 17 May 2023 08:22:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1pzFx3-0007O2-1U
- for qemu-devel@nongnu.org; Wed, 17 May 2023 08:08:19 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzGAQ-0002eZ-35
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 08:22:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1pzFx1-0003sL-00
- for qemu-devel@nongnu.org; Wed, 17 May 2023 08:08:16 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1pzGAO-0006Yp-9j
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 08:22:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684325294;
+ s=mimecast20190719; t=1684326122;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=20rLuDb+RqGbgc9BdxJ1X/ks5hDUjRdW4kxSLOVdGYA=;
- b=iUSrj4acOifjIvvcvWqGJJevFa0aqRzM4iz2CY1fGZLa7nCJHso4IAM8MIafJDVLld1Uni
- QWAqSZ/1tpJDgQywXZy1I9xwjrvZG+r05/+h1DlzYG3Vd1GpMGp8mbh5E/ZTeRMO5tqK/n
- gh1Smts2T0SWXt+lkeCkRuKKLcAVH88=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-F5oLuqC-OHeKE9Enzjm9rg-1; Wed, 17 May 2023 08:08:13 -0400
-X-MC-Unique: F5oLuqC-OHeKE9Enzjm9rg-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-6439df91d81so462457b3a.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 05:08:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684325292; x=1686917292;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=20rLuDb+RqGbgc9BdxJ1X/ks5hDUjRdW4kxSLOVdGYA=;
- b=kqXAI5bFRUIIc6KXOPRb7mGIlA1VXwzj3S3D1iVOnQfe9h1nnIRrAUUkPgsd/5YtDO
- BAZ3GxtmRPdDklXHnas2nCAKZdOvB4N1vjTv089iZ7CjKBgohWeh4Fenk7Y05m0J22FY
- clS03GTsc/3+kydyTuf1+o6PJibCbayiaT3os3xhZ+vXGMXqCY8jcluXRTtyCLeddGGV
- cLdxCoz/VSvI1dSjmIFFg9sa9OU4UR63fjNnq27SIg1H2HUNIPXnRa9XA06sdQAMfdyF
- TuRRm++ArmxoV2ycv1LnkVhKHYdhKXVr5XGNRyOFS5/NXS95GfUxUxwO8WDvFnacPZOz
- wedw==
-X-Gm-Message-State: AC+VfDwV0PwaxLo5q6WZGh43ZHXhHz3bKrMZAAxo+Ax7z3jIssAH3jzQ
- Rnib7kbkozQaA9flnTIKB2c34TBtHSUVHfIZiKU75sPjaz35BEWLEnkYV9QYoBJH1dLYhIDR/ur
- nSdBLaTfQYsFcUCY=
-X-Received: by 2002:a05:6a00:810:b0:64c:c836:662d with SMTP id
- m16-20020a056a00081000b0064cc836662dmr647999pfk.20.1684325291911; 
- Wed, 17 May 2023 05:08:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6v411CJDbFcb0Amen4XrHzrBm35kHbVfXrIpeIuBZwbqK3c4aoqbfEgoSWdxRsq8rw4w2T8w==
-X-Received: by 2002:a05:6a00:810:b0:64c:c836:662d with SMTP id
- m16-20020a056a00081000b0064cc836662dmr647962pfk.20.1684325291497; 
- Wed, 17 May 2023 05:08:11 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.105.155])
- by smtp.googlemail.com with ESMTPSA id
- y10-20020aa7804a000000b006328ee1e56csm15153070pfm.2.2023.05.17.05.08.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 05:08:10 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH] acpi/tests/bios-tables-test: add an environment variable for
- iasl location
-Date: Wed, 17 May 2023 17:37:51 +0530
-Message-Id: <20230517120751.14679-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.39.1
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=IHUfvFJhkDz3DqKJFkj3rngWOHllKoZuVNXQlgQ6EjQ=;
+ b=Fdft2xanKgoCNgKcdQC9HbsEji8eVqy0kjS/ORgVZp2RqPs/NZflVQYG6/UghmqJtJqmzV
+ KBkoENkoOXx6j+VnYOM9U4FocT9EIEgHywEnuYZYxx4cLz0wPRqQaJP6JgfnvdBmK3wlh7
+ vYfXa5WddeD3VEa++o2SZ62YHYYWykA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-670--KuSUMsvPjCPB18WYzceaA-1; Wed, 17 May 2023 08:22:00 -0400
+X-MC-Unique: -KuSUMsvPjCPB18WYzceaA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40881867955;
+ Wed, 17 May 2023 12:21:59 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8EB3040C2063;
+ Wed, 17 May 2023 12:21:58 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 526FE21E66E3; Wed, 17 May 2023 14:21:54 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Avihai Horon <avihaih@nvidia.com>
+Cc: qemu-devel@nongnu.org,  Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,  Juan Quintela
+ <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Yishai
+ Hadas <yishaih@nvidia.com>,  Jason Gunthorpe <jgg@nvidia.com>,  Maor
+ Gottlieb <maorg@nvidia.com>,  Kirti Wankhede <kwankhede@nvidia.com>,
+ Tarun Gupta <targupta@nvidia.com>,  Joao Martins
+ <joao.m.martins@oracle.com>
+Subject: Re: [PATCH 1/8] migration: Add precopy initial data capability
+References: <20230501140141.11743-1-avihaih@nvidia.com>
+ <20230501140141.11743-2-avihaih@nvidia.com>
+ <87lehn71wm.fsf@pond.sub.org>
+ <1836389d-0774-08a1-ef54-8487d238fe73@nvidia.com>
+Date: Wed, 17 May 2023 14:21:54 +0200
+In-Reply-To: <1836389d-0774-08a1-ef54-8487d238fe73@nvidia.com> (Avihai Horon's
+ message of "Wed, 17 May 2023 13:16:00 +0300")
+Message-ID: <87lehn2lnh.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,89 +90,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the meson based QEMU build process locates the iasl binary from the
-current PATH and other locations [1] and uses that to set CONFIG_IASL which is
-then used by the test.
+Avihai Horon <avihaih@nvidia.com> writes:
 
-This has two disadvantages:
- - If iasl was not previously installed in the PATH, one has to install iasl
-   and rebuild QEMU in order to pick up the iasl location. One cannot simply
-   use the existing bios-tables-test binary because CONFIG_IASL is only set
-   during the QEMU build time by meson and then bios-tables-test has to be
-   rebuilt with CONFIG_IASL set in order to use iasl.
- - Sometimes, the stock iasl that comes with distributions is simply not good
-   enough because it does not support the latest ACPI changes - newly
-   introduced tables or new table attributes etc. In order to test ACPI code
-   in QEMU, one has to clone the latest acpica upstream repository and
-   rebuild iasl in order to get support for it. In those cases, one may want
-   the test to use the iasl binary from a non-standard location.
+> On 17/05/2023 12:17, Markus Armbruster wrote:
+>> External email: Use caution opening links or attachments
+>>
+>>
+>> Avihai Horon <avihaih@nvidia.com> writes:
+>>
+>>> Migration downtime estimation is calculated based on bandwidth and
+>>> remaining migration data. This assumes that loading of migration data in
+>>> the destination takes a negligible amount of time and that downtime
+>>> depends only on network speed.
+>>>
+>>> While this may be true for RAM, it's not necessarily true for other
+>>> migration users. For example, loading the data of a VFIO device in the
+>>> destination might require from the device to allocate resources, prepare
+>>> internal data structures and so on. These operations can take a
+>>> significant amount of time which can increase migration downtime.
+>>>
+>>> This patch adds a new capability "precopy initial data" that allows the
+>>> source to send initial precopy data and the destination to ACK that this
+>>> data has been loaded. Migration will not attempt to stop the source VM
+>>> and complete the migration until this ACK is received.
+>>>
+>>> This will allow migration users to send initial precopy data which can
+>>> be used to reduce downtime (e.g., by pre-allocating resources), while
+>>> making sure that the source will stop the VM and complete the migration
+>>> only after this initial precopy data is sent and loaded in the
+>>> destination so it will have full effect.
+>>>
+>>> This new capability relies on the return path capability to communicate
+>>> from the destination back to the source.
+>>>
+>>> The actual implementation of the capability will be added in the
+>>> following patches.
+>>>
+>>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+>>> ---
+>>>   qapi/migration.json |  9 ++++++++-
+>>>   migration/options.h |  1 +
+>>>   migration/options.c | 20 ++++++++++++++++++++
+>>>   3 files changed, 29 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/qapi/migration.json b/qapi/migration.json
+>>> index 82000adce4..d496148386 100644
+>>> --- a/qapi/migration.json
+>>> +++ b/qapi/migration.json
+>>> @@ -478,6 +478,13 @@
+>>>   #                    should not affect the correctness of postcopy migration.
+>>>   #                    (since 7.1)
+>>>   #
+>>> +# @precopy-initial-data: If enabled, migration will not attempt to stop source
+>>> +#                        VM and complete the migration until an ACK is received
+>>> +#                        from the destination that initial precopy data has
+>>> +#                        been loaded. This can improve downtime if there are
+>>> +#                        migration users that support precopy initial data.
+>>> +#                        (since 8.1)
+>>> +#
+>> Please format like
+>>
+>>     # @precopy-initial-data: If enabled, migration will not attempt to
+>>     #     stop source VM and complete the migration until an ACK is
+>>     #     received from the destination that initial precopy data has been
+>>     #     loaded.  This can improve downtime if there are migration users
+>>     #     that support precopy initial data.  (since 8.1)
+>>
+>> to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
+>> to conform to current conventions).
+>
+> Sure.
+>
+>>
+>> What do you mean by "if there are migration users that support precopy
+>> initial data"?
+>
+> This capability only provides the framework to send precopy initial data and ACK that it was loaded in the destination.
+> To actually benefit from it, migration users (such as VFIO devices, RAM, etc.) must implement support for it and use it.
+>
+> What I wanted to say here is that there is no point to enable this capability if there are no migration users that support it.
+> For example, if you are migrating a VM without VFIO devices, then enabling this capability will have no effect.
 
-In order to overcome the above two disadvantages, we introduce a new
-environment variable IASL_PATH that can be set by the tester pointing to an
-possibly non-standard iasl binary location. Bios-tables-test then uses this
-environment variable to set its iasl location, possibly also overriding the
-location that was pointed to by CONFIG_IASL that was set by meson. This way
-developers can not only use this new environment variable to set iasl
-location to quickly run bios-tables-test but also can point the test to a
-custom iasl if required.
+I see.
 
-[1] https://mesonbuild.com/Reference-manual_functions.html#find_program
+Which "migration users" support it now?
 
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- tests/qtest/bios-tables-test.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Which could support it in the future?
 
-sample runs:
+Is the "initial precopy data" feature described in more detail anywhere?
 
-$ QTEST_QEMU_BINARY=./qemu-system-x86_64 V=2 ./tests/qtest/bios-tables-test
-...
-acpi-test: Warning! APIC binary file mismatch. Actual [aml:/tmp/aml-DLHA51], Expected [aml:tests/data/acpi/pc/APIC].
-See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
-Using iasl: /usr/bin/iasl
-acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-L9GA51.dsl, aml:/tmp/aml-DLHA51], Expected [asl:/tmp/asl-10EA51.dsl, aml:tests/data/acpi/pc/APIC].
+>> Do I have to ensure the ACK comes by configuring the destination VM in a
+>> certain way, and if yes, how exactly?
+>
+> In v2 of the series that I will send later you will have to enable this capability also in the destination.
 
-$ QTEST_QEMU_BINARY=./qemu-system-x86_64 V=2 IASL_PATH=/home/anisinha/workspace/acpica/generate/unix/bin/iasl ./tests/qtest/bios-tables-test
-...
-acpi-test: Warning! APIC binary file mismatch. Actual [aml:/tmp/aml-5CQ341], Expected [aml:tests/data/acpi/pc/APIC].
-See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
-User has provided an iasl path, using that: /home/anisinha/workspace/acpica/generate/unix/bin/iasl
-acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-2GQ341.dsl, aml:/tmp/aml-5CQ341], Expected [asl:/tmp/asl-IBR341.dsl, aml:tests/data/acpi/pc/APIC].
+What happens when you enable it on the source and not on the
+destination?
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 7fd88b0e9c..37e8e484cb 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -440,7 +440,12 @@ static void test_acpi_asl(test_data *data)
-     AcpiSdtTable *sdt, *exp_sdt;
-     test_data exp_data = {};
-     gboolean exp_err, err, all_tables_match = true;
-+    const char *user_iasl_path = getenv("IASL_PATH");
- 
-+    /* if user has provided a path to iasl, use that */
-+    if (user_iasl_path) {
-+        iasl = user_iasl_path;
-+    }
-     exp_data.tables = load_expected_aml(data);
-     dump_aml_files(data, false);
-     for (i = 0; i < data->tables->len; ++i) {
-@@ -473,6 +478,15 @@ static void test_acpi_asl(test_data *data)
-             continue;
-         }
- 
-+        if (verbosity_level >= 2) {
-+            if (user_iasl_path) {
-+                fprintf(stderr, "User has provided an iasl path," \
-+                        "using that: %s\n", user_iasl_path);
-+            } else {
-+                fprintf(stderr, "Using iasl: %s\n", iasl);
-+            }
-+        }
-+
-         err = load_asl(data->tables, sdt);
-         asl = normalize_asl(sdt->asl);
- 
--- 
-2.39.1
+[...]
 
 
