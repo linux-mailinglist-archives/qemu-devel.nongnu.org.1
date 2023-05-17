@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFAF70745A
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DE4707477
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 23:41:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzOlo-0003tK-79; Wed, 17 May 2023 17:33:16 -0400
+	id 1pzOsd-0007tp-Rl; Wed, 17 May 2023 17:40:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOll-0003t1-PU
- for qemu-devel@nongnu.org; Wed, 17 May 2023 17:33:13 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOsc-0007tc-BB
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:40:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOlk-0002PW-0c
- for qemu-devel@nongnu.org; Wed, 17 May 2023 17:33:13 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzOsX-0003uf-9q
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 17:40:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684359190;
+ s=mimecast20190719; t=1684359612;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yCMXFeI5aCvin78SFUUvbPKyYODaHY90bYpsrewDrR4=;
- b=AP/benz/zyI/NzMhZ3hrPRG20TKjZbSKEccrDZLF0juZpbp/kAQpulvSEZt3DX+/olZG9Y
- B53Yd+VihbPB/85NLH0XOMQ+Ie+f9R7p4MfIaipjS9PPmuC9ga5PhS8TLCyDDjwaXfNECA
- 2J+DR2AA3vaA10vkA8ASDxLE0EJrFeA=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Z1o846Dh8wWPEH2D8VFjFRkhhoxdmIXC1lQDghM5J44=;
+ b=NyVk+jo+qyZNiiMDoN+9D8n2rFi4rmmmOFU6PEQm8xEpMd+WOVSA88nPiBuoVfhooowvOt
+ Dvov5/EE9Fl0VlsVAoUUKCxWTvbk6ZmostkYCrPHMP+mwuOS5S3CSzXPOgyNFqUx5pujDx
+ KOmemMmFPAmp1P/erfgq3npydMb0KRg=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-zwbWBfSjMcWfq_9l7JUDZg-1; Wed, 17 May 2023 17:33:09 -0400
-X-MC-Unique: zwbWBfSjMcWfq_9l7JUDZg-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-24e147c206eso833594a91.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:33:09 -0700 (PDT)
+ us-mta-634-Y57E2lIVPg6cxkao-K64FA-1; Wed, 17 May 2023 17:40:11 -0400
+X-MC-Unique: Y57E2lIVPg6cxkao-K64FA-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2533b1e6e66so859692a91.3
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 14:40:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684359188; x=1686951188;
+ d=1e100.net; s=20221208; t=1684359610; x=1686951610;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yCMXFeI5aCvin78SFUUvbPKyYODaHY90bYpsrewDrR4=;
- b=Qd8dI3QaDh5kCsNL4FnM2G736NcSPY6jFEvuqkXveyysGD50g8pJ8cM8qRVhiJZ2Cc
- In37ZIsSgZqtBd7RejZNJS77crR7VO89clYFXElhhavnvU5staA8Lyy7wGm9II6qHeL8
- QmBAfBDMjzcAGKBhCvZiPHsd+xxaw+bxmX6ExrHpawrwbl7WVlD2r3vZsl+Kmj/Bghlj
- rAf6VntsSZF2duGGzE1tp9uWqt4YAs2O6qDuLPxrwBFhFPS3pRdXr0fPdKh2CuS41cIe
- URdl5Y5y8RFk4o+c1jBXf9PDaNyLKWD0h7zzTZXRiiFVkaDQNXr5SttQSHD4B/JJdDGj
- wqUw==
-X-Gm-Message-State: AC+VfDw5Axtdsk5YVPVElksM4W53QE9vwTmpBfba6871e8P1IlUzIm/L
- JHGzFskn812D+K8blkCCw5ZBFCoWmDmaPs9S63xFYupKuYNWTAM3PC+9ovINddFa3pB6QUr4xZ1
- 5gDuOdqhJwtzeEWE0T+kh6CFbZbqYevw=
-X-Received: by 2002:a17:90a:1b0c:b0:253:2a56:3831 with SMTP id
- q12-20020a17090a1b0c00b002532a563831mr250485pjq.34.1684359188167; 
- Wed, 17 May 2023 14:33:08 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ46StApNgwfc8T4kqJsfCY9/5EtDyMmH/aNQcjODqIeFLaRiGv7T8jEOf++g0jJEsl1oIdy0stGlJxhUhWXg1k=
-X-Received: by 2002:a17:90a:1b0c:b0:253:2a56:3831 with SMTP id
- q12-20020a17090a1b0c00b002532a563831mr250472pjq.34.1684359187909; Wed, 17 May
- 2023 14:33:07 -0700 (PDT)
+ bh=Z1o846Dh8wWPEH2D8VFjFRkhhoxdmIXC1lQDghM5J44=;
+ b=MuMzQLa17mr9Zg27K9LDbjzUe87W4f+xz3oRd6Us1yl+yUk7THhYPHPhDKdWG8BOSx
+ aL6/NdvJzHRaLd2moxtjdmjnYsrYRMiB5UOVZ5Lle+MM4tonhLtu4xZxaYw07LNv+pWu
+ 9WMUBdAsbXX3yEJOnKTIsDdI39k6ox8i6HY6oRNOtNDaByztQYIGzzbgwvSchPAF0qqe
+ lbELEldaBbR55/looCaDiSf0aalamZyAwI3gCjVmJ2m0iGj0ljTq8eg15MIhvEPaCMxl
+ iBeIS5goDWSdMzjIjf0xMhc8nwYfbjz8eKvOXx1/8z7uxZoIa4fDsBc18wLEEXwDaY0/
+ 0tgQ==
+X-Gm-Message-State: AC+VfDzdNZ8ByHWsuz+7wmps8gCCNF41S41wivPQ1PrjgYtpiaqBPxt1
+ fAuQ9sH89LCTxjf/SqHOmJpMRjhuPopIFhjZVy7BISZVHhCWUOfAEiqB3GfUfGGdmR8vS09zx9r
+ GaxSKU3MGkIAsfV9aAr04ullppQbHk7I=
+X-Received: by 2002:a17:90a:fa4f:b0:24d:e3dc:4b10 with SMTP id
+ dt15-20020a17090afa4f00b0024de3dc4b10mr297877pjb.23.1684359610006; 
+ Wed, 17 May 2023 14:40:10 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7AEXzEfg+Oc8KiznkPoccG+FXwVyMg0Kvq0pofdPAk79RrD6KRLxC/sm8wbNof1n3kGEAGP81w/YbSH1JzBAs=
+X-Received: by 2002:a17:90a:fa4f:b0:24d:e3dc:4b10 with SMTP id
+ dt15-20020a17090afa4f00b0024de3dc4b10mr297866pjb.23.1684359609767; Wed, 17
+ May 2023 14:40:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230416222838.36642-1-mateusz.p.albecki@gmail.com>
- <20230416222838.36642-2-mateusz.p.albecki@gmail.com>
-In-Reply-To: <20230416222838.36642-2-mateusz.p.albecki@gmail.com>
+References: <20230224153410.19727-1-philmd@linaro.org>
+In-Reply-To: <20230224153410.19727-1-philmd@linaro.org>
 From: John Snow <jsnow@redhat.com>
-Date: Wed, 17 May 2023 17:32:56 -0400
-Message-ID: <CAFn=p-bcAW9aMymmWeVSMeyuT88YDZ2iYVh-t1GoogbBBPFjSw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/ide/core.c: fix handling of unsupported commands
-To: Mateusz Albecki <mateusz.p.albecki@gmail.com>
-Cc: qemu-devel@nongnu.org, Mateusz Albecki <mateusz.albecki@outlook.com>, 
- Niklas Cassel <niklas.cassel@wdc.com>, Niklas Cassel <nks@flawful.org>
+Date: Wed, 17 May 2023 17:39:58 -0400
+Message-ID: <CAFn=p-ZmCVwwE=MN+V+1+-tG-N2HZxrKpYrcipJn-2SLUJfmCg@mail.gmail.com>
+Subject: Re: [PATCH] hw/ide: Remove unuseful IDE_DMA__COUNT definition
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, qemu-block@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,49 +91,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Apr 16, 2023 at 6:29=E2=80=AFPM Mateusz Albecki
-<mateusz.p.albecki@gmail.com> wrote:
+On Fri, Feb 24, 2023 at 10:34=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
 >
-> From: Mateusz Albecki <mateusz.albecki@outlook.com>
+> First, IDE_DMA__COUNT represents the number of enumerated
+> values, but is incorrectly listed as part of the enum.
 >
-> Current code will not call ide_cmd_done when aborting the unsupported
-> command which will lead to the command timeout on the driver side instead
-> of getting a D2H FIS with ABRT indication. This can lead to problems on t=
-he
-> driver side as the spec mandates that device should return a D2H FIS with
-> ABRT bit set in ERR register(from SATA 3.1 section 16.3.3.8.6)
+> Second, IDE_DMA_CMD_str() is internal to core.c and only
+> takes sane enums from ide_dma_cmd. So no need to check the
+> 'enval' argument is within the enum range. Only checks
+> IDE_DMA_CMD_lookup[] entry is not NULL.
 >
-> Signed-off-by: Mateusz Albecki <mateusz.p.albecki@gmail.com>
-> ---
->  hw/ide/core.c | 1 +
->  1 file changed, 1 insertion(+)
+> Both combined, IDE_DMA__COUNT can go.
 >
-> diff --git a/hw/ide/core.c b/hw/ide/core.c
-> index 45d14a25e9..d7027bbd4d 100644
-> --- a/hw/ide/core.c
-> +++ b/hw/ide/core.c
-> @@ -2146,6 +2146,7 @@ void ide_bus_exec_cmd(IDEBus *bus, uint32_t val)
->
->      if (!ide_cmd_permitted(s, val)) {
->          ide_abort_command(s);
-> +        ide_cmd_done(s);
->          ide_bus_set_irq(s->bus);
->          return;
->      }
-> --
-> 2.40.0
+> Reduce IDE_DMA_CMD_lookup[] scope which is only used locally.
 >
 
-I recently noticed that Niklas Cassel sent a patch to fix unsupported
-command handling:
-https://lists.gnu.org/archive/html/qemu-devel/2023-04/msg05552.html
+You reviewed the patch where this got written in :)
 
-I suspect that his approach is the more technically correct one and
-that calling ide_cmd_done here is a heavy cudgel that may have
-unintended consequences. Am I mistaken?
-Can you check that Niklas's patch solves your issue? I think you're
-both solving the same problem. I've CC'd him on this patch as well.
+I didn't think anything actually protected us from giving
+IDE_DMA_CMD_str() a bogus integer. I'm not familiar with the idea that
+it takes "only sane enums". Is that true? Or, is it just because it's
+internal to the file that we can statically prove that it's true?
 
 --js
+
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/ide/core.c             | 10 +++++-----
+>  include/hw/ide/internal.h |  3 ---
+>  2 files changed, 5 insertions(+), 8 deletions(-)
+>
+> diff --git a/hw/ide/core.c b/hw/ide/core.c
+> index 5d1039378f..8bf61e7267 100644
+> --- a/hw/ide/core.c
+> +++ b/hw/ide/core.c
+> @@ -63,19 +63,19 @@ static const int smart_attributes[][12] =3D {
+>      { 190,  0x03, 0x00, 0x45, 0x45, 0x1f, 0x00, 0x1f, 0x1f, 0x00, 0x00, =
+0x32},
+>  };
+>
+> -const char *IDE_DMA_CMD_lookup[IDE_DMA__COUNT] =3D {
+> +static const char *IDE_DMA_CMD_lookup[] =3D {
+>      [IDE_DMA_READ] =3D "DMA READ",
+>      [IDE_DMA_WRITE] =3D "DMA WRITE",
+>      [IDE_DMA_TRIM] =3D "DMA TRIM",
+> -    [IDE_DMA_ATAPI] =3D "DMA ATAPI"
+> +    [IDE_DMA_ATAPI] =3D "DMA ATAPI",
+>  };
+>
+>  static const char *IDE_DMA_CMD_str(enum ide_dma_cmd enval)
+>  {
+> -    if ((unsigned)enval < IDE_DMA__COUNT) {
+> -        return IDE_DMA_CMD_lookup[enval];
+> +    if (!IDE_DMA_CMD_lookup[enval]) {
+> +        return "DMA UNKNOWN CMD";
+>      }
+> -    return "DMA UNKNOWN CMD";
+> +    return IDE_DMA_CMD_lookup[enval];
+>  }
+>
+>  static void ide_dummy_transfer_stop(IDEState *s);
+> diff --git a/include/hw/ide/internal.h b/include/hw/ide/internal.h
+> index fc0aa81a88..e864fe8caf 100644
+> --- a/include/hw/ide/internal.h
+> +++ b/include/hw/ide/internal.h
+> @@ -352,11 +352,8 @@ enum ide_dma_cmd {
+>      IDE_DMA_WRITE,
+>      IDE_DMA_TRIM,
+>      IDE_DMA_ATAPI,
+> -    IDE_DMA__COUNT
+>  };
+>
+> -extern const char *IDE_DMA_CMD_lookup[IDE_DMA__COUNT];
+> -
+>  #define ide_cmd_is_read(s) \
+>          ((s)->dma_cmd =3D=3D IDE_DMA_READ)
+>
+> --
+> 2.38.1
+>
 
 
