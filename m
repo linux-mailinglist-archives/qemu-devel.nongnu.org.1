@@ -2,89 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A07706472
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 409D3706482
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 11:49:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzDgs-0007rK-4M; Wed, 17 May 2023 05:43:26 -0400
+	id 1pzDlR-0003IM-64; Wed, 17 May 2023 05:48:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1pzDgi-0007oJ-Mc
- for qemu-devel@nongnu.org; Wed, 17 May 2023 05:43:18 -0400
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ (Exim 4.90_1) (envelope-from <brchuckz@aim.com>) id 1pzDlO-0003Ez-M9
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 05:48:06 -0400
+Received: from sonic315-8.consmr.mail.gq1.yahoo.com ([98.137.65.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1pzDgc-0006IZ-Ak
- for qemu-devel@nongnu.org; Wed, 17 May 2023 05:43:12 -0400
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-39420384cc4so403229b6e.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 02:43:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1684316588; x=1686908588;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=330bbfPwJfkdLBg7u8w9eH5VgxXkkoF5RD84Qv8xHWI=;
- b=e6g7U6BoYGCkRdA3Npcgz9M+/6LekmVmJuXjVHjS4jcTy58rlBTrOQiFbayGZgo124
- YHF6wVC5xgZBxxmIrTDsOjxkl7upyKmxLxuvod7/JJ13cqRB4cLcCRPSdkM+zJmTBROh
- ve7WJzW77HMGGtpl5tZc6+c/9M8qLlNJ1JfUhW6ic2bCkSFhcs45EkBw0WrL80IRA0A/
- R8tSfbpUIOoW1mql4iW8HxkMwuI0lXNRNpH1ToZAMAqN+6fEL/a2fEyglfy3U9ys8qhd
- TVQkWKOhjJ2FWCtQ4YNKuJYY2J087hx3kzWhCO3hXULYcBbpHQqZ71LJSqJchSQFePzu
- 9yaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684316588; x=1686908588;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=330bbfPwJfkdLBg7u8w9eH5VgxXkkoF5RD84Qv8xHWI=;
- b=Rt6mmzRCs3+5jiSuJ3f/VAIK8hvTLO6MjVHJk+DdDL7v1TeAqvmt1u9gXz8V19vqip
- 63om3w+aKQ4SDQHFixjjNIF8dvdQPxyj8Ood3Sj3FynRLSlVH28kmFt5QCfS7ptgow6X
- tovyLjVDvpUa4Ui2coL5b0EfiitbQxG2/mLKZFCaSicT1oadxGHbQOk4cQege7giIdhJ
- 4sKyPhkqnw/RsiDkadty2R0QQWgBb1zfFwkg35Am6jroDTbtUzX8yY915e9sqxqWQhF6
- 5NWiNQgcZpCz+6DlktrMtN1NTd8Dkqvlk89F9SNlY4ZevxaL5hh5P2Y4Q5ZMCgwvqCwh
- AjGA==
-X-Gm-Message-State: AC+VfDyRl0DACjZ8BwmxMPaJ4IvjzJ7GYuJLcH+WPvZ27UdWQMM6siK1
- myquahR4g5OgF0ijiCOS0ESFBA==
-X-Google-Smtp-Source: ACHHUZ562e2J9ZEBLRH8+4V/Zt8e6eK9F1iRuoF07jwB02ykcCadWTTVHYC+n1lLMXau6vXzoAvd9g==
-X-Received: by 2002:a05:6808:6295:b0:392:5882:69d6 with SMTP id
- du21-20020a056808629500b00392588269d6mr12995753oib.16.1684316588379; 
- Wed, 17 May 2023 02:43:08 -0700 (PDT)
-Received: from [192.168.68.107] (189-46-207-53.dsl.telesp.net.br.
- [189.46.207.53]) by smtp.gmail.com with ESMTPSA id
- c15-20020a056808138f00b003874e6dfeefsm9221237oiw.37.2023.05.17.02.43.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 May 2023 02:43:08 -0700 (PDT)
-Message-ID: <527b0d33-58f4-73c7-1c0e-10960defb67d@ventanamicro.com>
-Date: Wed, 17 May 2023 06:43:04 -0300
+ (Exim 4.90_1) (envelope-from <brchuckz@aim.com>) id 1pzDlM-0007Oq-GG
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 05:48:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048;
+ t=1684316879; bh=aQdscKvLY6S6aQh/xtHAjeHn3mkGg+q462RfdyoVGDo=;
+ h=Date:From:Subject:To:Cc:References:In-Reply-To:From:Subject:Reply-To;
+ b=NxYsyj0LBb0F4lcv7k+j5t9nJ4hSQqhiDpI3nPPqw1dqNP99We5mLSXhlhwA3SuYVtYN8n9B9bvHhnNEz5RwHkRYM2DjbY7ibSoOJB09VeOw5/X9Ld9AojjWdyPknZMzixOONhwwBRLZKAG84APZ+Nd7wdpcF4FscnmdUEAdPhuaIEhhAYHXzbHXoXBT6r+OdKUxEtacpr/XXrh8Z7TAJkbfHZ16h8Nw9fGoMMgGe7DKRUkGNjG1om3DV49gz1A0ZCBFnXgHX3tw9TxMBkrjEN/xqP9eU/fFun6Mt8DCneDS+S3qGwJlFtZPv0alZdiajH84j9AuHQNyPa8L3n3i1Q==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
+ t=1684316879; bh=4daBEh926WVPMyxCoaZ42Ind3YD2iMbZTrLb4RtE6eL=;
+ h=X-Sonic-MF:Date:From:Subject:To:From:Subject;
+ b=DCJJDr9M5HfHciobmrpii3IKct1Wf7aFwV/eU5GygKPWS7n2gI97QtQdymen8M+Sx1L2d9s31YFc+dC2hxxyZvI8TfzzbRdlKkrOmg534OdJyP3LXMXqqLJqEeSAIDN19TKe8Q+9Cl2JCKPrM55hTJ6Il4G5yXGWXg7dK0lrL8FMm53a4t5TXjaE60eTL4yx2bgoa0TpDhZWaNVfj0Upw0hj+/uc2bwewnPtvsjRQkZ8vFfWXtQ1xqOlHrPzr5HrhVmFOGGsbLModl6CSR/VXP617ac181VKgCZmcL10k0JWb7FmM+Ex3ek9IhU+685sAah84bKNZ1jxUa14rrKShw==
+X-YMail-OSG: TJX2jYsVM1nF85kpPnGWeXvnTL5hE1dgUE6Cq76nrXx.KSuRVXdJydyDPNVdAou
+ eJKhlXPF_0yUHiWremP6Zed_03k1h07aaq3BnbKS64N4mpma7Qti_RAGgBRe6_h8ieB9JxdQTwps
+ DIPZNc.8E.cvlyw.8KxFAZpK4j6AH_DNlY7hQWRsaHL.1aVEj_Eeg4vSUtT2fUjElmyuLLm2p1hM
+ kQBWiRZgpPS5f4PxJcWfMqpRppMQK6Wg5NzFjW5drADld0rou9k5hdwHmnITiSQhO_awGhmGf.AR
+ JaczotUdnLayeCYw9D_nlvzFJ7olROQ.nYYL5aGTjqoa3vRphnTXIRauhrkbJ5SCLcwFjaHNFZRf
+ XhRS0IwT0qBocmxt.0t6dAVPOSjpcZDz1BofVfchffrsyYEjj6JwkahPT4lE1dNkS7rYha.4ab.G
+ 7y8vUmLgPbOazHHpD19UYB0ZSU6SNgvN7MjMFjXq0zf9gLk07SPLHHN0gdU00oujtJIHrtJUTsuc
+ bM1FHveV0JUZ4XZFuK_jHsd8AjRR.bRCQihHAxN131sLcv05DgzNBGlyY29gr6yyoJTrTymXLnSc
+ TZPBClCy_rBrvgp6R8KThwEOq6EAfZF2QW9zK5zMFSJsCq0mYZzDgNL3Nin3uFMVbUxhmfiyvyBY
+ dUMr6iUvqpCijY6wrByjMZhIDi9oc2Fx15bU6QckILeuuk7CKPz7JQ1SER7OtwyFrM71Mv1XmX02
+ fvbBUs.uUTyzQMwla84VN.dpVPVd6hXtKcqkoUeBGbjEgU9gQ7ttDUgEU3veeLkRi7YRqwoJFr.f
+ M_hxFmyQidjkon0YNugVUdxjVIhGVZ5wm9.62nys4VYhv7Ip_7hyHAEXetXaEpmZAFonwkUQUDHp
+ dtjxU.eBw2EEq9bYRIDEVXHNH72j_DcZXCitXetALf8pm__WZMwuObtqTLCKJarIs4AHycO1G4k9
+ wQBAPv7soUT21cOMmbl91oss3jLohT10ecZ.6nzXrZsJ7aEyBy7AG4L4x6dGUcSsNrD.Q37cNpfO
+ NoaC23VIYqRMvy8kCg95bS_NMdWd8QqIJjZNTyUcxbm64k.nL2a2.lmgbBnQ6iqjIN9cHCyQruQw
+ uCSCpDUA4G0AfS84wpSA.lrTmTzzFsIWkuh8GBiyBppg3Epmn_ToBVqNmCaArBEZdJf_ZxEPaOfa
+ 0JM5r7gBHfEFSwdDz_mGAkHtZNENZhL1so.uMTppiqLkA_3396Jm83UcUcir6e4r4T55b7vlABWk
+ jfCY5p0R_zrg7xLy68wkdRog.B3xxGdx6Cyjqipl2IjCaHUv0UDqxOlK85vdYWW0pxWQNyNn_YYf
+ qI0ZRgD_oAG9f240YwBnDHTufTZUZWalcTcubC5K2ovDANBtX36APUTJT2JmvKckHqaHMXaaXuo2
+ rgM2GHwlA4.R3BaLwqCv1TrhNjPC.W8iC5pGIzKSEiLmcjgm9jPPmJqcO1aHNG5k9qu2wlahlJee
+ hqRdoTAHUsy09D9iD8VQ6bjrT8Sx3rEh7L0O9zO.4AVCm5LHzY5hwjRbZORaM5vHckDoqRhj9q6R
+ xyAK1.r5w1me8rRgvfzpAhrqj6Karnc5qZOSj7l440U_8sAc2jDh443zrZpyjJJKDQ8aJUkjSE2F
+ jWv6WcOgbcl2NXjIht1Z.BMxGUSpWOl20e__FqxmawrLu1be5oDwi8GIJGIPfORSf2d_ZuwqmcjS
+ UI86Fz_tjgLUfLaL6oAsWg7yZbBs2I.gNNlicnBsF4qhhhBunVy6MDcdteObdGEqQomvHrYeP2Gc
+ K3m7iOxL6zGQNhI8elC1n5so4ici6FIohO4fSVgeIAsV6vxJ85PvS54Pg61zk7yfQERppaFIYZEP
+ U93LvdNp8f_BkXp0rkoNKgBo7AnasOsA8QPxMogBYLg8KvEF1ORwpgpc4S5Vb5BgXBsLY52LTNNs
+ J_.isQr9FRXoktN61BetWZxDuwQ3qODmcTyi.PO2i2jcX_99V2e.ul2fz_hPv.iuAITvUO5JpHI7
+ s8q3H7ylHPTDGHqx3vjY8ncdco24Qkj2V0yhfHEyr.RAhsLrcpD.UtDRT1odIIxuh._vSldh1ihf
+ 4xIiiaAqS4fjooQDOPRbP.dJDQTBJM7Khv1bjaVx8WaDVLbYITTXQMRedYoDE7NeB6dZt69IdzCq
+ YyPXa5fP1AkkI6QbYhwWHH5ZPJFrMm59HsOiAKC0QbOeSVujKFVwFmwNUY5lsaB3d5SV4nIs4uIe
+ W3RtOY4LVGEjCeEJA
+X-Sonic-MF: <brchuckz@aim.com>
+X-Sonic-ID: 4eb3fcf0-14b8-4781-b11e-557bf4fbb7f4
+Received: from sonic.gate.mail.ne1.yahoo.com by
+ sonic315.consmr.mail.gq1.yahoo.com with HTTP; Wed, 17 May 2023 09:47:59 +0000
+Received: by hermes--production-bf1-54475bbfff-xh8w9 (Yahoo Inc. Hermes SMTP
+ Server) with ESMTPA ID 24aad0db06063cbf22325155fe59148c; 
+ Wed, 17 May 2023 09:47:54 +0000 (UTC)
+Message-ID: <47ed3568-2127-a865-4e4f-ff5902484231@aol.com>
+Date: Wed, 17 May 2023 05:47:52 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v8 11/11] target/riscv: rework write_misa()
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230421132727.121462-1-dbarboza@ventanamicro.com>
- <20230421132727.121462-12-dbarboza@ventanamicro.com>
- <CAKmqyKPcEvWXb7m4uRxBJoVzNmjoX-Oo=H+GNO_c4PY0HOJNpQ@mail.gmail.com>
- <0fb9fc04-49a4-fa32-3bf4-3a2cb7a96c4b@ventanamicro.com>
- <CAKmqyKOaz8dUt5+LBgr_ewO+s3x2XrtVGvGMM5WwyLVzMMzBQA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+From: Chuck Zmudzinski <brchuckz@aol.com>
+Subject: Re: [PATCH] xen/pt: fix igd passthrough for pc machine with xen
+ accelerator
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, xen-devel@lists.xenproject.org,
+ qemu-stable@nongnu.org
+References: <a304213d26506b066021f803c39b87f6a262ed86.1675820085.git.brchuckz.ref@aol.com>
+ <a304213d26506b066021f803c39b87f6a262ed86.1675820085.git.brchuckz@aol.com>
+ <986d9eca-5fab-cacb-05c7-b85e4d58665b@msgid.tls.msk.ru>
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAKmqyKOaz8dUt5+LBgr_ewO+s3x2XrtVGvGMM5WwyLVzMMzBQA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x229.google.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
+In-Reply-To: <986d9eca-5fab-cacb-05c7-b85e4d58665b@msgid.tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21471
+ mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
+Received-SPF: pass client-ip=98.137.65.32; envelope-from=brchuckz@aim.com;
+ helo=sonic315-8.consmr.mail.gq1.yahoo.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.666,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-2.666,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,270 +114,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 5/17/2023 2:39 AM, Michael Tokarev wrote:
+> 08.02.2023 05:03, Chuck Zmudzinski wrote:
+> > Commit 998250e97661 ("xen, gfx passthrough: register host bridge specific
+> > to passthrough") uses the igd-passthrough-i440FX pci host device with
+> > the xenfv machine type and igd-passthru=on, but using it for the pc
+> > machine type, xen accelerator, and igd-passtru=on was omitted from that
+> > commit.
+> > 
+> > The igd-passthru-i440FX pci host device is also needed for guests
+> > configured with the pc machine type, the xen accelerator, and
+> > igd-passthru=on. Specifically, tests show that not using the igd-specific
+> > pci host device with the Intel igd passed through to the guest results
+> > in slower startup performance and reduced resolution of the display
+> > during startup. This patch fixes this issue.
+> > 
+> > To simplify the logic that is needed to support both the --enable-xen
+> > and the --disable-xen configure options, introduce the boolean symbol
+> > pc_xen_igd_gfx_pt_enabled() whose value is set appropriately in the
+> > sysemu/xen.h header file as the test to determine whether or not
+> > to use the igd-passthrough-i440FX pci host device instead of the
+> > normal i440FX pci host device.
+> > 
+> > Fixes: 998250e97661 ("xen, gfx passthrough: register host bridge specific to passthrough")
+> > Signed-off-by: Chuck Zmudzinski <brchuckz@aol.com>
+>
+> Has this change been forgotten?  Is it not needed anymore?
 
+Short answer:
 
-On 5/17/23 01:48, Alistair Francis wrote:
-> On Mon, May 8, 2023 at 8:29 PM Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
->>
->>
->>
->> On 5/7/23 20:25, Alistair Francis wrote:
->>> On Fri, Apr 21, 2023 at 11:29 PM Daniel Henrique Barboza
->>> <dbarboza@ventanamicro.com> wrote:
->>>>
->>>> write_misa() must use as much common logic as possible. We want to open
->>>> code just the bits that are exclusive to the CSR write operation and TCG
->>>> internals.
->>>>
->>>> Our validation is done with riscv_cpu_validate_set_extensions(), but we
->>>> need a small tweak first. When enabling RVG we're doing:
->>>>
->>>>           env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
->>>>           env->misa_ext_mask = env->misa_ext;
->>>>
->>>> This works fine for realize() time but this can potentially overwrite
->>>> env->misa_ext_mask if we reutilize the function for write_misa().
->>>>
->>>> Instead of doing misa_ext_mask = misa_ext, sum up the RVG extensions in
->>>> misa_ext_mask as well. This won't change realize() time behavior
->>>> (misa_ext_mask will be == misa_ext) and will ensure that write_misa()
->>>> won't change misa_ext_mask by accident.
->>>>
->>>> After that, rewrite write_misa() to work as follows:
->>>>
->>>> - mask the write using misa_ext_mask to avoid enabling unsupported
->>>>     extensions;
->>>>
->>>> - suppress RVC if the next insn isn't aligned;
->>>>
->>>> - disable RVG if any of RVG dependencies are being disabled by the user;
->>>>
->>>> - assign env->misa_ext and run riscv_cpu_validate_set_extensions(). On
->>>>     error, rollback env->misa_ext to its original value;
->>>>
->>>> - handle RVF and MSTATUS_FS and continue as usual.
->>>>
->>>> Let's keep write_misa() as experimental for now until this logic gains
->>>> enough mileage.
->>>>
->>>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->>>> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
->>>> ---
->>>>    target/riscv/cpu.c |  4 ++--
->>>>    target/riscv/cpu.h |  1 +
->>>>    target/riscv/csr.c | 47 ++++++++++++++++++++--------------------------
->>>>    3 files changed, 23 insertions(+), 29 deletions(-)
->>>>
->>>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->>>> index 7d407321aa..4fa720a39d 100644
->>>> --- a/target/riscv/cpu.c
->>>> +++ b/target/riscv/cpu.c
->>>> @@ -944,7 +944,7 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
->>>>     * Check consistency between chosen extensions while setting
->>>>     * cpu->cfg accordingly.
->>>>     */
->>>> -static void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->>>> +void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->>>>    {
->>>>        CPURISCVState *env = &cpu->env;
->>>>        Error *local_err = NULL;
->>>> @@ -960,7 +960,7 @@ static void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->>>>            cpu->cfg.ext_ifencei = true;
->>>>
->>>>            env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
->>>> -        env->misa_ext_mask = env->misa_ext;
->>>> +        env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
->>>>        }
->>>>
->>>>        if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
->>>> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
->>>> index 15423585d0..1f39edc687 100644
->>>> --- a/target/riscv/cpu.h
->>>> +++ b/target/riscv/cpu.h
->>>> @@ -548,6 +548,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->>>>                            bool probe, uintptr_t retaddr);
->>>>    char *riscv_isa_string(RISCVCPU *cpu);
->>>>    void riscv_cpu_list(void);
->>>> +void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
->>>>
->>>>    #define cpu_list riscv_cpu_list
->>>>    #define cpu_mmu_index riscv_cpu_mmu_index
->>>> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
->>>> index 4451bd1263..4a3c57ea6f 100644
->>>> --- a/target/riscv/csr.c
->>>> +++ b/target/riscv/csr.c
->>>> @@ -1387,39 +1387,18 @@ static RISCVException read_misa(CPURISCVState *env, int csrno,
->>>>    static RISCVException write_misa(CPURISCVState *env, int csrno,
->>>>                                     target_ulong val)
->>>>    {
->>>> +    RISCVCPU *cpu = env_archcpu(env);
->>>> +    uint32_t orig_misa_ext = env->misa_ext;
->>>> +    Error *local_err = NULL;
->>>> +
->>>>        if (!riscv_cpu_cfg(env)->misa_w) {
->>>>            /* drop write to misa */
->>>>            return RISCV_EXCP_NONE;
->>>>        }
->>>>
->>>> -    /* 'I' or 'E' must be present */
->>>> -    if (!(val & (RVI | RVE))) {
->>>> -        /* It is not, drop write to misa */
->>>> -        return RISCV_EXCP_NONE;
->>>> -    }
->>>> -
->>>> -    /* 'E' excludes all other extensions */
->>>> -    if (val & RVE) {
->>>> -        /*
->>>> -         * when we support 'E' we can do "val = RVE;" however
->>>> -         * for now we just drop writes if 'E' is present.
->>>> -         */
->>>> -        return RISCV_EXCP_NONE;
->>>> -    }
->>>> -
->>>> -    /*
->>>> -     * misa.MXL writes are not supported by QEMU.
->>>> -     * Drop writes to those bits.
->>>> -     */
->>>> -
->>>>        /* Mask extensions that are not supported by this hart */
->>>>        val &= env->misa_ext_mask;
->>>>
->>>> -    /* 'D' depends on 'F', so clear 'D' if 'F' is not present */
->>>> -    if ((val & RVD) && !(val & RVF)) {
->>>> -        val &= ~RVD;
->>>> -    }
->>>> -
->>>>        /*
->>>>         * Suppress 'C' if next instruction is not aligned
->>>>         * TODO: this should check next_pc
->>>> @@ -1428,18 +1407,32 @@ static RISCVException write_misa(CPURISCVState *env, int csrno,
->>>>            val &= ~RVC;
->>>>        }
->>>>
->>>> +    /* Disable RVG if any of its dependencies are disabled */
->>>> +    if (!(val & RVI && val & RVM && val & RVA &&
->>>> +          val & RVF && val & RVD)) {
->>>> +        val &= ~RVG;
->>>> +    }
->>>> +
->>>>        /* If nothing changed, do nothing. */
->>>>        if (val == env->misa_ext) {
->>>>            return RISCV_EXCP_NONE;
->>>>        }
->>>>
->>>> -    if (!(val & RVF)) {
->>>> +    env->misa_ext = val;
->>>> +    riscv_cpu_validate_set_extensions(cpu, &local_err);
->>>> +    if (local_err != NULL) {
->>>> +        /* Rollback on validation error */
->>>> +        env->misa_ext = orig_misa_ext;
->>>
->>> I don't think this is right though. The spec even states:
->>>
->>> " An attempt to write an unsupported combination causes those bits to
->>> be set to some supported combination."
->>
->> Rolling back to the previous state (which means do nothing) is a supported
->> combination. I don't think the spec forbids what we're doing here.
-> 
-> It doesn't forbid it, but it also doesn't really encourage it.
-> 
->>
->>
->>>
->>> So we should try to follow what the guest requested as closely as we
->>> can, instead of just rolling back.
->>
->> Let's say we have this:
->>
->> RVI | RVM | RVA | RVF | RVD | RVC | RVU | RVV
->>
->> And the userspace wants to write this (clear RVF):
->>
->> RVI | RVM | RVA | RVD | RVC | RVU | RVV
->>
->>
->> What should we do in this case? Removing RVF would imply removing RVD and RVV, so
->> that's one alternative. Another alternative is consider that the user should
->> clear all bits of RVV explicitly, so we ignore the RVF clear and keep it as it
->> is (which we're already doing in this patch).
-> 
-> In this case we should keep RVF enabled, I agree.
-> 
-> What I'm thinking of, is what happens if we have:
-> 
-> RVI | RVM | RVA | RVF | RVD | RVC | RVU | RVV
-> 
-> and the user writes (clears RVF and RVV)
-> 
-> RVI | RVM | RVA | RVD | RVC | RVU
-> 
-> We can't disable RVF, because RVD requires it, but we can disable RVV.
-> So we should end up with just RVV disabled
-> 
-> RVI | RVM | RVA | RVF | RVD | RVC | RVU
-> 
->  From my interpretation of the spec, that's what we should be supporting.
-> 
->>
->> Note that both are right depending on the user intention. And this is why I don't
->> believe that follow what the user attempted to do, or "follow what the guest as
->> closely as we can" is viable.
->>
->> An alternative, instead of keeping the original misa_ext value, is to do
->> misa_ext = misa_ext_mask. This would mean "in case of a failed validation,
->> since we don't know what the user tried to do, re-enable everything".
-> 
-> I think that's even worse :)
-> 
->>
->> Anything other than keeping the existing misa_ext, like this patch is already
->> doing, or setting misa_ext to misa_ext_mask, will demand more code and assumptions
->> based on what we can't control (user intentions).
-> 
-> Hmm... That's fair. It does make the process more complex, although we
-> are already checking if the combination is valid.
-> 
-> Ok, how about we at least report a guest error if the combination is
-> invalid and we roll back. Then we can go ahead with the patch.
+After 4f67543b ("xen/pt: reserve PCI slot 2 for Intel igd-passthru ") was
+applied, I was inclined to think this change is not needed anymore, but
+it would not hurt to add this change also, and now I think it might be
+more correct to also add this change.
 
-Sure! I'll make the change and re-send.
+Longer explanation:
 
+I strongly desired that at least one of the patches I proposed to improve
+support for Intel IGD passthrough with xen be committed. Since
+4f67543b ("xen/pt: reserve PCI slot 2 for Intel igd-passthru ") that fixed
+Intel IGD passthrough for the xenfv machine type has been committed,
+I reasoned that there is not such a great need to also fix Intel IGD
+passthrough for the pc machine type with xen so I did not push hard for
+this patch to also be applied.
 
-Daniel
+My requirement was that either the xenfv machine be fixed or the pc
+machine be fixed. I did not think it was necessary to fix them both, and
+4f67543b ("xen/pt: reserve PCI slot 2 for Intel igd-passthru ") fixed the
+xenfv machine. But this patch provides the additional fix for the pc machine,
+a fix that is distinct from the fix that has already been committed for the
+xenfv machine, and it probably should also be applied so pc and xenfv
+machines will work equally well with Intel IGD passthrough.
 
+In other words, it is good to fix at least one of the two broken machines configured
+for Intel IGD passthrough and xen, it is better to fix them both. We already fixed
+one of them with 4f67543b ("xen/pt: reserve PCI slot 2 for Intel igd-passthru "),
+this patch would fix the other one.
 
-> 
-> Alistair
-> 
->>
->>
->> Thanks,
->>
->>
->> Daniel
->>
->>
->>>
->>> Alistair
->>>
->>>> +
->>>> +        return RISCV_EXCP_NONE;
->>>> +    }
->>>> +
->>>> +    if (!(env->misa_ext & RVF)) {
->>>>            env->mstatus &= ~MSTATUS_FS;
->>>>        }
->>>>
->>>>        /* flush translation cache */
->>>>        tb_flush(env_cpu(env));
->>>> -    env->misa_ext = val;
->>>>        env->xl = riscv_cpu_mxl(env);
->>>>        return RISCV_EXCP_NONE;
->>>>    }
->>>> --
->>>> 2.40.0
->>>>
->>>>
+If you want to add this change also, let's make sure recent changes to the
+xen header files do not require the patch to be rebased before committing
+it.
+
+Chuck
 
