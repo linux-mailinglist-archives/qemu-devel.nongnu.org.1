@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A64707020
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4107C706FE3
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 May 2023 19:47:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzLDx-0007KB-4E; Wed, 17 May 2023 13:46:07 -0400
+	id 1pzLEB-0007py-3N; Wed, 17 May 2023 13:46:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLDo-0007G3-Pe
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:56 -0400
+ id 1pzLDt-0007Kv-Jf
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzLDl-00044p-KM
- for qemu-devel@nongnu.org; Wed, 17 May 2023 13:45:56 -0400
+ id 1pzLDl-00045m-JT
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 13:46:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684345550;
+ s=mimecast20190719; t=1684345551;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l876oqAb8aNAhYWvZIc/atB5ahSGSdR5tVYDJUVhSc0=;
- b=c2MXn5hHbI/54Nz4hZSavtGXD7GO0TCcGBq7IcmpYgrrioq7lhLWUP5SD+h4r4AR05mjoB
- 5Q0bM0BHhGh5Rq6bZBqFJlXbrfXdH93KLWo7nRf7dwdTq3/W4PrW7ZVtciWYLgDCzjiqDh
- ta1b4TV20UmXGSrbywFJmUYV4Pprfg8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=s4UDkO3Kdy5NCRIXg9Om8yA7mbqwupVdh0F2UuY1x8M=;
+ b=G4ASfSl0uwAj7ZyB1YO3W6HuEkRHPyVBYxAcNbc+voCVIYuHQoPIJ4dGZUvFXJdQlj0luN
+ VWfxUDmDO9ZXf8iOv1AFLRZFMDhwRhBt3J0UbiNHYENooWI9VBrF2UwaNnAsnAcelMcGez
+ U2pslFr8059Yw08nIXVNOVD3pSQQ4Sk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-FvIONaD8PvyKEtmiqnLpmA-1; Wed, 17 May 2023 13:45:48 -0400
-X-MC-Unique: FvIONaD8PvyKEtmiqnLpmA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f4fa463282so7685315e9.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:45:48 -0700 (PDT)
+ us-mta-18-KuTnZ1d8NO25jygKnVz8lA-1; Wed, 17 May 2023 13:45:50 -0400
+X-MC-Unique: KuTnZ1d8NO25jygKnVz8lA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30479b764f9so451276f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 10:45:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684345547; x=1686937547;
+ d=1e100.net; s=20221208; t=1684345548; x=1686937548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=l876oqAb8aNAhYWvZIc/atB5ahSGSdR5tVYDJUVhSc0=;
- b=CoSjo4TuBd+PbiDmDnTp4PwHvgIlln5LsZ179tN9SjxjhQYfyU5zJ5BTmIz0aPlP4V
- VN3c1gWuHn/GkE39Bf/xJdA/xJ2pgRYGidCqkpbYyW4eogUtDdk4HtmTHN5B2USOKVTS
- D7bBz7t9SKyU5/HVdAnfo1wigd68IPJ9+YySkbvjaO3R/yPbLv6UQZWfkDk632Sdru3V
- Kxin5qNy3EbWqTwxe6mjKjSAwhi8O41wjnTwRWmcfq9qmYQTfB8nT2lSzJ5ieeq1/Ikm
- sKpyEU96rXmCdo3J1BzFeEcgECY/PUFWf9TeUpYWWWss6WcmeYTNZqMWPXbjhlwmGQpg
- eYEg==
-X-Gm-Message-State: AC+VfDys5FNebS3vXpgGdeGBmklJOzLHuBltCDoIvHITHTr3pjABHr+y
- G+HDQKjGZRpduSsVrTphfU6hzQPV6OKt3KGYk5aCcB/QNr8HWOZyqeLwCwTTz0Bo/OhpqIVUkHT
- fcMTqBo5hSgykKIec1FKX+hPI9rxXWPtRvxgqV0be2OuPu60GtGZDYFoffTDHTFUlZgjnlAN+Il
- c=
-X-Received: by 2002:a05:600c:3658:b0:3f4:2374:3517 with SMTP id
- y24-20020a05600c365800b003f423743517mr23442540wmq.19.1684345547054; 
- Wed, 17 May 2023 10:45:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6EpzmgVVWnv8LrZ+BwyKt+zx5qo979l/37YQBOXsXEaceFv6kvihlKeZBU3m/HF+dzWKwN7A==
-X-Received: by 2002:a05:600c:3658:b0:3f4:2374:3517 with SMTP id
- y24-20020a05600c365800b003f423743517mr23442521wmq.19.1684345546516; 
- Wed, 17 May 2023 10:45:46 -0700 (PDT)
+ bh=s4UDkO3Kdy5NCRIXg9Om8yA7mbqwupVdh0F2UuY1x8M=;
+ b=iOx/92xCbxzjl7dPTN8hOvcZv1AzSsLZNLNnfw13pYUue7TX+2xODbCYeEmvoVc5Ce
+ 0uhYfMNe5ZL7fNE0P34VmPuOI/Hmk1L9LXcQvAqNtLbev320RmUsDlu63fbWH14IJgUa
+ xaehioyPO6iWkohcWzSI8w2/G6RdXbLl/tQdwyNUgMbgmBpHOh30uWvO7rdm7rwFTcFt
+ o80LsMRR4/rW7YZsJD2s+V92Cb3BQIP9GYibk9bUlYyYrbyL8N3Mh16U0wwfdGbJVyFq
+ 9X21HS5ZvFhBR3++AWoUpFzTUaj97CuYHf9rAOzq9+/u+qTJjXI54QN6VcnIs/mWjQ33
+ zh6g==
+X-Gm-Message-State: AC+VfDzGbK8jmR3igjEyvFW7CGDn8dSAq8Y7G5wao4Aordx9olXxtcor
+ 7wnpWOSwN0McjxXuMv/g//N4oggW/vrYr5Qaj7Ip5JHwIE/avIH2jcqq9mJcEAXXaTzgUgWPh3l
+ 6KxC7MG6qWrKRh2TxBfaIvowrEhh4zkHzeCoG4JN93uQiDECjahNXleMv0pVN6+7tfWU0QkCr/U
+ 4=
+X-Received: by 2002:adf:db8f:0:b0:306:4125:5f61 with SMTP id
+ u15-20020adfdb8f000000b0030641255f61mr1209058wri.44.1684345548642; 
+ Wed, 17 May 2023 10:45:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Cdjx7f+zrEroDbjYC6CWe3y/K2J2dmlQTjmNZ92jEZWmBuHToPvuIIhdsHZ1g/20azpeZRg==
+X-Received: by 2002:adf:db8f:0:b0:306:4125:5f61 with SMTP id
+ u15-20020adfdb8f000000b0030641255f61mr1209048wri.44.1684345548137; 
+ Wed, 17 May 2023 10:45:48 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- c16-20020a7bc850000000b003f42d3111b8sm2894515wml.30.2023.05.17.10.45.45
+ z26-20020a7bc7da000000b003f50d6ee334sm2831493wmk.47.2023.05.17.10.45.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 10:45:46 -0700 (PDT)
+ Wed, 17 May 2023 10:45:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/68] tcg: round-robin: do not use mb_read for rr_current_cpu
-Date: Wed, 17 May 2023 19:44:26 +0200
-Message-Id: <20230517174520.887405-15-pbonzini@redhat.com>
+Subject: [PULL 15/68] coverity: the definitive COMPONENTS.md update
+Date: Wed, 17 May 2023 19:44:27 +0200
+Message-Id: <20230517174520.887405-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230517174520.887405-1-pbonzini@redhat.com>
 References: <20230517174520.887405-1-pbonzini@redhat.com>
@@ -100,51 +100,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The ordering here tries to be logical and matches the one in the
+website.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/tcg/tcg-accel-ops-rr.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ scripts/coverity-scan/COMPONENTS.md | 45 +++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 15 deletions(-)
 
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 5788efa5ff4d..b6d10fa9a250 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -72,11 +72,13 @@ static void rr_kick_next_cpu(void)
- {
-     CPUState *cpu;
-     do {
--        cpu = qatomic_mb_read(&rr_current_cpu);
-+        cpu = qatomic_read(&rr_current_cpu);
-         if (cpu) {
-             cpu_exit(cpu);
-         }
--    } while (cpu != qatomic_mb_read(&rr_current_cpu));
-+        /* Finish kicking this cpu before reading again.  */
-+        smp_mb();
-+    } while (cpu != qatomic_read(&rr_current_cpu));
- }
+diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
+index 7c48e0f1d215..883da95aff22 100644
+--- a/scripts/coverity-scan/COMPONENTS.md
++++ b/scripts/coverity-scan/COMPONENTS.md
+@@ -24,6 +24,9 @@ hppa
+ i386
+   ~ (/qemu)?((/include)?/hw/i386/.*|/target/i386/.*|/hw/intc/[^/]*apic[^/]*\.c)
  
- static void rr_kick_thread(void *opaque)
-@@ -241,8 +243,9 @@ static void *rr_cpu_thread_fn(void *arg)
-         }
- 
-         while (cpu && cpu_work_list_empty(cpu) && !cpu->exit_request) {
--
-+            /* Store rr_current_cpu before evaluating cpu_can_run().  */
-             qatomic_mb_set(&rr_current_cpu, cpu);
++loongarch
++  ~ (/qemu)?((/include)?/hw/(loongarch/.*|.*/loongarch.*)|/target/loongarch/.*)
 +
-             current_cpu = cpu;
+ m68k
+   ~ (/qemu)?((/include)?/hw/m68k/.*|/target/m68k/.*|(/include)?/hw(/.*)?/mcf.*|(/include)?/hw/nubus/.*)
  
-             qemu_clock_enable(QEMU_CLOCK_VIRTUAL,
-@@ -280,7 +283,7 @@ static void *rr_cpu_thread_fn(void *arg)
-             cpu = CPU_NEXT(cpu);
-         } /* while (cpu && !cpu->exit_request).. */
+@@ -36,11 +39,14 @@ mips
+ nios2
+   ~ (/qemu)?((/include)?/hw/nios2/.*|/target/nios2/.*)
  
--        /* Does not need qatomic_mb_set because a spurious wakeup is okay.  */
-+        /* Does not need a memory barrier because a spurious wakeup is okay.  */
-         qatomic_set(&rr_current_cpu, NULL);
++openrisc
++  ~ (/qemu)?((/include)?/hw/openrisc/.*|/target/openrisc/.*)
++
+ ppc
+   ~ (/qemu)?((/include)?/hw/ppc/.*|/target/ppc/.*|/hw/pci-host/(uninorth.*|dec.*|prep.*|ppc.*)|/hw/misc/macio/.*|(/include)?/hw/.*/(xics|openpic|spapr).*)
  
-         if (cpu && cpu->exit_request) {
+ riscv
+-  ~ (/qemu)?((/include)?/hw/riscv/.*|/target/riscv/.*)
++  ~ (/qemu)?((/include)?/hw/riscv/.*|/target/riscv/.*|/hw/.*/(riscv_|ibex_|sifive_).*)
+ 
+ rx
+   ~ (/qemu)?((/include)?/hw/rx/.*|/target/rx/.*)
+@@ -54,12 +60,12 @@ sh4
+ sparc
+   ~ (/qemu)?((/include)?/hw/sparc(64)?.*|/target/sparc/.*|/hw/.*/grlib.*|/hw/display/cg3.c)
+ 
+-tilegx
+-  ~ (/qemu)?(/target/tilegx/.*)
+-
+ tricore
+   ~ (/qemu)?((/include)?/hw/tricore/.*|/target/tricore/.*)
+ 
++xtensa
++  ~ (/qemu)?((/include)?/hw/xtensa/.*|/target/xtensa/.*)
++
+ 9pfs
+   ~ (/qemu)?(/hw/9pfs/.*|/fsdev/.*)
+ 
+@@ -73,7 +79,7 @@ char
+   ~ (/qemu)?(/qemu-char\.c|/include/sysemu/char\.h|(/include)?/hw/char/.*)
+ 
+ crypto
+-  ~ (/qemu)?((/include)?/crypto/.*|/hw/.*/crypto.*)
++  ~ (/qemu)?((/include)?/crypto/.*|/hw/.*/.*crypto.*|(/include/sysemu|/backends)/cryptodev.*)
+ 
+ disas
+   ~ (/qemu)?((/include)?/disas.*)
+@@ -100,7 +106,7 @@ net
+   ~ (/qemu)?((/include)?(/hw)?/(net|rdma)/.*)
+ 
+ pci
+-  ~ (/qemu)?(/hw/pci.*|/include/hw/pci.*)
++  ~ (/qemu)?(/include)?/hw/(cxl/|pci).*
+ 
+ qemu-ga
+   ~ (/qemu)?(/qga/.*)
+@@ -108,9 +114,6 @@ qemu-ga
+ scsi
+   ~ (/qemu)?(/scsi/.*|/hw/scsi/.*|/include/hw/scsi/.*)
+ 
+-tcg
+-  ~ (/qemu)?(/accel/tcg/.*|/replay/.*|/(.*/)?softmmu.*)
+-
+ trace
+   ~ (/qemu)?(/.*trace.*\.[ch])
+ 
+@@ -126,9 +129,27 @@ user
+ util
+   ~ (/qemu)?(/util/.*|/include/qemu/.*)
+ 
++vfio
++  ~ (/qemu)?(/include)?/hw/vfio/.*
++
++virtio
++  ~ (/qemu)?(/include)?/hw/virtio/.*
++
+ xen
+   ~ (/qemu)?(.*/xen.*)
+ 
++hvf
++  ~ (/qemu)?(.*/hvf.*)
++
++kvm
++  ~ (/qemu)?(.*/kvm.*)
++
++tcg
++  ~ (/qemu)?(/accel/tcg|/replay|/tcg)/.*
++
++sysemu
++  ~ (/qemu)?(/softmmu/.*|/accel/.*)
++
+ (headers)
+   ~ (/qemu)?(/include/.*)
+ 
+@@ -137,9 +158,3 @@ testlibs
+ 
+ tests
+   ~ (/qemu)?(/tests/.*)
+-
+-loongarch
+-  ~ (/qemu)?((/include)?/hw/(loongarch/.*|.*/loongarch.*)|/target/loongarch/.*)
+-
+-riscv
+-  ~ (/qemu)?((/include)?/hw/riscv/.*|/target/riscv/.*|/hw/.*/(riscv_|ibex_|sifive_).*)
 -- 
 2.40.1
 
