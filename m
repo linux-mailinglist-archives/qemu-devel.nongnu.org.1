@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4320D7081C4
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F7C7081CB
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:53:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzd6T-0004Co-Ay; Thu, 18 May 2023 08:51:33 -0400
+	id 1pzd6e-0004PP-8y; Thu, 18 May 2023 08:51:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6Q-0004Bm-4a
+ id 1pzd6Q-0004Bn-4M
  for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:30 -0400
 Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6K-00082B-5Z
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:29 -0400
+ id 1pzd6K-00082G-RI
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:28 -0400
 Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f450815d0bso19663975e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:21 -0700 (PDT)
+ 5b1f17b1804b1-3f42c865534so19289425e9.2
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684414280; x=1687006280;
+ d=linaro.org; s=google; t=1684414281; x=1687006281;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KJ0AuTZIeHtuKSRHgOzvysEJomvJ3ZVkSEuGxl++Sq4=;
- b=HshaxGK1tq+rZh64u+TC8e4zMT1kwD+MOLJb4VzWrnqQsOP/BcV3gJhT1BOajUIhHT
- WNGzeNDjVdgRNNRu/kU03mHi7BfG8gmnAJvV92Kz7ppERRjEOzegkyllxSLG0t7IDpp/
- gKdZT8kbsHxG4V13EIBOTZLNdeXC3PZHMFQDEk6eo6zC0LIs745kOsayd+HHSLV07ZVe
- lYI3OdNoD7Zot7eNdbGgXKYhwLb0N8BDgfnxtC0zffTnysbBEH3XPqo1FOA7+90vxi3+
- a8ueeSJFdDLpOF810ReGXrc97CQhBrJA7GcMNm180JcgItAtETO0tkM7kGtL0L7YzfwJ
- mwfQ==
+ :reply-to; bh=DfLkJ/KKotr8qkh9BlAVe/zewDqYjcmGwxDXPduCDv0=;
+ b=Jtwul7lNYZy+w/SdrVmtkS6d6o4TkzMxiMOu83VckjPo/s80Mv6tRxCJw0vRZPew/h
+ 1+a4CJ2RnMwJYozxmu52V4VcYEEAxTD+xbbfnhyFEIhLoDy9qlQNDehSRbgkkUVjrZ9+
+ kxUU8MAPzKcWTbhs0MCjsXDojUMOMFAYTfTMgRfF9Ds0D6vSwsd4xPFl9+H2FspSodkl
+ 8mE0IhqphfNu21d9nCzPTuR6M6ok7q+1jZZNDmw6CFJ431VUV8zvceiWddF0VOpcTQj3
+ 82PWktqbG2CMnq6YTTqUxrhozKXvm8ibd7UCtYobbMi+kp57u8KUq/Vt0G+m631hlOli
+ nzww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684414280; x=1687006280;
+ d=1e100.net; s=20221208; t=1684414281; x=1687006281;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KJ0AuTZIeHtuKSRHgOzvysEJomvJ3ZVkSEuGxl++Sq4=;
- b=ArRYGfsToGtI5zRkxJGR61sKCXdhJcawnO9+Y9orhDwp1gKj2cPSEVIHowxBmsg8lU
- xY/uXbjpxMNMJPKNwIK4QN0YC+4moOmOSdlKOzWdCX9aJoxe3+RTcUIQmNqy+4sb4P/Q
- +NVWCAMYX7Qcg4aQNDm5h0gdgTRQv5joc0Vy0hRpTovV7gSvASZDZ3j9eL1u5BWnzjns
- G0vqodmGGfUdLkfVQyE/agiY1YnEBU7rS+JH9kGhtJNOJWdV3pQ3JIj5qHBj20wDvKxV
- C73iA2gttDI3/vKpmsaa7jxi/DmjtSspF50NgKc+IXpVkJs8xgEDCZnFyQ2pI1MZKNG1
- Zd8Q==
-X-Gm-Message-State: AC+VfDw8RnKBaqLRheBJwxAHerjJhqVgzBIZl5UY2MJzWPt54s6/ynDg
- 6cT15Z4OCD9Te16LV5W6QgGH4TSN4+fd9TKwksw=
-X-Google-Smtp-Source: ACHHUZ4+XVvknHRR/U1tFbof+/yo+JyQXDAVOC5ou1uLRWbohuAu1o6Mhg994IOJGCf+5C/3gT1tzg==
-X-Received: by 2002:a7b:c393:0:b0:3f4:2267:10c0 with SMTP id
- s19-20020a7bc393000000b003f4226710c0mr1577703wmj.28.1684414280776; 
- Thu, 18 May 2023 05:51:20 -0700 (PDT)
+ bh=DfLkJ/KKotr8qkh9BlAVe/zewDqYjcmGwxDXPduCDv0=;
+ b=AUnNTTTzW+LqjfpBei4oZmqHoLqXeThoODKEmuaITisVm5aVtX0ERYJNv+Ud/+OGF/
+ m7znugUZwA65Cavjb62jmd8e1P0x9xWzi5QqKqprnDhXD9j30wjrrokCYU1TxSfe2+iO
+ skxF33tN0sCRg78aJhuseWltTDtUkepq/Ldarst2sCdmuCUWp+5gFpdfK/H3ZjGNRFi0
+ Y2GuVbMZAFMtK09TTSdUopsVvx0UJts/zXEqo095Xo8sK2wrQiWHsPEB7FlLRvFQwPda
+ r3hw70pH7npLHjIp9YTtB2d24LNjDT3l4we9BBzYGFh3Eq7ZISoNU59plDsixO7UFTYX
+ /qLw==
+X-Gm-Message-State: AC+VfDz8D2HMsU8+FYj1Zs5r5FoGtlPqzeb8lsVkZMIiAa7KUtliRJAP
+ CwQUmlWA4N+zeBTDmMH6pa/5p1a5Qj4UFGGUSd4=
+X-Google-Smtp-Source: ACHHUZ6gZCcGXx3d7NG0xuOh+t62ZmlrRXXdv6Zqstf93x6EUcuz/GR/T45W5CvumR1JcojXeaCqCQ==
+X-Received: by 2002:a05:600c:215:b0:3f4:27db:d with SMTP id
+ 21-20020a05600c021500b003f427db000dmr1313529wmi.17.1684414281149; 
+ Thu, 18 May 2023 05:51:21 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  z21-20020a1c4c15000000b003f42d2f4531sm5201321wmf.48.2023.05.18.05.51.20
@@ -58,9 +58,10 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 18 May 2023 05:51:20 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/29] target/arm: Convert ERET, ERETAA, ERETAB to decodetree
-Date: Thu, 18 May 2023 13:51:04 +0100
-Message-Id: <20230518125107.146421-27-peter.maydell@linaro.org>
+Subject: [PULL 27/29] target/arm: Saturate L2CTLR_EL1 core count field rather
+ than overflowing
+Date: Thu, 18 May 2023 13:51:05 +0100
+Message-Id: <20230518125107.146421-28-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230518125107.146421-1-peter.maydell@linaro.org>
 References: <20230518125107.146421-1-peter.maydell@linaro.org>
@@ -90,231 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the exception-return insns ERET, ERETA and ERETB to
-decodetree. These were the last insns left in the legacy
-decoder function disas_uncond_reg_b(), which allows us to
-remove it.
+The IMPDEF sysreg L2CTLR_EL1 found on the Cortex-A35, A53, A57, A72
+and which we (arguably dubiously) also provide in '-cpu max' has a
+2 bit field for the number of processors in the cluster. On real
+hardware this must be sufficient because it can only be configured
+with up to 4 CPUs in the cluster. However on QEMU if the board code
+does not explicitly configure the code into clusters with the right
+CPU count we default to "give the value assuming that all CPUs in
+the system are in a single cluster", which might be too big to fit
+in the field.
 
-The old decoder explicitly decoded the DRPS instruction,
-only in order to call unallocated_encoding() on it, exactly
-as would have happened if it hadn't decoded it. This is
-because this insn always UNDEFs unless the CPU is in
-halting-debug state, which we don't emulate. So we list
-the pattern in a comment in a64.decode, but don't actively
-decode it.
+Instead of just overflowing this 2-bit field, saturate to 3 (meaning
+"4 CPUs", so at least we don't overwrite other fields in the register.
+It's unlikely that any guest code really cares about the value in
+this field; at least, if it does it probably also wants the system
+to be more closely matching real hardware, i.e. not to have more
+than 4 CPUs.
+
+This issue has been present since the L2CTLR was first added in
+commit 377a44ec8f2fac5b back in 2014. It was only noticed because
+Coverity complains (CID 1509227) that the shift might overflow 32 bits
+and inadvertently sign extend into the top half of the 64 bit value.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230512144106.3608981-21-peter.maydell@linaro.org
+Message-id: 20230512170223.3801643-2-peter.maydell@linaro.org
 ---
- target/arm/tcg/a64.decode      |   8 ++
- target/arm/tcg/translate-a64.c | 163 +++++++++++----------------------
- 2 files changed, 63 insertions(+), 108 deletions(-)
+ target/arm/cortex-regs.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 2fd435b6317..12a310d0a31 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -142,3 +142,11 @@ RETA            1101011 0010 11111 00001 m:1 11111 11111 &reta  # RETAA, RETAB
- &bra        rn rm m
- BRA             1101011 1000 11111 00001 m:1 rn:5 rm:5 &bra # BRAA, BRAB
- BLRA            1101011 1001 11111 00001 m:1 rn:5 rm:5 &bra # BLRAA, BLRAB
-+
-+ERET            1101011 0100 11111 000000 11111 00000
-+ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
-+
-+# We don't need to decode DRPS because it always UNDEFs except when
-+# the processor is in halting debug state (which we don't implement).
-+# The pattern is listed here as documentation.
-+# DRPS            1101011 0101 11111 000000 11111 00000
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 40a6e59a609..741a6087399 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1539,6 +1539,61 @@ static bool trans_BLRA(DisasContext *s, arg_bra *a)
-     return true;
- }
- 
-+static bool trans_ERET(DisasContext *s, arg_ERET *a)
-+{
-+    TCGv_i64 dst;
-+
-+    if (s->current_el == 0) {
-+        return false;
-+    }
-+    if (s->fgt_eret) {
-+        gen_exception_insn_el(s, 0, EXCP_UDEF, 0, 2);
-+        return true;
-+    }
-+    dst = tcg_temp_new_i64();
-+    tcg_gen_ld_i64(dst, cpu_env,
-+                   offsetof(CPUARMState, elr_el[s->current_el]));
-+
-+    if (tb_cflags(s->base.tb) & CF_USE_ICOUNT) {
-+        gen_io_start();
-+    }
-+
-+    gen_helper_exception_return(cpu_env, dst);
-+    /* Must exit loop to check un-masked IRQs */
-+    s->base.is_jmp = DISAS_EXIT;
-+    return true;
-+}
-+
-+static bool trans_ERETA(DisasContext *s, arg_reta *a)
-+{
-+    TCGv_i64 dst;
-+
-+    if (!dc_isar_feature(aa64_pauth, s)) {
-+        return false;
-+    }
-+    if (s->current_el == 0) {
-+        return false;
-+    }
-+    /* The FGT trap takes precedence over an auth trap. */
-+    if (s->fgt_eret) {
-+        gen_exception_insn_el(s, 0, EXCP_UDEF, a->m ? 3 : 2, 2);
-+        return true;
-+    }
-+    dst = tcg_temp_new_i64();
-+    tcg_gen_ld_i64(dst, cpu_env,
-+                   offsetof(CPUARMState, elr_el[s->current_el]));
-+
-+    dst = auth_branch_target(s, dst, cpu_X[31], !a->m);
-+    if (tb_cflags(s->base.tb) & CF_USE_ICOUNT) {
-+        gen_io_start();
-+    }
-+
-+    gen_helper_exception_return(cpu_env, dst);
-+    /* Must exit loop to check un-masked IRQs */
-+    s->base.is_jmp = DISAS_EXIT;
-+    return true;
-+}
-+
- /* HINT instruction group, including various allocated HINTs */
- static void handle_hint(DisasContext *s, uint32_t insn,
-                         unsigned int op1, unsigned int op2, unsigned int crm)
-@@ -2307,111 +2362,6 @@ static void disas_exc(DisasContext *s, uint32_t insn)
-     }
- }
- 
--/* Unconditional branch (register)
-- *  31           25 24   21 20   16 15   10 9    5 4     0
-- * +---------------+-------+-------+-------+------+-------+
-- * | 1 1 0 1 0 1 1 |  opc  |  op2  |  op3  |  Rn  |  op4  |
-- * +---------------+-------+-------+-------+------+-------+
-- */
--static void disas_uncond_b_reg(DisasContext *s, uint32_t insn)
--{
--    unsigned int opc, op2, op3, rn, op4;
--    TCGv_i64 dst;
--    TCGv_i64 modifier;
--
--    opc = extract32(insn, 21, 4);
--    op2 = extract32(insn, 16, 5);
--    op3 = extract32(insn, 10, 6);
--    rn = extract32(insn, 5, 5);
--    op4 = extract32(insn, 0, 5);
--
--    if (op2 != 0x1f) {
--        goto do_unallocated;
--    }
--
--    switch (opc) {
--    case 0:
--    case 1:
--    case 2:
--    case 8:
--    case 9:
--        /*
--         * BR, BLR, RET, RETAA, RETAB, BRAAZ, BRABZ, BLRAAZ, BLRABZ,
--         * BRAA, BLRAA: handled in decodetree
--         */
--        goto do_unallocated;
--
--    case 4: /* ERET */
--        if (s->current_el == 0) {
--            goto do_unallocated;
--        }
--        switch (op3) {
--        case 0: /* ERET */
--            if (op4 != 0) {
--                goto do_unallocated;
--            }
--            if (s->fgt_eret) {
--                gen_exception_insn_el(s, 0, EXCP_UDEF, syn_erettrap(op3), 2);
--                return;
--            }
--            dst = tcg_temp_new_i64();
--            tcg_gen_ld_i64(dst, cpu_env,
--                           offsetof(CPUARMState, elr_el[s->current_el]));
--            break;
--
--        case 2: /* ERETAA */
--        case 3: /* ERETAB */
--            if (!dc_isar_feature(aa64_pauth, s)) {
--                goto do_unallocated;
--            }
--            if (rn != 0x1f || op4 != 0x1f) {
--                goto do_unallocated;
--            }
--            /* The FGT trap takes precedence over an auth trap. */
--            if (s->fgt_eret) {
--                gen_exception_insn_el(s, 0, EXCP_UDEF, syn_erettrap(op3), 2);
--                return;
--            }
--            dst = tcg_temp_new_i64();
--            tcg_gen_ld_i64(dst, cpu_env,
--                           offsetof(CPUARMState, elr_el[s->current_el]));
--            if (s->pauth_active) {
--                modifier = cpu_X[31];
--                if (op3 == 2) {
--                    gen_helper_autia(dst, cpu_env, dst, modifier);
--                } else {
--                    gen_helper_autib(dst, cpu_env, dst, modifier);
--                }
--            }
--            break;
--
--        default:
--            goto do_unallocated;
--        }
--        if (tb_cflags(s->base.tb) & CF_USE_ICOUNT) {
--            gen_io_start();
--        }
--
--        gen_helper_exception_return(cpu_env, dst);
--        /* Must exit loop to check un-masked IRQs */
--        s->base.is_jmp = DISAS_EXIT;
--        return;
--
--    case 5: /* DRPS */
--        if (op3 != 0 || op4 != 0 || rn != 0x1f) {
--            goto do_unallocated;
--        } else {
--            unallocated_encoding(s);
--        }
--        return;
--
--    default:
--    do_unallocated:
--        unallocated_encoding(s);
--        return;
--    }
--}
--
- /* Branches, exception generating and system instructions */
- static void disas_b_exc_sys(DisasContext *s, uint32_t insn)
+diff --git a/target/arm/cortex-regs.c b/target/arm/cortex-regs.c
+index 17708480e75..ae817b08ddf 100644
+--- a/target/arm/cortex-regs.c
++++ b/target/arm/cortex-regs.c
+@@ -15,8 +15,15 @@ static uint64_t l2ctlr_read(CPUARMState *env, const ARMCPRegInfo *ri)
  {
-@@ -2427,9 +2377,6 @@ static void disas_b_exc_sys(DisasContext *s, uint32_t insn)
-             disas_exc(s, insn);
-         }
-         break;
--    case 0x6b: /* Unconditional branch (register) */
--        disas_uncond_b_reg(s, insn);
--        break;
-     default:
-         unallocated_encoding(s);
-         break;
+     ARMCPU *cpu = env_archcpu(env);
+ 
+-    /* Number of cores is in [25:24]; otherwise we RAZ */
+-    return (cpu->core_count - 1) << 24;
++    /*
++     * Number of cores is in [25:24]; otherwise we RAZ.
++     * If the board didn't configure the CPUs into clusters,
++     * we default to "all CPUs in one cluster", which might be
++     * more than the 4 that the hardware permits and which is
++     * all you can report in this two-bit field. Saturate to
++     * 0b11 (== 4 CPUs) rather than overflowing the field.
++     */
++    return MIN(cpu->core_count - 1, 3) << 24;
+ }
+ 
+ static const ARMCPRegInfo cortex_a72_a57_a53_cp_reginfo[] = {
 -- 
 2.34.1
 
