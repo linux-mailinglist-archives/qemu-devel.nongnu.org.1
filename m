@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31336708207
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 15:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0291B70823B
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 15:10:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzdJA-0001fE-I3; Thu, 18 May 2023 09:04:40 -0400
+	id 1pzdOH-0003Y5-9M; Thu, 18 May 2023 09:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1pzdJ8-0001eW-EE
- for qemu-devel@nongnu.org; Thu, 18 May 2023 09:04:38 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1pzdOF-0003X9-Oe
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 09:09:55 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1pzdJ5-0001oz-Ku
- for qemu-devel@nongnu.org; Thu, 18 May 2023 09:04:38 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f42d937d2eso12691225e9.2
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 06:04:33 -0700 (PDT)
+ id 1pzdOC-0002Wh-2n
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 09:09:55 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f42b984405so12953565e9.3
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 06:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684415072; x=1687007072;
+ d=linaro.org; s=google; t=1684415390; x=1687007390;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F5KI15Czh03oBpwRJEUqw2YPs/UI7TyiDPqYBelrrFw=;
- b=sb4RvuydaaB7zNZmR1bEPOCZ/TViw85jBu9TEbsyV3In78mDHFD0AsPi3LZWXBOfMg
- kMJzVkJaiKNA0q8H85IisPq7BLShvRILDxMor+GfbMWamDf9kvmlnZQC3hYyucueH2BH
- ESxjG2M53HgAB1IHrchB/DDDatPqX/P5pc0AfnsLWCPIgIR++FwKsub5Ah/Pvlg4Pzmi
- wjTd8nQiKPuMQaSmhS+a4UGxtGcr7yOJAe25eM9DX0ZIAcAVKhenBEb05L0dM3XhxFyP
- MWdq3+mkN3EwQitCHYMVeLnztFGth2qL9dEFnhct0Pc71Of/afusinZIf+A2ZUMTbg9e
- BrVg==
+ bh=ArArsbPZ00QvOcp6Hl9dx+HU0I2Rr6cjnyj4cN5NjhU=;
+ b=fJzRTWepaYkM2KxtE7ZKy8YIaCtVteIbOPN0cY/SOr8GIS/MqxcVjdslIgACa4scVk
+ 2pL6GqP+fzIRCi5QgqbPe7ldqzypw7hm9mVAlYYWA+qA4h+lrTEj4la45Pop7jK82DDE
+ F3CPCe5UuBDuIN3ArzV7G//86np49qDNvGER74LjkeqyGwaY9nX3BanHOyARARBTZCTI
+ 32bPr2/pkTGT/wdQAQD2c4Yi8N/d+3DpP1Ffof2JXS56vDwnv0xTjHnKKMz7dhwVKQ6f
+ c1oD9q0B74PeOerP/ZeZsbg4OuvMD96IhagFQusTV7KUhlMPEndJH4tvPVOawtOG/VyG
+ Qxpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684415072; x=1687007072;
+ d=1e100.net; s=20221208; t=1684415390; x=1687007390;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=F5KI15Czh03oBpwRJEUqw2YPs/UI7TyiDPqYBelrrFw=;
- b=boMSmikfZaEogolqfCCQwDRvFAYpNpeqXfjKcwPs3P29evX1Jbr4emJDgtCNrxGyMO
- v0hG5qMihZS9MAX1/oWpJV8gcIBxsANr67ALvOvix89MGdm0+KHwYafOT9NvXQP+JxMh
- mCeGu57B1QTWJWf1ytmpg3hlH/20nkfz1VlwPh2OB/g1WAr/L/3mVhAQnXCQM7R8bBfl
- VG8yf2352GY1g2gGQAq2U4sM2U+LTXgyGzqS7og9f82HD7gnfwqUAu1Lnu2QBvtJuJvx
- UPG3Hv9b8/Bj75MLiV/4B9Euzv13Khc+2OvnKpjIVoU9dHGOsFA9y7Wv0h36ySFjeZJh
- XPfg==
-X-Gm-Message-State: AC+VfDwjSVuNg6kgLVM1rXjDI78p2jg4znZ1ObUSanrn61cmqJ3cUVpr
- yGAojFG9BHQVz0Buwamb3dAHuA==
-X-Google-Smtp-Source: ACHHUZ5e0h3Gecb37yKqDi3y60/Vh57IBUluAX3rv6wkEDZqif61wq9vB2R5NH3MlEm5EdtHDWKxDw==
-X-Received: by 2002:a05:600c:210a:b0:3f4:2452:966a with SMTP id
- u10-20020a05600c210a00b003f42452966amr1312940wml.27.1684415071902; 
- Thu, 18 May 2023 06:04:31 -0700 (PDT)
+ bh=ArArsbPZ00QvOcp6Hl9dx+HU0I2Rr6cjnyj4cN5NjhU=;
+ b=k1gp+rrHdVmt3/Nlpx7QpCh+qgs+hRFGtFY+SHbWa1Da/ANakoTOxfssjJLgQ6G9Dt
+ /8fdHuMvw03YPO9rLeyK4SAxwD7+Y/RxaZUVam0a3LAo2ITm0q2Zbdv0DcVf5SgPNtor
+ gHdumm1aRk3YydAtz/yZAlss5AalL7zy98I5jrr7elrnbjCi9pbvbJz8joTIcHX8v2NM
+ 0DncI54pfW8ZWoU/wqfypE0irnkJZ1p95YDI+/sRdSjQ9CcilbYckhuSxrvnlH1eX2zU
+ MkQYUmh2LUPvkNhQZGzxbgz4PBtWmLFsVKZi5GqSRz9slf+X8zumyjMomG8cguTOG2Et
+ xeWg==
+X-Gm-Message-State: AC+VfDzU/u+JfOFe8zr84kE0wA725C9b13u1XFxpt02Vj3nIn1tkMMLz
+ 0E0Jw1x0zZSQAAvAREr2sTteDQ==
+X-Google-Smtp-Source: ACHHUZ51lkqpZDM7gX1Ntiv5iZNqWpuxDNFgza8+Z9rtvsJcsC6TFGbb6oegUoNPlc1QvIKHGCxozw==
+X-Received: by 2002:a05:600c:231a:b0:3f4:fc57:1c3e with SMTP id
+ 26-20020a05600c231a00b003f4fc571c3emr1428657wmo.12.1684415390219; 
+ Thu, 18 May 2023 06:09:50 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- n16-20020a1c7210000000b003f19b3d89e9sm5231468wmc.33.2023.05.18.06.04.30
+ u14-20020a7bcb0e000000b003f42a75ac2asm2051907wmj.23.2023.05.18.06.09.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 06:04:31 -0700 (PDT)
+ Thu, 18 May 2023 06:09:49 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 48CDB1FFBB;
- Thu, 18 May 2023 14:04:30 +0100 (BST)
-References: <20230506072012.10350-1-anisinha@redhat.com>
+ by zen.linaroharston (Postfix) with ESMTP id 927421FFBB;
+ Thu, 18 May 2023 14:09:48 +0100 (BST)
+References: <CAP5Nno6wrz4qEMK70KFwxoZWeo89+SAyXDXFW8A30mJ-WeFi4A@mail.gmail.com>
+ <87ttwts5ur.fsf@linaro.org>
+ <CAP5Nno4C6C-sfj73NM92Gstnw8mm7A7RwEYT=oUZm1Fh0QqFYQ@mail.gmail.com>
+ <CAFEAcA-wT3OUZzkVA8riMRDWE4M_f3yZD2HLHSTksLUVM+kH3Q@mail.gmail.com>
 User-agent: mu4e 1.11.6; emacs 29.0.91
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
- <thuth@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, berrange@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH] docs/devel: remind developers to run CI container
- pipeline when updating images
-Date: Thu, 18 May 2023 14:04:22 +0100
-In-reply-to: <20230506072012.10350-1-anisinha@redhat.com>
-Message-ID: <871qjdn63l.fsf@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Jun Sun <jsun@junsun.net>, qemu-devel@nongnu.org
+Subject: Re: [PATCH risu] use time() as random seed and introduce --randseed
+ option
+Date: Thu, 18 May 2023 14:09:02 +0100
+In-reply-to: <CAFEAcA-wT3OUZzkVA8riMRDWE4M_f3yZD2HLHSTksLUVM+kH3Q@mail.gmail.com>
+Message-ID: <87wn15lrab.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,23 +100,53 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Ani Sinha <anisinha@redhat.com> writes:
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-> When new dependencies and packages are added to containers, its important=
- to
-> run CI container generation pipelines on gitlab to make sure that there a=
-re no
-> obvious conflicts between packages that are being added and those that are
-> already present. Running CI container pipelines will make sure that there=
- are
-> no such breakages before we commit the change updating the containers. Ad=
-d a
-> line in the documentation reminding developers to run the pipeline before
-> submitting the change. It will also ease the life of the maintainers.
+> On Fri, 5 May 2023 at 01:23, Jun Sun <jsun@junsun.net> wrote:
+>>
+>> Agree on the usefulness of generating the same test. That is the
+>> reason behind adding --randseed option. Once a seed is set, it
+>> always generates the same sequence of instructions.
+>>
+>> Basically with this patch,
+>>
+>> by default you will generate random instruction sequences for most testi=
+ng cases
+>> you can provide a random seed option in the commandline to generate a de=
+terministic instruction sequence
+>>
+>> Without this patch,
+>>
+>> we always get one fixed sequence (ie. random seed =3D=3D 0 case)
+>> Otherwise we would have to manually modify code to generate random
+>> instruction sequences or generate a different fixed sequence.
+>>
+>> Hope this clarifies things a little bit.
 >
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> Mmm; it comes down to: should we default to 'time' and
+> require the user to specify --randseed 0 to get the old
+> behaviour; or do we retain the current behaviour as the
+> default and let the user pass an option if they want a
+> non-reproducibly random output.
+>
+> Alex, what do you reckon? You probably have been using
+> risugen more actively than me recently. I guess I vaguely
+> lean to "default to randomize(time)".
 
-Queued to testing/next, thanks.
+I'm easy either way as long as we as long as we print out the seed so we
+can deterministically regenerate if we want to.
+
+>
+> Also, should we make risugen print the random seed to stdout
+> so you can repro it even if you didn't pass --randseed initially?
+>
+> Now that the random-seed-setting is 6 lines instead of 1,
+> this should definitely be abstracted out to a function
+> in the common code and not repeated in each per-arch file.
+>
+> thanks
+> -- PMM
+
 
 --=20
 Alex Benn=C3=A9e
