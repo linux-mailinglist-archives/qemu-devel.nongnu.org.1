@@ -2,92 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8857081FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 15:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CD4708208
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 15:05:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzdFj-0008PC-Ds; Thu, 18 May 2023 09:01:07 -0400
+	id 1pzdIp-0001YA-JU; Thu, 18 May 2023 09:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzdFY-0008MD-DO
- for qemu-devel@nongnu.org; Thu, 18 May 2023 09:01:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzdFW-0001Fr-1A
- for qemu-devel@nongnu.org; Thu, 18 May 2023 09:00:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684414850;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=b+Kp3vDrs09j+dhwv48A/96FKDGN4H3AHRyMtmZ6TAM=;
- b=VkQ8+fwUbrz1rhYxGfWGfpft9caQFXeSwBSP5jiHyVHMeN8TWKb8LlDz+al8LIDjaoB45O
- HbpHysEWg7S0aOcbXxT9ZJdca8pJM8TC+2/IbyMxtctPmhxdmVl+PJ8ksiqnU8O/3rCio9
- TMr4AhoqfW3f4ZZ75QbyZmCam9VW4MM=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-cfuaUTZbPLSaUiDX5AG9Tw-1; Thu, 18 May 2023 09:00:48 -0400
-X-MC-Unique: cfuaUTZbPLSaUiDX5AG9Tw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-50bcd245040so2620423a12.0
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 06:00:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pzdIo-0001Xu-19
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 09:04:18 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1pzdIm-0001nU-9I
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 09:04:17 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-64d18d7738dso477509b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 06:04:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684415053; x=1687007053;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nzZYtfkcZRws2M/l9EIIG6noEaMWrg374XPMxh+WHTA=;
+ b=S8+foUSy/QkTyO0ENa5BTgUOhW2FqLeIXEN8qdpHj7cbBkPt1JtXzFiX0zVg/BcB3N
+ gFwkgBBYM8FnKV/5PAHCPMmifHzMPbzxBR7/2vFZYS73qBNJRNgXHRrvIH6+yjwMhCYe
+ VOzUBejD8Rstr9V57Stlp16D91jzEt9vG4Eb3WTsrId6fnU5PWjLUBmpJ9dewgfd2nGI
+ xAYXT462Pe2tyizY7MxAt3PercrLLXkzozaiTHTmEFWUJzgfeELcWDHUqqoDMhue+fBA
+ mgdySVx6j3YkbYSsTBp05zoRaAA08tzl2jNfPdmqTQEslnDWYfbESt4yE+ajUaE4AtqE
+ to+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684414847; x=1687006847;
+ d=1e100.net; s=20221208; t=1684415053; x=1687007053;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b+Kp3vDrs09j+dhwv48A/96FKDGN4H3AHRyMtmZ6TAM=;
- b=P278VQo9zxqsEZsDZBmUKYeeMOWJAQDvvWOlN+LEVYMPLqL6EZr4cP0rEAw5Tr2UkG
- lcJRlOpwH/tcZrTfl9oIFoc7u2RZ420FOS6slX5jh7Zyy5tpbbDbGeqFgENn8s6Q5IP/
- qYzKsTGOZFtk/VCo4gUmypc1waslwRh0WKaCtCzJxAO6me+p4GwWSMAp74MbhbL1gUvw
- wTFPMbFAFlPRr1PqBFG/dSwR6bUG7bxhf6uZKJ8GMc2Pit9IT0UzQVDb03d5tDxr2w9C
- atsjQ6R1QWtzlBB25XA+rZbsxbCCKYxqsdsGp6RvCFLVnoL5Zci21vPegUPbQfMxCXA2
- 9iOA==
-X-Gm-Message-State: AC+VfDwV87e9Bs7GfXGLfOZm4nVHY/8rIkhnMF2wxdwFfbHLKS3kLw/A
- 0pxFZOsbIu1l2D63yCtN2yOZBZOjDCHx6j2ZVCfomG3co5gmrxhmcBN2iBe8agpZ5AvVi7egu96
- x4mQft1r97tXB1C4=
-X-Received: by 2002:aa7:ccd3:0:b0:510:591d:3d03 with SMTP id
- y19-20020aa7ccd3000000b00510591d3d03mr5838690edt.10.1684414847129; 
- Thu, 18 May 2023 06:00:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4rgpgx6F1x8aQjcl3RkhXQn74gd9hy2sd74Q+OTvRHUbSkyOMWl9JZahoglAjlQoL8FFXOFA==
-X-Received: by 2002:aa7:ccd3:0:b0:510:591d:3d03 with SMTP id
- y19-20020aa7ccd3000000b00510591d3d03mr5838645edt.10.1684414846437; 
- Thu, 18 May 2023 06:00:46 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:1c09:f536:3de6:228c?
- ([2001:b07:6468:f312:1c09:f536:3de6:228c])
- by smtp.googlemail.com with ESMTPSA id
- m11-20020a50ef0b000000b005067d6b06efsm572309eds.17.2023.05.18.06.00.45
+ bh=nzZYtfkcZRws2M/l9EIIG6noEaMWrg374XPMxh+WHTA=;
+ b=IWEBrQZcj7O+Ts1mZjmCnJrmjS8L+GB1YZWdCYmVwSFSuZs0DtSaasBZhttI5OoW3k
+ XvndgVt9O9nzwqNfrepdIL4dt1PsCxDnkAuCcHpi84YD/iLju1M3CnA6h39l56DeWM0N
+ GVxKfFGoXGPQpVVe8pF3L7yW51Sc3iyWsMf+L9lvknF7yVeqhoEUYqm8ln+Es1oma2ok
+ 4FOnXRQXdgOEJFXDDZY8AXYvWQC6MgxSHXMvHzyeK7W3HL0OvkIa3HSuYlM/9cq5XIzF
+ WnGfZMgDURFVdAmGiW4bl5///8N3B3Owq2agIA3h/JYCO2Q5+Nvv+iE17BG4c3gP8XHS
+ C3nQ==
+X-Gm-Message-State: AC+VfDxM6UTMe5EHra/NV4tKZqNmBAh5gZO1oVxMSus8ltP7UgV0G9rP
+ YlY7TjtEmPjxDfsKvEcHJnSf1w==
+X-Google-Smtp-Source: ACHHUZ6OoyDuQdoKaDytJA73o1YjBgBFN9zkjQijeb8sUx+wmYcCFtfbGRJXOgy1tzUFkCxjULaUrw==
+X-Received: by 2002:a05:6a20:7fa8:b0:100:8258:1679 with SMTP id
+ d40-20020a056a207fa800b0010082581679mr2385439pzj.0.1684415053182; 
+ Thu, 18 May 2023 06:04:13 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:5dd2:c230:399b:cdc1?
+ ([2602:ae:1598:4c01:5dd2:c230:399b:cdc1])
+ by smtp.gmail.com with ESMTPSA id
+ t5-20020aa79385000000b0064d1d8fd24asm1192144pfe.60.2023.05.18.06.04.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 May 2023 06:00:45 -0700 (PDT)
-Message-ID: <f8f06172-29fd-08ae-182e-193d139a878b@redhat.com>
-Date: Thu, 18 May 2023 15:00:44 +0200
+ Thu, 18 May 2023 06:04:12 -0700 (PDT)
+Message-ID: <276441f2-eb7b-6e29-a138-c4dd8937cef1@linaro.org>
+Date: Thu, 18 May 2023 06:04:10 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 2/2] meson: use subproject for keycodemapdb
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/68] i386, build system, KVM changes for 2023-05-18
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com
-References: <20230518124645.1011316-1-pbonzini@redhat.com>
- <20230518124645.1011316-3-pbonzini@redhat.com> <ZGYgNYaS5c4Yq8uh@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <ZGYgNYaS5c4Yq8uh@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230517174520.887405-1-pbonzini@redhat.com>
+ <a7f23b7c-879f-36db-dabd-1891bda766e5@linaro.org>
+ <CAFEAcA93JsM+XkWnQ=SzR94k9eHVvfV_NnFeOtpdv70TLpUa9w@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA93JsM+XkWnQ=SzR94k9eHVvfV_NnFeOtpdv70TLpUa9w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
 X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.544, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.544,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,114 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/18/23 14:55, Daniel P. Berrangé wrote:
-> On Thu, May 18, 2023 at 02:46:45PM +0200, Paolo Bonzini wrote:
->> By using a subproject, our own meson.build can use variables from
->> the subproject instead of hard-coded paths.  In the future, it may
->> also be possible to use wrap to download the submodule.
+On 5/18/23 02:22, Peter Maydell wrote:
+> On Wed, 17 May 2023 at 21:32, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>> Failures:
+> 
+>> https://gitlab.com/qemu-project/qemu/-/jobs/4304958508#L2551
 >>
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->> ---
->>   .gitmodules                      | 4 ++--
->>   configure                        | 4 ++--
->>   scripts/archive-source.sh        | 2 +-
->>   {ui => subprojects}/keycodemapdb | 0
->>   ui/meson.build                   | 6 ++++--
->>   5 files changed, 9 insertions(+), 7 deletions(-)
->>   rename {ui => subprojects}/keycodemapdb (100%)
->>
->> diff --git a/.gitmodules b/.gitmodules
->> index 3ed5d073d630..f8b2ddf3877c 100644
->> --- a/.gitmodules
->> +++ b/.gitmodules
->> @@ -25,8 +25,8 @@
->>   [submodule "roms/QemuMacDrivers"]
->>   	path = roms/QemuMacDrivers
->>   	url = https://gitlab.com/qemu-project/QemuMacDrivers.git
->> -[submodule "ui/keycodemapdb"]
->> -	path = ui/keycodemapdb
->> +[submodule "subprojects/keycodemapdb"]
->> +	path = subprojects/keycodemapdb
->>   	url = https://gitlab.com/qemu-project/keycodemapdb.git
->>   [submodule "roms/seabios-hppa"]
->>   	path = roms/seabios-hppa
->> diff --git a/configure b/configure
->> index 5bbca83d9a31..2b6995e16756 100755
->> --- a/configure
->> +++ b/configure
->> @@ -254,7 +254,7 @@ else
->>       git_submodules_action="ignore"
->>   fi
->>   
->> -git_submodules="ui/keycodemapdb"
->> +git_submodules="subprojects/keycodemapdb"
->>   git="git"
->>   debug_tcg="no"
->>   docs="auto"
->> @@ -806,7 +806,7 @@ case $git_submodules_action in
->>           fi
->>       ;;
->>       ignore)
->> -        if ! test -f "$source_path/ui/keycodemapdb/README"
->> +        if ! test -f "$source_path/subprojects/keycodemapdb/README"
->>           then
->>               echo
->>               echo "ERROR: missing GIT submodules"
->> diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
->> index b15f6fe6b8fe..a0a3153faa99 100755
->> --- a/scripts/archive-source.sh
->> +++ b/scripts/archive-source.sh
->> @@ -26,7 +26,7 @@ sub_file="${sub_tdir}/submodule.tar"
->>   # independent of what the developer currently has initialized
->>   # in their checkout, because the build environment is completely
->>   # different to the host OS.
->> -submodules="subprojects/dtc meson ui/keycodemapdb"
->> +submodules="subprojects/dtc meson subprojects/keycodemapdb"
->>   submodules="$submodules tests/fp/berkeley-softfloat-3 tests/fp/berkeley-testfloat-3"
->>   sub_deinit=""
->>   
->> diff --git a/ui/keycodemapdb b/subprojects/keycodemapdb
->> similarity index 100%
->> rename from ui/keycodemapdb
->> rename to subprojects/keycodemapdb
->> diff --git a/ui/meson.build b/ui/meson.build
->> index 330369707dd7..e24d52b89941 100644
->> --- a/ui/meson.build
->> +++ b/ui/meson.build
->> @@ -162,13 +162,15 @@ keymaps = [
->>   ]
->>   
->>   if have_system or xkbcommon.found()
->> +  keycodemapdb_proj = subproject('keycodemapdb', required: true)
->> +  keymap_gen = find_program('keymap-gen', required: true)
+>> /usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/libc.a(init-first.o):
+>> in function `__libc_init_first':
+>> (.text+0x10): relocation truncated to fit: R_AARCH64_LD64_GOTPAGE_LO15 against symbol
+>> `__environ' defined in .bss section in
+>> /usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/libc.a(environ.o)
+>> /usr/bin/ld: (.text+0x10): warning: too many GOT entries for -fpic, please recompile with
+>> -fPIC
 > 
-> This variable isn't used, is it ?
+> This is really a bug in the host libc (more specifically, how
+> the libc.a was compiled), isn't it? We've only previously seen
+> it when trying to build the system emulation binaries statically,
+> but it looks like it's finally reared its head for the usermode
+> binaries here. IIRC it basically boils down to how big the final
+> executable is and whether you get unlucky with what gets linked
+> in and what order such that a reloc in libc ends up wanting to
+> access a GOT table entry that gets assigned too high an index.
+> Still, given the prevalence of libc that's been compiled -fpic
+> rather than -fPIC, we probably need to deal with it somehow.
 
-Hmm, no it isn't.  Do you prefer the code below and removing the 
-assignment, or
+Yes, this looks like the same --static-pie issue we saw before.
 
-     command: [python, keymap_gen.full_path(),
+I thought we'd been working around this in CI by testing --static --disable-pie.  Given 
+Paolo moves --static handling to meson in this patch set, I assume that's the culprit.
 
-?  find_program is nicer, but you have to peek with 
-keycodemap_proj.get_variable() anyway to reach the CSV file, so...
+> Side note: why are we linking against -lstdc++ ???
 
-Paolo
+Missed c++ purging?
 
->>     foreach e : keymaps
->>       output = 'input-keymap-@0@-to-@1@.c.inc'.format(e[0], e[1])
->>       genh += custom_target(output,
->>                     output: output,
->>                     capture: true,
->> -                  input: files('keycodemapdb/data/keymaps.csv'),
->> -                  command: [python, files('keycodemapdb/tools/keymap-gen'),
->> +                  input: keycodemapdb_proj.get_variable('keymaps_csv'),
->> +                  command: [python, keycodemapdb_proj.get_variable('keymap_gen'),
->>                               'code-map',
->>                               '--lang', 'glib2',
->>                               '--varname', 'qemu_input_map_@0@_to_@1@'.format(e[0], e[1]),
-> 
-> 
-> With regards,
-> Daniel
+
+r~
 
 
