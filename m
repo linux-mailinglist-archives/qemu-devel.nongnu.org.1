@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20FA7081E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4AF7081D4
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:53:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzd6V-0004FF-0W; Thu, 18 May 2023 08:51:35 -0400
+	id 1pzd6U-0004Cy-3r; Thu, 18 May 2023 08:51:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6L-0004Al-PP
+ id 1pzd6L-0004Ah-CB
  for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:26 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6E-0007zM-FV
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:23 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3f427118644so19430045e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:14 -0700 (PDT)
+ id 1pzd6D-00080Q-5T
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:21 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f42c86543bso13198875e9.3
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684414273; x=1687006273;
+ d=linaro.org; s=google; t=1684414274; x=1687006274;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=EYMNPZn0ycDWSAniczGdOCIYstv04S4syoY1G6oBBM0=;
- b=g0tRyEUOpxcX2s8O0UJsmp7DUiygSKJEwcUyIQ0sHdq+aJpi3gJCXMoafcYtKHR0BR
- DXjYXj6Lx5vRKriirkc20HzT4HpThbCMMKHic+y0+ah8Emf4M4caVAdYCBF5lrZsHgK6
- 6cwwP0nUTEZ3DS0kyJwq0pDOK8zxYCPUwWACSsJVPtcGbrvEnm7Wcgj8WJpQ+UFNC+dy
- r6Rj9Yu4BAlSfoW67tIXU7kSlHmHv3SKcyrg3d1/Wijr+p/MAJpHcqKYUXUBFEjRYigl
- mSrGe90w16zVo1OAIW+RLPWmen/5HnzRTvt2z7lmMPCDBxIeNjGz/McvBUrJStTl1W0S
- /eaA==
+ :reply-to; bh=MitncF/4GqTSNnwixClM4RdAFm5G7KDGOzVgQYsIGKo=;
+ b=rx+PmxiW9qIU5xNMBKaIdRg64ufGexmhvR1n5qKoTEvaGBeEw4u97Twf7j2veOOk6A
+ BGvbBWtqxUNqkweSrKRl9swyj218YoZ6vuHDJXQiQS2ap67Xsi7WTuNGUINR0BO2nM9S
+ FacJ3bN+1XfcfmjNF29/s5vhcnVSuhc3B5MX1ZcQnBOTQ+/mMJ56coifKIvYdrMVTjY4
+ KS4IK6PJNWw+9L2lq9w+3HXkkVFxb6G4DWmxjiHfJFrjWxc67JUZloHtupl8pZYNb1GJ
+ 4NKQ9vXb0L0UrrmVMBj6OgaNOwLwx5fS0pw6KQxibEWLmnvn4bv6JK++Sizj474nAnX3
+ Ts6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684414273; x=1687006273;
+ d=1e100.net; s=20221208; t=1684414274; x=1687006274;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EYMNPZn0ycDWSAniczGdOCIYstv04S4syoY1G6oBBM0=;
- b=IQ/uwhCJKf2iRMelN06xT7N2Oz36JmrHNLmrwS7bRbsytWKAVnh4L+zq52LrMPyfrX
- aSkZ5iUQYA0FZsb191RXZVCH/DDU4i3kwQInWOpKEjfikZ/+YMnUUTKQQRfVk5QvOEf8
- k0WC+b8wIrb4xVy4JPrKZIyo/1BSXQ1PvX96iWzPDRPISBDa2o6Uib/bTe3UCktvv3B5
- ZZqcs2SotdACRT6CByppSbmg1gqIEYHl1avm5IfBz4PyhN6TC4AypGVI3oGVCpt9pPWL
- u/mt1GL7tGH/1hcCN8SdU16gI8gwWuaBLISjzb728qDiq4V9fiOl2tEeu9r6B32H83RC
- Q2SA==
-X-Gm-Message-State: AC+VfDwoi6e8X6Oa5sR2Oy5NBKdiIF7g+rCKTDbKTKDlES4Z4o0gYAWV
- aXWc6PlmyKeA9hvitqRSHZwlu0RS2rkJUtJhH0o=
-X-Google-Smtp-Source: ACHHUZ6Cabe/vERvinp1Y4/ZBDcUDCYAAXO3Kkn3D8b44uVBPHk84fTFZYLogoApNnj+llifZlVhOA==
-X-Received: by 2002:a05:600c:2152:b0:3f2:5be3:cd6a with SMTP id
- v18-20020a05600c215200b003f25be3cd6amr1378369wml.4.1684414273372; 
+ bh=MitncF/4GqTSNnwixClM4RdAFm5G7KDGOzVgQYsIGKo=;
+ b=X5tLKFjNQBo6YcMuUBOghJRKirTyBojcYcJgaem2vLDGzsGmgdPlhNBj02frbIr2RB
+ mQ4XXTyjnVCzBFDGfe+tWbDjGoNmlzHXC20bWTnXv1s/aDQjnGLTTGuridj8D2SPyIDt
+ yitT3RW64rWvQMMKBQbynL6Fmbz63LWJsuRJeE6jegoBeleWbqdARIn/12SCTx/mDwnk
+ YEpxI0q67Z9zYY7kuR8mMCgVbKE2d2RstdbNIqK5Mr2uuIS9/FRr+Sh5ysaCd2WwbVEl
+ PjR1ZEUt5l2DCmkXZh4clcGv4hQZjidZW2+q48ckYom9C2KcraXNCg4cPVJD/MW98aL6
+ RxvQ==
+X-Gm-Message-State: AC+VfDx/5c/KnnsjEA723S9k3nd1c2zkiPMD8UStFbJrAYNLxLRKOzXi
+ 2HXdUOU2pGud0NAVkz7KH8glPT034ARu/adamio=
+X-Google-Smtp-Source: ACHHUZ7tw37++rz2SMU5g/0wUcr3v+jPeik2PWy7CtdAbviBbhH3ajx2x7wwh5opkPeDSxG9vpXAqg==
+X-Received: by 2002:a05:600c:ad9:b0:3f4:21cf:b4a4 with SMTP id
+ c25-20020a05600c0ad900b003f421cfb4a4mr1534086wmr.20.1684414273768; 
  Thu, 18 May 2023 05:51:13 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 18 May 2023 05:51:13 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/29] target/arm: Convert PC-rel addressing to decodetree
-Date: Thu, 18 May 2023 13:50:48 +0100
-Message-Id: <20230518125107.146421-11-peter.maydell@linaro.org>
+Subject: [PULL 11/29] target/arm: Split gen_add_CC and gen_sub_CC
+Date: Thu, 18 May 2023 13:50:49 +0100
+Message-Id: <20230518125107.146421-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230518125107.146421-1-peter.maydell@linaro.org>
 References: <20230518125107.146421-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,101 +92,195 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Convert the ADR and ADRP instructions.
+Split out specific 32-bit and 64-bit functions.
+These carry the same signature as tcg_gen_add_i64,
+and so will be easier to pass as callbacks.
+
+Retain gen_add_CC and gen_sub_CC during conversion.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230512144106.3608981-5-peter.maydell@linaro.org
-[PMM: Rebased]
+Message-id: 20230512144106.3608981-6-peter.maydell@linaro.org
+[PMM: rebased]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/a64.decode      | 13 ++++++++++++
- target/arm/tcg/translate-a64.c | 38 +++++++++++++---------------------
- 2 files changed, 27 insertions(+), 24 deletions(-)
+ target/arm/tcg/translate-a64.c | 149 +++++++++++++++++++--------------
+ 1 file changed, 84 insertions(+), 65 deletions(-)
 
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 43321bbbb05..bcf46fc37d7 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -18,3 +18,16 @@
- #
- # This file is processed by scripts/decodetree.py
- #
-+
-+&ri              rd imm
-+
-+
-+### Data Processing - Immediate
-+
-+# PC-rel addressing
-+
-+%imm_pcrel      5:s19 29:2
-+@pcrel          . .. ..... ................... rd:5     &ri imm=%imm_pcrel
-+
-+ADR             0 .. 10000 ................... .....    @pcrel
-+ADRP            1 .. 10000 ................... .....    @pcrel
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 1fd6f97b641..ffcd05eb38a 100644
+index ffcd05eb38a..7a633abf830 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -4179,31 +4179,24 @@ static void disas_ldst(DisasContext *s, uint32_t insn)
+@@ -682,83 +682,102 @@ static inline void gen_logic_CC(int sf, TCGv_i64 result)
+ }
+ 
+ /* dest = T0 + T1; compute C, N, V and Z flags */
++static void gen_add64_CC(TCGv_i64 dest, TCGv_i64 t0, TCGv_i64 t1)
++{
++    TCGv_i64 result, flag, tmp;
++    result = tcg_temp_new_i64();
++    flag = tcg_temp_new_i64();
++    tmp = tcg_temp_new_i64();
++
++    tcg_gen_movi_i64(tmp, 0);
++    tcg_gen_add2_i64(result, flag, t0, tmp, t1, tmp);
++
++    tcg_gen_extrl_i64_i32(cpu_CF, flag);
++
++    gen_set_NZ64(result);
++
++    tcg_gen_xor_i64(flag, result, t0);
++    tcg_gen_xor_i64(tmp, t0, t1);
++    tcg_gen_andc_i64(flag, flag, tmp);
++    tcg_gen_extrh_i64_i32(cpu_VF, flag);
++
++    tcg_gen_mov_i64(dest, result);
++}
++
++static void gen_add32_CC(TCGv_i64 dest, TCGv_i64 t0, TCGv_i64 t1)
++{
++    TCGv_i32 t0_32 = tcg_temp_new_i32();
++    TCGv_i32 t1_32 = tcg_temp_new_i32();
++    TCGv_i32 tmp = tcg_temp_new_i32();
++
++    tcg_gen_movi_i32(tmp, 0);
++    tcg_gen_extrl_i64_i32(t0_32, t0);
++    tcg_gen_extrl_i64_i32(t1_32, t1);
++    tcg_gen_add2_i32(cpu_NF, cpu_CF, t0_32, tmp, t1_32, tmp);
++    tcg_gen_mov_i32(cpu_ZF, cpu_NF);
++    tcg_gen_xor_i32(cpu_VF, cpu_NF, t0_32);
++    tcg_gen_xor_i32(tmp, t0_32, t1_32);
++    tcg_gen_andc_i32(cpu_VF, cpu_VF, tmp);
++    tcg_gen_extu_i32_i64(dest, cpu_NF);
++}
++
+ static void gen_add_CC(int sf, TCGv_i64 dest, TCGv_i64 t0, TCGv_i64 t1)
+ {
+     if (sf) {
+-        TCGv_i64 result, flag, tmp;
+-        result = tcg_temp_new_i64();
+-        flag = tcg_temp_new_i64();
+-        tmp = tcg_temp_new_i64();
+-
+-        tcg_gen_movi_i64(tmp, 0);
+-        tcg_gen_add2_i64(result, flag, t0, tmp, t1, tmp);
+-
+-        tcg_gen_extrl_i64_i32(cpu_CF, flag);
+-
+-        gen_set_NZ64(result);
+-
+-        tcg_gen_xor_i64(flag, result, t0);
+-        tcg_gen_xor_i64(tmp, t0, t1);
+-        tcg_gen_andc_i64(flag, flag, tmp);
+-        tcg_gen_extrh_i64_i32(cpu_VF, flag);
+-
+-        tcg_gen_mov_i64(dest, result);
++        gen_add64_CC(dest, t0, t1);
+     } else {
+-        /* 32 bit arithmetic */
+-        TCGv_i32 t0_32 = tcg_temp_new_i32();
+-        TCGv_i32 t1_32 = tcg_temp_new_i32();
+-        TCGv_i32 tmp = tcg_temp_new_i32();
+-
+-        tcg_gen_movi_i32(tmp, 0);
+-        tcg_gen_extrl_i64_i32(t0_32, t0);
+-        tcg_gen_extrl_i64_i32(t1_32, t1);
+-        tcg_gen_add2_i32(cpu_NF, cpu_CF, t0_32, tmp, t1_32, tmp);
+-        tcg_gen_mov_i32(cpu_ZF, cpu_NF);
+-        tcg_gen_xor_i32(cpu_VF, cpu_NF, t0_32);
+-        tcg_gen_xor_i32(tmp, t0_32, t1_32);
+-        tcg_gen_andc_i32(cpu_VF, cpu_VF, tmp);
+-        tcg_gen_extu_i32_i64(dest, cpu_NF);
++        gen_add32_CC(dest, t0, t1);
      }
  }
  
--/* PC-rel. addressing
-- *   31  30   29 28       24 23                5 4    0
-- * +----+-------+-----------+-------------------+------+
-- * | op | immlo | 1 0 0 0 0 |       immhi       |  Rd  |
-- * +----+-------+-----------+-------------------+------+
-+/*
-+ * PC-rel. addressing
-  */
--static void disas_pc_rel_adr(DisasContext *s, uint32_t insn)
-+
-+static bool trans_ADR(DisasContext *s, arg_ri *a)
- {
--    unsigned int page, rd;
--    int64_t offset;
-+    gen_pc_plus_diff(s, cpu_reg(s, a->rd), a->imm);
-+    return true;
-+}
- 
--    page = extract32(insn, 31, 1);
--    /* SignExtend(immhi:immlo) -> offset */
--    offset = sextract64(insn, 5, 19);
--    offset = offset << 2 | extract32(insn, 29, 2);
--    rd = extract32(insn, 0, 5);
-+static bool trans_ADRP(DisasContext *s, arg_ri *a)
+ /* dest = T0 - T1; compute C, N, V and Z flags */
++static void gen_sub64_CC(TCGv_i64 dest, TCGv_i64 t0, TCGv_i64 t1)
 +{
-+    int64_t offset = (int64_t)a->imm << 12;
- 
--    if (page) {
--        /* ADRP (page based) */
--        offset <<= 12;
--        /* The page offset is ok for CF_PCREL. */
--        offset -= s->pc_curr & 0xfff;
--    }
++    /* 64 bit arithmetic */
++    TCGv_i64 result, flag, tmp;
++
++    result = tcg_temp_new_i64();
++    flag = tcg_temp_new_i64();
++    tcg_gen_sub_i64(result, t0, t1);
++
++    gen_set_NZ64(result);
++
++    tcg_gen_setcond_i64(TCG_COND_GEU, flag, t0, t1);
++    tcg_gen_extrl_i64_i32(cpu_CF, flag);
++
++    tcg_gen_xor_i64(flag, result, t0);
++    tmp = tcg_temp_new_i64();
++    tcg_gen_xor_i64(tmp, t0, t1);
++    tcg_gen_and_i64(flag, flag, tmp);
++    tcg_gen_extrh_i64_i32(cpu_VF, flag);
++    tcg_gen_mov_i64(dest, result);
++}
++
++static void gen_sub32_CC(TCGv_i64 dest, TCGv_i64 t0, TCGv_i64 t1)
++{
++    /* 32 bit arithmetic */
++    TCGv_i32 t0_32 = tcg_temp_new_i32();
++    TCGv_i32 t1_32 = tcg_temp_new_i32();
++    TCGv_i32 tmp;
++
++    tcg_gen_extrl_i64_i32(t0_32, t0);
++    tcg_gen_extrl_i64_i32(t1_32, t1);
++    tcg_gen_sub_i32(cpu_NF, t0_32, t1_32);
++    tcg_gen_mov_i32(cpu_ZF, cpu_NF);
++    tcg_gen_setcond_i32(TCG_COND_GEU, cpu_CF, t0_32, t1_32);
++    tcg_gen_xor_i32(cpu_VF, cpu_NF, t0_32);
++    tmp = tcg_temp_new_i32();
++    tcg_gen_xor_i32(tmp, t0_32, t1_32);
++    tcg_gen_and_i32(cpu_VF, cpu_VF, tmp);
++    tcg_gen_extu_i32_i64(dest, cpu_NF);
++}
++
+ static void gen_sub_CC(int sf, TCGv_i64 dest, TCGv_i64 t0, TCGv_i64 t1)
+ {
+     if (sf) {
+-        /* 64 bit arithmetic */
+-        TCGv_i64 result, flag, tmp;
 -
--    gen_pc_plus_diff(s, cpu_reg(s, rd), offset);
-+    /* The page offset is ok for CF_PCREL. */
-+    offset -= s->pc_curr & 0xfff;
-+    gen_pc_plus_diff(s, cpu_reg(s, a->rd), offset);
-+    return true;
+-        result = tcg_temp_new_i64();
+-        flag = tcg_temp_new_i64();
+-        tcg_gen_sub_i64(result, t0, t1);
+-
+-        gen_set_NZ64(result);
+-
+-        tcg_gen_setcond_i64(TCG_COND_GEU, flag, t0, t1);
+-        tcg_gen_extrl_i64_i32(cpu_CF, flag);
+-
+-        tcg_gen_xor_i64(flag, result, t0);
+-        tmp = tcg_temp_new_i64();
+-        tcg_gen_xor_i64(tmp, t0, t1);
+-        tcg_gen_and_i64(flag, flag, tmp);
+-        tcg_gen_extrh_i64_i32(cpu_VF, flag);
+-        tcg_gen_mov_i64(dest, result);
++        gen_sub64_CC(dest, t0, t1);
+     } else {
+-        /* 32 bit arithmetic */
+-        TCGv_i32 t0_32 = tcg_temp_new_i32();
+-        TCGv_i32 t1_32 = tcg_temp_new_i32();
+-        TCGv_i32 tmp;
+-
+-        tcg_gen_extrl_i64_i32(t0_32, t0);
+-        tcg_gen_extrl_i64_i32(t1_32, t1);
+-        tcg_gen_sub_i32(cpu_NF, t0_32, t1_32);
+-        tcg_gen_mov_i32(cpu_ZF, cpu_NF);
+-        tcg_gen_setcond_i32(TCG_COND_GEU, cpu_CF, t0_32, t1_32);
+-        tcg_gen_xor_i32(cpu_VF, cpu_NF, t0_32);
+-        tmp = tcg_temp_new_i32();
+-        tcg_gen_xor_i32(tmp, t0_32, t1_32);
+-        tcg_gen_and_i32(cpu_VF, cpu_VF, tmp);
+-        tcg_gen_extu_i32_i64(dest, cpu_NF);
++        gen_sub32_CC(dest, t0, t1);
+     }
  }
  
- /*
-@@ -4656,9 +4649,6 @@ static void disas_extract(DisasContext *s, uint32_t insn)
- static void disas_data_proc_imm(DisasContext *s, uint32_t insn)
- {
-     switch (extract32(insn, 23, 6)) {
--    case 0x20: case 0x21: /* PC-rel. addressing */
--        disas_pc_rel_adr(s, insn);
--        break;
-     case 0x22: /* Add/subtract (immediate) */
-         disas_add_sub_imm(s, insn);
-         break;
 -- 
 2.34.1
 
