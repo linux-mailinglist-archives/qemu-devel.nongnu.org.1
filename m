@@ -2,77 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1ABD7083FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 16:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B15708429
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 16:45:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzej1-0006xK-UP; Thu, 18 May 2023 10:35:27 -0400
+	id 1pzerB-0002N8-KA; Thu, 18 May 2023 10:43:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ido.ber3@gmail.com>)
- id 1pzej0-0006x0-1y
- for qemu-devel@nongnu.org; Thu, 18 May 2023 10:35:26 -0400
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ido.ber3@gmail.com>)
- id 1pzeiy-0001MZ-FE
- for qemu-devel@nongnu.org; Thu, 18 May 2023 10:35:25 -0400
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-3f39600f9b8so10689251cf.3
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 07:35:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684420523; x=1687012523;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=f7laxQvselTFgPc8ahAoxVSv6VFklyi9ZezIofVcIlA=;
- b=IeTvr7BuD8Cr8VulKCNACicdxLi9x8nPSTBDKccFVn+8IH2d6HA6X41GfbmpS2j0X3
- Rk01g1FXcVPchUdzq6W4Nx+RxKd2nwdG6Wx94K1TpBc8yyUBBSjgAqeVi4ZWkvDT5YEm
- Fmz0Vn1p9aJmMXHOv2QNSadd6pnqkUJco3acomgy3cKX+B9vaS8qV+6pfMf03bXThBs7
- ALcDTm5MHCKQSV+CL6CAtS96uGXiL6eUmiyCfJvVnBmIQDKjvYZ2hQHAu3VqFoYfrSIt
- 8nqELU7RWjTkeR5CiO/Rqe8upVs2vxUWwJ/tsyVCOsCIU2Qncql5YG3S6GNFZ8FGdyax
- cxwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684420523; x=1687012523;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f7laxQvselTFgPc8ahAoxVSv6VFklyi9ZezIofVcIlA=;
- b=c+Vkb3LeQRNOZKRs26Q1kLuu0FQJrt0vxrnTvbeZqKnnm0clu865CJenNuhFT3HqJ8
- pHVXJCtoahXAET9F7sLQkG91LyOJpqVvNB5xvCTX4Kz7TUetYijcP2BORxczQz6fGhMR
- nTZNz0VbKLSjy3HqU+TKOaCWOCo0CKzQc9UOOn6LvDrk4Tw7WevR8CZ+DYfLmPLw3idN
- JRmDEVzYeBexO2HmNXKz734YxVrxSgOYWOyGrdePYZ1y9utWj+tlOXOiOVkOi/ac0YFU
- NXL4gVPsf80FKGOQy88Y09Q3ddwtBcmSIR+lPUeBPrBTY61Y0oFyZ87dXJ+YaJTlLiod
- n2OA==
-X-Gm-Message-State: AC+VfDw7/XcVmh9vRLQhIkLfm78p4141ygPHw3gUuEftRj9C9j/wUPs6
- MGwTjm+FLG2SCIRHRIhZwoFMtnYequaV96ptCdgOKSgeZnc=
-X-Google-Smtp-Source: ACHHUZ4927aCjRNV2iXjL1JJ5VKLEP/zhtgBaCX4fgrjXlmE7vrMpyW0yWqdGqKx/o8NRpg/azZ1XbyQpA2aOKCiyFY=
-X-Received: by 2002:a05:622a:44b:b0:3f6:837f:79c9 with SMTP id
- o11-20020a05622a044b00b003f6837f79c9mr5890583qtx.26.1684420522562; Thu, 18
- May 2023 07:35:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1pzer5-0002Ml-F0
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 10:43:51 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1pzer2-0002gr-UL
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 10:43:47 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0d:3786:0:640:7c97:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 007395FE58;
+ Thu, 18 May 2023 17:43:37 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:7204::1:34] (unknown
+ [2a02:6b8:b081:7204::1:34])
+ by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id ZheUqa3MpmI0-b4ZPFrj8; Thu, 18 May 2023 17:43:36 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1684421016; bh=4/4AuHgAzPTm3TLt+h8FWKFKEq3c54TEGJcjL7aFU0k=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=fJX3rjxj75zJbg7Zqmfu3tsFkWeMFkM05InJ2Eiqxh3MILps7epnwJ+UZBQwpEVgH
+ Ek/wRrHlbVvWh1+W42IYCd8QtNWcYq6KqyAIFjhnMQN660+WxVv2Qj6/UZ9jJ2BbTo
+ yxwy4ERzxcwo1HfG64H12R92Tr6ted3QZNsjHUt4=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <208b27c5-e81f-2185-39f0-70e16ade2448@yandex-team.ru>
+Date: Thu, 18 May 2023 17:43:35 +0300
 MIME-Version: 1.0
-References: <CANamGFG1Lq+QSMshgYChj663K=Sj19YEh8WP=HWYM6HBnpRpWw@mail.gmail.com>
- <CAFEAcA83RoCWzZD3pOdJndtRYynf7j0GwTEZCfOz6uOv5fybnQ@mail.gmail.com>
-In-Reply-To: <CAFEAcA83RoCWzZD3pOdJndtRYynf7j0GwTEZCfOz6uOv5fybnQ@mail.gmail.com>
-From: ido berenbaum <ido.ber3@gmail.com>
-Date: Thu, 18 May 2023 17:35:11 +0300
-Message-ID: <CANamGFFb_zwkAe0+VRfj7daL0CSs4-hS5SX-GRSmG2kJJCLV0Q@mail.gmail.com>
-Subject: Re: Gpio in vexpress
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000e6574c05fbf8b642"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=ido.ber3@gmail.com; helo=mail-qt1-x830.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 2/5] migration: never fail in global_state_store()
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, leobras@redhat.com,
+ peterx@redhat.com, yc-core@yandex-team.ru
+References: <20230517123752.21615-1-vsementsov@yandex-team.ru>
+ <20230517123752.21615-3-vsementsov@yandex-team.ru>
+ <87ilcpevlq.fsf@secure.mitica>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <87ilcpevlq.fsf@secure.mitica>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.544,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -84,85 +79,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e6574c05fbf8b642
-Content-Type: text/plain; charset="UTF-8"
+On 18.05.23 14:18, Juan Quintela wrote:
+> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> wrote:
+>> Actually global_state_store() can never fail. Let's get rid of extra
+>> error paths.
+>>
+>> To make things clear, use new runstate_get() and use same approach for
+>> global_state_store() and global_state_store_running().
+>>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> 
+> I don't know.
+> 
+> On one hand, you have removed a lot of code that "can't" happen.
+> 
+> On the other:
+> 
+>> +static void global_state_do_store(RunState state)
+>>   {
+>> -    if (!runstate_store((char *)global_state.runstate,
+>> -                        sizeof(global_state.runstate))) {
+>> -        error_report("runstate name too big: %s", global_state.runstate);
+>> -        trace_migrate_state_too_big();
+>> -        return -EINVAL;
+>> -    }
+>> -    return 0;
+>> +    const char *state_str = RunState_str(state);
+>> +    assert(strlen(state_str) < sizeof(global_state.runstate));
+> 
+> First: g_assert() please.
+> 
+> Second: We try really hard not to fail during migration and get the
+> whole qemu back.  One assert is bad.  Specially in a place like this
+> one, where we know that nothing is broken, simpli that we can't migrate.
+> 
 
-Oh, I was under the impression the vexpress board is not based on a real
-physical hardware like virt.
-In any case, In my workplace we use the qemu for our CI testing, to prevent
-the need to use our hardware for logical tests.
-The thing is our SoC is not implemented in qemu, and so we are using the
-vexpress as it is similar enough when considering the core structure.
-But, as it is not identical we need to make changes to make it fit our use
-cases. For example, add a gpio.
+On the other hand, having runstate longer than 100 characters means memory corruption, so aborting QEMU is best we can do
 
-Do you think we should use a different SoC as a base for our development?
+-- 
+Best regards,
+Vladimir
 
-On Tue, May 16, 2023, 12:17 Peter Maydell <peter.maydell@linaro.org> wrote:
-
-> On Tue, 16 May 2023 at 07:36, ido berenbaum <ido.ber3@gmail.com> wrote:
-> >
-> > Hi, I was trying to understand the architecture of the vexpress virtual
-> machine in regards to adding new gpios that are going to be external.
-> > First, is it right to act as if I am developing on a physical board and
-> add the gpios to the VexpressMachineState struct?
-> > Secondly, which gpio type fits here? I see that for fsl_imx7 it is the
-> imx_gpio, but what is for vexpress? Should I create one?
-> > Or, can I use pl061?
->
-> The vexpress is a model of a real piece of hardware, so the
-> answer is "you model what the real hardware is doing". You
-> should be able to find that out in the technical reference
-> manual for the board / daughterboard.
->
-> Why are you interested in the vexpress in particular?
-> It is a pretty elderly development board...
->
-> thanks
-> -- PMM
->
-
---000000000000e6574c05fbf8b642
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div>Oh, I was under the impression the vexpress board is=
- not based on a real physical hardware like virt.</div><div dir=3D"auto">In=
- any case, In my workplace we use the qemu for our CI testing, to prevent t=
-he need to use our hardware for logical tests.</div><div dir=3D"auto">The t=
-hing is our SoC is not implemented in qemu, and so we are using the vexpres=
-s as it is similar enough when considering the core structure.</div><div di=
-r=3D"auto">But, as it is not identical we need to make changes to make it f=
-it our use cases. For example, add a gpio.</div><div dir=3D"auto"><br></div=
-><div dir=3D"auto">Do you think we should use a different SoC as a base for=
- our development?<br><br><div class=3D"gmail_quote" dir=3D"auto"><div dir=
-=3D"ltr" class=3D"gmail_attr">On Tue, May 16, 2023, 12:17 Peter Maydell &lt=
-;<a href=3D"mailto:peter.maydell@linaro.org" target=3D"_blank" rel=3D"noref=
-errer">peter.maydell@linaro.org</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padd=
-ing-left:1ex">On Tue, 16 May 2023 at 07:36, ido berenbaum &lt;<a href=3D"ma=
-ilto:ido.ber3@gmail.com" rel=3D"noreferrer noreferrer" target=3D"_blank">id=
-o.ber3@gmail.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Hi, I was trying to understand the architecture of the vexpress virtua=
-l machine in regards to adding new gpios that are going to be external.<br>
-&gt; First, is it right to act as if I am developing on a physical board an=
-d add the gpios to the VexpressMachineState struct?<br>
-&gt; Secondly, which gpio type fits here? I see that for fsl_imx7 it is the=
- imx_gpio, but what is for vexpress? Should I create one?<br>
-&gt; Or, can I use pl061?<br>
-<br>
-The vexpress is a model of a real piece of hardware, so the<br>
-answer is &quot;you model what the real hardware is doing&quot;. You<br>
-should be able to find that out in the technical reference<br>
-manual for the board / daughterboard.<br>
-<br>
-Why are you interested in the vexpress in particular?<br>
-It is a pretty elderly development board...<br>
-<br>
-thanks<br>
--- PMM<br>
-</blockquote></div></div></div>
-
---000000000000e6574c05fbf8b642--
 
