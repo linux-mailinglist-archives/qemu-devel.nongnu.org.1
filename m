@@ -2,66 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29AA707786
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 03:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B34707793
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 03:48:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzSe4-0000jH-2b; Wed, 17 May 2023 21:41:32 -0400
+	id 1pzSkI-0002vM-9n; Wed, 17 May 2023 21:47:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1pzSe0-0000h7-Ir
- for qemu-devel@nongnu.org; Wed, 17 May 2023 21:41:28 -0400
-Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1pzSdy-0003Y8-2n
- for qemu-devel@nongnu.org; Wed, 17 May 2023 21:41:28 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxFuk9gmVkJLIJAA--.16988S3;
- Thu, 18 May 2023 09:41:17 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxLb87gmVkGwJnAA--.45501S4; 
- Thu, 18 May 2023 09:41:17 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
- imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
- alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn
-Subject: [PATCH v1 2/2] hw/intc: Set physical cpuid route for LoongArch ipi
- device
-Date: Thu, 18 May 2023 09:41:15 +0800
-Message-Id: <20230518014115.117869-3-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230518014115.117869-1-gaosong@loongson.cn>
-References: <20230518014115.117869-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1pzSkG-0002vE-Kt
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 21:47:56 -0400
+Received: from mga14.intel.com ([192.55.52.115])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1pzSkE-00055P-4b
+ for qemu-devel@nongnu.org; Wed, 17 May 2023 21:47:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1684374474; x=1715910474;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=gdAdRvP+tA7jTdJEAqexvvpL2eBDug9vJEmBEi1TrhU=;
+ b=j7Owjz8KOlr/Wev+mitomunjlytIZWS6azltUhgU13HZZOQO0Khb7Zd9
+ BsD3yZR3D8BIhPnjP9TytbUqLaFTXLixqwjdLucjkrpVhCHIvYSihmbSr
+ cYo5pxcGu50wAhh7wd1n7sM2A5hadKlPXi9uCfB3nC4q/kDeB1OPSsqXw
+ PUTAwLf4a+OG/Sa9DCRmlXjyZutXfqIqdEHPZYpoaLM6xOk8r7edvZeZU
+ 4oF1BqgTJpjwMK0QjPRCJhJOwbx48TL1b2OoxdZabZc7Kc8uScuDjIMhe
+ iqS+tWrkiLwekeqEFdHDu8eHbpNc/yN2fDP/ZOEFj6Nr1WI1AmpT8ii+5 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="351952362"
+X-IronPort-AV: E=Sophos;i="5.99,283,1677571200"; d="scan'208";a="351952362"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 May 2023 18:47:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="876245404"
+X-IronPort-AV: E=Sophos;i="5.99,283,1677571200"; d="scan'208";a="876245404"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.249.174.199])
+ ([10.249.174.199])
+ by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 May 2023 18:47:37 -0700
+Message-ID: <3b4731ca-c76c-cf11-d025-2c8397bc1c5c@intel.com>
+Date: Thu, 18 May 2023 09:47:35 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxLb87gmVkGwJnAA--.45501S4
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjvJXoWxCF48Jw4kGFy3uFWfuw17Wrg_yoWrJF1rpF
- y7ur1a9r40qFZxXas3G34DXrn8Jrn7Wa429a1Ska9YkF4DWry8WF1kt34qqFyDA34rXF4Y
- vFs7Jw42gF42qrDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
- bnkFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
- AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF
- 7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6x
- kF7I0E14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020E
- x4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26rWlOx8S6xCaFV
- Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v
- 1sIEY20_WwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I
- 0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAI
- cVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcV
- CF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
- c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0zRVWlkUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.10.1
+Subject: Re: [PATCH v3 1/3] migration: Add documentation for backwards
+ compatiblity
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Jiri Denemark <jdenemar@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Fiona Ebner <f.ebner@proxmox.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+References: <20230515083201.55060-1-quintela@redhat.com>
+ <20230515083201.55060-2-quintela@redhat.com> <ZGQUMyKBbkLlsDhD@x1n>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZGQUMyKBbkLlsDhD@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.55.52.115; envelope-from=xiaoyao.li@intel.com;
+ helo=mga14.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.412,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,133 +87,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LoongArch ipi device uses physical cpuid to route to different
-vcpus rather logical cpuid, and the physical cpuid is the same
-with cpuid in acpi dsdt and srat table.
+On 5/17/2023 7:39 AM, Peter Xu wrote:
+> On Mon, May 15, 2023 at 10:31:59AM +0200, Juan Quintela wrote:
+>> State what are the requeriments to get migration working between qemu
+>> versions.  And once there explain how one is supposed to implement a
+>> new feature/default value and not break migration.
+>>
+>> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> Message-Id: <20230511082701.12828-1-quintela@redhat.com>
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> ---
+>>   docs/devel/migration.rst | 216 +++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 216 insertions(+)
+>>
+>> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+>> index 6f65c23b47..b4c4f3ec35 100644
+>> --- a/docs/devel/migration.rst
+>> +++ b/docs/devel/migration.rst
+>> @@ -142,6 +142,222 @@ General advice for device developers
+>>     may be different on the destination.  This can result in the
+>>     device state being loaded into the wrong device.
+>>   
+>> +How backwards compatibility works
+>> +---------------------------------
+>> +
+>> +When we do migration, we have to QEMU process: the source and the
+> 
+> s/to/two/, s/process/processes/
+> 
+>> +target.  There are two cases, they are the same version or they are a
+>> +different version.
+> 
+> s/a different version/different versions/
+> 
+>> +The easy case is when they are the same version.
+>> +The difficult one is when they are different versions.
+>> +
+>> +There are two things that are different, but they have very similar
+>> +names and sometimes get confused:
+> 
+> (space)
+> 
+>> +- QEMU version
+>> +- machine version
+> 
+> It's normally called "machine type", so maybe use that?  Or just "machine
+> version / machine type"?
+> 
+>> +
+>> +Let's start with a practical example, we start with:
+>> +
+>> +- qemu-system-x86_64 (v5.2), from now on qemu-5.2.
+>> +- qemu-system-x86_64 (v5.1), from now on qemu-5.1.
+>> +
+>> +Related to this are the "latest" machine types defined on each of
+>> +them:
+>> +
+>> +- pc-q35-5.2 (newer one in qemu-5.2) from now on pc-5.2
+>> +- pc-q35-5.1 (newer one in qemu-5.1) from now on pc-5.1
+>> +
+>> +First of all, migration is only supposed to work if you use the same
+>> +machine type in both source and destination. The QEMU hardware
+>> +configuration needs to be the same also on source and destination.
+>> +Most aspects of the backend configuration can be changed at will,
+>> +except for a few cases where the backend features influence frontend
+>> +device feature exposure.  But that is not relevant for this section.
+>> +
+>> +I am going to list the number of combinations that we can have.  Let's
+>> +start with the trivial ones, QEMU is the same on source and
+>> +destination:
+>> +
+>> +1 - qemu-5.2 -M pc-5.2  -> migrates to -> qemu-5.2 -M pc-5.2
+>> +
+>> +  This is the latest QEMU with the latest machine type.
+>> +  This have to work, and if it doesn't work it is a bug.
+>> +
+>> +2 - qemu-5.1 -M pc-5.1  -> migrates to -> qemu-5.1 -M pc-5.1
+>> +
+>> +  Exactly the same case than the previous one, but for 5.1.
+>> +  Nothing to see here either.
+>> +
+>> +This are the easiest ones, we will not talk more about them in this
+>> +section.
+>> +
+>> +Now we start with the more interesting cases.  Consider the case where
+>> +we have the same QEMU version in both sides (qemu-5.2) but we are using
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- hw/intc/loongarch_ipi.c | 44 ++++++++++++++++++++++++++++++++++-------
- hw/loongarch/virt.c     |  1 +
- target/loongarch/cpu.h  |  2 ++
- 3 files changed, 40 insertions(+), 7 deletions(-)
+s/we are using/we are not
 
-diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index d6ab91721e..e5f396ca75 100644
---- a/hw/intc/loongarch_ipi.c
-+++ b/hw/intc/loongarch_ipi.c
-@@ -17,6 +17,8 @@
- #include "target/loongarch/internals.h"
- #include "trace.h"
- 
-+static void loongarch_ipi_writel(void *, hwaddr, uint64_t, unsigned);
-+
- static uint64_t loongarch_ipi_readl(void *opaque, hwaddr addr, unsigned size)
- {
-     IPICore *s = opaque;
-@@ -75,13 +77,42 @@ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr)
-                       data, MEMTXATTRS_UNSPECIFIED, NULL);
- }
- 
-+static int archid_cmp(const void *a, const void *b)
-+{
-+   CPUArchId *archid_a = (CPUArchId *)a;
-+   CPUArchId *archid_b = (CPUArchId *)b;
-+
-+   return archid_a->arch_id - archid_b->arch_id;
-+}
-+
-+static CPUArchId *find_cpu_by_archid(MachineState *ms, uint32_t id)
-+{
-+    CPUArchId apic_id, *found_cpu;
-+
-+    apic_id.arch_id = id;
-+    found_cpu = bsearch(&apic_id, ms->possible_cpus->cpus,
-+        ms->possible_cpus->len, sizeof(*ms->possible_cpus->cpus),
-+        archid_cmp);
-+
-+    return found_cpu;
-+}
-+
-+static CPUState *ipi_getcpu(int arch_id)
-+{
-+    MachineState *machine = MACHINE(qdev_get_machine());
-+    CPUArchId *archid;
-+
-+    archid = find_cpu_by_archid(machine, arch_id);
-+    return CPU(archid->cpu);
-+}
-+
- static void ipi_send(uint64_t val)
- {
-     uint32_t cpuid;
-     uint8_t vector;
--    CPULoongArchState *env;
-     CPUState *cs;
-     LoongArchCPU *cpu;
-+    LoongArchIPI *s;
- 
-     cpuid = extract32(val, 16, 10);
-     if (cpuid >= LOONGARCH_MAX_CPUS) {
-@@ -92,11 +123,10 @@ static void ipi_send(uint64_t val)
-     /* IPI status vector */
-     vector = extract8(val, 0, 5);
- 
--    cs = qemu_get_cpu(cpuid);
-+    cs = ipi_getcpu(cpuid);
-     cpu = LOONGARCH_CPU(cs);
--    env = &cpu->env;
--    address_space_stl(&env->address_space_iocsr, 0x1008,
--                      BIT(vector), MEMTXATTRS_UNSPECIFIED, NULL);
-+    s = LOONGARCH_IPI(cpu->env.ipistate);
-+    loongarch_ipi_writel(&s->ipi_core, CORE_SET_OFF, BIT(vector), 4);
- }
- 
- static void mail_send(uint64_t val)
-@@ -114,7 +144,7 @@ static void mail_send(uint64_t val)
-     }
- 
-     addr = 0x1020 + (val & 0x1c);
--    cs = qemu_get_cpu(cpuid);
-+    cs = ipi_getcpu(cpuid);
-     cpu = LOONGARCH_CPU(cs);
-     env = &cpu->env;
-     send_ipi_data(env, val, addr);
-@@ -135,7 +165,7 @@ static void any_send(uint64_t val)
-     }
- 
-     addr = val & 0xffff;
--    cs = qemu_get_cpu(cpuid);
-+    cs = ipi_getcpu(cpuid);
-     cpu = LOONGARCH_CPU(cs);
-     env = &cpu->env;
-     send_ipi_data(env, val, addr);
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 83c1e43ff5..6e1c42fb2b 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -616,6 +616,7 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
-             memory_region_add_subregion(&env->system_iocsr, APIC_BASE,
-                                 sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi),
-                                 cpu));
-+        env->ipistate = ipi;
-     }
- 
-     /*
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 1f37e36b7c..b23f38c3d5 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -351,6 +351,8 @@ typedef struct CPUArchState {
-     MemoryRegion iocsr_mem;
-     bool load_elf;
-     uint64_t elf_address;
-+    /* Store ipistate to access from this struct */
-+    DeviceState *ipistate;
- #endif
- } CPULoongArchState;
- 
--- 
-2.39.1
+>> +the latest machine type for that version (pc-5.2) but one of an older
+>> +QEMU version, in this case pc-5.1.
 
 
