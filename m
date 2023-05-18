@@ -2,92 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016F7708A9B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 23:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1BA708A9D
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 23:35:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzlG3-0007Hy-2E; Thu, 18 May 2023 17:33:59 -0400
+	id 1pzlHN-0008AJ-V1; Thu, 18 May 2023 17:35:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzlG1-0007HV-Ar
- for qemu-devel@nongnu.org; Thu, 18 May 2023 17:33:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzlHL-00089t-Ug
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 17:35:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzlFz-0006hI-SM
- for qemu-devel@nongnu.org; Thu, 18 May 2023 17:33:57 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzlHK-00070z-Ha
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 17:35:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684445635;
+ s=mimecast20190719; t=1684445717;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7s09xnxpexVz0QYNy4nSoOKMhOyh8D0WhQK8jBI3lIo=;
- b=Faj2S4bQxYvVu+jAkhBC6DWd7801k5KltZ0ZGGjE/MMNWXLJMFVZzbxNd+xgOK7mcJhLR3
- lL1d2GGDnMyp82fAga7Yde9PztFa6/JAUo5DOlBYJJBmzg+xYUCifEYcaut/FjXUggL2Mv
- ERyOLicBxqXPRODKgm39V10BDLyyQe4=
+ bh=aSqxFmqZRWPuqIbZqU0R0bF/zcPOPngryUE7pctGGxo=;
+ b=JKyUG6jdZIEo++BrTu1j8rY5M7g/qmp2vSIBj6ysqhQr0nhXv4AsTBc8/dYd2UFisSfidy
+ I6RB18uYOayUjEnkhv0Y7GXvtU2rFwNclxWa6Qq6TgwiKKCD/EtmlXmTiqMFrHen7uaYcV
+ PUzAuwZ5knYYkGSRdMKKUU6+L9KcIFQ=
 Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
  [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-H65FvJV-NruWnzXiVzVkrg-1; Thu, 18 May 2023 17:33:53 -0400
-X-MC-Unique: H65FvJV-NruWnzXiVzVkrg-1
+ us-mta-340-Aq30gvt5Mk2FVwuzg2Hc6g-1; Thu, 18 May 2023 17:35:16 -0400
+X-MC-Unique: Aq30gvt5Mk2FVwuzg2Hc6g-1
 Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2af222cc3a1so1431191fa.3
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 14:33:53 -0700 (PDT)
+ 38308e7fff4ca-2af207a45bfso3036371fa.0
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 14:35:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684445632; x=1687037632;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7s09xnxpexVz0QYNy4nSoOKMhOyh8D0WhQK8jBI3lIo=;
- b=Kdp0CYrNZnkIEX+qQE+7mGaSSU9HXnTqnKGQe9XX8i/iB8+Jk/iEXSgagsKtavmFfu
- t8CWRpYeGxe/DNbTurmgjYiU1+3StxhElFcPiPt9KvmZW8XggRIDS/ZReTKPXl5BSUOL
- 0ykZB+FVMueFlvf5rEx9w6YsruBgGTYvBc+M05gbdRL+65J8qAn2hSBQvHi/GEESIge1
- sDT6i6ehAjrtAYpox+PzYreYDlz4HJtdaIbsB4FfSj/gtj+PqbNbssyfb3W+f64qwoCy
- V/8LWnB5UxX7bR+P4VimdYdOsH8SbyuJkTbTvq2vgoK1t/QM6+MArSMYbYEV3azjrX9H
- nn2A==
-X-Gm-Message-State: AC+VfDw6Y7fPWWozRjoklxn4u/Euzj3/L+y2V1N/Sbwz/Vi4yB9KzEv3
- 7Qff+TrfJEjkCEGPGprMFFJf21nYKEESQ2F2pPviUltIgzFia+fs0Qey7o0Zhzwr6NfB3TcE2SR
- 9LoITdme4ZQjAQk0=
-X-Received: by 2002:ac2:5973:0:b0:4f3:98b4:e45a with SMTP id
- h19-20020ac25973000000b004f398b4e45amr84459lfp.21.1684445632283; 
- Thu, 18 May 2023 14:33:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4sMtsQeLWYHS8w2u2HTrJaY0tRujQqwnc+ABZBXbJxykRl6QHF7DhYZcwyFWMDb3fxkMxHCQ==
-X-Received: by 2002:ac2:5973:0:b0:4f3:98b4:e45a with SMTP id
- h19-20020ac25973000000b004f398b4e45amr84451lfp.21.1684445631892; 
- Thu, 18 May 2023 14:33:51 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684445714; x=1687037714;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aSqxFmqZRWPuqIbZqU0R0bF/zcPOPngryUE7pctGGxo=;
+ b=MaLsSKEEGhSsEL5H4CbUYUetAWAHXvHTwNZGOnSH7oCXG9JEhGf0Cl/MpCMsLOT+L5
+ 4K0BJjd0vflWNdN1RZ1wBKAZC6KAp/oXsGIJFt/owJ+G/PsU/3lWMbO0iET4+FwMq3lE
+ sDO1UzrB//QNB6Ig/xNUDbqRCicnnwbkQVpVrExEEWHK9vyic7dRccSIuX/6ks91I1z8
+ ssPkNdSXHRdK1qG8mN6qJgyt1zvWlIGsRcAQ/F71Wax9N/bGEd4DbgViM5fSqaS2mt28
+ tlDFX6LCk/zWPaq+tcZhj1IjNiINxBY2aU4FXdxilz2Z6QHr3DhFLY+dWq59S4D1gRXD
+ OVcA==
+X-Gm-Message-State: AC+VfDzJsBc5VxVBNQcFbMMTQvOOg/Is9W1yMJbM4UYErbn1MRz9967v
+ x5ap563YdHWJiLZT9D9tIpLR8YkWZkJd1kTOybseLHqEaVqMhVYoLVae7SXFDiZj95in5jwc1lb
+ Yh2Cb9uMlV0uGCcGbUnOcrqM=
+X-Received: by 2002:a2e:6e18:0:b0:2a8:ac95:be75 with SMTP id
+ j24-20020a2e6e18000000b002a8ac95be75mr10691230ljc.42.1684445714408; 
+ Thu, 18 May 2023 14:35:14 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ50Fs3un9LXWsl7Qj75bxs4MI7ByMQhtNLYqrZAUqXjaKgega5iCo5NXOkD+O5bjckdh03FVw==
+X-Received: by 2002:a2e:6e18:0:b0:2a8:ac95:be75 with SMTP id
+ j24-20020a2e6e18000000b002a8ac95be75mr10691225ljc.42.1684445714116; 
+ Thu, 18 May 2023 14:35:14 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:175:3e4d:6703:27b9:6f74:5282])
  by smtp.gmail.com with ESMTPSA id
- s18-20020ac25fb2000000b004edb8fac1cesm363730lfe.215.2023.05.18.14.33.47
+ a5-20020a05651c010500b002a8e8c776e9sm484712ljb.56.2023.05.18.14.35.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 14:33:51 -0700 (PDT)
-Date: Thu, 18 May 2023 17:33:44 -0400
+ Thu, 18 May 2023 14:35:13 -0700 (PDT)
+Date: Thu, 18 May 2023 17:35:09 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-arm@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?iso-8859-1?Q?Herv=E9?= Poussineau <hpoussin@reactos.org>,
- Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org,
- qemu-ppc@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 0/4] Trivial cleanups
-Message-ID: <20230518173332-mutt-send-email-mst@kernel.org>
-References: <20230513100906.46672-1-shentey@gmail.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com
+Subject: Re: [PATCH] virtio-gpu: add a FIXME for virtio_gpu_load()
+Message-ID: <20230518173438-mutt-send-email-mst@kernel.org>
+References: <20230515132518.1025853-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230513100906.46672-1-shentey@gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230515132518.1025853-1-marcandre.lureau@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,35 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, May 13, 2023 at 12:09:02PM +0200, Bernhard Beschow wrote:
-> This series:
-> * Removes dead code from omap_uart and i82378
-> * Resolves redundant code in the i8254 timer devices
-> * Replaces string literals by macro usage for TYPE_ISA_PARALLEL devices
+On Mon, May 15, 2023 at 05:25:18PM +0400, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Bernhard Beschow (4):
->   hw/timer/i8254_common: Share "iobase" property via base class
->   hw/arm/omap: Remove unused omap_uart_attach()
->   hw/char/parallel: Export TYPE_ISA_PARALLEL macro
->   hw/isa/i82378: Remove unused "io" attribute
-
-
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
->  include/hw/arm/omap.h      | 1 -
->  include/hw/char/parallel.h | 2 ++
->  hw/char/omap_uart.c        | 9 ---------
->  hw/char/parallel-isa.c     | 2 +-
->  hw/char/parallel.c         | 1 -
->  hw/i386/kvm/i8254.c        | 1 -
->  hw/isa/i82378.c            | 1 -
->  hw/isa/isa-superio.c       | 3 ++-
->  hw/timer/i8254.c           | 6 ------
->  hw/timer/i8254_common.c    | 6 ++++++
->  10 files changed, 11 insertions(+), 21 deletions(-)
+> It looks like the virtio_gpu_load() does not compute and set the offset,
+> the same way virtio_gpu_set_scanout() does. This probably results in
+> incorrect display until the scanout/framebuffer is updated again, I
+> guess we should fix it, although I haven't checked this yet.
 > 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+I guess it's a way to ping Gerd ;)
+Better to just fix it though, no?
+
+> ---
+>  hw/display/virtio-gpu.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> index 66ac9b6cc5..66cddd94d9 100644
+> --- a/hw/display/virtio-gpu.c
+> +++ b/hw/display/virtio-gpu.c
+> @@ -1289,6 +1289,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
+>      /* load & apply scanout state */
+>      vmstate_load_state(f, &vmstate_virtio_gpu_scanouts, g, 1);
+>      for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
+> +        /* FIXME: should take scanout.r.{x,y} into account */
+>          scanout = &g->parent_obj.scanout[i];
+>          if (!scanout->resource_id) {
+>              continue;
 > -- 
 > 2.40.1
-> 
 
 
