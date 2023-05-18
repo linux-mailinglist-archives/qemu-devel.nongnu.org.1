@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061EA707DE4
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 12:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A860707DE1
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 12:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzai7-0007CX-Ex; Thu, 18 May 2023 06:18:15 -0400
+	id 1pzai9-0007Cf-1J; Thu, 18 May 2023 06:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzai5-0007Bn-43
- for qemu-devel@nongnu.org; Thu, 18 May 2023 06:18:13 -0400
+ id 1pzai6-0007CO-MR
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 06:18:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzai3-0004lK-Nt
- for qemu-devel@nongnu.org; Thu, 18 May 2023 06:18:12 -0400
+ id 1pzai5-0004la-A8
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 06:18:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684405091;
+ s=mimecast20190719; t=1684405092;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bBojB1HHhw9e5Mqc9sqoqRl9uNsGGM3YqDRyz7NIFJw=;
- b=K+YXBWoA8nar+BsKRpdwyrZrAmt6As/dt9bUI4OMA5DvkXyzGOZawpbaRrmLPs7LjdUne1
- zfFczbkqTf+EqtOnIP1VJKMfDcjLGRDuUXEew5QYhIYvRlfHXhRn670ybUqKaig9W9SwCV
- odGH1dY++OExpW3RNALrDHOUVnX05to=
+ bh=YW2RiDVuo8s3fHdACuQ7sebR9x64p06vs4OxuqmRjaY=;
+ b=f8aJ/s21PiifWRRXMuOxRfsG7fAG6i3wGrUgQRhtMfBZfOu5+H1KE5JHWklPLtn9vrtBnu
+ YdueSauKcmTJt6qB4anuVi0lO3GuFr+Ka7EEZ/tDx5XkvZgF+vVcV0WbYpRRLTVqRvqhwR
+ yzvGNVvHvtMUhqOwY4N0XjV1noS6gRQ=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-oF4AHTqNN62mKH4un8UJPw-1; Thu, 18 May 2023 06:18:09 -0400
-X-MC-Unique: oF4AHTqNN62mKH4un8UJPw-1
+ us-mta-207-NVvBqoMNNLuGFqKZOFSFrQ-1; Thu, 18 May 2023 06:18:11 -0400
+X-MC-Unique: NVvBqoMNNLuGFqKZOFSFrQ-1
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9662960d1e4so206448466b.1
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 03:18:09 -0700 (PDT)
+ a640c23a62f3a-966329c872bso247420966b.1
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 03:18:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684405088; x=1686997088;
+ d=1e100.net; s=20221208; t=1684405089; x=1686997089;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bBojB1HHhw9e5Mqc9sqoqRl9uNsGGM3YqDRyz7NIFJw=;
- b=Pu8pJHLIC4yQrZMZymc4dTWUDdRReC9M7mYNqbnSAhC0HjavObhXzGMbybytc2pho7
- 8zQNP+HIBJanHq8WTafAQSKA/as6v/VhJZIU/c5mnJsN4F0Iq9T4RpNPyXAWbr53O23b
- swaJsl31p1t+lFeVjebLmiYD1LLS2OwjeMR9RYmpKdZmTHPeGfd9wipP5J2It89KDT8y
- a9Rq/+YgHTY2zt9D0zH11QNjMlHOQhw8XilZ7qyxaBrl+QOF0vPJYBXYBpHFvpCh16j8
- 7CsLKPbkxhNVDbAkPuv9vvJ8evEFgFzozDQ9MPeePPoP2MuXeZUfeMdMXAyNz0jbElxo
- Ya4w==
-X-Gm-Message-State: AC+VfDw/CX6Hgq7Om4y5kVVraHGOhAkJ33XSqX5k21s183WOeCnvf2Ch
- gJt+UQgE3lkxU1Jk14muhMELOy6WjZrlXEPXaCG32LKXiobTG5xVcuwUvko3YP8OgEgc1MVXj3R
- AAe530TpVWg1PIsokdA7lDvu5Hrm6OfE7OnV/wkZkrrWjmfWlmmF/ie4rvmPcTJUwG30ERdfrSn
- Q=
-X-Received: by 2002:a17:907:a46:b0:94f:2b80:f3b4 with SMTP id
- be6-20020a1709070a4600b0094f2b80f3b4mr36915825ejc.69.1684405088077; 
- Thu, 18 May 2023 03:18:08 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ544H4ISYWnS5WDZnizp1bVKCxiMEpPhIocYU9tncvGHfsa/6BROTQZcXfywILF+zMZ/v3g0Q==
-X-Received: by 2002:a17:907:a46:b0:94f:2b80:f3b4 with SMTP id
- be6-20020a1709070a4600b0094f2b80f3b4mr36915807ejc.69.1684405087741; 
- Thu, 18 May 2023 03:18:07 -0700 (PDT)
+ bh=YW2RiDVuo8s3fHdACuQ7sebR9x64p06vs4OxuqmRjaY=;
+ b=B5Fz48NSBa2gll4LEYFVNLRUojDNdiJObcqU3hE2QOVnpoj3X01awmPuDSmVJbUBLP
+ qIloMh4LP4yNJyCMUIpJV1ZcN0+9COJJiZ6T6ol6m3oHtO+glZSsIesQrH7V61pSosop
+ zFOzulZ6WQPdOG96jW3+NNEZsyDohQ6k1i9AIOnt6w4YnK8NoyziTztRbh9g2sUvw6Xy
+ scN0CrMzrbugtzCithFjpSwzHMflNUyu+zv8wbUWDutUUk4warrfKsXxKZCTi62uRCSv
+ RVF+e7/Irqfwlbe/pVuAqpT9YfMqlQfX0KMXkU7TTfg6uTGKOJ0ykvFs9WFjMnBreppT
+ xFNA==
+X-Gm-Message-State: AC+VfDyeCEfaK2rLc4YRo+6bHFutByiThu+dIV0HNpe9Xk8r1ZA2Tmhk
+ kwrkxMBLwwtkbDowGAIYXBvUDzv7GFk6c47xhZSOzW8uCBE/JbK19aZaStIIt6J0JnWvcKySyT/
+ EQ7QIgmLu0pE+r1Acz+SOItfYMQ/EksC6/U17Vx+vAT1bjS7OreIgAnRqM2QseBTKAnj592vVxD
+ 8=
+X-Received: by 2002:a17:907:318b:b0:957:17c5:8705 with SMTP id
+ xe11-20020a170907318b00b0095717c58705mr37373711ejb.51.1684405089737; 
+ Thu, 18 May 2023 03:18:09 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ78/r05KgtbdH43ioHuiG/XQmekZjMBr2M9RWnNOXQj7dkYo1MEypzCps0tD+xqrL2iIkRvNA==
+X-Received: by 2002:a17:907:318b:b0:957:17c5:8705 with SMTP id
+ xe11-20020a170907318b00b0095717c58705mr37373697ejb.51.1684405089337; 
+ Thu, 18 May 2023 03:18:09 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- lt1-20020a170906fa8100b0096efd44dbffsm764745ejb.105.2023.05.18.03.18.06
+ x23-20020a1709060a5700b00966447c76f3sm779511ejf.39.2023.05.18.03.18.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 03:18:07 -0700 (PDT)
+ Thu, 18 May 2023 03:18:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com
-Subject: [PATCH 1/4] monitor: use QEMU_LOCK_GUARD a bit more
-Date: Thu, 18 May 2023 12:18:01 +0200
-Message-Id: <20230518101804.992085-2-pbonzini@redhat.com>
+Subject: [PATCH 2/4] monitor: allow calling monitor_resume under mon_lock
+Date: Thu, 18 May 2023 12:18:02 +0200
+Message-Id: <20230518101804.992085-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230518101804.992085-1-pbonzini@redhat.com>
 References: <20230518101804.992085-1-pbonzini@redhat.com>
@@ -100,38 +100,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Move monitor_resume()'s call to readline_show_prompt() outside the
+potentially locked section.  Reuse the existing monitor_accept_input()
+bottom half for this purpose.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- monitor/monitor.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ monitor/monitor.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 602535696c59..4b11bca2a21d 100644
+index 4b11bca2a21d..7080d2da8ec6 100644
 --- a/monitor/monitor.c
 +++ b/monitor/monitor.c
-@@ -161,10 +161,9 @@ static gboolean monitor_unblocked(void *do_not_use, GIOCondition cond,
+@@ -567,6 +567,12 @@ static void monitor_accept_input(void *opaque)
  {
      Monitor *mon = opaque;
  
--    qemu_mutex_lock(&mon->mon_lock);
-+    QEMU_LOCK_GUARD(&mon->mon_lock);
-     mon->out_watch = 0;
-     monitor_flush_locked(mon);
--    qemu_mutex_unlock(&mon->mon_lock);
-     return FALSE;
++    if (!monitor_is_qmp(mon)) {
++        MonitorHMP *hmp_mon = container_of(mon, MonitorHMP, common);
++        assert(hmp_mon->rs);
++        readline_show_prompt(hmp_mon->rs);
++    }
++
+     qemu_chr_fe_accept_input(&mon->chr);
  }
  
-@@ -203,9 +202,8 @@ static void monitor_flush_locked(Monitor *mon)
+@@ -585,12 +591,6 @@ void monitor_resume(Monitor *mon)
+             ctx = qemu_get_aio_context();
+         }
  
- void monitor_flush(Monitor *mon)
- {
--    qemu_mutex_lock(&mon->mon_lock);
-+    QEMU_LOCK_GUARD(&mon->mon_lock);
-     monitor_flush_locked(mon);
--    qemu_mutex_unlock(&mon->mon_lock);
- }
+-        if (!monitor_is_qmp(mon)) {
+-            MonitorHMP *hmp_mon = container_of(mon, MonitorHMP, common);
+-            assert(hmp_mon->rs);
+-            readline_show_prompt(hmp_mon->rs);
+-        }
+-
+         aio_bh_schedule_oneshot(ctx, monitor_accept_input, mon);
+     }
  
- /* flush at every end of line */
 -- 
 2.40.1
 
