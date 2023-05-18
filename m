@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4777084D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D437084D9
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:28:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzfXo-0001LN-CW; Thu, 18 May 2023 11:27:56 -0400
+	id 1pzfYK-0002Gu-K8; Thu, 18 May 2023 11:28:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzfXl-0001L1-VY
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:27:53 -0400
+ id 1pzfYJ-0002C8-00
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:28:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzfXj-0003z0-Mx
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:27:53 -0400
+ id 1pzfYH-000460-Ew
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:28:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684423670;
+ s=mimecast20190719; t=1684423703;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=RVsWedMGqMQr6bM4ca41H/pcxJaQD1wOcUTf6g/yiVg=;
- b=G+1FDx1LQrrj+Ya9d+yCSvs+cmuBdqhmMD1u3hZ2NgiS4RnAkDAaldHHhm3Dv7+o41u+oc
- Z3j+CrhkuIMzxyBEFCtdj6fLqVoqnWEWHwUeiqi5dW6MmwlDAQpXiCe8ftbzzTtOLZFuFJ
- EsFBg9gbQNICZiDwsbHip0be0b4hHYE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+NpevbFIAj2Z7u8KYUyYjpw7m0wCftQlVsSEjAdWNE8=;
+ b=AAM3vCmDXcbRn0GXX1UeOPHl3dWKhSO5SwdjA16a863NFHcAxKIE2qUWbyLh5MbfeUbhYY
+ tiSGQro3hl6uvkDofEprDbBSfZmYMYIhS4bTa5V9BAK7YrT81YZ1DPoXE2UF0vQuNcfkBz
+ 6Qdr7GTLSzj/K1FuEDVxanYcUh4DGUo=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-4R-kwjFyMeCIB5fyc7vuXg-1; Thu, 18 May 2023 11:27:49 -0400
-X-MC-Unique: 4R-kwjFyMeCIB5fyc7vuXg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30940b01998so848186f8f.3
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:27:49 -0700 (PDT)
+ us-mta-549-U9Ep3-JbMeidM8XQ8PzlAw-1; Thu, 18 May 2023 11:28:22 -0400
+X-MC-Unique: U9Ep3-JbMeidM8XQ8PzlAw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f41ce0a69fso8779165e9.1
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:28:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684423668; x=1687015668;
+ d=1e100.net; s=20221208; t=1684423701; x=1687015701;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RVsWedMGqMQr6bM4ca41H/pcxJaQD1wOcUTf6g/yiVg=;
- b=Wr4wfM66t5305Cjw0gaQpibLT9kQdEVOCqgKRsp5YcVzfi4n3eVEJRq5MGCThAInpW
- rFrjKHfJEP35PLEQ7uY8qX9+kaKHpBuFZBE+ixtaLE/fujSgLTwIpcBUkignNH9soAee
- v/i8IFBc+YOG5P1uwTeqnwHcQqlRlRnn0v5Ce2byXHooGUIsKIiBLl6cjRIN6nlE6e36
- q9jLmZwMzw8DXNbKrqFrZZeBgZG4U5ok1ZPPHqPxbjXOhc/zEDZg2+/rn9GptKOf3yL/
- n9PuTYqRZubQEjfTOs+YsLz+fp3KnTiDsieHwJOnyXJ1TjLgue2AvfVLfpLV1MBc6XD6
- 1Bxw==
-X-Gm-Message-State: AC+VfDwA9Gnt5mR6RCG0L06+1PJnbvLXjwcKAjgHPf1HXzArBSQ+4W2W
- qzESVSXl6Wb+gAa28zMgvsoUgtHnKXNwACo9tl+Tb0+06qqVEG5f/HAGCVKS4dtRU0hbLS03Nog
- UHkYkgl3rqwppLiY=
-X-Received: by 2002:a5d:5703:0:b0:307:8e1b:6cc7 with SMTP id
- a3-20020a5d5703000000b003078e1b6cc7mr1412228wrv.67.1684423668339; 
- Thu, 18 May 2023 08:27:48 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4keqQDLVmbKs4IXAHWXezPzb0E3g1/mccfdNarRBmmq3KcUPCgyb+i34Il5T9kYpKQS3VvUg==
-X-Received: by 2002:a5d:5703:0:b0:307:8e1b:6cc7 with SMTP id
- a3-20020a5d5703000000b003078e1b6cc7mr1412211wrv.67.1684423668016; 
- Thu, 18 May 2023 08:27:48 -0700 (PDT)
+ bh=+NpevbFIAj2Z7u8KYUyYjpw7m0wCftQlVsSEjAdWNE8=;
+ b=GXk6P9Z0hj/thJGjWVdeW7J5WYCtwi69mItQWAoyZVt968OKVEsa80e3ahYIhKSyx2
+ IyA5cuGJTWog4HlqNVNxYA/Amvd9gg1zU9YUkMM+nnQofI2yhb6D3RgJoiaBKAb8ldr+
+ JqwxebJ8o5MkpaVa9z4OwsRb0ZwwmqExXalgn1lIs1MQuBZn4XylYX5LIwKk6Lfcek+O
+ XZsqjocTc30jZyq3JidCPsezO8hgDPMXqCPJ5WhDfPstOoBFSv2tGpVL8bKc7BxztCPA
+ GhxSugRklyc1GjWZgEFvBWsP7A6yG9YGrbjJ9w/Q74QYcmwNTcN14qMf+Rt+aNyCGaRC
+ ZJ9g==
+X-Gm-Message-State: AC+VfDw+pWsIAj7EiS0NG0FebF1DzFoNwHXBjDH//+QackAxv8vZgYdP
+ 3nGNtsA9p2EjTg1xRpE+uxttM7Z3XNoJn91SE/pqxifH/8Y4zZ8tcyKU48Tp5zi3wEKA4O15ZPx
+ K0TEmrLXA4M7bNso=
+X-Received: by 2002:a7b:c3c4:0:b0:3f1:75ae:1cfe with SMTP id
+ t4-20020a7bc3c4000000b003f175ae1cfemr1820780wmj.7.1684423700979; 
+ Thu, 18 May 2023 08:28:20 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ61j0I7srj77qx2GVVchZxAvEUMzhSZcifVNCodlN+V2f4lq3jBdbIhN8/SoYtpV3bGAsY12A==
+X-Received: by 2002:a7b:c3c4:0:b0:3f1:75ae:1cfe with SMTP id
+ t4-20020a7bc3c4000000b003f175ae1cfemr1820772wmj.7.1684423700743; 
+ Thu, 18 May 2023 08:28:20 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- a8-20020a05600c224800b003f42cc7aac4sm2351899wmm.37.2023.05.18.08.27.46
+ l2-20020adfe582000000b0030632833e74sm2578760wrm.11.2023.05.18.08.28.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 08:27:47 -0700 (PDT)
+ Thu, 18 May 2023 08:28:20 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>,  Michael Tokarev <mjt@tls.msk.ru>,  Fiona
- Ebner <f.ebner@proxmox.com>,  Leonardo Bras <leobras@redhat.com>,  Eduardo
- Habkost <eduardo@habkost.net>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,  qemu-devel@nongnu.org, Cleber Rosa
- <crosa@redhat.com>
-Subject: Re: [PATCH v1 1/1] hw/pci: Disable PCI_ERR_UNCOR_MASK register for
- machine type < 8.0
-In-Reply-To: <20230518110755-mutt-send-email-mst@kernel.org> (Michael
- S. Tsirkin's message of "Thu, 18 May 2023 11:10:18 -0400")
-References: <20230503002701.854329-1-leobras@redhat.com>
- <7f308149-5495-d415-5e51-1fa15fc20f84@proxmox.com>
- <87jzxf5ki9.fsf@secure.mitica>
- <8c3a4f60-b3ab-7c38-27c0-3f8f2caaeae4@tls.msk.ru>
- <87wn15dgbs.fsf@secure.mitica> <ZGYnpQmc+5Sut3x8@x1n>
- <20230518110755-mutt-send-email-mst@kernel.org>
+To: "Wang, Wei W" <wei.w.wang@intel.com>
+Cc: Daniel =?utf-8?Q?P=2EBerrang=C3=A9?= <berrange@redhat.com>,  "Wang, Lei4"
+ <lei4.wang@intel.com>,  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "peterx@redhat.com" <peterx@redhat.com>,  "leobras@redhat.com"
+ <leobras@redhat.com>
+Subject: Re: [PATCH] multifd: Set a higher "backlog" default value for listen()
+In-Reply-To: <DS0PR11MB6373526303940FC5D9892BABDC7F9@DS0PR11MB6373.namprd11.prod.outlook.com>
+ (Wei W. Wang's message of "Thu, 18 May 2023 15:17:08 +0000")
+References: <20230518085228.172816-1-lei4.wang@intel.com>
+ <DS0PR11MB6373D659BCA67BD75D8ECC5DDC7F9@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <ZGYaOu3F3hsiPj5N@redhat.com> <87a5y1dd55.fsf@secure.mitica>
+ <DS0PR11MB6373526303940FC5D9892BABDC7F9@DS0PR11MB6373.namprd11.prod.outlook.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 18 May 2023 17:27:46 +0200
-Message-ID: <87wn15bqx9.fsf@secure.mitica>
+Date: Thu, 18 May 2023 17:28:19 +0200
+Message-ID: <87sfbtbqwc.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
@@ -111,71 +105,22 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
-
-[adding cleber]
-
-> On Thu, May 18, 2023 at 09:27:01AM -0400, Peter Xu wrote:
->> One thing we can also do to avoid it in the future is simply having someone
->> do this check around each softfreeze (and we'll also need maintainers be
->> careful on merging anything that's risky though after softfreeze) rather
->> than after release (what I did for this time, which is late), try to cover
->> as much devices as possible. I don't know whether there's a way to always
->> cover all devices.
+"Wang, Wei W" <wei.w.wang@intel.com> wrote:
+> On Thursday, May 18, 2023 8:43 PM, Juan Quintela wrote:
 >> 
->> I'll volunteer myself for that as long as I'll remember.  Juan, please also
->> have a check or remind me if I didn't. :)
 >> 
->> I am not sure whether I mentioned it somewhere before, but maybe it'll work
->> if we can also have some way we check migrating each of the vmsd from
->> old-qemu to new-qemu (and also new->old) covering all devices.  It doesn't
->> need to be a real migration, just generate the per-device stream and try
->> loading on the other binary.
+>> Are you using -incoming defer?
 >> 
->> It might be an overkill to be part of CI to check each commit, but if
->> there's some way to check it then at least we can run it also after
->> softfreeze.  I also don't know whether it'll be easy to achieve it at all,
->> but I'll think more about it too and update if I found something useful.
+>> No? right.
+>> 
+>> With multifd, you should use -incoming defer. 
 >
-> I'm all for more testing but if it does not actually test that the
-> values loaded are actually used correctly then the testing is of course
-> lower quality. Better than nothing I guess ...
+> Yes, just confirmed that it works well with deferred incoming.
+> I think we should enforce this kind of requirement in the code.
+> I'll make a patch for this.
 
-As said in my other email.  The problem that I have is that there is no
-easy way to test two different qemu binaries. And what we would like is
-testing at least:
+Actually, we should deprecate everything except defer.
 
-qemu-8.0 -M pc-8.0 -> qemu-latest -M pc-8.0
-qemu-latest -M pc-8.0 -> qemu-8.0 -M pc-8.0
-
-Then we have the probem of:
-- what architectures do we care?
-  My bet is on x86_64, i386? (almost free with previous one), ppc64,
-  aarch64, s390.
-- what devices do we care?
-  virtio-devices for sure.  Not sure with others.  Notice that if we
-  want the test to run on CI, they need to be virtual devices.
-
-Once the mechanism of testing and reporting is there, we can decide:
-- what other devices we care
-  no good ideas here: SATA, e1000e perhaps.
-- what other versions we care
-  perhaps it is not out of qestion to test the last two
-  versions. i.e. to add:
-  $ qemu-7.2 -M pc-7.2 -> qemu-latest -M pc-7.2
-  $ qemu-latest -M pc-7.2 -> qemu-7.2 -M pc-7.2
-  But we haven't been very good just allowing the latest version to add
-  the latests two.
-
-Cleber, any idea how difficult would be to add something like that?
-
-For reference, we are trying to test, detect the failures described
-here:
-
-https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03285.html
-
-See the three emails.
-
-Thanks, Juan.
+Later, Juan.
 
 
