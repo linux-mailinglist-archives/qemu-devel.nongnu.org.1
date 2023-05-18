@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871467085E5
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 18:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A187085F5
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 18:22:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzgN1-0007eU-Ks; Thu, 18 May 2023 12:20:51 -0400
+	id 1pzgMz-0007du-G4; Thu, 18 May 2023 12:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1pzgMs-0007a5-AV
+ id 1pzgMs-0007a4-2x
  for qemu-devel@nongnu.org; Thu, 18 May 2023 12:20:43 -0400
 Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1pzgMp-0006Oy-VD
- for qemu-devel@nongnu.org; Thu, 18 May 2023 12:20:42 -0400
+ id 1pzgMp-0006Oo-Db
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 12:20:41 -0400
 Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f417ea5252so15823155e9.0
+ 5b1f17b1804b1-3f423ac6e2dso15007015e9.2
  for <qemu-devel@nongnu.org>; Thu, 18 May 2023 09:20:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1684426838; x=1687018838;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ayogSVxfSVQQQYdBMAOZ/LyoRWO3sdpvhi1wrumi/gQ=;
- b=rdB9tHepLa5T84QRfVWA+TvRBaMa0nNcNZspgXLRiaT+Seqe1WXZJfI2cVg1+rvF3D
- ZyvJAOjhY0/wmt8XeVF5BghlF6sZXB4b1vWY/jw5Mjx/FUf72rPDKBr0v6mb2qmXbXcj
- Ea15BZOrFOfuC3NpKvU9YrzkTfEnQoG7x5mxBxVKDMO6ybkWEXPyNrkoGzNRTkssKCV3
- EaO92MK0PsiKSDJd+X+hJYxy1XCjLs99uaS6ClwAvjPGxbr+HgHXDzT93iE0u0WBZTDe
- LMUtXLam5+FeWJ8s0t8pvl1/SBx5eCbP1HJfBf/GT8pZ5QI4glBepwjjlUY9e1eCrRRi
- mXtw==
+ bh=t9bOCy8hfslLOFUbFXGRnstMdv8Rmiyu6+GL3b7wJvQ=;
+ b=Sf9UO7H/kY0lxXEeBowCMMlrjC81mkfrexk2c2Iu7Tzo1adQSi5nhwPNUVrjiALdwB
+ VjSvzHND6xbyjgWnzHoa2hlvFRZ+3H41vtyfD0RhNDMMxLCds/eHEZULe/QslIgG1+BA
+ OGI2OhsG83leqpV7RVCRA54C9QUH1T8ca6dDIAuID8SRL8rdJm3DnXNPLMwxLQ5Gq+yt
+ KaLYoMmhOQrTlBfg+e3eVEy/WNTWp93VRBp54IDZ/y9u3u8HFPk4veNGJmjRGtM9PbO4
+ Zs5gquLMxJb4IR97EV2jLfciODpNwYGS10CSBJb/toFux7bH2bPHpG5CJrKAqZA+znWe
+ Axrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1684426838; x=1687018838;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ayogSVxfSVQQQYdBMAOZ/LyoRWO3sdpvhi1wrumi/gQ=;
- b=f+Im7QH3y2TFd73dcToTyYcdL1xdnFrRxo4gpmXXG5OFEcU7KumSU1c/4J3XDZ2NrL
- IScqoFi2kIMZtRKJ+NVwFqj0FEx6/6NPQAlMl60Kf0A/+sO6KblrQMqqCXkDmrquJZ0n
- AHyOCpKLGhmW7OlqroMA4XqZmZM5s9EkmEvQa3OOSLg4+0P95x9gIQOq5jB9xWyV88IR
- IE6KaA6nKewCe+/0FZ1q/ujO9KEY4Z2N85N6dlQgF+WqevVnvzGCOMC9U/6ZoHl5f0gU
- HEWNu8vBASLCZTtg5+tEOxHCOVDTNu3lF9ArcrqcRrUzhwFuH68XCnXs5CWxf83HnOi0
- H1ZA==
-X-Gm-Message-State: AC+VfDzzlQZzAG27kRFRtQD7VFgYgDmaIwnCEPq4Y0hly3kJTOv7NOb5
- C/dU+cZHxUV+/DRCNm8zuwHkIg==
-X-Google-Smtp-Source: ACHHUZ6zJuqITLf763wgz0CVaqG2ZnvEU4wi+Z2UYemlS2423c3xMSdM1jU+jHB3rHn/sNzTnqLcsg==
-X-Received: by 2002:a1c:7906:0:b0:3f4:253b:92b3 with SMTP id
- l6-20020a1c7906000000b003f4253b92b3mr1857874wme.18.1684426838667; 
- Thu, 18 May 2023 09:20:38 -0700 (PDT)
+ bh=t9bOCy8hfslLOFUbFXGRnstMdv8Rmiyu6+GL3b7wJvQ=;
+ b=lQjhzDFmibxRxtVkp8z1A7BIccfgr6X4wG6jXLzdMLeaOMO+vvHV0geNnMnoT1ahx/
+ MVkr3TYga40kg4AwNoO4T+tfXzKJ1IJSXFvE+Ov46vMVN83/wXPEcjqnGe1gfphdNBdv
+ 7jGw7aFVtxHTeXRh9+1aKzsSEG78WZuGZ9ascSjIfS9OeXJXu3G/cPtFcbOyaKrE3/n9
+ vpkZ4OVgU6xuUVy5WqFR3FLN2yEakbCldHGh6j6kqO3tA2pdBqTj0ZdAzGml/Xt9pRNO
+ 0y1utRCelvj3iINehLso4vkTzEkmaRXgKky5FollNoy03Vafs7z157IqlLtKD5CH2FMf
+ A5cw==
+X-Gm-Message-State: AC+VfDw7uPO3+g+lCRNQmqdMAX5N8gkpKNlKJjJo1V6mfCOpbkHJ4Pjs
+ yN6OAfyT9zUIgH8Xz1w3art55A==
+X-Google-Smtp-Source: ACHHUZ5niRyCRrdvz48kXHl2VLwfv8iEXJaLiFeFbRaEOUVxJQiRFd++xhRIZhzAuRjVoi16COBDkg==
+X-Received: by 2002:a7b:cd8c:0:b0:3f4:27d5:a6dc with SMTP id
+ y12-20020a7bcd8c000000b003f427d5a6dcmr1988921wmj.31.1684426837950; 
+ Thu, 18 May 2023 09:20:37 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- 2-20020a05600c22c200b003f4e8530696sm2472658wmg.46.2023.05.18.09.20.35
+ g23-20020a7bc4d7000000b003f4290720cbsm2477307wmk.29.2023.05.18.09.20.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 18 May 2023 09:20:37 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id EE6341FFC2;
- Thu, 18 May 2023 17:20:34 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 11D371FFBB;
+ Thu, 18 May 2023 17:20:35 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -73,9 +73,9 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 7/8] python/qemu: allow avocado to set logging name space
-Date: Thu, 18 May 2023 17:20:33 +0100
-Message-Id: <20230518162034.1277885-8-alex.bennee@linaro.org>
+Subject: [PATCH 8/8] docs: add some documentation on avocado logging
+Date: Thu, 18 May 2023 17:20:34 +0100
+Message-Id: <20230518162034.1277885-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230518162034.1277885-1-alex.bennee@linaro.org>
 References: <20230518162034.1277885-1-alex.bennee@linaro.org>
@@ -106,184 +106,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the update to the latest version Avocado only automatically
-collects logging under the avocado name space. Tweak the QEMUMachine
-class to allow avocado to bring logging under its name space. This
-also allows useful tricks like:
-
-  ./avocado --show avocado.qemu.machine run path/to/test
-
-if you want to quickly get the machine invocation out of a test
-without searching deeply through the logs.
+While we have fixed the logging to go under the avocado name space we
+might as well mention the useful "--show" option and the streams you
+can use it on.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- python/qemu/machine/machine.py         | 42 ++++++++++++++------------
- tests/avocado/avocado_qemu/__init__.py |  3 +-
- 2 files changed, 24 insertions(+), 21 deletions(-)
+ docs/devel/testing.rst | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
-index e57c254484..402b9a0df9 100644
---- a/python/qemu/machine/machine.py
-+++ b/python/qemu/machine/machine.py
-@@ -49,10 +49,6 @@
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index 8f18052ba7..77402a0daf 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -983,6 +983,31 @@ of Avocado or ``make check-avocado``, and can also be queried using:
  
- from . import console_socket
+   tests/venv/bin/avocado list tests/avocado
  
--
--LOG = logging.getLogger(__name__)
--
--
- class QEMUMachineError(Exception):
-     """
-     Exception called when an error in QEMUMachine happens.
-@@ -131,6 +127,7 @@ def __init__(self,
-                  drain_console: bool = False,
-                  console_log: Optional[str] = None,
-                  log_dir: Optional[str] = None,
-+                 log_namespace: Optional[str] = None,
-                  qmp_timer: Optional[float] = 30):
-         '''
-         Initialize a QEMUMachine
-@@ -164,6 +161,11 @@ def __init__(self,
-         self._sock_dir = sock_dir
-         self._log_dir = log_dir
- 
-+        if log_namespace:
-+            self.log = logging.getLogger(log_namespace)
-+        else:
-+            self.log = logging.getLogger(__name__)
++Logs
++^^^^
 +
-         self._monitor_address = monitor_address
++Avocado collects anything logged under the 'avocado.*' name space in
++the log files for a given run. You can also use the ``--show`` option
++to dump selected logging streams directly to stdout:
++
++  .. code::
++
++   tests/venv/bin/avocado --show avocado.qemu.machine run tests/avocado/$TESTFILE:$TESTCLASS.$TESTNAME
++
++There are a number of useful streams you can select.
++
++.. list-table:: Avocado Logging Streams
++  :header-rows: 1
++
++  * - Stream Name
++    - Contents
++  * - avocado.qemu.machine
++    - VM lifecycle including the launch command
++  * - avocado.guest.console
++    - Serial console interactions
++  * - avocado.guest.ssh
++    - ssh interactions
++
+ Manual Installation
+ ~~~~~~~~~~~~~~~~~~~
  
-         self._console_log_path = console_log
-@@ -382,11 +384,11 @@ def _post_shutdown(self) -> None:
-         Called to cleanup the VM instance after the process has exited.
-         May also be called after a failed launch.
-         """
--        LOG.debug("Cleaning up after VM process")
-+        self.log.debug("Cleaning up after VM process")
-         try:
-             self._close_qmp_connection()
-         except Exception as err:  # pylint: disable=broad-except
--            LOG.warning(
-+            self.log.warning(
-                 "Exception closing QMP connection: %s",
-                 str(err) if str(err) else type(err).__name__
-             )
-@@ -414,7 +416,7 @@ def _post_shutdown(self) -> None:
-                 command = ' '.join(self._qemu_full_args)
-             else:
-                 command = ''
--            LOG.warning(msg, -int(exitcode), command)
-+            self.log.warning(msg, -int(exitcode), command)
- 
-         self._quit_issued = False
-         self._user_killed = False
-@@ -458,7 +460,7 @@ def _launch(self) -> None:
-         Launch the VM and establish a QMP connection
-         """
-         self._pre_launch()
--        LOG.debug('VM launch command: %r', ' '.join(self._qemu_full_args))
-+        self.log.debug('VM launch command: %r', ' '.join(self._qemu_full_args))
- 
-         # Cleaning up of this subprocess is guaranteed by _do_shutdown.
-         # pylint: disable=consider-using-with
-@@ -507,7 +509,7 @@ def _early_cleanup(self) -> None:
-         # for QEMU to exit, while QEMU is waiting for the socket to
-         # become writable.
-         if self._console_socket is not None:
--            LOG.debug("Closing console socket")
-+            self.log.debug("Closing console socket")
-             self._console_socket.close()
-             self._console_socket = None
- 
-@@ -518,7 +520,7 @@ def _hard_shutdown(self) -> None:
-         :raise subprocess.Timeout: When timeout is exceeds 60 seconds
-             waiting for the QEMU process to terminate.
-         """
--        LOG.debug("Performing hard shutdown")
-+        self.log.debug("Performing hard shutdown")
-         self._early_cleanup()
-         self._subp.kill()
-         self._subp.wait(timeout=60)
-@@ -535,17 +537,17 @@ def _soft_shutdown(self, timeout: Optional[int]) -> None:
-         :raise subprocess.TimeoutExpired: When timeout is exceeded waiting for
-             the QEMU process to terminate.
-         """
--        LOG.debug("Attempting graceful termination")
-+        self.log.debug("Attempting graceful termination")
- 
-         self._early_cleanup()
- 
-         if self._quit_issued:
--            LOG.debug(
-+            self.log.debug(
-                 "Anticipating QEMU termination due to prior 'quit' command, "
-                 "or explicit call to wait()"
-             )
-         else:
--            LOG.debug("Politely asking QEMU to terminate")
-+            self.log.debug("Politely asking QEMU to terminate")
- 
-         if self._qmp_connection:
-             try:
-@@ -557,14 +559,14 @@ def _soft_shutdown(self, timeout: Optional[int]) -> None:
-                 # Regardless, we want to quiesce the connection.
-                 self._close_qmp_connection()
-         elif not self._quit_issued:
--            LOG.debug(
-+            self.log.debug(
-                 "Not anticipating QEMU quit and no QMP connection present, "
-                 "issuing SIGTERM"
-             )
-             self._subp.terminate()
- 
-         # May raise subprocess.TimeoutExpired
--        LOG.debug(
-+        self.log.debug(
-             "Waiting (timeout=%s) for QEMU process (pid=%s) to terminate",
-             timeout, self._subp.pid
-         )
-@@ -586,9 +588,9 @@ def _do_shutdown(self, timeout: Optional[int]) -> None:
-             self._soft_shutdown(timeout)
-         except Exception as exc:
-             if isinstance(exc, subprocess.TimeoutExpired):
--                LOG.debug("Timed out waiting for QEMU process to exit")
--            LOG.debug("Graceful shutdown failed", exc_info=True)
--            LOG.debug("Falling back to hard shutdown")
-+                self.log.debug("Timed out waiting for QEMU process to exit")
-+            self.log.debug("Graceful shutdown failed", exc_info=True)
-+            self.log.debug("Falling back to hard shutdown")
-             self._hard_shutdown()
-             raise AbnormalShutdown("Could not perform graceful shutdown") \
-                 from exc
-@@ -611,9 +613,9 @@ def shutdown(self,
-         if not self._launched:
-             return
- 
--        LOG.debug("Shutting down VM appliance; timeout=%s", timeout)
-+        self.log.debug("Shutting down VM appliance; timeout=%s", timeout)
-         if hard:
--            LOG.debug("Caller requests immediate termination of QEMU process.")
-+            self.log.debug("Caller requests immediate termination of QEMU process.")
- 
-         try:
-             if hard:
-diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
-index b19f797b7b..d925573299 100644
---- a/tests/avocado/avocado_qemu/__init__.py
-+++ b/tests/avocado/avocado_qemu/__init__.py
-@@ -322,7 +322,8 @@ def require_multiprocess(self):
-     def _new_vm(self, name, *args):
-         self._sd = tempfile.TemporaryDirectory(prefix="qemu_")
-         vm = QEMUMachine(self.qemu_bin, base_temp_dir=self.workdir,
--                         sock_dir=self._sd.name, log_dir=self.logdir)
-+                         sock_dir=self._sd.name, log_dir=self.logdir,
-+                         log_namespace="avocado.qemu.machine")
-         self.log.debug('QEMUMachine "%s" created', name)
-         self.log.debug('QEMUMachine "%s" temp_dir: %s', name, vm.temp_dir)
-         self.log.debug('QEMUMachine "%s" log_dir: %s', name, vm.log_dir)
 -- 
 2.39.2
 
