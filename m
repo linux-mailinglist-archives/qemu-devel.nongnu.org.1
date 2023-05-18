@@ -2,64 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFB770814A
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A33DA708179
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:40:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzcla-0002hp-Dg; Thu, 18 May 2023 08:29:58 -0400
+	id 1pzcuf-0004Ny-9K; Thu, 18 May 2023 08:39:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1pzclY-0002hg-4j
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:29:56 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pzcuX-0004Mp-Bb
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:39:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1pzclW-0003lX-Ia
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:29:55 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pzcuV-0005ZJ-V3
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:39:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684412993;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=X7Q9GoTeyFkQRXjb3dCo7FKCBS8VJLRFSSvobb6LBXE=;
- b=dCK3q5Z3Egm5QYoz3478/MvHa94DUiU9s5gAGVcvMlMjbs+wotszEkE0urvMSYjT57BWh3
- bAK5XQN7lonK4nSVlv1ZJZ/pjPOf1lgttFpm7s39J/oiHpSzV+sxj6dwt4DFKWBmaaseHF
- 8CAryGtRm91egfBA5jVYV/4zA9aE0Z8=
+ s=mimecast20190719; t=1684413551;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CZqT5Q7lCSd3K0ucMqF+n3ExJbf0EbMoFEkscusaDTM=;
+ b=Cke1jchiecmNVd9baoByFbaUNQukrlLHdCj39ooOnyVhlS51ng9Al9BmFm7gIFOKeuD1je
+ 8grbDL34FKPN4zgWyXGVJXkyF6jAJ7I3JlBiyoRNJmsv/6PVxNlPL1rScsfalQjvNuHl52
+ 292Xjur7zp0MTkOPMSWKGBb8nsXPFOU=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-300-rpisL_VuP0WxtkaGdQwRow-1; Thu, 18 May 2023 08:29:50 -0400
-X-MC-Unique: rpisL_VuP0WxtkaGdQwRow-1
+ us-mta-630-2NIA7KnuMs2IQA02BBzxiw-1; Thu, 18 May 2023 08:39:07 -0400
+X-MC-Unique: 2NIA7KnuMs2IQA02BBzxiw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C2D403C0F180;
- Thu, 18 May 2023 12:29:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.105])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BF36C14171C0;
- Thu, 18 May 2023 12:29:48 +0000 (UTC)
-Date: Thu, 18 May 2023 13:29:46 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: "Wang, Wei W" <wei.w.wang@intel.com>
-Cc: "Wang, Lei4" <lei4.wang@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "quintela@redhat.com" <quintela@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "leobras@redhat.com" <leobras@redhat.com>
-Subject: Re: [PATCH] multifd: Set a higher "backlog" default value for listen()
-Message-ID: <ZGYaOu3F3hsiPj5N@redhat.com>
-References: <20230518085228.172816-1-lei4.wang@intel.com>
- <DS0PR11MB6373D659BCA67BD75D8ECC5DDC7F9@DS0PR11MB6373.namprd11.prod.outlook.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60A823C1485C;
+ Thu, 18 May 2023 12:39:07 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 98C9E1415304;
+ Thu, 18 May 2023 12:39:06 +0000 (UTC)
+Date: Thu, 18 May 2023 07:39:04 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, stefanha@redhat.com, 
+ mjt@tls.msk.ru, pbonzini@redhat.com, qemu-devel@nongnu.org, 
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH 1/3] graph-lock: Disable locking for now
+Message-ID: <n2mxiegyv7cyjyxg2e6547nvifcztfgfi2n4ltb4awh4egww3a@krexmm6lxs3m>
+References: <20230517152834.277483-1-kwolf@redhat.com>
+ <20230517152834.277483-2-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DS0PR11MB6373D659BCA67BD75D8ECC5DDC7F9@DS0PR11MB6373.namprd11.prod.outlook.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
+In-Reply-To: <20230517152834.277483-2-kwolf@redhat.com>
+User-Agent: NeoMutt/20230517
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,7 +63,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,60 +77,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 18, 2023 at 09:13:58AM +0000, Wang, Wei W wrote:
-> On Thursday, May 18, 2023 4:52 PM, Wang, Lei4 wrote:
-> > When destination VM is launched, the "backlog" parameter for listen() is set
-> > to 1 as default in socket_start_incoming_migration_internal(), which will
-> > lead to socket connection error (the queue of pending connections is full)
-> > when "multifd" and "multifd-channels" are set later on and a high number of
-> > channels are used. Set it to a hard-coded higher default value 512 to fix this
-> > issue.
-> > 
-> > Reported-by: Wei Wang <wei.w.wang@intel.com>
-> > Signed-off-by: Lei Wang <lei4.wang@intel.com>
-> > ---
-> >  migration/socket.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/migration/socket.c b/migration/socket.c index
-> > 1b6f5baefb..b43a66ef7e 100644
-> > --- a/migration/socket.c
-> > +++ b/migration/socket.c
-> > @@ -179,7 +179,7 @@
-> > socket_start_incoming_migration_internal(SocketAddress *saddr,
-> >      QIONetListener *listener = qio_net_listener_new();
-> >      MigrationIncomingState *mis = migration_incoming_get_current();
-> >      size_t i;
-> > -    int num = 1;
-> > +    int num = 512;
-> > 
+On Wed, May 17, 2023 at 05:28:32PM +0200, Kevin Wolf wrote:
+> In QEMU 8.0, we've been seeing deadlocks in bdrv_graph_wrlock(). They
+> come from callers that hold an AioContext lock, which is not allowed
+> during polling. In theory, we could temporarily release the lock, but
+> callers are inconsistent about whether they hold a lock, and if they do,
+> some are also confused about which one they hold. While all of this is
+> fixable, it's not trivial, and the best course of action for 8.0.1 is
+> probably just disabling the graph locking code temporarily.
 > 
-> Probably we need a macro for it, e.g.
-> #define MIGRATION_CHANNEL_MAX  512
+> We don't currently rely on graph locking yet. It is supposed to replace
+> the AioContext lock eventually to enable multiqueue support, but as long
+> as we still have the AioContext lock, it is sufficient without the graph
+> lock. Once the AioContext lock goes away, the deadlock doesn't exist any
+> more either and this commit can be reverted. (Of course, it can also be
+> reverted while the AioContext lock still exists if the callers have been
+> fixed.)
+
+Makes sense - certainly easier than finding all the lurking bugs,
+while we still have the AioContext lock protection.
+
 > 
-> Also, I think below lines could be removed, as using a larger value of num (i.e. 512)
-> doesn't seem to consume more resources anywhere:
-> -    if (migrate_use_multifd()) {
-> -        num = migrate_multifd_channels();
-> -    } else if (migrate_postcopy_preempt()) {
-> -        num = RAM_CHANNEL_MAX;
-> -    }
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  block/graph-lock.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 
-Given that this code already exists, why is it not already sufficient ?
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-The commit description is saying we're setting backlog == 1 wit
-multifd, but this later code is setting it to match the multfd
-channels.  Why isn't that enough ?
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
 
 
