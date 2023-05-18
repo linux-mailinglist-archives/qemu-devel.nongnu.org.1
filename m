@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7238D70831E
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 15:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 843097082D4
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 15:35:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzdkP-0005Hq-Fe; Thu, 18 May 2023 09:32:49 -0400
+	id 1pzdmd-0001vc-20; Thu, 18 May 2023 09:35:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pzdkN-0005H2-S7
- for qemu-devel@nongnu.org; Thu, 18 May 2023 09:32:47 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pzdma-0001v4-94
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 09:35:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pzdkM-0006P6-AT
- for qemu-devel@nongnu.org; Thu, 18 May 2023 09:32:47 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pzdmX-0006kv-E1
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 09:35:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684416765;
+ s=mimecast20190719; t=1684416898;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=KV0ZLxSuW5t5tqUkF6NOlfKzMGv527wZcGWEtMuTRZs=;
- b=MjG+CxSLKRZZULGuyCXIeF9YVugb2vakD8WBUiwfiqdKNyA+Xg7d8va36VK4hoY31IbevD
- 8czk5r4aCENnVQn3geoPn4caAjy2FlvWLryBFpPGcGBKsyzY8Av34h98eqvvoCVi6SberU
- fkY2EjnvUbttC+cJAXIK1+ODHBkvngc=
+ bh=xC/cH2NLdykz1Ceu4/a2a7b944agvY6KewPv7ZYtWZM=;
+ b=OXyjy3eYUdXV7TTL75R0E3CXVBxFYde7vabbzb/M1qIkeYfKUHipHEbin4+lM9c0ci0Izt
+ 6cDCz94h2JQx/qpiy8hdrSieGYIb3vVj9dJL+Vmmflyx/28O9gKZzDAU/YiyisMWRaGBdt
+ nAA1H9cxNaFkbMLnEWDB35hAB1MyaSQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-660-ptGQ77n9MEurb2l2Hrb46A-1; Thu, 18 May 2023 09:32:39 -0400
-X-MC-Unique: ptGQ77n9MEurb2l2Hrb46A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-286-Py1knuqeNfWiXVpsFywvAw-1; Thu, 18 May 2023 09:34:56 -0400
+X-MC-Unique: Py1knuqeNfWiXVpsFywvAw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C6E785A588;
- Thu, 18 May 2023 13:32:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1EA32871CA1;
+ Thu, 18 May 2023 13:34:54 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.57])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D703740C6EC4;
- Thu, 18 May 2023 13:32:38 +0000 (UTC)
-Date: Thu, 18 May 2023 08:32:37 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 98D52492B01;
+ Thu, 18 May 2023 13:34:53 +0000 (UTC)
+Date: Thu, 18 May 2023 08:34:51 -0500
 From: Eric Blake <eblake@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-stable@nongnu.org, qemu-devel@nongnu.org, 
- Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH v8.0.1 00/36] Patch Round-up for stable 8.0.1, freeze on
- 2023-05-27
-Message-ID: <jwgbzdtl72ewm2nzsil3fp2ie7f3gysqsfgsw5kr5g7fst2qgb@hc7v7yxk6mci>
-References: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
+To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Cc: hreitz@redhat.com, armbru@redhat.com, richard.henderson@linaro.org
+Subject: Re: [PATCH v2 05/19] cutils: Fix wraparound parsing in qemu_strtoui
+Message-ID: <qj4ug7oiuaf4dmpmfudmmfvpa7tktkwzfp3devx5yu7d2eilzc@c6yoog5akiv4>
+References: <20230512021033.1378730-1-eblake@redhat.com>
+ <20230512021033.1378730-6-eblake@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230517073442.3622973-0-mjt@msgid.tls.msk.ru>
+In-Reply-To: <20230512021033.1378730-6-eblake@redhat.com>
 User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -79,36 +78,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 17, 2023 at 11:00:20AM +0300, Michael Tokarev wrote:
-> Hi everyone,
+On Thu, May 11, 2023 at 09:10:19PM -0500, Eric Blake wrote:
 > 
-> The following new patches are queued for QEMU stable v8.0.1:
+> While we were matching 32-bit strtol in qemu_strtoi, our use of a
+> 64-bit parse was leaking through for some inaccurate answers in
+> qemu_strtoui in comparison to a 32-bit strtoul.  Fix those, and update
+> the testsuite now that our bounds checks are correct.
 > 
->   https://gitlab.com/qemu-project/qemu/-/commits/staging-8.0
+> Our int wrappers would be a lot easier to write if libc had a
+> guaranteed 32-bit parser even on platforms with 64-bit long.
 > 
-> Patch freeze is 2023-05-27, and the release is planned for 2023-06-29:
-> 
->   https://wiki.qemu.org/Planning/8.0
-> 
-> Please respond here or CC qemu-stable@nongnu.org on any additional patches
-> you think should (or shouldn't) be included in the release.
-> 
-> I'd like to include a few more changes in 8.0.1 release, for example
-> https://lore.kernel.org/all/20230301142926.18686-1-yuval.shaia.ml@gmail.com/
-> "hw/pvrdma: Protect against buggy or malicious guest driver", and especially
-> https://lore.kernel.org/all/20230503002701.854329-1-leobras@redhat.com/
-> "hw/pci: Disable PCI_ERR_UNCOR_MASK register for machine type < 8.0"
-> and a few others, but we can wait forever.  I pinged patches which seems
-> like should be in -stable.
+> Fixes: 473a2a331e ("cutils: add qemu_strtoi & qemu_strtoui parsers for int/unsigned int types", v2.12.0)
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>  tests/unit/test-cutils.c | 11 +++++------
+>  util/cutils.c            | 14 ++++++++++----
+>  2 files changed, 15 insertions(+), 10 deletions(-)
 
-Here's a trio probably worth including:
-
-403d18ae384 migration: Handle block device inactivation fa
-5d39f44d7ac migration: Minor control flow simplification
-6dab4c93ecf migration: Attempt disk reactivation in more f
-
-(the middle one is pointless on its own, but reduces conflict
-resolution in the third)
+cc'ing qemu-stable as this is a bug fix, but given its age, it's not a
+recent regression and therefore probably not essential for backport
 
 -- 
 Eric Blake, Principal Software Engineer
