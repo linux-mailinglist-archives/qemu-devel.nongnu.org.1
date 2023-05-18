@@ -2,54 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DEF707D58
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 11:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C70E707D9E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 12:10:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzaLF-0007UW-T8; Thu, 18 May 2023 05:54:37 -0400
+	id 1pzaYp-0001Xx-Ev; Thu, 18 May 2023 06:08:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1pzaLD-0007U8-JR
- for qemu-devel@nongnu.org; Thu, 18 May 2023 05:54:35 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1pzaLB-0000UV-BD
- for qemu-devel@nongnu.org; Thu, 18 May 2023 05:54:35 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QMQF52Gz4z6J7Ch;
- Thu, 18 May 2023 17:50:01 +0800 (CST)
-Received: from localhost (10.126.175.163) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 18 May
- 2023 10:54:17 +0100
-Date: Thu, 18 May 2023 10:54:16 +0100
-To: Ira Weiny <ira.weiny@intel.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Dave Jiang
- <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH RFC 1/5] hw/cxl: Use define for build bug detection
-Message-ID: <20230518105416.000054c9@Huawei.com>
-In-Reply-To: <20230517-rfc-type2-dev-v1-1-6eb2e470981b@intel.com>
-References: <20230517-rfc-type2-dev-v1-0-6eb2e470981b@intel.com>
- <20230517-rfc-type2-dev-v1-1-6eb2e470981b@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1pzaYl-0001XW-6c
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 06:08:35 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1pzaYj-0002nJ-LA
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 06:08:34 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-50b9ef67f35so3276263a12.2
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 03:08:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684404512; x=1686996512;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=JM/Te4zeKkA1WovpJmHGh4bMjFSCsf1ZEe8BHG9lYaY=;
+ b=xgr5RxULpU1g3f0V6h6nGIqbJQu3mwic4R4Vf9fliGw/w46SNy6WQToEG8qOnR5myi
+ 1ZBJwSzFZtHNUWvtHEZaDt3q/kqdY1bKfNxVym0UsDr9Z5ikjyNbhu6Gk94M9bk0HSUV
+ FxLboadsqZ6LPcSdgdwQAyamXcbjeeebwlklHLIuZVLhdNy2aBV4W1AteyutKUsH0jE6
+ HYXnvLURIU/wk4OtW8C9yHRyA8cJ0jodIPhbrYdO1xLigt1vKzjan7LfFtDG1wXBEEVF
+ ShuPeO4gvloGZaQXuQd/nJfkXompmMRVjjKNFfg8YndO3WJVKgAqjpxGUJM7F/pmj6kr
+ lVUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684404512; x=1686996512;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JM/Te4zeKkA1WovpJmHGh4bMjFSCsf1ZEe8BHG9lYaY=;
+ b=MIc6ydpecyxj0igcsq6kyOJdnAlTYtvmAltzOp/20LxXj/V7FIN3+39ih0REzhPc86
+ J2z6QgUv8wqLnzE7bTXDmXMVL3tY1yi+bJu4NppWtItGphpDZ+4eJcZIV6L3Og+N1qg7
+ N32d5EUd6MdfBaVwkszrsJQ3HpnUXnm3xn/QG7lhj+93iMpU6GU1DS5/jU+KvXSCFFRt
+ RnvICgLVns5swi+hzMJY9+SZjXjLTXyvhN6LEadnCzkkcQWz8ZEfZ+SGPJQtYZ893VM4
+ zIVn0HqB6CJmZ9J2AFtX18n7GAmmHE6HBCIQuOQwDQPuoJ/4NrjYZ7v4Cwx6WXUEakHZ
+ mGkw==
+X-Gm-Message-State: AC+VfDz0mXuqWEzD2HdfbMiyH3TqNzlnsbDBLV6GIyOAVAIdO9j3QQ85
+ qBzu/3ZACd2UEVaPsN6nkdGj8IrzNxAEe6yhOaa1DQ==
+X-Google-Smtp-Source: ACHHUZ4Yr10Ql4qKwH6xWC1T8+PZ1l2ANUkiLYT2/eO829nDN5wNxd7WvWC8aezvIEH0L7Kv2ASg65fYiPs6Hbifz5g=
+X-Received: by 2002:a05:6402:31ef:b0:50b:f999:9dee with SMTP id
+ dy15-20020a05640231ef00b0050bf9999deemr4386914edb.8.1684404511971; Thu, 18
+ May 2023 03:08:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.126.175.163]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230515143753.365591-1-marcin.juszkiewicz@linaro.org>
+In-Reply-To: <20230515143753.365591-1-marcin.juszkiewicz@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 18 May 2023 11:08:21 +0100
+Message-ID: <CAFEAcA9fkBUfOMfz9yDa2nH=ouCZRDSczfgsMW3-Yr3r7okFug@mail.gmail.com>
+Subject: Re: [PATCH] Maintainers: add myself as reviewer for sbsa-ref
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Leif Lindholm <quic_llindhol@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,57 +82,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 May 2023 19:45:54 -0700
-Ira Weiny <ira.weiny@intel.com> wrote:
-
-> Magic numbers can be confusing.
-> 
-> Use the range size define for CXL.cachemem rather than a magic number.
-> Update/add spec references.
-> 
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-
-I guess we should do a scrub to move all refs to 3.0 soon
-given it's horrible having a mixture of spec versions for the references.
-
-For future specs, we should only do this when sufficient X.Y references
-have started to appear - I think that's true for r3.0 now.
-
-Jonathan
-
+On Mon, 15 May 2023 at 15:37, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
+>
+> At Linaro I work on sbsa-ref, know direction it goes.
+>
+> May not get code details each time.
+>
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 > ---
->  include/hw/cxl/cxl_component.h | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
-> index 52b6a2d67f40..bca2b756c202 100644
-> --- a/include/hw/cxl/cxl_component.h
-> +++ b/include/hw/cxl/cxl_component.h
-> @@ -10,7 +10,7 @@
->  #ifndef CXL_COMPONENT_H
->  #define CXL_COMPONENT_H
->  
-> -/* CXL 2.0 - 8.2.4 */
-> +/* CXL 3.0 - 8.2.3 */
->  #define CXL2_COMPONENT_IO_REGION_SIZE 0x1000
->  #define CXL2_COMPONENT_CM_REGION_SIZE 0x1000
->  #define CXL2_COMPONENT_BLOCK_SIZE 0x10000
-> @@ -173,7 +173,9 @@ HDM_DECODER_INIT(3);
->      (CXL_IDE_REGISTERS_OFFSET + CXL_IDE_REGISTERS_SIZE)
->  #define CXL_SNOOP_REGISTERS_SIZE   0x8
->  
-> -QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET + CXL_SNOOP_REGISTERS_SIZE) >= 0x1000,
-> +/* CXL 3.0 8.2.3 Table 8-21 */
-> +QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET +
-> +                    CXL_SNOOP_REGISTERS_SIZE) >= CXL2_COMPONENT_CM_REGION_SIZE,
->                     "No space for registers");
->  
->  typedef struct component_registers {
-> 
 
+
+
+Applied to target-arm.next, thanks.
+
+-- PMM
 
