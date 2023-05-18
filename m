@@ -2,87 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F192B708396
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 16:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7B770838D
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 16:06:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzdlM-0006Iz-Bz; Thu, 18 May 2023 09:33:48 -0400
+	id 1pzeFp-0007Td-Kr; Thu, 18 May 2023 10:05:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
- id 1pzbyl-0000CF-GU
- for qemu-devel@nongnu.org; Thu, 18 May 2023 07:39:32 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
- id 1pzbyi-0002WC-EJ
- for qemu-devel@nongnu.org; Thu, 18 May 2023 07:39:30 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f435658d23so18693145e9.3
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 04:39:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1684409967; x=1687001967; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7RMufLVcnImVuRlhef+rldQbtlOp58Wd3G7oPLW1EL4=;
- b=5FL+3CKXVELaXh/rt3PAA479sqtRGHpLQpOnkpGhygXawXKQ0LaN5tY7n8dU7CGJ2p
- c4PtKSc6vsC7zhalBqeKnwmr+CLHN4SKZ7EyZZToRBJP7ktDhhKbotuh043kIDbFglsY
- QgblbO6w6I8URschJpgpiAUxJP2Qknnh4l0+ksDc/ovyhSggS8Vksgzjx9X4ZhFNykcW
- /Y7nov8SNGCiiUQ2xDc7LQjCT8aFW0X7FnJ86eDstBQZTvV9enT1RHWv4AdedRj4hFg8
- fqb2QJ7j7vulgWGhEV1e6rdYO4iMo203BV2E7LKUMw+QyWYcwxr6feKPDq7kYzHxsHq+
- nY+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684409967; x=1687001967;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7RMufLVcnImVuRlhef+rldQbtlOp58Wd3G7oPLW1EL4=;
- b=U8K+w8vyvgYS8SWKD4+1v2xJ8aXakaD308hdD/2JHXMGPoXlGtBZ61gJ6bmzK4w+xB
- ldVIHlBxWZRAIbgiLtwEE7OEJbzMgDiU19TKgiOkXZTfL1ft9aksjDgFG89CWlqxWv5+
- J3uTM4ZO1OxRL76ItbGIsudu43UmJUiHIbpj9PZoYKXllggmNgLQvsQywriupvXx8mE5
- VVS6Wr6756GXS55+17rMX9X3YjyGxqXe6YzFi/Pz+l7vgVC8Xba94ppGeroaqKQ1Tzrw
- +uxf28QPjIHLOs3cexZjrWUahHb0mE8wL8D9XDj3dxatsQ81r8nH6v1kcqPgCCGUQSCp
- qp2A==
-X-Gm-Message-State: AC+VfDw2gfi7+TOHTjcAgktm77h+LBYAGLzTE5ewo5MROR9T7ITvG5fq
- baaEN5zQVNq1c3nxbV/AvypWyA==
-X-Google-Smtp-Source: ACHHUZ4h8FFljrzvKlb7zxoLglalw8mUA5mOXANmxjHo03HUKOdrUWOH+yQO74RgeV/fmMLQv6jBNw==
-X-Received: by 2002:a05:600c:ad3:b0:3f5:e7f:5328 with SMTP id
- c19-20020a05600c0ad300b003f50e7f5328mr1506863wmr.3.1684409966976; 
- Thu, 18 May 2023 04:39:26 -0700 (PDT)
-Received: from localhost.localdomain
- (cpc98982-watf12-2-0-cust57.15-2.cable.virginm.net. [82.26.13.58])
- by smtp.gmail.com with ESMTPSA id
- p6-20020a1c7406000000b003f4272c2d10sm5083982wmc.1.2023.05.18.04.39.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 04:39:26 -0700 (PDT)
-From: Rajnesh Kanwal <rkanwal@rivosinc.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, apatel@ventanamicro.com,
- Rajnesh Kanwal <rkanwal@rivosinc.com>
-Subject: [PATCH 2/6] target/riscv: Check for async flag in case of
- RISCV_EXCP_SEMIHOST.
-Date: Thu, 18 May 2023 12:38:34 +0100
-Message-Id: <20230518113838.130084-3-rkanwal@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
+ id 1pzeFn-0007T3-8H
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 10:05:15 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
+ id 1pzeFa-0003ng-5w
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 10:05:15 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+ by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
+ 20230518140458euoutp013e6105b64faac1740a73b141f3a7005a~gQeGwS7-63097730977euoutp01k
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 14:04:58 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
+ 20230518140458euoutp013e6105b64faac1740a73b141f3a7005a~gQeGwS7-63097730977euoutp01k
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1684418698;
+ bh=/RZUBP+5BOkPl5P2jh2sy3iB7ty3zWb58X/R8p37OiY=;
+ h=From:To:Cc:Subject:Date:References:From;
+ b=GdpH+t55eA+PeOp+0R9ZaRzobIY2KHmGV7DDjEWtl2EeU7NB0Fch6g3tCWHqnKxRv
+ jRsbeN/uNUPvR8inz50/pB4fHp8unM9WCxMr7j/R3uPJ2etipJ9g0yh9PEaDjhnbM/
+ xmrTbWfIwdE1y9ISVUkM1RawrHFOGXURakHV2Z7Q=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230518140457eucas1p1c86f4aa256a9b96399c72c83e3bd7bca~gQeGfhFQm3166531665eucas1p1P;
+ Thu, 18 May 2023 14:04:57 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+ eusmges1new.samsung.com (EUCPMTA) with SMTP id 6E.72.42423.98036646; Thu, 18
+ May 2023 15:04:57 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+ eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+ 20230518140457eucas1p17f5acf26efb84441f8da0510ffd38bab~gQeF4J4H11423714237eucas1p1P;
+ Thu, 18 May 2023 14:04:57 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+ eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20230518140457eusmtrp260b1525a35a54c34c53096fd7a69d966~gQeF3c5MV0224402244eusmtrp2a;
+ Thu, 18 May 2023 14:04:57 +0000 (GMT)
+X-AuditID: cbfec7f2-a3bff7000002a5b7-18-646630897f27
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+ eusmgms2.samsung.com (EUCPMTA) with SMTP id 71.61.14344.98036646; Thu, 18
+ May 2023 15:04:57 +0100 (BST)
+Received: from AMDN5139.EU.corp.samsungelectronics.net (unknown
+ [106.210.135.112]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+ 20230518140456eusmtip2023e687f6199f75263cfb553748b2f4c~gQeFXTQvP2811328113eusmtip2k;
+ Thu, 18 May 2023 14:04:56 +0000 (GMT)
+From: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
+To: qemu-devel@nongnu.org, akihiko.odaki@daynix.com
+Cc: sriram.yagnaraman@est.tech, jasowang@redhat.com, k.kwiecien@samsung.com,
+ m.sochacki@samsung.com
+Subject: [PATCH v8 0/7] igb: packet-split descriptors support
+Date: Thu, 18 May 2023 16:04:41 +0200
+Message-Id: <20230518140448.2001-1-t.dzieciol@partner.samsung.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230518113838.130084-1-rkanwal@rivosinc.com>
-References: <20230518113838.130084-1-rkanwal@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=rkanwal@rivosinc.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuphleLIzCtJLcpLzFFi42LZduzned1Og7QUg/VfjC0+n1rLbrHs0mcm
+ i8b5c1gttl79wW5xvHcHi0XvphdMDmweJ94eZPW48Ogcs8eTa5uZPN7vu8rm0bdlFWMAaxSX
+ TUpqTmZZapG+XQJXRsvCnywFzRwVPzYvZWxg3MLWxcjJISFgIrHhVh9rFyMXh5DACkaJY4/m
+ sUE4Xxglrs/ZxQjhfGaUmDXlODtMy5wFX6ASyxklzqz+zALhtDNJHPu3kQWkik3ATOLRl3lA
+ gzk4RASMJT62i4OEmQVSJY7+OQhWIixgK3Hmzk+woSwCqhLXpi4Hi/MKOEm0/pvJArFMXmLm
+ pe/sEHFBiZMzn7BAzJGXaN46mxlkr4TATA6Jl4/PQ13nIvH0/Q1mCFtY4tXxLVBxGYn/O+cz
+ QdjlEj/PbmOHaG5hlNgzdTJUkbXEpa0/wY5mFtCUWL9LHyLsKNE1/QwTSFhCgE/ixltBiBv4
+ JCZtm84MEeaV6GgTgqjWkfi2aSYbRFhKYuGNOoiwh0Tv47OMILaQQKzEubUrWSYwKsxC8tgs
+ JI/NQjhhASPzKkbx1NLi3PTUYsO81HK94sTc4tK8dL3k/NxNjMAEc/rf8U87GOe++qh3iJGJ
+ g/EQowQHs5IIb2BfcooQb0piZVVqUX58UWlOavEhRmkOFiVxXm3bk8lCAumJJanZqakFqUUw
+ WSYOTqkGprZvzhPlZmosZVU4OStZZJvbkulpCTxHFN9wtNhm7ZW7VVP4Nix22e+SExwL7v67
+ uerTF1f9rSXS7dftj8/hm3dmWYbo5Bcn1GQkLb4cmvhOnmfNnycXHhvntKoUu6/LblvYN0fu
+ 2dTT6j3cidyrNtye79XBfN9//6S9qmk1h2syV3KKhbz2PWK7q+fc5O8FGic2VS0vby983PBj
+ rpOsvcKsnq7TzVWrTWqLlsr+mfFMc3XSt/ObjCZtac31vC5166HoypMqCRqZr/+f1JqzMvfS
+ VsFXz/XVPrNwz/3Yz7Pi/tWPMgWFe1o12XzkZGeVrHOOvreoquOzzunzxzuXZ3U/f/Fho6Ha
+ mvvipQ+kt7YrsRRnJBpqMRcVJwIAxLTwyZ8DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrMLMWRmVeSWpSXmKPExsVy+t/xe7qdBmkpBn3PeCw+n1rLbrHs0mcm
+ i8b5c1gttl79wW5xvHcHi0XvphdMDmweJ94eZPW48Ogcs8eTa5uZPN7vu8rm0bdlFWMAa5Se
+ TVF+aUmqQkZ+cYmtUrShhZGeoaWFnpGJpZ6hsXmslZGpkr6dTUpqTmZZapG+XYJeRsvCnywF
+ zRwVPzYvZWxg3MLWxcjJISFgIjFnwRfGLkYuDiGBpYwSy682QCWkJPb1/GeHsIUl/lzrYoMo
+ amWS+LmpmRkkwSZgJvHoyzzWLkYODhEBU4lneyVBwswCmRKnX+0DmyMsYCtx5s5PsDksAqoS
+ 16YuZwGxeQWcJFr/zWSBmC8vMfPSd3aIuKDEyZlPWCDmyEs0b53NPIGRbxaS1CwkqQWMTKsY
+ RVJLi3PTc4uN9IoTc4tL89L1kvNzNzECQ3vbsZ9bdjCufPVR7xAjEwfjIUYJDmYlEd7AvuQU
+ Id6UxMqq1KL8+KLSnNTiQ4ymQPdNZJYSTc4HRldeSbyhmYGpoYmZpYGppZmxkjivZ0FHopBA
+ emJJanZqakFqEUwfEwenVAPTKk6rHje3W3PaZbRZGG6fPOtWt0AoQHbDmierztfMa1VJWTp3
+ IaMoWybT3cv7RHaJda6p5Qs93SQ+7U4+S2HxDv9DT2bLv5223mXP9F9bp345KvLHaP29JOmD
+ GjX2G3ZYT4oImmewUbknyasiKuxnP0vKg8mFef0cB9va2n4vUPnbKcq52jtT3eO3R82bx/6/
+ ImaeLVMJz6lK6t99O+DpgiDxT9d51mompq14eqHM4MuaxU1Xbt2u2BoQ52BlbsZy61PCkQ3X
+ y5Smzdor0Pom6nd1TMucb/5NTgGnJev271XvnrP7Sfg2z/ivt/PVDd61+TP17CjiWqWeI7Mh
+ WW/fxXzrWf38q26tXiOVrXZZiaU4I9FQi7moOBEAxhpBX/YCAAA=
+X-CMS-MailID: 20230518140457eucas1p17f5acf26efb84441f8da0510ffd38bab
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20230518140457eucas1p17f5acf26efb84441f8da0510ffd38bab
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20230518140457eucas1p17f5acf26efb84441f8da0510ffd38bab
+References: <CGME20230518140457eucas1p17f5acf26efb84441f8da0510ffd38bab@eucas1p1.samsung.com>
+Received-SPF: none client-ip=210.118.77.11;
+ envelope-from=t.dzieciol@partner.samsung.com; helo=mailout1.w1.samsung.com
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_HI=-5,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 18 May 2023 09:33:46 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,28 +126,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RISCV_EXCP_SEMIHOST is set to 0x10, which can also be a local
-interrupt as well. This change adds a check for async flag
-before invoking semihosting logic.
+Based-on: <20230423041833.5302-1-akihiko.odaki@daynix.com>
+("[PATCH v3 00/47] igb: Fix for DPDK")
 
-Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
----
- target/riscv/cpu_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Purposes of this series of patches:
+* introduce packet-split RX descriptors support. This feature is used by Linux
+  VF driver for MTU values from 2048.
+* refactor RX descriptor handling for introduction of packet-split RX
+  descriptors support
+* fix descriptors flags handling
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 57d04385f1..c78a2a9514 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1602,7 +1602,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-     target_ulong htval = 0;
-     target_ulong mtval2 = 0;
- 
--    if  (cause == RISCV_EXCP_SEMIHOST) {
-+    if  (!async && cause == RISCV_EXCP_SEMIHOST) {
-         do_common_semihosting(cs);
-         env->pc += 4;
-         return;
+Tomasz Dzieciol (7):
+  igb: remove TCP ACK detection
+  igb: rename E1000E_RingInfo_st
+  igb: RX descriptors guest writting refactoring
+  igb: RX payload guest writting refactoring
+  igb: add IPv6 extended headers traffic detection
+  igb: packet-split descriptors support
+  e1000e: rename e1000e_ba_state and e1000e_write_hdr_to_rx_buffers
+
+ hw/net/e1000e_core.c     |  78 ++--
+ hw/net/igb_core.c        | 746 ++++++++++++++++++++++++++++-----------
+ hw/net/igb_regs.h        |  20 +-
+ hw/net/trace-events      |   6 +-
+ tests/qtest/libqos/igb.c |   5 +
+ 5 files changed, 604 insertions(+), 251 deletions(-)
+
 -- 
 2.25.1
 
