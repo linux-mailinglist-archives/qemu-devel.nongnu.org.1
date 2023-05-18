@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EB47081CD
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A1D7081CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:52:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzd6M-00048X-5H; Thu, 18 May 2023 08:51:27 -0400
+	id 1pzd6O-0004AU-7B; Thu, 18 May 2023 08:51:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd68-00048D-0N
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:12 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1pzd6C-00048l-Tv
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:19 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd66-0007vV-Ih
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:11 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f42769a0c1so20056105e9.2
+ id 1pzd67-0007vn-Hs
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:13 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3f4249b7badso20004865e9.3
  for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1684414269; x=1687006269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=94FCi7vRK7PCs/VHyO/ULgXCs/4n8etjGNdHUXsYuv0=;
- b=FH3XHwwpO8AVRez9im6KL3DnjOzEy5bgBxrJimKFYw3QrKXEU//zANcAAEG2orkWFr
- zWwED5i5Um7RUUFb9mp0oTDuHbYG2zTeoDLPWTH2q1Y5WRYzdLzzk9gwT6NG+6C+4m/k
- CRB3Bmw70pIN+MVgetw4RVhW2yjDxnVP75FvENh/63c2hKwJATjqwc8wcBBqvjICHbz1
- 7FGV2C/AHolw+xKqxJTnR8DbzBiPItKDuyMhsaGLkCOG4gim5V5jFclB11fO/WhY16Rd
- VU1R0o20rD5ffktvae2adeJFOzp/97utq+KlIkW/oc5zdc8heVnIgLkoqGNpzdac/tPQ
- UlIQ==
+ :reply-to; bh=3qgQgU0oovp++OASw0Q9fkW/XuF2+8h0xHqcmjtio2o=;
+ b=PIY78DRzhDloelyVFdnDXBNoH066+cQQD70srzPuacfQ/BpVgoygWKSHW4xo3uF2r1
+ GwRsDlz4ugmcWrjE6KjAfgykQXbyidmmxwJ+Gjst+IFG1fDZEvAzzssIMNn8jRD4iT4o
+ Y/uWStgtb4nccBdpXD5FTqafWF54MNfG+O5oaWWAgk230iwNKol9WqJrXJMNLA2OxX0W
+ wAZQbMAZM9MhBampIWsbpl04HZ8h4Ii+fId3zvX/JCBxmkWB7WeLNdQTkwo7zCLQpIzG
+ S78CciOyW3VK2R+B4iwyX5m+uHGzmfZm3QNkcijkgSribOgUapeSokiZ47Erux7Gsjiw
+ Umrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1684414269; x=1687006269;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=94FCi7vRK7PCs/VHyO/ULgXCs/4n8etjGNdHUXsYuv0=;
- b=R4yj2UB8UG4xe5kBsojiEBjfjmcXsVUkswJy670Bh7qzkVzJsyVWGxfGblB+S3sqFU
- 1MTYKfIWU3KHj/8oXaXpDuHCAKUnAb6NMjBtJVwNfQaPvwoeOCF6v3BMG0V3DANTNVqo
- 1GQuLDrr2+8VOPMaT+LkVim1hdvaOJ8sKawSyu6D20OhvprIp4ZArfYBlvtj5xQ7M1op
- Iyn7acGh4zScabrY4XLm/XnEjjnj31Gn3Ia3qsG97dGXyIhoS10zm8cvtpD8TMFsFWtX
- p32uJyqpgAAUwcoa1yLGzjqfH0mkL0NEYlJJrhE32qFL2z8wC233s5J9ul2LJtt1WsT0
- fAPQ==
-X-Gm-Message-State: AC+VfDwPilSKJr7h2KRrRWYKwLkkQjEQ3Uoih5tMELW/q6Pezu05NDXp
- yZ9YMfaLYVqxlS06av9GAuCw+ihJxhAqQxIhdQY=
-X-Google-Smtp-Source: ACHHUZ47PDwBmtssD+SPDatP1AMFzZEfDqHTdtRKtzphe8l31CIzhfEaCUM77xMLfNM+DBheLKF4+g==
-X-Received: by 2002:a1c:7910:0:b0:3f4:27ff:7d54 with SMTP id
- l16-20020a1c7910000000b003f427ff7d54mr1523362wme.3.1684414269118; 
+ bh=3qgQgU0oovp++OASw0Q9fkW/XuF2+8h0xHqcmjtio2o=;
+ b=Ypy867hss6S8m2jz6xs7PLKWmkDNXCrOmoU0GzMx3LV6NG9Vau4+FfDe/Sa10xhwEC
+ SDbA38zsAuG29rgsSSBQUkcGIR1UrBGHKkhusTc6+D4GzEFHDvvpnie8vtKhXIn2Eyk5
+ S43EJGg/Pkhc7iO7kgI/Om+vXzr/6KjQiEJ1JHj2RZ+myLKJurxkUjzG0R0edZflSAdN
+ zY2BJe9F78W08TfXITh49y9jVdlm+1X0rSu34tT8p0577JLWCFa+FSmjcy+DcAf1IbHt
+ 2JdMx801WBqDMXELCakSO3GKtv+sRbJNJqizlP7rWpciOcXTu2OhYPUgi58Jo+Am6E32
+ LgJA==
+X-Gm-Message-State: AC+VfDzHkWvy32PsOgVOasQEab+ayNQTXWnJYnfTJIhW7sYA0/gwaIel
+ zruzyegB/a+1KjxYSgDeg62+26MtU3k8APMThr8=
+X-Google-Smtp-Source: ACHHUZ5wfLoreon7OriuyIdjTvadvW/fpNDugCBGEDTE2ay0YP8nZZyiR0BYVhag5PeAgUEDH+pDVA==
+X-Received: by 2002:a05:600c:ad9:b0:3f4:21ff:b91f with SMTP id
+ c25-20020a05600c0ad900b003f421ffb91fmr1416245wmr.28.1684414269574; 
  Thu, 18 May 2023 05:51:09 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- z21-20020a1c4c15000000b003f42d2f4531sm5201321wmf.48.2023.05.18.05.51.08
+ z21-20020a1c4c15000000b003f42d2f4531sm5201321wmf.48.2023.05.18.05.51.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 05:51:08 -0700 (PDT)
+ Thu, 18 May 2023 05:51:09 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/29] sbsa-ref: switch default cpu core to Neoverse-N1
-Date: Thu, 18 May 2023 13:50:39 +0100
-Message-Id: <20230518125107.146421-2-peter.maydell@linaro.org>
+Subject: [PULL 02/29] target/arm: Fix vd == vm overlap in sve_ldff1_z
+Date: Thu, 18 May 2023 13:50:40 +0100
+Message-Id: <20230518125107.146421-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230518125107.146421-1-peter.maydell@linaro.org>
 References: <20230518125107.146421-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,32 +90,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The world outside moves to newer and newer cpu cores. Let move SBSA
-Reference Platform to something newer as well.
+If vd == vm, copy vm to scratch, so that we can pre-zero
+the output and still access the gather indicies.
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
-Message-id: 20230506183417.1360427-1-marcin.juszkiewicz@linaro.org
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1612
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230504104232.1877774-1-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/sbsa-ref.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/tcg/sve_helper.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 0b93558dde1..a1562f944a6 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -852,7 +852,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
+diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
+index ccf5e5beca2..0097522470e 100644
+--- a/target/arm/tcg/sve_helper.c
++++ b/target/arm/tcg/sve_helper.c
+@@ -6727,6 +6727,7 @@ void sve_ldff1_z(CPUARMState *env, void *vd, uint64_t *vg, void *vm,
+     intptr_t reg_off;
+     SVEHostPage info;
+     target_ulong addr, in_page;
++    ARMVectorReg scratch;
  
-     mc->init = sbsa_ref_init;
-     mc->desc = "QEMU 'SBSA Reference' ARM Virtual Machine";
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a57");
-+    mc->default_cpu_type = ARM_CPU_TYPE_NAME("neoverse-n1");
-     mc->max_cpus = 512;
-     mc->pci_allow_0_address = true;
-     mc->minimum_page_bits = 12;
+     /* Skip to the first true predicate.  */
+     reg_off = find_next_active(vg, 0, reg_max, esz);
+@@ -6736,6 +6737,11 @@ void sve_ldff1_z(CPUARMState *env, void *vd, uint64_t *vg, void *vm,
+         return;
+     }
+ 
++    /* Protect against overlap between vd and vm. */
++    if (unlikely(vd == vm)) {
++        vm = memcpy(&scratch, vm, reg_max);
++    }
++
+     /*
+      * Probe the first element, allowing faults.
+      */
 -- 
 2.34.1
 
