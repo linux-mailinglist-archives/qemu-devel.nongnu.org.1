@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CF07081C6
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 689D37081D7
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:53:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzd6c-0004K2-TT; Thu, 18 May 2023 08:51:42 -0400
+	id 1pzd6X-0004HW-TN; Thu, 18 May 2023 08:51:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6T-0004E0-Vu
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:34 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1pzd6O-0004BP-5m
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:28 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6N-00081F-V4
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:32 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3f42ba32e24so12946055e9.3
+ id 1pzd6K-00081L-5l
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:27 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3078cc99232so1900597f8f.3
  for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1684414276; x=1687006276;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uNT0sE0KvR5tqYTGENxbEwXvtcUr3Gd67Gy0nr4Q/MM=;
- b=mugcpl5PqGFMf2VB1qUHBS7NuGTWAL/ahRFY5nr646zqJixTksMiWpIomJLc/78O65
- 0MzP2OFBF6A6YLJHrELnCj7T4/tTABvQUEBFnnSOQ+g/1oPCxg0jEfYj6NpMlwRBd5Lf
- JjR40gE2jF5djEfNVH5OFQNZ/jaB4hjVvU9JKRtlmv2hB7FQy/wEgzf9Tmw8/mli0T/0
- XArJH9097cy/266J+DE3h2w8JLYV2hBM4YJUvpVNEr0OcF+wSJptmsh4C07M4xO31Go5
- YM4klr9eDNJ0NQaA++eZSqz5E3x+bEWu42Xj6dmEb7RoUD9G1Gs0WRorlXIkOHdP6tM4
- /AWg==
+ :reply-to; bh=316WPcTaX/dkZyaOwPkqhzyQ3qnA+Bqof7S5NJnRzk4=;
+ b=S+3I4xXRHgJ42h3DloY6yhHVKW1NOpiYXjmo1lmdEOhkvGfh67PmqweQ9LpmWNaEi5
+ EjlrbaNcDGjYn8ydkOXD+WO0GASawhjJsdA9xO1RlZVw9RtuNrSu7m2CD6RAJpefR2VC
+ 5pZHcZw5NWjSkhw3OCBxsf6uuxvvRuwQ6DduWlsrQhlQ50XnNmqKg68l1/C3jvbUPAok
+ vZ44IumqECB6EaoYIXTCZU2G40EQ+3Iz2P32RUdv2LJTGFZq6DZL6iDh+i03fPRz9qBt
+ IHMdEtuJ5aOfYwmBvmwD2U7EryT2BbtDSxAQl1booacO8Z6g6MxaRHz6MZ57uuK2QsTa
+ XdPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1684414276; x=1687006276;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uNT0sE0KvR5tqYTGENxbEwXvtcUr3Gd67Gy0nr4Q/MM=;
- b=hoZncEFYv0uQveeaLuNau/zNsi8MBL7x59nbaf3KWehkBYuVe0zaZFm8LWqNpepRXN
- RC6zrkw3A88E8Kx7qjEdYossJaQp9GMyGtlyss3rnmJmfG0aLfKUvIBeWd5vt2Qh7zU5
- BRluoV6Sosgzov2B2071cJe3fpBXLWgLyBCXlTB4cfO56OZ+ECdR1ZDWCToe3op6/Hp8
- uQUQ/lHYNpqijuvZXBJ0umv1MUjeI4cuq7WeFvlrakCsGoc64+FDbQOqzCotfJnJFoJo
- CHgZPS7sALrqxW3eyOEcM5TxMVB4+HPRn4pPT702o+cN7Ze5yw1pAEl15LVt0bsKlV74
- R65Q==
-X-Gm-Message-State: AC+VfDwFaNOjkNorU5DIiWqaJ2QmkXI2IcWhpdqPk4rGPbRuh+WUa9Dc
- yFGvIGAFJvadJnb4qt3dqM+V65biIrOpxzTet5U=
-X-Google-Smtp-Source: ACHHUZ7VAuow0zvKMbclAf8KDyz8vn+61iWKL2ZxFnwMjJCM5p1IxKsdY3EC/zg5Q2cQ8s9MHKj1TQ==
-X-Received: by 2002:a05:600c:cb:b0:3f4:23b9:eed2 with SMTP id
- u11-20020a05600c00cb00b003f423b9eed2mr1418501wmm.38.1684414276121; 
+ bh=316WPcTaX/dkZyaOwPkqhzyQ3qnA+Bqof7S5NJnRzk4=;
+ b=ekonLL/Wp0TV3bgqVTVpxkYA5VVJZATZZT6QM+X+hKPSkTBeC+1pLhsJwR7gdFPAOl
+ 0wOWqWHPMytKIVAz7OuqnTkCNu1H/sPW5yH36XCxv/bdyleOefhiMeC85U3atLCI6nhc
+ QcKZ1+ua0w8dr96prfRrb03w/k9Z0HkY+vmwQ21kGmnsmnAOKpeqTOzc8W2KfPOGZbHU
+ WuF39BHzWIdvlD4vNf4i+2d8ZiCw0GSeoJkTy5Tng5DRn1QharWFHZLcBP7B+NQkGNTr
+ 6CFdmNQpnPByncgeDv5xm/hjTmk+7ebFByl2AHg3RIUfPcqPYjQ3729xSR01goskVcEv
+ YYmQ==
+X-Gm-Message-State: AC+VfDyXWHbg7LWKUu2mTATyMll0VRhTRJItYRZhC5RBIhXQutXgyr9Q
+ mysa3MqfluC1nARbMAo2i6yuDIdJZQjPf24xUUQ=
+X-Google-Smtp-Source: ACHHUZ5CDISbTg8X/ZqdwXnfULItg/EIfe3ftiRnhJkz0XWH7PjU8Wufok3hwMz9+qDYYZzKtEpcng==
+X-Received: by 2002:adf:fe50:0:b0:307:a36b:e7b1 with SMTP id
+ m16-20020adffe50000000b00307a36be7b1mr1771112wrs.5.1684414276546; 
  Thu, 18 May 2023 05:51:16 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- z21-20020a1c4c15000000b003f42d2f4531sm5201321wmf.48.2023.05.18.05.51.15
+ z21-20020a1c4c15000000b003f42d2f4531sm5201321wmf.48.2023.05.18.05.51.16
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 05:51:15 -0700 (PDT)
+ Thu, 18 May 2023 05:51:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/29] target/arm: Convert Move wide (immediate) to decodetree
-Date: Thu, 18 May 2023 13:50:54 +0100
-Message-Id: <20230518125107.146421-17-peter.maydell@linaro.org>
+Subject: [PULL 17/29] target/arm: Convert Bitfield to decodetree
+Date: Thu, 18 May 2023 13:50:55 +0100
+Message-Id: <20230518125107.146421-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230518125107.146421-1-peter.maydell@linaro.org>
 References: <20230518125107.146421-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,136 +92,217 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Convert the MON, MOVZ, MOVK instructions.
+Convert the BFM, SBFM, UBFM instructions.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230512144106.3608981-11-peter.maydell@linaro.org
+Message-id: 20230512144106.3608981-12-peter.maydell@linaro.org
 [PMM: Rebased]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/a64.decode      | 13 ++++++
- target/arm/tcg/translate-a64.c | 73 ++++++++++++++--------------------
- 2 files changed, 42 insertions(+), 44 deletions(-)
+ target/arm/tcg/a64.decode      |  13 +++
+ target/arm/tcg/translate-a64.c | 144 ++++++++++++++++++---------------
+ 2 files changed, 94 insertions(+), 63 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 1933afa457b..350b37c8f37 100644
+index 350b37c8f37..4d5709f9857 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -71,3 +71,16 @@ EOR_i           . 10 100100 . ...... ...... ..... ..... @logic_imm_64
- EOR_i           . 10 100100 . ...... ...... ..... ..... @logic_imm_32
- ANDS_i          . 11 100100 . ...... ...... ..... ..... @logic_imm_64
- ANDS_i          . 11 100100 . ...... ...... ..... ..... @logic_imm_32
+@@ -84,3 +84,16 @@ MOVZ            . 10 100101 .. ................ .....   @movw_64
+ MOVZ            . 10 100101 .. ................ .....   @movw_32
+ MOVK            . 11 100101 .. ................ .....   @movw_64
+ MOVK            . 11 100101 .. ................ .....   @movw_32
 +
-+# Move wide (immediate)
++# Bitfield
 +
-+&movw           rd sf imm hw
-+@movw_64        1 .. ...... hw:2   imm:16 rd:5          &movw sf=1
-+@movw_32        0 .. ...... 0 hw:1 imm:16 rd:5          &movw sf=0
++&bitfield       rd rn sf immr imms
++@bitfield_64    1 .. ...... 1 immr:6 imms:6 rn:5 rd:5      &bitfield sf=1
++@bitfield_32    0 .. ...... 0 0 immr:5 0 imms:5 rn:5 rd:5  &bitfield sf=0
 +
-+MOVN            . 00 100101 .. ................ .....   @movw_64
-+MOVN            . 00 100101 .. ................ .....   @movw_32
-+MOVZ            . 10 100101 .. ................ .....   @movw_64
-+MOVZ            . 10 100101 .. ................ .....   @movw_32
-+MOVK            . 11 100101 .. ................ .....   @movw_64
-+MOVK            . 11 100101 .. ................ .....   @movw_32
++SBFM            . 00 100110 . ...... ...... ..... ..... @bitfield_64
++SBFM            . 00 100110 . ...... ...... ..... ..... @bitfield_32
++BFM             . 01 100110 . ...... ...... ..... ..... @bitfield_64
++BFM             . 01 100110 . ...... ...... ..... ..... @bitfield_32
++UBFM            . 10 100110 . ...... ...... ..... ..... @bitfield_64
++UBFM            . 10 100110 . ...... ...... ..... ..... @bitfield_32
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 4192f951d48..c9117f0a405 100644
+index c9117f0a405..3e7344e79c3 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -4395,52 +4395,40 @@ TRANS(ANDS_i, gen_rri_log, a, true, tcg_gen_andi_i64)
+@@ -4431,82 +4431,103 @@ static bool trans_MOVK(DisasContext *s, arg_movw *a)
+     return true;
+ }
  
- /*
-  * Move wide (immediate)
-- *
-- *  31 30 29 28         23 22 21 20             5 4    0
-- * +--+-----+-------------+-----+----------------+------+
-- * |sf| opc | 1 0 0 1 0 1 |  hw |  imm16         |  Rd  |
-- * +--+-----+-------------+-----+----------------+------+
-- *
-- * sf: 0 -> 32 bit, 1 -> 64 bit
-- * opc: 00 -> N, 10 -> Z, 11 -> K
-- * hw: shift/16 (0,16, and sf only 32, 48)
+-/* Bitfield
+- *   31  30 29 28         23 22  21  16 15  10 9    5 4    0
+- * +----+-----+-------------+---+------+------+------+------+
+- * | sf | opc | 1 0 0 1 1 0 | N | immr | imms |  Rn  |  Rd  |
+- * +----+-----+-------------+---+------+------+------+------+
++/*
++ * Bitfield
   */
--static void disas_movw_imm(DisasContext *s, uint32_t insn)
+-static void disas_bitfield(DisasContext *s, uint32_t insn)
 +
-+static bool trans_MOVZ(DisasContext *s, arg_movw *a)
++static bool trans_SBFM(DisasContext *s, arg_SBFM *a)
  {
--    int rd = extract32(insn, 0, 5);
--    uint64_t imm = extract32(insn, 5, 16);
--    int sf = extract32(insn, 31, 1);
--    int opc = extract32(insn, 29, 2);
--    int pos = extract32(insn, 21, 2) << 4;
--    TCGv_i64 tcg_rd = cpu_reg(s, rd);
-+    int pos = a->hw << 4;
-+    tcg_gen_movi_i64(cpu_reg(s, a->rd), (uint64_t)a->imm << pos);
-+    return true;
-+}
+-    unsigned int sf, n, opc, ri, si, rn, rd, bitsize, pos, len;
+-    TCGv_i64 tcg_rd, tcg_tmp;
++    TCGv_i64 tcg_rd = cpu_reg(s, a->rd);
++    TCGv_i64 tcg_tmp = read_cpu_reg(s, a->rn, 1);
++    unsigned int bitsize = a->sf ? 64 : 32;
++    unsigned int ri = a->immr;
++    unsigned int si = a->imms;
++    unsigned int pos, len;
  
--    if (!sf && (pos >= 32)) {
+-    sf = extract32(insn, 31, 1);
+-    opc = extract32(insn, 29, 2);
+-    n = extract32(insn, 22, 1);
+-    ri = extract32(insn, 16, 6);
+-    si = extract32(insn, 10, 6);
+-    rn = extract32(insn, 5, 5);
+-    rd = extract32(insn, 0, 5);
+-    bitsize = sf ? 64 : 32;
+-
+-    if (sf != n || ri >= bitsize || si >= bitsize || opc > 2) {
 -        unallocated_encoding(s);
 -        return;
 -    }
-+static bool trans_MOVN(DisasContext *s, arg_movw *a)
-+{
-+    int pos = a->hw << 4;
-+    uint64_t imm = a->imm;
- 
--    switch (opc) {
--    case 0: /* MOVN */
--    case 2: /* MOVZ */
--        imm <<= pos;
--        if (opc == 0) {
--            imm = ~imm;
--        }
--        if (!sf) {
--            imm &= 0xffffffffu;
--        }
--        tcg_gen_movi_i64(tcg_rd, imm);
--        break;
--    case 3: /* MOVK */
--        tcg_gen_deposit_i64(tcg_rd, tcg_rd, tcg_constant_i64(imm), pos, 16);
--        if (!sf) {
--            tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
--        }
--        break;
--    default:
--        unallocated_encoding(s);
--        break;
-+    imm = ~(imm << pos);
-+    if (!a->sf) {
-+        imm = (uint32_t)imm;
-     }
-+    tcg_gen_movi_i64(cpu_reg(s, a->rd), imm);
+-
+-    tcg_rd = cpu_reg(s, rd);
+-
+-    /* Suppress the zero-extend for !sf.  Since RI and SI are constrained
+-       to be smaller than bitsize, we'll never reference data outside the
+-       low 32-bits anyway.  */
+-    tcg_tmp = read_cpu_reg(s, rn, 1);
+-
+-    /* Recognize simple(r) extractions.  */
+     if (si >= ri) {
+         /* Wd<s-r:0> = Wn<s:r> */
+         len = (si - ri) + 1;
+-        if (opc == 0) { /* SBFM: ASR, SBFX, SXTB, SXTH, SXTW */
+-            tcg_gen_sextract_i64(tcg_rd, tcg_tmp, ri, len);
+-            goto done;
+-        } else if (opc == 2) { /* UBFM: UBFX, LSR, UXTB, UXTH */
+-            tcg_gen_extract_i64(tcg_rd, tcg_tmp, ri, len);
+-            return;
++        tcg_gen_sextract_i64(tcg_rd, tcg_tmp, ri, len);
++        if (!a->sf) {
++            tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
+         }
+-        /* opc == 1, BFXIL fall through to deposit */
++    } else {
++        /* Wd<32+s-r,32-r> = Wn<s:0> */
++        len = si + 1;
++        pos = (bitsize - ri) & (bitsize - 1);
++
++        if (len < ri) {
++            /*
++             * Sign extend the destination field from len to fill the
++             * balance of the word.  Let the deposit below insert all
++             * of those sign bits.
++             */
++            tcg_gen_sextract_i64(tcg_tmp, tcg_tmp, 0, len);
++            len = ri;
++        }
++
++        /*
++         * We start with zero, and we haven't modified any bits outside
++         * bitsize, therefore no final zero-extension is unneeded for !sf.
++         */
++        tcg_gen_deposit_z_i64(tcg_rd, tcg_tmp, pos, len);
++    }
 +    return true;
 +}
 +
-+static bool trans_MOVK(DisasContext *s, arg_movw *a)
++static bool trans_UBFM(DisasContext *s, arg_UBFM *a)
 +{
-+    int pos = a->hw << 4;
-+    TCGv_i64 tcg_rd, tcg_im;
++    TCGv_i64 tcg_rd = cpu_reg(s, a->rd);
++    TCGv_i64 tcg_tmp = read_cpu_reg(s, a->rn, 1);
++    unsigned int bitsize = a->sf ? 64 : 32;
++    unsigned int ri = a->immr;
++    unsigned int si = a->imms;
++    unsigned int pos, len;
 +
 +    tcg_rd = cpu_reg(s, a->rd);
-+    tcg_im = tcg_constant_i64(a->imm);
-+    tcg_gen_deposit_i64(tcg_rd, tcg_rd, tcg_im, pos, 16);
-+    if (!a->sf) {
-+        tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
++    tcg_tmp = read_cpu_reg(s, a->rn, 1);
++
++    if (si >= ri) {
++        /* Wd<s-r:0> = Wn<s:r> */
++        len = (si - ri) + 1;
++        tcg_gen_extract_i64(tcg_rd, tcg_tmp, ri, len);
++    } else {
++        /* Wd<32+s-r,32-r> = Wn<s:0> */
++        len = si + 1;
++        pos = (bitsize - ri) & (bitsize - 1);
++        tcg_gen_deposit_z_i64(tcg_rd, tcg_tmp, pos, len);
 +    }
++    return true;
++}
++
++static bool trans_BFM(DisasContext *s, arg_BFM *a)
++{
++    TCGv_i64 tcg_rd = cpu_reg(s, a->rd);
++    TCGv_i64 tcg_tmp = read_cpu_reg(s, a->rn, 1);
++    unsigned int bitsize = a->sf ? 64 : 32;
++    unsigned int ri = a->immr;
++    unsigned int si = a->imms;
++    unsigned int pos, len;
++
++    tcg_rd = cpu_reg(s, a->rd);
++    tcg_tmp = read_cpu_reg(s, a->rn, 1);
++
++    if (si >= ri) {
++        /* Wd<s-r:0> = Wn<s:r> */
+         tcg_gen_shri_i64(tcg_tmp, tcg_tmp, ri);
++        len = (si - ri) + 1;
+         pos = 0;
+     } else {
+-        /* Handle the ri > si case with a deposit
+-         * Wd<32+s-r,32-r> = Wn<s:0>
+-         */
++        /* Wd<32+s-r,32-r> = Wn<s:0> */
+         len = si + 1;
+         pos = (bitsize - ri) & (bitsize - 1);
+     }
+ 
+-    if (opc == 0 && len < ri) {
+-        /* SBFM: sign extend the destination field from len to fill
+-           the balance of the word.  Let the deposit below insert all
+-           of those sign bits.  */
+-        tcg_gen_sextract_i64(tcg_tmp, tcg_tmp, 0, len);
+-        len = ri;
+-    }
+-
+-    if (opc == 1) { /* BFM, BFXIL */
+-        tcg_gen_deposit_i64(tcg_rd, tcg_rd, tcg_tmp, pos, len);
+-    } else {
+-        /* SBFM or UBFM: We start with zero, and we haven't modified
+-           any bits outside bitsize, therefore the zero-extension
+-           below is unneeded.  */
+-        tcg_gen_deposit_z_i64(tcg_rd, tcg_tmp, pos, len);
+-        return;
+-    }
+-
+- done:
+-    if (!sf) { /* zero extend final result */
++    tcg_gen_deposit_i64(tcg_rd, tcg_rd, tcg_tmp, pos, len);
++    if (!a->sf) {
+         tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
+     }
 +    return true;
  }
  
- /* Bitfield
-@@ -4585,9 +4573,6 @@ static void disas_extract(DisasContext *s, uint32_t insn)
+ /* Extract
+@@ -4573,9 +4594,6 @@ static void disas_extract(DisasContext *s, uint32_t insn)
  static void disas_data_proc_imm(DisasContext *s, uint32_t insn)
  {
      switch (extract32(insn, 23, 6)) {
--    case 0x25: /* Move wide (immediate) */
--        disas_movw_imm(s, insn);
+-    case 0x26: /* Bitfield */
+-        disas_bitfield(s, insn);
 -        break;
-     case 0x26: /* Bitfield */
-         disas_bitfield(s, insn);
+     case 0x27: /* Extract */
+         disas_extract(s, insn);
          break;
 -- 
 2.34.1
