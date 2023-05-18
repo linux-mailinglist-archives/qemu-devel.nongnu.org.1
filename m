@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B111708006
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 13:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A58708062
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 13:51:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzc3f-0003EL-7s; Thu, 18 May 2023 07:44:35 -0400
+	id 1pzc99-0004TL-Cx; Thu, 18 May 2023 07:50:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzc3c-00037P-Vy
- for qemu-devel@nongnu.org; Thu, 18 May 2023 07:44:33 -0400
+ id 1pzc97-0004TC-KU
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 07:50:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzc3b-0003cU-Kh
- for qemu-devel@nongnu.org; Thu, 18 May 2023 07:44:32 -0400
+ id 1pzc96-00050Q-27
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 07:50:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684410270;
+ s=mimecast20190719; t=1684410610;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=M8CBsU1YrLA8lTJurNNlZ6udQjgtu5HxOABPMwURlbw=;
- b=dCPKGRu8vI2jwT4QCHhPNpp0rtMTbMN0nnf/0VrFo6cPZXMDIpOUuq/zaRgG+1XDB4ais/
- ZW+PV7vbypDS9kbih5AkKz1dkskn4ndiUBhBNWgU8UV1yg0USoXLdk3hUlgAv8GJnmwfp1
- cU/JWLYkdjKdg4c9PSltGtWibP0olbQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ILQmDWaTq3SsdHJUCCexIgisMSE7TKwgIx2nO4eTXxg=;
+ b=IApV8GoRhMyl9az1EVxYRI3L6f0cI0/3xJ1TOJ1pSFNpOhL0SfQfZQFnR39fQw8C9f/OQE
+ PM/QMNB+u4lGEfPD7vzQKIrZXAomYirH0zLcPzM75aO6xc8YQzJXs5JABMII8pYq/dOwDe
+ ltbiT0EAi+0e7zPU6DwezvRzJH6ror8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-333-5slEz_AhNJSYRR870T_Y9A-1; Thu, 18 May 2023 07:44:26 -0400
-X-MC-Unique: 5slEz_AhNJSYRR870T_Y9A-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f429072212so8091205e9.1
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 04:44:26 -0700 (PDT)
+ us-mta-39-hvOw6hpxM8O75xMunubHsw-1; Thu, 18 May 2023 07:50:07 -0400
+X-MC-Unique: hvOw6hpxM8O75xMunubHsw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3063287f1c9so855181f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 04:50:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684410265; x=1687002265;
+ d=1e100.net; s=20221208; t=1684410606; x=1687002606;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M8CBsU1YrLA8lTJurNNlZ6udQjgtu5HxOABPMwURlbw=;
- b=YluRFot9y5wFRZuIm4PiTCsnd7akchqgdORt88oIBEFuo9MGp7XnnjBfh+0OEnzfem
- vrFMESB70rgeESW5d1bwzld5YuzkW4NRvjvTEmNtL2ZX3VFVyO5YTSkmivVT2gDNxFLZ
- qHpRdrSwavEKpqdGBhPvwoNNfUa9P07vhWSYKmfN8YBoDU5Z8J5dMXjediaRIwTT0NVw
- JCUM8ZS5Pl7ygOlGyKYXQs15tjQgVghguJmbyuxvt69ruaTmc2QHCNnPFzqtoxayfo2E
- +gjxTn3FSy9XkuvBMk8YDNUwJhmXNIhyDTKa5fl6sVH7muTXPYgbc3iFKpHb4Af7gs0Z
- nYRw==
-X-Gm-Message-State: AC+VfDwFhTctp2JxaG1PPycze0NkbetdKePgzBFBeRQBun5C9NKK88jM
- 5rM6kbRyd6+WtlrfcT8z3JQOcyWSgSTA9Q7fKlK2ZOnCMYlSrdnx+me+9anLGyvds/jlW1XgWdu
- EMw7R7s5ujHk7ZrY=
-X-Received: by 2002:a7b:cc82:0:b0:3f4:253f:c3d6 with SMTP id
- p2-20020a7bcc82000000b003f4253fc3d6mr1331875wma.33.1684410265235; 
- Thu, 18 May 2023 04:44:25 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ75DErYhuNeNpIO58gIU2KH0o5tobVLjVvTnDCbSLsxJpwPg18blJlWH8rWWE4hK6EHDgkM5Q==
-X-Received: by 2002:a7b:cc82:0:b0:3f4:253f:c3d6 with SMTP id
- p2-20020a7bcc82000000b003f4253fc3d6mr1331862wma.33.1684410264894; 
- Thu, 18 May 2023 04:44:24 -0700 (PDT)
+ bh=ILQmDWaTq3SsdHJUCCexIgisMSE7TKwgIx2nO4eTXxg=;
+ b=hFToLoHFR7uGasMj9GI3LFb3koef+eSmb3RtYHw+dVRrjTYImWnS1MBEqKrq6WjSS/
+ kmxodJFjd6SyzFNLKsdLMr2GI7RfIW1N9dx29ezRoYNNj8KEOhZSyuHWLQr99S0i/Xlz
+ VPzD4s9pPcfps55PpJdJ8dCRkb9Crj1MlW3htKpATaoGV/xrnSOoXpySUtChlH4zNbBt
+ BRswMjM2lnH9Q0MrK3UgY2EbZ+K6Q1lJcpGXnvmwc+xc9PB9caSzlH1ozpya5rbFtkdc
+ u0vGRXgVm/cRN54S6SATF5ZuAx73UK4UtXfPxUUqNf7FlM56JlWfGZpbCXM9HSUL6Kwe
+ 0eyg==
+X-Gm-Message-State: AC+VfDynefIX+RYwIFbxO3H0Rvg0cUC77XEEqRb3qFR+MGlRpDrN9Yr6
+ KtEDe0A2wqSh3szKkRlk+UdLIpUizxLmgxaEUUaWGRVP+0VEr42QUXM+olSaZ/WrBEQf2J9Xbh6
+ r9ZUDOub4JXXIA1E=
+X-Received: by 2002:adf:ec47:0:b0:306:2d3d:a108 with SMTP id
+ w7-20020adfec47000000b003062d3da108mr1247757wrn.11.1684410606585; 
+ Thu, 18 May 2023 04:50:06 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6dHuY7D7d62S1EgLMhl0swp0BVkKi701c+VGmR4v80z2eWozFTNZK8mhDHm3mrtm1BIbX14g==
+X-Received: by 2002:adf:ec47:0:b0:306:2d3d:a108 with SMTP id
+ w7-20020adfec47000000b003062d3da108mr1247746wrn.11.1684410606175; 
+ Thu, 18 May 2023 04:50:06 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- i3-20020adff303000000b0030795b2be15sm1903808wro.103.2023.05.18.04.44.23
+ e6-20020a056000120600b003012030a0c6sm1989525wrx.18.2023.05.18.04.50.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 04:44:23 -0700 (PDT)
+ Thu, 18 May 2023 04:50:04 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: "Wang, Wei W" <wei.w.wang@intel.com>
-Cc: "Wang, Lei4" <lei4.wang@intel.com>,  "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>,  "peterx@redhat.com" <peterx@redhat.com>,
- "leobras@redhat.com" <leobras@redhat.com>
-Subject: Re: [PATCH] multifd: Set a higher "backlog" default value for listen()
-In-Reply-To: <DS0PR11MB6373D659BCA67BD75D8ECC5DDC7F9@DS0PR11MB6373.namprd11.prod.outlook.com>
- (Wei W. Wang's message of "Thu, 18 May 2023 09:13:58 +0000")
-References: <20230518085228.172816-1-lei4.wang@intel.com>
- <DS0PR11MB6373D659BCA67BD75D8ECC5DDC7F9@DS0PR11MB6373.namprd11.prod.outlook.com>
+To: Tejus GK <tejus.gk@nutanix.com>
+Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
+ berrange@redhat.com,  shivam.kumar1@nutanix.com
+Subject: Re: [RFC v3 1/2] migration: Update error description whenever
+ migration fails
+In-Reply-To: <20230518062308.90631-2-tejus.gk@nutanix.com> (Tejus GK's message
+ of "Thu, 18 May 2023 06:23:07 +0000")
+References: <20230518062308.90631-1-tejus.gk@nutanix.com>
+ <20230518062308.90631-2-tejus.gk@nutanix.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 18 May 2023 13:44:22 +0200
-Message-ID: <87sfbtdfu1.fsf@secure.mitica>
+Date: Thu, 18 May 2023 13:50:04 +0200
+Message-ID: <87o7mhdfkj.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
@@ -102,54 +102,93 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Wang, Wei W" <wei.w.wang@intel.com> wrote:
-> On Thursday, May 18, 2023 4:52 PM, Wang, Lei4 wrote:
->> When destination VM is launched, the "backlog" parameter for listen() is set
->> to 1 as default in socket_start_incoming_migration_internal(), which will
->> lead to socket connection error (the queue of pending connections is full)
->> when "multifd" and "multifd-channels" are set later on and a high number of
->> channels are used. Set it to a hard-coded higher default value 512 to fix this
->> issue.
->> 
->> Reported-by: Wei Wang <wei.w.wang@intel.com>
->> Signed-off-by: Lei Wang <lei4.wang@intel.com>
->> ---
->>  migration/socket.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/migration/socket.c b/migration/socket.c index
->> 1b6f5baefb..b43a66ef7e 100644
->> --- a/migration/socket.c
->> +++ b/migration/socket.c
->> @@ -179,7 +179,7 @@
->> socket_start_incoming_migration_internal(SocketAddress *saddr,
->>      QIONetListener *listener = qio_net_listener_new();
->>      MigrationIncomingState *mis = migration_incoming_get_current();
->>      size_t i;
->> -    int num = 1;
->> +    int num = 512;
->> 
+Tejus GK <tejus.gk@nutanix.com> wrote:
+> There are places in migration.c where the migration is marked failed with
+> MIGRATION_STATUS_FAILED, but the failure reason is never updated. Hence
+> libvirt doesn't know why the migration failed when it queries for it.
 >
-> Probably we need a macro for it, e.g.
-> #define MIGRATION_CHANNEL_MAX  512
+> Signed-off-by: Tejus GK <tejus.gk@nutanix.com>
+
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+
+
+> ---
+>  migration/migration.c | 23 ++++++++++++-----------
+>  1 file changed, 12 insertions(+), 11 deletions(-)
 >
-> Also, I think below lines could be removed, as using a larger value of num (i.e. 512)
-> doesn't seem to consume more resources anywhere:
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 00d8ba8da0..864150d01d 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -1683,15 +1683,11 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
+>      } else if (strstart(uri, "fd:", &p)) {
+>          fd_start_outgoing_migration(s, p, &local_err);
+>      } else {
+> -        if (!(has_resume && resume)) {
+> -            yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+> -        }
+> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "uri",
+> +        error_setg(&local_err, QERR_INVALID_PARAMETER_VALUE, "uri",
+>                     "a valid migration protocol");
+>          migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
+>                            MIGRATION_STATUS_FAILED);
+>          block_cleanup_parameters();
+> -        return;
 
-Could you confirm that?
+If you have to respin, please split the removal of the yan_unregister()
+and return in one patch, and let of this patch the error bits.
 
-> -    if (migrate_use_multifd()) {
-> -        num = migrate_multifd_channels();
-> -    } else if (migrate_postcopy_preempt()) {
-> -        num = RAM_CHANNEL_MAX;
-> -    }
+>      }
+>  
+>      if (local_err) {
+> @@ -2073,7 +2069,7 @@ migration_wait_main_channel(MigrationState *ms)
+>   * Switch from normal iteration to postcopy
+>   * Returns non-0 on error
+>   */
+> -static int postcopy_start(MigrationState *ms)
+> +static int postcopy_start(MigrationState *ms, Error **errp)
+>  {
+>      int ret;
+>      QIOChannelBuffer *bioc;
+> @@ -2183,7 +2179,7 @@ static int postcopy_start(MigrationState *ms)
+>       */
+>      ret = qemu_file_get_error(ms->to_dst_file);
+>      if (ret) {
+> -        error_report("postcopy_start: Migration stream errored (pre package)");
+> +        error_setg(errp, "postcopy_start: Migration stream errored (pre package)");
+>          goto fail_closefb;
+>      }
+>  
+> @@ -2220,7 +2216,7 @@ static int postcopy_start(MigrationState *ms)
+>  
+>      ret = qemu_file_get_error(ms->to_dst_file);
+>      if (ret) {
+> -        error_report("postcopy_start: Migration stream errored");
+> +        error_setg(errp, "postcopy_start: Migration stream errored");
+>          migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+>                                MIGRATION_STATUS_FAILED);
+>      }
+> @@ -2741,6 +2737,7 @@ typedef enum {
+>  static MigIterateState migration_iteration_run(MigrationState *s)
+>  {
+>      uint64_t must_precopy, can_postcopy;
+> +    Error *local_err = NULL;
+>      bool in_postcopy = s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE;
+>  
+>      qemu_savevm_state_pending_estimate(&must_precopy, &can_postcopy);
+> @@ -2763,8 +2760,9 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+>      /* Still a significant amount to transfer */
+>      if (!in_postcopy && must_precopy <= s->threshold_size &&
+>          qatomic_read(&s->start_postcopy)) {
+> -        if (postcopy_start(s)) {
+> -            error_report("%s: postcopy failed to start", __func__);
+> +        if (postcopy_start(s, &local_err)) {
+> +            migrate_set_error(s, local_err);
+> +            error_report_err(local_err);
 
-Agreed that in this case we should drop this bit.
-
-But on the other hand, if it does'nt consume more resources, why isn't
-the kernel just ignoring the value passed to listen an just use a big
-number?
-
-Later, Juan.
+Not your fault.
+But the interface of migrate_set_error() is a mess.  It is followed
+sometimes from error_report_err() another from error_free() and another
+by ...
 
 
