@@ -2,91 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5AD70854B
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF1470854C
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:49:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzfrC-0004df-NL; Thu, 18 May 2023 11:47:58 -0400
+	id 1pzfrE-0004yB-GQ; Thu, 18 May 2023 11:48:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1pzfpx-00043O-SP
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:46:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1pzfpu-0007Wb-Q5
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:46:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684424779;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=U+ohhMLdD6oMt7wQsCjH5gTw3CSm0NjJslp4cmuIvf4=;
- b=UySCh6TMjmKaMonKzJG/T5VKQhAMdrU3zse44xbs/d5AcAmKZBsuJHBlim/pEcuNK/tDy8
- KjwVzNUIPHatmSqbFFjcqMh8djJ7jTUcaIv/6Vf2s+Ho7FtMrjUWDcv1501aVB+LEZdZEp
- zVWZQWl12NDPBHovXFmzPWD9h2gvQNM=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-ydRITNlUPPa_n9F2hFpBLA-1; Thu, 18 May 2023 11:46:08 -0400
-X-MC-Unique: ydRITNlUPPa_n9F2hFpBLA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9698409b9bfso205734366b.1
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:46:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
+ id 1pzfr2-0004l4-8A
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:47:52 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
+ id 1pzfqz-0007n1-QZ
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:47:47 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2533ed4f1dcso1541721a91.1
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1684424864; x=1687016864; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=A5xnL4oFYlNeI8JkbGRyebJAta2+ap6XwwoYOhgmZPY=;
+ b=KxzMHTxdizLAM+xPQDv2bXrmEfX5xSIUPrhihoylWlfj9cOU0uR6QHss7NreckbEAE
+ I6+BPpyGmd1uojIZQBPgt+MgG4LiUQWxSa0YnIaWmQF8s/WaMnPgEb4UvGu93wktL7sp
+ lSn83AHM+BFH1LQ8qBxnotwa47CmwFiDIvDMjKTVXDGzfXqvabmx6qsZRGnS+RuKucuA
+ qy4Hs7/yD3DxZxc/sxXbixnrndrTyMerObisikK6Xbjhd1FFYBGxe0z2nxu+lXWMIvdR
+ dZwJAoV6WV3aSnVADpzBHaLIWy+da8LZukTK/laxggkdRYMBkwOMEQpTPzifQYaG2sTR
+ 9liA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684424766; x=1687016766;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1684424864; x=1687016864;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U+ohhMLdD6oMt7wQsCjH5gTw3CSm0NjJslp4cmuIvf4=;
- b=d3ew7q8F3yvwvW5VnIanSS0h95a/AtSfrhbgsUiF1WLmxKg4aFqYVhDkBLS/Xkeksy
- vbA38v5NkzyrVCax3kyl/T9zZTDR4ITiuBtamktisfBEAzs4wvvTrimmTL53XDucHiWr
- 9tPfciwOxvRtKXQdN7UTy6Z0UtQaoiqmo1HcAp6pCz1KcInTq/dY1aL5UX+phEniydeo
- hqzTwtDgF5E1SHHMc2u8rLkLaj+2boXdzbbU7R4IwhxzuMb88UA6p87EGlY7slrGAp3z
- iY+SoiI9Gu7u/BP7CYyVbcSESjyY7S+LmrtGPebR/cTi8hB6UsKrNhcenOou59V77XXz
- UYRQ==
-X-Gm-Message-State: AC+VfDy/bqqROcBOiFG+3ldpezZ/E6KzZB3E4oTRlC7Zqci25AM0a4gO
- BfNFKgmzIsJ5cjq7i+gx0cVBaUgfijGCRFucXBmrhVfRmrhLADE4WjFU4G69XrBSHpB2stuqb1c
- JnjyNpRlxBYWdqvY=
-X-Received: by 2002:a17:907:3fa5:b0:96a:eb4e:e310 with SMTP id
- hr37-20020a1709073fa500b0096aeb4ee310mr5898367ejc.23.1684424766079; 
- Thu, 18 May 2023 08:46:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7sf9YmNoXpiEPn32z1lF2B1E+6UGSRKwmLLSxLFa+sXqXSHEVQQg3jhjCvbIFaU8/a/7OvMw==
-X-Received: by 2002:a17:907:3fa5:b0:96a:eb4e:e310 with SMTP id
- hr37-20020a1709073fa500b0096aeb4ee310mr5898341ejc.23.1684424765706; 
- Thu, 18 May 2023 08:46:05 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- qx16-20020a170906fcd000b009545230e682sm1131739ejb.91.2023.05.18.08.46.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 08:46:05 -0700 (PDT)
-Date: Thu, 18 May 2023 17:46:04 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Eric DeVolder <eric.devolder@oracle.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, anisinha@redhat.com,
- marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
- richard.henderson@linaro.org, eduardo@habkost.net,
- boris.ostrovsky@oracle.com, miguel.luis@oracle.com
-Subject: Re: [PATCH v2 0/3] ACPI: i386: bump MADT to revision 3
-Message-ID: <20230518174604.2c43cd70@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230517162545.2191-1-eric.devolder@oracle.com>
-References: <20230517162545.2191-1-eric.devolder@oracle.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
+ bh=A5xnL4oFYlNeI8JkbGRyebJAta2+ap6XwwoYOhgmZPY=;
+ b=Pry409q0IOJVwCks6K9Xk9urH6Lvjll3hr4rHwusGqZPqzNjoKup9mInKEamGKMlx8
+ wGM8LtUgYJbh5E4fwqOAcpjCFctm92JsFEMulSduxLPasrPW2QAlCpm1+nXUJnC2cJep
+ d6b+nTNFX+ZwDsOimPaxXHVuV3tR12adUum33nbHfLXOHnoZKtRQ4lU8ZiIc2oqPD8bx
+ wm1ryKmWac6/aVMakF5n0cHHPjtl4y3X0Hx4NefKzmDVvNVtBwIs4F1EMWDsCKdkSz+u
+ /kTBCOwvgF2eBPhpbg4Xs2HKluYc2iHKcYdF4yzejtEem5vwma/4qi5oRsCJwgqzueBx
+ YEug==
+X-Gm-Message-State: AC+VfDyhGbNuAaib8By1sUh6Yv5atj5mwEqO/pn2O3SIzFB07NwN6767
+ a9N4G+hWODF5X08Peqf1V1nk5hSefLLkmAJyXC8ehg==
+X-Google-Smtp-Source: ACHHUZ4xWEkPIoBx/8IbKGWhjQisR/gnsJbYnjYQqYXEnfeT1VTK2yUfZMludY4bmNQsqd5OAk449b8MEHelZxgrIIo=
+X-Received: by 2002:a17:90a:a906:b0:253:2f10:6133 with SMTP id
+ i6-20020a17090aa90600b002532f106133mr2589084pjq.22.1684424863985; Thu, 18 May
+ 2023 08:47:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230518113838.130084-1-rkanwal@rivosinc.com>
+ <20230518113838.130084-3-rkanwal@rivosinc.com>
+ <CAGKm2NK3+46Te9bFwmyAXkRy3RVXXe61Zz1BYdPaZqxMoJ7HHA@mail.gmail.com>
+In-Reply-To: <CAGKm2NK3+46Te9bFwmyAXkRy3RVXXe61Zz1BYdPaZqxMoJ7HHA@mail.gmail.com>
+From: Rajnesh Kanwal <rkanwal@rivosinc.com>
+Date: Thu, 18 May 2023 16:47:33 +0100
+Message-ID: <CAECbVCuMt7MHnRgPS_bo5dqhhEyeeGR11KtwZxQ0YR=Yj3RAag@mail.gmail.com>
+Subject: Re: [PATCH 2/6] target/riscv: Check for async flag in case of
+ RISCV_EXCP_SEMIHOST.
+To: =?UTF-8?B?TG/Dr2MgTGVmb3J0?= <loic@rivosinc.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
+ alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com, 
+ apatel@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=rkanwal@rivosinc.com; helo=mail-pj1-x102a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,105 +91,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 May 2023 12:25:42 -0400
-Eric DeVolder <eric.devolder@oracle.com> wrote:
+On Thu, May 18, 2023 at 4:21=E2=80=AFPM Lo=C3=AFc Lefort <loic@rivosinc.com=
+> wrote:
+>
+> Is there a reason to keep RISCV_EXCP_SEMIHOST handling separate from othe=
+r exceptions?
+> Otherwise it could be moved in the switch block just a few lines below.
 
-> The following Linux kernel change broke CPU hotplug for MADT revision
-> less than 5.
-> 
->  e2869bd7af60 ("x86/acpi/boot: Do not register processors that cannot be onlined for x2APIC")
-> 
-> Discussion on this topic can be located here:
-> 
->  https://lore.kernel.org/linux-acpi/20230327191026.3454-1-eric.devolder@oracle.com/T/#t
-> 
-> which resulted in the following fixes in Linux 6.3-rc5:
-> 
->  a74fabfbd1b7: ("x86/ACPI/boot: Use FADT version to check support for online capable")
->  fed8d8773b8e: ("x86/acpi/boot: Correct acpi_is_processor_usable() check")
-> 
-> However, as part of the investigation into resolving this breakage, I
-> learned that i386 QEMU reports revision 1, while technically it
-> generates revision 3.
-> 
-> Below is a table summarizing the changes to the MADT. This information
-> gleamed from the ACPI specs on uefi.org.
-> 
-> ACPI    MADT    What
-> Version Version
-> 1.0             MADT not present
-> 2.0     1       Section 5.2.10.4
-> 3.0     2       Section 5.2.11.4
->                  5.2.11.13 Local SAPIC Structure added two new fields:
->                   ACPI Processor UID Value
->                   ACPI Processor UID String
->                  5.2.10.14 Platform Interrupt Sources Structure:
->                   Reserved changed to Platform Interrupt Sources Flags
-> 3.0b    2       Section 5.2.11.4
->                  Added a section describing guidelines for the ordering of
->                  processors in the MADT to support proper boot processor
->                  and multi-threaded logical processor operation.
-> 4.0     3       Section 5.2.12
->                  Adds Processor Local x2APIC structure type 9
->                  Adds Local x2APIC NMI structure type 0xA
-> 5.0     3       Section 5.2.12
-> 6.0     3       Section 5.2.12
-> 6.0a    4       Section 5.2.12
->                  Adds ARM GIC structure types 0xB-0xF
-> 6.2a    45      Section 5.2.12   <--- version 45, is indeed accurate!
-> 6.2b    5       Section 5.2.12
->                  GIC ITS last Reserved offset changed to 16 from 20 (typo)
-> 6.3     5       Section 5.2.12
->                  Adds Local APIC Flags Online Capable!
->                  Adds GICC SPE Overflow Interrupt field
-> 6.4     5       Section 5.2.12
->                  Adds Multiprocessor Wakeup Structure type 0x10
->                  (change notes says structure previously misplaced?)
-> 6.5     5       Section 5.2.12
-> 
-> For the MADT revision change 1 -> 2, the spec has a change to the
-> SAPIC structure. In general, QEMU does not generate/support SAPIC.
-> So the QEMU i386 MADT revision can safely be moved to 2.
-> 
-> For the MADT revision change 2 -> 3, the spec adds Local x2APIC
-> structures. QEMU has long supported x2apic ACPI structures.
-> So the QEMU i386 MADT revision can safely be moved to 3.
-> 
-> So, set the MADT revision to 3.
-> 
-> Regards,
-> Eric
-> ---
-> v2: 17may2023
->  - Fix problems with the binary tables for the bios-tables-test.c
->    and make check.
-> 
-> v1: 15may2023
->  - initial
-> ---
-> Eric DeVolder (3):
->   ACPI: bios-tables-test.c step 2 (allowed-diff entries)
->   ACPI: i386: bump to MADT to revision 3
->   ACPI: bios-tables-test.c step 5 (update expected table binaries)
-> 
->  hw/i386/acpi-common.c                         |   2 +-
->  tests/data/acpi/microvm/APIC                  | Bin 70 -> 70 bytes
->  tests/data/acpi/microvm/APIC.ioapic2          | Bin 82 -> 82 bytes
->  tests/data/acpi/microvm/APIC.pcie             | Bin 110 -> 110 bytes
->  tests/data/acpi/pc/APIC                       | Bin 120 -> 120 bytes
->  tests/data/acpi/pc/APIC.acpihmat              | Bin 128 -> 128 bytes
->  tests/data/acpi/pc/APIC.cphp                  | Bin 160 -> 160 bytes
->  tests/data/acpi/pc/APIC.dimmpxm               | Bin 144 -> 144 bytes
->  tests/data/acpi/q35/APIC                      | Bin 120 -> 120 bytes
->  tests/data/acpi/q35/APIC.acpihmat             | Bin 128 -> 128 bytes
->  tests/data/acpi/q35/APIC.acpihmat-noinitiator | Bin 144 -> 144 bytes
->  tests/data/acpi/q35/APIC.core-count2          | Bin 2478 -> 2478 bytes
->  tests/data/acpi/q35/APIC.cphp                 | Bin 160 -> 160 bytes
->  tests/data/acpi/q35/APIC.dimmpxm              | Bin 144 -> 144 bytes
->  tests/data/acpi/q35/APIC.xapic                | Bin 2686 -> 2686 bytes
->  15 files changed, 1 insertion(+), 1 deletion(-)
-> 
+I agree. I will move it to the switch in the next series.
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Thanks
 
+>
+> On Thu, May 18, 2023 at 1:39=E2=80=AFPM Rajnesh Kanwal <rkanwal@rivosinc.=
+com> wrote:
+>>
+>> RISCV_EXCP_SEMIHOST is set to 0x10, which can also be a local
+>> interrupt as well. This change adds a check for async flag
+>> before invoking semihosting logic.
+>>
+>> Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
+>> ---
+>>  target/riscv/cpu_helper.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+>> index 57d04385f1..c78a2a9514 100644
+>> --- a/target/riscv/cpu_helper.c
+>> +++ b/target/riscv/cpu_helper.c
+>> @@ -1602,7 +1602,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+>>      target_ulong htval =3D 0;
+>>      target_ulong mtval2 =3D 0;
+>>
+>> -    if  (cause =3D=3D RISCV_EXCP_SEMIHOST) {
+>> +    if  (!async && cause =3D=3D RISCV_EXCP_SEMIHOST) {
+>>          do_common_semihosting(cs);
+>>          env->pc +=3D 4;
+>>          return;
+>> --
+>> 2.25.1
+>>
+>>
 
