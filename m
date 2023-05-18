@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C661707F6B
+	by mail.lfdr.de (Postfix) with ESMTPS id 158E1707F6C
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 13:35:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzbtJ-0005EA-Hn; Thu, 18 May 2023 07:33:53 -0400
+	id 1pzbtX-0005GI-W5; Thu, 18 May 2023 07:34:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzbtG-0005Dj-Om
- for qemu-devel@nongnu.org; Thu, 18 May 2023 07:33:50 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzbtT-0005G6-IC
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 07:34:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzbtE-0001XF-Id
- for qemu-devel@nongnu.org; Thu, 18 May 2023 07:33:50 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzbtR-0001ZU-JK
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 07:34:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684409627;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=7fY8UHKcqBx7Ntq4hUVwG9qCcgVv6zTOEIp6CI7cIcg=;
- b=Um+xuJa67LRZlvbEfmmP2zYvCLXeCR3FC4ajhxC1NWYvoIkNQBwbttbt5BIsjwQGXji+h8
- Kzc92NKnueOeMxdVDPsB4btwRWFV7ODucipG0HWbiW1HM1z+04OvfiwWBpHotJfmJfGG1Y
- woeuvZHOjCibTt+NGJQQCZahhtknLNg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1684409640;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LKimyqQKbKZG0KAGalZV3+3YqE3WmBdF3Y0R/ZIAPYY=;
+ b=hhgGxrKf3Q9i7x32t08KemTiMvp4CXnzYjA0I8ebt+VKatAnNDbDDBEEH/IJDewHnrHN3V
+ /rgBjA04zKAEKSKOqlVtbsvn6ON6bszh+KaGlVSrx5/zNFWYIKzu3fSo6/vVbjtbZJZ0wn
+ zHMyR7nmVOeufk8CI5n4kStufgyeF3w=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-X3vtubYvOxemYToB48YAFQ-1; Thu, 18 May 2023 07:33:46 -0400
-X-MC-Unique: X3vtubYvOxemYToB48YAFQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f422654fa0so7197895e9.2
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 04:33:45 -0700 (PDT)
+ us-mta-349-N27j9TyLMQCPEfSGtWLQcQ-1; Thu, 18 May 2023 07:33:58 -0400
+X-MC-Unique: N27j9TyLMQCPEfSGtWLQcQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-96f4d917e06so2301566b.1
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 04:33:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684409625; x=1687001625;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7fY8UHKcqBx7Ntq4hUVwG9qCcgVv6zTOEIp6CI7cIcg=;
- b=CVZP/nH8KA8fZU8+FhER2H0SJYLU+Xv99LLCDZ4jGsWjdFZnm3MN+mBAgudLt4M97v
- Rx0UAAUEINcNrOcl0hOMHBWL+6yTTU1GKrvWOsZVQIfOIJCgBSiD2EhF3sUMZviryK8Z
- 8vO7FwkAjFfeeUdH2EDiFIr3qboEaRbnIREHdHLBklzSku8c3C/DqqtQCeMHnfh/5yeN
- La1DI7ZpLvL6lHTW2iYtaT9vU3To4H/eV7Hhy8vi6zVw3hvsXHlzW7/wNqCVNHalsDNQ
- IHi/gIiye8L4VRqDS2CYOehXO1j/Y1QQh6n8JK/ILgGSYfds+t+EJuretGuGs2g7iMT4
- t0tw==
-X-Gm-Message-State: AC+VfDwDcs5sFBDceYS7iOZKsenZ+4mbfAzWb0cC4V3MmCQjg+yshN94
- fWbex5T/eEwg+hzB+YzITF7nGwRoL6+D/91wuBOY33TcmWRQ1ogN1ShsIk4Locby2BiJegmGYte
- Mst9aTjr27tpkwwI=
-X-Received: by 2002:a1c:7310:0:b0:3f5:4d4:4edb with SMTP id
- d16-20020a1c7310000000b003f504d44edbmr1259654wmb.21.1684409624984; 
- Thu, 18 May 2023 04:33:44 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5ES7Rkwm9/sA42zmlgW10+RPXEElzpHg6xxn2076VvPu1b0uXLFlUWFEsFCgFU9e6enqdzmA==
-X-Received: by 2002:a1c:7310:0:b0:3f5:4d4:4edb with SMTP id
- d16-20020a1c7310000000b003f504d44edbmr1259635wmb.21.1684409624600; 
- Thu, 18 May 2023 04:33:44 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- w22-20020a1cf616000000b003f4289b18a7sm1817915wmc.5.2023.05.18.04.33.43
+ d=1e100.net; s=20221208; t=1684409637; x=1687001637;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LKimyqQKbKZG0KAGalZV3+3YqE3WmBdF3Y0R/ZIAPYY=;
+ b=H3dj9odnxnHOxlHZlmFQtPCm5fwk/8PnSpxkq+wSFfgT+V51Uxf05s/i8SXMxG1tGf
+ TOOk5bbYni/xSWnj03nY8PryZ/Op6TDhVtFXFIYvHDbDDMgmIFiwAlu/KzPKo1Xgcr7U
+ U60Utum6R5wWOv2xfVlZQH76H15Dxn9jqk8bUfqHCuNs7NdyBXJrQ8rpWgttBcs/N1zJ
+ 6G1hkW/8HVlwQnrakfhQmMQzmQjqN0pNHIeQXqww3bUjXeadGnLze/V3VV2eO0/NA7n6
+ eAhVJ4LLi+jAC/Bd/rzUd6QxBvIatHHdtr4jwNh9G3WgQk3LyPWb0Bf1rFKzeS2Kg0WQ
+ aarQ==
+X-Gm-Message-State: AC+VfDz7awwDnNinEYRil5e0jBJJbhddedvJ2hxDNnZnxLCCFJHd1jCs
+ kIUGU8Jp9GkBJ0FIH+sfdsFcv6bWnHG8fViRX+eaH58YIgn1YtgrEHfx+CAJlOv6oh3dB5UPQVt
+ Xe7W1UVHVvKC4pN4VYw+CpsRhO/WbSsOoCu1ZrCsd+xtQSIPtAzvma7pW2z0CX+xsIJ0YqhprRQ
+ 4=
+X-Received: by 2002:a17:907:e9f:b0:94e:4b26:233c with SMTP id
+ ho31-20020a1709070e9f00b0094e4b26233cmr5543655ejc.16.1684409637311; 
+ Thu, 18 May 2023 04:33:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ629DhT2KNhgDOkVBiNuN9ZS+foTGo987r5nyzVdeGq2IHPzjGgeBagD+9FP3cLJfmpudWAGw==
+X-Received: by 2002:a17:907:e9f:b0:94e:4b26:233c with SMTP id
+ ho31-20020a1709070e9f00b0094e4b26233cmr5543639ejc.16.1684409636946; 
+ Thu, 18 May 2023 04:33:56 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
+ by smtp.gmail.com with ESMTPSA id
+ q9-20020a170906b28900b00965b0eb7b0csm861683ejz.103.2023.05.18.04.33.55
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 04:33:43 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Fiona Ebner <f.ebner@proxmox.com>,  Leonardo Bras <leobras@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,  "Michael S. Tsirkin"
- <mst@redhat.com>,  Peter Xu <peterx@redhat.com>,  qemu-devel@nongnu.org
-Subject: Re: [PATCH v1 1/1] hw/pci: Disable PCI_ERR_UNCOR_MASK register for
- machine type < 8.0
-In-Reply-To: <8c3a4f60-b3ab-7c38-27c0-3f8f2caaeae4@tls.msk.ru> (Michael
- Tokarev's message of "Thu, 18 May 2023 10:34:36 +0300")
-References: <20230503002701.854329-1-leobras@redhat.com>
- <7f308149-5495-d415-5e51-1fa15fc20f84@proxmox.com>
- <87jzxf5ki9.fsf@secure.mitica>
- <8c3a4f60-b3ab-7c38-27c0-3f8f2caaeae4@tls.msk.ru>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 18 May 2023 13:33:43 +0200
-Message-ID: <87wn15dgbs.fsf@secure.mitica>
+ Thu, 18 May 2023 04:33:55 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] scripts: make sure scripts are invoked via $(PYTHON)
+Date: Thu, 18 May 2023 13:33:55 +0200
+Message-Id: <20230518113355.1006000-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,82 +93,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Michael Tokarev <mjt@tls.msk.ru> wrote:
-> 11.05.2023 11:40, Juan Quintela wrote:
->> Fiona Ebner <f.ebner@proxmox.com> wrote:
-> ...
->>> Closes: https://gitlab.com/qemu-project/qemu/-/issues/1576
->>>
->>> AFAICT, this breaks (forward) migration from 8.0 to 8.0 + this patch
->>> when using machine type <= 7.2. That is because after this patch, when
->>> using machine type <= 7.2, the wmask for the register is not set and
->>> when 8.0 sends a nonzero value for the register, the error condition in
->>> get_pci_config_device() will trigger again.
->> I think that works correctly.
->> See https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg02733.html
->> What we have (before this patch) (using abbrevs as in the doc
->> before)
->> Current state:
->> (1) qemu-8.0 -M pc-8.0 -> qemu-8.0 -M pc-8.0 works
->>      not affected by the patch
->> (2) qemu-7.2 -M pc-7.2 -> qemu-8.0 -M pc-8.0 works
->>      works well because 7.2 don't change that field
->> (3) qemu-8.0 -M pc-7.2 -> qemu-7.2 -M pc-7.2 fails
->> With the patch we fixed 3, so once it is in stable, 1 and 2 continue
->> as
->> usual and for (3) we will have:
->> (3) qemu-8.0.1 -M pc-7.2 -> qemu-7.2 -M pc-7.2 works
->> If what you mean is that:
->> (3) qemu-8.0 -M pc-7.2 -> qemu-8.0.1 -M pc-7.2 works
->> Will fail, that is true, but I can think a "sane" way to fix this.
+Some scripts are invoked via the first "python3" binary in the PATH,
+because they are executable and their shebang line is "#! /usr/bin/env
+python3".  To enforce usage of $(PYTHON), make them nonexecutable.
+Scripts invoked via meson need nothing else, and meson-buildoptions.py
+is already using $(PYTHON).  For probe-gdb-support.py however the
+invocation in the configure script has to be adjusted.
 
-Hi
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ configure                     | 2 +-
+ scripts/meson-buildoptions.py | 0
+ scripts/modinfo-collect.py    | 0
+ scripts/modinfo-generate.py   | 0
+ scripts/probe-gdb-support.py  | 0
+ 5 files changed, 1 insertion(+), 1 deletion(-)
+ mode change 100755 => 100644 scripts/meson-buildoptions.py
+ mode change 100755 => 100644 scripts/modinfo-collect.py
+ mode change 100755 => 100644 scripts/modinfo-generate.py
+ mode change 100755 => 100644 scripts/probe-gdb-support.py
 
-> That's a great summary indeed.
-
-Thanks.
-
->>> Is it necessary to also handle that? Maybe by special casing the error
->>> condition in get_pci_config_device() to be prepared to accept such a
->>> stream from 8.0?
->> Well, we can do that, but it is to the pci maintainers to decide if
->> that
->> is "sane".
->
-> So, can we go from here somewhere? I'd love this fix to be in 8.0.1,
-> either with or without the (un)sane part of the (3) variant above which
-> might fail.  Or else we'll have the same situation in 8.0.1 as we now
-> have in 8.0.0 (the deadline is May-27).
->
-> We did broke x.y.0 => x.y.1 migration before already like this, such as
-> with 7.2.0=>7.2.1. I'm not saying it's a nice thing to do, just stating
-> a fact. Yes, it is better to avoid such breakage, but.. meh..
-
-See patch for documentation:
-
-https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03288.html
-
-Basically, the best we can do is:
-- get the patch posted.  Fixes everything except:
-  (3) qemu-8.0 -M pc-7.2 -> qemu-8.0.1 -M pc-7.2 works
-
-And for that, we can document somewhere that we need to launch
-qemu-8.0.1 as:
-
-$ qemu-8.0.1 -M pc-7.2 -device blah,x-pci-err-unc-mask=on
-
-And mark someone that this machine is tainted an can only be migrated to
-qemu's >= qemu-8.0.1.  And that we should reboot it as the user
-convenience. (reboot here means poweroff qemu and poweron it back
-without x-pci-err-unc-mask=on).
-
-Later, Juan.
-
-
-
+diff --git a/configure b/configure
+index bcab685cfd97..31a787153e38 100755
+--- a/configure
++++ b/configure
+@@ -1767,7 +1767,7 @@ if test -n "$gdb_bin"; then
+     gdb_version=$($gdb_bin --version | head -n 1)
+     if version_ge ${gdb_version##* } 9.1; then
+         echo "HAVE_GDB_BIN=$gdb_bin" >> $config_host_mak
+-        gdb_arches=$("$source_path/scripts/probe-gdb-support.py" $gdb_bin)
++        gdb_arches=$($python "$source_path/scripts/probe-gdb-support.py" $gdb_bin)
+     else
+         gdb_bin=""
+     fi
+diff --git a/scripts/meson-buildoptions.py b/scripts/meson-buildoptions.py
+old mode 100755
+new mode 100644
+diff --git a/scripts/modinfo-collect.py b/scripts/modinfo-collect.py
+old mode 100755
+new mode 100644
+diff --git a/scripts/modinfo-generate.py b/scripts/modinfo-generate.py
+old mode 100755
+new mode 100644
+diff --git a/scripts/probe-gdb-support.py b/scripts/probe-gdb-support.py
+old mode 100755
+new mode 100644
+-- 
+2.40.1
 
 
