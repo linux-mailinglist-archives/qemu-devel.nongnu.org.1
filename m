@@ -2,81 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC09708891
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 21:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7CD7088D6
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 21:59:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzjZ9-0002aH-K5; Thu, 18 May 2023 15:45:35 -0400
+	id 1pzjlV-0004yC-23; Thu, 18 May 2023 15:58:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1pzjZ6-0002Y4-Oy
- for qemu-devel@nongnu.org; Thu, 18 May 2023 15:45:32 -0400
+ (Exim 4.90_1) (envelope-from <vgoyal@redhat.com>) id 1pzjlL-0004xn-Mm
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 15:58:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1pzjZ5-0001g0-67
- for qemu-devel@nongnu.org; Thu, 18 May 2023 15:45:32 -0400
+ (Exim 4.90_1) (envelope-from <vgoyal@redhat.com>) id 1pzjlI-00043B-GS
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 15:58:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684439128;
+ s=mimecast20190719; t=1684439881;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SAJXAt6feLr6gmEqt6qqxD2HpFOWj88j7GCSTBVyu6Y=;
- b=LCWq8zFHa43VjHj5Pn84cyCpBrEBgL0DLBWVhQ0W3kQDUtxcg3jHFzwwodmVwRa0KHDfUL
- MhtLbFKCHD0Hha+yN+NiJOyD+0Ustcb6Y5nHyCa956iv8qdHNbs0WfTNOkegNqBUhGBi7y
- p2r1kk/AqYWhNSeffooXfp7jVvh10Jg=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-dXLICYFvOFiKDm0FiD2NYQ-1; Thu, 18 May 2023 15:45:27 -0400
-X-MC-Unique: dXLICYFvOFiKDm0FiD2NYQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-61b5f341341so3081946d6.0
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 12:45:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684439127; x=1687031127;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SAJXAt6feLr6gmEqt6qqxD2HpFOWj88j7GCSTBVyu6Y=;
- b=Ql0URBh4v19izS821iQpl7QHZkRj0r6ud1d/wNZfPVqHOtNlxnPCWSLUBq37Dcnjc1
- C+SxfO6reKvctq72ap01uklqoYUjT1EZVXsdB0dafIxOkGW5hgQoVW6HYX6h05KeDBrN
- XqZkuC0T6sAIqy0LI1jCIptuS/MzXJVI3lSfeSalypiU17A5n1yVEArz6h+ey0F6LP8+
- 9zBphJ/L9tL4klFpHrZVwfl9E0ZWg6sBuuSnOODlqO/1uob1BT8ZW3I92ubUvYQznZwq
- +E1Ytlcb9hCx7+ynG5T3q09dsupTJUJMTgb2JEB60ou1GlqMGASBJo2/k+ehR+RiZP4G
- qKfw==
-X-Gm-Message-State: AC+VfDwEDl+dVDXVlwkAmBLW5Rl52zjU1vjMpTuB9Ud/kgYRzFWUyKgz
- XpnpGX/1tR7obGAg2T2X0ciMKmK9m6ay6nmSI2GjsSmx/VFIHRm33Xrhtbf1gzrn2Yad7NrfczD
- tPxMl/Z2DmgdtZq8=
-X-Received: by 2002:a05:6214:5011:b0:621:cef:f270 with SMTP id
- jo17-20020a056214501100b006210ceff270mr300254qvb.5.1684439126789; 
- Thu, 18 May 2023 12:45:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ682Vy5Ut/nKL2aSfEFYZCxgm41y4YT6/7r+VwCP2fAV8EfDAj8R4Vp9Vi+06WNmfvVz7xQEw==
-X-Received: by 2002:a05:6214:5011:b0:621:cef:f270 with SMTP id
- jo17-20020a056214501100b006210ceff270mr300224qvb.5.1684439126516; 
- Thu, 18 May 2023 12:45:26 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- s19-20020ac87593000000b003ee08d3e073sm739674qtq.42.2023.05.18.12.45.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 12:45:25 -0700 (PDT)
-Date: Thu, 18 May 2023 15:45:24 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Eric Auger <eric.auger@redhat.com>, Nicolin Chen <nicolinc@nvidia.com>,
- peter.maydell@linaro.org, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, yi.l.liu@intel.com, kevin.tian@intel.com,
- Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: Multiple vIOMMU instance support in QEMU?
-Message-ID: <ZGaAVAI9u4K4vy1/@x1n>
-References: <ZEcT/7erkhHDaNvD@Asurada-Nvidia> <ZGWaCKQqK5hVqbvM@Asurada-Nvidia>
- <0defbf3f-a8be-7f1b-3683-e3e3ece295fc@redhat.com>
- <ZGYzOEhdTA6sWKjP@x1n> <ZGY8rj9hRxGLpFdH@nvidia.com>
+ bh=p/CURRJzCFKNNeNG/dxJlMkqz4W8LyO9peKE8rqFKIs=;
+ b=JEIy7UOW5g3g0O1OHjOK8bsJwNby74Xuv2z/mlLsa9BcTkMP8o2frHHEumPeTeWFeGY3xN
+ l1r8R0mFBG3pGgOdwl87lGsjVfcaH+MtizSt2OkzV+IZv0YISWQG8hE4ST8MdJXPdu2YVg
+ cm6uoDyyYq+IWr1UoNQhwdkWN3aSiZU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-75-3TRc5bn1PbGIyG44_1tINA-1; Thu, 18 May 2023 15:45:50 -0400
+X-MC-Unique: 3TRc5bn1PbGIyG44_1tINA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EDB8C85A5B1;
+ Thu, 18 May 2023 19:45:46 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.22.32.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CB16040C2063;
+ Thu, 18 May 2023 19:45:46 +0000 (UTC)
+Received: by fedora.redhat.com (Postfix, from userid 1000)
+ id 6545516CCFB; Thu, 18 May 2023 15:45:46 -0400 (EDT)
+Date: Thu, 18 May 2023 15:45:46 -0400
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, virtio-fs@redhat.com,
+ Erik Schilling <erik.schilling@linaro.org>
+Subject: Re: Status of DAX for virtio-fs/virtiofsd?
+Message-ID: <ZGaAalXSMhPb3eqe@redhat.com>
+References: <87v8grlzu9.fsf@linaro.org>
+ <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZGY8rj9hRxGLpFdH@nvidia.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=vgoyal@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,73 +83,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 18, 2023 at 11:56:46AM -0300, Jason Gunthorpe wrote:
-> On Thu, May 18, 2023 at 10:16:24AM -0400, Peter Xu wrote:
+On Wed, May 17, 2023 at 12:26:18PM -0400, Stefan Hajnoczi wrote:
+> On Wed, 17 May 2023 at 11:54, Alex Bennée <alex.bennee@linaro.org> wrote:
+> Hi Alex,
+> There were two unresolved issues:
 > 
-> > What you mentioned above makes sense to me from the POV that 1 vIOMMU may
-> > not suffice, but that's at least totally new area to me because I never
-> > used >1 IOMMUs even bare metal (excluding the case where I'm aware that
-> > e.g. a GPU could have its own IOMMU-like dma translator).
+> 1. How to inject SIGBUS when the guest accesses a page that's beyond
+> the end-of-file.
+> 2. Implementing the vhost-user messages for mapping ranges of files to
+> the vhost-user frontend.
 > 
-> Even x86 systems are multi-iommu, one iommu per physical CPU socket.
+> The harder problem is SIGBUS. An mmap area may be larger than the
+> length of the file. Or another process could truncate the file while
+> it's mmapped, causing a previously correctly sized mmap to become
+> longer than the actual file. When a page beyond the end of file is
+> accessed, the kernel raises SIGBUS.
+> 
+> When this scenario occurs in the DAX Window, kvm.ko gets some type of
+> vmexit (fault) and the code currently enters an infinite loop because
+> it expects KVM memory regions to resolve faults. Since there is no
+> page backing that part of the vma, the fault handling fails and the
+> code loops trying to do this forever.
+> 
+> There needs to be a way to inject this fault back into the guest.
+> However, we did not found a way to do that. We considered Machine
+> Check Exceptions (MCEs), x86 interrupts, and paravirtualized
+> approaches. None of them looked like a clean and sane way to do this.
+> The Linux maintainers for MCEs and kvm.ko were not excited about
+> supporting this.
+> 
+> So in the end, SIGBUS was never solved. It leads to a DoS because the
+> host kernel will enter an infinite loop. We decided that until there
+> is progress on SIGBUS, we can't go ahead with DAX Windows in
+> production.
+> 
+> The easier problem is adding new vhost-user messages. It does lead to
+> a fundamental change in the vhost-user protocol: the presence of the
+> DAX Window means there are memory ranges that cannot be accessed via
+> shared memory. Imagine Device A has a DAX Window and Device B needs to
+> DMA to/from it. That doesn't work because the mmaps happen inside the
+> frontend (QEMU), so Device B doesn't have access to the current
+> mappings. The fundamental change to vhost-user is that virtqueue
+> descriptor mapping code must now deal with the situation where guest
+> addresses are absent from the shared memory regions and instead send
+> vhost-user protocol messages to read/write to/from bounce buffers
+> instead. The rest of the device backend does not require modification.
+> This is a slow path, but at least it works whereas currently the I/O
+> would fail because the memory is absent. Other solutions to the
+> vhost-user DMA problem exist, but this is the one that Dave and I last
+> discussed.
+> 
+> In the end, there is still work to do to make the DAX Window
+> supportable. There is experimental code out there that kind of works,
+> but we felt it was incomplete.
 
-I tried to look at a 2-node system on hand and I indeed got two dmars:
+I feel that it will be good if someone can solve the vhost-user problem
+first and get patches upstream. Now virtiofsd support from qemu has
+been removed, so someone will have to add DAX support to rust virtiofsd.
+(And make correspoding vhost-user changes in qemu).
 
-[    4.444788] DMAR: dmar0: reg_base_addr fbffc000 ver 1:0 cap 8d2078c106f0466 ecap f020df
-[    4.459673] DMAR: dmar1: reg_base_addr c7ffc000 ver 1:0 cap 8d2078c106f0466 ecap f020df
+Once that is done, someone can look into MCE issue.
 
-Though they do not seem to be all parallel on attaching devices.  E.g.,
-most of the devices on this host are attached to dmar1, while there're only
-two devices attached to dmar0:
+With vhost-user problem solved, DAX will be usable in non-shared mode.
+That is just pass through host filesystem into the guest and even host
+can't make modifications. And that should steer clear us of the truncation
+issue.
 
-80:05.2 System peripheral: Intel Corporation Xeon E7 v4/Xeon E5 v4/Xeon E3 v4/Xeon D IIO RAS/Control Status/Global Errors (rev 01)
-80:05.0 System peripheral: Intel Corporation Xeon E7 v4/Xeon E5 v4/Xeon E3 v4/Xeon D Map/VTd_Misc/System Management (rev 01)
+virtiofs DAX is a good piece of technology and provides speed up in many
+cases. Will be sad to see the patches lost.
+
+Now people are posting fixes to kernel side of DAX and there is no good
+way to test these. I will try to make it work with old DAX branch david
+had to test kernel changes but I am sure at some point of time it will
+stop working and I don't want virtiofs kernel DAX code to become unstable.
+
+Will be good if somebody takes up this project and makes it happen.
+
+Thanks
+Vivek
 
 > 
-> I'm not sure how they model this though - Kevin do you know? Do we get
-> multiple iommu instances in Linux or is all the broadcasting of
-> invalidates and sharing of tables hidden?
+> To your specific questions:
 > 
-> > What's the system layout of your multi-vIOMMU world?  Is there still a
-> > centric vIOMMU, or multi-vIOMMUs can run fully in parallel, so that e.g. we
-> > can have DEV1,DEV2 under vIOMMU1 and DEV3,DEV4 under vIOMMU2?
+> >  * What VMM/daemon combinations has DAX been tested on?
 > 
-> Just like physical, each viommu is parallel and independent. Each has
-> its own caches, ASIDs, DIDs/etc and thus invalidation domains.
+> Only the experimental virtio-fs Kata Containers kernels and QEMU
+> builds that were available a few years ago. I don't think the code has
+> been rebased.
 > 
-> The seperated caches is the motivating reason to do this as something
-> like vCMDQ is a direct command channel for invalidations to only the
-> caches of a single IOMMU block.
-
-From cache invalidation pov, shouldn't the best be per-device granule (like
-dev-iotlb in VT-d? No idea for ARM)?
-
-But that's two angles I assume - currently dev-iotlb is still emulated at
-least in QEMU.  Having a hardware accelerated queue is definitely another
-thing.
-
+> >  * Isn't it time the vhost-user spec is updated?
 > 
-> > Is it a common hardware layout or nVidia specific?
+> I don't know if Dave ever wrote the spec for or implemented the final
+> version of the vhost-user protocol messages we discussed.
 > 
-> I think it is pretty normal, you have multiple copies of the IOMMU and
-> its caches for physical reasons.
+> >  * Is anyone picking up Dave's patches for the QEMU side of support?
 > 
-> The only choice is if the platform HW somehow routes invalidations to
-> all IOMMUs or requires SW to route/replicate invalidates.
+> Not at the moment. It would be nice to support, but someone needs the
+> energy/time/focus to deal with the outstanding issues I mentioned.
 > 
-> ARM's IP seems to be designed toward the latter so I expect it is
-> going to be common on ARM.
-
-Thanks for the information, Jason.
-
-I see that Intel is already copied here (at least Yi and Kevin) so I assume
-there're already some kind of synchronizations on multi-vIOMMU vs recent
-works on Intel side, which is definitely nice and can avoid work conflicts.
-
-We should probably also copy Jason Wang and mst when there's any formal
-proposal.  I've got them all copied here too.
-
--- 
-Peter Xu
+> If you want to work on it, feel free to include me. I can help dig up
+> old discussions and give input.
+> 
+> Stefan
+> 
 
 
