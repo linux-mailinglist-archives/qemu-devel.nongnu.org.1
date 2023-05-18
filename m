@@ -2,88 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3FA70819A
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BB270819F
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:44:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzcxs-0005dS-Ik; Thu, 18 May 2023 08:42:40 -0400
+	id 1pzcz3-0006U4-3S; Thu, 18 May 2023 08:43:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzcxo-0005cz-Pc
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:42:36 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pzcz1-0006Tf-Ss
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:43:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzcxn-0006LX-9n
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:42:36 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1pzcyz-0006T6-OI
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:43:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684413754;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1684413829;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=BH6rWW4ir19N8eu0HyYSrvHGiHIBfKhOYu2vdhgD2eo=;
- b=HlwiTsAxcNnJ4tu89CkTldJ7M0J5r9bsZYcXDaryTodnIHV3NFGHsq91SA7WWaDoxZXY3t
- Ozq8gPiGm4fGN5rlFOxXcVRlueANHOGPhuzDEeQXJGB2xO/LnRrHdXKNwW0XtP9hYtb8Nl
- XP+tCvi3pTOPKpVXWKjakOsa14k6+6o=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-53-eOkeg21fNBat-nTQ3fVStA-1; Thu, 18 May 2023 08:42:33 -0400
-X-MC-Unique: eOkeg21fNBat-nTQ3fVStA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f453ff4cdfso7946005e9.2
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:42:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684413752; x=1687005752;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BH6rWW4ir19N8eu0HyYSrvHGiHIBfKhOYu2vdhgD2eo=;
- b=i9Cpp5ASW3VzzYYaIvtwutozQ0guKFjUpk2bcNqohbvjSah03mk1sQKGqwCVB6ct4F
- HBpt7MHN1zEYNKvPg2VUrZ3mfVp7L+y2gPDu/KYu8cDjwH75p4fGJrgcJJj1hVNuExfS
- OzxOc9nu4dKQy+qbCwYbn8DGU9wcRwdzm2PIfpReAJQf7sldzjl82xMwD9zQgrAFnuH0
- hxFLoAojJnoy9g6XXWKoFPZZJxbLNuwXbCfqIzwLAbncbho+LcKlcQPAmxVaFEBhHCZ9
- WaQhFAaBG+Ywzjltky+c27n0tfNLwVGjqeMKJhv7H8JG0SJ4LBusFnCqvVs1TRzTcCnY
- daNA==
-X-Gm-Message-State: AC+VfDzrzlOKrlJPrcCU+G5rkEu25k+qkBgV6/8TRtB/4jJ7IQ90loFd
- eznSDBmOaPtmzaGnqeVNP9sRlTJLA9EZPv+LUvAlCv/7U51YBHyCBh06TEAnGDVTbi0f1B3a5wm
- bsh0VjBBj3Yk/jd4=
-X-Received: by 2002:a05:600c:218:b0:3f4:16bc:bd1b with SMTP id
- 24-20020a05600c021800b003f416bcbd1bmr1298698wmi.39.1684413751909; 
- Thu, 18 May 2023 05:42:31 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6IwmpeYCY8PK4LmoTHpCBKjIKWENL2O227mmBYXwItl3H6R7B5PfqL5Ohml6FXCLUGd1SBEg==
-X-Received: by 2002:a05:600c:218:b0:3f4:16bc:bd1b with SMTP id
- 24-20020a05600c021800b003f416bcbd1bmr1298685wmi.39.1684413751592; 
- Thu, 18 May 2023 05:42:31 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- 7-20020a05600c028700b003f0ad8d1c69sm5247903wmk.25.2023.05.18.05.42.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 05:42:31 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: "Wang, Wei W" <wei.w.wang@intel.com>,  "Wang, Lei4"
- <lei4.wang@intel.com>,  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "peterx@redhat.com" <peterx@redhat.com>,  "leobras@redhat.com"
- <leobras@redhat.com>
-Subject: Re: [PATCH] multifd: Set a higher "backlog" default value for listen()
-In-Reply-To: <ZGYaOu3F3hsiPj5N@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Thu, 18 May 2023 13:29:46 +0100")
-References: <20230518085228.172816-1-lei4.wang@intel.com>
- <DS0PR11MB6373D659BCA67BD75D8ECC5DDC7F9@DS0PR11MB6373.namprd11.prod.outlook.com>
- <ZGYaOu3F3hsiPj5N@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 18 May 2023 14:42:30 +0200
-Message-ID: <87a5y1dd55.fsf@secure.mitica>
+ bh=noTnnvx7hKT1ss0cfJY58pZ3y0ub1wqQkd/0n4naQSY=;
+ b=hL6GsGFL387j7mCTePMXl1FseV9jthDzTCRRzthduxipufiBt+xZG49Dt5IjHua4hHN1X7
+ Cq10L1tk5/+IOx43kHy0Duk/OhCqbLjcxhdgFTOqS1JZmQcxFzRfENY1DPU7JAWOewMXy5
+ L2jZpMtpvFmZqpZRDN5RYakzx5H2PeE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-617-Tj6A0JwdMHOobZSUntBC_g-1; Thu, 18 May 2023 08:43:45 -0400
+X-MC-Unique: Tj6A0JwdMHOobZSUntBC_g-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C40385A588;
+ Thu, 18 May 2023 12:43:45 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id ADFED492B01;
+ Thu, 18 May 2023 12:43:44 +0000 (UTC)
+Date: Thu, 18 May 2023 07:43:43 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, stefanha@redhat.com, 
+ mjt@tls.msk.ru, pbonzini@redhat.com, qemu-devel@nongnu.org, 
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH 2/3] nbd/server: Fix drained_poll to wake coroutine in
+ right AioContext
+Message-ID: <2yc23l45pys5p4ebx43bka2bev25cgftg3pqmbdc7vlot2vrwx@emjxgdchhf2s>
+References: <20230517152834.277483-1-kwolf@redhat.com>
+ <20230517152834.277483-3-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230517152834.277483-3-kwolf@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,77 +77,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> On Thu, May 18, 2023 at 09:13:58AM +0000, Wang, Wei W wrote:
->> On Thursday, May 18, 2023 4:52 PM, Wang, Lei4 wrote:
->> > When destination VM is launched, the "backlog" parameter for listen() =
-is set
->> > to 1 as default in socket_start_incoming_migration_internal(), which w=
-ill
->> > lead to socket connection error (the queue of pending connections is f=
-ull)
->> > when "multifd" and "multifd-channels" are set later on and a high numb=
-er of
->> > channels are used. Set it to a hard-coded higher default value 512 to =
-fix this
->> > issue.
->> >=20
->> > Reported-by: Wei Wang <wei.w.wang@intel.com>
->> > Signed-off-by: Lei Wang <lei4.wang@intel.com>
->> > ---
->> >  migration/socket.c | 2 +-
->> >  1 file changed, 1 insertion(+), 1 deletion(-)
->> >=20
->> > diff --git a/migration/socket.c b/migration/socket.c index
->> > 1b6f5baefb..b43a66ef7e 100644
->> > --- a/migration/socket.c
->> > +++ b/migration/socket.c
->> > @@ -179,7 +179,7 @@
->> > socket_start_incoming_migration_internal(SocketAddress *saddr,
->> >      QIONetListener *listener =3D qio_net_listener_new();
->> >      MigrationIncomingState *mis =3D migration_incoming_get_current();
->> >      size_t i;
->> > -    int num =3D 1;
->> > +    int num =3D 512;
->> >=20
->>=20
->> Probably we need a macro for it, e.g.
->> #define MIGRATION_CHANNEL_MAX  512
->>=20
->> Also, I think below lines could be removed, as using a larger value of n=
-um (i.e. 512)
->> doesn't seem to consume more resources anywhere:
->> -    if (migrate_use_multifd()) {
->> -        num =3D migrate_multifd_channels();
->> -    } else if (migrate_postcopy_preempt()) {
->> -        num =3D RAM_CHANNEL_MAX;
->> -    }
+On Wed, May 17, 2023 at 05:28:33PM +0200, Kevin Wolf wrote:
+> nbd_drained_poll() generally runs in the main thread, not whatever
+> iothread the NBD server coroutine is meant to run in, so it can't
+> directly reenter the coroutines to wake them up.
+> 
+> The code seems to have the right intention, it specifies the correct
+> AioContext when it calls qemu_aio_coroutine_enter(). However, this
+> functions doesn't schedule the coroutine to run in that AioContext, but
+> it assumes it is already called in the home thread of the AioContext.
+> 
+> To fix this, add a new thread-safe qio_channel_wake_read() that can be
+> called in the main thread to wake up the coroutine in its AioContext,
+> and use this in nbd_drained_poll().
+> 
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  include/io/channel.h | 10 ++++++++++
+>  io/channel.c         | 33 +++++++++++++++++++++++++++------
+>  nbd/server.c         |  3 +--
+>  3 files changed, 38 insertions(+), 8 deletions(-)
 >
-> Given that this code already exists, why is it not already sufficient ?
 
-Ah, I "think" I remember now.
+Lots of support code...
 
-> The commit description is saying we're setting backlog =3D=3D 1 wit
-> multifd, but this later code is setting it to match the multfd
-> channels.  Why isn't that enough ?
+> +++ b/nbd/server.c
+> @@ -1599,8 +1599,7 @@ static bool nbd_drained_poll(void *opaque)
+>               * enter it here so we don't depend on the client to wake it up.
+>               */
+>              if (client->recv_coroutine != NULL && client->read_yielding) {
+> -                qemu_aio_coroutine_enter(exp->common.ctx,
+> -                                         client->recv_coroutine);
+> +                qio_channel_wake_read(client->ioc);
+>              }
 
+...for what boils down to a deceptively simple alternative call.  But
+your reasoning made sense to me, and I can see how your new function
+solves the issue.
 
-Are you using -incoming defer?
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-No? right.
-
-With multifd, you should use -incoming defer.  It is more, you should
-use -incoming defer always.  The problem is that the way qemu starts,
-when we do the initial listen, the parameters migration_channels and
-migration_multifd hasn't yet been parsed.
-
-Can you confirm that if you start with -incoming defer, everything works
-as expected?
-
-Later, Juan.
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
 
 
