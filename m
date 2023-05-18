@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF197084AD
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A636F7084BB
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzfH1-0007wj-PQ; Thu, 18 May 2023 11:10:35 -0400
+	id 1pzfKA-0001dS-Ap; Thu, 18 May 2023 11:13:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzfGw-0007ur-71
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:10:30 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pzfK6-0001c1-JW
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:13:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzfGt-0000Kz-VC
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:10:29 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pzfK4-0001Bv-KG
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:13:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684422627;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QQJZV7pGn00rYuJROGnck+p7KpwVNB0FtLS0D3QbZr0=;
- b=Ash3jRhRuM9uJcfSEmiRKwdLicweUsC9PuBRmI4rIi20YG46wTBx7XlWJa+1vtWM94vVGr
- 3z71rfI770TJf0t0M+mjVxQ/kF3H/ytHccZ8kGsk0TGw8JGeuE8xTFG6F4e6X3mBCPYbyB
- zbai1yhGjf6jB9HYdsFpCDXhtHJJhfg=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1684422823;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=wY31to70a5r93rJi7UWpbq+qXC7wpC36n158+Yf4Zb4=;
+ b=enyJiIgM690e9ABCDWLFbxfjHq1sHzfyAVyqKiXNb6cKp3z7+Llr9auG6vlwS7oQTwTaQ1
+ re44KwlE1OgHq3FlAFLFl46lK9JRDGWfT+4T9GSNfIZerBnxq0PjDjsvZNXqJCG+ltazRj
+ 5cKj2c2hxj9oWkXFqXmJH3OG7Zep7Sk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-8T7Nr8QcPumfRqVKQvZPKw-1; Thu, 18 May 2023 11:10:25 -0400
-X-MC-Unique: 8T7Nr8QcPumfRqVKQvZPKw-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4edc7406cbaso1420364e87.2
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:10:25 -0700 (PDT)
+ us-mta-669-2TZpyBJRMgqmLwHYUGvSwQ-1; Thu, 18 May 2023 11:13:42 -0400
+X-MC-Unique: 2TZpyBJRMgqmLwHYUGvSwQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f4245ffb03so13700095e9.3
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:13:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684422624; x=1687014624;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QQJZV7pGn00rYuJROGnck+p7KpwVNB0FtLS0D3QbZr0=;
- b=GziJmlZU4bAj7otHe1x16+grlSKW5CggfGN1FBk6PIq1pHdIi2EeKrablU/2BAgllq
- DdvCQeLeZyTih8auSaCkllrqah500K0IoNVPMyC25WU1aDYuNARVyUb0iz5sAs5BSMi2
- QkrxnSCNP7gA200e9o/FyoaJTT7bQSzaLCXB5OBZXHyAEgpt8B1W4/GOU2p0IEM5tpM+
- gsKG6eUgmRalKKQuw3VSldW5HIeRJrtILie2VQvPBiXMheB1uQM/D+TeTijK7n8NfE96
- WrV/bsfMKaTAW8nxOBdJraiBS2ORc6u85bqaZCtHcyXqHGQgIYxWxJC7OsyrTK2GOs6w
- XhNg==
-X-Gm-Message-State: AC+VfDxaghK9rnB58k4oJcCAHC0Tk9MPhLfA00KCz92uaCE7ejvCh8E9
- KJVelqEx5dZxZ2dVbGrPgbPdh+XRRUhEuiCgA1wS/pQjlwkaNhbk1zpjQCkNIj66oqeuP1ahcpZ
- offqhqOCRUEI7sCQ=
-X-Received: by 2002:ac2:4465:0:b0:4f3:aae3:aedc with SMTP id
- y5-20020ac24465000000b004f3aae3aedcmr83725lfl.9.1684422624044; 
- Thu, 18 May 2023 08:10:24 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ52uv3QM7c4Or1piLfBKlgQu3Bf4Ejcm7ogR55fusiOFt29piCaRrV4S/GxVLKyIKqL5fPczA==
-X-Received: by 2002:ac2:4465:0:b0:4f3:aae3:aedc with SMTP id
- y5-20020ac24465000000b004f3aae3aedcmr83717lfl.9.1684422623677; 
- Thu, 18 May 2023 08:10:23 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:175:3e4d:6703:27b9:6f74:5282])
- by smtp.gmail.com with ESMTPSA id
- g12-20020a19ac0c000000b004eeec1261ecsm285895lfc.31.2023.05.18.08.10.21
+ d=1e100.net; s=20221208; t=1684422821; x=1687014821;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wY31to70a5r93rJi7UWpbq+qXC7wpC36n158+Yf4Zb4=;
+ b=dvkRWxTZxb/ob1f904Hi0njbmEYggQ/UKgeEPdppgdKXMawVLpJnc3PzswSDWcJQM+
+ 8b0XBdCC0Pl7x4dJwe4D7VSY9eFVQha5EGq3J19bv5yZTA/kiWNEdCIJWfThuXar4ekV
+ 2+pwXHH0eydTcnj4psA0x1pPOBsVk+GwIK74YxmCIKL6dordQ4apov4izJJ6Imi7WU7Y
+ BzfH4JPUYRAfyUf61WFj4KbsjIGGQJW/yMDOil5HHwIyI7vF4XTnFtKnICEIU5SiZfGI
+ CNxIVPRo6Eb3hP0y5mwl7OV5UObSv3LaKdQPDujOK7V/zEXhDKUDrpfTY9gJE2VPU5kT
+ x7ng==
+X-Gm-Message-State: AC+VfDyK5VBBPz48Zk4aNjxyBn1ejzYHql4U0gajT64BjqPPV1dUANNm
+ FxUAoPiV7K10+pJXiijf+vU2lV1P6cclSajDCZiKvpo9spq0z0VsfjzDtTaxE8TvMrABV9PaIUC
+ uBa3nPL3kNtaHzNM=
+X-Received: by 2002:a7b:cd0a:0:b0:3f4:e4fa:90f1 with SMTP id
+ f10-20020a7bcd0a000000b003f4e4fa90f1mr1731181wmj.33.1684422821387; 
+ Thu, 18 May 2023 08:13:41 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5of5o+bRivNxnYO9ZPqUzJSYifs75kP+PxyK9NvGjrbvgv39gyHpj1Bn1HkFfam7RhFrgFUA==
+X-Received: by 2002:a7b:cd0a:0:b0:3f4:e4fa:90f1 with SMTP id
+ f10-20020a7bcd0a000000b003f4e4fa90f1mr1731166wmj.33.1684422821026; 
+ Thu, 18 May 2023 08:13:41 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ a20-20020a1cf014000000b003f506e6ff83sm2367398wmb.22.2023.05.18.08.13.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 08:10:23 -0700 (PDT)
-Date: Thu, 18 May 2023 11:10:18 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Fiona Ebner <f.ebner@proxmox.com>, Leonardo Bras <leobras@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v1 1/1] hw/pci: Disable PCI_ERR_UNCOR_MASK register for
- machine type < 8.0
-Message-ID: <20230518110755-mutt-send-email-mst@kernel.org>
-References: <20230503002701.854329-1-leobras@redhat.com>
- <7f308149-5495-d415-5e51-1fa15fc20f84@proxmox.com>
- <87jzxf5ki9.fsf@secure.mitica>
- <8c3a4f60-b3ab-7c38-27c0-3f8f2caaeae4@tls.msk.ru>
- <87wn15dgbs.fsf@secure.mitica> <ZGYnpQmc+5Sut3x8@x1n>
+ Thu, 18 May 2023 08:13:40 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: <gudkov.andrei@huawei.com>
+Cc: <qemu-devel@nongnu.org>,  <eblake@redhat.com>,  <armbru@redhat.com>,
+ <berrange@redhat.com>,  <zhengchuan@huawei.com>,  <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH v2 2/4] migration/calc-dirty-rate: detailed stats in
+ sampling mode
+In-Reply-To: <ZGY5ttHypAtAhFSi@DESKTOP-0LHM7NF.china.huawei.com> (gudkov
+ andrei's message of "Thu, 18 May 2023 17:45:26 +0300")
+References: <cover.1682598010.git.gudkov.andrei@huawei.com>
+ <22436421241c49c9b6d9b9120d166392c40fb991.1682598010.git.gudkov.andrei@huawei.com>
+ <875y906qce.fsf@secure.mitica>
+ <ZF47+rkmPdTKIaH8@DESKTOP-0LHM7NF.china.huawei.com>
+ <87h6se2ecs.fsf@secure.mitica>
+ <ZGY5ttHypAtAhFSi@DESKTOP-0LHM7NF.china.huawei.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 18 May 2023 17:13:39 +0200
+Message-ID: <875y8pd658.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZGYnpQmc+5Sut3x8@x1n>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,115 +103,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 18, 2023 at 09:27:01AM -0400, Peter Xu wrote:
-> On Thu, May 18, 2023 at 01:33:43PM +0200, Juan Quintela wrote:
-> > Michael Tokarev <mjt@tls.msk.ru> wrote:
-> > > 11.05.2023 11:40, Juan Quintela wrote:
-> > >> Fiona Ebner <f.ebner@proxmox.com> wrote:
-> > > ...
-> > >>> Closes: https://gitlab.com/qemu-project/qemu/-/issues/1576
-> > >>>
-> > >>> AFAICT, this breaks (forward) migration from 8.0 to 8.0 + this patch
-> > >>> when using machine type <= 7.2. That is because after this patch, when
-> > >>> using machine type <= 7.2, the wmask for the register is not set and
-> > >>> when 8.0 sends a nonzero value for the register, the error condition in
-> > >>> get_pci_config_device() will trigger again.
-> > >> I think that works correctly.
-> > >> See https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg02733.html
-> > >> What we have (before this patch) (using abbrevs as in the doc
-> > >> before)
-> > >> Current state:
-> > >> (1) qemu-8.0 -M pc-8.0 -> qemu-8.0 -M pc-8.0 works
-> > >>      not affected by the patch
-> > >> (2) qemu-7.2 -M pc-7.2 -> qemu-8.0 -M pc-8.0 works
-> > >>      works well because 7.2 don't change that field
-> > >> (3) qemu-8.0 -M pc-7.2 -> qemu-7.2 -M pc-7.2 fails
-> > >> With the patch we fixed 3, so once it is in stable, 1 and 2 continue
-> > >> as
-> > >> usual and for (3) we will have:
-> > >> (3) qemu-8.0.1 -M pc-7.2 -> qemu-7.2 -M pc-7.2 works
-> > >> If what you mean is that:
-> > >> (3) qemu-8.0 -M pc-7.2 -> qemu-8.0.1 -M pc-7.2 works
-> > >> Will fail, that is true, but I can think a "sane" way to fix this.
-> > 
-> > Hi
-> > 
-> > > That's a great summary indeed.
-> > 
-> > Thanks.
-> > 
-> > >>> Is it necessary to also handle that? Maybe by special casing the error
-> > >>> condition in get_pci_config_device() to be prepared to accept such a
-> > >>> stream from 8.0?
-> > >> Well, we can do that, but it is to the pci maintainers to decide if
-> > >> that
-> > >> is "sane".
-> > >
-> > > So, can we go from here somewhere? I'd love this fix to be in 8.0.1,
-> > > either with or without the (un)sane part of the (3) variant above which
-> > > might fail.  Or else we'll have the same situation in 8.0.1 as we now
-> > > have in 8.0.0 (the deadline is May-27).
-> > >
-> > > We did broke x.y.0 => x.y.1 migration before already like this, such as
-> > > with 7.2.0=>7.2.1. I'm not saying it's a nice thing to do, just stating
-> > > a fact. Yes, it is better to avoid such breakage, but.. meh..
-> > 
-> > See patch for documentation:
-> > 
-> > https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03288.html
-> > 
-> > Basically, the best we can do is:
-> > - get the patch posted.  Fixes everything except:
-> >   (3) qemu-8.0 -M pc-7.2 -> qemu-8.0.1 -M pc-7.2 works
-> > 
-> > And for that, we can document somewhere that we need to launch
-> > qemu-8.0.1 as:
-> > 
-> > $ qemu-8.0.1 -M pc-7.2 -device blah,x-pci-err-unc-mask=on
-> 
-> One thing we can also do to avoid it in the future is simply having someone
-> do this check around each softfreeze (and we'll also need maintainers be
-> careful on merging anything that's risky though after softfreeze) rather
-> than after release (what I did for this time, which is late), try to cover
-> as much devices as possible. I don't know whether there's a way to always
-> cover all devices.
-> 
-> I'll volunteer myself for that as long as I'll remember.  Juan, please also
-> have a check or remind me if I didn't. :)
-> 
-> I am not sure whether I mentioned it somewhere before, but maybe it'll work
-> if we can also have some way we check migrating each of the vmsd from
-> old-qemu to new-qemu (and also new->old) covering all devices.  It doesn't
-> need to be a real migration, just generate the per-device stream and try
-> loading on the other binary.
-> 
-> It might be an overkill to be part of CI to check each commit, but if
-> there's some way to check it then at least we can run it also after
-> softfreeze.  I also don't know whether it'll be easy to achieve it at all,
-> but I'll think more about it too and update if I found something useful.
+<gudkov.andrei@huawei.com> wrote:
+> On Mon, May 15, 2023 at 10:22:43AM +0200, Juan Quintela wrote:
+>> <gudkov.andrei@huawei.com> wrote:
+>> > On Wed, May 10, 2023 at 07:36:33PM +0200, Juan Quintela wrote:
+>> >> Andrei Gudkov <gudkov.andrei@huawei.com> wrote:
+>> >> > Collect number of dirty pages for progresseively increasing time
+>> >> > periods starting with 125ms up to number of seconds specified with
+>> >> > calc-dirty-rate. Report through qmp and hmp: 1) vector of dirty page
+>> >> > measurements, 2) page size, 3) total number of VM pages, 4) number
+>> >> > of sampled pages.
+>> >> >
+>> >> >  3 files changed, 160 insertions(+), 54 deletions(-)
+>> >> >
+>> >> > diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
+>> >> > index acba3213a3..4491bbe91a 100644
+>> >> > --- a/migration/dirtyrate.c
+>> >> > +++ b/migration/dirtyrate.c
+>> >> > @@ -224,6 +224,7 @@ static struct DirtyRateInfo *query_dirty_rate_info(void)
+>> >> >      info->calc_time = DirtyStat.calc_time;
+>> >> >      info->sample_pages = DirtyStat.sample_pages;
+>> >> >      info->mode = dirtyrate_mode;
+>> >> > +    info->page_size = TARGET_PAGE_SIZE;
+>> >> 
+>> >> I thought we exported this trough ""info migrate"
+>> >> but we do it only if we are in the middle of a migration.  Perhaps we
+>> >> should print it always.
+>> >
+>> > So, which one do you prefer? To keep it here or to make "info migrate" print it always (or both)?
+>> 
+>> info migrate to print it allways.  Thanks.
+>
+> I looked into "info migrate". To print page size irregarding migration status,
+> all other 17 fields of MigrationInfo.ram will have to be made optional.
+> Atop of that, it feels like that page size doesn't belong to "info migrate"
+> since it is the only one "static" value, while all others are "dynamic" counters.
+>
+> I think I found a better place where page size can be reported --
+> query-memory-size-summary. After the change it would be as following:
+>   {"execute": "query-memory-size-summary"}
+>   {"return": {"page-size": 4096, "base-memory": 34359738368, "plugged-memory": 0}}
+>
+> What do you think about it?
 
-I'm all for more testing but if it does not actually test that the
-values loaded are actually used correctly then the testing is of course
-lower quality. Better than nothing I guess ...
+Perfect for me.
 
-
-
-> > 
-> > And mark someone that this machine is tainted an can only be migrated to
-> > qemu's >= qemu-8.0.1.  And that we should reboot it as the user
-> > convenience. (reboot here means poweroff qemu and poweron it back
-> > without x-pci-err-unc-mask=on).
-> > 
-> > Later, Juan.
-> > 
-> > 
-> > 
-> > 
-> 
-> -- 
-> Peter Xu
+Thanks.
 
 
