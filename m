@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D245707961
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 06:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E82770796E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 07:11:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzViU-0008IY-Lc; Thu, 18 May 2023 00:58:18 -0400
+	id 1pzVuG-0003EP-94; Thu, 18 May 2023 01:10:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzViS-0008Ht-So
- for qemu-devel@nongnu.org; Thu, 18 May 2023 00:58:16 -0400
+ id 1pzVu7-0003Co-Bt
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 01:10:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzViR-0001YW-4p
- for qemu-devel@nongnu.org; Thu, 18 May 2023 00:58:16 -0400
+ id 1pzVu3-0003Ne-3i
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 01:10:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684385894;
+ s=mimecast20190719; t=1684386612;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=xnyFSz+wq7s+MQcGM0EpafMe12bS1eZBXo3KtPXIaJc=;
- b=LQnp0ws+QZxJZAUW5Fl+F07/a+8M/a47SxAgI7gvpGPemcC4MbJ+GOpOdSMrISEK42K6u7
- 1eveeHq4Yz1K1z9rYAN1DtESKpkmYfSL/pT4yi/RNW/ouwltz/bQ3D6AgEIFROhdl2po3h
- 3YTHGozNDwW824PNlJ3AJgSoIdXenmA=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2saJ2kehoukek5c92HxgZ2YxEeutbV7AdUvgLgzNkM0=;
+ b=CjNs1CUMDr5fHC0v5uH4Liw6y4fxjLAnCs8l439hXCLfvVFEh07hzNfi5M2Jh30QN3Z/N2
+ WU3jutb36RNtXFjJrj6Iux//KooXPmmxmkuDBKSQSjd2R0mGJYUm6Mnanhl6t57zG7rFcM
+ 9xDdEHF0zWP/xWh2pqcwTGt+/AzqKl8=
+Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
+ [209.85.221.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-Uw3gtV22Nhap-TMEesLqYA-1; Thu, 18 May 2023 00:58:12 -0400
-X-MC-Unique: Uw3gtV22Nhap-TMEesLqYA-1
-Received: by mail-ua1-f71.google.com with SMTP id
- a1e0cc1a2514c-780c9094f63so497609241.3
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 21:58:12 -0700 (PDT)
+ us-mta-547--GCsk3JrN6abSOn65Ga8tA-1; Thu, 18 May 2023 01:10:11 -0400
+X-MC-Unique: -GCsk3JrN6abSOn65Ga8tA-1
+Received: by mail-vk1-f198.google.com with SMTP id
+ 71dfb90a1353d-450ddbc9431so442490e0c.2
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 22:10:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684385891; x=1686977891;
+ d=1e100.net; s=20221208; t=1684386610; x=1686978610;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=xnyFSz+wq7s+MQcGM0EpafMe12bS1eZBXo3KtPXIaJc=;
- b=OGYjJ/4BSNwq5biBNEKsU2BHwTpAXxaaWfchaNF+ioW6SYcZVrB5THIF12aoLTyDdb
- uo7ButvXlDLyZ+38mD7yZgI5h+DQ629U2fgaoqlSi6FdoRpksOJVSKYWqUtKuVq02FH4
- IT6Cjd7582mtX0uJV37xxBiqpS3YIT3KFl61egt7G1V5pn+DEMvK4+77PbUz4/vVgBGJ
- hkD9H7Q9huA7ZBEKzmS4VFz/R2TSqFtzvez6hSKqfUW2aZaCzoWOWCzaK+nTizPE9VfT
- axgpEC+W57dsfWu0LIwpx3AxVGRzAwMAT+46g/N2y/Aj5y44o+BPxp5S0TLBDVqWSCbP
- hzzw==
-X-Gm-Message-State: AC+VfDwCq66XFvdnXC3vUkG9gRxUzL3S3qM7NpQeo7zyXe+w+GCuiQpv
- wA5Z1X6FlszVCu/qWdRDuOXYP18ytUF/ip9utVcKTBabFkOQdrlo5iPm/T02GzQhxfz7cGiZVXZ
- 7btsJzJ5GQx4q8WMOJlSA4AE7Du9boP+IIxjUX7c=
-X-Received: by 2002:a67:f50e:0:b0:437:e14e:a98e with SMTP id
- u14-20020a67f50e000000b00437e14ea98emr118061vsn.19.1684385891463; 
- Wed, 17 May 2023 21:58:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ59jk81BtvYWCYXOPuD+hS7AaauAH2QB5EjGIzz3XCcw+1b0K9WXSfWxyYI2npZy64ui6Q7TC/ZSEijjuLw6cE=
-X-Received: by 2002:a67:f50e:0:b0:437:e14e:a98e with SMTP id
- u14-20020a67f50e000000b00437e14ea98emr118058vsn.19.1684385891242; Wed, 17 May
- 2023 21:58:11 -0700 (PDT)
+ bh=2saJ2kehoukek5c92HxgZ2YxEeutbV7AdUvgLgzNkM0=;
+ b=bzcpM4Wl1MjymhZbmqwkupp0E4E0p1j0ke0BkeLV4CbsQtlrouni8VvhQqL/4LAzD9
+ HsY/5c8N0DAZ0bPe+yZbpC1AEEPhYhDSLemsGdYTaKhxIf9ZYY+z3cpOWo7y8HTNCLWI
+ 3MFtGvQMUhAi88EIk962fQQ/yhWhjYhNnIb7flb64pWpLi7Sv3lmyqlZLqvUIpTb7v35
+ ImOmWr/ouxcmH2gF8nA/xesM9/YVj4Hx27+4NJwEVmJH5TmVuyIHYLTLsvQbbrKHTV9p
+ LIV8qhrsxsW6LLBoKF5tolhd2OZrHU4TMf0gY+B1SObCuKALBC7nrJkAKn+Xb4ohjigP
+ 4yCQ==
+X-Gm-Message-State: AC+VfDwpZi7dYcVl37pSoXk42I2DMcwdkMnAjpU08tNO0O2XUlquXmiH
+ PiHzGxWjs1U38rnwR5upBsjH9xmrp9hn9XvR6UAgv9g4+VveoakfT9oV+cm5BgY62ji1sJUcfYt
+ yzxqAxq5BYJlDxtsfQ7KcZRpHZo4oqm0=
+X-Received: by 2002:a67:fe02:0:b0:42f:46d1:ffad with SMTP id
+ l2-20020a67fe02000000b0042f46d1ffadmr156035vsr.22.1684386610502; 
+ Wed, 17 May 2023 22:10:10 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4fmjz/cftfrE/Nnm10gieBywXwd1NbEUQFBd8VLBn2k4VwG5J7R4UA8gUeUIK87ZYQDyq8BSz4qnK46r/yykg=
+X-Received: by 2002:a67:fe02:0:b0:42f:46d1:ffad with SMTP id
+ l2-20020a67fe02000000b0042f46d1ffadmr156031vsr.22.1684386610195; Wed, 17 May
+ 2023 22:10:10 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230517174520.887405-1-pbonzini@redhat.com>
- <20230517174520.887405-64-pbonzini@redhat.com>
- <CAFEAcA8851_6Ye_sQ-wA85HSzwRTQvMw_Ahmh9E5XafyOwwq_g@mail.gmail.com>
-In-Reply-To: <CAFEAcA8851_6Ye_sQ-wA85HSzwRTQvMw_Ahmh9E5XafyOwwq_g@mail.gmail.com>
+ <a7f23b7c-879f-36db-dabd-1891bda766e5@linaro.org>
+In-Reply-To: <a7f23b7c-879f-36db-dabd-1891bda766e5@linaro.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 18 May 2023 06:57:59 +0200
-Message-ID: <CABgObfYcWRPLrVeYPRcRcuPeg41QckH9UMbsu0=n7WBLf5UrYA@mail.gmail.com>
-Subject: Re: [PULL 63/68] configure: remove compiler sanity check
-To: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 18 May 2023 07:09:58 +0200
+Message-ID: <CABgObfaxs0PLEtdJPvfuaxg+AGnfzT9raBL-VVpZ9jMX--i4GA@mail.gmail.com>
+Subject: Re: [PULL 00/68] i386, build system, KVM changes for 2023-05-18
+To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="000000000000b6689a05fbf0a639"
+Content-Type: multipart/alternative; boundary="00000000000090ccb305fbf0d15d"
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -93,70 +92,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b6689a05fbf0a639
+--00000000000090ccb305fbf0d15d
 Content-Type: text/plain; charset="UTF-8"
 
-Il mer 17 mag 2023, 20:48 Peter Maydell <peter.maydell@linaro.org> ha
-scritto:
+Il mer 17 mag 2023, 22:31 Richard Henderson <richard.henderson@linaro.org>
+ha scritto:
 
-> On Wed, 17 May 2023 at 18:50, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> >
-> > The comment is not correct anymore, in that the usability test for
-> > the compiler and linker are done after probing $cpu, and Meson will
-> > redo them anyway.
+> https://gitlab.com/qemu-project/qemu/-/jobs/4304958487#L1887
 >
-> The other thing this check is useful for, though, is
-> providing a helpful error message rather than using
-> a busted compiler for the other compile checks that
-> configure does and then producing a confusing error message
-> when some required-item test fails. (I think traditionally
-> this was the GLIB_SIZEOF_SIZE_T check, but we may have put
-> some other tests before that in the meantime.)
+> Warning, treated as error:
+> the sphinx_rtd_theme extension does not declare if it is safe for parallel
+> reading,
+> assuming it isn't - please ask the extension author to check and make it
+> explicit
 >
 
-Yes but Meson does both the sanity check and the sizeof test now.
+Hmm I think with John's infrastructure it will be easy to check for a given
+version of the theme but I wonder why it didn't fail for me.
+
+
+> https://gitlab.com/qemu-project/qemu/-/jobs/4304958508#L2551
+>
+> /usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/libc.a(init-first.o):
+>
+> in function `__libc_init_first':
+> (.text+0x10): relocation truncated to fit: R_AARCH64_LD64_GOTPAGE_LO15
+> against symbol
+> `__environ' defined in .bss section in
+>
+> /usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/libc.a(environ.o)
+> /usr/bin/ld: (.text+0x10): warning: too many GOT entries for -fpic, please
+> recompile with
+> -fPIC
+>
+
+I will probably just split the PR in two while I figure out what happens,
+thanks.
 
 Paolo
 
 
-> -- PMM
+>
+> r~
 >
 >
 
---000000000000b6689a05fbf0a639
+--00000000000090ccb305fbf0d15d
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mer 17 mag 2023, 20:48 Peter Maydell &lt;<a href=3D=
-"mailto:peter.maydell@linaro.org">peter.maydell@linaro.org</a>&gt; ha scrit=
-to:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
-order-left:1px #ccc solid;padding-left:1ex">On Wed, 17 May 2023 at 18:50, P=
-aolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com" target=3D"_blank" r=
-el=3D"noreferrer">pbonzini@redhat.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; The comment is not correct anymore, in that the usability test for<br>
-&gt; the compiler and linker are done after probing $cpu, and Meson will<br=
->
-&gt; redo them anyway.<br>
+class=3D"gmail_attr">Il mer 17 mag 2023, 22:31 Richard Henderson &lt;<a hre=
+f=3D"mailto:richard.henderson@linaro.org">richard.henderson@linaro.org</a>&=
+gt; ha scritto:</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 =
+0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<a href=3D"https://gitlab.com/qemu-project/qemu/-/jobs/4304958487#L1887" re=
+l=3D"noreferrer noreferrer" target=3D"_blank">https://gitlab.com/qemu-proje=
+ct/qemu/-/jobs/4304958487#L1887</a><br>
 <br>
-The other thing this check is useful for, though, is<br>
-providing a helpful error message rather than using<br>
-a busted compiler for the other compile checks that<br>
-configure does and then producing a confusing error message<br>
-when some required-item test fails. (I think traditionally<br>
-this was the GLIB_SIZEOF_SIZE_T check, but we may have put<br>
-some other tests before that in the meantime.)<br></blockquote></div></div>=
-<div dir=3D"auto"><br></div><div dir=3D"auto">Yes but Meson does both the s=
-anity check and the sizeof test now.</div><div dir=3D"auto"><br></div><div =
-dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div =
-class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0=
- 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+Warning, treated as error:<br>
+the sphinx_rtd_theme extension does not declare if it is safe for parallel =
+reading, <br>
+assuming it isn&#39;t - please ask the extension author to check and make i=
+t explicit<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=
+=3D"auto">Hmm I think with John&#39;s infrastructure it will be easy to che=
+ck for a given version of the theme but I wonder why it didn&#39;t fail for=
+ me.</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail=
+_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border=
+-left:1px #ccc solid;padding-left:1ex">
 <br>
--- PMM<br>
+<a href=3D"https://gitlab.com/qemu-project/qemu/-/jobs/4304958508#L2551" re=
+l=3D"noreferrer noreferrer" target=3D"_blank">https://gitlab.com/qemu-proje=
+ct/qemu/-/jobs/4304958508#L2551</a><br>
+<br>
+/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/=
+libc.a(init-first.o): <br>
+in function `__libc_init_first&#39;:<br>
+(.text+0x10): relocation truncated to fit: R_AARCH64_LD64_GOTPAGE_LO15 agai=
+nst symbol <br>
+`__environ&#39; defined in .bss section in <br>
+/usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/=
+libc.a(environ.o)<br>
+/usr/bin/ld: (.text+0x10): warning: too many GOT entries for -fpic, please =
+recompile with <br>
+-fPIC<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"a=
+uto">I will probably just split the PR in two while I figure out what happe=
+ns, thanks.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><=
+div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #=
+ccc solid;padding-left:1ex">
+<br>
+<br>
+r~<br>
 <br>
 </blockquote></div></div></div>
 
---000000000000b6689a05fbf0a639--
+--00000000000090ccb305fbf0d15d--
 
 
