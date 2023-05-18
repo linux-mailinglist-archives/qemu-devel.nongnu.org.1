@@ -2,156 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215D4708960
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 22:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27407708964
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 22:22:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzk74-0006jf-Hj; Thu, 18 May 2023 16:20:52 -0400
+	id 1pzk7j-0006w3-1a; Thu, 18 May 2023 16:21:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
- id 1pzk5y-0006Pj-3H
- for qemu-devel@nongnu.org; Thu, 18 May 2023 16:19:36 -0400
-Received: from mga04.intel.com ([192.55.52.120])
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
+ id 1pzk5y-0006Pk-Qr; Thu, 18 May 2023 16:19:37 -0400
+Received: from mail-bn8nam04on2060c.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8d::60c]
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
- id 1pzk5t-0000Og-8e
- for qemu-devel@nongnu.org; Thu, 18 May 2023 16:19:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1684441164; x=1715977164;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=nbMTVyoe7raqD7/6iDMJWlY+IqSbzwK2732iS8+dles=;
- b=HxgowxtqZ2TLd2eEAf/QVJSNHHzuT+/PF/fLsQ2fnjd7204WAM+GFlFn
- sE+UzwkrNHdWtyUGvDn0HFsqM8wCqx0a0cebk06VfWVtPhqimVUCBz226
- yAN6kLdWjPiAl+rlzp8D+S4FgmEWktbAtOD9Z1vQvkgbySeW45DvA3UsC
- IliX+xtoD8ZUfLcSq6UYgGLirr89NLWZRN4JzBh5OjqP119P3/FnDKqjO
- EtRGSNU6lWl9GFuEG0lA+KLcFcfBUcpp1KqfH8rB17/74xV71iRqdGdCn
- i1uBuZ8KrlG4R1WxyUjthoKy9MYvit2pI0pVfT6BHReu7dsn4EMcZUJT/ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="351022773"
-X-IronPort-AV: E=Sophos;i="6.00,175,1681196400"; d="scan'208";a="351022773"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 May 2023 13:19:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="1032335184"
-X-IronPort-AV: E=Sophos;i="6.00,175,1681196400"; d="scan'208";a="1032335184"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmsmga005.fm.intel.com with ESMTP; 18 May 2023 13:19:21 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Thu, 18 May 2023 13:19:21 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Thu, 18 May 2023 13:19:21 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Thu, 18 May 2023 13:19:21 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Thu, 18 May 2023 13:19:20 -0700
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>)
+ id 1pzk5v-0000Ou-MG; Thu, 18 May 2023 16:19:30 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DeYOG+5Ht/Rlywk5Rf+u4bdp172cya23zAKNoN/nSKP07zY2mK4Jty6uw/l8fX5j159hknFX0rBcj6QyMErfvG0Tt4PXlW/1YM9LORRtbTkonw5LdONxgz3teRYtIEUnIpSY4c0CZ+OBFjdEbu2WfWO1ycawrU+G5XsfPPST6q8PSwI1vjNyylfBGu+zhuIIVmUQNVAe0pMl4zDb6LmjGQU3xJDdb7ppJxMEyGzhizDfCRqU6W99I7LjITCWxjUjyMsNFI0JCVKtQ6ZsvXuldNOWmJZbn+tGH8JTl6ToBGgIoF/02H3clklV5xnBCZF3Bl2q2IEEx009t+19QUtgCg==
+ b=I941IIa+qNBjfSilxbaP3nbPVInWLX2S0QZpb0FFdXQ63bJ2uiEx4udx3bQk0yx2QKTxXDGvoPUgp4z+mUVl2Ac++wWTuw1c3PdM2uu11UypeLxpvhi/rlu9Yyv8ze8f0TW465qxv6mfgfMdQtblvkU3DRbziVH2Qg1C3DuEEHGjNcjjxRFsiJypievWRcdhPpH56pVpRjdeBvMm7qKRVTNmtefgXnoQG3CVPU+QFAG3cMj37X9TsvwGNsSKybScgBeGKEYQGqwl8JXMqnZYChrKou/I4az6mK/oyhGp7TCpNa9fF73QsskMJ61z9LaCV8LbVkyXugRiMW+MXf7Esw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cWVzQxKAQkD2BqllWGNzJ+rfOoVgAp6heUumGFTwni0=;
- b=PppYlU9xY5VDSE0zioxxzWiMJ3zqRedsOoZHEeS6thiv/B8TaX+xCe+0Ho6HPZKoAaALglAWTY4z4rv4f5NSO68Va7Vf2RbEVvLTDvxUsUUk2ZuA/zb9aDqRUb8Y+P6baoLdPpNEDsrnW5ZIUIVALn2Hyl/DUAfekaZYv20C2DVAVKCHPIsbXdE/ehQdm8mLuSIpYBjzNwjwwfnA2cGPtRkE7EtOiurV74GLEgqsjK/q5JiBajoFL+UZrJPhteZ5hs88+dzhiS+Lpm3p3hB6aDCwOPzZq9+U5E2o41JtWcekRH+qyCaz64gVHkamBHqY7BTil0kU9Z224RFj6oSDiA==
+ bh=fz2MfLW412onc28NV6+GoJc4TOt34NMF8NvF4FGymeE=;
+ b=VDe2BRwKHTUQ5S8rfE/Wu/QNdKrSLlQK6IDjkB6XHTPWK/0UB9JrY4OFBgYO5nCRLRb3oa1iwg2YdD44NR3h0VjcxQXAn3JFTeq5XyO2IzgrMKgFeKy6SHyP8hkYS4miOIhTwOnA2d52SknURjozxHkYLAK3aIBqfFIffsTXzVvxdPNhjiLL7YqHR8SHSg27uHezVkQNK0clJ/40IZPjymOjUv19uk8rf5BqYwP+ur5gw5viOJSJykyU5IGRDhSOi7Kk3nQjmyi8FPSPddlk7TyuEoHbFTFVvuNiCuf1OAeV3kyhd9BlHaEQwwN491i+7lE1m9ez/Z/WKs+zmpv05g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fz2MfLW412onc28NV6+GoJc4TOt34NMF8NvF4FGymeE=;
+ b=hFv8OVccWt0rqsgBAHHZHMjc+7NJfrYNuCFD94AdJlRxeWiXkb5DoL7CXZeiMhO7rUx9wV/525u/cePO18n2AaUtJ+ytPaxM8560muY1UFkBZ/GhIg/DFL2uYsAvbLob71I/S/YyuxMhVjbd6ka25J1Cn6CjJjoOpWe+IxPPv1eroZsWN32c/TfLQeW11BnErqqKCTqg/4S6oCtVUkLHA9A5mzqprP5Enha10hsO60xNLHP4XvXKUixjxIHnHTqO2mrjdEk8trm3G0yNNuMnLptsq2ysvY6h7HE9FN0NKL3bv/P3gYr1rdf3uJXmPqGTtU1zyCFnKl2j9CLffadPuw==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
- by DM4PR11MB5279.namprd11.prod.outlook.com (2603:10b6:5:38a::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.19; Thu, 18 May
- 2023 20:19:19 +0000
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::4fe2:e207:596b:d145]) by SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::4fe2:e207:596b:d145%5]) with mapi id 15.20.6411.017; Thu, 18 May 2023
- 20:19:19 +0000
-Date: Thu, 18 May 2023 13:19:12 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ira Weiny
- <ira.weiny@intel.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Dave Jiang
- <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH RFC 1/5] hw/cxl: Use define for build bug detection
-Message-ID: <64668840a067b_114f6029416@iweiny-mobl.notmuch>
-References: <20230517-rfc-type2-dev-v1-0-6eb2e470981b@intel.com>
- <20230517-rfc-type2-dev-v1-1-6eb2e470981b@intel.com>
- <20230518105416.000054c9@Huawei.com>
-Content-Type: text/plain; charset="us-ascii"
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by BY5PR12MB4306.namprd12.prod.outlook.com (2603:10b6:a03:206::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.17; Thu, 18 May
+ 2023 20:19:21 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6411.017; Thu, 18 May 2023
+ 20:19:21 +0000
+Date: Thu, 18 May 2023 17:19:20 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Eric Auger <eric.auger@redhat.com>, Nicolin Chen <nicolinc@nvidia.com>,
+ peter.maydell@linaro.org, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, yi.l.liu@intel.com, kevin.tian@intel.com,
+ Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: Multiple vIOMMU instance support in QEMU?
+Message-ID: <ZGaISJUBFdMu+nxo@nvidia.com>
+References: <ZEcT/7erkhHDaNvD@Asurada-Nvidia> <ZGWaCKQqK5hVqbvM@Asurada-Nvidia>
+ <0defbf3f-a8be-7f1b-3683-e3e3ece295fc@redhat.com>
+ <ZGYzOEhdTA6sWKjP@x1n> <ZGY8rj9hRxGLpFdH@nvidia.com>
+ <ZGaAVAI9u4K4vy1/@x1n>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230518105416.000054c9@Huawei.com>
-X-ClientProxiedBy: BYAPR05CA0022.namprd05.prod.outlook.com
- (2603:10b6:a03:c0::35) To SA1PR11MB6733.namprd11.prod.outlook.com
- (2603:10b6:806:25c::17)
+In-Reply-To: <ZGaAVAI9u4K4vy1/@x1n>
+X-ClientProxiedBy: MN2PR01CA0018.prod.exchangelabs.com (2603:10b6:208:10c::31)
+ To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|DM4PR11MB5279:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e2cfba9-edfd-4a6a-15a1-08db57dd28b5
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|BY5PR12MB4306:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08059e32-3499-4efe-1ecb-08db57dd2a49
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PqToWcm21ACpPOA+mI52DVDtHa8dg+dcmaMCh8R6HMDqBY3G+mnvNNK0VyDmmwq6f8zjB4MudS3GBCn832zbqFTeYijryU1oFT+iC1UFTrfBd/eRJl2bmR8bwqe6cBg+VLZcg/xiWDuZt/gmcWBY+c/nDX7M1UARoz4C0s+L9ljWsCjJfrQZiXXuHBn48PXg9m5fYRXdK9aTGBk7ZUfQpc9NUUSBTquOWn4ZybjzUDZbK2uhyz9H/WAq+NL5A5NnygLVBT5uQ7VfuxMZo1QkwDyJL7X6Nti4WmjBS+uspXZSJL8LOWJFnwn26QAcYsNLnDNwA4vyaIRuq2hXIXJIc7+HEzcWaaspKEL/muG3yNCZ8uhrXspUZcFXPc+UiweUNDBlfgr1vCRgft89LDo604yNXte8W/Yu6L2xwNVNXEtp0WvKenaeTv3ZY1Y/qO2vJdhTa/J/ledlIkQnyJjB+hgW7SDLQUnj/7t/H5uUMbnsLZqCxzjOf5EfyQMPtu0RkkL6V/hByjpLU2d4CYs1Eg7LKmVjdXEs76dJxB5bsd/STyPoeIaykKlRxnBHr+TR
+X-Microsoft-Antispam-Message-Info: JXS0PTx+/7XFQYkUwj3wgLQHdtS69cwHp3wql2SNseUiKFuJjYzOTd1vRZJXrHPlTgjKoREQUgCd8PBXsJgQOO9CMysdM/zk41AKkpSeI2YzVF3ZdHNi9/CljvQhNwkx5faHxaWKszxQHhz8OJc5szHCTGZENpbO7wlEqM63xq8DgIZplT22dOZsZH8DeNux/vTK06HGp1qmS1wQlYt3PEccuTvlVpYU04+CmEuESUztkJsV8igZlIKbCNB4+B9MQpif+Ouvp9gQUzEdixg0qbUh88Qvx+3V5z97q+8h0Saf23HhmtJ0y2N1sYi2KOK96PB6kTi1H29TgxK8es0LCcOM7q7GSUCqE0HRsdGgT8EIpEntf3DQhBejfdPDxrduQ48JmVud3bCMddTT13zLFGNRf5i0mUEw+YuL6H0uDqLKZOIwgID6QfXtIvg7E1onP2YJy0gGbi1usapAht6qu5JfUq8F+U3glSosaH9v+cyFm4wlp6U4tYaf9BZx0ZgRPDk5cnKofs7KyMFbSOwf20WWEtUF7lwBXKu5paJmsbz1taHgry1mI8OUhShyJ9xr32X0WHgOzAEgJhDUIE2dKubFaxsurecNbkSGCvnsDvM=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA1PR11MB6733.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(136003)(396003)(366004)(346002)(39860400002)(451199021)(5660300002)(41300700001)(83380400001)(4744005)(2906002)(86362001)(38100700002)(82960400001)(8936002)(9686003)(6512007)(6506007)(26005)(44832011)(186003)(8676002)(107886003)(66946007)(66556008)(66476007)(6666004)(6486002)(478600001)(54906003)(4326008)(316002)(110136005);
- DIR:OUT; SFP:1102; 
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(376002)(396003)(366004)(346002)(136003)(39860400002)(451199021)(478600001)(36756003)(86362001)(66556008)(316002)(54906003)(6916009)(66946007)(66476007)(4326008)(8936002)(2906002)(6486002)(5660300002)(8676002)(41300700001)(38100700002)(6512007)(2616005)(6506007)(83380400001)(186003)(26005)(67856001);
+ DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RciLKuPqNNJ6Z3ScwQGJolwc6Zj66uxAAJMo1R2HVEr3D79KMG2k9KOMw3Ak?=
- =?us-ascii?Q?sVq3OrsUfq5AOk7SacZEDGTV0D1JOqm7JJrRtDtHHNicO+T7ZYQON+0isQEt?=
- =?us-ascii?Q?dBJeJzvLTNurutUrx6WQ7BfT6aJoW/7Twuia9B6/fG/7nmGkYLzlmzyPxfz/?=
- =?us-ascii?Q?kYgGlX2DsVn1Qd8B08alXn7VvfRXr6UPMy49o5QYudRYdz6X1ht64qj75qpY?=
- =?us-ascii?Q?KgZeC8iCPhA+Y8RTsc3+TCu5VQLDViIpbRbUNRqXazBDTymN70eYqHz2PbOo?=
- =?us-ascii?Q?Sl700VmNxJqxO4hvvMiuzz+px7SCe8CDSZNd4BfwLyt7j/HIlx9uje0pTW5o?=
- =?us-ascii?Q?rF+v9p5JMmPq7jmWZAeZFhe5AmQax2Ta1FNMNe1AFuMF0h9PhLx7AdjNkPrr?=
- =?us-ascii?Q?67TEgPopuL5bftmLt7JIV5VXHVp2YrVLyOsqAvoLgQ1gbB+3BmeDPCFRUDRP?=
- =?us-ascii?Q?YpxEkR278LcCVRZDdBByjbwmrgq9Feh0OCC74lsRDWGxr3UzthtFo3JO5u0r?=
- =?us-ascii?Q?s9i8A6BT1efu2K1R5JiTfmKvrxcl6xB0KoSwpgTiERnezm62Csf5w6fC6JCN?=
- =?us-ascii?Q?iuK8qq8wpxUsTjJ4fb+axHxXN/04bYsM6iWWusRtnDJXneeHnGopKTYDQMTj?=
- =?us-ascii?Q?vtsao5wEvphUVdVnTq2zPNPFz40MMSl57QuOHxh6MdtlK6lLsATEM2DbpcYj?=
- =?us-ascii?Q?bAlEfVsBf6uM9jyhcBZYmivUfRz/2yJWAsM56ODjxXKVdQQwIrJoPKY0e8c6?=
- =?us-ascii?Q?jo0oxQVm5P7iOhDGpDrOORMeL78vnYjL9Va4uMorQ074SmWSVs7B+peunhDM?=
- =?us-ascii?Q?bEvPoXlSJCrWWR2tX3hTtGg78qe7UbnViorxDX0sEG1gP2vOWcmkVRjkNpp3?=
- =?us-ascii?Q?AqDxedyVsBWYAPcSVa5/XnINV6UhD7LuaVRdJv+J3GCZn4BafdcDLknEJgpy?=
- =?us-ascii?Q?ua79tFZPB3fyOgUFyPWzsdqmp0a9h0eJvHGuEGkg+KXFFTx/iYCObNd663X0?=
- =?us-ascii?Q?kOXiby/cmtPb/pRlmbe8WRgDxYmycAWtG+xT/Vj8+GX8FKv0GBGfC7LctXjJ?=
- =?us-ascii?Q?Xd/tmP0phU07SguXViMzRu0A8J1XDg8TD+SmPLRX8Xl+1Enens4YBxiSBkEl?=
- =?us-ascii?Q?2tBHM6N6WKBi/s8IIoXO1ozKz4Qywlcmp6+VbIW1FT7OD+yA+bGqHct58vUT?=
- =?us-ascii?Q?0q/bJdWgB2Ok4nZZO+jF3maIx/X7yhm1QaKdVtAjB75OLiLn6Ojlugc4Qitz?=
- =?us-ascii?Q?W+tgdPNZGtm7WmDxndXsT81FiHLnP/T9gCQGc0wIOWtsbIP4o8Wodb9kqLGL?=
- =?us-ascii?Q?n+sMUhDCDZVmkR9Xsgl0uvHw7t3zItL3347yp1OyI/++8JIv4A4pjL2mJgpS?=
- =?us-ascii?Q?P6PBINLVCbkh0rkBa++4vcUjXJONcVfllOlO4/rzua88HrOGNsz9twMK2fCZ?=
- =?us-ascii?Q?C8983kMjxiT3bfhDHM7L9K6TSuGV/i3Hy9yg3bpEAJOnKldBDm/cXx/+y4kW?=
- =?us-ascii?Q?ablOxu+/f37z1eTEsOXUq2SRTTr7YasklFn6Ix1f1GBSiy/f2J8ndfqD9Rls?=
- =?us-ascii?Q?8hfNOhJQ3OKs9l5lOP6NS3kseJHLzyChhotI/zMT?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e2cfba9-edfd-4a6a-15a1-08db57dd28b5
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?HZXZXZe05YVqsQ7d8p+xPKY+gWOnm3DTyabH68ELfjvtPGTjaEdOzuLZ2dJK?=
+ =?us-ascii?Q?zOU1Jb6j27w3WGcO01bh7BZdr72dkNLTpf2wT1ek/xUdjaSJXf3NkJinYhDg?=
+ =?us-ascii?Q?y+AnPkyaN0dRi5WwlTpYh7T4EdOGmoPYLhRyqzs1QXoOhvYmVfID1Bt1CL0V?=
+ =?us-ascii?Q?oMqm169JGs9nS/4FML7SRc8+Wvzn0HM//dX4GBo0xHSPAd73DQ9i7mja7TNt?=
+ =?us-ascii?Q?KfDhPvEhHvztoC5Iu6zMSiN6XJfwBhz2gZgbqh4S0D01gPvFYkAmnFNgvPxJ?=
+ =?us-ascii?Q?rxbqfiQLFS2TsJTxTH1uWE64wA+QQkF8jtHFty6WhlxbdpiwZBlE4JNHsxkl?=
+ =?us-ascii?Q?qiwN2kt+b4gf+MdkOhRkFPZE1s3jmzUMT+t8c4T0yW3hZJPeURFBrH0B2Qz1?=
+ =?us-ascii?Q?WvWuRk2+Ag+BQr4SCK29tgx1fbXkewDKy8ArqD8pQMvvLp8yyOgNiiUvjDMX?=
+ =?us-ascii?Q?LQ0MhzgYTT5Z+1iXCieT38+ib+CtbJuSsXdfJZPt/nWzJgR3l4cJIO8cT3zN?=
+ =?us-ascii?Q?kJgx3BZ483WC/BDa8MauV78BlAkBn5BwJnsgq8YSe2CIJuNIELEmihbOYFtl?=
+ =?us-ascii?Q?JSAZ7HylzDJkr4UtKvxb+FWfecd0NcnCoyHi1jg0x2ue2GM76wSN8xNsRCpK?=
+ =?us-ascii?Q?1IdT2TTKD82X8hNxHZRvjhoc8nlufUJYifXCM2srkLfgBp/X1xECTR3E7eom?=
+ =?us-ascii?Q?ICYf6iNht7VtR3VrRq9iXHAZ7434/xUT+oGullaT+LM1M0LJ1dYVlP4EYJmD?=
+ =?us-ascii?Q?+Oa/FySosbbfzLbnb3N/7g8z4tVTohdFL375JKmcQxuhrKB7vlCJKT8n45nd?=
+ =?us-ascii?Q?gxThht/fS8vvCS/AVftdAMu1DkPa1pliSfw1ftw+lEihOpKwH74ULxLaWLds?=
+ =?us-ascii?Q?88KU9pIRY9/HpfZI7AHuQKU1QB8g6bSUfr6vc81PA2GKwC6GqAvOJrKJot83?=
+ =?us-ascii?Q?2jVZ35LLvRKIQXGAiwIanXhDOR3EJUMiLO/KGPy0/fGzeyoh0MEoGfT7AQvY?=
+ =?us-ascii?Q?dH+Nh03Wdo3sccqWYqmPWWHkxql5s4SyGtRXBIVJ/EzJIODtsVpjD2zI7NcS?=
+ =?us-ascii?Q?tjPYTi7+ObzhKQXlQJpHvLlF3rumimiS9O+AXnxHjtRNHlWc7gAVAnd7OJv2?=
+ =?us-ascii?Q?45unmFaZ2GZwDophSpttsfqZYkldGxo5DbWy0oNs/rLRaIm3sB0sao3hBpFk?=
+ =?us-ascii?Q?zoVdI7LS6AgiZC+K24PcR/DqDmRq0s5tOtdiHoKUHYuwvcNX0hPXzQqc2+Sq?=
+ =?us-ascii?Q?D9FeWhP4krm2RDLHZeWfOGDcNxnNDOcwUDgNzdKc/0caJQw8XrlXS3pX2cM2?=
+ =?us-ascii?Q?2q3b2MbuxLt82yxs3VG3hYlOxe05MckErgUkQ972b7o3xA6KrGwo21l6VDZG?=
+ =?us-ascii?Q?2B/4zRbrPiMQGWPRhc/s9G6FUvVlkm1xj4WzDGQESrifjEYrbrS1tmi0SbQ8?=
+ =?us-ascii?Q?qVKXQ1jgvvjbOyUx4+vcuS/CoNNbUGw2P6ksh2CRktTrdvYoJDcP2bElmUrE?=
+ =?us-ascii?Q?JCrneL07WlbnFLrUCnHhPnlFlHa/XhXmu0lriWIhIMB6qC11uWUItLA6Oxzp?=
+ =?us-ascii?Q?+je3PzteoGaaq25eZ3a/nLIO01HhRvWnSxaTWa8/?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08059e32-3499-4efe-1ecb-08db57dd2a49
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 20:19:18.9415 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 20:19:21.3472 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2njHQI01MCvZ5JVfWT2VI8vG+BLYCjvnIYhQsolH7UMPMNM7YokNnHhW5MDOt0wDf3+zBg8rL/VgbXK1dwIcJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5279
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.120; envelope-from=ira.weiny@intel.com;
- helo=mga04.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-Exchange-CrossTenant-UserPrincipalName: EgVZ7VV4aMz76g5IjNHsOhpohrpSwEzDRBIM1x6li0XegRKY5WvJ2loI1Txjt/fu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4306
+Received-SPF: softfail client-ip=2a01:111:f400:7e8d::60c;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -168,28 +138,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jonathan Cameron wrote:
-> On Wed, 17 May 2023 19:45:54 -0700
-> Ira Weiny <ira.weiny@intel.com> wrote:
-> 
-> > Magic numbers can be confusing.
+On Thu, May 18, 2023 at 03:45:24PM -0400, Peter Xu wrote:
+> On Thu, May 18, 2023 at 11:56:46AM -0300, Jason Gunthorpe wrote:
+> > On Thu, May 18, 2023 at 10:16:24AM -0400, Peter Xu wrote:
 > > 
-> > Use the range size define for CXL.cachemem rather than a magic number.
-> > Update/add spec references.
+> > > What you mentioned above makes sense to me from the POV that 1 vIOMMU may
+> > > not suffice, but that's at least totally new area to me because I never
+> > > used >1 IOMMUs even bare metal (excluding the case where I'm aware that
+> > > e.g. a GPU could have its own IOMMU-like dma translator).
 > > 
-> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > Even x86 systems are multi-iommu, one iommu per physical CPU socket.
 > 
-> I guess we should do a scrub to move all refs to 3.0 soon
-> given it's horrible having a mixture of spec versions for the references.
+> I tried to look at a 2-node system on hand and I indeed got two dmars:
 > 
-> For future specs, we should only do this when sufficient X.Y references
-> have started to appear - I think that's true for r3.0 now.
+> [    4.444788] DMAR: dmar0: reg_base_addr fbffc000 ver 1:0 cap 8d2078c106f0466 ecap f020df
+> [    4.459673] DMAR: dmar1: reg_base_addr c7ffc000 ver 1:0 cap 8d2078c106f0466 ecap f020df
+> 
+> Though they do not seem to be all parallel on attaching devices.  E.g.,
+> most of the devices on this host are attached to dmar1, while there're only
+> two devices attached to dmar0:
 
-For the kernel side I think Dan is taking the 'if you are updating it then
-update the spec' but otherwise leave it be.  So since I'm touching the
-code I updated it.
+Yeah, I expect it has to do with physical topology. PCIe devices
+physically connected to each socket should use the socket local iommu
+and the socket local caches.
 
-I agree, it is a pain to have to look at the 2.0 spec but you can do it.
+ie it would be foolish to take an IO in socket A and the forward it to
+socket B to perform IOMMU translation then forward it back to socket A
+to land in memory.
 
-Ira
+> > I'm not sure how they model this though - Kevin do you know? Do we get
+> > multiple iommu instances in Linux or is all the broadcasting of
+> > invalidates and sharing of tables hidden?
+> > 
+> > > What's the system layout of your multi-vIOMMU world?  Is there still a
+> > > centric vIOMMU, or multi-vIOMMUs can run fully in parallel, so that e.g. we
+> > > can have DEV1,DEV2 under vIOMMU1 and DEV3,DEV4 under vIOMMU2?
+> > 
+> > Just like physical, each viommu is parallel and independent. Each has
+> > its own caches, ASIDs, DIDs/etc and thus invalidation domains.
+> > 
+> > The seperated caches is the motivating reason to do this as something
+> > like vCMDQ is a direct command channel for invalidations to only the
+> > caches of a single IOMMU block.
+> 
+> From cache invalidation pov, shouldn't the best be per-device granule (like
+> dev-iotlb in VT-d? No idea for ARM)?
+
+There are many caches and different cache tag schemes in an iommu. All
+of them are local to the IOMMU block.
+
+Consider where we might have a single vDID but the devices using that
+DID are spread across two physical IOMMUs. When the VM asks to
+invalidate the vDID the system has to generate two physical pDID
+invalidations.
+
+This can't be done without a software mediation layer in the VMM.
+
+The better solution is to make the pDID and vDID 1:1 so the VM itself
+replicates the invalidations. The VM has better knowledge of when
+replication is needed so it is overall more efficient.
+
+> I see that Intel is already copied here (at least Yi and Kevin) so I assume
+> there're already some kind of synchronizations on multi-vIOMMU vs recent
+> works on Intel side, which is definitely nice and can avoid work conflicts.
+
+I actually don't know that.. Intel sees multiple DMAR blocks in SW and
+they have kernel level replication of invalidation.. Intel doesn't
+have a HW fast path yet so they can rely on mediation to fix it. Thus
+I expect there is no HW replication of invalidations here. Kevin?
+
+Remember the VFIO API hides all of this, when you change the VFIO
+container it automatically generates all requires invalidations in the
+kernel.
+
+I also heard AMD has a HW fast and also multi-iommu but I don't really
+know the details.
+
+Jason
 
