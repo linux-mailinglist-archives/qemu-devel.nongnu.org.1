@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47C7707D2C
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 11:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE96707D3A
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 11:49:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzaDh-00051y-Gb; Thu, 18 May 2023 05:46:49 -0400
+	id 1pzaG9-0005rz-Qi; Thu, 18 May 2023 05:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pzaDf-0004yU-CH; Thu, 18 May 2023 05:46:47 -0400
-Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1pzaDd-0007eR-JR; Thu, 18 May 2023 05:46:47 -0400
-Received: by mail-vk1-xa31.google.com with SMTP id
- 71dfb90a1353d-44fdac26696so678455e0c.3; 
- Thu, 18 May 2023 02:46:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684403204; x=1686995204;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TTGha2+UDqoCQhdIBbOft/9BW9/Oywsy/b7ztAWumSM=;
- b=i6M61hsKXQZySs5SAHVXgz6IQXlotfVD/iUjtonXCCElmoyM0SnCkFzh4S/zRbum8a
- 01uCXfTqG3uP9Oke5uEGx45osM2dKe9xn4ZHXsQTMN4LG4ePX2SGrNE2eLukV2ls1qsr
- WDaWoNL0AXAnVtFvvvNeHpfzrIufGvAlaMK86neXDLe4vtmPHjwEGTedbRlOxXREJV1S
- MrZYHGDSX0bS/Q9W3yO7LjWDC/Iga4kJdit2rZAfOP6vhS/k2V3xnH4bHjJ5bQ5346tW
- 2SAYggtk4Ghuv//nNmfyKI4fgrLAvmDaeyBTVQSjv4IEIVq7SGbmAlRtoo3K+NzV8V59
- q2yw==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pzaG6-0005rV-QX
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 05:49:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pzaG5-00083r-9P
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 05:49:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684403356;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=vRd+lHne9UXH/fGhg39XeK4jgNBBN5NEHZR9iTW19Z4=;
+ b=V5OtuHQjeLpm+woutSLi9d6ohck1vpKWLo8TIJj5TjRDvqXHh3g9FPMJdSWi8h4N7hVIhH
+ VgjorWVV5J8FsoIqrbUL67TKvuUCBnYauN6gVb92p4ffZEqnhyGnoCkAtS9tqMP2xQDcTi
+ JuB8FultE+uh5UIjjVkSF93jbPO2NeA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-1l61p0IJPZi6Wdi53g-qbQ-1; Thu, 18 May 2023 05:49:14 -0400
+X-MC-Unique: 1l61p0IJPZi6Wdi53g-qbQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f42ceb4a4fso6871085e9.0
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 02:49:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684403204; x=1686995204;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1684403353; x=1686995353;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TTGha2+UDqoCQhdIBbOft/9BW9/Oywsy/b7ztAWumSM=;
- b=IgUU8YHxN25rgUfo5wYE0ceONw2tbl850BU8ymoaBxX4qqr4fT/Wq0crSh4Wo41J9r
- t8+RrrP0UvDjXMXy1IfLHpedmzeBFR7XdueqHWzMHsL+zlu9xHHedzinZa8kvFKA8q0e
- 2/KKhqjAaTJpIUPnYHHCAKMV9Re7eoH/gPzWusDA4q79KSvSH2FAtLj2rt6aAphQ0PkF
- EyTu5Yu90qLG0l7hQ0QGtMfnRjmdT051IxANL754ePlT0md3+whjxoCYORzwebyo4HrU
- N8gwmUqmQrEgTnr5mGltJqtyoPy/ehuIWdlGBh/lVHY5+s+BXT5QbL7olIA60X4DBVLg
- iz7Q==
-X-Gm-Message-State: AC+VfDy1/099ozMFG5TKQvUmXEyIKBC+hjF3dBLyzcEeimtcBngGWlPJ
- taJ2haulbarsM9+B48mKGyVA/5wI+HG6HPZyaqmWSdecBowQhSbL
-X-Google-Smtp-Source: ACHHUZ7ofFP5HTQQmoXBBSHQOgaoFrcSzpcOzc/Fnt6KbLv5/jDha55LhWZsK3OOxRhQ+i3TdnzaemCb3R7RqkThCqM=
-X-Received: by 2002:a1f:4513:0:b0:453:2ae:f37c with SMTP id
- s19-20020a1f4513000000b0045302aef37cmr380346vka.2.1684403204130; Thu, 18 May
- 2023 02:46:44 -0700 (PDT)
+ bh=vRd+lHne9UXH/fGhg39XeK4jgNBBN5NEHZR9iTW19Z4=;
+ b=dIgHvukTD8sIudzmF2S44i0uBxNnAyGfHkYThHHFMj3swJKqhR80nCFzPbgIJunfYV
+ yRfmWdtCKqEv7TPxkFGftUdmSrG6rnWLA7xshJn/TwCarDG+4lf9YigdT1pF4RO8gAys
+ lEVtdQkG6rmLsf7opm1ByyZD4KxVl5RKafQO8GrHgAbIjwh4thZ4E4roZJVD1yjrujvi
+ GVOz5hvAmR/1ADjgJiUuw95KuxSOZ2Zq/VbycAcogtR6L1TAwNQ1HKh9rkkOT5lsvMrK
+ 5nb0Kr08EvJrd+yfbX7/U3rKBPaW/bLEdDLDfdswWzufSMk6LYbceaQpcY/GnFi3hy7c
+ 6VLQ==
+X-Gm-Message-State: AC+VfDyezvTgASL+cX4OI/bAcm2CvRRaQcRZOR3vRyJexxLaO3sGDw6k
+ zizxK/LxCeekUEaHz8YfTIV/pWLhMOmQU6WRHK61KAPOXvoUn9/RB74nmi9Ty90RBeK7IqtaKPd
+ LVI38rxxOL2FQsMd6PxdKw4NCBQ==
+X-Received: by 2002:a5d:670c:0:b0:306:340c:4737 with SMTP id
+ o12-20020a5d670c000000b00306340c4737mr906184wru.67.1684403353074; 
+ Thu, 18 May 2023 02:49:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6K+nwVvu6GOTpz4GkQX7UfagvKF2vociJyGiSzbPyH8MH5di1UDK2BjZz5sOYNUcjZUXAizw==
+X-Received: by 2002:a5d:670c:0:b0:306:340c:4737 with SMTP id
+ o12-20020a5d670c000000b00306340c4737mr906173wru.67.1684403352778; 
+ Thu, 18 May 2023 02:49:12 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ o14-20020adfe80e000000b0030644bdefd8sm1612293wrm.52.2023.05.18.02.49.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 May 2023 02:49:12 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,  peter.maydell@linaro.org
+Subject: Re: [PATCH 5/9] util/bufferiszero: Use i386 cpuinfo.h
+In-Reply-To: <20230518044058.2777467-6-richard.henderson@linaro.org> (Richard
+ Henderson's message of "Wed, 17 May 2023 21:40:54 -0700")
+References: <20230518044058.2777467-1-richard.henderson@linaro.org>
+ <20230518044058.2777467-6-richard.henderson@linaro.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 18 May 2023 11:49:11 +0200
+Message-ID: <87r0redl60.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <20230517091519.34439-1-liweiwei@iscas.ac.cn>
-In-Reply-To: <20230517091519.34439-1-liweiwei@iscas.ac.cn>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 18 May 2023 19:46:17 +1000
-Message-ID: <CAKmqyKMi+hXYe-0z=P9APn7x0zx=aiAc=eyKTy7trUUU8evq+A@mail.gmail.com>
-Subject: Re: [PATCH v6 00/12] target/riscv: Fix PMP related problem
-To: Weiwei Li <liweiwei@iscas.ac.cn>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org, 
- wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,105 +96,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 17, 2023 at 7:16=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.cn> wr=
-ote:
+Richard Henderson <richard.henderson@linaro.org> wrote:
+> Use cpuinfo_init() during init_accel(), and the variable cpuinfo
+> during test_buffer_is_zero_next_accel().  Adjust the logic that
+> cycles through the set of accelerators for testing.
 >
-> This patchset originally tries to fix the PMP bypass problem issue https:=
-//gitlab.com/qemu-project/qemu/-/issues/1542:
->
-> * TLB will be cached if the matched PMP entry cover the whole page.  Howe=
-ver PMP entries with higher priority may cover part of the page (but not ma=
-tch the access address), which means different regions in this page may hav=
-e different permission rights. So it also cannot be cached (patch 1).
-> * Writing to pmpaddr and MML/MMWP didn't trigger tlb flush (patch 7 and  =
-9).
-> * We set the tlb_size to 1 to make the TLB_INVALID_MASK set, and and the =
-next access will again go through tlb_fill. However, this way will not work=
- in tb_gen_code() =3D> get_page_addr_code_hostp(): the TLB host address wil=
-l be cached, and the following instructions can use this host address direc=
-tly which may lead to the bypass of PMP related check (original patch 11).
->
-> The port is available here:
-> https://github.com/plctlab/plct-qemu/tree/plct-pmp-fix-v6
->
-> v6:
->
-> * Update comments in Patch 1
-> * Remove the merged Patch 11
->
-> v5:
->
-> * Mov the original Patch 6 to Patch 3
-> * add Patch 4 to change the return type of pmp_hart_has_privs() to bool
-> * add Patch 5 to make RLB/MML/MMWP bits writable only when Smepmp is enab=
-led
-> * add Patch 6 to remove unused paramters in pmp_hart_has_privs_default()
-> * add Patch 7 to flush tlb when MMWP or MML bits are changed
-> * add Patch 8 to update the next rule addr in pmpaddr_csr_write()
-> * add Patch 13 to deny access if access is partially inside the PMP entry
->
-> v4:
->
-> * Update comments for Patch 1, and move partial check code from Patch 2 t=
-o Patch 1
->
-> * Restore log message change in Patch 2
->
-> * Update commit message and the way to improve the problem in Patch 6
->
-> v3:
->
-> * Ignore disabled PMP entry in pmp_get_tlb_size() in Patch 1
->
-> * Drop Patch 5, since tb jmp cache have been flushed in tlb_flush, so flu=
-sh tb seems unnecessary.
->
-> * Fix commit message problems in Patch 8 (Patch 7 in new patchset)
->
-> v2:
->
-> * Update commit message for patch 1
-> * Add default tlb_size when pmp is diabled or there is no rules and only =
-get the tlb size when translation success in patch 2
-> * Update get_page_addr_code_hostp instead of probe_access_internal to fix=
- the cached host address for instruction fetch in patch 6
-> * Add patch 7 to make the short up really work in pmp_hart_has_privs
-> * Add patch 8 to use pmp_update_rule_addr() and pmp_update_rule_nums() se=
-parately
->
-> Weiwei Li (12):
->   target/riscv: Update pmp_get_tlb_size()
->   target/riscv: Move pmp_get_tlb_size apart from
->     get_physical_address_pmp
->   target/riscv: Make the short cut really work in pmp_hart_has_privs
->   target/riscv: Change the return type of pmp_hart_has_privs() to bool
->   target/riscv: Make RLB/MML/MMWP bits writable only when Smepmp is
->     enabled
->   target/riscv: Remove unused paramters in pmp_hart_has_privs_default()
->   target/riscv: Flush TLB when MMWP or MML bits are changed
->   target/riscv: Update the next rule addr in pmpaddr_csr_write()
->   target/riscv: Flush TLB when pmpaddr is updated
->   target/riscv: Flush TLB only when pmpcfg/pmpaddr really changes
->   target/riscv: Separate pmp_update_rule() in pmpcfg_csr_write
->   target/riscv: Deny access if access is partially inside the PMP entry
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Thanks!
+Semi related to this.
 
-Applied to riscv-to-apply.next
+For migration, I check every single page to see if it is full of zeros.
+But I can promisse that it is just a page (i.e. 4KiB, 16KiB or 64KiB,
+correct alignation, correct length, ...).
 
-Alistair
+Will do it make sense to have an special function for that?
 
->
->  target/riscv/cpu_helper.c |  27 ++---
->  target/riscv/pmp.c        | 203 ++++++++++++++++++++++----------------
->  target/riscv/pmp.h        |  11 +--
->  3 files changed, 135 insertions(+), 106 deletions(-)
->
-> --
-> 2.25.1
->
->
+Yes, I have found with perf that bufferiszero() is quite high.  No, I
+haven't try to experiment using a function that is optimized for the
+page size in the architecture.
+
+What do you think?
+
+Later, Juan.
+
 
