@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C41870855E
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8BF70855F
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:53:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzfve-0001y2-8h; Thu, 18 May 2023 11:52:34 -0400
+	id 1pzfwN-0002Wh-11; Thu, 18 May 2023 11:53:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzfvc-0001xu-OK
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:52:32 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1pzfwJ-0002OS-VG
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:53:16 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzfvb-0000TA-96
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:52:32 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-510e90d785fso1083144a12.2
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:52:30 -0700 (PDT)
+ id 1pzfwI-0000XO-AI
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:53:15 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-510e419d701so1862111a12.1
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:53:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684425149; x=1687017149;
+ d=linaro.org; s=google; t=1684425191; x=1687017191;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Ykp/NMO2d73c0SnK4LV8R0oIFsbb8dCN1sBdkCj+DNE=;
- b=w1R1Ba511l7quQlbqS7f5NIFGd4MrOnFjocgAl601Ccy7iU4NjHIkZY1C5IsO2LTq0
- kQKD+P5Pcd3NCCLMbi0k47T8QUYBHZgDWhNdsYAOMy1JzKGFS0mTe229q74khKInHUrf
- 5UTh3B7bZxqFlPqIwaCQ+VDxcd9KO80W7tnZugFvaQrdvKpTH05h89Y5uXR7mqpCK+Lh
- ruLnkAmNCRDv+rF9891Eu8yv7anI4clo1uMiaVsIQCzgbmoAJhwlbyEMaZ0zYOVEpgek
- wjNRMLUWtH80gzE+IQMtDyx/BOnQq5kB+O5lcqpN5AbBwBSCQRPEDBUwtefvZKucO79n
- 91YQ==
+ bh=HzAxjRWg6oAnaYwcIoiUlQTiEpqRX0Jn7vfdp876LBU=;
+ b=ij58i4GVdwGSk1MiNfdawzDHH3ZZXTXD/WqbFjJta+fVDXjAawBMgmjEtum4qSYfsV
+ 5MRkU2vX0F3U9kV7WeWfmHauK08b5Q7gczO4Ib73AqUywy8DVRw8wFz573/FGORmW1f6
+ Sgy9fIl9r3PbbI6Y4u12u57vNA4o8R9NzYAXrlP5JrNnWZ9iHe1gbz4wsMU6nr8gJNOJ
+ cLQdOJRPhsfM/X4NwtsxH/upy+4nNaFjMJ5XmrRuin3j5qB+yppqACt4o8E6q3H5y3Fc
+ tyRZxm0KyaWeIixgz0n+pkloKhp1CmNO9s4tMKGCGP0P1qpOWBPsi3CHxT8sN8Nbrd6v
+ 3cEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684425149; x=1687017149;
+ d=1e100.net; s=20221208; t=1684425191; x=1687017191;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Ykp/NMO2d73c0SnK4LV8R0oIFsbb8dCN1sBdkCj+DNE=;
- b=A8N+jMIVys/MwwRFje0TPHN9tvukw041VbXLt5kZ5A5o1ODl9krLJwA7q9C3SnC0oj
- NBzJ98obqySnHtD9G43baqk9nOMol/toJUB+hJTm+TuMYLYCRVzbiEg++3g/X2VQF4US
- jvfGOnaxtpnyJdCeEuanxSiblQ4++vRlCz56mg+56yaPRbV4wJKOQnAOpJnIUm6h5FJ3
- kRk5T3jP3XHjTcQ215WCme1CN06LsfaObbvz//AGOVKKUbG/ul2zyYIUsgt/zb/nR8fe
- y8Lug3TSD2Mqqhin7oHBJDPAVkvJ4ylUaN7FlwKVbhlpN+WpxQnwX0576y/1+qpgkboi
- Rz4A==
-X-Gm-Message-State: AC+VfDyg18PLnZVk3YLcRZv56rHrL255BoZLs8RFfItM2q8mbR1Kd+di
- m0xd91UnJ8vJNySk/gnA+t4hiKAXTsLAroqIlZPhtw==
-X-Google-Smtp-Source: ACHHUZ6gpj3VB7j6jonpGXnzz9kIrL6g4DXPVOm5JipSqIVkhD7OAuiHcfTc2SbxQ51SLp2fh87So9m41aSrqGrk+tE=
-X-Received: by 2002:a50:eb48:0:b0:510:d9b3:11fb with SMTP id
- z8-20020a50eb48000000b00510d9b311fbmr3554838edp.40.1684425149412; Thu, 18 May
- 2023 08:52:29 -0700 (PDT)
+ bh=HzAxjRWg6oAnaYwcIoiUlQTiEpqRX0Jn7vfdp876LBU=;
+ b=Ywyv1tbNtUGDJqgiD7xabN4gobMOsOwUDC/eoE8WJNNQhgRp6w3w7RbkDCiGRPs/w1
+ dZ+QdLiwrVW9i25C2sh92VF8ONj1FLXqFZ3hjD2Vfy5u6zVdUl93pcO0LqtR3MCF5hpR
+ g97jNjj+o/+lGg6fOKYaaUW/oRNAzGvhakrNpZnXWfaMqrBh8vXe8K1nGrnPSRfA6ECK
+ QP3S6QIuEeDi59JRq9pKxrGeiUT5FkTNh5aV/ftsSMQWuTLuW7BeqqmlAGVyOh+NSIVY
+ K2qZbMQas1J6Jislf1o7JAdZBxpMfu93ZINU0RO1jYvqB6+elnY6Dhrebu0gUGDfmdfr
+ 5HDg==
+X-Gm-Message-State: AC+VfDw2Dog7N162/BdVvYpKDQ5Jc8YAQjeyT48DssZgH7xi3W9iSjyg
+ qDri/x2Arjjl1OySCd+3Z2YBN2J/fVRYoBbSmEyiE0rah7DayjNa
+X-Google-Smtp-Source: ACHHUZ4k4ry0vqoUw7GWMsXJobhx86G1pHlhd7YOTrD2kWWHMmWCCspOCFXrYyy/lzBm4lDE+ciU3qaFUpnxNkbmnlc=
+X-Received: by 2002:a05:6402:1a48:b0:50b:d23c:deb4 with SMTP id
+ bf8-20020a0564021a4800b0050bd23cdeb4mr6353154edb.42.1684425191517; Thu, 18
+ May 2023 08:53:11 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230518044058.2777467-1-richard.henderson@linaro.org>
- <20230518044058.2777467-4-richard.henderson@linaro.org>
-In-Reply-To: <20230518044058.2777467-4-richard.henderson@linaro.org>
+ <20230518044058.2777467-5-richard.henderson@linaro.org>
+In-Reply-To: <20230518044058.2777467-5-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 18 May 2023 16:52:18 +0100
-Message-ID: <CAFEAcA8PndFpVuitJd1CR3BG7mhtkMxp98jdNQo+F_YwK5640Q@mail.gmail.com>
-Subject: Re: [PATCH 3/9] util: Add i386 CPUINFO_ATOMIC_VMOVDQU
+Date: Thu, 18 May 2023 16:53:00 +0100
+Message-ID: <CAFEAcA-bM_14e9pp2UY=wxyHqOKQZkjHrSzND8SLFcHG1bKtQg@mail.gmail.com>
+Subject: Re: [PATCH 4/9] tcg/i386: Use cpuinfo.h
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,13 +88,18 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, 18 May 2023 at 05:41, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> Add a bit to indicate when VMOVDQU is also atomic if aligned.
+> Use the CPUINFO_* bits instead of the individual boolean
+> variables that we had been using.  Remove all of the init
+> code that was moved over to cpuinfo-i386.c.
+>
+> Note that have_avx512* check both AVX512{F,VL}, as we had
+> previously done during tcg_target_init.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  include/host/i386/cpuinfo.h | 1 +
->  util/cpuinfo-i386.c         | 4 +++-
->  2 files changed, 4 insertions(+), 1 deletion(-)
+>  tcg/i386/tcg-target.h     |  28 +++++----
+>  tcg/i386/tcg-target.c.inc | 123 ++------------------------------------
+>  2 files changed, 22 insertions(+), 129 deletions(-)
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
