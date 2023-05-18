@@ -2,83 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BB0708610
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 18:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 495B5708618
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 18:33:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzgUH-000614-JI; Thu, 18 May 2023 12:28:21 -0400
+	id 1pzgY7-0008AJ-6q; Thu, 18 May 2023 12:32:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pzgUF-00060w-Tg
- for qemu-devel@nongnu.org; Thu, 18 May 2023 12:28:19 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pzgUE-0007nA-8l
- for qemu-devel@nongnu.org; Thu, 18 May 2023 12:28:19 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-64d2da6a0f9so40712b3a.0
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 09:28:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684427296; x=1687019296;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gALyqwckLOjKVI/UMJ85Y4Pgw5Qc6o2oxa6ldQNSFC8=;
- b=AgmsqNdx7JG524w5uhHV0crMin/gwdzIxQ/9LK/Q2qF4E1SNuYprisAH2UHvRt56ht
- eTVoCCrgf37VkXy6/SEtC4oXhqSVT4Lse9HT9vZ+Tcgc8JCmKZJ5iznuiWNCROt0Iquk
- y2cCEzOmO5r9XMrZmHhKTyyg4qepSx2xN7vbws8KMEmScteHhQK4ujrCoGAf/Q7SLyx2
- OdTcyR1jONn9fNBlnyRNjdxwW061qQxuHSuMUeYXWoEckjrKPbGQHoRzNJtmNpmDfJRF
- 32f+yoHnnOoAvBtUINVPt0fk2j2Y56xJf0Bt3anVzmrRv5IUeMB/uJh9o5bcQw1T2y8A
- 0ciQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1pzgY5-000880-HY
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 12:32:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1pzgY2-00007B-BF
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 12:32:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684427533;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yrycU8NWg0tOdz/F+YEeKb7WKw+5NqbdR0cKz/jakX8=;
+ b=G/o5U+P1jAmU846Srks7f1FfBzb7X/ylTfKSZZ+J+4mKoU1gVZ7dKw+iQcp6SPoLxSayvD
+ b4c7+tky2lEAp3Yeh8sjm+p0ZSHD3sWbUCfFGysr/6ZSGCeYNdsyix9psN/xQZ6Tq4WhKf
+ ymKvtzpaWnBWazWd2RdRwI5ab/Od+4c=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-pBDqV4ARMmqWYE_xUdQM5w-1; Thu, 18 May 2023 12:32:11 -0400
+X-MC-Unique: pBDqV4ARMmqWYE_xUdQM5w-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-61b636b5f90so4199796d6.1
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 09:32:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684427296; x=1687019296;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gALyqwckLOjKVI/UMJ85Y4Pgw5Qc6o2oxa6ldQNSFC8=;
- b=mBMVfzha6fGyfz2W1ubwMLEMlKcDwJSJHmki+QCGvI/9Lgc3DQM8UYAy5u/9oovhQv
- GwjDrkWhFBionVQuAA3BYTYrJX/1lDm+2q6lgOdZ79WvfUGaB19vKO5Pc5kZ5mttbvcD
- X8DbjAo/voguQ7tbYh5Nb07P4M44nU6ni8COD8zHnJxWgOKP8g+mFSd/Q/ClWEItByCO
- dLFgsYFkgCf68FsqtdVaBAFcgjNiheqqkXklITJXTtEr79b97aTaK1hNXDjfpgtW023I
- z4rIDITn3lewx/e5dfxzJo6KeoWNnjoG0AEiYga3ZRnMFA7CZtQ8D8Ct0SXCdORH40Dn
- 5Smw==
-X-Gm-Message-State: AC+VfDyeCYVImD7mvu5amztthwdb69LiskE8+zWlAm6OSXNqJ05W1GHd
- HJp6RUlnHy79dX1PGfps03ggXA==
-X-Google-Smtp-Source: ACHHUZ5leRo776jvZ7cTGucKAC8n3FX58pk2FzP9GApriH5GpI965ZxdrawR5FT71MvORyMnsC3e/g==
-X-Received: by 2002:a05:6a00:1311:b0:636:f899:46a0 with SMTP id
- j17-20020a056a00131100b00636f89946a0mr5208154pfu.15.1684427296060; 
- Thu, 18 May 2023 09:28:16 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:5dd2:c230:399b:cdc1?
- ([2602:ae:1598:4c01:5dd2:c230:399b:cdc1])
- by smtp.gmail.com with ESMTPSA id
- f12-20020aa78b0c000000b0063b7f3250e9sm1558361pfd.7.2023.05.18.09.28.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 May 2023 09:28:15 -0700 (PDT)
-Message-ID: <f2eab727-5fd3-71d7-7610-0c7ad6af3b01@linaro.org>
-Date: Thu, 18 May 2023 09:28:13 -0700
+ d=1e100.net; s=20221208; t=1684427531; x=1687019531;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yrycU8NWg0tOdz/F+YEeKb7WKw+5NqbdR0cKz/jakX8=;
+ b=AmEaUJTqXPDXj2PdAQ7YtAu4if/cNmYK/k19ITDRxL13jRW4Nu9GbjlYZLEmLL+yc1
+ WisHEIYngj8erYevUPabJYIJbYopaeyhhl5IgBaPQRsX1gp8h0cQN626D80PF56Wdr5Q
+ OQo/gvCfyXMNCYfVICNcOfu43xr1A5NMyT9T6BhjIsn4+ie+Rjl87uDuwrsdhJEU6m9I
+ qttqcSnYdyQVf0XiXYYyT6wQzUF7ABsKHyG+PJIxsA6OFvLeib7ASN1moJpMUHd1JQ9W
+ 66Ae0YjhtXBOMp0ZyBCIF0puoLLUirFrHPuVhJdoTJZxyrzhh2fPKEtjKaQFO9ORyWF/
+ NoJQ==
+X-Gm-Message-State: AC+VfDx7FY3SeLlSBbbeMf5MTedoCvqNvkBPgITyWQ8Pj11ljwgYFw5Y
+ 7b9He4BH4sW1wUgENSu0uwHGcTJ9A5qqNd5MgbfFCqV6EOr8jkmtXTgjsL5JFyZEf1hFnwYO7GI
+ NaD6jfk1zcYSdQ4Y=
+X-Received: by 2002:ad4:5be3:0:b0:5f1:31eb:1f0e with SMTP id
+ k3-20020ad45be3000000b005f131eb1f0emr12435535qvc.4.1684427531285; 
+ Thu, 18 May 2023 09:32:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Bp/tMI4MrADFgIvmNdTwhmppnLm6iL6nhMtW2W5W8wlSSUth5xJ5Yqg78SVTtbvLl16yUZg==
+X-Received: by 2002:ad4:5be3:0:b0:5f1:31eb:1f0e with SMTP id
+ k3-20020ad45be3000000b005f131eb1f0emr12435489qvc.4.1684427530855; 
+ Thu, 18 May 2023 09:32:10 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ mz19-20020a0562142d1300b006211a5495adsm630920qvb.75.2023.05.18.09.32.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 May 2023 09:32:09 -0700 (PDT)
+Date: Thu, 18 May 2023 12:32:08 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
+ Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ John Snow <jsnow@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Greg Kurz <groug@kaod.org>,
+ qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
+ Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Leonardo Bras <leobras@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: Re: [PATCH 21/21] migration/multifd: Compute transferred bytes
+ correctly
+Message-ID: <ZGZTCAHV5M/+w3VS@x1n>
+References: <20230508130909.65420-1-quintela@redhat.com>
+ <20230508130909.65420-22-quintela@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL v3 00/68] i386, build system, KVM changes for 2023-05-18
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20230518114025.1006732-1-pbonzini@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230518114025.1006732-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.544,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230508130909.65420-22-quintela@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,37 +111,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/18/23 04:40, Paolo Bonzini wrote:
-> The following changes since commit d27e7c359330ba7020bdbed7ed2316cb4cf6ffc1:
-> 
->    qapi/parser: Drop two bad type hints for now (2023-05-17 10:18:33 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/bonzini/qemu.git  tags/for-upstream
-> 
-> for you to fetch changes up to fe3ab4eb2de46076cbafcbc86b22e71ad24894c6:
-> 
->    docs/devel: update build system docs (2023-05-18 13:35:28 +0200)
-> 
-> ----------------------------------------------------------------
-> * kvm: enable dirty ring for arm64
-> * target/i386: new features
-> * target/i386: AVX fixes
-> * configure: create a python venv unconditionally
-> * meson: bump to 0.63.0 and move tests from configure
-> * meson: Pass -j option to sphinx
-> * drop support for Python 3.6
-> * fix check-python-tox
-> * fix "make clean" in the source directory
-> 
-> ----------------------------------------------------------------
-> v2->v3:
->          fix cut-and-paste typo in "build: move warning flag selection to meson"
+On Mon, May 08, 2023 at 03:09:09PM +0200, Juan Quintela wrote:
+> In the past, we had to put the in the main thread all the operations
+> related with sizes due to qemu_file not beeing thread safe.  As now
+> all counters are atomic, we can update the counters just after the
+> do the write.  As an aditional bonus, we are able to use the right
+> value for the compression methods.  Right now we were assuming that
+> there were no compression at all.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+Maybe worth mention that initial packet is also accounted after this.
 
+> 
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
 
-r~
+Two more trivial nits:
+
+> ---
+>  migration/multifd.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 9d2ade7abc..3a19d8e304 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -175,6 +175,7 @@ void multifd_register_ops(int method, MultiFDMethods *ops)
+>  static int multifd_send_initial_packet(MultiFDSendParams *p, Error **errp)
+>  {
+>      MultiFDInit_t msg = {};
+> +    size_t size = sizeof(msg);
+>      int ret;
+>  
+>      msg.magic = cpu_to_be32(MULTIFD_MAGIC);
+> @@ -182,10 +183,12 @@ static int multifd_send_initial_packet(MultiFDSendParams *p, Error **errp)
+>      msg.id = p->id;
+>      memcpy(msg.uuid, &qemu_uuid.data, sizeof(msg.uuid));
+>  
+> -    ret = qio_channel_write_all(p->c, (char *)&msg, sizeof(msg), errp);
+> +    ret = qio_channel_write_all(p->c, (char *)&msg, size, errp);
+>      if (ret != 0) {
+>          return -1;
+>      }
+> +    stat64_add(&mig_stats.multifd_bytes, size);
+> +    stat64_add(&mig_stats.transferred, size);
+>      return 0;
+>  }
+>  
+> @@ -396,7 +399,6 @@ static int multifd_send_pages(QEMUFile *f)
+>      static int next_channel;
+>      MultiFDSendParams *p = NULL; /* make happy gcc */
+>      MultiFDPages_t *pages = multifd_send_state->pages;
+> -    uint64_t transferred;
+>  
+>      if (qatomic_read(&multifd_send_state->exiting)) {
+>          return -1;
+> @@ -431,10 +433,7 @@ static int multifd_send_pages(QEMUFile *f)
+>      p->packet_num = multifd_send_state->packet_num++;
+>      multifd_send_state->pages = p->pages;
+>      p->pages = pages;
+> -    transferred = ((uint64_t) pages->num) * p->page_size + p->packet_len;
+>      qemu_mutex_unlock(&p->mutex);
+> -    stat64_add(&mig_stats.transferred, transferred);
+> -    stat64_add(&mig_stats.multifd_bytes, transferred);
+>      qemu_sem_post(&p->sem);
+>  
+>      return 1;
+> @@ -716,6 +715,8 @@ static void *multifd_send_thread(void *opaque)
+>                  if (ret != 0) {
+>                      break;
+>                  }
+> +                stat64_add(&mig_stats.multifd_bytes, p->packet_len);
+> +                stat64_add(&mig_stats.transferred, p->packet_len);
+>              } else {
+>                  /* Send header using the same writev call */
+>                  p->iov[0].iov_len = p->packet_len;
+> @@ -728,6 +729,8 @@ static void *multifd_send_thread(void *opaque)
+>                  break;
+>              }
+>  
+> +            stat64_add(&mig_stats.multifd_bytes, p->next_packet_size);
+> +            stat64_add(&mig_stats.transferred, p->next_packet_size);
+
+Two nits:
+
+Maybe merge the two so half atomic operations?
+
+Also maybe also worth having a inline helper for adding both multifd_bytes
+and transferred?
+
+With/without that, all look good:
+
+Reviewed-by: Peter Xu <peterx@redhat.com>
+
+Thanks,
+
+>              qemu_mutex_lock(&p->mutex);
+>              p->pending_job--;
+>              qemu_mutex_unlock(&p->mutex);
+> -- 
+> 2.40.0
+> 
+
+-- 
+Peter Xu
 
 
