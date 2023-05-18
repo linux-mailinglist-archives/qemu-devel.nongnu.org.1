@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A1D7081CA
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB947081C7
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:52:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzd6O-0004AU-7B; Thu, 18 May 2023 08:51:28 -0400
+	id 1pzd6T-0004Cn-26; Thu, 18 May 2023 08:51:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6C-00048l-Tv
+ id 1pzd6B-00048k-Sh
  for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:19 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd67-0007vn-Hs
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:13 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3f4249b7badso20004865e9.3
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:10 -0700 (PDT)
+ id 1pzd67-0007w6-IE
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:12 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3f41dceb9d1so19555945e9.1
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684414269; x=1687006269;
+ d=linaro.org; s=google; t=1684414270; x=1687006270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3qgQgU0oovp++OASw0Q9fkW/XuF2+8h0xHqcmjtio2o=;
- b=PIY78DRzhDloelyVFdnDXBNoH066+cQQD70srzPuacfQ/BpVgoygWKSHW4xo3uF2r1
- GwRsDlz4ugmcWrjE6KjAfgykQXbyidmmxwJ+Gjst+IFG1fDZEvAzzssIMNn8jRD4iT4o
- Y/uWStgtb4nccBdpXD5FTqafWF54MNfG+O5oaWWAgk230iwNKol9WqJrXJMNLA2OxX0W
- wAZQbMAZM9MhBampIWsbpl04HZ8h4Ii+fId3zvX/JCBxmkWB7WeLNdQTkwo7zCLQpIzG
- S78CciOyW3VK2R+B4iwyX5m+uHGzmfZm3QNkcijkgSribOgUapeSokiZ47Erux7Gsjiw
- Umrg==
+ :reply-to; bh=71bqprvJHFwaprTBPUqH8YYr/a1cVIn1wiv2+BaYT4w=;
+ b=XxhhaI73zrKQLFUp0bAKtZlL+vGjWTJ87alMItSmwVZ4xEkcELr7i88BQSVYhnoF/5
+ mw8ISmByqZlfjYGamX7TJnnsHUDKxntwBkRfhz8UI0PmXXfBueJ1mTXsPREhP7WcyRLx
+ ubahybu+3KACBoMj8JjtmkNQmWxwDvhrAhyH/jwPcPPS8qOY/clr4zhOIwYGrfaGTxn7
+ kzA9pC8KTbBIkHcmK3R1eV9MqWkHnXSNMp30H4mXE6LX4bLeuFXa2hoMzMQDj68FlTdb
+ CJOlejLDeLnUsBp60Q08+tkQtelsxcKtIOrb+qCQRK+b2CYFf75xklT2dKYhyfEz1qDr
+ 3psA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684414269; x=1687006269;
+ d=1e100.net; s=20221208; t=1684414270; x=1687006270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3qgQgU0oovp++OASw0Q9fkW/XuF2+8h0xHqcmjtio2o=;
- b=Ypy867hss6S8m2jz6xs7PLKWmkDNXCrOmoU0GzMx3LV6NG9Vau4+FfDe/Sa10xhwEC
- SDbA38zsAuG29rgsSSBQUkcGIR1UrBGHKkhusTc6+D4GzEFHDvvpnie8vtKhXIn2Eyk5
- S43EJGg/Pkhc7iO7kgI/Om+vXzr/6KjQiEJ1JHj2RZ+myLKJurxkUjzG0R0edZflSAdN
- zY2BJe9F78W08TfXITh49y9jVdlm+1X0rSu34tT8p0577JLWCFa+FSmjcy+DcAf1IbHt
- 2JdMx801WBqDMXELCakSO3GKtv+sRbJNJqizlP7rWpciOcXTu2OhYPUgi58Jo+Am6E32
- LgJA==
-X-Gm-Message-State: AC+VfDzHkWvy32PsOgVOasQEab+ayNQTXWnJYnfTJIhW7sYA0/gwaIel
- zruzyegB/a+1KjxYSgDeg62+26MtU3k8APMThr8=
-X-Google-Smtp-Source: ACHHUZ5wfLoreon7OriuyIdjTvadvW/fpNDugCBGEDTE2ay0YP8nZZyiR0BYVhag5PeAgUEDH+pDVA==
-X-Received: by 2002:a05:600c:ad9:b0:3f4:21ff:b91f with SMTP id
- c25-20020a05600c0ad900b003f421ffb91fmr1416245wmr.28.1684414269574; 
+ bh=71bqprvJHFwaprTBPUqH8YYr/a1cVIn1wiv2+BaYT4w=;
+ b=hgMg8tsn/j4qurNPl3EbxEJWPJ+IVIk6hZ1XkNu2FjKtPnO+VmdlhQsbgJp2NGVoJ+
+ pB/WrAUbXsAJUmQLTSGjw0r7yMLXo+mTmLsgIR2BOWYHsnx1FstxLCni7j3iNu2QyZNy
+ qksx73WqfGIdiSbGeOCE2MruAz/Szjq1nXOvBiDdTY2Y0pPuEOa+nWq7asifyzdz215b
+ a1YJCbeMe9xVyxI9D8DHrgyFNPEhL0UxRBRoWb5qZ/2drpaxmYlrww4TD9QRjVTSAOQA
+ DfV0kL762k6Wir8Lp/1RbSBPbfIoPE6SttrQeIcg1+6sTO8JHuFOiIPXcTXYZ3ZyUmES
+ +HVg==
+X-Gm-Message-State: AC+VfDwSGbJGJgB0NV5I8e7dR6M1lTnNWZMu+dZrI0PENOziaPwcoaA8
+ be5dwPjoG22BH1A7cb9FjXmKEHGFcZp0bznWMls=
+X-Google-Smtp-Source: ACHHUZ6Dkm55MfVU8Y0gWVYIqoRcqiCa89NT3pjxNLn5FdqSWGBzXX0LuPVYOx7P7RbGWFAmckYeZw==
+X-Received: by 2002:a1c:7910:0:b0:3f4:f0c2:127 with SMTP id
+ l16-20020a1c7910000000b003f4f0c20127mr1577334wme.22.1684414269989; 
  Thu, 18 May 2023 05:51:09 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 18 May 2023 05:51:09 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/29] target/arm: Fix vd == vm overlap in sve_ldff1_z
-Date: Thu, 18 May 2023 13:50:40 +0100
-Message-Id: <20230518125107.146421-3-peter.maydell@linaro.org>
+Subject: [PULL 03/29] Maintainers: add myself as reviewer for sbsa-ref
+Date: Thu, 18 May 2023 13:50:41 +0100
+Message-Id: <20230518125107.146421-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230518125107.146421-1-peter.maydell@linaro.org>
 References: <20230518125107.146421-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,45 +91,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-If vd == vm, copy vm to scratch, so that we can pre-zero
-the output and still access the gather indicies.
+At Linaro I work on sbsa-ref, know direction it goes.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1612
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230504104232.1877774-1-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+May not get code details each time.
+
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230515143753.365591-1-marcin.juszkiewicz@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/sve_helper.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index ccf5e5beca2..0097522470e 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -6727,6 +6727,7 @@ void sve_ldff1_z(CPUARMState *env, void *vd, uint64_t *vg, void *vm,
-     intptr_t reg_off;
-     SVEHostPage info;
-     target_ulong addr, in_page;
-+    ARMVectorReg scratch;
- 
-     /* Skip to the first true predicate.  */
-     reg_off = find_next_active(vg, 0, reg_max, esz);
-@@ -6736,6 +6737,11 @@ void sve_ldff1_z(CPUARMState *env, void *vd, uint64_t *vg, void *vm,
-         return;
-     }
- 
-+    /* Protect against overlap between vd and vm. */
-+    if (unlikely(vd == vm)) {
-+        vm = memcpy(&scratch, vm, reg_max);
-+    }
-+
-     /*
-      * Probe the first element, allowing faults.
-      */
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 50585117a0b..d0e604c725d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -940,6 +940,7 @@ SBSA-REF
+ M: Radoslaw Biernacki <rad@semihalf.com>
+ M: Peter Maydell <peter.maydell@linaro.org>
+ R: Leif Lindholm <quic_llindhol@quicinc.com>
++R: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+ L: qemu-arm@nongnu.org
+ S: Maintained
+ F: hw/arm/sbsa-ref.c
 -- 
 2.34.1
 
