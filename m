@@ -2,91 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C16707F0B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 13:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BE7707F0E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 13:21:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzbfo-0007z0-V6; Thu, 18 May 2023 07:19:56 -0400
+	id 1pzbgZ-0000iw-Ka; Thu, 18 May 2023 07:20:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1pzbfn-0007yp-UQ
- for qemu-devel@nongnu.org; Thu, 18 May 2023 07:19:55 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pzbgX-0000gs-97
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 07:20:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1pzbfm-0007hD-IK
- for qemu-devel@nongnu.org; Thu, 18 May 2023 07:19:55 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pzbgV-00081a-US
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 07:20:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684408794;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UUcZWhlig4K+IT7Tw0VPSDzBjKAMB0imkoYeeaIx95g=;
- b=enXaXbxDH0IaHnyfV+Unb6uirOtmtFT6DmXtF5kVWEFOsy0xmWhgR6zik1XPtkBrc0bcGI
- BtDrBga01bRz2cx9veJWsI/4su2czS3ftZRlqHX7mWAjlxvGQnfaojBo+TYnvBFr29x10b
- 0gTryCrUGzHi/3LU9tbtfDkSTOFOKIg=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1684408839;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=5ahp6IZYagH1ikl22Y51trhZMvAYZqyEikQotXsxazk=;
+ b=RfsPwzJvTEpDt1YeA9M4gM6WdA2CA5xlIf4hJsfxmEoYi1pzqFsBE0gVPVMx4upMe2OHYv
+ 29Km2u/PCpIny6ZDFhmeBy9z5uC4sFOve5KxpkNUm0rtzIOsvAdznAtbnhuKlJAnQIujvY
+ tm5pTwlgYPD5BGrXaoHViq+l5zyD3zc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-kajw8ZhyMm2F4gkasJqkLg-1; Thu, 18 May 2023 07:19:52 -0400
-X-MC-Unique: kajw8ZhyMm2F4gkasJqkLg-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1ae7040632fso2447105ad.1
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 04:19:52 -0700 (PDT)
+ us-mta-592-yUmOJYygM1ejIojpfgC2IQ-1; Thu, 18 May 2023 07:20:37 -0400
+X-MC-Unique: yUmOJYygM1ejIojpfgC2IQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f42b226871so8000325e9.0
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 04:20:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684408791; x=1687000791;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1684408836; x=1687000836;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UUcZWhlig4K+IT7Tw0VPSDzBjKAMB0imkoYeeaIx95g=;
- b=AB/ThFZQ6KRp1uB9TCMvj1dtwGEcBymsgTql5kN9M2Wq6Kr8y76GixpHIe5gP0Vy7C
- MM6HBAgOGbP4k0rl/qs2ce9zwQ1D+shfEEYV5gdTdX2aj3CJflW3ZJ7ICMa5q9LKQr4S
- xcoHw/TKuR1WDqtNnG53p/ZGb+EtOCUPEmQhzJufMpHOPvfbhXOHIhaaZZ61pL3uOkOZ
- U7nEeedx++2d1j/sB4NF4kpsFX3Zcl444DB+EASPaODygPGJ9MRwDncjdSm7PTWuxYTN
- 2xURqS4qpClE3fM05cBs4X+GCgidPfX4Xh0oyd/Llj9KLqkmSuPlLoExfLSpz3nvuV0p
- 09PA==
-X-Gm-Message-State: AC+VfDx8v0/4MweroVqLBADaM1vq2a3Jymll10U9sY97A8tfGbOQxfgP
- 72FTxAID4awtVv3WmXYvwfg0pA8NI4K6Ux5YJZQYU06cXsuDmllHBvFqUFdLj3jTDqJ3EyalHC0
- jlr/47lLmVkPaZ0s=
-X-Received: by 2002:a17:902:d511:b0:1ae:10a5:8349 with SMTP id
- b17-20020a170902d51100b001ae10a58349mr2274564plg.23.1684408791659; 
- Thu, 18 May 2023 04:19:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5ZFa3qL7nIj4LFu30odV/hO2c0FfPiKM4ShDpGOe09zKiqapOMWcp6hcJnzHhwQoflZZUQ+Q==
-X-Received: by 2002:a17:902:d511:b0:1ae:10a5:8349 with SMTP id
- b17-20020a170902d51100b001ae10a58349mr2274538plg.23.1684408791286; 
- Thu, 18 May 2023 04:19:51 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.106.170])
- by smtp.gmail.com with ESMTPSA id
- li12-20020a170903294c00b00199193e5ea1sm1187239plb.61.2023.05.18.04.19.48
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 18 May 2023 04:19:50 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
- for iasl location
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230518063559-mutt-send-email-mst@kernel.org>
-Date: Thu, 18 May 2023 16:49:46 +0530
-Cc: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <56051E30-DEB6-463D-AB4D-427795C40A77@redhat.com>
-References: <20230517101523-mutt-send-email-mst@kernel.org>
- <B6AD0FB1-CF05-4B4C-B58D-279422895E4D@redhat.com>
- <20230517103522-mutt-send-email-mst@kernel.org>
- <ED522229-5A71-40C2-AF2C-5D921B0B5D54@redhat.com> <87zg63m18g.fsf@linaro.org>
- <20230517112347-mutt-send-email-mst@kernel.org> <87r0rflzd4.fsf@linaro.org>
- <20230517120710-mutt-send-email-mst@kernel.org> <87ilcqnckm.fsf@linaro.org>
- <C2CC04A8-F0F1-4360-ABF0-1F8DF7768AB1@redhat.com>
- <20230518063559-mutt-send-email-mst@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ bh=5ahp6IZYagH1ikl22Y51trhZMvAYZqyEikQotXsxazk=;
+ b=Q4rH6bx1V+SKeqX2spAhPfOOZ1ITs3Ape/T0aIEakj4qiMkDN7fMjlx81SlahW02sO
+ 9f2Jlk/tZ0DdA86BFSGTtwDrbuqLHg5rVPd5kFwfo0+cAc29pBtuF6xNJM5zX0jsQTYV
+ gw/PIXHpBbPLBsZhPo4CwcUPyIk9p2cVuiw+iE7UFO8QfU8bGj309Rz4zh+qlVcQHYnY
+ SemFfT5q5E4apEaS5XMyRkk1y/lgRbXPa6GDFf8rXEnuVamJGCILcmTW/9r83reVhaKa
+ /8L4BZLimQnNZrhKQomihuKN17yviilMleeWJAgDm/xsJ9ro/dy/x4PoR8XQlitRgjlC
+ TRag==
+X-Gm-Message-State: AC+VfDxN9c5tXXc+AMVm+ykhTtJaYWFKTSJFgQaWcuF2a2Rb7DkFDloI
+ HBkvs9xj6ZiqINwheO2UigVN9n2jAk4k7PNT85+6QIIofIXUjSIt2D9SEJu8TjnnjQ0VaxDmBXz
+ 74khzfCyyRS7nViI=
+X-Received: by 2002:a5d:5233:0:b0:2dd:11b8:8aa9 with SMTP id
+ i19-20020a5d5233000000b002dd11b88aa9mr1279190wra.15.1684408836639; 
+ Thu, 18 May 2023 04:20:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ58GcI9d8lAj1IW/PTSd6NVW+ptwoG+7PIAUR0DZ5LR7uQGVcZ40RjgtXE3T046eWGCxZ1/cA==
+X-Received: by 2002:a5d:5233:0:b0:2dd:11b8:8aa9 with SMTP id
+ i19-20020a5d5233000000b002dd11b88aa9mr1279180wra.15.1684408836368; 
+ Thu, 18 May 2023 04:20:36 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ m14-20020adffa0e000000b003062ad45243sm1902509wrr.14.2023.05.18.04.20.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 May 2023 04:20:35 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org,  pbonzini@redhat.com,  leobras@redhat.com,
+ peterx@redhat.com,  yc-core@yandex-team.ru
+Subject: Re: [PATCH 4/5] migration: switch from .vm_was_running to
+ .vm_old_state
+In-Reply-To: <20230517123752.21615-5-vsementsov@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Wed, 17 May 2023 15:37:51 +0300")
+References: <20230517123752.21615-1-vsementsov@yandex-team.ru>
+ <20230517123752.21615-5-vsementsov@yandex-team.ru>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 18 May 2023 13:20:35 +0200
+Message-ID: <87a5y1evi4.fsf@secure.mitica>
+MIME-Version: 1.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,22 +98,17 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> wrote:
+> No logic change here, only refactoring. That's a preparation for next
+> commit where we finally restore the stopped vm state on migration
+> failure or cancellation.
+>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-
-> On 18-May-2023, at 4:10 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->=20
-> he annoying thing with both these approaches is they work
-> less well than current code since iasl won't be invoked
-> at all if you do not remember the magic variable to set
-> or flag to pass. ATM it is self-contained.
-
-We could address this by a log message just like we do today[1] by =
-telling users to use the environment variable.
-
-1. "to see ASL diff between mismatched files install IASL, rebuild QEMU =
-from scratch and re-run tests with V=3D1"=
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 
