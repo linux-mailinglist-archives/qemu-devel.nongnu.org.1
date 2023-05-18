@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D907E707939
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 06:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D252970793E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 06:44:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzVRu-00067J-Hl; Thu, 18 May 2023 00:41:10 -0400
+	id 1pzVRt-00066h-IH; Thu, 18 May 2023 00:41:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pzVRr-00066I-Kx
+ id 1pzVRr-00066G-KF
  for qemu-devel@nongnu.org; Thu, 18 May 2023 00:41:07 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1pzVRm-00076t-Aw
- for qemu-devel@nongnu.org; Thu, 18 May 2023 00:41:06 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-5304d0d1eddso818015a12.2
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 21:41:01 -0700 (PDT)
+ id 1pzVRm-000771-RF
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 00:41:05 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1aaef97652fso12626555ad.0
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 21:41:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684384860; x=1686976860;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2j+KG0vywAY0xpdoWRt7odhQMaLxqAskBd42QfUyDtE=;
- b=Bh7a0/iyJMzfanu0qAfhaOO1vAed7hJLxhij/aEZU+dMEbCQIKPP8Cfb9VT7vzRNyQ
- YG3+6MrV3v+sAc4CUn8bq3ShxTHwuEegQhnUJ+MRHgYXjfzZaOOoNu5j3yLp5NK9JVw/
- LTt3RtMsEtlN/DV6EF1s/L3xfFhHvEmBJT5hR3oa2UoPqvHrqkBgB9208hUn2bRdr2Ax
- PxA+iNOlsat+FjWwDOH/H1n7VKyjhpY58xhSfuxYm6h16QHAbH/DerhbcUvQga1I81IW
- kP7W+IB2EuIwitojpIqsZFQddQ4uEIRZUOBaUiXPE99cNARoI615XzNT8K4WiAD/AW80
- YOKA==
+ d=linaro.org; s=google; t=1684384861; x=1686976861;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8+ScMm8RFAy9abD2OYSsuUTJ0MCbN7DfgykRl5CDnnQ=;
+ b=iqm5RAMSsA1ukUGs634BKvHD1LhxdaUqvqXv8dY6719b9d/SDa/PciLRJWk1NY5JS1
+ l2oSD7QqWde8Hewr1Itw/6B5eTybnrv9D8DjESr5rA7O6P2wSI6fxD5ehibVPCytDSVa
+ RTr+grAMVEQ4MfMVd1XJ7Q87MvlQOgCKM6lnSwUIkY315BfihHSre6JsmrudYZp1/cbQ
+ zWgFAmURH3wDNkTYQwE8zR/+gojPf+MnXFiKO+bqu/68NqzJiLrlTZ4ZfJwt/Qb0siDj
+ bNYkfbVS1Mjwve778ueHPRSu3Tr8QYatnBRNUjIXP2rIwejnKQhsgbWOvz+L63OpSPI8
+ rXKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684384860; x=1686976860;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2j+KG0vywAY0xpdoWRt7odhQMaLxqAskBd42QfUyDtE=;
- b=Bz1eBMc/gWDo3NzMSB/GIXdbx9Er4rkQ3aceE2MCP++0jdIs5P1dDk2w6P/ZQ4saQG
- DSFtu6uf+15Kz/JcnevDXuCegNV6tFVRz+Wb8tiEmFzj5vUCPCFjrZK1daP9gysY6ase
- EI11ZKlA7e1R9iDuo/FEJaLBSjIo/7JQMbieK+NF1CeV3VYMPoMZ3/AeQeF+laRcb046
- 2CNgJapVl0Ml8QpZekRzURSZQ5tCvtRdoQ7tp6EMwds/GQHjyoYrFxSHJmwAjMpA/lPW
- 3u58ibjMmULsIrEFxU5ZXhwxwv6wnzmMdk5uz55KvQG2I8ODbPNjhlrXH6ZF6g76KYFs
- 8Vmg==
-X-Gm-Message-State: AC+VfDwD825yztuWlS3HeU2cHSKEz8l0QAQECDjaekzCwsqUB6pvqAK+
- GfCbkykjBXOxlevTFsY4jM13OGj6oE+Y7dUO6FQ=
-X-Google-Smtp-Source: ACHHUZ7sxmE1l2Yyn1wMVtXffNkG7GepVtLJDHpzjjDTpFIofWPGivik8NwGcVrpBDbb/MIZoPmjuw==
-X-Received: by 2002:a17:903:1c7:b0:1ae:1237:8754 with SMTP id
- e7-20020a17090301c700b001ae12378754mr1494885plh.68.1684384860392; 
- Wed, 17 May 2023 21:41:00 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684384861; x=1686976861;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8+ScMm8RFAy9abD2OYSsuUTJ0MCbN7DfgykRl5CDnnQ=;
+ b=NAmtiQv1tSyOt7i/HSFY3cTEosSuZkuR0OdyNRNY2KS3viTC4px1DztMYqdCveHkTP
+ qe/LKWZtI5Jgr//ur0AjJ5uEPMy/wL83v5ZanbLoymXYjeuwFqK1tJdrCUowfxUhZMj4
+ tZ/aodF2BUNMwgWBTO3qccVQ83nBxpTf18TkRknE7yyRnTz5+cxvkSGVw6udthf73d2U
+ V7tfZjNx1hmXWP05XLlKn5tx+ZLRHOeKc3EgR5QS/mR5iKI/FU5zTlmZKQuf2/ZJFNPm
+ At8PTO/owW5w4Ay+5dFoB8f5rtltaV0GL9C7TMADPTFbIySoJUGb+HywurYzeqRtunvh
+ o10A==
+X-Gm-Message-State: AC+VfDw0NhMwM+KKw1U56WIThkjcN/E9rg6ktwbXzN95JnXM8wa4pQjx
+ 9Gsx5EJwdA19PnzIne8BO95DbSJq032/7eSsQBo=
+X-Google-Smtp-Source: ACHHUZ64Gj/vll5hY4LzMz7NuhglArzWOt8GXlMognEW6BiQs/5ah0JCjkoRyuarS154oFhs7jHppA==
+X-Received: by 2002:a17:902:d2c2:b0:1ac:61ad:d6bd with SMTP id
+ n2-20020a170902d2c200b001ac61add6bdmr1314610plc.65.1684384861405; 
+ Wed, 17 May 2023 21:41:01 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:17a4:1aa0:c49d:e8f7])
  by smtp.gmail.com with ESMTPSA id
- t9-20020a170902e84900b001ab1d23bf5dsm225592plg.258.2023.05.17.21.40.59
+ t9-20020a170902e84900b001ab1d23bf5dsm225592plg.258.2023.05.17.21.41.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 May 2023 21:40:59 -0700 (PDT)
+ Wed, 17 May 2023 21:41:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PATCH 0/9] Host-specific includes, begin cpuinfo.h
-Date: Wed, 17 May 2023 21:40:49 -0700
-Message-Id: <20230518044058.2777467-1-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 1/9] util: Introduce host-specific cpuinfo.h
+Date: Wed, 17 May 2023 21:40:50 -0700
+Message-Id: <20230518044058.2777467-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230518044058.2777467-1-richard.henderson@linaro.org>
+References: <20230518044058.2777467-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,61 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hiya.
+The entire contents of the header is host-specific, but the
+existence of such a header is not, which could prevent some
+host specific ifdefs at the top of the file for the include.
 
-This is looking toward cleaning up a couple of things:
+Add include/host/{arch,generic} to the project arguments.
 
-(1) There are 5 bits of x86 host detection, 3 of them for xbzrle.
-    Unify this down to one, with additional cleanups for xbzrle.
-
-(2) Provides a host-specific include path for splitting atomic128.h
-    and probably other stuff so as to avoid host-specific ifdefs.
-    Actually splitting atomic128.h is so far left for further work.
-
-
-r~
-
-
-Richard Henderson (9):
-  util: Introduce host-specific cpuinfo.h
-  util: Add cpuinfo-i386.c
-  util: Add i386 CPUINFO_ATOMIC_VMOVDQU
-  tcg/i386: Use cpuinfo.h
-  util/bufferiszero: Use i386 cpuinfo.h
-  migration/xbzrle: Shuffle function order
-  migration/xbzrle: Use i386 cacheinfo.h
-  migration: Build migration_files once
-  util: Add cpuinfo-aarch64.c
-
- include/host/aarch64/cpuinfo.h |  22 ++
- include/host/generic/cpuinfo.h |   4 +
- include/host/i386/cpuinfo.h    |  39 +++
- include/host/x86_64/cpuinfo.h  |   1 +
- migration/xbzrle.h             |   5 +-
- tcg/aarch64/tcg-target.h       |   4 +-
- tcg/i386/tcg-target.h          |  28 +-
- migration/ram.c                |  34 +--
- migration/xbzrle.c             | 268 ++++++++++---------
- tests/bench/xbzrle-bench.c     | 469 ---------------------------------
- tests/unit/test-xbzrle.c       |  49 +---
- util/bufferiszero.c            | 126 ++++-----
- util/cpuinfo-aarch64.c         |  67 +++++
- util/cpuinfo-i386.c            |  99 +++++++
- meson.build                    |   8 +
- migration/meson.build          |   1 -
- tcg/aarch64/tcg-target.c.inc   |  41 +--
- tcg/i386/tcg-target.c.inc      | 123 +--------
- tests/bench/meson.build        |   6 -
- util/meson.build               |   6 +
- 20 files changed, 476 insertions(+), 924 deletions(-)
- create mode 100644 include/host/aarch64/cpuinfo.h
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+Cc: Paolo Bonzini <pbonzini@redhat.com> (maintainer:Meson)
+Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com> (reviewer:Meson)
+Cc: "Daniel P. Berrangé" <berrange@redhat.com> (reviewer:Meson)
+Cc: Thomas Huth <thuth@redhat.com> (reviewer:Meson)
+Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org> (reviewer:Meson)
+---
+ include/host/generic/cpuinfo.h | 4 ++++
+ meson.build                    | 8 ++++++++
+ 2 files changed, 12 insertions(+)
  create mode 100644 include/host/generic/cpuinfo.h
- create mode 100644 include/host/i386/cpuinfo.h
- create mode 100644 include/host/x86_64/cpuinfo.h
- delete mode 100644 tests/bench/xbzrle-bench.c
- create mode 100644 util/cpuinfo-aarch64.c
- create mode 100644 util/cpuinfo-i386.c
 
+diff --git a/include/host/generic/cpuinfo.h b/include/host/generic/cpuinfo.h
+new file mode 100644
+index 0000000000..eca672064a
+--- /dev/null
++++ b/include/host/generic/cpuinfo.h
+@@ -0,0 +1,4 @@
++/*
++ * No host specific cpu indentification.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
+diff --git a/meson.build b/meson.build
+index 4dddccb890..0dd806e8a5 100644
+--- a/meson.build
++++ b/meson.build
+@@ -292,6 +292,14 @@ add_project_arguments('-iquote', '.',
+                       '-iquote', meson.current_source_dir() / 'include',
+                       language: all_languages)
+ 
++include_host = meson.current_source_dir() / 'include/host/'
++if fs.is_dir(include_host / host_arch)
++  add_project_arguments('-iquote', include_host / host_arch,
++                        language: all_languages)
++endif
++add_project_arguments('-iquote', include_host / 'generic',
++                      language: all_languages)
++
+ sparse = find_program('cgcc', required: get_option('sparse'))
+ if sparse.found()
+   run_target('sparse',
 -- 
 2.34.1
 
