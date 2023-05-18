@@ -2,78 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C2370783B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 04:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D1970786E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 05:24:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzTht-0001TZ-1B; Wed, 17 May 2023 22:49:33 -0400
+	id 1pzUEU-00089f-8Q; Wed, 17 May 2023 23:23:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
- id 1pzThq-0001T0-Uu
- for qemu-devel@nongnu.org; Wed, 17 May 2023 22:49:30 -0400
-Received: from mail-qv1-xf34.google.com ([2607:f8b0:4864:20::f34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
- id 1pzThp-0000Vq-D7
- for qemu-devel@nongnu.org; Wed, 17 May 2023 22:49:30 -0400
-Received: by mail-qv1-xf34.google.com with SMTP id
- 6a1803df08f44-623802d9bfdso11141336d6.2
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 19:49:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1684378168; x=1686970168;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HBiYU3X0LxCc5gBu85kfHUp7ZMB7Axiw4k2XXatVVQY=;
- b=hcveBapPBvRI3aeYrgzC9A0qehPog5szRH0cIZ6hyDGvZWlJe6z9u9ufnvkEqZQqWI
- qRdilruTFtWn3rlYUEy57zXsGcqL35EcgjQn0WXysISY57bfW3D0VFLTFnXH4KTq75rQ
- l2ijq4Bljtzmj/fD/2KEq7zAk9eq72h4++Ew5/iXzKPPY8EBG+/S3J5svTDS/medxBR2
- GBQMGwvTaVJWIv0ibxJT3bfeTRRnzysvirH8Bu9RpNnITiF0KKCf+yyd6X8ZZZ2i87PU
- cbjQb1Skz6ASneyBW0XDg+ItvokOPLHiCtWqwjQOxRvNpi6CuRiAgIMqLcYtYt84knr9
- cixw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684378168; x=1686970168;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HBiYU3X0LxCc5gBu85kfHUp7ZMB7Axiw4k2XXatVVQY=;
- b=G04JMZLsIIA+O2l+/ydVjXnhSrE8xrGBXwyEP555Nu9zaHAOuRE0ZqwtqYuk9y05BM
- c90cFxBHqsqqIfYRAB/PSp0xh6Fodwz7znetdnFsWuJTEwLM41xZvyMOQVP/j1Kp+eNC
- IiXkTVjhwtXqJ1FrRMMJaGSxa2F2KN7lSPBbeoL0j2y/igEN1Jz4C+9Eg/H5Vc/t+A6V
- N9jpUvCBr2wNpO+N3uWHtm2xK+Ut+dq+DL9mNB8S5aLDFg0Ai+lgkXj64BV3PMjj+2Ko
- RZhy7cfAJPupnlQczt6JNd9gf6ZBqE2F8iI8EpXTjapzwPvO+Nb+sRIZL5evfeMo6bLM
- NNMg==
-X-Gm-Message-State: AC+VfDx9VzDIwJQTUjRSMloewlWbIp5I78NYo20eoRZ+t6lgHabR77vq
- +yyEnDYjtHAkhpIPDFgFlaQsWzRNLIvm9+yNHv1Ytw==
-X-Google-Smtp-Source: ACHHUZ7nC9xmUrcj3JbxM1W947C1x95JlpdnJDwlCqstb7WK43Ss5oXWv4FOHwis00JvlTGMBbJDbQCU23bIDDODcfw=
-X-Received: by 2002:a05:6214:20ec:b0:621:331b:f55d with SMTP id
- 12-20020a05621420ec00b00621331bf55dmr2516253qvk.19.1684378168049; Wed, 17 May
- 2023 19:49:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1pzUES-00089T-GF; Wed, 17 May 2023 23:23:12 -0400
+Received: from mail-mw2nam10on20628.outbound.protection.outlook.com
+ ([2a01:111:f400:7e89::628]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nicolinc@nvidia.com>)
+ id 1pzUEP-0008Bh-SU; Wed, 17 May 2023 23:23:12 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=auaNTS/IIbQN8mukF9aQK9BPin9+2lpQFp0ujmDup2KBm/mf67YQUdTPhntr4Hgy56aKpZyx/oSRLt4mtitVGHTLgjBpRGmkJSMWAe5xgYQDTAYcgASdrN9aXHhdHUIue32GNa7L27KQZcwurtJGjyIJa1VIsXzYV//9Df78H7K9QwdeGmlXNoEvLadpVPttPev0ynI+mtS7eZdaC18g097yng+45ZVb8RvYrB4jWLhcPjARm5Ow+TnrLGQT1lCCCD7igQmMM7jN1BuRIStnrKuFrF3mh3RaEWgjOaumk3YywyokmI159KkCAyp0IpBFrJz7JdknUVA26cadGTI9Fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6SQ685UVM78OjMIz7m9s69w/wsipZvSBbwqQQa18gfw=;
+ b=BMC01HapPMZurbnGtN/JOedwkuZ8YDsW3RywEJLcKghwV7E9/1EOioyojTcy8Oc2s88zxyBHwEawtZPHPvUJmcmlzEzS1VpYL9SyPIoFIa1c7q5H4oaoz0MKV4XCwN2YRVGEeErSRMN8BcaKmo1fkmm45Uy/uuixd5twzmv6RyMVp3hcbuth+orZy4Hlse0Uc3L03qr/R7xVOUzl0WKzNk+WialC/ickWdTXWLu11Bei9R818/M9uJgYzKsTUPcSX0HaTb9vMflzzafFzpX1QGCYq8UlW2+Y9L/ktgNLPvxShXMnCDBcApf01fnjx8ZRudII0N72wkMyhuDcExKNDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6SQ685UVM78OjMIz7m9s69w/wsipZvSBbwqQQa18gfw=;
+ b=KCE9a4mdni4EswBgKxJm/3qot0pSKB3JmhqXDixUfJjarpjJ5prKF8BL7OP4Qn7NP3clrd+fp5HsjQN4EGUf4bAxjBaSRoZLUypNVCUB+cPxQXzo+Q0rsORuz8MN0Gxm/iV3ivDZj+o+U3FJZIc+CjofyDZqHWLJAzonBvRPNZ8JSU6xe9m/WlqqtNc9ZqSOAKkHns56bSqerikolNMEMqCBI78WC3p/o8dpRU5e5JTsLFsEV8vHltuWdZ6DpKkaETwZg59/tv/atJ9SxOaxfQ4ApV6rMsjgoCp8MkIAZ8oR90Vqehp3MMUIp3T2XtAaXQwWGycszNnWxa8iXXq3Jg==
+Received: from BN0PR04CA0154.namprd04.prod.outlook.com (2603:10b6:408:eb::9)
+ by DM6PR12MB4059.namprd12.prod.outlook.com (2603:10b6:5:215::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.33; Thu, 18 May
+ 2023 03:23:03 +0000
+Received: from BN8NAM11FT102.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:eb:cafe::5b) by BN0PR04CA0154.outlook.office365.com
+ (2603:10b6:408:eb::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.18 via Frontend
+ Transport; Thu, 18 May 2023 03:23:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN8NAM11FT102.mail.protection.outlook.com (10.13.177.27) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6411.19 via Frontend Transport; Thu, 18 May 2023 03:23:03 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Wed, 17 May 2023
+ 20:22:51 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Wed, 17 May
+ 2023 20:22:50 -0700
+Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37 via Frontend
+ Transport; Wed, 17 May 2023 20:22:50 -0700
+Date: Wed, 17 May 2023 20:22:48 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: <eric.auger@redhat.com>, <peter.maydell@linaro.org>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <jgg@nvidia.com>, <yi.l.liu@intel.com>, <kevin.tian@intel.com>
+Subject: Re: Multiple vIOMMU instance support in QEMU?
+Message-ID: <ZGWaCKQqK5hVqbvM@Asurada-Nvidia>
+References: <ZEcT/7erkhHDaNvD@Asurada-Nvidia>
 MIME-Version: 1.0
-References: <20230501140020.3667219-1-mchitale@ventanamicro.com>
- <20230501140020.3667219-2-mchitale@ventanamicro.com>
- <CAKmqyKN9vAAtXtRaUN3_im5k8kO+GoJ-V1mFbJPniSEdeswLnw@mail.gmail.com>
-In-Reply-To: <CAKmqyKN9vAAtXtRaUN3_im5k8kO+GoJ-V1mFbJPniSEdeswLnw@mail.gmail.com>
-From: Mayuresh Chitale <mchitale@ventanamicro.com>
-Date: Thu, 18 May 2023 08:18:51 +0530
-Message-ID: <CAN37VV6Ms0hs_vAAr0n-P8chb-77jhQTQrv0qjBLKXiuBiDA_Q@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] target/riscv: smstateen check for fcsr
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- Daniel Barboza <dbarboza@ventanamicro.com>, liweiwei@iscas.ac.cn, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f34;
- envelope-from=mchitale@ventanamicro.com; helo=mail-qv1-xf34.google.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZEcT/7erkhHDaNvD@Asurada-Nvidia>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT102:EE_|DM6PR12MB4059:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67fd44e3-7bf4-4680-a298-08db574f30d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: VPKksNaUBgqeRGB+WfFhH0UBuFcYVqgLqxPacwGW2HFdf694hbPKr1wWa6jRiONv9N9Y9k+8svKkRDhPlk8g2UKxHPqWRNg6rOlL7atEL2h1F1+fWoJ701XCSxJDkgv/QIF3fg6dPF3G6Gmd3Vxw2EtWGz0pdIctUW+DyTiyoDpq0wi9B/mik2IsZ5R/V7A2CxPv6sSctFl73KjRDaJ+ZGJxv3s4Rh7JE2nuCBeBQEE6SUuslQCnCC6SFp03NGVT0gczup+xZDKv+xrYDJUgQMtevHHIAfXKIrMX7MzCOARmigIR2JT3pbO1cANqI1YrqF/J6j/vbl4q6OLl+BJEMzg/xU5Jk4RqzBMKMKobyw1vyV0IvoSHFT511bAwCcgug44Rpy3noXkCZ01eY0T0YugHU8VThucwG67GP8MlFp/ZvobEO8ur4MM/Hv5J8juGQwm0p8qzRX+PZFL5MWgt22vCodzuShNs4XWy4wzQRowW7GzVWWBBHN6/zEfjxT4+XkvFjIMP+WsO66s43DFXt2GSywxraK9ISBnybWZg1ftaWADcn7NWGZbRUex9kX9DRMBQLrHl5t4JaR4BFOqc8/eghc4LT7sjE9ne4rST/0vqB4R1FA+CwKkWCFnQVA+8AywOLPLaNuRhCitueLr5eKsuugAWqdIrFgW7enlliYTVk6NRihH3GmWUY7DV+JzgiIm/LAif/Ne9SLqLBOjGbaLe9sw8IV3T2ybqMCNWz1EGAESCllXBYcVYq8TEcHYP
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230028)(4636009)(346002)(39860400002)(396003)(136003)(376002)(451199021)(46966006)(36840700001)(40470700004)(5660300002)(40460700003)(41300700001)(47076005)(336012)(426003)(36860700001)(2906002)(356005)(86362001)(7636003)(82310400005)(33716001)(82740400003)(186003)(9686003)(55016003)(8936002)(26005)(8676002)(40480700001)(70586007)(70206006)(54906003)(110136005)(478600001)(4326008)(316002);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 03:23:03.4416 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67fd44e3-7bf4-4680-a298-08db574f30d1
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT102.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4059
+Received-SPF: softfail client-ip=2a01:111:f400:7e89::628;
+ envelope-from=nicolinc@nvidia.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,112 +126,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 17, 2023 at 8:42=E2=80=AFAM Alistair Francis <alistair23@gmail.=
-com> wrote:
->
-> On Tue, May 2, 2023 at 12:00=E2=80=AFAM Mayuresh Chitale
-> <mchitale@ventanamicro.com> wrote:
-> >
-> > If smstateen is implemented and smtateen0.fcsr is clear and misa.F
-> > is off then the floating point operations must return illegal
-> > instruction exception or virtual instruction trap, if relevant.
->
-> Do you mind re-wording this commit message? I can't get my head around
-> it. You talk about returning an illegal instruction exception, but
-> most of this patch is just adding SMSTATEEN0_FCSR to the write mask if
-> floating point is disabled.
->
-Sure. The generic code for access check was added in a previous patch.
-> It looks to me like you are returning an exception trying to access a
-> floating pointer register if FP is off and SMSTATEEN0_FCSR is not set
-> (which you describe) but also then only allow changing SMSTATEEN0_FCSR
-> if the RVF is not enabled, which is where I'm confused.
-The smstateen0.fcsr bit is writable only when misa.F =3D=3D 0.
+Hi Peter,
 
->
-> Your patch seems to be correct, I think the commit message and title
-> just needs a small tweak. Maybe something like this:
->
-> ```
-> target/riscv: smstateen add support for fcsr bit
->
-> If smstateen is implemented and SMSTATEEN0.FCSR is zero floating point
-> CSR access should raise an illegal instruction exception or virtual
-> equivalent as required.
->
-> We also allow the guest to set/unset the FCSR bit, but only if misa.F
-> =3D=3D 0, as defined in the spec.
+Eric previously mentioned that you might not like the idea.
+Before we start this big effort, would it possible for you
+to comment a word or two on this topic?
 
-How about:
+Thanks!
 
-target/riscv: smstateen check for fcsr
-
-Implement the s/h/mstateen.fcsr bit as as defined in the smstateen spec
-and check for it when accessing the fcsr register and its fields.
-
-> ```
->
-> Alistair
->
-> >
-> > Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
-> > Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> > ---
-> >  target/riscv/csr.c | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> >
-> > diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> > index 4451bd1263..3f6b824bd2 100644
-> > --- a/target/riscv/csr.c
-> > +++ b/target/riscv/csr.c
-> > @@ -82,6 +82,10 @@ static RISCVException fs(CPURISCVState *env, int csr=
-no)
-> >          !riscv_cpu_cfg(env)->ext_zfinx) {
-> >          return RISCV_EXCP_ILLEGAL_INST;
-> >      }
-> > +
-> > +    if (!env->debugger && !riscv_cpu_fp_enabled(env)) {
-> > +        return smstateen_acc_ok(env, 0, SMSTATEEN0_FCSR);
-> > +    }
-> >  #endif
-> >      return RISCV_EXCP_NONE;
-> >  }
-> > @@ -2100,6 +2104,9 @@ static RISCVException write_mstateen0(CPURISCVSta=
-te *env, int csrno,
-> >                                        target_ulong new_val)
-> >  {
-> >      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
-> > +    if (!riscv_has_ext(env, RVF)) {
-> > +        wr_mask |=3D SMSTATEEN0_FCSR;
-> > +    }
-> >
-> >      return write_mstateen(env, csrno, wr_mask, new_val);
-> >  }
-> > @@ -2173,6 +2180,10 @@ static RISCVException write_hstateen0(CPURISCVSt=
-ate *env, int csrno,
-> >  {
-> >      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
-> >
-> > +    if (!riscv_has_ext(env, RVF)) {
-> > +        wr_mask |=3D SMSTATEEN0_FCSR;
-> > +    }
-> > +
-> >      return write_hstateen(env, csrno, wr_mask, new_val);
-> >  }
-> >
-> > @@ -2259,6 +2270,10 @@ static RISCVException write_sstateen0(CPURISCVSt=
-ate *env, int csrno,
-> >  {
-> >      uint64_t wr_mask =3D SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
-> >
-> > +    if (!riscv_has_ext(env, RVF)) {
-> > +        wr_mask |=3D SMSTATEEN0_FCSR;
-> > +    }
-> > +
-> >      return write_sstateen(env, csrno, wr_mask, new_val);
-> >  }
-> >
-> > --
-> > 2.34.1
-> >
+On Mon, Apr 24, 2023 at 04:42:57PM -0700, Nicolin Chen wrote:
+> Hi all,
+> 
+> (Please feel free to include related folks into this thread.)
+> 
+> In light of an ongoing nested-IOMMU support effort via IOMMUFD, we
+> would likely have a need of a multi-vIOMMU support in QEMU, or more
+> specificly a multi-vSMMU support for an underlying HW that has multi
+> physical SMMUs. This would be used in the following use cases.
+>  1) Multiple physical SMMUs with different feature bits so that one
+>     vSMMU enabling a nesting configuration cannot reflect properly.
+>  2) NVIDIA Grace CPU has a VCMDQ HW extension for SMMU CMDQ. Every
+>     VCMDQ HW has an MMIO region (CONS and PROD indexes) that should
+>     be exposed to a VM, so that a hypervisor can avoid trappings by
+>     using this HW accelerator for performance. However, one single
+>     vSMMU cannot mmap multiple MMIO regions from multiple pSMMUs.
+>  3) With the latest iommufd design, a single vIOMMU model shares the
+>     same stage-2 HW pagetable across all physical SMMUs with a shared
+>     VMID. Then a stage-1 pagetable invalidation (for one device) at
+>     the vSMMU would have to be broadcasted to all the SMMU instances,
+>     which would hurt the overall performance.
+> 
+> I previously discussed with Eric this topic in a private email. Eric
+> felt the difficulty of implementing this in the current QEMU system,
+> as it would touch different subsystems like IORT and platform device,
+> since the passthrough devices would be attached to different vIOMMUs.
+> 
+> Yet, given the situations above, it's likely the best by duplicating
+> the vIOMMU instance corresponding to the number of the physical SMMU
+> instances.
+> 
+> So, I am sending this email to collect opinions on this and see what
+> would be a potential TODO list if we decide to go on this path.
+> 
+> Thanks
+> Nicolin
 
