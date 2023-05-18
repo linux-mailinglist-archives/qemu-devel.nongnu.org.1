@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E35707DE0
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 12:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 061EA707DE4
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 12:19:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzai6-0007C9-2g; Thu, 18 May 2023 06:18:14 -0400
+	id 1pzai7-0007CX-Ex; Thu, 18 May 2023 06:18:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzai3-0007BU-Lf
- for qemu-devel@nongnu.org; Thu, 18 May 2023 06:18:11 -0400
+ id 1pzai5-0007Bn-43
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 06:18:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzai2-0004kz-8c
- for qemu-devel@nongnu.org; Thu, 18 May 2023 06:18:11 -0400
+ id 1pzai3-0004lK-Nt
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 06:18:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684405089;
+ s=mimecast20190719; t=1684405091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=FMGAp67pCzRERc/50dq+8XPU465P8/s9qIpLz/s8cTo=;
- b=Omc3MQ2nafck0qRO/u7gIXyV/a7Kem+wDKbnmO2+C0Z49XJmaoWH9Q993OEnaFLtRxhMbb
- wIcDxTiMcrZFW6tI/mk3wnvzgISuJn8S+uA9vRydduP5Wb5t4XTW5SAHIP5nVYRy/MYreG
- Oazd9ytCBk/vxALEomeWyyC19qyc3D4=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bBojB1HHhw9e5Mqc9sqoqRl9uNsGGM3YqDRyz7NIFJw=;
+ b=K+YXBWoA8nar+BsKRpdwyrZrAmt6As/dt9bUI4OMA5DvkXyzGOZawpbaRrmLPs7LjdUne1
+ zfFczbkqTf+EqtOnIP1VJKMfDcjLGRDuUXEew5QYhIYvRlfHXhRn670ybUqKaig9W9SwCV
+ odGH1dY++OExpW3RNALrDHOUVnX05to=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-5c5l3G4sNFK-Ow0xj1zFGw-1; Thu, 18 May 2023 06:18:07 -0400
-X-MC-Unique: 5c5l3G4sNFK-Ow0xj1zFGw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-510526d2a5fso2270096a12.0
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 03:18:07 -0700 (PDT)
+ us-mta-483-oF4AHTqNN62mKH4un8UJPw-1; Thu, 18 May 2023 06:18:09 -0400
+X-MC-Unique: oF4AHTqNN62mKH4un8UJPw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9662960d1e4so206448466b.1
+ for <qemu-devel@nongnu.org>; Thu, 18 May 2023 03:18:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684405086; x=1686997086;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FMGAp67pCzRERc/50dq+8XPU465P8/s9qIpLz/s8cTo=;
- b=OPKfF+JhbgF9+JbCf8g+wyrqTf+L+aqsfryNt2yRaJdfJ80w5mkI/ruIbKgpSPENJV
- hNRIWMYPlQ4x51hWCJTuQU/KzK4OEkgzpp1zW2A16s7zcU3ZB1VrYcaKU4v1wa80ZVIV
- EumQT7tAcRzGnV3d/m0vIGizfEtKvcjxulJW8L7/B0nC2+qFFDwgSRL8HiAljdrK8ejt
- 3rMAAx9YWlaDYZvlHvLN3t1GRLNTrzCIUwWKo1GVNiXzA1h8eOjN8BZhavUO5Z5LB99x
- IHHEOpHohdoxkn5XcoLlwbUuJQBW2vW/KvR2DJKBREnaX9JLOPlELMNfDe67/wssUabv
- zwkw==
-X-Gm-Message-State: AC+VfDyOEYdTfVrxUNv219rITiU2OJpn+AwI+RmA6/fJAqYh7YRdczkZ
- XalfAwybivswgyeZwVirHBVbQvlNhfVN7YQILHcSWnHXUDd046xTPHfLHhILw82FWNFwDlGGMwl
- n/2wFIkkv/CVPdMoUXMaD7qME70hnskJDIoC0GQq6wTxUud0jBZwaFUAL/6FyDICPRqAghFl7/A
- I=
-X-Received: by 2002:a17:907:96a1:b0:94f:236b:9e3a with SMTP id
- hd33-20020a17090796a100b0094f236b9e3amr5148959ejc.3.1684405086273; 
- Thu, 18 May 2023 03:18:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5gdfD5MhY1vx3PIMHDshik1iq8vXLX+VV/6Cpta8HcEZtUnsTWdqvufOKpFtDb0N4+Q9moDQ==
-X-Received: by 2002:a17:907:96a1:b0:94f:236b:9e3a with SMTP id
- hd33-20020a17090796a100b0094f236b9e3amr5148943ejc.3.1684405085922; 
- Thu, 18 May 2023 03:18:05 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684405088; x=1686997088;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bBojB1HHhw9e5Mqc9sqoqRl9uNsGGM3YqDRyz7NIFJw=;
+ b=Pu8pJHLIC4yQrZMZymc4dTWUDdRReC9M7mYNqbnSAhC0HjavObhXzGMbybytc2pho7
+ 8zQNP+HIBJanHq8WTafAQSKA/as6v/VhJZIU/c5mnJsN4F0Iq9T4RpNPyXAWbr53O23b
+ swaJsl31p1t+lFeVjebLmiYD1LLS2OwjeMR9RYmpKdZmTHPeGfd9wipP5J2It89KDT8y
+ a9Rq/+YgHTY2zt9D0zH11QNjMlHOQhw8XilZ7qyxaBrl+QOF0vPJYBXYBpHFvpCh16j8
+ 7CsLKPbkxhNVDbAkPuv9vvJ8evEFgFzozDQ9MPeePPoP2MuXeZUfeMdMXAyNz0jbElxo
+ Ya4w==
+X-Gm-Message-State: AC+VfDw/CX6Hgq7Om4y5kVVraHGOhAkJ33XSqX5k21s183WOeCnvf2Ch
+ gJt+UQgE3lkxU1Jk14muhMELOy6WjZrlXEPXaCG32LKXiobTG5xVcuwUvko3YP8OgEgc1MVXj3R
+ AAe530TpVWg1PIsokdA7lDvu5Hrm6OfE7OnV/wkZkrrWjmfWlmmF/ie4rvmPcTJUwG30ERdfrSn
+ Q=
+X-Received: by 2002:a17:907:a46:b0:94f:2b80:f3b4 with SMTP id
+ be6-20020a1709070a4600b0094f2b80f3b4mr36915825ejc.69.1684405088077; 
+ Thu, 18 May 2023 03:18:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ544H4ISYWnS5WDZnizp1bVKCxiMEpPhIocYU9tncvGHfsa/6BROTQZcXfywILF+zMZ/v3g0Q==
+X-Received: by 2002:a17:907:a46:b0:94f:2b80:f3b4 with SMTP id
+ be6-20020a1709070a4600b0094f2b80f3b4mr36915807ejc.69.1684405087741; 
+ Thu, 18 May 2023 03:18:07 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- cd20-20020a170906b35400b0096a5eb2836asm758346ejb.203.2023.05.18.03.18.05
+ lt1-20020a170906fa8100b0096efd44dbffsm764745ejb.105.2023.05.18.03.18.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 May 2023 03:18:05 -0700 (PDT)
+ Thu, 18 May 2023 03:18:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com
-Subject: [PATCH 0/4] monitor/hmp: cleanup monitor_event() and suspend_cnt
-Date: Thu, 18 May 2023 12:18:00 +0200
-Message-Id: <20230518101804.992085-1-pbonzini@redhat.com>
+Subject: [PATCH 1/4] monitor: use QEMU_LOCK_GUARD a bit more
+Date: Thu, 18 May 2023 12:18:01 +0200
+Message-Id: <20230518101804.992085-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230518101804.992085-1-pbonzini@redhat.com>
+References: <20230518101804.992085-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -97,31 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-monitor_event() is not using monitor_suspend() and monitor_resume()
-even though that is the desired outcome of moving out of and back into
-the monitor with Ctrl-a c.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ monitor/monitor.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-While cleaning this up, make the locking of several fields in struct
-Monitor less esoteric, i.e. protect them just with mon_lock.  This gets
-rid of one of the last two cases where qatomic_mb_read()/qatomic_mb_set()
-pair is used to achieve a semblance of sequential consistency.
-
-Paolo
-
-Paolo Bonzini (4):
-  monitor: use QEMU_LOCK_GUARD a bit more
-  monitor: allow calling monitor_resume under mon_lock
-  monitor: add more *_locked() functions
-  monitor: do not use mb_read/mb_set for suspend_cnt
-
- include/monitor/monitor.h     |  3 +++
- monitor/hmp.c                 | 41 ++++++++++++++++-------------------
- monitor/monitor-internal.h    |  3 +--
- monitor/monitor.c             | 39 ++++++++++++++++++---------------
- tests/qemu-iotests/051.out    |  4 ++--
- tests/qemu-iotests/051.pc.out | 20 ++++++++---------
- 6 files changed, 57 insertions(+), 53 deletions(-)
-
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index 602535696c59..4b11bca2a21d 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -161,10 +161,9 @@ static gboolean monitor_unblocked(void *do_not_use, GIOCondition cond,
+ {
+     Monitor *mon = opaque;
+ 
+-    qemu_mutex_lock(&mon->mon_lock);
++    QEMU_LOCK_GUARD(&mon->mon_lock);
+     mon->out_watch = 0;
+     monitor_flush_locked(mon);
+-    qemu_mutex_unlock(&mon->mon_lock);
+     return FALSE;
+ }
+ 
+@@ -203,9 +202,8 @@ static void monitor_flush_locked(Monitor *mon)
+ 
+ void monitor_flush(Monitor *mon)
+ {
+-    qemu_mutex_lock(&mon->mon_lock);
++    QEMU_LOCK_GUARD(&mon->mon_lock);
+     monitor_flush_locked(mon);
+-    qemu_mutex_unlock(&mon->mon_lock);
+ }
+ 
+ /* flush at every end of line */
 -- 
 2.40.1
 
