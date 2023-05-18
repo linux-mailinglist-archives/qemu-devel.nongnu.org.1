@@ -2,40 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988CD707AAB
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 09:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAB4707AB3
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 09:16:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzXpa-00021g-GO; Thu, 18 May 2023 03:13:48 -0400
+	id 1pzXry-0002nJ-PH; Thu, 18 May 2023 03:16:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzXpT-0001zc-6G; Thu, 18 May 2023 03:13:39 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pzXrv-0002n8-3o
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 03:16:11 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1pzXpR-00074y-2z; Thu, 18 May 2023 03:13:38 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1pzXrt-0007XK-K7
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 03:16:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1E1946DB1;
- Thu, 18 May 2023 10:13:25 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 685596DB5;
+ Thu, 18 May 2023 10:16:07 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EB9FF626D;
- Thu, 18 May 2023 10:13:23 +0300 (MSK)
-Message-ID: <fdb97449-d234-0d98-ed02-733ec1d33ac1@tls.msk.ru>
-Date: Thu, 18 May 2023 10:13:23 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id F26E0626E;
+ Thu, 18 May 2023 10:16:06 +0300 (MSK)
+Message-ID: <4134faa3-a0e6-7fe2-1e44-05e84fd88201@tls.msk.ru>
+Date: Thu, 18 May 2023 10:16:06 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 17/18] aio-posix: do not nest poll handlers
+Subject: Re: [PATCH v2] Add information how to fix common build error on
+ Windows in symlink-install-tree
 Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>
-References: <20230517165116.475123-1-kwolf@redhat.com>
- <20230517165116.475123-18-kwolf@redhat.com>
+To: Mateusz Krawczuk <mat.krawczuk@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, qemu-devel@nongnu.org
+References: <20230504211101.1386-1-mat.krawczuk@gmail.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230517165116.475123-18-kwolf@redhat.com>
+In-Reply-To: <20230504211101.1386-1-mat.krawczuk@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -61,40 +65,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-17.05.2023 19:51, Kevin Wolf wrote:
-> From: Stefan Hajnoczi <stefanha@redhat.com>
-> 
-> QEMU's event loop supports nesting, which means that event handler
-> functions may themselves call aio_poll(). The condition that triggered a
-> handler must be reset before the nested aio_poll() call, otherwise the
-> same handler will be called and immediately re-enter aio_poll. This
-> leads to an infinite loop and stack exhaustion.
-> 
-> Poll handlers are especially prone to this issue, because they typically
-> reset their condition by finishing the processing of pending work.
-> Unfortunately it is during the processing of pending work that nested
-> aio_poll() calls typically occur and the condition has not yet been
-> reset.
-> 
-> Disable a poll handler during ->io_poll_ready() so that a nested
-> aio_poll() call cannot invoke ->io_poll_ready() again. As a result, the
-> disabled poll handler and its associated fd handler do not run during
-> the nested aio_poll(). Calling aio_set_fd_handler() from inside nested
-> aio_poll() could cause it to run again. If the fd handler is pending
-> inside nested aio_poll(), then it will also run again.
-> 
-> In theory fd handlers can be affected by the same issue, but they are
-> more likely to reset the condition before calling nested aio_poll().
-> 
-> This is a special case and it's somewhat complex, but I don't see a way
-> around it as long as nested aio_poll() is supported.
-> 
-> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2186181
-> Fixes: c38270692593 ("block: Mark bdrv_co_io_(un)plug() and callers GRAPH_RDLOCK")
+05.05.2023 00:11, Mateusz Krawczuk wrote:
+..
+>       except BaseException as e:
+>           if not isinstance(e, OSError) or e.errno != errno.EEXIST:
+> +            if os.name == 'nt':
+> +                print('Please enable Developer Mode to support soft link '
+> +                      'without Administrator permission')
+>               print(f'error making symbolic link {dest}', file=sys.stderr)
+>               raise e
 
-Is it not a stable-8.0 material?
-
-Thanks,
+FWIW, can't we get rid of symlinks entirely? It smells like this
+should be possible with meson.
 
 /mjt
 
