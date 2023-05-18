@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B6070847E
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4397084A1
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 17:06:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzf8B-0004Wi-Hg; Thu, 18 May 2023 11:01:27 -0400
+	id 1pzfCE-0006Ag-Dn; Thu, 18 May 2023 11:05:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzf88-0004Vy-Rm
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:01:24 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzf86-00072f-MB
- for qemu-devel@nongnu.org; Thu, 18 May 2023 11:01:24 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-510d6b939bfso3335362a12.0
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 08:01:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684422081; x=1687014081;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BSokkkJ85wC0FcYBWg/iT24aoJnqpk9wFzh4rzt5yKs=;
- b=zwTZgJPNHby7cD/BE506ne1HZJjH2xZ3avsV/6wZoGgT884zUVKieNTIJUw05ATTjT
- XSiX5JLcHnJNEb3HcwqnCjPHwg5/u/1Muh0U7Cpk9Szz0jTRF7aYHZYHsNvWcvo4hKq0
- wd0e+AI2Lsi6TOSJ0E5GuxRVH70SeX+cRIF4Sx1ZCOwByuc0fCIfTNH5MPdHGGEj+Z1o
- V/XvntpES6VdlP6vVU6vG2rIkwSA6jFSBSfKXHlBDL9LDTyUYgI3RhZfg+uCUrATz04L
- K4/7KNH/eZiqLpEaDQaflRIi8zkUby3oDDfZwzLqgPET4JRb/1kzfrxBun/uxyvKLXwB
- MTFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684422081; x=1687014081;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BSokkkJ85wC0FcYBWg/iT24aoJnqpk9wFzh4rzt5yKs=;
- b=CTRNsEFW4i4luezcVkILxsRyfq5t5qkyNIGXmQc0BYM60rGFqr35EoEZapEpdFb4X3
- zlaUCJFET4Iz4C/xF/J8D8vqHRwGxfwkHKN+BL3IZV7lxrOJ3iXSc7ICpmNA7/pJghi9
- PvW/ArgxgP1AgibPMOifLFFoqpoiIcaXMDVRnV5D1VeBb2k3naAU+ZquA03oYok043qc
- upnk2/SdpfwZYAIBPXN3fzJ7ptbxxphQTl1h0yHL+9qUdUZaU/N9Gc4I6Fv/NSUig930
- NACxCNLOl9tbTcbbhSkFKClDWMk5XljWhcJE4CdEnKdoYqk0dYrM0MHKBhCxvxFO1sRs
- vCNA==
-X-Gm-Message-State: AC+VfDyDYs+3sLI7Pa6Jmtb1Sr30euPHEC/dLfe1sMbhfmUsKoaDDL0Q
- Auv3aow2zVgRdON3JPFacmtmQyBLrl3bjblkvKN/4Q==
-X-Google-Smtp-Source: ACHHUZ5/lw98kNr8K0Ai71v9WHdaXpPG8XuT7zOsRbJbKqvIEDhhxRQKuRbiqXY3MyAqkG3t/H2ySMHX+a2o9BXlKNo=
-X-Received: by 2002:a05:6402:205b:b0:50b:c89f:f381 with SMTP id
- bc27-20020a056402205b00b0050bc89ff381mr4809103edb.29.1684422081002; Thu, 18
- May 2023 08:01:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1pzfCC-0006AI-3y
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:05:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1pzfCA-0007qq-4k
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 11:05:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684422333;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=phScfOwKt72MDcjUN0AqA+SFUzrYjkbyh2NCbktujeE=;
+ b=Q9OpFxAEUnqJu54u8L7ZAalusP5Exly7Y2Ras4C3pWY+3swaBy3m/CBCJM5LUWt16ig9qt
+ 83V9RJ2Emq2cXGv14QAet9AA4qrFuzlNXI7ATXfVsHgnq42s8AgOSwewr0M/XB6bL8ZsWS
+ QHQtFvfgfOb5DSTU9yFu1euKenx8MLE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-264-8_QCnTjNPZ6_PYNjrfUFsA-1; Thu, 18 May 2023 11:05:29 -0400
+X-MC-Unique: 8_QCnTjNPZ6_PYNjrfUFsA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13DF2857E65;
+ Thu, 18 May 2023 15:05:29 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.42])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6FF3E492B01;
+ Thu, 18 May 2023 15:05:27 +0000 (UTC)
+Date: Thu, 18 May 2023 11:05:25 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ richard.henderson@linaro.org, qemu-devel@nongnu.org
+Subject: Re: [PULL 17/18] aio-posix: do not nest poll handlers
+Message-ID: <20230518150525.GB403983@fedora>
+References: <20230517165116.475123-1-kwolf@redhat.com>
+ <20230517165116.475123-18-kwolf@redhat.com>
+ <fdb97449-d234-0d98-ed02-733ec1d33ac1@tls.msk.ru>
 MIME-Version: 1.0
-References: <CANamGFG1Lq+QSMshgYChj663K=Sj19YEh8WP=HWYM6HBnpRpWw@mail.gmail.com>
- <CAFEAcA83RoCWzZD3pOdJndtRYynf7j0GwTEZCfOz6uOv5fybnQ@mail.gmail.com>
- <CANamGFFb_zwkAe0+VRfj7daL0CSs4-hS5SX-GRSmG2kJJCLV0Q@mail.gmail.com>
-In-Reply-To: <CANamGFFb_zwkAe0+VRfj7daL0CSs4-hS5SX-GRSmG2kJJCLV0Q@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 18 May 2023 16:01:09 +0100
-Message-ID: <CAFEAcA997nsVLYbhsXQ+vBnN-=gPmm=9fTmrbysqszgUcsx4uA@mail.gmail.com>
-Subject: Re: Gpio in vexpress
-To: ido berenbaum <ido.ber3@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="a77WSmufvOvyc3qO"
+Content-Disposition: inline
+In-Reply-To: <fdb97449-d234-0d98-ed02-733ec1d33ac1@tls.msk.ru>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,31 +81,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 May 2023 at 15:36, ido berenbaum <ido.ber3@gmail.com> wrote:
->
-> Oh, I was under the impression the vexpress board is not based on a real physical hardware like virt.
 
-Yep; the motherboard part is documented here:
-https://developer.arm.com/documentation/dui0447/latest/
-and the daughterboards are:
-https://developer.arm.com/documentation/dui0448/latest/ (A9)
-https://developer.arm.com/documentation/dui0604/latest/ (A15)
+--a77WSmufvOvyc3qO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> In any case, In my workplace we use the qemu for our CI testing, to prevent the need to use our hardware for logical tests.
-> The thing is our SoC is not implemented in qemu, and so we are using the vexpress as it is similar enough when considering the core structure.
-> But, as it is not identical we need to make changes to make it fit our use cases. For example, add a gpio.
->
-> Do you think we should use a different SoC as a base for our development?
+On Thu, May 18, 2023 at 10:13:23AM +0300, Michael Tokarev wrote:
+> 17.05.2023 19:51, Kevin Wolf wrote:
+> > From: Stefan Hajnoczi <stefanha@redhat.com>
+> >=20
+> > QEMU's event loop supports nesting, which means that event handler
+> > functions may themselves call aio_poll(). The condition that triggered a
+> > handler must be reset before the nested aio_poll() call, otherwise the
+> > same handler will be called and immediately re-enter aio_poll. This
+> > leads to an infinite loop and stack exhaustion.
+> >=20
+> > Poll handlers are especially prone to this issue, because they typically
+> > reset their condition by finishing the processing of pending work.
+> > Unfortunately it is during the processing of pending work that nested
+> > aio_poll() calls typically occur and the condition has not yet been
+> > reset.
+> >=20
+> > Disable a poll handler during ->io_poll_ready() so that a nested
+> > aio_poll() call cannot invoke ->io_poll_ready() again. As a result, the
+> > disabled poll handler and its associated fd handler do not run during
+> > the nested aio_poll(). Calling aio_set_fd_handler() from inside nested
+> > aio_poll() could cause it to run again. If the fd handler is pending
+> > inside nested aio_poll(), then it will also run again.
+> >=20
+> > In theory fd handlers can be affected by the same issue, but they are
+> > more likely to reset the condition before calling nested aio_poll().
+> >=20
+> > This is a special case and it's somewhat complex, but I don't see a way
+> > around it as long as nested aio_poll() is supported.
+> >=20
+> > Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2186181
+> > Fixes: c38270692593 ("block: Mark bdrv_co_io_(un)plug() and callers GRA=
+PH_RDLOCK")
+>=20
+> Is it not a stable-8.0 material?
 
-If you're just doing local hacks you can do whatever
-you like. Upstream we won't take changes which don't
-match the real vexpress hardware, and that didn't include
-any GPIO controllers.
+Yes.
 
-If the guest code you're running is expecting to run on
-your actual SoC you might consider modelling it, but
-this is a fair amount of work.
+Stefan
 
-thanks
--- PMM
+--a77WSmufvOvyc3qO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRmPrUACgkQnKSrs4Gr
+c8hekwf/ZlFAn4MXQD3ZVkdZE11x4050BqnHJSbpkSmtP2nUUYWoAAXDZ4+yTqPa
+tgSL1sV6wWjipwF9tiX3caqKyNBNVQhjd/d8p3uofcQ5ZyrByUWmApVs/WVFquXZ
+y5sRth+ADrWhee6eC44ADb5oQGSuo5U2MZtg5R+n92MCScCVWJoh7AbkBVDfwFkr
+PwhNaZ/wquzs231EvdwskG9OSuD7QXpi90Oqbt+fC35JZ88DRnljQWtIvvZqsTSd
+/w+4jYsjLTbtOyEeCYFOv8Oy+HbCQ3g0D9enmNOu7WHFg1A0nhO4MA2Xn6L3Lad+
+hb8wsYKFUnO7jN9KUk/Ai1hjnpH7Ow==
+=P76q
+-----END PGP SIGNATURE-----
+
+--a77WSmufvOvyc3qO--
+
 
