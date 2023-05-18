@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EF47081D1
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C457081CC
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 14:53:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzd6Y-0004Hu-8v; Thu, 18 May 2023 08:51:38 -0400
+	id 1pzd6b-0004JG-6v; Thu, 18 May 2023 08:51:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6U-0004Ey-8s
+ id 1pzd6T-0004E2-W5
  for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:34 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzd6N-00081f-W0
- for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:33 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3093a7b71fbso1882018f8f.2
+ id 1pzd6N-00081j-UT
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 08:51:31 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3f41d087b3bso20206885e9.0
  for <qemu-devel@nongnu.org>; Thu, 18 May 2023 05:51:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684414277; x=1687006277;
+ d=linaro.org; s=google; t=1684414278; x=1687006278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=u3wPL3NK+XZ35Ptpin56VFyKyMzmgfDqXeAb/6jTxe8=;
- b=EcLG9Us9FbFSgL8jjBKcAwEkL2m3aSb01tKJphR2tg0kfAGGhtFBkcPY3X+iGgu/dT
- wDCcPXHGRktx4YI1c6p8kWs49cz69PQrNua4dHt6Z1d6fO7v6G+ApYu1J2M0IqY4Mlux
- 4TgH3TJ/1hfY1h1KlTnw5pf9iCoV0nvtX6VkRp69pmurNiDxEbgWff4KKN6X/Ne8xAqa
- U/SSXav5UwG1Vp+3C6tSTESzi+dyK9HUSTI+0W13uISuW0cJubM4fjSfKO69nRWN/Xz8
- 2nqAhY1SvKuRem9E5sDyDTf7HiLm0BDjOatddOalMkpTQY/Z20D+cgpazzku5fN6wMRS
- EDZg==
+ :reply-to; bh=W6KDzoUlerslTQhMby3OQ4q1nBSstouBuvraHtUO/aU=;
+ b=srWVxZYd2kCDDPVc1wVLUC0M2xfIDKLs7iFrbG/Ye7thv0Rwc1Idq/NzA4l00UdLFx
+ 8eK3hJQSLX6y7b7xYY5k8PRFDNdYo/I7/O0tPNx2bc+l80MYCMmhqUHwyF/6QbpOcYl5
+ bOCU8wOLdqtmMruPQE5lnoLjZxQ+fpl7Dv4Nf7hlMOtHuBVkLwMAcZ9MNIzEOJO+eHoQ
+ 1cgUwYgNAlqAuqHPDki4WbAf45l/66wSBjhA7Gr3FWOVt9fJwQQTsmzN/1/ezxYY4VJO
+ ZzeThtVQmbKyc5kt1CCmTXXIYQIO31BLRRjHY4iJIPJtsLG7DcUAbQU4ysitk4ySTFqX
+ lOUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684414277; x=1687006277;
+ d=1e100.net; s=20221208; t=1684414278; x=1687006278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u3wPL3NK+XZ35Ptpin56VFyKyMzmgfDqXeAb/6jTxe8=;
- b=O4wu6jYOIgpK3rIqR2/lnvde0HNuGvembmvi+dO80kU8BvSuyWuzJpUyFT0kKJASfx
- a95TuwHKfLXQxahCe+WmmQ9zbXTm2DQ54zE8lgagceS+v5C7trSmR3N4/E31+N++eSIo
- bG6pi6PUhwW7Fh0Wm1msW/EMqXZHfU2LBvV+5nmAlA5l7ikrz9IzeMjM/0xAZH0aw18I
- I6GnB5bskJD40drP1Pzmyxx+TDaoK1TgUxXz+ri+Vv6wuheGase44mlDSZ0JbuUKiwkZ
- nHWNCicyzu6QUB50pRNRC81NbsZ/t7i5D+v4rhWZ6c7sDWYE035LYYj59dwo6m3e1MJz
- Pcfg==
-X-Gm-Message-State: AC+VfDy34jfeeXOIxPcUBWeMPBn3KNVHU+IVe3geo9w6edRJLT/vYyL7
- JDo3bJfoLZZ9hqy4zmT8GIHmfhOBBu9XNMuyvh4=
-X-Google-Smtp-Source: ACHHUZ5MbocghGDrgJXt5Mhcrtxvg6yYcNblKH7nur7ctJihyS2BLx83Yoeo0N5thp21Y+S71P8Bkg==
-X-Received: by 2002:a5d:6545:0:b0:309:4368:a8a0 with SMTP id
- z5-20020a5d6545000000b003094368a8a0mr1462388wrv.68.1684414277737; 
- Thu, 18 May 2023 05:51:17 -0700 (PDT)
+ bh=W6KDzoUlerslTQhMby3OQ4q1nBSstouBuvraHtUO/aU=;
+ b=KUb7h3fJmGR+j6ZcUHv1t1B33f9GritTKSuTvSxFqBzpe5dieL8p2rqe4SWkjq6Hun
+ xFYmeIL0gGbEvA0fs/kn0Ur3EtokTz/QlZUw48mSlyNK/FKb91qSKKRHz0YN0lLDkY7L
+ TgZEpPfuROfLVa3ZnXwm6apSuMcAk3G2AxmnvKSQVUat2264aR5N2zHXqohyXQC8yspy
+ pbgQcWPvJD1Or8AaOsqmtjm/UusBjknLNhoOMwfNtT2/yeYTu7FKWelJrc9rnYmR/w+h
+ GsgTzJv0JXea+E+Ci0Gq5emhexzM0v3ZJV2/AZdBfalgbFYxJamq7Emj4tyZxJb3iQBs
+ WgtQ==
+X-Gm-Message-State: AC+VfDzSyWDvO3RE5mgJUfbFh6V2ILngPEQCx3gwTt1lR6niCNXdahXn
+ JkdaEEGbcOkVBtrmxHtFirB3vjAlmOTFDjAirro=
+X-Google-Smtp-Source: ACHHUZ4xHy+JkugiM4xXnHlfktVfSEuIlf4s0iaRRYTtDiMRDXl4lmXnRVat3FZgtexQAbWVpgzJWA==
+X-Received: by 2002:a1c:7409:0:b0:3f1:75b0:dc47 with SMTP id
+ p9-20020a1c7409000000b003f175b0dc47mr1394474wmc.15.1684414278168; 
+ Thu, 18 May 2023 05:51:18 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  z21-20020a1c4c15000000b003f42d2f4531sm5201321wmf.48.2023.05.18.05.51.17
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 18 May 2023 05:51:17 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/29] target/arm: Convert CBZ, CBNZ to decodetree
-Date: Thu, 18 May 2023 13:50:58 +0100
-Message-Id: <20230518125107.146421-21-peter.maydell@linaro.org>
+Subject: [PULL 21/29] target/arm: Convert TBZ, TBNZ to decodetree
+Date: Thu, 18 May 2023 13:50:59 +0100
+Message-Id: <20230518125107.146421-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230518125107.146421-1-peter.maydell@linaro.org>
 References: <20230518125107.146421-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,60 +90,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the compare-and-branch-immediate insns CBZ and CBNZ
+Convert the test-and-branch-immediate insns TBZ and TBNZ
 to decodetree.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230512144106.3608981-15-peter.maydell@linaro.org
+Message-id: 20230512144106.3608981-16-peter.maydell@linaro.org
 ---
- target/arm/tcg/a64.decode      |  5 +++++
- target/arm/tcg/translate-a64.c | 26 ++++++--------------------
+ target/arm/tcg/a64.decode      |  6 ++++++
+ target/arm/tcg/translate-a64.c | 25 +++++--------------------
  2 files changed, 11 insertions(+), 20 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 483e3649929..f5759a66e7f 100644
+index f5759a66e7f..09def15863f 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -113,3 +113,8 @@ EXTR            0 00 100111 0 0 rm:5 0 imm:5 rn:5 rd:5   &extract sf=0
+@@ -118,3 +118,9 @@ BL              1 00101 .......................... @branch
+ &cbz     rt imm sf nz
  
- B               0 00101 .......................... @branch
- BL              1 00101 .......................... @branch
+ CBZ             sf:1 011010 nz:1 ................... rt:5 &cbz imm=%imm19
 +
-+%imm19   5:s19 !function=times_4
-+&cbz     rt imm sf nz
++%imm14     5:s14 !function=times_4
++%imm31_19  31:1 19:5
++&tbz       rt imm nz bitpos
 +
-+CBZ             sf:1 011010 nz:1 ................... rt:5 &cbz imm=%imm19
++TBZ             . 011011 nz:1 ..... .............. rt:5 &tbz  imm=%imm14 bitpos=%imm31_19
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index f702e9b0678..06619f8a05d 100644
+index 06619f8a05d..1e5977423a6 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -1334,33 +1334,22 @@ static bool trans_BL(DisasContext *s, arg_i *a)
+@@ -1352,35 +1352,23 @@ static bool trans_CBZ(DisasContext *s, arg_cbz *a)
      return true;
  }
  
--/* Compare and branch (immediate)
-- *   31  30         25  24  23                  5 4      0
-- * +----+-------------+----+---------------------+--------+
-- * | sf | 0 1 1 0 1 0 | op |         imm19       |   Rt   |
-- * +----+-------------+----+---------------------+--------+
+-/* Test and branch (immediate)
+- *   31  30         25  24  23   19 18          5 4    0
+- * +----+-------------+----+-------+-------------+------+
+- * | b5 | 0 1 1 0 1 1 | op |  b40  |    imm14    |  Rt  |
+- * +----+-------------+----+-------+-------------+------+
 - */
--static void disas_comp_b_imm(DisasContext *s, uint32_t insn)
-+
-+static bool trans_CBZ(DisasContext *s, arg_cbz *a)
+-static void disas_test_b_imm(DisasContext *s, uint32_t insn)
++static bool trans_TBZ(DisasContext *s, arg_tbz *a)
  {
--    unsigned int sf, op, rt;
+-    unsigned int bit_pos, op, rt;
 -    int64_t diff;
      DisasLabel match;
      TCGv_i64 tcg_cmp;
  
--    sf = extract32(insn, 31, 1);
--    op = extract32(insn, 24, 1); /* 0: CBZ; 1: CBNZ */
+-    bit_pos = (extract32(insn, 31, 1) << 5) | extract32(insn, 19, 5);
+-    op = extract32(insn, 24, 1); /* 0: TBZ; 1: TBNZ */
+-    diff = sextract32(insn, 5, 14) * 4;
 -    rt = extract32(insn, 0, 5);
--    diff = sextract32(insn, 5, 19) * 4;
 -
--    tcg_cmp = read_cpu_reg(s, rt, sf);
-+    tcg_cmp = read_cpu_reg(s, a->rt, a->sf);
+     tcg_cmp = tcg_temp_new_i64();
+-    tcg_gen_andi_i64(tcg_cmp, cpu_reg(s, rt), (1ULL << bit_pos));
++    tcg_gen_andi_i64(tcg_cmp, cpu_reg(s, a->rt), 1ULL << a->bitpos);
+ 
      reset_btype(s);
  
      match = gen_disas_label(s);
@@ -157,16 +159,16 @@ index f702e9b0678..06619f8a05d 100644
 +    return true;
  }
  
- /* Test and branch (immediate)
-@@ -2408,9 +2397,6 @@ static void disas_uncond_b_reg(DisasContext *s, uint32_t insn)
+ /* Conditional branch (immediate)
+@@ -2397,9 +2385,6 @@ static void disas_uncond_b_reg(DisasContext *s, uint32_t insn)
  static void disas_b_exc_sys(DisasContext *s, uint32_t insn)
  {
      switch (extract32(insn, 25, 7)) {
--    case 0x1a: case 0x5a: /* Compare & branch (immediate) */
--        disas_comp_b_imm(s, insn);
+-    case 0x1b: case 0x5b: /* Test & branch (immediate) */
+-        disas_test_b_imm(s, insn);
 -        break;
-     case 0x1b: case 0x5b: /* Test & branch (immediate) */
-         disas_test_b_imm(s, insn);
+     case 0x2a: /* Conditional branch (immediate) */
+         disas_cond_b_imm(s, insn);
          break;
 -- 
 2.34.1
