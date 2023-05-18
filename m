@@ -2,85 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A46B707A14
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 08:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C20F707A15
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 08:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzWqc-0008EC-IX; Thu, 18 May 2023 02:10:46 -0400
+	id 1pzWr8-0008I2-Uf; Thu, 18 May 2023 02:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1pzWqU-0008CP-Ap
- for qemu-devel@nongnu.org; Thu, 18 May 2023 02:10:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1pzWr5-0008HZ-E8
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 02:11:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1pzWqQ-0004pp-OE
- for qemu-devel@nongnu.org; Thu, 18 May 2023 02:10:38 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1pzWr2-000515-L2
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 02:11:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684390233;
+ s=mimecast20190719; t=1684390271;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l/g2mAqa15fpKbMd9OMgtc44tCIzrLtrsT4VJjw7R10=;
- b=go1POatlBk3aFtHeSv3j+B05yqMT5/Uqib66hqO/yfKBASEFIzdaprQn2GxLXIstgYuxYW
- K+i4Rwn9zKNjj7//+lFrPXu1IVbIhndAuh1TWdVJRunahGsZsw7YN4GFOZFO7kAV44LgLF
- 3GdpLijxpuodj+kXHybuD1malaxpw5g=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=POs/BQVMoivQyUmVNZMcRuw6DgTlBBQIOum/ugrzyF8=;
+ b=P2zMJ0Io/1bXkJGu43fL0yP1l/0anyDteWQEbjoEq7qp0TG4MLs4t1b1SOsHsk1w2Fb9GT
+ vMXJtjYH62imwYR154ILz0g+UJy8/YYi7kYBRzkGMMNwNoGY7/rH/WVTmdAdKnMQ4vfPr3
+ gyjbv+nKDmjv5YyHueDPi1hExxXqZPc=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-673-7wUbWEgFMc2XGBaunxROQg-1; Thu, 18 May 2023 02:10:32 -0400
-X-MC-Unique: 7wUbWEgFMc2XGBaunxROQg-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-4f1385c2c35so1123795e87.1
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 23:10:31 -0700 (PDT)
+ us-mta-222-lHXXySt-N66y2oMyNmeT0g-1; Thu, 18 May 2023 02:11:09 -0400
+X-MC-Unique: lHXXySt-N66y2oMyNmeT0g-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-64d2467d593so23515b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 17 May 2023 23:11:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684390230; x=1686982230;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1684390269; x=1686982269;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=l/g2mAqa15fpKbMd9OMgtc44tCIzrLtrsT4VJjw7R10=;
- b=FsQAEoGWcYcE72NK6SOetTs1zUhJKLT/tQ4v9LfJIjI73I0cn0ZAvi0lETiWS0W/54
- 4gXFxbHdW8oMAHg6qDrKDe6WXmABbZ2d2GGbFiXRoLzpVn6dlxQ5x93r5243xjdW6XVY
- +zDwtyZlE+yflUNUQQumpFwsmCUUGxa5bQSNz7lqsesp2ipaaHl4u8MgEWmjjQZRwA7t
- vAK+0GwWhM6opwCdLwsdVvaFiB7HpiOYoRvEa3p7QIZMkLQsDWGBGnfAlWnzOjmkU8M4
- 7zXuB3YLYhOJanPw/kIXn27qEr3+BeXxjzXlIS7Ua4uQ/CG4Zsqkb9CYXdqVhZeTULzh
- wURg==
-X-Gm-Message-State: AC+VfDyUdhFHufX3zJd2OHkaQTvQkuh8ZUbNxSdZM7L2OxYKRh3BM72N
- eYL7n3qbdnXZuAT/YdXXpx2mBTkqOlakTdC37zzlATjAQpLB2tKjkBbfn6f0SKj8+dc0n6ZXN8m
- Q6LGeJ05JKEBwKY4ucpptePofVTMBJaA=
-X-Received: by 2002:ac2:55b8:0:b0:4f2:509b:87ba with SMTP id
- y24-20020ac255b8000000b004f2509b87bamr922833lfg.50.1684390230641; 
- Wed, 17 May 2023 23:10:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6MlSGzszIwk1y6/FViKb2iK+WFCEn1HMdCr+BGX5Ozh56nL0Qco83QXkzCUxuDa3SIRs3gZAEryILgF77uzaA=
-X-Received: by 2002:ac2:55b8:0:b0:4f2:509b:87ba with SMTP id
- y24-20020ac255b8000000b004f2509b87bamr922821lfg.50.1684390230332; Wed, 17 May
- 2023 23:10:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230512135122.70403-1-viktor@daynix.com>
- <20230512135122.70403-2-viktor@daynix.com>
-In-Reply-To: <20230512135122.70403-2-viktor@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 18 May 2023 14:10:19 +0800
-Message-ID: <CACGkMEtnTHipbuWu6BCgm=wMpekO7Ov2H4OnN47jhrnjQpCjsg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] virtio-pci: add handling of PCI ATS and Device-TLB
- enable/disable
-To: Viktor Prutyanov <viktor@daynix.com>
-Cc: mst@redhat.com, qemu-devel@nongnu.org, yan@daynix.com, 
- yuri.benditovich@daynix.com
-Content-Type: text/plain; charset="UTF-8"
+ bh=POs/BQVMoivQyUmVNZMcRuw6DgTlBBQIOum/ugrzyF8=;
+ b=cZJVsqh31jkYh8zYJgrUIw/v1rhxvYVRV53QLvnY3Ke99PCBRlhAj3v1ok+oB0D2BQ
+ SC3W8oyC48LoC8kKULryAG6VGqzbo6xHyvrarzgvqMglB/Z+PnXJ6CcSJg4bkxCoeQVf
+ mgSuOKJkpGojUN5LpfXrPQUBRiDQDb/DGJ7GHRWMaIani9hz5usYIhDPQXcCi3q+VsJH
+ rG8rg/kAhSX59D7NYl0yzj5S0D0KnYuqJzWXCK1KJE8JYcokizAXkFShjIBr7Up9u9QZ
+ bbJ/PJqijHMgB8c9QY3x8RwwT+RclSiLWKOMcqoB2tWgJqWCitbrE+8PM5ddg+MPeKDi
+ ANgA==
+X-Gm-Message-State: AC+VfDxXOAOXU/oUZ71EKN8Rv4X4oAjC2z2YRhQXiWuChTuiksLqfmHt
+ uDEiGiDhEpRRfP5K0CstkXxGGWnfipe4L29CJy/qxMoHIlI74CGdFKpyWRDbaaam9hQN22LUer6
+ 1YBXs3+PoeSNcus4=
+X-Received: by 2002:a05:6a00:1785:b0:64a:f730:154c with SMTP id
+ s5-20020a056a00178500b0064af730154cmr3287159pfg.13.1684390268901; 
+ Wed, 17 May 2023 23:11:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5KW60xfM8iR5ZGijy5kczLdRz/3d0RuyCnphXSI1VuiLzU4pCOJgvRyb9Z/RFMKJJfisoQCg==
+X-Received: by 2002:a05:6a00:1785:b0:64a:f730:154c with SMTP id
+ s5-20020a056a00178500b0064af730154cmr3287140pfg.13.1684390268609; 
+ Wed, 17 May 2023 23:11:08 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.106.170])
+ by smtp.gmail.com with ESMTPSA id
+ 23-20020a631457000000b00530277f7b0fsm452228pgu.53.2023.05.17.23.11.06
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 17 May 2023 23:11:08 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
+ for iasl location
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <87ilcqnckm.fsf@linaro.org>
+Date: Thu, 18 May 2023 11:41:04 +0530
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Message-Id: <BB60D504-C69A-4984-A078-A3899B38DE58@redhat.com>
+References: <20230517120751.14679-1-anisinha@redhat.com>
+ <20230517101523-mutt-send-email-mst@kernel.org>
+ <B6AD0FB1-CF05-4B4C-B58D-279422895E4D@redhat.com>
+ <20230517103522-mutt-send-email-mst@kernel.org>
+ <ED522229-5A71-40C2-AF2C-5D921B0B5D54@redhat.com> <87zg63m18g.fsf@linaro.org>
+ <20230517112347-mutt-send-email-mst@kernel.org> <87r0rflzd4.fsf@linaro.org>
+ <20230517120710-mutt-send-email-mst@kernel.org> <87ilcqnckm.fsf@linaro.org>
+To: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,104 +108,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 12, 2023 at 9:51=E2=80=AFPM Viktor Prutyanov <viktor@daynix.com=
-> wrote:
->
-> According to PCIe Address Translation Services specification 5.1.3.,
-> ATS Control Register has Enable bit to enable/disable ATS. Guest may
-> enable/disable PCI ATS and, accordingly, Device-TLB for the VirtIO PCI
-> device. So, raise/lower a flag and call a trigger function to pass this
-> event to a device implementation.
->
-> Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
 
-Acked-by: Jason Wang <jasowang@redhat.com>
 
-Thanks
+> On 17-May-2023, at 9:50 PM, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
+wrote:
+>=20
+> is there any easy way to add arguments to individual tests
 
-> ---
->  hw/virtio/virtio-pci.c     | 36 ++++++++++++++++++++++++++++++++++++
->  include/hw/virtio/virtio.h |  2 ++
->  2 files changed, 38 insertions(+)
->
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index 02fb84a8fa..edbc0daa18 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -716,6 +716,38 @@ virtio_address_space_read(VirtIOPCIProxy *proxy, hwa=
-ddr addr,
->      }
->  }
->
-> +static void virtio_pci_ats_ctrl_trigger(PCIDevice *pci_dev, bool enable)
-> +{
-> +    VirtIOPCIProxy *proxy =3D VIRTIO_PCI(pci_dev);
-> +    VirtIODevice *vdev =3D virtio_bus_get_device(&proxy->bus);
-> +    VirtioDeviceClass *k =3D VIRTIO_DEVICE_GET_CLASS(vdev);
-> +
-> +    vdev->device_iotlb_enabled =3D enable;
-> +
-> +    if (k->toggle_device_iotlb) {
-> +        k->toggle_device_iotlb(vdev);
-> +    }
-> +}
-> +
-> +static void pcie_ats_config_write(PCIDevice *dev, uint32_t address,
-> +                                  uint32_t val, int len)
-> +{
-> +    uint32_t off;
-> +    uint16_t ats_cap =3D dev->exp.ats_cap;
-> +
-> +    if (!ats_cap || address < ats_cap) {
-> +        return;
-> +    }
-> +    off =3D address - ats_cap;
-> +    if (off >=3D PCI_EXT_CAP_ATS_SIZEOF) {
-> +        return;
-> +    }
-> +
-> +    if (range_covers_byte(off, len, PCI_ATS_CTRL + 1)) {
-> +        virtio_pci_ats_ctrl_trigger(dev, !!(val & PCI_ATS_CTRL_ENABLE));
-> +    }
-> +}
-> +
->  static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
->                                  uint32_t val, int len)
->  {
-> @@ -729,6 +761,10 @@ static void virtio_write_config(PCIDevice *pci_dev, =
-uint32_t address,
->          pcie_cap_flr_write_config(pci_dev, address, val, len);
->      }
->
-> +    if (proxy->flags & VIRTIO_PCI_FLAG_ATS) {
-> +        pcie_ats_config_write(pci_dev, address, val, len);
-> +    }
-> +
->      if (range_covers_byte(address, len, PCI_COMMAND)) {
->          if (!(pci_dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
->              virtio_set_disabled(vdev, true);
-> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-> index f6b38f7e9c..af86ed7249 100644
-> --- a/include/hw/virtio/virtio.h
-> +++ b/include/hw/virtio/virtio.h
-> @@ -155,6 +155,7 @@ struct VirtIODevice
->      QLIST_HEAD(, VirtQueue) *vector_queues;
->      QTAILQ_ENTRY(VirtIODevice) next;
->      EventNotifier config_notifier;
-> +    bool device_iotlb_enabled;
->  };
->
->  struct VirtioDeviceClass {
-> @@ -212,6 +213,7 @@ struct VirtioDeviceClass {
->      const VMStateDescription *vmsd;
->      bool (*primary_unplug_pending)(void *opaque);
->      struct vhost_dev *(*get_vhost)(VirtIODevice *vdev);
-> +    void (*toggle_device_iotlb)(VirtIODevice *vdev);
->  };
->
->  void virtio_instance_init_common(Object *proxy_obj, void *data,
-> --
-> 2.35.1
->
+I looked at this before for bios bits work and seems it is not =
+straightforward to add test specific command line options in our meson =
+build system. It needs some work. I am also curious as to what Paolo =
+thought about this.=
 
 
