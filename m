@@ -2,94 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2164707D4C
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 11:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14DEF707D58
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 11:55:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzaJi-0006q2-I8; Thu, 18 May 2023 05:53:02 -0400
+	id 1pzaLF-0007UW-T8; Thu, 18 May 2023 05:54:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzaJe-0006pl-Gx
- for qemu-devel@nongnu.org; Thu, 18 May 2023 05:53:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1pzaLD-0007U8-JR
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 05:54:35 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzaJc-0000Ot-WE
- for qemu-devel@nongnu.org; Thu, 18 May 2023 05:52:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684403575;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bmtO6hfhx/i+LCK4C5RTyu+M2SMSwwCu9r+4e9ysruQ=;
- b=YtMdEQfz5DzlkIbsY782Shf/kQ0lJ/ajaK3WM8Xq4ss+vb0SFUTlG7VEessh+pCnvh/ueZ
- MxdBpdUT00cMRsGk9wifquFf4ztFWI+MJZSSmotVIkscTk3R5vzNvRVtiiusVkNckL/chB
- Yfr3kjXu+4V8Qp/jornsw0eh6RGNaSU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-tQYxCv2vMMyFVkGXRfAJZQ-1; Thu, 18 May 2023 05:52:54 -0400
-X-MC-Unique: tQYxCv2vMMyFVkGXRfAJZQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-969d75fec7aso258690866b.2
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 02:52:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684403572; x=1686995572;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bmtO6hfhx/i+LCK4C5RTyu+M2SMSwwCu9r+4e9ysruQ=;
- b=OUWH98kpLtwhnuJK0pkRouxJz+9/6A3JojjmhSMkqtZAH8kqi73QSvHEcLcagA9Ge4
- aoalPoIC3X0i45ZFYZqZVsrBuzLooRGYbyuy8Cv0vjY8IIplBbt88OG8VbtyDgbshqG1
- C4ifevn4xcg+zPO9n9xC4zxzLlyJpTxba73BhZ7Pokd/uuZ16vultjfSJoyYOG0yJCtW
- 2q7KwFrY5PDzM1Tp3bM4buBlu4kK7ZS3ia7xgjjF/+Q98XgWcTo2kSNnK49Y/vdCzRSd
- ybRwWZH00VNG4wQkeJgXKOXF0OsO1lLWi0wtgAHJ0kGViiGiq9J+/XI4xTNDLBNxcges
- hM+w==
-X-Gm-Message-State: AC+VfDx5KR0xi1+eUxkMd86QjcsaamXB0A5g2KP3pu6NjdubZfHgMM3u
- gsbRn5u6prLU+jWahD64xeuukk7ZIECVka1+YD6WfVUNJuHO1Zf5NV7qsgZtaB7TDNXUUKligA9
- YGUL4Qy41Gfs+pug=
-X-Received: by 2002:a17:907:7fa7:b0:94f:553:6fd6 with SMTP id
- qk39-20020a1709077fa700b0094f05536fd6mr46684345ejc.24.1684403572801; 
- Thu, 18 May 2023 02:52:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5omMlkOJEqaHBScHTvQA7k1VQnlR9BmMhR/EX4giiqvWx2/qFBoTNsBotlQmmuMi3dF/xMQw==
-X-Received: by 2002:a17:907:7fa7:b0:94f:553:6fd6 with SMTP id
- qk39-20020a1709077fa700b0094f05536fd6mr46684334ejc.24.1684403572472; 
- Thu, 18 May 2023 02:52:52 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:1c09:f536:3de6:228c?
- ([2001:b07:6468:f312:1c09:f536:3de6:228c])
- by smtp.googlemail.com with ESMTPSA id
- g3-20020a170906868300b009658264076asm733647ejx.45.2023.05.18.02.52.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 May 2023 02:52:51 -0700 (PDT)
-Message-ID: <f17b3d28-c5b7-ef69-309a-1b57662729e9@redhat.com>
-Date: Thu, 18 May 2023 11:52:51 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1pzaLB-0000UV-BD
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 05:54:35 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QMQF52Gz4z6J7Ch;
+ Thu, 18 May 2023 17:50:01 +0800 (CST)
+Received: from localhost (10.126.175.163) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 18 May
+ 2023 10:54:17 +0100
+Date: Thu, 18 May 2023 10:54:16 +0100
+To: Ira Weiny <ira.weiny@intel.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Dave Jiang
+ <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH RFC 1/5] hw/cxl: Use define for build bug detection
+Message-ID: <20230518105416.000054c9@Huawei.com>
+In-Reply-To: <20230517-rfc-type2-dev-v1-1-6eb2e470981b@intel.com>
+References: <20230517-rfc-type2-dev-v1-0-6eb2e470981b@intel.com>
+ <20230517-rfc-type2-dev-v1-1-6eb2e470981b@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PULL 00/68] i386, build system, KVM changes for 2023-05-18
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20230517174520.887405-1-pbonzini@redhat.com>
- <a7f23b7c-879f-36db-dabd-1891bda766e5@linaro.org>
- <CAFEAcA93JsM+XkWnQ=SzR94k9eHVvfV_NnFeOtpdv70TLpUa9w@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <CAFEAcA93JsM+XkWnQ=SzR94k9eHVvfV_NnFeOtpdv70TLpUa9w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.412, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.126.175.163]
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,45 +63,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/18/23 11:22, Peter Maydell wrote:
-> On Wed, 17 May 2023 at 21:32, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->> Failures:
+On Wed, 17 May 2023 19:45:54 -0700
+Ira Weiny <ira.weiny@intel.com> wrote:
+
+> Magic numbers can be confusing.
 > 
->> https://gitlab.com/qemu-project/qemu/-/jobs/4304958508#L2551
->>
->> /usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/libc.a(init-first.o):
->> in function `__libc_init_first':
->> (.text+0x10): relocation truncated to fit: R_AARCH64_LD64_GOTPAGE_LO15 against symbol
->> `__environ' defined in .bss section in
->> /usr/lib/gcc/aarch64-linux-gnu/11/../../../../aarch64-linux-gnu/lib/../lib/libc.a(environ.o)
->> /usr/bin/ld: (.text+0x10): warning: too many GOT entries for -fpic, please recompile with
->> -fPIC
+> Use the range size define for CXL.cachemem rather than a magic number.
+> Update/add spec references.
 > 
-> This is really a bug in the host libc (more specifically, how
-> the libc.a was compiled), isn't it? We've only previously seen
-> it when trying to build the system emulation binaries statically,
-> but it looks like it's finally reared its head for the usermode
-> binaries here. IIRC it basically boils down to how big the final
-> executable is and whether you get unlucky with what gets linked
-> in and what order such that a reloc in libc ends up wanting to
-> access a GOT table entry that gets assigned too high an index.
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
-The patches should introduce no code changes AFAICT, but I noticed that 
-they added a '-no-pie' flag that was not there previously in the static 
-compilation case.  Maybe that's the source of the breakage (if so it's 
-arguably a GCC driver bug, but compiler command lines are hard).
+I guess we should do a scrub to move all refs to 3.0 soon
+given it's horrible having a mixture of spec versions for the references.
 
-> Side note: why are we linking against -lstdc++ ???
+For future specs, we should only do this when sufficient X.Y references
+have started to appear - I think that's true for r3.0 now.
 
-A remnant of libvixl that was never deleted:
+Jonathan
 
-    emulator = executable(exe_name, exe['sources'], ...
-                          link_language: link_language, ...)
-
-Paolo
+> ---
+>  include/hw/cxl/cxl_component.h | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
+> index 52b6a2d67f40..bca2b756c202 100644
+> --- a/include/hw/cxl/cxl_component.h
+> +++ b/include/hw/cxl/cxl_component.h
+> @@ -10,7 +10,7 @@
+>  #ifndef CXL_COMPONENT_H
+>  #define CXL_COMPONENT_H
+>  
+> -/* CXL 2.0 - 8.2.4 */
+> +/* CXL 3.0 - 8.2.3 */
+>  #define CXL2_COMPONENT_IO_REGION_SIZE 0x1000
+>  #define CXL2_COMPONENT_CM_REGION_SIZE 0x1000
+>  #define CXL2_COMPONENT_BLOCK_SIZE 0x10000
+> @@ -173,7 +173,9 @@ HDM_DECODER_INIT(3);
+>      (CXL_IDE_REGISTERS_OFFSET + CXL_IDE_REGISTERS_SIZE)
+>  #define CXL_SNOOP_REGISTERS_SIZE   0x8
+>  
+> -QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET + CXL_SNOOP_REGISTERS_SIZE) >= 0x1000,
+> +/* CXL 3.0 8.2.3 Table 8-21 */
+> +QEMU_BUILD_BUG_MSG((CXL_SNOOP_REGISTERS_OFFSET +
+> +                    CXL_SNOOP_REGISTERS_SIZE) >= CXL2_COMPONENT_CM_REGION_SIZE,
+>                     "No space for registers");
+>  
+>  typedef struct component_registers {
+> 
 
 
