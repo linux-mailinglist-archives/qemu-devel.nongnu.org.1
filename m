@@ -2,90 +2,157 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41BD70894B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 22:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 215D4708960
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 22:21:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzk2k-0003aq-F8; Thu, 18 May 2023 16:16:10 -0400
+	id 1pzk74-0006jf-Hj; Thu, 18 May 2023 16:20:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzk21-0002yY-Q1
- for qemu-devel@nongnu.org; Thu, 18 May 2023 16:15:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
+ id 1pzk5y-0006Pj-3H
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 16:19:36 -0400
+Received: from mga04.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1pzk1x-0007ts-S4
- for qemu-devel@nongnu.org; Thu, 18 May 2023 16:15:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684440919;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ac196FLJW2jzRh9FgHVLmsgPhdF+NV41hdbpmj/JtDI=;
- b=YkUTGyDtjyGNXZ2AYOh/MvCvBG6py6EhCDf3ZaGot6DoKsSHUyGrUtDU31//pji/lr3xNA
- QB/aN1Y8fibJTXXMwFvdAS5Gv1vlgpJmzmKsu5BFnD/XzIngmi0gXknwAkWh1x5GFXyu7v
- J7JlIoirEcmFNRO+spXPjmZ3SGq2YjU=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-qzEy623CPRCXLTjw9yngvg-1; Thu, 18 May 2023 16:15:16 -0400
-X-MC-Unique: qzEy623CPRCXLTjw9yngvg-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1ae763f9bdaso5705735ad.3
- for <qemu-devel@nongnu.org>; Thu, 18 May 2023 13:15:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684440915; x=1687032915;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ac196FLJW2jzRh9FgHVLmsgPhdF+NV41hdbpmj/JtDI=;
- b=a0A/iq61684uBZRPLpGrxC6ttsr+ZCWhQRRj1CkIr1xCgi3xwFPntKMRnItldPt4an
- Ui4ZwlUyqKkd0nZ9HSpfsEvGe3Zci8c5cgTmR1Xvd7iFq0RVhnl7DAImiFJwMIP+4qHo
- TBkY4egEPzF7VXWSHAxqKZ7+4z5zf4ClU91mR/tf7/ve14T8PjbHRhH9KCNWeFtklLHm
- +RUo8lNfDu/DrgPpGEkNRCCXYWpCfNJwrrNA96YRdj5CNlieZKUinf9Sic7n542UKhiF
- UAkDSoZyU5xPxePuW2ticYa2IxbELaVn3Qv3hJ4ObFvAzVPnpG+XS6njI2A00q1nfTFW
- 1EAw==
-X-Gm-Message-State: AC+VfDwTGnvBJ2k2yrAVF33ru84o8Xbhq2awRwkttA6jMGPNsaG2miUk
- moRTf8QgbwaAyqo9GZ27wbw0KcnTPHb2yEmrtLNIO0skhIwu1DDT8603q1zkN+MEOegG9HHNoRT
- KyQyizjC21z4p/zqQbFoynkuBjQS44l8=
-X-Received: by 2002:a17:902:c103:b0:1ab:15c2:e2e9 with SMTP id
- 3-20020a170902c10300b001ab15c2e2e9mr285426pli.7.1684440914956; 
- Thu, 18 May 2023 13:15:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4iESZJ3RtCb4Uv0swcG32Bz+iVN9hCGxqB7GkT7aVuEmP+ZRrkxU6LGDBmaXmSzzPtLyeLfRJc+93kzKvdRok=
-X-Received: by 2002:a17:902:c103:b0:1ab:15c2:e2e9 with SMTP id
- 3-20020a170902c10300b001ab15c2e2e9mr285385pli.7.1684440914485; Thu, 18 May
- 2023 13:15:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
+ id 1pzk5t-0000Og-8e
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 16:19:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1684441164; x=1715977164;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=nbMTVyoe7raqD7/6iDMJWlY+IqSbzwK2732iS8+dles=;
+ b=HxgowxtqZ2TLd2eEAf/QVJSNHHzuT+/PF/fLsQ2fnjd7204WAM+GFlFn
+ sE+UzwkrNHdWtyUGvDn0HFsqM8wCqx0a0cebk06VfWVtPhqimVUCBz226
+ yAN6kLdWjPiAl+rlzp8D+S4FgmEWktbAtOD9Z1vQvkgbySeW45DvA3UsC
+ IliX+xtoD8ZUfLcSq6UYgGLirr89NLWZRN4JzBh5OjqP119P3/FnDKqjO
+ EtRGSNU6lWl9GFuEG0lA+KLcFcfBUcpp1KqfH8rB17/74xV71iRqdGdCn
+ i1uBuZ8KrlG4R1WxyUjthoKy9MYvit2pI0pVfT6BHReu7dsn4EMcZUJT/ Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="351022773"
+X-IronPort-AV: E=Sophos;i="6.00,175,1681196400"; d="scan'208";a="351022773"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2023 13:19:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="1032335184"
+X-IronPort-AV: E=Sophos;i="6.00,175,1681196400"; d="scan'208";a="1032335184"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmsmga005.fm.intel.com with ESMTP; 18 May 2023 13:19:21 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 18 May 2023 13:19:21 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 18 May 2023 13:19:21 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Thu, 18 May 2023 13:19:21 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Thu, 18 May 2023 13:19:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DeYOG+5Ht/Rlywk5Rf+u4bdp172cya23zAKNoN/nSKP07zY2mK4Jty6uw/l8fX5j159hknFX0rBcj6QyMErfvG0Tt4PXlW/1YM9LORRtbTkonw5LdONxgz3teRYtIEUnIpSY4c0CZ+OBFjdEbu2WfWO1ycawrU+G5XsfPPST6q8PSwI1vjNyylfBGu+zhuIIVmUQNVAe0pMl4zDb6LmjGQU3xJDdb7ppJxMEyGzhizDfCRqU6W99I7LjITCWxjUjyMsNFI0JCVKtQ6ZsvXuldNOWmJZbn+tGH8JTl6ToBGgIoF/02H3clklV5xnBCZF3Bl2q2IEEx009t+19QUtgCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cWVzQxKAQkD2BqllWGNzJ+rfOoVgAp6heUumGFTwni0=;
+ b=PppYlU9xY5VDSE0zioxxzWiMJ3zqRedsOoZHEeS6thiv/B8TaX+xCe+0Ho6HPZKoAaALglAWTY4z4rv4f5NSO68Va7Vf2RbEVvLTDvxUsUUk2ZuA/zb9aDqRUb8Y+P6baoLdPpNEDsrnW5ZIUIVALn2Hyl/DUAfekaZYv20C2DVAVKCHPIsbXdE/ehQdm8mLuSIpYBjzNwjwwfnA2cGPtRkE7EtOiurV74GLEgqsjK/q5JiBajoFL+UZrJPhteZ5hs88+dzhiS+Lpm3p3hB6aDCwOPzZq9+U5E2o41JtWcekRH+qyCaz64gVHkamBHqY7BTil0kU9Z224RFj6oSDiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
+ by DM4PR11MB5279.namprd11.prod.outlook.com (2603:10b6:5:38a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.19; Thu, 18 May
+ 2023 20:19:19 +0000
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::4fe2:e207:596b:d145]) by SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::4fe2:e207:596b:d145%5]) with mapi id 15.20.6411.017; Thu, 18 May 2023
+ 20:19:19 +0000
+Date: Thu, 18 May 2023 13:19:12 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ira Weiny
+ <ira.weiny@intel.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Dave Jiang
+ <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH RFC 1/5] hw/cxl: Use define for build bug detection
+Message-ID: <64668840a067b_114f6029416@iweiny-mobl.notmuch>
+References: <20230517-rfc-type2-dev-v1-0-6eb2e470981b@intel.com>
+ <20230517-rfc-type2-dev-v1-1-6eb2e470981b@intel.com>
+ <20230518105416.000054c9@Huawei.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230518105416.000054c9@Huawei.com>
+X-ClientProxiedBy: BYAPR05CA0022.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::35) To SA1PR11MB6733.namprd11.prod.outlook.com
+ (2603:10b6:806:25c::17)
 MIME-Version: 1.0
-References: <20230518162034.1277885-1-alex.bennee@linaro.org>
- <20230518162034.1277885-8-alex.bennee@linaro.org>
-In-Reply-To: <20230518162034.1277885-8-alex.bennee@linaro.org>
-From: John Snow <jsnow@redhat.com>
-Date: Thu, 18 May 2023 16:15:03 -0400
-Message-ID: <CAFn=p-YLTqv6bQGi9xFeZ1fCw71EdqiTLw2xv2yWnJmWfzw+vQ@mail.gmail.com>
-Subject: Re: [PATCH 7/8] python/qemu: allow avocado to set logging name space
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, Beraldo Leal <bleal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|DM4PR11MB5279:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e2cfba9-edfd-4a6a-15a1-08db57dd28b5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: PqToWcm21ACpPOA+mI52DVDtHa8dg+dcmaMCh8R6HMDqBY3G+mnvNNK0VyDmmwq6f8zjB4MudS3GBCn832zbqFTeYijryU1oFT+iC1UFTrfBd/eRJl2bmR8bwqe6cBg+VLZcg/xiWDuZt/gmcWBY+c/nDX7M1UARoz4C0s+L9ljWsCjJfrQZiXXuHBn48PXg9m5fYRXdK9aTGBk7ZUfQpc9NUUSBTquOWn4ZybjzUDZbK2uhyz9H/WAq+NL5A5NnygLVBT5uQ7VfuxMZo1QkwDyJL7X6Nti4WmjBS+uspXZSJL8LOWJFnwn26QAcYsNLnDNwA4vyaIRuq2hXIXJIc7+HEzcWaaspKEL/muG3yNCZ8uhrXspUZcFXPc+UiweUNDBlfgr1vCRgft89LDo604yNXte8W/Yu6L2xwNVNXEtp0WvKenaeTv3ZY1Y/qO2vJdhTa/J/ledlIkQnyJjB+hgW7SDLQUnj/7t/H5uUMbnsLZqCxzjOf5EfyQMPtu0RkkL6V/hByjpLU2d4CYs1Eg7LKmVjdXEs76dJxB5bsd/STyPoeIaykKlRxnBHr+TR
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA1PR11MB6733.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(376002)(136003)(396003)(366004)(346002)(39860400002)(451199021)(5660300002)(41300700001)(83380400001)(4744005)(2906002)(86362001)(38100700002)(82960400001)(8936002)(9686003)(6512007)(6506007)(26005)(44832011)(186003)(8676002)(107886003)(66946007)(66556008)(66476007)(6666004)(6486002)(478600001)(54906003)(4326008)(316002)(110136005);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RciLKuPqNNJ6Z3ScwQGJolwc6Zj66uxAAJMo1R2HVEr3D79KMG2k9KOMw3Ak?=
+ =?us-ascii?Q?sVq3OrsUfq5AOk7SacZEDGTV0D1JOqm7JJrRtDtHHNicO+T7ZYQON+0isQEt?=
+ =?us-ascii?Q?dBJeJzvLTNurutUrx6WQ7BfT6aJoW/7Twuia9B6/fG/7nmGkYLzlmzyPxfz/?=
+ =?us-ascii?Q?kYgGlX2DsVn1Qd8B08alXn7VvfRXr6UPMy49o5QYudRYdz6X1ht64qj75qpY?=
+ =?us-ascii?Q?KgZeC8iCPhA+Y8RTsc3+TCu5VQLDViIpbRbUNRqXazBDTymN70eYqHz2PbOo?=
+ =?us-ascii?Q?Sl700VmNxJqxO4hvvMiuzz+px7SCe8CDSZNd4BfwLyt7j/HIlx9uje0pTW5o?=
+ =?us-ascii?Q?rF+v9p5JMmPq7jmWZAeZFhe5AmQax2Ta1FNMNe1AFuMF0h9PhLx7AdjNkPrr?=
+ =?us-ascii?Q?67TEgPopuL5bftmLt7JIV5VXHVp2YrVLyOsqAvoLgQ1gbB+3BmeDPCFRUDRP?=
+ =?us-ascii?Q?YpxEkR278LcCVRZDdBByjbwmrgq9Feh0OCC74lsRDWGxr3UzthtFo3JO5u0r?=
+ =?us-ascii?Q?s9i8A6BT1efu2K1R5JiTfmKvrxcl6xB0KoSwpgTiERnezm62Csf5w6fC6JCN?=
+ =?us-ascii?Q?iuK8qq8wpxUsTjJ4fb+axHxXN/04bYsM6iWWusRtnDJXneeHnGopKTYDQMTj?=
+ =?us-ascii?Q?vtsao5wEvphUVdVnTq2zPNPFz40MMSl57QuOHxh6MdtlK6lLsATEM2DbpcYj?=
+ =?us-ascii?Q?bAlEfVsBf6uM9jyhcBZYmivUfRz/2yJWAsM56ODjxXKVdQQwIrJoPKY0e8c6?=
+ =?us-ascii?Q?jo0oxQVm5P7iOhDGpDrOORMeL78vnYjL9Va4uMorQ074SmWSVs7B+peunhDM?=
+ =?us-ascii?Q?bEvPoXlSJCrWWR2tX3hTtGg78qe7UbnViorxDX0sEG1gP2vOWcmkVRjkNpp3?=
+ =?us-ascii?Q?AqDxedyVsBWYAPcSVa5/XnINV6UhD7LuaVRdJv+J3GCZn4BafdcDLknEJgpy?=
+ =?us-ascii?Q?ua79tFZPB3fyOgUFyPWzsdqmp0a9h0eJvHGuEGkg+KXFFTx/iYCObNd663X0?=
+ =?us-ascii?Q?kOXiby/cmtPb/pRlmbe8WRgDxYmycAWtG+xT/Vj8+GX8FKv0GBGfC7LctXjJ?=
+ =?us-ascii?Q?Xd/tmP0phU07SguXViMzRu0A8J1XDg8TD+SmPLRX8Xl+1Enens4YBxiSBkEl?=
+ =?us-ascii?Q?2tBHM6N6WKBi/s8IIoXO1ozKz4Qywlcmp6+VbIW1FT7OD+yA+bGqHct58vUT?=
+ =?us-ascii?Q?0q/bJdWgB2Ok4nZZO+jF3maIx/X7yhm1QaKdVtAjB75OLiLn6Ojlugc4Qitz?=
+ =?us-ascii?Q?W+tgdPNZGtm7WmDxndXsT81FiHLnP/T9gCQGc0wIOWtsbIP4o8Wodb9kqLGL?=
+ =?us-ascii?Q?n+sMUhDCDZVmkR9Xsgl0uvHw7t3zItL3347yp1OyI/++8JIv4A4pjL2mJgpS?=
+ =?us-ascii?Q?P6PBINLVCbkh0rkBa++4vcUjXJONcVfllOlO4/rzua88HrOGNsz9twMK2fCZ?=
+ =?us-ascii?Q?C8983kMjxiT3bfhDHM7L9K6TSuGV/i3Hy9yg3bpEAJOnKldBDm/cXx/+y4kW?=
+ =?us-ascii?Q?ablOxu+/f37z1eTEsOXUq2SRTTr7YasklFn6Ix1f1GBSiy/f2J8ndfqD9Rls?=
+ =?us-ascii?Q?8hfNOhJQ3OKs9l5lOP6NS3kseJHLzyChhotI/zMT?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e2cfba9-edfd-4a6a-15a1-08db57dd28b5
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 20:19:18.9415 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2njHQI01MCvZ5JVfWT2VI8vG+BLYCjvnIYhQsolH7UMPMNM7YokNnHhW5MDOt0wDf3+zBg8rL/VgbXK1dwIcJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5279
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.120; envelope-from=ira.weiny@intel.com;
+ helo=mga04.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,224 +168,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 18, 2023 at 12:20=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@lina=
-ro.org> wrote:
->
-> Since the update to the latest version Avocado only automatically
-> collects logging under the avocado name space. Tweak the QEMUMachine
-> class to allow avocado to bring logging under its name space. This
-> also allows useful tricks like:
->
->   ./avocado --show avocado.qemu.machine run path/to/test
->
-> if you want to quickly get the machine invocation out of a test
-> without searching deeply through the logs.
->
+Jonathan Cameron wrote:
+> On Wed, 17 May 2023 19:45:54 -0700
+> Ira Weiny <ira.weiny@intel.com> wrote:
+> 
+> > Magic numbers can be confusing.
+> > 
+> > Use the range size define for CXL.cachemem rather than a magic number.
+> > Update/add spec references.
+> > 
+> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> 
+> I guess we should do a scrub to move all refs to 3.0 soon
+> given it's horrible having a mixture of spec versions for the references.
+> 
+> For future specs, we should only do this when sufficient X.Y references
+> have started to appear - I think that's true for r3.0 now.
 
-Huh. That's kind of weird though, right? Each Python module is
-intended to log to its own namespace by design; it feels like Avocado
-really ought to have configuration options that allows it to collect
-logging from other namespaces. I'm not against this patch, but if for
-instance I wind up splitting qemu.machine out as a separate module
-someday (like I did to qemu.qmp), then it feels weird to add options
-specifically for fudging the logging hierarchy.
+For the kernel side I think Dan is taking the 'if you are updating it then
+update the spec' but otherwise leave it be.  So since I'm touching the
+code I updated it.
 
-Also, what about the QMP logging? I don't suppose this will trickle
-down to that level either.
+I agree, it is a pain to have to look at the 2.0 spec but you can do it.
 
-Worried this is kind of incomplete.
-
---js
-
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> ---
->  python/qemu/machine/machine.py         | 42 ++++++++++++++------------
->  tests/avocado/avocado_qemu/__init__.py |  3 +-
->  2 files changed, 24 insertions(+), 21 deletions(-)
->
-> diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine=
-.py
-> index e57c254484..402b9a0df9 100644
-> --- a/python/qemu/machine/machine.py
-> +++ b/python/qemu/machine/machine.py
-> @@ -49,10 +49,6 @@
->
->  from . import console_socket
->
-> -
-> -LOG =3D logging.getLogger(__name__)
-> -
-> -
->  class QEMUMachineError(Exception):
->      """
->      Exception called when an error in QEMUMachine happens.
-> @@ -131,6 +127,7 @@ def __init__(self,
->                   drain_console: bool =3D False,
->                   console_log: Optional[str] =3D None,
->                   log_dir: Optional[str] =3D None,
-> +                 log_namespace: Optional[str] =3D None,
->                   qmp_timer: Optional[float] =3D 30):
->          '''
->          Initialize a QEMUMachine
-> @@ -164,6 +161,11 @@ def __init__(self,
->          self._sock_dir =3D sock_dir
->          self._log_dir =3D log_dir
->
-> +        if log_namespace:
-> +            self.log =3D logging.getLogger(log_namespace)
-> +        else:
-> +            self.log =3D logging.getLogger(__name__)
-> +
->          self._monitor_address =3D monitor_address
->
->          self._console_log_path =3D console_log
-> @@ -382,11 +384,11 @@ def _post_shutdown(self) -> None:
->          Called to cleanup the VM instance after the process has exited.
->          May also be called after a failed launch.
->          """
-> -        LOG.debug("Cleaning up after VM process")
-> +        self.log.debug("Cleaning up after VM process")
->          try:
->              self._close_qmp_connection()
->          except Exception as err:  # pylint: disable=3Dbroad-except
-> -            LOG.warning(
-> +            self.log.warning(
->                  "Exception closing QMP connection: %s",
->                  str(err) if str(err) else type(err).__name__
->              )
-> @@ -414,7 +416,7 @@ def _post_shutdown(self) -> None:
->                  command =3D ' '.join(self._qemu_full_args)
->              else:
->                  command =3D ''
-> -            LOG.warning(msg, -int(exitcode), command)
-> +            self.log.warning(msg, -int(exitcode), command)
->
->          self._quit_issued =3D False
->          self._user_killed =3D False
-> @@ -458,7 +460,7 @@ def _launch(self) -> None:
->          Launch the VM and establish a QMP connection
->          """
->          self._pre_launch()
-> -        LOG.debug('VM launch command: %r', ' '.join(self._qemu_full_args=
-))
-> +        self.log.debug('VM launch command: %r', ' '.join(self._qemu_full=
-_args))
->
->          # Cleaning up of this subprocess is guaranteed by _do_shutdown.
->          # pylint: disable=3Dconsider-using-with
-> @@ -507,7 +509,7 @@ def _early_cleanup(self) -> None:
->          # for QEMU to exit, while QEMU is waiting for the socket to
->          # become writable.
->          if self._console_socket is not None:
-> -            LOG.debug("Closing console socket")
-> +            self.log.debug("Closing console socket")
->              self._console_socket.close()
->              self._console_socket =3D None
->
-> @@ -518,7 +520,7 @@ def _hard_shutdown(self) -> None:
->          :raise subprocess.Timeout: When timeout is exceeds 60 seconds
->              waiting for the QEMU process to terminate.
->          """
-> -        LOG.debug("Performing hard shutdown")
-> +        self.log.debug("Performing hard shutdown")
->          self._early_cleanup()
->          self._subp.kill()
->          self._subp.wait(timeout=3D60)
-> @@ -535,17 +537,17 @@ def _soft_shutdown(self, timeout: Optional[int]) ->=
- None:
->          :raise subprocess.TimeoutExpired: When timeout is exceeded waiti=
-ng for
->              the QEMU process to terminate.
->          """
-> -        LOG.debug("Attempting graceful termination")
-> +        self.log.debug("Attempting graceful termination")
->
->          self._early_cleanup()
->
->          if self._quit_issued:
-> -            LOG.debug(
-> +            self.log.debug(
->                  "Anticipating QEMU termination due to prior 'quit' comma=
-nd, "
->                  "or explicit call to wait()"
->              )
->          else:
-> -            LOG.debug("Politely asking QEMU to terminate")
-> +            self.log.debug("Politely asking QEMU to terminate")
->
->          if self._qmp_connection:
->              try:
-> @@ -557,14 +559,14 @@ def _soft_shutdown(self, timeout: Optional[int]) ->=
- None:
->                  # Regardless, we want to quiesce the connection.
->                  self._close_qmp_connection()
->          elif not self._quit_issued:
-> -            LOG.debug(
-> +            self.log.debug(
->                  "Not anticipating QEMU quit and no QMP connection presen=
-t, "
->                  "issuing SIGTERM"
->              )
->              self._subp.terminate()
->
->          # May raise subprocess.TimeoutExpired
-> -        LOG.debug(
-> +        self.log.debug(
->              "Waiting (timeout=3D%s) for QEMU process (pid=3D%s) to termi=
-nate",
->              timeout, self._subp.pid
->          )
-> @@ -586,9 +588,9 @@ def _do_shutdown(self, timeout: Optional[int]) -> Non=
-e:
->              self._soft_shutdown(timeout)
->          except Exception as exc:
->              if isinstance(exc, subprocess.TimeoutExpired):
-> -                LOG.debug("Timed out waiting for QEMU process to exit")
-> -            LOG.debug("Graceful shutdown failed", exc_info=3DTrue)
-> -            LOG.debug("Falling back to hard shutdown")
-> +                self.log.debug("Timed out waiting for QEMU process to ex=
-it")
-> +            self.log.debug("Graceful shutdown failed", exc_info=3DTrue)
-> +            self.log.debug("Falling back to hard shutdown")
->              self._hard_shutdown()
->              raise AbnormalShutdown("Could not perform graceful shutdown"=
-) \
->                  from exc
-> @@ -611,9 +613,9 @@ def shutdown(self,
->          if not self._launched:
->              return
->
-> -        LOG.debug("Shutting down VM appliance; timeout=3D%s", timeout)
-> +        self.log.debug("Shutting down VM appliance; timeout=3D%s", timeo=
-ut)
->          if hard:
-> -            LOG.debug("Caller requests immediate termination of QEMU pro=
-cess.")
-> +            self.log.debug("Caller requests immediate termination of QEM=
-U process.")
->
->          try:
->              if hard:
-> diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avoca=
-do_qemu/__init__.py
-> index b19f797b7b..d925573299 100644
-> --- a/tests/avocado/avocado_qemu/__init__.py
-> +++ b/tests/avocado/avocado_qemu/__init__.py
-> @@ -322,7 +322,8 @@ def require_multiprocess(self):
->      def _new_vm(self, name, *args):
->          self._sd =3D tempfile.TemporaryDirectory(prefix=3D"qemu_")
->          vm =3D QEMUMachine(self.qemu_bin, base_temp_dir=3Dself.workdir,
-> -                         sock_dir=3Dself._sd.name, log_dir=3Dself.logdir=
-)
-> +                         sock_dir=3Dself._sd.name, log_dir=3Dself.logdir=
-,
-> +                         log_namespace=3D"avocado.qemu.machine")
->          self.log.debug('QEMUMachine "%s" created', name)
->          self.log.debug('QEMUMachine "%s" temp_dir: %s', name, vm.temp_di=
-r)
->          self.log.debug('QEMUMachine "%s" log_dir: %s', name, vm.log_dir)
-> --
-> 2.39.2
->
-
+Ira
 
