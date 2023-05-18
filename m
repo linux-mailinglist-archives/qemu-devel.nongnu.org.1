@@ -2,84 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DB3707A28
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 08:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C5E707A3E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 08:25:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzWuA-0002gx-Sn; Thu, 18 May 2023 02:14:26 -0400
+	id 1pzX3t-00060R-68; Thu, 18 May 2023 02:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1pzWu4-0002fp-85
- for qemu-devel@nongnu.org; Thu, 18 May 2023 02:14:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <tejus.gk@nutanix.com>)
+ id 1pzX39-0005wF-Mx
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 02:23:44 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1pzWu1-0005R0-Jy
- for qemu-devel@nongnu.org; Thu, 18 May 2023 02:14:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684390456;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=s602FP0yE5Rrz53ja+ZMAu4zf0TTsEx88sK6a4cCpU8=;
- b=BrPhZXQEciPYUtcRsqmXL3c8cF3NlvC/c7ldMRcjeWQ7qU+xyGFgIQgJtJJdLldbgR9QEd
- 72IpweTkseO+1jTJA2ZJb/eturptHOeMMKDKVWwWm/lvyoAg3wh/1+wf2B3trSTDm7PjlP
- 6YppkS76d7kqfUfKu3wWJ56mdEY82fc=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-TATCRVdUMdiiBllyGjZPSQ-1; Thu, 18 May 2023 02:14:14 -0400
-X-MC-Unique: TATCRVdUMdiiBllyGjZPSQ-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4ef455ba989so1135230e87.0
- for <qemu-devel@nongnu.org>; Wed, 17 May 2023 23:14:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684390452; x=1686982452;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=s602FP0yE5Rrz53ja+ZMAu4zf0TTsEx88sK6a4cCpU8=;
- b=W+NIsYM+0eHm7Xftqz1s+xOtlPbaJhgfBefTu6iZPliFhzBB93Mt+Lixf6D6xlxf9G
- 9AAzGt4bz2c5xHruFKnQaQLA2TthLiPl4Zf95jcE91rrCfvwBXedaHqjMDQ9TLhZaZ4f
- v4TQ1xU5ZbwNcw1GkRoXRS0oDcL7M8l6LwXwkFZ38XLTewH01q39yEOsXechykT0bs1l
- ToWJu9cQSDilaSqaCaU4CeSrKyS3Yi6S0pvdrN1LNWwviqvBP8e6xnFnq6gvFk+PrWrQ
- VH/hRR2lk/4ibMnIHgPl/YldfC3rj4FosXOfuNsJ3AhdfNi2BwO0N0x+vmUsiiL4/Cvu
- YkcA==
-X-Gm-Message-State: AC+VfDwKu7v93zcMPA3sV3VBCxbmlMZjvsdpZXOQNvCd/A0G3PWaWi77
- W2BxsNVJ7y6TuFhMaDqLQCS6/wfrrkDQgwZcTzBQN6JUe11MzooNj49OkffLboOE0lXgzYLoLqw
- IMiLuNT9zZvsTfbAVRSCmMNhNJaNcwkg=
-X-Received: by 2002:a19:f709:0:b0:4eb:4335:e104 with SMTP id
- z9-20020a19f709000000b004eb4335e104mr1037233lfe.47.1684390452681; 
- Wed, 17 May 2023 23:14:12 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ79RDGrVR7of0lnmqUq5XSC5Njtya2NAji47V2azGTFYd8KakLYBA3KP8ap9FL3IiEtpz1qWPb50Uf2e4nMeW0=
-X-Received: by 2002:a19:f709:0:b0:4eb:4335:e104 with SMTP id
- z9-20020a19f709000000b004eb4335e104mr1037221lfe.47.1684390452363; Wed, 17 May
- 2023 23:14:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tejus.gk@nutanix.com>)
+ id 1pzX36-0006oT-26
+ for qemu-devel@nongnu.org; Thu, 18 May 2023 02:23:43 -0400
+Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34I4GUFq010641; Wed, 17 May 2023 23:23:36 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=proofpoint20171006;
+ bh=/u1xA4rvUVOtlY/Rs9+JHilNQI1h5wn7but7Wj07YRU=;
+ b=wKV231njhkgHjIIH6elrc7xpJSGyVl9ZzfleHnauvVhZ+0/iAsUNgY2BNDi0bU15W5jg
+ MU47W5qi7EPYfDC+mep2NYxG1JvOPOoLzAjr7FDHI4bMmft15AwhXomBc7/xHvdUtNPZ
+ Y00KiZa2T+KLNhfsw+mev50AFVGG8Am9pPwJHtNjomV7vFPkGybvOTsYYaC/VWDxFBGQ
+ FyWHJKx4EQ2Ivn0PV93GhkEImMJswSZgy0gyMYwDk2SB9eZMqN0QiWrHOquyPC/iSSnZ
+ bJm/KIQ+ABFsb7pRT70UgT1xH30NYzW/i03M5A28SKrbagvxJaPFrFJan3Q2QxSKKdEi WQ== 
+Received: from nam10-bn7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10lp2105.outbound.protection.outlook.com [104.47.70.105])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3qmw97sxbn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 17 May 2023 23:23:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dUshBqt0fhTRusCYLpUKHGjWqKpkHaR24kyb08BI50txdyNY1Tfi89Y9UyuKj+CgjFc7m6CMQrTV3/pYf/jtrNkY7qIFQm0jMB6KAPYIR6ZV7DHVxcSc65yiyIrp0rWHBc0zq7Qk4TEJ3BDJkodL94R26aW1iMryMAPvo+7ke8svbhe3/kej6BFO0hYFVtCGwzycZ4EQ1VPaq1VRYX5KxmmNW1XkdiHWmS5A3ZdlfJriqSf9hLWfvX3bBjnXa5QCf/GWkACBqQoCcfbDTZftGi+ytECqjpGUWm2dPfrFCTA7lLRTY4UQBsQHjCLS6oa+ABHH4fSIMyiEGKrsykxu0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/u1xA4rvUVOtlY/Rs9+JHilNQI1h5wn7but7Wj07YRU=;
+ b=jUQKWKavfScvPSfcg1EbwJ8CmNqE4mMG2i0m1C5q9msWqWiJsGZI/fQ2CvQN8Wsj9ViA44bgZk6BmZ7OWKkblyRcMdK61YQicsJlztpIxIPrtCT+74OMO98MUc37gR38Dopjp/QZA206Ne2yGG0W3sPiJTFQ5aMjWeBxjF326vPyQzWj6zONKz2yjcgbbwsma05oXyBIgP5G4Q4KfqzjXqGEKqe28fyHFKsqmXhMFxIGynedwNSk6bxapm4v5wwCF4msF0DBqmgBgEGumy7jYebSbCegkSeRZ1bMWsjl4sn4L3F3ItakmbVvF0Ww+43CIhMXCAuligbrMTuKpCOEYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/u1xA4rvUVOtlY/Rs9+JHilNQI1h5wn7but7Wj07YRU=;
+ b=RheoyMLuNo9Ivmb7hpo8NhSRYeTB3l9PTZeaGWwLXKU926SrdmS0ZbwVYRc1ieOMsOtwpKKVB8ujNyZE/TmbVrZwVT8Z/MJDpeJh9GK5dZtdh3kU+DJ3qTyD3B009heRYk0yHqyGhR+/L6Ka0KF+zOSbUS8+cLhfEgSVBgH0WFMm3zAFOSI3c8c1fM113zmqAgtxy/Du05oZ0C9VuBsdXORS1qU0EqB98Laqg3INbOXsNkCi9A7bzdJUNmeNDWLYlCYlniQtvCL8WS6Jbu7HyBCbqfAZfxMrryhpoVShDUhAjPJ++vML5FxfZu3RHoq4Azi//jqB4vgJBXqw1ZR2RA==
+Received: from DM6PR02MB4810.namprd02.prod.outlook.com (2603:10b6:5:fb::15) by
+ CY5PR02MB8920.namprd02.prod.outlook.com (2603:10b6:930:38::10) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6411.17; Thu, 18 May 2023 06:23:34 +0000
+Received: from DM6PR02MB4810.namprd02.prod.outlook.com
+ ([fe80::7b0b:cd05:f137:7f12]) by DM6PR02MB4810.namprd02.prod.outlook.com
+ ([fe80::7b0b:cd05:f137:7f12%7]) with mapi id 15.20.6411.017; Thu, 18 May 2023
+ 06:23:34 +0000
+From: Tejus GK <tejus.gk@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
+ berrange@redhat.com, shivam.kumar1@nutanix.com,
+ Tejus GK <tejus.gk@nutanix.com>
+Subject: [RFC v3 0/2] migration: Update error description whenever migration
+ fails
+Date: Thu, 18 May 2023 06:23:06 +0000
+Message-Id: <20230518062308.90631-1-tejus.gk@nutanix.com>
+X-Mailer: git-send-email 2.22.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0010.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::15) To DM6PR02MB4810.namprd02.prod.outlook.com
+ (2603:10b6:5:fb::15)
 MIME-Version: 1.0
-References: <20230512135122.70403-1-viktor@daynix.com>
- <20230512135122.70403-3-viktor@daynix.com>
-In-Reply-To: <20230512135122.70403-3-viktor@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 18 May 2023 14:14:01 +0800
-Message-ID: <CACGkMEvYV4jZTjejM04PRtdYPPLwW7JGnBRa3QXeWoizxJqQkw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] vhost: register and change IOMMU flag depending on
- Device-TLB state
-To: Viktor Prutyanov <viktor@daynix.com>
-Cc: mst@redhat.com, qemu-devel@nongnu.org, yan@daynix.com, 
- yuri.benditovich@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR02MB4810:EE_|CY5PR02MB8920:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c872bfc-b937-4c81-9b81-08db57686847
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: O8LkomTPEdNGDwIYzzgbkF6u/a8unmaeO31lZh70FXzH1hf/EluTuttReydnxfcawlBf140UJyXLB3toUdnCdMxO1Q6+ajHKKENZ+LBFO1MteD+dsPGoO/aSdz52AUhe+k5/UgadsSKEzXM6bkskNffXSqBpf/S78u7WIftQ8f1wKc1DIN3q+aU/SQ7AHAdqhwt8PFRUaxnD9ygZUN813vAvbp0ogS3TP+UyoCM4Hbd4IZudm/0Itx1aj1WG3l5FLGA82CXCBR5WyV6zO+X9VW7seoPoICakM7pA83D5AgfZjZrF29Wc7jMva8O+lS/cw9C8u6MiAA5hcXb/39Rm3mhy4hGcwXj4kDh6PQU8PVI4X+W8/yv60MDUyQW6VkXAcjdwR1i7abjaehrXyesreAKK94pvU2yegIIcAn79bJAcS3HMcQ/jufcN8XYU0A03y51xh3KYHITnPEqp9r8CQpR7wdDWQvrQGXeDWmnMr3Z26E2ulwf+K3YgdV4aj+D3eyIT6USnU9mryBNJIjVmMah7RWBfQUJdMhf7+TYS+BEPu7G/fqyxduEBZE9WrJNaZEalMsjfIR1r7tITdF1S6c9hLmbPYfy/nAzGcjz60R6OatNdtLzYTQLOTvW4FZD0CTgl4tZVZlqrsV4tU00Ipg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR02MB4810.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(346002)(396003)(136003)(39860400002)(366004)(376002)(451199021)(66556008)(316002)(6916009)(66476007)(52116002)(478600001)(4326008)(966005)(6486002)(86362001)(36756003)(83380400001)(1076003)(6512007)(6506007)(107886003)(186003)(26005)(66946007)(2616005)(8936002)(2906002)(5660300002)(8676002)(15650500001)(6666004)(38350700002)(41300700001)(38100700002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ZW2maVzlf9Ke8knF3hyHkPwyxufcl+WTg1zzCz4RZBUfgt3RI7Ughr10ux7P?=
+ =?us-ascii?Q?IQDK27XYVALDCKxvMXF6cetU0YZOKtgb6AOdJh+spBiOtbekaHq8I28tjPD5?=
+ =?us-ascii?Q?ABn48XopJU5R+CfTHCdxWb2zeRS2lmk+QU83wl0lrK1I7n2UxRXRt/BT47m2?=
+ =?us-ascii?Q?Dg6ASbP2vuTor9yyuqnGTZ76vpcTmr7GKdFO2v3xGAHh28NZiQsHkP4dypOS?=
+ =?us-ascii?Q?qozBTUp0B1V8He/3QR+4QQh/gs8HpTxJdEgmPY88silaV7bxNfcCs/EwpdZd?=
+ =?us-ascii?Q?MQvi1RbqCzZLoEycSNCM/NfFvjjVsSF8rUWrEhTIdnaHpSc3dfCGQsRMDQj8?=
+ =?us-ascii?Q?5933Mx8bBNpZec8mjsCKlewwb+DwFUYPDs2Vo/PJafXA3nMRfp/pi41j9rwA?=
+ =?us-ascii?Q?u4wzpcpLLtE6UDb6vccVLauEL7b5hKw5ID4AxWe8H9pzoBCbidG6y1m0TDb2?=
+ =?us-ascii?Q?SrMLeU5XGx7Y4R0mqpdoSnE9cAHaoBrInCLNKoYW/bXcTkRTqDHZrCL+fFLJ?=
+ =?us-ascii?Q?NK3LVrGqPjlLuAWyt2NSXJO6RZs2cl9KTkc+QqNqbnEkBKAXSrGaPwZajdC/?=
+ =?us-ascii?Q?nBQ+n3HMbGhrK8euvO54JRvfYqCIVxbmJ1EgYYflmGVIpNyQqU6xF6l8FxIu?=
+ =?us-ascii?Q?rZrmtbXnMEmLmkHaWSJRZCPfF7gYOGR3HPwuNNibzBDuFFTDrM6qnE3EkPmx?=
+ =?us-ascii?Q?QbnhPaOdJrizM2CIIMRj6iDi9SnlH6jeX3u9KEaEVgPCyp7Hfyyj3RBwce4N?=
+ =?us-ascii?Q?LeuGIZN96/56h7DtV4q7Zyvq+rhv1FefCTHi9Mwc/1rFi1kD7iSY86h0HqJI?=
+ =?us-ascii?Q?R5pLzZO1xPqClUIPQ6efVT/PdOx7F0rP6WFPahQUp4QDv71V8moRtvxEwSMS?=
+ =?us-ascii?Q?hda4yEwnnKrPT2znAvuxOCH7+V3HiALK8d6nGbonMHU1W42n1a/1Owa/n/Ue?=
+ =?us-ascii?Q?vPpGEOGgrOM37tm9LWwnXtwdCSIy8+COZhRNh7vX4pylzYzTloyzi9O7jHU6?=
+ =?us-ascii?Q?ZEjUnsBXT6XO9FPsqn7C5IQqAYrKfKqwyUJIVsHza089Nfk5aV5vM4FFfCWJ?=
+ =?us-ascii?Q?iJF2E1rru2lV6lns5DPPCAfJ/U+kutssbAoggbpMYSjapC1qbGEXpcRCG217?=
+ =?us-ascii?Q?2PIVsis1THyZUP6RnTy7i/p/VQMr+pj5G0NotXkp9gh8pD2x39Kvdm3qncXM?=
+ =?us-ascii?Q?X9ZqpPfSPGpbCN+hcPqdrk7nQ6+DDsjTyguc1mX7FoqRU5RAxjxd2t1MKAgJ?=
+ =?us-ascii?Q?qSC0eXQ3ysp5Hc1VFkpvXWsSHGP9aDD74h/xP09Lu2pnhqdNqoSCMPlq6m5Q?=
+ =?us-ascii?Q?J7x04x7xr5lQQv8QBNH3s7yD2q6QJkcIu4jeuMAth4JwvG61+nRlP1jE6M1b?=
+ =?us-ascii?Q?5BnKDDZRQEEsd3VEH9Qc5LGr1SumCvjbYzl7oGvdcpzx4+DSDJCnWOrlHi2t?=
+ =?us-ascii?Q?GpZf0MWPorQsJRFmBFDMFp3eOWQfz4MSskBxddpRAPj6l3/iPOISxUO3ooSb?=
+ =?us-ascii?Q?7/L5nbf0tEz5+6xRmo8ipaEiw0WLmNDBEpSwAck309AAT0AKdsiIh3ssXz/g?=
+ =?us-ascii?Q?3s5Tn4WvYXzWnZCTchXyMSlb+QANAKmUHVAFkWM/?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c872bfc-b937-4c81-9b81-08db57686847
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR02MB4810.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 06:23:34.2718 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 14DG48s/lBZtkptNePy8LosBplx5eaHisNjhUqyADmixTmJKEojaKlMr68xXFJ2DHcxsM7/EWTlhiwjfETxpgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR02MB8920
+X-Proofpoint-GUID: Xz8I2hZemRIwxPHxNxqkqi75R6-KG4hX
+X-Proofpoint-ORIG-GUID: Xz8I2hZemRIwxPHxNxqkqi75R6-KG4hX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-18_04,2023-05-17_02,2023-02-09_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.151.68; envelope-from=tejus.gk@nutanix.com;
+ helo=mx0a-002c1b01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,165 +156,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 12, 2023 at 9:51=E2=80=AFPM Viktor Prutyanov <viktor@daynix.com=
-> wrote:
->
-> The guest can disable or never enable Device-TLB. In these cases,
-> it can't be used even if enabled in QEMU. So, check Device-TLB state
-> before registering IOMMU notifier and select unmap flag depending on
-> that. Also, implement a way to change IOMMU notifier flag if Device-TLB
-> state is changed.
->
-> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2001312
-> Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
-> ---
->  hw/virtio/vhost-backend.c         |  6 ++++++
->  hw/virtio/vhost.c                 | 30 ++++++++++++++++++------------
->  include/hw/virtio/vhost-backend.h |  3 +++
->  include/hw/virtio/vhost.h         |  1 +
->  4 files changed, 28 insertions(+), 12 deletions(-)
->
-> diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
-> index 8e581575c9..d39bfefd2d 100644
-> --- a/hw/virtio/vhost-backend.c
-> +++ b/hw/virtio/vhost-backend.c
-> @@ -297,6 +297,11 @@ static void vhost_kernel_set_iotlb_callback(struct v=
-host_dev *dev,
->          qemu_set_fd_handler((uintptr_t)dev->opaque, NULL, NULL, NULL);
->  }
->
-> +static void vhost_kernel_toggle_device_iotlb(struct vhost_dev *dev)
-> +{
-> +    vhost_toggle_device_iotlb(dev);
-> +}
-> +
->  const VhostOps kernel_ops =3D {
->          .backend_type =3D VHOST_BACKEND_TYPE_KERNEL,
->          .vhost_backend_init =3D vhost_kernel_init,
-> @@ -328,6 +333,7 @@ const VhostOps kernel_ops =3D {
->          .vhost_vsock_set_running =3D vhost_kernel_vsock_set_running,
->          .vhost_set_iotlb_callback =3D vhost_kernel_set_iotlb_callback,
->          .vhost_send_device_iotlb_msg =3D vhost_kernel_send_device_iotlb_=
-msg,
-> +        .vhost_toggle_device_iotlb =3D vhost_kernel_toggle_device_iotlb,
->  };
->  #endif
->
-> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index 746d130c74..41c9fbf286 100644
-> --- a/hw/virtio/vhost.c
-> +++ b/hw/virtio/vhost.c
-> @@ -781,7 +781,6 @@ static void vhost_iommu_region_add(MemoryListener *li=
-stener,
->      Int128 end;
->      int iommu_idx;
->      IOMMUMemoryRegion *iommu_mr;
-> -    int ret;
->
->      if (!memory_region_is_iommu(section->mr)) {
->          return;
-> @@ -796,7 +795,9 @@ static void vhost_iommu_region_add(MemoryListener *li=
-stener,
->      iommu_idx =3D memory_region_iommu_attrs_to_index(iommu_mr,
->                                                     MEMTXATTRS_UNSPECIFIE=
-D);
->      iommu_notifier_init(&iommu->n, vhost_iommu_unmap_notify,
-> -                        IOMMU_NOTIFIER_DEVIOTLB_UNMAP,
-> +                        dev->vdev->device_iotlb_enabled ?
-> +                            IOMMU_NOTIFIER_DEVIOTLB_UNMAP :
-> +                            IOMMU_NOTIFIER_UNMAP,
->                          section->offset_within_region,
->                          int128_get64(end),
->                          iommu_idx);
-> @@ -804,16 +805,8 @@ static void vhost_iommu_region_add(MemoryListener *l=
-istener,
->      iommu->iommu_offset =3D section->offset_within_address_space -
->                            section->offset_within_region;
->      iommu->hdev =3D dev;
-> -    ret =3D memory_region_register_iommu_notifier(section->mr, &iommu->n=
-, NULL);
-> -    if (ret) {
-> -        /*
-> -         * Some vIOMMUs do not support dev-iotlb yet.  If so, try to use=
- the
-> -         * UNMAP legacy message
-> -         */
-> -        iommu->n.notifier_flags =3D IOMMU_NOTIFIER_UNMAP;
-> -        memory_region_register_iommu_notifier(section->mr, &iommu->n,
-> -                                              &error_fatal);
-> -    }
+Hi everyone,
 
-So we lose this fallback. Is this really intended?
+Thank you everyone for the reviews, this is the	v3 patchset based on the 
+reviews	received on the	previous ones. 
 
-E.g does it work if you are using virtio-iommu?
+Links to the previous patchsets:
+v1: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00868.html
+v2: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg01943.html
 
-Thanks
+I've broken this patchset into two parts; the first patch contains fixes
+for places in migration.c where	the failure reason is not updated.
+Compared to the	previous patchset, this	fixes a	few errors existing in  
+the last patch and covers a few	more places where the failure reason 
+isn't updated. 
 
-> +    memory_region_register_iommu_notifier(section->mr, &iommu->n,
-> +                                          &error_fatal);
->      QLIST_INSERT_HEAD(&dev->iommu_list, iommu, iommu_next);
->      /* TODO: can replay help performance here? */
->  }
-> @@ -841,6 +834,19 @@ static void vhost_iommu_region_del(MemoryListener *l=
-istener,
->      }
->  }
->
-> +void vhost_toggle_device_iotlb(struct vhost_dev *dev)
-> +{
-> +    struct vhost_iommu *iommu;
-> +
-> +    QLIST_FOREACH(iommu, &dev->iommu_list, iommu_next) {
-> +        memory_region_unregister_iommu_notifier(iommu->mr, &iommu->n);
-> +        iommu->n.notifier_flags =3D dev->vdev->device_iotlb_enabled ?
-> +                IOMMU_NOTIFIER_DEVIOTLB_UNMAP : IOMMU_NOTIFIER_UNMAP;
-> +        memory_region_register_iommu_notifier(iommu->mr, &iommu->n,
-> +                                              &error_fatal);
-> +    }
-> +}
-> +
->  static int vhost_virtqueue_set_addr(struct vhost_dev *dev,
->                                      struct vhost_virtqueue *vq,
->                                      unsigned idx, bool enable_log)
-> diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-=
-backend.h
-> index ec3fbae58d..10a3c36b4b 100644
-> --- a/include/hw/virtio/vhost-backend.h
-> +++ b/include/hw/virtio/vhost-backend.h
-> @@ -133,6 +133,8 @@ typedef int (*vhost_set_config_call_op)(struct vhost_=
-dev *dev,
->
->  typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
->
-> +typedef void (*vhost_toggle_device_iotlb_op)(struct vhost_dev *dev);
-> +
->  typedef struct VhostOps {
->      VhostBackendType backend_type;
->      vhost_backend_init vhost_backend_init;
-> @@ -181,6 +183,7 @@ typedef struct VhostOps {
->      vhost_force_iommu_op vhost_force_iommu;
->      vhost_set_config_call_op vhost_set_config_call;
->      vhost_reset_status_op vhost_reset_status;
-> +    vhost_toggle_device_iotlb_op vhost_toggle_device_iotlb;
->  } VhostOps;
->
->  int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
-> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-> index a52f273347..785832ed46 100644
-> --- a/include/hw/virtio/vhost.h
-> +++ b/include/hw/virtio/vhost.h
-> @@ -320,6 +320,7 @@ bool vhost_has_free_slot(void);
->  int vhost_net_set_backend(struct vhost_dev *hdev,
->                            struct vhost_vring_file *file);
->
-> +void vhost_toggle_device_iotlb(struct vhost_dev *dev);
->  int vhost_device_iotlb_miss(struct vhost_dev *dev, uint64_t iova, int wr=
-ite);
->
->  int vhost_virtqueue_start(struct vhost_dev *dev, struct VirtIODevice *vd=
-ev,
-> --
-> 2.35.1
->
+The second patch, covers places	outside	of migration.c,	which eventually 
+lead to	a migration failure, along with	an error_report() call being 
+made, however without an update	for the failure	reason.	I am aware that	
+the changes in vmstate.c breaks	the build due to a unit-test build 
+failing, so I wanted to	know the right way to approach this. 
+
+regards,
+Tejus
+
+
+Tejus GK (2):
+  migration: Update error description whenever migration fails
+  migration: Update error description whenever migration fails
+
+ migration/migration.c | 23 ++++++++++++-----------
+ migration/savevm.c    | 13 ++++++++++---
+ migration/vmstate.c   | 13 ++++++++++---
+ 3 files changed, 32 insertions(+), 17 deletions(-)
+
+-- 
+2.22.3
 
 
