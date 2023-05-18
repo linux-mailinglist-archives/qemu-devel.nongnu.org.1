@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6D9707A40
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 08:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4694707A3F
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 May 2023 08:25:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzX3r-0005xh-V1; Thu, 18 May 2023 02:24:28 -0400
+	id 1pzX3j-0005xK-5U; Thu, 18 May 2023 02:24:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tejus.gk@nutanix.com>)
- id 1pzX39-0005wN-Nz
+ id 1pzX39-0005wG-N8
  for qemu-devel@nongnu.org; Thu, 18 May 2023 02:23:44 -0400
 Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tejus.gk@nutanix.com>)
- id 1pzX36-0006p0-1p
+ id 1pzX36-0006pQ-20
  for qemu-devel@nongnu.org; Thu, 18 May 2023 02:23:41 -0400
 Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
  by mx0a-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34I4GUFr010641; Wed, 17 May 2023 23:23:37 -0700
+ 34I4GUFs010641; Wed, 17 May 2023 23:23:37 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references :
  content-transfer-encoding : content-type : mime-version;
- s=proofpoint20171006; bh=OqUbbbmEOrIemKbYSILOP47SaDlbS4sifFzFVG2B09E=;
- b=n1VMVTHTPiw4vVA8/qfE6v0/Hr7oq2Nq38hEjRZRHMNPRBMgX7ivG+uJq5WNkTvohM7q
- ngOvRYTW9MjKepBJICZVRyfa9wHHoSZG+ZKqZWicMuTYhrz+9O/CaVWgkYCnq5cB7GeU
- 1nrlV5Am4IT0FVuZwD1V8oejq3R5eFPrzYmHyrkh1n2GkLQ/E98XbYixNjUKrv4HBTi7
- //kaJcudX6oZd3hBIV2teLLeffMv8MQzCDPsWXGuKR4V2lbhGtpsJe3KaTvlZcHV5Gwo
- qPhyJRv6ES1R2Zi86rJ1liUstoGCrAJMhix0hmGQgmFS6ujuqtSiJUgyrRWbBZXWwg30 Cw== 
+ s=proofpoint20171006; bh=Hhv0zaHlw6I/WknkKGKNakQWgq4MsCoA0Iq5r6cDl80=;
+ b=S/b4T9isUKb4vWGMc6K+jZKqa4wZJ2fEWebRbeK962Xty5249M2THeJOQcO2JAeGVRiF
+ e9pCS4OYXoL/OWgwjy7Tr1BK+d7Anh6H/MTtyGN87RV90GDlZgbdauec8RhLV5p7l/Os
+ pnc1y2eLqCg4GwLwpWKSBBJ22cjljUZ0qns60sIKdUHl1LAmYcb+Zb7LfeRvNdNxCyJB
+ Dsitwu8Sdc2PfmK12fk9aluyLg+S+t8z9Pt6fWRBYw3p09LJMIm6sZHSUz+FtCRAS6A7
+ Y+SLxF/JIPFpZri0i6TIc30g33m0ZmUmtjfYbgDtrMG8kdiEczpM5Mwoj64yTDpJ4Ie/ Yw== 
 Received: from nam10-bn7-obe.outbound.protection.outlook.com
  (mail-bn7nam10lp2105.outbound.protection.outlook.com [104.47.70.105])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3qmw97sxbn-2
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3qmw97sxbn-3
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 17 May 2023 23:23:37 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VPmyVSn7/tXv5EUz4+jXDbeo07nn2abzdR5AZOkNMhPuDPxVkz7jBVjbZ2mhYaHAfgx6GM/SrC0MHQYB4tI3ONh1rGT/lYVpU9ZdaW5eEJ58S9+5gCIwbOnrV2Jbu9C1dEsrPrqV7xjRCdY27kKH2hQ/sPezBclKg8m5CwjI7ZHWMIFdsjCNI8OZ+Yv9flXwFMgsiBmIm8GWvhj98cYxtwTDjo6rDjieP767bpAiBULuhquTIVAfqqtRtX+qTDWRJdJjtl3jXWaOmbvNax3bn7G2EsFaYjadpPlbH86/kkhl4b7GOKtANjEwgIxm7utam8KEHh0ev7Kj9SZaafj91w==
+ b=PgdDxkql6nso+BVzcn4rqH0tMdZoJVUptqEpINIn7sFxEBUcQWVkfziUJaYMO63WrS29aOO4EAG6ChfzqsJP5Jd2fXdGri0SWVHg5JI/jM8GW6NMFM1siN8V6vNssyykpgCUZUMydG/EBo2Ql+aadHjuloGjBM+QIHc4ymWOeVHwd+gC1t+zDIZ5Y1cbPVIjTKReOjBaO2Kg++TqNbtcZB3ik8n3o/FYtd2Q+N0Eol882X6bfpAD0I1DBZtlarWlILsa2YVh7U3Z8jkhy+Wag42rQTScnIou6z2XxpL4d6CMj636flBL3kc4w1aw1bGAP0Y3lWwi3S12n566H2z1+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OqUbbbmEOrIemKbYSILOP47SaDlbS4sifFzFVG2B09E=;
- b=LgEUkjIW3AJDH+xVKx0p/b0jaak0r0q1nmPZDYn4qsL+8hK8xv5ocLdG3s+eYsLLVDKVyFUtQJyOUBI3ziJrIhzXaRrp+T8ZdPdop8uxh3kyfKfvGZHpr6tEAOoiXYTocAJkTsPZZ/Aggx0Saxmxe3fYbMKQCcVEkpdPhnp+wcjUaCQP+Aez9j/UHr3GyVYO/i2UI3Vlb3Eqk8o3ZLJFPCzDL6fBNIC5kgpriOuQFwOCGZ2xBfaBH58P+FxbfhdU7r6E7Fq3fwQrhbexkDQ3GSpBbj6oXSMAeFZP0dlEj5qlskWmjSg9hVFa80DFfmfI49viCYEpKez+cyHVLfQ02Q==
+ bh=Hhv0zaHlw6I/WknkKGKNakQWgq4MsCoA0Iq5r6cDl80=;
+ b=Ckj87oYhs4P4fZci1XTgeBKqKSc/CbJOs1YKpmeMuJ1AmQMnBkElW46YH8nNSOn+8FS9iasbu09AzXqLSpiG9dxEgFwCPhERisSemRVigqEqMnpD76gJ5VVweMSyM71Q8E0WvQOsRL8YAbPQKcd7iwC1Y4S3m+dQyWM8+KesVjUwZwRr9u6QWZWtIxHRfCDKB6jWKQj4F8Sl1gz0+mncg56hK9aKXQBDixfLsnwH+g/kPNiUUqML57v9699F/ck23+26QG4lj3tXvkAwAGB2stGHXxZq00SR314bbhYTVevTQ47jDj0GCHrRUEInZn2WJX9qphb1V5CP8PHU11owtA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OqUbbbmEOrIemKbYSILOP47SaDlbS4sifFzFVG2B09E=;
- b=edSPCOk23ZBlJu7bUOyCqMaQWrudBOROamz3wvELtv8AcvlGm0c4YzsIIfN5QUSDDwtzYJkAg3rt9YkXttl78jzIzDRVfBzO3SgzFk8mL77M2AVB/qD31Ws6XnKFoLqmwQ9QSD/wWpkKXIu1je4NJqdDmU76gRnNOSgCnR0MiFjdEsw3lK1q64g0GNwcZ/J+gKeWRiCGwwzBEOuI2Ji1/Xb0F0JUnC6JhC0h8eMjuHq80nNYSKSLVndP5g5X6RbXVG2at3F5fInJp+yUsTaru9lE4Lkmm4dHtRi4rBuZ5esfP+K3jDZd9LLj1GUECejXZK0fBCp3T3iS3vQbem5lvw==
+ bh=Hhv0zaHlw6I/WknkKGKNakQWgq4MsCoA0Iq5r6cDl80=;
+ b=Q85zAbFxXlOJJB4S2J89kv/DuUF1AqCphlOTu90Zix+QzVZHkIAXA71KtoIbpz0pXHKMxkrAW444c9oovemOYCNU/emNNf9wizeAD0caPiOqlZJOlnzkxd8zQmVCbWEyO0DDGjypJgW3kueHOOkqNvvkeuqyX5zoKVMPUC2fZ+Iyd12nm3Soo29pNLURGE53Ny/E3hVBQ610jesBOXcVM1KwFCmEpTgw1QFfP6mCeu/NfDFMrXC0E7tmvYu/MaH6KdBqYeZmTHQfhKw/xQLWbwSl5imiXIp0qbK2nT3BVxRjRaR1iCGBbfiO+YneW/dR7mTeLGleQyWmm1lUTWzZ7w==
 Received: from DM6PR02MB4810.namprd02.prod.outlook.com (2603:10b6:5:fb::15) by
  CY5PR02MB8920.namprd02.prod.outlook.com (2603:10b6:930:38::10) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6411.17; Thu, 18 May 2023 06:23:35 +0000
+ 15.20.6411.17; Thu, 18 May 2023 06:23:36 +0000
 Received: from DM6PR02MB4810.namprd02.prod.outlook.com
  ([fe80::7b0b:cd05:f137:7f12]) by DM6PR02MB4810.namprd02.prod.outlook.com
  ([fe80::7b0b:cd05:f137:7f12%7]) with mapi id 15.20.6411.017; Thu, 18 May 2023
- 06:23:35 +0000
+ 06:23:36 +0000
 From: Tejus GK <tejus.gk@nutanix.com>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
  berrange@redhat.com, shivam.kumar1@nutanix.com,
  Tejus GK <tejus.gk@nutanix.com>
-Subject: [RFC v3 1/2] migration: Update error description whenever migration
+Subject: [RFC v3 2/2] migration: Update error description whenever migration
  fails
-Date: Thu, 18 May 2023 06:23:07 +0000
-Message-Id: <20230518062308.90631-2-tejus.gk@nutanix.com>
+Date: Thu, 18 May 2023 06:23:08 +0000
+Message-Id: <20230518062308.90631-3-tejus.gk@nutanix.com>
 X-Mailer: git-send-email 2.22.3
 In-Reply-To: <20230518062308.90631-1-tejus.gk@nutanix.com>
 References: <20230518062308.90631-1-tejus.gk@nutanix.com>
@@ -80,57 +80,57 @@ X-ClientProxiedBy: SJ0PR03CA0010.namprd03.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM6PR02MB4810:EE_|CY5PR02MB8920:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea9ec8ce-48d4-454b-438f-08db576868d4
+X-MS-Office365-Filtering-Correlation-Id: def10707-013e-4955-000a-08db57686955
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uw+5uc7wq+PrUq12blXvxPS3f7Cgwe7PLcAededlHmHc9QI15LpHq/RekHmDnC6936pzZB8hL8U9RhbCTnmmiqgvuyNSKEiS9/hMtpVIa68wzqUdxxNJ8dIGs+tTL3zR1n1IQUDhswgqFv6kgd0iUa9yqravQpPE9CCs3QVvuccSz4MTPl6BdeTgUZEZdx5evVu6hDJPGMyC+20UVg5UgtAxeKSYXn97Ypbh0A5JsCFvrM7n/X7SLTpw9q90rpyWCGy6JqZzIGsxDxGaZERY0/Q0gkY0oVgZXBOdeGI3QZm0IDXu7OO6lv5FkNsoBPEgGc1WKRH67/QZMoVja3BExUdB0ovt1bWR2mCbVslgw13IkwhsSD5uTC4569NSMB2IcF28R+wBXQQLNAD/41G8KHhOZdmlsaXnxQ1fOlXUz3xto3OiXd0i8B1xiDDGhMYq3487C/wWD8RyQw5L13o05BfoMj1Rr+LVeelcmSEoR4+I24sz56jZfznz/5Tg5Xsw4c36S3feoU1H3zeeBaBZfQiSBQ3VggUUx1nWMTTfB2er/95YlW03wmQRGtTqC2mwYMjBcBUSDPH//nS736hZS/m+IpN6b+l4Zn3mBpdbZvsq3+/zsPEf7qZP5m3yM59P
+X-Microsoft-Antispam-Message-Info: gcDCh14QxlZSrnapr3/1QhkLWWJ7Lreur3Yl8KKlsPX0Rhb1+EAivYbz9bNRP0gumCvaiE8V7oqR8gxWOymezmEqd046vVnFIw3GF+XLqmvBxAzGfMTI3ImlFx9aOU2/U/xbrEanBVj9pY07F7lnzYZ69VJjbpwqOIaN00h8sDkfjloPErZhggFEqaukSv5NeOTz6Ui6wBH6pm7MgXWWMkXoAQpmtvr/6D5zgfTTVfihVPg3b93l1Q5tm2GNbc76dMtoIb65nuuJNNOqzPbggvV7XCaUQiAnDViDzU82jIaGsL68zNIEu3zbSOP2E0Id54IlJ8R+QYOC2J+DCaFPXeb7mKvjSbmjxmYUEmods55/JQUWySw8p/A3hDUNzrv8tCnEOB+a1/AYajPKMIPkQi9kcbX0TKPqVxUOiXl32H8JPTLghZWpw99WnTN5YWUletV4c5Rg7CHZ4gYwmRQIow9Qz30CVL+LbPt5x1Dp/pcPNoth0z4i55yey2TbmGJxmr5hhuaocmwmMtyTs/k+Nwcn1v5qhOXY77mVLpYNg0dTkFdHgYRHrWewXLD4/Qv8BmZ1m0FrevlWe1PNozxfcfpV5NbccQ93LdukxozVpWU2C7vHNUjlTAb6sarJMKMb
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM6PR02MB4810.namprd02.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230028)(346002)(396003)(136003)(39860400002)(366004)(376002)(451199021)(66556008)(316002)(6916009)(66476007)(52116002)(478600001)(4326008)(6486002)(86362001)(36756003)(83380400001)(1076003)(6512007)(6506007)(107886003)(186003)(26005)(66946007)(2616005)(8936002)(2906002)(5660300002)(8676002)(15650500001)(6666004)(38350700002)(41300700001)(38100700002);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uPC7N7ssMD8p8ZKIR3PfznSSGOES2u8DlUroqlAieTviZJqcByQDgzySGaZF?=
- =?us-ascii?Q?YVh6d0803whFWRlQRBxp3v4VK9tHdXR3ZrUhmLYWuGxXXZjn/sNv8/rm3xnd?=
- =?us-ascii?Q?h74LHZAVVV71SP3xzdds62mjKZ7JjLtHeiNeulmt0EQ85VnVlVyNJYJthrYw?=
- =?us-ascii?Q?38jz4RZTcvk9U4ZrwCYreV3q7bF+yVkq+31x7UtD8uBByoDZ50JYcczPmjIi?=
- =?us-ascii?Q?+ImVyKatjcNvw+I0PctF89pDnVoseMXX66M6wqZyMnVo51Ocea+9JU08gH14?=
- =?us-ascii?Q?7IVMD2EPujtaZZWMEryAhspZIhN9qhWMfxTEvRGECV9+y7G1yHqt4AZLShjb?=
- =?us-ascii?Q?wqHrImkI1eMqfnNM10X9uZsFPn83pO9vFWNyulqLoupSZD+nV6ZeTLoIkgGE?=
- =?us-ascii?Q?RDIN9zRKK3xYTZp1CFnogOEQxoR6ILfERXpg1+83v5GM0onBzvv7p9FxHH2N?=
- =?us-ascii?Q?NHpDsM7zDs4pN5hFVkq/2qOilf0tUaxbWZr37p7kNycWTsi0BNr6GR5s54ot?=
- =?us-ascii?Q?wsmTSdTUKFgVEyITzvBB5k5O23ASFf5O8mytlAu6G3Q9gLi/jJRWMEfffLm0?=
- =?us-ascii?Q?pxPQyg8uJJ1ObqIo0lnJ+BaE//SIusQx3BsfiNT3Z9RQ2PKoK2sbD+QecOov?=
- =?us-ascii?Q?CF2iUCNrDVGvh2eqZu5BvH6aJz7vZdPuPyR3FeVvteN1cv4u6M20mNLNzeuR?=
- =?us-ascii?Q?H/d7HoyfUMDqmSqo9vDjiw6hchB/1tZxwM90HtCLZ7lmsYbRkdOzWRaFhd7w?=
- =?us-ascii?Q?FtttnwnHIwWvIyis079RS1kEdnNavi8eeu+ZWcZmPlDJmw7d19mNiZ3d+vPV?=
- =?us-ascii?Q?9y/i8Ohzgh5meS0WIOZqukGz85rYTKudyI+8a7RWF5Ykv8Cu7kqsNjACNP44?=
- =?us-ascii?Q?Ld8naqkmeRhEb077ZAReyP3LTS7mCeRsO/ut5yzRLyLNb1rRRO1Xdcs6T8qr?=
- =?us-ascii?Q?6AS27qMWMh4jlEnEtwrqF21G+gEXYKmuwPx7iu+FKnNhmfyViKx7YBXv/08V?=
- =?us-ascii?Q?gtrTWATImgfgtANGBtmfTUFiAW8Tn/wYzaNVaM8rMkCbcEwehQMDW8trMWNS?=
- =?us-ascii?Q?zCMIiFLug307SwKIjpbUpgd0OkDj2t+SQqQAyG/8/sux+yMa8iCsuzdMWl+V?=
- =?us-ascii?Q?Lhg9BBOMhoHMRPaN7FIZSdcoUm/kXrGb6IOkm5j6byCCIBMqknpPudxYZAI5?=
- =?us-ascii?Q?EzNdMOm8PAwZ3woMzIkNBYc3fGyigOvTWse/ucjXgcfrITHNNpWokMMUolyN?=
- =?us-ascii?Q?TvNaMl6KuuSM0J34zsuHVKqlZFCbsX0bWFkmKJGGmb6jeJYEccwBFpVfkbxc?=
- =?us-ascii?Q?nRByrFgK8scg3jmxXKj8xoUDvQ4LmvB2uHt9f8dMx+jwFZfWj+1cOd/EFAN2?=
- =?us-ascii?Q?A6DQYK0nCyN4zg5r67vxY+16TLOFg5Dg45oGcMC3WPFhtjVR1gpF+cteOcVh?=
- =?us-ascii?Q?4J5eK/JkcTvXfZ/aYNMzOajlriQi7B8gpnu6JyyiY3onKkpL4W4DgUCb3GFO?=
- =?us-ascii?Q?QnnzhnZL1U6vHdUtng/ikAAu6ovGKnd68+pttC+Et02Ufgn9dr+IZA7Fz8jg?=
- =?us-ascii?Q?ucQASRF4SUVq5VUSGO5f7kJaMgud6T827Lq0U5t8+2BDpUV0EIvVpnhwMCSB?=
- =?us-ascii?Q?sA=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ly8qrmSMbAnXRp55nwJDqJt4MrvSuDIoj1wxeBPMyJP1H/fa3Id96VXYMd4J?=
+ =?us-ascii?Q?eequtzqK1WkQNf+iDy8Mb7+gHWKqnrgQrIBxfDKwgBwQ27knpuZulAWKvNbE?=
+ =?us-ascii?Q?CU3lG/UDNpdtA+LD92KraKFuoRA30UETZlUuzLg9yifkFbhuJVR1pmiuj8p7?=
+ =?us-ascii?Q?8s2/e43W+QsF/0gqdWjGq+659V3TAjEQNAQDTh0XfcSkA2lbEqpwo/4F11am?=
+ =?us-ascii?Q?nNTsTkdxdVNWopwtc4xgZgVD+jyLCkRZcKMNlt0vCOdWT4bUANY+bZVcK9o8?=
+ =?us-ascii?Q?sCPPD+dvgp4/WwZNTGJIt19V+WdtMPe0n7RESVDYra5ktRk7xHzfQMWMFlaI?=
+ =?us-ascii?Q?jhPYQqPCH94P4AP5T5vgkrwKFPoiG8d9DcILbh12ncqds9t093cO+rknkb8u?=
+ =?us-ascii?Q?7wXBaTfYWcurc/DMD8x60vY8FCG87ZVAEMW7XbSx7nLZafT+qfw1sAlnQEo8?=
+ =?us-ascii?Q?kOjfWitRiQiehT8Nj0kUmzoK0UfvcCyznSqfBY6aCCNbG9fwelvFL5Z2mJLl?=
+ =?us-ascii?Q?cI1L91bht24NdIScRjZo88XkJBJ167p4Igy7TsRfJI2D4t/n4i2a5ZD1Yp+j?=
+ =?us-ascii?Q?w5tBevHFPnnTZQfYwieUGVPE1I6TkigXZ9SEWTyhLxHYZ/TSblqVwiyS1ggz?=
+ =?us-ascii?Q?exO2pq3xd3UMolnoawwXmcn8J/LjP8G68Toi0yHFBwgP6lXt6E8RAuinoWR8?=
+ =?us-ascii?Q?y72w2fw2OVj+vzomlq7+mfTLQiUc9+atBnW7Zoe6wwt39uffFBoQyvI3GIcP?=
+ =?us-ascii?Q?SV4E1OlmvowZY8PHdvdBbChxYTUaLG9PiMePDAwtw8bCaj3CTKhCyBNj2Y05?=
+ =?us-ascii?Q?9JZH6SaKpyvT5r0ZFhUkU7u52rJpw+YB3X2TbwQGEkoOLR3uoYT6HK8q8H7I?=
+ =?us-ascii?Q?JUzZnTr9fBOXsilVHNf1Y0wUsvaY916pWIcoN+Ap0/o9yQ70iV/uhbHz2OKp?=
+ =?us-ascii?Q?SNmi07sc+MX48uqnzlTfK1RJMSCYrGQTEGopMVn7YogwFknn+8wgQbq28A19?=
+ =?us-ascii?Q?mxFZRmrMiw0osuAOA0s9S3Kocqnw7BzPY50VtoSiO/KhfwJPFlZUxhrztREv?=
+ =?us-ascii?Q?77wzNc8y05sc/Y4CAdy1gMw8VbufV6IAyceXnDBFiGmuzA/dm46yM0tCBhEy?=
+ =?us-ascii?Q?KvhhgzFivnTIunHawc4jzgx7/BpZmNeITl/9mhzqv7981JnRomiWiatUL1oo?=
+ =?us-ascii?Q?1Eo44GtQTtxDtjBaexHh+LLNaxWwlHj5uv00W8JlY2KZbSnjL+MyFotVWycj?=
+ =?us-ascii?Q?7Z3l6eLpW161inCIrNtR4r6acYa9ShDIgBFODIgzjtN9drGGnNvJvwKoI+oJ?=
+ =?us-ascii?Q?GM0jsivgh2f4g/Bmz1RxmV9Zk7/hr5WcKRfmjiIKOOvsch7Mnp7jjnOJMgkv?=
+ =?us-ascii?Q?Wug/W8wybIFlz1d5uPECcta158isrh7K0VSFeEc9aaEVE3Tb3XHKzSJNKS3X?=
+ =?us-ascii?Q?wYoFoQq4K33s6f5rIgwUW0waSBX10gxrLZoL8IIPLVlGVuSU3OCf53zlSxwv?=
+ =?us-ascii?Q?UVijhoZTg+wzZlYCQOkARbgc+9gVJozMBntE2bZVWvCgqawzJSOkx0NsEcTV?=
+ =?us-ascii?Q?U37LR09/OuaJw2kS2kU/IlYB4kVSQjSg5clx2kqWSNLHlmLVfeUB6OBbelne?=
+ =?us-ascii?Q?3A=3D=3D?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea9ec8ce-48d4-454b-438f-08db576868d4
+X-MS-Exchange-CrossTenant-Network-Message-Id: def10707-013e-4955-000a-08db57686955
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR02MB4810.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 06:23:35.1855 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2023 06:23:35.9798 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2gSDWEExFR9FY11TAJagQrhUNuICJ0qIcBYQ5NL4zZks2uJr978bFRZg0yfniGYJQJVT1PNasQVs6hxeJpuHqQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: mJp7oM7cwD21iDCTP6wtTQCYeBrwj3aY1jnwUPfNb53VJ4rulYOFTUw4JH4NQjl9culDv6mS84P96Dl4c4e3+g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR02MB8920
-X-Proofpoint-GUID: zHvbA8-avjADhSzxJ9y6tqyIPXwELlag
-X-Proofpoint-ORIG-GUID: zHvbA8-avjADhSzxJ9y6tqyIPXwELlag
+X-Proofpoint-GUID: GUIQgA9Ojxo38AtSOyY20AEfbksDT55-
+X-Proofpoint-ORIG-GUID: GUIQgA9Ojxo38AtSOyY20AEfbksDT55-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-05-18_04,2023-05-17_02,2023-02-09_01
@@ -159,103 +159,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are places in migration.c where the migration is marked failed with
-MIGRATION_STATUS_FAILED, but the failure reason is never updated. Hence
+There are places outside of migration.c which eventually leads to a
+migration failure, but the failure reason is never updated. Hence
 libvirt doesn't know why the migration failed when it queries for it.
 
 Signed-off-by: Tejus GK <tejus.gk@nutanix.com>
 ---
- migration/migration.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ migration/savevm.c  | 13 ++++++++++---
+ migration/vmstate.c | 13 ++++++++++---
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 00d8ba8da0..864150d01d 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1683,15 +1683,11 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
-     } else if (strstart(uri, "fd:", &p)) {
-         fd_start_outgoing_migration(s, p, &local_err);
-     } else {
--        if (!(has_resume && resume)) {
--            yank_unregister_instance(MIGRATION_YANK_INSTANCE);
--        }
--        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "uri",
-+        error_setg(&local_err, QERR_INVALID_PARAMETER_VALUE, "uri",
-                    "a valid migration protocol");
-         migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
-                           MIGRATION_STATUS_FAILED);
-         block_cleanup_parameters();
--        return;
-     }
- 
-     if (local_err) {
-@@ -2073,7 +2069,7 @@ migration_wait_main_channel(MigrationState *ms)
-  * Switch from normal iteration to postcopy
-  * Returns non-0 on error
-  */
--static int postcopy_start(MigrationState *ms)
-+static int postcopy_start(MigrationState *ms, Error **errp)
+diff --git a/migration/savevm.c b/migration/savevm.c
+index e33788343a..39d4ecdd41 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1068,10 +1068,14 @@ void qemu_savevm_send_open_return_path(QEMUFile *f)
+ int qemu_savevm_send_packaged(QEMUFile *f, const uint8_t *buf, size_t len)
  {
-     int ret;
-     QIOChannelBuffer *bioc;
-@@ -2183,7 +2179,7 @@ static int postcopy_start(MigrationState *ms)
-      */
-     ret = qemu_file_get_error(ms->to_dst_file);
-     if (ret) {
--        error_report("postcopy_start: Migration stream errored (pre package)");
-+        error_setg(errp, "postcopy_start: Migration stream errored (pre package)");
-         goto fail_closefb;
-     }
- 
-@@ -2220,7 +2216,7 @@ static int postcopy_start(MigrationState *ms)
- 
-     ret = qemu_file_get_error(ms->to_dst_file);
-     if (ret) {
--        error_report("postcopy_start: Migration stream errored");
-+        error_setg(errp, "postcopy_start: Migration stream errored");
-         migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
-                               MIGRATION_STATUS_FAILED);
-     }
-@@ -2741,6 +2737,7 @@ typedef enum {
- static MigIterateState migration_iteration_run(MigrationState *s)
- {
-     uint64_t must_precopy, can_postcopy;
+     uint32_t tmp;
++    MigrationState *ms = migrate_get_current();
 +    Error *local_err = NULL;
-     bool in_postcopy = s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE;
  
-     qemu_savevm_state_pending_estimate(&must_precopy, &can_postcopy);
-@@ -2763,8 +2760,9 @@ static MigIterateState migration_iteration_run(MigrationState *s)
-     /* Still a significant amount to transfer */
-     if (!in_postcopy && must_precopy <= s->threshold_size &&
-         qatomic_read(&s->start_postcopy)) {
--        if (postcopy_start(s)) {
--            error_report("%s: postcopy failed to start", __func__);
-+        if (postcopy_start(s, &local_err)) {
-+            migrate_set_error(s, local_err);
-+            error_report_err(local_err);
-         }
-         return MIG_ITERATE_SKIP;
-     }
-@@ -3250,8 +3248,10 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
-      */
-     if (migrate_postcopy_ram() || migrate_return_path()) {
-         if (open_return_path_on_source(s, !resume)) {
--            error_report("Unable to open return-path for postcopy");
-+            error_setg(&local_err, "Unable to open return-path for postcopy");
-             migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-+            migrate_set_error(s, local_err);
-+            error_report_err(local_err);
-             migrate_fd_cleanup(s);
-             return;
-         }
-@@ -3275,6 +3275,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
+     if (len > MAX_VM_CMD_PACKAGED_SIZE) {
+-        error_report("%s: Unreasonably large packaged state: %zu",
++        error_setg(&local_err, "%s: Unreasonably large packaged state: %zu",
+                      __func__, len);
++        migrate_set_error(ms, local_err);
++        error_report_err(local_err);
+         return -1;
      }
  
-     if (multifd_save_setup(&local_err) != 0) {
-+        migrate_set_error(s, local_err);
-         error_report_err(local_err);
-         migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
-                           MIGRATION_STATUS_FAILED);
+@@ -1456,6 +1460,7 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+     int vmdesc_len;
+     SaveStateEntry *se;
+     int ret;
++    Error *local_err = NULL;
+ 
+     QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+         if (se->vmsd && se->vmsd->early_setup) {
+@@ -1475,8 +1480,10 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+          * bdrv_activate_all() on the other end won't fail. */
+         ret = bdrv_inactivate_all();
+         if (ret) {
+-            error_report("%s: bdrv_inactivate_all() failed (%d)",
+-                         __func__, ret);
++            error_setg(&local_err, "%s: bdrv_inactivate_all() failed (%d)",
++                       __func__, ret);
++            migrate_set_error(ms, local_err);
++            error_report_err(local_err);
+             qemu_file_set_error(f, ret);
+             return ret;
+         }
+diff --git a/migration/vmstate.c b/migration/vmstate.c
+index af01d54b6f..3a5770b925 100644
+--- a/migration/vmstate.c
++++ b/migration/vmstate.c
+@@ -14,6 +14,7 @@
+ #include "migration.h"
+ #include "migration/vmstate.h"
+ #include "savevm.h"
++#include "qapi/error.h"
+ #include "qapi/qmp/json-writer.h"
+ #include "qemu-file.h"
+ #include "qemu/bitops.h"
+@@ -323,6 +324,8 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+ {
+     int ret = 0;
+     const VMStateField *field = vmsd->fields;
++    MigrationState *ms = migrate_get_current();
++    Error *local_err = NULL;
+ 
+     trace_vmstate_save_state_top(vmsd->name);
+ 
+@@ -330,7 +333,9 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+         ret = vmsd->pre_save(opaque);
+         trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
+         if (ret) {
+-            error_report("pre-save failed: %s", vmsd->name);
++            error_setg(&local_err, "pre-save failed: %s", vmsd->name);
++            migrate_set_error(ms, local_err);
++            error_report_err(local_err);
+             return ret;
+         }
+     }
+@@ -383,8 +388,10 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+                                      vmdesc_loop);
+                 }
+                 if (ret) {
+-                    error_report("Save of field %s/%s failed",
+-                                 vmsd->name, field->name);
++                    error_setg(&local_err, "Save of field %s/%s failed",
++                                vmsd->name, field->name);
++                    migrate_set_error(ms, local_err);
++                    error_report_err(local_err);
+                     if (vmsd->post_save) {
+                         vmsd->post_save(opaque);
+                     }
 -- 
 2.22.3
 
