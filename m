@@ -2,90 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC270709A9F
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 254D5709AB2
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:58:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01TL-0006HU-Iv; Fri, 19 May 2023 10:52:47 -0400
+	id 1q01TN-0006LC-16; Fri, 19 May 2023 10:52:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01TE-0005fX-Vo
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01TK-00067m-7t
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01T9-0003mH-QI
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01TG-0003n9-4X
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507954;
+ s=mimecast20190719; t=1684507961;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OedOpR3sWdkPNhnqIT9PzPMy+No4a4OcU7ka6unQxog=;
- b=hgfge2Jsho/G6kKY92g2k4gQio7tWm8/xq6vF0e1QYBeapz8ismyGNSyPWFlEDG0wbc+vA
- fVYlwIu15aUXyC3hsh3q7OHlmWHNY4S6owbWFC5EazlHJDbwg0gGxe4RSMw2Oh7PRN33Wk
- nYley2LOuLTq5A32lZDzYd0TAF3hhEc=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=N7l9eaKw0wAoGbx++cmrYeMJ6/PfackXU4qxbeWVb6I=;
+ b=LXrPrASFyN9xAarH6rCXPhF6Ub3pBPi66IuiHTRDcFUBFmuAvOwkrciCxhdfI+BG4B7HUD
+ CfUsTSLbPQhdsCg8eGqLfa5zRkyAuB1ie5Heq2iiJIPlaiPFLlYADEokcp8yw6Kigzpv/5
+ VwZ6Mf9/sLjpjn/5o9odmVTINBoy/Ro=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-5WjbbZ0BNJGWvJjRRw2tlQ-1; Fri, 19 May 2023 10:52:33 -0400
-X-MC-Unique: 5WjbbZ0BNJGWvJjRRw2tlQ-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2af1589c75aso13526861fa.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:52:32 -0700 (PDT)
+ us-mta-411-fVxKquxzMlCgTFIlDJO5Cw-1; Fri, 19 May 2023 10:52:39 -0400
+X-MC-Unique: fVxKquxzMlCgTFIlDJO5Cw-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2ad9ee492c7so19332371fa.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:52:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507951; x=1687099951;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OedOpR3sWdkPNhnqIT9PzPMy+No4a4OcU7ka6unQxog=;
- b=iGnSLWgQDbV0gmuu/e3bphDz5mtF4DP5GhYrFgvyGNwqaVly3nF4XzHM+r/RSFopbB
- mjdC0dblBizMz3sxyKEKvfhFsEjYg3qut42+ByHKteWIwGLXp9ltmDhOzu+eOEjOi+LR
- oopNzYZ7bycraDyUO3xIFneLP5ZEWL0SG0srmrxQgLYADcCtcrCHCve7ZLqbzHxfIGZf
- orrOVK5g1zwWHtNdaC7AkWLVAeCTJ2191wufW/3QSwXv831ttUA628ZPwfJJc063lLJL
- d0qQqCIiEtQEZjNbEgkQBFQwKG5a0DAH3CDY1/kUV6fUZEV1p5I3xfXIrNhZuKADeujf
- b0tg==
-X-Gm-Message-State: AC+VfDyPkPdyy8wbeEMw1wHZy5is/hjpBRDfXC6+aoGbll3MD2gsDIBh
- lQa/o8mhXpMhATr3RPX5gX13VCvsgpI3WnPahh12exkostT7YtcwjSsTsNDoqkPnytlpX7F+VpQ
- PdrugzpS3Ov265CkdLKPdgfTVnDnEx7Yxhqew+f/QRYfpqopr/F1TgHm3IwaQC0rrhBEI
-X-Received: by 2002:a19:f002:0:b0:4ed:c17c:16e5 with SMTP id
- p2-20020a19f002000000b004edc17c16e5mr1086418lfc.17.1684507950897; 
- Fri, 19 May 2023 07:52:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6mK3TAp7J7+TY9GMOb92H8Gq61C1JityalPA9zk/YDkDhrRdms+jLIVknlx1S0padeVCwVtg==
-X-Received: by 2002:a19:f002:0:b0:4ed:c17c:16e5 with SMTP id
- p2-20020a19f002000000b004edc17c16e5mr1086405lfc.17.1684507950659; 
- Fri, 19 May 2023 07:52:30 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684507958; x=1687099958;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=N7l9eaKw0wAoGbx++cmrYeMJ6/PfackXU4qxbeWVb6I=;
+ b=VgEAIbHot90IfZlNh6AdjE1JXB/AeU2NjZt9ePCaxvi2RnRz9NEQHozic3egZS1bvv
+ Wexht55HCVQNAf+G3CCmNW9F5bGPPwqDiT4KyS3A/pWZFFbRvSYhpq7/cg6L/6i57M+3
+ eCz1psnJob1UUB19UP19a9QwOdDfQe6kFfKZIq+xaJ/r45hDtGpXPo9xDBxNzvvWSDtv
+ JBghqUWAJR5U49YrZ28f+2OYeXbHmjllj8IQ5VH8+2kGX/14mO9Y+fm49atbp5x37z7x
+ ipybo3QRhiwv3lb0kho8zi0nQRtw55lni5++YfVcweCJetk00Nj+e3bQTFqNEC9EGsvU
+ I60g==
+X-Gm-Message-State: AC+VfDz8AKbsWxZGfn9vSRwNQtI2khMm2OZTU0JyW2LMVGoTBRWFmVKO
+ iKe5UXJ3fHfXFITuSrvNLnV3puns3paodj3/HJYvoutC0QncwC2eobP0IUmb52SshpwY7syJvbg
+ fCatLmb4Fegb7FNdIYpI4WaaPpANLUghnUQfWsAcqWMPjBLi+LdydT9lLhrrTTdDLvNsW
+X-Received: by 2002:a05:6512:49e:b0:4ef:ff42:b13 with SMTP id
+ v30-20020a056512049e00b004efff420b13mr803756lfq.65.1684507957841; 
+ Fri, 19 May 2023 07:52:37 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5BuclpEfxdgyMOez7idGWRvwuJ5C47rw8aB2+3wb/rRNNrmGlevgV0ZqfNyW4anhtgoohEfA==
+X-Received: by 2002:a05:6512:49e:b0:4ef:ff42:b13 with SMTP id
+ v30-20020a056512049e00b004efff420b13mr803744lfq.65.1684507957543; 
+ Fri, 19 May 2023 07:52:37 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- u29-20020a056512041d00b004f20d0ebe50sm626132lfk.94.2023.05.19.07.52.27
+ f26-20020ac2533a000000b004f3a1033078sm626368lfh.52.2023.05.19.07.52.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:52:30 -0700 (PDT)
-Date: Fri, 19 May 2023 10:52:25 -0400
+ Fri, 19 May 2023 07:52:37 -0700 (PDT)
+Date: Fri, 19 May 2023 10:52:30 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 32/40] hw/i386/pc_{q35,piix}: Minimize usage of
- get_system_memory()
-Message-ID: <8631743c0968d11983a3a04939c580160bb79ac3.1684507742.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 33/40] hw/i386/pc: Initialize ram_memory variable directly
+Message-ID: <f9fddaf7ce26acc48fc899673affe957103862a5.1684507742.git.mst@redhat.com>
 References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1684507742.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,68 +106,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
+Going through pc_memory_init() seems quite complicated for a simple
+assignment.
+
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230213162004.2797-6-shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230213162004.2797-7-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc_piix.c | 2 +-
- hw/i386/pc_q35.c  | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ include/hw/i386/pc.h | 1 -
+ hw/i386/pc.c         | 2 --
+ hw/i386/pc_piix.c    | 4 ++--
+ hw/i386/pc_q35.c     | 6 ++----
+ 4 files changed, 4 insertions(+), 9 deletions(-)
 
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 84935fc958..4e638564ca 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -162,7 +162,6 @@ void xen_load_linux(PCMachineState *pcms);
+ void pc_memory_init(PCMachineState *pcms,
+                     MemoryRegion *system_memory,
+                     MemoryRegion *rom_memory,
+-                    MemoryRegion **ram_memory,
+                     uint64_t pci_hole64_size);
+ uint64_t pc_pci_hole64_start(void);
+ DeviceState *pc_vga_init(ISABus *isa_bus, PCIBus *pci_bus);
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 7802dc21d9..03da571bda 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -952,7 +952,6 @@ static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_size)
+ void pc_memory_init(PCMachineState *pcms,
+                     MemoryRegion *system_memory,
+                     MemoryRegion *rom_memory,
+-                    MemoryRegion **ram_memory,
+                     uint64_t pci_hole64_size)
+ {
+     int linux_boot, i;
+@@ -1010,7 +1009,6 @@ void pc_memory_init(PCMachineState *pcms,
+      * Split single memory region and use aliases to address portions of it,
+      * done for backwards compatibility with older qemus.
+      */
+-    *ram_memory = machine->ram;
+     ram_below_4g = g_malloc(sizeof(*ram_below_4g));
+     memory_region_init_alias(ram_below_4g, NULL, "ram-below-4g", machine->ram,
+                              0, x86ms->below_4g_mem_size);
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index a9c40201fb..ac7b1a9194 100644
+index ac7b1a9194..1acf02e711 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -242,7 +242,7 @@ static void pc_init1(MachineState *machine,
-         isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(piix3), "isa.0"));
+@@ -144,6 +144,7 @@ static void pc_init1(MachineState *machine,
+     if (xen_enabled()) {
+         xen_hvm_init_pc(pcms, &ram_memory);
      } else {
-         pci_bus = NULL;
--        isa_bus = isa_bus_new(NULL, get_system_memory(), system_io,
-+        isa_bus = isa_bus_new(NULL, system_memory, system_io,
-                               &error_abort);
-         i8257_dma_init(isa_bus, 0);
-         pcms->hpet_enabled = false;
++        ram_memory = machine->ram;
+         if (!pcms->max_ram_below_4g) {
+             pcms->max_ram_below_4g = 0xe0000000; /* default: 3.5G */
+         }
+@@ -206,8 +207,7 @@ static void pc_init1(MachineState *machine,
+ 
+     /* allocate ram and load rom/bios */
+     if (!xen_enabled()) {
+-        pc_memory_init(pcms, system_memory,
+-                       rom_memory, &ram_memory, hole64_size);
++        pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
+     } else {
+         pc_system_flash_cleanup_unused(pcms);
+         if (machine->kernel_filename != NULL) {
 diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 89e69737d6..1490f87adb 100644
+index 1490f87adb..c1535af739 100644
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -126,6 +126,7 @@ static void pc_q35_init(MachineState *machine)
-     DeviceState *lpc_dev;
-     BusState *idebus[MAX_SATA_PORTS];
-     ISADevice *rtc_state;
-+    MemoryRegion *system_memory = get_system_memory();
+@@ -130,7 +130,6 @@ static void pc_q35_init(MachineState *machine)
      MemoryRegion *system_io = get_system_io();
      MemoryRegion *pci_memory;
      MemoryRegion *rom_memory;
-@@ -192,7 +193,7 @@ static void pc_q35_init(MachineState *machine)
-         rom_memory = pci_memory;
-     } else {
-         pci_memory = NULL;
--        rom_memory = get_system_memory();
-+        rom_memory = system_memory;
-     }
- 
-     pc_guest_info_init(pcms);
-@@ -215,7 +216,7 @@ static void pc_q35_init(MachineState *machine)
+-    MemoryRegion *ram_memory;
+     GSIState *gsi_state;
+     ISABus *isa_bus;
+     int i;
+@@ -216,12 +215,11 @@ static void pc_q35_init(MachineState *machine)
      }
  
      /* allocate ram and load rom/bios */
--    pc_memory_init(pcms, get_system_memory(), rom_memory, &ram_memory,
-+    pc_memory_init(pcms, system_memory, rom_memory, &ram_memory,
-                    pci_hole64_size);
+-    pc_memory_init(pcms, system_memory, rom_memory, &ram_memory,
+-                   pci_hole64_size);
++    pc_memory_init(pcms, system_memory, rom_memory, pci_hole64_size);
  
      object_property_add_child(OBJECT(machine), "q35", OBJECT(q35_host));
-@@ -224,7 +225,7 @@ static void pc_q35_init(MachineState *machine)
+     object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_RAM_MEM,
+-                             OBJECT(ram_memory), NULL);
++                             OBJECT(machine->ram), NULL);
      object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_PCI_MEM,
                               OBJECT(pci_memory), NULL);
      object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_SYSTEM_MEM,
--                             OBJECT(get_system_memory()), NULL);
-+                             OBJECT(system_memory), NULL);
-     object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_IO_MEM,
-                              OBJECT(system_io), NULL);
-     object_property_set_int(OBJECT(q35_host), PCI_HOST_BELOW_4G_MEM_SIZE,
 -- 
 MST
 
