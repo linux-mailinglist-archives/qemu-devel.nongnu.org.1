@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581C27093CF
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 11:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9037093D6
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 11:40:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzwZH-0005uc-UG; Fri, 19 May 2023 05:38:36 -0400
+	id 1pzwbD-0007Bf-RC; Fri, 19 May 2023 05:40:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzwZG-0005ra-IE
- for qemu-devel@nongnu.org; Fri, 19 May 2023 05:38:34 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzwZF-0006u9-0a
- for qemu-devel@nongnu.org; Fri, 19 May 2023 05:38:34 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-96aadfb19d7so575446366b.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 02:38:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684489111; x=1687081111;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZCbJITu6J+V7NNLLeIAbJ8W0ENj5B2DYy10NNBwFVzI=;
- b=AQnLiFn21OdvpWY2PQjpdLPmtfQysocNeLeCYIbXaf0LwbH703pqjyrQV1AFiHnaVT
- wyl/1jaNbI5FJuPtfqRTwtA3l6MR1dj0D8GOgFLcYA4KUjQvE2+Z+klO/BCnR0vKIkVQ
- tyw56ZrpmgJoG1yIPKN/dpW3vXiidE3GQV41QBFeUfm4/agOTTC/yLY/5HAy/FlcMI/O
- anmhQqd+P7gAYwYWU+AxdYW2mPmOqZNUbxGEjkmVxDr3yuL3q1OrbYgAA8TGhpMP7dgj
- mBKBA8avnIHfI26cJkMDEc9/fHWbb/yxE69CaPFEb8x/6OcJFYryMKCR14akKbMFUvSk
- +0aA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzwbB-0007BA-A7
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 05:40:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzwb9-0007KH-NX
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 05:40:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684489230;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZGgVYN47MlADJxwCDbKhu3cWwXO+cXZGL4Db8KNAS4k=;
+ b=E8LotmrOAFY9kgropqKNtrlCsM8K/8DyOFpxd36xBKl36SIMdxOrHaN1DsCKTRZMF3G99z
+ f53k2vgFUdoJV95b8+11ofQ6liNpS5VBLcU0ec6JqE42yF3lMVKggko35IGpT3FfegAkZL
+ CRyj/yB5eC+8HIAfBGJOEx4fhNcDDqI=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-394-dtfqgCb7PEaV2U3rT8ES5w-1; Fri, 19 May 2023 05:40:29 -0400
+X-MC-Unique: dtfqgCb7PEaV2U3rT8ES5w-1
+Received: by mail-ua1-f71.google.com with SMTP id
+ a1e0cc1a2514c-780e23ab096so990663241.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 02:40:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684489111; x=1687081111;
+ d=1e100.net; s=20221208; t=1684489229; x=1687081229;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZCbJITu6J+V7NNLLeIAbJ8W0ENj5B2DYy10NNBwFVzI=;
- b=bZrAZBYpILD6ncV9hfPEs+hYVDKNFLUM0whUm6vlPFSyE4VSFIJTy6PsNHNaHkerAi
- AEe00+8AAYc1A06P99KCQHv4sRK6IoePk5XiQnYWzh/4kXphQzQP6kOYntOpRxxxtnbQ
- jXoDPrHSAHQPTCYoDrwKD1OlAEfgCvt3b28TR12py7VkOEjQkhqDWcKk3B3IIJR4jbks
- SrWAa9MFUfbPhpsJlODiVGb2ywRXMWEB/CrcVx193SnbL0XZ9eNjEIQ2GSOvol//LlMF
- sDUt9jiPJlamO8bkw/cnkrnq8vqZPQyO3f3HTJe8j454RGVok5Z8tnrj8AZxGzWAG5be
- 7ghw==
-X-Gm-Message-State: AC+VfDy6tcebQj0AJQhJVrh7itpXxTX8juAXaUFZNn6Xk791BuAs9xwt
- MK3X5joN3qscGMQblyM0nY4+1BGgJI3w6STEOlT6ig==
-X-Google-Smtp-Source: ACHHUZ5R71EuPRKoR5qTlWH1IFpfiFvnPBFuQdxGEEOHckXo3TAKWjQ7Eh+iJFNzlUDfR+/Wk+zCBlUo0+77v73ojS8=
-X-Received: by 2002:a17:906:5f87:b0:966:1d92:5f97 with SMTP id
- a7-20020a1709065f8700b009661d925f97mr1235052eju.66.1684489111196; Fri, 19 May
- 2023 02:38:31 -0700 (PDT)
+ bh=ZGgVYN47MlADJxwCDbKhu3cWwXO+cXZGL4Db8KNAS4k=;
+ b=G8sKROuFOU97eh9A3Fj+2JlVWPS+iY2KYe1paJt1eUeOF5kqGm2nX/ud+u76YDFZ4v
+ BSJXIq012tJVdPOPPIjhXFyeVqIscB6rzJ0nbgLQ4wch1WgcSdKC8CGr7kmZcaG9LQRO
+ 7b1eF3oMxa+kz9fzcLshKhNkUD4fP9mYismEvGyPGgfDBtHMPqpRNCsLK+FlHlixMGiA
+ QCWKjvhbu0P6qGUW7iTOtl9FPB6ezxowLfBTOExvRk1EBTpzzW6v+hH6ucQu0yPgQnul
+ dYYzc7CWhg/syZUvaPguQ/Zhobt/ZXbFPwUMEJPmxBCriuAICHJYdZnU9pNdXLEACRfS
+ oSaA==
+X-Gm-Message-State: AC+VfDzbDBUNWBpCmwZ9peA6nHWnBxOnyl+imhnNOyQ1oZQceilv7pGc
+ AjidpzN+Z9f5YNuElt/ovD1Qi3gYRblnj/5oDRcEJANW7AYtOze70cmrWOvAjc+R112obLj7wHl
+ ke5L1HIeNIVIpKP86P6ImEZa8JJnVKPHBQpm4N6A=
+X-Received: by 2002:a05:6102:2459:b0:436:120:c91f with SMTP id
+ g25-20020a056102245900b004360120c91fmr454104vss.4.1684489228786; 
+ Fri, 19 May 2023 02:40:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Jr8Np96qjurgukmsWH9bRkBgcUJxKssnUrJJYBKYwK85nPSGAxqAJ9dxF/P9e/xKDYTMSQ/K99TUNj7K2UYc=
+X-Received: by 2002:a05:6102:2459:b0:436:120:c91f with SMTP id
+ g25-20020a056102245900b004360120c91fmr454097vss.4.1684489228549; Fri, 19 May
+ 2023 02:40:28 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230519085647.1104775-1-pbonzini@redhat.com>
  <CAFEAcA-nMG_5u4pADASoQNF_MCCXHMCB3APTtVLohzTzCmJ3cQ@mail.gmail.com>
  <ZGdCL3Ka2JSeo+XD@redhat.com>
 In-Reply-To: <ZGdCL3Ka2JSeo+XD@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 19 May 2023 10:38:19 +0100
-Message-ID: <CAFEAcA9P-mAQ-Vf8vs=jsFpcKePnnFFtaP11_RAjZNhmmzOUKw@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 19 May 2023 11:40:16 +0200
+Message-ID: <CABgObfbtWuRmma2fynUV=O3wexz4TBTfG4CxaDyR7VeA7mDkMg@mail.gmail.com>
 Subject: Re: [PATCH v2 0/6] meson: use subprojects for bundled projects
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org, 
  marcandre.lureau@redhat.com, richard.henderson@linaro.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,40 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 May 2023 at 10:32, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
->
-> On Fri, May 19, 2023 at 10:21:03AM +0100, Peter Maydell wrote:
-> > On Fri, 19 May 2023 at 09:56, Paolo Bonzini <pbonzini@redhat.com> wrote=
-:
-> > >
-> > > QEMU bundles a copy of dtc and keycodemapdb.  They both support meson=
-,
-> > > so we can run their build system via subproject() instead of hardcodi=
-ng
-> > > their contents.
-> > >
-> > > In fact, now that QEMU's configure script knows how to install missin=
-g
-> > > Python dependencies, we can replace submodules altogether with .wrap
-> > > files, which have several advantages, either immediate or potential:
-> >
-> > So do we have a path for getting rid of submodules entirely?
-> > I'd be all in favour of that, but I'm somewhat less in favour
-> > of "some things are submodules and some things are this new
-> > .wrap file setup"...
->
-> I think we can ignore 'roms' submodules on the basis they are never used
-> during a normal build, they're mostly just a maintainer convenience and
-> for release archive source bundling.
+On Fri, May 19, 2023 at 11:32=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
+redhat.com> wrote:
+> Maybe we can none the less wire up libvirt-ci into wrap, or alternatively
+> since its python, could we make our new venv setup tools put libvirt-ci
+> into the venv ?
 
-Yeah, I agree -- or at least I agree they're a distinct use of
-submodules. We might at some point want to look at whether there's
-a better way to deal with ROM blobs than what we do today, especially
-as the size of the source archives for things like UEFI is much
-bigger than I expect anybody anticipated when they set the rom
-blob machinery up. I don't think the way we do ROM blobs is
-very convenient for our distro downstreams either.
+libvirt-ci is used from the source tree so I think it doesn't even fit
+into the venv. It's not unlike the roms.
 
--- PMM
+> Paolo mentioned the float stuff as future work, but not sure what his
+> plans are specifically?
+
+No plans in particular---after all the whole meson conversion was like
+"let's try to find a day every month to proceed", and these two
+submodules are not particularly big. I know it's doable but I heard
+there were plans of embedding it too, so I left it aside and focused
+on the more interesting ones.
+
+Paolo
+
+> Feels like we should be able to figure out some way to get rid of all
+> the submodules though, except for the roms, which are special and ok to
+> leave IMHO
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>
+
 
