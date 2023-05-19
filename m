@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507787092A1
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 11:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 258E37092DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 11:19:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzw5V-0002Kc-AS; Fri, 19 May 2023 05:07:49 -0400
+	id 1pzwFy-0005DB-14; Fri, 19 May 2023 05:18:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1pzw5T-0002K6-Bd
- for qemu-devel@nongnu.org; Fri, 19 May 2023 05:07:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1pzw5R-0001vv-No
- for qemu-devel@nongnu.org; Fri, 19 May 2023 05:07:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684487265;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vl25maeecDcssW9290Ipyp/sJIa1WSzUyM7IHPqx740=;
- b=K4YlDHA8NGvrBJXsBUkzafMchQcFxc0l/arUIIl0JqFTKf+8efYStZphF9V/+AxE/CNpQn
- JXyeo+uyWgF9kqK8RFT0O5lHA7RKfmf4ItqDfOVPjE/FWqKndaQ0VBGx5DdkT6o+5399WG
- xEvXPQ9zjj0Btic4/5EwyLo2r6nJhlQ=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-642-8piFY8ecM3i2VPgTh4URlQ-1; Fri, 19 May 2023 05:07:43 -0400
-X-MC-Unique: 8piFY8ecM3i2VPgTh4URlQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C8EC1C068E7;
- Fri, 19 May 2023 09:07:43 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.105])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AD170492B0A;
- Fri, 19 May 2023 09:07:42 +0000 (UTC)
-Date: Fri, 19 May 2023 10:07:40 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
- richard.henderson@linaro.org, peter.maydell@linaro.org
-Subject: Re: [PATCH 5/6] configure: rename --enable-pypi to
- --enable-download, control subprojects too
-Message-ID: <ZGc8XCDoR+803blJ@redhat.com>
-References: <20230519085647.1104775-1-pbonzini@redhat.com>
- <20230519085647.1104775-6-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1pzwFw-0005Cp-0q
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 05:18:36 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1pzwFt-0003bj-EJ
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 05:18:35 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-510c734fa2dso1247985a12.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 02:18:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684487910; x=1687079910;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=pF+94+WYAd0Xj1GS1XNVyRMXHfG2s/Cgnpk57e31Vhg=;
+ b=FfRe5zl/guPWD0gy2VwXfKm6TuZLLFhu6tUJ0tyevbTt6rVNc0nBY2NghnQ3hw9j6w
+ ZHEirsuLSP3iwX9/unsX2+wpJvGGLhzRLqHANfKFBr2cy7Hdgd05FHdSAWpZCjno11w9
+ XulLz4F8faFNYDWfbFWFtXKAmqHbltTnlTbVE0hIdX2JKizRG6UKC4DpinKFjPY/ipI+
+ TYvgVtCH7dfJxvUerAcaOJuHf+jE9RxpMr31SkSFgt3IJte66ZctyoZYFNx57AxLHAfz
+ cOn9kPbNa4ZtvQC1TN81ifQtY/zplfxUDOfOUoMGbALh1Z4NmNxqnjN1dPVjrKNn4vRg
+ HpEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684487910; x=1687079910;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pF+94+WYAd0Xj1GS1XNVyRMXHfG2s/Cgnpk57e31Vhg=;
+ b=cte30nj67eyzfAc7wbD8p6mC0rroxZPl37XI7oFm7xvhp1m8cGozMo3nBTYyCeu1yA
+ dSeLbFxXw5bXwfyAXvqj2ENY8pKv8uLQ9/mpVOta6r6zCrR0ZGrMQjwTUJd2+FazeOx3
+ S2M01f4q4wJJpqQpQurJ/eAh0bR2rdAyRwmcy4nGt2SC1jl4eKKgAuP4TSe1Sim1r/t3
+ 6FweHLnIC9OWkBsXf3Rjl8+jw1dtWLodupP3xBFOy/+kfdFwlxdD+qKihd2U6ST3j92N
+ zuA1XjmL8rABlud6AkibyxbabPYBDb5iopQmxs9bGr7/9xZ0uib36A3npOFXC3Ad3I1k
+ cjWQ==
+X-Gm-Message-State: AC+VfDwF+8XAn3HjPeGMb6RnJ6Rn6TIxtwkecy3vD4o4orDbvR0Y5PYS
+ hVtphoCbYpMPiWgwdZ4mV2YsHSWtnbmqBOLMzGpfww==
+X-Google-Smtp-Source: ACHHUZ4WkInYgfpE55a818sjkKyRasCSWfoQ/cFjWFoLagbZbmlAhx63blPey8jTbLoHiHjE6ivG0mUnd+3P3bLMEaE=
+X-Received: by 2002:a05:6402:2554:b0:504:77ed:5a33 with SMTP id
+ l20-20020a056402255400b0050477ed5a33mr7746048edb.8.1684487910648; Fri, 19 May
+ 2023 02:18:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230519085647.1104775-6-pbonzini@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <58b8067d-3136-94ed-f53e-2ccd0feb8c75@linaro.org>
+In-Reply-To: <58b8067d-3136-94ed-f53e-2ccd0feb8c75@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 May 2023 10:18:19 +0100
+Message-ID: <CAFEAcA8nKiES473FbfCa=jkTO2SaVTKOgGPoAAFAzaojZZ86jA@mail.gmail.com>
+Subject: Re: gitlab shared runner time expired
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,36 +81,16 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 19, 2023 at 10:56:45AM +0200, Paolo Bonzini wrote:
-> The behavior of --{enable,disable}-pypi is similar to that of
-> -Dwrapmode={default,nodownload} respectively.  In particular,
-> in both cases a feature needs to be explicitly enabled for the
-> dependency to be downloaded.
-> 
-> So, use a single option to control both cases.  Now, --enable-slirp
-> will trigger cloning and building of libslirp if the .pc file
-> is not found on the machine.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  .gitignore             |  2 --
->  configure              | 17 +++++++----------
->  subprojects/.gitignore |  3 +++
->  3 files changed, 10 insertions(+), 12 deletions(-)
->  create mode 100644 subprojects/.gitignore
+On Thu, 18 May 2023 at 20:27, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> So, here we are again, out of runner time with 13 days left in the month.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+This is quite early -- have you been processing pull requests
+strictly one at a time, or in (small) batches ?
 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+-- PMM
 
