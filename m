@@ -2,100 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A7870A08A
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 22:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F88470A0FC
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 22:41:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q06dR-0004Tj-23; Fri, 19 May 2023 16:23:33 -0400
+	id 1q06ud-0002dv-Mz; Fri, 19 May 2023 16:41:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=496baf2b8=nsaenz@amazon.es>)
- id 1q066p-0007Hh-I5
- for qemu-devel@nongnu.org; Fri, 19 May 2023 15:49:51 -0400
-Received: from smtp-fw-80009.amazon.com ([99.78.197.220])
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
+ id 1q06ub-0002dj-N3
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 16:41:17 -0400
+Received: from mail-bn8nam04on2058.outbound.protection.outlook.com
+ ([40.107.100.58] helo=NAM04-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=496baf2b8=nsaenz@amazon.es>)
- id 1q066n-0000xU-CU
- for qemu-devel@nongnu.org; Fri, 19 May 2023 15:49:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1684525789; x=1716061789;
- h=mime-version:content-transfer-encoding:date:to:cc:from:
- message-id:references:in-reply-to:subject;
- bh=W0aeDSQlpa8RnbtI8R4fU5iLyJqG7lFtVnkckklLVdU=;
- b=UZscyj/sTikoKI3jjdCsaSDKbSZdc44INjR7fnsNGFAsseDg0MGAOjZ9
- kMUm9pluNQFUL5PSH2qF6y1j3a6rgIexCafbPfDlW83FxKy2Rz/vd7rGL
- rnXizQ1rTMmgyacbp28REqQXTXYFBxGuLHzq6A5qaxMGgc5bqDaFjSt/O g=;
-X-IronPort-AV: E=Sophos;i="6.00,177,1681171200"; 
-   d="scan'208";a="4376891"
-Subject: Re: [PATCH v10 2/9] KVM: Introduce per-page memory attributes
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO
- email-inbound-relay-pdx-2c-m6i4x-e7094f15.us-west-2.amazon.com)
- ([10.25.36.214]) by smtp-border-fw-80009.pdx80.corp.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2023 19:49:44 +0000
-Received: from EX19D004EUC001.ant.amazon.com
- (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
- by email-inbound-relay-pdx-2c-m6i4x-e7094f15.us-west-2.amazon.com (Postfix)
- with ESMTPS id 9CE90410CD; Fri, 19 May 2023 19:49:41 +0000 (UTC)
-Received: from localhost (10.13.235.138) by EX19D004EUC001.ant.amazon.com
- (10.252.51.190) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Fri, 19 May
- 2023 19:49:27 +0000
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
+ id 1q06uZ-0000uL-Ok
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 16:41:17 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k4F1geCCPm6S2AgqLl+Wmhk95CeYSMwzkOJ82uKm9XM8dVwKUjPacdiriGVrF6BCqlunnQEFCW5cledZum1ocVNvBuIz/4+WxrbI/Nbzkyv5Jj5UjyvQM3oqqjV+Y7Gzk/8gKar/dtlZC4pel/K3KxNVuKeWFV8/af8rCsz6PRR26JZDHQaXbC6c5TAoxSDFVCiJ0FmaLi9//bw1rB0nM70ni2Tu0ynXd2Ktj5CYMnCTth59JPbHl2eEt9KhDuJ+9fwxRMZ4PU/PwgaXBohqu7JQoPBNv6W8hRKtrpZ1CPONvUXJN4QHa6Y8qay6Ek4fGXK+RnpFJWCEfHDgD884jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2RvNkXvrPVH2SEn6VZOpBpj/DI8puHOUGOb4c4nbYoM=;
+ b=mHCVae8wndKPlJhzVyy7gvgegR5EFU1C2hZESzyzW2+Jvx2fp5vfkPBfxfc6wkxkFUEfbqVLsYeBVnTOrn/kySks99xh4kjyJ1b1CdlQgFaq4feSy9hFLSGeS9uQwgi0VhDlueh9GgWNJCDVc96WvRcr/Ic3RHMjkhBVNmX4wGgQgVjFifwdeUsfka+cjCc6HpD39w+9InZ15B2s+ynWSZK/3wae9clEnUukZd3/nLhVLFg7dicApU6TuvtfdNJkOYNfT4y5ok5UlkBmD6Ehbcpn8zlF66sF5RSQUyToLET+JCc7TyzZ4FQtn5aQ40BpbrqDLp0NkpftRkOCImf2vQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2RvNkXvrPVH2SEn6VZOpBpj/DI8puHOUGOb4c4nbYoM=;
+ b=DWWnQYRUW+lFeS+fA6fe+i2rSj7AxvcdZ8YsurIhgINa7HYTaVeFIEyguB5LmaaBABN9kvkDVl2Fw8f79YeGBMRyKdgOdAPGvco22qvjzBvmkpC1ZqEJnKIf3SuJCtWAbdzy66JLjf0V7kW2M9M3QZyZaQEmw0V7m5Bb53Y554o=
+Received: from BYAPR06CA0059.namprd06.prod.outlook.com (2603:10b6:a03:14b::36)
+ by SA1PR12MB6971.namprd12.prod.outlook.com (2603:10b6:806:24e::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.28; Fri, 19 May
+ 2023 20:36:10 +0000
+Received: from DM6NAM11FT103.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:a03:14b:cafe::e3) by BYAPR06CA0059.outlook.office365.com
+ (2603:10b6:a03:14b::36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.21 via Frontend
+ Transport; Fri, 19 May 2023 20:36:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT103.mail.protection.outlook.com (10.13.172.75) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6411.21 via Frontend Transport; Fri, 19 May 2023 20:36:10 +0000
+Received: from SATLEXMB08.amd.com (10.181.40.132) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 19 May
+ 2023 15:35:20 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB08.amd.com
+ (10.181.40.132) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 19 May
+ 2023 13:35:19 -0700
+Received: from xsjfnuv50.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
+ Transport; Fri, 19 May 2023 15:35:19 -0500
+From: Vikram Garhwal <vikram.garhwal@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <frasse.iglesias@gmail.com>, Vikram Garhwal <vikram.garhwal@amd.com>
+Subject: [QEMU][PATCH v5 0/4] Introduce Xilinx Versal CANFD
+Date: Fri, 19 May 2023 13:35:02 -0700
+Message-ID: <20230519203506.21002-1-vikram.garhwal@amd.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Date: Fri, 19 May 2023 19:49:23 +0000
-To: Sean Christopherson <seanjc@google.com>
-CC: Chao Peng <chao.p.peng@linux.intel.com>, <kvm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
- <linux-api@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <qemu-devel@nongnu.org>, <graf@amazon.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, "Vitaly Kuznetsov"
- <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, Jim Mattson
- <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Arnd Bergmann <arnd@arndb.de>, "Naoya Horiguchi"
- <naoya.horiguchi@nec.com>, Miaohe Lin <linmiaohe@huawei.com>,
- <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Hugh Dickins
- <hughd@google.com>, Jeff Layton <jlayton@kernel.org>, "J . Bruce Fields"
- <bfields@fieldses.org>, Andrew Morton <akpm@linux-foundation.org>, "Shuah
- Khan" <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>, Steven Price
- <steven.price@arm.com>, "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
- Vlastimil Babka <vbabka@suse.cz>, "Vishal Annapurve" <vannapurve@google.com>, 
- Yu Zhang <yu.c.zhang@linux.intel.com>, "Kirill A . Shutemov"
- <kirill.shutemov@linux.intel.com>, <luto@kernel.org>,
- <jun.nakajima@intel.com>, <dave.hansen@intel.com>, <ak@linux.intel.com>,
- <david@redhat.com>, <aarcange@redhat.com>, <ddutile@redhat.com>,
- <dhildenb@redhat.com>, Quentin Perret <qperret@google.com>,
- <tabba@google.com>, Michael Roth <michael.roth@amd.com>, <mhocko@suse.com>,
- <wei.w.wang@intel.com>, <anelkz@amazon.de>
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Message-ID: <CSQI5IB968XC.GO0OPMYT1C8N@dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com>
-X-Mailer: aerc 0.15.2-21-g30c1a30168df-dirty
-References: <20221202061347.1070246-1-chao.p.peng@linux.intel.com>
- <20221202061347.1070246-3-chao.p.peng@linux.intel.com>
- <CSQFE7I30W27.2TPDIHOTZNRIZ@dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com>
- <ZGe+m+uFzpiW7wlr@google.com>
-In-Reply-To: <ZGe+m+uFzpiW7wlr@google.com>
-X-Originating-IP: [10.13.235.138]
-X-ClientProxiedBy: EX19D032UWB002.ant.amazon.com (10.13.139.190) To
- EX19D004EUC001.ant.amazon.com (10.252.51.190)
-Precedence: Bulk
-Received-SPF: pass client-ip=99.78.197.220;
- envelope-from=prvs=496baf2b8=nsaenz@amazon.es; helo=smtp-fw-80009.amazon.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT103:EE_|SA1PR12MB6971:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27ea6271-53b1-4473-a95a-08db58a8ae38
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: wsYAziD+d9sIb1DYzPxJcUeaepIQwawGhvyO3QelRYF3aBFw/dL8KDMtOmJVJDDdttthAQ8bXJGITfwZ0zWim/nGZD1lr6Wgo3tLLG9Ksq02hWWe7Ug8dW73lJZvvgaAGsfKj5qNsQTGJTmzznazDDZaQLV/i8pKx5Bx77t9SKcyBTKhasgCfhOz+kPsAqrLH7WIMoCi/JBshO9GIUAOihOQofJTCbAeYrbEMSlS2CR1iDcW2bFXtAhdOBNbR1VkLjqZO5tM2eINOlI9fK3nyrmUjxkaPykL+U13n/BfYQGegAFFWaryqWebDqNT21x43LHahAm04Ax0JcBiM0etKVJIYDcbu/mCx5JqsG5OW1y0CbCWepNplITZTrsYBy4/v8+Q7nggYgu3Q7WvHVcCSptRAHzKzpHCGVK0NxzRo7C4u0wHtIBRHj42EooE2w0Icbm1liLkdb0q2CJjuBav98bs1mlGeNS7jZ4WLbydD+y+T4UX2zaj7YyRk4fC4ljbystxjV4uPu6vuuwX+5Dt3F4FRxEW+FLe0j7GIpJNllR23bczSki61Wa3XSW9rPdI0DK78TCBYhpvUBRiqD+bJCkohvkhLcuL5+BaYP+WQoZ0kNMvia9OejhtFa9lueqI8xxB960x6cQhK8b8G8+hhXot/KdPBY/XLygKL+QSVqLpOncELLc0sqNhUQS9XOvHAgP2uCK7oJqpfEl2UFYaAuwguZbVcuTse65HfQihjwXLHBFfjeBmRF/ytduAkswtUlFE+8zDRp/IsUogbKYckA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230028)(4636009)(396003)(136003)(39860400002)(376002)(346002)(451199021)(40470700004)(46966006)(36840700001)(82310400005)(86362001)(36756003)(2906002)(40460700003)(40480700001)(36860700001)(83380400001)(426003)(336012)(47076005)(6666004)(26005)(1076003)(6916009)(356005)(4326008)(186003)(70586007)(82740400003)(54906003)(44832011)(316002)(41300700001)(2616005)(70206006)(478600001)(8676002)(81166007)(8936002)(5660300002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2023 20:36:10.2974 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27ea6271-53b1-4473-a95a-08db58a8ae38
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT103.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6971
+Received-SPF: softfail client-ip=40.107.100.58;
+ envelope-from=vikram.garhwal@amd.com;
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 19 May 2023 16:23:30 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -107,107 +121,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Sean,
+Hi,
+This patch implements CANFD controller for xlnx-versal-virt machine. There are
+two controllers CANFD0@0xFF06_0000 and CANFD1@0xFF07_0000 are connected to the
+machine.
 
-On Fri May 19, 2023 at 6:23 PM UTC, Sean Christopherson wrote:
-> On Fri, May 19, 2023, Nicolas Saenz Julienne wrote:
-> > Hi,
-> >
-> > On Fri Dec 2, 2022 at 6:13 AM UTC, Chao Peng wrote:
-> >
-> > [...]
-> > > +The user sets the per-page memory attributes to a guest memory range=
- indicated
-> > > +by address/size, and in return KVM adjusts address and size to refle=
-ct the
-> > > +actual pages of the memory range have been successfully set to the a=
-ttributes.
-> > > +If the call returns 0, "address" is updated to the last successful a=
-ddress + 1
-> > > +and "size" is updated to the remaining address size that has not bee=
-n set
-> > > +successfully. The user should check the return value as well as the =
-size to
-> > > +decide if the operation succeeded for the whole range or not. The us=
-er may want
-> > > +to retry the operation with the returned address/size if the previou=
-s range was
-> > > +partially successful.
-> > > +
-> > > +Both address and size should be page aligned and the supported attri=
-butes can be
-> > > +retrieved with KVM_GET_SUPPORTED_MEMORY_ATTRIBUTES.
-> > > +
-> > > +The "flags" field may be used for future extensions and should be se=
-t to 0s.
-> >
-> > We have been looking into adding support for the Hyper-V VSM extensions
-> > which Windows uses to implement Credential Guard. This interface seems
-> > like a good fit for one of its underlying features. I just wanted to
-> > share a bit about it, and see if we can expand it to fit this use-case.
-> > Note that this was already briefly discussed between Sean and Alex some
-> > time ago[1].
-> >
-> > VSM introduces isolated guest execution contexts called Virtual Trust
-> > Levels (VTL) [2]. Each VTL has its own memory access protections,
-> > virtual processors states, interrupt controllers and overlay pages. VTL=
-s
-> > are hierarchical and might enforce memory protections on less privilege=
-d
-> > VTLs. Memory protections are enforced on a per-GPA granularity.
-> >
-> > The list of possible protections is:
-> > - No access -- This needs a new memory attribute, I think.
->
-> No, if KVM provides three bits for READ, WRITE, and EXECUTE, then userspa=
-ce can
-> get all the possible combinations.  E.g. this is RWX=3D000b
+Also, added basic qtests for data exchange between both the controllers in
+various supported configs.
 
-That's not what the current implementation does, when attributes is
-equal 0 it clears the entries from the xarray:
+Changelog:
+v4->v5:
+    Fix Linux dtb connections for CANFD.
+    Address feedback from Francisco for xlnx-versal-canfd.c file.
+v3->v4:
+    Address formatting related feedback from Peter.
+    Correct dlc byte data storing if dlc is not a multiple of 4.
+    Remove unnecessary LOG_GUEST_ERROR.
+    Remove instance_finalize(canfd_finalize) function.
+    Remove unused member of struct XlnxVersalCANFDState.
 
-static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
-					   struct kvm_memory_attributes *attrs)
-{
+v2->v3:
+    Corrected reg2frame().
+    Added assert to prevent out of bound cases.
+    Replace tx_id link list with GSList and removed sorting function.
+    Replaced PTIMER_POLICY_LEGACY with proper timer policies.
+    Corrected minor code format issues.
 
-    entry =3D attrs->attributes ? xa_mk_value(attrs->attributes) : NULL;
-[...]
-    for (i =3D start; i < end; i++)
-    	if (xa_err(xa_store(&kvm->mem_attr_array, i, entry,
-    			    GFP_KERNEL_ACCOUNT)))
-        		break;
-}
+v1->v2
+    Update xlnx-versal-virt.rst with CANFD examples and add this in 03/05 patch.
+    Addressed comments for patch 02/05 and 03/05.
+    Add reviewed-by tags for patch 01/05, 04/05 and 05/05.
+    Change commit message for patch 02/05.
+    Add SPDX license for Qtest.
 
-From Documentation/core-api/xarray.rst:
+Regards,
+Vikram
 
-"There is no difference between an entry that has never
-been stored to, one that has been erased and one that has most recently
-had ``NULL`` stored to it."
 
-The way I understood the series, there needs to be a differentiation
-between no attributes (regular page fault) and no-access.
+Vikram Garhwal (4):
+  MAINTAINERS: Include canfd tests under Xilinx CAN
+  hw/net/can: Introduce Xilinx Versal CANFD controller
+  xlnx-versal: Connect Xilinx VERSAL CANFD controllers
+  tests/qtest: Introduce tests for Xilinx VERSAL CANFD controller
 
-> > We implemented this in the past by using a separate address space per
-> > VTL and updating memory regions on protection changes. But having to
-> > update the memory slot layout for every permission change scales poorly=
-,
-> > especially as we have to perform 100.000s of these operations at boot
-> > (see [1] for a little more context).
-> >
-> > I believe the biggest barrier for us to use memory attributes is not
-> > having the ability to target specific address spaces, or to the very
-> > least having some mechanism to maintain multiple independent layers of
-> > attributes.
->
-> Can you elaborate on "specific address spaces"?  In KVM, that usually mea=
-ns SMM,
-> but the VTL comment above makes me think you're talking about something e=
-ntirely
-> different.  E.g. can you provide a brief summary of the requirements/expe=
-ctations?
+ MAINTAINERS                          |    2 +-
+ docs/system/arm/xlnx-versal-virt.rst |   31 +
+ hw/arm/xlnx-versal-virt.c            |   53 +
+ hw/arm/xlnx-versal.c                 |   37 +
+ hw/net/can/meson.build               |    1 +
+ hw/net/can/trace-events              |    7 +
+ hw/net/can/xlnx-versal-canfd.c       | 2107 ++++++++++++++++++++++++++
+ include/hw/arm/xlnx-versal.h         |   12 +
+ include/hw/net/xlnx-versal-canfd.h   |   87 ++
+ tests/qtest/meson.build              |    1 +
+ tests/qtest/xlnx-canfd-test.c        |  423 ++++++
+ 11 files changed, 2760 insertions(+), 1 deletion(-)
+ create mode 100644 hw/net/can/xlnx-versal-canfd.c
+ create mode 100644 include/hw/net/xlnx-versal-canfd.h
+ create mode 100644 tests/qtest/xlnx-canfd-test.c
 
-I'll do so with a clear head on Monday. :)
+-- 
+2.17.1
 
-Thanks!
-Nicolas
 
