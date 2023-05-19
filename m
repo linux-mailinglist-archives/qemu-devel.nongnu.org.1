@@ -2,76 +2,158 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E593709E86
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 19:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 726CA709E8B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 19:49:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q04BA-0004Au-Pb; Fri, 19 May 2023 13:46:12 -0400
+	id 1q04DU-000563-T7; Fri, 19 May 2023 13:48:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q04B8-0004Ag-Ly
- for qemu-devel@nongnu.org; Fri, 19 May 2023 13:46:10 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q04B4-0004Cq-SP
- for qemu-devel@nongnu.org; Fri, 19 May 2023 13:46:10 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-96f53c06babso276809466b.3
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 10:46:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684518365; x=1687110365;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=SgeNjNsuKfTbNkGJ3rWv2yI3Rj8+AFZqNL/QEiB2hcM=;
- b=V4EA1iCuZFn06qNcJ16Kmcnn+Kvw/e3rMHjr6lmzAJhB3dTl0Qf+4JiL9Jmp2PbXG1
- s+Ej3pxf9pcN0p1ZPEFhZ3S9OSFKp+p4WaPLQHjk/bDEmRNw8OVsLOBbdi+GXfvdbmTf
- vUcCwHnIrIy7UCtc52T26eSAwDAo2R8gy3uewKgqchL+LZV+idzro+Np7+4fvDkuuGM3
- a9lwgNaBeBv7a+M3CR2XstReiusrHNOWjZUjIjOwnm+t1A8cbXHzGzZRXj9xQZzAA6ka
- nqGNeGqrN1pCJymCyhVU5OYVkpp4PVjmMKAbe6d3RRBzEmS0cxq5CoyTayLovdrecFNl
- w95w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684518365; x=1687110365;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SgeNjNsuKfTbNkGJ3rWv2yI3Rj8+AFZqNL/QEiB2hcM=;
- b=bZy6TaNQ265GB+HqDGTWzmdVJc4iB98yhnhWaLVZsjlGl/xDcH3u5mn2JEBL1bzxWU
- k0hr1V5F+yddlhhsF/sWbWOkweuloDC8cG1qZ88A+qZuH8JhyZG1Ze3Xsw2SIxnUt7Pm
- 7qS4eiYiaNnvmmmpMpCcVLaePe0wkahIXmZ73kSTTDVc7mVMDqH48KL8fWUZrWtAJoYV
- UpeKbLkCPEV9t4+XTUhFmr+7SH8Jec5WlYT92O/Kad/4UgPQpmyLjyFEMNrrP7xPudoR
- ZCBDwBxNcFiaYsRMXnhUtuCaBxYgCl5UYRPIjdzVWcDF9Sq8GAxndpyvUrJA6tfUmySh
- mdcg==
-X-Gm-Message-State: AC+VfDwWDbxg1ZsBvTuBT6b0U4D08vqD2YNEliui9oVJjnKR1Yf2L59M
- Zp+UVJpTDmMFKW15wngE6DZjZ4/+3qnAumQwwW1oD/O51uWUtOkA
-X-Google-Smtp-Source: ACHHUZ5Dz5qj0OTdPERL7+PUMDM1cPfana9ZiLVnGe0rnQT7p29+BGZ951VVYXppm9bBpaD9BRaAPdsDWTd2pohPzIc=
-X-Received: by 2002:a17:907:86a8:b0:965:c2ab:7014 with SMTP id
- qa40-20020a17090786a800b00965c2ab7014mr2582110ejc.35.1684518365259; Fri, 19
- May 2023 10:46:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
+ id 1q04DT-00055t-6r
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 13:48:35 -0400
+Received: from mga01.intel.com ([192.55.52.88])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
+ id 1q04DP-0004P0-Ni
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 13:48:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1684518513; x=1716054513;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=wdDxgP8mBLeCJuH6mOEvJJIw32S7hJtzzQNfUGoA6IY=;
+ b=W1TszNWM+4HiTFnP3nzGLw8qs60k8iGIm+yxhw4ubE6h/plpqn1nyklI
+ QGhKPbH2otsmwfgzBTYKg2reW2ftfe4R107vzxycoX4np+Z9E11OOIrmS
+ cIn2YUv4ltMZZruRD2uv6bIJsvDIePRLdVaAygILv73BqQI//sZ6kV4++
+ Wxzu7AydrOyhPYrisoA9PXWulnlJZn8A5x6GIT7z6eAttmjbzCazpw0Iz
+ O/ROw4ljEmSIqBfu964dMv9lRXmMqhb3P5oi9pGOsU1PM6NYsaCllEEKJ
+ hkkL6ABvYEVexcGUiijEMyBy3LSH1bRRKjD2I4asceMqaR/dwkIylkZHg g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10715"; a="380655919"
+X-IronPort-AV: E=Sophos;i="6.00,177,1681196400"; d="scan'208";a="380655919"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 May 2023 10:48:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10715"; a="876919198"
+X-IronPort-AV: E=Sophos;i="6.00,177,1681196400"; d="scan'208";a="876919198"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orsmga005.jf.intel.com with ESMTP; 19 May 2023 10:48:25 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 19 May 2023 10:48:25 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Fri, 19 May 2023 10:48:25 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.170)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Fri, 19 May 2023 10:48:23 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iytH0iBAW4Q60+/s/JExZ/XIaTarHbHoi4eWmaZ/Ag2SDm8Ato1Q28FVRQcRX0qGrIVZSv+YDICSsU39oo6ffzIshTTHJo3g2RCUM9hEofCoU9e0AvF6BbSF9sFc7w7+B+VrWWm++kXP/+GgM5vo/Tg8CaWex34Of1Lky8fcfIdGH8zlOZXOgz/bOuSvX7hvtf6ufFj+OWNHqpwJpFWZuZ4cBwxeU1CMW6T7T1xRTUWxw6KAuDqJS3o/iWHSXMiZ3NalVnXIuKjLrDOY/kACg+C8vrG9CJtq4WajuxM/Uj5BoyQwfBJz34h457Bi0XnRsDMuECK2mO9Vsi9CWCXNyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=11Uvudk355/364lB0mEIhSFjOG5GNTK1+YWlmiDCuEI=;
+ b=k0yMUbGK6XfbjMOLXd1fLas8ITdyfGSF52MELhIohtYFh3L79ci0YsF3bZQyVAWV026WjcnKeHtt4c359frjYdLW7uqJiEad0+pi4idjiQY3ehuhXAQlXEb5RtOuTzJUYalsmfMwOQn6S6IgFO9vIpTF8WflEpDiwRdGTH47GA8Wy2dFcxnoShhY8ajjV2EoJvOfrvEUBpmcvLe5PsFGIhDZ0nGlA4r+TKAJDjTrh1Aq3u3vSIxhDcrNMJw/jox/T4D1oDcF9VpU6dJB5wvFoNlCnh/DyB0wUjxkHpFOY5NzfogNZc9CXCUCKHDdIexzLj+6fcjk6gSKByNJFcckxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
+ by CY5PR11MB6091.namprd11.prod.outlook.com (2603:10b6:930:2d::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.30; Fri, 19 May
+ 2023 17:48:22 +0000
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::4fe2:e207:596b:d145]) by SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::4fe2:e207:596b:d145%5]) with mapi id 15.20.6411.021; Fri, 19 May 2023
+ 17:48:21 +0000
+Date: Fri, 19 May 2023 10:48:13 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, <qemu-devel@nongnu.org>,
+ Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>
+CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
+ <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, Philippe
+ =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
+ <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, Daniel P
+ =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>
+Subject: Re: [PATCH v6 4/4] hw/cxl: Add clear poison mailbox command support.
+Message-ID: <6467b65d75bc1_1231462942d@iweiny-mobl.notmuch>
+References: <20230519141803.29713-1-Jonathan.Cameron@huawei.com>
+ <20230519141803.29713-5-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230519141803.29713-5-Jonathan.Cameron@huawei.com>
+X-ClientProxiedBy: BYAPR08CA0021.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::34) To SA1PR11MB6733.namprd11.prod.outlook.com
+ (2603:10b6:806:25c::17)
 MIME-Version: 1.0
-References: <20230518114025.1006732-1-pbonzini@redhat.com>
- <CAFEAcA-ZtAHC2frNzVymYf9pufyi6Y1wHeLnKLrne7NaTeqNfw@mail.gmail.com>
- <CABgObfbk=8Uq3gN1dThxq3jJOAEk_cGu0Y4bvRtvdR9xZ2xtxw@mail.gmail.com>
- <CAFEAcA_4_JD46CxkT2dcXSLHKNsa7kKYPYJkqEzZERDTK_wx-A@mail.gmail.com>
- <379845d1-7a4e-a0eb-345c-451b17e77638@redhat.com>
-In-Reply-To: <379845d1-7a4e-a0eb-345c-451b17e77638@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 19 May 2023 18:45:54 +0100
-Message-ID: <CAFEAcA-cWzw-heK7y83=ZnSG7Kd_NUiayOrm6Zz6jRADB1-Nfg@mail.gmail.com>
-Subject: Re: [PULL v3 00/68] i386, build system, KVM changes for 2023-05-18
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|CY5PR11MB6091:EE_
+X-MS-Office365-Filtering-Correlation-Id: 52e7e4f8-41d6-4ca0-3ffb-08db58913c76
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: IUAerX3ZdPspAee+HKsamazP7+Dlq1DzKSvrpjSaffkm/iQs3oqlblhIEbduEKUHi9Q+V1mE4Spk3sqYXuSc0CKEJ42jKFdDVpHqaqJ5glmElCcQ8DcIbx1YTwIcaEbCVebOFAdYqaCD46jZI85jQNETSe+5R2GQ4z3DjQPqnHMZsPojBorptilw3crLxyUEn/vuilGOT2gb87IbztQW2hCEI54JRcr7/9lzkjUO41hR9HJcCs4cePvUaPHt+Z0ScN+SRXjQG5+13Bbh7K+n0PqG3Vy9oZY1DW+FZSiAyIHfyUEnAll+ZgvNSTGthi2jOvryye8DgaCy9cbcCLsTou4TbszNy1p5sjO2p9VJ7Lvqqg/04kxV8K+IUIwcNfufx2Ay8KSCTq3O2EY607HAYKrvJaXczxuiRj3qoZs6vfZQxo/Bvdl+h0Cn+zUPf2ioKb3AZpGfTKGfb2bUpkx1UI2eqZOOoyoDowpSK/Hfjz7H/f/us2d8Gf/PnwNCeEYjAlSLlfx7fjJFwfw3ICqzsOe0dAOizFdMirC72wp/Zne+LXTkcmnvUYsHa6a9yb9I
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA1PR11MB6733.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(366004)(346002)(39860400002)(136003)(376002)(396003)(451199021)(110136005)(86362001)(6512007)(6486002)(54906003)(478600001)(6666004)(9686003)(316002)(82960400001)(5660300002)(26005)(2906002)(4326008)(8936002)(186003)(66556008)(66476007)(41300700001)(38100700002)(7416002)(66946007)(44832011)(6506007)(8676002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qAHxB2QBo8RMLiTfxDaFLJW1XzyMufhJmV9Agi+XX7sn4q8VjTX3fF+ERaYf?=
+ =?us-ascii?Q?RHkOOPLcIucFLiwoU3WPQjfIPGgQ1nkR/wCrkbXkhr8iwyoaZfCK6wR/+05L?=
+ =?us-ascii?Q?7U8MCKyjhiXq2XylGFzNOziD3Fv10g72y9uO/q6vRQwnkFmUA7JqV1GOKr+u?=
+ =?us-ascii?Q?IeSz7TMSXhYnAE8ysjYyuh1Yh2yJrEbup8KTRfRTSfgRzAnB6Qye4ApHll6a?=
+ =?us-ascii?Q?PWHH0+cNi62mGOsp4GdfEti1qqVLCU8XejTrmzq2YFZ3Rqaomnem1sC71Mj3?=
+ =?us-ascii?Q?uQmFLWwDORBdsY9nCQtVfjCz91rG2x5XfTkGE3lDa4c2x1WcjM6tbO12FRBB?=
+ =?us-ascii?Q?MSbKKq/ZKfvjVCNLO7j0ATWTDfqy9HCmlgM324rR6f7umHEtqEezRBZIpQEP?=
+ =?us-ascii?Q?tswARS+h8orjQr5sPazS7uetLio+f2f7Wz0FqTgXIrhG9SqSDWeT8tteCctX?=
+ =?us-ascii?Q?WXezNcBk4k95VJazFaN60D/5LYkyDKy2dbLtjFUYYgG0rqMd0wb/M+NwKUFR?=
+ =?us-ascii?Q?OvRUV0Ep990VQcZdMNlSxcg7S/CVxOzzqQlmpjZ3E/ePTlph16FENYcjEYPF?=
+ =?us-ascii?Q?EscUTAaUI7zKCK3/UoIQklISVTwUY0D3tSw2DEiOdSLjs8XMFYHU1BXCJOjK?=
+ =?us-ascii?Q?rsxZKIQ9mv7i36vnhBoiL2GNOhhzrxXfwiRR+KBF5e2hxIIBNHwCxLBgm+2B?=
+ =?us-ascii?Q?qmAloUFLHq7qXmvJQ0GobNXRFAfvFmv77xscUxyutPNrRihJc3KKjpiQlwb1?=
+ =?us-ascii?Q?H/KumUbPbg70IQSALUyPG+7E8NFEH16QHAdH6vk/6Q+Xr3jW8062Z4RBQ1Jw?=
+ =?us-ascii?Q?Tk1dOlDhrrws8pT8ZSDrXdB/iD5SOnY+mt+Y1voSDhVAkXKz3SEjMm0nPaFv?=
+ =?us-ascii?Q?vfYiEbiYvnCMe4AeweOXZwpXhXPFOJZvAOmSk/Utf1i7gBZ0MEKEBoZ2oAU5?=
+ =?us-ascii?Q?gQgpINePNukct7xGeawRuAnFmG51MdjpX5uhWU02zM0iLk1qC6WRXG/31YFz?=
+ =?us-ascii?Q?yT4E95BZrrgIWUjizm7csevhtQ6LepQ7flUShgTo6oIHH4eNWY93qwD92wPM?=
+ =?us-ascii?Q?bFhs0fmc1Vn+OxZwSAmlz2k5OLEUjWV+zyqEauFsMxfw/pm5NDQcDLksqYKf?=
+ =?us-ascii?Q?twLMwqQUS4L/rleT7+wP5Sni0mEkjVucBqLhT1UKuWjj9vzEibb2fEtNpwt1?=
+ =?us-ascii?Q?djDDwMpPpnqLZO7HfiJGFKdYl15u+sOm16spGkPqYaIntq02ko6F3+RKR23k?=
+ =?us-ascii?Q?3FU2/hV9rLkXS5J8EhF2x4MzSB99oD8jnnq4ygnXjU2QfltMCSXvQyHPPgcB?=
+ =?us-ascii?Q?+krW/CS5DgjOuPNlThqubi5X+uC0ykPWw85/fClqwaLOXuIpeWYBR7qhFqun?=
+ =?us-ascii?Q?DiJdVxhg1xtW7wXLTm8Jf9gclLNdrk5zHrXZCvv40BEdCSjvuEMwHMo3a8ES?=
+ =?us-ascii?Q?1z7Jvkfnqa7Ep87NNONuYvhnVQOEyNOv1/5e8p+ISaM2i2iejzdb9lWEPT//?=
+ =?us-ascii?Q?cCoJeOIR2mNTytBdNvVGyvZlIRqu5rCV4mcdSzMygSfw/RKdbRHjTh/BeqYu?=
+ =?us-ascii?Q?mpMzaJji/qYSB+/1eQFOtFTIFkYxBir/02IbT3j5?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52e7e4f8-41d6-4ca0-3ffb-08db58913c76
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2023 17:48:21.3711 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6CiqYIBouiyrSNZQ7wvt0iJmGi6BLt/51/a2ffvAMdni1EsWiN+cUdEsv9lnfdaDngGGTbTm6iJ61XiIZlaAwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6091
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.88; envelope-from=ira.weiny@intel.com;
+ helo=mga01.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,126 +170,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 May 2023 at 18:31, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> On 5/19/23 19:01, Peter Maydell wrote:
-> >> Can you send your config-host.mak after a failed rebuild? I think
-> >> what's happening is that the path to meson has changed but Makefile
-> >> still tries the old one (which could be the system meson in
-> >> /usr/bin).
-> >
-> > Attached; it has
-> > MESON=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/pyvenv/bin/meson
-> >
-> >  That meson says: $
-> > /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/pyvenv/bin/meson --version>
-> > 1.1.0 is neither the system meson (which is 0.61.2) nor the version
-> > the build system wants (0.63.0) nor the version that it complains
-> > that it's found (0.61.5), so I'm not sure what's going on there...
->
-> 1.1.0 must be something you have cached somewhere
+Jonathan Cameron wrote:
+> Current implementation is very simple so many of the corner
+> cases do not exist (e.g. fragmenting larger poison list entries)
+> 
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-Well, I've never done anything with meson except use whatever
-the QEMU build system provides...
+Minor nit below.  Otherwise looks good.
 
-> but 0.61.5 comes from
-> the old submodule.  You should be able to find it with
->
-> grep -wA2 'rule REGENERATE_BUILD' ../build.ninja
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-Yep:
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index ab600735eb..84022d7ae3 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -947,6 +947,42 @@ static void set_lsa(CXLType3Dev *ct3d, const void *buf, uint64_t size,
+>       */
+>  }
+>  
+> +static bool set_cacheline(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data)
+> +{
+> +    MemoryRegion *vmr = NULL, *pmr = NULL;
+> +    AddressSpace *as;
+> +
+> +    if (ct3d->hostvmem) {
+> +        vmr = host_memory_backend_get_memory(ct3d->hostvmem);
+> +    }
+> +    if (ct3d->hostpmem) {
+> +        pmr = host_memory_backend_get_memory(ct3d->hostpmem);
+> +    }
+> +
+> +    if (!vmr && !pmr) {
+> +        return false;
+> +    }
+> +
+> +    if (dpa_offset + 64 > ct3d->cxl_dstate.mem_size) {
 
-$ grep -wA2 'rule REGENERATE_BUILD' build/x86-tgts/build.ninja
-rule REGENERATE_BUILD
- command = /usr/bin/python3
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/meson/meson.py --internal
-regenerate /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts --backend
-ninja
- description = Regenerating build files.
+NIT: s/64/CXL_CACHE_LINE_SIZE/
 
-$ /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/meson/meson.py --version
-0.61.5
-
-> You should be able to unhose the directory with
->
-> pyvenv/bin/meson setup --reconfigure ../..
->
-> (where ../.. should be the path to the sources) or even with the patch:
->
-> diff --git a/Makefile b/Makefile
-> index 3c7d67142f13..08fb6a3b058a 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -115,15 +115,15 @@ Makefile.ninja: build.ninja
->           $(NINJA) -t query build.ninja | sed -n '1,/^  input:/d; /^  outputs:/q; s/$$/ \\/p'; \
->         } > $@.tmp && mv $@.tmp $@
->   -include Makefile.ninja
-> +endif
->
-> +ifneq ($(MESON),)
->   # A separate rule is needed for Makefile dependencies to avoid -n
->   build.ninja: build.ninja.stamp
->   $(build-files):
->   build.ninja.stamp: meson.stamp $(build-files)
-> -       $(NINJA) $(if $V,-v,) build.ninja && touch $@
-> -endif
-> +       $(MESON) setup --reconfigure $(SRC_PATH) && touch $@
->
-> -ifneq ($(MESON),)
->   Makefile.mtest: build.ninja scripts/mtest2make.py
->         $(MESON) introspect --targets --tests --benchmarks | $(PYTHON) scripts/mtest2make.py > $@
->   -include Makefile.mtest
-
-This patch doesn't work, I'm afraid:
-
-$ make -C build/x86-tgts/
-make: Entering directory
-'/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts'
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/pyvenv/bin/meson
-setup --reconfigure /mnt/nvmedisk/linaro/qemu-from-laptop/qemu &&
-touch build.ninja.stamp
-WARNING: Regenerating configuration from scratch.
-Reason: Coredata file
-'/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/meson-private/coredata.dat'
-references functions or classes that don't exist. This probably means
-that it was generated with an old version of meson. Try running from
-the source directory meson setup
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts --wipe
-The Meson build system
-Version: 1.1.0
-Source dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-Build dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts
-Build type: native build
-
-../../meson.build:1:0: ERROR: Unknown options: "sphinx_build"
-
-A full log can be found at
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/meson-logs/meson-log.txt
-  GIT     ui/keycodemapdb tests/fp/berkeley-testfloat-3
-tests/fp/berkeley-softfloat-3 dtc
-[0/1] Regenerating build files.
-The Meson build system
-Version: 0.61.5
-Source dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-Build dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts
-Build type: native build
-
-../../meson.build:1:0: ERROR: Meson version is 0.61.5 but project
-requires >=0.63.0
-
-A full log can be found at
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/meson-logs/meson-log.txt
-ninja: error: rebuilding 'build.ninja': subcommand failed
-FAILED: build.ninja
-/usr/bin/python3
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/meson/meson.py --internal
-regenerate /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts --backend
-ninja
-make: *** [Makefile:165: run-ninja] Error 1
-make: Leaving directory
-'/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts'
-
--- PMM
+Ira
 
