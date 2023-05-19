@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE0A709AB3
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64242709AAA
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:57:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01TI-0005Wz-OJ; Fri, 19 May 2023 10:52:44 -0400
+	id 1q01TJ-0005u1-LP; Fri, 19 May 2023 10:52:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01T4-00050D-LG
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01T5-00050H-VA
  for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Sy-0003kN-On
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01T4-0003lv-DL
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507944;
+ s=mimecast20190719; t=1684507948;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yL382e7AnC4ayRKjUR+8KuEK+Fg9P80Jv7fuv4Rssck=;
- b=QB5q5E/lz30SkBWjiJocsttjzPYNnHcY9jnRz85q/ei1AAKV3GFQSVgXAwwhkofmQBaGAO
- wjhD4t1MhaMfd1YXBXvTqnJJgFdAG7ApAlcpSCPSR/vquYLsGbNJohJS1NFHgdBG1PHb+b
- 5D33GL+o+0iQ56grlcozafPQzxun/yA=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=AkZgLO2ULCvim6XkvxIlN6Y1si/CGYQ9Gj9d57Tfixs=;
+ b=AqJ3iK0hm6s0edAsTMJsLC+3LCxDQRv1v0f0OBq4goRnWeU56waehZhkbSq3bHaa18+SKV
+ sJSDgHyt5ovTouE43qUyH0R0A4gitQS/bkxWtZ5Rc3Ljdg8AZQKPXy3ZZNFW4FVu5FUKXH
+ G71W6xwP1szDV7FNgFtUj4bby2oRZOo=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-a7qvYsYrPxuupZGrrobwOg-1; Fri, 19 May 2023 10:52:23 -0400
-X-MC-Unique: a7qvYsYrPxuupZGrrobwOg-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2af237b22aaso4960241fa.0
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:52:20 -0700 (PDT)
+ us-mta-355-avLj4-sgNDaw9lOok_3CGg-1; Fri, 19 May 2023 10:52:27 -0400
+X-MC-Unique: avLj4-sgNDaw9lOok_3CGg-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-4ef455ba989so2144187e87.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:52:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507939; x=1687099939;
+ d=1e100.net; s=20221208; t=1684507945; x=1687099945;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yL382e7AnC4ayRKjUR+8KuEK+Fg9P80Jv7fuv4Rssck=;
- b=lFjYVpslG9eTmVnFQ4NQAwROO+fia7BZvwQCUyFBCodu2krjhPue7i0z94Ob/XINqO
- NNNSf+FbG0D+olFU/VFV8l74tKVwVsSjWJqcGEv1m2RmfR1UQ0co6YovwCnAiLC/7rdT
- L1t+YIpeOH20Sqrd7JY4wt0qn+LPVToHC8RqKz1vmau8tw34XaGNLK4RmkTkg35Fvp9r
- LEtwsQQ2saNJ0xF+BmtnM/ndyyWe+gOpf1dZPCmNjj5GvqKqSB/z7LPOTUmDOKyw1LlP
- 6OhffLdyFww+5PKY3AZYJGqSwYZbs97UZhm6/b2S6ftnUrSsX3RcfqMUpIjC0PbXUsQf
- X6lQ==
-X-Gm-Message-State: AC+VfDy/q3pePwdlhVjzKbBpLiH2HFn/fORt7COEpYl3kV7fKuGRIzGL
- ZDsVSLt1TPbwyBxjnUZXjoqe6EtzXJ62Rp6sd3xwhfA74tykUEAoj8ypVzsdbfjAnSY50tH2sNH
- aAwHddS27FuSKopxQsyo5SVhJ+qfrmVXUhk7lUs0EfSG4PPP53FV3YbbQWaOAvs2XmkB6
-X-Received: by 2002:a2e:b04d:0:b0:29f:58c6:986e with SMTP id
- d13-20020a2eb04d000000b0029f58c6986emr811366ljl.52.1684507939384; 
- Fri, 19 May 2023 07:52:19 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6BBoUNxQ0Plh7QFLNuPkZ7JbhXGtm+85gYLAL6owOdGN6erxB+kkKni03pVPqXuSTOuJkDRw==
-X-Received: by 2002:a2e:b04d:0:b0:29f:58c6:986e with SMTP id
- d13-20020a2eb04d000000b0029f58c6986emr811352ljl.52.1684507939135; 
- Fri, 19 May 2023 07:52:19 -0700 (PDT)
+ bh=AkZgLO2ULCvim6XkvxIlN6Y1si/CGYQ9Gj9d57Tfixs=;
+ b=aevI5QGvdEgY/0qPi9gojsVQscwjsKEy5nF8Gxk7Sx6c5ZLPBY4em67HiTy5CxNdn4
+ b0bRKT3+sgdw31ltn61mhqbTt50KIvUSfM8mNU8yE058+cOM2Nx22fRtEZQGBeRzS9lw
+ svXz1t2/2+s74U0EXU+n37fhcGlNnHSnzUavaYrjv7hWQt9kwOtKQa9UONgLsaPq8V5M
+ 8I7YSpUba5ldVgu9H13dtcHY5iNCPVha1t0eB60nJJVaNelbZ93V+jZ7kxlNfuJFiB6A
+ SuxHPUVV7ai7uvocq69C4J2+wjmjp7/WfpxTVQ+lRI++F6Q7RuqiH1KOL8x919onxPsA
+ QdOA==
+X-Gm-Message-State: AC+VfDy3jMU6oeTTX9IWntukRFJT/1UfyfXFejzdKRckkuae4wg3wo85
+ q5BZscXp6U/wBYrPg6rcsWSQTfgNPNeqK/qztZTOnPUkSAl7dN9XCKrXS8RrfhPYF6ALqpw5K4V
+ 0gBTZMPOfpIZCGktjPOdeknH5BtbQ+ScK5PD+9J8+A4OWjn9HHL+P/RD0+mWYk8HvPhXD
+X-Received: by 2002:a05:6512:376b:b0:4ef:f4ef:a1cc with SMTP id
+ z11-20020a056512376b00b004eff4efa1ccmr755977lft.14.1684507945268; 
+ Fri, 19 May 2023 07:52:25 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4A+bXZ8eevLxogYXvyXCwUzwFiHbSmRQtP7gW3vX29PXNxd/QgsLXJkGcFgkSUMtJgBJ0evA==
+X-Received: by 2002:a05:6512:376b:b0:4ef:f4ef:a1cc with SMTP id
+ z11-20020a056512376b00b004eff4efa1ccmr755960lft.14.1684507944980; 
+ Fri, 19 May 2023 07:52:24 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- a5-20020a05651c010500b002a8b08882dbsm854659ljb.55.2023.05.19.07.52.15
+ f18-20020ac24e52000000b004cc9042c9cfsm626003lfr.158.2023.05.19.07.52.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:52:18 -0700 (PDT)
-Date: Fri, 19 May 2023 10:52:13 -0400
+ Fri, 19 May 2023 07:52:24 -0700 (PDT)
+Date: Fri, 19 May 2023 10:52:19 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 30/40] hw/i386/pc_q35: Reuse machine parameter
-Message-ID: <1ab7167b09446996a8c967c6fe2eb4dcb9f53c87.1684507742.git.mst@redhat.com>
+Subject: [PULL 31/40] hw/i386/pc_{q35,piix}: Reuse MachineClass::desc as SMB
+ product name
+Message-ID: <1e366da0318bd9fb8cea66914e9682ad6e7d0a94.1684507742.git.mst@redhat.com>
 References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -106,29 +108,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
+No need to repeat the descriptions.
+
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230213162004.2797-4-shentey@gmail.com>
+Message-Id: <20230213162004.2797-5-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc_q35.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/pc_piix.c | 2 +-
+ hw/i386/pc_q35.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 66a849d279..a9c40201fb 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -198,7 +198,7 @@ static void pc_init1(MachineState *machine,
+     if (pcmc->smbios_defaults) {
+         MachineClass *mc = MACHINE_GET_CLASS(machine);
+         /* These values are guest ABI, do not change */
+-        smbios_set_defaults("QEMU", "Standard PC (i440FX + PIIX, 1996)",
++        smbios_set_defaults("QEMU", mc->desc,
+                             mc->name, pcmc->smbios_legacy_mode,
+                             pcmc->smbios_uuid_encoded,
+                             pcms->smbios_entry_point_type);
 diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index f02919d92c..a76c2d4501 100644
+index a76c2d4501..89e69737d6 100644
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -218,7 +218,7 @@ static void pc_q35_init(MachineState *machine)
-     pc_memory_init(pcms, get_system_memory(), rom_memory, &ram_memory,
-                    pci_hole64_size);
+@@ -199,7 +199,7 @@ static void pc_q35_init(MachineState *machine)
  
--    object_property_add_child(qdev_get_machine(), "q35", OBJECT(q35_host));
-+    object_property_add_child(OBJECT(machine), "q35", OBJECT(q35_host));
-     object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_RAM_MEM,
-                              OBJECT(ram_memory), NULL);
-     object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_PCI_MEM,
+     if (pcmc->smbios_defaults) {
+         /* These values are guest ABI, do not change */
+-        smbios_set_defaults("QEMU", "Standard PC (Q35 + ICH9, 2009)",
++        smbios_set_defaults("QEMU", mc->desc,
+                             mc->name, pcmc->smbios_legacy_mode,
+                             pcmc->smbios_uuid_encoded,
+                             pcms->smbios_entry_point_type);
 -- 
 MST
 
