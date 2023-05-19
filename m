@@ -2,52 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A61E709173
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE1470919B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:26:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzvD0-00028s-Nw; Fri, 19 May 2023 04:11:32 -0400
+	id 1pzvQB-0004di-1J; Fri, 19 May 2023 04:25:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1pzvCq-00028j-KH
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:11:21 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzvQ8-0004dI-KI
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:25:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1pzvCl-0001FB-PO
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:11:19 -0400
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QMzyP2V91z67nFJ;
- Fri, 19 May 2023 16:09:17 +0800 (CST)
-Received: from DESKTOP-0LHM7NF.huawei.com (10.199.58.101) by
- lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Fri, 19 May 2023 09:11:04 +0100
-To: <qemu-devel@nongnu.org>
-CC: <eduardo@habkost.net>, <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, 
- <wangyanan55@huawei.com>, <eblake@redhat.com>, <armbru@redhat.com>, Andrei
- Gudkov <gudkov.andrei@huawei.com>
-Subject: [PATCH] [query-memory-size-summary] Report page size
-Date: Fri, 19 May 2023 11:10:30 +0300
-Message-ID: <3200757e8218f65f873e79ab84a4b8382fbfa099.1684483058.git.gudkov.andrei@huawei.com>
-X-Mailer: git-send-email 2.30.2
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzvQ4-0003I5-Ay
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:25:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684484698;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=qlgzse35/U7pJowc/LVIUcU4eodAmYKoY3TprbNdG0Y=;
+ b=bgWUbbNRE/Fgu+/6NyiDsJs29/qJhf6KRZxYUVwele2KIInHImcfV+bVJb1/tevs9qev1d
+ 8MsvtyhZoMzLEyj1jBalmZbyVqp+pwbOKEJtZs5SvCgnGdSOIkjhN4OMCBVxtX1i0SzsbI
+ WFFUHsdvMTlFjUaNYMhu6s68Rn2gUbY=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-590-2u2cxhn2P9qcTdSRi236ng-1; Fri, 19 May 2023 04:24:55 -0400
+X-MC-Unique: 2u2cxhn2P9qcTdSRi236ng-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-50bffc723c5so3018343a12.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 01:24:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684484694; x=1687076694;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qlgzse35/U7pJowc/LVIUcU4eodAmYKoY3TprbNdG0Y=;
+ b=SYxuF9ULie4q5tX7fsABtwLBV+vv3loVLoEZDEs+2Sj9zmuaZB87Yx9jwq84E5/cQ3
+ WoVT2+YCIQeqhmd3nwteKd+GC4ImXa1pSnBNOxf32kB1sE2dYQ7+w9YgE5DWfjzo5LTv
+ XiIgtF8UsSFbxL3EBM+KhNlc1PQMlGz/ygEp3U2dB5cfhtDVtag/BXGOFkGOoP6a27ND
+ Jnv5dv+wZahiFtVeiMsqAgcKORq56w6CEFNy1hzMcDMbT+uAaLsXBF51Es9DI/icSJpr
+ 2oi7ZSWY3a2a44mo8EKu5OK2yZ6EMR57yaiFRTIigpPxuNqLjpIuozH6HYIiVYZ0MG9K
+ 6Maw==
+X-Gm-Message-State: AC+VfDwSPRxQaUx/4787oQAcCxEjB0oOdorAonO4hl+RsQRLRKNLuL4E
+ eZelCWsztl7R8kUoRCWy57NsMnmzMiDeXclDKZAoBkFtd58C1m7DSOjCrqgCUVGCTMOqo/ZEFEl
+ WEvDcgvVX364zWY8VaifdfNT9w6qLbp4RhfXa8MekS8wwZ0INWu05IDRuUCiFTk53bkZ898h/3B
+ g=
+X-Received: by 2002:a05:6402:39a:b0:502:23a2:6739 with SMTP id
+ o26-20020a056402039a00b0050223a26739mr953591edv.28.1684484694210; 
+ Fri, 19 May 2023 01:24:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ52ztK/d/w1CkT3Iow1WjmihlF6+ywAI0yagGvsoW2MMQevmIn2EwHPrx+2PLnGa4995TOC0g==
+X-Received: by 2002:a05:6402:39a:b0:502:23a2:6739 with SMTP id
+ o26-20020a056402039a00b0050223a26739mr953578edv.28.1684484693810; 
+ Fri, 19 May 2023 01:24:53 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ by smtp.gmail.com with ESMTPSA id
+ x23-20020aa7dad7000000b005067d089aafsm1399283eds.11.2023.05.19.01.24.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 May 2023 01:24:53 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: jsnow@redhat.com,
+	hao.xiang@bytedance.com
+Subject: [PATCH] mkvenv: replace distlib.database with
+ importlib.metadata/pkg_resources
+Date: Fri, 19 May 2023 10:24:52 +0200
+Message-Id: <20230519082452.1101992-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.58.101]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- lhrpeml500004.china.huawei.com (7.191.163.9)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ LONGWORDS=2.035, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,74 +97,228 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Andrei Gudkov <gudkov.andrei@huawei.com>
-From:  Andrei Gudkov via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some commands (query-migrate and calc-dirty-rate) report values
-in units of pages. However, currently the only place where we can
-get page size is through query-migrate and only after migration
-has started. query-memory-size-summary seems like an appropritate
-place where it should be reported instead.
+importlib.metadata is just as good as distlib.database and a bit more
+battle-proven for "egg" based distributions, and in fact that is exactly
+why mkvenv.py is not using distlib.database to find entry points: it
+simply does not work for eggs.
 
-Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
+The only disadvantage of importlib.metadata is that it is not available
+by default before Python 3.8, so we need a fallback to pkg_resources
+(again, just like for the case of finding entry points).  Do so to
+fix issues where incorrect egg metadata results in a JSONDecodeError.
+
+While at it, reuse the new _get_version function to diagnose an incorrect
+version of the package even if importlib.metadata is not available.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qapi/machine.json          | 8 ++++++--
- hw/core/machine-qmp-cmds.c | 3 +++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ python/scripts/mkvenv.py | 113 ++++++++++++++++++++++-----------------
+ python/setup.cfg         |   6 ---
+ 2 files changed, 65 insertions(+), 54 deletions(-)
 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 37660d8f2a..10b2d686da 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1125,10 +1125,13 @@
- #     field is omitted if target doesn't support memory hotplug (i.e.
- #     CONFIG_MEM_DEVICE not defined at build time).
- #
-+# @page-size: the number of bytes per target page (since 8.1)
-+#
- # Since: 2.11
- ##
- { 'struct': 'MemoryInfo',
--  'data'  : { 'base-memory': 'size', '*plugged-memory': 'size' } }
-+  'data'  : { 'base-memory': 'size', '*plugged-memory': 'size',
-+              'page-size': 'size' } }
+diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
+index 8c036c019aaf..6c78a2c1120e 100644
+--- a/python/scripts/mkvenv.py
++++ b/python/scripts/mkvenv.py
+@@ -76,7 +76,6 @@
+     Union,
+ )
+ import venv
+-import warnings
  
- ##
- # @query-memory-size-summary:
-@@ -1139,7 +1142,8 @@
- # Example:
- #
- # -> { "execute": "query-memory-size-summary" }
--# <- { "return": { "base-memory": 4294967296, "plugged-memory": 0 } }
-+# <- { "return": { "page-size": 4096, "base-memory": 34359738368,
-+#      "plugged-memory": 0 } }
- #
- # Since: 2.11
- ##
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 3860a50c3b..b768ff372f 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -27,6 +27,7 @@
- #include "sysemu/numa.h"
- #include "sysemu/runstate.h"
- #include "sysemu/sysemu.h"
-+#include "exec/target_page.h"
  
- /*
-  * fast means: we NEVER interrupt vCPU threads to retrieve
-@@ -289,6 +290,8 @@ MemoryInfo *qmp_query_memory_size_summary(Error **errp)
-     mem_info->has_plugged_memory =
-         mem_info->plugged_memory != (uint64_t)-1;
+ # Try to load distlib, with a fallback to pip's vendored version.
+@@ -84,7 +83,6 @@
+ # outside the venv or before a potential call to ensurepip in checkpip().
+ HAVE_DISTLIB = True
+ try:
+-    import distlib.database
+     import distlib.scripts
+     import distlib.version
+ except ImportError:
+@@ -92,7 +90,6 @@
+         # Reach into pip's cookie jar.  pylint and flake8 don't understand
+         # that these imports will be used via distlib.xxx.
+         from pip._vendor import distlib
+-        import pip._vendor.distlib.database  # noqa, pylint: disable=unused-import
+         import pip._vendor.distlib.scripts  # noqa, pylint: disable=unused-import
+         import pip._vendor.distlib.version  # noqa, pylint: disable=unused-import
+     except ImportError:
+@@ -556,6 +553,57 @@ def pkgname_from_depspec(dep_spec: str) -> str:
+     return match.group(0)
  
-+    mem_info->page_size = qemu_target_page_size();
+ 
++def _get_version_importlib(package: str) -> Optional[str]:
++    # pylint: disable=import-outside-toplevel
++    # pylint: disable=no-name-in-module
++    # pylint: disable=import-error
++    try:
++        # First preference: Python 3.8+ stdlib
++        from importlib.metadata import (  # type: ignore
++            PackageNotFoundError,
++            distribution,
++        )
++    except ImportError as exc:
++        logger.debug("%s", str(exc))
++        # Second preference: Commonly available PyPI backport
++        from importlib_metadata import (  # type: ignore
++            PackageNotFoundError,
++            distribution,
++        )
 +
-     return mem_info;
- }
++    try:
++        return str(distribution(package).version)
++    except PackageNotFoundError:
++        return None
++
++
++def _get_version_pkg_resources(package: str) -> Optional[str]:
++    # pylint: disable=import-outside-toplevel
++    # Bundled with setuptools; has a good chance of being available.
++    import pkg_resources
++
++    try:
++        return str(pkg_resources.get_distribution(package).version)
++    except pkg_resources.DistributionNotFound:
++        return None
++
++
++def _get_version(package: str) -> Optional[str]:
++    try:
++        return _get_version_importlib(package)
++    except ImportError as exc:
++        logger.debug("%s", str(exc))
++
++    try:
++        return _get_version_pkg_resources(package)
++    except ImportError as exc:
++        logger.debug("%s", str(exc))
++        raise Ouch(
++            "Neither importlib.metadata nor pkg_resources found. "
++            "Use Python 3.8+, or install importlib-metadata or setuptools."
++        ) from exc
++
++
+ def diagnose(
+     dep_spec: str,
+     online: bool,
+@@ -581,26 +629,7 @@ def diagnose(
+     bad = False
+ 
+     pkg_name = pkgname_from_depspec(dep_spec)
+-    pkg_version = None
+-
+-    has_importlib = False
+-    try:
+-        # Python 3.8+ stdlib
+-        # pylint: disable=import-outside-toplevel
+-        # pylint: disable=no-name-in-module
+-        # pylint: disable=import-error
+-        from importlib.metadata import (  # type: ignore
+-            PackageNotFoundError,
+-            version,
+-        )
+-
+-        has_importlib = True
+-        try:
+-            pkg_version = version(pkg_name)
+-        except PackageNotFoundError:
+-            pass
+-    except ModuleNotFoundError:
+-        pass
++    pkg_version = _get_version(pkg_name)
+ 
+     lines = []
+ 
+@@ -609,14 +638,9 @@ def diagnose(
+             f"Python package '{pkg_name}' version '{pkg_version}' was found,"
+             " but isn't suitable."
+         )
+-    elif has_importlib:
+-        lines.append(
+-            f"Python package '{pkg_name}' was not found nor installed."
+-        )
+     else:
+         lines.append(
+-            f"Python package '{pkg_name}' is either not found or"
+-            " not a suitable version."
++            f"Python package '{pkg_name}' was not found nor installed."
+         )
+ 
+     if wheels_dir:
+@@ -711,21 +735,18 @@ def _do_ensure(
+     :param online: If True, fall back to PyPI.
+     :param wheels_dir: If specified, search this path for packages.
+     """
+-    with warnings.catch_warnings():
+-        warnings.filterwarnings(
+-            "ignore", category=UserWarning, module="distlib"
+-        )
+-        dist_path = distlib.database.DistributionPath(include_egg=True)
+-        absent = []
+-        present = []
+-        for spec in dep_specs:
+-            matcher = distlib.version.LegacyMatcher(spec)
+-            dist = dist_path.get_distribution(matcher.name)
+-            if dist is None or not matcher.match(dist.version):
+-                absent.append(spec)
+-            else:
+-                logger.info("found %s", dist)
+-                present.append(matcher.name)
++    absent = []
++    present = []
++    for spec in dep_specs:
++        matcher = distlib.version.LegacyMatcher(spec)
++        ver = _get_version(matcher.name)
++        if ver is None or not matcher.match(
++            distlib.version.LegacyVersion(ver)
++        ):
++            absent.append(spec)
++        else:
++            logger.info("found %s %s", matcher.name, ver)
++            present.append(matcher.name)
+ 
+     if present:
+         generate_console_scripts(present)
+@@ -843,10 +864,6 @@ def main() -> int:
+         if os.environ.get("V"):
+             logging.basicConfig(level=logging.INFO)
+ 
+-        # These are incredibly noisy even for V=1
+-        logging.getLogger("distlib.metadata").addFilter(lambda record: False)
+-        logging.getLogger("distlib.database").addFilter(lambda record: False)
+-
+     parser = argparse.ArgumentParser(
+         prog="mkvenv",
+         description="QEMU pyvenv bootstrapping utility",
+diff --git a/python/setup.cfg b/python/setup.cfg
+index 5abb7d30ad42..42f0b0be07d1 100644
+--- a/python/setup.cfg
++++ b/python/setup.cfg
+@@ -115,9 +115,6 @@ ignore_missing_imports = True
+ [mypy-distlib]
+ ignore_missing_imports = True
+ 
+-[mypy-distlib.database]
+-ignore_missing_imports = True
+-
+ [mypy-distlib.scripts]
+ ignore_missing_imports = True
+ 
+@@ -127,9 +124,6 @@ ignore_missing_imports = True
+ [mypy-pip._vendor.distlib]
+ ignore_missing_imports = True
+ 
+-[mypy-pip._vendor.distlib.database]
+-ignore_missing_imports = True
+-
+ [mypy-pip._vendor.distlib.scripts]
+ ignore_missing_imports = True
  
 -- 
-2.30.2
+2.40.1
 
 
