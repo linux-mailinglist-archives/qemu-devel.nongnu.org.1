@@ -2,63 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B14709DBA
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 19:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A89D709E2E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 19:32:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q03kB-00043I-SI; Fri, 19 May 2023 13:18:19 -0400
+	id 1q03wr-0007oX-FA; Fri, 19 May 2023 13:31:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q03k9-00042r-Oj
- for qemu-devel@nongnu.org; Fri, 19 May 2023 13:18:17 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q03wp-0007o3-IB
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 13:31:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q03k7-00082e-VA
- for qemu-devel@nongnu.org; Fri, 19 May 2023 13:18:17 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q03wn-00020r-Vd
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 13:31:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684516695;
+ s=mimecast20190719; t=1684517480;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=yc1st7BJd535z/hR6QSVbTStUbA6VASHADpLYvNNe/k=;
- b=ezAB6sPTroqz7z6h98H3xrpTpGtHKtBqlYTSqJYze8ITGRRYd8wIJ6skXlQ3wF/9BpturR
- CCfOWZTgUGz9cKN/ioFajfQpY//n30jRS00DL7IBlbF6UdjdaZ380WZoOEtc6S+nhoy++E
- JKWjb9856Dgrn6yP/aN1UGI4zeGGXt8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-493-v57tarKHNrOGzrsvCbMxnA-1; Fri, 19 May 2023 13:18:11 -0400
-X-MC-Unique: v57tarKHNrOGzrsvCbMxnA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4E500185A793;
- Fri, 19 May 2023 17:18:11 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.39.193.158])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 93B5B1121314;
- Fri, 19 May 2023 17:18:10 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	richard.henderson@linaro.org,
-	qemu-devel@nongnu.org
-Subject: [PULL v3 00/21] Block layer patches
-Date: Fri, 19 May 2023 19:18:06 +0200
-Message-Id: <20230519171806.435109-1-kwolf@redhat.com>
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YKSuEyJ0VRWZT/lZ93O7WkEtQ6h4HcAoDvPFosuXNTg=;
+ b=MlvMLy5pKgcu5pmUpRvEdcfLlvJH0X8GkyhbAP0bPev4ZcaSsxTZzORCIvB0zD2tLuj34y
+ zXf0M80CnB95tUhS/sYdiD3sGUUji0kMW9LoIuGb14Ukxgr1jjQ6b1Z+znTh/oJ/p5xAON
+ y5pwTp0KTacB/PgMTVVxK4dGnxjX85k=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-15-g54nNyo2PDGnz2qBsbwzgw-1; Fri, 19 May 2023 13:31:19 -0400
+X-MC-Unique: g54nNyo2PDGnz2qBsbwzgw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-965cd056598so475336966b.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 10:31:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684517477; x=1687109477;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YKSuEyJ0VRWZT/lZ93O7WkEtQ6h4HcAoDvPFosuXNTg=;
+ b=k11S/qPvg4Qni/ake7d6h25IN3DWJg/PiU7zByTowi7j4mthkYrvmH27B5FGBXFcCI
+ FwdzB0k8FW9+WxtY4EPUr0KrVlkgJK7KtfhogOlfjdlfw7/ih+19Ugri6BT9rWLJGeOi
+ bfGa+fMtWQEgGNGcI2ExFCF/VPJvAKJUbDvHPP/Adjf9goI+Y7RmgKe8KYoJ6llgrZ3Y
+ Z5sxCDv8Rj/wf8zyq84Ez/B8gQX8tgp26EF8vzAIQ8Rc2q7Uudenk+dZJ1onggGqQ4ez
+ FD+M727wyN6v2Oeuv/bK4r1zWp2UNXRzvkfnPv4CpvemYJ08w1IA8e/l55RxDriS5vHN
+ P99g==
+X-Gm-Message-State: AC+VfDzw/V0nHEPdpoO7Gm3myFMyAgCudBeQhu7JyX84vFgiFXfrJadH
+ sfafB7Q4A/83qrSF+ZpaCUZvCTrUmHDW45Y6Fk+BObzHqMTx+oxDQjojPS0832Fu5T7JM/auUlp
+ eu65yErZsaxgc4oIxai4O7sw=
+X-Received: by 2002:a17:906:c359:b0:96a:f688:db80 with SMTP id
+ ci25-20020a170906c35900b0096af688db80mr2219759ejb.67.1684517477695; 
+ Fri, 19 May 2023 10:31:17 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7fUH2Ty6EYxX4Km/78sMEh0IV33I8rVfAtE7rlkTuSUbfieI+3e+ga36xMZYCPLKckLQlKfg==
+X-Received: by 2002:a17:906:c359:b0:96a:f688:db80 with SMTP id
+ ci25-20020a170906c35900b0096af688db80mr2219743ejb.67.1684517477339; 
+ Fri, 19 May 2023 10:31:17 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
+ ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.googlemail.com with ESMTPSA id
+ e14-20020a056402148e00b0050bc7c882bfsm1846673edv.65.2023.05.19.10.31.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 10:31:16 -0700 (PDT)
+Message-ID: <379845d1-7a4e-a0eb-345c-451b17e77638@redhat.com>
+Date: Fri, 19 May 2023 19:31:16 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PULL v3 00/68] i386, build system, KVM changes for 2023-05-18
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+References: <20230518114025.1006732-1-pbonzini@redhat.com>
+ <CAFEAcA-ZtAHC2frNzVymYf9pufyi6Y1wHeLnKLrne7NaTeqNfw@mail.gmail.com>
+ <CABgObfbk=8Uq3gN1dThxq3jJOAEk_cGu0Y4bvRtvdR9xZ2xtxw@mail.gmail.com>
+ <CAFEAcA_4_JD46CxkT2dcXSLHKNsa7kKYPYJkqEzZERDTK_wx-A@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <CAFEAcA_4_JD46CxkT2dcXSLHKNsa7kKYPYJkqEzZERDTK_wx-A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,95 +105,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit d009607d08d22f91ca399b72828c6693855e7325:
+On 5/19/23 19:01, Peter Maydell wrote:
+>> Can you send your config-host.mak after a failed rebuild? I think
+>> what's happening is that the path to meson has changed but Makefile
+>> still tries the old one (which could be the system meson in
+>> /usr/bin).
+> 
+> Attached; it has 
+> MESON=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/pyvenv/bin/meson
+>
+>  That meson says: $
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/pyvenv/bin/meson --version> 
+> 1.1.0 is neither the system meson (which is 0.61.2) nor the version
+> the build system wants (0.63.0) nor the version that it complains
+> that it's found (0.61.5), so I'm not sure what's going on there...
 
-  Revert "arm/kvm: add support for MTE" (2023-05-19 08:01:15 -0700)
+1.1.0 must be something you have cached somewhere, but 0.61.5 comes from
+the old submodule.  You should be able to find it with
 
-are available in the Git repository at:
+grep -wA2 'rule REGENERATE_BUILD' ../build.ninja
 
-  https://repo.or.cz/qemu/kevin.git tags/for-upstream
+You should be able to unhose the directory with
 
-for you to fetch changes up to 95fdd8db61848d31fde1d9b32da7f3f76babfa25:
+pyvenv/bin/meson setup --reconfigure ../..
 
-  iotests: Test commit with iothreads and ongoing I/O (2023-05-19 19:16:53 +0200)
+(where ../.. should be the path to the sources) or even with the patch:
 
-----------------------------------------------------------------
-Block layer patches
+diff --git a/Makefile b/Makefile
+index 3c7d67142f13..08fb6a3b058a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -115,15 +115,15 @@ Makefile.ninja: build.ninja
+  	  $(NINJA) -t query build.ninja | sed -n '1,/^  input:/d; /^  outputs:/q; s/$$/ \\/p'; \
+  	} > $@.tmp && mv $@.tmp $@
+  -include Makefile.ninja
++endif
+  
++ifneq ($(MESON),)
+  # A separate rule is needed for Makefile dependencies to avoid -n
+  build.ninja: build.ninja.stamp
+  $(build-files):
+  build.ninja.stamp: meson.stamp $(build-files)
+-	$(NINJA) $(if $V,-v,) build.ninja && touch $@
+-endif
++	$(MESON) setup --reconfigure $(SRC_PATH) && touch $@
+  
+-ifneq ($(MESON),)
+  Makefile.mtest: build.ninja scripts/mtest2make.py
+  	$(MESON) introspect --targets --tests --benchmarks | $(PYTHON) scripts/mtest2make.py > $@
+  -include Makefile.mtest
 
-- qcow2 spec: Rename "zlib" compression to "deflate"
-- Honour graph read lock even in the main thread + prerequisite fixes
-- aio-posix: do not nest poll handlers (fixes infinite recursion)
-- Refactor QMP blockdev transactions
-- graph-lock: Disable locking for now
-- iotests/245: Check if 'compress' driver is available
-
-----------------------------------------------------------------
-Akihiro Suda (1):
-      docs/interop/qcow2.txt: fix description about "zlib" clusters
-
-Kevin Wolf (12):
-      block: Call .bdrv_co_create(_opts) unlocked
-      block/export: Fix null pointer dereference in error path
-      qcow2: Unlock the graph in qcow2_do_open() where necessary
-      qemu-img: Take graph lock more selectively
-      test-bdrv-drain: Take graph lock more selectively
-      test-bdrv-drain: Call bdrv_co_unref() in coroutine context
-      blockjob: Adhere to rate limit even when reentered early
-      graph-lock: Honour read locks even in the main thread
-      iotests/245: Check if 'compress' driver is available
-      graph-lock: Disable locking for now
-      nbd/server: Fix drained_poll to wake coroutine in right AioContext
-      iotests: Test commit with iothreads and ongoing I/O
-
-Stefan Hajnoczi (2):
-      aio-posix: do not nest poll handlers
-      tested: add test for nested aio_poll() in poll handlers
-
-Vladimir Sementsov-Ogievskiy (6):
-      blockdev: refactor transaction to use Transaction API
-      blockdev: transactions: rename some things
-      blockdev: qmp_transaction: refactor loop to classic for
-      blockdev: transaction: refactor handling transaction properties
-      blockdev: use state.bitmap in block-dirty-bitmap-add action
-      blockdev: qmp_transaction: drop extra generic layer
-
- docs/interop/qcow2.txt                             |  10 +-
- include/block/block-global-state.h                 |   8 +-
- include/block/block_int-common.h                   |   4 +-
- include/block/blockjob_int.h                       |  14 +-
- include/io/channel.h                               |  10 +
- block.c                                            |   1 -
- block/commit.c                                     |   7 +-
- block/create.c                                     |   1 -
- block/crypto.c                                     |  25 +-
- block/export/export.c                              |   6 +-
- block/graph-lock.c                                 |  34 +-
- block/mirror.c                                     |  23 +-
- block/parallels.c                                  |   6 +-
- block/qcow.c                                       |   6 +-
- block/qcow2.c                                      |  43 +-
- block/qed.c                                        |   6 +-
- block/raw-format.c                                 |   2 +-
- block/stream.c                                     |   7 +-
- block/vdi.c                                        |  11 +-
- block/vhdx.c                                       |   8 +-
- block/vmdk.c                                       |  27 +-
- block/vpc.c                                        |   6 +-
- blockdev.c                                         | 606 +++++++++------------
- blockjob.c                                         |  22 +-
- io/channel.c                                       |  33 +-
- nbd/server.c                                       |   3 +-
- qemu-img.c                                         |   5 +-
- tests/unit/test-bdrv-drain.c                       |   6 +-
- tests/unit/test-nested-aio-poll.c                  | 130 +++++
- util/aio-posix.c                                   |  11 +
- tests/qemu-iotests/iotests.py                      |   4 +
- tests/qemu-iotests/245                             |   7 +-
- tests/qemu-iotests/245.out                         |   9 +-
- tests/qemu-iotests/tests/graph-changes-while-io    |  56 +-
- .../qemu-iotests/tests/graph-changes-while-io.out  |   4 +-
- tests/unit/meson.build                             |   5 +-
- 36 files changed, 664 insertions(+), 502 deletions(-)
- create mode 100644 tests/unit/test-nested-aio-poll.c
+Paolo
 
 
