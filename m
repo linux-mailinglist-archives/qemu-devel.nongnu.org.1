@@ -2,73 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A89709A13
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD41F709A2E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:42:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01GO-0002pv-IR; Fri, 19 May 2023 10:39:24 -0400
+	id 1q01JH-0004Bl-1P; Fri, 19 May 2023 10:42:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q01GM-0002pX-Tm
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:39:22 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q01GL-0001Rx-3Q
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:39:22 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-510d8b0169fso4362872a12.1
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:39:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684507159; x=1687099159;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5G5kgmLYsr4XlNQgbqAHqq0gaVURQy1bCWUDn7j6kXw=;
- b=EfThjahuduC3OEn8bGQ63qpo9o3dgdHX0ssME0Fd8eSHKu1IXOytmdUq2WXi61IkeC
- fYgN3gMaUyU1+rIs3NGZRy6nHzlDRbRiNCkZf+kplXkMid314hRtOitWmvxvHU4igMEz
- 9ZtU5ZMDghm+ljpf7JjOKgDuMvLW47mME1raic6dQCYQEH18/d0kVVkb2M3vaBEhhicR
- BKqmdSAVOJ29BMWu30gOBrXkR7wYdRqT0G01SaNE0mnmAkHzJeErSu4wj+x5psYbVJsM
- IAP2p56R0vmI/iwHqolaTAQytTGze/W3x8+XVH7Iz4tBOI6q9pwPckw8xzuy03GsSob0
- lHWA==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01JE-0004BL-Qg
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:42:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01JD-00022x-71
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:42:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684507337;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=M/QTO1WYaffsfyPtUIUiwHUnhi82SBkep340tA+v9ok=;
+ b=GuCvDsYOkRAchEpiRCgAan0gqbHNInl2yxK5IryzUzLYsebgPP/YR4U2rHHaeFkvnjRQ6b
+ bkSwU5rsXHDN7oCKccLSSRnCjaVzm4ZHHo1+ym2TPhroBjJTjpFDMhSrWQunHwWCJpg9IJ
+ +LwFM6RNFh3a+1eiQaQioxVsgFauM3I=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-517-SjMupShhM4m162-B0VcP9Q-1; Fri, 19 May 2023 10:42:14 -0400
+X-MC-Unique: SjMupShhM4m162-B0VcP9Q-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-96f6944c529so85780466b.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:42:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507159; x=1687099159;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5G5kgmLYsr4XlNQgbqAHqq0gaVURQy1bCWUDn7j6kXw=;
- b=bKD63PbxH/YCS+4UcIhgNIxLh+JGXbHhiCz8T99o7q0gK40gqnM8PJ9kmoQ2o14jvw
- f9MEPnwV/EUXRFpRd370lqkLaiGysM0Y1lFDaAlTX9dqPs8arHv40hlW24fYNJNSM+c+
- kLPgUW2Dr59lDmUYKIxIG99i8/IdZTDI4LjPD+TGFUsLObfvoaB1a1YGfNqe5bQrcCXU
- pf2/Y5o461PJjXj5ttC5aDLLpuWLD0iqgYTCPIhcABtLjvA4h7o71/u3rGuVr5MGKm3A
- 9CG05k6j0Obf47Or/DCXsZkNQRbZ2EbLsIxUN4igH1UE2m+ToGm1FgPnymtS90zsoNR1
- SNsg==
-X-Gm-Message-State: AC+VfDwF3KvttUMeQFLLE/WqymFdLf42osg0j3TDCTjNdsUzf1b9PCFC
- OdO0ASWRxsrP6gk83Wd0pJrlfffRqAG0OI3UJDwbE10OA3e7CNMp
-X-Google-Smtp-Source: ACHHUZ7JhB+YoiCX6K9jpr2lnHl0Sirp0+hXEHFFWgWHPVeFkZ2l9OKtzurWM4wQhzNYameWogIDCjL38uWsaQ11XEI=
-X-Received: by 2002:aa7:d1c7:0:b0:50d:9e7c:264d with SMTP id
- g7-20020aa7d1c7000000b0050d9e7c264dmr1757554edp.8.1684507159068; Fri, 19 May
- 2023 07:39:19 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684507333; x=1687099333;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=M/QTO1WYaffsfyPtUIUiwHUnhi82SBkep340tA+v9ok=;
+ b=dY3B6IXltIxuctX611vus/cl5WvnVCV1dRydwPTKMpK3pdzjxD/PRM9M6WFcV1xtkR
+ Pct07YaAX0oIptGQval5sHO3V4hE7uCpo3dUW8XJJbg8molGFnQpF/rqyCSijKkzS7b2
+ eOZ3jA5X+33GUewDP8OHZQf/28mW2jAUpWxBjkrt0wBDXGyz5Lk9exRVUAwKEvePdu2i
+ heLZfRc8KJbSBy8Ecp6H+tFAYGr+xDqJ04d8jy8xtrqHFfSWl+iTT66Vmj1IyWOzbMDJ
+ kwRN1DDYAnUEiOfsXp75vmo9hSgWYI0wW09k6NXF90SHCLJXgXC50p9orScu7vghQMm+
+ KoJg==
+X-Gm-Message-State: AC+VfDxYQ1H/AkhZCzTww7meRVI1W5BAG2kLlv+lh1zUVx1kiNKBpIts
+ b/9NkbJ496d8Xlz8OtF+7O82f2X9kalO+y9EfSy0anxodFPMuSjBTrpg5jNblHjVeuCPMJHrRyU
+ CjOHGI5K7mDq0r+A=
+X-Received: by 2002:a17:907:1c8b:b0:958:489f:d050 with SMTP id
+ nb11-20020a1709071c8b00b00958489fd050mr2372904ejc.43.1684507333497; 
+ Fri, 19 May 2023 07:42:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7zaOFcoK9tTo5N6B+LyEUvD2Khomo8ffUhfL/rQvZ2MCRuNjWqMH0vTiHJrKTawXaz1nFkSA==
+X-Received: by 2002:a17:907:1c8b:b0:958:489f:d050 with SMTP id
+ nb11-20020a1709071c8b00b00958489fd050mr2372888ejc.43.1684507333238; 
+ Fri, 19 May 2023 07:42:13 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
+ (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
+ [2003:cf:d723:b0c7:284b:5990:6336:f84f])
+ by smtp.gmail.com with ESMTPSA id
+ my48-20020a1709065a7000b009664e25c425sm2375400ejc.95.2023.05.19.07.42.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 07:42:12 -0700 (PDT)
+Message-ID: <af74699e-9ce2-b9f9-2fef-e0b862e32833@redhat.com>
+Date: Fri, 19 May 2023 16:42:11 +0200
 MIME-Version: 1.0
-References: <20230518114025.1006732-1-pbonzini@redhat.com>
-In-Reply-To: <20230518114025.1006732-1-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 19 May 2023 15:39:08 +0100
-Message-ID: <CAFEAcA-ZtAHC2frNzVymYf9pufyi6Y1wHeLnKLrne7NaTeqNfw@mail.gmail.com>
-Subject: Re: [PULL v3 00/68] i386, build system, KVM changes for 2023-05-18
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 05/19] cutils: Fix wraparound parsing in qemu_strtoui
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: armbru@redhat.com, richard.henderson@linaro.org
+References: <20230512021033.1378730-1-eblake@redhat.com>
+ <20230512021033.1378730-6-eblake@redhat.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230512021033.1378730-6-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,115 +102,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 May 2023 at 12:41, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> ----------------------------------------------------------------
-> * kvm: enable dirty ring for arm64
-> * target/i386: new features
-> * target/i386: AVX fixes
-> * configure: create a python venv unconditionally
-> * meson: bump to 0.63.0 and move tests from configure
-> * meson: Pass -j option to sphinx
-> * drop support for Python 3.6
-> * fix check-python-tox
-> * fix "make clean" in the source directory
+On 12.05.23 04:10, Eric Blake wrote:
+> While we were matching 32-bit strtol in qemu_strtoi, our use of a
+> 64-bit parse was leaking through for some inaccurate answers in
+> qemu_strtoui in comparison to a 32-bit strtoul.  Fix those, and update
+> the testsuite now that our bounds checks are correct.
+>
+> Our int wrappers would be a lot easier to write if libc had a
+> guaranteed 32-bit parser even on platforms with 64-bit long.
+>
+> Fixes: 473a2a331e ("cutils: add qemu_strtoi & qemu_strtoui parsers for int/unsigned int types", v2.12.0)
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>   tests/unit/test-cutils.c | 11 +++++------
+>   util/cutils.c            | 14 ++++++++++----
+>   2 files changed, 15 insertions(+), 10 deletions(-)
 
-Hi; this seems to have broken builds from not-clean on my system.
-Blowing away the build tree and recreating it from scratch
-works, as does manually re-running configure,
-but the Makefile ought to re-run parts of configure
-etc when it needs to.
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
-It does seem to try to, but (unlike a manual configure re-run)
-it doesn't prevent the failure.
+> diff --git a/util/cutils.c b/util/cutils.c
+> index 5887e744140..997ddcd09e5 100644
+> --- a/util/cutils.c
+> +++ b/util/cutils.c
+> @@ -466,10 +466,16 @@ int qemu_strtoui(const char *nptr, const char **endptr, int base,
+>       if (errno == ERANGE) {
+>           *result = -1;
+>       } else {
+> -        if (lresult > UINT_MAX) {
+> -            *result = UINT_MAX;
+> -            errno = ERANGE;
+> -        } else if (lresult < INT_MIN) {
+> +        /*
+> +         * Note that platforms with 32-bit strtoul accept input in the
+> +         * range [-4294967295, 4294967295]; but we used 64-bit
+> +         * strtoull which wraps -18446744073709551615 to 1.  Reject
+> +         * positive values that contain '-', and wrap all valid
+> +         * negative values.
+> +         */
+> +        if (lresult > UINT_MAX ||
+> +            lresult < -(long long)UINT_MAX ||
+> +            (lresult > 0 && memchr(nptr, '-', ep - nptr))) {
+>               *result = UINT_MAX;
+>               errno = ERANGE;
+>           } else {
 
-You can see that it says it needs to run configure, and mkvenv
-claims to be installing meson 0.6.3, but then the actual build
-says it didn't work. (A second run of 'make' at this point doesn't
-do the rerun of configure but meson fails in the same way.)
+Just a question whether I guessed correctly, because there’s no comment 
+on the matter: We store the (supposedly unsigned) result of strtoull() 
+in a signed long long because e.g. -1 is mapped to ULLONG_MAX, so the 
+valid unsigned ranges would be [0, UINT_MAX] \cup [ULLONG_MAX - UINT_MAX 
++ 1, ULLONG_MAX], which is more cumbersome to check than the [-UINT_MAX, 
+UINT_MAX] range?  (And we’d need to exclude strings with - in them if 
+ullresult > UINT_MAX rather than > 0, probably)
 
-Other weird things:
-(1) the error message is printed three times
-(2) "warn: ignoring non-existent submodule meson"
+Hanna
 
-$ make -C build/x86-tgts
-make: Entering directory
-'/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts'
-config-host.mak is out-of-date, running configure
-python determined to be '/usr/bin/python3'
-python version: Python 3.10.6
-mkvenv: Creating non-isolated virtual environment at 'pyvenv'
-mkvenv: checking for meson>=0.63.0
-mkvenv: installing meson>=0.63.0
-mkvenv: checking for sphinx>=1.6.0, sphinx-rtd-theme>=0.5.0
-/usr/bin/ninja  build.ninja && touch build.ninja.stamp
-[0/1] Regenerating build files.
-The Meson build system
-Version: 0.61.5
-Source dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-Build dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts
-Build type: native build
-
-../../meson.build:1:0: ERROR: Meson version is 0.61.5 but project
-requires >=0.63.0
-
-A full log can be found at
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/meson-logs/meson-log.txt
-FAILED: build.ninja
-/usr/bin/python3
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/meson/meson.py --internal
-regenerate /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts --backend
-ninja
-ninja: error: rebuilding 'build.ninja': subcommand failed
-  GIT     ui/keycodemapdb meson tests/fp/berkeley-testfloat-3
-tests/fp/berkeley-softfloat-3 dtc
-warn: ignoring non-existent submodule meson
-/usr/bin/ninja  build.ninja && touch build.ninja.stamp
-[0/1] Regenerating build files.
-The Meson build system
-Version: 0.61.5
-Source dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-Build dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts
-Build type: native build
-
-../../meson.build:1:0: ERROR: Meson version is 0.61.5 but project
-requires >=0.63.0
-
-A full log can be found at
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/meson-logs/meson-log.txt
-FAILED: build.ninja
-/usr/bin/python3
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/meson/meson.py --internal
-regenerate /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts --backend
-ninja
-ninja: error: rebuilding 'build.ninja': subcommand failed
-  GIT     ui/keycodemapdb tests/fp/berkeley-testfloat-3
-tests/fp/berkeley-softfloat-3 dtc
-[0/1] Regenerating build files.
-The Meson build system
-Version: 0.61.5
-Source dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-Build dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts
-Build type: native build
-
-../../meson.build:1:0: ERROR: Meson version is 0.61.5 but project
-requires >=0.63.0
-
-A full log can be found at
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/meson-logs/meson-log.txt
-ninja: error: rebuilding 'build.ninja': subcommand failed
-FAILED: build.ninja
-/usr/bin/python3
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/meson/meson.py --internal
-regenerate /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts --backend
-ninja
-make: *** [Makefile:165: run-ninja] Error 1
-make: Leaving directory
-'/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts'
-
-
-thanks
--- PMM
 
