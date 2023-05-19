@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591B6708DC1
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 04:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 391AD708DC0
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 04:25:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzpmv-0004Uj-Ck; Thu, 18 May 2023 22:24:13 -0400
+	id 1pzpmu-0004U4-Lg; Thu, 18 May 2023 22:24:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzpml-0004Ri-F9; Thu, 18 May 2023 22:24:05 -0400
+ id 1pzpml-0004Rh-F3; Thu, 18 May 2023 22:24:04 -0400
 Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzpmh-00028u-NT; Thu, 18 May 2023 22:24:02 -0400
+ id 1pzpmi-00028t-9x; Thu, 18 May 2023 22:24:02 -0400
 Received: from localhost.localdomain (unknown [61.165.33.195])
- by APP-01 (Coremail) with SMTP id qwCowACHjw+x3WZkAeNjAQ--.12622S2;
- Fri, 19 May 2023 10:23:46 +0800 (CST)
+ by APP-01 (Coremail) with SMTP id qwCowACHjw+x3WZkAeNjAQ--.12622S3;
+ Fri, 19 May 2023 10:23:47 +0800 (CST)
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -26,29 +26,33 @@ Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
  Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH 0/7] Add support for extension specific disas
-Date: Fri, 19 May 2023 10:19:19 +0800
-Message-Id: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
+Subject: [PATCH 1/7] disas: Change type of disassemble_info.target_info to
+ pointer
+Date: Fri, 19 May 2023 10:19:20 +0800
+Message-Id: <20230519021926.15362-2-liweiwei@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
+References: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowACHjw+x3WZkAeNjAQ--.12622S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uF1fWF1rtF4kKr15tF1DJrb_yoW8GF43pr
- 4fGry3Kr4kA3yxXr4fW3WUWr4Yyw40gF43Kwn7Aw48A39xAry5Xrn7Jr18A34xJFyfWFyq
- 9a15Cryruws5JF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
- 6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
- 4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
- Yx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
- WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7Cj
- xVA2Y2ka0xkIwI1lc2xSY4AK67AK6r4UMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
- AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
- 17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
- IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
- IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
- evJa73UjIFyTuYvjfUO_MaUUUUU
+X-CM-TRANSID: qwCowACHjw+x3WZkAeNjAQ--.12622S3
+X-Coremail-Antispam: 1UD129KBjvdXoW7XryUtr15uF1xKryxWr4kZwb_yoW3ArX_Cw
+ 4xWayvkr18WFsayrWrXFW5Kry0g3ykJFZ8WFWfurnxKFy0gFsxG3yUGa47AF48WrWvyr93
+ u3Z7Xry7Cw4jgjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUbyAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+ 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUGwA2048vs2IY02
+ 0Ec7CjxVAFwI0_JFI_Gr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
+ wVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84
+ ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1U
+ M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
+ v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
+ F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
+ IY04v7MxkIecxEwVAFwVW8JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8
+ JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1V
+ AFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xII
+ jxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4
+ A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU
+ 0xZFpf9x0JUDEfrUUUUU=
 X-Originating-IP: [61.165.33.195]
 X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
 Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
@@ -74,34 +78,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some extensions have conflict encodings, such as
- * Z*inx reuse the same encodings as normal float point extensions.
- * Zcm* reuse the some encodings of Zcd.
- * Custom extensions from different vendors may share the same encodings.
-To resolve this problem, this patchset tries to pass RISCVCPUConfig as disasemble_info.target_info to support extension specific disas, which means that the disas for this extensions is supported only when the related extension is supported.
-This patchset also fixes some style problems in disas/riscv.c.
+Use pointer to pass more information of target to disasembler,
+such as pass cpu.cfg related information in following commits.
 
-The port is available here:
-https://github.com/plctlab/plct-qemu/tree/plct-disas-upstream
+Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+---
+ include/disas/dis-asm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Weiwei Li (7):
-  disas: Change type of disassemble_info.target_info to pointer
-  target/riscv: Pass RISCVCPUConfig as target_info to disassemble_info
-  disas/riscv.c: Support disas for Zcm* extensions
-  disas/riscv.c: Support disas for Z*inx extensions
-  disas/riscv.c: Remove unused decomp_rv32/64 value for vector
-    instructions
-  disas/riscv.c: Fix lines with over 80 characters
-  disas/riscv.c: Remove redundant parentheses
-
- disas/riscv.c           | 1206 +++++++++++++++++++++------------------
- include/disas/dis-asm.h |    2 +-
- target/riscv/cpu.c      |    1 +
- target/riscv/cpu.h      |  114 +---
- target/riscv/cpu_cfg.h  |  135 +++++
- 5 files changed, 789 insertions(+), 669 deletions(-)
- create mode 100644 target/riscv/cpu_cfg.h
-
+diff --git a/include/disas/dis-asm.h b/include/disas/dis-asm.h
+index 2f6f91c2ee..2324f6b1a4 100644
+--- a/include/disas/dis-asm.h
++++ b/include/disas/dis-asm.h
+@@ -397,7 +397,7 @@ typedef struct disassemble_info {
+   char * disassembler_options;
+ 
+   /* Field intended to be used by targets in any way they deem suitable.  */
+-  int64_t target_info;
++  void *target_info;
+ 
+   /* Options for Capstone disassembly.  */
+   int cap_arch;
 -- 
 2.25.1
 
