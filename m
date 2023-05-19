@@ -2,70 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71995709EB8
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 20:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F036C709EBB
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 20:04:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q04RY-0000OG-Gn; Fri, 19 May 2023 14:03:08 -0400
+	id 1q04SV-00012E-CI; Fri, 19 May 2023 14:04:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q04RU-0000NF-QZ
- for qemu-devel@nongnu.org; Fri, 19 May 2023 14:03:04 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q04ST-000116-39
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 14:04:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q04RT-00075D-BC
- for qemu-devel@nongnu.org; Fri, 19 May 2023 14:03:04 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q04SR-0007F2-F8
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 14:04:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684519382;
+ s=mimecast20190719; t=1684519442;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9lNXxV1zUZYrDspBUxzU864D9HvFfM8LOEU5Gj42LqM=;
- b=MM0US8I/rx1ajieTpPCwbjBlcT2Ul2in0X2wRO0OLupcVQ6fv+rR8wWc85KrATA8E4HvYk
- NUxKiCzGJYYTGA3Kne6rnmNjRp5X84LH6hDrV0jlyCZSSAsvherVfmVCBkAx7zQDfh54FB
- eem1tq8MSWnGJh3C7G7mutlI6jg40c4=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-510-RBap21yZMxChnCTpzh-vZw-1; Fri, 19 May 2023 14:03:00 -0400
-X-MC-Unique: RBap21yZMxChnCTpzh-vZw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08A3E2801A45;
- Fri, 19 May 2023 18:03:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.57])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 924D22026D49;
- Fri, 19 May 2023 18:02:59 +0000 (UTC)
-Date: Fri, 19 May 2023 13:02:54 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, richard.henderson@linaro.org
-Subject: Re: [PATCH v2 14/19] test-cutils: Add more coverage to
- qemu_strtosz11;rgb:1e1e/1e1e/1e1e
-Message-ID: <6krldtbtwytpcd7f3eqgo4kevjosjphsj2pscoiom5zckn7vtp@xwhq5vbm26kx>
-References: <20230512021033.1378730-1-eblake@redhat.com>
- <20230512021033.1378730-15-eblake@redhat.com>
- <bbea3ac2-2890-0606-3f0f-f1b80ec27ad7@redhat.com>
+ bh=MfNEPA255UvNC/uHjSqpDELH9Hq+ohd2X5AGJbCSces=;
+ b=XbI7G8v5UYmHV7LtoxvMRwE/1333NjKZe7P9Z2SGoABlDLLcDlk5dHUpOkQFLYT8RB44In
+ jt3NmSQTjjkky6Zd5W1OwsRlMFC5mpK6ctY4/Coc9eETxk45piveNQq8oxDANAnJx/8Fwv
+ LYKZXkTKGhjlA8q5QekQ3sNZgYOIQU8=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-67sa9ek-Nr2g1k_R5v6oKg-1; Fri, 19 May 2023 14:04:01 -0400
+X-MC-Unique: 67sa9ek-Nr2g1k_R5v6oKg-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5118fc8abd0so758734a12.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 11:04:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684519440; x=1687111440;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MfNEPA255UvNC/uHjSqpDELH9Hq+ohd2X5AGJbCSces=;
+ b=LamS8gaM0vZ7cVC8kYa+TN8WiiiF0JsTGM2chVSR+L+SfTaVRBmXC4QBpKGCf5O3xQ
+ SfW0EwJsHDY9rZnV31raBYPFQN2fLuboM08JGGJ+XcfnsdCjnzc4SPhxSJgyUIkVM5OK
+ brEzOVHCwhUFBLvEfFpdQvlZ0C1iJ8KEciDTpyZE5XU5MnDrwoz1VYzUELslFv+gm2q/
+ EYaQHCHYNbWpaLj8uHnjYmXOS8OuEihAC8VmwwwvSEy766oJWPzFOidGnM4OMn2gr7zR
+ IAmcPdJWRFmYaL4tdY+T3hyxOBsSRKtBr/woTQwBDEUrpkhkdIqsosoeOG5jDkYEtouX
+ Kmgg==
+X-Gm-Message-State: AC+VfDxKjXKfaoH1TkuPVRz9gnyT3CdZ1zTemlarbufqoGklSGndjnSw
+ 4azAmWn0wRMISzjRKeHMHEDM6rVG/SWEcf/jgMqio0AHywiys0Q9UD2EGGwh1VvYAdy57F5gd0k
+ azleQcfRyxFFe1eo=
+X-Received: by 2002:aa7:d295:0:b0:510:ee0f:1eab with SMTP id
+ w21-20020aa7d295000000b00510ee0f1eabmr1974898edq.41.1684519440072; 
+ Fri, 19 May 2023 11:04:00 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4jwBkrs30ljZ3XsHKewjbrCuYV6ISxDD6XXsZrOUXNgp+Rsm9OP0+4DFB70I6Hopa7SVvzZA==
+X-Received: by 2002:aa7:d295:0:b0:510:ee0f:1eab with SMTP id
+ w21-20020aa7d295000000b00510ee0f1eabmr1974885edq.41.1684519439659; 
+ Fri, 19 May 2023 11:03:59 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
+ ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.googlemail.com with ESMTPSA id
+ n2-20020a50c202000000b005067d6b06efsm16883edf.17.2023.05.19.11.03.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 11:03:59 -0700 (PDT)
+Message-ID: <c2eed4ee-18e5-19b4-0a11-168fad0618b1@redhat.com>
+Date: Fri, 19 May 2023 20:03:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bbea3ac2-2890-0606-3f0f-f1b80ec27ad7@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PULL v3 00/68] i386, build system, KVM changes for 2023-05-18
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+References: <20230518114025.1006732-1-pbonzini@redhat.com>
+ <CAFEAcA-ZtAHC2frNzVymYf9pufyi6Y1wHeLnKLrne7NaTeqNfw@mail.gmail.com>
+ <CABgObfbk=8Uq3gN1dThxq3jJOAEk_cGu0Y4bvRtvdR9xZ2xtxw@mail.gmail.com>
+ <CAFEAcA_4_JD46CxkT2dcXSLHKNsa7kKYPYJkqEzZERDTK_wx-A@mail.gmail.com>
+ <379845d1-7a4e-a0eb-345c-451b17e77638@redhat.com>
+ <CAFEAcA-cWzw-heK7y83=ZnSG7Kd_NUiayOrm6Zz6jRADB1-Nfg@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <CAFEAcA-cWzw-heK7y83=ZnSG7Kd_NUiayOrm6Zz6jRADB1-Nfg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,61 +108,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 19, 2023 at 05:26:12PM +0200, Hanna Czenczek wrote:
-> On 12.05.23 04:10, Eric Blake wrote:
-> > Add some more strings that the user might send our way.  In
-> > particular, some of these additions include FIXME comments showing
-> > where our parser doesn't quite behave the way we want.
-> > 
-> > Signed-off-by: Eric Blake <eblake@redhat.com>
-> > 
-> > ---
-> > 
-> > v2: even more tests added, pad a string to avoid out-of-bounds
-> > randomness [Hanna]
-> > ---
-> >   tests/unit/test-cutils.c | 147 +++++++++++++++++++++++++++++++++++----
-> >   1 file changed, 135 insertions(+), 12 deletions(-)
+On 5/19/23 19:45, Peter Maydell wrote:
+> On Fri, 19 May 2023 at 18:31, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>>
+>> On 5/19/23 19:01, Peter Maydell wrote:
+>>>> Can you send your config-host.mak after a failed rebuild? I think
+>>>> what's happening is that the path to meson has changed but Makefile
+>>>> still tries the old one (which could be the system meson in
+>>>> /usr/bin).
+>>>
+>>> Attached; it has
+>>> MESON=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/pyvenv/bin/meson
+>>>
+>>>   That meson says: $
+>>> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/pyvenv/bin/meson --version>
+>>> 1.1.0 is neither the system meson (which is 0.61.2) nor the version
+>>> the build system wants (0.63.0) nor the version that it complains
+>>> that it's found (0.61.5), so I'm not sure what's going on there...
+>>
+>> 1.1.0 must be something you have cached somewhere
 > 
-> The subject line appears as if it contained an ANSI escape sequence.
-
-Yep, and I even flagged that in reply to the cover letter.
-
+> Well, I've never done anything with meson except use whatever
+> the QEMU build system provides...
 > 
-> > diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
-> > index 1936c7b5795..7800caf9b0e 100644
-> > --- a/tests/unit/test-cutils.c
-> > +++ b/tests/unit/test-cutils.c
-> > @@ -3162,7 +3162,12 @@ static void do_strtosz_full(const char *str, qemu_strtosz_fn fn,
-> >       ret = fn(str, &endptr, &val);
-> >       g_assert_cmpint(ret, ==, exp_ptr_ret);
-> >       g_assert_cmpuint(val, ==, exp_ptr_val);
-> > -    g_assert_true(endptr == str + exp_ptr_offset);
-> > +    if (str) {
-> > +        g_assert_true(endptr == str + exp_ptr_offset);
-> > +    } else {
-> > +        g_assert_cmpint(exp_ptr_offset, ==, 0);
-> > +        g_assert_null(endptr);
-> > +    }
+>> but 0.61.5 comes from
+>> the old submodule.  You should be able to find it with
+>>
+>> grep -wA2 'rule REGENERATE_BUILD' ../build.ninja
 > 
-> This patch adds no new cases that call do_strtosz*() with a NULL str – did
-> you intent for this to go into patch 12?
-
-Oh, indeed - it was patch 12 that added do_strtosz(NULL, -EINVAL,
-0xbaadf00d, 0); it's a shame the compiler doesn't complain about 'NULL
-+ 0' as being an odd expression.  Yes, I'll hoist this hunk to 12 for
-v3...
-
+> Yep:
 > 
-> Regardless (with the subject fixed, though):
+> $ grep -wA2 'rule REGENERATE_BUILD' build/x86-tgts/build.ninja
+> rule REGENERATE_BUILD
+>   command = /usr/bin/python3
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/meson/meson.py --internal
+> regenerate /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts --backend
+> ninja
+>   description = Regenerating build files.
 > 
-> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+> $ /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/meson/meson.py --version
+> 0.61.5
+> 
+>> You should be able to unhose the directory with
+>>
+>> pyvenv/bin/meson setup --reconfigure ../..
+>>
+>> (where ../.. should be the path to the sources) or even with the patch:
+>>
+>> diff --git a/Makefile b/Makefile
+>> index 3c7d67142f13..08fb6a3b058a 100644
+>> --- a/Makefile
+>> +++ b/Makefile
+>> @@ -115,15 +115,15 @@ Makefile.ninja: build.ninja
+>>            $(NINJA) -t query build.ninja | sed -n '1,/^  input:/d; /^  outputs:/q; s/$$/ \\/p'; \
+>>          } > $@.tmp && mv $@.tmp $@
+>>    -include Makefile.ninja
+>> +endif
+>>
+>> +ifneq ($(MESON),)
+>>    # A separate rule is needed for Makefile dependencies to avoid -n
+>>    build.ninja: build.ninja.stamp
+>>    $(build-files):
+>>    build.ninja.stamp: meson.stamp $(build-files)
+>> -       $(NINJA) $(if $V,-v,) build.ninja && touch $@
+>> -endif
+>> +       $(MESON) setup --reconfigure $(SRC_PATH) && touch $@
+>>
+>> -ifneq ($(MESON),)
+>>    Makefile.mtest: build.ninja scripts/mtest2make.py
+>>          $(MESON) introspect --targets --tests --benchmarks | $(PYTHON) scripts/mtest2make.py > $@
+>>    -include Makefile.mtest
+> 
+> This patch doesn't work, I'm afraid:
+> 
+> $ make -C build/x86-tgts/
+> make: Entering directory
+> '/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts'
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/pyvenv/bin/meson
+> setup --reconfigure /mnt/nvmedisk/linaro/qemu-from-laptop/qemu &&
+> touch build.ninja.stamp
+> WARNING: Regenerating configuration from scratch.
+> Reason: Coredata file
+> '/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts/meson-private/coredata.dat'
+> references functions or classes that don't exist. This probably means
+> that it was generated with an old version of meson. Try running from
+> the source directory meson setup
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts --wipe
+> The Meson build system
+> Version: 1.1.0
+> Source dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu
+> Build dir: /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86-tgts
+> Build type: native build
+> 
+> ../../meson.build:1:0: ERROR: Unknown options: "sphinx_build"
 
-...while keeping your R-b.
+Well, it almost works---notice that now you are running the 1.1.0 from 
+pyvenv/bin/meson.  For now you can proceed with
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.           +1-919-301-3266
-Virtualization:  qemu.org | libvirt.org
+    sed -i /sphinx_build/d meson-private/cmd_line.txt
+
+and I'll try to send a proper patch over the weekend.
+
+Paolo
 
 
