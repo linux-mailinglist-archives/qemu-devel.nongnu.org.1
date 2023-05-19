@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67170709A9C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7322F709A87
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:54:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01Tf-0006ki-BT; Fri, 19 May 2023 10:53:07 -0400
+	id 1q01Tm-000724-55; Fri, 19 May 2023 10:53:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q01TT-0006ZF-Eq
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:55 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q01TP-0003sK-7L
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:54 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-510ede0f20aso2573411a12.3
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:52:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684507969; x=1687099969;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WUHGT4mRjZTDBz215D3HBEX70neikChI3AFb2FALInw=;
- b=MIoV9sFXyDZjRmua8eXAoJMp24pfo2/GLYvv0Ss9e2ahHkc4NeL22jrSz9imeVVryw
- RdzP/XwWpsOXoSKa06b8jaeTw2vfKadV4Ll3YPZIFGzRPkU8xzoQ1MDuo6nWwymrIV/+
- tsIOgkjS+cqOvi3ihtBEUmgNfBlQ3AXcBG9E48kEawldxHDUJYUZpz/nxWWmfiM9u2Rm
- P60aljgAkmsygPoxPgmHmU+ULBfh3ITbXRmpcspBJd55y+gu6wk2Xqq5FqrmmSuoUHv3
- PeoNeYEbfkAI2BtGlPfIng/gWqWLxn1sByCMAmxRn5RXIF6XCHdz6Zvj54aFypcUj+Kl
- zEDg==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Tf-0006rx-S1
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:53:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Tc-0003t1-DJ
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:53:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684507982;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Yp/tSHUOqsrSNAJ6KI0EHry6cJp6FlWfqU2oOq6BEB4=;
+ b=SEurRrvXPKROGRP84fPm9IGIVXXXLn03VmEogmhBVELahxw8DdRfmGhNMytXDPurS6zuyx
+ V8yR9P2QCYynQZCrbPvbbgWL/N68NQZlh7j/Rp15Dmu07TEmDgsd1GttkWtYntZL+JcVI0
+ shyRbvrN9Kvaz/Y8GFyhkiagZ4pPNCA=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-iyBweUZSMBCPToCXCRdcvA-1; Fri, 19 May 2023 10:52:54 -0400
+X-MC-Unique: iyBweUZSMBCPToCXCRdcvA-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-4f39ae34494so1701277e87.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:52:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507969; x=1687099969;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WUHGT4mRjZTDBz215D3HBEX70neikChI3AFb2FALInw=;
- b=N78rZL3NllidzhboOCrolLGf8IkPxEQUNjRafIIpmos0XUDvzWtqC1HrJqL67so1x6
- Bsx4KlegkrcmDUGbq906jxU2hYv7tdP2bMilI38pcknmwNKFx3nTu+79b/7TbzespzTM
- wBhZkoOjezNW6LC0Zijc+8SDuMTJ6Cpea4/sk0p8WHL/K9PFUneG1djiIYx+Qqsnr3bv
- GyzrgFvrSHuqmZDFxZxNclWsy8GG02aoqdgg0/n9cOZDg/3sSGUglkEhRvXT1xvd1oQ+
- u0kOjjFWXGnF0ZXlv5+uOu7y8A+T9Aof5FMy5Sliypfs6UCrXdqglWPTc3R0MGT1IPTV
- 8BnQ==
-X-Gm-Message-State: AC+VfDwOpE1JJ9puD5cvy32ggoqeHNgbTAuRxo6nngdjUgJYA8T5mvpj
- zt3+T0WC5q37ZFfJbH0MjHZGpu2K9M/ENzg9Wr04ZVYM6EdZf1V+
-X-Google-Smtp-Source: ACHHUZ6scr/02k50LUStAIoRXpAVNnaysXcDZ1EPKKHurelCnHUzIxXwKmiNqltvmvsiEAkS+J+Zpo+MpR0lAucelXY=
-X-Received: by 2002:a17:907:7f1f:b0:967:21:5887 with SMTP id
- qf31-20020a1709077f1f00b0096700215887mr2509793ejc.40.1684507969584; Fri, 19
- May 2023 07:52:49 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684507968; x=1687099968;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Yp/tSHUOqsrSNAJ6KI0EHry6cJp6FlWfqU2oOq6BEB4=;
+ b=eK/7aml+1N1vyTsh53mKGKytOUq0JWVtaQzo6Zl8g+f/8UQxf+Shk6opv+wI4bXWQy
+ lasEQS8oOF48iOPaJT12/9hxZ4QXlgCKVGlh4ol0jJRoEI0p4Ze+Zp1favCtNczqx0Pw
+ 42IVc6s3KrYhF1ft76e95EGKfQ7ZJIFZAwoAs0RhIbnYG0TqNZ9TZcMoqvnvE/X62P6/
+ udiPjwtU9sqh5FrNEwdYumYr5apIeoQcTUQyT8jAu8FTYCDBBnWIDRfRG2V71oO2Ck+/
+ d4Vpwcsluih8UB9L0KtTNfkRCX1F2ucWDFfP3PkHYBPe4uCzW8kqOndo/U5FVZGlAK5f
+ 0fwg==
+X-Gm-Message-State: AC+VfDyZ7nywx6xny12hGRGwTpdea+JOZbDDKqfw1UF4prb29BFe3ig8
+ XrySUeScQia2PWtZOHVJvlOA5dX4ymXDDB0vZ+nMU4LUwgbYk7cw6wPHpFgXjuiGPB2k1IGJ+o8
+ DaDRW9QlJ9D+ZPZPU4hGAyMv7YDyVLR61vX3dD4/ZxH6b5hQMVhKUrXatPLhKBN+yT9eD
+X-Received: by 2002:a05:6512:92c:b0:4f1:4fa4:4f56 with SMTP id
+ f12-20020a056512092c00b004f14fa44f56mr757237lft.17.1684507967978; 
+ Fri, 19 May 2023 07:52:47 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ76BGAvkBCfB6fTrCdsxWWVg21gnok83BQl+H84cA5GH5PkjOkxDbZYwg4nWqQOl/UXS+0bpQ==
+X-Received: by 2002:a05:6512:92c:b0:4f1:4fa4:4f56 with SMTP id
+ f12-20020a056512092c00b004f14fa44f56mr757231lft.17.1684507967638; 
+ Fri, 19 May 2023 07:52:47 -0700 (PDT)
+Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
+ p4-20020a19f004000000b004f39868bef1sm616602lfc.209.2023.05.19.07.52.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 May 2023 07:52:47 -0700 (PDT)
+Date: Fri, 19 May 2023 10:52:42 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Viktor Prutyanov <viktor@daynix.com>
+Subject: [PULL 35/40] virtio-pci: add handling of PCI ATS and Device-TLB
+ enable/disable
+Message-ID: <206e91d143301414df2deb48a411e402414ba6db.1684507742.git.mst@redhat.com>
+References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
-References: <20230518125107.146421-1-peter.maydell@linaro.org>
- <20230518125107.146421-5-peter.maydell@linaro.org> <878rdklbu2.fsf@linaro.org>
- <CAFEAcA_4ovPWkNw=KNVicD35SzJcQhi4Najt8cS3GSa-TLroKA@mail.gmail.com>
-In-Reply-To: <CAFEAcA_4ovPWkNw=KNVicD35SzJcQhi4Najt8cS3GSa-TLroKA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 19 May 2023 15:52:38 +0100
-Message-ID: <CAFEAcA9QB4YY5wKBu4eyHvy7yb8PZdvAs+tZaXDEhU+RzY=yKg@mail.gmail.com>
-Subject: Re: [PULL 04/29] arm/kvm: add support for MTE
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Cornelia Huck <cohuck@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1684507742.git.mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,78 +98,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 May 2023 at 14:31, Peter Maydell <peter.maydell@linaro.org> wrot=
-e:
->
-> On Fri, 19 May 2023 at 13:55, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
-> >
-> >
-> > Peter Maydell <peter.maydell@linaro.org> writes:
-> >
-> > > From: Cornelia Huck <cohuck@redhat.com>
-> > >
-> > > Extend the 'mte' property for the virt machine to cover KVM as
-> > > well. For KVM, we don't allocate tag memory, but instead enable the
-> > > capability.
-> > >
-> > > If MTE has been enabled, we need to disable migration, as we do not
-> > > yet have a way to migrate the tags as well. Therefore, MTE will stay
-> > > off with KVM unless requested explicitly.
-> > >
-> > > Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-> > > Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> > > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> > > Message-id: 20230428095533.21747-2-cohuck@redhat.com
-> > > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> >
-> > I bisected to this commit which causes a segfault on one of my test
-> > kernels (6.3.2 arm64):
-> >
-> >   =E2=9E=9C  ag MTE .config
-> >   486:CONFIG_ARM64_AS_HAS_MTE=3Dy
-> >   487:CONFIG_ARM64_MTE=3Dy
-> >   2949:CONFIG_WLAN_VENDOR_ADMTEK=3Dy
-> >   3573:# CONFIG_I2C_SIMTEC is not set
-> >   5278:# CONFIG_DRM_PANEL_TPO_TD043MTEA1 is not set
-> >   9749:CONFIG_ARCH_USE_MEMTEST=3Dy
-> >   9750:CONFIG_MEMTEST=3Dy
->
-> Try this entirely untested patch?
->
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index f6a88e52ac2..f350661a928 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -1593,6 +1593,15 @@ static void arm_cpu_realizefn(DeviceState *dev,
-> Error **errp)
->          }
->      }
->
-> +    /*
-> +     * For TCG, we can only present MTE to the guest if the board gave u=
-s
-> +     * tag RAM. Set has_mte appropriately so code below doesn't need to
-> +     * care whether we're TCG or KVM when deciding if MTE is present.
-> +     */
-> +    if (tcg_enabled() || qtest_enabled()) {
-> +        cpu->has_mte =3D cpu->tag_memory !=3D NULL;
-> +    }
-> +
->      if (!tcg_enabled() && !qtest_enabled()) {
->          /*
->           * We assume that no accelerator except TCG (and the "not really=
- an
+From: Viktor Prutyanov <viktor@daynix.com>
 
-Hmm, actually I don't think that's the only fix needed. It's OK for
-TCG, but for KVM I can't see anywhere in the code that ever sets
-has_mte to false. We default it to on in the cpu.c code, but
-then the board code only sets it to true if MTE is enabled
-(via kvm_arm_enable_mte()).
+According to PCIe Address Translation Services specification 5.1.3.,
+ATS Control Register has Enable bit to enable/disable ATS. Guest may
+enable/disable PCI ATS and, accordingly, Device-TLB for the VirtIO PCI
+device. So, raise/lower a flag and call a trigger function to pass this
+event to a device implementation.
 
-Let's just revert the patch while we figure out the right logic.
-I'll send a revert patch in a moment.
+Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
+Message-Id: <20230512135122.70403-2-viktor@daynix.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ include/hw/virtio/virtio.h |  2 ++
+ hw/virtio/virtio-pci.c     | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-thanks
--- PMM
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index f6b38f7e9c..af86ed7249 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -155,6 +155,7 @@ struct VirtIODevice
+     QLIST_HEAD(, VirtQueue) *vector_queues;
+     QTAILQ_ENTRY(VirtIODevice) next;
+     EventNotifier config_notifier;
++    bool device_iotlb_enabled;
+ };
+ 
+ struct VirtioDeviceClass {
+@@ -212,6 +213,7 @@ struct VirtioDeviceClass {
+     const VMStateDescription *vmsd;
+     bool (*primary_unplug_pending)(void *opaque);
+     struct vhost_dev *(*get_vhost)(VirtIODevice *vdev);
++    void (*toggle_device_iotlb)(VirtIODevice *vdev);
+ };
+ 
+ void virtio_instance_init_common(Object *proxy_obj, void *data,
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 02fb84a8fa..edbc0daa18 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -716,6 +716,38 @@ virtio_address_space_read(VirtIOPCIProxy *proxy, hwaddr addr,
+     }
+ }
+ 
++static void virtio_pci_ats_ctrl_trigger(PCIDevice *pci_dev, bool enable)
++{
++    VirtIOPCIProxy *proxy = VIRTIO_PCI(pci_dev);
++    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
++    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
++
++    vdev->device_iotlb_enabled = enable;
++
++    if (k->toggle_device_iotlb) {
++        k->toggle_device_iotlb(vdev);
++    }
++}
++
++static void pcie_ats_config_write(PCIDevice *dev, uint32_t address,
++                                  uint32_t val, int len)
++{
++    uint32_t off;
++    uint16_t ats_cap = dev->exp.ats_cap;
++
++    if (!ats_cap || address < ats_cap) {
++        return;
++    }
++    off = address - ats_cap;
++    if (off >= PCI_EXT_CAP_ATS_SIZEOF) {
++        return;
++    }
++
++    if (range_covers_byte(off, len, PCI_ATS_CTRL + 1)) {
++        virtio_pci_ats_ctrl_trigger(dev, !!(val & PCI_ATS_CTRL_ENABLE));
++    }
++}
++
+ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
+                                 uint32_t val, int len)
+ {
+@@ -729,6 +761,10 @@ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
+         pcie_cap_flr_write_config(pci_dev, address, val, len);
+     }
+ 
++    if (proxy->flags & VIRTIO_PCI_FLAG_ATS) {
++        pcie_ats_config_write(pci_dev, address, val, len);
++    }
++
+     if (range_covers_byte(address, len, PCI_COMMAND)) {
+         if (!(pci_dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
+             virtio_set_disabled(vdev, true);
+-- 
+MST
+
 
