@@ -2,68 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3107A70A244
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 23:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BFC70A29D
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 00:02:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q086o-0005zD-Kn; Fri, 19 May 2023 17:57:58 -0400
+	id 1q08Al-0000xX-SK; Fri, 19 May 2023 18:02:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q086m-0005yK-GP
- for qemu-devel@nongnu.org; Fri, 19 May 2023 17:57:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q086l-0004FT-1u
- for qemu-devel@nongnu.org; Fri, 19 May 2023 17:57:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684533474;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fgLJMJytCtabs3p65dU+5yU7aU1Lzei6dYgf+/EPmqw=;
- b=SKNHp9vrxIKmdZuNPM8S8tKrHRa1yakv/M9E5BM6oTZVzskPR271d13yDI9MrsRPi/St8l
- GGBi/Cz48gV14ch7TRIPTOPAnyaWQEChyJNydVnrRDIWbBVi4aUOHW/YCMnu5A2Q8gwfAm
- X9RdGoNtaCb0E2EWuIAnK01MCSueRfo=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-205-yoCbIoAGMYi19gyO_PTBUQ-1; Fri, 19 May 2023 17:57:50 -0400
-X-MC-Unique: yoCbIoAGMYi19gyO_PTBUQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3042A2A5954B;
- Fri, 19 May 2023 21:57:50 +0000 (UTC)
-Received: from omen.home.shazbot.org (unknown [10.22.10.168])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C854AC0004B;
- Fri, 19 May 2023 21:57:49 +0000 (UTC)
-From: Alex Williamson <alex.williamson@redhat.com>
-To: robin@streamhpc.com,
-	mst@redhat.com,
-	marcel.apfelbaum@gmail.com
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	qemu-devel@nongnu.org
-Subject: [RFC PATCH 4/4] vfio/pci: Enable AtomicOps completers on root ports
-Date: Fri, 19 May 2023 15:57:39 -0600
-Message-Id: <20230519215739.402729-5-alex.williamson@redhat.com>
-In-Reply-To: <20230519215739.402729-1-alex.williamson@redhat.com>
-References: <20230519215739.402729-1-alex.williamson@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q08Aj-0000xB-38
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 18:02:01 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q08Af-0005MJ-Gk
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 18:01:59 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-64d3e5e5980so963078b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 15:01:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684533716; x=1687125716;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TngQurTO/1HqFGCrSsTC6ORhJ3EKlTAeoMUBWa0y2IQ=;
+ b=csS1lIlbID/GNz2v/DIcmXeNilZGeVSwBLfkrJboKYVKYtyBGSsvNv6nLosWW/mvbZ
+ k1UcLOfwP4LfxJftUXtNwlCWIz6eAhOvoYlKfk/ksbZHYbk5L0hf6wVITTkWCmpzp9rZ
+ geZfsq5IA+EAD0YMGSiOhvQzoyEygfRJhgVH0w14HFkw2TUi4YhsGAj41f+ug5ClHZSe
+ fvbga04QS+FVr18+bGB1ts5sKbXe4wvrjvvRcPxrjkD96xJFtIxVKXhpSTDpCGVKIRLP
+ tn3W5ynT6GdiDaazXyXwXcKbokIfqmuoGQQnxF4SE0VWvqUaqC8/P4k4f3SZcM4G6HI5
+ PIAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684533716; x=1687125716;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TngQurTO/1HqFGCrSsTC6ORhJ3EKlTAeoMUBWa0y2IQ=;
+ b=VLOjeyrqYRKl0cMiL9YIJ0sIhh8zPC0MopOjFkbCBjOZJmKJRXq0YM4WvbolpWA+eX
+ taJPJ6TcdcKE0Ix0Sgapa6zHFRHdbKzz22X09d0pk/fUBocrC7iBmVB6Rp7M/YmabBda
+ 9zBzDrHfP6uPXtCLnXI5LV+QByrPfHReIzMAe0zakNUPvKvFFG8XB1AtAB7VWXWA5exM
+ WqGE/Fwb98TFCBWIkkj5uNgvjH+WaJyv2FXAu7ozGFx7/+ZJV/uBWOYepEI4ofrUKlLF
+ vD3dCnBPHqx3wPCbhG8dega66c6R65aC7fLEhCGpVUKngSMhs3NxRbn1lIoF8MJt+c14
+ PUOw==
+X-Gm-Message-State: AC+VfDxvoFI7V/Fx+L+leMWofCWOT84WA4HmFVDiJFi00GCdejHIQkug
+ XRnczx5Kl8tDEPP2yQby4eff3w==
+X-Google-Smtp-Source: ACHHUZ74NIxIjB4SoyTKXVkrNbnE8wAAOmBuN+syj97QIfxFVUbxu8Gfa/2Xntlbj5cYfPtZVbY3Gg==
+X-Received: by 2002:a05:6a00:1a4f:b0:646:74ce:a36c with SMTP id
+ h15-20020a056a001a4f00b0064674cea36cmr4927000pfv.8.1684533715900; 
+ Fri, 19 May 2023 15:01:55 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:686f:d1bb:8fc4:dc38?
+ ([2602:ae:1598:4c01:686f:d1bb:8fc4:dc38])
+ by smtp.gmail.com with ESMTPSA id
+ x18-20020aa79192000000b00642ea56f06dsm165292pfa.26.2023.05.19.15.01.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 15:01:55 -0700 (PDT)
+Message-ID: <c40211b7-478e-6a00-2cd3-b1d143169f91@linaro.org>
+Date: Fri, 19 May 2023 15:01:53 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v11 00/14] TCG code quality tracking
+Content-Language: en-US
+To: "Wu, Fei" <fei2.wu@intel.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20230421132421.1617479-1-fei2.wu@intel.com>
+ <87wn259n4g.fsf@linaro.org> <680395c1-8d8e-4f0d-f4eb-27cc0b15f033@intel.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <680395c1-8d8e-4f0d-f4eb-27cc0b15f033@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.527,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,101 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For cold-plug configurations where the vfio-pci device reports enabled
-support for PCIe AtomicOps completers and we have a compatible VM
-configuration, mirror the host AtomicOps completer support in the virtual
-root port.
+On 5/18/23 18:16, Wu, Fei wrote:
+> On 4/22/2023 12:42 AM, Alex Bennée wrote:
+>>
+>> Fei Wu <fei2.wu@intel.com> writes:
+>>
+>>> This patch series were done by Vanderson and Alex originally in 2019, I
+>>> (Fei Wu) rebased them on latest upstream from:
+>>>      https://github.com/stsquad/qemu/tree/tcg/tbstats-and-perf-v10
+>>> and send out this review per Alex's request, I will continue to address
+>>> any future review comments here. As it's been a very long time and there
+>>> are lots of conflicts during rebase, it's my fault if I introduce any
+>>> problems during the process.
+>>
+>> Hi Fei,
+>>
+>> Thanks for picking this up. I can confirm that this applies cleanly to
+>> master and I have kicked the tyres and things still seem to work. I'm
+>> not sure if I can provide much review on code I wrote but a few things
+>> to point out:
+>>
+>>    - there are a number of CI failures, mainly qatomic on 32 bit guests
+>>      see https://gitlab.com/stsquad/qemu/-/pipelines/844857279/failures
+>>      maybe we just disable time accounting for 32 bit hosts?
+>>
+> I sent out v12 series which fixes some CI failures. qatomic is not
+> touched yet, the current code with CONFIG_PROFILER should have the same
+> issue, what's the policy of 32 bit guests support on qemu?
 
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
----
- hw/vfio/pci.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+They should work.
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index bf27a3990564..61d045785bf8 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -1826,6 +1826,70 @@ static void vfio_add_emulated_long(VFIOPCIDevice *vdev, int pos,
-     vfio_set_long_bits(vdev->emulated_config_bits + pos, mask, mask);
- }
- 
-+/*
-+ * For a cold-plugged device connected directly to a root port where
-+ * vfio-pci reports AtomicOp completer support on the host, twiddle
-+ * bits in the emulated root port to reflect this capability.
-+ */
-+static void vfio_pci_enable_rp_atomics(VFIOPCIDevice *vdev)
-+{
-+    struct vfio_device_info_cap_pci_atomic_comp *cap;
-+    g_autofree struct vfio_device_info *info = NULL;
-+    struct vfio_info_cap_header *hdr;
-+    PCIDevice *parent;
-+    uint32_t mask = 0;
-+    PCIBus *bus;
-+
-+    /*
-+     * XXX
-+     *  - Should this also be restricted to TYPE_VFIO_PCI_NOHOTPLUG devices?
-+     *  - Should we clear the capability on exit?
-+     */
-+    if (vdev->pdev.qdev.hotplugged) {
-+        return;
-+    }
-+
-+    info = vfio_get_device_info(vdev->vbasedev.fd);
-+    if (!info) {
-+        return;
-+    }
-+
-+    hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_PCI_ATOMIC_COMP);
-+    if (!hdr) {
-+        return;
-+    }
-+
-+    cap = (void *)hdr;
-+    if (cap->flags & VFIO_PCI_ATOMIC_COMP32) {
-+        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP32;
-+    }
-+    if (cap->flags & VFIO_PCI_ATOMIC_COMP64) {
-+        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP64;
-+    }
-+    if (cap->flags & VFIO_PCI_ATOMIC_COMP128) {
-+        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP128;
-+    }
-+
-+    if (!mask) {
-+        return;
-+    }
-+
-+    bus = pci_get_bus(&vdev->pdev);
-+    parent = bus->parent_dev;
-+
-+    if (!parent || !pci_is_express(parent) || !parent->exp.exp_cap) {
-+        return;
-+    }
-+
-+    if (pcie_cap_get_type(parent) != PCI_EXP_TYPE_ROOT_PORT ||
-+        pcie_cap_get_version(parent) != PCI_EXP_FLAGS_VER2) {
-+        return;
-+    }
-+
-+    pci_long_test_and_set_mask(parent->config + parent->exp.exp_cap +
-+                               PCI_EXP_DEVCAP2, mask);
-+}
-+
- static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
-                                Error **errp)
- {
-@@ -1929,6 +1993,8 @@ static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
-                            QEMU_PCI_EXP_LNKCAP_MLS(QEMU_PCI_EXP_LNK_2_5GT), ~0);
-             vfio_add_emulated_word(vdev, pos + PCI_EXP_LNKCTL, 0, ~0);
-         }
-+
-+        vfio_pci_enable_rp_atomics(vdev);
-     }
- 
-     /*
--- 
-2.39.2
+> Besides time, there are some other counters with uint64_t using qatomic
+> such as TCGProfile.table_op_count, we might switch to size_t instead?
 
+Probably.  You probably don't need to represent times as uint64_t (or time64_t), but as 
+differentials for elapsed time.
+
+We could accumulate into 'float' if you were concerned about overflowing 2^32 units.  This 
+is statistics after all; we don't really need exact numbers, we need magnitude and 2-3 
+digits of precision.
+
+
+r~
 
