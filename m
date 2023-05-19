@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05AEB709A86
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E82D709AA8
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:57:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01Tm-00072S-8c; Fri, 19 May 2023 10:53:14 -0400
+	id 1q01Tn-00075x-RW; Fri, 19 May 2023 10:53:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Tf-0006ru-P2
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:53:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Tj-0006uL-Sb
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:53:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Tc-0003t5-Cj
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:53:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Tf-0003tT-Pp
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:53:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507983;
+ s=mimecast20190719; t=1684507987;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6iHPJFfV/9vWifWqb0iM28PQLKjUavjqG0T5tG7KkDY=;
- b=U4I5keXEoQYTmmBdeYadoe/NY4DT3xXa72Kk1Oqbsz5UaqfTSV1P5Gt2YKWKfyRLF7leP6
- bPAXDuMTINrhxmqXrlGNZb8zkDd69ADMs0bqXgIHMolOCUil2LgczHSzLenHYQ7sY17r7Z
- S9+cZDOyzXihjWvnLlabKMPtxb9dvYE=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RNlRLeBH0sdjVgB3c/rYKTW280v9Im/ZQre+6tEqB58=;
+ b=VX77f6oRITFABemHU16KE5DkQk1twvWwyikf9JdsEsaVz/OMrTuxlmtJkD9Cj5ZHetTIh9
+ 6TqPzDaftRkuxLDYTYrYeZfTYIfqH9MWLl859Ofut2HKN/t8VEGHLzEDVf8Buy1Jx9BlAB
+ R1cEpwCMQGwUDscHDO5pXbIa+pouzjs=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-581-NrQFOboOPWK1tEuPbCcjLg-1; Fri, 19 May 2023 10:53:00 -0400
-X-MC-Unique: NrQFOboOPWK1tEuPbCcjLg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4ef455ba61cso2271874e87.0
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:53:00 -0700 (PDT)
+ us-mta-471-EczBs_2kOzKYyvkWhlKaVg-1; Fri, 19 May 2023 10:53:06 -0400
+X-MC-Unique: EczBs_2kOzKYyvkWhlKaVg-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-4f251247084so2217543e87.3
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:53:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507979; x=1687099979;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6iHPJFfV/9vWifWqb0iM28PQLKjUavjqG0T5tG7KkDY=;
- b=cD5YyvH04wX9IC5q03i64MOb5I0+JPGenSEw4IcfM8e4Tkb0ehujMBN0Dh+EZUf7TL
- qjBmuedPSpv2y3D8F6iNy4YtLy1rbzKzMN4UeNoRhoiCwKEolno/+D47HwLZ0d67QDoc
- uk/ueCOGkLSejMIykTR5PoGI/Gk1vFoDX8FOK1zGLgiuH3GamG3arz7Y164bfpDFzCHT
- Ss/wwb8h2YwBa9BjgcEYwBK6TJWm/2y8f/Lt9tJBFezKE5Q+eep6k2oEnv00g9d83X9c
- HlhsgLpL98p4DYln50LW8KYfTLjRzHTDJJp3JhfZa1P8ganhqZnSKesYD71ur/PIcHCo
- C72g==
-X-Gm-Message-State: AC+VfDyOmO2BwS7JCn6+xeOXd4Ivlj1eNHNtlLW7t0kLhVHXIdr6eMCN
- klLK80SMB0+73/n0VcczvjsUBaoEjpcIBXpAoVnpTWSc99/i9NolsQPgtaaHgdk94RAsBOuf57c
- siwj2AAbjsAHwKb9PIZRuuTQxiaO+UO8Be2iMUVzkmIsCJV6EwmtkkJKkIieWbyWO1siP
-X-Received: by 2002:ac2:4556:0:b0:4f1:5015:43c4 with SMTP id
- j22-20020ac24556000000b004f1501543c4mr978931lfm.38.1684507979066; 
- Fri, 19 May 2023 07:52:59 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4SC6vwFKscVqaQGy9EbZqcVFaBBikaNwXTMe8eAbS8p4H/D7/mGMittX8t/pzJb6GvADXeDQ==
-X-Received: by 2002:ac2:4556:0:b0:4f1:5015:43c4 with SMTP id
- j22-20020ac24556000000b004f1501543c4mr978921lfm.38.1684507978767; 
- Fri, 19 May 2023 07:52:58 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684507984; x=1687099984;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RNlRLeBH0sdjVgB3c/rYKTW280v9Im/ZQre+6tEqB58=;
+ b=KxglCQaBcxMhp1wYKbBEsl42maR030pkE0ta4UNQ5+GRkwLRjIEOw01H8q1EiEdqkK
+ oYBWzcmEeupgbQEevM453lk8u6BYwdEdmeo1gygxZRHPbBL4I1fbyhuy7TvM9AoxP4xA
+ zesJ2NSgKLsECPILwHmE1D7iICkV5/b0tPUsLCAhzxLM67fZUL/0jfhsHAVLuRWajB6q
+ Wb+0zZ1rOCAL1e5X88JIG90Oqd3dbJRyuDg7HxXpDosN+LjtemUcrcnGhH6vCluOaLNI
+ KClo65oILvaTqnPodGRU30p8PIGA7FmsQV3EJOgHoUF8lCwOvINf8cgOlGWlv3mlbNDr
+ BmFQ==
+X-Gm-Message-State: AC+VfDznkU+wgZgtax4kdhcQWSFK3iiS8Ell5CHhffj27vtMxSGusWlv
+ mepVoY5TzuFENYImNkq6x5h/0fPPIkvAvm1SgWBFick5K8LuxQSF3+jfL4RsSGRL7C8N74k4J33
+ MvQbgex882gZly9U+soO0ATHkRKCwOjBPdER3aHwMv5ND7/K9muOYoo0aGadddA69u9LM
+X-Received: by 2002:ac2:5503:0:b0:4ec:8816:f4fc with SMTP id
+ j3-20020ac25503000000b004ec8816f4fcmr870740lfk.6.1684507984052; 
+ Fri, 19 May 2023 07:53:04 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4RKWZNi97LwlIa55UseygQIS9nIJ+Ri1wNFQcNQ5qyG6ZbMb5+hcmKTKUPURdOcj3ZcIvPPQ==
+X-Received: by 2002:ac2:5503:0:b0:4ec:8816:f4fc with SMTP id
+ j3-20020ac25503000000b004ec8816f4fcmr870731lfk.6.1684507983771; 
+ Fri, 19 May 2023 07:53:03 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- d5-20020ac244c5000000b004d5a5d90d83sm626319lfm.60.2023.05.19.07.52.55
+ q11-20020ac25a0b000000b004f3b0cf4925sm181248lfn.142.2023.05.19.07.53.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:52:58 -0700 (PDT)
-Date: Fri, 19 May 2023 10:52:53 -0400
+ Fri, 19 May 2023 07:53:03 -0700 (PDT)
+Date: Fri, 19 May 2023 10:52:59 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Ira Weiny <ira.weiny@intel.com>, Fan Ni <fan.ni@samsung.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 37/40] hw/cxl: rename mailbox return code type from ret_code
- to CXLRetCode
-Message-ID: <b6aab4597173f5d112a8aa0f3ded502cfb7042a9.1684507742.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PULL 38/40] hw/cxl: Introduce cxl_device_get_timestamp() utility
+ function
+Message-ID: <547a652fd1e10c2b6a2b9b91084e4c1cea8665a2.1684507742.git.mst@redhat.com>
 References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1684507742.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -102,183 +99,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Ira Weiny <ira.weiny@intel.com>
 
-Given the increasing usage of this mailbox return code type, now
-is a good time to switch to QEMU style naming.
+There are new users of this functionality coming shortly so factor
+it out from the GET_TIMESTAMP mailbox command handling.
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Message-Id: <20230423162013.4535-2-Jonathan.Cameron@huawei.com>
+Message-Id: <20230423162013.4535-3-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 64 +++++++++++++++++++-------------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
+ include/hw/cxl/cxl_device.h |  2 ++
+ hw/cxl/cxl-device-utils.c   | 15 +++++++++++++++
+ hw/cxl/cxl-mailbox-utils.c  | 11 +----------
+ 3 files changed, 18 insertions(+), 10 deletions(-)
 
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index edb9791bab..02befda0f6 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -287,4 +287,6 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+                             unsigned size, MemTxAttrs attrs);
+ 
++uint64_t cxl_device_get_timestamp(CXLDeviceState *cxlds);
++
+ #endif
+diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+index 4c5e88aaf5..86e1cea8ce 100644
+--- a/hw/cxl/cxl-device-utils.c
++++ b/hw/cxl/cxl-device-utils.c
+@@ -269,3 +269,18 @@ void cxl_device_register_init_common(CXLDeviceState *cxl_dstate)
+ 
+     cxl_initialize_mailbox(cxl_dstate);
+ }
++
++uint64_t cxl_device_get_timestamp(CXLDeviceState *cxl_dstate)
++{
++    uint64_t time, delta;
++    uint64_t final_time = 0;
++
++    if (cxl_dstate->timestamp.set) {
++        /* Find the delta from the last time the host set the time. */
++        time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++        delta = time - cxl_dstate->timestamp.last_set;
++        final_time = cxl_dstate->timestamp.host_set + delta;
++    }
++
++    return final_time;
++}
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index ed663cc04a..7b2aef0d67 100644
+index 7b2aef0d67..702e16ca20 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -23,7 +23,7 @@
-  *     FOO    = 0x7f,
-  *          #define BAR 0
-  *  2. Implement the handler
-- *    static ret_code cmd_foo_bar(struct cxl_cmd *cmd,
-+ *    static CXLRetCode cmd_foo_bar(struct cxl_cmd *cmd,
-  *                                  CXLDeviceState *cxl_dstate, uint16_t *len)
-  *  3. Add the command to the cxl_cmd_set[][]
-  *    [FOO][BAR] = { "FOO_BAR", cmd_foo_bar, x, y },
-@@ -90,10 +90,10 @@ typedef enum {
-     CXL_MBOX_UNSUPPORTED_MAILBOX = 0x15,
-     CXL_MBOX_INVALID_PAYLOAD_LENGTH = 0x16,
-     CXL_MBOX_MAX = 0x17
--} ret_code;
-+} CXLRetCode;
- 
- struct cxl_cmd;
--typedef ret_code (*opcode_handler)(struct cxl_cmd *cmd,
-+typedef CXLRetCode (*opcode_handler)(struct cxl_cmd *cmd,
-                                    CXLDeviceState *cxl_dstate, uint16_t *len);
- struct cxl_cmd {
-     const char *name;
-@@ -105,16 +105,16 @@ struct cxl_cmd {
- 
- #define DEFINE_MAILBOX_HANDLER_ZEROED(name, size)                         \
-     uint16_t __zero##name = size;                                         \
--    static ret_code cmd_##name(struct cxl_cmd *cmd,                       \
--                               CXLDeviceState *cxl_dstate, uint16_t *len) \
-+    static CXLRetCode cmd_##name(struct cxl_cmd *cmd,                       \
-+                                 CXLDeviceState *cxl_dstate, uint16_t *len) \
-     {                                                                     \
-         *len = __zero##name;                                              \
-         memset(cmd->payload, 0, *len);                                    \
-         return CXL_MBOX_SUCCESS;                                          \
-     }
- #define DEFINE_MAILBOX_HANDLER_NOP(name)                                  \
--    static ret_code cmd_##name(struct cxl_cmd *cmd,                       \
--                               CXLDeviceState *cxl_dstate, uint16_t *len) \
-+    static CXLRetCode cmd_##name(struct cxl_cmd *cmd,                       \
-+                                 CXLDeviceState *cxl_dstate, uint16_t *len) \
-     {                                                                     \
-         return CXL_MBOX_SUCCESS;                                          \
-     }
-@@ -125,9 +125,9 @@ DEFINE_MAILBOX_HANDLER_ZEROED(events_get_interrupt_policy, 4);
- DEFINE_MAILBOX_HANDLER_NOP(events_set_interrupt_policy);
- 
- /* 8.2.9.2.1 */
--static ret_code cmd_firmware_update_get_info(struct cxl_cmd *cmd,
--                                             CXLDeviceState *cxl_dstate,
--                                             uint16_t *len)
-+static CXLRetCode cmd_firmware_update_get_info(struct cxl_cmd *cmd,
-+                                               CXLDeviceState *cxl_dstate,
-+                                               uint16_t *len)
+@@ -163,17 +163,8 @@ static CXLRetCode cmd_timestamp_get(struct cxl_cmd *cmd,
+                                     CXLDeviceState *cxl_dstate,
+                                     uint16_t *len)
  {
-     struct {
-         uint8_t slots_supported;
-@@ -159,9 +159,9 @@ static ret_code cmd_firmware_update_get_info(struct cxl_cmd *cmd,
- }
+-    uint64_t time, delta;
+-    uint64_t final_time = 0;
++    uint64_t final_time = cxl_device_get_timestamp(cxl_dstate);
  
- /* 8.2.9.3.1 */
--static ret_code cmd_timestamp_get(struct cxl_cmd *cmd,
--                                  CXLDeviceState *cxl_dstate,
--                                  uint16_t *len)
-+static CXLRetCode cmd_timestamp_get(struct cxl_cmd *cmd,
-+                                    CXLDeviceState *cxl_dstate,
-+                                    uint16_t *len)
- {
-     uint64_t time, delta;
-     uint64_t final_time = 0;
-@@ -181,7 +181,7 @@ static ret_code cmd_timestamp_get(struct cxl_cmd *cmd,
- }
+-    if (cxl_dstate->timestamp.set) {
+-        /* First find the delta from the last time the host set the time. */
+-        time = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-        delta = time - cxl_dstate->timestamp.last_set;
+-        final_time = cxl_dstate->timestamp.host_set + delta;
+-    }
+-
+-    /* Then adjust the actual time */
+     stq_le_p(cmd->payload, final_time);
+     *len = 8;
  
- /* 8.2.9.3.2 */
--static ret_code cmd_timestamp_set(struct cxl_cmd *cmd,
-+static CXLRetCode cmd_timestamp_set(struct cxl_cmd *cmd,
-                                   CXLDeviceState *cxl_dstate,
-                                   uint16_t *len)
- {
-@@ -201,9 +201,9 @@ static const QemuUUID cel_uuid = {
- };
- 
- /* 8.2.9.4.1 */
--static ret_code cmd_logs_get_supported(struct cxl_cmd *cmd,
--                                       CXLDeviceState *cxl_dstate,
--                                       uint16_t *len)
-+static CXLRetCode cmd_logs_get_supported(struct cxl_cmd *cmd,
-+                                         CXLDeviceState *cxl_dstate,
-+                                         uint16_t *len)
- {
-     struct {
-         uint16_t entries;
-@@ -224,9 +224,9 @@ static ret_code cmd_logs_get_supported(struct cxl_cmd *cmd,
- }
- 
- /* 8.2.9.4.2 */
--static ret_code cmd_logs_get_log(struct cxl_cmd *cmd,
--                                 CXLDeviceState *cxl_dstate,
--                                 uint16_t *len)
-+static CXLRetCode cmd_logs_get_log(struct cxl_cmd *cmd,
-+                                   CXLDeviceState *cxl_dstate,
-+                                   uint16_t *len)
- {
-     struct {
-         QemuUUID uuid;
-@@ -265,9 +265,9 @@ static ret_code cmd_logs_get_log(struct cxl_cmd *cmd,
- }
- 
- /* 8.2.9.5.1.1 */
--static ret_code cmd_identify_memory_device(struct cxl_cmd *cmd,
--                                           CXLDeviceState *cxl_dstate,
--                                           uint16_t *len)
-+static CXLRetCode cmd_identify_memory_device(struct cxl_cmd *cmd,
-+                                             CXLDeviceState *cxl_dstate,
-+                                             uint16_t *len)
- {
-     struct {
-         char fw_revision[0x10];
-@@ -309,9 +309,9 @@ static ret_code cmd_identify_memory_device(struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
- }
- 
--static ret_code cmd_ccls_get_partition_info(struct cxl_cmd *cmd,
--                                           CXLDeviceState *cxl_dstate,
--                                           uint16_t *len)
-+static CXLRetCode cmd_ccls_get_partition_info(struct cxl_cmd *cmd,
-+                                              CXLDeviceState *cxl_dstate,
-+                                              uint16_t *len)
- {
-     struct {
-         uint64_t active_vmem;
-@@ -339,9 +339,9 @@ static ret_code cmd_ccls_get_partition_info(struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
- }
- 
--static ret_code cmd_ccls_get_lsa(struct cxl_cmd *cmd,
--                                 CXLDeviceState *cxl_dstate,
--                                 uint16_t *len)
-+static CXLRetCode cmd_ccls_get_lsa(struct cxl_cmd *cmd,
-+                                   CXLDeviceState *cxl_dstate,
-+                                   uint16_t *len)
- {
-     struct {
-         uint32_t offset;
-@@ -364,9 +364,9 @@ static ret_code cmd_ccls_get_lsa(struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
- }
- 
--static ret_code cmd_ccls_set_lsa(struct cxl_cmd *cmd,
--                                 CXLDeviceState *cxl_dstate,
--                                 uint16_t *len)
-+static CXLRetCode cmd_ccls_set_lsa(struct cxl_cmd *cmd,
-+                                   CXLDeviceState *cxl_dstate,
-+                                   uint16_t *len)
- {
-     struct set_lsa_pl {
-         uint32_t offset;
 -- 
 MST
 
