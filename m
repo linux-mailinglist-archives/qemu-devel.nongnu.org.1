@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6616709A6E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30699709A9D
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:55:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01QV-0006ze-Up; Fri, 19 May 2023 10:49:51 -0400
+	id 1q01QZ-00070f-Hy; Fri, 19 May 2023 10:49:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QS-0006zF-OD
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QX-000709-By
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QR-0003Gg-1W
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QV-0003Gx-UT
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507786;
+ s=mimecast20190719; t=1684507791;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=m8H3lZKDwI3mjSVXnoAagyvh6l6UiwvzrfJKVsJ59EM=;
- b=YECQE4VOhYUC0fMKqwk8+UwXLa9w+5y3FAyiaYLTS+39AFrJ62BfuUZ5qSckjJ9wFL4YN5
- gR22depUVqNezuaT/o/f7mgGGJ7uXTK/3okT1JBox/NO0frn6E2rq4v5EpYYsqFvJvwJx9
- D65fAX+YNECdKYSUkM0bieKU9Zt5WRA=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NRIzHJtQJ7HpA10667EVr72jRlizLm0GWgvFozTLp40=;
+ b=OmzNgpwkkq8zbf2bIIHs25D0SLZdrQcu3qOLyXFjfi6ZL6LvelO9Ys3aMe6n9eFlBjB3KQ
+ JVYqvHP/EpdTaSDIfhU9KOX1TWHNldfyVkJiv1xP6idvjQdyaZ/ubpPHrPQwziYGocHS5Q
+ HfQaSPA9Em2Vb+uo9bch7LUnH2T+OqM=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-373-2iedybBcOt-DLJ0i7Q0hKA-1; Fri, 19 May 2023 10:49:44 -0400
-X-MC-Unique: 2iedybBcOt-DLJ0i7Q0hKA-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4f13b1c06aaso2237693e87.1
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:49:43 -0700 (PDT)
+ us-mta-32-aRpN0gqkNFmuojEGPWDecw-1; Fri, 19 May 2023 10:49:49 -0400
+X-MC-Unique: aRpN0gqkNFmuojEGPWDecw-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2af1ed9514bso9184391fa.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:49:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507782; x=1687099782;
+ d=1e100.net; s=20221208; t=1684507788; x=1687099788;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m8H3lZKDwI3mjSVXnoAagyvh6l6UiwvzrfJKVsJ59EM=;
- b=ljgAoY1/xHWfyg3hOrCK7wMTQR7iLo+WlB+WHJZ0VlGeapOlwA+g8LHPDnxqgPrzrA
- to8Pp9ipde6EZvvmkYqbaiA+u4bSwtoYkxRNpomyj2pSAfV73wcciwCA6GOsOef+Tyxd
- c8CIyeLexL2ueOQDNJRZqT5jcgOoIAM7I4vp99SpjgXSwHN2sNmS7/D9ca72j6HqtlaH
- iaDyqhwMEzFBOJgZiMXnS+Q8sUiI4Y0Lik1FWI7hzP+cqOKn6cfmlawNlfLeA0vKH6JX
- yrChLy7vR27ggEFq1FLZvn9UJxkmxcm8jbPQ4aiXqrdbDbQWmc+JTjRRC+929XzA5UuL
- OWOg==
-X-Gm-Message-State: AC+VfDxtpJcmEgAQjpYISp9Bf73SeNevriI6sbs2OH9LTKw5nUW9AhZ3
- c40Ba1+k6tJ62rauS8Hfl1AjwTfN2E7SEoi7ziK6z+mjwhlPtgR0wfd4NjjeuRK44JeLOkYq0S0
- 54HtY1i2dKkASqpL0mL/SYjPUDIkiFf5wg7wILQ9h4iSX1MWofGYgrymI8VWCy0dEmz5f
-X-Received: by 2002:ac2:4350:0:b0:4f3:91ee:3b73 with SMTP id
- o16-20020ac24350000000b004f391ee3b73mr763649lfl.30.1684507782124; 
- Fri, 19 May 2023 07:49:42 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7KyHMrBRXp+ODGCDRdQ7k8O3ycOiCEFjjFMJcYYFNWbDmQ/tq34Glr4iEsK89QdZBLoCcaKg==
-X-Received: by 2002:ac2:4350:0:b0:4f3:91ee:3b73 with SMTP id
- o16-20020ac24350000000b004f391ee3b73mr763640lfl.30.1684507781799; 
- Fri, 19 May 2023 07:49:41 -0700 (PDT)
+ bh=NRIzHJtQJ7HpA10667EVr72jRlizLm0GWgvFozTLp40=;
+ b=awUZAYmrYplbZehovGSPpUdim/d1+2vbiSG3hiFX8sCQLb5LwjB4NY5TRttLTq6N1O
+ /ImNUySDpegQg4ua57q6qxM8Qov5ESkwllO1tEzi5sRlHdQkfbbRQHcyujDH6ROfgrKu
+ SP9UjFn/NxGgl8JTjVkAfe7e8tYXzqgTfehUhLMr7LhkyjakJlfLz27ZWRGx25lRgV2f
+ ZZ3V76SeH5UY4TQ25jYDqnKTyFLnSocE1SZK/jtfjbE+ICnKogFqB2tkbwWG0zTLCcAT
+ aGdjJRqOyFRFMRpvw0MaMV7XvfT52EcdRWFskTL0sOkpbqgU7c7OjmxZz+IsEMk7WJLz
+ K6Ag==
+X-Gm-Message-State: AC+VfDx4xlGCeVDaRTGz8rIQ+b99lbBkVTQGFvb2l6MDYX3LHXQg7Y/z
+ NsfqfuCIPNSl15QEVo4rrieAnpEygeFcn7qVyau6gJ+8ujD3aqusF1r4R6YbhCzFJl8ZFCR8oDt
+ HA4SxUQiZfURWPqjeN8PI9rVXDqfvNwUY3EFrUgAx13lxStBqy0klxtNdy0aNysH65pdV
+X-Received: by 2002:ac2:485c:0:b0:4f2:40dd:e2cf with SMTP id
+ 28-20020ac2485c000000b004f240dde2cfmr850802lfy.55.1684507787948; 
+ Fri, 19 May 2023 07:49:47 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ75DCQVoeaWOvT0MknfmWM9sAQdeMgKnBwv7tprv/81SWe28d45CA6WNvBHRAg0LumxCkmgBQ==
+X-Received: by 2002:ac2:485c:0:b0:4f2:40dd:e2cf with SMTP id
+ 28-20020ac2485c000000b004f240dde2cfmr850786lfy.55.1684507787552; 
+ Fri, 19 May 2023 07:49:47 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- v26-20020a056512049a00b004efff420b11sm622508lfq.181.2023.05.19.07.49.39
+ l6-20020ac25546000000b004f37a541f0csm553711lfk.270.2023.05.19.07.49.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:49:41 -0700 (PDT)
-Date: Fri, 19 May 2023 10:49:36 -0400
+ Fri, 19 May 2023 07:49:46 -0700 (PDT)
+Date: Fri, 19 May 2023 10:49:42 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Lei Yang <leiyang@redhat.com>
-Subject: [PULL 01/40] vhost: fix possible wrap in SVQ descriptor ring
-Message-ID: <5d410557dea452f6231a7c66155e29a37e168528.1684507742.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Hao Zeng <zenghao@kylinos.cn>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 02/40] hw/cxl: cdat: Fix open file not closed in ct3_load_cdat()
+Message-ID: <71ba92f3488b64bd5c81e2872c56e88cea21bb95.1684507742.git.mst@redhat.com>
 References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -77,15 +76,15 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1684507742.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,104 +100,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hawkins Jiawei <yin31149@gmail.com>
+From: Hao Zeng <zenghao@kylinos.cn>
 
-QEMU invokes vhost_svq_add() when adding a guest's element
-into SVQ. In vhost_svq_add(), it uses vhost_svq_available_slots()
-to check whether QEMU can add the element into SVQ. If there is
-enough space, then QEMU combines some out descriptors and some
-in descriptors into one descriptor chain, and adds it into
-`svq->vring.desc` by vhost_svq_vring_write_descs().
+Open file descriptor not closed in error paths. Fix by replace
+open coded handling of read of whole file into a buffer with
+g_file_get_contents()
 
-Yet the problem is that, `svq->shadow_avail_idx - svq->shadow_used_idx`
-in vhost_svq_available_slots() returns the number of occupied elements,
-or the number of descriptor chains, instead of the number of occupied
-descriptors, which may cause wrapping in SVQ descriptor ring.
+Fixes: aba578bdac ("hw/cxl: CDAT Data Object Exchange implementation")
+Signed-off-by: Zeng Hao <zenghao@kylinos.cn>
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Suggested-by: Jonathan Cameron via <qemu-devel@nongnu.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Here is an example. In vhost_handle_guest_kick(), QEMU forwards
-as many available buffers to device by virtqueue_pop() and
-vhost_svq_add_element(). virtqueue_pop() returns a guest's element,
-and then this element is added into SVQ by vhost_svq_add_element(),
-a wrapper to vhost_svq_add(). If QEMU invokes virtqueue_pop() and
-vhost_svq_add_element() `svq->vring.num` times,
-vhost_svq_available_slots() thinks QEMU just ran out of slots and
-everything should work fine. But in fact, virtqueue_pop() returns
-`svq->vring.num` elements or descriptor chains, more than
-`svq->vring.num` descriptors due to guest memory fragmentation,
-and this causes wrapping in SVQ descriptor ring.
-
-This bug is valid even before marking the descriptors used.
-If the guest memory is fragmented, SVQ must add chains
-so it can try to add more descriptors than possible.
-
-This patch solves it by adding `num_free` field in
-VhostShadowVirtqueue structure and updating this field
-in vhost_svq_add() and vhost_svq_get_buf(), to record
-the number of free descriptors.
-
-Fixes: 100890f7ca ("vhost: Shadow virtqueue buffers forwarding")
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20230509084817.3973-1-yin31149@gmail.com>
+--
+Changes since v5:
+- Drop if guard on g_free() as per checkpatch warning.
+Message-Id: <20230421132020.7408-2-Jonathan.Cameron@huawei.com>
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
 ---
- hw/virtio/vhost-shadow-virtqueue.h | 3 +++
- hw/virtio/vhost-shadow-virtqueue.c | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ hw/cxl/cxl-cdat.c | 29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
-index 926a4897b1..6efe051a70 100644
---- a/hw/virtio/vhost-shadow-virtqueue.h
-+++ b/hw/virtio/vhost-shadow-virtqueue.h
-@@ -107,6 +107,9 @@ typedef struct VhostShadowVirtqueue {
+diff --git a/hw/cxl/cxl-cdat.c b/hw/cxl/cxl-cdat.c
+index 137abd0992..056711d63d 100644
+--- a/hw/cxl/cxl-cdat.c
++++ b/hw/cxl/cxl-cdat.c
+@@ -110,29 +110,18 @@ static void ct3_load_cdat(CDATObject *cdat, Error **errp)
+     g_autofree CDATEntry *cdat_st = NULL;
+     uint8_t sum = 0;
+     int num_ent;
+-    int i = 0, ent = 1, file_size = 0;
++    int i = 0, ent = 1;
++    gsize file_size = 0;
+     CDATSubHeader *hdr;
+-    FILE *fp = NULL;
++    GError *error = NULL;
  
-     /* Next head to consume from the device */
-     uint16_t last_used_idx;
-+
-+    /* Size of SVQ vring free descriptors */
-+    uint16_t num_free;
- } VhostShadowVirtqueue;
- 
- bool vhost_svq_valid_features(uint64_t features, Error **errp);
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index 8361e70d1b..bd7c12b6d3 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -68,7 +68,7 @@ bool vhost_svq_valid_features(uint64_t features, Error **errp)
-  */
- static uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq)
- {
--    return svq->vring.num - (svq->shadow_avail_idx - svq->shadow_used_idx);
-+    return svq->num_free;
- }
- 
- /**
-@@ -263,6 +263,7 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
-         return -EINVAL;
+     /* Read CDAT file and create its cache */
+-    fp = fopen(cdat->filename, "r");
+-    if (!fp) {
+-        error_setg(errp, "CDAT: Unable to open file");
++    if (!g_file_get_contents(cdat->filename, (gchar **)&cdat->buf,
++                             &file_size, &error)) {
++        error_setg(errp, "CDAT: File read failed: %s", error->message);
++        g_error_free(error);
+         return;
      }
- 
-+    svq->num_free -= ndescs;
-     svq->desc_state[qemu_head].elem = elem;
-     svq->desc_state[qemu_head].ndescs = ndescs;
-     vhost_svq_kick(svq);
-@@ -449,6 +450,7 @@ static VirtQueueElement *vhost_svq_get_buf(VhostShadowVirtqueue *svq,
-     last_used_chain = vhost_svq_last_desc_of_chain(svq, num, used_elem.id);
-     svq->desc_next[last_used_chain] = svq->free_head;
-     svq->free_head = used_elem.id;
-+    svq->num_free += num;
- 
-     *len = used_elem.len;
-     return g_steal_pointer(&svq->desc_state[used_elem.id].elem);
-@@ -659,6 +661,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
-     svq->iova_tree = iova_tree;
- 
-     svq->vring.num = virtio_queue_get_num(vdev, virtio_get_queue_index(vq));
-+    svq->num_free = svq->vring.num;
-     driver_size = vhost_svq_driver_area_size(svq);
-     device_size = vhost_svq_device_area_size(svq);
-     svq->vring.desc = qemu_memalign(qemu_real_host_page_size(), driver_size);
+-
+-    fseek(fp, 0, SEEK_END);
+-    file_size = ftell(fp);
+-    fseek(fp, 0, SEEK_SET);
+-    cdat->buf = g_malloc0(file_size);
+-
+-    if (fread(cdat->buf, file_size, 1, fp) == 0) {
+-        error_setg(errp, "CDAT: File read failed");
+-        return;
+-    }
+-
+-    fclose(fp);
+-
+     if (file_size < sizeof(CDATTableHeader)) {
+         error_setg(errp, "CDAT: File too short");
+         return;
+@@ -218,7 +207,5 @@ void cxl_doe_cdat_release(CXLComponentState *cxl_cstate)
+         cdat->free_cdat_table(cdat->built_buf, cdat->built_buf_len,
+                               cdat->private);
+     }
+-    if (cdat->buf) {
+-        free(cdat->buf);
+-    }
++    g_free(cdat->buf);
+ }
 -- 
 MST
 
