@@ -2,81 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF727709695
+	by mail.lfdr.de (Postfix) with ESMTPS id C68AC709696
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 13:33:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzyLV-0003wq-JV; Fri, 19 May 2023 07:32:29 -0400
+	id 1pzyLo-00040Y-J1; Fri, 19 May 2023 07:32:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1pzyLT-0003wZ-CK
- for qemu-devel@nongnu.org; Fri, 19 May 2023 07:32:28 -0400
-Received: from mail-qv1-xf2c.google.com ([2607:f8b0:4864:20::f2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1pzyLR-0007Gr-Kv
- for qemu-devel@nongnu.org; Fri, 19 May 2023 07:32:27 -0400
-Received: by mail-qv1-xf2c.google.com with SMTP id
- 6a1803df08f44-62382e86f81so13617976d6.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 04:32:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684495943; x=1687087943;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=g3TvzKEFJnEMVCYxQv3dx+AxrtRbYrFctzVbiDmqYTs=;
- b=tvyvGQIkyFg/QCoiEa0UeGBQjd8gxX0G7fOUfNgebzOMJ50pnT5xpoN+2mC4+k+9Y/
- M/VLVRsGmFV6v6lNlF1Np56bJVOlLegAqdZ22n7VyfHpGaSUWPu8Bnp+fzr0TQzUFE0j
- VsNtW9BRY/q31qBZX5PH81ntTucECtMnbmXpLXGuZ46yIwX4h7sdia5VE9Uyv9QsawEt
- oxfeuE47xZJsHOuAuOLM/oSOGDlUO2Wp0eGKKK8veSEJ3rN92i2zTL0P+gISYk/psWvO
- AqkvnLTOpAV3AWLiS2XOPnmTklztVfrtkX9ySNnqud6KnukSwOQmXwN0eUAayx3dRmQK
- 3cxw==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pzyLk-00040F-Ky
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 07:32:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1pzyLi-0007NQ-I0
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 07:32:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684495961;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=KZ0n9pthhX0n2ApULG5jEUaKlMKUDnYoAcr+VLNgDyM=;
+ b=HKM65W9nY1EPvPKgFYT2H8FqMJUbO/ClFLqNZTJl0Dsnxritg+OZmGgyN1wHH7xokBmKCu
+ PWCaE3Hk9I0l95vMTdC5Gb4G7+CvF4v1bsjQXzMdxkKNEkUGupsNK2zK5ytcxjC9pBnTxh
+ DJER5PC2jUlk+nGfxymdD5NRmm2Pho4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-516-FGXPVzAJNM2FSBbhYGN8ng-1; Fri, 19 May 2023 07:32:38 -0400
+X-MC-Unique: FGXPVzAJNM2FSBbhYGN8ng-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-307bac4c949so1987971f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 04:32:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684495943; x=1687087943;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g3TvzKEFJnEMVCYxQv3dx+AxrtRbYrFctzVbiDmqYTs=;
- b=TG9KNPIjQDhkTG+QBKjbmQ5Jz38wQhLT8MWWJz8HNev6QkYf/3bwMNqZpBWClIaTiM
- 10QKMAYxjX3foqN1EzFS79iy+IlERAFnVut4cGlH86nI0BHYClW9NPa/e2ISzJZa3DOW
- PUBLKz9asfU2LYFFtUwLnnaSDj16yRQADhferQ19IN/FaEeUSwSdKUzZ8PClgNHmECu9
- ZqH/iQ4YMoY5DQU37C9kVxs06UXo5pJDO5n0KE5S4z5NB1apTnQaebN21YKQ09NTcgV/
- 3OWAddf1EB2CKgNy0b5bSXtepMSANrywLIKhggFDYuWXSG0rRhqtX0LdXtzGVrhkxS3l
- Ut9Q==
-X-Gm-Message-State: AC+VfDwsM+BmkWxJDyyKtj01JH8DSVt2LjaJggkgZ66+gcNWsAQqKyvq
- K2qnS0gfqnPO7VxzoRUuSX/IsA==
-X-Google-Smtp-Source: ACHHUZ4McPgkIOWVlNQv7DKt6gIkIYkxSmLf+YmnMYiai+UccZkc/IIaY/7fNygmyFMM4n1AJjVolg==
-X-Received: by 2002:ad4:5742:0:b0:621:64c7:235f with SMTP id
- q2-20020ad45742000000b0062164c7235fmr3915277qvx.27.1684495943052; 
- Fri, 19 May 2023 04:32:23 -0700 (PDT)
-Received: from [192.168.69.115] (mau49-h01-176-184-41-228.dsl.sta.abo.bbox.fr.
- [176.184.41.228]) by smtp.gmail.com with ESMTPSA id
- l9-20020ac87249000000b003e89e2b3c23sm1216558qtp.58.2023.05.19.04.32.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 04:32:22 -0700 (PDT)
-Message-ID: <d6118a9c-1e3f-4c29-520e-26562bbac600@linaro.org>
-Date: Fri, 19 May 2023 13:32:19 +0200
+ d=1e100.net; s=20221208; t=1684495957; x=1687087957;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KZ0n9pthhX0n2ApULG5jEUaKlMKUDnYoAcr+VLNgDyM=;
+ b=MwrO7iqR+q0iO5HUDb2EY1I4w0LiGjsE0laeO4cAvVKp8xni6RjeAwJP5EGfYT3irN
+ /noUxB4c8C+dTqzwI0Rsn0aTlN09R5zec4RMWDdRtrrCHAqaeOybrJBmq6EIj7rT5Sa9
+ 8dIWBmDSb5QVAVRGpGQaRgzZecQYjFsbEQ6K1DtkSKYPvkRN+jx4sgzRo1+Hw/d9Vown
+ 3BfeGVIPrvn/Ct/Gv/yu1ZFW2GlfwMAMEjnCK+SN2R3ZbA0RnDqKUfRuLSJnrStwOjRc
+ CBOddfh+jEPoR9WPcUgDW4nNsOLrjqml3WSJr1Pb6uhSIRKP6Tga1ogo7rYPmWC+gyuO
+ oPGA==
+X-Gm-Message-State: AC+VfDzdTRrgqqmGegu8hER0+DLVWcwQEEoGPnr++l6ece1JoXEyRuWD
+ /fRwindyNCRz1v3jpvCx57YAHbjtlDhrgCsZYlqm1+6QgI60K7g9DO3WIT6QNQCmlEAI9YoYIqw
+ 75InXI0jWljI5jcs=
+X-Received: by 2002:a05:600c:2214:b0:3f3:468d:d017 with SMTP id
+ z20-20020a05600c221400b003f3468dd017mr1124347wml.6.1684495956912; 
+ Fri, 19 May 2023 04:32:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ46PR25CtQsBGEC2kUvkg9ZJE4QSdWo8BD4mAHbtrVx+C9/WrHGVj0eX/ILpdGcPfC69EIbEw==
+X-Received: by 2002:a05:600c:2214:b0:3f3:468d:d017 with SMTP id
+ z20-20020a05600c221400b003f3468dd017mr1124334wml.6.1684495956637; 
+ Fri, 19 May 2023 04:32:36 -0700 (PDT)
+Received: from redhat.com (84.125.95.163.dyn.user.ono.com. [84.125.95.163])
+ by smtp.gmail.com with ESMTPSA id
+ y14-20020adffa4e000000b00306281cfa59sm5052728wrr.47.2023.05.19.04.32.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 May 2023 04:32:35 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: "Wang, Wei W" <wei.w.wang@intel.com>
+Cc: "Wang, Lei4" <lei4.wang@intel.com>,  "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>,  "peterx@redhat.com" <peterx@redhat.com>,
+ "leobras@redhat.com" <leobras@redhat.com>,  "Daniel Berrange"
+ <berrange@redhat.com>
+Subject: Re: [PATCH] multifd: Set a higher "backlog" default value for listen()
+In-Reply-To: <DS0PR11MB63736463A526A0D1A0D64568DC7C9@DS0PR11MB6373.namprd11.prod.outlook.com>
+ (Wei W. Wang's message of "Fri, 19 May 2023 03:33:22 +0000")
+References: <20230518085228.172816-1-lei4.wang@intel.com>
+ <87h6saf18t.fsf@secure.mitica>
+ <9def6eb4-e317-2b6d-87ab-d0aa34ea3afe@intel.com>
+ <DS0PR11MB637345417B81FF5637B2D7D8DC7C9@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <bc6f6fdb-ebf9-387b-9d56-5c61095a9473@intel.com>
+ <DS0PR11MB63736463A526A0D1A0D64568DC7C9@DS0PR11MB6373.namprd11.prod.outlook.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Fri, 19 May 2023 13:32:33 +0200
+Message-ID: <87fs7sy2su.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [RFC PATCH] Add support for RAPL MSRs in KVM/Qemu
-Content-Language: en-US
-To: Anthony Harivel <aharivel@redhat.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, mtosatti@redhat.com
-References: <20230517130730.85469-1-aharivel@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230517130730.85469-1-aharivel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f2c;
- envelope-from=philmd@linaro.org; helo=mail-qv1-xf2c.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.527,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,149 +103,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Anthony,
+"Wang, Wei W" <wei.w.wang@intel.com> wrote:
+> On Friday, May 19, 2023 10:52 AM, Wang, Lei4 wrote:
+>> > We can change it to uint16_t or uint32_t, but need to see if listening
+>> > on a larger value is OK to everyone.
+>> 
+>> Is there any use case to use >256 migration channels? If not, then I suppose
+>> it's no need to increase it.
+>
+> People can choose to use more than 256 channels to boost performance.
 
-On 17/5/23 15:07, Anthony Harivel wrote:
-> Starting with the "Sandy Bridge" generation, Intel CPUs provide a RAPL
-> interface (Running Average Power Limit) for advertising the accumulated
-> energy consumption of various power domains (e.g. CPU packages, DRAM,
-> etc.).
-> 
-> The consumption is reported via MSRs (model specific registers) like
-> MSR_PKG_ENERGY_STATUS for the CPU package power domain. These MSRs are
-> 64 bits registers that represent the accumulated energy consumption in
-> micro Joules. They are updated by microcode every ~1ms.
-> 
-> For now, KVM always returns 0 when the guest requests the value of
-> these MSRs. Use the KVM MSR filtering mechanism to allow QEMU handle
-> these MSRs dynamically in userspace.
-> 
-> To limit the amount of system calls for every MSR call, create a new
-> thread in QEMU that updates the "virtual" MSR values asynchronously.
-> 
-> Each vCPU has its own vMSR to reflect the independence of vCPUs. The
-> thread updates the vMSR values with the ratio of energy consumed of
-> the whole physical CPU package the vCPU thread runs on and the
-> thread's utime and stime values.
-> 
-> All other non-vCPU threads are also taken into account. Their energy
-> consumption is evenly distributed among all vCPUs threads running on
-> the same physical CPU package.
-> 
-> This feature is activated with -accel kvm,rapl=true.
-> 
-> Actual limitation:
-> - Works only on Intel host CPU because AMD CPUs are using different MSR
->    adresses.
-> 
-> - Only the Package Power-Plane (MSR_PKG_ENERGY_STATUS) is reported at
->    the moment.
-> 
-> - Since each vCPU has an independent vMSR value, the vCPU topology must
->    be changed to match that reality. There must be a single vCPU per
->    virtual socket (e.g.: -smp 4,sockets=4). Accessing pkg-0 energy will
->    give vCPU 0 energy, pkg-1 will give vCPU 1 energy, etc.
-> 
-> Signed-off-by: Anthony Harivel <aharivel@redhat.com>
-> ---
+See my other email, I doubt it any time soon O:-)
+
+> If it is determined that using larger than 256 channels doesn't increase performance
+> on all the existing platforms, then we need to have it reflected in the code explicitly,
+> e.g. fail with errors messages when user does:
+> migrate_set_parameter multifd-channels 512
 
 
-> diff --git a/target/i386/kvm/vmsr_energy.h b/target/i386/kvm/vmsr_energy.h
-> new file mode 100644
-> index 000000000000..5f79d2cbe00d
-> --- /dev/null
-> +++ b/target/i386/kvm/vmsr_energy.h
-> @@ -0,0 +1,80 @@
-> +/*
-> + * QEMU KVM support -- x86 virtual energy-related MSR.
-> + *
-> + * Copyright 2023 Red Hat, Inc. 2023
-> + *
-> + *  Author:
-> + *      Anthony Harivel <aharivel@redhat.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + *
-> + */
-> +
-> +#ifndef VMSR_ENERGY_H
-> +#define VMSR_ENERGY_H
-> +
-> +#include "qemu/osdep.h"
-> +
-> +#include <numa.h>
-> +
-> +/*
-> + * Define the interval time in micro seconds between 2 samples of
-> + * energy related MSRs
-> + */
-> +#define MSR_ENERGY_THREAD_SLEEP_US 1000000.0
-> +
-> +/*
-> + * Thread statistic
-> + * @ thread_id: TID (thread ID)
-> + * @ is_vcpu: true is thread is vCPU thread
-> + * @ cpu_id: CPU number last executed on
-> + * @ vcpu_id: vCPU ID
-> + * @ numa_node_id:node number of the CPU
-> + * @ utime: amount of clock ticks the thread
-> + *          has been scheduled in User mode
-> + * @ stime: amount of clock ticks the thread
-> + *          has been scheduled in System mode
-> + * @ delta_ticks: delta of utime+stime between
-> + *          the two samples (before/after sleep)
-> + */
-> +struct thread_stat {
-> +    unsigned int thread_id;
-> +    bool is_vcpu;
-> +    unsigned int cpu_id;
-> +    unsigned int vcpu_id;
-> +    unsigned int numa_node_id;
-> +    unsigned long long *utime;
-> +    unsigned long long *stime;
-> +    unsigned long long delta_ticks;
-> +};
-> +
-> +/*
-> + * Package statistic
-> + * @ e_start: package energy counter before the sleep
-> + * @ e_end: package energy counter after the sleep
-> + * @ e_delta: delta of package energy counter
-> + * @ e_ratio: store the energy ratio of non-vCPU thread
-> + * @ nb_vcpu: number of vCPU running on this package
-> + */
-> +struct packge_energy_stat {
+(qemu) migrate_set_parameter multifd-channels 300
+Error: Parameter 'multifd-channels' expects uint8_t
 
-"package"
+So I think that is working.
 
-> +    uint64_t e_start;
-> +    uint64_t e_end;
-> +    uint64_t e_delta;
-> +    uint64_t e_ratio;
-> +    unsigned int nb_vcpu;
-> +};
-> +
-> +typedef struct thread_stat thread_stat;
-> +typedef struct packge_energy_stat package_energy_stat;
-> +
-> +uint64_t read_msr(uint32_t reg, unsigned int cpu_id);
-> +void delta_ticks(thread_stat *thd_stat, int i);
-> +unsigned int get_maxcpus(unsigned int package_num);
-> +int read_thread_stat(struct thread_stat *thread, int pid, int index);
-> +pid_t *get_thread_ids(pid_t pid, int *num_threads);
-> +double get_ratio(package_energy_stat *pkg_stat,
-> +                        thread_stat *thd_stat,
-> +                        int maxticks, int i);
-
-Would prefixing these declarations with 'vmsr_' provide
-a clearer API? Otherwise, maybe this isn't the best header
-to declare them.
-
-> +
-> +#endif /* VMSR_ENERGY_H */
+>> 
+>> >
+>> > Man page of listen mentions that the  maximum length of the queue for
+>> > incomplete sockets can be set using
+>> > /proc/sys/net/ipv4/tcp_max_syn_backlog,
+>> > and it is 4096 by default on my machine
 
 
