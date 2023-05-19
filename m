@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84F7709245
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A374E709256
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:58:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzvtg-0001ZR-GQ; Fri, 19 May 2023 04:55:36 -0400
+	id 1pzvuy-0002DF-RW; Fri, 19 May 2023 04:56:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzvtd-0001Z9-6s
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:55:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzvux-0002Cv-6V
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:56:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzvtb-0008Ov-Ci
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:55:32 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzvuv-0000Ah-Cf
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:56:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684486529;
+ s=mimecast20190719; t=1684486612;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qfGM0F2DqFrM2zvwPeiLpuDTBpUpEhdxAZI4NWajA+M=;
- b=ipajp1OJRPAT+AXMvUDKo2QcLl0mWS1klClOQv20n+Oczzp/XIWDyWxi0DZs5OtXbQF+4Q
- 3cUH/mmsnEVP2Xh/v2KQSWHUmeV/QgvOyHkpTTywgruIP/wIUQ34LbLEo1YogH8a2iO6eo
- m/z1dKb5ryzPG/0XkH0x67++bwXWpyg=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=QJ5uXtbHBSXEriPm76vUF3RNo0wtbvx0i6MBijRshIc=;
+ b=Oy08i1QnUzSdHaJ86HkbvQkjL47jdSnQMfMwvjFFWdQa+jyOpr0F03+k43amfDnHi0npZq
+ goOZolRoJYANgBiGz5y5ey7r+N5SnkJSfZvGoCVjByIH8uORoR7Ue8GevsaCT0ARsvoGaH
+ ntBg7Whr8gkConQT0Tm7qe1UeI/N9Ls=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-341-PeqLCgLiO5ywQLPjgFoOkQ-1; Fri, 19 May 2023 04:55:27 -0400
-X-MC-Unique: PeqLCgLiO5ywQLPjgFoOkQ-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2ac7e062911so16128201fa.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 01:55:27 -0700 (PDT)
+ us-mta-484-jpXAkM-PPGWN3xbU72DuTQ-1; Fri, 19 May 2023 04:56:50 -0400
+X-MC-Unique: jpXAkM-PPGWN3xbU72DuTQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-510dc46e130so2915603a12.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 01:56:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684486526; x=1687078526;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qfGM0F2DqFrM2zvwPeiLpuDTBpUpEhdxAZI4NWajA+M=;
- b=O1FLdafKajn6buFnECAGwQKeTzdcJWFeoCJ8B4sO+F+Vp0ipNqF3j5dSHitBcjOvhu
- o07RhJ8OHJbZAED26wXImuylQc5dxU3YgpXis3b742v1pm1oou9GrsHkDsKddQO1OFJe
- UMFwgRwI5+3TOVq8S5Y0zQldLnrxJ3+avGD3zMog6xUOj5HByBWDeDiDpXqV+4LL76Yf
- 7qq5AygUlJlPSLCCwiSYzov54XH65KBrH26oZ8L5GKBaVMOJCjMhHidUeml2f3O7+bLB
- 6BFhAiK3Xi/ht8pliSugk5SlyZHWuXaG2AZbYVc/c993m8mEF6Gkq0rcKdP73ealabYQ
- CVZQ==
-X-Gm-Message-State: AC+VfDzW4f6fopaI9fXDfuEe3duSDuiWLrp7a1k5S8u2hUqESJN1fu+b
- ImRMmjRf85NNXOPvVPl8GZZJVCc3ajvUt4n8vQwZLnKP1nKnNqig6F4SARM7DN+2NpCg391PtHq
- 6OwkbBXSxEEQPw+c=
-X-Received: by 2002:a2e:7a15:0:b0:2a8:ac95:be75 with SMTP id
- v21-20020a2e7a15000000b002a8ac95be75mr445395ljc.42.1684486526175; 
- Fri, 19 May 2023 01:55:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5wCC9XiDiAtvWoYkLTRr2uhNt+/1ay9GyN1AKSCOtK0nqCXgZG40E7xmdd6tj3cbqXOX5D/Q==
-X-Received: by 2002:a2e:7a15:0:b0:2a8:ac95:be75 with SMTP id
- v21-20020a2e7a15000000b002a8ac95be75mr445387ljc.42.1684486525806; 
- Fri, 19 May 2023 01:55:25 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:175:3e4d:6703:27b9:6f74:5282])
+ d=1e100.net; s=20221208; t=1684486609; x=1687078609;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QJ5uXtbHBSXEriPm76vUF3RNo0wtbvx0i6MBijRshIc=;
+ b=asiZrQqrl59M2hjXWjRtUUzDIR9/k19UHCHEG75W+4vxkwkYX6XlqHRNpnFHbFSW2K
+ Nvf16I3CEf68+3DfMgX0oVoQnQMckO0FLibmlsbhG+wNvPbRvDQv9z+nF84ly9nTL68/
+ bzDHfrnZbiJOU14hbFTKBVRtRsiP7LvBkbEBbMAUqpJxYRJfEZxTdavRIh44vD4QCJ2C
+ vIbH4G/ETqhrmaqPrty5qgVohr6Hxjwk/NkDpEPZNTXTImWM9ZOYp2axMytO8V9K0d8b
+ AyqdVc/j89dF4KLuBG7w2ss+tKj1E7NwJCI8k4cQKuv+glskRqx2fSnLfopgx6CRq9ha
+ uVOQ==
+X-Gm-Message-State: AC+VfDxYgUF5DLVlw9ST8eXgxJReUyaH7o54xi7HCi/z3uSZIqgdtHmE
+ cLF68P7XPDxw+PlOCQdga5Q9rG9UAAhn9vzqmgEum7O91WOT3nqVGi+A6POw+VywgkcaczmopgB
+ HPMRtdYAuWNG+FvJbVFKpZ8lJys7v9tqOkK2r3vSABFS828e6JGNJFF6c/ZVOA/dqJvniMwYhlw
+ M=
+X-Received: by 2002:aa7:d38c:0:b0:510:d6b3:a1ac with SMTP id
+ x12-20020aa7d38c000000b00510d6b3a1acmr1198246edq.13.1684486609220; 
+ Fri, 19 May 2023 01:56:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6lRmlO6u9aMzMepDA7p9I9Ze6lXaY7anJrWkky0zVHzvkycIfZ9LaaKK5D0RiY04c+zs0N0Q==
+X-Received: by 2002:aa7:d38c:0:b0:510:d6b3:a1ac with SMTP id
+ x12-20020aa7d38c000000b00510d6b3a1acmr1198229edq.13.1684486608738; 
+ Fri, 19 May 2023 01:56:48 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- c16-20020a2e6810000000b002ac88e29049sm717856lja.43.2023.05.19.01.55.21
+ u24-20020aa7d0d8000000b00510da8aa2c6sm1433659edo.69.2023.05.19.01.56.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 01:55:25 -0700 (PDT)
-Date: Fri, 19 May 2023 04:55:18 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?iso-8859-1?Q?Herv=E9?= Poussineau <hpoussin@reactos.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 1/2] hw/i386/pc: Create RTC controllers in south bridges
-Message-ID: <20230519045450-mutt-send-email-mst@kernel.org>
-References: <20230519084734.220480-1-shentey@gmail.com>
- <20230519084734.220480-2-shentey@gmail.com>
+ Fri, 19 May 2023 01:56:48 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, berrange@redhat.com,
+ richard.henderson@linaro.org, peter.maydell@linaro.org
+Subject: [PATCH v2 0/6] meson: use subprojects for bundled projects
+Date: Fri, 19 May 2023 10:56:40 +0200
+Message-Id: <20230519085647.1104775-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230519084734.220480-2-shentey@gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,226 +98,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 19, 2023 at 10:47:33AM +0200, Bernhard Beschow wrote:
-> Just like in the real hardware (and in PIIX4), create the RTC
-> controllers in the south bridges.
-> 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Message-Id: <20221022150508.26830-11-shentey@gmail.com>
+QEMU bundles a copy of dtc and keycodemapdb.  They both support meson,
+so we can run their build system via subproject() instead of hardcoding
+their contents.
 
-Please do not include this Message-Id field when you post.
+In fact, now that QEMU's configure script knows how to install missing
+Python dependencies, we can replace submodules altogether with .wrap
+files, which have several advantages, either immediate or potential:
 
-> ---
->  include/hw/southbridge/ich9.h |  2 ++
->  include/hw/southbridge/piix.h |  3 +++
->  hw/i386/pc.c                  | 12 +++++++++++-
->  hw/i386/pc_piix.c             |  8 ++++++++
->  hw/i386/pc_q35.c              |  2 ++
->  hw/isa/lpc_ich9.c             |  8 ++++++++
->  hw/isa/piix3.c                | 15 +++++++++++++++
->  hw/isa/Kconfig                |  2 ++
->  8 files changed, 51 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
-> index 7004eecbf9..fd01649d04 100644
-> --- a/include/hw/southbridge/ich9.h
-> +++ b/include/hw/southbridge/ich9.h
-> @@ -6,6 +6,7 @@
->  #include "hw/intc/ioapic.h"
->  #include "hw/pci/pci.h"
->  #include "hw/pci/pci_device.h"
-> +#include "hw/rtc/mc146818rtc.h"
->  #include "exec/memory.h"
->  #include "qemu/notify.h"
->  #include "qom/object.h"
-> @@ -30,6 +31,7 @@ struct ICH9LPCState {
->      */
->      uint8_t irr[PCI_SLOT_MAX][PCI_NUM_PINS];
->  
-> +    MC146818RtcState rtc;
->      APMState apm;
->      ICH9LPCPMRegs pm;
->      uint32_t sci_level; /* track sci level */
-> diff --git a/include/hw/southbridge/piix.h b/include/hw/southbridge/piix.h
-> index 0bf48e936d..a840340308 100644
-> --- a/include/hw/southbridge/piix.h
-> +++ b/include/hw/southbridge/piix.h
-> @@ -13,6 +13,7 @@
->  #define HW_SOUTHBRIDGE_PIIX_H
->  
->  #include "hw/pci/pci_device.h"
-> +#include "hw/rtc/mc146818rtc.h"
->  
->  /* PIRQRC[A:D]: PIRQx Route Control Registers */
->  #define PIIX_PIRQCA 0x60
-> @@ -51,6 +52,8 @@ struct PIIXState {
->      /* This member isn't used. Just for save/load compatibility */
->      int32_t pci_irq_levels_vmstate[PIIX_NUM_PIRQS];
->  
-> +    MC146818RtcState rtc;
-> +
->      /* Reset Control Register contents */
->      uint8_t rcr;
->  
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index d761c8c775..2bf7de694e 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -1318,7 +1318,17 @@ void pc_basic_device_init(struct PCMachineState *pcms,
->          pit_alt_irq = qdev_get_gpio_in(hpet, HPET_LEGACY_PIT_INT);
->          rtc_irq = qdev_get_gpio_in(hpet, HPET_LEGACY_RTC_INT);
->      }
-> -    *rtc_state = ISA_DEVICE(mc146818_rtc_init(isa_bus, 2000, rtc_irq));
-> +
-> +    if (rtc_irq) {
-> +        qdev_connect_gpio_out(DEVICE(*rtc_state), 0, rtc_irq);
-> +    } else {
-> +        uint32_t irq = object_property_get_uint(OBJECT(*rtc_state),
-> +                                                "irq",
-> +                                                &error_fatal);
-> +        isa_connect_gpio_out(*rtc_state, 0, irq);
-> +    }
-> +    object_property_add_alias(OBJECT(pcms), "rtc-time", OBJECT(*rtc_state),
-> +                              "date");
->  
->  #ifdef CONFIG_XEN_EMU
->      if (xen_mode == XEN_EMULATE) {
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index 66a849d279..682f51577c 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -32,6 +32,7 @@
->  #include "hw/i386/pc.h"
->  #include "hw/i386/apic.h"
->  #include "hw/pci-host/i440fx.h"
-> +#include "hw/rtc/mc146818rtc.h"
->  #include "hw/southbridge/piix.h"
->  #include "hw/display/ramfb.h"
->  #include "hw/firmware/smbios.h"
-> @@ -240,10 +241,17 @@ static void pc_init1(MachineState *machine,
->          piix3->pic = x86ms->gsi;
->          piix3_devfn = piix3->dev.devfn;
->          isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(piix3), "isa.0"));
-> +        rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
-> +                                                             "rtc"));
->      } else {
->          pci_bus = NULL;
->          isa_bus = isa_bus_new(NULL, get_system_memory(), system_io,
->                                &error_abort);
-> +
-> +        rtc_state = isa_new(TYPE_MC146818_RTC);
-> +        qdev_prop_set_int32(DEVICE(rtc_state), "base_year", 2000);
-> +        isa_realize_and_unref(rtc_state, isa_bus, &error_fatal);
-> +
->          i8257_dma_init(isa_bus, 0);
->          pcms->hpet_enabled = false;
->      }
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index f02919d92c..2bbd0d02df 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -242,6 +242,8 @@ static void pc_q35_init(MachineState *machine)
->                        x86_machine_is_smm_enabled(x86ms));
->      pci_realize_and_unref(lpc, host_bus, &error_fatal);
->  
-> +    rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
-> +
->      object_property_add_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
->                               TYPE_HOTPLUG_HANDLER,
->                               (Object **)&x86ms->acpi_dev,
-> diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-> index 9714b0001e..9c47a2f6c7 100644
-> --- a/hw/isa/lpc_ich9.c
-> +++ b/hw/isa/lpc_ich9.c
-> @@ -658,6 +658,8 @@ static void ich9_lpc_initfn(Object *obj)
->      static const uint8_t acpi_enable_cmd = ICH9_APM_ACPI_ENABLE;
->      static const uint8_t acpi_disable_cmd = ICH9_APM_ACPI_DISABLE;
->  
-> +    object_initialize_child(obj, "rtc", &lpc->rtc, TYPE_MC146818_RTC);
-> +
->      object_property_add_uint8_ptr(obj, ACPI_PM_PROP_SCI_INT,
->                                    &lpc->sci_gsi, OBJ_PROP_FLAG_READ);
->      object_property_add_uint8_ptr(OBJECT(lpc), ACPI_PM_PROP_ACPI_ENABLE_CMD,
-> @@ -723,6 +725,12 @@ static void ich9_lpc_realize(PCIDevice *d, Error **errp)
->  
->      i8257_dma_init(isa_bus, 0);
->  
-> +    /* RTC */
-> +    qdev_prop_set_int32(DEVICE(&lpc->rtc), "base_year", 2000);
-> +    if (!qdev_realize(DEVICE(&lpc->rtc), BUS(isa_bus), errp)) {
-> +        return;
-> +    }
-> +
->      pci_bus_irqs(pci_bus, ich9_lpc_set_irq, d, ICH9_LPC_NB_PIRQS);
->      pci_bus_map_irqs(pci_bus, ich9_lpc_map_irq);
->      pci_bus_set_route_irq_fn(pci_bus, ich9_route_intx_pin_to_irq);
-> diff --git a/hw/isa/piix3.c b/hw/isa/piix3.c
-> index a9cb39bf21..f9103ea45a 100644
-> --- a/hw/isa/piix3.c
-> +++ b/hw/isa/piix3.c
-> @@ -28,6 +28,7 @@
->  #include "hw/dma/i8257.h"
->  #include "hw/southbridge/piix.h"
->  #include "hw/irq.h"
-> +#include "hw/qdev-properties.h"
->  #include "hw/isa/isa.h"
->  #include "hw/xen/xen.h"
->  #include "sysemu/runstate.h"
-> @@ -301,6 +302,12 @@ static void pci_piix3_realize(PCIDevice *dev, Error **errp)
->                                          PIIX_RCR_IOPORT, &d->rcr_mem, 1);
->  
->      i8257_dma_init(isa_bus, 0);
-> +
-> +    /* RTC */
-> +    qdev_prop_set_int32(DEVICE(&d->rtc), "base_year", 2000);
-> +    if (!qdev_realize(DEVICE(&d->rtc), BUS(isa_bus), errp)) {
-> +        return;
-> +    }
->  }
->  
->  static void build_pci_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
-> @@ -324,6 +331,13 @@ static void build_pci_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
->      qbus_build_aml(bus, scope);
->  }
->  
-> +static void pci_piix3_init(Object *obj)
-> +{
-> +    PIIX3State *d = PIIX3_PCI_DEVICE(obj);
-> +
-> +    object_initialize_child(obj, "rtc", &d->rtc, TYPE_MC146818_RTC);
-> +}
-> +
->  static void pci_piix3_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -350,6 +364,7 @@ static const TypeInfo piix3_pci_type_info = {
->      .name = TYPE_PIIX3_PCI_DEVICE,
->      .parent = TYPE_PCI_DEVICE,
->      .instance_size = sizeof(PIIX3State),
-> +    .instance_init = pci_piix3_init,
->      .abstract = true,
->      .class_init = pci_piix3_class_init,
->      .interfaces = (InterfaceInfo[]) {
-> diff --git a/hw/isa/Kconfig b/hw/isa/Kconfig
-> index 0156a66889..c10cbc5fc1 100644
-> --- a/hw/isa/Kconfig
-> +++ b/hw/isa/Kconfig
-> @@ -35,6 +35,7 @@ config PIIX3
->      bool
->      select I8257
->      select ISA_BUS
-> +    select MC146818RTC
->  
->  config PIIX4
->      bool
-> @@ -79,3 +80,4 @@ config LPC_ICH9
->      select I8257
->      select ISA_BUS
->      select ACPI_ICH9
-> +    select MC146818RTC
-> -- 
-> 2.40.1
+* option parsing and downloading is delegated to meson
+
+* the commit is stored in a text file instead of a magic entry in the
+  git tree object, and can be a branch name or a version number as well
+
+* we could stop shipping external dependencies that are only used as a
+  fallback, but not break compilation on platforms that lack them.
+  For example it may make sense to download dtc at build time,
+  controlled by --enable-download, even when building from a tarball.
+  This is _not_ done in this patch series, but Marc-André has tried
+  it before[1].
+
+* we could also add .wrap files for other dependencies that are missing
+  on the GCC compile farm machines.  People who build on Windows might also
+  enjoy getting the mandatory dependencies (pixman, zlib, glib, possibly
+  SDL?) via wraps.
+
+It is possible to use subprojects also for berkeley-softfloat-3
+and berkeley-testfloat-3.  This would require moving the corresponding
+parts of tests/fp/meson.build to an overlay file.
+
+Paolo
+
+[1] https://patchew.org/QEMU/20230302131848.1527460-1-marcandre.lureau@redhat.com/20230302131848.1527460-5-marcandre.lureau@redhat.com/
+
+
+Paolo Bonzini (6):
+  remove remaining traces of meson submodule
+  meson: simplify logic for -Dfdt
+  meson: use subproject for internal libfdt
+  meson: use subproject for keycodemapdb
+  configure: rename --enable-pypi to --enable-download, control
+    subprojects too
+  meson: subprojects: replace submodules with wrap files
+
+ .gitignore                          |  2 -
+ .gitlab-ci.d/buildtest-template.yml |  5 +-
+ .gitmodules                         |  9 ----
+ configure                           | 71 ++++++-----------------------
+ dtc                                 |  1 -
+ meson.build                         | 56 ++++++-----------------
+ meson_options.txt                   |  1 +
+ scripts/archive-source.sh           | 11 ++++-
+ scripts/make-release                |  5 ++
+ subprojects/.gitignore              |  6 +++
+ subprojects/dtc.wrap                |  4 ++
+ subprojects/keycodemapdb.wrap       |  4 ++
+ subprojects/libvfio-user            |  1 -
+ subprojects/libvfio-user.wrap       |  4 ++
+ ui/keycodemapdb                     |  1 -
+ ui/meson.build                      |  8 ++--
+ 16 files changed, 68 insertions(+), 121 deletions(-)
+ delete mode 160000 dtc
+ create mode 100644 subprojects/.gitignore
+ create mode 100644 subprojects/dtc.wrap
+ create mode 100644 subprojects/keycodemapdb.wrap
+ delete mode 160000 subprojects/libvfio-user
+ create mode 100644 subprojects/libvfio-user.wrap
+ delete mode 160000 ui/keycodemapdb
+
+-- 
+2.40.1
 
 
