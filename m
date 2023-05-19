@@ -2,72 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24687708FF5
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 08:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9EB709021
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 09:07:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pztmW-0001yH-A3; Fri, 19 May 2023 02:40:04 -0400
+	id 1pzuBe-0007SD-Hf; Fri, 19 May 2023 03:06:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1pztmU-0001y0-Ej; Fri, 19 May 2023 02:40:02 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1pztmS-0001J9-Hw; Fri, 19 May 2023 02:40:02 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-966287b0f72so535386366b.0; 
- Thu, 18 May 2023 23:39:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684478398; x=1687070398;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=XkHBfqXijCuSOiW+CSML581/q7hUOmAL1bzpkIvLh0o=;
- b=ZumwCGD6d3J15NWxYI+SXQ9Ryt0ndJ6tYBtSLX0ITlJcEd0RWP6fDTP743Elj6tsYB
- oXUOR2r2vUoUq4cUNq+13gIf+pPkzIqX+gKhMvNfDd4eSP5e7yabGBXszpBDXtMjfe24
- vjRDpbRi8y3N+Z2wi0CPy0X5S7pAEuA9jnc1r/8sVo33M1grzNhlI92cEc3lazRqg6RO
- nyipWL2a36DyC/EU+vLs99zBnvVjMP9TwB5hyea3h8hWYm4b7f01iFqB1pvCDcExxHYb
- XdudZtmC9V/u6l/3+o7bd7mwGvNieGs2Tc/DjgDNh972mkU8SCi0OmwIhN/mE1oWZ0/n
- pxWA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzuBY-0007QP-SO
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 03:05:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1pzuBW-0005gs-Ad
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 03:05:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684479953;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=M0qGAB7USPM54ODgaWUWL5AVe/iVbhTHkCRpc8l4VTA=;
+ b=bRRvG+bm5u7+QcKS+iPufOVXcQjZ3C4INz4vKt2BIMOQCDBlDxrVFwtoR6rvjcN2HWZBSu
+ 6Pn74ClanWsRn+FMth1XXNDQfUwnFn18gS8d3+1bhXkCmH97s6ca77V5ifh/ltiA52cG5Q
+ JT6ylo6I2S2xjsppd3XuejjVQnk19ks=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-382-hJ2uF_vYNZGaWThIHRLL_g-1; Fri, 19 May 2023 03:05:51 -0400
+X-MC-Unique: hJ2uF_vYNZGaWThIHRLL_g-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4edbdd8268bso1978602e87.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 00:05:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684478398; x=1687070398;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XkHBfqXijCuSOiW+CSML581/q7hUOmAL1bzpkIvLh0o=;
- b=BbPCFdRT0SZkpwp4cf8YzAIxiYKJMGLP2DpUQi+ji0/6xUR1s29SeZROXQFI52ZKon
- fp8AeN2cYqnOBKl5qtbunAZ6ujDqPE30x606P7FZeXkuPdYhDsIsEywcgP93NmIlJ73s
- lGCzvLokKCt5wXgocCz66eFAm4OdJnmebZYYWfjrmaF9Qg0ITdm0sbJTVrcqQrSSjX+4
- mFCc2GL3a0swC8KrhZRQG5wobELV3FN5yN6YM5RpQm/MclYOQTxQYcVg0kcf9/43rkIJ
- Wwn0t6YYEQbDMq3ydEpsYiALXYzWa0V7h2XPk7hboxAw41lQZJfJ7rLA2L452h736WbZ
- ITQA==
-X-Gm-Message-State: AC+VfDy1XNuL8hdCt10AIuHDYOpMnujSwd7RQ2GBW25ZRBQ4aeVMfwnw
- fI9J9RmpGDJGcZxzaCC28A5fwHgrJFItWKwMHn8TgtNuSUhgTg==
-X-Google-Smtp-Source: ACHHUZ7wsk/CAE9Gn3PJQkNDhVoOZDYwy41H9YRvrnkRJzmiY+f6aoIHcS6rEpnE7GYf3GESNd8rFsh1u/VSP0wyE50=
-X-Received: by 2002:a17:906:6a0d:b0:96a:928c:d391 with SMTP id
- qw13-20020a1709066a0d00b0096a928cd391mr781295ejc.4.1684478397838; Thu, 18 May
- 2023 23:39:57 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684479948; x=1687071948;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M0qGAB7USPM54ODgaWUWL5AVe/iVbhTHkCRpc8l4VTA=;
+ b=a5zgvCU2BmcPpeIRh9e8XXtZM518LqCPjabOCTmPp6iU79tFMzXUBmsLv6UVsQxp1v
+ 4cd1+rEP9aaNbi9o6b7sJlCI6SxxPX3QsKE1aBwx9p11Y8vlKVXK3fkjk9ux948goF43
+ E3dhGlrZvVKErzWMjWJwBKZukvsiZrqoDwfTepiurv3CJIwbJ3IiLmezxYr2E74Rsa/x
+ 4OLVbOsAXSAhyyaNB/4HkKfucMpmQfqik3ib5JNaXOePS//GLM5WtuGn2nq4CqqsXqkx
+ 93sEybxW66O6DV8PFW6Eepr3u2HrvqxHzzFDysezVuIMl64KBnyaGnXpSShxQOc++xwf
+ /SZQ==
+X-Gm-Message-State: AC+VfDxWhn3ea/OiYFFD53zC66n0AlYZqaYE6CMYbA/ehkRwY5fEbq4g
+ 8Y9V7J/kogGPUqT85/Nl00aQx/Ndh6KqdvJnCHDIq9VWxa/3BAdfLZN7TGBCepIferMNvmtjKS8
+ hwVJCY56PTpk4G/Y=
+X-Received: by 2002:ac2:5a4d:0:b0:4ed:cb37:7d8c with SMTP id
+ r13-20020ac25a4d000000b004edcb377d8cmr416264lfn.67.1684479948171; 
+ Fri, 19 May 2023 00:05:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6cU4cnan/0cKk4e5auz9IV17m/lTaoN5Aq+j334HaBu/UQzc/6Gt22HWPqxbuP7LFdr0P5Rg==
+X-Received: by 2002:ac2:5a4d:0:b0:4ed:cb37:7d8c with SMTP id
+ r13-20020ac25a4d000000b004edcb377d8cmr416249lfn.67.1684479947771; 
+ Fri, 19 May 2023 00:05:47 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:175:3e4d:6703:27b9:6f74:5282])
+ by smtp.gmail.com with ESMTPSA id
+ 24-20020ac24858000000b004cb43eb09dfsm496899lfy.123.2023.05.19.00.05.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 May 2023 00:05:47 -0700 (PDT)
+Date: Fri, 19 May 2023 03:05:40 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, Fan Ni <fan.ni@samsung.com>,
+ linux-cxl@vger.kernel.org, linuxarm@huawei.com,
+ Ira Weiny <ira.weiny@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Dave Jiang <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v5 6/6] hw/cxl: Add clear poison mailbox command support.
+Message-ID: <20230519030515-mutt-send-email-mst@kernel.org>
+References: <20230423162013.4535-1-Jonathan.Cameron@huawei.com>
+ <20230423162013.4535-7-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-References: <20230519062137.1251741-1-tommy.wu@sifive.com>
-In-Reply-To: <20230519062137.1251741-1-tommy.wu@sifive.com>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Fri, 19 May 2023 08:39:46 +0200
-Message-ID: <CAJy5ezoRZOqzWDe_ZAq_TF2k=9ZCXZkp8Ea2iaxoRV=yw+tGNw@mail.gmail.com>
-Subject: Re: [PATCH] hw/dma/xilinx_axidma: Check DMASR.HALTED to prevent
- infinite loop.
-To: Tommy Wu <tommy.wu@sifive.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000088f95505fc0630f7"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-ej1-x62b.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230423162013.4535-7-Jonathan.Cameron@huawei.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,180 +106,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000088f95505fc0630f7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, May 19, 2023 at 8:21=E2=80=AFAM Tommy Wu <tommy.wu@sifive.com> wrot=
-e:
-
-> When we receive a packet from the xilinx_axienet and then try to s2mem
-> through the xilinx_axidma, if the descriptor ring buffer is full in the
-> xilinx axidma driver, we=E2=80=99ll assert the DMASR.HALTED in the
-> function : stream_process_s2mem and return 0. In the end, we=E2=80=99ll b=
-e stuck in
-> an infinite loop in axienet_eth_rx_notify.
->
-> This patch checks the DMASR.HALTED state when we try to push data
-> from xilinx axi-enet to xilinx axi-dma. When the DMASR.HALTED is asserted=
-,
-> we will not keep pushing the data and then prevent the infinte loop.
->
-> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+On Sun, Apr 23, 2023 at 05:20:13PM +0100, Jonathan Cameron wrote:
+> Current implementation is very simple so many of the corner
+> cases do not exist (e.g. fragmenting larger poison list entries)
+> 
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  hw/dma/xilinx_axidma.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
-> index 6030c76435..12c90267df 100644
-> --- a/hw/dma/xilinx_axidma.c
-> +++ b/hw/dma/xilinx_axidma.c
-> @@ -168,6 +168,11 @@ static inline int stream_idle(struct Stream *s)
->      return !!(s->regs[R_DMASR] & DMASR_IDLE);
+> v5:
+> - Much simpler identification of the entry to modify (Ira)
+> - Use CXL_CACHE_LINE_SIZE instead of 64. (Philippe)
+> - Use memory_region_size() instead of accessing directly. (Michael)
+> - Rename unused len parameter len_unused to make it clear that (Fan)
+>   for a fixed length input payload, this parameter has already been
+>   checked so the function need not do anything with it.
+> ---
+>  hw/cxl/cxl-mailbox-utils.c  | 82 +++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3.c          | 37 +++++++++++++++++
+>  include/hw/cxl/cxl_device.h |  1 +
+>  3 files changed, 120 insertions(+)
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 6c476ad7f4..e3401b6be8 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -65,6 +65,7 @@ enum {
+>      MEDIA_AND_POISON = 0x43,
+>          #define GET_POISON_LIST        0x0
+>          #define INJECT_POISON          0x1
+> +        #define CLEAR_POISON           0x2
+>  };
+>  
+>  /* 8.2.8.4.5.1 Command Return Codes */
+> @@ -512,6 +513,85 @@ static CXLRetCode cmd_media_inject_poison(struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
 >  }
->
-> +static inline int stream_halted(struct Stream *s)
->
-
-At some point we should probably change all of these helpers to return
-booleans...
-Anyway, this fix looks good to me:
-
-Reviewed-by: Edgar E. Iglesias <edgar@zeroasic.com>
-
-
-
-
+>  
+> +static CXLRetCode cmd_media_clear_poison(struct cxl_cmd *cmd,
+> +                                         CXLDeviceState *cxl_dstate,
+> +                                         uint16_t *len_unused)
 > +{
-> +    return !!(s->regs[R_DMASR] & DMASR_HALTED);
+> +    CXLType3Dev *ct3d = container_of(cxl_dstate, CXLType3Dev, cxl_dstate);
+> +    CXLPoisonList *poison_list = &ct3d->poison_list;
+> +    CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
+> +    struct clear_poison_pl {
+> +        uint64_t dpa;
+> +        uint8_t data[64];
+> +    };
+> +    CXLPoison *ent;
+> +    uint64_t dpa;
+> +
+> +    struct clear_poison_pl *in = (void *)cmd->payload;
+> +
+> +    dpa = ldq_le_p(&in->dpa);
+> +    if (dpa + CXL_CACHE_LINE_SIZE > cxl_dstate->mem_size) {
+> +        return CXL_MBOX_INVALID_PA;
+> +    }
+> +
+> +    /* Clearing a region with no poison is not an error so always do so */
+> +    if (cvc->set_cacheline) {
+> +        if (!cvc->set_cacheline(ct3d, dpa, in->data)) {
+> +            return CXL_MBOX_INTERNAL_ERROR;
+> +        }
+> +    }
+> +
+> +    QLIST_FOREACH(ent, poison_list, node) {
+> +        /*
+> +         * Test for contained in entry. Simpler than general case
+> +         * as clearing 64 bytes and entries 64 byte aligned
+> +         */
+> +        if ((dpa >= ent->start) && (dpa < ent->start + ent->length)) {
+> +            break;
+> +        }
+> +    }
+> +    if (!ent) {
+> +        return CXL_MBOX_SUCCESS;
+> +    }
+> +
+> +    QLIST_REMOVE(ent, node);
+> +    ct3d->poison_list_cnt--;
+> +
+> +    if (dpa > ent->start) {
+> +        CXLPoison *frag;
+> +        /* Cannot overflow as replacing existing entry */
+> +
+> +        frag = g_new0(CXLPoison, 1);
+> +
+> +        frag->start = ent->start;
+> +        frag->length = dpa - ent->start;
+> +        frag->type = ent->type;
+> +
+> +        QLIST_INSERT_HEAD(poison_list, frag, node);
+> +        ct3d->poison_list_cnt++;
+> +    }
+> +
+> +    if (dpa + CXL_CACHE_LINE_SIZE < ent->start + ent->length) {
+> +        CXLPoison *frag;
+> +
+> +        if (ct3d->poison_list_cnt == CXL_POISON_LIST_LIMIT) {
+> +            cxl_set_poison_list_overflowed(ct3d);
+> +        } else {
+> +            frag = g_new0(CXLPoison, 1);
+> +
+> +            frag->start = dpa + CXL_CACHE_LINE_SIZE;
+> +            frag->length = ent->start + ent->length - frag->start;
+> +            frag->type = ent->type;
+> +            QLIST_INSERT_HEAD(poison_list, frag, node);
+> +            ct3d->poison_list_cnt++;
+> +        }
+> +    }
+> +    /* Any fragments have been added, free original entry */
+> +    g_free(ent);
+> +
+> +    return CXL_MBOX_SUCCESS;
 > +}
 > +
->  static void stream_reset(struct Stream *s)
+>  #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+>  #define IMMEDIATE_DATA_CHANGE (1 << 2)
+>  #define IMMEDIATE_POLICY_CHANGE (1 << 3)
+> @@ -543,6 +623,8 @@ static struct cxl_cmd cxl_cmd_set[256][256] = {
+>          cmd_media_get_poison_list, 16, 0 },
+>      [MEDIA_AND_POISON][INJECT_POISON] = { "MEDIA_AND_POISON_INJECT_POISON",
+>          cmd_media_inject_poison, 8, 0 },
+> +    [MEDIA_AND_POISON][CLEAR_POISON] = { "MEDIA_AND_POISON_CLEAR_POISON",
+> +        cmd_media_clear_poison, 72, 0 },
+>  };
+>  
+>  void cxl_process_mailbox(CXLDeviceState *cxl_dstate)
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index ab600735eb..a247f506b7 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -947,6 +947,42 @@ static void set_lsa(CXLType3Dev *ct3d, const void *buf, uint64_t size,
+>       */
+>  }
+>  
+> +static bool set_cacheline(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data)
+> +{
+> +    MemoryRegion *vmr = NULL, *pmr = NULL;
+> +    AddressSpace *as;
+> +
+> +    if (ct3d->hostvmem) {
+> +        vmr = host_memory_backend_get_memory(ct3d->hostvmem);
+> +    }
+> +    if (ct3d->hostpmem) {
+> +        pmr = host_memory_backend_get_memory(ct3d->hostpmem);
+> +    }
+> +
+> +    if (!vmr && !pmr) {
+> +        return false;
+> +    }
+> +
+> +    if (dpa_offset + 64 > int128_get64(ct3d->cxl_dstate.mem_size)) {
+> +        return false;
+> +    }
+
+Fails build:
+
+https://gitlab.com/mstredhat/qemu/-/jobs/4313193004
+
+
+> +
+> +    if (vmr) {
+> +        if (dpa_offset < memory_region_size(vmr)) {
+> +            as = &ct3d->hostvmem_as;
+> +        } else {
+> +            as = &ct3d->hostpmem_as;
+> +            dpa_offset -= memory_region_size(vmr);
+> +        }
+> +    } else {
+> +        as = &ct3d->hostpmem_as;
+> +    }
+> +
+> +    address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, &data,
+> +                        CXL_CACHE_LINE_SIZE);
+> +    return true;
+> +}
+> +
+>  void cxl_set_poison_list_overflowed(CXLType3Dev *ct3d)
 >  {
->      s->regs[R_DMASR] =3D DMASR_HALTED;  /* starts up halted.  */
-> @@ -269,7 +274,7 @@ static void stream_process_mem2s(struct Stream *s,
-> StreamSink *tx_data_dev,
->      uint64_t addr;
->      bool eop;
->
-> -    if (!stream_running(s) || stream_idle(s)) {
-> +    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
->          return;
->      }
->
-> @@ -326,7 +331,7 @@ static size_t stream_process_s2mem(struct Stream *s,
-> unsigned char *buf,
->      unsigned int rxlen;
->      size_t pos =3D 0;
->
-> -    if (!stream_running(s) || stream_idle(s)) {
-> +    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
->          return 0;
->      }
->
-> @@ -407,7 +412,7 @@ xilinx_axidma_data_stream_can_push(StreamSink *obj,
->      XilinxAXIDMAStreamSink *ds =3D XILINX_AXI_DMA_DATA_STREAM(obj);
->      struct Stream *s =3D &ds->dma->streams[1];
->
-> -    if (!stream_running(s) || stream_idle(s)) {
-> +    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
->          ds->dma->notify =3D notify;
->          ds->dma->notify_opaque =3D notify_opaque;
->          return false;
-> --
-> 2.31.1
->
->
+>          ct3d->poison_list_overflowed = true;
+> @@ -1168,6 +1204,7 @@ static void ct3_class_init(ObjectClass *oc, void *data)
+>      cvc->get_lsa_size = get_lsa_size;
+>      cvc->get_lsa = get_lsa;
+>      cvc->set_lsa = set_lsa;
+> +    cvc->set_cacheline = set_cacheline;
+>  }
+>  
+>  static const TypeInfo ct3d_info = {
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 32c234ea91..73328a52cf 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -298,6 +298,7 @@ struct CXLType3Class {
+>                          uint64_t offset);
+>      void (*set_lsa)(CXLType3Dev *ct3d, const void *buf, uint64_t size,
+>                      uint64_t offset);
+> +    bool (*set_cacheline)(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data);
+>  };
+>  
+>  MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+> -- 
+> 2.37.2
 
---00000000000088f95505fc0630f7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Fri, May 19, 2023 at 8:21=E2=80=AFAM T=
-ommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com">tommy.wu@sifive.com</a>&=
-gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
-px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">When =
-we receive a packet from the xilinx_axienet and then try to s2mem<br>
-through the xilinx_axidma, if the descriptor ring buffer is full in the<br>
-xilinx axidma driver, we=E2=80=99ll assert the DMASR.HALTED in the<br>
-function : stream_process_s2mem and return 0. In the end, we=E2=80=99ll be =
-stuck in<br>
-an infinite loop in axienet_eth_rx_notify.<br>
-<br>
-This patch checks the DMASR.HALTED state when we try to push data<br>
-from xilinx axi-enet to xilinx axi-dma. When the DMASR.HALTED is asserted,<=
-br>
-we will not keep pushing the data and then prevent the infinte loop.<br>
-<br>
-Signed-off-by: Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" target=
-=3D"_blank">tommy.wu@sifive.com</a>&gt;<br>
----<br>
-=C2=A0hw/dma/xilinx_axidma.c | 11 ++++++++---<br>
-=C2=A01 file changed, 8 insertions(+), 3 deletions(-)<br>
-<br>
-diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c<br>
-index 6030c76435..12c90267df 100644<br>
---- a/hw/dma/xilinx_axidma.c<br>
-+++ b/hw/dma/xilinx_axidma.c<br>
-@@ -168,6 +168,11 @@ static inline int stream_idle(struct Stream *s)<br>
-=C2=A0 =C2=A0 =C2=A0return !!(s-&gt;regs[R_DMASR] &amp; DMASR_IDLE);<br>
-=C2=A0}<br>
-<br>
-+static inline int stream_halted(struct Stream *s)<br></blockquote><div><br=
-></div><div>At some point we should probably change all of these helpers to=
- return booleans...</div><div>Anyway, this fix looks good to me:</div><div>=
-<br></div><div>Reviewed-by: Edgar E. Iglesias &lt;<a href=3D"mailto:edgar@z=
-eroasic.com">edgar@zeroasic.com</a>&gt;<br></div><div><br></div><div><br></=
-div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
-0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-+{<br>
-+=C2=A0 =C2=A0 return !!(s-&gt;regs[R_DMASR] &amp; DMASR_HALTED);<br>
-+}<br>
-+<br>
-=C2=A0static void stream_reset(struct Stream *s)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0s-&gt;regs[R_DMASR] =3D DMASR_HALTED;=C2=A0 /* starts u=
-p halted.=C2=A0 */<br>
-@@ -269,7 +274,7 @@ static void stream_process_mem2s(struct Stream *s, Stre=
-amSink *tx_data_dev,<br>
-=C2=A0 =C2=A0 =C2=A0uint64_t addr;<br>
-=C2=A0 =C2=A0 =C2=A0bool eop;<br>
-<br>
--=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s)) {<br>
-+=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s) || stream_halted(s)=
-) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-@@ -326,7 +331,7 @@ static size_t stream_process_s2mem(struct Stream *s, un=
-signed char *buf,<br>
-=C2=A0 =C2=A0 =C2=A0unsigned int rxlen;<br>
-=C2=A0 =C2=A0 =C2=A0size_t pos =3D 0;<br>
-<br>
--=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s)) {<br>
-+=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s) || stream_halted(s)=
-) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-@@ -407,7 +412,7 @@ xilinx_axidma_data_stream_can_push(StreamSink *obj,<br>
-=C2=A0 =C2=A0 =C2=A0XilinxAXIDMAStreamSink *ds =3D XILINX_AXI_DMA_DATA_STRE=
-AM(obj);<br>
-=C2=A0 =C2=A0 =C2=A0struct Stream *s =3D &amp;ds-&gt;dma-&gt;streams[1];<br=
->
-<br>
--=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s)) {<br>
-+=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s) || stream_halted(s)=
-) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ds-&gt;dma-&gt;notify =3D notify;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ds-&gt;dma-&gt;notify_opaque =3D notify_o=
-paque;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
--- <br>
-2.31.1<br>
-<br>
-</blockquote></div></div>
-
---00000000000088f95505fc0630f7--
 
