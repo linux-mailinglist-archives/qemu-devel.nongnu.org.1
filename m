@@ -2,90 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE44C7091BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFEC7091E6
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzvaI-00010H-C0; Fri, 19 May 2023 04:35:34 -0400
+	id 1pzvjp-0002TU-7s; Fri, 19 May 2023 04:45:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzvaG-000102-1Y
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:35:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzvaE-0004y5-HS
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:35:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684485329;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cpUUmVRA2tb4K9vWob5lHlCs7a3j7p2lrVdRexEB9bc=;
- b=hLhwQip/nk8ApwcW+R1ffzKmgav3m1YsCtp5yHGerXWAP1Bq7sTr+NMK3iXeKX5F+GZaQN
- daVQw6bfVxdxUKSdC0sHLbhl/Keocgrjldllre+JsAMV29AxHLrm5v3hfYXInfFbMtV+MH
- w/L9mJBaeWryrfPAIV69nc/cUteA//4=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-MT4vjsLfPPeo9w63bPdlHQ-1; Fri, 19 May 2023 04:35:28 -0400
-X-MC-Unique: MT4vjsLfPPeo9w63bPdlHQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-94a356c74e0so330107566b.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 01:35:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684485327; x=1687077327;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cpUUmVRA2tb4K9vWob5lHlCs7a3j7p2lrVdRexEB9bc=;
- b=a0jdo/OL7gJeB19VWPXGGx8MlejVQw7n4+q9rVzEjp4A/q/sF+l3ilPs+YTwESPtyk
- FhagCvne+77WK7llAoGeQgY+y6U0bh/V42dDLLJ1m73AFYi7ARcSEHccW0Qh65omzZMV
- Rqr62bUfJAkvJJ4PafAHWpVJWUhvsS3VUKZTBInPXgMJZzlo+IPk73Av9Ej9f4VgWoC7
- VyOacr2yWG40dJevaQEJ7G+lqe5ucA5C0qp3jBv6VKhUq58BEZ7vuYGtgzJ17u3PC9hE
- 9jl/acNDZX/F+rmK/4PnveoYe1gvKkfVZH3fIcYvYYEG7aG8HOoljQ1H0kmdS+TgTpJd
- cILQ==
-X-Gm-Message-State: AC+VfDx2T558KEeVdhIvUJhYLGqbRdr8/7yI3aYNXXod5pWgTC6hsQMz
- M3KFx9EA9+nThyRIZwdx4MZFK0w+L647b8Tl3CsNRc2DwxL3tY9htgt/Aq4XHuu6cP9t/KMx32S
- AbXJ6W7QvtgVZCU4=
-X-Received: by 2002:a17:907:dac:b0:962:582d:89d7 with SMTP id
- go44-20020a1709070dac00b00962582d89d7mr869308ejc.38.1684485326862; 
- Fri, 19 May 2023 01:35:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7MqCcmKHPUMdGPfywWu7aUm84I5jT2OagdVRya73ypgyxCsYgKNXFBHzrSYlwLRcklATJSsA==
-X-Received: by 2002:a17:907:dac:b0:962:582d:89d7 with SMTP id
- go44-20020a1709070dac00b00962582d89d7mr869292ejc.38.1684485326539; 
- Fri, 19 May 2023 01:35:26 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045?
- ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
- by smtp.googlemail.com with ESMTPSA id
- k1-20020a170906970100b00965e1be3002sm1981218ejx.166.2023.05.19.01.35.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 01:35:26 -0700 (PDT)
-Message-ID: <c30613c6-0521-2b0b-57cd-7c860096cd05@redhat.com>
-Date: Fri, 19 May 2023 10:35:25 +0200
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1pzvjl-0002SS-W7
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:45:22 -0400
+Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1pzvjj-0006OQ-2e
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:45:21 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxX+sSN2dkxR4KAA--.17872S3;
+ Fri, 19 May 2023 16:45:06 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Dx_7MQN2dkAaxpAA--.48143S2; 
+ Fri, 19 May 2023 16:45:05 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
+ alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn
+Subject: [PATCH v1] target/loongarch: Fix the vinsgr2vr/vpickve2gr
+ instructions cause system coredump
+Date: Fri, 19 May 2023 16:45:04 +0800
+Message-Id: <20230519084504.645714-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: gitlab shared runner time expired
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- qemu-devel <qemu-devel@nongnu.org>, Camilla Conte <cconte@redhat.com>
-References: <58b8067d-3136-94ed-f53e-2ccd0feb8c75@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <58b8067d-3136-94ed-f53e-2ccd0feb8c75@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.544, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-CM-TRANSID: AQAAf8Dx_7MQN2dkAaxpAA--.48143S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjvJXoWxuryxZw45XrykCw48Jw4Dtwb_yoWrCr45pw
+ 1Fv34xZr4UZr1fZ3sxK3s0gFn09F4Iy34UtwsY9wn5K3y7tr1DJa1DJ34a9ryxA3WkW3yk
+ tFy8Z3WUWF4DJaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+ bn8Fc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
+ AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF
+ 7I0E14v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7
+ CjxVAFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2
+ zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIEY20_WwAm72CE4IkC6x
+ 0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxF
+ aVAv8VWrMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
+ Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY
+ 6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6x
+ AIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
+ 1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvj4RC_MaUUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,26 +74,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/18/23 21:26, Richard Henderson wrote:
-> So, here we are again, out of runner time with 13 days left in the month.
-> 
-> Did we come to any resolution since last time?  Holding development for 
-> that long just isn't right, so I'll continue processing the hard way -- 
-> testing on private runners and local build machines.
+The vinsgr2vr/vpickve2gr instructions need use get_src/get_dst to get
+gpr registers value, not cpu_gpr[]. The $zero register does not
+have cpu_gpr[0] allocated.
 
-Hi,
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ target/loongarch/insn_trans/trans_lsx.c.inc | 36 ++++++++++++++-------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-Camilla Conte has set up a Kubernetes-based runner on Azure.  If you
-apply the two patches here:
-
-    https://lore.kernel.org/qemu-devel/20230407145252.32955-1-cconte@redhat.com/
-
-You should be able to run pipelines almost as usual, just with
-
-    git push -o ci.variable=RUNNER_TAG=k8s ...
-
-Camilla, please confirm that this is correct.
-
-Paolo
+diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
+index 0be2b5a3a8..312ce0475f 100644
+--- a/target/loongarch/insn_trans/trans_lsx.c.inc
++++ b/target/loongarch/insn_trans/trans_lsx.c.inc
+@@ -3963,96 +3963,108 @@ TRANS(vsetallnez_d, gen_cv, gen_helper_vsetallnez_d)
+ 
+ static bool trans_vinsgr2vr_b(DisasContext *ctx, arg_vr_i *a)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_st8_i64(cpu_gpr[a->rj], cpu_env,
++    tcg_gen_st8_i64(src, cpu_env,
+                     offsetof(CPULoongArchState, fpr[a->vd].vreg.B(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vinsgr2vr_h(DisasContext *ctx, arg_vr_i *a)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_st16_i64(cpu_gpr[a->rj], cpu_env,
++    tcg_gen_st16_i64(src, cpu_env,
+                     offsetof(CPULoongArchState, fpr[a->vd].vreg.H(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vinsgr2vr_w(DisasContext *ctx, arg_vr_i *a)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_st32_i64(cpu_gpr[a->rj], cpu_env,
++    tcg_gen_st32_i64(src, cpu_env,
+                      offsetof(CPULoongArchState, fpr[a->vd].vreg.W(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vinsgr2vr_d(DisasContext *ctx, arg_vr_i *a)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_st_i64(cpu_gpr[a->rj], cpu_env,
++    tcg_gen_st_i64(src, cpu_env,
+                    offsetof(CPULoongArchState, fpr[a->vd].vreg.D(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_b(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld8s_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld8s_i64(dst, cpu_env,
+                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_h(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld16s_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld16s_i64(dst, cpu_env,
+                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_w(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld32s_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld32s_i64(dst, cpu_env,
+                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_d(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld_i64(dst, cpu_env,
+                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_bu(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld8u_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld8u_i64(dst, cpu_env,
+                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_hu(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld16u_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld16u_i64(dst, cpu_env,
+                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_wu(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld32u_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld32u_i64(dst, cpu_env,
+                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld_i64(dst, cpu_env,
+                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
+     return true;
+ }
+-- 
+2.39.1
 
 
