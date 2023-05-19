@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B4F709E93
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 19:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EABB709E98
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 19:54:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q04H8-0006fO-E4; Fri, 19 May 2023 13:52:22 -0400
+	id 1q04J9-0007Qx-EC; Fri, 19 May 2023 13:54:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q04H6-0006fG-ML
- for qemu-devel@nongnu.org; Fri, 19 May 2023 13:52:20 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q04J7-0007QY-Gg
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 13:54:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q04H4-000598-RM
- for qemu-devel@nongnu.org; Fri, 19 May 2023 13:52:20 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q04J6-0005Hj-20
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 13:54:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684518737;
+ s=mimecast20190719; t=1684518863;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=t09Dq5VurfFflxzaTZKr0bStfAuoXbopn2trMkMowLs=;
- b=XmPyKDmKLu1r9z9Vrj5yIEJYKhu9qGS0zSpu8yjDaPtbfhqAdv5VSdRIhKC6hGPCKaZkjz
- Yhwxnfltm5nVxdNedw1X0qjj/DC/orEHyQM/stkukiWrGRVL6Qggjron4D/yPWeGzhGHsF
- 6pmcZniJXenEOtR25VByDLIF0FKn7bU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=33o5hjQaEdvkmpCxUCSk/yN5FVLiyQWRI8/SHXQqshg=;
+ b=Ennzcsz1lL4JnC2Lhsa0M3yv+5E16WpCM4YW2BhD/QDRLWKmIKBLl/Wd29mnKmj/wq6ZeF
+ mFvnhM+WVNBy7Q78aGVXxG1yPzLK6xpfmfIjn3gqgWI8FYe7bnUppiCAFs54AL1gYYEmLP
+ SesgXvQ5fsU15Z0T1V5NUEEyd5r4XWs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-447-Coch_jQmPMm-u27gFS4k9Q-1; Fri, 19 May 2023 13:52:16 -0400
-X-MC-Unique: Coch_jQmPMm-u27gFS4k9Q-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-633-3hn6_CHGP1Ob94b2IMd-YQ-1; Fri, 19 May 2023 13:54:22 -0400
+X-MC-Unique: 3hn6_CHGP1Ob94b2IMd-YQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BCB953C01DB1;
- Fri, 19 May 2023 17:52:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0430811E86;
+ Fri, 19 May 2023 17:54:21 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.57])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AF878492B0A;
- Fri, 19 May 2023 17:52:14 +0000 (UTC)
-Date: Fri, 19 May 2023 12:52:12 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CD0834F2DE7;
+ Fri, 19 May 2023 17:54:20 +0000 (UTC)
+Date: Fri, 19 May 2023 12:54:19 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Hanna Czenczek <hreitz@redhat.com>
 Cc: qemu-devel@nongnu.org, armbru@redhat.com, richard.henderson@linaro.org
-Subject: Re: [PATCH v2 09/19] test-cutils: Add coverage of qemu_strtod
-Message-ID: <uc3cbsxtikz3icrxkct2ry4xowmtxm5fvkrnmfiufjb7xt3ncw@bt2xoq3qqbiu>
+Subject: Re: [PATCH v2 11/19] test-cutils: Refactor qemu_strtosz tests for
+ less boilerplate
+Message-ID: <fzjeahymwhinmdv43qvu6qk4ax6a7rehbk7uaept3qzqsjsnwi@e6rzdep42bxr>
 References: <20230512021033.1378730-1-eblake@redhat.com>
- <20230512021033.1378730-10-eblake@redhat.com>
- <2e230e7f-694f-6b4e-2fcf-7504532581ed@redhat.com>
+ <20230512021033.1378730-12-eblake@redhat.com>
+ <609ab33a-d0fe-d13b-274c-4c517ecd5428@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2e230e7f-694f-6b4e-2fcf-7504532581ed@redhat.com>
+In-Reply-To: <609ab33a-d0fe-d13b-274c-4c517ecd5428@redhat.com>
 User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,72 +79,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 19, 2023 at 05:05:20PM +0200, Hanna Czenczek wrote:
+On Fri, May 19, 2023 at 05:13:52PM +0200, Hanna Czenczek wrote:
 > On 12.05.23 04:10, Eric Blake wrote:
-> > It's hard to tweak code for consistency if I can't prove what will or
-> > won't break from those tweaks.  Time to add unit tests for
-> > qemu_strtod() and qemu_strtod_finite().
+> > No need to copy-and-paste lots of boilerplate per string tested, when
+> > we can consolidate that behind helper functions.  Plus, this adds a
+> > bit more coverage (we now test all strings both with and without
+> > endptr, whereas before some tests skipped the NULL endptr case), which
+> > exposed a SEGFAULT on qemu_strtosz(NULL, NULL, &val) that will be
+> > parsed in an upcoming patch.
+
+s/parsed/fixed/
+
 > > 
-> > Among other things, I wrote a check whether we have C99 semantics for
-> > strtod("0x1") (which MUST parse hex numbers) rather than C89 (which
-> > must stop parsing at 'x').  These days, I suspect that is okay; but if
-> > it fails CI checks, knowing the difference will help us decide what we
-> > want to do about it.  Note that C2x, while not final at the time of
-> > this patch, has been considering whether to make strtol("0b1") parse
-> > as 1 with no slop instead of the C17 parse of 0 with slop "b1"; that
-> > decision may also bleed over to strtod().  But for now, I didn't think
-> > it worth adding unit tests on that front (to strtol or strtod) as
-> > things may still change.
-> > 
-> > Likewise, there are plenty more corner cases of strtod proper that I
-> > don't explicitly test here, but there are enough unit tests added here
-> > that it covers all the branches reached in our wrappers.  In
-> > particular, it demonstrates the difference on when *value is left
-> > uninitialized, which an upcoming patch will normalize.
+> > Note that duplicating boilerplate has one advantage lost here - a
+> > failed test tells you which line number failed; but a helper function
+> > does not show the call stack that reached the failure.  Since we call
+> > the helper more than once within many of the "unit tests", even the
+> > unit test name doesn't point out which call is failing.  But that only
+> > matters when tests fail (they normally pass); at which point I'm
+> > debugging the failures under gdb anyways, so I'm not too worried about
+> > it.
 > > 
 > > Signed-off-by: Eric Blake <eblake@redhat.com>
-> > 
 > > ---
-> > 
-> > v2: Added g_assert_false(signbit(res)) anywhere I used
-> > g_assert_cmpfloat(res,==,0.0); add a test for strtod() hex parsing and
-> > handling of junk after ERANGE, which is major enough that I dropped
-> > R-b
-> > ---
-> >   tests/unit/test-cutils.c | 510 +++++++++++++++++++++++++++++++++++++++
-> >   1 file changed, 510 insertions(+)
-> > 
-> > diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
-> > index d3076c3fec1..1763839a157 100644
-> > --- a/tests/unit/test-cutils.c
-> > +++ b/tests/unit/test-cutils.c
+> >   tests/unit/test-cutils.c | 503 ++++++++-------------------------------
+> >   1 file changed, 100 insertions(+), 403 deletions(-)
 > 
-> [...]
-> 
-> > +static void test_qemu_strtod_erange_junk(void)
-> > +{
-> > +    const char *str;
-> > +    const char *endptr;
-> > +    int err;
-> > +    double res;
-> > +
-> > +    /* EINVAL has priority over ERANGE */
-> 
-> By being placed here, this comment confused me a bit, because the first case
-> does return ERANGE.  So I’d prefer it above the second case, where we
-> actually expect EINVAL, but understand that’s a personal preference.  (Same
-> for the _finite_ variant)
+> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
-The test is what happens when both conditions apply.  For
-qemu_strtod("1e-999junk", &endptr), only ERANGE applies (because
-"junk" is returned in endptr); it is not until
-qemu_strtod("1e-999junk", NULL) where EINVAL is also possible
-(trailing junk takes precedence over underflow).  For qemu_strtosz(),
-I made it a bit more obvious by writing a helper function that shows
-both errno values in a single line, rather than spreading out the
-boilerplate over multiple lines.
-
-Should I do a similar helper function for qemu_strtod[_finite] in v3?
+I'm debating about using similar boilerplate compression for the
+strtol and strtod tests in v3 of the series.  I can definitively state
+that debugging a failed test was harder (had to open up gdb instead of
+just seeing the line number of the failure), but that overall I got to
+focus a lot more on the tests rather than the boilerplate.
 
 -- 
 Eric Blake, Principal Software Engineer
