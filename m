@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393FE708DC3
+	by mail.lfdr.de (Postfix) with ESMTPS id 206D0708DC2
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 04:25:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzpmw-0004Vw-7X; Thu, 18 May 2023 22:24:14 -0400
+	id 1pzpms-0004Tb-Sm; Thu, 18 May 2023 22:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzpml-0004Rk-H0; Thu, 18 May 2023 22:24:05 -0400
+ id 1pzpml-0004Rj-GN; Thu, 18 May 2023 22:24:05 -0400
 Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1pzpmh-0002AI-NH; Thu, 18 May 2023 22:24:02 -0400
+ id 1pzpmi-0002A8-9t; Thu, 18 May 2023 22:24:02 -0400
 Received: from localhost.localdomain (unknown [61.165.33.195])
- by APP-01 (Coremail) with SMTP id qwCowACHjw+x3WZkAeNjAQ--.12622S5;
+ by APP-01 (Coremail) with SMTP id qwCowACHjw+x3WZkAeNjAQ--.12622S6;
  Fri, 19 May 2023 10:23:49 +0800 (CST)
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 To: qemu-riscv@nongnu.org,
@@ -26,32 +26,32 @@ Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
  Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH 3/7] disas/riscv.c: Support disas for Zcm* extensions
-Date: Fri, 19 May 2023 10:19:22 +0800
-Message-Id: <20230519021926.15362-4-liweiwei@iscas.ac.cn>
+Subject: [PATCH 4/7] disas/riscv.c: Support disas for Z*inx extensions
+Date: Fri, 19 May 2023 10:19:23 +0800
+Message-Id: <20230519021926.15362-5-liweiwei@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
 References: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowACHjw+x3WZkAeNjAQ--.12622S5
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZF17Jry3ZFyxAF45Xry7Jrb_yoW8Jw4rpr
- yrur45JrZ8Cay7Ww1fXryUCan8J395KrWIqFyFyw1fWr9xAFW5ur1DJa4aqrykGrWxJF4x
- uw15Grn8AFs7Aa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUPE14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JrWl82xGYIkIc2
- x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
- Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
- 8EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j6F4U
- JwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
- IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
- M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
- kIc2xKxwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
- Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
- CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0
- I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I
- 8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73
- UjIFyTuYvjfUOWrWUUUUU
+X-CM-TRANSID: qwCowACHjw+x3WZkAeNjAQ--.12622S6
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr4DWw1DWw17AFy8Cw1rWFg_yoW8GFyDpa
+ 4rKF93Ar12yFnFg343JF47JrW5A348Kw1UG3yxJay8CrnrJr4vkas3CFWqqFZ5Cas7Ars8
+ uF4vgF4rAFs5AwUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUmY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+ kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+ z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr
+ 1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr1j
+ 6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7V
+ C0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j
+ 6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x0262
+ 8vn2kIc2xKxwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+ Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
+ AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
+ cVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+ IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
+ Ja73UjIFyTuYvjfUOa9-UUUUU
 X-Originating-IP: [61.165.33.195]
 X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
 Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
@@ -77,56 +77,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support disas for Zcmt* instructions only when related extensions
-are supported.
+Support disas for Z*inx instructions only when Zfinx extension is supported.
 
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 ---
- disas/riscv.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ disas/riscv.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/disas/riscv.c b/disas/riscv.c
-index 729ab684da..9e01810eef 100644
+index 9e01810eef..a370bac6ef 100644
 --- a/disas/riscv.c
 +++ b/disas/riscv.c
-@@ -2501,7 +2501,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 op = rv_op_c_sqsp;
-             } else {
-                 op = rv_op_c_fsdsp;
--                if (((inst >> 12) & 0b01)) {
-+                if (dec->cfg->ext_zcmp && ((inst >> 12) & 0b01)) {
-                     switch ((inst >> 8) & 0b01111) {
-                     case 8:
-                         if (((inst >> 4) & 0b01111) >= 4) {
-@@ -2527,16 +2527,20 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 } else {
-                     switch ((inst >> 10) & 0b011) {
-                     case 0:
--                        if (((inst >> 2) & 0xFF) >= 32) {
--                            op = rv_op_cm_jalt;
--                        } else {
--                            op = rv_op_cm_jt;
-+                        if (dec->cfg->ext_zcmt) {
-+                            if (((inst >> 2) & 0xFF) >= 32) {
-+                                op = rv_op_cm_jalt;
-+                            } else {
-+                                op = rv_op_cm_jt;
-+                            }
-                         }
-                         break;
-                     case 3:
--                        switch ((inst >> 5) & 0b011) {
--                        case 1: op = rv_op_cm_mvsa01; break;
--                        case 3: op = rv_op_cm_mva01s; break;
-+                        if (dec->cfg->ext_zcmp) {
-+                            switch ((inst >> 5) & 0b011) {
-+                            case 1: op = rv_op_cm_mvsa01; break;
-+                            case 3: op = rv_op_cm_mva01s; break;
-+                            }
-                         }
-                         break;
-                     }
+@@ -4590,16 +4590,24 @@ static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
+             append(buf, rv_ireg_name_sym[dec->rs2], buflen);
+             break;
+         case '3':
+-            append(buf, rv_freg_name_sym[dec->rd], buflen);
++            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rd] :
++                                              rv_freg_name_sym[dec->rd],
++                   buflen);
+             break;
+         case '4':
+-            append(buf, rv_freg_name_sym[dec->rs1], buflen);
++            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs1] :
++                                              rv_freg_name_sym[dec->rs1],
++                   buflen);
+             break;
+         case '5':
+-            append(buf, rv_freg_name_sym[dec->rs2], buflen);
++            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs2] :
++                                              rv_freg_name_sym[dec->rs2],
++                   buflen);
+             break;
+         case '6':
+-            append(buf, rv_freg_name_sym[dec->rs3], buflen);
++            append(buf, dec->cfg->ext_zfinx ? rv_ireg_name_sym[dec->rs3] :
++                                              rv_freg_name_sym[dec->rs3],
++                   buflen);
+             break;
+         case '7':
+             snprintf(tmp, sizeof(tmp), "%d", dec->rs1);
 -- 
 2.25.1
 
