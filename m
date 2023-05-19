@@ -2,58 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229A4709876
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 15:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C69709898
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 15:43:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q00J6-0006qi-UQ; Fri, 19 May 2023 09:38:08 -0400
+	id 1q00Ne-00039o-Sc; Fri, 19 May 2023 09:42:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q00J4-0006hV-NU
- for qemu-devel@nongnu.org; Fri, 19 May 2023 09:38:06 -0400
-Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q00NX-00039Y-2W
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 09:42:44 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q00Ix-0006sj-DW
- for qemu-devel@nongnu.org; Fri, 19 May 2023 09:38:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
- :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Peb1ZR9hlOpT5CVTLrqq2nEJ9wxm4qUnfmxeZklnGAE=; b=k39HAxCPv17s2tlTFvOPzHM8Ry
- +MLPUVmyMpx5YPR2iZcJyEiXcYfeOuFzu12GIt3rhcq37Wk4gh8xwfWKLLeKdzWJhEKBWj6TckuHN
- DPbKwmxVHnhrReEVznNArqMP1uCFTNY+hE3bRx0GN6kuvyrv8l2+RJ0BLOffrbhzhNbE=;
-X-Envelope-From: <kbastian@mail.uni-paderborn.de>
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de
-Subject: [PATCH 6/6] tests/tcg/tricore: Add recursion test for CSAs
-Date: Fri, 19 May 2023 15:36:50 +0200
-Message-Id: <20230519133650.575600-7-kbastian@mail.uni-paderborn.de>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230519133650.575600-1-kbastian@mail.uni-paderborn.de>
-References: <20230519133650.575600-1-kbastian@mail.uni-paderborn.de>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q00NU-0007x9-CB
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 09:42:42 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QN7Js2DVxz67PjK;
+ Fri, 19 May 2023 21:40:45 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 19 May
+ 2023 14:42:36 +0100
+Date: Fri, 19 May 2023 14:42:34 +0100
+To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>
+CC: <linux-cxl@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, "Alison
+ Schofield" <alison.schofield@intel.com>, Michael Roth <michael.roth@amd.com>, 
+ Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
+ <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, "Daniel P .
+ =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, Thomas
+ Huth <thuth@redhat.com>
+Subject: Re: [PATCH v5 3/6] bswap: Add the ability to store to an unaligned
+ 24 bit field
+Message-ID: <20230519144223.0000551a@huawei.com>
+In-Reply-To: <20230519123353.00004a00@huawei.com>
+References: <20230423162013.4535-1-Jonathan.Cameron@huawei.com>
+ <20230423162013.4535-4-Jonathan.Cameron@huawei.com>
+ <20230519123353.00004a00@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.5.19.132723, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.5.16.600001
-X-Sophos-SenderHistory: ip=84.154.188.104, fs=36, da=172112521, mc=12, sc=0,
- hc=12, sp=0, fso=36, re=0, sd=0, hd=0
-X-IMT-Source: Intern
-X-IMT-Spam-Score: 0.0 ()
-X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::16;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -68,59 +72,171 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
----
- tests/tcg/tricore/Makefile.softmmu-target     |  3 ++-
- tests/tcg/tricore/c/test_context_save_areas.c | 15 +++++++++++++++
- 2 files changed, 17 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/tricore/c/test_context_save_areas.c
+On Fri, 19 May 2023 12:33:53 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index 5d282e0dda..19bec44531 100644
---- a/tests/tcg/tricore/Makefile.softmmu-target
-+++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -4,7 +4,7 @@ C_TESTS_PATH = $(TESTS_PATH)/c
- 
- LDFLAGS = -T$(TESTS_PATH)/link.ld --mcpu=tc162
- ASFLAGS = -mtc162
--CFLAGS = -mtc162 -c
-+CFLAGS = -mtc162 -c -I$(TESTS_PATH)
- 
- TESTS += test_abs.asm.tst
- TESTS += test_bmerge.asm.tst
-@@ -23,6 +23,7 @@ TESTS += test_msub.asm.tst
- TESTS += test_muls.asm.tst
- 
- TESTS += test_boot_to_main.c.tst
-+TESTS += test_context_save_areas.c.tst
- 
- QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
- 
-diff --git a/tests/tcg/tricore/c/test_context_save_areas.c b/tests/tcg/tricore/c/test_context_save_areas.c
-new file mode 100644
-index 0000000000..a300ee2f9c
---- /dev/null
-+++ b/tests/tcg/tricore/c/test_context_save_areas.c
-@@ -0,0 +1,15 @@
-+#include "testdev_assert.h"
-+
-+static int fib(int n)
-+{
-+    if (n == 1 || n == 2) {
-+        return 1;
-+    }
-+    return fib(n - 2) + fib(n - 1);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    testdev_assert(fib(10) == 55);
-+    return 0;
-+}
--- 
-2.40.1
+> On Sun, 23 Apr 2023 17:20:10 +0100
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> 
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > CXL has 24 bit unaligned fields which need to be stored to.  CXL is
+> > specified as little endian.
+> > 
+> > Define st24_le_p() and the supporting functions to store such a field
+> > from a 32 bit host native value.
+> > 
+> > The use of b, w, l, q as the size specifier is limiting.  So "24" was
+> > used for the size part of the function name.
+> > 
+> > Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> 
+> This doesn't work for s390 (probably big endian hosts in general)
+> 
+> I'll post a new version of the series with adjusted logic shortly. 
+> I think all we can do is special case the 24 bit logic in the block
+> dealing with big vs little endian accessors.
+> 
+> Something like the following.
+> I'll drop Fan's tag as this is a substantial change. Fan, if you can
+> take a look at v6 when I post it that would be great.
+> 
+> I'm having issues with gitlab CI minutes running out on my fork.
+> Hopefully I can get that resolved and test this properly. 
+
+Got this tested using a cross compile in docker via
+make docker-test-build@debian-x390x-cross
+
+and a bunch of docker config.
+
+Anyhow, will send out new version of patches 3-6 shortly. 
+
+Thanks,
+
+Jonathan
+
+> 
+> diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+> index 91ed9c7e2c..f546b1fc06 100644
+> --- a/include/qemu/bswap.h
+> +++ b/include/qemu/bswap.h
+> @@ -40,11 +40,13 @@ static inline void bswap64s(uint64_t *s)
+>  #if HOST_BIG_ENDIAN
+>  #define be_bswap(v, size) (v)
+>  #define le_bswap(v, size) glue(__builtin_bswap, size)(v)
+> +#define le_bswap24(v) bswap24(v)
+>  #define be_bswaps(v, size)
+>  #define le_bswaps(p, size) \
+>              do { *p = glue(__builtin_bswap, size)(*p); } while (0)
+>  #else
+>  #define le_bswap(v, size) (v)
+> +#define le_bswap24(v) (v)
+>  #define be_bswap(v, size) glue(__builtin_bswap, size)(v)
+>  #define le_bswaps(v, size)
+>  #define be_bswaps(p, size) \
+> @@ -319,7 +321,7 @@ static inline void stw_le_p(void *ptr, uint16_t v)
+> 
+>  static inline void st24_le_p(void *ptr, uint32_t v)
+>  {
+> -    st24_he_p(ptr, le_bswap(v, 24));
+> +    st24_he_p(ptr, le_bswap24(v));
+>  }
+> 
+>  static inline void stl_le_p(void *ptr, uint32_t v)
+> 
+> > 
+> > ---
+> > v5:
+> >   - Added assertion that upper bits of the input parameter aren't set.
+> >   - Mask value in bswap24s()
+> >   - update docs
+> > ---
+> >  docs/devel/loads-stores.rst |  1 +
+> >  include/qemu/bswap.h        | 25 +++++++++++++++++++++++++
+> >  2 files changed, 26 insertions(+)
+> > 
+> > diff --git a/docs/devel/loads-stores.rst b/docs/devel/loads-stores.rst
+> > index ad5dfe133e..57b4396f7a 100644
+> > --- a/docs/devel/loads-stores.rst
+> > +++ b/docs/devel/loads-stores.rst
+> > @@ -36,6 +36,7 @@ store: ``st{size}_{endian}_p(ptr, val)``
+> >  ``size``
+> >   - ``b`` : 8 bits
+> >   - ``w`` : 16 bits
+> > + - ``24`` : 24 bits
+> >   - ``l`` : 32 bits
+> >   - ``q`` : 64 bits
+> >  
+> > diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+> > index 15a78c0db5..91ed9c7e2c 100644
+> > --- a/include/qemu/bswap.h
+> > +++ b/include/qemu/bswap.h
+> > @@ -8,11 +8,25 @@
+> >  #undef  bswap64
+> >  #define bswap64(_x) __builtin_bswap64(_x)
+> >  
+> > +static inline uint32_t bswap24(uint32_t x)
+> > +{
+> > +    assert((x & 0xff000000U) == 0);
+> > +
+> > +    return (((x & 0x000000ffU) << 16) |
+> > +            ((x & 0x0000ff00U) <<  0) |
+> > +            ((x & 0x00ff0000U) >> 16));
+> > +}
+> > +
+> >  static inline void bswap16s(uint16_t *s)
+> >  {
+> >      *s = __builtin_bswap16(*s);
+> >  }
+> >  
+> > +static inline void bswap24s(uint32_t *s)
+> > +{
+> > +    *s = bswap24(*s & 0x00ffffffU);
+> > +}
+> > +
+> >  static inline void bswap32s(uint32_t *s)
+> >  {
+> >      *s = __builtin_bswap32(*s);
+> > @@ -176,6 +190,7 @@ CPU_CONVERT(le, 64, uint64_t)
+> >   * size is:
+> >   *   b: 8 bits
+> >   *   w: 16 bits
+> > + *   24: 24 bits
+> >   *   l: 32 bits
+> >   *   q: 64 bits
+> >   *
+> > @@ -248,6 +263,11 @@ static inline void stw_he_p(void *ptr, uint16_t v)
+> >      __builtin_memcpy(ptr, &v, sizeof(v));
+> >  }
+> >  
+> > +static inline void st24_he_p(void *ptr, uint32_t v)
+> > +{
+> > +    __builtin_memcpy(ptr, &v, 3);
+> > +}
+> > +
+> >  static inline int ldl_he_p(const void *ptr)
+> >  {
+> >      int32_t r;
+> > @@ -297,6 +317,11 @@ static inline void stw_le_p(void *ptr, uint16_t v)
+> >      stw_he_p(ptr, le_bswap(v, 16));
+> >  }
+> >  
+> > +static inline void st24_le_p(void *ptr, uint32_t v)
+> > +{
+> > +    st24_he_p(ptr, le_bswap(v, 24));
+> > +}
+> > +
+> >  static inline void stl_le_p(void *ptr, uint32_t v)
+> >  {
+> >      stl_he_p(ptr, le_bswap(v, 32));  
+> 
+> 
 
 
