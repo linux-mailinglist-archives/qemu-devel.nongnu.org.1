@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDBB709A6D
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6616709A6E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:50:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01QO-0006yl-PI; Fri, 19 May 2023 10:49:44 -0400
+	id 1q01QV-0006ze-Up; Fri, 19 May 2023 10:49:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QN-0006ya-1t
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:43 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QS-0006zF-OD
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QL-0003G1-7C
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:42 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QR-0003Gg-1W
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507779;
+ s=mimecast20190719; t=1684507786;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=1xdeVgMpfooe9go3slx9PNk5dyeYPABczVEFjcv6058=;
- b=aJQ0KQKLi92T6uHPVlHeH6Ltzucm4YT5p2Nsaujh3ApJ/gmZtRlcrzC6CR0Jp36acn3c76
- o7w4kKgbbvxWQLcrjmpOuF4rOHQCckXMUUGhTz4QWqm+h4gMvLXQsRdpY77GFgfZ1BfPKg
- AI5HLJe2gI6vzls0yaRFw+OnJAg0oOI=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=m8H3lZKDwI3mjSVXnoAagyvh6l6UiwvzrfJKVsJ59EM=;
+ b=YECQE4VOhYUC0fMKqwk8+UwXLa9w+5y3FAyiaYLTS+39AFrJ62BfuUZ5qSckjJ9wFL4YN5
+ gR22depUVqNezuaT/o/f7mgGGJ7uXTK/3okT1JBox/NO0frn6E2rq4v5EpYYsqFvJvwJx9
+ D65fAX+YNECdKYSUkM0bieKU9Zt5WRA=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-19-Pj5j6EYjPk2Eu82oFB_DDQ-1; Fri, 19 May 2023 10:49:38 -0400
-X-MC-Unique: Pj5j6EYjPk2Eu82oFB_DDQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4f13ecb8f01so2123162e87.1
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:49:38 -0700 (PDT)
+ us-mta-373-2iedybBcOt-DLJ0i7Q0hKA-1; Fri, 19 May 2023 10:49:44 -0400
+X-MC-Unique: 2iedybBcOt-DLJ0i7Q0hKA-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-4f13b1c06aaso2237693e87.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:49:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507776; x=1687099776;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1xdeVgMpfooe9go3slx9PNk5dyeYPABczVEFjcv6058=;
- b=SfMymySIwL2hbapEQ6b2vnP0GkaLr2x9qMarcEkcUs08mefB2DWN4Fh/SLTQ12zwuu
- XN9ct53akfsZyWB1OYKl4pVRR0SDqqH039PXBFYvNn29WKSBHxU8Z6XoonGzrx4HfNWi
- Ir8V3187eRoKE8tM/0eb2uBP9L/ApbDJuUopAXglzLA2/6zJ3fYFtr1fihqphK9CrDEp
- qu/m80UVN1oVRjy29m3HBRpNOLmMLnUqcfaQ5CvW8RxQfKWUbyzgTtXOE1V72EuFJXzX
- FUTzf4AV2V2e0uM+S6ruc6uvccZ/jEpkMzRZ5FC7aMY782oIBG1JcCKHoipE0N1X4Y/c
- Hs/g==
-X-Gm-Message-State: AC+VfDwfIVcyLF+lLE7H3VvmVaZCS+F/gtJMV0Nfw+ZNVxoQ/xDnk3Cq
- 72H6yMxEmIV1Fh/Uk9EQJisDI5odLGg4DooCoYoE6KRoz8vegjOS3bF8f748rIk2Za/eeYmSRW2
- eUxh2cY3dn0GOwAIaO8yta0dUS218h9dUFsTs8YIL/VVefcRYGNkKihq4Rbi2gg9VPBxA
-X-Received: by 2002:ac2:5333:0:b0:4ed:d2cf:857b with SMTP id
- f19-20020ac25333000000b004edd2cf857bmr935642lfh.5.1684507776384; 
- Fri, 19 May 2023 07:49:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6EkwJCnc20/f/WoH442j6POvLTI513BPvNyd5g+g9WUnMd04zjtK7ywvO+/ntdGxJAaKnLcQ==
-X-Received: by 2002:ac2:5333:0:b0:4ed:d2cf:857b with SMTP id
- f19-20020ac25333000000b004edd2cf857bmr935636lfh.5.1684507775910; 
- Fri, 19 May 2023 07:49:35 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684507782; x=1687099782;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=m8H3lZKDwI3mjSVXnoAagyvh6l6UiwvzrfJKVsJ59EM=;
+ b=ljgAoY1/xHWfyg3hOrCK7wMTQR7iLo+WlB+WHJZ0VlGeapOlwA+g8LHPDnxqgPrzrA
+ to8Pp9ipde6EZvvmkYqbaiA+u4bSwtoYkxRNpomyj2pSAfV73wcciwCA6GOsOef+Tyxd
+ c8CIyeLexL2ueOQDNJRZqT5jcgOoIAM7I4vp99SpjgXSwHN2sNmS7/D9ca72j6HqtlaH
+ iaDyqhwMEzFBOJgZiMXnS+Q8sUiI4Y0Lik1FWI7hzP+cqOKn6cfmlawNlfLeA0vKH6JX
+ yrChLy7vR27ggEFq1FLZvn9UJxkmxcm8jbPQ4aiXqrdbDbQWmc+JTjRRC+929XzA5UuL
+ OWOg==
+X-Gm-Message-State: AC+VfDxtpJcmEgAQjpYISp9Bf73SeNevriI6sbs2OH9LTKw5nUW9AhZ3
+ c40Ba1+k6tJ62rauS8Hfl1AjwTfN2E7SEoi7ziK6z+mjwhlPtgR0wfd4NjjeuRK44JeLOkYq0S0
+ 54HtY1i2dKkASqpL0mL/SYjPUDIkiFf5wg7wILQ9h4iSX1MWofGYgrymI8VWCy0dEmz5f
+X-Received: by 2002:ac2:4350:0:b0:4f3:91ee:3b73 with SMTP id
+ o16-20020ac24350000000b004f391ee3b73mr763649lfl.30.1684507782124; 
+ Fri, 19 May 2023 07:49:42 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7KyHMrBRXp+ODGCDRdQ7k8O3ycOiCEFjjFMJcYYFNWbDmQ/tq34Glr4iEsK89QdZBLoCcaKg==
+X-Received: by 2002:ac2:4350:0:b0:4f3:91ee:3b73 with SMTP id
+ o16-20020ac24350000000b004f391ee3b73mr763640lfl.30.1684507781799; 
+ Fri, 19 May 2023 07:49:41 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- w9-20020a19c509000000b004f391a2028dsm612062lfe.265.2023.05.19.07.49.32
+ v26-20020a056512049a00b004efff420b11sm622508lfq.181.2023.05.19.07.49.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:49:35 -0700 (PDT)
-Date: Fri, 19 May 2023 10:49:30 -0400
+ Fri, 19 May 2023 07:49:41 -0700 (PDT)
+Date: Fri, 19 May 2023 10:49:36 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/40] virtio,pc,pci: fixes, features, cleanups
-Message-ID: <cover.1684507742.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Hawkins Jiawei <yin31149@gmail.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Lei Yang <leiyang@redhat.com>
+Subject: [PULL 01/40] vhost: fix possible wrap in SVQ descriptor ring
+Message-ID: <5d410557dea452f6231a7c66155e29a37e168528.1684507742.git.mst@redhat.com>
+References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1684507742.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
@@ -95,164 +101,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 297e8182194e634baa0cbbfd96d2e09e2a0bcd40:
+From: Hawkins Jiawei <yin31149@gmail.com>
 
-  accel/tcg: Fix append_mem_cb (2023-05-18 09:28:44 -0700)
+QEMU invokes vhost_svq_add() when adding a guest's element
+into SVQ. In vhost_svq_add(), it uses vhost_svq_available_slots()
+to check whether QEMU can add the element into SVQ. If there is
+enough space, then QEMU combines some out descriptors and some
+in descriptors into one descriptor chain, and adds it into
+`svq->vring.desc` by vhost_svq_vring_write_descs().
 
-are available in the Git repository at:
+Yet the problem is that, `svq->shadow_avail_idx - svq->shadow_used_idx`
+in vhost_svq_available_slots() returns the number of occupied elements,
+or the number of descriptor chains, instead of the number of occupied
+descriptors, which may cause wrapping in SVQ descriptor ring.
 
-  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+Here is an example. In vhost_handle_guest_kick(), QEMU forwards
+as many available buffers to device by virtqueue_pop() and
+vhost_svq_add_element(). virtqueue_pop() returns a guest's element,
+and then this element is added into SVQ by vhost_svq_add_element(),
+a wrapper to vhost_svq_add(). If QEMU invokes virtqueue_pop() and
+vhost_svq_add_element() `svq->vring.num` times,
+vhost_svq_available_slots() thinks QEMU just ran out of slots and
+everything should work fine. But in fact, virtqueue_pop() returns
+`svq->vring.num` elements or descriptor chains, more than
+`svq->vring.num` descriptors due to guest memory fragmentation,
+and this causes wrapping in SVQ descriptor ring.
 
-for you to fetch changes up to 87af48a49c0a5663b3fff58c3407393772d3c448:
+This bug is valid even before marking the descriptors used.
+If the guest memory is fragmented, SVQ must add chains
+so it can try to add more descriptors than possible.
 
-  hw/i386/pc: No need for rtc_state to be an out-parameter (2023-05-19 10:30:46 -0400)
+This patch solves it by adding `num_free` field in
+VhostShadowVirtqueue structure and updating this field
+in vhost_svq_add() and vhost_svq_get_buf(), to record
+the number of free descriptors.
 
-----------------------------------------------------------------
-virtio,pc,pci: fixes, features, cleanups
-
-CXL volatile memory support
-More memslots for vhost-user on x86 and ARM.
-vIOMMU support for vhost-vdpa
-pcie-to-pci bridge can now be compiled out
-MADT revision bumped to 3
-Fixes, cleanups all over the place.
-
+Fixes: 100890f7ca ("vhost: Shadow virtqueue buffers forwarding")
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20230509084817.3973-1-yin31149@gmail.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+---
+ hw/virtio/vhost-shadow-virtqueue.h | 3 +++
+ hw/virtio/vhost-shadow-virtqueue.c | 5 ++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-----------------------------------------------------------------
-Bernhard Beschow (9):
-      hw/pci-host/i440fx: Inline sysbus_add_io()
-      hw/pci-host/q35: Inline sysbus_add_io()
-      hw/i386/pc_q35: Reuse machine parameter
-      hw/i386/pc_{q35,piix}: Reuse MachineClass::desc as SMB product name
-      hw/i386/pc_{q35,piix}: Minimize usage of get_system_memory()
-      hw/i386/pc: Initialize ram_memory variable directly
-      hw/pci-host/pam: Make init_pam() usage more readable
-      hw/i386/pc: Create RTC controllers in south bridges
-      hw/i386/pc: No need for rtc_state to be an out-parameter
-
-Brice Goglin (1):
-      docs/cxl: fix some typos
-
-Cindy Lu (4):
-      vhost: expose function vhost_dev_has_iommu()
-      vhost_vdpa: fix the input in trace_vhost_vdpa_listener_region_del()
-      vhost-vdpa: Add check for full 64-bit in region delete
-      vhost-vdpa: Add support for vIOMMU.
-
-David Hildenbrand (2):
-      virtio-mem: Default to "unplugged-inaccessible=on" with 8.1 on x86-64
-      vhost-user: Remove acpi-specific memslot limit
-
-Eric DeVolder (3):
-      ACPI: bios-tables-test.c step 2 (allowed-diff entries)
-      ACPI: i386: bump to MADT to revision 3
-      ACPI: bios-tables-test.c step 5 (update expected table binaries)
-
-Eugenio Pérez (1):
-      virtio-net: not enable vq reset feature unconditionally
-
-Gregory Price (2):
-      tests/qtest/cxl-test: whitespace, line ending cleanup
-      hw/cxl: Multi-Region CXL Type-3 Devices (Volatile and Persistent)
-
-Hao Zeng (1):
-      hw/cxl: cdat: Fix open file not closed in ct3_load_cdat()
-
-Hawkins Jiawei (1):
-      vhost: fix possible wrap in SVQ descriptor ring
-
-Ira Weiny (1):
-      hw/cxl: Introduce cxl_device_get_timestamp() utility function
-
-Jonathan Cameron (6):
-      hw/cxl: cdat: Fix failure to free buffer in erorr paths
-      hw/cxl: drop pointless memory_region_transaction_guards
-      hw/cxl: Fix endian handling for decoder commit.
-      hw/cxl: Fix incorrect reset of commit and associated clearing of committed.
-      hw/mem: Use memory_region_size() in cxl_type3
-      hw/cxl: rename mailbox return code type from ret_code to CXLRetCode
-
-Leonardo Bras (1):
-      hw/pci: Disable PCI_ERR_UNCOR_MASK register for machine type < 8.0
-
-Mauro Matteo Cascella (1):
-      virtio-crypto: fix NULL pointer dereference in virtio_crypto_free_request
-
-Raghu H (2):
-      docs/cxl: Remove incorrect CXL type 3 size parameter
-      docs/cxl: Replace unsupported AARCH64 with x86_64
-
-Sebastian Ott (1):
-      hw/pci-bridge: make building pcie-to-pci bridge configurable
-
-Stefan Hajnoczi (1):
-      vhost-user: send SET_STATUS 0 after GET_VRING_BASE
-
-Viktor Prutyanov (1):
-      virtio-pci: add handling of PCI ATS and Device-TLB enable/disable
-
-Vladimir Sementsov-Ogievskiy (2):
-      pci: pci_add_option_rom(): improve style
-      pci: pci_add_option_rom(): refactor: use g_autofree for path variable
-
- hw/virtio/vhost-shadow-virtqueue.h            |   3 +
- include/hw/cxl/cxl_device.h                   |  13 +-
- include/hw/i386/pc.h                          |   3 +-
- include/hw/pci-host/pam.h                     |   5 +-
- include/hw/pci/pci.h                          |   2 +
- include/hw/southbridge/ich9.h                 |   2 +
- include/hw/southbridge/piix.h                 |   3 +
- include/hw/virtio/vhost-vdpa.h                |  11 +
- include/hw/virtio/vhost.h                     |   1 +
- include/hw/virtio/virtio.h                    |   2 +
- hw/core/machine.c                             |   1 +
- hw/cxl/cxl-cdat.c                             |  60 ++---
- hw/cxl/cxl-component-utils.c                  |  14 +-
- hw/cxl/cxl-device-utils.c                     |  15 ++
- hw/cxl/cxl-mailbox-utils.c                    | 107 ++++----
- hw/i386/acpi-common.c                         |   2 +-
- hw/i386/pc.c                                  |  22 +-
- hw/i386/pc_piix.c                             |  18 +-
- hw/i386/pc_q35.c                              |  19 +-
- hw/isa/lpc_ich9.c                             |   8 +
- hw/isa/piix3.c                                |  15 ++
- hw/mem/cxl_type3.c                            | 342 +++++++++++++++++++-------
- hw/net/virtio-net.c                           |   1 -
- hw/pci-bridge/cxl_upstream.c                  |   3 +
- hw/pci-host/i440fx.c                          |  15 +-
- hw/pci-host/pam.c                             |  12 +-
- hw/pci-host/q35.c                             |  14 +-
- hw/pci/pci.c                                  |  29 +--
- hw/pci/pcie_aer.c                             |  11 +-
- hw/virtio/vhost-shadow-virtqueue.c            |   5 +-
- hw/virtio/vhost-user.c                        |  28 ++-
- hw/virtio/vhost-vdpa.c                        | 168 ++++++++++++-
- hw/virtio/vhost.c                             |   2 +-
- hw/virtio/virtio-crypto.c                     |  18 +-
- hw/virtio/virtio-mem.c                        |   2 +-
- hw/virtio/virtio-pci.c                        |  36 +++
- tests/qtest/bios-tables-test.c                |   8 +-
- tests/qtest/cxl-test.c                        | 140 ++++++++---
- docs/about/deprecated.rst                     |   8 +
- docs/system/devices/cxl.rst                   |  63 +++--
- hw/isa/Kconfig                                |   2 +
- hw/pci-bridge/Kconfig                         |   5 +
- hw/pci-bridge/meson.build                     |   3 +-
- tests/data/acpi/microvm/APIC                  | Bin 70 -> 70 bytes
- tests/data/acpi/microvm/APIC.ioapic2          | Bin 82 -> 82 bytes
- tests/data/acpi/microvm/APIC.pcie             | Bin 110 -> 110 bytes
- tests/data/acpi/pc/APIC                       | Bin 120 -> 120 bytes
- tests/data/acpi/pc/APIC.acpihmat              | Bin 128 -> 128 bytes
- tests/data/acpi/pc/APIC.cphp                  | Bin 160 -> 160 bytes
- tests/data/acpi/pc/APIC.dimmpxm               | Bin 144 -> 144 bytes
- tests/data/acpi/q35/APIC                      | Bin 120 -> 120 bytes
- tests/data/acpi/q35/APIC.acpihmat             | Bin 128 -> 128 bytes
- tests/data/acpi/q35/APIC.acpihmat-noinitiator | Bin 144 -> 144 bytes
- tests/data/acpi/q35/APIC.core-count2          | Bin 2478 -> 2478 bytes
- tests/data/acpi/q35/APIC.cphp                 | Bin 160 -> 160 bytes
- tests/data/acpi/q35/APIC.dimmpxm              | Bin 144 -> 144 bytes
- tests/data/acpi/q35/APIC.xapic                | Bin 2686 -> 2686 bytes
- 57 files changed, 900 insertions(+), 341 deletions(-)
+diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
+index 926a4897b1..6efe051a70 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.h
++++ b/hw/virtio/vhost-shadow-virtqueue.h
+@@ -107,6 +107,9 @@ typedef struct VhostShadowVirtqueue {
+ 
+     /* Next head to consume from the device */
+     uint16_t last_used_idx;
++
++    /* Size of SVQ vring free descriptors */
++    uint16_t num_free;
+ } VhostShadowVirtqueue;
+ 
+ bool vhost_svq_valid_features(uint64_t features, Error **errp);
+diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+index 8361e70d1b..bd7c12b6d3 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.c
++++ b/hw/virtio/vhost-shadow-virtqueue.c
+@@ -68,7 +68,7 @@ bool vhost_svq_valid_features(uint64_t features, Error **errp)
+  */
+ static uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq)
+ {
+-    return svq->vring.num - (svq->shadow_avail_idx - svq->shadow_used_idx);
++    return svq->num_free;
+ }
+ 
+ /**
+@@ -263,6 +263,7 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
+         return -EINVAL;
+     }
+ 
++    svq->num_free -= ndescs;
+     svq->desc_state[qemu_head].elem = elem;
+     svq->desc_state[qemu_head].ndescs = ndescs;
+     vhost_svq_kick(svq);
+@@ -449,6 +450,7 @@ static VirtQueueElement *vhost_svq_get_buf(VhostShadowVirtqueue *svq,
+     last_used_chain = vhost_svq_last_desc_of_chain(svq, num, used_elem.id);
+     svq->desc_next[last_used_chain] = svq->free_head;
+     svq->free_head = used_elem.id;
++    svq->num_free += num;
+ 
+     *len = used_elem.len;
+     return g_steal_pointer(&svq->desc_state[used_elem.id].elem);
+@@ -659,6 +661,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
+     svq->iova_tree = iova_tree;
+ 
+     svq->vring.num = virtio_queue_get_num(vdev, virtio_get_queue_index(vq));
++    svq->num_free = svq->vring.num;
+     driver_size = vhost_svq_driver_area_size(svq);
+     device_size = vhost_svq_device_area_size(svq);
+     svq->vring.desc = qemu_memalign(qemu_real_host_page_size(), driver_size);
+-- 
+MST
 
 
