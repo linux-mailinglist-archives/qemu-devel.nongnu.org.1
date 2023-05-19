@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390C3709AAC
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC0C709A76
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:52:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01SA-0003AF-FV; Fri, 19 May 2023 10:51:34 -0400
+	id 1q01SE-0003Zt-0b; Fri, 19 May 2023 10:51:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01S4-00037f-7y
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:51:28 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01SB-0003RB-MI
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:51:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01S2-0003dV-Da
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:51:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01S9-0003fU-4i
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:51:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507885;
+ s=mimecast20190719; t=1684507891;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=scD/t6FKL2vSfOhKYpUs6/tNGVFI4PHgCamZz9KPYUk=;
- b=B5Z09pEtVuZWLNsxctTqqky+jRv3MY2dB81hs1DX/FsWACFcDVC/I7hfLxxqN8th+kzfI4
- L+IoY1EsMzUgjYnbWaq1UiQ20R5FEPjHBmUGk/3rt2etDgr+tQH3mGFpZtBS50qJZQknv5
- r2mOsS0myve/mX08fGWx+dmJdiWZGPU=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3a5VBfyfVaZtQkBTAD7S89WTx9VSHLv7NsVNGa8+EsM=;
+ b=cZkEWmiB/22G8ZJDVwF3nmkz+ImS0n5n8cQ7SNtB8UR7ZS9rv1yW6Hd+9v+2Z4iFD0gvS0
+ vuUds51Nu1GC4F6g2WdBKi0IOvBNFVJedjJYVhWbISj049w9oaHwGqv/5yYMHED8Kn9o4c
+ 0dRalvjZM37fCE6Df5N/gM78EG0mo7s=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-380-3GaB10ZTM7iP8JR1Zgy2iA-1; Fri, 19 May 2023 10:51:23 -0400
-X-MC-Unique: 3GaB10ZTM7iP8JR1Zgy2iA-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2ac7e062911so17915711fa.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:51:23 -0700 (PDT)
+ us-mta-494-HqTJo0afNYGHSHiRVxIGuQ-1; Fri, 19 May 2023 10:51:29 -0400
+X-MC-Unique: HqTJo0afNYGHSHiRVxIGuQ-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-4f020caac60so2235512e87.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:51:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507882; x=1687099882;
+ d=1e100.net; s=20221208; t=1684507888; x=1687099888;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=scD/t6FKL2vSfOhKYpUs6/tNGVFI4PHgCamZz9KPYUk=;
- b=NovS4NwZP2VHUHg5HFWjB9K5wuwyRos6DIG8kaD4gEGWaUL4LOLiCo9k2QllXdDWdz
- 1XlUtk9+vTcsVWxshVwOMruQXK3VvlezBfZhbQmc1HDjbq7LPhXo2x2D/m0UsjZoiHp6
- SfAlzQdrqe1uPSqrQsV9nUMLEDuOeUJYdgUfn/wv8RrAk0mvBMxTizBXPQrVnGcnvNCW
- WWSKgvom2tfgIW/8xiW5P9kjsacGcJe8cvqdes00hjmjeCZm2xpo2xpPtbFgkqISxRcN
- aCJ/K0fqdgO/GmnTZOjkqPbRk8i5GWKnr36CCLtHoYVONxYUL4T5d8q1k/yhEm0159zP
- U08Q==
-X-Gm-Message-State: AC+VfDyXiVY7SyBk4nGv7rjD4MWk0fhUYP1tbhsEaihYqCzvJLrLAGfh
- Oj1e1wp/1Bdf5dQExFFgGr8MaemJDYQUMyOK2rT2VDT28+alyFjUpLD5EKyfrsvm0YKTfb+0L2K
- E4mU92bGbaqnzYilyWsffQopb8C2UI5YA2fdmHU+XjysXKZNyxZvaRdCyhm77ZzUfzL+T
-X-Received: by 2002:ac2:489a:0:b0:4f3:a4ce:7ccd with SMTP id
- x26-20020ac2489a000000b004f3a4ce7ccdmr837224lfc.35.1684507881921; 
- Fri, 19 May 2023 07:51:21 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6L/auj6WCtEsR82SBz3AfLgfsHQKnDqe1Q4VCZa4CrmBkzQAu10udk/ot9EQqqkzog3ZBDog==
-X-Received: by 2002:ac2:489a:0:b0:4f3:a4ce:7ccd with SMTP id
- x26-20020ac2489a000000b004f3a4ce7ccdmr837209lfc.35.1684507881652; 
- Fri, 19 May 2023 07:51:21 -0700 (PDT)
+ bh=3a5VBfyfVaZtQkBTAD7S89WTx9VSHLv7NsVNGa8+EsM=;
+ b=QMvllrWtraHUosxkhh4pgN9ygBFyNztdKnwxjv/aReDZHz1CY45j7+d8nDE7sy6Xp0
+ 3aqxoUWuDE0l/yTIz0pXXHmC8UgFJ0+Z5zu5zwBPGXT4yGP5aa/C90USDH6wgmGIoonD
+ ydKqaAue8EmROczRUGKJrPbBNQfd8lqxpbv7+IYxaUPdUQrW3f0BphfGLn8bm8IlKiem
+ bgyTFH9ttk29SX1bb1aPnRwcsUE3rgQVYOkd3I6stUylOksie6ZDwzYVeJ+3yi6I6E8Z
+ LegopPGOW1LqRPa43ZCZnlajA2lWBToQ/al4obltDvpy+Xdh7VhnEbP3DCKZPmHJ2GYB
+ 6WLw==
+X-Gm-Message-State: AC+VfDzwRzTqryYNrOrpBnO11kWzDO2sVvmihpiluNjFr6xXvFDgKBrw
+ 9cytnPDg8mJnQX2sL0foAKA2q6xjO3Af0mMJCVwtUvbuFneFpTp6ibuqqUzLXsmJcGyk0sZ5Ofw
+ dl7k5yL3L0g+IkjkLldpfoAo3OkRX7nu/UyR2RBB5OmcwW7urx7xUaFLFFAB29oCQwJ0X
+X-Received: by 2002:ac2:4d0d:0:b0:4f2:72be:22eb with SMTP id
+ r13-20020ac24d0d000000b004f272be22ebmr787742lfi.55.1684507887880; 
+ Fri, 19 May 2023 07:51:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6dAjZT+90uKvaMdcJe08CoGHza9OmxOJ9wwq3EeDxNjuTdLB446RO7fnqIp66oHo+KE+dvJw==
+X-Received: by 2002:ac2:4d0d:0:b0:4f2:72be:22eb with SMTP id
+ r13-20020ac24d0d000000b004f272be22ebmr787732lfi.55.1684507887580; 
+ Fri, 19 May 2023 07:51:27 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- a6-20020a19f806000000b004f38260f196sm618728lff.218.2023.05.19.07.51.18
+ j16-20020ac253b0000000b004f2391fe9a6sm620239lfh.266.2023.05.19.07.51.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:51:21 -0700 (PDT)
-Date: Fri, 19 May 2023 10:51:16 -0400
+ Fri, 19 May 2023 07:51:27 -0700 (PDT)
+Date: Fri, 19 May 2023 10:51:21 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Leonardo Bras <leobras@redhat.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>, Eduardo Habkost <eduardo@habkost.net>,
+ David Hildenbrand <david@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 19/40] hw/pci: Disable PCI_ERR_UNCOR_MASK register for machine
- type < 8.0
-Message-ID: <5ed3dabe57dd9f4c007404345e5f5bf0e347317f.1684507742.git.mst@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 20/40] virtio-mem: Default to "unplugged-inaccessible=on" with
+ 8.1 on x86-64
+Message-ID: <d5cef02574c126327a6f673c12b8718ce55f80e7.1684507742.git.mst@redhat.com>
 References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -104,105 +102,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leonardo Bras <leobras@redhat.com>
+From: David Hildenbrand <david@redhat.com>
 
-Since it's implementation on v8.0.0-rc0, having the PCI_ERR_UNCOR_MASK
-set for machine types < 8.0 will cause migration to fail if the target
-QEMU version is < 8.0.0 :
+Allowing guests to read unplugged memory simplified the bring-up of
+virtio-mem in Linux guests -- which was limited to x86-64 only. On arm64
+(which was added later), we never had legacy guests and don't even allow
+to configure it, essentially always having "unplugged-inaccessible=on".
 
-qemu-system-x86_64: get_pci_config_device: Bad config data: i=0x10a read: 40 device: 0 cmask: ff wmask: 0 w1cmask:0
-qemu-system-x86_64: Failed to load PCIDevice:config
-qemu-system-x86_64: Failed to load e1000e:parent_obj
-qemu-system-x86_64: error while loading state for instance 0x0 of device '0000:00:02.0/e1000e'
-qemu-system-x86_64: load of migration failed: Invalid argument
+At this point, all guests we care about
+should be supporting VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE, so let's
+change the default for the 8.1 machine.
 
-The above test migrated a 7.2 machine type from QEMU master to QEMU 7.2.0,
-with this cmdline:
+This change implies that also memory that supports the shared zeropage
+(private anonymous memory) will now require
+VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE in the driver in order to be usable by
+the guest -- as default, one can still manually set the
+unplugged-inaccessible property.
 
-./qemu-system-x86_64 -M pc-q35-7.2 [-incoming XXX]
+Disallowing the guest to read unplugged memory will be important for
+some future features, such as memslot optimizations or protection of
+unplugged memory, whereby we'll actually no longer allow the guest to
+even read from unplugged memory.
 
-In order to fix this, property x-pcie-err-unc-mask was introduced to
-control when PCI_ERR_UNCOR_MASK is enabled. This property is enabled by
-default, but is disabled if machine type <= 7.2.
+At some point, we might want to deprecate and remove that property.
 
-Fixes: 010746ae1d ("hw/pci/aer: Implement PCI_ERR_UNCOR_MASK register")
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Leonardo Bras <leobras@redhat.com>
-Message-Id: <20230503002701.854329-1-leobras@redhat.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1576
-Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>
+
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20230503182352.792458-1-david@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pci.h |  2 ++
- hw/core/machine.c    |  1 +
- hw/pci/pci.c         |  2 ++
- hw/pci/pcie_aer.c    | 11 +++++++----
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ hw/i386/pc.c           | 4 +++-
+ hw/virtio/virtio-mem.c | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index 935b4b91b4..e6d0574a29 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -207,6 +207,8 @@ enum {
-     QEMU_PCIE_EXTCAP_INIT = (1 << QEMU_PCIE_EXTCAP_INIT_BITNR),
- #define QEMU_PCIE_CXL_BITNR 10
-     QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
-+#define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
-+    QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
- };
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index d761c8c775..7802dc21d9 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -116,7 +116,9 @@
+     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
  
- typedef struct PCIINTxRoute {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 47a34841a5..07f763eb2e 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -48,6 +48,7 @@ GlobalProperty hw_compat_7_2[] = {
-     { "e1000e", "migrate-timadj", "off" },
-     { "virtio-mem", "x-early-migration", "false" },
-     { "migration", "x-preempt-pre-7-2", "true" },
-+    { TYPE_PCI_DEVICE, "x-pcie-err-unc-mask", "off" },
- };
- const size_t hw_compat_7_2_len = G_N_ELEMENTS(hw_compat_7_2);
+-GlobalProperty pc_compat_8_0[] = {};
++GlobalProperty pc_compat_8_0[] = {
++    { "virtio-mem", "unplugged-inaccessible", "auto" },
++};
+ const size_t pc_compat_8_0_len = G_N_ELEMENTS(pc_compat_8_0);
  
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 3a0107758c..1cc7c89036 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -79,6 +79,8 @@ static Property pci_props[] = {
-     DEFINE_PROP_STRING("failover_pair_id", PCIDevice,
-                        failover_pair_id),
-     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
-+    DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
-+                    QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
-diff --git a/hw/pci/pcie_aer.c b/hw/pci/pcie_aer.c
-index 103667c368..374d593ead 100644
---- a/hw/pci/pcie_aer.c
-+++ b/hw/pci/pcie_aer.c
-@@ -112,10 +112,13 @@ int pcie_aer_init(PCIDevice *dev, uint8_t cap_ver, uint16_t offset,
- 
-     pci_set_long(dev->w1cmask + offset + PCI_ERR_UNCOR_STATUS,
-                  PCI_ERR_UNC_SUPPORTED);
--    pci_set_long(dev->config + offset + PCI_ERR_UNCOR_MASK,
--                 PCI_ERR_UNC_MASK_DEFAULT);
--    pci_set_long(dev->wmask + offset + PCI_ERR_UNCOR_MASK,
--                 PCI_ERR_UNC_SUPPORTED);
-+
-+    if (dev->cap_present & QEMU_PCIE_ERR_UNC_MASK) {
-+        pci_set_long(dev->config + offset + PCI_ERR_UNCOR_MASK,
-+                     PCI_ERR_UNC_MASK_DEFAULT);
-+        pci_set_long(dev->wmask + offset + PCI_ERR_UNCOR_MASK,
-+                     PCI_ERR_UNC_SUPPORTED);
-+    }
- 
-     pci_set_long(dev->config + offset + PCI_ERR_UNCOR_SEVER,
-                  PCI_ERR_UNC_SEVERITY_DEFAULT);
+ GlobalProperty pc_compat_7_2[] = {
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index 957fe77dc0..538b695c29 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -1341,7 +1341,7 @@ static Property virtio_mem_properties[] = {
+                      TYPE_MEMORY_BACKEND, HostMemoryBackend *),
+ #if defined(VIRTIO_MEM_HAS_LEGACY_GUESTS)
+     DEFINE_PROP_ON_OFF_AUTO(VIRTIO_MEM_UNPLUGGED_INACCESSIBLE_PROP, VirtIOMEM,
+-                            unplugged_inaccessible, ON_OFF_AUTO_AUTO),
++                            unplugged_inaccessible, ON_OFF_AUTO_ON),
+ #endif
+     DEFINE_PROP_BOOL(VIRTIO_MEM_EARLY_MIGRATION_PROP, VirtIOMEM,
+                      early_migration, true),
 -- 
 MST
 
