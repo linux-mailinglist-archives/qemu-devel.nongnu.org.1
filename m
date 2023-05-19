@@ -2,63 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C69709898
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 15:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 055917098FE
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:08:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q00Ne-00039o-Sc; Fri, 19 May 2023 09:42:50 -0400
+	id 1q00lU-0000RF-1j; Fri, 19 May 2023 10:07:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q00NX-00039Y-2W
- for qemu-devel@nongnu.org; Fri, 19 May 2023 09:42:44 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q00lR-0000PS-Nd
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:07:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q00NU-0007x9-CB
- for qemu-devel@nongnu.org; Fri, 19 May 2023 09:42:42 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QN7Js2DVxz67PjK;
- Fri, 19 May 2023 21:40:45 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 19 May
- 2023 14:42:36 +0100
-Date: Fri, 19 May 2023 14:42:34 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>
-CC: <linux-cxl@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, "Alison
- Schofield" <alison.schofield@intel.com>, Michael Roth <michael.roth@amd.com>, 
- Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, "Daniel P .
- =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, Thomas
- Huth <thuth@redhat.com>
-Subject: Re: [PATCH v5 3/6] bswap: Add the ability to store to an unaligned
- 24 bit field
-Message-ID: <20230519144223.0000551a@huawei.com>
-In-Reply-To: <20230519123353.00004a00@huawei.com>
-References: <20230423162013.4535-1-Jonathan.Cameron@huawei.com>
- <20230423162013.4535-4-Jonathan.Cameron@huawei.com>
- <20230519123353.00004a00@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q00lM-00045V-LU
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:07:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684505239;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KunC4O8HC6TGF6nkWV5KzE1pYFp1MCsZ4Zu312+xZVY=;
+ b=CneX8ZD9OCixocYij9z1lqxKHEnf9ZtLLfGGR2gSQOG7f055gQbcsjEMcoIbTCdjrhf6qW
+ UKwuktcYN5vSU22Bj37w+XyWRpCFm4oNO4U7FbF23c9zQPxkCjDYm0aSj6gHn7CeXi98ao
+ RzqpX3f6MBrN7pBPXNAQVXSrHNglalE=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-88-FBeke4kWNlKAOdsO-hiuOA-1; Fri, 19 May 2023 10:07:18 -0400
+X-MC-Unique: FBeke4kWNlKAOdsO-hiuOA-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-3f38dedae2aso46459131cf.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:07:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684505238; x=1687097238;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KunC4O8HC6TGF6nkWV5KzE1pYFp1MCsZ4Zu312+xZVY=;
+ b=FwY7o4MbF1Ejakg3rfO83PabqEfq2zff5wqAf32lawlFTcU7jysUIZZfwPrPv1CQ3p
+ kBPxe2g0GABJ+qi+ppNTh8JN4grzoUKdI4phdFMeGCMVBqvfbMjkVDKSgsYVwIx7bZw0
+ 7YEODllDspLQJNHU9Oy5+La93Z2ivH0xHE3UmMTpfbrGWBgdyCobxrIjyPUe5SenAyJG
+ 7KptUL6rSRRbQwk684tAMIYmdch7sd1F5gqbonDtMzTGpwGGttJuTHAnrWbxbz2Gs4LL
+ 0DyP17I+rk2688JonsXxNaA50ETt0FqPH3LcsReM/jLV1haWA/nk3ricuU8fmv74uuPM
+ 2ATQ==
+X-Gm-Message-State: AC+VfDzPFe0fOxpvtY2Go4ORj0O0czCGe/JnpMpI0rTKMLIqX9PfH0+m
+ 6bYiItSTlLWlJv/TTmaWqKe+VPDZFlEDKnN60nqci2eW1mKiOaf8NRjNMEGy/SeNGNciY5/cL+V
+ jf1CPr9BfjYhmKE6tmC3x7EF4v4WIMGs=
+X-Received: by 2002:a05:622a:c9:b0:3f3:8a3a:d168 with SMTP id
+ p9-20020a05622a00c900b003f38a3ad168mr4389027qtw.5.1684505237802; 
+ Fri, 19 May 2023 07:07:17 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5lap/t5dZzjXzIs+w1n/bWCQ940bBvOdz5UiFqOciBOeyIdLTTnLLrGZEHWCUmDXC07OExJ1xfEK7hSj6b0ww=
+X-Received: by 2002:a05:622a:c9:b0:3f3:8a3a:d168 with SMTP id
+ p9-20020a05622a00c900b003f38a3ad168mr4388980qtw.5.1684505237464; Fri, 19 May
+ 2023 07:07:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230407145252.32955-1-cconte@redhat.com>
+ <ZGc6srab3Q7IcUpx@redhat.com>
+ <CACPOWh1QSdSiEoSeTyVW2RDpENU0jdyDGWzQAjeKy5g0ShEsOA@mail.gmail.com>
+ <ZGdwyNmhLmBMwaKp@redhat.com>
+In-Reply-To: <ZGdwyNmhLmBMwaKp@redhat.com>
+From: Camilla Conte <cconte@redhat.com>
+Date: Fri, 19 May 2023 15:06:41 +0100
+Message-ID: <CACPOWh3-xVwu0+m1SuBTCSpcCoWJ2cQDN=G05bSW4x15piCwtg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] Add CI configuration for Kubernetes
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cconte@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,171 +91,245 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 May 2023 12:33:53 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On Fri, May 19, 2023 at 1:51=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+>
+> On Fri, May 19, 2023 at 01:33:50PM +0100, Camilla Conte wrote:
+> > On Fri, May 19, 2023 at 10:00=E2=80=AFAM Daniel P. Berrang=C3=A9 <berra=
+nge@redhat.com> wrote:
+> > >
+> > > On Fri, Apr 07, 2023 at 03:52:51PM +0100, Camilla Conte wrote:
+> > > > Configure Gitlab CI to run on Kubernetes
+> > > > according to the official documentation.
+> > > > https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#docker=
+-in-docker-with-tls-enabled-in-kubernetes
+> > > >
+> > > > These changes are needed because of the CI jobs
+> > > > using Docker-in-Docker (dind).
+> > > > As soon as Docker-in-Docker is replaced with Kaniko,
+> > > > these changes can be reverted.
+> > > >
+> > > > I documented what I did to set up the Kubernetes runner on the wiki=
+:
+> > > > https://wiki.qemu.org/Testing/CI/KubernetesRunners
+> > > >
+> > > > Signed-off-by: Camilla Conte <cconte@redhat.com>
+> > > > ---
+> > > >  .gitlab-ci.d/container-template.yml |  6 +++---
+> > > >  .gitlab-ci.d/default.yml            |  3 +++
+> > > >  .gitlab-ci.d/opensbi.yml            |  8 +++-----
+> > > >  .gitlab-ci.d/qemu-project.yml       | 17 +++++++++++++++++
+> > > >  4 files changed, 26 insertions(+), 8 deletions(-)
+> > > >  create mode 100644 .gitlab-ci.d/default.yml
+> > > >
+> > > > diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/con=
+tainer-template.yml
+> > > > index 519b8a9482..f55a954741 100644
+> > > > --- a/.gitlab-ci.d/container-template.yml
+> > > > +++ b/.gitlab-ci.d/container-template.yml
+> > > > @@ -1,14 +1,14 @@
+> > > >  .container_job_template:
+> > > >    extends: .base_job_template
+> > > > -  image: docker:stable
+> > > > +  image: docker:20.10.16
+> > > >    stage: containers
+> > > >    services:
+> > > > -    - docker:dind
+> > > > +    - docker:20.10.16-dind
+> > > >    before_script:
+> > > >      - export TAG=3D"$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
+> > > >      - export COMMON_TAG=3D"$CI_REGISTRY/qemu-project/qemu/qemu/$NA=
+ME:latest"
+> > > >      - apk add python3
+> > > > -    - docker info
+> > > > +    - until docker info; do sleep 1; done
+> > > >      - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REG=
+ISTRY_PASSWORD"
+> > > >    script:
+> > > >      - echo "TAG:$TAG"
+> > > > diff --git a/.gitlab-ci.d/default.yml b/.gitlab-ci.d/default.yml
+> > > > new file mode 100644
+> > > > index 0000000000..292be8b91c
+> > > > --- /dev/null
+> > > > +++ b/.gitlab-ci.d/default.yml
+> > > > @@ -0,0 +1,3 @@
+> > > > +default:
+> > > > +  tags:
+> > > > +    - $RUNNER_TAG
+> > >
+> > > Can we just put this in base.yml instead of creating a new file.
+> >
+> > Sure.
+> >
+> > > > diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
+> > > > index 9a651465d8..5b0b47b57b 100644
+> > > > --- a/.gitlab-ci.d/opensbi.yml
+> > > > +++ b/.gitlab-ci.d/opensbi.yml
+> > > > @@ -42,17 +42,15 @@
+> > > >  docker-opensbi:
+> > > >    extends: .opensbi_job_rules
+> > > >    stage: containers
+> > > > -  image: docker:stable
+> > > > +  image: docker:20.10.16
+> > > >    services:
+> > > > -    - docker:stable-dind
+> > > > +    - docker:20.10.16-dind
+> > >
+> > > Can you elaborate on this ?  I know the docs about use that particula=
+r
+> > > version tag, but they don't appear to explain why. If this is not
+> > > actually a hard requirements, we should keep using the stable tag.
+> >
+> > Yes, we can keep using "stable".
+> > Then, we should be ready to address future issues that may arise from
+> > "stable" not being compatible with the runner.
+> >
+> > > >    variables:
+> > > >      GIT_DEPTH: 3
+> > > >      IMAGE_TAG: $CI_REGISTRY_IMAGE:opensbi-cross-build
+> > > > -    # We don't use TLS
+> > > > -    DOCKER_HOST: tcp://docker:2375
+> > > > -    DOCKER_TLS_CERTDIR: ""
+> > >
+> > > So IIUC, this was always redundant when using gitlab CI. We should ju=
+st
+> > > remove these in a standalone commit.
+> >
+> > Okay, I'll put this in a separate commit.
+> >
+> > > >    before_script:
+> > > >      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $=
+CI_REGISTRY
+> > > > +    - until docker info; do sleep 1; done
+> > >
+> > > Was this really needed ?  The docs don't show that, and docker login =
+is
+> > > synchronous, so I wouldn't expect us to them poll on 'docker info'.
+> >
+> > Unfortunately, yes. We need to wait until the "docker info" command is
+> > successful. This ensures that the Docker server has started and the
+> > subsequent docker commands won't fail.
+>
+> >
+> > > In container-template.yml we in fact do the reverse
+> > >
+> > >     - docker info
+> > >     - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGIST=
+RY_PASSWORD"
+> >
+> > About "docker login", as far as I understand it's a client-only
+> > command. It doesn't involve the Docker server at all. These two
+> > commands are not related to each other, it doesn't matter if "docker
+> > login" runs before or after "docker info".
+> >
+> > > imho best make this opensbi.yml file match contanier-template.yml, an=
+d
+> > > could be part of the same cleanup commit that removes thhose two dock=
+er
+> > > env vars.
+> >
+> > You mean to replace the "docker-opensbi" job in the "opensbi.yml" file
+> > with the same as the ".container_job_template" from the
+> > "container-template.yml" file?
+> > These two look too much different to me. I think we need to keep both.
 
-> On Sun, 23 Apr 2023 17:20:10 +0100
-> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-> 
-> > From: Ira Weiny <ira.weiny@intel.com>
-> > 
-> > CXL has 24 bit unaligned fields which need to be stored to.  CXL is
-> > specified as little endian.
-> > 
-> > Define st24_le_p() and the supporting functions to store such a field
-> > from a 32 bit host native value.
-> > 
-> > The use of b, w, l, q as the size specifier is limiting.  So "24" was
-> > used for the size part of the function name.
-> > 
-> > Reviewed-by: Fan Ni <fan.ni@samsung.com>
-> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> 
-> This doesn't work for s390 (probably big endian hosts in general)
-> 
-> I'll post a new version of the series with adjusted logic shortly. 
-> I think all we can do is special case the 24 bit logic in the block
-> dealing with big vs little endian accessors.
-> 
-> Something like the following.
-> I'll drop Fan's tag as this is a substantial change. Fan, if you can
-> take a look at v6 when I post it that would be great.
-> 
-> I'm having issues with gitlab CI minutes running out on my fork.
-> Hopefully I can get that resolved and test this properly. 
+> No, I didn't mean we have to merge them. Just that the container-template=
+.yml
+> file merely does 'docker info' without any loop. So either that one is br=
+oken,
+> or using a loop in opensbi.yml is redundant.
+>
+> Assuming you've tested this series on k8s successfully, it would indicate
+> that the looping is not required, otherwise all the container jobs would
+> have failed.
 
-Got this tested using a cross compile in docker via
-make docker-test-build@debian-x390x-cross
+Actually, I added the 'docker info' loop in the container-template.yml
+file too. Or am I missing your point?
 
-and a bunch of docker config.
+> > > >    script:
+> > > >      - docker pull $IMAGE_TAG || true
+> > > >      - docker build --cache-from $IMAGE_TAG --tag $CI_REGISTRY_IMAG=
+E:$CI_COMMIT_SHA
+> > > > diff --git a/.gitlab-ci.d/qemu-project.yml b/.gitlab-ci.d/qemu-proj=
+ect.yml
+> > > > index a7ed447fe4..57b175f5c2 100644
+> > > > --- a/.gitlab-ci.d/qemu-project.yml
+> > > > +++ b/.gitlab-ci.d/qemu-project.yml
+> > > > @@ -1,7 +1,24 @@
+> > > >  # This file contains the set of jobs run by the QEMU project:
+> > > >  # https://gitlab.com/qemu-project/qemu/-/pipelines
+> > > >
+> > > > +variables:
+> > > > +  RUNNER_TAG: ""
+> > > > +
+> > > > +workflow:
+> > > > +  rules:
+> > > > +    # Set additional variables when running on Kubernetes.
+> > > > +    # https://wiki.qemu.org/Testing/CI/KubernetesRunners
+> > > > +    - if: $RUNNER_TAG =3D=3D "k8s"
+> > > > +      variables:
+> > > > +        DOCKER_HOST: tcp://docker:2376
+> > > > +        DOCKER_TLS_CERTDIR: "/certs"
+> > > > +        DOCKER_TLS_VERIFY: 1
+> > > > +        DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+> > >
+> > > Is there anyway we can get the runner itself to set these
+> > > correctly by default ?
+> >
+> > Yes, the runner can set environment variables for its jobs.
+> >
+> > My concern here is that over time we lose visibility of these
+> > customizations if we put them in the runner configuration.
+> > This can be solved by having a repo in the qemu-project namespace to
+> > host the runner configuration, something like I did here:
+> > https://gitlab.com/spotlesstofu/qemu-ci-kubernetes.
 
-Anyhow, will send out new version of patches 3-6 shortly. 
+> Cleber put configs for the current QEMU private runners into
+> the main qemu.git at scripts/ci/setup/  We should have any
+> setup for the k8s runner somewhere nearby too. Or move all
+> of it out into a separate repository.
 
-Thanks,
+Okay, I'll add a patch to put the runner configuration near scripts/ci/setu=
+p/.
 
-Jonathan
+> > > IMHO the ideal would be that the k8s runners are registerd with the
+> > > qemu project to run *any* jobs without requiring tags. That way the
+> > > runners will "just work" when share runners are unavailable/exhausted=
+,
+> > > like we have with Eldon's runner
+> >
+> > The problem here is that the Kubernetes (k8s) runner can't run windows
+> > jobs at the moment. If we wait for the shared runners to be exhausted,
+> > those few windows jobs in the pipeline won't be able to run.
 
-> 
-> diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-> index 91ed9c7e2c..f546b1fc06 100644
-> --- a/include/qemu/bswap.h
-> +++ b/include/qemu/bswap.h
-> @@ -40,11 +40,13 @@ static inline void bswap64s(uint64_t *s)
->  #if HOST_BIG_ENDIAN
->  #define be_bswap(v, size) (v)
->  #define le_bswap(v, size) glue(__builtin_bswap, size)(v)
-> +#define le_bswap24(v) bswap24(v)
->  #define be_bswaps(v, size)
->  #define le_bswaps(p, size) \
->              do { *p = glue(__builtin_bswap, size)(*p); } while (0)
->  #else
->  #define le_bswap(v, size) (v)
-> +#define le_bswap24(v) (v)
->  #define be_bswap(v, size) glue(__builtin_bswap, size)(v)
->  #define le_bswaps(v, size)
->  #define be_bswaps(p, size) \
-> @@ -319,7 +321,7 @@ static inline void stw_le_p(void *ptr, uint16_t v)
-> 
->  static inline void st24_le_p(void *ptr, uint32_t v)
->  {
-> -    st24_he_p(ptr, le_bswap(v, 24));
-> +    st24_he_p(ptr, le_bswap24(v));
->  }
-> 
->  static inline void stl_le_p(void *ptr, uint32_t v)
-> 
-> > 
-> > ---
-> > v5:
-> >   - Added assertion that upper bits of the input parameter aren't set.
-> >   - Mask value in bswap24s()
-> >   - update docs
-> > ---
-> >  docs/devel/loads-stores.rst |  1 +
-> >  include/qemu/bswap.h        | 25 +++++++++++++++++++++++++
-> >  2 files changed, 26 insertions(+)
-> > 
-> > diff --git a/docs/devel/loads-stores.rst b/docs/devel/loads-stores.rst
-> > index ad5dfe133e..57b4396f7a 100644
-> > --- a/docs/devel/loads-stores.rst
-> > +++ b/docs/devel/loads-stores.rst
-> > @@ -36,6 +36,7 @@ store: ``st{size}_{endian}_p(ptr, val)``
-> >  ``size``
-> >   - ``b`` : 8 bits
-> >   - ``w`` : 16 bits
-> > + - ``24`` : 24 bits
-> >   - ``l`` : 32 bits
-> >   - ``q`` : 64 bits
-> >  
-> > diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-> > index 15a78c0db5..91ed9c7e2c 100644
-> > --- a/include/qemu/bswap.h
-> > +++ b/include/qemu/bswap.h
-> > @@ -8,11 +8,25 @@
-> >  #undef  bswap64
-> >  #define bswap64(_x) __builtin_bswap64(_x)
-> >  
-> > +static inline uint32_t bswap24(uint32_t x)
-> > +{
-> > +    assert((x & 0xff000000U) == 0);
-> > +
-> > +    return (((x & 0x000000ffU) << 16) |
-> > +            ((x & 0x0000ff00U) <<  0) |
-> > +            ((x & 0x00ff0000U) >> 16));
-> > +}
-> > +
-> >  static inline void bswap16s(uint16_t *s)
-> >  {
-> >      *s = __builtin_bswap16(*s);
-> >  }
-> >  
-> > +static inline void bswap24s(uint32_t *s)
-> > +{
-> > +    *s = bswap24(*s & 0x00ffffffU);
-> > +}
-> > +
-> >  static inline void bswap32s(uint32_t *s)
-> >  {
-> >      *s = __builtin_bswap32(*s);
-> > @@ -176,6 +190,7 @@ CPU_CONVERT(le, 64, uint64_t)
-> >   * size is:
-> >   *   b: 8 bits
-> >   *   w: 16 bits
-> > + *   24: 24 bits
-> >   *   l: 32 bits
-> >   *   q: 64 bits
-> >   *
-> > @@ -248,6 +263,11 @@ static inline void stw_he_p(void *ptr, uint16_t v)
-> >      __builtin_memcpy(ptr, &v, sizeof(v));
-> >  }
-> >  
-> > +static inline void st24_he_p(void *ptr, uint32_t v)
-> > +{
-> > +    __builtin_memcpy(ptr, &v, 3);
-> > +}
-> > +
-> >  static inline int ldl_he_p(const void *ptr)
-> >  {
-> >      int32_t r;
-> > @@ -297,6 +317,11 @@ static inline void stw_le_p(void *ptr, uint16_t v)
-> >      stw_he_p(ptr, le_bswap(v, 16));
-> >  }
-> >  
-> > +static inline void st24_le_p(void *ptr, uint32_t v)
-> > +{
-> > +    st24_he_p(ptr, le_bswap(v, 24));
-> > +}
-> > +
-> >  static inline void stl_le_p(void *ptr, uint32_t v)
-> >  {
-> >      stl_he_p(ptr, le_bswap(v, 32));  
-> 
-> 
+> Hmm, that's awkward. I'm not convinced we should be expecting the maintai=
+ner
+> doing staging builds to decide whether or not to the set tag when running=
+ a
+> pipeline. I guess maybe we can set 'RUNNER_TAG' in the web UI settings fo=
+r
+> CI, to turn it on globally for qemu.git upstream.
+
+Setting the RUNNER_TAG variable in the web UI would work.
+
+Someone would have to switch (remove) the RUNNER_TAG variable whenever
+we want to use the shared runners instead of the Kubernetes runner.
+This variable change could probably be automated to switch runners
+when a certain amount of remaining shared runners minutes is reached.
+
+
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>
 
 
