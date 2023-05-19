@@ -2,95 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3857096C5
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 13:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7131370973F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 14:32:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzybE-00014Z-6g; Fri, 19 May 2023 07:48:44 -0400
+	id 1pzzG3-0007pB-8R; Fri, 19 May 2023 08:30:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzybB-000147-Tn
- for qemu-devel@nongnu.org; Fri, 19 May 2023 07:48:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1pzzFy-0007nv-Gm
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 08:30:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzybA-0002G3-Cb
- for qemu-devel@nongnu.org; Fri, 19 May 2023 07:48:41 -0400
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1pzzFp-0002uP-HE
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 08:30:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684496919;
+ s=mimecast20190719; t=1684499433;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tyAqPOA30jlygdwot+rINyW6Md0cSwyA2f+ayCCD3uk=;
- b=HUBZezbh/y86FiIXPaBMf7pZc8I3k3jfX3bxbhjF8bawMzb+duJegtFeRLlkwKxv8PMycL
- HFcaxjGPK3nyYEP5rxqxxCXhkizII6tePPmeCk62pM75r1Ii/7ZVpKhsWBr/7jWo6FGNGt
- aIZDGy98EAel/lEUO7RyNAGX1swVN1Q=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6ef3NpjL9CBrVCeiGGJq6blDpDcsiBb0k9lm+Fss2RA=;
+ b=Cb0D6Pb7Q8mllTUQT0Lc9XE9CxJtuH3goO71xJxBGKuCwzCh/3AC0tn67vPN8H1MWcQv1P
+ 02wdVV72aCC3I7BZpyvhm7/JVAEwAOxnJAmlKcfwJA1d1X0qKatLYZ5rkwe7MrZyWevVoG
+ lONgFFfF3yCM/cS92BFUYEL93teeOk0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-FiZtucNwMlu6b9OXrE_8rw-1; Fri, 19 May 2023 07:48:37 -0400
-X-MC-Unique: FiZtucNwMlu6b9OXrE_8rw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-50bcb45f749so3235322a12.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 04:48:37 -0700 (PDT)
+ us-mta-513-lLzavXcYO7urM9vE2fX_9g-1; Fri, 19 May 2023 08:30:31 -0400
+X-MC-Unique: lLzavXcYO7urM9vE2fX_9g-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-307bac4c949so2023338f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 05:30:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684496917; x=1687088917;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tyAqPOA30jlygdwot+rINyW6Md0cSwyA2f+ayCCD3uk=;
- b=bTG7YZfBnmKxatmXvpKSs8+h0wnHDyf1HLuLCewQ4J3cXYLpc/ViZa9ebDo+anFpaz
- n61IjIo8gAcAOL0rzGiGU2oqU3N5yeZ+TC0SMvqaYsiBW7dQL9obnAVnTOIdRUuEkm0F
- +hkJ20Foq//7o4jGnGUumaTUH9n9PdjR2Th6JFNI3p3sI/bNtgAzZpnfXc4VI4WVvS3a
- 26GMmGfeQoljOvzEEqhFjXwAgC/TRw/PZsmxpwY2EqGCES/yNRoBMCX1VU/oc1/mO8dH
- YsuGmAMvNJUC/0p+PmbbDQaJ7Nx1+XDB9RDPxz1NG6EjERTGWgUOKcvg+Nk5gqSuiLcE
- 2MXQ==
-X-Gm-Message-State: AC+VfDzFr32pSePRLRMRYT8FXQy+zl0AC6OTv3fwlmyMz2G9lB+gSB78
- cdfePyY9Pqb5cUw2k+7gNIwLd0nqvLwaulT7Q1W65Tv8hfOdBXLURczNDe2MxJHLMdqOj+1TovF
- H0qcN8oA9DgSnvOg=
-X-Received: by 2002:a05:6402:f:b0:510:f132:5c98 with SMTP id
- d15-20020a056402000f00b00510f1325c98mr1322133edu.17.1684496916811; 
- Fri, 19 May 2023 04:48:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7q+Qmm+Z2Ip9mIuHkjuDvZfkmPM0TSzPmo4+W2+hXsoBwTQYgHlUTSoOFM9XDxPpkJduLTrQ==
-X-Received: by 2002:a05:6402:f:b0:510:f132:5c98 with SMTP id
- d15-20020a056402000f00b00510f1325c98mr1322116edu.17.1684496916440; 
- Fri, 19 May 2023 04:48:36 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
- ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.googlemail.com with ESMTPSA id
- g17-20020a056402181100b0050bc5acfcc0sm1607185edy.24.2023.05.19.04.48.35
+ d=1e100.net; s=20221208; t=1684499430; x=1687091430;
+ h=in-reply-to:references:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=6ef3NpjL9CBrVCeiGGJq6blDpDcsiBb0k9lm+Fss2RA=;
+ b=XV7LjyjEftcEr6LiFD0FdZewZHL1LRpakPCaxFx22taPeHxSgTZyvDVmi+BiPkaJad
+ j/Xex1DQfYag3l/t0W/d/sIvbTlVDD9A5h9z3FB1F90ZGJDMydZr0GXW+Evnpkw3d+Yx
+ gKkIBEql5I/SFw4NcSRR9DWpJ2PMvZNxCInON7iaNGyyzChMwftD+jxwrr/oDo+l7/kn
+ GiQ+41suzUSclbyXxJhkOEXMfRvybkGH96/HEqwrXmnHqg6a5r+w7Nx7VIZTy3kxjWHg
+ AbQuWPjPqe2lKqots3GOtaqXyFybAKAQ3DJSC8+rtWpuiTDOf3PQYSjonpo44IrFdDpP
+ rVGw==
+X-Gm-Message-State: AC+VfDz+EHzcLtKI+2VDvEgnQYZ5YENWV1vbx0eej2Tv9ljsIT4v8dBZ
+ 8mR77BktMaW0K6apFm1oZ8JnTntBTtXmuThvY4o7Wb7eWplqtVFmbc9Ob5XQ4uD/BOL8e+6FZAu
+ sPJJH2LIYcFmfp1w=
+X-Received: by 2002:adf:ef42:0:b0:307:c0c4:108f with SMTP id
+ c2-20020adfef42000000b00307c0c4108fmr1963596wrp.33.1684499430673; 
+ Fri, 19 May 2023 05:30:30 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4bd1NM75SMmxcjqrS53W9jiTzLRqm9IK993JygPMfSbh+ZuD4rCSVee4YDyd4mXyM73xnGOA==
+X-Received: by 2002:adf:ef42:0:b0:307:c0c4:108f with SMTP id
+ c2-20020adfef42000000b00307c0c4108fmr1963572wrp.33.1684499430248; 
+ Fri, 19 May 2023 05:30:30 -0700 (PDT)
+Received: from localhost ([2a01:e0a:a9a:c460:ada2:6df5:d1b0:21e])
+ by smtp.gmail.com with ESMTPSA id
+ m39-20020a05600c3b2700b003f07ef4e3e0sm14428617wms.0.2023.05.19.05.30.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 04:48:35 -0700 (PDT)
-Message-ID: <8c5c87b0-79e3-02c1-b093-3d636a9853b0@redhat.com>
-Date: Fri, 19 May 2023 13:48:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 0/6] meson: use subprojects for bundled projects
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
- richard.henderson@linaro.org, Thomas Huth <thuth@redhat.com>
-References: <20230519085647.1104775-1-pbonzini@redhat.com>
- <CAFEAcA-nMG_5u4pADASoQNF_MCCXHMCB3APTtVLohzTzCmJ3cQ@mail.gmail.com>
- <ZGdCL3Ka2JSeo+XD@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <ZGdCL3Ka2JSeo+XD@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ Fri, 19 May 2023 05:30:29 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 19 May 2023 14:30:29 +0200
+Message-Id: <CSQ97MRMICF6.5KCQEVGSYKFW@fedora>
+Subject: Re: [RFC PATCH] Add support for RAPL MSRs in KVM/Qemu
+From: "Anthony Harivel" <aharivel@redhat.com>
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>, <pbonzini@redhat.com>, <mtosatti@redhat.com>
+X-Mailer: aerc/0.13.0-123-g2937830491b5
+References: <20230517130730.85469-1-aharivel@redhat.com>
+ <d6118a9c-1e3f-4c29-520e-26562bbac600@linaro.org>
+In-Reply-To: <d6118a9c-1e3f-4c29-520e-26562bbac600@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aharivel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,19 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/19/23 11:32, Daniel P. Berrangé wrote:
-> Feels like we should be able to figure out some way to get rid of all
-> the submodules though, except for the roms, which are special and ok to
-> leave IMHO
+Philippe Mathieu-Daud=C3=A9, May 19, 2023 at 13:32:
 
-Hmm, almost.  roms/SLOF is used to build 
-pc-bios/s390-ccw/s390-netboot.img, so right now GIT_SUBMODULE and 
-GIT_SUBMODULE_ACTION could not be removed even without counting the 
-tests/fp submodules.  That's about 10,000 lines of code, or about 20% of 
-all of SLOF; it might be a bit too much for vendoring.
+Hi Philippe,
 
-Adding Thomas for ideas...
+> > +/*
+> > + * Package statistic
+> > + * @ e_start: package energy counter before the sleep
+> > + * @ e_end: package energy counter after the sleep
+> > + * @ e_delta: delta of package energy counter
+> > + * @ e_ratio: store the energy ratio of non-vCPU thread
+> > + * @ nb_vcpu: number of vCPU running on this package
+> > + */
+> > +struct packge_energy_stat {
+>
+> "package"
 
-Paolo
+My bad..
+This will be corrected.
+
+>
+> > +    uint64_t e_start;
+> > +    uint64_t e_end;
+> > +    uint64_t e_delta;
+> > +    uint64_t e_ratio;
+> > +    unsigned int nb_vcpu;
+> > +};
+> > +
+> > +typedef struct thread_stat thread_stat;
+> > +typedef struct packge_energy_stat package_energy_stat;
+> > +
+> > +uint64_t read_msr(uint32_t reg, unsigned int cpu_id);
+> > +void delta_ticks(thread_stat *thd_stat, int i);
+> > +unsigned int get_maxcpus(unsigned int package_num);
+> > +int read_thread_stat(struct thread_stat *thread, int pid, int index);
+> > +pid_t *get_thread_ids(pid_t pid, int *num_threads);
+> > +double get_ratio(package_energy_stat *pkg_stat,
+> > +                        thread_stat *thd_stat,
+> > +                        int maxticks, int i);
+>
+> Would prefixing these declarations with 'vmsr_' provide
+> a clearer API? Otherwise, maybe this isn't the best header
+> to declare them.
+
+I agree with you this lack the prefixing you mention for better API clarity=
+.=20
+I will correct that.
+
+Thanks !
+
+> > +
+> > +#endif /* VMSR_ENERGY_H */
 
 
