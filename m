@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A36709859
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 15:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B9770985B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 15:32:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q00Bc-0003PU-9l; Fri, 19 May 2023 09:30:24 -0400
+	id 1q00Cr-0004Rg-18; Fri, 19 May 2023 09:31:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q00Ba-0003PD-4i
- for qemu-devel@nongnu.org; Fri, 19 May 2023 09:30:22 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q00Cp-0004P1-Gi
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 09:31:39 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q00BY-0005O4-1w
- for qemu-devel@nongnu.org; Fri, 19 May 2023 09:30:21 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1a516fb6523so30924765ad.3
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 06:30:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q00Cn-0005gt-Su
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 09:31:39 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-965ab8ed1c0so516861166b.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 06:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684503018; x=1687095018;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xzVhHKbZ2mR1wPsTPQ0oiOD+r1sjZF7340pwhoUEuHE=;
- b=Z8FVP6itoUtel8zEWSv2bNyGwO+6ni2kSqiCq+5xxF4715a2sFDwXT63XsVHymMk4p
- pJR65tFwxPXAyFt4s+xXvO/tgA91hb8iP7+aN8KL4LgR2JMaPz7ZyWrnFPsHzNXOA0uv
- HVWB7o4X5EB4k1bfcJODRzajKKXIo8qolB3+0j+xcpYAko4bRZ41Inkz/A+XA6fQYir7
- waadT7FcfgKDQw/k9p+cybBeCCgyYa02VvwJkcs9UWiEZ4CM0fJknPs+YyaWB7PhJ3Rl
- P6Okm4y+bRkLM5+9QLQwNlh5F62qO2KCoLUsH7oSHpi58IdbJluQw2amwZbVytZhYLbh
- JwfA==
+ d=linaro.org; s=google; t=1684503095; x=1687095095;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=m58E9ezTP8ik5vQQkXe/DA0gml36NE6R89Em8nZVOJM=;
+ b=v88tRm+hnI8aChmeD54MyjMeGP9zTjwn0dzGhUUaIck6QLQyJdcxWE3e8r/ALSANI9
+ 557+rckku9kY9eFJ281ZJ7Z5FcQIXDTDtfjhvuoVaqTTFKK30Utowh8iVghWK//NGMMi
+ fRlmdYY2MdrGn0Xk+Z5maeY8CgBJIBzKDiX30TvQ6p35gmEDPHIrGhYsZnd6ydkYOQkN
+ G0y47QRidmwWjxQ9Ct1HhgiG9+Ut+iC2A4EC5Kv+SqUbLMCTdmHdgXolsXUpl4RXrc8Z
+ EEJGwYAENb1/XjA+8/3jRp/Yige/7HmGO6rs6+2hhsagObjMwH2b/XGqJMinHhKl8ee9
+ PvuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684503018; x=1687095018;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xzVhHKbZ2mR1wPsTPQ0oiOD+r1sjZF7340pwhoUEuHE=;
- b=k18C3fSb8+vUyCKVfTXFbbNgqEJdr2zh/z8wNQLMOHmj/LS+6rwjLGr/Es40hSvSRm
- 7e1bRvI7NFR3B7T14DIgeuCS876tj6NCkc2awbWU4CTZIFgTVWhEumrO9Y80w26Od0Yb
- eTjT/mBbqGHmUMjPxWDQxRuwW5BOAFVyV5R3VIINDXxaRrXTWCxEHZc/kkpo29gE/FrQ
- Qk/UmcgM6CaFO5KHa6HDgGE3M4fCZMuJEx4MQqoCnIEEVsZ8TkSJqlFiTQJ1giFivnhH
- 74fD20PaAglhSRuIhHQNvBWS/0wQ42NXI/G1iLPzEazrFgZ02vnxKT5ERYM2RLwDT47O
- FHPA==
-X-Gm-Message-State: AC+VfDzVK8SrGalM71Lno2TM0wacuoeTgUzHPUd7Am8/xK/b+1+ZXURG
- TBv7lfvTP9qJAHHkmRdvD7Qjow==
-X-Google-Smtp-Source: ACHHUZ45r0u03Lby0N1awhRTdo8PT4dRu+GxqxqKR/T7LR4kA+EyeMWDKsg99E3nYW29BpjZHPLTDw==
-X-Received: by 2002:a17:902:db0a:b0:1ac:5c90:23e with SMTP id
- m10-20020a170902db0a00b001ac5c90023emr3407389plx.7.1684503018309; 
- Fri, 19 May 2023 06:30:18 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:686f:d1bb:8fc4:dc38?
- ([2602:ae:1598:4c01:686f:d1bb:8fc4:dc38])
- by smtp.gmail.com with ESMTPSA id
- iw17-20020a170903045100b001ae62d7cb2bsm3397839plb.199.2023.05.19.06.30.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 06:30:17 -0700 (PDT)
-Message-ID: <876cc081-8338-aeb9-3c10-7d7318ffd00c@linaro.org>
-Date: Fri, 19 May 2023 06:30:15 -0700
+ d=1e100.net; s=20221208; t=1684503095; x=1687095095;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=m58E9ezTP8ik5vQQkXe/DA0gml36NE6R89Em8nZVOJM=;
+ b=TLR9PNYD4E43U/YSUR34sTw8E/WVNdfcyWPbhuN9MaH0wO4ZQ2lNaszklYLZm5BU1E
+ zs+U+lZuQaaVMBqQmbGTerr4EgPNrANynyyCu77SBlvxKSofOrkokZNP5mIIQudlm6Y7
+ rDMt6i+bdqCA2bW4ZOK0TLBIZg8CumIgvjjLtbVLQMTQYefSSoK3esV7YtN0Zk/N4YqM
+ pxqGL6uPvxdwBbUk2gl6QIa6tOUglbcMiVwC7u1AM8vuDfNh/JGqykKpl/0KqvM5fyPd
+ 4U155Yrh10F3FCjSirNWP6vqDHSSjyDakOFoEjVx8UcFRMOpiwPSQAkXlpQ3Y06fVdTN
+ jCmw==
+X-Gm-Message-State: AC+VfDzqwSgk/zEvJlrDdPHcD18h4l9fQTN8OikIUaVZRatttSeU5HJZ
+ CCs1K2biZVBcTYC23S9sdCW0kcOE00mCIe6s9XRavQ==
+X-Google-Smtp-Source: ACHHUZ5yAUnFUf/CAPk8CSlStxMUfadsTxWlk67qfZ8xnDcA/KVj7HOFi5CQ40AzAt+/e3+uu/IT0bMRlseOaZIJLI4=
+X-Received: by 2002:a17:906:5f89:b0:96a:ad45:fd51 with SMTP id
+ a9-20020a1709065f8900b0096aad45fd51mr1508446eju.27.1684503095580; Fri, 19 May
+ 2023 06:31:35 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: gitlab shared runner time expired
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-References: <58b8067d-3136-94ed-f53e-2ccd0feb8c75@linaro.org>
- <CAFEAcA8nKiES473FbfCa=jkTO2SaVTKOgGPoAAFAzaojZZ86jA@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8nKiES473FbfCa=jkTO2SaVTKOgGPoAAFAzaojZZ86jA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.527,
+References: <20230518125107.146421-1-peter.maydell@linaro.org>
+ <20230518125107.146421-5-peter.maydell@linaro.org> <878rdklbu2.fsf@linaro.org>
+In-Reply-To: <878rdklbu2.fsf@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 May 2023 14:31:24 +0100
+Message-ID: <CAFEAcA_4ovPWkNw=KNVicD35SzJcQhi4Najt8cS3GSa-TLroKA@mail.gmail.com>
+Subject: Re: [PULL 04/29] arm/kvm: add support for MTE
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Cornelia Huck <cornelia.huck@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,18 +87,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/19/23 02:18, Peter Maydell wrote:
-> On Thu, 18 May 2023 at 20:27, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> So, here we are again, out of runner time with 13 days left in the month.
-> 
-> This is quite early -- have you been processing pull requests
-> strictly one at a time, or in (small) batches ?
+On Fri, 19 May 2023 at 13:55, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+>
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+> > From: Cornelia Huck <cohuck@redhat.com>
+> >
+> > Extend the 'mte' property for the virt machine to cover KVM as
+> > well. For KVM, we don't allocate tag memory, but instead enable the
+> > capability.
+> >
+> > If MTE has been enabled, we need to disable migration, as we do not
+> > yet have a way to migrate the tags as well. Therefore, MTE will stay
+> > off with KVM unless requested explicitly.
+> >
+> > Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+> > Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> > Message-id: 20230428095533.21747-2-cohuck@redhat.com
+> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>
+> I bisected to this commit which causes a segfault on one of my test
+> kernels (6.3.2 arm64):
+>
+>   =E2=9E=9C  ag MTE .config
+>   486:CONFIG_ARM64_AS_HAS_MTE=3Dy
+>   487:CONFIG_ARM64_MTE=3Dy
+>   2949:CONFIG_WLAN_VENDOR_ADMTEK=3Dy
+>   3573:# CONFIG_I2C_SIMTEC is not set
+>   5278:# CONFIG_DRM_PANEL_TPO_TD043MTEA1 is not set
+>   9749:CONFIG_ARCH_USE_MEMTEST=3Dy
+>   9750:CONFIG_MEMTEST=3Dy
 
-Mostly one at a time, because most pull requests have had errors.  Every single time I've 
-tried to batch them this month it has been futile.
+Try this entirely untested patch?
 
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index f6a88e52ac2..f350661a928 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1593,6 +1593,15 @@ static void arm_cpu_realizefn(DeviceState *dev,
+Error **errp)
+         }
+     }
 
-r~
++    /*
++     * For TCG, we can only present MTE to the guest if the board gave us
++     * tag RAM. Set has_mte appropriately so code below doesn't need to
++     * care whether we're TCG or KVM when deciding if MTE is present.
++     */
++    if (tcg_enabled() || qtest_enabled()) {
++        cpu->has_mte =3D cpu->tag_memory !=3D NULL;
++    }
++
+     if (!tcg_enabled() && !qtest_enabled()) {
+         /*
+          * We assume that no accelerator except TCG (and the "not really a=
+n
+
+(Signed-off-by: Peter Maydell <peter.maydell@linaro.org> if it
+works and you want to turn it into a proper patch...)
+
+-- PMM
 
