@@ -2,73 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8588670994C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF6970995A
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:18:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q00t9-0002w8-UG; Fri, 19 May 2023 10:15:23 -0400
+	id 1q00vt-0004KO-TC; Fri, 19 May 2023 10:18:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q00t7-0002vY-Sl
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:15:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q00vr-0004KB-1h
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:18:11 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q00t5-0005No-RJ
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:15:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684505716;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0AwUQROAmCrLeAeToIxlntnc9qTCtQMfHAM/o285D/o=;
- b=YlTyxZoTdVgBKgtMkAw37CB6Q1UwrckfTYX5cjOAu/wdMTEpCio1OBgVOgQ1kZDSl3ex6g
- YU9B4EbU+7xvZETDoruP+ybAYjVU0IadE877919Wfn5gdj3VZRa320UqNvQh8TL6tivpld
- CdlV011gAbMt9DvtXkJkxSMsLOwSKF0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-357-2jXX3ijYOx2mLIcLr3c3cQ-1; Fri, 19 May 2023 10:15:14 -0400
-X-MC-Unique: 2jXX3ijYOx2mLIcLr3c3cQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 587253C1410D
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 14:15:14 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.105])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D03CF4F2DDE;
- Fri, 19 May 2023 14:15:13 +0000 (UTC)
-Date: Fri, 19 May 2023 15:15:05 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Camilla Conte <cconte@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/2] Add CI configuration for Kubernetes
-Message-ID: <ZGeEaVAzJ8B/W79K@redhat.com>
-References: <20230407145252.32955-1-cconte@redhat.com>
- <ZGc6srab3Q7IcUpx@redhat.com>
- <CACPOWh1QSdSiEoSeTyVW2RDpENU0jdyDGWzQAjeKy5g0ShEsOA@mail.gmail.com>
- <ZGdwyNmhLmBMwaKp@redhat.com>
- <CACPOWh3-xVwu0+m1SuBTCSpcCoWJ2cQDN=G05bSW4x15piCwtg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q00vo-0005nK-GL
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:18:10 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QN86b5Rn6z67d2y;
+ Fri, 19 May 2023 22:16:55 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 19 May 2023 15:18:03 +0100
+To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>
+CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
+ <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Dave Jiang
+ <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>, Eric
+ Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>, Thomas
+ Huth <thuth@redhat.com>
+Subject: [PATCH v6 0/4] hw/cxl: Poison get, inject, clear
+Date: Fri, 19 May 2023 15:17:59 +0100
+Message-ID: <20230519141803.29713-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACPOWh3-xVwu0+m1SuBTCSpcCoWJ2cQDN=G05bSW4x15piCwtg@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,158 +66,100 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 19, 2023 at 03:06:41PM +0100, Camilla Conte wrote:
-> On Fri, May 19, 2023 at 1:51 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > On Fri, May 19, 2023 at 01:33:50PM +0100, Camilla Conte wrote:
-> > > On Fri, May 19, 2023 at 10:00 AM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > > >
-> > > > On Fri, Apr 07, 2023 at 03:52:51PM +0100, Camilla Conte wrote:
-> > > > > Configure Gitlab CI to run on Kubernetes
-> > > > > according to the official documentation.
-> > > > > https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#docker-in-docker-with-tls-enabled-in-kubernetes
-> > > > >
-> > > > > These changes are needed because of the CI jobs
-> > > > > using Docker-in-Docker (dind).
-> > > > > As soon as Docker-in-Docker is replaced with Kaniko,
-> > > > > these changes can be reverted.
-> > > > >
-> > > > > I documented what I did to set up the Kubernetes runner on the wiki:
-> > > > > https://wiki.qemu.org/Testing/CI/KubernetesRunners
-> > > > >
-> > > > > Signed-off-by: Camilla Conte <cconte@redhat.com>
-> > > > > ---
-> > > > >  .gitlab-ci.d/container-template.yml |  6 +++---
-> > > > >  .gitlab-ci.d/default.yml            |  3 +++
-> > > > >  .gitlab-ci.d/opensbi.yml            |  8 +++-----
-> > > > >  .gitlab-ci.d/qemu-project.yml       | 17 +++++++++++++++++
-> > > > >  4 files changed, 26 insertions(+), 8 deletions(-)
-> > > > >  create mode 100644 .gitlab-ci.d/default.yml
-> > > > >
-> > > > > diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
-> > > > > index 519b8a9482..f55a954741 100644
-> > > > > --- a/.gitlab-ci.d/container-template.yml
-> > > > > +++ b/.gitlab-ci.d/container-template.yml
-> > > > > @@ -1,14 +1,14 @@
-> > > > >  .container_job_template:
-> > > > >    extends: .base_job_template
-> > > > > -  image: docker:stable
-> > > > > +  image: docker:20.10.16
-> > > > >    stage: containers
-> > > > >    services:
-> > > > > -    - docker:dind
-> > > > > +    - docker:20.10.16-dind
-> > > > >    before_script:
-> > > > >      - export TAG="$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
-> > > > >      - export COMMON_TAG="$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
-> > > > >      - apk add python3
-> > > > > -    - docker info
-> > > > > +    - until docker info; do sleep 1; done
-> > > > >      - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
-> > > > >    script:
-> > > > >      - echo "TAG:$TAG"
-> > > > > diff --git a/.gitlab-ci.d/default.yml b/.gitlab-ci.d/default.yml
-> > > > > new file mode 100644
-> > > > > index 0000000000..292be8b91c
-> > > > > --- /dev/null
-> > > > > +++ b/.gitlab-ci.d/default.yml
-> > > > > @@ -0,0 +1,3 @@
-> > > > > +default:
-> > > > > +  tags:
-> > > > > +    - $RUNNER_TAG
-> > > >
-> > > > Can we just put this in base.yml instead of creating a new file.
-> > >
-> > > Sure.
-> > >
-> > > > > diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
-> > > > > index 9a651465d8..5b0b47b57b 100644
-> > > > > --- a/.gitlab-ci.d/opensbi.yml
-> > > > > +++ b/.gitlab-ci.d/opensbi.yml
-> > > > > @@ -42,17 +42,15 @@
-> > > > >  docker-opensbi:
-> > > > >    extends: .opensbi_job_rules
-> > > > >    stage: containers
-> > > > > -  image: docker:stable
-> > > > > +  image: docker:20.10.16
-> > > > >    services:
-> > > > > -    - docker:stable-dind
-> > > > > +    - docker:20.10.16-dind
-> > > >
-> > > > Can you elaborate on this ?  I know the docs about use that particular
-> > > > version tag, but they don't appear to explain why. If this is not
-> > > > actually a hard requirements, we should keep using the stable tag.
-> > >
-> > > Yes, we can keep using "stable".
-> > > Then, we should be ready to address future issues that may arise from
-> > > "stable" not being compatible with the runner.
-> > >
-> > > > >    variables:
-> > > > >      GIT_DEPTH: 3
-> > > > >      IMAGE_TAG: $CI_REGISTRY_IMAGE:opensbi-cross-build
-> > > > > -    # We don't use TLS
-> > > > > -    DOCKER_HOST: tcp://docker:2375
-> > > > > -    DOCKER_TLS_CERTDIR: ""
-> > > >
-> > > > So IIUC, this was always redundant when using gitlab CI. We should just
-> > > > remove these in a standalone commit.
-> > >
-> > > Okay, I'll put this in a separate commit.
-> > >
-> > > > >    before_script:
-> > > > >      - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-> > > > > +    - until docker info; do sleep 1; done
-> > > >
-> > > > Was this really needed ?  The docs don't show that, and docker login is
-> > > > synchronous, so I wouldn't expect us to them poll on 'docker info'.
-> > >
-> > > Unfortunately, yes. We need to wait until the "docker info" command is
-> > > successful. This ensures that the Docker server has started and the
-> > > subsequent docker commands won't fail.
-> >
-> > >
-> > > > In container-template.yml we in fact do the reverse
-> > > >
-> > > >     - docker info
-> > > >     - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
-> > >
-> > > About "docker login", as far as I understand it's a client-only
-> > > command. It doesn't involve the Docker server at all. These two
-> > > commands are not related to each other, it doesn't matter if "docker
-> > > login" runs before or after "docker info".
-> > >
-> > > > imho best make this opensbi.yml file match contanier-template.yml, and
-> > > > could be part of the same cleanup commit that removes thhose two docker
-> > > > env vars.
-> > >
-> > > You mean to replace the "docker-opensbi" job in the "opensbi.yml" file
-> > > with the same as the ".container_job_template" from the
-> > > "container-template.yml" file?
-> > > These two look too much different to me. I think we need to keep both.
-> 
-> > No, I didn't mean we have to merge them. Just that the container-template.yml
-> > file merely does 'docker info' without any loop. So either that one is broken,
-> > or using a loop in opensbi.yml is redundant.
-> >
-> > Assuming you've tested this series on k8s successfully, it would indicate
-> > that the looping is not required, otherwise all the container jobs would
-> > have failed.
-> 
-> Actually, I added the 'docker info' loop in the container-template.yml
-> file too. Or am I missing your point?
+Note that Michael Tsirkin replied to v5 to say he has first
+3 queued - the bswap one is buggy so should be dropped and
+replaced with this v6.  Note changes in that patch were large
+enough that I've dropped Fan Ni's tag.
 
-No, I'm blind and missed that. So all is consistent already.
+Tested the problematic cross compiles using docker.
+
+v6:
+ - Fix 24 bit bswap on big endian platforms.
+   I think this was broken in a bad rebase some time ago.
+   Fix is to not use the general macros for this case as they
+   rely on a builtin 24 bit byte swap which doesn't exist.
+ - Wrong use of int128_to_64() on a variable that was uint64_t in
+   the first place.
+
+Many of the precursors listed for v4 have now been applied, but
+a few minor fixes have come up in the meantime so there are still
+a few precursors including the volatile support left from v4
+precursors.
+
+Michael has the above series + initial patches of v5 of this series
+queued up.
+
+Depends on 
+[PATCH 0/2] hw/cxl: CDAT file handling fixes.
+[PATCH v2 0/3] hw/cxl: Fix decoder commit and uncommit handling
+[PATCH 0/3] docs/cxl: Gathering of fixes for 8.0 CXL docs.
+[PATCH v5 0/3] hw/mem: CXL Type-3 Volatile Memory Support
+ 
+Based on: Message-ID: 20230421132020.7408-1-Jonathan.Cameron@huawei.com
+Based on: Message-ID: 20230421135906.3515-1-Jonathan.Cameron@huawei.com
+Based on: Message-ID: 20230421134507.26842-1-Jonathan.Cameron@huawei.com
+Based on: Message-ID: 20230421160827.2227-1-Jonathan.Cameron@huawei.com
+
+The kernel support for Poison handling is currently in the cxl/pending
+branch and hopefully should be in the CXL pull request next week.
+
+https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=pending
+
+This code has been very useful for testing and helped identify various
+corner cases.
+
+Updated cover letter.
+
+The series supports:
+1) Injection of variable length poison regions via QMP (to fake real
+   memory corruption and ensure we deal with odd overflow corner cases
+   such as clearing the middle of a large region making the list overflow
+   as we go from one long entry to two smaller entries.
+2) Read of poison list via the CXL mailbox.
+3) Injection via the poison injection mailbox command (limited to 64 byte
+   entries - spec constraint)
+4) Clearing of poison injected via either method.
+
+The implementation is meant to be a valid combination of impdef choices
+based on what the spec allowed. There are a number of places where it could
+be made more sophisticated that we might consider in future:
+* Fusing adjacent poison entries if the types match.
+* Separate injection list and main poison list, to test out limits on
+  injected poison list being smaller than the main list.
+* Poison list overflow event (needs event log support in general)
+* Connecting up to the poison list error record generation (rather complex
+  and not needed for currently kernel handling testing).
+* Triggering the synchronous and asynchronous errors that occur on reads
+  and writes of the memory when the host receives poison.
+
+As the kernel code is currently fairly simple, it is likely that the above
+does not yet matter but who knows what will turn up in future!
 
 
-With regards,
-Daniel
+Ira Weiny (1):
+  bswap: Add the ability to store to an unaligned 24 bit field
+
+Jonathan Cameron (3):
+  hw/cxl: QMP based poison injection support
+  hw/cxl: Add poison injection via the mailbox.
+  hw/cxl: Add clear poison mailbox command support.
+
+ docs/devel/loads-stores.rst |   1 +
+ hw/cxl/cxl-mailbox-utils.c  | 214 ++++++++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3.c          |  93 ++++++++++++++++
+ hw/mem/cxl_type3_stubs.c    |   6 +
+ include/hw/cxl/cxl.h        |   1 +
+ include/hw/cxl/cxl_device.h |  21 ++++
+ include/qemu/bswap.h        |  27 +++++
+ qapi/cxl.json               |  18 +++
+ 8 files changed, 381 insertions(+)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.39.2
 
 
