@@ -2,91 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD41F709A2E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4400D709A48
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:45:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01JH-0004Bl-1P; Fri, 19 May 2023 10:42:23 -0400
+	id 1q01LW-0005LJ-8X; Fri, 19 May 2023 10:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01JE-0004BL-Qg
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:42:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01LU-0005Kl-8O
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:44:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01JD-00022x-71
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:42:20 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01LS-0002PV-Vy
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:44:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507337;
+ s=mimecast20190719; t=1684507478;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M/QTO1WYaffsfyPtUIUiwHUnhi82SBkep340tA+v9ok=;
- b=GuCvDsYOkRAchEpiRCgAan0gqbHNInl2yxK5IryzUzLYsebgPP/YR4U2rHHaeFkvnjRQ6b
- bkSwU5rsXHDN7oCKccLSSRnCjaVzm4ZHHo1+ym2TPhroBjJTjpFDMhSrWQunHwWCJpg9IJ
- +LwFM6RNFh3a+1eiQaQioxVsgFauM3I=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9Adt5IcIOen/FCzmeJ9ZKl4dQmt7S+GpjvrRhWvgpkw=;
+ b=g8/dOZIdshc++EZQA9MwIlWChJThTIsP7OalbqogxUY4dvCrAWVjaqtw00Szkq/abOC57D
+ 8jEoSs68f/+puyKBkWEfd7TkZEqK75xDwPYF/hRr2Q7LVuaHrG2HQdXHhPrjT45OHnwk7g
+ mVTsY3LbrYUSz9LoFLCcA9p60ZbrihA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-SjMupShhM4m162-B0VcP9Q-1; Fri, 19 May 2023 10:42:14 -0400
-X-MC-Unique: SjMupShhM4m162-B0VcP9Q-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-96f6944c529so85780466b.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:42:14 -0700 (PDT)
+ us-mta-556-EI1l0rnvNhORryVfaGwkmA-1; Fri, 19 May 2023 10:44:37 -0400
+X-MC-Unique: EI1l0rnvNhORryVfaGwkmA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-510dd6ff768so2530829a12.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:44:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507333; x=1687099333;
+ d=1e100.net; s=20221208; t=1684507474; x=1687099474;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=M/QTO1WYaffsfyPtUIUiwHUnhi82SBkep340tA+v9ok=;
- b=dY3B6IXltIxuctX611vus/cl5WvnVCV1dRydwPTKMpK3pdzjxD/PRM9M6WFcV1xtkR
- Pct07YaAX0oIptGQval5sHO3V4hE7uCpo3dUW8XJJbg8molGFnQpF/rqyCSijKkzS7b2
- eOZ3jA5X+33GUewDP8OHZQf/28mW2jAUpWxBjkrt0wBDXGyz5Lk9exRVUAwKEvePdu2i
- heLZfRc8KJbSBy8Ecp6H+tFAYGr+xDqJ04d8jy8xtrqHFfSWl+iTT66Vmj1IyWOzbMDJ
- kwRN1DDYAnUEiOfsXp75vmo9hSgWYI0wW09k6NXF90SHCLJXgXC50p9orScu7vghQMm+
- KoJg==
-X-Gm-Message-State: AC+VfDxYQ1H/AkhZCzTww7meRVI1W5BAG2kLlv+lh1zUVx1kiNKBpIts
- b/9NkbJ496d8Xlz8OtF+7O82f2X9kalO+y9EfSy0anxodFPMuSjBTrpg5jNblHjVeuCPMJHrRyU
- CjOHGI5K7mDq0r+A=
-X-Received: by 2002:a17:907:1c8b:b0:958:489f:d050 with SMTP id
- nb11-20020a1709071c8b00b00958489fd050mr2372904ejc.43.1684507333497; 
- Fri, 19 May 2023 07:42:13 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7zaOFcoK9tTo5N6B+LyEUvD2Khomo8ffUhfL/rQvZ2MCRuNjWqMH0vTiHJrKTawXaz1nFkSA==
-X-Received: by 2002:a17:907:1c8b:b0:958:489f:d050 with SMTP id
- nb11-20020a1709071c8b00b00958489fd050mr2372888ejc.43.1684507333238; 
- Fri, 19 May 2023 07:42:13 -0700 (PDT)
+ bh=9Adt5IcIOen/FCzmeJ9ZKl4dQmt7S+GpjvrRhWvgpkw=;
+ b=Fm++eJM6KrG9yCAbcxsDTsyQEbtSrf2EfaTkKpd7rPCaqpPs7yTT3ROEZj0uc5qev9
+ r2r6Mw2WaUI7UOpEtywaFptYTI5G/q9OQfaIxprdh238GM4KFLbFtMaHCM3CJFaXB/nR
+ E/d8B4KZca8PZN4S0vjlYwZ/Re4jOUelN1Q8k4biyuXwwlsOXo+6O8Q9VUYiMi9KRksT
+ e9SABEu3mt1VViML2bIomP32g2fDswo16gHeyjrBWr5W3exQclay6gDt+qO69n6D6f3O
+ BjjTRhgLdJAZootIQ9gUYmIXcBDJI3/oaKBZyBr+3vbXtiTNJsXMYlKjLa+rtGVdH/zz
+ SBQw==
+X-Gm-Message-State: AC+VfDwgi9MW9rk83gvRUPp8D/UbCaetV32etNKwgsJCpWXVWMN3qDdy
+ PhekMjK2po7RDFENefHaPcwpD5vgnPPW6EH7Fs4o/Pmiz0bocYpnZx2TKeyRAhpAt9WJ1+aHx3q
+ H+wCZDc7BUmY66B0=
+X-Received: by 2002:a17:907:2cc7:b0:959:18b2:454a with SMTP id
+ hg7-20020a1709072cc700b0095918b2454amr1917217ejc.76.1684507474660; 
+ Fri, 19 May 2023 07:44:34 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5MMo2hK0oMYQplXO2EET+zCHbds0t3NpnEPg3/PjndUcMeCcxvm6bYNdOsw/p9fZnytSuXqQ==
+X-Received: by 2002:a17:907:2cc7:b0:959:18b2:454a with SMTP id
+ hg7-20020a1709072cc700b0095918b2454amr1917206ejc.76.1684507474354; 
+ Fri, 19 May 2023 07:44:34 -0700 (PDT)
 Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
  (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
  [2003:cf:d723:b0c7:284b:5990:6336:f84f])
  by smtp.gmail.com with ESMTPSA id
- my48-20020a1709065a7000b009664e25c425sm2375400ejc.95.2023.05.19.07.42.12
+ rk5-20020a170907214500b0094f3b18044bsm2363548ejb.218.2023.05.19.07.44.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 07:42:12 -0700 (PDT)
-Message-ID: <af74699e-9ce2-b9f9-2fef-e0b862e32833@redhat.com>
-Date: Fri, 19 May 2023 16:42:11 +0200
+ Fri, 19 May 2023 07:44:33 -0700 (PDT)
+Message-ID: <06e3f1ce-06a9-467c-ecf4-5966725642c1@redhat.com>
+Date: Fri, 19 May 2023 16:44:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v2 05/19] cutils: Fix wraparound parsing in qemu_strtoui
+Subject: Re: [PATCH v2 06/19] cutils: Document differences between parse_uint
+ and qemu_strtou64
 Content-Language: en-US
 To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
 Cc: armbru@redhat.com, richard.henderson@linaro.org
 References: <20230512021033.1378730-1-eblake@redhat.com>
- <20230512021033.1378730-6-eblake@redhat.com>
+ <20230512021033.1378730-7-eblake@redhat.com>
 From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230512021033.1378730-6-eblake@redhat.com>
+In-Reply-To: <20230512021033.1378730-7-eblake@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,57 +105,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12.05.23 04:10, Eric Blake wrote:
-> While we were matching 32-bit strtol in qemu_strtoi, our use of a
-> 64-bit parse was leaking through for some inaccurate answers in
-> qemu_strtoui in comparison to a 32-bit strtoul.  Fix those, and update
-> the testsuite now that our bounds checks are correct.
+> These two functions are subtly different, and not just because of
+> swapped parameter order.  It took me adding better unit tests to
+> figure out why.  Document the differences to make it more obvious to
+> developers trying to pick which one to use, as well as to aid in
+> upcoming semantic changes.
 >
-> Our int wrappers would be a lot easier to write if libc had a
-> guaranteed 32-bit parser even on platforms with 64-bit long.
+> While touching the documentation, adjust a mis-statement: parse_uint
+> does not return -EINVAL on invalid base, but assert()s, like all the
+> other qemu_strto* functions that take a base argument.
 >
-> Fixes: 473a2a331e ("cutils: add qemu_strtoi & qemu_strtoui parsers for int/unsigned int types", v2.12.0)
 > Signed-off-by: Eric Blake <eblake@redhat.com>
 > ---
->   tests/unit/test-cutils.c | 11 +++++------
->   util/cutils.c            | 14 ++++++++++----
->   2 files changed, 15 insertions(+), 10 deletions(-)
+>   util/cutils.c | 20 ++++++++++++--------
+>   1 file changed, 12 insertions(+), 8 deletions(-)
 
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-
-> diff --git a/util/cutils.c b/util/cutils.c
-> index 5887e744140..997ddcd09e5 100644
-> --- a/util/cutils.c
-> +++ b/util/cutils.c
-> @@ -466,10 +466,16 @@ int qemu_strtoui(const char *nptr, const char **endptr, int base,
->       if (errno == ERANGE) {
->           *result = -1;
->       } else {
-> -        if (lresult > UINT_MAX) {
-> -            *result = UINT_MAX;
-> -            errno = ERANGE;
-> -        } else if (lresult < INT_MIN) {
-> +        /*
-> +         * Note that platforms with 32-bit strtoul accept input in the
-> +         * range [-4294967295, 4294967295]; but we used 64-bit
-> +         * strtoull which wraps -18446744073709551615 to 1.  Reject
-> +         * positive values that contain '-', and wrap all valid
-> +         * negative values.
-> +         */
-> +        if (lresult > UINT_MAX ||
-> +            lresult < -(long long)UINT_MAX ||
-> +            (lresult > 0 && memchr(nptr, '-', ep - nptr))) {
->               *result = UINT_MAX;
->               errno = ERANGE;
->           } else {
-
-Just a question whether I guessed correctly, because there’s no comment 
-on the matter: We store the (supposedly unsigned) result of strtoull() 
-in a signed long long because e.g. -1 is mapped to ULLONG_MAX, so the 
-valid unsigned ranges would be [0, UINT_MAX] \cup [ULLONG_MAX - UINT_MAX 
-+ 1, ULLONG_MAX], which is more cumbersome to check than the [-UINT_MAX, 
-UINT_MAX] range?  (And we’d need to exclude strings with - in them if 
-ullresult > UINT_MAX rather than > 0, probably)
-
-Hanna
 
 
