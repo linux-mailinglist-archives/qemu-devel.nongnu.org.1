@@ -2,92 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBEF709B02
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 17:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D9D709B11
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 17:17:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01p2-0000Bt-AV; Fri, 19 May 2023 11:15:12 -0400
+	id 1q01r4-0002Sb-Eu; Fri, 19 May 2023 11:17:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01p0-00007y-B1
- for qemu-devel@nongnu.org; Fri, 19 May 2023 11:15:10 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q01qv-0002Q4-3f
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 11:17:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01oy-00044R-O4
- for qemu-devel@nongnu.org; Fri, 19 May 2023 11:15:10 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q01qs-0004TB-Mo
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 11:17:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684509308;
+ s=mimecast20190719; t=1684509425;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ibx0s4BuzeEZLgxNwhc0EU/PYP1e7Z2TbZnB9+LksSU=;
- b=bUjoppaO2asex6JaWnt/nDoDk1dL6HD3FZCgQQfPdMYYz6E4RZ231D8pzgjj2fL/z1Brci
- TbruPKFDtISSG9HbtnKlGORpLWRYrPNley0ISbpfUOBsPNpY9K7gJQ7UE3Rx8H/KdKxX3Y
- sROGe49zhbIos548Ji7bh7LoCl3C994=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-310-9oNf9cZHNAGpvN62U93cHA-1; Fri, 19 May 2023 11:15:05 -0400
-X-MC-Unique: 9oNf9cZHNAGpvN62U93cHA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-965b73d8b7eso369109466b.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 08:15:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684509304; x=1687101304;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ibx0s4BuzeEZLgxNwhc0EU/PYP1e7Z2TbZnB9+LksSU=;
- b=icexalGNDJ737FZOwNlT7IwkzBuYjvHCvxtDUN+rJOL0F1KdLCYKQPDQP9jbbruO52
- N7i6+Qv8WOSTd24AJgdYn1OGrBh7LDSYzPiKx+kHdRevIcT10fPD98cHz2SwKWb3GvMV
- lKx9xjIWhRJW11F6ruZfHA5q2lXIvSZXIN8fI/F92id6yBSRGpKVhdJd0hgiVaUtGEf/
- EACL2DVSbbq6MI14QBdHGWQ5dYEsGrauPeNurvJMKy8EJTMFcqCcn3XO3/zqn58/Ubzt
- wJfXidtzZ7pLjJEpGBViKuCvm8FVa06VnaqczWKjAUXPmAVJIk8Vdkw0lFSrv++tTSsG
- NREg==
-X-Gm-Message-State: AC+VfDzZeiUr03HwrJrTueqC5oD2EX+nARVhfFJm+IaREjS08vxgvYQZ
- 6+jZqivRzsUoFy+uQrYVbglA8VjfI9sdl88FKPaNiAN0NRX0TuLZLOAhj01It7R1jTLZcJMI8dY
- EgtCXTBGLsxY0/zo=
-X-Received: by 2002:a17:907:6e03:b0:94f:322d:909d with SMTP id
- sd3-20020a1709076e0300b0094f322d909dmr2387918ejc.63.1684509304191; 
- Fri, 19 May 2023 08:15:04 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ66S/tEGcZZRj1zBf9VNboqfCnl5wTcoMJHfcY+Or//rk0eTFuYuMLnRqtksKi5XHUt0+HFzg==
-X-Received: by 2002:a17:907:6e03:b0:94f:322d:909d with SMTP id
- sd3-20020a1709076e0300b0094f322d909dmr2387898ejc.63.1684509303929; 
- Fri, 19 May 2023 08:15:03 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
- (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
- [2003:cf:d723:b0c7:284b:5990:6336:f84f])
- by smtp.gmail.com with ESMTPSA id
- gv16-20020a170906f11000b0094ef923a6ccsm2383128ejb.219.2023.05.19.08.15.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 08:15:03 -0700 (PDT)
-Message-ID: <13316404-8ab5-ea99-679c-7f1854e222d7@redhat.com>
-Date: Fri, 19 May 2023 17:15:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 12/19] cutils: Allow NULL str in qemu_strtosz
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-Cc: armbru@redhat.com, richard.henderson@linaro.org
+ bh=Vl1r6HJ5E5vFtdAQVEl3FLJvzbWYjZFyZOIHe3KqOgY=;
+ b=ZpwMzcStH6j/uQ1+RB84kT8gdwwi9lmH/jQDZymWsbCZ0/NT6c+R60b/++py25Q7fJWXqw
+ N9HQZmLC+aT/7SIrfQkWZ4oL7D69nd2VnKDXI2/NSfD/bRJ034zs5jJi7umccHO7YJqf/4
+ QU2jhh+LVAo2614qN4ZCamcZJ/+c7xw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-414-5F70q8WVOdG1dRmaUF0l8A-1; Fri, 19 May 2023 11:17:04 -0400
+X-MC-Unique: 5F70q8WVOdG1dRmaUF0l8A-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 335E7858299;
+ Fri, 19 May 2023 15:17:04 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B9B1340CFD45;
+ Fri, 19 May 2023 15:17:03 +0000 (UTC)
+Date: Fri, 19 May 2023 10:17:01 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, richard.henderson@linaro.org
+Subject: Re: [PATCH v2 04/19] test-cutils: Test more integer corner cases
+Message-ID: <jpuwow2gu5ooo4jlgz3lbyj3wilsqv2atwshtm2dpdnrrhbuix@jsqihr4nuyv3>
 References: <20230512021033.1378730-1-eblake@redhat.com>
- <20230512021033.1378730-13-eblake@redhat.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230512021033.1378730-13-eblake@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ <20230512021033.1378730-5-eblake@redhat.com>
+ <0fd2fa2b-dfd5-7c22-e6de-7e018868c8ce@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0fd2fa2b-dfd5-7c22-e6de-7e018868c8ce@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,17 +80,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.05.23 04:10, Eric Blake wrote:
-> All the other qemu_strto* and parse_uint allow a NULL str.  Having
-> qemu_strtosz crash on qemu_strtosz(NULL, NULL, &value) is an easy fix
-> that adds some consistency between our string parsers.
->
-> Signed-off-by: Eric Blake <eblake@redhat.com>
-> ---
->   tests/unit/test-cutils.c | 3 +++
->   util/cutils.c            | 2 +-
->   2 files changed, 4 insertions(+), 1 deletion(-)
+On Fri, May 19, 2023 at 04:27:10PM +0200, Hanna Czenczek wrote:
+> On 12.05.23 04:10, Eric Blake wrote:
+> > We have quite a few undertested and underdocumented integer parsing
+> > corner cases.  To ensure that any changes we make in the code are
+> > intentional rather than accidental semantic changes, it is time to add
+> > more unit tests of existing behavior.
+> > 
+> > In particular, this demonstrates that parse_uint() and qemu_strtou64()
+> > behave differently.  For "-0", it's hard to argue why parse_uint needs
+> > to reject it (it's not a negative integer), but the documentation sort
+> > of mentions it; but it is intentional that all other negative values
+> > are treated as ERANGE with value 0 (compared to qemu_strtou64()
+> > treating "-2" as success and UINT64_MAX-1, for example).
+> > 
+> > Also, when mixing overflow/underflow with a check for no trailing
+> > junk, parse_uint_full favors ERANGE over EINVAL, while qemu_strto[iu]*
+> > favor EINVAL.  This behavior is outside the C standard, so we can pick
+> > whatever we want, but it would be nice to be consistent.
+> > 
+> > Note that C requires that "9223372036854775808" fail strtoll() with
+> > ERANGE/INT64_MAX, but "-9223372036854775808" pass with INT64_MIN; we
+> > weren't testing this.  For strtol(), the behavior depends on whether
+> > long is 32- or 64-bits (the cutoff point either being the same as
+> > strtoll() or at "-2147483648").  Meanwhile, C is clear that
+> > "-18446744073709551615" pass stroull() (but not strtoll) with value 1,
+> > even though we want it to fail parse_uint().  And although
+> > qemu_strtoui() has no C counterpart, it makes more sense if we design
+> > it like 32-bit strtoul() (that is, where "-4294967296" be an alternate
+> > acceptable spelling for "1".  We aren't there yet, so some of the
+> > tests added in this patch have FIXME comments.
+> > 
+> > Signed-off-by: Eric Blake <eblake@redhat.com>
+> > ---
+> >   tests/unit/test-cutils.c | 799 ++++++++++++++++++++++++++++++++++++---
+> >   1 file changed, 738 insertions(+), 61 deletions(-)
+> > 
+> > diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
+> > index 1eeaf21ae22..89c10f5307a 100644
+> > --- a/tests/unit/test-cutils.c
+> > +++ b/tests/unit/test-cutils.c
+> 
+> [...]
+> 
+> > @@ -717,34 +890,75 @@ static void test_qemu_strtoui_max(void)
+> > 
+> >   static void test_qemu_strtoui_overflow(void)
+> >   {
+> > -    char *str = g_strdup_printf("%lld", (long long)UINT_MAX + 1ll);
+> > -    char f = 'X';
+> > -    const char *endptr = &f;
+> > -    unsigned int res = 999;
+> > +    const char *str;
+> > +    const char *endptr;
+> > +    unsigned int res;
+> >       int err;
+> > 
+> > +    str = "4294967296"; /* UINT_MAX + 1ll */
+> > +    endptr = "somewhere";
+> > +    res = 999;
+> >       err = qemu_strtoui(str, &endptr, 0, &res);
+> > +    g_assert_cmpint(err, ==, -ERANGE);
+> > +    g_assert_cmpint(res, ==, UINT_MAX);
+> 
+> Why cmpint and not cmpuint here?  (I see you’re using cmpint instead of
+> cmpuint in many strtou* test functions below, too.)
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+Probably a combination of copy-paste vs rebase patch re-ordering.
+Yes, all test_*strtoui* tests should be using
+g_assert_cmpuint(res...).  Will fix.
+
+> 
+> [...]
+> 
+> > @@ -1325,31 +1697,67 @@ static void test_qemu_strtoul_max(void)
+> 
+> [...]
+> 
+> >   static void test_qemu_strtoul_underflow(void)
+> >   {
+> > -    const char *str = "-99999999999999999999999999999999999999999999";
+> > -    char f = 'X';
+> > -    const char *endptr = &f;
+> > -    unsigned long res = 999;
+> > +    const char *str;
+> > +    const char *endptr;
+> > +    unsigned long res;
+> >       int err;
+> > 
+> > +    /* 1 less than -ULONG_MAX */
+> > +    str = ULONG_MAX == UINT_MAX ? "-4294967297" : "-18446744073709551617";
+> 
+> Technically these are 2 less than -ULONG_MAX, not 1 less.
+
+Indeed.  Both constants should end in 6, not 7.  Will fix.
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
 
 
