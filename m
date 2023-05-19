@@ -2,75 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7028709967
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC44B7099AC
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:29:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q00xD-0005pt-T4; Fri, 19 May 2023 10:19:35 -0400
+	id 1q014n-0002QP-Nv; Fri, 19 May 2023 10:27:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q00xC-0005oZ-75
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:19:34 -0400
-Received: from mail-vs1-xe29.google.com ([2607:f8b0:4864:20::e29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q00xA-00064e-CQ
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:19:33 -0400
-Received: by mail-vs1-xe29.google.com with SMTP id
- ada2fe7eead31-42c38a6daf3so2093187137.3
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:19:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1684505971; x=1687097971;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=d0w2RxvAhcjR29ZHHV6n6gzOPJ44jDkxCcbacPkGSCU=;
- b=kLkp4yJHrhjpVXzYh0as4vKSreh/krdPczx5BeKDipN3/dlswjsAgTKZiJVQ62ADbC
- eNx9RQRVM4wU+odF3AD+whkXM5CZmqQkBi7zQ9si6hCwFRoAY15iQM8mXhm/M1oM0qdx
- IlO3ZYTrN/Olu4Vzr3wQyOVRq7c6imjdsS5b5RSThVlgqoFk5V0mIu+KDfvmL0EhDPT4
- /EjQkU5KFWKkDC5uxoDLj8E32npAhB10xqqnelIJzhkNHFWUnk6KtUC6j1A/xfjM7X3z
- uu89PIPvHESkINAng/jsIYQs09fMzqTA8ZNdlKwFx42kcWUMy4bnw78GhPapKWj+wcoQ
- PUdA==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q014k-0002QA-V2
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:27:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q014h-0007VN-La
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:27:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684506436;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hSuzkv7JlO5qLbQd09Z2/5mVfeE/LmY+NyroADKuR64=;
+ b=DtI/i69Xv/mTG8ju1Gvr0B6KrOyrIBgghbfNYzFjyP0UNT0trVWzGwto05ttfXtGhuXPYM
+ 5gtX1atIqCCcS+NXUgQsFQMFiZXhxBmEdH2Hta0Xu/xS+PDZn8mfpKVGwaa2A38RYnR46h
+ vm7UFohhY4U9Af7tUwiBiDBhg01ioaI=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-124-5-nfxOn_OpOtqelMS7nnjw-1; Fri, 19 May 2023 10:27:13 -0400
+X-MC-Unique: 5-nfxOn_OpOtqelMS7nnjw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-50c064801a3so4184666a12.3
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:27:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684505971; x=1687097971;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=d0w2RxvAhcjR29ZHHV6n6gzOPJ44jDkxCcbacPkGSCU=;
- b=Ma5sPBOADu78w3tiIMUizeOn5fSAzofxjr6LqqT7DuY750HCeBRFxm5Vsc3Ksz05HQ
- RQ2Zm+6dbDm60lYYRnMWXYkc2kuv/gJnuUKOqb64KYWBMTnhkttW4f0d2jUZVfzv334/
- Rxiqb4oLQQgkdletLx7aRv18vhyyeBmLlvGJp3HWgc4DgimnNgGhj9Yc3HUexLot7hR/
- IA/AYl386QxCwigM5KHRlntb4Sgcq9gWPJ97vzMIdvaSAcPcgXgA/fDFwQs3VH086gWV
- GTI+K2RAmRJjEfupO6GDKepADy00B0xDlT0E92vib0cEfts17MCLhS9JvLltonB0N5za
- TRrw==
-X-Gm-Message-State: AC+VfDwqtPHoDuC6h5X3e6hBss/CoygFxh0iWkF4BWKI+6YkjFEq8rwt
- cOLStt+8enqvBnVsWt9mwB6oMWRBdAtLZvRHOXOyeQ==
-X-Google-Smtp-Source: ACHHUZ7Hnz8jKZt0Uzg0vatxAwzE5WgKbDJYhCWb8WQCXmuEPxBEtPaQ5dPfYR1HUikTbQmbN2hygNCnYieEgjpmDRU=
-X-Received: by 2002:a05:6102:cd:b0:437:e68a:7091 with SMTP id
- u13-20020a05610200cd00b00437e68a7091mr971442vsp.29.1684505970973; Fri, 19 May
- 2023 07:19:30 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684506432; x=1687098432;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hSuzkv7JlO5qLbQd09Z2/5mVfeE/LmY+NyroADKuR64=;
+ b=cT1qxhzAT2O5M5JsVEiIGhI9wc2VGqW/jg8bQk0A1Vh1k3YgvwIaJaXiThfgkNf6Mp
+ Eu4GYEpJgTdmedJg6NkXVf/uveruLhVAoLWviTWXMzGSGyexWBQ5NsyGSMS3aDEHGYiq
+ cJsIr/+QdhsnY9LiyipXw+V5YsA9kPqm1C5xLjx2jV7xJkQgbohCcuD6Avr6NWmDnrQx
+ c7fbd41l38zos1xdZ0obZ0yvFEj/b1st12eiQf0UpRTaDvyedIom5lfWLRIo/YJh4S/v
+ pxeOrhP48+gocArr8N+5q0+9bgKNsQ1Bgg/w7F7aV0BGEFZorsnStDKYoYDThNRE90bi
+ KbuQ==
+X-Gm-Message-State: AC+VfDwUvwxSOA9TK9SoGuqkfiVcpDGlEdAIxCcv0ooyBeP+khI4ewck
+ E77Z5MTGPiw8ys1/rYBIZdrMM9W77D0wyXNYtUmtlni5P7zFFLW221MQOv6JE9QTdZyor17+uJK
+ GzIwvpE/1WI+FAwI=
+X-Received: by 2002:aa7:d1c6:0:b0:50b:c72a:2b1b with SMTP id
+ g6-20020aa7d1c6000000b0050bc72a2b1bmr2067417edp.19.1684506432151; 
+ Fri, 19 May 2023 07:27:12 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5AaFSKO4tzuyvxF1Yj4DlvUN/9ymxBFC2ztx/deoRQW0yOmhiUAAtKn0vPW7+GWq2wgSI/6Q==
+X-Received: by 2002:aa7:d1c6:0:b0:50b:c72a:2b1b with SMTP id
+ g6-20020aa7d1c6000000b0050bc72a2b1bmr2067408edp.19.1684506431843; 
+ Fri, 19 May 2023 07:27:11 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
+ (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
+ [2003:cf:d723:b0c7:284b:5990:6336:f84f])
+ by smtp.gmail.com with ESMTPSA id
+ dy1-20020a05640231e100b0050bc4600d38sm1734278edb.79.2023.05.19.07.27.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 07:27:11 -0700 (PDT)
+Message-ID: <0fd2fa2b-dfd5-7c22-e6de-7e018868c8ce@redhat.com>
+Date: Fri, 19 May 2023 16:27:10 +0200
 MIME-Version: 1.0
-References: <20230519062137.1251741-1-tommy.wu@sifive.com>
- <CAJy5ezoRZOqzWDe_ZAq_TF2k=9ZCXZkp8Ea2iaxoRV=yw+tGNw@mail.gmail.com>
-In-Reply-To: <CAJy5ezoRZOqzWDe_ZAq_TF2k=9ZCXZkp8Ea2iaxoRV=yw+tGNw@mail.gmail.com>
-From: Tommy Wu <tommy.wu@sifive.com>
-Date: Fri, 19 May 2023 22:19:22 +0800
-Message-ID: <CANj3q_kq_sxRGqrELBqN2qNquDi8E1hOfG4c5UjrCyUKmbZchQ@mail.gmail.com>
-Subject: Re: [PATCH] hw/dma/xilinx_axidma: Check DMASR.HALTED to prevent
- infinite loop.
-To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000005b4e005fc0c9c30"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e29;
- envelope-from=tommy.wu@sifive.com; helo=mail-vs1-xe29.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 04/19] test-cutils: Test more integer corner cases
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: armbru@redhat.com, richard.henderson@linaro.org
+References: <20230512021033.1378730-1-eblake@redhat.com>
+ <20230512021033.1378730-5-eblake@redhat.com>
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230512021033.1378730-5-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,198 +103,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000005b4e005fc0c9c30
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 12.05.23 04:10, Eric Blake wrote:
+> We have quite a few undertested and underdocumented integer parsing
+> corner cases.  To ensure that any changes we make in the code are
+> intentional rather than accidental semantic changes, it is time to add
+> more unit tests of existing behavior.
+>
+> In particular, this demonstrates that parse_uint() and qemu_strtou64()
+> behave differently.  For "-0", it's hard to argue why parse_uint needs
+> to reject it (it's not a negative integer), but the documentation sort
+> of mentions it; but it is intentional that all other negative values
+> are treated as ERANGE with value 0 (compared to qemu_strtou64()
+> treating "-2" as success and UINT64_MAX-1, for example).
+>
+> Also, when mixing overflow/underflow with a check for no trailing
+> junk, parse_uint_full favors ERANGE over EINVAL, while qemu_strto[iu]*
+> favor EINVAL.  This behavior is outside the C standard, so we can pick
+> whatever we want, but it would be nice to be consistent.
+>
+> Note that C requires that "9223372036854775808" fail strtoll() with
+> ERANGE/INT64_MAX, but "-9223372036854775808" pass with INT64_MIN; we
+> weren't testing this.  For strtol(), the behavior depends on whether
+> long is 32- or 64-bits (the cutoff point either being the same as
+> strtoll() or at "-2147483648").  Meanwhile, C is clear that
+> "-18446744073709551615" pass stroull() (but not strtoll) with value 1,
+> even though we want it to fail parse_uint().  And although
+> qemu_strtoui() has no C counterpart, it makes more sense if we design
+> it like 32-bit strtoul() (that is, where "-4294967296" be an alternate
+> acceptable spelling for "1".  We aren't there yet, so some of the
+> tests added in this patch have FIXME comments.
+>
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>   tests/unit/test-cutils.c | 799 ++++++++++++++++++++++++++++++++++++---
+>   1 file changed, 738 insertions(+), 61 deletions(-)
+>
+> diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
+> index 1eeaf21ae22..89c10f5307a 100644
+> --- a/tests/unit/test-cutils.c
+> +++ b/tests/unit/test-cutils.c
 
-Thank Edgar E. Iglesias for the advice.
-I can submit another patch to do that.
+[...]
 
-On Fri, May 19, 2023 at 2:39=E2=80=AFPM Edgar E. Iglesias <edgar.iglesias@g=
-mail.com>
-wrote:
+> @@ -717,34 +890,75 @@ static void test_qemu_strtoui_max(void)
+>
+>   static void test_qemu_strtoui_overflow(void)
+>   {
+> -    char *str = g_strdup_printf("%lld", (long long)UINT_MAX + 1ll);
+> -    char f = 'X';
+> -    const char *endptr = &f;
+> -    unsigned int res = 999;
+> +    const char *str;
+> +    const char *endptr;
+> +    unsigned int res;
+>       int err;
+>
+> +    str = "4294967296"; /* UINT_MAX + 1ll */
+> +    endptr = "somewhere";
+> +    res = 999;
+>       err = qemu_strtoui(str, &endptr, 0, &res);
+> +    g_assert_cmpint(err, ==, -ERANGE);
+> +    g_assert_cmpint(res, ==, UINT_MAX);
 
->
-> On Fri, May 19, 2023 at 8:21=E2=80=AFAM Tommy Wu <tommy.wu@sifive.com> wr=
-ote:
->
->> When we receive a packet from the xilinx_axienet and then try to s2mem
->> through the xilinx_axidma, if the descriptor ring buffer is full in the
->> xilinx axidma driver, we=E2=80=99ll assert the DMASR.HALTED in the
->> function : stream_process_s2mem and return 0. In the end, we=E2=80=99ll =
-be stuck
->> in
->> an infinite loop in axienet_eth_rx_notify.
->>
->> This patch checks the DMASR.HALTED state when we try to push data
->> from xilinx axi-enet to xilinx axi-dma. When the DMASR.HALTED is asserte=
-d,
->> we will not keep pushing the data and then prevent the infinte loop.
->>
->> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
->> ---
->>  hw/dma/xilinx_axidma.c | 11 ++++++++---
->>  1 file changed, 8 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
->> index 6030c76435..12c90267df 100644
->> --- a/hw/dma/xilinx_axidma.c
->> +++ b/hw/dma/xilinx_axidma.c
->> @@ -168,6 +168,11 @@ static inline int stream_idle(struct Stream *s)
->>      return !!(s->regs[R_DMASR] & DMASR_IDLE);
->>  }
->>
->> +static inline int stream_halted(struct Stream *s)
->>
->
-> At some point we should probably change all of these helpers to return
-> booleans...
-> Anyway, this fix looks good to me:
->
-> Reviewed-by: Edgar E. Iglesias <edgar@zeroasic.com>
->
->
->
->
->> +{
->> +    return !!(s->regs[R_DMASR] & DMASR_HALTED);
->> +}
->> +
->>  static void stream_reset(struct Stream *s)
->>  {
->>      s->regs[R_DMASR] =3D DMASR_HALTED;  /* starts up halted.  */
->> @@ -269,7 +274,7 @@ static void stream_process_mem2s(struct Stream *s,
->> StreamSink *tx_data_dev,
->>      uint64_t addr;
->>      bool eop;
->>
->> -    if (!stream_running(s) || stream_idle(s)) {
->> +    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
->>          return;
->>      }
->>
->> @@ -326,7 +331,7 @@ static size_t stream_process_s2mem(struct Stream *s,
->> unsigned char *buf,
->>      unsigned int rxlen;
->>      size_t pos =3D 0;
->>
->> -    if (!stream_running(s) || stream_idle(s)) {
->> +    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
->>          return 0;
->>      }
->>
->> @@ -407,7 +412,7 @@ xilinx_axidma_data_stream_can_push(StreamSink *obj,
->>      XilinxAXIDMAStreamSink *ds =3D XILINX_AXI_DMA_DATA_STREAM(obj);
->>      struct Stream *s =3D &ds->dma->streams[1];
->>
->> -    if (!stream_running(s) || stream_idle(s)) {
->> +    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
->>          ds->dma->notify =3D notify;
->>          ds->dma->notify_opaque =3D notify_opaque;
->>          return false;
->> --
->> 2.31.1
->>
->>
+Why cmpint and not cmpuint here?  (I see you’re using cmpint instead of 
+cmpuint in many strtou* test functions below, too.)
 
---00000000000005b4e005fc0c9c30
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[...]
 
-<div dir=3D"ltr">Thank Edgar E. Iglesias for the advice.<br>I can submit an=
-other patch to do that.</div><br><div class=3D"gmail_quote"><div dir=3D"ltr=
-" class=3D"gmail_attr">On Fri, May 19, 2023 at 2:39=E2=80=AFPM Edgar E. Igl=
-esias &lt;<a href=3D"mailto:edgar.iglesias@gmail.com">edgar.iglesias@gmail.=
-com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
-x"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><=
-div dir=3D"ltr" class=3D"gmail_attr">On Fri, May 19, 2023 at 8:21=E2=80=AFA=
-M Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" target=3D"_blank">tom=
-my.wu@sifive.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" =
-style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pa=
-dding-left:1ex">When we receive a packet from the xilinx_axienet and then t=
-ry to s2mem<br>
-through the xilinx_axidma, if the descriptor ring buffer is full in the<br>
-xilinx axidma driver, we=E2=80=99ll assert the DMASR.HALTED in the<br>
-function : stream_process_s2mem and return 0. In the end, we=E2=80=99ll be =
-stuck in<br>
-an infinite loop in axienet_eth_rx_notify.<br>
-<br>
-This patch checks the DMASR.HALTED state when we try to push data<br>
-from xilinx axi-enet to xilinx axi-dma. When the DMASR.HALTED is asserted,<=
-br>
-we will not keep pushing the data and then prevent the infinte loop.<br>
-<br>
-Signed-off-by: Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" target=
-=3D"_blank">tommy.wu@sifive.com</a>&gt;<br>
----<br>
-=C2=A0hw/dma/xilinx_axidma.c | 11 ++++++++---<br>
-=C2=A01 file changed, 8 insertions(+), 3 deletions(-)<br>
-<br>
-diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c<br>
-index 6030c76435..12c90267df 100644<br>
---- a/hw/dma/xilinx_axidma.c<br>
-+++ b/hw/dma/xilinx_axidma.c<br>
-@@ -168,6 +168,11 @@ static inline int stream_idle(struct Stream *s)<br>
-=C2=A0 =C2=A0 =C2=A0return !!(s-&gt;regs[R_DMASR] &amp; DMASR_IDLE);<br>
-=C2=A0}<br>
-<br>
-+static inline int stream_halted(struct Stream *s)<br></blockquote><div><br=
-></div><div>At some point we should probably change all of these helpers to=
- return booleans...</div><div>Anyway, this fix looks good to me:</div><div>=
-<br></div><div>Reviewed-by: Edgar E. Iglesias &lt;<a href=3D"mailto:edgar@z=
-eroasic.com" target=3D"_blank">edgar@zeroasic.com</a>&gt;<br></div><div><br=
-></div><div><br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">
-+{<br>
-+=C2=A0 =C2=A0 return !!(s-&gt;regs[R_DMASR] &amp; DMASR_HALTED);<br>
-+}<br>
-+<br>
-=C2=A0static void stream_reset(struct Stream *s)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0s-&gt;regs[R_DMASR] =3D DMASR_HALTED;=C2=A0 /* starts u=
-p halted.=C2=A0 */<br>
-@@ -269,7 +274,7 @@ static void stream_process_mem2s(struct Stream *s, Stre=
-amSink *tx_data_dev,<br>
-=C2=A0 =C2=A0 =C2=A0uint64_t addr;<br>
-=C2=A0 =C2=A0 =C2=A0bool eop;<br>
-<br>
--=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s)) {<br>
-+=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s) || stream_halted(s)=
-) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-@@ -326,7 +331,7 @@ static size_t stream_process_s2mem(struct Stream *s, un=
-signed char *buf,<br>
-=C2=A0 =C2=A0 =C2=A0unsigned int rxlen;<br>
-=C2=A0 =C2=A0 =C2=A0size_t pos =3D 0;<br>
-<br>
--=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s)) {<br>
-+=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s) || stream_halted(s)=
-) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-@@ -407,7 +412,7 @@ xilinx_axidma_data_stream_can_push(StreamSink *obj,<br>
-=C2=A0 =C2=A0 =C2=A0XilinxAXIDMAStreamSink *ds =3D XILINX_AXI_DMA_DATA_STRE=
-AM(obj);<br>
-=C2=A0 =C2=A0 =C2=A0struct Stream *s =3D &amp;ds-&gt;dma-&gt;streams[1];<br=
+> @@ -1325,31 +1697,67 @@ static void test_qemu_strtoul_max(void)
+
+[...]
+
+>   static void test_qemu_strtoul_underflow(void)
+>   {
+> -    const char *str = "-99999999999999999999999999999999999999999999";
+> -    char f = 'X';
+> -    const char *endptr = &f;
+> -    unsigned long res = 999;
+> +    const char *str;
+> +    const char *endptr;
+> +    unsigned long res;
+>       int err;
 >
-<br>
--=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s)) {<br>
-+=C2=A0 =C2=A0 if (!stream_running(s) || stream_idle(s) || stream_halted(s)=
-) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ds-&gt;dma-&gt;notify =3D notify;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ds-&gt;dma-&gt;notify_opaque =3D notify_o=
-paque;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return false;<br>
--- <br>
-2.31.1<br>
-<br>
-</blockquote></div></div>
-</blockquote></div>
+> +    /* 1 less than -ULONG_MAX */
+> +    str = ULONG_MAX == UINT_MAX ? "-4294967297" : "-18446744073709551617";
 
---00000000000005b4e005fc0c9c30--
+Technically these are 2 less than -ULONG_MAX, not 1 less.
+
+Hanna
+
 
