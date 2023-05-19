@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D047091B6
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E907091BA
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:31:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzvUr-0006te-84; Fri, 19 May 2023 04:29:57 -0400
+	id 1pzvVv-0007aL-V5; Fri, 19 May 2023 04:31:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzvUp-0006tU-Gw
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:29:55 -0400
+ id 1pzvVs-0007ZW-TY
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:31:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1pzvUn-00042K-69
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:29:54 -0400
+ id 1pzvVr-0004OK-Im
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:31:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684484992;
+ s=mimecast20190719; t=1684485058;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YhXrQ/+2v2wwXuHALY4/4MGiskQNkfHfvZ4vQ1eWVqY=;
- b=GodUx6KUrxLgU63xjgX6Vwds1QTmjeZ9+zmEPwJ5sTwV6ZC7aYcm7S6LDqmitigIMe0GHJ
- MnqxMN9siaIXDIBf0x4KS+JFghgG/nPcSRZcl5J5v979gIPV9Res8kw3qbjWziOhcsE4Db
- UCnLcfrr0hCsvZb+QqiqUp3CzzE5krA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zYhukvTLxd5vY8IT0HgTeoW1864tkNJT6D8/3hlKdAo=;
+ b=RHVhAf7OjRQYHSOr6csga+qbirU6r/tIi2J9EJ3si/SEey+DBQ6gaAWgp5HfA2r7/ihTfH
+ 83VwmWz2Jp33dwchEzaKeZNX5N6XPir64ZWj7q9CIc/bt1sKwr/L48+5pPvJEmHkgOwQd2
+ ESJi1aITRszpu/XD+/HntYO7X1d139w=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-284-72mCG47eMDuggLyWcGMwIw-1; Fri, 19 May 2023 04:29:50 -0400
-X-MC-Unique: 72mCG47eMDuggLyWcGMwIw-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-50dfa390825so1754503a12.3
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 01:29:50 -0700 (PDT)
+ us-mta-302-fLppPjmfOYmyrw41P1pcaA-1; Fri, 19 May 2023 04:30:57 -0400
+X-MC-Unique: fLppPjmfOYmyrw41P1pcaA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-510eb233a81so1445003a12.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 01:30:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684484989; x=1687076989;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1684485056; x=1687077056;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YhXrQ/+2v2wwXuHALY4/4MGiskQNkfHfvZ4vQ1eWVqY=;
- b=OLrJzBQ9ErwLenuZroE/AYk2YFtbcUUwRo/09MxSwwPWr2pAdk0/Nrweka8URJMhsk
- E9NDQsW8O1e6gpWI9nvezhlDAynRVh8oecSvvWJb5qkVPUfzYNV3j+p76LnPI8dn2O/S
- Px9zez2VakzOW5oVFNLFS+6xhwrtv0C83sA6pPho2/4O3cNYQDfEiWfEjq3Pxfn+ijEP
- 5Ck2lkEHAEFPicLuDQLBv9QxfCkSVp1E0iavXwNZWVBhq4Y0ngIU7VQqmxTSuWChLqRd
- 3I2x3yQUT6bXpUQvEZLf89hMpoWtsV3vADPJgO9GXzxE3/ShkhrRbgZ0A5bXLuG9R+mb
- KAcg==
-X-Gm-Message-State: AC+VfDyYRTbw1UY4XlBId1hYYzvw5L2Ddmkmc/1Qm2fbMI1ZpoMhsw4l
- 7ikBxcFy+qOFuT0XRk9zCrUlU9pB2i23ncG6BJ/SlZImV0/QLQeM+6iMqmRVG8CC9r3wpE75VEt
- J/SWlb7Fe/dQD+iCSrwc3oEA=
-X-Received: by 2002:a17:907:3e24:b0:96a:5bdd:7557 with SMTP id
- hp36-20020a1709073e2400b0096a5bdd7557mr1060949ejc.70.1684484989515; 
- Fri, 19 May 2023 01:29:49 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7/GYw5QSeMfsMFlor0ScsVLbLR2FUB998embyjmoqyj+PpZfi7OJ1lxuF/W5ezsoncUk4G9w==
-X-Received: by 2002:a17:907:3e24:b0:96a:5bdd:7557 with SMTP id
- hp36-20020a1709073e2400b0096a5bdd7557mr1060936ejc.70.1684484989235; 
- Fri, 19 May 2023 01:29:49 -0700 (PDT)
+ bh=zYhukvTLxd5vY8IT0HgTeoW1864tkNJT6D8/3hlKdAo=;
+ b=lZVg/s/aPR2rlee8P9EtV40ozNZuoZTLcU4xmI8RuTn5ZT5XfzKYI7TXcL9OATzCuY
+ sMSWOxFMPJR1xuLRNIVg54bgh9EQqDEenhPsa9UIRM3mljOQ8gp0oes12mqTzyw/m98u
+ frJoilmp7aOZUt7+vnOzf9Tmj8+rUh4/bYGmJ+0m5T3xSSpfp2lmLm40X34hwS6fuaw9
+ Yk96adTAgATnYTY6kXp1YLLei4Hic+kAS01o5fCtaMtxxhGZQmK63M0N2YvAfj1PbFoC
+ m34Fvdnw4yuK0qZGLGhJkifSE/8k3KzRiBAGgWOvrx822sc/GsqqLABnYaBBS0raT5Us
+ E8gA==
+X-Gm-Message-State: AC+VfDyCiOKNEIehCd///D1gB1CLk8fy67gkosEoaHMYW+DFH39KSsB8
+ WKRyj14FlguCvYqeYAamlDofqoFf2FiDEGzqiMBtf5jb7mW0PRLcJtIXwcZg0XxIWNcLyPujrQ3
+ XeLX6xv03N18gpD9/lTEmubg=
+X-Received: by 2002:a17:907:9809:b0:96b:207:a894 with SMTP id
+ ji9-20020a170907980900b0096b0207a894mr804601ejc.1.1684485056043; 
+ Fri, 19 May 2023 01:30:56 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7oLNgcyYiZ2fMfLVvEQ+uq6QhjOZVrGyAD51HHHgDvj0r1LTX1kCF1FFcNhDFTtCaFMsXd6Q==
+X-Received: by 2002:a17:907:9809:b0:96b:207:a894 with SMTP id
+ ji9-20020a170907980900b0096b0207a894mr804583ejc.1.1684485055690; 
+ Fri, 19 May 2023 01:30:55 -0700 (PDT)
 Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045?
  ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.googlemail.com with ESMTPSA id
- jx27-20020a170907761b00b0094f67ea6598sm2005220ejc.193.2023.05.19.01.29.48
+ j4-20020a170906830400b009658475919csm1320778ejx.188.2023.05.19.01.30.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 01:29:48 -0700 (PDT)
-Message-ID: <7e2b211f-8da8-3345-528d-bc6f3b35484d@redhat.com>
-Date: Fri, 19 May 2023 10:29:47 +0200
+ Fri, 19 May 2023 01:30:55 -0700 (PDT)
+Message-ID: <81e3dd08-1927-241e-2fe2-343e0f815acb@redhat.com>
+Date: Fri, 19 May 2023 10:30:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PULL 00/68] i386, build system, KVM changes for 2023-05-18
+Subject: Re: Configure no longer works after pulling in the latest QEMU commits
 Content-Language: en-US
-To: Yang Zhong <yang.zhong@linux.intel.com>
-Cc: qemu-devel@nongnu.org
-References: <20230517174520.887405-1-pbonzini@redhat.com>
- <ZGbnrwKTTO1PsDhT@yangzhon>
+To: Hao Xiang <hao.xiang@bytedance.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "jsnow@redhat.com" <jsnow@redhat.com>
+References: <CAAYibXhsM8rWghEtUoehodK1u+SZ5of81vA-gshmTWiH7PvbLg@mail.gmail.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <ZGbnrwKTTO1PsDhT@yangzhon>
+In-Reply-To: <CAAYibXhsM8rWghEtUoehodK1u+SZ5of81vA-gshmTWiH7PvbLg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -46
@@ -104,30 +104,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/19/23 05:06, Yang Zhong wrote:
+On 5/19/23 05:00, Hao Xiang wrote:
+> Hi,
 > 
-> Paolo, please help add below queued sgx fix into this PULL request, which was
-> missed from last time, thanks a lot!
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg00841.html
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg00896.html
+> After pulling in the QEMU latest commits, I can no longer run the 
+> "configure" command. Below is the error message I am seeing. I believe 
+> this is related to this change "configure: create a python venv 
+> unconditionally".
+> I am running on Debian GNU/Linux 11 (bullseye) and 5.15 kernel version.
+> What can I do to fix/work around the issue?
 
-Isn't this commit 72497cff896fecf74306ed33626c30e43633cdd6?
+Hi,
 
-Author: Yang Zhong <yang.zhong@linux.intel.com>
-Date:   Thu Apr 6 02:40:41 2023 -0400
+please try the patch I have Cc'd you on,
 
-     target/i386: Change wrong XFRM value in SGX CPUID leaf
-     
-     The previous patch wrongly replaced FEAT_XSAVE_XCR0_{LO|HI} with
-     FEAT_XSAVE_XSS_{LO|HI} in CPUID(EAX=12,ECX=1):{ECX,EDX}.  As a result,
-     SGX enclaves only supported SSE and x87 feature (xfrm=0x3).
-     
-     Fixes: 301e90675c3f ("target/i386: Enable support for XSAVES based features")
-     Signed-off-by: Yang Zhong <yang.zhong@linux.intel.com>
-     Reviewed-by: Yang Weijiang <weijiang.yang@intel.com>
-     Reviewed-by: Kai Huang <kai.huang@intel.com>
-     Message-Id: <20230406064041.420039-1-yang.zhong@linux.intel.com>
-     Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+"[PATCH] mkvenv: replace distlib.database with importlib.metadata/pkg_resources"
 
 Paolo
 
