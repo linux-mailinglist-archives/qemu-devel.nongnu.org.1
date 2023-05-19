@@ -2,91 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC44B7099AC
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0A77099BB
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:30:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q014n-0002QP-Nv; Fri, 19 May 2023 10:27:25 -0400
+	id 1q017S-0003ai-FM; Fri, 19 May 2023 10:30:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q014k-0002QA-V2
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:27:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1q017O-0003Zw-Tm; Fri, 19 May 2023 10:30:06 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q014h-0007VN-La
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:27:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684506436;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hSuzkv7JlO5qLbQd09Z2/5mVfeE/LmY+NyroADKuR64=;
- b=DtI/i69Xv/mTG8ju1Gvr0B6KrOyrIBgghbfNYzFjyP0UNT0trVWzGwto05ttfXtGhuXPYM
- 5gtX1atIqCCcS+NXUgQsFQMFiZXhxBmEdH2Hta0Xu/xS+PDZn8mfpKVGwaa2A38RYnR46h
- vm7UFohhY4U9Af7tUwiBiDBhg01ioaI=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-5-nfxOn_OpOtqelMS7nnjw-1; Fri, 19 May 2023 10:27:13 -0400
-X-MC-Unique: 5-nfxOn_OpOtqelMS7nnjw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-50c064801a3so4184666a12.3
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:27:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684506432; x=1687098432;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hSuzkv7JlO5qLbQd09Z2/5mVfeE/LmY+NyroADKuR64=;
- b=cT1qxhzAT2O5M5JsVEiIGhI9wc2VGqW/jg8bQk0A1Vh1k3YgvwIaJaXiThfgkNf6Mp
- Eu4GYEpJgTdmedJg6NkXVf/uveruLhVAoLWviTWXMzGSGyexWBQ5NsyGSMS3aDEHGYiq
- cJsIr/+QdhsnY9LiyipXw+V5YsA9kPqm1C5xLjx2jV7xJkQgbohCcuD6Avr6NWmDnrQx
- c7fbd41l38zos1xdZ0obZ0yvFEj/b1st12eiQf0UpRTaDvyedIom5lfWLRIo/YJh4S/v
- pxeOrhP48+gocArr8N+5q0+9bgKNsQ1Bgg/w7F7aV0BGEFZorsnStDKYoYDThNRE90bi
- KbuQ==
-X-Gm-Message-State: AC+VfDwUvwxSOA9TK9SoGuqkfiVcpDGlEdAIxCcv0ooyBeP+khI4ewck
- E77Z5MTGPiw8ys1/rYBIZdrMM9W77D0wyXNYtUmtlni5P7zFFLW221MQOv6JE9QTdZyor17+uJK
- GzIwvpE/1WI+FAwI=
-X-Received: by 2002:aa7:d1c6:0:b0:50b:c72a:2b1b with SMTP id
- g6-20020aa7d1c6000000b0050bc72a2b1bmr2067417edp.19.1684506432151; 
- Fri, 19 May 2023 07:27:12 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5AaFSKO4tzuyvxF1Yj4DlvUN/9ymxBFC2ztx/deoRQW0yOmhiUAAtKn0vPW7+GWq2wgSI/6Q==
-X-Received: by 2002:aa7:d1c6:0:b0:50b:c72a:2b1b with SMTP id
- g6-20020aa7d1c6000000b0050bc72a2b1bmr2067408edp.19.1684506431843; 
- Fri, 19 May 2023 07:27:11 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
- (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
- [2003:cf:d723:b0c7:284b:5990:6336:f84f])
- by smtp.gmail.com with ESMTPSA id
- dy1-20020a05640231e100b0050bc4600d38sm1734278edb.79.2023.05.19.07.27.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 07:27:11 -0700 (PDT)
-Message-ID: <0fd2fa2b-dfd5-7c22-e6de-7e018868c8ce@redhat.com>
-Date: Fri, 19 May 2023 16:27:10 +0200
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1q017N-0007um-1D; Fri, 19 May 2023 10:30:06 -0400
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34JD04b5023060; Fri, 19 May 2023 14:30:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=uLhjUzQQt1+AApRcBY9d6rORrc/G51JhCn3qL3G2CJc=;
+ b=RChCHAfAUmXf2hLTSC+GfDrRdq5ioWm7d09L95c8nwN9y8lAJ5CDL2SJh0Rl9DvNpSOx
+ ++t2Ca7Pq2WVjiw5VFxD9+0CSI8EfESfB/M8ZCYebtR/ZM9Q35RePm7GQgzubr0A0hna
+ 9LaGg6q+EODsGX20fyspP3i3wUbf7aFaidMY0uB83XMqkFEXYzuDTFe57m1Re5QstQdB
+ /AAKxj4/vU2Xt32bdVdc+GBexFmQ3Iq+b2Za3xIPBcudxe+JK/DtKaIt7vuhJQzMYyJ9
+ LCoWGKe1KH9c0Os9PSbTVsDP2ys39fHUjp3Su3hzjQrqgFK+ws9PRTpNIn5XsxXldLji Dg== 
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qp4ccrt74-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 May 2023 14:30:00 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
+ [10.45.79.139])
+ by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34JETOwa006006
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 May 2023 14:29:24 GMT
+Received: from [10.111.133.230] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Fri, 19 May
+ 2023 07:29:22 -0700
+Message-ID: <1c322d4a-64f8-5c94-6f39-1bac8afb0fdd@quicinc.com>
+Date: Fri, 19 May 2023 15:29:19 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 04/19] test-cutils: Test more integer corner cases
-To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-Cc: armbru@redhat.com, richard.henderson@linaro.org
-References: <20230512021033.1378730-1-eblake@redhat.com>
- <20230512021033.1378730-5-eblake@redhat.com>
-Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230512021033.1378730-5-eblake@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v2] hw/arm/sbsa-ref: add GIC node into DT
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, <qemu-devel@nongnu.org>
+CC: <qemu-arm@nongnu.org>, Peter Maydell <peter.maydell@linaro.org>
+References: <20230517105303.453161-1-marcin.juszkiewicz@linaro.org>
+From: Leif Lindholm <quic_llindhol@quicinc.com>
+In-Reply-To: <20230517105303.453161-1-marcin.juszkiewicz@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: TQ3XKVDzgqEroiK8oruGF9s0FTUne4JI
+X-Proofpoint-ORIG-GUID: TQ3XKVDzgqEroiK8oruGF9s0FTUne4JI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-19_10,2023-05-17_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 impostorscore=0 spamscore=0 bulkscore=0
+ phishscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305190123
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_llindhol@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.527,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,93 +97,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.05.23 04:10, Eric Blake wrote:
-> We have quite a few undertested and underdocumented integer parsing
-> corner cases.  To ensure that any changes we make in the code are
-> intentional rather than accidental semantic changes, it is time to add
-> more unit tests of existing behavior.
->
-> In particular, this demonstrates that parse_uint() and qemu_strtou64()
-> behave differently.  For "-0", it's hard to argue why parse_uint needs
-> to reject it (it's not a negative integer), but the documentation sort
-> of mentions it; but it is intentional that all other negative values
-> are treated as ERANGE with value 0 (compared to qemu_strtou64()
-> treating "-2" as success and UINT64_MAX-1, for example).
->
-> Also, when mixing overflow/underflow with a check for no trailing
-> junk, parse_uint_full favors ERANGE over EINVAL, while qemu_strto[iu]*
-> favor EINVAL.  This behavior is outside the C standard, so we can pick
-> whatever we want, but it would be nice to be consistent.
->
-> Note that C requires that "9223372036854775808" fail strtoll() with
-> ERANGE/INT64_MAX, but "-9223372036854775808" pass with INT64_MIN; we
-> weren't testing this.  For strtol(), the behavior depends on whether
-> long is 32- or 64-bits (the cutoff point either being the same as
-> strtoll() or at "-2147483648").  Meanwhile, C is clear that
-> "-18446744073709551615" pass stroull() (but not strtoll) with value 1,
-> even though we want it to fail parse_uint().  And although
-> qemu_strtoui() has no C counterpart, it makes more sense if we design
-> it like 32-bit strtoul() (that is, where "-4294967296" be an alternate
-> acceptable spelling for "1".  We aren't there yet, so some of the
-> tests added in this patch have FIXME comments.
->
-> Signed-off-by: Eric Blake <eblake@redhat.com>
+On 2023-05-17 11:53, Marcin Juszkiewicz wrote:
+> Let add GIC information into DeviceTree as part of SBSA-REF versioning.
+> 
+> Trusted Firmware will read it and provide to next firmware level.
+> 
+> Bumps platform version to 0.1 one so we can check is node is present.
+> 
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
+
 > ---
->   tests/unit/test-cutils.c | 799 ++++++++++++++++++++++++++++++++++++---
->   1 file changed, 738 insertions(+), 61 deletions(-)
->
-> diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
-> index 1eeaf21ae22..89c10f5307a 100644
-> --- a/tests/unit/test-cutils.c
-> +++ b/tests/unit/test-cutils.c
-
-[...]
-
-> @@ -717,34 +890,75 @@ static void test_qemu_strtoui_max(void)
->
->   static void test_qemu_strtoui_overflow(void)
->   {
-> -    char *str = g_strdup_printf("%lld", (long long)UINT_MAX + 1ll);
-> -    char f = 'X';
-> -    const char *endptr = &f;
-> -    unsigned int res = 999;
-> +    const char *str;
-> +    const char *endptr;
-> +    unsigned int res;
->       int err;
->
-> +    str = "4294967296"; /* UINT_MAX + 1ll */
-> +    endptr = "somewhere";
-> +    res = 999;
->       err = qemu_strtoui(str, &endptr, 0, &res);
-> +    g_assert_cmpint(err, ==, -ERANGE);
-> +    g_assert_cmpint(res, ==, UINT_MAX);
-
-Why cmpint and not cmpuint here?  (I see you’re using cmpint instead of 
-cmpuint in many strtou* test functions below, too.)
-
-[...]
-
-> @@ -1325,31 +1697,67 @@ static void test_qemu_strtoul_max(void)
-
-[...]
-
->   static void test_qemu_strtoul_underflow(void)
->   {
-> -    const char *str = "-99999999999999999999999999999999999999999999";
-> -    char f = 'X';
-> -    const char *endptr = &f;
-> -    unsigned long res = 999;
-> +    const char *str;
-> +    const char *endptr;
-> +    unsigned long res;
->       int err;
->
-> +    /* 1 less than -ULONG_MAX */
-> +    str = ULONG_MAX == UINT_MAX ? "-4294967297" : "-18446744073709551617";
-
-Technically these are 2 less than -ULONG_MAX, not 1 less.
-
-Hanna
+>   hw/arm/sbsa-ref.c | 19 ++++++++++++++++++-
+>   1 file changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index 792371fdce..9204e8605f 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -29,6 +29,7 @@
+>   #include "exec/hwaddr.h"
+>   #include "kvm_arm.h"
+>   #include "hw/arm/boot.h"
+> +#include "hw/arm/fdt.h"
+>   #include "hw/arm/smmuv3.h"
+>   #include "hw/block/flash.h"
+>   #include "hw/boards.h"
+> @@ -168,6 +169,20 @@ static uint64_t sbsa_ref_cpu_mp_affinity(SBSAMachineState *sms, int idx)
+>       return arm_cpu_mp_affinity(idx, clustersz);
+>   }
+>   
+> +static void sbsa_fdt_add_gic_node(SBSAMachineState *sms)
+> +{
+> +    char *nodename;
+> +
+> +    nodename = g_strdup_printf("/intc");
+> +    qemu_fdt_add_subnode(sms->fdt, nodename);
+> +    qemu_fdt_setprop_sized_cells(sms->fdt, nodename, "reg",
+> +                                 2, sbsa_ref_memmap[SBSA_GIC_DIST].base,
+> +                                 2, sbsa_ref_memmap[SBSA_GIC_DIST].size,
+> +                                 2, sbsa_ref_memmap[SBSA_GIC_REDIST].base,
+> +                                 2, sbsa_ref_memmap[SBSA_GIC_REDIST].size);
+> +
+> +    g_free(nodename);
+> +}
+>   /*
+>    * Firmware on this machine only uses ACPI table to load OS, these limited
+>    * device tree nodes are just to let firmware know the info which varies from
+> @@ -204,7 +219,7 @@ static void create_fdt(SBSAMachineState *sms)
+>        *                        fw compatibility.
+>        */
+>       qemu_fdt_setprop_cell(fdt, "/", "machine-version-major", 0);
+> -    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 0);
+> +    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 1);
+>   
+>       if (ms->numa_state->have_numa_distance) {
+>           int size = nb_numa_nodes * nb_numa_nodes * 3 * sizeof(uint32_t);
+> @@ -260,6 +275,8 @@ static void create_fdt(SBSAMachineState *sms)
+>   
+>           g_free(nodename);
+>       }
+> +
+> +    sbsa_fdt_add_gic_node(sms);
+>   }
+>   
+>   #define SBSA_FLASH_SECTOR_SIZE (256 * KiB)
 
 
