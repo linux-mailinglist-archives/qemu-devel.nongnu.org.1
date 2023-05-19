@@ -2,53 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8151F727606
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Jun 2023 06:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCCD70F1E0
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 11:12:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q77BF-00066Y-FH; Thu, 08 Jun 2023 00:23:25 -0400
+	id 1q1kX3-000171-Pa; Wed, 24 May 2023 05:11:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z4-0006R3-JY
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:42 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1q1kX1-00016e-LJ
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 05:11:43 -0400
+Received: from esa2.hc1455-7.c3s2.iphmx.com ([207.54.90.48])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1q74z1-0000DC-QL
- for qemu-devel@nongnu.org; Wed, 07 Jun 2023 22:02:42 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id DCC1D11F0E4;
- Thu,  8 Jun 2023 02:02:38 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Fri, 18 Nov 2022 10:08:54 +0800
-Subject: [PATCH QEMU v5 1/8] softmmu/dirtylimit: Add parameter check for hmp
- "set_vcpu_dirty_limit"
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1q1kX0-0000dr-0v
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 05:11:43 -0400
+X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="117781870"
+X-IronPort-AV: E=Sophos;i="6.00,188,1681138800"; d="scan'208";a="117781870"
+Received: from unknown (HELO yto-r4.gw.nic.fujitsu.com) ([218.44.52.220])
+ by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 May 2023 18:11:37 +0900
+Received: from yto-m4.gw.nic.fujitsu.com (yto-nat-yto-m4.gw.nic.fujitsu.com
+ [192.168.83.67])
+ by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 9524DCD6C2
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 18:11:34 +0900 (JST)
+Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
+ [192.51.206.21])
+ by yto-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id D5F80D3F2D
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 18:11:33 +0900 (JST)
+Received: from cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+ by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 5B4802007CAA5
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 18:11:33 +0900 (JST)
+Received: from G08CNEXHBPEKD10.g08.fujitsu.local (unknown [10.167.33.114])
+ by cn.fujitsu.com (Postfix) with ESMTP id 3FAC04D8AD59;
+ Fri, 19 May 2023 16:57:19 +0800 (CST)
+Received: from G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.114) by
+ G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 19 May 2023 16:57:19 +0800
+Received: from localhost.localdomain (10.167.226.45) by
+ G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
+ id 15.1.2507.23 via Frontend Transport; Fri, 19 May 2023 16:57:19 +0800
+From: Li Zhijian <lizhijian@cn.fujitsu.com>
+To: <Jonathan.Cameron@huawei.com>, <qemu-devel@nongnu.org>
+CC: <ben.widawsky@intel.com>, <dan.j.williams@intel.com>, <mst@redhat.com>,
+ <peter.maydell@linaro.org>, Li Zhijian <lizhijian@cn.fujitsu.com>
+Subject: [PATCH 1/2] docs/cxl: Correct CFMW number
+Date: Fri, 19 May 2023 16:58:01 +0800
+Message-ID: <20230519085802.2106900-1-lizhijian@cn.fujitsu.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Message-ID: <168618975839.6361.17407633874747688653-1@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <168618975839.6361.17407633874747688653-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hyman =?utf-8?b?SHVhbmco6buE5YuHKQ==?= <yong.huang@smartx.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-yoursite-MailScanner-ID: 3FAC04D8AD59.A04CE
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: lizhijian@fujitsu.com
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-27646.006
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-27646.006
+X-TMASE-Result: 10-4.112000-10.000000
+X-TMASE-MatchedRID: a/NQqtkq7zoK3XsS78iVZKJVTu7sjgg1wwUOMx+/uQNOaDdl7pggvQTg
+ sjIJUJZIIvrftAIhWmLy9zcRSkKatfH/uuICyxMCLV6LoOnjWZms4IQYg+G3CNspzL3HlL8hU5z
+ 8XnT4Vkji8zVgXoAltvbGdFF9BGjiC24oEZ6SpSmcfuxsiY4QFFMJQmIMMhF0aJKVtBOvry2tjI
+ XO5FYzSzon8SHqc6a/1Z2AA2kLsxIJM5kWfx01eUOexVgQs3hj9gycg79CNJGQJ517SGaXY9VGK
+ sGTt2/S6yORifnpUaoNUYeVfcC2R3iZNoNUzKgUYDttQUGqHZU=
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+Received-SPF: pass client-ip=207.54.90.48; envelope-from=lizhijian@fujitsu.com;
+ helo=esa2.hc1455-7.c3s2.iphmx.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Jun 2023 00:23:13 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,55 +89,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+The 'Notes:' in this document mentioned CFMW{0-2}, but the figure missed
+CFMW2.
 
-dirty_rate paraemter of hmp command "set_vcpu_dirty_limit" is invalid
-if less than 0, so add parameter check for it.
-
-Note that this patch also delete the unsolicited help message and
-clean up the code.
-
-Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
 ---
- softmmu/dirtylimit.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+I'm totally new to CXL, so i have little confidence to this change :)
+---
+ docs/system/devices/cxl.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
-index 015a9038d1..5c12d26d49 100644
---- a/softmmu/dirtylimit.c
-+++ b/softmmu/dirtylimit.c
-@@ -515,14 +515,15 @@ void hmp_set_vcpu_dirty_limit(Monitor *mon, const QDict=
- *qdict)
-     int64_t cpu_index =3D qdict_get_try_int(qdict, "cpu_index", -1);
-     Error *err =3D NULL;
-=20
--    qmp_set_vcpu_dirty_limit(!!(cpu_index !=3D -1), cpu_index, dirty_rate, &=
-err);
--    if (err) {
--        hmp_handle_error(mon, err);
--        return;
-+    if (dirty_rate < 0) {
-+        error_setg(&err, "invalid dirty page limit %ld", dirty_rate);
-+        goto out;
-     }
-=20
--    monitor_printf(mon, "[Please use 'info vcpu_dirty_limit' to query "
--                   "dirty limit for virtual CPU]\n");
-+    qmp_set_vcpu_dirty_limit(!!(cpu_index !=3D -1), cpu_index, dirty_rate, &=
-err);
-+
-+out:
-+    hmp_handle_error(mon, err);
- }
-=20
- static struct DirtyLimitInfo *dirtylimit_query_vcpu(int cpu_index)
---=20
-2.38.5
+diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
+index dce43476129..d3577a4d6da 100644
+--- a/docs/system/devices/cxl.rst
++++ b/docs/system/devices/cxl.rst
+@@ -162,7 +162,7 @@ Example system Topology. x marks the match in each decoder level::
+   |<------------------SYSTEM PHYSICAL ADDRESS MAP (1)----------------->|
+   |    __________   __________________________________   __________    |
+   |   |          | |                                  | |          |   |
+-  |   | CFMW 0   | |  CXL Fixed Memory Window 1       | | CFMW 1   |   |
++  |   | CFMW 0   | |  CXL Fixed Memory Window 1       | | CFMW 2   |   |
+   |   | HB0 only | |  Configured to interleave memory | | HB1 only |   |
+   |   |          | |  memory accesses across HB0/HB1  | |          |   |
+   |   |__________| |_____x____________________________| |__________|   |
+@@ -247,7 +247,7 @@ Example topology involving a switch::
+   |<------------------SYSTEM PHYSICAL ADDRESS MAP (1)----------------->|
+   |    __________   __________________________________   __________    |
+   |   |          | |                                  | |          |   |
+-  |   | CFMW 0   | |  CXL Fixed Memory Window 1       | | CFMW 1   |   |
++  |   | CFMW 0   | |  CXL Fixed Memory Window 1       | | CFMW 2   |   |
+   |   | HB0 only | |  Configured to interleave memory | | HB1 only |   |
+   |   |          | |  memory accesses across HB0/HB1  | |          |   |
+   |   |____x_____| |__________________________________| |__________|   |
+-- 
+2.31.1
+
+
 
 
