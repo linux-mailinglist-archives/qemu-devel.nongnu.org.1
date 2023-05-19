@@ -2,70 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFC37091A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D047091B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:30:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzvRb-00060s-Mn; Fri, 19 May 2023 04:26:35 -0400
+	id 1pzvUr-0006te-84; Fri, 19 May 2023 04:29:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1pzvRZ-00060N-UE
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:26:33 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzvUp-0006tU-Gw
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:29:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1pzvRY-0003b2-9N
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:26:33 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1pzvUn-00042K-69
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:29:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684484791;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=/VQc5CMJd9Uwb6Y2ierTNa5I2weukOfjBSHZ6aRR7hg=;
- b=dUTDgHFPsVYqlB5EV2yEEwoLE1BzMEwm/jMAHEht0SgIth+DEqGEkpQTx5i70j61h3lKBi
- DG1yYTAXKT2AoM5dJ+4AK1EeppjkyrmSvQQ1de2stjuQIOT5gUFOPJ6CjTc97eQcL19i1q
- s+BzcuSWoPqOhh6+MA+x6SqDdaAV8vc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-652-Xw1BrYQMMnSUiNpoOOC-Xg-1; Fri, 19 May 2023 04:26:27 -0400
-X-MC-Unique: Xw1BrYQMMnSUiNpoOOC-Xg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 606A3101A531;
- Fri, 19 May 2023 08:26:27 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.105])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8C75A140E954;
- Fri, 19 May 2023 08:26:26 +0000 (UTC)
-Date: Fri, 19 May 2023 09:26:23 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Wei Wang <wei.w.wang@intel.com>, quintela@redhat.com,
- lei4.wang@intel.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH v1] migration: fail the cap check if it requires the use
- of deferred incoming
-Message-ID: <ZGcyr9d2qpYpV5As@redhat.com>
-References: <20230518160026.57414-1-wei.w.wang@intel.com>
- <ZGZ6Yqx2+dOp+Q73@x1n>
+ s=mimecast20190719; t=1684484992;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YhXrQ/+2v2wwXuHALY4/4MGiskQNkfHfvZ4vQ1eWVqY=;
+ b=GodUx6KUrxLgU63xjgX6Vwds1QTmjeZ9+zmEPwJ5sTwV6ZC7aYcm7S6LDqmitigIMe0GHJ
+ MnqxMN9siaIXDIBf0x4KS+JFghgG/nPcSRZcl5J5v979gIPV9Res8kw3qbjWziOhcsE4Db
+ UCnLcfrr0hCsvZb+QqiqUp3CzzE5krA=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-284-72mCG47eMDuggLyWcGMwIw-1; Fri, 19 May 2023 04:29:50 -0400
+X-MC-Unique: 72mCG47eMDuggLyWcGMwIw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-50dfa390825so1754503a12.3
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 01:29:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684484989; x=1687076989;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YhXrQ/+2v2wwXuHALY4/4MGiskQNkfHfvZ4vQ1eWVqY=;
+ b=OLrJzBQ9ErwLenuZroE/AYk2YFtbcUUwRo/09MxSwwPWr2pAdk0/Nrweka8URJMhsk
+ E9NDQsW8O1e6gpWI9nvezhlDAynRVh8oecSvvWJb5qkVPUfzYNV3j+p76LnPI8dn2O/S
+ Px9zez2VakzOW5oVFNLFS+6xhwrtv0C83sA6pPho2/4O3cNYQDfEiWfEjq3Pxfn+ijEP
+ 5Ck2lkEHAEFPicLuDQLBv9QxfCkSVp1E0iavXwNZWVBhq4Y0ngIU7VQqmxTSuWChLqRd
+ 3I2x3yQUT6bXpUQvEZLf89hMpoWtsV3vADPJgO9GXzxE3/ShkhrRbgZ0A5bXLuG9R+mb
+ KAcg==
+X-Gm-Message-State: AC+VfDyYRTbw1UY4XlBId1hYYzvw5L2Ddmkmc/1Qm2fbMI1ZpoMhsw4l
+ 7ikBxcFy+qOFuT0XRk9zCrUlU9pB2i23ncG6BJ/SlZImV0/QLQeM+6iMqmRVG8CC9r3wpE75VEt
+ J/SWlb7Fe/dQD+iCSrwc3oEA=
+X-Received: by 2002:a17:907:3e24:b0:96a:5bdd:7557 with SMTP id
+ hp36-20020a1709073e2400b0096a5bdd7557mr1060949ejc.70.1684484989515; 
+ Fri, 19 May 2023 01:29:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7/GYw5QSeMfsMFlor0ScsVLbLR2FUB998embyjmoqyj+PpZfi7OJ1lxuF/W5ezsoncUk4G9w==
+X-Received: by 2002:a17:907:3e24:b0:96a:5bdd:7557 with SMTP id
+ hp36-20020a1709073e2400b0096a5bdd7557mr1060936ejc.70.1684484989235; 
+ Fri, 19 May 2023 01:29:49 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045?
+ ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ by smtp.googlemail.com with ESMTPSA id
+ jx27-20020a170907761b00b0094f67ea6598sm2005220ejc.193.2023.05.19.01.29.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 01:29:48 -0700 (PDT)
+Message-ID: <7e2b211f-8da8-3345-528d-bc6f3b35484d@redhat.com>
+Date: Fri, 19 May 2023 10:29:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZGZ6Yqx2+dOp+Q73@x1n>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PULL 00/68] i386, build system, KVM changes for 2023-05-18
+Content-Language: en-US
+To: Yang Zhong <yang.zhong@linux.intel.com>
+Cc: qemu-devel@nongnu.org
+References: <20230517174520.887405-1-pbonzini@redhat.com>
+ <ZGbnrwKTTO1PsDhT@yangzhon>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <ZGbnrwKTTO1PsDhT@yangzhon>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-2.544, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,43 +101,34 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 18, 2023 at 03:20:02PM -0400, Peter Xu wrote:
-> On Fri, May 19, 2023 at 12:00:26AM +0800, Wei Wang wrote:
-> > qemu_start_incoming_migration needs to check the number of multifd
-> > channels or postcopy ram channels to configure the backlog parameter (i.e.
-> > the maximum length to which the queue of pending connections for sockfd
-> > may grow) of listen(). So multifd and postcopy-preempt caps require the
-> > use of deferred incoming, that is, calling qemu_start_incoming_migration
-> > should be deferred via qmp or hmp commands after the cap of multifd and
-> > postcopy-preempt are configured.
-> > 
-> > Check if deferred incoming is used when enabling multifd or
-> > postcopy-preempt, and fail the check with error messages if not.
-> > 
-> > Signed-off-by: Wei Wang <wei.w.wang@intel.com>
+On 5/19/23 05:06, Yang Zhong wrote:
 > 
-> IIUC this will unfortunately break things like:
-> 
->   -global migration.x-postcopy-preempt=on
-> 
-> where the cap is actually applied before incoming starts even with !defer
-> so it should still work.
-> 
-> Can we just make socket_start_incoming_migration_internal() listen on a
-> static but larger value?
+> Paolo, please help add below queued sgx fix into this PULL request, which was
+> missed from last time, thanks a lot!
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg00841.html
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg00896.html
 
-Why do we need todo that ? I thought we just determined the problem was
-a configuration error, not a code error.
+Isn't this commit 72497cff896fecf74306ed33626c30e43633cdd6?
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Author: Yang Zhong <yang.zhong@linux.intel.com>
+Date:   Thu Apr 6 02:40:41 2023 -0400
+
+     target/i386: Change wrong XFRM value in SGX CPUID leaf
+     
+     The previous patch wrongly replaced FEAT_XSAVE_XCR0_{LO|HI} with
+     FEAT_XSAVE_XSS_{LO|HI} in CPUID(EAX=12,ECX=1):{ECX,EDX}.  As a result,
+     SGX enclaves only supported SSE and x87 feature (xfrm=0x3).
+     
+     Fixes: 301e90675c3f ("target/i386: Enable support for XSAVES based features")
+     Signed-off-by: Yang Zhong <yang.zhong@linux.intel.com>
+     Reviewed-by: Yang Weijiang <weijiang.yang@intel.com>
+     Reviewed-by: Kai Huang <kai.huang@intel.com>
+     Message-Id: <20230406064041.420039-1-yang.zhong@linux.intel.com>
+     Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Paolo
 
 
