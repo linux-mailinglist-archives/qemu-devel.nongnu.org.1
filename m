@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8992F709A7B
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D2F709A77
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:52:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01Qw-00076O-Nr; Fri, 19 May 2023 10:50:18 -0400
+	id 1q01Qw-00076M-7E; Fri, 19 May 2023 10:50:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Qt-00074D-BJ
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Qt-00074C-3a
  for qemu-devel@nongnu.org; Fri, 19 May 2023 10:50:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Ql-0003U6-JF
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Qr-0003Ui-Io
  for qemu-devel@nongnu.org; Fri, 19 May 2023 10:50:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507805;
+ s=mimecast20190719; t=1684507812;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=3Uz+rubBMDavSXwC+q/q5QWww1PtBSrKQ33BgEKuCPk=;
- b=e2WyVN/qLHA0xd0GwTBXBHBw+yk/MLJKhg21GbsRTgUWnXg5GfWnOWykxJsy8o34eNo85P
- 5fcS8xjQuOPqKQDkzN3dEvVcJJCTIsiFxh+xGS7yUUGtBWkE5hbwNKIWQqTzTezoVXfJOI
- CJBCKOzyVSofA6RZPCZjI4OAhwW6/4A=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NojQDkxaiUz9/Fpnr3UOkUr9Gdhrk66biKkct4h/Eno=;
+ b=frv73BYi2OtjunFaQAt3lu7+R6NJ2NIbnwvrC71n6gxI1cl4c+SYQbLs2NHGACPI1oHAVQ
+ PpXJ1TeE1h6pz+hhSiItkV2vRJIcTXFD1Ar5SrtkDyfkSekGcnIpQz4vJ4rege4Q978Apf
+ K4v9FJ+NydWIGD+4P7yUhSwu/bHs/tw=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-EumRFo64N_KPENZllNbbiw-1; Fri, 19 May 2023 10:50:04 -0400
-X-MC-Unique: EumRFo64N_KPENZllNbbiw-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2af1a8b6c38so10036351fa.1
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:50:04 -0700 (PDT)
+ us-mta-424-LN4YAPusO3KEXsP7qVx6kw-1; Fri, 19 May 2023 10:50:10 -0400
+X-MC-Unique: LN4YAPusO3KEXsP7qVx6kw-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ab3e925512so5586531fa.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:50:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507802; x=1687099802;
+ d=1e100.net; s=20221208; t=1684507808; x=1687099808;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3Uz+rubBMDavSXwC+q/q5QWww1PtBSrKQ33BgEKuCPk=;
- b=ZxXXpvo5NesF4bkcGhAR9X1N8d4vR0+A+WE1bjT+UCQXlQ3m9EclYxaff4z6015+Rf
- A2O8/zaoeB1dRtiTXm0dofPBr08LHz8DSQoI4CsyAuuQqOOGe/qNHbqtHv/haNho7lwC
- cnTpLzQA54vMhQTjGPBY+HiKw3V8TYZvAWeeD4SD/OK7hY16+HUjVu3HE/2D4PABEzp6
- PdQAwBXbORf9QRDipidrVzlfbF93oW7xJOMRpe5mGG+Ga5NNcbF0FzeK4k5GCcy7m3EY
- FRGf5d+QItFEz0F7bfNnGks+XjZOqXycDUJfQIPrJFeNJ6+xEeqJOkP4FfG2h3R2EQfI
- TwkA==
-X-Gm-Message-State: AC+VfDxoVx+J+GaWt/XVttD5cWxeDPgiYVqWlkCcac1UChFlOOfdCSqB
- EoupkrFYj4MXROJwK/7H5AJQocH+B27XDz7W7y9wT3cWzqYAKeQ3TuyBLJdDUML81CFJk3AHR7L
- Pd6EtUuxjd1XT71h+T5iuKJPntQ/qLr6RmR/azXePPJk/jU7iqx7OKDedGoOUkWG8aP+k
-X-Received: by 2002:a2e:8887:0:b0:2af:2686:65f1 with SMTP id
- k7-20020a2e8887000000b002af268665f1mr826970lji.7.1684507802778; 
- Fri, 19 May 2023 07:50:02 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6BrApu1/3TH67DQntYWdC7bVmEWcNr2nWboJz2Xah4hAk9gmopfboALr09TaGfbN4T6sEVzg==
-X-Received: by 2002:a2e:8887:0:b0:2af:2686:65f1 with SMTP id
- k7-20020a2e8887000000b002af268665f1mr826956lji.7.1684507802428; 
- Fri, 19 May 2023 07:50:02 -0700 (PDT)
+ bh=NojQDkxaiUz9/Fpnr3UOkUr9Gdhrk66biKkct4h/Eno=;
+ b=XbzGx1YQaEgoz/8Zdj4vf/RKifW0cuenXAEfGgV/nmLbWghugAp8LbK6UPVuCGrnso
+ k1RdfoeUFa4lXMbkMhRVMOxgUJOQOvKQZ6inVlhHy95ZUpQjmh/sattirMsg2KlxBbxb
+ u3WOlJuxsJzKdneyD6r87MA5FMLDroOYDVhh9sraXEO/V3cvmnOk+fty722BxUB2Ie0v
+ pquLgCkv7b4iywP5llpLJlXpxw95S9gthHI7fd3u/PG2OqkZev5zl00IfJV0s+UxFVYP
+ KWfE6qveHUQjng+96N4okXZUGEh70EYZeCQjtn2jNOQ+DEToLeX5uIPS84t403CnM6o6
+ Blwg==
+X-Gm-Message-State: AC+VfDymZhar5uchTBAfiPX2AtiravqhfV6yjtRCPP5Wuy9d/SaVvInx
+ pwLOqQKa8LGSwzLvMuPzDFhSozoyE2cH1cL4Z0do+zzVtNRdDelBPaFsxv4f5VkDA1CTCNkvWt8
+ 4JvrEQY6Gatf27bUB5tCBgeScoFulszp3NNhMaUzxWnChNGhnQu7p+ZIrpof6sAbF0bxj
+X-Received: by 2002:a05:6512:3189:b0:4f1:21a2:9006 with SMTP id
+ i9-20020a056512318900b004f121a29006mr994626lfe.18.1684507808202; 
+ Fri, 19 May 2023 07:50:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6zrgjjJhEtho2MaQ3xAkpOw4LaErI9e/NHoEw0YYkJzD5Ni1nzIwbNAiSEMHkKcuVXUwC+Bw==
+X-Received: by 2002:a05:6512:3189:b0:4f1:21a2:9006 with SMTP id
+ i9-20020a056512318900b004f121a29006mr994612lfe.18.1684507807955; 
+ Fri, 19 May 2023 07:50:07 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- u6-20020a2e8446000000b002ad333df101sm847534ljh.133.2023.05.19.07.49.59
+ m11-20020ac24acb000000b004edb2cb3500sm615608lfp.279.2023.05.19.07.50.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:50:01 -0700 (PDT)
-Date: Fri, 19 May 2023 10:49:57 -0400
+ Fri, 19 May 2023 07:50:07 -0700 (PDT)
+Date: Fri, 19 May 2023 10:50:02 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Raghu H <raghuhack78@gmail.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Stefan Weil <sw@weilnetz.de>
-Subject: [PULL 05/40] docs/cxl: Remove incorrect CXL type 3 size parameter
-Message-ID: <9830ea6126c6a3b3ea7af720d98aa7717dba59eb.1684507742.git.mst@redhat.com>
+ Stefan Weil <sw@weilnetz.de>, Davidlohr Bueso <dave@stgolabs.net>
+Subject: [PULL 06/40] docs/cxl: Replace unsupported AARCH64 with x86_64
+Message-ID: <0795b98f096b876a36e2c45adb42c2004655011e.1684507742.git.mst@redhat.com>
 References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -100,40 +100,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Raghu H <raghuhack78@gmail.com>
 
-cxl-type3 memory size is read directly from the provided memory backed end
-device. Remove non existent size option
+Currently Qemu CXL emulation support is not availabe on AARCH64 but its
+available with qemu x86_64 architecture, updating the document to reflect
+the supported platform.
 
 Signed-off-by: Raghu H <raghuhack78@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20230421134507.26842-3-Jonathan.Cameron@huawei.com>
+Message-Id: <20230421134507.26842-4-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- docs/system/devices/cxl.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ docs/system/devices/cxl.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
-index 9618becdab..dd1a62bd57 100644
+index dd1a62bd57..8f2885aba1 100644
 --- a/docs/system/devices/cxl.rst
 +++ b/docs/system/devices/cxl.rst
-@@ -354,13 +354,13 @@ An example of 4 devices below a switch suitable for 1, 2 or 4 way interleave::
-   -device cxl-rp,port=1,bus=cxl.1,id=root_port1,chassis=0,slot=1 \
-   -device cxl-upstream,bus=root_port0,id=us0 \
-   -device cxl-downstream,port=0,bus=us0,id=swport0,chassis=0,slot=4 \
--  -device cxl-type3,bus=swport0,memdev=cxl-mem0,lsa=cxl-lsa0,id=cxl-pmem0,size=256M \
-+  -device cxl-type3,bus=swport0,memdev=cxl-mem0,lsa=cxl-lsa0,id=cxl-pmem0 \
-   -device cxl-downstream,port=1,bus=us0,id=swport1,chassis=0,slot=5 \
--  -device cxl-type3,bus=swport1,memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem1,size=256M \
-+  -device cxl-type3,bus=swport1,memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem1 \
-   -device cxl-downstream,port=2,bus=us0,id=swport2,chassis=0,slot=6 \
--  -device cxl-type3,bus=swport2,memdev=cxl-mem2,lsa=cxl-lsa2,id=cxl-pmem2,size=256M \
-+  -device cxl-type3,bus=swport2,memdev=cxl-mem2,lsa=cxl-lsa2,id=cxl-pmem2 \
-   -device cxl-downstream,port=3,bus=us0,id=swport3,chassis=0,slot=7 \
--  -device cxl-type3,bus=swport3,memdev=cxl-mem3,lsa=cxl-lsa3,id=cxl-pmem3,size=256M \
-+  -device cxl-type3,bus=swport3,memdev=cxl-mem3,lsa=cxl-lsa3,id=cxl-pmem3 \
-   -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=4k
+@@ -302,7 +302,7 @@ Example command lines
+ ---------------------
+ A very simple setup with just one directly attached CXL Type 3 device::
  
- Kernel Configuration Options
+-  qemu-system-aarch64 -M virt,gic-version=3,cxl=on -m 4g,maxmem=8G,slots=8 -cpu max \
++  qemu-system-x86_64 -M q35,cxl=on -m 4G,maxmem=8G,slots=8 -smp 4 \
+   ...
+   -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/cxltest.raw,size=256M \
+   -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=/tmp/lsa.raw,size=256M \
+@@ -315,7 +315,7 @@ A setup suitable for 4 way interleave. Only one fixed window provided, to enable
+ interleave across 2 CXL host bridges.  Each host bridge has 2 CXL Root Ports, with
+ the CXL Type3 device directly attached (no switches).::
+ 
+-  qemu-system-aarch64 -M virt,gic-version=3,cxl=on -m 4g,maxmem=8G,slots=8 -cpu max \
++  qemu-system-x86_64 -M q35,cxl=on -m 4G,maxmem=8G,slots=8 -smp 4 \
+   ...
+   -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/cxltest.raw,size=256M \
+   -object memory-backend-file,id=cxl-mem2,share=on,mem-path=/tmp/cxltest2.raw,size=256M \
+@@ -339,7 +339,7 @@ the CXL Type3 device directly attached (no switches).::
+ 
+ An example of 4 devices below a switch suitable for 1, 2 or 4 way interleave::
+ 
+-  qemu-system-aarch64 -M virt,gic-version=3,cxl=on -m 4g,maxmem=8G,slots=8 -cpu max \
++  qemu-system-x86_64 -M q35,cxl=on -m 4G,maxmem=8G,slots=8 -smp 4 \
+   ...
+   -object memory-backend-file,id=cxl-mem0,share=on,mem-path=/tmp/cxltest.raw,size=256M \
+   -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/cxltest1.raw,size=256M \
 -- 
 MST
 
