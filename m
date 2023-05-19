@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B509709C0C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 18:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B49709C20
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 18:12:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q02eo-00009A-R8; Fri, 19 May 2023 12:08:42 -0400
+	id 1q02hk-0001Cj-Kr; Fri, 19 May 2023 12:11:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q02el-000090-CK
- for qemu-devel@nongnu.org; Fri, 19 May 2023 12:08:39 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q02ej-0005AB-2h
- for qemu-devel@nongnu.org; Fri, 19 May 2023 12:08:38 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3f41dceb9d4so33308515e9.1
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 09:08:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684512515; x=1687104515;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Cat+2JbmIcdnoRXO4DRR0sI+LIw48V1Dt9TYcqnKnJs=;
- b=IgBB13P455nBhQT3dDr/Q+PFuTqi3+mAL7UJADa0gS+9DWSxGii6E+QpEZ1LO3Al9j
- f2CEoNsGjH1KbjVET2k7S87Cn4JT6VUNNwzeZ7qhO2y+evvUINCuadMSupwiLjI1Yv9d
- SaXftf0o2ILyktm22Qva/r2w/YrcfkWj/bFMU7TLmvV3kp7wvxx8PsmKVlzy0upMf6YV
- afbKXTfy19Iw8O0XDRAtjk3irzgYzxqWKUFnJ41RgflGWHuAqOKiSMPfQdKOl1SSj8qj
- 9/27fWJVf4iuvTBJ/baqPXX8dSKU715mIRaJkokJuO+JGwFP6miOeqWHpOFHC5e4mHVp
- yiZA==
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1q02hi-0001BJ-Ql
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 12:11:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1q02hh-0005dd-9L
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 12:11:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684512700;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kYmEvbwNYo4DjgLy+BIBNnAnbvYAmd61hZd2na3vlQo=;
+ b=iXXHBLxhI/Lhk/R/V8YV9kyLnCKn7BtSrdzOuh7VHZvko02+DS7DVVJaP8pyG1ET2KYkKx
+ jqGyKpAnLZusT9PO8W6XZVINpKzClZHCxK8lxpurrIdlP29/iQUIKvGXv7KLxYPqcvek/u
+ BaYkt7MC5sy+07GCprcrBvdDqxHkqbE=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-669-mafMnGx9M5OumIyWly6ALw-1; Fri, 19 May 2023 12:11:39 -0400
+X-MC-Unique: mafMnGx9M5OumIyWly6ALw-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2533b1e6e66so2181008a91.3
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 09:11:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684512515; x=1687104515;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Cat+2JbmIcdnoRXO4DRR0sI+LIw48V1Dt9TYcqnKnJs=;
- b=NIEyMFPDEV/01pGPSjgpBsL/rLkGqExN5EnXFX/dBOEfsaREHt2lOvVvtNPv12WHIo
- GUO6yPv5g/mTimAjNVNjpvPZzR2BlbZccucIVm31BYWdjEfwLLNc+Abfqa3HaAq5hwMS
- kpau3+BUWl/LVxH/mdZGA6LkepGSk53uNdw+hzsDwXgg8lswOu6OCVqbWGj033MO/7xH
- DGodLIrjSG7jGI5tzLwUpaIbsZhkB6gLdJGAiJM1pSIS3vnQxDnY5Kk/EOZi9v7DGjfR
- zNn4meKwiXCdbV/DtBkFBaLl4uVLcfULqoOpfg0m8iFoBazWLEJo+JSWa5sE/DcZ/6Cq
- YGxA==
-X-Gm-Message-State: AC+VfDzlwnxJvExYviKwqEFw2UndEi/MAXN0jG51vJmzDv3KKppdmVwC
- wP85RbIU4yryLSjcE8Afzq5Xaw==
-X-Google-Smtp-Source: ACHHUZ5TIf9PbUqcfpYdP35gTIAuSo3PzhFV1RJf3U2xr8S4r2+Ac8P49/FwbP42VFwjyhR9uxnczA==
-X-Received: by 2002:a7b:cb8f:0:b0:3f1:7bac:d411 with SMTP id
- m15-20020a7bcb8f000000b003f17bacd411mr1722139wmi.39.1684512515272; 
- Fri, 19 May 2023 09:08:35 -0700 (PDT)
-Received: from [192.168.69.115] (mau49-h01-176-184-41-228.dsl.sta.abo.bbox.fr.
- [176.184.41.228]) by smtp.gmail.com with ESMTPSA id
- i3-20020adff303000000b0030795b2be15sm5648287wro.103.2023.05.19.09.08.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 09:08:34 -0700 (PDT)
-Message-ID: <27f9ad4f-bdde-f548-860b-34e52493faa2@linaro.org>
-Date: Fri, 19 May 2023 18:08:30 +0200
+ d=1e100.net; s=20221208; t=1684512698; x=1687104698;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kYmEvbwNYo4DjgLy+BIBNnAnbvYAmd61hZd2na3vlQo=;
+ b=Nvk762dz52gqoaDizMJaHUvIvb7RvK0cf/XNdf3rs93LgGgPZxH8Mul1PadzAO9XUx
+ D22Gd7Ir+HTqa0GKk08OYTRjOwUA7PibZviideIH1jscHlEbm3UWmHjGSisVgzVP6kqK
+ ALPlawHw73fEzQlFszv5Z9F44hQG4jpobP5ygfsoQ+rhDhf+fJeuXCDjZxL03FQBhxMl
+ ko3UBuBW7EJM/+ipJrMDHMvxjmdZ21kmYe7PyHSAYqx2OL9p47Zd6yRE/gEvyi1Y5qba
+ mrAj2rGP6oXZA4LHI84mgooiRzt9/GWh2MX6e9r/j/2hkfQBVjxr4SmJOeceBtzQBkN7
+ 8wfQ==
+X-Gm-Message-State: AC+VfDy0XAlxWEiN8IjcCKNd+pVTyyh09hy/gAIjgF7FXhk8Np4wSNSN
+ TzQA5m4cxt/wTFxd8lh5xeiRiHT7czje263r9lW+wvKHpYwXQAP5260Ein0QmFwcZliiZGht9XJ
+ ngpDTqNlxwbbMZfcqcjHUEjmlxR1qR6ksmccT3Pc=
+X-Received: by 2002:a17:90a:8c03:b0:24e:cb3:f7f8 with SMTP id
+ a3-20020a17090a8c0300b0024e0cb3f7f8mr2721786pjo.46.1684512697931; 
+ Fri, 19 May 2023 09:11:37 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5MahWyNM5C0x1fbg21vJHz6yjQHJKGTN1HKf8xR/+5LqYEkKglrO4UCus/RnjaFTTmihFcmNAy1Q68lBfkJ1o=
+X-Received: by 2002:a17:90a:8c03:b0:24e:cb3:f7f8 with SMTP id
+ a3-20020a17090a8c0300b0024e0cb3f7f8mr2721771pjo.46.1684512697686; Fri, 19 May
+ 2023 09:11:37 -0700 (PDT)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 19 May 2023 09:11:37 -0700
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20230425102545.162888-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v6 1/4] bswap: Add the ability to store to an unaligned 24
- bit field
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
- Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>
-Cc: linux-cxl@vger.kernel.org, linuxarm@huawei.com,
- Ira Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>,
- Dave Jiang <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-References: <20230519141803.29713-1-Jonathan.Cameron@huawei.com>
- <20230519141803.29713-2-Jonathan.Cameron@huawei.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230519141803.29713-2-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.527,
+In-Reply-To: <20230425102545.162888-1-sunilvl@ventanamicro.com>
+Date: Fri, 19 May 2023 09:11:37 -0700
+Message-ID: <CABJz62Og-9mVUfBKExMU1MG=UD7mnOKsdpeuEvXpoPTVn8TS7A@mail.gmail.com>
+Subject: Re: [PATCH v2] hw/riscv: virt: Assume M-mode FW in pflash0 only when
+ "-bios none"
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Heinrich Schuchardt <xypron.glpk@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,130 +99,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/5/23 16:18, Jonathan Cameron wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
-> 
-> CXL has 24 bit unaligned fields which need to be stored to.  CXL is
-> specified as little endian.
-> 
-> Define st24_le_p() and the supporting functions to store such a field
-> from a 32 bit host native value.
-> 
-> The use of b, w, l, q as the size specifier is limiting.  So "24" was
-> used for the size part of the function name.
-> 
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->   docs/devel/loads-stores.rst |  1 +
->   include/qemu/bswap.h        | 27 +++++++++++++++++++++++++++
->   2 files changed, 28 insertions(+)
-> 
-> diff --git a/docs/devel/loads-stores.rst b/docs/devel/loads-stores.rst
-> index d2cefc77a2..82a79e91d9 100644
-> --- a/docs/devel/loads-stores.rst
-> +++ b/docs/devel/loads-stores.rst
-> @@ -36,6 +36,7 @@ store: ``st{size}_{endian}_p(ptr, val)``
->   ``size``
->    - ``b`` : 8 bits
->    - ``w`` : 16 bits
-> + - ``24`` : 24 bits
->    - ``l`` : 32 bits
->    - ``q`` : 64 bits
->   
-> diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-> index 15a78c0db5..f546b1fc06 100644
-> --- a/include/qemu/bswap.h
-> +++ b/include/qemu/bswap.h
-> @@ -8,11 +8,25 @@
->   #undef  bswap64
->   #define bswap64(_x) __builtin_bswap64(_x)
->   
-> +static inline uint32_t bswap24(uint32_t x)
-> +{
-> +    assert((x & 0xff000000U) == 0);
+On Tue, Apr 25, 2023 at 03:55:45PM +0530, Sunil V L wrote:
+> qemu-system-riscv64 -bios <opensbi_fw> \
+> -drive file=<smode_fw_vars>,if=pflash,format=raw,unit=0 \
+> -drive file=<smode_fw_code>,if=pflash,format=raw,unit=1,readonly=on  \
+> -machine virt
 
-Asserting here is a bit violent. In particular because there is no
-contract description that x should be less than N bits for bswapN()
-in "qemu/bswap.h" API.
+I've noticed that edk2 for RISC-V, at least in the form it is
+currently packaged for Fedora, doesn't seem to have separate CODE and
+VARS files:
 
-But if you rather to assert ...
+  $ ls /usr/share/edk2/riscv/* | cat
+  /usr/share/edk2/riscv/RISCV_VIRT.fd
+  /usr/share/edk2/riscv/RISCV_VIRT.raw
 
-> +
-> +    return (((x & 0x000000ffU) << 16) |
-> +            ((x & 0x0000ff00U) <<  0) |
-> +            ((x & 0x00ff0000U) >> 16));
-> +}
-> +
->   static inline void bswap16s(uint16_t *s)
->   {
->       *s = __builtin_bswap16(*s);
->   }
->   
-> +static inline void bswap24s(uint32_t *s)
-> +{
-> +    *s = bswap24(*s & 0x00ffffffU);
+Is that something that needs to be addressed in upstream edk2? If so,
+will you be looking into it?
 
-... and sanitize the value here ...
-
-> +}
-> +
->   static inline void bswap32s(uint32_t *s)
->   {
->       *s = __builtin_bswap32(*s);
-> @@ -26,11 +40,13 @@ static inline void bswap64s(uint64_t *s)
->   #if HOST_BIG_ENDIAN
->   #define be_bswap(v, size) (v)
->   #define le_bswap(v, size) glue(__builtin_bswap, size)(v)
-> +#define le_bswap24(v) bswap24(v)
-
-... then shouldn't you sanitize also here?
-
-Personally I'd just drop the assertion.
-
->   #define be_bswaps(v, size)
->   #define le_bswaps(p, size) \
->               do { *p = glue(__builtin_bswap, size)(*p); } while (0)
->   #else
->   #define le_bswap(v, size) (v)
-> +#define le_bswap24(v) (v)
->   #define be_bswap(v, size) glue(__builtin_bswap, size)(v)
->   #define le_bswaps(v, size)
->   #define be_bswaps(p, size) \
-> @@ -176,6 +192,7 @@ CPU_CONVERT(le, 64, uint64_t)
->    * size is:
->    *   b: 8 bits
->    *   w: 16 bits
-> + *   24: 24 bits
->    *   l: 32 bits
->    *   q: 64 bits
->    *
-> @@ -248,6 +265,11 @@ static inline void stw_he_p(void *ptr, uint16_t v)
->       __builtin_memcpy(ptr, &v, sizeof(v));
->   }
->   
-> +static inline void st24_he_p(void *ptr, uint32_t v)
-> +{
-> +    __builtin_memcpy(ptr, &v, 3);
-> +}
-> +
->   static inline int ldl_he_p(const void *ptr)
->   {
->       int32_t r;
-> @@ -297,6 +319,11 @@ static inline void stw_le_p(void *ptr, uint16_t v)
->       stw_he_p(ptr, le_bswap(v, 16));
->   }
->   
-> +static inline void st24_le_p(void *ptr, uint32_t v)
-> +{
-> +    st24_he_p(ptr, le_bswap24(v));
-> +}
-> +
->   static inline void stl_le_p(void *ptr, uint32_t v)
->   {
->       stl_he_p(ptr, le_bswap(v, 32));
-
-Conditional to removing the assertion in bswap24():
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+-- 
+Andrea Bolognani / Red Hat / Virtualization
 
 
