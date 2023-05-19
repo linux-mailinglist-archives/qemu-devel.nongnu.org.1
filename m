@@ -2,65 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABACA709FCF
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 21:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B31A70A03B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 21:59:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q05dH-0002cj-Dc; Fri, 19 May 2023 15:19:19 -0400
+	id 1q06EY-0007pA-Eg; Fri, 19 May 2023 15:57:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q05dF-0002c0-3T
- for qemu-devel@nongnu.org; Fri, 19 May 2023 15:19:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q05dC-00047R-RB
- for qemu-devel@nongnu.org; Fri, 19 May 2023 15:19:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684523953;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lEI1DaTSWKm/RQc4y4r8qrMyUEbZJciFhovKKvIZnQU=;
- b=Qa60LCY04WEyq1rWyvnuYsKP+Zt6SjqAgw49ITZsE3cZWtK+Ov296hzquRpt8iq1hsLMR3
- HMNqpzfvwbKiIkT990vvaj85m5XLu0gVVL8TizqmOdtDdzbDBG1yTpEpPKhUHp4HOXcMQ1
- BJREb/JmLCMmOnnILvnUg0O7lJI94UI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-19-IE2m3dNhOGC0NoXqeldtZw-1; Fri, 19 May 2023 15:19:12 -0400
-X-MC-Unique: IE2m3dNhOGC0NoXqeldtZw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 68C7F185A78E;
- Fri, 19 May 2023 19:19:10 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.158])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id ADE2FC54184;
- Fri, 19 May 2023 19:19:09 +0000 (UTC)
-Date: Fri, 19 May 2023 21:19:08 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, quintela@redhat.com
-Subject: Re: [PULL v3 00/21] Block layer patches
-Message-ID: <ZGfLrJ5H+H6dnJjA@redhat.com>
-References: <20230519171806.435109-1-kwolf@redhat.com>
- <c74f18d7-47a4-5251-85c2-a9981e9603bf@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c74f18d7-47a4-5251-85c2-a9981e9603bf@linaro.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ (Exim 4.90_1) (envelope-from
+ <3qtRnZAYKCh0L73GC59HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--seanjc.bounces.google.com>)
+ id 1q06EM-0007oi-Fx
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 15:57:38 -0400
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3qtRnZAYKCh0L73GC59HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--seanjc.bounces.google.com>)
+ id 1q06EH-0002Fd-IC
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 15:57:38 -0400
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-561fc920e70so41677317b3.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 12:57:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20221208; t=1684526250; x=1687118250;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:from:to:cc:subject:date:message-id:reply-to;
+ bh=pKqky4qtLhLMqwc+jYDJn6p8bYat7L/lp+nKxMPkRyY=;
+ b=Y4/nCNzrFtAXrTxhpgxnIohVGQ15GL4scvI0E/2mwJYj0GQbPVuXot7Jeu/0WvRvj2
+ 9Uxos5w5dD8ChOUGochlppnIBC5WV72wtD3Z57q1qVzEB6BAU0zrp0Rj839OpxiYl1kv
+ G7aILpvUERbXB4ndb2rR/5sC8oXuhx9NqV1vUAEDqYGF4xFHckOEfCC8e/Xg4DdMuR9l
+ zQm9PUkP+OBFNpwTjL8yMr9HKgLvxTY4wkwyU4C1eKD22zw0o+8bYInRVaF8kFuyTWom
+ 12s22nrLwFtLZKHZJekTC38ZFlIu/iG4U6Mf6VoeQ952/z/sfp8161qhLkUY71jT5lqI
+ iHcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684526250; x=1687118250;
+ h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+ :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pKqky4qtLhLMqwc+jYDJn6p8bYat7L/lp+nKxMPkRyY=;
+ b=mAh0kBabVp46cqjwmP7zE7ajOjrizDTbHAkfnVKYHecJMepJbp9/2VcUhd3gDzKldK
+ HQSLrv0htTxHex+kPTs1Jc8Y9AcbLYbz4O6j0mlhfDylhW5XqUcwWKbloJttLErJWdNp
+ E+ZILHHMJTbPlKmbnIFItgsw6pI0/LcZWfBjSCQUby176gAJG2LX2nTqAhIPpqi8guKn
+ ILFtPTthZhdNizYp1377RNF2G3Fag/tLEuAdk3ANuEpMFBmZtFnUQO+HTk+g5J73PJdQ
+ MOWkTFX81AwMv0m2o6KxKTtWKphQpBkGIg1UcjJDJjlgnyJ0e7EOy1Jh4qwHSDnj06sO
+ pamg==
+X-Gm-Message-State: AC+VfDzo1Cd97PtFUqzKDXUmNWslu6+ZMj1zGnVD7TbddtE/OfIlr5zf
+ e2P26fwIXBqN/bsrp1u4Aema6Oi+U5k=
+X-Google-Smtp-Source: ACHHUZ6FEiPmU5v43LWifQRBpo81052L49sw5QgxYInZToAzWsR8mGtYDH7+PppQKkPgp34+c6aLJuvLWhk=
+X-Received: from zagreus.c.googlers.com
+ ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:9f0a:0:b0:561:949f:227 with SMTP id
+ s10-20020a819f0a000000b00561949f0227mr1854093ywn.1.1684526250423; Fri, 19 May
+ 2023 12:57:30 -0700 (PDT)
+Date: Fri, 19 May 2023 12:57:28 -0700
+In-Reply-To: <CSQI5IB968XC.GO0OPMYT1C8N@dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com>
+Mime-Version: 1.0
+References: <20221202061347.1070246-1-chao.p.peng@linux.intel.com>
+ <20221202061347.1070246-3-chao.p.peng@linux.intel.com>
+ <CSQFE7I30W27.2TPDIHOTZNRIZ@dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com>
+ <ZGe+m+uFzpiW7wlr@google.com>
+ <CSQI5IB968XC.GO0OPMYT1C8N@dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com>
+Message-ID: <ZGfUqBLaO+cI9ypv@google.com>
+Subject: Re: [PATCH v10 2/9] KVM: Introduce per-page memory attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Cc: Chao Peng <chao.p.peng@linux.intel.com>, kvm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-api@vger.kernel.org, linux-doc@vger.kernel.org, qemu-devel@nongnu.org, 
+ graf@amazon.com, Paolo Bonzini <pbonzini@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>, 
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, 
+ Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, 
+ Arnd Bergmann <arnd@arndb.de>, Naoya Horiguchi <naoya.horiguchi@nec.com>, 
+ Miaohe Lin <linmiaohe@huawei.com>, x86@kernel.org,
+ "H . Peter Anvin" <hpa@zytor.com>, 
+ Hugh Dickins <hughd@google.com>, Jeff Layton <jlayton@kernel.org>, 
+ "J . Bruce Fields" <bfields@fieldses.org>,
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Steven Price <steven.price@arm.com>, 
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
+ Vlastimil Babka <vbabka@suse.cz>, 
+ Vishal Annapurve <vannapurve@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, luto@kernel.org,
+ jun.nakajima@intel.com, 
+ dave.hansen@intel.com, ak@linux.intel.com, david@redhat.com, 
+ aarcange@redhat.com, ddutile@redhat.com, dhildenb@redhat.com, 
+ Quentin Perret <qperret@google.com>, tabba@google.com,
+ Michael Roth <michael.roth@amd.com>, 
+ mhocko@suse.com, wei.w.wang@intel.com, anelkz@amazon.de
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3qtRnZAYKCh0L73GC59HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--seanjc.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,90 +120,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 19.05.2023 um 20:48 hat Richard Henderson geschrieben:
-> On 5/19/23 10:18, Kevin Wolf wrote:
-> > The following changes since commit d009607d08d22f91ca399b72828c6693855e7325:
-> > 
-> >    Revert "arm/kvm: add support for MTE" (2023-05-19 08:01:15 -0700)
-> > 
-> > are available in the Git repository at:
-> > 
-> >    https://repo.or.cz/qemu/kevin.git tags/for-upstream
-> > 
-> > for you to fetch changes up to 95fdd8db61848d31fde1d9b32da7f3f76babfa25:
-> > 
-> >    iotests: Test commit with iothreads and ongoing I/O (2023-05-19 19:16:53 +0200)
-> > 
-> > ----------------------------------------------------------------
-> > Block layer patches
-> > 
-> > - qcow2 spec: Rename "zlib" compression to "deflate"
-> > - Honour graph read lock even in the main thread + prerequisite fixes
-> > - aio-posix: do not nest poll handlers (fixes infinite recursion)
-> > - Refactor QMP blockdev transactions
-> > - graph-lock: Disable locking for now
-> > - iotests/245: Check if 'compress' driver is available
-> > 
-> > ----------------------------------------------------------------
-> > Akihiro Suda (1):
-> >        docs/interop/qcow2.txt: fix description about "zlib" clusters
-> > 
-> > Kevin Wolf (12):
-> >        block: Call .bdrv_co_create(_opts) unlocked
-> >        block/export: Fix null pointer dereference in error path
-> >        qcow2: Unlock the graph in qcow2_do_open() where necessary
-> >        qemu-img: Take graph lock more selectively
-> >        test-bdrv-drain: Take graph lock more selectively
-> >        test-bdrv-drain: Call bdrv_co_unref() in coroutine context
-> >        blockjob: Adhere to rate limit even when reentered early
-> >        graph-lock: Honour read locks even in the main thread
-> >        iotests/245: Check if 'compress' driver is available
-> >        graph-lock: Disable locking for now
-> >        nbd/server: Fix drained_poll to wake coroutine in right AioContext
-> >        iotests: Test commit with iothreads and ongoing I/O
-> > 
-> > Stefan Hajnoczi (2):
-> >        aio-posix: do not nest poll handlers
-> >        tested: add test for nested aio_poll() in poll handlers
-> > 
-> > Vladimir Sementsov-Ogievskiy (6):
-> >        blockdev: refactor transaction to use Transaction API
-> >        blockdev: transactions: rename some things
-> >        blockdev: qmp_transaction: refactor loop to classic for
-> >        blockdev: transaction: refactor handling transaction properties
-> >        blockdev: use state.bitmap in block-dirty-bitmap-add action
-> >        blockdev: qmp_transaction: drop extra generic layer
+On Fri, May 19, 2023, Nicolas Saenz Julienne wrote:
+> Hi Sean,
 > 
-> Test failure:
+> On Fri May 19, 2023 at 6:23 PM UTC, Sean Christopherson wrote:
+> > On Fri, May 19, 2023, Nicolas Saenz Julienne wrote:
+> > > Hi,
+> > >
+> > > On Fri Dec 2, 2022 at 6:13 AM UTC, Chao Peng wrote:
+> > >
+> > > [...]
+> > > > +The user sets the per-page memory attributes to a guest memory range indicated
+> > > > +by address/size, and in return KVM adjusts address and size to reflect the
+> > > > +actual pages of the memory range have been successfully set to the attributes.
+> > > > +If the call returns 0, "address" is updated to the last successful address + 1
+> > > > +and "size" is updated to the remaining address size that has not been set
+> > > > +successfully. The user should check the return value as well as the size to
+> > > > +decide if the operation succeeded for the whole range or not. The user may want
+> > > > +to retry the operation with the returned address/size if the previous range was
+> > > > +partially successful.
+> > > > +
+> > > > +Both address and size should be page aligned and the supported attributes can be
+> > > > +retrieved with KVM_GET_SUPPORTED_MEMORY_ATTRIBUTES.
+> > > > +
+> > > > +The "flags" field may be used for future extensions and should be set to 0s.
+> > >
+> > > We have been looking into adding support for the Hyper-V VSM extensions
+> > > which Windows uses to implement Credential Guard. This interface seems
+> > > like a good fit for one of its underlying features. I just wanted to
+> > > share a bit about it, and see if we can expand it to fit this use-case.
+> > > Note that this was already briefly discussed between Sean and Alex some
+> > > time ago[1].
+> > >
+> > > VSM introduces isolated guest execution contexts called Virtual Trust
+> > > Levels (VTL) [2]. Each VTL has its own memory access protections,
+> > > virtual processors states, interrupt controllers and overlay pages. VTLs
+> > > are hierarchical and might enforce memory protections on less privileged
+> > > VTLs. Memory protections are enforced on a per-GPA granularity.
+> > >
+> > > The list of possible protections is:
+> > > - No access -- This needs a new memory attribute, I think.
+> >
+> > No, if KVM provides three bits for READ, WRITE, and EXECUTE, then userspace can
+> > get all the possible combinations.  E.g. this is RWX=000b
 > 
-> https://gitlab.com/qemu-project/qemu/-/jobs/4317480370#L3347
+> That's not what the current implementation does, when attributes is
+> equal 0 it clears the entries from the xarray:
 > 
-> 194              fail       [18:42:03] [18:42:05]   1.2s
-> output mismatch (see /builds/qemu-project/qemu/build/tests/qemu-iotests/scratch/raw-file-194/194.out.bad)
-> --- /builds/qemu-project/qemu/tests/qemu-iotests/194.out
-> +++ /builds/qemu-project/qemu/build/tests/qemu-iotests/scratch/raw-file-194/194.out.bad
-> @@ -14,7 +14,6 @@
->  {"return": {}}
->  {"data": {"status": "setup"}, "event": "MIGRATION", "timestamp":
-> {"microseconds": "USECS", "seconds": "SECS"}}
->  {"data": {"status": "active"}, "event": "MIGRATION", "timestamp":
-> {"microseconds": "USECS", "seconds": "SECS"}}
-> -{"data": {"status": "postcopy-active"}, "event": "MIGRATION", "timestamp":
-> {"microseconds": "USECS", "seconds": "SECS"}}
->  {"data": {"status": "completed"}, "event": "MIGRATION", "timestamp":
-> {"microseconds": "USECS", "seconds": "SECS"}}
->  Gracefully ending the `drive-mirror` job on source...
+> static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+> 					   struct kvm_memory_attributes *attrs)
+> {
+> 
+>     entry = attrs->attributes ? xa_mk_value(attrs->attributes) : NULL;
+> [...]
+>     for (i = start; i < end; i++)
+>     	if (xa_err(xa_store(&kvm->mem_attr_array, i, entry,
+>     			    GFP_KERNEL_ACCOUNT)))
+>         		break;
+> }
+> 
+> >From Documentation/core-api/xarray.rst:
+> 
+> "There is no difference between an entry that has never
+> been stored to, one that has been erased and one that has most recently
+> had ``NULL`` stored to it."
+> 
+> The way I understood the series, there needs to be a differentiation
+> between no attributes (regular page fault) and no-access.
 
-You got the same failure on mst's pull request, so this seems to be
-unrelated to the pull request at least.
+Ah, I see what you're saying.  There are multiple ways to solve things without a
+"no access" flag while still maintaining an empty xarray for the default case.
+E.g. invert the flags to be DENY flags[*], have an internal-only "entry valid" flag,
+etc.
 
-Maybe it is related to us using different test runners now and the test
-isn't working right there?
-
-I tried to reproduce locally with the same options as the disable-tcg CI
-job uses, but it always passes. Juan, do you have an idea what it could
-mean if on some CI system the "postcopy-active" event is missing?
-
-Kevin
-
+[*] I vaguely recall suggesting a "deny" approach somewhere, but I may just be
+    making things up to make it look like I thought deeply about this ;-)
 
