@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B778709A82
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7A3709AA1
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:56:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01Tw-0007iJ-H6; Fri, 19 May 2023 10:53:24 -0400
+	id 1q01VU-0004ZT-Q7; Fri, 19 May 2023 10:55:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Tu-0007dt-VD
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:53:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01VT-0004Yr-BH
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:54:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Tt-0003vP-8Q
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:53:22 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01VR-0005VZ-Tx
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:54:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684508000;
+ s=mimecast20190719; t=1684508097;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1tmyLUCgie0guMo2DyzPBcQwQPzOLQHwY6RFHxL/fUs=;
- b=hsAhfu3t2JT/LZScNKpegadTd9HxH29tfo4UGmiqwQPkt8FY5w5Je3ELonLElsvDuMTCXQ
- tr4GWTpvI/HnmSm9bJRhh65f+61ihA0xe3aEAUbcdwa9v7upvtfyfYBL7fyY+KUQ86gGkn
- pY1uEC0uPdb0OhezmblS86URE0HHy4M=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Wzb0geO+0m+islgln1S5KPyD7d22nuEfTQu+NEpapas=;
+ b=UhM4rngG8nRxjmtxPcLrAeBNlYFDxs+mmpU4J2WDwCU9FEgs+F5tMRpPSNxy/CQbLxf4v8
+ r2DSWVmaT9kbgqokLvfnEH6o6UpXR8jy7Aq8xmN8AdFzvfxsA/i3BrDqPyd6Ilv9wqRjwc
+ VA3pX8p8x/925HqceeiGZSf9awQ8Up8=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-ywOHwfm5Na2A1ubnt5yRyA-1; Fri, 19 May 2023 10:53:19 -0400
-X-MC-Unique: ywOHwfm5Na2A1ubnt5yRyA-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4f225b6dc0dso2288832e87.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:53:19 -0700 (PDT)
+ us-mta-630-u0Se8l91M32hNtVvE1aRaw-1; Fri, 19 May 2023 10:54:55 -0400
+X-MC-Unique: u0Se8l91M32hNtVvE1aRaw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-50d89279d95so1254189a12.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:54:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507997; x=1687099997;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1684508094; x=1687100094;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1tmyLUCgie0guMo2DyzPBcQwQPzOLQHwY6RFHxL/fUs=;
- b=Dod4tJsfeElqgaoTSahjXFZX3B+4HYeUz6k7q278EcAL66jieLxcI9hMYZXAAeZZ7o
- JroX3gzrna3L5XZFn5MfQxUps2MtEZgWvcRE+OgJWzZbLVNBbCho5pNKi5ZPhXGBm/Aq
- adscItkRNS2RjenBo0pxU0oqwPEVCUzz7+IjHjIuWCJmx0odpYIGm2DAHrzHXyBi4QDV
- uOqnnJ1aSCb1A8u07n0LzXdCBqP/ORRlbEs4SStTVrKtRvkVE/9QIL7agfJcModqIFaD
- yV8qT5wY8zl9M7o7UOSV/dSBiY/wr+qxeeoIWevugY5/GqUXDBIhCtMEO4f5ztBBebmB
- CHoA==
-X-Gm-Message-State: AC+VfDyS83P5ZsX+4UbDyLgsw8B6HWC6Mnoyl532tlo4TBw0oL1N3cIl
- UxihCIgepCwQlFPdCgmc2A3YMF1SjSwfln5U0y+ERL1FhqfNw9awSL9Js7D2X8zuvmWYhlHZepS
- NKLhAXcdjIwLbuffSJ0JoU4US+eCYUmDc/Kgs8fevFPoxw9wIS94X1O5uKW8aCrwHlAKP
-X-Received: by 2002:ac2:5225:0:b0:4f2:455d:18bd with SMTP id
- i5-20020ac25225000000b004f2455d18bdmr857052lfl.16.1684507997548; 
- Fri, 19 May 2023 07:53:17 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5JToqUeyw+GCIgpbJzHS3bQZ0F7ms86q2zGO5EbYfPAdje4GLsSQoS3aZtDH68nRIHuS/hgw==
-X-Received: by 2002:ac2:5225:0:b0:4f2:455d:18bd with SMTP id
- i5-20020ac25225000000b004f2455d18bdmr857038lfl.16.1684507997170; 
- Fri, 19 May 2023 07:53:17 -0700 (PDT)
-Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- b20-20020ac247f4000000b004efff420b0asm623388lfp.108.2023.05.19.07.53.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:53:16 -0700 (PDT)
-Date: Fri, 19 May 2023 10:53:11 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 40/40] hw/i386/pc: No need for rtc_state to be an out-parameter
-Message-ID: <87af48a49c0a5663b3fff58c3407393772d3c448.1684507742.git.mst@redhat.com>
-References: <cover.1684507742.git.mst@redhat.com>
+ bh=Wzb0geO+0m+islgln1S5KPyD7d22nuEfTQu+NEpapas=;
+ b=hOObLsM9LqJpEMBLeJ7WOW5X6CimiDCy1bQ8+wBM0xeiNokvb5hibfTHjsUWKXOAc9
+ jYFZOMAKiEP8x3Mf2odIijc6t/Ew2+05ahCzbivPpZ8u/5QotqLlVBcNEmWr8whqMYlI
+ xMEdRiXYnVMexlTtD4/N5e58jvh3kmoMRLTlwoKd+stH5EH+PPLaOA1ha4JQ5/KSeNxA
+ /LoxliYNAU2J/r1+mNPhqJrnEqcJ0YKJgWRcudQKswtqSEZLwCdBsu0ohle1ayNkTREc
+ HDozGnFPMFnmmgh1fgeyhYkIFcHe7wBarb8WTvuK7pPe3HlImNQM+nd4r7SX9FTb5HyX
+ Ivog==
+X-Gm-Message-State: AC+VfDyJY8LKV7/pXp9sLjEnOReK0PRGEUd0cjbHhMJaelxVOZyhONyr
+ rYBtBYJNoh3xsGp3qVeVsi9KOLvUF+Cd9gPd3FiG4wWynJ+UYP3ptpyX04TZn2tSQqBlrSUrF5C
+ flSfL7AY1oAifVoE=
+X-Received: by 2002:a17:907:6d26:b0:966:5fac:2e52 with SMTP id
+ sa38-20020a1709076d2600b009665fac2e52mr2245979ejc.9.1684508094815; 
+ Fri, 19 May 2023 07:54:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6RU8ojAkGgs87dCBsL6mfGvYqkXweKQH0XmXPaSWIboTTbRBFeXR5bSjcW7h9WFKSr62mGdA==
+X-Received: by 2002:a17:907:6d26:b0:966:5fac:2e52 with SMTP id
+ sa38-20020a1709076d2600b009665fac2e52mr2245961ejc.9.1684508094454; 
+ Fri, 19 May 2023 07:54:54 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
+ (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
+ [2003:cf:d723:b0c7:284b:5990:6336:f84f])
+ by smtp.gmail.com with ESMTPSA id
+ r21-20020a170906281500b0096ace550467sm2398193ejc.176.2023.05.19.07.54.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 07:54:53 -0700 (PDT)
+Message-ID: <dc9aca94-08be-20d4-9777-ba777ca5fa1b@redhat.com>
+Date: Fri, 19 May 2023 16:54:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1684507742.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 08/19] cutils: Allow NULL endptr in parse_uint()
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: armbru@redhat.com, richard.henderson@linaro.org
+References: <20230512021033.1378730-1-eblake@redhat.com>
+ <20230512021033.1378730-9-eblake@redhat.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230512021033.1378730-9-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,107 +103,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+On 12.05.23 04:10, Eric Blake wrote:
+> All the qemu_strto*() functions permit a NULL endptr, just like their
+> libc counterparts, leaving parse_uint() as the oddball that caused
+> SEGFAULT on NULL and required the user to call parse_uint_full()
+> instead.  Relax things for consistency, even though the testsuite is
+> the only impacted caller.  Add one more unit test to ensure even
+> parse_uint_full(NULL, 0, &value) works.  This also fixes our code to
+> uniformly favor EINVAL over ERANGE when both apply.
+>
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>   tests/unit/test-cutils.c | 18 ++++++++++++++++--
+>   util/cutils.c            | 34 ++++++++++++----------------------
+>   2 files changed, 28 insertions(+), 24 deletions(-)
 
-Now that the RTC is created as part of the southbridges it doesn't need
-to be an out-parameter any longer.
-
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230519084734.220480-3-shentey@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- include/hw/i386/pc.h |  2 +-
- hw/i386/pc.c         | 12 ++++++------
- hw/i386/pc_piix.c    |  2 +-
- hw/i386/pc_q35.c     |  2 +-
- 4 files changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 4e638564ca..79e755879d 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -167,7 +167,7 @@ uint64_t pc_pci_hole64_start(void);
- DeviceState *pc_vga_init(ISABus *isa_bus, PCIBus *pci_bus);
- void pc_basic_device_init(struct PCMachineState *pcms,
-                           ISABus *isa_bus, qemu_irq *gsi,
--                          ISADevice **rtc_state,
-+                          ISADevice *rtc_state,
-                           bool create_fdctrl,
-                           uint32_t hpet_irqs);
- void pc_cmos_init(PCMachineState *pcms,
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 4a73786e20..b3d826a83a 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1265,7 +1265,7 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
- 
- void pc_basic_device_init(struct PCMachineState *pcms,
-                           ISABus *isa_bus, qemu_irq *gsi,
--                          ISADevice **rtc_state,
-+                          ISADevice *rtc_state,
-                           bool create_fdctrl,
-                           uint32_t hpet_irqs)
- {
-@@ -1320,14 +1320,14 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-     }
- 
-     if (rtc_irq) {
--        qdev_connect_gpio_out(DEVICE(*rtc_state), 0, rtc_irq);
-+        qdev_connect_gpio_out(DEVICE(rtc_state), 0, rtc_irq);
-     } else {
--        uint32_t irq = object_property_get_uint(OBJECT(*rtc_state),
-+        uint32_t irq = object_property_get_uint(OBJECT(rtc_state),
-                                                 "irq",
-                                                 &error_fatal);
--        isa_connect_gpio_out(*rtc_state, 0, irq);
-+        isa_connect_gpio_out(rtc_state, 0, irq);
-     }
--    object_property_add_alias(OBJECT(pcms), "rtc-time", OBJECT(*rtc_state),
-+    object_property_add_alias(OBJECT(pcms), "rtc-time", OBJECT(rtc_state),
-                               "date");
- 
- #ifdef CONFIG_XEN_EMU
-@@ -1341,7 +1341,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-     }
- #endif
- 
--    qemu_register_boot_set(pc_boot_set, *rtc_state);
-+    qemu_register_boot_set(pc_boot_set, rtc_state);
- 
-     if (!xen_enabled() &&
-         (x86ms->pit == ON_OFF_AUTO_AUTO || x86ms->pit == ON_OFF_AUTO_ON)) {
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 34e81b79d0..10070ea9a5 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -277,7 +277,7 @@ static void pc_init1(MachineState *machine,
-     }
- 
-     /* init basic PC hardware */
--    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, &rtc_state, true,
-+    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, true,
-                          0x4);
- 
-     pc_nic_init(pcmc, isa_bus, pci_bus);
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 8faeb6ce05..8030d53da6 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -292,7 +292,7 @@ static void pc_q35_init(MachineState *machine)
-     }
- 
-     /* init basic PC hardware */
--    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, &rtc_state, !mc->no_floppy,
-+    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, rtc_state, !mc->no_floppy,
-                          0xff0104);
- 
-     if (pcms->sata_enabled) {
--- 
-MST
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
 
