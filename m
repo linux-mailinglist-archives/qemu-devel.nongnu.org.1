@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E06D709DA8
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 19:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C83709DAB
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 19:15:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q03fg-0001Yh-LG; Fri, 19 May 2023 13:13:40 -0400
+	id 1q03hP-0002Pe-MS; Fri, 19 May 2023 13:15:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q03fe-0001YB-37
- for qemu-devel@nongnu.org; Fri, 19 May 2023 13:13:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q03fc-0007Fa-Eb
- for qemu-devel@nongnu.org; Fri, 19 May 2023 13:13:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684516415;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=H0txiS8fhV5a6QvydQ29+HWYchHBBihIsm9ao7q2q74=;
- b=HkRWAPtRwANOPx5tXzRVm1yAxv7CvwnXsmdTJ0Sro/jTHkW4a8DMn566xPLRL8rH37gXmH
- eJvQYHTa2fWr/nZxUHbQSLnI4JSF26e3A5sbEdsaiVcssgVeyNRh1TnovUYxigrCGay0Vj
- XxJE726CY0u3BOVtgCemeIPhEos0Q/I=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-gPjjX-A0MFOklhuo1piowg-1; Fri, 19 May 2023 13:13:33 -0400
-X-MC-Unique: gPjjX-A0MFOklhuo1piowg-1
-Received: by mail-ua1-f69.google.com with SMTP id
- a1e0cc1a2514c-772cb9bedeaso1098894241.1
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 10:13:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q03hI-0002Oi-Mu
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 13:15:21 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q03hG-0007P8-Mg
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 13:15:20 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3f42711865eso22562855e9.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 10:15:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684516517; x=1687108517;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Lm6I4ZpaJpPYNz1gRwThJ8Pmmqv3IfAT+ti7+cmttZk=;
+ b=XSNOtJPW590Mfz8C9vU54tSOr3+9s41ZKmJVw0hNDEGrTjR8/39+feMd79SPlYH/5I
+ jKZB0ObW5te29BgUdJ+MsSoe9c5qdJo2ZUVQw6CFM8e0TMb6cXOEMklUfWJnHy7l2r2t
+ R2UAimDlbLZDbWaYjlabnMqubykCsROnAa8gfMur3OXRfohDbtq/uH9S02Ea3A7yyq5i
+ rNYihpZmZTRuoVHr15Gw/4biqVuqj2FAg/XlpqttVizx0Uvcwslwi2KPv+g4jz021Mai
+ 8vKOItrvfyQX7E+/IhsYN5ZznBW0Bg3rTL+ezP7ehcNNoPmBwGc9j/ASoJCGk4lTAOVR
+ l+Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684516413; x=1687108413;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=H0txiS8fhV5a6QvydQ29+HWYchHBBihIsm9ao7q2q74=;
- b=jpT1oyUj3t8H99wTeeJRuVRAzCduoUxrw6OfdKyclZgDq8xwB0ynlkFl51I+VEOFEQ
- 9HhitR2If5rf08iRGvGJS0wlzdkp2J+D7HvC24RQu2YjmI6rZoWAqsV31dq7CKz5xbE5
- Ms8an/zJY6nzATnCyXu0Qmo5bJtNbw+JoImWNEbJisO1FbwAD++ALNfn1ObgnkxfhvIS
- kWq/zfRpnpLcBzPyg3O2hYJwUmpVRa7hm8tSj7hexXcoNhQPxkATpROkYh0OJee9/QI1
- mLPY9at2Yl5eqknU+TBuGz2dD9VoY48dipYKs8fv8e1xCzT932r/Y2JWRAMYIxofhMoI
- F05w==
-X-Gm-Message-State: AC+VfDwxjZW91pjdurbyAzxvNObbUZ9xAdZv3wZab9HJoX0hX84Y6/XX
- TlceSVgVAlATFWrJcFBjCa1fXJFifBojtX9p9L4Z/jO4Jc+s/Ey3PQ9nWgnZIiU5/FDlSZaCCwl
- 2Q3vLtkzZdU9rAyPiGB8s6r/HrqpcCR8=
-X-Received: by 2002:a1f:5c50:0:b0:435:b4a5:d3c0 with SMTP id
- q77-20020a1f5c50000000b00435b4a5d3c0mr1275868vkb.10.1684516413052; 
- Fri, 19 May 2023 10:13:33 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7KOb+T06C/8IGN2TI1+b2T/u5DoEFa2P1B9d5jz1Owzr4XwLNPMFyglMGn9wi63TPslWC7FAv2ktgBw9EEm50=
-X-Received: by 2002:a1f:5c50:0:b0:435:b4a5:d3c0 with SMTP id
- q77-20020a1f5c50000000b00435b4a5d3c0mr1275862vkb.10.1684516412797; Fri, 19
- May 2023 10:13:32 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684516517; x=1687108517;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Lm6I4ZpaJpPYNz1gRwThJ8Pmmqv3IfAT+ti7+cmttZk=;
+ b=JYW8obd9Lvs+4SS0Cni85wC2T6tVYggxqXTsbe0ieSYyChNF2qDa4XpqdKUNpBQYkg
+ SqkfUShSuXTXWVpxsrWcqw9B07H402qGj19RqZi3njKEG7w+mXkRKPthGU9DatHbyGcA
+ Kjlz7MmUA1HroGL80yEQpPBsTCEPWqwV5+uhhY1CPbu+XrVDJj4QcJh+dBUh7MJqNZKe
+ ss5ytGiYGBdDvUenpLRoGovE38ULBz36rZZtM1VB3Q8qThbnogc6GK3rovdutRMMk+Va
+ SUtCMXtMYCriNywutQb/TI10KlN8cEiDNP3buPdUE33/4ck85bP9fbWuVYxSZd9gubim
+ fatg==
+X-Gm-Message-State: AC+VfDwqb8kT6KR6cyQU9DFy/EqncSipApEh4QaHh0swLfghWlJ9U0ja
+ Z1ibt/IVNDCLf9Yk6GwX/Giirw==
+X-Google-Smtp-Source: ACHHUZ72X8XW6U7UB0bmcUNQWaG3nhHiCaxduDGzhTQ2tp4tAxCDlOE3yOfZWLfdKSE2DiBF8TVHFQ==
+X-Received: by 2002:a7b:cd8b:0:b0:3f4:e4f5:1f63 with SMTP id
+ y11-20020a7bcd8b000000b003f4e4f51f63mr1598538wmj.41.1684516516844; 
+ Fri, 19 May 2023 10:15:16 -0700 (PDT)
+Received: from [192.168.69.115] (mau49-h01-176-184-41-228.dsl.sta.abo.bbox.fr.
+ [176.184.41.228]) by smtp.gmail.com with ESMTPSA id
+ x6-20020a05600c21c600b003f4fbd9cdb3sm2979228wmj.34.2023.05.19.10.15.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 10:15:16 -0700 (PDT)
+Message-ID: <7021189b-4034-f5e7-4e72-0a4276d0bc8a@linaro.org>
+Date: Fri, 19 May 2023 19:15:13 +0200
 MIME-Version: 1.0
-References: <20230517101523-mutt-send-email-mst@kernel.org>
- <B6AD0FB1-CF05-4B4C-B58D-279422895E4D@redhat.com>
- <20230517103522-mutt-send-email-mst@kernel.org>
- <ED522229-5A71-40C2-AF2C-5D921B0B5D54@redhat.com> <87zg63m18g.fsf@linaro.org>
- <20230517112347-mutt-send-email-mst@kernel.org> <87r0rflzd4.fsf@linaro.org>
- <20230517120710-mutt-send-email-mst@kernel.org> <87ilcqnckm.fsf@linaro.org>
- <C2CC04A8-F0F1-4360-ABF0-1F8DF7768AB1@redhat.com>
- <20230518063559-mutt-send-email-mst@kernel.org>
- <d69e10b7-597d-913f-eb90-ed59b5b669f7@redhat.com>
-In-Reply-To: <d69e10b7-597d-913f-eb90-ed59b5b669f7@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 19 May 2023 19:13:21 +0200
-Message-ID: <CABgObfa3XqZOnSFkty8UqxibXKkqFGeQVT7Wad7YLan8zC2G=w@mail.gmail.com>
-Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
- for iasl location
-To: Ani Sinha <anisinha@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v5 6/11] riscv: Initial commit of OpenTitan machine
+Content-Language: en-US
+To: Alistair Francis <alistair.francis@wdc.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: bmeng.cn@gmail.com, palmer@dabbelt.com, alistair23@gmail.com
+References: <cover.1590704015.git.alistair.francis@wdc.com>
+ <0ab3cecbe801f9e14ad1a5447d02483b9008fdbb.1590704015.git.alistair.francis@wdc.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <0ab3cecbe801f9e14ad1a5447d02483b9008fdbb.1590704015.git.alistair.francis@wdc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.527,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,18 +94,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 18, 2023 at 1:02=E2=80=AFPM Ani Sinha <anisinha@redhat.com> wro=
-te:
-> > Can we split this variable out to config-test.h maybe?
-> > Then you can reconfigure with a different iasl and QEMU
-> > will not be rebuilt, just the tests.
->
-> TBH, it looks more and more like our previous approach was simple and
-> better before we started tying iasl to meson.
+Hi Alistair,
 
-What was the previous one? Can you point to the commit that complicated thi=
-ngs?
+[Old patch]
 
-Paolo
+On 29/5/20 00:14, Alistair Francis wrote:
+> This adds a barebone OpenTitan machine to QEMU.
+> 
+> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> Reviewed-by: Bin Meng <bin.meng@windriver.com>
+> ---
+>   default-configs/riscv32-softmmu.mak |   1 +
+>   default-configs/riscv64-softmmu.mak |  11 +-
+>   include/hw/riscv/opentitan.h        |  68 ++++++++++
+>   hw/riscv/opentitan.c                | 184 ++++++++++++++++++++++++++++
+>   MAINTAINERS                         |   9 ++
+>   hw/riscv/Kconfig                    |   5 +
+>   hw/riscv/Makefile.objs              |   1 +
+>   7 files changed, 278 insertions(+), 1 deletion(-)
+>   create mode 100644 include/hw/riscv/opentitan.h
+>   create mode 100644 hw/riscv/opentitan.c
 
+
+> diff --git a/include/hw/riscv/opentitan.h b/include/hw/riscv/opentitan.h
+> new file mode 100644
+> index 0000000000..a4b6499444
+> --- /dev/null
+> +++ b/include/hw/riscv/opentitan.h
+> @@ -0,0 +1,68 @@
+> +/*
+> + * QEMU RISC-V Board Compatible with OpenTitan FPGA platform
+> + *
+> + * Copyright (c) 2020 Western Digital
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms and conditions of the GNU General Public License,
+> + * version 2 or later, as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> + * more details.
+> + *
+> + * You should have received a copy of the GNU General Public License along with
+> + * this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef HW_OPENTITAN_H
+> +#define HW_OPENTITAN_H
+> +
+> +#include "hw/riscv/riscv_hart.h"
+> +
+> +#define TYPE_RISCV_IBEX_SOC "riscv.lowrisc.ibex.soc"
+> +#define RISCV_IBEX_SOC(obj) \
+> +    OBJECT_CHECK(LowRISCIbexSoCState, (obj), TYPE_RISCV_IBEX_SOC)
+> +
+> +typedef struct LowRISCIbexSoCState {
+> +    /*< private >*/
+> +    SysBusDevice parent_obj;
+> +
+> +    /*< public >*/
+> +    RISCVHartArrayState cpus;
+> +    MemoryRegion flash_mem;
+> +    MemoryRegion rom;
+> +} LowRISCIbexSoCState;
+> +
+> +typedef struct OpenTitanState {
+> +    /*< private >*/
+> +    SysBusDevice parent_obj;
+
+Shouldn't this object inheritate from MachineState ...?
+
+> +    /*< public >*/
+> +    LowRISCIbexSoCState soc;
+> +} OpenTitanState;
+
+
+> diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
+> new file mode 100644
+> index 0000000000..b4fb836466
+> --- /dev/null
+> +++ b/hw/riscv/opentitan.c
+> @@ -0,0 +1,184 @@
+> +/*
+> + * QEMU RISC-V Board Compatible with OpenTitan FPGA platform
+> + *
+> + * Copyright (c) 2020 Western Digital
+> + *
+> + * Provides a board compatible with the OpenTitan FPGA platform:
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms and conditions of the GNU General Public License,
+> + * version 2 or later, as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> + * more details.
+> + *
+> + * You should have received a copy of the GNU General Public License along with
+> + * this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "hw/riscv/opentitan.h"
+> +#include "qapi/error.h"
+> +#include "hw/boards.h"
+> +#include "hw/misc/unimp.h"
+> +#include "hw/riscv/boot.h"
+> +#include "exec/address-spaces.h"
+> +
+> +static const struct MemmapEntry {
+> +    hwaddr base;
+> +    hwaddr size;
+> +} ibex_memmap[] = {
+> +    [IBEX_ROM] =            {  0x00008000,   0xc000 },
+> +    [IBEX_RAM] =            {  0x10000000,  0x10000 },
+> +    [IBEX_FLASH] =          {  0x20000000,  0x80000 },
+> +    [IBEX_UART] =           {  0x40000000,  0x10000 },
+> +    [IBEX_GPIO] =           {  0x40010000,  0x10000 },
+> +    [IBEX_SPI] =            {  0x40020000,  0x10000 },
+> +    [IBEX_FLASH_CTRL] =     {  0x40030000,  0x10000 },
+> +    [IBEX_PINMUX] =         {  0x40070000,  0x10000 },
+> +    [IBEX_RV_TIMER] =       {  0x40080000,  0x10000 },
+> +    [IBEX_PLIC] =           {  0x40090000,  0x10000 },
+> +    [IBEX_PWRMGR] =         {  0x400A0000,  0x10000 },
+> +    [IBEX_RSTMGR] =         {  0x400B0000,  0x10000 },
+> +    [IBEX_CLKMGR] =         {  0x400C0000,  0x10000 },
+> +    [IBEX_AES] =            {  0x40110000,  0x10000 },
+> +    [IBEX_HMAC] =           {  0x40120000,  0x10000 },
+> +    [IBEX_ALERT_HANDLER] =  {  0x40130000,  0x10000 },
+> +    [IBEX_NMI_GEN] =        {  0x40140000,  0x10000 },
+> +    [IBEX_USBDEV] =         {  0x40150000,  0x10000 },
+> +    [IBEX_PADCTRL] =        {  0x40160000,  0x10000 }
+> +};
+> +
+> +static void riscv_opentitan_init(MachineState *machine)
+> +{
+> +    const struct MemmapEntry *memmap = ibex_memmap;
+> +    OpenTitanState *s = g_new0(OpenTitanState, 1);
+
+... because looking at QOM design issue, this line looks dubious.
+
+> +    MemoryRegion *sys_mem = get_system_memory();
+> +    MemoryRegion *main_mem = g_new(MemoryRegion, 1);
+> +
+> +    /* Initialize SoC */
+> +    object_initialize_child(OBJECT(machine), "soc", &s->soc,
+> +                            sizeof(s->soc), TYPE_RISCV_IBEX_SOC,
+> +                            &error_abort, NULL);
+> +    object_property_set_bool(OBJECT(&s->soc), true, "realized",
+> +                            &error_abort);
+> +
+> +    memory_region_init_ram(main_mem, NULL, "riscv.lowrisc.ibex.ram",
+> +        memmap[IBEX_RAM].size, &error_fatal);
+> +    memory_region_add_subregion(sys_mem,
+> +        memmap[IBEX_RAM].base, main_mem);
+> +
+> +
+> +    if (machine->firmware) {
+> +        riscv_load_firmware(machine->firmware, memmap[IBEX_RAM].base, NULL);
+> +    }
+> +
+> +    if (machine->kernel_filename) {
+> +        riscv_load_kernel(machine->kernel_filename, NULL);
+> +    }
+> +}
 
