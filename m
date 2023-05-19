@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF292709AB4
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A0C709A9A
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:55:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01TD-0005LF-NP; Fri, 19 May 2023 10:52:39 -0400
+	id 1q01TC-000564-DG; Fri, 19 May 2023 10:52:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Sv-0004sW-OI
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Sv-0004sV-Nd
  for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01St-0003jx-TG
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01St-0003jt-DB
  for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507939;
+ s=mimecast20190719; t=1684507938;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EcQNtufz3Fzfm9arp8K8qhgvENcT9nU1AXjN4pj1S3g=;
- b=g6bDKFox7l+vyM3bPD5DsPD9YriBdEOSVds0oTMt/Dc5poqjXUU4GrsAS1p9LameYVSTV7
- MkVr2Ig6oJ4tEDgwsgECa/j+dTZYCoLWdG5pHSX9IRUVIEXeI2TaxsJoIuXo41exW8ov7W
- dnKNLQR4iM+wJHOoicYffecMarchl9U=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ERgWhut0Ar78W50hUKkDUqbaG/clkmwna7iN062IWeA=;
+ b=DDqnzCYj/DVW5y4HCiXgRBQU2i/6gkf6MOCb3HkamjXeo4w6+rIdSPba0OhWhtZJjoo4q6
+ WrnUjpel+CfY2LC4zYxE15ZRbPRxQVA5EVagr17sTOUZp+bAae/wQsiHTkKBNPHo2EUVfA
+ IH0kNqln3Lqxm5v4tVVvxgnNTCPsh38=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-98-i8h5DMBYOoaTRyUIMyTWvQ-1; Fri, 19 May 2023 10:52:10 -0400
-X-MC-Unique: i8h5DMBYOoaTRyUIMyTWvQ-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2ac98a3d564so17926081fa.3
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:52:09 -0700 (PDT)
+ us-mta-524-Ffdglf5VObqH2l8J2AfOXQ-1; Fri, 19 May 2023 10:52:16 -0400
+X-MC-Unique: Ffdglf5VObqH2l8J2AfOXQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-4f020caac60so2235976e87.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:52:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507928; x=1687099928;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EcQNtufz3Fzfm9arp8K8qhgvENcT9nU1AXjN4pj1S3g=;
- b=BdGejDJsfwPQ/5/8zV8YJTCE1bAmLUNvWgg/PVQNIs04Xc6/X145Np5ronM1jb85XC
- tJLH70ehj90HYUB6HFOEbeykM/bCnuO0lwe2P2/X5eVv6f8VbicAhccrjZMBVlGDe05L
- j8eTGWx3yTiNQMBx96ffQrKzaw44zBCSV9vaiMVWqZp/goKQwL3CbuC8lvpPPutBTtBJ
- cwj1ciJ6c14cYuR8gdDr6eVrU+Q9IYwRivM+D9L321jfvMqeSBPLMdAJyhr857/Dm8Mc
- Q5MsBhRMzd1A8chND5yFi0f1oW8UPSSajVUXPAlf7W04mx6tbMcbcawsfR98+pkQgzzd
- ZPaQ==
-X-Gm-Message-State: AC+VfDxH1kkPhb0KN9U+49hpx0LPsk37kayv+x8QkJa8rlfaCwVCNT26
- TmhR3yXHN9+lH27PGchmeZ/6VMezj1X1obZh7117zNQWe62VZNfYT5ssokMgZBaWcpnCKlPP+0U
- HOipuEY6OuKNABymlhN2flQuQeuxELx72wPKlJo7E+/2tAi4i8j5MUlVlSW3e6siju0Dr
-X-Received: by 2002:a2e:2e0f:0:b0:2ad:95dd:8802 with SMTP id
- u15-20020a2e2e0f000000b002ad95dd8802mr884319lju.38.1684507927947; 
- Fri, 19 May 2023 07:52:07 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6cSILmhVP9fLJT9IRvkCEnpslQ18oM/Ojmi2vIUaLqVjoulPeBlh/k+YeZB3D3nad4lAtS5w==
-X-Received: by 2002:a2e:2e0f:0:b0:2ad:95dd:8802 with SMTP id
- u15-20020a2e2e0f000000b002ad95dd8802mr884308lju.38.1684507927707; 
- Fri, 19 May 2023 07:52:07 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684507934; x=1687099934;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ERgWhut0Ar78W50hUKkDUqbaG/clkmwna7iN062IWeA=;
+ b=AXDnjP992+CB2Xz4GI2P6JmkoiHGw4m7jnH+XUH8zxIVNtoCk19UWiXkuqMZN2d9PS
+ YBToaiY//+CmD0n6TK1tZIV8XV+LkiK72s5lUpPjapYHXw04j4Q0IEBsnoxtsJ/2UDIP
+ /oEhlJBE4yI5eI3xR33v2lAfrYxSccaMkFC30d3/5SEDDlgd+GmCMpcBNOIDXxVlAtec
+ oJ4tNHi83Lr5/rUlOHkzMcNcrz2Sl0AVd+Ser70bfZaWcjoqvOW9uwKWsuywXkJll0/N
+ mv6Hd9ztuKaeCJ/TLYrzQmZ2yTCUm4SID6SXUwdBp4jqsC+xhExlB9tooKrdiH7H/8a0
+ yeSQ==
+X-Gm-Message-State: AC+VfDwAW3WE9/44VZCD0B2LJ134fFdJmlQ7e6/SmsD4WLUVb42pfxaQ
+ gc4Hmwv0md5UvXBpr7T8n3zpgQv0RWVcbrD7BYnm0zOR+17GnK8yP08ONxYhSa0CXvkY1J6w1cq
+ WQjCvxo6I3Nf+t4EIvvsVKFpua+eiiCxXu+wTEokuV11043Z5+wiBVg/+N1oPb71hAR52
+X-Received: by 2002:ac2:44d6:0:b0:4dd:ce0b:7692 with SMTP id
+ d22-20020ac244d6000000b004ddce0b7692mr814825lfm.46.1684507933936; 
+ Fri, 19 May 2023 07:52:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4j1ExbdBB4jyguSGtF/CvuI8waDeTLSOW100aHcOBft3PqT1QlcG5Cf3ZGBs+DUxpJGwcIGg==
+X-Received: by 2002:ac2:44d6:0:b0:4dd:ce0b:7692 with SMTP id
+ d22-20020ac244d6000000b004ddce0b7692mr814813lfm.46.1684507933550; 
+ Fri, 19 May 2023 07:52:13 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- e11-20020a2e984b000000b002a9ee18e9c7sm826862ljj.69.2023.05.19.07.52.04
+ d7-20020ac244c7000000b004f11eb32f20sm633732lfm.13.2023.05.19.07.52.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:52:07 -0700 (PDT)
-Date: Fri, 19 May 2023 10:52:02 -0400
+ Fri, 19 May 2023 07:52:12 -0700 (PDT)
+Date: Fri, 19 May 2023 10:52:08 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 28/40] hw/pci-host/i440fx: Inline sysbus_add_io()
-Message-ID: <273d65020b04f8a01e4b5cd543aeef1624b17001.1684507742.git.mst@redhat.com>
+Subject: [PULL 29/40] hw/pci-host/q35: Inline sysbus_add_io()
+Message-ID: <67b4a74a0743c4cdb78bf884cea2407645530af3.1684507742.git.mst@redhat.com>
 References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1684507742.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -106,44 +103,37 @@ From: Bernhard Beschow <shentey@gmail.com>
 sysbus_add_io() just wraps memory_region_add_subregion() while also
 obscuring where the memory is attached. So use
 memory_region_add_subregion() directly and attach it to the existing
-memory region s->bus->address_space_io which is set as an alias to
-get_system_io() by the pc machine.
+memory region s->mch.address_space_io which is set as an alias to
+get_system_io() by the q35 machine.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230213162004.2797-2-shentey@gmail.com>
+Message-Id: <20230213162004.2797-3-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/i440fx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/pci-host/q35.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/pci-host/i440fx.c b/hw/pci-host/i440fx.c
-index 262f82c303..9c6882d3fc 100644
---- a/hw/pci-host/i440fx.c
-+++ b/hw/pci-host/i440fx.c
-@@ -27,6 +27,7 @@
- #include "qemu/range.h"
- #include "hw/i386/pc.h"
- #include "hw/pci/pci.h"
-+#include "hw/pci/pci_bus.h"
- #include "hw/pci/pci_host.h"
- #include "hw/pci-host/i440fx.h"
- #include "hw/qdev-properties.h"
-@@ -217,10 +218,10 @@ static void i440fx_pcihost_realize(DeviceState *dev, Error **errp)
-     PCIHostState *s = PCI_HOST_BRIDGE(dev);
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index 26390863d6..fa05844319 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -50,10 +50,12 @@ static void q35_host_realize(DeviceState *dev, Error **errp)
+     Q35PCIHost *s = Q35_HOST_DEVICE(dev);
      SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
  
--    sysbus_add_io(sbd, 0xcf8, &s->conf_mem);
-+    memory_region_add_subregion(s->bus->address_space_io, 0xcf8, &s->conf_mem);
-     sysbus_init_ioports(sbd, 0xcf8, 4);
+-    sysbus_add_io(sbd, MCH_HOST_BRIDGE_CONFIG_ADDR, &pci->conf_mem);
++    memory_region_add_subregion(s->mch.address_space_io,
++                                MCH_HOST_BRIDGE_CONFIG_ADDR, &pci->conf_mem);
+     sysbus_init_ioports(sbd, MCH_HOST_BRIDGE_CONFIG_ADDR, 4);
  
--    sysbus_add_io(sbd, 0xcfc, &s->data_mem);
-+    memory_region_add_subregion(s->bus->address_space_io, 0xcfc, &s->data_mem);
-     sysbus_init_ioports(sbd, 0xcfc, 4);
+-    sysbus_add_io(sbd, MCH_HOST_BRIDGE_CONFIG_DATA, &pci->data_mem);
++    memory_region_add_subregion(s->mch.address_space_io,
++                                MCH_HOST_BRIDGE_CONFIG_DATA, &pci->data_mem);
+     sysbus_init_ioports(sbd, MCH_HOST_BRIDGE_CONFIG_DATA, 4);
  
-     /* register i440fx 0xcf8 port as coalesced pio */
+     /* register q35 0xcf8 port as coalesced pio */
 -- 
 MST
 
