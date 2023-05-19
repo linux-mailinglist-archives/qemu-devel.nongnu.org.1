@@ -2,63 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFEC7091E6
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8EFC7091EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 10:46:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzvjp-0002TU-7s; Fri, 19 May 2023 04:45:25 -0400
+	id 1pzvka-0002yG-RK; Fri, 19 May 2023 04:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1pzvjl-0002SS-W7
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:45:22 -0400
-Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1pzvjj-0006OQ-2e
- for qemu-devel@nongnu.org; Fri, 19 May 2023 04:45:21 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxX+sSN2dkxR4KAA--.17872S3;
- Fri, 19 May 2023 16:45:06 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dx_7MQN2dkAaxpAA--.48143S2; 
- Fri, 19 May 2023 16:45:05 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
- alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn
-Subject: [PATCH v1] target/loongarch: Fix the vinsgr2vr/vpickve2gr
- instructions cause system coredump
-Date: Fri, 19 May 2023 16:45:04 +0800
-Message-Id: <20230519084504.645714-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1pzvkZ-0002u8-1f
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:46:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1pzvkV-0006WC-8Y
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 04:46:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684485966;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jgI8OJAIeNt0D4Rn40wXDXa5ZKqF4jwy77J/VpVAn4w=;
+ b=RZvG3mz/0k6MLxvpNqGugNiACeXAue4zObkVSs0khAqNyvc/RvJ0oi0WLYql61cZMX8En/
+ HyN6W1ARNdWLJyqUL/AJYwnDIrKiyBoMZQTL3pKGj6YMo2cNUPwy6uQG8qGlWbH2fWwTD4
+ XnLNut3+GLQuhRQF4aNPM8C6RChQAWc=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-wVdDPc5rNhaWBh3v-AogEQ-1; Fri, 19 May 2023 04:46:04 -0400
+X-MC-Unique: wVdDPc5rNhaWBh3v-AogEQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-969f24626fbso87019266b.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 01:46:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684485963; x=1687077963;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jgI8OJAIeNt0D4Rn40wXDXa5ZKqF4jwy77J/VpVAn4w=;
+ b=X8jdgR71DQE7rhDoCP+x8LQr3W2kNeefZBX2xk2ivSoMkfimyLrHzE8okZoC/ZJ/w9
+ kdVsGT5/Rb6A2k4krkoJbmskj2A0vt9RSHiWZFZpP8d7cLQTL9uJGDQVARVWsresgBMZ
+ y8TuSgKzdEeeG1W2pgXxY+n3k3FfWj+zPuEmCbjeTC+AFX3DznPGEf25lTV9YXNeogKj
+ ZeOG8S+dMV3ahX8Efj0HPCQIAtjGv4f9XbLLrwaTp6DItsM3UNxhSJN+rkC5kR3V7rkD
+ 72sMqJ93I3mqJgtP5f0N/h6XzYEU3YSVSmUbNsKY3uNv/XegZ23NU5qTrY8I46p9mOAc
+ dvwQ==
+X-Gm-Message-State: AC+VfDzAI2fNvyFv1AZCtF44EE1wERb8EDRyKa+CYWfdfw4Jt6EnEWDe
+ XkC6LNm9vYXTQ4TnLN/Z3jeLx7MYqF41fAEs/VbUkEbES+7ArR8FmliYVjF73tJq/ac3hcKAdPm
+ 499sOEuDnjStwLg8=
+X-Received: by 2002:a17:907:3e0b:b0:967:13a3:d82c with SMTP id
+ hp11-20020a1709073e0b00b0096713a3d82cmr1204376ejc.26.1684485962908; 
+ Fri, 19 May 2023 01:46:02 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5s/YXjjycc6PLN79YkUCZyKXcyl+Pgz0v3jvliAT7csD7GqowYq044W8A3xmPDZJy18EdUeA==
+X-Received: by 2002:a17:907:3e0b:b0:967:13a3:d82c with SMTP id
+ hp11-20020a1709073e0b00b0096713a3d82cmr1204351ejc.26.1684485962534; 
+ Fri, 19 May 2023 01:46:02 -0700 (PDT)
+Received: from sgarzare-redhat (c-115-213.cust-q.wadsl.it. [212.43.115.213])
+ by smtp.gmail.com with ESMTPSA id
+ m18-20020a17090679d200b00965af4c7f07sm1997520ejo.20.2023.05.19.01.45.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 May 2023 01:46:01 -0700 (PDT)
+Date: Fri, 19 May 2023 10:45:57 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, xen-devel@lists.xenproject.org, 
+ Julia Suvorova <jusual@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, Kevin Wolf <kwolf@redhat.com>,
+ Fam Zheng <fam@euphon.net>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org, 
+ Paul Durrant <paul@xen.org>, Anthony Perard <anthony.perard@citrix.com>, 
+ Aarushi Mehta <mehta.aaru20@gmail.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH 1/6] block: add blk_io_plug_call() API
+Message-ID: <mzxjz4d3ab3sq6grwsle6wlacysh2uffz42ojpdze3hmqimbr5@fxgkad47nnim>
+References: <20230517221022.325091-1-stefanha@redhat.com>
+ <20230517221022.325091-2-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dx_7MQN2dkAaxpAA--.48143S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjvJXoWxuryxZw45XrykCw48Jw4Dtwb_yoWrCr45pw
- 1Fv34xZr4UZr1fZ3sxK3s0gFn09F4Iy34UtwsY9wn5K3y7tr1DJa1DJ34a9ryxA3WkW3yk
- tFy8Z3WUWF4DJaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
- bn8Fc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
- AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF
- 7I0E14v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7
- CjxVAFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2
- zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIEY20_WwAm72CE4IkC6x
- 0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxF
- aVAv8VWrMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
- Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY
- 6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6x
- AIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
- 1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvj4RC_MaUUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230517221022.325091-2-stefanha@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,141 +106,391 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vinsgr2vr/vpickve2gr instructions need use get_src/get_dst to get
-gpr registers value, not cpu_gpr[]. The $zero register does not
-have cpu_gpr[0] allocated.
+On Wed, May 17, 2023 at 06:10:17PM -0400, Stefan Hajnoczi wrote:
+>Introduce a new API for thread-local blk_io_plug() that does not
+>traverse the block graph. The goal is to make blk_io_plug() multi-queue
+>friendly.
+>
+>Instead of having block drivers track whether or not we're in a plugged
+>section, provide an API that allows them to defer a function call until
+>we're unplugged: blk_io_plug_call(fn, opaque). If blk_io_plug_call() is
+>called multiple times with the same fn/opaque pair, then fn() is only
+>called once at the end of the function - resulting in batching.
+>
+>This patch introduces the API and changes blk_io_plug()/blk_io_unplug().
+>blk_io_plug()/blk_io_unplug() no longer require a BlockBackend argument
+>because the plug state is now thread-local.
+>
+>Later patches convert block drivers to blk_io_plug_call() and then we
+>can finally remove .bdrv_co_io_plug() once all block drivers have been
+>converted.
+>
+>Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+>---
+> MAINTAINERS                       |   1 +
+> include/sysemu/block-backend-io.h |  13 +--
+> block/block-backend.c             |  22 -----
+> block/plug.c                      | 159 ++++++++++++++++++++++++++++++
+> hw/block/dataplane/xen-block.c    |   8 +-
+> hw/block/virtio-blk.c             |   4 +-
+> hw/scsi/virtio-scsi.c             |   6 +-
+> block/meson.build                 |   1 +
+> 8 files changed, 173 insertions(+), 41 deletions(-)
+> create mode 100644 block/plug.c
+>
+>diff --git a/MAINTAINERS b/MAINTAINERS
+>index 50585117a0..574202295c 100644
+>--- a/MAINTAINERS
+>+++ b/MAINTAINERS
+>@@ -2644,6 +2644,7 @@ F: util/aio-*.c
+> F: util/aio-*.h
+> F: util/fdmon-*.c
+> F: block/io.c
+>+F: block/plug.c
+> F: migration/block*
+> F: include/block/aio.h
+> F: include/block/aio-wait.h
+>diff --git a/include/sysemu/block-backend-io.h b/include/sysemu/block-backend-io.h
+>index d62a7ee773..be4dcef59d 100644
+>--- a/include/sysemu/block-backend-io.h
+>+++ b/include/sysemu/block-backend-io.h
+>@@ -100,16 +100,9 @@ void blk_iostatus_set_err(BlockBackend *blk, int error);
+> int blk_get_max_iov(BlockBackend *blk);
+> int blk_get_max_hw_iov(BlockBackend *blk);
+>
+>-/*
+>- * blk_io_plug/unplug are thread-local operations. This means that multiple
+>- * IOThreads can simultaneously call plug/unplug, but the caller must ensure
+>- * that each unplug() is called in the same IOThread of the matching plug().
+>- */
+>-void coroutine_fn blk_co_io_plug(BlockBackend *blk);
+>-void co_wrapper blk_io_plug(BlockBackend *blk);
+>-
+>-void coroutine_fn blk_co_io_unplug(BlockBackend *blk);
+>-void co_wrapper blk_io_unplug(BlockBackend *blk);
+>+void blk_io_plug(void);
+>+void blk_io_unplug(void);
+>+void blk_io_plug_call(void (*fn)(void *), void *opaque);
+>
+> AioContext *blk_get_aio_context(BlockBackend *blk);
+> BlockAcctStats *blk_get_stats(BlockBackend *blk);
+>diff --git a/block/block-backend.c b/block/block-backend.c
+>index ca537cd0ad..1f1d226ba6 100644
+>--- a/block/block-backend.c
+>+++ b/block/block-backend.c
+>@@ -2568,28 +2568,6 @@ void blk_add_insert_bs_notifier(BlockBackend *blk, Notifier *notify)
+>     notifier_list_add(&blk->insert_bs_notifiers, notify);
+> }
+>
+>-void coroutine_fn blk_co_io_plug(BlockBackend *blk)
+>-{
+>-    BlockDriverState *bs = blk_bs(blk);
+>-    IO_CODE();
+>-    GRAPH_RDLOCK_GUARD();
+>-
+>-    if (bs) {
+>-        bdrv_co_io_plug(bs);
+>-    }
+>-}
+>-
+>-void coroutine_fn blk_co_io_unplug(BlockBackend *blk)
+>-{
+>-    BlockDriverState *bs = blk_bs(blk);
+>-    IO_CODE();
+>-    GRAPH_RDLOCK_GUARD();
+>-
+>-    if (bs) {
+>-        bdrv_co_io_unplug(bs);
+>-    }
+>-}
+>-
+> BlockAcctStats *blk_get_stats(BlockBackend *blk)
+> {
+>     IO_CODE();
+>diff --git a/block/plug.c b/block/plug.c
+>new file mode 100644
+>index 0000000000..6738a568ba
+>--- /dev/null
+>+++ b/block/plug.c
+>@@ -0,0 +1,159 @@
+>+/* SPDX-License-Identifier: GPL-2.0-or-later */
+>+/*
+>+ * Block I/O plugging
+>+ *
+>+ * Copyright Red Hat.
+>+ *
+>+ * This API defers a function call within a blk_io_plug()/blk_io_unplug()
+>+ * section, allowing multiple calls to batch up. This is a performance
+>+ * optimization that is used in the block layer to submit several I/O requests
+>+ * at once instead of individually:
+>+ *
+>+ *   blk_io_plug(); <-- start of plugged region
+>+ *   ...
+>+ *   blk_io_plug_call(my_func, my_obj); <-- deferred my_func(my_obj) call
+>+ *   blk_io_plug_call(my_func, my_obj); <-- another
+>+ *   blk_io_plug_call(my_func, my_obj); <-- another
+>+ *   ...
+>+ *   blk_io_unplug(); <-- end of plugged region, my_func(my_obj) is called once
+>+ *
+>+ * This code is actually generic and not tied to the block layer. If another
+>+ * subsystem needs this functionality, it could be renamed.
+>+ */
+>+
+>+#include "qemu/osdep.h"
+>+#include "qemu/coroutine-tls.h"
+>+#include "qemu/notify.h"
+>+#include "qemu/thread.h"
+>+#include "sysemu/block-backend.h"
+>+
+>+/* A function call that has been deferred until unplug() */
+>+typedef struct {
+>+    void (*fn)(void *);
+>+    void *opaque;
+>+} UnplugFn;
+>+
+>+/* Per-thread state */
+>+typedef struct {
+>+    unsigned count;       /* how many times has plug() been called? */
+>+    GArray *unplug_fns;   /* functions to call at unplug time */
+>+} Plug;
+>+
+>+/* Use get_ptr_plug() to fetch this thread-local value */
+>+QEMU_DEFINE_STATIC_CO_TLS(Plug, plug);
+>+
+>+/* Called at thread cleanup time */
+>+static void blk_io_plug_atexit(Notifier *n, void *value)
+>+{
+>+    Plug *plug = get_ptr_plug();
+>+    g_array_free(plug->unplug_fns, TRUE);
+>+}
+>+
+>+/* This won't involve coroutines, so use __thread */
+>+static __thread Notifier blk_io_plug_atexit_notifier;
+>+
+>+/**
+>+ * blk_io_plug_call:
+>+ * @fn: a function pointer to be invoked
+>+ * @opaque: a user-defined argument to @fn()
+>+ *
+>+ * Call @fn(@opaque) immediately if not within a blk_io_plug()/blk_io_unplug()
+>+ * section.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/insn_trans/trans_lsx.c.inc | 36 ++++++++++++++-------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+Just to understand better, what if two BlockDrivers share the same
+iothread but one calls blk_io_plug()/blk_io_unplug(), while the other
+calls this function not in a blk_io_plug()/blk_io_unplug() section?
 
-diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
-index 0be2b5a3a8..312ce0475f 100644
---- a/target/loongarch/insn_trans/trans_lsx.c.inc
-+++ b/target/loongarch/insn_trans/trans_lsx.c.inc
-@@ -3963,96 +3963,108 @@ TRANS(vsetallnez_d, gen_cv, gen_helper_vsetallnez_d)
- 
- static bool trans_vinsgr2vr_b(DisasContext *ctx, arg_vr_i *a)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_st8_i64(cpu_gpr[a->rj], cpu_env,
-+    tcg_gen_st8_i64(src, cpu_env,
-                     offsetof(CPULoongArchState, fpr[a->vd].vreg.B(a->imm)));
-     return true;
- }
- 
- static bool trans_vinsgr2vr_h(DisasContext *ctx, arg_vr_i *a)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_st16_i64(cpu_gpr[a->rj], cpu_env,
-+    tcg_gen_st16_i64(src, cpu_env,
-                     offsetof(CPULoongArchState, fpr[a->vd].vreg.H(a->imm)));
-     return true;
- }
- 
- static bool trans_vinsgr2vr_w(DisasContext *ctx, arg_vr_i *a)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_st32_i64(cpu_gpr[a->rj], cpu_env,
-+    tcg_gen_st32_i64(src, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vd].vreg.W(a->imm)));
-     return true;
- }
- 
- static bool trans_vinsgr2vr_d(DisasContext *ctx, arg_vr_i *a)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_st_i64(cpu_gpr[a->rj], cpu_env,
-+    tcg_gen_st_i64(src, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vd].vreg.D(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_b(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld8s_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld8s_i64(dst, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_h(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld16s_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld16s_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_w(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld32s_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld32s_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_d(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld_i64(dst, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_bu(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld8u_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld8u_i64(dst, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_hu(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld16u_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld16u_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_wu(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld32u_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld32u_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld_i64(dst, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
-     return true;
- }
--- 
-2.39.1
+If the call is in the middle of the other BlockDriver's section, it is
+deferred, right?
+
+Is this situation possible?
+Or should we prevent blk_io_plug_call() from being called out of a
+blk_io_plug()/blk_io_unplug() section?
+
+Thanks,
+Stefano
+
+>+ *
+>+ * Otherwise defer the call until the end of the outermost
+>+ * blk_io_plug()/blk_io_unplug() section in this thread. If the same
+>+ * @fn/@opaque pair has already been deferred, it will only be called once upon
+>+ * blk_io_unplug() so that accumulated calls are batched into a single call.
+>+ *
+>+ * The caller must ensure that @opaque is not be freed before @fn() is invoked.
+>+ */
+>+void blk_io_plug_call(void (*fn)(void *), void *opaque)
+>+{
+>+    Plug *plug = get_ptr_plug();
+>+
+>+    /* Call immediately if we're not plugged */
+>+    if (plug->count == 0) {
+>+        fn(opaque);
+>+        return;
+>+    }
+>+
+>+    GArray *array = plug->unplug_fns;
+>+    if (!array) {
+>+        array = g_array_new(FALSE, FALSE, sizeof(UnplugFn));
+>+        plug->unplug_fns = array;
+>+        blk_io_plug_atexit_notifier.notify = blk_io_plug_atexit;
+>+        qemu_thread_atexit_add(&blk_io_plug_atexit_notifier);
+>+    }
+>+
+>+    UnplugFn *fns = (UnplugFn *)array->data;
+>+    UnplugFn new_fn = {
+>+        .fn = fn,
+>+        .opaque = opaque,
+>+    };
+>+
+>+    /*
+>+     * There won't be many, so do a linear search. If this becomes a bottleneck
+>+     * then a binary search (glib 2.62+) or different data structure could be
+>+     * used.
+>+     */
+>+    for (guint i = 0; i < array->len; i++) {
+>+        if (memcmp(&fns[i], &new_fn, sizeof(new_fn)) == 0) {
+>+            return; /* already exists */
+>+        }
+>+    }
+>+
+>+    g_array_append_val(array, new_fn);
+>+}
+>+
+>+/**
+>+ * blk_io_plug: Defer blk_io_plug_call() functions until blk_io_unplug()
+>+ *
+>+ * blk_io_plug/unplug are thread-local operations. This means that multiple
+>+ * threads can simultaneously call plug/unplug, but the caller must ensure that
+>+ * each unplug() is called in the same thread of the matching plug().
+>+ *
+>+ * Nesting is supported. blk_io_plug_call() functions are only called at the
+>+ * outermost blk_io_unplug().
+>+ */
+>+void blk_io_plug(void)
+>+{
+>+    Plug *plug = get_ptr_plug();
+>+
+>+    assert(plug->count < UINT32_MAX);
+>+
+>+    plug->count++;
+>+}
+>+
+>+/**
+>+ * blk_io_unplug: Run any pending blk_io_plug_call() functions
+>+ *
+>+ * There must have been a matching blk_io_plug() call in the same thread prior
+>+ * to this blk_io_unplug() call.
+>+ */
+>+void blk_io_unplug(void)
+>+{
+>+    Plug *plug = get_ptr_plug();
+>+
+>+    assert(plug->count > 0);
+>+
+>+    if (--plug->count > 0) {
+>+        return;
+>+    }
+>+
+>+    GArray *array = plug->unplug_fns;
+>+    if (!array) {
+>+        return;
+>+    }
+>+
+>+    UnplugFn *fns = (UnplugFn *)array->data;
+>+
+>+    for (guint i = 0; i < array->len; i++) {
+>+        fns[i].fn(fns[i].opaque);
+>+    }
+>+
+>+    /*
+>+     * This resets the array without freeing memory so that appending is cheap
+>+     * in the future.
+>+     */
+>+    g_array_set_size(array, 0);
+>+}
+>diff --git a/hw/block/dataplane/xen-block.c b/hw/block/dataplane/xen-block.c
+>index d8bc39d359..e49c24f63d 100644
+>--- a/hw/block/dataplane/xen-block.c
+>+++ b/hw/block/dataplane/xen-block.c
+>@@ -537,7 +537,7 @@ static bool xen_block_handle_requests(XenBlockDataPlane *dataplane)
+>      * is below us.
+>      */
+>     if (inflight_atstart > IO_PLUG_THRESHOLD) {
+>-        blk_io_plug(dataplane->blk);
+>+        blk_io_plug();
+>     }
+>     while (rc != rp) {
+>         /* pull request from ring */
+>@@ -577,12 +577,12 @@ static bool xen_block_handle_requests(XenBlockDataPlane *dataplane)
+>
+>         if (inflight_atstart > IO_PLUG_THRESHOLD &&
+>             batched >= inflight_atstart) {
+>-            blk_io_unplug(dataplane->blk);
+>+            blk_io_unplug();
+>         }
+>         xen_block_do_aio(request);
+>         if (inflight_atstart > IO_PLUG_THRESHOLD) {
+>             if (batched >= inflight_atstart) {
+>-                blk_io_plug(dataplane->blk);
+>+                blk_io_plug();
+>                 batched = 0;
+>             } else {
+>                 batched++;
+>@@ -590,7 +590,7 @@ static bool xen_block_handle_requests(XenBlockDataPlane *dataplane)
+>         }
+>     }
+>     if (inflight_atstart > IO_PLUG_THRESHOLD) {
+>-        blk_io_unplug(dataplane->blk);
+>+        blk_io_unplug();
+>     }
+>
+>     return done_something;
+>diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+>index 8f65ea4659..b4286424c1 100644
+>--- a/hw/block/virtio-blk.c
+>+++ b/hw/block/virtio-blk.c
+>@@ -1134,7 +1134,7 @@ void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq)
+>     bool suppress_notifications = virtio_queue_get_notification(vq);
+>
+>     aio_context_acquire(blk_get_aio_context(s->blk));
+>-    blk_io_plug(s->blk);
+>+    blk_io_plug();
+>
+>     do {
+>         if (suppress_notifications) {
+>@@ -1158,7 +1158,7 @@ void virtio_blk_handle_vq(VirtIOBlock *s, VirtQueue *vq)
+>         virtio_blk_submit_multireq(s, &mrb);
+>     }
+>
+>-    blk_io_unplug(s->blk);
+>+    blk_io_unplug();
+>     aio_context_release(blk_get_aio_context(s->blk));
+> }
+>
+>diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+>index 612c525d9d..534a44ee07 100644
+>--- a/hw/scsi/virtio-scsi.c
+>+++ b/hw/scsi/virtio-scsi.c
+>@@ -799,7 +799,7 @@ static int virtio_scsi_handle_cmd_req_prepare(VirtIOSCSI *s, VirtIOSCSIReq *req)
+>         return -ENOBUFS;
+>     }
+>     scsi_req_ref(req->sreq);
+>-    blk_io_plug(d->conf.blk);
+>+    blk_io_plug();
+>     object_unref(OBJECT(d));
+>     return 0;
+> }
+>@@ -810,7 +810,7 @@ static void virtio_scsi_handle_cmd_req_submit(VirtIOSCSI *s, VirtIOSCSIReq *req)
+>     if (scsi_req_enqueue(sreq)) {
+>         scsi_req_continue(sreq);
+>     }
+>-    blk_io_unplug(sreq->dev->conf.blk);
+>+    blk_io_unplug();
+>     scsi_req_unref(sreq);
+> }
+>
+>@@ -836,7 +836,7 @@ static void virtio_scsi_handle_cmd_vq(VirtIOSCSI *s, VirtQueue *vq)
+>                 while (!QTAILQ_EMPTY(&reqs)) {
+>                     req = QTAILQ_FIRST(&reqs);
+>                     QTAILQ_REMOVE(&reqs, req, next);
+>-                    blk_io_unplug(req->sreq->dev->conf.blk);
+>+                    blk_io_unplug();
+>                     scsi_req_unref(req->sreq);
+>                     virtqueue_detach_element(req->vq, &req->elem, 0);
+>                     virtio_scsi_free_req(req);
+>diff --git a/block/meson.build b/block/meson.build
+>index 486dda8b85..fb4332bd66 100644
+>--- a/block/meson.build
+>+++ b/block/meson.build
+>@@ -23,6 +23,7 @@ block_ss.add(files(
+>   'mirror.c',
+>   'nbd.c',
+>   'null.c',
+>+  'plug.c',
+>   'qapi.c',
+>   'qcow2-bitmap.c',
+>   'qcow2-cache.c',
+>-- 
+>2.40.1
+>
 
 
