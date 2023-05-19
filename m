@@ -2,71 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19C0708D5C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 03:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591B6708DC1
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 04:25:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzoxd-0004tp-W3; Thu, 18 May 2023 21:31:14 -0400
+	id 1pzpmv-0004Uj-Ck; Thu, 18 May 2023 22:24:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
- id 1pzoxa-0004tS-BS
- for qemu-devel@nongnu.org; Thu, 18 May 2023 21:31:10 -0400
-Received: from mga03.intel.com ([134.134.136.65])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
- id 1pzoxV-00006R-Sd
- for qemu-devel@nongnu.org; Thu, 18 May 2023 21:31:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1684459865; x=1715995865;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=eV4StzUGvrMtIqBYOexCViDexcICEv0T1yZNP51xibI=;
- b=TUFcHjs7LfgzIMhFPOm3mXvNKT8JEG8vpy43c58jBdnCRVB9kDVhS5l5
- YyLVXvFr0yekVJr8L0s1EptdGSylgYZABf4LQSWMTzDlcSbGR6HrKv+0F
- j/O1JzDrq248xiUTOUAzy7Van+rMER+rSfQBLNcbFiXpM7wa0kUruIJan
- MQW0P5wD7i/uqv4Fr5IwvXnICWkAUlaFGXBMIGx6Lyx4jb4NHkN3J1FGN
- EnIP8fXF9BDPMny5IPhVl/KEiBe6G8syXHTQpwY4bu7N0Fa8bXyEQXze4
- 4v8OG0TkfZl6+WrlrgWKdDCsWUpUlD+uoAIchAlV9f9X6D8tp8sAiXrox w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="355468027"
-X-IronPort-AV: E=Sophos;i="6.00,175,1681196400"; d="scan'208";a="355468027"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 May 2023 18:30:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="733102836"
-X-IronPort-AV: E=Sophos;i="6.00,175,1681196400"; d="scan'208";a="733102836"
-Received: from leiwang7-mobl.ccr.corp.intel.com (HELO [10.254.210.149])
- ([10.254.210.149])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 May 2023 18:30:43 -0700
-Message-ID: <9def6eb4-e317-2b6d-87ab-d0aa34ea3afe@intel.com>
-Date: Fri, 19 May 2023 09:30:40 +0800
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1pzpml-0004Ri-F9; Thu, 18 May 2023 22:24:05 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1pzpmh-00028u-NT; Thu, 18 May 2023 22:24:02 -0400
+Received: from localhost.localdomain (unknown [61.165.33.195])
+ by APP-01 (Coremail) with SMTP id qwCowACHjw+x3WZkAeNjAQ--.12622S2;
+ Fri, 19 May 2023 10:23:46 +0800 (CST)
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
+ Weiwei Li <liweiwei@iscas.ac.cn>
+Subject: [PATCH 0/7] Add support for extension specific disas
+Date: Fri, 19 May 2023 10:19:19 +0800
+Message-Id: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.11.0
-Subject: Re: [PATCH] multifd: Set a higher "backlog" default value for listen()
-Content-Language: en-US
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, leobras@redhat.com,
- wei.w.wang@intel.com, Daniel Berrange <berrange@redhat.com>
-References: <20230518085228.172816-1-lei4.wang@intel.com>
- <87h6saf18t.fsf@secure.mitica>
-From: "Wang, Lei" <lei4.wang@intel.com>
-In-Reply-To: <87h6saf18t.fsf@secure.mitica>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=134.134.136.65; envelope-from=lei4.wang@intel.com;
- helo=mga03.intel.com
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.544, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qwCowACHjw+x3WZkAeNjAQ--.12622S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF1fWF1rtF4kKr15tF1DJrb_yoW8GF43pr
+ 4fGry3Kr4kA3yxXr4fW3WUWr4Yyw40gF43Kwn7Aw48A39xAry5Xrn7Jr18A34xJFyfWFyq
+ 9a15Cryruws5JF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+ 6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+ 4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+ Yx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
+ WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7Cj
+ xVA2Y2ka0xkIwI1lc2xSY4AK67AK6r4UMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+ AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+ 17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+ IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+ IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
+ evJa73UjIFyTuYvjfUO_MaUUUUU
+X-Originating-IP: [61.165.33.195]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,45 +74,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/18/2023 17:16, Juan Quintela wrote:
-> Lei Wang <lei4.wang@intel.com> wrote:
->> When destination VM is launched, the "backlog" parameter for listen() is set
->> to 1 as default in socket_start_incoming_migration_internal(), which will
->> lead to socket connection error (the queue of pending connections is full)
->> when "multifd" and "multifd-channels" are set later on and a high number of
->> channels are used. Set it to a hard-coded higher default value 512 to fix
->> this issue.
->>
->> Reported-by: Wei Wang <wei.w.wang@intel.com>
->> Signed-off-by: Lei Wang <lei4.wang@intel.com>
-> 
-> [cc'd daiel who is the maintainer of qio]
-> 
-> My understanding of that value is that 230 or something like that would
-> be more than enough.  The maxiimum number of multifd channels is 256.
+Some extensions have conflict encodings, such as
+ * Z*inx reuse the same encodings as normal float point extensions.
+ * Zcm* reuse the some encodings of Zcd.
+ * Custom extensions from different vendors may share the same encodings.
+To resolve this problem, this patchset tries to pass RISCVCPUConfig as disasemble_info.target_info to support extension specific disas, which means that the disas for this extensions is supported only when the related extension is supported.
+This patchset also fixes some style problems in disas/riscv.c.
 
-You are right, the "multifd-channels" expects uint8_t, so 256 is enough.
+The port is available here:
+https://github.com/plctlab/plct-qemu/tree/plct-disas-upstream
 
-> 
-> Daniel, any opinion?
-> 
-> Later, Juan.
-> 
->> ---
->>  migration/socket.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/migration/socket.c b/migration/socket.c
->> index 1b6f5baefb..b43a66ef7e 100644
->> --- a/migration/socket.c
->> +++ b/migration/socket.c
->> @@ -179,7 +179,7 @@ socket_start_incoming_migration_internal(SocketAddress *saddr,
->>      QIONetListener *listener = qio_net_listener_new();
->>      MigrationIncomingState *mis = migration_incoming_get_current();
->>      size_t i;
->> -    int num = 1;
->> +    int num = 512;
->>  
->>      qio_net_listener_set_name(listener, "migration-socket-listener");
-> 
+Weiwei Li (7):
+  disas: Change type of disassemble_info.target_info to pointer
+  target/riscv: Pass RISCVCPUConfig as target_info to disassemble_info
+  disas/riscv.c: Support disas for Zcm* extensions
+  disas/riscv.c: Support disas for Z*inx extensions
+  disas/riscv.c: Remove unused decomp_rv32/64 value for vector
+    instructions
+  disas/riscv.c: Fix lines with over 80 characters
+  disas/riscv.c: Remove redundant parentheses
+
+ disas/riscv.c           | 1206 +++++++++++++++++++++------------------
+ include/disas/dis-asm.h |    2 +-
+ target/riscv/cpu.c      |    1 +
+ target/riscv/cpu.h      |  114 +---
+ target/riscv/cpu_cfg.h  |  135 +++++
+ 5 files changed, 789 insertions(+), 669 deletions(-)
+ create mode 100644 target/riscv/cpu_cfg.h
+
+-- 
+2.25.1
+
 
