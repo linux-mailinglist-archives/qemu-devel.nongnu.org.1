@@ -2,95 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68AC709696
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 13:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F522709699
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 13:34:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzyLo-00040Y-J1; Fri, 19 May 2023 07:32:48 -0400
+	id 1pzyN5-0005RK-HU; Fri, 19 May 2023 07:34:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzyLk-00040F-Ky
- for qemu-devel@nongnu.org; Fri, 19 May 2023 07:32:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1pzyN0-0005R3-Va
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 07:34:02 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1pzyLi-0007NQ-I0
- for qemu-devel@nongnu.org; Fri, 19 May 2023 07:32:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684495961;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=KZ0n9pthhX0n2ApULG5jEUaKlMKUDnYoAcr+VLNgDyM=;
- b=HKM65W9nY1EPvPKgFYT2H8FqMJUbO/ClFLqNZTJl0Dsnxritg+OZmGgyN1wHH7xokBmKCu
- PWCaE3Hk9I0l95vMTdC5Gb4G7+CvF4v1bsjQXzMdxkKNEkUGupsNK2zK5ytcxjC9pBnTxh
- DJER5PC2jUlk+nGfxymdD5NRmm2Pho4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-FGXPVzAJNM2FSBbhYGN8ng-1; Fri, 19 May 2023 07:32:38 -0400
-X-MC-Unique: FGXPVzAJNM2FSBbhYGN8ng-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-307bac4c949so1987971f8f.0
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 04:32:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684495957; x=1687087957;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=KZ0n9pthhX0n2ApULG5jEUaKlMKUDnYoAcr+VLNgDyM=;
- b=MwrO7iqR+q0iO5HUDb2EY1I4w0LiGjsE0laeO4cAvVKp8xni6RjeAwJP5EGfYT3irN
- /noUxB4c8C+dTqzwI0Rsn0aTlN09R5zec4RMWDdRtrrCHAqaeOybrJBmq6EIj7rT5Sa9
- 8dIWBmDSb5QVAVRGpGQaRgzZecQYjFsbEQ6K1DtkSKYPvkRN+jx4sgzRo1+Hw/d9Vown
- 3BfeGVIPrvn/Ct/Gv/yu1ZFW2GlfwMAMEjnCK+SN2R3ZbA0RnDqKUfRuLSJnrStwOjRc
- CBOddfh+jEPoR9WPcUgDW4nNsOLrjqml3WSJr1Pb6uhSIRKP6Tga1ogo7rYPmWC+gyuO
- oPGA==
-X-Gm-Message-State: AC+VfDzdTRrgqqmGegu8hER0+DLVWcwQEEoGPnr++l6ece1JoXEyRuWD
- /fRwindyNCRz1v3jpvCx57YAHbjtlDhrgCsZYlqm1+6QgI60K7g9DO3WIT6QNQCmlEAI9YoYIqw
- 75InXI0jWljI5jcs=
-X-Received: by 2002:a05:600c:2214:b0:3f3:468d:d017 with SMTP id
- z20-20020a05600c221400b003f3468dd017mr1124347wml.6.1684495956912; 
- Fri, 19 May 2023 04:32:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ46PR25CtQsBGEC2kUvkg9ZJE4QSdWo8BD4mAHbtrVx+C9/WrHGVj0eX/ILpdGcPfC69EIbEw==
-X-Received: by 2002:a05:600c:2214:b0:3f3:468d:d017 with SMTP id
- z20-20020a05600c221400b003f3468dd017mr1124334wml.6.1684495956637; 
- Fri, 19 May 2023 04:32:36 -0700 (PDT)
-Received: from redhat.com (84.125.95.163.dyn.user.ono.com. [84.125.95.163])
- by smtp.gmail.com with ESMTPSA id
- y14-20020adffa4e000000b00306281cfa59sm5052728wrr.47.2023.05.19.04.32.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 04:32:35 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: "Wang, Wei W" <wei.w.wang@intel.com>
-Cc: "Wang, Lei4" <lei4.wang@intel.com>,  "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>,  "peterx@redhat.com" <peterx@redhat.com>,
- "leobras@redhat.com" <leobras@redhat.com>,  "Daniel Berrange"
- <berrange@redhat.com>
-Subject: Re: [PATCH] multifd: Set a higher "backlog" default value for listen()
-In-Reply-To: <DS0PR11MB63736463A526A0D1A0D64568DC7C9@DS0PR11MB6373.namprd11.prod.outlook.com>
- (Wei W. Wang's message of "Fri, 19 May 2023 03:33:22 +0000")
-References: <20230518085228.172816-1-lei4.wang@intel.com>
- <87h6saf18t.fsf@secure.mitica>
- <9def6eb4-e317-2b6d-87ab-d0aa34ea3afe@intel.com>
- <DS0PR11MB637345417B81FF5637B2D7D8DC7C9@DS0PR11MB6373.namprd11.prod.outlook.com>
- <bc6f6fdb-ebf9-387b-9d56-5c61095a9473@intel.com>
- <DS0PR11MB63736463A526A0D1A0D64568DC7C9@DS0PR11MB6373.namprd11.prod.outlook.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Fri, 19 May 2023 13:32:33 +0200
-Message-ID: <87fs7sy2su.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1pzyMy-0007Yd-Ix
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 07:34:02 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QN4PW0RvTz6J76p;
+ Fri, 19 May 2023 19:29:35 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 19 May
+ 2023 12:33:54 +0100
+Date: Fri, 19 May 2023 12:33:53 +0100
+To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>
+CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
+ <ira.weiny@intel.com>, Alison Schofield <alison.schofield@intel.com>, Michael
+ Roth <michael.roth@amd.com>, Philippe =?ISO-8859-1?Q?Mathieu-Da?=
+ =?ISO-8859-1?Q?ud=E9?= <philmd@linaro.org>, Dave Jiang
+ <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, "Daniel P .
+ =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>
+Subject: Re: [PATCH v5 3/6] bswap: Add the ability to store to an unaligned
+ 24 bit field
+Message-ID: <20230519123353.00004a00@huawei.com>
+In-Reply-To: <20230423162013.4535-4-Jonathan.Cameron@huawei.com>
+References: <20230423162013.4535-1-Jonathan.Cameron@huawei.com>
+ <20230423162013.4535-4-Jonathan.Cameron@huawei.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,38 +72,154 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Wang, Wei W" <wei.w.wang@intel.com> wrote:
-> On Friday, May 19, 2023 10:52 AM, Wang, Lei4 wrote:
->> > We can change it to uint16_t or uint32_t, but need to see if listening
->> > on a larger value is OK to everyone.
->> 
->> Is there any use case to use >256 migration channels? If not, then I suppose
->> it's no need to increase it.
->
-> People can choose to use more than 256 channels to boost performance.
+On Sun, 23 Apr 2023 17:20:10 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-See my other email, I doubt it any time soon O:-)
+> From: Ira Weiny <ira.weiny@intel.com>
+> 
+> CXL has 24 bit unaligned fields which need to be stored to.  CXL is
+> specified as little endian.
+> 
+> Define st24_le_p() and the supporting functions to store such a field
+> from a 32 bit host native value.
+> 
+> The use of b, w, l, q as the size specifier is limiting.  So "24" was
+> used for the size part of the function name.
+> 
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> If it is determined that using larger than 256 channels doesn't increase performance
-> on all the existing platforms, then we need to have it reflected in the code explicitly,
-> e.g. fail with errors messages when user does:
-> migrate_set_parameter multifd-channels 512
+This doesn't work for s390 (probably big endian hosts in general)
 
+I'll post a new version of the series with adjusted logic shortly. 
+I think all we can do is special case the 24 bit logic in the block
+dealing with big vs little endian accessors.
 
-(qemu) migrate_set_parameter multifd-channels 300
-Error: Parameter 'multifd-channels' expects uint8_t
+Something like the following.
+I'll drop Fan's tag as this is a substantial change. Fan, if you can
+take a look at v6 when I post it that would be great.
 
-So I think that is working.
+I'm having issues with gitlab CI minutes running out on my fork.
+Hopefully I can get that resolved and test this properly. 
 
->> 
->> >
->> > Man page of listen mentions that the  maximum length of the queue for
->> > incomplete sockets can be set using
->> > /proc/sys/net/ipv4/tcp_max_syn_backlog,
->> > and it is 4096 by default on my machine
+diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+index 91ed9c7e2c..f546b1fc06 100644
+--- a/include/qemu/bswap.h
++++ b/include/qemu/bswap.h
+@@ -40,11 +40,13 @@ static inline void bswap64s(uint64_t *s)
+ #if HOST_BIG_ENDIAN
+ #define be_bswap(v, size) (v)
+ #define le_bswap(v, size) glue(__builtin_bswap, size)(v)
++#define le_bswap24(v) bswap24(v)
+ #define be_bswaps(v, size)
+ #define le_bswaps(p, size) \
+             do { *p = glue(__builtin_bswap, size)(*p); } while (0)
+ #else
+ #define le_bswap(v, size) (v)
++#define le_bswap24(v) (v)
+ #define be_bswap(v, size) glue(__builtin_bswap, size)(v)
+ #define le_bswaps(v, size)
+ #define be_bswaps(p, size) \
+@@ -319,7 +321,7 @@ static inline void stw_le_p(void *ptr, uint16_t v)
+
+ static inline void st24_le_p(void *ptr, uint32_t v)
+ {
+-    st24_he_p(ptr, le_bswap(v, 24));
++    st24_he_p(ptr, le_bswap24(v));
+ }
+
+ static inline void stl_le_p(void *ptr, uint32_t v)
+
+> 
+> ---
+> v5:
+>   - Added assertion that upper bits of the input parameter aren't set.
+>   - Mask value in bswap24s()
+>   - update docs
+> ---
+>  docs/devel/loads-stores.rst |  1 +
+>  include/qemu/bswap.h        | 25 +++++++++++++++++++++++++
+>  2 files changed, 26 insertions(+)
+> 
+> diff --git a/docs/devel/loads-stores.rst b/docs/devel/loads-stores.rst
+> index ad5dfe133e..57b4396f7a 100644
+> --- a/docs/devel/loads-stores.rst
+> +++ b/docs/devel/loads-stores.rst
+> @@ -36,6 +36,7 @@ store: ``st{size}_{endian}_p(ptr, val)``
+>  ``size``
+>   - ``b`` : 8 bits
+>   - ``w`` : 16 bits
+> + - ``24`` : 24 bits
+>   - ``l`` : 32 bits
+>   - ``q`` : 64 bits
+>  
+> diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+> index 15a78c0db5..91ed9c7e2c 100644
+> --- a/include/qemu/bswap.h
+> +++ b/include/qemu/bswap.h
+> @@ -8,11 +8,25 @@
+>  #undef  bswap64
+>  #define bswap64(_x) __builtin_bswap64(_x)
+>  
+> +static inline uint32_t bswap24(uint32_t x)
+> +{
+> +    assert((x & 0xff000000U) == 0);
+> +
+> +    return (((x & 0x000000ffU) << 16) |
+> +            ((x & 0x0000ff00U) <<  0) |
+> +            ((x & 0x00ff0000U) >> 16));
+> +}
+> +
+>  static inline void bswap16s(uint16_t *s)
+>  {
+>      *s = __builtin_bswap16(*s);
+>  }
+>  
+> +static inline void bswap24s(uint32_t *s)
+> +{
+> +    *s = bswap24(*s & 0x00ffffffU);
+> +}
+> +
+>  static inline void bswap32s(uint32_t *s)
+>  {
+>      *s = __builtin_bswap32(*s);
+> @@ -176,6 +190,7 @@ CPU_CONVERT(le, 64, uint64_t)
+>   * size is:
+>   *   b: 8 bits
+>   *   w: 16 bits
+> + *   24: 24 bits
+>   *   l: 32 bits
+>   *   q: 64 bits
+>   *
+> @@ -248,6 +263,11 @@ static inline void stw_he_p(void *ptr, uint16_t v)
+>      __builtin_memcpy(ptr, &v, sizeof(v));
+>  }
+>  
+> +static inline void st24_he_p(void *ptr, uint32_t v)
+> +{
+> +    __builtin_memcpy(ptr, &v, 3);
+> +}
+> +
+>  static inline int ldl_he_p(const void *ptr)
+>  {
+>      int32_t r;
+> @@ -297,6 +317,11 @@ static inline void stw_le_p(void *ptr, uint16_t v)
+>      stw_he_p(ptr, le_bswap(v, 16));
+>  }
+>  
+> +static inline void st24_le_p(void *ptr, uint32_t v)
+> +{
+> +    st24_he_p(ptr, le_bswap(v, 24));
+> +}
+> +
+>  static inline void stl_le_p(void *ptr, uint32_t v)
+>  {
+>      stl_he_p(ptr, le_bswap(v, 32));
 
 
