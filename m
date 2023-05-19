@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258E37092DB
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 11:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992727092E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 11:22:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1pzwFy-0005DB-14; Fri, 19 May 2023 05:18:38 -0400
+	id 1pzwIb-00065x-90; Fri, 19 May 2023 05:21:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzwFw-0005Cp-0q
- for qemu-devel@nongnu.org; Fri, 19 May 2023 05:18:36 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1pzwIX-00065H-5T
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 05:21:17 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1pzwFt-0003bj-EJ
- for qemu-devel@nongnu.org; Fri, 19 May 2023 05:18:35 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-510c734fa2dso1247985a12.0
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 02:18:32 -0700 (PDT)
+ id 1pzwIV-00047X-Lv
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 05:21:16 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5112cae8d82so597292a12.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 02:21:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684487910; x=1687079910;
+ d=linaro.org; s=google; t=1684488074; x=1687080074;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pF+94+WYAd0Xj1GS1XNVyRMXHfG2s/Cgnpk57e31Vhg=;
- b=FfRe5zl/guPWD0gy2VwXfKm6TuZLLFhu6tUJ0tyevbTt6rVNc0nBY2NghnQ3hw9j6w
- ZHEirsuLSP3iwX9/unsX2+wpJvGGLhzRLqHANfKFBr2cy7Hdgd05FHdSAWpZCjno11w9
- XulLz4F8faFNYDWfbFWFtXKAmqHbltTnlTbVE0hIdX2JKizRG6UKC4DpinKFjPY/ipI+
- TYvgVtCH7dfJxvUerAcaOJuHf+jE9RxpMr31SkSFgt3IJte66ZctyoZYFNx57AxLHAfz
- cOn9kPbNa4ZtvQC1TN81ifQtY/zplfxUDOfOUoMGbALh1Z4NmNxqnjN1dPVjrKNn4vRg
- HpEQ==
+ bh=lI9Uy75B3jWMnEHGhSiOejzd6AMTOTsbEavQnkvQx4I=;
+ b=D4VRWhTx8LXTPIrTVC5p0UB6SV+Drq4YXsvt7KHdJ/Roh+57+Geq0luu62z1ga52Hi
+ 8/1MveeZFAjqZe3CXxskWqiJ+k2KKZg/SRfBWiWOU1lqdWxRmGk4DqOFjhhLStBLuvda
+ rwpa/dXKXxZJhHzyUtUoF6exU1W/fdYzPKaSNAVaX19GcBT1vzZSmTDJVAs1QVX96xZ2
+ l9Ed0Ar4a0ap3lbSKP7+PwM3PKmEKs5Kvjtpt9jXaR5yjAo6jY8qVYKIPIJva3ZtwjBK
+ KuDBg2u+pXlw0DQSrgVsN9f/tY5AQcgVHv46WOygnfGhM/Chfra0Pez6QJN7REjPc1LU
+ BJpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684487910; x=1687079910;
+ d=1e100.net; s=20221208; t=1684488074; x=1687080074;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=pF+94+WYAd0Xj1GS1XNVyRMXHfG2s/Cgnpk57e31Vhg=;
- b=cte30nj67eyzfAc7wbD8p6mC0rroxZPl37XI7oFm7xvhp1m8cGozMo3nBTYyCeu1yA
- dSeLbFxXw5bXwfyAXvqj2ENY8pKv8uLQ9/mpVOta6r6zCrR0ZGrMQjwTUJd2+FazeOx3
- S2M01f4q4wJJpqQpQurJ/eAh0bR2rdAyRwmcy4nGt2SC1jl4eKKgAuP4TSe1Sim1r/t3
- 6FweHLnIC9OWkBsXf3Rjl8+jw1dtWLodupP3xBFOy/+kfdFwlxdD+qKihd2U6ST3j92N
- zuA1XjmL8rABlud6AkibyxbabPYBDb5iopQmxs9bGr7/9xZ0uib36A3npOFXC3Ad3I1k
- cjWQ==
-X-Gm-Message-State: AC+VfDwF+8XAn3HjPeGMb6RnJ6Rn6TIxtwkecy3vD4o4orDbvR0Y5PYS
- hVtphoCbYpMPiWgwdZ4mV2YsHSWtnbmqBOLMzGpfww==
-X-Google-Smtp-Source: ACHHUZ4WkInYgfpE55a818sjkKyRasCSWfoQ/cFjWFoLagbZbmlAhx63blPey8jTbLoHiHjE6ivG0mUnd+3P3bLMEaE=
-X-Received: by 2002:a05:6402:2554:b0:504:77ed:5a33 with SMTP id
- l20-20020a056402255400b0050477ed5a33mr7746048edb.8.1684487910648; Fri, 19 May
- 2023 02:18:30 -0700 (PDT)
+ bh=lI9Uy75B3jWMnEHGhSiOejzd6AMTOTsbEavQnkvQx4I=;
+ b=JR5s9G+sx3xKQHcoYuyNQTiPUavJxucti4+c3pJliIGzaPdQbORz9XfwbUJP6WRvyg
+ FqUc6eXqS1ORAfAWZwwJNIRu8kz2uhJ3ZMSmgatxcaPjSSk8p6X7SDf9W3k1Y3w67Uk7
+ QtlKlRK4h+7sqquiEPyMiq223K3iDBozeG2oAiuLGniCkuC+YZf2adNt7PNlYLOgIUAl
+ 4I5Lsci9l8zT4O4TiZylRLeJdYEGJPCpQqI9833DRtWTpBPERc+i54KbI36qZ6At4y3F
+ OIw0q1rEXbXr01ycR1CenmXOOxQT/qmKVePoXVy5MtHkursX23hdycLJw0lOZq+YH/UD
+ /APw==
+X-Gm-Message-State: AC+VfDw/QKtoCfHoDegnWkI9VtqKLhrwuN79i1LgShGNnt2cRhSSsV6A
+ SO4k/7cDNjqxt2j2RUGi6XpgVu+DCAgiZWlXAQn16w==
+X-Google-Smtp-Source: ACHHUZ6CSYh4kX4tWyneSgNI2+iBJpO5i03JPEbwQLr1QllDGg3hfst6J9V3WYnYy/ukEFqotVGgaQ5WowAnaXs5L7o=
+X-Received: by 2002:a05:6402:544:b0:50c:646:da42 with SMTP id
+ i4-20020a056402054400b0050c0646da42mr1087640edx.28.1684488074016; Fri, 19 May
+ 2023 02:21:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <58b8067d-3136-94ed-f53e-2ccd0feb8c75@linaro.org>
-In-Reply-To: <58b8067d-3136-94ed-f53e-2ccd0feb8c75@linaro.org>
+References: <20230519085647.1104775-1-pbonzini@redhat.com>
+In-Reply-To: <20230519085647.1104775-1-pbonzini@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 19 May 2023 10:18:19 +0100
-Message-ID: <CAFEAcA8nKiES473FbfCa=jkTO2SaVTKOgGPoAAFAzaojZZ86jA@mail.gmail.com>
-Subject: Re: gitlab shared runner time expired
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>
+Date: Fri, 19 May 2023 10:21:03 +0100
+Message-ID: <CAFEAcA-nMG_5u4pADASoQNF_MCCXHMCB3APTtVLohzTzCmJ3cQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] meson: use subprojects for bundled projects
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, berrange@redhat.com, 
+ richard.henderson@linaro.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,13 +85,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 May 2023 at 20:27, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Fri, 19 May 2023 at 09:56, Paolo Bonzini <pbonzini@redhat.com> wrote:
 >
-> So, here we are again, out of runner time with 13 days left in the month.
+> QEMU bundles a copy of dtc and keycodemapdb.  They both support meson,
+> so we can run their build system via subproject() instead of hardcoding
+> their contents.
+>
+> In fact, now that QEMU's configure script knows how to install missing
+> Python dependencies, we can replace submodules altogether with .wrap
+> files, which have several advantages, either immediate or potential:
 
-This is quite early -- have you been processing pull requests
-strictly one at a time, or in (small) batches ?
+So do we have a path for getting rid of submodules entirely?
+I'd be all in favour of that, but I'm somewhat less in favour
+of "some things are submodules and some things are this new
+.wrap file setup"...
 
+thanks
 -- PMM
 
