@@ -2,85 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C953709A83
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0173709A7F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01Sq-0004WX-8c; Fri, 19 May 2023 10:52:16 -0400
+	id 1q01Sq-0004ag-Gp; Fri, 19 May 2023 10:52:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Sk-0004Hc-Ca
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Sc-0003iC-34
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01Si-0004B8-Aj
  for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01Sb-0003hs-So
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:52:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507921;
+ s=mimecast20190719; t=1684507920;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MG9QRbAhHmgPgErXXueTm6QmvHo2RMS9Zz4DxlsczRI=;
- b=I7Fb5CqLfhuLEXYfYW47Mo7RdTXK01YikMsENUoA3Lyy/3sLPWOQML/dQ7KKyE4Qc6rV+x
- INw+lT3WkSeedblcNw6Dxe885UeK1+ir1iZMatuTaxm1gdQdYtRny5adUcBxgQcSpvDMdp
- 4o0RGgAUFRNQVy3APOYADLze3KvyaPo=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BhxSf9MG4sE+I3nZiAvxxBLABniX6x9Cgnmgp9/7iYc=;
+ b=HKBYkr2MEgcZLAnaxZOX+BwhI2GC+pduxUpPPZb6VedFcNOtVQQYzb33omqbbVeDwlGGdp
+ 9lvyebgjOrHRN5CJH49oMZsFUDK0YzJRCJBoYwGH4qVWE+UHPMzVcd9t4olT+7LZOC22aZ
+ ZPY5i6RK5LNecgvq9RBOdjUxv90H30I=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-zOL3TX1oM-ilZpTVPhWNCQ-1; Fri, 19 May 2023 10:52:00 -0400
-X-MC-Unique: zOL3TX1oM-ilZpTVPhWNCQ-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2af23cfd23aso4547341fa.0
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:51:59 -0700 (PDT)
+ us-mta-522-D6RHdErCOw6S6uVcFMnNAg-1; Fri, 19 May 2023 10:51:58 -0400
+X-MC-Unique: D6RHdErCOw6S6uVcFMnNAg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-510d1c71b8fso3357041a12.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:51:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507918; x=1687099918;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MG9QRbAhHmgPgErXXueTm6QmvHo2RMS9Zz4DxlsczRI=;
- b=bQUMatfRyq0/jzl7Gsi2D6BQu0OLQt1ZK/ohKrk4BgYTClHozetdmCxOuU1xEy0i47
- MKHimvSRbBkMr3A4cLtbyR+LPkr1wt4Y/Mf2qzx5vR9sJsMTsLMZZSYYok43+lhIahTY
- c+z9N3dbCKrHrlAKmUwdT6HJtXiQOL6tQHd1HCWfdj/ui19728o8ZWA6RM8RcYnWMLAN
- 37hzgQh0t2F2CZaUIQ3tSGP3W19019H0V+U4Jtml2evqxgYdk4gq3BeCTsqT/st1L1ou
- Zt1xl4Qxsl6j1zY+0XnqHLUCxkY0pu6zPaECm4FywDu8o9gOLIv49y1JsfPne4ih7xB5
- PXzg==
-X-Gm-Message-State: AC+VfDzqEY9Hsp8rPHbSdhvHLO+JDS9SmlnhvDNjMXpn4za65kZLK+sC
- EosUMbJ4UJuGgJjSFUTKUXSDSyyH5S+FCBUAqtUL310+5zQRgl4ibwm84I3707gKIZNBSkgGLd5
- EBNIhuX6WkxhCml3iUpnluvVueNfowrmCAhiMKDgw0zqu//1vBwt5bcIgb9Ac2PUaKdi9
-X-Received: by 2002:ac2:4949:0:b0:4f3:93ec:ffec with SMTP id
- o9-20020ac24949000000b004f393ecffecmr849230lfi.63.1684507918301; 
- Fri, 19 May 2023 07:51:58 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4HVWKWqDquqjB68SkRi0XayeTIIqLw47+ZAGD54wq30UHaC3l1/gyCaVtWhP/X8DrkxMYkYA==
-X-Received: by 2002:ac2:4949:0:b0:4f3:93ec:ffec with SMTP id
- o9-20020ac24949000000b004f393ecffecmr849219lfi.63.1684507917942; 
+ d=1e100.net; s=20221208; t=1684507917; x=1687099917;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BhxSf9MG4sE+I3nZiAvxxBLABniX6x9Cgnmgp9/7iYc=;
+ b=T+vPArZJv74QlnC+gJyJSyDgZvY1yEcSBjEfMHf+Qj967HFBqLI2y+5D/XV6PxQagy
+ ccXNX1wKbzA5iprB45YdfTfo2miyEndoSBmFf9qtKNSp0zHQU/Yp8Yfl+0UichKnXBag
+ TPr6Y1AXu7Y0s/HCiRChfgckEXNk/7WeMhPFJsVQm92oXrYKj53FfSOa+IDLdSRqy6JZ
+ yMtChfowDBQZzCDe36/vaZ8eZJrJZqoPNJYq3NESPCqla5SaFpip34HpU/adImUte4jI
+ K9poG05/v/w1h7qc7s4Gfn5mmbAQd2LP/64GVlIMkOywfE6DAVw+1YqMBGaj/orUcnJ2
+ wgSA==
+X-Gm-Message-State: AC+VfDxQnFTA50gSH4PN137WxEq8bWMBi/Tn+o2VxsdXh666gkV3+fbh
+ hSZymrjfhfQWkf3/p80Z8v+MCuB9hN+KdkfGyF6v53J782XtKduczH1T5F8xYmDFlTpaOUn4/It
+ thmuJ3nddgMbknEo=
+X-Received: by 2002:a17:907:3fa8:b0:96b:1608:3563 with SMTP id
+ hr40-20020a1709073fa800b0096b16083563mr2264924ejc.58.1684507917474; 
  Fri, 19 May 2023 07:51:57 -0700 (PDT)
-Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- x17-20020a19f611000000b004eca2b1c5b4sm622290lfe.229.2023.05.19.07.51.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+X-Google-Smtp-Source: ACHHUZ5xlgNRg3hkcmBF/kk1HyKNFheE87uxHPM5Qp85+OFt3V6ssCD0raP1eyMKmueqPsp3PCOQuA==
+X-Received: by 2002:a17:907:3fa8:b0:96b:1608:3563 with SMTP id
+ hr40-20020a1709073fa800b0096b16083563mr2264907ejc.58.1684507917161; 
  Fri, 19 May 2023 07:51:57 -0700 (PDT)
-Date: Fri, 19 May 2023 10:51:53 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Cindy Lu <lulu@redhat.com>
-Subject: [PULL 26/40] vhost-vdpa: Add check for full 64-bit in region delete
-Message-ID: <2fbef6aad892a3e784041fc5a6d5f5bda0565464.1684507742.git.mst@redhat.com>
-References: <cover.1684507742.git.mst@redhat.com>
+Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
+ (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
+ [2003:cf:d723:b0c7:284b:5990:6336:f84f])
+ by smtp.gmail.com with ESMTPSA id
+ kl13-20020a170907994d00b00947740a4373sm2348324ejc.81.2023.05.19.07.51.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 May 2023 07:51:56 -0700 (PDT)
+Message-ID: <923d9425-e041-9647-9530-990f9994ad85@redhat.com>
+Date: Fri, 19 May 2023 16:51:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1684507742.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 07/19] cutils: Adjust signature of parse_uint[_full]
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: armbru@redhat.com, richard.henderson@linaro.org,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Peter Lieven <pl@kamp.de>,
+ Michael Roth <michael.roth@amd.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, "open list:GLUSTER" <qemu-block@nongnu.org>,
+ "open list:GLUSTER" <integration@gluster.org>
+References: <20230512021033.1378730-1-eblake@redhat.com>
+ <20230512021033.1378730-8-eblake@redhat.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230512021033.1378730-8-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,54 +109,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cindy Lu <lulu@redhat.com>
+On 12.05.23 04:10, Eric Blake wrote:
+> It's already confusing that we have two very similar functions for
+> wrapping the parse of a 64-bit unsigned value, differing mainly on
+> whether they permit leading '-'.  Adjust the signature of parse_uint()
+> and parse_uint_full() to be like all of qemu_strto*(): put the result
+> parameter last, use the same types (uint64_t is not always the same as
+> unsigned long long, and mark endptr const (only latter affects the
+> rare caller of parse_uint).  Adjust all callers in the tree.
+>
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>   include/qemu/cutils.h         |   5 +-
+>   audio/audio_legacy.c          |   4 +-
+>   block/gluster.c               |   4 +-
+>   block/nfs.c                   |   4 +-
+>   blockdev.c                    |   4 +-
+>   contrib/ivshmem-server/main.c |   4 +-
+>   qapi/opts-visitor.c           |  10 +--
+>   tests/unit/test-cutils.c      | 113 +++++++++++++++-------------------
+>   ui/vnc.c                      |   4 +-
+>   util/cutils.c                 |  13 ++--
+>   util/guest-random.c           |   4 +-
+>   util/qemu-sockets.c           |  10 +--
+>   12 files changed, 82 insertions(+), 97 deletions(-)
 
-The unmap ioctl doesn't accept a full 64-bit span. So need to
-add check for the section's size in vhost_vdpa_listener_region_del().
+[...]
 
-Signed-off-by: Cindy Lu <lulu@redhat.com>
-Message-Id: <20230510054631.2951812-4-lulu@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/virtio/vhost-vdpa.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+> diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
+> index 08989d1d3ac..0c7d07b3297 100644
+> --- a/tests/unit/test-cutils.c
+> +++ b/tests/unit/test-cutils.c
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 92c2413c76..0c8c37e786 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -316,10 +316,28 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-         vhost_iova_tree_remove(v->iova_tree, *result);
-     }
-     vhost_vdpa_iotlb_batch_begin_once(v);
-+    /*
-+     * The unmap ioctl doesn't accept a full 64-bit. need to check it
-+     */
-+    if (int128_eq(llsize, int128_2_64())) {
-+        llsize = int128_rshift(llsize, 1);
-+        ret = vhost_vdpa_dma_unmap(v, VHOST_VDPA_GUEST_PA_ASID, iova,
-+                                   int128_get64(llsize));
-+
-+        if (ret) {
-+            error_report("vhost_vdpa_dma_unmap(%p, 0x%" HWADDR_PRIx ", "
-+                         "0x%" HWADDR_PRIx ") = %d (%m)",
-+                         v, iova, int128_get64(llsize), ret);
-+        }
-+        iova += int128_get64(llsize);
-+    }
-     ret = vhost_vdpa_dma_unmap(v, VHOST_VDPA_GUEST_PA_ASID, iova,
-                                int128_get64(llsize));
-+
-     if (ret) {
--        error_report("vhost_vdpa dma unmap error!");
-+        error_report("vhost_vdpa_dma_unmap(%p, 0x%" HWADDR_PRIx ", "
-+                     "0x%" HWADDR_PRIx ") = %d (%m)",
-+                     v, iova, int128_get64(llsize), ret);
-     }
- 
-     memory_region_unref(section->mr);
--- 
-MST
+[...]
+
+> @@ -186,32 +176,31 @@ static void test_parse_uint_max(void)
+>
+>   static void test_parse_uint_overflow(void)
+>   {
+> -    unsigned long long i;
+> -    char f = 'X';
+> -    char *endptr;
+> +    uint64_t i;
+> +    const char *endptr = "somewhere";
+
+The initialization here is technically not necessary because it’s reset 
+above the parse_uint() call below.
+
+Anyway:
+
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+
+>       const char *str;
+>       int r;
+>
+>       i = 999;
+> -    endptr = &f;
+> +    endptr = "somewhere";
+>       str = "99999999999999999999999999999999999999";
+> -    r = parse_uint(str, &i, &endptr, 0);
+> +    r = parse_uint(str, &endptr, 0, &i);
+>       g_assert_cmpint(r, ==, -ERANGE);
+>       g_assert_cmpuint(i, ==, ULLONG_MAX);
+>       g_assert_true(endptr == str + strlen(str));
 
 
