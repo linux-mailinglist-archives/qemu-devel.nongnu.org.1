@@ -2,91 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7A3709AA1
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E52709AB6
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:58:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01VU-0004ZT-Q7; Fri, 19 May 2023 10:55:00 -0400
+	id 1q01WQ-0007C6-S5; Fri, 19 May 2023 10:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01VT-0004Yr-BH
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:54:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01VR-0005VZ-Tx
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:54:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684508097;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Wzb0geO+0m+islgln1S5KPyD7d22nuEfTQu+NEpapas=;
- b=UhM4rngG8nRxjmtxPcLrAeBNlYFDxs+mmpU4J2WDwCU9FEgs+F5tMRpPSNxy/CQbLxf4v8
- r2DSWVmaT9kbgqokLvfnEH6o6UpXR8jy7Aq8xmN8AdFzvfxsA/i3BrDqPyd6Ilv9wqRjwc
- VA3pX8p8x/925HqceeiGZSf9awQ8Up8=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-u0Se8l91M32hNtVvE1aRaw-1; Fri, 19 May 2023 10:54:55 -0400
-X-MC-Unique: u0Se8l91M32hNtVvE1aRaw-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-50d89279d95so1254189a12.1
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:54:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q01WO-0006vT-3f
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:55:56 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q01WL-0007pE-JP
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:55:55 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-64d3e5e5980so438918b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:55:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684508152; x=1687100152;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FN4aSqNn3UXjSiBjzXh4KZBQGq8xhbefpqTUEFY07sk=;
+ b=k46E0wswExbTnEmTGKu1MtV4ynXkuIeqCA9S8RbGf/elMTV/DzJUtofU4aur7BB03f
+ 9sKoUVCSz61Ju62Ez09pcDCBaXwkCIapVXWh3S9qV9hy5LH/wMZgl+KFBpr1UoqCIFmP
+ TAFAg6QpiFlR5TXmkxhUGgb/2fRjUsEAeYyDy+4gJsUGM288A+nl7li2a6etekdVOSE3
+ wo7GUQFWDmRZp582h9bLHNa3m5MBtLE7xsMjuiy4XwrEhZEIf3G5kpDk1JsKFMti/XET
+ pPjqLKC1TU4hAaXvxF/GJ2LF7pm1jw6LVN0vPR6UZbl3ml58tmk8nE3c99pfoY2Gbh9D
+ A6hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684508094; x=1687100094;
+ d=1e100.net; s=20221208; t=1684508152; x=1687100152;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wzb0geO+0m+islgln1S5KPyD7d22nuEfTQu+NEpapas=;
- b=hOObLsM9LqJpEMBLeJ7WOW5X6CimiDCy1bQ8+wBM0xeiNokvb5hibfTHjsUWKXOAc9
- jYFZOMAKiEP8x3Mf2odIijc6t/Ew2+05ahCzbivPpZ8u/5QotqLlVBcNEmWr8whqMYlI
- xMEdRiXYnVMexlTtD4/N5e58jvh3kmoMRLTlwoKd+stH5EH+PPLaOA1ha4JQ5/KSeNxA
- /LoxliYNAU2J/r1+mNPhqJrnEqcJ0YKJgWRcudQKswtqSEZLwCdBsu0ohle1ayNkTREc
- HDozGnFPMFnmmgh1fgeyhYkIFcHe7wBarb8WTvuK7pPe3HlImNQM+nd4r7SX9FTb5HyX
- Ivog==
-X-Gm-Message-State: AC+VfDyJY8LKV7/pXp9sLjEnOReK0PRGEUd0cjbHhMJaelxVOZyhONyr
- rYBtBYJNoh3xsGp3qVeVsi9KOLvUF+Cd9gPd3FiG4wWynJ+UYP3ptpyX04TZn2tSQqBlrSUrF5C
- flSfL7AY1oAifVoE=
-X-Received: by 2002:a17:907:6d26:b0:966:5fac:2e52 with SMTP id
- sa38-20020a1709076d2600b009665fac2e52mr2245979ejc.9.1684508094815; 
- Fri, 19 May 2023 07:54:54 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6RU8ojAkGgs87dCBsL6mfGvYqkXweKQH0XmXPaSWIboTTbRBFeXR5bSjcW7h9WFKSr62mGdA==
-X-Received: by 2002:a17:907:6d26:b0:966:5fac:2e52 with SMTP id
- sa38-20020a1709076d2600b009665fac2e52mr2245961ejc.9.1684508094454; 
- Fri, 19 May 2023 07:54:54 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
- (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
- [2003:cf:d723:b0c7:284b:5990:6336:f84f])
+ bh=FN4aSqNn3UXjSiBjzXh4KZBQGq8xhbefpqTUEFY07sk=;
+ b=CXVZAY0HgsYvnWogtLNwDdivUkN7GY1djRsWj7RNFSWvf1WXRnmKnwLSVkN8z7W7yx
+ Gb166wJH7g5Zbh3BqIW1x/Vpd0L2FHRVJskq/hulYFPymMcKEfMG7G7jx65lo1TfZ7cE
+ yvgpAqEYE+kCr2mrgTa/BrinrSuhUbQcsJQtHiaEKrjxM0Ci50K8/dighXn4MSijhX3L
+ PGhQFJX/fd08MHAMWIRWALrg0bHZXJC27mmoesjs2nouR1Zt44cYkrLzxOR+YsaRZjnJ
+ FZ8Azu6XFaovfV/DrNNOkwhhWHbSvu+Vg8NB7DZIwRcSxJTUQ58A10RM1Nj3FenVQ1l9
+ oiyw==
+X-Gm-Message-State: AC+VfDyUKRFR8sMnIwj/hE2/Xrsbr2mkZLkB9R3GTDOJbLXi4TWPWR5Q
+ aGaXU/ZU6XpFIItgo9rt9DVuIQ==
+X-Google-Smtp-Source: ACHHUZ4xE8fJ2qmeI9lr0ntyX3QoiF1+IqSGclppCPbVQn6CUHdwrHavVBpVt+IYm/D6eRDEtUEnfA==
+X-Received: by 2002:a05:6a00:1505:b0:64c:c5c0:6e01 with SMTP id
+ q5-20020a056a00150500b0064cc5c06e01mr4045017pfu.31.1684508151767; 
+ Fri, 19 May 2023 07:55:51 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:686f:d1bb:8fc4:dc38?
+ ([2602:ae:1598:4c01:686f:d1bb:8fc4:dc38])
  by smtp.gmail.com with ESMTPSA id
- r21-20020a170906281500b0096ace550467sm2398193ejc.176.2023.05.19.07.54.53
+ u5-20020a634545000000b0050be8e0b94csm3111455pgk.90.2023.05.19.07.55.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 07:54:53 -0700 (PDT)
-Message-ID: <dc9aca94-08be-20d4-9777-ba777ca5fa1b@redhat.com>
-Date: Fri, 19 May 2023 16:54:52 +0200
+ Fri, 19 May 2023 07:55:51 -0700 (PDT)
+Message-ID: <1e87fc3b-ed31-ee70-01d5-0df52237ec70@linaro.org>
+Date: Fri, 19 May 2023 07:55:49 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 08/19] cutils: Allow NULL endptr in parse_uint()
+ Thunderbird/102.11.0
+Subject: Re: [PULL v2 00/44] Hexagon update
 Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-Cc: armbru@redhat.com, richard.henderson@linaro.org
-References: <20230512021033.1378730-1-eblake@redhat.com>
- <20230512021033.1378730-9-eblake@redhat.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230512021033.1378730-9-eblake@redhat.com>
+To: Taylor Simpson <tsimpson@quicinc.com>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, peter.maydell@linaro.org, bcain@quicinc.com,
+ quic_mathbern@quicinc.com, stefanha@redhat.com, ale@rev.ng, anjo@rev.ng,
+ quic_mliebel@quicinc.com
+References: <20230518200411.271148-1-tsimpson@quicinc.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230518200411.271148-1-tsimpson@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.527,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,21 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.05.23 04:10, Eric Blake wrote:
-> All the qemu_strto*() functions permit a NULL endptr, just like their
-> libc counterparts, leaving parse_uint() as the oddball that caused
-> SEGFAULT on NULL and required the user to call parse_uint_full()
-> instead.  Relax things for consistency, even though the testsuite is
-> the only impacted caller.  Add one more unit test to ensure even
-> parse_uint_full(NULL, 0, &value) works.  This also fixes our code to
-> uniformly favor EINVAL over ERANGE when both apply.
->
-> Signed-off-by: Eric Blake <eblake@redhat.com>
-> ---
->   tests/unit/test-cutils.c | 18 ++++++++++++++++--
->   util/cutils.c            | 34 ++++++++++++----------------------
->   2 files changed, 28 insertions(+), 24 deletions(-)
+On 5/18/23 13:03, Taylor Simpson wrote:
+> The following changes since commit 278238505d28d292927bff7683f39fb4fbca7fd1:
+> 
+>    Merge tag 'pull-tcg-20230511-2' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-05-11 11:44:23 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/quic/qemu  tags/pull-hex-20230518-1
+> 
+> for you to fetch changes up to 9073bfd725440da0af44f1ee1e3bcf72e9de39b6:
+> 
+>    Hexagon (linux-user/hexagon): handle breakpoints (2023-05-18 12:40:52 -0700)
+> 
+> ----------------------------------------------------------------
+> **** Changes in v2 ****
+> Fix break in 32-bit host build
+> 
+> This PR can be broken down into the following parts
+> - Add support for new architecture versions v68/v69/v71/v73
+> - Short-circuit writes to temporaries when packet semantics permit this
+> - Move bookkeeping items from CPUHexagonState to DisasContext
+> - Correct '-cpu help' output and handling of unknown Hexagon versions
+> - Enable LLDB debugging
+> - Miscellaneous fixes and improvements
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+
+
+r~
 
 
