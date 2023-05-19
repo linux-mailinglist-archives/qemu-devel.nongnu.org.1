@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323BB709A70
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F43709A6F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:50:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01Qz-0007AW-BF; Fri, 19 May 2023 10:50:21 -0400
+	id 1q01R5-0007FJ-C9; Fri, 19 May 2023 10:50:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Qw-00076P-IX
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:50:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01R2-0007Bj-HU
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:50:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01Qv-0003Vk-6X
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:50:18 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01R1-0003WQ-16
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:50:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507816;
+ s=mimecast20190719; t=1684507822;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dcZFU9WEz6IBrpIZ1MKLxB7FV3fbWZxqDG0kHJf8q0c=;
- b=XYNXSfol/PfV/cg2jlvchq3DgQLYUc3O7ph6ubNILMjj8Nl4eUm21cJXX2YleK2qqOI0Vs
- JWu6kJrH4M+mwtfvqlN5VZxDPL51hjUmQrkoX/08NcEyyT0f2WoHUkmGX2Oo0x6Q/NePHi
- zIWrIe2N5PJs7l+4GT72LBPgxo0bDWI=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SJKuAz/JWMsZ+1DzNWbmPjnID9bsDA/kvaU7AtGkj/E=;
+ b=feVv68OlFNzfnZYMHopd9KYcLXUjlqPYMTuJOZQ0ZXTbk4sz2wmUyQz0QVnrBgI85zUSzH
+ 5aVRuZwpx6Otpen6A3vMplNSqkOC6ilmbeCZg1bGUH4ajISHyPLnw4ZtEE+LTaWBlNjh2z
+ IYE6PMv8apDBlcujqgqdUCRxockFxf4=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-Je0_I5r5M32YnwAd3Gl-CQ-1; Fri, 19 May 2023 10:50:15 -0400
-X-MC-Unique: Je0_I5r5M32YnwAd3Gl-CQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4f38f48be8bso2237616e87.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:50:15 -0700 (PDT)
+ us-mta-462-XowbH-SSNDqWIqs_y6BTgQ-1; Fri, 19 May 2023 10:50:20 -0400
+X-MC-Unique: XowbH-SSNDqWIqs_y6BTgQ-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2af207a45bfso7173281fa.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:50:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507813; x=1687099813;
+ d=1e100.net; s=20221208; t=1684507818; x=1687099818;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dcZFU9WEz6IBrpIZ1MKLxB7FV3fbWZxqDG0kHJf8q0c=;
- b=l60q7NcniqLalCUGO+8itLYCRj/+P7LH4pc/y0TeYXVS9Tkz4MEMiyF2Ds606oBQxo
- 40gDEyWrJqZnMfbctEjHU+cze9h3wHNTllAATIBuZ0HoCBS8WgQVO5YC7NLXI7G3G/aH
- tUTRA7n4SBfhosaDhlYMeHiPlZgbC4Ke/TlemAc+plVFyDX+ygEi6A9rA6JKWaq06Zyo
- taNWqfyr8JYSBodQsJQLgdOY/3CI8xjFLZFf4PqvsEgRa/P8RPQrlBa2mRZK+MVp3jJy
- yqswssbb49NFKsvsYc5wqykp4w9Y8YsxplKRvM3a0tzUKZ1fsgq5AWfizv5zNmClzsp/
- SNTQ==
-X-Gm-Message-State: AC+VfDxpC5UUePjJG80nMxOc46aMyKbU0+cqWeMZZTqmy8FOaxiJdLC2
- 3Huk41xDzTAYdQUd/4SBb9FOUQuexgDJqeWb8rYbH4zQ0wqwahk9TmfJhdUyt2qEvZEw3A/D/TV
- XRmgjOQvBNhDT8Wy+xdxGppyRl5mgNa820R/RH/IQ+0gPenmhQ1U8YiizGn/xsc2soSd7
-X-Received: by 2002:a19:7413:0:b0:4f3:a99f:1ea7 with SMTP id
- v19-20020a197413000000b004f3a99f1ea7mr916257lfe.55.1684507813569; 
- Fri, 19 May 2023 07:50:13 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4qANQQRUmSyE/TwtD2r+IpS9G0Y5O23eLP02MTZn+bsKqVBPJfgYaeWMubiwF/XkW+ruYQ9A==
-X-Received: by 2002:a19:7413:0:b0:4f3:a99f:1ea7 with SMTP id
- v19-20020a197413000000b004f3a99f1ea7mr916251lfe.55.1684507813323; 
- Fri, 19 May 2023 07:50:13 -0700 (PDT)
+ bh=SJKuAz/JWMsZ+1DzNWbmPjnID9bsDA/kvaU7AtGkj/E=;
+ b=CmTH4/6GPHBhe29lt2mqqFBIPalNDo28xhxNj8Zn0SpA0r+Y6aYMdBRXlBi6sATyyj
+ fKAKFKee2ITkwhsvef0cvOdFu272RJ7cx8L03wOwWIHLTwpWODYGbkMY8G3qD+bsPSLz
+ rhz5aM86tdubj2rBEolKYbGvNQCRJjwUwd5YNEIIPNMYTmKgYgWZyUHEJ4qF2MrwB/nJ
+ z7tusl0GNO1OZhJjvclYBmMHAdDfeYnuVESxl9GLuzOa/+ikggsHcWTDPNDsceI8c1fd
+ c6BbB/b4QgrQx1QSIB9Xs9oH9nJu0ExPwvCkd/Qt23mKknStAy0orviJXLzX4vALt4DM
+ m8ww==
+X-Gm-Message-State: AC+VfDxjS+9J69lOXIIWJ9RLMpGNIim5ZSf7oIOlDtOiXM0sSPNt0lxG
+ kLKX8YBdqfxHinFd8WaGqJdANRpHctYpVJRp8zLaWMmltRhGXD0vQyx3er3Q3qXneOyg9CNxb8z
+ cHwI95Q9//LF+ZldJe9pG5I7tE6hYaEghpi2j2y6XmILQR9tdWlkops6/HRuPZJq39QqC
+X-Received: by 2002:a2e:320e:0:b0:2a6:1682:3a1e with SMTP id
+ y14-20020a2e320e000000b002a616823a1emr903207ljy.31.1684507818716; 
+ Fri, 19 May 2023 07:50:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6Awntf+GiRpdvXky++sABqbqKt+gwpgE8xRk8JtERdugO8JJfuCyRhrUMBNooKwTmrpVze6A==
+X-Received: by 2002:a2e:320e:0:b0:2a6:1682:3a1e with SMTP id
+ y14-20020a2e320e000000b002a616823a1emr903198ljy.31.1684507818456; 
+ Fri, 19 May 2023 07:50:18 -0700 (PDT)
 Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
- a15-20020ac2520f000000b004f393d4b51fsm620629lfl.190.2023.05.19.07.50.10
+ q5-20020a2e9145000000b002addd80bc8csm831276ljg.66.2023.05.19.07.50.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 May 2023 07:50:12 -0700 (PDT)
-Date: Fri, 19 May 2023 10:50:08 -0400
+ Fri, 19 May 2023 07:50:17 -0700 (PDT)
+Date: Fri, 19 May 2023 10:50:13 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 07/40] hw/cxl: drop pointless memory_region_transaction_guards
-Message-ID: <23e1248d7e3cb7331a1cee13ff109a5c52471ec2.1684507742.git.mst@redhat.com>
+Subject: [PULL 08/40] hw/cxl: Fix endian handling for decoder commit.
+Message-ID: <92ff7cabf97d9942ebaeafed6747dc18c8c1f697.1684507742.git.mst@redhat.com>
 References: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -77,15 +77,15 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1684507742.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,37 +103,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Not clear what intent was here, but probably based on a misunderstanding
-of what these guards are for.
+Not a real problem yet as all supported architectures are
+little endian, but continue to tidy these up when touching
+code for other reasons.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20230421135906.3515-2-Jonathan.Cameron@huawei.com>
+
+Message-Id: <20230421135906.3515-3-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/cxl/cxl-component-utils.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/cxl/cxl-component-utils.c | 8 ++++----
+ hw/mem/cxl_type3.c           | 9 ++++++---
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
 diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index b665d4f565..324be79b11 100644
+index 324be79b11..a3e6cf75cf 100644
 --- a/hw/cxl/cxl-component-utils.c
 +++ b/hw/cxl/cxl-component-utils.c
-@@ -47,14 +47,12 @@ static void dumb_hdm_handler(CXLComponentState *cxl_cstate, hwaddr offset,
+@@ -47,12 +47,12 @@ static void dumb_hdm_handler(CXLComponentState *cxl_cstate, hwaddr offset,
          break;
      }
  
--    memory_region_transaction_begin();
-     stl_le_p((uint8_t *)cache_mem + offset, value);
+-    stl_le_p((uint8_t *)cache_mem + offset, value);
      if (should_commit) {
-         ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, COMMIT, 0);
-         ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, ERR, 0);
-         ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, COMMITTED, 1);
+-        ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, COMMIT, 0);
+-        ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, ERR, 0);
+-        ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, COMMITTED, 1);
++        value = FIELD_DP32(value, CXL_HDM_DECODER0_CTRL, COMMIT, 0);
++        value = FIELD_DP32(value, CXL_HDM_DECODER0_CTRL, ERR, 0);
++        value = FIELD_DP32(value, CXL_HDM_DECODER0_CTRL, COMMITTED, 1);
      }
--    memory_region_transaction_commit();
++    stl_le_p((uint8_t *)cache_mem + offset, value);
  }
  
  static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 7647122cc6..a2a9b17dbb 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -314,14 +314,17 @@ static void hdm_decoder_commit(CXLType3Dev *ct3d, int which)
+ {
+     ComponentRegisters *cregs = &ct3d->cxl_cstate.crb;
+     uint32_t *cache_mem = cregs->cache_mem_registers;
++    uint32_t ctrl;
+ 
+     assert(which == 0);
+ 
++    ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL);
+     /* TODO: Sanity checks that the decoder is possible */
+-    ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, COMMIT, 0);
+-    ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, ERR, 0);
++    ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, COMMIT, 0);
++    ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, ERR, 0);
++    ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED, 1);
+ 
+-    ARRAY_FIELD_DP32(cache_mem, CXL_HDM_DECODER0_CTRL, COMMITTED, 1);
++    stl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL, ctrl);
+ }
+ 
+ static int ct3d_qmp_uncor_err_to_cxl(CxlUncorErrorType qmp_err)
 -- 
 MST
 
