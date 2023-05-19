@@ -2,92 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4400D709A48
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDBB709A6D
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 May 2023 16:50:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q01LW-0005LJ-8X; Fri, 19 May 2023 10:44:42 -0400
+	id 1q01QO-0006yl-PI; Fri, 19 May 2023 10:49:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01LU-0005Kl-8O
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:44:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QN-0006ya-1t
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q01LS-0002PV-Vy
- for qemu-devel@nongnu.org; Fri, 19 May 2023 10:44:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q01QL-0003G1-7C
+ for qemu-devel@nongnu.org; Fri, 19 May 2023 10:49:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684507478;
+ s=mimecast20190719; t=1684507779;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9Adt5IcIOen/FCzmeJ9ZKl4dQmt7S+GpjvrRhWvgpkw=;
- b=g8/dOZIdshc++EZQA9MwIlWChJThTIsP7OalbqogxUY4dvCrAWVjaqtw00Szkq/abOC57D
- 8jEoSs68f/+puyKBkWEfd7TkZEqK75xDwPYF/hRr2Q7LVuaHrG2HQdXHhPrjT45OHnwk7g
- mVTsY3LbrYUSz9LoFLCcA9p60ZbrihA=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1xdeVgMpfooe9go3slx9PNk5dyeYPABczVEFjcv6058=;
+ b=aJQ0KQKLi92T6uHPVlHeH6Ltzucm4YT5p2Nsaujh3ApJ/gmZtRlcrzC6CR0Jp36acn3c76
+ o7w4kKgbbvxWQLcrjmpOuF4rOHQCckXMUUGhTz4QWqm+h4gMvLXQsRdpY77GFgfZ1BfPKg
+ AI5HLJe2gI6vzls0yaRFw+OnJAg0oOI=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-EI1l0rnvNhORryVfaGwkmA-1; Fri, 19 May 2023 10:44:37 -0400
-X-MC-Unique: EI1l0rnvNhORryVfaGwkmA-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-510dd6ff768so2530829a12.2
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:44:35 -0700 (PDT)
+ us-mta-19-Pj5j6EYjPk2Eu82oFB_DDQ-1; Fri, 19 May 2023 10:49:38 -0400
+X-MC-Unique: Pj5j6EYjPk2Eu82oFB_DDQ-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-4f13ecb8f01so2123162e87.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 07:49:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684507474; x=1687099474;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9Adt5IcIOen/FCzmeJ9ZKl4dQmt7S+GpjvrRhWvgpkw=;
- b=Fm++eJM6KrG9yCAbcxsDTsyQEbtSrf2EfaTkKpd7rPCaqpPs7yTT3ROEZj0uc5qev9
- r2r6Mw2WaUI7UOpEtywaFptYTI5G/q9OQfaIxprdh238GM4KFLbFtMaHCM3CJFaXB/nR
- E/d8B4KZca8PZN4S0vjlYwZ/Re4jOUelN1Q8k4biyuXwwlsOXo+6O8Q9VUYiMi9KRksT
- e9SABEu3mt1VViML2bIomP32g2fDswo16gHeyjrBWr5W3exQclay6gDt+qO69n6D6f3O
- BjjTRhgLdJAZootIQ9gUYmIXcBDJI3/oaKBZyBr+3vbXtiTNJsXMYlKjLa+rtGVdH/zz
- SBQw==
-X-Gm-Message-State: AC+VfDwgi9MW9rk83gvRUPp8D/UbCaetV32etNKwgsJCpWXVWMN3qDdy
- PhekMjK2po7RDFENefHaPcwpD5vgnPPW6EH7Fs4o/Pmiz0bocYpnZx2TKeyRAhpAt9WJ1+aHx3q
- H+wCZDc7BUmY66B0=
-X-Received: by 2002:a17:907:2cc7:b0:959:18b2:454a with SMTP id
- hg7-20020a1709072cc700b0095918b2454amr1917217ejc.76.1684507474660; 
- Fri, 19 May 2023 07:44:34 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5MMo2hK0oMYQplXO2EET+zCHbds0t3NpnEPg3/PjndUcMeCcxvm6bYNdOsw/p9fZnytSuXqQ==
-X-Received: by 2002:a17:907:2cc7:b0:959:18b2:454a with SMTP id
- hg7-20020a1709072cc700b0095918b2454amr1917206ejc.76.1684507474354; 
- Fri, 19 May 2023 07:44:34 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
- (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
- [2003:cf:d723:b0c7:284b:5990:6336:f84f])
- by smtp.gmail.com with ESMTPSA id
- rk5-20020a170907214500b0094f3b18044bsm2363548ejb.218.2023.05.19.07.44.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 07:44:33 -0700 (PDT)
-Message-ID: <06e3f1ce-06a9-467c-ecf4-5966725642c1@redhat.com>
-Date: Fri, 19 May 2023 16:44:33 +0200
+ d=1e100.net; s=20221208; t=1684507776; x=1687099776;
+ h=content-transfer-encoding:content-disposition:mime-version
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1xdeVgMpfooe9go3slx9PNk5dyeYPABczVEFjcv6058=;
+ b=SfMymySIwL2hbapEQ6b2vnP0GkaLr2x9qMarcEkcUs08mefB2DWN4Fh/SLTQ12zwuu
+ XN9ct53akfsZyWB1OYKl4pVRR0SDqqH039PXBFYvNn29WKSBHxU8Z6XoonGzrx4HfNWi
+ Ir8V3187eRoKE8tM/0eb2uBP9L/ApbDJuUopAXglzLA2/6zJ3fYFtr1fihqphK9CrDEp
+ qu/m80UVN1oVRjy29m3HBRpNOLmMLnUqcfaQ5CvW8RxQfKWUbyzgTtXOE1V72EuFJXzX
+ FUTzf4AV2V2e0uM+S6ruc6uvccZ/jEpkMzRZ5FC7aMY782oIBG1JcCKHoipE0N1X4Y/c
+ Hs/g==
+X-Gm-Message-State: AC+VfDwfIVcyLF+lLE7H3VvmVaZCS+F/gtJMV0Nfw+ZNVxoQ/xDnk3Cq
+ 72H6yMxEmIV1Fh/Uk9EQJisDI5odLGg4DooCoYoE6KRoz8vegjOS3bF8f748rIk2Za/eeYmSRW2
+ eUxh2cY3dn0GOwAIaO8yta0dUS218h9dUFsTs8YIL/VVefcRYGNkKihq4Rbi2gg9VPBxA
+X-Received: by 2002:ac2:5333:0:b0:4ed:d2cf:857b with SMTP id
+ f19-20020ac25333000000b004edd2cf857bmr935642lfh.5.1684507776384; 
+ Fri, 19 May 2023 07:49:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6EkwJCnc20/f/WoH442j6POvLTI513BPvNyd5g+g9WUnMd04zjtK7ywvO+/ntdGxJAaKnLcQ==
+X-Received: by 2002:ac2:5333:0:b0:4ed:d2cf:857b with SMTP id
+ f19-20020ac25333000000b004edd2cf857bmr935636lfh.5.1684507775910; 
+ Fri, 19 May 2023 07:49:35 -0700 (PDT)
+Received: from redhat.com ([176.12.184.180]) by smtp.gmail.com with ESMTPSA id
+ w9-20020a19c509000000b004f391a2028dsm612062lfe.265.2023.05.19.07.49.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 May 2023 07:49:35 -0700 (PDT)
+Date: Fri, 19 May 2023 10:49:30 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/40] virtio,pc,pci: fixes, features, cleanups
+Message-ID: <cover.1684507742.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 06/19] cutils: Document differences between parse_uint
- and qemu_strtou64
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-Cc: armbru@redhat.com, richard.henderson@linaro.org
-References: <20230512021033.1378730-1-eblake@redhat.com>
- <20230512021033.1378730-7-eblake@redhat.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230512021033.1378730-7-eblake@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.527, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,22 +95,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12.05.23 04:10, Eric Blake wrote:
-> These two functions are subtly different, and not just because of
-> swapped parameter order.  It took me adding better unit tests to
-> figure out why.  Document the differences to make it more obvious to
-> developers trying to pick which one to use, as well as to aid in
-> upcoming semantic changes.
->
-> While touching the documentation, adjust a mis-statement: parse_uint
-> does not return -EINVAL on invalid base, but assert()s, like all the
-> other qemu_strto* functions that take a base argument.
->
-> Signed-off-by: Eric Blake <eblake@redhat.com>
-> ---
->   util/cutils.c | 20 ++++++++++++--------
->   1 file changed, 12 insertions(+), 8 deletions(-)
+The following changes since commit 297e8182194e634baa0cbbfd96d2e09e2a0bcd40:
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+  accel/tcg: Fix append_mem_cb (2023-05-18 09:28:44 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+
+for you to fetch changes up to 87af48a49c0a5663b3fff58c3407393772d3c448:
+
+  hw/i386/pc: No need for rtc_state to be an out-parameter (2023-05-19 10:30:46 -0400)
+
+----------------------------------------------------------------
+virtio,pc,pci: fixes, features, cleanups
+
+CXL volatile memory support
+More memslots for vhost-user on x86 and ARM.
+vIOMMU support for vhost-vdpa
+pcie-to-pci bridge can now be compiled out
+MADT revision bumped to 3
+Fixes, cleanups all over the place.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Bernhard Beschow (9):
+      hw/pci-host/i440fx: Inline sysbus_add_io()
+      hw/pci-host/q35: Inline sysbus_add_io()
+      hw/i386/pc_q35: Reuse machine parameter
+      hw/i386/pc_{q35,piix}: Reuse MachineClass::desc as SMB product name
+      hw/i386/pc_{q35,piix}: Minimize usage of get_system_memory()
+      hw/i386/pc: Initialize ram_memory variable directly
+      hw/pci-host/pam: Make init_pam() usage more readable
+      hw/i386/pc: Create RTC controllers in south bridges
+      hw/i386/pc: No need for rtc_state to be an out-parameter
+
+Brice Goglin (1):
+      docs/cxl: fix some typos
+
+Cindy Lu (4):
+      vhost: expose function vhost_dev_has_iommu()
+      vhost_vdpa: fix the input in trace_vhost_vdpa_listener_region_del()
+      vhost-vdpa: Add check for full 64-bit in region delete
+      vhost-vdpa: Add support for vIOMMU.
+
+David Hildenbrand (2):
+      virtio-mem: Default to "unplugged-inaccessible=on" with 8.1 on x86-64
+      vhost-user: Remove acpi-specific memslot limit
+
+Eric DeVolder (3):
+      ACPI: bios-tables-test.c step 2 (allowed-diff entries)
+      ACPI: i386: bump to MADT to revision 3
+      ACPI: bios-tables-test.c step 5 (update expected table binaries)
+
+Eugenio Pérez (1):
+      virtio-net: not enable vq reset feature unconditionally
+
+Gregory Price (2):
+      tests/qtest/cxl-test: whitespace, line ending cleanup
+      hw/cxl: Multi-Region CXL Type-3 Devices (Volatile and Persistent)
+
+Hao Zeng (1):
+      hw/cxl: cdat: Fix open file not closed in ct3_load_cdat()
+
+Hawkins Jiawei (1):
+      vhost: fix possible wrap in SVQ descriptor ring
+
+Ira Weiny (1):
+      hw/cxl: Introduce cxl_device_get_timestamp() utility function
+
+Jonathan Cameron (6):
+      hw/cxl: cdat: Fix failure to free buffer in erorr paths
+      hw/cxl: drop pointless memory_region_transaction_guards
+      hw/cxl: Fix endian handling for decoder commit.
+      hw/cxl: Fix incorrect reset of commit and associated clearing of committed.
+      hw/mem: Use memory_region_size() in cxl_type3
+      hw/cxl: rename mailbox return code type from ret_code to CXLRetCode
+
+Leonardo Bras (1):
+      hw/pci: Disable PCI_ERR_UNCOR_MASK register for machine type < 8.0
+
+Mauro Matteo Cascella (1):
+      virtio-crypto: fix NULL pointer dereference in virtio_crypto_free_request
+
+Raghu H (2):
+      docs/cxl: Remove incorrect CXL type 3 size parameter
+      docs/cxl: Replace unsupported AARCH64 with x86_64
+
+Sebastian Ott (1):
+      hw/pci-bridge: make building pcie-to-pci bridge configurable
+
+Stefan Hajnoczi (1):
+      vhost-user: send SET_STATUS 0 after GET_VRING_BASE
+
+Viktor Prutyanov (1):
+      virtio-pci: add handling of PCI ATS and Device-TLB enable/disable
+
+Vladimir Sementsov-Ogievskiy (2):
+      pci: pci_add_option_rom(): improve style
+      pci: pci_add_option_rom(): refactor: use g_autofree for path variable
+
+ hw/virtio/vhost-shadow-virtqueue.h            |   3 +
+ include/hw/cxl/cxl_device.h                   |  13 +-
+ include/hw/i386/pc.h                          |   3 +-
+ include/hw/pci-host/pam.h                     |   5 +-
+ include/hw/pci/pci.h                          |   2 +
+ include/hw/southbridge/ich9.h                 |   2 +
+ include/hw/southbridge/piix.h                 |   3 +
+ include/hw/virtio/vhost-vdpa.h                |  11 +
+ include/hw/virtio/vhost.h                     |   1 +
+ include/hw/virtio/virtio.h                    |   2 +
+ hw/core/machine.c                             |   1 +
+ hw/cxl/cxl-cdat.c                             |  60 ++---
+ hw/cxl/cxl-component-utils.c                  |  14 +-
+ hw/cxl/cxl-device-utils.c                     |  15 ++
+ hw/cxl/cxl-mailbox-utils.c                    | 107 ++++----
+ hw/i386/acpi-common.c                         |   2 +-
+ hw/i386/pc.c                                  |  22 +-
+ hw/i386/pc_piix.c                             |  18 +-
+ hw/i386/pc_q35.c                              |  19 +-
+ hw/isa/lpc_ich9.c                             |   8 +
+ hw/isa/piix3.c                                |  15 ++
+ hw/mem/cxl_type3.c                            | 342 +++++++++++++++++++-------
+ hw/net/virtio-net.c                           |   1 -
+ hw/pci-bridge/cxl_upstream.c                  |   3 +
+ hw/pci-host/i440fx.c                          |  15 +-
+ hw/pci-host/pam.c                             |  12 +-
+ hw/pci-host/q35.c                             |  14 +-
+ hw/pci/pci.c                                  |  29 +--
+ hw/pci/pcie_aer.c                             |  11 +-
+ hw/virtio/vhost-shadow-virtqueue.c            |   5 +-
+ hw/virtio/vhost-user.c                        |  28 ++-
+ hw/virtio/vhost-vdpa.c                        | 168 ++++++++++++-
+ hw/virtio/vhost.c                             |   2 +-
+ hw/virtio/virtio-crypto.c                     |  18 +-
+ hw/virtio/virtio-mem.c                        |   2 +-
+ hw/virtio/virtio-pci.c                        |  36 +++
+ tests/qtest/bios-tables-test.c                |   8 +-
+ tests/qtest/cxl-test.c                        | 140 ++++++++---
+ docs/about/deprecated.rst                     |   8 +
+ docs/system/devices/cxl.rst                   |  63 +++--
+ hw/isa/Kconfig                                |   2 +
+ hw/pci-bridge/Kconfig                         |   5 +
+ hw/pci-bridge/meson.build                     |   3 +-
+ tests/data/acpi/microvm/APIC                  | Bin 70 -> 70 bytes
+ tests/data/acpi/microvm/APIC.ioapic2          | Bin 82 -> 82 bytes
+ tests/data/acpi/microvm/APIC.pcie             | Bin 110 -> 110 bytes
+ tests/data/acpi/pc/APIC                       | Bin 120 -> 120 bytes
+ tests/data/acpi/pc/APIC.acpihmat              | Bin 128 -> 128 bytes
+ tests/data/acpi/pc/APIC.cphp                  | Bin 160 -> 160 bytes
+ tests/data/acpi/pc/APIC.dimmpxm               | Bin 144 -> 144 bytes
+ tests/data/acpi/q35/APIC                      | Bin 120 -> 120 bytes
+ tests/data/acpi/q35/APIC.acpihmat             | Bin 128 -> 128 bytes
+ tests/data/acpi/q35/APIC.acpihmat-noinitiator | Bin 144 -> 144 bytes
+ tests/data/acpi/q35/APIC.core-count2          | Bin 2478 -> 2478 bytes
+ tests/data/acpi/q35/APIC.cphp                 | Bin 160 -> 160 bytes
+ tests/data/acpi/q35/APIC.dimmpxm              | Bin 144 -> 144 bytes
+ tests/data/acpi/q35/APIC.xapic                | Bin 2686 -> 2686 bytes
+ 57 files changed, 900 insertions(+), 341 deletions(-)
 
 
