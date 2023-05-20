@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFF670A4F5
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 05:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B6570A54F
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 06:23:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0DMV-0005Xr-Rx; Fri, 19 May 2023 23:34:31 -0400
+	id 1q0E6K-0002y0-2f; Sat, 20 May 2023 00:21:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q0DMT-0005Xe-Im
- for qemu-devel@nongnu.org; Fri, 19 May 2023 23:34:29 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0E6I-0002xb-5s
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 00:21:50 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q0DMR-0004S2-AL
- for qemu-devel@nongnu.org; Fri, 19 May 2023 23:34:28 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-64d426e63baso681288b3a.0
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 20:34:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0E6G-0003ln-JW
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 00:21:49 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-309d3e8777cso197071f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 21:21:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684553665; x=1687145665;
+ d=linaro.org; s=google; t=1684556507; x=1687148507;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8Od08UhMq25QIsi7/cQ4Wcalbl37ZYXdHQAb1S1hTA0=;
- b=V72BfvwwHWpZ3Z00LlTcLXV2RzUwHr4BEE35XwQFrh8Pa1EI3B22jxMIlG7u8hoFPR
- KZvYd/alyo9y5T8+FB68yFg1YMdmQ22+mEeP1RnUDjVajO+y4j3/55Zo77XYH3HfCq2e
- dqOLwnrlt0s4sYiouV/h5IqrsF6RzFMRg4Lj/YwWX77O3IhdbMED4SldbDJ5weezIOyE
- 3Vyzp52iMP0i4EPrq2yLxlF3kRef+T7cV+i0QdrguZzh4y2Y+FDBpQdD88eOeNoCH7E2
- E+xjJu44TC71rp0hIS7o/evWqPEB9z2brEck66TUaVz1aoYm2+t8VbOL/wAb2uia9jTT
- Z13A==
+ bh=9L++UuYY0EHz3yiv5WPTM6cAEkrR/f/dIGRBMDbQPJ0=;
+ b=MgUHVozj2HliXcmx47Bw9aO6dQMuf1CdJ27HE2wCF3rO4qOAQmU/vkzzu0w2pYgDX9
+ qhvjTfcaXinlWEMG3nOPGYlC2eZcQanBeAWvIV/RebOKJGkeE3Rpk1O5fTo1IP7mIwQC
+ +rj2sx/j2yKfqS73kcFLFyICKV+/96yOowpaub+LXsGkDUG3c45VboCu4kkUn5HttSlY
+ 08oN/HM3tDSByoj7oxr7A7FQ+bRdHLL2aBhA90B77OIV2EliyE7fmqxd9tuJgR98ECIf
+ /OJiY6Jcr1QTkrEl4cSGo+IaxRMlnp5OTlKgf/Jo94IbToukkNnVwizFhDUuBKCE7T9t
+ qubw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684553665; x=1687145665;
+ d=1e100.net; s=20221208; t=1684556507; x=1687148507;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8Od08UhMq25QIsi7/cQ4Wcalbl37ZYXdHQAb1S1hTA0=;
- b=Gx4SsXaPQLdUo8KxphenKO+yWsTq4tHtQ18bzNs6asxBe0r6hQ45q1GHZaKMwa3j6i
- u+zBpwm4PKU/oOTbDXxbLcsprMWmx3eahOGDphFGiDBzqaICWE11FECRoPbWL6RlmWeD
- FpQPtTlUCyZrmb1qFlSfOjmM3am8+plTIPhznrA3GYcY4aJn6B60J1GS24t8a0Z+arQt
- WO8X7AuXmbitnyvxuhdteY/jcX0d+rhfVkHuXiU0q7aOi3yRaQpoJutIuBPdHvLeD3SO
- 0B3EnZyOsu0+yNOyLgGVWykMKOr55AJFzk19Jm6HSc6GoraCT6m/EUCvjefKv314XmCO
- Ch5g==
-X-Gm-Message-State: AC+VfDxBWDbmjm1D+4DyeuBa7JUyXKOmMfKwtviVsd8TsrWB2umOGpG8
- 525HK24bNDHR5UHFqouvnWaITg==
-X-Google-Smtp-Source: ACHHUZ6KKJWTDPZt1zG9aP3rHvopUsckG8pgdKrHPSyce2XlwA0gFp3F+7XBWF4JGGMCmhxWnHBbXg==
-X-Received: by 2002:a05:6a00:2d90:b0:643:5d7a:a898 with SMTP id
- fb16-20020a056a002d9000b006435d7aa898mr6118766pfb.0.1684553665356; 
- Fri, 19 May 2023 20:34:25 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:686f:d1bb:8fc4:dc38?
- ([2602:ae:1598:4c01:686f:d1bb:8fc4:dc38])
- by smtp.gmail.com with ESMTPSA id
- a23-20020a62bd17000000b00649281e2f03sm364542pff.141.2023.05.19.20.34.24
+ bh=9L++UuYY0EHz3yiv5WPTM6cAEkrR/f/dIGRBMDbQPJ0=;
+ b=eK+K3lE7/3ihxMgGFB6fIILdLycEG/5l5WVYc3hz19KfEWmtXQkCXqpA/BNOwq4v8o
+ 1TRAlF9j/6FXB2JUZWwcXchp35bfBUtgmd+nGz4dOzJJcwsfHx+Jama6XdwTxza+b6ul
+ +loipneQcFyGvcpLerGkNjEghhzYqxA8fIlgwRZ9yWr1pkpVKui5xATVYB/IIYEq4X4x
+ vW8BARaFrZTQSCgzhqMYBIDucFJFdYEbNwHp8oulYwUUYqq+p3yFLHjrS5kcX88lX9vR
+ n5Fd7t7rde7vQ3Kwkc1XzJA22S6VrIpdz6xjL//mdjzqUVehgoeMDiiZsmSx34z6CLHF
+ zGsA==
+X-Gm-Message-State: AC+VfDyu+i6yg6KzkJwLQFWzF66vhyL2UfuOcQoiA2PplGBw6NqeMoUs
+ gCMooWvvEqDL0hDI4zGd19wjRg==
+X-Google-Smtp-Source: ACHHUZ7d+24cJuxOFc7Ji5UC8rjIJbY6foTS2BZ9yiP3evsOuGWp9Lff+ac9OGyUAWFvktlQfUWauQ==
+X-Received: by 2002:adf:f64f:0:b0:2f8:33bd:a170 with SMTP id
+ x15-20020adff64f000000b002f833bda170mr5907688wrp.32.1684556506756; 
+ Fri, 19 May 2023 21:21:46 -0700 (PDT)
+Received: from [192.168.69.115] (mau49-h01-176-184-41-228.dsl.sta.abo.bbox.fr.
+ [176.184.41.228]) by smtp.gmail.com with ESMTPSA id
+ z14-20020a7bc7ce000000b003f4b6bcbd8bsm956536wmk.31.2023.05.19.21.21.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 May 2023 20:34:24 -0700 (PDT)
-Message-ID: <04aa362a-041a-fb18-7ffa-c75555c11ca9@linaro.org>
-Date: Fri, 19 May 2023 20:34:23 -0700
+ Fri, 19 May 2023 21:21:46 -0700 (PDT)
+Message-ID: <381a8c29-66ae-c998-6d18-0fdff7995139@linaro.org>
+Date: Sat, 20 May 2023 06:21:44 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/40] virtio,pc,pci: fixes, features, cleanups
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH 2/8] plugins: fix memory leak while parsing options
 Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-References: <cover.1684507742.git.mst@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <cover.1684507742.git.mst@redhat.com>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>
+Cc: Yanan Wang <wangyanan55@huawei.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marco Liebel <mliebel@qti.qualcomm.com>,
+ Mark Burton <mburton@qti.qualcomm.com>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+References: <20230519170454.2353945-1-alex.bennee@linaro.org>
+ <20230519170454.2353945-3-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230519170454.2353945-3-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,34 +105,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/19/23 07:49, Michael S. Tsirkin wrote:
-> The following changes since commit 297e8182194e634baa0cbbfd96d2e09e2a0bcd40:
+On 19/5/23 19:04, Alex Bennée wrote:
+> It was hard to track down this leak as it was an internal allocation
+> by glib and the backtraces did not give much away. The autofree was
+> freeing the allocation with g_free() but not taking care of the
+> individual strings. They should have been freed with g_strfreev()
+> instead.
 > 
->    accel/tcg: Fix append_mem_cb (2023-05-18 09:28:44 -0700)
+> Searching the glib source code for the correct string free function
+> led to:
 > 
-> are available in the Git repository at:
+>    G_DEFINE_AUTO_CLEANUP_FREE_FUNC(GStrv, g_strfreev, NULL)
 > 
->    https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git  tags/for_upstream
+> and indeed if you read to the bottom of the documentation page you
+> will find:
 > 
-> for you to fetch changes up to 87af48a49c0a5663b3fff58c3407393772d3c448:
+>    typedef gchar** GStrv;
 > 
->    hw/i386/pc: No need for rtc_state to be an out-parameter (2023-05-19 10:30:46 -0400)
-> 
-> ----------------------------------------------------------------
-> virtio,pc,pci: fixes, features, cleanups
-> 
-> CXL volatile memory support
-> More memslots for vhost-user on x86 and ARM.
-> vIOMMU support for vhost-vdpa
-> pcie-to-pci bridge can now be compiled out
-> MADT revision bumped to 3
-> Fixes, cleanups all over the place.
-> 
-> Signed-off-by: Michael S. Tsirkin<mst@redhat.com>
+>    A typedef alias for gchar**. This is mostly useful when used together with g_auto().
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+So possibly glib could improve by declaring g_strsplit()
+(and co) returning a GStrv instead of a gchar** type?
 
+> So fix up all the g_autofree g_strsplit case that smugly thought they
+> had de-allocation covered.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   contrib/plugins/cache.c     | 2 +-
+>   contrib/plugins/drcov.c     | 2 +-
+>   contrib/plugins/execlog.c   | 2 +-
+>   contrib/plugins/hotblocks.c | 2 +-
+>   contrib/plugins/hotpages.c  | 2 +-
+>   contrib/plugins/howvec.c    | 2 +-
+>   contrib/plugins/hwprofile.c | 2 +-
+>   contrib/plugins/lockstep.c  | 2 +-
+>   tests/plugin/bb.c           | 2 +-
+>   tests/plugin/insn.c         | 2 +-
+>   tests/plugin/mem.c          | 2 +-
+>   tests/plugin/syscall.c      | 2 +-
+>   12 files changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/contrib/plugins/cache.c b/contrib/plugins/cache.c
+> index 2e25184a7f..5036213f1b 100644
+> --- a/contrib/plugins/cache.c
+> +++ b/contrib/plugins/cache.c
+> @@ -772,7 +772,7 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
+>   
+>       for (i = 0; i < argc; i++) {
+>           char *opt = argv[i];
+> -        g_autofree char **tokens = g_strsplit(opt, "=", 2);
+> +        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
 
-r~
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
