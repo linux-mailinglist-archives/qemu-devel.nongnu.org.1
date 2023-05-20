@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039F070A917
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 18:28:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CD670A91A
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 18:28:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0PQH-0003kL-Rm; Sat, 20 May 2023 12:27:13 -0400
+	id 1q0PQJ-0003mZ-QN; Sat, 20 May 2023 12:27:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q0PQ9-0003fO-64
+ id 1q0PQ9-0003fJ-4F
  for qemu-devel@nongnu.org; Sat, 20 May 2023 12:27:06 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q0PQ3-00039B-1v
+ id 1q0PQ3-00039N-25
  for qemu-devel@nongnu.org; Sat, 20 May 2023 12:27:03 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1ae851f2a7dso11661935ad.0
- for <qemu-devel@nongnu.org>; Sat, 20 May 2023 09:26:57 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1ae6dce19f7so20701315ad.3
+ for <qemu-devel@nongnu.org>; Sat, 20 May 2023 09:26:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684600016; x=1687192016;
+ d=linaro.org; s=google; t=1684600017; x=1687192017;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AHAmgIp57eQq/xk6K8cmnraRLR5HX4TvEutgtaIW/48=;
- b=gVu4BAXH5NbAJI0BPJ2q1YYcSDfuVbxJV8Jtpze6pFN5Ow8tbjCDYwsd2Hnre/CYWS
- x0Nq25pzGKhpqA9bacvZy6inhNLlfysgpqUDWKgBQpYn9IRIb8soCNynNGTkC+2uU/Cj
- uH6JFJg2SfTGpcFQDbcJukVweHHZDiU2/PunLTbIvp18RB+i+whcWyA2+W776LmSMDsE
- woqwHEGtaulH8/orhywc189NWc1dG5YwChzo9TL8Zy0ZIYI0UcIpQi3Z26KgVyaWKReZ
- yGCVdEKH/b3T49/aMM/NDkmsLfUzD7AHrEGNx39ue+/84KctH16mbh+qKG69oJM2sLvD
- DZ/w==
+ bh=2DqFQEVjlcRQv07fj6FpnhLPU4q7Af597SdqlFdm/+U=;
+ b=lGaHcHYcW5sessr2JXeHN3gEF1bQzcAqnz0Z2gpqw7SBttpcTsXKlN6oMp0WuV6JP8
+ UMLwxrg6zUclXcwkwmbD2vc/+o62K56rf/QeJvAiIl6X8sp3hgWJDs1QEuh5qifTQO57
+ zmNYgtYq4A8pc7d5d3z3xv3wze05HGzxpcU5GcWc1YLBm21dZc9JjoYkyAETHIPpWmbl
+ sRsPb0hzWfBXmOTxQiL+lrRnH6kSZ4sItIWbx/rsdCjm4jVqJAI5VSRzVHVcRvb/KSAp
+ Yp4Y6naleRuQ2/c1/gpZzN3DTeEJ7rNbGyC24f0+ybBNUJO/N1e83y11KvmSqpHOj5+g
+ 7SzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684600016; x=1687192016;
+ d=1e100.net; s=20221208; t=1684600017; x=1687192017;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AHAmgIp57eQq/xk6K8cmnraRLR5HX4TvEutgtaIW/48=;
- b=aokROlIISklo7EEWDhe+3MXcsN8FgvW+Vgqt//8Sfa1aMXHfd6k/o2jKrtGqYW8WzR
- Ca64DhWBqwTKiyV27udMN7sJu0Hxa/0lxVgUhfJB+eLDZefMUhHxwx16OWJ5QiJ9l8uv
- VR+1gaM2ouF98hiGmIiP63FxebK204xjCS+ETbLZ8LKYRi3AkB6Zw905t6Gzk1EqLic9
- L4t/WPuToyIopdD/BZdnmQSNudmfM+cULb2wxYvSAyUVo/C0xFC9IoUd67zV3akloaW5
- w6YAE5WXT/Dbiyrp1OLqqTdvdkJ2wA3f9cjo6pMGovmHSplZNxHQcBty/5MYV/vE/ji0
- 67CQ==
-X-Gm-Message-State: AC+VfDxT3R4DRMnv5PcKT79mcsu29fnkTam3pU888sKcj7IpFk4tp1ZJ
- r75ixIVXesZQRjgcMQwWKHEzVjtGTkxcdHQllDI=
-X-Google-Smtp-Source: ACHHUZ6hdvvLmHaOP+THgifHMGSA4GtZDo0e5lX8T9I4QYRCIFgi+8xNyWPO/hWc+Thee4wZ76gFIA==
-X-Received: by 2002:a17:902:ce81:b0:1ac:61ad:d6f2 with SMTP id
- f1-20020a170902ce8100b001ac61add6f2mr6773788plg.5.1684600016500; 
- Sat, 20 May 2023 09:26:56 -0700 (PDT)
+ bh=2DqFQEVjlcRQv07fj6FpnhLPU4q7Af597SdqlFdm/+U=;
+ b=hA73ODfY6XQ59xDch3OqJ3B0AbvqP+vm7pA3iF3J3j7KttMLi0DMr2eStHFpkwuUsM
+ qKF79QMUudfdt/d0hWfP5IBezTGEq7nrVMxIPYY1x0YM5CfvGy9tIsSFBs93a6Ls/E+t
+ 7X0A8BEropQKID9MGZXAydPRwz4IAgea032p1dw4UVPpjVPxDvww9sQHkh/itAOt3ffP
+ y1eqRbf3oRbqp70RJeKNvk5UJb3I86BsfXurpzjgtXqQTk1CDKK1hDKQH17nupDzpR3q
+ 3f8Kf9WFg/Q0p42HmUfMmRlroTzncztboqNNMbRV3B/y2b5Rv3Z7kwjefm3tpNeMybsz
+ SfAg==
+X-Gm-Message-State: AC+VfDyOwmsbUtn73apO8w6b+BSqHhWSv1fMe+KoUxu8c5WP2x+dsFqG
+ b9nOOalyTzsYesd8/M0s6VRxXPRapq30JJ0GDoA=
+X-Google-Smtp-Source: ACHHUZ5aer9MErtKXFS19KMiuw77IWTbGofST9DKlY6Ok1uCUGwmRa6MUXV0AMm8FSHPBu25tN0dkg==
+X-Received: by 2002:a17:903:2444:b0:1aa:f203:781c with SMTP id
+ l4-20020a170903244400b001aaf203781cmr7423499pls.44.1684600017246; 
+ Sat, 20 May 2023 09:26:57 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:d078:d94e:cb2b:a055])
  by smtp.gmail.com with ESMTPSA id
- d12-20020a170903230c00b001a5260a6e6csm1697104plh.206.2023.05.20.09.26.55
+ d12-20020a170903230c00b001a5260a6e6csm1697104plh.206.2023.05.20.09.26.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sat, 20 May 2023 09:26:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 12/27] meson: Fix detect atomic128 support with optimization
-Date: Sat, 20 May 2023 09:26:19 -0700
-Message-Id: <20230520162634.3991009-13-richard.henderson@linaro.org>
+Subject: [PATCH 13/27] include/qemu: Move CONFIG_ATOMIC128_OPT handling to
+ atomic128.h
+Date: Sat, 20 May 2023 09:26:20 -0700
+Message-Id: <20230520162634.3991009-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230520162634.3991009-1-richard.henderson@linaro.org>
 References: <20230520162634.3991009-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,27 +92,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Silly typo: sizeof(16) != 16.
+Not only the routines in ldst_atomicity.c.inc need markup,
+but also the ones in the headers.
 
-Fixes: e61f1efeb730 ("meson: Detect atomic128 support with optimization")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ host/include/generic/host/atomic128-cas.h  | 12 ++++++++----
+ host/include/generic/host/atomic128-ldst.h | 18 ++++++++++++------
+ include/qemu/atomic128.h                   | 17 +++++++++++++++++
+ accel/tcg/ldst_atomicity.c.inc             | 17 -----------------
+ 4 files changed, 37 insertions(+), 27 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 4ffc0d3e59..5e7fc6345f 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2555,7 +2555,7 @@ if has_int128
-   # __alignof(unsigned __int128) for the host.
-   atomic_test_128 = '''
-     int main(int ac, char **av) {
--      unsigned __int128 *p = __builtin_assume_aligned(av[ac - 1], sizeof(16));
-+      unsigned __int128 *p = __builtin_assume_aligned(av[ac - 1], 16);
-       p[1] = __atomic_load_n(&p[0], __ATOMIC_RELAXED);
-       __atomic_store_n(&p[2], p[3], __ATOMIC_RELAXED);
-       __atomic_compare_exchange_n(&p[4], &p[5], p[6], 0, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
+diff --git a/host/include/generic/host/atomic128-cas.h b/host/include/generic/host/atomic128-cas.h
+index 513622fe34..991d3da082 100644
+--- a/host/include/generic/host/atomic128-cas.h
++++ b/host/include/generic/host/atomic128-cas.h
+@@ -12,24 +12,28 @@
+ #define HOST_ATOMIC128_CAS_H
+ 
+ #if defined(CONFIG_ATOMIC128)
+-static inline Int128 atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
++static inline Int128 ATTRIBUTE_ATOMIC128_OPT
++atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
+ {
++    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
+     Int128Alias r, c, n;
+ 
+     c.s = cmp;
+     n.s = new;
+-    r.i = qatomic_cmpxchg__nocheck((__int128_t *)ptr, c.i, n.i);
++    r.i = qatomic_cmpxchg__nocheck(ptr_align, c.i, n.i);
+     return r.s;
+ }
+ # define HAVE_CMPXCHG128 1
+ #elif defined(CONFIG_CMPXCHG128)
+-static inline Int128 atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
++static inline Int128 ATTRIBUTE_ATOMIC128_OPT
++atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
+ {
++    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
+     Int128Alias r, c, n;
+ 
+     c.s = cmp;
+     n.s = new;
+-    r.i = __sync_val_compare_and_swap_16((__int128_t *)ptr, c.i, n.i);
++    r.i = __sync_val_compare_and_swap_16(ptr_align, c.i, n.i);
+     return r.s;
+ }
+ # define HAVE_CMPXCHG128 1
+diff --git a/host/include/generic/host/atomic128-ldst.h b/host/include/generic/host/atomic128-ldst.h
+index e7354a9255..46911dfb61 100644
+--- a/host/include/generic/host/atomic128-ldst.h
++++ b/host/include/generic/host/atomic128-ldst.h
+@@ -12,32 +12,38 @@
+ #define HOST_ATOMIC128_LDST_H
+ 
+ #if defined(CONFIG_ATOMIC128)
+-static inline Int128 atomic16_read(Int128 *ptr)
++static inline Int128 ATTRIBUTE_ATOMIC128_OPT
++atomic16_read(Int128 *ptr)
+ {
++    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
+     Int128Alias r;
+ 
+-    r.i = qatomic_read__nocheck((__int128_t *)ptr);
++    r.i = qatomic_read__nocheck(ptr_align);
+     return r.s;
+ }
+ 
+-static inline void atomic16_set(Int128 *ptr, Int128 val)
++static inline void ATTRIBUTE_ATOMIC128_OPT
++atomic16_set(Int128 *ptr, Int128 val)
+ {
++    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
+     Int128Alias v;
+ 
+     v.s = val;
+-    qatomic_set__nocheck((__int128_t *)ptr, v.i);
++    qatomic_set__nocheck(ptr_align, v.i);
+ }
+ 
+ # define HAVE_ATOMIC128 1
+ #elif !defined(CONFIG_USER_ONLY) && HAVE_CMPXCHG128
+-static inline Int128 atomic16_read(Int128 *ptr)
++static inline Int128 ATTRIBUTE_ATOMIC128_OPT
++atomic16_read(Int128 *ptr)
+ {
+     /* Maybe replace 0 with 0, returning the old value.  */
+     Int128 z = int128_make64(0);
+     return atomic16_cmpxchg(ptr, z, z);
+ }
+ 
+-static inline void atomic16_set(Int128 *ptr, Int128 val)
++static inline void ATTRIBUTE_ATOMIC128_OPT
++atomic16_set(Int128 *ptr, Int128 val)
+ {
+     Int128 old = *ptr, cmp;
+     do {
+diff --git a/include/qemu/atomic128.h b/include/qemu/atomic128.h
+index 3a8adb4d47..34554bf0ac 100644
+--- a/include/qemu/atomic128.h
++++ b/include/qemu/atomic128.h
+@@ -15,6 +15,23 @@
+ 
+ #include "qemu/int128.h"
+ 
++/*
++ * If __alignof(unsigned __int128) < 16, GCC may refuse to inline atomics
++ * that are supported by the host, e.g. s390x.  We can force the pointer to
++ * have our known alignment with __builtin_assume_aligned, however prior to
++ * GCC 13 that was only reliable with optimization enabled.  See
++ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107389
++ */
++#if defined(CONFIG_ATOMIC128_OPT)
++# if !defined(__OPTIMIZE__)
++#  define ATTRIBUTE_ATOMIC128_OPT  __attribute__((optimize("O1")))
++# endif
++# define CONFIG_ATOMIC128
++#endif
++#ifndef ATTRIBUTE_ATOMIC128_OPT
++# define ATTRIBUTE_ATOMIC128_OPT
++#endif
++
+ /*
+  * GCC is a house divided about supporting large atomic operations.
+  *
+diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+index ba5db7c366..b89631bbef 100644
+--- a/accel/tcg/ldst_atomicity.c.inc
++++ b/accel/tcg/ldst_atomicity.c.inc
+@@ -16,23 +16,6 @@
+ #endif
+ #define HAVE_al8_fast      (ATOMIC_REG_SIZE >= 8)
+ 
+-/*
+- * If __alignof(unsigned __int128) < 16, GCC may refuse to inline atomics
+- * that are supported by the host, e.g. s390x.  We can force the pointer to
+- * have our known alignment with __builtin_assume_aligned, however prior to
+- * GCC 13 that was only reliable with optimization enabled.  See
+- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107389
+- */
+-#if defined(CONFIG_ATOMIC128_OPT)
+-# if !defined(__OPTIMIZE__)
+-#  define ATTRIBUTE_ATOMIC128_OPT  __attribute__((optimize("O1")))
+-# endif
+-# define CONFIG_ATOMIC128
+-#endif
+-#ifndef ATTRIBUTE_ATOMIC128_OPT
+-# define ATTRIBUTE_ATOMIC128_OPT
+-#endif
+-
+ #if defined(CONFIG_ATOMIC128)
+ # define HAVE_al16_fast    true
+ #else
 -- 
 2.34.1
 
