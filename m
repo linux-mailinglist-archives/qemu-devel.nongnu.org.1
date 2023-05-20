@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EBE70A5C2
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 07:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4A670A5BE
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 07:46:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0FPO-0007Kl-SD; Sat, 20 May 2023 01:45:38 -0400
+	id 1q0FPP-0007Lj-6A; Sat, 20 May 2023 01:45:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FP5-0007DP-BX
- for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:22 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FP8-0007DZ-Kl
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:24 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FP1-0007bZ-Ez
- for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:18 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3078a3f3b5fso3931347f8f.0
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 22:45:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FP6-0007c1-Nn
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:22 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3f423521b10so26269125e9.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 22:45:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684561513; x=1687153513;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=KPXfjzpgnUnJ+Ee8FGyGU5PT2PYy9bLcVqwty/Mu0pM=;
- b=Dnz2plYFZml0O3yiwpZx1EGdqBt8yOEnk2d7diFjU5vaTepF36k1HmsJtaz/qqvZrN
- jtm/ZFDLMOnUHh+rQLFayybsshVlvYCnJGgqps0ZqvJ6foTIHnJwxiX1dJdX5eLfuEqd
- njcBQM9AcatDe+Pmfjf3fD8kmOiJcn+S82bPeNeZh0n9ElwgEhKJAGAD2EADNj/yAfu+
- 5THTUe3Raa1+qIFH6gi3cvhacIIj/T6SSkXnwd5gtc/biS2B3jQ6/eDRDnkngWeRfEMf
- qBRTHir6v7LYIHzEkFF5SNtWnFdXfSBHqxj5kGZ9hU0Vh4lNe6hDdLSAcovR0uxFV2/L
- qKHw==
+ d=linaro.org; s=google; t=1684561518; x=1687153518;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QoiLKMEOX41tFLy0qcfFWPV2O7S+2JSUpMk1QMM25jk=;
+ b=V76Eq+YECNX7VaDfDoQ/AsLC3xPuSpCb7UZocxiXVHsnBJkZ5N5WqVSdD1YGA0TMiU
+ J7MPqWxTwZx2HkF0Uoy4+IoYKcmL2LSnSG895WdDUj9bx/QGTXyyfkv7QHVyRpcL5aI3
+ Gfzf+CFn4Njd8KjaT8nl4H+pFX644qN8ZnBjogR39sf+IXWMudIf+ur0W/4ayLw6NpCN
+ Px2dmXOKp1b3KJUgBdAslLx0ID8GW+Mx0nxvk5Dc4WgKNbC4p8iQtj3x0DH4KkpmwM8n
+ 2UC1009K7PTAyb0njdpUFh1TFC6qK6YnenNuTkukHL5mR/FJwUcbk6tNg2nnPVNKvqDs
+ UE6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684561513; x=1687153513;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KPXfjzpgnUnJ+Ee8FGyGU5PT2PYy9bLcVqwty/Mu0pM=;
- b=cytNoNVGH+FjMOrI66deTKCt5lrn+kKU0DWX6ETPytC67fYqIOU5q2yCVKWmjDwjFq
- 3xFwWyac6SigPug5UmT87Z2kohTltIm+P+pCofOHnxcJULBjFVyEBZhzX6EiVDvaEaqK
- iCMGThDA3zvmASkeB+Xm3uH4RdNbcNiTUbesh2wJr9ULXILWnHMgnzSBWFosMjK3ZtDD
- lZFwumxbSTcWtaG+XMpYTa/CQjTxYNOqIegRCLIm9oE63jQvAeWm8lYpea6xTi/Uj1A+
- yuVMQJ+uwZhlP+jnEjNg0Q5f+8mY3DTNW2Ci3HhlNuANeSAAB6ZPSUlMQW1tJuElzPgD
- zSZA==
-X-Gm-Message-State: AC+VfDwv+326zGY61U6OhJ1arim7p9F3aRdlWpDfIEO5EaEyBrObmBTM
- yibR0wbPiWZcmEGlEm995/MLM5BcoHnwHQ52VjQ=
-X-Google-Smtp-Source: ACHHUZ55a40q1IxRIUR9v8HNNTTLN1tCbGBVHpqg9tdZz8WQiu0FJnZacv3D9Qdd/61azHwJFFJUVw==
-X-Received: by 2002:a05:6000:1109:b0:304:79c1:725d with SMTP id
- z9-20020a056000110900b0030479c1725dmr2953422wrw.45.1684561513260; 
- Fri, 19 May 2023 22:45:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684561518; x=1687153518;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QoiLKMEOX41tFLy0qcfFWPV2O7S+2JSUpMk1QMM25jk=;
+ b=HL0HWAEpViRWAubiEOghOuNtdSn7ngtqB8OIjs1LHQReQCsAX6PwX6AYDsAg4uMUR/
+ SJhkDjgznmqBaLUAMpzUgShsXCKTYhYjYyvpClRh3U8R0zy6XsdrbrowNfEYSw21q6ja
+ sXJApZAX7Mb4iI1pJKu3QnZ0LMIhg4W2lh7UfypqhaZxg2e6cBkWjtUOIz6fxuEiyN2E
+ fsz+ACOC3snWkc9wo4zulsqitzXmmQwfffNaf1OtVfJ+PbcnBC3Ne42GjE2Bw1ENKNF8
+ NMPyAuRGPqKnW+foxchOlGROPJ83RLM3LG4vl77PNlJZxsemI4aq2OMZ/UT2bGPJ6nbp
+ JnVA==
+X-Gm-Message-State: AC+VfDxvGLryA6fS6OxC8leN8Lx9YK4xda0kA5DQ5o0cyT3EW0vl39p0
+ 2CZf3Uyo6AyHxUXCBGXEAIkO/DX2lxd2D7klaLo=
+X-Google-Smtp-Source: ACHHUZ4csgNyyT/psF7HgptwDPAqaL5PythaxSAos8jHh6FNFfYt6y9UmPWol2OiVVQ6gEzfs4yH4A==
+X-Received: by 2002:a05:600c:ac6:b0:3f1:8c5f:dfc5 with SMTP id
+ c6-20020a05600c0ac600b003f18c5fdfc5mr2749103wmr.39.1684561518473; 
+ Fri, 19 May 2023 22:45:18 -0700 (PDT)
 Received: from localhost.localdomain
  (mau49-h01-176-184-41-228.dsl.sta.abo.bbox.fr. [176.184.41.228])
  by smtp.gmail.com with ESMTPSA id
- d16-20020a5d5390000000b00301a351a8d6sm879335wrv.84.2023.05.19.22.45.11
+ 4-20020a05600c020400b003f19b3d89e9sm4304862wmi.33.2023.05.19.22.45.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 May 2023 22:45:12 -0700 (PDT)
+ Fri, 19 May 2023 22:45:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
@@ -62,16 +63,18 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <Alistair.Francis@wdc.com>, qemu-riscv@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/5] hw/riscv/opentitan: Correct QOM type/size of
- OpenTitanState
-Date: Sat, 20 May 2023 07:45:05 +0200
-Message-Id: <20230520054510.68822-1-philmd@linaro.org>
+Subject: [PATCH 1/5] hw/riscv/opentitan: Rename machine_[class]_init()
+ functions
+Date: Sat, 20 May 2023 07:45:06 +0200
+Message-Id: <20230520054510.68822-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230520054510.68822-1-philmd@linaro.org>
+References: <20230520054510.68822-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,28 +97,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Follow QOM style which declares FOO_init() as instance
+initializer and FOO_class_init() as class initializer:
+rename the OpenTitan machine class/instance init()
+accordingly.
 
-This series fix a QOM issue with the OpenTitanState
-structure, noticed while auditing QOM relations globally.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/riscv/opentitan.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-All patches are trivial to review.
-
-Regards,
-
-Phil.
-
-Philippe Mathieu-Daudé (5):
-  hw/riscv/opentitan: Rename machine_[class]_init() functions
-  hw/riscv/opentitan: Declare QOM types using DEFINE_TYPES() macro
-  hw/riscv/opentitan: Add TYPE_OPENTITAN_MACHINE definition
-  hw/riscv/opentitan: Explicit machine type definition
-  hw/riscv/opentitan: Correct OpenTitanState parent type/size
-
- include/hw/riscv/opentitan.h |  6 +++++-
- hw/riscv/opentitan.c         | 38 +++++++++++++++++++-----------------
- 2 files changed, 25 insertions(+), 19 deletions(-)
-
+diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
+index bc678766e7..2d21ee39c5 100644
+--- a/hw/riscv/opentitan.c
++++ b/hw/riscv/opentitan.c
+@@ -75,7 +75,7 @@ static const MemMapEntry ibex_memmap[] = {
+     [IBEX_DEV_FLASH_VIRTUAL] =  {  0x80000000,  0x80000     },
+ };
+ 
+-static void opentitan_board_init(MachineState *machine)
++static void opentitan_machine_init(MachineState *machine)
+ {
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+     const MemMapEntry *memmap = ibex_memmap;
+@@ -108,17 +108,17 @@ static void opentitan_board_init(MachineState *machine)
+     }
+ }
+ 
+-static void opentitan_machine_init(MachineClass *mc)
++static void opentitan_machine_class_init(MachineClass *mc)
+ {
+     mc->desc = "RISC-V Board compatible with OpenTitan";
+-    mc->init = opentitan_board_init;
++    mc->init = opentitan_machine_init;
+     mc->max_cpus = 1;
+     mc->default_cpu_type = TYPE_RISCV_CPU_IBEX;
+     mc->default_ram_id = "riscv.lowrisc.ibex.ram";
+     mc->default_ram_size = ibex_memmap[IBEX_DEV_RAM].size;
+ }
+ 
+-DEFINE_MACHINE("opentitan", opentitan_machine_init)
++DEFINE_MACHINE("opentitan", opentitan_machine_class_init)
+ 
+ static void lowrisc_ibex_soc_init(Object *obj)
+ {
 -- 
 2.38.1
 
