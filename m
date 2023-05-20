@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABB570AA9B
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 21:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E5570AAA0
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 21:08:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0Ruk-0007GS-63; Sat, 20 May 2023 15:06:50 -0400
+	id 1q0Rum-0007H6-Of; Sat, 20 May 2023 15:06:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q0Rui-0007GE-9q
- for qemu-devel@nongnu.org; Sat, 20 May 2023 15:06:48 -0400
+ id 1q0Ruk-0007Gv-RT
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 15:06:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q0Rug-00008M-SP
- for qemu-devel@nongnu.org; Sat, 20 May 2023 15:06:48 -0400
+ id 1q0Ruj-00008p-BE
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 15:06:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684609606;
+ s=mimecast20190719; t=1684609608;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YDil6ojXcrA8yrvkIjnS2BxrShNRD12fHk2YDYi2Uro=;
- b=Fp8hHeavC8YTlSkhhHO4l2kXIjI2ODq/zIoSzohHDbaS8bKL6eU4KJvmI7BvLr9fr9BKMI
- ha3Vj+zXWQo3CaDMqRtmIE4aOeC9OUEGh3fdoW7mhKDG27SsRNjDQoeBI4Bxk/iC+l6gqT
- Ntouzunr5QiktIO+a2bwOR0EmbCgcdY=
+ bh=7+uAVWJIlaKEAvLadAmkjz7dYWA6Y4OgVYfAWCmHVUA=;
+ b=fN+f5Ap5WVGuuj7mv0htUctSbtEGpy2nnFycSILriJSzc6eI2uS4pnxGUc1+joYqPxlWbk
+ Ud5taJZu724QJR3nEZLO/u7wPhrQuT6kV5MyuO0Zwssi23VQ0+jMfYj4sutz1X84fos9bN
+ QONJyq9DzZaft/3FBGLS067MEDaNz4k=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-JJGy4Bu0Pai6O_S8cx5FKA-1; Sat, 20 May 2023 15:06:45 -0400
-X-MC-Unique: JJGy4Bu0Pai6O_S8cx5FKA-1
+ us-mta-352-KWfA_EiqPsiLPATEWhsq-A-1; Sat, 20 May 2023 15:06:46 -0400
+X-MC-Unique: KWfA_EiqPsiLPATEWhsq-A-1
 Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-94a355c9028so541644266b.3
- for <qemu-devel@nongnu.org>; Sat, 20 May 2023 12:06:44 -0700 (PDT)
+ a640c23a62f3a-96f6e83685eso197667566b.1
+ for <qemu-devel@nongnu.org>; Sat, 20 May 2023 12:06:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684609603; x=1687201603;
+ d=1e100.net; s=20221208; t=1684609605; x=1687201605;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YDil6ojXcrA8yrvkIjnS2BxrShNRD12fHk2YDYi2Uro=;
- b=IzJfrUSFT5IkCGxYj314FdWlNf+Xp8W8PmIFhQadV5WTiDn8ETyrrhGNJB2Lv0CL5J
- DVnGuELrgFMgB+Tqler50TE64L+EIz6bOvsw+aN95GZqOpPxmcHHXcwR67cL+CDxWyAd
- FbkFHDW7p+MvftsOPj+IGhhB/IcWyobfM9aInDR3vJ4RGpNlJHXoKIRuxy/JBbBzLxJc
- YAG6CdSttbHaWK70Q9UoE8hqt7TzSb/YuLq99muPCrESXLY1wT6nKTDCun7g3LYXfqFS
- o17QUq6f9mPLuWriizJC3jf+fKb1OGoqDKMSUqphY4qLnn0fTcFOtsB9n4pwYoG7Hd/+
- mQpw==
-X-Gm-Message-State: AC+VfDzVaK9VYF18FsDPnZCxE3YrHC2H6lSZmSKzoa1IBuwtrVQkLYNH
- zWYczB0SB4G2mjA7XZ8xAMsmWAq96Oe2SYEi4XIIWarrZA7qam080QzDo7IWAE2/3fFDa5O/Sar
- 8mM7vaIw/GSNccUgZuQBY36eD+YBoxeqdPIVCv3KOPfMAZx4FiXm8bKt58pRWKpVPfGWtr2SCfd
- 8=
-X-Received: by 2002:a17:906:9743:b0:96f:32ae:a7e1 with SMTP id
- o3-20020a170906974300b0096f32aea7e1mr6404193ejy.63.1684609603448; 
- Sat, 20 May 2023 12:06:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7P1u4EbnaIj1uyW3bjFi5u3DVH7KC2d9C7acMeMLgYA/aXf7OwuboswgfHGo8l5CgmRysiIQ==
-X-Received: by 2002:a17:906:9743:b0:96f:32ae:a7e1 with SMTP id
- o3-20020a170906974300b0096f32aea7e1mr6404179ejy.63.1684609603225; 
- Sat, 20 May 2023 12:06:43 -0700 (PDT)
+ bh=7+uAVWJIlaKEAvLadAmkjz7dYWA6Y4OgVYfAWCmHVUA=;
+ b=VV7ZKyn8mcSirALsAEmNSYHBuR+i1ESfcfxnZ0HhGjLSQ4ILOaNLWLhV2OtaBISbY0
+ s/L+Mfb8JybZU5p+G5wjdLUhe92rFiFgTx2iGF4EBDitiiPz4GX396JFFpRESXwuF0YU
+ CWuxlZFkguFFiF31Qv/y+XUrO55rlyLuu8cGboRaP+zJIzcz08KqHXCDA/+2jv4kJCGB
+ euKS6PQ0P+6bvebRP0Kw9U4sP4WXMF0h/AEcFkN1ToNN0nH5afDVttfpiN35n9BxzHBu
+ z3jG41nLeQRqb11/I7khZWOsDAZfZirDNVZgMbTsks6dJDMcccs9o0Jm1gvtG8uWWZZJ
+ x/7g==
+X-Gm-Message-State: AC+VfDxqWx7tJ3hJI3sRkDumcCBaXQcvuwSjApby6qH72Zq0fYXybn0A
+ sLRAKQ43bDIeFVmK2bbfdZ2tNNYqaxXT2JEeDvliZMYwamqZWxkbdDDstTWffWNwaqWzH7ZYZzc
+ w3ARrqatvIO054j4D0SVqS6kEjlsSYHoctRPxwi9lcuNgSW+JxX9oPc/BNA2LbsANINSS9+AO1x
+ E=
+X-Received: by 2002:a17:907:628f:b0:961:b0:3dfd with SMTP id
+ nd15-20020a170907628f00b0096100b03dfdmr5829503ejc.7.1684609605177; 
+ Sat, 20 May 2023 12:06:45 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4ggwsgVXn7Gn+GEtxrIxG+oIBcKzUqsORxSksPhqs3O4pTq4j/QR1ZO5JTrXflOq5QQ0u+Yg==
+X-Received: by 2002:a17:907:628f:b0:961:b0:3dfd with SMTP id
+ nd15-20020a170907628f00b0096100b03dfdmr5829494ejc.7.1684609604928; 
+ Sat, 20 May 2023 12:06:44 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- e16-20020a170906845000b00965cd3a037fsm1074093ejy.112.2023.05.20.12.06.42
+ d18-20020aa7d5d2000000b0050bc9ffed66sm1054453eds.53.2023.05.20.12.06.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 May 2023 12:06:42 -0700 (PDT)
+ Sat, 20 May 2023 12:06:44 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 6/7] gitlab: custom-runners: preserve more artifacts for
- debugging
-Date: Sat, 20 May 2023 21:06:31 +0200
-Message-Id: <20230520190632.7491-7-pbonzini@redhat.com>
+Subject: [PULL 7/7] scripts: make sure scripts are invoked via $(PYTHON)
+Date: Sat, 20 May 2023 21:06:32 +0200
+Message-Id: <20230520190632.7491-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230520190632.7491-1-pbonzini@redhat.com>
 References: <20230520190632.7491-1-pbonzini@redhat.com>
@@ -101,32 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since custom runners are not generally available, make it possible to
-debug the differences between a successful and a failing build by
-comparing the logs and the build.ninja rules.
+Some scripts are invoked via the first "python3" binary in the PATH,
+because they are executable and their shebang line is "#! /usr/bin/env
+python3".  To enforce usage of $(PYTHON), make them nonexecutable.
+Scripts invoked via meson need nothing else, and meson-buildoptions.py
+is already using $(PYTHON).  For probe-gdb-support.py however the
+invocation in the configure script has to be adjusted.
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitlab-ci.d/custom-runners.yml | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ configure                     | 2 +-
+ scripts/meson-buildoptions.py | 0
+ scripts/modinfo-collect.py    | 0
+ scripts/modinfo-generate.py   | 0
+ scripts/probe-gdb-support.py  | 0
+ 5 files changed, 1 insertion(+), 1 deletion(-)
+ mode change 100755 => 100644 scripts/meson-buildoptions.py
+ mode change 100755 => 100644 scripts/modinfo-collect.py
+ mode change 100755 => 100644 scripts/modinfo-generate.py
+ mode change 100755 => 100644 scripts/probe-gdb-support.py
 
-diff --git a/.gitlab-ci.d/custom-runners.yml b/.gitlab-ci.d/custom-runners.yml
-index 34a1e6f32735..8e5b9500f401 100644
---- a/.gitlab-ci.d/custom-runners.yml
-+++ b/.gitlab-ci.d/custom-runners.yml
-@@ -20,8 +20,10 @@ variables:
-   artifacts:
-     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
-     expire_in: 7 days
-+    when: always
-     paths:
--      - build/meson-logs/testlog.txt
-+      - build/build.ninja
-+      - build/meson-logs
-     reports:
-       junit: build/meson-logs/testlog.junit.xml
- 
+diff --git a/configure b/configure
+index f7cd376e525f..1bdc7fd69b7b 100755
+--- a/configure
++++ b/configure
+@@ -1767,7 +1767,7 @@ if test -n "$gdb_bin"; then
+     gdb_version=$($gdb_bin --version | head -n 1)
+     if version_ge ${gdb_version##* } 9.1; then
+         echo "HAVE_GDB_BIN=$gdb_bin" >> $config_host_mak
+-        gdb_arches=$("$source_path/scripts/probe-gdb-support.py" $gdb_bin)
++        gdb_arches=$($python "$source_path/scripts/probe-gdb-support.py" $gdb_bin)
+     else
+         gdb_bin=""
+     fi
+diff --git a/scripts/meson-buildoptions.py b/scripts/meson-buildoptions.py
+old mode 100755
+new mode 100644
+diff --git a/scripts/modinfo-collect.py b/scripts/modinfo-collect.py
+old mode 100755
+new mode 100644
+diff --git a/scripts/modinfo-generate.py b/scripts/modinfo-generate.py
+old mode 100755
+new mode 100644
+diff --git a/scripts/probe-gdb-support.py b/scripts/probe-gdb-support.py
+old mode 100755
+new mode 100644
 -- 
 2.40.1
 
