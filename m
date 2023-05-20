@@ -2,51 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA4B70A563
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 06:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EBE70A5C2
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 07:46:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0EUI-0007t5-9B; Sat, 20 May 2023 00:46:38 -0400
+	id 1q0FPO-0007Kl-SD; Sat, 20 May 2023 01:45:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q0EUF-0007sK-7R
- for qemu-devel@nongnu.org; Sat, 20 May 2023 00:46:35 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q0EUD-0007CA-Da
- for qemu-devel@nongnu.org; Sat, 20 May 2023 00:46:34 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 761EF74B5;
- Sat, 20 May 2023 07:46:18 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A7B6B6C08;
- Sat, 20 May 2023 07:46:16 +0300 (MSK)
-Message-ID: <d53a8882-eb59-cf09-6ab7-b4a712f20668@tls.msk.ru>
-Date: Sat, 20 May 2023 07:46:16 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FP5-0007DP-BX
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:22 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FP1-0007bZ-Ez
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:18 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3078a3f3b5fso3931347f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 22:45:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684561513; x=1687153513;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KPXfjzpgnUnJ+Ee8FGyGU5PT2PYy9bLcVqwty/Mu0pM=;
+ b=Dnz2plYFZml0O3yiwpZx1EGdqBt8yOEnk2d7diFjU5vaTepF36k1HmsJtaz/qqvZrN
+ jtm/ZFDLMOnUHh+rQLFayybsshVlvYCnJGgqps0ZqvJ6foTIHnJwxiX1dJdX5eLfuEqd
+ njcBQM9AcatDe+Pmfjf3fD8kmOiJcn+S82bPeNeZh0n9ElwgEhKJAGAD2EADNj/yAfu+
+ 5THTUe3Raa1+qIFH6gi3cvhacIIj/T6SSkXnwd5gtc/biS2B3jQ6/eDRDnkngWeRfEMf
+ qBRTHir6v7LYIHzEkFF5SNtWnFdXfSBHqxj5kGZ9hU0Vh4lNe6hDdLSAcovR0uxFV2/L
+ qKHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684561513; x=1687153513;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KPXfjzpgnUnJ+Ee8FGyGU5PT2PYy9bLcVqwty/Mu0pM=;
+ b=cytNoNVGH+FjMOrI66deTKCt5lrn+kKU0DWX6ETPytC67fYqIOU5q2yCVKWmjDwjFq
+ 3xFwWyac6SigPug5UmT87Z2kohTltIm+P+pCofOHnxcJULBjFVyEBZhzX6EiVDvaEaqK
+ iCMGThDA3zvmASkeB+Xm3uH4RdNbcNiTUbesh2wJr9ULXILWnHMgnzSBWFosMjK3ZtDD
+ lZFwumxbSTcWtaG+XMpYTa/CQjTxYNOqIegRCLIm9oE63jQvAeWm8lYpea6xTi/Uj1A+
+ yuVMQJ+uwZhlP+jnEjNg0Q5f+8mY3DTNW2Ci3HhlNuANeSAAB6ZPSUlMQW1tJuElzPgD
+ zSZA==
+X-Gm-Message-State: AC+VfDwv+326zGY61U6OhJ1arim7p9F3aRdlWpDfIEO5EaEyBrObmBTM
+ yibR0wbPiWZcmEGlEm995/MLM5BcoHnwHQ52VjQ=
+X-Google-Smtp-Source: ACHHUZ55a40q1IxRIUR9v8HNNTTLN1tCbGBVHpqg9tdZz8WQiu0FJnZacv3D9Qdd/61azHwJFFJUVw==
+X-Received: by 2002:a05:6000:1109:b0:304:79c1:725d with SMTP id
+ z9-20020a056000110900b0030479c1725dmr2953422wrw.45.1684561513260; 
+ Fri, 19 May 2023 22:45:13 -0700 (PDT)
+Received: from localhost.localdomain
+ (mau49-h01-176-184-41-228.dsl.sta.abo.bbox.fr. [176.184.41.228])
+ by smtp.gmail.com with ESMTPSA id
+ d16-20020a5d5390000000b00301a351a8d6sm879335wrv.84.2023.05.19.22.45.11
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 19 May 2023 22:45:12 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Bin Meng <bin.meng@windriver.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>, qemu-riscv@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/5] hw/riscv/opentitan: Correct QOM type/size of
+ OpenTitanState
+Date: Sat, 20 May 2023 07:45:05 +0200
+Message-Id: <20230520054510.68822-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 0/2] hw/cxl: CDAT file handling fixes.
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- linuxarm@huawei.com, Zeng Hao <zenghao@kylinos.cn>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230421132020.7408-1-Jonathan.Cameron@huawei.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230421132020.7408-1-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.527,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,33 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-21.04.2023 16:20, Jonathan Cameron via wrote:
-> I've picked up Hao Zeng's v5 and added a patch to deal with the
-> issues that Peter pointed out in this area.
-> 
-> On error, the CDAT file handling left resource dangling and didn't
-> cleanly exit from calling functions.  Hao Zeng dealt with closing
-> the file. The second patch deals with the buffer allocation and
-> ensuring a clean exit at the two callers.
-> 
-> Hao Zeng (1):
->    hw/cxl: cdat: Fix open file not closed in ct3_load_cdat()
-> 
-> Jonathan Cameron (1):
->    hw/cxl: cdat: Fix failure to free buffer in erorr paths
-> 
->   hw/cxl/cxl-cdat.c            | 60 +++++++++++++++---------------------
->   hw/mem/cxl_type3.c           |  4 +++
->   hw/pci-bridge/cxl_upstream.c |  3 ++
->   3 files changed, 32 insertions(+), 35 deletions(-)
+Hi,
 
-Hi!
+This series fix a QOM issue with the OpenTitanState
+structure, noticed while auditing QOM relations globally.
 
-Is it a stable (8.0 & 7.2) material?
-The issues does not seem to be very important, still smells like
-a good thing to have in -stable.
+All patches are trivial to review.
 
-Thanks,
+Regards,
 
-/mjt
+Phil.
+
+Philippe Mathieu-Daudé (5):
+  hw/riscv/opentitan: Rename machine_[class]_init() functions
+  hw/riscv/opentitan: Declare QOM types using DEFINE_TYPES() macro
+  hw/riscv/opentitan: Add TYPE_OPENTITAN_MACHINE definition
+  hw/riscv/opentitan: Explicit machine type definition
+  hw/riscv/opentitan: Correct OpenTitanState parent type/size
+
+ include/hw/riscv/opentitan.h |  6 +++++-
+ hw/riscv/opentitan.c         | 38 +++++++++++++++++++-----------------
+ 2 files changed, 25 insertions(+), 19 deletions(-)
+
+-- 
+2.38.1
+
 
