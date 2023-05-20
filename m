@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEBB70A924
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 18:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 226B270A930
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 18:31:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0PQR-0003tx-Mz; Sat, 20 May 2023 12:27:23 -0400
+	id 1q0PQg-000442-KS; Sat, 20 May 2023 12:27:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q0PQI-0003lD-3o
+ id 1q0PQI-0003lo-Kw
  for qemu-devel@nongnu.org; Sat, 20 May 2023 12:27:14 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q0PQB-0003Cm-D8
- for qemu-devel@nongnu.org; Sat, 20 May 2023 12:27:13 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-64d41d8bc63so858921b3a.0
- for <qemu-devel@nongnu.org>; Sat, 20 May 2023 09:27:06 -0700 (PDT)
+ id 1q0PQB-0003DB-Mk
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 12:27:14 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1ae763f9c0bso19177635ad.2
+ for <qemu-devel@nongnu.org>; Sat, 20 May 2023 09:27:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684600025; x=1687192025;
+ d=linaro.org; s=google; t=1684600026; x=1687192026;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CGOMI9oWPo3BxTxZ0mc++YW+gNIJuzyjA8l4rsjXfws=;
- b=pkWmyPa4dErujdaLu++fdfX9S8D492g1tUcbNwqC+jeVrA1uzIOc+/3UDO4kU2x5a8
- 5h0x14O0xBXUVJxvTOFFkYs7EusA4q90/agou2cuRkLvQl+eRUgDOJqKdle7AMEVfWAY
- 7oToMI7GC2U7GqDBIsNkfpxYc+lqQbAw9Di7vUOYCJV8DEisqyMigLXrtLTFs+NzoRFC
- CpXX2gyh+mbS6t/HZ7vgbE2RJms5KxLk+ph9SjcH8segsKZxDNHU3j8yF1iZjao6/ZER
- U9hCdAPQXbdytRKiFU9GjgIVIShA74eU1B0jGr25yBvlhMccpCBfiHSvPEnBVOf6KB80
- 4PVA==
+ bh=HBWDA1+uXlJlZoqOFW38eoLfuSmJeXie3CQojpPMW+I=;
+ b=ti+wWeMggL+updxo7npyLU6E7n0t0wTIC2QaiZuU7+qej1bOnC7wwhRMZNtME0MxAt
+ mn+6XenhT4Z/XwUVTEIYnlOaWC6dCFDQHAq9r/zo1nt4bO+GBb9I2nQ4GEMnEGNMvyiD
+ c/mx2vdg3jan3T+vu/leMFhISwkLXvLxKDBbsJs550dTkcwA+EwUdhuxPJERPVqosC+d
+ 07wnlSsaW2+ZF3ei21FJFWwwFpXJCmpXPtjzepA4ZF3DW5F22u/XJKDuoVIapNchsd3D
+ 3cktPlQV7u6yxvv2jkABYgoHY+4ZXLekHsXVhjwJ17KhdFKSuG5laL9lfknXrXmmhfKm
+ 2usA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684600025; x=1687192025;
+ d=1e100.net; s=20221208; t=1684600026; x=1687192026;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CGOMI9oWPo3BxTxZ0mc++YW+gNIJuzyjA8l4rsjXfws=;
- b=VQ6ZoVaOVpTLDcaJkafcVrZ4fNInQBFfQSQzp8VKdd5r6rz+FNOLINV9/ssw4O8R7n
- tLM1Z/slNI2epiZy6E6sxgQvYQdBWIaISdYuNQbtZifKWvEA+C4bnf+HghFDpN7/EEI9
- xgU9e2y8knb0CEYkOw0d1FeFtuSwhVbrdkQkNw0AmnWrsx+qf6mjCFcfl0duCL5FUvOJ
- 4lk3IkoixMXWf0Cm4DBW1bQR8A+cOCX1FmHMR94xBnoWzN+9W3USkFzWCoZnczs597O8
- Volau17STsNIylBujhpRFoeFg2Yrusgqnb/YExmLGNJLbtYcWN62l8z5Dbxd4pOLRfrB
- EW+A==
-X-Gm-Message-State: AC+VfDxmyUKeFLSTtmpi3xGT2Swb49c1I6D1ma5CNqhpFFWCLX8y0n0r
- RfnSsc46ErNYIeIZoB2uz3lFxmLFTae0QB34YzM=
-X-Google-Smtp-Source: ACHHUZ6x6JaRe7iWZ6jUiJehNG62HPybwm8ChwQgzzuDRThbBY8TtS010bAe8OnHUdKVkHJmjHZNpw==
-X-Received: by 2002:a17:902:d2c2:b0:1ac:b4db:6a62 with SMTP id
- n2-20020a170902d2c200b001acb4db6a62mr6328290plc.65.1684600025593; 
- Sat, 20 May 2023 09:27:05 -0700 (PDT)
+ bh=HBWDA1+uXlJlZoqOFW38eoLfuSmJeXie3CQojpPMW+I=;
+ b=MOV0dfjL2XlTEhEPzgEblNGpqB+gdeUSBXv5htgjuOQjBzr90BHhczsoL7YO9Q0ugK
+ qrAFfppMuignNXzaYsjKBsdL6r84NCGYEA1/xZFEB/xh38gQpyzgnEuwqUd3JgJyh/+J
+ M4UMU5wzMe8CPdy8T47HT3++Ryp+sNkFOtFCPqakZMiLDz5MGqOeps93UngIf81IIUbo
+ 1TKmlQCI13gal82MoyQwDbZSHK7klV3UGhmNBNkgyUNtUk3j1lsdhxwaNQxRZlRLRbda
+ D4jGRKJRZkwUK2cyILnGC2lPG4G/VE5zxA37xX8UaoQjyXQLhD4NTrxUSbvsmLLuMk1w
+ yZ2g==
+X-Gm-Message-State: AC+VfDzm7t+Syj2rNhqfF3xeuirtyruvIDqOVRQxpznLfgK1afOsKQxl
+ FadmjfuGZGrcvfzMRyXTBo9u70kzbVvW/6bE3Wg=
+X-Google-Smtp-Source: ACHHUZ6ltYylYV4lUUfFCnnYYnyOyj2ma0K9NMCFKotvFdJqeuiwnBUAfaAZzs/Cmk6fVqywgtuaIQ==
+X-Received: by 2002:a17:902:cacc:b0:1a6:8031:59e7 with SMTP id
+ y12-20020a170902cacc00b001a6803159e7mr5435095pld.46.1684600026320; 
+ Sat, 20 May 2023 09:27:06 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:d078:d94e:cb2b:a055])
  by smtp.gmail.com with ESMTPSA id
- d12-20020a170903230c00b001a5260a6e6csm1697104plh.206.2023.05.20.09.27.04
+ d12-20020a170903230c00b001a5260a6e6csm1697104plh.206.2023.05.20.09.27.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sat, 20 May 2023 09:27:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 22/27] qemu/atomic128: Split atomic16_read
-Date: Sat, 20 May 2023 09:26:29 -0700
-Message-Id: <20230520162634.3991009-23-richard.henderson@linaro.org>
+Subject: [PATCH 23/27] accel/tcg: Correctly use atomic128.h in
+ ldst_atomicity.c.inc
+Date: Sat, 20 May 2023 09:26:30 -0700
+Message-Id: <20230520162634.3991009-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230520162634.3991009-1-richard.henderson@linaro.org>
 References: <20230520162634.3991009-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,139 +92,285 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create both atomic16_read_ro and atomic16_read_rw.
-Previously we pretended that we had atomic16_read in system mode,
-because we "know" that all ram is always writable to the host.
-Now, expose read-only and read-write versions all of the time.
-
-For aarch64, do not fall back to __atomic_read_16 even if
-supported by the compiler, to work around a clang bug.
+Remove the locally defined load_atomic16 and store_atomic16,
+along with HAVE_al16 and HAVE_al16_fast in favor of the
+routines defined in atomic128.h.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/aarch64/host/atomic128-ldst.h | 21 ++++++++-------
- host/include/generic/host/atomic128-ldst.h | 31 ++++++++++++++++------
- target/s390x/tcg/mem_helper.c              |  2 +-
- 3 files changed, 36 insertions(+), 18 deletions(-)
+ accel/tcg/cputlb.c             |   2 +-
+ accel/tcg/ldst_atomicity.c.inc | 118 +++++++--------------------------
+ 2 files changed, 24 insertions(+), 96 deletions(-)
 
-diff --git a/host/include/aarch64/host/atomic128-ldst.h b/host/include/aarch64/host/atomic128-ldst.h
-index c2e7b44bc5..6959b2bd8e 100644
---- a/host/include/aarch64/host/atomic128-ldst.h
-+++ b/host/include/aarch64/host/atomic128-ldst.h
-@@ -11,10 +11,18 @@
- #ifndef AARCH64_ATOMIC128_LDST_H
- #define AARCH64_ATOMIC128_LDST_H
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 0bd06bf894..90c72c9940 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -2712,7 +2712,7 @@ static uint64_t do_st16_leN(CPUArchState *env, MMULookupPageData *p,
  
--/* Through gcc 10, aarch64 has no support for 128-bit atomics.  */
--#if !defined(CONFIG_ATOMIC128) && !defined(CONFIG_USER_ONLY)
--/* We can do better than cmpxchg for AArch64.  */
--static inline Int128 atomic16_read(Int128 *ptr)
-+/*
-+ * Through gcc 10, aarch64 has no support for 128-bit atomics.
-+ * Through clang 16, without -march=armv8.4-a, __atomic_load_16
-+ * is incorrectly expanded to a read-write operation.
-+ */
-+
-+#define HAVE_ATOMIC128_RO 0
-+#define HAVE_ATOMIC128_RW 1
-+
-+Int128 QEMU_ERROR("unsupported atomic") atomic16_read_ro(const Int128 *ptr);
-+
-+static inline Int128 atomic16_read_rw(Int128 *ptr)
- {
-     uint64_t l, h;
-     uint32_t tmp;
-@@ -41,9 +49,4 @@ static inline void atomic16_set(Int128 *ptr, Int128 val)
-         : [l] "r"(l), [h] "r"(h));
- }
- 
--# define HAVE_ATOMIC128 1
--#else
--#include "host/include/generic/host/atomic128-ldst.h"
--#endif
--
- #endif /* AARCH64_ATOMIC128_LDST_H */
-diff --git a/host/include/generic/host/atomic128-ldst.h b/host/include/generic/host/atomic128-ldst.h
-index 06a62e9dd0..79d208b7a4 100644
---- a/host/include/generic/host/atomic128-ldst.h
-+++ b/host/include/generic/host/atomic128-ldst.h
-@@ -12,16 +12,25 @@
- #define HOST_ATOMIC128_LDST_H
- 
- #if defined(CONFIG_ATOMIC128)
-+# define HAVE_ATOMIC128_RO 1
-+# define HAVE_ATOMIC128_RW 1
-+
- static inline Int128 ATTRIBUTE_ATOMIC128_OPT
--atomic16_read(Int128 *ptr)
-+atomic16_read_ro(const Int128 *ptr)
- {
--    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
-+    const __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
-     Int128Alias r;
- 
-     r.i = qatomic_read__nocheck(ptr_align);
-     return r.s;
- }
- 
-+static inline Int128 ATTRIBUTE_ATOMIC128_OPT
-+atomic16_read_rw(Int128 *ptr)
-+{
-+    return atomic16_read_ro(ptr);
-+}
-+
- static inline void ATTRIBUTE_ATOMIC128_OPT
- atomic16_set(Int128 *ptr, Int128 val)
- {
-@@ -32,10 +41,14 @@ atomic16_set(Int128 *ptr, Int128 val)
-     qatomic_set__nocheck(ptr_align, v.i);
- }
- 
--# define HAVE_ATOMIC128 1
--#elif defined(CONFIG_CMPXCHG128) && !defined(CONFIG_USER_ONLY)
-+#elif defined(CONFIG_CMPXCHG128)
-+# define HAVE_ATOMIC128_RO 0
-+# define HAVE_ATOMIC128_RW 1
-+
-+Int128 QEMU_ERROR("unsupported atomic") atomic16_read_ro(const Int128 *ptr);
-+
- static inline Int128 ATTRIBUTE_ATOMIC128_OPT
--atomic16_read(Int128 *ptr)
-+atomic16_read_rw(Int128 *ptr)
- {
-     /* Maybe replace 0 with 0, returning the old value.  */
-     Int128 z = int128_make64(0);
-@@ -52,12 +65,14 @@ atomic16_set(Int128 *ptr, Int128 val)
-     } while (int128_ne(old, cmp));
- }
- 
--# define HAVE_ATOMIC128 1
- #else
-+# define HAVE_ATOMIC128_RO 0
-+# define HAVE_ATOMIC128_RW 0
-+
- /* Fallback definitions that must be optimized away, or error.  */
--Int128 QEMU_ERROR("unsupported atomic") atomic16_read(Int128 *ptr);
-+Int128 QEMU_ERROR("unsupported atomic") atomic16_read_ro(const Int128 *ptr);
-+Int128 QEMU_ERROR("unsupported atomic") atomic16_read_rw(Int128 *ptr);
- void QEMU_ERROR("unsupported atomic") atomic16_set(Int128 *ptr, Int128 val);
--# define HAVE_ATOMIC128 0
- #endif
- 
- #endif /* HOST_ATOMIC128_LDST_H */
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index bad789a742..db22995171 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -1778,7 +1778,7 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
-         max = 3;
- #endif
-         if ((HAVE_CMPXCHG128 ? 0 : fc + 2 > max) ||
--            (HAVE_ATOMIC128  ? 0 : sc > max)) {
-+            (HAVE_ATOMIC128_RW ? 0 : sc > max)) {
+     case MO_ATOM_WITHIN16_PAIR:
+         /* Since size > 8, this is the half that must be atomic. */
+-        if (!HAVE_al16) {
++        if (!HAVE_ATOMIC128_RW) {
              cpu_loop_exit_atomic(env_cpu(env), ra);
          }
+         return store_whole_le16(p->haddr, p->size, val_le);
+diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+index b89631bbef..0f6b3f8ab6 100644
+--- a/accel/tcg/ldst_atomicity.c.inc
++++ b/accel/tcg/ldst_atomicity.c.inc
+@@ -16,18 +16,6 @@
+ #endif
+ #define HAVE_al8_fast      (ATOMIC_REG_SIZE >= 8)
+ 
+-#if defined(CONFIG_ATOMIC128)
+-# define HAVE_al16_fast    true
+-#else
+-# define HAVE_al16_fast    false
+-#endif
+-#if defined(CONFIG_ATOMIC128) || defined(CONFIG_CMPXCHG128)
+-# define HAVE_al16         true
+-#else
+-# define HAVE_al16         false
+-#endif
+-
+-
+ /**
+  * required_atomicity:
+  *
+@@ -146,26 +134,6 @@ static inline uint64_t load_atomic8(void *pv)
+     return qatomic_read__nocheck(p);
+ }
+ 
+-/**
+- * load_atomic16:
+- * @pv: host address
+- *
+- * Atomically load 16 aligned bytes from @pv.
+- */
+-static inline Int128 ATTRIBUTE_ATOMIC128_OPT
+-load_atomic16(void *pv)
+-{
+-#ifdef CONFIG_ATOMIC128
+-    __uint128_t *p = __builtin_assume_aligned(pv, 16);
+-    Int128Alias r;
+-
+-    r.u = qatomic_read__nocheck(p);
+-    return r.s;
+-#else
+-    qemu_build_not_reached();
+-#endif
+-}
+-
+ /**
+  * load_atomic8_or_exit:
+  * @env: cpu context
+@@ -211,8 +179,8 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+ {
+     Int128 *p = __builtin_assume_aligned(pv, 16);
+ 
+-    if (HAVE_al16_fast) {
+-        return load_atomic16(p);
++    if (HAVE_ATOMIC128_RO) {
++        return atomic16_read_ro(p);
      }
+ 
+ #ifdef CONFIG_USER_ONLY
+@@ -232,14 +200,9 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+      * In system mode all guest pages are writable, and for user-only
+      * we have just checked writability.  Try cmpxchg.
+      */
+-#if defined(CONFIG_CMPXCHG128)
+-    /* Swap 0 with 0, with the side-effect of returning the old value. */
+-    {
+-        Int128Alias r;
+-        r.u = __sync_val_compare_and_swap_16((__uint128_t *)p, 0, 0);
+-        return r.s;
++    if (HAVE_ATOMIC128_RW) {
++        return atomic16_read_rw(p);
+     }
+-#endif
+ 
+     /* Ultimate fallback: re-execute in serial context. */
+     cpu_loop_exit_atomic(env_cpu(env), ra);
+@@ -360,11 +323,10 @@ static uint64_t load_atom_extract_al16_or_exit(CPUArchState *env, uintptr_t ra,
+ static inline uint64_t ATTRIBUTE_ATOMIC128_OPT
+ load_atom_extract_al16_or_al8(void *pv, int s)
+ {
+-#if defined(CONFIG_ATOMIC128)
+     uintptr_t pi = (uintptr_t)pv;
+     int o = pi & 7;
+     int shr = (HOST_BIG_ENDIAN ? 16 - s - o : o) * 8;
+-    __uint128_t r;
++    Int128 r;
+ 
+     pv = (void *)(pi & ~7);
+     if (pi & 8) {
+@@ -373,18 +335,14 @@ load_atom_extract_al16_or_al8(void *pv, int s)
+         uint64_t b = qatomic_read__nocheck(p8 + 1);
+ 
+         if (HOST_BIG_ENDIAN) {
+-            r = ((__uint128_t)a << 64) | b;
++            r = int128_make128(b, a);
+         } else {
+-            r = ((__uint128_t)b << 64) | a;
++            r = int128_make128(a, b);
+         }
+     } else {
+-        __uint128_t *p16 = __builtin_assume_aligned(pv, 16, 0);
+-        r = qatomic_read__nocheck(p16);
++        r = atomic16_read_ro(pv);
+     }
+-    return r >> shr;
+-#else
+-    qemu_build_not_reached();
+-#endif
++    return int128_getlo(int128_urshift(r, shr));
+ }
+ 
+ /**
+@@ -472,7 +430,7 @@ static uint16_t load_atom_2(CPUArchState *env, uintptr_t ra,
+     if (likely((pi & 1) == 0)) {
+         return load_atomic2(pv);
+     }
+-    if (HAVE_al16_fast) {
++    if (HAVE_ATOMIC128_RO) {
+         return load_atom_extract_al16_or_al8(pv, 2);
+     }
+ 
+@@ -511,7 +469,7 @@ static uint32_t load_atom_4(CPUArchState *env, uintptr_t ra,
+     if (likely((pi & 3) == 0)) {
+         return load_atomic4(pv);
+     }
+-    if (HAVE_al16_fast) {
++    if (HAVE_ATOMIC128_RO) {
+         return load_atom_extract_al16_or_al8(pv, 4);
+     }
+ 
+@@ -557,7 +515,7 @@ static uint64_t load_atom_8(CPUArchState *env, uintptr_t ra,
+     if (HAVE_al8 && likely((pi & 7) == 0)) {
+         return load_atomic8(pv);
+     }
+-    if (HAVE_al16_fast) {
++    if (HAVE_ATOMIC128_RO) {
+         return load_atom_extract_al16_or_al8(pv, 8);
+     }
+ 
+@@ -607,8 +565,8 @@ static Int128 load_atom_16(CPUArchState *env, uintptr_t ra,
+      * If the host does not support 16-byte atomics, wait until we have
+      * examined the atomicity parameters below.
+      */
+-    if (HAVE_al16_fast && likely((pi & 15) == 0)) {
+-        return load_atomic16(pv);
++    if (HAVE_ATOMIC128_RO && likely((pi & 15) == 0)) {
++        return atomic16_read_ro(pv);
+     }
+ 
+     atmax = required_atomicity(env, pi, memop);
+@@ -687,36 +645,6 @@ static inline void store_atomic8(void *pv, uint64_t val)
+     qatomic_set__nocheck(p, val);
+ }
+ 
+-/**
+- * store_atomic16:
+- * @pv: host address
+- * @val: value to store
+- *
+- * Atomically store 16 aligned bytes to @pv.
+- */
+-static inline void ATTRIBUTE_ATOMIC128_OPT
+-store_atomic16(void *pv, Int128Alias val)
+-{
+-#if defined(CONFIG_ATOMIC128)
+-    __uint128_t *pu = __builtin_assume_aligned(pv, 16);
+-    qatomic_set__nocheck(pu, val.u);
+-#elif defined(CONFIG_CMPXCHG128)
+-    __uint128_t *pu = __builtin_assume_aligned(pv, 16);
+-    __uint128_t o;
+-
+-    /*
+-     * Without CONFIG_ATOMIC128, __atomic_compare_exchange_n will always
+-     * defer to libatomic, so we must use __sync_*_compare_and_swap_16
+-     * and accept the sequential consistency that comes with it.
+-     */
+-    do {
+-        o = *pu;
+-    } while (!__sync_bool_compare_and_swap_16(pu, o, val.u));
+-#else
+-    qemu_build_not_reached();
+-#endif
+-}
+-
+ /**
+  * store_atom_4x2
+  */
+@@ -957,7 +885,7 @@ static uint64_t store_whole_le16(void *pv, int size, Int128 val_le)
+     int sh = o * 8;
+     Int128 m, v;
+ 
+-    qemu_build_assert(HAVE_al16);
++    qemu_build_assert(HAVE_ATOMIC128_RW);
+ 
+     /* Like MAKE_64BIT_MASK(0, sz), but larger. */
+     if (sz <= 64) {
+@@ -1017,7 +945,7 @@ static void store_atom_2(CPUArchState *env, uintptr_t ra,
+             return;
+         }
+     } else if ((pi & 15) == 7) {
+-        if (HAVE_al16) {
++        if (HAVE_ATOMIC128_RW) {
+             Int128 v = int128_lshift(int128_make64(val), 56);
+             Int128 m = int128_lshift(int128_make64(0xffff), 56);
+             store_atom_insert_al16(pv - 7, v, m);
+@@ -1086,7 +1014,7 @@ static void store_atom_4(CPUArchState *env, uintptr_t ra,
+                 return;
+             }
+         } else {
+-            if (HAVE_al16) {
++            if (HAVE_ATOMIC128_RW) {
+                 store_whole_le16(pv, 4, int128_make64(cpu_to_le32(val)));
+                 return;
+             }
+@@ -1151,7 +1079,7 @@ static void store_atom_8(CPUArchState *env, uintptr_t ra,
+         }
+         break;
+     case MO_64:
+-        if (HAVE_al16) {
++        if (HAVE_ATOMIC128_RW) {
+             store_whole_le16(pv, 8, int128_make64(cpu_to_le64(val)));
+             return;
+         }
+@@ -1177,8 +1105,8 @@ static void store_atom_16(CPUArchState *env, uintptr_t ra,
+     uint64_t a, b;
+     int atmax;
+ 
+-    if (HAVE_al16_fast && likely((pi & 15) == 0)) {
+-        store_atomic16(pv, val);
++    if (HAVE_ATOMIC128_RW && likely((pi & 15) == 0)) {
++        atomic16_set(pv, val);
+         return;
+     }
+ 
+@@ -1206,7 +1134,7 @@ static void store_atom_16(CPUArchState *env, uintptr_t ra,
+         }
+         break;
+     case -MO_64:
+-        if (HAVE_al16) {
++        if (HAVE_ATOMIC128_RW) {
+             uint64_t val_le;
+             int s2 = pi & 15;
+             int s1 = 16 - s2;
+@@ -1233,8 +1161,8 @@ static void store_atom_16(CPUArchState *env, uintptr_t ra,
+         }
+         break;
+     case MO_128:
+-        if (HAVE_al16) {
+-            store_atomic16(pv, val);
++        if (HAVE_ATOMIC128_RW) {
++            atomic16_set(pv, val);
+             return;
+         }
+         break;
 -- 
 2.34.1
 
