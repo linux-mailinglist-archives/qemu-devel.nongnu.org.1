@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4A670A5BE
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 07:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEB770A5C3
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 07:47:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0FPP-0007Lj-6A; Sat, 20 May 2023 01:45:39 -0400
+	id 1q0FPN-0007Hn-3G; Sat, 20 May 2023 01:45:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FP8-0007DZ-Kl
- for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:24 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FPC-0007Du-Tz
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:30 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FP6-0007c1-Nn
- for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:22 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3f423521b10so26269125e9.0
- for <qemu-devel@nongnu.org>; Fri, 19 May 2023 22:45:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0FPB-0007cT-FE
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 01:45:26 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f41d087b24so27222745e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 May 2023 22:45:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684561518; x=1687153518;
+ d=linaro.org; s=google; t=1684561524; x=1687153524;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QoiLKMEOX41tFLy0qcfFWPV2O7S+2JSUpMk1QMM25jk=;
- b=V76Eq+YECNX7VaDfDoQ/AsLC3xPuSpCb7UZocxiXVHsnBJkZ5N5WqVSdD1YGA0TMiU
- J7MPqWxTwZx2HkF0Uoy4+IoYKcmL2LSnSG895WdDUj9bx/QGTXyyfkv7QHVyRpcL5aI3
- Gfzf+CFn4Njd8KjaT8nl4H+pFX644qN8ZnBjogR39sf+IXWMudIf+ur0W/4ayLw6NpCN
- Px2dmXOKp1b3KJUgBdAslLx0ID8GW+Mx0nxvk5Dc4WgKNbC4p8iQtj3x0DH4KkpmwM8n
- 2UC1009K7PTAyb0njdpUFh1TFC6qK6YnenNuTkukHL5mR/FJwUcbk6tNg2nnPVNKvqDs
- UE6A==
+ bh=hTAW6cK3XhyHe2DSiXzz9dWc3zDAXzPHwYcm030hYyk=;
+ b=pW+WiwCo5lSt4d/R7h1EzOwqgt2veIicK34eOeQmtyBV/1P7xSikI7OYscaUpCoHlO
+ 8UPHOQcdYfgJcRwDMxr+E8obGdG8RrJ3PiT8z4DR43Mu4FTKUvoiwkrQMIXy2pRtQ8iH
+ B14/qJK4CH7ZbogzWfqK+s6+LSe0Y6okbyKt5h2fGNq2+2ESGiW9Vi2uqK8snox/x3vD
+ yZeiOdXw22QXPH4tqE9iF7p5R718nxExJ7QNwvYkF0MThY7ro6xgQkywlgb/XccZTGbi
+ YdZoBOvH2WdGqmZ5G3U27LDGvReQc5mOid5NzZBFpf5Li50x08c0vMgpAB79GzZm7RF/
+ FANQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684561518; x=1687153518;
+ d=1e100.net; s=20221208; t=1684561524; x=1687153524;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QoiLKMEOX41tFLy0qcfFWPV2O7S+2JSUpMk1QMM25jk=;
- b=HL0HWAEpViRWAubiEOghOuNtdSn7ngtqB8OIjs1LHQReQCsAX6PwX6AYDsAg4uMUR/
- SJhkDjgznmqBaLUAMpzUgShsXCKTYhYjYyvpClRh3U8R0zy6XsdrbrowNfEYSw21q6ja
- sXJApZAX7Mb4iI1pJKu3QnZ0LMIhg4W2lh7UfypqhaZxg2e6cBkWjtUOIz6fxuEiyN2E
- fsz+ACOC3snWkc9wo4zulsqitzXmmQwfffNaf1OtVfJ+PbcnBC3Ne42GjE2Bw1ENKNF8
- NMPyAuRGPqKnW+foxchOlGROPJ83RLM3LG4vl77PNlJZxsemI4aq2OMZ/UT2bGPJ6nbp
- JnVA==
-X-Gm-Message-State: AC+VfDxvGLryA6fS6OxC8leN8Lx9YK4xda0kA5DQ5o0cyT3EW0vl39p0
- 2CZf3Uyo6AyHxUXCBGXEAIkO/DX2lxd2D7klaLo=
-X-Google-Smtp-Source: ACHHUZ4csgNyyT/psF7HgptwDPAqaL5PythaxSAos8jHh6FNFfYt6y9UmPWol2OiVVQ6gEzfs4yH4A==
-X-Received: by 2002:a05:600c:ac6:b0:3f1:8c5f:dfc5 with SMTP id
- c6-20020a05600c0ac600b003f18c5fdfc5mr2749103wmr.39.1684561518473; 
- Fri, 19 May 2023 22:45:18 -0700 (PDT)
+ bh=hTAW6cK3XhyHe2DSiXzz9dWc3zDAXzPHwYcm030hYyk=;
+ b=ISBIGJQYOcQ9y3k+Z8ybSioTiOh9NQU4hbgzIHhE4+53TSJ8WdewgvEf2WZqGOR6Tq
+ uhHYneUPoR7Q+1NareatwlF9ihAZr/0l2wIuOpsAPZrOOPGZb5yw+WWcpgIHEorIjPrA
+ vTHrhB1B3Mag9+tXaAkU5goxWy568lVk/DMqRqoMxdueJzrVJUzHIu44Dp74V7rlvHJ6
+ bjtPAna9x4KlRZ65E4VJ+xiV01ruyXy3G44d71kz4ZKObCzHSRvT3q8IYhksIN/QqzH9
+ rIJTbLLjiVBG4ONV4TVhTVZ/Ti9p8VyBKyT/rGbmSEgEcLUKxPCRkijezSm/JDDS8gdN
+ zjVw==
+X-Gm-Message-State: AC+VfDxXrp0waoT/0ZiSJFzVvI08eqBi9LPuQKUqj+1/DedPuYk9F7vJ
+ q/OGuwYMWyK1hKyJ24Zi4gRZkxmqK0NsHadQx5Q=
+X-Google-Smtp-Source: ACHHUZ4FC3MChAhppSmAQjd0r86vrx342dJt6bw0lmbKUiXRki7lTY3HDSZKRDvlIFvx9fusHmNKUQ==
+X-Received: by 2002:adf:ee91:0:b0:309:509f:a7f0 with SMTP id
+ b17-20020adfee91000000b00309509fa7f0mr3056463wro.44.1684561523946; 
+ Fri, 19 May 2023 22:45:23 -0700 (PDT)
 Received: from localhost.localdomain
  (mau49-h01-176-184-41-228.dsl.sta.abo.bbox.fr. [176.184.41.228])
  by smtp.gmail.com with ESMTPSA id
- 4-20020a05600c020400b003f19b3d89e9sm4304862wmi.33.2023.05.19.22.45.17
+ z12-20020a5d640c000000b00307c8d6b4a0sm905259wru.26.2023.05.19.22.45.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 May 2023 22:45:18 -0700 (PDT)
+ Fri, 19 May 2023 22:45:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
@@ -63,18 +63,18 @@ Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <Alistair.Francis@wdc.com>, qemu-riscv@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/5] hw/riscv/opentitan: Rename machine_[class]_init()
- functions
-Date: Sat, 20 May 2023 07:45:06 +0200
-Message-Id: <20230520054510.68822-2-philmd@linaro.org>
+Subject: [PATCH 2/5] hw/riscv/opentitan: Declare QOM types using
+ DEFINE_TYPES() macro
+Date: Sat, 20 May 2023 07:45:07 +0200
+Message-Id: <20230520054510.68822-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230520054510.68822-1-philmd@linaro.org>
 References: <20230520054510.68822-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,50 +97,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Follow QOM style which declares FOO_init() as instance
-initializer and FOO_class_init() as class initializer:
-rename the OpenTitan machine class/instance init()
-accordingly.
+When multiple QOM types are registered in the same file,
+it is simpler to use the the DEFINE_TYPES() macro. Replace
+the type_init() / type_register_static() combination. This
+is in preparation of adding the OpenTitan machine type to
+this array in a pair of commits.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/riscv/opentitan.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/riscv/opentitan.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
 diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
-index bc678766e7..2d21ee39c5 100644
+index 2d21ee39c5..294955eeea 100644
 --- a/hw/riscv/opentitan.c
 +++ b/hw/riscv/opentitan.c
-@@ -75,7 +75,7 @@ static const MemMapEntry ibex_memmap[] = {
-     [IBEX_DEV_FLASH_VIRTUAL] =  {  0x80000000,  0x80000     },
+@@ -320,17 +320,14 @@ static void lowrisc_ibex_soc_class_init(ObjectClass *oc, void *data)
+     dc->user_creatable = false;
+ }
+ 
+-static const TypeInfo lowrisc_ibex_soc_type_info = {
+-    .name = TYPE_RISCV_IBEX_SOC,
+-    .parent = TYPE_DEVICE,
+-    .instance_size = sizeof(LowRISCIbexSoCState),
+-    .instance_init = lowrisc_ibex_soc_init,
+-    .class_init = lowrisc_ibex_soc_class_init,
++static const TypeInfo open_titan_types[] = {
++    {
++        .name           = TYPE_RISCV_IBEX_SOC,
++        .parent         = TYPE_DEVICE,
++        .instance_size  = sizeof(LowRISCIbexSoCState),
++        .instance_init  = lowrisc_ibex_soc_init,
++        .class_init     = lowrisc_ibex_soc_class_init,
++    }
  };
  
--static void opentitan_board_init(MachineState *machine)
-+static void opentitan_machine_init(MachineState *machine)
- {
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-     const MemMapEntry *memmap = ibex_memmap;
-@@ -108,17 +108,17 @@ static void opentitan_board_init(MachineState *machine)
-     }
- }
- 
--static void opentitan_machine_init(MachineClass *mc)
-+static void opentitan_machine_class_init(MachineClass *mc)
- {
-     mc->desc = "RISC-V Board compatible with OpenTitan";
--    mc->init = opentitan_board_init;
-+    mc->init = opentitan_machine_init;
-     mc->max_cpus = 1;
-     mc->default_cpu_type = TYPE_RISCV_CPU_IBEX;
-     mc->default_ram_id = "riscv.lowrisc.ibex.ram";
-     mc->default_ram_size = ibex_memmap[IBEX_DEV_RAM].size;
- }
- 
--DEFINE_MACHINE("opentitan", opentitan_machine_init)
-+DEFINE_MACHINE("opentitan", opentitan_machine_class_init)
- 
- static void lowrisc_ibex_soc_init(Object *obj)
- {
+-static void lowrisc_ibex_soc_register_types(void)
+-{
+-    type_register_static(&lowrisc_ibex_soc_type_info);
+-}
+-
+-type_init(lowrisc_ibex_soc_register_types)
++DEFINE_TYPES(open_titan_types)
 -- 
 2.38.1
 
