@@ -2,71 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4B270A5EE
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 08:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF2270A622
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 May 2023 09:24:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0FyO-0000YX-KX; Sat, 20 May 2023 02:21:48 -0400
+	id 1q0Gv6-0007xD-B6; Sat, 20 May 2023 03:22:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yu.chen@h3c.com>) id 1q0FyK-0000YP-Lg
- for qemu-devel@nongnu.org; Sat, 20 May 2023 02:21:44 -0400
-Received: from smtp.h3c.com ([60.191.123.56] helo=h3cspam01-ex.h3c.com)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1q0Gv4-0007x4-IN
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 03:22:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yu.chen@h3c.com>) id 1q0FyH-0004vk-Ps
- for qemu-devel@nongnu.org; Sat, 20 May 2023 02:21:44 -0400
-Received: from mail.maildlp.com ([172.25.15.155])
- by h3cspam01-ex.h3c.com with ESMTP id 34K6LRVE020464;
- Sat, 20 May 2023 14:21:27 +0800 (GMT-8)
- (envelope-from yu.chen@h3c.com)
-Received: from DAG2EX05-BASE.srv.huawei-3com.com (unknown [10.69.0.53])
- by mail.maildlp.com (Postfix) with ESMTP id E2357222E3C7;
- Sat, 20 May 2023 14:25:29 +0800 (CST)
-Received: from DAG2EX10-IDC.srv.huawei-3com.com (172.20.54.133) by
- DAG2EX05-BASE.srv.huawei-3com.com (10.69.0.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Sat, 20 May 2023 14:21:27 +0800
-Received: from DAG2EX10-IDC.srv.huawei-3com.com ([fe80::e886:502d:5063:7e2b])
- by DAG2EX10-IDC.srv.huawei-3com.com ([fe80::e886:502d:5063:7e2b%10])
- with mapi id 15.01.2507.021; Sat, 20 May 2023 14:21:27 +0800
-From: Yuchen <yu.chen@h3c.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "rth@twiddle.net" <rth@twiddle.net>, "ehabkost@redhat.com"
- <ehabkost@redhat.com>, Dongli Zhang <dongli.zhang@oracle.com>
-Subject: =?utf-8?B?5Zue5aSNOiDlm57lpI06IFtQQVRDSF0gdGFyZ2V0L2kzODY6IENsZWFyIHhz?=
- =?utf-8?Q?ave_pkru_bit_when_KVM_XCR0_not_support?=
-Thread-Topic: =?utf-8?B?5Zue5aSNOiBbUEFUQ0hdIHRhcmdldC9pMzg2OiBDbGVhciB4c2F2ZSBwa3J1?=
- =?utf-8?Q?_bit_when_KVM_XCR0_not_support?=
-Thread-Index: AdmH10nRMdIv88FeTxmtO8yhX/g2MgAx9MSAADk09OAALF7qAAAhFRMgAAoPOtA=
-Date: Sat, 20 May 2023 06:21:27 +0000
-Message-ID: <0530c2ed26094739baa9eed6439ac0bf@h3c.com>
-References: <914d4bfc6901485c9f029ce26ceb7d10@h3c.com>
- <0a734157-778b-8d33-3999-b374a68a3c39@redhat.com>
- <6c64f1b84cbf4dd1a75301fc4615f351@h3c.com>
- <e7c5d527-2461-332e-638f-38c95ff2602d@redhat.com>
- <26ad17ab26ea43d1a5ef97c0a4c8c7bd@h3c.com>
-In-Reply-To: <26ad17ab26ea43d1a5ef97c0a4c8c7bd@h3c.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.99.196.41]
-x-sender-location: DAG2
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1q0Gv2-0005I0-7F
+ for qemu-devel@nongnu.org; Sat, 20 May 2023 03:22:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684567342;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sZCfGMGLOesec3wgs0sBQSwkmciYc3QkwxJONJ19Ww4=;
+ b=VNAwuh1ovZxaDJIXcWxGnqVR8/yX0Bvqldpv1KQvUFM6roDEBd9p98N084ny3C11lYYSxI
+ xS6uPSnx7fm2e8X5/h1FX5hFfOsTEXjrr4/6p1feYPlVyQKGOixDsHdmDnD31NMBY8GQBD
+ yW3Ikk91ZC0euFULFZpEZTDsCYZVCAs=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-623-PbT7hrDIMaWOQVSw7zj8SA-1; Sat, 20 May 2023 03:22:21 -0400
+X-MC-Unique: PbT7hrDIMaWOQVSw7zj8SA-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-643a1fed384so2510549b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 20 May 2023 00:22:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684567340; x=1687159340;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sZCfGMGLOesec3wgs0sBQSwkmciYc3QkwxJONJ19Ww4=;
+ b=gOwSsRic6NQ7vY6Zj/liLxOwyC7ksBuKBVBFA5C+nqkC8NQ7rZWCLbqlgu+42VbJC7
+ IA1UeIPMEbzMdBEXen7KqKmifPLqOuUDkHORGPUvwBZ4EjaKPGDLj6IwtbqJXL3cOUjU
+ P+wzdB1lYhCBiKAAW/tEDNAqjbEWXcLmor5bKyMPfYbdJ/RMS3OIvO6zUlSGIumyKbWW
+ ny0QjbNZ0NZ42wjGQ52P6Lbp7IGCv0bRjrhHihuaa29+WsOX2ysqTogtMMxQYnHi+1cG
+ Ilzbg9+pCWgHBanrsQONvLqswBTZPJLuxNk+8KTPrwp7oOv7NA+Y7mfWc5byi0SEdSP/
+ oFag==
+X-Gm-Message-State: AC+VfDzrre7HXxnR29G93wRauTEczT2UyiW1iAmKsuH+uH0hPGmcjgnN
+ iWoI4d5Sc9BK14AJu+wPZ/q1Peb/kPR9u/173IZRwf97VlwBHmJAY04i16OJ7mbSvHY0ZqCsTJ/
+ uXaZ9KhTwTrpM5mk=
+X-Received: by 2002:a05:6a00:2e1e:b0:64a:f730:1552 with SMTP id
+ fc30-20020a056a002e1e00b0064af7301552mr6377979pfb.19.1684567339916; 
+ Sat, 20 May 2023 00:22:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ53NIPZK79xI91tjtpUd6m0Dy9eICfLELThAFrgDMUxLvBdohZ5GiULt1ZUVIue7uqdAUZL4Q==
+X-Received: by 2002:a05:6a00:2e1e:b0:64a:f730:1552 with SMTP id
+ fc30-20020a056a002e1e00b0064af7301552mr6377951pfb.19.1684567339525; 
+ Sat, 20 May 2023 00:22:19 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.105.135])
+ by smtp.googlemail.com with ESMTPSA id
+ b15-20020a631b4f000000b00534684201b0sm821344pgm.27.2023.05.20.00.22.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 20 May 2023 00:22:19 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: alex.bennee@linaro.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH v2] acpi/tests/bios-tables-test: pass iasl path through
+ environment variable
+Date: Sat, 20 May 2023 12:52:09 +0530
+Message-Id: <20230520072209.48766-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: h3cspam01-ex.h3c.com 34K6LRVE020464
-Received-SPF: pass client-ip=60.191.123.56; envelope-from=yu.chen@h3c.com;
- helo=h3cspam01-ex.h3c.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,82 +103,214 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-UGFvbG8sDQpJIGRlYnVnZ2VkIGFuZCBmb3VuZCwgeDg2X2NwdV94c2F2ZV94Y3IwX2NvbXBvbmVu
-dHMoKSByZXR1ZW4gMCwgYWx0aG91Z2ggaXQgY2FuIHNvbHZlIHByb2JsZW0sIGJ1dCBYQ1IwIGJp
-dCAwIGFsc28gaXMgMCwgDQp0aGlzIGlzIG5vdCBjb3JyZWN0LiBCZWNhdXNlIEludGVsIG1hbnVh
-bCBSZXF1aXJlbWVudHMgOiAiIFhDUjAuWDg3IChiaXQgMCk6IFRoaXMgYml0IDAgbXVzdCBiZSAx
-LiBBbiBhdHRlbXB0IHRvIHdyaXRlIDAgdG8gdGhpcyBiaXQgY2F1c2VzIGEgI0dQIGV4Y2VwdGlv
-bi4gIiAoMi42IEVYVEVOREVEIENPTlRST0wgUkVHSVNURVJTIChJTkNMVURJTkcgWENSMCkpLg0K
-DQo+IC0tLS0t6YKu5Lu25Y6f5Lu2LS0tLS0NCj4g5Y+R5Lu25Lq6OiB5dWNoZW4gKENsb3VkKQ0K
-PiDlj5HpgIHml7bpl7Q6IDIwMjPlubQ15pyIMjDml6UgOTo1OA0KPiDmlLbku7bkuro6ICdQYW9s
-byBCb256aW5pJyA8cGJvbnppbmlAcmVkaGF0LmNvbT47DQo+ICdxZW11LWRldmVsQG5vbmdudS5v
-cmcnIDxxZW11LWRldmVsQG5vbmdudS5vcmc+DQo+IOaKhOmAgTogJ3J0aEB0d2lkZGxlLm5ldCcg
-PHJ0aEB0d2lkZGxlLm5ldD47ICdlaGFia29zdEByZWRoYXQuY29tJw0KPiA8ZWhhYmtvc3RAcmVk
-aGF0LmNvbT47ICdEb25nbGkgWmhhbmcnIDxkb25nbGkuemhhbmdAb3JhY2xlLmNvbT4NCj4g5Li7
-6aKYOiDlm57lpI06IOWbnuWkjTogW1BBVENIXSB0YXJnZXQvaTM4NjogQ2xlYXIgeHNhdmUgcGty
-dSBiaXQgd2hlbiBLVk0NCj4gWENSMCBub3Qgc3VwcG9ydA0KPiANCj4gUGFvbG8sIHRoYW5rcywN
-Cj4gVGhlIGtlcm5lbCBwYXRjaCBjYW4gc29sdmUgdGhpcyBwcm9ibGVtLiBCdXQgaXQgaXMgZGlm
-ZmljdWx0IHRvIHVwZ3JhZGUgdGhlDQo+IGtlcm5lbCBpbiBzb21lIHByb2R1Y3Rpb24gZW52aXJv
-bm1lbnRzLCBhbmQgdXBncmFkaW5nIHFlbXUgaXMgZWFzeS4NCj4gVGhpcyBwYXRjaCBpcyBqdXN0
-IHRvIHN5bmMgcWVtdSB3aXRoIGt2bSBYU0FWRSBmZWF0dXJlcywgbm8gbmVnYXRpdmUNCj4gaW1w
-YWN0Lg0KPiBBdCB0aGUgc2FtZSB0aW1lLCBpdCBpbmNyZWFzZXMgdGhlIGNvbXBhdGliaWxpdHkg
-b2YgcWVtdSB0byBrZXJuZWwgYW5kDQo+IGltcHJvdmVzIHRoZSByb2J1c3RuZXNzIG9mIHFlbXUu
-DQo+IA0KPiA+IC0tLS0t6YKu5Lu25Y6f5Lu2LS0tLS0NCj4gPiDlj5Hku7bkuro6IFBhb2xvIEJv
-bnppbmkgPHBib256aW5pQHJlZGhhdC5jb20+DQo+ID4g5Y+R6YCB5pe26Ze0OiAyMDIz5bm0Neac
-iDIw5pelIDE6MzcNCj4gPiDmlLbku7bkuro6IHl1Y2hlbiAoQ2xvdWQpIDx5dS5jaGVuQGgzYy5j
-b20+DQo+ID4g5Li76aKYOiBSZTog5Zue5aSNOiBbUEFUQ0hdIHRhcmdldC9pMzg2OiBDbGVhciB4
-c2F2ZSBwa3J1IGJpdCB3aGVuIEtWTQ0KPiA+IFhDUjAgbm90IHN1cHBvcnQNCj4gPg0KPiA+IE9u
-IDUvMTgvMjMgMTQ6MzcsIFl1Y2hlbiB3cm90ZToNCj4gPiA+IFllcywgYmVjYXVzZSB4ODZfY3B1
-X3hzYXZlX2FsbF9hcmVhcygpIGNhbiBnZXQgdGhlIGNvcnJlY3QgWFNBVkUNCj4gPiBmZWF0dXJl
-cy4NCj4gPg0KPiA+IElmIHlvdSB0ZXN0ZWQgaXQsIEkgY2FuIHBvc3QgdGhlIHBhdGNoIGFzIGEg
-d29ya2Fyb3VuZC4gIEhvd2V2ZXIsIHRoZQ0KPiA+IGtlcm5lbCBidWcgaGFzIGJlZW4gZml4ZWQg
-dG9vLg0KPiA+DQo+ID4gUGFvbG8NCj4gPg0KPiA+ID4+IC0tLS0t6YKu5Lu25Y6f5Lu2LS0tLS0N
-Cj4gPiA+PiDlj5Hku7bkuro6IFBhb2xvIEJvbnppbmkgPHBib256aW5pQHJlZGhhdC5jb20+DQo+
-ID4gPj4g5Y+R6YCB5pe26Ze0OiAyMDIz5bm0NeaciDE45pelIDE6MDgNCj4gPiA+PiDmlLbku7bk
-uro6IHl1Y2hlbiAoQ2xvdWQpIDx5dS5jaGVuQGgzYy5jb20+Ow0KPiA+IHFlbXUtZGV2ZWxAbm9u
-Z251Lm9yZw0KPiA+ID4+IOaKhOmAgTogcnRoQHR3aWRkbGUubmV0OyBlaGFia29zdEByZWRoYXQu
-Y29tOyBjaGVuZ2NoaXdlbg0KPiAoQ2xvdWQpDQo+ID4gPj4gPGNoZW5nY2hpd2VuQGgzYy5jb20+
-DQo+ID4gPj4g5Li76aKYOiBSZTogW1BBVENIXSB0YXJnZXQvaTM4NjogQ2xlYXIgeHNhdmUgcGty
-dSBiaXQgd2hlbiBLVk0gWENSMA0KPiA+IG5vdA0KPiA+ID4+IHN1cHBvcnQNCj4gPiA+Pg0KPiA+
-ID4+IE9uIDUvMTcvMjMgMTI6NTUsIFl1Y2hlbiB3cm90ZToNCj4gPiA+Pj4gTWlncmF0aW5nIGd1
-ZXN0IGZyb20gSW50ZWwgbmV3IENQVSAoYXMgR29sZCA2MjMwKSB0byBvbGQgQ1BVIChhcw0KPiA+
-ID4+PiBFNS0yNjUwIHY0KSB3aWxsIHBhdXNlIG9uIHRoZSBkZXN0aW5hdGlvbiBob3N0LiBCZWNh
-dXNlIG9sZCBDUFUNCj4gPiA+Pj4gbm90IHN1cHBvcnQgeHNhdmUgcGtydSBmZWF0dXJlLCBhbmQg
-S1ZNIEtWTV9TRVRfWFNBVkUgaW9jdGwNCj4gcmV0dXJuDQo+ID4gPj4gRUlOVkFMLg0KPiA+ID4+
-Pg0KPiA+ID4+PiBUaGlzIGtlcm5lbCBjb21taXQgaW50cm9kdWNlcyB0aGUgcHJvYmxlbToNCj4g
-PiA+Pj4NCj4gPiA+Pj4gZWE0ZDY5MzhkNGMwIHg4Ni9mcHU6IFJlcGxhY2UgS1ZNcyBob21lIGJy
-ZXdlZCBGUFUgY29weQ0KPiBmcm9tDQo+ID4gPj4gdXNlcg0KPiA+ID4+Pg0KPiA+ID4+PiBTaWdu
-ZWQtb2ZmLWJ5OiBZdUNoZW4gPHl1LmNoZW5AaDNjLmNvbT4NCj4gPiA+Pg0KPiA+ID4+IFdvdWxk
-IHRoaXMgd29yayBpbnN0ZWFkPw0KPiA+ID4+DQo+ID4gPj4gZGlmZiAtLWdpdCBhL3RhcmdldC9p
-Mzg2L3hzYXZlX2hlbHBlci5jDQo+ID4gPj4gYi90YXJnZXQvaTM4Ni94c2F2ZV9oZWxwZXIuYyBp
-bmRleCA5OTZlOWYzYmZlZjUuLmQzZTVlZGFkMmVjZA0KPiA+ID4+IDEwMDY0NA0KPiA+ID4+IC0t
-LSBhL3RhcmdldC9pMzg2L3hzYXZlX2hlbHBlci5jDQo+ID4gPj4gKysrIGIvdGFyZ2V0L2kzODYv
-eHNhdmVfaGVscGVyLmMNCj4gPiA+PiBAQCAtNDcsNyArNDcsNyBAQCB2b2lkIHg4Nl9jcHVfeHNh
-dmVfYWxsX2FyZWFzKFg4NkNQVSAqY3B1LA0KPiA+IHZvaWQNCj4gPiA+PiAqYnVmLCB1aW50MzJf
-dCBidWZsZW4pDQo+ID4gPj4gICAgICAgICAgICBzdHFfcCh4bW0gKyA4LCBlbnYtPnhtbV9yZWdz
-W2ldLlpNTV9RKDEpKTsNCj4gPiA+PiAgICAgICAgfQ0KPiA+ID4+DQo+ID4gPj4gLSAgICBoZWFk
-ZXItPnhzdGF0ZV9idiA9IGVudi0+eHN0YXRlX2J2Ow0KPiA+ID4+ICsgICAgaGVhZGVyLT54c3Rh
-dGVfYnYgPSBlbnYtPnhzdGF0ZV9idiAmDQo+ID4gPj4gKyB4ODZfY3B1X3hzYXZlX3hjcjBfY29t
-cG9uZW50cyhjcHUpOw0KPiA+ID4+DQo+ID4gPj4gICAgICAgIGUgPSAmeDg2X2V4dF9zYXZlX2Fy
-ZWFzW1hTVEFURV9ZTU1fQklUXTsNCj4gPiA+PiAgICAgICAgaWYgKGUtPnNpemUgJiYgZS0+b2Zm
-c2V0KSB7DQo+ID4gPj4NCj4gPiA+PiBQYW9sbw0KPiA+ID4NCj4gPiA+IC0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+
-ID4gPiAtLQ0KPiA+ID4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ID4gPiDmnKzpgq7ku7blj4rlhbbpmYTku7blkKvmnInm
-lrDljY7kuInpm4blm6LnmoTkv53lr4bkv6Hmga/vvIzku4XpmZDkuo7lj5HpgIHnu5nkuIrpnaLl
-nLANCj4g5Z2ADQo+ID4g5Lit5YiX5Ye6DQo+ID4gPiDnmoTkuKrkurrmiJbnvqTnu4TjgILnpoHm
-raLku7vkvZXlhbbku5bkurrku6Xku7vkvZXlvaLlvI/kvb/nlKjvvIjljIXmi6zkvYbkuI3pmZDk
-uo7lhagNCj4g6YOoDQo+ID4g5oiW6YOo5YiG5Zyw5rOE6Zyy44CB5aSN5Yi244CBDQo+ID4gPiDm
-iJbmlaPlj5HvvInmnKzpgq7ku7bkuK3nmoTkv6Hmga/jgILlpoLmnpzmgqjplJnmlLbkuobmnKzp
-gq7ku7bvvIzor7fmgqjnq4vljbPnlLXor53miJYNCj4g6YKuDQo+ID4g5Lu26YCa55+l5Y+R5Lu2
-5Lq65bm25Yig6Zmk5pysDQo+ID4gPiDpgq7ku7bvvIENCj4gPiA+IFRoaXMgZS1tYWlsIGFuZCBp
-dHMgYXR0YWNobWVudHMgY29udGFpbiBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24NCj4gPiA+IGZy
-b20gTmV3IEgzQywgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBmb3IgdGhlIHBlcnNvbiBvciBlbnRp
-dHkgd2hvc2UNCj4gPiA+IGFkZHJlc3MgaXMgbGlzdGVkIGFib3ZlLiBBbnkgdXNlIG9mIHRoZSBp
-bmZvcm1hdGlvbiBjb250YWluZWQgaGVyZWluDQo+ID4gPiBpbiBhbnkgd2F5IChpbmNsdWRpbmcs
-IGJ1dCBub3QgbGltaXRlZCB0bywgdG90YWwgb3IgcGFydGlhbA0KPiA+ID4gZGlzY2xvc3VyZSwg
-cmVwcm9kdWN0aW9uLCBvciBkaXNzZW1pbmF0aW9uKSBieSBwZXJzb25zIG90aGVyIHRoYW4NCj4g
-PiA+IHRoZSBpbnRlbmRlZA0KPiA+ID4gcmVjaXBpZW50KHMpIGlzIHByb2hpYml0ZWQuIElmIHlv
-dSByZWNlaXZlIHRoaXMgZS1tYWlsIGluIGVycm9yLA0KPiA+ID4gcGxlYXNlIG5vdGlmeSB0aGUg
-c2VuZGVyIGJ5IHBob25lIG9yIGVtYWlsIGltbWVkaWF0ZWx5IGFuZCBkZWxldGUgaXQhDQoNCg==
+Currently the meson based QEMU build process locates the iasl binary from the
+current PATH and other locations [1] and uses that to set CONFIG_IASL which is
+then used by the test.
+
+This has two disadvantages:
+ - If iasl was not previously installed in the PATH, one has to install iasl
+   and rebuild QEMU in order to pick up the iasl location. One cannot simply
+   use the existing bios-tables-test binary because CONFIG_IASL is only set
+   during the QEMU build time by meson and then bios-tables-test has to be
+   rebuilt with CONFIG_IASL set in order to use iasl.
+ - Sometimes, the stock iasl that comes with distributions is simply not good
+   enough because it does not support the latest ACPI changes - newly
+   introduced tables or new table attributes etc. In order to test ACPI code
+   in QEMU, one has to clone the latest acpica upstream repository and
+   rebuild iasl in order to get support for it. In those cases, one may want
+   the test to use the iasl binary from a non-standard location.
+
+In order to overcome the above two disadvantages, we make CONFIG_IASL an
+environment variable that can be set by the meson build system as well as
+by the tester. Bios-tables-test then uses this environment variable to set
+its iasl location. This way developers can not only point CONFIG_IASL
+environment variable to a possibly a non-standard custom build binary
+and quickly run bios-tables-test but the meson build system can also set
+it to a standard iasl binary that is found in the PATH.
+
+[1] https://mesonbuild.com/Reference-manual_functions.html#find_program
+
+CC: alex.bennee@linaro.org
+CC: pbonzini@redhat.com
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ meson.build                    | 10 ----------
+ meson_options.txt              |  2 --
+ scripts/meson-buildoptions.sh  |  2 --
+ tests/qtest/bios-tables-test.c | 16 ++++++++++------
+ tests/qtest/meson.build        |  4 ++++
+ 5 files changed, 14 insertions(+), 20 deletions(-)
+
+changelog:
+v2:
+addressed comments from v1. CONFIG_IASL is now an environment
+variable and no new environment variable is introduced.
+Top level meson.build now does not set CONFIG_IASL in the
+platform header. References to iasl has been removed from other
+files. Test doc is updated. For example:
+
+"to see ASL diff between mismatched files install IASL, set CONFIG_IASL environment variable to the path of iasl binary,
+ and run 'QTEST_QEMU_BINARY=<path to QEMU binary to test> V=1 ./tests/qtest/bios-tables-test' from build directory.
+ Alternatively run 'V=1 make check-qtest -B' from build dir."
+
+
+One drawback of this approach is that meson overrides the values
+of environment variables that are passed from the OS command line
+with the values it sets. So if CONFIG_IASL is passed as an
+env variable by the developer while running "make check-qtest" and
+meson finds iasl in the path, meson will override the value the
+developer provided with the one that it found. I have not seen a
+way to check for OS env from meson.build like we do os.environ.get()
+in python.
+Other than the above, other cases are tested. In absence of iasl,
+the developer can provide their own CONFIG_IASL and path to a custom
+binary and the test picks it up when run from make check-qtest.
+Once iasl is installed, make check-qtest -B will force meson to
+retest iasl path and pass it to the test as an enviroinment.
+When running the test directly, one has to explicitly pass the path
+of iasl in the commnand line as no meson is involved there. There is
+no automatic PATH discovery in the test.
+  
+diff --git a/meson.build b/meson.build
+index 25a4b9f2c1..18c7b669d9 100644
+--- a/meson.build
++++ b/meson.build
+@@ -179,12 +179,6 @@ if 'dtrace' in get_option('trace_backends')
+   endif
+ endif
+ 
+-if get_option('iasl') == ''
+-  iasl = find_program('iasl', required: false)
+-else
+-  iasl = find_program(get_option('iasl'), required: true)
+-endif
+-
+ ##################
+ # Compiler flags #
+ ##################
+@@ -1791,9 +1785,6 @@ foreach k : get_option('trace_backends')
+ endforeach
+ config_host_data.set_quoted('CONFIG_TRACE_FILE', get_option('trace_file'))
+ config_host_data.set_quoted('CONFIG_TLS_PRIORITY', get_option('tls_priority'))
+-if iasl.found()
+-  config_host_data.set_quoted('CONFIG_IASL', iasl.full_path())
+-endif
+ config_host_data.set_quoted('CONFIG_BINDIR', get_option('prefix') / get_option('bindir'))
+ config_host_data.set_quoted('CONFIG_PREFIX', get_option('prefix'))
+ config_host_data.set_quoted('CONFIG_QEMU_CONFDIR', get_option('prefix') / qemu_confdir)
+@@ -3761,7 +3752,6 @@ summary_info += {'sphinx-build':      sphinx_build}
+ if config_host.has_key('HAVE_GDB_BIN')
+   summary_info += {'gdb':             config_host['HAVE_GDB_BIN']}
+ endif
+-summary_info += {'iasl':              iasl}
+ summary_info += {'genisoimage':       config_host['GENISOIMAGE']}
+ if targetos == 'windows' and have_ga
+   summary_info += {'wixl':            wixl}
+diff --git a/meson_options.txt b/meson_options.txt
+index d8330a1f71..9149df8004 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -14,8 +14,6 @@ option('smbd', type : 'string', value : '',
+        description: 'Path to smbd for slirp networking')
+ option('sphinx_build', type : 'string', value : 'sphinx-build',
+        description: 'Use specified sphinx-build for building document')
+-option('iasl', type : 'string', value : '',
+-       description: 'Path to ACPI disassembler')
+ option('tls_priority', type : 'string', value : 'NORMAL',
+        description: 'Default TLS protocol/cipher priority string')
+ option('default_devices', type : 'boolean', value : true,
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 2805d1c145..98ca2e53af 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -48,7 +48,6 @@ meson_options_help() {
+   printf "%s\n" '                           dtrace/ftrace/log/nop/simple/syslog/ust)'
+   printf "%s\n" '  --firmwarepath=VALUES    search PATH for firmware files [share/qemu-'
+   printf "%s\n" '                           firmware]'
+-  printf "%s\n" '  --iasl=VALUE             Path to ACPI disassembler'
+   printf "%s\n" '  --includedir=VALUE       Header file directory [include]'
+   printf "%s\n" '  --interp-prefix=VALUE    where to find shared libraries etc., use %M for'
+   printf "%s\n" '                           cpu name [/usr/gnemul/qemu-%M]'
+@@ -304,7 +303,6 @@ _meson_option_parse() {
+     --disable-hexagon-idef-parser) printf "%s" -Dhexagon_idef_parser=false ;;
+     --enable-hvf) printf "%s" -Dhvf=enabled ;;
+     --disable-hvf) printf "%s" -Dhvf=disabled ;;
+-    --iasl=*) quote_sh "-Diasl=$2" ;;
+     --enable-iconv) printf "%s" -Diconv=enabled ;;
+     --disable-iconv) printf "%s" -Diconv=disabled ;;
+     --includedir=*) quote_sh "-Dincludedir=$2" ;;
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 7fd88b0e9c..e43a94787f 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -102,11 +102,7 @@ typedef struct {
+ 
+ static char disk[] = "tests/acpi-test-disk-XXXXXX";
+ static const char *data_dir = "tests/data/acpi";
+-#ifdef CONFIG_IASL
+-static const char *iasl = CONFIG_IASL;
+-#else
+ static const char *iasl;
+-#endif
+ 
+ static int verbosity_level;
+ 
+@@ -441,6 +437,8 @@ static void test_acpi_asl(test_data *data)
+     test_data exp_data = {};
+     gboolean exp_err, err, all_tables_match = true;
+ 
++    iasl = getenv("CONFIG_IASL");
++
+     exp_data.tables = load_expected_aml(data);
+     dump_aml_files(data, false);
+     for (i = 0; i < data->tables->len; ++i) {
+@@ -473,6 +471,10 @@ static void test_acpi_asl(test_data *data)
+             continue;
+         }
+ 
++        if (verbosity_level >= 2) {
++            fprintf(stderr, "Using iasl: %s\n", iasl);
++        }
++
+         err = load_asl(data->tables, sdt);
+         asl = normalize_asl(sdt->asl);
+ 
+@@ -529,8 +531,10 @@ static void test_acpi_asl(test_data *data)
+     }
+     if (!iasl && !all_tables_match) {
+         fprintf(stderr, "to see ASL diff between mismatched files install IASL,"
+-                " rebuild QEMU from scratch and re-run tests with V=1"
+-                " environment variable set");
++                " set CONFIG_IASL environment variable to the path of iasl binary,\n"
++                " and run \'QTEST_QEMU_BINARY=<path to QEMU binary to test>"
++                " V=1 ./tests/qtest/bios-tables-test\' from build directory.\n"
++                " Alternatively run \'V=1 make check-qtest -B\' from build dir.\n");
+     }
+     g_assert(all_tables_match);
+ 
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 48cd35b5b2..f0b212bbd8 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -105,6 +105,7 @@ if dbus_display and targetos != 'windows'
+   qtests_i386 += ['dbus-display-test']
+ endif
+ 
++iasl = find_program('iasl', required: false)
+ dbus_daemon = find_program('dbus-daemon', required: false)
+ if dbus_daemon.found() and gdbus_codegen.found()
+   # Temporarily disabled due to Patchew failures:
+@@ -338,6 +339,9 @@ foreach dir : target_dirs
+ 
+   test_deps = roms
+   qtest_env = environment()
++  if iasl.found()
++    qtest_env.set('CONFIG_IASL', iasl.full_path())
++  endif
+   if have_tools
+     qtest_env.set('QTEST_QEMU_IMG', './qemu-img')
+     test_deps += [qemu_img]
+-- 
+2.39.1
+
 
