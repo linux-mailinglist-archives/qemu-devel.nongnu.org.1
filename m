@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CC170ADA0
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 13:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC6C70AE0F
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 14:32:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0hNA-0002d6-PE; Sun, 21 May 2023 07:37:12 -0400
+	id 1q0iDP-0001vi-NY; Sun, 21 May 2023 08:31:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0hN9-0002bD-3B
- for qemu-devel@nongnu.org; Sun, 21 May 2023 07:37:11 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q0iDF-0001vM-TL; Sun, 21 May 2023 08:31:01 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0hN7-0000Bp-5e
- for qemu-devel@nongnu.org; Sun, 21 May 2023 07:37:10 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f601c57d8dso2999695e9.0
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 04:37:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q0iDE-0001k8-EQ; Sun, 21 May 2023 08:31:01 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-96fa4a6a79bso153482666b.3; 
+ Sun, 21 May 2023 05:30:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684669027; x=1687261027;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1Qu0B0ldTle60waGFJy+QMGdYezVw7yhxtyunoe8NbQ=;
- b=ujsKxi3nroQEJx9t6Gz/YjG47nmttbLZ+uMCy59L32DwnCJ+B8TDPS/Ed9PHYyj98c
- Hb4K09YBGuYJZk4cQqpdusGty9g6SlKXAhgkegwd4zDPNXJGlzB4MhLiGlP0cd6gB0hE
- 4ixGS/8uo9vCQyDMjS4K9UXUNjPmCsQTAZ3pmcpi4Kg2IxnqGnPeAmfTK5Umdhk+cfrW
- K5yzevvUCQVbDrOZSTe45+F/LpxgmyM6GkRggad7rpCv+kuL5iFy8o/H36DFTGD0XgeK
- S8pq+bwTpd9VJi7kML77N5QpwP5rZSx3YX7f9OXc6gZMDqpnDcGl8ZUHkUc8xAh0NfPm
- CqHA==
+ d=gmail.com; s=20221208; t=1684672257; x=1687264257;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BZLXAZ0ETagSKu1U9dc04gylc7GNMLpCPSdXgwBueE0=;
+ b=n89cFf5KcItLN6Vu654Uokdk/WhpNpjFjj15982vxuiLDdkEsHT1SDGnXgE3yRgMZC
+ TpBpz7SRwFAZvCO/V17nmMcPcGnfr6C1KcsW7S/gfXUxm3ge8seXCXcr93o0n3GcGyex
+ ldstHtuOuAhMOfR8ZbBrB9NwPfl60YeBcsgbiLxC64AkxPxDiXzWbYAQBtVUfLfD3gvH
+ SRxP8flhSvyv4c3DBWRB7UJYkC5mrYxPxpE5MEjFd2KINCjiUkHvYcqUh4Aeyy8oL4uU
+ 4+0UFf1NJqaag7iXbGTfd+9ZtMJiTZY2RGJTqlBJXve+TX23jCGJepj5HcAvQa6w49uD
+ JRDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684669027; x=1687261027;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1Qu0B0ldTle60waGFJy+QMGdYezVw7yhxtyunoe8NbQ=;
- b=RoA5BEc1VjfhsEXfX7mfvbKwsBEmGArIdlDh/4ctVfzWEaT/idzqDTpo2vZo04YzRf
- B7VZ1t89SYRnLE+/z/81/PrgUL4cw2bOrzKAf3AQsbqzkA7sHblf2nba3ozhf3Xt6Wpw
- tvmurXFTCHkkMh/SneMjJ6z1DG29PsLPFTOD0DQcWAr6mBnHOoEuEVSjurZAcoP1A3g3
- Mp7ZCpFBCPi3Ptw2BwKTvEwxzeFoKONbg0X1mLFSP9bMTvS4UkaeTfECSTR+Gr88b61j
- 9PsMTNVL0izcWFampLN6aTrRX9W1Bd/wZBgBOUdy5rmO+H/It+IhnjwHiyPTbFabC7g6
- DKCw==
-X-Gm-Message-State: AC+VfDxJDRlCa5rTN3oCRyoCp1yOd9QWLF7AlUdGkw7OBtzCikE7uXn3
- oKMqPm1qlfwyjcHI8GzfsSoa7w==
-X-Google-Smtp-Source: ACHHUZ5UpNmBdiJBY7yswHqeOegHR6lvAhVvlT2JxBgmiWueTEzEQbglODag/UCAaR2rfutYCZrLVw==
-X-Received: by 2002:a05:600c:2256:b0:3f1:7848:6740 with SMTP id
- a22-20020a05600c225600b003f178486740mr5421750wmm.8.1684669027203; 
- Sun, 21 May 2023 04:37:07 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.152.177])
+ d=1e100.net; s=20221208; t=1684672257; x=1687264257;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BZLXAZ0ETagSKu1U9dc04gylc7GNMLpCPSdXgwBueE0=;
+ b=Ygc61de0sgsvbRw5YKhG1N5P4zTYs8ei8GRZZBRpqcGF60EMqS9SdyEKJLvNNQfLSA
+ 4V6WH8VWmEdGtYpK0qjs++bZueHh2XWU9SlVaYbXgGtqfQmitMKX4ZdXQoSk0Kd9Yq2M
+ 0bkUoqGT2L5GIMr1ApRBpmkkOvXaqDJrD5lhY19f0r/ZJoOYNMDT1EJnL5L3xzDYes2M
+ cU0JbnWJBfzU5SrmAU447tyAvZMGXlHuAt6bbXUOO5KyQP8g4TFeKhlnFK8K1DENMC8Z
+ RhDujnax//USjONqqtr4tiF7hsqUFSRl8menphyGtkU8hZ5HThRwbbOMUtjdwv4DuEUs
+ 98XA==
+X-Gm-Message-State: AC+VfDx+V5ToAyZ3mrjQihAUJNo6vk66QqzOt7PF7tAscmo+sdXRjjPj
+ sZL0lV3QBCsROF4Rqq6Tsn6FI6F0oQ8=
+X-Google-Smtp-Source: ACHHUZ61CXtJ2oNIhgXMj0yFxL8DoNFYRkbiyWygpceqEHDwme7qYVGSzddCvl/L4+0Ny1ThzrrSXg==
+X-Received: by 2002:a17:907:3d94:b0:96f:d67b:80af with SMTP id
+ he20-20020a1709073d9400b0096fd67b80afmr853010ejc.75.1684672257234; 
+ Sun, 21 May 2023 05:30:57 -0700 (PDT)
+Received: from Provence.localdomain
+ (dynamic-077-191-145-122.77.191.pool.telefonica.de. [77.191.145.122])
  by smtp.gmail.com with ESMTPSA id
- o3-20020a1c7503000000b003f09d7b6e20sm4995455wmc.2.2023.05.21.04.37.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 May 2023 04:37:06 -0700 (PDT)
-Message-ID: <0bb0cded-8450-536e-b90f-1a9d33311c2a@linaro.org>
-Date: Sun, 21 May 2023 13:37:05 +0200
+ b19-20020a170906729300b00965ec1faf27sm1882678ejl.74.2023.05.21.05.30.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 May 2023 05:30:56 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-trivial@nongnu.org,
+ qemu-arm@nongnu.org,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH v2 0/6] Trivial cleanups
+Date: Sun, 21 May 2023 14:30:43 +0200
+Message-Id: <20230521123049.312349-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH] target/mips: Rework cp0_timer with clock API
-Content-Language: en-US
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-Cc: chenhuacai@kernel.org
-References: <20230521110037.90049-1-jiaxun.yang@flygoat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230521110037.90049-1-jiaxun.yang@flygoat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,36 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/5/23 13:00, Jiaxun Yang wrote:
-> Previous implementation of MIPS cp0_timer computes a
-> cp0_count_ns based on input clock. However rounding
-> error of cp0_count_ns can affect precision of cp0_timer.
-> 
-> Using clock API and a divider for cp0_timer, so we can
-> use clock_ns_to_ticks/clock_ns_to_ticks to avoid rounding
-> issue.
-> 
-> Also workaround the situation that in such handler flow:
-> 
-> count = read_c0_count()
-> write_c0_compare(count)
-> 
-> If timer had not progressed when compare was written, the
-> interrupt would trigger again.
-> 
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
-> This seems fixed MTTCG booting issue on malta 5kEc with SMP.
-> I'm going to do more test and see if we can enable MTTCG for
-> mips64el.
-> ---
->   target/mips/cpu.c              |  8 +++++---
->   target/mips/cpu.h              |  3 ++-
->   target/mips/sysemu/cp0_timer.c | 35 ++++++++++++++++++----------------
->   3 files changed, 26 insertions(+), 20 deletions(-)
-
-Nice!
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+This series:=0D
+* Removes dead code from omap_uart and i82378=0D
+* Resolves redundant code in the i8254 timer devices=0D
+* Exports ParallelState and ISAParallelState in order to replac string lite=
+rals=0D
+  by TYPE_ISA_PARALLEL macro usage=0D
+=0D
+v2:=0D
+* Export ParallelState and ISAParallelState (Mark)=0D
+=0D
+Testing done:=0D
+* `make check`=0D
+=0D
+Bernhard Beschow (6):=0D
+  hw/timer/i8254_common: Share "iobase" property via base class=0D
+  hw/arm/omap: Remove unused omap_uart_attach()=0D
+  hw/isa/i82378: Remove unused "io" attribute=0D
+  hw/char/parallel: Export ParallelState=0D
+  hw/char/parallel-isa: Export ISAParallelState=0D
+  hw/char/parallel: Replace string literals by TYPE_ISA_PARALLEL macro=0D
+=0D
+ include/hw/arm/omap.h          |  1 -=0D
+ include/hw/char/parallel-isa.h | 46 ++++++++++++++++++++++++++++=0D
+ include/hw/char/parallel.h     | 44 +++++++++++++++++++++++++++=0D
+ hw/char/omap_uart.c            |  9 ------=0D
+ hw/char/parallel-isa.c         |  3 +-=0D
+ hw/char/parallel.c             | 55 +---------------------------------=0D
+ hw/i386/kvm/i8254.c            |  1 -=0D
+ hw/isa/i82378.c                |  1 -=0D
+ hw/isa/isa-superio.c           |  3 +-=0D
+ hw/timer/i8254.c               |  6 ----=0D
+ hw/timer/i8254_common.c        |  6 ++++=0D
+ 11 files changed, 101 insertions(+), 74 deletions(-)=0D
+ create mode 100644 include/hw/char/parallel-isa.h=0D
+=0D
+-- =0D
+2.40.1=0D
+=0D
 
