@@ -2,101 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F95470AD20
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 11:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE1670AD6E
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 12:25:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0f0T-0002mC-0a; Sun, 21 May 2023 05:05:37 -0400
+	id 1q0gEP-0004Fq-8L; Sun, 21 May 2023 06:24:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q0f0Q-0002lp-GQ
- for qemu-devel@nongnu.org; Sun, 21 May 2023 05:05:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1q0gEM-0004FO-Nu
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 06:24:02 -0400
+Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q0f0O-0006Bb-Qb
- for qemu-devel@nongnu.org; Sun, 21 May 2023 05:05:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684659931;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3VSx/Avfb33Ldgih9JSGuUPfbI4fITybLTK9e69Y1TY=;
- b=H3PvPJGEirhAGh1/ETZBHyG6SRErpnSnuu348f0B/YbIW/b4oQ2OPFpSxpxPnN2KcoV+DD
- 4MaU0EG1tLStVvIwGWwLWNJOF7FSQd6z+MgqOoXPxNj5NItGDZv9CDllwvAvQpriVb5nxC
- wTJviQX0ol4N9056Kc1OctNjEot920Y=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-240-di6i7gboNtGYnoiAlrNQqw-1; Sun, 21 May 2023 05:05:30 -0400
-X-MC-Unique: di6i7gboNtGYnoiAlrNQqw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30793c16c78so3174323f8f.3
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 02:05:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684659929; x=1687251929;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3VSx/Avfb33Ldgih9JSGuUPfbI4fITybLTK9e69Y1TY=;
- b=FDM2V6lGD6TiieCP9foplQ22+BFstON76sstIKmFQSW6jtf4prblkHhj5RZnU//YoS
- FsQZo9Lqz+yStLrlX2H7j9DSLcWBDwZqp7P9VsjEBZfSKvRerzOXdNdnmg9QfkpUs77l
- t1YycxW/uc2mn/Jl+fw0v2Y1sokOByRzHJuVdfL2XqUsehGvgJpkbQbO63Vd6poVUf93
- n26LpGFi58ZqEPvR7aCyPoxcijY6/dlv363CJ4/4sulOuQB+sQn5rnSJF7EHaH+snEIl
- MMIsp/9oPSmn2IlVN7q/j0b8n1eiGuopW6PF8CX51wabYIGxuMUBFyNeuHkiUHR0hqqr
- GiYw==
-X-Gm-Message-State: AC+VfDx1wo8VHd9BDy2DOR/A7IKBB+LmG7jd4XMoLt2hh0mogDr3l2Mr
- x4HvuRyXkZ7Mp2q6kJ0brsXNS7smUm3Dk8+hRSXMU0QO8pso9XXpZtA06KZGAhq48pAiyWa1WAZ
- 1zxZ/DjZIAtl8NNQ=
-X-Received: by 2002:a5d:4b4e:0:b0:2fb:600e:55bd with SMTP id
- w14-20020a5d4b4e000000b002fb600e55bdmr4945540wrs.39.1684659928896; 
- Sun, 21 May 2023 02:05:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4XOP64xDKuhvScJEE4WNn6L+GxaVOCiNZ2RGkPbPgb+PtDQCMNsQ+Es239o+pZAxvM+7IIWA==
-X-Received: by 2002:a5d:4b4e:0:b0:2fb:600e:55bd with SMTP id
- w14-20020a5d4b4e000000b002fb600e55bdmr4945531wrs.39.1684659928608; 
- Sun, 21 May 2023 02:05:28 -0700 (PDT)
-Received: from redhat.com ([2.52.11.67]) by smtp.gmail.com with ESMTPSA id
- l4-20020a5d5604000000b00300aee6c9cesm4112693wrv.20.2023.05.21.02.05.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 May 2023 02:05:27 -0700 (PDT)
-Date: Sun, 21 May 2023 05:05:23 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- qemu-devel@nongnu.org, Fan Ni <fan.ni@samsung.com>,
- linux-cxl@vger.kernel.org, linuxarm@huawei.com,
- Ira Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>,
- Dave Jiang <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v6 1/4] bswap: Add the ability to store to an unaligned
- 24 bit field
-Message-ID: <20230521050417-mutt-send-email-mst@kernel.org>
-References: <20230519141803.29713-1-Jonathan.Cameron@huawei.com>
- <20230519141803.29713-2-Jonathan.Cameron@huawei.com>
- <CAFEAcA_kjm+k7SEEnz6uw+cOJyXSoUqg2wCQ5h+W-eTfwxD=FA@mail.gmail.com>
- <04b53845-b54f-458f-bc6f-f5aed86cdd06@eik.bme.hu>
- <4dd8a802-9a8c-77ab-6355-38910eefe19e@linaro.org>
- <06481704-adc6-bc63-e79d-34ac87484810@linaro.org>
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1q0gEL-0003J5-2y
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 06:24:02 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailout.nyi.internal (Postfix) with ESMTP id 0478B5C0100;
+ Sun, 21 May 2023 06:23:57 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Sun, 21 May 2023 06:23:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:date:date:from:from
+ :in-reply-to:message-id:mime-version:reply-to:sender:subject
+ :subject:to:to; s=fm2; t=1684664637; x=1684751037; bh=eEpkqUg/EL
+ 1KXSu/ZgC9VV6JDPEbCiaA1xMECrtfny0=; b=GKldhiOY/zbm0lfP4GyPAQ5fbt
+ sZQmpaRQ1Ky662oYQz39xOKI71bDmMjvYfoeIl2+ZhSOLSKQCXh804/GRHsuXtfg
+ 086DN6dDbs4rNICU0JKpJzhb0CIMbPl8V/w2lWKKxPioELZndSkh9ip2BTL5doFh
+ ylKoDSuvO8oZnmHDTpjfMaKiJ71ZLUhP+MNQNfMYN4ufrjwuZucwKcgd1b/6CCO7
+ U6ClJPrUa36Bfbvf7uCe1BvSHkz1zi4+kL++kyfMRNbfmO9H6+EzAN/VdsBHVnzh
+ 1kAaeRoOD70lHt/GijA/XFWWuLIML6tuGZttZ4w3gtJmryn7Sj9WtWqbojyA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1684664637; x=1684751037; bh=eEpkqUg/EL1KX
+ Su/ZgC9VV6JDPEbCiaA1xMECrtfny0=; b=LC9pH3aXA+h4kiugL1gXlTS55Uiw/
+ 1zUyxRRJcXU1QFBOTouwjS9a/oogiTW5VcGOiY3kXjhJgnHyrMHUIK69xFF+t1GK
+ vG9oxrvJyr/2zc4r8y931hEx0pt5DCFaYNoJrKYFRLYY9pi7aYPiY2B4LJkw0EMQ
+ 9tLgEX4XlrVHrtA7X2Ul63ivQ9TRGADypFpnPy68UN04phd+f1r5xmQlBZyh+uzc
+ pOFANE876VczRKt9YaW/y5LZMULtRr6QGtROXyD9yzL69JAGF9aCQpQ0WVaLDj31
+ 7Vnk5SOk8OkjUFr5o2vITFddhI3ECUjYOlzynFxw0CBTL3k6FWaZH+kdw==
+X-ME-Sender: <xms:PPFpZI_ELEChhlU6YWlcvsVB5dpPDGxi97EVs8Bv069cS1EL9ZtH-A>
+ <xme:PPFpZAtHcgn5UVSpsUPW1-8uAa2JDYT1IjTZBUlbnY72AY1aP9xZddDGgoyy7XNpw
+ p40NIuzbsoBTCW0Osk>
+X-ME-Received: <xmr:PPFpZOB5ALHMAtNzGAqD7ZUh__T5o2FvY96TPQManCdhecA9QUmldUczThmF>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeiledgvdejucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertd
+ ertddtnecuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghes
+ fhhlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhephfetuddtudevieeljeejte
+ ffheeujeduhefgffejudfhueelleduffefgfffveeknecuvehluhhsthgvrhfuihiivgep
+ tdenucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgoh
+ grthdrtghomh
+X-ME-Proxy: <xmx:PPFpZIeQFqo5lgfayjjErV-i91MvwRtJAn1rLJcohl2MSRvcL-PwRA>
+ <xmx:PPFpZNOXLDy2gsHU1Y5jg28OCAnh2EqT6qpa4Sp42FRIkQDv4o6EUg>
+ <xmx:PPFpZCnTziAnfbEOcFLcCp06mpMwUwwjFuvN9EdIxafITutU91waMQ>
+ <xmx:PfFpZAeq943bPGnUuVZCktEys9IB5TExNbiRmEYHjJg6V2FOVHVudA>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 21 May 2023 06:23:55 -0400 (EDT)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+To: qemu-devel@nongnu.org
+Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, philmd@linaro.org,
+ chenhuacai@kernel.org, crosa@redhat.com, wainersm@redhat.com,
+ bleal@redhat.com, Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH 0/4] hw/mips/loongson3_virt: Wire up loongarch_ipi device
+Date: Sun, 21 May 2023 11:23:03 +0100
+Message-Id: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <06481704-adc6-bc63-e79d-34ac87484810@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=66.111.4.25; envelope-from=jiaxun.yang@flygoat.com;
+ helo=out1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,71 +100,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, May 20, 2023 at 07:08:22PM +0200, Philippe Mathieu-Daudé wrote:
-> On 20/5/23 17:15, Richard Henderson wrote:
-> > On 5/20/23 06:15, BALATON Zoltan wrote:
-> > > On Sat, 20 May 2023, Peter Maydell wrote:
-> > > > On Fri, 19 May 2023 at 15:19, Jonathan Cameron via
-> > > > <qemu-devel@nongnu.org> wrote:
-> > > > > 
-> > > > > From: Ira Weiny <ira.weiny@intel.com>
-> > > > > 
-> > > > > CXL has 24 bit unaligned fields which need to be stored to.  CXL is
-> > > > > specified as little endian.
-> > > > > 
-> > > > > Define st24_le_p() and the supporting functions to store such a field
-> > > > > from a 32 bit host native value.
-> > > > > 
-> > > > > The use of b, w, l, q as the size specifier is limiting.  So "24" was
-> > > > > used for the size part of the function name.
-> > > 
-> > > Maybe it's clearer to use 24 but if we want to keep these somewhat
-> > > consistent how about using t for Triplet, Three-bytes or
-> > > Twenty-four?
-> > 
-> > I think it's clearer to use '3'.
-> > When I added 128-bit support I used cpu_ld16_mmu.
-> 
-> There is also ld8u / ld8s / st8.
-> 
-> > I think it would be clearer to not use letters anywhere, and to use
-> > units of bytes instead of units of bits (no one can store just a bit),
-> > but changing everything is a big job.
-> 
-> So:
-> 
-> ldub ->  ld1u,
-> 
-> lduw_le -> ld2u_le,
-> 
-> virtio_stl -> virtio_st4,
-> 
-> stq_be -> st8_be.
-> 
-> Right?
+Hi all,
 
+This series wires up loongarch_ipi device for loongson3-virt,
+which is required for SMP support.
 
-No, using bits is so ingrained by now, that people will think
-st8 is a single byte.
+We also add a new test for loongson3-virt for acceptance harness.
 
-And yes, you can store a bit - you have to read modify write but
-hey.
+Thanks
+- Jiaxun
 
-> Also we have:
-> 
-> cpu_ld/st_*
-> virtio_ld/st_*
-> ld/st_*_phys
-> ld/st_*_pci_dma
-> address_space_ld/st
-> 
-> While mass-changing, we could use FOO_ld/st_BAR with FOO
-> for API and BAR for API variant (endian, mmuidx, ra, ...):
-> 
-> So:
-> 
-> ld/st_*_pci_dma -> pci_dma_ld/st_*
-> 
-> for ld/st_*_phys I'm not sure.
+Jiaxun Yang (4):
+  hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes
+  hw/intc/loongarch_ipi: Guard LoongArch only features with ifdef
+  hw/mips/loongson3_virt: Wire up loongarch_ipi device
+  tests/avocado: Add boot_linux_console test for loongson3-virt
+
+ hw/intc/loongarch_ipi.c             | 26 ++++++++++++++--
+ hw/mips/Kconfig                     |  1 +
+ hw/mips/loongson3_bootp.c           |  2 --
+ hw/mips/loongson3_bootp.h           |  3 ++
+ hw/mips/loongson3_virt.c            | 20 +++++++++++--
+ include/hw/intc/loongarch_ipi.h     |  4 ++-
+ tests/avocado/boot_linux_console.py | 46 +++++++++++++++++++++++++++++
+ 7 files changed, 94 insertions(+), 8 deletions(-)
+
+-- 
+2.39.2 (Apple Git-143)
 
 
