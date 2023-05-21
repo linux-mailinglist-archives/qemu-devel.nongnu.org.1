@@ -2,94 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1893670AD6C
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 12:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E99D370AD7C
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 12:46:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0gER-0004Gw-Kd; Sun, 21 May 2023 06:24:07 -0400
+	id 1q0gYM-00011J-N0; Sun, 21 May 2023 06:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1q0gEQ-0004GL-2v
- for qemu-devel@nongnu.org; Sun, 21 May 2023 06:24:06 -0400
-Received: from out1-smtp.messagingengine.com ([66.111.4.25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1q0gEN-0003K9-Ok
- for qemu-devel@nongnu.org; Sun, 21 May 2023 06:24:05 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id 4BCA45C00FF;
- Sun, 21 May 2023 06:24:03 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Sun, 21 May 2023 06:24:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1684664643; x=
- 1684751043; bh=0784/bt8cqIJNIgnKytV5uBzkiiFa5ovKD7coZu8JNo=; b=h
- WBq7V51s9xUzBRRHtTkHLogE/rsjXe5uO0vdWoEwRhEMm6quSuLZ8wNWFj5bLV1a
- pa1gOXgwCKJeHg8BoccCSbgHBklMhBFIjGhUq8CCYEtX7i0pMZNzdMhFz9LCEmRj
- XcMLjlRUoKX3IXMrNG3hTHgWbPLsRGUXEODZ565U3CMWEIbicozKO5RxuB7ec16q
- 5k05h2XC7fiwS75iAnTSi0mI0GyyYx1BNkBt5JV4jPo1ZQ3NlZvqnpOSaCWDQ8zw
- 6px68ZY417aTSjq8CKSyVZa/QOgkbA2pmxjmw4PBw2n60q/N3HsjkwCZLivjugCN
- Vsv0PUvUChSttA2GtZFTw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1684664643; x=
- 1684751043; bh=0784/bt8cqIJNIgnKytV5uBzkiiFa5ovKD7coZu8JNo=; b=C
- fdFSzVq17U1Y1mIr+3Y6UZXclI1v5bCBtx0Fb8B8gwEnHJ0oAJ9xQ8mMfTqrBTyj
- Nyj64NYW606V+Eimw3Pkc1qckZYYeXqETWEnZA+dUZ1rU+vt4XM1VB5TkVpuQ5Jz
- Rvi1lmM3OsRuQqMeN3fDb70STEWiwwX3M2841M19oX2QQxL/5A5k5smekspsfH6I
- tti7jKsVrcyN5xoq6HnE1yD9S6xIGc/FAHqQHB+p6L7yj0gETDkZo4DSB6Zz0jYo
- JnPbtS7A5NLMjZlNbXhZ8c9Bpd+zeqXQli+pSeYYT1AgSs5Asiull5flu6G0woIp
- v3qSDYm2nAIHGOL09RV+g==
-X-ME-Sender: <xms:Q_FpZAsgdBROjnM2yfprCCCGoJ5B2xszitueUe1Pd5kKKW8nmZbREw>
- <xme:Q_FpZNeiVWZUVW2o9pZfCLve2Ja_ZGSTzPd3gtsURU8cFHmebcWsFx_d19jR1TYrh
- lDa-3OT6K2PM4ceuSI>
-X-ME-Received: <xmr:Q_FpZLzXVwrlfkBrG-B2UagO1f4WrbqHUb3SK9Z6_To3q9Np3xgpNyPG2u2K>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeiledgvdekucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtke
- ertdertddtnecuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghn
- ghesfhhlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepgfelgeekvddtjedule
- dutdfffeeutdfgkedvgfeftdelveffjeekfeehffegteegnecuffhomhgrihhnpeguvggs
- ihgrnhdrohhrghdpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenuc
- frrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdr
- tghomh
-X-ME-Proxy: <xmx:Q_FpZDMvbYEsOPgu3cuXLDOCLc7JMg_c7d3MQkR1GfRDYwA33fzo2g>
- <xmx:Q_FpZA-vLC034_pGS86w98_0auJQm9i_2WBc-WxCBIDV-ij8dinZ7Q>
- <xmx:Q_FpZLWfCEa-IU94YS_4AUCHGm9vZy8yYem_1wXIrBn-g_RXCFDV9A>
- <xmx:Q_FpZNOQ2QJdplfZ2lkmqZFRgOwtNbplqTX7PRNW6BwODgMHBAOUtA>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 21 May 2023 06:24:01 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-To: qemu-devel@nongnu.org
-Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, philmd@linaro.org,
- chenhuacai@kernel.org, crosa@redhat.com, wainersm@redhat.com,
- bleal@redhat.com, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 4/4] tests/avocado: Add boot_linux_console test for
- loongson3-virt
-Date: Sun, 21 May 2023 11:23:07 +0100
-Message-Id: <20230521102307.87081-5-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
-References: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0gYI-00010u-9x
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 06:44:38 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0gYG-0007Ax-PK
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 06:44:38 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f603ff9c02so701315e9.2
+ for <qemu-devel@nongnu.org>; Sun, 21 May 2023 03:44:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684665875; x=1687257875;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nCN+5sKSFUxbOOonFCNh9PYrfwPB8kflQdSqCBv+5qU=;
+ b=PPTPcF+meoDUtiGTPHpEP8KtMme08p71hEZ5dmzwMAPQSanI6OLSmft9RdiRYseLSS
+ TYzPjGFuep06lFP94YbjsHwr/E4l30xPqWSI1P9TH424HLMeIq0/oGdm9FoEooUGkIem
+ xXpR0/6PuRYQuGwWUT/lqdz0pdudMo3MjPcyVAj2GloomEX7CTL+fMmMFJITAfhPduwz
+ /PKapB+H/7NKhU2Ba2JhfuuhIXYD28d1jET+6/TEtpCuTVKw9l6EgBeOakJm45uh2kXk
+ 6f+kRQeK2UKISZqena1ei4xKV0JHVAnhPRSJRX6m1JmWcHTxd3ORK90O0nY5s/GvykDX
+ JjVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684665875; x=1687257875;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nCN+5sKSFUxbOOonFCNh9PYrfwPB8kflQdSqCBv+5qU=;
+ b=JkgU3+FghQhdd48n054UF7RCarr3noFKWoAbd4tJLGp8HkvkCKyYess6VJ9z/aHlMq
+ TqpNWi7JQoEmVFl172CzsypVPUaQK8X206rUwXsK5NnWUdJ6ubDKl+83Z6NpxK9HhxQ7
+ G/VBZXarDYmZy5V4EwSD9OdUd9nzatcfbmHODlh4YjeN+qSLnXxFuHJYBlgRqHS8XaMk
+ zw2Hi6As5/v3v14fMU3t7h3xYtS6+BFV6SHocdzUidvya9uCIW9mVh8kjb+wabO/KazA
+ hSBRKqlO2JsIiljC/2+NTmgGxWgrQaNHcwsybTb5AeH4Wh21um9gKce82gHukjyLHm/d
+ Pi9w==
+X-Gm-Message-State: AC+VfDxVXO24/01Dpc9wUHJ9jzhsTPtaPGVYWP5F57kZIjJsmP2cfPPV
+ JE806tPf7zVMUbmo/4Fu5wgu9w==
+X-Google-Smtp-Source: ACHHUZ7+mjBRk1s3//c5TQhjVSpEGLvMbBI3jyKa9qhEJVXn3wZM+FEUw5/uenDPOt1JYZUQbLVOmA==
+X-Received: by 2002:a7b:cb96:0:b0:3f4:1a97:ab09 with SMTP id
+ m22-20020a7bcb96000000b003f41a97ab09mr5758272wmi.25.1684665874861; 
+ Sun, 21 May 2023 03:44:34 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.152.177])
+ by smtp.gmail.com with ESMTPSA id
+ g3-20020a7bc4c3000000b003f427687ba7sm4779974wmk.41.2023.05.21.03.44.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 21 May 2023 03:44:34 -0700 (PDT)
+Message-ID: <ca4a56fc-83b6-0892-45b5-d95406b1dab2@linaro.org>
+Date: Sun, 21 May 2023 12:44:33 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=66.111.4.25; envelope-from=jiaxun.yang@flygoat.com;
- helo=out1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH 10/27] include/host: Split out atomic128-cas.h
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+References: <20230520162634.3991009-1-richard.henderson@linaro.org>
+ <20230520162634.3991009-11-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230520162634.3991009-11-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, PDS_BTC_ID=0.017,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,71 +93,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test loongson3-virt machine againt debian kernel and cpio rootfs.
+On 20/5/23 18:26, Richard Henderson wrote:
+> Separates the aarch64-specific portion into its own file.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   host/include/aarch64/host/atomic128-cas.h | 43 ++++++++++++++++++
+>   host/include/generic/host/atomic128-cas.h | 43 ++++++++++++++++++
+>   include/qemu/atomic128.h                  | 55 +----------------------
+>   3 files changed, 87 insertions(+), 54 deletions(-)
+>   create mode 100644 host/include/aarch64/host/atomic128-cas.h
+>   create mode 100644 host/include/generic/host/atomic128-cas.h
+> 
+> diff --git a/host/include/aarch64/host/atomic128-cas.h b/host/include/aarch64/host/atomic128-cas.h
+> new file mode 100644
+> index 0000000000..1247995419
+> --- /dev/null
+> +++ b/host/include/aarch64/host/atomic128-cas.h
+> @@ -0,0 +1,43 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Compare-and-swap for 128-bit atomic operations, generic version.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- tests/avocado/boot_linux_console.py | 46 +++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+"Aarch64 specific"
 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index c0675809e641..fdb479448e47 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -191,6 +191,52 @@ def test_mips64el_fuloong2e(self):
-         console_pattern = 'Kernel command line: %s' % kernel_command_line
-         self.wait_for_console_pattern(console_pattern)
- 
-+    def test_mips64el_loongson3_virt_cpio(self):
-+        """
-+        :avocado: tags=arch:mips64el
-+        :avocado: tags=endian:little
-+        :avocado: tags=machine:loongson3-virt
-+        :avocado: tags=cpu:Loongson-3A1000
-+        :avocado: tags=device:liointc
-+        :avocado: tags=device:loongarch_ipi
-+        :avocado: tags=device:goldfish_rtc
-+        """
-+        deb_url = ('http://snapshot.debian.org/archive/debian/'
-+                   '20230501T024743Z/pool/main/l/linux/'
-+                   'linux-image-5.10.0-22-loongson-3_5.10.178-3_mips64el.deb')
-+        deb_hash = 'af4fcc721b727df0bef31057325e4cc02725ae0c'
-+        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-+        kernel_path = self.extract_from_deb(deb_path,
-+                                        '/boot/vmlinuz-5.10.0-22-loongson-3')
-+        initrd_url = ('https://github.com/groeck/linux-build-test/'
-+                      'raw/8584a59e/rootfs/'
-+                      'mipsel64/rootfs.mipsel64r1.cpio.gz')
-+        initrd_hash = '1dbb8a396e916847325284dbe2151167'
-+        initrd_path_gz = self.fetch_asset(initrd_url, algorithm='md5',
-+                                          asset_hash=initrd_hash)
-+        initrd_path = self.workdir + "rootfs.cpio"
-+        archive.gzip_uncompress(initrd_path_gz, initrd_path)
-+
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE
-+                               + 'console=ttyS0,115200 '
-+                               + 'rdinit=/sbin/init noreboot')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-initrd', initrd_path,
-+                         '-append', kernel_command_line,
-+                         '-no-reboot')
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'Boot successful.')
-+
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'ICT Loongson-3')
-+        exec_command_and_wait_for_pattern(self, 'uname -a',
-+                                                '5.10.0-22-loongson-3')
-+        exec_command_and_wait_for_pattern(self, 'reboot',
-+                                                'reboot: Restarting system')
-+        # Wait for VM to shut down gracefully
-+        self.vm.wait()
-+
-     def test_mips_malta_cpio(self):
-         """
-         :avocado: tags=arch:mips
--- 
-2.39.2 (Apple Git-143)
+> + *
+> + * Copyright (C) 2018, 2023 Linaro, Ltd.
+> + *
+> + * See docs/devel/atomics.rst for discussion about the guarantees each
+> + * atomic primitive is meant to provide.
+> + */
+> +
+> +#ifndef AARCH64_ATOMIC128_CAS_H
+> +#define AARCH64_ATOMIC128_CAS_H
+> +
+> +/* Through gcc 10, aarch64 has no support for 128-bit atomics.  */
 
 
