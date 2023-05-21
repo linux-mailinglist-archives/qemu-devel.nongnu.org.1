@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD77870AE7E
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 17:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D42270AE81
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 17:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0kpf-00087k-Hy; Sun, 21 May 2023 11:18:51 -0400
+	id 1q0kpm-000897-2o; Sun, 21 May 2023 11:18:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1q0kpd-00087J-Es
- for qemu-devel@nongnu.org; Sun, 21 May 2023 11:18:49 -0400
-Received: from mail-mw2nam12on2060c.outbound.protection.outlook.com
- ([2a01:111:f400:fe5a::60c]
- helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ id 1q0kpk-00088k-DE
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 11:18:56 -0400
+Received: from mail-dm6nam04on20600.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8b::600]
+ helo=NAM04-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1q0kpb-0000CS-L0
- for qemu-devel@nongnu.org; Sun, 21 May 2023 11:18:49 -0400
+ id 1q0kpi-0000DH-Lv
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 11:18:56 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SuFjI7UvSHDmaOJV9YtnIi4GL6sUOZ/x5d+4zfWUcu5HhkiT+IHvd7CW/BDTkPOuBgjdyzniwOEQsGYYTrHH8Tpe2Hg03VMvYD/x53bk0JNEbIyYQf67JrfewiSkFoKon00C3u75Z6YE0pAHaLs7QM6btvnDJxsxhWXUSJxC3DyJNusvUIY8Ph8wMfXt9A/jO+psNv0H2LEwyWjIp9VLwTkwdNR4tIalpBdOW5N62ryQ65bTzkGhF0jwMY6PupMkGFzECEakLDulP1e4qwGYOOmPeUl8Z7q0KVTQEKMVm7efHZh4eV+nWxnF4typQ/MdTOhe3tA3E4v841TTyzoaaA==
+ b=jKDeY+bqcZDm4IYqsurLcei9oPg7wj8gytSpSC65tnwVAykB+IQS/Ud/0TucVLkQ4z62xUtKThdndvt5n+nfOAa21rdvC+g9Byktmb5pXh/o8UG8fhbUL3IXUQH0Re8vRWuaEgkdTL3fggwS0BYHCLzCZ4VDSsYEiMUm7JK26OBO0mOkWxQfU6140G3DlSBWK2Ox/I3RxrMp/gMkRoTLMXE3VNx6HjIU84ZL4zl+ilsqTNHwMmmzjhc2ncJRUCnTa0bcP5as8RdAQ6VmGFkm9q/UxpdlJmYiN2xYTAnZu7nwCl3muz/NpR1tf3XXP7/lirvhNFB39uv3h7zAPNK3kw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H8qr/4vY6rROCFN+GNRissWhsvrGsoPf1KWa7EDU66U=;
- b=LLY3YiYEiieUR9anwfjuGdaDTrVar93gil9ixLHRduM5MiKFVbtlIrXB/gD8Uyz8J7/Fsf6ncg/h6+qY4rdEKrcdQZZiSMjFqulbo9RNEk4+ktONdWbPptioIXle4FA0DmL1q/nqteSF5Y2VBj8jswLQ4P9doAj8XthlPf5a3Q1a1JVMfqyyYIWvA+BNmv+jJRRRlHf1txF9g0KuM8YUAI/as65nT0aZT+awHnHdQUcmoPJ1Xp6MDdDXG9CabmRAFs9R5O4prGC4rukBdWAORCXQ6MkrB4aZuNDueDPjXgvINxnoU8gpiGoo0qW7K4oNkjIEXiPYkrp/md1JG7T1xQ==
+ bh=Ty9CIV2fh2WcvJCAV9AeKyGJqCBOuEfLaT2SmeXbeCY=;
+ b=FS9cbTDTGfE2lZ3Xdd17ngo2/4MXsMP6/jNa+azyl5TNiEFQC6gSoc/d82n4DCTKlgh5cSqg6tawOr334wksDMrOfVYatvCvlry05rf0CaEjTrW2oc1IVtcfgRz8ifJnqahyg0Lgfr/ltnKSpMLQFHNZTSfTvbXbLxgaeNHvtW4YtB6f7Lp9bchU8/xt1qcBeTvjho9pcw92ngDgKqygGhz1ZvM2eMaaFPjEbvJ1/Oyim2GFNQoylhRF/K/9VeAsFfOhU8IiF57C03UBVXAKXbSrwwj3RWTfKfc4mLH1+6OOKfWyZNbzb69AzGXsX8ctfaDcb883+epFXmLZOw3HpA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -34,18 +34,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H8qr/4vY6rROCFN+GNRissWhsvrGsoPf1KWa7EDU66U=;
- b=H7rliA//RQYRZlwQlaEbY3fcI20oioO92owc2M+KOXmjo9G1gnptibjydZpbwNZ0pCV+wavkfplbVPLJ0UU0KIB5soH5+XrGx8uk1mwOKziGyvLh7mIWcTJGgxPCGKDTz/9Qd+eXXp9ttEhZLXdK9Sws+uiymAc9ThIZpyMf5AAsJMDOgMxIEkEneNzlGxr3ufsuXYbBjup8cR+KRJGvFHsCusorVc06uY/M5Kx4LpaICEwJMuGOVcpB1wwzrYimC43t20OzezzyFAc5ztUIBEf8bMWIAcmyrkyAD0XzIAKqg9Hv8zZco59r1FmsQH2iIbuEq+/lx2gwfq1Fotob+Q==
-Received: from SJ0PR05CA0097.namprd05.prod.outlook.com (2603:10b6:a03:334::12)
- by CY8PR12MB7611.namprd12.prod.outlook.com (2603:10b6:930:9b::19)
+ bh=Ty9CIV2fh2WcvJCAV9AeKyGJqCBOuEfLaT2SmeXbeCY=;
+ b=AAdi/K4keUP9izJrC2ZLuqGSb6i+JyLbkyTbrn7LB9cn4Ls0wCdKOIWoHapAlFdBjcGAWueuGJ7j6NwPIK5nOgAEs2N+791fNAekMklQ4OxEVv9jyf9QLoqf+NVLS8ALJlOKGNdeIKF/Zohdgpx65LnTWg7fiUI59wDIPfKAhleD64kUvxd2Qyo8AA25R4RytwGXgqbMtBXM8ch+xn5Rxo9FOpXTuLK+E5PrqVGTKIqZ39e1VFbp2ckefkL3ynEinm8ly96d904gOdO5qYyXK6dEpW33x1PCG73C2q2B1zl6UVEL80/5qey68jFNbHxVgUEMiHVPN0dpSOXxYrDZGQ==
+Received: from SJ0PR05CA0109.namprd05.prod.outlook.com (2603:10b6:a03:334::24)
+ by PH7PR12MB8779.namprd12.prod.outlook.com (2603:10b6:510:26b::8)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.27; Sun, 21 May
- 2023 15:18:43 +0000
+ 2023 15:18:50 +0000
 Received: from DM6NAM11FT011.eop-nam11.prod.protection.outlook.com
- (2603:10b6:a03:334:cafe::ae) by SJ0PR05CA0097.outlook.office365.com
- (2603:10b6:a03:334::12) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:a03:334:cafe::cb) by SJ0PR05CA0109.outlook.office365.com
+ (2603:10b6:a03:334::24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.12 via Frontend
- Transport; Sun, 21 May 2023 15:18:43 +0000
+ Transport; Sun, 21 May 2023 15:18:50 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -56,18 +56,18 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.161) by
  DM6NAM11FT011.mail.protection.outlook.com (10.13.172.108) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6411.28 via Frontend Transport; Sun, 21 May 2023 15:18:43 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ 15.20.6411.28 via Frontend Transport; Sun, 21 May 2023 15:18:50 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Sun, 21 May 2023
- 08:18:32 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ 08:18:37 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Sun, 21 May
- 2023 08:18:31 -0700
+ 2023 08:18:37 -0700
 Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.8)
  with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport; Sun, 21 May
- 2023 08:18:26 -0700
+ 2023 08:18:32 -0700
 From: Avihai Horon <avihaih@nvidia.com>
 To: <qemu-devel@nongnu.org>
 CC: Alex Williamson <alex.williamson@redhat.com>,
@@ -82,9 +82,9 @@ CC: Alex Williamson <alex.williamson@redhat.com>,
  <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>, Avihai Horon
  <avihaih@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta
  <targupta@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v3 3/7] migration: Enable switchover ack capability
-Date: Sun, 21 May 2023 18:18:04 +0300
-Message-ID: <20230521151808.24804-4-avihaih@nvidia.com>
+Subject: [PATCH v3 4/7] tests: Add migration switchover ack capability test
+Date: Sun, 21 May 2023 18:18:05 +0300
+Message-ID: <20230521151808.24804-5-avihaih@nvidia.com>
 X-Mailer: git-send-email 2.21.3
 In-Reply-To: <20230521151808.24804-1-avihaih@nvidia.com>
 References: <20230521151808.24804-1-avihaih@nvidia.com>
@@ -93,29 +93,29 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT011:EE_|CY8PR12MB7611:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4393b04f-abb6-400c-3b06-08db5a0eaa0f
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT011:EE_|PH7PR12MB8779:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e2db2cd-7f61-4dba-3009-08db5a0eae47
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /Dadh4PPlS2nlL3+rPFGGQJhXXQCqPgs06l9+to+fEEB3powuTxWyea6s7LU/dguIBJo/zOgHlE5VdJuigFdhalO14zImCzVvLQHWXh7qGenLVjYVojm/s9uvVSI4vt/7nj0kjV6ie+zLskQ1T0TI3OaqQPfjCsnkHYHpdlpwMn3ZCqUF3j/llXzL5cjSI4Us19+YuhAT2Xwq6+KKbZBdANV121AEgC71/tTwiGv8Gc7+F+lPiiTKUrhLjWjXqkKn1saYdmCBiQRbhJh1wCSb3U5j8mT5HeKr47DQ5c74LKL2tLTtwRtx43HQQdy8moiRNMQZoDrDsqDZ4l7cM8mU+gYud2kPUGkJALFXC+dRUKr8D991dmzl3dm2iZ50d8QTQv9mxxPlrKcJ9RePaxj8Ugi84/l5Qvi3DNOy7rudA3Xz/b0xRW5dEptfpKhKUg2DxbbpU2Hm7UfqYMirH+DMW67l078ki8iAOesPOMFYK6EOlXrSi3WK/zivqmmnsqkYaknglsIDEdpAKSD9El79SYGvAsVimuhc91oRQs387e+zlHMWpLcdlgwPFR2txuRrK7ppCTvAN4tMWPsS6yU1rf8BcKebaboWn5f1Qky8ETnW6f1j/lR+zOBHxlpf62GqloroRTKqtwHdfG+/iKr4ltofqrnHjXTQIgFEXOBpVglddOtYM3Dvo9aLgGKel4FUbAOqjR6K434xfxP0t+HSZkr063mZ24MUga34Kn9eZo=
+X-Microsoft-Antispam-Message-Info: 2y5DN+LcUlvFYtBdAA80w516kfpt2LJcFfk8WP3XuLvqSh6ebTynpW20euMCtCW4wlqQShdl1vnyaqLBXuuAFDfXKjxpjVnIP40VpwObDXCEHu1MmaH1feBXlM6wRlSiH1PlzMsuB6JgJGI3cA9t9vsFk8czFtyCSZNcFgl8Q/y495uhP4IyPayZwK99dg4z7VhKip07a5EhOTofSZXi5dGHhsmC/04/F/HsfUP7ehD0KaJ6v1GnJ+p66iE3TVfT5z10IHU/kCDYoZUmjbogqhDPW+Jjy7Pkndce8ocrCUBxSHig3r53CdkRkQiqWFLVPohFlHc5fWB54DUFKGwcK/x2YlpvfjbBNMgqtX3HJLA+X8WYTPAya2HyUu2/cW+9qK6Q/deR5Q+RXzwDjEOK1raxsqRb7o4c3DLAfAFD5ao3vPWsGsYkhEk3M0hGevLeawj4j12WVcHuVxBu+pQXyV1vSr/Br38MKC2uGsJTTxw6VdCG3FYAQ5UOJNM5GZTAx5sa4fRzKF4QH3xEOSZMWqz7s+D+frNheL/jfSNsyiGZfU5tx5dC4cYu/MirUynaaIRIHbtHvJL6h2PETIbWsgB7Ct6Hh0LNicbFEfPy1PXjwfHxwdLeW47h5B3sdYBY27u/wEuHfAFQU1PHBvGAgoCGaySs1qS3jzCdXEFiyIoMFce2RyDgGvJp4M9CY8l3CD3OevGI8NBdGwSUV1/lNta50Sp8Telt1FinALMGkYl7Txr5PLTeK6PHdQNjF3iE
 X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230028)(4636009)(396003)(136003)(346002)(39860400002)(376002)(451199021)(40470700004)(46966006)(36840700001)(7416002)(40460700003)(5660300002)(8676002)(36860700001)(47076005)(36756003)(186003)(2906002)(4744005)(83380400001)(426003)(336012)(86362001)(2616005)(7636003)(356005)(82740400003)(82310400005)(40480700001)(8936002)(1076003)(26005)(41300700001)(478600001)(316002)(6666004)(6916009)(4326008)(70206006)(70586007)(7696005)(54906003);
+ SFS:(13230028)(4636009)(376002)(346002)(39860400002)(396003)(136003)(451199021)(36840700001)(40470700004)(46966006)(54906003)(356005)(7636003)(478600001)(36860700001)(4326008)(70586007)(70206006)(47076005)(6916009)(82310400005)(426003)(336012)(82740400003)(2616005)(2906002)(6666004)(316002)(186003)(26005)(86362001)(1076003)(41300700001)(7696005)(5660300002)(40460700003)(40480700001)(8676002)(8936002)(7416002)(36756003);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2023 15:18:43.0817 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4393b04f-abb6-400c-3b06-08db5a0eaa0f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2023 15:18:50.1593 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e2db2cd-7f61-4dba-3009-08db5a0eae47
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
  Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT011.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7611
-Received-SPF: softfail client-ip=2a01:111:f400:fe5a::60c;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8779
+Received-SPF: softfail client-ip=2a01:111:f400:7e8b::600;
  envelope-from=avihaih@nvidia.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
+ helo=NAM04-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -138,31 +138,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that switchover ack logic has been implemented, enable the
-capability.
+Add migration switchover ack capability test. The test runs without
+devices that support this capability, but is still useful to make sure
+it didn't break anything.
 
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tests/qtest/migration-test.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/migration/options.c b/migration/options.c
-index 16007afca6..5a9505adf7 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -562,10 +562,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-                              "'return-path'");
-             return false;
-         }
--
--        /* Disable this capability until it's implemented */
--        error_setg(errp, "'switchover-ack' is not implemented yet");
--        return false;
-     }
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index b99b49a314..d246a5bbc5 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -1648,6 +1648,28 @@ static void test_precopy_tcp_plain(void)
+     test_precopy_common(&args);
+ }
  
-     return true;
++static void *test_migrate_switchover_ack_start(QTestState *from, QTestState *to)
++{
++
++    migrate_set_capability(from, "return-path", true);
++    migrate_set_capability(to, "return-path", true);
++
++    migrate_set_capability(from, "switchover-ack", true);
++    migrate_set_capability(to, "switchover-ack", true);
++
++    return NULL;
++}
++
++static void test_precopy_tcp_switchover_ack(void)
++{
++    MigrateCommon args = {
++        .listen_uri = "tcp:127.0.0.1:0",
++        .start_hook = test_migrate_switchover_ack_start,
++    };
++
++    test_precopy_common(&args);
++}
++
+ #ifdef CONFIG_GNUTLS
+ static void test_precopy_tcp_tls_psk_match(void)
+ {
+@@ -2695,6 +2717,10 @@ int main(int argc, char **argv)
+ #endif /* CONFIG_GNUTLS */
+ 
+     qtest_add_func("/migration/precopy/tcp/plain", test_precopy_tcp_plain);
++
++    qtest_add_func("/migration/precopy/tcp/plain/switchover-ack",
++                   test_precopy_tcp_switchover_ack);
++
+ #ifdef CONFIG_GNUTLS
+     qtest_add_func("/migration/precopy/tcp/tls/psk/match",
+                    test_precopy_tcp_tls_psk_match);
 -- 
 2.26.3
 
