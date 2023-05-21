@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A6570AD8E
+	by mail.lfdr.de (Postfix) with ESMTPS id A896F70AD90
 	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 13:16:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0h2S-0000WO-OE; Sun, 21 May 2023 07:15:48 -0400
+	id 1q0h2S-0000WP-Qk; Sun, 21 May 2023 07:15:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q0h2Q-0000VN-GD; Sun, 21 May 2023 07:15:46 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1q0h2R-0000Vf-79; Sun, 21 May 2023 07:15:47 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q0h2O-0004jR-NV; Sun, 21 May 2023 07:15:46 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-510f525e06cso4923246a12.2; 
- Sun, 21 May 2023 04:15:43 -0700 (PDT)
+ id 1q0h2P-0004jY-NY; Sun, 21 May 2023 07:15:46 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-96aae59bbd6so932144666b.3; 
+ Sun, 21 May 2023 04:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684667742; x=1687259742;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=MV+iuENOUYweizG4m2f0iUWA/6WAQ9Xj4f7dtsvrJXs=;
- b=PRZEP55DiHWg5XtWRXaYNeHZ8AXAMqt/k3eCozl9hW37Z1IjfKED6ia+ExjHJtqoMY
- YNkTMlcc5VL0gvxswNgkjNpKwbgO7X0hx6/IaFTFylenYiDMXcHI7joLcLR6a4NnHc4s
- n9zh04enlSeOPCi9e0oMoAksG1fgvD33W0Z2X6b5HNkFciqobyBKdKT+I1zjpU7xW64S
- fMwiqppeAh83rzcn7GieJTwpK91NuHEPBVu1ynLD0TFDHzawWZ1zSj/ozQVCirHZfJjL
- ehDQySAiro7fvTFZgNGYY92kT03I8gHBc1ZEbHzHgVAuu0k33x2Uf09FW2B6MvfQYara
- 1Wew==
+ d=gmail.com; s=20221208; t=1684667743; x=1687259743;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zAglph6l2Iect/DEGB+rq6Jjk5c3mTKMPl5jFgPSj6Q=;
+ b=ZjuzuFpf71SNdeKiDws5Fbsg7adakweYwEH3+FTXJh93RWs+4esBaoxLeK6Y/WiqXI
+ PmueZZCAErKKko9gOsV4lAubq6yqJjZN0LxOgTI46WHiZ51r8nTJVP3Kotp9/SGPJMKl
+ IyD7rGoQSvXn06qp03WBvKjCvaf9+atg2hp+zkqFIA4W0Kk1j2ny3aSypTCdMQqDp8Lo
+ XER8lDPSDKRjbx6CTfm47HdUOlCzrUnRvvrmcZLwt2B3SyHIg+PUhdW965Df98qALL7P
+ sImacXChhuB/cWp1rndzSk66zGpgkN80ofSFDd0ZHLkq93yAHzPepY49F5IJFLK92+49
+ xeHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684667742; x=1687259742;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MV+iuENOUYweizG4m2f0iUWA/6WAQ9Xj4f7dtsvrJXs=;
- b=JWdRIOMPAoclbfgD1ZImdhnWRqFCGbI6m5ykfRz4Wo7tF1Y6Jc8YOAkjB53Gay+4yn
- HtnuzsbNIw3VrbaF8czqs99Qs/BKdfrha/RDSBwMS+F3jOXfKQc6kEb21gF8JErRvdJ8
- UBcPsJOVevB54im9ZJbM2hIKin7SfIuq/L7GO9cSe2gXrE07pyvNURzobDKFiffKWQQT
- RewtohGTGOwny/1aKOOfXNDDX42jqlBTl/hyfoy/kL8++KpOjVgkjOXT1h6Gho+dBkg4
- 32HC1m9SDRDUWApTWi8gSjGrWEkjV/UBKqY2GQUFPDJorfk98VOxsIe1O/koFZObp842
- BdtQ==
-X-Gm-Message-State: AC+VfDy7jdrq1IZCOPpPQL0BHHt27VUQh0qWBRC5ykEUwZ5noSFsnNOu
- Gp799cQK1fe4D1zMt9GRVwnvkmDArSs=
-X-Google-Smtp-Source: ACHHUZ6WS7hXpQZnBpNAygOgC01rUZodBlf9H86P/m6R5vjO3SIF29wh9UyzT4yDhVtQeZIOLGBiAg==
-X-Received: by 2002:aa7:c6c8:0:b0:50b:c46a:13be with SMTP id
- b8-20020aa7c6c8000000b0050bc46a13bemr6116859eds.22.1684667742018; 
- Sun, 21 May 2023 04:15:42 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684667743; x=1687259743;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zAglph6l2Iect/DEGB+rq6Jjk5c3mTKMPl5jFgPSj6Q=;
+ b=bj0h1WCu+Veg7EUvLjzm3IPIyOrwzqkvKhX39+UV4+pS7nCUEzXG3PSnHp8uZVw59h
+ IDOmbY1Dl1twwiCFdEjiQDcifsLQEpw29AYOjLtFkbPKukXmViXAXY5/ZiNDeXv3iXsG
+ TpY1KZvultbtA+KJIFtW2fkR7LjNuyIdkLgj5oiuCkrM33RIB4LSf1cuHln4YeJ/Hd50
+ /g0o+wKZrIVWERvdQxr+xy4Utbb+CXBqZNpKkwfXJxZ3e608QWOAh4kw9KryjYCd2Mlb
+ 6TmYKR0lwt0Cw0rkNaalaBZ4TLHm7TbzC035E9ZEDKRAde8LQr5AfMMai7yVQtNugO+E
+ 5iEQ==
+X-Gm-Message-State: AC+VfDy8FW08hiEr3nJ57QzKviS7dnkAsAZzoC/F223bqESbV0JbYPl0
+ 8/8CT1pago6ZQBTTNGstlS/tWDlfCMQ=
+X-Google-Smtp-Source: ACHHUZ5G8/lcMU8ddsv4yHSq/o0u80ZRY62moHgRN+8ALcefnCsBLGbjzfdKDJsn49S96eb6YPKgjA==
+X-Received: by 2002:a17:907:1c1b:b0:96f:905e:e090 with SMTP id
+ nc27-20020a1709071c1b00b0096f905ee090mr5516177ejc.35.1684667743131; 
+ Sun, 21 May 2023 04:15:43 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-077-191-145-122.77.191.pool.telefonica.de. [77.191.145.122])
  by smtp.gmail.com with ESMTPSA id
- l5-20020a056402124500b0050dfb9fc499sm1757123edw.39.2023.05.21.04.15.40
+ l5-20020a056402124500b0050dfb9fc499sm1757123edw.39.2023.05.21.04.15.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 May 2023 04:15:41 -0700 (PDT)
+ Sun, 21 May 2023 04:15:42 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>, Huacai Chen <chenhuacai@kernel.org>,
  qemu-ppc@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 0/6] VIA and general PCI IDE cleanup
-Date: Sun, 21 May 2023 13:15:28 +0200
-Message-Id: <20230521111534.207973-1-shentey@gmail.com>
+ Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PATCH 1/6] hw/ide/pci: Expose legacy interrupts as named GPIOs
+Date: Sun, 21 May 2023 13:15:29 +0200
+Message-Id: <20230521111534.207973-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230521111534.207973-1-shentey@gmail.com>
+References: <20230521111534.207973-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,59 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series is split off from a more general PCI IDE refactoring aiming for=
- a=0D
-common implementation of the PCI IDE controller specification for all=0D
-TYPE_PCI_IDE models [1].=0D
-=0D
-The first three patches resolve a circular dependency between the VIA IDE=0D
-controller and its south bridge. The next two patches resolves redundant co=
-de=0D
-accross all TYPE_PCI_IDE models. The last patch modernizes VM state setup i=
-n=0D
-PIIX IDE.=0D
-=0D
-Testing done:=0D
-* `make check`=0D
-* `make check-avocado`=0D
-* `qemu-system-ppc -machine pegasos2 -rtc base=3Dlocaltime -device \=0D
-   ati-vga,guest_hwcursor=3Dtrue,romfile=3D"" -cdrom morphos-3.17.iso \=0D
-   -bios pegasos2.rom`=0D
-   The machine booted successfully and a startup sound was hearable=0D
-* `qemu-system-ppc -machine sam460ex -rtc base=3Dlocaltime -drive \=0D
-   if=3Dnone,id=3Dcd,file=3Dmorphos-3.17.iso,format=3Draw -device \=0D
-   ide-cd,drive=3Dcd,bus=3Dide.1`=0D
-   The machine booted successfully into graphical desktop environment=0D
-=0D
-Changes since [1]:=0D
-* Turn legacy IRQs into named GPIOs (Mark)=0D
-* Don't make VIA IDE legacy IRQs routable; just wire up in host device (Zol=
-tan)=0D
-* Rename extracted bmdma_clear_status() (Zoltan)=0D
-   ... to bmdma_status_writeb() (Mark)=0D
-=0D
-[1] https://lore.kernel.org/qemu-devel/20230422150728.176512-1-shentey@gmai=
-l.com/=0D
-=0D
-Bernhard Beschow (6):=0D
-  hw/ide/pci: Expose legacy interrupts as named GPIOs=0D
-  hw/ide/via: Wire up IDE legacy interrupts in host device=0D
-  hw/isa/vt82c686: Remove via_isa_set_irq()=0D
-  hw/ide: Extract IDEBus assignment into bmdma_init()=0D
-  hw/ide: Extract bmdma_status_writeb()=0D
-  hw/ide/piix: Move registration of VMStateDescription to DeviceClass=0D
-=0D
- include/hw/ide/pci.h      |  1 +=0D
- include/hw/isa/vt82c686.h |  2 --=0D
- hw/ide/cmd646.c           |  3 +--=0D
- hw/ide/pci.c              | 15 +++++++++++++++=0D
- hw/ide/piix.c             |  8 +++-----=0D
- hw/ide/sii3112.c          |  7 ++-----=0D
- hw/ide/via.c              |  9 +++++----=0D
- hw/isa/vt82c686.c         | 11 +++++------=0D
- 8 files changed, 32 insertions(+), 24 deletions(-)=0D
-=0D
--- =0D
-2.40.1=0D
-=0D
+Exposing the legacy IDE interrupts as GPIOs allows them to be connected in the
+parent device through qdev_connect_gpio_out(), i.e. without accessing private
+data of TYPE_PCI_IDE.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ hw/ide/pci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/hw/ide/pci.c b/hw/ide/pci.c
+index fc9224bbc9..9a5a7089d4 100644
+--- a/hw/ide/pci.c
++++ b/hw/ide/pci.c
+@@ -522,10 +522,19 @@ void bmdma_init(IDEBus *bus, BMDMAState *bm, PCIIDEState *d)
+     bm->pci_dev = d;
+ }
+ 
++static void pci_ide_init(Object *obj)
++{
++    PCIIDEState *d = PCI_IDE(obj);
++
++    qdev_init_gpio_out_named(DEVICE(d), d->isa_irq, "isa-irq",
++                             ARRAY_SIZE(d->isa_irq));
++}
++
+ static const TypeInfo pci_ide_type_info = {
+     .name = TYPE_PCI_IDE,
+     .parent = TYPE_PCI_DEVICE,
+     .instance_size = sizeof(PCIIDEState),
++    .instance_init = pci_ide_init,
+     .abstract = true,
+     .interfaces = (InterfaceInfo[]) {
+         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+-- 
+2.40.1
+
 
