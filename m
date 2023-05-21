@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA8470AE15
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EEE70AE12
 	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 14:33:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0iDQ-0001wm-FT; Sun, 21 May 2023 08:31:12 -0400
+	id 1q0iDT-000237-Ak; Sun, 21 May 2023 08:31:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q0iDH-0001vT-A0; Sun, 21 May 2023 08:31:03 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1q0iDI-0001ve-D8; Sun, 21 May 2023 08:31:05 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q0iDF-0001kF-Kk; Sun, 21 May 2023 08:31:03 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-96f588bc322so431355166b.1; 
- Sun, 21 May 2023 05:31:00 -0700 (PDT)
+ id 1q0iDG-0001kP-Og; Sun, 21 May 2023 08:31:04 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-96fab30d1e1so189865766b.0; 
+ Sun, 21 May 2023 05:31:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684672259; x=1687264259;
+ d=gmail.com; s=20221208; t=1684672260; x=1687264260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Anz5dlSMRx2Ue0AdMLdpzN5IRHRJ9vVknwSj+KlouiQ=;
- b=I+MGt1x/fVUA/Vfj1B/iex59UobttsBmPNzrgWbROuH/ockZNifRfZIQYY62PbBhXu
- EieTpWwcoyRqrWngEjBM7G0j9QZlgWSFzXk+ApCUIyb75MH3DQvaGi6sia9ziW5tVuXH
- 6su5qd2WEfmW4bTwUVhx54ODTq6gSQ2O8xspMD1hRMBDWbL3uljWJBCtQc+knxT42Btl
- ZILE7XxBZp4eW++h6ilKG/NEJxyAx97D3HIEclIWK8qVidASArbdQKi0IuQDR6r/itP+
- kVMXqsWSWT/FehaO8EEQYK6TYvg03ISIgzPywdCr2hO+IljU8OQbRz+mS2Am7P6K3ySu
- w8aA==
+ bh=iS6IllWr8xotqYJ+kDfnN1bLpimUHqJGv84Pvf7+lk4=;
+ b=a/jNERZFkl+kJSIwUXyJzXDh4DSKma9BEljQQzTxsBjhukBUK/ysk4ZUHZK7L4NP22
+ 8yu6odfXYDZPq3pBiL4Y2RiSRec0oHnbYQcpwTb6SwLDlhnF+tl2MpP4M475+OiLb98O
+ DcbE//auu8+ZXtrfhaR/gFU4dPT17b/8wSU5V7TjPSZKt5bpaYy3trEa5yNqTIBXIBMy
+ fk97INAkXGEMFWp1toN4BAC92xnriPb/S2iCo4X+rlLZS4z60Ai611xoBQsPxgTS825H
+ fPL58gMriZ0Vl0aLf6SQudt2fXdhqHQMxe884Mrbg4oj+8Dk/Jmgi5/XFQ0dZNmcM411
+ /XJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684672259; x=1687264259;
+ d=1e100.net; s=20221208; t=1684672260; x=1687264260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Anz5dlSMRx2Ue0AdMLdpzN5IRHRJ9vVknwSj+KlouiQ=;
- b=fdxsa4Y9vJ3iAUr/Zi+ct4gDnoHEh63mp1gDZ2v+YjlAJuje5Po+o6WFtgT4He/djj
- Vs5ZTgfRCnCacwsWTHCuWDq6G874Tn1UfQ0nJIuCJjob/FvqM4dZ7vCK13U+keVXoJ3p
- Ol4nAKaLNr8hbRDv0Wkkb7t/QId1XzCYSb9BAVpcjhVzc16OisBailyDU3GG0gHq6R6t
- DipizMprrxsA/1jekMVJKV1+H4sXchNm3JU1iDF40ZXSREdy/ZKyA6klY94l+vQwAXCS
- 9oOITYnBY0lU3Fwgij5Ag6TXCB62zRl5zhEZK5Fi1CGWjODGGqbtGHl2vB8USerefLLT
- UlTQ==
-X-Gm-Message-State: AC+VfDyA4W1EBkZ2XBy1qJFQ3F0VDuZ31m5/y5n0afxYGMSzaFTfo4w5
- XbZCEegK7KT5VxlDZvUy0gAaoP6pNOY=
-X-Google-Smtp-Source: ACHHUZ78GZ3ZKHj9M/KHfRLkdL8rRVk2gcWHimYmCN5CRVsyRubKaUO61I3kFRMiqDezSXVt81L6kw==
-X-Received: by 2002:a17:906:58d1:b0:933:3814:e0f4 with SMTP id
- e17-20020a17090658d100b009333814e0f4mr8423846ejs.16.1684672258548; 
- Sun, 21 May 2023 05:30:58 -0700 (PDT)
+ bh=iS6IllWr8xotqYJ+kDfnN1bLpimUHqJGv84Pvf7+lk4=;
+ b=TCRIHZzkIFlAQAwZDiKqYU2S0tfkTukKdYYKDN9e0X3xuvGMyKxs9b1XA8113e/jQJ
+ 4yTL+kohkDUlN2I5FK2lohJLFu8ejUvrYBBimnl0YPcQZB5YYKfI0WiIBVYvkv7vVfvL
+ m4DI5A2xiVHayuKfXUn0LDZvOYWrpnRnkpJxOaoLGpZ2OhKOazSA5BlHECtcyQlvo7OW
+ a41OE4u2aZ/DBx2zMU+LXptBNUTZKKeKvvSO+1j4IBNxHWHv+p7Y17XiIF6ZGzGWFY80
+ EnQiQ2PxQ5VAt8pEcKFwEtP1w25VsFKybHdpkWkYxKlc2QN25mOSd0f9qEmbp7G+wg/9
+ GluA==
+X-Gm-Message-State: AC+VfDyRAKrs262Q2ZfNkd4EI9Pv94PV+aDn9G2CysWO1PhXJCGAfyAD
+ iOV7cKdAFmk7MBwn+3e3fsvHDrl/Fno=
+X-Google-Smtp-Source: ACHHUZ42H06+SnWQSEWDenwjJxBuXx+mHeiphUa1vfu5nOi2EHaouOvZIDLNmi6yBsjbzSgtRwqxfA==
+X-Received: by 2002:a17:907:1688:b0:965:d7c7:24db with SMTP id
+ hc8-20020a170907168800b00965d7c724dbmr6541782ejc.32.1684672259921; 
+ Sun, 21 May 2023 05:30:59 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-077-191-145-122.77.191.pool.telefonica.de. [77.191.145.122])
  by smtp.gmail.com with ESMTPSA id
- b19-20020a170906729300b00965ec1faf27sm1882678ejl.74.2023.05.21.05.30.57
+ b19-20020a170906729300b00965ec1faf27sm1882678ejl.74.2023.05.21.05.30.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 May 2023 05:30:58 -0700 (PDT)
+ Sun, 21 May 2023 05:30:59 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
@@ -69,18 +69,17 @@ Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  Bernhard Beschow <shentey@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/6] hw/timer/i8254_common: Share "iobase" property via
- base class
-Date: Sun, 21 May 2023 14:30:44 +0200
-Message-Id: <20230521123049.312349-2-shentey@gmail.com>
+Subject: [PATCH v2 2/6] hw/arm/omap: Remove unused omap_uart_attach()
+Date: Sun, 21 May 2023 14:30:45 +0200
+Message-Id: <20230521123049.312349-3-shentey@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230521123049.312349-1-shentey@gmail.com>
 References: <20230521123049.312349-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,80 +102,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both TYPE_KVM_I8254 and TYPE_I8254 have their own but same implementation of
-the "iobase" property. The storage for the property already resides in
-PITCommonState, so also move the property definition there.
+The function is unused since commit
+bdad3654d3c55f478e538037d9eccd204e5fc8ee ('hw/arm/nseries: Remove
+invalid/unnecessary n8x0_uart_setup()').
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/kvm/i8254.c     | 1 -
- hw/timer/i8254.c        | 6 ------
- hw/timer/i8254_common.c | 6 ++++++
- 3 files changed, 6 insertions(+), 7 deletions(-)
+ include/hw/arm/omap.h | 1 -
+ hw/char/omap_uart.c   | 9 ---------
+ 2 files changed, 10 deletions(-)
 
-diff --git a/hw/i386/kvm/i8254.c b/hw/i386/kvm/i8254.c
-index 191a26fa57..6a7383d877 100644
---- a/hw/i386/kvm/i8254.c
-+++ b/hw/i386/kvm/i8254.c
-@@ -301,7 +301,6 @@ static void kvm_pit_realizefn(DeviceState *dev, Error **errp)
- }
+diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
+index c275d9b681..067e9419f7 100644
+--- a/include/hw/arm/omap.h
++++ b/include/hw/arm/omap.h
+@@ -724,7 +724,6 @@ struct omap_uart_s *omap2_uart_init(MemoryRegion *sysmem,
+                 qemu_irq txdma, qemu_irq rxdma,
+                 const char *label, Chardev *chr);
+ void omap_uart_reset(struct omap_uart_s *s);
+-void omap_uart_attach(struct omap_uart_s *s, Chardev *chr);
  
- static Property kvm_pit_properties[] = {
--    DEFINE_PROP_UINT32("iobase", PITCommonState, iobase,  -1),
-     DEFINE_PROP_LOSTTICKPOLICY("lost_tick_policy", KVMPITState,
-                                lost_tick_policy, LOST_TICK_POLICY_DELAY),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/timer/i8254.c b/hw/timer/i8254.c
-index c8388ea432..c235496fc9 100644
---- a/hw/timer/i8254.c
-+++ b/hw/timer/i8254.c
-@@ -350,11 +350,6 @@ static void pit_realizefn(DeviceState *dev, Error **errp)
-     pc->parent_realize(dev, errp);
- }
+ struct omap_mpuio_s;
+ qemu_irq *omap_mpuio_in_get(struct omap_mpuio_s *s);
+diff --git a/hw/char/omap_uart.c b/hw/char/omap_uart.c
+index 1c890b9201..6848bddb4e 100644
+--- a/hw/char/omap_uart.c
++++ b/hw/char/omap_uart.c
+@@ -175,12 +175,3 @@ struct omap_uart_s *omap2_uart_init(MemoryRegion *sysmem,
  
--static Property pit_properties[] = {
--    DEFINE_PROP_UINT32("iobase", PITCommonState, iobase,  -1),
--    DEFINE_PROP_END_OF_LIST(),
--};
+     return s;
+ }
 -
- static void pit_class_initfn(ObjectClass *klass, void *data)
- {
-     PITClass *pc = PIT_CLASS(klass);
-@@ -366,7 +361,6 @@ static void pit_class_initfn(ObjectClass *klass, void *data)
-     k->get_channel_info = pit_get_channel_info_common;
-     k->post_load = pit_post_load;
-     dc->reset = pit_reset;
--    device_class_set_props(dc, pit_properties);
- }
- 
- static const TypeInfo pit_info = {
-diff --git a/hw/timer/i8254_common.c b/hw/timer/i8254_common.c
-index 050875b497..e4093e2904 100644
---- a/hw/timer/i8254_common.c
-+++ b/hw/timer/i8254_common.c
-@@ -240,6 +240,11 @@ static const VMStateDescription vmstate_pit_common = {
-     }
- };
- 
-+static Property pit_common_properties[] = {
-+    DEFINE_PROP_UINT32("iobase", PITCommonState, iobase,  -1),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static void pit_common_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -252,6 +257,7 @@ static void pit_common_class_init(ObjectClass *klass, void *data)
-      * done by board code.
-      */
-     dc->user_creatable = false;
-+    device_class_set_props(dc, pit_common_properties);
- }
- 
- static const TypeInfo pit_common_type = {
+-void omap_uart_attach(struct omap_uart_s *s, Chardev *chr)
+-{
+-    /* TODO: Should reuse or destroy current s->serial */
+-    s->serial = serial_mm_init(get_system_memory(), s->base, 2, s->irq,
+-                               omap_clk_getrate(s->fclk) / 16,
+-                               chr ?: qemu_chr_new("null", "null", NULL),
+-                               DEVICE_NATIVE_ENDIAN);
+-}
 -- 
 2.40.1
 
