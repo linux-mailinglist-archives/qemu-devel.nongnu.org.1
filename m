@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D53F70AD86
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 12:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC6970AD89
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 13:01:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0gi1-0003jp-AK; Sun, 21 May 2023 06:54:41 -0400
+	id 1q0goF-0004yM-77; Sun, 21 May 2023 07:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0ghz-0003jS-DZ
- for qemu-devel@nongnu.org; Sun, 21 May 2023 06:54:39 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0ghl-0000Qa-1E
- for qemu-devel@nongnu.org; Sun, 21 May 2023 06:54:39 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f475366514so32733265e9.2
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 03:54:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684666463; x=1687258463;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=j8+592qdCMoaZlE0TSoLcKETp+/AM2RvWSQ4KMWkHCg=;
- b=figTEWYP7WTxFjab/R4iPLa7q4pbdDlCmgn+PlGK8m7dSMqtTYz7MwKD/821BE5nE5
- 7zjzSioXj5lsvmkOkA2WoEY0JgsxSuD7WpqHpcWPvDubXqUtrWSWNlcrGErJgfn6TxqP
- 9QY3+lDOb/BEVDCbrXpTRI3lyJ81Rhl6+c1FPdcblsPI4twCEvWHroZ+kaylIbSqe4VN
- qSwNKQUw+K2L5Z70O4oSV6eTnbyXO2bqDuMeiKtOe8wMCWAynXwT56Ox6G8aHG7GT+gI
- R1s09ntcxKd7VH0+A+nZN5e98qUO66Nd+KoXyS5WMr0hktHIIOQzXK0zA6tqVpk0cy0J
- Ys4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684666463; x=1687258463;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j8+592qdCMoaZlE0TSoLcKETp+/AM2RvWSQ4KMWkHCg=;
- b=Bo/tOi6MvAiRdgSispxNE+sqRTyRmQ6hNvI8p/CUbyVVUU6wUUdAdQ39JWINmij00E
- NSHHEYgs9nq+7+aZGCshr5ayWcbXonvHQZO5T3PbJAITDygartALGauBoLQYcDOu6gDK
- 4n0UdKdTYh+u2F3qobjeMCpestGBo61AsLiC0pc2pekmz2v2rSmbJdrvgGEpX8qeU2oY
- MOJ3tIE+KoLTFcVjDb+jOXiDkIoDR5jR5y6DnQ2SpnoGdLJOclNwILrsfhmYz0bSp6o4
- RJWPqH+ezEVGrZMO0A2VHv77SMyrz9qz1zWAVOrYRRhLtf7PEmfyk7ihfANerqOX0d4q
- +bHg==
-X-Gm-Message-State: AC+VfDwLTjWBTvKQJf8972D47NO6JzHmgzXM5nefHL00QXzJVVObwVYp
- qbluRbS2FJ06/Hnm1a8bRSO3IBvgW2xz5Z/cEaw=
-X-Google-Smtp-Source: ACHHUZ4quDMUWw2RaiHxpfz1NY+fZ2I3OHosBHc2bSD6M2HKylIINVsa2Noj3OKQq6ZaPFCTR7t+bA==
-X-Received: by 2002:a7b:ca44:0:b0:3f4:27ff:7d48 with SMTP id
- m4-20020a7bca44000000b003f427ff7d48mr5245194wml.19.1684666462781; 
- Sun, 21 May 2023 03:54:22 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.152.177])
- by smtp.gmail.com with ESMTPSA id
- g17-20020a7bc4d1000000b003f423a04016sm8081725wmk.18.2023.05.21.03.54.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 May 2023 03:54:22 -0700 (PDT)
-Message-ID: <6ff38111-2f9b-b025-5dac-8d98b6911199@linaro.org>
-Date: Sun, 21 May 2023 12:54:20 +0200
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1q0gnt-0004yC-Hp
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 07:00:45 -0400
+Received: from out1-smtp.messagingengine.com ([66.111.4.25])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1q0gnr-0001Rw-L2
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 07:00:45 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.nyi.internal (Postfix) with ESMTP id 035D45C010F;
+ Sun, 21 May 2023 07:00:42 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute1.internal (MEProxy); Sun, 21 May 2023 07:00:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:date:date:from:from
+ :in-reply-to:message-id:mime-version:reply-to:sender:subject
+ :subject:to:to; s=fm2; t=1684666841; x=1684753241; bh=Z4nCXcCAaV
+ i9VHHeHv3qATH6KOa7RYJUKN9eWZ9J+T4=; b=G2LiN/ufk92F6iVfRZV6F7XlAv
+ Xa2x9C1rM2aSK08UGuUo4o3WvNYGrOZXdoZHKonXzjJN8Ka6sZv4544VDowvEMco
+ Nk5TPyKX/B9CgffafY+h4y9gQVwL3NhJ66zHA6u3ffJZz6x6vumbxa6oGb65baTS
+ 94IYLReeJRlTMX67FK6N0vOa89A4vAi8o5nteiy4/cmlv4cDuSkVu1FHktGTmzll
+ O7jwrv4cbaUoJNc/xTMIkWKmeuonRE8GxinhMaW6IhDpNuMpBaUU/y+ZtkJmGlvk
+ 6yQBUKoTzY/7hg2O3AKJFY1suNjs8JPxDQFsvdZuFf4JAffMdF3/3176MYiA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1684666841; x=1684753241; bh=Z4nCXcCAaVi9V
+ HHeHv3qATH6KOa7RYJUKN9eWZ9J+T4=; b=hS431qSzaORpBcTH57jgqNNnaWdLZ
+ hpYTerht09Z9+hz03qakOXx+TaeRrNNHn6sshx8dJjwnZt5nccmuQM6UldrfFGsj
+ Bm3YC4z+acbZ/6+h272pNckt0zNyI7p0VvZVfY3IQ7uyGUu/s8bg+wtG/1tbi+51
+ 0em3+U5uf+xmxW0kFbFVzmPzOlMcTWNrMI9t9w3Xeu1aGD5YbsDxj8uydeAdo4dn
+ 3jTBzrGEbBHVdQ2KWesu/ea57eiYj/U63i2bj56clt+5HQRFzeVfXKCKwkZTm4pz
+ AG4E4IxudwXioeuN/GDUBNZNjRNruarqwm5Hml1MhJhZXikOKkoKv5d2w==
+X-ME-Sender: <xms:2flpZB3etRbNcIcFHLwyHYvLmKunltolklDT0SgmLn48GDQOVbsu3A>
+ <xme:2flpZIG8r0FXyQr8lWV66JLKg6krMb7hAhj6g7EU61G45L6wnhEkEiGknDqKL7hSi
+ L1E3v_k3beTuMGkReY>
+X-ME-Received: <xmr:2flpZB6Be3fxUpV_Gi8hbsBnU2biYcDNsGRrSWYmG9wBwQ3edLqZqIiuuWXS>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeiledgfeehucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertd
+ ertddtnecuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghes
+ fhhlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhephfetuddtudevieeljeejte
+ ffheeujeduhefgffejudfhueelleduffefgfffveeknecuvehluhhsthgvrhfuihiivgep
+ tdenucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgoh
+ grthdrtghomh
+X-ME-Proxy: <xmx:2flpZO1ZIiZ3wPuj0uqrP6UNTwNPZatUfux50DhKJmY43H4S8lFjSQ>
+ <xmx:2flpZEH8KsIo41cMQWjLBzbEpwFWmLtCBViqDK8B90pDl0pMcIdgMA>
+ <xmx:2flpZP9pwrUgXbXL7kH-E4MqQgI7XX0wzoCOZA-2-t3cVZU-7PtfDg>
+ <xmx:2flpZJTwZkuIoc7SumPd12i1_Zks7kQ12Ov1fkY1jnoIfXSnBDCKeg>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 21 May 2023 07:00:40 -0400 (EDT)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, chenhuacai@kernel.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH] target/mips: Rework cp0_timer with clock API
+Date: Sun, 21 May 2023 12:00:37 +0100
+Message-Id: <20230521110037.90049-1-jiaxun.yang@flygoat.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 12/27] meson: Fix detect atomic128 support with
- optimization
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20230520162634.3991009-1-richard.henderson@linaro.org>
- <20230520162634.3991009-13-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230520162634.3991009-13-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, NICE_REPLY_A=-0.098, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=66.111.4.25; envelope-from=jiaxun.yang@flygoat.com;
+ helo=out1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,26 +99,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/5/23 18:26, Richard Henderson wrote:
-> Silly typo: sizeof(16) != 16.
-> 
-> Fixes: e61f1efeb730 ("meson: Detect atomic128 support with optimization")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index 4ffc0d3e59..5e7fc6345f 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -2555,7 +2555,7 @@ if has_int128
->     # __alignof(unsigned __int128) for the host.
->     atomic_test_128 = '''
->       int main(int ac, char **av) {
-> -      unsigned __int128 *p = __builtin_assume_aligned(av[ac - 1], sizeof(16));
-> +      unsigned __int128 *p = __builtin_assume_aligned(av[ac - 1], 16);
+Previous implementation of MIPS cp0_timer computes a
+cp0_count_ns based on input clock. However rounding
+error of cp0_count_ns can affect precision of cp0_timer.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Using clock API and a divider for cp0_timer, so we can
+use clock_ns_to_ticks/clock_ns_to_ticks to avoid rounding
+issue.
+
+Also workaround the situation that in such handler flow:
+
+count = read_c0_count()
+write_c0_compare(count)
+
+If timer had not progressed when compare was written, the
+interrupt would trigger again.
+
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+This seems fixed MTTCG booting issue on malta 5kEc with SMP.
+I'm going to do more test and see if we can enable MTTCG for
+mips64el.
+---
+ target/mips/cpu.c              |  8 +++++---
+ target/mips/cpu.h              |  3 ++-
+ target/mips/sysemu/cp0_timer.c | 35 ++++++++++++++++++----------------
+ 3 files changed, 26 insertions(+), 20 deletions(-)
+
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index 01e0fbe10db2..b7119cbbb459 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -449,9 +449,9 @@ static void mips_cp0_period_set(MIPSCPU *cpu)
+ {
+     CPUMIPSState *env = &cpu->env;
+ 
+-    env->cp0_count_ns = clock_ticks_to_ns(MIPS_CPU(cpu)->clock,
+-                                          env->cpu_model->CCRes);
+-    assert(env->cp0_count_ns);
++    clock_set_mul_div(cpu->count_div, env->cpu_model->CCRes, 1);
++    clock_set_source(cpu->count_div, cpu->clock);
++    clock_set_source(env->count_clock, cpu->count_div);
+ }
+ 
+ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
+@@ -504,6 +504,8 @@ static void mips_cpu_initfn(Object *obj)
+ 
+     cpu_set_cpustate_pointers(cpu);
+     cpu->clock = qdev_init_clock_in(DEVICE(obj), "clk-in", NULL, cpu, 0);
++    cpu->count_div = clock_new(OBJECT(obj), "clk-div-count");
++    env->count_clock = clock_new(OBJECT(obj), "clk-count");
+     env->cpu_model = mcc->cpu_def;
+ }
+ 
+diff --git a/target/mips/cpu.h b/target/mips/cpu.h
+index 142c55af478b..1b8107b0af86 100644
+--- a/target/mips/cpu.h
++++ b/target/mips/cpu.h
+@@ -1160,8 +1160,8 @@ typedef struct CPUArchState {
+ 
+     const mips_def_t *cpu_model;
+     QEMUTimer *timer; /* Internal timer */
++    Clock *count_clock; /* CP0_Count clock */
+     target_ulong exception_base; /* ExceptionBase input to the core */
+-    uint64_t cp0_count_ns; /* CP0_Count clock period (in nanoseconds) */
+ } CPUMIPSState;
+ 
+ /**
+@@ -1178,6 +1178,7 @@ struct ArchCPU {
+     /*< public >*/
+ 
+     Clock *clock;
++    Clock *count_div; /* Divider for CP0_Count clock */
+     CPUNegativeOffsetState neg;
+     CPUMIPSState env;
+ };
+diff --git a/target/mips/sysemu/cp0_timer.c b/target/mips/sysemu/cp0_timer.c
+index 70de95d338f8..9d2bcb0dea21 100644
+--- a/target/mips/sysemu/cp0_timer.c
++++ b/target/mips/sysemu/cp0_timer.c
+@@ -28,15 +28,26 @@
+ #include "internal.h"
+ 
+ /* MIPS R4K timer */
++static uint32_t cpu_mips_get_count_val(CPUMIPSState *env)
++{
++    int64_t now_ns;
++    now_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    return env->CP0_Count +
++            (uint32_t)clock_ns_to_ticks(env->count_clock, now_ns);
++}
++
+ static void cpu_mips_timer_update(CPUMIPSState *env)
+ {
+     uint64_t now_ns, next_ns;
+     uint32_t wait;
+ 
+     now_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-    wait = env->CP0_Compare - env->CP0_Count -
+-           (uint32_t)(now_ns / env->cp0_count_ns);
+-    next_ns = now_ns + (uint64_t)wait * env->cp0_count_ns;
++    wait = env->CP0_Compare - cpu_mips_get_count_val(env);
++    /* Clamp interval to overflow if virtual time had not progressed */
++    if (!wait) {
++        wait = UINT32_MAX;
++    }
++    next_ns = now_ns + clock_ticks_to_ns(env->count_clock, wait);
+     timer_mod(env->timer, next_ns);
+ }
+ 
+@@ -64,7 +75,7 @@ uint32_t cpu_mips_get_count(CPUMIPSState *env)
+             cpu_mips_timer_expire(env);
+         }
+ 
+-        return env->CP0_Count + (uint32_t)(now_ns / env->cp0_count_ns);
++        return cpu_mips_get_count_val(env);
+     }
+ }
+ 
+@@ -79,9 +90,8 @@ void cpu_mips_store_count(CPUMIPSState *env, uint32_t count)
+         env->CP0_Count = count;
+     } else {
+         /* Store new count register */
+-        env->CP0_Count = count -
+-               (uint32_t)(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) /
+-                          env->cp0_count_ns);
++        env->CP0_Count = count - (uint32_t)clock_ns_to_ticks(env->count_clock,
++                        qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
+         /* Update timer timer */
+         cpu_mips_timer_update(env);
+     }
+@@ -107,8 +117,8 @@ void cpu_mips_start_count(CPUMIPSState *env)
+ void cpu_mips_stop_count(CPUMIPSState *env)
+ {
+     /* Store the current value */
+-    env->CP0_Count += (uint32_t)(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) /
+-                                 env->cp0_count_ns);
++    env->CP0_Count += (uint32_t)clock_ns_to_ticks(env->count_clock,
++                        qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
+ }
+ 
+ static void mips_timer_cb(void *opaque)
+@@ -121,14 +131,7 @@ static void mips_timer_cb(void *opaque)
+         return;
+     }
+ 
+-    /*
+-     * ??? This callback should occur when the counter is exactly equal to
+-     * the comparator value.  Offset the count by one to avoid immediately
+-     * retriggering the callback before any virtual time has passed.
+-     */
+-    env->CP0_Count++;
+     cpu_mips_timer_expire(env);
+-    env->CP0_Count--;
+ }
+ 
+ void cpu_mips_clock_init(MIPSCPU *cpu)
+-- 
+2.39.2 (Apple Git-143)
 
 
