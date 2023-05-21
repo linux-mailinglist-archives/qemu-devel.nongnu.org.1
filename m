@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8350C70AD6F
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 12:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4B170AD71
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 12:25:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0gEQ-0004G7-Gp; Sun, 21 May 2023 06:24:06 -0400
+	id 1q0gER-0004Gv-1c; Sun, 21 May 2023 06:24:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1q0gEM-0004FN-NI
- for qemu-devel@nongnu.org; Sun, 21 May 2023 06:24:02 -0400
+ id 1q0gEN-0004Fe-Sc
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 06:24:03 -0400
 Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1q0gEL-0003JI-33
- for qemu-devel@nongnu.org; Sun, 21 May 2023 06:24:02 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id 906745C0106;
- Sun, 21 May 2023 06:23:58 -0400 (EDT)
+ id 1q0gEL-0003JX-UK
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 06:24:03 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 2E8445C0101;
+ Sun, 21 May 2023 06:24:00 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute5.internal (MEProxy); Sun, 21 May 2023 06:23:58 -0400
+ by compute4.internal (MEProxy); Sun, 21 May 2023 06:24:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:date:date:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1684664638; x=
- 1684751038; bh=ZOLEDoNYnFMxx0AUhrzEwS73DT7TeurHf5uuRbwPBKk=; b=a
- lCFRlyoobGqu/NzQqdhWtgb3wbO5QiMIjz0e0ndjHCio1V/osoTQXLr3fcxMVw5F
- W+zxDabLEz84q36pOwvgtp56KN3o4dkmWGJhQ9tNXT7LvXy/qR6lpfOVaRoG0RXU
- NomPd9i3AY7wiQJ3Zo2oNzIGj2OdCUmkFnLLjctE1a+YlY8qRBK8dv2e1u1lJOTk
- HS4KqkfUGBZwexk1BKhOpCtZ6Zu2LlVOGjZNSzeJj8nTNCeRCjEJ6wV+IK4niDXh
- UQZjcvmQHF6DAxg5UlFmhomXOi/BTveBvuvO6vvxBSPAensyn0OKPntJkxhIyBp6
- jqOjYJRiLvEVuyiAwhW8A==
+ :reply-to:sender:subject:subject:to:to; s=fm2; t=1684664640; x=
+ 1684751040; bh=DbYwJfU969KkgdSfKT1Db23fqol4X6eaY4w+54yLWbo=; b=G
+ sxQA+Y3ysA6KNIFRk2DH0rQ7CH+EFNHus/0icMkS2DAouPgXLLYiUiFjOc1uI2zS
+ rS4HWowy/wWrjVsk14mlQnXFzt8htNEzge4Ma2GVmMpbem2ujP9yHCSEKx2F6euB
+ blGanVrgJGvAn6JcePP9un9kcob5t0wHFkwvj/y8twMnsSVaSbVO8UR2aUwRXUV1
+ X7uQcxCOp45/OVwBmwv4XNww5/0qz3ePyvwV4k0OcnV23hu2uRV8gPxGuVVCUtlG
+ oALZerdljdAy9OS8hrZuLZ9nsWnvgXy6+snnMob1I76SVt5Pjh3QfPf/VtKUt48x
+ 3mRmDFNC24SNs8N+AcCwQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1684664638; x=
- 1684751038; bh=ZOLEDoNYnFMxx0AUhrzEwS73DT7TeurHf5uuRbwPBKk=; b=M
- 6YrJ+Y1h3gQiF98zIJSQ9qEFQTMHo6netR89YGuSJ+5jQf6mFc7yJozxnSDEJm41
- hOR+KoRvc9A47/xDnZKQgK2AGalXkh+CmJqQ73CGZaCCfaCT05xYf1DcMVCsDQiC
- 0Gsgw0kx2mUFS0Tj39xcLWfBvRt2Tqi/hkXVrmaAZzgblVEsNmJTbSct1XoFWK55
- 6N71a6qyOitAw9aAGxApE1Zn2egnqQT4Z2Ag+07NJGhutLNQiF+XoObk6CayT57f
- WHAaIjaSkXgLpJMMGwbIs7MKD78/S1DWqSqAJUYLHyR3eF3Kc3CybofslfsVUcrj
- I/oKwvN5m4Fdc0iZM3eNQ==
-X-ME-Sender: <xms:PvFpZGTTCJIcUZnXmsxuqtRnXbJhbHswGXLnD-5TFIkMEsrL8v_bmA>
- <xme:PvFpZLz10_tt4gOyRKd3xe3s7NDAjyl5cZo9xxyTY3FfVfJR9aLFoVVm2rkrFZK9n
- KEg46wZ9ar60rxCQl0>
-X-ME-Received: <xmr:PvFpZD3htjCmx04ClXkaV1f1H_eTNTfCI0X0OiCVBaQlgnwAC9-rxXCvoQAa>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1684664640; x=
+ 1684751040; bh=DbYwJfU969KkgdSfKT1Db23fqol4X6eaY4w+54yLWbo=; b=q
+ ut5/TUFUM+Cy2+/O7byHWYsO8uLtqEATJLgbMAgh4zT2C9zKlWJl1ovu4QA9bE8e
+ 5XT4zoVJslB7TvIhY3GaxyPJv8PjkG2cplSQP/D6S3DZUXUz2KUxyUFSceKzTGmV
+ 2OCdnaEgUJ8r0d/HfDALFNBQFCePOywfZB7iF+lw8cBZw3zVYtKWDxQ/n3/BhRsD
+ k5XCu/D+cFx1ezVDE9ne9P97bNuiFacrxNXHQx0ejbHIoFiDrkqWq/iuw7btvMov
+ otEMTgoeuoB3oLyfyIFNGSHSzut1i9f0J2f5xM81QPXvZreLn/N1eJnEmseFTn20
+ mxoDqyFlWmkTPV1PuEg7w==
+X-ME-Sender: <xms:QPFpZPfWVcXr-EJc7x4EgShDoCZOij7dlS9gUNKebzrLfZAlGUlpxg>
+ <xme:QPFpZFONWMoT3_YSVyNptIjhcFx9ZBXgM7-h_i2HGQHFxXcgUo2h6hQi8emfv38SK
+ P4AiykoNFx-vyuagEw>
+X-ME-Received: <xmr:QPFpZIgWkfDdJzYjXW4WTze1J0rZ6MEheFFDaGZHivzlr1S1S9zMDBEpegBn>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeiledgvdekucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtke
@@ -59,21 +59,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeiledgvdekucetufdoteggod
  dvgeekgfdvtdettdelieeihfegtedugeekhfdvhfejfedtnecuvehluhhsthgvrhfuihii
  vgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhi
  hgohgrthdrtghomh
-X-ME-Proxy: <xmx:PvFpZCAhWtsSuhDsTdVLcazOOCir19q9zTYCaotkMRxcBrfkjjaRAA>
- <xmx:PvFpZPie5uRB_5KsuXvejohAXSMoTtFSPLP4ygPe2bNq9VCb_ES_Tg>
- <xmx:PvFpZOobi8aLRsGH3BXst6QwgFrXGvhbO1KlgmeJO4L6yL4FMu3qNg>
- <xmx:PvFpZPhmVmRZnicwmeOeelXlvf-0t_tLyPC6IEM4K5p4k5ZNNsYYMg>
+X-ME-Proxy: <xmx:QPFpZA80SMI_zPlFJjf8OxRqAAot0dbJLvvD-xJrRGhMelTTiChhYA>
+ <xmx:QPFpZLtom9PPvEggW_myoiccdvQZsVsMs3Y-y-JWCpSu0ZmPYOdriQ>
+ <xmx:QPFpZPE1jvCX0em0ZpC9iNyLG8g77LpGpJiqJZ1jXsgX-p7iWb09gw>
+ <xmx:QPFpZE8SnC0lhZfxos_BOPySCL2f-ur9lH5npaxea5Y1Z-Cs6Tohnw>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 21 May 2023 06:23:57 -0400 (EDT)
+ 21 May 2023 06:23:58 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 To: qemu-devel@nongnu.org
 Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, philmd@linaro.org,
  chenhuacai@kernel.org, crosa@redhat.com, wainersm@redhat.com,
  bleal@redhat.com, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 1/4] hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes
-Date: Sun, 21 May 2023 11:23:04 +0100
-Message-Id: <20230521102307.87081-2-jiaxun.yang@flygoat.com>
+Subject: [PATCH 2/4] hw/intc/loongarch_ipi: Guard LoongArch only features with
+ ifdef
+Date: Sun, 21 May 2023 11:23:05 +0100
+Message-Id: <20230521102307.87081-3-jiaxun.yang@flygoat.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
 References: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
@@ -104,69 +105,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As per "Loongson 3A5000/3B5000 Processor Reference Manual",
-Loongson 3A5000's IPI implementation have 4 mailboxes per
-core.
+IOCSR based send features are tied to LoongArch's CPU implmentation,
+ifdef them for LoongArch only so we can build loongarch_ipi on MIPS.
 
-However, in 78464f023b54 ("hw/loongarch/virt: Modify ipi as
-percpu device"), the number of IPI mailboxes was reduced to
-one, which mismatches actual hardware.
+Note that Loongson-3A4000 have IOCSR as well, so we may implement
+those features for MIPS in future.
 
-It won't affect LoongArch based system as LoongArch boot code
-only uses the first mailbox, however MIPS based Loongson boot
-code uses all 4 mailboxes.
-
-Fixes: 78464f023b54 ("hw/loongarch/virt: Modify ipi as percpu device")
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- hw/intc/loongarch_ipi.c         | 6 +++---
- include/hw/intc/loongarch_ipi.h | 4 +++-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ hw/intc/loongarch_ipi.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index d6ab91721ea1..3e453816524e 100644
+index 3e453816524e..895a2ee96e1e 100644
 --- a/hw/intc/loongarch_ipi.c
 +++ b/hw/intc/loongarch_ipi.c
-@@ -238,14 +238,14 @@ static void loongarch_ipi_init(Object *obj)
+@@ -50,6 +50,7 @@ static uint64_t loongarch_ipi_readl(void *opaque, hwaddr addr, unsigned size)
+     return ret;
+ }
  
- static const VMStateDescription vmstate_ipi_core = {
-     .name = "ipi-single",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .fields = (VMStateField[]) {
-         VMSTATE_UINT32(status, IPICore),
-         VMSTATE_UINT32(en, IPICore),
-         VMSTATE_UINT32(set, IPICore),
-         VMSTATE_UINT32(clear, IPICore),
--        VMSTATE_UINT32_ARRAY(buf, IPICore, 2),
-+        VMSTATE_UINT32_ARRAY(buf, IPICore, IPI_MBX_NUM * 2),
-         VMSTATE_END_OF_LIST()
-     }
- };
-diff --git a/include/hw/intc/loongarch_ipi.h b/include/hw/intc/loongarch_ipi.h
-index 664e050b926e..6c6194786e80 100644
---- a/include/hw/intc/loongarch_ipi.h
-+++ b/include/hw/intc/loongarch_ipi.h
-@@ -28,6 +28,8 @@
- #define MAIL_SEND_OFFSET      0
- #define ANY_SEND_OFFSET       (IOCSR_ANY_SEND - IOCSR_MAIL_SEND)
- 
-+#define IPI_MBX_NUM           4
++#ifdef TARGET_LOONGARCH64
+ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr)
+ {
+     int i, mask = 0, data = 0;
+@@ -140,6 +141,25 @@ static void any_send(uint64_t val)
+     env = &cpu->env;
+     send_ipi_data(env, val, addr);
+ }
++#else
++static void ipi_send(uint64_t val)
++{
++    qemu_log_mask(LOG_UNIMP, "%s: Unimplemented send 0x%" PRIx64 "\n",
++                    __func__, val);
++}
 +
- #define TYPE_LOONGARCH_IPI "loongarch_ipi"
- OBJECT_DECLARE_SIMPLE_TYPE(LoongArchIPI, LOONGARCH_IPI)
++static void mail_send(uint64_t val)
++{
++    qemu_log_mask(LOG_UNIMP, "%s: Unimplemented send 0x%" PRIx64 "\n",
++                    __func__, val);
++}
++
++static void any_send(uint64_t val)
++{
++    qemu_log_mask(LOG_UNIMP, "%s: Unimplemented send 0x%" PRIx64 "\n",
++                    __func__, val);
++}
++#endif
  
-@@ -37,7 +39,7 @@ typedef struct IPICore {
-     uint32_t set;
-     uint32_t clear;
-     /* 64bit buf divide into 2 32bit buf */
--    uint32_t buf[2];
-+    uint32_t buf[IPI_MBX_NUM * 2];
-     qemu_irq irq;
- } IPICore;
- 
+ static void loongarch_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
+                                  unsigned size)
 -- 
 2.39.2 (Apple Git-143)
 
