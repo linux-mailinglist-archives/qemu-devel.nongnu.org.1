@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5193770AD8C
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 13:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A6570AD8E
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 13:16:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0h1w-0000HC-Oe; Sun, 21 May 2023 07:15:17 -0400
+	id 1q0h2S-0000WO-OE; Sun, 21 May 2023 07:15:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0h1v-0000Gq-8Y
- for qemu-devel@nongnu.org; Sun, 21 May 2023 07:15:15 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q0h2Q-0000VN-GD; Sun, 21 May 2023 07:15:46 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0h1t-0004gS-Gf
- for qemu-devel@nongnu.org; Sun, 21 May 2023 07:15:14 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3f420618d5bso30619145e9.1
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 04:15:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1q0h2O-0004jR-NV; Sun, 21 May 2023 07:15:46 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-510f525e06cso4923246a12.2; 
+ Sun, 21 May 2023 04:15:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684667712; x=1687259712;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=S7lCt1F+L+Sdvv92ThgE7G1ptCNi2zM217m0D08ErHo=;
- b=IQpNCPav85qGHNro+7zBckqzY6IkPGWwui3Zo6nP80X6yd8jQVuvaB8QO6anbsfEtI
- 3CmsVM5U4MGyOdbwOijmXJo4WFr2/P6gCLESRZDj49vEFpMSqge1dhRHEhdf0oTfu4sO
- v8dTljS6sdMvrmoQyrn7Ek8TuFdhn2elv40duKCJwJgw5sT9o7Q+a+3ybrS7iEcdb3/W
- jjD2RMUyI3NhBjHTQAbuBcnJDQz6Oq7VPF6fawi1N85HhGpW6V96bxQLWdwQpmgAuTsT
- T9tUBIGq67Im95BPvUkJqP/Ti17CuSmKglpY4btlq1aJaWe4pUzlRBQIj0miEubPF7qw
- OKkA==
+ d=gmail.com; s=20221208; t=1684667742; x=1687259742;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MV+iuENOUYweizG4m2f0iUWA/6WAQ9Xj4f7dtsvrJXs=;
+ b=PRZEP55DiHWg5XtWRXaYNeHZ8AXAMqt/k3eCozl9hW37Z1IjfKED6ia+ExjHJtqoMY
+ YNkTMlcc5VL0gvxswNgkjNpKwbgO7X0hx6/IaFTFylenYiDMXcHI7joLcLR6a4NnHc4s
+ n9zh04enlSeOPCi9e0oMoAksG1fgvD33W0Z2X6b5HNkFciqobyBKdKT+I1zjpU7xW64S
+ fMwiqppeAh83rzcn7GieJTwpK91NuHEPBVu1ynLD0TFDHzawWZ1zSj/ozQVCirHZfJjL
+ ehDQySAiro7fvTFZgNGYY92kT03I8gHBc1ZEbHzHgVAuu0k33x2Uf09FW2B6MvfQYara
+ 1Wew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684667712; x=1687259712;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=S7lCt1F+L+Sdvv92ThgE7G1ptCNi2zM217m0D08ErHo=;
- b=fhDcxT9ADJnznG/jhtEcc6ERJuxU1Mvp7dFIymeU353lU4nNfmOj++F2xrtHa4CyOS
- cq6py3SPF4Du5Eu6cH23AVDv8/Ep7DU+9Iof+zsBUIVJyFR8t+O8VXKQOytU3p7r/ipS
- EBcsqrs1MD/08crNITiyI4u1yqXkN6aTg3N8tWlug796w1kl8sYdfUgq7pZce8/hu1Pc
- CqrLtryk1fGW0WPWSnclMwSRqR20rLZuzSZ/Z2kzUnGlSP4OE0IsHdRc4SVyRULo5ZNz
- 02Pj1FtiRrXiGAbuPYsd4edcnKrxABK/tbYbt/T6LzzvFpMF5ZG6quh7vC5rM2yrta5g
- NE3g==
-X-Gm-Message-State: AC+VfDxwEh2O5xSWuNDntHg4Az+nEc2XIlDCaezYO+aESLqrXFIAdzlp
- bQhJ9CxBUgOuDw8Bloq+msjgRw==
-X-Google-Smtp-Source: ACHHUZ7IUJSSOQvAdmPhKGN0vdIAPh5uY7nnvJkDGaNbT8s6dRz67jSlRaBZGOKEsOsIP+FLJRREGg==
-X-Received: by 2002:a1c:7c08:0:b0:3f5:4d4:4edb with SMTP id
- x8-20020a1c7c08000000b003f504d44edbmr5189436wmc.21.1684667711840; 
- Sun, 21 May 2023 04:15:11 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.152.177])
+ d=1e100.net; s=20221208; t=1684667742; x=1687259742;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MV+iuENOUYweizG4m2f0iUWA/6WAQ9Xj4f7dtsvrJXs=;
+ b=JWdRIOMPAoclbfgD1ZImdhnWRqFCGbI6m5ykfRz4Wo7tF1Y6Jc8YOAkjB53Gay+4yn
+ HtnuzsbNIw3VrbaF8czqs99Qs/BKdfrha/RDSBwMS+F3jOXfKQc6kEb21gF8JErRvdJ8
+ UBcPsJOVevB54im9ZJbM2hIKin7SfIuq/L7GO9cSe2gXrE07pyvNURzobDKFiffKWQQT
+ RewtohGTGOwny/1aKOOfXNDDX42jqlBTl/hyfoy/kL8++KpOjVgkjOXT1h6Gho+dBkg4
+ 32HC1m9SDRDUWApTWi8gSjGrWEkjV/UBKqY2GQUFPDJorfk98VOxsIe1O/koFZObp842
+ BdtQ==
+X-Gm-Message-State: AC+VfDy7jdrq1IZCOPpPQL0BHHt27VUQh0qWBRC5ykEUwZ5noSFsnNOu
+ Gp799cQK1fe4D1zMt9GRVwnvkmDArSs=
+X-Google-Smtp-Source: ACHHUZ6WS7hXpQZnBpNAygOgC01rUZodBlf9H86P/m6R5vjO3SIF29wh9UyzT4yDhVtQeZIOLGBiAg==
+X-Received: by 2002:aa7:c6c8:0:b0:50b:c46a:13be with SMTP id
+ b8-20020aa7c6c8000000b0050bc46a13bemr6116859eds.22.1684667742018; 
+ Sun, 21 May 2023 04:15:42 -0700 (PDT)
+Received: from Provence.localdomain
+ (dynamic-077-191-145-122.77.191.pool.telefonica.de. [77.191.145.122])
  by smtp.gmail.com with ESMTPSA id
- l10-20020a05600c27ca00b003f4290720d0sm8029684wmb.47.2023.05.21.04.15.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 May 2023 04:15:11 -0700 (PDT)
-Message-ID: <8d6e67d7-52c0-aa60-76cb-bf70d586cf7a@linaro.org>
-Date: Sun, 21 May 2023 13:15:09 +0200
+ l5-20020a056402124500b0050dfb9fc499sm1757123edw.39.2023.05.21.04.15.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 May 2023 04:15:41 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, Huacai Chen <chenhuacai@kernel.org>,
+ qemu-ppc@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH 0/6] VIA and general PCI IDE cleanup
+Date: Sun, 21 May 2023 13:15:28 +0200
+Message-Id: <20230521111534.207973-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 16/27] accel/tcg: Unify cpu_{ld,st}*_{be,le}_mmu
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20230520162634.3991009-1-richard.henderson@linaro.org>
- <20230520162634.3991009-17-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230520162634.3991009-17-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,72 +92,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
-
-On 20/5/23 18:26, Richard Henderson wrote:
-> With the current structure of cputlb.c, there is no difference
-> between the little-endian and big-endian entry points, aside
-> from the assert.  Unify the pairs of functions.
-> 
-> The only use of the functions with explicit endianness was in
-> target/sparc64, and that was only to satisfy the assert.
-
-I'm having hard time to follow all the handling of the various
-ASI definitions from target/sparc/asi.h. ...
-
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/exec/cpu_ldst.h     |  58 ++-----
->   accel/tcg/cputlb.c          | 122 +++-----------
->   accel/tcg/user-exec.c       | 322 ++++++++++--------------------------
->   target/arm/tcg/m_helper.c   |   4 +-
->   target/sparc/ldst_helper.c  |  18 +-
->   accel/tcg/ldst_common.c.inc |  24 +--
->   6 files changed, 137 insertions(+), 411 deletions(-)
-
-
-> diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-> index 7972d56a72..981a47d8bb 100644
-> --- a/target/sparc/ldst_helper.c
-> +++ b/target/sparc/ldst_helper.c
-> @@ -1334,25 +1334,13 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
-
-
-Shouldn't we propagate the ASI endianness?
-
-                 ...
-   +             memop |= (asi & 8) ? MO_LE : MO_BE;
-                 oi = make_memop_idx(memop, idx);
-                 switch (size) {
-                 case 1:
-
->                   ret = cpu_ldb_mmu(env, addr, oi, GETPC());
->                   break;
->               case 2:
-> -                if (asi & 8) {
-> -                    ret = cpu_ldw_le_mmu(env, addr, oi, GETPC());
-> -                } else {
-> -                    ret = cpu_ldw_be_mmu(env, addr, oi, GETPC());
-> -                }
-> +                ret = cpu_ldw_mmu(env, addr, oi, GETPC());
->                   break;
->               case 4:
-> -                if (asi & 8) {
-> -                    ret = cpu_ldl_le_mmu(env, addr, oi, GETPC());
-> -                } else {
-> -                    ret = cpu_ldl_be_mmu(env, addr, oi, GETPC());
-> -                }
-> +                ret = cpu_ldl_mmu(env, addr, oi, GETPC());
->                   break;
->               case 8:
-> -                if (asi & 8) {
-> -                    ret = cpu_ldq_le_mmu(env, addr, oi, GETPC());
-> -                } else {
-> -                    ret = cpu_ldq_be_mmu(env, addr, oi, GETPC());
-> -                }
-> +                ret = cpu_ldq_mmu(env, addr, oi, GETPC());
->                   break;
->               default:
->                   g_assert_not_reached();
-Otherwise great simplification!
+This series is split off from a more general PCI IDE refactoring aiming for=
+ a=0D
+common implementation of the PCI IDE controller specification for all=0D
+TYPE_PCI_IDE models [1].=0D
+=0D
+The first three patches resolve a circular dependency between the VIA IDE=0D
+controller and its south bridge. The next two patches resolves redundant co=
+de=0D
+accross all TYPE_PCI_IDE models. The last patch modernizes VM state setup i=
+n=0D
+PIIX IDE.=0D
+=0D
+Testing done:=0D
+* `make check`=0D
+* `make check-avocado`=0D
+* `qemu-system-ppc -machine pegasos2 -rtc base=3Dlocaltime -device \=0D
+   ati-vga,guest_hwcursor=3Dtrue,romfile=3D"" -cdrom morphos-3.17.iso \=0D
+   -bios pegasos2.rom`=0D
+   The machine booted successfully and a startup sound was hearable=0D
+* `qemu-system-ppc -machine sam460ex -rtc base=3Dlocaltime -drive \=0D
+   if=3Dnone,id=3Dcd,file=3Dmorphos-3.17.iso,format=3Draw -device \=0D
+   ide-cd,drive=3Dcd,bus=3Dide.1`=0D
+   The machine booted successfully into graphical desktop environment=0D
+=0D
+Changes since [1]:=0D
+* Turn legacy IRQs into named GPIOs (Mark)=0D
+* Don't make VIA IDE legacy IRQs routable; just wire up in host device (Zol=
+tan)=0D
+* Rename extracted bmdma_clear_status() (Zoltan)=0D
+   ... to bmdma_status_writeb() (Mark)=0D
+=0D
+[1] https://lore.kernel.org/qemu-devel/20230422150728.176512-1-shentey@gmai=
+l.com/=0D
+=0D
+Bernhard Beschow (6):=0D
+  hw/ide/pci: Expose legacy interrupts as named GPIOs=0D
+  hw/ide/via: Wire up IDE legacy interrupts in host device=0D
+  hw/isa/vt82c686: Remove via_isa_set_irq()=0D
+  hw/ide: Extract IDEBus assignment into bmdma_init()=0D
+  hw/ide: Extract bmdma_status_writeb()=0D
+  hw/ide/piix: Move registration of VMStateDescription to DeviceClass=0D
+=0D
+ include/hw/ide/pci.h      |  1 +=0D
+ include/hw/isa/vt82c686.h |  2 --=0D
+ hw/ide/cmd646.c           |  3 +--=0D
+ hw/ide/pci.c              | 15 +++++++++++++++=0D
+ hw/ide/piix.c             |  8 +++-----=0D
+ hw/ide/sii3112.c          |  7 ++-----=0D
+ hw/ide/via.c              |  9 +++++----=0D
+ hw/isa/vt82c686.c         | 11 +++++------=0D
+ 8 files changed, 32 insertions(+), 24 deletions(-)=0D
+=0D
+-- =0D
+2.40.1=0D
+=0D
 
