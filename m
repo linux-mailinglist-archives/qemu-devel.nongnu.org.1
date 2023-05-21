@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C0F70AD83
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 12:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D53F70AD86
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 12:55:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0gbJ-0002V9-2a; Sun, 21 May 2023 06:47:45 -0400
+	id 1q0gi1-0003jp-AK; Sun, 21 May 2023 06:54:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0gb5-0002Ui-No
- for qemu-devel@nongnu.org; Sun, 21 May 2023 06:47:32 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0ghz-0003jS-DZ
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 06:54:39 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0gb4-0007fn-2c
- for qemu-devel@nongnu.org; Sun, 21 May 2023 06:47:31 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f6042d610fso498835e9.1
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 03:47:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0ghl-0000Qa-1E
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 06:54:39 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f475366514so32733265e9.2
+ for <qemu-devel@nongnu.org>; Sun, 21 May 2023 03:54:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684666048; x=1687258048;
+ d=linaro.org; s=google; t=1684666463; x=1687258463;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6cYsSlpsUo2NEw0M7LWJm5pe6RfuXpa7vSt/MgnCt98=;
- b=YFCa90RWXZEDaRh95VEL91w8G9X8th3ucm/fh1edHuHJ8rVzeS39Bpgwi44v/mhlf4
- f+oVqX/P2K/W91U7q+4ZJf4s3XNeO0dx+KJIJ6eUh+Ws52W9VgExJRc+/6NAweurafDK
- Xod6iRS+iSDsrcQDHo5sqCa5J5x/EkphI72roQT56aX18ch5mhgWalJMoExGchTEj4mt
- 3MkBomaPsKkgbGmObTW0bVism36rqB1ykcWitPHxl1EmXbvJHjksCLWDZTaLiXhwmADU
- zLEPsaAP3NMFH9xPgJ/4/ZAh/u3l9O63Ww/95iB+wKYbdsPAlz2+9EjMmGjmIj+eM0Fy
- oDgg==
+ bh=j8+592qdCMoaZlE0TSoLcKETp+/AM2RvWSQ4KMWkHCg=;
+ b=figTEWYP7WTxFjab/R4iPLa7q4pbdDlCmgn+PlGK8m7dSMqtTYz7MwKD/821BE5nE5
+ 7zjzSioXj5lsvmkOkA2WoEY0JgsxSuD7WpqHpcWPvDubXqUtrWSWNlcrGErJgfn6TxqP
+ 9QY3+lDOb/BEVDCbrXpTRI3lyJ81Rhl6+c1FPdcblsPI4twCEvWHroZ+kaylIbSqe4VN
+ qSwNKQUw+K2L5Z70O4oSV6eTnbyXO2bqDuMeiKtOe8wMCWAynXwT56Ox6G8aHG7GT+gI
+ R1s09ntcxKd7VH0+A+nZN5e98qUO66Nd+KoXyS5WMr0hktHIIOQzXK0zA6tqVpk0cy0J
+ Ys4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684666048; x=1687258048;
+ d=1e100.net; s=20221208; t=1684666463; x=1687258463;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6cYsSlpsUo2NEw0M7LWJm5pe6RfuXpa7vSt/MgnCt98=;
- b=Ke1PNTwMcctjEjE09ASq63PJfxaJ/1R4Cl5LhpwWNyx0spurqM/CnMvb8BGAD7QMfN
- isSyFkYXv3VGiV2ClUegsjfQezATbv2bH5JCnh9tol1dCRmqS3Q8pD/hMxATIH0g66rt
- Z/C/VSMgoUZ/QkVf0tWo0O3FZCMIn26yh6JmYn12pswQjIgzXAALRtr6sGs3OorjOZLq
- AqB/VcjKULlXCtY0yxZ8veqtdC07/EqhIWqkJUs24X+QkxI8/xMQxvVToQZDNWUsuvwm
- vX4OXrDLErcYiDoKMBLlAXuXk0z6faTbnouBCxMhMI1hPAUmtWHFKg6zRrb/5LGujeDG
- 0hLw==
-X-Gm-Message-State: AC+VfDzh1AjHcMzHbP9tMtCNdlosrC/q30sojjWtm4XHMLlQYn1w7f+c
- IFTpDDtyvoz4MIcaTcpZBHXV9A==
-X-Google-Smtp-Source: ACHHUZ4OSJWvOCMMbslWys7j98NEP6lxsSlI53rGnbgtixXTI4LPA9UKZAAr218OawMucDI31JwSQw==
-X-Received: by 2002:a05:600c:245:b0:3f5:4e1:2a89 with SMTP id
- 5-20020a05600c024500b003f504e12a89mr5163982wmj.34.1684666048393; 
- Sun, 21 May 2023 03:47:28 -0700 (PDT)
+ bh=j8+592qdCMoaZlE0TSoLcKETp+/AM2RvWSQ4KMWkHCg=;
+ b=Bo/tOi6MvAiRdgSispxNE+sqRTyRmQ6hNvI8p/CUbyVVUU6wUUdAdQ39JWINmij00E
+ NSHHEYgs9nq+7+aZGCshr5ayWcbXonvHQZO5T3PbJAITDygartALGauBoLQYcDOu6gDK
+ 4n0UdKdTYh+u2F3qobjeMCpestGBo61AsLiC0pc2pekmz2v2rSmbJdrvgGEpX8qeU2oY
+ MOJ3tIE+KoLTFcVjDb+jOXiDkIoDR5jR5y6DnQ2SpnoGdLJOclNwILrsfhmYz0bSp6o4
+ RJWPqH+ezEVGrZMO0A2VHv77SMyrz9qz1zWAVOrYRRhLtf7PEmfyk7ihfANerqOX0d4q
+ +bHg==
+X-Gm-Message-State: AC+VfDwLTjWBTvKQJf8972D47NO6JzHmgzXM5nefHL00QXzJVVObwVYp
+ qbluRbS2FJ06/Hnm1a8bRSO3IBvgW2xz5Z/cEaw=
+X-Google-Smtp-Source: ACHHUZ4quDMUWw2RaiHxpfz1NY+fZ2I3OHosBHc2bSD6M2HKylIINVsa2Noj3OKQq6ZaPFCTR7t+bA==
+X-Received: by 2002:a7b:ca44:0:b0:3f4:27ff:7d48 with SMTP id
+ m4-20020a7bca44000000b003f427ff7d48mr5245194wml.19.1684666462781; 
+ Sun, 21 May 2023 03:54:22 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.152.177])
  by smtp.gmail.com with ESMTPSA id
- m9-20020a7bce09000000b003f4247fbb5fsm8028151wmc.10.2023.05.21.03.47.27
+ g17-20020a7bc4d1000000b003f423a04016sm8081725wmk.18.2023.05.21.03.54.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 May 2023 03:47:27 -0700 (PDT)
-Message-ID: <80ec6d3c-f4bb-2513-ab88-4179e3396c23@linaro.org>
-Date: Sun, 21 May 2023 12:47:26 +0200
+ Sun, 21 May 2023 03:54:22 -0700 (PDT)
+Message-ID: <6ff38111-2f9b-b025-5dac-8d98b6911199@linaro.org>
+Date: Sun, 21 May 2023 12:54:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 01/27] util: Introduce host-specific cpuinfo.h
+Subject: Re: [PATCH 12/27] meson: Fix detect atomic128 support with
+ optimization
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Juan Quintela <quintela@redhat.com>
+Cc: qemu-arm@nongnu.org
 References: <20230520162634.3991009-1-richard.henderson@linaro.org>
- <20230520162634.3991009-2-richard.henderson@linaro.org>
+ <20230520162634.3991009-13-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230520162634.3991009-2-richard.henderson@linaro.org>
+In-Reply-To: <20230520162634.3991009-13-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, NICE_REPLY_A=-0.098, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,53 +94,24 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/5/23 18:26, Richard Henderson wrote:
-> The entire contents of the header is host-specific, but the
-> existence of such a header is not, which could prevent some
-> host specific ifdefs at the top of the file for the include.
+> Silly typo: sizeof(16) != 16.
 > 
-> Add host/include/{arch,generic} to the project arguments.
-> 
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Fixes: e61f1efeb730 ("meson: Detect atomic128 support with optimization")
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   host/include/generic/host/cpuinfo.h | 4 ++++
->   meson.build                         | 8 ++++++++
->   2 files changed, 12 insertions(+)
->   create mode 100644 host/include/generic/host/cpuinfo.h
+>   meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/host/include/generic/host/cpuinfo.h b/host/include/generic/host/cpuinfo.h
-> new file mode 100644
-> index 0000000000..eca672064a
-> --- /dev/null
-> +++ b/host/include/generic/host/cpuinfo.h
-> @@ -0,0 +1,4 @@
-> +/*
-> + * No host specific cpu indentification.
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
 > diff --git a/meson.build b/meson.build
-> index 0a5cdefd4d..4ffc0d3e59 100644
+> index 4ffc0d3e59..5e7fc6345f 100644
 > --- a/meson.build
 > +++ b/meson.build
-> @@ -512,6 +512,14 @@ add_project_arguments('-iquote', '.',
->                         '-iquote', meson.current_source_dir() / 'include',
->                         language: all_languages)
->   
-> +host_include = meson.current_source_dir() / 'host/include/'
-> +if fs.is_dir(host_include / host_arch)
-> +  add_project_arguments('-iquote', host_include / host_arch,
-> +                        language: all_languages)
-> +endif
-
-Maybe add a comment "generic include path must come last, after
-host specific include path".
-
-> +add_project_arguments('-iquote', host_include / 'generic',
-> +                      language: all_languages)
-> +
->   sparse = find_program('cgcc', required: get_option('sparse'))
->   if sparse.found()
->     run_target('sparse',
+> @@ -2555,7 +2555,7 @@ if has_int128
+>     # __alignof(unsigned __int128) for the host.
+>     atomic_test_128 = '''
+>       int main(int ac, char **av) {
+> -      unsigned __int128 *p = __builtin_assume_aligned(av[ac - 1], sizeof(16));
+> +      unsigned __int128 *p = __builtin_assume_aligned(av[ac - 1], 16);
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
