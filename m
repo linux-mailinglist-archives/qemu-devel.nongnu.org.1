@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213F970AE65
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 17:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C0C70AE6E
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 17:10:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0kZ6-0002xR-5o; Sun, 21 May 2023 11:01:44 -0400
+	id 1q0keo-00051n-9e; Sun, 21 May 2023 11:07:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q0kZ2-0002wW-CW
- for qemu-devel@nongnu.org; Sun, 21 May 2023 11:01:40 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1q0kel-00051P-5G
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 11:07:35 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q0kZ0-0006AH-Rt
- for qemu-devel@nongnu.org; Sun, 21 May 2023 11:01:40 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-64d2c865e4eso2146324b3a.0
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 08:01:38 -0700 (PDT)
+ id 1q0kco-0006eS-Cq
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 11:07:34 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-64d2ca9ef0cso2051524b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 21 May 2023 08:05:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684681297; x=1687273297;
+ d=linaro.org; s=google; t=1684681526; x=1687273526;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=4YEc+QUwDN6om9t03jT9ecIttjXYI2GN3RYTmHjitcc=;
- b=rcy+gC3i4UeGieY3p1RjXc9fllK5ksA0RjYXn6TGUEAsjPZs1wz/6d+56nUXUEJtvD
- 9hagoen+Mugp1SFkdb0Z8fFPIptoGjziipBVzVwcAkWba83EyiCXsLRVN+NyXYYb85e0
- xDktizS7bZ2ufOECYbfKJ+TtQWf0ixgSWCn9+yRgwbVB+NX1QuuL84Gz16ebxlZDaCQP
- i1fPw5tWHsZQ4TS1xkY3rBavY7kJT/OnJFWTOussY3EZasWH+JUEa5oglsTDpTHQbVd5
- MOnkAfcL8k7XMObopZiB4EcqBcMckzuYs+RKd8JYRty66lt1okTNQxuu/I8+GVLRTd6d
- epJA==
+ bh=kauN85zUEcijoU9C0IuXVfoqSTj2H4oWskwS+fpAtkM=;
+ b=ZQejgiE8mXpC2HhLyCm98/4nU8g8mBH5RALgFG7yJGu7M0QiZdkLNFliiy4KMAHpKE
+ Jw3U5YCZpXkcFgXT7RDt4GHBE9P7H1vbIDKgWhfNiNvOEfK0Y/v6uEPNXtGtnVT1ubxZ
+ wjOC06l6s/SnZItrjzqeTi4g8itXmSKh0/PQi/Dj4mIY6P/wXbe/Irkrl2mSnn1+0z79
+ RmQsXBusuFhG96xqSexg0/hy5uTglxbXNP85Qhzfo840aJXRZzLWlTSW4xJU3KjvnUIf
+ bpawry0YCEeT76id7FkazD/TAx8oSrAiwOxgoTYm5M+cX8BtkTlTZ8JnCFVO2dCwgTtE
+ WA/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684681297; x=1687273297;
+ d=1e100.net; s=20221208; t=1684681526; x=1687273526;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4YEc+QUwDN6om9t03jT9ecIttjXYI2GN3RYTmHjitcc=;
- b=GTrixPH6F9HzPO+p3pj32fcOv3yYSnpQRSvF1v7gpoeBYovYLOqv3on25SVB3PJLTa
- mT1I428nSqtA9Z/C7rK7nQCZTLwG9jz0yXyahyk0LdW6GuxWKCyaq2hwGccQ3BDD0sI1
- CLv5KJ4NQt0fHLPtZgZ1pFf4DQ7L2WVmX7Nz+l6fFSvY7GkzBYnwaF3tnvAl+gjpK3UF
- qKT8CpFwooG5GUpyJz0TFp422GQ/b8Fo6f7IAcdhGFIks9DmhoYj60ASXQTsn6k9E9GH
- VE4A7xsiftHOGxD3jqrVNkHQbDJTDjPiRKLTs9M8H2GYIymOIgVXO6fQLD+6RyW+idhl
- KpWg==
-X-Gm-Message-State: AC+VfDz9yfQPuDTxr+BZ0Edhq1n0JeFtpPYVuWaeS6fweg1UpQV8/cck
- MP1ogQmYzowklgJ6MhY396tZOg==
-X-Google-Smtp-Source: ACHHUZ6S+ks65d9s5H7Md6SiojAiD1tFPTYZOh45hyRSZZvsQwAce4AXv0iGaW5bHfP240G3LLbmQQ==
-X-Received: by 2002:a05:6a20:748e:b0:10b:e0a:1319 with SMTP id
- p14-20020a056a20748e00b0010b0e0a1319mr3549226pzd.13.1684681297191; 
- Sun, 21 May 2023 08:01:37 -0700 (PDT)
+ bh=kauN85zUEcijoU9C0IuXVfoqSTj2H4oWskwS+fpAtkM=;
+ b=kQWHEuJ+xLAkCRfPgsyVeKC1e+IgLO3kMf8XXTFUZI4L9COb6qiZCBgGzHDafiDrIW
+ 05oOGzD53kgJ5SARXDpfAQQgCc7j+vY/ZBRbNug0AhteWiIS6cvPHDUikzWirujpbq1S
+ 6EtsuYZJH0NU7EmIdIPMEVn6L6hgJQgOkKjWGg95E6TYWMZ7edkXVEx0LWEUg9+uR6cO
+ anTHtDzpVQ3CkxE2IsuOJGLauk7Q6t+PAiPZddEzvYP9XUK/1pwGbxAj+yhSA8/9hyhm
+ bXmQKzeLSxilEsrpArxhC4tZgPNIx3M6a4BIOPl3JtO+q0yByxQOKZ07eSB2IZsNiC6E
+ JQSQ==
+X-Gm-Message-State: AC+VfDzQZE1U2nTn81aOAoJ55yythftRg4Z2ytYBMfDB8aAuaUFHV7tL
+ 46Uf/qR8gjIUe0ADO7iEj5Z2Ng==
+X-Google-Smtp-Source: ACHHUZ7vTLZY9Ycis8TXJAvZl5TrahzQR4fVJQdZLaUuHQX3Ziy2+2/zlwaJR06y4vjcAWvFHtrLuw==
+X-Received: by 2002:aa7:88d6:0:b0:62d:cfd4:e440 with SMTP id
+ k22-20020aa788d6000000b0062dcfd4e440mr11416956pff.8.1684681526242; 
+ Sun, 21 May 2023 08:05:26 -0700 (PDT)
 Received: from [10.40.30.162] ([66.172.120.86])
  by smtp.gmail.com with ESMTPSA id
- b5-20020aa78705000000b006437c0edf9csm2744487pfo.16.2023.05.21.08.01.36
+ k25-20020aa792d9000000b00649ac17779csm2617583pfa.160.2023.05.21.08.05.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 May 2023 08:01:36 -0700 (PDT)
-Message-ID: <37df70b4-5ae4-f36b-a349-303828545262@linaro.org>
-Date: Sun, 21 May 2023 08:01:34 -0700
+ Sun, 21 May 2023 08:05:25 -0700 (PDT)
+Message-ID: <dddfb5fc-31b6-9561-5d71-1e83534dc269@linaro.org>
+Date: Sun, 21 May 2023 08:05:23 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 17/27] target/s390x: Use cpu_{ld,st}*_mmu in do_csst
+Subject: Re: [PATCH 02/27] util: Add cpuinfo-i386.c
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: qemu-arm@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
 References: <20230520162634.3991009-1-richard.henderson@linaro.org>
- <20230520162634.3991009-18-richard.henderson@linaro.org>
- <a56f5acc-5716-8598-e49c-d1f6c19e144f@linaro.org>
+ <20230520162634.3991009-3-richard.henderson@linaro.org>
+ <b51a6df0-b53b-c6dc-b496-0c320aad463d@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <a56f5acc-5716-8598-e49c-d1f6c19e144f@linaro.org>
+In-Reply-To: <b51a6df0-b53b-c6dc-b496-0c320aad463d@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,48 +98,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/21/23 04:21, Philippe Mathieu-Daudé wrote:
-> Hi Richard,
-> 
+On 5/21/23 04:28, Philippe Mathieu-Daudé wrote:
 > On 20/5/23 18:26, Richard Henderson wrote:
->> Use cpu_ld16_mmu and cpu_st16_mmu to eliminate the special case,
->> and change all of the *_data_ra functions to match.
+>> Add cpuinfo.h for i386 and x86_64, and the initialization
+>> for that in util/.  Populate that with a slightly altered
+>> copy of the tcg host probing code.  Other uses of cpuid.h
+>> will be adjusted one patch at a time.
 >>
+>> Reviewed-by: Juan Quintela <quintela@redhat.com>
 >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 >> ---
->> Cc: qemu-s390x@nongnu.org
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
->> ---
->>   target/s390x/tcg/mem_helper.c | 65 ++++++++++++++---------------------
->>   1 file changed, 26 insertions(+), 39 deletions(-)
->>
->> diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
->> index 0e0d66b3b6..b6cf24403c 100644
->> --- a/target/s390x/tcg/mem_helper.c
->> +++ b/target/s390x/tcg/mem_helper.c
->> @@ -1737,6 +1737,9 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
->>                           uint64_t a2, bool parallel)
->>   {
->>       uint32_t mem_idx = cpu_mmu_index(env, false);
->> +    MemOpIdx oi16 = make_memop_idx(MO_TE | MO_128, mem_idx);
->> +    MemOpIdx oi8 = make_memop_idx(MO_TE | MO_64, mem_idx);
+>>   host/include/i386/host/cpuinfo.h   | 38 ++++++++++++
+>>   host/include/x86_64/host/cpuinfo.h |  1 +
+>>   util/cpuinfo-i386.c                | 97 ++++++++++++++++++++++++++++++
+>>   util/meson.build                   |  4 ++
+>>   4 files changed, 140 insertions(+)
+>>   create mode 100644 host/include/i386/host/cpuinfo.h
+>>   create mode 100644 host/include/x86_64/host/cpuinfo.h
+>>   create mode 100644 util/cpuinfo-i386.c
 > 
-> 
->>               if (parallel) {
->>   #ifdef CONFIG_ATOMIC64
->> -                MemOpIdx oi = make_memop_idx(MO_TEUQ | MO_ALIGN, mem_idx);
->> -                ov = cpu_atomic_cmpxchgq_be_mmu(env, a1, cv, nv, oi, ra);
->> +                ov = cpu_atomic_cmpxchgq_be_mmu(env, a1, cv, nv, oi8, ra);
-> 
-> Why is it safe to remove MO_ALIGN here?
+> Missing F: entry in MAINTAINERS file. We probably need new sections.
 
-Alignment check already done at the start of the function:
-
-     /* Sanity check the alignments.  */
-     if (extract32(a1, 0, fc + 2) || extract32(a2, 0, sc)) {
-         goto spec_exception;
-     }
+What would you put there?
 
 
 r~
