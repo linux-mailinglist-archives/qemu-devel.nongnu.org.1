@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121CA70AC8E
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 07:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056CF70AD0A
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 10:55:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0byx-0006y6-DY; Sun, 21 May 2023 01:51:51 -0400
+	id 1q0epY-0007ve-P8; Sun, 21 May 2023 04:54:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q0byk-0006xj-RW
- for qemu-devel@nongnu.org; Sun, 21 May 2023 01:51:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q0epV-0007vR-Gg
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 04:54:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q0byi-0004SS-SW
- for qemu-devel@nongnu.org; Sun, 21 May 2023 01:51:38 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q0epT-0003v4-Aq
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 04:54:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684648294;
+ s=mimecast20190719; t=1684659253;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=eFn7Co6twJRnlAGdii0nPqqEcSCoCAsd+Y2ZTEqCATY=;
- b=AK9NanVy55CQ+7jnWSP8iorIaaGHTR1/y6xmslkcVjALulh0L04TmXKEV6teY0EzC1qS6r
- mPfaFhdeOgCI+W2IhFmZ77VQoqSyHEeI79+TwO329WojmfQKUP7pX5P0bUnroXERTtUR8x
- QBWIlK9n7wM0m7WKwlgMXBiMUqf/iaU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XwhGsnf5JbAowqxD5rRKRGjdJP7tlw0l1nZ6ep4GZBI=;
+ b=Oo1a2EychKhrzxnxW0w55iTRK2fIIAdm5iOhWxy+Vs3gPpK/iXj8nXYedfZ8lfaJEMiWre
+ JC6xXF/4zDTWedAHuNqqaLD5uyurjYxYsthZSRpsd6BQza4tkSV/8rJDCwBYgBsaD8RPKL
+ PF1kmmHk8UTJaqGl30F+WfFlsE9QpAA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-DHf79wgrOs-Ol3TCkiOw2Q-1; Sun, 21 May 2023 01:51:33 -0400
-X-MC-Unique: DHf79wgrOs-Ol3TCkiOw2Q-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f426d4944fso16281065e9.1
- for <qemu-devel@nongnu.org>; Sat, 20 May 2023 22:51:33 -0700 (PDT)
+ us-mta-390-9oClol_4NJewP69G-o2v4g-1; Sun, 21 May 2023 04:54:11 -0400
+X-MC-Unique: 9oClol_4NJewP69G-o2v4g-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f426ffdbc6so27930755e9.3
+ for <qemu-devel@nongnu.org>; Sun, 21 May 2023 01:54:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684648292; x=1687240292;
+ d=1e100.net; s=20221208; t=1684659250; x=1687251250;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eFn7Co6twJRnlAGdii0nPqqEcSCoCAsd+Y2ZTEqCATY=;
- b=P7x0QLj5zMdyh0Lx6b4esizP/OgI2pq3U1yZQaX2kuMnvjj/LErSfG+3HGOhBQuDds
- n0dZ8SwRqmT6qv9UMjc19Q/tcpIa3iAwvSx0EVhIlqv9RTJLHchC62iU4wJurczQYnzC
- mPmHdgTa9xn/aeXXZrlOwhxjnQcnv6axsaBB78i5QIQ5AqkZKt+krBs6AZZQxYu2YljR
- 4f6m2aTb59Y5tzDqRq54AV+Ua04T/aQysilvYKcRL5OHDIy65bT/SUqtWDekfFEOsxSV
- BnvjWJBP1H2RfhVSAkU9EtEdqfty/jB0GF6BV7SJJfKsqFL6Udq8/zEaqCFUy0X8NF6T
- 5YTg==
-X-Gm-Message-State: AC+VfDwFApRE8NLckgYigFRAR+hndGj3WSyl20I98cE+O4hkr/zw3hEF
- EQsQM604ZDhq+bxAJDrAT7OZsLOz+yncWsNaFNfFHJt3/hqFOf2cFuYKfsb3pBCffdMCuSWcfxQ
- hzMlJElqYlqR/4OU=
-X-Received: by 2002:a7b:cd0d:0:b0:3f1:7aff:e14a with SMTP id
- f13-20020a7bcd0d000000b003f17affe14amr4609446wmj.39.1684648292183; 
- Sat, 20 May 2023 22:51:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7ndVEg9dSuKLtbTi25t0LlE9JhrR20d7F6mQ+jQ3/Lcit39w6Yu0ra9hTxfqxBIkIgs1l8Wg==
-X-Received: by 2002:a7b:cd0d:0:b0:3f1:7aff:e14a with SMTP id
- f13-20020a7bcd0d000000b003f17affe14amr4609434wmj.39.1684648291831; 
- Sat, 20 May 2023 22:51:31 -0700 (PDT)
+ bh=XwhGsnf5JbAowqxD5rRKRGjdJP7tlw0l1nZ6ep4GZBI=;
+ b=GE4U7D6bcyRzgGUJjHxZkmAb0c0Mu9BZL1kmeVsj+1KfSZ8incAIKBGVn78+5h9qJW
+ IhZ8GlPqB+yYL9ZQVyWEcGcDMXzO5i353e1tZMiVVyhtjAtuNwUMPgaFKZYeB1bvuY9y
+ FlpHB0/LHje6iUL0aGyV5lX27Kb7jVgKNDInSurA9bnWTiuUTmBh6CXm3CcyEWWak1/9
+ SbbJaBcMhAcgzoNQosSRr+FNHPBUoHT1dwoes42sGGArDAyKjreWY8cKXFp+OeZNQqs3
+ wlTE/JPSdN0VKN1vfz3nSIRlAUMC9l342Zev55MPSOqUSKOvY1Ea0phYHHuCMn1iir/p
+ h2+A==
+X-Gm-Message-State: AC+VfDxlqQfwFJsjP+4z9/C/ga0H6hB7+NqevD9igL6nCA080oPANVOI
+ v7z3NxxPdzdx5hsxnSJAwoaWriEATX+XnKlxbiEko2/CnHinzJE5D3C5+O8cuOgre+c/CHvNwlX
+ ozQdF/N0oNNmlnBw=
+X-Received: by 2002:a1c:4c03:0:b0:3f4:20ec:75f1 with SMTP id
+ z3-20020a1c4c03000000b003f420ec75f1mr5652725wmf.33.1684659250693; 
+ Sun, 21 May 2023 01:54:10 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5oJ8zwqwdJ/QnvP90ENsoBN7kn2QIYkqYaugBDeX/vf4vaGaRiDqXCr0W8sLH0bnWeB6UMyQ==
+X-Received: by 2002:a1c:4c03:0:b0:3f4:20ec:75f1 with SMTP id
+ z3-20020a1c4c03000000b003f420ec75f1mr5652707wmf.33.1684659250339; 
+ Sun, 21 May 2023 01:54:10 -0700 (PDT)
 Received: from redhat.com ([2.52.11.67]) by smtp.gmail.com with ESMTPSA id
- c11-20020a05600c0acb00b003f4285629casm4092135wmr.42.2023.05.20.22.51.29
+ n10-20020adfe78a000000b0030796e103a1sm4155522wrm.5.2023.05.21.01.54.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 May 2023 22:51:30 -0700 (PDT)
-Date: Sun, 21 May 2023 01:51:27 -0400
+ Sun, 21 May 2023 01:54:09 -0700 (PDT)
+Date: Sun, 21 May 2023 04:54:06 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: Ani Sinha <anisinha@redhat.com>
-Cc: Cleber Rosa <crosa@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] acpi/tests/avocado/bits: enable bios bits avocado tests
- on gitlab CI pipeline
-Message-ID: <20230521015057-mutt-send-email-mst@kernel.org>
-References: <20230517065357.5614-1-anisinha@redhat.com>
- <501EE8C0-D6C2-4FDE-9747-90932F70EB77@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
+ for iasl location
+Message-ID: <20230521045204-mutt-send-email-mst@kernel.org>
+References: <20230517120751.14679-1-anisinha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <501EE8C0-D6C2-4FDE-9747-90932F70EB77@redhat.com>
+In-Reply-To: <20230517120751.14679-1-anisinha@redhat.com>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -99,66 +95,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 19, 2023 at 08:44:18PM +0530, Ani Sinha wrote:
+On Wed, May 17, 2023 at 05:37:51PM +0530, Ani Sinha wrote:
+> Currently the meson based QEMU build process locates the iasl binary from the
+> current PATH and other locations [1] and uses that to set CONFIG_IASL which is
+> then used by the test.
 > 
+> This has two disadvantages:
+>  - If iasl was not previously installed in the PATH, one has to install iasl
+>    and rebuild QEMU in order to pick up the iasl location. One cannot simply
+>    use the existing bios-tables-test binary because CONFIG_IASL is only set
+>    during the QEMU build time by meson and then bios-tables-test has to be
+>    rebuilt with CONFIG_IASL set in order to use iasl.
+>  - Sometimes, the stock iasl that comes with distributions is simply not good
+>    enough because it does not support the latest ACPI changes - newly
+>    introduced tables or new table attributes etc. In order to test ACPI code
+>    in QEMU, one has to clone the latest acpica upstream repository and
+>    rebuild iasl in order to get support for it. In those cases, one may want
+>    the test to use the iasl binary from a non-standard location.
 > 
-> > On 17-May-2023, at 12:23 PM, Ani Sinha <anisinha@redhat.com> wrote:
-> > 
-> > Biosbits avocado tests on gitlab has thus far been disabled because some
-> > packages needed by this test was missing in the container images used by gitlab
-> > CI. These packages have now been added with the commit:
-> > 
-> > da9000784c90d ("tests/lcitool: Add mtools and xorriso and remove genisoimage as dependencies")
-> > 
-> > Therefore, this change enables bits avocado test on gitlab.
-> > At the same time, the bits cleanup code has also been made more robust with
-> > this change.
-> > 
-> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> In order to overcome the above two disadvantages, we introduce a new
+> environment variable IASL_PATH that can be set by the tester pointing to an
+> possibly non-standard iasl binary location. Bios-tables-test then uses this
+> environment variable to set its iasl location, possibly also overriding the
+> location that was pointed to by CONFIG_IASL that was set by meson. This way
+> developers can not only use this new environment variable to set iasl
+> location to quickly run bios-tables-test but also can point the test to a
+> custom iasl if required.
 > 
-> Michael, did you forget to queue this?
+> [1] https://mesonbuild.com/Reference-manual_functions.html#find_program
+> 
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+
+I don't much like it that the default is now a bit harder
+to run. Case of playing with iasl is really esotetic.
+I propose a simpler idea.
+- add config-iasl.h with only CONFIG_IASL set to path
+- include from bios test
+
+Now if you change path only bios test is rebuilt.
+
+Hmm?
 
 
-Not that I forgot but it takes me time to process new patches.
-This came after I started testing the pull.
-
-> > ---
-> > tests/avocado/acpi-bits.py | 8 ++++----
-> > 1 file changed, 4 insertions(+), 4 deletions(-)
-> > 
-> > Pipeline is green:
-> > https://gitlab.com/anisinha/qemu/-/pipelines/869670000
-> > bios bits tests passing:
-> > https://gitlab.com/anisinha/qemu/-/jobs/4298116787#L189
-> > 
-> > diff --git a/tests/avocado/acpi-bits.py b/tests/avocado/acpi-bits.py
-> > index 14038fa3c4..3ed286dcbd 100644
-> > --- a/tests/avocado/acpi-bits.py
-> > +++ b/tests/avocado/acpi-bits.py
-> > @@ -123,9 +123,9 @@ def base_args(self):
-> >         """return the base argument to QEMU binary"""
-> >         return self._base_args
-> > 
-> > -@skipIf(not supported_platform() or missing_deps() or os.getenv('GITLAB_CI'),
-> > -        'incorrect platform or dependencies (%s) not installed ' \
-> > -        'or running on GitLab' % ','.join(deps))
-> > +@skipIf(not supported_platform() or missing_deps(),
-> > +        'unsupported platform or dependencies (%s) not installed' \
-> > +        % ','.join(deps))
-> > class AcpiBitsTest(QemuBaseTest): #pylint: disable=too-many-instance-attributes
-> >     """
-> >     ACPI and SMBIOS tests using biosbits.
-> > @@ -356,7 +356,7 @@ def tearDown(self):
-> >         """
-> >         if self._vm:
-> >             self.assertFalse(not self._vm.is_running)
-> > -        if not os.getenv('BITS_DEBUG'):
-> > +        if not os.getenv('BITS_DEBUG') and self._workDir:
-> >             self.logger.info('removing the work directory %s', self._workDir)
-> >             shutil.rmtree(self._workDir)
-> >         else:
-> > -- 
-> > 2.39.1
-> > 
+> ---
+>  tests/qtest/bios-tables-test.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> sample runs:
+> 
+> $ QTEST_QEMU_BINARY=./qemu-system-x86_64 V=2 ./tests/qtest/bios-tables-test
+> ...
+> acpi-test: Warning! APIC binary file mismatch. Actual [aml:/tmp/aml-DLHA51], Expected [aml:tests/data/acpi/pc/APIC].
+> See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
+> Using iasl: /usr/bin/iasl
+> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-L9GA51.dsl, aml:/tmp/aml-DLHA51], Expected [asl:/tmp/asl-10EA51.dsl, aml:tests/data/acpi/pc/APIC].
+> 
+> $ QTEST_QEMU_BINARY=./qemu-system-x86_64 V=2 IASL_PATH=/home/anisinha/workspace/acpica/generate/unix/bin/iasl ./tests/qtest/bios-tables-test
+> ...
+> acpi-test: Warning! APIC binary file mismatch. Actual [aml:/tmp/aml-5CQ341], Expected [aml:tests/data/acpi/pc/APIC].
+> See source file tests/qtest/bios-tables-test.c for instructions on how to update expected files.
+> User has provided an iasl path, using that: /home/anisinha/workspace/acpica/generate/unix/bin/iasl
+> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-2GQ341.dsl, aml:/tmp/aml-5CQ341], Expected [asl:/tmp/asl-IBR341.dsl, aml:tests/data/acpi/pc/APIC].
+> 
+> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+> index 7fd88b0e9c..37e8e484cb 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -440,7 +440,12 @@ static void test_acpi_asl(test_data *data)
+>      AcpiSdtTable *sdt, *exp_sdt;
+>      test_data exp_data = {};
+>      gboolean exp_err, err, all_tables_match = true;
+> +    const char *user_iasl_path = getenv("IASL_PATH");
+>  
+> +    /* if user has provided a path to iasl, use that */
+> +    if (user_iasl_path) {
+> +        iasl = user_iasl_path;
+> +    }
+>      exp_data.tables = load_expected_aml(data);
+>      dump_aml_files(data, false);
+>      for (i = 0; i < data->tables->len; ++i) {
+> @@ -473,6 +478,15 @@ static void test_acpi_asl(test_data *data)
+>              continue;
+>          }
+>  
+> +        if (verbosity_level >= 2) {
+> +            if (user_iasl_path) {
+> +                fprintf(stderr, "User has provided an iasl path," \
+> +                        "using that: %s\n", user_iasl_path);
+> +            } else {
+> +                fprintf(stderr, "Using iasl: %s\n", iasl);
+> +            }
+> +        }
+> +
+>          err = load_asl(data->tables, sdt);
+>          asl = normalize_asl(sdt->asl);
+>  
+> -- 
+> 2.39.1
 
 
