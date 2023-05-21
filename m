@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4104B70AE5D
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 16:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A5C70AE64
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 17:02:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0kPa-0000bx-0E; Sun, 21 May 2023 10:51:54 -0400
+	id 1q0kYM-0002RW-4m; Sun, 21 May 2023 11:00:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1q0kPX-0000bj-TI
- for qemu-devel@nongnu.org; Sun, 21 May 2023 10:51:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1q0kPV-0004TL-Ua
- for qemu-devel@nongnu.org; Sun, 21 May 2023 10:51:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684680708;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8c6ANHP2PVnVqXXnnIn+gnUyxJJpIpvPYTtZ/4tz5IM=;
- b=K0r4DeM0/8U5c14GCnjP6mr/4heNcHftjNAUerxJSk81v9z013HT4wNGoHXwdDnoipBELs
- NiW81eFCIC/gy+4PefNWdkh/XJ+QS235jb7un40PtSNhDNX6dokUhMeIXt56d8Zr+tll20
- 8irNmQCbBxGPuiXuDNBkc+Hm5j257Gs=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-g1BMrQzHMyazahyKQlVlXQ-1; Sun, 21 May 2023 10:51:46 -0400
-X-MC-Unique: g1BMrQzHMyazahyKQlVlXQ-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-64d48b8ecd2so1239636b3a.1
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 07:51:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q0kYJ-0002Jm-B0
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 11:00:55 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q0kYH-0005y6-NY
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 11:00:55 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-64d30ab1ef2so1792406b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 21 May 2023 08:00:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684681252; x=1687273252;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yHSn/Esv6cszlwmmwaTaf9CKHsOKsa2WOrnGwYQfYrc=;
+ b=UNkUeErrMfHpMSMAips/GO9r1O7YXmUwgiVmd6QniZmBa0UqDIvpJWsrEMLxp660vi
+ ZdvCOzKScZTuIMupPJNdRwSdUlyWwpOZ147l3OsRdBUIgB5PJxPdI8Fy3bw6c9e+5Lpc
+ gjVdFa21cxFHbZypsGZSLIEdmLnn4CQwf2kR1p8tiG/F0qxB9bn2boew5jP8VYI4QX/j
+ lE1mcqgm0qdvmijon3JA+8PXANmLJVQJysYw17gfJ5fsgPGT3+pxxiTFLhPZYjOGOIDJ
+ PChRv9VvBB8+N7EDgjO+xJL9pVd5qooJB2wZMCWBn6rwf4OOenqO6rx/2mfnDBy2BrdE
+ 6ZJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684680705; x=1687272705;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8c6ANHP2PVnVqXXnnIn+gnUyxJJpIpvPYTtZ/4tz5IM=;
- b=IfINEKQM6W9oGhv5GEp/ZIjgm2TK1t26IMT3sSG9biNUHqN3rWk3ZwDk4o4NkNg53b
- qtpjruqjFa5XEDliva2O0s5xHomIguJb+xdpy/FhVWelvnEPe9YpXU01VM7eBr00FAlT
- AWgJgFqmFTU6HSsaZxTIMgojiw3waq+Tgzc2ESyt3jhVsbk8+Cq3aPtxVSRm/TYyRk8k
- 56P3W+Fdu2VfUUiLFp4MSyS61CRvl95RxEnqWYgwPaoAD1MK3lzMXymQCnWpld+vnH2t
- GdwsppfWsSpWBVWCUusCCxBxKXQSTYTOpFrLfSuJbnpsfAXM+GOaZVi4amWCwfcf8iwC
- YIEQ==
-X-Gm-Message-State: AC+VfDz4kgwy5h+2zQgkzVBYwQDkz4qOfE53TU6sFkd1pSw9XmNXkFSK
- 8++iS4ySIN2xzYCZNEMVC3jJnxzsCiD7C4tOLJjhhjjqu4yKTHGXTbvvi9KJMsoAi71UjT6d56g
- OcCk4DcNS5T231ow=
-X-Received: by 2002:a05:6a00:a21:b0:646:9232:df6 with SMTP id
- p33-20020a056a000a2100b0064692320df6mr11691125pfh.33.1684680705622; 
- Sun, 21 May 2023 07:51:45 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4H6dIGOWYfeX7ebCQ9pc5SbNyVw+HfjA1R6ykGkXsXTV9vmLEbX0ZLppRu855UfOfWTlc3yg==
-X-Received: by 2002:a05:6a00:a21:b0:646:9232:df6 with SMTP id
- p33-20020a056a000a2100b0064692320df6mr11691106pfh.33.1684680705175; 
- Sun, 21 May 2023 07:51:45 -0700 (PDT)
-Received: from smtpclient.apple ([203.212.246.201])
+ d=1e100.net; s=20221208; t=1684681252; x=1687273252;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yHSn/Esv6cszlwmmwaTaf9CKHsOKsa2WOrnGwYQfYrc=;
+ b=W9zsMorbUTjs4kAPTwh0PTzG5Q2Tzg83sb0BDyoBMuZkgWRfWyF4WyPgkgHkygrM0J
+ pHUjRkdyO0LioorjFzykke7p8dwPf6l/ELvIiMY0EV49mRb3eFECtm1ZQgx4ija1B+sL
+ E5DoRDQ6ggI27qoJJMh0RpwpXvEOshM+DLeG39pUuSTuIjhtm98V52Yfnc4/R39DhUB1
+ lM/hez5flhsbz5YPgiZZEU7Dx9PBkIb6/YSH4oqKU4JZzByTG7Qv1nocBmD7JhaUOH8C
+ a1ycHPF3a4AXuwGBXs5bGnghn1tdxx2F0LEC0/BhQ85xlhSPo9CcBrw1BiSP3uwUYnjC
+ zhRw==
+X-Gm-Message-State: AC+VfDzkHvPHfmvoEa85jdMHCg9q0uqD8vFIb8rYRdiMOsGhFlBQKoAP
+ Rd1NVLEBDziT2npsMTk4jyc2jA==
+X-Google-Smtp-Source: ACHHUZ76iTo6XHnZMBMRWGpv+UH3VbjXEMNV8Ty2HgVMquFg7XE8BnVBxNmHXMh/sWcIyrvV7h6SzA==
+X-Received: by 2002:a05:6a00:2d1c:b0:64d:7225:cfff with SMTP id
+ fa28-20020a056a002d1c00b0064d7225cfffmr190769pfb.8.1684681251386; 
+ Sun, 21 May 2023 08:00:51 -0700 (PDT)
+Received: from [10.40.30.162] ([66.172.120.86])
  by smtp.gmail.com with ESMTPSA id
- j17-20020a62e911000000b0064d413caea6sm2670688pfh.179.2023.05.21.07.51.43
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 21 May 2023 07:51:44 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH] acpi/tests/bios-tables-test: add an environment variable
- for iasl location
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230521045204-mutt-send-email-mst@kernel.org>
-Date: Sun, 21 May 2023 20:21:40 +0530
-Cc: Igor Mammedov <imammedo@redhat.com>,
+ c24-20020aa78c18000000b0064b0326494asm886861pfd.150.2023.05.21.08.00.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 21 May 2023 08:00:50 -0700 (PDT)
+Message-ID: <015fb09b-6f34-dec4-d241-8fc5c9a44d7e@linaro.org>
+Date: Sun, 21 May 2023 08:00:48 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 16/27] accel/tcg: Unify cpu_{ld,st}*_{be,le}_mmu
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0C57E4D4-3198-4DA4-9DCD-1D6A6F75F590@redhat.com>
-References: <20230517120751.14679-1-anisinha@redhat.com>
- <20230521045204-mutt-send-email-mst@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Cc: qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+References: <20230520162634.3991009-1-richard.henderson@linaro.org>
+ <20230520162634.3991009-17-richard.henderson@linaro.org>
+ <8d6e67d7-52c0-aa60-76cb-bf70d586cf7a@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <8d6e67d7-52c0-aa60-76cb-bf70d586cf7a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,145 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-> On 21-May-2023, at 2:24 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->=20
-> On Wed, May 17, 2023 at 05:37:51PM +0530, Ani Sinha wrote:
->> Currently the meson based QEMU build process locates the iasl binary =
-from the
->> current PATH and other locations [1] and uses that to set CONFIG_IASL =
-which is
->> then used by the test.
->>=20
->> This has two disadvantages:
->> - If iasl was not previously installed in the PATH, one has to =
-install iasl
->>   and rebuild QEMU in order to pick up the iasl location. One cannot =
-simply
->>   use the existing bios-tables-test binary because CONFIG_IASL is =
-only set
->>   during the QEMU build time by meson and then bios-tables-test has =
-to be
->>   rebuilt with CONFIG_IASL set in order to use iasl.
->> - Sometimes, the stock iasl that comes with distributions is simply =
-not good
->>   enough because it does not support the latest ACPI changes - newly
->>   introduced tables or new table attributes etc. In order to test =
-ACPI code
->>   in QEMU, one has to clone the latest acpica upstream repository and
->>   rebuild iasl in order to get support for it. In those cases, one =
-may want
->>   the test to use the iasl binary from a non-standard location.
->>=20
->> In order to overcome the above two disadvantages, we introduce a new
->> environment variable IASL_PATH that can be set by the tester pointing =
-to an
->> possibly non-standard iasl binary location. Bios-tables-test then =
-uses this
->> environment variable to set its iasl location, possibly also =
-overriding the
->> location that was pointed to by CONFIG_IASL that was set by meson. =
-This way
->> developers can not only use this new environment variable to set iasl
->> location to quickly run bios-tables-test but also can point the test =
-to a
->> custom iasl if required.
->>=20
->> [1] =
-https://mesonbuild.com/Reference-manual_functions.html#find_program
->>=20
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->=20
-> I don't much like it that the default is now a bit harder
-> to run. Case of playing with iasl is really esotetic.
-> I propose a simpler idea.
-> - add config-iasl.h with only CONFIG_IASL set to path
-> - include from bios test
->=20
-> Now if you change path only bios test is rebuilt.
->=20
-> Hmm?
-
-We can do this.=20
-
-If an environment variable CONFIG_IASL is set or a command line is =
-passed (we can do one or the other), use that. Else use a default path =
-/usr/bin/iasl. This way we do not even need to rebuild the test if the =
-developer wishes to use another iasl binary from a different location.=20=
-
-I prefer env var slightly because its easier to implement from meson. =
-Test specific command lines in meson.build would need more work.
-
->=20
->=20
+On 5/21/23 04:15, Philippe Mathieu-Daudé wrote:
+> Hi Richard,
+> 
+> On 20/5/23 18:26, Richard Henderson wrote:
+>> With the current structure of cputlb.c, there is no difference
+>> between the little-endian and big-endian entry points, aside
+>> from the assert.  Unify the pairs of functions.
+>>
+>> The only use of the functions with explicit endianness was in
+>> target/sparc64, and that was only to satisfy the assert.
+> 
+> I'm having hard time to follow all the handling of the various
+> ASI definitions from target/sparc/asi.h. ...
+> 
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 >> ---
->> tests/qtest/bios-tables-test.c | 14 ++++++++++++++
->> 1 file changed, 14 insertions(+)
->>=20
->> sample runs:
->>=20
->> $ QTEST_QEMU_BINARY=3D./qemu-system-x86_64 V=3D2 =
-./tests/qtest/bios-tables-test
->> ...
->> acpi-test: Warning! APIC binary file mismatch. Actual =
-[aml:/tmp/aml-DLHA51], Expected [aml:tests/data/acpi/pc/APIC].
->> See source file tests/qtest/bios-tables-test.c for instructions on =
-how to update expected files.
->> Using iasl: /usr/bin/iasl
->> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-L9GA51.dsl, =
-aml:/tmp/aml-DLHA51], Expected [asl:/tmp/asl-10EA51.dsl, =
-aml:tests/data/acpi/pc/APIC].
->>=20
->> $ QTEST_QEMU_BINARY=3D./qemu-system-x86_64 V=3D2 =
-IASL_PATH=3D/home/anisinha/workspace/acpica/generate/unix/bin/iasl =
-./tests/qtest/bios-tables-test
->> ...
->> acpi-test: Warning! APIC binary file mismatch. Actual =
-[aml:/tmp/aml-5CQ341], Expected [aml:tests/data/acpi/pc/APIC].
->> See source file tests/qtest/bios-tables-test.c for instructions on =
-how to update expected files.
->> User has provided an iasl path, using that: =
-/home/anisinha/workspace/acpica/generate/unix/bin/iasl
->> acpi-test: Warning! APIC mismatch. Actual [asl:/tmp/asl-2GQ341.dsl, =
-aml:/tmp/aml-5CQ341], Expected [asl:/tmp/asl-IBR341.dsl, =
-aml:tests/data/acpi/pc/APIC].
->>=20
->> diff --git a/tests/qtest/bios-tables-test.c =
-b/tests/qtest/bios-tables-test.c
->> index 7fd88b0e9c..37e8e484cb 100644
->> --- a/tests/qtest/bios-tables-test.c
->> +++ b/tests/qtest/bios-tables-test.c
->> @@ -440,7 +440,12 @@ static void test_acpi_asl(test_data *data)
->>     AcpiSdtTable *sdt, *exp_sdt;
->>     test_data exp_data =3D {};
->>     gboolean exp_err, err, all_tables_match =3D true;
->> +    const char *user_iasl_path =3D getenv("IASL_PATH");
->>=20
->> +    /* if user has provided a path to iasl, use that */
->> +    if (user_iasl_path) {
->> +        iasl =3D user_iasl_path;
->> +    }
->>     exp_data.tables =3D load_expected_aml(data);
->>     dump_aml_files(data, false);
->>     for (i =3D 0; i < data->tables->len; ++i) {
->> @@ -473,6 +478,15 @@ static void test_acpi_asl(test_data *data)
->>             continue;
->>         }
->>=20
->> +        if (verbosity_level >=3D 2) {
->> +            if (user_iasl_path) {
->> +                fprintf(stderr, "User has provided an iasl path," \
->> +                        "using that: %s\n", user_iasl_path);
->> +            } else {
->> +                fprintf(stderr, "Using iasl: %s\n", iasl);
->> +            }
->> +        }
->> +
->>         err =3D load_asl(data->tables, sdt);
->>         asl =3D normalize_asl(sdt->asl);
->>=20
->> --=20
->> 2.39.1
+>>   include/exec/cpu_ldst.h     |  58 ++-----
+>>   accel/tcg/cputlb.c          | 122 +++-----------
+>>   accel/tcg/user-exec.c       | 322 ++++++++++--------------------------
+>>   target/arm/tcg/m_helper.c   |   4 +-
+>>   target/sparc/ldst_helper.c  |  18 +-
+>>   accel/tcg/ldst_common.c.inc |  24 +--
+>>   6 files changed, 137 insertions(+), 411 deletions(-)
+> 
+> 
+>> diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
+>> index 7972d56a72..981a47d8bb 100644
+>> --- a/target/sparc/ldst_helper.c
+>> +++ b/target/sparc/ldst_helper.c
+>> @@ -1334,25 +1334,13 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
+> 
+> 
+> Shouldn't we propagate the ASI endianness?
 
+Already done in translate, get_asi():
+
+         /* The little-endian asis all have bit 3 set.  */
+         if (asi & 8) {
+             memop ^= MO_BSWAP;
+         }
+
+
+r~
 
