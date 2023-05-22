@@ -2,88 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82A270C87B
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 21:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD09B70C88C
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 21:40:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1BMS-0001Gq-Mp; Mon, 22 May 2023 15:38:28 -0400
+	id 1q1BNM-0001yF-S6; Mon, 22 May 2023 15:39:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1q1BMP-0001G5-Dg; Mon, 22 May 2023 15:38:25 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1q1BMN-00036s-RT; Mon, 22 May 2023 15:38:25 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2af1e290921so53284681fa.3; 
- Mon, 22 May 2023 12:38:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684784301; x=1687376301;
- h=user-agent:in-reply-to:content-transfer-encoding
- :content-disposition:mime-version:references:message-id:subject:cc
- :to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=oRMYDtMICSn5nsPyWp0UzpotVYQAEshwHkg9F8gB2eA=;
- b=YheHZEcWW9S1Z9Saj1LQ0e/3FE8CzSTA4nhjvODkq2YivyqF1OTxKOkgwk27ZVLbZR
- rrl2JoORmNTSt4+sczh/eIf4MGkb49lloDwkIwnLCxQQLmmO3dhVLfhWD9BsIbPgVsiQ
- P7XCX4V1eWDiGP7S3lKj3WOETSFeHZXKKlR4k6/a6dg96eM5tt8rNIQdNJ+Q7X0Xzv13
- JhHbn9c7Jeq1kqvhMN4OqnfPCxf387gn4yuLnTDivKhyTSp6sgjHoDnpEPvFn8ny/pZe
- VwzCuzMVk5yz1FDLeGPp2Ec1Dqu51rGfX/xhnlQ9vrWKim0yn8jIXn4eOY/TpWPJp/Qm
- 0xnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684784301; x=1687376301;
- h=user-agent:in-reply-to:content-transfer-encoding
- :content-disposition:mime-version:references:message-id:subject:cc
- :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oRMYDtMICSn5nsPyWp0UzpotVYQAEshwHkg9F8gB2eA=;
- b=bmSc6WgX/7wTD2+jRlcPYOVy5DLdg24/WY4CbXDJjZuGh+dLqhSt1Tpqt/W8PfY6PF
- HvTfo+f2paeqOuvsr3wPksXessn5uC+UaaATscoDCrk9b3eaQZzUQZ4xcpIpK37jEES6
- LAI7wrtx6X3Wzh060qhcUctW46+6DgwDU87cowdz8KWWz+wGwqapHEXewMvIwX4lyLC/
- d95VOb74JhQaMqkNk1c3AA9NP6IIReBMwNlHBSB5VrhoZ+CVoQMg/IQrZ0wXl6ZfG69Z
- DbfgakbBxN8jmel8azpbflk2WdGjWEIlji/brsvuRrK/WC+vCHvn66IDF5aPK6smVkCI
- ZEaw==
-X-Gm-Message-State: AC+VfDyq6D3oqcc7lZAE08UQU3GqtyszVWvaMGwBIO+yJ58cr+jVLJfm
- o8DkZhfaJAuJxrki/AKNdAE=
-X-Google-Smtp-Source: ACHHUZ7W1XQ85Yp6SFo9ZUEnWH1fffn4Q42jPnsGKo3cTAfdPatJcR7vnkKWhH5UvuxKmkAPqZ4dpg==
-X-Received: by 2002:a2e:9588:0:b0:2ad:aa42:8c0b with SMTP id
- w8-20020a2e9588000000b002adaa428c0bmr4355501ljh.35.1684784301293; 
- Mon, 22 May 2023 12:38:21 -0700 (PDT)
-Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
- by smtp.gmail.com with ESMTPSA id
- a19-20020a2e9813000000b002a7746800d0sm1260991ljj.130.2023.05.22.12.38.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 12:38:20 -0700 (PDT)
-Date: Mon, 22 May 2023 21:38:19 +0200
-From: Francisco Iglesias <frasse.iglesias@gmail.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 03/12] util/fifo8: Introduce fifo8_peek_buf()
-Message-ID: <20230522193818.GF6984@fralle-msi>
-References: <20230522153144.30610-1-philmd@linaro.org>
- <20230522153144.30610-4-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1q1BNK-0001ur-1v; Mon, 22 May 2023 15:39:22 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1q1BNH-0003DZ-DF; Mon, 22 May 2023 15:39:21 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34MJ6Z4q017391; Mon, 22 May 2023 19:39:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=P4Xs7QboHw/CQaP/yo4jHq9pDQ53+9Cq43ieDddVmS0=;
+ b=PMcwpXrU62ps6UiGLuj6AY24CqQ7oat/1GSR9g/77/LvDsT8TDE+bWffrYzhmEtHYhsg
+ QF6p8J8fndqpnjmeY+a0/jRayBabj1QsTuJza528wu8/evFQukB3CsKsg5IqSxUbPUYV
+ lTC87iwnZs80ol+jduZfDSd3jr0RHon1A7XQT1q2Z+3DM8FCCz4JbPWfJQ+VxV41AoG2
+ TAmS3XyqV6ob5Rf4FR+B43/HfSrA1OxB2n4U+REkyckv0H74bChh/THuIIneUzn93DWh
+ sHwmG7ItWI50BoPKJxy6HXgrjncFpCQi8QAe4RluSmZbmalrBUOqu+eyhFOU9podXUzo aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrdyt18u6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 May 2023 19:39:07 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34MJ7ojI022050;
+ Mon, 22 May 2023 19:39:06 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrdyt18sy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 May 2023 19:39:06 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34M3M6Cp013903;
+ Mon, 22 May 2023 19:39:04 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qppdk140m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 May 2023 19:39:03 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34MJcwBf62783836
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 May 2023 19:38:58 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 24D552004B;
+ Mon, 22 May 2023 19:38:58 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0A90620040;
+ Mon, 22 May 2023 19:38:57 +0000 (GMT)
+Received: from li-7e0de7cc-2d9d-11b2-a85c-de26c016e5ad.ibm.com (unknown
+ [9.171.42.164]) by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 22 May 2023 19:38:56 +0000 (GMT)
+Message-ID: <6f0f0bb9f9f7aa48cbb6c60629a0a83ef722970a.camel@linux.ibm.com>
+Subject: Re: [PATCH v20 14/21] tests/avocado: s390x cpu topology core
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
+ cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com,
+ kvm@vger.kernel.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
+ eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
+ nrb@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+Date: Mon, 22 May 2023 21:38:56 +0200
+In-Reply-To: <20230425161456.21031-15-pmorel@linux.ibm.com>
+References: <20230425161456.21031-1-pmorel@linux.ibm.com>
+ <20230425161456.21031-15-pmorel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kfwwFOPyXCY0LnFH_5iwv90OgzyNDEig
+X-Proofpoint-GUID: lUiF2TUwsYFr9pWud_x6kdNOTpOn_fUH
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230522153144.30610-4-philmd@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -1020
-X-Spam_score: -102.1
-X-Spam_bar: ---------------------------------------------------
-X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_WELCOMELIST=-0.01,
- USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-22_14,2023-05-22_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0
+ impostorscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 mlxlogscore=999 bulkscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305220165
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,118 +118,285 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On [2023 May 22] Mon 17:31:35, Philippe Mathieu-Daudé wrote:
-> To be able to poke at FIFO content without popping it,
-> introduce the fifo8_peek_buf() method by factoring
-> common content from fifo8_pop_buf().
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Tue, 2023-04-25 at 18:14 +0200, Pierre Morel wrote:
+> Introduction of the s390x cpu topology core functions and
+> basic tests.
+>=20
+> We test the corelation between the command line and
+> the QMP results in query-cpus-fast for various CPU topology.
+>=20
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
 > ---
->  include/qemu/fifo8.h | 26 ++++++++++++++++++++++++++
->  util/fifo8.c         | 22 ++++++++++++++++++----
->  2 files changed, 44 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/qemu/fifo8.h b/include/qemu/fifo8.h
-> index d0d02bc73d..7acf6d1347 100644
-> --- a/include/qemu/fifo8.h
-> +++ b/include/qemu/fifo8.h
-> @@ -93,6 +93,32 @@ uint8_t fifo8_pop(Fifo8 *fifo);
->   */
->  const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
->  
-> +/**
-> + * fifo8_peek_buf:
-> + * @fifo: FIFO to poke from
-> + * @max: maximum number of bytes to pop
-> + * @numptr: pointer filled with number of bytes returned (can be NULL)
-> + *
-> + * Pop a number of elements from the FIFO up to a maximum of max. The buffer
-
-s/Pop/Peek into/
-
-> + * containing the popped data is returned. This buffer points directly into
-
-s/popped data/data peeked into/
-
-If above sounds good:
-
-Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
-
-
-> + * the FIFO backing store and data is invalidated once any of the fifo8_* APIs
-> + * are called on the FIFO.
-
-(Above sounds as if it happens automatically to me but I'm not english native,
-a suggestion could be to put something as below "clients are responsible for
-tracking this")
-
-> + *
-> + * The function may return fewer bytes than requested when the data wraps
-> + * around in the ring buffer; in this case only a contiguous part of the data
-> + * is returned.
-> + *
-> + * The number of valid bytes returned is populated in *numptr; will always
-> + * return at least 1 byte. max must not be 0 or greater than the number of
-> + * bytes in the FIFO.
-> + *
-> + * Clients are responsible for checking the availability of requested data
-> + * using fifo8_num_used().
-> + *
-> + * Returns: A pointer to peekable data.
-> + */
-> +const uint8_t *fifo8_peek_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
+>  MAINTAINERS                    |   1 +
+>  tests/avocado/s390_topology.py | 208 +++++++++++++++++++++++++++++++++
+>  2 files changed, 209 insertions(+)
+>  create mode 100644 tests/avocado/s390_topology.py
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index fe5638e31d..41419840b0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1662,6 +1662,7 @@ F: hw/s390x/cpu-topology.c
+>  F: target/s390x/kvm/cpu_topology.c
+>  F: docs/devel/s390-cpu-topology.rst
+>  F: docs/system/s390x/cpu-topology.rst
+> +F: tests/avocado/s390_topology.py
+>=20=20
+>  X86 Machines
+>  ------------
+> diff --git a/tests/avocado/s390_topology.py b/tests/avocado/s390_topology=
+.py
+> new file mode 100644
+> index 0000000000..ce119a095e
+> --- /dev/null
+> +++ b/tests/avocado/s390_topology.py
+> @@ -0,0 +1,208 @@
+> +# Functional test that boots a Linux kernel and checks the console
+> +#
+> +# Copyright IBM Corp. 2023
+> +#
+> +# Author:
+> +#  Pierre Morel <pmorel@linux.ibm.com>
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or
+> +# later.  See the COPYING file in the top-level directory.
 > +
->  /**
->   * fifo8_reset:
->   * @fifo: FIFO to reset
-> diff --git a/util/fifo8.c b/util/fifo8.c
-> index 032e985440..e12477843e 100644
-> --- a/util/fifo8.c
-> +++ b/util/fifo8.c
-> @@ -66,7 +66,8 @@ uint8_t fifo8_pop(Fifo8 *fifo)
->      return ret;
->  }
->  
-> -const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-> +static const uint8_t *fifo8_peekpop_buf(Fifo8 *fifo, uint32_t max,
-> +                                        uint32_t *numptr, bool do_pop)
->  {
->      uint8_t *ret;
->      uint32_t num;
-> @@ -74,15 +75,28 @@ const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
->      assert(max > 0 && max <= fifo->num);
->      num = MIN(fifo->capacity - fifo->head, max);
->      ret = &fifo->data[fifo->head];
-> -    fifo->head += num;
-> -    fifo->head %= fifo->capacity;
-> -    fifo->num -= num;
+> +import os
+> +import shutil
+> +import time
 > +
-> +    if (do_pop) {
-> +        fifo->head += num;
-> +        fifo->head %= fifo->capacity;
-> +        fifo->num -= num;
-> +    }
->      if (numptr) {
->          *numptr = num;
->      }
->      return ret;
->  }
->  
-> +const uint8_t *fifo8_peek_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-> +{
-> +    return fifo8_peekpop_buf(fifo, max, numptr, false);
-> +}
+> +from avocado_qemu import QemuSystemTest
+> +from avocado_qemu import exec_command
+> +from avocado_qemu import exec_command_and_wait_for_pattern
+> +from avocado_qemu import interrupt_interactive_console_until_pattern
+> +from avocado_qemu import wait_for_console_pattern
+> +from avocado.utils import process
+> +from avocado.utils import archive
 > +
-> +const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
-> +{
-> +    return fifo8_peekpop_buf(fifo, max, numptr, true);
-> +}
 > +
->  void fifo8_reset(Fifo8 *fifo)
->  {
->      fifo->num = 0;
-> -- 
-> 2.38.1
-> 
-> 
+> +class LinuxKernelTest(QemuSystemTest):
+
+I'd get rid of this class, unless you plan to use it for more children.
+
+> +    KERNEL_COMMON_COMMAND_LINE =3D 'printk.time=3D0 '
+> +
+> +    def wait_for_console_pattern(self, success_message, vm=3DNone):
+
+You always use the same args for this function, I'd refactor it into
+def wait_until_booted(self):
+
+> +        wait_for_console_pattern(self, success_message,
+> +                                 failure_message=3D'Kernel panic - not s=
+yncing',
+> +                                 vm=3Dvm)
+> +
+> +
+> +class S390CPUTopology(LinuxKernelTest):
+> +    """
+> +    S390x CPU topology consist of 4 topology layers, from bottom to top,
+> +    the cores, sockets, books and drawers and 2 modifiers attributes,
+> +    the entitlement and the dedication.
+> +    See: docs/system/s390x/cpu-topology.rst.
+> +
+> +    S390x CPU topology is setup in different ways:
+> +    - implicitely from the '-smp' argument by completing each topology
+> +      level one after the other begining with drawer 0, book 0 and socke=
+t 0.
+> +    - explicitely from the '-device' argument on the QEMU command line
+> +    - explicitely by hotplug of a new CPU using QMP or HMP
+> +    - it is modified by using QMP 'set-cpu-topology'
+> +
+> +    The S390x modifier attribute entitlement depends on the machine
+> +    polarization, which can be horizontal or vertical.
+> +    The polarization is changed on a request from the guest.
+> +    """
+> +    timeout =3D 90
+> +
+> +
+> +    def check_topology(self, c, s, b, d, e, t):
+> +        res =3D self.vm.qmp('query-cpus-fast')
+> +        line =3D  res['return']
+> +        for x in line:
+
+for cpu in cpus
+
+> +            core =3D x['props']['core-id']
+> +            socket =3D x['props']['socket-id']
+> +            book =3D x['props']['book-id']
+> +            drawer =3D x['props']['drawer-id']
+> +            entitlement =3D x['entitlement']
+> +            dedicated =3D x['dedicated']
+> +            if core =3D=3D c:
+> +                self.assertEqual(drawer, d)
+> +                self.assertEqual(book, b)
+> +                self.assertEqual(socket, s)
+> +                self.assertEqual(entitlement, e)
+> +                self.assertEqual(dedicated, t)
+> +
+> +    def kernel_init(self):
+> +        """
+> +        We need a kernel supporting the CPU topology.
+> +        We need a minimal root filesystem with a shell.
+> +        """
+> +        kernel_url =3D ('https://archives.fedoraproject.org/pub/archive'
+> +                      '/fedora-secondary/releases/35/Server/s390x/os'
+> +                      '/images/kernel.img')
+> +        kernel_hash =3D '0d1aaaf303f07cf0160c8c48e56fe638'
+> +        kernel_path =3D self.fetch_asset(kernel_url, algorithm=3D'md5',
+> +                                       asset_hash=3Dkernel_hash)
+> +
+> +        initrd_url =3D ('https://archives.fedoraproject.org/pub/archive'
+> +                      '/fedora-secondary/releases/35/Server/s390x/os'
+> +                      '/images/initrd.img')
+> +        initrd_hash =3D 'a122057d95725ac030e2ec51df46e172'
+> +        initrd_path_xz =3D self.fetch_asset(initrd_url, algorithm=3D'md5=
+',
+> +                                          asset_hash=3Dinitrd_hash)
+> +        initrd_path =3D os.path.join(self.workdir, 'initrd-raw.img')
+> +        archive.lzma_uncompress(initrd_path_xz, initrd_path)
+> +
+> +        self.vm.set_console()
+> +        kernel_command_line =3D (self.KERNEL_COMMON_COMMAND_LINE +
+> +                              'root=3D/dev/ram '
+> +                              'selinux=3D0 '
+> +                              'rdinit=3D/bin/sh')
+> +        self.vm.add_args('-nographic',
+> +                         '-enable-kvm',
+> +                         '-cpu', 'z14,ctop=3Don',
+> +                         '-m', '512',
+> +                         '-name', 'Some Guest Name',
+> +                         '-uuid', '30de4fd9-b4d5-409e-86a5-09b387f70bfa',
+
+What is the meaning of those flags (name & uuid), do you need them?
+Where does the value for the uuid come from?
+
+> +                         '-kernel', kernel_path,
+> +                         '-initrd', initrd_path,
+> +                         '-append', kernel_command_line)
+> +
+> +    def test_single(self):
+
+Why no comment and avocado tags here?
+
+> +        self.kernel_init()
+> +        self.vm.launch()
+> +        self.wait_for_console_pattern('no job control')
+> +        self.check_topology(0, 0, 0, 0, 'medium', False)
+> +
+> +    def test_default(self):
+> +        """
+> +        This test checks the implicite topology.
+
+s/implicite/implicit/
+
+> +
+> +        :avocado: tags=3Darch:s390x
+> +        :avocado: tags=3Dmachine:s390-ccw-virtio
+> +        """
+> +        self.kernel_init()
+> +        self.vm.add_args('-smp',
+> +                         '13,drawers=3D2,books=3D2,sockets=3D3,cores=3D2=
+,maxcpus=3D24')
+> +        self.vm.launch()
+> +        self.wait_for_console_pattern('no job control')
+> +        self.check_topology(0, 0, 0, 0, 'medium', False)
+> +        self.check_topology(1, 0, 0, 0, 'medium', False)
+> +        self.check_topology(2, 1, 0, 0, 'medium', False)
+> +        self.check_topology(3, 1, 0, 0, 'medium', False)
+> +        self.check_topology(4, 2, 0, 0, 'medium', False)
+> +        self.check_topology(5, 2, 0, 0, 'medium', False)
+> +        self.check_topology(6, 0, 1, 0, 'medium', False)
+> +        self.check_topology(7, 0, 1, 0, 'medium', False)
+> +        self.check_topology(8, 1, 1, 0, 'medium', False)
+> +        self.check_topology(9, 1, 1, 0, 'medium', False)
+> +        self.check_topology(10, 2, 1, 0, 'medium', False)
+> +        self.check_topology(11, 2, 1, 0, 'medium', False)
+> +        self.check_topology(12, 0, 0, 1, 'medium', False)
+> +
+> +    def test_move(self):
+> +        """
+> +        This test checks the topology modification by moving a CPU
+> +        to another socket: CPU 0 is moved from socket 0 to socket 2.
+> +
+> +        :avocado: tags=3Darch:s390x
+> +        :avocado: tags=3Dmachine:s390-ccw-virtio
+> +        """
+> +        self.kernel_init()
+> +        self.vm.add_args('-smp',
+> +                         '1,drawers=3D2,books=3D2,sockets=3D3,cores=3D2,=
+maxcpus=3D24')
+> +        self.vm.launch()
+> +        self.wait_for_console_pattern('no job control')
+> +
+> +        self.check_topology(0, 0, 0, 0, 'medium', False)
+> +        res =3D self.vm.qmp('set-cpu-topology',
+> +                          {'core-id': 0, 'socket-id': 2, 'entitlement': =
+'low'})
+> +        self.assertEqual(res['return'], {})
+> +        self.check_topology(0, 2, 0, 0, 'low', False)
+> +
+> +    def test_hotplug(self):
+> +        """
+> +        This test verifies that a CPU defined with '-device' command line
+> +        argument finds its right place inside the topology.
+> +
+> +        :avocado: tags=3Darch:s390x
+> +        :avocado: tags=3Dmachine:s390-ccw-virtio
+> +        """
+> +        self.kernel_init()
+> +        self.vm.add_args('-smp',
+> +                         '1,drawers=3D2,books=3D2,sockets=3D3,cores=3D2,=
+maxcpus=3D24')
+> +        self.vm.add_args('-device', 'z14-s390x-cpu,core-id=3D10')
+> +        self.vm.launch()
+> +        self.wait_for_console_pattern('no job control')
+> +
+> +        self.check_topology(10, 2, 1, 0, 'medium', False)
+> +
+> +    def test_hotplug_full(self):
+
+I would unite this test with the previous one.
+Both test -device with some values missing.
+
+> +        """
+> +        This test verifies that a hotplugged fully defined with '-device'
+> +        command line argument finds its right place inside the topology.
+> +
+> +        :avocado: tags=3Darch:s390x
+> +        :avocado: tags=3Dmachine:s390-ccw-virtio
+> +        """
+> +        self.kernel_init()
+> +        self.vm.add_args('-smp',
+> +                         '1,drawers=3D2,books=3D2,sockets=3D3,cores=3D2,=
+maxcpus=3D24')
+> +        self.vm.add_args('-device',
+> +                         'z14-s390x-cpu,'
+> +                         'core-id=3D1,socket-id=3D0,book-id=3D1,drawer-i=
+d=3D1,entitlement=3Dlow')
+> +        self.vm.add_args('-device',
+> +                         'z14-s390x-cpu,'
+> +                         'core-id=3D2,socket-id=3D0,book-id=3D1,drawer-i=
+d=3D1,entitlement=3Dmedium')
+> +        self.vm.add_args('-device',
+> +                         'z14-s390x-cpu,'
+> +                         'core-id=3D3,socket-id=3D1,book-id=3D1,drawer-i=
+d=3D1,entitlement=3Dhigh')
+> +        self.vm.add_args('-device',
+> +                         'z14-s390x-cpu,'
+> +                         'core-id=3D4,socket-id=3D1,book-id=3D1,drawer-i=
+d=3D1')
+> +        self.vm.add_args('-device',
+> +                         'z14-s390x-cpu,'
+> +                         'core-id=3D5,socket-id=3D2,book-id=3D1,drawer-i=
+d=3D1,dedicated=3Dtrue')
+> +        self.vm.launch()
+> +        self.wait_for_console_pattern('no job control')
+> +        self.check_topology(1, 0, 1, 1, 'low', False)
+> +        self.check_topology(2, 0, 1, 1, 'medium', False)
+> +        self.check_topology(3, 1, 1, 1, 'high', False)
+> +        self.check_topology(4, 1, 1, 1, 'medium', False)
+> +        self.check_topology(5, 2, 1, 1, 'high', True)
+
+Looks good all in all.
+
 
