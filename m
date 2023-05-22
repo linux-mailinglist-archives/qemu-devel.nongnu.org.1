@@ -2,82 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DC870BCF6
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A668E70BCF8
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:09:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q14LO-0000o5-Av; Mon, 22 May 2023 08:08:54 -0400
+	id 1q14M3-0001MK-Vh; Mon, 22 May 2023 08:09:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q14LG-0000lB-AG
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:08:47 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q14LD-0003Mh-LS
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:08:45 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f4271185daso59651325e9.2
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 05:08:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684757322; x=1687349322;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sh4pBHBvg+BmCESADlKiWS6YEFw9DmsXIdZ9+r+yXZQ=;
- b=nqBAPZgRsCZ1J+/NpFZeJR1QDB1NpbxYq95Q79I1/W8f1Vln+fh4dAGmuGWKthb7gU
- HvXdMHiRF/zdmor9IaLrPnNylk+epCdwdNnPYS4hdpOTGo2vdQAWYbe1iJ+zyk/IqH5f
- qGOCsw496rmOxCRjb9hz+QUiXZgHC1dtMtHk3QdVeOmHBdLAB4jgTLnuip5hXG3velW4
- wfKov4rzar0I0wFFkisnPF6E/qlrPvRkSGB9zk7NL4UfILJ12mf9G3euhWuLRHR/A2UE
- fr0mL0ywgg2yns+T5Mp7OebBizVtejEkj27NVYBtgPw75YKvY5NwmuB86iKy/gQMU7y8
- IrOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684757322; x=1687349322;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sh4pBHBvg+BmCESADlKiWS6YEFw9DmsXIdZ9+r+yXZQ=;
- b=fvXB7B0WliuRiAmaOI0S56m1tGqB7wahVcSlr2pn0jsDbfSBl4hnGs9vqwcoYxUNle
- OmYq8iM0Ttg0h6W7uvUajt9jwED2qOcIpEECDpp5cDvAUgP5yeIp1szK7N1EfpQasl2z
- 3MOh2awly0sjd7culAkJybTA3cN677eMSNEedlACV82rKktCixi8gGu3LFamz82O949z
- LiSCI4UJNg52q3uOmYvSLGwMXJ8S/azeaPgyeXTDnjA/RyQXY8iCP0oiPwrLdj5pK9q0
- q8G+rS9bp/GQI6zpz8cnIrD5O116F9MKyKsHf0+es58iPEFRcovxhx6A3EWQFI27VPff
- wOQA==
-X-Gm-Message-State: AC+VfDxVocPfmbo3A/yIKkVLX8eEaaADfqcaInW9GqtEYd59I49/0eLt
- 69JOEbb9RfhHkmVqS4gh3QzXnMveuG2u2RSyVRo=
-X-Google-Smtp-Source: ACHHUZ4/+09EysC/kZAEwHHo2uHu2yRcPA3V07ttjBNOXcI1miG4UIOvXabiFawmtPQ3m5Mv1nFmeg==
-X-Received: by 2002:a05:600c:cf:b0:3f4:2572:2259 with SMTP id
- u15-20020a05600c00cf00b003f425722259mr7241057wmm.28.1684757321764; 
- Mon, 22 May 2023 05:08:41 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.153.164])
- by smtp.gmail.com with ESMTPSA id
- x26-20020a05600c21da00b003f42d2f4531sm11387026wmj.48.2023.05.22.05.08.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 05:08:41 -0700 (PDT)
-Message-ID: <543abfb5-87b6-e4c8-a88e-72c9369a6b5e@linaro.org>
-Date: Mon, 22 May 2023 14:08:39 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q14Lp-0001Ea-Ps
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:09:22 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q14Lm-0003WM-Oh
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:09:21 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QPx2h4R23z6J6dY;
+ Mon, 22 May 2023 20:04:44 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 22 May
+ 2023 13:09:13 +0100
+Date: Mon, 22 May 2023 13:09:12 +0100
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+CC: Richard Henderson <richard.henderson@linaro.org>, BALATON Zoltan
+ <balaton@eik.bme.hu>, Peter Maydell <peter.maydell@linaro.org>,
+ <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, "Dave
+ Jiang" <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, "Daniel
+ P . =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>
+Subject: Re: [PATCH v6 1/4] bswap: Add the ability to store to an unaligned
+ 24 bit field
+Message-ID: <20230522130912.0000555f@Huawei.com>
+In-Reply-To: <06481704-adc6-bc63-e79d-34ac87484810@linaro.org>
+References: <20230519141803.29713-1-Jonathan.Cameron@huawei.com>
+ <20230519141803.29713-2-Jonathan.Cameron@huawei.com>
+ <CAFEAcA_kjm+k7SEEnz6uw+cOJyXSoUqg2wCQ5h+W-eTfwxD=FA@mail.gmail.com>
+ <04b53845-b54f-458f-bc6f-f5aed86cdd06@eik.bme.hu>
+ <4dd8a802-9a8c-77ab-6355-38910eefe19e@linaro.org>
+ <06481704-adc6-bc63-e79d-34ac87484810@linaro.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 2/2] hw/mips/loongson3_virt: Remove CPU restrictions for
- TCG
-Content-Language: en-US
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, chenhuacai@kernel.org
-References: <20230521214832.20145-1-jiaxun.yang@flygoat.com>
- <20230521214832.20145-3-jiaxun.yang@flygoat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230521214832.20145-3-jiaxun.yang@flygoat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,22 +76,77 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/5/23 23:48, Jiaxun Yang wrote:
-> After implemented CPUCFG and CSR, we are now able to boot Linux
-> kernel with Loongson-3A4000 CPU, so there is no point to restrict
-> CPU type for TCG.
-> 
+On Sat, 20 May 2023 19:08:22 +0200
+Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1639
-?
+> On 20/5/23 17:15, Richard Henderson wrote:
+> > On 5/20/23 06:15, BALATON Zoltan wrote: =20
+> >> On Sat, 20 May 2023, Peter Maydell wrote: =20
+> >>> On Fri, 19 May 2023 at 15:19, Jonathan Cameron via
+> >>> <qemu-devel@nongnu.org> wrote: =20
+> >>>>
+> >>>> From: Ira Weiny <ira.weiny@intel.com>
+> >>>>
+> >>>> CXL has 24 bit unaligned fields which need to be stored to.=A0 CXL is
+> >>>> specified as little endian.
+> >>>>
+> >>>> Define st24_le_p() and the supporting functions to store such a field
+> >>>> from a 32 bit host native value.
+> >>>>
+> >>>> The use of b, w, l, q as the size specifier is limiting.=A0 So "24" =
+was
+> >>>> used for the size part of the function name. =20
+> >>
+> >> Maybe it's clearer to use 24 but if we want to keep these somewhat=20
+> >> consistent how about using t for Triplet, Three-bytes or Twenty-four? =
+=20
+> >=20
+> > I think it's clearer to use '3'.
+> > When I added 128-bit support I used cpu_ld16_mmu. =20
 
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->   hw/mips/loongson3_virt.c | 4 ----
->   1 file changed, 4 deletions(-)
+As an aside on that - you didn't update the docs when you added that
+(I was looking for it to copy your regex ;)
 
+>=20
+> There is also ld8u / ld8s / st8.
+>=20
+> > I think it would be clearer to not use letters anywhere, and to use=20
+> > units of bytes instead of units of bits (no one can store just a bit),=
+=20
+> > but changing everything is a big job. =20
+>=20
+> So:
+>=20
+> ldub ->  ld1u,
+>=20
+> lduw_le -> ld2u_le,
+>=20
+> virtio_stl -> virtio_st4,
+>=20
+> stq_be -> st8_be.
+>=20
+> Right?
+>=20
+> Also we have:
+>=20
+> cpu_ld/st_*
+> virtio_ld/st_*
+> ld/st_*_phys
+> ld/st_*_pci_dma
+> address_space_ld/st
+>=20
+> While mass-changing, we could use FOO_ld/st_BAR with FOO
+> for API and BAR for API variant (endian, mmuidx, ra, ...):
+>=20
+> So:
+>=20
+> ld/st_*_pci_dma -> pci_dma_ld/st_*
+>=20
+> for ld/st_*_phys I'm not sure.
 
 
