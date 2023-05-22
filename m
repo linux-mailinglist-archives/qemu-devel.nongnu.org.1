@@ -2,75 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661A970BCEA
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA6270BCF9
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:09:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q14J0-0007HD-6V; Mon, 22 May 2023 08:06:27 -0400
+	id 1q14LU-0000uw-6e; Mon, 22 May 2023 08:09:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q14IT-000780-Pf
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:05:59 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q14IQ-0002dz-OL
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:05:52 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-510eb980ce2so6777168a12.2
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 05:05:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1q14LR-0000ta-RG
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:08:57 -0400
+Received: from esa5.hc2706-39.iphmx.com ([216.71.137.63])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alxndr@bu.edu>) id 1q14LP-0003Sp-NZ
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:08:57 -0400
+X-IronPort-RemoteIP: 209.85.222.198
+X-IronPort-MID: 292687626
+X-IronPort-Reputation: None
+X-IronPort-Listener: OutgoingMail
+X-IronPort-SenderGroup: RELAY_GSUITE
+X-IronPort-MailFlowPolicy: $RELAYED
+IronPort-Data: A9a23:IfDqDK/zAFtnJvyldQvFDrUDOXyTJUtcMsCJ2f8bNWPcYEJGY0x3y
+ WRMDW2OPa2NYTD2LdEnOdi1/UlXsMWAz9VnTwY6pCoxFiIbosf7XuiUfxz6V8+wwmwvb67FA
+ +E2MISowBUcFyeEzvuVGuG96yI6jefQHeCU5NfsYkhZXRVjRDoqlSVtkus4hp8AqdWiCkaGt
+ MiaT/f3YTdJ4BYqdDpMg06/gEk35q+q5WlC5gVWic1j5zcyqVFEVPrzGonsdxMUcqEMdsamS
+ uDKyq2O/2+x13/B3fv8z94X2mVTKlLjFVHmZkh+AsBOsTAbzsAG6ZvXAdJHAathZ5RlqPgqo
+ DlFncTYpQ7EpcQgksxEO/VTO3gW0aGrZNYriJVw2CCe5xSuTpfi/xlhJEA/M9EGx+QmOEFPq
+ sJICTwBUUGIre3jldpXSsE07igiBMziPYdao3I5iD+AXKZgTpfETKHHo9Rf2V/chOgURaeYN
+ 5dfM2A1Kk2RM3WjOX9OYH46tO6sln/zaRVStRSYqbdfD237ll0rjuiyboCLEjCMbd9uh36Tl
+ nnbxVWnLSoDFt/AyiW83X3504cjmgu+Aur+DoaQ7/NvnRify3IeDDUQUl20p+T/jVSxM++zM
+ GQR8ysq6LExrQmlF4itGRK/p3GAs1gXXN84//AG1TxhA5H8u26xblXohBYfMbTKaOdeqeQW6
+ 2K0
+IronPort-HdrOrdr: A9a23:qvD87KjHkmUmfJ6x/RFxIi5fGXBQXgcji2hC6mlwRA09TyX4rb
+ HMoB1/73TJYVkqNU3I9ertBED4ewKhyXcX2+ks1NWZMjUO41HYTr2KhLGKq1fd8kbFl9K1u5
+ 0OT0F1MqyUMbBc5fyKh3jfYq9QuOWvweSKoe/fynt3JDsaEZ2Ilz0JcTpyzCVNNW177aJQLu
+ vg2iPtnUveRUgq
+X-Talos-CUID: 9a23:Hjy/T21Mwaq+i0Tzrr4oL7xfG8krLmPgzibpA07nNzZIRLGqGFS69/Yx
+X-Talos-MUID: =?us-ascii?q?9a23=3ALSqB1Q5NeYKOlOBnXuA0/mjdxoxy2L2WA3AWjK8?=
+ =?us-ascii?q?35ea/LA5zZDSCtRu4F9o=3D?=
+Received: from mail-qk1-f198.google.com ([209.85.222.198])
+ by ob1.hc2706-39.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
+ 22 May 2023 08:08:36 -0400
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-759555c944dso474208085a.3
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 05:08:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684757149; x=1687349149;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3nDPkpZcS5CkxGXF3Oer4I4F5NDGn6kOFgGyXUkxK/E=;
- b=cs0EwpM9qL8m1/7oNwI51GvZqAs/JGyPjHUDLh8y9iWvVkEHZrXW8XQCc+CVOy/pHj
- wr44yChWTKiatTH7coLAwpwiY3CeUJHd9Vu+9QjTJFUslm7NT7t15R1dA9cIaKejgBzl
- OSpd1YLhw+mj30VWXw8kvbmWr7wEt6R50xBNZF/vGEzltvjbe3gOaypdxKAaMjLVIpbN
- LKgRWSc1gjJKfvcjtYw7+crNUBHZHwLxe5PM0Wb3gv7aonNmIJ/0SCOS/eF1H2xnr+NP
- 1ViqE9DOpZCHpVCX1bqHr0EmbcnohbBKk8lscuQGXBeXKNpAXYXo2SczVCXPGjfuaou4
- GHow==
+ d=bu.edu; s=s1gsbu; t=1684757315; x=1687349315;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=DyZAyccGgGbIklvT3S2ttTlRF6QRBnOHm93pDXLBvjk=;
+ b=S9EwX/YMCg3EwLxaTQFJ+BfIeaDBVMB5hg7scUtNJEPHr07bk+S41VWatn7cQOPxSQ
+ 9ZQ+pq03l7Bgu8xwFPUzKSvEBHhz05gN4vS3qGRdtoEB1JO7fMa+z8Vmqms2KqSwMpS1
+ NX1EfU4Na8Tnl+PDJa7BR291Ni7aJJVXdrUOvPi2qMpiiqxsGuaVIQPyeP7HNG9IcjjD
+ fitODmYDWs00rQ1zc4S5mVBbbDhi08vdagIPH3Q1G/5fziKeE+icjHxOYqmipCYSt77H
+ oiR5BtKJtA51XPMcMe5BAFi0Vlwn8S+ClULAw6zQsZUkmj3ASnhvxBXFPgoziBW93DP/
+ dboQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684757149; x=1687349149;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3nDPkpZcS5CkxGXF3Oer4I4F5NDGn6kOFgGyXUkxK/E=;
- b=D8agpyhIbHvCHDhLceWOg6UG2Jxcb6X87XixZKA9qeORxcwpXtQ6wFfXOdbYKFyG+d
- wwnHrcc+pBYr02yF95r/dKapRGXXgtPjSTuGfgf2Y4gwqnmYFpAhMSczafMsn6wi6Mqx
- gkNlwRGuzimoNxGml/PA4jT4zhHm/0GZe5mkJ25kmBwmL2MYKLNmIto7n9gsFewlhSDP
- q1xuYZoZUp6ylbyC5rktA8hB1+bCvA0BahpOMJN4/JO7JmGWXnFH7NgKYj6U3/5sU0CE
- N3TwGaPauBOTTO7/HHyvGfzLNmI20floZwYftzYfIQHJoOqbeBi+r7NAeK6m+HPj5W29
- Q6bw==
-X-Gm-Message-State: AC+VfDz7ji2gedlgNGyzln0zMncMAxHy06Pw5rUubHVuGAF1mAKOHm3d
- pi1HGlmS+ykDrtOXjSR9V9vWK2PtfO0c/nJi0m+i4Q==
-X-Google-Smtp-Source: ACHHUZ47pZ9YadquVeYyJ8XdN2WMY6ydTA9OJuKzkD/eUOmUjgedMrF74ckkcwSlvNi1lVeDSP+mSc1cUwgnCbt0hRo=
-X-Received: by 2002:a05:6402:2d5:b0:510:f6e0:7d9f with SMTP id
- b21-20020a05640202d500b00510f6e07d9fmr9184627edx.13.1684757148982; Mon, 22
- May 2023 05:05:48 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684757315; x=1687349315;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DyZAyccGgGbIklvT3S2ttTlRF6QRBnOHm93pDXLBvjk=;
+ b=K45jlCm6xlp34lojhEAEm6WV3jWfWr1xVWChGxHq/j56vljL+wXEFsQHZAYI5MIl7l
+ Awy+JLgWVIkELVR3n9ZUYPEhf2/F4JIYEE9D/lDVeqLv7thyA7MDoE0N2TlQCyCI6tDe
+ LZjD+aqu1hoCM7uy4VbMQ8btWsGzdZ4J3abdRh3YFAIQqLBHg2JqHgpNN7mxy6PEKT4w
+ aO0mdWrapdiukNHhw/2sbsF6Yw/ETnzSWt1aMdv7F8cnhk6dmmuLzeCdEtCtRKfS+1vn
+ LxMZkCjPqIRGzdjj+QjyMT4pg2aYk5y908Z8tqTv4s8vPW1zjGKuC0a1uc5fiAjAvG5y
+ nVPg==
+X-Gm-Message-State: AC+VfDzbIeWcGUMHj9MCI6whqMltmTVc55AbPe8n/+InEQKjQEK8TDS4
+ Ua1BDARy1kEacOvYWyZ4J/1MTseTaZ/kjrCShzoEN5YQnRXyRVxanHmFf/UHJBBDfAoffOIBLIy
+ laa2x4ilJNOz0NAZzTi02TINyvBVprg==
+X-Received: by 2002:a05:620a:9c2:b0:75b:23a0:d9c4 with SMTP id
+ y2-20020a05620a09c200b0075b23a0d9c4mr350060qky.26.1684757315381; 
+ Mon, 22 May 2023 05:08:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5YYOvHAsDVoypN2LGdM67aZrMMWRH6FGGmLmMaz06p6JQG9Afk3LB+Rbkh2N+KN5MA82za8w==
+X-Received: by 2002:a05:620a:9c2:b0:75b:23a0:d9c4 with SMTP id
+ y2-20020a05620a09c200b0075b23a0d9c4mr350042qky.26.1684757315142; 
+ Mon, 22 May 2023 05:08:35 -0700 (PDT)
+Received: from mozz.bu.edu (mozz.bu.edu. [128.197.127.33])
+ by smtp.gmail.com with ESMTPSA id
+ c1-20020a05620a164100b0074dfd9283afsm1656733qko.79.2023.05.22.05.08.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 May 2023 05:08:34 -0700 (PDT)
+Date: Mon, 22 May 2023 08:08:31 -0400
+From: Alexander Bulekov <alxndr@bu.edu>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ qemu-devel@nongnu.org, Bandan Das <bsd@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>,
+ Qiuhao Li <Qiuhao.Li@outlook.com>, qemu-stable@nongnu.org
+Subject: Re: [PATCH v2] hw/scsi/lsi53c895a: Fix reentrancy issues in the LSI
+ controller (CVE-2023-0330)
+Message-ID: <20230522120831.spextkl64fp35yuz@mozz.bu.edu>
+References: <20230522091011.1082574-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20230520205444.887287457E7@zero.eik.bme.hu>
- <CAFEAcA9gAYPpOJ6VyPYwCVyOhMmJMEe4QyGzB57xCbK0MOED5A@mail.gmail.com>
- <0ab99dea-dbe6-9b3c-37a1-0ad66c0573b2@eik.bme.hu>
-In-Reply-To: <0ab99dea-dbe6-9b3c-37a1-0ad66c0573b2@eik.bme.hu>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 May 2023 13:05:37 +0100
-Message-ID: <CAFEAcA-pxaWN+AQCbzejdy072otR4Sm6hXURW7s8_Eb+cZMBUQ@mail.gmail.com>
-Subject: Re: [PATCH] bitops.h: Compile out asserts without --enable-debug
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230522091011.1082574-1-thuth@redhat.com>
+X-CES-GSUITE_AUTH: bf3aNvsZpxl8
+Received-SPF: pass client-ip=216.71.137.63; envelope-from=alxndr@bu.edu;
+ helo=esa5.hc2706-39.iphmx.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,32 +126,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 22 May 2023 at 13:00, BALATON Zoltan <balaton@eik.bme.hu> wrote:
-> On Mon, 22 May 2023, Peter Maydell wrote:
-> > Can we have some figures for performance improvements,
-> > please? General QEMU policy is that asserts remain,
-> > even in non-debug builds, so exceptions from that policy
-> > should come with justification with figures attached.
->
-> Here are some figures converting a 10MB wav file to mp3 with lame on
-> AmigaOS pegasos2 which is using a lot of FPU operations (which is using
-> softfloat on TCG target/ppc due to no hardfloat so it's very slow):
->
->     8.0: 1:11 0.8264x, 1:11 0x8258x
-> master: 1:12 0.8117x, 1:12 0.8103x
->   patch: 1:02 0.9541x, 1:02 0.9506x
+On 230522 1110, Thomas Huth wrote:
+> We cannot use the generic reentrancy guard in the LSI code, so
+> we have to manually prevent endless reentrancy here. The problematic
+> lsi_execute_script() function has already a way to detect whether
+> too many instructions have been executed - we just have to slightly
+> change the logic here that it also takes into account if the function
+> has been called too often in a reentrant way.
+> 
+> The code in fuzz-lsi53c895a-test.c has been taken from an earlier
+> patch by Mauro Matteo Cascella.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1563
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-Thanks; that does seem like quite a lot of overhead.
-
-> I've never seen these asserts firing and unlikely to depend on run time
-> values so leaving them in non-debug builds seems unnecessary overkill that
-> also hurts performance.
-
-Where they don't depend on runtime values, the compiler will be
-able to detect that the assert condition is always false and
-won't emit any code. It's only the cases where the start or
-length are variable that will be causing the slowdown.
-
-thanks
--- PMM
+Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
 
