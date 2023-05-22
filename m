@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB4370BC6A
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD3570BC50
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:51:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q144L-0005hR-GD; Mon, 22 May 2023 07:51:18 -0400
+	id 1q144J-0005gO-LK; Mon, 22 May 2023 07:51:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143m-0005GC-15
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143k-0005Ft-Q8
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143k-0007cz-EI
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143i-0007c9-Oo
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684756239;
+ s=mimecast20190719; t=1684756237;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zf9D44r/0HhU06/EUF5GhbYgULRU1H7EmFZrtEZn/1c=;
- b=F5FNrVR6X4L2QL0kJKfVVU/5Fb9BSxtoInDD499/3GfbVZLCJFMeQ+a7ffn4do84RsTXKz
- woSSCVoMkLhQI3mD/xnXvWIn25f1qKg7G5rwCpC9+N6pKkKBv953/BlWgLmC7tn60t+i/I
- NyXg51OdfgtvnBwgrPnsjM7UQJkTh3o=
+ bh=pH65POdmAMTXmtm1l3r/Pu5UVwWA+rhlac/kvN5jD0g=;
+ b=UfgteKv7/Z23nrhpbnR0lzE1binzjTClaJLyolctQYgqJKMFQovSB7DXefsZmsCANhkhYH
+ AigRtXRnRZKykeLO0ZqejsjxnAM4cDPRb08MCG+RSuFWgmt+QG6o12Wtn5nRXLkVTOoco0
+ qFkWBdaMyiQigJ89BQQzo51Z61aGQVw=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-135-V-F5jp47OxS77R4P_SS0fw-1; Mon, 22 May 2023 07:50:35 -0400
-X-MC-Unique: V-F5jp47OxS77R4P_SS0fw-1
+ us-mta-182-oZ29Rd9LOMyhfaek0HlCdA-1; Mon, 22 May 2023 07:50:36 -0400
+X-MC-Unique: oZ29Rd9LOMyhfaek0HlCdA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 202B1381D1E4;
- Mon, 22 May 2023 11:50:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2056F2A59556;
+ Mon, 22 May 2023 11:50:36 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.195.33])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7DA992166B26;
- Mon, 22 May 2023 11:50:34 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 629AB2166B27;
+ Mon, 22 May 2023 11:50:35 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 16/20] tests/qtest/meson.build: Run the net filter tests only
- with default devices
-Date: Mon, 22 May 2023 13:50:10 +0200
-Message-Id: <20230522115014.1110840-17-thuth@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 17/20] tests/qemu-iotests/172: Run QEMU with -vga none and -nic
+ none
+Date: Mon, 22 May 2023 13:50:11 +0200
+Message-Id: <20230522115014.1110840-18-thuth@redhat.com>
 In-Reply-To: <20230522115014.1110840-1-thuth@redhat.com>
 References: <20230522115014.1110840-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -76,46 +77,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These tests rely on a default NIC to be available. Skip them if we
-used the "--without-default-devices" configure option.
+This way QEMU won't complain in case the VGA card or the NIC device
+are not available in the binary, thus it won't spoil the output
+and the test then passes with such QEMU binaries that have a limited
+configuration, too.
 
-Message-Id: <20230512124033.502654-17-thuth@redhat.com>
+Message-Id: <20230512124033.502654-18-thuth@redhat.com>
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/meson.build | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/qemu-iotests/172 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index ab422772d3..4c5585ac0f 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -34,10 +34,12 @@ qtests_pci = \
- qtests_cxl = \
-   (config_all_devices.has_key('CONFIG_CXL') ? ['cxl-test'] : [])
+diff --git a/tests/qemu-iotests/172 b/tests/qemu-iotests/172
+index ff269ca7b5..4da0e0f2e2 100755
+--- a/tests/qemu-iotests/172
++++ b/tests/qemu-iotests/172
+@@ -56,7 +56,7 @@ do_run_qemu()
+             done
+         fi
+         echo quit
+-    ) | $QEMU -accel qtest -nographic -monitor stdio -serial none "$@"
++    ) | $QEMU -accel qtest -nographic -monitor stdio -serial none -vga none -nic none "$@"
+     echo
+ }
  
-+# FIXME: Get rid of get_option('default_devices') here and check
-+#        for the availability of the default NICs in the tests
- qtests_filter = \
--  (slirp.found() ? ['test-netfilter'] : []) + \
--  (config_host.has_key('CONFIG_POSIX') ? ['test-filter-mirror'] : []) + \
--  (config_host.has_key('CONFIG_POSIX') ? ['test-filter-redirector'] : [])
-+  (get_option('default_devices') and slirp.found() ? ['test-netfilter'] : []) + \
-+  (get_option('default_devices') and config_host.has_key('CONFIG_POSIX') ? ['test-filter-mirror'] : []) + \
-+  (get_option('default_devices') and config_host.has_key('CONFIG_POSIX') ? ['test-filter-redirector'] : [])
- 
- qtests_i386 = \
-   (slirp.found() ? ['pxe-test'] : []) + \
-@@ -221,9 +223,7 @@ qtests_aarch64 = \
-    'migration-test']
- 
- qtests_s390x = \
--  (slirp.found() ? ['pxe-test', 'test-netfilter'] : []) +                 \
--  (config_host.has_key('CONFIG_POSIX') ? ['test-filter-mirror'] : []) +                         \
--  (config_host.has_key('CONFIG_POSIX') ? ['test-filter-redirector'] : []) +                     \
-+  qtests_filter + \
-   ['boot-serial-test',
-    'drive_del-test',
-    'device-plug-test',
 -- 
 2.31.1
 
