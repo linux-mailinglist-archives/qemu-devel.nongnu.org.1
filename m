@@ -2,78 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1612670BA66
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 12:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B8270BB01
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 12:57:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1386-0001vh-0K; Mon, 22 May 2023 06:51:06 -0400
+	id 1q13DW-0002vV-0I; Mon, 22 May 2023 06:56:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q1382-0001vN-8D
- for qemu-devel@nongnu.org; Mon, 22 May 2023 06:51:03 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q13DU-0002vE-AR
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 06:56:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q137z-0002g5-Ox
- for qemu-devel@nongnu.org; Mon, 22 May 2023 06:51:01 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q13DS-0003ky-LS
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 06:56:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684752658;
+ s=mimecast20190719; t=1684752997;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fsRPVZDfLl82brKxyoZYlWsHyLg7oHjz9b2xGuLMHdo=;
- b=izIjDig/GqA8NwUOt2yKibWnj/er4CffTaYhclSst14P2buVfGuu2HVTSAeYVR/7+Ydb4/
- dU6mFJ8aUjcxX88uWDTK4w3GjimZkx7pal2uZ7R32Y7vJrZz+Kfdb4XO4cOsx5cz7U6pf9
- sPjWBzZEikUVND053785xqeFNMBbdvA=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-99-rX41fMwnMZmjvEen_lfMxA-1; Mon, 22 May 2023 06:50:56 -0400
-X-MC-Unique: rX41fMwnMZmjvEen_lfMxA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 73BCC1C05EAA;
- Mon, 22 May 2023 10:50:56 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 53425492B0B;
- Mon, 22 May 2023 10:50:56 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3072E21E692E; Mon, 22 May 2023 12:50:55 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Andrew Melnychenko <andrew@daynix.com>,  jasowang@redhat.com,
- mst@redhat.com,  eblake@redhat.com,  qemu-devel@nongnu.org,
- yuri.benditovich@daynix.com,  yan@daynix.com
-Subject: Re: [PATCH v2 5/6] qmp: Added new command to retrieve eBPF blob.
-References: <20230512122902.34345-1-andrew@daynix.com>
- <20230512122902.34345-6-andrew@daynix.com>
- <ZGIAUxfLmI6hm3VT@redhat.com> <87zg64u0g7.fsf@pond.sub.org>
- <ZGNE0bk2zCDpUkYS@redhat.com> <87ilcsshgf.fsf@pond.sub.org>
- <ZGNbHcbeN0klbBjU@redhat.com> <87ilcspe2w.fsf@pond.sub.org>
- <ZGOUmRu0/Ckca6J6@redhat.com> <87lehonwnj.fsf@pond.sub.org>
- <ZGOe2i1ia1qdMuJm@redhat.com>
-Date: Mon, 22 May 2023 12:50:55 +0200
-In-Reply-To: <ZGOe2i1ia1qdMuJm@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 16 May 2023 16:18:50 +0100")
-Message-ID: <87v8gkljw0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=SRRXncr5Yx5UVKKvc1WGUFJZIpDhX3vrDDLRNpqCQf0=;
+ b=BolBIhLkaS4uVUEdlhQxex6nsTrqFI8v9/WpYuVCeEexyGQWXjccZtDD2I5VG8gJxNb9we
+ DpP6A8N1KXpSm7Zc2LykRejLfotPXBBXDR4wi66PXdpMqpqL0hRhCcL7CE87Y2e/ygskEa
+ tMODWm6fiSNYFXd54rQyxnAyAcNuzsU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-Fk4fl4oeNOaNwUu0EzTV-A-1; Mon, 22 May 2023 06:56:36 -0400
+X-MC-Unique: Fk4fl4oeNOaNwUu0EzTV-A-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-96fd6bd135dso123144566b.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 03:56:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684752995; x=1687344995;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SRRXncr5Yx5UVKKvc1WGUFJZIpDhX3vrDDLRNpqCQf0=;
+ b=feMqGkHhyRJA4l6Ra0WE072RQ/xIEsuwDKAXEqjMc06qmWOnt87J6YkpFE2z7PtOvq
+ KCS7JvlqTD54n2fz1QxaCGxqfnNyIhQ42CjLz8ex4/G0xrk5+GhT7VI0ly1rV6WFq5ie
+ D9RZt0fhzWDTHG3mN6RRbZtcOiTfm2UQQ60wZd6fHPiH7XEnhJ8FZdZcmqEzB3g0MEEa
+ UGzvxz8FQ/24SSbm4wpEwwFCsamUtriiPlExxQZIzwoPZWIwWWBoFYBf6tj9fBSygjf8
+ SafKLXcM6JWMNFz0yAq5gHbaIboh57opv7vusF2pnlb8Udh7UTSGO6gag3eJCfhaDzWN
+ eRzw==
+X-Gm-Message-State: AC+VfDykpOA7kb7x/Z61+mDEkCvTiei1eJ2pPQiU5gceKd7I5a5ytMBb
+ 01bRDSBil+HMa2/uUQQFFlrtfhe0UNJ6wuEl/qoYVdL+z8ektc6XF1aqtbAgeiJT3Dtg+onTzah
+ 6o3RWc3lJp0N//qk=
+X-Received: by 2002:a17:906:58cd:b0:96f:a39c:86d4 with SMTP id
+ e13-20020a17090658cd00b0096fa39c86d4mr7737716ejs.7.1684752995076; 
+ Mon, 22 May 2023 03:56:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4CqJ3EgjKGFIPMdTU7eG7BP7MWYxlI4l2K/Rs5BgByb/2tLrUKR0y2hWXaRwmTwvA+gpb5JQ==
+X-Received: by 2002:a17:906:58cd:b0:96f:a39c:86d4 with SMTP id
+ e13-20020a17090658cd00b0096fa39c86d4mr7737704ejs.7.1684752994785; 
+ Mon, 22 May 2023 03:56:34 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d723:b0c7:284b:5990:6336:f84f?
+ (p200300cfd723b0c7284b59906336f84f.dip0.t-ipconnect.de.
+ [2003:cf:d723:b0c7:284b:5990:6336:f84f])
+ by smtp.gmail.com with ESMTPSA id
+ m23-20020a056402051700b0050bd245d39esm2850465edv.6.2023.05.22.03.56.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 03:56:34 -0700 (PDT)
+Message-ID: <935a5d04-5119-18c2-2b32-a77f3ac415f5@redhat.com>
+Date: Mon, 22 May 2023 12:56:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 09/19] test-cutils: Add coverage of qemu_strtod
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, richard.henderson@linaro.org
+References: <20230512021033.1378730-1-eblake@redhat.com>
+ <20230512021033.1378730-10-eblake@redhat.com>
+ <2e230e7f-694f-6b4e-2fcf-7504532581ed@redhat.com>
+ <uc3cbsxtikz3icrxkct2ry4xowmtxm5fvkrnmfiufjb7xt3ncw@bt2xoq3qqbiu>
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <uc3cbsxtikz3icrxkct2ry4xowmtxm5fvkrnmfiufjb7xt3ncw@bt2xoq3qqbiu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,50 +105,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On 19.05.23 19:52, Eric Blake wrote:
+> On Fri, May 19, 2023 at 05:05:20PM +0200, Hanna Czenczek wrote:
+>> On 12.05.23 04:10, Eric Blake wrote:
+>>> It's hard to tweak code for consistency if I can't prove what will or
+>>> won't break from those tweaks.  Time to add unit tests for
+>>> qemu_strtod() and qemu_strtod_finite().
+>>>
+>>> Among other things, I wrote a check whether we have C99 semantics for
+>>> strtod("0x1") (which MUST parse hex numbers) rather than C89 (which
+>>> must stop parsing at 'x').  These days, I suspect that is okay; but if
+>>> it fails CI checks, knowing the difference will help us decide what we
+>>> want to do about it.  Note that C2x, while not final at the time of
+>>> this patch, has been considering whether to make strtol("0b1") parse
+>>> as 1 with no slop instead of the C17 parse of 0 with slop "b1"; that
+>>> decision may also bleed over to strtod().  But for now, I didn't think
+>>> it worth adding unit tests on that front (to strtol or strtod) as
+>>> things may still change.
+>>>
+>>> Likewise, there are plenty more corner cases of strtod proper that I
+>>> don't explicitly test here, but there are enough unit tests added here
+>>> that it covers all the branches reached in our wrappers.  In
+>>> particular, it demonstrates the difference on when *value is left
+>>> uninitialized, which an upcoming patch will normalize.
+>>>
+>>> Signed-off-by: Eric Blake <eblake@redhat.com>
+>>>
+>>> ---
+>>>
+>>> v2: Added g_assert_false(signbit(res)) anywhere I used
+>>> g_assert_cmpfloat(res,==,0.0); add a test for strtod() hex parsing and
+>>> handling of junk after ERANGE, which is major enough that I dropped
+>>> R-b
+>>> ---
+>>>    tests/unit/test-cutils.c | 510 +++++++++++++++++++++++++++++++++++++++
+>>>    1 file changed, 510 insertions(+)
+>>>
+>>> diff --git a/tests/unit/test-cutils.c b/tests/unit/test-cutils.c
+>>> index d3076c3fec1..1763839a157 100644
+>>> --- a/tests/unit/test-cutils.c
+>>> +++ b/tests/unit/test-cutils.c
+>> [...]
+>>
+>>> +static void test_qemu_strtod_erange_junk(void)
+>>> +{
+>>> +    const char *str;
+>>> +    const char *endptr;
+>>> +    int err;
+>>> +    double res;
+>>> +
+>>> +    /* EINVAL has priority over ERANGE */
+>> By being placed here, this comment confused me a bit, because the first case
+>> does return ERANGE.  So I’d prefer it above the second case, where we
+>> actually expect EINVAL, but understand that’s a personal preference.  (Same
+>> for the _finite_ variant)
+> The test is what happens when both conditions apply.  For
+> qemu_strtod("1e-999junk", &endptr), only ERANGE applies (because
+> "junk" is returned in endptr); it is not until
+> qemu_strtod("1e-999junk", NULL) where EINVAL is also possible
+> (trailing junk takes precedence over underflow).
 
-> On Tue, May 16, 2023 at 05:06:24PM +0200, Markus Armbruster wrote:
->> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->>=20
->> > On Tue, May 16, 2023 at 04:04:39PM +0200, Markus Armbruster wrote:
+Yep; it’s just that because the comment is directly above one test case, 
+I assumed it applied to just that case, and was looking for the EINVAL 
+there.  Only then I realized that EINVAL won’t occur there, and the 
+comment instead points out the difference between the two cases there are.
 
-[...]
-
->> >> However, I now wonder why we fetch it from QEMU.  Why not ship it with
->> >> QEMU?
->> >
->> > Fetching it from QEMU gives us a strong guarantee that the eBPF
->> > code actually matches the QEMU binary we're talking to, which is
->> > useful if you're dealing with RPMs which can be upgraded behind
->> > your back, or have multiple parallel installs of QEMU.
->>=20
->> Yes, but what makes this one different from all the other things that
->> need to match?
+> For qemu_strtosz(),
+> I made it a bit more obvious by writing a helper function that shows
+> both errno values in a single line, rather than spreading out the
+> boilerplate over multiple lines.
 >
-> Many of the external resources QEMU uses don't need to be a precise
-> match to a QEMU version, it is sufficient for them to be of "version
-> X or newer".  eBPF programs need to be a precise match, because the
-> QEMU code has assumptions about the eBPF code it uses, such as the
-> configuration maps present.
->
-> There is another example where a perfect match is needed - loadable
-> .so modules. eg if you're running QEMU and trigger dlopen of a QEMU
-> module, the loaded module needs to come from the perfect matching
-> build. Most distros don't solve that, but there was something added
-> a while back that let QEMU load modules from a specific location.
->
-> The idea was that the RPM/Deb package manager can upgrade the
-> modules, but the modules from the previously installed QEMU would be
-> kept in somewhere temporary like /var/run/...., so that pre-existing
-> running QEMU could still load the exact matched .sos. While that hack
-> kinda works it has too many moving parts for my liking, leaving failure
-> scenarios open. IMHO, being able to directly fetch the resource=20
-> directly from QEMU is a better strategy for eBPF programs, as it
-> eliminates more of the failure scenarios with very little effort.
+> Should I do a similar helper function for qemu_strtod[_finite] in v3?
 
-On the other hand, yet another way to solve the same class of problem.
-
-If we decide that's what we want, the rationale needs to be worked into
-the commit message.
+I mean, from my perspective, all I can see is that it would make 
+reviewing v3 more tedious…
 
 
