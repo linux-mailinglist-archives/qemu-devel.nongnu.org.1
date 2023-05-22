@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E561570B4D2
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 08:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1656370B4D7
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 08:07:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0ygB-00084Y-OT; Mon, 22 May 2023 02:05:59 -0400
+	id 1q0yh9-0000UH-Cw; Mon, 22 May 2023 02:06:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0yg9-00082k-Ae
- for qemu-devel@nongnu.org; Mon, 22 May 2023 02:05:57 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0yh2-0000Pr-Uv
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 02:06:55 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0yg6-00026p-NL
- for qemu-devel@nongnu.org; Mon, 22 May 2023 02:05:57 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3f42ba32e24so35023625e9.3
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 23:05:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0yh0-0002EP-66
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 02:06:52 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3f41d087a84so21013125e9.1
+ for <qemu-devel@nongnu.org>; Sun, 21 May 2023 23:06:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684735553; x=1687327553;
+ d=linaro.org; s=google; t=1684735608; x=1687327608;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NXgJy8c5g6MPyHjNu9RSgx4PXQ+UTK626UsedlhezkQ=;
- b=jKfXul5YJIBY7lm67QP+IDB5SV3dQiRW7Z3ntEsymQq5a/JS+qYKriS9XRoBthO/vS
- P+85gAkwjvUtsEIbs594kCDPq6ByZNvMoZ35ASHmj6+D7Up78nUuVpp35Ba4ns9uvwii
- /arQZr3KUqZw94Hnxa2UgkNPXM3/GulVvluSZeiskUeaUZ0V5aiLR0S7l8ywZZy8pcXs
- 88WoxkwuB/5hWLTQKT//2Bc70y84pyPoXjD4sdlQ+S7as4yRgXMsVrHWagJWefX0t4ED
- PdceyTWNVKLamICZ51O95RtAoLAOCrfJACHgTBkNKKbQQTGbwU6vBIz2PnFlXUYHl3j3
- 2A1A==
+ bh=42PH/00QoWmPwyG5RAq9Du9zwqNWKsNLPesCLbcp4J0=;
+ b=f900Q2VuftbThemhFu2SJgpGaRXrk29p3nbGjjoxRtPJc7gkBnCt8X4DFRy4zf12w0
+ AeOEm9A78B9jIGgZdtCFPdWQie0jojHPZNjDudu6Er/d4YMioQ88SpwXV+wd0bj92Uj3
+ kDJm8KOfId4K19A3QDD0cgJCi5A2q57SA0IA4+lgxLNPojX7XhfNl19v5MWrwgZtWRLT
+ U03lXfGdWVINB0tN+5aNHBIEvSqfzybguZwguI+vmwjh+W61NHVl55D5uN7d16gJiJT/
+ omqP2gwZIYPqXePD94/0WAdFlry3dHzMnCudz8aUngWczXH+2WFZ06Cz063i9UMKg+oZ
+ scmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684735553; x=1687327553;
+ d=1e100.net; s=20221208; t=1684735608; x=1687327608;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NXgJy8c5g6MPyHjNu9RSgx4PXQ+UTK626UsedlhezkQ=;
- b=i7G5m60trSNJSc+aXjXUAFbLxrKcyD1Kur/rrM4mQONNdEugKN9d5fDMy3C9iC5AY4
- TaWMTDuFEhrhFIwsHKFiM3raIaXfcS8lcTe68s55rkMVKvMRPHs8NjGCydxXjpQQv2uA
- OgmNmKW2DZqw6GHfwS4FkHbKD2cZOzPww7NPKVPnRwIQlmlPfDYB6IRZEza3Lvql4DBg
- NQ3KasFiEESftlWQU/Rwx/Ht7djlDHYtwQ2D0gL65o2XV0rpKU1oPbP0c4pp7Vh+4goT
- P6UIULVAzdlxJ1U0O9sSOKom8f6e77cP584m9dYzpm2RQgn5DAd9QCb5Vov5uNqt9SdP
- UddQ==
-X-Gm-Message-State: AC+VfDw5J0LSM7CXmhmGJeGWp13RqLerDOLETtQF5VkYaHn7iSfRQ7Ah
- Wb562D/gOgefnJit6ShD/4LQjg==
-X-Google-Smtp-Source: ACHHUZ7M+d+vYV1pwynGt8mkSD7oGvpUVsBNnDfTCh73z9kcWS2ILdE4jDMqW9N9gRGQrHk9jeAHXg==
-X-Received: by 2002:a7b:cbc1:0:b0:3f5:aa2:288b with SMTP id
- n1-20020a7bcbc1000000b003f50aa2288bmr6190355wmi.0.1684735553036; 
- Sun, 21 May 2023 23:05:53 -0700 (PDT)
+ bh=42PH/00QoWmPwyG5RAq9Du9zwqNWKsNLPesCLbcp4J0=;
+ b=OKMZUQrBJN7wqIpzBLZELXc5yDGLzyWxjHkqMyuXKLOYJTEf+WJM6HhO/pPX0a+AfM
+ SYJh7YegNUxOjrQdr/3xXxemYNM9sXkYpLDRI+POXcJ4uSm5eV6tWmNiptiY7h/D9LhN
+ zvmRiGRVflnamZbhVPYVunA3Z5a/GEJz8/6P4eolF9qXICuO0iArtrUfAeVeZAbEQB87
+ Hse5nZKrVpdPVfubvc6TtEaEp0W9xLbUgo5Fu4NPwxabwBXxsd3833Wn6TgBJYlJeaE0
+ mXNnRX+CJF9putmhFIvKgpkwk5SE56pjMvZ8eEsCwGa0vlhiY3SI7ts2WImVHhmrIxId
+ uPUA==
+X-Gm-Message-State: AC+VfDyBwQu2nFX+bujYeOOWeTCqHgtLzulq4VAk5K4CPrOlDAYxPf/s
+ yAiAM588Ow4PBnCYdAq2AW1diQ==
+X-Google-Smtp-Source: ACHHUZ7RtomUNjN4IxHCiR3WVGfn2PmHnVOl/V8h+pRFjo8RgIKioENpg/4+S4s4Mtvu6+UZYz+R7A==
+X-Received: by 2002:a05:600c:1e01:b0:3f5:6e6:4285 with SMTP id
+ ay1-20020a05600c1e0100b003f506e64285mr6600095wmb.11.1684735608023; 
+ Sun, 21 May 2023 23:06:48 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.153.164])
  by smtp.gmail.com with ESMTPSA id
- o5-20020a05600c378500b003f42314832fsm7098482wmr.18.2023.05.21.23.05.51
+ n10-20020adfe78a000000b0030796e103a1sm6586280wrm.5.2023.05.21.23.06.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 May 2023 23:05:52 -0700 (PDT)
-Message-ID: <e55f3652-0d22-9845-f9c8-0ae4c6e3387e@linaro.org>
-Date: Mon, 22 May 2023 08:05:50 +0200
+ Sun, 21 May 2023 23:06:47 -0700 (PDT)
+Message-ID: <f5a97618-fde2-b4a4-f926-ab619b1fd1e0@linaro.org>
+Date: Mon, 22 May 2023 08:06:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 4/6] hw/char/parallel: Export ParallelState
+Subject: Re: [PATCH v2 6/6] hw/char/parallel: Replace string literals by
+ TYPE_ISA_PARALLEL macro
 Content-Language: en-US
 To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
@@ -69,16 +70,15 @@ Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+ Peter Maydell <peter.maydell@linaro.org>
 References: <20230521123049.312349-1-shentey@gmail.com>
- <20230521123049.312349-5-shentey@gmail.com>
+ <20230521123049.312349-7-shentey@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230521123049.312349-5-shentey@gmail.com>
+In-Reply-To: <20230521123049.312349-7-shentey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -102,54 +102,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 21/5/23 14:30, Bernhard Beschow wrote:
-> Exporting ParallelState is a precondition for exporing TYPE_ISA_PARALLEL.
+> Rather than using a string literal which is prone to typos let's use a macro
+> instead which is caught by the compiler if mistyped.
 > 
-> Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-Missing your S-o-b.
-
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
 > ---
->   include/hw/char/parallel.h | 44 ++++++++++++++++++++++++++++++++++++++
->   hw/char/parallel.c         | 42 ------------------------------------
->   2 files changed, 44 insertions(+), 42 deletions(-)
-> 
-> diff --git a/include/hw/char/parallel.h b/include/hw/char/parallel.h
-> index 0a23c0f57e..2d4907c1fe 100644
-> --- a/include/hw/char/parallel.h
-> +++ b/include/hw/char/parallel.h
-> @@ -1,9 +1,53 @@
->   #ifndef HW_PARALLEL_H
->   #define HW_PARALLEL_H
->   
-> +#include "exec/ioport.h"
-> +#include "exec/memory.h"
->   #include "hw/isa/isa.h"
-> +#include "hw/irq.h"
-> +#include "chardev/char-fe.h"
->   #include "chardev/char.h"
->   
-> +/*
-> + * These are the definitions for the Printer Status Register
-> + */
-> +#define PARA_STS_BUSY   0x80    /* Busy complement */
-> +#define PARA_STS_ACK    0x40    /* Acknowledge */
-> +#define PARA_STS_PAPER  0x20    /* Out of paper */
-> +#define PARA_STS_ONLINE 0x10    /* Online */
-> +#define PARA_STS_ERROR  0x08    /* Error complement */
-> +#define PARA_STS_TMOUT  0x01    /* EPP timeout */
-> +
-> +/*
-> + * These are the definitions for the Printer Control Register
-> + */
-> +#define PARA_CTR_DIR    0x20    /* Direction (1=read, 0=write) */
-> +#define PARA_CTR_INTEN  0x10    /* IRQ Enable */
-> +#define PARA_CTR_SELECT 0x08    /* Select In complement */
-> +#define PARA_CTR_INIT   0x04    /* Initialize Printer complement */
-> +#define PARA_CTR_AUTOLF 0x02    /* Auto linefeed complement */
-> +#define PARA_CTR_STROBE 0x01    /* Strobe complement */
-> +
-> +#define PARA_CTR_SIGNAL (PARA_CTR_SELECT | PARA_CTR_INIT | PARA_CTR_AUTOLF \
-> +                         | PARA_CTR_STROBE)
+>   hw/char/parallel-isa.c | 3 ++-
+>   hw/isa/isa-superio.c   | 3 ++-
+>   2 files changed, 4 insertions(+), 2 deletions(-)
 
-Can't we keep these register definitions local to the implementation?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
