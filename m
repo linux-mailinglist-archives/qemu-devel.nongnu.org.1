@@ -2,89 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEA070BF90
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 15:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0494570BFAF
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 15:26:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q15Tp-0005mH-FI; Mon, 22 May 2023 09:21:41 -0400
+	id 1q15Y0-0006sv-I1; Mon, 22 May 2023 09:26:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q15Tn-0005m5-RA
- for qemu-devel@nongnu.org; Mon, 22 May 2023 09:21:39 -0400
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q15Tm-0000vZ-76
- for qemu-devel@nongnu.org; Mon, 22 May 2023 09:21:39 -0400
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-397fe20a2b5so387394b6e.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 06:21:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1684761696; x=1687353696;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=auOmq+12x07fwhP1oh8Gkgzt7UcHeioWEHLBzPygiu8=;
- b=EOerP9tBfS9rBg4DY2YgLooQd+YcnwB3Aesz8tjQxV2LIhATnWZaQN3IGTPlIwOjXb
- 7jcLbKcqIe+PE2qv7Uv1Rr+JanaaavivSu8+FncT1QZdx8Oypbcj4wcv3t4dCfWYCzMi
- pZi4slrbdqDsOvp2y+COO+LV2m+WKXlqeflg/3tCSc+l2pLFOVx7ojpggN/jlcrv1ZlI
- mDXhbteHZAXNcL7JH2RKp0uMuCEm8c5r278U+LvdYL5tk/l49nSkMyrDRrhL553u74+W
- AVryt3HjBtEDoQeCjfjK322UyktcThlRV33R81yaCgjTO3v+MubzSnPTdkg44cPWgYst
- mA0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684761696; x=1687353696;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=auOmq+12x07fwhP1oh8Gkgzt7UcHeioWEHLBzPygiu8=;
- b=TBLVDwBbdVRI6IqQTas5sb8dt32g00SWmwTqtW3RpP+J7YdPdVbINKCz5iZjrFvCMI
- X9HhmgdZQNWulp7eHpG2x4+VnGoncbxFWAd7DFp1kQKroob2GCTTEcZOYqQzvgeVFHgz
- pBPHb+m/WaBK0198qMFE35xjcRiFiigt+vz2/puvHe/ipsJvq28dHDy1sOJik9EO6Epw
- dZ8p+OpwxFrVUKjBjsk3+2JiyNuRdoxgcyQ04/UEC2/upRnLEqsVaBu79ToCmVTLM2lA
- jvtCfzT0Dmw+Nxto4xaprGrP1px77Y8AjRZUyQ3hoH4VT36JvVQvy/aklOYCzWzYoPgj
- OvYA==
-X-Gm-Message-State: AC+VfDzldZ7imdm6B8SpF7B5ICxCeJDpElHYWsx3fFDnw9WM82KoKaTj
- YgzTS0zwa+Zi1TztCjoRHEqjZw==
-X-Google-Smtp-Source: ACHHUZ5rOtHCYGvhct8UvZqrdiVMtSyUiCVyYv+fK0mytFG6kGd2k4Ev/lKMrCWiTIZQuqcclQV0/Q==
-X-Received: by 2002:aca:2105:0:b0:396:3ae5:65a4 with SMTP id
- 5-20020aca2105000000b003963ae565a4mr5371215oiz.57.1684761696690; 
- Mon, 22 May 2023 06:21:36 -0700 (PDT)
-Received: from [192.168.68.107] ([179.111.98.125])
- by smtp.gmail.com with ESMTPSA id
- s205-20020acaa9d6000000b00397f453aae6sm2075148oie.38.2023.05.22.06.21.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 06:21:36 -0700 (PDT)
-Message-ID: <04873b9a-d6d4-1d6f-ce25-89a8e18ab5f1@ventanamicro.com>
-Date: Mon, 22 May 2023 10:21:32 -0300
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q15Xw-0006sL-Qx; Mon, 22 May 2023 09:25:56 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q15Xt-0001cX-Pm; Mon, 22 May 2023 09:25:56 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id D2CD2748A56;
+ Mon, 22 May 2023 15:25:50 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A5D16748A4D; Mon, 22 May 2023 15:25:50 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A3FAE748A59;
+ Mon, 22 May 2023 15:25:50 +0200 (CEST)
+Date: Mon, 22 May 2023 15:25:50 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
+cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH] bitops.h: Compile out asserts without --enable-debug
+In-Reply-To: <874jo47cnd.fsf@linaro.org>
+Message-ID: <aaa22b3f-d548-5a69-489a-5777a7e98cef@eik.bme.hu>
+References: <20230520205444.887287457E7@zero.eik.bme.hu>
+ <874jo47cnd.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 1/5] hw/riscv/opentitan: Rename machine_[class]_init()
- functions
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Bin Meng <bin.meng@windriver.com>,
- Alistair Francis <Alistair.Francis@wdc.com>, qemu-riscv@nongnu.org
-References: <20230520054510.68822-1-philmd@linaro.org>
- <20230520054510.68822-2-philmd@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230520054510.68822-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x236.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1053451517-1684761950=:76570"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,54 +59,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-1053451517-1684761950=:76570
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-On 5/20/23 02:45, Philippe Mathieu-Daudé wrote:
-> Follow QOM style which declares FOO_init() as instance
-> initializer and FOO_class_init() as class initializer:
-> rename the OpenTitan machine class/instance init()
-> accordingly.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
+On Mon, 22 May 2023, Alex Bennée wrote:
+> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>
+>> The low level extract and deposit funtions provided by bitops.h are
+>> used in performance critical places. It crept into target/ppc via
+>> FIELD_EX64 and also used by softfloat so PPC code using a lot of FPU
+>> where hardfloat is also disabled is doubly affected.
+>
+> Most of these asserts compile out to nothing if the compiler is able to
+> verify the constants are in the range. For example examining
+> the start of float64_add:
+>
+>  Dump of assembler code for function float64_add:
+>  ../../fpu/softfloat.c:
+>  1979	{
+>     0x00000000007ac9b0 <+0>:	movabs $0xfffffffffffff,%r9
+>     0x00000000007ac9ba <+10>:	push   %rbx
+>
+>  /home/alex/lsrc/qemu.git/include/qemu/bitops.h:
+>  396	    return (value >> start) & (~0ULL >> (64 - length));
+>     0x00000000007ac9bb <+11>:	mov    %rdi,%rcx
+>     0x00000000007ac9be <+14>:	shr    $0x34,%rcx
+>     0x00000000007ac9c2 <+18>:	and    $0x7ff,%ecx
+>
+>  ../../fpu/softfloat.c:
+>  1979	{
+>     0x00000000007ac9c8 <+24>:	sub    $0x30,%rsp
+>
+>  /home/alex/lsrc/qemu.git/include/qemu/bitops.h:
+>  396	    return (value >> start) & (~0ULL >> (64 - length));
+>     0x00000000007ac9cc <+28>:	mov    %fs:0x28,%rax
+>     0x00000000007ac9d5 <+37>:	mov    %rax,0x28(%rsp)
+>     0x00000000007ac9da <+42>:	mov    %rdi,%rax
+>     0x00000000007ac9dd <+45>:	and    %r9,%rdi
+>
+>  ../../fpu/softfloat.c:
+>  588	    *r = (FloatParts64) {
+>     0x00000000007ac9e0 <+48>:	mov    %ecx,0x4(%rsp)
+>     0x00000000007ac9e4 <+52>:	mov    %rdi,0x8(%rsp)
+>
+>  /home/alex/lsrc/qemu.git/include/qemu/bitops.h:
+>  396	    return (value >> start) & (~0ULL >> (64 - length));
+>     0x00000000007ac9e9 <+57>:	shr    $0x3f,%rax
+>
+>  ../../fpu/softfloat.c:
+>  588	    *r = (FloatParts64) {
+>     0x00000000007ac9ed <+61>:	mov    %al,0x1(%rsp)
+>
+>  589	        .cls = float_class_unclassified,
+>  590	        .sign = extract64(raw, f_size + e_size, 1),
+>     0x00000000007ac9f1 <+65>:	mov    %rax,%r8
+>
+> I don't see any check and abort steps because all the shift and mask
+> values are known at compile time. The softfloat compilation certainly
+> does have some assert points though:
+>
+> readelf -s ./libqemu-ppc64-softmmu.fa.p/fpu_softfloat.c.o  |grep assert
+>   136: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND g_assertion_mess[...]
+>   138: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND __assert_fail
+>
+> but the references are for the ISRA segments so its tricky to know if
+> they get used or are just there for LTO purposes.
+>
+> If there are hot-paths that show up the extract/deposit functions I
+> suspect a better approach would be to implement _nocheck variants (or
+> maybe _noassert?) and use them where required rather than turning off
+> the assert checking for these utility functions.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Just to clarify again, the asserts are still there when compiled with 
+--enable-debug. The patch only turns them off for optimised release builds 
+which I think makes sense if these asserts are to catch programming 
+errors. I think I've also suggested adding noassert versions of these but 
+that wasn't a popular idea and it may also not be easy to convert all 
+places to use that like for example the register fields related usage in 
+target/ppc as that would also affect other places. So this seems to be the 
+simplest and most effective approach.
 
->   hw/riscv/opentitan.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
-> index bc678766e7..2d21ee39c5 100644
-> --- a/hw/riscv/opentitan.c
-> +++ b/hw/riscv/opentitan.c
-> @@ -75,7 +75,7 @@ static const MemMapEntry ibex_memmap[] = {
->       [IBEX_DEV_FLASH_VIRTUAL] =  {  0x80000000,  0x80000     },
->   };
->   
-> -static void opentitan_board_init(MachineState *machine)
-> +static void opentitan_machine_init(MachineState *machine)
->   {
->       MachineClass *mc = MACHINE_GET_CLASS(machine);
->       const MemMapEntry *memmap = ibex_memmap;
-> @@ -108,17 +108,17 @@ static void opentitan_board_init(MachineState *machine)
->       }
->   }
->   
-> -static void opentitan_machine_init(MachineClass *mc)
-> +static void opentitan_machine_class_init(MachineClass *mc)
->   {
->       mc->desc = "RISC-V Board compatible with OpenTitan";
-> -    mc->init = opentitan_board_init;
-> +    mc->init = opentitan_machine_init;
->       mc->max_cpus = 1;
->       mc->default_cpu_type = TYPE_RISCV_CPU_IBEX;
->       mc->default_ram_id = "riscv.lowrisc.ibex.ram";
->       mc->default_ram_size = ibex_memmap[IBEX_DEV_RAM].size;
->   }
->   
-> -DEFINE_MACHINE("opentitan", opentitan_machine_init)
-> +DEFINE_MACHINE("opentitan", opentitan_machine_class_init)
->   
->   static void lowrisc_ibex_soc_init(Object *obj)
->   {
+The softfloat related usage in these tests I've done seem to mostly come 
+from unpacking and repacking floats in softfloat which is done for every 
+operation, e.g. muladd which mp3 encoding mostly uses does 3 unpacks and 1 
+pack for each call and each unpack is 3 extracts so even small overheads 
+add app quickly. Just 1 muladd will result in 9 extracts and 2 deposits at 
+least plus updating PPC flags for each FPU op adds a bunch more. I did 
+some profiling with perf to find these.
+
+Regards,
+BALATON Zoltan
+--3866299591-1053451517-1684761950=:76570--
 
