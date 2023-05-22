@@ -2,166 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAFB170BEC5
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A953470BED3
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:55:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q151H-0002J6-SA; Mon, 22 May 2023 08:52:12 -0400
+	id 1q153i-0003OU-C2; Mon, 22 May 2023 08:54:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q151F-0002Iy-Tx
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:52:09 -0400
-Received: from mga07.intel.com ([134.134.136.100])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q151D-0003ws-6H
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:52:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1684759927; x=1716295927;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=j3VK0pWyvDKoy7wN5mF50LSyQFuKobx69zY/wrvAQss=;
- b=Z9EoCWrmUdgEpYCl3fCsbFn57dHyTHsWCvNLBXst5v8E+ZLe1dKwuQhS
- VCxn7xNIGwzXQ3z0jVz1Gf6Mjx5vQ/ad60m2FlIXSGIERwcmTqaDcUI20
- EGtCkk3kTyOlmE2rSO0zrhizd5h0usbM3zFa2zsDQcioA7VG5oupzoob9
- fmT9NZcvXS/ridHShdkTtYOKol/8qPpq53RleYr+fbeRJMWfH/Gz4EtyW
- VXMia7qNAL7f4uytTpXROg1EOc3tgShGn/w+y5UjzCvkS90S2+9U1ms/o
- KJKywVCm3A2bNCazV79Z1quG0bAwleLKHbkfGQ+FGWqTp7KoF9Jnz2+aQ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10717"; a="418616507"
-X-IronPort-AV: E=Sophos;i="6.00,184,1681196400"; d="scan'208";a="418616507"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2023 05:52:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10717"; a="877743067"
-X-IronPort-AV: E=Sophos;i="6.00,184,1681196400"; d="scan'208";a="877743067"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by orsmga005.jf.intel.com with ESMTP; 22 May 2023 05:52:00 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 22 May 2023 05:52:00 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 22 May 2023 05:52:00 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Mon, 22 May 2023 05:52:00 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Mon, 22 May 2023 05:51:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YWyLkFgrRWa3zP2Ea6Q6mjuHO/rxXIaiUeMicD1FWtLkJ2FlE+L75Fo2t0ZIpgkL75mgi9pSmj6IYoPrUzAL4niLk1kPVnvfmjEzIYgd6ge8kwffor0hC+zfytAe4ph9a5XURrqfnHBO3vJc3nevIyncpDVAGhZZEiXer/h2eFXyDQb6A45famb+rOc1tagTJshtWL5nbOhyUIPMoJMDDbMKI9alIhowlNjuluoUJkV/EIy5YwYPFk+h4yaSutggdmyV06Sawv8cXvMd6PP2FmFaKLCpcM2wDppDAOEZfA4rV7WUL+lG3MzGqjp4q0D1vbiTyBWHaw1JMcwimuqspg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DuoIoT04jSqWiiVQsW2dKgDW8zimMixNNoSl9OQKato=;
- b=hZSqWToK9/KoxdUtG7ntvO1P1RwW9/VT0qnHds7EveBSwCP8gKahvHrRhM0XyQpfORGo5AX2tqIZnhW2FBO3XAqSaZ1ULvPZj/nw6+PubvD9asLc09K4oEj0KAUdF4hDpfzE1jnEGSntzYDPyURTLcMeRaSv3qcQqyFT6QDHNvwUy86LUdIcIdqbVEWkRA1Z7qJnmWaoAJ6OooLXGQVe3f3kFPhDNfNaUpBDchxb9vM0qx8yRODrKQoAEZlSjR0giOYzpPozm4f5iijfxSCFKocOERANAYmO8Y692ND1LI5BoEGACsoLQl/tCwZ6WPGtmv8vM+WT4+U1sredKAZ5Og==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BY5PR11MB4500.namprd11.prod.outlook.com (2603:10b6:a03:1c3::24)
- by MN0PR11MB5962.namprd11.prod.outlook.com (2603:10b6:208:371::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Mon, 22 May
- 2023 12:51:58 +0000
-Received: from BY5PR11MB4500.namprd11.prod.outlook.com
- ([fe80::b80e:1bbb:b818:10bc]) by BY5PR11MB4500.namprd11.prod.outlook.com
- ([fe80::b80e:1bbb:b818:10bc%3]) with mapi id 15.20.6411.028; Mon, 22 May 2023
- 12:51:58 +0000
-Message-ID: <d281595e-1d62-a32c-0627-09ba0b0577ad@intel.com>
-Date: Mon, 22 May 2023 20:51:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v12 15/15] docs/tb-stats: add how to
-To: Thomas Huth <thuth@redhat.com>, <qemu-devel@nongnu.org>,
- <richard.henderson@linaro.org>, <alex.bennee@linaro.org>
-CC: Peter Maydell <peter.maydell@linaro.org>
-References: <20230518135757.1442654-1-fei2.wu@intel.com>
- <20230518135757.1442654-16-fei2.wu@intel.com>
- <36525a40-b4a5-517d-2926-8b646ec46d7e@redhat.com>
-Content-Language: en-US
-From: "Wu, Fei" <fei2.wu@intel.com>
-In-Reply-To: <36525a40-b4a5-517d-2926-8b646ec46d7e@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR02CA0065.apcprd02.prod.outlook.com
- (2603:1096:4:54::29) To BY5PR11MB4500.namprd11.prod.outlook.com
- (2603:10b6:a03:1c3::24)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q153c-0003NT-Oo
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:54:36 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q153a-0004ML-Nm
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:54:36 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6af6f4a0e11so1121329a34.0
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 05:54:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1684760073; x=1687352073;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=h/vop7u3ewpIN1+xfvi7+V6u7BR7DCD5DOkZLtkv/4w=;
+ b=WDlyG05qic+i7CLr91hY7nIoDX4qwIpUdRKuxbEwmzuTznpOlLtGFE8Vn/hNlFouT5
+ cpo/zR55vSRwDTk2zasRds16cmV0prfeKHjyRJoyxStjFnnnzmK1yOz7AQtMmc7B6yCx
+ UprLIunEreFdWXfQXqhhUHE4KA5w3yBM/YAcvvLHNDQLaYLF0/aIE6iXCn+BEduOCDPm
+ NbMNLeeLO0W4xFB3p/KzR3k1UTrFiPUslOsx1ybttrMo+H5yjH4E4HFLFmxvDAa5ieaG
+ kiNdHjJUmHcVMjZWQ+xscQ4IPtv416B7qQzxQUicXXdoi+BywciR2l6aPbegaWFEYhwV
+ y3OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684760073; x=1687352073;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=h/vop7u3ewpIN1+xfvi7+V6u7BR7DCD5DOkZLtkv/4w=;
+ b=O5p70NRURrxZPawUWSKnRddyzmFtVUZQ0gtAHBeY/voFQCoJHBu7hP9sv9NNkJwgQG
+ mut1sRew/EgY5awvAI0eJ1WH2yuIRbDzZG9voAaG1BeMDJzW7PUFuGRk/E67V8pCh4vx
+ 1QqbjBYsTda2MvheCCGwL/3HHnRghXAL6hAUudO/gGVJ8yxCiQDMJllme8EJM9vuRgmk
+ 7gg3Zs7n/204e4Tq6/pf8Ylxaxzr6jlv+qIyjLTepFZ64VH0pjZ4vxNfZ/5FdK909LGZ
+ hdYfJQPzQm4KGXnYh6jonaJjWKoiFy/0VLG+RYLpxeZE8tHmkOMmuSxGcLb/FH4FTBq7
+ AMqA==
+X-Gm-Message-State: AC+VfDx+Vp2w/LQC6OPV7Bpazc4Uef3N2kRYVT7F7b56GbsUTr3RTD+X
+ 4qX85O28V8PUD+Jn7+agy1T2yQ==
+X-Google-Smtp-Source: ACHHUZ6doRqs95xce432Rqui/Q7rn7+3u4DuOtJ28Pwd5hmQCK2djUJF9uYC9EQTC5cs/iBFQvEf2A==
+X-Received: by 2002:a54:4784:0:b0:398:10ef:c9d2 with SMTP id
+ o4-20020a544784000000b0039810efc9d2mr1175802oic.36.1684760073516; 
+ Mon, 22 May 2023 05:54:33 -0700 (PDT)
+Received: from [192.168.68.107] ([179.111.98.125])
+ by smtp.gmail.com with ESMTPSA id
+ k127-20020aca3d85000000b0038c0a359e74sm2674630oia.31.2023.05.22.05.54.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 05:54:33 -0700 (PDT)
+Message-ID: <29978bd3-97d0-9f17-d13e-b986bd0e7087@ventanamicro.com>
+Date: Mon, 22 May 2023 09:54:28 -0300
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR11MB4500:EE_|MN0PR11MB5962:EE_
-X-MS-Office365-Filtering-Correlation-Id: 022cdbdc-9cdf-4742-befb-08db5ac353e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 09sYcGEPRGMTdnFrzPJVk3TIXAJ6tLbLT4M81MKwThmZjsoH/7XRLUX5Lc/EqsViSRwp/e3/IpZr9UNrOYhnULl9gWLAYjBsUcsXgoNgJLyWujSv2NhrVOtAbojrJj1mjvpA0YkiTC7AZKc7KS2EOSKjlkqB2Y63Smln7nBTW0n93wPG2Fy+MCDWEinWWPH1eOWba9TP2YIZoTcVnp3sZ6p6y+CMvFDjaRy9UMmN8Ja+OCU/56mLUo2yhbpkE4ZW9TwJC7Np2NhygSYOc6/hO05YW8x1qiJfFaYhvb8tbADsnUa+0TCDQVoZbBvk5Yuyqe42sftwgrqQ0uksa4mA0KP6AnIRJ7k9WALcmVa0tBdWrZKYBigsBg5u92wgDVmT20+b8j41rYjiohZs5ugrGI63kiTbf4pAgKglWtFPoUs7a7O+kEE0WPkn4FSB9ITBlBOmpNVImni0CMGFhCA/soQewcnLlZ1/KXZIiw1N7xdTi79OnnZgea0EOvjOacxsZZ4cMCfm5xsWdFQaUvKPMmPLqZMW8+onwJ4KI9e2B3LkWQ03dIrQbDJmDhmKaIVdYCduHJ5uVZ71V6qSxYgi6ApTbHLGTlU9GKgzXJz9oNMHi761KHQWAfi1DzAuY1Lm4PrCFebPnCeoGO+UFuEa8Q==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BY5PR11MB4500.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(396003)(39860400002)(136003)(346002)(376002)(451199021)(31686004)(86362001)(4326008)(66556008)(66476007)(316002)(4744005)(2906002)(36756003)(5660300002)(478600001)(66946007)(31696002)(41300700001)(8936002)(8676002)(6486002)(82960400001)(83380400001)(6666004)(38100700002)(6506007)(6512007)(26005)(186003)(2616005)(53546011)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R3U4akdiYnJmRFZLNS9XQWY3amlSNVNDWlEvTTBidnhrTVZoVDdpQXErZ2tk?=
- =?utf-8?B?VHhZS0xXbWJRMXhEL3VkYjlBMXdpZDFRaFFaWWZUMlVKY0tUWnBWZFN3WE15?=
- =?utf-8?B?TElqRTl3UGNwN3h5Q0VjNFZ6aXlFTitYakVBVlF3aGZnR2pSVkR0QnlPSUFp?=
- =?utf-8?B?YnlTWVN0ZVUyTk5kYituOFBBM1ZoU0RXaVo3L0ViR01uTjErOTVJRnhDNGpn?=
- =?utf-8?B?bURMRzZoL0FlT0NsOG5pOWhVdDRkcGc5NHEwUHZ3TVdFbjA5V2pzMml6ZktE?=
- =?utf-8?B?ZXVFOXRFTEp5UjBOQm9vbzNubnFnNldoVFUwTnE4VDFEUlFkeVM3amtaWDJV?=
- =?utf-8?B?RUk4NHNVMkRXaXJ5VVN4TzM0K1M4SHZiS0U3M2NBZ1o5Q1U0KzFKU3FYUVdM?=
- =?utf-8?B?UWdpNFczU0UxNFZHWkRjNFZpYmh0NFBqV2NzNjBpaW5zcTJLblEwOGQrSUFq?=
- =?utf-8?B?YStTdlRqNy8zZmRXZVU2S0FOVWs4K3RaWDFPNERaT241U1llWi9rU0FYWTU1?=
- =?utf-8?B?OUdsdC9FWURnOXZXR0RJZ2dwSnpGdE9qM0VHUThZK0RHTGhDdG1IbmoxQTla?=
- =?utf-8?B?enpIQkE0blF4OFZoNE1sMmZBUS96MTBmYTJYV3hyK1FuTXU1VTdzOU1vYWJZ?=
- =?utf-8?B?bDdiY2ljcHFZMzJoRmV1amJHUnBMNXhJem92VG9JUTJjUFFnNUJJeWVJZk1j?=
- =?utf-8?B?M1BzMFRnanhXamhmWkNhM1RjNzlMb1RWZVBaTzFpU2dzSXlFWlhkb1AxRUYr?=
- =?utf-8?B?cHo1d3RPL21wbWhabzMzMXRKdXUvWVZjSVRUbU1IbUJHRE1mR1d3d0lycXNz?=
- =?utf-8?B?K2ZNOFJ2bmNITENEaHBuTmFiTncxRklQYUUyeVAycDlFcVk1bmt1NllFeldp?=
- =?utf-8?B?bTBzK2hHUGpxZXdvclo0OFVldnpDK05sOGF4ckVlUXlXRUJVOFBUai9qeDNE?=
- =?utf-8?B?c2E2T3BVb1laWGVEVmdWU0lVTE1paEtGTTFiWmg5UzQ3Rmlnd2NwVXhQRUg1?=
- =?utf-8?B?TFNLbi9qcnVSbXpEYmdidTUrSjJnNWNxWUZFN3dhNVNhMC9IZlBUVHFyV1I3?=
- =?utf-8?B?dlNvQ0ZTTDU1bysyWnArT2t6NHErYlF2RzhKMC9Mb21yNng0WDgzV1h4WU9r?=
- =?utf-8?B?NTRidkZyMzZITW5rVk83TzFJZ2VHRVJwYWlWRGoxN2VZUlU1TVpKT3BqV0lm?=
- =?utf-8?B?VXJaTTJWTWU1M2Y1cEZoVWlKaDhIaERjd1ZhWGFZeWNUOVJDRms4ZVBZVzlJ?=
- =?utf-8?B?NGhHNXFPc0ZpeVE3eFhzNkl2WTRJbFkxWjFTTEFiWXJQS1FwTU1oYi9Xd3Zj?=
- =?utf-8?B?U2xvZkhaTW9sZHJJQzhEMUkralpkMGtzWmh2anJHSUZCMHBGcmx1VFBnU010?=
- =?utf-8?B?Y2V1MkV4eDU4Wnp6UmlReTJZTGpMM0QyQVZmS0ZZTzdZZTZuTUF6SEZsRXpT?=
- =?utf-8?B?SGtHajRwOEFkSmhSV3BJOER3T0xsZldyTTJVZFl1S1VLUjAyVlNuMDVBVVpY?=
- =?utf-8?B?ZHl0Vzd5aFBWNTlHN1ZjcTRTMFZFV1BVMWNuZ1JrU3lXdVdXdWJQbWRGN2J5?=
- =?utf-8?B?VnFhVjE1bGRCNUE0Qm1VVU9ZVGF4Z3NjR0VVQi9GRitvY0E2eGg3UEszZ2Nu?=
- =?utf-8?B?Qklrc2V6Rk12VVVHV0g1K3hua1lyUE5OamVWUGlKL1VORWZJdk1KblhtbTVS?=
- =?utf-8?B?SFRScG9VVm92YWxRS0VlOVdGU1lHaXNCRTlIUEZ2MkRQK00vYVNJRVVlZ3Ar?=
- =?utf-8?B?dVJHSWc3OGJEQmFUNDlOM3VwaU1uL0NGcW45RmFUWVVZZmphb0tiOHlxaStn?=
- =?utf-8?B?eXhZYVhGcGRLK1FaVytXdFpIY2pBY3B0WTE4Zk9zbjJPN3FNS2lObFhGdFJ0?=
- =?utf-8?B?YTByTmdJeTMzb2pqZ1QvZFpKS0RSQ2g0cmZyQ2F0YmtJUVZ3S0ZlcGFXcWUy?=
- =?utf-8?B?ZFRPUHpOQmZESFJVUUFPMUZYcnNQSTRxREdWSDNVNTFESkRPNXl2SWhvbGFi?=
- =?utf-8?B?emZPZnhweFNLQ0NKbGZsMmNPazNRQTRMWTNYNDF0UFpnaTZPZThQVThDdGhB?=
- =?utf-8?B?dXRmNHg3NnN4a0krMElNaGtBall5WnNLU1poY1dMTDVEQjVZM0ZIZkVKdCtP?=
- =?utf-8?Q?7hwZeM8YBN/91CZisZSjfujL9?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 022cdbdc-9cdf-4742-befb-08db5ac353e3
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4500.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2023 12:51:57.9295 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: InDcEJy6GC4f3UYP4AG0dyrf1TefDt6LEg9q8ARo0mO3ZONNc4k3609hS9YiGFpgGQrdQUJLpZtRfA1dHoIJVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB5962
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.100; envelope-from=fei2.wu@intel.com;
- helo=mga07.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 2/7] target/riscv: Pass RISCVCPUConfig as target_info to
+ disassemble_info
+Content-Language: en-US
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
+ <20230519021926.15362-3-liweiwei@iscas.ac.cn>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230519021926.15362-3-liweiwei@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -177,26 +98,369 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/2023 6:25 PM, Thomas Huth wrote:
-> On 18/05/2023 15.57, Fei Wu wrote:
->> Signed-off-by: Fei Wu <fei2.wu@intel.com>
->> ---
->>   docs/tb-stats.txt | 116 ++++++++++++++++++++++++++++++++++++++++++++++
-> 
-> I'd suggest to add this file in the docs/devel folder instead, and maybe
-> use a "tcg-" prefix for the file name?
-> 
-> Anyway, please add it as a proper .rst file instead of using plain ASCII
-> .txt for new documentation.
-> 
-Good suggestion, I will update it together with other comments in next
-series.
 
-Thanks,
-Fei.
 
->  Thanks,
->   Thomas
+On 5/18/23 23:19, Weiwei Li wrote:
+> Pass RISCVCPUConfig as disassemble_info.target_info to support disas
+> of conflict instructions related to specific extensions.
 > 
+> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+> ---
 
+I suggest split the CPUCfg declarations from cpu.h into the new cpu_cfg.h header
+in a separated patch. It makes our lives easier when bissecting for bugs and
+so on.
+
+One more nit below:
+
+
+>   disas/riscv.c          |  10 ++-
+>   target/riscv/cpu.c     |   1 +
+>   target/riscv/cpu.h     | 114 +---------------------------------
+>   target/riscv/cpu_cfg.h | 135 +++++++++++++++++++++++++++++++++++++++++
+>   4 files changed, 144 insertions(+), 116 deletions(-)
+>   create mode 100644 target/riscv/cpu_cfg.h
+> 
+> diff --git a/disas/riscv.c b/disas/riscv.c
+> index e61bda5674..729ab684da 100644
+> --- a/disas/riscv.c
+> +++ b/disas/riscv.c
+> @@ -19,7 +19,7 @@
+>   
+>   #include "qemu/osdep.h"
+>   #include "disas/dis-asm.h"
+> -
+> +#include "target/riscv/cpu_cfg.h"
+>   
+>   /* types */
+>   
+> @@ -967,6 +967,7 @@ typedef enum {
+>   /* structures */
+>   
+>   typedef struct {
+> +    RISCVCPUConfig *cfg;
+>       uint64_t  pc;
+>       uint64_t  inst;
+>       int32_t   imm;
+> @@ -4855,11 +4856,13 @@ static void decode_inst_decompress(rv_decode *dec, rv_isa isa)
+>   /* disassemble instruction */
+>   
+>   static void
+> -disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst)
+> +disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
+> +            RISCVCPUConfig *cfg)
+>   {
+>       rv_decode dec = { 0 };
+>       dec.pc = pc;
+>       dec.inst = inst;
+> +    dec.cfg = cfg;
+>       decode_inst_opcode(&dec, isa);
+>       decode_inst_operands(&dec, isa);
+>       decode_inst_decompress(&dec, isa);
+> @@ -4914,7 +4917,8 @@ print_insn_riscv(bfd_vma memaddr, struct disassemble_info *info, rv_isa isa)
+>           break;
+>       }
+>   
+> -    disasm_inst(buf, sizeof(buf), isa, memaddr, inst);
+> +    disasm_inst(buf, sizeof(buf), isa, memaddr, inst,
+> +                (RISCVCPUConfig *)info->target_info);
+>       (*info->fprintf_func)(info->stream, "%s", buf);
+>   
+>       return len;
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index db0875fb43..4fe926cdd1 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -818,6 +818,7 @@ static void riscv_cpu_reset_hold(Object *obj)
+>   static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
+>   {
+>       RISCVCPU *cpu = RISCV_CPU(s);
+> +    info->target_info = &cpu->cfg;
+>   
+>       switch (riscv_cpu_mxl(&cpu->env)) {
+>       case MXL_RV32:
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index de7e43126a..dc1229b69c 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -27,6 +27,7 @@
+>   #include "qom/object.h"
+>   #include "qemu/int128.h"
+>   #include "cpu_bits.h"
+> +#include "cpu_cfg.h"
+>   #include "qapi/qapi-types-common.h"
+>   #include "cpu-qom.h"
+>   
+> @@ -368,119 +369,6 @@ struct CPUArchState {
+>       uint64_t kvm_timer_frequency;
+>   };
+>   
+> -/*
+> - * map is a 16-bit bitmap: the most significant set bit in map is the maximum
+> - * satp mode that is supported. It may be chosen by the user and must respect
+> - * what qemu implements (valid_1_10_32/64) and what the hw is capable of
+> - * (supported bitmap below).
+> - *
+> - * init is a 16-bit bitmap used to make sure the user selected a correct
+> - * configuration as per the specification.
+> - *
+> - * supported is a 16-bit bitmap used to reflect the hw capabilities.
+> - */
+> -typedef struct {
+> -    uint16_t map, init, supported;
+> -} RISCVSATPMap;
+> -
+> -struct RISCVCPUConfig {
+> -    bool ext_zba;
+> -    bool ext_zbb;
+> -    bool ext_zbc;
+> -    bool ext_zbkb;
+> -    bool ext_zbkc;
+> -    bool ext_zbkx;
+> -    bool ext_zbs;
+> -    bool ext_zca;
+> -    bool ext_zcb;
+> -    bool ext_zcd;
+> -    bool ext_zce;
+> -    bool ext_zcf;
+> -    bool ext_zcmp;
+> -    bool ext_zcmt;
+> -    bool ext_zk;
+> -    bool ext_zkn;
+> -    bool ext_zknd;
+> -    bool ext_zkne;
+> -    bool ext_zknh;
+> -    bool ext_zkr;
+> -    bool ext_zks;
+> -    bool ext_zksed;
+> -    bool ext_zksh;
+> -    bool ext_zkt;
+> -    bool ext_ifencei;
+> -    bool ext_icsr;
+> -    bool ext_icbom;
+> -    bool ext_icboz;
+> -    bool ext_zicond;
+> -    bool ext_zihintpause;
+> -    bool ext_smstateen;
+> -    bool ext_sstc;
+> -    bool ext_svadu;
+> -    bool ext_svinval;
+> -    bool ext_svnapot;
+> -    bool ext_svpbmt;
+> -    bool ext_zdinx;
+> -    bool ext_zawrs;
+> -    bool ext_zfh;
+> -    bool ext_zfhmin;
+> -    bool ext_zfinx;
+> -    bool ext_zhinx;
+> -    bool ext_zhinxmin;
+> -    bool ext_zve32f;
+> -    bool ext_zve64f;
+> -    bool ext_zve64d;
+> -    bool ext_zmmul;
+> -    bool ext_zvfh;
+> -    bool ext_zvfhmin;
+> -    bool ext_smaia;
+> -    bool ext_ssaia;
+> -    bool ext_sscofpmf;
+> -    bool rvv_ta_all_1s;
+> -    bool rvv_ma_all_1s;
+> -
+> -    uint32_t mvendorid;
+> -    uint64_t marchid;
+> -    uint64_t mimpid;
+> -
+> -    /* Vendor-specific custom extensions */
+> -    bool ext_xtheadba;
+> -    bool ext_xtheadbb;
+> -    bool ext_xtheadbs;
+> -    bool ext_xtheadcmo;
+> -    bool ext_xtheadcondmov;
+> -    bool ext_xtheadfmemidx;
+> -    bool ext_xtheadfmv;
+> -    bool ext_xtheadmac;
+> -    bool ext_xtheadmemidx;
+> -    bool ext_xtheadmempair;
+> -    bool ext_xtheadsync;
+> -    bool ext_XVentanaCondOps;
+> -
+> -    uint8_t pmu_num;
+> -    char *priv_spec;
+> -    char *user_spec;
+> -    char *bext_spec;
+> -    char *vext_spec;
+> -    uint16_t vlen;
+> -    uint16_t elen;
+> -    uint16_t cbom_blocksize;
+> -    uint16_t cboz_blocksize;
+> -    bool mmu;
+> -    bool pmp;
+> -    bool epmp;
+> -    bool debug;
+> -    bool misa_w;
+> -
+> -    bool short_isa_string;
+> -
+> -#ifndef CONFIG_USER_ONLY
+> -    RISCVSATPMap satp_mode;
+> -#endif
+> -};
+> -
+> -typedef struct RISCVCPUConfig RISCVCPUConfig;
+> -
+>   /*
+>    * RISCVCPU:
+>    * @env: #CPURISCVState
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> new file mode 100644
+> index 0000000000..e2e982fac4
+> --- /dev/null
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -0,0 +1,135 @@
+> +/*
+> + * QEMU RISC-V CPU CFG
+> + *
+> + * Copyright (c) 2016-2017 Sagar Karandikar, sagark@eecs.berkeley.edu
+> + * Copyright (c) 2017-2018 SiFive, Inc.
+
+I don't mind keeping these copyrights but it would be good to have a 2023 copyright
+as well since the file was just created.
+
+
+Other than that:
+
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms and conditions of the GNU General Public License,
+> + * version 2 or later, as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> + * more details.
+> + *
+> + * You should have received a copy of the GNU General Public License along with
+> + * this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef RISCV_CPU_CFG_H
+> +#define RISCV_CPU_CFG_H
+> +
+> +/*
+> + * map is a 16-bit bitmap: the most significant set bit in map is the maximum
+> + * satp mode that is supported. It may be chosen by the user and must respect
+> + * what qemu implements (valid_1_10_32/64) and what the hw is capable of
+> + * (supported bitmap below).
+> + *
+> + * init is a 16-bit bitmap used to make sure the user selected a correct
+> + * configuration as per the specification.
+> + *
+> + * supported is a 16-bit bitmap used to reflect the hw capabilities.
+> + */
+> +typedef struct {
+> +    uint16_t map, init, supported;
+> +} RISCVSATPMap;
+> +
+> +struct RISCVCPUConfig {
+> +    bool ext_zba;
+> +    bool ext_zbb;
+> +    bool ext_zbc;
+> +    bool ext_zbkb;
+> +    bool ext_zbkc;
+> +    bool ext_zbkx;
+> +    bool ext_zbs;
+> +    bool ext_zca;
+> +    bool ext_zcb;
+> +    bool ext_zcd;
+> +    bool ext_zce;
+> +    bool ext_zcf;
+> +    bool ext_zcmp;
+> +    bool ext_zcmt;
+> +    bool ext_zk;
+> +    bool ext_zkn;
+> +    bool ext_zknd;
+> +    bool ext_zkne;
+> +    bool ext_zknh;
+> +    bool ext_zkr;
+> +    bool ext_zks;
+> +    bool ext_zksed;
+> +    bool ext_zksh;
+> +    bool ext_zkt;
+> +    bool ext_ifencei;
+> +    bool ext_icsr;
+> +    bool ext_icbom;
+> +    bool ext_icboz;
+> +    bool ext_zicond;
+> +    bool ext_zihintpause;
+> +    bool ext_smstateen;
+> +    bool ext_sstc;
+> +    bool ext_svadu;
+> +    bool ext_svinval;
+> +    bool ext_svnapot;
+> +    bool ext_svpbmt;
+> +    bool ext_zdinx;
+> +    bool ext_zawrs;
+> +    bool ext_zfh;
+> +    bool ext_zfhmin;
+> +    bool ext_zfinx;
+> +    bool ext_zhinx;
+> +    bool ext_zhinxmin;
+> +    bool ext_zve32f;
+> +    bool ext_zve64f;
+> +    bool ext_zve64d;
+> +    bool ext_zmmul;
+> +    bool ext_zvfh;
+> +    bool ext_zvfhmin;
+> +    bool ext_smaia;
+> +    bool ext_ssaia;
+> +    bool ext_sscofpmf;
+> +    bool rvv_ta_all_1s;
+> +    bool rvv_ma_all_1s;
+> +
+> +    uint32_t mvendorid;
+> +    uint64_t marchid;
+> +    uint64_t mimpid;
+> +
+> +    /* Vendor-specific custom extensions */
+> +    bool ext_xtheadba;
+> +    bool ext_xtheadbb;
+> +    bool ext_xtheadbs;
+> +    bool ext_xtheadcmo;
+> +    bool ext_xtheadcondmov;
+> +    bool ext_xtheadfmemidx;
+> +    bool ext_xtheadfmv;
+> +    bool ext_xtheadmac;
+> +    bool ext_xtheadmemidx;
+> +    bool ext_xtheadmempair;
+> +    bool ext_xtheadsync;
+> +    bool ext_XVentanaCondOps;
+> +
+> +    uint8_t pmu_num;
+> +    char *priv_spec;
+> +    char *user_spec;
+> +    char *bext_spec;
+> +    char *vext_spec;
+> +    uint16_t vlen;
+> +    uint16_t elen;
+> +    uint16_t cbom_blocksize;
+> +    uint16_t cboz_blocksize;
+> +    bool mmu;
+> +    bool pmp;
+> +    bool epmp;
+> +    bool debug;
+> +    bool misa_w;
+> +
+> +    bool short_isa_string;
+> +
+> +#ifndef CONFIG_USER_ONLY
+> +    RISCVSATPMap satp_mode;
+> +#endif
+> +};
+> +
+> +typedef struct RISCVCPUConfig RISCVCPUConfig;
+> +#endif
 
