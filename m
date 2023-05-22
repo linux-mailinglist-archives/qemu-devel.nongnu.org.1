@@ -2,67 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2FA270BE61
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AB070BE67
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:33:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q14g8-0007qq-5f; Mon, 22 May 2023 08:30:20 -0400
+	id 1q14iK-0000Du-Qs; Mon, 22 May 2023 08:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1q14g5-0007qJ-8V
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:30:17 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1q14g3-0007g7-RE
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:30:17 -0400
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 37BA81FEE0;
- Mon, 22 May 2023 12:30:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1684758613; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xigl1psyyOSxOweZR4/5p3xB0FbVmDtUpiAiWmdbGxY=;
- b=U6S0fSw9zqxthBhpx8Ggv10PL18ymAo889fhgaFI7baH1PKbQw68sP/f4HbV+8WiJXeX9E
- uf/8znLPmZuwSRKCxOfFMFO7DpUXcHGSc1kQdRQ5Pgu+xTkKHodVjOhfeTRWVzTxXe51QB
- yJuBWnksexGJpeCjo6cqk27OMF4XSrA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1684758613;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xigl1psyyOSxOweZR4/5p3xB0FbVmDtUpiAiWmdbGxY=;
- b=9ZA+xHinvkttk4Q/l3wz75NGv5khV+bajypaGI7oUPT9o+4IqELCje70ZVEH582m7e03KM
- dUpXsHmWF0MWwFAQ==
-Received: from hawking.suse.de (unknown [10.168.4.11])
- by relay2.suse.de (Postfix) with ESMTP id 167F32C15D;
- Mon, 22 May 2023 12:30:12 +0000 (UTC)
-Received: by hawking.suse.de (Postfix, from userid 17005)
- id B09C34A03A7; Mon, 22 May 2023 14:30:12 +0200 (CEST)
-From: Andreas Schwab <schwab@suse.de>
-To: Laurent Vivier <laurent@vivier.eu>
-Cc: Warner Losh <imp@bsdimp.com>,  Kyle Evans <kevans@freebsd.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v3] linux-user, bsd-user: preserve incoming order of
- environment variables in the target
-In-Reply-To: <mvmlejfsivd.fsf@suse.de> (Andreas Schwab's message of "Wed, 29
- Mar 2023 17:00:06 +0200")
-References: <mvmlejfsivd.fsf@suse.de>
-X-Yow: My EARS are GONE!!
-Date: Mon, 22 May 2023 14:30:12 +0200
-Message-ID: <mvmv8gkft0r.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q14iH-0000De-UN
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:32:33 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q14iE-0007w1-On
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:32:33 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:20ad:0:640:50e2:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id BCB0A5F1F3;
+ Mon, 22 May 2023 15:32:25 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b50f::1:35] (unknown
+ [2a02:6b8:b081:b50f::1:35])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id NWgsYc0OpSw0-dGLhpjlM; Mon, 22 May 2023 15:32:24 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1684758744; bh=exSm0Z3K84aHX9K+3Hg7J3i2nLw2ykyli/GKos4XssY=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=1bH/tcb5tUnDOL9wtmCotCzytKB5tyyzsyw8wTLp27fKjIYk6Mn9shYWAeW3Tr4rQ
+ aM4RyzqwAnjdhkwuT1RmC8NGzGc7/oPtdm637XhmuXn26P4AE2lTxZS7aQO/Azt/sB
+ w/w1La+CYxPaY91JIGTmTQqXllM99hwyKsTJ65b0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <79c57b4a-12f0-babd-e0af-62e6655df70e@yandex-team.ru>
+Date: Mon, 22 May 2023 15:32:23 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=schwab@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v7 1/4] qapi/qdev.json: unite DEVICE_* event data into
+ single structure
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
+ eblake@redhat.com, eduardo@habkost.net, berrange@redhat.com,
+ pbonzini@redhat.com, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ antonkuchin@yandex-team.ru, den-plotnikov@yandex-team.ru
+References: <20230421103207.845847-1-vsementsov@yandex-team.ru>
+ <20230421103207.845847-2-vsementsov@yandex-team.ru>
+ <20230518160434-mutt-send-email-mst@kernel.org> <87a5xwogw0.fsf@pond.sub.org>
+ <0b692f6f-4d9a-60be-e1c0-9aa0f7869eed@yandex-team.ru>
+ <87h6s4k1hu.fsf@pond.sub.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <87h6s4k1hu.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,10 +83,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping?
+On 22.05.23 15:13, Markus Armbruster wrote:
+> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+> 
+>> On 22.05.23 12:27, Markus Armbruster wrote:
+>>> "Michael S. Tsirkin" <mst@redhat.com> writes:
+>>>
+>>>> On Fri, Apr 21, 2023 at 01:32:04PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>>>>> DEVICE_DELETED and DEVICE_UNPLUG_GUEST_ERROR has equal data, let's
+>>>>> refactor it to one structure. That also helps to add new events
+>>>>> consistently.
+>>>>>
+>>>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>>>
+>>>> Can QAPI maintainers please review this patchset?
+>>>> It's been a month.
+>>>
+>>> It's been a busy month; sorry for the delay.
+>>>
+>>>>> ---
+>>>>>    qapi/qdev.json | 39 +++++++++++++++++++++++++++------------
+>>>>>    1 file changed, 27 insertions(+), 12 deletions(-)
+>>>>>
+>>>>> diff --git a/qapi/qdev.json b/qapi/qdev.json
+>>>>> index 2708fb4e99..135cd81586 100644
+>>>>> --- a/qapi/qdev.json
+>>>>> +++ b/qapi/qdev.json
+>>>>> @@ -114,16 +114,37 @@
+>>>>>    { 'command': 'device_del', 'data': {'id': 'str'} }
+>>>>>    
+>>>>>    ##
+>>>>> -# @DEVICE_DELETED:
+>>>>> +# @DeviceAndPath:
+>>>>>    #
+>>>>> -# Emitted whenever the device removal completion is acknowledged by the guest.
+>>>>> -# At this point, it's safe to reuse the specified device ID. Device removal can
+>>>>> -# be initiated by the guest or by HMP/QMP commands.
+>>>>> +# In events we designate devices by both their ID (if the device has one)
+>>>>> +# and QOM path.
+>>>>> +#
+>>>>> +# Why we need ID? User specify ID in device_add command and in command line
+>>>>> +# and expects same identifier in the event data.
+>>>>> +#
+>>>>> +# Why we need QOM path? Some devices don't have ID and we still want to emit
+>>>>> +# events for them.
+>>>>> +#
+>>>>> +# So, we have a bit of redundancy, as QOM path for device that has ID is
+>>>>> +# always /machine/peripheral/ID. But that's hard to change keeping both
+>>>>> +# simple interface for most users and universality for the generic case.
+>>>
+>>> Hmm.  I appreciate rationale, but I'm not sure it fits here.  Would
+>>> readers be worse off if we dropped it?
+>>
+>> Is there a syntax to add comment to the QAPI structure, which doesn't go into compiled public documentation?
+> 
+> Yes!  qapi-code-gen.rst: "A multi-line comment that starts and ends with
+> a ``##`` line is a documentation comment."  All other comments are not,
+> and won't be included in generated documentation.
+
+Good, thanks!
+
+> 
+> Example: qapi/qapi-schema.json has
+> 
+>      { 'include': 'pragma.json' }
+> 
+>      # Documentation generated with qapi-gen.py is in source order, with
+>      # included sub-schemas inserted at the first include directive
+>      # (subsequent include directives have no effect).  To get a sane and
+>      # stable order, it's best to include each sub-schema just once, or
+>      # include it first right here.
+> 
+>      { 'include': 'error.json' }
+> 
+> Not a documentation comment, thus not included in generated
+> documentation.
+> 
+> Additionally, TODO sections in documentation comments are omitted from
+> generated documentation.  qapi-code-gen.rst again: "TODO" sections are
+> not rendered at all (they are for developers, not users of QMP).
+> 
+>> I agree that we don't need this in compiled documentation, but this place in the code really good for the rationale, to avoid starting the discussion from the beginning again.
+> 
+> Saving rationale so we can refer to it later is good.  We tend to use
+> commit messages for that.  I'd say use comments when the rationale needs
+> to be more visible.
+> 
+
+Yes I can move this to the commit message. I just wasn't sure that it's an obvious place in our case, as that's not a commit that introduces new structure but just a no-logic-change refactoring.
 
 -- 
-Andreas Schwab, SUSE Labs, schwab@suse.de
-GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
-"And now for something completely different."
+Best regards,
+Vladimir
+
 
