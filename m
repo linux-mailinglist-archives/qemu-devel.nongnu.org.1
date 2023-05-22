@@ -2,93 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8F270C5D9
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 21:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB9470C5EC
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 21:13:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1AxL-0005eQ-0C; Mon, 22 May 2023 15:12:32 -0400
+	id 1q1AyE-0001uE-9T; Mon, 22 May 2023 15:13:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1Ax3-0005CU-AG
- for qemu-devel@nongnu.org; Mon, 22 May 2023 15:12:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1Ax0-0005Ib-2K
- for qemu-devel@nongnu.org; Mon, 22 May 2023 15:12:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684782726;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VfEywYsBeQT2PWYZhGBSDUVT7Gi+JZYdGtYNtSdy13o=;
- b=ZQ2DnQPf8TsT0DuAuVUChddKl4drIbDwpo/1Y6eGKqnFhGqhwDc9IoHq0/h5sBaNWZaMvJ
- YhwdsxQpa5DvF0sLJO22vozyd0Z3mhGy97DU5WCMd2uK+dXukXKQnmGspuEO1oDDV53v0D
- +AGcv19tPnqEMPwnSUDDDaQCSniTre4=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-_4kM5VAAMwmG_j_KEOhQPw-1; Mon, 22 May 2023 15:12:05 -0400
-X-MC-Unique: _4kM5VAAMwmG_j_KEOhQPw-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1ae8ed0a9dfso15352135ad.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 12:12:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
+ id 1q1Ay4-0001iZ-D5; Mon, 22 May 2023 15:13:19 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
+ id 1q1Ay2-0005WZ-J1; Mon, 22 May 2023 15:13:15 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-4f4b2bc1565so1263379e87.2; 
+ Mon, 22 May 2023 12:13:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1684782792; x=1687374792;
+ h=user-agent:in-reply-to:content-transfer-encoding
+ :content-disposition:mime-version:references:message-id:subject:cc
+ :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=nKgUiUzzPXQ1tuCogr7I/mtRpKX/s6KhmaB88kM8TA0=;
+ b=Gp6sLXbqRbYhOk5okVAboNBk8S4IstWTKwehNnal3rfs77XXrIRlCzvNBnKu8iKOXv
+ eSIS5P/wWJMw8q1gMt6azs6NIOnL0+Oce0ufmZ3+ukI82diHGnAUnzFWiDhHPkmZHvc0
+ gR6aXyQjnQgCGv6eFSrkfMwxePbOa7daCIDg5nM17GYm+Wro/0XtWNtmo+U4xJ2rf41W
+ eDkl30QxDeaKWVwgSTqAndmtFewfkyy/EtBm1dCaGCu9Pvz6axcmuU4WKMiu0Q+G4NZM
+ Eq4sqOVSptvqqkLqFfDIzoRT2mlaJbH9hLmYkdOull/IUGULnWhbpBoblxrHCXF0OY+T
+ ipoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684782724; x=1687374724;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VfEywYsBeQT2PWYZhGBSDUVT7Gi+JZYdGtYNtSdy13o=;
- b=MCh1qA6I2UceaT/DvDKQd6v2xzh6bpi0kHwuyZPzzgJ5tj4GTx1w52WWcXddajzNsz
- zWwkahsgCfcBuydFfzpHgscfN542AVycL8pgTO7fi0yNEh091EtFhv13SiryoLMJT1TI
- ay90OCJllS9GVC1rtfmBFPUHE186QGa6TUV6gxrh5BAs/Vj424u47EIDo9+Qs1k4lOb7
- 4iLpQ9uIS/0vkCkejBB/drOZYZfVLGvCc8Kle3ADlR3cpmfyc+qAJJSmvMGBdXHY7EkJ
- vuMKtd8ETAzWeQv3kV2RpD00CTtB/eJOe4deTWWoOH/w2AXy9BcdYumuDHfQ2duOdb3G
- FtUg==
-X-Gm-Message-State: AC+VfDxk4EkZgXm0hVLefmBWtumwQzuqtJ691i1QRPa1pEjIZ357GnAq
- LNUm8J2ZWsx3//K5pnNNVcpduxhtJqLY+q3agYwZFEC9yiDMnI7WOg3/kNnhDri06Lqwm7KSQEv
- v/ZeI0Dr7bva4CUVu0UXfaCYtnwutStk=
-X-Received: by 2002:a17:902:e74a:b0:1af:c0b9:d962 with SMTP id
- p10-20020a170902e74a00b001afc0b9d962mr1542491plf.24.1684782724437; 
- Mon, 22 May 2023 12:12:04 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4puve1s/GK6fh6OolbnN0Oda31Xp5+hp3r+EFkGiphtT4SZUmJUrszrsJUkWF0qhBD7QS20KOKqq6eQIblkgk=
-X-Received: by 2002:a17:902:e74a:b0:1af:c0b9:d962 with SMTP id
- p10-20020a170902e74a00b001afc0b9d962mr1542459plf.24.1684782724045; Mon, 22
- May 2023 12:12:04 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684782792; x=1687374792;
+ h=user-agent:in-reply-to:content-transfer-encoding
+ :content-disposition:mime-version:references:message-id:subject:cc
+ :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nKgUiUzzPXQ1tuCogr7I/mtRpKX/s6KhmaB88kM8TA0=;
+ b=MFVJNNjxc7sMYVaYR1eiZOfe3RtAtNurZ0cVsXfEZqzOrKzyDGOlF5EDk0XqOJX5cy
+ nknfL0S68KN1nfip3nu8WbuU7AMaIbTh8uhF/QAMHp9mlESrBFtnmYdh7HI6bxXDt5UP
+ ZwXt1xVcb25SkLDjk8emWmc+VjSV43GIFHrOe/EwfEhjbHLlAAvTWyDD3vkzDZjhz80Z
+ 1kT+UYwcckQ9hu76+9SnB3hL4rase5uOhLkJz51OGuhYfbaZUIfgNqfw4+/WXYIxqZqq
+ mRPQSmJ9vZ8kO0zkw7D0EMFEs2Fj3EawKsey1xMteIDQRvrlspfFr1bIJQgu5AJRPm7x
+ 2WHA==
+X-Gm-Message-State: AC+VfDymaizMWtrWsviGmtFSTbW6ZrTnieuueFtUgmtXc4YimWn9kmJl
+ l6kPvsaC//ZzQh3/O7AKd+Q=
+X-Google-Smtp-Source: ACHHUZ6B+fmB57n+i0JWWVsNPGjA1igCoK6K6k1CVkc9dGbLuL7rujp5Acql5fKqjsPrOyuSn2Ou/w==
+X-Received: by 2002:ac2:5991:0:b0:4f3:a0f0:7c4a with SMTP id
+ w17-20020ac25991000000b004f3a0f07c4amr3781811lfn.40.1684782791802; 
+ Mon, 22 May 2023 12:13:11 -0700 (PDT)
+Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
+ by smtp.gmail.com with ESMTPSA id
+ j2-20020a19f502000000b004eff530efe7sm1078916lfb.93.2023.05.22.12.13.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 May 2023 12:13:11 -0700 (PDT)
+Date: Mon, 22 May 2023 21:13:10 +0200
+From: Francisco Iglesias <frasse.iglesias@gmail.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 02/12] util/fifo8: Allow fifo8_pop_buf() to not populate
+ popped length
+Message-ID: <20230522191309.GE6984@fralle-msi>
+References: <20230522153144.30610-1-philmd@linaro.org>
+ <20230522153144.30610-3-philmd@linaro.org>
 MIME-Version: 1.0
-References: <20230518162034.1277885-1-alex.bennee@linaro.org>
- <20230518162034.1277885-8-alex.bennee@linaro.org>
- <CAFn=p-YLTqv6bQGi9xFeZ1fCw71EdqiTLw2xv2yWnJmWfzw+vQ@mail.gmail.com>
- <87o7mglt99.fsf@linaro.org>
-In-Reply-To: <87o7mglt99.fsf@linaro.org>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 22 May 2023 15:11:52 -0400
-Message-ID: <CAFn=p-aiXNLM==RGqkYSeKO3UridfWBX0ExgWOC5G9HevBHaxA@mail.gmail.com>
-Subject: Re: [PATCH 7/8] python/qemu: allow avocado to set logging name space
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Cleber Rosa <crosa@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230522153144.30610-3-philmd@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -1020
+X-Spam_score: -102.1
+X-Spam_bar: ---------------------------------------------------
+X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_WELCOMELIST=-0.01,
+ USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,261 +100,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 19, 2023 at 2:39=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linar=
-o.org> wrote:
->
->
-> John Snow <jsnow@redhat.com> writes:
->
-> > On Thu, May 18, 2023 at 12:20=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@=
-linaro.org> wrote:
-> >>
-> >> Since the update to the latest version Avocado only automatically
-> >> collects logging under the avocado name space. Tweak the QEMUMachine
-> >> class to allow avocado to bring logging under its name space. This
-> >> also allows useful tricks like:
-> >>
-> >>   ./avocado --show avocado.qemu.machine run path/to/test
-> >>
-> >> if you want to quickly get the machine invocation out of a test
-> >> without searching deeply through the logs.
-> >>
-> >
-> > Huh. That's kind of weird though, right? Each Python module is
-> > intended to log to its own namespace by design; it feels like Avocado
-> > really ought to have configuration options that allows it to collect
-> > logging from other namespaces. I'm not against this patch, but if for
-> > instance I wind up splitting qemu.machine out as a separate module
-> > someday (like I did to qemu.qmp), then it feels weird to add options
-> > specifically for fudging the logging hierarchy.
->
-> According to the docs it does but I couldn't get it to work so this is a
-> sticking plaster over that. If it gets fixed in later avocado's it is
-> easy enough to remove.
->
+On [2023 May 22] Mon 17:31:34, Philippe Mathieu-Daudé wrote:
+> There might be cases where we know the number of bytes we can
+> pop from the FIFO, or we simply don't care how many bytes is
+> returned. Allow fifo8_pop_buf() to take a NULL numptr.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Fair enough ...
+Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
 
-Cleber, any input?
 
-> > Also, what about the QMP logging? I don't suppose this will trickle
-> > down to that level either.
->
-> I can certainly add that - but it would need a similar hook.
-
-Right... this is why I am wondering if it isn't just simpler to
-configure Avocado to just relay everything from the qemu.* namespace,
-which will be easier in the long run ... but hey, if it's broken, it's
-broken :(
-
-ACK to the bandaid.
-
---js
-
->
-> >
-> > Worried this is kind of incomplete.
-> >
-> > --js
-> >
-> >> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> >> ---
-> >>  python/qemu/machine/machine.py         | 42 ++++++++++++++-----------=
--
-> >>  tests/avocado/avocado_qemu/__init__.py |  3 +-
-> >>  2 files changed, 24 insertions(+), 21 deletions(-)
-> >>
-> >> diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/mach=
-ine.py
-> >> index e57c254484..402b9a0df9 100644
-> >> --- a/python/qemu/machine/machine.py
-> >> +++ b/python/qemu/machine/machine.py
-> >> @@ -49,10 +49,6 @@
-> >>
-> >>  from . import console_socket
-> >>
-> >> -
-> >> -LOG =3D logging.getLogger(__name__)
-> >> -
-> >> -
-> >>  class QEMUMachineError(Exception):
-> >>      """
-> >>      Exception called when an error in QEMUMachine happens.
-> >> @@ -131,6 +127,7 @@ def __init__(self,
-> >>                   drain_console: bool =3D False,
-> >>                   console_log: Optional[str] =3D None,
-> >>                   log_dir: Optional[str] =3D None,
-> >> +                 log_namespace: Optional[str] =3D None,
-> >>                   qmp_timer: Optional[float] =3D 30):
-> >>          '''
-> >>          Initialize a QEMUMachine
-> >> @@ -164,6 +161,11 @@ def __init__(self,
-> >>          self._sock_dir =3D sock_dir
-> >>          self._log_dir =3D log_dir
-> >>
-> >> +        if log_namespace:
-> >> +            self.log =3D logging.getLogger(log_namespace)
-> >> +        else:
-> >> +            self.log =3D logging.getLogger(__name__)
-> >> +
-> >>          self._monitor_address =3D monitor_address
-> >>
-> >>          self._console_log_path =3D console_log
-> >> @@ -382,11 +384,11 @@ def _post_shutdown(self) -> None:
-> >>          Called to cleanup the VM instance after the process has exite=
-d.
-> >>          May also be called after a failed launch.
-> >>          """
-> >> -        LOG.debug("Cleaning up after VM process")
-> >> +        self.log.debug("Cleaning up after VM process")
-> >>          try:
-> >>              self._close_qmp_connection()
-> >>          except Exception as err:  # pylint: disable=3Dbroad-except
-> >> -            LOG.warning(
-> >> +            self.log.warning(
-> >>                  "Exception closing QMP connection: %s",
-> >>                  str(err) if str(err) else type(err).__name__
-> >>              )
-> >> @@ -414,7 +416,7 @@ def _post_shutdown(self) -> None:
-> >>                  command =3D ' '.join(self._qemu_full_args)
-> >>              else:
-> >>                  command =3D ''
-> >> -            LOG.warning(msg, -int(exitcode), command)
-> >> +            self.log.warning(msg, -int(exitcode), command)
-> >>
-> >>          self._quit_issued =3D False
-> >>          self._user_killed =3D False
-> >> @@ -458,7 +460,7 @@ def _launch(self) -> None:
-> >>          Launch the VM and establish a QMP connection
-> >>          """
-> >>          self._pre_launch()
-> >> -        LOG.debug('VM launch command: %r', ' '.join(self._qemu_full_a=
-rgs))
-> >> +        self.log.debug('VM launch command: %r', ' '.join(self._qemu_f=
-ull_args))
-> >>
-> >>          # Cleaning up of this subprocess is guaranteed by _do_shutdow=
-n.
-> >>          # pylint: disable=3Dconsider-using-with
-> >> @@ -507,7 +509,7 @@ def _early_cleanup(self) -> None:
-> >>          # for QEMU to exit, while QEMU is waiting for the socket to
-> >>          # become writable.
-> >>          if self._console_socket is not None:
-> >> -            LOG.debug("Closing console socket")
-> >> +            self.log.debug("Closing console socket")
-> >>              self._console_socket.close()
-> >>              self._console_socket =3D None
-> >>
-> >> @@ -518,7 +520,7 @@ def _hard_shutdown(self) -> None:
-> >>          :raise subprocess.Timeout: When timeout is exceeds 60 seconds
-> >>              waiting for the QEMU process to terminate.
-> >>          """
-> >> -        LOG.debug("Performing hard shutdown")
-> >> +        self.log.debug("Performing hard shutdown")
-> >>          self._early_cleanup()
-> >>          self._subp.kill()
-> >>          self._subp.wait(timeout=3D60)
-> >> @@ -535,17 +537,17 @@ def _soft_shutdown(self, timeout: Optional[int])=
- -> None:
-> >>          :raise subprocess.TimeoutExpired: When timeout is exceeded wa=
-iting for
-> >>              the QEMU process to terminate.
-> >>          """
-> >> -        LOG.debug("Attempting graceful termination")
-> >> +        self.log.debug("Attempting graceful termination")
-> >>
-> >>          self._early_cleanup()
-> >>
-> >>          if self._quit_issued:
-> >> -            LOG.debug(
-> >> +            self.log.debug(
-> >>                  "Anticipating QEMU termination due to prior 'quit' co=
-mmand, "
-> >>                  "or explicit call to wait()"
-> >>              )
-> >>          else:
-> >> -            LOG.debug("Politely asking QEMU to terminate")
-> >> +            self.log.debug("Politely asking QEMU to terminate")
-> >>
-> >>          if self._qmp_connection:
-> >>              try:
-> >> @@ -557,14 +559,14 @@ def _soft_shutdown(self, timeout: Optional[int])=
- -> None:
-> >>                  # Regardless, we want to quiesce the connection.
-> >>                  self._close_qmp_connection()
-> >>          elif not self._quit_issued:
-> >> -            LOG.debug(
-> >> +            self.log.debug(
-> >>                  "Not anticipating QEMU quit and no QMP connection pre=
-sent, "
-> >>                  "issuing SIGTERM"
-> >>              )
-> >>              self._subp.terminate()
-> >>
-> >>          # May raise subprocess.TimeoutExpired
-> >> -        LOG.debug(
-> >> +        self.log.debug(
-> >>              "Waiting (timeout=3D%s) for QEMU process (pid=3D%s) to te=
-rminate",
-> >>              timeout, self._subp.pid
-> >>          )
-> >> @@ -586,9 +588,9 @@ def _do_shutdown(self, timeout: Optional[int]) -> =
-None:
-> >>              self._soft_shutdown(timeout)
-> >>          except Exception as exc:
-> >>              if isinstance(exc, subprocess.TimeoutExpired):
-> >> -                LOG.debug("Timed out waiting for QEMU process to exit=
-")
-> >> -            LOG.debug("Graceful shutdown failed", exc_info=3DTrue)
-> >> -            LOG.debug("Falling back to hard shutdown")
-> >> +                self.log.debug("Timed out waiting for QEMU process to=
- exit")
-> >> +            self.log.debug("Graceful shutdown failed", exc_info=3DTru=
-e)
-> >> +            self.log.debug("Falling back to hard shutdown")
-> >>              self._hard_shutdown()
-> >>              raise AbnormalShutdown("Could not perform graceful shutdo=
-wn") \
-> >>                  from exc
-> >> @@ -611,9 +613,9 @@ def shutdown(self,
-> >>          if not self._launched:
-> >>              return
-> >>
-> >> -        LOG.debug("Shutting down VM appliance; timeout=3D%s", timeout=
-)
-> >> +        self.log.debug("Shutting down VM appliance; timeout=3D%s", ti=
-meout)
-> >>          if hard:
-> >> -            LOG.debug("Caller requests immediate termination of QEMU =
-process.")
-> >> +            self.log.debug("Caller requests immediate termination of =
-QEMU process.")
-> >>
-> >>          try:
-> >>              if hard:
-> >> diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/av=
-ocado_qemu/__init__.py
-> >> index b19f797b7b..d925573299 100644
-> >> --- a/tests/avocado/avocado_qemu/__init__.py
-> >> +++ b/tests/avocado/avocado_qemu/__init__.py
-> >> @@ -322,7 +322,8 @@ def require_multiprocess(self):
-> >>      def _new_vm(self, name, *args):
-> >>          self._sd =3D tempfile.TemporaryDirectory(prefix=3D"qemu_")
-> >>          vm =3D QEMUMachine(self.qemu_bin, base_temp_dir=3Dself.workdi=
-r,
-> >> -                         sock_dir=3Dself._sd.name, log_dir=3Dself.log=
-dir)
-> >> +                         sock_dir=3Dself._sd.name, log_dir=3Dself.log=
-dir,
-> >> +                         log_namespace=3D"avocado.qemu.machine")
-> >>          self.log.debug('QEMUMachine "%s" created', name)
-> >>          self.log.debug('QEMUMachine "%s" temp_dir: %s', name, vm.temp=
-_dir)
-> >>          self.log.debug('QEMUMachine "%s" log_dir: %s', name, vm.log_d=
-ir)
-> >> --
-> >> 2.39.2
-> >>
->
-
+> ---
+>  include/qemu/fifo8.h | 10 +++++-----
+>  util/fifo8.c         | 12 ++++++++----
+>  2 files changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/qemu/fifo8.h b/include/qemu/fifo8.h
+> index 16be02f361..d0d02bc73d 100644
+> --- a/include/qemu/fifo8.h
+> +++ b/include/qemu/fifo8.h
+> @@ -71,7 +71,7 @@ uint8_t fifo8_pop(Fifo8 *fifo);
+>   * fifo8_pop_buf:
+>   * @fifo: FIFO to pop from
+>   * @max: maximum number of bytes to pop
+> - * @num: actual number of returned bytes
+> + * @numptr: pointer filled with number of bytes returned (can be NULL)
+>   *
+>   * Pop a number of elements from the FIFO up to a maximum of max. The buffer
+>   * containing the popped data is returned. This buffer points directly into
+> @@ -82,16 +82,16 @@ uint8_t fifo8_pop(Fifo8 *fifo);
+>   * around in the ring buffer; in this case only a contiguous part of the data
+>   * is returned.
+>   *
+> - * The number of valid bytes returned is populated in *num; will always return
+> - * at least 1 byte. max must not be 0 or greater than the number of bytes in
+> - * the FIFO.
+> + * The number of valid bytes returned is populated in *numptr; will always
+> + * return at least 1 byte. max must not be 0 or greater than the number of
+> + * bytes in the FIFO.
+>   *
+>   * Clients are responsible for checking the availability of requested data
+>   * using fifo8_num_used().
+>   *
+>   * Returns: A pointer to popped data.
+>   */
+> -const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *num);
+> +const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr);
+>  
+>  /**
+>   * fifo8_reset:
+> diff --git a/util/fifo8.c b/util/fifo8.c
+> index d4d1c135e0..032e985440 100644
+> --- a/util/fifo8.c
+> +++ b/util/fifo8.c
+> @@ -66,16 +66,20 @@ uint8_t fifo8_pop(Fifo8 *fifo)
+>      return ret;
+>  }
+>  
+> -const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *num)
+> +const uint8_t *fifo8_pop_buf(Fifo8 *fifo, uint32_t max, uint32_t *numptr)
+>  {
+>      uint8_t *ret;
+> +    uint32_t num;
+>  
+>      assert(max > 0 && max <= fifo->num);
+> -    *num = MIN(fifo->capacity - fifo->head, max);
+> +    num = MIN(fifo->capacity - fifo->head, max);
+>      ret = &fifo->data[fifo->head];
+> -    fifo->head += *num;
+> +    fifo->head += num;
+>      fifo->head %= fifo->capacity;
+> -    fifo->num -= *num;
+> +    fifo->num -= num;
+> +    if (numptr) {
+> +        *numptr = num;
+> +    }
+>      return ret;
+>  }
+>  
+> -- 
+> 2.38.1
+> 
+> 
 
