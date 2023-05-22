@@ -2,51 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8278470CAEA
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 22:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1483770CAF1
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 22:27:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1C5H-0004Zt-HA; Mon, 22 May 2023 16:24:47 -0400
+	id 1q1C6y-00061I-8M; Mon, 22 May 2023 16:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q1C5F-0004ZX-ED
- for qemu-devel@nongnu.org; Mon, 22 May 2023 16:24:45 -0400
-Received: from rev.ng ([5.9.113.41])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q1C6m-0005q6-Pm; Mon, 22 May 2023 16:26:21 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q1C5D-0004Pz-5g
- for qemu-devel@nongnu.org; Mon, 22 May 2023 16:24:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:From:Reply-To:Cc:To:Subject:References:MIME-Version:
- Date:Message-ID:Content-Type:Sender:Content-Transfer-Encoding:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=q+YspsFRWcjFJ8iV/0UxuBs6YjZP+nZKZ3Zb5R1rd9k=; b=PqY9j2xvGyQX8YXCAam94oxeaV
- rdJNf+o+jUmmUA5DBtYiRCCaImqQf+ajd5gah89JVpALPBghs2wilgmA1pP+kqcP9OUS6sIuiOw2s
- v0QlpCWAxsJPYffRlkuXaihrnpQI2yysHeFixrmEE7GKBMAHXh//UdBhxuOq1NfnPs30=;
-Content-Type: multipart/mixed; boundary="------------FDFpJB1xOM7umC0lk5x29EGQ"
-Message-ID: <4ffdd486-ec7d-49c7-1330-0d0b090735b9@rev.ng>
-Date: Mon, 22 May 2023 22:24:22 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q1C6h-0004xK-Qm; Mon, 22 May 2023 16:26:20 -0400
+Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:2c24:0:640:73f8:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 4874660BEA;
+ Mon, 22 May 2023 23:26:04 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b50f::1:35] (unknown
+ [2a02:6b8:b081:b50f::1:35])
+ by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 3Qodgh2OmW20-QWEBRGZ2; Mon, 22 May 2023 23:26:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1684787163; bh=qjJCSlccghjDut0sTVTMT/Z61cXvKx0QmPG9tt4Ltlo=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=w6cm+b12CXD+qQHUtlDntWkRCnHgVnYLJejRdr13DG7eLvzP6zTYgP//APn1cEu2S
+ ociO21xZpiQkdaPivLmD8uT8VmTyV3USygwDSthq6ghOLUG4oK/fi3Di8LwXl6wVqv
+ Rcq/qwS+LRdED0XpeVmuveZj4EY1gGEmmv7rixUQ=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <b4127b37-1be6-91f5-aa76-429ef4e97a11@yandex-team.ru>
+Date: Mon, 22 May 2023 23:26:03 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-References: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
-Subject: Help finding Coverity defects for generated Hexagon code
+ Thunderbird/102.9.0
+Subject: Re: [PATCH] qcow2: Explicit mention of padding bytes
 Content-Language: en-US
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>, pbonzini@redhat.com
-Organization: rev.ng
-In-Reply-To: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
-X-Forwarded-Message-Id: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -9
-X-Spam_score: -1.0
-X-Spam_bar: -
-X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SENDGRID_REDIR=1.068,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "open list:qcow2" <qemu-block@nongnu.org>
+References: <20230522184631.47211-1-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230522184631.47211-1-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,248 +72,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  anjo@rev.ng
-X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------FDFpJB1xOM7umC0lk5x29EGQ
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On 22.05.23 21:46, Eric Blake wrote:
+> Although we already covered the need for padding bytes with our
+> changes in commit 3ae3fcfa, commit 66fcbca5 (both v5.0.0) added one
+> byte and relied on the rest of the text for implicitly covering 7
+> padding bytes.  For consistency with other parts of the header (such
+> as the header extension format listing padding from n - m, or the
+> snapshot table entry listing variable padding), we might as well call
+> out the remaining 7 bytes as padding until such time (as any) as they
+> gain another meaning.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Hi,
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-coverity recently reported some defects in code generated by idef-parser
-(email attached). These defects are expected and we plan to emit a
-/* coverity[event_tag] */ comment to disable the specific event triggered.
+> ---
+> 
+> Spring cleaning my old branches.
+> 
+> v3: reviving an old patch; v2 was:
+> https://lists.gnu.org/archive/html/qemu-devel/2020-04/msg00687.html
+> ---
+>   docs/interop/qcow2.txt | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/docs/interop/qcow2.txt b/docs/interop/qcow2.txt
+> index e7f036c286b..2c4618375ad 100644
+> --- a/docs/interop/qcow2.txt
+> +++ b/docs/interop/qcow2.txt
+> @@ -226,6 +226,7 @@ version 2.
+>                       <https://www.zlib.net/> in QEMU. However, clusters with the
+>                       deflate compression type do not have zlib headers.
+> 
+> +        105 - 111:  Padding, contents defined below.
+> 
 
-However, I'm not able to find the event_tag as I can't find the defect in
-the QEMU coverity project, and the link in the email simply brings me
-to the main project page. I've tried sorting through the defects and
-searching for the CID without luck.
-
-Any ideas? I'm not super familiar with coverity.
 
 -- 
-Anton Johansson,
-rev.ng Labs Srl.
+Best regards,
+Vladimir
 
---------------FDFpJB1xOM7umC0lk5x29EGQ
-Content-Type: message/rfc822; name="New Defects reported by Coverity Scan for
- QEMU.eml"
-Content-Disposition: attachment; filename="New Defects reported by Coverity
- Scan for QEMU.eml"
-Content-Transfer-Encoding: 7bit
-
-Delivered-To: 97antjoh@gmail.com
-Received: by 2002:a05:6022:81a1:b0:3f:b214:ff8f with SMTP id c33csp1096559lab;
-        Fri, 19 May 2023 13:16:27 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7KCh9qW2QQpuHQKOq6wCWtCw5vdDgE06yZ/SLsC/dfMkADckWS6smEfaeT05Jzofz7xVbV
-X-Received: by 2002:adf:f7c8:0:b0:306:2e04:5925 with SMTP id a8-20020adff7c8000000b003062e045925mr2828893wrq.17.1684527387619;
-        Fri, 19 May 2023 13:16:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1684527387; cv=none;
-        d=google.com; s=arc-20160816;
-        b=FVbhLJ/ss8bd+lQPDx3nl5AiWaBqLezvrc7+G261PsinJ5j60gGPtmS+VMgmSkWe2T
-         ETtuCOuluJOuIbF/eFRkUy12OzGidsJfIV+Gnbws4FHuWfQ8mj/MIANSXadjX2YPmU+7
-         8zFIn7AqSVqP9Cn01CGOo1weIX35fEBP/vLMI/RijumcGfZrkmavYJYHjQ9deBxflmYb
-         DQjLk6VcWTnB4QGGjeChLgdkPdsCitpNxpltLQzBaJ1p2MAkpSLvFJVNfAHsnn56j6yQ
-         cq6HVcbrfufMgr+hTYwRlezx3D/Pqb5dZv6jZpi5Tel4txcYTj8b+bESYz604QP7gve/
-         AaBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
-        h=content-transfer-encoding:to:mime-version:subject:message-id:from
-         :date:dkim-signature:dkim-signature;
-        bh=LrEaXnV2Sb9rHuUOHsIy/wx8lMCcrnrX6NODW3lRuAI=;
-        b=OwkOAVcloveG2GtA33z+5TM8VA9Q5WG68BnCh2n9ZApYsJzCNJC+kcPSZ69BaUU77a
-         JdDrhtzdPtY/Z8ueegWsqAoUhlu4hNpAsgGdVb1BfbmrD3idIGAYGqGJYAGAf5fGn1So
-         4PPRewCapg/PDnbZ8xSqEODrTqptXlIfK8oFOjXgHqhdrHCPVk5KtHoaVP5UrM1SwOgx
-         JTPmZzExLL45phwbELVmCyeL7fX4XQOtfhAZeSvYY8Ti+VME2qLvm7UiHgeIn9bHopMX
-         KNEtQQEWfHdEx1pCDDq0gQ8eeyc1ctrbxVPnmdSVMyXmgEQoMJ2NPdcQiaUWVaQQE/fB
-         cJhw==
-ARC-Authentication-Results: i=1; mx.google.com;
-       dkim=pass header.i=@rev.ng header.s=dkim header.b=mA1YOwk6;
-       dkim=pass header.i=@coverity.com header.s=sc header.b=j+8pJ9ty;
-       spf=fail (google.com: domain of bounces+15810271-3271-anjo=rev.ng@sg.coverity.com does not designate 5.9.113.41 as permitted sender) smtp.mailfrom="bounces+15810271-3271-anjo=rev.ng@sg.coverity.com";
-       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=coverity.com
-Return-Path: <bounces+15810271-3271-anjo=rev.ng@sg.coverity.com>
-Received: from rev.ng (rev.ng. [5.9.113.41])
-        by mx.google.com with ESMTPS id y10-20020a056000108a00b0030630e6f95asi2900818wrw.640.2023.05.19.13.16.27
-        for <97antjoh@gmail.com>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 19 May 2023 13:16:27 -0700 (PDT)
-Received-SPF: fail (google.com: domain of bounces+15810271-3271-anjo=rev.ng@sg.coverity.com does not designate 5.9.113.41 as permitted sender) client-ip=5.9.113.41;
-Authentication-Results: mx.google.com;
-       dkim=pass header.i=@rev.ng header.s=dkim header.b=mA1YOwk6;
-       dkim=pass header.i=@coverity.com header.s=sc header.b=j+8pJ9ty;
-       spf=fail (google.com: domain of bounces+15810271-3271-anjo=rev.ng@sg.coverity.com does not designate 5.9.113.41 as permitted sender) smtp.mailfrom="bounces+15810271-3271-anjo=rev.ng@sg.coverity.com";
-       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=coverity.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
-	s=dkim; h=Content-Transfer-Encoding:Content-Type:To:Mime-Version:Subject:
-	Message-ID:From:Date:Sender:Reply-To:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=LrEaXnV2Sb9rHuUOHsIy/wx8lMCcrnrX6NODW3lRuAI=; b=mA1YOwk6dba0eX/W2FA/AR2aDO
-	tpcl1mVSLEWDbSoAkOLb0itsqseiHu7UFtPfAg2VGxNyeeHQT2jxtUJY897elPaeljPXU8dIp/hBP
-	y+HNjY/OEGY20tl9RBojo24uQVVjXuq442wGbR8oz/OYwoUCAwQAs6Dse7GTDXgyMvh8=;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=coverity.com;
-	h=from:subject:mime-version:to:content-type:content-transfer-encoding:
-	cc:content-type:from:subject:to;
-	s=sc; bh=LrEaXnV2Sb9rHuUOHsIy/wx8lMCcrnrX6NODW3lRuAI=;
-	b=j+8pJ9tyFPM1cK6s1Zccjk727xr2BzVSn82po6zSnqD+baJGw3ehbpResx0gUG9+K+l1
-	0muFTOSQA4plDV2s3HwGSD13Xm6ZiSfYL3YLtShMoVWyGSELfKF/1+NVSFmMFIt/8RBocV
-	llMFvucdxrJBUgEF8ssshsLRyFkBU/9LZ6r9ETeg/9eRD7GaAYvaVuBRLac6GTZzBSSdr0
-	eh0MYTMiy1Ct7zZ1CPpRfJVw/J0ft3uxC+BrSJRj4M2nJfPxpBzUaCmLonyjCiMHEplVyK
-	hqdJF6jV1yBSaMDBs4iFTsO1j8Wn3dIyRye2qfSXkoSS90WUtloX8VulJGDrRIWQ==
-Received: by filterdrecv-65f68489c8-lx4fk with SMTP id filterdrecv-65f68489c8-lx4fk-1-6467D913-43
-        2023-05-19 20:16:19.691451651 +0000 UTC m=+765614.450674333
-Received: from coverity.com (unknown)
-	by geopod-ismtpd-0 (SG) with ESMTP
-	id OA6rqqTXRcWSa5Rthq-ZFw
-	Fri, 19 May 2023 20:16:19.572 +0000 (UTC)
-Date: Fri, 19 May 2023 20:16:19 +0000 (UTC)
-From: scan-admin@coverity.com
-Message-ID: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
-Subject: New Defects reported by Coverity Scan for QEMU
-Mime-Version: 1.0
-X-SG-EID:  =?us-ascii?Q?HBOmY=2FE5MTYb8Mhr7ulQJIaFxcZEWpCD=2F7YwgOg+H8uRiPTm6w=2F+4Fwt5x0Cl7?=
- =?us-ascii?Q?HwU9l8yr80c3VDUMmciluEPWHGWqkT709IWbvQW?=
- =?us-ascii?Q?Vi0=2FdRVD78OXKqyQkiG4ZETBbYoLJRenM=2FrtaD4?=
- =?us-ascii?Q?5gZDX7W=2FbvgbptbTPFJdnoJSb03hXscsa3t4L+o?=
- =?us-ascii?Q?680PBeMUt5q9PZ9jFtkAcOGO1eIbbrn4Svg=3D=3D?=
-To: anjo@rev.ng
-X-Entity-ID: S2cgcZKcMUFZg9Mweglhkg==
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-
-Hi,
-
-Please find the latest report on new defect(s) introduced to QEMU found with Coverity Scan.
-
-5 new defect(s) introduced to QEMU found with Coverity Scan.
-9 defect(s), reported by Coverity Scan earlier, were marked fixed in the recent build analyzed by Coverity Scan.
-
-New defect(s) Reported-by: Coverity Scan
-Showing 5 of 5 defect(s)
-
-
-** CID 1512512:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 32297 in emit_F2_dfmpylh()
-
-
-________________________________________________________________________________________________________
-*** CID 1512512:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 32297 in emit_F2_dfmpylh()
-32291     tcg_gen_ori_i64(tmp_3, tmp_2, qemu_tmp_1);
-32292     TCGv_i64 tmp_4 = tcg_temp_new_i64();
-32293     tcg_gen_mul_i64(tmp_4, tmp_0, tmp_3);
-32294     int64_t qemu_tmp_2 = (int64_t)((int32_t) 0x1);
-32295     TCGv_i64 tmp_5 = tcg_temp_new_i64();
-32296     if (qemu_tmp_2 >= 64) {
->>>     CID 1512512:  Control flow issues  (DEADCODE)
->>>     Execution cannot reach this statement: "tcg_gen_movi_i64(tmp_5, 0L);".
-32297     tcg_gen_movi_i64(tmp_5, 0);
-32298     } else {
-32299     tcg_gen_shli_i64(tmp_5, tmp_4, qemu_tmp_2);
-32300     }
-32301     TCGv_i64 tmp_6 = tcg_temp_new_i64();
-32302     tcg_gen_add_i64(tmp_6, RxxV, tmp_5);
-
-** CID 1512511:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 32257 in emit_F2_dfmpyll()
-
-
-________________________________________________________________________________________________________
-*** CID 1512511:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 32257 in emit_F2_dfmpyll()
-32251     } else {
-32252     tcg_gen_shri_i64(tmp_3, prod, qemu_tmp_0);
-32253     }
-32254     int64_t qemu_tmp_1 = (int64_t)((int32_t) 0x1);
-32255     TCGv_i64 tmp_4 = tcg_temp_new_i64();
-32256     if (qemu_tmp_1 >= 64) {
->>>     CID 1512511:  Control flow issues  (DEADCODE)
->>>     Execution cannot reach this statement: "tcg_gen_movi_i64(tmp_4, 0L);".
-32257     tcg_gen_movi_i64(tmp_4, 0);
-32258     } else {
-32259     tcg_gen_shli_i64(tmp_4, tmp_3, qemu_tmp_1);
-32260     }
-32261     tcg_gen_mov_i64(RddV, tmp_4);
-32262     TCGv_i64 tmp_5 = tcg_temp_new_i64();
-
-** CID 1512510:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 16045 in emit_M2_dpmpyss_rnd_s0()
-
-
-________________________________________________________________________________________________________
-*** CID 1512510:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 16045 in emit_M2_dpmpyss_rnd_s0()
-16039     tcg_gen_addi_i64(tmp_3, tmp_2, qemu_tmp_0);
-16040     int64_t qemu_tmp_1 = (int64_t)((int32_t) 0x20);
-16041     TCGv_i64 tmp_4 = tcg_temp_new_i64();
-16042     {
-16043     int64_t shift = qemu_tmp_1;
-16044     if (qemu_tmp_1 >= 64) {
->>>     CID 1512510:  Control flow issues  (DEADCODE)
->>>     Execution cannot reach this statement: "shift = 63L;".
-16045         shift = 64 - 1;
-16046     }
-16047     tcg_gen_sari_i64(tmp_4, tmp_3, shift);
-16048     }
-16049     TCGv_i32 tmp_5 = tcg_temp_new_i32();
-16050     tcg_gen_trunc_i64_tl(tmp_5, tmp_4);
-
-** CID 1512509:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 32287 in emit_F2_dfmpylh()
-
-
-________________________________________________________________________________________________________
-*** CID 1512509:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 32287 in emit_F2_dfmpylh()
-32281     tcg_gen_extract_i64(tmp_1, RttV, ((int32_t) 0x1) * 32, 32);
-32282     int64_t qemu_tmp_0 = (int64_t)((int32_t) 0x14);
-32283     TCGv_i64 tmp_2 = tcg_temp_new_i64();
-32284     if (qemu_tmp_0 != 0) {
-32285     tcg_gen_extract_i64(tmp_2, tmp_1, 0, qemu_tmp_0);
-32286     } else {
->>>     CID 1512509:  Control flow issues  (DEADCODE)
->>>     Execution cannot reach this statement: "tcg_gen_movi_i64(tmp_2, 0L);".
-32287     tcg_gen_movi_i64(tmp_2, 0);
-32288     }
-32289     int64_t qemu_tmp_1 = (int64_t)((int32_t) 0x100000);
-32290     TCGv_i64 tmp_3 = tcg_temp_new_i64();
-32291     tcg_gen_ori_i64(tmp_3, tmp_2, qemu_tmp_1);
-32292     TCGv_i64 tmp_4 = tcg_temp_new_i64();
-
-** CID 1512508:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 32250 in emit_F2_dfmpyll()
-
-
-________________________________________________________________________________________________________
-*** CID 1512508:  Control flow issues  (DEADCODE)
-/target/hexagon/idef-generated-emitter.indented.c: 32250 in emit_F2_dfmpyll()
-32244     TCGv_i64 tmp_2 = tcg_temp_new_i64();
-32245     tcg_gen_mul_i64(tmp_2, tmp_0, tmp_1);
-32246     tcg_gen_mov_i64(prod, tmp_2);
-32247     int64_t qemu_tmp_0 = (int64_t)((int32_t) 0x20);
-32248     TCGv_i64 tmp_3 = tcg_temp_new_i64();
-32249     if (qemu_tmp_0 >= 64) {
->>>     CID 1512508:  Control flow issues  (DEADCODE)
->>>     Execution cannot reach this statement: "tcg_gen_movi_i64(tmp_3, 0L);".
-32250     tcg_gen_movi_i64(tmp_3, 0);
-32251     } else {
-32252     tcg_gen_shri_i64(tmp_3, prod, qemu_tmp_0);
-32253     }
-32254     int64_t qemu_tmp_1 = (int64_t)((int32_t) 0x1);
-32255     TCGv_i64 tmp_4 = tcg_temp_new_i64();
-
-
-________________________________________________________________________________________________________
-To view the defects in Coverity Scan visit, https://u15810271.ct.sendgrid.net/ls/click?upn=HRESupC-2F2Czv4BOaCWWCy7my0P0qcxCbhZ31OYv50yrzEQNXe51mg-2FlKoEnRoarMq5nOxxfhqLUuo8HvG2S4Ew-3D-3DbhwO_HM6v81mUGiNDJakbNe6YIRym-2FQHdIITfL-2F6M7vogPEFZsLU1jTbzTaCeyjviVsFQbBtqkUAi0j5NgYn6TunnxkQOIazJbAGHPpUUiVWiLdepITfddm-2BZj5rEvsNpXIGxoCBaqL46nJjmZh0KtMVH7OF2PUhlwJEAF8mxruXgXKxWiIhfYkC5C9ZGRS-2Bb899ClIwrdzrG-2Bcyej9gVEhhbTg-3D-3D
-
-  To manage Coverity Scan email notifications for "anjo@rev.ng", click https://u15810271.ct.sendgrid.net/ls/click?upn=HRESupC-2F2Czv4BOaCWWCy7my0P0qcxCbhZ31OYv50yped04pjJnmXOsUBtKYNIXxkHoxhtWuBL8xoZ3fXkWsjZDnFzdblVNdGVG7hTtMZDUMu9N-2FYFh-2BJcj3muNZzOh-2Bw69-2BzSi3-2Bq8J92Hkdofe5qo1YUQPHgoatMDbyIAxhNk-3DSIxP_HM6v81mUGiNDJakbNe6YIRym-2FQHdIITfL-2F6M7vogPEFZsLU1jTbzTaCeyjviVsFQjadlt-2B2lzdXKw3TRUawXJePqEdv2tDdi9YF5DmvrNW-2BzIqvOihj37P4PnQkxzqLli3gtnfjMNcu8OdlowwiquMdWPu63YHLdJ3vzUw8b00nEIzPsYQD9PMFGPPitGYc6d-2B71ETjA-2FyDsAw1RS5JQhw-3D-3D
-
-
---------------FDFpJB1xOM7umC0lk5x29EGQ--
 
