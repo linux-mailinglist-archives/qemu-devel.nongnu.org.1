@@ -2,94 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0394270C4DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 20:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED36270C4F4
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 20:06:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q19qu-0002xR-2D; Mon, 22 May 2023 14:01:48 -0400
+	id 1q19ux-0004qJ-Un; Mon, 22 May 2023 14:06:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q19qf-0002uo-KQ
- for qemu-devel@nongnu.org; Mon, 22 May 2023 14:01:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1q19uv-0004pX-7v
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 14:05:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q19qe-0007te-1a
- for qemu-devel@nongnu.org; Mon, 22 May 2023 14:01:33 -0400
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1q19ut-0000dO-4v
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 14:05:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684778490;
+ s=mimecast20190719; t=1684778751;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VduVAIEXfCk+g5yzVBb8JD66cuiIAVSiWdbriaSaW+s=;
- b=XGTxCwqwP+H6P7B+a/WS6gyvZNZGNxnN10TjFJ8nqgSLNOzEaOJKOX6nfdVO+yThHmjsRR
- 2oC//6lpwylGYxemztyXrOppMNkxDK4rZ2scxj03bGntCOVMljaSHOnc2vt93ixwVFr/nS
- hMQ22gUkcLH/Y7deb8NHArCGeqRW4V4=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/sP5Mbo+KfoVAN0aoyuMtemv59lgs/athzOa0Ms7dKM=;
+ b=KC81GmTntyQSVdrAwS7KbVA7+EfuuC74CvUWGoqCVgvjLR4cxG/uLQBMiIat9RR4tykohF
+ UbF7oFRzpWqt9RnaJwR2ueCK5uCD0VK54SUmda7dQz/phIwt7vHOCNbit1jI4wAmZ48uWU
+ mVyudwgY6JVUYk+kXDZOReEpkY6NeUw=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-YKm9BUo7MMitmSa4HuJlDg-1; Mon, 22 May 2023 14:00:35 -0400
-X-MC-Unique: YKm9BUo7MMitmSa4HuJlDg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-94a35b0d4ceso627224366b.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 11:00:18 -0700 (PDT)
+ us-mta-177-r_vJXZz7ODmkZFK_GWW8zw-1; Mon, 22 May 2023 14:05:50 -0400
+X-MC-Unique: r_vJXZz7ODmkZFK_GWW8zw-1
+Received: by mail-ua1-f69.google.com with SMTP id
+ a1e0cc1a2514c-78684c215eeso68816241.3
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 11:05:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684778417; x=1687370417;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VduVAIEXfCk+g5yzVBb8JD66cuiIAVSiWdbriaSaW+s=;
- b=Hs18b/q5CkKRVc52BCMvGDWMC0FAOJIdktblvF4BcEMPn8Vbmjt/pSvzqCIqxGRSiP
- s/iLViV8x+KhWyhddDxM5feC+vtr8iFmNHoyr7oljbLej//DFBCuKO++WvPLbJ8I2aWB
- MXpaBZg64FBGLlqgzp4l2wMDCGZtm2PkjYDldihyNmCqEQQ2uaso0SjQyTnPQ8SdgsX/
- dgSsLPOEPelJs0N8gxttdO3eI5mkRBv0qdklGUx6m8pm5yznjzEAFNp73lKLuPMxTJ8M
- WB8pUxsiMI0hBUm0ej2C9HwH28KZKwKIfqXNvcMsnk26MZIYyNUwqHJjHemTK0diVCBH
- Nb+g==
-X-Gm-Message-State: AC+VfDz7MB53/iIGLN5VCBPr3oGWs3TJm8rLflblek1OsX6MoUjb9XjO
- CmRDbHwpk7iotmarTfXC4VwTwowuPDttZJ7+voycxCpxV96C4RF1nP0jmnnG039zWa2uPkbtn2+
- YAcV9OI0IfeqQx0M=
-X-Received: by 2002:a17:907:6d8f:b0:96f:7e14:3084 with SMTP id
- sb15-20020a1709076d8f00b0096f7e143084mr9908847ejc.44.1684778417422; 
- Mon, 22 May 2023 11:00:17 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6TXA1tuoaDJqfacfWzLn1zNnsE9Ru4aXvnoAeJlJSt7tBUWWYj4RF155AE/PXNRulOS/CRPQ==
-X-Received: by 2002:a17:907:6d8f:b0:96f:7e14:3084 with SMTP id
- sb15-20020a1709076d8f00b0096f7e143084mr9908821ejc.44.1684778417110; 
- Mon, 22 May 2023 11:00:17 -0700 (PDT)
-Received: from [192.168.8.105] (tmo-096-217.customers.d1-online.com.
- [80.187.96.217]) by smtp.gmail.com with ESMTPSA id
- z14-20020a170906240e00b00966056bd4f4sm3371877eja.28.2023.05.22.11.00.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 11:00:16 -0700 (PDT)
-Message-ID: <ddc978a1-8edb-f284-4a45-6d10d1b7733a@redhat.com>
-Date: Mon, 22 May 2023 20:00:14 +0200
+ d=1e100.net; s=20221208; t=1684778750; x=1687370750;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/sP5Mbo+KfoVAN0aoyuMtemv59lgs/athzOa0Ms7dKM=;
+ b=PkUjuH4vLSkPiq7v5ysnhjcgrs8uZs322uJ7MiDJaDNRqGRp39Bq8B3JgBcGSbHRS+
+ Z7Wdqbro6H2T5foQzwv+/HiEWhf362lgWxDwLYb9K017CsmFQrWSXyzc4X/x7qlcxCM2
+ vwXIgSHrZOGsKgmg0D8/oQ9AiIWvruOab8bAl3Z+Wbk5/TwVscFTpYajAO6702ItZ/Ov
+ 5gCuE/cBw6IF1FFoiW1WOg7m6/DMqZO5XAoKML3lhVaARmLp755WLBGRe0wmM1hYMwCh
+ oufJfEeEHLXD9Nuoa0stwibAHmcYLYT2SrKOuvmS+JAlYUfP1J+X19guyRW9i3Lub6QE
+ P0Wg==
+X-Gm-Message-State: AC+VfDxFClOZ0+1MayIza9rTZ1hdr4eEvIGBdjrsUQF7hsKjEymdX9BU
+ N6WYjJHbGpMmBVmzGwlqDGz2gfl101w6r0BKCxXBbxrWxxemCnT9b9glgwCnfgNM62dFHIuORVS
+ ez6kLaa4mVFD8XBgXVUM3g4Ky9GAEgxE+CyjyjF9Bjw==
+X-Received: by 2002:a1f:45c3:0:b0:453:2ae:f37c with SMTP id
+ s186-20020a1f45c3000000b0045302aef37cmr3960074vka.2.1684778749733; 
+ Mon, 22 May 2023 11:05:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5gp0RFZxkUk7ttBpg3OWOa1XTsxapMBkVStIr3mRNWM3Vsui4tsq9wRH4FEhUOkttB/RD+DUny2qaIua6KaN8=
+X-Received: by 2002:a1f:45c3:0:b0:453:2ae:f37c with SMTP id
+ s186-20020a1f45c3000000b0045302aef37cmr3960067vka.2.1684778749510; Mon, 22
+ May 2023 11:05:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] acpi/tests/avocado/bits: enable bios bits avocado tests
- on gitlab CI pipeline
-To: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Cc: Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-References: <20230517065357.5614-1-anisinha@redhat.com>
- <501EE8C0-D6C2-4FDE-9747-90932F70EB77@redhat.com>
- <20230521015057-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230521015057-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+References: <20230508141813.1086562-1-mcascell@redhat.com>
+In-Reply-To: <20230508141813.1086562-1-mcascell@redhat.com>
+From: Mauro Matteo Cascella <mcascell@redhat.com>
+Date: Mon, 22 May 2023 20:05:38 +0200
+Message-ID: <CAA8xKjX=j8rDCL=UfBF2ES8hhSmxXrpOn_cgyhC5h37i4vh+Dg@mail.gmail.com>
+Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
+ cursor_alloc
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, marcandre.lureau@redhat.com, jacek.halon@gmail.com, 
+ Yair M <yairh33@gmail.com>, "Elsayed El-Refa'ei" <e.elrefaei99@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,33 +95,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/05/2023 07.51, Michael S. Tsirkin wrote:
-> On Fri, May 19, 2023 at 08:44:18PM +0530, Ani Sinha wrote:
->>
->>
->>> On 17-May-2023, at 12:23 PM, Ani Sinha <anisinha@redhat.com> wrote:
->>>
->>> Biosbits avocado tests on gitlab has thus far been disabled because some
->>> packages needed by this test was missing in the container images used by gitlab
->>> CI. These packages have now been added with the commit:
->>>
->>> da9000784c90d ("tests/lcitool: Add mtools and xorriso and remove genisoimage as dependencies")
->>>
->>> Therefore, this change enables bits avocado test on gitlab.
->>> At the same time, the bits cleanup code has also been made more robust with
->>> this change.
->>>
->>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>
->> Michael, did you forget to queue this?
-> 
-> 
-> Not that I forgot but it takes me time to process new patches.
-> This came after I started testing the pull.
+On Mon, May 8, 2023 at 4:20=E2=80=AFPM Mauro Matteo Cascella
+<mcascell@redhat.com> wrote:
+>
+> The cursor_alloc function still accepts a signed integer for both the cur=
+sor
+> width and height. A specially crafted negative width/height could make da=
+tasize
+> wrap around and cause the next allocation to be 0, potentially leading to=
+ a
+> heap buffer overflow. Modify QEMUCursor struct and cursor_alloc prototype=
+ to
+> accept unsigned ints.
+>
+> Fixes: CVE-2023-1601
+> Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_alloc (CVE-20=
+21-4206)")
+> Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
+> Reported-by: Jacek Halon <jacek.halon@gmail.com>
 
-FYI, I've picked it up today.
+Addendum:
+Reported-by: Yair Mizrahi <yairh33@gmail.com>
+Reported-by: Elsayed El-Refa'ei <e.elrefaei99@gmail.com>
 
-  Thomas
+> ---
+>  include/ui/console.h | 4 ++--
+>  ui/cursor.c          | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/ui/console.h b/include/ui/console.h
+> index 2a8fab091f..92a4d90a1b 100644
+> --- a/include/ui/console.h
+> +++ b/include/ui/console.h
+> @@ -144,13 +144,13 @@ typedef struct QemuUIInfo {
+>
+>  /* cursor data format is 32bit RGBA */
+>  typedef struct QEMUCursor {
+> -    int                 width, height;
+> +    uint32_t            width, height;
+>      int                 hot_x, hot_y;
+>      int                 refcount;
+>      uint32_t            data[];
+>  } QEMUCursor;
+>
+> -QEMUCursor *cursor_alloc(int width, int height);
+> +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height);
+>  QEMUCursor *cursor_ref(QEMUCursor *c);
+>  void cursor_unref(QEMUCursor *c);
+>  QEMUCursor *cursor_builtin_hidden(void);
+> diff --git a/ui/cursor.c b/ui/cursor.c
+> index 6fe67990e2..b5fcb64839 100644
+> --- a/ui/cursor.c
+> +++ b/ui/cursor.c
+> @@ -90,7 +90,7 @@ QEMUCursor *cursor_builtin_left_ptr(void)
+>      return cursor_parse_xpm(cursor_left_ptr_xpm);
+>  }
+>
+> -QEMUCursor *cursor_alloc(int width, int height)
+> +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height)
+>  {
+>      QEMUCursor *c;
+>      size_t datasize =3D width * height * sizeof(uint32_t);
+> --
+> 2.40.1
+>
 
+
+--
+Mauro Matteo Cascella
+Red Hat Product Security
+PGP-Key ID: BB3410B0
 
 
