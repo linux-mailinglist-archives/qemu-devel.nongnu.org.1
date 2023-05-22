@@ -2,99 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDC270BC29
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 598EF70BC4D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:51:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q141S-00045M-MV; Mon, 22 May 2023 07:48:18 -0400
+	id 1q1445-0005H1-Gi; Mon, 22 May 2023 07:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1q141P-00044s-QI
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:48:15 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1q141M-000756-OP
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:48:15 -0400
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id 2B69B5C0102;
- Mon, 22 May 2023 07:48:05 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute2.internal (MEProxy); Mon, 22 May 2023 07:48:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
- 1684756085; x=1684842485; bh=5VDY/DQlRjweo1+bKEszwnsHQAkleKao7iy
- X343SUcA=; b=SK34oiDW3ThI7BVaJG1fa6o+Qlp2ho4CJIqrx7xrfjEzKPt0i0m
- h7Uphv//J2UDTKHyJ8l7fYFMHhCQoDYJCeCvJ3BcRZ5D/29WXU0aJDiekfsLLPEe
- SgGygH/GtrNIcL+VteCmeL5ce9tH90pYGcd3eefpdexVX0Xse3V2L2GeUX9NIguv
- eBq7nwSbzeQWf/Lg7idUD4I2bCDAgiKV/W3smv9oTIko+EQJ6m3KtDsou+cGeTHN
- +T2TPDbFg5wqG2mcLfZG3WWodtYZbOL8o+CQqeAX5212/BoniWuNJJBze9h5FCZS
- J4kdAVWcnOIUpJe7ocEl+5Tyx4sYp/41NgQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
- 1684756085; x=1684842485; bh=5VDY/DQlRjweo1+bKEszwnsHQAkleKao7iy
- X343SUcA=; b=oGZoWdGn7mChk4I8lyzVuk9hf1jQTChANRgOmGNAp7uQa9nA+7s
- zuJD2vtYofi3FFcx+/JwnfNQBTaIunRB1EkwwD133RhhVadP2AVDXHuUyyDrZjxD
- R5oPK1XiEeErTUS8+AD/BdFHHhuY6BrcA8qkR/7lgTIYwxYSpmMbTFenN5jH3YDE
- fqZ30ZdbD5/ljObn7tmTEsPULgycYlQ/0FLUB/sl1JDqYWDkOKf/gGHiuTzYSnnV
- CoPtFgpJjvsIRmCs/RfgimjyfmJbi02W4py8WS8rPvj/u5xXcU+/5+GeTdqRzxcf
- EU7ujdWb949xcWY3aiLCbKGo2oLQ7I2bUgw==
-X-ME-Sender: <xms:dFZrZFdezwOLTZBJu6QNqoZ6ww56ksdde76QMt7B8uSi1McSyy_Fxw>
- <xme:dFZrZDNxN6BSHMIQD9VTmtGpq6IjuXP0n6wORUXlJq3i4InmCJik_2BCNiHVCzNuV
- k-7czG4Tll_-KC04hU>
-X-ME-Received: <xmr:dFZrZOhcs5Ov3nYdYRfEfQwncEnEMwuxnkp_JRFucQme2CfU_UdunWFUkh4WjtSx2Uh8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejuddggeduucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurheptggguffhjgffvefgkfhfvffosehtqhhmtdhhtdejnecuhfhrohhmpeflihgr
- gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
- cuggftrfgrthhtvghrnhepuddtjeffteetfeekjeeiheefueeigeeutdevieejveeihfff
- ledvgfduiefhvddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
- hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:dFZrZO9qmiMonBO6N7s3TxFrlV0ty1vd0gqCbl8QviaCo_cD_WTaPA>
- <xmx:dFZrZBsGavf7T6bu0yMm5MdGssnLkkoeXhHdSDe9F0tbL9PEt0vnuQ>
- <xmx:dFZrZNF3ayVVvcdPu2bm6vUpYV0pZg62-J5tYup0603Tf-nhhYOXaw>
- <xmx:dVZrZFgHPaG4POn8LMepp2w2X7qYIa81f-YnRV7ETih6PIttNsk4Ag>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 22 May 2023 07:48:03 -0400 (EDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.500.231\))
-Subject: Re: [PATCH 1/4] hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-In-Reply-To: <CAAhV-H4kx5cDcswkHpCYH9UZhh7PDEndP+NvwNgdZaZji6BFLA@mail.gmail.com>
-Date: Mon, 22 May 2023 12:47:52 +0100
-Cc: QEMU devel <qemu-devel@nongnu.org>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CA74488A-DB92-4D13-8BAC-5E853F187419@flygoat.com>
-References: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
- <20230521102307.87081-2-jiaxun.yang@flygoat.com>
- <CAAhV-H4kx5cDcswkHpCYH9UZhh7PDEndP+NvwNgdZaZji6BFLA@mail.gmail.com>
-To: Huacai Chen <chenhuacai@kernel.org>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>
-X-Mailer: Apple Mail (2.3731.500.231)
-Received-SPF: pass client-ip=66.111.4.29; envelope-from=jiaxun.yang@flygoat.com;
- helo=out5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q1434-00054q-T2
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:03 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q142y-0007Mq-Th
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:49:55 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1ae852a5330so19558455ad.3
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 04:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684756191; x=1687348191;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mAGcH5e8/Df3po5mgqSd+bFIdk4+MUX6wGZwUaFC68Q=;
+ b=CmOh7Ij8xo1QPmwuAOtRgkwdeI0hCgkWW5EYxcSpQK2shEwiVQbWKnn8Ha08Sd1+06
+ fpKeHbXTHZ+D7riPOKPr3PnRFdy7paZPbrQe7rg1vR+4YYVCQa2LedyTeoqQqJAc2Rtx
+ 6znnFJ3Hi0vz6YRmLxb2iMIf40xcovECAG7PZG+5TLqvSqLI4BG6XdIa1Q1BAouGGMV7
+ Sc5wrbkaW/WFt5byhdjrnXcYnM3eGDN69TwFnMSBBTfCfo1ymlIDjwjyPDQfQyQiXQh7
+ 5Tq0o9WYE0L+lrISF49PAmPsMEBgvsPe/h93Gt7Yy6MEvPYWzWlJEw8vheHT1kc8wXYe
+ kfQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684756191; x=1687348191;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mAGcH5e8/Df3po5mgqSd+bFIdk4+MUX6wGZwUaFC68Q=;
+ b=VABOYyyVAHGvg5licaCN3FAGeGv70QX+7xjyxcvkkv7dDoZGSHD5YqoZAmNADcrfVd
+ zDOp6ClOHCkmRCOGlyi9HVLeQOT/ZtsQ7o+6kkkb+C3nqNIQvFP2xyHO65RSnElhxuGB
+ uLWeVpB5C7ZOafpV4ErMP+hHTDlcWnVy74bksOz3XZKHDgru2DzX4aMUEQiSIUUTxX8O
+ JlrKWLqV2FAeq3fsNGWXLb3do+djzuk2SCcqqdJHXVE1EZySvp3hy7846yyFeZzf9l6t
+ SyNW1IHDeM2wFtmCOwvV7bAJSDgwbE9jes9r++hD3AZoi7X/whxWfc+z+fW4b1uSQseL
+ Muzg==
+X-Gm-Message-State: AC+VfDzd6iXDqlCoqdvvD4kTo7HBaCrciu0wlKN8IdYApGiNiZo08ePc
+ qXn3nlkvxJugCbkDpM47/Md31aeJdmQX3Hajpbw=
+X-Google-Smtp-Source: ACHHUZ7AFIqM3cUjn+5YouKRcSC/tq9kgl8S3KuL0+Y49rfsIvOum8dBhW0qLAfVHfd2KxovQb62mQ==
+X-Received: by 2002:a17:903:3317:b0:1ab:1a73:7c7f with SMTP id
+ jk23-20020a170903331700b001ab1a737c7fmr9113619plb.63.1684756191001; 
+ Mon, 22 May 2023 04:49:51 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ u3-20020a170902e80300b0019f3cc463absm4725922plg.0.2023.05.22.04.49.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 May 2023 04:49:50 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH] util/vfio-helpers: Use g_file_read_link()
+Date: Mon, 22 May 2023 20:49:43 +0900
+Message-Id: <20230522114943.33024-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::631;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,102 +89,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When _FORTIFY_SOURCE=2, glibc version is 2.35, and GCC version is
+12.1.0, the compiler complains as follows:
 
+In file included from /usr/include/features.h:490,
+                 from /usr/include/bits/libc-header-start.h:33,
+                 from /usr/include/stdint.h:26,
+                 from /usr/lib/gcc/aarch64-unknown-linux-gnu/12.1.0/include/stdint.h:9,
+                 from /home/alarm/q/var/qemu/include/qemu/osdep.h:94,
+                 from ../util/vfio-helpers.c:13:
+In function 'readlink',
+    inlined from 'sysfs_find_group_file' at ../util/vfio-helpers.c:116:9,
+    inlined from 'qemu_vfio_init_pci' at ../util/vfio-helpers.c:326:18,
+    inlined from 'qemu_vfio_open_pci' at ../util/vfio-helpers.c:517:9:
+/usr/include/bits/unistd.h:119:10: error: argument 2 is null but the corresponding size argument 3 value is 4095 [-Werror=nonnull]
+  119 |   return __glibc_fortify (readlink, __len, sizeof (char),
+      |          ^~~~~~~~~~~~~~~
 
-> 2023=E5=B9=B45=E6=9C=8822=E6=97=A5 04:52=EF=BC=8CHuacai Chen =
-<chenhuacai@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> Hi, Jiaxun,
->=20
-> Rename loongarch_ipi to loongson_ipi? It will be shared by both MIPS
-> and LoongArch in your series.
+This error implies the allocated buffer can be NULL. Use
+g_file_read_link(), which allocates buffer automatically to avoid the
+error.
 
-Hi Huacai,
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ util/vfio-helpers.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Thanks for the point, what=E2=80=99s the opinion from LoongArch =
-mainatiners?
-
-Or perhaps rename it as loong_ipi to reflect the nature that it=E2=80=99s =
-shared
-by MIPS based Loongson and LoongArch based Loongson?
-
-Thanks
-- Jiaxun
-
->=20
->=20
-> Huacai
->=20
-> On Sun, May 21, 2023 at 6:24=E2=80=AFPM Jiaxun Yang =
-<jiaxun.yang@flygoat.com> wrote:
->>=20
->> As per "Loongson 3A5000/3B5000 Processor Reference Manual",
->> Loongson 3A5000's IPI implementation have 4 mailboxes per
->> core.
->>=20
->> However, in 78464f023b54 ("hw/loongarch/virt: Modify ipi as
->> percpu device"), the number of IPI mailboxes was reduced to
->> one, which mismatches actual hardware.
->>=20
->> It won't affect LoongArch based system as LoongArch boot code
->> only uses the first mailbox, however MIPS based Loongson boot
->> code uses all 4 mailboxes.
->>=20
->> Fixes: 78464f023b54 ("hw/loongarch/virt: Modify ipi as percpu =
-device")
->> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
->> ---
->> hw/intc/loongarch_ipi.c         | 6 +++---
->> include/hw/intc/loongarch_ipi.h | 4 +++-
->> 2 files changed, 6 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
->> index d6ab91721ea1..3e453816524e 100644
->> --- a/hw/intc/loongarch_ipi.c
->> +++ b/hw/intc/loongarch_ipi.c
->> @@ -238,14 +238,14 @@ static void loongarch_ipi_init(Object *obj)
->>=20
->> static const VMStateDescription vmstate_ipi_core =3D {
->>     .name =3D "ipi-single",
->> -    .version_id =3D 1,
->> -    .minimum_version_id =3D 1,
->> +    .version_id =3D 2,
->> +    .minimum_version_id =3D 2,
->>     .fields =3D (VMStateField[]) {
->>         VMSTATE_UINT32(status, IPICore),
->>         VMSTATE_UINT32(en, IPICore),
->>         VMSTATE_UINT32(set, IPICore),
->>         VMSTATE_UINT32(clear, IPICore),
->> -        VMSTATE_UINT32_ARRAY(buf, IPICore, 2),
->> +        VMSTATE_UINT32_ARRAY(buf, IPICore, IPI_MBX_NUM * 2),
->>         VMSTATE_END_OF_LIST()
->>     }
->> };
->> diff --git a/include/hw/intc/loongarch_ipi.h =
-b/include/hw/intc/loongarch_ipi.h
->> index 664e050b926e..6c6194786e80 100644
->> --- a/include/hw/intc/loongarch_ipi.h
->> +++ b/include/hw/intc/loongarch_ipi.h
->> @@ -28,6 +28,8 @@
->> #define MAIL_SEND_OFFSET      0
->> #define ANY_SEND_OFFSET       (IOCSR_ANY_SEND - IOCSR_MAIL_SEND)
->>=20
->> +#define IPI_MBX_NUM           4
->> +
->> #define TYPE_LOONGARCH_IPI "loongarch_ipi"
->> OBJECT_DECLARE_SIMPLE_TYPE(LoongArchIPI, LOONGARCH_IPI)
->>=20
->> @@ -37,7 +39,7 @@ typedef struct IPICore {
->>     uint32_t set;
->>     uint32_t clear;
->>     /* 64bit buf divide into 2 32bit buf */
->> -    uint32_t buf[2];
->> +    uint32_t buf[IPI_MBX_NUM * 2];
->>     qemu_irq irq;
->> } IPICore;
->>=20
->> --
->> 2.39.2 (Apple Git-143)
->>=20
+diff --git a/util/vfio-helpers.c b/util/vfio-helpers.c
+index 2d8af38f88..e482ab22e2 100644
+--- a/util/vfio-helpers.c
++++ b/util/vfio-helpers.c
+@@ -106,15 +106,17 @@ struct QEMUVFIOState {
+  */
+ static char *sysfs_find_group_file(const char *device, Error **errp)
+ {
++    g_autoptr(GError) gerr;
+     char *sysfs_link;
+     char *sysfs_group;
+     char *p;
+     char *path = NULL;
+ 
+     sysfs_link = g_strdup_printf("/sys/bus/pci/devices/%s/iommu_group", device);
+-    sysfs_group = g_malloc0(PATH_MAX);
+-    if (readlink(sysfs_link, sysfs_group, PATH_MAX - 1) == -1) {
+-        error_setg_errno(errp, errno, "Failed to find iommu group sysfs path");
++    sysfs_group = g_file_read_link(sysfs_link, &gerr);
++    if (gerr) {
++        error_setg(errp, "Failed to find iommu group sysfs path: %s",
++                   gerr->message);
+         goto out;
+     }
+     p = strrchr(sysfs_group, '/');
+-- 
+2.40.1
 
 
