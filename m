@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A953470BED3
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC86C70BF50
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 15:11:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q153i-0003OU-C2; Mon, 22 May 2023 08:54:42 -0400
+	id 1q15Jj-0004cx-Ae; Mon, 22 May 2023 09:11:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q153c-0003NT-Oo
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:54:36 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q15JU-0004bd-H5
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 09:11:00 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q153a-0004ML-Nm
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:54:36 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6af6f4a0e11so1121329a34.0
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 05:54:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q15JR-0007Pp-V4
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 09:11:00 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f607e60902so3606355e9.2
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 06:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1684760073; x=1687352073;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=h/vop7u3ewpIN1+xfvi7+V6u7BR7DCD5DOkZLtkv/4w=;
- b=WDlyG05qic+i7CLr91hY7nIoDX4qwIpUdRKuxbEwmzuTznpOlLtGFE8Vn/hNlFouT5
- cpo/zR55vSRwDTk2zasRds16cmV0prfeKHjyRJoyxStjFnnnzmK1yOz7AQtMmc7B6yCx
- UprLIunEreFdWXfQXqhhUHE4KA5w3yBM/YAcvvLHNDQLaYLF0/aIE6iXCn+BEduOCDPm
- NbMNLeeLO0W4xFB3p/KzR3k1UTrFiPUslOsx1ybttrMo+H5yjH4E4HFLFmxvDAa5ieaG
- kiNdHjJUmHcVMjZWQ+xscQ4IPtv416B7qQzxQUicXXdoi+BywciR2l6aPbegaWFEYhwV
- y3OA==
+ d=linaro.org; s=google; t=1684761056; x=1687353056;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3MAZUvg7d9dhLhvZm1URXq1BhSaBQXSEfBHTNs7EGTg=;
+ b=BDcHbrY6a6WUb9E77zOY2CfMW8kwgE3zukNHBOfOSewNLzW6tnjOv1V2wPO9nUZ284
+ Fqfk4cM8F84Re/CVTSyO0BVh2RR9Ovldl610CpHLHqu5zZGtRU6gIx5TCdmwLvAZSiok
+ FB9nlMPtCAaxJwYKN7/n6tF/PGxMug8A1IE87wX7596+35wRAjvOlzBEgOgI8XOFGNRv
+ BF1lcC8jQV0sB0HQhe/g67krNfbqWkxvI51PcX12cWTbW0rBZnm4eVnOvSeWSieXmLA9
+ QFsJJ+PZ8zbPbGV2VXADsSZ6kFrtK8NTigbC4n2HNLZBskNewmPGTvqj9HL9XhCnFMxW
+ UhGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684760073; x=1687352073;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h/vop7u3ewpIN1+xfvi7+V6u7BR7DCD5DOkZLtkv/4w=;
- b=O5p70NRURrxZPawUWSKnRddyzmFtVUZQ0gtAHBeY/voFQCoJHBu7hP9sv9NNkJwgQG
- mut1sRew/EgY5awvAI0eJ1WH2yuIRbDzZG9voAaG1BeMDJzW7PUFuGRk/E67V8pCh4vx
- 1QqbjBYsTda2MvheCCGwL/3HHnRghXAL6hAUudO/gGVJ8yxCiQDMJllme8EJM9vuRgmk
- 7gg3Zs7n/204e4Tq6/pf8Ylxaxzr6jlv+qIyjLTepFZ64VH0pjZ4vxNfZ/5FdK909LGZ
- hdYfJQPzQm4KGXnYh6jonaJjWKoiFy/0VLG+RYLpxeZE8tHmkOMmuSxGcLb/FH4FTBq7
- AMqA==
-X-Gm-Message-State: AC+VfDx+Vp2w/LQC6OPV7Bpazc4Uef3N2kRYVT7F7b56GbsUTr3RTD+X
- 4qX85O28V8PUD+Jn7+agy1T2yQ==
-X-Google-Smtp-Source: ACHHUZ6doRqs95xce432Rqui/Q7rn7+3u4DuOtJ28Pwd5hmQCK2djUJF9uYC9EQTC5cs/iBFQvEf2A==
-X-Received: by 2002:a54:4784:0:b0:398:10ef:c9d2 with SMTP id
- o4-20020a544784000000b0039810efc9d2mr1175802oic.36.1684760073516; 
- Mon, 22 May 2023 05:54:33 -0700 (PDT)
-Received: from [192.168.68.107] ([179.111.98.125])
+ d=1e100.net; s=20221208; t=1684761056; x=1687353056;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=3MAZUvg7d9dhLhvZm1URXq1BhSaBQXSEfBHTNs7EGTg=;
+ b=FYynekdRgaXBaw/+ONlu9fgo0ZSxrrt0SSIuoRlWs7tLIXYV0OAmfQzVaXNC8doLih
+ /mqGNhXwafOrqWuvIIpOrffj8GZqfhZOPVenUp3yB08CusIOWT/ON1sHRyzWZ/yj3Zvh
+ RY7ZaDhoApv9Z/cDFfaFvFsLtyg2aMJfV4vNgFijaE6nB84tpxhJoQnSYlQmshZ5n2dE
+ Ba/D22WLqMaOhhBy6/NWlYJMi9Y50GDHsCmSwfNEmiMxnYhlbxlC3NSn1kp24WwzSWX6
+ 7rQGE4fjLDrFOt+7HtqbeQ+2lF4zn8HZBdhpSgKBOqGlXCx5aUCFvbJmiXnsb+cpK1Dh
+ UpJA==
+X-Gm-Message-State: AC+VfDyD5k+YQcCrWjdYGiSY92UnwykwJ/UhP5YvKVEjkQpWR70itEpX
+ c2O24PiGjy16SeKwJqMqj2tMGw==
+X-Google-Smtp-Source: ACHHUZ5QzUGzdp95hVlnI+Uh7SgHxJzNOJNCeq10HZ/+UXf4croXdGoswjspzfH7aNveDdfndaAA4Q==
+X-Received: by 2002:a5d:4a02:0:b0:30a:8c0b:320d with SMTP id
+ m2-20020a5d4a02000000b0030a8c0b320dmr3179355wrq.11.1684761055872; 
+ Mon, 22 May 2023 06:10:55 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- k127-20020aca3d85000000b0038c0a359e74sm2674630oia.31.2023.05.22.05.54.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 05:54:33 -0700 (PDT)
-Message-ID: <29978bd3-97d0-9f17-d13e-b986bd0e7087@ventanamicro.com>
-Date: Mon, 22 May 2023 09:54:28 -0300
+ c5-20020adfe705000000b002c71b4d476asm7728071wrm.106.2023.05.22.06.10.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 May 2023 06:10:55 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id E82C01FFBB;
+ Mon, 22 May 2023 14:10:54 +0100 (BST)
+References: <87v8grlzu9.fsf@linaro.org>
+ <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Stefan Hajnoczi
+ <stefanha@redhat.com>, virtio-fs@redhat.com, Erik Schilling
+ <erik.schilling@linaro.org>, Vivek Goyal <vgoyal@redhat.com>
+Subject: Re: Status of DAX for virtio-fs/virtiofsd?
+Date: Mon, 22 May 2023 13:54:47 +0100
+In-reply-to: <CAJSP0QX+NeJ8Z5d+2ocUUVj4EGopxKT+trmEfacgvhE7TqCokQ@mail.gmail.com>
+Message-ID: <87zg5w5x5t.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 2/7] target/riscv: Pass RISCVCPUConfig as target_info to
- disassemble_info
-Content-Language: en-US
-To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-References: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
- <20230519021926.15362-3-liweiwei@iscas.ac.cn>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230519021926.15362-3-liweiwei@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,368 +99,98 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+Stefan Hajnoczi <stefanha@gmail.com> writes:
 
-On 5/18/23 23:19, Weiwei Li wrote:
-> Pass RISCVCPUConfig as disassemble_info.target_info to support disas
-> of conflict instructions related to specific extensions.
-> 
-> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-> ---
+> On Wed, 17 May 2023 at 11:54, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+> Hi Alex,
+> There were two unresolved issues:
+>
+> 1. How to inject SIGBUS when the guest accesses a page that's beyond
+> the end-of-file.
+> 2. Implementing the vhost-user messages for mapping ranges of files to
+> the vhost-user frontend.
+>
+> The harder problem is SIGBUS. An mmap area may be larger than the
+> length of the file. Or another process could truncate the file while
+> it's mmapped, causing a previously correctly sized mmap to become
+> longer than the actual file. When a page beyond the end of file is
+> accessed, the kernel raises SIGBUS.
+>
+> When this scenario occurs in the DAX Window, kvm.ko gets some type of
+> vmexit (fault) and the code currently enters an infinite loop because
+> it expects KVM memory regions to resolve faults. Since there is no
+> page backing that part of the vma, the fault handling fails and the
+> code loops trying to do this forever.
+>
+> There needs to be a way to inject this fault back into the guest.
+> However, we did not found a way to do that. We considered Machine
+> Check Exceptions (MCEs), x86 interrupts, and paravirtualized
+> approaches. None of them looked like a clean and sane way to do this.
+> The Linux maintainers for MCEs and kvm.ko were not excited about
+> supporting this.
+>
+> So in the end, SIGBUS was never solved. It leads to a DoS because the
+> host kernel will enter an infinite loop. We decided that until there
+> is progress on SIGBUS, we can't go ahead with DAX Windows in
+> production.
 
-I suggest split the CPUCfg declarations from cpu.h into the new cpu_cfg.h header
-in a separated patch. It makes our lives easier when bissecting for bugs and
-so on.
+This certainly seems like something we'd need hypervisor specific
+support for as well. In the Xen case pages aren't "owned" by the dom0
+kernel (although it does track some of them) so the hypervisor would
+need report the problem via some mechanism.
 
-One more nit below:
+> The easier problem is adding new vhost-user messages. It does lead to
+> a fundamental change in the vhost-user protocol: the presence of the
+> DAX Window means there are memory ranges that cannot be accessed via
+> shared memory. Imagine Device A has a DAX Window and Device B needs to
+> DMA to/from it. That doesn't work because the mmaps happen inside the
+> frontend (QEMU), so Device B doesn't have access to the current
+> mappings. The fundamental change to vhost-user is that virtqueue
+> descriptor mapping code must now deal with the situation where guest
+> addresses are absent from the shared memory regions and instead send
+> vhost-user protocol messages to read/write to/from bounce buffers
+> instead. The rest of the device backend does not require modification.
+> This is a slow path, but at least it works whereas currently the I/O
+> would fail because the memory is absent. Other solutions to the
+> vhost-user DMA problem exist, but this is the one that Dave and I last
+> discussed.
 
+This doesn't sound too dissimilar to cases we need to handle now in Xen
+where access to memory is transitory and controlled by the hypervisor.
 
->   disas/riscv.c          |  10 ++-
->   target/riscv/cpu.c     |   1 +
->   target/riscv/cpu.h     | 114 +---------------------------------
->   target/riscv/cpu_cfg.h | 135 +++++++++++++++++++++++++++++++++++++++++
->   4 files changed, 144 insertions(+), 116 deletions(-)
->   create mode 100644 target/riscv/cpu_cfg.h
-> 
-> diff --git a/disas/riscv.c b/disas/riscv.c
-> index e61bda5674..729ab684da 100644
-> --- a/disas/riscv.c
-> +++ b/disas/riscv.c
-> @@ -19,7 +19,7 @@
->   
->   #include "qemu/osdep.h"
->   #include "disas/dis-asm.h"
-> -
-> +#include "target/riscv/cpu_cfg.h"
->   
->   /* types */
->   
-> @@ -967,6 +967,7 @@ typedef enum {
->   /* structures */
->   
->   typedef struct {
-> +    RISCVCPUConfig *cfg;
->       uint64_t  pc;
->       uint64_t  inst;
->       int32_t   imm;
-> @@ -4855,11 +4856,13 @@ static void decode_inst_decompress(rv_decode *dec, rv_isa isa)
->   /* disassemble instruction */
->   
->   static void
-> -disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst)
-> +disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
-> +            RISCVCPUConfig *cfg)
->   {
->       rv_decode dec = { 0 };
->       dec.pc = pc;
->       dec.inst = inst;
-> +    dec.cfg = cfg;
->       decode_inst_opcode(&dec, isa);
->       decode_inst_operands(&dec, isa);
->       decode_inst_decompress(&dec, isa);
-> @@ -4914,7 +4917,8 @@ print_insn_riscv(bfd_vma memaddr, struct disassemble_info *info, rv_isa isa)
->           break;
->       }
->   
-> -    disasm_inst(buf, sizeof(buf), isa, memaddr, inst);
-> +    disasm_inst(buf, sizeof(buf), isa, memaddr, inst,
-> +                (RISCVCPUConfig *)info->target_info);
->       (*info->fprintf_func)(info->stream, "%s", buf);
->   
->       return len;
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index db0875fb43..4fe926cdd1 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -818,6 +818,7 @@ static void riscv_cpu_reset_hold(Object *obj)
->   static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
->   {
->       RISCVCPU *cpu = RISCV_CPU(s);
-> +    info->target_info = &cpu->cfg;
->   
->       switch (riscv_cpu_mxl(&cpu->env)) {
->       case MXL_RV32:
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index de7e43126a..dc1229b69c 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -27,6 +27,7 @@
->   #include "qom/object.h"
->   #include "qemu/int128.h"
->   #include "cpu_bits.h"
-> +#include "cpu_cfg.h"
->   #include "qapi/qapi-types-common.h"
->   #include "cpu-qom.h"
->   
-> @@ -368,119 +369,6 @@ struct CPUArchState {
->       uint64_t kvm_timer_frequency;
->   };
->   
-> -/*
-> - * map is a 16-bit bitmap: the most significant set bit in map is the maximum
-> - * satp mode that is supported. It may be chosen by the user and must respect
-> - * what qemu implements (valid_1_10_32/64) and what the hw is capable of
-> - * (supported bitmap below).
-> - *
-> - * init is a 16-bit bitmap used to make sure the user selected a correct
-> - * configuration as per the specification.
-> - *
-> - * supported is a 16-bit bitmap used to reflect the hw capabilities.
-> - */
-> -typedef struct {
-> -    uint16_t map, init, supported;
-> -} RISCVSATPMap;
-> -
-> -struct RISCVCPUConfig {
-> -    bool ext_zba;
-> -    bool ext_zbb;
-> -    bool ext_zbc;
-> -    bool ext_zbkb;
-> -    bool ext_zbkc;
-> -    bool ext_zbkx;
-> -    bool ext_zbs;
-> -    bool ext_zca;
-> -    bool ext_zcb;
-> -    bool ext_zcd;
-> -    bool ext_zce;
-> -    bool ext_zcf;
-> -    bool ext_zcmp;
-> -    bool ext_zcmt;
-> -    bool ext_zk;
-> -    bool ext_zkn;
-> -    bool ext_zknd;
-> -    bool ext_zkne;
-> -    bool ext_zknh;
-> -    bool ext_zkr;
-> -    bool ext_zks;
-> -    bool ext_zksed;
-> -    bool ext_zksh;
-> -    bool ext_zkt;
-> -    bool ext_ifencei;
-> -    bool ext_icsr;
-> -    bool ext_icbom;
-> -    bool ext_icboz;
-> -    bool ext_zicond;
-> -    bool ext_zihintpause;
-> -    bool ext_smstateen;
-> -    bool ext_sstc;
-> -    bool ext_svadu;
-> -    bool ext_svinval;
-> -    bool ext_svnapot;
-> -    bool ext_svpbmt;
-> -    bool ext_zdinx;
-> -    bool ext_zawrs;
-> -    bool ext_zfh;
-> -    bool ext_zfhmin;
-> -    bool ext_zfinx;
-> -    bool ext_zhinx;
-> -    bool ext_zhinxmin;
-> -    bool ext_zve32f;
-> -    bool ext_zve64f;
-> -    bool ext_zve64d;
-> -    bool ext_zmmul;
-> -    bool ext_zvfh;
-> -    bool ext_zvfhmin;
-> -    bool ext_smaia;
-> -    bool ext_ssaia;
-> -    bool ext_sscofpmf;
-> -    bool rvv_ta_all_1s;
-> -    bool rvv_ma_all_1s;
-> -
-> -    uint32_t mvendorid;
-> -    uint64_t marchid;
-> -    uint64_t mimpid;
-> -
-> -    /* Vendor-specific custom extensions */
-> -    bool ext_xtheadba;
-> -    bool ext_xtheadbb;
-> -    bool ext_xtheadbs;
-> -    bool ext_xtheadcmo;
-> -    bool ext_xtheadcondmov;
-> -    bool ext_xtheadfmemidx;
-> -    bool ext_xtheadfmv;
-> -    bool ext_xtheadmac;
-> -    bool ext_xtheadmemidx;
-> -    bool ext_xtheadmempair;
-> -    bool ext_xtheadsync;
-> -    bool ext_XVentanaCondOps;
-> -
-> -    uint8_t pmu_num;
-> -    char *priv_spec;
-> -    char *user_spec;
-> -    char *bext_spec;
-> -    char *vext_spec;
-> -    uint16_t vlen;
-> -    uint16_t elen;
-> -    uint16_t cbom_blocksize;
-> -    uint16_t cboz_blocksize;
-> -    bool mmu;
-> -    bool pmp;
-> -    bool epmp;
-> -    bool debug;
-> -    bool misa_w;
-> -
-> -    bool short_isa_string;
-> -
-> -#ifndef CONFIG_USER_ONLY
-> -    RISCVSATPMap satp_mode;
-> -#endif
-> -};
-> -
-> -typedef struct RISCVCPUConfig RISCVCPUConfig;
-> -
->   /*
->    * RISCVCPU:
->    * @env: #CPURISCVState
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> new file mode 100644
-> index 0000000000..e2e982fac4
-> --- /dev/null
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -0,0 +1,135 @@
-> +/*
-> + * QEMU RISC-V CPU CFG
-> + *
-> + * Copyright (c) 2016-2017 Sagar Karandikar, sagark@eecs.berkeley.edu
-> + * Copyright (c) 2017-2018 SiFive, Inc.
+>
+> In the end, there is still work to do to make the DAX Window
+> supportable. There is experimental code out there that kind of works,
+> but we felt it was incomplete.
+>
+> To your specific questions:
+>
+>>  * What VMM/daemon combinations has DAX been tested on?
+>
+> Only the experimental virtio-fs Kata Containers kernels and QEMU
+> builds that were available a few years ago. I don't think the code has
+> been rebased.
+>
+>>  * Isn't it time the vhost-user spec is updated?
+>
+> I don't know if Dave ever wrote the spec for or implemented the final
+> version of the vhost-user protocol messages we discussed.
+>
+>>  * Is anyone picking up Dave's patches for the QEMU side of support?
+>
+> Not at the moment. It would be nice to support, but someone needs the
+> energy/time/focus to deal with the outstanding issues I mentioned.
+>
+> If you want to work on it, feel free to include me. I can help dig up
+> old discussions and give input.
 
-I don't mind keeping these copyrights but it would be good to have a 2023 copyright
-as well since the file was just created.
+I think in the short term we shall just concentrate on getting virtiofsd
+working well in our Xen setup. We can certainly consider looking at DAX
+again in our optimisation phase. We know it will help in performance so
+its just down to the implementation details ;-)
 
-
-Other than that:
-
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms and conditions of the GNU General Public License,
-> + * version 2 or later, as published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope it will be useful, but WITHOUT
-> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-> + * more details.
-> + *
-> + * You should have received a copy of the GNU General Public License along with
-> + * this program.  If not, see <http://www.gnu.org/licenses/>.
-> + */
-> +
-> +#ifndef RISCV_CPU_CFG_H
-> +#define RISCV_CPU_CFG_H
-> +
-> +/*
-> + * map is a 16-bit bitmap: the most significant set bit in map is the maximum
-> + * satp mode that is supported. It may be chosen by the user and must respect
-> + * what qemu implements (valid_1_10_32/64) and what the hw is capable of
-> + * (supported bitmap below).
-> + *
-> + * init is a 16-bit bitmap used to make sure the user selected a correct
-> + * configuration as per the specification.
-> + *
-> + * supported is a 16-bit bitmap used to reflect the hw capabilities.
-> + */
-> +typedef struct {
-> +    uint16_t map, init, supported;
-> +} RISCVSATPMap;
-> +
-> +struct RISCVCPUConfig {
-> +    bool ext_zba;
-> +    bool ext_zbb;
-> +    bool ext_zbc;
-> +    bool ext_zbkb;
-> +    bool ext_zbkc;
-> +    bool ext_zbkx;
-> +    bool ext_zbs;
-> +    bool ext_zca;
-> +    bool ext_zcb;
-> +    bool ext_zcd;
-> +    bool ext_zce;
-> +    bool ext_zcf;
-> +    bool ext_zcmp;
-> +    bool ext_zcmt;
-> +    bool ext_zk;
-> +    bool ext_zkn;
-> +    bool ext_zknd;
-> +    bool ext_zkne;
-> +    bool ext_zknh;
-> +    bool ext_zkr;
-> +    bool ext_zks;
-> +    bool ext_zksed;
-> +    bool ext_zksh;
-> +    bool ext_zkt;
-> +    bool ext_ifencei;
-> +    bool ext_icsr;
-> +    bool ext_icbom;
-> +    bool ext_icboz;
-> +    bool ext_zicond;
-> +    bool ext_zihintpause;
-> +    bool ext_smstateen;
-> +    bool ext_sstc;
-> +    bool ext_svadu;
-> +    bool ext_svinval;
-> +    bool ext_svnapot;
-> +    bool ext_svpbmt;
-> +    bool ext_zdinx;
-> +    bool ext_zawrs;
-> +    bool ext_zfh;
-> +    bool ext_zfhmin;
-> +    bool ext_zfinx;
-> +    bool ext_zhinx;
-> +    bool ext_zhinxmin;
-> +    bool ext_zve32f;
-> +    bool ext_zve64f;
-> +    bool ext_zve64d;
-> +    bool ext_zmmul;
-> +    bool ext_zvfh;
-> +    bool ext_zvfhmin;
-> +    bool ext_smaia;
-> +    bool ext_ssaia;
-> +    bool ext_sscofpmf;
-> +    bool rvv_ta_all_1s;
-> +    bool rvv_ma_all_1s;
-> +
-> +    uint32_t mvendorid;
-> +    uint64_t marchid;
-> +    uint64_t mimpid;
-> +
-> +    /* Vendor-specific custom extensions */
-> +    bool ext_xtheadba;
-> +    bool ext_xtheadbb;
-> +    bool ext_xtheadbs;
-> +    bool ext_xtheadcmo;
-> +    bool ext_xtheadcondmov;
-> +    bool ext_xtheadfmemidx;
-> +    bool ext_xtheadfmv;
-> +    bool ext_xtheadmac;
-> +    bool ext_xtheadmemidx;
-> +    bool ext_xtheadmempair;
-> +    bool ext_xtheadsync;
-> +    bool ext_XVentanaCondOps;
-> +
-> +    uint8_t pmu_num;
-> +    char *priv_spec;
-> +    char *user_spec;
-> +    char *bext_spec;
-> +    char *vext_spec;
-> +    uint16_t vlen;
-> +    uint16_t elen;
-> +    uint16_t cbom_blocksize;
-> +    uint16_t cboz_blocksize;
-> +    bool mmu;
-> +    bool pmp;
-> +    bool epmp;
-> +    bool debug;
-> +    bool misa_w;
-> +
-> +    bool short_isa_string;
-> +
-> +#ifndef CONFIG_USER_ONLY
-> +    RISCVSATPMap satp_mode;
-> +#endif
-> +};
-> +
-> +typedef struct RISCVCPUConfig RISCVCPUConfig;
-> +#endif
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
