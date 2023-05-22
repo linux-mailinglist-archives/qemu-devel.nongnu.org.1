@@ -2,90 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1656370B4D7
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 08:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1008E70B530
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 08:40:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0yh9-0000UH-Cw; Mon, 22 May 2023 02:06:59 -0400
+	id 1q0zBt-0000KQ-C3; Mon, 22 May 2023 02:38:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0yh2-0000Pr-Uv
- for qemu-devel@nongnu.org; Mon, 22 May 2023 02:06:55 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q0yh0-0002EP-66
- for qemu-devel@nongnu.org; Mon, 22 May 2023 02:06:52 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3f41d087a84so21013125e9.1
- for <qemu-devel@nongnu.org>; Sun, 21 May 2023 23:06:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684735608; x=1687327608;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=42PH/00QoWmPwyG5RAq9Du9zwqNWKsNLPesCLbcp4J0=;
- b=f900Q2VuftbThemhFu2SJgpGaRXrk29p3nbGjjoxRtPJc7gkBnCt8X4DFRy4zf12w0
- AeOEm9A78B9jIGgZdtCFPdWQie0jojHPZNjDudu6Er/d4YMioQ88SpwXV+wd0bj92Uj3
- kDJm8KOfId4K19A3QDD0cgJCi5A2q57SA0IA4+lgxLNPojX7XhfNl19v5MWrwgZtWRLT
- U03lXfGdWVINB0tN+5aNHBIEvSqfzybguZwguI+vmwjh+W61NHVl55D5uN7d16gJiJT/
- omqP2gwZIYPqXePD94/0WAdFlry3dHzMnCudz8aUngWczXH+2WFZ06Cz063i9UMKg+oZ
- scmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684735608; x=1687327608;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=42PH/00QoWmPwyG5RAq9Du9zwqNWKsNLPesCLbcp4J0=;
- b=OKMZUQrBJN7wqIpzBLZELXc5yDGLzyWxjHkqMyuXKLOYJTEf+WJM6HhO/pPX0a+AfM
- SYJh7YegNUxOjrQdr/3xXxemYNM9sXkYpLDRI+POXcJ4uSm5eV6tWmNiptiY7h/D9LhN
- zvmRiGRVflnamZbhVPYVunA3Z5a/GEJz8/6P4eolF9qXICuO0iArtrUfAeVeZAbEQB87
- Hse5nZKrVpdPVfubvc6TtEaEp0W9xLbUgo5Fu4NPwxabwBXxsd3833Wn6TgBJYlJeaE0
- mXNnRX+CJF9putmhFIvKgpkwk5SE56pjMvZ8eEsCwGa0vlhiY3SI7ts2WImVHhmrIxId
- uPUA==
-X-Gm-Message-State: AC+VfDyBwQu2nFX+bujYeOOWeTCqHgtLzulq4VAk5K4CPrOlDAYxPf/s
- yAiAM588Ow4PBnCYdAq2AW1diQ==
-X-Google-Smtp-Source: ACHHUZ7RtomUNjN4IxHCiR3WVGfn2PmHnVOl/V8h+pRFjo8RgIKioENpg/4+S4s4Mtvu6+UZYz+R7A==
-X-Received: by 2002:a05:600c:1e01:b0:3f5:6e6:4285 with SMTP id
- ay1-20020a05600c1e0100b003f506e64285mr6600095wmb.11.1684735608023; 
- Sun, 21 May 2023 23:06:48 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.153.164])
- by smtp.gmail.com with ESMTPSA id
- n10-20020adfe78a000000b0030796e103a1sm6586280wrm.5.2023.05.21.23.06.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 May 2023 23:06:47 -0700 (PDT)
-Message-ID: <f5a97618-fde2-b4a4-f926-ab619b1fd1e0@linaro.org>
-Date: Mon, 22 May 2023 08:06:45 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q0zBq-0000K8-Ik
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 02:38:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q0zBl-0007kc-G8
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 02:38:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684737515;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jBaySRTwv+bppajLdfrfx8I2knxfsIL8HJLvl5wsBDc=;
+ b=Y0ookLrSo4ZFp3+oLD5+XnglduXSmklsu+e693utIahBinVVywGQC6dISW2mNch0RoinaN
+ C2cWWrOLLjhQVRS9LRHg7R82ZhwEUAHQds2V4hS13uQtC0bnCPRJz6ZnTI/meq1ESdlFDJ
+ w5pW1pwArYsTFuBLyUXCrfLBAHu5RGo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-434-WZ-2m3mVP6aQFb4Evp8_Zg-1; Mon, 22 May 2023 02:38:32 -0400
+X-MC-Unique: WZ-2m3mVP6aQFb4Evp8_Zg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 891C485A5A8;
+ Mon, 22 May 2023 06:38:31 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0E3EC7AF5;
+ Mon, 22 May 2023 06:38:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id BAFEB21E692E; Mon, 22 May 2023 08:38:29 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: <qemu-devel@nongnu.org>,  Michael Tsirkin <mst@redhat.com>,  Fan Ni
+ <fan.ni@samsung.com>,  <linux-cxl@vger.kernel.org>,
+ <linuxarm@huawei.com>,  Ira Weiny <ira.weiny@intel.com>,  Alison
+ Schofield <alison.schofield@intel.com>,  Michael Roth
+ <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Dave
+ Jiang <dave.jiang@intel.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,  Mike Maslenkin
+ <mike.maslenkin@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v5 4/6] hw/cxl: QMP based poison injection support
+References: <20230423162013.4535-1-Jonathan.Cameron@huawei.com>
+ <20230423162013.4535-5-Jonathan.Cameron@huawei.com>
+Date: Mon, 22 May 2023 08:38:29 +0200
+In-Reply-To: <20230423162013.4535-5-Jonathan.Cameron@huawei.com> (Jonathan
+ Cameron's message of "Sun, 23 Apr 2023 17:20:11 +0100")
+Message-ID: <87a5xwrhui.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 6/6] hw/char/parallel: Replace string literals by
- TYPE_ISA_PARALLEL macro
-Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-trivial@nongnu.org,
- qemu-arm@nongnu.org, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
- <hpoussin@reactos.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230521123049.312349-1-shentey@gmail.com>
- <20230521123049.312349-7-shentey@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230521123049.312349-7-shentey@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.098,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,17 +88,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/5/23 14:30, Bernhard Beschow wrote:
-> Rather than using a string literal which is prone to typos let's use a macro
-> instead which is caught by the compiler if mistyped.
-> 
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->   hw/char/parallel-isa.c | 3 ++-
->   hw/isa/isa-superio.c   | 3 ++-
->   2 files changed, 4 insertions(+), 2 deletions(-)
+Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Inject poison using qmp command cxl-inject-poison to add an entry to the
+> poison list.
+>
+> For now, the poison is not returned CXL.mem reads, but only via the
+> mailbox command Get Poison List. So a normal memory read to an address
+> that is on the poison list will not yet result in a synchronous exception
+> (and similar for partial cacheline writes).
+> That is left for a future patch.
+>
+> See CXL rev 3.0, sec 8.2.9.8.4.1 Get Poison list (Opcode 4300h)
+>
+> Kernel patches to use this interface here:
+> https://lore.kernel.org/linux-cxl/cover.1665606782.git.alison.schofield@intel.com/
+>
+> To inject poison using qmp (telnet to the qmp port)
+> { "execute": "qmp_capabilities" }
+>
+> { "execute": "cxl-inject-poison",
+>     "arguments": {
+>          "path": "/machine/peripheral/cxl-pmem0",
+>          "start": 2048,
+>          "length": 256
+>     }
+> }
+>
+> Adjusted to select a device on your machine.
+>
+> Note that the poison list supported is kept short enough to avoid the
+> complexity of state machine that is needed to handle the MORE flag.
+>
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> ---
+> v5:
+>   - Picked up Fan Ni's tag
+>   - Use ROUND_DOWN() as suggestion by Philippe
+>   - Update qapi docs to 8.1
+>   - Added comment to clarify the lack of synchronous poison exceptions
+>     that has been left for a future patch set.
+> ---
+>  hw/cxl/cxl-mailbox-utils.c  | 90 +++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3.c          | 56 +++++++++++++++++++++++
+>  hw/mem/cxl_type3_stubs.c    |  6 +++
+>  include/hw/cxl/cxl.h        |  1 +
+>  include/hw/cxl/cxl_device.h | 20 +++++++++
+>  qapi/cxl.json               | 18 ++++++++
+>  6 files changed, 191 insertions(+)
+
+Please add
+
+    [diff]
+            orderFile = scripts/git.orderfile
+
+to your .git/config, so that QAPI schema changes come first in diffs.
+
+[...]
+
+> diff --git a/qapi/cxl.json b/qapi/cxl.json
+> index 4be7d46041..ca3af3f0b2 100644
+> --- a/qapi/cxl.json
+> +++ b/qapi/cxl.json
+> @@ -5,6 +5,24 @@
+>  # = CXL devices
+>  ##
+>  
+> +##
+> +# @cxl-inject-poison:
+> +#
+> +# Poison records indicate that a CXL memory device knows that a particular
+> +# memory region may be corrupted. This may be because of locally detected
+> +# errors (e.g. ECC failure) or poisoned writes received from other components
+> +# in the system. This injection mechanism enables testing of the OS handling
+> +# of poison records which may be queried via the CXL mailbox.
+> +#
+> +# @path: CXL type 3 device canonical QOM path
+> +# @start: Start address - must be 64 byte aligned.
+> +# @length: Length of poison to inject - must be a multiple of 64 bytes.
+> +#
+> +# Since: 8.1
+> +##
+> +{ 'command': 'cxl-inject-poison',
+> +  'data': { 'path': 'str', 'start': 'uint64', 'length': 'uint64' }}
+> +
+>  ##
+>  # @CxlUncorErrorType:
+>  #
+
+Please format like
+
+   ##
+   # @cxl-inject-poison:
+   #
+   # Poison records indicate that a CXL memory device knows that a
+   # particular memory region may be corrupted.  This may be because of
+   # locally detected errors (e.g. ECC failure) or poisoned writes
+   # received from other components in the system.  This injection
+   # mechanism enables testing of the OS handling of poison records which
+   # may be queried via the CXL mailbox.
+   #
+   # @path: CXL type 3 device canonical QOM path
+   #
+   # @start: Start address - must be 64 byte aligned.
+   #
+   # @length: Length of poison to inject - must be a multiple of 64
+   #     bytes.
+   #
+   # Since: 8.1
+   ##
+
+to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
+to conform to current conventions).
+
+The blank lines help with catching certain errors.  rST loves to
+surprise...
+
+> +{ 'command': 'cxl-inject-poison',
+> +  'data': { 'path': 'str', 'start': 'uint64', 'length': 'uint64' }}
+> +
+
+Make this 'length': 'size'.  Just to signal intent; it generates the
+same code.
+
+>  ##
+>  # @CxlUncorErrorType:
+>  #
+
+With that
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
