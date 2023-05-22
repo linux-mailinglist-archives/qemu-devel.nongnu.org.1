@@ -2,101 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C46F70C2F9
+	by mail.lfdr.de (Postfix) with ESMTPS id 4190C70C2F8
 	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:06:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1831-00045h-51; Mon, 22 May 2023 12:06:11 -0400
+	id 1q181z-0003aH-61; Mon, 22 May 2023 12:05:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nnmlinux@linux.ibm.com>)
- id 1q182x-00043k-Ia; Mon, 22 May 2023 12:06:07 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nnmlinux@linux.ibm.com>)
- id 1q182t-000197-KC; Mon, 22 May 2023 12:06:07 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34MG0pmD018482; Mon, 22 May 2023 16:05:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=fsEgROLTAS+NIKkoI+pm0VujtH0QtXt80RJThpm+zU0=;
- b=DRsYnZ7ylKErqt6qXuseUsZXVHRKWVugOsbsUjwXVbbCAE6ACC1z7vkrobbZGrfhGPnk
- 8t7D019uoCtMui1BZeHhukfXGxhVO8Rsq7CaQ6tKZu8VP5z1SqyA68VAuyD1w/LwlvaS
- swpIIRgjCYpURhLwVEYlWYepYbRgkZNpZeODxAzmT6+U8NCcBf2qRJWTonwVsT+WDW67
- dfWfJ/n7f3Bcn3ZZUhlzXWn1QwiL/SKc3kTKIlVkVe+YumJwRgTEeYmOrK0Ol7bAd2uW
- GsnvHVJjLl9mQADwZWYKhhCj4/AcSQWgYzR5u/LZlPwN6478K8W1lwZEx3zE4+FB3Kt0 qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrbhv04hg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 May 2023 16:05:45 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34MG1iSL021710;
- Mon, 22 May 2023 16:05:40 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrbhv030c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 May 2023 16:05:40 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34MEbjhr023274;
- Mon, 22 May 2023 16:03:15 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3qppc3h1n5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 May 2023 16:03:15 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34MG3BpG45744524
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 May 2023 16:03:12 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4D7C20049;
- Mon, 22 May 2023 16:03:11 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B42F520040;
- Mon, 22 May 2023 16:03:09 +0000 (GMT)
-Received: from ltc-wspoon17.aus.stglabs.ibm.com (unknown [9.3.101.49])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 22 May 2023 16:03:09 +0000 (GMT)
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-To: danielhb413@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
- groug@kaod.org, npiggin@gmail.com
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, farosas@suse.de,
- npiggin@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
- sbhat@linux.ibm.com, nnmlinux@linux.ibm.com
-Subject: [PATCH v3] target: ppc: Use MSR_HVB bit to get the target endianness
- for memory dump
-Date: Mon, 22 May 2023 12:02:42 -0400
-Message-Id: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6Mfx2D-bLyPHmFRgzLi9BRf8UiTpkQMv
-X-Proofpoint-GUID: YUGBUpQCx9nhSeYpxiqLvlaGLy6EHGWU
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q181t-0003Zv-WE
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:05:02 -0400
+Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q181o-0000jh-VH
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:05:01 -0400
+Received: by mail-qk1-x72d.google.com with SMTP id
+ af79cd13be357-75afc10188fso98240385a.3
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 09:04:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684771494; x=1687363494;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=l3o07hAx+xVExjVlNAsthx/Rb+eGLI1xxsnlUA+C52M=;
+ b=JejSvr1pVcn51D77s7QewtnMLbJokM5OWs91mRk2z2rYv9rK8RgqlOMAcHYE4sndxF
+ A+bPNuP43H3YHvXaW0iz70MQdI/P+pQvzrgf55JtLQuBEuqo5CdHF9Wvav5QeZ8m3x2I
+ tbzG0aPdQ3q/f9FFprhOqBwP63yysL3dUZyE1843NdpgfTmCBWeakPOLl2sGVPuqKMPY
+ TUMfU9s0HmF3U6A1usm8rbunddtJnQppJSRrsIj073kC4NbQltQWAJs6hAPeM11q7MWT
+ eSBq0rGrr2gThJegLR3LC3/N6axPqhNVgcpE/lPFjkfAWhsc+fHpJahEI3rJMD+K8IQw
+ WwDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684771494; x=1687363494;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=l3o07hAx+xVExjVlNAsthx/Rb+eGLI1xxsnlUA+C52M=;
+ b=HLPvgUGDhe+xxvzHg1E2dz9AO5ytsunHW+P4+Q8FmZ5Pq9WXxByFmA/lZw0usrwJwu
+ fwCYCDc/cB4tcxLXKz75b8Slr0hcbESN4OSjx/7D3K+FhTaPaR/SvgphUWV0ehDG2IJR
+ U3tKa40q7lzfq+GLy0M8VomeEy4P587AJUjb17MgjMg8YbJY2YppX14l7MhyJVKz4oBc
+ FUVWydgTO2r8h7Xw2bnzjvuB7JNcJJHgepsVRpwSQR0UXRzW36DL4VjGoxuD497/fwhu
+ 4WMUmNAnUZB7McOfChUpQyk068if1yiFWLpKycfgj45h3Q+qhS7X2qgikogupviz2Dkx
+ FFyQ==
+X-Gm-Message-State: AC+VfDwj7yJuw0LiUII1APMb+Dlc2q1Lmv0P6zQ4Gja9HX7m27q9Kgf6
+ 2U10A8MelHFNgRX/3no7qc6VMA==
+X-Google-Smtp-Source: ACHHUZ7mPcyFAlP/Qpjs5tj82rndNdkJhaKppBt5kUjOQ8+f6q0jfYzSH8J0xy4x6ajcg06oO4kiLw==
+X-Received: by 2002:a05:620a:3e81:b0:75b:23a0:d9e8 with SMTP id
+ tv1-20020a05620a3e8100b0075b23a0d9e8mr1084111qkn.62.1684771494694; 
+ Mon, 22 May 2023 09:04:54 -0700 (PDT)
+Received: from ?IPV6:2607:fb90:8063:704:7944:82ed:f254:5737?
+ ([2607:fb90:8063:704:7944:82ed:f254:5737])
+ by smtp.gmail.com with ESMTPSA id
+ f6-20020a05620a15a600b0074d4cf8f9fcsm947882qkk.107.2023.05.22.09.04.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 09:04:54 -0700 (PDT)
+Message-ID: <662b0cdc-29f1-23a6-a42b-8cfa58026bb9@linaro.org>
+Date: Mon, 22 May 2023 09:04:50 -0700
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-22_11,2023-05-22_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0
- suspectscore=0 phishscore=0 spamscore=0 mlxscore=0 malwarescore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305220134
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=nnmlinux@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL v3 00/21] Block layer patches
+Content-Language: en-US
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
+References: <20230519171806.435109-1-kwolf@redhat.com>
+ <1513489b-2d86-3722-94fa-1a560ac31aa8@linaro.org>
+ <ZGsdjRQIbgIcaAhA@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ZGsdjRQIbgIcaAhA@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,80 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently on PPC64 qemu always dumps the guest memory in
-Big Endian (BE) format even though the guest running in Little Endian
-(LE) mode. So crash tool fails to load the dump as illustrated below:
+On 5/22/23 00:45, Kevin Wolf wrote:
+> Am 19.05.2023 um 21:11 hat Richard Henderson geschrieben:
+>> On 5/19/23 10:18, Kevin Wolf wrote:
+>>> The following changes since commit d009607d08d22f91ca399b72828c6693855e7325:
+>>>
+>>>     Revert "arm/kvm: add support for MTE" (2023-05-19 08:01:15 -0700)
+>>>
+>>> are available in the Git repository at:
+>>>
+>>>     https://repo.or.cz/qemu/kevin.git  tags/for-upstream
+>>>
+>>> for you to fetch changes up to 95fdd8db61848d31fde1d9b32da7f3f76babfa25:
+>>>
+>>>     iotests: Test commit with iothreads and ongoing I/O (2023-05-19 19:16:53 +0200)
+>>>
+>>> ----------------------------------------------------------------
+>>> Block layer patches
+>>>
+>>> - qcow2 spec: Rename "zlib" compression to "deflate"
+>>> - Honour graph read lock even in the main thread + prerequisite fixes
+>>> - aio-posix: do not nest poll handlers (fixes infinite recursion)
+>>> - Refactor QMP blockdev transactions
+>>> - graph-lock: Disable locking for now
+>>> - iotests/245: Check if 'compress' driver is available
+>>
+>> Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as
+>> appropriate.
+> 
+> Hm, I just pulled, and it doesn't seem to be actually there in master?
 
-Log :
-$ virsh dump DOMAIN --memory-only dump.file
+I dunno what happened.  Applied for real this time.
 
-Domain 'DOMAIN' dumped to dump.file
 
-$ crash vmlinux dump.file
-
-<snip>
-crash 8.0.2-1.el9
-
-WARNING: endian mismatch:
-          crash utility: little-endian
-          dump.file: big-endian
-
-WARNING: machine type mismatch:
-          crash utility: PPC64
-          dump.file: (unknown)
-
-crash: dump.file: not a supported file format
-<snip>
-
-This happens because cpu_get_dump_info() passes cpu->env->has_hv_mode
-to function ppc_interrupts_little_endian(), the cpu->env->has_hv_mode
-always set for powerNV even though the guest is not running in hv mode.
-The hv mode should be taken from msr_mask MSR_HVB bit
-(cpu->env.msr_mask & MSR_HVB). This patch fixes the issue by passing
-MSR_HVB value to ppc_interrupts_little_endian() in order to determine
-the guest endianness.
-
-The crash tool also expects guest kernel endianness should match the
-endianness of the dump.
-
-The patch was tested on POWER9 box booted with Linux as host in
-following cases:
-
-Host-Endianess Qemu-Target-Machine Qemu-Guest-Endianess  Qemu-Generated-Guest
-                                                          Memory-Dump-Format
-BE             powernv             LE KVM guest                 LE
-BE             powernv             BE KVM guest                 BE
-LE             powernv             LE KVM guest                 LE
-LE             powernv             BE KVM guest                 BE
-LE             pseries KVM         LE KVM guest                 LE
-LE             pseries TCG         LE guest                     LE
-
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
----
-Changes since V2:
-commit message modified as per feedbak from Nicholas Piggin.
-Changes since V1:
-https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.ibm.com/
-The approach to solve the issue was changed based on feedback from
-Fabiano Rosas on patch V1.
----
- target/ppc/arch_dump.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
-index f58e6359d5..a8315659d9 100644
---- a/target/ppc/arch_dump.c
-+++ b/target/ppc/arch_dump.c
-@@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
-     info->d_machine = PPC_ELF_MACHINE;
-     info->d_class = ELFCLASS;
- 
--    if (ppc_interrupts_little_endian(cpu, cpu->env.has_hv_mode)) {
-+    if (ppc_interrupts_little_endian(cpu, !!(cpu->env.msr_mask & MSR_HVB))) {
-         info->d_endian = ELFDATA2LSB;
-     } else {
-         info->d_endian = ELFDATA2MSB;
--- 
-2.39.2
+r~
 
 
