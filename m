@@ -2,129 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F7970CEA7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 01:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FEE70CEB6
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 01:36:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Eoh-0008Ph-V6; Mon, 22 May 2023 19:19:51 -0400
+	id 1q1F35-0002PR-5A; Mon, 22 May 2023 19:34:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan@outlook.com>) id 1q1Eof-0008PL-M8
- for qemu-devel@nongnu.org; Mon, 22 May 2023 19:19:49 -0400
-Received: from mail-psaapc01olkn2082f.outbound.protection.outlook.com
- ([2a01:111:f400:feae::82f]
- helo=APC01-PSA-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan@outlook.com>) id 1q1Eod-0004cX-6V
- for qemu-devel@nongnu.org; Mon, 22 May 2023 19:19:49 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NLvfesz20zMhtzI2UiIm7SVURAP8lbqVgXUo1QEL80SdrTG4pu3lhgotwLMqcJbrZwrljwTGslCmzKuNFEFGEsYGdBehc3oM48wEvW62VZdfcjGy5CEuSCJpe9Sccz0RRPDTvaRjG9kjV5ykuTq+Ad4PRGzMDSzyWYQ+L3wjdhTOPINyyU3rEGUC1vvrqL8m6m5Lh361rA5Iar4TSyMytEpIP+0fomXqFRzIVRzTrBDFZEjyS7eN7dz4Bg3+DLy+JBF5hvb0Pi4k+8oEgQyoC0p4Yaq08Dd/PA8F+azKdGcl/5cxR/1f+cQGZ/gQjpSPpD8tz64vZTVgiB+q6sNvwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8kah9xYMgZc1cORzgg/Skr+yN/PXwUTof4jYFR4ej7o=;
- b=nRHk2ZuNcBgAs2wNS/zac+sL7Ba7skeVamv1QBTg/KhkdL2DX1a7eo4TJFU1xsEOAxQDg/TW0WJzN7CAEbYAmJnWaRlN6yR0iRLZ7RVTJsWTe0heco1OQM96rMDx8SR9RkA07Indd1awf/UPb6yuCpX1szS7TPuykCLYAY3uCNKHuhEjVSdDmtUQLfF159r/fKgWt1usOTGtUPd5ENIGsSGldF9jUNmUgDsx/bTE5u70k/Nto436sjnZctXvZq/HBiDzbsYvq2vDp3gkp3n4Fjn6Ov2YCzgoNjtVCScCuvgpaf7UhRn0BZwurdLyz/Jycaj/kIlcnZx29NOvEgj6/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8kah9xYMgZc1cORzgg/Skr+yN/PXwUTof4jYFR4ej7o=;
- b=ohnxygqCe5Zb4YnoHW2QH25FpDwkcewHwFKUPA0j4vzHrtJnS9mmpRhUuLMCPXmkAzH+ikQ6NaiNhDf36S85tmtcwtSIRAda2EetJ2YCRwEVSc5XNNmeSq/KwaHitBQctm/bimWvBu/Ul7ITL9p75Kr/Zwr5KnD6AGCPhNx+uOnRmQyg5EjhCSzeaTXG/PcpfJIJONn/nYChv2lHNPd/iRiMnxUZPaSkSOyBrG9QSt3oeXGqaPfZvvGGSrAmRa+cO97X0E/49EA1MJiKvsoI93tkrU8cJz0Tj95MpvMA7RwGD9BguvRzYvPy4QH+NbYw61277/hR1nEdU6JCIfS06A==
-Received: from SG2PR06MB3397.apcprd06.prod.outlook.com (2603:1096:4:7a::17) by
- TYUPR06MB6219.apcprd06.prod.outlook.com (2603:1096:400:352::9) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6411.27; Mon, 22 May 2023 23:19:38 +0000
-Received: from SG2PR06MB3397.apcprd06.prod.outlook.com
- ([fe80::248c:58fd:97db:5425]) by SG2PR06MB3397.apcprd06.prod.outlook.com
- ([fe80::248c:58fd:97db:5425%7]) with mapi id 15.20.6411.021; Mon, 22 May 2023
- 23:19:38 +0000
-Date: Mon, 22 May 2023 16:19:28 -0700
-From: Fan Ni <nifan@outlook.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel@nongnu.org, Michael Tsirkin <mst@redhat.com>,
- Fan Ni <fan.ni@samsung.com>, linux-cxl@vger.kernel.org,
- linuxarm@huawei.com, Ira Weiny <ira.weiny@intel.com>,
- Michael Roth <michael.roth@amd.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Dave Jiang <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, a.manzanares@samsung.com,
- dave@stgolabs.net, nmtadam.samsung@gmail.com, nifan@outlook.com
-Subject: Re: [PATCH v7 5/7] hw/cxl/events: Add injection of General Media
- Events
-Message-ID: <SG2PR06MB339713607428B5C4B3748586B2439@SG2PR06MB3397.apcprd06.prod.outlook.com>
-References: <20230522150947.11546-1-Jonathan.Cameron@huawei.com>
- <CGME20230522151228uscas1p20e6e90e3ecbfb7ad237a043a86252d85@uscas1p2.samsung.com>
- <20230522150947.11546-6-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230522150947.11546-6-Jonathan.Cameron@huawei.com>
-X-TMN: [FHVODIAGbQ+9c8LTucd9XzXHE/SNg+99R3QOGq+R4c8=]
-X-ClientProxiedBy: BYAPR04CA0016.namprd04.prod.outlook.com
- (2603:10b6:a03:40::29) To SG2PR06MB3397.apcprd06.prod.outlook.com
- (2603:1096:4:7a::17)
-X-Microsoft-Original-Message-ID: <ZGv4gJ//roEEf9wk@outlook.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1F32-0002P1-JJ
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 19:34:40 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1F2z-0007hr-AT
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 19:34:40 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1ae875bf125so26097295ad.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 16:34:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684798476; x=1687390476;
+ h=in-reply-to:from:references:cc:to:content-language:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bqq8LgeF9tPfw6tPVYwk5p7UNwAud6NgoNGr1cB8GVo=;
+ b=mhY4YVrC+BOkcyZkKEhXCI5nfn0w1EGJ+aiZyPw5rGVrOIIFg6FO7w0CbSjNKVHZim
+ Eohj9RUgYRRdvT2K1qskN2bCvnf3C/CZM0l8tzzzJ5etyep3AXZgE+stDC4k0cBB5Ddd
+ pZ1Af7HcL3/5pVyubVmoat+O18Cj5NlaXIXIuXzyLPsWHAOHcZqCCZOX3srcJ9Z8pPAv
+ dt6PmoJmTy16LkPgtS3paofOUjVqmdYFgUvpzGafoW4RTbCbKpzl8seHfrQxYSf8wLDw
+ NinUBieX5V534LL9b6zKFl2IptGkfZZ3nhHG//35ng8lPg5+SzsqneeszdoYNYLvuSJO
+ +kmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684798476; x=1687390476;
+ h=in-reply-to:from:references:cc:to:content-language:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=bqq8LgeF9tPfw6tPVYwk5p7UNwAud6NgoNGr1cB8GVo=;
+ b=OBaGC4Egp/OmqEjpnWBk1raVyoFa4DKpJh40HmzlqnaqU2JcNhuJB+KBDNff2ogV9O
+ SXsYUrOmpMpg8IbD9t7ZaWtNQu4sPWgivVKcL+H+yHc5cdiX6JeUoWZsRfA0X8oMAE/U
+ xDUQaQgQaOxS766rNhcea1XL/Ch1N7mqTNLNesm+hGaYM0GNsSS5OgjpEfYHZFipTalc
+ xyF4E5dZ7htLlbYaUw2/En/VLZAbieTu5J5ceiC0ReXa/jN5g5qQ7a6E2SRlcx1zcEVr
+ S4qa+04EqXg71/N//yUDf0c+kRbvah4WeceqLFlwjcWZ9ncZmrrEBH5g3d7EYaxQg1ee
+ ZCMA==
+X-Gm-Message-State: AC+VfDwJo8ZjcCDauhl9jhKAfwfeBzA5dCT9T796n97bveXzOoaOzlQ6
+ EJwSXOOwptXGjBJcv+FRwJsHBw==
+X-Google-Smtp-Source: ACHHUZ4TNNAAInb4/KcLM3GKJHgpWUJLwPR9+EheNXou17h036QDtXCUtIb8Dyv3lIWG+GbDxJzUXA==
+X-Received: by 2002:a17:902:ab93:b0:1af:bba9:16e0 with SMTP id
+ f19-20020a170902ab9300b001afbba916e0mr2498026plr.8.1684798475485; 
+ Mon, 22 May 2023 16:34:35 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:86fe:2b34:5897:c8ef?
+ ([2602:ae:1598:4c01:86fe:2b34:5897:c8ef])
+ by smtp.gmail.com with ESMTPSA id
+ v1-20020a170902b7c100b001a95c7742bbsm5407893plz.9.2023.05.22.16.34.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 16:34:34 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------UCWAQH6RMlhn58F0s0hhCddn"
+Message-ID: <ec9cfe5a-d5f2-466d-34dc-c35817e7e010@linaro.org>
+Date: Mon, 22 May 2023 16:34:33 -0700
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SG2PR06MB3397:EE_|TYUPR06MB6219:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed156c3e-fc61-4a8b-dc20-08db5b1b0357
-X-MS-Exchange-SLBlob-MailProps: ScCmN3RHayE5CJPSKkfc+gH+CEmTXh/KLd+d5Ug5U49ffe1OJSn8DE4FKEFHFmjA8n0sx9I/vaVRv4rpnkZt706vrN04VHwm1WJjIpLiY6uiouw7wVBn76ugfvveUAGFbjnNPUyH2V+kOSS/QfqMxkrOgAD3tmhro22ecRPbE0fOPM8ovhYRGXxacyOXk20WYa2bikh5FBJkEYai71UI0R+DCoB5P7MR9S0FrVeVJRJw34NDt766pRbW8RBEOgqx0trQ+ycn8etSl2HMXJtgBXomqOgeVh6MD5+6iUA44XCSh9EgcPp/V2gpGhJdNc/6Cr5dvHbhFtrCkHklTMD8hk+hhp/aQu2xhTDm1SACOe3qlCxu73RaE7eYNdyMcpEeC/CWzD5Ya1ltOX/BKHp8XAnY/7pQCkQJuQifOZAP8Icj5NCrtrPBACa2Fp3HXwDJmZXTB1p/G4vxBPTvV/Lcw3HlAr16jrWEYwBPJB1/JOLHBPqw+0LxGiy5ma6xqM0bWAxpHWeoHs9J0XOm8/cYqm1KgHd0/5qcwOpeHrMdD4M/VjdkD8k4/bBMTwN5tBaEYo1A1djPB7gpw7g3DHydR6+EAxZZkimW95cWeH6RHrnmtAPEe2Un4q5eVdAKJgiwe8bi0l1cH40db5vrwS5cBGghmvvw9YaqvoUk2f7jOoxjdHGuo2qqtxCDQHqZymDovrTu0jgny56atYphZOEEzdb0h/ssnEPpLKhgq8laVaU=
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: pPBt9L75EHfWUDExsyuhrSO0tqs5TbxnniVtjuGWw4CBlmQ92WYKeQcSUWauTbpaYwRhOYPSyE+JEjAdGB7tBXISsyM91sKYezjUk5EJDGMFDps/ZJ2RiuV2bnh7vaiS8w0SdA3kt70UOjd/6IfWwF6dH0G+oUvKoiBAVdjqy+xRuG3xl9sv+dH6mv7S9vHSmC8eV4h3ThMlhN/tzLfA0QDNvRy7hsgKQqVULE+27cv4gJJu6gsRckQ78WPfY8ot5vCVrt8UAR7+i7TUO6mHqG/bkV1soSZiaqeq5ur/ZcI8wNV+ZH64awBu5Zx58hYU+oRi5iDJa6LzyB6IJl0Ush8JztysupeolFzBHrjIaShVk7OZcLYRzuQ1G3rFQXv9hWvytbyyySPQFCweLHz3FJ0RpOQztsvpRFAJDtRxYM/hZXrlPnZqo2eHuLZPMQ54mxgnDSYrLsSPe//eFpG73mvYWJ8OaUMq5fWyXRYqrDqjswacS70Bo9/6+d6wC3zVIMPOYkINKMdvdIIAa7S86aNWp6/7P0pe+9/vy1mSwzXZq5mQmGhxJalHTprUj2PO/+JIZ8t1sxnKaggraJVUKrbeCq6QKv41Ugs4PchLrsNhTYUqU8LPTYYnOcxjqhlPjflSX/7lo4dt3MH88srTQw==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Ri93VWxxSE9NT0cvZm1XcUpXaTJRWml1bk1GODRUYm9rOExKSjg1WUFKNGVM?=
- =?utf-8?B?THlVMUd0SjVSZVBkSm8wcGZvM2RLNnNmd0gxejlzSmVKdElSN1Vzd3NnZzBL?=
- =?utf-8?B?V3p0TGhBYjdLVU1yaGRvNXN3YWZtVVJXNjY2RExlY0JLcHN5OHJOdVZ1Ymxh?=
- =?utf-8?B?SDFCd2VLbWhZdzZCTWJNLzVQQ2JwV3kwdGsrbVVPcXpPMU1MM2JubktCOHJJ?=
- =?utf-8?B?OHZMMy9wVzQ2aWhEOE1EemRib1J0WmhUcTZjcnVKTjhkZnVWYWhrVncxOXZa?=
- =?utf-8?B?ZUFqMU16ejhwSWJ6d2VHTkcvd01xUXY1dDJKYmlOLzIxbWZ2dEZ3VEplYmZh?=
- =?utf-8?B?VktkKy9aR2JMY1h3QXFoNE5lYlFGSkdyVVI4enFLaGRNaFk2WGsrVVdsOEE0?=
- =?utf-8?B?NmtWSzlUQXhRRFNTQ1JJUmJnR0NvZjhWaUs0L3oxQnEyZjdxWTM1T0ZXUEh0?=
- =?utf-8?B?RUl6dXA3YjZuNzlWQzE2MjIyQ1BVQ0JPdDd1ZjlJS1JsQTR4MW5BM3pZaEtk?=
- =?utf-8?B?eVFzaFZ1WFV2SGxmNzZpVmY5eWYxTCtzdXpydWdPU1R2NFBSMVVWUmVMZXVW?=
- =?utf-8?B?SWY5YTQ0YjVTb2NxZjhySzBEbjNud2gvMXlNVENuQnpsRE5lTlluekljZytR?=
- =?utf-8?B?bjF6OVFVdWY4MFZ0M0RnYUl6NkRBeHhiV2xDRFl2L0pBNGJYMWZrT3lQekMy?=
- =?utf-8?B?eW9tT3dtT2dLU0RyRlR4OGJpYjhRSzd0TXRBL3ZGL0k0YVVnZ1R5T0xsMSsr?=
- =?utf-8?B?MG5GMlN0OHg2cFFMSjQrVlJZV01ZTGxDUVNnb2IyNmh4bTJQd2FRNmxCTmp4?=
- =?utf-8?B?MG5OekdnRkJGOG8ybThYRGVndzVYa2xTNlVyZERYU1NReFJRU0ZmZFJGb0tB?=
- =?utf-8?B?ZlpnNFFkVHgvdTd4TXNQUzlzbFpHOHpVUWs5Vk1WUWRiSG83dTVtZVo5OTE4?=
- =?utf-8?B?MyttTGFHTE15YmpJWkFHWUZ2M1pzV0Z2Uk0xeEVxRk1rQ0FlSzUvRjN3ZEpt?=
- =?utf-8?B?dmNNbFNpeTZLY2xsWXZaQll0R2xkbk8rNkU0WnA2VjB1b1FaR2VYZnpUUGdN?=
- =?utf-8?B?RFpnL1pYMlBxSkp4eCtEamYyQUxGS0M4cUxlZ21LeGtSdEtuSG5IT3ByVjRj?=
- =?utf-8?B?Kzl5YW15V3YzYzVPOWEzemlQTkdDd0dvTVpWUmI2RUt5NkVTNkkwdHExUDk4?=
- =?utf-8?B?Y240dlNQS09MdXRKZHkzYUJIL1FmSjE5YmF2REUrQVllSmtOUzZyM3JzWWxh?=
- =?utf-8?B?S1Ewek5TczhEcGt3OGdFd1VrZ1NMcXZsTGRqdDlhOFlWd3V6cGN5b1JXdGhy?=
- =?utf-8?B?Yy9tckNVY3JzbkdLYnB3VHNuSHpiMStIN28rTkJVZ1E4ZVhzbWZNRXlBN095?=
- =?utf-8?B?WG12OHhja1FVMExJZDZUVUhJdVM0YmcvL0FLb0ZSSjNHOWt5WWVnbmlJS2Yx?=
- =?utf-8?B?MWZoUXZZTnNpaFpXcmlSQThUOW5VaU4zRmZwdWV0OFpOWmlSTG5lNCtCSWFO?=
- =?utf-8?B?U3VERVdLS2pueldqQjFKQXNtMi9zdEhXRld0Q25LQTN2Q2xRakRpMGtLeTBy?=
- =?utf-8?B?c2JCaTZDanlVSEJFWkoyYm9iSTJIZ2gwNlBvV1QyaG80N0x3cXl0bDRjODkw?=
- =?utf-8?Q?wwpE6/jzhurTBynQVUdN7LRDRP3vnUR1SU6/CWxWKTec=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed156c3e-fc61-4a8b-dc20-08db5b1b0357
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3397.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2023 23:19:38.6687 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYUPR06MB6219
-Received-SPF: pass client-ip=2a01:111:f400:feae::82f;
- envelope-from=nifan@outlook.com;
- helo=APC01-PSA-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] bitops.h: Compile out asserts without --enable-debug
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+References: <20230520205444.887287457E7@zero.eik.bme.hu>
+ <874jo47cnd.fsf@linaro.org> <aaa22b3f-d548-5a69-489a-5777a7e98cef@eik.bme.hu>
+ <87v8gk5m7p.fsf@linaro.org> <49c4781a-1e91-85ef-d9cb-6996e9bbb10c@eik.bme.hu>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <49c4781a-1e91-85ef-d9cb-6996e9bbb10c@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -140,294 +97,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 05/22/2023 16:09, Jonathan Cameron wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
-> 
-> To facilitate testing provide a QMP command to inject a general media
-> event.  The event can be added to the log specified.
-> 
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> ---
+This is a multi-part message in MIME format.
+--------------UCWAQH6RMlhn58F0s0hhCddn
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-
-> v7: Various docs updates and field renames including a lot more
->     specification references.
-> ---
->  qapi/cxl.json               |  79 +++++++++++++++++++++++++
->  include/hw/cxl/cxl_events.h |  20 +++++++
->  hw/mem/cxl_type3.c          | 111 ++++++++++++++++++++++++++++++++++++
->  hw/mem/cxl_type3_stubs.c    |  10 ++++
->  4 files changed, 220 insertions(+)
+On 5/22/23 15:26, BALATON Zoltan wrote:
+> On Mon, 22 May 2023, Alex Bennée wrote:
+>> (ajb: add Richard for his compiler-fu)
+>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>>> On Mon, 22 May 2023, Alex Bennée wrote:
+>>>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>>>>
+>>>>> The low level extract and deposit funtions provided by bitops.h are
+>>>>> used in performance critical places. It crept into target/ppc via
+>>>>> FIELD_EX64 and also used by softfloat so PPC code using a lot of FPU
+>>>>> where hardfloat is also disabled is doubly affected.
+>>>>
+>>>> Most of these asserts compile out to nothing if the compiler is able to
+>>>> verify the constants are in the range. For example examining
+>>>> the start of float64_add:
+>>>>
+>> <snip>
+>>>>
+>>>> I don't see any check and abort steps because all the shift and mask
+>>>> values are known at compile time. The softfloat compilation certainly
+>>>> does have some assert points though:
+>>>>
+>>>> readelf -s ./libqemu-ppc64-softmmu.fa.p/fpu_softfloat.c.o  |grep assert
+>>>>   136: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND g_assertion_mess[...]
+>>>>   138: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND __assert_fail
+>>>>
+>>>> but the references are for the ISRA segments so its tricky to know if
+>>>> they get used or are just there for LTO purposes.
+>>>>
+>>>> If there are hot-paths that show up the extract/deposit functions I
+>>>> suspect a better approach would be to implement _nocheck variants (or
+>>>> maybe _noassert?) and use them where required rather than turning off
+>>>> the assert checking for these utility functions.
+>>>
+>>> Just to clarify again, the asserts are still there when compiled with
+>>> --enable-debug. The patch only turns them off for optimised release
+>>> builds which I think makes sense if these asserts are to catch
+>>> programming errors.
+>>
+>> Well as Peter said the general policy is to keep asserts in but I
+>> appreciate this is a hotpath case.
+>>
+>>> I think I've also suggested adding noassert
+>>> versions of these but that wasn't a popular idea and it may also not
+>>> be easy to convert all places to use that like for example the
+>>> register fields related usage in target/ppc as that would also affect
+>>> other places.
+>>
+>> Is code generation or device emulation really on the hot-path. Generally
+>> a well predicted assert is in the noise for those operations.
 > 
-> diff --git a/qapi/cxl.json b/qapi/cxl.json
-> index 4849fca776..7700e26a0d 100644
-> --- a/qapi/cxl.json
-> +++ b/qapi/cxl.json
-> @@ -5,6 +5,85 @@
->  # = CXL devices
->  ##
->  
-> +##
-> +# @CxlEventLog:
-> +#
-> +# CXL has a number of separate event logs for different types of
-> +# events. Each such event log is handled and signaled independently.
-> +#
-> +# @informational: Information Event Log
-> +#
-> +# @warning: Warning Event Log
-> +#
-> +# @failure: Failure Event Log
-> +#
-> +# @fatal: Fatal Event Log
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'enum': 'CxlEventLog',
-> +  'data': ['informational',
-> +           'warning',
-> +           'failure',
-> +           'fatal']
-> + }
-> +
-> +##
-> +# @cxl-inject-general-media-event:
-> +#
-> +# Inject an event record for a General Media Event (CXL r3.0
-> +# 8.2.9.2.1.1) This event type is reported via one of the event logs
-> +# specified via the log parameter.
-> +#
-> +# @path: CXL type 3 device canonical QOM path
-> +#
-> +# @log: event log to add the event to
-> +#
-> +# @flags: Event Record Flags. See CXL r3.0 Table 8-42 Common Event
-> +#         Record Format, Event Record Flags for subfield definitions.
-> +#
-> +# @dpa: Device Physical Address (relative to @path device). Note lower
-> +#       bits include some flags. See CXL r3.0 Table 8-43 General Media
-> +#       Event Record, Physical Address.
-> +#
-> +# @descriptor: Memory Event Descriptor with additional memory
-> +#              event information. See CXL r3.0 Table 8-43 General
-> +#              Media Event Record, Memory Event Descriptor for bit
-> +#              definitions.
-> +#
-> +# @type: Type of memory event that occurred. See CXL r3.0 Table 8-43
-> +#        General Media Event Record, Memory Event Type for possible
-> +#        values.
-> +#
-> +# @transaction-type: Type of first transaction that caused the event
-> +#                    to occur. See CXL r3.0 Table 8-43 General Media
-> +#                    Event Record, Transaction Type for possible
-> +#                    values.
-> +#
-> +# @channel: The channel of the memory event location. A channel is
-> +#           an interface that can be independently accessed for a
-> +#           transaction.
-> +#
-> +# @rank: The rank of the memory event location. A rank is a set of
-> +#        memory devices on a channel that together execute a
-> +#        transaction.
-> +#
-> +# @device: Bitmask that represents all devices in the rank associated
-> +#          with the memory event location.
-> +#
-> +# @component-id: Device specific component identifier for the event.
-> +#                May describe a field replaceable sub-component of
-> +#                the device.
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'command': 'cxl-inject-general-media-event',
-> +  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags': 'uint8',
-> +            'dpa': 'uint64', 'descriptor': 'uint8',
-> +            'type': 'uint8', 'transaction-type': 'uint8',
-> +            '*channel': 'uint8', '*rank': 'uint8',
-> +            '*device': 'uint32', '*component-id': 'str' } }
-> +
->  ##
->  # @cxl-inject-poison:
->  #
-> diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-> index 4bf8b7aa08..b189193f4c 100644
-> --- a/include/hw/cxl/cxl_events.h
-> +++ b/include/hw/cxl/cxl_events.h
-> @@ -103,4 +103,24 @@ typedef struct CXLEventInterruptPolicy {
->  /* DCD is optional but other fields are not */
->  #define CXL_EVENT_INT_SETTING_MIN_LEN 4
->  
-> +/*
-> + * General Media Event Record
-> + * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
-> + */
-> +#define CXL_EVENT_GEN_MED_COMP_ID_SIZE  0x10
-> +#define CXL_EVENT_GEN_MED_RES_SIZE      0x2e
-> +typedef struct CXLEventGenMedia {
-> +    CXLEventRecordHdr hdr;
-> +    uint64_t phys_addr;
-> +    uint8_t descriptor;
-> +    uint8_t type;
-> +    uint8_t transaction_type;
-> +    uint16_t validity_flags;
-> +    uint8_t channel;
-> +    uint8_t rank;
-> +    uint8_t device[3];
-> +    uint8_t component_id[CXL_EVENT_GEN_MED_COMP_ID_SIZE];
-> +    uint8_t reserved[CXL_EVENT_GEN_MED_RES_SIZE];
-> +} QEMU_PACKED CXLEventGenMedia;
-> +
->  #endif /* CXL_EVENTS_H */
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index c9e347f42b..b1618779d2 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -1181,6 +1181,117 @@ void qmp_cxl_inject_correctable_error(const char *path, CxlCorErrorType type,
->      pcie_aer_inject_error(PCI_DEVICE(obj), &err);
->  }
->  
-> +static void cxl_assign_event_header(CXLEventRecordHdr *hdr,
-> +                                    const QemuUUID *uuid, uint32_t flags,
-> +                                    uint8_t length, uint64_t timestamp)
-> +{
-> +    st24_le_p(&hdr->flags, flags);
-> +    hdr->length = length;
-> +    memcpy(&hdr->id, uuid, sizeof(hdr->id));
-> +    stq_le_p(&hdr->timestamp, timestamp);
-> +}
-> +
-> +static const QemuUUID gen_media_uuid = {
-> +    .data = UUID(0xfbcd0a77, 0xc260, 0x417f,
-> +                 0x85, 0xa9, 0x08, 0x8b, 0x16, 0x21, 0xeb, 0xa6),
-> +};
-> +
-> +#define CXL_GMER_VALID_CHANNEL                          BIT(0)
-> +#define CXL_GMER_VALID_RANK                             BIT(1)
-> +#define CXL_GMER_VALID_DEVICE                           BIT(2)
-> +#define CXL_GMER_VALID_COMPONENT                        BIT(3)
-> +
-> +static int ct3d_qmp_cxl_event_log_enc(CxlEventLog log)
-> +{
-> +    switch (log) {
-> +    case CXL_EVENT_LOG_INFORMATIONAL:
-> +        return CXL_EVENT_TYPE_INFO;
-> +    case CXL_EVENT_LOG_WARNING:
-> +        return CXL_EVENT_TYPE_WARN;
-> +    case CXL_EVENT_LOG_FAILURE:
-> +        return CXL_EVENT_TYPE_FAIL;
-> +    case CXL_EVENT_LOG_FATAL:
-> +        return CXL_EVENT_TYPE_FATAL;
-> +/* DCD not yet supported */
-> +    default:
-> +        return -EINVAL;
-> +    }
-> +}
-> +/* Component ID is device specific.  Define this as a string. */
-> +void qmp_cxl_inject_general_media_event(const char *path, CxlEventLog log,
-> +                                        uint8_t flags, uint64_t dpa,
-> +                                        uint8_t descriptor, uint8_t type,
-> +                                        uint8_t transaction_type,
-> +                                        bool has_channel, uint8_t channel,
-> +                                        bool has_rank, uint8_t rank,
-> +                                        bool has_device, uint32_t device,
-> +                                        const char *component_id,
-> +                                        Error **errp)
-> +{
-> +    Object *obj = object_resolve_path(path, NULL);
-> +    CXLEventGenMedia gem;
-> +    CXLEventRecordHdr *hdr = &gem.hdr;
-> +    CXLDeviceState *cxlds;
-> +    CXLType3Dev *ct3d;
-> +    uint16_t valid_flags = 0;
-> +    uint8_t enc_log;
-> +    int rc;
-> +
-> +    if (!obj) {
-> +        error_setg(errp, "Unable to resolve path");
-> +        return;
-> +    }
-> +    if (!object_dynamic_cast(obj, TYPE_CXL_TYPE3)) {
-> +        error_setg(errp, "Path does not point to a CXL type 3 device");
-> +        return;
-> +    }
-> +    ct3d = CXL_TYPE3(obj);
-> +    cxlds = &ct3d->cxl_dstate;
-> +
-> +    rc = ct3d_qmp_cxl_event_log_enc(log);
-> +    if (rc < 0) {
-> +        error_setg(errp, "Unhandled error log type");
-> +        return;
-> +    }
-> +    enc_log = rc;
-> +
-> +    memset(&gem, 0, sizeof(gem));
-> +    cxl_assign_event_header(hdr, &gen_media_uuid, flags, sizeof(gem),
-> +                            cxl_device_get_timestamp(&ct3d->cxl_dstate));
-> +
-> +    stq_le_p(&gem.phys_addr, dpa);
-> +    gem.descriptor = descriptor;
-> +    gem.type = type;
-> +    gem.transaction_type = transaction_type;
-> +
-> +    if (has_channel) {
-> +        gem.channel = channel;
-> +        valid_flags |= CXL_GMER_VALID_CHANNEL;
-> +    }
-> +
-> +    if (has_rank) {
-> +        gem.rank = rank;
-> +        valid_flags |= CXL_GMER_VALID_RANK;
-> +    }
-> +
-> +    if (has_device) {
-> +        st24_le_p(gem.device, device);
-> +        valid_flags |= CXL_GMER_VALID_DEVICE;
-> +    }
-> +
-> +    if (component_id) {
-> +        strncpy((char *)gem.component_id, component_id,
-> +                sizeof(gem.component_id) - 1);
-> +        valid_flags |= CXL_GMER_VALID_COMPONENT;
-> +    }
-> +
-> +    stw_le_p(&gem.validity_flags, valid_flags);
-> +
-> +    if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&gem)) {
-> +        cxl_event_irq_assert(ct3d);
-> +    }
-> +}
-> +
->  static void ct3_class_init(ObjectClass *oc, void *data)
->  {
->      DeviceClass *dc = DEVICE_CLASS(oc);
-> diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-> index fd1166a610..4dfbdf9268 100644
-> --- a/hw/mem/cxl_type3_stubs.c
-> +++ b/hw/mem/cxl_type3_stubs.c
-> @@ -3,6 +3,16 @@
->  #include "qapi/error.h"
->  #include "qapi/qapi-commands-cxl.h"
->  
-> +void qmp_cxl_inject_general_media_event(const char *path, CxlEventLog log,
-> +                                        uint8_t flags, uint64_t dpa,
-> +                                        uint8_t descriptor, uint8_t type,
-> +                                        uint8_t transaction_type,
-> +                                        bool has_channel, uint8_t channel,
-> +                                        bool has_rank, uint8_t rank,
-> +                                        bool has_device, uint32_t device,
-> +                                        const char *component_id,
-> +                                        Error **errp) {}
-> +
->  void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
->                             Error **errp)
->  {
-> -- 
-> 2.39.2
+> They aren't in code generation but in helpers as you can also see in the profile below and 
+> so they can be on hot path. Also I've noticed that extract8 and extract16 just call 
+> extract32 after adding another assert on their own in addition to the one in extract32 
+> which is double overhead for really no reason. I'd delete all these asserts as the 
+> likelhood of bugs these could catch is very low anyway (how often do you expect somebody 
+> to call these with out of bound values that would not be obvious from the results 
+> otherwise?) but leaving them in non-debug builds is totally useless in my opinion.
 > 
+>>> So this seems to be the simplest and most effective
+>>> approach.
+>>>
+>>> The softfloat related usage in these tests I've done seem to mostly
+>>> come from unpacking and repacking floats in softfloat which is done
+>>> for every operation, e.g. muladd which mp3 encoding mostly uses does 3
+>>> unpacks and 1 pack for each call and each unpack is 3 extracts so even
+>>> small overheads add app quickly. Just 1 muladd will result in 9
+>>> extracts and 2 deposits at least plus updating PPC flags for each FPU
+>>> op adds a bunch more. I did some profiling with perf to find these.
+>>
+>> After some messing about trying to get lame to cross compile to a static
+>> binary I was able to replicate what you've seen:
+>>
+>>  11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
+>>  11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+>>   8.26%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
+>>   6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+>>   5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+>>   4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
+>>   4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
+>>   3.62%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
+>>   3.32%  qemu-ppc64  qemu-ppc64               [.] helper_todouble
+>>   2.68%  qemu-ppc64  qemu-ppc64               [.] float64_add
+>>   2.51%  qemu-ppc64  qemu-ppc64               [.] float64_hs_compare
+>>   2.30%  qemu-ppc64  qemu-ppc64               [.] float64r32_muladd
+>>   1.80%  qemu-ppc64  qemu-ppc64               [.] float64r32_mul
+>>   1.40%  qemu-ppc64  qemu-ppc64               [.] float64r32_add
+>>   1.34%  qemu-ppc64  qemu-ppc64               [.] parts64_mul
+>>   1.16%  qemu-ppc64  qemu-ppc64               [.] parts64_addsub
+>>   1.14%  qemu-ppc64  qemu-ppc64               [.] helper_reset_fpstatus
+>>   1.06%  qemu-ppc64  qemu-ppc64               [.] helper_float_check_status
+>>   1.04%  qemu-ppc64  qemu-ppc64               [.] float64_muladd
+> 
+> I've run 32 bit PPC version in qemu-system-ppc so the profile is a bit different (has more 
+> system related overhead that I plan to look at separately) but this part is similar to the 
+> above. I also wonder what makes helper_compute_fprf_float64 a bottleneck as that does not 
+> seem to have much extract/deposit, only a call to clz but it's hard to tell what it really 
+> does due to nested calls and macros. I've also seen this function among the top contenders 
+> in my profiling.
+> 
+>> what I find confusing is the fact the parts extraction and packing
+>> should all be known constants which should cause the asserts to
+>> disappear. However it looks like the compiler decided to bring in a copy
+>> of the whole inline function (ISRA = >interprocedural scalar replacement
+>> of aggregates) which obviously can't fold the constants and eliminate
+>> the assert.
+> 
+> Could it be related to that while the parts size and start are marked const but pulled out 
+> of a struct field so the compiler may not know their actual value until run time?
+> 
+>> Richard,
+>>
+>> Any idea of why the compiler might decide to do something like this?
 
--- 
-Fan Ni <nifan@outlook.com>
+Try this.
+
+
+r~
+
+--------------UCWAQH6RMlhn58F0s0hhCddn
+Content-Type: text/x-patch; charset=UTF-8; name="z.patch"
+Content-Disposition: attachment; filename="z.patch"
+Content-Transfer-Encoding: base64
+
+ZGlmZiAtLWdpdCBhL2ZwdS9zb2Z0ZmxvYXQuYyBiL2ZwdS9zb2Z0ZmxvYXQuYwppbmRleCAx
+MDhmOWNiMjI0Li40MmU2YzE4OGI0IDEwMDY0NAotLS0gYS9mcHUvc29mdGZsb2F0LmMKKysr
+IGIvZnB1L3NvZnRmbG9hdC5jCkBAIC01OTMsMjcgKzU5MywyNyBAQCBzdGF0aWMgdm9pZCB1
+bnBhY2tfcmF3NjQoRmxvYXRQYXJ0czY0ICpyLCBjb25zdCBGbG9hdEZtdCAqZm10LCB1aW50
+NjRfdCByYXcpCiAgICAgfTsKIH0KIAotc3RhdGljIGlubGluZSB2b2lkIGZsb2F0MTZfdW5w
+YWNrX3JhdyhGbG9hdFBhcnRzNjQgKnAsIGZsb2F0MTYgZikKK3N0YXRpYyB2b2lkIFFFTVVf
+RkxBVFRFTiBmbG9hdDE2X3VucGFja19yYXcoRmxvYXRQYXJ0czY0ICpwLCBmbG9hdDE2IGYp
+CiB7CiAgICAgdW5wYWNrX3JhdzY0KHAsICZmbG9hdDE2X3BhcmFtcywgZik7CiB9CiAKLXN0
+YXRpYyBpbmxpbmUgdm9pZCBiZmxvYXQxNl91bnBhY2tfcmF3KEZsb2F0UGFydHM2NCAqcCwg
+YmZsb2F0MTYgZikKK3N0YXRpYyB2b2lkIFFFTVVfRkxBVFRFTiBiZmxvYXQxNl91bnBhY2tf
+cmF3KEZsb2F0UGFydHM2NCAqcCwgYmZsb2F0MTYgZikKIHsKICAgICB1bnBhY2tfcmF3NjQo
+cCwgJmJmbG9hdDE2X3BhcmFtcywgZik7CiB9CiAKLXN0YXRpYyBpbmxpbmUgdm9pZCBmbG9h
+dDMyX3VucGFja19yYXcoRmxvYXRQYXJ0czY0ICpwLCBmbG9hdDMyIGYpCitzdGF0aWMgdm9p
+ZCBRRU1VX0ZMQVRURU4gZmxvYXQzMl91bnBhY2tfcmF3KEZsb2F0UGFydHM2NCAqcCwgZmxv
+YXQzMiBmKQogewogICAgIHVucGFja19yYXc2NChwLCAmZmxvYXQzMl9wYXJhbXMsIGYpOwog
+fQogCi1zdGF0aWMgaW5saW5lIHZvaWQgZmxvYXQ2NF91bnBhY2tfcmF3KEZsb2F0UGFydHM2
+NCAqcCwgZmxvYXQ2NCBmKQorc3RhdGljIHZvaWQgUUVNVV9GTEFUVEVOIGZsb2F0NjRfdW5w
+YWNrX3JhdyhGbG9hdFBhcnRzNjQgKnAsIGZsb2F0NjQgZikKIHsKICAgICB1bnBhY2tfcmF3
+NjQocCwgJmZsb2F0NjRfcGFyYW1zLCBmKTsKIH0KIAotc3RhdGljIHZvaWQgZmxvYXR4ODBf
+dW5wYWNrX3JhdyhGbG9hdFBhcnRzMTI4ICpwLCBmbG9hdHg4MCBmKQorc3RhdGljIHZvaWQg
+UUVNVV9GTEFUVEVOIGZsb2F0eDgwX3VucGFja19yYXcoRmxvYXRQYXJ0czEyOCAqcCwgZmxv
+YXR4ODAgZikKIHsKICAgICAqcCA9IChGbG9hdFBhcnRzMTI4KSB7CiAgICAgICAgIC5jbHMg
+PSBmbG9hdF9jbGFzc191bmNsYXNzaWZpZWQsCkBAIC02MjMsNyArNjIzLDcgQEAgc3RhdGlj
+IHZvaWQgZmxvYXR4ODBfdW5wYWNrX3JhdyhGbG9hdFBhcnRzMTI4ICpwLCBmbG9hdHg4MCBm
+KQogICAgIH07CiB9CiAKLXN0YXRpYyB2b2lkIGZsb2F0MTI4X3VucGFja19yYXcoRmxvYXRQ
+YXJ0czEyOCAqcCwgZmxvYXQxMjggZikKK3N0YXRpYyB2b2lkIFFFTVVfRkxBVFRFTiBmbG9h
+dDEyOF91bnBhY2tfcmF3KEZsb2F0UGFydHMxMjggKnAsIGZsb2F0MTI4IGYpCiB7CiAgICAg
+Y29uc3QgaW50IGZfc2l6ZSA9IGZsb2F0MTI4X3BhcmFtcy5mcmFjX3NpemUgLSA2NDsKICAg
+ICBjb25zdCBpbnQgZV9zaXplID0gZmxvYXQxMjhfcGFyYW1zLmV4cF9zaXplOwpAQCAtNjUw
+LDI3ICs2NTAsMjcgQEAgc3RhdGljIHVpbnQ2NF90IHBhY2tfcmF3NjQoY29uc3QgRmxvYXRQ
+YXJ0czY0ICpwLCBjb25zdCBGbG9hdEZtdCAqZm10KQogICAgIHJldHVybiByZXQ7CiB9CiAK
+LXN0YXRpYyBpbmxpbmUgZmxvYXQxNiBmbG9hdDE2X3BhY2tfcmF3KGNvbnN0IEZsb2F0UGFy
+dHM2NCAqcCkKK3N0YXRpYyBmbG9hdDE2IFFFTVVfRkxBVFRFTiBmbG9hdDE2X3BhY2tfcmF3
+KGNvbnN0IEZsb2F0UGFydHM2NCAqcCkKIHsKICAgICByZXR1cm4gbWFrZV9mbG9hdDE2KHBh
+Y2tfcmF3NjQocCwgJmZsb2F0MTZfcGFyYW1zKSk7CiB9CiAKLXN0YXRpYyBpbmxpbmUgYmZs
+b2F0MTYgYmZsb2F0MTZfcGFja19yYXcoY29uc3QgRmxvYXRQYXJ0czY0ICpwKQorc3RhdGlj
+IGJmbG9hdDE2IFFFTVVfRkxBVFRFTiBiZmxvYXQxNl9wYWNrX3Jhdyhjb25zdCBGbG9hdFBh
+cnRzNjQgKnApCiB7CiAgICAgcmV0dXJuIHBhY2tfcmF3NjQocCwgJmJmbG9hdDE2X3BhcmFt
+cyk7CiB9CiAKLXN0YXRpYyBpbmxpbmUgZmxvYXQzMiBmbG9hdDMyX3BhY2tfcmF3KGNvbnN0
+IEZsb2F0UGFydHM2NCAqcCkKK3N0YXRpYyBmbG9hdDMyIFFFTVVfRkxBVFRFTiBmbG9hdDMy
+X3BhY2tfcmF3KGNvbnN0IEZsb2F0UGFydHM2NCAqcCkKIHsKICAgICByZXR1cm4gbWFrZV9m
+bG9hdDMyKHBhY2tfcmF3NjQocCwgJmZsb2F0MzJfcGFyYW1zKSk7CiB9CiAKLXN0YXRpYyBp
+bmxpbmUgZmxvYXQ2NCBmbG9hdDY0X3BhY2tfcmF3KGNvbnN0IEZsb2F0UGFydHM2NCAqcCkK
+K3N0YXRpYyBmbG9hdDY0IFFFTVVfRkxBVFRFTiBmbG9hdDY0X3BhY2tfcmF3KGNvbnN0IEZs
+b2F0UGFydHM2NCAqcCkKIHsKICAgICByZXR1cm4gbWFrZV9mbG9hdDY0KHBhY2tfcmF3NjQo
+cCwgJmZsb2F0NjRfcGFyYW1zKSk7CiB9CiAKLXN0YXRpYyBmbG9hdDEyOCBmbG9hdDEyOF9w
+YWNrX3Jhdyhjb25zdCBGbG9hdFBhcnRzMTI4ICpwKQorc3RhdGljIGZsb2F0MTI4IFFFTVVf
+RkxBVFRFTiBmbG9hdDEyOF9wYWNrX3Jhdyhjb25zdCBGbG9hdFBhcnRzMTI4ICpwKQogewog
+ICAgIGNvbnN0IGludCBmX3NpemUgPSBmbG9hdDEyOF9wYXJhbXMuZnJhY19zaXplIC0gNjQ7
+CiAgICAgY29uc3QgaW50IGVfc2l6ZSA9IGZsb2F0MTI4X3BhcmFtcy5leHBfc2l6ZTsK
+
+--------------UCWAQH6RMlhn58F0s0hhCddn--
 
