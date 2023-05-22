@@ -2,78 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC23F70BC28
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDC270BC29
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:48:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1413-0003xD-2y; Mon, 22 May 2023 07:47:53 -0400
+	id 1q141S-00045M-MV; Mon, 22 May 2023 07:48:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q140x-0003wj-V2
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:47:48 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q140w-00073O-8F
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:47:47 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-52c30fbccd4so5299380a12.0
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 04:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684756064; x=1687348064;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=M4Dl1h0jo+m8UUuvwugjWjif9pBMRWgnAljl+9/hZvY=;
- b=dlkYW4VKHDiU41nqFFs9piZtbhj9vvJk+G+Tf4c0gNQz/OnwUdNxSkemGfoKFC2o/q
- ijtVLeUAk0BRmKOzXkxGoUyn8sVx6eknQeYKHyXpRDhTHpKVm93M0OgbQqsO1dZIFSCq
- 1NiyNWvPc5y575W2XY7gdHJa7IAH8TqslAdPvV3NVUF53ct7PCUhFb0ial/lxxBHFvEm
- GuZUPgD6jqTEoQiojPmzrcVTgw+qCPXawveILV2kSdOWDj00WTBnBA2QOgTYbr87RiNq
- 8bqTZgoXG2ZUL9LbA9sVBdGRXEESaaPdqaHwhry4zr0PBtTULYKAI1fQ9cIyQs5xEPwL
- uL/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684756064; x=1687348064;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=M4Dl1h0jo+m8UUuvwugjWjif9pBMRWgnAljl+9/hZvY=;
- b=Q5ABcFKQUkl2BOuJzhP2Rh7mHW8nt3W6unTZ/X6tRkTFBwR0+LTk/8I+LX9/l6bCzO
- ToxLPhRi1B9Zg/MuZpXdyxHVlISMpSVlH9qbbu4bTPqyXDGJeTSWyKjmNTWrflcuWUED
- WZZLMCnZKVxbJqXIF6A7ZGGXaIf0cFcu2LHmXzSsYPENjTcKcudFPZOksGrx9Euph+Q3
- czJJJHfhX7dHcoTvT8lwcBgGpU25fwrbr//03ndscTe1TRgKxjBUNKAlCcqP+Jy7LNJB
- U97r0YXTsUhPgZ2bRS+J6nX6M6wyLDNDiU6lJ2KvXsIp2TkDodVXirXa/wBORJZzqqNd
- toZA==
-X-Gm-Message-State: AC+VfDyiWTqYGX4R2oAZdXA2EMAQgu0MsiicsHQ/JeAVvbCKmcDRQg7K
- eKvwYBqXVvPv/xvQv9XB5/1k6BriyhCmMq1amIY=
-X-Google-Smtp-Source: ACHHUZ4XQjPSNIRiOkS/Um6PiwLqoOtNr/WufvsqobxN4H8HAkIF0SSNeZ4MtGd01tQgWBBibmZAVw==
-X-Received: by 2002:a17:902:748c:b0:1a9:21bc:65f8 with SMTP id
- h12-20020a170902748c00b001a921bc65f8mr9783096pll.11.1684756064318; 
- Mon, 22 May 2023 04:47:44 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- jb4-20020a170903258400b001ac4e316b51sm4710108plb.109.2023.05.22.04.47.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 04:47:43 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH] crypto: Always initialize splitkeylen
-Date: Mon, 22 May 2023 20:47:37 +0900
-Message-Id: <20230522114737.32686-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1q141P-00044s-QI
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:48:15 -0400
+Received: from out5-smtp.messagingengine.com ([66.111.4.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1q141M-000756-OP
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:48:15 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id 2B69B5C0102;
+ Mon, 22 May 2023 07:48:05 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute2.internal (MEProxy); Mon, 22 May 2023 07:48:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+ 1684756085; x=1684842485; bh=5VDY/DQlRjweo1+bKEszwnsHQAkleKao7iy
+ X343SUcA=; b=SK34oiDW3ThI7BVaJG1fa6o+Qlp2ho4CJIqrx7xrfjEzKPt0i0m
+ h7Uphv//J2UDTKHyJ8l7fYFMHhCQoDYJCeCvJ3BcRZ5D/29WXU0aJDiekfsLLPEe
+ SgGygH/GtrNIcL+VteCmeL5ce9tH90pYGcd3eefpdexVX0Xse3V2L2GeUX9NIguv
+ eBq7nwSbzeQWf/Lg7idUD4I2bCDAgiKV/W3smv9oTIko+EQJ6m3KtDsou+cGeTHN
+ +T2TPDbFg5wqG2mcLfZG3WWodtYZbOL8o+CQqeAX5212/BoniWuNJJBze9h5FCZS
+ J4kdAVWcnOIUpJe7ocEl+5Tyx4sYp/41NgQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+ 1684756085; x=1684842485; bh=5VDY/DQlRjweo1+bKEszwnsHQAkleKao7iy
+ X343SUcA=; b=oGZoWdGn7mChk4I8lyzVuk9hf1jQTChANRgOmGNAp7uQa9nA+7s
+ zuJD2vtYofi3FFcx+/JwnfNQBTaIunRB1EkwwD133RhhVadP2AVDXHuUyyDrZjxD
+ R5oPK1XiEeErTUS8+AD/BdFHHhuY6BrcA8qkR/7lgTIYwxYSpmMbTFenN5jH3YDE
+ fqZ30ZdbD5/ljObn7tmTEsPULgycYlQ/0FLUB/sl1JDqYWDkOKf/gGHiuTzYSnnV
+ CoPtFgpJjvsIRmCs/RfgimjyfmJbi02W4py8WS8rPvj/u5xXcU+/5+GeTdqRzxcf
+ EU7ujdWb949xcWY3aiLCbKGo2oLQ7I2bUgw==
+X-ME-Sender: <xms:dFZrZFdezwOLTZBJu6QNqoZ6ww56ksdde76QMt7B8uSi1McSyy_Fxw>
+ <xme:dFZrZDNxN6BSHMIQD9VTmtGpq6IjuXP0n6wORUXlJq3i4InmCJik_2BCNiHVCzNuV
+ k-7czG4Tll_-KC04hU>
+X-ME-Received: <xmr:dFZrZOhcs5Ov3nYdYRfEfQwncEnEMwuxnkp_JRFucQme2CfU_UdunWFUkh4WjtSx2Uh8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejuddggeduucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurheptggguffhjgffvefgkfhfvffosehtqhhmtdhhtdejnecuhfhrohhmpeflihgr
+ gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+ cuggftrfgrthhtvghrnhepuddtjeffteetfeekjeeiheefueeigeeutdevieejveeihfff
+ ledvgfduiefhvddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+ hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:dFZrZO9qmiMonBO6N7s3TxFrlV0ty1vd0gqCbl8QviaCo_cD_WTaPA>
+ <xmx:dFZrZBsGavf7T6bu0yMm5MdGssnLkkoeXhHdSDe9F0tbL9PEt0vnuQ>
+ <xmx:dFZrZNF3ayVVvcdPu2bm6vUpYV0pZg62-J5tYup0603Tf-nhhYOXaw>
+ <xmx:dVZrZFgHPaG4POn8LMepp2w2X7qYIa81f-YnRV7ETih6PIttNsk4Ag>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 22 May 2023 07:48:03 -0400 (EDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.500.231\))
+Subject: Re: [PATCH 1/4] hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+In-Reply-To: <CAAhV-H4kx5cDcswkHpCYH9UZhh7PDEndP+NvwNgdZaZji6BFLA@mail.gmail.com>
+Date: Mon, 22 May 2023 12:47:52 +0100
+Cc: QEMU devel <qemu-devel@nongnu.org>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CA74488A-DB92-4D13-8BAC-5E853F187419@flygoat.com>
+References: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
+ <20230521102307.87081-2-jiaxun.yang@flygoat.com>
+ <CAAhV-H4kx5cDcswkHpCYH9UZhh7PDEndP+NvwNgdZaZji6BFLA@mail.gmail.com>
+To: Huacai Chen <chenhuacai@kernel.org>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>
+X-Mailer: Apple Mail (2.3731.500.231)
+Received-SPF: pass client-ip=66.111.4.29; envelope-from=jiaxun.yang@flygoat.com;
+ helo=out5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,55 +110,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When _FORTIFY_SOURCE=2, glibc version is 2.35, and GCC version is
-12.1.0, the compiler complains as follows:
 
-In file included from /usr/include/string.h:535,
-                 from /home/alarm/q/var/qemu/include/qemu/osdep.h:99,
-                 from ../crypto/block-luks.c:21:
-In function 'memset',
-    inlined from 'qcrypto_block_luks_store_key' at ../crypto/block-luks.c:843:9:
-/usr/include/bits/string_fortified.h:59:10: error: 'splitkeylen' may be used uninitialized [-Werror=maybe-uninitialized]
-   59 |   return __builtin___memset_chk (__dest, __ch, __len,
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   60 |                                  __glibc_objsize0 (__dest));
-      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
-../crypto/block-luks.c: In function 'qcrypto_block_luks_store_key':
-../crypto/block-luks.c:699:12: note: 'splitkeylen' was declared here
-  699 |     size_t splitkeylen;
-      |            ^~~~~~~~~~~
 
-It seems the compiler cannot see that splitkeylen will not be used
-when splitkey is NULL. Suppress the warning by initializing splitkeylen
-even when splitkey stays NULL.
+> 2023=E5=B9=B45=E6=9C=8822=E6=97=A5 04:52=EF=BC=8CHuacai Chen =
+<chenhuacai@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> Hi, Jiaxun,
+>=20
+> Rename loongarch_ipi to loongson_ipi? It will be shared by both MIPS
+> and LoongArch in your series.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- crypto/block-luks.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi Huacai,
 
-diff --git a/crypto/block-luks.c b/crypto/block-luks.c
-index 5688783ab1..2f59c3a625 100644
---- a/crypto/block-luks.c
-+++ b/crypto/block-luks.c
-@@ -706,14 +706,14 @@ qcrypto_block_luks_store_key(QCryptoBlock *block,
- 
-     assert(slot_idx < QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS);
-     slot = &luks->header.key_slots[slot_idx];
-+    splitkeylen = luks->header.master_key_len * slot->stripes;
-+
-     if (qcrypto_random_bytes(slot->salt,
-                              QCRYPTO_BLOCK_LUKS_SALT_LEN,
-                              errp) < 0) {
-         goto cleanup;
-     }
- 
--    splitkeylen = luks->header.master_key_len * slot->stripes;
--
-     /*
-      * Determine how many iterations are required to
-      * hash the user password while consuming 1 second of compute
--- 
-2.40.1
+Thanks for the point, what=E2=80=99s the opinion from LoongArch =
+mainatiners?
+
+Or perhaps rename it as loong_ipi to reflect the nature that it=E2=80=99s =
+shared
+by MIPS based Loongson and LoongArch based Loongson?
+
+Thanks
+- Jiaxun
+
+>=20
+>=20
+> Huacai
+>=20
+> On Sun, May 21, 2023 at 6:24=E2=80=AFPM Jiaxun Yang =
+<jiaxun.yang@flygoat.com> wrote:
+>>=20
+>> As per "Loongson 3A5000/3B5000 Processor Reference Manual",
+>> Loongson 3A5000's IPI implementation have 4 mailboxes per
+>> core.
+>>=20
+>> However, in 78464f023b54 ("hw/loongarch/virt: Modify ipi as
+>> percpu device"), the number of IPI mailboxes was reduced to
+>> one, which mismatches actual hardware.
+>>=20
+>> It won't affect LoongArch based system as LoongArch boot code
+>> only uses the first mailbox, however MIPS based Loongson boot
+>> code uses all 4 mailboxes.
+>>=20
+>> Fixes: 78464f023b54 ("hw/loongarch/virt: Modify ipi as percpu =
+device")
+>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> ---
+>> hw/intc/loongarch_ipi.c         | 6 +++---
+>> include/hw/intc/loongarch_ipi.h | 4 +++-
+>> 2 files changed, 6 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+>> index d6ab91721ea1..3e453816524e 100644
+>> --- a/hw/intc/loongarch_ipi.c
+>> +++ b/hw/intc/loongarch_ipi.c
+>> @@ -238,14 +238,14 @@ static void loongarch_ipi_init(Object *obj)
+>>=20
+>> static const VMStateDescription vmstate_ipi_core =3D {
+>>     .name =3D "ipi-single",
+>> -    .version_id =3D 1,
+>> -    .minimum_version_id =3D 1,
+>> +    .version_id =3D 2,
+>> +    .minimum_version_id =3D 2,
+>>     .fields =3D (VMStateField[]) {
+>>         VMSTATE_UINT32(status, IPICore),
+>>         VMSTATE_UINT32(en, IPICore),
+>>         VMSTATE_UINT32(set, IPICore),
+>>         VMSTATE_UINT32(clear, IPICore),
+>> -        VMSTATE_UINT32_ARRAY(buf, IPICore, 2),
+>> +        VMSTATE_UINT32_ARRAY(buf, IPICore, IPI_MBX_NUM * 2),
+>>         VMSTATE_END_OF_LIST()
+>>     }
+>> };
+>> diff --git a/include/hw/intc/loongarch_ipi.h =
+b/include/hw/intc/loongarch_ipi.h
+>> index 664e050b926e..6c6194786e80 100644
+>> --- a/include/hw/intc/loongarch_ipi.h
+>> +++ b/include/hw/intc/loongarch_ipi.h
+>> @@ -28,6 +28,8 @@
+>> #define MAIL_SEND_OFFSET      0
+>> #define ANY_SEND_OFFSET       (IOCSR_ANY_SEND - IOCSR_MAIL_SEND)
+>>=20
+>> +#define IPI_MBX_NUM           4
+>> +
+>> #define TYPE_LOONGARCH_IPI "loongarch_ipi"
+>> OBJECT_DECLARE_SIMPLE_TYPE(LoongArchIPI, LOONGARCH_IPI)
+>>=20
+>> @@ -37,7 +39,7 @@ typedef struct IPICore {
+>>     uint32_t set;
+>>     uint32_t clear;
+>>     /* 64bit buf divide into 2 32bit buf */
+>> -    uint32_t buf[2];
+>> +    uint32_t buf[IPI_MBX_NUM * 2];
+>>     qemu_irq irq;
+>> } IPICore;
+>>=20
+>> --
+>> 2.39.2 (Apple Git-143)
+>>=20
 
 
