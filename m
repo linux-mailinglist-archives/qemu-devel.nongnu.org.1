@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8EB70C381
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4523C70C3B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:44:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q18TU-0008QT-5q; Mon, 22 May 2023 12:33:32 -0400
+	id 1q18cq-0006L3-AB; Mon, 22 May 2023 12:43:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1q18TS-0008OC-Dn
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:33:30 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q18cn-0006Jg-M9
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:43:09 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1q18TQ-0007Hu-8Z
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:33:30 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-53482b44007so3061608a12.2
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 09:33:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q18cl-000109-VD
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:43:09 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-397f10f861eso1302280b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 09:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684773206; x=1687365206;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hV1xKptK2zq7A9P/6mdydkNSTgcrh8cQJbvS5XWcxoQ=;
- b=E7EC2OKLy7rnEFOU/ieBU1OOzBP83Ps3R0JWErXA1gbjf7npRyOuCWeHlWXQcTvJJv
- Xe5gYR6GQOsCPNnc+0d/yt0391+Zya634IEt64/oX4cUSYPEB/Gdsn/gW0ar6BoyXub5
- tnokcjnHz9kSK7aKGTyBU8sXWhlLXf482Sh9LzQJ7h/865sOY9Zflp8U4PFdgXJKsVVH
- DMSsaieegqDuec3veoRp1rY0DqRP2aQhWrycOGkJ1x8t/1yj0DZgSImnYN+6c7uqIjzk
- Eo7JomOk6c/s0M8xgM6RTRwRQXW4cfHohV1E9T9hK/WEwM3jqvtSmFndCTIlYmuUG1ST
- HpCQ==
+ d=ventanamicro.com; s=google; t=1684773786; x=1687365786;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GOYy3bs/AQNdS/l+oVYBJG39Lu7iuY8UB/63FUs/KqI=;
+ b=hUQWgdJ9ddwj/8VpA6dBc94K72jN8mzwCdQInBj/GvyQSlsHmJV+VMCPoL8EF5nXbM
+ Hvbp5yZEngzPpncLEMl0oFRPodsMJUW3f/1xAWyuRz0hJIeb5Q6NtNVQYiopyyHfvdr7
+ wGGmEQjSWAdzBcjytridOAMlR3P4J5NbwGkqetUho8qYK0b/CjLM1LYc1/jfhxwkheG5
+ qTSc6Jd/qynMtjPvPx8IU6RfUXRCfjC/baASfskkG2fXvKzU9nVSjF9UVaXA4YOO8+6/
+ jE83T+XE+1mfT/YPrmR/u+sTCzxWDWEucd6qD7xq67aAfUgN8RW/1dCb3ppjf/1iBx11
+ d58g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684773206; x=1687365206;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hV1xKptK2zq7A9P/6mdydkNSTgcrh8cQJbvS5XWcxoQ=;
- b=bwYNWqLlPLQ7VII0eP7mWrkeIHWHDpQ+vsijm3y6DQfL8TUfmrM7P6bgZEnxiSl03x
- PFn6hsK/YRpNUNpvWY7knDKTFlDpvz+sM6+2O8J9MegEY2OQL/NP8dybbRLly31RQXZj
- e5LVZufwMhbEg/OuTWUCZLxo9D/VzUPUTTtF3VVFR+qPrpEHaZamawe3H9ZCZM7ALJrk
- UUImMmr2K+QrFF/iJ8wnUH95ftvXOKrBxeYI+8NnYZyL6Lc7644KScXiS936OYPRBe6G
- PV8mGuN8h3E3TEHTWhQydz9n8LJIipt3ZzhdVgoxGrkLRFA28HHyCzZSJxtan8iioDoi
- gAvQ==
-X-Gm-Message-State: AC+VfDxXbVR3vHeRlcltVttZnwPR3jFzblSnbjqF0wwWpZIxQT806mHa
- cYKIwf8gIBx34OBzHY5cpfy6tdhJw3pIvA==
-X-Google-Smtp-Source: ACHHUZ6j3UIpmL14Lac9bM/BOxeJX7LF2/EwoSlK7OZYjMN4SXZNzSxCRLvla1+Q6LmQ3kjXu2vKgA==
-X-Received: by 2002:a17:90b:4b01:b0:253:34da:480 with SMTP id
- lx1-20020a17090b4b0100b0025334da0480mr10585859pjb.31.1684773206198; 
- Mon, 22 May 2023 09:33:26 -0700 (PDT)
-Received: from localhost.localdomain ([113.173.119.15])
- by smtp.googlemail.com with ESMTPSA id
- s5-20020a17090a2f0500b0025393752cd5sm12293253pjd.1.2023.05.22.09.33.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 09:33:25 -0700 (PDT)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v4 5/5] amd_iommu: report x2APIC support to the operating
- system
-Date: Mon, 22 May 2023 23:31:57 +0700
-Message-Id: <20230522163157.9754-6-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230522163157.9754-1-minhquangbui99@gmail.com>
-References: <20230522163157.9754-1-minhquangbui99@gmail.com>
+ d=1e100.net; s=20221208; t=1684773786; x=1687365786;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GOYy3bs/AQNdS/l+oVYBJG39Lu7iuY8UB/63FUs/KqI=;
+ b=mCw02N4o5mMoH+9Tz/tNFjZq+7FhtBXOy644X6jRXggX54UbMbsVmFpvk/2QE5gh8D
+ bcWTE5iXImen7jPn3aN/CbGbmMdDsB+i7I8qy1i0q6WTPKyhxcQbw1Dc4ndq/sZqY3dQ
+ 5eMhK/uNZp5U6OAvG3JH8OO/DpYGGOpGCe6O0y2GhH1bObn226r8M5dTmCj2BT2jl/KB
+ gNQEJwHX8IXfgqzSP/UcVdgiFOhGktqyN4MCw342ZgOSkubFd4kEXkRVbXPmyLZC2dgl
+ Yt0RsItEAsB+vYVW7Kzr/IIyDNc6jx3BVA+df1HdRvwC+C4KZp3xAJuQBDbe0ttM+Jnc
+ SmwA==
+X-Gm-Message-State: AC+VfDyTXqI1y/DpFL1f2+NXTwTDG9j+wftM4b+23U9CiaQ/ueKtpv5G
+ 4a8G72MX6cMU2N3ObBLwGSaHgQ==
+X-Google-Smtp-Source: ACHHUZ753WmWEwE6L0CQT5uMWY2pvXWVze06fEoF2YYUzooX/qaYpxPCM79x18/VBE2Qj2qHfG+DIg==
+X-Received: by 2002:aca:620b:0:b0:396:1512:6fd1 with SMTP id
+ w11-20020aca620b000000b0039615126fd1mr8346568oib.17.1684773786692; 
+ Mon, 22 May 2023 09:43:06 -0700 (PDT)
+Received: from [192.168.68.107] ([179.111.98.125])
+ by smtp.gmail.com with ESMTPSA id
+ v128-20020a4a5a86000000b005555797999dsm762019ooa.17.2023.05.22.09.43.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 09:43:06 -0700 (PDT)
+Message-ID: <1ec71603-577c-b8da-9f41-6ddb4938d417@ventanamicro.com>
+Date: Mon, 22 May 2023 13:43:02 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 3/6] target/riscv: Set VS* bits to one in mideleg when
+ H-Ext is enabled
+Content-Language: en-US
+To: Rajnesh Kanwal <rkanwal@rivosinc.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com,
+ apatel@ventanamicro.com
+References: <20230518113838.130084-1-rkanwal@rivosinc.com>
+ <20230518113838.130084-4-rkanwal@rivosinc.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230518113838.130084-4-rkanwal@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,313 +99,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds XTSup configuration to let user choose to whether enable
-this feature or not. When XTSup is enabled, additional bytes in IRTE with
-enabled guest virtual VAPIC are used to support 32-bit destination id.
-
-Additionally, this commit exports IVHD type 0x11 besides the old IVHD type
-0x10 in ACPI table. IVHD type 0x10 does not report full set of IOMMU
-features only the legacy ones, so operating system (e.g. Linux) may only
-detects x2APIC support if IVHD type 0x11 is available. The IVHD type 0x10
-is kept so that old operating system that only parses type 0x10 can detect
-the IOMMU device.
-
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
----
- hw/i386/acpi-build.c | 127 ++++++++++++++++++++++++++-----------------
- hw/i386/amd_iommu.c  |  21 ++++++-
- hw/i386/amd_iommu.h  |  16 ++++--
- 3 files changed, 108 insertions(+), 56 deletions(-)
-
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 512162003b..4459122e56 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -2339,30 +2339,23 @@ static void
- build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
-                 const char *oem_table_id)
- {
--    int ivhd_table_len = 24;
-     AMDVIState *s = AMD_IOMMU_DEVICE(x86_iommu_get_default());
-     GArray *ivhd_blob = g_array_new(false, true, 1);
-     AcpiTable table = { .sig = "IVRS", .rev = 1, .oem_id = oem_id,
-                         .oem_table_id = oem_table_id };
-+    uint64_t feature_report;
- 
-     acpi_table_begin(&table, table_data);
-     /* IVinfo - IO virtualization information common to all
-      * IOMMU units in a system
-      */
--    build_append_int_noprefix(table_data, 40UL << 8/* PASize */, 4);
-+    build_append_int_noprefix(table_data,
-+                             (1UL << 0) | /* EFRSup */
-+                             (40UL << 8), /* PASize */
-+                             4);
-     /* reserved */
-     build_append_int_noprefix(table_data, 0, 8);
- 
--    /* IVHD definition - type 10h */
--    build_append_int_noprefix(table_data, 0x10, 1);
--    /* virtualization flags */
--    build_append_int_noprefix(table_data,
--                             (1UL << 0) | /* HtTunEn      */
--                             (1UL << 4) | /* iotblSup     */
--                             (1UL << 6) | /* PrefSup      */
--                             (1UL << 7),  /* PPRSup       */
--                             1);
--
-     /*
-      * A PCI bus walk, for each PCI host bridge, is necessary to create a
-      * complete set of IVHD entries.  Do this into a separate blob so that we
-@@ -2382,56 +2375,92 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
-         build_append_int_noprefix(ivhd_blob, 0x0000001, 4);
-     }
- 
--    ivhd_table_len += ivhd_blob->len;
--
-     /*
-      * When interrupt remapping is supported, we add a special IVHD device
--     * for type IO-APIC.
--     */
--    if (x86_iommu_ir_supported(x86_iommu_get_default())) {
--        ivhd_table_len += 8;
--    }
--
--    /* IVHD length */
--    build_append_int_noprefix(table_data, ivhd_table_len, 2);
--    /* DeviceID */
--    build_append_int_noprefix(table_data,
--                              object_property_get_int(OBJECT(&s->pci), "addr",
--                                                      &error_abort), 2);
--    /* Capability offset */
--    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
--    /* IOMMU base address */
--    build_append_int_noprefix(table_data, s->mmio.addr, 8);
--    /* PCI Segment Group */
--    build_append_int_noprefix(table_data, 0, 2);
--    /* IOMMU info */
--    build_append_int_noprefix(table_data, 0, 2);
--    /* IOMMU Feature Reporting */
--    build_append_int_noprefix(table_data,
--                             (48UL << 30) | /* HATS   */
--                             (48UL << 28) | /* GATS   */
--                             (1UL << 2)   | /* GTSup  */
--                             (1UL << 6),    /* GASup  */
--                             4);
--
--    /* IVHD entries as found above */
--    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
--    g_array_free(ivhd_blob, TRUE);
--
--    /*
--     * Add a special IVHD device type.
-+     * for type IO-APIC
-      * Refer to spec - Table 95: IVHD device entry type codes
-      *
-      * Linux IOMMU driver checks for the special IVHD device (type IO-APIC).
-      * See Linux kernel commit 'c2ff5cf5294bcbd7fa50f7d860e90a66db7e5059'
-      */
-     if (x86_iommu_ir_supported(x86_iommu_get_default())) {
--        build_append_int_noprefix(table_data,
-+        build_append_int_noprefix(ivhd_blob,
-                                  (0x1ull << 56) |           /* type IOAPIC */
-                                  (IOAPIC_SB_DEVID << 40) |  /* IOAPIC devid */
-                                  0x48,                      /* special device */
-                                  8);
-     }
-+
-+    /* IVHD definition - type 10h */
-+    build_append_int_noprefix(table_data, 0x10, 1);
-+    /* virtualization flags */
-+    build_append_int_noprefix(table_data,
-+                             (1UL << 0) | /* HtTunEn      */
-+                             (1UL << 4) | /* iotblSup     */
-+                             (1UL << 6) | /* PrefSup      */
-+                             (1UL << 7),  /* PPRSup       */
-+                             1);
-+
-+    /* IVHD length */
-+    build_append_int_noprefix(table_data, ivhd_blob->len + 24, 2);
-+    /* DeviceID */
-+    build_append_int_noprefix(table_data,
-+                              object_property_get_int(OBJECT(&s->pci), "addr",
-+                                                      &error_abort), 2);
-+    /* Capability offset */
-+    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-+    /* IOMMU base address */
-+    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-+    /* PCI Segment Group */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* IOMMU info */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* IOMMU Feature Reporting */
-+    feature_report = (48UL << 30) | /* HATS   */
-+                     (48UL << 28) | /* GATS   */
-+                     (1UL << 2)   | /* GTSup  */
-+                     (1UL << 6);    /* GASup  */
-+    if (s->xtsup) {
-+        feature_report |= (1UL << 0); /* XTSup */
-+    }
-+    build_append_int_noprefix(table_data, feature_report, 4);
-+
-+    /* IVHD entries as found above */
-+    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
-+
-+   /* IVHD definition - type 11h */
-+    build_append_int_noprefix(table_data, 0x11, 1);
-+    /* virtualization flags */
-+    build_append_int_noprefix(table_data,
-+                             (1UL << 0) | /* HtTunEn      */
-+                             (1UL << 4),  /* iotblSup     */
-+                             1);
-+
-+    /* IVHD length */
-+    build_append_int_noprefix(table_data, ivhd_blob->len + 40, 2);
-+    /* DeviceID */
-+    build_append_int_noprefix(table_data,
-+                              object_property_get_int(OBJECT(&s->pci), "addr",
-+                                                      &error_abort), 2);
-+    /* Capability offset */
-+    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
-+    /* IOMMU base address */
-+    build_append_int_noprefix(table_data, s->mmio.addr, 8);
-+    /* PCI Segment Group */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* IOMMU info */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* IOMMU Attributes */
-+    build_append_int_noprefix(table_data, 0, 4);
-+    /* EFR Register Image */
-+    build_append_int_noprefix(table_data, s->efr_reg, 8);
-+    /* EFR Register Image 2 */
-+    build_append_int_noprefix(table_data, 0, 8);
-+
-+    /* IVHD entries as found above */
-+    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
-+
-+    g_array_free(ivhd_blob, TRUE);
-     acpi_table_end(linker, &table);
- }
- 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 9c77304438..0e308184d7 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -31,6 +31,7 @@
- #include "hw/i386/apic_internal.h"
- #include "trace.h"
- #include "hw/i386/apic-msidef.h"
-+#include "hw/qdev-properties.h"
- 
- /* used AMD-Vi MMIO registers */
- const char *amdvi_mmio_low[] = {
-@@ -1155,7 +1156,12 @@ static int amdvi_int_remap_ga(AMDVIState *iommu,
-     irq->vector = irte.hi.fields.vector;
-     irq->dest_mode = irte.lo.fields_remap.dm;
-     irq->redir_hint = irte.lo.fields_remap.rq_eoi;
--    irq->dest = irte.lo.fields_remap.destination;
-+    if (iommu->xtsup) {
-+        irq->dest = irte.lo.fields_remap.destination |
-+                    (irte.hi.fields.destination_hi << 24);
-+    } else {
-+        irq->dest = irte.lo.fields_remap.destination & 0xff;
-+    }
- 
-     return 0;
- }
-@@ -1503,10 +1509,15 @@ static void amdvi_init(AMDVIState *s)
-     s->enabled = false;
-     s->ats_enabled = false;
-     s->cmdbuf_enabled = false;
-+    s->efr_reg = AMDVI_DEFAULT_EXT_FEATURES;
-+
-+    if (s->xtsup) {
-+        s->efr_reg |= AMDVI_FEATURE_XT;
-+    }
- 
-     /* reset MMIO */
-     memset(s->mmior, 0, AMDVI_MMIO_SIZE);
--    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES, AMDVI_EXT_FEATURES,
-+    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES, s->efr_reg,
-             0xffffffffffffffef, 0);
-     amdvi_set_quad(s, AMDVI_MMIO_STATUS, 0, 0x98, 0x67);
- }
-@@ -1591,6 +1602,11 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
-     amdvi_init(s);
- }
- 
-+static Property amdvi_properties[] = {
-+    DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static const VMStateDescription vmstate_amdvi_sysbus = {
-     .name = "amd-iommu",
-     .unmigratable = 1
-@@ -1617,6 +1633,7 @@ static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
-     dc->user_creatable = true;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-     dc->desc = "AMD IOMMU (AMD-Vi) DMA Remapping device";
-+    device_class_set_props(dc, amdvi_properties);
- }
- 
- static const TypeInfo amdvi_sysbus = {
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 6da893ee57..f3730db990 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -154,6 +154,7 @@
- 
- #define AMDVI_FEATURE_PREFETCH            (1ULL << 0) /* page prefetch       */
- #define AMDVI_FEATURE_PPR                 (1ULL << 1) /* PPR Support         */
-+#define AMDVI_FEATURE_XT                  (1ULL << 2) /* x2APIC Support      */
- #define AMDVI_FEATURE_GT                  (1ULL << 4) /* Guest Translation   */
- #define AMDVI_FEATURE_IA                  (1ULL << 6) /* inval all support   */
- #define AMDVI_FEATURE_GA                  (1ULL << 7) /* guest VAPIC support */
-@@ -173,8 +174,9 @@
- #define AMDVI_IOTLB_MAX_SIZE 1024
- #define AMDVI_DEVID_SHIFT    36
- 
--/* extended feature support */
--#define AMDVI_EXT_FEATURES (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
-+/* default extended feature */
-+#define AMDVI_DEFAULT_EXT_FEATURES \
-+        (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
-         AMDVI_FEATURE_IA | AMDVI_FEATURE_GT | AMDVI_FEATURE_HE | \
-         AMDVI_GATS_MODE | AMDVI_HATS_MODE | AMDVI_FEATURE_GA)
- 
-@@ -278,8 +280,8 @@ union irte_ga_lo {
-                 dm:1,
-                 /* ------ */
-                 guest_mode:1,
--                destination:8,
--                rsvd_1:48;
-+                destination:24,
-+                rsvd_1:32;
-   } fields_remap;
- };
- 
-@@ -287,7 +289,8 @@ union irte_ga_hi {
-   uint64_t val;
-   struct {
-       uint64_t  vector:8,
--                rsvd_2:56;
-+                rsvd_2:48,
-+                destination_hi:8;
-   } fields;
- };
- 
-@@ -366,6 +369,9 @@ struct AMDVIState {
- 
-     /* Interrupt remapping */
-     bool ga_enabled;
-+    bool xtsup;
-+
-+    uint64_t efr_reg;            /* extended feature register */
- };
- 
- #endif
--- 
-2.25.1
-
+DQoNCk9uIDUvMTgvMjMgMDg6MzgsIFJham5lc2ggS2Fud2FsIHdyb3RlOg0KPiBXaXRoIEgt
+RXh0IHN1cHBvcnRlZCwgVlMgYml0cyBhcmUgYWxsIGhhcmR3aXJlZCB0byBvbmUgaW4gTUlE
+RUxFRw0KPiBkZW5vdGluZyBhbHdheXMgZGVsZWdhdGVkIGludGVycnVwdHMuIFRoaXMgaXMg
+YmVpbmcgZG9uZSBpbiBybXdfbWlkZWxlZw0KPiBidXQgZ2l2ZW4gbWlkZWxlZyBpcyB1c2Vk
+IGluIG90aGVyIHBsYWNlcyB3aGVuIHJvdXRpbmcgaW50ZXJydXB0cw0KPiB0aGlzIGNoYW5n
+ZSBpbml0aWFsaXplcyBpdCBpbiByaXNjdl9jcHVfcmVhbGl6ZSB0byBiZSBvbiB0aGUgc2Fm
+ZSBzaWRlLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogUmFqbmVzaCBLYW53YWwgPHJrYW53YWxA
+cml2b3NpbmMuY29tPg0KPiAtLS0NCj4gICB0YXJnZXQvcmlzY3YvY3B1LmMgfCA1ICsrKysr
+DQo+ICAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdp
+dCBhL3RhcmdldC9yaXNjdi9jcHUuYyBiL3RhcmdldC9yaXNjdi9jcHUuYw0KPiBpbmRleCBk
+YjA4NzVmYjQzLi45MDQ2MGNmZTY0IDEwMDY0NA0KPiAtLS0gYS90YXJnZXQvcmlzY3YvY3B1
+LmMNCj4gKysrIGIvdGFyZ2V0L3Jpc2N2L2NwdS5jDQo+IEBAIC0xMjg4LDYgKzEyODgsMTEg
+QEAgc3RhdGljIHZvaWQgcmlzY3ZfY3B1X3JlYWxpemUoRGV2aWNlU3RhdGUgKmRldiwgRXJy
+b3IgKiplcnJwKQ0KPiAgICAgICAgICAgcmV0dXJuOw0KPiAgICAgICB9DQo+ICAgDQo+ICsg
+ICAgLyogV2l0aCBILUV4dCBWU1NJUCwgVlNUSVAsIFZTRUlQIGFuZCBTR0VJUCBhcmUgaGFy
+ZHdpcmVkIHRvIG9uZS4gKi8NCj4gKyAgICBpZiAocmlzY3ZfaGFzX2V4dChlbnYsIFJWSCkp
+IHsNCj4gKyAgICAgICAgZW52LT5taWRlbGVnID0gTUlQX1ZTU0lQIHwgTUlQX1ZTVElQIHwg
+TUlQX1ZTRUlQIHwgTUlQX1NHRUlQOw0KPiArICAgIH0NCj4gKw0KDQpUaGlzIGNoYW5nZSBi
+cmVha3MgbGludXgtdXNlciBidWlsZDoNCg0KRkFJTEVEOiBsaWJxZW11LXJpc2N2NjQtbGlu
+dXgtdXNlci5mYS5wL3RhcmdldF9yaXNjdl9jcHUuYy5vDQpjYyAtbTY0IC1tY3gxNiAtSWxp
+YnFlbXUtcmlzY3Y2NC1saW51eC11c2VyLmZhLnAgLUkuIC1JLi4gLUl0YXJnZXQvcmlzY3Yg
+LUkuLi90YXJnZXQvcmlzY3YgLUkuLi9jb21tb24tdXNlci9ob3N0L3g4Nl82NCAtSS4uL2xp
+bnV4LXVzZXIvaW5jbHVkZS9ob3N0L3g4Nl82NCAtSS4uL2xpbnV4LXVzZXIvaW5jbHVkZSAt
+SWxpbnV4LXVzZXIgLUkuLi9saW51eC11c2VyIC1JLi4vbGludXgtdXNlci9yaXNjdiAtSXFh
+cGkgLUl0cmFjZSAtSXVpIC1JdWkvc2hhZGVyIC1JL3Vzci9pbmNsdWRlL2dsaWItMi4wIC1J
+L3Vzci9saWI2NC9nbGliLTIuMC9pbmNsdWRlIC1JL3Vzci9pbmNsdWRlL3N5c3Byb2YtNCAt
+ZmRpYWdub3N0aWNzLWNvbG9yPWF1dG8gLVdhbGwgLVdpbnZhbGlkLXBjaCAtV2Vycm9yIC1z
+dGQ9Z251MTEgLU8yIC1nIC1pc3lzdGVtIC9ob21lL2RhbmllbGhiL3dvcmsvcWVtdS9saW51
+eC1oZWFkZXJzIC1pc3lzdGVtIGxpbnV4LWhlYWRlcnMgLWlxdW90ZSAuIC1pcXVvdGUgL2hv
+bWUvZGFuaWVsaGIvd29yay9xZW11IC1pcXVvdGUgL2hvbWUvZGFuaWVsaGIvd29yay9xZW11
+L2luY2x1ZGUgLWlxdW90ZSAvaG9tZS9kYW5pZWxoYi93b3JrL3FlbXUvdGNnL2kzODYgLXB0
+aHJlYWQgLVVfRk9SVElGWV9TT1VSQ0UgLURfRk9SVElGWV9TT1VSQ0U9MiAtRF9HTlVfU09V
+UkNFIC1EX0ZJTEVfT0ZGU0VUX0JJVFM9NjQgLURfTEFSR0VGSUxFX1NPVVJDRSAtZm5vLXN0
+cmljdC1hbGlhc2luZyAtZm5vLWNvbW1vbiAtZndyYXB2IC1XdW5kZWYgLVd3cml0ZS1zdHJp
+bmdzIC1XbWlzc2luZy1wcm90b3R5cGVzIC1Xc3RyaWN0LXByb3RvdHlwZXMgLVdyZWR1bmRh
+bnQtZGVjbHMgLVdvbGQtc3R5bGUtZGVjbGFyYXRpb24gLVdvbGQtc3R5bGUtZGVmaW5pdGlv
+biAtV3R5cGUtbGltaXRzIC1XZm9ybWF0LXNlY3VyaXR5IC1XZm9ybWF0LXkyayAtV2luaXQt
+c2VsZiAtV2lnbm9yZWQtcXVhbGlmaWVycyAtV2VtcHR5LWJvZHkgLVduZXN0ZWQtZXh0ZXJu
+cyAtV2VuZGlmLWxhYmVscyAtV2V4cGFuc2lvbi10by1kZWZpbmVkIC1XaW1wbGljaXQtZmFs
+bHRocm91Z2g9MiAtV21pc3NpbmctZm9ybWF0LWF0dHJpYnV0ZSAtV25vLW1pc3NpbmctaW5j
+bHVkZS1kaXJzIC1Xbm8tc2hpZnQtbmVnYXRpdmUtdmFsdWUgLVduby1wc2FiaSAtZnN0YWNr
+LXByb3RlY3Rvci1zdHJvbmcgLWZQSUUgLWlzeXN0ZW0uLi9saW51eC1oZWFkZXJzIC1pc3lz
+dGVtbGludXgtaGVhZGVycyAtRE5FRURfQ1BVX0ggJy1EQ09ORklHX1RBUkdFVD0icmlzY3Y2
+NC1saW51eC11c2VyLWNvbmZpZy10YXJnZXQuaCInICctRENPTkZJR19ERVZJQ0VTPSJyaXNj
+djY0LWxpbnV4LXVzZXItY29uZmlnLWRldmljZXMuaCInIC1NRCAtTVEgbGlicWVtdS1yaXNj
+djY0LWxpbnV4LXVzZXIuZmEucC90YXJnZXRfcmlzY3ZfY3B1LmMubyAtTUYgbGlicWVtdS1y
+aXNjdjY0LWxpbnV4LXVzZXIuZmEucC90YXJnZXRfcmlzY3ZfY3B1LmMuby5kIC1vIGxpYnFl
+bXUtcmlzY3Y2NC1saW51eC11c2VyLmZhLnAvdGFyZ2V0X3Jpc2N2X2NwdS5jLm8gLWMgLi4v
+dGFyZ2V0L3Jpc2N2L2NwdS5jDQouLi90YXJnZXQvcmlzY3YvY3B1LmM6IEluIGZ1bmN0aW9u
+IOKAmHJpc2N2X2NwdV9yZWFsaXpl4oCZOg0KLi4vdGFyZ2V0L3Jpc2N2L2NwdS5jOjEzNjY6
+MTI6IGVycm9yOiDigJhDUFVSSVNDVlN0YXRl4oCZIHtha2Eg4oCYc3RydWN0IENQVUFyY2hT
+dGF0ZeKAmX0gaGFzIG5vIG1lbWJlciBuYW1lZCDigJhtaWRlbGVn4oCZDQogIDEzNjYgfCAg
+ICAgICAgIGVudi0+bWlkZWxlZyA9IE1JUF9WU1NJUCB8IE1JUF9WU1RJUCB8IE1JUF9WU0VJ
+UCB8IE1JUF9TR0VJUDsNCiAgICAgICB8ICAgICAgICAgICAgXn4NClsxNzIwLzI3OThdIENv
+bXBpbGluZyBDIG9iamVjdCBsaWJxZW11LXJpc2N2NjQtbGludXgtdXNlci5mYS5wL2xpbnV4
+LXVzZXJfcmlzY3ZfY3B1X2xvb3AuDQoNCg0KDQpUaGUgcmVhc29uIGlzIHRoYXQgJ21pZGVs
+ZWcnIGlzIGEgc3lzdGVtIGVtdWxhdGlvbiBhdHRyaWJ1dGUgb25seSAoaS5lLiBkZWZpbmVk
+DQppbiBhICNpZm5kZWYgQ09ORklHX1VTRVJfT05MWSBibG9jaykuIFRoZXJlJ3MgYSBibG9j
+ayBsaWtlIHRoYXQgcmlnaHQgYmVmb3JlIHRoaXMNCnBvaW50IHdoZXJlIHJpc2N2X3RpbWVy
+X2luaXQoKSBpcyBiZWluZyBjYWxsZWQuIEkgc3VnZ2VzdCBtb3ZpbmcgdGhpcyBjb2RlIHRo
+ZXJlLg0KDQoNClRoYW5rcywNCg0KDQpEYW5pZWwNCg0KDQoNCj4gICAgICAgcmlzY3ZfY3B1
+X3JlZ2lzdGVyX2dkYl9yZWdzX2Zvcl9mZWF0dXJlcyhjcyk7DQo+ICAgDQo+ICAgICAgIHFl
+bXVfaW5pdF92Y3B1KGNzKTsNCg==
 
