@@ -2,91 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB6A70B0FA
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 May 2023 23:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BB870B33D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 04:34:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0qvC-0000Wh-Bs; Sun, 21 May 2023 17:48:58 -0400
+	id 1q0vLs-0003E4-Da; Sun, 21 May 2023 22:32:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1q0qvA-0000W6-FI
- for qemu-devel@nongnu.org; Sun, 21 May 2023 17:48:56 -0400
-Received: from out3-smtp.messagingengine.com ([66.111.4.27])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1q0qv8-00067t-H1
- for qemu-devel@nongnu.org; Sun, 21 May 2023 17:48:56 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailout.nyi.internal (Postfix) with ESMTP id 1B51C5C00C4;
- Sun, 21 May 2023 17:48:54 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Sun, 21 May 2023 17:48:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1684705734; x=
- 1684792134; bh=iG0WvAqwd5DRB3lppeZtCGRegXlc7BNe6x/K/+x9hZg=; b=L
- NBETH5JLwfkCkmz90YaFocKQ1xkMAmNy4Ma2noQ+VthQryueoLqa8B1pxTwHDHxj
- SeQXtkYe0ZV2byXvyxPF92EliUSwJIhsCWw0oCN657XkHVH9a71+HFXAM27djYxL
- G4cBl+yy3hjK8gmm8wrUArxr6uQ6BEkje7EaOBtSlXEvA1wV+lhR4C35TlObrPQ5
- sa1qMkK6gxujflQyLBc67l8crvLeO5HV5vwIkgSQ+Dc1x6lqtAfajgXRBp9Qgh5D
- ujON/syX59tui8EJW3R3XVAyKI44j5Ns0qheG42O+GapXlpV/msTgNYDeHvi3ABW
- 4qouqO2tkUInN6LFqADoA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1684705734; x=
- 1684792134; bh=iG0WvAqwd5DRB3lppeZtCGRegXlc7BNe6x/K/+x9hZg=; b=M
- Sz1aPzHIzQsXd77Jr6zZJAkPH2Xebe/OS9FpfzxhdcfTI0mwIstnhTagecybCeMI
- 6ufaE97BVj9em2Jfw1kd7J2HkptjCwXtHN+9+EwnnuFcFJXWQzN8qIapbuCEenIr
- 0CvnyECn3OsRyh334xgigWGFaADfS8+BBkdEOfr2fD0VOG3a1D4NSJa9MXdcCmDg
- PPW8nx2fOAoIHiBzLviKtQwNrW4nQSIiHf2VPkKA/I3yv+2TDZedXfCOSxRBg2+8
- SB8Eo5ySfLINB5g/zvDKwE7NtrErEhrLSCIFwhcNUXf3Zp5uXwabGcqMQcXbof1n
- 2xHIGrtzdduPW19hVoazQ==
-X-ME-Sender: <xms:xZFqZN2P0L6wxisUkqaJl_SfaTxme2R0homN-1Ga57abijY5sNwkUA>
- <xme:xZFqZEHrvy0-ZMaiwc1juNYK3vb3JCcdNe1_NrDnGleSxnuhDtVELzH1wpIc5Ssy2
- 3DGSR-z2BGSDoTH4qs>
-X-ME-Received: <xmr:xZFqZN7oXx2W4sE4rEyvZTG5b_XYmnQhHntAkRd_2MBhIMTiFKrhmy0M7HM8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejtddgtddvucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtke
- ertdertddtnecuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghn
- ghesfhhlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepfeeludefheegvdeuvd
- dvgeekgfdvtdettdelieeihfegtedugeekhfdvhfejfedtnecuvehluhhsthgvrhfuihii
- vgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhi
- hgohgrthdrtghomh
-X-ME-Proxy: <xmx:xZFqZK0GmSLqJAf1enUZ9J94syohPlkxp47UslhGWj82k38NpWyFMg>
- <xmx:xZFqZAEK56Aqnzryxx11IN3CNYGf8XiuNNxz1qlm5atuXrrlvCpo5A>
- <xmx:xZFqZL_ELq18wb6_lwH1r-7iASEoZHqJxpsTxhgZ11IfSEkWr14r2Q>
- <xmx:xpFqZMhhIuUtFxWBhksRnTuecyJ6P_DDZa7E9WlCcW9FLPBpbK3B-A>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 21 May 2023 17:48:52 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-To: qemu-devel@nongnu.org
-Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, philmd@linaro.org,
- chenhuacai@kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 2/2] hw/mips/loongson3_virt: Remove CPU restrictions for TCG
-Date: Sun, 21 May 2023 22:48:32 +0100
-Message-Id: <20230521214832.20145-3-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20230521214832.20145-1-jiaxun.yang@flygoat.com>
-References: <20230521214832.20145-1-jiaxun.yang@flygoat.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1q0vLo-0003Dv-VI
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 22:32:44 -0400
+Received: from mail.loongson.cn ([114.242.206.163] helo=loongson.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1q0vLl-0001l6-Kb
+ for qemu-devel@nongnu.org; Sun, 21 May 2023 22:32:44 -0400
+Received: from loongson.cn (unknown [10.20.42.57])
+ by gateway (Coremail) with SMTP id _____8AxmOk_1GpkIskKAA--.18591S3;
+ Mon, 22 May 2023 10:32:31 +0800 (CST)
+Received: from [10.20.42.57] (unknown [10.20.42.57])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxXrM+1GpkIXRuAA--.55113S3; 
+ Mon, 22 May 2023 10:32:30 +0800 (CST)
+Subject: Re: [PATCH 2/4] hw/intc/loongarch_ipi: Guard LoongArch only features
+ with ifdef
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: yangxiaojuan@loongson.cn, philmd@linaro.org, chenhuacai@kernel.org,
+ crosa@redhat.com, wainersm@redhat.com, bleal@redhat.com,
+ maobibo <maobibo@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
+ <20230521102307.87081-3-jiaxun.yang@flygoat.com>
+From: Song Gao <gaosong@loongson.cn>
+Message-ID: <a417d23a-1b9f-d730-a239-4ac359092764@loongson.cn>
+Date: Mon, 22 May 2023 10:32:30 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20230521102307.87081-3-jiaxun.yang@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=66.111.4.27; envelope-from=jiaxun.yang@flygoat.com;
- helo=out3-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8DxXrM+1GpkIXRuAA--.55113S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjvJXoW7tFy8GFW7AryDAr15ArWfGrg_yoW8CFWfpr
+ W3uF45Cr48tF17Wa9xC342gw1YqFn7JFySvF1fC340kayUXr97ua4kKr9Fva95C343Gr1U
+ Zws7Kr1UuF47urDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+ bI8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
+ 1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
+ wVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwA2z4
+ x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1l
+ e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2
+ IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4U
+ McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67vIY487Mx
+ AIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_
+ Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwI
+ xGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8
+ JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcV
+ C2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzZ2-UUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=loongson.cn
+X-Spam_score_int: 13
+X-Spam_score: 1.3
+X-Spam_bar: +
+X-Spam_report: (1.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.098,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,31 +84,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After implemented CPUCFG and CSR, we are now able to boot Linux
-kernel with Loongson-3A4000 CPU, so there is no point to restrict
-CPU type for TCG.
+Hi,
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- hw/mips/loongson3_virt.c | 4 ----
- 1 file changed, 4 deletions(-)
+在 2023/5/21 下午6:23, Jiaxun Yang 写道:
+> IOCSR based send features are tied to LoongArch's CPU implmentation,
+> ifdef them for LoongArch only so we can build loongarch_ipi on MIPS.
+>
+> Note that Loongson-3A4000 have IOCSR as well, so we may implement
+> those features for MIPS in future.
+>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>   hw/intc/loongarch_ipi.c | 20 ++++++++++++++++++++
+>   1 file changed, 20 insertions(+)
+>
+> diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+> index 3e453816524e..895a2ee96e1e 100644
+> --- a/hw/intc/loongarch_ipi.c
+> +++ b/hw/intc/loongarch_ipi.c
+> @@ -50,6 +50,7 @@ static uint64_t loongarch_ipi_readl(void *opaque, hwaddr addr, unsigned size)
+>       return ret;
+>   }
+>   
+> +#ifdef TARGET_LOONGARCH64
 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index a57245012598..47289fb6bf85 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -488,10 +488,6 @@ static void mips_loongson3_virt_init(MachineState *machine)
-         if (!machine->cpu_type) {
-             machine->cpu_type = MIPS_CPU_TYPE_NAME("Loongson-3A1000");
-         }
--        if (!strstr(machine->cpu_type, "Loongson-3A1000")) {
--            error_report("Loongson-3/TCG needs cpu type Loongson-3A1000");
--            exit(1);
--        }
-     } else {
-         if (!machine->cpu_type) {
-             machine->cpu_type = MIPS_CPU_TYPE_NAME("Loongson-3A4000");
--- 
-2.39.2 (Apple Git-143)
+How about adding one or three properties to LoongArchIPI?
+and set these properties when starting the device.
+
+This patch conflicts with patch [1], will it affect your patch?
+
+[1]: 
+https://patchew.org/QEMU/20230518014115.117869-1-gaosong@loongson.cn/20230518014115.117869-3-gaosong@loongson.cn/
+
+Thanks.
+Song Gao
+>   static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr)
+>   {
+>       int i, mask = 0, data = 0;
+> @@ -140,6 +141,25 @@ static void any_send(uint64_t val)
+>       env = &cpu->env;
+>       send_ipi_data(env, val, addr);
+>   }
+> +#else
+> +static void ipi_send(uint64_t val)
+> +{
+> +    qemu_log_mask(LOG_UNIMP, "%s: Unimplemented send 0x%" PRIx64 "\n",
+> +                    __func__, val);
+> +}
+> +
+> +static void mail_send(uint64_t val)
+> +{
+> +    qemu_log_mask(LOG_UNIMP, "%s: Unimplemented send 0x%" PRIx64 "\n",
+> +                    __func__, val);
+> +}
+> +
+> +static void any_send(uint64_t val)
+> +{
+> +    qemu_log_mask(LOG_UNIMP, "%s: Unimplemented send 0x%" PRIx64 "\n",
+> +                    __func__, val);
+> +}
+> +#endif
+>   
+>   static void loongarch_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
+>                                    unsigned size)
 
 
