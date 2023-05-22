@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4190C70C2F8
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A749B70C31A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:16:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q181z-0003aH-61; Mon, 22 May 2023 12:05:07 -0400
+	id 1q18Bb-0007lo-OJ; Mon, 22 May 2023 12:15:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q181t-0003Zv-WE
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:05:02 -0400
-Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q181o-0000jh-VH
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:05:01 -0400
-Received: by mail-qk1-x72d.google.com with SMTP id
- af79cd13be357-75afc10188fso98240385a.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 09:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684771494; x=1687363494;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=l3o07hAx+xVExjVlNAsthx/Rb+eGLI1xxsnlUA+C52M=;
- b=JejSvr1pVcn51D77s7QewtnMLbJokM5OWs91mRk2z2rYv9rK8RgqlOMAcHYE4sndxF
- A+bPNuP43H3YHvXaW0iz70MQdI/P+pQvzrgf55JtLQuBEuqo5CdHF9Wvav5QeZ8m3x2I
- tbzG0aPdQ3q/f9FFprhOqBwP63yysL3dUZyE1843NdpgfTmCBWeakPOLl2sGVPuqKMPY
- TUMfU9s0HmF3U6A1usm8rbunddtJnQppJSRrsIj073kC4NbQltQWAJs6hAPeM11q7MWT
- eSBq0rGrr2gThJegLR3LC3/N6axPqhNVgcpE/lPFjkfAWhsc+fHpJahEI3rJMD+K8IQw
- WwDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684771494; x=1687363494;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l3o07hAx+xVExjVlNAsthx/Rb+eGLI1xxsnlUA+C52M=;
- b=HLPvgUGDhe+xxvzHg1E2dz9AO5ytsunHW+P4+Q8FmZ5Pq9WXxByFmA/lZw0usrwJwu
- fwCYCDc/cB4tcxLXKz75b8Slr0hcbESN4OSjx/7D3K+FhTaPaR/SvgphUWV0ehDG2IJR
- U3tKa40q7lzfq+GLy0M8VomeEy4P587AJUjb17MgjMg8YbJY2YppX14l7MhyJVKz4oBc
- FUVWydgTO2r8h7Xw2bnzjvuB7JNcJJHgepsVRpwSQR0UXRzW36DL4VjGoxuD497/fwhu
- 4WMUmNAnUZB7McOfChUpQyk068if1yiFWLpKycfgj45h3Q+qhS7X2qgikogupviz2Dkx
- FFyQ==
-X-Gm-Message-State: AC+VfDwj7yJuw0LiUII1APMb+Dlc2q1Lmv0P6zQ4Gja9HX7m27q9Kgf6
- 2U10A8MelHFNgRX/3no7qc6VMA==
-X-Google-Smtp-Source: ACHHUZ7mPcyFAlP/Qpjs5tj82rndNdkJhaKppBt5kUjOQ8+f6q0jfYzSH8J0xy4x6ajcg06oO4kiLw==
-X-Received: by 2002:a05:620a:3e81:b0:75b:23a0:d9e8 with SMTP id
- tv1-20020a05620a3e8100b0075b23a0d9e8mr1084111qkn.62.1684771494694; 
- Mon, 22 May 2023 09:04:54 -0700 (PDT)
-Received: from ?IPV6:2607:fb90:8063:704:7944:82ed:f254:5737?
- ([2607:fb90:8063:704:7944:82ed:f254:5737])
- by smtp.gmail.com with ESMTPSA id
- f6-20020a05620a15a600b0074d4cf8f9fcsm947882qkk.107.2023.05.22.09.04.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 09:04:54 -0700 (PDT)
-Message-ID: <662b0cdc-29f1-23a6-a42b-8cfa58026bb9@linaro.org>
-Date: Mon, 22 May 2023 09:04:50 -0700
+ (Exim 4.90_1) (envelope-from <quic_mliebel@quicinc.com>)
+ id 1q18BP-0007kn-9t
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:14:51 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_mliebel@quicinc.com>)
+ id 1q18BN-000355-8J
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:14:51 -0400
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34MDKHNN003586
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 16:14:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=bxOLZid/Z95UhmCgS0fGyP4WyRF7q6T3npDoWm5XsGA=;
+ b=YzUgpAwhPNksF6Ku1naJFkX8T18BeioU2bRMfOWp3nQGJ1KnLgaL82tRMEPbOw6R3Dna
+ /ONqMyZZhFYbbTVSxbyMDulCLfOhyqynvEB4GN/SMqepXfvjuEXdSIaeOIYJ6wN52nOs
+ PybnJYwTzWfl7ROKZUAB+DBEoVA9TBHseUJCUtH2Qin4U9Ax6o1Eo3iHrnabOviSQJmr
+ vM7E7NgrpYgxTCAFZNuROlXajsyOBSQT1mn56ii2pmoShu8OYT1bJdUGAwpWq4STkWw4
+ pkC3PC8nxCsnPjwjlh/nqSxrwOJx7YwY7tob+U/dI/RsgH0XGvDERGYllrmdUDEMcK5J 0Q== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qpn7f4a6m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 16:14:33 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34MGEWZT013548
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 16:14:33 GMT
+Received: from hu-mliebel-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Mon, 22 May 2023 09:14:32 -0700
+From: Marco Liebel <quic_mliebel@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: Taylor Simpson <tsimpson@quicinc.com>, Brian Cain <bcain@quicinc.com>,
+ Marco Liebel <quic_mliebel@quicinc.com>
+Subject: [PATCH] Hexagon (target/hexagon) Fix assignment to tmp registers
+Date: Mon, 22 May 2023 09:13:56 -0700
+Message-ID: <20230522161356.438293-1-quic_mliebel@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL v3 00/21] Block layer patches
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
-References: <20230519171806.435109-1-kwolf@redhat.com>
- <1513489b-2d86-3722-94fa-1a560ac31aa8@linaro.org>
- <ZGsdjRQIbgIcaAhA@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZGsdjRQIbgIcaAhA@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: GvCYmo7uz7SKwLMw3f27SdZYClEiSVuh
+X-Proofpoint-ORIG-GUID: GvCYmo7uz7SKwLMw3f27SdZYClEiSVuh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-22_11,2023-05-22_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxlogscore=894
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 clxscore=1015 suspectscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305220135
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_mliebel@quicinc.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,39 +98,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/23 00:45, Kevin Wolf wrote:
-> Am 19.05.2023 um 21:11 hat Richard Henderson geschrieben:
->> On 5/19/23 10:18, Kevin Wolf wrote:
->>> The following changes since commit d009607d08d22f91ca399b72828c6693855e7325:
->>>
->>>     Revert "arm/kvm: add support for MTE" (2023-05-19 08:01:15 -0700)
->>>
->>> are available in the Git repository at:
->>>
->>>     https://repo.or.cz/qemu/kevin.git  tags/for-upstream
->>>
->>> for you to fetch changes up to 95fdd8db61848d31fde1d9b32da7f3f76babfa25:
->>>
->>>     iotests: Test commit with iothreads and ongoing I/O (2023-05-19 19:16:53 +0200)
->>>
->>> ----------------------------------------------------------------
->>> Block layer patches
->>>
->>> - qcow2 spec: Rename "zlib" compression to "deflate"
->>> - Honour graph read lock even in the main thread + prerequisite fixes
->>> - aio-posix: do not nest poll handlers (fixes infinite recursion)
->>> - Refactor QMP blockdev transactions
->>> - graph-lock: Disable locking for now
->>> - iotests/245: Check if 'compress' driver is available
->>
->> Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as
->> appropriate.
-> 
-> Hm, I just pulled, and it doesn't seem to be actually there in master?
+The order in which instructions are generated by gen_insn() influences
+assignment to tmp registers. During generation, tmp instructions (e.g.
+generate_V6_vassign_tmp) use vreg_src_off() to determine what kind of
+register to use as source. If some instruction (e.g.
+generate_V6_vmpyowh_64_acc) uses a tmp register but is generated prior
+to the corresponding tmp instruction, the vregs_updated_tmp bit map
+isn't updated in time.
 
-I dunno what happened.  Applied for real this time.
+Exmple:
+    { v14.tmp = v16; v25 = v14 } This works properly because
+    generate_V6_assign_tmp is generated before generate_V6_assign and
+    the bit map is updated.
 
+    { v15:14.tmp = vcombine(v21, v16); v25:24 += vmpyo(v18.w,v14.h) }
+    This does not work properly because vmpyo is generated before
+    vcombine and therefore the bit map does not yet know that there's
+    a tmp register.
 
-r~
+The parentheses in the decoding function were in the wrong place.
+Moving them to the correct location makes shuffling of .tmp vector
+registers work as expected.
+---
+ target/hexagon/mmvec/decode_ext_mmvec.c |  6 ++---
+ tests/tcg/hexagon/hvx_misc.c            | 31 +++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 3 deletions(-)
+
+diff --git a/target/hexagon/mmvec/decode_ext_mmvec.c b/target/hexagon/mmvec/decode_ext_mmvec.c
+index 061a65ab88..8d60804deb 100644
+--- a/target/hexagon/mmvec/decode_ext_mmvec.c
++++ b/target/hexagon/mmvec/decode_ext_mmvec.c
+@@ -148,9 +148,9 @@ decode_shuffle_for_execution_vops(Packet *pkt)
+     int i;
+     for (i = 0; i < pkt->num_insns; i++) {
+         uint16_t opcode = pkt->insn[i].opcode;
+-        if (GET_ATTRIB(opcode, A_LOAD) &&
+-            (GET_ATTRIB(opcode, A_CVI_NEW) ||
+-             GET_ATTRIB(opcode, A_CVI_TMP))) {
++        if ((GET_ATTRIB(opcode, A_LOAD) &&
++             GET_ATTRIB(opcode, A_CVI_NEW)) ||
++            GET_ATTRIB(opcode, A_CVI_TMP)) {
+             /*
+              * Find prior consuming vector instructions
+              * Move to end of packet
+diff --git a/tests/tcg/hexagon/hvx_misc.c b/tests/tcg/hexagon/hvx_misc.c
+index 09dec8d7a1..b45170acd1 100644
+--- a/tests/tcg/hexagon/hvx_misc.c
++++ b/tests/tcg/hexagon/hvx_misc.c
+@@ -60,6 +60,36 @@ static void test_load_tmp(void)
+     check_output_w(__LINE__, BUFSIZE);
+ }
+ 
++static void test_load_tmp2(void)
++{
++    void *pout0 = &output[0];
++    void *pout1 = &output[1];
++
++    asm volatile(
++        "r0 = #0x03030303\n\t"
++        "v16 = vsplat(r0)\n\t"
++        "r0 = #0x04040404\n\t"
++        "v18 = vsplat(r0)\n\t"
++        "r0 = #0x05050505\n\t"
++        "v21 = vsplat(r0)\n\t"
++        "{\n\t"
++        "   v25:24 += vmpyo(v18.w, v14.h)\n\t"
++        "   v15:14.tmp = vcombine(v21, v16)\n\t"
++        "}\n\t"
++        "vmem(%0 + #0) = v24\n\t"
++        "vmem(%1 + #0) = v25\n\t"
++        : : "r"(pout0), "r"(pout1)
++        : "r0", "v16", "v18", "v21", "v24", "v25", "memory"
++    );
++
++    for (int i = 0; i < MAX_VEC_SIZE_BYTES / 4; ++i) {
++        expect[0].w[i] = 0x180c0000;
++        expect[1].w[i] = 0x000c1818;
++    }
++
++    check_output_w(__LINE__, 2);
++}
++
+ static void test_load_cur(void)
+ {
+     void *p0 = buffer0;
+@@ -435,6 +465,7 @@ int main()
+     init_buffers();
+ 
+     test_load_tmp();
++    test_load_tmp2();
+     test_load_cur();
+     test_load_aligned();
+     test_load_unaligned();
+-- 
+2.25.1
 
 
