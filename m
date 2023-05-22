@@ -2,78 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551E770B660
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 09:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A15A70B694
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 09:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q0zpy-0007Wz-SL; Mon, 22 May 2023 03:20:11 -0400
+	id 1q1014-0001j2-Ii; Mon, 22 May 2023 03:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q0zpu-0007Wp-QC
- for qemu-devel@nongnu.org; Mon, 22 May 2023 03:20:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1012-0001is-9z
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 03:31:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q0zps-0006SD-56
- for qemu-devel@nongnu.org; Mon, 22 May 2023 03:20:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1010-0001FG-W4
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 03:31:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684740003;
+ s=mimecast20190719; t=1684740694;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=K9V4Z+Pxe9qIbxCcWDry2Az1P35E1LlASr3jNpJSfIY=;
- b=dt4RUMRwRj+RdyD6yLvZdS++AhevZtajKc9/qy9k+CM8QB4XvrsI9pfl3C4WHVlnW7UYEM
- D2hrZuhZAdIw5kucEnuKFTch4Q9MaFXDUveqsElIfqlcXIAO/xvAkzwKtEdIsmEL6yelrf
- +LesQMqwSadICApXuqTg4CjiOZ48iwY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-664-Sc-cUJLaMJKZhCJZR_Q_RQ-1; Mon, 22 May 2023 03:19:59 -0400
-X-MC-Unique: Sc-cUJLaMJKZhCJZR_Q_RQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2781D802E58;
- Mon, 22 May 2023 07:19:59 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8E5521121314;
- Mon, 22 May 2023 07:19:58 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8192B21E692E; Mon, 22 May 2023 09:19:57 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: <qemu-devel@nongnu.org>,  Michael Tsirkin <mst@redhat.com>,  Fan Ni
- <fan.ni@samsung.com>,  <linux-cxl@vger.kernel.org>,
- <linuxarm@huawei.com>,  Ira Weiny <ira.weiny@intel.com>,  Alison
- Schofield <alison.schofield@intel.com>,  Michael Roth
- <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Dave
- Jiang <dave.jiang@intel.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,  Mike Maslenkin
- <mike.maslenkin@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v5 5/7] hw/cxl/events: Add injection of General Media
- Events
-References: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
- <20230423165140.16833-6-Jonathan.Cameron@huawei.com>
-Date: Mon, 22 May 2023 09:19:57 +0200
-In-Reply-To: <20230423165140.16833-6-Jonathan.Cameron@huawei.com> (Jonathan
- Cameron's message of "Sun, 23 Apr 2023 17:51:38 +0100")
-Message-ID: <87lehgq1cy.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=W8kuLNohnKOx3ExNVEfyvrydeQ45tZ4mo/9wrXAhEKM=;
+ b=bTGx3HGfsemROaOTWzr3crajn1l+hxGhaa2uWo5vPy9rT8i7tzCNHFfCyP5cQmXzEseMCg
+ lfA7Z+UVOW/oQXmwxv4vZI63f70V09DucUH50htOKg8vG0czpPEE9IPA6iVnM9kXvT/Vgj
+ SnC86EbN6emCrCSq5PvZqmvec6yv7DY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-379-Vq0mj1DqPv2SZIA3EvA7WA-1; Mon, 22 May 2023 03:31:29 -0400
+X-MC-Unique: Vq0mj1DqPv2SZIA3EvA7WA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f60162f7fcso3808605e9.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 00:31:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684740689; x=1687332689;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=W8kuLNohnKOx3ExNVEfyvrydeQ45tZ4mo/9wrXAhEKM=;
+ b=OtOtpQNvH4jhApdw09gLd6QGrKqOO8c9TFTDZMymJG711FOh9aUTQNERtrRDn1qlCy
+ Uohs3QWvoOr1TClhMDBWIQnUtjV/RZnH7Aaefr7JC5PxbmV1EwD21aGlPQewDkdxY+1V
+ 7tSmCVBNaS4A2D1Kc6zcK4pDHv+nveUfr5AUyyqmmMwUkZnQFijC85wROCZbZ3oRRUN/
+ jeoqm/23HmysxklrI/SFuz5zV7XZzo0RNVb+hm80b14UMt4AFlFTJfjmTY8L1F65SSp0
+ jHLVm9H48iH93QQG5krE1wd3iEcykaSmX6nad1RQS3YqnnWhFo7+nnjKrTMkfAbFMba0
+ XEWA==
+X-Gm-Message-State: AC+VfDw7Y5LxAXPMsWMM0Nq7dFfg1+Y2oWEnos8JqoseQTNaDuo3h1VR
+ zYDz0/xNAf7ZNjG/dDEbA+p4mK8+jDvKv+4MqLiG8N5SToJLmnVf7TejTJ22rIq2nzItTmMnLjD
+ hGyK9pDpPEAq0ZH8=
+X-Received: by 2002:a7b:c7d7:0:b0:3f6:514:bddd with SMTP id
+ z23-20020a7bc7d7000000b003f60514bdddmr1015877wmk.2.1684740688955; 
+ Mon, 22 May 2023 00:31:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7WeJsjV2NHo88dZfXAex4a45EcjXqs+0kuw82a3of3j5IE+559knGclZwSgg2f9NCP5RmgTQ==
+X-Received: by 2002:a7b:c7d7:0:b0:3f6:514:bddd with SMTP id
+ z23-20020a7bc7d7000000b003f60514bdddmr1015850wmk.2.1684740688627; 
+ Mon, 22 May 2023 00:31:28 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-178-148.web.vodafone.de.
+ [109.43.178.148]) by smtp.gmail.com with ESMTPSA id
+ o5-20020a1c7505000000b003f0ad8d1c69sm10508880wmc.25.2023.05.22.00.31.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 00:31:27 -0700 (PDT)
+Message-ID: <617135d9-8c69-8a1a-0018-93fb52015ea1@redhat.com>
+Date: Mon, 22 May 2023 09:31:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH 5/8] qtest: use cpu interface in qtest_clock_warp
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Yanan Wang <wangyanan55@huawei.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marco Liebel <mliebel@qti.qualcomm.com>,
+ Mark Burton <mburton@qti.qualcomm.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+References: <20230519170454.2353945-1-alex.bennee@linaro.org>
+ <20230519170454.2353945-6-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230519170454.2353945-6-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.098, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,205 +112,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
-
-> From: Ira Weiny <ira.weiny@intel.com>
->
-> To facilitate testing provide a QMP command to inject a general media
-> event.  The event can be added to the log specified.
->
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-[...]
-
-> diff --git a/qapi/cxl.json b/qapi/cxl.json
-> index ca3af3f0b2..9dcd308a49 100644
-> --- a/qapi/cxl.json
-> +++ b/qapi/cxl.json
-> @@ -5,6 +5,56 @@
->  # = CXL devices
->  ##
->  
-> +##
-> +# @CxlEventLog:
-> +#
-> +# CXL has a number of separate event logs for different types of event.
-
-types of events
-
-> +# Each such event log is handled and signaled independently.
-> +#
-> +# @informational: Information Event Log
-> +# @warning: Warning Event Log
-> +# @failure: Failure Event Log
-> +# @fatal: Fatal Event Log
-
-Are these proper nouns?  If not, the words should not be capitalized.
-
-> +#
-> +# Since: 8.1
-> +##
-
-Please format like
-
-   ##
-   # @CxlEventLog:
-   #
-   # CXL has a number of separate event logs for different types of
-   # events.  Each such event log is handled and signaled independently.
-   #
-   # @informational: Information Event Log
-   #
-   # @warning: Warning Event Log
-   #
-   # @failure: Failure Event Log
-   #
-   # @fatal: Fatal Event Log
-   #
-   # Since: 8.1
-   ##
-
-to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-to conform to current conventions).
-
-The blank lines help with catching certain errors.  rST loves to
-surprise...
-
-> +{ 'enum': 'CxlEventLog',
-> +  'data': ['informational',
-> +           'warning',
-> +           'failure',
-> +           'fatal'
-> +           ]
-
-Make that
-              'fatal']
-
-> + }
-> +
-> +##
-> +# @cxl-inject-gen-media-event:
-
-Suggest cxl-inject-general-media-event, because we traditionally avoid
-abbreviations in QMP, for better or worse.
-
-> +#
-> +# Inject an event record for a General Media Event (CXL r3.0 8.2.9.2.1.1)
-
-What's "CXL r3.0", and where could a reader find it?
-
-Aside: the idea of a document with numbered section nested six levels
-deep is kind of horrifying :)
-
-Again, capitalize "General Media Event" only if it's a proper noun.  If
-"CXL r3.0" capitalizes it this way, it is.
-
-> +# This event type is reported via one of the event logs specified via
-> +# the log parameter.
-> +#
-> +# @path: CXL type 3 device canonical QOM path
-> +# @log: Event Log to add the event to
-
-event log
-
-> +# @flags: header flags
-
-Either specify the header flags here, or point to specification.
-
-> +# @physaddr: Physical Address
-
-Perhaps "Guest physical address"
-
-Address of what?
-
-We have no consistent naming convention for guest physical addresses.  I
-see @addr, @memaddr, @gpa.  Let's not add yet another name for the same
-thing without need.
-
-> +# @descriptor: Descriptor
-
-No.
-
-> +# @type: Type
-
-No.
-
-> +# @transaction-type: Transaction Type
-
-No.
-
-> +# @channel: Channel
-
-No.
-
-> +# @rank: Rank
-
-No.
-
-> +# @device: Device
-
-No.
-
-See, I can do too terse, too!
-
-> +# @component-id: Device specific string
-
-Probably no.
-
-> +#
-> +# Since: 8.1
-> +##
-
-Again, please format like
-
-   ##
-   # @cxl-inject-general-media-event:
-   #
-   # Inject an event record for a General Media Event (CXL r3.0
-   # 8.2.9.2.1.1) This event type is reported via one of the event logs
-   # specified via the log parameter.
-   #
-   # @path: CXL type 3 device canonical QOM path
-   #
-   # @log: Event Log to add the event to
-   #
-   # @flags: header flags
-   #
-   # @physaddr: Physical Address
-   #
-   # @descriptor: Descriptor
-   #
-   # @type: Type
-   #
-   # @transaction-type: Transaction Type
-   #
-   # @channel: Channel
-   #
-   # @rank: Rank
-   #
-   # @device: Device
-   #
-   # @component-id: Device specific string
-   #
-   # Since: 8.1
-   ##
-
-> +{ 'command': 'cxl-inject-gen-media-event',
-> +  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags': 'uint8',
-> +            'physaddr': 'uint64', 'descriptor': 'uint8',
-> +            'type': 'uint8', 'transaction-type': 'uint8',
-> +            '*channel': 'uint8', '*rank': 'uint8',
-> +            '*device': 'uint32', '*component-id': 'str'
-> +            }}
-
-Make that
-
-               '*device': 'uint32', '*component-id': 'str' } }
-
-> +
->  ##
->  # @cxl-inject-poison:
->  #
+On 19/05/2023 19.04, Alex Bennée wrote:
+> This generalises the qtest_clock_warp code to use the AccelOps
+> handlers for updating its own sense of time. This will make the next
+> patch which moves the warp code closer to pure code motion.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   include/sysemu/qtest.h | 1 +
+>   accel/qtest/qtest.c    | 1 +
+>   softmmu/qtest.c        | 6 +++---
+>   3 files changed, 5 insertions(+), 3 deletions(-)
+Acked-by: Thomas Huth <thuth@redhat.com>
 
 
