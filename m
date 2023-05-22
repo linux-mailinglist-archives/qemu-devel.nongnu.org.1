@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6C170BE8C
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD9C70BE92
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q14oP-0002nh-OR; Mon, 22 May 2023 08:38:53 -0400
+	id 1q14r3-0004yW-2B; Mon, 22 May 2023 08:41:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q14oN-0002n9-DV
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:38:51 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q14oL-0000RY-Sq
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:38:51 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-306dbad5182so3919599f8f.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 05:38:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684759127; x=1687351127;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GnKvUH7feHZ2H3rqbQkTcOuBoJdl8RGHnOqdNx7vd4U=;
- b=F8IluaxY7rtoamKg8xyfLjMzwt0m2jVr+iOSOYKjjNhntlgAc8e2jprbIQhyGMknve
- Zol6mhFbIitmG2tEqGEz6L8zWyIJpqsGbEZ21a04GMSuSHj9jxm9UZ5+PRMhcb0d76Ub
- AlmnoOg5afbfUkHE7cG3mCjM0Kvo1JA53174c7kUGPb1G59akM9z65emWZpMaDiho4DA
- pHbAffuFnukWUdzzrFd0jcpVE3Dq6RDE+XygroHE2/orgxqH/uRw9P/PULwfkGaOa27Z
- fHkU/FRXaYmtFdBzQG/cBwAKwMHDpVqWntBF69Pb9c86opyvNSK35qxREPzFI29JoZHs
- k1oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684759127; x=1687351127;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GnKvUH7feHZ2H3rqbQkTcOuBoJdl8RGHnOqdNx7vd4U=;
- b=ejhNzuvw3PKie4fa1T68/4XdyT440FK+WEBZjSFwsI409abB0Et8lY0/CSo6/fEpEf
- MybfWSBB/dYqRFM6mbMpA4/PJu1ZOpq/yDas5nixi38TMFdVymtBG7XiTTuCBLO4EKt1
- Qv58gKlqY+6bSL9ffr/m3wg1Oh6gnOq5GYjBnEEdd6YnC7EJLrudygPisgYbTVI6ygGO
- DnmnJGdS8kgLQ+LejWLY3qIjtiMdmbzlcfRP4t9jUmwHVxYJHnxk/DmjZ+HZsLoWXx43
- bnRLFParWqoOIHekzgMudkC2Tndfx5LpZr0L/JbVnm/np7FeLdcRJmxZsDNXINq+7jaB
- QGJQ==
-X-Gm-Message-State: AC+VfDx/vixZURANvuqoXj2K/FtpzCcxRGdc0hyC3CfjPQOK7XG9F0kJ
- GXOiEpE2LD0zJdbMesBxNTPJMQ==
-X-Google-Smtp-Source: ACHHUZ4QXrZGiHYAe8iNrG01eCLCYiuCNL2G/FT1IKMKvzEdU5YF2gsPFpvQzilcIvC4Vx2Kspsd8w==
-X-Received: by 2002:a05:6000:45:b0:306:2b40:1258 with SMTP id
- k5-20020a056000004500b003062b401258mr7142166wrx.21.1684759126881; 
- Mon, 22 May 2023 05:38:46 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.153.164])
- by smtp.gmail.com with ESMTPSA id
- j18-20020adff012000000b00304adbeeabbsm7582968wro.99.2023.05.22.05.38.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 05:38:46 -0700 (PDT)
-Message-ID: <ccdf88d1-54de-453f-b600-1f0f562aae31@linaro.org>
-Date: Mon, 22 May 2023 14:38:44 +0200
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1q14qx-0004xv-5B; Mon, 22 May 2023 08:41:31 -0400
+Received: from hq-ms.auriga.com ([82.97.202.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1q14qt-0000xp-FK; Mon, 22 May 2023 08:41:29 -0400
+Received: from HQ-MS1.office.auriga.msk (82.97.202.32) by
+ hq-ms1.office.auriga.msk (82.97.202.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.12; Mon, 22 May 2023 15:41:19 +0300
+Received: from HQ-MS1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f]) by
+ hq-ms1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f%8]) with mapi id
+ 15.02.1258.012; Mon, 22 May 2023 15:41:19 +0300
+From: "Kambalin, Sergey" <sergey.kambalin@auriga.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: Sergey Kambalin <serg.oker@gmail.com>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] [rpi4b] Make bootable rpi4b model
+Thread-Topic: [PATCH] [rpi4b] Make bootable rpi4b model
+Thread-Index: AQHZjJhM5s2DGZMhDE6fRKCxSTEX869l5goAgAA0A2T//9M1AIAAPGd6///VIACAAD0/pg==
+Date: Mon, 22 May 2023 12:41:19 +0000
+Message-ID: <672004b332154e15b14e4e96d20a23de@auriga.com>
+References: <20230522102910.20942-1-sergey.kambalin@auriga.com>
+ <CAFEAcA_aV0DvL3DgqU9SKKRsqCoMrvwbPoomx+NA8fkXKkTytA@mail.gmail.com>
+ <e5f053c126a24a62a4e1e8d309d939ce@auriga.com>
+ <CAFEAcA8bLr+_raHie4JxoEJAQ7cuj5nJKTYt5+7r6T0w8FFNsg@mail.gmail.com>
+ <ea63d09bb2d249b282a429ff9d373e4d@auriga.com>,
+ <CAFEAcA8HMgJ5_WwC6Mc5E61_KN4kqvpW6AE_EyDf-JcrFVQJMg@mail.gmail.com>
+In-Reply-To: <CAFEAcA8HMgJ5_WwC6Mc5E61_KN4kqvpW6AE_EyDf-JcrFVQJMg@mail.gmail.com>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [134.191.220.81]
+x-tm-as-product-ver: SMEX-14.0.0.1158-9.0.1002-27556.003
+x-tm-as-result: No-10--17.501200-8.000000
+x-tmase-matchedrid: IDcII6LbfMCJVA+ukO+5MWg4D2QV/2zL6r3HCixfuKcc4ri4RJV/1W/R
+ DAZTdSI3QnEYvg6//klFmXhQ6rgRVOyDy8V8lTWUzH6d90mb4+Ih6cl1707zKlZxVB3B2qbP6Xk
+ ezPna397QLE3MitZAfl9/IWsrV5Ek1LFdtmiebE5itzfafzhYerzutTz14s8pB4N9b2b2Ot6L2s
+ CeHVx5vavLMqivPPjo9ElewkZ1UEQ2ib2gFI+X3zo39wOA02Lhv/7xdLQjXSIgaqPnI+BNyB2MH
+ UpnrEwAiPTUF0vMdpGHIX2JO/wOMi3UeYOWBocyARprIm1hk212ZYwNBqM6IsSQ5qUrBcx3zKAC
+ X7I5tE7P1hd0ZMHSA01AeToCHLWXQqvLyTLhF8UFxov+3JYvY9+43C02PchEoUhuKHSz/jb7Tdr
+ 4xDxETRUJDVhOCrc2J9Dn0zV8taUumHyO4Y/CA51U1lojafr/DvKSaIxu6kqISI683skDCtSHnJ
+ Dq2yhMlixDUeTodIK9NZJut0CFKN9faxl/I4mhq5uw61JZjZBcdJ43JX6v+OTCMddcL/gjcxYeV
+ rfi/UI7kyoFYZ/5JMyhWimj2LHmYRa3eYQPHJ+lOc5PPl6XJn7cGd19dSFd
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--17.501200-8.000000
+x-tmase-version: SMEX-14.0.0.1158-9.0.1002-27556.003
+x-tm-snts-smtp: 8571BD7DE9C36E2D69E7D65F6F955E30376DC1AC75FB639448EC0A5A7BF18F002000:8
+Content-Type: multipart/alternative;
+ boundary="_000_672004b332154e15b14e4e96d20a23deaurigacom_"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH] util/vfio-helpers: Use g_file_read_link()
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-References: <20230522114943.33024-1-akihiko.odaki@daynix.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230522114943.33024-1-akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=82.97.202.32;
+ envelope-from=sergey.kambalin@auriga.com; helo=hq-ms.auriga.com
+X-Spam_score_int: 5
+X-Spam_score: 0.5
+X-Spam_bar: /
+X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
+ MIME_CHARSET_FARAWAY=2.45, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,62 +86,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/5/23 13:49, Akihiko Odaki wrote:
-> When _FORTIFY_SOURCE=2, glibc version is 2.35, and GCC version is
-> 12.1.0, the compiler complains as follows:
-> 
-> In file included from /usr/include/features.h:490,
->                   from /usr/include/bits/libc-header-start.h:33,
->                   from /usr/include/stdint.h:26,
->                   from /usr/lib/gcc/aarch64-unknown-linux-gnu/12.1.0/include/stdint.h:9,
->                   from /home/alarm/q/var/qemu/include/qemu/osdep.h:94,
->                   from ../util/vfio-helpers.c:13:
-> In function 'readlink',
->      inlined from 'sysfs_find_group_file' at ../util/vfio-helpers.c:116:9,
->      inlined from 'qemu_vfio_init_pci' at ../util/vfio-helpers.c:326:18,
->      inlined from 'qemu_vfio_open_pci' at ../util/vfio-helpers.c:517:9:
-> /usr/include/bits/unistd.h:119:10: error: argument 2 is null but the corresponding size argument 3 value is 4095 [-Werror=nonnull]
->    119 |   return __glibc_fortify (readlink, __len, sizeof (char),
->        |          ^~~~~~~~~~~~~~~
-> 
-> This error implies the allocated buffer can be NULL. Use
-> g_file_read_link(), which allocates buffer automatically to avoid the
-> error.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->   util/vfio-helpers.c | 8 +++++---
->   1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/util/vfio-helpers.c b/util/vfio-helpers.c
-> index 2d8af38f88..e482ab22e2 100644
-> --- a/util/vfio-helpers.c
-> +++ b/util/vfio-helpers.c
-> @@ -106,15 +106,17 @@ struct QEMUVFIOState {
->    */
->   static char *sysfs_find_group_file(const char *device, Error **errp)
->   {
-> +    g_autoptr(GError) gerr;
+--_000_672004b332154e15b14e4e96d20a23deaurigacom_
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 
-Shouldn't this also be NULL-initialized (other picky compilers)?
+Thanks!
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+________________________________
+=EF=D4: Peter Maydell <peter.maydell@linaro.org>
+=EF=D4=D0=D2=C1=D7=CC=C5=CE=CF: 22 =CD=C1=D1 2023 =C7. 15:01:26
+=EB=CF=CD=D5: Kambalin, Sergey
+=EB=CF=D0=C9=D1: Sergey Kambalin; qemu-arm@nongnu.org; qemu-devel@nongnu.or=
+g
+=F4=C5=CD=C1: Re: [PATCH] [rpi4b] Make bootable rpi4b model
 
->       char *sysfs_link;
->       char *sysfs_group;
->       char *p;
->       char *path = NULL;
->   
->       sysfs_link = g_strdup_printf("/sys/bus/pci/devices/%s/iommu_group", device);
-> -    sysfs_group = g_malloc0(PATH_MAX);
-> -    if (readlink(sysfs_link, sysfs_group, PATH_MAX - 1) == -1) {
-> -        error_setg_errno(errp, errno, "Failed to find iommu group sysfs path");
-> +    sysfs_group = g_file_read_link(sysfs_link, &gerr);
-> +    if (gerr) {
-> +        error_setg(errp, "Failed to find iommu group sysfs path: %s",
-> +                   gerr->message);
->           goto out;
->       }
->       p = strrchr(sysfs_group, '/');
+On Mon, 22 May 2023 at 12:42, Kambalin, Sergey
+<sergey.kambalin@auriga.com> wrote:
+>
+> Aw, I thought the entire machine should work at the first patch.
+>
+> Thank you for the detailed clarification! I think I've got the idea. I'll=
+ split it up.
+>
+> Could you please tell me what size is appropriate for a single patch?
 
+The most important things for patch splitting are:
+ * everything still has to compile cleanly
+ * the contents of a single patch should be a coherent single
+   thing that it makes sense to review in one part
+
+If there's something in there that only touches 20 lines of
+code but is a coherent single change, it's fine to have that in
+its own patch -- small patches are easy to review.
+
+At the upper end, I tend to think a patch is a bit big
+at around 200 lines, but for the specific case of "here
+is a new device" bigger than that is OK, because it's
+just adding new files rather than merging changes into
+existing ones.
+
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html
+has some other advice on patch submission, if you haven't
+read that yet.
+
+thanks
+-- PMM
+
+--_000_672004b332154e15b14e4e96d20a23deaurigacom_
+Content-Type: text/html; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dkoi8-r">
+<meta name=3D"Generator" content=3D"Microsoft Exchange Server">
+<!-- converted from text --><style><!-- .EmailQuote { margin-left: 1pt; pad=
+ding-left: 4pt; border-left: #800000 2px solid; } --></style>
+</head>
+<body>
+<meta content=3D"text/html; charset=3DUTF-8">
+<style type=3D"text/css" style=3D"">
+<!--
+p
+	{margin-top:0;
+	margin-bottom:0}
+-->
+</style>
+<div dir=3D"ltr">
+<div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; col=
+or:#000000; font-family:Calibri,Helvetica,sans-serif">
+<p>Thanks!</p>
+</div>
+<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
+<div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
+color=3D"#000000" style=3D"font-size:11pt"><b>=EF=D4:</b> Peter Maydell &lt=
+;peter.maydell@linaro.org&gt;<br>
+<b>=EF=D4=D0=D2=C1=D7=CC=C5=CE=CF:</b> 22 =CD=C1=D1 2023 =C7. 15:01:26<br>
+<b>=EB=CF=CD=D5:</b> Kambalin, Sergey<br>
+<b>=EB=CF=D0=C9=D1:</b> Sergey Kambalin; qemu-arm@nongnu.org; qemu-devel@no=
+ngnu.org<br>
+<b>=F4=C5=CD=C1:</b> Re: [PATCH] [rpi4b] Make bootable rpi4b model</font>
+<div>&nbsp;</div>
+</div>
+</div>
+<font size=3D"2"><span style=3D"font-size:10pt;">
+<div class=3D"PlainText">On Mon, 22 May 2023 at 12:42, Kambalin, Sergey<br>
+&lt;sergey.kambalin@auriga.com&gt; wrote:<br>
+&gt;<br>
+&gt; Aw, I thought the entire machine should work at the first patch.<br>
+&gt;<br>
+&gt; Thank you for the detailed clarification! I think I've got the idea. I=
+'ll split it up.<br>
+&gt;<br>
+&gt; Could you please tell me what size is appropriate for a single patch?<=
+br>
+<br>
+The most important things for patch splitting are:<br>
+&nbsp;* everything still has to compile cleanly<br>
+&nbsp;* the contents of a single patch should be a coherent single<br>
+&nbsp;&nbsp; thing that it makes sense to review in one part<br>
+<br>
+If there's something in there that only touches 20 lines of<br>
+code but is a coherent single change, it's fine to have that in<br>
+its own patch -- small patches are easy to review.<br>
+<br>
+At the upper end, I tend to think a patch is a bit big<br>
+at around 200 lines, but for the specific case of &quot;here<br>
+is a new device&quot; bigger than that is OK, because it's<br>
+just adding new files rather than merging changes into<br>
+existing ones.<br>
+<br>
+<a href=3D"https://www.qemu.org/docs/master/devel/submitting-a-patch.html">=
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html</a><br>
+has some other advice on patch submission, if you haven't<br>
+read that yet.<br>
+<br>
+thanks<br>
+-- PMM<br>
+</div>
+</span></font>
+</body>
+</html>
+
+--_000_672004b332154e15b14e4e96d20a23deaurigacom_--
 
