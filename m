@@ -2,66 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0023770B8E7
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 11:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC9B70B95F
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 11:50:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q11pc-0006Nx-EY; Mon, 22 May 2023 05:27:56 -0400
+	id 1q12AA-0002m7-CT; Mon, 22 May 2023 05:49:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q11pN-0006NT-SV
- for qemu-devel@nongnu.org; Mon, 22 May 2023 05:27:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1q129y-0002k4-Vg
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 05:49:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q11pJ-0008SI-OS
- for qemu-devel@nongnu.org; Mon, 22 May 2023 05:27:41 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1q129x-0005HI-8E
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 05:48:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684747655;
+ s=mimecast20190719; t=1684748924;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=svl96UbgxOrNJsGyBEyVrVo2uzgo2T8dXkCqRYlrzOI=;
- b=LaN2a2vz5gpdmuAhaVsVy7xDkrqw/SUx33HVhDFCqvAn24s7x0kQUPTPj+DFiSEMghHOVU
- FkhVd/9OHJ6ZtPh3u2G/TE+ncxxjAenQidOGvL0v8HE+EDuAGp13kNlFGvNNWQlpESMwze
- Zw39zJ64iAaVMI8PFBUMu1ZVCU84W1c=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=z9oMOJufZiEXaUZLK9IYxvnoC/t0NYLQcfgv5JvlfoY=;
+ b=Xa2Rl8PoZTIU08w3WIMisnejFKqJeKeSvf0FZUvHOt7rXmc3hN4qYBQMnhZ/W7YH90rNe8
+ 06IPMNmXi5RP/AbZjus0mfh8MiebBPYyp8ehkJ5dsevfqCJgpmZrKy21yKZUSQxysUXqEm
+ GJL0YtEbOgczvvfwLp13cSJspHWN+8o=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-624-mF6LJuzGOeeRWE03K9YUMA-1; Mon, 22 May 2023 05:27:29 -0400
-X-MC-Unique: mF6LJuzGOeeRWE03K9YUMA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-671-IHQl61GlMP28fS9EY_E1Tw-1; Mon, 22 May 2023 05:48:40 -0400
+X-MC-Unique: IHQl61GlMP28fS9EY_E1Tw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EF444185A78B;
- Mon, 22 May 2023 09:27:28 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 88FE5140E95D;
- Mon, 22 May 2023 09:27:28 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 56F6421E692E; Mon, 22 May 2023 11:27:27 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-devel@nongnu.org,  eblake@redhat.com,  eduardo@habkost.net,
- berrange@redhat.com,  pbonzini@redhat.com,  marcel.apfelbaum@gmail.com,
- philmd@linaro.org,  antonkuchin@yandex-team.ru,
- den-plotnikov@yandex-team.ru
-Subject: Re: [PATCH v7 1/4] qapi/qdev.json: unite DEVICE_* event data into
- single structure
-References: <20230421103207.845847-1-vsementsov@yandex-team.ru>
- <20230421103207.845847-2-vsementsov@yandex-team.ru>
- <20230518160434-mutt-send-email-mst@kernel.org>
-Date: Mon, 22 May 2023 11:27:27 +0200
-In-Reply-To: <20230518160434-mutt-send-email-mst@kernel.org> (Michael
- S. Tsirkin's message of "Thu, 18 May 2023 16:06:28 -0400")
-Message-ID: <87a5xwogw0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E5271C03377;
+ Mon, 22 May 2023 09:48:40 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.141])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F2191407DEC0;
+ Mon, 22 May 2023 09:48:39 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 04/29] arm/kvm: add support for MTE
+In-Reply-To: <CAFEAcA9QB4YY5wKBu4eyHvy7yb8PZdvAs+tZaXDEhU+RzY=yKg@mail.gmail.com>
+Organization: Red Hat GmbH
+References: <20230518125107.146421-1-peter.maydell@linaro.org>
+ <20230518125107.146421-5-peter.maydell@linaro.org>
+ <878rdklbu2.fsf@linaro.org>
+ <CAFEAcA_4ovPWkNw=KNVicD35SzJcQhi4Najt8cS3GSa-TLroKA@mail.gmail.com>
+ <CAFEAcA9QB4YY5wKBu4eyHvy7yb8PZdvAs+tZaXDEhU+RzY=yKg@mail.gmail.com>
+User-Agent: Notmuch/0.37 (https://notmuchmail.org)
+Date: Mon, 22 May 2023 11:48:38 +0200
+Message-ID: <874jo41ytl.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,144 +83,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Michael S. Tsirkin" <mst@redhat.com> writes:
+On Fri, May 19 2023, Peter Maydell <peter.maydell@linaro.org> wrote:
 
-> On Fri, Apr 21, 2023 at 01:32:04PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> DEVICE_DELETED and DEVICE_UNPLUG_GUEST_ERROR has equal data, let's
->> refactor it to one structure. That also helps to add new events
->> consistently.
->> 
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->
-> Can QAPI maintainers please review this patchset?
-> It's been a month.
+> On Fri, 19 May 2023 at 14:31, Peter Maydell <peter.maydell@linaro.org> wr=
+ote:
+>>
+>> On Fri, 19 May 2023 at 13:55, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
+wrote:
+>> >
+>> >
+>> > Peter Maydell <peter.maydell@linaro.org> writes:
+>> >
+>> > > From: Cornelia Huck <cohuck@redhat.com>
+>> > >
+>> > > Extend the 'mte' property for the virt machine to cover KVM as
+>> > > well. For KVM, we don't allocate tag memory, but instead enable the
+>> > > capability.
+>> > >
+>> > > If MTE has been enabled, we need to disable migration, as we do not
+>> > > yet have a way to migrate the tags as well. Therefore, MTE will stay
+>> > > off with KVM unless requested explicitly.
+>> > >
+>> > > Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+>> > > Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+>> > > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>> > > Message-id: 20230428095533.21747-2-cohuck@redhat.com
+>> > > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>> >
+>> > I bisected to this commit which causes a segfault on one of my test
+>> > kernels (6.3.2 arm64):
+>> >
+>> >   =E2=9E=9C  ag MTE .config
+>> >   486:CONFIG_ARM64_AS_HAS_MTE=3Dy
+>> >   487:CONFIG_ARM64_MTE=3Dy
+>> >   2949:CONFIG_WLAN_VENDOR_ADMTEK=3Dy
+>> >   3573:# CONFIG_I2C_SIMTEC is not set
+>> >   5278:# CONFIG_DRM_PANEL_TPO_TD043MTEA1 is not set
+>> >   9749:CONFIG_ARCH_USE_MEMTEST=3Dy
+>> >   9750:CONFIG_MEMTEST=3Dy
 
-It's been a busy month; sorry for the delay.
+Sigh, this patch seems to be cursed :( Apologies for the fallout.
 
->> ---
->>  qapi/qdev.json | 39 +++++++++++++++++++++++++++------------
->>  1 file changed, 27 insertions(+), 12 deletions(-)
->> 
->> diff --git a/qapi/qdev.json b/qapi/qdev.json
->> index 2708fb4e99..135cd81586 100644
->> --- a/qapi/qdev.json
->> +++ b/qapi/qdev.json
->> @@ -114,16 +114,37 @@
->>  { 'command': 'device_del', 'data': {'id': 'str'} }
->>  
->>  ##
->> -# @DEVICE_DELETED:
->> +# @DeviceAndPath:
->>  #
->> -# Emitted whenever the device removal completion is acknowledged by the guest.
->> -# At this point, it's safe to reuse the specified device ID. Device removal can
->> -# be initiated by the guest or by HMP/QMP commands.
->> +# In events we designate devices by both their ID (if the device has one)
->> +# and QOM path.
->> +#
->> +# Why we need ID? User specify ID in device_add command and in command line
->> +# and expects same identifier in the event data.
->> +#
->> +# Why we need QOM path? Some devices don't have ID and we still want to emit
->> +# events for them.
->> +#
->> +# So, we have a bit of redundancy, as QOM path for device that has ID is
->> +# always /machine/peripheral/ID. But that's hard to change keeping both
->> +# simple interface for most users and universality for the generic case.
+(I'm wondering what makes this pop up, maybe the CONFIG_MEMTEST?)
 
-Hmm.  I appreciate rationale, but I'm not sure it fits here.  Would
-readers be worse off if we dropped it?
-
->>  #
->>  # @device: the device's ID if it has one
->>  #
->>  # @path: the device's QOM path
->>  #
->> +# Since: 8.0
->> +##
->> +{ 'struct': 'DeviceAndPath',
->> +  'data': { '*device': 'str', 'path': 'str' } }
+>>
+>> Try this entirely untested patch?
+>>
+>> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+>> index f6a88e52ac2..f350661a928 100644
+>> --- a/target/arm/cpu.c
+>> +++ b/target/arm/cpu.c
+>> @@ -1593,6 +1593,15 @@ static void arm_cpu_realizefn(DeviceState *dev,
+>> Error **errp)
+>>          }
+>>      }
+>>
+>> +    /*
+>> +     * For TCG, we can only present MTE to the guest if the board gave =
+us
+>> +     * tag RAM. Set has_mte appropriately so code below doesn't need to
+>> +     * care whether we're TCG or KVM when deciding if MTE is present.
+>> +     */
+>> +    if (tcg_enabled() || qtest_enabled()) {
+>> +        cpu->has_mte =3D cpu->tag_memory !=3D NULL;
+>> +    }
 >> +
+>>      if (!tcg_enabled() && !qtest_enabled()) {
+>>          /*
+>>           * We assume that no accelerator except TCG (and the "not reall=
+y an
 >
-> Should be Since: 8.1 no?
+> Hmm, actually I don't think that's the only fix needed. It's OK for
+> TCG, but for KVM I can't see anywhere in the code that ever sets
+> has_mte to false. We default it to on in the cpu.c code, but
+> then the board code only sets it to true if MTE is enabled
+> (via kvm_arm_enable_mte()).
 
-Yes.
-
-Please format like
-
-   ##
-   # @DeviceAndPath:
-   #
-   # In events we designate devices by both their ID (if the device has
-   # one) and QOM path.
-   #
-   # Why we need ID?  User specify ID in device_add command and in
-   # command line and expects same identifier in the event data.
-   #
-   # Why we need QOM path?  Some devices don't have ID and we still want
-   # to emit events for them.
-   #
-   # So, we have a bit of redundancy, as QOM path for device that has ID
-   # is always /machine/peripheral/ID. But that's hard to change keeping
-   # both simple interface for most users and universality for the
-   # generic case.
-   #
-   # @device: the device's ID if it has one
-   #
-   # @path: the device's QOM path
-   #
-   # Since: 8.0
-   ##
-
-to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-to conform to current conventions).
-
->> +##
->> +# @DEVICE_DELETED:
->> +#
->> +# Emitted whenever the device removal completion is acknowledged by the guest.
->> +# At this point, it's safe to reuse the specified device ID. Device removal can
->> +# be initiated by the guest or by HMP/QMP commands.
->> +#
-
-Conflict resolution:
-
-    # Emitted whenever the device removal completion is acknowledged by
-    # the guest.  At this point, it's safe to reuse the specified device
-    # ID. Device removal can be initiated by the guest or by HMP/QMP
-    # commands.
-
->>  # Since: 1.5
->>  #
->>  # Example:
->> @@ -134,18 +155,13 @@
->>  #      "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
->>  #
->>  ##
->> -{ 'event': 'DEVICE_DELETED',
->> -  'data': { '*device': 'str', 'path': 'str' } }
->> +{ 'event': 'DEVICE_DELETED', 'data': 'DeviceAndPath' }
->>  
->>  ##
->>  # @DEVICE_UNPLUG_GUEST_ERROR:
->>  #
->>  # Emitted when a device hot unplug fails due to a guest reported error.
->>  #
->> -# @device: the device's ID if it has one
->> -#
->> -# @path: the device's QOM path
->> -#
->>  # Since: 6.2
->>  #
->>  # Example:
->> @@ -156,5 +172,4 @@
->>  #      "timestamp": { "seconds": 1615570772, "microseconds": 202844 } }
->>  #
->>  ##
->> -{ 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
->> -  'data': { '*device': 'str', 'path': 'str' } }
->> +{ 'event': 'DEVICE_UNPLUG_GUEST_ERROR', 'data': 'DeviceAndPath' }
->> -- 
->> 2.34.1
+Hrm, do we need explicit init of this field? Probably needless to say
+that I didn't hit this problem in any of my tests... I suspect that only
+specific kernels hit this?
 
 
