@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C41770B8AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 11:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0023770B8E7
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 11:29:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q11el-0004bp-Mz; Mon, 22 May 2023 05:16:43 -0400
+	id 1q11pc-0006Nx-EY; Mon, 22 May 2023 05:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q11ei-0004bS-M5
- for qemu-devel@nongnu.org; Mon, 22 May 2023 05:16:40 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q11eg-0006kU-5y
- for qemu-devel@nongnu.org; Mon, 22 May 2023 05:16:40 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-510b869fe0dso10317728a12.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 02:16:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684746996; x=1687338996;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=L3pRn/axMfoLuOpEltPeWJPhUx3egcLdSBFz0Mhn4/M=;
- b=vK1ejSAKnVUb2Fu9xbuKUepN6BZuRRwq7h1+Y1rY2HitucdW3V1po8yhPTBUnEGYE/
- GshyYWSyYJa2fOZb192J/Vc+SrBc+nCSWJSHDguz7gv13BKOGKwuHWRmfPW/9A6QVG3H
- GsRIMadF8qnKZyj9U3h8N5K60bgj2CzOhh4+CZZTuFpSK/b7Ox1lUNEgNPzHqAKMfR91
- ULHNYvOUWYvWl8uMiIVhsmNnmgWjFPZz1hc1T3AOAa+nkqMxS13JhdmPuDMu0Iu9/0Dh
- BJU+ZfMG1wwpOfHyqKjG7eMRtAroe61VsNFgIYqqLtt6r/VrVss+LR8H5M7oIPvf1EKh
- DnCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684746996; x=1687338996;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=L3pRn/axMfoLuOpEltPeWJPhUx3egcLdSBFz0Mhn4/M=;
- b=BG8U5PtuQ+RCYJknyiePmE/QhN2ZHq9Q4yijbOqZFkDOcWC6fgty5dUl1DqK/yGMXR
- 34t5IlL7dlO7vW1+cz1hUTamrzUVbwwKMEk/dcmE99klRgnKnRAFvx09m/zZXD/J4o9+
- u604+S7YsXkxlmQkN3ccQHlPaVD3T8kcVktc5z1B2pnFduPYZur81rrjdklEHuCBCCTP
- q/mxBVJwzCCRjFTZYZD07KdkDm8zGBUK/pF0qU9UJz2u+aCJuAaeSnoIf0H7CP9f2YD5
- r5nm3AAYy1ED02xPep2anTp6HRYYeF4AKj/f2ROC7yT9NGTVyM00vS6TBv+SqkYdZxYs
- GOvA==
-X-Gm-Message-State: AC+VfDym8KVkJH2mEnCsNLMw8o3bWUzgvVHaX8MoWJHs5/S6S2uW+YLA
- nlO1cLvG5hHHAzBnwQiZ5CfIpaANDBlGPap3IgrRqQ==
-X-Google-Smtp-Source: ACHHUZ4vHCu+sCNMLG0f6yE5bYSlbpRxmWriERJ1BEHfY7Vsy46mUt+kVU4cs1CBuC9cRGAnfPj4ZQ/d39GHO7czwoE=
-X-Received: by 2002:aa7:c157:0:b0:50a:276f:a3ba with SMTP id
- r23-20020aa7c157000000b0050a276fa3bamr7157859edp.34.1684746996080; Mon, 22
- May 2023 02:16:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q11pN-0006NT-SV
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 05:27:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q11pJ-0008SI-OS
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 05:27:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684747655;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=svl96UbgxOrNJsGyBEyVrVo2uzgo2T8dXkCqRYlrzOI=;
+ b=LaN2a2vz5gpdmuAhaVsVy7xDkrqw/SUx33HVhDFCqvAn24s7x0kQUPTPj+DFiSEMghHOVU
+ FkhVd/9OHJ6ZtPh3u2G/TE+ncxxjAenQidOGvL0v8HE+EDuAGp13kNlFGvNNWQlpESMwze
+ Zw39zJ64iAaVMI8PFBUMu1ZVCU84W1c=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-624-mF6LJuzGOeeRWE03K9YUMA-1; Mon, 22 May 2023 05:27:29 -0400
+X-MC-Unique: mF6LJuzGOeeRWE03K9YUMA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EF444185A78B;
+ Mon, 22 May 2023 09:27:28 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 88FE5140E95D;
+ Mon, 22 May 2023 09:27:28 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 56F6421E692E; Mon, 22 May 2023 11:27:27 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-devel@nongnu.org,  eblake@redhat.com,  eduardo@habkost.net,
+ berrange@redhat.com,  pbonzini@redhat.com,  marcel.apfelbaum@gmail.com,
+ philmd@linaro.org,  antonkuchin@yandex-team.ru,
+ den-plotnikov@yandex-team.ru
+Subject: Re: [PATCH v7 1/4] qapi/qdev.json: unite DEVICE_* event data into
+ single structure
+References: <20230421103207.845847-1-vsementsov@yandex-team.ru>
+ <20230421103207.845847-2-vsementsov@yandex-team.ru>
+ <20230518160434-mutt-send-email-mst@kernel.org>
+Date: Mon, 22 May 2023 11:27:27 +0200
+In-Reply-To: <20230518160434-mutt-send-email-mst@kernel.org> (Michael
+ S. Tsirkin's message of "Thu, 18 May 2023 16:06:28 -0400")
+Message-ID: <87a5xwogw0.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230520205444.887287457E7@zero.eik.bme.hu>
-In-Reply-To: <20230520205444.887287457E7@zero.eik.bme.hu>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 May 2023 10:16:25 +0100
-Message-ID: <CAFEAcA9gAYPpOJ6VyPYwCVyOhMmJMEe4QyGzB57xCbK0MOED5A@mail.gmail.com>
-Subject: Re: [PATCH] bitops.h: Compile out asserts without --enable-debug
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,24 +85,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 20 May 2023 at 21:55, BALATON Zoltan <balaton@eik.bme.hu> wrote:
->
-> The low level extract and deposit funtions provided by bitops.h are
-> used in performance critical places. It crept into target/ppc via
-> FIELD_EX64 and also used by softfloat so PPC code using a lot of FPU
-> where hardfloat is also disabled is doubly affected.
->
-> Normally asserts should be compiled out from release builds with
-> -DNDEBUG but that cannot be used in QEMU because some places still
-> rely on asserts instead of proper error checking. To resolve this,
-> compile out asserts from deposit/extract functions in optimised builds
-> which improves performance for target/ppc and possibly others too.
+"Michael S. Tsirkin" <mst@redhat.com> writes:
 
-Can we have some figures for performance improvements,
-please? General QEMU policy is that asserts remain,
-even in non-debug builds, so exceptions from that policy
-should come with justification with figures attached.
+> On Fri, Apr 21, 2023 at 01:32:04PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>> DEVICE_DELETED and DEVICE_UNPLUG_GUEST_ERROR has equal data, let's
+>> refactor it to one structure. That also helps to add new events
+>> consistently.
+>> 
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>
+> Can QAPI maintainers please review this patchset?
+> It's been a month.
 
-thanks
--- PMM
+It's been a busy month; sorry for the delay.
+
+>> ---
+>>  qapi/qdev.json | 39 +++++++++++++++++++++++++++------------
+>>  1 file changed, 27 insertions(+), 12 deletions(-)
+>> 
+>> diff --git a/qapi/qdev.json b/qapi/qdev.json
+>> index 2708fb4e99..135cd81586 100644
+>> --- a/qapi/qdev.json
+>> +++ b/qapi/qdev.json
+>> @@ -114,16 +114,37 @@
+>>  { 'command': 'device_del', 'data': {'id': 'str'} }
+>>  
+>>  ##
+>> -# @DEVICE_DELETED:
+>> +# @DeviceAndPath:
+>>  #
+>> -# Emitted whenever the device removal completion is acknowledged by the guest.
+>> -# At this point, it's safe to reuse the specified device ID. Device removal can
+>> -# be initiated by the guest or by HMP/QMP commands.
+>> +# In events we designate devices by both their ID (if the device has one)
+>> +# and QOM path.
+>> +#
+>> +# Why we need ID? User specify ID in device_add command and in command line
+>> +# and expects same identifier in the event data.
+>> +#
+>> +# Why we need QOM path? Some devices don't have ID and we still want to emit
+>> +# events for them.
+>> +#
+>> +# So, we have a bit of redundancy, as QOM path for device that has ID is
+>> +# always /machine/peripheral/ID. But that's hard to change keeping both
+>> +# simple interface for most users and universality for the generic case.
+
+Hmm.  I appreciate rationale, but I'm not sure it fits here.  Would
+readers be worse off if we dropped it?
+
+>>  #
+>>  # @device: the device's ID if it has one
+>>  #
+>>  # @path: the device's QOM path
+>>  #
+>> +# Since: 8.0
+>> +##
+>> +{ 'struct': 'DeviceAndPath',
+>> +  'data': { '*device': 'str', 'path': 'str' } }
+>> +
+>
+> Should be Since: 8.1 no?
+
+Yes.
+
+Please format like
+
+   ##
+   # @DeviceAndPath:
+   #
+   # In events we designate devices by both their ID (if the device has
+   # one) and QOM path.
+   #
+   # Why we need ID?  User specify ID in device_add command and in
+   # command line and expects same identifier in the event data.
+   #
+   # Why we need QOM path?  Some devices don't have ID and we still want
+   # to emit events for them.
+   #
+   # So, we have a bit of redundancy, as QOM path for device that has ID
+   # is always /machine/peripheral/ID. But that's hard to change keeping
+   # both simple interface for most users and universality for the
+   # generic case.
+   #
+   # @device: the device's ID if it has one
+   #
+   # @path: the device's QOM path
+   #
+   # Since: 8.0
+   ##
+
+to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
+to conform to current conventions).
+
+>> +##
+>> +# @DEVICE_DELETED:
+>> +#
+>> +# Emitted whenever the device removal completion is acknowledged by the guest.
+>> +# At this point, it's safe to reuse the specified device ID. Device removal can
+>> +# be initiated by the guest or by HMP/QMP commands.
+>> +#
+
+Conflict resolution:
+
+    # Emitted whenever the device removal completion is acknowledged by
+    # the guest.  At this point, it's safe to reuse the specified device
+    # ID. Device removal can be initiated by the guest or by HMP/QMP
+    # commands.
+
+>>  # Since: 1.5
+>>  #
+>>  # Example:
+>> @@ -134,18 +155,13 @@
+>>  #      "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
+>>  #
+>>  ##
+>> -{ 'event': 'DEVICE_DELETED',
+>> -  'data': { '*device': 'str', 'path': 'str' } }
+>> +{ 'event': 'DEVICE_DELETED', 'data': 'DeviceAndPath' }
+>>  
+>>  ##
+>>  # @DEVICE_UNPLUG_GUEST_ERROR:
+>>  #
+>>  # Emitted when a device hot unplug fails due to a guest reported error.
+>>  #
+>> -# @device: the device's ID if it has one
+>> -#
+>> -# @path: the device's QOM path
+>> -#
+>>  # Since: 6.2
+>>  #
+>>  # Example:
+>> @@ -156,5 +172,4 @@
+>>  #      "timestamp": { "seconds": 1615570772, "microseconds": 202844 } }
+>>  #
+>>  ##
+>> -{ 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
+>> -  'data': { '*device': 'str', 'path': 'str' } }
+>> +{ 'event': 'DEVICE_UNPLUG_GUEST_ERROR', 'data': 'DeviceAndPath' }
+>> -- 
+>> 2.34.1
+
 
