@@ -2,83 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8855170C2D0
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 17:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C46F70C2F9
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:06:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q17rT-00060R-J3; Mon, 22 May 2023 11:54:15 -0400
+	id 1q1831-00045h-51; Mon, 22 May 2023 12:06:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q17rR-0005y6-1T
- for qemu-devel@nongnu.org; Mon, 22 May 2023 11:54:13 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q17rP-00066i-91
- for qemu-devel@nongnu.org; Mon, 22 May 2023 11:54:12 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-253570deb8dso3792377a91.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 08:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684770849; x=1687362849;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FQiPxQehculiryxaHDAQcjPK8SkpxRHFkU8nz3e8/yM=;
- b=rK1Id13Vh88BpC5lW0/UdV2JVRQUnTLkx1Pl1N/zgznM13PxeGw0yXbm25CtlZ7q1g
- iNSWZ2Ji/F/lb6ZZ5/0CJqJPvEk+RbZHjur6Y+uAofxJNg4ulDgMJiYc48qzBQ2NGL8X
- gq8/eulWrQehVxdpKHPkW82gB4rjso31jBQVBK1Ugqf9SwrReExZKP6DRgT+GEqpC7U5
- s+7QBbeWC9Kvbvs9S39wpoRw5AwHO5GbP8cb8L6WenEab0QyTgRUznI0pPfDcrDBOA+5
- mVlRATnCzbtvkmZ/nVoDoI5k+fJZYticMQbZ4baO6gyDvtC+Ho+5w5g5l99w+uaNMarc
- 2Nzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684770849; x=1687362849;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FQiPxQehculiryxaHDAQcjPK8SkpxRHFkU8nz3e8/yM=;
- b=O30PirIvVtbDA8Iv5oQHfL19mc4QSZLMlGK6r9UrJ0R480kU4EItYLJbC+MoakMN6j
- Oe/dzRfTYGSwj38voMXf57+6FlMhKJl+1014DWXMF6K5LpxFv590y6RUXEsxjEvmnrSa
- 46qSdRoTHoNKKbQwjYbxgAweeOjfWy+3awgSD2UVL0wi/vbjK5U8PKEgnNm9c9pdVaRQ
- CrO0KjGLDB60lQgsNjnVgwZY+MfJQ1Me3ZllBlvR9DDSsBtj7/SDIlinKeuSw8OYHunQ
- 2UjSaoLjCwN2NVID6J9TkXz4hzoY5TN2gK7mXtT5ks6mktDdSvtoAxlOQLv1rW8h2XI2
- pfog==
-X-Gm-Message-State: AC+VfDyj3UZCYRZVTNcAmxs8ehw81L4vMewdQnCeboJju6+i4nfJ0zI2
- 32jhS5su/N64XfBbqG3FpJVN/Q==
-X-Google-Smtp-Source: ACHHUZ45cAc/f50vUaD07esll/IrZvUr6ywEVrZbpLJ7Uki6WsD9t63yiOdJN9SEJdYvTtalFN6Gzw==
-X-Received: by 2002:a17:90b:1e50:b0:252:b14a:55c2 with SMTP id
- pi16-20020a17090b1e5000b00252b14a55c2mr10099239pjb.9.1684770849232; 
- Mon, 22 May 2023 08:54:09 -0700 (PDT)
-Received: from ?IPV6:2607:fb90:8063:704:7944:82ed:f254:5737?
- ([2607:fb90:8063:704:7944:82ed:f254:5737])
- by smtp.gmail.com with ESMTPSA id
- mp14-20020a17090b190e00b00247735d1463sm4269730pjb.39.2023.05.22.08.54.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 08:54:08 -0700 (PDT)
-Message-ID: <e36730f8-5f32-1bfb-b09a-d6943732f0df@linaro.org>
-Date: Mon, 22 May 2023 08:54:05 -0700
+ (Exim 4.90_1) (envelope-from <nnmlinux@linux.ibm.com>)
+ id 1q182x-00043k-Ia; Mon, 22 May 2023 12:06:07 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nnmlinux@linux.ibm.com>)
+ id 1q182t-000197-KC; Mon, 22 May 2023 12:06:07 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34MG0pmD018482; Mon, 22 May 2023 16:05:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=fsEgROLTAS+NIKkoI+pm0VujtH0QtXt80RJThpm+zU0=;
+ b=DRsYnZ7ylKErqt6qXuseUsZXVHRKWVugOsbsUjwXVbbCAE6ACC1z7vkrobbZGrfhGPnk
+ 8t7D019uoCtMui1BZeHhukfXGxhVO8Rsq7CaQ6tKZu8VP5z1SqyA68VAuyD1w/LwlvaS
+ swpIIRgjCYpURhLwVEYlWYepYbRgkZNpZeODxAzmT6+U8NCcBf2qRJWTonwVsT+WDW67
+ dfWfJ/n7f3Bcn3ZZUhlzXWn1QwiL/SKc3kTKIlVkVe+YumJwRgTEeYmOrK0Ol7bAd2uW
+ GsnvHVJjLl9mQADwZWYKhhCj4/AcSQWgYzR5u/LZlPwN6478K8W1lwZEx3zE4+FB3Kt0 qg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrbhv04hg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 May 2023 16:05:45 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34MG1iSL021710;
+ Mon, 22 May 2023 16:05:40 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrbhv030c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 May 2023 16:05:40 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34MEbjhr023274;
+ Mon, 22 May 2023 16:03:15 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3qppc3h1n5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 May 2023 16:03:15 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34MG3BpG45744524
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 22 May 2023 16:03:12 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D4D7C20049;
+ Mon, 22 May 2023 16:03:11 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B42F520040;
+ Mon, 22 May 2023 16:03:09 +0000 (GMT)
+Received: from ltc-wspoon17.aus.stglabs.ibm.com (unknown [9.3.101.49])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 22 May 2023 16:03:09 +0000 (GMT)
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+To: danielhb413@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
+ groug@kaod.org, npiggin@gmail.com
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, farosas@suse.de,
+ npiggin@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
+ sbhat@linux.ibm.com, nnmlinux@linux.ibm.com
+Subject: [PATCH v3] target: ppc: Use MSR_HVB bit to get the target endianness
+ for memory dump
+Date: Mon, 22 May 2023 12:02:42 -0400
+Message-Id: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 6Mfx2D-bLyPHmFRgzLi9BRf8UiTpkQMv
+X-Proofpoint-GUID: YUGBUpQCx9nhSeYpxiqLvlaGLy6EHGWU
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] meson: remove -no-pie linker flag
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: vr_qemu@t-online.de, marcandre.lureau@redhat.com
-References: <20230522080816.66320-1-pbonzini@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230522080816.66320-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-22_11,2023-05-22_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ suspectscore=0 phishscore=0 spamscore=0 mlxscore=0 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305220134
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=nnmlinux@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,32 +112,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/23 01:08, Paolo Bonzini wrote:
-> The large comment in the patch says it all; the -no-pie flag is broken and
-> this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
-> ("build: move remaining compiler flag tests to meson", 2023-05-18).
+Currently on PPC64 qemu always dumps the guest memory in
+Big Endian (BE) format even though the guest running in Little Endian
+(LE) mode. So crash tool fails to load the dump as illustrated below:
 
-It's not nearly as simple as that.
+Log :
+$ virsh dump DOMAIN --memory-only dump.file
 
-> +  # What about linker flags?  For a static build, no PIE is implied by -static
-> +  # which we added above.  For dynamic linking, adding -no-pie is messy because
-> +  # it overrides -shared: the linker then wants to build an executable instead
-> +  # of a shared library and the build fails.  Before moving this code to Meson,
-> +  # we went through a dozen different commits affecting the usage of -no-pie,
-> +  # ultimately settling for a completely broken one that added -no-pie to the
-> +  # compiler flags together with -fno-pie... except that -no-pie is a linker
-> +  # flag that has no effect on the compiler command line.
+Domain 'DOMAIN' dumped to dump.file
 
--no-pie is a linker flag, but distro folk that didn't quite know what they were doing made 
-local changes to gcc's specs file.  So it *is* a compiler command-line flag, but only for 
-some builds of gcc.
+$ crash vmlinux dump.file
 
-We can't just remove -no-pie, we need to probe for it as cc.get_supported_arguments 
-instead of cc.get_supported_link_arguments.
+<snip>
+crash 8.0.2-1.el9
 
-Or something.  It's a mess, for sure.
+WARNING: endian mismatch:
+          crash utility: little-endian
+          dump.file: big-endian
 
+WARNING: machine type mismatch:
+          crash utility: PPC64
+          dump.file: (unknown)
 
-r~
+crash: dump.file: not a supported file format
+<snip>
+
+This happens because cpu_get_dump_info() passes cpu->env->has_hv_mode
+to function ppc_interrupts_little_endian(), the cpu->env->has_hv_mode
+always set for powerNV even though the guest is not running in hv mode.
+The hv mode should be taken from msr_mask MSR_HVB bit
+(cpu->env.msr_mask & MSR_HVB). This patch fixes the issue by passing
+MSR_HVB value to ppc_interrupts_little_endian() in order to determine
+the guest endianness.
+
+The crash tool also expects guest kernel endianness should match the
+endianness of the dump.
+
+The patch was tested on POWER9 box booted with Linux as host in
+following cases:
+
+Host-Endianess Qemu-Target-Machine Qemu-Guest-Endianess  Qemu-Generated-Guest
+                                                          Memory-Dump-Format
+BE             powernv             LE KVM guest                 LE
+BE             powernv             BE KVM guest                 BE
+LE             powernv             LE KVM guest                 LE
+LE             powernv             BE KVM guest                 BE
+LE             pseries KVM         LE KVM guest                 LE
+LE             pseries TCG         LE guest                     LE
+
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+---
+Changes since V2:
+commit message modified as per feedbak from Nicholas Piggin.
+Changes since V1:
+https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.ibm.com/
+The approach to solve the issue was changed based on feedback from
+Fabiano Rosas on patch V1.
+---
+ target/ppc/arch_dump.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
+index f58e6359d5..a8315659d9 100644
+--- a/target/ppc/arch_dump.c
++++ b/target/ppc/arch_dump.c
+@@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+     info->d_machine = PPC_ELF_MACHINE;
+     info->d_class = ELFCLASS;
+ 
+-    if (ppc_interrupts_little_endian(cpu, cpu->env.has_hv_mode)) {
++    if (ppc_interrupts_little_endian(cpu, !!(cpu->env.msr_mask & MSR_HVB))) {
+         info->d_endian = ELFDATA2LSB;
+     } else {
+         info->d_endian = ELFDATA2MSB;
+-- 
+2.39.2
 
 
