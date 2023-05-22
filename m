@@ -2,82 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A4570C14A
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 16:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CEB70C177
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 16:52:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q16h0-0008SS-LE; Mon, 22 May 2023 10:39:22 -0400
+	id 1q16s5-00055j-Bs; Mon, 22 May 2023 10:50:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q16gy-0008SJ-3o
- for qemu-devel@nongnu.org; Mon, 22 May 2023 10:39:20 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q16gw-0006EM-E5
- for qemu-devel@nongnu.org; Mon, 22 May 2023 10:39:19 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-64d5b4c400fso1985597b3a.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 07:39:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684766357; x=1687358357;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kKji7brr4/IRQBaroWt3D0Op1H9NbBWcaVyG8x9lm1M=;
- b=Py7PnwHncCYLqcb604+0xeAWbZI573KUg+G4ga6rAxVoS1Y6DrolkXaIykvo9badjo
- RJlEMdYJlwzexnFO9hUfvNabY0DtEOYJCGudPflSvKiezV4ItHUtvDrJ8GML3h7mPZSA
- KdG80Wb8zdQ6L9va54x59+ZpOJ0prdAwH9pV43cu0KfNMvMMGukBkbxeUvTak5mMonJ6
- LGzVmIbN8nZvcFkIKByGfoMfZ9lBaC4Pi9CyeWAywI+TQQIp/VgfV46cAlPKrvplLcyZ
- MHC9jfva9Y303HNDy6OCaSijIACkBgJuvBWYP7hzlyMH8l65Yzf5c6YqzKMsxZW2SOUS
- 69HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684766357; x=1687358357;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kKji7brr4/IRQBaroWt3D0Op1H9NbBWcaVyG8x9lm1M=;
- b=BlYi9K/In6rtf4IG0WuMjTn54yNUX1cWftJFUisVkTqXPhMdaU/WsQxVRpA11BaNlo
- 6sfOglqGii+iORy6MS0qciQfEJGfg0Z818XUKNbyYh4vkgXnL/4uEtlIO+Nsx47IaWCW
- HXwCFpJQi3mVE+3MjzNpEMzN2XsXpjhSeVsEjtKgIb4ygdwdwgKbpPN04C7ZCuR/Pj4c
- 3DbIy4OjruCCoxdJryr33m+fxbu78M8Y3m85Vszo5xeKULfYM7Bz0ekkPUhbHhU5VN6L
- L9wY+XJziJefPpm2FZZAdSRayQIGnhZRkmxSaTmPIY3OC2dyGCRTlnoVLkKRK7DD6OxH
- MBgA==
-X-Gm-Message-State: AC+VfDwR6g9B9yonqfvj8XEEIX3/YGhYe6rcNGULEsYVazfWe8lcK9mt
- J4wZWEZPeWpIDqUG5+XWL4CKhA==
-X-Google-Smtp-Source: ACHHUZ4qCK3IceHyRmEwHKx+651ATA4tebqZUgxEKViYF4902zfr0TfRY5QaVFu3vkOVKHgTiKiQTg==
-X-Received: by 2002:a05:6a00:1814:b0:646:9232:df8 with SMTP id
- y20-20020a056a00181400b0064692320df8mr15924334pfa.15.1684766356831; 
- Mon, 22 May 2023 07:39:16 -0700 (PDT)
-Received: from [10.0.14.188] (static-66-243-253-154.ellensburg.fairpoint.net.
- [66.243.253.154]) by smtp.gmail.com with ESMTPSA id
- v15-20020aa7850f000000b0063a04905379sm4248178pfn.137.2023.05.22.07.39.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 07:39:16 -0700 (PDT)
-Message-ID: <9223027b-07af-7fc6-103f-3281c7562fa9@linaro.org>
-Date: Mon, 22 May 2023 07:39:14 -0700
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q16rw-00055I-8c
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 10:50:40 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q16rs-0000Ny-SZ
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 10:50:40 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QQ0hS2JPQz67bZn;
+ Mon, 22 May 2023 22:49:12 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 22 May 2023 15:50:28 +0100
+To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>
+CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
+ <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Dave Jiang
+ <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>, Eric
+ Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>, Thomas
+ Huth <thuth@redhat.com>
+Subject: [PATCH v7 0/4] hw/cxl: Poison get, inject, clear
+Date: Mon, 22 May 2023 15:50:25 +0100
+Message-ID: <20230522145029.6370-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] meson: remove -no-pie linker flag
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: vr_qemu@t-online.de, marcandre.lureau@redhat.com
-References: <20230522080816.66320-1-pbonzini@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230522080816.66320-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,48 +66,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/23 01:08, Paolo Bonzini wrote:
-> The large comment in the patch says it all; the -no-pie flag is broken and
-> this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
-> ("build: move remaining compiler flag tests to meson", 2023-05-18).
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1664
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   meson.build | 13 +++++++++----
->   1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index 0a5cdefd4d3d..6733b2917081 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -267,10 +267,15 @@ endif
->   # has explicitly disabled PIE we need to extend our cflags.
->   if not get_option('b_pie')
->     qemu_common_flags += cc.get_supported_arguments('-fno-pie')
-> -  if not get_option('prefer_static')
-> -    # No PIE is implied by -static which we added above.
-> -    qemu_ldflags += cc.get_supported_link_arguments('-no-pie')
-> -  endif
-> +  # What about linker flags?  For a static build, no PIE is implied by -static
-> +  # which we added above.
+Whilst the discussion on naming of the 24 bit bswap is perhaps ongoing, this
+version makes the assumption that we'll keep it as originally proposed.
+I'm rushing it out a little because I want to send the events series on
+top of it so that I can get feedback on the updated docs.
 
-Is it though?  That was the major problem at the time: it wasn't.
+v7:
+- Dropped assert in 24 bit bswap
+- Added regex to the loads-stores.rst doc
+- Reformated the QMP as suggested by Markus
+- Used define in place of bare 64.
 
-IIRC, debian has enabled link-pie-by-default, so '-static' meant '-static-pie'.  Moreover, 
-not all of their static libraries were built -fpie, which led to link errors.
+Precursors now all upstream which make this email easier to write :)
 
-Trying both now, e.g. '--static --disable-system --disable-tools --disable-docs',
-a link line contains
+The kernel support for Poison handling is now upstream.
 
-... -Wl,--as-needed -Wl,--no-undefined -pie -Wl,--whole-archive libhwcore.fa ...
-                                        ^^^^
+This code has been very useful for testing and helped identify various
+corner cases.
 
-Where does that come from, and why isn't -no-pie the antidote?
+Updated cover letter.
+
+The series supports:
+1) Injection of variable length poison regions via QMP (to fake real
+   memory corruption and ensure we deal with odd overflow corner cases
+   such as clearing the middle of a large region making the list overflow
+   as we go from one long entry to two smaller entries.
+2) Read of poison list via the CXL mailbox.
+3) Injection via the poison injection mailbox command (limited to 64 byte
+   entries - spec constraint)
+4) Clearing of poison injected via either method.
+
+The implementation is meant to be a valid combination of impdef choices
+based on what the spec allowed. There are a number of places where it could
+be made more sophisticated that we might consider in future:
+* Fusing adjacent poison entries if the types match.
+* Separate injection list and main poison list, to test out limits on
+  injected poison list being smaller than the main list.
+* Poison list overflow event (needs event log support in general)
+* Connecting up to the poison list error record generation (rather complex
+  and not needed for currently kernel handling testing).
+* Triggering the synchronous and asynchronous errors that occur on reads
+  and writes of the memory when the host receives poison.
+
+As the kernel code is currently fairly simple, it is likely that the above
+does not yet matter but who knows what will turn up in future!
 
 
-r~
+Ira Weiny (1):
+  bswap: Add the ability to store to an unaligned 24 bit field
+
+Jonathan Cameron (3):
+  hw/cxl: QMP based poison injection support
+  hw/cxl: Add poison injection via the mailbox.
+  hw/cxl: Add clear poison mailbox command support.
+
+ docs/devel/loads-stores.rst |   2 +
+ qapi/cxl.json               |  21 ++++
+ include/hw/cxl/cxl.h        |   1 +
+ include/hw/cxl/cxl_device.h |  21 ++++
+ include/qemu/bswap.h        |  25 +++++
+ hw/cxl/cxl-mailbox-utils.c  | 214 ++++++++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3.c          |  93 ++++++++++++++++
+ hw/mem/cxl_type3_stubs.c    |   6 +
+ 8 files changed, 383 insertions(+)
+
+-- 
+2.39.2
+
 
