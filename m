@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAF970BC80
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 010F270BC6D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:54:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q144D-0005WU-JM; Mon, 22 May 2023 07:51:09 -0400
+	id 1q144q-0006Ux-Nv; Mon, 22 May 2023 07:51:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143f-0005C7-6K
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:37 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143g-0005CE-BJ
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143d-0007ao-2A
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:34 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143e-0007au-Ca
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1684756232;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2em7kWufVoiDT6zyEaWWxdszqSu3xXXgHp6YZGAfMrU=;
- b=epSwUI+gH1c8CwpIjsWWQDy9LH7DVCGMFcy/gj9ijiGEpjHANfr8/7qX5mZObN5QMprwBi
- PBeWJT7TQeYpyQpvPvs5+2TXSvFxr36TYrsLCqPNeDlCh6KqwYeZcOr5Jf+WtBJSuv+hTD
- tuAZtRrt8qJXQNaVlj08Nswdw+T77es=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mWN+12IWf/zj5AbaionYtYGdyUfi2QktvaTO4E1KFAM=;
+ b=ik0eUKDyjzoKhc+kvwUrL9vcr6eAoIwQEgz9YlTD0F/iB+fOLaZviJU83zWbYql4Aud6Bq
+ jL+sQkrONmou2CWh9IEGRIFl2IyxhxYFEqpflk/UPF/1auNkYWQQ+IVrayvaPAoj/kelKI
+ ZDUMH3s/ytljTMFTf+kEvBhV23ZJxZU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-594--yR8R6GSNr-AuxgTqS8Ezw-1; Mon, 22 May 2023 07:50:29 -0400
-X-MC-Unique: -yR8R6GSNr-AuxgTqS8Ezw-1
+ us-mta-634-ZB9O5LwSOFGCoqjnxdOaIA-1; Mon, 22 May 2023 07:50:31 -0400
+X-MC-Unique: ZB9O5LwSOFGCoqjnxdOaIA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 960822A59546;
- Mon, 22 May 2023 11:50:29 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0704485A5BA;
+ Mon, 22 May 2023 11:50:31 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.195.33])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AF9552166B27;
- Mon, 22 May 2023 11:50:28 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E6AAA2166B26;
+ Mon, 22 May 2023 11:50:29 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 11/20] tests/qtest/readconfig-test: Check for the availability
- of USB controllers
-Date: Mon, 22 May 2023 13:50:05 +0200
-Message-Id: <20230522115014.1110840-12-thuth@redhat.com>
+Subject: [PULL 12/20] tests/qtest/usb-hcd-uhci-test: Skip test if UHCI
+ controller is not available
+Date: Mon, 22 May 2023 13:50:06 +0200
+Message-Id: <20230522115014.1110840-13-thuth@redhat.com>
 In-Reply-To: <20230522115014.1110840-1-thuth@redhat.com>
 References: <20230522115014.1110840-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -77,34 +77,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The USB controllers might not be available in the QEMU binary
-(e.g. when using the "--without-default-devices" configure switch),
-so we have to check whether the devices can be used before running
-the related test.
+The test is already fenced with CONFIG_USB_UHCI in meson.build, but in
+case we build the ppc or mips targets in parallel, this config switch
+is still set in "config_all_devices" and thus the test is still run.
+Thus we need an explicit additional check here before adding the tests
+to the test plan.
 
-Message-Id: <20230512124033.502654-12-thuth@redhat.com>
+Message-Id: <20230512124033.502654-13-thuth@redhat.com>
 Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/readconfig-test.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/qtest/usb-hcd-uhci-test.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/qtest/readconfig-test.c b/tests/qtest/readconfig-test.c
-index 918d45684b..ac7242451b 100644
---- a/tests/qtest/readconfig-test.c
-+++ b/tests/qtest/readconfig-test.c
-@@ -207,7 +207,10 @@ int main(int argc, char *argv[])
-     if (g_str_equal(arch, "i386") ||
-         g_str_equal(arch, "x86_64")) {
-         qtest_add_func("readconfig/x86/memdev", test_x86_memdev);
--        qtest_add_func("readconfig/x86/ich9-ehci-uhci", test_docs_config_ich9);
-+        if (qtest_has_device("ich9-usb-ehci1") &&
-+            qtest_has_device("ich9-usb-uhci1")) {
-+            qtest_add_func("readconfig/x86/ich9-ehci-uhci", test_docs_config_ich9);
-+        }
-     }
- #if defined(CONFIG_SPICE) && !defined(__FreeBSD__)
-     qtest_add_func("readconfig/spice", test_spice);
+diff --git a/tests/qtest/usb-hcd-uhci-test.c b/tests/qtest/usb-hcd-uhci-test.c
+index f264d2bf73..84ac2f3c1a 100644
+--- a/tests/qtest/usb-hcd-uhci-test.c
++++ b/tests/qtest/usb-hcd-uhci-test.c
+@@ -66,6 +66,11 @@ int main(int argc, char **argv)
+ 
+     g_test_init(&argc, &argv, NULL);
+ 
++    if (!qtest_has_device("piix3-usb-uhci")) {
++        g_debug("piix3-usb-uhci not available");
++        return 0;
++    }
++
+     qtest_add_func("/uhci/pci/init", test_uhci_init);
+     qtest_add_func("/uhci/pci/port1", test_port_1);
+     qtest_add_func("/uhci/pci/hotplug", test_uhci_hotplug);
 -- 
 2.31.1
 
