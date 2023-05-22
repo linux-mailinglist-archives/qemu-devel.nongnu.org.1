@@ -2,63 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C4670BA51
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 12:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1612670BA66
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 12:51:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1359-0000aU-QX; Mon, 22 May 2023 06:48:03 -0400
+	id 1q1386-0001vh-0K; Mon, 22 May 2023 06:51:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q134y-0000Zx-03
- for qemu-devel@nongnu.org; Mon, 22 May 2023 06:47:56 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q1382-0001vN-8D
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 06:51:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q134w-00023s-1s
- for qemu-devel@nongnu.org; Mon, 22 May 2023 06:47:51 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q137z-0002g5-Ox
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 06:51:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684752468;
+ s=mimecast20190719; t=1684752658;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+Ckynoxxz7ZiD6JabSu/mB3zN3lK5Ok8/ghdJEmf0I0=;
- b=iRfpejusnZt8GI2n6YV9D4OHfCPp28Bhc44Z0H2YHBQxfKTraXCXejT85kyz7MFczoyesj
- etC8yfr/u6Yeik/VGsx9qxcnyPmIdwJwFLaP3YIQ4MxPsCvAdCvM9eaZDC+EDcbg9bBGbW
- vcxsG7pGSo1VFtOBdwBu2BIJfCYlxpw=
+ bh=fsRPVZDfLl82brKxyoZYlWsHyLg7oHjz9b2xGuLMHdo=;
+ b=izIjDig/GqA8NwUOt2yKibWnj/er4CffTaYhclSst14P2buVfGuu2HVTSAeYVR/7+Ydb4/
+ dU6mFJ8aUjcxX88uWDTK4w3GjimZkx7pal2uZ7R32Y7vJrZz+Kfdb4XO4cOsx5cz7U6pf9
+ sPjWBzZEikUVND053785xqeFNMBbdvA=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-19-_PlS-XMQPbysGe8f6TEZ2g-1; Mon, 22 May 2023 06:47:31 -0400
-X-MC-Unique: _PlS-XMQPbysGe8f6TEZ2g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-99-rX41fMwnMZmjvEen_lfMxA-1; Mon, 22 May 2023 06:50:56 -0400
+X-MC-Unique: rX41fMwnMZmjvEen_lfMxA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 560B13C025AD;
- Mon, 22 May 2023 10:47:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 73BCC1C05EAA;
+ Mon, 22 May 2023 10:50:56 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EAD392166B25;
- Mon, 22 May 2023 10:47:30 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 53425492B0B;
+ Mon, 22 May 2023 10:50:56 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C6F0D21E692E; Mon, 22 May 2023 12:47:29 +0200 (CEST)
+ id 3072E21E692E; Mon, 22 May 2023 12:50:55 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org,  armbru@redhat.com,  eblake@redhat.com,
- eduardo@habkost.net,  berrange@redhat.com,  pbonzini@redhat.com,
- marcel.apfelbaum@gmail.com,  mst@redhat.com,  philmd@linaro.org,
- antonkuchin@yandex-team.ru,  den-plotnikov@yandex-team.ru
-Subject: Re: [PATCH v7 2/4] qapi: add DEVICE_ON and query-hotplug
- infrastructure
-References: <20230421103207.845847-1-vsementsov@yandex-team.ru>
- <20230421103207.845847-3-vsementsov@yandex-team.ru>
-Date: Mon, 22 May 2023 12:47:29 +0200
-In-Reply-To: <20230421103207.845847-3-vsementsov@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Fri, 21 Apr 2023 13:32:05 +0300")
-Message-ID: <87zg5wlk1q.fsf@pond.sub.org>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>,  jasowang@redhat.com,
+ mst@redhat.com,  eblake@redhat.com,  qemu-devel@nongnu.org,
+ yuri.benditovich@daynix.com,  yan@daynix.com
+Subject: Re: [PATCH v2 5/6] qmp: Added new command to retrieve eBPF blob.
+References: <20230512122902.34345-1-andrew@daynix.com>
+ <20230512122902.34345-6-andrew@daynix.com>
+ <ZGIAUxfLmI6hm3VT@redhat.com> <87zg64u0g7.fsf@pond.sub.org>
+ <ZGNE0bk2zCDpUkYS@redhat.com> <87ilcsshgf.fsf@pond.sub.org>
+ <ZGNbHcbeN0klbBjU@redhat.com> <87ilcspe2w.fsf@pond.sub.org>
+ <ZGOUmRu0/Ckca6J6@redhat.com> <87lehonwnj.fsf@pond.sub.org>
+ <ZGOe2i1ia1qdMuJm@redhat.com>
+Date: Mon, 22 May 2023 12:50:55 +0200
+In-Reply-To: <ZGOe2i1ia1qdMuJm@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Tue, 16 May 2023 16:18:50 +0100")
+Message-ID: <87v8gkljw0.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,298 +89,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> We have DEVICE_DELETED event, that signals that device_del command is
-> actually completed. But we don't have a counter-part for device_add.
-> Still it's sensible for SHPC and PCIe-native hotplug, as there are time
-> when the device in some intermediate state. Let's add an event that say
-> that the device is finally powered on, power indicator is on and
-> everything is OK for next manipulation on that device.
->
-> Motivations:
-> 1. To be sure that device is "accepted" by guest. Guest may ignore
-> hotplugged device for some reason (for example during OS booting).
-> Management wants to catch this and handle the problem, instead of
-> silent assume that everything is OK. So, if we don't get the event by
-> some timeout, we can report an error, try to unplug/plug the disk again
-> or do some other things to handle the problem.
->
-> 2. The device can't be removed (by blockdev-del) while power indicator
-> of hotplug controller is blinking (QEMU reports "guest is busy (power
-> indicator blinking)"). So, management should avoid removing the device
-> until it gets the DEVICE_ON event.
-> (Probably, better solution for this point is to automatically postpone
-> deletion until power indicator stops blinking)
->
-> 3. Also, management tool may make a GUI visualization of power
-> indicator with help of this event.
->
-> New query-hotplug command in additon to "device-on" state also provides
-> SHPC/PCIe-native specific hotplug controller properties (like leds)
-> that may help to determine real state of hotplug controller. That may
-> help to get additional information for further debugging when DEVICE_ON
-> / DEVICE_DELETED not come in time as expected.
-
-Events often need to be paired with a query to let the management
-application resynchronize after a QMP disconnect, say for a restart.
-
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-
-Do we have libvirt patches?  If not, is anybody working on them?  If
-not, we need at least interface review by a libvirt developer familiar
-with hot-plug.  And we might want to mark the interface experimental.
+> On Tue, May 16, 2023 at 05:06:24PM +0200, Markus Armbruster wrote:
+>> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>>=20
+>> > On Tue, May 16, 2023 at 04:04:39PM +0200, Markus Armbruster wrote:
 
 [...]
 
-> diff --git a/qapi/qdev.json b/qapi/qdev.json
-> index 135cd81586..ffd20c43e0 100644
-> --- a/qapi/qdev.json
-> +++ b/qapi/qdev.json
-> @@ -173,3 +173,147 @@
->  #
->  ##
->  { 'event': 'DEVICE_UNPLUG_GUEST_ERROR', 'data': 'DeviceAndPath' }
-> +
-> +##
-> +# @LedActivity:
+>> >> However, I now wonder why we fetch it from QEMU.  Why not ship it with
+>> >> QEMU?
+>> >
+>> > Fetching it from QEMU gives us a strong guarantee that the eBPF
+>> > code actually matches the QEMU binary we're talking to, which is
+>> > useful if you're dealing with RPMs which can be upgraded behind
+>> > your back, or have multiple parallel installs of QEMU.
+>>=20
+>> Yes, but what makes this one different from all the other things that
+>> need to match?
+>
+> Many of the external resources QEMU uses don't need to be a precise
+> match to a QEMU version, it is sufficient for them to be of "version
+> X or newer".  eBPF programs need to be a precise match, because the
+> QEMU code has assumptions about the eBPF code it uses, such as the
+> configuration maps present.
+>
+> There is another example where a perfect match is needed - loadable
+> .so modules. eg if you're running QEMU and trigger dlopen of a QEMU
+> module, the loaded module needs to come from the perfect matching
+> build. Most distros don't solve that, but there was something added
+> a while back that let QEMU load modules from a specific location.
+>
+> The idea was that the RPM/Deb package manager can upgrade the
+> modules, but the modules from the previously installed QEMU would be
+> kept in somewhere temporary like /var/run/...., so that pre-existing
+> running QEMU could still load the exact matched .sos. While that hack
+> kinda works it has too many moving parts for my liking, leaving failure
+> scenarios open. IMHO, being able to directly fetch the resource=20
+> directly from QEMU is a better strategy for eBPF programs, as it
+> eliminates more of the failure scenarios with very little effort.
 
-Not sure about "Activity".  "Status"?
+On the other hand, yet another way to solve the same class of problem.
 
-> +#
-> +# Three-state led indicator state.
-
-Scratch the sentence?
-
-> +#
-> +# @on: Indicator is on.
-> +#
-> +# @blink: Indicator is blinking.
-> +#
-> +# @off: Indicator is off.
-
-Suggest "LED is on" ans so forth.
-
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'enum': 'LedActivity',
-> +  'data': [ 'on', 'blink', 'off' ] }
-
-Suggest 'blinking'.
-
-> +
-> +##
-> +# @HotplugSHPCSlotState:
-> +#
-> +# Standard Hot-Plug Controller slot state.
-> +#
-> +# @power-only: Slot is powered on but neither clock nor bus are connected.
-
-Comma after "on"?
-
-> +#
-> +# @enabled: Slot is powered on, clock and bus are connected, the card is
-> +#           fully functional from a hardware standpoint.
-
-Suggest ", and the card"
-
-Please format like
-
-   # @power-only: Slot is powered on, but neither clock nor bus are
-   #     connected.
-   #
-   # @enabled: Slot is powered on, clock and bus are connected, and the
-   #     card is fully functional from a hardware standpoint.
-
-to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-to conform to current conventions).
-
-> +#
-> +# @disabled: Slot is disabled, card is safe to be removed.
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'enum': 'HotplugSHPCSlotState',
-> +  'data': [ 'power-only', 'enabled', 'disabled' ] }
-> +
-> +##
-> +# @HotplugBaseState:
-> +#
-> +# Base structure for SHPC and PCIe-native hotplug.
-> +#
-> +# @power-led: Power indicator. When power indicator is on the device is
-> +#             ready and accepted by guest. Off status means that device
-> +#             is safe to remove and blinking is an intermediate state of
-> +#             hot-plug or hot-unplug.
-
-Suggest something like "When the power LED is on, the device is ...
-When it is off, the device is ...  It is blinking while hot plug or
-unplug is in progress."
-
-> +#
-> +# @attention-led: Attention indicator. Off status means normal operation,
-> +#                 On signals about operational problem, Blinking is for
-> +#                 locating the slot.
-
-Suggest something like "The attention LED is normally off.  It is on to
-signal a a problem.  Blinking is for helping users to locate the slot."
-
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'struct': 'HotplugBaseState',
-> +  'data': { '*power-led': 'LedActivity',
-> +            '*attention-led': 'LedActivity' } }
-> +
-> +##
-> +# @HotplugSHPCState:
-> +#
-> +# Standard Hot Plug Controller state.
-> +#
-> +# @slot-state: The slot state field of Slot Status.
-
-Color me confused.  What's "Slot Status"?
-
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'struct': 'HotplugSHPCState',
-> +  'base': 'HotplugBaseState',
-> +  'data': { '*slot-state': 'HotplugSHPCSlotState' } }
-> +
-> +##
-> +# @HotplugPCIeNativeState:
-> +#
-> +# PCIe Native hotplug slot state.
-
-hot-plug
-
-More below, not flagging it there.
-
-> +#
-> +# @power-on: PCIe Power Controller Control of Slot Control Register.
-> +#            True means Power On (Power Controller Control bit is 0),
-> +#            False means Power Off (Power Controller Control bit is 1).
-
-Please format like
-
-    # @power-on: PCIe Power Controller Control of Slot Control Register.
-    #     True means Power On (Power Controller Control bit is 0), and
-    #     False means Power Off (Power Controller Control bit is 1).
-
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'struct': 'HotplugPCIeNativeState',
-> +  'base': 'HotplugBaseState',
-> +  'data': { '*power-on': 'bool' } }
-> +
-> +##
-> +# @HotplugType:
-> +#
-> +# Type of hotplug controller / provider.
-> +#
-> +# @shpc: Standard Hot Plug Controller
-
-Suggest "PCI Standard Hot-plug Controller", because that's how the spec
-seems to spell it.
-
-> +#
-> +# @pcie-native: PCIe Native hotplug
-
-What about non-PCI hot-plug?
-
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'enum': 'HotplugType',
-> +  'data': ['shpc', 'pcie-native'] }
-> +
-> +##
-> +# @HotplugInfo:
-> +#
-> +# Generic hotplug slot state.
-
-Well, the generic part is defined here, but the union type pulls in
-controller-specific parts.  Scratch "generic"?
-
-> +#
-> +# @type: type of the hotplug (shpc or pcie-native)
-
-Repeating enum values in doc comments risks them going stale there.
-Scratch the parenthesis?
-
-> +#
-> +# @bus: The QOM path of the parent bus where device is hotplugged.
-
-Is this the bus the device is plugged into?
-
-What about bus-less devices?  Hmm, I think we can make an argument that
-the infrastructure required to make hot-plug work will always be part of
-some kind of bus.  Does this make sense to you?
-
-> +#
-> +# @addr: The bus address for hotplugged device if applicable.
-
-Uh, does this encode structured data in a string?
-
-> +#
-> +# @child: the hotplugged device
-> +#
-> +# @device-on: Device is powered-on by guest. This state changes at most
-> +#             once for the device and corresponds to DEVICE_ON event.
-> +#
-> +# Single: 8.1
-> +##
-> +{ 'union': 'HotplugInfo',
-> +  'base': { 'type': 'HotplugType',
-> +            'bus': 'DeviceAndPath',
-> +            '*addr': 'str',
-> +            'child': 'DeviceAndPath',
-> +            'device-on': 'bool' },
-> +  'discriminator': 'type',
-> +  'data': { 'shpc': 'HotplugSHPCState',
-> +            'pcie-native': 'HotplugPCIeNativeState' } }
-
-You have data common to both types in two places: base of HotplugInfo
-and base of the variant types HotplugBaseState.  Why?
-
-> +
-> +##
-> +# @query-hotplug:
-> +#
-> +# Query the state of hotplug controller.
-> +#
-
-@id is undocumented.
-
-> +# Since: 8.1
-> +##
-> +{ 'command': 'query-hotplug',
-> +  'data': { 'id': 'str' },
-> +  'returns': 'HotplugInfo' }
-
-I have more questions, but I'd like to understand the meaning of @id
-before I type them up.
-
-> +
-> +##
-> +# @DEVICE_ON:
-> +#
-> +# Emitted whenever the device insertion completion is acknowledged by the guest.
-> +# For now only emitted for SHPC and PCIe-native hotplug.
-
-Please format like
-
-   # Emitted whenever the device insertion completion is acknowledged by
-   # the guest.  For now only emitted for SHPC and PCIe-native hotplug.
-
-> +#
-> +# Since: 8.1
-> +##
-> +{ 'event': 'DEVICE_ON', 'data': 'DeviceAndPath' }
-
-[...]
+If we decide that's what we want, the rationale needs to be worked into
+the commit message.
 
 
