@@ -2,87 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1142770C0C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 16:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 620DD70C0EE
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 16:22:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q16KL-0001Oi-A6; Mon, 22 May 2023 10:15:57 -0400
+	id 1q16PD-0002bS-9C; Mon, 22 May 2023 10:20:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q16K8-0001NJ-W6
- for qemu-devel@nongnu.org; Mon, 22 May 2023 10:15:47 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q16K6-00022b-82
- for qemu-devel@nongnu.org; Mon, 22 May 2023 10:15:44 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-64d30ab1ef2so2549797b3a.2
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 07:15:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684764936; x=1687356936;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PBvw5qTXxwxfmFrGlIdM875GAPjwaEWrubZgMy5Cn28=;
- b=jl9qrUSgXSTyjmVrTG/DUdSziDoPnxtEJWpwITH0E0D8R3WVw+7Hp+psXcQqTEIHRo
- N+YRt5sw8qGkDDI7T/61b33v645XsEigl50RoYlxKIzf4gj8XeFgUzMZYiupB63QOL7t
- IeUAILF3ZvDSywC/7CwBVCpQzJjkzKyOGHAV3//7WS9O9cizuuFJH6SFg1F5TfgqCx+x
- u78yY+8BYd5kiaB+ZFxUdVtVSwO1m6ToNKCZxnDQVbfmLHVYPkTcfgRx3dryX4FsmG7w
- rG5exTpHzqSk0//5zW7vdehl+B1iVDE71onInYvrQmz+nqX8cKK/+wT+vRQ96BTEIfN+
- DFlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684764936; x=1687356936;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PBvw5qTXxwxfmFrGlIdM875GAPjwaEWrubZgMy5Cn28=;
- b=Un3wZLIzWHk/sTpe1+h+F2kspnfma8eOWimSYWt7iGR363iKEg5Dc0CnQfWU0CCq1I
- thjH3t6soVvsOrriai8pGZGZhUtg1rGaRKJ5i6x8ZDaK15hft+3yyZqIpqbiqoMcV64t
- OvRw7kBVPQ8ZXed3dtIiXsdio+6AsKMTATke0FtMkzPPLZ/XbIG6S3CRT4PxgNM45shd
- rN4/PqAksTkHwiz60GIswlGmSJ/0liwqRgR4htMP5Tyk9Di85hpj8HXvW1qOYpeAwqQK
- Oi/2IaWEOBWMVbDwOaTqlIHYfVyFTnpWLGTynYskZpTpiEvBTvxWXIQsgJJttJldX2+I
- dvNA==
-X-Gm-Message-State: AC+VfDwL48cFzQufMxE2kWJJcL44uVrl5m8M7hjLujLdx/k3gWPJXXv5
- 6/oNGFID4B0gBTzJXtAZjfZH8w==
-X-Google-Smtp-Source: ACHHUZ6TybJ+lRj955/SBklZfOxT3r5+OOJaySscrOWCfJuPJMptpy3GDFCs5Lu1+QIK9izug8Su/w==
-X-Received: by 2002:a05:6a00:10d1:b0:63b:5501:6795 with SMTP id
- d17-20020a056a0010d100b0063b55016795mr14426338pfu.24.1684764936203; 
- Mon, 22 May 2023 07:15:36 -0700 (PDT)
-Received: from [10.0.14.188] (static-66-243-253-154.ellensburg.fairpoint.net.
- [66.243.253.154]) by smtp.gmail.com with ESMTPSA id
- g11-20020a62e30b000000b006259e883ee9sm4192545pfh.189.2023.05.22.07.15.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 07:15:35 -0700 (PDT)
-Message-ID: <b82beafa-c9fe-2c89-2d97-f6c64f01706a@linaro.org>
-Date: Mon, 22 May 2023 07:15:33 -0700
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q16PA-0002bC-Ap; Mon, 22 May 2023 10:20:56 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q16P6-0002xz-Ci; Mon, 22 May 2023 10:20:56 -0400
+Received: from [192.168.0.120] (unknown [61.165.33.195])
+ by APP-01 (Coremail) with SMTP id qwCowABHPqI0emtkn8F0Aw--.18916S2;
+ Mon, 22 May 2023 22:20:37 +0800 (CST)
+Message-ID: <72ed983b-ed11-7c4b-dc75-3c3a576cd1dc@iscas.ac.cn>
+Date: Mon, 22 May 2023 22:20:36 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 15/27] target/s390x: Use tcg_gen_qemu_{ld,st}_i128 for
- LPQ, STPQ
+Cc: liweiwei@iscas.ac.cn, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, zhiwei_liu@linux.alibaba.com,
+ wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+Subject: Re: [PATCH 2/7] target/riscv: Pass RISCVCPUConfig as target_info to
+ disassemble_info
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+References: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
+ <20230519021926.15362-3-liweiwei@iscas.ac.cn>
+ <29978bd3-97d0-9f17-d13e-b986bd0e7087@ventanamicro.com>
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20230520162634.3991009-1-richard.henderson@linaro.org>
- <20230520162634.3991009-16-richard.henderson@linaro.org>
- <698d17f4-8018-41dd-4551-749d715bf71e@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <698d17f4-8018-41dd-4551-749d715bf71e@redhat.com>
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <29978bd3-97d0-9f17-d13e-b986bd0e7087@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-CM-TRANSID: qwCowABHPqI0emtkn8F0Aw--.18916S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3tr4kXw1fKrWxuF1kCr1kGrg_yoWkZrW8pF
+ 1vgFWUAr9rXwn3ur48Jw15Ka4fCrZ7J3Wktw10qF1DJF4xurW09w4Uur1qgF4UCF48Gr4r
+ Jr1YyFZrZF13JFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUU9G14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+ 6r4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+ Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+ c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVW5XwCF04k20xvY0x0EwIxGrw
+ CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+ 14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+ IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxK
+ x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+ 0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUbkR65UUUUU==
+X-Originating-IP: [61.165.33.195]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,29 +81,393 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/23 01:35, David Hildenbrand wrote:
->> @@ -4533,14 +4522,11 @@ static DisasJumpType op_stmh(DisasContext *s, DisasOps *o)
->>   static DisasJumpType op_stpq(DisasContext *s, DisasOps *o)
+
+On 2023/5/22 20:54, Daniel Henrique Barboza wrote:
+>
+>
+> On 5/18/23 23:19, Weiwei Li wrote:
+>> Pass RISCVCPUConfig as disassemble_info.target_info to support disas
+>> of conflict instructions related to specific extensions.
+>>
+>> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+>> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+>> ---
+>
+> I suggest split the CPUCfg declarations from cpu.h into the new 
+> cpu_cfg.h header
+> in a separated patch. It makes our lives easier when bissecting for 
+> bugs and
+> so on.
+OK. I'll do it in next version.
+>
+> One more nit below:
+>
+>
+>>   disas/riscv.c          |  10 ++-
+>>   target/riscv/cpu.c     |   1 +
+>>   target/riscv/cpu.h     | 114 +---------------------------------
+>>   target/riscv/cpu_cfg.h | 135 +++++++++++++++++++++++++++++++++++++++++
+>>   4 files changed, 144 insertions(+), 116 deletions(-)
+>>   create mode 100644 target/riscv/cpu_cfg.h
+>>
+>> diff --git a/disas/riscv.c b/disas/riscv.c
+>> index e61bda5674..729ab684da 100644
+>> --- a/disas/riscv.c
+>> +++ b/disas/riscv.c
+>> @@ -19,7 +19,7 @@
+>>     #include "qemu/osdep.h"
+>>   #include "disas/dis-asm.h"
+>> -
+>> +#include "target/riscv/cpu_cfg.h"
+>>     /* types */
+>>   @@ -967,6 +967,7 @@ typedef enum {
+>>   /* structures */
+>>     typedef struct {
+>> +    RISCVCPUConfig *cfg;
+>>       uint64_t  pc;
+>>       uint64_t  inst;
+>>       int32_t   imm;
+>> @@ -4855,11 +4856,13 @@ static void decode_inst_decompress(rv_decode 
+>> *dec, rv_isa isa)
+>>   /* disassemble instruction */
+>>     static void
+>> -disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, 
+>> rv_inst inst)
+>> +disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, 
+>> rv_inst inst,
+>> +            RISCVCPUConfig *cfg)
 >>   {
->> -    if (!(tb_cflags(s->base.tb) & CF_PARALLEL)) {
->> -        gen_helper_stpq(cpu_env, o->in2, o->out2, o->out);
->> -    } else if (HAVE_ATOMIC128) {
->> -        gen_helper_stpq_parallel(cpu_env, o->in2, o->out2, o->out);
->> -    } else {
->> -        gen_helper_exit_atomic(cpu_env);
->> -        return DISAS_NORETURN;
->> -    }
->> +    TCGv_i128 t16 = tcg_temp_new_i128();
+>>       rv_decode dec = { 0 };
+>>       dec.pc = pc;
+>>       dec.inst = inst;
+>> +    dec.cfg = cfg;
+>>       decode_inst_opcode(&dec, isa);
+>>       decode_inst_operands(&dec, isa);
+>>       decode_inst_decompress(&dec, isa);
+>> @@ -4914,7 +4917,8 @@ print_insn_riscv(bfd_vma memaddr, struct 
+>> disassemble_info *info, rv_isa isa)
+>>           break;
+>>       }
+>>   -    disasm_inst(buf, sizeof(buf), isa, memaddr, inst);
+>> +    disasm_inst(buf, sizeof(buf), isa, memaddr, inst,
+>> +                (RISCVCPUConfig *)info->target_info);
+>>       (*info->fprintf_func)(info->stream, "%s", buf);
+>>         return len;
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index db0875fb43..4fe926cdd1 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -818,6 +818,7 @@ static void riscv_cpu_reset_hold(Object *obj)
+>>   static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info 
+>> *info)
+>>   {
+>>       RISCVCPU *cpu = RISCV_CPU(s);
+>> +    info->target_info = &cpu->cfg;
+>>         switch (riscv_cpu_mxl(&cpu->env)) {
+>>       case MXL_RV32:
+>> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>> index de7e43126a..dc1229b69c 100644
+>> --- a/target/riscv/cpu.h
+>> +++ b/target/riscv/cpu.h
+>> @@ -27,6 +27,7 @@
+>>   #include "qom/object.h"
+>>   #include "qemu/int128.h"
+>>   #include "cpu_bits.h"
+>> +#include "cpu_cfg.h"
+>>   #include "qapi/qapi-types-common.h"
+>>   #include "cpu-qom.h"
+>>   @@ -368,119 +369,6 @@ struct CPUArchState {
+>>       uint64_t kvm_timer_frequency;
+>>   };
+>>   -/*
+>> - * map is a 16-bit bitmap: the most significant set bit in map is 
+>> the maximum
+>> - * satp mode that is supported. It may be chosen by the user and 
+>> must respect
+>> - * what qemu implements (valid_1_10_32/64) and what the hw is 
+>> capable of
+>> - * (supported bitmap below).
+>> - *
+>> - * init is a 16-bit bitmap used to make sure the user selected a 
+>> correct
+>> - * configuration as per the specification.
+>> - *
+>> - * supported is a 16-bit bitmap used to reflect the hw capabilities.
+>> - */
+>> -typedef struct {
+>> -    uint16_t map, init, supported;
+>> -} RISCVSATPMap;
+>> -
+>> -struct RISCVCPUConfig {
+>> -    bool ext_zba;
+>> -    bool ext_zbb;
+>> -    bool ext_zbc;
+>> -    bool ext_zbkb;
+>> -    bool ext_zbkc;
+>> -    bool ext_zbkx;
+>> -    bool ext_zbs;
+>> -    bool ext_zca;
+>> -    bool ext_zcb;
+>> -    bool ext_zcd;
+>> -    bool ext_zce;
+>> -    bool ext_zcf;
+>> -    bool ext_zcmp;
+>> -    bool ext_zcmt;
+>> -    bool ext_zk;
+>> -    bool ext_zkn;
+>> -    bool ext_zknd;
+>> -    bool ext_zkne;
+>> -    bool ext_zknh;
+>> -    bool ext_zkr;
+>> -    bool ext_zks;
+>> -    bool ext_zksed;
+>> -    bool ext_zksh;
+>> -    bool ext_zkt;
+>> -    bool ext_ifencei;
+>> -    bool ext_icsr;
+>> -    bool ext_icbom;
+>> -    bool ext_icboz;
+>> -    bool ext_zicond;
+>> -    bool ext_zihintpause;
+>> -    bool ext_smstateen;
+>> -    bool ext_sstc;
+>> -    bool ext_svadu;
+>> -    bool ext_svinval;
+>> -    bool ext_svnapot;
+>> -    bool ext_svpbmt;
+>> -    bool ext_zdinx;
+>> -    bool ext_zawrs;
+>> -    bool ext_zfh;
+>> -    bool ext_zfhmin;
+>> -    bool ext_zfinx;
+>> -    bool ext_zhinx;
+>> -    bool ext_zhinxmin;
+>> -    bool ext_zve32f;
+>> -    bool ext_zve64f;
+>> -    bool ext_zve64d;
+>> -    bool ext_zmmul;
+>> -    bool ext_zvfh;
+>> -    bool ext_zvfhmin;
+>> -    bool ext_smaia;
+>> -    bool ext_ssaia;
+>> -    bool ext_sscofpmf;
+>> -    bool rvv_ta_all_1s;
+>> -    bool rvv_ma_all_1s;
+>> -
+>> -    uint32_t mvendorid;
+>> -    uint64_t marchid;
+>> -    uint64_t mimpid;
+>> -
+>> -    /* Vendor-specific custom extensions */
+>> -    bool ext_xtheadba;
+>> -    bool ext_xtheadbb;
+>> -    bool ext_xtheadbs;
+>> -    bool ext_xtheadcmo;
+>> -    bool ext_xtheadcondmov;
+>> -    bool ext_xtheadfmemidx;
+>> -    bool ext_xtheadfmv;
+>> -    bool ext_xtheadmac;
+>> -    bool ext_xtheadmemidx;
+>> -    bool ext_xtheadmempair;
+>> -    bool ext_xtheadsync;
+>> -    bool ext_XVentanaCondOps;
+>> -
+>> -    uint8_t pmu_num;
+>> -    char *priv_spec;
+>> -    char *user_spec;
+>> -    char *bext_spec;
+>> -    char *vext_spec;
+>> -    uint16_t vlen;
+>> -    uint16_t elen;
+>> -    uint16_t cbom_blocksize;
+>> -    uint16_t cboz_blocksize;
+>> -    bool mmu;
+>> -    bool pmp;
+>> -    bool epmp;
+>> -    bool debug;
+>> -    bool misa_w;
+>> -
+>> -    bool short_isa_string;
+>> -
+>> -#ifndef CONFIG_USER_ONLY
+>> -    RISCVSATPMap satp_mode;
+>> -#endif
+>> -};
+>> -
+>> -typedef struct RISCVCPUConfig RISCVCPUConfig;
+>> -
+>>   /*
+>>    * RISCVCPU:
+>>    * @env: #CPURISCVState
+>> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+>> new file mode 100644
+>> index 0000000000..e2e982fac4
+>> --- /dev/null
+>> +++ b/target/riscv/cpu_cfg.h
+>> @@ -0,0 +1,135 @@
+>> +/*
+>> + * QEMU RISC-V CPU CFG
+>> + *
+>> + * Copyright (c) 2016-2017 Sagar Karandikar, sagark@eecs.berkeley.edu
+>> + * Copyright (c) 2017-2018 SiFive, Inc.
+>
+> I don't mind keeping these copyrights but it would be good to have a 
+> 2023 copyright
+> as well since the file was just created.
+>
+I copy them from cpu.h since the code is just copied from it without any 
+modification .
+
+I don't know whether it's suitable to add new Copyrights for this case.
+
+Regards,
+
+Weiwei li
+
+>
+> Other than that:
+>
+>
+> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>
+>> + *
+>> + * This program is free software; you can redistribute it and/or 
+>> modify it
+>> + * under the terms and conditions of the GNU General Public License,
+>> + * version 2 or later, as published by the Free Software Foundation.
+>> + *
+>> + * This program is distributed in the hope it will be useful, but 
+>> WITHOUT
+>> + * ANY WARRANTY; without even the implied warranty of 
+>> MERCHANTABILITY or
+>> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public 
+>> License for
+>> + * more details.
+>> + *
+>> + * You should have received a copy of the GNU General Public License 
+>> along with
+>> + * this program.  If not, see <http://www.gnu.org/licenses/>.
+>> + */
 >> +
->> +    tcg_gen_concat_i64_i128(t16, o->out2, o->out);
->> +    tcg_gen_qemu_st_i128(t16, o->in2, get_mem_index(s),
->> +                         MO_TE | MO_128 | MO_ALIGN);
-> 
-> I briefly glimpsed at tcg_gen_qemu_ld_i128_int (and use_two_i64_for_i128()), does this 
-> really provide the atomic guarantees we need in all cases?
+>> +#ifndef RISCV_CPU_CFG_H
+>> +#define RISCV_CPU_CFG_H
+>> +
+>> +/*
+>> + * map is a 16-bit bitmap: the most significant set bit in map is 
+>> the maximum
+>> + * satp mode that is supported. It may be chosen by the user and 
+>> must respect
+>> + * what qemu implements (valid_1_10_32/64) and what the hw is 
+>> capable of
+>> + * (supported bitmap below).
+>> + *
+>> + * init is a 16-bit bitmap used to make sure the user selected a 
+>> correct
+>> + * configuration as per the specification.
+>> + *
+>> + * supported is a 16-bit bitmap used to reflect the hw capabilities.
+>> + */
+>> +typedef struct {
+>> +    uint16_t map, init, supported;
+>> +} RISCVSATPMap;
+>> +
+>> +struct RISCVCPUConfig {
+>> +    bool ext_zba;
+>> +    bool ext_zbb;
+>> +    bool ext_zbc;
+>> +    bool ext_zbkb;
+>> +    bool ext_zbkc;
+>> +    bool ext_zbkx;
+>> +    bool ext_zbs;
+>> +    bool ext_zca;
+>> +    bool ext_zcb;
+>> +    bool ext_zcd;
+>> +    bool ext_zce;
+>> +    bool ext_zcf;
+>> +    bool ext_zcmp;
+>> +    bool ext_zcmt;
+>> +    bool ext_zk;
+>> +    bool ext_zkn;
+>> +    bool ext_zknd;
+>> +    bool ext_zkne;
+>> +    bool ext_zknh;
+>> +    bool ext_zkr;
+>> +    bool ext_zks;
+>> +    bool ext_zksed;
+>> +    bool ext_zksh;
+>> +    bool ext_zkt;
+>> +    bool ext_ifencei;
+>> +    bool ext_icsr;
+>> +    bool ext_icbom;
+>> +    bool ext_icboz;
+>> +    bool ext_zicond;
+>> +    bool ext_zihintpause;
+>> +    bool ext_smstateen;
+>> +    bool ext_sstc;
+>> +    bool ext_svadu;
+>> +    bool ext_svinval;
+>> +    bool ext_svnapot;
+>> +    bool ext_svpbmt;
+>> +    bool ext_zdinx;
+>> +    bool ext_zawrs;
+>> +    bool ext_zfh;
+>> +    bool ext_zfhmin;
+>> +    bool ext_zfinx;
+>> +    bool ext_zhinx;
+>> +    bool ext_zhinxmin;
+>> +    bool ext_zve32f;
+>> +    bool ext_zve64f;
+>> +    bool ext_zve64d;
+>> +    bool ext_zmmul;
+>> +    bool ext_zvfh;
+>> +    bool ext_zvfhmin;
+>> +    bool ext_smaia;
+>> +    bool ext_ssaia;
+>> +    bool ext_sscofpmf;
+>> +    bool rvv_ta_all_1s;
+>> +    bool rvv_ma_all_1s;
+>> +
+>> +    uint32_t mvendorid;
+>> +    uint64_t marchid;
+>> +    uint64_t mimpid;
+>> +
+>> +    /* Vendor-specific custom extensions */
+>> +    bool ext_xtheadba;
+>> +    bool ext_xtheadbb;
+>> +    bool ext_xtheadbs;
+>> +    bool ext_xtheadcmo;
+>> +    bool ext_xtheadcondmov;
+>> +    bool ext_xtheadfmemidx;
+>> +    bool ext_xtheadfmv;
+>> +    bool ext_xtheadmac;
+>> +    bool ext_xtheadmemidx;
+>> +    bool ext_xtheadmempair;
+>> +    bool ext_xtheadsync;
+>> +    bool ext_XVentanaCondOps;
+>> +
+>> +    uint8_t pmu_num;
+>> +    char *priv_spec;
+>> +    char *user_spec;
+>> +    char *bext_spec;
+>> +    char *vext_spec;
+>> +    uint16_t vlen;
+>> +    uint16_t elen;
+>> +    uint16_t cbom_blocksize;
+>> +    uint16_t cboz_blocksize;
+>> +    bool mmu;
+>> +    bool pmp;
+>> +    bool epmp;
+>> +    bool debug;
+>> +    bool misa_w;
+>> +
+>> +    bool short_isa_string;
+>> +
+>> +#ifndef CONFIG_USER_ONLY
+>> +    RISCVSATPMap satp_mode;
+>> +#endif
+>> +};
+>> +
+>> +typedef struct RISCVCPUConfig RISCVCPUConfig;
+>> +#endif
 
-Yes.  The CF_PARALLEL check is the same as the one removed above.
-
-
-r~
 
