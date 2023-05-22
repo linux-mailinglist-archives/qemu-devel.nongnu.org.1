@@ -2,157 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CF970CAEF
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A0A670CAEE
 	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 22:26:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1C6h-0005PQ-T1; Mon, 22 May 2023 16:26:15 -0400
+	id 1q1C6i-0005VK-IG; Mon, 22 May 2023 16:26:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <siddhartha.punj@intel.com>)
- id 1q1Ax3-0005Fj-OM
- for qemu-devel@nongnu.org; Mon, 22 May 2023 15:12:13 -0400
-Received: from mga05.intel.com ([192.55.52.43])
+ (Exim 4.90_1) (envelope-from <nifan@outlook.com>) id 1q1BYU-0005lA-7N
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 15:50:54 -0400
+Received: from mail-psaapc01olkn20820.outbound.protection.outlook.com
+ ([2a01:111:f400:feae::820]
+ helo=APC01-PSA-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <siddhartha.punj@intel.com>)
- id 1q1Awz-0005Hy-QE
- for qemu-devel@nongnu.org; Mon, 22 May 2023 15:12:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1684782729; x=1716318729;
- h=from:to:subject:date:message-id:mime-version;
- bh=Dd9KYp4LUr6yyPcO95CC+JIAsqpe9qqlM8+J+XcWPAo=;
- b=Qqouqk7X6psZ4GWxGz6NuMEU4klX/l24SLiCY+sOhjz3sJG0ovnlIb+U
- yelw02mAb/wotxUlm6+0+u94yRWUKk7Lr+Z2j5fzbbMYT71BmPb3ZDNzw
- gtjKu1BBm52VV3hbefiJ4C6QF7rgiViZx0q7ChKegG1hMZCIzOoCTJBYq
- 4EWgeZGYQXLYkv4MnTk3u6dA4NLT1vNF4gX7Wr0x3AZVPTXfLggrrDkrT
- fdkWi8mOQeu70L+kV9fF/H21jLX5SIeS1tDXBVCPTCKuRoEacvKviET7l
- KsLz1JqntvnPvQc96eZdaJXXmYl5vw5wmC0exDTlZ3PSbX6XSBCNSWaCI A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10718"; a="439371185"
-X-IronPort-AV: E=Sophos;i="6.00,184,1681196400"; 
- d="scan'208,217";a="439371185"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2023 12:12:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10718"; a="697747912"
-X-IronPort-AV: E=Sophos;i="6.00,184,1681196400"; 
- d="scan'208,217";a="697747912"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orsmga007.jf.intel.com with ESMTP; 22 May 2023 12:12:03 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 22 May 2023 12:12:02 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 22 May 2023 12:12:02 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Mon, 22 May 2023 12:12:02 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.176)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Mon, 22 May 2023 12:12:01 -0700
+ (Exim 4.90_1) (envelope-from <nifan@outlook.com>) id 1q1BYR-0005cY-II
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 15:50:53 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LbemKv84Atttu8l2g1PfZyfJ/MDnsD4tXsAsO5T+OkSCEV2Zfj06Z0+gsAKB8SWaR5spOQp4FA/NYUP0NJQVPYuHa9l08tNG/YewzddTik0GS5ifoy2wDQaw3tKh9/SRt5BcXOwUTTJd0v7phLfoquHBVFy/zcUyaDVNfhaC6UECP0WGbe5r6XOqrwNvKJ3czYpsXKY8Cw7ssOtFJ8yM4v/FTCnzrCA2SGTt5/d7TIW9BD6fiNX+9+qLCI7prnAGw2u/8gw6UO/gRKLwBABu+TOB5/FcJ6W8o9AoTNHuLn6hg/mj/EgWi2e0tvPXIChZdprIoSqoWcGp4QqYeNnAkQ==
+ b=NNY2+1mtfylTtpakMz6oUM6xD8ErDDP+c9415bZdVvffzng3ypEigGJ495BVlHs0nmvyQHflWyF/MQ5Du/AOzxdjZjMtd4kST3K1tBUR5eS7CwRYlSgWbteVDKEC9iivWJe1e6UZ8mVu4kl4woKp7gouVGn7G1ysrQwCeAHHN4XIMJiwWZwUsBlbVHJq1ktMa0yLHPQJ73LfGmHxNwnO9VE15Tt5t0a02ipDdqvInn4Ythu/El9IrYluAwGra1/NHgIQZsZEGO8tw61xsPRxIi+0S/tQBnsC4iliUclSIE+JVtbxJKRDkM+XwS2Q7Ct86dhvFXcMxkgxuzPMPj2Scw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nUCvd49BnmojTPYi3DJ3JCbobmShVpRwgEBTylGY9iE=;
- b=jrwfHQgLTfW2tPSmkvtschh9m0q6kius3meOpFw7F778dpc0bxuRJsdZPuLJahOxBL2+bjtp6z2nNJIbBtgrLBlcTSP7pDvAi7lgQVSShD95PR8xfAnf3rtNFGRA5rWqp8a4F2u6HGSxTrYInqgukO5zBc3Pyd86OE1tMMVmkc/hY5/b73OmL0aS9qNuCTFTXHLYG6WCjpNT9DlIaMvChoCFc5BR5pvbbX2QjajtcOnYtyLd8NvEhhFNlEXp6GwpS1NnhVNXz1GDWroe1x0WUOEWY9ZIAuxs9DfUnXoxXD/G//zopTfqgP+PndmT7XLeMv2KOqN3oxyqPLb1u7+ibg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH8PR11MB7142.namprd11.prod.outlook.com (2603:10b6:510:22e::22)
- by PH0PR11MB7636.namprd11.prod.outlook.com (2603:10b6:510:26f::13)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=WBO35UCzaez7CLkXANWJPWfb0JcQ0UYghIH6Nz+U6Jg=;
+ b=JQjCdMWvx7MeW3du3rfnf2R5PvbX+aaKGzOLm4RdNfHaTxieVC0Hkgs6l/pgM+6DUdDUPornkqBvFHMcWPEDh+zz1v4O07ps/AWJogtExDH/o17zNAeLnbVV8c0/F1NW4j8Hhz08kAVMZVSWFqHV35XlmXK5abNIEIU3FyHPYARh5GHdeC+CxzkmCy+d71eInSxPnoMre6AlGYs0Iq3VHNibLhq2COd6P7p+nZQb/dyPY9lwrCINNwv6JcI4k3qMB9UkOs9X8x/fkNbirB39GFe3kobNx6SBghCBC+QmeKsTR4ox9v3VqQmwySXyV51YLm8NxNgDPUqmG2EQ6RGMCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WBO35UCzaez7CLkXANWJPWfb0JcQ0UYghIH6Nz+U6Jg=;
+ b=G5SJ70flQ0g9MfrwfuY8Amx93zcwDD1t12Jn4P5x+8+kvK9k+N1FOHM2HZa2DyjwlVB5QIyIHu5YnnrPO1yY7Lr3ELC0fYnil8pPNXxYf0qGLPon0aDrTFqh7SNoOvZgYGnYZ4SPhgHosg1Oe/cM7cxTFLnfiHx73maKKDbNFhIxyg1esYpgI/ZqwbBpKRhMzOG8mxzOwc2dJTV7mE/oUf7BE4ss6B9tfeIKezP01Bd/vd6u7sDc99rQq+rwzN3QuOm+cfqZT8rs9tKl7F3JCfpIV07AXNZSM7pOyp+2VLPS3I1MKbLLKXwTzhgGG0IdRhKp8s6i7S25Stw807quWg==
+Received: from SG2PR06MB3397.apcprd06.prod.outlook.com (2603:1096:4:7a::17) by
+ SEYPR06MB6756.apcprd06.prod.outlook.com (2603:1096:101:165::11) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Mon, 22 May
- 2023 19:11:55 +0000
-Received: from PH8PR11MB7142.namprd11.prod.outlook.com
- ([fe80::a8d3:958e:258d:309b]) by PH8PR11MB7142.namprd11.prod.outlook.com
- ([fe80::a8d3:958e:258d:309b%7]) with mapi id 15.20.6411.028; Mon, 22 May 2023
- 19:11:55 +0000
-From: "Punj, Siddhartha" <siddhartha.punj@intel.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Building QEMU errors
-Thread-Topic: Building QEMU errors
-Thread-Index: AdmM37rgPD942hM5TX+0v59nyq96pQ==
-Date: Mon, 22 May 2023 19:11:55 +0000
-Message-ID: <PH8PR11MB714207F8969670F0685FAB30FC439@PH8PR11MB7142.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH8PR11MB7142:EE_|PH0PR11MB7636:EE_
-x-ms-office365-filtering-correlation-id: fb11826b-6190-4ee5-c986-08db5af86850
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: RI1qKx5XjiHzBA8geVKKW+JRatCPo1Qm9IG9GZrgeH4QetXYgqxcLxpPIIHMop8HsqcKy9HAaDXvJM0vQJOoLUCQpnH5N2HBHe+YhRqdT5LmQZQ3rRfgSSIJA9Gk60OiW8IXlZNNdI/1DyFppPw5g4oOdBeFi1ys1JuvYYCSLhUzEn0Ac4agi550lmGVq/Dfc08wUA0iFsoQQ4XpeB9CXHqp2gaN4GWGrEkEg/kdLeD+hSstqQ75kdgGK/BPayQQJ9LgVOFebIilnGNB1FDErdn7qH/PvGGFIj+kYpR3iWaxk+I4rLgEnXqb/UbAVO2IzP/feBdDuKKdqWB1nv56hJZ16+oMyCtG6IRlNPJjo1sjlV0yc2ZQAejoH3339qi+/dcUgHEw6lIjzI4RlU8I5Kr/+B6OtnCrLO/Jdf3TGIrHlwJBbGHCagrruScZW8HPsx1NfbXlzGde5FGiAjH2Mvn/7dApSKY1HoScmes0Ww7CN8wNzGz1+QdVX7wHZER8b0/MYW8/lzywSxy6eInytc3PlGUc2ory3yqwUL2p3AA4HiE54dVFZfL8uqJxL0WI3CfE+EACxArwl3k6GbGDjbO2KRDl9TOfFxxKEmqC7bsWfMMSBJJao3/ca/dzZwNh
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB7142.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(376002)(39860400002)(136003)(346002)(366004)(451199021)(2906002)(71200400001)(38100700002)(55016003)(122000001)(8676002)(52536014)(6506007)(26005)(83380400001)(186003)(3480700007)(9686003)(8936002)(7116003)(86362001)(33656002)(316002)(41300700001)(5660300002)(966005)(7696005)(6916009)(166002)(82960400001)(38070700005)(66476007)(76116006)(66556008)(66946007)(478600001)(64756008)(66446008)(460985005);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?B85IxWzkruUTm6O++RgR7wSdpgtiatokIRTA5bT5showKve8EBYloYr3Ostx?=
- =?us-ascii?Q?N1Uvy61xCJh6yDQTHlIRjCodKo++Ze19SUwo0iETWdSh3Cykb3+dy+eNH6J4?=
- =?us-ascii?Q?gBInvAdGKLx4uHYcaOv3xsV7QMCpu21lueNr5Thqy3fxwDDOTrC1138Kxfwo?=
- =?us-ascii?Q?Ro7LeR8DFsGwlJuVCZ16I9JreqbOE2vMpVVAc5JJ9+pxN40EnhFWLs3Rf9v8?=
- =?us-ascii?Q?+1CwVu54pPQTvSq9n1npiB9ivR5+3m9RZWzSZ8ArCuGvrWqZ2Qzmbx/CW0yh?=
- =?us-ascii?Q?uAkhjoHt6wImuMoWl88RjaAmZbthVgBAV0AeaZvrvEmRnw5PXREOQrHisG5f?=
- =?us-ascii?Q?rWi9T2LkDjXxc/TXILIOonfX8toUN+9vG5hXldns1a1B0T9NfbZ9BxXxMmOC?=
- =?us-ascii?Q?KB+STA1UXAOByH5lcR4lM9IS9n2Lip+o4dqaLQNnis2iDDgQvd+9IAo+xOp6?=
- =?us-ascii?Q?Ibvr12kNdr8/6IKA9U2lUJjbnXHy5xDOA/KKtV6C4Pxy9BVOvqTkjYVoi/wL?=
- =?us-ascii?Q?Z5Mn83Z2hW6hKy1iXKL/j1PImBgQ08f8levUneZOlivdpqQTjZM0NWhSPeZd?=
- =?us-ascii?Q?xRNMgZ4hCET39wBbrgOXD7JpqorPd0gGyIAQOvMQhfWVnJ1egBvG8YySXVeG?=
- =?us-ascii?Q?EZghl5+rpHnDYMO/eVkG4ytRyOP9tJZyXJ9CPxOe7gPOZoTCe7kgv38mYSx9?=
- =?us-ascii?Q?W6g+BpEGkvLjQqVdc0//vJV/tkR7FTSHNbMXg88WnOuDEkG2xynJdG4AvY3N?=
- =?us-ascii?Q?c4J1gOuhi9cQ1lND1vsvcpEv+io6wX85Jn8FdepHN9RRfPZMrkpeg3Hyzox7?=
- =?us-ascii?Q?mYzUvYPAW/DvmrDmW7+1cj06+H1CTgMag2+Q+PdGyJAvHX7fzZLPUNMRykDD?=
- =?us-ascii?Q?8zDrtOaJ1VifHxQy2UjPIU/KmW5zT+c2ylSLGFcyYbnprCka8uNr1hUbMOk+?=
- =?us-ascii?Q?oAf0XOW4w5HPx5Q/GstBDW3Aa7pOGfTfOMtwVO/dDwVY1k0+j1ZP7BSS8efr?=
- =?us-ascii?Q?3QlFabgisQZIp+cHWop+tPe31i4V64zVU1pu8HLgHox55Mjxd/IFNfQOUtaw?=
- =?us-ascii?Q?J8YxEoKTgH+PcLxBD8oM+PgQOFQAqUj2MI4x/QYK4rJYbI9gd158OHheyN6w?=
- =?us-ascii?Q?17JyQ8N9aUzvcYa9YyXDcuU6KP7CS/7/oPPQkL3s9ilSp9vPdtJT0TYAFGpQ?=
- =?us-ascii?Q?9dxMHg4kZQ6bUzuNh0CAthui9RDPJ6m4ROVlyn+DdWPjruOBTIkwOC5Wo8+r?=
- =?us-ascii?Q?+uG3bnBXwFdq2XbhwcvRGdbP9sC3KPmZeuznu51frBoPXI0Ewa6P6qQZqSNf?=
- =?us-ascii?Q?VqEq9uijnewHhIGB0E3gbyqSk2dWMzvqngkisr6HRUvi0uxaskfr0MgvLT0r?=
- =?us-ascii?Q?zP8Kc5BOZUlcVHA403osr9SPpQ54Z2Xb0N3lEsV4ympfyOlvXiNL5dPkzy1C?=
- =?us-ascii?Q?1CyNT3ZFFgm/tt7Tq9LKwrYzS294NM5jA492j3TGNBMQuMVF/uMuYetHhQf/?=
- =?us-ascii?Q?oCaV4v2svIlEiKUyYcyjrZor5pVVJ26sLrZOaqZCLwQaNNg2Fv/0ufTaAaHb?=
- =?us-ascii?Q?Xe8AnRwHJwvSxi83On9E0vxq1E1LK6OKKa4IEB3/?=
-Content-Type: multipart/alternative;
- boundary="_000_PH8PR11MB714207F8969670F0685FAB30FC439PH8PR11MB7142namp_"
+ 2023 19:50:44 +0000
+Received: from SG2PR06MB3397.apcprd06.prod.outlook.com
+ ([fe80::248c:58fd:97db:5425]) by SG2PR06MB3397.apcprd06.prod.outlook.com
+ ([fe80::248c:58fd:97db:5425%7]) with mapi id 15.20.6411.021; Mon, 22 May 2023
+ 19:50:44 +0000
+Date: Mon, 22 May 2023 12:50:34 -0700
+From: Fan Ni <nifan@outlook.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, Michael Tsirkin <mst@redhat.com>,
+ Fan Ni <fan.ni@samsung.com>, linux-cxl@vger.kernel.org,
+ linuxarm@huawei.com, Ira Weiny <ira.weiny@intel.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Dave Jiang <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v7 3/7] hw/cxl/events: Wire up get/clear event mailbox
+ commands
+Message-ID: <SG2PR06MB3397AB10C301F4F596EBD688B2439@SG2PR06MB3397.apcprd06.prod.outlook.com>
+References: <20230522150947.11546-1-Jonathan.Cameron@huawei.com>
+ <CGME20230522151125uscas1p1ac7cc62cf284544e2b827d7cacaba8cd@uscas1p1.samsung.com>
+ <20230522150947.11546-4-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230522150947.11546-4-Jonathan.Cameron@huawei.com>
+X-TMN: [qljxHMAg6dAhp8ZE7n26hPyi0JGBISys5GaLncBg6CA=]
+X-ClientProxiedBy: SJ0PR13CA0047.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::22) To SG2PR06MB3397.apcprd06.prod.outlook.com
+ (2603:1096:4:7a::17)
+X-Microsoft-Original-Message-ID: <ZGvHihvn/9h2rTVF@outlook.com>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SG2PR06MB3397:EE_|SEYPR06MB6756:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef422005-72c0-4603-62f9-08db5afdd46b
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uyLGe4XJcrnjrp1Y+vzMr2vbbbJ17PRw20ejb0IWNLJysMl0Pk/CjtDwVdMhvKtAcdcWg+arYf4gFDucJQphBVMYoq9RS1EaGKqpg0mSQ5n0ujQMr0193wJ58Ai4UBbB+uFJw0Ao3trOSe/3xUr8vr5KheqYTenMi4/pwvzz1HgqxYvmv0wp7zH2e4SHhWpfxMVH/4MS9Koj4eFDT1V9+nWoxHbjq6P/LXQdUYHOsMz6NlqVsIL05A+HKPx3SzO9dKMpIW9bncm2JRNcOqjMs/X4/GN1L3x2SYSef/IiRRggsHwPMFIwlbq6KDDbOGkIl3DX1zhlUUWqS+NGL56sQV+pmaRN8P2P8LzHL3o3Tuifg2HbjUE7AtUgAxJWWpDtDTFCKNYrNQxlM6oNj3tceHoIBuC8KY2omywa1u4mgPY9vHLcemdtEEq/dd0xenrbmxSJlt7Gy3Zer6cWs6ERaknPM9uWx9viQgJ/YgFl8yrKpsuuM0hdyd3EgzCrCEvhLaUKsVM0Jg99LEAkhedM7lI/6IpeQlCpg+lyXyo7qzRwLWShF6AOxn5JEzyaZSn1oW9cpESg6YSENmQ2y2fWrGWDM+Zi6bT4VSXi7bpHE1je0n80MGHMA+q1dMncsSVU
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TU1kTzIxS3pIU2FSUUlFWklTYU1ISWhxelBjLzJQS2FpZTU4a2ZrQWVsMnZK?=
+ =?utf-8?B?Wml5YnZvRHdtKzVTbU5MMFFmMzNBMmlJRFRhSmJJU09idUYxeXY2Z0QyUkYy?=
+ =?utf-8?B?TmpyZGU5cjhUL0krTmQxK2R3eENnTExmVHJEYmlEM1FhOU9vRnBBZngvRTRE?=
+ =?utf-8?B?bjNaSVhWV2hKcWFiak56NnF1MmR5a1VwQ2kzTVBzSGNCSlpydXkrVjJsRWRi?=
+ =?utf-8?B?NGc0d3lBZ3BBTW16M2F5Nk00Tng1QTltMFg4aTRZVm5lTWYxdHhMVkdBLzBN?=
+ =?utf-8?B?RG1vZkhxaUJrRXdlOWdEUzVONmZSOGp1ZmE2OThlUVNSU0pWMGY5WGdEUmJX?=
+ =?utf-8?B?bERRSGFnR2IrTGw5UUV3bm9sQkRsSFNpOW1mQTFsZzVIMitQQmMwUlNzejdN?=
+ =?utf-8?B?eVd4YlBhTHdxRGU5NCt3TTVzTGpUV2syQ1I0N0NWNUtVRWt1UUJDeFBtS3lP?=
+ =?utf-8?B?K1h3U3JKdlRBWE1RUkNpUXZ4ZjU0a25pckJjOCt4bFFGMTlWNG1EcUR0K1lI?=
+ =?utf-8?B?Z293L1FYdGdUNkRFd00vTzIxVGpaNENLZEVGeGFoSUE4Zm8rSUQwb3FrQ0Yz?=
+ =?utf-8?B?SHo2RWttOE1ub1Ntenc2blJrbW5WcFBVZGNXdERrc1pFcFRyMlkzSnVBREdT?=
+ =?utf-8?B?YkVpZjVGeHpiSnIyd3ZxaTNRdktvQjk1VHRWWlNkaWlmaUFRcjBPUjNVblI2?=
+ =?utf-8?B?RGFobnY3ZW1mcVlPL3gycE9PelZ4SERFZ1Bkb1VmMUJ0NjlVK2o1amVSWm5S?=
+ =?utf-8?B?RzNEenpqaE4zc2JWdHlYTlBqQUdFYlJKYXl0S2h0dk9EVnhzbVlHYjRid1VI?=
+ =?utf-8?B?azhLWGRjeTcvQ0t4ZzVhNjFlRG9uVVpvQlZZYUI4RmNWajVFYU82WnQwWGw3?=
+ =?utf-8?B?NWpkcHlFNm5ueXJrN2NiNHJCc01CQnJnWnE4dnhad0ZyV2JqenRneHkyNUta?=
+ =?utf-8?B?dnQ1OE9vRmtXWnhKMUtieDFSTEJzamZ1cm1oZWprY2UvN0pIN2JTaWhDZFFU?=
+ =?utf-8?B?cXlhRkhoTVFuMTJtR0lIbWE1S3Jtdk12RzkzTFVjSldpUlBMdkI2SGp4MmJF?=
+ =?utf-8?B?enFINVExRTVNVlRvckZSRUJLM2VmdWx4WXBOd292QXhWZGpCMlpDZlNadVQ2?=
+ =?utf-8?B?YlVrcWNNeEJFUXNvVGwzcUgweDF0bGp2aERTU1BLOHhhd014WkJGRW9hdW1N?=
+ =?utf-8?B?V0tKQ25PWGNERTFYV1BQcmZzaXFYM0xSMHd1cDJvQlhScTVqVysyWFZoWjhO?=
+ =?utf-8?B?T085Yk5JV1VrZ1B1eFcxektJSG5GUGtqRVEwZjFoUVVaampDOHhrM0grRXBC?=
+ =?utf-8?B?M1Y4NWQzMEdMMElqZlQvNU9sakplYjFtS0g3ZnZNNnBtbERubis3V2xKMUtt?=
+ =?utf-8?B?ZVN1WnNJdHE1ZE50OUdFKzJEblVCbWtRK3BLNktTdTEyb09uUnJXaUFmdzdk?=
+ =?utf-8?B?dlRMa3graHRwZ2dZYnNIZDRGOXRoLzNiMjNFbHdESmFheW90U2pDMXFzQ3Vn?=
+ =?utf-8?B?OFVSbVAxN2d6SVFjd05ZUjNmZDhUR0V4Nmw4NUJCMU9Id2x4N3dmYmJjQkww?=
+ =?utf-8?B?QlRTSmpnaWFzZlNlQ09xSDJBR2ZkMXoweFEyWHpsd0VFTVhoYW8wUUJBS28v?=
+ =?utf-8?Q?8TRjjB7HcIg9IDQQxLk0DuzZT7ZDCQ2k1z4GHMm9GMyI=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef422005-72c0-4603-62f9-08db5afdd46b
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3397.apcprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB7142.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb11826b-6190-4ee5-c986-08db5af86850
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2023 19:11:55.1232 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jDx/LFvDvjTPvnAKtrpP1PCOABeVCEhQXhc7dhIcNuxF2H3+ApHH0gZ8PNuTCV8Gg/ccGRle+Awm2mb1pfuOHfwy8CJpyXjY0GWfYKF7krU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7636
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.43;
- envelope-from=siddhartha.punj@intel.com; helo=mga05.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2023 19:50:44.2894 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB6756
+Received-SPF: pass client-ip=2a01:111:f400:feae::820;
+ envelope-from=nifan@outlook.com;
+ helo=APC01-PSA-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 22 May 2023 16:25:51 -0400
+X-Mailman-Approved-At: Mon, 22 May 2023 16:25:59 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -167,174 +139,470 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_PH8PR11MB714207F8969670F0685FAB30FC439PH8PR11MB7142namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+The 05/22/2023 16:09, Jonathan Cameron wrote:
+> From: Ira Weiny <ira.weiny@intel.com>
+> 
+> CXL testing is benefited from an artificial event log injection
+> mechanism.
+> 
+> Add an event log infrastructure to insert, get, and clear events from
+> the various logs available on a device.
+> 
+> Replace the stubbed out CXL Get/Clear Event mailbox commands with
+> commands that operate on the new infrastructure.
+> 
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
 
-Hi QEMU community,
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-I'm trying to build QEMU on my development environment on Windows (64 bit, =
-windows 10 enterprise), but am facing issues.
+See comments below in cxl_event_insert.
 
-I'm using the MSYS2 installer as administrator with the following commands:
+>  include/hw/cxl/cxl_device.h |  25 +++++
+>  include/hw/cxl/cxl_events.h |  55 +++++++++
+>  hw/cxl/cxl-events.c         | 217 ++++++++++++++++++++++++++++++++++++
+>  hw/cxl/cxl-mailbox-utils.c  |  40 ++++++-
+>  hw/mem/cxl_type3.c          |   1 +
+>  hw/cxl/meson.build          |   1 +
+>  6 files changed, 337 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 9f8ee85f8a..d3aec1bc0e 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -111,6 +111,20 @@ typedef enum {
+>      CXL_MBOX_MAX = 0x17
+>  } CXLRetCode;
+>  
+> +typedef struct CXLEvent {
+> +    CXLEventRecordRaw data;
+> +    QSIMPLEQ_ENTRY(CXLEvent) node;
+> +} CXLEvent;
+> +
+> +typedef struct CXLEventLog {
+> +    uint16_t next_handle;
+> +    uint16_t overflow_err_count;
+> +    uint64_t first_overflow_timestamp;
+> +    uint64_t last_overflow_timestamp;
+> +    QemuMutex lock;
+> +    QSIMPLEQ_HEAD(, CXLEvent) events;
+> +} CXLEventLog;
+> +
+>  typedef struct cxl_device_state {
+>      MemoryRegion device_registers;
+>  
+> @@ -161,6 +175,8 @@ typedef struct cxl_device_state {
+>      uint64_t mem_size;
+>      uint64_t pmem_size;
+>      uint64_t vmem_size;
+> +
+> +    CXLEventLog event_logs[CXL_EVENT_TYPE_MAX];
+>  } CXLDeviceState;
+>  
+>  /* Initialize the register block for a device */
+> @@ -353,6 +369,15 @@ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+>  
+>  uint64_t cxl_device_get_timestamp(CXLDeviceState *cxlds);
+>  
+> +void cxl_event_init(CXLDeviceState *cxlds);
+> +bool cxl_event_insert(CXLDeviceState *cxlds, CXLEventLogType log_type,
+> +                      CXLEventRecordRaw *event);
+> +CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
+> +                                 uint8_t log_type, int max_recs,
+> +                                 uint16_t *len);
+> +CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds,
+> +                                   CXLClearEventPayload *pl);
+> +
+>  void cxl_set_poison_list_overflowed(CXLType3Dev *ct3d);
+>  
+>  #endif
+> diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
+> index aeb3b0590e..d4aaa894f1 100644
+> --- a/include/hw/cxl/cxl_events.h
+> +++ b/include/hw/cxl/cxl_events.h
+> @@ -10,6 +10,8 @@
+>  #ifndef CXL_EVENTS_H
+>  #define CXL_EVENTS_H
+>  
+> +#include "qemu/uuid.h"
+> +
+>  /*
+>   * CXL rev 3.0 section 8.2.9.2.2; Table 8-49
+>   *
+> @@ -25,4 +27,57 @@ typedef enum CXLEventLogType {
+>      CXL_EVENT_TYPE_MAX
+>  } CXLEventLogType;
+>  
+> +/*
+> + * Common Event Record Format
+> + * CXL rev 3.0 section 8.2.9.2.1; Table 8-42
+> + */
+> +#define CXL_EVENT_REC_HDR_RES_LEN 0xf
+> +typedef struct CXLEventRecordHdr {
+> +    QemuUUID id;
+> +    uint8_t length;
+> +    uint8_t flags[3];
+> +    uint16_t handle;
+> +    uint16_t related_handle;
+> +    uint64_t timestamp;
+> +    uint8_t maint_op_class;
+> +    uint8_t reserved[CXL_EVENT_REC_HDR_RES_LEN];
+> +} QEMU_PACKED CXLEventRecordHdr;
+> +
+> +#define CXL_EVENT_RECORD_DATA_LENGTH 0x50
+> +typedef struct CXLEventRecordRaw {
+> +    CXLEventRecordHdr hdr;
+> +    uint8_t data[CXL_EVENT_RECORD_DATA_LENGTH];
+> +} QEMU_PACKED CXLEventRecordRaw;
+> +#define CXL_EVENT_RECORD_SIZE (sizeof(CXLEventRecordRaw))
+> +
+> +/*
+> + * Get Event Records output payload
+> + * CXL rev 3.0 section 8.2.9.2.2; Table 8-50
+> + */
+> +#define CXL_GET_EVENT_FLAG_OVERFLOW     BIT(0)
+> +#define CXL_GET_EVENT_FLAG_MORE_RECORDS BIT(1)
+> +typedef struct CXLGetEventPayload {
+> +    uint8_t flags;
+> +    uint8_t reserved1;
+> +    uint16_t overflow_err_count;
+> +    uint64_t first_overflow_timestamp;
+> +    uint64_t last_overflow_timestamp;
+> +    uint16_t record_count;
+> +    uint8_t reserved2[0xa];
+> +    CXLEventRecordRaw records[];
+> +} QEMU_PACKED CXLGetEventPayload;
+> +#define CXL_EVENT_PAYLOAD_HDR_SIZE (sizeof(CXLGetEventPayload))
+> +
+> +/*
+> + * Clear Event Records input payload
+> + * CXL rev 3.0 section 8.2.9.2.3; Table 8-51
+> + */
+> +typedef struct CXLClearEventPayload {
+> +    uint8_t event_log;      /* CXLEventLogType */
+> +    uint8_t clear_flags;
+> +    uint8_t nr_recs;
+> +    uint8_t reserved[3];
+> +    uint16_t handle[];
+> +} CXLClearEventPayload;
+> +
+>  #endif /* CXL_EVENTS_H */
+> diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
+> new file mode 100644
+> index 0000000000..5da1b76b97
+> --- /dev/null
+> +++ b/hw/cxl/cxl-events.c
+> @@ -0,0 +1,217 @@
+> +/*
+> + * CXL Event processing
+> + *
+> + * Copyright(C) 2023 Intel Corporation.
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2. See the
+> + * COPYING file in the top-level directory.
+> + */
+> +
+> +#include <stdint.h>
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/bswap.h"
+> +#include "qemu/typedefs.h"
+> +#include "qemu/error-report.h"
+> +#include "hw/cxl/cxl.h"
+> +#include "hw/cxl/cxl_events.h"
+> +
+> +/* Artificial limit on the number of events a log can hold */
+> +#define CXL_TEST_EVENT_OVERFLOW 8
+> +
+> +static void reset_overflow(CXLEventLog *log)
+> +{
+> +    log->overflow_err_count = 0;
+> +    log->first_overflow_timestamp = 0;
+> +    log->last_overflow_timestamp = 0;
+> +}
+> +
+> +void cxl_event_init(CXLDeviceState *cxlds)
+> +{
+> +    CXLEventLog *log;
+> +    int i;
+> +
+> +    for (i = 0; i < CXL_EVENT_TYPE_MAX; i++) {
+> +        log = &cxlds->event_logs[i];
+> +        log->next_handle = 1;
+> +        log->overflow_err_count = 0;
+> +        log->first_overflow_timestamp = 0;
+> +        log->last_overflow_timestamp = 0;
+> +        qemu_mutex_init(&log->lock);
+> +        QSIMPLEQ_INIT(&log->events);
+> +    }
+> +}
+> +
+> +static CXLEvent *cxl_event_get_head(CXLEventLog *log)
+> +{
+> +    return QSIMPLEQ_FIRST(&log->events);
+> +}
+> +
+> +static CXLEvent *cxl_event_get_next(CXLEvent *entry)
+> +{
+> +    return QSIMPLEQ_NEXT(entry, node);
+> +}
+> +
+> +static int cxl_event_count(CXLEventLog *log)
+> +{
+> +    CXLEvent *event;
+> +    int rc = 0;
+> +
+> +    QSIMPLEQ_FOREACH(event, &log->events, node) {
+> +        rc++;
+> +    }
+> +
+> +    return rc;
+> +}
+> +
+> +static bool cxl_event_empty(CXLEventLog *log)
+> +{
+> +    return QSIMPLEQ_EMPTY(&log->events);
+> +}
+> +
+> +static void cxl_event_delete_head(CXLDeviceState *cxlds,
+> +                                  CXLEventLogType log_type,
+> +                                  CXLEventLog *log)
+> +{
+> +    CXLEvent *entry = cxl_event_get_head(log);
+> +
+> +    reset_overflow(log);
+> +    QSIMPLEQ_REMOVE_HEAD(&log->events, node);
+> +    if (cxl_event_empty(log)) {
+> +        cxl_event_set_status(cxlds, log_type, false);
+> +    }
+> +    g_free(entry);
+> +}
+> +
+> +/*
+> + * return true if an interrupt should be generated as a result
+> + * of inserting this event.
+> + */
+> +bool cxl_event_insert(CXLDeviceState *cxlds, CXLEventLogType log_type,
+> +                      CXLEventRecordRaw *event)
+> +{
+> +    uint64_t time;
+> +    CXLEventLog *log;
+> +    CXLEvent *entry;
+> +
+> +    if (log_type >= CXL_EVENT_TYPE_MAX) {
+> +        return false;
+> +    }
+> +
+> +    time = cxl_device_get_timestamp(cxlds);
+> +
+> +    log = &cxlds->event_logs[log_type];
+> +
+> +    QEMU_LOCK_GUARD(&log->lock);
+> +
+> +    if (cxl_event_count(log) >= CXL_TEST_EVENT_OVERFLOW) {
+> +        if (log->overflow_err_count == 0) {
+> +            log->first_overflow_timestamp = time;
+> +        }
+> +        log->overflow_err_count++;
+> +        log->last_overflow_timestamp = time;
+> +        return false;
+> +    }
+> +
+> +    entry = g_new0(CXLEvent, 1);
+> +
+> +    memcpy(&entry->data, event, sizeof(*event));
+> +
+> +    entry->data.hdr.handle = cpu_to_le16(log->next_handle);
+> +    log->next_handle++;
+> +    /* 0 handle is never valid */
+> +    if (log->next_handle == 0) {
 
-pacman -Syu
-pacman -Su
-pacman -S base-devel mingw-w64-x86_64-toolchain git python ninja
-pacman -S mingw-w64-x86_64-glib2 mingw64/mingw/w64-x86_64-gtk3 mingw64/ming=
-w-w64-x86_64-SDL2 python-setuptools
-closed console
+next_handle is uint16_t, how can it be 0 after next_handle++?
 
-started mingw64
-git clone  https://www.gitlab.com/qemu/qemu
-cd into qemu
-and then ran the following command on MinGW64:
+> +        log->next_handle++;
+> +    }
+> +    entry->data.hdr.timestamp = cpu_to_le64(time);
+> +
+> +    QSIMPLEQ_INSERT_TAIL(&log->events, entry, node);
+> +    cxl_event_set_status(cxlds, log_type, true);
+> +
+> +    /* Count went from 0 to 1 */
+> +    return cxl_event_count(log) == 1;
+> +}
+> +
+> +CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
+> +                                 uint8_t log_type, int max_recs,
+> +                                 uint16_t *len)
+> +{
+> +    CXLEventLog *log;
+> +    CXLEvent *entry;
+> +    uint16_t nr;
+> +
+> +    if (log_type >= CXL_EVENT_TYPE_MAX) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +
+> +    log = &cxlds->event_logs[log_type];
+> +
+> +    QEMU_LOCK_GUARD(&log->lock);
+> +
+> +    entry = cxl_event_get_head(log);
+> +    for (nr = 0; entry && nr < max_recs; nr++) {
+> +        memcpy(&pl->records[nr], &entry->data, CXL_EVENT_RECORD_SIZE);
+> +        entry = cxl_event_get_next(entry);
+> +    }
+> +
+> +    if (!cxl_event_empty(log)) {
+> +        pl->flags |= CXL_GET_EVENT_FLAG_MORE_RECORDS;
+> +    }
+> +
+> +    if (log->overflow_err_count) {
+> +        pl->flags |= CXL_GET_EVENT_FLAG_OVERFLOW;
+> +        pl->overflow_err_count = cpu_to_le16(log->overflow_err_count);
+> +        pl->first_overflow_timestamp = cpu_to_le64(log->first_overflow_timestamp);
+> +        pl->last_overflow_timestamp = cpu_to_le64(log->last_overflow_timestamp);
+> +    }
+> +
+> +    pl->record_count = cpu_to_le16(nr);
+> +    *len = CXL_EVENT_PAYLOAD_HDR_SIZE + (CXL_EVENT_RECORD_SIZE * nr);
+> +
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+> +CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds, CXLClearEventPayload *pl)
+> +{
+> +    CXLEventLog *log;
+> +    uint8_t log_type;
+> +    CXLEvent *entry;
+> +    int nr;
+> +
+> +    log_type = pl->event_log;
+> +
+> +    if (log_type >= CXL_EVENT_TYPE_MAX) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +
+> +    log = &cxlds->event_logs[log_type];
+> +
+> +    QEMU_LOCK_GUARD(&log->lock);
+> +    /*
+> +     * Must itterate the queue twice.
+> +     * "The device shall verify the event record handles specified in the input
+> +     * payload are in temporal order. If the device detects an older event
+> +     * record that will not be cleared when Clear Event Records is executed,
+> +     * the device shall return the Invalid Handle return code and shall not
+> +     * clear any of the specified event records."
+> +     *   -- CXL 3.0 8.2.9.2.3
+> +     */
+> +    entry = cxl_event_get_head(log);
+> +    for (nr = 0; entry && nr < pl->nr_recs; nr++) {
+> +        uint16_t handle = pl->handle[nr];
+> +
+> +        /* NOTE: Both handles are little endian. */
+> +        if (handle == 0 || entry->data.hdr.handle != handle) {
+> +            return CXL_MBOX_INVALID_INPUT;
+> +        }
+> +        entry = cxl_event_get_next(entry);
+> +    }
+> +
+> +    entry = cxl_event_get_head(log);
+> +    for (nr = 0; entry && nr < pl->nr_recs; nr++) {
+> +        cxl_event_delete_head(cxlds, log_type, log);
+> +        entry = cxl_event_get_head(log);
+> +    }
+> +
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index d7e114aaae..3f46538048 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -9,6 +9,7 @@
+>  
+>  #include "qemu/osdep.h"
+>  #include "hw/cxl/cxl.h"
+> +#include "hw/cxl/cxl_events.h"
+>  #include "hw/pci/pci.h"
+>  #include "qemu/cutils.h"
+>  #include "qemu/log.h"
+> @@ -95,11 +96,46 @@ struct cxl_cmd {
+>          return CXL_MBOX_SUCCESS;                                          \
+>      }
+>  
+> -DEFINE_MAILBOX_HANDLER_ZEROED(events_get_records, 0x20);
+> -DEFINE_MAILBOX_HANDLER_NOP(events_clear_records);
+>  DEFINE_MAILBOX_HANDLER_ZEROED(events_get_interrupt_policy, 4);
+>  DEFINE_MAILBOX_HANDLER_NOP(events_set_interrupt_policy);
+>  
+> +static CXLRetCode cmd_events_get_records(struct cxl_cmd *cmd,
+> +                                         CXLDeviceState *cxlds,
+> +                                         uint16_t *len)
+> +{
+> +    CXLGetEventPayload *pl;
+> +    uint8_t log_type;
+> +    int max_recs;
+> +
+> +    if (cmd->in < sizeof(log_type)) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +
+> +    log_type = *((uint8_t *)cmd->payload);
+> +
+> +    pl = (CXLGetEventPayload *)cmd->payload;
+> +    memset(pl, 0, sizeof(*pl));
+> +
+> +    max_recs = (cxlds->payload_size - CXL_EVENT_PAYLOAD_HDR_SIZE) /
+> +                CXL_EVENT_RECORD_SIZE;
+> +    if (max_recs > 0xFFFF) {
+> +        max_recs = 0xFFFF;
+> +    }
+> +
+> +    return cxl_event_get_records(cxlds, pl, log_type, max_recs, len);
+> +}
+> +
+> +static CXLRetCode cmd_events_clear_records(struct cxl_cmd *cmd,
+> +                                           CXLDeviceState *cxlds,
+> +                                           uint16_t *len)
+> +{
+> +    CXLClearEventPayload *pl;
+> +
+> +    pl = (CXLClearEventPayload *)cmd->payload;
+> +    *len = 0;
+> +    return cxl_event_clear_records(cxlds, pl);
+> +}
+> +
+>  /* 8.2.9.2.1 */
+>  static CXLRetCode cmd_firmware_update_get_info(struct cxl_cmd *cmd,
+>                                                 CXLDeviceState *cxl_dstate,
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index d751803188..ec5a384885 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -724,6 +724,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+>          goto err_release_cdat;
+>      }
+>  
+> +    cxl_event_init(&ct3d->cxl_dstate);
+>      return;
+>  
+>  err_release_cdat:
+> diff --git a/hw/cxl/meson.build b/hw/cxl/meson.build
+> index cfa95ffd40..71059972d4 100644
+> --- a/hw/cxl/meson.build
+> +++ b/hw/cxl/meson.build
+> @@ -5,6 +5,7 @@ softmmu_ss.add(when: 'CONFIG_CXL',
+>                     'cxl-mailbox-utils.c',
+>                     'cxl-host.c',
+>                     'cxl-cdat.c',
+> +                   'cxl-events.c',
+>                 ),
+>                 if_false: files(
+>                     'cxl-host-stubs.c',
+> -- 
+> 2.39.2
+> 
 
-
-./configure --enable-gtk --enable-sdl --target-list=3Dx86_64-softmmu --disa=
-ble-werror --disable-stack-protector --disable-capstone --enable-debug
-
-And I'm getting the following output in my build: ln: failed to create symb=
-olic link 'x86_64-softmmu/qemu-system-x86_64.exe': No such file or director=
-y
-
-Is this a known issue for QEMU right now that's critical? I'm trying to use=
-/modify QEMU to create a virtual PCIe device. Please let me know/how I coul=
-d potentially resolve this.
-
-Thanks,
-
-Siddartha
-
---_000_PH8PR11MB714207F8969670F0685FAB30FC439PH8PR11MB7142namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:dt=3D"uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:m=3D"http://sc=
-hemas.microsoft.com/office/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-=
-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:"Lucida Console";
-	panose-1:2 11 6 9 4 5 4 2 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:#0563C1;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:=
-break-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal">Hi QEMU community,<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">I&#8217;m trying to build QEMU on my development env=
-ironment on Windows (64 bit, windows 10 enterprise), but am facing issues.
-<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">I&#8217;m using the MSYS2 installer as administrator=
- with the following commands: &nbsp;<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">pacman -Syu<o:p></o:p></p>
-<p class=3D"MsoNormal">pacman -Su<o:p></o:p></p>
-<p class=3D"MsoNormal">pacman -S base-devel mingw-w64-x86_64-toolchain git =
-python ninja
-<o:p></o:p></p>
-<p class=3D"MsoNormal">pacman -S mingw-w64-x86_64-glib2 mingw64/mingw/w64-x=
-86_64-gtk3 mingw64/mingw-w64-x86_64-SDL2 python-setuptools<o:p></o:p></p>
-<p class=3D"MsoNormal">closed console<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">started mingw64<o:p></o:p></p>
-<p class=3D"MsoNormal">git clone <span style=3D"color:black">&nbsp;</span><=
-a href=3D"https://www.gitlab.com/qemu/qemu">https://www.gitlab.com/qemu/qem=
-u</a><o:p></o:p></p>
-<p class=3D"MsoNormal">cd into qemu<o:p></o:p></p>
-<p class=3D"MsoNormal">and then ran the following command on MinGW64:<o:p><=
-/o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p style=3D"margin:0in"><b><span lang=3D"LA" style=3D"font-size:10.0pt;font=
--family:&quot;Courier New&quot;;color:#FF0080">./</span></b><span lang=3D"L=
-A" style=3D"font-size:10.0pt;font-family:&quot;Courier New&quot;;color:blac=
-k">configure
-</span><b><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Cou=
-rier New&quot;;color:#FF0080">--</span></b><span lang=3D"LA" style=3D"font-=
-size:10.0pt;font-family:&quot;Courier New&quot;;color:black">enable-gtk
-</span><b><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Cou=
-rier New&quot;;color:#FF0080">--</span></b><span lang=3D"LA" style=3D"font-=
-size:10.0pt;font-family:&quot;Courier New&quot;;color:black">enable-sdl
-</span><b><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Cou=
-rier New&quot;;color:#FF0080">--</span></b><span lang=3D"LA" style=3D"font-=
-size:10.0pt;font-family:&quot;Courier New&quot;;color:black">target-list</s=
-pan><b><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Courie=
-r New&quot;;color:#FF0080">=3D</span></b><span lang=3D"LA" style=3D"font-si=
-ze:10.0pt;font-family:&quot;Courier New&quot;;color:black">x86_64-softmmu
-</span><b><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Cou=
-rier New&quot;;color:#FF0080">--</span></b><span lang=3D"LA" style=3D"font-=
-size:10.0pt;font-family:&quot;Courier New&quot;;color:black">disable-werror
-</span><b><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Cou=
-rier New&quot;;color:#FF0080">--</span></b><span lang=3D"LA" style=3D"font-=
-size:10.0pt;font-family:&quot;Courier New&quot;;color:black">disable-stack-=
-protector
-</span><b><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Cou=
-rier New&quot;;color:#FF0080">--</span></b><span lang=3D"LA" style=3D"font-=
-size:10.0pt;font-family:&quot;Courier New&quot;;color:black">disable-capsto=
-ne
-</span><b><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Cou=
-rier New&quot;;color:#FF0080">--</span></b><span lang=3D"LA" style=3D"font-=
-size:10.0pt;font-family:&quot;Courier New&quot;;color:black">enable-debug</=
-span><span lang=3D"LA" style=3D"font-size:10.0pt;font-family:&quot;Courier =
-New&quot;"><o:p></o:p></span></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">And I&#8217;m getting the following output in my bui=
-ld: <span style=3D"font-size:9.0pt;font-family:&quot;Lucida Console&quot;">
-ln: failed to create symbolic link 'x86_64-softmmu/qemu-system-x86_64.exe':=
- No such file or directory<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Is this a known issue for QEMU right now that&#8217;=
-s critical? I&#8217;m trying to use/modify QEMU to create a virtual PCIe de=
-vice. Please let me know/how I could potentially resolve this.
-<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Thanks,<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">Siddartha<o:p></o:p></p>
-</div>
-</body>
-</html>
-
---_000_PH8PR11MB714207F8969670F0685FAB30FC439PH8PR11MB7142namp_--
+-- 
+Fan Ni <nifan@outlook.com>
 
