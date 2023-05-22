@@ -2,78 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598EF70BC4D
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D34C70BC5B
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:52:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1445-0005H1-Gi; Mon, 22 May 2023 07:51:01 -0400
+	id 1q144E-0005Yb-OL; Mon, 22 May 2023 07:51:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1434-00054q-T2
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:03 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q142y-0007Mq-Th
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:49:55 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1ae852a5330so19558455ad.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 04:49:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684756191; x=1687348191;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mAGcH5e8/Df3po5mgqSd+bFIdk4+MUX6wGZwUaFC68Q=;
- b=CmOh7Ij8xo1QPmwuAOtRgkwdeI0hCgkWW5EYxcSpQK2shEwiVQbWKnn8Ha08Sd1+06
- fpKeHbXTHZ+D7riPOKPr3PnRFdy7paZPbrQe7rg1vR+4YYVCQa2LedyTeoqQqJAc2Rtx
- 6znnFJ3Hi0vz6YRmLxb2iMIf40xcovECAG7PZG+5TLqvSqLI4BG6XdIa1Q1BAouGGMV7
- Sc5wrbkaW/WFt5byhdjrnXcYnM3eGDN69TwFnMSBBTfCfo1ymlIDjwjyPDQfQyQiXQh7
- 5Tq0o9WYE0L+lrISF49PAmPsMEBgvsPe/h93Gt7Yy6MEvPYWzWlJEw8vheHT1kc8wXYe
- kfQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684756191; x=1687348191;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mAGcH5e8/Df3po5mgqSd+bFIdk4+MUX6wGZwUaFC68Q=;
- b=VABOYyyVAHGvg5licaCN3FAGeGv70QX+7xjyxcvkkv7dDoZGSHD5YqoZAmNADcrfVd
- zDOp6ClOHCkmRCOGlyi9HVLeQOT/ZtsQ7o+6kkkb+C3nqNIQvFP2xyHO65RSnElhxuGB
- uLWeVpB5C7ZOafpV4ErMP+hHTDlcWnVy74bksOz3XZKHDgru2DzX4aMUEQiSIUUTxX8O
- JlrKWLqV2FAeq3fsNGWXLb3do+djzuk2SCcqqdJHXVE1EZySvp3hy7846yyFeZzf9l6t
- SyNW1IHDeM2wFtmCOwvV7bAJSDgwbE9jes9r++hD3AZoi7X/whxWfc+z+fW4b1uSQseL
- Muzg==
-X-Gm-Message-State: AC+VfDzd6iXDqlCoqdvvD4kTo7HBaCrciu0wlKN8IdYApGiNiZo08ePc
- qXn3nlkvxJugCbkDpM47/Md31aeJdmQX3Hajpbw=
-X-Google-Smtp-Source: ACHHUZ7AFIqM3cUjn+5YouKRcSC/tq9kgl8S3KuL0+Y49rfsIvOum8dBhW0qLAfVHfd2KxovQb62mQ==
-X-Received: by 2002:a17:903:3317:b0:1ab:1a73:7c7f with SMTP id
- jk23-20020a170903331700b001ab1a737c7fmr9113619plb.63.1684756191001; 
- Mon, 22 May 2023 04:49:51 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- u3-20020a170902e80300b0019f3cc463absm4725922plg.0.2023.05.22.04.49.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 04:49:50 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH] util/vfio-helpers: Use g_file_read_link()
-Date: Mon, 22 May 2023 20:49:43 +0900
-Message-Id: <20230522114943.33024-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.40.1
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143U-00059y-0V
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143Q-0007Rj-F2
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684756218;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=maJaOj0P581oW/eLfeohQ1Tvvy7TrCPUnQMOrRTNbfM=;
+ b=X0bro3BrOwZuxgllfIT2MCTn2eUNQBMss2m48G4UadFIsbSp2Xrb2N53B5O6jMdE5E7P9H
+ P5X35wHCMDwNwszcyduEfjOnkzTGxATFktswsVWLcFxjKiZyVRyVk5t7aWYlOHva5PXrix
+ I8bAx3W6FqnJKFA1k67gD2k6+N3CqGw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-286-T7MHWBSwNTSpQTK5r2eLig-1; Mon, 22 May 2023 07:50:17 -0400
+X-MC-Unique: T7MHWBSwNTSpQTK5r2eLig-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B64DD85A5BB;
+ Mon, 22 May 2023 11:50:16 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.195.33])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0FD912166B26;
+ Mon, 22 May 2023 11:50:15 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 00/20] Allow "make check" with "--without-default-devices"
+Date: Mon, 22 May 2023 13:49:54 +0200
+Message-Id: <20230522115014.1110840-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,58 +72,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When _FORTIFY_SOURCE=2, glibc version is 2.35, and GCC version is
-12.1.0, the compiler complains as follows:
+The following changes since commit aa222a8e4f975284b3f8f131653a4114b3d333b3:
 
-In file included from /usr/include/features.h:490,
-                 from /usr/include/bits/libc-header-start.h:33,
-                 from /usr/include/stdint.h:26,
-                 from /usr/lib/gcc/aarch64-unknown-linux-gnu/12.1.0/include/stdint.h:9,
-                 from /home/alarm/q/var/qemu/include/qemu/osdep.h:94,
-                 from ../util/vfio-helpers.c:13:
-In function 'readlink',
-    inlined from 'sysfs_find_group_file' at ../util/vfio-helpers.c:116:9,
-    inlined from 'qemu_vfio_init_pci' at ../util/vfio-helpers.c:326:18,
-    inlined from 'qemu_vfio_open_pci' at ../util/vfio-helpers.c:517:9:
-/usr/include/bits/unistd.h:119:10: error: argument 2 is null but the corresponding size argument 3 value is 4095 [-Werror=nonnull]
-  119 |   return __glibc_fortify (readlink, __len, sizeof (char),
-      |          ^~~~~~~~~~~~~~~
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2023-05-19 12:17:16 -0700)
 
-This error implies the allocated buffer can be NULL. Use
-g_file_read_link(), which allocates buffer automatically to avoid the
-error.
+are available in the Git repository at:
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- util/vfio-helpers.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-05-22
 
-diff --git a/util/vfio-helpers.c b/util/vfio-helpers.c
-index 2d8af38f88..e482ab22e2 100644
---- a/util/vfio-helpers.c
-+++ b/util/vfio-helpers.c
-@@ -106,15 +106,17 @@ struct QEMUVFIOState {
-  */
- static char *sysfs_find_group_file(const char *device, Error **errp)
- {
-+    g_autoptr(GError) gerr;
-     char *sysfs_link;
-     char *sysfs_group;
-     char *p;
-     char *path = NULL;
- 
-     sysfs_link = g_strdup_printf("/sys/bus/pci/devices/%s/iommu_group", device);
--    sysfs_group = g_malloc0(PATH_MAX);
--    if (readlink(sysfs_link, sysfs_group, PATH_MAX - 1) == -1) {
--        error_setg_errno(errp, errno, "Failed to find iommu group sysfs path");
-+    sysfs_group = g_file_read_link(sysfs_link, &gerr);
-+    if (gerr) {
-+        error_setg(errp, "Failed to find iommu group sysfs path: %s",
-+                   gerr->message);
-         goto out;
-     }
-     p = strrchr(sysfs_group, '/');
--- 
-2.40.1
+for you to fetch changes up to 3884bf6468ac6bbb58c2b3feaa74e87f821b52f3:
+
+  memory: stricter checks prior to unsetting engaged_in_io (2023-05-22 10:35:28 +0200)
+
+----------------------------------------------------------------
+* First batch of fixes to allow "make check" with "--without-default-devices"
+* Enable the "bios bits" avocado test in the gitlab-CI
+* Another minor fix for the redundancy DMA blocker code
+
+----------------------------------------------------------------
+Alexander Bulekov (1):
+      memory: stricter checks prior to unsetting engaged_in_io
+
+Ani Sinha (1):
+      acpi/tests/avocado/bits: enable bios bits avocado tests on gitlab CI pipeline
+
+Thomas Huth (18):
+      hw/i386/Kconfig: ISAPC works fine without VGA_ISA
+      softmmu/vl.c: Check for the availability of the VGA device before using it
+      hw: Move the default NIC machine class setting from the x86 to the generic one
+      softmmu/vl.c: Disable default NIC if it has not been compiled into the binary
+      hw/ppc: Use MachineClass->default_nic in the ppc machines
+      hw/s390x: Use MachineClass->default_nic in the s390x machine
+      hw/sh4: Use MachineClass->default_nic in the sh4 r2d machine
+      hw/char/parallel: Move TYPE_ISA_PARALLEL to the header file
+      hw/i386: Ignore the default parallel port if it has not been compiled into QEMU
+      hw/sparc64/sun4u: Use MachineClass->default_nic and MachineClass->no_parallel
+      tests/qtest/readconfig-test: Check for the availability of USB controllers
+      tests/qtest/usb-hcd-uhci-test: Skip test if UHCI controller is not available
+      tests/qtest/cdrom-test: Fix the test to also work without optional devices
+      tests/qtest/virtio-ccw-test: Remove superfluous tests
+      tests/qtest: Check for the availability of virtio-ccw devices before using them
+      tests/qtest/meson.build: Run the net filter tests only with default devices
+      tests/qemu-iotests/172: Run QEMU with -vga none and -nic none
+      .gitlab-ci.d/buildtest.yml: Run full "make check" with --without-default-devices
+
+ include/hw/boards.h             |  1 +
+ include/hw/char/parallel.h      |  2 ++
+ include/hw/i386/pc.h            |  1 -
+ hw/char/parallel-isa.c          |  2 +-
+ hw/char/parallel.c              |  1 -
+ hw/i386/pc.c                    |  3 ++-
+ hw/i386/pc_piix.c               |  7 +++++--
+ hw/i386/pc_q35.c                |  8 ++++----
+ hw/isa/isa-superio.c            |  3 ++-
+ hw/ppc/e500.c                   |  3 ++-
+ hw/ppc/e500plat.c               |  1 +
+ hw/ppc/mac_newworld.c           |  4 +++-
+ hw/ppc/mac_oldworld.c           |  4 +++-
+ hw/ppc/mpc8544ds.c              |  1 +
+ hw/ppc/ppc440_bamboo.c          |  4 +++-
+ hw/ppc/prep.c                   |  4 +++-
+ hw/s390x/s390-virtio-ccw.c      |  4 +++-
+ hw/sh4/r2d.c                    |  4 +++-
+ hw/sparc64/sun4u.c              | 11 ++++++++---
+ softmmu/memory.c                |  4 +++-
+ softmmu/vl.c                    | 20 ++++++++++++++++++-
+ tests/qtest/cdrom-test.c        | 16 ++++++++++++---
+ tests/qtest/device-plug-test.c  |  9 ++++++++-
+ tests/qtest/readconfig-test.c   |  5 ++++-
+ tests/qtest/usb-hcd-uhci-test.c |  5 +++++
+ tests/qtest/virtio-ccw-test.c   | 43 +++++++++++++----------------------------
+ .gitlab-ci.d/buildtest.yml      |  2 +-
+ hw/i386/Kconfig                 |  2 +-
+ tests/avocado/acpi-bits.py      |  8 ++++----
+ tests/qemu-iotests/172          |  2 +-
+ tests/qtest/meson.build         | 12 ++++++------
+ 31 files changed, 125 insertions(+), 71 deletions(-)
 
 
