@@ -2,63 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540C470C076
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 15:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B494A70C0A9
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 16:03:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q15yz-0004B9-LS; Mon, 22 May 2023 09:53:53 -0400
+	id 1q167I-0006Ib-WC; Mon, 22 May 2023 10:02:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q15yw-0004B0-TS
- for qemu-devel@nongnu.org; Mon, 22 May 2023 09:53:51 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q15yu-0006dF-4b
- for qemu-devel@nongnu.org; Mon, 22 May 2023 09:53:50 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QPzMG1w6Xz6J6xl;
- Mon, 22 May 2023 21:49:14 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 22 May
- 2023 14:53:43 +0100
-Date: Mon, 22 May 2023 14:53:42 +0100
-To: Markus Armbruster <armbru@redhat.com>
-CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, Ira Weiny
- <ira.weiny@intel.com>, Alison Schofield <alison.schofield@intel.com>, Michael
- Roth <michael.roth@amd.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud?=
- =?ISO-8859-1?Q?=E9?= <philmd@linaro.org>, Dave Jiang <dave.jiang@intel.com>,
- "Daniel P . =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, Thomas
- Huth <thuth@redhat.com>
-Subject: Re: [PATCH v5 5/7] hw/cxl/events: Add injection of General Media
- Events
-Message-ID: <20230522145313.000024df@huawei.com>
-In-Reply-To: <20230522135737.000079c4@Huawei.com>
-References: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
- <20230423165140.16833-6-Jonathan.Cameron@huawei.com>
- <87lehgq1cy.fsf@pond.sub.org> <20230522135737.000079c4@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q167H-0006IT-AG
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 10:02:27 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q167E-000886-Vv
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 10:02:26 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1ae87bdc452so20106765ad.2
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 07:02:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684764143; x=1687356143;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=G15aZEZjYPBd9Rlthi4KqUFx99nujyjNkZz3Gas5GTU=;
+ b=wDAGQo1LSCJQ2OCTcvrRc0xmpDVSHiGAJY8209/Zz3zMeUUog6RYPEtiAzXI2+1Zo7
+ Br44ogD+CbeIaDApWM3IQuirKkmqt8nW+AugEBMlPxxbDSkJtVs2kWXbNTrm6AJ5qBoE
+ r5ZDDcgxYldH/cmtOxrXcPQx779FHt3ImNwKUhMzUhqmb8Pu8xPAH1S1UU8rSPubcCdT
+ ayJ34NZTekHAEQGA3Ubj/ndHjZfXXdCQlYUJ8uEAbY0UvjNoWwSVzIYZR/SRBPSQrONp
+ KnCEC8JZSSwKTswWU2aRYh+wbMAPsdOqNsaLoAlr7cukBk8/5KVWvUmoBL+wYa/DlvMl
+ RUGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684764143; x=1687356143;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=G15aZEZjYPBd9Rlthi4KqUFx99nujyjNkZz3Gas5GTU=;
+ b=VHcf3CbVUiMMF8+ClY5M0L+R+qQDMle1RQOkej6zL7/aBDFIUNQw74jsjIRRZEPVth
+ xmmDh+fGbxaQ/Mq1aTXsXoaWrjY5Qvg6bFHP4pGXdvNI/Xd9mq+HL8U6Vc1PoJ/myG4c
+ n5+XB/efigQm2NYF7fNuIOL/Z3Sn8yQ+HTrDLGfHyoL5VvDZjygM1BxDB2YMRhX/V7Tf
+ aRfDMFgG4+edUA+MwFuzCDFI7tYtfoHjNCjDeJ2YpGDZRY8lrJehu7wBVwbrKr0gredo
+ IIpypoRZzgujXITrM6RFZyTmBlVv7sRmCfaRhVH9+lASVLn6TXP7AWllAYgj5STHV/7Y
+ ZRYg==
+X-Gm-Message-State: AC+VfDypl6b9cy4XPgFqOVaW3JfDRV/XSPYUGWTDDw30SdDVSQ6WykmJ
+ tpW2zTgEPNvkKoyuXqj09CtpVg==
+X-Google-Smtp-Source: ACHHUZ5VVLPuHiNYUz6sJdv7reou7F0XYK3Tnomr8TWlJHDQ+elv9Y7L6+WeZ+YHpcnJMD6DEVvmxg==
+X-Received: by 2002:a17:903:234a:b0:1ac:85b0:1bdb with SMTP id
+ c10-20020a170903234a00b001ac85b01bdbmr15699367plh.55.1684764143084; 
+ Mon, 22 May 2023 07:02:23 -0700 (PDT)
+Received: from [10.0.14.188] (static-66-243-253-154.ellensburg.fairpoint.net.
+ [66.243.253.154]) by smtp.gmail.com with ESMTPSA id
+ bj6-20020a170902850600b001a183ade911sm4917349plb.56.2023.05.22.07.02.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 07:02:22 -0700 (PDT)
+Message-ID: <6be5313c-db9c-4fea-5b32-c0231977d2f8@linaro.org>
+Date: Mon, 22 May 2023 07:02:20 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 0/7] Python fixes and related patches
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230520190632.7491-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230520190632.7491-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,165 +90,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 22 May 2023 13:57:37 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On 5/20/23 12:06, Paolo Bonzini wrote:
+> The following changes since commit f0b95ab6b8192d84338496a0b6fd8f2c08a4a3a8:
+> 
+>    Merge tag 'for-upstream' ofhttps://gitlab.com/bonzini/qemu  into staging (2023-05-18 07:52:12 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/bonzini/qemu.git  tags/for-upstream-urgent
+> 
+> for you to fetch changes up to 4b424c757188f7a47630a4d8edcf4ad9f19255bc:
+> 
+>    scripts: make sure scripts are invoked via $(PYTHON) (2023-05-19 20:40:29 +0200)
+> 
+> ----------------------------------------------------------------
+> Fixes for Python venv changes
 
-> On Mon, 22 May 2023 09:19:57 +0200
-> Markus Armbruster <armbru@redhat.com> wrote:
-> 
-> > Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
-> >   
-> > > From: Ira Weiny <ira.weiny@intel.com>
-> > >
-> > > To facilitate testing provide a QMP command to inject a general media
-> > > event.  The event can be added to the log specified.
-> > >
-> > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>    
-> > 
-> > [...]
-> >   
-> > > diff --git a/qapi/cxl.json b/qapi/cxl.json
-> > > index ca3af3f0b2..9dcd308a49 100644
-> > > --- a/qapi/cxl.json
-> > > +++ b/qapi/cxl.json
-> > > @@ -5,6 +5,56 @@
-> > >  # = CXL devices
-> > >  ##
-> > >  
-> > > +##
-> > > +# @CxlEventLog:
-> > > +#
-> > > +# CXL has a number of separate event logs for different types of event.    
-> > 
-> > types of events
-> >   
-> > > +# Each such event log is handled and signaled independently.
-> > > +#
-> > > +# @informational: Information Event Log
-> > > +# @warning: Warning Event Log
-> > > +# @failure: Failure Event Log
-> > > +# @fatal: Fatal Event Log    
-> > 
-> > Are these proper nouns?  If not, the words should not be capitalized.  
-> 
-> By your definition below of them being capitalized in the CXL spec then
-> yes, they are all proper nouns.
-> 
-> 
-> ...
-> 
-> > > +#
-> > > +# Inject an event record for a General Media Event (CXL r3.0 8.2.9.2.1.1)    
-> > 
-> > What's "CXL r3.0", and where could a reader find it?  
-> 
-> We have docs in docs/system/devices/cxl.rst that include the consortium
-> website which has download links on the front page.  I'm not sure we want to
-> have lots of references to the URL spread throughout QEMU.  I can add one
-> somewhere in cxl.json if you think it is important to have one here as well.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-FWIW I tried adding some top level docs by adding stuff directly under the
- = CXL devices 
-at the top of the file and building the html docs.
 
-Looks fine in the actual page, but is picked up in the index generation as
-a heading we should be able to link to alongside the CxlEventLog and
-command definitions.
+r~
 
-So, I'll not do that for now.
-
-Jonathan
-
-> 
-> > 
-> > Aside: the idea of a document with numbered section nested six levels
-> > deep is kind of horrifying :)  
-> 
-> Agreed!
-> 
-> > 
-> > Again, capitalize "General Media Event" only if it's a proper noun.  If
-> > "CXL r3.0" capitalizes it this way, it is.  
-> 
-> It does capitalize it.
-> 
-> ...
-> 
-> >   
-> > > +# @flags: header flags    
-> > 
-> > Either specify the header flags here, or point to specification.  
-> 
-> Added a reference - same reason as below, the contents is being added to
-> with each version and we don't want to bake what is supported in this
-> interface if we can avoid it.
-> 
-> >   
-> > > +# @physaddr: Physical Address    
-> > 
-> > Perhaps "Guest physical address"
-> > 
-> > Address of what?  
-> 
-> Changed already based on Phillipe's feedback on v6 to
-> Physical address (relative to @path device)
-> 
-> In CXL terms it's a Device Physical Address (DPA) which
-> are independent of the host (or guest) physical addresses with
-> runtime controllable mappings.
-> I'll change it to 
-> 
-> @dpa: Device Physical Address (relative to @path device)
-> (and Device Physical Address is capitalized like that in the CXL spec)
-> 
-> > 
-> > We have no consistent naming convention for guest physical addresses.  I
-> > see @addr, @memaddr, @gpa.  Let's not add yet another name for the same
-> > thing without need.  
-> 
-> It's none of the above (except may addr which is so vague)
-> 
-> I'll change to dpa.
-> 
-> Also added a note that some of the lower bits encode flags
-> Not this is probably why the spec uses a different name - Physical
-> Address  to distinguish this from DPA - I'll keep that naming in the
-> implementation of the record, but it's not needed in the injection
-> interface where I think DPA is less confusing.
-> 
-> >   
-> > > +# @descriptor: Descriptor    
-> > 
-> > No.  
-> 
-> Ok this indeed ended up sparse.
-> 
-> It is a tricky balance as I don't think it makes sense to just
-> duplicate large chunks of the spec. 
-> I'll have a go at summarizing what sort of things are in each.
-> As I mention below, we could break, these down fully at the cost
-> of constant updates as the CXL spec evolves to add new subfields
-> or values for existing fields.  This one for example currently has
-> 3 bits, Uncorrectable Event, Threshold Event, Poison List Overflow event.
-> The next one currently has 3 bits defined as well, but there are 3 more
-> queued up for inclusion.
-> 
-> Realistically no one is going to write a descriptor without
-> looking at the specification for the field definitions and understanding
-> the physical geometry of their device (which will be device specific).
-> 
-> I'm fine with tweaking the balance though if you think that makes sense.
-> 
-> Jonathan
-> 
-> 
-> 
-> 
 
 
