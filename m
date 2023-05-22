@@ -2,68 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE8C70BBA1
+	by mail.lfdr.de (Postfix) with ESMTPS id 9611670BBA3
 	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:22:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q13al-0001le-Nv; Mon, 22 May 2023 07:20:43 -0400
+	id 1q13b4-0001nA-LD; Mon, 22 May 2023 07:21:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q13aa-0001jo-IF
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:20:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q13b1-0001mf-DX
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:20:59 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q13aX-00013s-NC
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:20:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684754427;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BMI7CZSXRo3W+b1jK1Xj5yQhN8tN2c5PtJoXQaigiHU=;
- b=gY0H1HbVUhtgoyZ37iLmJvLAAi3pn15aDU/TUas/GA/m/KOQmH4R/oDg2GYt+xl2LBORb0
- G4nO7MfPRui0M3dYwSGyC/IpxUuKa/PX1EQx7aAH5QH6Rni5B+kI37RToDWim7X1XXEwnd
- MfrIa56Sc2Q+t9MB+EhErRe5WtTDhcA=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-15-Qa0HyNxCO2WB2booW-_ssg-1; Mon, 22 May 2023 07:20:24 -0400
-X-MC-Unique: Qa0HyNxCO2WB2booW-_ssg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C9161C0783E;
- Mon, 22 May 2023 11:20:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E197C57961;
- Mon, 22 May 2023 11:20:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4779221E66E5; Mon, 22 May 2023 13:20:22 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Peter Maydell <peter.maydell@linaro.org>,
- Eric Blake <eblake@redhat.com>
-Subject: [PULL v2 4/4] docs/interop: Delete qmp-intro.txt
-Date: Mon, 22 May 2023 13:20:22 +0200
-Message-Id: <20230522112022.2075140-5-armbru@redhat.com>
-In-Reply-To: <20230522112022.2075140-1-armbru@redhat.com>
-References: <20230522112022.2075140-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q13ax-0001CV-FA
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:20:59 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QPw2c0L4yz67vYh;
+ Mon, 22 May 2023 19:19:36 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 22 May
+ 2023 12:20:51 +0100
+Date: Mon, 22 May 2023 12:20:50 +0100
+To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>
+CC: <linux-cxl@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, "Michael
+ Roth" <michael.roth@amd.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, Dave Jiang <dave.jiang@intel.com>, Markus Armbruster
+ <armbru@redhat.com>, "Daniel P . =?ISO-8859-1?Q?Berrang=E9?="
+ <berrange@redhat.com>, Eric Blake <eblake@redhat.com>, Mike Maslenkin
+ <mike.maslenkin@gmail.com>, =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau
+ <marcandre.lureau@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v6 2/4] hw/cxl: QMP based poison injection support
+Message-ID: <20230522122037.0000542c@huawei.com>
+In-Reply-To: <20230519141803.29713-3-Jonathan.Cameron@huawei.com>
+References: <20230519141803.29713-1-Jonathan.Cameron@huawei.com>
+ <20230519141803.29713-3-Jonathan.Cameron@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,179 +69,352 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+On Fri, 19 May 2023 15:18:01 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-qmp-intro.txt is quite small and provides very little information
-that isn't already in the documentation elsewhere.  Fold the example
-command lines into qemu-options.hx, and delete the now-unneeded plain
-text document.
+> Inject poison using qmp command cxl-inject-poison to add an entry to the
+> poison list.
+> 
+> For now, the poison is not returned CXL.mem reads, but only via the
+> mailbox command Get Poison List. So a normal memory read to an address
+> that is on the poison list will not yet result in a synchronous exception
+> (and similar for partial cacheline writes).
+> That is left for a future patch.
+> 
+> See CXL rev 3.0, sec 8.2.9.8.4.1 Get Poison list (Opcode 4300h)
+> 
+> Kernel patches to use this interface here:
+> https://lore.kernel.org/linux-cxl/cover.1665606782.git.alison.schofield@intel.com/
+> 
+> To inject poison using qmp (telnet to the qmp port)
+> { "execute": "qmp_capabilities" }
+> 
+> { "execute": "cxl-inject-poison",
+>     "arguments": {
+>          "path": "/machine/peripheral/cxl-pmem0",
+>          "start": 2048,
+>          "length": 256
+>     }
+> }
+> 
+> Adjusted to select a device on your machine.
+> 
+> Note that the poison list supported is kept short enough to avoid the
+> complexity of state machine that is needed to handle the MORE flag.
+> 
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+For reference.  Markus Armbruster gave some feedback on v5 that crossed this this.
+I'll incorporate into v7.
 
-While we're touching the qemu-options.hx documentation text,
-wordsmith it a little bit and improve the rST formatting.
+Thanks,
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230515162245.3964307-4-peter.maydell@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- docs/interop/qmp-intro.txt | 88 --------------------------------------
- qemu-options.hx            | 28 +++++++++---
- 2 files changed, 22 insertions(+), 94 deletions(-)
- delete mode 100644 docs/interop/qmp-intro.txt
-
-diff --git a/docs/interop/qmp-intro.txt b/docs/interop/qmp-intro.txt
-deleted file mode 100644
-index 1c745a7af0..0000000000
---- a/docs/interop/qmp-intro.txt
-+++ /dev/null
-@@ -1,88 +0,0 @@
--                          QEMU Machine Protocol
--                          =====================
--
--Introduction
--------------
--
--The QEMU Machine Protocol (QMP) allows applications to operate a
--QEMU instance.
--
--QMP is JSON[1] based and features the following:
--
--- Lightweight, text-based, easy to parse data format
--- Asynchronous messages support (ie. events)
--- Capabilities Negotiation
--
--For detailed information on QMP's usage, please, refer to the following files:
--
--o qmp-spec.txt      QEMU Machine Protocol current specification
--o qemu-qmp-ref.html QEMU QMP commands and events (auto-generated at build-time)
--
--[1] https://www.json.org
--
--Usage
-------
--
--You can use the -qmp option to enable QMP. For example, the following
--makes QMP available on localhost port 4444:
--
--$ qemu [...] -qmp tcp:localhost:4444,server=on,wait=off
--
--However, for more flexibility and to make use of more options, the -mon
--command-line option should be used. For instance, the following example
--creates one HMP instance (human monitor) on stdio and one QMP instance
--on localhost port 4444:
--
--$ qemu [...] -chardev stdio,id=mon0 -mon chardev=mon0,mode=readline \
--             -chardev socket,id=mon1,host=localhost,port=4444,server=on,wait=off \
--             -mon chardev=mon1,mode=control,pretty=on
--
--Please, refer to QEMU's manpage for more information.
--
--Simple Testing
----------------
--
--To manually test QMP one can connect with telnet and issue commands by hand:
--
--$ telnet localhost 4444
--Trying 127.0.0.1...
--Connected to localhost.
--Escape character is '^]'.
--{
--    "QMP": {
--        "version": {
--            "qemu": {
--                "micro": 0,
--                "minor": 0,
--                "major": 3
--            },
--            "package": "v3.0.0"
--        },
--        "capabilities": [
--            "oob"
--        ]
--    }
--}
--
--{ "execute": "qmp_capabilities" }
--{
--    "return": {
--    }
--}
--
--{ "execute": "query-status" }
--{
--    "return": {
--        "status": "prelaunch", 
--        "singlestep": false, 
--        "running": false
--    }
--}
--
--Please refer to docs/interop/qemu-qmp-ref.* for a complete command
--reference, generated from qapi/qapi-schema.json.
--
--QMP wiki page
---------------
--
--https://wiki.qemu.org/QMP
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 30690d9c3f..e4566149ee 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4170,26 +4170,42 @@ DEF("qmp", HAS_ARG, QEMU_OPTION_qmp, \
-     QEMU_ARCH_ALL)
- SRST
- ``-qmp dev``
--    Like -monitor but opens in 'control' mode.
-+    Like ``-monitor`` but opens in 'control' mode. For example, to make
-+    QMP available on localhost port 4444::
-+
-+        -qmp tcp:localhost:4444,server=on,wait=off
-+
-+    Not all options are configurable via this syntax; for maximum
-+    flexibility use the ``-mon`` option and an accompanying ``-chardev``.
-+
- ERST
- DEF("qmp-pretty", HAS_ARG, QEMU_OPTION_qmp_pretty, \
-     "-qmp-pretty dev like -qmp but uses pretty JSON formatting\n",
-     QEMU_ARCH_ALL)
- SRST
- ``-qmp-pretty dev``
--    Like -qmp but uses pretty JSON formatting.
-+    Like ``-qmp`` but uses pretty JSON formatting.
- ERST
+Jonathan
  
- DEF("mon", HAS_ARG, QEMU_OPTION_mon, \
-     "-mon [chardev=]name[,mode=readline|control][,pretty[=on|off]]\n", QEMU_ARCH_ALL)
- SRST
- ``-mon [chardev=]name[,mode=readline|control][,pretty[=on|off]]``
--    Setup monitor on chardev name. ``mode=control`` configures 
--    a QMP monitor (a JSON RPC-style protocol) and it is not the
--    same as HMP, the human monitor that has a "(qemu)" prompt.
--    ``pretty`` is only valid when ``mode=control``, 
-+    Set up a monitor connected to the chardev ``name``.
-+    QEMU supports two monitors: the Human Monitor Protocol
-+    (HMP; for human interaction), and the QEMU Monitor Protocol
-+    (QMP; a JSON RPC-style protocol).
-+    The default is HMP; ``mode=control`` selects QMP instead.
-+    ``pretty`` is only valid when ``mode=control``,
-     turning on JSON pretty printing to ease
-     human reading and debugging.
-+
-+    For example::
-+
-+      -chardev socket,id=mon1,host=localhost,port=4444,server=on,wait=off \
-+      -mon chardev=mon1,mode=control,pretty=on
-+
-+    enables the QMP monitor on localhost port 4444 with pretty-printing.
- ERST
- 
- DEF("debugcon", HAS_ARG, QEMU_OPTION_debugcon, \
--- 
-2.39.2
+> ---
+>  hw/cxl/cxl-mailbox-utils.c  | 90 +++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3.c          | 56 +++++++++++++++++++++++
+>  hw/mem/cxl_type3_stubs.c    |  6 +++
+>  include/hw/cxl/cxl.h        |  1 +
+>  include/hw/cxl/cxl_device.h | 20 +++++++++
+>  qapi/cxl.json               | 18 ++++++++
+>  6 files changed, 191 insertions(+)
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 702e16ca20..1f74b26ea2 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -62,6 +62,8 @@ enum {
+>          #define GET_PARTITION_INFO     0x0
+>          #define GET_LSA       0x2
+>          #define SET_LSA       0x3
+> +    MEDIA_AND_POISON = 0x43,
+> +        #define GET_POISON_LIST        0x0
+>  };
+>  
+>  /* 8.2.8.4.5.1 Command Return Codes */
+> @@ -295,6 +297,10 @@ static CXLRetCode cmd_identify_memory_device(struct cxl_cmd *cmd,
+>      stq_le_p(&id->persistent_capacity, cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
+>      stq_le_p(&id->volatile_capacity, cxl_dstate->vmem_size / CXL_CAPACITY_MULTIPLIER);
+>      stl_le_p(&id->lsa_size, cvc->get_lsa_size(ct3d));
+> +    /* 256 poison records */
+> +    st24_le_p(id->poison_list_max_mer, 256);
+> +    /* No limit - so limited by main poison record limit */
+> +    stw_le_p(&id->inject_poison_limit, 0);
+>  
+>      *len = sizeof(*id);
+>      return CXL_MBOX_SUCCESS;
+> @@ -384,6 +390,88 @@ static CXLRetCode cmd_ccls_set_lsa(struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> +/*
+> + * This is very inefficient, but good enough for now!
+> + * Also the payload will always fit, so no need to handle the MORE flag and
+> + * make this stateful. We may want to allow longer poison lists to aid
+> + * testing that kernel functionality.
+> + */
+> +static CXLRetCode cmd_media_get_poison_list(struct cxl_cmd *cmd,
+> +                                            CXLDeviceState *cxl_dstate,
+> +                                            uint16_t *len)
+> +{
+> +    struct get_poison_list_pl {
+> +        uint64_t pa;
+> +        uint64_t length;
+> +    } QEMU_PACKED;
+> +
+> +    struct get_poison_list_out_pl {
+> +        uint8_t flags;
+> +        uint8_t rsvd1;
+> +        uint64_t overflow_timestamp;
+> +        uint16_t count;
+> +        uint8_t rsvd2[0x14];
+> +        struct {
+> +            uint64_t addr;
+> +            uint32_t length;
+> +            uint32_t resv;
+> +        } QEMU_PACKED records[];
+> +    } QEMU_PACKED;
+> +
+> +    struct get_poison_list_pl *in = (void *)cmd->payload;
+> +    struct get_poison_list_out_pl *out = (void *)cmd->payload;
+> +    CXLType3Dev *ct3d = container_of(cxl_dstate, CXLType3Dev, cxl_dstate);
+> +    uint16_t record_count = 0, i = 0;
+> +    uint64_t query_start, query_length;
+> +    CXLPoisonList *poison_list = &ct3d->poison_list;
+> +    CXLPoison *ent;
+> +    uint16_t out_pl_len;
+> +
+> +    query_start = ldq_le_p(&in->pa);
+> +    /* 64 byte alignemnt required */
+> +    if (query_start & 0x3f) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +    query_length = ldq_le_p(&in->length) * CXL_CACHE_LINE_SIZE;
+> +
+> +    QLIST_FOREACH(ent, poison_list, node) {
+> +        /* Check for no overlap */
+> +        if (ent->start >= query_start + query_length ||
+> +            ent->start + ent->length <= query_start) {
+> +            continue;
+> +        }
+> +        record_count++;
+> +    }
+> +    out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
+> +    assert(out_pl_len <= CXL_MAILBOX_MAX_PAYLOAD_SIZE);
+> +
+> +    memset(out, 0, out_pl_len);
+> +    QLIST_FOREACH(ent, poison_list, node) {
+> +        uint64_t start, stop;
+> +
+> +        /* Check for no overlap */
+> +        if (ent->start >= query_start + query_length ||
+> +            ent->start + ent->length <= query_start) {
+> +            continue;
+> +        }
+> +
+> +        /* Deal with overlap */
+> +        start = MAX(ROUND_DOWN(ent->start, 64ull), query_start);
+> +        stop = MIN(ROUND_DOWN(ent->start, 64ull) + ent->length,
+> +                   query_start + query_length);
+> +        stq_le_p(&out->records[i].addr, start | (ent->type & 0x7));
+> +        stl_le_p(&out->records[i].length, (stop - start) / CXL_CACHE_LINE_SIZE);
+> +        i++;
+> +    }
+> +    if (ct3d->poison_list_overflowed) {
+> +        out->flags = (1 << 1);
+> +        stq_le_p(&out->overflow_timestamp, ct3d->poison_list_overflow_ts);
+> +    }
+> +    stw_le_p(&out->count, record_count);
+> +    *len = out_pl_len;
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+>  #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+>  #define IMMEDIATE_DATA_CHANGE (1 << 2)
+>  #define IMMEDIATE_POLICY_CHANGE (1 << 3)
+> @@ -411,6 +499,8 @@ static struct cxl_cmd cxl_cmd_set[256][256] = {
+>      [CCLS][GET_LSA] = { "CCLS_GET_LSA", cmd_ccls_get_lsa, 8, 0 },
+>      [CCLS][SET_LSA] = { "CCLS_SET_LSA", cmd_ccls_set_lsa,
+>          ~0, IMMEDIATE_CONFIG_CHANGE | IMMEDIATE_DATA_CHANGE },
+> +    [MEDIA_AND_POISON][GET_POISON_LIST] = { "MEDIA_AND_POISON_GET_POISON_LIST",
+> +        cmd_media_get_poison_list, 16, 0 },
+>  };
+>  
+>  void cxl_process_mailbox(CXLDeviceState *cxl_dstate)
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index 2adacbd01b..ab600735eb 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -947,6 +947,62 @@ static void set_lsa(CXLType3Dev *ct3d, const void *buf, uint64_t size,
+>       */
+>  }
+>  
+> +void cxl_set_poison_list_overflowed(CXLType3Dev *ct3d)
+> +{
+> +        ct3d->poison_list_overflowed = true;
+> +        ct3d->poison_list_overflow_ts =
+> +            cxl_device_get_timestamp(&ct3d->cxl_dstate);
+> +}
+> +
+> +void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
+> +                           Error **errp)
+> +{
+> +    Object *obj = object_resolve_path(path, NULL);
+> +    CXLType3Dev *ct3d;
+> +    CXLPoison *p;
+> +
+> +    if (length % 64) {
+> +        error_setg(errp, "Poison injection must be in multiples of 64 bytes");
+> +        return;
+> +    }
+> +    if (start % 64) {
+> +        error_setg(errp, "Poison start address must be 64 byte aligned");
+> +        return;
+> +    }
+> +    if (!obj) {
+> +        error_setg(errp, "Unable to resolve path");
+> +        return;
+> +    }
+> +    if (!object_dynamic_cast(obj, TYPE_CXL_TYPE3)) {
+> +        error_setg(errp, "Path does not point to a CXL type 3 device");
+> +        return;
+> +    }
+> +
+> +    ct3d = CXL_TYPE3(obj);
+> +
+> +    QLIST_FOREACH(p, &ct3d->poison_list, node) {
+> +        if (((start >= p->start) && (start < p->start + p->length)) ||
+> +            ((start + length > p->start) &&
+> +             (start + length <= p->start + p->length))) {
+> +            error_setg(errp, "Overlap with existing poisoned region not supported");
+> +            return;
+> +        }
+> +    }
+> +
+> +    if (ct3d->poison_list_cnt == CXL_POISON_LIST_LIMIT) {
+> +        cxl_set_poison_list_overflowed(ct3d);
+> +        return;
+> +    }
+> +
+> +    p = g_new0(CXLPoison, 1);
+> +    p->length = length;
+> +    p->start = start;
+> +    p->type = CXL_POISON_TYPE_INTERNAL; /* Different from injected via the mbox */
+> +
+> +    QLIST_INSERT_HEAD(&ct3d->poison_list, p, node);
+> +    ct3d->poison_list_cnt++;
+> +}
+> +
+>  /* For uncorrectable errors include support for multiple header recording */
+>  void qmp_cxl_inject_uncorrectable_errors(const char *path,
+>                                           CXLUncorErrorRecordList *errors,
+> diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
+> index d574c58f9a..fd1166a610 100644
+> --- a/hw/mem/cxl_type3_stubs.c
+> +++ b/hw/mem/cxl_type3_stubs.c
+> @@ -3,6 +3,12 @@
+>  #include "qapi/error.h"
+>  #include "qapi/qapi-commands-cxl.h"
+>  
+> +void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
+> +                           Error **errp)
+> +{
+> +    error_setg(errp, "CXL Type 3 support is not compiled in");
+> +}
+> +
+>  void qmp_cxl_inject_uncorrectable_errors(const char *path,
+>                                           CXLUncorErrorRecordList *errors,
+>                                           Error **errp)
+> diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
+> index c453983e83..56c9e7676e 100644
+> --- a/include/hw/cxl/cxl.h
+> +++ b/include/hw/cxl/cxl.h
+> @@ -18,6 +18,7 @@
+>  #include "cxl_component.h"
+>  #include "cxl_device.h"
+>  
+> +#define CXL_CACHE_LINE_SIZE 64
+>  #define CXL_COMPONENT_REG_BAR_IDX 0
+>  #define CXL_DEVICE_REG_BAR_IDX 2
+>  
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index 02befda0f6..32c234ea91 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -242,6 +242,18 @@ typedef struct CXLError {
+>  
+>  typedef QTAILQ_HEAD(, CXLError) CXLErrorList;
+>  
+> +typedef struct CXLPoison {
+> +    uint64_t start, length;
+> +    uint8_t type;
+> +#define CXL_POISON_TYPE_EXTERNAL 0x1
+> +#define CXL_POISON_TYPE_INTERNAL 0x2
+> +#define CXL_POISON_TYPE_INJECTED 0x3
+> +    QLIST_ENTRY(CXLPoison) node;
+> +} CXLPoison;
+> +
+> +typedef QLIST_HEAD(, CXLPoison) CXLPoisonList;
+> +#define CXL_POISON_LIST_LIMIT 256
+> +
+>  struct CXLType3Dev {
+>      /* Private */
+>      PCIDevice parent_obj;
+> @@ -264,6 +276,12 @@ struct CXLType3Dev {
+>  
+>      /* Error injection */
+>      CXLErrorList error_list;
+> +
+> +    /* Poison Injection - cache */
+> +    CXLPoisonList poison_list;
+> +    unsigned int poison_list_cnt;
+> +    bool poison_list_overflowed;
+> +    uint64_t poison_list_overflow_ts;
+>  };
+>  
+>  #define TYPE_CXL_TYPE3 "cxl-type3"
+> @@ -289,4 +307,6 @@ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+>  
+>  uint64_t cxl_device_get_timestamp(CXLDeviceState *cxlds);
+>  
+> +void cxl_set_poison_list_overflowed(CXLType3Dev *ct3d);
+> +
+>  #endif
+> diff --git a/qapi/cxl.json b/qapi/cxl.json
+> index b21c9b4c1c..dcf9e7b715 100644
+> --- a/qapi/cxl.json
+> +++ b/qapi/cxl.json
+> @@ -5,6 +5,24 @@
+>  # = CXL devices
+>  ##
+>  
+> +##
+> +# @cxl-inject-poison:
+> +#
+> +# Poison records indicate that a CXL memory device knows that a particular
+> +# memory region may be corrupted. This may be because of locally detected
+> +# errors (e.g. ECC failure) or poisoned writes received from other components
+> +# in the system. This injection mechanism enables testing of the OS handling
+> +# of poison records which may be queried via the CXL mailbox.
+> +#
+> +# @path: CXL type 3 device canonical QOM path
+> +# @start: Start address - must be 64 byte aligned.
+> +# @length: Length of poison to inject - must be a multiple of 64 bytes.
+> +#
+> +# Since: 8.1
+> +##
+> +{ 'command': 'cxl-inject-poison',
+> +  'data': { 'path': 'str', 'start': 'uint64', 'length': 'uint64' }}
+> +
+>  ##
+>  # @CxlUncorErrorType:
+>  #
 
 
