@@ -2,68 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A668E70BCF8
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB60E70BD39
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:15:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q14M3-0001MK-Vh; Mon, 22 May 2023 08:09:36 -0400
+	id 1q14Q6-0003yk-64; Mon, 22 May 2023 08:13:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q14Lp-0001Ea-Ps
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:09:22 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q14Q2-0003yK-MO
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:13:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q14Lm-0003WM-Oh
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:09:21 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QPx2h4R23z6J6dY;
- Mon, 22 May 2023 20:04:44 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 22 May
- 2023 13:09:13 +0100
-Date: Mon, 22 May 2023 13:09:12 +0100
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-CC: Richard Henderson <richard.henderson@linaro.org>, BALATON Zoltan
- <balaton@eik.bme.hu>, Peter Maydell <peter.maydell@linaro.org>,
- <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>,
- "Ira Weiny" <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, "Dave
- Jiang" <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, "Daniel
- P . =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
- Huth" <thuth@redhat.com>
-Subject: Re: [PATCH v6 1/4] bswap: Add the ability to store to an unaligned
- 24 bit field
-Message-ID: <20230522130912.0000555f@Huawei.com>
-In-Reply-To: <06481704-adc6-bc63-e79d-34ac87484810@linaro.org>
-References: <20230519141803.29713-1-Jonathan.Cameron@huawei.com>
- <20230519141803.29713-2-Jonathan.Cameron@huawei.com>
- <CAFEAcA_kjm+k7SEEnz6uw+cOJyXSoUqg2wCQ5h+W-eTfwxD=FA@mail.gmail.com>
- <04b53845-b54f-458f-bc6f-f5aed86cdd06@eik.bme.hu>
- <4dd8a802-9a8c-77ab-6355-38910eefe19e@linaro.org>
- <06481704-adc6-bc63-e79d-34ac87484810@linaro.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q14Q0-0004ZE-GT
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:13:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684757618;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QV1k4H/wDVVFm/Go5OzXEukJIYy1vNrLfnJMs4XiTn8=;
+ b=gEbKylPf3ZlqPRcsUveEZLDIaStDDFlPNvDgIIriv6QekwMRfui6enqDbhMJoZb6YmhY8m
+ MsF+yaWmXw9CoFuSgU2FJJt8mlFNrBBcTv5uk77B3aXJzSSun88sEJocEFH2iUOpjrcVrD
+ 39I+Ph/VR5kgRQnIJFV80ZXVkGcdTTg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-187-PYU0x__jNQ6prcaKMNzTJg-1; Mon, 22 May 2023 08:13:35 -0400
+X-MC-Unique: PYU0x__jNQ6prcaKMNzTJg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4349A800141;
+ Mon, 22 May 2023 12:13:35 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F3F4AC575E2;
+ Mon, 22 May 2023 12:13:34 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C507D21E692E; Mon, 22 May 2023 14:13:33 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,  qemu-devel@nongnu.org,
+ eblake@redhat.com,  eduardo@habkost.net,  berrange@redhat.com,
+ pbonzini@redhat.com,  marcel.apfelbaum@gmail.com,  philmd@linaro.org,
+ antonkuchin@yandex-team.ru,  den-plotnikov@yandex-team.ru
+Subject: Re: [PATCH v7 1/4] qapi/qdev.json: unite DEVICE_* event data into
+ single structure
+References: <20230421103207.845847-1-vsementsov@yandex-team.ru>
+ <20230421103207.845847-2-vsementsov@yandex-team.ru>
+ <20230518160434-mutt-send-email-mst@kernel.org>
+ <87a5xwogw0.fsf@pond.sub.org>
+ <0b692f6f-4d9a-60be-e1c0-9aa0f7869eed@yandex-team.ru>
+Date: Mon, 22 May 2023 14:13:33 +0200
+In-Reply-To: <0b692f6f-4d9a-60be-e1c0-9aa0f7869eed@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Mon, 22 May 2023 14:43:07 +0300")
+Message-ID: <87h6s4k1hu.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,77 +83,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 20 May 2023 19:08:22 +0200
-Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-> On 20/5/23 17:15, Richard Henderson wrote:
-> > On 5/20/23 06:15, BALATON Zoltan wrote: =20
-> >> On Sat, 20 May 2023, Peter Maydell wrote: =20
-> >>> On Fri, 19 May 2023 at 15:19, Jonathan Cameron via
-> >>> <qemu-devel@nongnu.org> wrote: =20
-> >>>>
-> >>>> From: Ira Weiny <ira.weiny@intel.com>
-> >>>>
-> >>>> CXL has 24 bit unaligned fields which need to be stored to.=A0 CXL is
-> >>>> specified as little endian.
-> >>>>
-> >>>> Define st24_le_p() and the supporting functions to store such a field
-> >>>> from a 32 bit host native value.
-> >>>>
-> >>>> The use of b, w, l, q as the size specifier is limiting.=A0 So "24" =
-was
-> >>>> used for the size part of the function name. =20
-> >>
-> >> Maybe it's clearer to use 24 but if we want to keep these somewhat=20
-> >> consistent how about using t for Triplet, Three-bytes or Twenty-four? =
-=20
-> >=20
-> > I think it's clearer to use '3'.
-> > When I added 128-bit support I used cpu_ld16_mmu. =20
+> On 22.05.23 12:27, Markus Armbruster wrote:
+>> "Michael S. Tsirkin" <mst@redhat.com> writes:
+>> 
+>>> On Fri, Apr 21, 2023 at 01:32:04PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+>>>> DEVICE_DELETED and DEVICE_UNPLUG_GUEST_ERROR has equal data, let's
+>>>> refactor it to one structure. That also helps to add new events
+>>>> consistently.
+>>>>
+>>>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>>
+>>> Can QAPI maintainers please review this patchset?
+>>> It's been a month.
+>> 
+>> It's been a busy month; sorry for the delay.
+>> 
+>>>> ---
+>>>>   qapi/qdev.json | 39 +++++++++++++++++++++++++++------------
+>>>>   1 file changed, 27 insertions(+), 12 deletions(-)
+>>>>
+>>>> diff --git a/qapi/qdev.json b/qapi/qdev.json
+>>>> index 2708fb4e99..135cd81586 100644
+>>>> --- a/qapi/qdev.json
+>>>> +++ b/qapi/qdev.json
+>>>> @@ -114,16 +114,37 @@
+>>>>   { 'command': 'device_del', 'data': {'id': 'str'} }
+>>>>   
+>>>>   ##
+>>>> -# @DEVICE_DELETED:
+>>>> +# @DeviceAndPath:
+>>>>   #
+>>>> -# Emitted whenever the device removal completion is acknowledged by the guest.
+>>>> -# At this point, it's safe to reuse the specified device ID. Device removal can
+>>>> -# be initiated by the guest or by HMP/QMP commands.
+>>>> +# In events we designate devices by both their ID (if the device has one)
+>>>> +# and QOM path.
+>>>> +#
+>>>> +# Why we need ID? User specify ID in device_add command and in command line
+>>>> +# and expects same identifier in the event data.
+>>>> +#
+>>>> +# Why we need QOM path? Some devices don't have ID and we still want to emit
+>>>> +# events for them.
+>>>> +#
+>>>> +# So, we have a bit of redundancy, as QOM path for device that has ID is
+>>>> +# always /machine/peripheral/ID. But that's hard to change keeping both
+>>>> +# simple interface for most users and universality for the generic case.
+>> 
+>> Hmm.  I appreciate rationale, but I'm not sure it fits here.  Would
+>> readers be worse off if we dropped it?
+>
+> Is there a syntax to add comment to the QAPI structure, which doesn't go into compiled public documentation?
 
-As an aside on that - you didn't update the docs when you added that
-(I was looking for it to copy your regex ;)
+Yes!  qapi-code-gen.rst: "A multi-line comment that starts and ends with
+a ``##`` line is a documentation comment."  All other comments are not,
+and won't be included in generated documentation.
 
->=20
-> There is also ld8u / ld8s / st8.
->=20
-> > I think it would be clearer to not use letters anywhere, and to use=20
-> > units of bytes instead of units of bits (no one can store just a bit),=
-=20
-> > but changing everything is a big job. =20
->=20
-> So:
->=20
-> ldub ->  ld1u,
->=20
-> lduw_le -> ld2u_le,
->=20
-> virtio_stl -> virtio_st4,
->=20
-> stq_be -> st8_be.
->=20
-> Right?
->=20
-> Also we have:
->=20
-> cpu_ld/st_*
-> virtio_ld/st_*
-> ld/st_*_phys
-> ld/st_*_pci_dma
-> address_space_ld/st
->=20
-> While mass-changing, we could use FOO_ld/st_BAR with FOO
-> for API and BAR for API variant (endian, mmuidx, ra, ...):
->=20
-> So:
->=20
-> ld/st_*_pci_dma -> pci_dma_ld/st_*
->=20
-> for ld/st_*_phys I'm not sure.
+Example: qapi/qapi-schema.json has
+
+    { 'include': 'pragma.json' }
+
+    # Documentation generated with qapi-gen.py is in source order, with
+    # included sub-schemas inserted at the first include directive
+    # (subsequent include directives have no effect).  To get a sane and
+    # stable order, it's best to include each sub-schema just once, or
+    # include it first right here.
+
+    { 'include': 'error.json' }
+
+Not a documentation comment, thus not included in generated
+documentation.
+
+Additionally, TODO sections in documentation comments are omitted from
+generated documentation.  qapi-code-gen.rst again: "TODO" sections are
+not rendered at all (they are for developers, not users of QMP).
+
+> I agree that we don't need this in compiled documentation, but this place in the code really good for the rationale, to avoid starting the discussion from the beginning again.
+
+Saving rationale so we can refer to it later is good.  We tend to use
+commit messages for that.  I'd say use comments when the rationale needs
+to be more visible.
+
+[...]
 
 
