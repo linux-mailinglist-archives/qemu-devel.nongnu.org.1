@@ -2,64 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD0770C4F8
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 20:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC75C70C509
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 20:18:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q19yl-0006Ru-Go; Mon, 22 May 2023 14:09:55 -0400
+	id 1q1A6G-0001Nm-Dh; Mon, 22 May 2023 14:17:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1q19yk-0006Rj-AL
- for qemu-devel@nongnu.org; Mon, 22 May 2023 14:09:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1q19yi-000149-Tp
- for qemu-devel@nongnu.org; Mon, 22 May 2023 14:09:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684778991;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=fqpVYtoOvANJNKZHYEd3/G7WQsLRofvmBgl2UL+zb3o=;
- b=Enf5f39tT8BFe9linW95vl+s3czm4P0XUxkYRQmmqJFfHxm90otfKGgTU12WAtnsbeiZyt
- LPskLzy7qSkb4/8/zFGjT8L80SVCiu3zNfGaAFU76NBZkNq9F2jMNEV31f0ALl8wLOxceD
- 5T4+fNbBA6wcqNgyyadh5TzlIwVXg4I=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-610-B-JNFzLWPr6v6I734-jlbw-1; Mon, 22 May 2023 14:08:41 -0400
-X-MC-Unique: B-JNFzLWPr6v6I734-jlbw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q1A5r-0001N3-MF
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 14:17:19 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q1A5l-0002TJ-9J
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 14:17:14 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DFFE9185A78E;
- Mon, 22 May 2023 18:08:40 +0000 (UTC)
-Received: from kaapi.redhat.com (unknown [10.67.24.15])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 27F1D40D1B60;
- Mon, 22 May 2023 18:08:38 +0000 (UTC)
-From: P J P <ppandit@redhat.com>
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH] vhost: release memory objects in error path
-Date: Mon, 22 May 2023 23:40:21 +0530
-Message-Id: <20230522181021.403585-1-ppandit@redhat.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id EBB3721FE0;
+ Mon, 22 May 2023 18:17:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1684779423; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wCWnhf8K6HLN5QXSLZW1ajHRqXYuDrufG1Y4BbwA/Fk=;
+ b=A+mzSTCibcBGdqRM8g/SBVq62tWzp9DGm9iiAbuw087U7br2EJKRFzLA5Q/rW5sNKnN5Tb
+ 8lt6625c4ZO9FaP3bgPfI9Ennmt/CZ+lcIADtKwtp/mSNBZHm5HJqfv7pLSnRa+1vI9UMg
+ MbR6I0tWUPIpYqsFBsIlNZbRIQTs4Sk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1684779423;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wCWnhf8K6HLN5QXSLZW1ajHRqXYuDrufG1Y4BbwA/Fk=;
+ b=iJBej1CzG574xa9zalZIMT3YdSHRPQhNAS4/KmS1bK/cYdUU8sKFoj+EUoKSOCeMN/D/bv
+ s8fm7SYIY7Ugr3CQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7A2FB13336;
+ Mon, 22 May 2023 18:17:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 6kwrEZ+xa2TyGgAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 22 May 2023 18:17:03 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v4 2/2] meson: Deserialize the man pages and html builds
+In-Reply-To: <79204af5-6aa9-47c5-56ed-5e356b57c10f@redhat.com>
+References: <20230503203947.3417-1-farosas@suse.de>
+ <20230503203947.3417-3-farosas@suse.de>
+ <79204af5-6aa9-47c5-56ed-5e356b57c10f@redhat.com>
+Date: Mon, 22 May 2023 15:17:01 -0300
+Message-ID: <87pm6sut7m.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,57 +86,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-vhost_dev_start function does not release memory objects in case
-of an error. This may crash the guest with:
+> On 5/3/23 22:39, Fabiano Rosas wrote:
+>> For the documentation builds (man pages & manual), we let Sphinx
+>> decide when to rebuild and use a depfile to know when to trigger the
+>> make target.
+>> 
+>> We currently use a trick of having the man pages custom_target take as
+>> input the html pages custom_target object, which causes both targets
+>> to be executed if one of the dependencies has changed. However, having
+>> this at the custom_target level means that the two builds are
+>> effectively serialized.
+>> 
+>> We can eliminate the dependency between the targets by adding a second
+>> depfile for the man pages build, allowing them to be parallelized by
+>> ninja while keeping sphinx in charge of deciding when to rebuild.
+>> 
+>> Since they can now run in parallel, separate the Sphinx cache
+>> directory of the two builds. We need this not only for data
+>> consistency but also because Sphinx writes builder-dependent
+>> environment information to the cache directory (see notes under
+>> smartquotes_excludes in sphinx docs [1]).
+>> 
+>> Note that after this patch the commands `make man` and `make html`
+>> only build the specified target. To keep the old behavior of building
+>> both targets, use `make man html` or `make sphinxdocs`.
+>> 
+>> 1- https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-  stack trace of thread 125653:
-  Program terminated with signal SIGSEGV, Segmentation fault
-  #0  memory_listener_register (qemu-kvm + 0x6cda0f)
-  #1  vhost_dev_start (qemu-kvm + 0x699301)
-  #2  vhost_net_start (qemu-kvm + 0x45b03f)
-  #3  virtio_net_set_status (qemu-kvm + 0x665672)
-  #4  qmp_set_link (qemu-kvm + 0x548fd5)
-  #5  net_vhost_user_event (qemu-kvm + 0x552c45)
-  #6  tcp_chr_connect (qemu-kvm + 0x88d473)
-  #7  tcp_chr_new_client (qemu-kvm + 0x88cf83)
-  #8  tcp_chr_accept (qemu-kvm + 0x88b429)
-  #9  qio_net_listener_channel_func (qemu-kvm + 0x7ac07c)
-  #10 g_main_context_dispatch (libglib-2.0.so.0 + 0x54e2f)
-  ===
+Sorry it took me a while to get back to this, I've been caught in
+downstream work.
 
-Release memory_listener and virtqueue objects in the error path.
+>
+> Unfortunately this breaks CentOS 8, which has an older version of ninja:
+>
+> ninja: error: build.ninja:16369: multiple outputs aren't (yet?) 
+> supported by depslog; bring this up on the mailing list if it affects you
+>
+> This was fixed in ninja 1.10.0.
+>
 
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
----
- hw/virtio/vhost.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+It looks like it would be easier to just wait until all our supported
+build platforms reach this version.
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 23da579ce2..e261ae7c49 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1942,7 +1942,7 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-     r = event_notifier_init(
-         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier, 0);
-     if (r < 0) {
--        return r;
-+        goto fail_vq;
-     }
-     event_notifier_test_and_clear(
-         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
-@@ -2004,6 +2004,9 @@ fail_vq:
-     }
- 
- fail_mem:
-+    if (vhost_dev_has_iommu(hdev)) {
-+        memory_listener_unregister(&hdev->iommu_listener);
-+    }
- fail_features:
-     vdev->vhost_started = false;
-     hdev->started = false;
--- 
-2.40.1
+Is this CentOS 8 or CentOS Stream 8? I believe CentOS Stream 8 would
+drop from our support matrix at the end of this year. And CentOS 8
+should have already dropped no? Due to Stream 9 being released in
+2021. Unless we do not count Stream as a new version over plain CentOS.
 
+For the dates and versions, I'm looking at:
+https://en.wikipedia.org/wiki/CentOS
+https://repology.org/project/ninja/versions
 
