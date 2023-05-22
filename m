@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4523C70C3B0
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A8770C404
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 19:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q18cq-0006L3-AB; Mon, 22 May 2023 12:43:12 -0400
+	id 1q190M-0004Nf-2c; Mon, 22 May 2023 13:07:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q18cn-0006Jg-M9
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:43:09 -0400
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q190J-0004MF-Eo
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 13:07:27 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q18cl-000109-VD
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:43:09 -0400
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-397f10f861eso1302280b6e.0
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 09:43:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q190H-0005Fw-M8
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 13:07:27 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f6094cb2ebso335145e9.3
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 10:07:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1684773786; x=1687365786;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GOYy3bs/AQNdS/l+oVYBJG39Lu7iuY8UB/63FUs/KqI=;
- b=hUQWgdJ9ddwj/8VpA6dBc94K72jN8mzwCdQInBj/GvyQSlsHmJV+VMCPoL8EF5nXbM
- Hvbp5yZEngzPpncLEMl0oFRPodsMJUW3f/1xAWyuRz0hJIeb5Q6NtNVQYiopyyHfvdr7
- wGGmEQjSWAdzBcjytridOAMlR3P4J5NbwGkqetUho8qYK0b/CjLM1LYc1/jfhxwkheG5
- qTSc6Jd/qynMtjPvPx8IU6RfUXRCfjC/baASfskkG2fXvKzU9nVSjF9UVaXA4YOO8+6/
- jE83T+XE+1mfT/YPrmR/u+sTCzxWDWEucd6qD7xq67aAfUgN8RW/1dCb3ppjf/1iBx11
- d58g==
+ d=linaro.org; s=google; t=1684775244; x=1687367244;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TumTCVGWczqfeGY0qofqJIg+NkbqU+f10W6TWIj+B1w=;
+ b=abZgR+rpiiu07lzWW+vU+gDfo8JqgG75CB7vwj47f6bzzVAeNjvxnPwBT9woj9mSXw
+ WGBniQU0GYUp+OCfa/bMoZwJHAW4nv6rQPtQ4DV/arY0cslMKB/KZnC7bBwTcYaAbpEB
+ JLKxYShPFHP59bWipXXr9u37urWe33nArgSVY/fVqfnpAbThAClSeWw0e7Ywa54aE5+u
+ ciPlS5KwiB0TcbgLzlSBTFxKYL6zFz7+kqebNmdGgksWLFJ5YD5omqx5TQMEkhSeh11d
+ 0BACnlGjyGmTOH8ikkk6NK3kfkF1/nACpBKMjrnkcwRmKA2EhdEoBmqS0Zs5Mg9jBgqV
+ dGoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684773786; x=1687365786;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GOYy3bs/AQNdS/l+oVYBJG39Lu7iuY8UB/63FUs/KqI=;
- b=mCw02N4o5mMoH+9Tz/tNFjZq+7FhtBXOy644X6jRXggX54UbMbsVmFpvk/2QE5gh8D
- bcWTE5iXImen7jPn3aN/CbGbmMdDsB+i7I8qy1i0q6WTPKyhxcQbw1Dc4ndq/sZqY3dQ
- 5eMhK/uNZp5U6OAvG3JH8OO/DpYGGOpGCe6O0y2GhH1bObn226r8M5dTmCj2BT2jl/KB
- gNQEJwHX8IXfgqzSP/UcVdgiFOhGktqyN4MCw342ZgOSkubFd4kEXkRVbXPmyLZC2dgl
- Yt0RsItEAsB+vYVW7Kzr/IIyDNc6jx3BVA+df1HdRvwC+C4KZp3xAJuQBDbe0ttM+Jnc
- SmwA==
-X-Gm-Message-State: AC+VfDyTXqI1y/DpFL1f2+NXTwTDG9j+wftM4b+23U9CiaQ/ueKtpv5G
- 4a8G72MX6cMU2N3ObBLwGSaHgQ==
-X-Google-Smtp-Source: ACHHUZ753WmWEwE6L0CQT5uMWY2pvXWVze06fEoF2YYUzooX/qaYpxPCM79x18/VBE2Qj2qHfG+DIg==
-X-Received: by 2002:aca:620b:0:b0:396:1512:6fd1 with SMTP id
- w11-20020aca620b000000b0039615126fd1mr8346568oib.17.1684773786692; 
- Mon, 22 May 2023 09:43:06 -0700 (PDT)
-Received: from [192.168.68.107] ([179.111.98.125])
+ d=1e100.net; s=20221208; t=1684775244; x=1687367244;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=TumTCVGWczqfeGY0qofqJIg+NkbqU+f10W6TWIj+B1w=;
+ b=JUGg8qClUI0A61hNTWARREZ2BzcS8hqv44wYEqo9ULIdPvQdnNl+s9NBxzrhQb2dVq
+ oPJl3S6lIIiFxqTWRerPffsSOvl4OYtjDbOKCHgh2Mm+TfyrS6bOfkHiTcKr2e+fZVHP
+ ptisdduaq5JEl4xAdQDmgeNsdsNU/lZZMQv57LuGRNWN+Uf7FHlNUSishX9E3gS+hkEy
+ pvW/PY7kCJqWNqjl0r4qjMghFqKmYIEMwO/EVn5aG/WqtT1k/2e52RXN/bLTOKA0GtNS
+ zd4obPsyShzkbRE5emt2lLJcKUYHECW5PzCwCdeTQirwHviG84GExqA7NKquSWmNQyv7
+ LbCQ==
+X-Gm-Message-State: AC+VfDyTqtB0HjaB+pnc9i1ZYjiosdZ8AFE1QtFX5Ou2meEU2LlLibEq
+ k7X1ofj6df/MeRI8qts3dl5ZAQ==
+X-Google-Smtp-Source: ACHHUZ7VuZAsesDVxrV8RA52ei896UKSHkXHt77Zv3woUxp5OjR74qhpfe55BYr3z04Smpgxe1lDMA==
+X-Received: by 2002:a1c:ed18:0:b0:3f4:2374:3515 with SMTP id
+ l24-20020a1ced18000000b003f423743515mr8408133wmh.5.1684775243686; 
+ Mon, 22 May 2023 10:07:23 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- v128-20020a4a5a86000000b005555797999dsm762019ooa.17.2023.05.22.09.43.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 09:43:06 -0700 (PDT)
-Message-ID: <1ec71603-577c-b8da-9f41-6ddb4938d417@ventanamicro.com>
-Date: Mon, 22 May 2023 13:43:02 -0300
+ j17-20020a5d6191000000b0030639a86f9dsm8260809wru.51.2023.05.22.10.07.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 May 2023 10:07:23 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id C58A71FFBB;
+ Mon, 22 May 2023 18:07:22 +0100 (BST)
+References: <20230520205444.887287457E7@zero.eik.bme.hu>
+ <874jo47cnd.fsf@linaro.org>
+ <aaa22b3f-d548-5a69-489a-5777a7e98cef@eik.bme.hu>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: BALATON Zoltan <balaton@eik.bme.hu>, Richard Henderson
+ <richard.henderson@linaro.org>
+Cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH] bitops.h: Compile out asserts without --enable-debug
+Date: Mon, 22 May 2023 17:48:48 +0100
+In-reply-to: <aaa22b3f-d548-5a69-489a-5777a7e98cef@eik.bme.hu>
+Message-ID: <87v8gk5m7p.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 3/6] target/riscv: Set VS* bits to one in mideleg when
- H-Ext is enabled
-Content-Language: en-US
-To: Rajnesh Kanwal <rkanwal@rivosinc.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, atishp@rivosinc.com,
- apatel@ventanamicro.com
-References: <20230518113838.130084-1-rkanwal@rivosinc.com>
- <20230518113838.130084-4-rkanwal@rivosinc.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230518113838.130084-4-rkanwal@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,67 +98,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCk9uIDUvMTgvMjMgMDg6MzgsIFJham5lc2ggS2Fud2FsIHdyb3RlOg0KPiBXaXRoIEgt
-RXh0IHN1cHBvcnRlZCwgVlMgYml0cyBhcmUgYWxsIGhhcmR3aXJlZCB0byBvbmUgaW4gTUlE
-RUxFRw0KPiBkZW5vdGluZyBhbHdheXMgZGVsZWdhdGVkIGludGVycnVwdHMuIFRoaXMgaXMg
-YmVpbmcgZG9uZSBpbiBybXdfbWlkZWxlZw0KPiBidXQgZ2l2ZW4gbWlkZWxlZyBpcyB1c2Vk
-IGluIG90aGVyIHBsYWNlcyB3aGVuIHJvdXRpbmcgaW50ZXJydXB0cw0KPiB0aGlzIGNoYW5n
-ZSBpbml0aWFsaXplcyBpdCBpbiByaXNjdl9jcHVfcmVhbGl6ZSB0byBiZSBvbiB0aGUgc2Fm
-ZSBzaWRlLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogUmFqbmVzaCBLYW53YWwgPHJrYW53YWxA
-cml2b3NpbmMuY29tPg0KPiAtLS0NCj4gICB0YXJnZXQvcmlzY3YvY3B1LmMgfCA1ICsrKysr
-DQo+ICAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdp
-dCBhL3RhcmdldC9yaXNjdi9jcHUuYyBiL3RhcmdldC9yaXNjdi9jcHUuYw0KPiBpbmRleCBk
-YjA4NzVmYjQzLi45MDQ2MGNmZTY0IDEwMDY0NA0KPiAtLS0gYS90YXJnZXQvcmlzY3YvY3B1
-LmMNCj4gKysrIGIvdGFyZ2V0L3Jpc2N2L2NwdS5jDQo+IEBAIC0xMjg4LDYgKzEyODgsMTEg
-QEAgc3RhdGljIHZvaWQgcmlzY3ZfY3B1X3JlYWxpemUoRGV2aWNlU3RhdGUgKmRldiwgRXJy
-b3IgKiplcnJwKQ0KPiAgICAgICAgICAgcmV0dXJuOw0KPiAgICAgICB9DQo+ICAgDQo+ICsg
-ICAgLyogV2l0aCBILUV4dCBWU1NJUCwgVlNUSVAsIFZTRUlQIGFuZCBTR0VJUCBhcmUgaGFy
-ZHdpcmVkIHRvIG9uZS4gKi8NCj4gKyAgICBpZiAocmlzY3ZfaGFzX2V4dChlbnYsIFJWSCkp
-IHsNCj4gKyAgICAgICAgZW52LT5taWRlbGVnID0gTUlQX1ZTU0lQIHwgTUlQX1ZTVElQIHwg
-TUlQX1ZTRUlQIHwgTUlQX1NHRUlQOw0KPiArICAgIH0NCj4gKw0KDQpUaGlzIGNoYW5nZSBi
-cmVha3MgbGludXgtdXNlciBidWlsZDoNCg0KRkFJTEVEOiBsaWJxZW11LXJpc2N2NjQtbGlu
-dXgtdXNlci5mYS5wL3RhcmdldF9yaXNjdl9jcHUuYy5vDQpjYyAtbTY0IC1tY3gxNiAtSWxp
-YnFlbXUtcmlzY3Y2NC1saW51eC11c2VyLmZhLnAgLUkuIC1JLi4gLUl0YXJnZXQvcmlzY3Yg
-LUkuLi90YXJnZXQvcmlzY3YgLUkuLi9jb21tb24tdXNlci9ob3N0L3g4Nl82NCAtSS4uL2xp
-bnV4LXVzZXIvaW5jbHVkZS9ob3N0L3g4Nl82NCAtSS4uL2xpbnV4LXVzZXIvaW5jbHVkZSAt
-SWxpbnV4LXVzZXIgLUkuLi9saW51eC11c2VyIC1JLi4vbGludXgtdXNlci9yaXNjdiAtSXFh
-cGkgLUl0cmFjZSAtSXVpIC1JdWkvc2hhZGVyIC1JL3Vzci9pbmNsdWRlL2dsaWItMi4wIC1J
-L3Vzci9saWI2NC9nbGliLTIuMC9pbmNsdWRlIC1JL3Vzci9pbmNsdWRlL3N5c3Byb2YtNCAt
-ZmRpYWdub3N0aWNzLWNvbG9yPWF1dG8gLVdhbGwgLVdpbnZhbGlkLXBjaCAtV2Vycm9yIC1z
-dGQ9Z251MTEgLU8yIC1nIC1pc3lzdGVtIC9ob21lL2RhbmllbGhiL3dvcmsvcWVtdS9saW51
-eC1oZWFkZXJzIC1pc3lzdGVtIGxpbnV4LWhlYWRlcnMgLWlxdW90ZSAuIC1pcXVvdGUgL2hv
-bWUvZGFuaWVsaGIvd29yay9xZW11IC1pcXVvdGUgL2hvbWUvZGFuaWVsaGIvd29yay9xZW11
-L2luY2x1ZGUgLWlxdW90ZSAvaG9tZS9kYW5pZWxoYi93b3JrL3FlbXUvdGNnL2kzODYgLXB0
-aHJlYWQgLVVfRk9SVElGWV9TT1VSQ0UgLURfRk9SVElGWV9TT1VSQ0U9MiAtRF9HTlVfU09V
-UkNFIC1EX0ZJTEVfT0ZGU0VUX0JJVFM9NjQgLURfTEFSR0VGSUxFX1NPVVJDRSAtZm5vLXN0
-cmljdC1hbGlhc2luZyAtZm5vLWNvbW1vbiAtZndyYXB2IC1XdW5kZWYgLVd3cml0ZS1zdHJp
-bmdzIC1XbWlzc2luZy1wcm90b3R5cGVzIC1Xc3RyaWN0LXByb3RvdHlwZXMgLVdyZWR1bmRh
-bnQtZGVjbHMgLVdvbGQtc3R5bGUtZGVjbGFyYXRpb24gLVdvbGQtc3R5bGUtZGVmaW5pdGlv
-biAtV3R5cGUtbGltaXRzIC1XZm9ybWF0LXNlY3VyaXR5IC1XZm9ybWF0LXkyayAtV2luaXQt
-c2VsZiAtV2lnbm9yZWQtcXVhbGlmaWVycyAtV2VtcHR5LWJvZHkgLVduZXN0ZWQtZXh0ZXJu
-cyAtV2VuZGlmLWxhYmVscyAtV2V4cGFuc2lvbi10by1kZWZpbmVkIC1XaW1wbGljaXQtZmFs
-bHRocm91Z2g9MiAtV21pc3NpbmctZm9ybWF0LWF0dHJpYnV0ZSAtV25vLW1pc3NpbmctaW5j
-bHVkZS1kaXJzIC1Xbm8tc2hpZnQtbmVnYXRpdmUtdmFsdWUgLVduby1wc2FiaSAtZnN0YWNr
-LXByb3RlY3Rvci1zdHJvbmcgLWZQSUUgLWlzeXN0ZW0uLi9saW51eC1oZWFkZXJzIC1pc3lz
-dGVtbGludXgtaGVhZGVycyAtRE5FRURfQ1BVX0ggJy1EQ09ORklHX1RBUkdFVD0icmlzY3Y2
-NC1saW51eC11c2VyLWNvbmZpZy10YXJnZXQuaCInICctRENPTkZJR19ERVZJQ0VTPSJyaXNj
-djY0LWxpbnV4LXVzZXItY29uZmlnLWRldmljZXMuaCInIC1NRCAtTVEgbGlicWVtdS1yaXNj
-djY0LWxpbnV4LXVzZXIuZmEucC90YXJnZXRfcmlzY3ZfY3B1LmMubyAtTUYgbGlicWVtdS1y
-aXNjdjY0LWxpbnV4LXVzZXIuZmEucC90YXJnZXRfcmlzY3ZfY3B1LmMuby5kIC1vIGxpYnFl
-bXUtcmlzY3Y2NC1saW51eC11c2VyLmZhLnAvdGFyZ2V0X3Jpc2N2X2NwdS5jLm8gLWMgLi4v
-dGFyZ2V0L3Jpc2N2L2NwdS5jDQouLi90YXJnZXQvcmlzY3YvY3B1LmM6IEluIGZ1bmN0aW9u
-IOKAmHJpc2N2X2NwdV9yZWFsaXpl4oCZOg0KLi4vdGFyZ2V0L3Jpc2N2L2NwdS5jOjEzNjY6
-MTI6IGVycm9yOiDigJhDUFVSSVNDVlN0YXRl4oCZIHtha2Eg4oCYc3RydWN0IENQVUFyY2hT
-dGF0ZeKAmX0gaGFzIG5vIG1lbWJlciBuYW1lZCDigJhtaWRlbGVn4oCZDQogIDEzNjYgfCAg
-ICAgICAgIGVudi0+bWlkZWxlZyA9IE1JUF9WU1NJUCB8IE1JUF9WU1RJUCB8IE1JUF9WU0VJ
-UCB8IE1JUF9TR0VJUDsNCiAgICAgICB8ICAgICAgICAgICAgXn4NClsxNzIwLzI3OThdIENv
-bXBpbGluZyBDIG9iamVjdCBsaWJxZW11LXJpc2N2NjQtbGludXgtdXNlci5mYS5wL2xpbnV4
-LXVzZXJfcmlzY3ZfY3B1X2xvb3AuDQoNCg0KDQpUaGUgcmVhc29uIGlzIHRoYXQgJ21pZGVs
-ZWcnIGlzIGEgc3lzdGVtIGVtdWxhdGlvbiBhdHRyaWJ1dGUgb25seSAoaS5lLiBkZWZpbmVk
-DQppbiBhICNpZm5kZWYgQ09ORklHX1VTRVJfT05MWSBibG9jaykuIFRoZXJlJ3MgYSBibG9j
-ayBsaWtlIHRoYXQgcmlnaHQgYmVmb3JlIHRoaXMNCnBvaW50IHdoZXJlIHJpc2N2X3RpbWVy
-X2luaXQoKSBpcyBiZWluZyBjYWxsZWQuIEkgc3VnZ2VzdCBtb3ZpbmcgdGhpcyBjb2RlIHRo
-ZXJlLg0KDQoNClRoYW5rcywNCg0KDQpEYW5pZWwNCg0KDQoNCj4gICAgICAgcmlzY3ZfY3B1
-X3JlZ2lzdGVyX2dkYl9yZWdzX2Zvcl9mZWF0dXJlcyhjcyk7DQo+ICAgDQo+ICAgICAgIHFl
-bXVfaW5pdF92Y3B1KGNzKTsNCg==
+
+(ajb: add Richard for his compiler-fu)
+
+BALATON Zoltan <balaton@eik.bme.hu> writes:
+
+> On Mon, 22 May 2023, Alex Benn=C3=A9e wrote:
+>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>>
+>>> The low level extract and deposit funtions provided by bitops.h are
+>>> used in performance critical places. It crept into target/ppc via
+>>> FIELD_EX64 and also used by softfloat so PPC code using a lot of FPU
+>>> where hardfloat is also disabled is doubly affected.
+>>
+>> Most of these asserts compile out to nothing if the compiler is able to
+>> verify the constants are in the range. For example examining
+>> the start of float64_add:
+>>
+<snip>
+>>
+>> I don't see any check and abort steps because all the shift and mask
+>> values are known at compile time. The softfloat compilation certainly
+>> does have some assert points though:
+>>
+>> readelf -s ./libqemu-ppc64-softmmu.fa.p/fpu_softfloat.c.o  |grep assert
+>>   136: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND g_assertion_me=
+ss[...]
+>>   138: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND __assert_fail
+>>
+>> but the references are for the ISRA segments so its tricky to know if
+>> they get used or are just there for LTO purposes.
+>>
+>> If there are hot-paths that show up the extract/deposit functions I
+>> suspect a better approach would be to implement _nocheck variants (or
+>> maybe _noassert?) and use them where required rather than turning off
+>> the assert checking for these utility functions.
+>
+> Just to clarify again, the asserts are still there when compiled with
+> --enable-debug. The patch only turns them off for optimised release
+> builds which I think makes sense if these asserts are to catch
+> programming errors.
+
+Well as Peter said the general policy is to keep asserts in but I
+appreciate this is a hotpath case.
+
+> I think I've also suggested adding noassert
+> versions of these but that wasn't a popular idea and it may also not
+> be easy to convert all places to use that like for example the
+> register fields related usage in target/ppc as that would also affect
+> other places.
+
+Is code generation or device emulation really on the hot-path. Generally
+a well predicted assert is in the noise for those operations.
+
+> So this seems to be the simplest and most effective
+> approach.
+>
+> The softfloat related usage in these tests I've done seem to mostly
+> come from unpacking and repacking floats in softfloat which is done
+> for every operation, e.g. muladd which mp3 encoding mostly uses does 3
+> unpacks and 1 pack for each call and each unpack is 3 extracts so even
+> small overheads add app quickly. Just 1 muladd will result in 9
+> extracts and 2 deposits at least plus updating PPC flags for each FPU
+> op adds a bunch more. I did some profiling with perf to find these.
+
+After some messing about trying to get lame to cross compile to a static
+binary I was able to replicate what you've seen:
+
+  11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
+  11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+   8.26%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_floa=
+t64
+   6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+   5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+   4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
+   4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
+   3.62%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_ca=
+nonical
+   3.32%  qemu-ppc64  qemu-ppc64               [.] helper_todouble
+   2.68%  qemu-ppc64  qemu-ppc64               [.] float64_add
+   2.51%  qemu-ppc64  qemu-ppc64               [.] float64_hs_compare
+   2.30%  qemu-ppc64  qemu-ppc64               [.] float64r32_muladd
+   1.80%  qemu-ppc64  qemu-ppc64               [.] float64r32_mul
+   1.40%  qemu-ppc64  qemu-ppc64               [.] float64r32_add
+   1.34%  qemu-ppc64  qemu-ppc64               [.] parts64_mul
+   1.16%  qemu-ppc64  qemu-ppc64               [.] parts64_addsub
+   1.14%  qemu-ppc64  qemu-ppc64               [.] helper_reset_fpstatus
+   1.06%  qemu-ppc64  qemu-ppc64               [.] helper_float_check_status
+   1.04%  qemu-ppc64  qemu-ppc64               [.] float64_muladd
+
+what I find confusing is the fact the parts extraction and packing
+should all be known constants which should cause the asserts to
+disappear. However it looks like the compiler decided to bring in a copy
+of the whole inline function (ISRA =3D >interprocedural scalar replacement
+of aggregates) which obviously can't fold the constants and eliminate
+the assert.
+
+Richard,
+
+Any idea of why the compiler might decide to do something like this?
+
+>
+> Regards,
+> BALATON Zoltan
+
+
+--
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
