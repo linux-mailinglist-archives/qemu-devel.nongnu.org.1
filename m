@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDCA70BC7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44ACD70BC6C
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:54:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q144I-0005ar-JZ; Mon, 22 May 2023 07:51:14 -0400
+	id 1q144L-0005hQ-Br; Mon, 22 May 2023 07:51:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143n-0005GO-Di
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143n-0005GN-DS
  for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143l-0007dm-Fb
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143k-0007dI-Nq
  for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1684756240;
@@ -22,32 +22,32 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hitrJqe+z/WFUUPtDgBsKkz9UeUd1fXKqgnzctdi1K4=;
- b=SxMluUOf/crcNSkZf/pXzhpy/MT4HUz64z2wCU3527gGLPj4JWmOGHvM4luSQOWM54TG/3
- rikQ0YP+LAdJxtOBGbBIBx2aADgFyLTst0P9fCVlbgCBuYdZs1NzRBHE0jK6+dJCfreOOU
- Wgbd1po2UfjT/vW+5hwXvyO09QdQ2MQ=
+ bh=7RccDGRErIJs5vNwrUAogX4sU2ut3n2RLxqApFssBAg=;
+ b=JvoVTsV3BOU7PrkmobEdkip5YvMgdgIK3FhOcydTKONdD4V5ZnfaypgAn+eRU6p+xY03zA
+ NSXirNjYTREjLht2prILrbDGgxHhzPtjBwgBKc5LtwB5r7H+mSFse4MecQH8pUIoIWGsW8
+ MKO/AHlz9lvd1tkjOrYIW98E2SEIJkE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-137-qyWdwoH8MJ2_4g02_9KiIw-1; Mon, 22 May 2023 07:50:37 -0400
-X-MC-Unique: qyWdwoH8MJ2_4g02_9KiIw-1
+ us-mta-61-Y9qtrc5qOTmFwoPz_2DFpw-1; Mon, 22 May 2023 07:50:38 -0400
+X-MC-Unique: Y9qtrc5qOTmFwoPz_2DFpw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4D7698007D9;
- Mon, 22 May 2023 11:50:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7F99B185A791;
+ Mon, 22 May 2023 11:50:38 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.195.33])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6C8722166B26;
- Mon, 22 May 2023 11:50:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A54782166B26;
+ Mon, 22 May 2023 11:50:37 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 18/20] .gitlab-ci.d/buildtest.yml: Run full "make check" with
- --without-default-devices
-Date: Mon, 22 May 2023 13:50:12 +0200
-Message-Id: <20230522115014.1110840-19-thuth@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 19/20] acpi/tests/avocado/bits: enable bios bits avocado tests
+ on gitlab CI pipeline
+Date: Mon, 22 May 2023 13:50:13 +0200
+Message-Id: <20230522115014.1110840-20-thuth@redhat.com>
 In-Reply-To: <20230522115014.1110840-1-thuth@redhat.com>
 References: <20230522115014.1110840-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -77,29 +77,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks to the fixes from the previous patches, we can now run
-the full set of "make check" with all targets here.
+From: Ani Sinha <anisinha@redhat.com>
 
-Message-Id: <20230512124033.502654-19-thuth@redhat.com>
-Acked-by: Paolo Bonzini <pbonzini@redhat.com>
+Biosbits avocado tests on gitlab has thus far been disabled because some
+packages needed by this test was missing in the container images used by gitlab
+CI. These packages have now been added with the commit:
+
+da9000784c90d ("tests/lcitool: Add mtools and xorriso and remove genisoimage as dependencies")
+
+Therefore, this change enables bits avocado test on gitlab.
+At the same time, the bits cleanup code has also been made more robust with
+this change.
+
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Message-Id: <20230517065357.5614-1-anisinha@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/avocado/acpi-bits.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 307cba1aab..0f1be14cb6 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -527,7 +527,7 @@ build-without-defaults:
-       --disable-strip
-     TARGETS: avr-softmmu mips64-softmmu s390x-softmmu sh4-softmmu
-       sparc64-softmmu hexagon-linux-user i386-linux-user s390x-linux-user
--    MAKE_CHECK_ARGS: check-unit check-qtest-avr check-qtest-mips64
-+    MAKE_CHECK_ARGS: check
+diff --git a/tests/avocado/acpi-bits.py b/tests/avocado/acpi-bits.py
+index 14038fa3c4..3ed286dcbd 100644
+--- a/tests/avocado/acpi-bits.py
++++ b/tests/avocado/acpi-bits.py
+@@ -123,9 +123,9 @@ def base_args(self):
+         """return the base argument to QEMU binary"""
+         return self._base_args
  
- build-libvhost-user:
-   extends: .base_job_template
+-@skipIf(not supported_platform() or missing_deps() or os.getenv('GITLAB_CI'),
+-        'incorrect platform or dependencies (%s) not installed ' \
+-        'or running on GitLab' % ','.join(deps))
++@skipIf(not supported_platform() or missing_deps(),
++        'unsupported platform or dependencies (%s) not installed' \
++        % ','.join(deps))
+ class AcpiBitsTest(QemuBaseTest): #pylint: disable=too-many-instance-attributes
+     """
+     ACPI and SMBIOS tests using biosbits.
+@@ -356,7 +356,7 @@ def tearDown(self):
+         """
+         if self._vm:
+             self.assertFalse(not self._vm.is_running)
+-        if not os.getenv('BITS_DEBUG'):
++        if not os.getenv('BITS_DEBUG') and self._workDir:
+             self.logger.info('removing the work directory %s', self._workDir)
+             shutil.rmtree(self._workDir)
+         else:
 -- 
 2.31.1
 
