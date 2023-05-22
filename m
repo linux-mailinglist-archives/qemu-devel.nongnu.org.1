@@ -2,101 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A15A70B694
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 09:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 727BE70B6B4
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 09:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1014-0001j2-Ii; Mon, 22 May 2023 03:31:38 -0400
+	id 1q10CF-0006Ok-Ah; Mon, 22 May 2023 03:43:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1012-0001is-9z
- for qemu-devel@nongnu.org; Mon, 22 May 2023 03:31:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q10CB-0006OY-O7
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 03:43:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1010-0001FG-W4
- for qemu-devel@nongnu.org; Mon, 22 May 2023 03:31:36 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q10CA-0003lf-4X
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 03:43:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684740694;
+ s=mimecast20190719; t=1684741385;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W8kuLNohnKOx3ExNVEfyvrydeQ45tZ4mo/9wrXAhEKM=;
- b=bTGx3HGfsemROaOTWzr3crajn1l+hxGhaa2uWo5vPy9rT8i7tzCNHFfCyP5cQmXzEseMCg
- lfA7Z+UVOW/oQXmwxv4vZI63f70V09DucUH50htOKg8vG0czpPEE9IPA6iVnM9kXvT/Vgj
- SnC86EbN6emCrCSq5PvZqmvec6yv7DY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-379-Vq0mj1DqPv2SZIA3EvA7WA-1; Mon, 22 May 2023 03:31:29 -0400
-X-MC-Unique: Vq0mj1DqPv2SZIA3EvA7WA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f60162f7fcso3808605e9.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 00:31:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684740689; x=1687332689;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=W8kuLNohnKOx3ExNVEfyvrydeQ45tZ4mo/9wrXAhEKM=;
- b=OtOtpQNvH4jhApdw09gLd6QGrKqOO8c9TFTDZMymJG711FOh9aUTQNERtrRDn1qlCy
- Uohs3QWvoOr1TClhMDBWIQnUtjV/RZnH7Aaefr7JC5PxbmV1EwD21aGlPQewDkdxY+1V
- 7tSmCVBNaS4A2D1Kc6zcK4pDHv+nveUfr5AUyyqmmMwUkZnQFijC85wROCZbZ3oRRUN/
- jeoqm/23HmysxklrI/SFuz5zV7XZzo0RNVb+hm80b14UMt4AFlFTJfjmTY8L1F65SSp0
- jHLVm9H48iH93QQG5krE1wd3iEcykaSmX6nad1RQS3YqnnWhFo7+nnjKrTMkfAbFMba0
- XEWA==
-X-Gm-Message-State: AC+VfDw7Y5LxAXPMsWMM0Nq7dFfg1+Y2oWEnos8JqoseQTNaDuo3h1VR
- zYDz0/xNAf7ZNjG/dDEbA+p4mK8+jDvKv+4MqLiG8N5SToJLmnVf7TejTJ22rIq2nzItTmMnLjD
- hGyK9pDpPEAq0ZH8=
-X-Received: by 2002:a7b:c7d7:0:b0:3f6:514:bddd with SMTP id
- z23-20020a7bc7d7000000b003f60514bdddmr1015877wmk.2.1684740688955; 
- Mon, 22 May 2023 00:31:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7WeJsjV2NHo88dZfXAex4a45EcjXqs+0kuw82a3of3j5IE+559knGclZwSgg2f9NCP5RmgTQ==
-X-Received: by 2002:a7b:c7d7:0:b0:3f6:514:bddd with SMTP id
- z23-20020a7bc7d7000000b003f60514bdddmr1015850wmk.2.1684740688627; 
- Mon, 22 May 2023 00:31:28 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-178-148.web.vodafone.de.
- [109.43.178.148]) by smtp.gmail.com with ESMTPSA id
- o5-20020a1c7505000000b003f0ad8d1c69sm10508880wmc.25.2023.05.22.00.31.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 00:31:27 -0700 (PDT)
-Message-ID: <617135d9-8c69-8a1a-0018-93fb52015ea1@redhat.com>
-Date: Mon, 22 May 2023 09:31:26 +0200
+ bh=m2jQLVtcBrEOXrrXOZFckMsB7kSNxMZW7o8GGlFGMUQ=;
+ b=dohKt4UpeyLSUPjRU5f1saPIm/wfcS/P2UqvAkiVNcK0pX1TyY8lbj1wFxw4ZGrV62BbHq
+ KQ562Ehg3IbUPX0U+Yqi9lxx+AXLekfyd38AquYzsgNnFjePhuOBiczhAH9BnPR83PzVLS
+ BBkwb7lgxjOAfU3vbVPCNdVBBiDNQng=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-356-tOtMTy8oOTmF87g0PMYLUw-1; Mon, 22 May 2023 03:43:02 -0400
+X-MC-Unique: tOtMTy8oOTmF87g0PMYLUw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DC82800B35;
+ Mon, 22 May 2023 07:43:01 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 212512166B26;
+ Mon, 22 May 2023 07:43:01 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 15E3121E692E; Mon, 22 May 2023 09:43:00 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: <qemu-devel@nongnu.org>,  Michael Tsirkin <mst@redhat.com>,  Fan Ni
+ <fan.ni@samsung.com>,  <linux-cxl@vger.kernel.org>,
+ <linuxarm@huawei.com>,  Ira Weiny <ira.weiny@intel.com>,  Alison
+ Schofield <alison.schofield@intel.com>,  Michael Roth
+ <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Dave
+ Jiang <dave.jiang@intel.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,  Mike Maslenkin
+ <mike.maslenkin@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v5 6/7] hw/cxl/events: Add injection of DRAM events
+References: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
+ <20230423165140.16833-7-Jonathan.Cameron@huawei.com>
+Date: Mon, 22 May 2023 09:43:00 +0200
+In-Reply-To: <20230423165140.16833-7-Jonathan.Cameron@huawei.com> (Jonathan
+ Cameron's message of "Sun, 23 Apr 2023 17:51:39 +0100")
+Message-ID: <87edn8q0aj.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [RFC PATCH 5/8] qtest: use cpu interface in qtest_clock_warp
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Yanan Wang <wangyanan55@huawei.com>, Riku Voipio <riku.voipio@iki.fi>,
- Laurent Vivier <lvivier@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marco Liebel <mliebel@qti.qualcomm.com>,
- Mark Burton <mburton@qti.qualcomm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-References: <20230519170454.2353945-1-alex.bennee@linaro.org>
- <20230519170454.2353945-6-alex.bennee@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230519170454.2353945-6-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.098, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,17 +88,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/05/2023 19.04, Alex Bennée wrote:
-> This generalises the qtest_clock_warp code to use the AccelOps
-> handlers for updating its own sense of time. This will make the next
-> patch which moves the warp code closer to pure code motion.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   include/sysemu/qtest.h | 1 +
->   accel/qtest/qtest.c    | 1 +
->   softmmu/qtest.c        | 6 +++---
->   3 files changed, 5 insertions(+), 3 deletions(-)
-Acked-by: Thomas Huth <thuth@redhat.com>
+Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
+
+> Defined in CXL r3.0 8.2.9.2.1.2 DRAM Event Record, this event
+> provides information related to DRAM devices.
+>
+> Example injection command in QMP:
+>
+> { "execute": "cxl-inject-dram-event",
+>     "arguments": {
+>         "path": "/machine/peripheral/cxl-mem0",
+>         "log": "informational",
+>         "flags": 1,
+>         "physaddr": 1000,
+>         "descriptor": 3,
+>         "type": 3,
+>         "transaction-type": 192,
+>         "channel": 3,
+>         "rank": 17,
+>         "nibble-mask": 37421234,
+>         "bank-group": 7,
+>         "bank": 11,
+>         "row": 2,
+>         "column": 77,
+>         "correction-mask": [33, 44, 55,66]
+>     }}
+>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+[...]
+
+> index 9dcd308a49..190db58385 100644
+> --- a/qapi/cxl.json
+> +++ b/qapi/cxl.json
+> @@ -55,6 +55,41 @@
+>              '*device': 'uint32', '*component-id': 'str'
+>              }}
+>  
+> +##
+> +# @cxl-inject-dram-event:
+> +#
+> +# Inject an event record for a DRAM Event (CXL r3.0 8.2.9.2.1.2)
+> +# This event type is reported via one of the event logs specified via
+> +# the log parameter.
+> +#
+> +# @path: CXL type 3 device canonical QOM path
+> +# @log: Event Log to add the event to
+> +# @flags: header flags
+> +# @physaddr: Physical Address
+> +# @descriptor: Descriptor
+> +# @type: Type
+> +# @transaction-type: Transaction Type
+> +# @channel: Channel
+> +# @rank: Rank
+> +# @nibble-mask: Identify one or more nibbles that the error affects
+> +# @bank-group: Bank group
+> +# @bank: Bank
+> +# @row: Row
+> +# @column: Column
+
+My comments on cxl-inject-gen-media-event's doc comment in the previous
+patch apply.
+
+> +# @correction-mask: Bits within each nibble. Used in order of bits set
+> +#                   in the nibble-mask.  Up to 4 nibbles may be covered.
+> +#
+> +# Since: 8.1
+> +##
+> +{ 'command': 'cxl-inject-dram-event',
+> +  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags': 'uint8',
+> +            'physaddr': 'uint64', 'descriptor': 'uint8',
+> +            'type': 'uint8', 'transaction-type': 'uint8',
+> +            '*channel': 'uint8', '*rank': 'uint8', '*nibble-mask': 'uint32',
+> +            '*bank-group': 'uint8', '*bank': 'uint8', '*row': 'uint32',
+> +            '*column': 'uint16', '*correction-mask': [ 'uint64' ]
+> +           }}
+> +
+>  ##
+>  # @cxl-inject-poison:
+>  #
+
+Please format like
+
+   ##
+   # @cxl-inject-dram-event:
+   #
+   # Inject an event record for a DRAM Event (CXL r3.0 8.2.9.2.1.2) This
+   # event type is reported via one of the event logs specified via the
+   # log parameter.
+   #
+   # @path: CXL type 3 device canonical QOM path
+   #
+   # @log: Event Log to add the event to
+   #
+   # @flags: header flags
+   #
+   # @physaddr: Physical Address
+   #
+   # @descriptor: Descriptor
+   #
+   # @type: Type
+   #
+   # @transaction-type: Transaction Type
+   #
+   # @channel: Channel
+   #
+   # @rank: Rank
+   #
+   # @nibble-mask: Identify one or more nibbles that the error affects
+   #
+   # @bank-group: Bank group
+   #
+   # @bank: Bank
+   #
+   # @row: Row
+   #
+   # @column: Column
+   #
+   # @correction-mask: Bits within each nibble.  Used in order of bits
+   #     set in the nibble-mask.  Up to 4 nibbles may be covered.
+   #
+   # Since: 8.1
+   ##
+
+to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
+to conform to current conventions).
 
 
