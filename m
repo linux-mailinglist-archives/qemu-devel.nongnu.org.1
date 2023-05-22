@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010F270BC6D
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AB170BC65
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:54:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q144q-0006Ux-Nv; Mon, 22 May 2023 07:51:48 -0400
+	id 1q144N-0005iL-8T; Mon, 22 May 2023 07:51:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143g-0005CE-BJ
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143i-0005DH-Cg
  for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143e-0007au-Ca
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:36 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q143g-0007ba-CQ
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:50:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684756232;
+ s=mimecast20190719; t=1684756235;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mWN+12IWf/zj5AbaionYtYGdyUfi2QktvaTO4E1KFAM=;
- b=ik0eUKDyjzoKhc+kvwUrL9vcr6eAoIwQEgz9YlTD0F/iB+fOLaZviJU83zWbYql4Aud6Bq
- jL+sQkrONmou2CWh9IEGRIFl2IyxhxYFEqpflk/UPF/1auNkYWQQ+IVrayvaPAoj/kelKI
- ZDUMH3s/ytljTMFTf+kEvBhV23ZJxZU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KtyVBFc1fHyqJE7iYbiDrEuQQX0YRCX1xDBYjW/HC88=;
+ b=QsKSuQmjbtaWdL/xzdJNxWPtFxlgc1tXyELT1Adobf50LPgO14PrCLU3ZLVFQ6xt2776n7
+ T7bWgbl8eiJ2v6Bxovx4WzrIhwLTcFJfzgPxJfg09+biFNHQJEH0SQXuUw7cqstdORSvt1
+ Pg1rK7RJdUpYhyQmxcN7+3mmOfXmSog=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-634-ZB9O5LwSOFGCoqjnxdOaIA-1; Mon, 22 May 2023 07:50:31 -0400
-X-MC-Unique: ZB9O5LwSOFGCoqjnxdOaIA-1
+ us-mta-25-BAaVnvRaMjaMNLk2NH-XCg-1; Mon, 22 May 2023 07:50:32 -0400
+X-MC-Unique: BAaVnvRaMjaMNLk2NH-XCg-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0704485A5BA;
- Mon, 22 May 2023 11:50:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C71D381D1E8;
+ Mon, 22 May 2023 11:50:32 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.195.33])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E6AAA2166B26;
- Mon, 22 May 2023 11:50:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 478562166B26;
+ Mon, 22 May 2023 11:50:31 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 12/20] tests/qtest/usb-hcd-uhci-test: Skip test if UHCI
- controller is not available
-Date: Mon, 22 May 2023 13:50:06 +0200
-Message-Id: <20230522115014.1110840-13-thuth@redhat.com>
+Subject: [PULL 13/20] tests/qtest/cdrom-test: Fix the test to also work
+ without optional devices
+Date: Mon, 22 May 2023 13:50:07 +0200
+Message-Id: <20230522115014.1110840-14-thuth@redhat.com>
 In-Reply-To: <20230522115014.1110840-1-thuth@redhat.com>
 References: <20230522115014.1110840-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -77,35 +77,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test is already fenced with CONFIG_USB_UHCI in meson.build, but in
-case we build the ppc or mips targets in parallel, this config switch
-is still set in "config_all_devices" and thus the test is still run.
-Thus we need an explicit additional check here before adding the tests
-to the test plan.
+It's possible to disable virtio-scsi and virtio-blk in the binaries,
+so we must not run the corresponding tests if these devices are missing.
 
-Message-Id: <20230512124033.502654-13-thuth@redhat.com>
+Message-Id: <20230512124033.502654-14-thuth@redhat.com>
 Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/usb-hcd-uhci-test.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/qtest/cdrom-test.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/tests/qtest/usb-hcd-uhci-test.c b/tests/qtest/usb-hcd-uhci-test.c
-index f264d2bf73..84ac2f3c1a 100644
---- a/tests/qtest/usb-hcd-uhci-test.c
-+++ b/tests/qtest/usb-hcd-uhci-test.c
-@@ -66,6 +66,11 @@ int main(int argc, char **argv)
+diff --git a/tests/qtest/cdrom-test.c b/tests/qtest/cdrom-test.c
+index 2b7e10d920..d1cc375849 100644
+--- a/tests/qtest/cdrom-test.c
++++ b/tests/qtest/cdrom-test.c
+@@ -136,9 +136,12 @@ static void add_x86_tests(void)
+     }
  
-     g_test_init(&argc, &argv, NULL);
+     qtest_add_data_func("cdrom/boot/default", "-cdrom ", test_cdboot);
+-    qtest_add_data_func("cdrom/boot/virtio-scsi",
+-                        "-device virtio-scsi -device scsi-cd,drive=cdr "
+-                        "-blockdev file,node-name=cdr,filename=", test_cdboot);
++    if (qtest_has_device("virtio-scsi-ccw")) {
++        qtest_add_data_func("cdrom/boot/virtio-scsi",
++                            "-device virtio-scsi -device scsi-cd,drive=cdr "
++                            "-blockdev file,node-name=cdr,filename=",
++                            test_cdboot);
++    }
+     /*
+      * Unstable CI test under load
+      * See https://lists.gnu.org/archive/html/qemu-devel/2019-02/msg05509.html
+@@ -183,10 +186,17 @@ static void add_s390x_tests(void)
+ {
+     if (!qtest_has_accel("tcg") && !qtest_has_accel("kvm")) {
+         g_test_skip("No KVM or TCG accelerator available, skipping boot tests");
++    }
++    if (!qtest_has_device("virtio-blk-ccw")) {
+         return;
+     }
  
-+    if (!qtest_has_device("piix3-usb-uhci")) {
-+        g_debug("piix3-usb-uhci not available");
-+        return 0;
+     qtest_add_data_func("cdrom/boot/default", "-cdrom ", test_cdboot);
++
++    if (!qtest_has_device("virtio-scsi-ccw")) {
++        return;
 +    }
 +
-     qtest_add_func("/uhci/pci/init", test_uhci_init);
-     qtest_add_func("/uhci/pci/port1", test_port_1);
-     qtest_add_func("/uhci/pci/hotplug", test_uhci_hotplug);
+     qtest_add_data_func("cdrom/boot/virtio-scsi",
+                         "-device virtio-scsi -device scsi-cd,drive=cdr "
+                         "-blockdev file,node-name=cdr,filename=", test_cdboot);
 -- 
 2.31.1
 
