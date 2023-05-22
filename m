@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E07970C124
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 16:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A4570C14A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 16:40:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q16Ym-000690-Vk; Mon, 22 May 2023 10:30:53 -0400
+	id 1q16h0-0008SS-LE; Mon, 22 May 2023 10:39:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q16Yf-00068F-RB
- for qemu-devel@nongnu.org; Mon, 22 May 2023 10:30:47 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q16gy-0008SJ-3o
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 10:39:20 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q16Yd-0004sn-GK
- for qemu-devel@nongnu.org; Mon, 22 May 2023 10:30:45 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6af6df840ffso1255658a34.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 07:30:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q16gw-0006EM-E5
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 10:39:19 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-64d5b4c400fso1985597b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 07:39:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1684765841; x=1687357841;
+ d=linaro.org; s=google; t=1684766357; x=1687358357;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qzqChIr7BUoc+pjS1WfYzYrHL7ybVeo7KcQ/VSzJSW0=;
- b=Exm+pAqvjKrpYHUJVSWsrjH70g688+L6S+mw8tDRCxpUWefDaUY1RTy8qdnLg7DHPP
- Bzy4HzRlcSIkVraHNR06b57KRlhzjXY6zht2iKwFk3wKg3xjlAll3PSduaZqYB6Iy4w4
- CtRrM5dDZN95dpYU7OuJlZEQ4wwtEirFCK7T/DYammEzxPXcHI+jXvnrh1hCC/Oo4iFM
- WTv6F0qYJG5VkKceHD2AuhJ+XAXQhcjR7hZ8ypOY1s4CjfhrUK6V58qcpEbmnupr9lVy
- wW/so1ERM0UP7rYgXR/8ON9lRAWdYu+sg32GQ9R+T9rmGVe4Qm01O/3ftJhxPVLSbb5w
- FFiA==
+ bh=kKji7brr4/IRQBaroWt3D0Op1H9NbBWcaVyG8x9lm1M=;
+ b=Py7PnwHncCYLqcb604+0xeAWbZI573KUg+G4ga6rAxVoS1Y6DrolkXaIykvo9badjo
+ RJlEMdYJlwzexnFO9hUfvNabY0DtEOYJCGudPflSvKiezV4ItHUtvDrJ8GML3h7mPZSA
+ KdG80Wb8zdQ6L9va54x59+ZpOJ0prdAwH9pV43cu0KfNMvMMGukBkbxeUvTak5mMonJ6
+ LGzVmIbN8nZvcFkIKByGfoMfZ9lBaC4Pi9CyeWAywI+TQQIp/VgfV46cAlPKrvplLcyZ
+ MHC9jfva9Y303HNDy6OCaSijIACkBgJuvBWYP7hzlyMH8l65Yzf5c6YqzKMsxZW2SOUS
+ 69HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684765841; x=1687357841;
+ d=1e100.net; s=20221208; t=1684766357; x=1687358357;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qzqChIr7BUoc+pjS1WfYzYrHL7ybVeo7KcQ/VSzJSW0=;
- b=IO2ASbIwEdmLo9nCKAiEh2fhKc1+MkWEX13wO95wJd5soXyylm2+bgFoXZ3Kw2NRCj
- vmS8gRiG1HtQnMjovvjLyQMKCYm4HLKvOTbon5VNQ763llsDXEV0Xl8hrY/nSlLQNHXq
- AmRL+QYyds8zlHf2kBRWA8gNQQ8s1wmoN1spfhrCOLtdEKdfh+wh2GhZTt8vNIw6X+uE
- PwY0GK982+/1eUZjXNQkkAfZz09lLHi103LKWc7GKuYmzlAxQAqKgzJBC+VPKoplMOp6
- 9ryIiGJIe7kb8igsjAHBp4YI/lJMTQxhG4smWj3vnmhORoi+l7bi2tC1zTyJzldMmM5R
- EcSw==
-X-Gm-Message-State: AC+VfDylxWbgY2FX6psCcIjoTwbGTVak3R5eZI4fAZxN6FS2/EhPwbA8
- vfBaraa3C2oM9KYDkYbYnM2QCA==
-X-Google-Smtp-Source: ACHHUZ5//pvGERtI/02xBg6dNE8iTrJVBCQEbGUPM5YfZBl0zJbtWm/T96R30EA+epGUhamEzWZcbQ==
-X-Received: by 2002:a05:6830:1402:b0:6ab:1fc:43b4 with SMTP id
- v2-20020a056830140200b006ab01fc43b4mr5345432otp.9.1684765841016; 
- Mon, 22 May 2023 07:30:41 -0700 (PDT)
-Received: from [192.168.68.107] ([179.111.98.125])
- by smtp.gmail.com with ESMTPSA id
- z13-20020a9d62cd000000b006aafb3a4ca0sm2340674otk.70.2023.05.22.07.30.38
+ bh=kKji7brr4/IRQBaroWt3D0Op1H9NbBWcaVyG8x9lm1M=;
+ b=BlYi9K/In6rtf4IG0WuMjTn54yNUX1cWftJFUisVkTqXPhMdaU/WsQxVRpA11BaNlo
+ 6sfOglqGii+iORy6MS0qciQfEJGfg0Z818XUKNbyYh4vkgXnL/4uEtlIO+Nsx47IaWCW
+ HXwCFpJQi3mVE+3MjzNpEMzN2XsXpjhSeVsEjtKgIb4ygdwdwgKbpPN04C7ZCuR/Pj4c
+ 3DbIy4OjruCCoxdJryr33m+fxbu78M8Y3m85Vszo5xeKULfYM7Bz0ekkPUhbHhU5VN6L
+ L9wY+XJziJefPpm2FZZAdSRayQIGnhZRkmxSaTmPIY3OC2dyGCRTlnoVLkKRK7DD6OxH
+ MBgA==
+X-Gm-Message-State: AC+VfDwR6g9B9yonqfvj8XEEIX3/YGhYe6rcNGULEsYVazfWe8lcK9mt
+ J4wZWEZPeWpIDqUG5+XWL4CKhA==
+X-Google-Smtp-Source: ACHHUZ4qCK3IceHyRmEwHKx+651ATA4tebqZUgxEKViYF4902zfr0TfRY5QaVFu3vkOVKHgTiKiQTg==
+X-Received: by 2002:a05:6a00:1814:b0:646:9232:df8 with SMTP id
+ y20-20020a056a00181400b0064692320df8mr15924334pfa.15.1684766356831; 
+ Mon, 22 May 2023 07:39:16 -0700 (PDT)
+Received: from [10.0.14.188] (static-66-243-253-154.ellensburg.fairpoint.net.
+ [66.243.253.154]) by smtp.gmail.com with ESMTPSA id
+ v15-20020aa7850f000000b0063a04905379sm4248178pfn.137.2023.05.22.07.39.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 07:30:40 -0700 (PDT)
-Message-ID: <61c83ef0-52f9-156b-ecab-11f8c5928118@ventanamicro.com>
-Date: Mon, 22 May 2023 11:30:36 -0300
+ Mon, 22 May 2023 07:39:16 -0700 (PDT)
+Message-ID: <9223027b-07af-7fc6-103f-3281c7562fa9@linaro.org>
+Date: Mon, 22 May 2023 07:39:14 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 3/7] disas/riscv.c: Support disas for Zcm* extensions
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] meson: remove -no-pie linker flag
 Content-Language: en-US
-To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-References: <20230519021926.15362-1-liweiwei@iscas.ac.cn>
- <20230519021926.15362-4-liweiwei@iscas.ac.cn>
- <0ca6bb76-ba1c-4185-6faf-e70f979849da@ventanamicro.com>
- <5d70173d-75d0-a072-2e36-777d91496df5@iscas.ac.cn>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <5d70173d-75d0-a072-2e36-777d91496df5@iscas.ac.cn>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: vr_qemu@t-online.de, marcandre.lureau@redhat.com
+References: <20230522080816.66320-1-pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230522080816.66320-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,107 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 5/22/23 11:27, Weiwei Li wrote:
+On 5/22/23 01:08, Paolo Bonzini wrote:
+> The large comment in the patch says it all; the -no-pie flag is broken and
+> this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
+> ("build: move remaining compiler flag tests to meson", 2023-05-18).
 > 
-> On 2023/5/22 21:10, Daniel Henrique Barboza wrote:
->> In fact, apparently checkpatch.pl is not too happy about this patch:
->>
->> On 5/18/23 23:19, Weiwei Li wrote:
->>> Support disas for Zcmt* instructions only when related extensions
->>> are supported.
->>>
->>> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
->>> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
->>> ---
->>>   disas/riscv.c | 20 ++++++++++++--------
->>>   1 file changed, 12 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/disas/riscv.c b/disas/riscv.c
->>> index 729ab684da..9e01810eef 100644
->>> --- a/disas/riscv.c
->>> +++ b/disas/riscv.c
->>> @@ -2501,7 +2501,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
->>>                   op = rv_op_c_sqsp;
->>>               } else {
->>>                   op = rv_op_c_fsdsp;
->>> -                if (((inst >> 12) & 0b01)) {
->>> +                if (dec->cfg->ext_zcmp && ((inst >> 12) & 0b01)) {
->>>                       switch ((inst >> 8) & 0b01111) {
->>>                       case 8:
->>>                           if (((inst >> 4) & 0b01111) >= 4) {
->>> @@ -2527,16 +2527,20 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
->>>                   } else {
->>>                       switch ((inst >> 10) & 0b011) {
->>>                       case 0:
->>> -                        if (((inst >> 2) & 0xFF) >= 32) {
->>> -                            op = rv_op_cm_jalt;
->>> -                        } else {
->>> -                            op = rv_op_cm_jt;
->>> +                        if (dec->cfg->ext_zcmt) {
->>> +                            if (((inst >> 2) & 0xFF) >= 32) {
->>> +                                op = rv_op_cm_jalt;
->>> +                            } else {
->>> +                                op = rv_op_cm_jt;
->>> +                            }
->>>                           }
->>>                           break;
->>>                       case 3:
->>> -                        switch ((inst >> 5) & 0b011) {
->>> -                        case 1: op = rv_op_cm_mvsa01; break;
->>> -                        case 3: op = rv_op_cm_mva01s; break;
->>> +                        if (dec->cfg->ext_zcmp) {
->>> +                            switch ((inst >> 5) & 0b011) {
->>> +                            case 1: op = rv_op_cm_mvsa01; break;
->>> +                            case 3: op = rv_op_cm_mva01s; break;
->>> +                            }
->>
->> At this point:
->>
->> ================
->> 3/7 Checking commit 989059d476f9 (disas/riscv.c: Support disas for Zcm* extensions)
->> ERROR: trailing statements should be on next line
->> #51: FILE: disas/riscv.c:2541:
->> +                            case 1: op = rv_op_cm_mvsa01; break;
->>
->> ERROR: trailing statements should be on next line
->> #52: FILE: disas/riscv.c:2542:
->> +                            case 3: op = rv_op_cm_mva01s; break;
->>
->> total: 2 errors, 0 warnings, 35 lines checked
->>
->> Patch 3/7 has style problems, please review.  If any of these errors
->> are false positives report them to the maintainer, see
->> ================
->>
-> Yeah. I also found this errors when I ran the checkpatch.pl.
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1664
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   meson.build | 13 +++++++++----
+>   1 file changed, 9 insertions(+), 4 deletions(-)
 > 
-> However, this is the usual code style in this file. So I didn't fix it.
+> diff --git a/meson.build b/meson.build
+> index 0a5cdefd4d3d..6733b2917081 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -267,10 +267,15 @@ endif
+>   # has explicitly disabled PIE we need to extend our cflags.
+>   if not get_option('b_pie')
+>     qemu_common_flags += cc.get_supported_arguments('-fno-pie')
+> -  if not get_option('prefer_static')
+> -    # No PIE is implied by -static which we added above.
+> -    qemu_ldflags += cc.get_supported_link_arguments('-no-pie')
+> -  endif
+> +  # What about linker flags?  For a static build, no PIE is implied by -static
+> +  # which we added above.
 
-As long as the maintainer is ok with it (since it'll make noise in Gitlab when
-running the test runners and so on) we can leave it as is.
+Is it though?  That was the major problem at the time: it wasn't.
+
+IIRC, debian has enabled link-pie-by-default, so '-static' meant '-static-pie'.  Moreover, 
+not all of their static libraries were built -fpie, which led to link errors.
+
+Trying both now, e.g. '--static --disable-system --disable-tools --disable-docs',
+a link line contains
+
+... -Wl,--as-needed -Wl,--no-undefined -pie -Wl,--whole-archive libhwcore.fa ...
+                                        ^^^^
+
+Where does that come from, and why isn't -no-pie the antidote?
 
 
-
-Daniel
-
-> 
-> Regards,
-> 
-> Weiwei Li
-> 
->>
->> The issue predates your patch. It would be very nice of you if you can fix it
->> though :D
->>
->>
->>
->> Daniel
->>
->>
->>>                           }
->>>                           break;
->>>                       }
-> 
+r~
 
