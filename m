@@ -2,66 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACEF70CAC4
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 22:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8278470CAEA
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 22:26:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Byr-0002SX-1j; Mon, 22 May 2023 16:18:09 -0400
+	id 1q1C5H-0004Zt-HA; Mon, 22 May 2023 16:24:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q1Bym-0002R5-QL
- for qemu-devel@nongnu.org; Mon, 22 May 2023 16:18:04 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q1C5F-0004ZX-ED
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 16:24:45 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q1Byj-0003CB-6R
- for qemu-devel@nongnu.org; Mon, 22 May 2023 16:18:04 -0400
-Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:a49a:0:640:edd6:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 3EB2F60422;
- Mon, 22 May 2023 23:17:54 +0300 (MSK)
-Received: from vsementsov-nix.yandex-team.ru (unknown
- [2a02:6b8:b081:b50f::1:35])
- by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id gHorB52Oq4Y0-wILQZAsd; Mon, 22 May 2023 23:17:53 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1684786673; bh=dUUlzMkltXKQYamoDXKhpHfvM27TlkJvtP5w+fNxSyo=;
- h=Cc:Message-Id:References:Date:In-Reply-To:Subject:To:From;
- b=uazuDzq1dbykja5WPidRz1dO/Lzr9W+qPNrYKgKDv91La+Bdt7QLcMhKyHBD6SCvO
- uPpnhuqINZTlT3cvhJKRACgoXP/SKk58cEa7imkwwS+656S9evliKzXxKC36JyCEpD
- BgNmmAjbL3DVdVorbBnADX9/66sItdb0F4l9QnVQ=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- david@redhat.com, peterx@redhat.com, pbonzini@redhat.com,
- den-plotnikov@yandex-team.ru, lersek@redhat.com, kraxel@redhat.com,
- dgilbert@redhat.com, quintela@redhat.com, armbru@redhat.com,
- vsementsov@yandex-team.ru
-Subject: [PATCH v4 1/1] pci: ROM preallocation for incoming migration
-Date: Mon, 22 May 2023 23:17:40 +0300
-Message-Id: <20230522201740.88960-2-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230522201740.88960-1-vsementsov@yandex-team.ru>
-References: <20230522201740.88960-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q1C5D-0004Pz-5g
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 16:24:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:From:Reply-To:Cc:To:Subject:References:MIME-Version:
+ Date:Message-ID:Content-Type:Sender:Content-Transfer-Encoding:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=q+YspsFRWcjFJ8iV/0UxuBs6YjZP+nZKZ3Zb5R1rd9k=; b=PqY9j2xvGyQX8YXCAam94oxeaV
+ rdJNf+o+jUmmUA5DBtYiRCCaImqQf+ajd5gah89JVpALPBghs2wilgmA1pP+kqcP9OUS6sIuiOw2s
+ v0QlpCWAxsJPYffRlkuXaihrnpQI2yysHeFixrmEE7GKBMAHXh//UdBhxuOq1NfnPs30=;
+Content-Type: multipart/mixed; boundary="------------FDFpJB1xOM7umC0lk5x29EGQ"
+Message-ID: <4ffdd486-ec7d-49c7-1330-0d0b090735b9@rev.ng>
+Date: Mon, 22 May 2023 22:24:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+References: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
+Subject: Help finding Coverity defects for generated Hexagon code
+Content-Language: en-US
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, pbonzini@redhat.com
+Organization: rev.ng
+In-Reply-To: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
+X-Forwarded-Message-Id: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -9
+X-Spam_score: -1.0
+X-Spam_bar: -
+X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SENDGRID_REDIR=1.068,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,189 +59,248 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  anjo@rev.ng
+X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On incoming migration we have the following sequence to load option
-ROM:
+This is a multi-part message in MIME format.
+--------------FDFpJB1xOM7umC0lk5x29EGQ
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-1. On device realize we do normal load ROM from the file
+Hi,
 
-2. Than, on incoming migration we rewrite ROM from the incoming RAM
-   block. If sizes mismatch we fail, like this:
+coverity recently reported some defects in code generated by idef-parser
+(email attached). These defects are expected and we plan to emit a
+/* coverity[event_tag] */ comment to disable the specific event triggered.
 
-    Size mismatch: 0000:00:03.0/virtio-net-pci.rom: 0x40000 != 0x80000: Invalid argument
+However, I'm not able to find the event_tag as I can't find the defect in
+the QEMU coverity project, and the link in the email simply brings me
+to the main project page. I've tried sorting through the defects and
+searching for the CID without luck.
 
-This is not ideal when we migrate to updated distribution: we have to
-keep old ROM files in new distribution and be careful around romfile
-property to load correct ROM file. Which is loaded actually just to
-allocate the ROM with correct length.
+Any ideas? I'm not super familiar with coverity.
 
-Note, that romsize property doesn't really help: if we try to specify
-it when default romfile is larger, it fails with something like:
-
-    romfile "efi-virtio.rom" (160768 bytes) is too large for ROM size 65536
-
-Let's just ignore ROM file when romsize is specified and we are in
-incoming migration state. In other words, we need only to preallocate
-ROM of specified size, local ROM file is unrelated.
-
-This way:
-
-If romsize was specified on source, we just use same commandline as on
-source, and migration will work independently of local ROM files on
-target.
-
-If romsize was not specified on source (and we have mismatching local
-ROM file on target host), we have to specify romsize on target to match
-source romsize. romfile parameter may be kept same as on source or may
-be dropped, the file is not loaded anyway.
-
-As a bonus we avoid extra reading from ROM file on target.
-
-Note: when we don't have romsize parameter on source command line and
-need it for target, it may be calculated as aligned up to power of two
-size of ROM file on source (if we know, which file is it) or,
-alternatively it may be retrieved from source QEMU by QMP qom-get
-command, like
-
-  { "execute": "qom-get",
-    "arguments": {
-      "path": "/machine/peripheral/CARD_ID/virtio-net-pci.rom[0]",
-      "property": "size" } }
-
-Note: we have extra initialization of size variable to zero in
-      pci_add_option_rom to avoid false-positive
-      "error: ‘size’ may be used uninitialized"
-
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
----
- hw/pci/pci.c | 79 ++++++++++++++++++++++++++++++----------------------
- 1 file changed, 46 insertions(+), 33 deletions(-)
-
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 1cc7c89036..a3840cc452 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -36,6 +36,7 @@
- #include "migration/vmstate.h"
- #include "net/net.h"
- #include "sysemu/numa.h"
-+#include "sysemu/runstate.h"
- #include "sysemu/sysemu.h"
- #include "hw/loader.h"
- #include "qemu/error-report.h"
-@@ -2308,12 +2309,18 @@ static void pci_patch_ids(PCIDevice *pdev, uint8_t *ptr, uint32_t size)
- static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-                                Error **errp)
- {
--    int64_t size;
-+    int64_t size = 0;
-     g_autofree char *path = NULL;
--    void *ptr;
-     char name[32];
-     const VMStateDescription *vmsd;
- 
-+    /*
-+     * In case of incoming migration ROM will come with migration stream, no
-+     * reason to load the file.  Neither we want to fail if local ROM file
-+     * mismatches with specified romsize.
-+     */
-+    bool load_file = !runstate_check(RUN_STATE_INMIGRATE);
-+
-     if (!pdev->romfile || !strlen(pdev->romfile)) {
-         return;
-     }
-@@ -2343,32 +2350,35 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-         return;
-     }
- 
--    path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
--    if (path == NULL) {
--        path = g_strdup(pdev->romfile);
--    }
-+    if (load_file || pdev->romsize == -1) {
-+        path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
-+        if (path == NULL) {
-+            path = g_strdup(pdev->romfile);
-+        }
- 
--    size = get_image_size(path);
--    if (size < 0) {
--        error_setg(errp, "failed to find romfile \"%s\"", pdev->romfile);
--        return;
--    } else if (size == 0) {
--        error_setg(errp, "romfile \"%s\" is empty", pdev->romfile);
--        return;
--    } else if (size > 2 * GiB) {
--        error_setg(errp, "romfile \"%s\" too large (size cannot exceed 2 GiB)",
--                   pdev->romfile);
--        return;
--    }
--    if (pdev->romsize != -1) {
--        if (size > pdev->romsize) {
--            error_setg(errp, "romfile \"%s\" (%u bytes) "
--                       "is too large for ROM size %u",
--                       pdev->romfile, (uint32_t)size, pdev->romsize);
-+        size = get_image_size(path);
-+        if (size < 0) {
-+            error_setg(errp, "failed to find romfile \"%s\"", pdev->romfile);
-+            return;
-+        } else if (size == 0) {
-+            error_setg(errp, "romfile \"%s\" is empty", pdev->romfile);
-+            return;
-+        } else if (size > 2 * GiB) {
-+            error_setg(errp,
-+                       "romfile \"%s\" too large (size cannot exceed 2 GiB)",
-+                       pdev->romfile);
-             return;
-         }
--    } else {
--        pdev->romsize = pow2ceil(size);
-+        if (pdev->romsize != -1) {
-+            if (size > pdev->romsize) {
-+                error_setg(errp, "romfile \"%s\" (%u bytes) "
-+                           "is too large for ROM size %u",
-+                           pdev->romfile, (uint32_t)size, pdev->romsize);
-+                return;
-+            }
-+        } else {
-+            pdev->romsize = pow2ceil(size);
-+        }
-     }
- 
-     vmsd = qdev_get_vmsd(DEVICE(pdev));
-@@ -2379,15 +2389,18 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-     memory_region_init_rom(&pdev->rom, OBJECT(pdev), name, pdev->romsize,
-                            &error_fatal);
- 
--    ptr = memory_region_get_ram_ptr(&pdev->rom);
--    if (load_image_size(path, ptr, size) < 0) {
--        error_setg(errp, "failed to load romfile \"%s\"", pdev->romfile);
--        return;
--    }
-+    if (load_file) {
-+        void *ptr = memory_region_get_ram_ptr(&pdev->rom);
- 
--    if (is_default_rom) {
--        /* Only the default rom images will be patched (if needed). */
--        pci_patch_ids(pdev, ptr, size);
-+        if (load_image_size(path, ptr, size) < 0) {
-+            error_setg(errp, "failed to load romfile \"%s\"", pdev->romfile);
-+            return;
-+        }
-+
-+        if (is_default_rom) {
-+            /* Only the default rom images will be patched (if needed). */
-+            pci_patch_ids(pdev, ptr, size);
-+        }
-     }
- 
-     pci_register_bar(pdev, PCI_ROM_SLOT, 0, &pdev->rom);
 -- 
-2.34.1
+Anton Johansson,
+rev.ng Labs Srl.
 
+--------------FDFpJB1xOM7umC0lk5x29EGQ
+Content-Type: message/rfc822; name="New Defects reported by Coverity Scan for
+ QEMU.eml"
+Content-Disposition: attachment; filename="New Defects reported by Coverity
+ Scan for QEMU.eml"
+Content-Transfer-Encoding: 7bit
+
+Delivered-To: 97antjoh@gmail.com
+Received: by 2002:a05:6022:81a1:b0:3f:b214:ff8f with SMTP id c33csp1096559lab;
+        Fri, 19 May 2023 13:16:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7KCh9qW2QQpuHQKOq6wCWtCw5vdDgE06yZ/SLsC/dfMkADckWS6smEfaeT05Jzofz7xVbV
+X-Received: by 2002:adf:f7c8:0:b0:306:2e04:5925 with SMTP id a8-20020adff7c8000000b003062e045925mr2828893wrq.17.1684527387619;
+        Fri, 19 May 2023 13:16:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1684527387; cv=none;
+        d=google.com; s=arc-20160816;
+        b=FVbhLJ/ss8bd+lQPDx3nl5AiWaBqLezvrc7+G261PsinJ5j60gGPtmS+VMgmSkWe2T
+         ETtuCOuluJOuIbF/eFRkUy12OzGidsJfIV+Gnbws4FHuWfQ8mj/MIANSXadjX2YPmU+7
+         8zFIn7AqSVqP9Cn01CGOo1weIX35fEBP/vLMI/RijumcGfZrkmavYJYHjQ9deBxflmYb
+         DQjLk6VcWTnB4QGGjeChLgdkPdsCitpNxpltLQzBaJ1p2MAkpSLvFJVNfAHsnn56j6yQ
+         cq6HVcbrfufMgr+hTYwRlezx3D/Pqb5dZv6jZpi5Tel4txcYTj8b+bESYz604QP7gve/
+         AaBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:to:mime-version:subject:message-id:from
+         :date:dkim-signature:dkim-signature;
+        bh=LrEaXnV2Sb9rHuUOHsIy/wx8lMCcrnrX6NODW3lRuAI=;
+        b=OwkOAVcloveG2GtA33z+5TM8VA9Q5WG68BnCh2n9ZApYsJzCNJC+kcPSZ69BaUU77a
+         JdDrhtzdPtY/Z8ueegWsqAoUhlu4hNpAsgGdVb1BfbmrD3idIGAYGqGJYAGAf5fGn1So
+         4PPRewCapg/PDnbZ8xSqEODrTqptXlIfK8oFOjXgHqhdrHCPVk5KtHoaVP5UrM1SwOgx
+         JTPmZzExLL45phwbELVmCyeL7fX4XQOtfhAZeSvYY8Ti+VME2qLvm7UiHgeIn9bHopMX
+         KNEtQQEWfHdEx1pCDDq0gQ8eeyc1ctrbxVPnmdSVMyXmgEQoMJ2NPdcQiaUWVaQQE/fB
+         cJhw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@rev.ng header.s=dkim header.b=mA1YOwk6;
+       dkim=pass header.i=@coverity.com header.s=sc header.b=j+8pJ9ty;
+       spf=fail (google.com: domain of bounces+15810271-3271-anjo=rev.ng@sg.coverity.com does not designate 5.9.113.41 as permitted sender) smtp.mailfrom="bounces+15810271-3271-anjo=rev.ng@sg.coverity.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=coverity.com
+Return-Path: <bounces+15810271-3271-anjo=rev.ng@sg.coverity.com>
+Received: from rev.ng (rev.ng. [5.9.113.41])
+        by mx.google.com with ESMTPS id y10-20020a056000108a00b0030630e6f95asi2900818wrw.640.2023.05.19.13.16.27
+        for <97antjoh@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 19 May 2023 13:16:27 -0700 (PDT)
+Received-SPF: fail (google.com: domain of bounces+15810271-3271-anjo=rev.ng@sg.coverity.com does not designate 5.9.113.41 as permitted sender) client-ip=5.9.113.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@rev.ng header.s=dkim header.b=mA1YOwk6;
+       dkim=pass header.i=@coverity.com header.s=sc header.b=j+8pJ9ty;
+       spf=fail (google.com: domain of bounces+15810271-3271-anjo=rev.ng@sg.coverity.com does not designate 5.9.113.41 as permitted sender) smtp.mailfrom="bounces+15810271-3271-anjo=rev.ng@sg.coverity.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=coverity.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+	s=dkim; h=Content-Transfer-Encoding:Content-Type:To:Mime-Version:Subject:
+	Message-ID:From:Date:Sender:Reply-To:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=LrEaXnV2Sb9rHuUOHsIy/wx8lMCcrnrX6NODW3lRuAI=; b=mA1YOwk6dba0eX/W2FA/AR2aDO
+	tpcl1mVSLEWDbSoAkOLb0itsqseiHu7UFtPfAg2VGxNyeeHQT2jxtUJY897elPaeljPXU8dIp/hBP
+	y+HNjY/OEGY20tl9RBojo24uQVVjXuq442wGbR8oz/OYwoUCAwQAs6Dse7GTDXgyMvh8=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=coverity.com;
+	h=from:subject:mime-version:to:content-type:content-transfer-encoding:
+	cc:content-type:from:subject:to;
+	s=sc; bh=LrEaXnV2Sb9rHuUOHsIy/wx8lMCcrnrX6NODW3lRuAI=;
+	b=j+8pJ9tyFPM1cK6s1Zccjk727xr2BzVSn82po6zSnqD+baJGw3ehbpResx0gUG9+K+l1
+	0muFTOSQA4plDV2s3HwGSD13Xm6ZiSfYL3YLtShMoVWyGSELfKF/1+NVSFmMFIt/8RBocV
+	llMFvucdxrJBUgEF8ssshsLRyFkBU/9LZ6r9ETeg/9eRD7GaAYvaVuBRLac6GTZzBSSdr0
+	eh0MYTMiy1Ct7zZ1CPpRfJVw/J0ft3uxC+BrSJRj4M2nJfPxpBzUaCmLonyjCiMHEplVyK
+	hqdJF6jV1yBSaMDBs4iFTsO1j8Wn3dIyRye2qfSXkoSS90WUtloX8VulJGDrRIWQ==
+Received: by filterdrecv-65f68489c8-lx4fk with SMTP id filterdrecv-65f68489c8-lx4fk-1-6467D913-43
+        2023-05-19 20:16:19.691451651 +0000 UTC m=+765614.450674333
+Received: from coverity.com (unknown)
+	by geopod-ismtpd-0 (SG) with ESMTP
+	id OA6rqqTXRcWSa5Rthq-ZFw
+	Fri, 19 May 2023 20:16:19.572 +0000 (UTC)
+Date: Fri, 19 May 2023 20:16:19 +0000 (UTC)
+From: scan-admin@coverity.com
+Message-ID: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
+Subject: New Defects reported by Coverity Scan for QEMU
+Mime-Version: 1.0
+X-SG-EID:  =?us-ascii?Q?HBOmY=2FE5MTYb8Mhr7ulQJIaFxcZEWpCD=2F7YwgOg+H8uRiPTm6w=2F+4Fwt5x0Cl7?=
+ =?us-ascii?Q?HwU9l8yr80c3VDUMmciluEPWHGWqkT709IWbvQW?=
+ =?us-ascii?Q?Vi0=2FdRVD78OXKqyQkiG4ZETBbYoLJRenM=2FrtaD4?=
+ =?us-ascii?Q?5gZDX7W=2FbvgbptbTPFJdnoJSb03hXscsa3t4L+o?=
+ =?us-ascii?Q?680PBeMUt5q9PZ9jFtkAcOGO1eIbbrn4Svg=3D=3D?=
+To: anjo@rev.ng
+X-Entity-ID: S2cgcZKcMUFZg9Mweglhkg==
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+Please find the latest report on new defect(s) introduced to QEMU found with Coverity Scan.
+
+5 new defect(s) introduced to QEMU found with Coverity Scan.
+9 defect(s), reported by Coverity Scan earlier, were marked fixed in the recent build analyzed by Coverity Scan.
+
+New defect(s) Reported-by: Coverity Scan
+Showing 5 of 5 defect(s)
+
+
+** CID 1512512:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 32297 in emit_F2_dfmpylh()
+
+
+________________________________________________________________________________________________________
+*** CID 1512512:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 32297 in emit_F2_dfmpylh()
+32291     tcg_gen_ori_i64(tmp_3, tmp_2, qemu_tmp_1);
+32292     TCGv_i64 tmp_4 = tcg_temp_new_i64();
+32293     tcg_gen_mul_i64(tmp_4, tmp_0, tmp_3);
+32294     int64_t qemu_tmp_2 = (int64_t)((int32_t) 0x1);
+32295     TCGv_i64 tmp_5 = tcg_temp_new_i64();
+32296     if (qemu_tmp_2 >= 64) {
+>>>     CID 1512512:  Control flow issues  (DEADCODE)
+>>>     Execution cannot reach this statement: "tcg_gen_movi_i64(tmp_5, 0L);".
+32297     tcg_gen_movi_i64(tmp_5, 0);
+32298     } else {
+32299     tcg_gen_shli_i64(tmp_5, tmp_4, qemu_tmp_2);
+32300     }
+32301     TCGv_i64 tmp_6 = tcg_temp_new_i64();
+32302     tcg_gen_add_i64(tmp_6, RxxV, tmp_5);
+
+** CID 1512511:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 32257 in emit_F2_dfmpyll()
+
+
+________________________________________________________________________________________________________
+*** CID 1512511:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 32257 in emit_F2_dfmpyll()
+32251     } else {
+32252     tcg_gen_shri_i64(tmp_3, prod, qemu_tmp_0);
+32253     }
+32254     int64_t qemu_tmp_1 = (int64_t)((int32_t) 0x1);
+32255     TCGv_i64 tmp_4 = tcg_temp_new_i64();
+32256     if (qemu_tmp_1 >= 64) {
+>>>     CID 1512511:  Control flow issues  (DEADCODE)
+>>>     Execution cannot reach this statement: "tcg_gen_movi_i64(tmp_4, 0L);".
+32257     tcg_gen_movi_i64(tmp_4, 0);
+32258     } else {
+32259     tcg_gen_shli_i64(tmp_4, tmp_3, qemu_tmp_1);
+32260     }
+32261     tcg_gen_mov_i64(RddV, tmp_4);
+32262     TCGv_i64 tmp_5 = tcg_temp_new_i64();
+
+** CID 1512510:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 16045 in emit_M2_dpmpyss_rnd_s0()
+
+
+________________________________________________________________________________________________________
+*** CID 1512510:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 16045 in emit_M2_dpmpyss_rnd_s0()
+16039     tcg_gen_addi_i64(tmp_3, tmp_2, qemu_tmp_0);
+16040     int64_t qemu_tmp_1 = (int64_t)((int32_t) 0x20);
+16041     TCGv_i64 tmp_4 = tcg_temp_new_i64();
+16042     {
+16043     int64_t shift = qemu_tmp_1;
+16044     if (qemu_tmp_1 >= 64) {
+>>>     CID 1512510:  Control flow issues  (DEADCODE)
+>>>     Execution cannot reach this statement: "shift = 63L;".
+16045         shift = 64 - 1;
+16046     }
+16047     tcg_gen_sari_i64(tmp_4, tmp_3, shift);
+16048     }
+16049     TCGv_i32 tmp_5 = tcg_temp_new_i32();
+16050     tcg_gen_trunc_i64_tl(tmp_5, tmp_4);
+
+** CID 1512509:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 32287 in emit_F2_dfmpylh()
+
+
+________________________________________________________________________________________________________
+*** CID 1512509:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 32287 in emit_F2_dfmpylh()
+32281     tcg_gen_extract_i64(tmp_1, RttV, ((int32_t) 0x1) * 32, 32);
+32282     int64_t qemu_tmp_0 = (int64_t)((int32_t) 0x14);
+32283     TCGv_i64 tmp_2 = tcg_temp_new_i64();
+32284     if (qemu_tmp_0 != 0) {
+32285     tcg_gen_extract_i64(tmp_2, tmp_1, 0, qemu_tmp_0);
+32286     } else {
+>>>     CID 1512509:  Control flow issues  (DEADCODE)
+>>>     Execution cannot reach this statement: "tcg_gen_movi_i64(tmp_2, 0L);".
+32287     tcg_gen_movi_i64(tmp_2, 0);
+32288     }
+32289     int64_t qemu_tmp_1 = (int64_t)((int32_t) 0x100000);
+32290     TCGv_i64 tmp_3 = tcg_temp_new_i64();
+32291     tcg_gen_ori_i64(tmp_3, tmp_2, qemu_tmp_1);
+32292     TCGv_i64 tmp_4 = tcg_temp_new_i64();
+
+** CID 1512508:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 32250 in emit_F2_dfmpyll()
+
+
+________________________________________________________________________________________________________
+*** CID 1512508:  Control flow issues  (DEADCODE)
+/target/hexagon/idef-generated-emitter.indented.c: 32250 in emit_F2_dfmpyll()
+32244     TCGv_i64 tmp_2 = tcg_temp_new_i64();
+32245     tcg_gen_mul_i64(tmp_2, tmp_0, tmp_1);
+32246     tcg_gen_mov_i64(prod, tmp_2);
+32247     int64_t qemu_tmp_0 = (int64_t)((int32_t) 0x20);
+32248     TCGv_i64 tmp_3 = tcg_temp_new_i64();
+32249     if (qemu_tmp_0 >= 64) {
+>>>     CID 1512508:  Control flow issues  (DEADCODE)
+>>>     Execution cannot reach this statement: "tcg_gen_movi_i64(tmp_3, 0L);".
+32250     tcg_gen_movi_i64(tmp_3, 0);
+32251     } else {
+32252     tcg_gen_shri_i64(tmp_3, prod, qemu_tmp_0);
+32253     }
+32254     int64_t qemu_tmp_1 = (int64_t)((int32_t) 0x1);
+32255     TCGv_i64 tmp_4 = tcg_temp_new_i64();
+
+
+________________________________________________________________________________________________________
+To view the defects in Coverity Scan visit, https://u15810271.ct.sendgrid.net/ls/click?upn=HRESupC-2F2Czv4BOaCWWCy7my0P0qcxCbhZ31OYv50yrzEQNXe51mg-2FlKoEnRoarMq5nOxxfhqLUuo8HvG2S4Ew-3D-3DbhwO_HM6v81mUGiNDJakbNe6YIRym-2FQHdIITfL-2F6M7vogPEFZsLU1jTbzTaCeyjviVsFQbBtqkUAi0j5NgYn6TunnxkQOIazJbAGHPpUUiVWiLdepITfddm-2BZj5rEvsNpXIGxoCBaqL46nJjmZh0KtMVH7OF2PUhlwJEAF8mxruXgXKxWiIhfYkC5C9ZGRS-2Bb899ClIwrdzrG-2Bcyej9gVEhhbTg-3D-3D
+
+  To manage Coverity Scan email notifications for "anjo@rev.ng", click https://u15810271.ct.sendgrid.net/ls/click?upn=HRESupC-2F2Czv4BOaCWWCy7my0P0qcxCbhZ31OYv50yped04pjJnmXOsUBtKYNIXxkHoxhtWuBL8xoZ3fXkWsjZDnFzdblVNdGVG7hTtMZDUMu9N-2FYFh-2BJcj3muNZzOh-2Bw69-2BzSi3-2Bq8J92Hkdofe5qo1YUQPHgoatMDbyIAxhNk-3DSIxP_HM6v81mUGiNDJakbNe6YIRym-2FQHdIITfL-2F6M7vogPEFZsLU1jTbzTaCeyjviVsFQjadlt-2B2lzdXKw3TRUawXJePqEdv2tDdi9YF5DmvrNW-2BzIqvOihj37P4PnQkxzqLli3gtnfjMNcu8OdlowwiquMdWPu63YHLdJ3vzUw8b00nEIzPsYQD9PMFGPPitGYc6d-2B71ETjA-2FyDsAw1RS5JQhw-3D-3D
+
+
+--------------FDFpJB1xOM7umC0lk5x29EGQ--
 
