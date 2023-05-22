@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FD370BC13
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC23F70BC28
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 13:48:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q13wn-0002M0-Rd; Mon, 22 May 2023 07:43:29 -0400
+	id 1q1413-0003xD-2y; Mon, 22 May 2023 07:47:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q13wg-0002L7-3p
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:43:27 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q13wc-0006L8-RD
- for qemu-devel@nongnu.org; Mon, 22 May 2023 07:43:21 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c0d:3786:0:640:7c97:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 10EA75FF9D;
- Mon, 22 May 2023 14:43:09 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b50f::1:35] (unknown
- [2a02:6b8:b081:b50f::1:35])
- by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 7hfoYH4MiCg0-lrfEqmy9; Mon, 22 May 2023 14:43:08 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1684755788; bh=Bbu2xonIcUQ+wLAPjrb7XSbvLpDbGUU7MQPyk1pQUjg=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=v+DjA5IaUIQAUZ5Td2QmM7kzl4SKipGq3ccG0NCyUI4IRaPxOh1ZDc4ry5Ezmac62
- 7gkp9ix6y07c2RFD65JN23cchMiqLv9dqaVqJN2h6ZasjEhyZzmBtgqNfXNfH2Fhap
- MdZ5b7ux9vaZVg3CuSIwi00pX9tL2/MPMPevEixw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <0b692f6f-4d9a-60be-e1c0-9aa0f7869eed@yandex-team.ru>
-Date: Mon, 22 May 2023 14:43:07 +0300
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q140x-0003wj-V2
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:47:48 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q140w-00073O-8F
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 07:47:47 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-52c30fbccd4so5299380a12.0
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 04:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684756064; x=1687348064;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=M4Dl1h0jo+m8UUuvwugjWjif9pBMRWgnAljl+9/hZvY=;
+ b=dlkYW4VKHDiU41nqFFs9piZtbhj9vvJk+G+Tf4c0gNQz/OnwUdNxSkemGfoKFC2o/q
+ ijtVLeUAk0BRmKOzXkxGoUyn8sVx6eknQeYKHyXpRDhTHpKVm93M0OgbQqsO1dZIFSCq
+ 1NiyNWvPc5y575W2XY7gdHJa7IAH8TqslAdPvV3NVUF53ct7PCUhFb0ial/lxxBHFvEm
+ GuZUPgD6jqTEoQiojPmzrcVTgw+qCPXawveILV2kSdOWDj00WTBnBA2QOgTYbr87RiNq
+ 8bqTZgoXG2ZUL9LbA9sVBdGRXEESaaPdqaHwhry4zr0PBtTULYKAI1fQ9cIyQs5xEPwL
+ uL/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684756064; x=1687348064;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=M4Dl1h0jo+m8UUuvwugjWjif9pBMRWgnAljl+9/hZvY=;
+ b=Q5ABcFKQUkl2BOuJzhP2Rh7mHW8nt3W6unTZ/X6tRkTFBwR0+LTk/8I+LX9/l6bCzO
+ ToxLPhRi1B9Zg/MuZpXdyxHVlISMpSVlH9qbbu4bTPqyXDGJeTSWyKjmNTWrflcuWUED
+ WZZLMCnZKVxbJqXIF6A7ZGGXaIf0cFcu2LHmXzSsYPENjTcKcudFPZOksGrx9Euph+Q3
+ czJJJHfhX7dHcoTvT8lwcBgGpU25fwrbr//03ndscTe1TRgKxjBUNKAlCcqP+Jy7LNJB
+ U97r0YXTsUhPgZ2bRS+J6nX6M6wyLDNDiU6lJ2KvXsIp2TkDodVXirXa/wBORJZzqqNd
+ toZA==
+X-Gm-Message-State: AC+VfDyiWTqYGX4R2oAZdXA2EMAQgu0MsiicsHQ/JeAVvbCKmcDRQg7K
+ eKvwYBqXVvPv/xvQv9XB5/1k6BriyhCmMq1amIY=
+X-Google-Smtp-Source: ACHHUZ4XQjPSNIRiOkS/Um6PiwLqoOtNr/WufvsqobxN4H8HAkIF0SSNeZ4MtGd01tQgWBBibmZAVw==
+X-Received: by 2002:a17:902:748c:b0:1a9:21bc:65f8 with SMTP id
+ h12-20020a170902748c00b001a921bc65f8mr9783096pll.11.1684756064318; 
+ Mon, 22 May 2023 04:47:44 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ jb4-20020a170903258400b001ac4e316b51sm4710108plb.109.2023.05.22.04.47.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 May 2023 04:47:43 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH] crypto: Always initialize splitkeylen
+Date: Mon, 22 May 2023 20:47:37 +0900
+Message-Id: <20230522114737.32686-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v7 1/4] qapi/qdev.json: unite DEVICE_* event data into
- single structure
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, eblake@redhat.com, eduardo@habkost.net,
- berrange@redhat.com, pbonzini@redhat.com, marcel.apfelbaum@gmail.com,
- philmd@linaro.org, antonkuchin@yandex-team.ru, den-plotnikov@yandex-team.ru
-References: <20230421103207.845847-1-vsementsov@yandex-team.ru>
- <20230421103207.845847-2-vsementsov@yandex-team.ru>
- <20230518160434-mutt-send-email-mst@kernel.org> <87a5xwogw0.fsf@pond.sub.org>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <87a5xwogw0.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,155 +89,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.05.23 12:27, Markus Armbruster wrote:
-> "Michael S. Tsirkin" <mst@redhat.com> writes:
-> 
->> On Fri, Apr 21, 2023 at 01:32:04PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->>> DEVICE_DELETED and DEVICE_UNPLUG_GUEST_ERROR has equal data, let's
->>> refactor it to one structure. That also helps to add new events
->>> consistently.
->>>
->>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>
->> Can QAPI maintainers please review this patchset?
->> It's been a month.
-> 
-> It's been a busy month; sorry for the delay.
-> 
->>> ---
->>>   qapi/qdev.json | 39 +++++++++++++++++++++++++++------------
->>>   1 file changed, 27 insertions(+), 12 deletions(-)
->>>
->>> diff --git a/qapi/qdev.json b/qapi/qdev.json
->>> index 2708fb4e99..135cd81586 100644
->>> --- a/qapi/qdev.json
->>> +++ b/qapi/qdev.json
->>> @@ -114,16 +114,37 @@
->>>   { 'command': 'device_del', 'data': {'id': 'str'} }
->>>   
->>>   ##
->>> -# @DEVICE_DELETED:
->>> +# @DeviceAndPath:
->>>   #
->>> -# Emitted whenever the device removal completion is acknowledged by the guest.
->>> -# At this point, it's safe to reuse the specified device ID. Device removal can
->>> -# be initiated by the guest or by HMP/QMP commands.
->>> +# In events we designate devices by both their ID (if the device has one)
->>> +# and QOM path.
->>> +#
->>> +# Why we need ID? User specify ID in device_add command and in command line
->>> +# and expects same identifier in the event data.
->>> +#
->>> +# Why we need QOM path? Some devices don't have ID and we still want to emit
->>> +# events for them.
->>> +#
->>> +# So, we have a bit of redundancy, as QOM path for device that has ID is
->>> +# always /machine/peripheral/ID. But that's hard to change keeping both
->>> +# simple interface for most users and universality for the generic case.
-> 
-> Hmm.  I appreciate rationale, but I'm not sure it fits here.  Would
-> readers be worse off if we dropped it?
+When _FORTIFY_SOURCE=2, glibc version is 2.35, and GCC version is
+12.1.0, the compiler complains as follows:
 
-Is there a syntax to add comment to the QAPI structure, which doesn't go into compiled public documentation?
+In file included from /usr/include/string.h:535,
+                 from /home/alarm/q/var/qemu/include/qemu/osdep.h:99,
+                 from ../crypto/block-luks.c:21:
+In function 'memset',
+    inlined from 'qcrypto_block_luks_store_key' at ../crypto/block-luks.c:843:9:
+/usr/include/bits/string_fortified.h:59:10: error: 'splitkeylen' may be used uninitialized [-Werror=maybe-uninitialized]
+   59 |   return __builtin___memset_chk (__dest, __ch, __len,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   60 |                                  __glibc_objsize0 (__dest));
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+../crypto/block-luks.c: In function 'qcrypto_block_luks_store_key':
+../crypto/block-luks.c:699:12: note: 'splitkeylen' was declared here
+  699 |     size_t splitkeylen;
+      |            ^~~~~~~~~~~
 
-I agree that we don't need this in compiled documentation, but this place in the code really good for the rationale, to avoid starting the discussion from the beginning again.
+It seems the compiler cannot see that splitkeylen will not be used
+when splitkey is NULL. Suppress the warning by initializing splitkeylen
+even when splitkey stays NULL.
 
-> 
->>>   #
->>>   # @device: the device's ID if it has one
->>>   #
->>>   # @path: the device's QOM path
->>>   #
->>> +# Since: 8.0
->>> +##
->>> +{ 'struct': 'DeviceAndPath',
->>> +  'data': { '*device': 'str', 'path': 'str' } }
->>> +
->>
->> Should be Since: 8.1 no?
-> 
-> Yes.
-> 
-> Please format like
-> 
->     ##
->     # @DeviceAndPath:
->     #
->     # In events we designate devices by both their ID (if the device has
->     # one) and QOM path.
->     #
->     # Why we need ID?  User specify ID in device_add command and in
->     # command line and expects same identifier in the event data.
->     #
->     # Why we need QOM path?  Some devices don't have ID and we still want
->     # to emit events for them.
->     #
->     # So, we have a bit of redundancy, as QOM path for device that has ID
->     # is always /machine/peripheral/ID. But that's hard to change keeping
->     # both simple interface for most users and universality for the
->     # generic case.
->     #
->     # @device: the device's ID if it has one
->     #
->     # @path: the device's QOM path
->     #
->     # Since: 8.0
->     ##
-> 
-> to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-> to conform to current conventions).
-> 
->>> +##
->>> +# @DEVICE_DELETED:
->>> +#
->>> +# Emitted whenever the device removal completion is acknowledged by the guest.
->>> +# At this point, it's safe to reuse the specified device ID. Device removal can
->>> +# be initiated by the guest or by HMP/QMP commands.
->>> +#
-> 
-> Conflict resolution:
-> 
->      # Emitted whenever the device removal completion is acknowledged by
->      # the guest.  At this point, it's safe to reuse the specified device
->      # ID. Device removal can be initiated by the guest or by HMP/QMP
->      # commands.
-> 
->>>   # Since: 1.5
->>>   #
->>>   # Example:
->>> @@ -134,18 +155,13 @@
->>>   #      "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
->>>   #
->>>   ##
->>> -{ 'event': 'DEVICE_DELETED',
->>> -  'data': { '*device': 'str', 'path': 'str' } }
->>> +{ 'event': 'DEVICE_DELETED', 'data': 'DeviceAndPath' }
->>>   
->>>   ##
->>>   # @DEVICE_UNPLUG_GUEST_ERROR:
->>>   #
->>>   # Emitted when a device hot unplug fails due to a guest reported error.
->>>   #
->>> -# @device: the device's ID if it has one
->>> -#
->>> -# @path: the device's QOM path
->>> -#
->>>   # Since: 6.2
->>>   #
->>>   # Example:
->>> @@ -156,5 +172,4 @@
->>>   #      "timestamp": { "seconds": 1615570772, "microseconds": 202844 } }
->>>   #
->>>   ##
->>> -{ 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
->>> -  'data': { '*device': 'str', 'path': 'str' } }
->>> +{ 'event': 'DEVICE_UNPLUG_GUEST_ERROR', 'data': 'DeviceAndPath' }
->>> -- 
->>> 2.34.1
-> 
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ crypto/block-luks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+index 5688783ab1..2f59c3a625 100644
+--- a/crypto/block-luks.c
++++ b/crypto/block-luks.c
+@@ -706,14 +706,14 @@ qcrypto_block_luks_store_key(QCryptoBlock *block,
+ 
+     assert(slot_idx < QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS);
+     slot = &luks->header.key_slots[slot_idx];
++    splitkeylen = luks->header.master_key_len * slot->stripes;
++
+     if (qcrypto_random_bytes(slot->salt,
+                              QCRYPTO_BLOCK_LUKS_SALT_LEN,
+                              errp) < 0) {
+         goto cleanup;
+     }
+ 
+-    splitkeylen = luks->header.master_key_len * slot->stripes;
+-
+     /*
+      * Determine how many iterations are required to
+      * hash the user password while consuming 1 second of compute
 -- 
-Best regards,
-Vladimir
+2.40.1
 
 
