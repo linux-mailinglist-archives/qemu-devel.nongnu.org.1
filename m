@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4430970C2A5
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 17:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8855170C2D0
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 17:55:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q17fq-0002Vw-10; Mon, 22 May 2023 11:42:14 -0400
+	id 1q17rT-00060R-J3; Mon, 22 May 2023 11:54:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1q17fo-0002Uu-63
- for qemu-devel@nongnu.org; Mon, 22 May 2023 11:42:12 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q17rR-0005y6-1T
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 11:54:13 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1q17fm-0003bN-Fg
- for qemu-devel@nongnu.org; Mon, 22 May 2023 11:42:11 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-96f50e26b8bso797530566b.2
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 08:42:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q17rP-00066i-91
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 11:54:12 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-253570deb8dso3792377a91.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 08:54:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684770128; x=1687362128;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ntBwRRWm0xdALQrGuEtYHqvRbQtMjEFrpMKv/FDPAtc=;
- b=Bq+iCjCjRCZk7Z2o2PEXXeN3EHl2PVNoeR7dHYGP77ELQXFLrOsTqbRZNuu2EZXNox
- ee4KV72bxzASbNu8HHDb+tecCgvuR1+j9zcQuziJ3WHXgGbDgMgR4q35VvaAvQ8FIzhd
- 7BH7AFq52xE4g3RpUx86aW1PvdW2V9Ih7SQVS6OCPje7weuu4TmPucCfY8QPq554ONKh
- clrmC4luNFd0SSLT6qeD3mKwfFdwOBez4hfM2ae+Z6si5DOoX53MgZ8dc0DuEBSKZ6PM
- a1t9uxlb3K5N0McFOznAuyrBO9Or/4Cg+9jkY6n5rQpK6mtOO6vRrHc8hpGr/m3xTHGe
- HFOw==
+ d=linaro.org; s=google; t=1684770849; x=1687362849;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FQiPxQehculiryxaHDAQcjPK8SkpxRHFkU8nz3e8/yM=;
+ b=rK1Id13Vh88BpC5lW0/UdV2JVRQUnTLkx1Pl1N/zgznM13PxeGw0yXbm25CtlZ7q1g
+ iNSWZ2Ji/F/lb6ZZ5/0CJqJPvEk+RbZHjur6Y+uAofxJNg4ulDgMJiYc48qzBQ2NGL8X
+ gq8/eulWrQehVxdpKHPkW82gB4rjso31jBQVBK1Ugqf9SwrReExZKP6DRgT+GEqpC7U5
+ s+7QBbeWC9Kvbvs9S39wpoRw5AwHO5GbP8cb8L6WenEab0QyTgRUznI0pPfDcrDBOA+5
+ mVlRATnCzbtvkmZ/nVoDoI5k+fJZYticMQbZ4baO6gyDvtC+Ho+5w5g5l99w+uaNMarc
+ 2Nzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684770128; x=1687362128;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ntBwRRWm0xdALQrGuEtYHqvRbQtMjEFrpMKv/FDPAtc=;
- b=Au/1c0ivMn4E7PMJJCVHr4JPfsQRWfPyscR4Gyhv9zpkzToRuZO7r7eG7e6Zo4wKld
- 6v4fQg5lcwNjoWQa9eBQpKrFhuEr8TqvxuLKQVukPubes0bJo69+2/y1Jw04RA5GYOy6
- SaeaiYCrrwd7dwBexS6cRoxE1UFjpmjPe62S/0Z3Lga17+ijNPgLTwgCFO6BdB1z+GBH
- Xm5uEMkaTe+oOHCbqR2jCadjy94oSZ/8ATC7ivk3/prOp9E85PDCyX3CSy/EWJH1AwoC
- XDxojDIG0CYOpvqCM6VZTmPBL1/UT325ZB+Gy4H3nzYRV6rhT1NzUoYY9X2DyT++LLpQ
- Sx4A==
-X-Gm-Message-State: AC+VfDy7ExijUafwn3m9pA4L2pA4qwPgFsWPM+DJam2+qYZHNRpSh+wm
- 7KxvM3lGFCoeZSjW652VVyM=
-X-Google-Smtp-Source: ACHHUZ7G6JHBlLpI2JhNhYUZZZnAm4QfrynURn4NvO9azaPSCc58vc0V5uJ4Z0Rkvw7XgawRIq94UA==
-X-Received: by 2002:a17:907:72c5:b0:96f:5f44:ea02 with SMTP id
- du5-20020a17090772c500b0096f5f44ea02mr10250547ejc.8.1684770128067; 
- Mon, 22 May 2023 08:42:08 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-089-012-142-218.89.12.pool.telefonica.de.
- [89.12.142.218]) by smtp.gmail.com with ESMTPSA id
- z14-20020a1709067e4e00b00969dfd160aesm3224573ejr.109.2023.05.22.08.42.07
+ d=1e100.net; s=20221208; t=1684770849; x=1687362849;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FQiPxQehculiryxaHDAQcjPK8SkpxRHFkU8nz3e8/yM=;
+ b=O30PirIvVtbDA8Iv5oQHfL19mc4QSZLMlGK6r9UrJ0R480kU4EItYLJbC+MoakMN6j
+ Oe/dzRfTYGSwj38voMXf57+6FlMhKJl+1014DWXMF6K5LpxFv590y6RUXEsxjEvmnrSa
+ 46qSdRoTHoNKKbQwjYbxgAweeOjfWy+3awgSD2UVL0wi/vbjK5U8PKEgnNm9c9pdVaRQ
+ CrO0KjGLDB60lQgsNjnVgwZY+MfJQ1Me3ZllBlvR9DDSsBtj7/SDIlinKeuSw8OYHunQ
+ 2UjSaoLjCwN2NVID6J9TkXz4hzoY5TN2gK7mXtT5ks6mktDdSvtoAxlOQLv1rW8h2XI2
+ pfog==
+X-Gm-Message-State: AC+VfDyj3UZCYRZVTNcAmxs8ehw81L4vMewdQnCeboJju6+i4nfJ0zI2
+ 32jhS5su/N64XfBbqG3FpJVN/Q==
+X-Google-Smtp-Source: ACHHUZ45cAc/f50vUaD07esll/IrZvUr6ywEVrZbpLJ7Uki6WsD9t63yiOdJN9SEJdYvTtalFN6Gzw==
+X-Received: by 2002:a17:90b:1e50:b0:252:b14a:55c2 with SMTP id
+ pi16-20020a17090b1e5000b00252b14a55c2mr10099239pjb.9.1684770849232; 
+ Mon, 22 May 2023 08:54:09 -0700 (PDT)
+Received: from ?IPV6:2607:fb90:8063:704:7944:82ed:f254:5737?
+ ([2607:fb90:8063:704:7944:82ed:f254:5737])
+ by smtp.gmail.com with ESMTPSA id
+ mp14-20020a17090b190e00b00247735d1463sm4269730pjb.39.2023.05.22.08.54.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 08:42:07 -0700 (PDT)
-Date: Mon, 22 May 2023 15:42:03 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Stefano Stabellini <sstabellini@kernel.org>, mst@redhat.com
-CC: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- David Woodhouse <dwmw@amazon.co.uk>, Eduardo Habkost <eduardo@habkost.net>,
- Chuck Zmudzinski <brchuckz@aol.com>, Aurelien Jarno <aurelien@aurel32.net>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
- Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Anthony Perard <anthony.perard@citrix.com>, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 0/7] Resolve TYPE_PIIX3_XEN_DEVICE
-In-Reply-To: <alpine.DEB.2.22.394.2305151350180.4125828@ubuntu-linux-20-04-desktop>
-References: <20230403074124.3925-1-shentey@gmail.com>
- <20230421033757-mutt-send-email-mst@kernel.org>
- <9EB9A984-61E5-4226-8352-B5DDC6E2C62E@gmail.com>
- <alpine.DEB.2.22.394.2305151350180.4125828@ubuntu-linux-20-04-desktop>
-Message-ID: <EB3E61EB-B543-4B15-94A9-C16A66437601@gmail.com>
+ Mon, 22 May 2023 08:54:08 -0700 (PDT)
+Message-ID: <e36730f8-5f32-1bfb-b09a-d6943732f0df@linaro.org>
+Date: Mon, 22 May 2023 08:54:05 -0700
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] meson: remove -no-pie linker flag
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: vr_qemu@t-online.de, marcandre.lureau@redhat.com
+References: <20230522080816.66320-1-pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230522080816.66320-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,103 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 5/22/23 01:08, Paolo Bonzini wrote:
+> The large comment in the patch says it all; the -no-pie flag is broken and
+> this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
+> ("build: move remaining compiler flag tests to meson", 2023-05-18).
+
+It's not nearly as simple as that.
+
+> +  # What about linker flags?  For a static build, no PIE is implied by -static
+> +  # which we added above.  For dynamic linking, adding -no-pie is messy because
+> +  # it overrides -shared: the linker then wants to build an executable instead
+> +  # of a shared library and the build fails.  Before moving this code to Meson,
+> +  # we went through a dozen different commits affecting the usage of -no-pie,
+> +  # ultimately settling for a completely broken one that added -no-pie to the
+> +  # compiler flags together with -fno-pie... except that -no-pie is a linker
+> +  # flag that has no effect on the compiler command line.
+
+-no-pie is a linker flag, but distro folk that didn't quite know what they were doing made 
+local changes to gcc's specs file.  So it *is* a compiler command-line flag, but only for 
+some builds of gcc.
+
+We can't just remove -no-pie, we need to probe for it as cc.get_supported_arguments 
+instead of cc.get_supported_link_arguments.
+
+Or something.  It's a mess, for sure.
 
 
-Am 15=2E Mai 2023 20:52:40 UTC schrieb Stefano Stabellini <sstabellini@ker=
-nel=2Eorg>:
->On Sat, 13 May 2023, Bernhard Beschow wrote:
->> Am 21=2E April 2023 07:38:10 UTC schrieb "Michael S=2E Tsirkin" <mst@re=
-dhat=2Ecom>:
->> >On Mon, Apr 03, 2023 at 09:41:17AM +0200, Bernhard Beschow wrote:
->> >> There is currently a dedicated PIIX3 device model for use under Xen=
-=2E By reusing
->> >> existing PCI API during initialization this device model can be elim=
-inated and
->> >> the plain PIIX3 device model can be used instead=2E
->> >>=20
->> >> Resolving TYPE_PIIX3_XEN_DEVICE results in less code while also maki=
-ng Xen
->> >> agnostic towards the precise south bridge being used in the PC machi=
-ne=2E The
->> >> latter might become particularily interesting once PIIX4 becomes usa=
-ble in the
->> >> PC machine, avoiding the "Frankenstein" use of PIIX4_ACPI in PIIX3=
-=2E
->> >
->> >xen stuff so I assume that tree?
->>=20
->> Ping
->
->I am OK either way=2E Michael, what do you prefer?
->
->Normally I would suggest for you to pick up the patches=2E But as it
->happens I'll have to likely send another pull request in a week or two
->and I can add these patches to it=2E
->
->Let me know your preference and I am happy to follow it=2E
+r~
 
-Hi Stefano,
-
-Michael's PR was merged last week=2E How about including this series into =
-your PR then?
-
-Best regards,
-Bernhard
-
->
->
->> >
->> >> Testing done:
->> >> - `make check`
->> >> - Run `xl create` with the following config:
->> >>     name =3D "Manjaro"
->> >>     type =3D 'hvm'
->> >>     memory =3D 1536
->> >>     apic =3D 1
->> >>     usb =3D 1
->> >>     disk =3D [ "file:manjaro-kde-21=2E2=2E6-220416-linux515=2Eiso,hd=
-c:cdrom,r" ]
->> >>     device_model_override =3D "/usr/bin/qemu-system-x86_64"
->> >>     vga =3D "stdvga"
->> >>     sdl =3D 1
->> >> - `qemu-system-x86_64 -M pc -m 2G -cpu host -accel kvm \
->> >>     -cdrom manjaro-kde-21=2E2=2E6-220416-linux515=2Eiso`
->> >>=20
->> >> v4:
->> >> - Add patch fixing latent memory leak in pci_bus_irqs() (Anthony)
->> >>=20
->> >> v3:
->> >> - Rebase onto master
->> >>=20
->> >> v2:
->> >> - xen_piix3_set_irq() is already generic=2E Just rename it=2E (Chuck=
-)
->> >>=20
->> >> Tested-by: Chuck Zmudzinski <brchuckz@aol=2Ecom>
->> >>=20
->> >> Bernhard Beschow (7):
->> >>   include/hw/xen/xen: Rename xen_piix3_set_irq() to xen_intx_set_irq=
-()
->> >>   hw/pci/pci=2Ec: Don't leak PCIBus::irq_count[] in pci_bus_irqs()
->> >>   hw/isa/piix3: Reuse piix3_realize() in piix3_xen_realize()
->> >>   hw/isa/piix3: Wire up Xen PCI IRQ handling outside of PIIX3
->> >>   hw/isa/piix3: Avoid Xen-specific variant of piix3_write_config()
->> >>   hw/isa/piix3: Resolve redundant k->config_write assignments
->> >>   hw/isa/piix3: Resolve redundant TYPE_PIIX3_XEN_DEVICE
->> >>=20
->> >>  include/hw/southbridge/piix=2Eh |  1 -
->> >>  include/hw/xen/xen=2Eh          |  2 +-
->> >>  hw/i386/pc_piix=2Ec             | 36 +++++++++++++++++++--
->> >>  hw/i386/xen/xen-hvm=2Ec         |  2 +-
->> >>  hw/isa/piix3=2Ec                | 60 +-----------------------------=
------
->> >>  hw/pci/pci=2Ec                  |  2 ++
->> >>  stubs/xen-hw-stub=2Ec           |  2 +-
->> >>  7 files changed, 39 insertions(+), 66 deletions(-)
->> >>=20
->> >> --=20
->> >> 2=2E40=2E0
->> >>=20
->> >
->>=20
 
