@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3CA70BE6A
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6C170BE8C
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 14:39:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q14lL-0001Ux-TS; Mon, 22 May 2023 08:35:43 -0400
+	id 1q14oP-0002nh-OR; Mon, 22 May 2023 08:38:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q14lJ-0001Um-7J
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:35:41 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q14oN-0002n9-DV
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:38:51 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q14lH-0008UC-FI
- for qemu-devel@nongnu.org; Mon, 22 May 2023 08:35:40 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-309382efe13so3710200f8f.2
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 05:35:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q14oL-0000RY-Sq
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 08:38:51 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-306dbad5182so3919599f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 05:38:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684758938; x=1687350938;
+ d=linaro.org; s=google; t=1684759127; x=1687351127;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=N2ItjaF5KYSE01tsDdGRxwHfsgFV3kyKxWeUutjJe3Q=;
- b=KVHRRi2Z7bD0COopJFLDmywWppPF584MA7wW8LojnrrY+9IcBDRoB9p0fYTHwu7zLp
- WqowbHdxaHeI/nY2fxREb1U8QfuO/9/F8EhsNZCmJCX3gc/bMDvuGUD4Avxf52/v5wN3
- tBsSxvzGndyxwuYnfBvuljni5Jh5eBdTJW5+X0Mque0GTmKyh6tWf3KE81xguxVDJF4o
- lx9X3vOAPpYdSULufL3N/tnoCnNguXhdhEgX30K9sXmyfdLbq/VxRQP/ICyy+ozo3SY6
- pBUzuQJAtzj+ZXbCDPRyrUPEcBgzRKM/aBEtfeXWUO4IaaDBEC5Uz9fJbXLbixS7fu0o
- bklg==
+ bh=GnKvUH7feHZ2H3rqbQkTcOuBoJdl8RGHnOqdNx7vd4U=;
+ b=F8IluaxY7rtoamKg8xyfLjMzwt0m2jVr+iOSOYKjjNhntlgAc8e2jprbIQhyGMknve
+ Zol6mhFbIitmG2tEqGEz6L8zWyIJpqsGbEZ21a04GMSuSHj9jxm9UZ5+PRMhcb0d76Ub
+ AlmnoOg5afbfUkHE7cG3mCjM0Kvo1JA53174c7kUGPb1G59akM9z65emWZpMaDiho4DA
+ pHbAffuFnukWUdzzrFd0jcpVE3Dq6RDE+XygroHE2/orgxqH/uRw9P/PULwfkGaOa27Z
+ fHkU/FRXaYmtFdBzQG/cBwAKwMHDpVqWntBF69Pb9c86opyvNSK35qxREPzFI29JoZHs
+ k1oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684758938; x=1687350938;
+ d=1e100.net; s=20221208; t=1684759127; x=1687351127;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N2ItjaF5KYSE01tsDdGRxwHfsgFV3kyKxWeUutjJe3Q=;
- b=CqM7mMWy7UNMnnhjEaMkHV5QVc1NoleH0t7K4JGoC/aE0oO6C2RRGsvKuNYM9UBZf2
- Trd6MAwOmSPyMU36jlgy88WncReuQZNF6eSEfUuHQBbWyiU51OgYy+NwiEoNo1s61ZUt
- ROtwKpAVWjTYXOVfcO1mm2n4uMp9W6vSVTEEKV0OAUB+JUPeD8kVjiuRpaxtv8HIa96E
- BNVqt0WXmlHFZv3oXKkZZt+amVUoGMTCgRNq0fNES7NmWuh11d7CJYN1X/JZcAemiDxb
- SROB3rq8WJ2zem+y5xOCgwUx9wkptkbhz314jlIb9u4zZw8vzZ2XdyQS3/If0NcquI1I
- O0uA==
-X-Gm-Message-State: AC+VfDxg9WFxDjfAc4bvmV3nWBnjH4gYgRAYqX99VhUh1CX2xEOOzG16
- 8wOzRcC4eZ9XSwFXZk7Od4l2ySU090h+StdGEkE=
-X-Google-Smtp-Source: ACHHUZ59rzkbZYh+zkLScYSn9bwdGXftNnqWQazIq3zzZuRJLF4Bf80REeZiduNEI7QjKkH4znjzfA==
-X-Received: by 2002:adf:fa89:0:b0:307:6278:611a with SMTP id
- h9-20020adffa89000000b003076278611amr7521360wrr.21.1684758937857; 
- Mon, 22 May 2023 05:35:37 -0700 (PDT)
+ bh=GnKvUH7feHZ2H3rqbQkTcOuBoJdl8RGHnOqdNx7vd4U=;
+ b=ejhNzuvw3PKie4fa1T68/4XdyT440FK+WEBZjSFwsI409abB0Et8lY0/CSo6/fEpEf
+ MybfWSBB/dYqRFM6mbMpA4/PJu1ZOpq/yDas5nixi38TMFdVymtBG7XiTTuCBLO4EKt1
+ Qv58gKlqY+6bSL9ffr/m3wg1Oh6gnOq5GYjBnEEdd6YnC7EJLrudygPisgYbTVI6ygGO
+ DnmnJGdS8kgLQ+LejWLY3qIjtiMdmbzlcfRP4t9jUmwHVxYJHnxk/DmjZ+HZsLoWXx43
+ bnRLFParWqoOIHekzgMudkC2Tndfx5LpZr0L/JbVnm/np7FeLdcRJmxZsDNXINq+7jaB
+ QGJQ==
+X-Gm-Message-State: AC+VfDx/vixZURANvuqoXj2K/FtpzCcxRGdc0hyC3CfjPQOK7XG9F0kJ
+ GXOiEpE2LD0zJdbMesBxNTPJMQ==
+X-Google-Smtp-Source: ACHHUZ4QXrZGiHYAe8iNrG01eCLCYiuCNL2G/FT1IKMKvzEdU5YF2gsPFpvQzilcIvC4Vx2Kspsd8w==
+X-Received: by 2002:a05:6000:45:b0:306:2b40:1258 with SMTP id
+ k5-20020a056000004500b003062b401258mr7142166wrx.21.1684759126881; 
+ Mon, 22 May 2023 05:38:46 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.153.164])
  by smtp.gmail.com with ESMTPSA id
- f18-20020adfdb52000000b002f7780eee10sm7675725wrj.59.2023.05.22.05.35.37
+ j18-20020adff012000000b00304adbeeabbsm7582968wro.99.2023.05.22.05.38.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 05:35:37 -0700 (PDT)
-Message-ID: <865a9b78-0fd7-2cc8-8e51-0b8b1b34e514@linaro.org>
-Date: Mon, 22 May 2023 14:35:35 +0200
+ Mon, 22 May 2023 05:38:46 -0700 (PDT)
+Message-ID: <ccdf88d1-54de-453f-b600-1f0f562aae31@linaro.org>
+Date: Mon, 22 May 2023 14:38:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH] crypto: Always initialize splitkeylen
+Subject: Re: [PATCH] util/vfio-helpers: Use g_file_read_link()
 Content-Language: en-US
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>
-References: <20230522114737.32686-1-akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+References: <20230522114943.33024-1-akihiko.odaki@daynix.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230522114737.32686-1-akihiko.odaki@daynix.com>
+In-Reply-To: <20230522114943.33024-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,82 +93,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/5/23 13:47, Akihiko Odaki wrote:
+On 22/5/23 13:49, Akihiko Odaki wrote:
 > When _FORTIFY_SOURCE=2, glibc version is 2.35, and GCC version is
 > 12.1.0, the compiler complains as follows:
 > 
-> In file included from /usr/include/string.h:535,
->                   from /home/alarm/q/var/qemu/include/qemu/osdep.h:99,
->                   from ../crypto/block-luks.c:21:
-> In function 'memset',
->      inlined from 'qcrypto_block_luks_store_key' at ../crypto/block-luks.c:843:9:
-> /usr/include/bits/string_fortified.h:59:10: error: 'splitkeylen' may be used uninitialized [-Werror=maybe-uninitialized]
->     59 |   return __builtin___memset_chk (__dest, __ch, __len,
->        |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->     60 |                                  __glibc_objsize0 (__dest));
->        |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
-> ../crypto/block-luks.c: In function 'qcrypto_block_luks_store_key':
-> ../crypto/block-luks.c:699:12: note: 'splitkeylen' was declared here
->    699 |     size_t splitkeylen;
->        |            ^~~~~~~~~~~
+> In file included from /usr/include/features.h:490,
+>                   from /usr/include/bits/libc-header-start.h:33,
+>                   from /usr/include/stdint.h:26,
+>                   from /usr/lib/gcc/aarch64-unknown-linux-gnu/12.1.0/include/stdint.h:9,
+>                   from /home/alarm/q/var/qemu/include/qemu/osdep.h:94,
+>                   from ../util/vfio-helpers.c:13:
+> In function 'readlink',
+>      inlined from 'sysfs_find_group_file' at ../util/vfio-helpers.c:116:9,
+>      inlined from 'qemu_vfio_init_pci' at ../util/vfio-helpers.c:326:18,
+>      inlined from 'qemu_vfio_open_pci' at ../util/vfio-helpers.c:517:9:
+> /usr/include/bits/unistd.h:119:10: error: argument 2 is null but the corresponding size argument 3 value is 4095 [-Werror=nonnull]
+>    119 |   return __glibc_fortify (readlink, __len, sizeof (char),
+>        |          ^~~~~~~~~~~~~~~
 > 
-> It seems the compiler cannot see that splitkeylen will not be used
-> when splitkey is NULL. Suppress the warning by initializing splitkeylen
-> even when splitkey stays NULL.
-
-What about using splitkeylen instead?
-
--- >8 --
-diff --git a/crypto/block-luks.c b/crypto/block-luks.c
-index 5688783ab1..dfba98fdc1 100644
---- a/crypto/block-luks.c
-+++ b/crypto/block-luks.c
-@@ -696,7 +696,7 @@ qcrypto_block_luks_store_key(QCryptoBlock *block,
-      QCryptoBlockLUKS *luks = block->opaque;
-      QCryptoBlockLUKSKeySlot *slot;
-      g_autofree uint8_t *splitkey = NULL;
--    size_t splitkeylen;
-+    size_t splitkeylen = 0;
-      g_autofree uint8_t *slotkey = NULL;
-      g_autoptr(QCryptoCipher) cipher = NULL;
-      g_autoptr(QCryptoIVGen) ivgen = NULL;
-@@ -839,7 +839,7 @@ cleanup:
-      if (slotkey) {
-          memset(slotkey, 0, luks->header.master_key_len);
-      }
--    if (splitkey) {
-+    if (splitkeylen) {
-          memset(splitkey, 0, splitkeylen);
-      }
-      return ret;
----
-
+> This error implies the allocated buffer can be NULL. Use
+> g_file_read_link(), which allocates buffer automatically to avoid the
+> error.
 > 
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->   crypto/block-luks.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   util/vfio-helpers.c | 8 +++++---
+>   1 file changed, 5 insertions(+), 3 deletions(-)
 > 
-> diff --git a/crypto/block-luks.c b/crypto/block-luks.c
-> index 5688783ab1..2f59c3a625 100644
-> --- a/crypto/block-luks.c
-> +++ b/crypto/block-luks.c
-> @@ -706,14 +706,14 @@ qcrypto_block_luks_store_key(QCryptoBlock *block,
+> diff --git a/util/vfio-helpers.c b/util/vfio-helpers.c
+> index 2d8af38f88..e482ab22e2 100644
+> --- a/util/vfio-helpers.c
+> +++ b/util/vfio-helpers.c
+> @@ -106,15 +106,17 @@ struct QEMUVFIOState {
+>    */
+>   static char *sysfs_find_group_file(const char *device, Error **errp)
+>   {
+> +    g_autoptr(GError) gerr;
+
+Shouldn't this also be NULL-initialized (other picky compilers)?
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+>       char *sysfs_link;
+>       char *sysfs_group;
+>       char *p;
+>       char *path = NULL;
 >   
->       assert(slot_idx < QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS);
->       slot = &luks->header.key_slots[slot_idx];
-> +    splitkeylen = luks->header.master_key_len * slot->stripes;
-> +
->       if (qcrypto_random_bytes(slot->salt,
->                                QCRYPTO_BLOCK_LUKS_SALT_LEN,
->                                errp) < 0) {
->           goto cleanup;
+>       sysfs_link = g_strdup_printf("/sys/bus/pci/devices/%s/iommu_group", device);
+> -    sysfs_group = g_malloc0(PATH_MAX);
+> -    if (readlink(sysfs_link, sysfs_group, PATH_MAX - 1) == -1) {
+> -        error_setg_errno(errp, errno, "Failed to find iommu group sysfs path");
+> +    sysfs_group = g_file_read_link(sysfs_link, &gerr);
+> +    if (gerr) {
+> +        error_setg(errp, "Failed to find iommu group sysfs path: %s",
+> +                   gerr->message);
+>           goto out;
 >       }
->   
-> -    splitkeylen = luks->header.master_key_len * slot->stripes;
-> -
->       /*
->        * Determine how many iterations are required to
->        * hash the user password while consuming 1 second of compute
+>       p = strrchr(sysfs_group, '/');
 
 
