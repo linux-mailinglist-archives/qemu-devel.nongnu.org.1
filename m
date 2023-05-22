@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0751170C33E
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 357CD70C384
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:34:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q18Ks-0004Ce-74; Mon, 22 May 2023 12:24:38 -0400
+	id 1q18Sv-0007xN-2U; Mon, 22 May 2023 12:32:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q18Ko-0004BR-GA
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:24:34 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
+ id 1q18SP-0007x3-1d
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:32:25 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q18Km-0005Du-Sp
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:24:34 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-5208be24dcbso4361696a12.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 09:24:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
+ id 1q18SM-00073X-Rl
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:32:24 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2554696544cso1392195a91.2
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 09:32:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684772671; x=1687364671;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RbbqGfzEsOqlIrhpkyoVznWK6opmGYHtG0SlEsH5+4U=;
- b=SsMlBUa0cpWApru52YhsJmxniz04zSFrJDyVh4bCaggJFiwUvaq426lcwvqTpn9SJ9
- GMw/kjXdvTRE/+oYH00Wiy5fXEK4EpwCfusCUn9uiSegKuPvlavOTtXjSGkp/eVZm6BC
- FFdDrUGv4lIbI042MpyjggKHHwDysB5ZLD9fpD3xDtzCXoHLUJR+xTgiKUnKnK5BKyb5
- IbirREKSpdnLVxQvpdCy6VJRaWcDlmio6oVUHXw0EJsytwhGXNPqMIPJPWmpkjsX+0Gc
- WoiBsmhjpQUsCJ/buIkSavxIUoBTX6smwUxqt0sAt003oNHOc0FdtAKELRS9v5gtt9Fl
- 0l4w==
+ d=gmail.com; s=20221208; t=1684773140; x=1687365140;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=x8tlFNuQZN9Wi00C4ghMAR+1duem5K1cRwccOkliQOI=;
+ b=lgSXRRn8HlfKOfvPzRwsWpwSCgP8umQEq6rfKU+2aRCVf28T1EI1PF5WATq0ZrrXp0
+ YBquZWynfMCEw0ZSHI3DaI+SDs2uH0NL9UvHH5s7VRBdaF5U1+DNLZflDp9zB8aEiz/o
+ IedIuY5XtO4Oxd+d3CjOQjtDbo8bnKHKmUJcizCmUQDjuJgQ2Qac+tEf4nkX6GVjB8ua
+ Vv0Z7hQTF8e6BB9XJcLG7Sy7ZS8zFKfGyd4ivVCvPvhYhHoL+pN6x6Gewc5+yX27HC2C
+ pqZEbQQoihBWui1uOtkjPrftaWzVb7xkzzelsPI3JZtuH3iHO9N+oG3L5Awmv77WJzmV
+ I2FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684772671; x=1687364671;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RbbqGfzEsOqlIrhpkyoVznWK6opmGYHtG0SlEsH5+4U=;
- b=dGaTi0J7AsELaD17Ksn8GO/UKQA8xmQRpj79eRau/twpvwp0TdVxsjU2/4huxuTT94
- QXig1hVyYBeznzaQlPz3RJJ5u6vsNC4zAp9ZK97YCDkyN1j2WaR4TH+ewITPR72/bfRZ
- 9oR4QeeSlNn+5tuXmBqkWsGqv6LVNtq498ArsNUOGNFz1cKNURTjfiZK6Ln5AmdWV/QJ
- CnkzZoK0/TB41LCe+zglr2eHJbN6ca3HGr6qQ7ggNmbAXu81JvpYdH23PRbseOp0Saok
- AK4Esl7VCfxkRJ5cpiyvnKkjsdbrz9tHaDr5AxO+TI8BooikMXJEb77aRZvC+J7G9n6F
- ftXw==
-X-Gm-Message-State: AC+VfDw8aD5r/z385l1CqST3Hfd84fFp4NwHBGYZwQteyo1YDoNp0X3F
- iUIG7Fb3wgiS9xupQcJ5b69N7w==
-X-Google-Smtp-Source: ACHHUZ4lB0QYPWi95kjsSETygmCmqIP0+9ZC/tk3itow0/oO47y1a/xjMC5te1zvh/qlIjBAX7XiKg==
-X-Received: by 2002:a17:90a:6b84:b0:250:8f09:75f2 with SMTP id
- w4-20020a17090a6b8400b002508f0975f2mr9786671pjj.22.1684772671252; 
- Mon, 22 May 2023 09:24:31 -0700 (PDT)
-Received: from ?IPV6:2607:fb90:8063:704:7944:82ed:f254:5737?
- ([2607:fb90:8063:704:7944:82ed:f254:5737])
- by smtp.gmail.com with ESMTPSA id
- cq5-20020a17090af98500b002508d73f4e8sm6042893pjb.57.2023.05.22.09.24.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 May 2023 09:24:30 -0700 (PDT)
-Message-ID: <224a43d9-0ded-0b6d-03eb-65e27535e297@linaro.org>
-Date: Mon, 22 May 2023 09:24:27 -0700
+ d=1e100.net; s=20221208; t=1684773140; x=1687365140;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=x8tlFNuQZN9Wi00C4ghMAR+1duem5K1cRwccOkliQOI=;
+ b=TsfnkjdFdHL88sP8EzUwS6yGgUO1k+EjFb4QPQu5X91nLwxik7dws7nqbpqRmqirI/
+ vhXsZjAxKwVdF7y8kzcitLtbZiYElYI+i7/FewFMm143ZqUszseqZHP7013wPOQjAJKj
+ 8DZnnM0Q+GocR8G53jVHB00jErqDdRlGkjOVeFtmH1rit4iQwDGfbSH1FonFOGUACY+P
+ sOJupFKZY1jxUfAB84Q3jKjYSjVE2KBkQ6LgYDOPJ1I13SHJ5JfbZvlCl+PfSN3MIhRR
+ leGDXFD58YHyRcG/wRlxCM3ag4+zMJ0V1Rd9UqyHze+u31ck958sbjhvQRbhFGmoLBZ1
+ fttg==
+X-Gm-Message-State: AC+VfDywcKZ6242zwlJiuv53M6sGGjfG31L3P78igEoq2owZq2GqcMAc
+ DCdelZm+KCmVm1xmA5QISUQ8Nlqlntk=
+X-Google-Smtp-Source: ACHHUZ5ctRWAQhfPX0WqrlMNvHzppzlVSXBm4oHIY2ZQJPqu51zWy+C4XApnudYtH9sR/tSs3lONWg==
+X-Received: by 2002:a17:90a:e150:b0:253:8260:f9aa with SMTP id
+ ez16-20020a17090ae15000b002538260f9aamr9377188pjb.6.1684773139930; 
+ Mon, 22 May 2023 09:32:19 -0700 (PDT)
+Received: from localhost.localdomain ([113.173.119.15])
+ by smtp.googlemail.com with ESMTPSA id
+ s5-20020a17090a2f0500b0025393752cd5sm12293253pjd.1.2023.05.22.09.32.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 May 2023 09:32:19 -0700 (PDT)
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Bui Quang Minh <minhquangbui99@gmail.com>
+Subject: [PATCH v4 0/5] Support x2APIC mode with TCG accelerator
+Date: Mon, 22 May 2023 23:31:52 +0700
+Message-Id: <20230522163157.9754-1-minhquangbui99@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 16/27] accel/tcg: Unify cpu_{ld,st}*_{be,le}_mmu
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20230520162634.3991009-1-richard.henderson@linaro.org>
- <20230520162634.3991009-17-richard.henderson@linaro.org>
- <8d6e67d7-52c0-aa60-76cb-bf70d586cf7a@linaro.org>
- <015fb09b-6f34-dec4-d241-8fc5c9a44d7e@linaro.org>
- <5a8ef696-5833-5a6d-7b60-e946f0bdcdb7@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <5a8ef696-5833-5a6d-7b60-e946f0bdcdb7@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-pj1-x1035.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,66 +96,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/21/23 23:39, Philippe Mathieu-Daudé wrote:
-> On 21/5/23 17:00, Richard Henderson wrote:
->> On 5/21/23 04:15, Philippe Mathieu-Daudé wrote:
->>> Hi Richard,
->>>
->>> On 20/5/23 18:26, Richard Henderson wrote:
->>>> With the current structure of cputlb.c, there is no difference
->>>> between the little-endian and big-endian entry points, aside
->>>> from the assert.  Unify the pairs of functions.
->>>>
->>>> The only use of the functions with explicit endianness was in
->>>> target/sparc64, and that was only to satisfy the assert.
->>>
->>> I'm having hard time to follow all the handling of the various
->>> ASI definitions from target/sparc/asi.h. ...
->>>
->>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>>> ---
->>>>   include/exec/cpu_ldst.h     |  58 ++-----
->>>>   accel/tcg/cputlb.c          | 122 +++-----------
->>>>   accel/tcg/user-exec.c       | 322 ++++++++++--------------------------
->>>>   target/arm/tcg/m_helper.c   |   4 +-
->>>>   target/sparc/ldst_helper.c  |  18 +-
->>>>   accel/tcg/ldst_common.c.inc |  24 +--
->>>>   6 files changed, 137 insertions(+), 411 deletions(-)
->>>
->>>
->>>> diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
->>>> index 7972d56a72..981a47d8bb 100644
->>>> --- a/target/sparc/ldst_helper.c
->>>> +++ b/target/sparc/ldst_helper.c
->>>> @@ -1334,25 +1334,13 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
->>>
->>>
->>> Shouldn't we propagate the ASI endianness?
->>
->> Already done in translate, get_asi():
->>
->>          /* The little-endian asis all have bit 3 set.  */
->>          if (asi & 8) {
->>              memop ^= MO_BSWAP;
->>          }
-> 
-> Just in front of my eyes 🤦‍♂️ So:
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Maybe amend the commit description "The ASI endianness is
-> already taken care of in get_asi() ..."?
+Hi everyone,
 
-That's what I was trying to say with "only there to satisfy the assert". I have expanded 
-on that a bit.
+This series implements x2APIC mode in userspace local APIC and the
+RDMSR/WRMSR helper to access x2APIC registers in x2APIC mode. Intel iommu
+and AMD iommu are adjusted to support x2APIC interrupt remapping. With this
+series, we can now boot Linux kernel into x2APIC mode with TCG accelerator
+using either Intel or AMD iommu.
 
+Testing to boot my own built Linux 6.3.0-rc2, the kernel successfully boot
+with enabled x2APIC and can enumerate CPU with APIC ID 257
 
-> While looking at get_asi(), ASI_FL16_* cases overwrite
-> 'memop', possibly discarding MO_ALIGN bit. Maybe this can't
-> happen.
+Using Intel IOMMU
 
-Ah, that does look like a bug in one of my recent conversions.
+qemu/build/qemu-system-x86_64 \
+  -smp 2,maxcpus=260 \
+  -cpu qemu64,x2apic=on \
+  -machine q35 \
+  -device intel-iommu,intremap=on,eim=on \
+  -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
+  -m 2G \
+  -kernel $KERNEL_DIR \
+  -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
+  -drive file=$IMAGE_DIR,format=raw \
+  -nographic \
+  -s
 
+Using AMD IOMMU
 
-r~
+qemu/build/qemu-system-x86_64 \
+  -smp 2,maxcpus=260 \
+  -cpu qemu64,x2apic=on \
+  -machine q35 \
+  -device amd-iommu,intremap=on,xtsup=on \
+  -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
+  -m 2G \
+  -kernel $KERNEL_DIR \
+  -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
+  -drive file=$IMAGE_DIR,format=raw \
+  -nographic \
+  -s
+
+Testing the emulated userspace APIC with kvm-unit-tests, disable test
+device with this patch
+
+diff --git a/lib/x86/fwcfg.c b/lib/x86/fwcfg.c
+index 1734afb..f56fe1c 100644
+--- a/lib/x86/fwcfg.c
++++ b/lib/x86/fwcfg.c
+@@ -27,6 +27,7 @@ static void read_cfg_override(void)
+ 
+        if ((str = getenv("TEST_DEVICE")))
+                no_test_device = !atol(str);
++       no_test_device = true;
+ 
+        if ((str = getenv("MEMLIMIT")))
+                fw_override[FW_CFG_MAX_RAM] = atol(str) * 1024 * 1024;
+
+~ env QEMU=/home/minh/Desktop/oss/qemu/build/qemu-system-x86_64 ACCEL=tcg \
+./run_tests.sh -v -g apic 
+
+TESTNAME=apic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/apic.flat -smp 2
+-cpu qemu64,+x2apic,+tsc-deadline -machine kernel_irqchip=split FAIL
+apic-split (54 tests, 8 unexpected failures, 1 skipped)
+TESTNAME=ioapic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/ioapic.flat -smp
+1 -cpu qemu64 -machine kernel_irqchip=split PASS ioapic-split (19 tests)
+TESTNAME=x2apic TIMEOUT=30 ACCEL=tcg ./x86/run x86/apic.flat -smp 2 -cpu
+qemu64,+x2apic,+tsc-deadline FAIL x2apic (54 tests, 8 unexpected failures,
+1 skipped) TESTNAME=xapic TIMEOUT=60 ACCEL=tcg ./x86/run x86/apic.flat -smp
+2 -cpu qemu64,-x2apic,+tsc-deadline -machine pit=off FAIL xapic (43 tests,
+6 unexpected failures, 2 skipped)
+
+  FAIL: apic_disable: *0xfee00030: 50014
+  FAIL: apic_disable: *0xfee00080: f0
+  FAIL: apic_disable: *0xfee00030: 50014
+  FAIL: apic_disable: *0xfee00080: f0 
+  FAIL: apicbase: relocate apic
+
+These errors are because we don't disable MMIO region when switching to
+x2APIC and don't support relocate MMIO region yet. This is a problem
+because, MMIO region is the same for all CPUs, in order to support these we
+need to figure out how to allocate and manage different MMIO regions for
+each CPUs. This can be an improvement in the future.
+
+  FAIL: nmi-after-sti
+  FAIL: multiple nmi
+
+These errors are in the way we handle CPU_INTERRUPT_NMI in core TCG.
+
+  FAIL: TMCCT should stay at zero
+
+This error is related to APIC timer which should be addressed in separate
+patch.
+
+Version 4 changes,
+- Patch 5:
+  + Instead of replacing IVHD type 0x10 with type 0x11, export both types
+  for backward compatibility with old guest operating system
+  + Flip the xtsup feature check condition in amdvi_int_remap_ga for
+  readability
+
+Version 3 changes,
+- Patch 2:
+  + Allow APIC ID > 255 only when x2APIC feature is supported on CPU
+  + Make physical destination mode IPI which has destination id 0xffffffff
+  a broadcast to xAPIC CPUs
+  + Make cluster address 0xf in cluster model of xAPIC logical destination
+  mode a broadcast to all clusters
+  + Create new extended_log_dest to store APIC_LDR information in x2APIC
+  instead of extending log_dest for backward compatibility in vmstate
+
+Version 2 changes,
+- Add support for APIC ID larger than 255
+- Adjust AMD iommu for x2APIC suuport
+- Reorganize and split patch 1,2 into patch 1,2,3 in version 2
+
+Thanks,
+Quang Minh.
+
+Bui Quang Minh (5):
+  i386/tcg: implement x2APIC registers MSR access
+  apic: add support for x2APIC mode
+  apic, i386/tcg: add x2apic transitions
+  intel_iommu: allow Extended Interrupt Mode when using userspace APIC
+  amd_iommu: report x2APIC support to the operating system
+
+ hw/i386/acpi-build.c                 | 127 +++++----
+ hw/i386/amd_iommu.c                  |  21 +-
+ hw/i386/amd_iommu.h                  |  16 +-
+ hw/i386/intel_iommu.c                |  11 -
+ hw/i386/x86.c                        |   8 +-
+ hw/intc/apic.c                       | 395 +++++++++++++++++++++------
+ hw/intc/apic_common.c                |  16 +-
+ hw/intc/trace-events                 |   4 +-
+ include/hw/i386/apic.h               |   6 +-
+ include/hw/i386/apic_internal.h      |   7 +-
+ target/i386/cpu-sysemu.c             |  18 +-
+ target/i386/cpu.c                    |   5 +-
+ target/i386/cpu.h                    |   9 +
+ target/i386/tcg/sysemu/misc_helper.c |  31 +++
+ 14 files changed, 500 insertions(+), 174 deletions(-)
+
+-- 
+2.25.1
+
 
