@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A749B70C31A
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0751170C33E
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 18:26:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q18Bb-0007lo-OJ; Mon, 22 May 2023 12:15:03 -0400
+	id 1q18Ks-0004Ce-74; Mon, 22 May 2023 12:24:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mliebel@quicinc.com>)
- id 1q18BP-0007kn-9t
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:14:51 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mliebel@quicinc.com>)
- id 1q18BN-000355-8J
- for qemu-devel@nongnu.org; Mon, 22 May 2023 12:14:51 -0400
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34MDKHNN003586
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 16:14:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=bxOLZid/Z95UhmCgS0fGyP4WyRF7q6T3npDoWm5XsGA=;
- b=YzUgpAwhPNksF6Ku1naJFkX8T18BeioU2bRMfOWp3nQGJ1KnLgaL82tRMEPbOw6R3Dna
- /ONqMyZZhFYbbTVSxbyMDulCLfOhyqynvEB4GN/SMqepXfvjuEXdSIaeOIYJ6wN52nOs
- PybnJYwTzWfl7ROKZUAB+DBEoVA9TBHseUJCUtH2Qin4U9Ax6o1Eo3iHrnabOviSQJmr
- vM7E7NgrpYgxTCAFZNuROlXajsyOBSQT1mn56ii2pmoShu8OYT1bJdUGAwpWq4STkWw4
- pkC3PC8nxCsnPjwjlh/nqSxrwOJx7YwY7tob+U/dI/RsgH0XGvDERGYllrmdUDEMcK5J 0Q== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qpn7f4a6m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 16:14:33 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34MGEWZT013548
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 16:14:33 GMT
-Received: from hu-mliebel-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Mon, 22 May 2023 09:14:32 -0700
-From: Marco Liebel <quic_mliebel@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: Taylor Simpson <tsimpson@quicinc.com>, Brian Cain <bcain@quicinc.com>,
- Marco Liebel <quic_mliebel@quicinc.com>
-Subject: [PATCH] Hexagon (target/hexagon) Fix assignment to tmp registers
-Date: Mon, 22 May 2023 09:13:56 -0700
-Message-ID: <20230522161356.438293-1-quic_mliebel@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q18Ko-0004BR-GA
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:24:34 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q18Km-0005Du-Sp
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 12:24:34 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-5208be24dcbso4361696a12.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 09:24:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684772671; x=1687364671;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RbbqGfzEsOqlIrhpkyoVznWK6opmGYHtG0SlEsH5+4U=;
+ b=SsMlBUa0cpWApru52YhsJmxniz04zSFrJDyVh4bCaggJFiwUvaq426lcwvqTpn9SJ9
+ GMw/kjXdvTRE/+oYH00Wiy5fXEK4EpwCfusCUn9uiSegKuPvlavOTtXjSGkp/eVZm6BC
+ FFdDrUGv4lIbI042MpyjggKHHwDysB5ZLD9fpD3xDtzCXoHLUJR+xTgiKUnKnK5BKyb5
+ IbirREKSpdnLVxQvpdCy6VJRaWcDlmio6oVUHXw0EJsytwhGXNPqMIPJPWmpkjsX+0Gc
+ WoiBsmhjpQUsCJ/buIkSavxIUoBTX6smwUxqt0sAt003oNHOc0FdtAKELRS9v5gtt9Fl
+ 0l4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684772671; x=1687364671;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RbbqGfzEsOqlIrhpkyoVznWK6opmGYHtG0SlEsH5+4U=;
+ b=dGaTi0J7AsELaD17Ksn8GO/UKQA8xmQRpj79eRau/twpvwp0TdVxsjU2/4huxuTT94
+ QXig1hVyYBeznzaQlPz3RJJ5u6vsNC4zAp9ZK97YCDkyN1j2WaR4TH+ewITPR72/bfRZ
+ 9oR4QeeSlNn+5tuXmBqkWsGqv6LVNtq498ArsNUOGNFz1cKNURTjfiZK6Ln5AmdWV/QJ
+ CnkzZoK0/TB41LCe+zglr2eHJbN6ca3HGr6qQ7ggNmbAXu81JvpYdH23PRbseOp0Saok
+ AK4Esl7VCfxkRJ5cpiyvnKkjsdbrz9tHaDr5AxO+TI8BooikMXJEb77aRZvC+J7G9n6F
+ ftXw==
+X-Gm-Message-State: AC+VfDw8aD5r/z385l1CqST3Hfd84fFp4NwHBGYZwQteyo1YDoNp0X3F
+ iUIG7Fb3wgiS9xupQcJ5b69N7w==
+X-Google-Smtp-Source: ACHHUZ4lB0QYPWi95kjsSETygmCmqIP0+9ZC/tk3itow0/oO47y1a/xjMC5te1zvh/qlIjBAX7XiKg==
+X-Received: by 2002:a17:90a:6b84:b0:250:8f09:75f2 with SMTP id
+ w4-20020a17090a6b8400b002508f0975f2mr9786671pjj.22.1684772671252; 
+ Mon, 22 May 2023 09:24:31 -0700 (PDT)
+Received: from ?IPV6:2607:fb90:8063:704:7944:82ed:f254:5737?
+ ([2607:fb90:8063:704:7944:82ed:f254:5737])
+ by smtp.gmail.com with ESMTPSA id
+ cq5-20020a17090af98500b002508d73f4e8sm6042893pjb.57.2023.05.22.09.24.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 09:24:30 -0700 (PDT)
+Message-ID: <224a43d9-0ded-0b6d-03eb-65e27535e297@linaro.org>
+Date: Mon, 22 May 2023 09:24:27 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 16/27] accel/tcg: Unify cpu_{ld,st}*_{be,le}_mmu
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+References: <20230520162634.3991009-1-richard.henderson@linaro.org>
+ <20230520162634.3991009-17-richard.henderson@linaro.org>
+ <8d6e67d7-52c0-aa60-76cb-bf70d586cf7a@linaro.org>
+ <015fb09b-6f34-dec4-d241-8fc5c9a44d7e@linaro.org>
+ <5a8ef696-5833-5a6d-7b60-e946f0bdcdb7@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <5a8ef696-5833-5a6d-7b60-e946f0bdcdb7@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: GvCYmo7uz7SKwLMw3f27SdZYClEiSVuh
-X-Proofpoint-ORIG-GUID: GvCYmo7uz7SKwLMw3f27SdZYClEiSVuh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-22_11,2023-05-22_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxlogscore=894
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 impostorscore=0
- malwarescore=0 adultscore=0 clxscore=1015 suspectscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305220135
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_mliebel@quicinc.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,99 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The order in which instructions are generated by gen_insn() influences
-assignment to tmp registers. During generation, tmp instructions (e.g.
-generate_V6_vassign_tmp) use vreg_src_off() to determine what kind of
-register to use as source. If some instruction (e.g.
-generate_V6_vmpyowh_64_acc) uses a tmp register but is generated prior
-to the corresponding tmp instruction, the vregs_updated_tmp bit map
-isn't updated in time.
+On 5/21/23 23:39, Philippe Mathieu-Daudé wrote:
+> On 21/5/23 17:00, Richard Henderson wrote:
+>> On 5/21/23 04:15, Philippe Mathieu-Daudé wrote:
+>>> Hi Richard,
+>>>
+>>> On 20/5/23 18:26, Richard Henderson wrote:
+>>>> With the current structure of cputlb.c, there is no difference
+>>>> between the little-endian and big-endian entry points, aside
+>>>> from the assert.  Unify the pairs of functions.
+>>>>
+>>>> The only use of the functions with explicit endianness was in
+>>>> target/sparc64, and that was only to satisfy the assert.
+>>>
+>>> I'm having hard time to follow all the handling of the various
+>>> ASI definitions from target/sparc/asi.h. ...
+>>>
+>>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>>> ---
+>>>>   include/exec/cpu_ldst.h     |  58 ++-----
+>>>>   accel/tcg/cputlb.c          | 122 +++-----------
+>>>>   accel/tcg/user-exec.c       | 322 ++++++++++--------------------------
+>>>>   target/arm/tcg/m_helper.c   |   4 +-
+>>>>   target/sparc/ldst_helper.c  |  18 +-
+>>>>   accel/tcg/ldst_common.c.inc |  24 +--
+>>>>   6 files changed, 137 insertions(+), 411 deletions(-)
+>>>
+>>>
+>>>> diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
+>>>> index 7972d56a72..981a47d8bb 100644
+>>>> --- a/target/sparc/ldst_helper.c
+>>>> +++ b/target/sparc/ldst_helper.c
+>>>> @@ -1334,25 +1334,13 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
+>>>
+>>>
+>>> Shouldn't we propagate the ASI endianness?
+>>
+>> Already done in translate, get_asi():
+>>
+>>          /* The little-endian asis all have bit 3 set.  */
+>>          if (asi & 8) {
+>>              memop ^= MO_BSWAP;
+>>          }
+> 
+> Just in front of my eyes 🤦‍♂️ So:
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Maybe amend the commit description "The ASI endianness is
+> already taken care of in get_asi() ..."?
 
-Exmple:
-    { v14.tmp = v16; v25 = v14 } This works properly because
-    generate_V6_assign_tmp is generated before generate_V6_assign and
-    the bit map is updated.
+That's what I was trying to say with "only there to satisfy the assert". I have expanded 
+on that a bit.
 
-    { v15:14.tmp = vcombine(v21, v16); v25:24 += vmpyo(v18.w,v14.h) }
-    This does not work properly because vmpyo is generated before
-    vcombine and therefore the bit map does not yet know that there's
-    a tmp register.
 
-The parentheses in the decoding function were in the wrong place.
-Moving them to the correct location makes shuffling of .tmp vector
-registers work as expected.
----
- target/hexagon/mmvec/decode_ext_mmvec.c |  6 ++---
- tests/tcg/hexagon/hvx_misc.c            | 31 +++++++++++++++++++++++++
- 2 files changed, 34 insertions(+), 3 deletions(-)
+> While looking at get_asi(), ASI_FL16_* cases overwrite
+> 'memop', possibly discarding MO_ALIGN bit. Maybe this can't
+> happen.
 
-diff --git a/target/hexagon/mmvec/decode_ext_mmvec.c b/target/hexagon/mmvec/decode_ext_mmvec.c
-index 061a65ab88..8d60804deb 100644
---- a/target/hexagon/mmvec/decode_ext_mmvec.c
-+++ b/target/hexagon/mmvec/decode_ext_mmvec.c
-@@ -148,9 +148,9 @@ decode_shuffle_for_execution_vops(Packet *pkt)
-     int i;
-     for (i = 0; i < pkt->num_insns; i++) {
-         uint16_t opcode = pkt->insn[i].opcode;
--        if (GET_ATTRIB(opcode, A_LOAD) &&
--            (GET_ATTRIB(opcode, A_CVI_NEW) ||
--             GET_ATTRIB(opcode, A_CVI_TMP))) {
-+        if ((GET_ATTRIB(opcode, A_LOAD) &&
-+             GET_ATTRIB(opcode, A_CVI_NEW)) ||
-+            GET_ATTRIB(opcode, A_CVI_TMP)) {
-             /*
-              * Find prior consuming vector instructions
-              * Move to end of packet
-diff --git a/tests/tcg/hexagon/hvx_misc.c b/tests/tcg/hexagon/hvx_misc.c
-index 09dec8d7a1..b45170acd1 100644
---- a/tests/tcg/hexagon/hvx_misc.c
-+++ b/tests/tcg/hexagon/hvx_misc.c
-@@ -60,6 +60,36 @@ static void test_load_tmp(void)
-     check_output_w(__LINE__, BUFSIZE);
- }
- 
-+static void test_load_tmp2(void)
-+{
-+    void *pout0 = &output[0];
-+    void *pout1 = &output[1];
-+
-+    asm volatile(
-+        "r0 = #0x03030303\n\t"
-+        "v16 = vsplat(r0)\n\t"
-+        "r0 = #0x04040404\n\t"
-+        "v18 = vsplat(r0)\n\t"
-+        "r0 = #0x05050505\n\t"
-+        "v21 = vsplat(r0)\n\t"
-+        "{\n\t"
-+        "   v25:24 += vmpyo(v18.w, v14.h)\n\t"
-+        "   v15:14.tmp = vcombine(v21, v16)\n\t"
-+        "}\n\t"
-+        "vmem(%0 + #0) = v24\n\t"
-+        "vmem(%1 + #0) = v25\n\t"
-+        : : "r"(pout0), "r"(pout1)
-+        : "r0", "v16", "v18", "v21", "v24", "v25", "memory"
-+    );
-+
-+    for (int i = 0; i < MAX_VEC_SIZE_BYTES / 4; ++i) {
-+        expect[0].w[i] = 0x180c0000;
-+        expect[1].w[i] = 0x000c1818;
-+    }
-+
-+    check_output_w(__LINE__, 2);
-+}
-+
- static void test_load_cur(void)
- {
-     void *p0 = buffer0;
-@@ -435,6 +465,7 @@ int main()
-     init_buffers();
- 
-     test_load_tmp();
-+    test_load_tmp2();
-     test_load_cur();
-     test_load_aligned();
-     test_load_unaligned();
--- 
-2.25.1
+Ah, that does look like a bug in one of my recent conversions.
 
+
+r~
 
