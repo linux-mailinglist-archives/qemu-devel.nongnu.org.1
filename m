@@ -2,59 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A906970C21A
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 17:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1031A70C245
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 17:23:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q17Dz-00022i-5u; Mon, 22 May 2023 11:13:27 -0400
+	id 1q17LZ-00049X-6F; Mon, 22 May 2023 11:21:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q17Dx-0001zX-G1
- for qemu-devel@nongnu.org; Mon, 22 May 2023 11:13:25 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1q17LV-00048L-0r; Mon, 22 May 2023 11:21:13 -0400
+Received: from hq-ms.auriga.com ([82.97.202.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q17Dv-0005Ni-Cj
- for qemu-devel@nongnu.org; Mon, 22 May 2023 11:13:25 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QQ1773tXhz6J71T;
- Mon, 22 May 2023 23:08:51 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 22 May 2023 16:13:20 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>
-CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
- <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>, Eric
- Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>, Thomas
- Huth <thuth@redhat.com>
-Subject: [PATCH v7 7/7] hw/cxl/events: Add injection of Memory Module Events
-Date: Mon, 22 May 2023 16:09:47 +0100
-Message-ID: <20230522150947.11546-8-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230522150947.11546-1-Jonathan.Cameron@huawei.com>
-References: <20230522150947.11546-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <sergey.kambalin@auriga.com>)
+ id 1q17LS-0007ER-Aa; Mon, 22 May 2023 11:21:12 -0400
+Received: from HQ-MS1.office.auriga.msk (82.97.202.32) by
+ hq-ms1.office.auriga.msk (82.97.202.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.12; Mon, 22 May 2023 18:21:03 +0300
+Received: from HQ-MS1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f]) by
+ hq-ms1.office.auriga.msk ([fe80::e2f8:5f63:adc1:868f%8]) with mapi id
+ 15.02.1258.012; Mon, 22 May 2023 18:21:03 +0300
+From: "Kambalin, Sergey" <sergey.kambalin@auriga.com>
+To: =?gb2312?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkqKY=?= <philmd@linaro.org>, "Sergey
+ Kambalin" <serg.oker@gmail.com>
+CC: Peter Maydell <peter.maydell@linaro.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] [rpi4b] Make bootable rpi4b model
+Thread-Topic: [PATCH] [rpi4b] Make bootable rpi4b model
+Thread-Index: AQHZjJhM5s2DGZMhDE6fRKCxSTEX869l5goAgAA0A2T//9M1AIAAPGd6///VIACAAD0/pv//3tKAAAm20Kk=
+Date: Mon, 22 May 2023 15:21:03 +0000
+Message-ID: <12ff45b45c334cbd8340becc512eaf89@auriga.com>
+References: <20230522102910.20942-1-sergey.kambalin@auriga.com>
+ <CAFEAcA_aV0DvL3DgqU9SKKRsqCoMrvwbPoomx+NA8fkXKkTytA@mail.gmail.com>
+ <e5f053c126a24a62a4e1e8d309d939ce@auriga.com>
+ <CAFEAcA8bLr+_raHie4JxoEJAQ7cuj5nJKTYt5+7r6T0w8FFNsg@mail.gmail.com>
+ <ea63d09bb2d249b282a429ff9d373e4d@auriga.com>
+ <CAFEAcA8HMgJ5_WwC6Mc5E61_KN4kqvpW6AE_EyDf-JcrFVQJMg@mail.gmail.com>
+ <672004b332154e15b14e4e96d20a23de@auriga.com>,
+ <7fb1818b-7ed9-975a-3fa0-ebda7553aa73@linaro.org>
+In-Reply-To: <7fb1818b-7ed9-975a-3fa0-ebda7553aa73@linaro.org>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [134.191.220.81]
+x-tm-as-product-ver: SMEX-14.0.0.1158-9.0.1002-27556.003
+x-tm-as-result: No-10--19.311900-8.000000
+x-tmase-matchedrid: xOmkFxUSbL+JVA+ukO+5MWg4D2QV/2zL6r3HCixfuKcc4ri4RJV/1W/R
+ DAZTdSI3QnEYvg6//klFmXhQ6rgRVOyDy8V8lTWUzH6d90mb4+Ih6cl1707zKlZxVB3B2qbP6Xk
+ ezPna397QLE3MitZAfl9/IWsrV5Ek1LFdtmiebE5itzfafzhYerzutTz14s8pB4N9b2b2Ot6L2s
+ CeHVx5vavLMqivPPjo9ElewkZ1UEQ2ib2gFI+X3zo39wOA02Lhv/7xdLQjXSIgaqPnI+BNyB2MH
+ UpnrEwAiPTUF0vMdpHE2FTB6r9HbwcO+Ovs7EaQQQ5+hY6u+45PnKxAOPp4WdWM2x6EZ/S9InVh
+ PozbL+m/+cseRgjV48XXGI8+1x81r8SWmHOl/UsRW4LR41Fi8mlYsa84w2hTOhR0VsdhRrBO6PM
+ ltTuI3mUVI5FRUThe9el/AXqANCywquY0kEgdZxqkhv3OdF4DNQO+lFC5/FV3de2OoBqgwoKQCY
+ LmjRv992grUwQgYZdOzTDkfilYT4JYxfHyi9oJ4vM1YF6AJbYXDmF9vUz9/rDGGXOPbPCbjI5fM
+ 8fX0wmm0nvaK7VjdZXO/vat5d5TqTD/Ey87O1k2RRIMOrvjaQ==
+x-tm-as-user-approved-sender: No
+x-tm-as-user-blocked-sender: No
+x-tmase-result: 10--19.311900-8.000000
+x-tmase-version: SMEX-14.0.0.1158-9.0.1002-27556.003
+x-tm-snts-smtp: C7FCEDA10982392AC6ED3CD31848D6493928DA025B08D8B2B2F88AAAE5ABD7A52000:8
+Content-Type: multipart/alternative;
+ boundary="_000_12ff45b45c334cbd8340becc512eaf89aurigacom_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=82.97.202.32;
+ envelope-from=sergey.kambalin@auriga.com; helo=hq-ms.auriga.com
+X-Spam_score_int: 5
+X-Spam_score: 0.5
+X-Spam_bar: /
+X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
+ MIME_CHARSET_FARAWAY=2.45, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,232 +86,121 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These events include a copy of the device health information at the
-time of the event. Actually using the emulated device health would
-require a lot of controls to manipulate that state.  Given the aim
-of this injection code is to just test the flows when events occur,
-inject the contents of the device health state as well.
+--_000_12ff45b45c334cbd8340becc512eaf89aurigacom_
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 
-Future work may add more sophisticate device health emulation
-including direct generation of these records when events occur
-(such as a temperature threshold being crossed).  That does not
-reduce the usefulness of this more basic generation of the events.
+VGhhbmtzIGZvciB0aGUgZXhhbXBsZSwgUGhpbGxpcGUhIEl0J3MgaGVscGZ1bCENCg0KX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18NCqewp+Q6IFBoaWxpcHBlIE1hdGhpZXUtRGF1ZKim
+IDxwaGlsbWRAbGluYXJvLm9yZz4NCqewp+Sn4afip9Gn06fdp9an36fgOiAyMiCn3qfRp/EgMjAy
+MyCn1C4gMTY6NDE6NTMNCqesp+Cn3qflOiBTZXJnZXkgS2FtYmFsaW47IEthbWJhbGluLCBTZXJn
+ZXkNCqesp+Cn4afap/E6IFBldGVyIE1heWRlbGw7IHFlbXUtYXJtQG5vbmdudS5vcmc7IHFlbXUt
+ZGV2ZWxAbm9uZ251Lm9yZw0Kp7Sn1qfep9E6IFJlOiBbUEFUQ0hdIFtycGk0Yl0gTWFrZSBib290
+YWJsZSBycGk0YiBtb2RlbA0KDQpPbiAyMi81LzIzIDE0OjQxLCBLYW1iYWxpbiwgU2VyZ2V5IHdy
+b3RlOg0KDQo+PiBDb3VsZCB5b3UgcGxlYXNlIHRlbGwgbWUgd2hhdCBzaXplIGlzIGFwcHJvcHJp
+YXRlIGZvciBhIHNpbmdsZSBwYXRjaD8NCj4NCj4gVGhlIG1vc3QgaW1wb3J0YW50IHRoaW5ncyBm
+b3IgcGF0Y2ggc3BsaXR0aW5nIGFyZToNCj4gICAqIGV2ZXJ5dGhpbmcgc3RpbGwgaGFzIHRvIGNv
+bXBpbGUgY2xlYW5seQ0KPiAgICogdGhlIGNvbnRlbnRzIG9mIGEgc2luZ2xlIHBhdGNoIHNob3Vs
+ZCBiZSBhIGNvaGVyZW50IHNpbmdsZQ0KPiAgICAgdGhpbmcgdGhhdCBpdCBtYWtlcyBzZW5zZSB0
+byByZXZpZXcgaW4gb25lIHBhcnQNCj4NCj4gSWYgdGhlcmUncyBzb21ldGhpbmcgaW4gdGhlcmUg
+dGhhdCBvbmx5IHRvdWNoZXMgMjAgbGluZXMgb2YNCj4gY29kZSBidXQgaXMgYSBjb2hlcmVudCBz
+aW5nbGUgY2hhbmdlLCBpdCdzIGZpbmUgdG8gaGF2ZSB0aGF0IGluDQo+IGl0cyBvd24gcGF0Y2gg
+LS0gc21hbGwgcGF0Y2hlcyBhcmUgZWFzeSB0byByZXZpZXcuDQo+DQo+IEF0IHRoZSB1cHBlciBl
+bmQsIEkgdGVuZCB0byB0aGluayBhIHBhdGNoIGlzIGEgYml0IGJpZw0KPiBhdCBhcm91bmQgMjAw
+IGxpbmVzLCBidXQgZm9yIHRoZSBzcGVjaWZpYyBjYXNlIG9mICJoZXJlDQo+IGlzIGEgbmV3IGRl
+dmljZSIgYmlnZ2VyIHRoYW4gdGhhdCBpcyBPSywgYmVjYXVzZSBpdCdzDQo+IGp1c3QgYWRkaW5n
+IG5ldyBmaWxlcyByYXRoZXIgdGhhbiBtZXJnaW5nIGNoYW5nZXMgaW50bw0KPiBleGlzdGluZyBv
+bmVzLg0KPg0KPiBodHRwczovL3d3dy5xZW11Lm9yZy9kb2NzL21hc3Rlci9kZXZlbC9zdWJtaXR0
+aW5nLWEtcGF0Y2guaHRtbA0KPiA8aHR0cHM6Ly93d3cucWVtdS5vcmcvZG9jcy9tYXN0ZXIvZGV2
+ZWwvc3VibWl0dGluZy1hLXBhdGNoLmh0bWw+DQo+IGhhcyBzb21lIG90aGVyIGFkdmljZSBvbiBw
+YXRjaCBzdWJtaXNzaW9uLCBpZiB5b3UgaGF2ZW4ndA0KPiByZWFkIHRoYXQgeWV0Lg0KDQpGV0lX
+IGV4YW1wbGUgb2Ygc2VyaWVzIGFkZGluZyB0aGUgUGkgWmVybzoNCg0KaHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvcWVtdS1kZXZlbC8yMDIwMTAyNDE3MDEyNy4zNTkyMTgyLTEtZjRidWdAYW1zYXQu
+b3JnLw0KDQo=
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+--_000_12ff45b45c334cbd8340becc512eaf89aurigacom_
+Content-Type: text/html; charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
----
-v7: Expanded docs for qapi and added a lot of cross references to
-    the CXL revision 3.0 specification.
----
- qapi/cxl.json               | 54 ++++++++++++++++++++++++++++++++
- include/hw/cxl/cxl_events.h | 19 ++++++++++++
- hw/mem/cxl_type3.c          | 62 +++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3_stubs.c    | 12 +++++++
- 4 files changed, 147 insertions(+)
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
+<meta name=3D"Generator" content=3D"Microsoft Exchange Server">
+<!-- converted from text --><style><!-- .EmailQuote { margin-left: 1pt; pad=
+ding-left: 4pt; border-left: #800000 2px solid; } --></style>
+</head>
+<body>
+<meta content=3D"text/html; charset=3DUTF-8">
+<style type=3D"text/css" style=3D"">
+<!--
+p
+	{margin-top:0;
+	margin-bottom:0}
+-->
+</style>
+<div dir=3D"ltr">
+<div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; col=
+or:#000000; font-family:Calibri,Helvetica,sans-serif">
+<p>Thanks for the example, Phillipe! It's helpful!</p>
+</div>
+<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
+<div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
+color=3D"#000000" style=3D"font-size:11pt"><b>=A7=B0=A7=E4:</b> Philippe Ma=
+thieu-Daud=A8=A6 &lt;philmd@linaro.org&gt;<br>
+<b>=A7=B0=A7=E4=A7=E1=A7=E2=A7=D1=A7=D3=A7=DD=A7=D6=A7=DF=A7=E0:</b> 22 =A7=
+=DE=A7=D1=A7=F1 2023 =A7=D4. 16:41:53<br>
+<b>=A7=AC=A7=E0=A7=DE=A7=E5:</b> Sergey Kambalin; Kambalin, Sergey<br>
+<b>=A7=AC=A7=E0=A7=E1=A7=DA=A7=F1:</b> Peter Maydell; qemu-arm@nongnu.org; =
+qemu-devel@nongnu.org<br>
+<b>=A7=B4=A7=D6=A7=DE=A7=D1:</b> Re: [PATCH] [rpi4b] Make bootable rpi4b mo=
+del</font>
+<div>&nbsp;</div>
+</div>
+</div>
+<font size=3D"2"><span style=3D"font-size:10pt;">
+<div class=3D"PlainText">On 22/5/23 14:41, Kambalin, Sergey wrote:<br>
+<br>
+&gt;&gt; Could you please tell me what size is appropriate for a single pat=
+ch?<br>
+&gt; <br>
+&gt; The most important things for patch splitting are:<br>
+&gt;&nbsp; &nbsp;* everything still has to compile cleanly<br>
+&gt;&nbsp; &nbsp;* the contents of a single patch should be a coherent sing=
+le<br>
+&gt;&nbsp; &nbsp;&nbsp; thing that it makes sense to review in one part<br>
+&gt; <br>
+&gt; If there's something in there that only touches 20 lines of<br>
+&gt; code but is a coherent single change, it's fine to have that in<br>
+&gt; its own patch -- small patches are easy to review.<br>
+&gt; <br>
+&gt; At the upper end, I tend to think a patch is a bit big<br>
+&gt; at around 200 lines, but for the specific case of &quot;here<br>
+&gt; is a new device&quot; bigger than that is OK, because it's<br>
+&gt; just adding new files rather than merging changes into<br>
+&gt; existing ones.<br>
+&gt; <br>
+&gt; <a href=3D"https://www.qemu.org/docs/master/devel/submitting-a-patch.h=
+tml">https://www.qemu.org/docs/master/devel/submitting-a-patch.html</a>
+<br>
+&gt; &lt;<a href=3D"https://www.qemu.org/docs/master/devel/submitting-a-pat=
+ch.html">https://www.qemu.org/docs/master/devel/submitting-a-patch.html</a>=
+&gt;<br>
+&gt; has some other advice on patch submission, if you haven't<br>
+&gt; read that yet.<br>
+<br>
+FWIW example of series adding the Pi Zero:<br>
+<br>
+<a href=3D"https://lore.kernel.org/qemu-devel/20201024170127.3592182-1-f4bu=
+g@amsat.org/">https://lore.kernel.org/qemu-devel/20201024170127.3592182-1-f=
+4bug@amsat.org/</a><br>
+<br>
+</div>
+</span></font>
+</body>
+</html>
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index ce9adcbc55..05c560cfe5 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -147,6 +147,60 @@
-             '*column': 'uint16', '*correction-mask': [ 'uint64' ]
-            }}
- 
-+##
-+# @cxl-inject-memory-module-event:
-+#
-+# Inject an event record for a Memory Module Event (CXL r3.0
-+# 8.2.9.2.1.3). # This event includes a copy of the Device Health
-+# info at the time of the event.
-+#
-+# @path: CXL type 3 device canonical QOM path
-+#
-+# @log: Event Log to add the event to
-+#
-+# @flags: Event Record Flags. See CXL r3.0 Table 8-42 Common Event
-+#         Record Format, Event Record Flags for subfield definitions.
-+#
-+# @type: Device Event Type. See CXL r3.0 Table 8-45 Memory Module
-+#        Event Record for bit definitions for bit definiions.
-+#
-+# @health-status: Overall health summary bitmap. See CXL r3.0 Table
-+#                 8-100 Get Health Info Output Payload, Health Status
-+#                 for bit definitions.
-+#
-+# @media-status: Overall media health summary. See CXL r3.0 Table
-+#                8-100 Get Health Info Output Payload, Media Status
-+#                for bit definitions.
-+#
-+# @additional-status: See CXL r3.0 Table 8-100 Get Health Info Output
-+#                     Payload, Additional Status for subfield
-+#                     definitions.
-+#
-+# @life-used: Percentage (0-100) of factory expected life span.
-+#
-+# @temperature: Device temperature in degrees Celsius.
-+#
-+# @dirty-shutdown-count: Number of time the device has been unable to
-+#                        determine whether data loss may have occurred.
-+#
-+# @corrected-volatile-error-count: Total number of correctable errors in
-+#                                  volatile memory.
-+#
-+# @corrected-persistent-error-count: Total number correctable errors in
-+#                                    persistent memory
-+#
-+# Since: 8.1
-+##
-+{ 'command': 'cxl-inject-memory-module-event',
-+  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags' : 'uint8',
-+            'type': 'uint8', 'health-status': 'uint8',
-+            'media-status': 'uint8', 'additional-status': 'uint8',
-+            'life-used': 'uint8', 'temperature' : 'int16',
-+            'dirty-shutdown-count': 'uint32',
-+            'corrected-volatile-error-count': 'uint32',
-+            'corrected-persistent-error-count': 'uint32'
-+            }}
-+
- ##
- # @cxl-inject-poison:
- #
-diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index a39e30d973..089ba2091f 100644
---- a/include/hw/cxl/cxl_events.h
-+++ b/include/hw/cxl/cxl_events.h
-@@ -146,4 +146,23 @@ typedef struct CXLEventDram {
-     uint8_t reserved[0x17];
- } QEMU_PACKED CXLEventDram;
- 
-+/*
-+ * Memory Module Event Record
-+ * CXL Rev 3.0 Section 8.2.9.2.1.3: Table 8-45
-+ * All fields little endian.
-+ */
-+typedef struct CXLEventMemoryModule {
-+    CXLEventRecordHdr hdr;
-+    uint8_t type;
-+    uint8_t health_status;
-+    uint8_t media_status;
-+    uint8_t additional_status;
-+    uint8_t life_used;
-+    int16_t temperature;
-+    uint32_t dirty_shutdown_count;
-+    uint32_t corrected_volatile_error_count;
-+    uint32_t corrected_persistent_error_count;
-+    uint8_t reserved[0x3d];
-+} QEMU_PACKED CXLEventMemoryModule;
-+
- #endif /* CXL_EVENTS_H */
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 3c07b1b7a3..4e314748d3 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1201,6 +1201,11 @@ static const QemuUUID dram_uuid = {
-                  0x4e, 0x9b, 0xfb, 0x5c, 0x96, 0x24),
- };
- 
-+static const QemuUUID memory_module_uuid = {
-+    .data = UUID(0xfe927475, 0xdd59, 0x4339, 0xa5, 0x86,
-+                 0x79, 0xba, 0xb1, 0x13, 0xb7, 0x74),
-+};
-+
- #define CXL_GMER_VALID_CHANNEL                          BIT(0)
- #define CXL_GMER_VALID_RANK                             BIT(1)
- #define CXL_GMER_VALID_DEVICE                           BIT(2)
-@@ -1408,6 +1413,63 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-     return;
- }
- 
-+void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-+                                        uint8_t flags, uint8_t type,
-+                                        uint8_t health_status,
-+                                        uint8_t media_status,
-+                                        uint8_t additional_status,
-+                                        uint8_t life_used,
-+                                        int16_t temperature,
-+                                        uint32_t dirty_shutdown_count,
-+                                        uint32_t corrected_volatile_error_count,
-+                                        uint32_t corrected_persistent_error_count,
-+                                        Error **errp)
-+{
-+    Object *obj = object_resolve_path(path, NULL);
-+    CXLEventMemoryModule module;
-+    CXLEventRecordHdr *hdr = &module.hdr;
-+    CXLDeviceState *cxlds;
-+    CXLType3Dev *ct3d;
-+    uint8_t enc_log;
-+    int rc;
-+
-+    if (!obj) {
-+        error_setg(errp, "Unable to resolve path");
-+        return;
-+    }
-+    if (!object_dynamic_cast(obj, TYPE_CXL_TYPE3)) {
-+        error_setg(errp, "Path does not point to a CXL type 3 device");
-+        return;
-+    }
-+    ct3d = CXL_TYPE3(obj);
-+    cxlds = &ct3d->cxl_dstate;
-+
-+    rc = ct3d_qmp_cxl_event_log_enc(log);
-+    if (rc < 0) {
-+        error_setg(errp, "Unhandled error log type");
-+        return;
-+    }
-+    enc_log = rc;
-+
-+    memset(&module, 0, sizeof(module));
-+    cxl_assign_event_header(hdr, &memory_module_uuid, flags, sizeof(module),
-+                            cxl_device_get_timestamp(&ct3d->cxl_dstate));
-+
-+    module.type = type;
-+    module.health_status = health_status;
-+    module.media_status = media_status;
-+    module.additional_status = additional_status;
-+    module.life_used = life_used;
-+    stw_le_p(&module.temperature, temperature);
-+    stl_le_p(&module.dirty_shutdown_count, dirty_shutdown_count);
-+    stl_le_p(&module.corrected_volatile_error_count, corrected_volatile_error_count);
-+    stl_le_p(&module.corrected_persistent_error_count, corrected_persistent_error_count);
-+
-+    if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&module)) {
-+        cxl_event_irq_assert(ct3d);
-+    }
-+}
-+
- static void ct3_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-index e904c5d089..f3e4a9fa72 100644
---- a/hw/mem/cxl_type3_stubs.c
-+++ b/hw/mem/cxl_type3_stubs.c
-@@ -26,6 +26,18 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-                                bool has_correction_mask, uint64List *correction_mask,
-                                Error **errp) {}
- 
-+void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-+                                        uint8_t flags, uint8_t type,
-+                                        uint8_t health_status,
-+                                        uint8_t media_status,
-+                                        uint8_t additional_status,
-+                                        uint8_t life_used,
-+                                        int16_t temperature,
-+                                        uint32_t dirty_shutdown_count,
-+                                        uint32_t corrected_volatile_error_count,
-+                                        uint32_t corrected_persistent_error_count,
-+                                        Error **errp) {}
-+
- void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
-                            Error **errp)
- {
--- 
-2.39.2
-
+--_000_12ff45b45c334cbd8340becc512eaf89aurigacom_--
 
