@@ -2,127 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BB270CE25
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 00:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C05770CE5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 00:54:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1EDv-0001TY-Ds; Mon, 22 May 2023 18:41:51 -0400
+	id 1q1EOM-0003Q4-Uo; Mon, 22 May 2023 18:52:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan@outlook.com>) id 1q1EDq-0001TH-1a
- for qemu-devel@nongnu.org; Mon, 22 May 2023 18:41:46 -0400
-Received: from mail-sgaapc01olkn2082c.outbound.protection.outlook.com
- ([2a01:111:f400:feab::82c]
- helo=APC01-SG2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan@outlook.com>) id 1q1EDn-0005dN-75
- for qemu-devel@nongnu.org; Mon, 22 May 2023 18:41:45 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LuureBTnTyFkBEjfu5tW9AgCLGFNHFLvu1qAapjEv46RpaW4ygoakTbfIJ+3xK8XIe6V26e7zo8dQujGYuFPj+6n2WcD0URo1M8GP+L9SUcr60A5d7KYz9LRbSjv3fCFNA6Jr/h7Vd/0tVxmBOWGiwti53Zdu3rgKDx425cEbkWCzYXS1ze1gE8teEz1US9ts5pCE202+rcjbNWks7jQlAzUyOjhOK4fQ0lwzdCSrWG5dJWq2xEXRZwgTROaHU7zy3GLus2wfVJHEM27o0y4cSDWrGoa3x3t78skpzs85nukfJazBSP+iTtm6dbey6E7xIkp9Cc9bgI3UQEZIEYHXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q9Sxaj2ei0JII4ZcJwc63MK3L7esTaCc7O4SZM6v/is=;
- b=Z39+hU5AmDiXxs/Or2yKpRSNsOdJwVcw5QF2uqTnSkvn0b2E3ZNeW195MUZXdASBj1wXqgoxFtpm4QTe30lTXE8BLwV9q35Ec81T4KAUg3RR48DuCFoXe/z8QfqQFDgQ+ih1V+l0Ug5WS7vyX02FeoBSv8V1Z6uChKQ2dEPjHWFGbvc+kI+CLpoh4Uthm2YZxLdOS1tKx5oiLJKy7ddBGsvF4XkNcFkLwRIY7nPx9cayGycQiR8UjOUQVCwhQF0USUkcVVsvjOAlrgyMgQZh0vj565iPBk2msQbKJwgd+tM/87tgjdVV7N6F4Y7mAMD9Hgso8erFM6GGj8h+md4KBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q9Sxaj2ei0JII4ZcJwc63MK3L7esTaCc7O4SZM6v/is=;
- b=f29Yz2ZviAouKTrSIhgQPDDzwtuMQqGqr1loOcUI+cbpdlLpw7NdNXou3FX9bJvQtzljT9ifHPn2Tn/8vAdcYxjDPwSJRGAzGgIzGuGm4odF5rX21riWZP6kVfzGdXNoywI+FkhTAo7qxHYaNVTv9MG3of+Qk0VSInPsk/DLeb9eyxcgS/nQhzelYvO85jiQh2ly4AqfNOBALO4w0QAuezgmjkBfpooTHL8Ib46Cl+0DGYxwmhfdGrlG76DCeMICmMKTgRFHJoY+lTCUCgzmF6RNM2zk3u0KnKRbcuIrW4aEdzL6whQzuI//2USgszQy/S/JCmwkMoRNJjabbzSpzA==
-Received: from SG2PR06MB3397.apcprd06.prod.outlook.com (2603:1096:4:7a::17) by
- SEYPR06MB5961.apcprd06.prod.outlook.com (2603:1096:101:d6::5) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6411.27; Mon, 22 May 2023 22:41:33 +0000
-Received: from SG2PR06MB3397.apcprd06.prod.outlook.com
- ([fe80::248c:58fd:97db:5425]) by SG2PR06MB3397.apcprd06.prod.outlook.com
- ([fe80::248c:58fd:97db:5425%7]) with mapi id 15.20.6411.021; Mon, 22 May 2023
- 22:41:33 +0000
-Date: Mon, 22 May 2023 15:41:21 -0700
-From: Fan Ni <nifan@outlook.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel@nongnu.org, Michael Tsirkin <mst@redhat.com>,
- Fan Ni <fan.ni@samsung.com>, linux-cxl@vger.kernel.org,
- linuxarm@huawei.com, Ira Weiny <ira.weiny@intel.com>,
- Michael Roth <michael.roth@amd.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Dave Jiang <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, a.manzanares@samsung.com,
- dave@stgolabs.net, nmtadam.samsung@gmail.com, nifan@outlook.com
-Subject: Re: [PATCH v7 4/7] hw/cxl/events: Add event interrupt support
-Message-ID: <SG2PR06MB339799CA0246F92C45A5F3EEB2439@SG2PR06MB3397.apcprd06.prod.outlook.com>
-References: <20230522150947.11546-1-Jonathan.Cameron@huawei.com>
- <CGME20230522151155uscas1p10e91528b5f7619923c286b70b891abec@uscas1p1.samsung.com>
- <20230522150947.11546-5-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230522150947.11546-5-Jonathan.Cameron@huawei.com>
-X-TMN: [qAb0Zz/Qhqj7ju5YKmEzvcI0HKAx/NlD5ergwjytUxk=]
-X-ClientProxiedBy: SJ0PR13CA0198.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::23) To SG2PR06MB3397.apcprd06.prod.outlook.com
- (2603:1096:4:7a::17)
-X-Microsoft-Original-Message-ID: <ZGvvkUi7Le8puZNt@outlook.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1EOL-0003Pi-6m
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 18:52:37 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1EOI-0007Oy-84
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 18:52:36 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-51f6461af24so4503476a12.2
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 15:52:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684795953; x=1687387953;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TZQx8xI8jUehHniFLcxL2MENl+SfW+K8YrSWgJmBSEg=;
+ b=TdJfKI4IhJxCosdf5xnMGOk07s5t4nlqhwiGxQYZtSbA2VjILwQ13z91zZJQWN5GDC
+ tsx2PJefOKZYbxdFBdb1AAZRq8UQshlyM+SJ5LQFGx5dFR2CRGYYBQgk2JUJshdnAkOE
+ HAk7zV4SVBAIR21m/Z+RzGHyd8I0L6zgVxnYlYSLlzTkxNHseNtyRNAzfCV4ornJMiTK
+ ljos4F+esySqJf4JRYZqwkl+kbXg9TbrvytDJB6Qw88zIPol+4A6N99HtZcaxTse1KqF
+ R+a9Aduc0UIXEHIuoOOdxKSYMZpXqeLHBcMrWt0HvJ+Urlg67McpONH0R7FDZRXbSuH/
+ ZWGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684795953; x=1687387953;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TZQx8xI8jUehHniFLcxL2MENl+SfW+K8YrSWgJmBSEg=;
+ b=Ap11dRHNGPFaGh08Nlo6RT3LImxxsfnBrcJxC+08RT6kGKdX9T8K9WINoxWWUpBh7f
+ ORbdvyBW5m6QN03CLz0hIWNQZl8vDZePe/BCHbFawDfnQv/UJ4d9NfybfdENBH+SMJOX
+ 6JX6wOmXJOnTH9AoWaIG+/mUCy7x2iXggYXZEsZXjbAi2pb177ZoZzrE6gH8Ou/agX4j
+ 4HF6fcujN+QhRq9nXE2am7dKlAYzhcgkrLzl6wAgmbr6c/g462JZ3n/PLP4IrUihhiy7
+ BFUEgZkj6TXsJ1Z6f2+v0i9fwu9mDxE8DsN4UmMsZ1MU5stZhFqJwZTvPQRZA2tFe5i3
+ jKSQ==
+X-Gm-Message-State: AC+VfDyiLd853GxpGrYY4XGi2Qr+HIlYKy8dYA1752L7DDndkNrKfTrZ
+ FkMAyOn6gCzbihH1gX6blcGrfg==
+X-Google-Smtp-Source: ACHHUZ6q+KaEdkUlR90V6C/hqdcIL6YsEcMJIqwz+hYXAHjBwmUFV2kP16p1L12Qqe4J1YwERK83Sw==
+X-Received: by 2002:a17:902:d503:b0:1ac:a661:a4c9 with SMTP id
+ b3-20020a170902d50300b001aca661a4c9mr15079077plg.33.1684795952701; 
+ Mon, 22 May 2023 15:52:32 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:86fe:2b34:5897:c8ef?
+ ([2602:ae:1598:4c01:86fe:2b34:5897:c8ef])
+ by smtp.gmail.com with ESMTPSA id
+ m4-20020a170902db0400b001a65fa33e62sm5327155plx.154.2023.05.22.15.52.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 15:52:32 -0700 (PDT)
+Message-ID: <d08d55dd-f38b-063c-d64e-9a0f79dbebf9@linaro.org>
+Date: Mon, 22 May 2023 15:52:30 -0700
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SG2PR06MB3397:EE_|SEYPR06MB5961:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97755f8b-dad2-4d16-f352-08db5b15b0e8
-X-MS-Exchange-SLBlob-MailProps: WaIXnCbdHrO3yEcJ8o8qPbkkVS+87Wk/8lm69NeR/J/Mg/ASWAsd8WITM86/Wns/aWmLLr9ajD27OoL4NSYXVc2BjEKDUpsnjR70YDBCx23t+GrhrxW+8IG5dCophEf9I4nM5d8XyyNIukAxoRXKMDWOF9VQbZJOm/d/I7heaM3fOfOhRE8K2XyMSOmz/2jX9Hf8P5zXcn0/2975Bdo0pQXnfQ9B3O5BsB0Z/cpC2GfRXnvUvhTFiF0SAD2/m84ARlQS7rFOBP1cf+//plDBK7qHquGmASWwPc5VuNF49U5sSODjNIZbxPXOAJdqzKNqFzVvO+A+mxpaFqYVNWX/6ZfgkA6EM57Qv9KRSTcM2DdI7b6KgP5Tvyz0liot+cDW1eV9nean7tkQPyI07gokPMBYtGW+Y839LDwX525EYMpyT40DcO0PP+4+iypXjx/wD26EMsbn36rpFGVPynYxdgG1tZue1szCsP37b7PT8IY9C1v1L3q0BbPamd5S2zmK8VRiMJu6/29mayrU58NNcq7bMunU8jLn0/Jl8uSIlYYCRAyzKEENp2pe0iyhlbJUXqmT3Mvjn9Kc7VD6HMu7GW4TfP5VMKPqeJTnREppIE4ErdGVrESvYZ55FHEeVyrHj/Mnpm59MJC/T/ORw3SnDWtWoODVBZR91cz1uu1+bR6UrUV+GAnohRW6EfkFmBb2/toBsyvTdNTNuOF7VBT8VNNGtY/z5XlgzyPon/0ApvfSalM9UcLQ8f+d5pe/itqfZnTOcRhGyNw=
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: D72qTqox7Uj+Ku/Slg/H+nGKX4GAUHY2qEiCZUSgpUDV3mifzRtRrWp7Lvbe4wO3EfMmi0hyi0g4udA6TKvhybLSwbOYju2ai6xyq2naqtmOMtyHi1vK3B9SjR4cnQ80x7nmyUCyP3TKhGq7m0RCf0uZsIMKIYpSWW3VhslGVW72lcNTAA9BoAalDvrlb3czVm65bKPGp/zqCkd6XwgoKqsr9LrQsx0zVe2Y808p+9DiScha761MnTzamyS+ZoySb1jBq3YzUn8C6UmLo7Ym86Q3xhVTtJqhfFM6Q95HK3BBHgFP6TL5/e+wObVv6tVGSUji73NMbUXcK+pDd7BLEhAE+L6P7z3YlqylAq4wHxzemyd5j+X7d/dC9KmqtEhIzD56ts4OftAN7ZnXoi4jhGMqYrOq6E1VsaLMf7BStXzsvc9XIZRfHA7j6DiF4HhvURRL++vw4sBZnVADozeBAV9jo5zSHJa6Al2u1cdbGNUIZcsK6aJupOH25COU4m6jfCNa2XLMD/14DL6c9EazO4YERfEYcpqO/GhEXVzuWvP70lDRRL2bUZ0+5GUgVwzhEw+2owuESAq55cUxwhKPS0P9P47syMMOCJ9Uw3hREOwLlhK8irAizlZx9+jupVSxselAzE1E700hBC9VFXBTzA==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QTJhb0lJOVRDZnpTQ01rSmhtWkV4RE5kR3M0WXduZkVvangvWnQ3V2JUV3hO?=
- =?utf-8?B?UUk1aEp1bnBKYlZpSjRpTWlkSUNxeGVVK1RQcCtLNzI2V0Q3VVo4UjdhQ0VW?=
- =?utf-8?B?S2Rabm5HZjBzYmR4UWc5bjU0czF0Y1RobGtOYXQvd2tiMWpieGhuak5uMmNV?=
- =?utf-8?B?NmNLcUhiRXRlL053RlhwbXRRNUtWT3lCVE5JWFZhNHl6WEptbmVGM0RlT25l?=
- =?utf-8?B?WXpGTWVNSHZsdWg0UE1jVHBtVHRwQnBHcUJsV2drL1JCZXQvbkh6SEkwTGJ4?=
- =?utf-8?B?eGpyS1pwU3MrdGZ4N1ZNRU50eWs2ektnbEY3RnFyZ3VIb0F4d1BWemMyY05n?=
- =?utf-8?B?Yk1pRE5yclJ4cXErVldvSGc5cnlhQkFQaDRCaHdsOVZJVVRISUNUeDZFbzFP?=
- =?utf-8?B?bk9ac1F1TzNrSmJidzFwd0FuMnR6bmlZbGNTN2hSS0RmWTJWUUx0aXVrTUI0?=
- =?utf-8?B?bHhJVUNxTGk5dnBOQ2t3L0lDbko5aTFWK09qZFc1U2h0L2xLN3lhdFVITXll?=
- =?utf-8?B?azloQU9acDh0R2VIRGJyQXZyZ0Iva2Q1WDlWVUlYVGZSRUxWOVdPdit3ellM?=
- =?utf-8?B?emNuMTZuS2VPQVVqeGZtZ1BENnp0em5QZ1RmbGR6QkxZSTV1TjVtb2hHRE5M?=
- =?utf-8?B?amNqME5qN2pwd3ZZaGhtTDFoWmMwSE5Mck8yRlRCLzFLVkZZOVhZcVNIVnN0?=
- =?utf-8?B?TDBQdW9iNUE5aXZWb0NtOU05ZVI1YlJpZmFOOVRJdzlpMFNYd2kwSmxKNDBV?=
- =?utf-8?B?VGg5SExDSFVQbnliMDdGeU9ZT2VBalNIeHc5TVpMdUEvSTdwNGRpMk9oNG45?=
- =?utf-8?B?TXJnS0ttNWNuSi9tREN5bjcvZnJBMWlXVWNsOURvOU0xQ2NUTzVzYzJOV3pI?=
- =?utf-8?B?UG4zbmEwcHlLYWRydGJKZDVEMEUrT0F3V3U2TWxDcUxOd1NoUjU3WFMxc1h1?=
- =?utf-8?B?amc0K3NPSGV3MzNJTytCbTdZSjRqeFFyTXllQU5OUkhaN0dvTE94UjdnZU5v?=
- =?utf-8?B?OXVnNFBWMjN2NzRqT0dEZ3hZdWtFaTdkNHFhRGdnSFRZTU5KZWs0RmpEdE15?=
- =?utf-8?B?c3ZMYkU4eHdLNFU2aFJOdms2blRYUmhEMXowUC9HR3ExdmdudExrSjhQbyt2?=
- =?utf-8?B?VTlsM1NUaU0yQkNrcUJlYTU0QTJ6VlhkOXkwMjNrR0g3Yno4NVNWcTliNmpV?=
- =?utf-8?B?RmY2SUhtdjRqdjRJd2ZZSWtqU05odTI5cW5SUnZvUE93RWdMcG4ydTVrb2R2?=
- =?utf-8?B?OUVham5ubnozNzBMR0RlQk1ZaElXbW53QWNqZ2hwdmZsMXRsRUhTNHNYektR?=
- =?utf-8?B?SjE5dTEvUUF6L3Z0QzZabmtqT0lTRitJWStYQ0ZWTUlTZzZRZXNPelpsV2RH?=
- =?utf-8?B?L2p6RkE0M3NMdWhlZm9NTUpQQjZDeitFRUVkN1Y4SkpZMFNpTGtrckpab0ZO?=
- =?utf-8?B?Mi93VTRVU0ozaFJGR1h4YXhpbW5ScGRYMGJEMjBMUGYraDZ0dHQ5SHVISG5D?=
- =?utf-8?B?cEdvcjR5LzAxK3RwbUVIemQ4RCtFUmgwQWdEdzNSdXpMQ0dBNkhWQ3BKQVlt?=
- =?utf-8?B?YlByVmpFSmZkc3U0YWdjRFJ2dkFIRlJ0Wk1UVHkwbmpDYnpuY1RhUjM2YXg5?=
- =?utf-8?Q?R3vWd+MFhuPGamtZ02sJ/zbX1jivChG7lLyBnS+Pd4xY=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97755f8b-dad2-4d16-f352-08db5b15b0e8
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3397.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2023 22:41:33.6544 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB5961
-Received-SPF: pass client-ip=2a01:111:f400:feab::82c;
- envelope-from=nifan@outlook.com;
- helo=APC01-SG2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: Add CI configuration for Kubernetes
+Content-Language: en-US
+To: Camilla Conte <cconte@redhat.com>, qemu-devel@nongnu.org
+Cc: berrange@redhat.com, thuth@redhat.com
+References: <20230522174153.46801-1-cconte@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230522174153.46801-1-cconte@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -139,316 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 05/22/2023 16:09, Jonathan Cameron wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
-> 
-> Replace the stubbed out CXL Get/Set Event interrupt policy mailbox
-> commands.  Enable those commands to control interrupts for each of the
-> event log types.
-> 
-> Skip the standard input mailbox length on the Set command due to DCD
-> being optional.  Perform the checks separately.
-> 
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
+On 5/22/23 10:41, Camilla Conte wrote:
+> Here's a second version (v2) of patches to support the Kubernetes runner for Gitlab CI.
+> You can find the v1 thread here: https://lore.kernel.org/qemu-devel/20230407145252.32955-1-cconte@redhat.com/.
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
->  include/hw/cxl/cxl_device.h |   6 +-
->  include/hw/cxl/cxl_events.h |  23 ++++++++
->  hw/cxl/cxl-events.c         |  33 ++++++++++-
->  hw/cxl/cxl-mailbox-utils.c  | 106 +++++++++++++++++++++++++++++-------
->  hw/mem/cxl_type3.c          |   4 +-
->  5 files changed, 147 insertions(+), 25 deletions(-)
-> 
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index d3aec1bc0e..1978730fba 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -121,6 +121,8 @@ typedef struct CXLEventLog {
->      uint16_t overflow_err_count;
->      uint64_t first_overflow_timestamp;
->      uint64_t last_overflow_timestamp;
-> +    bool irq_enabled;
-> +    int irq_vec;
->      QemuMutex lock;
->      QSIMPLEQ_HEAD(, CXLEvent) events;
->  } CXLEventLog;
-> @@ -369,7 +371,7 @@ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
->  
->  uint64_t cxl_device_get_timestamp(CXLDeviceState *cxlds);
->  
-> -void cxl_event_init(CXLDeviceState *cxlds);
-> +void cxl_event_init(CXLDeviceState *cxlds, int start_msg_num);
->  bool cxl_event_insert(CXLDeviceState *cxlds, CXLEventLogType log_type,
->                        CXLEventRecordRaw *event);
->  CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
-> @@ -378,6 +380,8 @@ CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPayload *pl,
->  CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds,
->                                     CXLClearEventPayload *pl);
->  
-> +void cxl_event_irq_assert(CXLType3Dev *ct3d);
-> +
->  void cxl_set_poison_list_overflowed(CXLType3Dev *ct3d);
->  
->  #endif
-> diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-> index d4aaa894f1..4bf8b7aa08 100644
-> --- a/include/hw/cxl/cxl_events.h
-> +++ b/include/hw/cxl/cxl_events.h
-> @@ -80,4 +80,27 @@ typedef struct CXLClearEventPayload {
->      uint16_t handle[];
->  } CXLClearEventPayload;
->  
-> +/**
-> + * Event Interrupt Policy
-> + *
-> + * CXL rev 3.0 section 8.2.9.2.4; Table 8-52
-> + */
-> +typedef enum CXLEventIntMode {
-> +    CXL_INT_NONE     = 0x00,
-> +    CXL_INT_MSI_MSIX = 0x01,
-> +    CXL_INT_FW       = 0x02,
-> +    CXL_INT_RES      = 0x03,
-> +} CXLEventIntMode;
-> +#define CXL_EVENT_INT_MODE_MASK 0x3
-> +#define CXL_EVENT_INT_SETTING(vector) ((((uint8_t)vector & 0xf) << 4) | CXL_INT_MSI_MSIX)
-> +typedef struct CXLEventInterruptPolicy {
-> +    uint8_t info_settings;
-> +    uint8_t warn_settings;
-> +    uint8_t failure_settings;
-> +    uint8_t fatal_settings;
-> +    uint8_t dyn_cap_settings;
-> +} QEMU_PACKED CXLEventInterruptPolicy;
-> +/* DCD is optional but other fields are not */
-> +#define CXL_EVENT_INT_SETTING_MIN_LEN 4
-> +
->  #endif /* CXL_EVENTS_H */
-> diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
-> index 5da1b76b97..d161d57456 100644
-> --- a/hw/cxl/cxl-events.c
-> +++ b/hw/cxl/cxl-events.c
-> @@ -13,6 +13,8 @@
->  #include "qemu/bswap.h"
->  #include "qemu/typedefs.h"
->  #include "qemu/error-report.h"
-> +#include "hw/pci/msi.h"
-> +#include "hw/pci/msix.h"
->  #include "hw/cxl/cxl.h"
->  #include "hw/cxl/cxl_events.h"
->  
-> @@ -26,7 +28,7 @@ static void reset_overflow(CXLEventLog *log)
->      log->last_overflow_timestamp = 0;
->  }
->  
-> -void cxl_event_init(CXLDeviceState *cxlds)
-> +void cxl_event_init(CXLDeviceState *cxlds, int start_msg_num)
->  {
->      CXLEventLog *log;
->      int i;
-> @@ -37,9 +39,16 @@ void cxl_event_init(CXLDeviceState *cxlds)
->          log->overflow_err_count = 0;
->          log->first_overflow_timestamp = 0;
->          log->last_overflow_timestamp = 0;
-> +        log->irq_enabled = false;
-> +        log->irq_vec = start_msg_num++;
->          qemu_mutex_init(&log->lock);
->          QSIMPLEQ_INIT(&log->events);
->      }
-> +
-> +    /* Override -- Dynamic Capacity uses the same vector as info */
-> +    cxlds->event_logs[CXL_EVENT_TYPE_DYNAMIC_CAP].irq_vec =
-> +                      cxlds->event_logs[CXL_EVENT_TYPE_INFO].irq_vec;
-> +
->  }
->  
->  static CXLEvent *cxl_event_get_head(CXLEventLog *log)
-> @@ -215,3 +224,25 @@ CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds, CXLClearEventPayload *
->  
->      return CXL_MBOX_SUCCESS;
->  }
-> +
-> +void cxl_event_irq_assert(CXLType3Dev *ct3d)
-> +{
-> +    CXLDeviceState *cxlds = &ct3d->cxl_dstate;
-> +    PCIDevice *pdev = &ct3d->parent_obj;
-> +    int i;
-> +
-> +    for (i = 0; i < CXL_EVENT_TYPE_MAX; i++) {
-> +        CXLEventLog *log = &cxlds->event_logs[i];
-> +
-> +        if (!log->irq_enabled || cxl_event_empty(log)) {
-> +            continue;
-> +        }
-> +
-> +        /*  Notifies interrupt, legacy IRQ is not supported */
-> +        if (msix_enabled(pdev)) {
-> +            msix_notify(pdev, log->irq_vec);
-> +        } else if (msi_enabled(pdev)) {
-> +            msi_notify(pdev, log->irq_vec);
-> +        }
-> +    }
-> +}
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 3f46538048..02f9b5a870 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -80,25 +80,6 @@ struct cxl_cmd {
->      uint8_t *payload;
->  };
->  
-> -#define DEFINE_MAILBOX_HANDLER_ZEROED(name, size)                         \
-> -    uint16_t __zero##name = size;                                         \
-> -    static CXLRetCode cmd_##name(struct cxl_cmd *cmd,                       \
-> -                                 CXLDeviceState *cxl_dstate, uint16_t *len) \
-> -    {                                                                     \
-> -        *len = __zero##name;                                              \
-> -        memset(cmd->payload, 0, *len);                                    \
-> -        return CXL_MBOX_SUCCESS;                                          \
-> -    }
-> -#define DEFINE_MAILBOX_HANDLER_NOP(name)                                  \
-> -    static CXLRetCode cmd_##name(struct cxl_cmd *cmd,                       \
-> -                                 CXLDeviceState *cxl_dstate, uint16_t *len) \
-> -    {                                                                     \
-> -        return CXL_MBOX_SUCCESS;                                          \
-> -    }
-> -
-> -DEFINE_MAILBOX_HANDLER_ZEROED(events_get_interrupt_policy, 4);
-> -DEFINE_MAILBOX_HANDLER_NOP(events_set_interrupt_policy);
-> -
->  static CXLRetCode cmd_events_get_records(struct cxl_cmd *cmd,
->                                           CXLDeviceState *cxlds,
->                                           uint16_t *len)
-> @@ -136,6 +117,88 @@ static CXLRetCode cmd_events_clear_records(struct cxl_cmd *cmd,
->      return cxl_event_clear_records(cxlds, pl);
->  }
->  
-> +static CXLRetCode cmd_events_get_interrupt_policy(struct cxl_cmd *cmd,
-> +                                                  CXLDeviceState *cxlds,
-> +                                                  uint16_t *len)
-> +{
-> +    CXLEventInterruptPolicy *policy;
-> +    CXLEventLog *log;
-> +
-> +    policy = (CXLEventInterruptPolicy *)cmd->payload;
-> +    memset(policy, 0, sizeof(*policy));
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_INFO];
-> +    if (log->irq_enabled) {
-> +        policy->info_settings = CXL_EVENT_INT_SETTING(log->irq_vec);
-> +    }
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_WARN];
-> +    if (log->irq_enabled) {
-> +        policy->warn_settings = CXL_EVENT_INT_SETTING(log->irq_vec);
-> +    }
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_FAIL];
-> +    if (log->irq_enabled) {
-> +        policy->failure_settings = CXL_EVENT_INT_SETTING(log->irq_vec);
-> +    }
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_FATAL];
-> +    if (log->irq_enabled) {
-> +        policy->fatal_settings = CXL_EVENT_INT_SETTING(log->irq_vec);
-> +    }
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_DYNAMIC_CAP];
-> +    if (log->irq_enabled) {
-> +        /* Dynamic Capacity borrows the same vector as info */
-> +        policy->dyn_cap_settings = CXL_INT_MSI_MSIX;
-> +    }
-> +
-> +    *len = sizeof(*policy);
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
-> +static CXLRetCode cmd_events_set_interrupt_policy(struct cxl_cmd *cmd,
-> +                                                  CXLDeviceState *cxlds,
-> +                                                  uint16_t *len)
-> +{
-> +    CXLEventInterruptPolicy *policy;
-> +    CXLEventLog *log;
-> +
-> +    if (*len < CXL_EVENT_INT_SETTING_MIN_LEN) {
-> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> +    }
-> +
-> +    policy = (CXLEventInterruptPolicy *)cmd->payload;
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_INFO];
-> +    log->irq_enabled = (policy->info_settings & CXL_EVENT_INT_MODE_MASK) ==
-> +                        CXL_INT_MSI_MSIX;
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_WARN];
-> +    log->irq_enabled = (policy->warn_settings & CXL_EVENT_INT_MODE_MASK) ==
-> +                        CXL_INT_MSI_MSIX;
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_FAIL];
-> +    log->irq_enabled = (policy->failure_settings & CXL_EVENT_INT_MODE_MASK) ==
-> +                        CXL_INT_MSI_MSIX;
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_FATAL];
-> +    log->irq_enabled = (policy->fatal_settings & CXL_EVENT_INT_MODE_MASK) ==
-> +                        CXL_INT_MSI_MSIX;
-> +
-> +    /* DCD is optional */
-> +    if (*len < sizeof(*policy)) {
-> +        return CXL_MBOX_SUCCESS;
-> +    }
-> +
-> +    log = &cxlds->event_logs[CXL_EVENT_TYPE_DYNAMIC_CAP];
-> +    log->irq_enabled = (policy->dyn_cap_settings & CXL_EVENT_INT_MODE_MASK) ==
-> +                        CXL_INT_MSI_MSIX;
-> +
-> +    *len = sizeof(*policy);
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
->  /* 8.2.9.2.1 */
->  static CXLRetCode cmd_firmware_update_get_info(struct cxl_cmd *cmd,
->                                                 CXLDeviceState *cxl_dstate,
-> @@ -611,9 +674,10 @@ static struct cxl_cmd cxl_cmd_set[256][256] = {
->      [EVENTS][CLEAR_RECORDS] = { "EVENTS_CLEAR_RECORDS",
->          cmd_events_clear_records, ~0, IMMEDIATE_LOG_CHANGE },
->      [EVENTS][GET_INTERRUPT_POLICY] = { "EVENTS_GET_INTERRUPT_POLICY",
-> -        cmd_events_get_interrupt_policy, 0, 0 },
-> +                                      cmd_events_get_interrupt_policy, 0, 0 },
->      [EVENTS][SET_INTERRUPT_POLICY] = { "EVENTS_SET_INTERRUPT_POLICY",
-> -        cmd_events_set_interrupt_policy, 4, IMMEDIATE_CONFIG_CHANGE },
-> +                                      cmd_events_set_interrupt_policy,
-> +                                      ~0, IMMEDIATE_CONFIG_CHANGE },
->      [FIRMWARE_UPDATE][GET_INFO] = { "FIRMWARE_UPDATE_GET_INFO",
->          cmd_firmware_update_get_info, 0, 0 },
->      [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index ec5a384885..c9e347f42b 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -659,7 +659,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
->      ComponentRegisters *regs = &cxl_cstate->crb;
->      MemoryRegion *mr = &regs->component_registers;
->      uint8_t *pci_conf = pci_dev->config;
-> -    unsigned short msix_num = 1;
-> +    unsigned short msix_num = 6;
->      int i, rc;
->  
->      QTAILQ_INIT(&ct3d->error_list);
-> @@ -723,8 +723,8 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
->      if (rc) {
->          goto err_release_cdat;
->      }
-> +    cxl_event_init(&ct3d->cxl_dstate, 2);
->  
-> -    cxl_event_init(&ct3d->cxl_dstate);
->      return;
->  
->  err_release_cdat:
-> -- 
-> 2.39.2
-> 
+This does not work:
 
--- 
-Fan Ni <nifan@outlook.com>
+https://gitlab.com/qemu-project/qemu/-/pipelines/875254290
+
+In particular, most jobs spent 30 minutes (until I cancelled them), e.g.
+
+https://gitlab.com/qemu-project/qemu/-/jobs/4329346855#L7561
+
+Client:
+  Debug Mode: false
+Server:
+ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
+Is the docker daemon running?
+
+
+r~
+
 
