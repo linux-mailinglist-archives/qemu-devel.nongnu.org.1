@@ -2,94 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9154270C29B
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 17:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4430970C2A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 May 2023 17:42:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q17by-00006h-Gz; Mon, 22 May 2023 11:38:14 -0400
+	id 1q17fq-0002Vw-10; Mon, 22 May 2023 11:42:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@us.ibm.com>)
- id 1q17bu-0008Tb-2j; Mon, 22 May 2023 11:38:11 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@us.ibm.com>)
- id 1q17bq-0002WQ-Lv; Mon, 22 May 2023 11:38:09 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34MFQI49019883; Mon, 22 May 2023 15:37:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=4fdzLapQ2JP2/cjzC8cWz8nbfumSWtQ1B/3l8MX3yIg=;
- b=n5z1IBmD1fsLtw30Y1pU3ABYAHaU0AV4bqRRuLzPVkRp0/PvDgQaSDl10mVk3QqmjEMq
- gfC6EKyRYNmVKLbiAYzy7nVkEVnL0s1e1Nprx88EsSTIWv3NP7hSdGF5926Ftyt9rlrs
- Tm5qPOGlgHHpTkUJ9E+6FwRqu/4SziTwE/xMJCKUJsspUgVJGZhK+/tCJEU+bDDI9j6V
- Sg2Q5vFguqB8gEpmyFupNJB05+e5MW6nIWTstqiv7ipWvqR5cGGaRmOWWYoQsQ4uopB3
- r0kRcSXXGtwKRa09YJPsalZCa//KDpisMA8nzIWuwqa4e2+mOs/IjlckKxCYa5k6DVjw uQ== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrb1jghp6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 May 2023 15:37:49 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34MDvrLs018501;
- Mon, 22 May 2023 15:37:17 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
- by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3qppdb2xtq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 May 2023 15:37:17 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34MFbGRT42402078
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 May 2023 15:37:16 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 583BA5805B;
- Mon, 22 May 2023 15:37:16 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42F0558059;
- Mon, 22 May 2023 15:37:16 +0000 (GMT)
-Received: from gfwa601.aus.stglabs.ibm.com (unknown [9.3.62.226])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 22 May 2023 15:37:16 +0000 (GMT)
-Received: by gfwa601.aus.stglabs.ibm.com (Postfix, from userid 155676)
- id 856B32ED7E4; Mon, 22 May 2023 10:37:15 -0500 (CDT)
-From: Ninad Palsule <ninad@linux.ibm.com>
-To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
- andrew@aj.id.au, joe@jms.id.au
-Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
-Subject: [PATCH v2 1/1] Add vpd data for Rainier machine
-Date: Mon, 22 May 2023 10:36:59 -0500
-Message-Id: <20230522153659.3379729-2-ninad@linux.ibm.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230522153659.3379729-1-ninad@linux.ibm.com>
-References: <20230522153659.3379729-1-ninad@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1q17fo-0002Uu-63
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 11:42:12 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1q17fm-0003bN-Fg
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 11:42:11 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-96f50e26b8bso797530566b.2
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 08:42:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1684770128; x=1687362128;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ntBwRRWm0xdALQrGuEtYHqvRbQtMjEFrpMKv/FDPAtc=;
+ b=Bq+iCjCjRCZk7Z2o2PEXXeN3EHl2PVNoeR7dHYGP77ELQXFLrOsTqbRZNuu2EZXNox
+ ee4KV72bxzASbNu8HHDb+tecCgvuR1+j9zcQuziJ3WHXgGbDgMgR4q35VvaAvQ8FIzhd
+ 7BH7AFq52xE4g3RpUx86aW1PvdW2V9Ih7SQVS6OCPje7weuu4TmPucCfY8QPq554ONKh
+ clrmC4luNFd0SSLT6qeD3mKwfFdwOBez4hfM2ae+Z6si5DOoX53MgZ8dc0DuEBSKZ6PM
+ a1t9uxlb3K5N0McFOznAuyrBO9Or/4Cg+9jkY6n5rQpK6mtOO6vRrHc8hpGr/m3xTHGe
+ HFOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684770128; x=1687362128;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ntBwRRWm0xdALQrGuEtYHqvRbQtMjEFrpMKv/FDPAtc=;
+ b=Au/1c0ivMn4E7PMJJCVHr4JPfsQRWfPyscR4Gyhv9zpkzToRuZO7r7eG7e6Zo4wKld
+ 6v4fQg5lcwNjoWQa9eBQpKrFhuEr8TqvxuLKQVukPubes0bJo69+2/y1Jw04RA5GYOy6
+ SaeaiYCrrwd7dwBexS6cRoxE1UFjpmjPe62S/0Z3Lga17+ijNPgLTwgCFO6BdB1z+GBH
+ Xm5uEMkaTe+oOHCbqR2jCadjy94oSZ/8ATC7ivk3/prOp9E85PDCyX3CSy/EWJH1AwoC
+ XDxojDIG0CYOpvqCM6VZTmPBL1/UT325ZB+Gy4H3nzYRV6rhT1NzUoYY9X2DyT++LLpQ
+ Sx4A==
+X-Gm-Message-State: AC+VfDy7ExijUafwn3m9pA4L2pA4qwPgFsWPM+DJam2+qYZHNRpSh+wm
+ 7KxvM3lGFCoeZSjW652VVyM=
+X-Google-Smtp-Source: ACHHUZ7G6JHBlLpI2JhNhYUZZZnAm4QfrynURn4NvO9azaPSCc58vc0V5uJ4Z0Rkvw7XgawRIq94UA==
+X-Received: by 2002:a17:907:72c5:b0:96f:5f44:ea02 with SMTP id
+ du5-20020a17090772c500b0096f5f44ea02mr10250547ejc.8.1684770128067; 
+ Mon, 22 May 2023 08:42:08 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-089-012-142-218.89.12.pool.telefonica.de.
+ [89.12.142.218]) by smtp.gmail.com with ESMTPSA id
+ z14-20020a1709067e4e00b00969dfd160aesm3224573ejr.109.2023.05.22.08.42.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 May 2023 08:42:07 -0700 (PDT)
+Date: Mon, 22 May 2023 15:42:03 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Stefano Stabellini <sstabellini@kernel.org>, mst@redhat.com
+CC: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Eduardo Habkost <eduardo@habkost.net>,
+ Chuck Zmudzinski <brchuckz@aol.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Anthony Perard <anthony.perard@citrix.com>, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 0/7] Resolve TYPE_PIIX3_XEN_DEVICE
+In-Reply-To: <alpine.DEB.2.22.394.2305151350180.4125828@ubuntu-linux-20-04-desktop>
+References: <20230403074124.3925-1-shentey@gmail.com>
+ <20230421033757-mutt-send-email-mst@kernel.org>
+ <9EB9A984-61E5-4226-8352-B5DDC6E2C62E@gmail.com>
+ <alpine.DEB.2.22.394.2305151350180.4125828@ubuntu-linux-20-04-desktop>
+Message-ID: <EB3E61EB-B543-4B15-94A9-C16A66437601@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: z5zf80W3QCbA36eVunLF41J4O3D5SknR
-X-Proofpoint-GUID: z5zf80W3QCbA36eVunLF41J4O3D5SknR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-22_10,2023-05-22_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0
- mlxlogscore=999 phishscore=0 suspectscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 impostorscore=0 clxscore=1011 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305220130
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@us.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,108 +100,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VPD data is added for system and BMC FRU. This data is fabricated.
 
-Tested:
-   - The system-vpd.service is active.
-   - VPD service related to bmc is active.
-Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
----
- hw/arm/aspeed.c        |  6 ++++--
- hw/arm/aspeed_eeprom.c | 45 +++++++++++++++++++++++++++++++++++++++++-
- hw/arm/aspeed_eeprom.h |  5 +++++
- 3 files changed, 53 insertions(+), 3 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 0b29028fe1..bfc2070bd2 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -788,8 +788,10 @@ static void rainier_bmc_i2c_init(AspeedMachineState *bmc)
-                      0x48);
-     i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 8), TYPE_TMP105,
-                      0x4a);
--    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 8), 0x50, 64 * KiB);
--    at24c_eeprom_init(aspeed_i2c_get_bus(&soc->i2c, 8), 0x51, 64 * KiB);
-+    at24c_eeprom_init_rom(aspeed_i2c_get_bus(&soc->i2c, 8), 0x50,
-+                          64 * KiB, rainier_bb_fruid, rainier_bb_fruid_len);
-+    at24c_eeprom_init_rom(aspeed_i2c_get_bus(&soc->i2c, 8), 0x51,
-+                          64 * KiB, rainier_bmc_fruid, rainier_bmc_fruid_len);
-     create_pca9552(soc, 8, 0x60);
-     create_pca9552(soc, 8, 0x61);
-     /* Bus 8: ucd90320@11 */
-diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
-index dc33a88a54..ace5266cec 100644
---- a/hw/arm/aspeed_eeprom.c
-+++ b/hw/arm/aspeed_eeprom.c
-@@ -119,9 +119,52 @@ const uint8_t yosemitev2_bmc_fruid[] = {
-     0x6e, 0x66, 0x69, 0x67, 0x20, 0x41, 0xc1, 0x45,
- };
- 
-+const uint8_t rainier_bb_fruid[] = {
-+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84,
-+    0x28, 0x00, 0x52, 0x54, 0x04, 0x56, 0x48, 0x44, 0x52, 0x56, 0x44, 0x02,
-+    0x01, 0x00, 0x50, 0x54, 0x0e, 0x56, 0x54, 0x4f, 0x43, 0x00, 0x00, 0x37,
-+    0x00, 0x4a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x50, 0x46, 0x08, 0x00, 0x00,
-+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46, 0x00, 0x52, 0x54,
-+    0x04, 0x56, 0x54, 0x4f, 0x43, 0x50, 0x54, 0x38, 0x56, 0x49, 0x4e, 0x49,
-+    0x00, 0x00, 0x81, 0x00, 0x3a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x56, 0x53,
-+    0x59, 0x53, 0x00, 0x00, 0xbb, 0x00, 0x27, 0x00, 0x00, 0x00, 0x00, 0x00,
-+    0x56, 0x43, 0x45, 0x4e, 0x00, 0x00, 0xe2, 0x00, 0x27, 0x00, 0x00, 0x00,
-+    0x00, 0x00, 0x56, 0x53, 0x42, 0x50, 0x00, 0x00, 0x09, 0x01, 0x19, 0x00,
-+    0x00, 0x00, 0x00, 0x00, 0x50, 0x46, 0x01, 0x00, 0x00, 0x00, 0x36, 0x00,
-+    0x52, 0x54, 0x04, 0x56, 0x49, 0x4e, 0x49, 0x44, 0x52, 0x04, 0x44, 0x45,
-+    0x53, 0x43, 0x48, 0x57, 0x02, 0x30, 0x31, 0x43, 0x43, 0x04, 0x33, 0x34,
-+    0x35, 0x36, 0x46, 0x4e, 0x04, 0x46, 0x52, 0x34, 0x39, 0x53, 0x4e, 0x04,
-+    0x53, 0x52, 0x31, 0x32, 0x50, 0x4e, 0x04, 0x50, 0x52, 0x39, 0x39, 0x50,
-+    0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x23, 0x00, 0x52, 0x54,
-+    0x04, 0x56, 0x53, 0x59, 0x53, 0x53, 0x45, 0x07, 0x49, 0x42, 0x4d, 0x53,
-+    0x59, 0x53, 0x31, 0x54, 0x4d, 0x08, 0x32, 0x32, 0x32, 0x32, 0x2d, 0x32,
-+    0x32, 0x32, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x23,
-+    0x00, 0x52, 0x54, 0x04, 0x56, 0x43, 0x45, 0x4e, 0x53, 0x45, 0x07, 0x31,
-+    0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x46, 0x43, 0x08, 0x31, 0x31, 0x31,
-+    0x31, 0x2d, 0x31, 0x31, 0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00,
-+    0x00, 0x00, 0x15, 0x00, 0x52, 0x54, 0x04, 0x56, 0x53, 0x42, 0x50, 0x49,
-+    0x4d, 0x04, 0x50, 0x00, 0x10, 0x01, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00,
-+    0x00, 0x00,
-+};
-+
-+/* Rainier BMC FRU */
-+const uint8_t rainier_bmc_fruid[] = {
-+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84,
-+    0x28, 0x00, 0x52, 0x54, 0x04, 0x56, 0x48, 0x44, 0x52, 0x56, 0x44, 0x02,
-+    0x01, 0x00, 0x50, 0x54, 0x0e, 0x56, 0x54, 0x4f, 0x43, 0x00, 0x00, 0x37,
-+    0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x50, 0x46, 0x08, 0x00, 0x00,
-+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x52, 0x54,
-+    0x04, 0x56, 0x54, 0x4f, 0x43, 0x50, 0x54, 0x0e, 0x56, 0x49, 0x4e, 0x49,
-+    0x00, 0x00, 0x57, 0x00, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x50, 0x46,
-+    0x01, 0x00, 0x00, 0x00, 0x1a, 0x00, 0x52, 0x54, 0x04, 0x56, 0x49, 0x4e,
-+    0x49, 0x44, 0x52, 0x04, 0x44, 0x45, 0x53, 0x43, 0x48, 0x57, 0x02, 0x30,
-+    0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-+};
-+
- const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
- const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
- const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
- const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
--
- const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
-+const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
-+const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
-diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
-index 86db6f0479..bbf9e54365 100644
---- a/hw/arm/aspeed_eeprom.h
-+++ b/hw/arm/aspeed_eeprom.h
-@@ -22,4 +22,9 @@ extern const size_t fby35_bmc_fruid_len;
- extern const uint8_t yosemitev2_bmc_fruid[];
- extern const size_t yosemitev2_bmc_fruid_len;
- 
-+extern const uint8_t rainier_bb_fruid[];
-+extern const size_t rainier_bb_fruid_len;
-+extern const uint8_t rainier_bmc_fruid[];
-+extern const size_t rainier_bmc_fruid_len;
-+
- #endif
--- 
-2.37.2
+Am 15=2E Mai 2023 20:52:40 UTC schrieb Stefano Stabellini <sstabellini@ker=
+nel=2Eorg>:
+>On Sat, 13 May 2023, Bernhard Beschow wrote:
+>> Am 21=2E April 2023 07:38:10 UTC schrieb "Michael S=2E Tsirkin" <mst@re=
+dhat=2Ecom>:
+>> >On Mon, Apr 03, 2023 at 09:41:17AM +0200, Bernhard Beschow wrote:
+>> >> There is currently a dedicated PIIX3 device model for use under Xen=
+=2E By reusing
+>> >> existing PCI API during initialization this device model can be elim=
+inated and
+>> >> the plain PIIX3 device model can be used instead=2E
+>> >>=20
+>> >> Resolving TYPE_PIIX3_XEN_DEVICE results in less code while also maki=
+ng Xen
+>> >> agnostic towards the precise south bridge being used in the PC machi=
+ne=2E The
+>> >> latter might become particularily interesting once PIIX4 becomes usa=
+ble in the
+>> >> PC machine, avoiding the "Frankenstein" use of PIIX4_ACPI in PIIX3=
+=2E
+>> >
+>> >xen stuff so I assume that tree?
+>>=20
+>> Ping
+>
+>I am OK either way=2E Michael, what do you prefer?
+>
+>Normally I would suggest for you to pick up the patches=2E But as it
+>happens I'll have to likely send another pull request in a week or two
+>and I can add these patches to it=2E
+>
+>Let me know your preference and I am happy to follow it=2E
 
+Hi Stefano,
+
+Michael's PR was merged last week=2E How about including this series into =
+your PR then?
+
+Best regards,
+Bernhard
+
+>
+>
+>> >
+>> >> Testing done:
+>> >> - `make check`
+>> >> - Run `xl create` with the following config:
+>> >>     name =3D "Manjaro"
+>> >>     type =3D 'hvm'
+>> >>     memory =3D 1536
+>> >>     apic =3D 1
+>> >>     usb =3D 1
+>> >>     disk =3D [ "file:manjaro-kde-21=2E2=2E6-220416-linux515=2Eiso,hd=
+c:cdrom,r" ]
+>> >>     device_model_override =3D "/usr/bin/qemu-system-x86_64"
+>> >>     vga =3D "stdvga"
+>> >>     sdl =3D 1
+>> >> - `qemu-system-x86_64 -M pc -m 2G -cpu host -accel kvm \
+>> >>     -cdrom manjaro-kde-21=2E2=2E6-220416-linux515=2Eiso`
+>> >>=20
+>> >> v4:
+>> >> - Add patch fixing latent memory leak in pci_bus_irqs() (Anthony)
+>> >>=20
+>> >> v3:
+>> >> - Rebase onto master
+>> >>=20
+>> >> v2:
+>> >> - xen_piix3_set_irq() is already generic=2E Just rename it=2E (Chuck=
+)
+>> >>=20
+>> >> Tested-by: Chuck Zmudzinski <brchuckz@aol=2Ecom>
+>> >>=20
+>> >> Bernhard Beschow (7):
+>> >>   include/hw/xen/xen: Rename xen_piix3_set_irq() to xen_intx_set_irq=
+()
+>> >>   hw/pci/pci=2Ec: Don't leak PCIBus::irq_count[] in pci_bus_irqs()
+>> >>   hw/isa/piix3: Reuse piix3_realize() in piix3_xen_realize()
+>> >>   hw/isa/piix3: Wire up Xen PCI IRQ handling outside of PIIX3
+>> >>   hw/isa/piix3: Avoid Xen-specific variant of piix3_write_config()
+>> >>   hw/isa/piix3: Resolve redundant k->config_write assignments
+>> >>   hw/isa/piix3: Resolve redundant TYPE_PIIX3_XEN_DEVICE
+>> >>=20
+>> >>  include/hw/southbridge/piix=2Eh |  1 -
+>> >>  include/hw/xen/xen=2Eh          |  2 +-
+>> >>  hw/i386/pc_piix=2Ec             | 36 +++++++++++++++++++--
+>> >>  hw/i386/xen/xen-hvm=2Ec         |  2 +-
+>> >>  hw/isa/piix3=2Ec                | 60 +-----------------------------=
+-----
+>> >>  hw/pci/pci=2Ec                  |  2 ++
+>> >>  stubs/xen-hw-stub=2Ec           |  2 +-
+>> >>  7 files changed, 39 insertions(+), 66 deletions(-)
+>> >>=20
+>> >> --=20
+>> >> 2=2E40=2E0
+>> >>=20
+>> >
+>>=20
 
