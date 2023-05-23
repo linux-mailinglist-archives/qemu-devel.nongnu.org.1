@@ -2,81 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FB770DF8B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 708C170DF96
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:45:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1TCN-0004Ho-NN; Tue, 23 May 2023 10:41:15 -0400
+	id 1q1TF0-0007YK-KH; Tue, 23 May 2023 10:43:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1TCL-0004EV-PP
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:41:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1TCI-0007Up-Q8
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:41:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684852869;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=eoVSCYLvX/niD9VEyeXYZeucnv3QQ9euIX0bVgRHy5U=;
- b=HupruXO6cYiweL/IsSixk8UgMd5AWqYyTGuFQYWMqqUpYSWV/ZmUhn2fAAuzT7wqKVVQa2
- Jr99VYOj20S6Wdu2C3NPFEckqNrNuy5GMM5KpvG/g/vtnhStRnz32ub5rc1H/3ipDPQ0ij
- p4paclCm5XJkc+HKUz2Ng9m//WKx/8I=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-cFslAIOKNAWs-0UtyXX6LA-1; Tue, 23 May 2023 10:41:08 -0400
-X-MC-Unique: cFslAIOKNAWs-0UtyXX6LA-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-25332df5afaso4153292a91.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:41:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684852866; x=1687444866;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eoVSCYLvX/niD9VEyeXYZeucnv3QQ9euIX0bVgRHy5U=;
- b=bZDXEhgsSoq0OsaLwieGUyu9J+dzX6AwemHMgNoR1/MTTHQvmpQbTItgSdydOIaR2u
- VuLjKuAB4z6lQZkpnRf6AL1+JLB4nCIasQaK7bXVVM/+suD5gK+/8k9C0upAeF9Vymwj
- XZzcebYszGaAcDBcRw1kWFwnsbj2Wm05sN5UP+30EZVdeGttkld499G3h+t/qIgA401N
- lwgwJQ4ayzYgrGUeBwPCPV9a2A+j090zytnPUPKNbfXSpC0U2facv9ikkSv4p+zDVApF
- PrJZ0M6dSxMHu05UFVSeZjJnI4LfiBlllCEimELd5B2unqkkdGh9sG2FkViTDWdqPvwF
- YFgg==
-X-Gm-Message-State: AC+VfDwNGOR6EFhnVRpfUVdvySNcDmNN7GmhlBJEAqFIs+Q2lnjTA7sI
- eoEXTZURzlwg2bVv9X8L4q2P+lipPDi2RoLYtJDznOSgYPIKDyH0HargZvA21UHO+NZjP1X7qeN
- XaWAin+UmZmcOJpNI2noxkq7wlr7itl9J/tS/FhY=
-X-Received: by 2002:a17:90a:17ec:b0:253:45e5:af5c with SMTP id
- q99-20020a17090a17ec00b0025345e5af5cmr13951049pja.32.1684852866583; 
- Tue, 23 May 2023 07:41:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ79mXoLvuZ5NabkBIAasdVpgJ8Lj/TNatDoZfD8LSZhtU16hv/H66VoSxIODRx47stwqV9yVNQ9Ot912F4BUas=
-X-Received: by 2002:a17:90a:17ec:b0:253:45e5:af5c with SMTP id
- q99-20020a17090a17ec00b0025345e5af5cmr13951041pja.32.1684852866363; Tue, 23
- May 2023 07:41:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q1TEx-0007Xp-Tk; Tue, 23 May 2023 10:43:55 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q1TEv-0007xU-8n; Tue, 23 May 2023 10:43:55 -0400
+Received: from [192.168.0.120] (unknown [61.165.37.98])
+ by APP-01 (Coremail) with SMTP id qwCowAAn36Ie0WxkBGYDBA--.32247S2;
+ Tue, 23 May 2023 22:43:42 +0800 (CST)
+Message-ID: <a1c36ae3-7875-0178-fcca-33abed1816f2@iscas.ac.cn>
+Date: Tue, 23 May 2023 22:43:41 +0800
 MIME-Version: 1.0
-References: <20230517163406.2593480-1-jsnow@redhat.com>
-In-Reply-To: <20230517163406.2593480-1-jsnow@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 23 May 2023 10:40:55 -0400
-Message-ID: <CAFn=p-a42EPq9LzQ+No3crhxCchUDxQH7eYcAEmtiq0mXz7HnA@mail.gmail.com>
-Subject: Re: [PATCH 0/5] python: backport socket changes from python-qemu-qmp
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Beraldo Leal <bleal@redhat.com>, 
- Daniel Berrange <berrange@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000994b9f05fc5d60f8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc: liweiwei@iscas.ac.cn, frank.chang@sifive.com, alistair.francis@wdc.com,
+ apatel@ventanamicro.com, palmer@rivosinc.com, dbarboza@ventanamicro.com,
+ bin.meng@windriver.com, zhiwei_liu@linux.alibaba.com
+Subject: Re: [PATCH 2/2] hw/intc: riscv_imsic: Refresh the CSRs xml after
+ updating the state of the cpu.
+Content-Language: en-US
+To: Tommy Wu <tommy.wu@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+References: <20230523114454.717708-1-tommy.wu@sifive.com>
+ <20230523114454.717708-3-tommy.wu@sifive.com>
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <20230523114454.717708-3-tommy.wu@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: qwCowAAn36Ie0WxkBGYDBA--.32247S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw4kZF4xtw1xWr1xtF1UZFb_yoW8JFyDpr
+ Z3Ca9Ikw1ktFyxu39ayr18ZF45Zrn8WrWYgF98C3yUX3y5Xa1rtrnFkw18AF1DWa4Fvr1a
+ vF1UKFWjkFnrAaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+ Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+ c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVW5XwCF04k20xvY0x0EwIxGrw
+ CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+ 14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+ IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+ x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+ 0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUrpBTUUUUU
+X-Originating-IP: [61.165.37.98]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,98 +80,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000994b9f05fc5d60f8
-Content-Type: text/plain; charset="UTF-8"
 
-On Wed, May 17, 2023, 12:34 PM John Snow <jsnow@redhat.com> wrote:
-
-> This is a small patchset designed to backport the changes made to the
-> qemu.qmp code to utilize pre-existing sockets. This contains some small
-> changes to machine.py to match the new API. This is necessary to do
-> before dropping qemu.qmp from qemu.git so we can utilize the future
-> 0.0.3 version of qemu.qmp.
+On 2023/5/23 19:44, Tommy Wu wrote:
+> Originally, when we set the ext_smaia to true, we still cannot print the
+> AIA CSRs in the remote gdb debugger, because the dynamic CSR xml is
+> generated when the cpu is realized.
 >
-> (This should also fix the bug where the buffering limit was not being
-> applied properly
-
-
-^to
-
-connections utilizing pre-existing sockets.)
+> This patch refreshes the dynamic CSR xml after we update the ext_smaia,
+> so that we can print the AIA CSRs in the remote gdb debugger.
 >
-> John Snow (5):
->   python/qmp: allow sockets to be passed to connect()
->   python/qmp/legacy: allow using sockets for connect()
->   python/machine: use connect-based interface for existing sockets
->   python/qmp/legacy: remove open_with_socket() calls
->   Revert "python/qmp/protocol: add open_with_socket()"
+> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+> Reviewed-by: Frank Chang <frank.chang@sifive.com>
+> ---
+>   hw/intc/riscv_imsic.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 >
->  python/qemu/machine/machine.py | 17 +++++++------
->  python/qemu/qmp/legacy.py      | 26 +++++++++-----------
->  python/qemu/qmp/protocol.py    | 45 +++++++++++++++-------------------
->  3 files changed, 41 insertions(+), 47 deletions(-)
->
-> --
-> 2.40.0
->
+> diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
+> index fea3385b51..97a51d535b 100644
+> --- a/hw/intc/riscv_imsic.c
+> +++ b/hw/intc/riscv_imsic.c
+> @@ -350,6 +350,10 @@ static void riscv_imsic_realize(DeviceState *dev, Error **errp)
+>           } else {
+>               rcpu->cfg.ext_smaia = true;
+>           }
+> +
+> +        /* Refresh the dynamic csr xml for the gdbstub. */
+> +        riscv_refresh_dynamic_csr_xml(cpu);
+> +
 
-ping - I'll send a PR for this on Friday if no objections. It just
-synchronizes the two codebases ahead of my plan to finally delete the
-duplication once and for all.
+There is an assert in riscv_refresh_dynamic_csr_xml():
 
-(and *that* series will need some good review and attention.)
++    if (!cpu->dyn_csr_xml) {
++        g_assert_not_reached();
++    }
 
---js
+So I think riscv_refresh_dynamic_csr_xml() can only be called when 
+cpu->dyn_csr_xml is true here.
 
->
+Regards,
 
---000000000000994b9f05fc5d60f8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Weiwei Li
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Wed, May 17, 2023, 12:34 PM John Snow &lt;<a href=
-=3D"mailto:jsnow@redhat.com">jsnow@redhat.com</a>&gt; wrote:<br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #cc=
-c solid;padding-left:1ex">This is a small patchset designed to backport the=
- changes made to the<br>
-qemu.qmp code to utilize pre-existing sockets. This contains some small<br>
-changes to machine.py to match the new API. This is necessary to do<br>
-before dropping qemu.qmp from qemu.git so we can utilize the future<br>
-0.0.3 version of qemu.qmp.<br>
-<br>
-(This should also fix the bug where the buffering limit was not being<br>
-applied properly </blockquote></div></div><div dir=3D"auto"><br></div><div =
-dir=3D"auto">^to</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div cl=
-ass=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0=
- .8ex;border-left:1px #ccc solid;padding-left:1ex">connections utilizing pr=
-e-existing sockets.)<br>
-<br>
-John Snow (5):<br>
-=C2=A0 python/qmp: allow sockets to be passed to connect()<br>
-=C2=A0 python/qmp/legacy: allow using sockets for connect()<br>
-=C2=A0 python/machine: use connect-based interface for existing sockets<br>
-=C2=A0 python/qmp/legacy: remove open_with_socket() calls<br>
-=C2=A0 Revert &quot;python/qmp/protocol: add open_with_socket()&quot;<br>
-<br>
-=C2=A0python/qemu/machine/machine.py | 17 +++++++------<br>
-=C2=A0python/qemu/qmp/legacy.py=C2=A0 =C2=A0 =C2=A0 | 26 +++++++++---------=
---<br>
-=C2=A0python/qemu/qmp/protocol.py=C2=A0 =C2=A0 | 45 +++++++++++++++--------=
------------<br>
-=C2=A03 files changed, 41 insertions(+), 47 deletions(-)<br>
-<br>
--- <br>
-2.40.0<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"=
-auto">ping - I&#39;ll send a PR for this on Friday if no objections. It jus=
-t synchronizes the two codebases ahead of my plan to finally delete the dup=
-lication once and for all.</div><div dir=3D"auto"><br></div><div dir=3D"aut=
-o">(and *that* series will need some good review and attention.)</div><div =
-dir=3D"auto"><br></div><div dir=3D"auto">--js</div><div dir=3D"auto"><div c=
-lass=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 =
-0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-</blockquote></div></div></div>
-
---000000000000994b9f05fc5d60f8--
+>           riscv_cpu_set_aia_ireg_rmw_fn(env, (imsic->mmode) ? PRV_M : PRV_S,
+>                                         riscv_imsic_rmw, imsic);
+>       }
 
 
