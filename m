@@ -2,80 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E286470D9C2
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 454A670D9F9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:07:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1OqA-00031u-5y; Tue, 23 May 2023 06:02:02 -0400
+	id 1q1Ota-0004pJ-Bg; Tue, 23 May 2023 06:05:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1q1Oq7-00031m-EJ
- for qemu-devel@nongnu.org; Tue, 23 May 2023 06:01:59 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
+ (Exim 4.90_1) (envelope-from <qianfanguijin@163.com>)
+ id 1q1OtW-0004km-Tf; Tue, 23 May 2023 06:05:30 -0400
+Received: from m12.mail.163.com ([220.181.12.214])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1q1Oq2-0005qH-J9
- for qemu-devel@nongnu.org; Tue, 23 May 2023 06:01:59 -0400
-Received: from loongson.cn (unknown [10.20.42.57])
- by gateway (Coremail) with SMTP id _____8Bxy_IJj2xkawYAAA--.164S3;
- Tue, 23 May 2023 18:01:45 +0800 (CST)
-Received: from [10.20.42.57] (unknown [10.20.42.57])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxBMUIj2xkcx1wAA--.57918S3; 
- Tue, 23 May 2023 18:01:44 +0800 (CST)
-Subject: Re: [PATCH 1/4] hw/intc/loongarch_ipi: Bring back all 4 IPI mailboxes
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Huacai Chen <chenhuacai@kernel.org>, Xiaojuan Yang
- <yangxiaojuan@loongson.cn>, QEMU devel <qemu-devel@nongnu.org>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Bibo Mao <maobibo@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, alex.bennee@linaro.org
-References: <20230521102307.87081-1-jiaxun.yang@flygoat.com>
- <20230521102307.87081-2-jiaxun.yang@flygoat.com>
- <CAAhV-H4kx5cDcswkHpCYH9UZhh7PDEndP+NvwNgdZaZji6BFLA@mail.gmail.com>
- <CA74488A-DB92-4D13-8BAC-5E853F187419@flygoat.com>
- <e184fa06-9ce4-1ab9-4680-58aa6c4200b9@linaro.org>
- <c965d4ef-3993-cfca-7d22-3ecef5cfc256@loongson.cn>
- <07F6A866-81EB-422F-A42E-6B31BEE401BF@flygoat.com>
-From: Song Gao <gaosong@loongson.cn>
-Message-ID: <29e26b7b-497c-a446-be86-8dda70b606d7@loongson.cn>
-Date: Tue, 23 May 2023 18:01:44 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (envelope-from <qianfanguijin@163.com>)
+ id 1q1OtR-0006uV-MG; Tue, 23 May 2023 06:05:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=0RJlZ
+ EXTMAzNf+ipGOESV/iLBMpdO1MFGHvbscmJU0Y=; b=RZIzLn3lSWOa/kQ4F/Khx
+ ibs7rzeGBwpWmTcdmmCGmWRBMvY7CtK2mp3iAedouhkJDhza9patEyOObl44xchb
+ Yg6h0hPVtGBmFNUx9irVxZLymxzn0wVoKVx5KopnQ1fXop6w6Ot653K+ooBic/FH
+ su0WyxYWEfxtlTv8QB7OLI=
+Received: from DESKTOP-B1R4FVG.localdomain (unknown [218.201.129.19])
+ by zwqz-smtp-mta-g0-3 (Coremail) with SMTP id _____wAnDC3Wj2xkMfafAQ--.65319S2;
+ Tue, 23 May 2023 18:05:11 +0800 (CST)
+From: qianfanguijin@163.com
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>,
+ qianfan Zhao <qianfanguijin@163.com>
+Subject: [PATCH v5 00/11] *** Add allwinner-r40 support ***
+Date: Tue, 23 May 2023 18:04:57 +0800
+Message-Id: <20230523100508.32564-1-qianfanguijin@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <07F6A866-81EB-422F-A42E-6B31BEE401BF@flygoat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8BxBMUIj2xkcx1wAA--.57918S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjvJXoW7Zw15Gr43uw1kWF15Zw1kXwb_yoW8CFyrpF
- W7Aa13tF4DtrnFka9Yg3s8uF1jkr1fJr47Wrs8X3429ayq9w18Wry8Cr4Uu3W7uwn8Jr1Y
- v3W0vasrCF17ZrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
- bakYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
- 1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
- wVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4
- x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1l
- e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2
- IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4U
- McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67vIY487Mx
- kF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4U
- MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67
- AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0
- cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z2
- 80aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIF
- yTuYvjxU2BT5DUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-CM-TRANSID: _____wAnDC3Wj2xkMfafAQ--.65319S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGryfCr4rAr4fGw15tw47Jwb_yoW5ZF1rpa
+ n8K343Kr1rta43AFWaqFnrJFyrJa4kGr4Utrn7ZryxAryaya1Yvr1UK3WfKrWfGFW2qw47
+ ZFZIqF13Ww4YqaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_RRiiUUUUU=
+X-Originating-IP: [218.201.129.19]
+X-CM-SenderInfo: htld0w5dqj3xxmlqqiywtou0bp/1tbiQhp47VaEFabHtgAAsd
+Received-SPF: pass client-ip=220.181.12.214;
+ envelope-from=qianfanguijin@163.com; helo=m12.mail.163.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,61 +71,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: qianfan Zhao <qianfanguijin@163.com>
 
+***History***
+# v1: 2023-03-21
 
-在 2023/5/23 上午11:22, Jiaxun Yang 写道:
->
->> 2023年5月23日 02:25，Song Gao <gaosong@loongson.cn> 写道：
->>
->>
->>
->> 在 2023/5/22 下午9:44, Philippe Mathieu-Daudé 写道:
->>> On 22/5/23 13:47, Jiaxun Yang wrote:
->>>>
->>>>> 2023年5月22日 04:52，Huacai Chen <chenhuacai@kernel.org> 写道：
->>>>>
->>>>> Hi, Jiaxun,
->>>>>
->>>>> Rename loongarch_ipi to loongson_ipi? It will be shared by both MIPS
->>>>> and LoongArch in your series.
->>>> Hi Huacai,
->>>>
->>>> Thanks for the point, what’s the opinion from LoongArch mainatiners?
->>>>
->>>> Or perhaps rename it as loong_ipi to reflect the nature that it’s shared
->>>> by MIPS based Loongson and LoongArch based Loongson?
->>> I'm not a LoongArch maintainer, but a model named "loong_ipi" makes
->>> sense to me.
->>>
->>> Please add it to the two Virt machine sections in MAINTAINERS.
-> Hi Song,
->
->> 'loonggson_ipi' is better, qemu doesn't have naming with 'loong' as prefix.
-> Thanks, I’ll take looongson_ipi then.
->
->> And  patch2 should not use macros. Some attributes should be added to distinguish between MIPS and LongArch.
-> By attribute do you mean property?
-Yes.
-> If so I don’t see any necessity, the IP block
-> Is totally the same on MIPS and LoongArch. I’m guarding them out because
-> We have different way to get IOCSR address space on MIPS, which is due
-> to be implemented.
->
-> I can further abstract out a function to get IOCSR address space. But still,
-> I think the best way to differ those two architecture is using TARGET_* macros,
-> as it doesn’t make much sense to have unused code for another architecture
-> compiled.
-Most of the code in hw/intc or hw/ uses property to distinguish between 
-different devices,  not TARGE_* macro.
+The first version which add allwinner-r40 support, supported features:
 
-I still think it is better to use property.
++ ccu
++ dram controller
++ uart
++ i2c and pmic(axp221)
++ sdcard
++ emac/gmac
 
-Thanks.
-Song Gao
->> All references to loongarch_ipi should also be changed.
-> Sure.
->
-> Thanks
-> - Jiaxun
+Also provide a test case under avocado, running quickly test:
+
+$ AVOCADO_ALLOW_LARGE_STORAGE=yes tests/venv/bin/avocado \
+    --verbose --show=app,console run -t machine:bpim2u \
+    ../tests/avocado/boot_linux_console.py
+
+# v2: 2023-03-28
+
+1. Fix the waring and error reported by checkpatch.pl
+2. Remove the other i2c controllers except that i2c0
+3. Use an array to register mmc and uart devices
+4. Rename axp209 to axp22x and add axp221 support
+5. Add a basic SRAM controller
+
+# v3: 2023-04-18
+
+1. Update some commit messages
+2. Squash those two commit about sdcard
+   hw: sd: allwinner-sdhost: Add sun50i-a64 SoC support
+   hw: arm: allwinner-r40: Fix the mmc controller's type
+
+# v4: 2023-05-10
+
+1. Rebase to master
+
+# v5: 2023-05-23
+
+1. Rebase to master
+2. Update based on Niek Linnenbank's guide.
+
+qianfan Zhao (11):
+  hw: arm: Add bananapi M2-Ultra and allwinner-r40 support
+  hw/arm/allwinner-r40: add Clock Control Unit
+  hw: allwinner-r40: Complete uart devices
+  hw: arm: allwinner-r40: Add i2c0 device
+  hw/misc: Rename axp209 to axp22x and add support AXP221 PMU
+  hw/arm/allwinner-r40: add SDRAM controller device
+  hw: sd: allwinner-sdhost: Add sun50i-a64 SoC support
+  hw: arm: allwinner-r40: Add emac and gmac support
+  hw: arm: allwinner-sramc: Add SRAM Controller support for R40
+  tests: avocado: boot_linux_console: Add test case for bpim2u
+  docs: system: arm: Introduce bananapi_m2u
+
+ docs/system/arm/bananapi_m2u.rst      | 138 +++++++
+ hw/arm/Kconfig                        |  14 +-
+ hw/arm/allwinner-r40.c                | 526 ++++++++++++++++++++++++++
+ hw/arm/bananapi_m2u.c                 | 145 +++++++
+ hw/arm/meson.build                    |   1 +
+ hw/misc/Kconfig                       |   5 +-
+ hw/misc/allwinner-r40-ccu.c           | 209 ++++++++++
+ hw/misc/allwinner-r40-dramc.c         | 513 +++++++++++++++++++++++++
+ hw/misc/allwinner-sramc.c             | 184 +++++++++
+ hw/misc/axp209.c                      | 238 ------------
+ hw/misc/axp2xx.c                      | 283 ++++++++++++++
+ hw/misc/meson.build                   |   5 +-
+ hw/misc/trace-events                  |  26 +-
+ hw/sd/allwinner-sdhost.c              |  72 +++-
+ include/hw/arm/allwinner-r40.h        | 143 +++++++
+ include/hw/misc/allwinner-r40-ccu.h   |  65 ++++
+ include/hw/misc/allwinner-r40-dramc.h | 108 ++++++
+ include/hw/misc/allwinner-sramc.h     |  69 ++++
+ include/hw/sd/allwinner-sdhost.h      |   9 +
+ tests/avocado/boot_linux_console.py   | 176 +++++++++
+ 20 files changed, 2681 insertions(+), 248 deletions(-)
+ create mode 100644 docs/system/arm/bananapi_m2u.rst
+ create mode 100644 hw/arm/allwinner-r40.c
+ create mode 100644 hw/arm/bananapi_m2u.c
+ create mode 100644 hw/misc/allwinner-r40-ccu.c
+ create mode 100644 hw/misc/allwinner-r40-dramc.c
+ create mode 100644 hw/misc/allwinner-sramc.c
+ delete mode 100644 hw/misc/axp209.c
+ create mode 100644 hw/misc/axp2xx.c
+ create mode 100644 include/hw/arm/allwinner-r40.h
+ create mode 100644 include/hw/misc/allwinner-r40-ccu.h
+ create mode 100644 include/hw/misc/allwinner-r40-dramc.h
+ create mode 100644 include/hw/misc/allwinner-sramc.h
+
+-- 
+2.25.1
 
 
