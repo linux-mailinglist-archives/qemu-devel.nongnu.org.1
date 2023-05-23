@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8977670DDF1
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4598870DDDC
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:48:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SMb-0008Qf-P6; Tue, 23 May 2023 09:47:45 -0400
+	id 1q1SMc-0008Ud-Ui; Tue, 23 May 2023 09:47:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SMY-0008Cc-P2
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:42 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1q1SMZ-0008Ev-BN
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:43 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SMW-000141-V8
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:42 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-64d44b198baso2519331b3a.0
+ id 1q1SMX-00012o-B3
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:43 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-64d3bc502ddso5110144b3a.0
  for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:47:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684849659; x=1687441659;
+ d=linaro.org; s=google; t=1684849660; x=1687441660;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WcxZjIY/T80MjuA6OZ00h+5fCLAwNHjF9M1KXt4rlvU=;
- b=Ups/My3t8avsQ85Rg7lt4VqQTExlV/NL4MSSXtzQb3il+0uLuKnzYlCu+9r3UucWzn
- FGYwZWRCTiuXf0I3hGrYf/TUE4HN8I+RJlsd40WbTZuBb8XmEJQX3o7VH4JVaYarCKcf
- 8/Vo5DhN1niyXOfimJYP0seVOJPHG2O2blR4SczjbU9cJ/K6SOHXIOCkr8OEAe/4eF8M
- ZgRLbo2YEYgGmewjYZ867jdldRo3zYCSud6pvgTrRluqKpbsF32Orx2MqPFaJaxZpigr
- fVhR9G4tBsLpjBbTUWfExQZyKSp+aWpv/OjJfNrXOCJ8UpDeqM/LNnfLuux8llzIHJtP
- k9Bw==
+ bh=TCEmCa6svz6iI89FPgua0fOjkJEldQJYp9iT0pK2PQY=;
+ b=iRRqx5BkHwsP+gTnyIGLFc3+0Uw4hw/B26V6zPewwX2tt6udOzwGM5V/mZDcaxoP8f
+ 1TALmSUCpfPSWjMgzf4zp474sOO+ERfaTlEEw2QlXRYcddYi9PrAZySn9rsRLRvqnBNb
+ r+RVWcfelBg7IrR98w0pTrigd7vqWLIGWEeTJdUXiIIDBeSne1pVnpG3QJfL5Qsu9xGR
+ rF3V6wqCNt01qSKS7HAyT+AbaBW9dhycgwI98t1V3nbKNPQjI+349IyqQEcKQR634Uxj
+ zIEVit2gxMBa1hP+iI3TNk7RPXVXK0Ry/MJhrA2jnLAnn5yd4yzvKsMTq4Hsd1ml5Ggz
+ WxAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684849659; x=1687441659;
+ d=1e100.net; s=20221208; t=1684849660; x=1687441660;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WcxZjIY/T80MjuA6OZ00h+5fCLAwNHjF9M1KXt4rlvU=;
- b=UszpwDSlj4eaLqsMomjv/O+o7k4TkB9Xmc//uVI3pScdxAFwA40ej6LcUnCRiwBtCj
- Qxxmtv2ATULg2yz6JPH+36yho7vT2pq/kId8kiiE2pBpIRtQQsmlLvnfK7Kj5y81ZBqB
- I/nxGEgmplMCvC8ztc+CroLKwxglXlYDLjz6FKYNvnIpMvNtRf9gCu4Kz9kgFLZMmsmd
- ePyzRGVfEv4hiSvvcnvkEV8xWx715r2gf96EcbyQwcdbaM7qGzSe5fCanTU6BtpmR6ap
- BqyOFkb1geaqGz/P5qK2S0GsSGerVzp3kdJZNtSMcIgdMHaYyy+YgT2xEPhXrSfYRkrU
- t3Sg==
-X-Gm-Message-State: AC+VfDzMxJtOlGaTHJGchP97Cy21CaWBseXDtjizuaiBpuimT/og9ftI
- Ynk6QNEWp9kzXZBObtp/kMVwhFv9GhweZtfblXQ=
-X-Google-Smtp-Source: ACHHUZ7hZMpJ87SgF8tVpal5ErubnzUxLRZrAwbz2VIAntjIiBm0x0bzT3eNybKPEzWCUsiqe1s8DQ==
-X-Received: by 2002:a05:6a00:1250:b0:63b:19e5:a96e with SMTP id
- u16-20020a056a00125000b0063b19e5a96emr13520990pfi.9.1684849659524; 
- Tue, 23 May 2023 06:47:39 -0700 (PDT)
+ bh=TCEmCa6svz6iI89FPgua0fOjkJEldQJYp9iT0pK2PQY=;
+ b=d878vU4JcU/i6J9PuohnEEzX9RAR7xmYo7m3UJETzO265vtudytlPM4Nth56Lt0VR/
+ 6JRWJToC2mRUsdKq6BuTksodmEdG0MmFLl24eUcsXiRULUB1bNM7Hf4U45L4oWEwwQz3
+ UU7G4uVYJzBjChlPYCtvTaaRpDuIoMf2rQSpdhqoiqjde3G3+ElaNn/BD50kQFqc6TzZ
+ 1JYRQpeX8zoV5Rp49q7OAe3NkdQKo/yY0kImGUO7P+CCTgJF14ebPy87e5U9gCSUfE8I
+ Ag4AF4Nav2nc1sZls8SkBstxo2YcPzOPJpSynln+h+V+BvIymGD4JUcxp649Zy9tGZJt
+ 3jQA==
+X-Gm-Message-State: AC+VfDxGBpiOVpOD3Mz90QqGhB+MTlBdJ2J/Zdo2m9nLL3dHAfm4qdHj
+ VqluF+qwBVbvxZVg6ussaQmc0PSt4bCGT2ep8P8=
+X-Google-Smtp-Source: ACHHUZ6+T9wP2Z3uujNfXVCOVHeD0+BkuScNust88CeF3WDYmpHvdgSQmLR92RIg3wfllReEgJyrCw==
+X-Received: by 2002:a05:6a00:1741:b0:64d:42f6:4c7b with SMTP id
+ j1-20020a056a00174100b0064d42f64c7bmr15494604pfc.27.1684849660554; 
+ Tue, 23 May 2023 06:47:40 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- j4-20020aa79284000000b0064d1349dc31sm5737122pfa.199.2023.05.23.06.47.38
+ j4-20020aa79284000000b0064d1349dc31sm5737122pfa.199.2023.05.23.06.47.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:47:39 -0700 (PDT)
+ Tue, 23 May 2023 06:47:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 05/27] util/bufferiszero: Use i386 host/cpuinfo.h
-Date: Tue, 23 May 2023 06:47:11 -0700
-Message-Id: <20230523134733.678646-6-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org,
+	Juan Quintela <quintela@redhat.com>
+Subject: [PATCH v2 06/27] migration/xbzrle: Shuffle function order
+Date: Tue, 23 May 2023 06:47:12 -0700
+Message-Id: <20230523134733.678646-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523134733.678646-1-richard.henderson@linaro.org>
 References: <20230523134733.678646-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,183 +92,274 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use cpuinfo_init() during init_accel(), and the variable cpuinfo
-during test_buffer_is_zero_next_accel().  Adjust the logic that
-cycles through the set of accelerators for testing.
+Place the CONFIG_AVX512BW_OPT block at the top,
+which will aid function selection in the next patch.
 
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/bufferiszero.c | 126 ++++++++++++++++----------------------------
- 1 file changed, 45 insertions(+), 81 deletions(-)
+ migration/xbzrle.c | 244 ++++++++++++++++++++++-----------------------
+ 1 file changed, 122 insertions(+), 122 deletions(-)
 
-diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 1886bc5ba4..d3c14320ef 100644
---- a/util/bufferiszero.c
-+++ b/util/bufferiszero.c
-@@ -24,6 +24,7 @@
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
- #include "qemu/bswap.h"
-+#include "host/cpuinfo.h"
+diff --git a/migration/xbzrle.c b/migration/xbzrle.c
+index 258e4959c9..751b5428f7 100644
+--- a/migration/xbzrle.c
++++ b/migration/xbzrle.c
+@@ -15,6 +15,128 @@
+ #include "qemu/host-utils.h"
+ #include "xbzrle.h"
  
- static bool
- buffer_zero_int(const void *buf, size_t len)
-@@ -184,111 +185,74 @@ buffer_zero_avx512(const void *buf, size_t len)
- }
- #endif /* CONFIG_AVX512F_OPT */
- 
--
--/* Note that for test_buffer_is_zero_next_accel, the most preferred
-- * ISA must have the least significant bit.
-- */
--#define CACHE_AVX512F 1
--#define CACHE_AVX2    2
--#define CACHE_SSE4    4
--#define CACHE_SSE2    8
--
--/* Make sure that these variables are appropriately initialized when
-+/*
-+ * Make sure that these variables are appropriately initialized when
-  * SSE2 is enabled on the compiler command-line, but the compiler is
-  * too old to support CONFIG_AVX2_OPT.
-  */
- #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
--# define INIT_CACHE 0
--# define INIT_ACCEL buffer_zero_int
-+# define INIT_USED     0
-+# define INIT_LENGTH   0
-+# define INIT_ACCEL    buffer_zero_int
- #else
- # ifndef __SSE2__
- #  error "ISA selection confusion"
- # endif
--# define INIT_CACHE CACHE_SSE2
--# define INIT_ACCEL buffer_zero_sse2
-+# define INIT_USED     CPUINFO_SSE2
-+# define INIT_LENGTH   64
-+# define INIT_ACCEL    buffer_zero_sse2
- #endif
- 
--static unsigned cpuid_cache = INIT_CACHE;
-+static unsigned used_accel = INIT_USED;
-+static unsigned length_to_accel = INIT_LENGTH;
- static bool (*buffer_accel)(const void *, size_t) = INIT_ACCEL;
--static int length_to_accel = 64;
- 
--static void init_accel(unsigned cache)
-+static unsigned __attribute__((noinline))
-+select_accel_cpuinfo(unsigned info)
- {
--    bool (*fn)(const void *, size_t) = buffer_zero_int;
--    if (cache & CACHE_SSE2) {
--        fn = buffer_zero_sse2;
--        length_to_accel = 64;
--    }
--#ifdef CONFIG_AVX2_OPT
--    if (cache & CACHE_SSE4) {
--        fn = buffer_zero_sse4;
--        length_to_accel = 64;
--    }
--    if (cache & CACHE_AVX2) {
--        fn = buffer_zero_avx2;
--        length_to_accel = 128;
--    }
--#endif
-+    static const struct {
-+        unsigned bit;
-+        unsigned len;
-+        bool (*fn)(const void *, size_t);
-+    } all[] = {
- #ifdef CONFIG_AVX512F_OPT
--    if (cache & CACHE_AVX512F) {
--        fn = buffer_zero_avx512;
--        length_to_accel = 256;
--    }
-+        { CPUINFO_AVX512F, 256, buffer_zero_avx512 },
- #endif
--    buffer_accel = fn;
-+#ifdef CONFIG_AVX2_OPT
-+        { CPUINFO_AVX2,    128, buffer_zero_avx2 },
-+        { CPUINFO_SSE4,     64, buffer_zero_sse4 },
-+#endif
-+        { CPUINFO_SSE2,     64, buffer_zero_sse2 },
-+        { CPUINFO_ALWAYS,    0, buffer_zero_int },
-+    };
++#if defined(CONFIG_AVX512BW_OPT)
++#include <immintrin.h>
 +
-+    for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
-+        if (info & all[i].bit) {
-+            length_to_accel = all[i].len;
-+            buffer_accel = all[i].fn;
-+            return all[i].bit;
++int __attribute__((target("avx512bw")))
++xbzrle_encode_buffer_avx512(uint8_t *old_buf, uint8_t *new_buf, int slen,
++                            uint8_t *dst, int dlen)
++{
++    uint32_t zrun_len = 0, nzrun_len = 0;
++    int d = 0, i = 0, num = 0;
++    uint8_t *nzrun_start = NULL;
++    /* add 1 to include residual part in main loop */
++    uint32_t count512s = (slen >> 6) + 1;
++    /* countResidual is tail of data, i.e., countResidual = slen % 64 */
++    uint32_t count_residual = slen & 0b111111;
++    bool never_same = true;
++    uint64_t mask_residual = 1;
++    mask_residual <<= count_residual;
++    mask_residual -= 1;
++    __m512i r = _mm512_set1_epi32(0);
++
++    while (count512s) {
++        int bytes_to_check = 64;
++        uint64_t mask = 0xffffffffffffffff;
++        if (count512s == 1) {
++            bytes_to_check = count_residual;
++            mask = mask_residual;
++        }
++        __m512i old_data = _mm512_mask_loadu_epi8(r,
++                                                  mask, old_buf + i);
++        __m512i new_data = _mm512_mask_loadu_epi8(r,
++                                                  mask, new_buf + i);
++        uint64_t comp = _mm512_cmpeq_epi8_mask(old_data, new_data);
++        count512s--;
++
++        bool is_same = (comp & 0x1);
++        while (bytes_to_check) {
++            if (d + 2 > dlen) {
++                return -1;
++            }
++            if (is_same) {
++                if (nzrun_len) {
++                    d += uleb128_encode_small(dst + d, nzrun_len);
++                    if (d + nzrun_len > dlen) {
++                        return -1;
++                    }
++                    nzrun_start = new_buf + i - nzrun_len;
++                    memcpy(dst + d, nzrun_start, nzrun_len);
++                    d += nzrun_len;
++                    nzrun_len = 0;
++                }
++                /* 64 data at a time for speed */
++                if (count512s && (comp == 0xffffffffffffffff)) {
++                    i += 64;
++                    zrun_len += 64;
++                    break;
++                }
++                never_same = false;
++                num = ctz64(~comp);
++                num = (num < bytes_to_check) ? num : bytes_to_check;
++                zrun_len += num;
++                bytes_to_check -= num;
++                comp >>= num;
++                i += num;
++                if (bytes_to_check) {
++                    /* still has different data after same data */
++                    d += uleb128_encode_small(dst + d, zrun_len);
++                    zrun_len = 0;
++                } else {
++                    break;
++                }
++            }
++            if (never_same || zrun_len) {
++                /*
++                 * never_same only acts if
++                 * data begins with diff in first count512s
++                 */
++                d += uleb128_encode_small(dst + d, zrun_len);
++                zrun_len = 0;
++                never_same = false;
++            }
++            /* has diff, 64 data at a time for speed */
++            if ((bytes_to_check == 64) && (comp == 0x0)) {
++                i += 64;
++                nzrun_len += 64;
++                break;
++            }
++            num = ctz64(comp);
++            num = (num < bytes_to_check) ? num : bytes_to_check;
++            nzrun_len += num;
++            bytes_to_check -= num;
++            comp >>= num;
++            i += num;
++            if (bytes_to_check) {
++                /* mask like 111000 */
++                d += uleb128_encode_small(dst + d, nzrun_len);
++                /* overflow */
++                if (d + nzrun_len > dlen) {
++                    return -1;
++                }
++                nzrun_start = new_buf + i - nzrun_len;
++                memcpy(dst + d, nzrun_start, nzrun_len);
++                d += nzrun_len;
++                nzrun_len = 0;
++                is_same = true;
++            }
 +        }
 +    }
-+    return 0;
- }
++
++    if (nzrun_len != 0) {
++        d += uleb128_encode_small(dst + d, nzrun_len);
++        /* overflow */
++        if (d + nzrun_len > dlen) {
++            return -1;
++        }
++        nzrun_start = new_buf + i - nzrun_len;
++        memcpy(dst + d, nzrun_start, nzrun_len);
++        d += nzrun_len;
++    }
++    return d;
++}
++#endif
++
+ /*
+   page = zrun nzrun
+        | zrun nzrun page
+@@ -175,125 +297,3 @@ int xbzrle_decode_buffer(uint8_t *src, int slen, uint8_t *dst, int dlen)
  
- #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
--#include "qemu/cpuid.h"
+     return d;
+ }
 -
--static void __attribute__((constructor)) init_cpuid_cache(void)
-+static void __attribute__((constructor)) init_accel(void)
- {
--    unsigned max = __get_cpuid_max(0, NULL);
--    int a, b, c, d;
--    unsigned cache = 0;
+-#if defined(CONFIG_AVX512BW_OPT)
+-#include <immintrin.h>
 -
--    if (max >= 1) {
--        __cpuid(1, a, b, c, d);
--        if (d & bit_SSE2) {
--            cache |= CACHE_SSE2;
+-int __attribute__((target("avx512bw")))
+-xbzrle_encode_buffer_avx512(uint8_t *old_buf, uint8_t *new_buf, int slen,
+-                            uint8_t *dst, int dlen)
+-{
+-    uint32_t zrun_len = 0, nzrun_len = 0;
+-    int d = 0, i = 0, num = 0;
+-    uint8_t *nzrun_start = NULL;
+-    /* add 1 to include residual part in main loop */
+-    uint32_t count512s = (slen >> 6) + 1;
+-    /* countResidual is tail of data, i.e., countResidual = slen % 64 */
+-    uint32_t count_residual = slen & 0b111111;
+-    bool never_same = true;
+-    uint64_t mask_residual = 1;
+-    mask_residual <<= count_residual;
+-    mask_residual -= 1;
+-    __m512i r = _mm512_set1_epi32(0);
+-
+-    while (count512s) {
+-        int bytes_to_check = 64;
+-        uint64_t mask = 0xffffffffffffffff;
+-        if (count512s == 1) {
+-            bytes_to_check = count_residual;
+-            mask = mask_residual;
 -        }
--        if (c & bit_SSE4_1) {
--            cache |= CACHE_SSE4;
--        }
+-        __m512i old_data = _mm512_mask_loadu_epi8(r,
+-                                                  mask, old_buf + i);
+-        __m512i new_data = _mm512_mask_loadu_epi8(r,
+-                                                  mask, new_buf + i);
+-        uint64_t comp = _mm512_cmpeq_epi8_mask(old_data, new_data);
+-        count512s--;
 -
--        /* We must check that AVX is not just available, but usable.  */
--        if ((c & bit_OSXSAVE) && (c & bit_AVX) && max >= 7) {
--            unsigned bv = xgetbv_low(0);
--            __cpuid_count(7, 0, a, b, c, d);
--            if ((bv & 0x6) == 0x6 && (b & bit_AVX2)) {
--                cache |= CACHE_AVX2;
+-        bool is_same = (comp & 0x1);
+-        while (bytes_to_check) {
+-            if (d + 2 > dlen) {
+-                return -1;
 -            }
--            /* 0xe6:
--            *  XCR0[7:5] = 111b (OPMASK state, upper 256-bit of ZMM0-ZMM15
--            *                    and ZMM16-ZMM31 state are enabled by OS)
--            *  XCR0[2:1] = 11b (XMM state and YMM state are enabled by OS)
--            */
--            if ((bv & 0xe6) == 0xe6 && (b & bit_AVX512F)) {
--                cache |= CACHE_AVX512F;
+-            if (is_same) {
+-                if (nzrun_len) {
+-                    d += uleb128_encode_small(dst + d, nzrun_len);
+-                    if (d + nzrun_len > dlen) {
+-                        return -1;
+-                    }
+-                    nzrun_start = new_buf + i - nzrun_len;
+-                    memcpy(dst + d, nzrun_start, nzrun_len);
+-                    d += nzrun_len;
+-                    nzrun_len = 0;
+-                }
+-                /* 64 data at a time for speed */
+-                if (count512s && (comp == 0xffffffffffffffff)) {
+-                    i += 64;
+-                    zrun_len += 64;
+-                    break;
+-                }
+-                never_same = false;
+-                num = ctz64(~comp);
+-                num = (num < bytes_to_check) ? num : bytes_to_check;
+-                zrun_len += num;
+-                bytes_to_check -= num;
+-                comp >>= num;
+-                i += num;
+-                if (bytes_to_check) {
+-                    /* still has different data after same data */
+-                    d += uleb128_encode_small(dst + d, zrun_len);
+-                    zrun_len = 0;
+-                } else {
+-                    break;
+-                }
+-            }
+-            if (never_same || zrun_len) {
+-                /*
+-                 * never_same only acts if
+-                 * data begins with diff in first count512s
+-                 */
+-                d += uleb128_encode_small(dst + d, zrun_len);
+-                zrun_len = 0;
+-                never_same = false;
+-            }
+-            /* has diff, 64 data at a time for speed */
+-            if ((bytes_to_check == 64) && (comp == 0x0)) {
+-                i += 64;
+-                nzrun_len += 64;
+-                break;
+-            }
+-            num = ctz64(comp);
+-            num = (num < bytes_to_check) ? num : bytes_to_check;
+-            nzrun_len += num;
+-            bytes_to_check -= num;
+-            comp >>= num;
+-            i += num;
+-            if (bytes_to_check) {
+-                /* mask like 111000 */
+-                d += uleb128_encode_small(dst + d, nzrun_len);
+-                /* overflow */
+-                if (d + nzrun_len > dlen) {
+-                    return -1;
+-                }
+-                nzrun_start = new_buf + i - nzrun_len;
+-                memcpy(dst + d, nzrun_start, nzrun_len);
+-                d += nzrun_len;
+-                nzrun_len = 0;
+-                is_same = true;
 -            }
 -        }
 -    }
--    cpuid_cache = cache;
--    init_accel(cache);
-+    used_accel = select_accel_cpuinfo(cpuinfo_init());
- }
- #endif /* CONFIG_AVX2_OPT */
- 
- bool test_buffer_is_zero_next_accel(void)
- {
--    /* If no bits set, we just tested buffer_zero_int, and there
--       are no more acceleration options to test.  */
--    if (cpuid_cache == 0) {
--        return false;
+-
+-    if (nzrun_len != 0) {
+-        d += uleb128_encode_small(dst + d, nzrun_len);
+-        /* overflow */
+-        if (d + nzrun_len > dlen) {
+-            return -1;
+-        }
+-        nzrun_start = new_buf + i - nzrun_len;
+-        memcpy(dst + d, nzrun_start, nzrun_len);
+-        d += nzrun_len;
 -    }
--    /* Disable the accelerator we used before and select a new one.  */
--    cpuid_cache &= cpuid_cache - 1;
--    init_accel(cpuid_cache);
--    return true;
-+    /*
-+     * Accumulate the accelerators that we've already tested, and
-+     * remove them from the set to test this round.  We'll get back
-+     * a zero from select_accel_cpuinfo when there are no more.
-+     */
-+    unsigned used = select_accel_cpuinfo(cpuinfo & ~used_accel);
-+    used_accel |= used;
-+    return used;
- }
- 
- static bool select_accel_fn(const void *buf, size_t len)
+-    return d;
+-}
+-#endif
 -- 
 2.34.1
 
