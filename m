@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 577A970DA45
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E9470DA21
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:17:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P3l-0006jD-30; Tue, 23 May 2023 06:16:05 -0400
+	id 1q1P3q-0006kw-Qx; Tue, 23 May 2023 06:16:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P3Z-0006i8-50; Tue, 23 May 2023 06:15:54 -0400
+ id 1q1P3d-0006ji-LW; Tue, 23 May 2023 06:15:57 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P3X-0001o7-79; Tue, 23 May 2023 06:15:52 -0400
+ id 1q1P3a-0001pk-K6; Tue, 23 May 2023 06:15:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C84337CF4;
- Tue, 23 May 2023 13:15:49 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 07AC27CF5;
+ Tue, 23 May 2023 13:15:50 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0D75D7284;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4905F7285;
  Tue, 23 May 2023 13:15:49 +0300 (MSK)
-Received: (nullmailer pid 85496 invoked by uid 1000);
+Received: (nullmailer pid 85499 invoked by uid 1000);
  Tue, 23 May 2023 10:15:48 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Marc Hartmayer <mhartmay@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Boris Fiuczynski <fiuczy@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 38/59] s390x/pv: Fix spurious warning with asynchronous
- teardown
-Date: Tue, 23 May 2023 13:14:58 +0300
-Message-Id: <20230523101536.85424-2-mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 39/59] util/async-teardown: wire up
+ query-command-line-options
+Date: Tue, 23 May 2023 13:14:59 +0300
+Message-Id: <20230523101536.85424-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
@@ -63,109 +63,156 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Kernel commit 292a7d6fca33 ("KVM: s390: pv: fix asynchronous teardown
-for small VMs") causes the KVM_PV_ASYNC_CLEANUP_PREPARE ioctl to fail
-if the VM is not larger than 2GiB. QEMU would attempt it and fail,
-print an error message, and then proceed with a normal teardown.
+Add new -run-with option with an async-teardown=on|off parameter. It is
+visible in the output of query-command-line-options QMP command, so it
+can be discovered and used by libvirt.
 
-Avoid attempting to use asynchronous teardown altogether when the VM is
-not larger than 2 GiB. This will avoid triggering the error message and
-also avoid pointless overhead; normal teardown is fast enough for small
-VMs.
+The option -async-teardown is now redundant, deprecate it.
 
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Fixes: c3a073c610 ("s390x/pv: Add support for asynchronous teardown for reboot")
-Link: https://lore.kernel.org/all/20230421085036.52511-2-imbrenda@linux.ibm.com/
+Reported-by: Boris Fiuczynski <fiuczy@linux.ibm.com>
+Fixes: c891c24b1a ("os-posix: asynchronous teardown for shutdown on Linux")
 Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-Id: <20230510105531.30623-2-imbrenda@linux.ibm.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-[thuth: Fix inline function parameter in pv.h]
+Message-Id: <20230505120051.36605-2-imbrenda@linux.ibm.com>
+[thuth: Add curly braces to fix error with GCC 8.5, fix bug in deprecated.rst]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 88693ab2a53f2f3d25cb39a7b5034ab391bc5a81)
+(cherry picked from commit 80bd81cadd127c1e2fc784612a52abe392670ba4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context tweak in docs/about/deprecated.rst)
 
-diff --git a/hw/s390x/pv.c b/hw/s390x/pv.c
-index 49ea38236c..b63f3784c6 100644
---- a/hw/s390x/pv.c
-+++ b/hw/s390x/pv.c
-@@ -13,6 +13,7 @@
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 914938fd76..2823362791 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -111,6 +111,10 @@ Use ``-machine acpi=off`` instead.
+ The HAXM project has been retired (see https://github.com/intel/haxm#status).
+ Use "whpx" (on Windows) or "hvf" (on macOS) instead.
  
- #include <linux/kvm.h>
++``-async-teardown`` (since 8.1)
++'''''''''''''''''''''''''''''''
++
++Use ``-run-with async-teardown=on`` instead.
  
-+#include "qemu/units.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "sysemu/kvm.h"
-@@ -115,7 +116,7 @@ static void *s390_pv_do_unprot_async_fn(void *p)
-      return NULL;
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+diff --git a/os-posix.c b/os-posix.c
+index 5adc69f560..90ea71725f 100644
+--- a/os-posix.c
++++ b/os-posix.c
+@@ -36,6 +36,8 @@
+ #include "qemu/log.h"
+ #include "sysemu/runstate.h"
+ #include "qemu/cutils.h"
++#include "qemu/config-file.h"
++#include "qemu/option.h"
+ 
+ #ifdef CONFIG_LINUX
+ #include <sys/prctl.h>
+@@ -152,9 +154,21 @@ int os_parse_cmd_args(int index, const char *optarg)
+         daemonize = 1;
+         break;
+ #if defined(CONFIG_LINUX)
++    /* deprecated */
+     case QEMU_OPTION_asyncteardown:
+         init_async_teardown();
+         break;
++    case QEMU_OPTION_run_with: {
++        QemuOpts *opts = qemu_opts_parse_noisily(qemu_find_opts("run-with"),
++                                                 optarg, false);
++        if (!opts) {
++            exit(1);
++        }
++        if (qemu_opt_get_bool(opts, "async-teardown", false)) {
++            init_async_teardown();
++        }
++        break;
++    }
+ #endif
+     default:
+         return -1;
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 4b8855a4f7..fdddfab6ff 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4786,20 +4786,32 @@ DEF("qtest-log", HAS_ARG, QEMU_OPTION_qtest_log, "", QEMU_ARCH_ALL)
+ DEF("async-teardown", 0, QEMU_OPTION_asyncteardown,
+     "-async-teardown enable asynchronous teardown\n",
+     QEMU_ARCH_ALL)
+-#endif
+ SRST
+ ``-async-teardown``
+-    Enable asynchronous teardown. A new process called "cleanup/<QEMU_PID>"
+-    will be created at startup sharing the address space with the main qemu
+-    process, using clone. It will wait for the main qemu process to
+-    terminate completely, and then exit.
+-    This allows qemu to terminate very quickly even if the guest was
+-    huge, leaving the teardown of the address space to the cleanup
+-    process. Since the cleanup process shares the same cgroups as the
+-    main qemu process, accounting is performed correctly. This only
+-    works if the cleanup process is not forcefully killed with SIGKILL
+-    before the main qemu process has terminated completely.
++    This option is deprecated and should no longer be used. The new option
++    ``-run-with async-teardown=on`` is a replacement.
+ ERST
++DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
++    "-run-with async-teardown[=on|off]\n"
++    "                misc QEMU process lifecycle options\n"
++    "                async-teardown=on enables asynchronous teardown\n",
++    QEMU_ARCH_ALL)
++SRST
++``-run-with``
++    Set QEMU process lifecycle options.
++
++    ``async-teardown=on`` enables asynchronous teardown. A new process called
++    "cleanup/<QEMU_PID>" will be created at startup sharing the address
++    space with the main QEMU process, using clone. It will wait for the
++    main QEMU process to terminate completely, and then exit. This allows
++    QEMU to terminate very quickly even if the guest was huge, leaving the
++    teardown of the address space to the cleanup process. Since the cleanup
++    process shares the same cgroups as the main QEMU process, accounting is
++    performed correctly. This only works if the cleanup process is not
++    forcefully killed with SIGKILL before the main QEMU process has
++    terminated completely.
++ERST
++#endif
+ 
+ DEF("msg", HAS_ARG, QEMU_OPTION_msg,
+     "-msg [timestamp[=on|off]][,guest-name=[on|off]]\n"
+diff --git a/util/async-teardown.c b/util/async-teardown.c
+index 62cdeb0f20..3ab19c8740 100644
+--- a/util/async-teardown.c
++++ b/util/async-teardown.c
+@@ -12,6 +12,9 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/config-file.h"
++#include "qemu/option.h"
++#include "qemu/module.h"
+ #include <dirent.h>
+ #include <sys/prctl.h>
+ #include <sched.h>
+@@ -144,3 +147,21 @@ void init_async_teardown(void)
+     clone(async_teardown_fn, new_stack_for_clone(), CLONE_VM, NULL);
+     sigprocmask(SIG_SETMASK, &old_signals, NULL);
  }
- 
--bool s390_pv_vm_try_disable_async(void)
-+bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms)
- {
-     /*
-      * t is only needed to create the thread; once qemu_thread_create
-@@ -123,7 +124,12 @@ bool s390_pv_vm_try_disable_async(void)
-      */
-     QemuThread t;
- 
--    if (!kvm_check_extension(kvm_state, KVM_CAP_S390_PROTECTED_ASYNC_DISABLE)) {
-+    /*
-+     * If the feature is not present or if the VM is not larger than 2 GiB,
-+     * KVM_PV_ASYNC_CLEANUP_PREPARE fill fail; no point in attempting it.
-+     */
-+    if ((MACHINE(ms)->maxram_size <= 2 * GiB) ||
-+        !kvm_check_extension(kvm_state, KVM_CAP_S390_PROTECTED_ASYNC_DISABLE)) {
-         return false;
-     }
-     if (s390_pv_cmd(KVM_PV_ASYNC_CLEANUP_PREPARE, NULL) != 0) {
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 503f212a31..0daf445d60 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -330,7 +330,7 @@ static inline void s390_do_cpu_ipl(CPUState *cs, run_on_cpu_data arg)
- 
- static void s390_machine_unprotect(S390CcwMachineState *ms)
- {
--    if (!s390_pv_vm_try_disable_async()) {
-+    if (!s390_pv_vm_try_disable_async(ms)) {
-         s390_pv_vm_disable();
-     }
-     ms->pv = false;
-diff --git a/include/hw/s390x/pv.h b/include/hw/s390x/pv.h
-index 966306a9db..7b935e2246 100644
---- a/include/hw/s390x/pv.h
-+++ b/include/hw/s390x/pv.h
-@@ -14,10 +14,10 @@
- 
- #include "qapi/error.h"
- #include "sysemu/kvm.h"
-+#include "hw/s390x/s390-virtio-ccw.h"
- 
- #ifdef CONFIG_KVM
- #include "cpu.h"
--#include "hw/s390x/s390-virtio-ccw.h"
- 
- static inline bool s390_is_pv(void)
- {
-@@ -41,7 +41,7 @@ static inline bool s390_is_pv(void)
- int s390_pv_query_info(void);
- int s390_pv_vm_enable(void);
- void s390_pv_vm_disable(void);
--bool s390_pv_vm_try_disable_async(void);
-+bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms);
- int s390_pv_set_sec_parms(uint64_t origin, uint64_t length);
- int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak);
- void s390_pv_prep_reset(void);
-@@ -61,7 +61,7 @@ static inline bool s390_is_pv(void) { return false; }
- static inline int s390_pv_query_info(void) { return 0; }
- static inline int s390_pv_vm_enable(void) { return 0; }
- static inline void s390_pv_vm_disable(void) {}
--static inline bool s390_pv_vm_try_disable_async(void) { return false; }
-+static inline bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms) { return false; }
- static inline int s390_pv_set_sec_parms(uint64_t origin, uint64_t length) { return 0; }
- static inline int s390_pv_unpack(uint64_t addr, uint64_t size, uint64_t tweak) { return 0; }
- static inline void s390_pv_prep_reset(void) {}
++
++static QemuOptsList qemu_run_with_opts = {
++    .name = "run-with",
++    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
++    .desc = {
++        {
++            .name = "async-teardown",
++            .type = QEMU_OPT_BOOL,
++        },
++        { /* end of list */ }
++    },
++};
++
++static void register_teardown(void)
++{
++    qemu_add_opts(&qemu_run_with_opts);
++}
++opts_init(register_teardown);
 -- 
 2.39.2
 
