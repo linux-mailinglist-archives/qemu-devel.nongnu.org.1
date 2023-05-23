@@ -2,81 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9793970E6B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 22:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EFA70E6C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 22:43:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Yom-0008La-Gx; Tue, 23 May 2023 16:41:16 -0400
+	id 1q1Yqi-0001rF-0Q; Tue, 23 May 2023 16:43:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q1Yok-00085K-3e
- for qemu-devel@nongnu.org; Tue, 23 May 2023 16:41:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q1Yoi-0006my-N3
- for qemu-devel@nongnu.org; Tue, 23 May 2023 16:41:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684874471;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PLASUw7a2U/r/ncne6F9gHdKgyHt/K5cMVTZYim/UzY=;
- b=X9ulXcNbsF/b77/UwA7/mm23bGlkyzPFwpi0gGoaOEfsQWv18borOY+xK+EShNKgKytoNw
- U09BxtTpRX96/CnEUIKcKHHfF1FBnZZYCHfC0RP66MZW3JQz9mkxiYiSNZVXX2pYsZ6nZ5
- 3p3pkQTKD9fOiJwr3T7JAuHllD7HCLw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-581-qx0JYLrBNCeP9nmsZPhCBg-1; Tue, 23 May 2023 16:41:06 -0400
-X-MC-Unique: qx0JYLrBNCeP9nmsZPhCBg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AFE2858285;
- Tue, 23 May 2023 20:41:05 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.61])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EFDABC1ED99;
- Tue, 23 May 2023 20:41:03 +0000 (UTC)
-Date: Tue, 23 May 2023 16:41:02 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Markus Armbruster <armbru@redhat.com>,
- Erik Schilling <erik.schilling@linaro.org>,
- Jason Wang <jasowang@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Gerd Hoffmann <kraxel@redhat.com>, virtio-fs@redhat.com,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH v2 05/13] include/hw/virtio: add kerneldoc for virtio_init
-Message-ID: <20230523204102.GD140337@fedora>
-References: <20230418162140.373219-1-alex.bennee@linaro.org>
- <20230418162140.373219-6-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1Yqf-0001qU-FU
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 16:43:13 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1YqQ-00072b-MY
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 16:43:13 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-64a9335a8e7so3680447b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 13:42:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684874577; x=1687466577;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xQbX0QJp/UFA4Uocq4Bao2xItNm6RhrQiuR1i3DCm+c=;
+ b=mJE0ItlL69R3pOVhOdTo+x2KOD2EVAJjhvPv11Uh5Q7vc5ruc5CCgm/VeL/cg670/n
+ COAueVMATRw8je+FtBOK7yi7u4cdlOh2XYcEffMEKVZcpqAJ24IKoNxPdUqXC/8mJ5hJ
+ VverVgCIR2GFAWH7Eq+clBow3vb/QtbNOWxlQNI4vAgrzlrYDb2KEHddhNlIAsu79qzn
+ aAVmXJ2CI+2rT9sTLoj60q7LpOUIFFYAZDtZ6GvC7P8Ixtn7FKoEZLFr43kB/OE/Hrsy
+ rQh94oz+iWGlmDj/f/FHR50JbDJvFDPXvHeYKnaQJ9ToltVFeMefA9bP1x/fYn2bPet0
+ HN1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684874577; x=1687466577;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xQbX0QJp/UFA4Uocq4Bao2xItNm6RhrQiuR1i3DCm+c=;
+ b=kCHgWbD18UQmugXsODjZg+AVJdb31swCv/uA2xZHQOvA0jUDnW5gx93ktrXvS4vE9i
+ VEKDLOMxdMFjTIC0bAFP60K4BAM7xxLLtmyz54vq87RW5y/lrqIa+ta2yWMc4uKdPFS5
+ 3vfSSj+lzb3ZRcJRkPgpaFUqS3RjcNKvFv/OSviit7JZ6Q9HxJx/Hy58csogwM7scqF8
+ JDvcrvHsJmssGfifDnvyvIq3xRRmr9ii8I1w0XVRmsuRMRoH+b1EP8PRFrIXVuedVhCj
+ a2U9w32CMdd6Ld+SEw65pQb5zpWTvH3ntkY/IVQL/aG6LjPAWW4vCtSB9Y3jkHeY2iez
+ lW+w==
+X-Gm-Message-State: AC+VfDzYksDkyYpSzai+hvA9mGoBOGzim88simcVm4dtqC7YyjtD+GXV
+ OPtIvSThQow66q4DKlVkFl4+8g==
+X-Google-Smtp-Source: ACHHUZ6Su98aDD8p9CIKQVSR8O5EjkXQitltL0uB9LLg1tb6Fe2Wdyd1m5ST+IN6PdPgW2iK52uxpw==
+X-Received: by 2002:a17:903:234a:b0:1ac:a88a:70b6 with SMTP id
+ c10-20020a170903234a00b001aca88a70b6mr20389321plh.31.1684874577020; 
+ Tue, 23 May 2023 13:42:57 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
+ ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
+ by smtp.gmail.com with ESMTPSA id
+ z2-20020a1709028f8200b001ab0159b9edsm7155240plo.250.2023.05.23.13.42.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 13:42:56 -0700 (PDT)
+Message-ID: <e19bb362-572e-25d1-013d-f53ff9e61e58@linaro.org>
+Date: Tue, 23 May 2023 13:42:54 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="dvQrJ4C/KXaEeudq"
-Content-Disposition: inline
-In-Reply-To: <20230418162140.373219-6-alex.bennee@linaro.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 6/7] target/riscv: Enable PC-relative translation
+Content-Language: en-US
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230523135939.299246-1-liweiwei@iscas.ac.cn>
+ <20230523135939.299246-7-liweiwei@iscas.ac.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230523135939.299246-7-liweiwei@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,35 +99,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---dvQrJ4C/KXaEeudq
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Apr 18, 2023 at 05:21:32PM +0100, Alex Benn=E9e wrote:
-> Signed-off-by: Alex Benn=E9e <alex.bennee@linaro.org>
+On 5/23/23 06:59, Weiwei Li wrote:
+> Add a base pc_save for PC-relative translation(CF_PCREL).
+> Diable the directly sync pc from tb by riscv_cpu_synchronize_from_tb.
+> Use gen_pc_plus_diff to get the pc-relative address.
+> Enable CF_PCREL in System mode.
+> 
+> Signed-off-by: Weiwei Li<liweiwei@iscas.ac.cn>
+> Signed-off-by: Junqiang Wang<wangjunqiang@iscas.ac.cn>
 > ---
->  include/hw/virtio/virtio.h | 6 ++++++
->  1 file changed, 6 insertions(+)
+>   target/riscv/cpu.c                        | 31 ++++++++++-----
+>   target/riscv/insn_trans/trans_rvi.c.inc   | 12 +++++-
+>   target/riscv/insn_trans/trans_rvzce.c.inc |  4 +-
+>   target/riscv/translate.c                  | 47 +++++++++++++++++++----
+>   4 files changed, 74 insertions(+), 20 deletions(-)
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
---dvQrJ4C/KXaEeudq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRtJN4ACgkQnKSrs4Gr
-c8gGugf+ItsPLi8OQgzdZdQriVkXhH1Qo9Sitp/W3Vux1IB7WJcBEQqUaA3q2Chd
-1FlP4aVXRC8dqzk+pf8IhN4pwHZAFij5W6jMZ5xVjpSW9j309+wdGCruufPj9FSn
-oiCIJfOVLBTBXB1VeJHP1ZxPGCrwD2bHfS1PYCdZBB+kZjF1p8TOHx6ysCsIUcub
-dZm6kQQeZkza5BW7vzUV0gNEnzqkWs8b99E7RMUDlw/giIVwZMUEFqlW4SF6mcyN
-2KyQWO+d0Ed9hxgt5OS6Oy7MDMhEQ3mWLxvGstLLENRINE0eslqCRSac2G8TQIRX
-HsgrJsjdIEJPLgeRf+FmkfTf0ejTww==
-=5l3r
------END PGP SIGNATURE-----
-
---dvQrJ4C/KXaEeudq--
-
+r~
 
