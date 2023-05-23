@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9184170E1E7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D97D70E1E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:37:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1V05-00018S-Oe; Tue, 23 May 2023 12:36:42 -0400
+	id 1q1V0C-0001Go-Va; Tue, 23 May 2023 12:36:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V04-00014O-C7
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:40 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0B-0001FP-FB
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:47 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V02-0001gD-Hg
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:40 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f60804faf4so380945e9.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:36:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V08-0001hY-Uo
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:47 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3093a7b71fbso7347429f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684859797; x=1687451797;
+ d=linaro.org; s=google; t=1684859803; x=1687451803;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vD4+39IhI5L7fmlbuqqsRg2B+vzAyPbhgTWPowgv4yc=;
- b=Ojz82F+JNrxoV+CzEb+nwtiSKvljJ//B4KwVou3r6rIzJs8je/ypEO6TCIopcIxDsv
- /H4q5I5qaYbgJksmbiT/hBh3xexKJYIBMDzRMNvlTSZ08Cd/AuFTw7CzBBNvnvZ0cfwH
- I4FGDgGXadNbxfOC1UDGyOLbCpLTBrz+8ZnNMW0ZMBZNe1SVTDJ+B16DbBzpNOzinyoO
- RQzn04fJqVYh/lzME5cTPriUVN31d/EkBQ6MqcfXdX2WB8AeszaTsrB+2xGHijqjMEKB
- mygyLPwbThLAhtxuvp7IbQcQOupiWQbLPZo4DYWqhq6nOOUKb5SIolgf5OX3gFCZaw7j
- waQQ==
+ bh=LoKzYtGI7sysobWsyNZRR7hMSKUoHQ2fOYULMUN/GtU=;
+ b=Zkyz29agILkhhtATpLyavCWN++d8QSZ0S8hpJ+v6wRNoFZkJii6sgLOmOT6P0XLxq/
+ PV+6XEyfA/zye3EMNCINhojrAEfM6lrhO26Njk0kk5/u8U7Z5YcWRgiI5AfpgTYfGww7
+ 5PrcUf2a93B7yDEJv7ImBBtpFbWV8lTI0vyC89UCl0XeulYJUo3TCTYAT++VFRCFvr4z
+ lk5fv3ujXLad3EFnrz8KH2usqfhVFjDOos7UfyaGdREVwkl/NPX+7GaEv5sH8gE6lv3l
+ a9hRyfCEY49xJl/0VZVKw53l3eMKib6w4CESGI6tCTH0LREb0luC66iaY0lx5CpeHkDw
+ lsSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684859797; x=1687451797;
+ d=1e100.net; s=20221208; t=1684859803; x=1687451803;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vD4+39IhI5L7fmlbuqqsRg2B+vzAyPbhgTWPowgv4yc=;
- b=hjJgZUOdWHgQBie+JumyNB7BkI43hW7pvsUnO+ZdZy338acSWawjFg1iCwkwp2NFnM
- 2bsM5dfiMRu1+ikSfF70BR7i5KfMVRhnQ5atSGQj6g9Vd1FGc3I16Kh/aOe4yKqy0LQ2
- mmlPTpvspdWK20YD+EypC2VYFrndKOfesXWMNMw24RY0WAlZHra3JbFw244CkA5VH2Dw
- gcNqjjZ9IEwU4GbfHhRcq5R4t0gY+ibvJ4OticHD7XJ2x9C4MJcMFSnOENqlS95Ny7EW
- yJBZcDBoWsysv00jGW4DZ2nk5jVgBDkxcIxB3cTMuo05bn9EUMlpNPhkFX6sQjV1/fmL
- wyFA==
-X-Gm-Message-State: AC+VfDyFZ938FJYIUAunkfafLYHTBFfzQGPuFX33RMYcnJUlVgB8Qvks
- FyjNNAsHk6Qlf6a+kOfOIvTnEl/KtJvfxKAzFfc=
-X-Google-Smtp-Source: ACHHUZ6zGeIFdD1GDuGVJ91vXos4g0+mB2A7tyT2UZUjTei/PCpjxPdmgoLnPetJU1kXgbhXmTpCEQ==
-X-Received: by 2002:a7b:cc15:0:b0:3f4:2452:966a with SMTP id
- f21-20020a7bcc15000000b003f42452966amr10252942wmh.27.1684859796704; 
- Tue, 23 May 2023 09:36:36 -0700 (PDT)
+ bh=LoKzYtGI7sysobWsyNZRR7hMSKUoHQ2fOYULMUN/GtU=;
+ b=N7rF93R8XMWgVGQpXqqJeuD105sE4XRHH1pCIzM7UAZBwp7g6di6beOEJu/1Gv3Pj1
+ hXRlpaYbDXnHaC2Iaudi6WpgfPN1AWJejdDdWriqVaQ4iG8u3F7IIG0lOe+0uq4YJuHK
+ O3hzvERTzfCZymtbNkzZu/psLwRz65TM4DOoBSHvY1fNjqkklY9BMwqYcwftLT5TRp1s
+ tCoUoQ+Z7oS+KdDiqpfj1BHfcOHrFnmMHXQlkXNDH1NDCzg0ChLzsgaq/bBD2D7TVRnV
+ gFL49umCCK2FhUHE95LbyyJHgOvyDJmoFgMfL4FxeNlTp7bNb0N+5gGaF++d6kLLsEG9
+ kiOg==
+X-Gm-Message-State: AC+VfDzZqcHd/sw86Ow9cbu9CHtVfwBo9u1DD/nGfSM02KlF1dYvqpCV
+ cWvDNCAF23n4wFuSwU7+TLgPLE/FJ18zTMviDyY=
+X-Google-Smtp-Source: ACHHUZ4LyIR/hoVtxCmsZve4h5nIgXZ6oI4E0/m+5TnUg3AoJcvcJslo/YuZWRBfvk3H1ZpJBJlfow==
+X-Received: by 2002:adf:e945:0:b0:309:3a83:cf43 with SMTP id
+ m5-20020adfe945000000b003093a83cf43mr10284626wrn.27.1684859803286; 
+ Tue, 23 May 2023 09:36:43 -0700 (PDT)
 Received: from localhost.localdomain
  (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
  by smtp.gmail.com with ESMTPSA id
- 22-20020a05600c231600b003f421979398sm15300258wmo.26.2023.05.23.09.36.34
+ g9-20020adffc89000000b002e5ff05765esm11616459wrr.73.2023.05.23.09.36.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 May 2023 09:36:36 -0700 (PDT)
+ Tue, 23 May 2023 09:36:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
@@ -70,18 +70,17 @@ Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
-Subject: [PATCH 05/11] hw/virtio: Introduce VHOST_VSOCK_COMMON symbol in
- Kconfig
-Date: Tue, 23 May 2023 18:35:54 +0200
-Message-Id: <20230523163600.83391-6-philmd@linaro.org>
+Subject: [PATCH 06/11] hw/virtio/virtio-mem: Use qemu_ram_get_fd() helper
+Date: Tue, 23 May 2023 18:35:55 +0200
+Message-Id: <20230523163600.83391-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230523163600.83391-1-philmd@linaro.org>
 References: <20230523163600.83391-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,57 +103,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of adding 'vhost-vsock-common.c' twice (for VHOST_VSOCK
-and VHOST_USER_VSOCK), have it depend on VHOST_VSOCK_COMMON,
-selected by both symbols.
+Avoid accessing RAMBlock internals, use the provided
+qemu_ram_get_fd() getter to get the file descriptor.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/virtio/Kconfig     | 6 ++++++
- hw/virtio/meson.build | 5 +++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ hw/virtio/virtio-mem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
-index 89e9e426d8..de7a35429a 100644
---- a/hw/virtio/Kconfig
-+++ b/hw/virtio/Kconfig
-@@ -56,14 +56,20 @@ config VIRTIO_MEM
-     depends on VIRTIO_MEM_SUPPORTED
-     select MEM_DEVICE
- 
-+config VHOST_VSOCK_COMMON
-+    bool
-+    depends on VIRTIO
-+
- config VHOST_VSOCK
-     bool
-     default y
-+    select VHOST_VSOCK_COMMON
-     depends on VIRTIO && VHOST_KERNEL
- 
- config VHOST_USER_VSOCK
-     bool
-     default y
-+    select VHOST_VSOCK_COMMON
-     depends on VIRTIO && VHOST_USER
- 
- config VHOST_USER_I2C
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index bdec78bfc6..54c90c24fb 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -23,8 +23,9 @@ specific_virtio_ss.add(when: 'CONFIG_VIRTIO_BALLOON', if_true: files('virtio-bal
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem.c'))
--specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock.c', 'vhost-vsock-common.c'))
--specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c', 'vhost-vsock-common.c'))
-+specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
-+specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock.c'))
-+specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index 538b695c29..74e63bd47a 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -135,7 +135,7 @@ static bool virtio_mem_has_shared_zeropage(RAMBlock *rb)
+      * anonymous RAM. In any other case, reading unplugged *can* populate a
+      * fresh page, consuming actual memory.
+      */
+-    return !qemu_ram_is_shared(rb) && rb->fd < 0 &&
++    return !qemu_ram_is_shared(rb) && qemu_ram_get_fd(rb) < 0 &&
+            qemu_ram_pagesize(rb) == qemu_real_host_page_size();
+ }
+ #endif /* VIRTIO_MEM_HAS_LEGACY_GUESTS */
 -- 
 2.38.1
 
