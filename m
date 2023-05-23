@@ -2,73 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 222EB70E0AA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 17:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E85F370E0C5
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 17:42:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1U3j-0005ky-6U; Tue, 23 May 2023 11:36:23 -0400
+	id 1q1U8J-0007rN-Cy; Tue, 23 May 2023 11:41:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q1U3h-0005kj-12
- for qemu-devel@nongnu.org; Tue, 23 May 2023 11:36:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q1U8H-0007qP-CD
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 11:41:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q1U3f-0003Qj-Gm
- for qemu-devel@nongnu.org; Tue, 23 May 2023 11:36:20 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q1U82-0004d8-MT
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 11:41:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684856178;
+ s=mimecast20190719; t=1684856445;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=oq79YFwvCAaDl5Ap+7mQLSf6QuErpsTVMi2TgffUJH0=;
- b=QRuKi8anoBQUD+mmvJCBMHtD2E7OziXDNRLdm96yByr3Ue4IqtvtCwueTmRqx0tJuJ22UD
- 7gZKD8QTiVSHWbViQVlxc6V0sLMNkDpP8wurtFQQMDIbOc5KC/kEDg4pB0G5n29aFWmJ28
- 74rSlrvOT9yRZH7u7J58Rpa2GmnSvvw=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-261-55FocREuOVSnKnEVNToBGQ-1; Tue, 23 May 2023 11:36:14 -0400
-X-MC-Unique: 55FocREuOVSnKnEVNToBGQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 70A0C1C12F87;
- Tue, 23 May 2023 15:36:14 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.107])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F0719140E95D;
- Tue, 23 May 2023 15:36:13 +0000 (UTC)
-Date: Tue, 23 May 2023 11:36:12 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Subject: Re: [PULL 18/18] tested: add test for nested aio_poll() in poll
- handlers
-Message-ID: <20230523153612.GA96478@fedora>
-References: <20230517165116.475123-1-kwolf@redhat.com>
- <20230517165116.475123-19-kwolf@redhat.com>
- <1d53f391-7fa4-f60d-119c-0cacb14209d6@linaro.org>
- <ZGdAEpLlO8GmQHr4@redhat.com>
+ bh=L+lGOlNAADPbJnZ5Q20cIDYiJbrwm3i2SH/48VDKDd8=;
+ b=eUnUEcytSptfHB9SP1as6U+/971O+vLe9EPQn4xCHFaW3bQodTzDkKapEMp3xCfmw1Byco
+ Shj+Nu5yeXvYHC5GqTdPLGCWCztS6zf7A0/X18XEoagJ15LuFm+Ycptg+qOhPTgjJb75YC
+ 6zmHEhfhiPSaqayb6g8e1lmtilLuluA=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-96-AgZYCoqYMnibtjeHWFhcDQ-1; Tue, 23 May 2023 11:40:44 -0400
+X-MC-Unique: AgZYCoqYMnibtjeHWFhcDQ-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-624a29df9feso5059186d6.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:40:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684856444; x=1687448444;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=L+lGOlNAADPbJnZ5Q20cIDYiJbrwm3i2SH/48VDKDd8=;
+ b=li5uE5nb0r9+HKfqkfDuGZob95hPZTrrmlDU/s3BOcV+JnWlJMRRRYHjht8B9+B6zj
+ sjWoH6PQlLsczYWelJMQrHPML10AeqI6fUH5F4XXkeg5dd3fBEkwlqxd3ZvVdfWRdnse
+ AGJODpmO2RRyGI5vYXPQ5l++Y/RjybywbYFXg9SXCpHfrIpb9PTi5F2grRi+F/Lw8Y0I
+ p7mA1ettwVF/NiTTsKQrQ7nW4WXZIYI9sXcsRECFU7YJJSyljhfFeWZThkutTO+QtZDu
+ uJxnKaPb9ZKwhmb0PWiuLF6MFzTj3tFCRDUPzUDKpRbieng4sH1eMQqwPKXWAxE/bfQD
+ UzgA==
+X-Gm-Message-State: AC+VfDycJZF2VxAjEgpphvEt32NNPNU7TfqafvOsFUcy3yqAyQBBnvJz
+ O8vV28rE0/ZHy4wQatWx+SQ0NZR3BL5Mhf2pYGv2soWRNVYJeIwd2Oqub5Ey+rVPk0Y2D3ctIHG
+ zTzcVT0kU6+vUR5o=
+X-Received: by 2002:a05:6214:400f:b0:625:86ed:8ab4 with SMTP id
+ kd15-20020a056214400f00b0062586ed8ab4mr7313669qvb.3.1684856443863; 
+ Tue, 23 May 2023 08:40:43 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7cnI6o2Fr8eW7smEZdcS0l6+ByKusysqe3MUtCsOcGLipGeaSa5QZXJlnmA3WBd8maoGahYQ==
+X-Received: by 2002:a05:6214:400f:b0:625:86ed:8ab4 with SMTP id
+ kd15-20020a056214400f00b0062586ed8ab4mr7313642qvb.3.1684856443420; 
+ Tue, 23 May 2023 08:40:43 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ m11-20020ad44b6b000000b0061b75f3d9bcsm2882176qvx.38.2023.05.23.08.40.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 May 2023 08:40:42 -0700 (PDT)
+Date: Tue, 23 May 2023 11:40:41 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v3 2/3] vhost: Remove vhost_backend_can_merge() callback
+Message-ID: <ZGzeeWnQnoTQRexj@x1n>
+References: <20230503172121.733642-1-david@redhat.com>
+ <20230503172121.733642-3-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="O6LSje+zV1jwv+/H"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZGdAEpLlO8GmQHr4@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <20230503172121.733642-3-david@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,89 +99,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, May 03, 2023 at 07:21:20PM +0200, David Hildenbrand wrote:
+> Checking whether the memory regions are equal is sufficient: if they are
+> equal, then most certainly the contained fd is equal.
 
---O6LSje+zV1jwv+/H
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Looks reasonable to me.
 
-On Fri, May 19, 2023 at 11:23:30AM +0200, Kevin Wolf wrote:
-> Am 17.05.2023 um 21:10 hat Richard Henderson geschrieben:
-> > On 5/17/23 09:51, Kevin Wolf wrote:
-> > > From: Stefan Hajnoczi <stefanha@redhat.com>
-> > >=20
-> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > Message-Id: <20230502184134.534703-3-stefanha@redhat.com>
-> > > Tested-by: Kevin Wolf <kwolf@redhat.com>
-> > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > > ---
-> > >   tests/unit/test-nested-aio-poll.c | 130 +++++++++++++++++++++++++++=
-+++
-> > >   tests/unit/meson.build            |   1 +
-> > >   2 files changed, 131 insertions(+)
-> > >   create mode 100644 tests/unit/test-nested-aio-poll.c
-> >=20
-> > This new test fails on windows:
-> >=20
-> > https://gitlab.com/qemu-project/qemu/-/jobs/4304413315#L3375
-> > https://gitlab.com/qemu-project/qemu/-/jobs/4304413313#L3357
->=20
-> What the CI output doesn't show is that the problem seems to be that the
-> test doesn't even make sense on Windows. When I run it manually:
->=20
-> Unexpected error in aio_context_set_poll_params() at ../../home/kwolf/sou=
-rce/qemu/util/aio-win32.c:443:
-> Z:\tmp\build-win32\tests\unit\test-nested-aio-poll.exe: AioContext pollin=
-g is not implemented on Windows
->=20
-> Stefan, I'll squash in the following, so you don't have to resubmit the
-> series.
+I double checked the src of the change and there's no bug report attached
+either.  Maybe just a double safety belt, but definitely Michael will know
+the best.
 
-Thank you, Kevin!
+https://lore.kernel.org/qemu-devel/1456067090-18187-1-git-send-email-mst@redhat.com/
 
-Stefan
+> 
+> The whole vhost-user memslot handling is suboptimal and overly
+> complicated. We shouldn't have to lookup a RAM memory regions we got
+> notified about in vhost_user_get_mr_data() using a host pointer. But that
+> requires a bigger rework -- especially an alternative vhost_set_mem_table()
+> backend call that simply consumes MemoryRegionSections.
+> 
+> For now, let's just drop vhost_backend_can_merge().
+> 
+> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+> Acked-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-> diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-> index a314f82baa..8ed81786ee 100644
-> --- a/tests/unit/meson.build
-> +++ b/tests/unit/meson.build
-> @@ -67,7 +67,6 @@ if have_block
->      'test-coroutine': [testblock],
->      'test-aio': [testblock],
->      'test-aio-multithread': [testblock],
-> -    'test-nested-aio-poll': [testblock],
->      'test-throttle': [testblock],
->      'test-thread-pool': [testblock],
->      'test-hbitmap': [testblock],
-> @@ -115,7 +114,10 @@ if have_block
->      tests +=3D {'test-crypto-xts': [crypto, io]}
->    endif
->    if 'CONFIG_POSIX' in config_host
-> -    tests +=3D {'test-image-locking': [testblock]}
-> +    tests +=3D {
-> +      'test-image-locking': [testblock],
-> +      'test-nested-aio-poll': [testblock],
-> +    }
->    endif
->    if config_host_data.get('CONFIG_REPLICATION')
->      tests +=3D {'test-replication': [testblock]}
->=20
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
---O6LSje+zV1jwv+/H
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRs3WwACgkQnKSrs4Gr
-c8goVQgAgaKH7r2y8xEp9yr7Uo9GUBYBPgPuVqcbtKTBi5vodrEhK0gz6LqvZG/Y
-RymhlNxn+y5vDcHKBEJL4NEPXQQ3t8aQCwOuorpufvHmhM7LFuGBeMlmKZQi5Gk+
-ccHAZKHig9VBXRchqUlj4D4xFZNRbGGZo791RcDJ7jlQYrn7yN7IcsOFyiyl2rYy
-QdK2bXX0O+tlhID0j+a4qxkTYMIahCmQaajFCz1zvCi2gqXH3uT7Ocl4qScwu+mK
-thaqw4TfNiauSn2sTpu+MTzwbCRExQM+NICRGGlolcn+w64TwHEwVt7dmBGBOZHp
-VXJl11z2vchy7Dxv08fW69E/yplnGA==
-=3DsD
------END PGP SIGNATURE-----
-
---O6LSje+zV1jwv+/H--
+-- 
+Peter Xu
 
 
