@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C875D70E1E8
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C83E770E1E3
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:37:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1V0V-000285-Mb; Tue, 23 May 2023 12:37:07 -0400
+	id 1q1V0Z-0002xA-53; Tue, 23 May 2023 12:37:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0O-0001um-D8
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:37:01 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0W-0002Tv-2R
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:37:08 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0L-0001lQ-HA
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:59 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3f608ba2e06so677465e9.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:36:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0S-0001ms-O5
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:37:07 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-30644c18072so4944271f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684859816; x=1687451816;
+ d=linaro.org; s=google; t=1684859822; x=1687451822;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=luIo+lkzsxjF6N0yYuJHc36ZlG6WILVPK31glw0xKRo=;
- b=tE2UUXBm33oIEe0XEpblnEM7JzqV9XCjQZzyhAePMlEpUCE8g0uZ4fX7XKqdfJjMeu
- ap8q0QFIm028KDEAiIJ0UuEochkCJEqulDwrgB0C3icbbcGFjDW3OU3mbc6dzrZF5skZ
- 3SApBPNYaw74iz5ByolZFX2/7HnpvNBDv1O7Q4iTULtVNlrTRuIQuTOe+VDijtfOtlZQ
- SzQTjQC81vME0XSgkFBEVjjkjBef1OztSdfu56R7FQU8CcTN+RjiHxRQ4lPGYXh6lny0
- ANfd+uxmwohIsuePF8koaVsMIEgjYe9FymbzOaw7eZXAfAz5rIY40P1DXzLON3KLVt9o
- ufgA==
+ bh=0T7+I7Nt03mZOG+eb8PyXOgF6bp5b6vfbKpMq74pjVQ=;
+ b=mW/EtuZv4W6001tLtSX2WPjW8IAYKZazArxGHYy77DxAqvlEl07mxiNsTk9zVEBtQk
+ yDPEdjHJoM4K5LcGpAnYYKUR6qavOWv3BfbfSCX102hdMOSs6iBdG/lVlQ3aQK9TDJjS
+ UbMNoKUoHIVZW8js86ez3cbOYU9jtEmp3coUG5WQHmkdoq3TcwxQBaq7k5XgsyrfNntM
+ apTEF105NCkpZJpMbQIdssoQ3V2e3NUTFNHnKwrUB3r2E8Zq6sWi0XxOraL7GtwJA/n2
+ PlSluFqIBymXo8xbffrwvMeluL0flFJwd1aUVbeEeyCpteCT+DKBcIknicUTkHBpiDbN
+ Rg1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684859816; x=1687451816;
+ d=1e100.net; s=20221208; t=1684859822; x=1687451822;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=luIo+lkzsxjF6N0yYuJHc36ZlG6WILVPK31glw0xKRo=;
- b=MwvtPwztUC4vqZ6/Gqif/bIDSJOfO9081Ae8s/exwRigiPblC2pWqoGQ1sEvcC3Ig5
- SHJmjIV8IPhtgKBIx1DArqpVm3RsprgBbn9R2HafzlgkpUfc+IvTxAZfRvkp1zZwVyhx
- WJho56pvaqFGCDeP/QVDQDSl78lpRIyNxK78yO7UXXFCVN4eSwwUuMkrkCQx3GnVOteY
- DtnndDk+LizA3BwfKTqyom5wrbWWrRSTHxOl/0bq6rwzxFbmxleJuShaGelOqj5zYUAP
- g0GN2Ou0venKyPGaO4pqhrWYvjYbQV75v3ZkB6c6HJmKXjEr4Vvt5XPnyAkol2jikkXk
- oEVQ==
-X-Gm-Message-State: AC+VfDwXGTBcxwtKtye+HwZ9uC+UbnSOPBaBhA5WXg3H/+WFuqGlhw8j
- GJ8/0eMTS0VL1qbC9GaTFDeK7k+VAkCHehl9nTE=
-X-Google-Smtp-Source: ACHHUZ6efSHHMIQJRhwCIzQ1BEMGTOBmqfAp9f2LqlPJrNl4G4ewqXa+YTqkBph4jK7O+AVvEuYe2Q==
-X-Received: by 2002:a1c:6a04:0:b0:3f6:c8c:7048 with SMTP id
- f4-20020a1c6a04000000b003f60c8c7048mr2002074wmc.20.1684859816021; 
- Tue, 23 May 2023 09:36:56 -0700 (PDT)
+ bh=0T7+I7Nt03mZOG+eb8PyXOgF6bp5b6vfbKpMq74pjVQ=;
+ b=OeQ66s7qLPzAQvnEs9CFDPHSxVRJeQkRuSJMI5f/FPxViRmCcEVsZ+NZho8WgLiGUf
+ KudldMUh90MS0i7xdYY6XOz1lCInI6nxo8DjNe1zolq8YvReDxjmh5VrvMfHzvJbOHOo
+ DglcKcWIL2VkSKzLW1csgBgAF4VgL5TskAiA0Qmu80MnIr0MzBmaaJ7h4K/aB3EWomlc
+ ZupPwRFpzQOcRItAzJe1FFGRJFnGLeXCsDjtIFj456bcatX6EhssEw1KAeBkSDe7Rr/D
+ p7Jr1lTPQaOiH6K2zWDM+/90uzox1RzM9/NESSdIEVvOrPQctW+moja9Gx0eKpDrNvx4
+ h2+Q==
+X-Gm-Message-State: AC+VfDyGllSKAWcz8Sbv9bSYq+VuiUcCiJVDwjmF+fSa53h9WQKGjoB4
+ 9rTbEYQgSw3QboYEeg+0WoYihM92y4PajbYoRIQ=
+X-Google-Smtp-Source: ACHHUZ5sKPJuLQotGtC6N1cTRxVS3fwE1j7VpjZ1luyNu8HSIj7DRLPwxKweyQyzucbLwGQOouEe7A==
+X-Received: by 2002:a5d:40c4:0:b0:309:43a2:8e9f with SMTP id
+ b4-20020a5d40c4000000b0030943a28e9fmr10539092wrq.27.1684859822796; 
+ Tue, 23 May 2023 09:37:02 -0700 (PDT)
 Received: from localhost.localdomain
  (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
  by smtp.gmail.com with ESMTPSA id
- t20-20020a1c7714000000b003f606869603sm5993391wmi.6.2023.05.23.09.36.53
+ f12-20020a5d58ec000000b00309257ad16csm11648022wrd.29.2023.05.23.09.37.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 May 2023 09:36:55 -0700 (PDT)
+ Tue, 23 May 2023 09:37:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
@@ -70,18 +70,17 @@ Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
-Subject: [PATCH 08/11] hw/virtio/virtio-iommu: Use target-agnostic
- qemu_target_page_mask()
-Date: Tue, 23 May 2023 18:35:57 +0200
-Message-Id: <20230523163600.83391-9-philmd@linaro.org>
+Subject: [PATCH 09/11] hw/virtio: Remove unnecessary 'virtio-access.h' header
+Date: Tue, 23 May 2023 18:35:58 +0200
+Message-Id: <20230523163600.83391-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230523163600.83391-1-philmd@linaro.org>
 References: <20230523163600.83391-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,36 +103,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to have virtio-iommu.c become target-agnostic,
-we need to avoid using TARGET_PAGE_MASK. Get it with the
-qemu_target_page_mask() helper.
+None of these files use the VirtIO Load/Store API declared
+by "hw/virtio/virtio-access.h". This header probably crept
+in via copy/pasting, remove it.
+
+Note, "virtio-access.h" is target-specific, so any file
+including it also become tainted as target-specific.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/virtio/virtio-iommu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/block/dataplane/virtio-blk.c | 1 -
+ hw/s390x/virtio-ccw.c           | 1 -
+ hw/scsi/vhost-scsi.c            | 1 -
+ hw/scsi/vhost-user-scsi.c       | 1 -
+ hw/scsi/virtio-scsi-dataplane.c | 1 -
+ hw/virtio/vdpa-dev.c            | 1 -
+ hw/virtio/vhost-vdpa.c          | 1 -
+ hw/virtio/vhost-vsock-common.c  | 1 -
+ hw/virtio/vhost.c               | 1 -
+ hw/virtio/virtio-crypto.c       | 1 -
+ hw/virtio/virtio-iommu.c        | 1 -
+ hw/virtio/virtio-mem.c          | 1 -
+ 12 files changed, 12 deletions(-)
 
+diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
+index af1c24c40c..03ecb51664 100644
+--- a/hw/block/dataplane/virtio-blk.c
++++ b/hw/block/dataplane/virtio-blk.c
+@@ -19,7 +19,6 @@
+ #include "qemu/main-loop.h"
+ #include "qemu/thread.h"
+ #include "qemu/error-report.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "hw/virtio/virtio-blk.h"
+ #include "virtio-blk.h"
+ #include "block/aio.h"
+diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
+index f44de1a8c1..17c548b84f 100644
+--- a/hw/s390x/virtio-ccw.c
++++ b/hw/s390x/virtio-ccw.c
+@@ -22,7 +22,6 @@
+ #include "qemu/error-report.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/s390x/adapter.h"
+ #include "hw/s390x/s390_flic.h"
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index 6a0fd0dfb1..443f67daa4 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -26,7 +26,6 @@
+ #include "hw/virtio/vhost.h"
+ #include "hw/virtio/virtio-scsi.h"
+ #include "hw/virtio/virtio-bus.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "hw/fw-path-provider.h"
+ #include "hw/qdev-properties.h"
+ #include "qemu/cutils.h"
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index b7a71a802c..ee99b19e7a 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -26,7 +26,6 @@
+ #include "hw/virtio/vhost-backend.h"
+ #include "hw/virtio/vhost-user-scsi.h"
+ #include "hw/virtio/virtio.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "chardev/char-fe.h"
+ #include "sysemu/sysemu.h"
+ 
+diff --git a/hw/scsi/virtio-scsi-dataplane.c b/hw/scsi/virtio-scsi-dataplane.c
+index f3214e1c57..21344c7cfe 100644
+--- a/hw/scsi/virtio-scsi-dataplane.c
++++ b/hw/scsi/virtio-scsi-dataplane.c
+@@ -19,7 +19,6 @@
+ #include "hw/scsi/scsi.h"
+ #include "scsi/constants.h"
+ #include "hw/virtio/virtio-bus.h"
+-#include "hw/virtio/virtio-access.h"
+ 
+ /* Context: QEMU global mutex held */
+ void virtio_scsi_dataplane_setup(VirtIOSCSI *s, Error **errp)
+diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+index 01b41eb0f1..e08e830006 100644
+--- a/hw/virtio/vdpa-dev.c
++++ b/hw/virtio/vdpa-dev.c
+@@ -25,7 +25,6 @@
+ #include "hw/virtio/vhost.h"
+ #include "hw/virtio/virtio.h"
+ #include "hw/virtio/virtio-bus.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "hw/virtio/vdpa-dev.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/runstate.h"
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index b3094e8a8b..3c575a9a6e 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -26,7 +26,6 @@
+ #include "cpu.h"
+ #include "trace.h"
+ #include "qapi/error.h"
+-#include "hw/virtio/virtio-access.h"
+ 
+ /*
+  * Return one past the end of the end of section. Be careful with uint64_t
+diff --git a/hw/virtio/vhost-vsock-common.c b/hw/virtio/vhost-vsock-common.c
+index e89af9b329..321262f6b3 100644
+--- a/hw/virtio/vhost-vsock-common.c
++++ b/hw/virtio/vhost-vsock-common.c
+@@ -12,7 +12,6 @@
+ #include "standard-headers/linux/virtio_vsock.h"
+ #include "qapi/error.h"
+ #include "hw/virtio/virtio-bus.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "qemu/error-report.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/virtio/vhost.h"
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 23da579ce2..7f3c727777 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -23,7 +23,6 @@
+ #include "qemu/log.h"
+ #include "standard-headers/linux/vhost_types.h"
+ #include "hw/virtio/virtio-bus.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "migration/blocker.h"
+ #include "migration/qemu-file-types.h"
+ #include "sysemu/dma.h"
+diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
+index c729a1f79e..a6d7e1e8ec 100644
+--- a/hw/virtio/virtio-crypto.c
++++ b/hw/virtio/virtio-crypto.c
+@@ -21,7 +21,6 @@
+ #include "hw/virtio/virtio.h"
+ #include "hw/virtio/virtio-crypto.h"
+ #include "hw/qdev-properties.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "standard-headers/linux/virtio_ids.h"
+ #include "sysemu/cryptodev-vhost.h"
+ 
 diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 1cd258135d..85905a9e3d 100644
+index 85905a9e3d..1bbad23f4a 100644
 --- a/hw/virtio/virtio-iommu.c
 +++ b/hw/virtio/virtio-iommu.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
- #include "qemu/log.h"
- #include "qemu/iov.h"
-+#include "exec/target_page.h"
- #include "hw/qdev-properties.h"
+@@ -32,7 +32,6 @@
+ #include "standard-headers/linux/virtio_ids.h"
+ 
+ #include "hw/virtio/virtio-bus.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "hw/virtio/virtio-iommu.h"
+ #include "hw/pci/pci_bus.h"
+ #include "hw/pci/pci.h"
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index 74e63bd47a..12ea58d5ad 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -20,7 +20,6 @@
+ #include "sysemu/reset.h"
  #include "hw/virtio/virtio.h"
- #include "sysemu/kvm.h"
-@@ -1164,7 +1165,7 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
-      * in vfio realize
-      */
-     s->config.bypass = s->boot_bypass;
--    s->config.page_size_mask = TARGET_PAGE_MASK;
-+    s->config.page_size_mask = qemu_target_page_mask();
-     s->config.input_range.end = UINT64_MAX;
-     s->config.domain_range.end = UINT32_MAX;
-     s->config.probe_size = VIOMMU_PROBE_SIZE;
+ #include "hw/virtio/virtio-bus.h"
+-#include "hw/virtio/virtio-access.h"
+ #include "hw/virtio/virtio-mem.h"
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
 -- 
 2.38.1
 
