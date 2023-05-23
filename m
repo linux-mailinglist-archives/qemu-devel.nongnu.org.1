@@ -2,103 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719EE70E472
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 20:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7974070E475
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 20:18:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1WZU-0006C8-1T; Tue, 23 May 2023 14:17:20 -0400
+	id 1q1Wa8-0006J2-JY; Tue, 23 May 2023 14:18:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1WZQ-0006BQ-Ex
- for qemu-devel@nongnu.org; Tue, 23 May 2023 14:17:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1WZN-00022o-Ts
- for qemu-devel@nongnu.org; Tue, 23 May 2023 14:17:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684865832;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0MPdEE4BdprSdXiFHRD6vGV53LBq7DbOeU4PuMtkpjc=;
- b=Tw4bDJ+OARjMK488XaIUHUxrBvvR1g66WgxrU1Goc60EJpgQYW9tw6Sra4WmBwgm5O6Dlk
- uPlM34t9Yk4Aup102oOMHkDuet1sCWxH6bNDtAJnaWMZH50hLI1eyySyo0mVhtR1bsYjcB
- JO36S4KX6PXBGMIveX1B8k5gLo6cgWk=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-567-zsel03CwN96lL1ugnG01Zw-1; Tue, 23 May 2023 14:17:10 -0400
-X-MC-Unique: zsel03CwN96lL1ugnG01Zw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-30953bcb997so1831452f8f.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 11:17:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1Wa6-0006Is-Os
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 14:17:58 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1Wa5-00029V-7a
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 14:17:58 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-25372604818so3939322a91.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 11:17:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684865874; x=1687457874;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bGCjSM9D57rfH+r9bt96oUzjdBdw6pNcVAxOlmQNo8k=;
+ b=PQgpGDSoJfFHWAuek40lTFRsJDpgXEmwZu15xDcTZouZbqVuXGeFTDBVgFjv2IedXD
+ 73GCe3NI3TtwHF/1+hw37Na4rtNo2krmIJGSOKI7e7wNmNnoWPh68KZragZiAzeoPIra
+ S6Z2Zx1Q7PQ2BkU7Uz9lepW0hBMrseLhUQgk1l9C9H/frAzVlXH63OsxTPz1Kk2cxifa
+ q0cP2KBZeqXk6j+zAf+AoVRz5yV1e7FeNKOokk9RO5YPSztvOc9mvZexahcunRfO8dZp
+ VlxwRYqs8bh00C4ltp8nXMAOa7sBSspqfP4vIW+eThJ5aGKq4amdK3xVgNzWcV6LEWKW
+ pmHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684865825; x=1687457825;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1684865874; x=1687457874;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0MPdEE4BdprSdXiFHRD6vGV53LBq7DbOeU4PuMtkpjc=;
- b=FEs2f7W4ygMTvPXbzGI9GABQqSOu67DIubjDgNdmrWyBAkWaFZbfEF70YPjRxZJFMo
- /Fb8O+VWyFLM6imcHKJVIAJROm0NbwWOKoZR7e4r4FCxvYf2JtJ3gecPbkkwL4aSDdH3
- KGrxz83ikHiUKQHHL3SlLqudlNqJCRS7++pcw9CSxwzcJb8rJ155ZLjY8N8mvQqRsUga
- SdsQYAupQ5LI8WrOqUEazo6de20s9J6uWpO7g5zAOMOK+t9nF8y5QvSgnpZ5D2eF2z0f
- /qMJhLGeBIuAWjGxk37jSZvFL1BhT5tRmKZ1NEvZpaCDOwdpM7eQ+/k2onTQJLY05JrY
- 0LKQ==
-X-Gm-Message-State: AC+VfDy7Q3gMwyVB3YpyImgBR3H6Kb8KjhQM+Zh1IVb3zDXcEX2m/iwm
- zJ2RFCPKY3R+qH7v5V2DCQQCNimFHQ3PUrZaqIAdffr1p1saIIGATmlB4Rr1vcwvmOP1JRhjclP
- Gfd+Grthi7N8xilg=
-X-Received: by 2002:adf:f14e:0:b0:307:88ba:c999 with SMTP id
- y14-20020adff14e000000b0030788bac999mr11387829wro.62.1684865825409; 
- Tue, 23 May 2023 11:17:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4aqP1NDzGqgu5DUyX7x2HHMIe+mFeYRn/R1GPFRYVxRsIISFVoPDPR16OHng+LxhD0h8gxWg==
-X-Received: by 2002:adf:f14e:0:b0:307:88ba:c999 with SMTP id
- y14-20020adff14e000000b0030788bac999mr11387816wro.62.1684865825096; 
- Tue, 23 May 2023 11:17:05 -0700 (PDT)
-Received: from [192.168.8.105] (tmo-117-143.customers.d1-online.com.
- [80.187.117.143]) by smtp.gmail.com with ESMTPSA id
- r14-20020adfce8e000000b00306c5900c10sm11961066wrn.9.2023.05.23.11.17.02
+ bh=bGCjSM9D57rfH+r9bt96oUzjdBdw6pNcVAxOlmQNo8k=;
+ b=a1LZOutYmJ5CVGYyR8vC6eIFmsRJCOnabmqwFWKG9/KJ09pxfTV4lxXTzv3zUEqH09
+ Tx17yygvZgmlayfUMDMg5QvN6iesW6mRMkajtVUrfuT5cj1xduE8xFBwLQ50vmbdplYh
+ +4+SxCBrcynBvev10gs/dZIGDAxtXQuz/AnZI9JQB0SD9yaIv1X/tXAFMAzeOqeOxPBF
+ YMuJFP9DxlJXeBxLl4WI3Cy9s/3ExkpV1dOHmplHjIPF3YZyjfLPxBS8aamZ1DrVfLpx
+ 1Ncrh/9bdEPM4n15CFfwIpnxcZtWSs+2tJkJoHi33eqRldTseqBQrAyTTIOqpZ6BeU0h
+ AZHw==
+X-Gm-Message-State: AC+VfDwX9qIygkshDamMxl1N0s11rX8x0+0p0ZvRIMGurP4NjC6Jl89i
+ Vwt5X4+529TAe5zUSvDoSvSpkw==
+X-Google-Smtp-Source: ACHHUZ6BIvD5pBJL+BiEr+v63WsjnExsBTeesw+t/n4OusaILZhIkZePtN51H7cHZPRRtrWQkwj86g==
+X-Received: by 2002:a17:903:483:b0:1ad:eeea:32d7 with SMTP id
+ jj3-20020a170903048300b001adeeea32d7mr15212928plb.48.1684865874570; 
+ Tue, 23 May 2023 11:17:54 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
+ ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
+ by smtp.gmail.com with ESMTPSA id
+ g23-20020a170902869700b001a98f844e60sm7091101plo.263.2023.05.23.11.17.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 11:17:04 -0700 (PDT)
-Message-ID: <c70a82d9-b7e4-6cef-6fc4-d2d77048b3b0@redhat.com>
-Date: Tue, 23 May 2023 20:17:01 +0200
+ Tue, 23 May 2023 11:17:54 -0700 (PDT)
+Message-ID: <68674803-6dbc-0048-e29b-e2b94c70708d@linaro.org>
+Date: Tue, 23 May 2023 11:17:52 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 01/11] softmmu: Introduce
- qemu_target_page_mask/qemu_target_page_align helpers
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 5/6] scripts/decodetree: Implement named field support
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Peter Xu <peterx@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- David Hildenbrand <david@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Eric Farman <farman@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
-References: <20230523163600.83391-1-philmd@linaro.org>
- <20230523163600.83391-2-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230523163600.83391-2-philmd@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230523120447.728365-1-peter.maydell@linaro.org>
+ <20230523120447.728365-6-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230523120447.728365-6-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,18 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/05/2023 18.35, Philippe Mathieu-Daudé wrote:
-> Since TARGET_PAGE_MASK and TARGET_PAGE_ALIGN are poisoned in
-> target-agnostic code, introduce the qemu_target_page_mask()
-> and qemu_target_page_align() helpers to get these values from
-> target-agnostic code at runtime.
+On 5/23/23 05:04, Peter Maydell wrote:
+> Implement support for named fields, i.e.  where one field is defined
+> in terms of another, rather than directly in terms of bits extracted
+> from the instruction.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> The new method referenced_fields() on all the Field classes returns a
+> list of fields that this field references.  This just passes through,
+> except for the new NamedField class.
+> 
+> We can then use referenced_fields() to:
+>   * construct a list of 'dangling references' for a format or
+>     pattern, which is the fields that the format/pattern uses but
+>     doesn't define itself
+>   * do a topological sort, so that we output "field = value"
+>     assignments in an order that means that we assign a field before
+>     we reference it in a subsequent assignment
+>   * check when we output the code for a pattern whether we need to
+>     fill in the format fields before or after the pattern fields, and
+>     do other error checking
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   include/exec/target_page.h |  2 ++
->   softmmu/physmem.c          | 10 ++++++++++
->   2 files changed, 12 insertions(+)
+>   scripts/decodetree.py | 145 ++++++++++++++++++++++++++++++++++++++++--
+>   1 file changed, 139 insertions(+), 6 deletions(-)
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+r~
 
