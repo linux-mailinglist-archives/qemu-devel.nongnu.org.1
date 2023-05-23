@@ -2,88 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5DC70DDB9
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FEA70DDD4
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:47:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SG6-0004GE-Dv; Tue, 23 May 2023 09:41:02 -0400
+	id 1q1SL1-0006zc-97; Tue, 23 May 2023 09:46:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q1SG0-0004Fw-KZ
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:40:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1q1SKy-0006z3-TX
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:46:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q1SFz-0008Hp-4A
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:40:56 -0400
+ (Exim 4.90_1) (envelope-from <kchamart@redhat.com>)
+ id 1q1SKw-0000p6-5F
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:46:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684849254;
+ s=mimecast20190719; t=1684849561;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/7jZ3dVDf/ymWlxLEEpXjfG5NsVuVZuU4Ip7/FKTBU8=;
- b=hIQiJiNzuNsbDMmLBy7+htQf0MRUeSokUf+N7GU5/XAiMnhmTkVt5sfTuhQbEXzPB0abGD
- Bq5uox5ajkx2EI1FspYKmg2oY0xIKxBkyklJ6gI4HTYAhcTOqSzP/nTbWfRioeNLOSnklj
- ouMr8CdTjKBuc2EvguRG9G5MGFSBtsY=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-cEPTeHF5Pmu8a_F4Dc3Uyg-1; Tue, 23 May 2023 09:40:50 -0400
-X-MC-Unique: cEPTeHF5Pmu8a_F4Dc3Uyg-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-3f6b1853e80so3289101cf.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:40:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684849250; x=1687441250;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/7jZ3dVDf/ymWlxLEEpXjfG5NsVuVZuU4Ip7/FKTBU8=;
- b=i/D4itrOGP8s4dhkdhmcJeXA/m7pG+tiwxyp+06sWOHWNQC9xZxM86xjwCoTDijhy7
- tBLLQYQZVBrob0vuNAuVWJ2Rx4c7LVXfKSefPu/Xq8a8BByWjATfAOWCqWVWFtdK9d+H
- voEQ0BUybpuZm6/F/S+IMhF2jxJ7z56qpjoe1u5onuvM+eTzoI1ALURJ6QnZ9NDjaeRI
- 2nL7hKpC8+RDb42ec1o8e7+NnmlqZ3T63sADR+C9qAyXhz8XISiqQVgKHdt3L/dcw1kk
- F7X90jALp/VbgzR7CX4Rqvb5p2XZJMGTqUyBYzir0ccUYpqE/mXzkHh1UbmDkE3EKU+u
- a/XA==
-X-Gm-Message-State: AC+VfDwECaPvY9My82vEk/Deb1TpcOTrT1tvCpBGCCDmpmyPspVn9911
- UdAI1T8g01jPwdOXKOkvgYc6Cl4gR+WKulqMaS68EKhkk/1ixqrrr9VNhBFu6bWJbpmgZ3J6Je5
- moSTsdHWuGQuoid8=
-X-Received: by 2002:a05:622a:104d:b0:3f6:aacf:5853 with SMTP id
- f13-20020a05622a104d00b003f6aacf5853mr11993960qte.3.1684849250230; 
- Tue, 23 May 2023 06:40:50 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6djdOr1sDhXSIywAPrfs+Y3yazi14h4oIF3XfYXR72jcmXsdBBwgURzOE17EEmCt5dlJApaQ==
-X-Received: by 2002:a05:622a:104d:b0:3f6:aacf:5853 with SMTP id
- f13-20020a05622a104d00b003f6aacf5853mr11993936qte.3.1684849249920; 
- Tue, 23 May 2023 06:40:49 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- r11-20020ac85e8b000000b003f6be76a5c1sm237809qtx.6.2023.05.23.06.40.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:40:49 -0700 (PDT)
-Date: Tue, 23 May 2023 09:40:48 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Wang, Wei W" <wei.w.wang@intel.com>
-Cc: "quintela@redhat.com" <quintela@redhat.com>,
- "Wang, Lei4" <lei4.wang@intel.com>,
- "berrange@redhat.com" <berrange@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v1] migration: fail the cap check if it requires the use
- of deferred incoming
-Message-ID: <ZGzCYMRWa7sW9xAv@x1n>
-References: <20230518160026.57414-1-wei.w.wang@intel.com>
- <ZGZ6Yqx2+dOp+Q73@x1n>
- <DS0PR11MB637350354B0285ABF3FA1BD9DC7C9@DS0PR11MB6373.namprd11.prod.outlook.com>
- <ZGeWF4lzBldLLH/y@x1n> <ZGeW3R5McptUueJF@x1n>
- <DS0PR11MB63736A4AE4A624D2B9EFD19DDC7D9@DS0PR11MB6373.namprd11.prod.outlook.com>
- <ZGv8adigFYpLD89k@x1n>
- <DS0PR11MB63737B09D72A735EC21F3C41DC409@DS0PR11MB6373.namprd11.prod.outlook.com>
+ bh=EuCBH3yoFQG8LOIbtmJg9pfMudFtseebYt+x5TlbMj8=;
+ b=Nmd2VvjsasrscFpKSjz1mVsb5w6GJqAz4x/dC/j7Kh97gXx22fad2tsuJghMmqSZH/OZDl
+ RBOn236wuJB4kuBhBq4ZYq21CEYgODntZGO80L24dlaijHFcPSlxsGKzI96bZE2iOhZpom
+ P3P81+VrTlL3BHc6kTg/y7x3wPzTKYs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-623-ryL14jTMNPqTf_m5sQqJ4Q-1; Tue, 23 May 2023 09:45:57 -0400
+X-MC-Unique: ryL14jTMNPqTf_m5sQqJ4Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D23B7185A793;
+ Tue, 23 May 2023 13:45:56 +0000 (UTC)
+Received: from pinwheel (unknown [10.39.194.85])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7C57B1121315;
+ Tue, 23 May 2023 13:45:55 +0000 (UTC)
+Date: Tue, 23 May 2023 15:45:52 +0200
+From: Kashyap Chamarthy <kchamart@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [PATCH v2] docs: build-system: rename "default-configs" to
+ "configs"
+Message-ID: <ZGzDkL9ZOK7JgMNs@pinwheel>
+References: <20230523133117.2278587-1-kchamart@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DS0PR11MB63737B09D72A735EC21F3C41DC409@DS0PR11MB6373.namprd11.prod.outlook.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230523133117.2278587-1-kchamart@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kchamart@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,40 +79,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 23, 2023 at 01:44:03AM +0000, Wang, Wei W wrote:
-> On Tuesday, May 23, 2023 7:36 AM, Peter Xu wrote:
-> > > > We may also want to trap the channel setups on num:
-> > > >
-> > > > migrate_params_test_apply():
-> > > >
-> > > >     if (params->has_multifd_channels) {
-> > > >         dest->multifd_channels = params->multifd_channels;
-> > > >     }
-> > >
-> > > Didn’t get this one. What do you want to add to above?
-> > 
-> > I meant after listen() is called with an explicit number in this case, should we
-> > disallow changing of multifd number of channels?
+On Tue, May 23, 2023 at 03:31:17PM +0200, Kashyap Chamarthy wrote:
+
+[I missed to include version history under "---"; now done]
+
+> Commit 812b31d3f9 (configs: rename default-configs to configs and
+> reorganise, 2021-07-07) did the rename.
 > 
-> Got you, thanks. That seems unnecessary to me, as the cap setting is required
-> for the use of multifd and patching there already achieves below what we want:
-> - users get the error message when deferred -incoming isn’t used;
-> - fail the cap setting for multifd, meaning that multifd won't be used (i.e.
-> no place that will care about multifd_channels).
+> Reflect that update also in the documentation.
+> 
+> Signed-off-by: Kashyap Chamarthy <kchamart@redhat.com>
 
-It's about whether we want to protect e.g. below steps:
+In v2:
 
-1. start dest qemu with -incoming defer
-2. "migrate-set-capabilities" to enable multifd
-3. "migrate-incoming xxx" to setup the sockets
-4. "migrate-set-parameters" to setup the num of multifd   <--- will be invalid here
+- Address Lei Wang's feedback from v1:
+  https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg02988.html
 
-Would that still be a problem that falls into the same category of what
-this patch wants to protect qemu from?
+(I'd appreciate a closer look at the edits in docs/devel/kconfig.rst, to
+make sure I'm referring to the correct subdirectory where appropriate:
+configs/devices/ vs. configs/targets/.  I read through the surrounding
+text to make the choice, but a second look would be helpful.)
 
-Thanks,
+>  docs/devel/build-system.rst | 12 +++++------
+>  docs/devel/kconfig.rst      | 40 ++++++++++++++++++++-----------------
+>  2 files changed, 28 insertions(+), 24 deletions(-)
+> 
+> diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
+> index 1894721743..20ebcc9ac6 100644
+> --- a/docs/devel/build-system.rst
+> +++ b/docs/devel/build-system.rst
+> @@ -193,7 +193,7 @@ Target-dependent emulator sourcesets:
+>    Each emulator also includes sources for files in the ``hw/`` and ``target/``
+>    subdirectories.  The subdirectory used for each emulator comes
+>    from the target's definition of ``TARGET_BASE_ARCH`` or (if missing)
+> -  ``TARGET_ARCH``, as found in ``default-configs/targets/*.mak``.
+> +  ``TARGET_ARCH``, as found in ``configs/targets/*.mak``.
+>  
+>    Each subdirectory in ``hw/`` adds one sourceset to the ``hw_arch`` dictionary,
+>    for example::
+> @@ -250,8 +250,8 @@ Utility sourcesets:
+>  The following files concur in the definition of which files are linked
+>  into each emulator:
+>  
+> -``default-configs/devices/*.mak``
+> -  The files under ``default-configs/devices/`` control the boards and devices
+> +``configs/devices/*.mak``
+> +  The files under ``configs/devices/`` control the boards and devices
+>    that are built into each QEMU system emulation targets. They merely contain
+>    a list of config variable definitions such as::
+>  
+> @@ -260,11 +260,11 @@ into each emulator:
+>      CONFIG_XLNX_VERSAL=y
+>  
+>  ``*/Kconfig``
+> -  These files are processed together with ``default-configs/devices/*.mak`` and
+> +  These files are processed together with ``configs/devices/*.mak`` and
+>    describe the dependencies between various features, subsystems and
+>    device models.  They are described in :ref:`kconfig`
+>  
+> -``default-configs/targets/*.mak``
+> +``configs/targets/*.mak``
+>    These files mostly define symbols that appear in the ``*-config-target.h``
+>    file for each emulator [#cfgtarget]_.  However, the ``TARGET_ARCH``
+>    and ``TARGET_BASE_ARCH`` will also be used to select the ``hw/`` and
+> @@ -457,7 +457,7 @@ Built by Meson:
+>    TARGET-NAME is again the name of a system or userspace emulator. The
+>    config-devices.mak file is automatically generated by make using the
+>    scripts/make_device_config.sh program, feeding it the
+> -  default-configs/$TARGET-NAME file as input.
+> +  configs/$TARGET-NAME file as input.
+>  
+>  ``config-host.h``, ``$TARGET_NAME-config-target.h``, ``$TARGET_NAME-config-devices.h``
+>    These files are used by source code to determine what features are
+> diff --git a/docs/devel/kconfig.rst b/docs/devel/kconfig.rst
+> index e3a544e463..73118e5106 100644
+> --- a/docs/devel/kconfig.rst
+> +++ b/docs/devel/kconfig.rst
+> @@ -38,11 +38,11 @@ originated in the Linux kernel, though it was heavily simplified and
+>  the handling of dependencies is stricter in QEMU.
+>  
+>  Unlike Linux, there is no user interface to edit the configuration, which
+> -is instead specified in per-target files under the ``default-configs/``
+> +is instead specified in per-target files under the ``configs/target/``
+>  directory of the QEMU source tree.  This is because, unlike Linux,
+> -configuration and dependencies can be treated as a black box when building
+> -QEMU; the default configuration that QEMU ships with should be okay in
+> -almost all cases.
+> +configuration and dependencies can be treated as a black box when
+> +building QEMU; the default configuration that QEMU ships with should be
+> +okay in almost all cases.
+>  
+>  The Kconfig language
+>  --------------------
+> @@ -103,11 +103,12 @@ directives can be included:
+>  **default value**: ``default <value> [if <expr>]``
+>  
+>    Default values are assigned to the config symbol if no other value was
+> -  set by the user via ``default-configs/*.mak`` files, and only if
+> -  ``select`` or ``depends on`` directives do not force the value to true
+> -  or false respectively.  ``<value>`` can be ``y`` or ``n``; it cannot
+> -  be an arbitrary Boolean expression.  However, a condition for applying
+> -  the default value can be added with ``if``.
+> +  set by the user via
+> +  ``configs/devices/TARGETNAME-softmmu/*.mak`` files, and only
+> +  if ``select`` or ``depends on`` directives do not force the value to
+> +  true or false respectively.  ``<value>`` can be ``y`` or ``n``; it
+> +  cannot be an arbitrary Boolean expression.  However, a condition for
+> +  applying the default value can be added with ``if``.
+>  
+>    A configuration element can have any number of default values (usually,
+>    if more than one default is present, they will have different
+> @@ -119,8 +120,8 @@ directives can be included:
+>    This is similar to ``select`` as it applies a lower limit of ``y``
+>    to another symbol.  However, the lower limit is only a default
+>    and the "implied" symbol's value may still be set to ``n`` from a
+> -  ``default-configs/*.mak`` files.  The following two examples are
+> -  equivalent::
+> +  ``configs/devices/TARGETNAME-softmmu/*.mak`` files.  The following
+> +  two examples are equivalent::
+>  
+>      config FOO
+>        bool
+> @@ -146,8 +147,9 @@ declares its dependencies in different ways:
+>        bool
+>  
+>    Subsystems always default to false (they have no ``default`` directive)
+> -  and are never visible in ``default-configs/*.mak`` files.  It's
+> -  up to other symbols to ``select`` whatever subsystems they require.
+> +  and are never visible in ``configs/devices/TARGETNAME-softmmu/*.mak``
+> +  files.  It's up to other symbols to ``select`` whatever subsystems
+> +  they require.
+>  
+>    They sometimes have ``select`` directives to bring in other required
+>    subsystems or buses.  For example, ``AUX`` (the DisplayPort auxiliary
+> @@ -229,7 +231,8 @@ declares its dependencies in different ways:
+>    cannot be started at all without it.  It should be listed under
+>    ``imply`` if (depending on the QEMU command line) the board may or
+>    may not be started without it.  Boards also default to false; they are
+> -  enabled by the ``default-configs/*.mak`` for the target they apply to.
+> +  enabled by the ``configs/targets/TARGETNAME-softmmu/*.mak`` for the
+> +  target they apply to.
+>  
+>  **internal elements**
+>  
+> @@ -241,18 +244,19 @@ declares its dependencies in different ways:
+>  
+>    Internal elements group code that is useful in several boards or
+>    devices.  They are usually enabled with ``select`` and in turn select
+> -  other elements; they are never visible in ``default-configs/*.mak``
+> -  files, and often not even in the Makefile.
+> +  other elements; they are never visible in
+> +  ``configs/devices/TARGETNAME-softmmu/*.mak`` files, and often not even
+> +  in the Makefile.
+>  
+>  Writing and modifying default configurations
+>  --------------------------------------------
+>  
+>  In addition to the Kconfig files under hw/, each target also includes
+> -a file called ``default-configs/TARGETNAME-softmmu.mak``.  These files
+> +a file called ``configs/devices/TARGETNAME-softmmu.mak``.  These files
+>  initialize some Kconfig variables to non-default values and provide the
+>  starting point to turn on devices and subsystems.
+>  
+> -A file in ``default-configs/`` looks like the following example::
+> +A file in ``configs/devices/`` looks like the following example::
+>  
+>      # Default configuration for alpha-softmmu
+>  
+> -- 
+> 2.40.1
+> 
 
 -- 
-Peter Xu
+/kashyap
 
 
