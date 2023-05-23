@@ -2,49 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052B870DA32
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E347670DA2B
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:18:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P66-00027Q-Lc; Tue, 23 May 2023 06:18:34 -0400
+	id 1q1P3N-0006dG-IQ; Tue, 23 May 2023 06:15:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P5E-0001ZA-V9; Tue, 23 May 2023 06:17:37 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1q1P3L-0006cO-3k
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 06:15:39 -0400
+Received: from smtpout3.mo529.mail-out.ovh.net ([46.105.54.81])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P59-0002E0-Q8; Tue, 23 May 2023 06:17:33 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 74B937D09;
- Tue, 23 May 2023 13:15:54 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id AB09A7299;
- Tue, 23 May 2023 13:15:53 +0300 (MSK)
-Received: (nullmailer pid 85560 invoked by uid 1000);
- Tue, 23 May 2023 10:15:49 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Eric Blake <eblake@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 59/59] nbd/server: Fix drained_poll to wake coroutine
- in right AioContext
-Date: Tue, 23 May 2023 13:15:19 +0300
-Message-Id: <20230523101536.85424-23-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
-References: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1q1P3H-0001hR-RK
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 06:15:38 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.108.1.250])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 8BB0C21DF6;
+ Tue, 23 May 2023 10:15:31 +0000 (UTC)
+Received: from kaod.org (37.59.142.102) by DAG8EX2.mxp5.local (172.16.2.72)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 23 May
+ 2023 12:15:30 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-102R004ad17168d-9d52-4d6f-a36f-8df47cb818b6,
+ 5354F1BE48D8676E327CF87D7838D956CE2421D7) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Tue, 23 May 2023 12:15:29 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Narayana Murty N <nnmlinux@linux.vnet.ibm.com>
+CC: Narayana Murty N <nnmlinux@linux.ibm.com>, <danielhb413@gmail.com>,
+ <clg@kaod.org>, <david@gibson.dropbear.id.au>, <npiggin@gmail.com>,
+ <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, <farosas@suse.de>,
+ <npiggin@linux.ibm.com>, <vaibhav@linux.ibm.com>, <harshpb@linux.ibm.com>,
+ <sbhat@linux.ibm.com>
+Subject: Re: [PATCH v3] target: ppc: Use MSR_HVB bit to get the target
+ endianness for memory dump
+Message-ID: <20230523121529.57739259@bahia>
+In-Reply-To: <29625575-d8f1-a66a-6d5a-0ce28a486525@linux.vnet.ibm.com>
+References: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
+ <20230522202024.735f02a6@bahia>
+ <29625575-d8f1-a66a-6d5a-0ce28a486525@linux.vnet.ibm.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.102]
+X-ClientProxiedBy: DAG5EX1.mxp5.local (172.16.2.41) To DAG8EX2.mxp5.local
+ (172.16.2.72)
+X-Ovh-Tracer-GUID: e9390875-dbad-4578-b303-45766f492d93
+X-Ovh-Tracer-Id: 10539267554478234043
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejfedgvddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeeftdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeelkeevfedujeduvdelgffhgeekudevveekhfejteeffeduheefffdvfefhhefhhfenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvghrnhgvlhdrohhrghenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtvddpjeekrdduleejrddvtdekrddvgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehnnhhmlhhinhhugieslhhinhhugidrvhhnvghtrdhisghmrdgtohhmpdhnnhhmlhhinhhugieslhhinhhugidrihgsmhdrtghomhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdpnhhpihhgghhinhesghhmrghilhdrtghomhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdroh
+ hrghdpfhgrrhhoshgrshesshhushgvrdguvgdpnhhpihhgghhinheslhhinhhugidrihgsmhdrtghomhdpvhgrihgshhgrvheslhhinhhugidrihgsmhdrtghomhdphhgrrhhshhhpsgeslhhinhhugidrihgsmhdrtghomhdpshgshhgrtheslhhinhhugidrihgsmhdrtghomhdptghlgheskhgrohgurdhorhhgpdfovfetjfhoshhtpehmohehvdelpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=46.105.54.81; envelope-from=groug@kaod.org;
+ helo=smtpout3.mo529.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,146 +78,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+On Tue, 23 May 2023 12:20:17 +0530
+Narayana Murty N <nnmlinux@linux.vnet.ibm.com> wrote:
 
-nbd_drained_poll() generally runs in the main thread, not whatever
-iothread the NBD server coroutine is meant to run in, so it can't
-directly reenter the coroutines to wake them up.
+> 
+> On 5/22/23 23:50, Greg Kurz wrote:
+> > On Mon, 22 May 2023 12:02:42 -0400
+> > Narayana Murty N<nnmlinux@linux.ibm.com>  wrote:
+> >
+> >> Currently on PPC64 qemu always dumps the guest memory in
+> >> Big Endian (BE) format even though the guest running in Little Endian
+> >> (LE) mode. So crash tool fails to load the dump as illustrated below:
+> >>
+> >> Log :
+> >> $ virsh dump DOMAIN --memory-only dump.file
+> >>
+> >> Domain 'DOMAIN' dumped to dump.file
+> >>
+> >> $ crash vmlinux dump.file
+> >>
+> >> <snip>
+> >> crash 8.0.2-1.el9
+> >>
+> >> WARNING: endian mismatch:
+> >>            crash utility: little-endian
+> >>            dump.file: big-endian
+> >>
+> >> WARNING: machine type mismatch:
+> >>            crash utility: PPC64
+> >>            dump.file: (unknown)
+> >>
+> >> crash: dump.file: not a supported file format
+> >> <snip>
+> >>
+> >> This happens because cpu_get_dump_info() passes cpu->env->has_hv_mode
+> >> to function ppc_interrupts_little_endian(), the cpu->env->has_hv_mode
+> >> always set for powerNV even though the guest is not running in hv mode.
+> >> The hv mode should be taken from msr_mask MSR_HVB bit
+> >> (cpu->env.msr_mask & MSR_HVB). This patch fixes the issue by passing
+> >> MSR_HVB value to ppc_interrupts_little_endian() in order to determine
+> >> the guest endianness.
+> >>
+> >> The crash tool also expects guest kernel endianness should match the
+> >> endianness of the dump.
+> >>
+> >> The patch was tested on POWER9 box booted with Linux as host in
+> >> following cases:
+> >>
+> >> Host-Endianess Qemu-Target-Machine Qemu-Guest-Endianess  Qemu-Generated-Guest
+> >>                                                            Memory-Dump-Format
+> >> BE             powernv             LE KVM guest                 LE
+> >> BE             powernv             BE KVM guest                 BE
+> >> LE             powernv             LE KVM guest                 LE
+> >> LE             powernv             BE KVM guest                 BE
+> > I don't quite understand why KVM is mentioned with the powernv machine.
+> 
+> guest running mode was mentioned.
+> 
 
-The code seems to have the right intention, it specifies the correct
-AioContext when it calls qemu_aio_coroutine_enter(). However, this
-functions doesn't schedule the coroutine to run in that AioContext, but
-it assumes it is already called in the home thread of the AioContext.
+QEMU cannot use KVM on the host to run a powernv machine. The
+guest is thus necessarily running in TCG mode.
 
-To fix this, add a new thread-safe qio_channel_wake_read() that can be
-called in the main thread to wake up the coroutine in its AioContext,
-and use this in nbd_drained_poll().
+Please describe your setup and what exactly you are testing.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-Id: <20230517152834.277483-3-kwolf@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 7c1f51bf38de8cea4ed5030467646c37b46edeb7)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> >
+> > Also have you tried to dump at various moments, e.g. during skiboot
+> > and when guest is booted, as in [1] which introduced the code this
+> > patch is changing ?
+> >
+> > [1]https://github.com/qemu/qemu/commit/5609400a422809c89ea788e4d0e13124a617582e.
+> >
+> >> LE             pseries KVM         LE KVM guest                 LE
+> >> LE             pseries TCG         LE guest                     LE
+> >>
+> > Fixes: 5609400a4228 ("target/ppc: Set the correct endianness for powernv memory dumps")
+> 
+> I agree, commit 5609400a4228 fixes endianness detection only for initial stage (skiboot) till endianness switch happens.
+> However, has_hv_mode is just a capability flag which is always set based on command-line param and doesnt really represent current hv state.
+> With this patch, it relies on the current state of the hv state based on the MSR_HVB of the msr_mask.
+> 
 
-diff --git a/include/io/channel.h b/include/io/channel.h
-index 153fbd2904..2b905423a9 100644
---- a/include/io/channel.h
-+++ b/include/io/channel.h
-@@ -757,6 +757,16 @@ void qio_channel_detach_aio_context(QIOChannel *ioc);
- void coroutine_fn qio_channel_yield(QIOChannel *ioc,
-                                     GIOCondition condition);
- 
-+/**
-+ * qio_channel_wake_read:
-+ * @ioc: the channel object
-+ *
-+ * If qio_channel_yield() is currently waiting for the channel to become
-+ * readable, interrupt it and reenter immediately. This function is safe to call
-+ * from any thread.
-+ */
-+void qio_channel_wake_read(QIOChannel *ioc);
-+
- /**
-  * qio_channel_wait:
-  * @ioc: the channel object
-diff --git a/io/channel.c b/io/channel.c
-index a8c7f11649..3c9b7beb65 100644
---- a/io/channel.c
-+++ b/io/channel.c
-@@ -19,6 +19,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "block/aio-wait.h"
- #include "io/channel.h"
- #include "qapi/error.h"
- #include "qemu/main-loop.h"
-@@ -514,7 +515,11 @@ int qio_channel_flush(QIOChannel *ioc,
- static void qio_channel_restart_read(void *opaque)
- {
-     QIOChannel *ioc = opaque;
--    Coroutine *co = ioc->read_coroutine;
-+    Coroutine *co = qatomic_xchg(&ioc->read_coroutine, NULL);
-+
-+    if (!co) {
-+        return;
-+    }
- 
-     /* Assert that aio_co_wake() reenters the coroutine directly */
-     assert(qemu_get_current_aio_context() ==
-@@ -525,7 +530,11 @@ static void qio_channel_restart_read(void *opaque)
- static void qio_channel_restart_write(void *opaque)
- {
-     QIOChannel *ioc = opaque;
--    Coroutine *co = ioc->write_coroutine;
-+    Coroutine *co = qatomic_xchg(&ioc->write_coroutine, NULL);
-+
-+    if (!co) {
-+        return;
-+    }
- 
-     /* Assert that aio_co_wake() reenters the coroutine directly */
-     assert(qemu_get_current_aio_context() ==
-@@ -568,7 +577,11 @@ void qio_channel_detach_aio_context(QIOChannel *ioc)
- void coroutine_fn qio_channel_yield(QIOChannel *ioc,
-                                     GIOCondition condition)
- {
-+    AioContext *ioc_ctx = ioc->ctx ?: qemu_get_aio_context();
-+
-     assert(qemu_in_coroutine());
-+    assert(in_aio_context_home_thread(ioc_ctx));
-+
-     if (condition == G_IO_IN) {
-         assert(!ioc->read_coroutine);
-         ioc->read_coroutine = qemu_coroutine_self();
-@@ -580,18 +593,26 @@ void coroutine_fn qio_channel_yield(QIOChannel *ioc,
-     }
-     qio_channel_set_aio_fd_handlers(ioc);
-     qemu_coroutine_yield();
-+    assert(in_aio_context_home_thread(ioc_ctx));
- 
-     /* Allow interrupting the operation by reentering the coroutine other than
-      * through the aio_fd_handlers. */
--    if (condition == G_IO_IN && ioc->read_coroutine) {
--        ioc->read_coroutine = NULL;
-+    if (condition == G_IO_IN) {
-+        assert(ioc->read_coroutine == NULL);
-         qio_channel_set_aio_fd_handlers(ioc);
--    } else if (condition == G_IO_OUT && ioc->write_coroutine) {
--        ioc->write_coroutine = NULL;
-+    } else if (condition == G_IO_OUT) {
-+        assert(ioc->write_coroutine == NULL);
-         qio_channel_set_aio_fd_handlers(ioc);
-     }
- }
- 
-+void qio_channel_wake_read(QIOChannel *ioc)
-+{
-+    Coroutine *co = qatomic_xchg(&ioc->read_coroutine, NULL);
-+    if (co) {
-+        aio_co_wake(co);
-+    }
-+}
- 
- static gboolean qio_channel_wait_complete(QIOChannel *ioc,
-                                           GIOCondition condition,
-diff --git a/nbd/server.c b/nbd/server.c
-index 3d8d0d81df..ea47522e8f 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -1599,8 +1599,7 @@ static bool nbd_drained_poll(void *opaque)
-              * enter it here so we don't depend on the client to wake it up.
-              */
-             if (client->recv_coroutine != NULL && client->read_yielding) {
--                qemu_aio_coroutine_enter(exp->common.ctx,
--                                         client->recv_coroutine);
-+                qio_channel_wake_read(client->ioc);
-             }
- 
-             return true;
--- 
-2.39.2
+Yes I see what your patch is doing. The 'Fixes: 5609400a4228 ...' line is
+intended to the changelog because it is supposedly a fix to this commit.
 
+> >
+> >> Signed-off-by: Narayana Murty N<nnmlinux@linux.ibm.com>
+> >> ---
+> >> Changes since V2:
+> >> commit message modified as per feedbak from Nicholas Piggin.
+> >> Changes since V1:
+> >> https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.ibm.com/
+> >> The approach to solve the issue was changed based on feedback from
+> >> Fabiano Rosas on patch V1.
+> >> ---
+> >>   target/ppc/arch_dump.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
+> >> index f58e6359d5..a8315659d9 100644
+> >> --- a/target/ppc/arch_dump.c
+> >> +++ b/target/ppc/arch_dump.c
+> >> @@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+> >>       info->d_machine = PPC_ELF_MACHINE;
+> >>       info->d_class = ELFCLASS;
+> >>   
+> >> -    if (ppc_interrupts_little_endian(cpu, cpu->env.has_hv_mode)) {
+> >> +    if (ppc_interrupts_little_endian(cpu, !!(cpu->env.msr_mask & MSR_HVB))) {
+> >>           info->d_endian = ELFDATA2LSB;
+> >>       } else {
+> >>           info->d_endian = ELFDATA2MSB;
 
