@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B4270D1A5
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4D570D1C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:49:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1I1A-0003f5-Ol; Mon, 22 May 2023 22:44:58 -0400
+	id 1q1I17-0003Sv-Hj; Mon, 22 May 2023 22:44:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I0v-0003NI-Sz
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:42 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1q1I0x-0003Or-Sn
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:44 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I0u-00049a-Fd
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:41 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-64d41763796so2471466b3a.2
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:44:38 -0700 (PDT)
+ id 1q1I0w-00049u-BR
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:43 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-25376483f66so3223760a91.0
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:44:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809877; x=1687401877;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809881; x=1687401881;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oERuBkIJa1L84Gt8ryLl7gNohjOzEDyL2xcegi4Ja6g=;
- b=QPf66iLAkgqfsee4XxIXi4Tc/b5SPCzFyaQHadNX8RYMVVk6e6TYX4ho0XAdd43CyH
- 38UpKbJylUMObjvRUGCl/UTcNps5TpTeVtQl9GBfG1Asui+hc90QCDmCd8012LvsXAnV
- XGJ47y0PUNfs+29G0K7NidUEnoXKAofeIcNUUtl9WXVt7lP0AbLeV7xayJeKXXyJXop+
- XTCFwWcERYgI3+VfIk1dsI14gu/PfqSuM28lK2yiQGYH9kdpFiVsACMTfnjzI/JG8EJ6
- peTSR07NAZ90/goawRfiFLAEJmVbX1zajiEzKRruDtWewwnbLqftkDh1+ypKuSjpQKu6
- RMlQ==
+ bh=As44EvDKe5F3A7y2pEDwPEQkJZ3O6lbWcqZylXZFXdQ=;
+ b=vsoHaZfZKza3Fjq1fv+4QHj77uBEIKPqaSF/eol8+rMDabfKtbdPbQ0WLSX7E+K0w/
+ gF+LgRuD2XUpdn0ammlbdbz+krbXJiBAiywQ60T+5kFqzV+mn30CVKoPa/QGhTPQevhg
+ EJalScgbiKPkXszqDmynyQuTfZM/7gjB5Kl3DicUGNSfMnch7PIBRrJkBQKb7k+1WPxK
+ uHCDnnOSRBqfMgjgopYQEdgYcC/pGsfnimZ2FmgUAvaqH3yQr5CwsVy0z8XxhwRZ8GV9
+ ZlQbcon2a67vCUnkWa7VcEkdR0oFBkjSjScT4zSt52LeHKoz7vdJAfEFBwnsusYwkltd
+ DpXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684809877; x=1687401877;
+ d=1e100.net; s=20221208; t=1684809881; x=1687401881;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oERuBkIJa1L84Gt8ryLl7gNohjOzEDyL2xcegi4Ja6g=;
- b=d56j+qp3QTSm+y2TYftlp0pHjDAr8a4BrdhwsBeApeyBt1Dx8R5ApHa5TNacpyPcdl
- FT/goFAZJzzo69ufStlDIgp0WhjwQC3e83xP6RtCnr8hPel/bfcYw5UXQ8qt09VKmiwj
- sTYYHI+nB87vsR5jtZtlauYPyJm1jMdursXvHgUT9WTp9RPHm9+X99BNIxG8tKqGhihM
- sLAseCBqzSrOCn8w8JtcuelCod4ULLCBt5fPqc4PiPQh/6yk4DsDhxvhv7VS5WEeLm8t
- BlrcDLdTzI8lax9VZCI0R8dbNPR1wkUgOAR06885AajAGjQcBdlqVPQJ0PHYL7TbY5F8
- 9x0w==
-X-Gm-Message-State: AC+VfDxhRlnFuAwtjytFt3zSOFTHydclSC62Ha1MzAb4nXC1TXWVLWek
- p7u9Iem6ZpFVNJRBYkROjFnlCQ==
-X-Google-Smtp-Source: ACHHUZ599roCzTaznZJ/4hnpA6OQHYNnuzoma7Ywg5LlQWBUEU7gd2ohvHCarPZwl2v07YTEJAKw3g==
-X-Received: by 2002:a05:6a21:6da5:b0:10b:78d6:a2c8 with SMTP id
- wl37-20020a056a216da500b0010b78d6a2c8mr6113556pzb.15.1684809877766; 
- Mon, 22 May 2023 19:44:37 -0700 (PDT)
+ bh=As44EvDKe5F3A7y2pEDwPEQkJZ3O6lbWcqZylXZFXdQ=;
+ b=hkh0KYVJr7gQU+pP6F95HdQS22CRyyF/Hfianbc+cO8Wk/jS5F7Qd58XM2rp/ZEZoE
+ e7XH6TrtgOmmJky8do0cqJpg/PF+OXdwqKnldk2p/lBuSwb2kG2eyuTyW5Tw0rSyL8dM
+ Up8Yx4kyl6aK0NFP+MbmRjGaSrHCoPM4iEADYVD/RjQZovXqWYnGlp0zjNinU6OjIG3L
+ Hzj05msQRgVTPdi70KnQI1E9kRIvKtbXt0/51TPbC4hPOeCvWx/MtFxfSyNczzmpyp5G
+ lSLT/MuqLnrB8UWaLf2LRJkyXtJbieK7X4vtxonx09tmxd1o7sDYFMnpaoV76O9Ul+g4
+ 5PNQ==
+X-Gm-Message-State: AC+VfDwBpp64134hosyoVZGMZtzbK/QKQutZX1Vb5Nk9nz5jEUYxeQNt
+ J/Nv0VT/tvJStVw3d7Shdu9DLA==
+X-Google-Smtp-Source: ACHHUZ7XjQbYd8ZNRTE3sbWYRzb5pLJb+zbpic0uk8k6RSLnB9EO2LCr7v3ox+AtRcwcjGNwhaUgPg==
+X-Received: by 2002:a17:90a:4a07:b0:253:440b:7aed with SMTP id
+ e7-20020a17090a4a0700b00253440b7aedmr11930031pjh.32.1684809881128; 
+ Mon, 22 May 2023 19:44:41 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.44.34
+ o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.44.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 19:44:37 -0700 (PDT)
+ Mon, 22 May 2023 19:44:40 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
@@ -69,16 +69,17 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org, Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 13/48] hw/net/net_tx_pkt: Remove net_rx_pkt_get_l4_info
-Date: Tue, 23 May 2023 11:43:04 +0900
-Message-Id: <20230523024339.50875-14-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 14/48] net/eth: Rename eth_setup_vlan_headers_ex
+Date: Tue, 23 May 2023 11:43:05 +0900
+Message-Id: <20230523024339.50875-15-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 References: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,50 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is not used.
+The old eth_setup_vlan_headers has no user so remove it and rename
+eth_setup_vlan_headers_ex.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/net_rx_pkt.h | 9 ---------
- hw/net/net_rx_pkt.c | 5 -----
- 2 files changed, 14 deletions(-)
+ include/net/eth.h   | 9 +--------
+ hw/net/net_tx_pkt.c | 2 +-
+ net/eth.c           | 2 +-
+ 3 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/hw/net/net_rx_pkt.h b/hw/net/net_rx_pkt.h
-index a06f5c2675..ce8dbdb284 100644
---- a/hw/net/net_rx_pkt.h
-+++ b/hw/net/net_rx_pkt.h
-@@ -119,15 +119,6 @@ eth_ip6_hdr_info *net_rx_pkt_get_ip6_info(struct NetRxPkt *pkt);
-  */
- eth_ip4_hdr_info *net_rx_pkt_get_ip4_info(struct NetRxPkt *pkt);
+diff --git a/include/net/eth.h b/include/net/eth.h
+index 9f19c3a695..e8af5742be 100644
+--- a/include/net/eth.h
++++ b/include/net/eth.h
+@@ -351,16 +351,9 @@ eth_strip_vlan_ex(const struct iovec *iov, int iovcnt, size_t iovoff,
+ uint16_t
+ eth_get_l3_proto(const struct iovec *l2hdr_iov, int iovcnt, size_t l2hdr_len);
  
--/**
-- * fetches L4 header analysis results
-- *
-- * Return:  pointer to analysis results structure which is stored in internal
-- *          packet area.
-- *
-- */
--eth_l4_hdr_info *net_rx_pkt_get_l4_info(struct NetRxPkt *pkt);
--
- typedef enum {
-     NetPktRssIpV4,
-     NetPktRssIpV4Tcp,
-diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
-index 63be6e05ad..6125a063d7 100644
---- a/hw/net/net_rx_pkt.c
-+++ b/hw/net/net_rx_pkt.c
-@@ -236,11 +236,6 @@ eth_ip4_hdr_info *net_rx_pkt_get_ip4_info(struct NetRxPkt *pkt)
-     return &pkt->ip4hdr_info;
- }
+-void eth_setup_vlan_headers_ex(struct eth_header *ehdr, uint16_t vlan_tag,
++void eth_setup_vlan_headers(struct eth_header *ehdr, uint16_t vlan_tag,
+     uint16_t vlan_ethtype, bool *is_new);
  
--eth_l4_hdr_info *net_rx_pkt_get_l4_info(struct NetRxPkt *pkt)
+-static inline void
+-eth_setup_vlan_headers(struct eth_header *ehdr, uint16_t vlan_tag,
+-    bool *is_new)
 -{
--    return &pkt->l4hdr_info;
+-    eth_setup_vlan_headers_ex(ehdr, vlan_tag, ETH_P_VLAN, is_new);
 -}
 -
- static inline void
- _net_rx_rss_add_chunk(uint8_t *rss_input, size_t *bytes_written,
-                       void *ptr, size_t size)
+ 
+ uint8_t eth_get_gso_type(uint16_t l3_proto, uint8_t *l3_hdr, uint8_t l4proto);
+ 
+diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
+index cc36750c9b..ce6b102391 100644
+--- a/hw/net/net_tx_pkt.c
++++ b/hw/net/net_tx_pkt.c
+@@ -368,7 +368,7 @@ void net_tx_pkt_setup_vlan_header_ex(struct NetTxPkt *pkt,
+     bool is_new;
+     assert(pkt);
+ 
+-    eth_setup_vlan_headers_ex(pkt->vec[NET_TX_PKT_L2HDR_FRAG].iov_base,
++    eth_setup_vlan_headers(pkt->vec[NET_TX_PKT_L2HDR_FRAG].iov_base,
+         vlan, vlan_ethtype, &is_new);
+ 
+     /* update l2hdrlen */
+diff --git a/net/eth.c b/net/eth.c
+index d7b30df79f..b6ff89c460 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -21,7 +21,7 @@
+ #include "net/checksum.h"
+ #include "net/tap.h"
+ 
+-void eth_setup_vlan_headers_ex(struct eth_header *ehdr, uint16_t vlan_tag,
++void eth_setup_vlan_headers(struct eth_header *ehdr, uint16_t vlan_tag,
+     uint16_t vlan_ethtype, bool *is_new)
+ {
+     struct vlan_header *vhdr = PKT_GET_VLAN_HDR(ehdr);
 -- 
 2.40.1
 
