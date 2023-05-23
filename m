@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D0D70DEDA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7305670DE39
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SUj-0000nZ-B5; Tue, 23 May 2023 09:56:09 -0400
+	id 1q1SVg-0003GY-I2; Tue, 23 May 2023 09:57:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSd-0005EO-84
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:54:00 -0400
+ id 1q1SVY-00036f-P4
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:57:02 -0400
 Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSb-0003Ad-Kn
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:58 -0400
+ id 1q1SVW-0004BN-N6
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:57:00 -0400
 Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-64d5b4c400fso3393964b3a.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:56 -0700 (PDT)
+ d2e1a72fcca58-64f47448aeaso363641b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:56:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684850036; x=1687442036;
+ d=linaro.org; s=google; t=1684850217; x=1687442217;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=v5+X8dtE6LfSMMjI2gnNlBbQTFJOMR9qw0ZxeW19zPE=;
- b=GXFj6UcZMGR+KV/DlZBqEsMGxJSTa8FyC0Q7WbHOl6WoIYDP/0RCJw5XiOCpeuxyMa
- PKZGjGFVVn7Eg4Fky+VbsTCecjPxX2hbHo/ZZj65X6y3f2skqsrBSpTMnOjR3FuR8W+g
- VCtaEhvZiE2h0xvZqQgov5tUlCuu1ixZ6jua+eIXvuYbuZJJQNdImdoEvXlTSp/EiOg4
- PLgfFFODjNjLnDgSeLiou7U6/g9SpWqLfYzxcl3L0srXvPmKt1rY4WfjZg8zS8Ahu94f
- 15OIqDSM388d5HoY0NGFVSenYjptnTUgzyMMi3AP/txKSjUaa2NpjCxFPpcpAsfnVKjo
- NtkQ==
+ :reply-to; bh=yWrZGJGhJkGS/jT+aD3SdArCyOPdyMfFotilTaL2dRI=;
+ b=LJBXY/2O+DxopgPZNK/s+cO/KW1lufkO6rmnj9ULvao5Gtbg6FMcC7iEoxpkP/ZlM1
+ TdP0kNR3MKcFil6j6UmEnQlb8rS9ge+tLWO62ZmF05Ed08x3inAoKW2yz3cXde2H529B
+ B8l4Y1joEe8nMWGqweyy/vWYibyU2WJp4BlR2WA7jQx9G1FFC2IQi9jcuP9QVofGHchr
+ wS0v0+ADVx7jGVtJ3JwjbS3GaoEd/RDfGLm7hf362xfk4vIrgYAXDjjZI+nVoP5BCaV1
+ sQpilPpsv4rlSSbvqX+iCstNz45O/5L8q+BQa/E3xtSeRFiayn32H9/f4BpdTJe9hJ9Z
+ C98w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684850036; x=1687442036;
+ d=1e100.net; s=20221208; t=1684850217; x=1687442217;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v5+X8dtE6LfSMMjI2gnNlBbQTFJOMR9qw0ZxeW19zPE=;
- b=f5QfqZEVuWhp43RYpnhLWrCLRHMNKrGjtnAvAnte+W0egDBKtUHseyK10U9Yybli4j
- JO7IV5KS8lpaF1bnub3EYI9CLahvQKsgSEPc9OOToHpBZdywMjF0+RakrUXamsKFHhev
- gi09a0Dd3cNJjZJ2eSljQHEhYf44p4HiapWnazdZ8aKUvyC88WC/H+gZwHsfOWTUZuVd
- Izwrhmkkw35zFADta5JF/1dakWB5F/CKnS3iBB0t8Hh68Kd1VFo/RFLKKBLhat3cfrCu
- HkNLVCirXUnU+oMp5/+NszEzWXQAZcV8wrItuiqrER9GjHkjw/gK3N2huMJn/bqkFdVP
- eDPg==
-X-Gm-Message-State: AC+VfDzJ4Xih893yOaC76mx53BDW9FyLTaSQPmYf88Q0qfqL5JL6HL4O
- 6QbH2UAMP4yDpjR9OD97KzFKuH0nhuab6nOSi08=
-X-Google-Smtp-Source: ACHHUZ7up5OrB2k2f71H/sWNQfczo3LuNteiaghh6GGR1JXofE/8Dejlw278yWR8EvKoC9WvrJeZtg==
-X-Received: by 2002:a05:6a00:2282:b0:63f:18ae:1d5f with SMTP id
- f2-20020a056a00228200b0063f18ae1d5fmr20543890pfe.29.1684850035887; 
- Tue, 23 May 2023 06:53:55 -0700 (PDT)
+ bh=yWrZGJGhJkGS/jT+aD3SdArCyOPdyMfFotilTaL2dRI=;
+ b=TJnarG0mumr0tez4OWMdOzIkg+8XQJ6kXdNixcR/VeSVRGwCbReWMYP3tKhYNYu/g5
+ 8F4o6wKOLA3k5YgLYSgBx7ghy58eIg6U5REKxz1cNqfg4AuMKy0sfOBf8tjKDC6/PqLa
+ 93AEdM+O5D2+IJFz/A38mXVrSEOzgIuFHCdWlgC1MxI5+spOqEbFvQgbl3TL0KKSI6uc
+ OJ2o+Yp5azMb/J4J1vxEAeKAke2WNbya/2/j3wzYABYtBBPqWlqJx1FNtdjfrAtEfo2O
+ HhyRREZsEnOrOvivxeJOX7P1BGO8/UFtH+nGOo0U5WMsnF8UNQmhmx38jYsbXyGbB0Q3
+ 4kMg==
+X-Gm-Message-State: AC+VfDwYuYXwvIZy6UW/BrwoeAqiE+hN8mDE0RdaVDwYiQ18XQZGrQ1c
+ bzUtd75C4gX1txzR7unV77AmhfKhK89aBm4leHg=
+X-Google-Smtp-Source: ACHHUZ5XYT9lHmQzZUwwnZ5Ar3ny+ytkrq9vSPE46BQukudVFoQb/OmKCb4DqlZ6W467kmjqbh3HpA==
+X-Received: by 2002:a05:6a00:1a15:b0:638:7e00:3737 with SMTP id
+ g21-20020a056a001a1500b006387e003737mr16186906pfv.23.1684850217091; 
+ Tue, 23 May 2023 06:56:57 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.55
+ v11-20020a62a50b000000b0063799398eaesm5805790pfm.51.2023.05.23.06.56.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:53:55 -0700 (PDT)
+ Tue, 23 May 2023 06:56:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 39/52] accel/tcg: Move translator_fake_ldb out of line
-Date: Tue, 23 May 2023 06:53:09 -0700
-Message-Id: <20230523135322.678948-40-richard.henderson@linaro.org>
+Subject: [PATCH v2 40/52] target/arm: Tidy helpers for translation
+Date: Tue, 23 May 2023 06:53:10 -0700
+Message-Id: <20230523135322.678948-41-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523135322.678948-1-richard.henderson@linaro.org>
 References: <20230523135322.678948-1-richard.henderson@linaro.org>
@@ -90,55 +90,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is used by exactly one host in extraordinary circumstances.
-This means that translator.h need not include plugin-gen.h;
-translator.c already includes plugin-gen.h.
+Move most includes from *translate*.c to translate.h, ensuring
+that we get the ordering correct.  Ensure cpu.h is first.
+Use disas/disas.h instead of exec/log.h.
+Drop otherwise unused includes.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/translator.h | 8 +-------
- accel/tcg/translator.c    | 5 +++++
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ target/arm/tcg/translate.h        |  3 +++
+ target/arm/tcg/translate-a64.c    | 17 +++++------------
+ target/arm/tcg/translate-m-nocp.c |  2 --
+ target/arm/tcg/translate-mve.c    |  3 ---
+ target/arm/tcg/translate-neon.c   |  3 ---
+ target/arm/tcg/translate-sme.c    |  6 ------
+ target/arm/tcg/translate-sve.c    |  9 ---------
+ target/arm/tcg/translate-vfp.c    |  3 ---
+ target/arm/tcg/translate.c        | 17 +++++------------
+ 9 files changed, 13 insertions(+), 50 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index c1a1203789..228002a623 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -22,7 +22,6 @@
- #include "qemu/bswap.h"
- #include "exec/exec-all.h"
- #include "exec/cpu_ldst.h"
--#include "exec/plugin-gen.h"
- #include "exec/translate-all.h"
- #include "tcg/tcg.h"
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 868a3abd0d..5b53b6215d 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -1,6 +1,9 @@
+ #ifndef TARGET_ARM_TRANSLATE_H
+ #define TARGET_ARM_TRANSLATE_H
  
-@@ -229,12 +228,7 @@ translator_ldq_swap(CPUArchState *env, DisasContextBase *db,
-  * re-synthesised for s390x "ex"). It ensures we update other areas of
-  * the translator with details of the executed instruction.
++#include "cpu.h"
++#include "tcg/tcg-op.h"
++#include "tcg/tcg-op-gvec.h"
+ #include "exec/translator.h"
+ #include "exec/helper-gen.h"
+ #include "internals.h"
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 8d45dbf8fc..d9800337cf 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -18,20 +18,13 @@
   */
+ #include "qemu/osdep.h"
+ 
+-#include "cpu.h"
+-#include "exec/exec-all.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "qemu/log.h"
+-#include "arm_ldst.h"
+ #include "translate.h"
+-#include "internals.h"
+-#include "qemu/host-utils.h"
+-#include "semihosting/semihost.h"
+-#include "exec/log.h"
+-#include "cpregs.h"
+ #include "translate-a64.h"
+-#include "qemu/atomic128.h"
++#include "qemu/log.h"
++#include "disas/disas.h"
++#include "arm_ldst.h"
++#include "semihosting/semihost.h"
++#include "cpregs.h"
+ 
+ static TCGv_i64 cpu_X[32];
+ static TCGv_i64 cpu_pc;
+diff --git a/target/arm/tcg/translate-m-nocp.c b/target/arm/tcg/translate-m-nocp.c
+index 9a89aab785..33f6478bb9 100644
+--- a/target/arm/tcg/translate-m-nocp.c
++++ b/target/arm/tcg/translate-m-nocp.c
+@@ -18,8 +18,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+ #include "translate.h"
+ #include "translate-a32.h"
+ 
+diff --git a/target/arm/tcg/translate-mve.c b/target/arm/tcg/translate-mve.c
+index 2ad3c40975..bbc7b3f4ce 100644
+--- a/target/arm/tcg/translate-mve.c
++++ b/target/arm/tcg/translate-mve.c
+@@ -18,9 +18,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "exec/exec-all.h"
+ #include "translate.h"
+ #include "translate-a32.h"
+ 
+diff --git a/target/arm/tcg/translate-neon.c b/target/arm/tcg/translate-neon.c
+index 6fac577abd..03913de047 100644
+--- a/target/arm/tcg/translate-neon.c
++++ b/target/arm/tcg/translate-neon.c
+@@ -21,9 +21,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "exec/exec-all.h"
+ #include "translate.h"
+ #include "translate-a32.h"
+ 
+diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+index b0812d9dd6..d0054e3f77 100644
+--- a/target/arm/tcg/translate-sme.c
++++ b/target/arm/tcg/translate-sme.c
+@@ -18,14 +18,8 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "cpu.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "tcg/tcg-gvec-desc.h"
+ #include "translate.h"
+ #include "translate-a64.h"
+-#include "fpu/softfloat.h"
 -
--static inline void translator_fake_ldb(uint8_t insn8, abi_ptr pc)
--{
--    plugin_insn_append(pc, &insn8, sizeof(insn8));
--}
--
-+void translator_fake_ldb(uint8_t insn8, abi_ptr pc);
  
  /*
-  * Return whether addr is on the same page as where disassembly started.
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 7a130e706e..60a613c99d 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -345,3 +345,8 @@ uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
-     plugin_insn_append(pc, &plug, sizeof(ret));
-     return ret;
- }
-+
-+void translator_fake_ldb(uint8_t insn8, abi_ptr pc)
-+{
-+    plugin_insn_append(pc, &insn8, sizeof(insn8));
-+}
+  * Include the generated decoder.
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 106baf311f..d9d5810dde 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -18,16 +18,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "cpu.h"
+-#include "exec/exec-all.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "tcg/tcg-gvec-desc.h"
+-#include "qemu/log.h"
+-#include "arm_ldst.h"
+ #include "translate.h"
+-#include "internals.h"
+-#include "exec/log.h"
+ #include "translate-a64.h"
+ #include "fpu/softfloat.h"
+ 
+diff --git a/target/arm/tcg/translate-vfp.c b/target/arm/tcg/translate-vfp.c
+index 95ac8d9db3..359b1e3e96 100644
+--- a/target/arm/tcg/translate-vfp.c
++++ b/target/arm/tcg/translate-vfp.c
+@@ -21,9 +21,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "exec/exec-all.h"
+ #include "translate.h"
+ #include "translate-a32.h"
+ 
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 7caf6d802d..a68d3c7f6d 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -20,20 +20,13 @@
+  */
+ #include "qemu/osdep.h"
+ 
+-#include "cpu.h"
+-#include "internals.h"
+-#include "disas/disas.h"
+-#include "exec/exec-all.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "qemu/log.h"
+-#include "qemu/bitops.h"
+-#include "arm_ldst.h"
+-#include "semihosting/semihost.h"
+-#include "exec/log.h"
+-#include "cpregs.h"
+ #include "translate.h"
+ #include "translate-a32.h"
++#include "qemu/log.h"
++#include "disas/disas.h"
++#include "arm_ldst.h"
++#include "semihosting/semihost.h"
++#include "cpregs.h"
+ #include "exec/helper-proto.h"
+ 
+ #define HELPER_H "helper.h"
 -- 
 2.34.1
 
