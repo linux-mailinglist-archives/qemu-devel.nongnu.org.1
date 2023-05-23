@@ -2,84 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBA170DA8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4862570DAB9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:41:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1PH3-0001j3-PY; Tue, 23 May 2023 06:29:49 -0400
+	id 1q1PQr-0005Zi-SX; Tue, 23 May 2023 06:39:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q1PGz-0001iX-CK
- for qemu-devel@nongnu.org; Tue, 23 May 2023 06:29:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q1PQp-0005ZC-FD
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 06:39:55 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q1PGx-0005xg-Qj
- for qemu-devel@nongnu.org; Tue, 23 May 2023 06:29:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684837782;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6KbEA1ZhSDrkzwgxYmO7ErPoKdaUAEZ6ym87svyHPK8=;
- b=PYo3oibkHDNc1BXvQfYw5SigIIXQu6Vc9zbWbTsSTZvmERDt7bJ50qDDhwhzPNugIHLR+5
- K1HMMH9aLE86rdlfbBCVjSfy/w16REL/k2qY7SH1ou3TLzBGlHWKswM9DT8xi13KqPyHZO
- uI3wbOTqLWUmqcJtGH4TnzsnOmjdsqY=
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
- [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-oao5qnBYMJm5betNmEVGEQ-1; Tue, 23 May 2023 06:29:41 -0400
-X-MC-Unique: oao5qnBYMJm5betNmEVGEQ-1
-Received: by mail-vs1-f71.google.com with SMTP id
- ada2fe7eead31-43537754d86so3844560137.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 03:29:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684837781; x=1687429781;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6KbEA1ZhSDrkzwgxYmO7ErPoKdaUAEZ6ym87svyHPK8=;
- b=BuAjOg6bvXhoBJFzUVypcIkduIjV9eYff9wxK6tZi2kFLBcUQ6JiTi6Gs+KeUL34qm
- LgBZJzqHrOcynAonTjVDy2hwPmWgLL+Fxao1KNG4zFATtrhi464+u/ywAKJzasM2eJTj
- UDnZJ2yXo+FT3eKP7og1euQWPfAxEqOeznl3fMYscppiXD7KbP66wu7Txq6raacGndDR
- HyWwnxTu0VJlKfI49iZz4rmO9EMCOo8R3q1jqBlFZvSeX4h9cp/KOXKCtUXmpMY0suYy
- 9IYH1BXUhzjCenvaMdpm/1cSZi3F2XTWPtai8G+o5yJGQxoiyuHsJkGNfMAybSwbEd5P
- PHow==
-X-Gm-Message-State: AC+VfDwZ+uBTYFsEUqgnn7VrFsFfD9SZo32g3e6y3650U60sPTyN8bqW
- KuxCjV+RmSsYuxnUp0//4zGrjamTnan2E8hkTh9MA+tH3XwGIuFLJ9PnWK6+bbmJ7hH8HlOHTCk
- 63Pb9iZTGA4KdICD4X3Q2AJGPG2VVXJE=
-X-Received: by 2002:a05:6102:914:b0:439:4882:48b4 with SMTP id
- x20-20020a056102091400b00439488248b4mr2037517vsh.3.1684837780897; 
- Tue, 23 May 2023 03:29:40 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ63CSMrCMDCdWrAGYV27ujyAsEhoEo1e33dubXonRJHT0PrRKmqhOQ/PAkgE43wUvf8IbyGLkCIHsMbvg2wc6E=
-X-Received: by 2002:a05:6102:914:b0:439:4882:48b4 with SMTP id
- x20-20020a056102091400b00439488248b4mr2037511vsh.3.1684837780611; Tue, 23 May
- 2023 03:29:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q1PQn-0000vh-Dh
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 06:39:55 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QQW114f1Fz6J7Bm;
+ Tue, 23 May 2023 18:35:17 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 23 May
+ 2023 11:39:49 +0100
+Date: Tue, 23 May 2023 11:39:48 +0100
+To: Fan Ni <nifan@outlook.com>
+CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira
+ Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
+ <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, "Daniel P .
+ =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>
+Subject: Re: [PATCH v7 3/7] hw/cxl/events: Wire up get/clear event mailbox
+ commands
+Message-ID: <20230523113948.000009f3@Huawei.com>
+In-Reply-To: <SG2PR06MB3397AB10C301F4F596EBD688B2439@SG2PR06MB3397.apcprd06.prod.outlook.com>
+References: <20230522150947.11546-1-Jonathan.Cameron@huawei.com>
+ <CGME20230522151125uscas1p1ac7cc62cf284544e2b827d7cacaba8cd@uscas1p1.samsung.com>
+ <20230522150947.11546-4-Jonathan.Cameron@huawei.com>
+ <SG2PR06MB3397AB10C301F4F596EBD688B2439@SG2PR06MB3397.apcprd06.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
- <4ffdd486-ec7d-49c7-1330-0d0b090735b9@rev.ng>
- <CAFEAcA9ZctmXrCAwsAk6eBeF4ojB4QBwq16TsdcGZPHTin6LEg@mail.gmail.com>
-In-Reply-To: <CAFEAcA9ZctmXrCAwsAk6eBeF4ojB4QBwq16TsdcGZPHTin6LEg@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 23 May 2023 12:29:29 +0200
-Message-ID: <CABgObfa7N+A=ReW-jme=Nx+wt7rZPcpuy-ANmxepcJMxeXeeWA@mail.gmail.com>
-Subject: Re: Help finding Coverity defects for generated Hexagon code
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: anjo@rev.ng, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,34 +73,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 23, 2023 at 11:18=E2=80=AFAM Peter Maydell <peter.maydell@linar=
-o.org> wrote:
-> On Mon, 22 May 2023 at 21:24, Anton Johansson <anjo@rev.ng> wrote:
-> > Hi,
-> >
-> > coverity recently reported some defects in code generated by idef-parse=
-r
-> > (email attached). These defects are expected and we plan to emit a
-> > /* coverity[event_tag] */ comment to disable the specific event trigger=
-ed.
->
-> We don't mark coverity false positives with comments in the
-> source. For the free online scanner, we just mark them as
-> false positives in the GUI (with an explanation of why they're
-> false positives).
+On Mon, 22 May 2023 12:50:34 -0700
+Fan Ni <nifan@outlook.com> wrote:
 
-They aren't visible in the GUI because the whole "hexagon generated
-files" component is marked as not-analyzed; which apparently means it
-_is_ analyzed and visible in the emails but not in the GUI.
+> The 05/22/2023 16:09, Jonathan Cameron wrote:
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > CXL testing is benefited from an artificial event log injection
+> > mechanism.
+> > 
+> > Add an event log infrastructure to insert, get, and clear events from
+> > the various logs available on a device.
+> > 
+> > Replace the stubbed out CXL Get/Clear Event mailbox commands with
+> > commands that operate on the new infrastructure.
+> > 
+> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---  
+> 
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> 
+> See comments below in cxl_event_insert.
 
-The event tag for this error should be "dead_error_condition". In
-theory, the hexagon generated files could be a good exception to the
-rules that we don't mark false positives in the source, but finding
-the right line to add the tag can be messy.
+...
 
-Paolo
+> > +    memcpy(&entry->data, event, sizeof(*event));
+> > +
+> > +    entry->data.hdr.handle = cpu_to_le16(log->next_handle);
+> > +    log->next_handle++;
+> > +    /* 0 handle is never valid */
+> > +    if (log->next_handle == 0) {  
+> 
+> next_handle is uint16_t, how can it be 0 after next_handle++?
 
+Intent was to deal with wrap around.
+We are fine with reusing handles after sufficiently long time that
+there can't be a confusion, just not 0 as that has special
+meaning when used to 'point' to a related event
+(see definition of Related Event Record Handle)
+
+> 
+> > +        log->next_handle++;
+> > +    }
+> > +    entry->data.hdr.timestamp = cpu_to_le64(time);
+> > +
+> > +    QSIMPLEQ_INSERT_TAIL(&log->events, entry, node);
+> > +    cxl_event_set_status(cxlds, log_type, true);
+> > +
+> > +    /* Count went from 0 to 1 */
+> > +    return cxl_event_count(log) == 1;
+> > +}
 
