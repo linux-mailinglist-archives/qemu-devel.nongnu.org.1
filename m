@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B727470DCFC
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 535A070DD19
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:57:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1RTK-0007bq-Vg; Tue, 23 May 2023 08:50:39 -0400
+	id 1q1RZe-0008IW-0D; Tue, 23 May 2023 08:57:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1q1RTH-0007Zx-FJ
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:50:35 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q1RZW-0008Hs-Es
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:57:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1q1RT9-0005Py-MH
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:50:34 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1q1RZU-0007Nc-M4
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:57:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684846223;
+ s=mimecast20190719; t=1684846619;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XK5Dlg+5QORJTTzD4xzB4uyxnmsfZHsr3HjcX8qYXrE=;
- b=ffxIrVGY11n1E1nOHfUGYj1ZS8wF/QgO93pb1a3wW0+CmG0RhyfnhARYIF7HfWE50Jn/9r
- NzGivvJr4kWlCb7smDGq4qRydtcNc7TOeGM5cWVrDeRjzS3/7oK7ZccYMmNkHwlN6FyAGP
- ad/aYBHRknjhApfY1zY4dJ68iXIm3kE=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=v6W0qPaJcvkAcmyGpIvpgI3p5gV3TzsuvLNSioCrrV4=;
+ b=JfGccRpz7TnkgeGcJlquI5mPJZAPIqXPsB/W10I0Izr8DUWri7lwy0TadPnH8tPT4sUb7Z
+ PG+vfQeAwuZFIF5P/bl4BTZG+cEkeGftbatIePWfhgRH6/YpK7bBTC8+tGCRbR7NREfCCJ
+ WiLroaRgGD+uJ8HDiV7j19ybdn6YGcc=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-RIIty5wNMuaoQqJqs6Xn7g-1; Tue, 23 May 2023 08:50:21 -0400
-X-MC-Unique: RIIty5wNMuaoQqJqs6Xn7g-1
-Received: by mail-vk1-f197.google.com with SMTP id
- 71dfb90a1353d-4575661883aso2151748e0c.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:50:21 -0700 (PDT)
+ us-mta-90-V4ayf5pfO72QoxJAnb2JYQ-1; Tue, 23 May 2023 08:56:58 -0400
+X-MC-Unique: V4ayf5pfO72QoxJAnb2JYQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-510f6e39f5aso1242265a12.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:56:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684846221; x=1687438221;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1684846617; x=1687438617;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XK5Dlg+5QORJTTzD4xzB4uyxnmsfZHsr3HjcX8qYXrE=;
- b=i9udegeTvsLhFgAy2BsIk49hlpj+pfgZfTi2Zbjy04gePQVcj666eFnaiMkcd6rOGA
- akMowbAjZ5nLjixEfeFMFSgAq0Xrq7nS60nm+R8f6aWGly2ZZCEVAG+dWobBxxbLCIat
- I9QPuRr1LUWN7GfZpfyz3W95zZjcDkheF3hTwzw0yr6BpxfH1MzvnlO9I+3IJ7PpZbHr
- 6PXHTxVE/nH8+1uBQDEsCM92/46iwzb4JJlvSl82XTvttcL4sSBPRZ2zgordT5XDfChH
- YjZqffHn+uPR5hc9HcXLmZ58DdVYJdiz1NnWT/b1ARG4CR2ecwVWJkpx/fwcmI09/0ag
- JeCg==
-X-Gm-Message-State: AC+VfDzOLEPmdiS2mh/qAA1fzC+j0heTFwlEE1isW+v0+6UYOotY/UIa
- mE3c+1x7UEwrXBLy9u5AsQA0EqdVmt8VhZXuFrcqZslCiuMDoanMyzPhUP2J5deZRdo7667AryZ
- b2iEFUXVP5knGINyzEKk2MYkfxL6TCyY=
-X-Received: by 2002:a1f:3d4e:0:b0:447:fafb:c15 with SMTP id
- k75-20020a1f3d4e000000b00447fafb0c15mr4391988vka.1.1684846220971; 
- Tue, 23 May 2023 05:50:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7YLYLAg2ScfnDcG3fBHv4hVeuYPXgt1AWHbQJs+Owqt0Imwe9tPsIz1ygiz0Dl6C014n3umvb8V8eAxi8oRyo=
-X-Received: by 2002:a1f:3d4e:0:b0:447:fafb:c15 with SMTP id
- k75-20020a1f3d4e000000b00447fafb0c15mr4391980vka.1.1684846220648; Tue, 23 May
- 2023 05:50:20 -0700 (PDT)
+ bh=v6W0qPaJcvkAcmyGpIvpgI3p5gV3TzsuvLNSioCrrV4=;
+ b=A5vXj7jXYrqyCuQ3LxO8nc8ohTKe/0CWoB7oqqkD2w8T7YKW6dSN91SoAC08WZelkS
+ qp4RXs6SVVBqpqzA11ALgCqvloi623fG+0l8Io70VVrh6HkNpp6lfCnnm/K9HtauEu8n
+ pCxJRG9XA/gcC5rChyWoaZldvh8OkPKzThBgbJy7K0dF9Xs0PmZ4fFabiWqfRIVWlzVI
+ UuRpGRnffOIyvysfD8C/Ep9rjsRYLYwMcFAA58+kpZ91F83xkWWL9PR9zgBMdoUA2FXo
+ pzwXWaaViTRT0sQNFtg6Zy7TkGrosne3kdh3xyqvy29xMxmVJo7JJIRmtoe24/04+Lwl
+ RNgA==
+X-Gm-Message-State: AC+VfDy0bNbBgk2YwoQioTpz4cJa1y7tmtY+iWNT6zI2x90xdpw55f5B
+ lC8Qb5MCkN3P/8fvNEEDCo44qD0Us0G0QPdBZv0X8WZcl+3EWfwbxc8AczuEMJE9SXPNJdFBVp7
+ N6cOXUuSiRSBTndk=
+X-Received: by 2002:aa7:d68c:0:b0:510:d6a2:408 with SMTP id
+ d12-20020aa7d68c000000b00510d6a20408mr13197688edr.17.1684846617238; 
+ Tue, 23 May 2023 05:56:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7U6KRa6qtLB/HId8PQ3ByX6dm6X6GFhISbpgctYk0NuS+9/9FNs7NNt5sOxBKYFyz/ABRP2Q==
+X-Received: by 2002:aa7:d68c:0:b0:510:d6a2:408 with SMTP id
+ d12-20020aa7d68c000000b00510d6a20408mr13197667edr.17.1684846616902; 
+ Tue, 23 May 2023 05:56:56 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ b17-20020aa7c911000000b00502689a06b2sm3963916edt.91.2023.05.23.05.56.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 May 2023 05:56:56 -0700 (PDT)
+Date: Tue, 23 May 2023 14:56:55 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, wangyanan55@huawei.com,
+ pbonzini@redhat.com, thuth@redhat.com, Peter Maydell
+ <peter.maydell@linaro.org>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
+ <berrange@redhat.com>
+Subject: Re: The madness of ad hoc special IDs (was: [PATCH] machine: do not
+ crash if default RAM backend name has been stollen)
+Message-ID: <20230523145655.739f0014@imammedo.users.ipa.redhat.com>
+In-Reply-To: <877csz6xgd.fsf@pond.sub.org>
+References: <20230522131717.3780533-1-imammedo@redhat.com>
+ <877csz6xgd.fsf@pond.sub.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230508141813.1086562-1-mcascell@redhat.com>
- <ZGx2bzKuwO6e4E2L@redhat.com>
-In-Reply-To: <ZGx2bzKuwO6e4E2L@redhat.com>
-From: Mauro Matteo Cascella <mcascell@redhat.com>
-Date: Tue, 23 May 2023 14:50:09 +0200
-Message-ID: <CAA8xKjVkD=K3Xnn4DyE3jVMjX_szqfb5mtkbb0odgN_5jQa93Q@mail.gmail.com>
-Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
- cursor_alloc
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@redhat.com, 
- jacek.halon@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mcascell@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,162 +104,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 23, 2023 at 10:16=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com> wrote:
->
-> On Mon, May 08, 2023 at 04:18:13PM +0200, Mauro Matteo Cascella wrote:
-> > The cursor_alloc function still accepts a signed integer for both the c=
-ursor
-> > width and height. A specially crafted negative width/height could make =
-datasize
-> > wrap around and cause the next allocation to be 0, potentially leading =
-to a
-> > heap buffer overflow. Modify QEMUCursor struct and cursor_alloc prototy=
-pe to
-> > accept unsigned ints.
-> >
-> I concur with Marc-Andre that there is no code path that can
-> actually trigger an overflow:
->
->
->   hw/display/ati.c:        s->cursor =3D cursor_alloc(64, 64);
->   hw/display/vhost-user-gpu.c:            s->current_cursor =3D cursor_al=
-loc(64, 64);
->   hw/display/virtio-gpu.c:            s->current_cursor =3D cursor_alloc(=
-64, 64);
->
-> Not exploitable as fixed size
->
->   hw/display/qxl-render.c:    c =3D cursor_alloc(cursor->header.width, cu=
-rsor->header.height);
->
-> Cursor header defined as:
->
->   typedef struct SPICE_ATTR_PACKED QXLCursorHeader {
->       uint64_t unique;
->       uint16_t type;
->       uint16_t width;
->       uint16_t height;
->       uint16_t hot_spot_x;
->       uint16_t hot_spot_y;
->   } QXLCursorHeader;
->
-> So no negative values can be passed to cursor_alloc()
->
->
->   hw/display/vmware_vga.c:    qc =3D cursor_alloc(c->width, c->height);
->
-> Where 'c' is defined as:
->
->   struct vmsvga_cursor_definition_s {
->       uint32_t width;
->       uint32_t height;
->       int id;
->       uint32_t bpp;
->       int hot_x;
->       int hot_y;
->       uint32_t mask[1024];
->       uint32_t image[4096];
->   };
->
-> and is also already bounds checked:
->
->             if (cursor.width > 256
->                 || cursor.height > 256
->                 || cursor.bpp > 32
->                 || SVGA_BITMAP_SIZE(x, y) > ARRAY_SIZE(cursor.mask)
->                 || SVGA_PIXMAP_SIZE(x, y, cursor.bpp)
->                     > ARRAY_SIZE(cursor.image)) {
->                     goto badcmd;
->             }
->
-> > Fixes: CVE-2023-1601
-> > Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_alloc (CVE-=
-2021-4206)")
->
-> Given there is no possible codepath that can overflow, CVE-2023-1601
-> looks invalid to me. It should be clsoed as not-a-bug and these two
-> Fixes lines removed.
+On Tue, 23 May 2023 14:31:30 +0200
+Markus Armbruster <armbru@redhat.com> wrote:
 
-I think you can tweak the original PoC [1] to trigger this bug.
-Setting width/height to 0x80000000 (versus 0x8000) should do the
-trick. You should be able to overflow datasize while bypassing the
-sanity check (width > 512 || height > 512) as width/height are signed
-prior to this patch. I haven't tested it, though.
+> Igor Mammedov <imammedo@redhat.com> writes:
+> 
+> > QEMU aborts when default RAM backend should be used (i.e. no
+> > explicit '-machine memory-backend=' specified) but user
+> > has created an object which 'id' equals to default RAM backend
+> > name used by board.
+> >
+> >  $QEMU -machine pc \
+> >        -object memory-backend-ram,id=pc.ram,size=4294967296
+> >
+> >  Actual results:
+> >  QEMU 7.2.0 monitor - type 'help' for more information
+> >  (qemu) Unexpected error in object_property_try_add() at ../qom/object.c:1239:
+> >  qemu-kvm: attempt to add duplicate property 'pc.ram' to object (type 'container')
+> >  Aborted (core dumped)
+> >
+> > Instead of abort, check for the conflicting 'id' and exit with
+> > an error, suggesting how to remedy the issue.  
+> 
+> This is an instance of an (unfortunately common) anti-pattern.
+> 
+> The point of an ID is to *identify*.  To do that, IDs of the same kind
+> must be unique.  "Of the same kind" because we let different kinds of
+> objects have the same ID[*].
+> 
+> IDs are arbitrary strings.  The user may pick any ID, as long as it's
+> unique.  Unique not only among the user's IDs, but the system's, too.
+> 
+> Every time we add code that picks an ID, we break backward
+> compatibility: user configurations that use this ID no longer work.
+> Thus, system-picked IDs are part of the external interface.
 
-[1] https://github.com/star-sg/CVE/blob/master/CVE-2021-4206/poc.c
-[2] https://starlabs.sg/advisories/21/21-4206/
+in this case, IDs are there to keep backward compatibility
+(so migration won't fail) and it affects only default (legacy**)
+path where user doesn't provide memory-backend explicitly
+(which could be named anything that doesn't collide with other objects)
 
+> We don't treat them as such.  They are pretty much undocumented, and
+> when we add new ones, we break the external interface silently.
 
-> > Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
-> > Reported-by: Jacek Halon <jacek.halon@gmail.com>
-> > ---
-> >  include/ui/console.h | 4 ++--
-> >  ui/cursor.c          | 2 +-
-> >  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> Even though it isn't fixing a bug, the change itself still makes
-> sense, because there's no reason a negative width/height is ever
-> appropriate. This protects us against accidentally introducing
-> future bugs, so with the two CVE Fixes lines removed:
->
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->
->
-> >
-> > diff --git a/include/ui/console.h b/include/ui/console.h
-> > index 2a8fab091f..92a4d90a1b 100644
-> > --- a/include/ui/console.h
-> > +++ b/include/ui/console.h
-> > @@ -144,13 +144,13 @@ typedef struct QemuUIInfo {
-> >
-> >  /* cursor data format is 32bit RGBA */
-> >  typedef struct QEMUCursor {
-> > -    int                 width, height;
-> > +    uint32_t            width, height;
-> >      int                 hot_x, hot_y;
-> >      int                 refcount;
-> >      uint32_t            data[];
-> >  } QEMUCursor;
-> >
-> > -QEMUCursor *cursor_alloc(int width, int height);
-> > +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height);
-> >  QEMUCursor *cursor_ref(QEMUCursor *c);
-> >  void cursor_unref(QEMUCursor *c);
-> >  QEMUCursor *cursor_builtin_hidden(void);
-> > diff --git a/ui/cursor.c b/ui/cursor.c
-> > index 6fe67990e2..b5fcb64839 100644
-> > --- a/ui/cursor.c
-> > +++ b/ui/cursor.c
-> > @@ -90,7 +90,7 @@ QEMUCursor *cursor_builtin_left_ptr(void)
-> >      return cursor_parse_xpm(cursor_left_ptr_xpm);
-> >  }
-> >
-> > -QEMUCursor *cursor_alloc(int width, int height)
-> > +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height)
-> >  {
-> >      QEMUCursor *c;
-> >      size_t datasize =3D width * height * sizeof(uint32_t);
-> > --
-> > 2.40.1
-> >
-> >
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
+this ID in particular is introspect-able (a part of qmp_query_machines output)
+to help mgmt pick backward compatible ID when switching to explicit
+RAM backend CLI (current libvirt behaviour).
 
+> How exactly things go wrong on a clash is detail from an interface
+> design point of view.  This patch changes one instance from "crash" to
+> "fatal error".  No objections, just pointing out we're playing whack a
+> mole there.
+> 
+> The fundamental mistake we made was not reserving IDs for the system's
+> own use.
+> 
+> The excuse I heard back then was that IDs are for the user, and the
+> system isn't supposed to pick any.  Well, it does.
+> 
+> To stop creating more moles, we need to reserve IDs for the system's
+> use, and let the system pick only reserved IDs going forward.
+> 
+> There would be two kinds of reserved IDs: 1. an easily documented,
+> easily checked ID pattern, e.g. "starts with <prefix>", to be used by
+> the system going forward, and 2. the messy zoo of system IDs we have
+> accumulated so far.
+> 
+> Thoughts?
 
---
-Mauro Matteo Cascella
-Red Hat Product Security
-PGP-Key ID: BB3410B0
+I'd vote for #1 only, however that isn't an option
+as renaming existing internal IDs will for sure break backward compat.
+So perhaps a mix of #1 (for all new internal IDs) and #2 for
+legacy ones, with some centralized place to keep track of them.
+ 
+> [...]
+> 
+> 
+> [*] Questionable idea if you ask me, but tangential to the point I'm
+> trying to make in this memo.
+> 
+
+[**] If it were up to me, I'd drop implicit RAM backend creation
+and require explicit backend being provided on CLI by user
+instead of making thing up for the sake of convenience.
+(If there is a support in favor of this, I'll gladly post a patch)
 
 
