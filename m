@@ -2,65 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC66D70DE80
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8714270DF03
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:17:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SaM-0000uV-Oj; Tue, 23 May 2023 10:01:58 -0400
+	id 1q1Sfl-0008Ai-7M; Tue, 23 May 2023 10:07:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q1SZS-0007ks-Je; Tue, 23 May 2023 10:01:09 -0400
-Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q1SZF-0004mq-F5; Tue, 23 May 2023 10:00:54 -0400
-Received: from localhost.localdomain (unknown [61.165.37.98])
- by APP-05 (Coremail) with SMTP id zQCowACHj4vixmxk5Uy2Aw--.17075S9;
- Tue, 23 May 2023 22:00:07 +0800 (CST)
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
- Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH v2 7/7] target/riscv: Remove pc_succ_insn from DisasContext
-Date: Tue, 23 May 2023 21:59:39 +0800
-Message-Id: <20230523135939.299246-8-liweiwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230523135939.299246-1-liweiwei@iscas.ac.cn>
-References: <20230523135939.299246-1-liweiwei@iscas.ac.cn>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1SfC-0007gm-TB
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 10:07:01 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Sf9-0006by-5y
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 10:06:56 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3094910b150so6343698f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:06:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684850813; x=1687442813;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DMOb2R2zYyVfu/V/xZbJP/Xhvnvfny+3vhB84aeFldQ=;
+ b=ECcF47FDBM9xG20Jq4IlG6chWA/AC9vBWzr5H3qrTph3MzXZJ9HrAD7H2expcjmB0d
+ ggLxODYhQ0GmTsWmd14MnP5LYeEEhMbAL+/wm/taPG8JYBpG+kore7J/roSj6qqbbQ1a
+ DtrC+NXRQGpmfpDKDfiUPrUSWG/63o0ynOE1NTGUPbJMxs99EuaUTyREVfseuNt3kRGo
+ JGGTdNgwPHcVXfq1aeHAVs4MN+YmtdLkRJKWK9+p1ZV8cuQ23O/N4pLz8j2eIu5WtJV/
+ 4QdPw1bBzPDRG9Fbmc/zU7T74cjSD804ZQXAD2Cq90LSPKg2GiPwrAvCXAYgBFnbdOeq
+ n3AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684850813; x=1687442813;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DMOb2R2zYyVfu/V/xZbJP/Xhvnvfny+3vhB84aeFldQ=;
+ b=cma4wS/v+ZEYbG2mZOxMWLsuLibypbtBWEN93V58ehbc+mBapO6hVrRYiy0JYWxjwC
+ AVmylZ0W9LfhT52iD41NnUhkdsyIbTKm0/xmxpDLALTGvG3yUri3il8cDMdLfHwbOFzJ
+ hhDVAY4tvbnjycHkRW9kNu09i200sx2fT6ft09PaOEgZ5GH8yWvDBnC5eD2nrlE3gBcF
+ ahVqSu34+eeQRSqqjJcROPCdb5wGwDWQv6ha25ilDoxen2SMNUaYPnD5B6758c16AOFZ
+ da6nKf8Keqdg1HiUBeDeR/5iVLq6A+bIcLvDKC/hnMYDL1AYQboOvYt77ruJ/IwU2lLw
+ zO1A==
+X-Gm-Message-State: AC+VfDzePiwFwrsAjuCLa/sWQZZpuvp1ygi5Wgu3aju8gPou5ZQt3loC
+ nnYiIkbqjYs5PvfrriGuHiyNrg==
+X-Google-Smtp-Source: ACHHUZ7EMEcEUBwiPC06xpPgy9gWJyEdA+jOEEOrIEKKm1kZcqjzqM7vGxfswr6MZ3zSOJLxVSbv6g==
+X-Received: by 2002:adf:f305:0:b0:2f2:7a0e:5cc9 with SMTP id
+ i5-20020adff305000000b002f27a0e5cc9mr11911342wro.19.1684850812754; 
+ Tue, 23 May 2023 07:06:52 -0700 (PDT)
+Received: from [192.168.69.115] (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr.
+ [176.184.48.94]) by smtp.gmail.com with ESMTPSA id
+ m2-20020adffe42000000b002feea065cc9sm11161283wrs.111.2023.05.23.07.06.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 07:06:52 -0700 (PDT)
+Message-ID: <b1f5c418-9b1a-4f38-3611-3d355e769b1b@linaro.org>
+Date: Tue, 23 May 2023 16:06:50 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
+ cursor_alloc
+Content-Language: en-US
+To: Mauro Matteo Cascella <mcascell@redhat.com>
+Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>,
+ qemu-devel@nongnu.org, kraxel@redhat.com, jacek.halon@gmail.com,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230508141813.1086562-1-mcascell@redhat.com>
+ <CAJ+F1CK2V22PMYP4PQwH+VYKhR32GKxFK5eRODE928iu3LVodA@mail.gmail.com>
+ <fcf99624-9a48-6760-a28d-bb88bce6572f@linaro.org>
+ <ZGx0ylB10aLWchuf@redhat.com>
+ <8a9c7803-5c1c-3e68-6506-14eae205d11e@linaro.org>
+ <CAA8xKjUN+Ru5h65YoTDg0trSUZg=L6iD5HF2AKNv-3wAt+ZtHg@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAA8xKjUN+Ru5h65YoTDg0trSUZg=L6iD5HF2AKNv-3wAt+ZtHg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowACHj4vixmxk5Uy2Aw--.17075S9
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrWxWFyfXw13CrWkJFWkZwb_yoW8Kr17pF
- 4fCr4xKFZ8Wa43uF95JF47ZFy7Gw4jkrW8Ww1vkws7Gr43u393CrWDKrWagF48XF409ryq
- yF4qyry5A3Wj9aDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUm014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
- kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
- z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr
- 1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
- 3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
- IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
- M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
- kIc2xKxwCY02Avz4vE14v_Xryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
- Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
- CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0
- I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
- C2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVj
- vjDU0xZFpf9x0JUBbyZUUUUU=
-X-Originating-IP: [61.165.37.98]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,62 +101,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pc_succ_insn is no longer useful after the introduce of cur_insn_len
-and all pc related value use diff value instead of absolute value.
+On 23/5/23 14:57, Mauro Matteo Cascella wrote:
+> On Tue, May 23, 2023 at 10:37 AM Philippe Mathieu-Daudé
+> <philmd@linaro.org> wrote:
+>>
+>> On 23/5/23 10:09, Daniel P. Berrangé wrote:
+>>> On Mon, May 22, 2023 at 08:55:02PM +0200, Philippe Mathieu-Daudé wrote:
+>>>> On 9/5/23 09:13, Marc-André Lureau wrote:
+>>>>> Hi
+>>>>>
+>>>>> On Mon, May 8, 2023 at 6:21 PM Mauro Matteo Cascella
+>>>>> <mcascell@redhat.com <mailto:mcascell@redhat.com>> wrote:
+>>>>>
+>>>>>       The cursor_alloc function still accepts a signed integer for both
+>>>>>       the cursor
+>>>>>       width and height. A specially crafted negative width/height could
+>>>>>       make datasize
+>>>>>       wrap around and cause the next allocation to be 0, potentially
+>>>>>       leading to a
+>>>>>       heap buffer overflow. Modify QEMUCursor struct and cursor_alloc
+>>>>>       prototype to
+>>>>>       accept unsigned ints.
+>>>>>
+>>>>>       Fixes: CVE-2023-1601
+>>>>>       Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_alloc
+>>>>>       (CVE-2021-4206)")
+>>>>>       Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com
+>>>>>       <mailto:mcascell@redhat.com>>
+>>>>>       Reported-by: Jacek Halon <jacek.halon@gmail.com
+>>>>>       <mailto:jacek.halon@gmail.com>>
+>>>>>
+>>>>>
+>>>>> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com
+>>>>> <mailto:marcandre.lureau@redhat.com>>
+>>>>>
+>>>>> It looks like this is not exploitable, QXL code uses u16 types, and
+>>>>
+>>>> 0xffff * 0xffff * 4 still overflows on 32-bit host, right?
+>>>
+>>> cursor_alloc() will reject 0xffff:
+>>>
+>>>       if (width > 512 || height > 512) {
+>>>           return NULL;
+>>>       }
+>>
+>> I hadn't looked at the source file (the 'datasize' assignation
+>> made me incorrectly think it'd be use before sanitized).
+>>
+>> Still I wonder why can't we use a simple 'unsigned' type instead
+>> of a uint32_t, but I won't insist.
+> 
+> I can send v2 with s/uint32_t/uint16_t/ if you think it's a relevant change.
 
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
----
- target/riscv/translate.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+Specifying the word size doesn't really add any (security) value IMHO.
 
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 538187f93b..37d731f9c5 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -57,8 +57,6 @@ typedef enum {
- 
- typedef struct DisasContext {
-     DisasContextBase base;
--    /* pc_succ_insn points to the instruction following base.pc_next */
--    target_ulong pc_succ_insn;
-     target_ulong cur_insn_len;
-     target_ulong pc_save;
-     target_ulong priv_ver;
-@@ -1147,7 +1145,6 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
-     /* Check for compressed insn */
-     if (ctx->cur_insn_len == 2) {
-         ctx->opcode = opcode;
--        ctx->pc_succ_insn = ctx->base.pc_next + 2;
-         /*
-          * The Zca extension is added as way to refer to instructions in the C
-          * extension that do not include the floating-point loads and stores
-@@ -1161,7 +1158,6 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
-                              translator_lduw(env, &ctx->base,
-                                              ctx->base.pc_next + 2));
-         ctx->opcode = opcode32;
--        ctx->pc_succ_insn = ctx->base.pc_next + 4;
- 
-         for (size_t i = 0; i < ARRAY_SIZE(decoders); ++i) {
-             if (decoders[i].guard_func(ctx) &&
-@@ -1182,7 +1178,6 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     uint32_t tb_flags = ctx->base.tb->flags;
- 
-     ctx->pc_save = ctx->base.pc_first;
--    ctx->pc_succ_insn = ctx->base.pc_first;
-     ctx->priv = FIELD_EX32(tb_flags, TB_FLAGS, PRIV);
-     ctx->mem_idx = FIELD_EX32(tb_flags, TB_FLAGS, MEM_IDX);
-     ctx->mstatus_fs = FIELD_EX32(tb_flags, TB_FLAGS, FS);
-@@ -1235,7 +1230,7 @@ static void riscv_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- 
-     ctx->ol = ctx->xl;
-     decode_opc(env, ctx, opcode16);
--    ctx->base.pc_next = ctx->pc_succ_insn;
-+    ctx->base.pc_next += ctx->cur_insn_len;
- 
-     /* Only the first insn within a TB is allowed to cross a page boundary. */
-     if (ctx->base.is_jmp == DISAS_NEXT) {
--- 
-2.25.1
+I'll stop bikeshedding here.
 
+Regards,
+
+Phil.
 
