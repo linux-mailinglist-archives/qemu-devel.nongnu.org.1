@@ -2,36 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45E570DA2E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD8E70DA33
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:19:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P42-0006vZ-H3; Tue, 23 May 2023 06:16:22 -0400
+	id 1q1P41-0006uX-8f; Tue, 23 May 2023 06:16:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P3e-0006k2-AP; Tue, 23 May 2023 06:15:59 -0400
+ id 1q1P3i-0006l2-QZ; Tue, 23 May 2023 06:16:03 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P3b-0001qD-Vc; Tue, 23 May 2023 06:15:58 -0400
+ id 1q1P3g-0001rD-52; Tue, 23 May 2023 06:16:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5386E7CF6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 78A687CF7;
  Tue, 23 May 2023 13:15:50 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7CDFF7286;
+ by tsrv.corpit.ru (Postfix) with SMTP id C94547287;
  Tue, 23 May 2023 13:15:49 +0300 (MSK)
-Received: (nullmailer pid 85502 invoked by uid 1000);
+Received: (nullmailer pid 85505 invoked by uid 1000);
  Tue, 23 May 2023 10:15:48 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Lizhi Yang <sledgeh4w@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 40/59] docs/about/emulation: fix typo
-Date: Tue, 23 May 2023 13:15:00 +0300
-Message-Id: <20230523101536.85424-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 41/59] tests/docker: bump the xtensa base to
+ debian:11-slim
+Date: Tue, 23 May 2023 13:15:01 +0300
+Message-Id: <20230523101536.85424-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
@@ -61,30 +64,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Lizhi Yang <sledgeh4w@gmail.com>
+From: Alex Bennée <alex.bennee@linaro.org>
 
-Duplicated word "are".
+Stretch is going out of support so things like security updates will
+fail. As the toolchain itself is binary it hopefully won't mind the
+underlying OS being updated.
 
-Signed-off-by: Lizhi Yang <sledgeh4w@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230511080119.99018-1-sledgeh4w@gmail.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit c70bb9a771d467302d1c7df5c5bd56b48f42716e)
+Message-Id: <20230503091244.1450613-3-alex.bennee@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 3217b84f3cd813a7daffc64b26543c313f3a042a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
-index b510a54418..0ad0b86f0d 100644
---- a/docs/about/emulation.rst
-+++ b/docs/about/emulation.rst
-@@ -99,7 +99,7 @@ depending on the guest architecture.
-     - Yes
-     - A configurable 32 bit soft core now owned by Cadence
+diff --git a/tests/docker/dockerfiles/debian-xtensa-cross.docker b/tests/docker/dockerfiles/debian-xtensa-cross.docker
+index 082b50da19..72c25d63d9 100644
+--- a/tests/docker/dockerfiles/debian-xtensa-cross.docker
++++ b/tests/docker/dockerfiles/debian-xtensa-cross.docker
+@@ -5,7 +5,7 @@
+ # using a prebuilt toolchains for Xtensa cores from:
+ # https://github.com/foss-xtensa/toolchain/releases
+ #
+-FROM docker.io/library/debian:stretch-slim
++FROM docker.io/library/debian:11-slim
  
--A number of features are are only available when running under
-+A number of features are only available when running under
- emulation including :ref:`Record/Replay<replay>` and :ref:`TCG Plugins`.
- 
- .. _Semihosting:
+ RUN apt-get update && \
+     DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
 -- 
 2.39.2
 
