@@ -2,74 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEB270DD25
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 918CC70DD2E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:07:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Rg6-0003HN-HO; Tue, 23 May 2023 09:03:50 -0400
+	id 1q1Rj7-0005GW-Cr; Tue, 23 May 2023 09:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1Rg3-0003Gr-18
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:03:47 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Rj1-0005Dy-Tp
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:06:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1Rg1-0000CH-1e
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:03:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Rj0-00015z-C2
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:06:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684847022;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1684847209;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gaSVe/ubveQ5cCN/BW/OiX+WXZA/Pko+U1uyj19xY+A=;
- b=Iemp9glofkT7hKHmYuL76PyErKA8UUxl99qTCHQGNqKjIRwWu/2qclrxmmrSktC3DpnqKR
- SLhCVYKlLHBQQ02wYfp/X1SsyueG7FETcuEka6UkB7GjvrfpAJhwpzltK7rVEOXLcFPLq3
- 2qMohu3NR58LcN7zQ5lWObYEbmW83nU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-172-TwoyCvP8PZubBErDk_T_zw-1; Tue, 23 May 2023 09:02:32 -0400
-X-MC-Unique: TwoyCvP8PZubBErDk_T_zw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 47FD71C06ECB;
- Tue, 23 May 2023 13:02:30 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.40])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7BAB59D73;
- Tue, 23 May 2023 13:02:29 +0000 (UTC)
-Date: Tue, 23 May 2023 14:02:26 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@redhat.com,
- jacek.halon@gmail.com
-Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
- cursor_alloc
-Message-ID: <ZGy5YogBNyCyam0L@redhat.com>
-References: <20230508141813.1086562-1-mcascell@redhat.com>
- <ZGx2bzKuwO6e4E2L@redhat.com>
- <CAA8xKjVkD=K3Xnn4DyE3jVMjX_szqfb5mtkbb0odgN_5jQa93Q@mail.gmail.com>
+ bh=9W/GIgR7kGLCJkifjU2EPZiulltikRRfmQYeSA/RXLg=;
+ b=NvdPnNZw+gXVkQWMeDm5kxW1PIDvVkoDKyXeAIBDPvu2Q1QAZs6fzDaV9uazh+o53ZIVJh
+ 4y7SV1LCKLyY/ErkeLwMappE+WIh5Z0ooK2cCDZ1B6wMfGJ2sty8DGv9gpSxbF6OFtw2R1
+ 7v3RENIHzqsKkMdTz/C4OAcytVV9o0I=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-540-Y0dDt40XMtOFP5fCXRw9iQ-1; Tue, 23 May 2023 09:06:45 -0400
+X-MC-Unique: Y0dDt40XMtOFP5fCXRw9iQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3093e600770so4707433f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:06:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684847204; x=1687439204;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9W/GIgR7kGLCJkifjU2EPZiulltikRRfmQYeSA/RXLg=;
+ b=WSa68S9E/NynoJbw5PDRSmUqQNMmxKnMT3TKgHQdp2OyHyuSQwSsKw+tQmsUrYAZIx
+ NIFB8KSoDyihkbJXrRjFgBaF82ebj0gJtnj6z6JpLyNzlyX0A4L26T4Q2o197d33o9aA
+ NUGIZzNk1Hb0hrbh5UtDMH9oBRgaRipYcZjYHMmRPOLyZMkw55K3W3fkGrBe5HI6rnIZ
+ Z48Azsxgf5frlBZg9NlDefFgtz88jMaENkCbnkt7y1G3hU4Pahc9+ifgIXUHFenE7C0T
+ kitMmICF14w7gWumHAvG/PaLH73yaPx+8+owdAZw/0MfDJKY8/RyyEKL2ZWVG8J3nR27
+ Vdng==
+X-Gm-Message-State: AC+VfDxgmfCRR8Vf80Jj4H0FO68KOg1SmcAhJBVjBTmfLF/mCyXFA9KD
+ b+7fNv/SmybvQPYJYC9c3QodObcQcsj/+cHk/9AjWqJcoonfcbgJvS0mt37TsFwOSssSIFcZGrA
+ ZlXck8GVgH2Mwh6E=
+X-Received: by 2002:adf:eacf:0:b0:307:2d0c:4036 with SMTP id
+ o15-20020adfeacf000000b003072d0c4036mr11599581wrn.66.1684847204019; 
+ Tue, 23 May 2023 06:06:44 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5kpif3d+dgdiYhVpSQrTvB3B+Ygmud+fPFXmc60Lvcd2zAYlI3w2Qna3vgLx2uxBzje5Y0ng==
+X-Received: by 2002:adf:eacf:0:b0:307:2d0c:4036 with SMTP id
+ o15-20020adfeacf000000b003072d0c4036mr11599566wrn.66.1684847203730; 
+ Tue, 23 May 2023 06:06:43 -0700 (PDT)
+Received: from [192.168.8.105] (tmo-117-143.customers.d1-online.com.
+ [80.187.117.143]) by smtp.gmail.com with ESMTPSA id
+ r14-20020adfce8e000000b00306c5900c10sm11170502wrn.9.2023.05.23.06.06.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 06:06:43 -0700 (PDT)
+Message-ID: <0d4d72b3-4b21-d371-7d15-bb36b33bbbc4@redhat.com>
+Date: Tue, 23 May 2023 15:06:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA8xKjVkD=K3Xnn4DyE3jVMjX_szqfb5mtkbb0odgN_5jQa93Q@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: The madness of ad hoc special IDs (was: [PATCH] machine: do not
+ crash if default RAM backend name has been stollen)
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, wangyanan55@huawei.com,
+ pbonzini@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230522131717.3780533-1-imammedo@redhat.com>
+ <877csz6xgd.fsf@pond.sub.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <877csz6xgd.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,77 +101,21 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 23, 2023 at 02:50:09PM +0200, Mauro Matteo Cascella wrote:
-> On Tue, May 23, 2023 at 10:16 AM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > On Mon, May 08, 2023 at 04:18:13PM +0200, Mauro Matteo Cascella wrote:
-> > > The cursor_alloc function still accepts a signed integer for both the cursor
-> > > width and height. A specially crafted negative width/height could make datasize
-> > > wrap around and cause the next allocation to be 0, potentially leading to a
-> > > heap buffer overflow. Modify QEMUCursor struct and cursor_alloc prototype to
-> > > accept unsigned ints.
-> > >
-> > I concur with Marc-Andre that there is no code path that can
-> > actually trigger an overflow:
-> >
-> >
-> >   hw/display/ati.c:        s->cursor = cursor_alloc(64, 64);
-> >   hw/display/vhost-user-gpu.c:            s->current_cursor = cursor_alloc(64, 64);
-> >   hw/display/virtio-gpu.c:            s->current_cursor = cursor_alloc(64, 64);
-> >
-> > Not exploitable as fixed size
-> >
-> >   hw/display/qxl-render.c:    c = cursor_alloc(cursor->header.width, cursor->header.height);
-> >
-> > Cursor header defined as:
-> >
-> >   typedef struct SPICE_ATTR_PACKED QXLCursorHeader {
-> >       uint64_t unique;
-> >       uint16_t type;
-> >       uint16_t width;
-> >       uint16_t height;
-> >       uint16_t hot_spot_x;
-> >       uint16_t hot_spot_y;
-> >   } QXLCursorHeader;
-> >
-> > So no negative values can be passed to cursor_alloc()
+On 23/05/2023 14.31, Markus Armbruster wrote:
+...
+> To stop creating more moles, we need to reserve IDs for the system's
+> use, and let the system pick only reserved IDs going forward.
 
-> >
-> > > Fixes: CVE-2023-1601
-> > > Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_alloc (CVE-2021-4206)")
-> >
-> > Given there is no possible codepath that can overflow, CVE-2023-1601
-> > looks invalid to me. It should be clsoed as not-a-bug and these two
-> > Fixes lines removed.
-> 
-> I think you can tweak the original PoC [1] to trigger this bug.
-> Setting width/height to 0x80000000 (versus 0x8000) should do the
-> trick. You should be able to overflow datasize while bypassing the
-> sanity check (width > 512 || height > 512) as width/height are signed
-> prior to this patch. I haven't tested it, though.
+Just something to add here: We already have a function for generating 
+internal IDs, the id_generate() function in util/id.c ... our convention is 
+that we use "#" as prefix for those, so for new code (which is not affected 
+by migration backward compatibility problems), we should maybe take care of 
+always using that prefix for internal IDs, too.
 
-The QXLCursorHeader  width/height fields are uint16_t, so 0x80000000
-will get truncated. No matter what value the guest sets, when we
-interpret this in qxl_cursor when calling cursor_alloc, the value
-will be in the range 0-65535, as that's the bounds of uint16_t.
+  Thomas
 
-We'll pass this unsigned value to cursor_alloc() which converts from
-uint16_t, to (signed) int. 'int' is larger than uint16_t, so the
-result will still be positive in the range 0-65535, and so the sanity
-check > 512 will fire and protect us.
-
-I still see no bug, let alone a CVE.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
