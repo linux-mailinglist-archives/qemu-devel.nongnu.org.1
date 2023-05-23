@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9488570DE24
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B48570DE32
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:56:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1ST1-0006CC-LB; Tue, 23 May 2023 09:54:24 -0400
+	id 1q1ST5-0006Rk-VA; Tue, 23 May 2023 09:54:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSN-0004xw-CN
+ id 1q1SSN-0004xx-JT
  for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:45 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSK-00033Z-H9
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:42 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-64d2e8a842cso3796494b3a.3
+ id 1q1SSL-00033g-B4
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:43 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-64d30ab1ef2so3629540b3a.2
  for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684850019; x=1687442019;
+ d=linaro.org; s=google; t=1684850020; x=1687442020;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=byv7QZQSLFh7nyIZS76P7wjGuStySRLZzDv41rBbtmM=;
- b=K57IpWc/RZ/KgPib/q1zfVCJZ7ZU9iPnZqbB0FMYkLL3w9vUKWRuDKyJw94n+ewC61
- o+m6aEZ/fTjGxt2Dnn5Yzym5oVv2fXr4ZGUjygOulK9dcOlGLjo2gfo3PvlfahMRQYpC
- dAjteAaAVoB4AtZpsqkRU36/H0u4B5QKCI0Yx6LvbSwCZwzeqJ0zDcGhdNlkoCtAtP8f
- fZl0zz1eCs6AmzR0vGT3J83c255eVktxVMo/6SM2h3WvzEFU+1ebllCH6jh0n9m2VrOF
- 4JhAG0LoHKfEr5YfkDofoeYQ7GcyIRV1P4L0OpJ6EbSrCxFS34/N37uJZ/ys7fM125WP
- vHlA==
+ :reply-to; bh=AcrCNc6GHVuEoru3kSHnYFGlGWejrWeSQLskEC2DiQ4=;
+ b=JjWvy5SWQ9Hbp0Jn6RSz8Jh91K485QojHlGqMJ2JlQfR2BPMC4y2NFRjDrICnPhq2R
+ yDe9/yuYWeVDVVc2jI7zdJdP7Te+flS1QnDWYNl0r8w6pB/qDRaCKX/N30YxBSwow1SM
+ re2XlsnAKdgTCMC6IAA9ZYNPH7B9jD/J7QyTz46MB99eEXsqYTno3Bpdr2mim3OdQ7UQ
+ Pyn2T+A/64HVoMAjrPI6f/nhEZYAaEcgq66aNTjAGBJ3quTH6irf1koz5eicS1EGJafL
+ c57IC7fWFI1dcIfPHZCQi1yGls43diSReva2N0OVrAEWy6DhdzRVC5S8sdLya3+X8F/+
+ rBHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684850019; x=1687442019;
+ d=1e100.net; s=20221208; t=1684850020; x=1687442020;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=byv7QZQSLFh7nyIZS76P7wjGuStySRLZzDv41rBbtmM=;
- b=B5haMpyPTQEmadvlNoNGGKcBaZsALFH3haB0JReFiQMJtnVWpVqakq1jE2q6IrrBqW
- D4MCoXK490XJ2EFYHv6HQcpgLpSKT4bYF7jqs/auql8lqHw8ZqinPnaaFLhXTa59Z7I+
- dyU8Yfgryipt+Z4e7hcmduXU8LBKpC5zcVOnm06TriqmctPmVxCisQYmvH9r1BfhM6g9
- seWn39d63pafkwsK1iuaZJe7DHsvMHdcT3Cx938h3JYHCEy38+RDCTrPzM6drE1LSjBL
- ng5zmUv70XsgE5Kgfd4FcCJ8Iu/v6nNxy0ogppWasHDRwnJ+x1D5zCOfosT4eik8695B
- H8tA==
-X-Gm-Message-State: AC+VfDxFlDlbJpppL3GB6vJlSzrCb9Z8udnZhfxGYXwdNHBMBe9oSXaq
- f0qkpWI9LvXe9L2TqhyxV+nwBg8QbVO/p6eC35M=
-X-Google-Smtp-Source: ACHHUZ48TvdEzh4UYf/3DKg+teDXTS/hvx3s7IpOcourvdSlmaow8IzJvKtJO7iPev0/eWZZMShwEg==
-X-Received: by 2002:aa7:88c4:0:b0:64c:f4f9:de87 with SMTP id
- k4-20020aa788c4000000b0064cf4f9de87mr19587500pff.18.1684850019001; 
+ bh=AcrCNc6GHVuEoru3kSHnYFGlGWejrWeSQLskEC2DiQ4=;
+ b=a4k36KuLCeR40UMCQV12GiYFFy3pKNO3v0Wb3bzqMhwDsXi2hsGDk8bS9zGhubePda
+ /KvJiEmo9RP9tvr89Kcm7y5XdrOBxqdgnSQ+XAFX53Q19MEF+1vfoaFK+hFd2oDj07KW
+ gk20M+YGIbJGoDgfiJp+QMCVF8Dv2E0zEei3vaPQszDJ58Di8AYEJFrX8nlP3IH0ZiL5
+ K/TN1L3asVNgk+mHVpWF0Y8rzRvsKcxjJ5c0hV/vLd4vnTrTVZk3/lI4bIJmUgE0+gjx
+ YC0BQTjU1k1/MeKfN38L/+eJCS8NHwFJfZ+nUMDqECuc4SwSb+d0hXQmMSk7OpME/LZ1
+ iS8g==
+X-Gm-Message-State: AC+VfDxbUqrpDY9mqcA+xVqx5OyZkN/crG5Vf/zKcDMZHkrD5l2BbOpe
+ AtdEpXVGwDMNMegpc3WAzjEubSP9nSTAkyBKDwo=
+X-Google-Smtp-Source: ACHHUZ4rKJN6kTVggyWkUxKh18TLMoL0hEqNIqo9f9AVhcrrSyPQxAKp+qDl03SGlHhtOoEYofutxw==
+X-Received: by 2002:a05:6a00:804:b0:647:d698:56d2 with SMTP id
+ m4-20020a056a00080400b00647d69856d2mr19243743pfk.27.1684850019920; 
  Tue, 23 May 2023 06:53:39 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.38
+ b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.39
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:53:38 -0700 (PDT)
+ Tue, 23 May 2023 06:53:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 18/52] target/hexagon: Include helper-gen.h where needed
-Date: Tue, 23 May 2023 06:52:48 -0700
-Message-Id: <20230523135322.678948-19-richard.henderson@linaro.org>
+Subject: [PATCH v2 19/52] tcg: Remove outdated comments in helper-head.h
+Date: Tue, 23 May 2023 06:52:49 -0700
+Message-Id: <20230523135322.678948-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523135322.678948-1-richard.henderson@linaro.org>
 References: <20230523135322.678948-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,61 +90,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This had been included via tcg-op-common.h via tcg-op.h,
-but that is going away.  In idef-parser.y, shuffle some
-tcg related includes into a more logical order.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hexagon/genptr.c                  | 1 +
- target/hexagon/translate.c               | 1 +
- target/hexagon/idef-parser/idef-parser.y | 3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ include/exec/helper-head.h | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
-diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
-index cb2aa28a19..2cb7061a69 100644
---- a/target/hexagon/genptr.c
-+++ b/target/hexagon/genptr.c
-@@ -20,6 +20,7 @@
- #include "internal.h"
- #include "tcg/tcg-op.h"
- #include "tcg/tcg-op-gvec.h"
-+#include "exec/helper-gen.h"
- #include "insn.h"
- #include "opcodes.h"
- #include "translate.h"
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index b18f1a9051..f36442c6d5 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -20,6 +20,7 @@
- #include "cpu.h"
- #include "tcg/tcg-op.h"
- #include "tcg/tcg-op-gvec.h"
-+#include "exec/helper-gen.h"
- #include "exec/cpu_ldst.h"
- #include "exec/log.h"
- #include "internal.h"
-diff --git a/target/hexagon/idef-parser/idef-parser.y b/target/hexagon/idef-parser/idef-parser.y
-index 5c983954ed..cd2612eb8c 100644
---- a/target/hexagon/idef-parser/idef-parser.y
-+++ b/target/hexagon/idef-parser/idef-parser.y
-@@ -843,13 +843,14 @@ int main(int argc, char **argv)
-     fputs("#include \"qemu/log.h\"\n", output_file);
-     fputs("#include \"cpu.h\"\n", output_file);
-     fputs("#include \"internal.h\"\n", output_file);
-+    fputs("#include \"tcg/tcg.h\"\n", output_file);
-     fputs("#include \"tcg/tcg-op.h\"\n", output_file);
-+    fputs("#include \"exec/helper-gen.h\"\n", output_file);
-     fputs("#include \"insn.h\"\n", output_file);
-     fputs("#include \"opcodes.h\"\n", output_file);
-     fputs("#include \"translate.h\"\n", output_file);
-     fputs("#define QEMU_GENERATE\n", output_file);
-     fputs("#include \"genptr.h\"\n", output_file);
--    fputs("#include \"tcg/tcg.h\"\n", output_file);
-     fputs("#include \"macros.h\"\n", output_file);
-     fprintf(output_file, "#include \"%s\"\n", argv[ARG_INDEX_EMITTER_H]);
+diff --git a/include/exec/helper-head.h b/include/exec/helper-head.h
+index f863a6ef5d..a355ef8ebe 100644
+--- a/include/exec/helper-head.h
++++ b/include/exec/helper-head.h
+@@ -1,18 +1,6 @@
+-/* Helper file for declaring TCG helper functions.
+-   Used by other helper files.
+-
+-   Targets should use DEF_HELPER_N and DEF_HELPER_FLAGS_N to declare helper
+-   functions.  Names should be specified without the helper_ prefix, and
+-   the return and argument types specified.  3 basic types are understood
+-   (i32, i64 and ptr).  Additional aliases are provided for convenience and
+-   to match the types used by the C helper implementation.
+-
+-   The target helper.h should be included in all files that use/define
+-   helper functions.  THis will ensure that function prototypes are
+-   consistent.  In addition it should be included an extra two times for
+-   helper.c, defining:
+-    GEN_HELPER 1 to produce op generation functions (gen_helper_*)
+-    GEN_HELPER 2 to do runtime registration helper functions.
++/*
++ * Helper file for declaring TCG helper functions.
++ * Used by other helper files.
+  */
  
+ #ifndef EXEC_HELPER_HEAD_H
 -- 
 2.34.1
 
