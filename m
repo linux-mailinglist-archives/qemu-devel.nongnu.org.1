@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E7470D553
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 09:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6727470D559
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 09:39:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1MXc-0003sY-ND; Tue, 23 May 2023 03:34:45 -0400
+	id 1q1MY1-0004Kp-0A; Tue, 23 May 2023 03:35:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1MXP-0003dZ-8n
- for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:32 -0400
+ id 1q1MXR-0003ld-1M
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1MXE-0004NW-Nf
- for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:22 -0400
+ id 1q1MXL-0004Nd-Au
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684827260;
+ s=mimecast20190719; t=1684827262;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D0rQG7Pqk8YsOYJmLpQbe/gtWZmE8jt1HUKmR30Mvtg=;
- b=PWjg2ig+tAVt/Qhh+tw/dtpJbA0FZapT/+DdfyBCRZ0b7evBDDTUcAdZEFdQwxeBAJAWbr
- 9HVSNSg0P01VbHDgiUjs5IyGyn0sOjwXzdP9q2ioL67CM/2IcnGgF3Rb40Mg8ySB0Vlxm3
- jOXXxqeSN0XaURfv/1xNJjJ+8MxjHZg=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tojmvZ0U8HPXw2t7VCgXqo5aAuztIu05+K5sQRCeL2I=;
+ b=V5GRxOxVwhhM1yr+1Kxt40E3TCLMcBZ8Tqvl1+AOFXgETf9/5tFd/hplRMZ3GRvb+4Aj1E
+ Vw7EyKdggshaQ8skpGrzjWI+JD68yIgEAlzTOB9zxCMXxbTSy+yMdgVv5dED78BQmCKKDq
+ gq+UHM5AdXxc/Gz66pSrXmgtqVywCOM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-632-BHXsQbabO5a3Iq1C9jUhrQ-1; Tue, 23 May 2023 03:34:16 -0400
-X-MC-Unique: BHXsQbabO5a3Iq1C9jUhrQ-1
+ us-mta-56-e-ae93uqM4-XI4v5C7FWyw-1; Tue, 23 May 2023 03:34:19 -0400
+X-MC-Unique: e-ae93uqM4-XI4v5C7FWyw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3876629DD984;
- Tue, 23 May 2023 07:34:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D6B42811E7C;
+ Tue, 23 May 2023 07:34:18 +0000 (UTC)
 Received: from localhost.localdomain (ovpn-12-45.pek2.redhat.com [10.72.12.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E8D772166B25;
- Tue, 23 May 2023 07:34:13 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E14AD2166B26;
+ Tue, 23 May 2023 07:34:16 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org,
 	peter.maydell@linaro.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 31/50] net/eth: Use void pointers
-Date: Tue, 23 May 2023 15:32:19 +0800
-Message-Id: <20230523073238.54236-32-jasowang@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 32/50] net/eth: Always add VLAN tag
+Date: Tue, 23 May 2023 15:32:20 +0800
+Message-Id: <20230523073238.54236-33-jasowang@redhat.com>
 In-Reply-To: <20230523073238.54236-1-jasowang@redhat.com>
 References: <20230523073238.54236-1-jasowang@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
@@ -83,64 +81,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The uses of uint8_t pointers were misleading as they are never accessed
-as an array of octets and it even require more strict alignment to
-access as struct eth_header.
+It is possible to have another VLAN tag even if the packet is already
+tagged.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- include/net/eth.h | 4 ++--
- net/eth.c         | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ hw/net/net_tx_pkt.c | 16 +++++++---------
+ include/net/eth.h   |  4 ++--
+ net/eth.c           | 22 ++++++----------------
+ 3 files changed, 15 insertions(+), 27 deletions(-)
 
+diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
+index ce6b102..af8f77a 100644
+--- a/hw/net/net_tx_pkt.c
++++ b/hw/net/net_tx_pkt.c
+@@ -40,7 +40,10 @@ struct NetTxPkt {
+ 
+     struct iovec *vec;
+ 
+-    uint8_t l2_hdr[ETH_MAX_L2_HDR_LEN];
++    struct {
++        struct eth_header eth;
++        struct vlan_header vlan[3];
++    } l2_hdr;
+     union {
+         struct ip_header ip;
+         struct ip6_header ip6;
+@@ -365,18 +368,13 @@ bool net_tx_pkt_build_vheader(struct NetTxPkt *pkt, bool tso_enable,
+ void net_tx_pkt_setup_vlan_header_ex(struct NetTxPkt *pkt,
+     uint16_t vlan, uint16_t vlan_ethtype)
+ {
+-    bool is_new;
+     assert(pkt);
+ 
+     eth_setup_vlan_headers(pkt->vec[NET_TX_PKT_L2HDR_FRAG].iov_base,
+-        vlan, vlan_ethtype, &is_new);
++                           &pkt->vec[NET_TX_PKT_L2HDR_FRAG].iov_len,
++                           vlan, vlan_ethtype);
+ 
+-    /* update l2hdrlen */
+-    if (is_new) {
+-        pkt->hdr_len += sizeof(struct vlan_header);
+-        pkt->vec[NET_TX_PKT_L2HDR_FRAG].iov_len +=
+-            sizeof(struct vlan_header);
+-    }
++    pkt->hdr_len += sizeof(struct vlan_header);
+ }
+ 
+ bool net_tx_pkt_add_raw_fragment(struct NetTxPkt *pkt, void *base, size_t len)
 diff --git a/include/net/eth.h b/include/net/eth.h
-index 05f5693..95ff24d 100644
+index 95ff24d..048e434 100644
 --- a/include/net/eth.h
 +++ b/include/net/eth.h
-@@ -342,12 +342,12 @@ eth_get_pkt_tci(const void *p)
- 
- size_t
- eth_strip_vlan(const struct iovec *iov, int iovcnt, size_t iovoff,
--               uint8_t *new_ehdr_buf,
-+               void *new_ehdr_buf,
-                uint16_t *payload_offset, uint16_t *tci);
- 
- size_t
- eth_strip_vlan_ex(const struct iovec *iov, int iovcnt, size_t iovoff,
--                  uint16_t vet, uint8_t *new_ehdr_buf,
-+                  uint16_t vet, void *new_ehdr_buf,
-                   uint16_t *payload_offset, uint16_t *tci);
- 
+@@ -353,8 +353,8 @@ eth_strip_vlan_ex(const struct iovec *iov, int iovcnt, size_t iovoff,
  uint16_t
+ eth_get_l3_proto(const struct iovec *l2hdr_iov, int iovcnt, size_t l2hdr_len);
+ 
+-void eth_setup_vlan_headers(struct eth_header *ehdr, uint16_t vlan_tag,
+-    uint16_t vlan_ethtype, bool *is_new);
++void eth_setup_vlan_headers(struct eth_header *ehdr, size_t *ehdr_size,
++                            uint16_t vlan_tag, uint16_t vlan_ethtype);
+ 
+ 
+ uint8_t eth_get_gso_type(uint16_t l3_proto, uint8_t *l3_hdr, uint8_t l4proto);
 diff --git a/net/eth.c b/net/eth.c
-index b6ff89c..f7ffbda 100644
+index f7ffbda..5307978 100644
 --- a/net/eth.c
 +++ b/net/eth.c
-@@ -226,11 +226,11 @@ void eth_get_protocols(const struct iovec *iov, size_t iovcnt, size_t iovoff,
+@@ -21,26 +21,16 @@
+ #include "net/checksum.h"
+ #include "net/tap.h"
  
- size_t
- eth_strip_vlan(const struct iovec *iov, int iovcnt, size_t iovoff,
--               uint8_t *new_ehdr_buf,
-+               void *new_ehdr_buf,
-                uint16_t *payload_offset, uint16_t *tci)
+-void eth_setup_vlan_headers(struct eth_header *ehdr, uint16_t vlan_tag,
+-    uint16_t vlan_ethtype, bool *is_new)
++void eth_setup_vlan_headers(struct eth_header *ehdr, size_t *ehdr_size,
++                            uint16_t vlan_tag, uint16_t vlan_ethtype)
  {
-     struct vlan_header vlan_hdr;
--    struct eth_header *new_ehdr = (struct eth_header *) new_ehdr_buf;
-+    struct eth_header *new_ehdr = new_ehdr_buf;
+     struct vlan_header *vhdr = PKT_GET_VLAN_HDR(ehdr);
  
-     size_t copied = iov_to_buf(iov, iovcnt, iovoff,
-                                new_ehdr, sizeof(*new_ehdr));
-@@ -276,7 +276,7 @@ eth_strip_vlan(const struct iovec *iov, int iovcnt, size_t iovoff,
+-    switch (be16_to_cpu(ehdr->h_proto)) {
+-    case ETH_P_VLAN:
+-    case ETH_P_DVLAN:
+-        /* vlan hdr exists */
+-        *is_new = false;
+-        break;
+-
+-    default:
+-        /* No VLAN header, put a new one */
+-        vhdr->h_proto = ehdr->h_proto;
+-        ehdr->h_proto = cpu_to_be16(vlan_ethtype);
+-        *is_new = true;
+-        break;
+-    }
++    memmove(vhdr + 1, vhdr, *ehdr_size - ETH_HLEN);
+     vhdr->h_tci = cpu_to_be16(vlan_tag);
++    vhdr->h_proto = ehdr->h_proto;
++    ehdr->h_proto = cpu_to_be16(vlan_ethtype);
++    *ehdr_size += sizeof(*vhdr);
+ }
  
- size_t
- eth_strip_vlan_ex(const struct iovec *iov, int iovcnt, size_t iovoff,
--                  uint16_t vet, uint8_t *new_ehdr_buf,
-+                  uint16_t vet, void *new_ehdr_buf,
-                   uint16_t *payload_offset, uint16_t *tci)
- {
-     struct vlan_header vlan_hdr;
+ uint8_t
 -- 
 2.7.4
 
