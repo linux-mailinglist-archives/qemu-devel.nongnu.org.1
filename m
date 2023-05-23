@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1427370DA47
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC40070DA35
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:19:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P4V-0008B1-Cx; Tue, 23 May 2023 06:16:51 -0400
+	id 1q1P4T-0007nb-Fy; Tue, 23 May 2023 06:16:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P4I-0007NG-Lx; Tue, 23 May 2023 06:16:41 -0400
+ id 1q1P4K-0007Nd-5g; Tue, 23 May 2023 06:16:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P4F-00021F-J8; Tue, 23 May 2023 06:16:37 -0400
+ id 1q1P4H-00022E-Vq; Tue, 23 May 2023 06:16:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8976B7D00;
+ by isrv.corpit.ru (Postfix) with ESMTP id B9C5D7D01;
  Tue, 23 May 2023 13:15:52 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D3DB07290;
- Tue, 23 May 2023 13:15:51 +0300 (MSK)
-Received: (nullmailer pid 85532 invoked by uid 1000);
- Tue, 23 May 2023 10:15:48 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id 0ACB77291;
+ Tue, 23 May 2023 13:15:52 +0300 (MSK)
+Received: (nullmailer pid 85535 invoked by uid 1000);
+ Tue, 23 May 2023 10:15:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Xinyu Li <lixinyu20s@ict.ac.cn>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 50/59] target/i386: fix avx2 instructions vzeroall and
- vpermdq
-Date: Tue, 23 May 2023 13:15:10 +0300
-Message-Id: <20230523101536.85424-14-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Hawkins Jiawei <yin31149@gmail.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Lei Yang <leiyang@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 51/59] vhost: fix possible wrap in SVQ descriptor ring
+Date: Tue, 23 May 2023 13:15:11 +0300
+Message-Id: <20230523101536.85424-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,50 +62,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xinyu Li <lixinyu20s@ict.ac.cn>
+From: Hawkins Jiawei <yin31149@gmail.com>
 
-vzeroall: xmm_regs should be used instead of xmm_t0
-vpermdq: bit 3 and 7 of imm should be considered
+QEMU invokes vhost_svq_add() when adding a guest's element
+into SVQ. In vhost_svq_add(), it uses vhost_svq_available_slots()
+to check whether QEMU can add the element into SVQ. If there is
+enough space, then QEMU combines some out descriptors and some
+in descriptors into one descriptor chain, and adds it into
+`svq->vring.desc` by vhost_svq_vring_write_descs().
 
-Signed-off-by: Xinyu Li <lixinyu20s@ict.ac.cn>
-Message-Id: <20230510145222.586487-1-lixinyu20s@ict.ac.cn>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 056d649007bc9fdae9f1d576e77c1316e9a34468)
+Yet the problem is that, `svq->shadow_avail_idx - svq->shadow_used_idx`
+in vhost_svq_available_slots() returns the number of occupied elements,
+or the number of descriptor chains, instead of the number of occupied
+descriptors, which may cause wrapping in SVQ descriptor ring.
+
+Here is an example. In vhost_handle_guest_kick(), QEMU forwards
+as many available buffers to device by virtqueue_pop() and
+vhost_svq_add_element(). virtqueue_pop() returns a guest's element,
+and then this element is added into SVQ by vhost_svq_add_element(),
+a wrapper to vhost_svq_add(). If QEMU invokes virtqueue_pop() and
+vhost_svq_add_element() `svq->vring.num` times,
+vhost_svq_available_slots() thinks QEMU just ran out of slots and
+everything should work fine. But in fact, virtqueue_pop() returns
+`svq->vring.num` elements or descriptor chains, more than
+`svq->vring.num` descriptors due to guest memory fragmentation,
+and this causes wrapping in SVQ descriptor ring.
+
+This bug is valid even before marking the descriptors used.
+If the guest memory is fragmented, SVQ must add chains
+so it can try to add more descriptors than possible.
+
+This patch solves it by adding `num_free` field in
+VhostShadowVirtqueue structure and updating this field
+in vhost_svq_add() and vhost_svq_get_buf(), to record
+the number of free descriptors.
+
+Fixes: 100890f7ca ("vhost: Shadow virtqueue buffers forwarding")
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20230509084817.3973-1-yin31149@gmail.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+(cherry picked from commit 5d410557dea452f6231a7c66155e29a37e168528)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index 0bd6bfad8a..fb63af7afa 100644
---- a/target/i386/ops_sse.h
-+++ b/target/i386/ops_sse.h
-@@ -2497,6 +2497,14 @@ void helper_vpermdq_ymm(Reg *d, Reg *v, Reg *s, uint32_t order)
-     d->Q(1) = r1;
-     d->Q(2) = r2;
-     d->Q(3) = r3;
-+    if (order & 0x8) {
-+        d->Q(0) = 0;
-+        d->Q(1) = 0;
-+    }
-+    if (order & 0x80) {
-+        d->Q(2) = 0;
-+        d->Q(3) = 0;
-+    }
- }
- 
- void helper_vpermq_ymm(Reg *d, Reg *s, uint32_t order)
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 95fb4f52fa..4fe8dec427 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -2285,7 +2285,7 @@ static void gen_VZEROALL(DisasContext *s, CPUX86State *env, X86DecodedInsn *deco
+diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+index 8361e70d1b..bd7c12b6d3 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.c
++++ b/hw/virtio/vhost-shadow-virtqueue.c
+@@ -68,7 +68,7 @@ bool vhost_svq_valid_features(uint64_t features, Error **errp)
+  */
+ static uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq)
  {
-     TCGv_ptr ptr = tcg_temp_new_ptr();
- 
--    tcg_gen_addi_ptr(ptr, cpu_env, offsetof(CPUX86State, xmm_t0));
-+    tcg_gen_addi_ptr(ptr, cpu_env, offsetof(CPUX86State, xmm_regs));
-     gen_helper_memset(ptr, ptr, tcg_constant_i32(0),
-                       tcg_constant_ptr(CPU_NB_REGS * sizeof(ZMMReg)));
+-    return svq->vring.num - (svq->shadow_avail_idx - svq->shadow_used_idx);
++    return svq->num_free;
  }
+ 
+ /**
+@@ -263,6 +263,7 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
+         return -EINVAL;
+     }
+ 
++    svq->num_free -= ndescs;
+     svq->desc_state[qemu_head].elem = elem;
+     svq->desc_state[qemu_head].ndescs = ndescs;
+     vhost_svq_kick(svq);
+@@ -449,6 +450,7 @@ static VirtQueueElement *vhost_svq_get_buf(VhostShadowVirtqueue *svq,
+     last_used_chain = vhost_svq_last_desc_of_chain(svq, num, used_elem.id);
+     svq->desc_next[last_used_chain] = svq->free_head;
+     svq->free_head = used_elem.id;
++    svq->num_free += num;
+ 
+     *len = used_elem.len;
+     return g_steal_pointer(&svq->desc_state[used_elem.id].elem);
+@@ -659,6 +661,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
+     svq->iova_tree = iova_tree;
+ 
+     svq->vring.num = virtio_queue_get_num(vdev, virtio_get_queue_index(vq));
++    svq->num_free = svq->vring.num;
+     driver_size = vhost_svq_driver_area_size(svq);
+     device_size = vhost_svq_device_area_size(svq);
+     svq->vring.desc = qemu_memalign(qemu_real_host_page_size(), driver_size);
+diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
+index 926a4897b1..6efe051a70 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.h
++++ b/hw/virtio/vhost-shadow-virtqueue.h
+@@ -107,6 +107,9 @@ typedef struct VhostShadowVirtqueue {
+ 
+     /* Next head to consume from the device */
+     uint16_t last_used_idx;
++
++    /* Size of SVQ vring free descriptors */
++    uint16_t num_free;
+ } VhostShadowVirtqueue;
+ 
+ bool vhost_svq_valid_features(uint64_t features, Error **errp);
 -- 
 2.39.2
 
