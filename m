@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73F170DA59
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A965370DA54
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:21:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P8b-0008Kt-2C; Tue, 23 May 2023 06:21:05 -0400
+	id 1q1P8Z-0008Hr-MP; Tue, 23 May 2023 06:21:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P8X-0008FF-Bd; Tue, 23 May 2023 06:21:01 -0400
+ id 1q1P8W-0008DP-UG; Tue, 23 May 2023 06:21:00 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P8V-0003DM-Ah; Tue, 23 May 2023 06:21:01 -0400
+ id 1q1P8V-0003RE-4p; Tue, 23 May 2023 06:21:00 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 54CF57D42;
+ by isrv.corpit.ru (Postfix) with ESMTP id 75BA07D43;
  Tue, 23 May 2023 13:20:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9879972A9;
+ by tsrv.corpit.ru (Postfix) with SMTP id C857272AA;
  Tue, 23 May 2023 13:20:16 +0300 (MSK)
-Received: (nullmailer pid 86097 invoked by uid 1000);
+Received: (nullmailer pid 86100 invoked by uid 1000);
  Tue, 23 May 2023 10:20:14 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Hawkins Jiawei <yin31149@gmail.com>,
+Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Lei Yang <leiyang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.3 43/45] vhost: fix possible wrap in SVQ descriptor ring
-Date: Tue, 23 May 2023 13:17:20 +0300
-Message-Id: <20230523102014.85954-12-mjt@tls.msk.ru>
+Subject: [Stable-7.2.3 44/45] virtio-net: not enable vq reset feature
+ unconditionally
+Date: Tue, 23 May 2023 13:17:21 +0300
+Message-Id: <20230523102014.85954-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.3-20230523131604@cover.tls.msk.ru>
 References: <qemu-stable-7.2.3-20230523131604@cover.tls.msk.ru>
@@ -62,102 +63,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hawkins Jiawei <yin31149@gmail.com>
+From: Eugenio Pérez <eperezma@redhat.com>
 
-QEMU invokes vhost_svq_add() when adding a guest's element
-into SVQ. In vhost_svq_add(), it uses vhost_svq_available_slots()
-to check whether QEMU can add the element into SVQ. If there is
-enough space, then QEMU combines some out descriptors and some
-in descriptors into one descriptor chain, and adds it into
-`svq->vring.desc` by vhost_svq_vring_write_descs().
+The commit 93a97dc5200a ("virtio-net: enable vq reset feature") enables
+unconditionally vq reset feature as long as the device is emulated.
+This makes impossible to actually disable the feature, and it causes
+migration problems from qemu version previous than 7.2.
 
-Yet the problem is that, `svq->shadow_avail_idx - svq->shadow_used_idx`
-in vhost_svq_available_slots() returns the number of occupied elements,
-or the number of descriptor chains, instead of the number of occupied
-descriptors, which may cause wrapping in SVQ descriptor ring.
+The entire final commit is unneeded as device system already enable or
+disable the feature properly.
 
-Here is an example. In vhost_handle_guest_kick(), QEMU forwards
-as many available buffers to device by virtqueue_pop() and
-vhost_svq_add_element(). virtqueue_pop() returns a guest's element,
-and then this element is added into SVQ by vhost_svq_add_element(),
-a wrapper to vhost_svq_add(). If QEMU invokes virtqueue_pop() and
-vhost_svq_add_element() `svq->vring.num` times,
-vhost_svq_available_slots() thinks QEMU just ran out of slots and
-everything should work fine. But in fact, virtqueue_pop() returns
-`svq->vring.num` elements or descriptor chains, more than
-`svq->vring.num` descriptors due to guest memory fragmentation,
-and this causes wrapping in SVQ descriptor ring.
+This reverts commit 93a97dc5200a95e63b99cb625f20b7ae802ba413.
+Fixes: 93a97dc5200a ("virtio-net: enable vq reset feature")
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 
-This bug is valid even before marking the descriptors used.
-If the guest memory is fragmented, SVQ must add chains
-so it can try to add more descriptors than possible.
-
-This patch solves it by adding `num_free` field in
-VhostShadowVirtqueue structure and updating this field
-in vhost_svq_add() and vhost_svq_get_buf(), to record
-the number of free descriptors.
-
-Fixes: 100890f7ca ("vhost: Shadow virtqueue buffers forwarding")
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20230509084817.3973-1-yin31149@gmail.com>
+Message-Id: <20230504101447.389398-1-eperezma@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-(cherry picked from commit 5d410557dea452f6231a7c66155e29a37e168528)
+(cherry picked from commit 1fac00f70b3261050af5564b20ca55c1b2a3059a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index a723073747..d422418f2d 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -68,7 +68,7 @@ bool vhost_svq_valid_features(uint64_t features, Error **errp)
-  */
- static uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq)
- {
--    return svq->vring.num - (svq->shadow_avail_idx - svq->shadow_used_idx);
-+    return svq->num_free;
- }
- 
- /**
-@@ -263,6 +263,7 @@ int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
-         return -EINVAL;
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index aba12759d5..4abd49e298 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -802,7 +802,6 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
      }
  
-+    svq->num_free -= ndescs;
-     svq->desc_state[qemu_head].elem = elem;
-     svq->desc_state[qemu_head].ndescs = ndescs;
-     vhost_svq_kick(svq);
-@@ -449,6 +450,7 @@ static VirtQueueElement *vhost_svq_get_buf(VhostShadowVirtqueue *svq,
-     last_used_chain = vhost_svq_last_desc_of_chain(svq, num, used_elem.id);
-     svq->desc_next[last_used_chain] = svq->free_head;
-     svq->free_head = used_elem.id;
-+    svq->num_free += num;
+     if (!get_vhost_net(nc->peer)) {
+-        virtio_add_feature(&features, VIRTIO_F_RING_RESET);
+         return features;
+     }
  
-     *len = used_elem.len;
-     return g_steal_pointer(&svq->desc_state[used_elem.id].elem);
-@@ -656,6 +658,7 @@ void vhost_svq_start(VhostShadowVirtqueue *svq, VirtIODevice *vdev,
-     svq->vq = vq;
- 
-     svq->vring.num = virtio_queue_get_num(vdev, virtio_get_queue_index(vq));
-+    svq->num_free = svq->vring.num;
-     driver_size = vhost_svq_driver_area_size(svq);
-     device_size = vhost_svq_device_area_size(svq);
-     svq->vring.desc = qemu_memalign(qemu_real_host_page_size(), driver_size);
-diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
-index d04c34a589..328a7fc075 100644
---- a/hw/virtio/vhost-shadow-virtqueue.h
-+++ b/hw/virtio/vhost-shadow-virtqueue.h
-@@ -107,6 +107,9 @@ typedef struct VhostShadowVirtqueue {
- 
-     /* Next head to consume from the device */
-     uint16_t last_used_idx;
-+
-+    /* Size of SVQ vring free descriptors */
-+    uint16_t num_free;
- } VhostShadowVirtqueue;
- 
- bool vhost_svq_valid_features(uint64_t features, Error **errp);
 -- 
 2.39.2
 
