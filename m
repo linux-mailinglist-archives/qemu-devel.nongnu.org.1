@@ -2,83 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAF870DD78
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7162D70DD79
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:31:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1S4x-0002iA-Km; Tue, 23 May 2023 09:29:31 -0400
+	id 1q1S6L-000431-Hf; Tue, 23 May 2023 09:30:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q1S4v-0002hG-UD
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:29:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q1S6G-00042Q-PS
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:30:54 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q1S4u-0005G4-5J
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:29:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684848566;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MyCdXYibxUkX/beXDihLMf9mHmrDiwgv9yPGoFZ+jBs=;
- b=VJ42HVkzS3q23g+5rageAsSwFiwY8hs+b0FMkVzRAX91QrzpRxJc+iySY7+1moohe60gOL
- KRnTGkpgkHn+ehM7yWMtf8pXE7GYy+ejXBH1BUlOaifpue8hUwv1lFkygy653Zjcf4hCPh
- 5oK43HBtiVM61APt9mG6nfqDl4anJoc=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-ZvDKrEY0NxK5DRUPhhvHVg-1; Tue, 23 May 2023 09:29:25 -0400
-X-MC-Unique: ZvDKrEY0NxK5DRUPhhvHVg-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-3f6ab996ea3so35469741cf.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:29:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684848564; x=1687440564;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MyCdXYibxUkX/beXDihLMf9mHmrDiwgv9yPGoFZ+jBs=;
- b=WMGK0LpwouPtyrKbsULt1+e4tXjGaIwqJ0qD4ngzUqOFWAfcre43C77SjdQqyR4O3f
- QAVEIxF7iBnQQpsVxb7eMQ7ou8JRYxrl72vFIf3DRvYrr1di4/N8Q4hoTYA6TKY1KeTM
- d7hugb/EcOKrY2KmMHRYcR7v/A6u6VLHoZcvTAdhe2vu986E/WI1XQr/2Xk38Lm1rvQI
- H4aDvyQzmIHYVG//hvTMCxAHn66j86/PQmf/UQOmuLE/S0KdPutSaB4BNLB0snCqVLvw
- BpvQRvqi5bKQJ62N+qm5Y/dVbiRcdG2Gwdg/4otCrn/+ONl9c0XvLlsCf0jwa1SDoPu+
- nyVw==
-X-Gm-Message-State: AC+VfDxARoa66zOeF8FpKtkEdvmjApbwDTBNYbdE9Xz27Z002ub2JydL
- Ki7dpAJqYD8++LPDMHhfy7HNNN6k1aR2QVZDNCFx2m8lX5ej74nA1hXOgYB/7xE6rsz47OXnpQV
- ELCVaWg9QlsT1RJXkKwhM/sinSZ5rmkU=
-X-Received: by 2002:a05:622a:452:b0:3f3:8749:741 with SMTP id
- o18-20020a05622a045200b003f387490741mr22168399qtx.13.1684848564717; 
- Tue, 23 May 2023 06:29:24 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5lJDqRot8uplacr2QkDUIWNbmuGwrzHZi4mTGVx42S+0jehOo0PlDSV9l8gwhc7qwUITB/k6GG8giKQIt73NY=
-X-Received: by 2002:a05:622a:452:b0:3f3:8749:741 with SMTP id
- o18-20020a05622a045200b003f387490741mr22168379qtx.13.1684848564456; Tue, 23
- May 2023 06:29:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q1S6E-0005td-Ox
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:30:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
+ Cc:To:Subject:Reply-To:MIME-Version:Date:Message-ID:Sender:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=LuiHUK/mJOjCGV29hwJPXrewxx6iPYCtsz4QG7Z+B1o=; b=gzFamER6jAKFOw6qdPI9iq3hMv
+ PgpX1mS725B0xUjklw9A6ZisP+BcGEWULzlSGmQLaR6fHJrA/IdZEqAxy7jqhp2mFmtzdqc+lAC0v
+ tz+Qc0BoD8dGFqnmhnU6nUmnl+VLYAV1CLmY5pQ2a6GC3E5oqNlhAzGcn/rroagvI+t0=;
+Message-ID: <5de92654-52e3-6042-de5e-b2334b737c13@rev.ng>
+Date: Tue, 23 May 2023 15:29:59 +0200
 MIME-Version: 1.0
-References: <20230522174153.46801-1-cconte@redhat.com>
- <d08d55dd-f38b-063c-d64e-9a0f79dbebf9@linaro.org>
- <CACPOWh0w=YEeGgG8rc1C-fOmfvRwVo4NVTqjARRwZNWEPjZehQ@mail.gmail.com>
- <b30f4f2e-5784-5c7b-8f13-aa12c61bae23@linaro.org>
-In-Reply-To: <b30f4f2e-5784-5c7b-8f13-aa12c61bae23@linaro.org>
-From: Camilla Conte <cconte@redhat.com>
-Date: Tue, 23 May 2023 14:28:47 +0100
-Message-ID: <CACPOWh3-_=gkg0CxD=FFvCjTJAmcuTRuVh_YEdn1BXRJc-qxUg@mail.gmail.com>
-Subject: Re: Add CI configuration for Kubernetes
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, thuth@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cconte@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: Help finding Coverity defects for generated Hexagon code
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
+ <4ffdd486-ec7d-49c7-1330-0d0b090735b9@rev.ng>
+ <CAFEAcA9ZctmXrCAwsAk6eBeF4ojB4QBwq16TsdcGZPHTin6LEg@mail.gmail.com>
+ <CABgObfa7N+A=ReW-jme=Nx+wt7rZPcpuy-ANmxepcJMxeXeeWA@mail.gmail.com>
+Content-Language: en-US
+Organization: rev.ng
+In-Reply-To: <CABgObfa7N+A=ReW-jme=Nx+wt7rZPcpuy-ANmxepcJMxeXeeWA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,37 +63,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  anjo@rev.ng
+X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 23, 2023 at 2:08=E2=80=AFPM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 5/23/23 01:24, Camilla Conte wrote:
-> > On Mon, May 22, 2023 at 11:52=E2=80=AFPM Richard Henderson
-> > <richard.henderson@linaro.org> wrote:
-> >> This does not work:
-> >>
-> >> https://gitlab.com/qemu-project/qemu/-/pipelines/875254290
-> >
-> > My bad, sorry. I didn't update the runner with the new values.yaml.
-> > The Docker environment variables were missing so it's looking for the
-> > Docker server at the wrong place.
-> >
-> > Now I updated the runner. You have to add the "k8s" tag to the runner
-> > again in the settings:
-> > https://gitlab.com/qemu-project/qemu/-/settings/ci_cd#Runners.
-> > As soon as the "k8s" tag is there the pipeline should be able to run.
-> >
->
-> The k8s tag has been there on the runner all along.  Did you mean somethi=
-ng else?
 
-I had Paolo adding it a few hours ago.
+On 5/23/23 12:29, Paolo Bonzini wrote:
+> On Tue, May 23, 2023 at 11:18 AM Peter Maydell <peter.maydell@linaro.org> wrote:
+>> On Mon, 22 May 2023 at 21:24, Anton Johansson <anjo@rev.ng> wrote:
+>>> Hi,
+>>>
+>>> coverity recently reported some defects in code generated by idef-parser
+>>> (email attached). These defects are expected and we plan to emit a
+>>> /* coverity[event_tag] */ comment to disable the specific event triggered.
+>> We don't mark coverity false positives with comments in the
+>> source. For the free online scanner, we just mark them as
+>> false positives in the GUI (with an explanation of why they're
+>> false positives).
+> They aren't visible in the GUI because the whole "hexagon generated
+> files" component is marked as not-analyzed; which apparently means it
+> _is_ analyzed and visible in the emails but not in the GUI.
 
->
->
-> r~
->
+Ah right...
+
+> The event tag for this error should be "dead_error_condition". In
+> theory, the hexagon generated files could be a good exception to the
+> rules that we don't mark false positives in the source, but finding
+> the right line to add the tag can be messy.
+If we decide to mark these in source, my plan was to simply emit
+
+     if (qemu_tmp_2 >= 64) {
+         /* coverity[dead_error_condition] */
+         tcg_gen_movi_i64(tmp_5, 0);
+     } else {
+         tcg_gen_shli_i64(tmp_5, tmp_4, qemu_tmp_2);
+     }
+
+for all of these safety checks around shifts/extracts where the defect could
+trigger. Maybe this is overreaching as we would also mark similar 
+branches in
+other instructions that are alive, but if we knew they were dead at 
+translation
+time we could simply not emit them to begin with.
+
+-- 
+Anton Johansson,
+rev.ng Labs Srl.
 
 
