@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D1970E601
+	by mail.lfdr.de (Postfix) with ESMTPS id D047A70E600
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 21:51:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Y13-00014A-1D; Tue, 23 May 2023 15:49:53 -0400
+	id 1q1Y13-00014z-L5; Tue, 23 May 2023 15:49:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q1Y10-00012I-4C; Tue, 23 May 2023 15:49:50 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ id 1q1Y11-00012s-CE; Tue, 23 May 2023 15:49:51 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q1Y0w-00047z-O6; Tue, 23 May 2023 15:49:49 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-96f818c48fbso2171966b.0; 
- Tue, 23 May 2023 12:49:44 -0700 (PDT)
+ id 1q1Y0x-000489-SI; Tue, 23 May 2023 15:49:51 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-510b6a249a8so522017a12.0; 
+ Tue, 23 May 2023 12:49:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684871383; x=1687463383;
+ d=gmail.com; s=20221208; t=1684871384; x=1687463384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=P72zQ7woazHMx0qT4VH6jdOKwmBc//e3KdkUSQs+4e0=;
- b=OU5/rOlmPd8KDLdvCYYGlyKmbJ1Cg4rivhxQYipGuuScUCnxS7uNiErTcmdM8CGjPm
- dFSNgRDKBQicn6dpoq+COKXdRIufKTyYg7UeMksVgticR/VquQPovuCfJDSmPdmw/gik
- FXF6SKjpuAiOI0n7WDKDjT/K7AYpgoLPhDJ9pQlx5z0XtnutBB8zK6TyMBVGeBnq4UXD
- 821lTCiL7JZKiLUG+idT+UhgeUyAeN5tGXI+KkYtHaQGhGWeQwRJ9jzLqZS3/AxMI2Cn
- es67taLdWtQ88xO0xt45PXxftxSZzrkFLLpx6Bhxd3rf4iWoJGUBx3hVRcyPSTvcHCaP
- sybw==
+ bh=8Lv55u1Phksy7vpvt5uQalm8ZH8vHXFG9KtnpUGBJcg=;
+ b=RpMJ5FtPZ7B8kwXqY3otfz5525EUiocLP4TzEE8Lxi3LWqhnRl+FTWaU6yvJKUvuxh
+ SEXTc29YrKIib/pcUXJpjGQcTkO29Gznz/4jmPD/1c54I2ansmZd0zA1ZL03IUrtOfPi
+ SJAqdqnxd2bJ0QGyQO+rOz9A/64J+sTMB8ln8a+KUdjNy1kLzSYxRKcs6MmS/3HC95d5
+ dDdxGbr++jNjX205T2pl0ncNRcGo94pbT6pT7YPPAHznPKsGPT9Sb6UsTaPm6h8XmTUN
+ sTlOQdwyu5SrjAGC9md1dXfY56jTRXn71gAgrXd2wVQJqe7tDqPYbUDQFO7vmg7ebg5I
+ DPbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684871383; x=1687463383;
+ d=1e100.net; s=20221208; t=1684871384; x=1687463384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=P72zQ7woazHMx0qT4VH6jdOKwmBc//e3KdkUSQs+4e0=;
- b=EIYD6sZz5e94UGmmYkXB3Ixq5tvIBQZfTnnzwzEkkzr4Igj2PT6GnQ0yIZK+WSW0mp
- OM8YzkowAwJcXWATMzHrDWNRAoKj0o5BRRnCyEqx5RQsTfb7Sz2Oz6vQa+ij/1HuiPH9
- DSxywCk3OSTDwMaoPB7HiOlOg5/GEVYSaH4VSI2KqNAo8uOx2GxHzGX+2EwNyvRJJCce
- XfVGkPj2ef1ul5XgA6dcoQWTkOEXJUt827bjhjB6rJimTzKMn2EmGMplhifZMIiKqxLk
- /FOP3/y8XQxBtbQqmnGxONGKYXXuK/ZVYyD5cskEc+YEyk5XV/TAxUPJe3aCAxjN2Di+
- FLZQ==
-X-Gm-Message-State: AC+VfDxEXj5DgjATsd1KO5ltMaMI96g/9za0sv4ytz04PqC3JvOPo5Pf
- tspp5DUmBybAbA77/qI2ox0F9kuWCek=
-X-Google-Smtp-Source: ACHHUZ7TC9LzEqi1rD629awTMapc0oUMGPgp/+cbMD7QL5p/kGgnd06N9eEoCzafbZ5Es38wnVsnaA==
-X-Received: by 2002:a17:906:dc91:b0:96f:45cd:6c24 with SMTP id
- cs17-20020a170906dc9100b0096f45cd6c24mr15020044ejc.23.1684871383616; 
- Tue, 23 May 2023 12:49:43 -0700 (PDT)
+ bh=8Lv55u1Phksy7vpvt5uQalm8ZH8vHXFG9KtnpUGBJcg=;
+ b=DgqsPX/sAd/HctWQy2Q1PHfYerjBJnsqIkS7/SSxXR9EkPqS5W5ZkNJNyZ6zegC8P4
+ 6yWSrZgH1TdXx+bgdj02PtSf1/4qLDfWGjlO9wKmUk9zZGEWbvYmXZv+7KUJQmBsAHo5
+ IcBEaaEa61n12gDH/WBegP1hk3vuwAHxEUnhbl/1B+WdchDH3QGP1YppuIgqhAZAAq87
+ YLlLx007/msrIfsXupZIztYvtf8FeOrpyUJUSuC8ymiyadyn+XD19yKMdupilROmoTZd
+ qA6gutHiMELmsj8gsCw2nPG2qjRG1VcTbgtCnf/CIJSwPK3Cm9EmCX3sUV9kpamhUsGI
+ MW/Q==
+X-Gm-Message-State: AC+VfDwtBkrY/ebDdlM07dZbDgSVCUeIsJzPwX6e/Na0o9ibWKfyMxtu
+ Gx84mWAoYbY/Rs23ToiSYoyJBVB+e64=
+X-Google-Smtp-Source: ACHHUZ7UwoB4XoIimm8xEOtTQT5M5eA54G1pJas2fVACF5ZuiurdSABuleM4qzUNuZQHZAsqcN/c9g==
+X-Received: by 2002:a17:907:968c:b0:969:e55f:cca2 with SMTP id
+ hd12-20020a170907968c00b00969e55fcca2mr18204111ejc.38.1684871384483; 
+ Tue, 23 May 2023 12:49:44 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-077-183-025-113.77.183.pool.telefonica.de. [77.183.25.113])
  by smtp.gmail.com with ESMTPSA id
- k17-20020a1709063e1100b0096f641a4c01sm4800593eji.179.2023.05.23.12.49.42
+ k17-20020a1709063e1100b0096f641a4c01sm4800593eji.179.2023.05.23.12.49.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 12:49:43 -0700 (PDT)
+ Tue, 23 May 2023 12:49:44 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Huacai Chen <chenhuacai@kernel.org>, John Snow <jsnow@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH v2 4/6] hw/ide: Extract IDEBus assignment into bmdma_init()
-Date: Tue, 23 May 2023 21:49:28 +0200
-Message-Id: <20230523194930.124352-5-shentey@gmail.com>
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH v2 5/6] hw/ide: Extract bmdma_status_writeb()
+Date: Tue, 23 May 2023 21:49:29 +0200
+Message-Id: <20230523194930.124352-6-shentey@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230523194930.124352-1-shentey@gmail.com>
 References: <20230523194930.124352-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,81 +94,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Every invocation of bmdma_init() is followed by `d->bmdma[i].bus = &d->bus[i]`.
-Resolve this redundancy by extracting it into bmdma_init().
+Every TYPE_PCI_IDE device performs the same not-so-trivial bit manipulation by
+copy'n'paste code. Extract this into bmdma_status_writeb(), mirroring
+bmdma_cmd_writeb().
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/ide/cmd646.c  | 1 -
- hw/ide/pci.c     | 1 +
- hw/ide/piix.c    | 1 -
- hw/ide/sii3112.c | 1 -
- hw/ide/via.c     | 1 -
- 5 files changed, 1 insertion(+), 4 deletions(-)
+ include/hw/ide/pci.h | 1 +
+ hw/ide/cmd646.c      | 2 +-
+ hw/ide/pci.c         | 5 +++++
+ hw/ide/piix.c        | 2 +-
+ hw/ide/sii3112.c     | 6 ++----
+ hw/ide/via.c         | 2 +-
+ 6 files changed, 11 insertions(+), 7 deletions(-)
 
+diff --git a/include/hw/ide/pci.h b/include/hw/ide/pci.h
+index 74c127e32f..1ff469de87 100644
+--- a/include/hw/ide/pci.h
++++ b/include/hw/ide/pci.h
+@@ -58,6 +58,7 @@ struct PCIIDEState {
+ 
+ void bmdma_init(IDEBus *bus, BMDMAState *bm, PCIIDEState *d);
+ void bmdma_cmd_writeb(BMDMAState *bm, uint32_t val);
++void bmdma_status_writeb(BMDMAState *bm, uint32_t val);
+ extern MemoryRegionOps bmdma_addr_ioport_ops;
+ void pci_ide_create_devs(PCIDevice *dev);
+ 
 diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index a68357c1c5..a094a6e12a 100644
+index a094a6e12a..cabe9048b1 100644
 --- a/hw/ide/cmd646.c
 +++ b/hw/ide/cmd646.c
-@@ -297,7 +297,6 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
-         ide_bus_init_output_irq(&d->bus[i], qdev_get_gpio_in(ds, i));
- 
-         bmdma_init(&d->bus[i], &d->bmdma[i], d);
--        d->bmdma[i].bus = &d->bus[i];
-         ide_bus_register_restart_cb(&d->bus[i]);
-     }
- }
+@@ -144,7 +144,7 @@ static void bmdma_write(void *opaque, hwaddr addr,
+         cmd646_update_irq(pci_dev);
+         break;
+     case 2:
+-        bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
++        bmdma_status_writeb(bm, val);
+         break;
+     case 3:
+         if (bm == &bm->pci_dev->bmdma[0]) {
 diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-index 9a5a7089d4..4cf1e9c679 100644
+index 4cf1e9c679..b258fd2f50 100644
 --- a/hw/ide/pci.c
 +++ b/hw/ide/pci.c
-@@ -519,6 +519,7 @@ void bmdma_init(IDEBus *bus, BMDMAState *bm, PCIIDEState *d)
-     bus->dma = &bm->dma;
-     bm->irq = bus->irq;
-     bus->irq = qemu_allocate_irq(bmdma_irq, bm, 0);
-+    bm->bus = bus;
-     bm->pci_dev = d;
+@@ -318,6 +318,11 @@ void bmdma_cmd_writeb(BMDMAState *bm, uint32_t val)
+     bm->cmd = val & 0x09;
  }
  
++void bmdma_status_writeb(BMDMAState *bm, uint32_t val)
++{
++    bm->status = (val & 0x60) | (bm->status & BM_STATUS_DMAING) | (bm->status & ~val & 0x06);
++}
++
+ static uint64_t bmdma_addr_read(void *opaque, hwaddr addr,
+                                 unsigned width)
+ {
 diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index 41d60921e3..a32f7ccece 100644
+index a32f7ccece..47e0b474c3 100644
 --- a/hw/ide/piix.c
 +++ b/hw/ide/piix.c
-@@ -144,7 +144,6 @@ static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
-     ide_bus_init_output_irq(&d->bus[i], isa_get_irq(NULL, port_info[i].isairq));
- 
-     bmdma_init(&d->bus[i], &d->bmdma[i], d);
--    d->bmdma[i].bus = &d->bus[i];
-     ide_bus_register_restart_cb(&d->bus[i]);
- 
-     return true;
+@@ -76,7 +76,7 @@ static void bmdma_write(void *opaque, hwaddr addr,
+         bmdma_cmd_writeb(bm, val);
+         break;
+     case 2:
+-        bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
++        bmdma_status_writeb(bm, val);
+         break;
+     }
+ }
 diff --git a/hw/ide/sii3112.c b/hw/ide/sii3112.c
-index f9becdff8e..5dd3d03c29 100644
+index 5dd3d03c29..63dc4a0494 100644
 --- a/hw/ide/sii3112.c
 +++ b/hw/ide/sii3112.c
-@@ -287,7 +287,6 @@ static void sii3112_pci_realize(PCIDevice *dev, Error **errp)
-         ide_bus_init_output_irq(&s->bus[i], qdev_get_gpio_in(ds, i));
- 
-         bmdma_init(&s->bus[i], &s->bmdma[i], s);
--        s->bmdma[i].bus = &s->bus[i];
-         ide_bus_register_restart_cb(&s->bus[i]);
-     }
- }
+@@ -149,8 +149,7 @@ static void sii3112_reg_write(void *opaque, hwaddr addr,
+         break;
+     case 0x02:
+     case 0x12:
+-        d->i.bmdma[0].status = (val & 0x60) | (d->i.bmdma[0].status & 1) |
+-                               (d->i.bmdma[0].status & ~val & 6);
++        bmdma_status_writeb(&d->i.bmdma[0], val);
+         break;
+     case 0x04 ... 0x07:
+         bmdma_addr_ioport_ops.write(&d->i.bmdma[0], addr - 4, val, size);
+@@ -165,8 +164,7 @@ static void sii3112_reg_write(void *opaque, hwaddr addr,
+         break;
+     case 0x0a:
+     case 0x1a:
+-        d->i.bmdma[1].status = (val & 0x60) | (d->i.bmdma[1].status & 1) |
+-                               (d->i.bmdma[1].status & ~val & 6);
++        bmdma_status_writeb(&d->i.bmdma[1], val);
+         break;
+     case 0x0c ... 0x0f:
+         bmdma_addr_ioport_ops.write(&d->i.bmdma[1], addr - 12, val, size);
 diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 0caae52276..91253fa4ef 100644
+index 91253fa4ef..fff23803a6 100644
 --- a/hw/ide/via.c
 +++ b/hw/ide/via.c
-@@ -196,7 +196,6 @@ static void via_ide_realize(PCIDevice *dev, Error **errp)
-         ide_bus_init_output_irq(&d->bus[i], qdev_get_gpio_in(ds, i));
- 
-         bmdma_init(&d->bus[i], &d->bmdma[i], d);
--        d->bmdma[i].bus = &d->bus[i];
-         ide_bus_register_restart_cb(&d->bus[i]);
+@@ -75,7 +75,7 @@ static void bmdma_write(void *opaque, hwaddr addr,
+         bmdma_cmd_writeb(bm, val);
+         break;
+     case 2:
+-        bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
++        bmdma_status_writeb(bm, val);
+         break;
+     default:;
      }
- }
 -- 
 2.40.1
 
