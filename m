@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FF170D1BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EA070D1A7
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:48:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1I0V-00037f-IU; Mon, 22 May 2023 22:44:15 -0400
+	id 1q1I0Z-00038P-Dm; Mon, 22 May 2023 22:44:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I0T-00037D-Am
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:13 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1q1I0X-000385-0J
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:17 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I0R-00046E-V3
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:13 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1ae54b623c2so63707155ad.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:44:11 -0700 (PDT)
+ id 1q1I0V-00046d-DU
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:16 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-64d247a023aso3666044b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:44:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809851; x=1687401851;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809854; x=1687401854;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JWGE4S4rPXKGMW5kyd7FDSiXC4WTsYFl6VqGlHNwJvw=;
- b=deFvVzFDSVyWa7zj6ZrW4EW0He6kd/rPaxOjcntAKNwwNj9Dw2zL8SqaCU8jlpxBNK
- jXINVHfDOC8EScG9Xv8G2NTV4IYPnVWFqhhNwv4P6V7vyA6sl3LI4662JUnSM7eYR4W9
- +3nj+8xHilkOpTCcT1EkRd/RlbREfU218cWljEVjPVSOoGLT22ajnJ1A5t27nDdZphrD
- NSjLwOTNZc5d+EkALHnBUR2gffOlVKr0i7Qgwe4eESgN71Lr/vUKXr+xR6V2tFbgsI6w
- zKOEAYjcRsAYjjx8NUH/OjKgTG05d5IWX67fUYDhmG/tS6/GY45vBndgOIeVxprPr6yh
- rmnw==
+ bh=+fXrhMcz/P3mkB39Ht6Evqc+Wg0GW18mnGpMmsiuBRE=;
+ b=yNiGwnJMSQHXozoDYovyKE5Zqd/XhN04arBsO76hVIGjjNAiAONK66qiB+E6aO+Qix
+ t/Hu7cJRez5mUlvR0Y31hlve3mNSw9GjUn9EPLDocDGOVK/oNiLlbF6lXqOzr0vMSSo+
+ JnoRu7YSxz0HBKaDeaCenLTm3uzJjk82tesXi+3T26Tw/8JEjxMcd8BmXiHveDmj2F8C
+ dRHmqS2SdgYdGpJ6SYlSsRPv1i5Gtn83/NC7p1ZPAZQNPeoH1bb2GQPpZQLyZJv15WxE
+ vyUaEPwpzsSAL3EcMw3k8oFXQbu18WVNlJtjsRwzxakAQL/bRKg/5wT1Z14xEPkfCpq5
+ 3/MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684809851; x=1687401851;
+ d=1e100.net; s=20221208; t=1684809854; x=1687401854;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JWGE4S4rPXKGMW5kyd7FDSiXC4WTsYFl6VqGlHNwJvw=;
- b=aX4pmc2mFPYmC69c6rVy4Tnle2kgjw/iHgi5FMM5IObEi3hStCAT6+JM0+VeaU3q9o
- jEkEomzqb49XPl9LGIBzQs0rQflNa+XjQNDnHcbeD+fKipd494ppro0IJ9hEHVK4/XQn
- in5xboO1W+KP6JFb0ssxk28oSpiPTTzI6qfxsCR/ZYSOkM0PGp8ULjd9ZnHqmwBbNE6A
- D4NAwu0/cQc3NrbtdNFQjHcPTkXjlf4YmSG0p7SPw3/Va6vqjCnpFUa2+iXHsnvBwLtg
- hW8SO2D2Wb80HFHwW5bl4OEnVxn6aLb+kF08G+BF6FDy029j/eO6FL5u1U7TCOQgXAji
- wJmA==
-X-Gm-Message-State: AC+VfDwxKzlKurRBqn+3RCS7Yzfw7bem0lRVlYOb67Ps4x7AzZYPO/Wu
- xZDxsN7u/E4EgkqsZnyPucb19Q==
-X-Google-Smtp-Source: ACHHUZ4O1jnzKynEpoymx59tjTq7KJIPy+KIxHT/rgbR1bVnmJlhaTrmzJZ1gAH+8lSuj7513nLTYA==
-X-Received: by 2002:a17:903:2311:b0:1af:bb27:f55f with SMTP id
- d17-20020a170903231100b001afbb27f55fmr4806107plh.55.1684809850824; 
- Mon, 22 May 2023 19:44:10 -0700 (PDT)
+ bh=+fXrhMcz/P3mkB39Ht6Evqc+Wg0GW18mnGpMmsiuBRE=;
+ b=ShiibA02Cva5w5DPXEJJXvMra2Lk7E3HjHOSv8SWgekT5dRCWQGje4MT98iEc8iaf5
+ dJ/BhQKN3TKr+1lYW90iMucM5FWv194pAipBeK5MqP9yzohmfdMAomx1R3FslmMUOQ6H
+ 27bbF6189b566/Z22J3nhQJxVDbUtka1y89ZcJWae2lgjhSSFX7l5H6Y3PVu0XVtP0zr
+ MH6tENCepHuEF+0JRvRxvweKkkouv37GBBJsz16ItawUuD+TG6oY8Aib/Orasu9zeqmS
+ W0PB+ENbkGtFIc3DpujlYE8y1VltbZ+HUMgKpCzFQsYml42lLIH90T3lQBK6R7gc7OC3
+ 8/Cg==
+X-Gm-Message-State: AC+VfDzqiu/IL/Nw/5jMkDJnCXsPsyorhtGMQl25fA2xSttVrsEVI2VD
+ pcWzqaXH9D41jjbe59A2bfBgyA==
+X-Google-Smtp-Source: ACHHUZ60vgi29Oo0o9QHD/S1VALK1jdTMH99NwVBOdBIgBBA1sJhtZUg+L9f6ZsK+cU4qHGqQYbDcg==
+X-Received: by 2002:a05:6a20:1444:b0:103:73a6:5cc1 with SMTP id
+ a4-20020a056a20144400b0010373a65cc1mr13657334pzi.4.1684809854181; 
+ Mon, 22 May 2023 19:44:14 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.44.07
+ o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.44.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 19:44:10 -0700 (PDT)
+ Mon, 22 May 2023 19:44:13 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
@@ -69,16 +69,16 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org, Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 05/48] igb: Do not require CTRL.VME for tx VLAN tagging
-Date: Tue, 23 May 2023 11:42:56 +0900
-Message-Id: <20230523024339.50875-6-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 06/48] igb: Clear IMS bits when committing ICR access
+Date: Tue, 23 May 2023 11:42:57 +0900
+Message-Id: <20230523024339.50875-7-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 References: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,36 +100,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While the datasheet of e1000e says it checks CTRL.VME for tx VLAN
-tagging, igb's datasheet has no such statements. It also says for
-"CTRL.VLE":
-> This register only affects the VLAN Strip in Rx it does not have any
-> influence in the Tx path in the 82576.
-(Appendix A. Changes from the 82575)
+The datasheet says contradicting statements regarding ICR accesses so it
+is not reliable to determine the behavior of ICR accesses. However,
+e1000e does clear IMS bits when reading ICR accesses and Linux also
+expects ICR accesses will clear IMS bits according to:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ethernet/intel/igb/igb_main.c?h=v6.2#n8048
 
-There is no "CTRL.VLE" so it is more likely that it is a mistake of
-CTRL.VME.
-
-Fixes: fba7c3b788 ("igb: respect VMVIR and VMOLR for VLAN")
+Fixes: 3a977deebe ("Intrdocue igb device emulation")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 ---
- hw/net/igb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/net/igb_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index dbd1192a8e..96a118b6c1 100644
+index 96a118b6c1..eaca5bd2b6 100644
 --- a/hw/net/igb_core.c
 +++ b/hw/net/igb_core.c
-@@ -402,7 +402,7 @@ igb_tx_insert_vlan(IGBCore *core, uint16_t qn, struct igb_tx *tx,
-         }
+@@ -2452,16 +2452,16 @@ igb_set_ims(IGBCore *core, int index, uint32_t val)
+ static void igb_commit_icr(IGBCore *core)
+ {
+     /*
+-     * If GPIE.NSICR = 0, then the copy of IAM to IMS will occur only if at
++     * If GPIE.NSICR = 0, then the clear of IMS will occur only if at
+      * least one bit is set in the IMS and there is a true interrupt as
+      * reflected in ICR.INTA.
+      */
+     if ((core->mac[GPIE] & E1000_GPIE_NSICR) ||
+         (core->mac[IMS] && (core->mac[ICR] & E1000_ICR_INT_ASSERTED))) {
+-        igb_set_ims(core, IMS, core->mac[IAM]);
+-    } else {
+-        igb_update_interrupt_state(core);
++        igb_clear_ims_bits(core, core->mac[IAM]);
      }
++
++    igb_update_interrupt_state(core);
+ }
  
--    if (insert_vlan && e1000x_vlan_enabled(core->mac)) {
-+    if (insert_vlan) {
-         net_tx_pkt_setup_vlan_header_ex(tx->tx_pkt, vlan,
-             core->mac[VET] & 0xffff);
-     }
+ static void igb_set_icr(IGBCore *core, int index, uint32_t val)
 -- 
 2.40.1
 
