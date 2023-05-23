@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3892770DEF6
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8977670DDF1
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:51:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Sfn-0008Jc-9v; Tue, 23 May 2023 10:07:35 -0400
+	id 1q1SMb-0008Qf-P6; Tue, 23 May 2023 09:47:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1SfO-00089s-1y
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:07:13 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1SMY-0008Cc-P2
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:42 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1Sf7-0006Xv-6X
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:07:09 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f607e60902so13036415e9.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:06:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1SMW-000141-V8
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:42 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-64d44b198baso2519331b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:47:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684850796; x=1687442796;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1684849659; x=1687441659;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sZK4uOU8yfAlYrR/chcA6iqh9NKoCWqHy8tFFNxtuCQ=;
- b=ks2kH7pUa8DphiT/uHKiTIaDporshMl3/D5M1ORTLKwMWer/P9Ozdt2zQofKzXuWub
- TL5NkbIDLwFbnREACxoxUsbcMi8wpzcQjejFRUes7o8YS4IDpegaQun5ymzg0JdbwdM+
- t99XgFtrPmAByE+DCFRhbBwW2Fw/AU1NsP79+1kadv+wgu+Q1K7/WHcY8m57XO8FnxHe
- 8YVwqLBJm431KIP0VjrNAyJxsGXs873q1rii992tXz0W9WdxNPGhH6V9/WLqAHr/W3Cc
- sf3uhx8UEn2TWNgCU2wCdr3ukwu0fV33voww0XdFT12WBtb9cXHyEX2jawxuEUSVyVmF
- k76w==
+ bh=WcxZjIY/T80MjuA6OZ00h+5fCLAwNHjF9M1KXt4rlvU=;
+ b=Ups/My3t8avsQ85Rg7lt4VqQTExlV/NL4MSSXtzQb3il+0uLuKnzYlCu+9r3UucWzn
+ FGYwZWRCTiuXf0I3hGrYf/TUE4HN8I+RJlsd40WbTZuBb8XmEJQX3o7VH4JVaYarCKcf
+ 8/Vo5DhN1niyXOfimJYP0seVOJPHG2O2blR4SczjbU9cJ/K6SOHXIOCkr8OEAe/4eF8M
+ ZgRLbo2YEYgGmewjYZ867jdldRo3zYCSud6pvgTrRluqKpbsF32Orx2MqPFaJaxZpigr
+ fVhR9G4tBsLpjBbTUWfExQZyKSp+aWpv/OjJfNrXOCJ8UpDeqM/LNnfLuux8llzIHJtP
+ k9Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684850796; x=1687442796;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=sZK4uOU8yfAlYrR/chcA6iqh9NKoCWqHy8tFFNxtuCQ=;
- b=XL0HY7y52VXY82G6tASNDyUHMub7j1/nndCxIvhX+bmRQbB6VfmJMVN1TGNBumbNQL
- HJWagBr4yE0jtiyQIcWWJDSrJTEg5Y8YZb9KN4fcAh8WB31RQryMF21sKXKOviortiDE
- thN6TL1SGW5V3MWDHpNImBjKUe5eQLLGuhWgV5y/5F4/5GTs5Bojwzqj1zKq1brHb4ld
- x+VD3gGBlj0G2VLP/WEyUeY/h4KtPhpGuncTP/mwo3JuwBTljpFtzGl/1b+GPtqtEVq7
- 4Ak4iH79R9pFdyg8BhpjDmbe8zaRTimtNjm2c0/Gnl6af86CjXbB0AIw8YFFYe54y6Lf
- tQ0A==
-X-Gm-Message-State: AC+VfDwoyjvVN6QxearhdoZPaIlcPVPidnMYVMaM4Z+kVFzjfD3tZqP3
- o2HqOwGHoNsTGK79OaOD60bGJQ==
-X-Google-Smtp-Source: ACHHUZ6UeSh0lCSAhIuURsHLCj+eZ4j1SVoJV3e4ODSPrIRsjFtYbktZE/SGPTYDQt0Ljth+5gxwXQ==
-X-Received: by 2002:a1c:f217:0:b0:3f4:2328:b5c2 with SMTP id
- s23-20020a1cf217000000b003f42328b5c2mr9220381wmc.35.1684850795594; 
- Tue, 23 May 2023 07:06:35 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1684849659; x=1687441659;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WcxZjIY/T80MjuA6OZ00h+5fCLAwNHjF9M1KXt4rlvU=;
+ b=UszpwDSlj4eaLqsMomjv/O+o7k4TkB9Xmc//uVI3pScdxAFwA40ej6LcUnCRiwBtCj
+ Qxxmtv2ATULg2yz6JPH+36yho7vT2pq/kId8kiiE2pBpIRtQQsmlLvnfK7Kj5y81ZBqB
+ I/nxGEgmplMCvC8ztc+CroLKwxglXlYDLjz6FKYNvnIpMvNtRf9gCu4Kz9kgFLZMmsmd
+ ePyzRGVfEv4hiSvvcnvkEV8xWx715r2gf96EcbyQwcdbaM7qGzSe5fCanTU6BtpmR6ap
+ BqyOFkb1geaqGz/P5qK2S0GsSGerVzp3kdJZNtSMcIgdMHaYyy+YgT2xEPhXrSfYRkrU
+ t3Sg==
+X-Gm-Message-State: AC+VfDzMxJtOlGaTHJGchP97Cy21CaWBseXDtjizuaiBpuimT/og9ftI
+ Ynk6QNEWp9kzXZBObtp/kMVwhFv9GhweZtfblXQ=
+X-Google-Smtp-Source: ACHHUZ7hZMpJ87SgF8tVpal5ErubnzUxLRZrAwbz2VIAntjIiBm0x0bzT3eNybKPEzWCUsiqe1s8DQ==
+X-Received: by 2002:a05:6a00:1250:b0:63b:19e5:a96e with SMTP id
+ u16-20020a056a00125000b0063b19e5a96emr13520990pfi.9.1684849659524; 
+ Tue, 23 May 2023 06:47:39 -0700 (PDT)
+Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- q3-20020a7bce83000000b003f4fb5532a1sm11937603wmj.43.2023.05.23.07.06.35
+ j4-20020aa79284000000b0064d1349dc31sm5737122pfa.199.2023.05.23.06.47.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 07:06:35 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id C3CEB1FFBB;
- Tue, 23 May 2023 15:06:34 +0100 (BST)
-References: <20230522153144.30610-1-philmd@linaro.org>
- <20230522153144.30610-13-philmd@linaro.org>
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, Peter
- Maydell <peter.maydell@linaro.org>, Mikko Rapeli <mikko.rapeli@linaro.org>
-Subject: Re: [PATCH 12/12] hw/char/pl011: Implement TX FIFO
-Date: Tue, 23 May 2023 14:47:11 +0100
-In-reply-to: <20230522153144.30610-13-philmd@linaro.org>
-Message-ID: <874jo33zx1.fsf@linaro.org>
+ Tue, 23 May 2023 06:47:39 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PATCH v2 05/27] util/bufferiszero: Use i386 host/cpuinfo.h
+Date: Tue, 23 May 2023 06:47:11 -0700
+Message-Id: <20230523134733.678646-6-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230523134733.678646-1-richard.henderson@linaro.org>
+References: <20230523134733.678646-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,267 +91,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Use cpuinfo_init() during init_accel(), and the variable cpuinfo
+during test_buffer_is_zero_next_accel().  Adjust the logic that
+cycles through the set of accelerators for testing.
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ util/bufferiszero.c | 126 ++++++++++++++++----------------------------
+ 1 file changed, 45 insertions(+), 81 deletions(-)
 
-> If the UART back-end chardev doesn't drain data as fast as stdout
-> does or blocks, buffer in the TX FIFO to try again later.
->
-> This avoids having the IO-thread busy waiting on chardev back-ends,
-> reported recently when testing the Trusted Reference Stack and
-> using the socket backend:
-> https://linaro.atlassian.net/browse/TRS-149?focusedCommentId=3D149574
->
-> Implement registering a front-end 'watch' callback on back-end
-> events, so we can resume transmitting when the back-end is writable
-> again, not blocking the main loop.
->
-> Similarly to the RX FIFO path, FIFO level selection is not
-> implemented (interrupt is triggered when a single byte is available
-> in the FIFO).
->
-> Due to the addition of the TX FIFO in the instance state, increase
-> the migration stream version.
->
-> Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-> Suggested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
-> RFC because I'm pretty sure I got the migration code wrong.
->
-> After writing this I noticed the hw/char/cmsdk-apb-uart.c model
-> is much more complete. Instead of copy/pasting its code, I'd rather
-> try to extract some generic/bstract "FIFO based chardev" QOM class;
-> but this is beyond the scope of this series.
-> ---
-<snip>
-> diff --git a/hw/char/pl011.c b/hw/char/pl011.c
-> index 03c006199e..a957138405 100644
-> --- a/hw/char/pl011.c
-> +++ b/hw/char/pl011.c
-> @@ -57,6 +57,9 @@ DeviceState *pl011_create(hwaddr addr, qemu_irq irq, Ch=
-ardev *chr)
->  /* Data Register, UARTDR */
->  #define DR_BE   (1 << 10)
->=20=20
-> +/* Receive Status Register/Error Clear Register, UARTRSR/UARTECR */
-> +#define RSR_OE  (1 << 3)
-> +
->  /* Interrupt status bits in UARTRIS, UARTMIS, UARTIMSC */
->  #define INT_OE (1 << 10)
->  #define INT_BE (1 << 9)
-> @@ -152,19 +155,94 @@ static inline void pl011_reset_tx_fifo(PL011State *=
-s)
->      /* Reset FIFO flags */
->      s->flags &=3D ~PL011_FLAG_TXFF;
->      s->flags |=3D PL011_FLAG_TXFE;
-> +
-> +    fifo8_reset(&s->xmit_fifo);
-> +}
-> +
-> +static gboolean pl011_drain_tx(PL011State *s)
-> +{
-> +    trace_pl011_fifo_tx_drain(fifo8_num_used(&s->xmit_fifo));
-> +    pl011_reset_tx_fifo(s);
-> +    s->rsr &=3D ~RSR_OE;
-> +    return FALSE;
+diff --git a/util/bufferiszero.c b/util/bufferiszero.c
+index 1886bc5ba4..d3c14320ef 100644
+--- a/util/bufferiszero.c
++++ b/util/bufferiszero.c
+@@ -24,6 +24,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ #include "qemu/bswap.h"
++#include "host/cpuinfo.h"
+ 
+ static bool
+ buffer_zero_int(const void *buf, size_t len)
+@@ -184,111 +185,74 @@ buffer_zero_avx512(const void *buf, size_t len)
+ }
+ #endif /* CONFIG_AVX512F_OPT */
+ 
+-
+-/* Note that for test_buffer_is_zero_next_accel, the most preferred
+- * ISA must have the least significant bit.
+- */
+-#define CACHE_AVX512F 1
+-#define CACHE_AVX2    2
+-#define CACHE_SSE4    4
+-#define CACHE_SSE2    8
+-
+-/* Make sure that these variables are appropriately initialized when
++/*
++ * Make sure that these variables are appropriately initialized when
+  * SSE2 is enabled on the compiler command-line, but the compiler is
+  * too old to support CONFIG_AVX2_OPT.
+  */
+ #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
+-# define INIT_CACHE 0
+-# define INIT_ACCEL buffer_zero_int
++# define INIT_USED     0
++# define INIT_LENGTH   0
++# define INIT_ACCEL    buffer_zero_int
+ #else
+ # ifndef __SSE2__
+ #  error "ISA selection confusion"
+ # endif
+-# define INIT_CACHE CACHE_SSE2
+-# define INIT_ACCEL buffer_zero_sse2
++# define INIT_USED     CPUINFO_SSE2
++# define INIT_LENGTH   64
++# define INIT_ACCEL    buffer_zero_sse2
+ #endif
+ 
+-static unsigned cpuid_cache = INIT_CACHE;
++static unsigned used_accel = INIT_USED;
++static unsigned length_to_accel = INIT_LENGTH;
+ static bool (*buffer_accel)(const void *, size_t) = INIT_ACCEL;
+-static int length_to_accel = 64;
+ 
+-static void init_accel(unsigned cache)
++static unsigned __attribute__((noinline))
++select_accel_cpuinfo(unsigned info)
+ {
+-    bool (*fn)(const void *, size_t) = buffer_zero_int;
+-    if (cache & CACHE_SSE2) {
+-        fn = buffer_zero_sse2;
+-        length_to_accel = 64;
+-    }
+-#ifdef CONFIG_AVX2_OPT
+-    if (cache & CACHE_SSE4) {
+-        fn = buffer_zero_sse4;
+-        length_to_accel = 64;
+-    }
+-    if (cache & CACHE_AVX2) {
+-        fn = buffer_zero_avx2;
+-        length_to_accel = 128;
+-    }
+-#endif
++    static const struct {
++        unsigned bit;
++        unsigned len;
++        bool (*fn)(const void *, size_t);
++    } all[] = {
+ #ifdef CONFIG_AVX512F_OPT
+-    if (cache & CACHE_AVX512F) {
+-        fn = buffer_zero_avx512;
+-        length_to_accel = 256;
+-    }
++        { CPUINFO_AVX512F, 256, buffer_zero_avx512 },
+ #endif
+-    buffer_accel = fn;
++#ifdef CONFIG_AVX2_OPT
++        { CPUINFO_AVX2,    128, buffer_zero_avx2 },
++        { CPUINFO_SSE4,     64, buffer_zero_sse4 },
++#endif
++        { CPUINFO_SSE2,     64, buffer_zero_sse2 },
++        { CPUINFO_ALWAYS,    0, buffer_zero_int },
++    };
++
++    for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
++        if (info & all[i].bit) {
++            length_to_accel = all[i].len;
++            buffer_accel = all[i].fn;
++            return all[i].bit;
++        }
++    }
++    return 0;
+ }
+ 
+ #if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
+-#include "qemu/cpuid.h"
+-
+-static void __attribute__((constructor)) init_cpuid_cache(void)
++static void __attribute__((constructor)) init_accel(void)
+ {
+-    unsigned max = __get_cpuid_max(0, NULL);
+-    int a, b, c, d;
+-    unsigned cache = 0;
+-
+-    if (max >= 1) {
+-        __cpuid(1, a, b, c, d);
+-        if (d & bit_SSE2) {
+-            cache |= CACHE_SSE2;
+-        }
+-        if (c & bit_SSE4_1) {
+-            cache |= CACHE_SSE4;
+-        }
+-
+-        /* We must check that AVX is not just available, but usable.  */
+-        if ((c & bit_OSXSAVE) && (c & bit_AVX) && max >= 7) {
+-            unsigned bv = xgetbv_low(0);
+-            __cpuid_count(7, 0, a, b, c, d);
+-            if ((bv & 0x6) == 0x6 && (b & bit_AVX2)) {
+-                cache |= CACHE_AVX2;
+-            }
+-            /* 0xe6:
+-            *  XCR0[7:5] = 111b (OPMASK state, upper 256-bit of ZMM0-ZMM15
+-            *                    and ZMM16-ZMM31 state are enabled by OS)
+-            *  XCR0[2:1] = 11b (XMM state and YMM state are enabled by OS)
+-            */
+-            if ((bv & 0xe6) == 0xe6 && (b & bit_AVX512F)) {
+-                cache |= CACHE_AVX512F;
+-            }
+-        }
+-    }
+-    cpuid_cache = cache;
+-    init_accel(cache);
++    used_accel = select_accel_cpuinfo(cpuinfo_init());
+ }
+ #endif /* CONFIG_AVX2_OPT */
+ 
+ bool test_buffer_is_zero_next_accel(void)
+ {
+-    /* If no bits set, we just tested buffer_zero_int, and there
+-       are no more acceleration options to test.  */
+-    if (cpuid_cache == 0) {
+-        return false;
+-    }
+-    /* Disable the accelerator we used before and select a new one.  */
+-    cpuid_cache &= cpuid_cache - 1;
+-    init_accel(cpuid_cache);
+-    return true;
++    /*
++     * Accumulate the accelerators that we've already tested, and
++     * remove them from the set to test this round.  We'll get back
++     * a zero from select_accel_cpuinfo when there are no more.
++     */
++    unsigned used = select_accel_cpuinfo(cpuinfo & ~used_accel);
++    used_accel |= used;
++    return used;
+ }
+ 
+ static bool select_accel_fn(const void *buf, size_t len)
+-- 
+2.34.1
 
-WHY ARE YOU SHOUTING?
-
-> +}
-> +
-
-worth a comment the return signals something to the chardev - I guess
-FEWatchFunc could do with a comment?
-
-> +static gboolean pl011_xmit(void *do_not_use, GIOCondition cond, void *op=
-aque)
-> +{
-> +    PL011State *s =3D opaque;
-> +    int ret;
-> +    const uint8_t *buf;
-> +    uint32_t buflen;
-> +    uint32_t count;
-> +
-> +    if (!qemu_chr_fe_backend_connected(&s->chr)) {
-> +        /* Instant drain the fifo when there's no back-end */
-> +        return pl011_drain_tx(s);
-> +    }
-> +
-> +    count =3D fifo8_num_used(&s->xmit_fifo);
-> +    if (!count) {
-> +        return FALSE;
-> +    }
-> +    if  (!(s->cr & CR_UARTEN)) {
-> +        /* Allow completing the current FIFO character before stopping. =
-*/
-> +        count =3D 1;
-> +    }
-
-maybe:
-
-  bool tx_enabled =3D s->cr & CR_UARTEN;
-  ...
-  count =3D tx_enabled ? fifo8_num_used(&s->xmit_fifo) : 1; /* current only=
- */
-
-  if (count) {
-
-> +
-> +    /* Transmit as much data as we can */
-> +    buf =3D fifo8_peek_buf(&s->xmit_fifo, count, &buflen);
-> +    ret =3D qemu_chr_fe_write(&s->chr, buf, buflen);
-> +    if (ret >=3D 0) {
-> +        /* Pop the data we could transmit */
-> +        trace_pl011_fifo_tx_xmit(ret);
-> +        fifo8_pop_buf(&s->xmit_fifo, ret, NULL);
-> +        s->int_level |=3D INT_TX;
-> +    }
-> +
-> +    if ((s->cr & CR_UARTEN) && !fifo8_is_empty(&s->xmit_fifo)) {
-
- tx_enabled && ...
-
-> +        /* Reschedule another transmission if we couldn't transmit all */
-> +        guint r =3D qemu_chr_fe_add_watch(&s->chr, G_IO_OUT | G_IO_HUP,
-> +                                        pl011_xmit, s);
-> +        if (!r) {
-> +            return pl011_drain_tx(s);
-> +        }
-> +    }
-> +
-> +    pl011_update(s);
-
-}
-
-> +
-> +    return FALSE;
->  }
->=20=20
->  static void pl011_write_tx(PL011State *s, const uint8_t *buf, int length)
->  {
->      if (!(s->cr & (CR_UARTEN | CR_TXE))) {
-> +        if (!fifo8_is_empty(&s->xmit_fifo)) {
-> +            /*
-> +             * If the UART is disabled in the middle of transmission
-> +             * or reception, it completes the current character before
-> +             * stopping.
-> +             */
-> +            pl011_xmit(NULL, G_IO_OUT, s);
-> +        }
->          return;
->      }
->=20=20
-> -    /* XXX this blocks entire thread. Rewrite to use
-> -     * qemu_chr_fe_write and background I/O callbacks */
-> -    qemu_chr_fe_write_all(&s->chr, buf, 1);
-> -    s->int_level |=3D INT_TX;
-> -    pl011_update(s);
-> +    if (length > fifo8_num_free(&s->xmit_fifo)) {
-> +        /*
-> +         * The FIFO contents remain valid because no more data is
-> +         * written when the FIFO is full, only the contents of the
-> +         * shift register are overwritten. The CPU must now read
-> +         * the data, to empty the FIFO.
-> +         */
-> +        trace_pl011_fifo_tx_overrun();
-> +        s->rsr |=3D RSR_OE;
-> +        return;
-> +    }
-> +
-> +    trace_pl011_fifo_tx_put(length);
-> +    fifo8_push_all(&s->xmit_fifo, buf, length);
-> +
-> +    pl011_xmit(NULL, G_IO_OUT, s);
->  }
->=20=20
->  static uint64_t pl011_read(void *opaque, hwaddr offset,
-> @@ -444,12 +522,17 @@ static int pl011_post_load(void *opaque, int versio=
-n_id)
->          s->read_pos =3D 0;
->      }
->=20=20
-> +    if (version_id >=3D 3 && !fifo8_is_empty(&s->xmit_fifo)) {
-> +        /* Reschedule another transmission */
-> +        qemu_chr_fe_add_watch(&s->chr, G_IO_OUT | G_IO_HUP, pl011_xmit, =
-s);
-> +    }
-> +
->      return 0;
->  }
->=20=20
->  static const VMStateDescription vmstate_pl011 =3D {
->      .name =3D "pl011",
-> -    .version_id =3D 2,
-> +    .version_id =3D 3,
->      .minimum_version_id =3D 2,
->      .post_load =3D pl011_post_load,
->      .fields =3D (VMStateField[]) {
-> @@ -462,6 +545,7 @@ static const VMStateDescription vmstate_pl011 =3D {
->          VMSTATE_UINT32(int_enabled, PL011State),
->          VMSTATE_UINT32(int_level, PL011State),
->          VMSTATE_UINT32_ARRAY(read_fifo, PL011State, PL011_FIFO_DEPTH),
-> +        VMSTATE_FIFO8(xmit_fifo, PL011State),
-
-I think you want something like:
-
-   VMSTATE_FIFO8_TEST(xmit_fifo, PL011State, pl011_is_version_3_or_better),
-
->          VMSTATE_UINT32(ilpr, PL011State),
->          VMSTATE_UINT32(ibrd, PL011State),
->          VMSTATE_UINT32(fbrd, PL011State),
-> @@ -505,10 +589,18 @@ static void pl011_realize(DeviceState *dev, Error *=
-*errp)
->  {
->      PL011State *s =3D PL011(dev);
->=20=20
-> +    fifo8_create(&s->xmit_fifo, PL011_FIFO_DEPTH);
->      qemu_chr_fe_set_handlers(&s->chr, pl011_can_receive, pl011_receive,
->                               pl011_event, NULL, s, NULL, true);
->  }
->=20=20
-> +static void pl011_unrealize(DeviceState *dev)
-> +{
-> +    PL011State *s =3D PL011(dev);
-> +
-> +    fifo8_destroy(&s->xmit_fifo);
-> +}
-> +
->  static void pl011_reset(DeviceState *dev)
->  {
->      PL011State *s =3D PL011(dev);
-> @@ -534,6 +626,7 @@ static void pl011_class_init(ObjectClass *oc, void *d=
-ata)
->      DeviceClass *dc =3D DEVICE_CLASS(oc);
->=20=20
->      dc->realize =3D pl011_realize;
-> +    dc->unrealize =3D pl011_unrealize;
->      dc->reset =3D pl011_reset;
->      dc->vmsd =3D &vmstate_pl011;
->      device_class_set_props(dc, pl011_properties);
-> diff --git a/hw/char/trace-events b/hw/char/trace-events
-> index 9fd40e3aae..4c25564066 100644
-> --- a/hw/char/trace-events
-> +++ b/hw/char/trace-events
-> @@ -60,6 +60,10 @@ pl011_write(uint32_t addr, uint32_t value, const char =
-*regname) "addr 0x%03x val
->  pl011_can_receive(uint32_t lcr, int read_count, int r) "LCR 0x%08x read_=
-count %d returning %d"
->  pl011_fifo_rx_put(uint32_t c, int read_count) "new char 0x%02x read_coun=
-t now %d"
->  pl011_fifo_rx_full(void) "RX FIFO now full, RXFF set"
-> +pl011_fifo_tx_put(int count) "TX FIFO push %d"
-> +pl011_fifo_tx_xmit(int count) "TX FIFO pop %d"
-> +pl011_fifo_tx_overrun(void) "TX FIFO overrun"
-> +pl011_fifo_tx_drain(unsigned drained) "TX FIFO draining %u"
->  pl011_baudrate_change(unsigned int baudrate, uint64_t clock, uint32_t ib=
-rd, uint32_t fbrd) "new baudrate %u (clk: %" PRIu64 "hz, ibrd: %" PRIu32 ",=
- fbrd: %" PRIu32 ")"
->=20=20
->  # cmsdk-apb-uart.c
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
