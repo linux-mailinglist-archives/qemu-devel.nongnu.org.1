@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB73270DDE6
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056E570DDEE
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:50:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SMn-0000iP-RT; Tue, 23 May 2023 09:47:57 -0400
+	id 1q1SMn-0000eS-4r; Tue, 23 May 2023 09:47:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SMk-0000Y4-BY
+ id 1q1SMk-0000YY-OL
  for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:54 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SMi-00018Y-1d
+ id 1q1SMi-00012p-Cu
  for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:54 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-64d1a0d640cso4495553b3a.1
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-64d577071a6so3550844b3a.1
  for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:47:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1684849671; x=1687441671;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HMMLECzBZvLbq8oOai1RMIPgWJmrRTbYQa8uL1NZwrA=;
- b=o3YpeNIKKmZRvW6OjT2jKQc3duTvw+ipPacNIrmqAPJ0RkTDK7hJyppfz1sfth8tYl
- Ocu5dSHd4vDKvjANuZsp0bfd65Op5ifQMpUos+KjqifDtD6drlCONGA14Sm2ua0x4zrp
- 8W3fU6h/Vcjt8+8H0OSiNQJEnwYWJNUj92JY1kxEVWmAjDukLnWcTGkmfE6sAyXZm3Yg
- 9b+fSyi9tM+WROrLdBmoebCBjD6hBRwaosAA2+DFuPKM02v+xaw/O5EJZcxoQL7wlIC/
- 4RONZpn4IxymfNHUW55SHVYkKqxYoWDBQQDGI8l/VC8DN4aK2/eZpyFXHenKrM9U3GsP
- HZoQ==
+ bh=MPL5Chc7uKNtPykCbIf1bx9tBI7z2B/RniQ4iaiA6MY=;
+ b=PJsAJODPha0GBAe98t8LJjJFCsJcYJGhqSpdj8rTUy7jUFQVlh4QVzgBESvFXuXIPw
+ +1MJvxuylEJKJfcR3aoYW4yP3XLT7u6pS4muVIgFUCNKa762ER7D6b6vRpi9NVbkr+ag
+ 0UlhLkkcV7jV8MNW04QPEwqTE1uyIIz1+yagrH98nYwnZ7r10U6mmbGaW5kskv5BB1XL
+ kO42jqxYqQZqnCoR+OgkwRem7wqZKyU+7fSeThvfHHMRXBmXbFEtIr/0OxahunFEhrcq
+ Kqq0wRmK4jnaovepy2Hf40YVvTVego2VtAmn0dnnajOPuwDZwpn7+NaJDJhtpzJXPLfY
+ NN9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1684849671; x=1687441671;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HMMLECzBZvLbq8oOai1RMIPgWJmrRTbYQa8uL1NZwrA=;
- b=QJu8jwMHpfMY1NCSh+Eh4szVFHbGQEPSajNdBSwuZtoWCWXnUF3GAGt8iPlru7vPQZ
- 8qqJCW9OqsUKGzkYjuNTWWRWYOTg6NKJUP6wQgMt23PfMS7DfBhCLTGWy6gmcIiaEx0Q
- vwGlXV2vpETIxYBBzPTW/cB15dfb+L90RcxfbDRCUbltih7l+5X3OBoUb8gzl4lDzyu+
- ciw4OsJ7JxDzuHIcYmNlzkRCYTcP2fpxQoSGEOrw9ifMUYm/K3yiFDtxx81WI0ueEpUs
- h2S/h/BajWnnKzORBoPkgPCVYpy8RF5b9ggAR174UWlNiKgx4UUlT3/AIRkQIeBxFOW5
- 4AYw==
-X-Gm-Message-State: AC+VfDxlK2zAzs8AIRJAx9ObGoIl3uU5eAPSamimrA+pD0fbuqcPvsg3
- QBicbs+Sv4kqwutr0Jt1Z0XR7k/xQtiA3rU0se4=
-X-Google-Smtp-Source: ACHHUZ5bJsoG7ZPPG8CrCFypqS/Ko0Pjk8i/VQ8RkMR6sBCPVIWNFN7vN4+P8HGvmmVAtAZ7xGFc7A==
-X-Received: by 2002:a05:6a21:329a:b0:10b:4f58:3fef with SMTP id
- yt26-20020a056a21329a00b0010b4f583fefmr8903765pzb.2.1684849670804; 
- Tue, 23 May 2023 06:47:50 -0700 (PDT)
+ bh=MPL5Chc7uKNtPykCbIf1bx9tBI7z2B/RniQ4iaiA6MY=;
+ b=cotzFybudU4ay3XrL+Kwbfd60XLe/jiO/6PT83lpdjtIAAhSlwdnBXTN6ICxjpQsOV
+ CNqQ6zCaDslzBFGVupJag2G5PNiOBS8vTiBOB9waEYZpPBTnTI04f7R7dx0jyA8W7HBw
+ 03h3PHJj/rziJGTHIUzXK11YXTR6kh5EAfu0F+Xpr8F1wi/LgBLQCz8spD/HQ3OymcYQ
+ jn8t10COTfjOfykg0pWR0IrmVydjhO71tHJ138X+rhfDPRC2W77wgtPPs06ThvNgY0vk
+ KJUhPw6ARoXfJnOvCZ95wext24rrPv3ZdsegnKqK1FfbYqVshowmpaw9Moa3W2s280an
+ OpTQ==
+X-Gm-Message-State: AC+VfDxTfZrujtg5VpPcbPs8hQp0SI4gVG1rpOCLyfRgrCIyXNTsyxK9
+ GN0pHrCB54nZaoPclboF09T+ZnGkB/T7gLBmFNM=
+X-Google-Smtp-Source: ACHHUZ4mamjgelBI7PtHPpPB9ujZ7rfRaxLncFeRt5j69sJS40T7GrHirmlJzJNGdZ2c8wIEW1HNZg==
+X-Received: by 2002:a05:6a00:14c4:b0:643:9ca:3c7d with SMTP id
+ w4-20020a056a0014c400b0064309ca3c7dmr17814113pfu.4.1684849671632; 
+ Tue, 23 May 2023 06:47:51 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
  j4-20020aa79284000000b0064d1349dc31sm5737122pfa.199.2023.05.23.06.47.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:47:50 -0700 (PDT)
+ Tue, 23 May 2023 06:47:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 18/27] target/s390x: Always use cpu_atomic_cmpxchgl_be_mmu
- in do_csst
-Date: Tue, 23 May 2023 06:47:24 -0700
-Message-Id: <20230523134733.678646-19-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org
+Subject: [PATCH v2 19/27] accel/tcg: Remove cpu_atomic_{ld,st}o_*_mmu
+Date: Tue, 23 May 2023 06:47:25 -0700
+Message-Id: <20230523134733.678646-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523134733.678646-1-richard.henderson@linaro.org>
 References: <20230523134733.678646-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,33 +91,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Eliminate the CONFIG_USER_ONLY specialization.
+Atomic load/store of 128-byte quantities is now handled
+by cpu_{ld,st}16_mmu.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/tcg/mem_helper.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ accel/tcg/atomic_template.h   | 61 +++--------------------------------
+ include/exec/cpu_ldst.h       |  9 ------
+ accel/tcg/atomic_common.c.inc | 14 --------
+ 3 files changed, 4 insertions(+), 80 deletions(-)
 
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index c757612244..aa8ec6ba6d 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -1800,13 +1800,7 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
-             uint32_t ov;
+diff --git a/accel/tcg/atomic_template.h b/accel/tcg/atomic_template.h
+index 404a530f7c..30eee9d066 100644
+--- a/accel/tcg/atomic_template.h
++++ b/accel/tcg/atomic_template.h
+@@ -87,33 +87,7 @@ ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
+     return ret;
+ }
  
-             if (parallel) {
--#ifdef CONFIG_USER_ONLY
--                uint32_t *haddr = g2h(env_cpu(env), a1);
--                ov = qatomic_cmpxchg__nocheck(haddr, cv, nv);
--#else
--                MemOpIdx oi = make_memop_idx(MO_TEUL | MO_ALIGN, mem_idx);
--                ov = cpu_atomic_cmpxchgl_be_mmu(env, a1, cv, nv, oi, ra);
+-#if DATA_SIZE >= 16
+-#if HAVE_ATOMIC128
+-ABI_TYPE ATOMIC_NAME(ld)(CPUArchState *env, target_ulong addr,
+-                         MemOpIdx oi, uintptr_t retaddr)
+-{
+-    DATA_TYPE *haddr = atomic_mmu_lookup(env, addr, oi, DATA_SIZE,
+-                                         PAGE_READ, retaddr);
+-    DATA_TYPE val;
+-
+-    val = atomic16_read(haddr);
+-    ATOMIC_MMU_CLEANUP;
+-    atomic_trace_ld_post(env, addr, oi);
+-    return val;
+-}
+-
+-void ATOMIC_NAME(st)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
+-                     MemOpIdx oi, uintptr_t retaddr)
+-{
+-    DATA_TYPE *haddr = atomic_mmu_lookup(env, addr, oi, DATA_SIZE,
+-                                         PAGE_WRITE, retaddr);
+-
+-    atomic16_set(haddr, val);
+-    ATOMIC_MMU_CLEANUP;
+-    atomic_trace_st_post(env, addr, oi);
+-}
 -#endif
-+                ov = cpu_atomic_cmpxchgl_be_mmu(env, a1, cv, nv, oi4, ra);
-             } else {
-                 ov = cpu_ldl_mmu(env, a1, oi4, ra);
-                 cpu_stl_mmu(env, a1, (ov == cv ? nv : ov), oi4, ra);
+-#else
++#if DATA_SIZE < 16
+ ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
+                            MemOpIdx oi, uintptr_t retaddr)
+ {
+@@ -188,7 +162,7 @@ GEN_ATOMIC_HELPER_FN(smax_fetch, MAX, SDATA_TYPE, new)
+ GEN_ATOMIC_HELPER_FN(umax_fetch, MAX,  DATA_TYPE, new)
+ 
+ #undef GEN_ATOMIC_HELPER_FN
+-#endif /* DATA SIZE >= 16 */
++#endif /* DATA SIZE < 16 */
+ 
+ #undef END
+ 
+@@ -220,34 +194,7 @@ ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
+     return BSWAP(ret);
+ }
+ 
+-#if DATA_SIZE >= 16
+-#if HAVE_ATOMIC128
+-ABI_TYPE ATOMIC_NAME(ld)(CPUArchState *env, target_ulong addr,
+-                         MemOpIdx oi, uintptr_t retaddr)
+-{
+-    DATA_TYPE *haddr = atomic_mmu_lookup(env, addr, oi, DATA_SIZE,
+-                                         PAGE_READ, retaddr);
+-    DATA_TYPE val;
+-
+-    val = atomic16_read(haddr);
+-    ATOMIC_MMU_CLEANUP;
+-    atomic_trace_ld_post(env, addr, oi);
+-    return BSWAP(val);
+-}
+-
+-void ATOMIC_NAME(st)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
+-                     MemOpIdx oi, uintptr_t retaddr)
+-{
+-    DATA_TYPE *haddr = atomic_mmu_lookup(env, addr, oi, DATA_SIZE,
+-                                         PAGE_WRITE, retaddr);
+-
+-    val = BSWAP(val);
+-    atomic16_set(haddr, val);
+-    ATOMIC_MMU_CLEANUP;
+-    atomic_trace_st_post(env, addr, oi);
+-}
+-#endif
+-#else
++#if DATA_SIZE < 16
+ ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
+                            MemOpIdx oi, uintptr_t retaddr)
+ {
+@@ -326,7 +273,7 @@ GEN_ATOMIC_HELPER_FN(add_fetch, ADD, DATA_TYPE, new)
+ #undef ADD
+ 
+ #undef GEN_ATOMIC_HELPER_FN
+-#endif /* DATA_SIZE >= 16 */
++#endif /* DATA_SIZE < 16 */
+ 
+ #undef END
+ #endif /* DATA_SIZE > 1 */
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index fc1d3d9301..5939688f69 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -300,15 +300,6 @@ Int128 cpu_atomic_cmpxchgo_be_mmu(CPUArchState *env, target_ulong addr,
+                                   Int128 cmpv, Int128 newv,
+                                   MemOpIdx oi, uintptr_t retaddr);
+ 
+-Int128 cpu_atomic_ldo_le_mmu(CPUArchState *env, target_ulong addr,
+-                             MemOpIdx oi, uintptr_t retaddr);
+-Int128 cpu_atomic_ldo_be_mmu(CPUArchState *env, target_ulong addr,
+-                             MemOpIdx oi, uintptr_t retaddr);
+-void cpu_atomic_sto_le_mmu(CPUArchState *env, target_ulong addr, Int128 val,
+-                           MemOpIdx oi, uintptr_t retaddr);
+-void cpu_atomic_sto_be_mmu(CPUArchState *env, target_ulong addr, Int128 val,
+-                           MemOpIdx oi, uintptr_t retaddr);
+-
+ #if defined(CONFIG_USER_ONLY)
+ 
+ extern __thread uintptr_t helper_retaddr;
+diff --git a/accel/tcg/atomic_common.c.inc b/accel/tcg/atomic_common.c.inc
+index fe0eea018f..f255c9e215 100644
+--- a/accel/tcg/atomic_common.c.inc
++++ b/accel/tcg/atomic_common.c.inc
+@@ -19,20 +19,6 @@ static void atomic_trace_rmw_post(CPUArchState *env, uint64_t addr,
+     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_RW);
+ }
+ 
+-#if HAVE_ATOMIC128
+-static void atomic_trace_ld_post(CPUArchState *env, uint64_t addr,
+-                                 MemOpIdx oi)
+-{
+-    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
+-}
+-
+-static void atomic_trace_st_post(CPUArchState *env, uint64_t addr,
+-                                 MemOpIdx oi)
+-{
+-    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
+-}
+-#endif
+-
+ /*
+  * Atomic helpers callable from TCG.
+  * These have a common interface and all defer to cpu_atomic_*
 -- 
 2.34.1
 
