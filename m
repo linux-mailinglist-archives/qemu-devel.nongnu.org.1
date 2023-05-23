@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AE170D3B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 08:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A9470D3AE
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 08:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1LGV-0000KU-MA; Tue, 23 May 2023 02:12:59 -0400
+	id 1q1LGX-0000LQ-Cy; Tue, 23 May 2023 02:13:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LG3-000084-Df
- for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:34 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LG8-0000A5-5w
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:37 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LG1-0005HY-46
- for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:30 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-309d3e8777cso2206946f8f.0
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 23:12:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LG6-0005I7-Jy
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:35 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f608074b50so12296685e9.0
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 23:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684822347; x=1687414347;
+ d=linaro.org; s=google; t=1684822353; x=1687414353;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=COK8ArK9HCGV7dddfTJnezNiZomsbkwCtC2egyZo1Mg=;
- b=Yq3/SmwS4ficbNhmaVHY92cqgGJxycWoEDAN0RmwiKiWSlLO2G22aYs++YYfZdxd1Z
- mRgkISUri+Q6vwNFoV4CYDXTJXHWLLPeG9zXLop/2FzB0bLmALSYLYmxpoKfHkEVd05f
- rh5MispZtv2jMlgniLg1sJTmqtsQ+2Sh8ICUmCcBvDelVFZ9IUqXqjvc5Av/rhyvDGXA
- CHJEk3sIAwnvYT65vAWpLb9zWU1oOs1gdUpxzodcQN2uJr6dVnUoUKq2rMNfc5YkbgEE
- B45v1bDoJ6HXvoKyVkyAjk3TEKW8NW6bZZ6yv9jW8kPC7+v/yJaiSv5vdI/qvSJ0ObaE
- WdTw==
+ bh=vkILo9SwujHxUBUp1ZR6EEs4lszUfK1/I8whdwDZtw4=;
+ b=eYUkRmIuVeopkfcJ9LVh4LhwHPZS+6bZ4svQd24hcus0NHav5uY6o2S+goIp7tIdlI
+ j4+v3OzHkpE427LcopqtoiiOmOGDJzUd2xLmnQI/jJROVLCBIpt0O8X1yUDvvFursZJd
+ 5AbleFBw3yyRURMHHya3sRBMnIyZDNQglIqpx+TNh1EYc+njTv3njw3FVl3NU4HYvGta
+ UdjUFryrSiMvlbh8LXDkpGBA6u/MSO0TDQNP3nAmZJxeTyZGHpeA5SSjh+y4key518cu
+ t5e3eG6Ms0IEVmQfp5Wg9obJFJIYP9lRYZYXV7BWX25SEBLE3xVqV+TaKeM7JIWfLXJ7
+ A6cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684822347; x=1687414347;
+ d=1e100.net; s=20221208; t=1684822353; x=1687414353;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=COK8ArK9HCGV7dddfTJnezNiZomsbkwCtC2egyZo1Mg=;
- b=XBxovRV1+i8vEHxETvfXuwApW+KBiqlCY4SXp8WZ3kwCzx6xSmm28oXv1xFHnxeYWc
- t1CsCcXV+Wke5CtlJt1ICVEJWE60BDg4F+vaPivMoR0YHJwsXLyWMlDQn1LV1MQd3yzL
- asg3psC8GIxGji+DsEt/1teWcW+VkC161eSZcUAgZBV1e8CECZbC6HQhWJNDTCgDwlpg
- 4maUhl+XcZ7+cJbl/NYElvX8DRZV6HXq2eG4iF+RPNVQIOCWPrhz6rbuZjNKnZbHYI9c
- GL2UtbveXN/hWtdr7wkxaHd/xkmgS9fhqRvrXPCV4cc1swed85GyIb9B5JHKxUnLBDPA
- bSpg==
-X-Gm-Message-State: AC+VfDw647fqI7bhhZrdcStdsSmILi+gJSLImJYpX+vL9/+/tmEYFMlv
- uAl089ic7PcZBIxq1M9+9oDAisD4Fbusf62Gc7o=
-X-Google-Smtp-Source: ACHHUZ4NNg4+HRofy0XfFyG51ERFZNsg+mUP1EW8DabtBX+aOHR9k5C5wE/nZXBq9uXfU1sBpUdHKA==
-X-Received: by 2002:a5d:4204:0:b0:307:7d1a:20fd with SMTP id
- n4-20020a5d4204000000b003077d1a20fdmr10396367wrq.12.1684822347356; 
- Mon, 22 May 2023 23:12:27 -0700 (PDT)
+ bh=vkILo9SwujHxUBUp1ZR6EEs4lszUfK1/I8whdwDZtw4=;
+ b=BbbMR/aHvE0i+Clj7gORiTR56X8cBh0M0HWEm0wke2jFmM483zMBUBqA+P1g/Xeb3N
+ 5vn8JyGgpCO/fEYHQHZuVSn/Xupthla26pkb9nikkZlLKOjZZ77qRT5toONMAA4Rz+m1
+ XAuBLkGB57Ft36+RTBv7pbRqNeBWSYbsu1NtPKcxX4DC2wXr6H95ssqRMW9fNoZWicxW
+ VPChUaCjrbQBL3IqP0wDK1abUH/73S/XdlqUue98qDOnoKV5Si6mlNr1VdurA6Y2/vpX
+ Z+DT/M+rBeJNbj3UDUpLRMClcQ0d4hz63hf4jF2E8ftSTASvgns8DQKWGwWR0aZm+att
+ 1S+A==
+X-Gm-Message-State: AC+VfDxBtBIQN8Y3IUjHDPlBr9iFu4y3EOm9gtX4GMIp1U7N+152wPGA
+ UvhEfqvc5WcGiX0HpWMgBcKQj1pvcyNug9MWjww=
+X-Google-Smtp-Source: ACHHUZ72kBDLXTDj7pjCxgoMEbwPORButIG5bB1St9qKebFYwl6XzS8F6qkENEz1LWLBnQN4OvS6SA==
+X-Received: by 2002:a7b:c393:0:b0:3f6:a66:a36d with SMTP id
+ s19-20020a7bc393000000b003f60a66a36dmr860850wmj.10.1684822352954; 
+ Mon, 22 May 2023 23:12:32 -0700 (PDT)
 Received: from localhost.localdomain
  (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
  by smtp.gmail.com with ESMTPSA id
- o9-20020adfeac9000000b0030647d1f34bsm10031319wrn.1.2023.05.22.23.12.25
+ k21-20020a7bc315000000b003f60a9ccd34sm1074830wmj.37.2023.05.22.23.12.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 22 May 2023 23:12:27 -0700 (PDT)
+ Mon, 22 May 2023 23:12:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>,
@@ -64,18 +64,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/4] hw/pci/pci: Simplify pci_bar_address() using
- MACHINE_GET_CLASS() macro
-Date: Tue, 23 May 2023 08:12:06 +0200
-Message-Id: <20230523061207.48818-4-philmd@linaro.org>
+Subject: [PATCH 4/4] hw/usb/hcd-ehci-pci: Simplify using DEVICE_GET_CLASS()
+ macro
+Date: Tue, 23 May 2023 08:12:07 +0200
+Message-Id: <20230523061207.48818-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230523061207.48818-1-philmd@linaro.org>
 References: <20230523061207.48818-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,28 +98,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove unnecessary intermediate variables.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci/pci.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/usb/hcd-ehci-pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 1cc7c89036..a2cb6071cb 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1444,9 +1444,7 @@ pcibus_t pci_bar_address(PCIDevice *d,
- {
-     pcibus_t new_addr, last_addr;
-     uint16_t cmd = pci_get_word(d->config + PCI_COMMAND);
--    Object *machine = qdev_get_machine();
--    ObjectClass *oc = object_get_class(machine);
--    MachineClass *mc = MACHINE_CLASS(oc);
-+    MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
-     bool allow_0_address = mc->pci_allow_0_address;
+diff --git a/hw/usb/hcd-ehci-pci.c b/hw/usb/hcd-ehci-pci.c
+index 4c37c8e227..345444a573 100644
+--- a/hw/usb/hcd-ehci-pci.c
++++ b/hw/usb/hcd-ehci-pci.c
+@@ -74,7 +74,7 @@ static void usb_ehci_pci_realize(PCIDevice *dev, Error **errp)
  
-     if (type & PCI_BASE_ADDRESS_SPACE_IO) {
+ static void usb_ehci_pci_init(Object *obj)
+ {
+-    DeviceClass *dc = OBJECT_GET_CLASS(DeviceClass, obj, TYPE_DEVICE);
++    DeviceClass *dc = DEVICE_GET_CLASS(obj);
+     EHCIPCIState *i = PCI_EHCI(obj);
+     EHCIState *s = &i->ehci;
+ 
 -- 
 2.38.1
 
