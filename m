@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF9F70D788
+	by mail.lfdr.de (Postfix) with ESMTPS id C68ED70D787
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:34:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1NST-0000YO-Ms; Tue, 23 May 2023 04:33:29 -0400
+	id 1q1NSs-0000gq-IY; Tue, 23 May 2023 04:33:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1NSR-0000Wx-MC
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:33:27 -0400
+ id 1q1NSo-0000gf-HA
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:33:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1NSQ-0008FX-46
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:33:27 -0400
+ id 1q1NSm-0008Ia-Vl
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:33:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684830805;
+ s=mimecast20190719; t=1684830828;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WMPi/nE+LdmCJ/8tgDdLYCVdWF+tI8xKyKwAL+QMU/g=;
- b=HAqY8RKnTuLkyVVNXWjKpnIeezv6vpitjxsGBLvdDTp/nadOIMMtgTiTUGMgCva1nOTwNn
- AUY+kC9tWHDDYj/FiwCspJU6vzOYKnvOOGBrchtI8dyg91AwtWne15eNzWUVY1YDXsKpKM
- ii+9NJQ0G2GhYtxX2p5PbFw2bWuEl7Q=
+ bh=D3FSFD8THTFhC41Sd+HrA9o5Yuj2zgC4tCb5XiTVn+w=;
+ b=Cauj3CTQnRUlmtu493vzFvMgHKbAUJeTeI37+Zqgu8UvfrjSP1aehJwWHuc6npkBQHxe2Y
+ FjhuoX+SsStUrJv88B04Ir9uKZFdtO+xh0u7V23Wy5Ck22mx7gRVMa9FHc6wItIO6Cy1ux
+ 6W4XYOKvObhRVIjOwxrVPwhA4y+NhRU=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-659-ClPynbv8MxSAWakZVh_guw-1; Tue, 23 May 2023 04:33:23 -0400
-X-MC-Unique: ClPynbv8MxSAWakZVh_guw-1
+ us-mta-3-qCy-rGedPzqmTHph0rayxg-1; Tue, 23 May 2023 04:33:47 -0400
+X-MC-Unique: qCy-rGedPzqmTHph0rayxg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A4933C0F22A
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:33:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB347381D4C3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:33:46 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.40])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E3BF9492B00;
- Tue, 23 May 2023 08:33:22 +0000 (UTC)
-Date: Tue, 23 May 2023 09:33:20 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1C750492B00;
+ Tue, 23 May 2023 08:33:46 +0000 (UTC)
+Date: Tue, 23 May 2023 09:33:43 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Camilla Conte <cconte@redhat.com>
 Cc: qemu-devel@nongnu.org, thuth@redhat.com
-Subject: Re: [PATCH v2 2/5] Use docker "stable" tag
-Message-ID: <ZGx6UCwinyIbItKT@redhat.com>
+Subject: Re: [PATCH v2 3/5] Add loop over docker info
+Message-ID: <ZGx6Z/KbTeeh24Ka@redhat.com>
 References: <20230522174153.46801-1-cconte@redhat.com>
- <20230522174153.46801-3-cconte@redhat.com>
+ <20230522174153.46801-4-cconte@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230522174153.46801-3-cconte@redhat.com>
+In-Reply-To: <20230522174153.46801-4-cconte@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -83,13 +83,17 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 22, 2023 at 06:41:51PM +0100, Camilla Conte wrote:
-> Use the same tag in all jobs.
+On Mon, May 22, 2023 at 06:41:52PM +0100, Camilla Conte wrote:
+> Wait for docker info to return successfuly to ensure that
+> the docker server (daemon) started.
+> This is needed for jobs running on Kubernetes.
+> See https://wiki.qemu.org/Testing/CI/KubernetesRunners.
 > 
 > Signed-off-by: Camilla Conte <cconte@redhat.com>
 > ---
 >  .gitlab-ci.d/container-template.yml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  .gitlab-ci.d/opensbi.yml            | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
