@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DD070D538
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 09:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7CD70D526
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 09:35:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1MXk-0003x9-Gz; Tue, 23 May 2023 03:34:56 -0400
+	id 1q1MY4-0004gm-5Y; Tue, 23 May 2023 03:35:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1MXR-0003mL-2s
+ id 1q1MXR-0003l4-0i
  for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1MXP-0004No-0a
+ id 1q1MXP-0004O4-0z
  for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684827265;
+ s=mimecast20190719; t=1684827269;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=isH0x3Is63o2SVLK7u7/2nLvAeemYKpZ/xUkVxPqjlI=;
- b=V5m9AWcdzax4snwVHRFJN3EW+/FfxOCLmB7b8mWwycOPQyqtqu95ANKVTB32zp77uOrL5l
- CjOLb2q79O7UyyXsv7G31qninUGnZu0aKFrjkL+PCm+7kpZ7xVDhX0A5VxUpvomPsx8LB5
- UKu+iHABk6FCwOuDKRkuIfUBQrBYgHM=
+ bh=719NQdOjuISosqPPigUXV4vbyXWcbZoRy/6YHdh/h9I=;
+ b=a0RM+PeRNPlnd8nuvRyjs2dGiZ8NQpF0WYcTC8857sPq4UQ+jldasoQ7iZMG+4Z9xcPdr/
+ fRkMEPEcoEQJHwzVrTwpZnMD91uwdeodsN2/4kfqXHG7FMHrj7Qzv7th7hvfK3k4x0X3kP
+ yDc269BKXDxhwIBaG9utA23q7aqAvWo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-90-X4w5TOlzM82xYkuyCnnxNA-1; Tue, 23 May 2023 03:34:22 -0400
-X-MC-Unique: X4w5TOlzM82xYkuyCnnxNA-1
+ us-mta-308-pOSG7VoWMn6WdFl5FzM7WQ-1; Tue, 23 May 2023 03:34:26 -0400
+X-MC-Unique: pOSG7VoWMn6WdFl5FzM7WQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D1F88802A55;
- Tue, 23 May 2023 07:34:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D096B800159;
+ Tue, 23 May 2023 07:34:25 +0000 (UTC)
 Received: from localhost.localdomain (ovpn-12-45.pek2.redhat.com [10.72.12.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8EE822166B26;
- Tue, 23 May 2023 07:34:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 87C4F2166B25;
+ Tue, 23 May 2023 07:34:22 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org,
 	peter.maydell@linaro.org
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL 33/50] hw/net/net_rx_pkt: Enforce alignment for eth_header
-Date: Tue, 23 May 2023 15:32:21 +0800
-Message-Id: <20230523073238.54236-34-jasowang@redhat.com>
+Subject: [PULL 34/50] tests/qtest/libqos/igb: Set GPIE.Multiple_MSIX
+Date: Tue, 23 May 2023 15:32:22 +0800
+Message-Id: <20230523073238.54236-35-jasowang@redhat.com>
 In-Reply-To: <20230523073238.54236-1-jasowang@redhat.com>
 References: <20230523073238.54236-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -83,59 +83,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-eth_strip_vlan and eth_strip_vlan_ex refers to ehdr_buf as struct
-eth_header. Enforce alignment for the structure.
+GPIE.Multiple_MSIX is not set by default, and needs to be set to get
+interrupts from multiple MSI-X vectors.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/net_rx_pkt.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tests/qtest/libqos/igb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
-index 6125a06..1de42b4 100644
---- a/hw/net/net_rx_pkt.c
-+++ b/hw/net/net_rx_pkt.c
-@@ -23,7 +23,10 @@
+diff --git a/tests/qtest/libqos/igb.c b/tests/qtest/libqos/igb.c
+index 12fb531..a603468 100644
+--- a/tests/qtest/libqos/igb.c
++++ b/tests/qtest/libqos/igb.c
+@@ -114,6 +114,7 @@ static void igb_pci_start_hw(QOSGraphObject *obj)
+     e1000e_macreg_write(&d->e1000e, E1000_RCTL, E1000_RCTL_EN);
  
- struct NetRxPkt {
-     struct virtio_net_hdr virt_hdr;
--    uint8_t ehdr_buf[sizeof(struct eth_header) + sizeof(struct vlan_header)];
-+    struct {
-+        struct eth_header eth;
-+        struct vlan_header vlan;
-+    } ehdr_buf;
-     struct iovec *vec;
-     uint16_t vec_len_total;
-     uint16_t vec_len;
-@@ -89,7 +92,7 @@ net_rx_pkt_pull_data(struct NetRxPkt *pkt,
-     if (pkt->ehdr_buf_len) {
-         net_rx_pkt_iovec_realloc(pkt, iovcnt + 1);
+     /* Enable all interrupts */
++    e1000e_macreg_write(&d->e1000e, E1000_GPIE,  E1000_GPIE_MSIX_MODE);
+     e1000e_macreg_write(&d->e1000e, E1000_IMS,  0xFFFFFFFF);
+     e1000e_macreg_write(&d->e1000e, E1000_EIMS, 0xFFFFFFFF);
  
--        pkt->vec[0].iov_base = pkt->ehdr_buf;
-+        pkt->vec[0].iov_base = &pkt->ehdr_buf;
-         pkt->vec[0].iov_len = pkt->ehdr_buf_len;
- 
-         pkt->tot_len = pllen + pkt->ehdr_buf_len;
-@@ -120,7 +123,7 @@ void net_rx_pkt_attach_iovec(struct NetRxPkt *pkt,
-     assert(pkt);
- 
-     if (strip_vlan) {
--        pkt->ehdr_buf_len = eth_strip_vlan(iov, iovcnt, iovoff, pkt->ehdr_buf,
-+        pkt->ehdr_buf_len = eth_strip_vlan(iov, iovcnt, iovoff, &pkt->ehdr_buf,
-                                            &ploff, &tci);
-     } else {
-         pkt->ehdr_buf_len = 0;
-@@ -142,7 +145,7 @@ void net_rx_pkt_attach_iovec_ex(struct NetRxPkt *pkt,
- 
-     if (strip_vlan) {
-         pkt->ehdr_buf_len = eth_strip_vlan_ex(iov, iovcnt, iovoff, vet,
--                                              pkt->ehdr_buf,
-+                                              &pkt->ehdr_buf,
-                                               &ploff, &tci);
-     } else {
-         pkt->ehdr_buf_len = 0;
 -- 
 2.7.4
 
