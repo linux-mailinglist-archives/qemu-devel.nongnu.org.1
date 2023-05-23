@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262BF70E61F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 21:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D0570E623
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 21:57:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Y7L-0000Oq-Mu; Tue, 23 May 2023 15:56:23 -0400
+	id 1q1Y7M-0000Pg-A7; Tue, 23 May 2023 15:56:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q1Y7J-0000NK-GN; Tue, 23 May 2023 15:56:21 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1q1Y7K-0000Nh-CN; Tue, 23 May 2023 15:56:22 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q1Y7H-0006Rs-Rw; Tue, 23 May 2023 15:56:21 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-96f818c48fbso3549866b.0; 
- Tue, 23 May 2023 12:56:18 -0700 (PDT)
+ id 1q1Y7I-0006SF-Od; Tue, 23 May 2023 15:56:22 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-96fa4a6a79bso603882466b.3; 
+ Tue, 23 May 2023 12:56:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684871777; x=1687463777;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=TjoUGtEA0nlcsDiZadtRY2aihoK2mUP2djsEyFXTOOA=;
- b=egL0lw1VBg26AAMDdm9J+ORUQdRSpBb7x+wJ8/CaZKWLRgyttmKAQz9yeWeCq65sTC
- CrJk+i6Psj+5BLYSYam4D8drR/RENsRoeko4im320I6UT0YG0HfPC/uqMuKBOa/+ATBL
- LpnRhbBzL8EgJcm1s974z3Hp64KhZplzTFCB5bpv+XpQFfTqMBEksrzNhNwEM0ED81tE
- 72KUnMgSmQwfaZg93Y5JG1zxZ9xSs63cndQlZ5cqW3mLEzasNqsJRX+f9KhlnxVqE0P9
- 4GffUcH51HzBHPo51OfTNEkS/HtaKA9SQfY6IxD2F/ydGAZkWNdK7VweQCJnbQqf1wxX
- mx6w==
+ d=gmail.com; s=20221208; t=1684871778; x=1687463778;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Anz5dlSMRx2Ue0AdMLdpzN5IRHRJ9vVknwSj+KlouiQ=;
+ b=lhavaWV+SYTjo+t3S5Fuv8/3rTstVvBx6aE+XMI7G9/YILZZgGoqegTF4DN052SsqQ
+ iAUcU3TYay1ie7OJphU2xE9UwUG39MwOdNXusTc91ywsV1Gz/vMjvvuzkU29s8lcwLyg
+ FcG9aMbkHKSVgAtUALoFPEqFtbcM6E8AEItXg8G7geYZarXse39HM5IcfEM9AMAfaD24
+ 29xW+EJjJ5eHKJ/0UJO5u9cRygAavLiHZzZL/l70G95Ki6xN0Lkt+k4gj5N5wKAdEs3s
+ i6CLLAmQmZuVVjFmFpdUivzUmd2sP3S2g5ypWy7xSXNGzABiE46QqAXU8Sy9i1FWWKnj
+ kCcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684871777; x=1687463777;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TjoUGtEA0nlcsDiZadtRY2aihoK2mUP2djsEyFXTOOA=;
- b=BD1J60DwnSzHSYK/P1Rit5nY4JZfEXS2VLnRPh/crkvrgynAgHdefUqpSMX/KzXq9d
- KOyMGhtKhHqpnMPDqUtbafMeB5FmuQIpMvU4b8EKzDyxlknAGzjh74JlCa9vpoMAb6Oz
- pmB5aAfZY0HWLaRY1r81q7WAxZLmVbT++ri4y6AjKJVr23FnYl3aFHq1AA0HYboGgEzB
- qmQwiJ7ww2TPHyyvj+TYbKzSSQrbBw12nY0zCDf7ZvyZoZWydB0ZxUbCqZhED0CGefm9
- ikVJe+osatBtVdpkpVX9dsjfmuiBp3duRrEg47urEIvoXnndTMhskKVF98WzytChNk9q
- Q1Qw==
-X-Gm-Message-State: AC+VfDwpM6y5+EnGchDTgLDC6tCU17weEMog08xE+EuXKIzY07DwZD3g
- drohzbN5JginSC14HxStN3m3XsdLlgQ=
-X-Google-Smtp-Source: ACHHUZ6VcavKfRkHdNL3f79Zzi8Tvtjq7ObLR0BZ5P5W9MfsVLairTMGEoimwG7bvi3y7wcRw2RRYw==
-X-Received: by 2002:a17:907:7d9f:b0:96f:905e:6117 with SMTP id
- oz31-20020a1709077d9f00b0096f905e6117mr12518386ejc.56.1684871776894; 
- Tue, 23 May 2023 12:56:16 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684871778; x=1687463778;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Anz5dlSMRx2Ue0AdMLdpzN5IRHRJ9vVknwSj+KlouiQ=;
+ b=gMTz1TQuRWJbFnshSWvzD57UHk58yKa2nGrEQYdRdel+PtMyeysjClfPBwQi4Buj3/
+ hoDUKkk/A27yy7lVx7dTgL6dDXyFLnKz81O65rrOf4+FHZdekNA/C825L7YM0vq7The8
+ J0RANZNEGPAfPu33e5xrUAAP4k73XOFQkL1yWhxwYrsrQWEaHaRPcpa02NfRcy0Q/lZx
+ rGK9WgcJKyTqzVwSuGN6+jKV0NMZkiYP6cuOgyEF5RphNsn0dOC5IlXVycR50VK7cF7/
+ KXefiseqyIv33A1IlNyYzbYaf0truBuUTrz/wjsdrpoea5rdJvVp+SQwS8ZPF0dFHUCY
+ HOaw==
+X-Gm-Message-State: AC+VfDwFxT+YHKFoHs2cIeYnCTGBiBNH0SNP7rRnEqkEnr1fAmfaLXL+
+ ti4Hag2VAsyC1QliK89o7rWNjsks1ao=
+X-Google-Smtp-Source: ACHHUZ4mb7KXdDurq+1tOk1ptoZqbWeTgfymx1bxd/sh0EeDEQdiRXtooLMdgUZValSmHr9yx8XmRQ==
+X-Received: by 2002:a17:907:25cd:b0:96f:3f1c:3fd3 with SMTP id
+ ae13-20020a17090725cd00b0096f3f1c3fd3mr12360958ejc.77.1684871778101; 
+ Tue, 23 May 2023 12:56:18 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-077-183-025-113.77.183.pool.telefonica.de. [77.183.25.113])
  by smtp.gmail.com with ESMTPSA id
- dk13-20020a170906f0cd00b00965af4c7f07sm4737740ejb.20.2023.05.23.12.56.15
+ dk13-20020a170906f0cd00b00965af4c7f07sm4737740ejb.20.2023.05.23.12.56.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 12:56:16 -0700 (PDT)
+ Tue, 23 May 2023 12:56:17 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
@@ -64,16 +65,21 @@ Cc: qemu-trivial@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, Michael Tokarev <mjt@tls.msk.ru>,
  qemu-arm@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 0/3] Trivial cleanups
-Date: Tue, 23 May 2023 21:56:05 +0200
-Message-Id: <20230523195608.125820-1-shentey@gmail.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 1/3] hw/timer/i8254_common: Share "iobase" property via
+ base class
+Date: Tue, 23 May 2023 21:56:06 +0200
+Message-Id: <20230523195608.125820-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230523195608.125820-1-shentey@gmail.com>
+References: <20230523195608.125820-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,35 +102,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series:=0D
-* Removes dead code from omap_uart and i82378=0D
-* Resolves redundant code in the i8254 timer devices=0D
-=0D
-v3:=0D
-* Drop TYPE_ISA_PARALLEL since they became obsolete by=0D
-  https://lore.kernel.org/qemu-devel/20230522115014.1110840-9-thuth@redhat.=
-com/=0D
-=0D
-v2:=0D
-* Export ParallelState and ISAParallelState (Mark)=0D
-=0D
-Testing done:=0D
-* `make check`=0D
-=0D
-Bernhard Beschow (3):=0D
-  hw/timer/i8254_common: Share "iobase" property via base class=0D
-  hw/arm/omap: Remove unused omap_uart_attach()=0D
-  hw/isa/i82378: Remove unused "io" attribute=0D
-=0D
- include/hw/arm/omap.h   | 1 -=0D
- hw/char/omap_uart.c     | 9 ---------=0D
- hw/i386/kvm/i8254.c     | 1 -=0D
- hw/isa/i82378.c         | 1 -=0D
- hw/timer/i8254.c        | 6 ------=0D
- hw/timer/i8254_common.c | 6 ++++++=0D
- 6 files changed, 6 insertions(+), 18 deletions(-)=0D
-=0D
--- =0D
-2.40.1=0D
-=0D
+Both TYPE_KVM_I8254 and TYPE_I8254 have their own but same implementation of
+the "iobase" property. The storage for the property already resides in
+PITCommonState, so also move the property definition there.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/kvm/i8254.c     | 1 -
+ hw/timer/i8254.c        | 6 ------
+ hw/timer/i8254_common.c | 6 ++++++
+ 3 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/hw/i386/kvm/i8254.c b/hw/i386/kvm/i8254.c
+index 191a26fa57..6a7383d877 100644
+--- a/hw/i386/kvm/i8254.c
++++ b/hw/i386/kvm/i8254.c
+@@ -301,7 +301,6 @@ static void kvm_pit_realizefn(DeviceState *dev, Error **errp)
+ }
+ 
+ static Property kvm_pit_properties[] = {
+-    DEFINE_PROP_UINT32("iobase", PITCommonState, iobase,  -1),
+     DEFINE_PROP_LOSTTICKPOLICY("lost_tick_policy", KVMPITState,
+                                lost_tick_policy, LOST_TICK_POLICY_DELAY),
+     DEFINE_PROP_END_OF_LIST(),
+diff --git a/hw/timer/i8254.c b/hw/timer/i8254.c
+index c8388ea432..c235496fc9 100644
+--- a/hw/timer/i8254.c
++++ b/hw/timer/i8254.c
+@@ -350,11 +350,6 @@ static void pit_realizefn(DeviceState *dev, Error **errp)
+     pc->parent_realize(dev, errp);
+ }
+ 
+-static Property pit_properties[] = {
+-    DEFINE_PROP_UINT32("iobase", PITCommonState, iobase,  -1),
+-    DEFINE_PROP_END_OF_LIST(),
+-};
+-
+ static void pit_class_initfn(ObjectClass *klass, void *data)
+ {
+     PITClass *pc = PIT_CLASS(klass);
+@@ -366,7 +361,6 @@ static void pit_class_initfn(ObjectClass *klass, void *data)
+     k->get_channel_info = pit_get_channel_info_common;
+     k->post_load = pit_post_load;
+     dc->reset = pit_reset;
+-    device_class_set_props(dc, pit_properties);
+ }
+ 
+ static const TypeInfo pit_info = {
+diff --git a/hw/timer/i8254_common.c b/hw/timer/i8254_common.c
+index 050875b497..e4093e2904 100644
+--- a/hw/timer/i8254_common.c
++++ b/hw/timer/i8254_common.c
+@@ -240,6 +240,11 @@ static const VMStateDescription vmstate_pit_common = {
+     }
+ };
+ 
++static Property pit_common_properties[] = {
++    DEFINE_PROP_UINT32("iobase", PITCommonState, iobase,  -1),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void pit_common_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -252,6 +257,7 @@ static void pit_common_class_init(ObjectClass *klass, void *data)
+      * done by board code.
+      */
+     dc->user_creatable = false;
++    device_class_set_props(dc, pit_common_properties);
+ }
+ 
+ static const TypeInfo pit_common_type = {
+-- 
+2.40.1
+
 
