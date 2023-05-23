@@ -2,105 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAF370E525
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 21:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4410B70E4DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 20:43:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1XPg-000899-70; Tue, 23 May 2023 15:11:16 -0400
+	id 1q1WxJ-0003Sw-0g; Tue, 23 May 2023 14:41:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1q1XPe-00088z-2Y
- for qemu-devel@nongnu.org; Tue, 23 May 2023 15:11:14 -0400
-Received: from black.elm.relay.mailchannels.net ([23.83.212.19])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1WxG-0003SZ-U2
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 14:41:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@stgolabs.net>) id 1q1XPb-0004yq-GE
- for qemu-devel@nongnu.org; Tue, 23 May 2023 15:11:13 -0400
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id 27EF7261838;
- Tue, 23 May 2023 19:11:06 +0000 (UTC)
-Received: from pdx1-sub0-mail-a295.dreamhost.com (unknown [127.0.0.6])
- (Authenticated sender: dreamhost)
- by relay.mailchannels.net (Postfix) with ESMTPA id E9B6E262B19;
- Tue, 23 May 2023 19:11:04 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1684869065; a=rsa-sha256;
- cv=none;
- b=lCP3oi7Gi1yljgr8jjMiX6orlm+LvdVf/UYWlTuU1jhAtmpuggPkTt6ABzde9uixpPupXv
- JMtdS7f4pkgwDnZFfqwIHMx4kPHvJTEoAmrKWxPmV8wittqmPkcvxBGLekN3RP5Brdxp/o
- FcTaquKr9H3XrLSvNQQpvR9LwZVqb4FBqhCbi//5SDXC7485+FsAqmH7/rvNxXnk80N5M0
- uDxX3uWaAqh7Q1pzjgRKnGJ5lUGMekWoE4MkOrMwt95m1r9hzLT7iRP02GoKSSsoRfshn6
- SbEoJf7ZAr4tvczeZDSDFo81mCmNuZ+dNIk1jqnm1c1jTxBEbnnscSTiqIukRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1684869065;
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1WxF-00077Y-GD
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 14:41:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684867312;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=Op8r1Kc3+GN8sY1mN+sFkqchh2eaHPJVaK96mVRfgNQ=;
- b=z8p6z3FyXxCEaGPpNgWBOwaUyQAJBI1BkosAIm/OpsGSLj6Uhy09dk4QqfE89B/3uomgsU
- 7Gx0FWjXmzIe2DOP7pz8OPRM2kDJ9FQcrJC+dDUEktow/r7a7i+3TquanAlUMWOhelvBFA
- 2qcYzu8MQvTKlkEnE1xobrz9vfQXWsBTEVkiThvuXEe4nrlq6XxjA/ZG9nQAtrV0x4CPhu
- usQvig8zjbUpzvDOjkH8Im7BEDAcOOM57Uz9e+zlpxl+8IQAI/Pu75rJHBcuzb9WGfDcVm
- UAyMaJMskhezDtqNEU6D3KwQTmsnyLkb/Ru9E933/fPuc+NFhplmmZiXIRi6ag==
-ARC-Authentication-Results: i=1; rspamd-5cdf8fd7d9-r57sl;
- auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Celery-Spicy: 4c0b55e26b54d1bd_1684869065885_3790490718
-X-MC-Loop-Signature: 1684869065885:3836037249
-X-MC-Ingress-Time: 1684869065884
-Received: from pdx1-sub0-mail-a295.dreamhost.com (pop.dreamhost.com
- [64.90.62.162]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.103.24.74 (trex/6.8.1); Tue, 23 May 2023 19:11:05 +0000
-Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- (Authenticated sender: dave@stgolabs.net)
- by pdx1-sub0-mail-a295.dreamhost.com (Postfix) with ESMTPSA id 4QQkS75cVBz66; 
- Tue, 23 May 2023 12:11:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
- s=dreamhost; t=1684869064;
- bh=Op8r1Kc3+GN8sY1mN+sFkqchh2eaHPJVaK96mVRfgNQ=;
- h=Date:From:To:Cc:Subject:Content-Type;
- b=N0EBlW/ljqL/9F0vyi3ZznA4Lkkx+pF4hKUZHanE3V5KgHMVRE8XR0wle+PBMCbDn
- 9AbVkoOZjo3IKo9TSY91BBOlZWw2zRMYtgmW346dXdlYHkghO28R/EsvqjN5xFores
- tLDL5icNsPb3k0gQofWVNEt5sCs2aFUQRHssyrH7vCucWv+jhfwOFmXsd2u5k70sL6
- WJa67zLshUV3EYX5WZD44ImhwgiJLW+thSI15SWqMaSI/mMNrT7XgGbuY4JZPhCsxg
- ywKaVqKg7D8xPPNEwS5S5S53FnkFQM92tyVrds1/YwO0I8kQPf3HlK9FuMsoB4gU//
- v4FOIRPt0z7ng==
-Date: Tue, 23 May 2023 11:37:33 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel@nongnu.org, Michael Tsirkin <mst@redhat.com>, 
- Fan Ni <fan.ni@samsung.com>, linux-cxl@vger.kernel.org, linuxarm@huawei.com, 
- Ira Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, 
- Philippe =?utf-8?B?TWF0aGlldS1EYXVkw6/Cv8K9?= <philmd@linaro.org>,
- Dave Jiang <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6/Cv8K9?= <berrange@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>, 
- =?utf-8?B?TWFyYy1BbmRyw6/Cv8K9?= Lureau <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v7 4/7] hw/cxl/events: Add event interrupt support
-Message-ID: <7ibf47asbwszonm2xvdajv2lmyand7geesaz2fu2cyrp6erwey@g4l6dkjpkija>
-References: <20230522150947.11546-1-Jonathan.Cameron@huawei.com>
- <20230522150947.11546-5-Jonathan.Cameron@huawei.com>
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9XaOSRmRG4UWXvpzQWNqCUYDwzqHlmfd4KiTEhK843A=;
+ b=hz7xmSFstIH7qNDCm6KKsiXj61HxR6HtMoH1bchV1jZ2mL5sK9dveekOCcTzqlYzeJRY/a
+ H99jlbFIEyH/qSYrwYAUF85m1DIWTsZcg6XyZlCBaGdSiBB1DszRwrJySNgdqBhPussQXX
+ iovB1LC6C7VxZ8I7EL4iMcg6wvmvz7E=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-124-OvA1guT6NpyTlsMPYTAQdA-1; Tue, 23 May 2023 14:41:48 -0400
+X-MC-Unique: OvA1guT6NpyTlsMPYTAQdA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-30a8f6d7bbdso1032656f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 11:41:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684867307; x=1687459307;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9XaOSRmRG4UWXvpzQWNqCUYDwzqHlmfd4KiTEhK843A=;
+ b=aqwneEpNJGGfQkbGjYnFoZTRLlhbSB7gJ0slL4acKIlQKzI+kaKTo2BOqOqzJDI5xe
+ NvPwY6CMtG8mjilu+IThhdUwkDVRI4IofaTatRHMhcfbLEzdnQSZu12PLOepPaQcNby2
+ xhOilGsQqBaNerGS9YTy40Rl+ruv+VXkSSUtQG+o1P2NN1NxIwwuEDQQtMwXTbIwsqLm
+ QR8gKm8ymy/c7m1+Je5dnBvCtFHgNHwrfRoKbXfpFqHvAh+EQnzr51KkvoINC53yyrwY
+ y0wEmZInoMFuk24ETBZz+pvPJvFg/0BXVVjSDceXLErBm19JAvbgI+5Fj+jrtACKv45c
+ zjKA==
+X-Gm-Message-State: AC+VfDyjQR0L95HDeI0MSPmfB7wz5wEcvSLpidrk6wImQu5QDi3zIUI7
+ kRQJb+GtCRiMy/t65lxJWwhEXYQd9/a7KdRbl49/zz+sLNiktxjC4VGNvl9BVackCxaPhBL/2U4
+ PlyCGz/OxLW87w44=
+X-Received: by 2002:adf:e8ce:0:b0:309:50e7:7d0 with SMTP id
+ k14-20020adfe8ce000000b0030950e707d0mr10241181wrn.31.1684867307336; 
+ Tue, 23 May 2023 11:41:47 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4OkUzeZokAnR61rWPwYdDHWm0uuVzigKpBUKFnV+xSgx6McKeqLKzoTE0ln5y2uVplNghqiA==
+X-Received: by 2002:adf:e8ce:0:b0:309:50e7:7d0 with SMTP id
+ k14-20020adfe8ce000000b0030950e707d0mr10241170wrn.31.1684867307066; 
+ Tue, 23 May 2023 11:41:47 -0700 (PDT)
+Received: from [192.168.8.105] (tmo-117-143.customers.d1-online.com.
+ [80.187.117.143]) by smtp.gmail.com with ESMTPSA id
+ c11-20020a5d4ccb000000b0030631dcbea6sm11843839wrt.77.2023.05.23.11.41.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 11:41:46 -0700 (PDT)
+Message-ID: <49fa8502-70f9-cdc4-1058-9d4202400db6@redhat.com>
+Date: Tue, 23 May 2023 20:41:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230522150947.11546-5-Jonathan.Cameron@huawei.com>
-User-Agent: NeoMutt/20230407
-Received-SPF: pass client-ip=23.83.212.19; envelope-from=dave@stgolabs.net;
- helo=black.elm.relay.mailchannels.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <CAFEAcA9GamGybSzd8FKBtmZ2qMgjRFy6D=Vhu1y0dL8m9Sa80w@mail.gmail.com>
+ <20230523155644.678524-1-marcin.juszkiewicz@linaro.org>
+ <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
+ <4101dedc-91d7-1735-4655-81082931b79d@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 1/2] docs: sbsa: correct graphics card name
+In-Reply-To: <4101dedc-91d7-1735-4655-81082931b79d@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,21 +104,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 22 May 2023, Jonathan Cameron wrote:
+On 23/05/2023 19.30, Marcin Juszkiewicz wrote:
+...
+>> (is there a reason why it can't be disabled with "-vga none" or 
+>> "-nodefaults"?)
+> 
+> That's something I need to check how it should be done.
 
->From: Ira Weiny <ira.weiny@intel.com>
->
->Replace the stubbed out CXL Get/Set Event interrupt policy mailbox
->commands.  Enable those commands to control interrupts for each of the
->event log types.
->
->Skip the standard input mailbox length on the Set command due to DCD
->being optional.  Perform the checks separately.
->
->Signed-off-by: Ira Weiny <ira.weiny@intel.com>
->Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Other boards set mc->default_display in their ...class_init
+function and then use pci_vga_init() (or vga_interface_type)
+to instantiate their default display adapter ... however, that
+does not seem to support the bochs adapter yet (see
+vga_interfaces[] in softmmu/vl.c).
 
-I had done this long ago, but I guess I never sent a proper tag.
+Not sure whether it's worth the effort to extend vga_interfaces[]
+in vl.c, but you could at least check whether vga_interface_type
+is VGA_NONE and skip the creation of the bochs adapter in that
+case?
 
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+> Should it also drop default_nic?
+
+Seems like sbsa-ref already uses nd_table[], so "-net none" should
+already work. For "configure --without-default-devices" builds, we
+still need a patch like this on top, though:
+
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -596,6 +596,7 @@ static void create_pcie(SBSAMachineState *sms)
+      hwaddr size_mmio_high = sbsa_ref_memmap[SBSA_PCIE_MMIO_HIGH].size;
+      hwaddr base_pio = sbsa_ref_memmap[SBSA_PCIE_PIO].base;
+      int irq = sbsa_ref_irqmap[SBSA_PCIE];
++    MachineClass *mc = MACHINE_GET_CLASS(sms);
+      MemoryRegion *mmio_alias, *mmio_alias_high, *mmio_reg;
+      MemoryRegion *ecam_alias, *ecam_reg;
+      DeviceState *dev;
+@@ -641,7 +642,7 @@ static void create_pcie(SBSAMachineState *sms)
+              NICInfo *nd = &nd_table[i];
+  
+              if (!nd->model) {
+-                nd->model = g_strdup("e1000e");
++                nd->model = g_strdup(mc->default_nic);
+              }
+  
+              pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
+@@ -858,6 +859,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
+      mc->minimum_page_bits = 12;
+      mc->block_default_type = IF_IDE;
+      mc->no_cdrom = 1;
++    mc->default_nic = "e1000e";
+      mc->default_ram_size = 1 * GiB;
+      mc->default_ram_id = "sbsa-ref.ram";
+      mc->default_cpus = 4;
+
+(I'm doing that default_nic change for a lot of other boards
+currently, so I can send a proper patch for this later)
+
+  Thomas
+
 
