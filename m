@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D8A70E97F
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3252E70E999
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:29:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1bN3-0000vd-Cy; Tue, 23 May 2023 19:24:49 -0400
+	id 1q1bQn-000220-II; Tue, 23 May 2023 19:28:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1bN1-0000v8-Sc
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:24:47 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1q1bQl-00021m-Ko
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:28:39 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1bMx-0000Fa-Fh
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:24:47 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1ae4c5e12edso2028325ad.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:24:43 -0700 (PDT)
+ id 1q1bQj-0001kq-UI
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:28:39 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1ae763f9a94so1885085ad.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684884282; x=1687476282;
+ d=linaro.org; s=google; t=1684884516; x=1687476516;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Jlxj1xtK0FCrY9yIfnEWl7EMX3rxHTyXuKXfmw9WCc8=;
- b=zYvQ0jgOpA35A1I0p2G15P+Eyf2tWee3mqqN+sPwiJIeeuJVQil1Z2KNxbF3ZC+h9E
- DXQWi4OGZKzOcRO9cxz6Z4uiPB55tcwq3sUKwFwhkIweqMIDGhqCfK7gQRsFoJ+nx+J9
- q2USFORZmQrYyiATgaVRP4NdClYvqZyAefIGYJ5EM2p/TQuyzNnoEgQBtOe9/0blfdgE
- Q22SqhGcG471925ACtyOR8jOokzCIqr2f22sT541x90jjUbcjom0DQQrYUP2HrAVHEPw
- yKU2z1+5hBfeyils9HWenVIvKwsjtTHHhJ+NnswkTcGpeVsiKtQrBG05S4zYmyUSOtqb
- zCIg==
+ bh=R1afHpMo8k+UAXoPPfe4d17I0FWS0+yHm6TDiQsDBFI=;
+ b=ZgPdyyI7S/rgqGwxUdK4iMEiFz+9EDBHr8JCgZahLx1RZB/YUMy1SsbSDL7ayf99PF
+ V1R9CMos6sptgiEW3FrJe33IM53CD8SXxzeEsbmUM4fd5bM0kgurx6+fixtBH9kGHG6L
+ u4pGioCI6WMCjozsRSnPe0usuSEB3hdwnDDk6leeJLEsLR7kP7nJoiB+Q5oahXbduwLb
+ 1Kxy0Ovsa3FPK+4O5YRcmjqJegpzOUpczvEhK8n5OpmtuseyHxWV85R76UNIBLZMBmEe
+ 4Hnad+1A8vyrIzTbBgqDvBz248fkV8oyzK15Kqv+kCUoC47ES+QpB2OuLiRQBaAkSD75
+ MelQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684884282; x=1687476282;
+ d=1e100.net; s=20221208; t=1684884516; x=1687476516;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Jlxj1xtK0FCrY9yIfnEWl7EMX3rxHTyXuKXfmw9WCc8=;
- b=ANi9GoFQuEb8tkk7YwIYFajYgh+lTqQh2MCuV6uR5J1qH1hcGB6p7FFSB1dAaADuIZ
- QPrNgRblEehMw0Zu2b8qbFxWhO3CMVJclcUqh5adVz9aU/NivVOqAdZgxCpitaF+3qWh
- H8lj6AYhGbEI/7mL7xJLwfRM9Vf2xgaqi3Aguh/H1GquY+QPkKMPt+xZ0fuBo0JqJgvq
- 0qBzp61tR7WNqj+IvrbxUbUICizyw8TcNM+R2qglpd1FcPThpNy5k9jbL/fnQ1RNvGtl
- l+yk5IXDWw6JWeFSdAWvTRU3kHEbUeh8DSlRFg6+ph6dG9UWcDOiOjq+QE8XZ4pluNcM
- z0Xg==
-X-Gm-Message-State: AC+VfDydHedHBSsyaMElCnaREJ37P/shCfV0m357IdyXJfi5estTj2Qa
- KfjZGCNY8lcVOqlYhZlg+CLWicHPvNKVl2lRxZk=
-X-Google-Smtp-Source: ACHHUZ6eYJbNb3jK0TcBw143niGSY1Y5jfyk7qbq1u40tAT2kMlKDvcVaEpBVplYBGQAnMMwQCfGOg==
-X-Received: by 2002:a17:902:ea0f:b0:1a6:4a64:4d27 with SMTP id
- s15-20020a170902ea0f00b001a64a644d27mr19372653plg.40.1684884282215; 
- Tue, 23 May 2023 16:24:42 -0700 (PDT)
+ bh=R1afHpMo8k+UAXoPPfe4d17I0FWS0+yHm6TDiQsDBFI=;
+ b=HhDmjpvhH5AxBOaonAHIVW0ZqcovrQz3KZhnbUePyjcc7U3OC7AmBVW2AOIruYr+db
+ 2BuRIVd3ShFRepWJGfPU4XuwuUKcc91cnDpF/VScCcoithPhH4h4VV/y8P+mXLK4hfBX
+ cZ+rzGHKW0XbQli6hTYrQqPGSNmTs7UDKZSZtawZwiihU2DqGMoXGNVKsJlzuyWy6dGM
+ VXGsrTwn5ZlE1fZR+Sza7uJI65wy8DReF9f4NE3eqgldknrHdZ5KcbbVRjb5drT6N2xT
+ j1g5kFdj23HZYAtu/md7jmQGr0k1Y8HPS/SlgSnfa7YQXHgSeahS0ppcjqcqKXaSw3pY
+ Ox2g==
+X-Gm-Message-State: AC+VfDwXVScQo5asNb86ACsY/+FlgMJk08fQqLzvGp0UKtH+uvW+L0CU
+ Vq0SJxHqGVNWbD9XHYcONXJtnA==
+X-Google-Smtp-Source: ACHHUZ7T/00353t2LcRfmv54mPW2F+GQeKBvixc+W8Z6Q5wQ+mNLOIgvs+UJZXsRhssbdvbkVyigNQ==
+X-Received: by 2002:a17:902:e88d:b0:1af:a143:b0e7 with SMTP id
+ w13-20020a170902e88d00b001afa143b0e7mr12596447plg.10.1684884516170; 
+ Tue, 23 May 2023 16:28:36 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
  ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- jf3-20020a170903268300b001a2135e7eabsm7338516plb.16.2023.05.23.16.24.41
+ b5-20020a170902d50500b001a9a8983a15sm7311595plg.231.2023.05.23.16.28.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 16:24:41 -0700 (PDT)
-Message-ID: <bdb3b80d-ca82-6831-26d5-b6a0133ccf62@linaro.org>
-Date: Tue, 23 May 2023 16:24:40 -0700
+ Tue, 23 May 2023 16:28:35 -0700 (PDT)
+Message-ID: <cfad3770-d883-3011-bee4-c3749891f886@linaro.org>
+Date: Tue, 23 May 2023 16:28:34 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 07/11] hw/virtio/vhost-vsock: Include missing
- 'virtio/virtio-bus.h' header
+Subject: Re: [PATCH 08/11] hw/virtio/virtio-iommu: Use target-agnostic
+ qemu_target_page_mask()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20230523163600.83391-1-philmd@linaro.org>
- <20230523163600.83391-8-philmd@linaro.org>
+ <20230523163600.83391-9-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523163600.83391-8-philmd@linaro.org>
+In-Reply-To: <20230523163600.83391-9-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,25 +98,42 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/23/23 09:35, Philippe Mathieu-Daudé wrote:
-> Instead of having "virtio/virtio-bus.h" implicitly included,
-> explicit it, to avoid when rearranging headers:
+> In order to have virtio-iommu.c become target-agnostic,
+> we need to avoid using TARGET_PAGE_MASK. Get it with the
+> qemu_target_page_mask() helper.
 > 
->    hw/virtio/vhost-vsock-common.c: In function ‘vhost_vsock_common_start’:
->    hw/virtio/vhost-vsock-common.c:51:5: error: unknown type name ‘VirtioBusClass’; did you mean ‘VirtioDeviceClass’?
->       51 |     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
->          |     ^~~~~~~~~~~~~~
->          |     VirtioDeviceClass
->    hw/virtio/vhost-vsock-common.c:51:25: error: implicit declaration of function ‘VIRTIO_BUS_GET_CLASS’; did you mean ‘VIRTIO_DEVICE_CLASS’? [-Werror=implicit-function-declaration]
->       51 |     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
->          |                         ^~~~~~~~~~~~~~~~~~~~
->          |                         VIRTIO_DEVICE_CLASS
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/virtio/vhost-vsock-common.c | 1 +
->   1 file changed, 1 insertion(+)
+>   hw/virtio/virtio-iommu.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+> index 1cd258135d..85905a9e3d 100644
+> --- a/hw/virtio/virtio-iommu.c
+> +++ b/hw/virtio/virtio-iommu.c
+> @@ -20,6 +20,7 @@
+>   #include "qemu/osdep.h"
+>   #include "qemu/log.h"
+>   #include "qemu/iov.h"
+> +#include "exec/target_page.h"
+>   #include "hw/qdev-properties.h"
+>   #include "hw/virtio/virtio.h"
+>   #include "sysemu/kvm.h"
+> @@ -1164,7 +1165,7 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+>        * in vfio realize
+>        */
+>       s->config.bypass = s->boot_bypass;
+> -    s->config.page_size_mask = TARGET_PAGE_MASK;
+> +    s->config.page_size_mask = qemu_target_page_mask();
+
+This could be
+
+   = -(uint64_t)qemu_target_page_size()
+
+without adding the new function.  But either way,
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
