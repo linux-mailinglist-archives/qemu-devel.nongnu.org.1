@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7842A70DBF4
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD8370DBF0
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:06:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Ql6-0002QK-Jv; Tue, 23 May 2023 08:04:56 -0400
+	id 1q1Ql5-0002Pa-MB; Tue, 23 May 2023 08:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1Ql3-0002Oa-PE
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:53 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1q1Ql4-0002On-BZ
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:54 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1Ql1-0008QP-N0
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:53 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-306dbad5182so4831567f8f.1
+ id 1q1Ql2-0008QY-1o
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:54 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f41dceb93bso47512135e9.1
  for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:04:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1684843490; x=1687435490;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BdpkvDlA4UmVXiobxDu+YLmGZsz0CGX9FJr5LiiDCI0=;
- b=BoxleB2f7RstIIcpPHNcsvRnHU8L1GFuE1Al8cFMs94kTlJF5SUvWSUaeklvXVMrVR
- YXFEFDFlxrYSn2dIsA2bZSk6Y9avndyIKCielqXpXoTXnu7P3lO+VzvB8D63QujxU9V3
- nzB1bC7UGRoD1cci8/E4tnSBUQMJrmIJ+3fFsY4qNiVpyeIb0Rv6+ATcDpmmIVp9lfx1
- TJWjf3uOQSWBURWt4rGXli8R8qBkaap5TqEmqXXHn54vEEsthKCgmvUQtv2tm+hXSrd7
- RLTAeBr2KTgnVZrfUZPr6TMdsvxrxM9ErM88uXPTeZoc2oCtPhekPbMwmyCDg7Gim2S4
- Syrg==
+ bh=xbN6BYbhg9Tc9GAYch8/jujIr0chTMGn9JipZlla0d0=;
+ b=Qx3qIYWEErLGhZBj/GkloiSqv8yDf7Zclo7kTGmeddsHnwWysd9SDHZaK+ZJdqTR41
+ Mm42oDfMglQjrhgZXSDbuOuXg+uE27H01cUjS1OfQRdG5Ts9h6TtqBiGnFIqgiGLYY2d
+ 35GmLoiJFT5WY46+y9T04mp59z0LBjup6jjOv8/JwE0ORe7PU6rYkb3pWtJ8d0kLpcvA
+ FLvuryf2oUAagNpVIHcDakPf5qRvgRJrdzQHjhupCRM+N0dz7xt9BQoSVd40yl/eIY4v
+ k/9Y1+IDC3U0d+JO/Kx6kXUdtmaDCS1JNR7yZLvq8Y+9OlcvATIxbMfhaj2NAi3O0maQ
+ sc1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1684843490; x=1687435490;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BdpkvDlA4UmVXiobxDu+YLmGZsz0CGX9FJr5LiiDCI0=;
- b=fj8z2SIhi8Y4FdLQgQ5DLpf/fAPq9AE08/Bt58O0L7Myp6+YxeD02R0vmkQXqsZcaD
- nO59fLNhsbYPq04bVqXm6Rkgo8+73LPOv+aIaPRGoVNTb3WGyIYoCSq6K25guUY0+9xO
- cRAIaW2CrM7qjGB1nSlDiICwaA8mQ980GIihX7bq3aePcA/7xDnXvqMC2Hlmc5JO+DiE
- v3l/ynqSK9bH5dU8tRY3APWAO0EmRp6Jr6kIfCuR4bKhnYrf12Tyfb5GH94QkkmNFA2+
- 1dSFDfLPeypmEuSaZcPbpFE5BUeOGppu1nhpm8ah4pYDebwLc3rCkwjC0baubRvLiIEw
- 2G7A==
-X-Gm-Message-State: AC+VfDxRKS+q3pina0uoEL6obA9jG4DF7E/9MqfCDoJwLJAYmwzHnVKg
- HV4kxrNgqHJyIFwvMxIK+jvOp0yJrSSZODf4ZIU=
-X-Google-Smtp-Source: ACHHUZ5ZK1lDkOho+A3gbtZGDhv7L7hv+ZXAO/6krdbnXAQ9+VjWRCFXbHU7snz95PCiVGXrMr/iQg==
-X-Received: by 2002:a05:6000:1285:b0:307:a58f:5f7b with SMTP id
- f5-20020a056000128500b00307a58f5f7bmr10123157wrx.64.1684843489899; 
- Tue, 23 May 2023 05:04:49 -0700 (PDT)
+ bh=xbN6BYbhg9Tc9GAYch8/jujIr0chTMGn9JipZlla0d0=;
+ b=l7iJfzhUuvzqiHkuG7K5QVolU5fnd2GDh7mdIY4JwIG4X5+vt+ylRYOKtYuaqj26HT
+ kUQsiUDTYYrfv3KQ7wsNA60LqWJw9JWnDdXRG8jIg2Qrtu2Utr/d6+rGOFgKTouOdkfV
+ 8Wg7nbTL+TJ6vsYyYz9+WMEDrBkv2ZZp7toTFccXL7Ii4DgdwhDPsUWW8xYznD3hlyug
+ tUivRpIiwur9SX+efZiaDAkgoWeJz73qfF3cqVHccF2kGt4XzBZSS0gKA8rEipjASNMP
+ MGw8Vce65o/VOFUNB54Q8XnXPU3LUpeiEKW7Ml/ArznJfu6UXETHg+8QjiFnITJZ0T7D
+ M1Uw==
+X-Gm-Message-State: AC+VfDxPlSMcMa6nycRMZAejfpRZfY/wfRm4oZVSDnixWLaLDZ9fFWUM
+ nImvgdCCcY1n6Bz+wSO0mlcKsXV4JCSTLgZFvo0=
+X-Google-Smtp-Source: ACHHUZ4+MOTjQgpghsERQnZtYPmfoUFU2xP6yyUy8Frp0fO0BeLRGCRDlFPcmiQAKCzXid9fby4W0A==
+X-Received: by 2002:a1c:6a09:0:b0:3f6:1e6:d5a2 with SMTP id
+ f9-20020a1c6a09000000b003f601e6d5a2mr5789238wmc.4.1684843490616; 
+ Tue, 23 May 2023 05:04:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- l17-20020adfe591000000b003079c402762sm10848778wrm.19.2023.05.23.05.04.49
+ l17-20020adfe591000000b003079c402762sm10848778wrm.19.2023.05.23.05.04.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 05:04:49 -0700 (PDT)
+ Tue, 23 May 2023 05:04:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 2/6] docs: Document decodetree named field syntax
-Date: Tue, 23 May 2023 13:04:43 +0100
-Message-Id: <20230523120447.728365-3-peter.maydell@linaro.org>
+Subject: [PATCH 3/6] scripts/decodetree: Pass lvalue-formatter function to
+ str_extract()
+Date: Tue, 23 May 2023 13:04:44 +0100
+Message-Id: <20230523120447.728365-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523120447.728365-1-peter.maydell@linaro.org>
 References: <20230523120447.728365-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,90 +92,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Document the named field syntax that we want to implement for the
-decodetree script.  This allows a field to be defined in terms of
-some other field that the instruction pattern has already set, for
-example:
+To support referring to other named fields in field definitions, we
+need to pass the str_extract() method a function which tells it how
+to emit the code for a previously initialized named field.  (In
+Pattern::output_code() the other field will be "u.f_foo.field", and
+in Format::output_extract() it is "a->field".)
 
-   %sz_imm 10:3 sz:3 !function=expand_sz_imm
-
-to allow a function to be passed both an immediate field from the
-instruction and also a sz value which might have been specified by
-the instruction pattern directly (sz=1, etc) rather than being a
-simple field within the instruction.
-
-Note that the restriction on not having the format referring to the
-pattern and the pattern referring to the format simultaneously is a
-restriction of the decoder generator rather than inherently being a
-silly thing to do.
+Refactor the two callsites that currently do "output code to
+initialize each field", and have them pass a lambda that defines how
+to format the lvalue in each case.  This is then used both in
+emitting the LHS of the assignment and also passed down to
+str_extract() as a new argument (unused at the moment, but will be
+used in the following patch).
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/devel/decodetree.rst | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ scripts/decodetree.py | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/docs/devel/decodetree.rst b/docs/devel/decodetree.rst
-index 49ea50c2a7f..e3392aa7057 100644
---- a/docs/devel/decodetree.rst
-+++ b/docs/devel/decodetree.rst
-@@ -23,22 +23,42 @@ Fields
+diff --git a/scripts/decodetree.py b/scripts/decodetree.py
+index a03dc6b5e3e..33f4252b4ee 100644
+--- a/scripts/decodetree.py
++++ b/scripts/decodetree.py
+@@ -205,7 +205,7 @@ def __str__(self):
+             s = ''
+         return str(self.pos) + ':' + s + str(self.len)
  
- Syntax::
+-    def str_extract(self):
++    def str_extract(self, lvalue_formatter):
+         global bitop_width
+         s = 's' if self.sign else ''
+         return f'{s}extract{bitop_width}(insn, {self.pos}, {self.len})'
+@@ -228,12 +228,12 @@ def __init__(self, subs, mask):
+     def __str__(self):
+         return str(self.subs)
  
--  field_def     := '%' identifier ( unnamed_field )* ( !function=identifier )?
-+  field_def     := '%' identifier ( field )* ( !function=identifier )?
-+  field         := unnamed_field | named_field
-   unnamed_field := number ':' ( 's' ) number
-+  named_field   := identifier ':' ( 's' ) number
+-    def str_extract(self):
++    def str_extract(self, lvalue_formatter):
+         global bitop_width
+         ret = '0'
+         pos = 0
+         for f in reversed(self.subs):
+-            ext = f.str_extract()
++            ext = f.str_extract(lvalue_formatter)
+             if pos == 0:
+                 ret = ext
+             else:
+@@ -264,7 +264,7 @@ def __init__(self, value):
+     def __str__(self):
+         return str(self.value)
  
- For *unnamed_field*, the first number is the least-significant bit position
- of the field and the second number is the length of the field.  If the 's' is
--present, the field is considered signed.  If multiple ``unnamed_fields`` are
--present, they are concatenated.  In this way one can define disjoint fields.
-+present, the field is considered signed.
+-    def str_extract(self):
++    def str_extract(self, lvalue_formatter):
+         return str(self.value)
+ 
+     def __cmp__(self, other):
+@@ -283,8 +283,9 @@ def __init__(self, func, base):
+     def __str__(self):
+         return self.func + '(' + str(self.base) + ')'
+ 
+-    def str_extract(self):
+-        return self.func + '(ctx, ' + self.base.str_extract() + ')'
++    def str_extract(self, lvalue_formatter):
++        return (self.func + '(ctx, '
++                + self.base.str_extract(lvalue_formatter) + ')')
+ 
+     def __eq__(self, other):
+         return self.func == other.func and self.base == other.base
+@@ -304,7 +305,7 @@ def __init__(self, func):
+     def __str__(self):
+         return self.func
+ 
+-    def str_extract(self):
++    def str_extract(self, lvalue_formatter):
+         return self.func + '(ctx)'
+ 
+     def __eq__(self, other):
+@@ -357,6 +358,11 @@ def __str__(self):
+ 
+     def str1(self, i):
+         return str_indent(i) + self.__str__()
 +
-+A *named_field* refers to some other field in the instruction pattern
-+or format. Regardless of the length of the other field where it is
-+defined, it will be inserted into this field with the specified
-+signedness and bit width.
-+
-+Field definitions that involve loops (i.e. where a field is defined
-+directly or indirectly in terms of itself) are errors.
-+
-+A format can include fields that refer to named fields that are
-+defined in the instruction pattern(s) that use the format.
-+Conversely, an instruction pattern can include fields that refer to
-+named fields that are defined in the format it uses. However you
-+cannot currently do both at once (i.e. pattern P uses format F; F has
-+a field A that refers to a named field B that is defined in P, and P
-+has a field C that refers to a named field D that is defined in F).
-+
-+If multiple ``fields`` are present, they are concatenated.
-+In this way one can define disjoint fields.
++    def output_fields(self, indent, lvalue_formatter):
++        for n, f in self.fields.items():
++            output(indent, lvalue_formatter(n), ' = ',
++                   f.str_extract(lvalue_formatter), ';\n')
+ # end General
  
- If ``!function`` is specified, the concatenated result is passed through the
- named function, taking and returning an integral value.
  
--One may use ``!function`` with zero ``unnamed_fields``.  This case is called
-+One may use ``!function`` with zero ``fields``.  This case is called
- a *parameter*, and the named function is only passed the ``DisasContext``
- and returns an integral value extracted from there.
+@@ -370,8 +376,7 @@ def extract_name(self):
+     def output_extract(self):
+         output('static void ', self.extract_name(), '(DisasContext *ctx, ',
+                self.base.struct_name(), ' *a, ', insntype, ' insn)\n{\n')
+-        for n, f in self.fields.items():
+-            output('    a->', n, ' = ', f.str_extract(), ';\n')
++        self.output_fields(str_indent(4), lambda n: 'a->' + n)
+         output('}\n\n')
+ # end Format
  
--A field with no ``unnamed_fields`` and no ``!function`` is in error.
-+A field with no ``fields`` and no ``!function`` is in error.
+@@ -395,8 +400,7 @@ def output_code(self, i, extracted, outerbits, outermask):
+         if not extracted:
+             output(ind, self.base.extract_name(),
+                    '(ctx, &u.f_', arg, ', insn);\n')
+-        for n, f in self.fields.items():
+-            output(ind, 'u.f_', arg, '.', n, ' = ', f.str_extract(), ';\n')
++        self.output_fields(ind, lambda n: 'u.f_' + arg + '.' + n)
+         output(ind, 'if (', translate_prefix, '_', self.name,
+                '(ctx, &u.f_', arg, ')) return true;\n')
  
- Field examples:
- 
-@@ -56,6 +76,9 @@ Field examples:
- | %shimm8 5:s8 13:1         | expand_shimm8(sextract(i, 5, 8) << 1 |      |
- |   !function=expand_shimm8 |               extract(i, 13, 1))            |
- +---------------------------+---------------------------------------------+
-+| %sz_imm 10:2 sz:3         | expand_sz_imm(extract(i, 10, 2) << 3 |      |
-+|   !function=expand_sz_imm |               extract(a->sz, 0, 3))         |
-++---------------------------+---------------------------------------------+
- 
- Argument Sets
- =============
 -- 
 2.34.1
 
