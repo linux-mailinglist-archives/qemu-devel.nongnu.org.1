@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBC9770E1EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E2970E1E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:37:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1V0e-0003bz-By; Tue, 23 May 2023 12:37:16 -0400
+	id 1q1V0l-0003s4-Ce; Tue, 23 May 2023 12:37:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0c-0003Ye-CI
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:37:14 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0h-0003nO-4P
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:37:19 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0a-0001ns-0S
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:37:14 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f603d4bc5bso423745e9.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:37:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1V0f-0001p4-CK
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:37:18 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3063433fa66so4845396f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684859829; x=1687451829;
+ d=linaro.org; s=google; t=1684859835; x=1687451835;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jOy+bpjsejzgIsMY1OLxW7QAM00Xe6+x59PGJ+hgH1E=;
- b=zV1yNfESHvrbx1agacksVxD2eLAG/q/hcFrusyvAxnJeBaJD2nmfjFfx3Lb998fZNT
- fKIwI0tPG9ziotHJnpDT/pNCpv1e6PycHAOPhBO6ftGMm9PrG9IyQNES8cU6CMN/FGKm
- 4Kd43uib7dcdXQIUA4SSbYuNaII+XNbbIuD2kkUY9PlXBWQdNdx3o6nPX8Uie1LNsdIh
- EQAiu4q3nNKCzOx16GW8CCw9etZeuovr5U0DupzNTLMvfQl7fNB51RKvRMR01V2Gztko
- aqEHIl4wOg6H5qXmDMyu/geWNWtbZfmz76wwIgk2n/cFuzGYX/1fWUrQ+9+8SbGL02zB
- jFzw==
+ bh=nVars2hcHXmfzOaUijNnjb/uP3QrA6j+f0+XOdMOWuA=;
+ b=pIB+0FQclVihJoQQAR3rBWyPzHTIIQts36rTOrBW/T1AEVAk6ZfQq9LyMnJIGZKw2H
+ uPmZAd7KHcbCyPEzSTnrwOuJDoorql8y+LMxEErZY6AGBZHFFaokV7rc02BBpX3m5+MC
+ rTDVBB4SQS50eKcYozU0PZaDJ1Fy/ecVWsj5Lu/FTP4lkOdKM2J+Kj27vVgoK0z6jOSp
+ 3Xhmh+Uw3zpw/61KcNaEE+s5TnxgnXWZ15MRUlfewF1HBuRuySCzCIpA42PcEBG9nKvu
+ CFASc5BXp8DTGq6QEPEVmgBXgvFJl4bDKzyTzDwm4+yKKFlenP9zmG0z/Jlv2AJSo0IB
+ 8z3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684859829; x=1687451829;
+ d=1e100.net; s=20221208; t=1684859835; x=1687451835;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jOy+bpjsejzgIsMY1OLxW7QAM00Xe6+x59PGJ+hgH1E=;
- b=V5sYQ9GtqGf5aTe+nkYEkWcXcnGgSaIHdVGre3FgFK/Gla7SD1uLB456XzoUN6Hjz8
- xF8xRbPYrirU+WX6J5G6JiJ3zWpQpQv0nVaV5Ho7dVZSSWujWXHtXGxOYyeAAulFCEFc
- hwXH66oNmJIn4/LZZcPdDBM35Ed3LSHtxvxtXf+09HrT53MrBxWtKYRTggw5CW8ZoN3y
- psIa+j5/HUBRLOXpjF7GiSG2TNfWci1rM7WeWpgUNnrOzkxYLZnFA13OneDzxGGNJTI9
- qKpD7EKhlMABxz19NLH4gHQ3bkdSrdA/3uV4t4gD0vmcCP0TjmMMMeLWDKchNY/Az16f
- PCxQ==
-X-Gm-Message-State: AC+VfDzhN9JblPYjSyjhXYvqgJDAYuavaVIUn+RzXCsqZQymHe5h2+gl
- k6T+oYk3sIxAUgWO0eIf6F+qGqy2smsW0n605Rc=
-X-Google-Smtp-Source: ACHHUZ4aqtAqbH5hdt6f03jur07idltn2jSp69YjwRSazOStED6x3njgSk8v5qn4hE8aVxkOEV1TQg==
-X-Received: by 2002:a05:600c:245:b0:3f6:7d2:9859 with SMTP id
- 5-20020a05600c024500b003f607d29859mr4117636wmj.6.1684859829155; 
- Tue, 23 May 2023 09:37:09 -0700 (PDT)
+ bh=nVars2hcHXmfzOaUijNnjb/uP3QrA6j+f0+XOdMOWuA=;
+ b=DMK7YI8SutmK/tzPM8IZXNjwMKAk8ecmSZYroJvOPh/Z9o5io8CIhFVGWfeWo1Jj6g
+ bwVnYnJcOr3+5t+N2KVjLzGGxRs5APz0troObXlXx42/woscx0LFgaHedpx9qL1U/keD
+ 9aA5jG7Kp5PjfaDrtWud8ZtowEmiqAkMpbUa/fKw1l4p2DtxdfyBAgXfpW1Y5wEbYtvi
+ OMuqgLO7RH4On2LnsHKAHMddoejMekESQQc4XQJuBoBpilbuL8Pcb0rvJZ9W939wu2XM
+ 4RC/QZrprbsEayXezcoyi5t+cWc+i5+0qnieJ7qkRc/TI3BUvuOmD90Z1ZlajWZMKkoO
+ Id6A==
+X-Gm-Message-State: AC+VfDxGvhKkWKAmnD5drCGmXcNLVrBJEnLq4NQI7kM/nzXXxy6MdYnk
+ iKXngpfQr9lODJoTsV1h4VpRa/NGrpHneSPM+1Q=
+X-Google-Smtp-Source: ACHHUZ5cKVjiBM2KucH1BkypxSUr9LtZNBUNs/mlDp3NJ+IGT7oHkpvOyvGG94Md7sUP6y0VxqGWdQ==
+X-Received: by 2002:a5d:6a09:0:b0:309:48b9:977b with SMTP id
+ m9-20020a5d6a09000000b0030948b9977bmr9886121wru.22.1684859835749; 
+ Tue, 23 May 2023 09:37:15 -0700 (PDT)
 Received: from localhost.localdomain
  (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a1c6a08000000b003f606c4ad33sm5816462wmc.32.2023.05.23.09.37.07
+ f18-20020adfdb52000000b00307d20546e6sm11831219wrj.27.2023.05.23.09.37.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 May 2023 09:37:08 -0700 (PDT)
+ Tue, 23 May 2023 09:37:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
@@ -70,25 +70,25 @@ Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
-Subject: [PATCH 10/11] hw/virtio: Build various target-agnostic objects just
- once
-Date: Tue, 23 May 2023 18:35:59 +0200
-Message-Id: <20230523163600.83391-11-philmd@linaro.org>
+Subject: [RFC PATCH 11/11] hw/virtio: Make vhost-vdpa.c target-agnostic to
+ build it once
+Date: Tue, 23 May 2023 18:36:00 +0200
+Message-Id: <20230523163600.83391-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230523163600.83391-1-philmd@linaro.org>
 References: <20230523163600.83391-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,101 +104,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous commit remove the unnecessary "virtio-access.h"
-header. These files no longer have target-specific dependency.
-Move them to the generic 'softmmu_ss' source set.
+Replace TARGET_PAGE_MASK -> qemu_target_page_mask() and
+TARGET_PAGE_ALIGN() -> qemu_target_page_align() so we don't
+need the target-specific "cpu.h" header.
+
+These macros are used in the MemoryListener add/del handlers
+(vhost_vdpa_listener_skipped_section is only called by
+vhost_vdpa_listener_region_add) which are not hot-path.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/block/dataplane/meson.build |  2 +-
- hw/scsi/meson.build            | 10 +++++++---
- hw/virtio/meson.build          | 11 ++++++-----
- 3 files changed, 14 insertions(+), 9 deletions(-)
+ hw/virtio/vhost-vdpa.c | 16 ++++++++--------
+ hw/virtio/meson.build  |  3 ++-
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/hw/block/dataplane/meson.build b/hw/block/dataplane/meson.build
-index 78d7ac1a11..dec73e7486 100644
---- a/hw/block/dataplane/meson.build
-+++ b/hw/block/dataplane/meson.build
-@@ -1,2 +1,2 @@
--specific_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c'))
-+softmmu_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c'))
- specific_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-block.c'))
-diff --git a/hw/scsi/meson.build b/hw/scsi/meson.build
-index d88f7450e8..12a1ca644f 100644
---- a/hw/scsi/meson.build
-+++ b/hw/scsi/meson.build
-@@ -1,5 +1,6 @@
- scsi_ss = ss.source_set()
- specific_scsi_ss = ss.source_set()
-+virtio_scsi_ss = ss.source_set()
- specific_virtio_scsi_ss = ss.source_set()
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 3c575a9a6e..a51497aaf1 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -14,6 +14,7 @@
+ #include <linux/vfio.h>
+ #include <sys/eventfd.h>
+ #include <sys/ioctl.h>
++#include "exec/target_page.h"
+ #include "hw/virtio/vhost.h"
+ #include "hw/virtio/vhost-backend.h"
+ #include "hw/virtio/virtio-net.h"
+@@ -23,7 +24,6 @@
+ #include "migration/blocker.h"
+ #include "qemu/cutils.h"
+ #include "qemu/main-loop.h"
+-#include "cpu.h"
+ #include "trace.h"
+ #include "qapi/error.h"
  
- scsi_ss.add(files(
-@@ -15,13 +16,16 @@ scsi_ss.add(when: 'CONFIG_MEGASAS_SCSI_PCI', if_true: files('megasas.c'))
- scsi_ss.add(when: 'CONFIG_MPTSAS_SCSI_PCI', if_true: files('mptsas.c', 'mptconfig.c', 'mptendian.c'))
- scsi_ss.add(when: 'CONFIG_VMW_PVSCSI_SCSI_PCI', if_true: files('vmw_pvscsi.c'))
+@@ -35,7 +35,7 @@ static Int128 vhost_vdpa_section_end(const MemoryRegionSection *section)
+ {
+     Int128 llend = int128_make64(section->offset_within_address_space);
+     llend = int128_add(llend, section->size);
+-    llend = int128_and(llend, int128_exts64(TARGET_PAGE_MASK));
++    llend = int128_and(llend, int128_exts64(qemu_target_page_mask()));
  
--specific_virtio_scsi_ss.add(files('virtio-scsi.c', 'virtio-scsi-dataplane.c'))
-+virtio_scsi_ss.add(files('virtio-scsi-dataplane.c'))
-+virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi.c'))
-+virtio_scsi_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi.c'))
-+
-+specific_virtio_scsi_ss.add(files('virtio-scsi.c'))
- specific_virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI_COMMON', if_true: files('vhost-scsi-common.c'))
--specific_virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi.c'))
--specific_virtio_scsi_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi.c'))
+     return llend;
+ }
+@@ -321,13 +321,13 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+         return;
+     }
  
- specific_scsi_ss.add(when: 'CONFIG_SPAPR_VSCSI', if_true: files('spapr_vscsi.c'))
- specific_scsi_ss.add_all(when: 'CONFIG_VIRTIO_SCSI', if_true: specific_virtio_scsi_ss)
-+scsi_ss.add_all(when: 'CONFIG_VIRTIO_SCSI', if_true: virtio_scsi_ss)
+-    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
+-                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
++    if (unlikely((section->offset_within_address_space & ~qemu_target_page_mask()) !=
++                 (section->offset_within_region & ~qemu_target_page_mask()))) {
+         error_report("%s received unaligned region", __func__);
+         return;
+     }
  
- softmmu_ss.add_all(when: 'CONFIG_SCSI', if_true: scsi_ss)
- specific_ss.add_all(when: 'CONFIG_SCSI', if_true: specific_scsi_ss)
+-    iova = TARGET_PAGE_ALIGN(section->offset_within_address_space);
++    iova = qemu_target_page_align(section->offset_within_address_space);
+     llend = vhost_vdpa_section_end(section);
+     if (int128_ge(int128_make64(iova), llend)) {
+         return;
+@@ -403,13 +403,13 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+         vhost_vdpa_iommu_region_del(listener, section);
+     }
+ 
+-    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
+-                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
++    if (unlikely((section->offset_within_address_space & ~qemu_target_page_mask()) !=
++                 (section->offset_within_region & ~qemu_target_page_mask()))) {
+         error_report("%s received unaligned region", __func__);
+         return;
+     }
+ 
+-    iova = TARGET_PAGE_ALIGN(section->offset_within_address_space);
++    iova = qemu_target_page_align(section->offset_within_address_space);
+     llend = vhost_vdpa_section_end(section);
+ 
+     trace_vhost_vdpa_listener_region_del(v, iova,
 diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 54c90c24fb..16e64e1cf1 100644
+index 16e64e1cf1..c29be98ab0 100644
 --- a/hw/virtio/meson.build
 +++ b/hw/virtio/meson.build
-@@ -2,13 +2,18 @@ softmmu_virtio_ss = ss.source_set()
- softmmu_virtio_ss.add(files('virtio-bus.c'))
- softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('virtio-pci.c'))
- softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_MMIO', if_true: files('virtio-mmio.c'))
-+softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
-+softmmu_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
-+softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
-+softmmu_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
- 
- specific_virtio_ss = ss.source_set()
- specific_virtio_ss.add(files('virtio.c'))
- specific_virtio_ss.add(files('virtio-config-io.c', 'virtio-qmp.c'))
- 
- if have_vhost
--  specific_virtio_ss.add(files('vhost.c', 'vhost-backend.c', 'vhost-iova-tree.c'))
-+  softmmu_virtio_ss.add(files('vhost.c'))
-+  specific_virtio_ss.add(files('vhost-backend.c', 'vhost-iova-tree.c'))
-   if have_vhost_user
+@@ -18,7 +18,8 @@ if have_vhost
      specific_virtio_ss.add(files('vhost-user.c'))
    endif
-@@ -20,20 +25,16 @@ else
- endif
- 
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_BALLOON', if_true: files('virtio-balloon.c'))
--specific_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem.c'))
--specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng.c'))
--specific_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
- specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'], if_true: files('vhost-user-gpio-pci.c'))
--specific_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
- 
- virtio_pci_ss = ss.source_set()
- virtio_pci_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-pci.c'))
+   if have_vhost_vdpa
+-    specific_virtio_ss.add(files('vhost-vdpa.c', 'vhost-shadow-virtqueue.c'))
++    softmmu_virtio_ss.add(files('vhost-vdpa.c'))
++    specific_virtio_ss.add(files('vhost-shadow-virtqueue.c'))
+   endif
+ else
+   softmmu_virtio_ss.add(files('vhost-stub.c'))
 -- 
 2.38.1
 
