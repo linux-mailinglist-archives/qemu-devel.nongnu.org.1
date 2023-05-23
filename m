@@ -2,76 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1988570E929
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 00:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2803B70E944
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 00:51:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1aeZ-0007Ak-MF; Tue, 23 May 2023 18:38:51 -0400
+	id 1q1aph-0003vQ-Lo; Tue, 23 May 2023 18:50:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1aeX-0007A2-AR
- for qemu-devel@nongnu.org; Tue, 23 May 2023 18:38:49 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1aeV-0003HG-Qu
- for qemu-devel@nongnu.org; Tue, 23 May 2023 18:38:49 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-25367154308so205736a91.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 15:38:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684881526; x=1687473526;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=qGpeX+BWJFtZgsJXkM8eCm9o68YYox29rk4GWeNIAbA=;
- b=SQKD5OmmWm1uQ2SNrNSzd9OmpuJWbF7BFXlJNJZRD+nSX3ixRGB5WNIua46jrllgN7
- 9bvjUpOMBoWo2eF7V5L8/aZmJvP5qnxcFlvRSso14vePatzGwxuYCE4VDyqrsJnJz14x
- zaAKBufF70Yn7zj72Uio0eUN4Ga74ey7gxotsJwnPvUuIAd9S9MzTADw9cRP6/YD9up2
- M7+0fg6kQXilaX+lxtOTmXuhpIv4F4aKUYn/TDDsnwU7V689aEK/13VZjzLLpydMTo3x
- GpYVtR9XJSLdkhZnLJrxwulru8bkJDjvBN8xtok7OQRQf2fJW9+TXi8EVSmQ1TPpalmq
- ovQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684881526; x=1687473526;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qGpeX+BWJFtZgsJXkM8eCm9o68YYox29rk4GWeNIAbA=;
- b=DamDHy5ZJkmk2yxVeY1oyAnqul9ajBB9jHnYhLfEgsORvL/QjVCW7iYkvW+2hgJX0T
- hu9RjwmNa0BQdXFMz2xF+lhi79hul75BA3a95Goexp0d+iq+Bxy6FaOHzdv32qiMXPAq
- hC3Eua67LRQe02PJOjXGez8CYmqdFqJOEji4tLfeIqhnNgMsP7vsWV3M5gZDZ4xC9Ssa
- 7M6xG+KcO1OZzUSKKuCItf28I73ZLrkEYWF+HZ2ewUq/ots2V+Ftyen8bHcbqX8JRZri
- TXzKFTTaIFuVTKTVlMGZh43tTiWeU9QBdA5zyAwdBDBUXaIvP++zFVq28mVM4Z1AatP3
- 2pMA==
-X-Gm-Message-State: AC+VfDyeYeMh4jl2dtR3iiaLTcgbSXeM4wnRXBkdx4p8yxQaqRvCQHwt
- kD822ZaYEF5EeiMEsL1eSUDazGv2FLVhS7E4tfU=
-X-Google-Smtp-Source: ACHHUZ4QFzb5WbVxyt572yNHuyLVGttGVf3A7tTyf+I5j+AWlN02Vik8wG8bJPcQndlau4YlPTjP0Q==
-X-Received: by 2002:a17:90a:4d86:b0:24d:fb8f:6c16 with SMTP id
- m6-20020a17090a4d8600b0024dfb8f6c16mr14997245pjh.16.1684881525584; 
- Tue, 23 May 2023 15:38:45 -0700 (PDT)
-Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
- by smtp.gmail.com with ESMTPSA id
- b22-20020a17090aa59600b0023b3d80c76csm75824pjq.4.2023.05.23.15.38.44
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 15:38:45 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH] meson: Adjust check for __int128_t
-Date: Tue, 23 May 2023 15:38:44 -0700
-Message-Id: <20230523223844.719056-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q1apY-0003vC-LU; Tue, 23 May 2023 18:50:12 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q1apW-0006Z1-DA; Tue, 23 May 2023 18:50:12 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id EB7A5746361;
+ Wed, 24 May 2023 00:50:02 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 6D1B374635C; Wed, 24 May 2023 00:50:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 69AA1746335;
+ Wed, 24 May 2023 00:50:02 +0200 (CEST)
+Date: Wed, 24 May 2023 00:50:02 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Richard Henderson <richard.henderson@linaro.org>
+cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, qemu-ppc@nongnu.org
+Subject: Re: [PATCH] target/ppc: Merge COMPUTE_CLASS and COMPUTE_FPRF
+In-Reply-To: <20230523202507.688859-1-richard.henderson@linaro.org>
+Message-ID: <7a436ae9-067d-c810-f76a-8f4fd23d87fd@eik.bme.hu>
+References: <20230523202507.688859-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,33 +57,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the signed * signed check, leaving the signed * unsigned check.
-This link test runs foul of -fsanitize=undefined, where clang-11 has
-an undefined reference to __muloti4 to check for signed overflow.
+On Tue, 23 May 2023, Richard Henderson wrote:
+> Instead of computing an artifical "class" bitmask then
+> converting that to the fprf value, compute the final
+> value from the start.
+>
+> Reorder the tests to check the most likely cases first.
 
-This failure prevents us properly detecting atomic128 support.
+This seems to work in that it makes the function go down in the profile 
+but does not seem to gain much speed, that is still about the same. The 
+profile looks like this with this patch (above these there are only 
+cpu_exec TCG related functions and muladd, fmadds helper but all with 
+less self percent, the ones with above 5% self count are all here):
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- meson.build | 2 --
- 1 file changed, 2 deletions(-)
+children   self   command          symbol
+10.54%     3.08%  qemu-system-ppc  float64r32_round_pack_canonical
+  8.67%     0.43%  qemu-system-ppc  parts64_uncanon
+  8.50%     0.62%  qemu-system-ppc  helper_fmuls
+  7.96%     7.96%  qemu-system-ppc  parts64_uncanon_normal
+  7.84%     1.78%  qemu-system-ppc  float64r32_mul
+  7.77%     6.69%  qemu-system-ppc  parts64_muladd
+  7.72%     1.88%  qemu-system-ppc  helper_float_check_status
+  7.70%     7.20%  qemu-system-ppc  helper_compute_fprf_float64
+  6.67%     0.48%  qemu-system-ppc  helper_fadds
 
-diff --git a/meson.build b/meson.build
-index ef181ff2df..865bdd8d11 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2542,10 +2542,8 @@ has_int128 = cc.links('''
-   int main (void) {
-     a = a + b;
-     b = a * b;
--    a = a * a;
-     return 0;
-   }''')
--
- config_host_data.set('CONFIG_INT128', has_int128)
- 
- if has_int128
--- 
-2.34.1
+Regards,
+BALATON Zoltan
 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> target/ppc/fpu_helper.c | 78 ++++++++++++-----------------------------
+> 1 file changed, 22 insertions(+), 56 deletions(-)
+>
+> diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
+> index a66e16c212..03150a0f10 100644
+> --- a/target/ppc/fpu_helper.c
+> +++ b/target/ppc/fpu_helper.c
+> @@ -141,62 +141,28 @@ static inline int ppc_float64_get_unbiased_exp(float64 f)
+>     return ((f >> 52) & 0x7FF) - 1023;
+> }
+>
+> -/* Classify a floating-point number.  */
+> -enum {
+> -    is_normal   = 1,
+> -    is_zero     = 2,
+> -    is_denormal = 4,
+> -    is_inf      = 8,
+> -    is_qnan     = 16,
+> -    is_snan     = 32,
+> -    is_neg      = 64,
+> -};
+> -
+> -#define COMPUTE_CLASS(tp)                                      \
+> -static int tp##_classify(tp arg)                               \
+> -{                                                              \
+> -    int ret = tp##_is_neg(arg) * is_neg;                       \
+> -    if (unlikely(tp##_is_any_nan(arg))) {                      \
+> -        float_status dummy = { };  /* snan_bit_is_one = 0 */   \
+> -        ret |= (tp##_is_signaling_nan(arg, &dummy)             \
+> -                ? is_snan : is_qnan);                          \
+> -    } else if (unlikely(tp##_is_infinity(arg))) {              \
+> -        ret |= is_inf;                                         \
+> -    } else if (tp##_is_zero(arg)) {                            \
+> -        ret |= is_zero;                                        \
+> -    } else if (tp##_is_zero_or_denormal(arg)) {                \
+> -        ret |= is_denormal;                                    \
+> -    } else {                                                   \
+> -        ret |= is_normal;                                      \
+> -    }                                                          \
+> -    return ret;                                                \
+> -}
+> -
+> -COMPUTE_CLASS(float16)
+> -COMPUTE_CLASS(float32)
+> -COMPUTE_CLASS(float64)
+> -COMPUTE_CLASS(float128)
+> -
+> -static void set_fprf_from_class(CPUPPCState *env, int class)
+> -{
+> -    static const uint8_t fprf[6][2] = {
+> -        { 0x04, 0x08 },  /* normalized */
+> -        { 0x02, 0x12 },  /* zero */
+> -        { 0x14, 0x18 },  /* denormalized */
+> -        { 0x05, 0x09 },  /* infinity */
+> -        { 0x11, 0x11 },  /* qnan */
+> -        { 0x00, 0x00 },  /* snan -- flags are undefined */
+> -    };
+> -    bool isneg = class & is_neg;
+> -
+> -    env->fpscr &= ~FP_FPRF;
+> -    env->fpscr |= fprf[ctz32(class)][isneg] << FPSCR_FPRF;
+> -}
+> -
+> -#define COMPUTE_FPRF(tp)                                \
+> -void helper_compute_fprf_##tp(CPUPPCState *env, tp arg) \
+> -{                                                       \
+> -    set_fprf_from_class(env, tp##_classify(arg));       \
+> +#define COMPUTE_FPRF(tp)                                          \
+> +void helper_compute_fprf_##tp(CPUPPCState *env, tp arg)           \
+> +{                                                                 \
+> +    bool neg = tp##_is_neg(arg);                                  \
+> +    target_ulong fprf;                                            \
+> +    if (likely(tp##_is_normal(arg))) {                            \
+> +        fprf = neg ? 0x08 << FPSCR_FPRF : 0x04 << FPSCR_FPRF;     \
+> +    } else if (tp##_is_zero(arg)) {                               \
+> +        fprf = neg ? 0x12 << FPSCR_FPRF : 0x02 << FPSCR_FPRF;     \
+> +    } else if (tp##_is_zero_or_denormal(arg)) {                   \
+> +        fprf = neg ? 0x18 << FPSCR_FPRF : 0x14 << FPSCR_FPRF;     \
+> +    } else if (tp##_is_infinity(arg)) {                           \
+> +        fprf = neg ? 0x09 << FPSCR_FPRF : 0x05 << FPSCR_FPRF;     \
+> +    } else {                                                      \
+> +        float_status dummy = { };  /* snan_bit_is_one = 0 */      \
+> +        if (tp##_is_signaling_nan(arg, &dummy)) {                 \
+> +            fprf = 0x00 << FPSCR_FPRF;                            \
+> +        } else {                                                  \
+> +            fprf = 0x11 << FPSCR_FPRF;                            \
+> +        }                                                         \
+> +    }                                                             \
+> +    env->fpscr = (env->fpscr & ~FP_FPRF) | fprf;                  \
+> }
+>
+> COMPUTE_FPRF(float16)
+>
 
