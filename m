@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822BC70E9A6
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF0270E9B7
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:45:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1bTf-0003eM-9h; Tue, 23 May 2023 19:31:39 -0400
+	id 1q1bfQ-0007q4-N5; Tue, 23 May 2023 19:43:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1bTc-0003e3-UD
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:31:37 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1q1bfO-0007pf-E0
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:43:46 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1bTb-0002ee-4r
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:31:36 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-64d2ca9ef0cso94167b3a.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:31:34 -0700 (PDT)
+ id 1q1bfK-000605-Hc
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:43:46 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1ae557aaf1dso2410205ad.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:43:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684884693; x=1687476693;
+ d=linaro.org; s=google; t=1684885421; x=1687477421;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=T49jv0sjH97dVSCY4k+3sKfL9x7mTrfr1JiA9WQmemY=;
- b=pMmqQl7biA1CUYBfbo3tgOzdrqFB7Rs5ZLSdI8eRKiYRSDObeUcxZVTJwvj1iORTBz
- 1jnuiC+EBKdfqDTlEi4bByQgmndc4j0ou1EjsxNgxHhM34p5qAovmveEyiBkL7TOYP40
- PVzEhD4BNI/zTncyy0iIJs/7SU3BaXVh7Tr9ajk8QmhZxBYwdaMgdFOoMbxx31MWMPA7
- U/BDDFDD8LLT2s7wRDv5EgSmoJ7V4K9frKLKqB4i0jAafsamIkIc+J1JGYNHa5C1hEL/
- 9IVLa4Fu5hEPll4wVhiJRr0Kd0R3R48p0lNEl8uvCdxgbl2f6Z2WlZFWJOzpvV7uUUE+
- hujA==
+ bh=lrIUM/zjMljHi6FkBWc1L4dsCYrPyo+GFSVCad90VDo=;
+ b=WZsY0Zy54GQpXwuCf9RW1VV6E0eaFPXdXMvanzDCxPRoS/bIhImF4cgl2fkQ2e0MPc
+ zQZDoQ++2OycOKu4QxS9HeGZkz1KMhtoIQwUxbaNUId1FqcCeOEZQhhCr3kzRxmRw3hf
+ ZMzFGAZiI5NyZqlD3YLrcypsj1EV22NvvFHNmwxg1yrqkFZgos7Qp8dLQG8hcv8KNPro
+ 92MIH1dK9OG/4goIYnxNSsXnjuo9iFCHAzcRRl6+LIiiJJHjZLz+TvyyNo+evkq//ZZ3
+ 94GNwrTTAO9kBPtQBEQGlOwnMJtW/r8gOu+UetVLOsYYtq5G8pHy46R8fezTPJNW1g7l
+ xOQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684884693; x=1687476693;
+ d=1e100.net; s=20221208; t=1684885421; x=1687477421;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=T49jv0sjH97dVSCY4k+3sKfL9x7mTrfr1JiA9WQmemY=;
- b=Z4hUX3Hkv++4ee6ON25/RxyQlpGwESwlQOm4d7kijxgJm2vNVDmZp+XlF6cG4QrVb8
- mwCrglsQ6E51GqUaaoDqDXa7WP3ST+5iOHTv5bMAP1Ki4qsKuWeSZ3m+CK/tN2oUxxNM
- b2piEjmHBa7HRhik+sPd2W500NMSVI0c0XdSXdpsn/wktRG93lVO9z7NwnBoDg8t11eT
- gzzgP6p5InS97MJok3ZxvsBRuu7j+VxJ6WT0IQcCbZkoQd6Tyfx2h0nDHQFYqzVCE6d6
- QB5W9LnPqJEXDsuavI/c4ZILTLWJDi9/CTr5b7HxZsek+9E10Kij0W0m+LvVXR/W4Y+H
- Q+2w==
-X-Gm-Message-State: AC+VfDy8WtIWsVgBiz9DDkmSd8ry6YPTtEJDJgXfQdvZBZ5SbyuE/BVJ
- yBxDYuyRIevJA9XMj8r9v2NSQw==
-X-Google-Smtp-Source: ACHHUZ6QqtpWb15Tql9mbizSH6DJTbY4C8FsL/CdvsshGIHsQfHIs8inldwPehFlKb8aOojsZcsHVQ==
-X-Received: by 2002:a05:6a20:8f05:b0:10c:49e:6c67 with SMTP id
- b5-20020a056a208f0500b0010c049e6c67mr6978104pzk.33.1684884693628; 
- Tue, 23 May 2023 16:31:33 -0700 (PDT)
+ bh=lrIUM/zjMljHi6FkBWc1L4dsCYrPyo+GFSVCad90VDo=;
+ b=NVII+QcK/L/3HQ8QYTOZnww5IHN1mHO1C4gNH/TH0bhIOV27sOajqtBlMBwGDkBrwG
+ YfcW7wVWU1ogfdMxboyZUcra5WVnKxAIW0xuBVqJ42dZs4kfFNZAEn7WTJ9JvqIwVtRq
+ DeHXThdBOQBcTbp7fjDH6MsIJsqVhtDjnolNSx3pQUbr01yfnQqq516neJfRsfwSM6eV
+ QyUHklN4pEaRFk/DxliKPEJ/UQC6i1+QqWec8BsDtlS//23Mk2ycEbSrmDhAkZV7Pcnv
+ yj6cEMIOX4ZGgJ1nSMUZJvkn+Pu/0zkadi2fDv85K3uqf++OZTgMcUzqvNLYAiWt2WPH
+ aHSQ==
+X-Gm-Message-State: AC+VfDxfR0szb5rMKNmaHQ96tjisdEHYJoN2UKSvg3bBA6/Tm6Y/Aayo
+ eVU3iJSwzYKw7uDduazKaIEgcQ==
+X-Google-Smtp-Source: ACHHUZ7GGbbWmQDW1v40NcuJFFY5J7e6Z3Uai4Wk27wIPRwZXKBfChWrYyITKW/G6qMLvbU+62KkOg==
+X-Received: by 2002:a17:902:ef82:b0:1a5:3319:12f7 with SMTP id
+ iz2-20020a170902ef8200b001a5331912f7mr15388582plb.50.1684885420882; 
+ Tue, 23 May 2023 16:43:40 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
  ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- z8-20020a634c08000000b00524cfd635cesm6356904pga.69.2023.05.23.16.31.32
+ b11-20020a170903228b00b001a52974700dsm7313343plh.174.2023.05.23.16.43.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 16:31:33 -0700 (PDT)
-Message-ID: <7c19f6ed-366d-fbad-ae60-09ff4a4b1e2d@linaro.org>
-Date: Tue, 23 May 2023 16:31:31 -0700
+ Tue, 23 May 2023 16:43:40 -0700 (PDT)
+Message-ID: <1f8fd0c6-5a6f-aebb-ae61-c3d5b45b7ecf@linaro.org>
+Date: Tue, 23 May 2023 16:43:38 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 10/11] hw/virtio: Build various target-agnostic objects
- just once
+Subject: Re: [RFC PATCH 11/11] hw/virtio: Make vhost-vdpa.c target-agnostic to
+ build it once
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20230523163600.83391-1-philmd@linaro.org>
- <20230523163600.83391-11-philmd@linaro.org>
+ <20230523163600.83391-12-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523163600.83391-11-philmd@linaro.org>
+In-Reply-To: <20230523163600.83391-12-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,19 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/23 09:35, Philippe Mathieu-Daudé wrote:
-> The previous commit remove the unnecessary "virtio-access.h"
-> header. These files no longer have target-specific dependency.
-> Move them to the generic 'softmmu_ss' source set.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   hw/block/dataplane/meson.build |  2 +-
->   hw/scsi/meson.build            | 10 +++++++---
->   hw/virtio/meson.build          | 11 ++++++-----
->   3 files changed, 14 insertions(+), 9 deletions(-)
+On 5/23/23 09:36, Philippe Mathieu-Daudé wrote:
+> @@ -321,13 +321,13 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+>           return;
+>       }
+>   
+> -    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
+> -                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
+> +    if (unlikely((section->offset_within_address_space & ~qemu_target_page_mask()) !=
+> +                 (section->offset_within_region & ~qemu_target_page_mask()))) {
+>           error_report("%s received unaligned region", __func__);
+>           return;
+>       }
+>   
+> -    iova = TARGET_PAGE_ALIGN(section->offset_within_address_space);
+> +    iova = qemu_target_page_align(section->offset_within_address_space);
+>       llend = vhost_vdpa_section_end(section);
+>       if (int128_ge(int128_make64(iova), llend)) {
+>           return;
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+I'm not keen on using 3 function calls to get one constant.
+This could be
+
+     int page_size = qemu_target_page_size();
+     int page_mask = page_size - 1;
+
+     if (section->foo & page_mask) { ...
+
+     iova = ROUND_UP(section->bar, page_size);
+
+Also in vhost_vdpa_listener_region_del.
+
+This then removes the only uses of qemu_target_page_align, so you don't need to add that 
+either.
+
 
 r~
 
