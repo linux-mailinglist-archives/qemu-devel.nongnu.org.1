@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2CD70D789
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF9F70D788
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:34:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1NSD-0000Sc-J3; Tue, 23 May 2023 04:33:13 -0400
+	id 1q1NST-0000YO-Ms; Tue, 23 May 2023 04:33:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1NS4-0000SR-Uv
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:33:05 -0400
+ id 1q1NSR-0000Wx-MC
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:33:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1NS2-0008BB-Mn
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:33:04 -0400
+ id 1q1NSQ-0008FX-46
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:33:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684830780;
+ s=mimecast20190719; t=1684830805;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RJvoKPEub5tzADWZHu5GtJXVCTZvaneuRwhwfuGpxbM=;
- b=EIdRH2F341a3tZLCxOExtcQXadML56e8zchuT/62jjs4filzCHV46s+j+AX0IsDIGuhV5P
- 51o8XlQRcRfELE+YUkknLTAkZTB+pdryHYp9mzGwxZY8zP8MJK1CGqQ6dcAQ90iMQl4VpY
- ZnHsvVw4V54S3ZL+Da4W+S3EsJE7nJw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WMPi/nE+LdmCJ/8tgDdLYCVdWF+tI8xKyKwAL+QMU/g=;
+ b=HAqY8RKnTuLkyVVNXWjKpnIeezv6vpitjxsGBLvdDTp/nadOIMMtgTiTUGMgCva1nOTwNn
+ AUY+kC9tWHDDYj/FiwCspJU6vzOYKnvOOGBrchtI8dyg91AwtWne15eNzWUVY1YDXsKpKM
+ ii+9NJQ0G2GhYtxX2p5PbFw2bWuEl7Q=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-83-ERePxFAZOXuNT9vnERxD3Q-1; Tue, 23 May 2023 04:32:58 -0400
-X-MC-Unique: ERePxFAZOXuNT9vnERxD3Q-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-659-ClPynbv8MxSAWakZVh_guw-1; Tue, 23 May 2023 04:33:23 -0400
+X-MC-Unique: ClPynbv8MxSAWakZVh_guw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74E5F101A53B
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:32:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A4933C0F22A
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:33:23 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.40])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D2AC240CFD45;
- Tue, 23 May 2023 08:32:57 +0000 (UTC)
-Date: Tue, 23 May 2023 09:32:55 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E3BF9492B00;
+ Tue, 23 May 2023 08:33:22 +0000 (UTC)
+Date: Tue, 23 May 2023 09:33:20 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Camilla Conte <cconte@redhat.com>
 Cc: qemu-devel@nongnu.org, thuth@redhat.com
-Subject: Re: [PATCH v2 1/5] Remove redundant CI variables
-Message-ID: <ZGx6N2+K9DnzIMGY@redhat.com>
+Subject: Re: [PATCH v2 2/5] Use docker "stable" tag
+Message-ID: <ZGx6UCwinyIbItKT@redhat.com>
 References: <20230522174153.46801-1-cconte@redhat.com>
- <20230522174153.46801-2-cconte@redhat.com>
+ <20230522174153.46801-3-cconte@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230522174153.46801-2-cconte@redhat.com>
+In-Reply-To: <20230522174153.46801-3-cconte@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,13 +83,13 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 22, 2023 at 06:41:50PM +0100, Camilla Conte wrote:
-> These are not needed when using gitlab.com shared runners.
+On Mon, May 22, 2023 at 06:41:51PM +0100, Camilla Conte wrote:
+> Use the same tag in all jobs.
 > 
 > Signed-off-by: Camilla Conte <cconte@redhat.com>
 > ---
->  .gitlab-ci.d/opensbi.yml | 3 ---
->  1 file changed, 3 deletions(-)
+>  .gitlab-ci.d/container-template.yml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
