@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7DA70D43B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 08:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0289C70D43C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 08:45:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Lkw-0001sk-Eb; Tue, 23 May 2023 02:44:27 -0400
+	id 1q1Ll1-0001uP-HN; Tue, 23 May 2023 02:44:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Lkq-0001mD-Sd
- for qemu-devel@nongnu.org; Tue, 23 May 2023 02:44:22 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Lkw-0001tU-M9
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 02:44:27 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Lkp-0002e5-3K
- for qemu-devel@nongnu.org; Tue, 23 May 2023 02:44:20 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3f6042d605dso14563095e9.2
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 23:44:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Lku-0002fT-Si
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 02:44:26 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f607dc98cdso10150235e9.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 23:44:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684824257; x=1687416257;
+ d=linaro.org; s=google; t=1684824263; x=1687416263;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e9m7RKGJ9iCFi/ZsgwgInII18OX7f8aQ/TJysalxieQ=;
- b=I/dSFSNyur6SGDbO6vWwdOPySUGPt/5pEwS5msmLZOoDO7LcM7yc3zlNLJZ+xeEtst
- ouK0vHpZVHfmehaMtDOvEHcip7M5It1/z6THMk8eGHHjpj2wOGUtlMpIfgLtvKr+jqql
- q0WdKhyuVwOE3YTRzx1g5zIxenIs2Hlpz6lf4fVLP7m/DUWTpAp3K2SKXy8dmEI1VsI9
- svMTtgiuIxzKn/BNny0700OHS36SWFSD5Qh7k0MILbvp0gQIXofbOJdu9CPcBAK02HM/
- WbPzO3FTbVpEEAL4RtNRGNm89ExpD9nv2KYA3cAARgp9DbfhKsWGqkvtgM3FeG8Ok7ms
- EYrg==
+ bh=gPBH60YOMI3nzrM9MwhgMu04H1kPb+OX0SImhK5mfvI=;
+ b=RcOJBU55r0Sut0VxWK0l9bLSNdcBC1Q3Z5hIkFEWKkKRC3zVn2D8KaKQMJPUSuuCJT
+ ixhTImi4FafW5e0jtcC4xBrmMZUDMMKbymKzVsb6RdkXpBS4g/nDqnm1zxN2TR9KWfcf
+ VNA/zyvgEfjMrZVnAjsD5ozJydqFstLfDQ0Q8RcmEIUGF9A+cvXCK1pC0iSyb5xvOVBF
+ wIS4Vd5C4TIFvkkb0kyzP3dCIEx1ZeXEOjYzAl+xsT2+BXlTQPCPmnQT2TxV3Euo2Bbq
+ qadUWz/b8jz4bv2sgqKVFDpF1nwbr2rQpxcAge5dwen26gQ7uBs+ZTV5B7phbzRz1Ymw
+ 5E+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684824257; x=1687416257;
+ d=1e100.net; s=20221208; t=1684824263; x=1687416263;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e9m7RKGJ9iCFi/ZsgwgInII18OX7f8aQ/TJysalxieQ=;
- b=jAo4jKAdTLkur0r8f5nK9CiaKoix7oo83X5m3uuZQ/ny+HpQk1HgcjSi3buV3/TqhL
- HzAdwoVmYYOArCdj6UfKmGOKmcBk2qm1EfI/URIUm6GaOBtP0juHholRLesYqZMeWA+9
- GV3UsdnJaT9cHqcJlMKifbu2Z4NUsL3mcAr/wzai3EAoRqHmvhNQsmAbeNeZMs0bPesw
- v4712WHVsavXspCPg+1gN+ZJ9109tTbyzOD0VZIyovWDyuwK2gwX6M9vqhWYsNCch6Z5
- 1VgKva49/Jk+zqO5vO92wwy8jWIkTZIQZSj1jwZJPlMDouNusvKjIHG6k7eND7rwCrsV
- JxLw==
-X-Gm-Message-State: AC+VfDykQMl2KyLKB07axzRwDcCw5zvqc6BOiKPXe9VsTcgd5pQm0l/y
- TWWDw2qkjAiXVH633IggzaqVIDI32BVCRr29nho=
-X-Google-Smtp-Source: ACHHUZ5ruophSw+tEwgqpIGHmU1Sb7BNY7Z/zF+pNWN27iDp8w6xakDTsU+Em3zCUDgmjab5syfHwA==
-X-Received: by 2002:a05:600c:209:b0:3f6:464:4b32 with SMTP id
- 9-20020a05600c020900b003f604644b32mr3708300wmi.13.1684824257319; 
- Mon, 22 May 2023 23:44:17 -0700 (PDT)
+ bh=gPBH60YOMI3nzrM9MwhgMu04H1kPb+OX0SImhK5mfvI=;
+ b=AxlxX1AT12jlW5JDW8a0EXg/n8PSnOl5+Ob09pssenZsk/ETNQj2yMPxLM9mrVxagY
+ 98rbnkNhjVqKPKo6hDCJfndYHvvunzYqnr2DDOSG7aOkhZbAG/W3SZXJ3wUVG4JFphNX
+ WAhJPp8eweSxtYFu0CBnia8/YmfGTroeUlDVRj3jA/zao/yqt/RBJFfHVEdj96cMhTeC
+ pNFihekvw8aTjokggJ7XESAytJTiicmXcGsyJGSX6sao4NQs4C9atijVs6z4NHSR4aLC
+ nT8GYsq3bxb+vsowCMA19p8yBi1/JiNIBQEqvxmi7Z3jbBoIl8DKJXGMMxpsqaBjcWT6
+ f05Q==
+X-Gm-Message-State: AC+VfDyJ9SCKM3StILMBM7SqFgsbcPxBPp9aX2vp56sNHA12vyztLdqY
+ paSKlIevxoMCVM60zu/soCbYS76dAsxacgJhd/U=
+X-Google-Smtp-Source: ACHHUZ4nY5SkfIJWixLkLhnfifbsIA94PhEi9T+06XW7Zl8iPiAs+MQl37OoxRifgbq8+aey8BMoIw==
+X-Received: by 2002:a7b:cd11:0:b0:3f6:91c:4e86 with SMTP id
+ f17-20020a7bcd11000000b003f6091c4e86mr1333117wmj.3.1684824263027; 
+ Mon, 22 May 2023 23:44:23 -0700 (PDT)
 Received: from localhost.localdomain
  (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
  by smtp.gmail.com with ESMTPSA id
- n1-20020a05600c294100b003ee74c25f12sm13828813wmd.35.2023.05.22.23.44.15
+ f4-20020a1c6a04000000b003f1978bbcd6sm1421092wmc.3.2023.05.22.23.44.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 22 May 2023 23:44:16 -0700 (PDT)
+ Mon, 22 May 2023 23:44:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
@@ -63,19 +63,19 @@ Cc: Bernhard Beschow <shentey@gmail.com>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-ppc@nongnu.org,
  Titus Rwantare <titusr@google.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 1/3] hw/mips/jazz: Fix modifying QOM class internal state from
- instance
-Date: Tue, 23 May 2023 08:44:06 +0200
-Message-Id: <20230523064408.57941-2-philmd@linaro.org>
+ Stuart Yoder <stuart.yoder@freescale.com>, Alexander Graf <agraf@csgraf.de>
+Subject: [PATCH 2/3] hw/ppc/e500plat: Fix modifying QOM class internal state
+ from instance
+Date: Tue, 23 May 2023 08:44:07 +0200
+Message-Id: <20230523064408.57941-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230523064408.57941-1-philmd@linaro.org>
 References: <20230523064408.57941-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,97 +101,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 QOM object instance should not modify its class state (because
 all other objects instanciated from this class get affected).
 
-Instead of modifying the MIPSCPUClass 'no_data_aborts' field
+Instead of modifying the PPCE500MachineClass 'mpic_version' field
 in the instance machine_init() handler, set it in the machine
-class_init handler. Since 2 machines require this, share the
-common code in a new machine_class_ignore_data_abort() helper.
+class init handler (e500plat_machine_class_init).
 
 Inspired-by: Bernhard Beschow <shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/jazz.c | 41 +++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+ hw/ppc/e500plat.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index ca4426a92c..de2e827bf8 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -128,7 +128,6 @@ static void mips_jazz_init(MachineState *machine,
-     int bios_size, n, big_endian;
-     Clock *cpuclk;
-     MIPSCPU *cpu;
--    MIPSCPUClass *mcc;
-     CPUMIPSState *env;
-     qemu_irq *i8259;
-     rc4030_dma *dmas;
-@@ -177,23 +176,6 @@ static void mips_jazz_init(MachineState *machine,
-     env = &cpu->env;
-     qemu_register_reset(main_cpu_reset, cpu);
+diff --git a/hw/ppc/e500plat.c b/hw/ppc/e500plat.c
+index 3032bd3f6d..c3b0ed01cf 100644
+--- a/hw/ppc/e500plat.c
++++ b/hw/ppc/e500plat.c
+@@ -30,18 +30,6 @@ static void e500plat_fixup_devtree(void *fdt)
+                      sizeof(compatible));
+ }
  
--    /*
--     * Chipset returns 0 in invalid reads and do not raise data exceptions.
--     * However, we can't simply add a global memory region to catch
--     * everything, as this would make all accesses including instruction
--     * accesses be ignored and not raise exceptions.
--     *
--     * NOTE: this behaviour of raising exceptions for bad instruction
--     * fetches but not bad data accesses was added in commit 54e755588cf1e9
--     * to restore behaviour broken by c658b94f6e8c206, but it is not clear
--     * whether the real hardware behaves this way. It is possible that
--     * real hardware ignores bad instruction fetches as well -- if so then
--     * we could replace this hijacking of CPU methods with a simple global
--     * memory region that catches all memory accesses, as we do on Malta.
--     */
--    mcc = MIPS_CPU_GET_CLASS(cpu);
--    mcc->no_data_aborts = true;
+-static void e500plat_init(MachineState *machine)
+-{
+-    PPCE500MachineClass *pmc = PPCE500_MACHINE_GET_CLASS(machine);
+-    /* Older KVM versions don't support EPR which breaks guests when we announce
+-       MPIC variants that support EPR. Revert to an older one for those */
+-    if (kvm_enabled() && !kvmppc_has_cap_epr()) {
+-        pmc->mpic_version = OPENPIC_MODEL_FSL_MPIC_20;
+-    }
 -
-     /* allocate RAM */
-     memory_region_add_subregion(address_space, 0, machine->ram);
- 
-@@ -414,6 +396,27 @@ void mips_pica61_init(MachineState *machine)
-     mips_jazz_init(machine, JAZZ_PICA61);
- }
- 
-+static void machine_class_ignore_data_abort(MachineClass *mc)
-+{
-+    MIPSCPUClass *mcc = MIPS_CPU_CLASS(mc);
-+
-+    /*
-+     * Chipset returns 0 in invalid reads and do not raise data exceptions.
-+     * However, we can't simply add a global memory region to catch
-+     * everything, as this would make all accesses including instruction
-+     * accesses be ignored and not raise exceptions.
-+     *
-+     * NOTE: this behaviour of raising exceptions for bad instruction
-+     * fetches but not bad data accesses was added in commit 54e755588cf1e9
-+     * to restore behaviour broken by c658b94f6e8c206, but it is not clear
-+     * whether the real hardware behaves this way. It is possible that
-+     * real hardware ignores bad instruction fetches as well -- if so then
-+     * we could replace this hijacking of CPU methods with a simple global
-+     * memory region that catches all memory accesses, as we do on Malta.
-+     */
-+    mcc->no_data_aborts = true;
-+}
-+
- static void mips_magnum_class_init(ObjectClass *oc, void *data)
+-    ppce500_init(machine);
+-}
+-
+ static void e500plat_machine_device_plug_cb(HotplugHandler *hotplug_dev,
+                                             DeviceState *dev, Error **errp)
  {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -423,6 +426,7 @@ static void mips_magnum_class_init(ObjectClass *oc, void *data)
-     mc->block_default_type = IF_SCSI;
-     mc->default_cpu_type = MIPS_CPU_TYPE_NAME("R4000");
-     mc->default_ram_id = "mips_jazz.ram";
-+    machine_class_ignore_data_abort(mc);
- }
+@@ -81,7 +69,6 @@ static void e500plat_machine_class_init(ObjectClass *oc, void *data)
+     pmc->pci_first_slot = 0x1;
+     pmc->pci_nr_slots = PCI_SLOT_MAX - 1;
+     pmc->fixup_devtree = e500plat_fixup_devtree;
+-    pmc->mpic_version = OPENPIC_MODEL_FSL_MPIC_42;
+     pmc->has_mpc8xxx_gpio = true;
+     pmc->has_esdhc = true;
+     pmc->platform_bus_base = 0xf00000000ULL;
+@@ -94,8 +81,18 @@ static void e500plat_machine_class_init(ObjectClass *oc, void *data)
+     pmc->pci_mmio_bus_base = 0xE0000000ULL;
+     pmc->spin_base = 0xFEF000000ULL;
  
- static const TypeInfo mips_magnum_type = {
-@@ -440,6 +444,7 @@ static void mips_pica61_class_init(ObjectClass *oc, void *data)
-     mc->block_default_type = IF_SCSI;
-     mc->default_cpu_type = MIPS_CPU_TYPE_NAME("R4000");
-     mc->default_ram_id = "mips_jazz.ram";
-+    machine_class_ignore_data_abort(mc);
- }
- 
- static const TypeInfo mips_pica61_type = {
++    if (kvm_enabled() && !kvmppc_has_cap_epr()) {
++        /*
++         * Older KVM versions don't support EPR which breaks guests when
++         * we announce MPIC variants that support EPR. Revert to an older
++         * one for those.
++         */
++        pmc->mpic_version = OPENPIC_MODEL_FSL_MPIC_20;
++    } else {
++        pmc->mpic_version = OPENPIC_MODEL_FSL_MPIC_42;
++    }
++
+     mc->desc = "generic paravirt e500 platform";
+-    mc->init = e500plat_init;
+     mc->max_cpus = 32;
+     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("e500v2_v30");
+     mc->default_ram_id = "mpc8544ds.ram";
 -- 
 2.38.1
 
