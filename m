@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA5770DF7B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2BA716FB6
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 23:29:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1T9C-0000Ki-QT; Tue, 23 May 2023 10:37:58 -0400
+	id 1q46sv-0004S5-TM; Tue, 30 May 2023 17:28:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q1T9A-0000KN-Ca; Tue, 23 May 2023 10:37:56 -0400
-Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q1T97-0006aI-1C; Tue, 23 May 2023 10:37:55 -0400
-Received: from [192.168.0.120] (unknown [61.165.37.98])
- by APP-01 (Coremail) with SMTP id qwCowAA3PZmxz2xkf8gCBA--.53625S2;
- Tue, 23 May 2023 22:37:38 +0800 (CST)
-Message-ID: <5d3558a0-8b7f-8b84-a4e0-a6f4404a56b6@iscas.ac.cn>
-Date: Tue, 23 May 2023 22:37:37 +0800
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1q45f1-0005Ku-Lg
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 16:09:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1q45en-0008Qv-Jt
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 16:09:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685477364;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zvlMIxRSHy+ZBHSg2xmRNgHncexJlOV1pEUIH2vuNMA=;
+ b=KQpnN8XW6l+EA1o/nUT7ll7RN/uhWu73XQxMq8DjDLuprPCWJaQLq4LRj9jTNKIErZySF3
+ fJETuY4+81xU7FWNzm5brF6Eqdpi4anY/CL4ybMtlotmZZxvmQ43CEy/j+p9L3fB7pzanb
+ 8jYJAEFE/1rLp7WLMuNcST11EsXfMwU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-576-01xmSpBDPbOqIDvolO_8-w-1; Tue, 30 May 2023 16:08:13 -0400
+X-MC-Unique: 01xmSpBDPbOqIDvolO_8-w-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-94a34e35f57so422015566b.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:08:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685477290; x=1688069290;
+ h=mime-version:user-agent:message-id:references:date:in-reply-to
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zvlMIxRSHy+ZBHSg2xmRNgHncexJlOV1pEUIH2vuNMA=;
+ b=VPjnqF5UowDZadEPOgY2JjjVNaxIPVJWr9pSM+3zE4v/zimD2HDK/3/sdt8CXUX8Xc
+ I7BKXOpTRrDh05h2W8r8TkWU5I4gGFpkK9164AqqUiCJWDJ8n8vTgwdJOZa3X0HzAtRT
+ 1I4zPeyZduWWjaKK/zw/EJ8xvsPY6xdt7JOpRZqMNdlNPytG2UU3yyf5PYNAK8nx2Qq6
+ tY8h7rKfd0jhpMmukfuyoZcBHKUvmOswJShGxJ3nWyBn5G9WgdSRsbxcQFvGgJcSTceB
+ aTBpT+KyEQm1MeHeU7nocXcS+MqKT1/7DvOrjOe+vf99QcfnJKDueW3phfQcqCAHVLii
+ WWKQ==
+X-Gm-Message-State: AC+VfDxdI0oftuliFch7yfPcL52iDdOaBKsVHLCJq4pOD+vrm48AocDB
+ ELsSietB/+qPWc8qONQd9MdYcbVOHEDj6yTpQnAI+XvmbGH7wfuZJ/SYom6q488ycs3Bf/O9KHe
+ qW8ffclee5uE3ypk=
+X-Received: by 2002:a17:907:7295:b0:961:a67:296 with SMTP id
+ dt21-20020a170907729500b009610a670296mr3107951ejc.11.1685477290249; 
+ Tue, 30 May 2023 13:08:10 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Qvpr7mwX7B0KnOB7pTG+adZJZjSnAuOs36b61MKGx5f9uxYrFK9yipouhkY4ctG+pB5iDfQ==
+X-Received: by 2002:a17:907:7295:b0:961:a67:296 with SMTP id
+ dt21-20020a170907729500b009610a670296mr3107942ejc.11.1685477290041; 
+ Tue, 30 May 2023 13:08:10 -0700 (PDT)
+Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
+ by smtp.gmail.com with ESMTPSA id
+ b12-20020a170906150c00b0097381fe7aaasm7763567ejd.180.2023.05.30.13.08.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 13:08:09 -0700 (PDT)
+From: Milan Zamazal <mzamazal@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com,
+    stefanha@redhat.com,
+    alex.bennee@linaro.org
+Subject: [PATCH 4/4] tests/qtest: enable tests for virtio-scmi
+In-Reply-To: <cover.1685476786.git.mzamazal@redhat.com>
+Date: Tue, 23 May 2023 16:38:58 +0200
+References: <cover.1685476786.git.mzamazal@redhat.com>
+Message-Id: <e20e0b6dae56d520619cbf2883aa4c3004fa06b7.1685476786.git.mzamazal@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Cc: liweiwei@iscas.ac.cn, frank.chang@sifive.com, alistair.francis@wdc.com,
- apatel@ventanamicro.com, palmer@rivosinc.com, dbarboza@ventanamicro.com,
- bin.meng@windriver.com, zhiwei_liu@linux.alibaba.com
-Subject: Re: [PATCH 1/2] target/riscv: Add a function to refresh the dynamic
- CSRs xml.
-To: Tommy Wu <tommy.wu@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-References: <20230523114454.717708-1-tommy.wu@sifive.com>
- <20230523114454.717708-2-tommy.wu@sifive.com>
-Content-Language: en-US
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-In-Reply-To: <20230523114454.717708-2-tommy.wu@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowAA3PZmxz2xkf8gCBA--.53625S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zr1UAF43JrWUXFy8Gr1fXrb_yoW8Kw47pw
- s5C398Cr1DJr97Ja4fJF4DXF15Aw47GF4Y9397ZwnrJr45X3y5tr1qk3W3Arn8Ga429r1j
- 9F1Y9r429r48Ar7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
- 6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
- Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
- I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
- 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
- c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVW5XwCF04k20xvY0x0EwIxGrw
- CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
- 14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
- IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
- x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI
- 0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUO4E_DUUUU
-X-Originating-IP: [61.165.37.98]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ DKIMWL_WL_HIGH=-0.167, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 30 May 2023 17:28:00 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,78 +100,332 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We don't have a virtio-scmi implementation in QEMU and only support a
+vhost-user backend.  This is very similar to virtio-gpio and we add the same
+set of tests, just passing some vhost-user messages over the control socket.
 
-On 2023/5/23 19:44, Tommy Wu wrote:
-> When we change the cpu extension state after the cpu is
-> realized, we cannot print the value of some CSRs in the remote
-> gdb debugger. The root cause is that the dynamic CSR xml is
-> generated when the cpu is realized.
->
-> This patch add a function to refresh the dynamic CSR xml after
-> the cpu is realized.
->
-> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-> Reviewed-by: Frank Chang <frank.chang@sifive.com>
-> ---
->   target/riscv/cpu.h     |  2 ++
->   target/riscv/gdbstub.c | 12 ++++++++++++
->   2 files changed, 14 insertions(+)
->
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index de7e43126a..dc8e592275 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -494,6 +494,7 @@ struct ArchCPU {
->       CPUNegativeOffsetState neg;
->       CPURISCVState env;
->   
-> +    int dyn_csr_base_reg;
+Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
+---
+ MAINTAINERS                      |   1 +
+ tests/qtest/libqos/meson.build   |   1 +
+ tests/qtest/libqos/virtio-scmi.c | 174 +++++++++++++++++++++++++++++++
+ tests/qtest/libqos/virtio-scmi.h |  34 ++++++
+ tests/qtest/vhost-user-test.c    |  44 ++++++++
+ 5 files changed, 254 insertions(+)
+ create mode 100644 tests/qtest/libqos/virtio-scmi.c
+ create mode 100644 tests/qtest/libqos/virtio-scmi.h
 
-dyn_csr_base_reg  seems have no additional effect on the function.
-
-And It remains unmodified in following riscv_refresh_dynamic_csr_xml().
-
-Regards,
-
-Weiwei Li
-
->       char *dyn_csr_xml;
->       char *dyn_vreg_xml;
->   
-> @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int csrno, riscv_csr_operations *ops);
->   void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);
->   
->   void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
-> +void riscv_refresh_dynamic_csr_xml(CPUState *cs);
->   
->   uint8_t satp_mode_max_from_map(uint32_t map);
->   const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
-> diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-> index 524bede865..9e97ee2c35 100644
-> --- a/target/riscv/gdbstub.c
-> +++ b/target/riscv/gdbstub.c
-> @@ -230,6 +230,8 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
->           bitsize = 64;
->       }
->   
-> +    cpu->dyn_csr_base_reg = base_reg;
-> +
->       g_string_printf(s, "<?xml version=\"1.0\"?>");
->       g_string_append_printf(s, "<!DOCTYPE feature SYSTEM \"gdb-target.dtd\">");
->       g_string_append_printf(s, "<feature name=\"org.gnu.gdb.riscv.csr\">");
-> @@ -349,3 +351,13 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
->                                    "riscv-csr.xml", 0);
->       }
->   }
-> +
-> +void riscv_refresh_dynamic_csr_xml(CPUState *cs)
-> +{
-> +    RISCVCPU *cpu = RISCV_CPU(cs);
-> +    if (!cpu->dyn_csr_xml) {
-> +        g_assert_not_reached();
-> +    }
-> +    g_free(cpu->dyn_csr_xml);
-> +    riscv_gen_dynamic_csr_xml(cs, cpu->dyn_csr_base_reg);
-> +}
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1ce2f3dabe..26a5bad736 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2207,6 +2207,7 @@ R: mzamazal@redhat.com
+ S: Supported
+ F: hw/virtio/vhost-user-scmi*
+ F: include/hw/virtio/vhost-user-scmi.h
++F: tests/qtest/libqos/virtio-scmi.*
+ 
+ virtio-crypto
+ M: Gonglei <arei.gonglei@huawei.com>
+diff --git a/tests/qtest/libqos/meson.build b/tests/qtest/libqos/meson.build
+index cc209a8de5..90aae42a22 100644
+--- a/tests/qtest/libqos/meson.build
++++ b/tests/qtest/libqos/meson.build
+@@ -46,6 +46,7 @@ libqos_srcs = files(
+         'virtio-serial.c',
+         'virtio-iommu.c',
+         'virtio-gpio.c',
++        'virtio-scmi.c',
+         'generic-pcihost.c',
+ 
+         # qgraph machines:
+diff --git a/tests/qtest/libqos/virtio-scmi.c b/tests/qtest/libqos/virtio-scmi.c
+new file mode 100644
+index 0000000000..ce8f4d5c06
+--- /dev/null
++++ b/tests/qtest/libqos/virtio-scmi.c
+@@ -0,0 +1,174 @@
++/*
++ * virtio-scmi nodes for testing
++ *
++ * SPDX-FileCopyrightText: Linaro Ltd
++ * SPDX-FileCopyrightText: Red Hat, Inc.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Based on virtio-gpio.c, doing basically the same thing.
++ */
++
++#include "qemu/osdep.h"
++#include "standard-headers/linux/virtio_config.h"
++#include "../libqtest.h"
++#include "qemu/module.h"
++#include "qgraph.h"
++#include "virtio-scmi.h"
++
++static QGuestAllocator *alloc;
++
++static void virtio_scmi_cleanup(QVhostUserSCMI *scmi)
++{
++    QVirtioDevice *vdev = scmi->vdev;
++    int i;
++
++    for (i = 0; i < 2; i++) {
++        qvirtqueue_cleanup(vdev->bus, scmi->queues[i], alloc);
++    }
++    g_free(scmi->queues);
++}
++
++/*
++ * This handles the VirtIO setup from the point of view of the driver
++ * frontend and therefore doesn't present any vhost specific features
++ * and in fact masks of the re-used bit.
++ */
++static void virtio_scmi_setup(QVhostUserSCMI *scmi)
++{
++    QVirtioDevice *vdev = scmi->vdev;
++    uint64_t features;
++    int i;
++
++    features = qvirtio_get_features(vdev);
++    features &= ~QVIRTIO_F_BAD_FEATURE;
++    qvirtio_set_features(vdev, features);
++
++    scmi->queues = g_new(QVirtQueue *, 2);
++    for (i = 0; i < 2; i++) {
++        scmi->queues[i] = qvirtqueue_setup(vdev, alloc, i);
++    }
++    qvirtio_set_driver_ok(vdev);
++}
++
++static void *qvirtio_scmi_get_driver(QVhostUserSCMI *v_scmi,
++                                     const char *interface)
++{
++    if (!g_strcmp0(interface, "vhost-user-scmi")) {
++        return v_scmi;
++    }
++    if (!g_strcmp0(interface, "virtio")) {
++        return v_scmi->vdev;
++    }
++
++    g_assert_not_reached();
++}
++
++static void *qvirtio_scmi_device_get_driver(void *object,
++                                            const char *interface)
++{
++    QVhostUserSCMIDevice *v_scmi = object;
++    return qvirtio_scmi_get_driver(&v_scmi->scmi, interface);
++}
++
++/* virtio-scmi (mmio) */
++static void qvirtio_scmi_device_destructor(QOSGraphObject *obj)
++{
++    QVhostUserSCMIDevice *scmi_dev = (QVhostUserSCMIDevice *) obj;
++    virtio_scmi_cleanup(&scmi_dev->scmi);
++}
++
++static void qvirtio_scmi_device_start_hw(QOSGraphObject *obj)
++{
++    QVhostUserSCMIDevice *scmi_dev = (QVhostUserSCMIDevice *) obj;
++    virtio_scmi_setup(&scmi_dev->scmi);
++}
++
++static void *virtio_scmi_device_create(void *virtio_dev,
++                                       QGuestAllocator *t_alloc,
++                                       void *addr)
++{
++    QVhostUserSCMIDevice *virtio_device = g_new0(QVhostUserSCMIDevice, 1);
++    QVhostUserSCMI *interface = &virtio_device->scmi;
++
++    interface->vdev = virtio_dev;
++    alloc = t_alloc;
++
++    virtio_device->obj.get_driver = qvirtio_scmi_device_get_driver;
++    virtio_device->obj.start_hw = qvirtio_scmi_device_start_hw;
++    virtio_device->obj.destructor = qvirtio_scmi_device_destructor;
++
++    return &virtio_device->obj;
++}
++
++/* virtio-scmi-pci */
++static void qvirtio_scmi_pci_destructor(QOSGraphObject *obj)
++{
++    QVhostUserSCMIPCI *scmi_pci = (QVhostUserSCMIPCI *) obj;
++    QOSGraphObject *pci_vobj =  &scmi_pci->pci_vdev.obj;
++
++    virtio_scmi_cleanup(&scmi_pci->scmi);
++    qvirtio_pci_destructor(pci_vobj);
++}
++
++static void qvirtio_scmi_pci_start_hw(QOSGraphObject *obj)
++{
++    QVhostUserSCMIPCI *scmi_pci = (QVhostUserSCMIPCI *) obj;
++    QOSGraphObject *pci_vobj =  &scmi_pci->pci_vdev.obj;
++
++    qvirtio_pci_start_hw(pci_vobj);
++    virtio_scmi_setup(&scmi_pci->scmi);
++}
++
++static void *qvirtio_scmi_pci_get_driver(void *object, const char *interface)
++{
++    QVhostUserSCMIPCI *v_scmi = object;
++
++    if (!g_strcmp0(interface, "pci-device")) {
++        return v_scmi->pci_vdev.pdev;
++    }
++    return qvirtio_scmi_get_driver(&v_scmi->scmi, interface);
++}
++
++static void *virtio_scmi_pci_create(void *pci_bus, QGuestAllocator *t_alloc,
++                                    void *addr)
++{
++    QVhostUserSCMIPCI *virtio_spci = g_new0(QVhostUserSCMIPCI, 1);
++    QVhostUserSCMI *interface = &virtio_spci->scmi;
++    QOSGraphObject *obj = &virtio_spci->pci_vdev.obj;
++
++    virtio_pci_init(&virtio_spci->pci_vdev, pci_bus, addr);
++    interface->vdev = &virtio_spci->pci_vdev.vdev;
++    alloc = t_alloc;
++
++    obj->get_driver = qvirtio_scmi_pci_get_driver;
++    obj->start_hw = qvirtio_scmi_pci_start_hw;
++    obj->destructor = qvirtio_scmi_pci_destructor;
++
++    return obj;
++}
++
++static void virtio_scmi_register_nodes(void)
++{
++    QPCIAddress addr = {
++        .devfn = QPCI_DEVFN(4, 0),
++    };
++
++    QOSGraphEdgeOptions edge_opts = { };
++
++    /* vhost-user-scmi-device */
++    edge_opts.extra_device_opts = "id=scmi,chardev=chr-vhost-user-test "
++        "-global virtio-mmio.force-legacy=false";
++    qos_node_create_driver("vhost-user-scmi-device",
++                            virtio_scmi_device_create);
++    qos_node_consumes("vhost-user-scmi-device", "virtio-bus", &edge_opts);
++    qos_node_produces("vhost-user-scmi-device", "vhost-user-scmi");
++
++    /* virtio-scmi-pci */
++    edge_opts.extra_device_opts = "id=scmi,addr=04.0,chardev=chr-vhost-user-test";
++    add_qpci_address(&edge_opts, &addr);
++    qos_node_create_driver("vhost-user-scmi-pci", virtio_scmi_pci_create);
++    qos_node_consumes("vhost-user-scmi-pci", "pci-bus", &edge_opts);
++    qos_node_produces("vhost-user-scmi-pci", "vhost-user-scmi");
++}
++
++libqos_init(virtio_scmi_register_nodes);
+diff --git a/tests/qtest/libqos/virtio-scmi.h b/tests/qtest/libqos/virtio-scmi.h
+new file mode 100644
+index 0000000000..cb5670da6e
+--- /dev/null
++++ b/tests/qtest/libqos/virtio-scmi.h
+@@ -0,0 +1,34 @@
++/*
++ * virtio-scmi structures
++ *
++ * SPDX-FileCopyrightText: Red Hat, Inc.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef TESTS_LIBQOS_VIRTIO_SCMI_H
++#define TESTS_LIBQOS_VIRTIO_SCMI_H
++
++#include "qgraph.h"
++#include "virtio.h"
++#include "virtio-pci.h"
++
++typedef struct QVhostUserSCMI QVhostUserSCMI;
++typedef struct QVhostUserSCMIPCI QVhostUserSCMIPCI;
++typedef struct QVhostUserSCMIDevice QVhostUserSCMIDevice;
++
++struct QVhostUserSCMI {
++    QVirtioDevice *vdev;
++    QVirtQueue **queues;
++};
++
++struct QVhostUserSCMIPCI {
++    QVirtioPCIDevice pci_vdev;
++    QVhostUserSCMI scmi;
++};
++
++struct QVhostUserSCMIDevice {
++    QOSGraphObject obj;
++    QVhostUserSCMI scmi;
++};
++
++#endif
+diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
+index 8ab10732f8..2377780fb0 100644
+--- a/tests/qtest/vhost-user-test.c
++++ b/tests/qtest/vhost-user-test.c
+@@ -33,6 +33,7 @@
+ #include "standard-headers/linux/virtio_ids.h"
+ #include "standard-headers/linux/virtio_net.h"
+ #include "standard-headers/linux/virtio_gpio.h"
++#include "standard-headers/linux/virtio_scmi.h"
+ 
+ #ifdef CONFIG_LINUX
+ #include <sys/vfs.h>
+@@ -145,6 +146,7 @@ enum {
+ enum {
+     VHOST_USER_NET,
+     VHOST_USER_GPIO,
++    VHOST_USER_SCMI,
+ };
+ 
+ typedef struct TestServer {
+@@ -1157,3 +1159,45 @@ static void register_vhost_gpio_test(void)
+                  "vhost-user-gpio", test_read_guest_mem, &opts);
+ }
+ libqos_init(register_vhost_gpio_test);
++
++static uint64_t vu_scmi_get_features(TestServer *s)
++{
++    return 0x1ULL << VIRTIO_F_VERSION_1 |
++        0x1ULL << VIRTIO_SCMI_F_P2A_CHANNELS |
++        0x1ULL << VHOST_USER_F_PROTOCOL_FEATURES;
++}
++
++static void vu_scmi_get_protocol_features(TestServer *s, CharBackend *chr,
++                                          VhostUserMsg *msg)
++{
++    msg->flags |= VHOST_USER_REPLY_MASK;
++    msg->size = sizeof(m.payload.u64);
++    msg->payload.u64 = 1ULL << VHOST_USER_PROTOCOL_F_MQ;
++
++    qemu_chr_fe_write_all(chr, (uint8_t *)msg, VHOST_USER_HDR_SIZE + msg->size);
++}
++
++static struct vhost_user_ops g_vu_scmi_ops = {
++    .type = VHOST_USER_SCMI,
++
++    .append_opts = append_vhost_gpio_opts,
++
++    .get_features = vu_scmi_get_features,
++    .set_features = vu_net_set_features,
++    .get_protocol_features = vu_scmi_get_protocol_features,
++};
++
++static void register_vhost_scmi_test(void)
++{
++    QOSGraphTestOptions opts = {
++        .before = vhost_user_test_setup,
++        .subprocess = true,
++        .arg = &g_vu_scmi_ops,
++    };
++
++    qemu_add_opts(&qemu_chardev_opts);
++
++    qos_add_test("scmi/read-guest-mem/memfile",
++                 "vhost-user-scmi", test_read_guest_mem, &opts);
++}
++libqos_init(register_vhost_scmi_test);
+-- 
+2.38.5
 
 
