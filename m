@@ -2,166 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8940270DE67
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF0670DEE9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:14:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SVb-00035Z-UH; Tue, 23 May 2023 09:57:03 -0400
+	id 1q1SVv-0003nv-00; Tue, 23 May 2023 09:57:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
- id 1q1SVT-00032C-Hl
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:56:58 -0400
-Received: from mga11.intel.com ([192.55.52.93])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q1SVr-0003j3-4E
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:57:19 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ira.weiny@intel.com>)
- id 1q1SVN-000486-LM
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:56:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1684850209; x=1716386209;
- h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=buhuuU9cJaI5/yTeD0Wr4NiLyP/pce16hjrTCWasjBs=;
- b=Ffo58YwJCuNt0EqMy/49+La2JN/kQjK+zZUbnq69K2sGnKm9n5xCZHRc
- iLtDyE5Y9sOXHNXEKIhcnD3ndol6qfFfblkoJlUBNpLZowhHGSdtQ2Y4e
- wSzbYlkuve87pfb84pTzcuB7QJUOv+wEE/vX1LJx6lt+UhkYwBeXoSMpA
- V8ySw6TxeRVhjjqhYwp5D+/cma/qcTDO7pgjk7jdoDBu/1XoTY1XJI4a3
- J4YKMtJRsHwrdKWsleXrB0SwXwdJ9sY34ZNu8Dwi/wEtkO3p8KvY3l65y
- /RowRPfjMJDt2cQy7hJeS4zQZ8oGpcnufZoxNsTDWYftOs1AVf34OHdV5 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="350751600"
-X-IronPort-AV: E=Sophos;i="6.00,186,1681196400"; d="scan'208";a="350751600"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2023 06:56:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="793730252"
-X-IronPort-AV: E=Sophos;i="6.00,186,1681196400"; d="scan'208";a="793730252"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by FMSMGA003.fm.intel.com with ESMTP; 23 May 2023 06:56:36 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 23 May 2023 06:56:36 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 23 May 2023 06:56:36 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Tue, 23 May 2023 06:56:36 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.104)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Tue, 23 May 2023 06:56:35 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Njj58/WsRuZeAUyehuQaNj1/CepRXxO7ro+w+a+yR8hzeEn9SYCGZ8xtUilLBpDY0Zmme+LvVrotHaA+ylcXI3fE3CRWR7NI/suDCGUxYqsPOYSK9dqkZmo03RvRR0GGSoAfrRb/celD2ta2m+oGuky3DlKHf7C2emznOf6xqQWvbruTf3QEmPLNX7wf0mlBzZpZu22ZSDL87Ii1p6mYVx5jWQgO8bGPkuFr+KplgruLFkM4KKKkr9Q8HtLWAkPzc9NNrx+kXlBy9GqO8RORXtOahSEBqYzCrFjHXgNmEd7cK/g2G/31Qbd3DsGVioZ2fJ2wvIKPZ9vuEw6UceZYZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KuWrJ5qOBv1B7lCdW8IvdpzIFkCR7SC1o22cCzhAXBE=;
- b=KT5kdGf5WyuPEAMcrmWR7tRkbAwZUqhlOQ0cv8N6P9vlPpscaH6obK9hJf/9UrPLC0brudhHsSUdey/7ih675DR9l4Bp3RyXUUupMzAuIE6Zp0LVEiTG5aU3GpJ2kLeBUsmJif9ICWnFDaWSmqtO/mVhBSwKaOeq3xfEL+r6I0+phle7qwVkIoid3AqghqTcqX/RxAH6vhu5o4P6OsiJr9oscmyglAJTkmNQovPsLXe9yVBYJfIE2qm9NIOPMB19YuPrRjF2vhuvjb1zluVvno5HfUd9WfcZKq6AunO8sJREqQo675PzpP2YRMYUioSmQtbKERat8NVca+EaTGHWSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
- by IA0PR11MB8417.namprd11.prod.outlook.com (2603:10b6:208:48d::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Tue, 23 May
- 2023 13:56:33 +0000
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::4fe2:e207:596b:d145]) by SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::4fe2:e207:596b:d145%5]) with mapi id 15.20.6411.028; Tue, 23 May 2023
- 13:56:33 +0000
-Date: Tue, 23 May 2023 06:56:25 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Philippe
- =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira
- Weiny <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, "Dave
- Jiang" <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, Daniel
- P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
- Huth" <thuth@redhat.com>
-Subject: Re: [PATCH v6 6/7] hw/cxl/events: Add injection of DRAM events
-Message-ID: <646cc60990976_16581529470@iweiny-mobl.notmuch>
-References: <20230519143043.30191-1-Jonathan.Cameron@huawei.com>
- <20230519143043.30191-7-Jonathan.Cameron@huawei.com>
- <6dc139cc-ec19-196f-017a-cb0a415af3e5@linaro.org>
- <20230519164533.0000436d@Huawei.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230519164533.0000436d@Huawei.com>
-X-ClientProxiedBy: BYAPR21CA0015.namprd21.prod.outlook.com
- (2603:10b6:a03:114::25) To SA1PR11MB6733.namprd11.prod.outlook.com
- (2603:10b6:806:25c::17)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q1SVb-0004CZ-Cc
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:57:18 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 49C0D746361;
+ Tue, 23 May 2023 15:57:01 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id EA27674635C; Tue, 23 May 2023 15:57:00 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E8A7E74632B;
+ Tue, 23 May 2023 15:57:00 +0200 (CEST)
+Date: Tue, 23 May 2023 15:57:00 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
+cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Aurelien Jarno <aurelien@aurel32.net>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [RFC PATCH] softfloat: use QEMU_FLATTEN to avoid mistaken isra
+ inlining
+In-Reply-To: <20230523131107.3680641-1-alex.bennee@linaro.org>
+Message-ID: <8920aa58-505c-92df-cff0-4ee232ca6f8b@eik.bme.hu>
+References: <20230523131107.3680641-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|IA0PR11MB8417:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23985e7e-a4cf-44aa-8d41-08db5b95842b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: HcSeI+FhG01fPZD30GC3w4qKVkmT/IHEjSq2bJTwb8KW7q1fOGX2V0Z3EgcU54VX2pvgXZxf1IHjL9gzArcDMUaJyR9UPMGxXcnyWzkN1xwG/HMt/wy6uVSHDt+SYmnmkMYnNkl3TSguJ3DECzUKnas4IRBHpxhPJVmWrCU0MerhKCTcEaZVQJjLMXiAi+ax/YSN4++g2mO4TrY72vzKuPagT9DwEop8ILIOcdNaSRVacLwFZ/B8azurNksblW2LGIGPMvWhX2h8oOwej9/AAUhYiTdGIYcGAHvzai9vLx9CK3UwDS54BN4qTXqH6EzHdyF3Hl4Xx0MnAGt30SXd4Z1bd0EE0Yyvdt1F2w3C9e2iqrCF7xAoFBV72YcHIv+6E8PIvIwNAeh75MLU/htQl1b7ma9K69TQ0gM/IlyxJOOeQ+oSBdh80xPV1tmOeO/Zi0xHoXFfOSGUakRHFKmeUwDqORgc8JsBB8RpzGb9WOdtRyGGCwLJLaiCQRtOYYvL+lEsPsxrrxsqf/2iFOy0WcSARyLOhzO7sBH0cLKiCumXshmtwOnM9OlMbOe2El50
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA1PR11MB6733.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(396003)(39860400002)(346002)(366004)(136003)(451199021)(26005)(186003)(53546011)(6512007)(6506007)(9686003)(82960400001)(7416002)(38100700002)(44832011)(83380400001)(2906002)(6486002)(316002)(54906003)(6666004)(110136005)(41300700001)(478600001)(66946007)(66556008)(66476007)(4326008)(86362001)(8936002)(8676002)(5660300002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?Y0KzfPOLnjNTSuHn2eD9Q62/ZGj99N1BtT3TqCReTRGoBYWRlkZtKlNiag?=
- =?iso-8859-1?Q?taqxdY43WMb9lS2NZr6lqqJJxUkL+1kgmkRi6bKAB35VoIn4106v9Tjn5H?=
- =?iso-8859-1?Q?EZ6hiYDuGcNt3Ncly+V7CqwY9I2IMrM1m3UZXR4gG4YhB0cSZnEhecJoBr?=
- =?iso-8859-1?Q?2c4cf+65eJpq77DGb1WyGS/a1xt6J8Jf2TMeRq33e1a3iJxxWzCWoyuUoW?=
- =?iso-8859-1?Q?uFAm7dWhQ3I/48K0tvfDEkfgv0u6GSWp8Krzay0aalQlykFYmUkSjYlyht?=
- =?iso-8859-1?Q?bBHyN00LyXd6E4dpN26RPmmSNbwEVb8cyD3IfcvjPMUAmeMvG7PEoxcm+e?=
- =?iso-8859-1?Q?VZfBCYFt+QUGeRxwFE6lbbsnt5iKgwMXeYttFwolmKx6xlyvrMXHXHTlqz?=
- =?iso-8859-1?Q?zfS/N9GSsYEMYWW5kASOdS62fordTjAYpITs9yIjZN3xvjzLzYHYqJjPJ/?=
- =?iso-8859-1?Q?oX0Zkzma1HdnCyFQpZSiK6ZmF9/v2A+KyXZzcuxgqyIfI8ZQK20NUkl3kV?=
- =?iso-8859-1?Q?pK//+qAQ7j6nDUmVEjnpFWNUbj4YHXCb7Tj3ZgW/lHgD8aitTZn0+oGU/A?=
- =?iso-8859-1?Q?D+mxPlAbF3OohRVTJ6TI/c9kxa1bLeLCxbQRVM+OsBca5+PH7KP3Dv8k/D?=
- =?iso-8859-1?Q?j8DbyKvWADI7TPNiDuf20SGgU+ZakazsKmDknWz75WxTXthyqkfnM2tL9Y?=
- =?iso-8859-1?Q?TooWtKDAeKIG4G3PdcHUVex3dJWYYFqI7blOkM+EPD/Kl9JPxC/9z5tMxS?=
- =?iso-8859-1?Q?iBU1tR1qSMVnUmwkS/xdPzLhi5A4FPsaxspUIA/UgOnA9DRhzE+IcKBQRg?=
- =?iso-8859-1?Q?+3dyNoz8UwZsVmTV8sJfk0K0KJPon6pAunHbzr0O/jK/CnMzsTP9WDzoCC?=
- =?iso-8859-1?Q?IiX3irzZnrJeU4HyKVNaGjD2ty9lBC2ylDUSfRJleUxHLOtUvWJ8iddowI?=
- =?iso-8859-1?Q?FLclYl3gW02PFiHNenybXwKglSlO3XFto8v4xjwa+E+FbH7JelgV8sNt8I?=
- =?iso-8859-1?Q?JmmHIAzyjMAlG2kz65VK5I++CGXPSrzEYOGhxdtkUR8X48g70GKElodR8U?=
- =?iso-8859-1?Q?wLNIWIGbCtHPGxGa9d8ggzwaBVOPjB/ScAuR2Mj9xYvT8IWZyVfPVjcB/T?=
- =?iso-8859-1?Q?sP3XSw10ZUF2YA+Ec3NmEf1TqxI8l9DiI3dPs+N5iFpw4innRFQaxX54Ti?=
- =?iso-8859-1?Q?M/yRgJjMd2UYWt+k8298CdJwR5Bb8etSXNR9kDI6anzHl4ZcZDUMFTwDz4?=
- =?iso-8859-1?Q?tMFK/AODWDM7u9MJNlkCkHrGqohLh6OR5lxuUdxDQD4FAT0QLP1sRx9Pr5?=
- =?iso-8859-1?Q?MmlkuYZf1SFYd7A1zdULxvcND44VXOz3FZemGAXaGgS6MhOkRNsbzJfF0c?=
- =?iso-8859-1?Q?YWLFaAXgCNktHw7fr5YEMlq034EpCJ/loj9/fG/unAMns5mn7GQzUgy47z?=
- =?iso-8859-1?Q?D7f0GUglVylpeumxEEtOc58Z65nC0sAK1ObX101NXX3hYXWjuiROBuzORG?=
- =?iso-8859-1?Q?2lDYOdaoihE8c63Qft3V9p0V3E3g9Z/5sR2IK51GXdgbGPOTU96b0HIUu4?=
- =?iso-8859-1?Q?vRoLCX3n5kCOIkglVZFYfsZNQVo4ehQXUU1nGX746tCy/cJPhE0Syy5Gxe?=
- =?iso-8859-1?Q?nQoE7PLB4tQltVYBbHJj0lG1eWqxAIwNeA?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23985e7e-a4cf-44aa-8d41-08db5b95842b
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2023 13:56:33.2823 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o2uHFoHzKGtbIThxjle5unB4jrCsF4jZyBcF0DutTYF+8Ho51X/Vb5ihUbD1LrcQZJmlRRjhFMzAMhqq1zAzdg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8417
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.93; envelope-from=ira.weiny@intel.com;
- helo=mga11.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ BOUNDARY="3866299591-524406227-1684850004=:38519"
+Content-ID: <12c5c727-1dce-30b1-3a8e-735e6f13417c@eik.bme.hu>
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -177,99 +64,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jonathan Cameron wrote:
-> On Fri, 19 May 2023 17:34:20 +0200
-> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
-> 
-> > Hi Jonathan,
-> > 
-> > On 19/5/23 16:30, Jonathan Cameron wrote:
-> > > Defined in CXL r3.0 8.2.9.2.1.2 DRAM Event Record, this event
-> > > provides information related to DRAM devices.
-> > > 
-> > > Example injection command in QMP:
-> > > 
-> > > { "execute": "cxl-inject-dram-event",
-> > >      "arguments": {
-> > >          "path": "/machine/peripheral/cxl-mem0",
-> > >          "log": "informational",
-> > >          "flags": 1,
-> > >          "physaddr": 1000,
-> > >          "descriptor": 3,
-> > >          "type": 3,
-> > >          "transaction-type": 192,
-> > >          "channel": 3,
-> > >          "rank": 17,
-> > >          "nibble-mask": 37421234,
-> > >          "bank-group": 7,
-> > >          "bank": 11,
-> > >          "row": 2,
-> > >          "column": 77,
-> > >          "correction-mask": [33, 44, 55,66]
-> > >      }}
-> > > 
-> > > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > ---
-> > >   hw/mem/cxl_type3.c          | 116 ++++++++++++++++++++++++++++++++++++
-> > >   hw/mem/cxl_type3_stubs.c    |  13 ++++
-> > >   include/hw/cxl/cxl_events.h |  23 +++++++
-> > >   qapi/cxl.json               |  35 +++++++++++
-> > >   4 files changed, 187 insertions(+)  
-> > 
-> > 
-> > > diff --git a/qapi/cxl.json b/qapi/cxl.json
-> > > index 7e1e6257ce..5e82097e76 100644
-> > > --- a/qapi/cxl.json
-> > > +++ b/qapi/cxl.json
-> > > @@ -55,6 +55,41 @@
-> > >               '*device': 'uint32', '*component-id': 'str'
-> > >               }}
-> > >   
-> > > +##
-> > > +# @cxl-inject-dram-event:
-> > > +#
-> > > +# Inject an event record for a DRAM Event (CXL r3.0 8.2.9.2.1.2)
-> > > +# This event type is reported via one of the event logs specified via
-> > > +# the log parameter.
-> > > +#
-> > > +# @path: CXL type 3 device canonical QOM path
-> > > +# @log: Event Log to add the event to
-> > > +# @flags: header flags
-> > > +# @physaddr: Physical Address  
-> > 
-> > Could this be a clearer description?
-> > 
-> > "Physical Address (relative to @path device)"
-> 
-> Makes sense.
-> 
-> > 
-> > > +# @descriptor: Descriptor
-> > > +# @type: Type
-> > > +# @transaction-type: Transaction Type
-> > > +# @channel: Channel
-> > > +# @rank: Rank
-> > > +# @nibble-mask: Identify one or more nibbles that the error affects  
-> > 
-> > > +# @bank-group: Bank group
-> > > +# @bank: Bank
-> > > +# @row: Row
-> > > +# @column: Column  
-> > 
-> > Why do we need bank/raw/col if we have physaddr?
-> 
-> Yes we need them. We don't know the device geometry / internal interleaving
-> / address hashing applied to smooth out access patterns etc.
-> 
-> I really don't want to put that level of complexity into the command
-> line for a device - so just left it to the test tools to squirt in
-> something valid.
-> 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I agree.  I don't think anyone is trying to emulate their exact memory
-device internals.  However, it does not prevent them from doing so with
-additional device types and/or qemu flags to get that behavior.
+--3866299591-524406227-1684850004=:38519
+Content-Type: text/plain; CHARSET=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-ID: <8d595ebe-b510-58d7-071a-ab1ee6c8c2f9@eik.bme.hu>
 
-Ira
+On Tue, 23 May 2023, Alex Bennée wrote:
+> Balton discovered that asserts for the extract/deposit calls had a
+
+Missing an a in my name and my given name is Zoltan. (First name and last 
+name is in the other way in Hungarian.) Maybe just add a Reported-by 
+instead of here if you want to record it.
+
+> significant impact on a lame benchmark on qemu-ppc. Replicating with:
+>
+>  ./qemu-ppc64 ~/lsrc/tests/lame.git-svn/builds/ppc64/frontend/lame \
+>    -h pts-trondheim-3.wav pts-trondheim-3.mp3
+>
+> showed up the pack/unpack routines not eliding the assert checks as it
+> should have done causing them to prominently figure in the profile:
+>
+>  11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
+>  11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+>   8.26%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
+>   6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+>   5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+>   4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
+>   4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
+>   3.62%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
+>
+> After this patch the same test runs 31 seconds faster with a profile
+> where the generated code dominates more:
+>
+> +   14.12%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619420
+> +   13.30%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000616850
+> +   12.58%    12.19%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+> +   10.62%     0.00%  qemu-ppc64  [unknown]                [.] 0x000000400061bf70
+> +    9.91%     9.73%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
+> +    7.84%     7.82%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+> +    6.47%     5.78%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize.constprop.0
+> +    6.46%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000620130
+> +    6.42%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619400
+> +    6.17%     6.04%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+> +    5.85%     0.00%  qemu-ppc64  [unknown]                [.] 0x00000040006167e0
+> +    5.74%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000b693fcffffd3
+> +    5.45%     4.78%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
+>
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Message-Id: <ec9cfe5a-d5f2-466d-34dc-c35817e7e010@linaro.org>
+> [AJB: Patchified rth's suggestion]
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: BALATON Zoltan <balaton@eik.bme.hu>
+
+Replace Cc: with
+Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+This solves the softfloat related usages, the rest probably are lower 
+overhead, I could not measure any more improvement with removing asserts 
+on top of this patch. I still have these functions high in my profiling 
+result:
+
+children  self    command          symbol
+11.40%    10.86%  qemu-system-ppc  helper_compute_fprf_float64
+11.25%     0.61%  qemu-system-ppc  helper_fmadds
+10.01%     3.23%  qemu-system-ppc  float64r32_round_pack_canonical
+  8.59%     1.80%  qemu-system-ppc  helper_float_check_status
+  8.34%     7.23%  qemu-system-ppc  parts64_muladd
+  8.16%     0.67%  qemu-system-ppc  helper_fmuls
+  8.08%     0.43%  qemu-system-ppc  parts64_uncanon
+  7.49%     1.78%  qemu-system-ppc  float64r32_mul
+  7.32%     7.32%  qemu-system-ppc  parts64_uncanon_normal
+  6.48%     0.52%  qemu-system-ppc  helper_fadds
+  6.31%     6.31%  qemu-system-ppc  do_float_check_status
+  5.99%     1.14%  qemu-system-ppc  float64r32_add
+
+Any idea on those?
+
+Unrelated to this patch I also started to see random crashes with a DSI on 
+a dcbz instruction now which did not happen before (or not frequently 
+enough for me to notice). I did not bisect that as it happens randomly but 
+I wonder if it could be related to recent unaligned access changes or some 
+other TCG change? Any idea what to check?
+
+Regards,
+BALATON Zoltan
+
+> ---
+> fpu/softfloat.c | 22 +++++++++++-----------
+> 1 file changed, 11 insertions(+), 11 deletions(-)
+>
+> diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+> index 108f9cb224..42e6c188b4 100644
+> --- a/fpu/softfloat.c
+> +++ b/fpu/softfloat.c
+> @@ -593,27 +593,27 @@ static void unpack_raw64(FloatParts64 *r, const FloatFmt *fmt, uint64_t raw)
+>     };
+> }
+>
+> -static inline void float16_unpack_raw(FloatParts64 *p, float16 f)
+> +static void QEMU_FLATTEN float16_unpack_raw(FloatParts64 *p, float16 f)
+> {
+>     unpack_raw64(p, &float16_params, f);
+> }
+>
+> -static inline void bfloat16_unpack_raw(FloatParts64 *p, bfloat16 f)
+> +static void QEMU_FLATTEN bfloat16_unpack_raw(FloatParts64 *p, bfloat16 f)
+> {
+>     unpack_raw64(p, &bfloat16_params, f);
+> }
+>
+> -static inline void float32_unpack_raw(FloatParts64 *p, float32 f)
+> +static void QEMU_FLATTEN float32_unpack_raw(FloatParts64 *p, float32 f)
+> {
+>     unpack_raw64(p, &float32_params, f);
+> }
+>
+> -static inline void float64_unpack_raw(FloatParts64 *p, float64 f)
+> +static void QEMU_FLATTEN float64_unpack_raw(FloatParts64 *p, float64 f)
+> {
+>     unpack_raw64(p, &float64_params, f);
+> }
+>
+> -static void floatx80_unpack_raw(FloatParts128 *p, floatx80 f)
+> +static void QEMU_FLATTEN floatx80_unpack_raw(FloatParts128 *p, floatx80 f)
+> {
+>     *p = (FloatParts128) {
+>         .cls = float_class_unclassified,
+> @@ -623,7 +623,7 @@ static void floatx80_unpack_raw(FloatParts128 *p, floatx80 f)
+>     };
+> }
+>
+> -static void float128_unpack_raw(FloatParts128 *p, float128 f)
+> +static void QEMU_FLATTEN float128_unpack_raw(FloatParts128 *p, float128 f)
+> {
+>     const int f_size = float128_params.frac_size - 64;
+>     const int e_size = float128_params.exp_size;
+> @@ -650,27 +650,27 @@ static uint64_t pack_raw64(const FloatParts64 *p, const FloatFmt *fmt)
+>     return ret;
+> }
+>
+> -static inline float16 float16_pack_raw(const FloatParts64 *p)
+> +static float16 QEMU_FLATTEN float16_pack_raw(const FloatParts64 *p)
+> {
+>     return make_float16(pack_raw64(p, &float16_params));
+> }
+>
+> -static inline bfloat16 bfloat16_pack_raw(const FloatParts64 *p)
+> +static bfloat16 QEMU_FLATTEN bfloat16_pack_raw(const FloatParts64 *p)
+> {
+>     return pack_raw64(p, &bfloat16_params);
+> }
+>
+> -static inline float32 float32_pack_raw(const FloatParts64 *p)
+> +static float32 QEMU_FLATTEN float32_pack_raw(const FloatParts64 *p)
+> {
+>     return make_float32(pack_raw64(p, &float32_params));
+> }
+>
+> -static inline float64 float64_pack_raw(const FloatParts64 *p)
+> +static float64 QEMU_FLATTEN float64_pack_raw(const FloatParts64 *p)
+> {
+>     return make_float64(pack_raw64(p, &float64_params));
+> }
+>
+> -static float128 float128_pack_raw(const FloatParts128 *p)
+> +static float128 QEMU_FLATTEN float128_pack_raw(const FloatParts128 *p)
+> {
+>     const int f_size = float128_params.frac_size - 64;
+>     const int e_size = float128_params.exp_size;
+>
+--3866299591-524406227-1684850004=:38519--
 
