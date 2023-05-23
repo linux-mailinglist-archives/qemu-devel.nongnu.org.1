@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2FE70DEDE
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD8A70DE35
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:56:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1ST0-000667-Rh; Tue, 23 May 2023 09:54:22 -0400
+	id 1q1STJ-0006qz-0t; Tue, 23 May 2023 09:54:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSE-0004Nt-7F
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:34 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1q1SSK-0004uI-NQ
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:41 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSA-00030g-DI
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:33 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-64d2b42a8f9so4267584b3a.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:29 -0700 (PDT)
+ id 1q1SSA-0002zf-Up
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:38 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-64d2ca9ef0cso3750511b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684850009; x=1687442009;
+ d=linaro.org; s=google; t=1684850010; x=1687442010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HxoP9990OHDYwNOE0anIjEZqeR9eEOPQW77YwWr1n2g=;
- b=CiVjx6Bvt1MQL6FvqAXZW3RFOJboT0fws4N9DOVUWfkU9urFNk4kFwnrFL4QQ90/i7
- VcB/MFFMlvZM/mhzgNePOzKhs1YKHnT/+x73fqf5T84aVQWPUjCMS2bPdWVFblKZ85v3
- 7N765LYgw2Q5I5fgUX82tmoeDsa/YsR6NwmcCBcWXi3HDqndpk3mI/IRo0xqNnqcJ5r7
- CFwLYDcnRSsddRdrI29PYvnEj+xRdLnK1ieC3f1PFoFDqxFfvywnEcyYWr0QrlFZJW7g
- k8lmKg3x732CLq75+bRl/uZc1WVpQ1tvpvSSD8WO47PlfXQkVArn8DIiTmhW0QGV3NCy
- cy8A==
+ :reply-to; bh=++xGouEzAnDLCOE+hfQe+33jtp4dTZsPLh5EBleA5as=;
+ b=NJSwZF1IQXP+5VK7pUoOmH+wfB9aZ4bGRKoOAysGt0SewV9dDQVVdssp092QPR1Fmb
+ v9+J2PCRulGs99Krkd5JDS1OiEAHlil8n7P4Nc2dZLXgwuUZzWtci+pdQqHI6Yms4XM+
+ j+Y/nIcRsquQYdu8wZqdvFGf1fKEWdlffVHpmLUW7d4zP9l3jfzJ1I5dnLHkecsb7QXb
+ evbDzjB1FZ06EjufkJ0vrgPqqaewMouWfGRBjiXux0AdTy4VsDVIMDiSOZaEFfqlJzou
+ 9dNsqlEuNeoY9g1Tlb+j2at9LitLV0z7EoS9M3yVkMcUvfuS0XS11WBarTZ3DUOv7NiJ
+ Ix0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684850009; x=1687442009;
+ d=1e100.net; s=20221208; t=1684850010; x=1687442010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HxoP9990OHDYwNOE0anIjEZqeR9eEOPQW77YwWr1n2g=;
- b=TWJbQs2BeF6amGEiBR4RDGH9Vl9YGbluqe+gDZPHsWlcl0pZYkavPufJIeUG8hhbzQ
- MGNbTyKzi6Wr3qLwAaTMIzUA1CUlfp/7m4hT/QKlsSbieaagjO2w0ks8Fxl5SDRM8c3c
- z8LqByQx6pbnm8JzErGSPO90zHoDx99eHNuJKbWO0a/F161AiJ9UzRhtEc0MDKCPWFEO
- EMPTE8AwHGyqxsR+3GmpK/zZ9hYUBXdJlpxyxyjguB8uDGVX86m1A7f1Sip4huIQ5IPg
- LaKcuc+W8Os7tZMqGSQJtIJOoKUdln/o4BetDwmq9+rUCLBRoghYg1jQz+2mSFIzyg6D
- rb0Q==
-X-Gm-Message-State: AC+VfDxLgjXwgoQCdU23wzawp8P1dhhnjAMy4nj5l0BVaxCynsX0HPGx
- J/UY0fvonjuF9HZ8FS7NZ+WqdHnLV/ofxGcfFmY=
-X-Google-Smtp-Source: ACHHUZ4dV5GSDXk6dAffbHsu2/u2LW5up4/lds4tPq+2+yxY5Dr9UGw8b56Q6zH/qyI9oHrheb+OdA==
-X-Received: by 2002:a05:6a20:72a8:b0:10b:b166:8836 with SMTP id
- o40-20020a056a2072a800b0010bb1668836mr6772260pzk.47.1684850008864; 
- Tue, 23 May 2023 06:53:28 -0700 (PDT)
+ bh=++xGouEzAnDLCOE+hfQe+33jtp4dTZsPLh5EBleA5as=;
+ b=M0yqLxAznPO6q1XBOoLMLKg92IJl8zFImRnoUVMPvEyWFKQBbcZYrIPa1xpRBX0txz
+ zWJg5jl5pSYHoyjsstAshUVKYTQSA2SzD01xdf7KE+0UK071GJ6fE5Cc1uQ2ldglNNWD
+ uJ5KV5eHM/ChGb6bubNBI/UU8kI1Or8hyaGvXovcPIX5pZbfBxND66JiEmwptsKEG9Yq
+ cYiCK6wTN0SEAUj4EqpFhYViOAFPxAE7WSluP7LCa9CuBQZA2ckLyabTUhnAM5C/SQPv
+ 5M88EsS2ZSH7sby0hgykob2AMWJDLTHP0BjzKN5bkeEDDGu+YlIt8TbE4gJroU3zk0RC
+ +YgA==
+X-Gm-Message-State: AC+VfDwu+sUOQn6oeRk+Th0R+oqIYrpDdJa1q8o9cCKPOqTB/9PB9BMh
+ uV10Xp3SfOVg6M5t+mcpxRm5ME2t3o6FT9YtP5Y=
+X-Google-Smtp-Source: ACHHUZ5YJqp2FFPmr9C+Rjk6/x3O/UKv3kd2aIx6xCK5UWR8I7i5dGMFLVeJ9NTh3pNDhmfR4JZK8g==
+X-Received: by 2002:a05:6a00:1689:b0:627:6328:79f1 with SMTP id
+ k9-20020a056a00168900b00627632879f1mr20302375pfc.34.1684850010011; 
+ Tue, 23 May 2023 06:53:30 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.28
+ b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:53:28 -0700 (PDT)
+ Tue, 23 May 2023 06:53:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 06/52] tcg: Widen CPUTLBEntry comparators to 64-bits
-Date: Tue, 23 May 2023 06:52:36 -0700
-Message-Id: <20230523135322.678948-7-richard.henderson@linaro.org>
+Subject: [PATCH v2 07/52] tcg: Add tlb_fast_offset to TCGContext
+Date: Tue, 23 May 2023 06:52:37 -0700
+Message-Id: <20230523135322.678948-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523135322.678948-1-richard.henderson@linaro.org>
 References: <20230523135322.678948-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,305 +89,515 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This makes CPUTLBEntry agnostic to the address size of the guest.
-When 32-bit addresses are in effect, we can simply read the low
-32 bits of the 64-bit field.  Similarly when we need to update
-the field for setting TLB_NOTDIRTY.
-
-For TCG backends that could in theory be big-endian, but in
-practice are not (arm, loongarch, riscv), use QEMU_BUILD_BUG_ON
-to document and ensure this is not accidentally missed.
-
-For s390x, which is always big-endian, use HOST_BIG_ENDIAN anyway,
-to document the reason for the adjustment.
-
-For sparc64 and ppc64, always perform a 64-bit load, and rely on
-the following 32-bit comparison to ignore the high bits.
-
-Rearrange mips and ppc if ladders for clarity.
+Disconnect the layout of ArchCPU from TCG compilation.
+Pass the relative offset of 'env' and 'neg.tlb.f' as a parameter.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-defs.h          | 37 +++++++++++---------------------
- include/exec/cpu_ldst.h          | 19 ++++++++++------
- accel/tcg/cputlb.c               |  8 +++++--
- tcg/aarch64/tcg-target.c.inc     |  1 +
- tcg/arm/tcg-target.c.inc         |  1 +
- tcg/loongarch64/tcg-target.c.inc |  1 +
- tcg/mips/tcg-target.c.inc        | 13 ++++++-----
- tcg/ppc/tcg-target.c.inc         | 28 +++++++++++++-----------
- tcg/riscv/tcg-target.c.inc       |  1 +
- tcg/s390x/tcg-target.c.inc       |  1 +
- tcg/sparc64/tcg-target.c.inc     |  8 +++++--
- 11 files changed, 67 insertions(+), 51 deletions(-)
+ include/exec/cpu-defs.h          | 39 +---------------------
+ include/exec/tlb-common.h        | 56 ++++++++++++++++++++++++++++++++
+ include/tcg/tcg.h                |  1 +
+ accel/tcg/translate-all.c        |  2 ++
+ tcg/tcg.c                        | 13 ++++++++
+ tcg/aarch64/tcg-target.c.inc     |  7 ++--
+ tcg/arm/tcg-target.c.inc         |  7 ++--
+ tcg/i386/tcg-target.c.inc        |  9 ++---
+ tcg/loongarch64/tcg-target.c.inc |  7 ++--
+ tcg/mips/tcg-target.c.inc        |  7 ++--
+ tcg/ppc/tcg-target.c.inc         |  7 ++--
+ tcg/riscv/tcg-target.c.inc       |  7 ++--
+ tcg/s390x/tcg-target.c.inc       |  7 ++--
+ tcg/sparc64/tcg-target.c.inc     |  7 ++--
+ 14 files changed, 110 insertions(+), 66 deletions(-)
+ create mode 100644 include/exec/tlb-common.h
 
 diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
-index a6e0cf1812..b757d37966 100644
+index b757d37966..0d418a0384 100644
 --- a/include/exec/cpu-defs.h
 +++ b/include/exec/cpu-defs.h
-@@ -65,11 +65,7 @@
+@@ -61,12 +61,11 @@
+ #define NB_MMU_MODES 16
+ 
+ #if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
++#include "exec/tlb-common.h"
+ 
  /* use a fully associative victim tlb of 8 entries */
  #define CPU_VTLB_SIZE 8
  
--#if HOST_LONG_BITS == 32 && TARGET_LONG_BITS == 32
--#define CPU_TLB_ENTRY_BITS 4
--#else
- #define CPU_TLB_ENTRY_BITS 5
--#endif
- 
+-#define CPU_TLB_ENTRY_BITS 5
+-
  #define CPU_TLB_DYN_MIN_BITS 6
  #define CPU_TLB_DYN_DEFAULT_BITS 8
-@@ -95,33 +91,26 @@
+ 
+@@ -90,27 +89,6 @@
+ #  endif
  # endif
  
- /* Minimalized TLB entry for use by TCG fast path. */
--typedef struct CPUTLBEntry {
--    /* bit TARGET_LONG_BITS to TARGET_PAGE_BITS : virtual address
--       bit TARGET_PAGE_BITS-1..4  : Nonzero for accesses that should not
--                                    go directly to ram.
--       bit 3                      : indicates that the entry is invalid
--       bit 2..0                   : zero
--    */
--    union {
--        struct {
--            target_ulong addr_read;
--            target_ulong addr_write;
--            target_ulong addr_code;
--            /* Addend to virtual address to get host address.  IO accesses
--               use the corresponding iotlb value.  */
--            uintptr_t addend;
--        };
+-/* Minimalized TLB entry for use by TCG fast path. */
+-typedef union CPUTLBEntry {
+-    struct {
+-        uint64_t addr_read;
+-        uint64_t addr_write;
+-        uint64_t addr_code;
+-        /*
+-         * Addend to virtual address to get host address.  IO accesses
+-         * use the corresponding iotlb value.
+-         */
+-        uintptr_t addend;
+-    };
+-    /*
+-     * Padding to get a power of two size, as well as index
+-     * access to addr_{read,write,code}.
+-     */
+-    uint64_t addr_idx[(1 << CPU_TLB_ENTRY_BITS) / sizeof(uint64_t)];
+-} CPUTLBEntry;
+-
+-QEMU_BUILD_BUG_ON(sizeof(CPUTLBEntry) != (1 << CPU_TLB_ENTRY_BITS));
+-
+ #endif  /* !CONFIG_USER_ONLY && CONFIG_TCG */
+ 
+ #if !defined(CONFIG_USER_ONLY)
+@@ -184,17 +162,6 @@ typedef struct CPUTLBDesc {
+     CPUTLBEntryFull *fulltlb;
+ } CPUTLBDesc;
+ 
+-/*
+- * Data elements that are per MMU mode, accessed by the fast path.
+- * The structure is aligned to aid loading the pair with one insn.
+- */
+-typedef struct CPUTLBDescFast {
+-    /* Contains (n_entries - 1) << CPU_TLB_ENTRY_BITS */
+-    uintptr_t mask;
+-    /* The array of tlb entries itself. */
+-    CPUTLBEntry *table;
+-} CPUTLBDescFast QEMU_ALIGNED(2 * sizeof(void *));
+-
+ /*
+  * Data elements that are shared between all MMU modes.
+  */
+@@ -230,10 +197,6 @@ typedef struct CPUTLB {
+     CPUTLBDescFast f[NB_MMU_MODES];
+ } CPUTLB;
+ 
+-/* This will be used by TCG backends to compute offsets.  */
+-#define TLB_MASK_TABLE_OFS(IDX) \
+-    ((int)offsetof(ArchCPU, neg.tlb.f[IDX]) - (int)offsetof(ArchCPU, env))
+-
+ #else
+ 
+ typedef struct CPUTLB { } CPUTLB;
+diff --git a/include/exec/tlb-common.h b/include/exec/tlb-common.h
+new file mode 100644
+index 0000000000..dc5a5faa0b
+--- /dev/null
++++ b/include/exec/tlb-common.h
+@@ -0,0 +1,56 @@
++/*
++ * Common definitions for the softmmu tlb
++ *
++ * Copyright (c) 2003 Fabrice Bellard
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++#ifndef EXEC_TLB_COMMON_H
++#define EXEC_TLB_COMMON_H 1
++
++#define CPU_TLB_ENTRY_BITS 5
++
++/* Minimalized TLB entry for use by TCG fast path. */
 +typedef union CPUTLBEntry {
 +    struct {
 +        uint64_t addr_read;
 +        uint64_t addr_write;
 +        uint64_t addr_code;
-         /*
--         * Padding to get a power of two size, as well as index
--         * access to addr_{read,write,code}.
++        /*
 +         * Addend to virtual address to get host address.  IO accesses
 +         * use the corresponding iotlb value.
-          */
--        target_ulong addr_idx[(1 << CPU_TLB_ENTRY_BITS) / TARGET_LONG_SIZE];
++         */
 +        uintptr_t addend;
-     };
++    };
 +    /*
 +     * Padding to get a power of two size, as well as index
 +     * access to addr_{read,write,code}.
 +     */
 +    uint64_t addr_idx[(1 << CPU_TLB_ENTRY_BITS) / sizeof(uint64_t)];
- } CPUTLBEntry;
++} CPUTLBEntry;
++
++QEMU_BUILD_BUG_ON(sizeof(CPUTLBEntry) != (1 << CPU_TLB_ENTRY_BITS));
++
++/*
++ * Data elements that are per MMU mode, accessed by the fast path.
++ * The structure is aligned to aid loading the pair with one insn.
++ */
++typedef struct CPUTLBDescFast {
++    /* Contains (n_entries - 1) << CPU_TLB_ENTRY_BITS */
++    uintptr_t mask;
++    /* The array of tlb entries itself. */
++    CPUTLBEntry *table;
++} CPUTLBDescFast QEMU_ALIGNED(2 * sizeof(void *));
++
++#endif /* EXEC_TLB_COMMON_H */
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 0da17f1b4f..54f260a66b 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -547,6 +547,7 @@ struct TCGContext {
+     TCGType addr_type;            /* TCG_TYPE_I32 or TCG_TYPE_I64 */
  
- QEMU_BUILD_BUG_ON(sizeof(CPUTLBEntry) != (1 << CPU_TLB_ENTRY_BITS));
- 
--
- #endif  /* !CONFIG_USER_ONLY && CONFIG_TCG */
- 
- #if !defined(CONFIG_USER_ONLY)
-diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index 5939688f69..a43b34e46b 100644
---- a/include/exec/cpu_ldst.h
-+++ b/include/exec/cpu_ldst.h
-@@ -334,18 +334,25 @@ static inline target_ulong tlb_read_idx(const CPUTLBEntry *entry,
- {
-     /* Do not rearrange the CPUTLBEntry structure members. */
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_read) !=
--                      MMU_DATA_LOAD * TARGET_LONG_SIZE);
-+                      MMU_DATA_LOAD * sizeof(uint64_t));
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_write) !=
--                      MMU_DATA_STORE * TARGET_LONG_SIZE);
-+                      MMU_DATA_STORE * sizeof(uint64_t));
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_code) !=
--                      MMU_INST_FETCH * TARGET_LONG_SIZE);
-+                      MMU_INST_FETCH * sizeof(uint64_t));
- 
--    const target_ulong *ptr = &entry->addr_idx[access_type];
--#if TCG_OVERSIZED_GUEST
--    return *ptr;
-+#if TARGET_LONG_BITS == 32
-+    /* Use qatomic_read, in case of addr_write; only care about low bits. */
-+    const uint32_t *ptr = (uint32_t *)&entry->addr_idx[access_type];
-+    ptr += HOST_BIG_ENDIAN;
-+    return qatomic_read(ptr);
- #else
-+    const uint64_t *ptr = &entry->addr_idx[access_type];
-+# if TCG_OVERSIZED_GUEST
-+    return *ptr;
-+# else
-     /* ofs might correspond to .addr_write, so use qatomic_read */
-     return qatomic_read(ptr);
-+# endif
+ #ifdef CONFIG_SOFTMMU
++    int tlb_fast_offset;
+     int page_mask;
+     uint8_t page_bits;
+     uint8_t tlb_dyn_max_bits;
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index f6c8ad1a18..be38d4aad8 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -361,6 +361,8 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+     tcg_ctx->page_bits = TARGET_PAGE_BITS;
+     tcg_ctx->page_mask = TARGET_PAGE_MASK;
+     tcg_ctx->tlb_dyn_max_bits = CPU_TLB_DYN_MAX_BITS;
++    tcg_ctx->tlb_fast_offset =
++        (int)offsetof(ArchCPU, neg.tlb.f) - (int)offsetof(ArchCPU, env);
  #endif
+ 
+  tb_overflow:
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 0b0fe9c7ad..35bbc03ede 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -44,6 +44,7 @@
+ #define NO_CPU_IO_DEFS
+ 
+ #include "exec/exec-all.h"
++#include "exec/tlb-common.h"
+ #include "tcg/tcg-op.h"
+ 
+ #if UINTPTR_MAX == UINT32_MAX
+@@ -410,6 +411,13 @@ static uintptr_t G_GNUC_UNUSED get_jmp_target_addr(TCGContext *s, int which)
+     return (uintptr_t)tcg_splitwx_to_rx(&s->gen_tb->jmp_target_addr[which]);
  }
  
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 90c72c9940..6beaeb0a81 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1000,11 +1000,15 @@ static void tlb_reset_dirty_range_locked(CPUTLBEntry *tlb_entry,
-         addr &= TARGET_PAGE_MASK;
-         addr += tlb_entry->addend;
-         if ((addr - start) < length) {
--#if TCG_OVERSIZED_GUEST
-+#if TARGET_LONG_BITS == 32
-+            uint32_t *ptr_write = (uint32_t *)&tlb_entry->addr_write;
-+            ptr_write += HOST_BIG_ENDIAN;
-+            qatomic_set(ptr_write, *ptr_write | TLB_NOTDIRTY);
-+#elif TCG_OVERSIZED_GUEST
-             tlb_entry->addr_write |= TLB_NOTDIRTY;
- #else
-             qatomic_set(&tlb_entry->addr_write,
--                       tlb_entry->addr_write | TLB_NOTDIRTY);
-+                        tlb_entry->addr_write | TLB_NOTDIRTY);
- #endif
-         }
-     }
++#if defined(CONFIG_SOFTMMU) && !defined(CONFIG_TCG_INTERPRETER)
++static int tlb_mask_table_ofs(TCGContext *s, int which)
++{
++    return s->tlb_fast_offset + which * sizeof(CPUTLBDescFast);
++}
++#endif
++
+ /* Signal overflow, starting over with fewer guest insns. */
+ static G_NORETURN
+ void tcg_raise_tb_overflow(TCGContext *s)
+@@ -1526,6 +1534,11 @@ void tcg_func_start(TCGContext *s)
+ 
+     tcg_debug_assert(s->addr_type == TCG_TYPE_I32 ||
+                      s->addr_type == TCG_TYPE_I64);
++
++#if defined(CONFIG_SOFTMMU) && !defined(CONFIG_TCG_INTERPRETER)
++    tcg_debug_assert(s->tlb_fast_offset < 0);
++    tcg_debug_assert(s->tlb_fast_offset >= MIN_TLB_MASK_TABLE_OFS);
++#endif
+ }
+ 
+ static TCGTemp *tcg_temp_alloc(TCGContext *s)
 diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index 84283665e7..39bb47baec 100644
+index 39bb47baec..af4e9fdac7 100644
 --- a/tcg/aarch64/tcg-target.c.inc
 +++ b/tcg/aarch64/tcg-target.c.inc
-@@ -1674,6 +1674,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     tcg_out_insn(s, 3502, ADD, 1, TCG_REG_X1, TCG_REG_X1, TCG_REG_X0);
+@@ -1620,6 +1620,9 @@ static bool tcg_out_qemu_st_slow_path(TCGContext *s, TCGLabelQemuLdst *lb)
+     return true;
+ }
  
-     /* Load the tlb comparator into X0, and the fast path addend into X1.  */
-+    QEMU_BUILD_BUG_ON(HOST_BIG_ENDIAN);
-     tcg_out_ld(s, addr_type, TCG_REG_X0, TCG_REG_X1,
-                is_ld ? offsetof(CPUTLBEntry, addr_read)
-                      : offsetof(CPUTLBEntry, addr_write));
++/* We expect to use a 7-bit scaled negative offset from ENV.  */
++#define MIN_TLB_MASK_TABLE_OFS  -512
++
+ /*
+  * For softmmu, perform the TLB load and compare.
+  * For useronly, perform any required alignment tests.
+@@ -1658,12 +1661,10 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+                  ? TCG_TYPE_I64 : TCG_TYPE_I32);
+ 
+     /* Load env_tlb(env)->f[mmu_idx].{mask,table} into {x0,x1}.  */
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) > 0);
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) < -512);
+     QEMU_BUILD_BUG_ON(offsetof(CPUTLBDescFast, mask) != 0);
+     QEMU_BUILD_BUG_ON(offsetof(CPUTLBDescFast, table) != 8);
+     tcg_out_insn(s, 3314, LDP, TCG_REG_X0, TCG_REG_X1, TCG_AREG0,
+-                 TLB_MASK_TABLE_OFS(mem_index), 1, 0);
++                 tlb_mask_table_ofs(s, mem_index), 1, 0);
+ 
+     /* Extract the TLB index from the address into X0.  */
+     tcg_out_insn(s, 3502S, AND_LSR, mask_type == TCG_TYPE_I64,
 diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-index 20cc1cc477..64eb0cb5dc 100644
+index 64eb0cb5dc..83e286088f 100644
 --- a/tcg/arm/tcg-target.c.inc
 +++ b/tcg/arm/tcg-target.c.inc
-@@ -1430,6 +1430,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-      * Add the tlb_table pointer, creating the CPUTLBEntry address in R1.
-      * Load the tlb comparator into R2/R3 and the fast path addend into R1.
-      */
-+    QEMU_BUILD_BUG_ON(HOST_BIG_ENDIAN);
-     if (cmp_off == 0) {
-         if (s->addr_type == TCG_TYPE_I32) {
-             tcg_out_ld32_rwb(s, COND_AL, TCG_REG_R2, TCG_REG_R1, TCG_REG_R0);
+@@ -1374,6 +1374,9 @@ static bool tcg_out_qemu_st_slow_path(TCGContext *s, TCGLabelQemuLdst *lb)
+     return true;
+ }
+ 
++/* We expect to use an 9-bit sign-magnitude negative offset from ENV.  */
++#define MIN_TLB_MASK_TABLE_OFS  -256
++
+ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+                                            TCGReg addrlo, TCGReg addrhi,
+                                            MemOpIdx oi, bool is_ld)
+@@ -1405,7 +1408,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     int mem_index = get_mmuidx(oi);
+     int cmp_off = is_ld ? offsetof(CPUTLBEntry, addr_read)
+                         : offsetof(CPUTLBEntry, addr_write);
+-    int fast_off = TLB_MASK_TABLE_OFS(mem_index);
++    int fast_off = tlb_mask_table_ofs(s, mem_index);
+     unsigned s_mask = (1 << (opc & MO_SIZE)) - 1;
+     TCGReg t_addr;
+ 
+@@ -1416,8 +1419,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     ldst->addrhi_reg = addrhi;
+ 
+     /* Load env_tlb(env)->f[mmu_idx].{mask,table} into {r0,r1}.  */
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) > 0);
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) < -256);
+     QEMU_BUILD_BUG_ON(offsetof(CPUTLBDescFast, mask) != 0);
+     QEMU_BUILD_BUG_ON(offsetof(CPUTLBDescFast, table) != 4);
+     tcg_out_ldrd_8(s, COND_AL, TCG_REG_R0, TCG_AREG0, fast_off);
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index bfe9d98b7e..d955aa6a9c 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -1858,6 +1858,8 @@ static inline int setup_guest_base_seg(void)
+ #endif /* setup_guest_base_seg */
+ #endif /* !SOFTMMU */
+ 
++#define MIN_TLB_MASK_TABLE_OFS  INT_MIN
++
+ /*
+  * For softmmu, perform the TLB load and compare.
+  * For useronly, perform any required alignment tests.
+@@ -1892,6 +1894,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     unsigned mem_index = get_mmuidx(oi);
+     unsigned s_bits = opc & MO_SIZE;
+     unsigned s_mask = (1 << s_bits) - 1;
++    int fast_ofs = tlb_mask_table_ofs(s, mem_index);
+     int tlb_mask;
+ 
+     ldst = new_ldst_label(s);
+@@ -1917,12 +1920,10 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+                    s->page_bits - CPU_TLB_ENTRY_BITS);
+ 
+     tcg_out_modrm_offset(s, OPC_AND_GvEv + trexw, TCG_REG_L0, TCG_AREG0,
+-                         TLB_MASK_TABLE_OFS(mem_index) +
+-                         offsetof(CPUTLBDescFast, mask));
++                         fast_ofs + offsetof(CPUTLBDescFast, mask));
+ 
+     tcg_out_modrm_offset(s, OPC_ADD_GvEv + hrexw, TCG_REG_L0, TCG_AREG0,
+-                         TLB_MASK_TABLE_OFS(mem_index) +
+-                         offsetof(CPUTLBDescFast, table));
++                         fast_ofs + offsetof(CPUTLBDescFast, table));
+ 
+     /*
+      * If the required alignment is at least as large as the access, simply
 diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index 0bae922982..e89f3b848b 100644
+index e89f3b848b..baf5fc3819 100644
 --- a/tcg/loongarch64/tcg-target.c.inc
 +++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -875,6 +875,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     tcg_out_opc_add_d(s, TCG_REG_TMP2, TCG_REG_TMP2, TCG_REG_TMP1);
+@@ -834,6 +834,9 @@ bool tcg_target_has_memory_bswap(MemOp memop)
+     return false;
+ }
  
-     /* Load the tlb comparator and the addend.  */
-+    QEMU_BUILD_BUG_ON(HOST_BIG_ENDIAN);
-     tcg_out_ld(s, addr_type, TCG_REG_TMP0, TCG_REG_TMP2,
-                is_ld ? offsetof(CPUTLBEntry, addr_read)
-                      : offsetof(CPUTLBEntry, addr_write));
++/* We expect to use a 12-bit negative offset from ENV.  */
++#define MIN_TLB_MASK_TABLE_OFS  -(1 << 11)
++
+ /*
+  * For softmmu, perform the TLB load and compare.
+  * For useronly, perform any required alignment tests.
+@@ -855,7 +858,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+ #ifdef CONFIG_SOFTMMU
+     unsigned s_bits = opc & MO_SIZE;
+     int mem_index = get_mmuidx(oi);
+-    int fast_ofs = TLB_MASK_TABLE_OFS(mem_index);
++    int fast_ofs = tlb_mask_table_ofs(s, mem_index);
+     int mask_ofs = fast_ofs + offsetof(CPUTLBDescFast, mask);
+     int table_ofs = fast_ofs + offsetof(CPUTLBDescFast, table);
+ 
+@@ -864,8 +867,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     ldst->oi = oi;
+     ldst->addrlo_reg = addr_reg;
+ 
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) > 0);
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) < -(1 << 11));
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP0, TCG_AREG0, mask_ofs);
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_AREG0, table_ofs);
+ 
 diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-index ef146b193c..26ed2a4e9b 100644
+index 26ed2a4e9b..e2a78d0530 100644
 --- a/tcg/mips/tcg-target.c.inc
 +++ b/tcg/mips/tcg-target.c.inc
-@@ -1199,14 +1199,17 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     /* Add the tlb_table pointer, creating the CPUTLBEntry address in TMP3.  */
-     tcg_out_opc_reg(s, ALIAS_PADD, TCG_TMP3, TCG_TMP3, TCG_TMP1);
+@@ -1142,6 +1142,9 @@ bool tcg_target_has_memory_bswap(MemOp memop)
+     return false;
+ }
  
-+    if (TCG_TARGET_REG_BITS == 32 || addr_type == TCG_TYPE_I32) {
-+        /* Load the (low half) tlb comparator.  */
-+        tcg_out_ld(s, TCG_TYPE_I32, TCG_TMP0, TCG_TMP3,
-+                   cmp_off + HOST_BIG_ENDIAN * 4);
-+    } else {
-+        tcg_out_ld(s, TCG_TYPE_I64, TCG_TMP0, TCG_TMP3, cmp_off);
-+    }
++/* We expect to use a 16-bit negative offset from ENV.  */
++#define MIN_TLB_MASK_TABLE_OFS  -32768
 +
-     if (TCG_TARGET_REG_BITS == 64 || addr_type == TCG_TYPE_I32) {
--        /* Load the tlb comparator.  */
--        tcg_out_ld(s, addr_type, TCG_TMP0, TCG_TMP3, cmp_off);
-         /* Load the tlb addend for the fast path.  */
-         tcg_out_ld(s, TCG_TYPE_PTR, TCG_TMP3, TCG_TMP3, add_off);
--    } else {
--        /* Load the low half of the tlb comparator.  */
--        tcg_out_ldst(s, OPC_LW, TCG_TMP0, TCG_TMP3, cmp_off + LO_OFF);
-     }
+ /*
+  * For softmmu, perform the TLB load and compare.
+  * For useronly, perform any required alignment tests.
+@@ -1167,7 +1170,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+ #ifdef CONFIG_SOFTMMU
+     unsigned s_mask = (1 << s_bits) - 1;
+     int mem_index = get_mmuidx(oi);
+-    int fast_off = TLB_MASK_TABLE_OFS(mem_index);
++    int fast_off = tlb_mask_table_ofs(s, mem_index);
+     int mask_off = fast_off + offsetof(CPUTLBDescFast, mask);
+     int table_off = fast_off + offsetof(CPUTLBDescFast, table);
+     int add_off = offsetof(CPUTLBEntry, addend);
+@@ -1181,8 +1184,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     ldst->addrhi_reg = addrhi;
  
-     /*
+     /* Load tlb_mask[mmu_idx] and tlb_table[mmu_idx].  */
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) > 0);
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) < -32768);
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_TMP0, TCG_AREG0, mask_off);
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_TMP1, TCG_AREG0, table_off);
+ 
 diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 30372519dd..8add9afbbf 100644
+index 8add9afbbf..073361a54b 100644
 --- a/tcg/ppc/tcg-target.c.inc
 +++ b/tcg/ppc/tcg-target.c.inc
-@@ -2085,20 +2085,24 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     }
-     tcg_out32(s, AND | SAB(TCG_REG_TMP1, TCG_REG_TMP1, TCG_REG_R0));
+@@ -2023,6 +2023,9 @@ bool tcg_target_has_memory_bswap(MemOp memop)
+     return true;
+ }
  
--    /* Load the (low part) TLB comparator into TMP2.  */
--    if (cmp_off == 0
--        && (TCG_TARGET_REG_BITS == 64 || addr_type == TCG_TYPE_I32)) {
--        uint32_t lxu = (TCG_TARGET_REG_BITS == 32 || addr_type == TCG_TYPE_I32
--                        ? LWZUX : LDUX);
--        tcg_out32(s, lxu | TAB(TCG_REG_TMP2, TCG_REG_TMP1, TCG_REG_TMP2));
-+    /*
-+     * Load the (low part) TLB comparator into TMP2.
-+     * For 64-bit host, always load the entire 64-bit slot for simplicity.
-+     * We will ignore the high bits with tcg_out_cmp(..., addr_type).
-+     */
-+    if (TCG_TARGET_REG_BITS == 64) {
-+        if (cmp_off == 0) {
-+            tcg_out32(s, LDUX | TAB(TCG_REG_TMP2, TCG_REG_TMP1, TCG_REG_TMP2));
-+        } else {
-+            tcg_out32(s, ADD | TAB(TCG_REG_TMP1, TCG_REG_TMP1, TCG_REG_TMP2));
-+            tcg_out_ld(s, TCG_TYPE_I64, TCG_REG_TMP2, TCG_REG_TMP1, cmp_off);
-+        }
-+    } else if (cmp_off == 0 && !HOST_BIG_ENDIAN) {
-+        tcg_out32(s, LWZUX | TAB(TCG_REG_TMP2, TCG_REG_TMP1, TCG_REG_TMP2));
-     } else {
-         tcg_out32(s, ADD | TAB(TCG_REG_TMP1, TCG_REG_TMP1, TCG_REG_TMP2));
--        if (TCG_TARGET_REG_BITS == 32 && addr_type != TCG_TYPE_I32) {
--            tcg_out_ld(s, TCG_TYPE_I32, TCG_REG_TMP2,
--                       TCG_REG_TMP1, cmp_off + 4 * HOST_BIG_ENDIAN);
--        } else {
--            tcg_out_ld(s, addr_type, TCG_REG_TMP2, TCG_REG_TMP1, cmp_off);
--        }
-+        tcg_out_ld(s, TCG_TYPE_I32, TCG_REG_TMP2, TCG_REG_TMP1,
-+                   cmp_off + 4 * HOST_BIG_ENDIAN);
-     }
++/* We expect to use a 16-bit negative offset from ENV.  */
++#define MIN_TLB_MASK_TABLE_OFS  -32768
++
+ /*
+  * For softmmu, perform the TLB load and compare.
+  * For useronly, perform any required alignment tests.
+@@ -2058,7 +2061,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     int mem_index = get_mmuidx(oi);
+     int cmp_off = is_ld ? offsetof(CPUTLBEntry, addr_read)
+                         : offsetof(CPUTLBEntry, addr_write);
+-    int fast_off = TLB_MASK_TABLE_OFS(mem_index);
++    int fast_off = tlb_mask_table_ofs(s, mem_index);
+     int mask_off = fast_off + offsetof(CPUTLBDescFast, mask);
+     int table_off = fast_off + offsetof(CPUTLBDescFast, table);
+     unsigned s_bits = opc & MO_SIZE;
+@@ -2070,8 +2073,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     ldst->addrhi_reg = addrhi;
  
-     /*
+     /* Load tlb_mask[mmu_idx] and tlb_table[mmu_idx].  */
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) > 0);
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) < -32768);
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_AREG0, mask_off);
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP2, TCG_AREG0, table_off);
+ 
 diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index 45bd09cfc4..1b5e3d3ec3 100644
+index 1b5e3d3ec3..99e375d5b1 100644
 --- a/tcg/riscv/tcg-target.c.inc
 +++ b/tcg/riscv/tcg-target.c.inc
-@@ -962,6 +962,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, TCGReg *pbase,
-     }
+@@ -898,6 +898,9 @@ static bool tcg_out_qemu_st_slow_path(TCGContext *s, TCGLabelQemuLdst *l)
+     return true;
+ }
  
-     /* Load the tlb comparator and the addend.  */
-+    QEMU_BUILD_BUG_ON(HOST_BIG_ENDIAN);
-     tcg_out_ld(s, addr_type, TCG_REG_TMP0, TCG_REG_TMP2,
-                is_ld ? offsetof(CPUTLBEntry, addr_read)
-                      : offsetof(CPUTLBEntry, addr_write));
++/* We expect to use a 12-bit negative offset from ENV.  */
++#define MIN_TLB_MASK_TABLE_OFS  -(1 << 11)
++
+ /*
+  * For softmmu, perform the TLB load and compare.
+  * For useronly, perform any required alignment tests.
+@@ -921,7 +924,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, TCGReg *pbase,
+     unsigned s_bits = opc & MO_SIZE;
+     unsigned s_mask = (1u << s_bits) - 1;
+     int mem_index = get_mmuidx(oi);
+-    int fast_ofs = TLB_MASK_TABLE_OFS(mem_index);
++    int fast_ofs = tlb_mask_table_ofs(s, mem_index);
+     int mask_ofs = fast_ofs + offsetof(CPUTLBDescFast, mask);
+     int table_ofs = fast_ofs + offsetof(CPUTLBDescFast, table);
+     int compare_mask;
+@@ -932,8 +935,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, TCGReg *pbase,
+     ldst->oi = oi;
+     ldst->addrlo_reg = addr_reg;
+ 
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) > 0);
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) < -(1 << 11));
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP0, TCG_AREG0, mask_ofs);
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_AREG0, table_ofs);
+ 
 diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-index c32801b829..319c697a3c 100644
+index 319c697a3c..264a5628db 100644
 --- a/tcg/s390x/tcg-target.c.inc
 +++ b/tcg/s390x/tcg-target.c.inc
-@@ -1783,6 +1783,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-         ofs = offsetof(CPUTLBEntry, addr_write);
-     }
-     if (addr_type == TCG_TYPE_I32) {
-+        ofs += HOST_BIG_ENDIAN * 4;
-         tcg_out_insn(s, RX, C, TCG_REG_R0, TCG_TMP0, TCG_REG_NONE, ofs);
-     } else {
-         tcg_out_insn(s, RXY, CG, TCG_REG_R0, TCG_TMP0, TCG_REG_NONE, ofs);
+@@ -1722,6 +1722,9 @@ static bool tcg_out_qemu_st_slow_path(TCGContext *s, TCGLabelQemuLdst *lb)
+     return true;
+ }
+ 
++/* We're expecting to use a 20-bit negative offset on the tlb memory ops.  */
++#define MIN_TLB_MASK_TABLE_OFS  -(1 << 19)
++
+ /*
+  * For softmmu, perform the TLB load and compare.
+  * For useronly, perform any required alignment tests.
+@@ -1744,7 +1747,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     unsigned s_bits = opc & MO_SIZE;
+     unsigned s_mask = (1 << s_bits) - 1;
+     int mem_index = get_mmuidx(oi);
+-    int fast_off = TLB_MASK_TABLE_OFS(mem_index);
++    int fast_off = tlb_mask_table_ofs(s, mem_index);
+     int mask_off = fast_off + offsetof(CPUTLBDescFast, mask);
+     int table_off = fast_off + offsetof(CPUTLBDescFast, table);
+     int ofs, a_off;
+@@ -1758,8 +1761,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     tcg_out_sh64(s, RSY_SRLG, TCG_TMP0, addr_reg, TCG_REG_NONE,
+                  s->page_bits - CPU_TLB_ENTRY_BITS);
+ 
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) > 0);
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) < -(1 << 19));
+     tcg_out_insn(s, RXY, NG, TCG_TMP0, TCG_AREG0, TCG_REG_NONE, mask_off);
+     tcg_out_insn(s, RXY, AG, TCG_TMP0, TCG_AREG0, TCG_REG_NONE, table_off);
+ 
 diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index 48efd83817..6c60657c36 100644
+index 6c60657c36..ffcb879211 100644
 --- a/tcg/sparc64/tcg-target.c.inc
 +++ b/tcg/sparc64/tcg-target.c.inc
-@@ -1063,8 +1063,12 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     /* Add the tlb_table pointer, creating the CPUTLBEntry address into R2.  */
-     tcg_out_arith(s, TCG_REG_T1, TCG_REG_T1, TCG_REG_T3, ARITH_ADD);
+@@ -1017,6 +1017,9 @@ bool tcg_target_has_memory_bswap(MemOp memop)
+     return true;
+ }
  
--    /* Load the tlb comparator and the addend. */
--    tcg_out_ld(s, addr_type, TCG_REG_T2, TCG_REG_T1, cmp_off);
-+    /*
-+     * Load the tlb comparator and the addend.
-+     * Always load the entire 64-bit comparator for simplicity.
-+     * We will ignore the high bits via BPCC_ICC below.
-+     */
-+    tcg_out_ld(s, TCG_TYPE_I64, TCG_REG_T2, TCG_REG_T1, cmp_off);
-     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_T1, TCG_REG_T1, add_off);
-     h->base = TCG_REG_T1;
++/* We expect to use a 13-bit negative offset from ENV.  */
++#define MIN_TLB_MASK_TABLE_OFS  -(1 << 12)
++
+ /*
+  * For softmmu, perform the TLB load and compare.
+  * For useronly, perform any required alignment tests.
+@@ -1040,7 +1043,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+ 
+ #ifdef CONFIG_SOFTMMU
+     int mem_index = get_mmuidx(oi);
+-    int fast_off = TLB_MASK_TABLE_OFS(mem_index);
++    int fast_off = tlb_mask_table_ofs(s, mem_index);
+     int mask_off = fast_off + offsetof(CPUTLBDescFast, mask);
+     int table_off = fast_off + offsetof(CPUTLBDescFast, table);
+     int cmp_off = is_ld ? offsetof(CPUTLBEntry, addr_read)
+@@ -1050,8 +1053,6 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     int cc;
+ 
+     /* Load tlb_mask[mmu_idx] and tlb_table[mmu_idx].  */
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) > 0);
+-    QEMU_BUILD_BUG_ON(TLB_MASK_TABLE_OFS(0) < -(1 << 12));
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_T2, TCG_AREG0, mask_off);
+     tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_T3, TCG_AREG0, table_off);
  
 -- 
 2.34.1
