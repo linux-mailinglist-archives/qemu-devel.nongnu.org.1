@@ -2,92 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FBC70E0BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 17:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B1A70E04C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 17:21:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Tlo-0001Ps-5u; Tue, 23 May 2023 11:17:52 -0400
+	id 1q1ToV-0003Lm-Fg; Tue, 23 May 2023 11:20:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1q1Tlh-0001Ip-6G
- for qemu-devel@nongnu.org; Tue, 23 May 2023 11:17:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
+ id 1q1ToT-0003Ld-85
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 11:20:37 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1q1Tlf-0007Lc-Ky
- for qemu-devel@nongnu.org; Tue, 23 May 2023 11:17:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684855062;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2zWKsYY5ZPJ6055j7aHaA7boCYcVDRDNZ31oucUAOYQ=;
- b=WjP2xiLat3+oAeQQceNaJhga2vUytJEy6TIJGmrZ/KU8CVzbixHPsfady7ocNfoZv5U1vs
- q1AS/+qtcVhxMNag171JMyI+prZY8nJ5GbebNUMGRx5c+LGr3cdJjNYg5z6zLL6I9CBO57
- xXy9tRBW/wYcTZp9qjL6ktuNdNHAalw=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-7QyzXTQiMI6SE0hO3i0qUw-1; Tue, 23 May 2023 11:17:41 -0400
-X-MC-Unique: 7QyzXTQiMI6SE0hO3i0qUw-1
-Received: by mail-ua1-f72.google.com with SMTP id
- a1e0cc1a2514c-7837efeb6a1so5934121241.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:17:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684855057; x=1687447057;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2zWKsYY5ZPJ6055j7aHaA7boCYcVDRDNZ31oucUAOYQ=;
- b=k58vu2dW0YVDa2jDGDrz3NLfUn9j1JJf+XA7VYq6g2VT0Rx8xxuYe2rpCbDe8ZuhA2
- +BVcbi6cZIxlOWcbPuLo2HnPzUkLXkpWOc2rilp3udWnEUWkCd/fIl+q4LH0+M4cd8NK
- WU/aiNQQXC4RYy5YdApowi3tMV/Z3hF1p6FedObdvIxpsirTyw2h7zgg2CorOg1+luI0
- HttzwSfzKDIDOktkGCX9wCisaimFzZcdpkn9GUoC6ClQyE4R1/VS/GbX/m1sjFKxOOMM
- +RTt+F9ZctGYoYlo36R48l+2wLzGFvu3na9/jr2JmU83sbZNvzsfv6pDoi+k0ZkzRs3K
- UhfA==
-X-Gm-Message-State: AC+VfDz03/uJhJezvCm0irCTZRPFsc4wtXdsbw6A793cEOJ2qRbpI5LZ
- v6nyD04CI0fH9Uftk4rksDpHq1AJCZKHRmvvFgdRj8EcWejHtSSWYx+s6ECVTBxYbhEtE28J447
- tPoUL6+Q9TdpTf3PNVHg5+DyuO8bBRBE=
-X-Received: by 2002:a67:ed51:0:b0:40e:5d46:d297 with SMTP id
- m17-20020a67ed51000000b0040e5d46d297mr4238894vsp.17.1684855057627; 
- Tue, 23 May 2023 08:17:37 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4cu6kJQIk9mPT/UJr/tREvkZX9ROA1YnqGqHUH2uiET1V1R04tgxkle9UA9R1v9McH5vfJrMWazq2qYRjZEzE=
-X-Received: by 2002:a67:ed51:0:b0:40e:5d46:d297 with SMTP id
- m17-20020a67ed51000000b0040e5d46d297mr4238880vsp.17.1684855057364; Tue, 23
- May 2023 08:17:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
+ id 1q1ToP-0007tT-Mx
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 11:20:37 -0400
+Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QQdHc6bGcz67ZCD;
+ Tue, 23 May 2023 23:18:20 +0800 (CST)
+Received: from DESKTOP-0LHM7NF.huawei.com (10.199.58.101) by
+ lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Tue, 23 May 2023 16:20:14 +0100
+To: <qemu-devel@nongnu.org>
+CC: <quintela@redhat.com>, <peterx@redhat.com>, <leobras@redhat.com>,
+ <eblake@redhat.com>, <armbru@redhat.com>, Andrei Gudkov
+ <gudkov.andrei@huawei.com>
+Subject: [PATCH] qapi: better docs for calc-dirty-rate and friends
+Date: Tue, 23 May 2023 18:19:56 +0300
+Message-ID: <fe7d32a621ebd69ef6974beb2499c0b5dccb9e19.1684854849.git.gudkov.andrei@huawei.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20230508141813.1086562-1-mcascell@redhat.com>
- <CAJ+F1CK2V22PMYP4PQwH+VYKhR32GKxFK5eRODE928iu3LVodA@mail.gmail.com>
- <fcf99624-9a48-6760-a28d-bb88bce6572f@linaro.org>
- <ZGx0ylB10aLWchuf@redhat.com>
- <8a9c7803-5c1c-3e68-6506-14eae205d11e@linaro.org>
- <CAA8xKjUN+Ru5h65YoTDg0trSUZg=L6iD5HF2AKNv-3wAt+ZtHg@mail.gmail.com>
- <b1f5c418-9b1a-4f38-3611-3d355e769b1b@linaro.org>
-In-Reply-To: <b1f5c418-9b1a-4f38-3611-3d355e769b1b@linaro.org>
-From: Mauro Matteo Cascella <mcascell@redhat.com>
-Date: Tue, 23 May 2023 17:17:26 +0200
-Message-ID: <CAA8xKjXb=89jPRPpOSR1G8eX6hrWgqW4+T==7NVMaNeJZNEiZA@mail.gmail.com>
-Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
- cursor_alloc
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>, 
- qemu-devel@nongnu.org, kraxel@redhat.com, jacek.halon@gmail.com, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.199.58.101]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ lhrpeml500004.china.huawei.com (7.191.163.9)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,85 +60,184 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Andrei Gudkov <gudkov.andrei@huawei.com>
+From:  Andrei Gudkov via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 23, 2023 at 4:07=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> On 23/5/23 14:57, Mauro Matteo Cascella wrote:
-> > On Tue, May 23, 2023 at 10:37=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-> > <philmd@linaro.org> wrote:
-> >>
-> >> On 23/5/23 10:09, Daniel P. Berrang=C3=A9 wrote:
-> >>> On Mon, May 22, 2023 at 08:55:02PM +0200, Philippe Mathieu-Daud=C3=A9=
- wrote:
-> >>>> On 9/5/23 09:13, Marc-Andr=C3=A9 Lureau wrote:
-> >>>>> Hi
-> >>>>>
-> >>>>> On Mon, May 8, 2023 at 6:21=E2=80=AFPM Mauro Matteo Cascella
-> >>>>> <mcascell@redhat.com <mailto:mcascell@redhat.com>> wrote:
-> >>>>>
-> >>>>>       The cursor_alloc function still accepts a signed integer for =
-both
-> >>>>>       the cursor
-> >>>>>       width and height. A specially crafted negative width/height c=
-ould
-> >>>>>       make datasize
-> >>>>>       wrap around and cause the next allocation to be 0, potentiall=
-y
-> >>>>>       leading to a
-> >>>>>       heap buffer overflow. Modify QEMUCursor struct and cursor_all=
-oc
-> >>>>>       prototype to
-> >>>>>       accept unsigned ints.
-> >>>>>
-> >>>>>       Fixes: CVE-2023-1601
-> >>>>>       Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_a=
-lloc
-> >>>>>       (CVE-2021-4206)")
-> >>>>>       Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com
-> >>>>>       <mailto:mcascell@redhat.com>>
-> >>>>>       Reported-by: Jacek Halon <jacek.halon@gmail.com
-> >>>>>       <mailto:jacek.halon@gmail.com>>
-> >>>>>
-> >>>>>
-> >>>>> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com
-> >>>>> <mailto:marcandre.lureau@redhat.com>>
-> >>>>>
-> >>>>> It looks like this is not exploitable, QXL code uses u16 types, and
-> >>>>
-> >>>> 0xffff * 0xffff * 4 still overflows on 32-bit host, right?
-> >>>
-> >>> cursor_alloc() will reject 0xffff:
-> >>>
-> >>>       if (width > 512 || height > 512) {
-> >>>           return NULL;
-> >>>       }
-> >>
-> >> I hadn't looked at the source file (the 'datasize' assignation
-> >> made me incorrectly think it'd be use before sanitized).
-> >>
-> >> Still I wonder why can't we use a simple 'unsigned' type instead
-> >> of a uint32_t, but I won't insist.
-> >
-> > I can send v2 with s/uint32_t/uint16_t/ if you think it's a relevant ch=
-ange.
->
-> Specifying the word size doesn't really add any (security) value IMHO.
+Rewrote calc-dirty-rate documentation. Briefly described
+different modes of dirty page rate measurement. Added some
+examples. Fixed obvious grammar errors.
 
-No security benefit, I know, it just seems more reasonable given what
-Gerd said about 512x512 sprites.
+Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
+---
+ qapi/migration.json | 107 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 77 insertions(+), 30 deletions(-)
 
-> I'll stop bikeshedding here.
->
-> Regards,
->
-> Phil.
->
---
-Mauro Matteo Cascella
-Red Hat Product Security
-PGP-Key ID: BB3410B0
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 179af0c4d8..19b51444b5 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1735,14 +1735,14 @@
+ ##
+ # @DirtyRateStatus:
+ #
+-# An enumeration of dirtyrate status.
++# Dirty page rate measurement status.
+ #
+-# @unstarted: the dirtyrate thread has not been started.
++# @unstarted: measuring thread has not been started yet
+ #
+-# @measuring: the dirtyrate thread is measuring.
++# @measuring: measuring thread is running
+ #
+-# @measured: the dirtyrate thread has measured and results are
+-#     available.
++# @measured: dirty page rate is measured and the results are
++#     available
+ #
+ # Since: 5.2
+ ##
+@@ -1752,13 +1752,14 @@
+ ##
+ # @DirtyRateMeasureMode:
+ #
+-# An enumeration of mode of measuring dirtyrate.
++# Method used to measure dirty page rate.  Differences between
++# available methods are explained in @calc-dirty-rate.
+ #
+-# @page-sampling: calculate dirtyrate by sampling pages.
++# @page-sampling: use page sampling
+ #
+-# @dirty-ring: calculate dirtyrate by dirty ring.
++# @dirty-ring: use dirty ring
+ #
+-# @dirty-bitmap: calculate dirtyrate by dirty bitmap.
++# @dirty-bitmap: use dirty bitmap
+ #
+ # Since: 6.2
+ ##
+@@ -1768,26 +1769,25 @@
+ ##
+ # @DirtyRateInfo:
+ #
+-# Information about current dirty page rate of vm.
++# Information about measured dirty page rate.
+ #
+ # @dirty-rate: an estimate of the dirty page rate of the VM in units
+-#     of MB/s, present only when estimating the rate has completed.
++#     of MiB/s. Value is present only when @status is 'measured'.
+ #
+-# @status: status containing dirtyrate query status includes
+-#     'unstarted' or 'measuring' or 'measured'
++# @status: current status of dirty page rate measurements
+ #
+ # @start-time: start time in units of second for calculation
+ #
+-# @calc-time: time in units of second for sample dirty pages
++# @calc-time: time period in units of second for which dirty page
++#     rate was measured
+ #
+-# @sample-pages: page count per GB for sample dirty pages the default
+-#     value is 512 (since 6.1)
++# @sample-pages: number of sampled pages per each GiB of guest
++#     memory.  Value is valid only in page-sampling mode (Since 6.1)
+ #
+-# @mode: mode containing method of calculate dirtyrate includes
+-#     'page-sampling' and 'dirty-ring' (Since 6.2)
++# @mode: mode that was used to measure dirty page rate (Since 6.2)
+ #
+-# @vcpu-dirty-rate: dirtyrate for each vcpu if dirty-ring mode
+-#     specified (Since 6.2)
++# @vcpu-dirty-rate: dirty rate for each vCPU if dirty-ring mode
++#     was specified (Since 6.2)
+ #
+ # Since: 5.2
+ ##
+@@ -1803,15 +1803,50 @@
+ ##
+ # @calc-dirty-rate:
+ #
+-# start calculating dirty page rate for vm
+-#
+-# @calc-time: time in units of second for sample dirty pages
+-#
+-# @sample-pages: page count per GB for sample dirty pages the default
+-#     value is 512 (since 6.1)
+-#
+-# @mode: mechanism of calculating dirtyrate includes 'page-sampling'
+-#     and 'dirty-ring' (Since 6.1)
++# Starts measuring dirty page rate of the VM.  Results can be
++# retrieved with @query-dirty-rate after measurements are completed.
++#
++# Dirty page rate is the number of pages changed in a given time
++# period expressed in MiB/s.  The following methods of calculation
++# are available:
++#
++# 1. In page sampling mode, a random subset of pages are selected
++#    and hashed twice: once in the beginning of measurement time
++#    period, another one -- in the end.  If two hashes for some page
++#    are different, the page is counted as changed.  Since this
++#    method relies on sampling and hashing, calculated dirty page
++#    rate is only the estimation of its true value.  Setting
++#    @sample-pages to higher value improves estimation quality but
++#    at the cost of higher computational overhead.
++#
++# 2. Dirty bitmap mode captures writes to memory by temporarily
++#    revoking write access to all pages and counting page faults.
++#    Information about modified pages is collected into bitmap,
++#    where each bit corresponds to one guest page.  This mode
++#    requires that KVM accelerator property "dirty-ring-size=N"
++#    is *not* set.
++#
++# 3. Dirty ring mode is similar to dirty bitmap mode, but the
++#    information about modified pages is collected into ring buffer.
++#    This mode tracks page modification per each vCPU separately.
++#    It requires that KVM accelerator property "dirty-ring-size=N"
++#    is set.
++#
++# @calc-time: time period in units of second for which dirty page rate
++#    is calculated.  Note that larger @calc-time values will typically
++#    result in smaller dirty page rates because page dirtying is a
++#    one-time event.  Once some page is counted as dirty during
++#    @calc-time period, further writes to this page will not increase
++#    dirty page rate anymore.
++#
++# @sample-pages: number of sampled pages per each GiB of guest memory.
++#     Default value is 512.  For 4KiB guest pages this corresponds to
++#     sampling ratio of 0.2%.  This argument is used only in page
++#     sampling mode. (Since 6.1)
++#
++# @mode: mechanism for tracking dirty pages.  Default value is
++#    'page-sampling'.  Others are 'dirty-bitmap' and 'dirty-ring'.
++#    (Since 6.1)
+ #
+ # Since: 5.2
+ #
+@@ -1828,9 +1863,21 @@
+ ##
+ # @query-dirty-rate:
+ #
+-# query dirty page rate in units of MB/s for vm
++# Query results of the most recent invocation of @calc-dirty-rate.
+ #
+ # Since: 5.2
++#
++# Examples:
++#
++# 1. Measurement is in progress:
++#
++# <- {"status": "measuring", "sample-pages": 512,
++#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
++#
++# 2. Measurement has been completed:
++#
++# <- {"status": "measured", "sample-pages": 512, "dirty-rate": 108,
++#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
+ ##
+ { 'command': 'query-dirty-rate', 'returns': 'DirtyRateInfo' }
+ 
+-- 
+2.30.2
 
 
