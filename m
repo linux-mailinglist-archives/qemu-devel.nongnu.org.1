@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096CC70E20D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1929470E273
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:50:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1VAe-0002gv-8c; Tue, 23 May 2023 12:47:36 -0400
+	id 1q1VCI-000477-Pu; Tue, 23 May 2023 12:49:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1VAc-0002gf-9V
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:47:34 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1q1VCG-00045Y-Ed
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:49:16 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1VAa-0004Gd-RW
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:47:34 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3095b1b6e02so3010877f8f.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:47:32 -0700 (PDT)
+ id 1q1VCF-0004j6-02
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:49:16 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3f42ba32e24so695955e9.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:49:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684860451; x=1687452451;
+ d=linaro.org; s=google; t=1684860553; x=1687452553;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FjgTeB1EyLfSRmtIChJixytg6q69O/cwCyX1AIzh5bg=;
- b=eud/jwloJSJK2Jwn80FK9irQLpVby0obSB5rBZ/CBLjp5urJ1XuPpWUvOYTg7tlaHW
- WTT31LiosP0Uqfx3vYFCQSEFae2CwoVTb1PkhIegSGO6qxFn0OYdQ/LMyD1F5nJn0sVl
- Nbdfj/SDbhZXJ65/xjKsPl6tsvyoHXvqv2V7r2ubwpAIr1rW2gVyYZagszGD1dM1sqxB
- lfz/N6o4PSZi5ETN/HUgqDjW/4z+p5hdn3pcCSDbNVWAuc6Oo8OTB/+5VHSu7TdAOjYo
- vf4Axus0N7Q4yGHy5IT3bk9Hdglt+eVAuFZmn5vBWhdoosSnm3DbpuM8+Gki5zI/npY7
- /YHw==
+ bh=fSAzFHWhZCR2v4BdkTx1hFMomBv0xMAB5sXZRm0+5js=;
+ b=sLnzv1/+U7X2nuiDDTwNbaLtwV+p87qcmPwPxHbgDV5Erk4Xj5WRavIU5psRoUPDZ8
+ d/nCXIjTT5oiUoi5FvvtTTAitZDcnMUIvFFn7H3ZovwQp58NHE2ZQcnfbhtNWDqOHC6q
+ nSFm3FBhSnQXrknVlT+4VqQv26uL7XZN1Z2IVa+Jh2+C2PbvJwluJ9J6WYRMWhUr+Yjc
+ vwim41tqvQQ1IDW2v3QQkI6+6Xvimt3NGGcEkUUfXLDn+gCx16Y34jErOezAhMA6hvaV
+ QcjIantMU4nlRQacwXFUjYt4VUBUre79Dy9ySfxxTvYCbklBIB6HTNzJJoUgMToqCA8M
+ rK/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684860451; x=1687452451;
+ d=1e100.net; s=20221208; t=1684860553; x=1687452553;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=FjgTeB1EyLfSRmtIChJixytg6q69O/cwCyX1AIzh5bg=;
- b=kar0SOCumvhGfC9oyUQHMRqN29R5fPtDVdq5J5Dk+fIWMJmydQNI7M4lWa46wSWFxL
- x1QsLR0E485flW/3YXYWAexlMPP9+aFYzJ3fg4uwMpOXvE1KsL0mKkNmatKmg5ehGVG4
- EaH3cckGpeczehslichqZNKUlT35/tS7r/8tExwMCEjTQe5S7hz/LCZpp8poY6PfkMrm
- zYTDrrbegjY2DheEg2d+MT0vL84tB6SM1g9hQgBaG4vVeSND3ZIj4Hkm7y0n1In+vSUc
- 7hvTECqVyvY8ityPnj0E1aN6BtM+DfwfkdDcF4a+VGPAtlUWCziVUqHFUB/moTb4DB0C
- VO5A==
-X-Gm-Message-State: AC+VfDwtdcwf6G+nyxUGJD/oiNuOqgOS2qY5FFEMK1a4nWWKqwh48AS5
- 2/7Y+MboL7FY7jZ+iWzT9Glx7Q==
-X-Google-Smtp-Source: ACHHUZ7V+CHajBqVvmpVpOHdKj5F22Sz2MdaOClGWwxqZLa9r8L6rbLaLAQKZPPtlK3kWck8ju4CZg==
-X-Received: by 2002:a5d:43cb:0:b0:306:2c39:5d52 with SMTP id
- v11-20020a5d43cb000000b003062c395d52mr10502259wrr.57.1684860451528; 
- Tue, 23 May 2023 09:47:31 -0700 (PDT)
+ bh=fSAzFHWhZCR2v4BdkTx1hFMomBv0xMAB5sXZRm0+5js=;
+ b=bPu/lV9LtnBRAMd9LI+Ffi4l4BpaPHPWIWoWEA5r9rtAysPv5rMWpDYZOM6vziYe1G
+ IQlGMni8eKHPBGf84zsgngSLU3XTYF0oC8ZFEVpaJfl9ye6MF6BKAAz92TNPueV+eqmo
+ y6d+huwXqRA/sT9TgsZ7TfQKuwShNPldElVaMWUswxP8zNKMHZbBOAVvFP0S+DEmhpou
+ mXNxur0uWUb6NEt9cj+/HqvZHjtwg/JZ5sKPdvdpUv4J5z7OMs9GIuEPxT1dIzgOQAbC
+ Ta2uYGBVCzDVIGnDL8G7Dc6czrFLM3xj4PLlsCmJ8BxvwPFAzcc/6JI39+VZn98+nPaE
+ GcwQ==
+X-Gm-Message-State: AC+VfDzGQUHV83qVcjoJetldD8p7nb2Rhs712atEJGH4iyS6Bo8i2lXf
+ hEv3t34VE3y0DgCWNrlZTY1UVg==
+X-Google-Smtp-Source: ACHHUZ77MzqKUATaIigfDDW0f6NgfwlRBVQav2+98c4AC4STheJ1fIsSJw+1JS7UF40UWna2ImY1JA==
+X-Received: by 2002:a05:600c:2257:b0:3f6:900:4b6a with SMTP id
+ a23-20020a05600c225700b003f609004b6amr2844959wmm.1.1684860553420; 
+ Tue, 23 May 2023 09:49:13 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- m9-20020a7bce09000000b003f4247fbb5fsm15378488wmc.10.2023.05.23.09.47.31
+ a23-20020a1cf017000000b003f17eaae2c9sm12428188wmb.1.2023.05.23.09.49.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 09:47:31 -0700 (PDT)
+ Tue, 23 May 2023 09:49:13 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id E9B211FFBB;
- Tue, 23 May 2023 17:47:30 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 8646E1FFBB;
+ Tue, 23 May 2023 17:49:12 +0100 (BST)
 References: <20230523134733.678646-1-richard.henderson@linaro.org>
- <20230523134733.678646-22-richard.henderson@linaro.org>
+ <20230523134733.678646-23-richard.henderson@linaro.org>
 User-agent: mu4e 1.11.6; emacs 29.0.91
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: peter.maydell@linaro.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 21/27] accel/tcg: Eliminate #if on HAVE_ATOMIC128 and
- HAVE_CMPXCHG128
-Date: Tue, 23 May 2023 17:47:26 +0100
-In-reply-to: <20230523134733.678646-22-richard.henderson@linaro.org>
-Message-ID: <87cz2ryoyl.fsf@linaro.org>
+Subject: Re: [PATCH v2 22/27] qemu/atomic128: Split atomic16_read
+Date: Tue, 23 May 2023 17:49:07 +0100
+In-reply-to: <20230523134733.678646-23-richard.henderson@linaro.org>
+Message-ID: <878rdfyovr.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,9 +99,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Richard Henderson <richard.henderson@linaro.org> writes:
 
-> These symbols will shortly become dynamic runtime tests and
-> therefore not appropriate for the preprocessor.  Use the
-> matching CONFIG_* symbols for that purpose.
+> Create both atomic16_read_ro and atomic16_read_rw.
+> Previously we pretended that we had atomic16_read in system mode,
+> because we "know" that all ram is always writable to the host.
+> Now, expose read-only and read-write versions all of the time.
+>
+> For aarch64, do not fall back to __atomic_read_16 even if
+> supported by the compiler, to work around a clang bug.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
