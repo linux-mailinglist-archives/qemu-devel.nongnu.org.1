@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C5970DA4C
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23DE70DA44
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P4m-0000bd-5k; Tue, 23 May 2023 06:17:08 -0400
+	id 1q1P4n-0000gg-MV; Tue, 23 May 2023 06:17:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P4j-0000Ub-6k; Tue, 23 May 2023 06:17:05 -0400
+ id 1q1P4k-0000aH-MB; Tue, 23 May 2023 06:17:06 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P4h-000249-JU; Tue, 23 May 2023 06:17:04 -0400
+ id 1q1P4i-000284-M2; Tue, 23 May 2023 06:17:06 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 565627D04;
+ by isrv.corpit.ru (Postfix) with ESMTP id 907457D05;
  Tue, 23 May 2023 13:15:53 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9D4757294;
+ by tsrv.corpit.ru (Postfix) with SMTP id CB61D7295;
  Tue, 23 May 2023 13:15:52 +0300 (MSK)
-Received: (nullmailer pid 85544 invoked by uid 1000);
+Received: (nullmailer pid 85548 invoked by uid 1000);
  Tue, 23 May 2023 10:15:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>,
- Yiming Tao <taoym@zju.edu.cn>, Gonglei <arei.gonglei@huawei.com>,
- zhenwei pi <pizhenwei@bytedance.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 54/59] virtio-crypto: fix NULL pointer dereference in
- virtio_crypto_free_request
-Date: Tue, 23 May 2023 13:15:14 +0300
-Message-Id: <20230523101536.85424-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 55/59] aio-posix: do not nest poll handlers
+Date: Tue, 23 May 2023 13:15:15 +0300
+Message-Id: <20230523101536.85424-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
@@ -62,52 +61,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mauro Matteo Cascella <mcascell@redhat.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Ensure op_info is not NULL in case of QCRYPTODEV_BACKEND_ALG_SYM algtype.
+QEMU's event loop supports nesting, which means that event handler
+functions may themselves call aio_poll(). The condition that triggered a
+handler must be reset before the nested aio_poll() call, otherwise the
+same handler will be called and immediately re-enter aio_poll. This
+leads to an infinite loop and stack exhaustion.
 
-Fixes: 0e660a6f90a ("crypto: Introduce RSA algorithm")
-Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
-Reported-by: Yiming Tao <taoym@zju.edu.cn>
-Message-Id: <20230509075317.1132301-1-mcascell@redhat.com>
-Reviewed-by: Gonglei <arei.gonglei@huawei.com>
-Reviewed-by: zhenwei pi<pizhenwei@bytedance.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 3e69908907f8d3dd20d5753b0777a6e3824ba824)
+Poll handlers are especially prone to this issue, because they typically
+reset their condition by finishing the processing of pending work.
+Unfortunately it is during the processing of pending work that nested
+aio_poll() calls typically occur and the condition has not yet been
+reset.
+
+Disable a poll handler during ->io_poll_ready() so that a nested
+aio_poll() call cannot invoke ->io_poll_ready() again. As a result, the
+disabled poll handler and its associated fd handler do not run during
+the nested aio_poll(). Calling aio_set_fd_handler() from inside nested
+aio_poll() could cause it to run again. If the fd handler is pending
+inside nested aio_poll(), then it will also run again.
+
+In theory fd handlers can be affected by the same issue, but they are
+more likely to reset the condition before calling nested aio_poll().
+
+This is a special case and it's somewhat complex, but I don't see a way
+around it as long as nested aio_poll() is supported.
+
+Cc: qemu-stable@nongnu.org
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2186181
+Fixes: c38270692593 ("block: Mark bdrv_co_io_(un)plug() and callers GRAPH_RDLOCK")
+Cc: Kevin Wolf <kwolf@redhat.com>
+Cc: Emanuele Giuseppe Esposito <eesposit@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20230502184134.534703-2-stefanha@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 6d740fb01b9f0f5ea7a82f4d5e458d91940a19ee)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index 802e1b9659..a1d122b9aa 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -476,15 +476,17 @@ static void virtio_crypto_free_request(VirtIOCryptoReq *req)
-         size_t max_len;
-         CryptoDevBackendSymOpInfo *op_info = req->op_info.u.sym_op_info;
- 
--        max_len = op_info->iv_len +
--                  op_info->aad_len +
--                  op_info->src_len +
--                  op_info->dst_len +
--                  op_info->digest_result_len;
--
--        /* Zeroize and free request data structure */
--        memset(op_info, 0, sizeof(*op_info) + max_len);
--        g_free(op_info);
-+        if (op_info) {
-+            max_len = op_info->iv_len +
-+                      op_info->aad_len +
-+                      op_info->src_len +
-+                      op_info->dst_len +
-+                      op_info->digest_result_len;
+diff --git a/util/aio-posix.c b/util/aio-posix.c
+index a8be940f76..34bc2a64d8 100644
+--- a/util/aio-posix.c
++++ b/util/aio-posix.c
+@@ -353,8 +353,19 @@ static bool aio_dispatch_handler(AioContext *ctx, AioHandler *node)
+         poll_ready && revents == 0 &&
+         aio_node_check(ctx, node->is_external) &&
+         node->io_poll_ready) {
++        /*
++         * Remove temporarily to avoid infinite loops when ->io_poll_ready()
++         * calls aio_poll() before clearing the condition that made the poll
++         * handler become ready.
++         */
++        QLIST_SAFE_REMOVE(node, node_poll);
 +
-+            /* Zeroize and free request data structure */
-+            memset(op_info, 0, sizeof(*op_info) + max_len);
-+            g_free(op_info);
+         node->io_poll_ready(node->opaque);
+ 
++        if (!QLIST_IS_INSERTED(node, node_poll)) {
++            QLIST_INSERT_HEAD(&ctx->poll_aio_handlers, node, node_poll);
 +        }
-     } else if (req->flags == QCRYPTODEV_BACKEND_ALG_ASYM) {
-         CryptoDevBackendAsymOpInfo *op_info = req->op_info.u.asym_op_info;
-         if (op_info) {
++
+         /*
+          * Return early since revents was zero. aio_notify() does not count as
+          * progress.
 -- 
 2.39.2
 
