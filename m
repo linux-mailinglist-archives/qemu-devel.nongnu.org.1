@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E886A70DE34
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7305670DE39
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SUZ-0000b8-LT; Tue, 23 May 2023 09:55:59 -0400
+	id 1q1SVg-0003GY-I2; Tue, 23 May 2023 09:57:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSa-0005AO-Q7
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:58 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1q1SVY-00036f-P4
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:57:02 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSY-00035U-TR
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:56 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-64d3fbb8c1cso4743978b3a.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:54 -0700 (PDT)
+ id 1q1SVW-0004BN-N6
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:57:00 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-64f47448aeaso363641b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:56:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684850034; x=1687442034;
+ d=linaro.org; s=google; t=1684850217; x=1687442217;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=YHMznhDZOucZiZnqaYMteWVjZfl00HdpVCrzNF7XO3s=;
- b=dtFyH/gIehEeHyrlOeqtpR1mvBqucYh9TlLWarcvBzaxE3lln2ips1szipzoYwl3OQ
- KriTdgBU0VepTwo9l0mF1V1gqjtaFNLZeD3zVvJipXpHTeEs3p7RbUdylucJnne0ABTo
- E/dfeZ6hS4n4bqybM5b21x04ttho4STGQbcmjev9bvdPV8ZiS6uJ5agy9oI+kt4qLpgK
- 109GtVE0bDQGpXOo4lekMfT9RBZ6S8e7RlQb3GDcZTSKe59Pc9rFNGVOGQZp/CEKZ+OD
- dl1JaxSy3w7Tyy5gDQhe24z8zga6jrjP6uLxW+noc1lKoMHsu0bPksK4TidccR2GwioB
- 4aJw==
+ :reply-to; bh=yWrZGJGhJkGS/jT+aD3SdArCyOPdyMfFotilTaL2dRI=;
+ b=LJBXY/2O+DxopgPZNK/s+cO/KW1lufkO6rmnj9ULvao5Gtbg6FMcC7iEoxpkP/ZlM1
+ TdP0kNR3MKcFil6j6UmEnQlb8rS9ge+tLWO62ZmF05Ed08x3inAoKW2yz3cXde2H529B
+ B8l4Y1joEe8nMWGqweyy/vWYibyU2WJp4BlR2WA7jQx9G1FFC2IQi9jcuP9QVofGHchr
+ wS0v0+ADVx7jGVtJ3JwjbS3GaoEd/RDfGLm7hf362xfk4vIrgYAXDjjZI+nVoP5BCaV1
+ sQpilPpsv4rlSSbvqX+iCstNz45O/5L8q+BQa/E3xtSeRFiayn32H9/f4BpdTJe9hJ9Z
+ C98w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684850034; x=1687442034;
+ d=1e100.net; s=20221208; t=1684850217; x=1687442217;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YHMznhDZOucZiZnqaYMteWVjZfl00HdpVCrzNF7XO3s=;
- b=MP6+1WrRZyhWPS2PQVvXDEZo1sKkqa0zlGJfkhi90aHYAi/PI4zKy/r0S/jnUQt4Ki
- R/eUXK6h/FZvaOHenUBM43acb2hMQ30EOSybR0+Tl7acdJDtLFn1KA0rQ69tolgW1xFG
- K+IG+VzQv8UQndkLdp5DHzf0g8u2mrMxP+Z8MRs5mQM+Y7pAj2gR48dQDUt/+RUSfNv9
- 34aGeijKOHJ57LTEP3oxETyi5GnVrBEKKWmTEwlJK9gWUFLVcqQid+wlm5WVLjGYKqZM
- NvljQvFCaHx4dtNAuVC/PbXuPEDDNsaHcsK4xw6bk8tXNVInlQRyvk21X22znn4mAzyo
- B4OA==
-X-Gm-Message-State: AC+VfDxmgfL0AKtqPmpT6ZTdB8heZMvUEX+k9/QN+XqnEiKuJ0hhR60m
- dzD/lDvIVPxcOf9Y8PYg5QyrbfgsZfgNpf625hg=
-X-Google-Smtp-Source: ACHHUZ4rhit60VNBmxjHaMQ3iTC0l1o1BYEr2XmU9xIGErGX9U53T2qYJbqxGIOQzPSK85zhOrZDuQ==
-X-Received: by 2002:aa7:88c5:0:b0:64a:f8c9:a42c with SMTP id
- k5-20020aa788c5000000b0064af8c9a42cmr17937911pff.18.1684850034010; 
- Tue, 23 May 2023 06:53:54 -0700 (PDT)
+ bh=yWrZGJGhJkGS/jT+aD3SdArCyOPdyMfFotilTaL2dRI=;
+ b=TJnarG0mumr0tez4OWMdOzIkg+8XQJ6kXdNixcR/VeSVRGwCbReWMYP3tKhYNYu/g5
+ 8F4o6wKOLA3k5YgLYSgBx7ghy58eIg6U5REKxz1cNqfg4AuMKy0sfOBf8tjKDC6/PqLa
+ 93AEdM+O5D2+IJFz/A38mXVrSEOzgIuFHCdWlgC1MxI5+spOqEbFvQgbl3TL0KKSI6uc
+ OJ2o+Yp5azMb/J4J1vxEAeKAke2WNbya/2/j3wzYABYtBBPqWlqJx1FNtdjfrAtEfo2O
+ HhyRREZsEnOrOvivxeJOX7P1BGO8/UFtH+nGOo0U5WMsnF8UNQmhmx38jYsbXyGbB0Q3
+ 4kMg==
+X-Gm-Message-State: AC+VfDwYuYXwvIZy6UW/BrwoeAqiE+hN8mDE0RdaVDwYiQ18XQZGrQ1c
+ bzUtd75C4gX1txzR7unV77AmhfKhK89aBm4leHg=
+X-Google-Smtp-Source: ACHHUZ5XYT9lHmQzZUwwnZ5Ar3ny+ytkrq9vSPE46BQukudVFoQb/OmKCb4DqlZ6W467kmjqbh3HpA==
+X-Received: by 2002:a05:6a00:1a15:b0:638:7e00:3737 with SMTP id
+ g21-20020a056a001a1500b006387e003737mr16186906pfv.23.1684850217091; 
+ Tue, 23 May 2023 06:56:57 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.53
+ v11-20020a62a50b000000b0063799398eaesm5805790pfm.51.2023.05.23.06.56.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:53:53 -0700 (PDT)
+ Tue, 23 May 2023 06:56:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 37/52] accel/tcg: Move most of gen-icount.h into
- translator.c
-Date: Tue, 23 May 2023 06:53:07 -0700
-Message-Id: <20230523135322.678948-38-richard.henderson@linaro.org>
+Subject: [PATCH v2 40/52] target/arm: Tidy helpers for translation
+Date: Tue, 23 May 2023 06:53:10 -0700
+Message-Id: <20230523135322.678948-41-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523135322.678948-1-richard.henderson@linaro.org>
 References: <20230523135322.678948-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,223 +90,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only usage of gen_tb_start and gen_tb_end are here.
-Move the static icount_start_insn variable into a local
-within translator_loop.  Simplify the two subroutines
-by passing in the existing local cflags variable.
-
-Leave only the declaration of gen_io_start in gen-icount.h.
+Move most includes from *translate*.c to translate.h, ensuring
+that we get the ordering correct.  Ensure cpu.h is first.
+Use disas/disas.h instead of exec/log.h.
+Drop otherwise unused includes.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/gen-icount.h | 79 +------------------------------------
- accel/tcg/translator.c    | 83 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 82 insertions(+), 80 deletions(-)
+ target/arm/tcg/translate.h        |  3 +++
+ target/arm/tcg/translate-a64.c    | 17 +++++------------
+ target/arm/tcg/translate-m-nocp.c |  2 --
+ target/arm/tcg/translate-mve.c    |  3 ---
+ target/arm/tcg/translate-neon.c   |  3 ---
+ target/arm/tcg/translate-sme.c    |  6 ------
+ target/arm/tcg/translate-sve.c    |  9 ---------
+ target/arm/tcg/translate-vfp.c    |  3 ---
+ target/arm/tcg/translate.c        | 17 +++++------------
+ 9 files changed, 13 insertions(+), 50 deletions(-)
 
-diff --git a/include/exec/gen-icount.h b/include/exec/gen-icount.h
-index f6de79a6b4..6006af4c06 100644
---- a/include/exec/gen-icount.h
-+++ b/include/exec/gen-icount.h
-@@ -1,83 +1,6 @@
- #ifndef GEN_ICOUNT_H
- #define GEN_ICOUNT_H
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 868a3abd0d..5b53b6215d 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -1,6 +1,9 @@
+ #ifndef TARGET_ARM_TRANSLATE_H
+ #define TARGET_ARM_TRANSLATE_H
  
++#include "cpu.h"
++#include "tcg/tcg-op.h"
++#include "tcg/tcg-op-gvec.h"
+ #include "exec/translator.h"
+ #include "exec/helper-gen.h"
+ #include "internals.h"
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 8d45dbf8fc..d9800337cf 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -18,20 +18,13 @@
+  */
+ #include "qemu/osdep.h"
+ 
+-#include "cpu.h"
 -#include "exec/exec-all.h"
--
--/* Helpers for instruction counting code generation.  */
--
--static TCGOp *icount_start_insn;
--
--static inline void gen_io_start(void)
--{
--    tcg_gen_st_i32(tcg_constant_i32(1), cpu_env,
--                   offsetof(ArchCPU, parent_obj.can_do_io) -
--                   offsetof(ArchCPU, env));
--}
--
--static inline void gen_tb_start(const TranslationBlock *tb)
--{
--    TCGv_i32 count = tcg_temp_new_i32();
--
--    tcg_gen_ld_i32(count, cpu_env,
--                   offsetof(ArchCPU, neg.icount_decr.u32) -
--                   offsetof(ArchCPU, env));
--
--    if (tb_cflags(tb) & CF_USE_ICOUNT) {
--        /*
--         * We emit a sub with a dummy immediate argument. Keep the insn index
--         * of the sub so that we later (when we know the actual insn count)
--         * can update the argument with the actual insn count.
--         */
--        tcg_gen_sub_i32(count, count, tcg_constant_i32(0));
--        icount_start_insn = tcg_last_op();
--    }
--
--    /*
--     * Emit the check against icount_decr.u32 to see if we should exit
--     * unless we suppress the check with CF_NOIRQ. If we are using
--     * icount and have suppressed interruption the higher level code
--     * should have ensured we don't run more instructions than the
--     * budget.
--     */
--    if (tb_cflags(tb) & CF_NOIRQ) {
--        tcg_ctx->exitreq_label = NULL;
--    } else {
--        tcg_ctx->exitreq_label = gen_new_label();
--        tcg_gen_brcondi_i32(TCG_COND_LT, count, 0, tcg_ctx->exitreq_label);
--    }
--
--    if (tb_cflags(tb) & CF_USE_ICOUNT) {
--        tcg_gen_st16_i32(count, cpu_env,
--                         offsetof(ArchCPU, neg.icount_decr.u16.low) -
--                         offsetof(ArchCPU, env));
--        /*
--         * cpu->can_do_io is cleared automatically here at the beginning of
--         * each translation block.  The cost is minimal and only paid for
--         * -icount, plus it would be very easy to forget doing it in the
--         * translator. Doing it here means we don't need a gen_io_end() to
--         * go with gen_io_start().
--         */
--        tcg_gen_st_i32(tcg_constant_i32(0), cpu_env,
--                       offsetof(ArchCPU, parent_obj.can_do_io) -
--                       offsetof(ArchCPU, env));
--    }
--}
--
--static inline void gen_tb_end(const TranslationBlock *tb, int num_insns)
--{
--    if (tb_cflags(tb) & CF_USE_ICOUNT) {
--        /*
--         * Update the num_insn immediate parameter now that we know
--         * the actual insn count.
--         */
--        tcg_set_insn_param(icount_start_insn, 2,
--                           tcgv_i32_arg(tcg_constant_i32(num_insns)));
--    }
--
--    if (tcg_ctx->exitreq_label) {
--        gen_set_label(tcg_ctx->exitreq_label);
--        tcg_gen_exit_tb(tb, TB_EXIT_REQUESTED);
--    }
--}
-+void gen_io_start(void);
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "qemu/log.h"
+-#include "arm_ldst.h"
+ #include "translate.h"
+-#include "internals.h"
+-#include "qemu/host-utils.h"
+-#include "semihosting/semihost.h"
+-#include "exec/log.h"
+-#include "cpregs.h"
+ #include "translate-a64.h"
+-#include "qemu/atomic128.h"
++#include "qemu/log.h"
++#include "disas/disas.h"
++#include "arm_ldst.h"
++#include "semihosting/semihost.h"
++#include "cpregs.h"
  
- #endif
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 6120ef2a92..b0d0015c70 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -18,6 +18,84 @@
- #include "exec/plugin-gen.h"
- #include "exec/replay-core.h"
+ static TCGv_i64 cpu_X[32];
+ static TCGv_i64 cpu_pc;
+diff --git a/target/arm/tcg/translate-m-nocp.c b/target/arm/tcg/translate-m-nocp.c
+index 9a89aab785..33f6478bb9 100644
+--- a/target/arm/tcg/translate-m-nocp.c
++++ b/target/arm/tcg/translate-m-nocp.c
+@@ -18,8 +18,6 @@
+  */
  
-+
-+void gen_io_start(void)
-+{
-+    tcg_gen_st_i32(tcg_constant_i32(1), cpu_env,
-+                   offsetof(ArchCPU, parent_obj.can_do_io) -
-+                   offsetof(ArchCPU, env));
-+}
-+
-+static TCGOp *gen_tb_start(uint32_t cflags)
-+{
-+    TCGv_i32 count = tcg_temp_new_i32();
-+    TCGOp *icount_start_insn = NULL;
-+
-+    tcg_gen_ld_i32(count, cpu_env,
-+                   offsetof(ArchCPU, neg.icount_decr.u32) -
-+                   offsetof(ArchCPU, env));
-+
-+    if (cflags & CF_USE_ICOUNT) {
-+        /*
-+         * We emit a sub with a dummy immediate argument. Keep the insn index
-+         * of the sub so that we later (when we know the actual insn count)
-+         * can update the argument with the actual insn count.
-+         */
-+        tcg_gen_sub_i32(count, count, tcg_constant_i32(0));
-+        icount_start_insn = tcg_last_op();
-+    }
-+
-+    /*
-+     * Emit the check against icount_decr.u32 to see if we should exit
-+     * unless we suppress the check with CF_NOIRQ. If we are using
-+     * icount and have suppressed interruption the higher level code
-+     * should have ensured we don't run more instructions than the
-+     * budget.
-+     */
-+    if (cflags & CF_NOIRQ) {
-+        tcg_ctx->exitreq_label = NULL;
-+    } else {
-+        tcg_ctx->exitreq_label = gen_new_label();
-+        tcg_gen_brcondi_i32(TCG_COND_LT, count, 0, tcg_ctx->exitreq_label);
-+    }
-+
-+    if (cflags & CF_USE_ICOUNT) {
-+        tcg_gen_st16_i32(count, cpu_env,
-+                         offsetof(ArchCPU, neg.icount_decr.u16.low) -
-+                         offsetof(ArchCPU, env));
-+        /*
-+         * cpu->can_do_io is cleared automatically here at the beginning of
-+         * each translation block.  The cost is minimal and only paid for
-+         * -icount, plus it would be very easy to forget doing it in the
-+         * translator. Doing it here means we don't need a gen_io_end() to
-+         * go with gen_io_start().
-+         */
-+        tcg_gen_st_i32(tcg_constant_i32(0), cpu_env,
-+                       offsetof(ArchCPU, parent_obj.can_do_io) -
-+                       offsetof(ArchCPU, env));
-+    }
-+
-+    return icount_start_insn;
-+}
-+
-+static void gen_tb_end(const TranslationBlock *tb, uint32_t cflags,
-+                       TCGOp *icount_start_insn, int num_insns)
-+{
-+    if (cflags & CF_USE_ICOUNT) {
-+        /*
-+         * Update the num_insn immediate parameter now that we know
-+         * the actual insn count.
-+         */
-+        tcg_set_insn_param(icount_start_insn, 2,
-+                           tcgv_i32_arg(tcg_constant_i32(num_insns)));
-+    }
-+
-+    if (tcg_ctx->exitreq_label) {
-+        gen_set_label(tcg_ctx->exitreq_label);
-+        tcg_gen_exit_tb(tb, TB_EXIT_REQUESTED);
-+    }
-+}
-+
- bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest)
- {
-     /* Suppress goto_tb if requested. */
-@@ -34,6 +112,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-                      const TranslatorOps *ops, DisasContextBase *db)
- {
-     uint32_t cflags = tb_cflags(tb);
-+    TCGOp *icount_start_insn;
-     bool plugin_enabled;
+ #include "qemu/osdep.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+ #include "translate.h"
+ #include "translate-a32.h"
  
-     /* Initialize DisasContext */
-@@ -55,7 +134,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+diff --git a/target/arm/tcg/translate-mve.c b/target/arm/tcg/translate-mve.c
+index 2ad3c40975..bbc7b3f4ce 100644
+--- a/target/arm/tcg/translate-mve.c
++++ b/target/arm/tcg/translate-mve.c
+@@ -18,9 +18,6 @@
+  */
  
-     /* Start translating.  */
--    gen_tb_start(db->tb);
-+    icount_start_insn = gen_tb_start(cflags);
-     ops->tb_start(db, cpu);
-     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+ #include "qemu/osdep.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "exec/exec-all.h"
+ #include "translate.h"
+ #include "translate-a32.h"
  
-@@ -112,7 +191,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+diff --git a/target/arm/tcg/translate-neon.c b/target/arm/tcg/translate-neon.c
+index 6fac577abd..03913de047 100644
+--- a/target/arm/tcg/translate-neon.c
++++ b/target/arm/tcg/translate-neon.c
+@@ -21,9 +21,6 @@
+  */
  
-     /* Emit code to exit the TB, as indicated by db->is_jmp.  */
-     ops->tb_stop(db, cpu);
--    gen_tb_end(db->tb, db->num_insns);
-+    gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
+ #include "qemu/osdep.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "exec/exec-all.h"
+ #include "translate.h"
+ #include "translate-a32.h"
  
-     if (plugin_enabled) {
-         plugin_gen_tb_end(cpu);
+diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
+index b0812d9dd6..d0054e3f77 100644
+--- a/target/arm/tcg/translate-sme.c
++++ b/target/arm/tcg/translate-sme.c
+@@ -18,14 +18,8 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "cpu.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "tcg/tcg-gvec-desc.h"
+ #include "translate.h"
+ #include "translate-a64.h"
+-#include "fpu/softfloat.h"
+-
+ 
+ /*
+  * Include the generated decoder.
+diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
+index 106baf311f..d9d5810dde 100644
+--- a/target/arm/tcg/translate-sve.c
++++ b/target/arm/tcg/translate-sve.c
+@@ -18,16 +18,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "cpu.h"
+-#include "exec/exec-all.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "tcg/tcg-gvec-desc.h"
+-#include "qemu/log.h"
+-#include "arm_ldst.h"
+ #include "translate.h"
+-#include "internals.h"
+-#include "exec/log.h"
+ #include "translate-a64.h"
+ #include "fpu/softfloat.h"
+ 
+diff --git a/target/arm/tcg/translate-vfp.c b/target/arm/tcg/translate-vfp.c
+index 95ac8d9db3..359b1e3e96 100644
+--- a/target/arm/tcg/translate-vfp.c
++++ b/target/arm/tcg/translate-vfp.c
+@@ -21,9 +21,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "exec/exec-all.h"
+ #include "translate.h"
+ #include "translate-a32.h"
+ 
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 7caf6d802d..a68d3c7f6d 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -20,20 +20,13 @@
+  */
+ #include "qemu/osdep.h"
+ 
+-#include "cpu.h"
+-#include "internals.h"
+-#include "disas/disas.h"
+-#include "exec/exec-all.h"
+-#include "tcg/tcg-op.h"
+-#include "tcg/tcg-op-gvec.h"
+-#include "qemu/log.h"
+-#include "qemu/bitops.h"
+-#include "arm_ldst.h"
+-#include "semihosting/semihost.h"
+-#include "exec/log.h"
+-#include "cpregs.h"
+ #include "translate.h"
+ #include "translate-a32.h"
++#include "qemu/log.h"
++#include "disas/disas.h"
++#include "arm_ldst.h"
++#include "semihosting/semihost.h"
++#include "cpregs.h"
+ #include "exec/helper-proto.h"
+ 
+ #define HELPER_H "helper.h"
 -- 
 2.34.1
 
