@@ -2,83 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D83A70DF6C
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA5770DF7B
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:38:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1T7Y-0007Q1-53; Tue, 23 May 2023 10:36:16 -0400
+	id 1q1T9C-0000Ki-QT; Tue, 23 May 2023 10:37:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1T7V-0007PW-DY
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:36:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1T7T-0006HY-TP
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:36:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684852570;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=w7vU7mDKi8jfo4a2JcT7cBkT7na3/1PWsgYYvBA0muM=;
- b=KkuFLkmHJ5NMGleR0eCzZUDeYm7USXVve4yuAzRdFbdSwVFZfzmsoXnzArmLB+3ZCOEPeW
- QflHdYw+WZobX6Bqb4BaqePSbSfjEP6weXCTtgadt0pzHqA+H4uWM+bHbwEgqqK89CEcmK
- HYq6WF2bb326K5RbP9WCe/gkpYD7KEc=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-132-mWxvp_YkOGq8VFZ45RwGtA-1; Tue, 23 May 2023 10:36:08 -0400
-X-MC-Unique: mWxvp_YkOGq8VFZ45RwGtA-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-2555076ea4dso2660483a91.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:36:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684852568; x=1687444568;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=w7vU7mDKi8jfo4a2JcT7cBkT7na3/1PWsgYYvBA0muM=;
- b=CNifUQGdIXYmRJz5gzgE254AOURm3w9kqpW+BnXX+eXC6CMkgek2XkkSBUzl5W0m93
- IluHZE+ivJJRn/ogkQg4KPXSM99uLm5XIMN+IOBF8cLjMc1Y7J47Xrycu2baVQcUVHGs
- Din7DN7IEKOUT69aIxTEMlkLRs18XRmyybXx3hhhPbP6SRjTOHIDr8spVelwiTKCoc2U
- A8EBRdUmA3B+SSYaaoyKXjDm4vgbLmbjDCx6yp4MbPs/v5zADKIxSsHXl9FUVA185hjB
- fnTUWep3Fxw05x0lFWqv/Fi8h1028Mdb4kZL89xLJzbsjvesN4OTO9sKNRQbW8KJ6ve5
- MLzQ==
-X-Gm-Message-State: AC+VfDwR7Avgl/PlFcI0daLsjlye4imYBrCs5m5HO2C5C6LHDka3VnQ0
- EbktTHf6T1uZ3g2X94zK9JzjP92DyERuvD1EMWMnqmzp2sb0z+q26aA6g6M+LtR/MiPlINbQsal
- L8Khey6ILJFRONdOUgVXIBoZJgb/+18c=
-X-Received: by 2002:a17:90b:3587:b0:24d:ebfe:be93 with SMTP id
- mm7-20020a17090b358700b0024debfebe93mr13185181pjb.37.1684852567919; 
- Tue, 23 May 2023 07:36:07 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5IgVrS8y1zJELoENjwm7tbwIxLOt9lBUuH5Ieq44Y8fCGbZNkRCvEXsr3CmO4nvc1GCMqvBIz7fcpM2f+TpX0=
-X-Received: by 2002:a17:90b:3587:b0:24d:ebfe:be93 with SMTP id
- mm7-20020a17090b358700b0024debfebe93mr13185159pjb.37.1684852567465; Tue, 23
- May 2023 07:36:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q1T9A-0000KN-Ca; Tue, 23 May 2023 10:37:56 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q1T97-0006aI-1C; Tue, 23 May 2023 10:37:55 -0400
+Received: from [192.168.0.120] (unknown [61.165.37.98])
+ by APP-01 (Coremail) with SMTP id qwCowAA3PZmxz2xkf8gCBA--.53625S2;
+ Tue, 23 May 2023 22:37:38 +0800 (CST)
+Message-ID: <5d3558a0-8b7f-8b84-a4e0-a6f4404a56b6@iscas.ac.cn>
+Date: Tue, 23 May 2023 22:37:37 +0800
 MIME-Version: 1.0
-References: <20230416222838.36642-1-mateusz.p.albecki@gmail.com>
- <20230416222838.36642-2-mateusz.p.albecki@gmail.com>
- <CAFn=p-bcAW9aMymmWeVSMeyuT88YDZ2iYVh-t1GoogbBBPFjSw@mail.gmail.com>
- <CAGe=PKEvnnjBQVx-rNDXjmwvQ272S2DLw-xEDjp1vVuU30i4Hw@mail.gmail.com>
-In-Reply-To: <CAGe=PKEvnnjBQVx-rNDXjmwvQ272S2DLw-xEDjp1vVuU30i4Hw@mail.gmail.com>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 23 May 2023 10:35:56 -0400
-Message-ID: <CAFn=p-bVdQ6E10F9FmapMcBvEUMX7hOjr-kz7FgfQL+cdJHV+A@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/ide/core.c: fix handling of unsupported commands
-To: Mateusz Albecki <mateusz.p.albecki@gmail.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Mateusz Albecki <mateusz.albecki@outlook.com>, 
- Niklas Cassel <niklas.cassel@wdc.com>, Niklas Cassel <nks@flawful.org>
-Content-Type: multipart/alternative; boundary="000000000000c8764b05fc5d4e0d"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc: liweiwei@iscas.ac.cn, frank.chang@sifive.com, alistair.francis@wdc.com,
+ apatel@ventanamicro.com, palmer@rivosinc.com, dbarboza@ventanamicro.com,
+ bin.meng@windriver.com, zhiwei_liu@linux.alibaba.com
+Subject: Re: [PATCH 1/2] target/riscv: Add a function to refresh the dynamic
+ CSRs xml.
+To: Tommy Wu <tommy.wu@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+References: <20230523114454.717708-1-tommy.wu@sifive.com>
+ <20230523114454.717708-2-tommy.wu@sifive.com>
+Content-Language: en-US
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <20230523114454.717708-2-tommy.wu@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qwCowAA3PZmxz2xkf8gCBA--.53625S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr1UAF43JrWUXFy8Gr1fXrb_yoW8Kw47pw
+ s5C398Cr1DJr97Ja4fJF4DXF15Aw47GF4Y9397ZwnrJr45X3y5tr1qk3W3Arn8Ga429r1j
+ 9F1Y9r429r48Ar7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+ Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+ c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVW5XwCF04k20xvY0x0EwIxGrw
+ CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+ 14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+ IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+ x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+ 0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUO4E_DUUUU
+X-Originating-IP: [61.165.37.98]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,60 +80,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000c8764b05fc5d4e0d
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 22, 2023 at 5:16=E2=80=AFPM Mateusz Albecki <mateusz.p.albecki@=
-gmail.com>
-wrote:
+On 2023/5/23 19:44, Tommy Wu wrote:
+> When we change the cpu extension state after the cpu is
+> realized, we cannot print the value of some CSRs in the remote
+> gdb debugger. The root cause is that the dynamic CSR xml is
+> generated when the cpu is realized.
 >
-> Certainly seems like my patch is wrong as it will make the abort path
-execute ide_cmd_done twice. During debug I came to the conclusion that
-ide_cmd_done is not called at all as I was getting timeouts on the driver
-side while waiting for D2H FIS. I am still not sure how I was getting this
-behavior if the problem was actually with setting correct error bits. Even
-so I think it can be safely assumed that Niklas' change will solve the
-issue, I will try to verify it in a couple of days and if I see any problem
-I will come back to you.
+> This patch add a function to refresh the dynamic CSR xml after
+> the cpu is realized.
 >
-> Mateusz
+> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+> Reviewed-by: Frank Chang <frank.chang@sifive.com>
+> ---
+>   target/riscv/cpu.h     |  2 ++
+>   target/riscv/gdbstub.c | 12 ++++++++++++
+>   2 files changed, 14 insertions(+)
+>
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index de7e43126a..dc8e592275 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -494,6 +494,7 @@ struct ArchCPU {
+>       CPUNegativeOffsetState neg;
+>       CPURISCVState env;
+>   
+> +    int dyn_csr_base_reg;
 
-Great, thanks :)
+dyn_csr_base_reg  seems have no additional effect on the function.
 
-I'm waiting to hear back from Niklas, but I'm hoping to take their patches
-this cycle as I think they look quite good.
+And It remains unmodified in following riscv_refresh_dynamic_csr_xml().
 
-Thank you for submitting bug reports and patches :~)
+Regards,
 
---js
+Weiwei Li
 
---000000000000c8764b05fc5d4e0d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><br>
-<br>
-On Mon, May 22, 2023 at 5:16=E2=80=AFPM Mateusz Albecki &lt;<a href=3D"mail=
-to:mateusz.p.albecki@gmail.com" target=3D"_blank" rel=3D"noreferrer">mateus=
-z.p.albecki@gmail.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Certainly seems like my patch is wrong as it will make the abort path =
-execute ide_cmd_done twice. During debug I came to the conclusion that ide_=
-cmd_done is not called at all as I was getting timeouts on the driver side =
-while waiting for D2H FIS. I am still not sure how I was getting this behav=
-ior if the problem was actually with setting correct error bits. Even so I =
-think it can be safely assumed that Niklas&#39; change will solve the issue=
-, I will try to verify it in a couple of days and if I see any problem I wi=
-ll come back to you.<br>
-&gt;<br>
-&gt; Mateusz<br><br><div dir=3D"auto">Great, thanks :)</div><div dir=3D"aut=
-o"><br></div><div dir=3D"auto">I&#39;m waiting to hear back from Niklas, bu=
-t I&#39;m hoping to take their patches this cycle as I think they look quit=
-e good.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Thank you for su=
-bmitting bug reports and patches :~)</div><div dir=3D"auto"><br></div><div =
-dir=3D"auto">--js</div></div>
-
---000000000000c8764b05fc5d4e0d--
+>       char *dyn_csr_xml;
+>       char *dyn_vreg_xml;
+>   
+> @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int csrno, riscv_csr_operations *ops);
+>   void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);
+>   
+>   void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
+> +void riscv_refresh_dynamic_csr_xml(CPUState *cs);
+>   
+>   uint8_t satp_mode_max_from_map(uint32_t map);
+>   const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+> diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+> index 524bede865..9e97ee2c35 100644
+> --- a/target/riscv/gdbstub.c
+> +++ b/target/riscv/gdbstub.c
+> @@ -230,6 +230,8 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
+>           bitsize = 64;
+>       }
+>   
+> +    cpu->dyn_csr_base_reg = base_reg;
+> +
+>       g_string_printf(s, "<?xml version=\"1.0\"?>");
+>       g_string_append_printf(s, "<!DOCTYPE feature SYSTEM \"gdb-target.dtd\">");
+>       g_string_append_printf(s, "<feature name=\"org.gnu.gdb.riscv.csr\">");
+> @@ -349,3 +351,13 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
+>                                    "riscv-csr.xml", 0);
+>       }
+>   }
+> +
+> +void riscv_refresh_dynamic_csr_xml(CPUState *cs)
+> +{
+> +    RISCVCPU *cpu = RISCV_CPU(cs);
+> +    if (!cpu->dyn_csr_xml) {
+> +        g_assert_not_reached();
+> +    }
+> +    g_free(cpu->dyn_csr_xml);
+> +    riscv_gen_dynamic_csr_xml(cs, cpu->dyn_csr_base_reg);
+> +}
 
 
