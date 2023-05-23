@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BDE70D53A
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 09:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CABA70D514
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 09:33:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1MWR-0000Fg-1o; Tue, 23 May 2023 03:33:31 -0400
+	id 1q1MWT-0000NV-15; Tue, 23 May 2023 03:33:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1MWO-00008X-VJ
- for qemu-devel@nongnu.org; Tue, 23 May 2023 03:33:28 -0400
+ id 1q1MWR-0000JZ-Cs
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 03:33:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1MWN-0004E1-GQ
- for qemu-devel@nongnu.org; Tue, 23 May 2023 03:33:28 -0400
+ id 1q1MWP-0004EN-OR
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 03:33:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684827206;
+ s=mimecast20190719; t=1684827209;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UUsckqu04NeAp+FM00z+EbAu5al3WPnvC+vd+OAYN5k=;
- b=LVHowA+EGE1grkSAa1DCsgSXw94nPxWnKgnk80BpxmKvbxHEOj6MepsxOIy6rJAnfrS6CB
- cEWnoWyEcG21uRBaVxxtFcoDIv02/DmoxmUVgZ5lvhLBJDwFNyOQM41JeYJU/M9dT2d4Xf
- 1+6LV5YMk2WFPjp/0nhS6qxrvfAcY0Y=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DWwxoIFMhXmVfy8zDYHjTLgc3zy64f1eoR5xSxbh6mU=;
+ b=Q2f/zHWU+7u9w4x9yWMFTbOfzoUkmvGmI/ww4tqtPn/F+GKUsU0pgqrpUfjrKJ0sGtcMAn
+ CquYevu7Q3//EpSFMD69jwpRuzN/mSnpQEop041dfW9Yku7yTa1YGGu8RcUJw7tQBAvDsp
+ NlJuiVAGVOvv2R5iC7f/X6EteCYGvxk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-248-912oNpsnPtO1w2UCFmyFeQ-1; Tue, 23 May 2023 03:33:22 -0400
-X-MC-Unique: 912oNpsnPtO1w2UCFmyFeQ-1
+ us-mta-168-vH3V76PYOsSo9OznhnaGHw-1; Tue, 23 May 2023 03:33:25 -0400
+X-MC-Unique: vH3V76PYOsSo9OznhnaGHw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 605E929DD98F;
- Tue, 23 May 2023 07:33:22 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20B8C85A5A8;
+ Tue, 23 May 2023 07:33:25 +0000 (UTC)
 Received: from localhost.localdomain (ovpn-12-45.pek2.redhat.com [10.72.12.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DC3AD2166B25;
- Tue, 23 May 2023 07:33:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 01F2F2166B26;
+ Tue, 23 May 2023 07:33:22 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org,
 	peter.maydell@linaro.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 13/50] tests/avocado: Remove test_igb_nomsi_kvm
-Date: Tue, 23 May 2023 15:32:01 +0800
-Message-Id: <20230523073238.54236-14-jasowang@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 14/50] hw/net/net_tx_pkt: Remove net_rx_pkt_get_l4_info
+Date: Tue, 23 May 2023 15:32:02 +0800
+Message-Id: <20230523073238.54236-15-jasowang@redhat.com>
 In-Reply-To: <20230523073238.54236-1-jasowang@redhat.com>
 References: <20230523073238.54236-1-jasowang@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
@@ -83,54 +81,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-It is unlikely to find more bugs with KVM so remove test_igb_nomsi_kvm
-to save time to run it.
+This function is not used.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- tests/avocado/netdev-ethtool.py | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ hw/net/net_rx_pkt.c | 5 -----
+ hw/net/net_rx_pkt.h | 9 ---------
+ 2 files changed, 14 deletions(-)
 
-diff --git a/tests/avocado/netdev-ethtool.py b/tests/avocado/netdev-ethtool.py
-index 8de118e..6da800f 100644
---- a/tests/avocado/netdev-ethtool.py
-+++ b/tests/avocado/netdev-ethtool.py
-@@ -29,7 +29,7 @@ def get_asset(self, name, sha1):
-         # URL into a unique one
-         return self.fetch_asset(name=name, locations=(url), asset_hash=sha1)
+diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
+index 63be6e0..6125a06 100644
+--- a/hw/net/net_rx_pkt.c
++++ b/hw/net/net_rx_pkt.c
+@@ -236,11 +236,6 @@ eth_ip4_hdr_info *net_rx_pkt_get_ip4_info(struct NetRxPkt *pkt)
+     return &pkt->ip4hdr_info;
+ }
  
--    def common_test_code(self, netdev, extra_args=None, kvm=False):
-+    def common_test_code(self, netdev, extra_args=None):
- 
-         # This custom kernel has drivers for all the supported network
-         # devices we can emulate in QEMU
-@@ -57,9 +57,6 @@ def common_test_code(self, netdev, extra_args=None, kvm=False):
-                          '-drive', drive,
-                          '-device', netdev)
- 
--        if kvm:
--            self.vm.add_args('-accel', 'kvm')
+-eth_l4_hdr_info *net_rx_pkt_get_l4_info(struct NetRxPkt *pkt)
+-{
+-    return &pkt->l4hdr_info;
+-}
 -
-         self.vm.set_console(console_index=0)
-         self.vm.launch()
+ static inline void
+ _net_rx_rss_add_chunk(uint8_t *rss_input, size_t *bytes_written,
+                       void *ptr, size_t size)
+diff --git a/hw/net/net_rx_pkt.h b/hw/net/net_rx_pkt.h
+index a06f5c2..ce8dbdb 100644
+--- a/hw/net/net_rx_pkt.h
++++ b/hw/net/net_rx_pkt.h
+@@ -119,15 +119,6 @@ eth_ip6_hdr_info *net_rx_pkt_get_ip6_info(struct NetRxPkt *pkt);
+  */
+ eth_ip4_hdr_info *net_rx_pkt_get_ip4_info(struct NetRxPkt *pkt);
  
-@@ -86,13 +83,6 @@ def test_igb_nomsi(self):
-         """
-         self.common_test_code("igb", "pci=nomsi")
- 
--    def test_igb_nomsi_kvm(self):
--        """
--        :avocado: tags=device:igb
--        """
--        self.require_accelerator('kvm')
--        self.common_test_code("igb", "pci=nomsi", True)
+-/**
+- * fetches L4 header analysis results
+- *
+- * Return:  pointer to analysis results structure which is stored in internal
+- *          packet area.
+- *
+- */
+-eth_l4_hdr_info *net_rx_pkt_get_l4_info(struct NetRxPkt *pkt);
 -
-     # It seems the other popular cards we model in QEMU currently fail
-     # the pattern test with:
-     #
+ typedef enum {
+     NetPktRssIpV4,
+     NetPktRssIpV4Tcp,
 -- 
 2.7.4
 
