@@ -2,66 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9787370D723
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FA870D6C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:10:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1NF8-0004UE-PT; Tue, 23 May 2023 04:19:42 -0400
+	id 1q1N5g-0007DK-Pq; Tue, 23 May 2023 04:09:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1q1NF6-0004Tm-6g
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:19:40 -0400
-Received: from mga07.intel.com ([134.134.136.100])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q1N5e-0007Cg-9c
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:09:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1q1NF3-0005N9-Gn
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:19:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1684829977; x=1716365977;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=wf/N1SMwE02glMH/l/yHrg8c/GFZCHuhXd+i2CXsPpk=;
- b=hJXxUdvzuWgO6sK0mtQdbxX4pOLAJxKkL5amQc15re7FGMTnomHjO/ya
- dgeJJl+ZzEAl0OgIQGQuVx7AEXqu7aFq8IP3he/TOfdOZiL4UyDYPKEHO
- mD7HRo4L2h1yFAvsH8/dmyuvrrahW9C3G4T+9CyBSLSDnigmGrbiTgHy3
- tOBzeRnD83qH2jyLOI0t1ZICo93z9gW5kU5X2onNil0i3Kj2vUj3w3RCO
- lSU3tBtrIApTI3TsupLI6M4Y/0gJ/1pxFxZeTFSKGHlUBO4F/ZrnVsRhv
- KmKNQsyVBQ8GrYXuoNZDZrzxZiuxLOOEBtiiCx5vc0+GOQX8RQz/ZoPDO Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10718"; a="418879543"
-X-IronPort-AV: E=Sophos;i="6.00,185,1681196400"; d="scan'208";a="418879543"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2023 01:19:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10718"; a="793647800"
-X-IronPort-AV: E=Sophos;i="6.00,185,1681196400"; d="scan'208";a="793647800"
-Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
- by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2023 01:19:21 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, peterx@redhat.com, jasowang@redhat.com,
- marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
- richard.henderson@linaro.org, eduardo@habkost.net, yi.l.liu@intel.com,
- chao.p.peng@intel.com
-Subject: [PATCH] intel_iommu: Optimize out some unnecessary UNMAP calls
-Date: Tue, 23 May 2023 16:07:02 +0800
-Message-Id: <20230523080702.179363-1-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q1N5c-00036u-KJ
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:09:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684829391;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+DIKluJaHmuaTwQmo7W/iMDiTcLq1CDK6YSD4qLF6zE=;
+ b=ZOn6adEB2Qs05EPwyWOYB/FmFZLNSF37+cAO9KI+ZzdoKioPuiaplUgbFHjNXhD/3Ko/1x
+ lu0B5Xc6tldtjR5V3Lc2/XPvD4GVTgAomm72DikkAA2nvSXsIvbAIXOTHtLKCAAXDaZhnJ
+ kFWAnwbo++BCmWkcC/HdBSuFipsUEdI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-641-Z8oqHFYVOZe8HOwNu1FNRQ-1; Tue, 23 May 2023 04:09:50 -0400
+X-MC-Unique: Z8oqHFYVOZe8HOwNu1FNRQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B4E88800B35;
+ Tue, 23 May 2023 08:09:49 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.40])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8CD4A9D73;
+ Tue, 23 May 2023 08:09:48 +0000 (UTC)
+Date: Tue, 23 May 2023 09:09:46 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>,
+ Mauro Matteo Cascella <mcascell@redhat.com>, qemu-devel@nongnu.org,
+ kraxel@redhat.com, jacek.halon@gmail.com,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
+ cursor_alloc
+Message-ID: <ZGx0ylB10aLWchuf@redhat.com>
+References: <20230508141813.1086562-1-mcascell@redhat.com>
+ <CAJ+F1CK2V22PMYP4PQwH+VYKhR32GKxFK5eRODE928iu3LVodA@mail.gmail.com>
+ <fcf99624-9a48-6760-a28d-bb88bce6572f@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.100;
- envelope-from=zhenzhong.duan@intel.com; helo=mga07.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <fcf99624-9a48-6760-a28d-bb88bce6572f@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,91 +84,112 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 63b88968f1 ("intel-iommu: rework the page walk logic") adds logic
-to record mapped IOVA ranges so we only need to send MAP or UNMAP when
-necessary. But there are still a few corner cases of unnecessary UNMAP.
+On Mon, May 22, 2023 at 08:55:02PM +0200, Philippe Mathieu-Daudé wrote:
+> On 9/5/23 09:13, Marc-André Lureau wrote:
+> > Hi
+> > 
+> > On Mon, May 8, 2023 at 6:21 PM Mauro Matteo Cascella
+> > <mcascell@redhat.com <mailto:mcascell@redhat.com>> wrote:
+> > 
+> >     The cursor_alloc function still accepts a signed integer for both
+> >     the cursor
+> >     width and height. A specially crafted negative width/height could
+> >     make datasize
+> >     wrap around and cause the next allocation to be 0, potentially
+> >     leading to a
+> >     heap buffer overflow. Modify QEMUCursor struct and cursor_alloc
+> >     prototype to
+> >     accept unsigned ints.
+> > 
+> >     Fixes: CVE-2023-1601
+> >     Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_alloc
+> >     (CVE-2021-4206)")
+> >     Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com
+> >     <mailto:mcascell@redhat.com>>
+> >     Reported-by: Jacek Halon <jacek.halon@gmail.com
+> >     <mailto:jacek.halon@gmail.com>>
+> > 
+> > 
+> > Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com
+> > <mailto:marcandre.lureau@redhat.com>>
+> > 
+> > It looks like this is not exploitable, QXL code uses u16 types, and
+> 
+> 0xffff * 0xffff * 4 still overflows on 32-bit host, right?
 
-One is address space switch. During switching to iommu address space,
-all the original mappings have been dropped by VFIO memory listener,
-we don't need to unmap again in replay. The other is invalidation,
-we only need to unmap when there are recorded mapped IOVA ranges,
-presuming most of OSes allocating IOVA range continuously,
-ex. on x86, linux sets up mapping from 0xffffffff downwards.
+cursor_alloc() will reject 0xffff:
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
-Tested on x86 with a net card passed or hotpluged to kvm guest,
-ping/ssh pass.
+    if (width > 512 || height > 512) {
+        return NULL;
+    }
 
- hw/i386/intel_iommu.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 94d52f4205d2..6afd6428aaaa 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3743,6 +3743,7 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
-     hwaddr start = n->start;
-     hwaddr end = n->end;
-     IntelIOMMUState *s = as->iommu_state;
-+    IOMMUTLBEvent event;
-     DMAMap map;
- 
-     /*
-@@ -3762,22 +3763,25 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
-     assert(start <= end);
-     size = remain = end - start + 1;
- 
-+    event.type = IOMMU_NOTIFIER_UNMAP;
-+    event.entry.target_as = &address_space_memory;
-+    event.entry.perm = IOMMU_NONE;
-+    /* This field is meaningless for unmap */
-+    event.entry.translated_addr = 0;
-+
-     while (remain >= VTD_PAGE_SIZE) {
--        IOMMUTLBEvent event;
-         uint64_t mask = dma_aligned_pow2_mask(start, end, s->aw_bits);
-         uint64_t size = mask + 1;
- 
-         assert(size);
- 
--        event.type = IOMMU_NOTIFIER_UNMAP;
--        event.entry.iova = start;
--        event.entry.addr_mask = mask;
--        event.entry.target_as = &address_space_memory;
--        event.entry.perm = IOMMU_NONE;
--        /* This field is meaningless for unmap */
--        event.entry.translated_addr = 0;
--
--        memory_region_notify_iommu_one(n, &event);
-+        map.iova = start;
-+        map.size = size;
-+        if (iova_tree_find(as->iova_tree, &map)) {
-+            event.entry.iova = start;
-+            event.entry.addr_mask = mask;
-+            memory_region_notify_iommu_one(n, &event);
-+        }
- 
-         start += size;
-         remain -= size;
-@@ -3826,13 +3830,6 @@ static void vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
-     uint8_t bus_n = pci_bus_num(vtd_as->bus);
-     VTDContextEntry ce;
- 
--    /*
--     * The replay can be triggered by either a invalidation or a newly
--     * created entry. No matter what, we release existing mappings
--     * (it means flushing caches for UNMAP-only registers).
--     */
--    vtd_address_space_unmap(vtd_as, n);
--
-     if (vtd_dev_to_context_entry(s, bus_n, vtd_as->devfn, &ce) == 0) {
-         trace_vtd_replay_ce_valid(s->root_scalable ? "scalable mode" :
-                                   "legacy mode",
+
+> 
+> > VMWare VGA checks for values > 256. Other paths use fixed size.
+> > 
+> >     ---
+> >       include/ui/console.h | 4 ++--
+> >       ui/cursor.c          | 2 +-
+> >       2 files changed, 3 insertions(+), 3 deletions(-)
+> > 
+> >     diff --git a/include/ui/console.h b/include/ui/console.h
+> >     index 2a8fab091f..92a4d90a1b 100644
+> >     --- a/include/ui/console.h
+> >     +++ b/include/ui/console.h
+> >     @@ -144,13 +144,13 @@ typedef struct QemuUIInfo {
+> > 
+> >       /* cursor data format is 32bit RGBA */
+> >       typedef struct QEMUCursor {
+> >     -    int                 width, height;
+> >     +    uint32_t            width, height;
+> >           int                 hot_x, hot_y;
+> >           int                 refcount;
+> >           uint32_t            data[];
+> >       } QEMUCursor;
+> > 
+> >     -QEMUCursor *cursor_alloc(int width, int height);
+> >     +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height);
+> >       QEMUCursor *cursor_ref(QEMUCursor *c);
+> >       void cursor_unref(QEMUCursor *c);
+> >       QEMUCursor *cursor_builtin_hidden(void);
+> >     diff --git a/ui/cursor.c b/ui/cursor.c
+> >     index 6fe67990e2..b5fcb64839 100644
+> >     --- a/ui/cursor.c
+> >     +++ b/ui/cursor.c
+> >     @@ -90,7 +90,7 @@ QEMUCursor *cursor_builtin_left_ptr(void)
+> >           return cursor_parse_xpm(cursor_left_ptr_xpm);
+> >       }
+> > 
+> >     -QEMUCursor *cursor_alloc(int width, int height)
+> >     +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height)
+> >       {
+> >           QEMUCursor *c;
+> 
+> Can't we check width/height > 0 && <= SOME_LIMIT_THAT_MAKES_SENSE?
+> 
+> Maybe a 16K * 16K cursor is future proof and safe enough.
+> 
+> >           size_t datasize = width * height * sizeof(uint32_t);
+> >     --     2.40.1
+> > 
+> > 
+> > 
+> > 
+> > -- 
+> > Marc-André Lureau
+> 
+> 
+
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
