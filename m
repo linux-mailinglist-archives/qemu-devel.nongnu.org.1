@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA56B70D191
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E7770D19A
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:47:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1I29-0007SV-C3; Mon, 22 May 2023 22:45:57 -0400
+	id 1q1I2C-0007eX-D8; Mon, 22 May 2023 22:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I1n-00065f-4b
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:45:36 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1q1I1o-000683-I0
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:45:38 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I1i-0004XY-AC
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:45:34 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2553b0938a9so1855246a91.0
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:45:29 -0700 (PDT)
+ id 1q1I1k-0004ai-W0
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:45:35 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-253724f6765so4201036a91.3
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:45:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809928; x=1687401928;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809931; x=1687401931;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vzPAbEmJEB50Ysp/pj8sTC2FsTwLihV0BgZPulCV70A=;
- b=G1IGJwkezi9qMAXkLAHJRkl4gV6pJWGuL/vIr+BEK+zTgcasvv9X3UwsLnKLuuDWXs
- QusxjKu8CHNbjxzPF5RJ0Q2uusgiN66nb39AiIKasKo0eIfn3WZJ3XWUiFiESrWkrUkU
- S9QQqksGuM5njhcUQdRQKkGqfT4aZzjgaHvQhn3bGtBZkZHPpFaMFLFqtR8FQMvNadD0
- TcT7G8pPbnx7bBJ11g8ZzSxgsedMpy/eC+f0BOyV+qQuchzX6AG0EZZfgUBnwJdtwwjr
- P7uggc5GWWy/PpfqxtLarP3LA+RXD5SXwugMySL2lVEMxid6zwwN/A8xBMMzQ4Mkv4OP
- cEHg==
+ bh=XmNEAS5k04F+fR8LffeAMeCi/ZTE8MQ4RgwXqTV1U6o=;
+ b=nwaLTyd0BNDxX1CL2n1NZGz65VvcaIQO976VvChdAvN5lU4yKaHkluNK7PdYZNWN5R
+ fz2ZFW64jg4x/Id/fhoBs5nT6r0ZiZmt2N10oTCAuOCNypa8JALy3m0sTZpzOLvTaq9B
+ cyFE0oAcJs64CTFexnCMM+OqKEDhzRBENcg+jyvywJWqfLEAcjw4TfiiuCb5ZaXIG2aY
+ tNuThj4MOyf0oVj8DTPTl5qMoTr5qIMImChBo5as89R4HnZBR2akvO0Un8FH0Ij0P48s
+ sxEzV4YrYpN652cAoeuTZNFmnhw+mhHS74Bfb1pUVJejbVIHHVXSVM1Pw1kUQoRf0cJL
+ NDBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684809928; x=1687401928;
+ d=1e100.net; s=20221208; t=1684809931; x=1687401931;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vzPAbEmJEB50Ysp/pj8sTC2FsTwLihV0BgZPulCV70A=;
- b=C8H07EfGTKNGo4yjJYGf8zlsfaNDvlRYOVF/FYxdXDLt8VY9hVYLusK3rHsKafCIxK
- 7uDEzjWEgIJGvSYMdvXzyUCIs5NXKMwAiwtXg6r7uRavIr+lA08N9xYMBl9+arWsdIyd
- a0j00DwFhYuPi/chCmhXE26anZlXE9T9OHQ1DIILXjRT8QES50qzNTX2OoBLiJBjC1dm
- eTQsxPrZ5oKtmTLIY+S9lLagR6jmx9cGeILzri39V9IHxjzwHvkIe05b7May7BHo0H5R
- 8ibpJFe+fCaHuY/eTyY5rz7/ILQyUM04cAvlxC8WMaK0DVbRefwIz984Jy/9dJHlXkVy
- KDaA==
-X-Gm-Message-State: AC+VfDzi26m67ARlp3+o9DfQ4RLgcD+GV/t0Q/cUrUhHn6vIIPmMSuRE
- 15J+k38aJovKaDsBePjY0NTx4g==
-X-Google-Smtp-Source: ACHHUZ5qnWtaQClkZaVy5x6Ho3BcHygWABNpAxpdE1w11toj6iiHUkfNFbeRltSXVJv+XXh4GSt0Sg==
-X-Received: by 2002:a17:90a:648e:b0:255:7e1b:ca6d with SMTP id
- h14-20020a17090a648e00b002557e1bca6dmr3687449pjj.7.1684809928420; 
- Mon, 22 May 2023 19:45:28 -0700 (PDT)
+ bh=XmNEAS5k04F+fR8LffeAMeCi/ZTE8MQ4RgwXqTV1U6o=;
+ b=M8DuiidrZiWZv+zeMbXRTD5x9vVJ6t5e1ByS+HZfw8TgpYqAgjs2fWuWm2h/Pw7G9B
+ d7oD0DsQfyVS/o3iT57chUCyOGl6/f8tLDkeNwI3AFVIiPEyhMqQu8qzBj/VFuk/mSQJ
+ 6WfzL0x2oHdCh7tgfPKKJ69pjaxm0YFHWWoOeAJWf6hNIXKK6fKf3wJCRwPSxUV5gikq
+ piI04sw/sZS5Rf2PlIoUKzuWRU1Et8HejaheN+S0jzfg/47KAnCS74tm2caYXlGoX8Yz
+ ltGT+3GgAdfZCjc138Lhz8c+dese3eYz6l4KzYU/USMKgAmQkcS8uYOewbR8HD0AY4G2
+ j0vQ==
+X-Gm-Message-State: AC+VfDywqsx2ULwnOffIZjA+kzk5h0kncoMLzwq9BIYyvf+mr7Jthfg3
+ X6v6/ndlShLEjOPLubvpanGT7w==
+X-Google-Smtp-Source: ACHHUZ7Sbe6Y6o2P6JEQgvRN+RL90BdGfMdv9Tz1AjCRJzsMYSPqgHJIiH4SNxzZQneyR+QZQPBT6w==
+X-Received: by 2002:a17:90b:4b51:b0:255:8a12:241b with SMTP id
+ mi17-20020a17090b4b5100b002558a12241bmr2509828pjb.22.1684809931715; 
+ Mon, 22 May 2023 19:45:31 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.45.25
+ o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.45.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 19:45:27 -0700 (PDT)
+ Mon, 22 May 2023 19:45:31 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
@@ -69,17 +69,16 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org, Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 28/48] e1000e: Rename a variable in
- e1000e_receive_internal()
-Date: Tue, 23 May 2023 11:43:19 +0900
-Message-Id: <20230523024339.50875-29-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 29/48] igb: Rename a variable in igb_receive_internal()
+Date: Tue, 23 May 2023 11:43:20 +0900
+Message-Id: <20230523024339.50875-30-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 References: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::102a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,64 +104,58 @@ Rename variable "n" to "causes", which properly represents the content
 of the variable.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 ---
- hw/net/e1000e_core.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ hw/net/igb_core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index 7dce448657..aea70b74d9 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -1650,7 +1650,7 @@ static ssize_t
- e1000e_receive_internal(E1000ECore *core, const struct iovec *iov, int iovcnt,
-                         bool has_vnet)
+diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
+index edda07e564..c954369964 100644
+--- a/hw/net/igb_core.c
++++ b/hw/net/igb_core.c
+@@ -1569,7 +1569,7 @@ igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
+                      bool has_vnet, bool *external_tx)
  {
+     uint16_t queues = 0;
 -    uint32_t n = 0;
 +    uint32_t causes = 0;
-     uint8_t buf[ETH_ZLEN];
-     struct iovec min_iov;
-     size_t size, orig_size;
-@@ -1723,32 +1723,32 @@ e1000e_receive_internal(E1000ECore *core, const struct iovec *iov, int iovcnt,
+     union {
+         L2Header l2_header;
+         uint8_t octets[ETH_ZLEN];
+@@ -1649,19 +1649,19 @@ igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
+             e1000x_fcs_len(core->mac);
  
-         /* Perform small receive detection (RSRPD) */
-         if (total_size < core->mac[RSRPD]) {
--            n |= E1000_ICS_SRPD;
-+            causes |= E1000_ICS_SRPD;
+         if (!igb_has_rxbufs(core, rxr.i, total_size)) {
+-            n |= E1000_ICS_RXO;
++            causes |= E1000_ICS_RXO;
+             trace_e1000e_rx_not_written_to_guest(rxr.i->idx);
+             continue;
          }
  
-         /* Perform ACK receive detection */
-         if  (!(core->mac[RFCTL] & E1000_RFCTL_ACK_DIS) &&
-              (e1000e_is_tcp_ack(core, core->rx_pkt))) {
--            n |= E1000_ICS_ACK;
-+            causes |= E1000_ICS_ACK;
-         }
+-        n |= E1000_ICR_RXDW;
++        causes |= E1000_ICR_RXDW;
+ 
+         igb_rx_fix_l4_csum(core, core->rx_pkt);
+         igb_write_packet_to_guest(core, core->rx_pkt, &rxr, &rss_info);
  
          /* Check if receive descriptor minimum threshold hit */
-         rdmts_hit = e1000e_rx_descr_threshold_hit(core, rxr.i);
--        n |= e1000e_rx_wb_interrupt_cause(core, rxr.i->idx, rdmts_hit);
-+        causes |= e1000e_rx_wb_interrupt_cause(core, rxr.i->idx, rdmts_hit);
+         if (igb_rx_descr_threshold_hit(core, rxr.i)) {
+-            n |= E1000_ICS_RXDMT0;
++            causes |= E1000_ICS_RXDMT0;
+         }
  
+         core->mac[EICR] |= igb_rx_wb_eic(core, rxr.i->idx);
+@@ -1669,8 +1669,8 @@ igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
          trace_e1000e_rx_written_to_guest(rxr.i->idx);
-     } else {
--        n |= E1000_ICS_RXO;
-+        causes |= E1000_ICS_RXO;
-         retval = 0;
- 
-         trace_e1000e_rx_not_written_to_guest(rxr.i->idx);
      }
  
--    if (!e1000e_intrmgr_delay_rx_causes(core, &n)) {
--        trace_e1000e_rx_interrupt_set(n);
--        e1000e_set_interrupt_cause(core, n);
-+    if (!e1000e_intrmgr_delay_rx_causes(core, &causes)) {
-+        trace_e1000e_rx_interrupt_set(causes);
-+        e1000e_set_interrupt_cause(core, causes);
-     } else {
--        trace_e1000e_rx_interrupt_delayed(n);
-+        trace_e1000e_rx_interrupt_delayed(causes);
-     }
+-    trace_e1000e_rx_interrupt_set(n);
+-    igb_set_interrupt_cause(core, n);
++    trace_e1000e_rx_interrupt_set(causes);
++    igb_set_interrupt_cause(core, causes);
  
-     return retval;
+     return orig_size;
+ }
 -- 
 2.40.1
 
