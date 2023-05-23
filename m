@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A573B70DB26
+	by mail.lfdr.de (Postfix) with ESMTPS id 815C670DB25
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 13:06:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Pp8-0004V9-Rj; Tue, 23 May 2023 07:05:02 -0400
+	id 1q1Pp6-0004U7-Ki; Tue, 23 May 2023 07:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pp4-0004Tz-9Z
- for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pp3-0004Tq-R6
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pp2-0002eE-RP
- for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:58 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pp2-0002e2-82
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684839896;
+ s=mimecast20190719; t=1684839895;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rM30N0KaR37ESOUKaGeDS2dtk3N/C0zbCYN4eye2Plc=;
- b=DvnP828NqaoZndO4bHI39FH6KqB2oWXgd49hngjCpeJBl3YMBhYJo7zm9qK0IK+OUChHag
- BWikZK9pappgx2W70RV4eNn2flddUeJlGEnPLiM0Y/vIyYnz0Bz+rZ3eDtqdZq41h36lYR
- ZlSLUFCbDFDiZAUdQp+j0q323Oco7nA=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=p88QPabx6fyTv3KzbTfhZ1QR58gl8zylMmH/d8/QmaM=;
+ b=BwohHHJKyVLITOeRTAtpOLkawAy1UqubJ71J+F2j3wac3Ftn9wsbHNvxPYFqO9mb8NhmUm
+ Rk2ftfCOwJAVkZl3TlUI/a/SwTtIfEeQmVsZwJaNmVAHLDyMnUVQZu33uXxyZuXRV9WaIL
+ a0Bl+AoS9z8dYXi0JazIe795PLVh9B8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-411-UPBcsx_JNKKAqs_c3FwZGA-1; Tue, 23 May 2023 07:04:51 -0400
-X-MC-Unique: UPBcsx_JNKKAqs_c3FwZGA-1
+ us-mta-410-RL2zaCohNwK0JQqzFlLIUg-1; Tue, 23 May 2023 07:04:54 -0400
+X-MC-Unique: RL2zaCohNwK0JQqzFlLIUg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF9DA2A5955D;
- Tue, 23 May 2023 11:04:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BD31B800888;
+ Tue, 23 May 2023 11:04:53 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.186])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9782F7AF5;
- Tue, 23 May 2023 11:04:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 61BC09D7B;
+ Tue, 23 May 2023 11:04:51 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
  Max Filippov <jcmvbkbc@gmail.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 2/5] hw/alpha: Use MachineClass->default_nic in the alpha
- machine
-Date: Tue, 23 May 2023 13:04:32 +0200
-Message-Id: <20230523110435.1375774-3-thuth@redhat.com>
+Subject: [PATCH 3/5] hw/arm: Use MachineClass->default_nic in the virt machine
+Date: Tue, 23 May 2023 13:04:33 +0200
+Message-Id: <20230523110435.1375774-4-thuth@redhat.com>
 In-Reply-To: <20230523110435.1375774-1-thuth@redhat.com>
 References: <20230523110435.1375774-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,38 +84,38 @@ default NIC is usable or not (for example when compiling with the
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/alpha/dp264.c | 4 +++-
+ hw/arm/virt.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
-index 4161f559a7..03495e1e60 100644
---- a/hw/alpha/dp264.c
-+++ b/hw/alpha/dp264.c
-@@ -49,6 +49,7 @@ static void clipper_init(MachineState *machine)
-     const char *kernel_filename = machine->kernel_filename;
-     const char *kernel_cmdline = machine->kernel_cmdline;
-     const char *initrd_filename = machine->initrd_filename;
-+    MachineClass *mc = MACHINE_GET_CLASS(machine);
-     AlphaCPU *cpus[4];
-     PCIBus *pci_bus;
-     PCIDevice *pci_dev;
-@@ -124,7 +125,7 @@ static void clipper_init(MachineState *machine)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index b99ae18501..9b9f7d9c68 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1426,6 +1426,7 @@ static void create_pcie(VirtMachineState *vms)
+     int i, ecam_id;
+     PCIHostState *pci;
+     MachineState *ms = MACHINE(vms);
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
  
-     /* Network setup.  e1000 is good enough, failing Tulip support.  */
-     for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, "e1000", NULL);
-+        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
-     }
+     dev = qdev_new(TYPE_GPEX_HOST);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+@@ -1479,7 +1480,7 @@ static void create_pcie(VirtMachineState *vms)
+             NICInfo *nd = &nd_table[i];
  
-     /* Super I/O */
-@@ -213,6 +214,7 @@ static void clipper_machine_init(MachineClass *mc)
-     mc->is_default = true;
-     mc->default_cpu_type = ALPHA_CPU_TYPE_NAME("ev67");
-     mc->default_ram_id = "ram";
-+    mc->default_nic = "e1000";
- }
+             if (!nd->model) {
+-                nd->model = g_strdup("virtio");
++                nd->model = g_strdup(mc->default_nic);
+             }
  
- DEFINE_MACHINE("clipper", clipper_machine_init)
+             pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
+@@ -3033,6 +3034,7 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+     mc->auto_enable_numa_with_memhp = true;
+     mc->auto_enable_numa_with_memdev = true;
+     mc->default_ram_id = "mach-virt.ram";
++    mc->default_nic = "virtio-net-pci";
+ 
+     object_class_property_add(oc, "acpi", "OnOffAuto",
+         virt_get_acpi, virt_set_acpi,
 -- 
 2.31.1
 
