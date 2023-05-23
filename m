@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B4570DCFD
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA1D70DCFF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:51:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1RTS-0007hn-MC; Tue, 23 May 2023 08:50:50 -0400
+	id 1q1RTK-0007aW-4y; Tue, 23 May 2023 08:50:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1RTJ-0007ax-V0
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:50:38 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1q1RTH-0007Zu-Dw
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:50:35 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1RT9-0005LK-P6
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:50:36 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-309d3e8777cso2544030f8f.0
+ id 1q1RT4-0005Js-Gf
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:50:34 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3093a6311dcso7291396f8f.1
  for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:50:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684846204; x=1687438204;
+ d=linaro.org; s=google; t=1684846203; x=1687438203;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K01VdPgPYNekowAJXeG2Q1UEkTaMboRdvQpIKYeYNGo=;
- b=BvVvpGYUHIhKyhaoahKO8dY/q9m04n9ZLTMDQabZX/cHAeOStO+OLvCsQF64+aKN2L
- 55UVHv9gwmG135gVmPHwc32YaFKzC8pgk/w4PU627gRcNjE+9DJjekwKE+WvFt6395K9
- gNl6jtoxOBGXNH0k80bty7ACRokZdluMxl4ydPCy98BbzjSXg5kaIk+arPeskrQ34ACv
- Ctx3AS1Kt6puc1KIvOCWJSXI0btOPxjbYI9+hG9vD2o8ihdXNIhF9HtX6jyLA0z6c+tC
- sUirQ7WDgwcIFGh99Iw3o6moFU3A/qN0/sZGVD+utIdSKun+BGYwzlb37nR9aG174QSZ
- 1v+Q==
+ bh=O6c49RYzHWdVq3P3yg8J3+/TKBPogcBQppAeDcgAsBA=;
+ b=Qz3tdzyoS9ILyQlJtfPKfKH/yxDz5t4bp3sPiRWtHlM/yevCT1Z1ZSF/LcnIo+BGjK
+ Vat6061KSGbQbG3JQhjJjne7lE9iSlZtetSUBYdMICJTW22ZugQxiNCTFTnhZIK02Z7y
+ bD3HGiaL5TZBUbifpaB+dacZQncVVoE73g8Y5qtC6MpGf3d+5DZRFYTLKcw+qP5j/tt2
+ IjttZlSguuVBULlJ1/480YdX4hKnjIypCVqwc0ylpGdLIBdXsVDXX45IYWxjAyefuAHO
+ Tz2uqdRlbqPVYTAKCkyqcPBSXe5I20kvvIaLhQJ5Q9Xr/BfYTizbfCIH9fLaXDv6s89d
+ 54MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684846204; x=1687438204;
+ d=1e100.net; s=20221208; t=1684846203; x=1687438203;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K01VdPgPYNekowAJXeG2Q1UEkTaMboRdvQpIKYeYNGo=;
- b=b9TbbPkPZsmtKDgkEUBZs056GFl6W4lzDOFaPotUfAL0qxk6nQGIKhVrgREMhbMN52
- CKoe5PRZ0e2WVgz+9ryCt0rl1BnMreGkkye2+sQh1yV+WNmaVdmb0hrLCzjM9e8BxIsh
- wxMbZfb3NG7kAX76E6bqa0tR+lc4LI2qBkBkR3n+5BQxZlWY/4CDmZxI3qycA0XrKuYP
- hjvAvrPtycBTlPZWi4AvReRuSREx+SLeaRpNiZVn0kN2nw917XywH28f32z73k5vR375
- 8dWZy2y8Wlp2Z7cYk0ebx+zjsMklm0x50tlsiJT43w1OnHHEJcLPkG/pn4Va+rIZwkjS
- jw7Q==
-X-Gm-Message-State: AC+VfDyBddOvuyUearhKq136BTx6oTdO5qqUOqJ2unMolP0+p+B1xNLS
- nWRXQ86oa+NLyMHLeTLFumFa8A==
-X-Google-Smtp-Source: ACHHUZ710PVnIQzWn0bKv4BfhMNSTFs+B2uATZKKtcyifek24dgl4yDvXtWCc8K78t/p/RVDqLcKYQ==
-X-Received: by 2002:a5d:4585:0:b0:30a:a165:f95 with SMTP id
- p5-20020a5d4585000000b0030aa1650f95mr1450124wrq.19.1684846204645; 
- Tue, 23 May 2023 05:50:04 -0700 (PDT)
+ bh=O6c49RYzHWdVq3P3yg8J3+/TKBPogcBQppAeDcgAsBA=;
+ b=Cg23NBzIoQJhu3Ltlzd6nR5ydFsKu/y+vU0+vaRyP7a+xYUjv7/We/tKZQU31nTxQY
+ zhxmB9TZCjTf/MTBGHn9SLlwb26640s1Jnmi1RCz55m8flnOXDYOIsKnjQr6glWaNjCi
+ ap9qEc3UD4qYLQhPW7Z3ARFJG8NAN/nhPd5hjQ08RggFad8Zye/KUg+Mw84INQ9E4wNw
+ WmBlkvUf1niMEJHjxE8lCXdRgRcaQfXmj6cNrZQb0Scqsyy61JHpYnAIGkTJuOdoWINm
+ /mF7LZHFdALOdXnQVn86AigDWkfGvarUjE661biiyk8dW/LdboqiNYPRtPNq2QR9DREJ
+ bijw==
+X-Gm-Message-State: AC+VfDwgosU6/fxFqwqVTR0KmG9yaDdofHnQCzR3TD07v2du9xUqx00P
+ eBRvOw0NTkHrg7O/CgAEZfkUVg==
+X-Google-Smtp-Source: ACHHUZ4XAznovqbdL4ofYv9FPd+H5uvyDjjJaACFBaiR6IadmiO26F8yjGk+Zlny3Iinj750sF6osA==
+X-Received: by 2002:a5d:40c2:0:b0:309:839:be3e with SMTP id
+ b2-20020a5d40c2000000b003090839be3emr9870522wrq.33.1684846203793; 
+ Tue, 23 May 2023 05:50:03 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- z16-20020a5d4d10000000b002f6176cc6desm11008898wrt.110.2023.05.23.05.50.02
+ s3-20020a5d4243000000b002cea9d931e6sm10972862wrr.78.2023.05.23.05.50.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 23 May 2023 05:50:02 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id C8D6C1FFBB;
- Tue, 23 May 2023 13:50:01 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 0FACF1FFC2;
+ Tue, 23 May 2023 13:50:02 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
@@ -74,24 +74,24 @@ Cc: Greg Kurz <groug@kaod.org>, Michael Roth <michael.roth@amd.com>,
  Riku Voipio <riku.voipio@iki.fi>, Eric Blake <eblake@redhat.com>,
  libvir-list@redhat.com, Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 07/10] trace: remove control-vcpu.h
-Date: Tue, 23 May 2023 13:49:57 +0100
-Message-Id: <20230523125000.3674739-8-alex.bennee@linaro.org>
+Subject: [PATCH v4 09/10] hw/9pfs: use qemu_xxhash4
+Date: Tue, 23 May 2023 13:49:59 +0100
+Message-Id: <20230523125000.3674739-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230523125000.3674739-1-alex.bennee@linaro.org>
 References: <20230523125000.3674739-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,105 +107,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we no longer have vcpu controlled trace events we can excise the
-code that allows us to query its status.
+No need to pass zeros as we have helpers that do that for us.
 
-Message-Id: <20230420150009.1675181-8-alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230503091756.1453057-8-alex.bennee@linaro.org>
+Message-Id: <20230503091756.1453057-10-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230505155336.137393-8-alex.bennee@linaro.org>
+Message-Id: <20230505155336.137393-10-alex.bennee@linaro.org>
 ---
- trace/control-vcpu.h          | 47 -----------------------------------
- trace/qmp.c                   |  2 +-
- scripts/tracetool/format/h.py |  5 +---
- 3 files changed, 2 insertions(+), 52 deletions(-)
- delete mode 100644 trace/control-vcpu.h
+ hw/9pfs/9p.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/trace/control-vcpu.h b/trace/control-vcpu.h
-deleted file mode 100644
-index 800fc5a219..0000000000
---- a/trace/control-vcpu.h
-+++ /dev/null
-@@ -1,47 +0,0 @@
--/*
-- * Interface for configuring and controlling the state of tracing events.
-- *
-- * Copyright (C) 2011-2016 Lluís Vilanova <vilanova@ac.upc.edu>
-- *
-- * This work is licensed under the terms of the GNU GPL, version 2 or later.
-- * See the COPYING file in the top-level directory.
-- */
--
--#ifndef TRACE__CONTROL_VCPU_H
--#define TRACE__CONTROL_VCPU_H
--
--#include "control.h"
--#include "event-internal.h"
--#include "hw/core/cpu.h"
--
--/**
-- * trace_event_get_vcpu_state:
-- * @vcpu: Target vCPU.
-- * @id: Event identifier name.
-- *
-- * Get the tracing state of an event (both static and dynamic) for the given
-- * vCPU.
-- *
-- * If the event has the disabled property, the check will have no performance
-- * impact.
-- */
--#define trace_event_get_vcpu_state(vcpu, id)                            \
--    ((id ##_ENABLED) &&                                                 \
--     trace_event_get_vcpu_state_dynamic_by_vcpu_id(                     \
--         vcpu, _ ## id ## _EVENT.vcpu_id))
--
--#include "control-internal.h"
--
--static inline bool
--trace_event_get_vcpu_state_dynamic_by_vcpu_id(CPUState *vcpu,
--                                              uint32_t vcpu_id)
--{
--    /* it's on fast path, avoid consistency checks (asserts) */
--    if (unlikely(trace_events_enabled_count)) {
--        return test_bit(vcpu_id, vcpu->trace_dstate);
--    } else {
--        return false;
--    }
--}
--
--#endif
-diff --git a/trace/qmp.c b/trace/qmp.c
-index aa760f1fc4..3e3971c6a8 100644
---- a/trace/qmp.c
-+++ b/trace/qmp.c
-@@ -10,7 +10,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-trace.h"
--#include "control-vcpu.h"
-+#include "control.h"
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 9621ec1341..991645adca 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -738,15 +738,14 @@ static VariLenAffix affixForIndex(uint64_t index)
+     return invertAffix(&prefix); /* convert prefix to suffix */
+ }
  
+-/* creative abuse of tb_hash_func7, which is based on xxhash */
+ static uint32_t qpp_hash(QppEntry e)
+ {
+-    return qemu_xxhash7(e.ino_prefix, e.dev, 0, 0, 0);
++    return qemu_xxhash4(e.ino_prefix, e.dev);
+ }
  
- static bool check_events(bool ignore_unavailable, bool is_pattern,
-diff --git a/scripts/tracetool/format/h.py b/scripts/tracetool/format/h.py
-index 285d7b03a9..ea126b07ea 100644
---- a/scripts/tracetool/format/h.py
-+++ b/scripts/tracetool/format/h.py
-@@ -16,10 +16,7 @@
+ static uint32_t qpf_hash(QpfEntry e)
+ {
+-    return qemu_xxhash7(e.ino, e.dev, 0, 0, 0);
++    return qemu_xxhash4(e.ino, e.dev);
+ }
  
- 
- def generate(events, backend, group):
--    if group == "root":
--        header = "trace/control-vcpu.h"
--    else:
--        header = "trace/control.h"
-+    header = "trace/control.h"
- 
-     out('/* This file is autogenerated by tracetool, do not edit. */',
-         '',
+ static bool qpd_cmp_func(const void *obj, const void *userp)
 -- 
 2.39.2
 
