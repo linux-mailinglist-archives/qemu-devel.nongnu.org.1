@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0296170E09C
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 17:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3591E70E0A9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 17:35:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1U1b-00035r-49; Tue, 23 May 2023 11:34:11 -0400
+	id 1q1U2W-0004Un-7x; Tue, 23 May 2023 11:35:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1U1Y-00035O-IS
- for qemu-devel@nongnu.org; Tue, 23 May 2023 11:34:08 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1U1W-0002nX-Kg
- for qemu-devel@nongnu.org; Tue, 23 May 2023 11:34:08 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-64d1a0d640cso4606586b3a.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:34:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684856045; x=1687448045;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4O6hvzNlC2ottsJv+LnzbHWmgE2ikpfWnIjCi8CmnNY=;
- b=cOH7EDLGZSecWBWCU7P91nFIK/W+J0q+vVW85htez5pLXsNCnQO8Y+RVWSQrvyYi8X
- mBRxfwRBfy+HFthBa6qgrxeftYGg5NIU3lHeldh+viFK0Yb8ze5ESsFli1SLhzjRKZpH
- Y4UmW0DGBSVA6QhC8XNhEiHAs8/kUdghAUo7mYv3s/bp6P5FtTv5D1YMcsU/p+TN15MU
- 1+Wb9FM/d+hvR7dVdK+ejeqxZRM2uB1jlzA6mU7VbZgPQAhqgPl04nqEsoaUCyD3pxex
- IrlF0KyM+IlURXOkVAddPDuXdUD+HNhAi7FqW0dpVcH4fVexC842U5T+fBxhuGV45Nlr
- 6Qbg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q1U2U-0004Ts-0Y
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 11:35:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q1U2R-000307-Go
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 11:35:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684856102;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YbqPQ3+fddGwi2dK1pYjN9CNZiJ3tvsF6HMsXfU0cEc=;
+ b=V6CRvKPXbtgvUezbb8wy6bANNV0O0XA90c+BWpCVwDLUQjA/Oc0xQ9+UfyjS9LNkmr7oOR
+ 9rmPy9dKK2GDJc9tOCclpT4y5OobVS2zuEpGKajpQBjat+5g4JCRxdW7jaD1poUfPbW4BC
+ CkjXnfln+x8b9Jjly64rNMPvuNd7G0k=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-99pvuJRFOTyVanwntkrt3w-1; Tue, 23 May 2023 11:35:00 -0400
+X-MC-Unique: 99pvuJRFOTyVanwntkrt3w-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-3f386bb966cso11611841cf.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:35:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684856045; x=1687448045;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4O6hvzNlC2ottsJv+LnzbHWmgE2ikpfWnIjCi8CmnNY=;
- b=FYNI5lMmi4o9Av14eqmSxj35rcx2AVvfnYJUqO0WAiR6qakgQIO39soaKbdCHGI1gX
- 5RKJiJ58rZG4eABnhpgF0TRIJ+/RaWY2pXSSQMf9f8AF4PVcYlnkfzEsPQ62ECOL3dxk
- eFKZLCFChEuxEx9UO1qmN6i0XZyziWk8t3LJGkY2J13e3x5eptfIkLRfJtMzeMMF4EoY
- pTV7SLHBtSOsvnW0P00WrONXxcfoHBMsHP/dMw8Fyodc0FUBcKBlQWZodDwZ3ttLrdJ5
- tH3dXI9imKnfzxnfrYKhkmY2J8TSAxjQK4POcbVGo146aOLoegUmter6N3Z+TqgGujaS
- cKcw==
-X-Gm-Message-State: AC+VfDxheBB++E1NH+nJtp1v2MzwJiYb3p9/tWyY5TdnZWCqaQjZCQza
- Iuq+haWVvFxA00yL0wIZdbGigw==
-X-Google-Smtp-Source: ACHHUZ7sMJxYd2CtUJua5srsXEScJv9dvdYvpKHLToHl834l3mt7+1THxchO4C+UyHBWIMnK3gimgQ==
-X-Received: by 2002:a05:6a20:a128:b0:10c:5d65:83ec with SMTP id
- q40-20020a056a20a12800b0010c5d6583ecmr3417925pzk.5.1684856045184; 
- Tue, 23 May 2023 08:34:05 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
- ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
- by smtp.gmail.com with ESMTPSA id
- a26-20020a62bd1a000000b0064f45b20703sm1199700pff.64.2023.05.23.08.34.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 08:34:04 -0700 (PDT)
-Message-ID: <cb97eb41-1417-86a4-e26a-0e0da3e22c6f@linaro.org>
-Date: Tue, 23 May 2023 08:34:03 -0700
+ d=1e100.net; s=20221208; t=1684856100; x=1687448100;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YbqPQ3+fddGwi2dK1pYjN9CNZiJ3tvsF6HMsXfU0cEc=;
+ b=dV1gqrUO11BFKL+RkUdiyyBMlJ2ngGUCyNdGsbyPcQ/pBTq9MtSGGWIM6RnjO9yAoe
+ LP7LAY/s7F9bNadLuqt++batHAJ6pHgMbYGlTI0jp3T2QhnRjCoQlWwExlDLM5vQcK1Z
+ 72au9DdsSu6iiqUXrQdBGB1SYh1BN+91JqAES9EcbXJaCZcxomkhiJD+Of5czVBYBFT9
+ TzlSx9tBI8UiAuJZYnhUISTj6U0mUBjDdUaFTXXTyvDRSfbZuZM5S7OwAdktb43idZ2q
+ W+IUbKn6w7UgzcC1OiMCz1rbYVWCApZ7gG+lczXTtxrxH0EiyE+pzT0/lO7zzXy0YTmi
+ unvA==
+X-Gm-Message-State: AC+VfDxGP+YWOxm3NRtb08/wrHiJAhPPY8HFMvhFxrb02mrNCnoxow+z
+ zst1S7oUrHUnotlESRgjCE8QVlETtu+1sadz1eP+Ir9aoWNyvhvJIueaSqY+tfzSjuXwTj8QvDy
+ TaPEdVR7ivVH0CCM=
+X-Received: by 2002:ac8:5908:0:b0:3f6:b330:4bfb with SMTP id
+ 8-20020ac85908000000b003f6b3304bfbmr7025390qty.0.1684856099761; 
+ Tue, 23 May 2023 08:34:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ43Busx1dcdHeydyhU+AiJDyL5YfP6W7dIgi9ZPWEFl8BT34zFSs7fCsXvFVA/oVFrg0+u11g==
+X-Received: by 2002:ac8:5908:0:b0:3f6:b330:4bfb with SMTP id
+ 8-20020ac85908000000b003f6b3304bfbmr7025359qty.0.1684856099412; 
+ Tue, 23 May 2023 08:34:59 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ mm19-20020a0562145e9300b00623927281c2sm2850887qvb.40.2023.05.23.08.34.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 May 2023 08:34:58 -0700 (PDT)
+Date: Tue, 23 May 2023 11:34:57 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Tiwei Bie <tiwei.bie@intel.com>
+Subject: Re: [PATCH v3 1/3] vhost: Rework memslot filtering and fix
+ "used_memslot" tracking
+Message-ID: <ZGzdIfLy+7rSh6fW@x1n>
+References: <20230503172121.733642-1-david@redhat.com>
+ <20230503172121.733642-2-david@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RFC PATCH] softfloat: use QEMU_FLATTEN to avoid mistaken isra
- inlining
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>, Aurelien Jarno
- <aurelien@aurel32.net>, Peter Maydell <peter.maydell@linaro.org>
-References: <20230523131107.3680641-1-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523131107.3680641-1-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230503172121.733642-2-david@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,52 +101,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/23 06:11, Alex Bennée wrote:
-> Balton discovered that asserts for the extract/deposit calls had a
-> significant impact on a lame benchmark on qemu-ppc. Replicating with:
+On Wed, May 03, 2023 at 07:21:19PM +0200, David Hildenbrand wrote:
+> Having multiple vhost devices, some filtering out fd-less memslots and
+> some not, can mess up the "used_memslot" accounting. Consequently our
+> "free memslot" checks become unreliable and we might run out of free
+> memslots at runtime later.
 > 
->    ./qemu-ppc64 ~/lsrc/tests/lame.git-svn/builds/ppc64/frontend/lame \
->      -h pts-trondheim-3.wav pts-trondheim-3.mp3
+> An example sequence which can trigger a potential issue that involves
+> different vhost backends (vhost-kernel and vhost-user) and hotplugged
+> memory devices can be found at [1].
 > 
-> showed up the pack/unpack routines not eliding the assert checks as it
-> should have done causing them to prominently figure in the profile:
+> Let's make the filtering mechanism less generic and distinguish between
+> backends that support private memslots (without a fd) and ones that only
+> support shared memslots (with a fd). Track the used_memslots for both
+> cases separately and use the corresponding value when required.
 > 
->    11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
->    11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
->     8.26%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
->     6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
->     5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
->     4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
->     4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
->     3.62%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
+> Note: Most probably we should filter out MAP_PRIVATE fd-based RAM regions
+> (for example, via memory-backend-memfd,...,shared=off or as default with
+>  memory-backend-file) as well. When not using MAP_SHARED, it might not work
+> as expected. Add a TODO for now.
 > 
-> After this patch the same test runs 31 seconds faster with a profile
-> where the generated code dominates more:
+> [1] https://lkml.kernel.org/r/fad9136f-08d3-3fd9-71a1-502069c000cf@redhat.com
 > 
-> +   14.12%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619420
-> +   13.30%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000616850
-> +   12.58%    12.19%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
-> +   10.62%     0.00%  qemu-ppc64  [unknown]                [.] 0x000000400061bf70
-> +    9.91%     9.73%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
-> +    7.84%     7.82%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
-> +    6.47%     5.78%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize.constprop.0
-> +    6.46%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000620130
-> +    6.42%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619400
-> +    6.17%     6.04%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
-> +    5.85%     0.00%  qemu-ppc64  [unknown]                [.] 0x00000040006167e0
-> +    5.74%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000b693fcffffd3
-> +    5.45%     4.78%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
-> 
-> Suggested-by: Richard Henderson<richard.henderson@linaro.org>
-> Message-Id:<ec9cfe5a-d5f2-466d-34dc-c35817e7e010@linaro.org>
-> [AJB: Patchified rth's suggestion]
-> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
-> Cc: BALATON Zoltan<balaton@eik.bme.hu>
+> Fixes: 988a27754bbb ("vhost: allow backends to filter memory sections")
+> Cc: Tiwei Bie <tiwei.bie@intel.com>
+> Acked-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
->   fpu/softfloat.c | 22 +++++++++++-----------
->   1 file changed, 11 insertions(+), 11 deletions(-)
+>  hw/virtio/vhost-user.c            |  7 ++--
+>  hw/virtio/vhost.c                 | 56 ++++++++++++++++++++++++++-----
+>  include/hw/virtio/vhost-backend.h |  5 ++-
+>  3 files changed, 52 insertions(+), 16 deletions(-)
+> 
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index e5285df4ba..0c3e2702b1 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -2453,10 +2453,9 @@ vhost_user_crypto_close_session(struct vhost_dev *dev, uint64_t session_id)
+>      return 0;
+>  }
+>  
+> -static bool vhost_user_mem_section_filter(struct vhost_dev *dev,
+> -                                          MemoryRegionSection *section)
+> +static bool vhost_user_no_private_memslots(struct vhost_dev *dev)
+>  {
+> -    return memory_region_get_fd(section->mr) >= 0;
+> +    return true;
+>  }
+>  
+>  static int vhost_user_get_inflight_fd(struct vhost_dev *dev,
+> @@ -2686,6 +2685,7 @@ const VhostOps user_ops = {
+>          .vhost_backend_init = vhost_user_backend_init,
+>          .vhost_backend_cleanup = vhost_user_backend_cleanup,
+>          .vhost_backend_memslots_limit = vhost_user_memslots_limit,
+> +        .vhost_backend_no_private_memslots = vhost_user_no_private_memslots,
+>          .vhost_set_log_base = vhost_user_set_log_base,
+>          .vhost_set_mem_table = vhost_user_set_mem_table,
+>          .vhost_set_vring_addr = vhost_user_set_vring_addr,
+> @@ -2712,7 +2712,6 @@ const VhostOps user_ops = {
+>          .vhost_set_config = vhost_user_set_config,
+>          .vhost_crypto_create_session = vhost_user_crypto_create_session,
+>          .vhost_crypto_close_session = vhost_user_crypto_close_session,
+> -        .vhost_backend_mem_section_filter = vhost_user_mem_section_filter,
+>          .vhost_get_inflight_fd = vhost_user_get_inflight_fd,
+>          .vhost_set_inflight_fd = vhost_user_set_inflight_fd,
+>          .vhost_dev_start = vhost_user_dev_start,
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index 746d130c74..4fe08c809f 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -46,20 +46,33 @@
+>  static struct vhost_log *vhost_log;
+>  static struct vhost_log *vhost_log_shm;
+>  
+> +/* Memslots used by backends that support private memslots (without an fd). */
+>  static unsigned int used_memslots;
+> +
+> +/* Memslots used by backends that only support shared memslots (with an fd). */
+> +static unsigned int used_shared_memslots;
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+It's just that these vars are updated multiple times when >1 vhost is
+there, accessing these fields are still a bit confusing - I think it's
+implicitly protected by BQL so looks always safe.
 
-r~
+Since we already have the shared/private handling, maybe for the long term
+it'll be nicer to just keep such info per-device e.g. in vhost_dev so we
+can also drop vhost_backend_no_private_memslots().  Anyway the code is
+internal so can be done on top even if worthwhile.
+
+> +
+>  static QLIST_HEAD(, vhost_dev) vhost_devices =
+>      QLIST_HEAD_INITIALIZER(vhost_devices);
+>  
+>  bool vhost_has_free_slot(void)
+>  {
+> -    unsigned int slots_limit = ~0U;
+> +    unsigned int free = UINT_MAX;
+>      struct vhost_dev *hdev;
+>  
+>      QLIST_FOREACH(hdev, &vhost_devices, entry) {
+>          unsigned int r = hdev->vhost_ops->vhost_backend_memslots_limit(hdev);
+> -        slots_limit = MIN(slots_limit, r);
+> +        unsigned int cur_free;
+> +
+> +        if (hdev->vhost_ops->vhost_backend_no_private_memslots &&
+> +            hdev->vhost_ops->vhost_backend_no_private_memslots(hdev)) {
+> +            cur_free = r - used_shared_memslots;
+> +        } else {
+> +            cur_free = r - used_memslots;
+> +        }
+> +        free = MIN(free, cur_free);
+>      }
+> -    return slots_limit > used_memslots;
+> +    return free > 1;
+
+Should here be "free > 0" instead?
+
+Trivial but maybe still matter when some device used exactly the size of
+all memslots of a device..
+
+Other than this the patch looks all good here.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
