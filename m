@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB83070D1A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B15A570D189
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:45:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1I1A-0003eH-E6; Mon, 22 May 2023 22:44:56 -0400
+	id 1q1I1K-00041W-Fx; Mon, 22 May 2023 22:45:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I14-0003TH-Fr
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:51 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1q1I18-0003iK-O5
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:54 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I12-0004Am-Uu
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:50 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-25343f0c693so4664333a91.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:44:48 -0700 (PDT)
+ id 1q1I16-0004BB-AC
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:53 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2537909d28cso3057746a91.0
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809888; x=1687401888;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809891; x=1687401891;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3ocsD2ZaUCUvnX115Ui0hmhaA4Y0GfsbtERqEgOjd/I=;
- b=Sw9bFQod6JLJgLL+Xm1dmPBhPosXTjwsFYCH9ATV1iLVc4/Gt6T5WjNMpiWdnse4E9
- xu6Y2DeSP0VFZ4hEphd+qbjnunOAQkxMNvI6VHVXRzQsi2gtPFdSNa8hYKXEkhjs5sgQ
- UXu+rV4s6x44TQHjf5/hFm5WlBmHFILd7euAORaWLfTtfyQk8wGI29OL+/2K2iUNMOoY
- dlSxGGiwh6E6YYjDf9ahKzbHGOu3Fg4NzK59tC9SfMbTQxSPF+H6BwViZH8AJw7OFOiZ
- 75AQ0OXIn4E+fCczhEqu44PvXm8ObF4XO9FYQ6nkgS0ggWAFR4NqBUEfoFChbpVE1vKj
- kp+Q==
+ bh=UifktMeAdutabcyCUI8IkLHFZre8mrFjn86ns+XayeQ=;
+ b=N/vLcjw1woIjUsN14GCrK2me6wVcNNf7vI08nTTqsEoRaQArhy7RWgExMe61CTdEzM
+ JLeexC88aI3sQsRt0Egt/QaVQrdUXOzyRqdw++sFFnnMaJCKpFExStIHW1WHevBQnaUt
+ GFOGUqcjK4yMjxJ9Eu+tk/Txx5RW391giUsC5Y6acxQWjhaDuyIHpQVuxTN+6EPnQ5y2
+ o9amKMGv/U7j/WeMNhK6fIeQu7pinisPNlbxZCca2taG9mhnHhZhFcoDK0GlJIIeI4PY
+ yXOzF2g0NhgcWyOJ9S9WHnfbpmHnqudJA91n3z2BplWBfMVu8ipYkVqXiZS9OTLjWASd
+ jBsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684809888; x=1687401888;
+ d=1e100.net; s=20221208; t=1684809891; x=1687401891;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3ocsD2ZaUCUvnX115Ui0hmhaA4Y0GfsbtERqEgOjd/I=;
- b=C03mCpDGn0FlUFn0ks0WYYI8dSGNkN5kQdR1AF1NgIRH7SwEAhfztw+pXdIF94uijl
- wD9NCz0A6QeyDY98W6FOdNgRPb32PhlaIB0lOhqQ4P1kKL+Xft5FNgPMkWQkU3i5Lx4r
- kYwQCZS3wfi3BOTmuJJQXle17jd7MK7XyBPGfG1YhTGgGN+YK71QnSYJcNGcEn+zAfS+
- Q/AjY+OB0nCErNWO9uUbEisCteUaHrqdcYi82YIJ9KfgeUp5jmi3ndkzVz9b8D+Ekrda
- 93+JyvlQFAXfeD/LxZJohdw3W6EQFxIEx+gXSYF2oOV0bWX/P4GKp+zOkjwS8CAmJw4z
- 3+bQ==
-X-Gm-Message-State: AC+VfDzDxg9jLstdhEC3JUcPOOjgYe4Fk3iHL8eF33P8HONkZxoUwtr7
- Ql/86qXShMMKT0Wj0eCXk9QBvQ==
-X-Google-Smtp-Source: ACHHUZ6a/nW9W2qiQhPP2Q6C8mxltRzfiR4WqI7JUJqk6hYEeHhSd1DwmATfQXzvZCHOP6vfUQC7ag==
-X-Received: by 2002:a17:90a:5b04:b0:23d:15d8:1bc3 with SMTP id
- o4-20020a17090a5b0400b0023d15d81bc3mr11571577pji.39.1684809887868; 
- Mon, 22 May 2023 19:44:47 -0700 (PDT)
+ bh=UifktMeAdutabcyCUI8IkLHFZre8mrFjn86ns+XayeQ=;
+ b=FlARUaxKCZXL/GcOdwQJk4QSs/k9P9FopYnTXClesUSLex8r+zAyLi4Ypyrxyze3BG
+ 0ZHEL34dC2LIQDKo1PeNuMuM7voAV+g0OfZ9VMXe9YwmPOkK/elkMkTd7Sd9z1Vbe17S
+ PVjX909wa7Gnlcd+EOGAiDPyQdIPGRUo3RhZZfWUqo4HCWkaBJjSdyetppsB1wnAqdXY
+ 0iJR/MC6/ih4i8bd4Bjr4HIz1YLt1zCE5eV6OuO5kj9FMr46hsX7LdaVgZ/hz8XvE4ac
+ 6+x2Sk3ZQ8el2snb9rt+SZU/aXP/ELZzzCGvA3SIE2OO3pe5fJ8Cl+RAIJ0N5zAFNEEj
+ VPpA==
+X-Gm-Message-State: AC+VfDxUkDUrY8vfkB4mBdYzMRS0pz0wpjARCstWXySDaBgrI9K0hgCw
+ yAlUFq/X5Rq5wQk+0q3FxtM2HQ==
+X-Google-Smtp-Source: ACHHUZ48T5gj87ItOuWacfombavxbjDpSiFKbI4lGMksxMm/OwHCtHSiHCreXMdUFhCnWrP+XwGLqQ==
+X-Received: by 2002:a17:90a:928a:b0:23a:ad68:25a7 with SMTP id
+ n10-20020a17090a928a00b0023aad6825a7mr12244256pjo.2.1684809891220; 
+ Mon, 22 May 2023 19:44:51 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.44.44
+ o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.44.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 19:44:47 -0700 (PDT)
+ Mon, 22 May 2023 19:44:50 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
@@ -69,16 +69,16 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org, Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 16/48] e1000x: Take CRC into consideration for size check
-Date: Tue, 23 May 2023 11:43:07 +0900
-Message-Id: <20230523024339.50875-17-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 17/48] e1000x: Rename TcpIpv6 into TcpIpv6Ex
+Date: Tue, 23 May 2023 11:43:08 +0900
+Message-Id: <20230523024339.50875-18-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 References: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1029;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1029.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,63 +100,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Section 13.7.15 Receive Length Error Count says:
->  Packets over 1522 bytes are oversized if LongPacketEnable is 0b
-> (RCTL.LPE). If LongPacketEnable (LPE) is 1b, then an incoming packet
-> is considered oversized if it exceeds 16384 bytes.
-
-> These lengths are based on bytes in the received packet from
-> <Destination Address> through <CRC>, inclusively.
-
-As QEMU processes packets without CRC, the number of bytes for CRC
-need to be subtracted. This change adds some size definitions to be used
-to derive the new size thresholds to eth.h.
+e1000e and igb employs NetPktRssIpV6TcpEx for RSS hash if TcpIpv6 MRQC
+bit is set. Moreover, igb also has a MRQC bit for NetPktRssIpV6Tcp
+though it is not implemented yet. Rename it to TcpIpv6Ex to avoid
+confusion.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 ---
- include/net/eth.h      |  2 ++
- hw/net/e1000x_common.c | 10 +++++-----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ hw/net/e1000x_regs.h | 24 ++++++++++++------------
+ hw/net/e1000e_core.c |  8 ++++----
+ hw/net/igb_core.c    |  8 ++++----
+ hw/net/trace-events  |  2 +-
+ 4 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/include/net/eth.h b/include/net/eth.h
-index e8af5742be..05f56931e7 100644
---- a/include/net/eth.h
-+++ b/include/net/eth.h
-@@ -32,6 +32,8 @@
- #define ETH_ALEN 6
- #define ETH_HLEN 14
- #define ETH_ZLEN 60     /* Min. octets in frame without FCS */
-+#define ETH_FCS_LEN 4
-+#define ETH_MTU 1500
+diff --git a/hw/net/e1000x_regs.h b/hw/net/e1000x_regs.h
+index 6d3c4c6d3a..13760c66d3 100644
+--- a/hw/net/e1000x_regs.h
++++ b/hw/net/e1000x_regs.h
+@@ -290,18 +290,18 @@
+ #define E1000_RETA_IDX(hash)        ((hash) & (BIT(7) - 1))
+ #define E1000_RETA_VAL(reta, hash)  (((uint8_t *)(reta))[E1000_RETA_IDX(hash)])
  
- struct eth_header {
-     uint8_t  h_dest[ETH_ALEN];   /* destination eth addr */
-diff --git a/hw/net/e1000x_common.c b/hw/net/e1000x_common.c
-index 6cc23138a8..212873fd77 100644
---- a/hw/net/e1000x_common.c
-+++ b/hw/net/e1000x_common.c
-@@ -140,16 +140,16 @@ bool e1000x_hw_rx_enabled(uint32_t *mac)
+-#define E1000_MRQC_EN_TCPIPV4(mrqc) ((mrqc) & BIT(16))
+-#define E1000_MRQC_EN_IPV4(mrqc)    ((mrqc) & BIT(17))
+-#define E1000_MRQC_EN_TCPIPV6(mrqc) ((mrqc) & BIT(18))
+-#define E1000_MRQC_EN_IPV6EX(mrqc)  ((mrqc) & BIT(19))
+-#define E1000_MRQC_EN_IPV6(mrqc)    ((mrqc) & BIT(20))
+-
+-#define E1000_MRQ_RSS_TYPE_NONE     (0)
+-#define E1000_MRQ_RSS_TYPE_IPV4TCP  (1)
+-#define E1000_MRQ_RSS_TYPE_IPV4     (2)
+-#define E1000_MRQ_RSS_TYPE_IPV6TCP  (3)
+-#define E1000_MRQ_RSS_TYPE_IPV6EX   (4)
+-#define E1000_MRQ_RSS_TYPE_IPV6     (5)
++#define E1000_MRQC_EN_TCPIPV4(mrqc)   ((mrqc) & BIT(16))
++#define E1000_MRQC_EN_IPV4(mrqc)      ((mrqc) & BIT(17))
++#define E1000_MRQC_EN_TCPIPV6EX(mrqc) ((mrqc) & BIT(18))
++#define E1000_MRQC_EN_IPV6EX(mrqc)    ((mrqc) & BIT(19))
++#define E1000_MRQC_EN_IPV6(mrqc)      ((mrqc) & BIT(20))
++
++#define E1000_MRQ_RSS_TYPE_NONE       (0)
++#define E1000_MRQ_RSS_TYPE_IPV4TCP    (1)
++#define E1000_MRQ_RSS_TYPE_IPV4       (2)
++#define E1000_MRQ_RSS_TYPE_IPV6TCPEX  (3)
++#define E1000_MRQ_RSS_TYPE_IPV6EX     (4)
++#define E1000_MRQ_RSS_TYPE_IPV6       (5)
  
- bool e1000x_is_oversized(uint32_t *mac, size_t size)
- {
-+    size_t header_size = sizeof(struct eth_header) + sizeof(struct vlan_header);
-     /* this is the size past which hardware will
-        drop packets when setting LPE=0 */
--    static const int maximum_ethernet_vlan_size = 1522;
-+    size_t maximum_short_size = header_size + ETH_MTU;
-     /* this is the size past which hardware will
-        drop packets when setting LPE=1 */
--    static const int maximum_ethernet_lpe_size = 16 * KiB;
-+    size_t maximum_large_size = 16 * KiB - ETH_FCS_LEN;
+ #define E1000_ICR_ASSERTED BIT(31)
+ #define E1000_EIAC_MASK    0x01F00000
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index 41d2435074..38d465a203 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -537,7 +537,7 @@ e1000e_rss_get_hash_type(E1000ECore *core, struct NetRxPkt *pkt)
+                                 ip6info->rss_ex_dst_valid,
+                                 ip6info->rss_ex_src_valid,
+                                 core->mac[MRQC],
+-                                E1000_MRQC_EN_TCPIPV6(core->mac[MRQC]),
++                                E1000_MRQC_EN_TCPIPV6EX(core->mac[MRQC]),
+                                 E1000_MRQC_EN_IPV6EX(core->mac[MRQC]),
+                                 E1000_MRQC_EN_IPV6(core->mac[MRQC]));
  
--    if ((size > maximum_ethernet_lpe_size ||
--        (size > maximum_ethernet_vlan_size
--            && !(mac[RCTL] & E1000_RCTL_LPE)))
-+    if ((size > maximum_large_size ||
-+        (size > maximum_short_size && !(mac[RCTL] & E1000_RCTL_LPE)))
-         && !(mac[RCTL] & E1000_RCTL_SBP)) {
-         e1000x_inc_reg_if_not_full(mac, ROC);
-         trace_e1000x_rx_oversized(size);
+@@ -546,8 +546,8 @@ e1000e_rss_get_hash_type(E1000ECore *core, struct NetRxPkt *pkt)
+                               ip6info->rss_ex_src_valid))) {
+ 
+             if (l4hdr_proto == ETH_L4_HDR_PROTO_TCP &&
+-                E1000_MRQC_EN_TCPIPV6(core->mac[MRQC])) {
+-                return E1000_MRQ_RSS_TYPE_IPV6TCP;
++                E1000_MRQC_EN_TCPIPV6EX(core->mac[MRQC])) {
++                return E1000_MRQ_RSS_TYPE_IPV6TCPEX;
+             }
+ 
+             if (E1000_MRQC_EN_IPV6EX(core->mac[MRQC])) {
+@@ -581,7 +581,7 @@ e1000e_rss_calc_hash(E1000ECore *core,
+     case E1000_MRQ_RSS_TYPE_IPV4TCP:
+         type = NetPktRssIpV4Tcp;
+         break;
+-    case E1000_MRQ_RSS_TYPE_IPV6TCP:
++    case E1000_MRQ_RSS_TYPE_IPV6TCPEX:
+         type = NetPktRssIpV6TcpEx;
+         break;
+     case E1000_MRQ_RSS_TYPE_IPV6:
+diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
+index 934db3c3e5..209fdad862 100644
+--- a/hw/net/igb_core.c
++++ b/hw/net/igb_core.c
+@@ -301,7 +301,7 @@ igb_rss_get_hash_type(IGBCore *core, struct NetRxPkt *pkt)
+                                 ip6info->rss_ex_dst_valid,
+                                 ip6info->rss_ex_src_valid,
+                                 core->mac[MRQC],
+-                                E1000_MRQC_EN_TCPIPV6(core->mac[MRQC]),
++                                E1000_MRQC_EN_TCPIPV6EX(core->mac[MRQC]),
+                                 E1000_MRQC_EN_IPV6EX(core->mac[MRQC]),
+                                 E1000_MRQC_EN_IPV6(core->mac[MRQC]));
+ 
+@@ -310,8 +310,8 @@ igb_rss_get_hash_type(IGBCore *core, struct NetRxPkt *pkt)
+                               ip6info->rss_ex_src_valid))) {
+ 
+             if (l4hdr_proto == ETH_L4_HDR_PROTO_TCP &&
+-                E1000_MRQC_EN_TCPIPV6(core->mac[MRQC])) {
+-                return E1000_MRQ_RSS_TYPE_IPV6TCP;
++                E1000_MRQC_EN_TCPIPV6EX(core->mac[MRQC])) {
++                return E1000_MRQ_RSS_TYPE_IPV6TCPEX;
+             }
+ 
+             if (E1000_MRQC_EN_IPV6EX(core->mac[MRQC])) {
+@@ -343,7 +343,7 @@ igb_rss_calc_hash(IGBCore *core, struct NetRxPkt *pkt, E1000E_RSSInfo *info)
+     case E1000_MRQ_RSS_TYPE_IPV4TCP:
+         type = NetPktRssIpV4Tcp;
+         break;
+-    case E1000_MRQ_RSS_TYPE_IPV6TCP:
++    case E1000_MRQ_RSS_TYPE_IPV6TCPEX:
+         type = NetPktRssIpV6TcpEx;
+         break;
+     case E1000_MRQ_RSS_TYPE_IPV6:
+diff --git a/hw/net/trace-events b/hw/net/trace-events
+index a34d196ff7..64d776bc2a 100644
+--- a/hw/net/trace-events
++++ b/hw/net/trace-events
+@@ -179,7 +179,7 @@ e1000e_rx_rss_disabled(void) "RSS is disabled"
+ e1000e_rx_rss_type(uint32_t type) "RSS type is %u"
+ e1000e_rx_rss_ip4(int l4hdr_proto, uint32_t mrqc, bool tcpipv4_enabled, bool ipv4_enabled) "RSS IPv4: L4 header protocol %d, mrqc 0x%X, tcpipv4 enabled %d, ipv4 enabled %d"
+ e1000e_rx_rss_ip6_rfctl(uint32_t rfctl) "RSS IPv6: rfctl 0x%X"
+-e1000e_rx_rss_ip6(bool ex_dis, bool new_ex_dis, int l4hdr_proto, bool has_ext_headers, bool ex_dst_valid, bool ex_src_valid, uint32_t mrqc, bool tcpipv6_enabled, bool ipv6ex_enabled, bool ipv6_enabled) "RSS IPv6: ex_dis: %d, new_ex_dis: %d, L4 header protocol %d, has_ext_headers %d, ex_dst_valid %d, ex_src_valid %d, mrqc 0x%X, tcpipv6 enabled %d, ipv6ex enabled %d, ipv6 enabled %d"
++e1000e_rx_rss_ip6(bool ex_dis, bool new_ex_dis, int l4hdr_proto, bool has_ext_headers, bool ex_dst_valid, bool ex_src_valid, uint32_t mrqc, bool tcpipv6ex_enabled, bool ipv6ex_enabled, bool ipv6_enabled) "RSS IPv6: ex_dis: %d, new_ex_dis: %d, L4 header protocol %d, has_ext_headers %d, ex_dst_valid %d, ex_src_valid %d, mrqc 0x%X, tcpipv6ex enabled %d, ipv6ex enabled %d, ipv6 enabled %d"
+ 
+ e1000e_rx_metadata_protocols(bool hasip4, bool hasip6, int l4hdr_protocol) "protocols: ip4: %d, ip6: %d, l4hdr: %d"
+ e1000e_rx_metadata_vlan(uint16_t vlan_tag) "VLAN tag is 0x%X"
 -- 
 2.40.1
 
