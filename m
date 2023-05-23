@@ -2,85 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11EE870DF9B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B86B270DFAC
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:52:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1TGu-0008VT-7J; Tue, 23 May 2023 10:45:56 -0400
+	id 1q1TLq-0002Gr-Fq; Tue, 23 May 2023 10:51:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1TGO-0008Se-IB
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:45:25 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1TGM-0008Rt-Fh
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:45:24 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2533ed4f1dcso5085913a91.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:45:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684853120; x=1687445120;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JFNp4xd579Hp5IAVfTBbHz1vK60Rg41sE8HnfvKdrTA=;
- b=Ebw2ZcJ29EBO6vMyZx1Y8PrZQ7jg4/N3SsAFWa4Pa/knYVaROMtgP9iIfvu1B9Kx/v
- QulJWmI4knByM+KnJS1h+K0t5gwpmxr0pnMNOZOQ/vh7DZ/VRImBHRqSIIbH+bkAIAgx
- hJZGUmrO0DYJ6imbhlKtuMHd2xYR/8Z6cik7wFWntbpvLad+x/UYBtvKz8RLwrvSsTn/
- eYRfk/cEwE17zY8Ua0jHi18UC40b4Gmh5GWBNu87ijesfjEpLBdtTSsGUaSJRfcpKN+D
- c4IhAdoFiitV+GaDSVsorlTwdgvoEjnVrmjTxg8euTDmZZ3OI9qsnuodW/4EqwgtAd1X
- bRsQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q1TLS-0002EH-HH
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 10:50:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q1TLP-0001FG-8f
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 10:50:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684853411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2WSJOdwK2KTo8dTJHFEBQhmw8vYJ1K+BuC7ekXqbm8g=;
+ b=UAwixD21n+nK/aZv9+GdyhRWPpw65Ik4lCoI/p9SvTebLHrnNurdCW3AZ4n7xRZRDLWvi0
+ ycRJScHZ9feBWVSfSacJtsbTyfUZetwcMvjq/+v7b8SEwoWtjp76EFUh36EjvW4WLeusM2
+ m/NMk62EpdgbQpRmuni/TCw8+lHr/n0=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-fe309ynzPH-evA-knKgx0w-1; Tue, 23 May 2023 10:50:09 -0400
+X-MC-Unique: fe309ynzPH-evA-knKgx0w-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-75b1224f63aso35857185a.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:50:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684853120; x=1687445120;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JFNp4xd579Hp5IAVfTBbHz1vK60Rg41sE8HnfvKdrTA=;
- b=JToTzRPQ0Ny/TbQ8TmQvKOELO9YXCjqDqHgflJg9BFKd04s08P7ia8s6T8ml4gPJhl
- OJTafeEBQ3NTpo7EJ8NyQ+BFrruONgElTuXGN1mKZRGc2xdYITNh95DUWdlcyNwRpsOa
- IHjhYYfIrZmaM39DJ6WZKulpX1LbrbtFwG+hlmYpLz0vKldK4pzMH1xpCtU/ZBXAX6ik
- stUi7yhIgsyNLLp0vJ5n97HGHW9O4BzReFg2UmvwFDqS5VeqODC3TgGj+zPI6R6XI+vX
- yY8Hmh79b/y5zG4fr79AcmxCqI7+gYaDinENcA2ApGB0+G/84vuNtF2dcuH1lwPF63Wi
- lFxQ==
-X-Gm-Message-State: AC+VfDx9Izy7UMuZnuvxA6aQ+lH1Qrgqoj0OEeF0ye/8M8VPIy1o6D7I
- x8r4SyqX7goT691oX3FKwUC8sYTwRIUAzcms/As=
-X-Google-Smtp-Source: ACHHUZ6apRlMjgtcJX3oA/KQrWR1d0MmkvymN03996JN5QrlIcvKQyeWY+7c9ZzQSCjDDMdqvFbHMw==
-X-Received: by 2002:a17:90a:d384:b0:255:54ce:c3a9 with SMTP id
- q4-20020a17090ad38400b0025554cec3a9mr7974915pju.24.1684853119881; 
- Tue, 23 May 2023 07:45:19 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
- ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
- by smtp.gmail.com with ESMTPSA id
- c14-20020a17090ad90e00b00247601ce2aesm7609404pjv.20.2023.05.23.07.45.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 07:45:19 -0700 (PDT)
-Message-ID: <959c1456-0a4c-6fc4-b878-e856fbf52927@linaro.org>
-Date: Tue, 23 May 2023 07:45:17 -0700
+ d=1e100.net; s=20221208; t=1684853408; x=1687445408;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2WSJOdwK2KTo8dTJHFEBQhmw8vYJ1K+BuC7ekXqbm8g=;
+ b=auNHfPgQXrC61ZcmjFah5FxAQ9wCDrG9TimqRPgX7hRM+wV+eD0li2ErQG7B3ijPqV
+ XR2BCchvmsbZv1A5vC5EgHTIOj85a5OtDb8WJ56cU8628SO6qU/X/xcm85eJ6TNnZHfo
+ kh4XIFm+OhndJU6s3/CPzIpZ6dsoe6NjmX2jOAeaTeFP0zzfHCcqLxi7bOvQirbKreSz
+ Xn3ikL46a4TB6pfjEqTdobhwPPB+Lg5gNXEri1oYJs64GS5KskzCQA60SOytVAk/FLVd
+ YcP1ahNWHrR6z/dSR6ltgMnxKfBZccJTynqYmQNkB0v2AyNXDFtz6UDoScotLb3E6co8
+ pDRA==
+X-Gm-Message-State: AC+VfDzXa3SIYzJhKQTWEwVY08fNONqoj4jTzc3pMC0mzcHE4NriDs52
+ b1rRxC2K5ibvHaYdA0sLWMzu3blR18Pk3Jx+HDt6SRGyfWjS1OnJCuRZiEEoYCMb4R++YsJ6wuU
+ LDGG8ysNNJ5jRzpU=
+X-Received: by 2002:a05:620a:2108:b0:75b:23a1:1de7 with SMTP id
+ l8-20020a05620a210800b0075b23a11de7mr4288611qkl.4.1684853408670; 
+ Tue, 23 May 2023 07:50:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6QLwssawT8oeFJMINz4vxyxRhr94/mhaliuY84jez3jcgRSjYJqN6I3jB5uUIPF0mAfFxgPQ==
+X-Received: by 2002:a05:620a:2108:b0:75b:23a1:1de7 with SMTP id
+ l8-20020a05620a210800b0075b23a11de7mr4288593qkl.4.1684853408360; 
+ Tue, 23 May 2023 07:50:08 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ n26-20020a05620a153a00b0075785052e97sm2546359qkk.95.2023.05.23.07.50.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 May 2023 07:50:07 -0700 (PDT)
+Date: Tue, 23 May 2023 10:50:06 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Wang, Wei W" <wei.w.wang@intel.com>
+Cc: "quintela@redhat.com" <quintela@redhat.com>,
+ "Wang, Lei4" <lei4.wang@intel.com>,
+ "berrange@redhat.com" <berrange@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v1] migration: fail the cap check if it requires the use
+ of deferred incoming
+Message-ID: <ZGzSnr5eaS1Wsjwf@x1n>
+References: <20230518160026.57414-1-wei.w.wang@intel.com>
+ <ZGZ6Yqx2+dOp+Q73@x1n>
+ <DS0PR11MB637350354B0285ABF3FA1BD9DC7C9@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <ZGeWF4lzBldLLH/y@x1n> <ZGeW3R5McptUueJF@x1n>
+ <DS0PR11MB63736A4AE4A624D2B9EFD19DDC7D9@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <ZGv8adigFYpLD89k@x1n>
+ <DS0PR11MB63737B09D72A735EC21F3C41DC409@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <ZGzCYMRWa7sW9xAv@x1n>
+ <DS0PR11MB637381609AFD7DA4998AB201DC409@DS0PR11MB6373.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] hw/ppc/openpic: Do not open-code ROUND_UP() macro
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-trivial@nongnu.org
-References: <20230523061546.49031-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523061546.49031-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DS0PR11MB637381609AFD7DA4998AB201DC409@DS0PR11MB6373.namprd11.prod.outlook.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,16 +107,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/23 23:15, Philippe Mathieu-Daudé wrote:
-> While reviewing, the ROUND_UP() macro is easier to figure out.
-> Besides, the comment confirms we want to round up here.
+On Tue, May 23, 2023 at 02:30:25PM +0000, Wang, Wei W wrote:
+> > It's about whether we want to protect e.g. below steps:
+> > 
+> > 1. start dest qemu with -incoming defer
+> > 2. "migrate-set-capabilities" to enable multifd
+> > 3. "migrate-incoming xxx" to setup the sockets
+> > 4. "migrate-set-parameters" to setup the num of multifd   <--- will be invalid here
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   include/hw/ppc/openpic.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Yes, step 4 is invalid, but I think nobody cares about that (i.e. no place uses the
+> invalid value) as step2 already fails the cap setting (with error messages).
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Since only until step 3 it setups the transport_data, so step 2 should be
+fine and not fail?  That's the whole point of my example or I missd
+something here..
 
-r~
+-- 
+Peter Xu
+
 
