@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3772B70E187
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE4270E191
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:20:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1UfD-0000KG-A6; Tue, 23 May 2023 12:15:07 -0400
+	id 1q1UjD-0001st-AU; Tue, 23 May 2023 12:19:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1UfB-0000Jw-O1
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:15:05 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1q1UjA-0001sk-W9
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:19:13 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1Uf9-0004eo-G2
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:15:05 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f603ff9c02so304915e9.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:15:03 -0700 (PDT)
+ id 1q1Uj9-0005qu-Ep
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:19:12 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3f41dceb93bso501115e9.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:19:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684858502; x=1687450502;
+ d=linaro.org; s=google; t=1684858750; x=1687450750;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zc6WtXL3ZdhU4C+S7p7n2dL9eKto+HpthqjmpZDKAt8=;
- b=lY58E+fVpt3rzGvQDTx1pN8tgI9pHqE8hs7kI4lZhhVZsNon6lW8rx1NB9r6ijz3np
- nOJSohQDsIX389JTGkeFshGQZDRxiVSKQ4mrdPSVoh/+WkaRJOoOYU9yylrTZz6K0g9s
- Jp4Dh4KM/bTMfVF0wEEj02qXu1e/j7ImPnxEdUrVgBvijYW1ABysaJ9iGGOhIcDU8coU
- IP6ajUi+Ze4bnMdxRaplCCBt3BnPiwnQ6V7O5iN3cEK05OWEzA9p3RQtIIQ66w0Q5TEt
- aL17TVX4wk4Jq3vDgmebzgSfmnFkvMRFltxCwKCiNDarQQ+D8iMrbJtxxmKYUTlJdEoQ
- +RhA==
+ bh=/I2HAQRfDM7x38B/NHIzvq/ic7efyuJLQuZxgm28YTg=;
+ b=hO+UhKictDzaQDxPiol/WJrXntfipsA0v/4RmatfbRlTPQqeRQCZdQA0BiAYwlJoYL
+ uSyRczbEMl5BVBCMQyUwo2Y6bFuWgVYzZEa5yIKpRkRBieXbKTZjOMPNRSOgZJoihX7A
+ xN0gCA3znGc9Vp+w4/cCulknz351Ol1ygm27K/UUnanbkAkGxVqLflcmjDlDIr4vfYkh
+ tCh4rJFoCahHd/KzGJNp4w0rX0DGtYB9GSNxmjKq3OYPUeIkXFwaMW976xoothB2qj+l
+ elw2os3Z7jA71aYQEZY0WKeWI5nhialHDLlPn9yIeA5dnutiYGbn+dvZNrxWwTziYYah
+ 3v4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684858502; x=1687450502;
+ d=1e100.net; s=20221208; t=1684858750; x=1687450750;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=zc6WtXL3ZdhU4C+S7p7n2dL9eKto+HpthqjmpZDKAt8=;
- b=T7KB3czsN1GmjRdOwgjv06fpHq4NsrK+b20Bkou4omAFkUMfRxDAwU6w0GHg+Afdqj
- PYTsQc3qL2UnjGp+Z9pygjqx9Ue+dMAUC2dCvvuG0YwRj+/ROuvkEsBtY4omBBsQlGo9
- ZdHhO8V44qjZxCf4OvkxilkHY+NcJqU8LdNRc0CTSPMsL+GCTLDI2ZV+RZUWvTAepEBP
- Tc5bSB2y/WrV2q0XEkrqItrd+JbWEEDUWnlBB5jj7tjeU4iJP5KJBbmTC1Fm+Swy8doA
- bTXpLUMaziLWzK5RS9OqHenRSmDVvQE0hvxEq6aa1jZgsWs3Bua/hJD/bSHQyF2gofj/
- WLCQ==
-X-Gm-Message-State: AC+VfDxoFhCvBfPw88bHrbwzZmcyE4gDooCppLPQ7loGcngGvKa3fqxp
- v4xytxVjQoElHKmGbtX45VSu5w==
-X-Google-Smtp-Source: ACHHUZ5jp/vqiE79YnYPgj9RfOhdMEH71wpGohPBRy9hXts5mp+c8I823gMSGqxdNntdx5v3J4oGGg==
-X-Received: by 2002:a05:600c:3784:b0:3f6:69f:75e0 with SMTP id
- o4-20020a05600c378400b003f6069f75e0mr4947414wmr.25.1684858501682; 
- Tue, 23 May 2023 09:15:01 -0700 (PDT)
+ bh=/I2HAQRfDM7x38B/NHIzvq/ic7efyuJLQuZxgm28YTg=;
+ b=eSE1/CVaI6bULDkv6s4u/XAZlE/9P0McGw3k5Xhf/OEJQ6SoU/FlE1zcA1KcCEWlxo
+ dn4lNBjqGuiAwXjwnesfNxSJqt942QMgmUWf8VhL3k+MUAXuzCHJ58D7fhgIdCg7Q+Xp
+ cHWor9e4s4dAWw7FwL4bqkqaMYpMgn6thYnkpYFvregOhNVuLZONST0FY7yvCOl9InLH
+ jFECKRGIlTqrncReGitvoTYhP7Yq5M0vKru9Cq6as+ReTmr1y+0gggr40ThdoUX+kbHb
+ Tn1gdCGDZk7Gg5Fsabcqp8+yHAKZo30OM5KAgdJN9MDqGy5b8R7MIlaJbWdOIUgq7M0s
+ SfSg==
+X-Gm-Message-State: AC+VfDwhpeNg8xm8BO4+Y5o5cIvn3A4EcrVQVKvzlI68vndVD/s8/k82
+ r+MRSpxx/mRZh5NMm1RMWoos/w==
+X-Google-Smtp-Source: ACHHUZ7v3l6ay9ax9iOOw2lYkP6zZ0toAZFaa07mQy3l4957JsbbR14KHwPw/LN1Hx83T3LK+VTsJg==
+X-Received: by 2002:a5d:5589:0:b0:306:2c01:4f08 with SMTP id
+ i9-20020a5d5589000000b003062c014f08mr10867905wrv.21.1684858749640; 
+ Tue, 23 May 2023 09:19:09 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- a3-20020adff7c3000000b002f22c44e974sm11520776wrq.102.2023.05.23.09.15.01
+ m13-20020adfe94d000000b002fda1b12a0bsm11770803wrn.2.2023.05.23.09.19.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 09:15:01 -0700 (PDT)
+ Tue, 23 May 2023 09:19:09 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id B13301FFBB;
- Tue, 23 May 2023 17:15:00 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id ABF131FFBB;
+ Tue, 23 May 2023 17:19:08 +0100 (BST)
 References: <20230523134733.678646-1-richard.henderson@linaro.org>
- <20230523134733.678646-5-richard.henderson@linaro.org>
+ <20230523134733.678646-6-richard.henderson@linaro.org>
 User-agent: mu4e 1.11.6; emacs 29.0.91
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: peter.maydell@linaro.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 04/27] tcg/i386: Use host/cpuinfo.h
-Date: Tue, 23 May 2023 17:14:54 +0100
-In-reply-to: <20230523134733.678646-5-richard.henderson@linaro.org>
-Message-ID: <87a5xv2fej.fsf@linaro.org>
+Subject: Re: [PATCH v2 05/27] util/bufferiszero: Use i386 host/cpuinfo.h
+Date: Tue, 23 May 2023 17:18:29 +0100
+In-reply-to: <20230523134733.678646-6-richard.henderson@linaro.org>
+Message-ID: <875y8j2f7n.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,15 +99,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Richard Henderson <richard.henderson@linaro.org> writes:
 
-> Use the CPUINFO_* bits instead of the individual boolean
-> variables that we had been using.  Remove all of the init
-> code that was moved over to cpuinfo-i386.c.
+> Use cpuinfo_init() during init_accel(), and the variable cpuinfo
+> during test_buffer_is_zero_next_accel().  Adjust the logic that
+> cycles through the set of accelerators for testing.
 >
-> Note that have_avx512* check both AVX512{F,VL}, as we had
-> previously done during tcg_target_init.
->
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  util/bufferiszero.c | 126 ++++++++++++++++----------------------------
+>  1 file changed, 45 insertions(+), 81 deletions(-)
+>
+> diff --git a/util/bufferiszero.c b/util/bufferiszero.c
+> index 1886bc5ba4..d3c14320ef 100644
+> --- a/util/bufferiszero.c
+> +++ b/util/bufferiszero.c
+<snip>
+> +static unsigned __attribute__((noinline))
+> +select_accel_cpuinfo(unsigned info)
+>  {
+> -    bool (*fn)(const void *, size_t) =3D buffer_zero_int;
+> -    if (cache & CACHE_SSE2) {
+> -        fn =3D buffer_zero_sse2;
+> -        length_to_accel =3D 64;
+> -    }
+> -#ifdef CONFIG_AVX2_OPT
+> -    if (cache & CACHE_SSE4) {
+> -        fn =3D buffer_zero_sse4;
+> -        length_to_accel =3D 64;
+> -    }
+> -    if (cache & CACHE_AVX2) {
+> -        fn =3D buffer_zero_avx2;
+> -        length_to_accel =3D 128;
+> -    }
+> -#endif
+> +    static const struct {
+> +        unsigned bit;
+> +        unsigned len;
+> +        bool (*fn)(const void *, size_t);
+> +    } all[] =3D {
+>  #ifdef CONFIG_AVX512F_OPT
+> -    if (cache & CACHE_AVX512F) {
+> -        fn =3D buffer_zero_avx512;
+> -        length_to_accel =3D 256;
+> -    }
+> +        { CPUINFO_AVX512F, 256, buffer_zero_avx512 },
+>  #endif
+> -    buffer_accel =3D fn;
+> +#ifdef CONFIG_AVX2_OPT
+> +        { CPUINFO_AVX2,    128, buffer_zero_avx2 },
+> +        { CPUINFO_SSE4,     64, buffer_zero_sse4 },
+> +#endif
+> +        { CPUINFO_SSE2,     64, buffer_zero_sse2 },
+> +        { CPUINFO_ALWAYS,    0, buffer_zero_int },
+> +    };
+> +
+
+Arguably we could have a brief one liner saying table in order of
+preference.
+
+Anyway:
 
 Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
