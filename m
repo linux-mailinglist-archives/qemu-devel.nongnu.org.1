@@ -2,81 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E04870E1CB
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACDF570E1D1
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:32:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1UtE-0000mp-Ch; Tue, 23 May 2023 12:29:36 -0400
+	id 1q1Uvk-0002q4-UO; Tue, 23 May 2023 12:32:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1UtC-0000mC-4i
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:29:34 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1UtA-00083x-I1
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:29:33 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-30aa1eb95a0so773490f8f.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:29:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684859371; x=1687451371;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=y+tvmMrSqCflG4Wf+uWz3a7OXzByiktobWGEehN7Lsw=;
- b=FjuDBCyEaBJT3XQeqv46fk45+xG46SFQ9jI1+GYUmPe3eTPCs3rldFX5lnLt6CemK4
- 116Ju4opnaJPZRIhQG1nYAyUwdmIZ5NUA4Pq4b3uI2T2+Q9RqDU/jb9zQcMhgFKg3X8n
- 0QoGf7npR7D+BKo4Wa9n2RaeHB5tP1PEwWBXwqPOLhaubg12O0YqxWlccH/JVW9Jhb88
- nNL0AzJdZquZ+s1QMJ8EGQRm+Fk3Ks0KBEdDofi2quEi3c55KSJGLHMOpXC4mLSx64NY
- IxZx3tTf1YNHVfIIFxUWwGFYS7o9kk47+5oD31DcCIE5EJ+lPWwgkFiTCH7y7HHxZEhN
- DQmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684859371; x=1687451371;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y+tvmMrSqCflG4Wf+uWz3a7OXzByiktobWGEehN7Lsw=;
- b=Go/c8Us0jDawVEhIVU3xF8I2Oa5qyhd414bdCppwJESnTBXgDOsZE3Nhp84u0Zyw4M
- yGBy3eyploZmA7BzRJ+H6fPo8hzVuI7dfojVnyhgAro0+yzE0FykiDZ/Pjmu76ZAsU17
- t+XWtKtufwraTgdZsPhg4RzTJVb1TUHjWYqw43AX9uDUl1xj1cGW5ZOi/wqvQKR9gP/P
- ILrQfym/bKeVhJhxfZrVWpwJdzel5EKWYWzFR42BNoT14F/4ZPxL4bz2lGC3LIlYaehP
- axwK6Slqa1x8lq0LEl5pOouhhIYrWCoC9Apt3nLyds5kEJ+0FG21FBXBIeSzV6BSvpYg
- k3nA==
-X-Gm-Message-State: AC+VfDyZvGKqYfXHqElA2fAMMG0nDxqxqrIKhHCZhO5c19JEkJbdgdRL
- S8CIvsIRoAJH1By3DpPnJKHPLl3X3SnIifg4e5s=
-X-Google-Smtp-Source: ACHHUZ4FjiCZ7t6IbanhoLPAfRqj2kI0RrSW99wzREOZJWV7TMJUREwWfRp5bjJfE84EUNsh6mijZg==
-X-Received: by 2002:adf:dd89:0:b0:307:7e68:3a47 with SMTP id
- x9-20020adfdd89000000b003077e683a47mr10585147wrl.37.1684859370894; 
- Tue, 23 May 2023 09:29:30 -0700 (PDT)
-Received: from [192.168.1.102] (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr.
- [176.184.48.94]) by smtp.gmail.com with ESMTPSA id
- k1-20020a7bc301000000b003f50e88ffc1sm15713023wmj.0.2023.05.23.09.29.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 09:29:30 -0700 (PDT)
-Message-ID: <5516d60c-ffcb-96fa-95cc-ce2864e6f08a@linaro.org>
-Date: Tue, 23 May 2023 18:29:29 +0200
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1q1Uvh-0002pe-Fx
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:32:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1q1Uvf-0000QF-Om
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:32:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684859526;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=EET2Da+kTu3BqzjQiQx4jbxb1dx6dRVpwsShZHnt/l0=;
+ b=ZzRFOqc8RujfKKcGEAGYlqOKjvn2TxolfKSZcXRJ/pqPP/O6ESus62yNuhG/poMLzPtZcB
+ dX7sIQnLkYzpFf2Vi6uUfd2ClaM3jajW7/h3LzRujFj6S31p6CZjn3P/6nCHHKOyb/vINK
+ iqGf1CWJtgu9tOQadcnREjJ1EOZ8efg=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-582-E0Z7ADgPPeWJlP_Io0iPyA-1; Tue, 23 May 2023 12:31:58 -0400
+X-MC-Unique: E0Z7ADgPPeWJlP_Io0iPyA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C14A92999B2C;
+ Tue, 23 May 2023 16:31:45 +0000 (UTC)
+Received: from f38-work.redhat.com (unknown [10.39.193.187])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 251DF200B673;
+ Tue, 23 May 2023 16:31:44 +0000 (UTC)
+From: Mauro Matteo Cascella <mcascell@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: mcascell@redhat.com, kraxel@redhat.com, marcandre.lureau@redhat.com,
+ berrange@redhat.com, philmd@linaro.org, richard.henderson@linaro.org,
+ jacek.halon@gmail.com, yairh33@gmail.com, e.elrefaei99@gmail.com
+Subject: [PATCH v2] ui/cursor: make width/height unsigned 16-bit integer
+Date: Tue, 23 May 2023 18:30:23 +0200
+Message-Id: <20230523163023.608121-1-mcascell@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 08/52] tcg: Remove TCG_TARGET_TLB_DISPLACEMENT_BITS
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230523135322.678948-1-richard.henderson@linaro.org>
- <20230523135322.678948-9-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230523135322.678948-9-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mcascell@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,23 +77,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/5/23 15:52, Richard Henderson wrote:
-> The last use was removed by e77c89fb086a.
-> 
-> Fixes: e77c89fb086a ("cputlb: Remove static tlb sizing")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/aarch64/tcg-target.h | 1 -
->   tcg/arm/tcg-target.h     | 1 -
->   tcg/i386/tcg-target.h    | 1 -
->   tcg/mips/tcg-target.h    | 1 -
->   tcg/ppc/tcg-target.h     | 1 -
->   tcg/riscv/tcg-target.h   | 1 -
->   tcg/s390x/tcg-target.h   | 1 -
->   tcg/sparc64/tcg-target.h | 1 -
->   tcg/tci/tcg-target.h     | 1 -
->   9 files changed, 9 deletions(-)
+Although not actually exploitable at the moment, a negative width/height
+could make datasize wrap around and potentially lead to buffer overflow.
+Since there is no reason a negative width/height is ever appropriate,
+modify QEMUCursor struct and cursor_alloc prototype to accept uint16_t.
+This protects us against accidentally introducing future bugs.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
+Reported-by: Jacek Halon <jacek.halon@gmail.com>
+Reported-by: Yair Mizrahi <yairh33@gmail.com>
+Reported-by: Elsayed El-Refa'ei <e.elrefaei99@gmail.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+v2:
+- update commit summary/description
+- add Reported-by/Reviewed-by
+- use uint16_t instead of uint32_t
+- add comment in cursor_alloc
+
+ include/ui/console.h | 4 ++--
+ ui/cursor.c          | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 2a8fab091f..ae5ec466c1 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -144,13 +144,13 @@ typedef struct QemuUIInfo {
+ 
+ /* cursor data format is 32bit RGBA */
+ typedef struct QEMUCursor {
+-    int                 width, height;
++    uint16_t            width, height;
+     int                 hot_x, hot_y;
+     int                 refcount;
+     uint32_t            data[];
+ } QEMUCursor;
+ 
+-QEMUCursor *cursor_alloc(int width, int height);
++QEMUCursor *cursor_alloc(uint16_t width, uint16_t height);
+ QEMUCursor *cursor_ref(QEMUCursor *c);
+ void cursor_unref(QEMUCursor *c);
+ QEMUCursor *cursor_builtin_hidden(void);
+diff --git a/ui/cursor.c b/ui/cursor.c
+index 6fe67990e2..29717b3ecb 100644
+--- a/ui/cursor.c
++++ b/ui/cursor.c
+@@ -90,11 +90,12 @@ QEMUCursor *cursor_builtin_left_ptr(void)
+     return cursor_parse_xpm(cursor_left_ptr_xpm);
+ }
+ 
+-QEMUCursor *cursor_alloc(int width, int height)
++QEMUCursor *cursor_alloc(uint16_t width, uint16_t height)
+ {
+     QEMUCursor *c;
+     size_t datasize = width * height * sizeof(uint32_t);
+ 
++    /* Modern physical hardware typically uses 512x512 sprites */
+     if (width > 512 || height > 512) {
+         return NULL;
+     }
+-- 
+2.40.1
 
 
