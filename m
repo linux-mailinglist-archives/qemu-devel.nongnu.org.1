@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DADB70D3AB
+	by mail.lfdr.de (Postfix) with ESMTPS id ABDB570D3AD
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 08:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1LG1-0008VU-JT; Tue, 23 May 2023 02:12:34 -0400
+	id 1q1LGI-00006n-5O; Tue, 23 May 2023 02:12:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LFl-0008SP-Rw
- for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:14 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LFr-0008UZ-Dz
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:19 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LFk-0005Fg-E9
- for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:13 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f41d087a84so30990285e9.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 23:12:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LFp-0005GF-QU
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:19 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3f606a80d34so10522635e9.0
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 23:12:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684822330; x=1687414330;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dVduBQdrAQ/JitmbuXJOwhpd3wkRFgWVzK14sta4Hho=;
- b=vCePpB1tAOUKUDaavDFVn3RTGCYQA7+ia8SH5XeZXmCUbdkl6Pc//7WTUCT3CmJmXs
- 7ARwdmqLBetrfYsaHz6zCcc+OCTVaN/U1crtM1KYPkTTa4cUVY47Sw2ueYAQRooVTV54
- wqUs7uVdM1CFGDnTV7VGzrD3xZA1fiH3gfzH6ikMEUE5Q2Clon1nSVSuH1p8HUwvOnp1
- nwxhMJlgdAj6Ga31jPH3/4uSxGX202lbQmNhR9fjKzQRUSnip0VUGTkyfam2b22c9wKj
- twXR3bBKjZyJlo7xtfa8frQPjD9pZNCfADZBm8ipbVioBDWF48eigM2ZTk9T3SVtpWyW
- K1NA==
+ d=linaro.org; s=google; t=1684822336; x=1687414336;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rvgfSp3TjhqQzTM2G/fo+fd/Hd3siY9cL5SrH7t8cjY=;
+ b=WbcZ09sUjG+37IQGon9H7EIfRkiDXXksdz1F975KclEMNwL8LMBixytqcMxO5mo6yg
+ sR4YkE/6re5LkWSj5cAzjbRxIaqqnTKKHUyWfzRpaEotNP8sN1/GaO9q8A9SwiE/5gbK
+ UxpAK+jiD+GxqhjVhwqkV8uZB6voQdyhD63fTUXoi5uWvuO9juolSjw68YIHEOpWF/ZT
+ 6fhWAvBG2RmiGrOsXc+7jEfotwBCqUqdcUhprWQ1UKtQPhUs7qirhty/fHgfOOWsu2IN
+ ShYL3OjJXAJ4uOHuEP+rOqYQkJ4FfVI7TvVKbvCkHgOxZddj0Xkgceke9nypDb+bTnCL
+ MtIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684822330; x=1687414330;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dVduBQdrAQ/JitmbuXJOwhpd3wkRFgWVzK14sta4Hho=;
- b=BfhEp9xmx6o5W3sdRmpPGPcMvXpB3UrziD5A2KdUfqB5velwkfKsbCw8kMglO3/Emo
- 1EFDcl17qwP7v1QS77JY8WxwOqo/qW7KX0THmNLyR4hRt5lYbztULSSCeaRUQrO6S8/f
- bhhT5CMD/WbeIpiroMjWsWWoYBsjSy8cjWbet0n2OYbR3xEWAjAhjjCAdpAmaNuMnlrp
- iLe6YXVS3aiNPh9t56XtHXlSxpFgYRMnF0e+FBsI0+yJnD/XB59otb+zfmOUapV8q28f
- FKojncCbHe2aeKC4a25eHjO7vKw1FOMbkeMUkbR8hO8SQvuvZus3tBTaXKgzemirj+xc
- URww==
-X-Gm-Message-State: AC+VfDyOrBwvC1sZLwwR40LSGy7fGO/bz3yt9CU6HhgBelIfF55fagJF
- J/A+PxkSdhfqi2fn33Qkc9Nk/9iJblbgxHBKjtg=
-X-Google-Smtp-Source: ACHHUZ5NYcIuw2v2H/oXDL7QaBofJ/TuFZA5JC1GbnEyNApzUjEMsEuuT/V58BzXAfTwoZr0wJLkcw==
-X-Received: by 2002:a05:600c:2256:b0:3f1:7848:6740 with SMTP id
- a22-20020a05600c225600b003f178486740mr9184172wmm.8.1684822330351; 
- Mon, 22 May 2023 23:12:10 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684822336; x=1687414336;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rvgfSp3TjhqQzTM2G/fo+fd/Hd3siY9cL5SrH7t8cjY=;
+ b=V+kIdXpp5EVOjz9vlQslYszc1YLlR7UoIHob/QxrLgOe/kBgFyBwK0s/zqhvXUmCAl
+ 5DpZAUb1kE3E4GMpU1rf5xwF76/Vcy2KJTvntzH6tI3iyUjmiXvqPA57prM+M3NHyQk2
+ diecPy7dVOpM3rOK55jv7uh+8L+lUald1ZBbQKKTPCQkSNHKUOrXFvfy/l5DiK7GLbCb
+ swwMqLkIub0EODva3YQNiW9EOD1Ar/M4AwoK7MpgSs8LNPH2rmoOtDZPaTTw+oxKZWqT
+ uJQecPsQUlK3ZF6WFmBXespaNVTrz9suGuuF403FTHcDZduE7MqWGfaXZhUn+1iUDlpW
+ fjHA==
+X-Gm-Message-State: AC+VfDzhbffFL9E6hSVMrw/mgW7dQ1TcziYn1ZXyvsspj1UZucvTn8A0
+ rUJyMGFHD3b7z399/9/mk9YMxlu+7ZKn595xw2U=
+X-Google-Smtp-Source: ACHHUZ5cE4L520E/8ZLoZGZSwjsbuoOe3RizPIcQj2NvLWRzvh882NFY0pmP0P2zvwPF2FivgEIf5Q==
+X-Received: by 2002:adf:ee05:0:b0:307:a24f:c15e with SMTP id
+ y5-20020adfee05000000b00307a24fc15emr8582480wrn.39.1684822336101; 
+ Mon, 22 May 2023 23:12:16 -0700 (PDT)
 Received: from localhost.localdomain
  (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
  by smtp.gmail.com with ESMTPSA id
- h19-20020a05600c28d300b003f427cba193sm13674971wmd.41.2023.05.22.23.12.08
+ k2-20020adfd842000000b0030647449730sm9894577wrl.74.2023.05.22.23.12.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 22 May 2023 23:12:09 -0700 (PDT)
+ Mon, 22 May 2023 23:12:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>,
@@ -63,15 +64,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/4] hw: Minor simplifications using proper QOM getter macros
-Date: Tue, 23 May 2023 08:12:03 +0200
-Message-Id: <20230523061207.48818-1-philmd@linaro.org>
+Subject: [PATCH 1/4] hw/core/cpu: Simplify realize() using MACHINE_GET_CLASS()
+ macro
+Date: Tue, 23 May 2023 08:12:04 +0200
+Message-Id: <20230523061207.48818-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230523061207.48818-1-philmd@linaro.org>
+References: <20230523061207.48818-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,21 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enforce QOM style. Besides, using the proper QOM macros
-slightly simplifies the code.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/core/cpu-common.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Philippe Mathieu-Daudé (4):
-  hw/core/cpu: Simplify realize() using MACHINE_GET_CLASS() macro
-  hw/i386/microvm: Simplify using object_dynamic_cast()
-  hw/pci/pci: Simplify pci_bar_address() using MACHINE_GET_CLASS() macro
-  hw/usb/hcd-ehci-pci: Simplify using DEVICE_GET_CLASS() macro
-
- hw/core/cpu-common.c  | 3 +--
- hw/i386/microvm.c     | 3 +--
- hw/pci/pci.c          | 4 +---
- hw/usb/hcd-ehci-pci.c | 2 +-
- 4 files changed, 4 insertions(+), 8 deletions(-)
-
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 5ccc3837b6..620312e9a5 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -196,8 +196,7 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
+      * no need to check the ignore_memory_transaction_failures board flag.
+      */
+     if (object_dynamic_cast(machine, TYPE_MACHINE)) {
+-        ObjectClass *oc = object_get_class(machine);
+-        MachineClass *mc = MACHINE_CLASS(oc);
++        MachineClass *mc = MACHINE_GET_CLASS(machine);
+ 
+         if (mc) {
+             cpu->ignore_memory_transaction_failures =
 -- 
 2.38.1
 
