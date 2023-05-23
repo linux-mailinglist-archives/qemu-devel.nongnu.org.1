@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE9970D17E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FF170D1BA
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1I0S-00036x-Fu; Mon, 22 May 2023 22:44:12 -0400
+	id 1q1I0V-00037f-IU; Mon, 22 May 2023 22:44:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I0Q-00036T-Az
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:10 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1q1I0T-00037D-Am
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:13 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I0O-00045a-PR
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:10 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2535d86a41bso3746531a91.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:44:08 -0700 (PDT)
+ id 1q1I0R-00046E-V3
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:13 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1ae54b623c2so63707155ad.3
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:44:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809847; x=1687401847;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809851; x=1687401851;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iRiwHOP/LRx7fFokqI6Ne+sigkhawLGOzwtp4xDjzzU=;
- b=H7V2Jy1T1yVI3pgcZVqpV38ajc2u4jlrXKoFcpu/VkIr9uJF96NLfdb0LAVAOSaLJz
- EvFZsImUrBlWzsUxj+gFLdM9JHmqq81FtNkfFXcB1vmfkClDVI05C8lppYmS1QI2dgoV
- uT7MsEFRos/JGbQQ0K5Mv7zrj/aRbuVkGYu629P8MA8gRcA32tMXh+MgfkuJDksD8sha
- sQIVHfvXD2i6LmdYCN11jr1gLb7ejyC6ayMEFRn1spmGNdMAgTqJ3bl9Gn2J7LH5Ou5P
- ETAORaFQeIqjA0bqe7qxkjgv0KWlEY9HSUEPGblxQqCTnOao3LICgTFr5r2lsCLKXp46
- uLVw==
+ bh=JWGE4S4rPXKGMW5kyd7FDSiXC4WTsYFl6VqGlHNwJvw=;
+ b=deFvVzFDSVyWa7zj6ZrW4EW0He6kd/rPaxOjcntAKNwwNj9Dw2zL8SqaCU8jlpxBNK
+ jXINVHfDOC8EScG9Xv8G2NTV4IYPnVWFqhhNwv4P6V7vyA6sl3LI4662JUnSM7eYR4W9
+ +3nj+8xHilkOpTCcT1EkRd/RlbREfU218cWljEVjPVSOoGLT22ajnJ1A5t27nDdZphrD
+ NSjLwOTNZc5d+EkALHnBUR2gffOlVKr0i7Qgwe4eESgN71Lr/vUKXr+xR6V2tFbgsI6w
+ zKOEAYjcRsAYjjx8NUH/OjKgTG05d5IWX67fUYDhmG/tS6/GY45vBndgOIeVxprPr6yh
+ rmnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684809847; x=1687401847;
+ d=1e100.net; s=20221208; t=1684809851; x=1687401851;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iRiwHOP/LRx7fFokqI6Ne+sigkhawLGOzwtp4xDjzzU=;
- b=ijVxRogBMY2IDmv0P/1m7qYC8wG+4d96W9cLqnzbdimXSQ7K++iHjG5jb4jDFpaMm/
- SszYFdR5bybqpTpi5OCCGzLGKw5MD5Lpkmt+hZC1mhiddPmqw1u4TL9oQQP/1SzgtA+d
- N+iZLwLw+TkHwrzwATSzcrz28P3dEUZ5zBX4uHcV24tES67dbZzgcSyINTj1d7FolXks
- XtSWP5lYBH4E64rTguxsES99y4/UtmLweeXOjk9Oi/8j1Ojj5TCF0NcePQbzYKEqDtCf
- hWwpUlmuzjMD6vPfeHMqyzzIXta98KwHYsHAulpNdcwPiZz3qTvPtkbJlKmxtPSkr4Yc
- Dv3g==
-X-Gm-Message-State: AC+VfDzwAQQDpwHuA9z+ixDIvMgGuWltSC867O52Svf+fciHzVWTMN6d
- ge4hcEzWf/lLYeJinFQ5R77xjR6AKzR35IF8lWA=
-X-Google-Smtp-Source: ACHHUZ6y5jWo5k0mlA6//yYtIZNp1KlyCRbj2uLXR5VKy6NO2YxBg7p6XjbSsGFbc1k4t6NgrP0ScQ==
-X-Received: by 2002:a17:90a:8a92:b0:253:342b:a14e with SMTP id
- x18-20020a17090a8a9200b00253342ba14emr11860808pjn.21.1684809847392; 
- Mon, 22 May 2023 19:44:07 -0700 (PDT)
+ bh=JWGE4S4rPXKGMW5kyd7FDSiXC4WTsYFl6VqGlHNwJvw=;
+ b=aX4pmc2mFPYmC69c6rVy4Tnle2kgjw/iHgi5FMM5IObEi3hStCAT6+JM0+VeaU3q9o
+ jEkEomzqb49XPl9LGIBzQs0rQflNa+XjQNDnHcbeD+fKipd494ppro0IJ9hEHVK4/XQn
+ in5xboO1W+KP6JFb0ssxk28oSpiPTTzI6qfxsCR/ZYSOkM0PGp8ULjd9ZnHqmwBbNE6A
+ D4NAwu0/cQc3NrbtdNFQjHcPTkXjlf4YmSG0p7SPw3/Va6vqjCnpFUa2+iXHsnvBwLtg
+ hW8SO2D2Wb80HFHwW5bl4OEnVxn6aLb+kF08G+BF6FDy029j/eO6FL5u1U7TCOQgXAji
+ wJmA==
+X-Gm-Message-State: AC+VfDwxKzlKurRBqn+3RCS7Yzfw7bem0lRVlYOb67Ps4x7AzZYPO/Wu
+ xZDxsN7u/E4EgkqsZnyPucb19Q==
+X-Google-Smtp-Source: ACHHUZ4O1jnzKynEpoymx59tjTq7KJIPy+KIxHT/rgbR1bVnmJlhaTrmzJZ1gAH+8lSuj7513nLTYA==
+X-Received: by 2002:a17:903:2311:b0:1af:bb27:f55f with SMTP id
+ d17-20020a170903231100b001afbb27f55fmr4806107plh.55.1684809850824; 
+ Mon, 22 May 2023 19:44:10 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.44.04
+ o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.44.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 19:44:07 -0700 (PDT)
+ Mon, 22 May 2023 19:44:10 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
@@ -69,16 +69,16 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org, Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 04/48] igb: Fix Rx packet type encoding
-Date: Tue, 23 May 2023 11:42:55 +0900
-Message-Id: <20230523024339.50875-5-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 05/48] igb: Do not require CTRL.VME for tx VLAN tagging
+Date: Tue, 23 May 2023 11:42:56 +0900
+Message-Id: <20230523024339.50875-6-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 References: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1032;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1032.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,94 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-igb's advanced descriptor uses a packet type encoding different from
-one used in e1000e's extended descriptor. Fix the logic to encode
-Rx packet type accordingly.
+While the datasheet of e1000e says it checks CTRL.VME for tx VLAN
+tagging, igb's datasheet has no such statements. It also says for
+"CTRL.VLE":
+> This register only affects the VLAN Strip in Rx it does not have any
+> influence in the Tx path in the 82576.
+(Appendix A. Changes from the 82575)
 
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
+There is no "CTRL.VLE" so it is more likely that it is a mistake of
+CTRL.VME.
+
+Fixes: fba7c3b788 ("igb: respect VMVIR and VMOLR for VLAN")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 ---
- hw/net/igb_regs.h |  5 +++++
- hw/net/igb_core.c | 38 +++++++++++++++++++-------------------
- 2 files changed, 24 insertions(+), 19 deletions(-)
+ hw/net/igb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/igb_regs.h b/hw/net/igb_regs.h
-index c5c5b3c3b8..21ee9a3b2d 100644
---- a/hw/net/igb_regs.h
-+++ b/hw/net/igb_regs.h
-@@ -641,6 +641,11 @@ union e1000_adv_rx_desc {
- 
- #define E1000_STATUS_NUM_VFS_SHIFT 14
- 
-+#define E1000_ADVRXD_PKT_IP4 BIT(4)
-+#define E1000_ADVRXD_PKT_IP6 BIT(6)
-+#define E1000_ADVRXD_PKT_TCP BIT(8)
-+#define E1000_ADVRXD_PKT_UDP BIT(9)
-+
- static inline uint8_t igb_ivar_entry_rx(uint8_t i)
- {
-     return i < 8 ? i * 4 : (i - 8) * 4 + 2;
 diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 464a41d0aa..dbd1192a8e 100644
+index dbd1192a8e..96a118b6c1 100644
 --- a/hw/net/igb_core.c
 +++ b/hw/net/igb_core.c
-@@ -1227,7 +1227,6 @@ igb_build_rx_metadata(IGBCore *core,
-     struct virtio_net_hdr *vhdr;
-     bool hasip4, hasip6;
-     EthL4HdrProto l4hdr_proto;
--    uint32_t pkt_type;
- 
-     *status_flags = E1000_RXD_STAT_DD;
- 
-@@ -1266,28 +1265,29 @@ igb_build_rx_metadata(IGBCore *core,
-         trace_e1000e_rx_metadata_ack();
-     }
- 
--    if (hasip6 && (core->mac[RFCTL] & E1000_RFCTL_IPV6_DIS)) {
--        trace_e1000e_rx_metadata_ipv6_filtering_disabled();
--        pkt_type = E1000_RXD_PKT_MAC;
--    } else if (l4hdr_proto == ETH_L4_HDR_PROTO_TCP ||
--               l4hdr_proto == ETH_L4_HDR_PROTO_UDP) {
--        pkt_type = hasip4 ? E1000_RXD_PKT_IP4_XDP : E1000_RXD_PKT_IP6_XDP;
--    } else if (hasip4 || hasip6) {
--        pkt_type = hasip4 ? E1000_RXD_PKT_IP4 : E1000_RXD_PKT_IP6;
--    } else {
--        pkt_type = E1000_RXD_PKT_MAC;
--    }
-+    if (pkt_info) {
-+        *pkt_info = rss_info->enabled ? rss_info->type : 0;
- 
--    trace_e1000e_rx_metadata_pkt_type(pkt_type);
-+        if (hasip4) {
-+            *pkt_info |= E1000_ADVRXD_PKT_IP4;
-+        }
- 
--    if (pkt_info) {
--        if (rss_info->enabled) {
--            *pkt_info = rss_info->type;
-+        if (hasip6) {
-+            *pkt_info |= E1000_ADVRXD_PKT_IP6;
+@@ -402,7 +402,7 @@ igb_tx_insert_vlan(IGBCore *core, uint16_t qn, struct igb_tx *tx,
          }
- 
--        *pkt_info |= (pkt_type << 4);
--    } else {
--        *status_flags |= E1000_RXD_PKT_TYPE(pkt_type);
-+        switch (l4hdr_proto) {
-+        case ETH_L4_HDR_PROTO_TCP:
-+            *pkt_info |= E1000_ADVRXD_PKT_TCP;
-+            break;
-+
-+        case ETH_L4_HDR_PROTO_UDP:
-+            *pkt_info |= E1000_ADVRXD_PKT_UDP;
-+            break;
-+
-+        default:
-+            break;
-+        }
      }
  
-     if (hdr_info) {
+-    if (insert_vlan && e1000x_vlan_enabled(core->mac)) {
++    if (insert_vlan) {
+         net_tx_pkt_setup_vlan_header_ex(tx->tx_pkt, vlan,
+             core->mac[VET] & 0xffff);
+     }
 -- 
 2.40.1
 
