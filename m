@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53DC70E68C
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 22:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C5270E690
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 22:35:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Yi6-0006an-SC; Tue, 23 May 2023 16:34:22 -0400
+	id 1q1Yj2-0007VW-Vg; Tue, 23 May 2023 16:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1Yi4-0006a0-34
- for qemu-devel@nongnu.org; Tue, 23 May 2023 16:34:20 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1Yi1-0004v5-Uq
- for qemu-devel@nongnu.org; Tue, 23 May 2023 16:34:19 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1ae408f4d1aso1081535ad.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 13:34:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684874056; x=1687466056;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7gEJI7oDuvv7tbPXfhhHdYUHgNd16ndnIz40ch9e1So=;
- b=Hoq+Kc500oYdDFTZ6Nltx0bbGlpbgy9hRB17VAq6dXIaF16ImiJKcyuaDDFmCkdxxo
- WXn0ib0PB4GiU0kt2PaMMKOOv4ZK77E02BOHz86E1UDYqOPktqHpnDGEwAZURtb9eS8z
- p+biDHPNPFkl/5Ulh2iP8AX/y1O0d3L2q814IunGsgK7DqTDaZXPAhuspLmcYBNZ1MWP
- iIaBf5LpBiNyvqUI6vSunBNDHJT3PgEPKdLOI5rKVPhYkGjoE/bFupYWw6Im0L2JSODz
- XtlxoJRNiFdM6uqrm1dmnDoAmBsOYElo7gNTga4A+XOgs8De3IUfL/PuajPGIt/QY6KI
- sNdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684874056; x=1687466056;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7gEJI7oDuvv7tbPXfhhHdYUHgNd16ndnIz40ch9e1So=;
- b=Sgp/3UhIuRosewC9amTsqZyiXf4n6vDzXMNlii+7gaayupxsbAFjW1e1k6oVSWj44e
- 55pwicEube1Bl+d9iQHh/zZTAM1T0V7JUbjTezSoW3doLuXc+RRiusoHINuQvs30SYkM
- DyH3fTkSkflXVzbQFTwNgCteuBr9xabh+pP6+RqX9o5v+ogGdlo+ZTxor1ZJq+lg1NY7
- Y3dvLQBKF5I/bV4Dk/zFFqkFEFOq9sGIRCBGFf0b29XgUFrYPvIvp6aGF8EYRRrO/q6x
- bfbMXggDonEGCXvTYF1lAVedVL5vMYoegfYgn87lAunmlNqMOnMlrg81m3U8u7BoM52b
- xl6g==
-X-Gm-Message-State: AC+VfDwGhunQbvaUilXVyWeq+m/Qhfauck/nCVbZafSy59LY1QPzw6zW
- /SC8lwSwQT0cqPHARU51N3+SjIyI7dNGwvkZs6k=
-X-Google-Smtp-Source: ACHHUZ5zHv4+zIa+lxesQsAQQrrJ9UT6zJATPTDi/6U3WVOIoBPdbvhYGZnEQX9Fmb3AqIay7WkdAA==
-X-Received: by 2002:a17:902:c402:b0:1ac:b259:87ea with SMTP id
- k2-20020a170902c40200b001acb25987eamr22116023plk.0.1684874056191; 
- Tue, 23 May 2023 13:34:16 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
- ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
- by smtp.gmail.com with ESMTPSA id
- b8-20020a170902d88800b001ab28f620d0sm7164495plz.290.2023.05.23.13.34.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 13:34:15 -0700 (PDT)
-Message-ID: <22b1cd80-27ce-9821-c434-ebc31bf6760a@linaro.org>
-Date: Tue, 23 May 2023 13:34:13 -0700
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q1Yis-0007SG-O2
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 16:35:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q1Yio-0005Ba-Sm
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 16:35:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684874106;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=g3E/x39V8NlhTpTKVQj0IYsVLqooqk3IsgzG9qM1ukE=;
+ b=akgLGde0279vRgcoufVR9zdJxLF6hJi1j5oPwnh659qG6U2lOmkx+9uiNL1j5fVPnNE36L
+ es/oP3CJ/eVQukXuP+tDwanAGxaaTt7JzB0u1F4l2MpPKOi+VjgAKZ+usYFPwinqVmVell
+ +BEY+hljHQi5Kk87X18OgQawmzCPvLo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-489-gHFiiG2MNACUBQbMODaYnA-1; Tue, 23 May 2023 16:35:04 -0400
+X-MC-Unique: gHFiiG2MNACUBQbMODaYnA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 410DA8002BF;
+ Tue, 23 May 2023 20:35:03 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.61])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AC762200AD47;
+ Tue, 23 May 2023 20:35:02 +0000 (UTC)
+Date: Tue, 23 May 2023 16:35:01 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Erik Schilling <erik.schilling@linaro.org>,
+ Jason Wang <jasowang@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Gerd Hoffmann <kraxel@redhat.com>, virtio-fs@redhat.com,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 03/13] hw/virtio: fix typo in VIRTIO_CONFIG_IRQ_IDX
+ comments
+Message-ID: <20230523203501.GB140337@fedora>
+References: <20230418162140.373219-1-alex.bennee@linaro.org>
+ <20230418162140.373219-4-alex.bennee@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 5/7] target/riscv: Use true diff for gen_pc_plus_diff
-Content-Language: en-US
-To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-References: <20230523135939.299246-1-liweiwei@iscas.ac.cn>
- <20230523135939.299246-6-liweiwei@iscas.ac.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523135939.299246-6-liweiwei@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="JA4+quDfuMdiE1Nu"
+Content-Disposition: inline
+In-Reply-To: <20230418162140.373219-4-alex.bennee@linaro.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,19 +93,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/23 06:59, Weiwei Li wrote:
-> Reduce reliance on absolute values by using true pc difference for
-> gen_pc_plus_diff() to prepare for PC-relative translation.
-> 
-> Signed-off-by: Weiwei Li<liweiwei@iscas.ac.cn>
-> Signed-off-by: Junqiang Wang<wangjunqiang@iscas.ac.cn>
+
+--JA4+quDfuMdiE1Nu
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Apr 18, 2023 at 05:21:30PM +0100, Alex Benn=E9e wrote:
+> Fixes: 544f0278af (virtio: introduce macro VIRTIO_CONFIG_IRQ_IDX)
+> Signed-off-by: Alex Benn=E9e <alex.bennee@linaro.org>
 > ---
->   target/riscv/insn_trans/trans_rvi.c.inc   |  6 ++----
->   target/riscv/insn_trans/trans_rvzce.c.inc |  2 +-
->   target/riscv/translate.c                  | 13 ++++++-------
->   3 files changed, 9 insertions(+), 12 deletions(-)
+>  hw/display/vhost-user-gpu.c    | 4 ++--
+>  hw/net/virtio-net.c            | 4 ++--
+>  hw/virtio/vhost-user-fs.c      | 4 ++--
+>  hw/virtio/vhost-user-gpio.c    | 2 +-
+>  hw/virtio/vhost-vsock-common.c | 4 ++--
+>  hw/virtio/virtio-crypto.c      | 4 ++--
+>  6 files changed, 11 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+> index 71dfd956b8..7c61a7c3ac 100644
+> --- a/hw/display/vhost-user-gpu.c
+> +++ b/hw/display/vhost-user-gpu.c
+> @@ -489,7 +489,7 @@ vhost_user_gpu_guest_notifier_pending(VirtIODevice *v=
+dev, int idx)
+> =20
+>      /*
+>       * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX =
+-1
+> -     * as the Marco of configure interrupt's IDX, If this driver does not
+> +     * as the macro of configure interrupt's IDX, If this driver does not
+>       * support, the function will return
+>       */
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+The entire comment could be rewritten to make the punctuation and
+grammar correct, if you want.
 
-r~
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--JA4+quDfuMdiE1Nu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRtI3UACgkQnKSrs4Gr
+c8jahAgAjNJL7hdL0me7Krt5f48JEWKVlbfdPmI5YsuNOD2rK9wUPekqO14fMTGG
+SweDE5VEvQfMEHxfB1Blk20yRbk5sb09K2bO0FOnvvgzNdqGXxpQqQs/qv3Py+WB
+MzAvyNWG8oTGRS/9n8iOosrueQTeXJ7hwstKGA9TVW9nbX2za5+TIPi1MDNxL8nO
+ax/dzHey5HXCJCVamyP0lQDlYq/8EWfsoY4rwXQkgvr/bExzQV/HCuIIjzpQSfXl
+4HOE9ps/HaOghhB26uiOjO8pCGgBaMBfVR3oHOqJNtBrOJPRSaU6ChjTPRjTH3Ab
+hRwIHK2d8V1TnX4LimyqVUy9hBzmeQ==
+=ZMIo
+-----END PGP SIGNATURE-----
+
+--JA4+quDfuMdiE1Nu--
+
 
