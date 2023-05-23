@@ -2,75 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B68470E2A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 19:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E823270E2AE
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 19:18:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1VZe-0004cu-Uu; Tue, 23 May 2023 13:13:26 -0400
+	id 1q1Ve8-0002iY-KP; Tue, 23 May 2023 13:18:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q1VZb-0004Yb-T8
- for qemu-devel@nongnu.org; Tue, 23 May 2023 13:13:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1q1Ve4-0002hC-FG
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 13:18:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q1VZa-00033g-E4
- for qemu-devel@nongnu.org; Tue, 23 May 2023 13:13:23 -0400
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1q1Vdx-000475-Qe
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 13:18:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684862001;
+ s=mimecast20190719; t=1684862272;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=czTdm2uRIahqSqIwAZcPFjYWVpvuZBgfbd8HjxPRqIY=;
- b=cMhzbEmW49njuSZN9jgLrJSUFXOKHe3zvkYHE8a7JF2ZetVNu+KoRMzwjL7sPXmvJyjlN7
- atqb1A0/XuKJmqbtF75+z+kWegPUzasbd0aLqwjZMfW9dfWGyh3I+I7p2r0ujhKumsf4vZ
- j958gFxnxakE7WXt9KqKxyF30vQrCUs=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-541-GrPxPye5NiuvRcUuQhgTnA-1; Tue, 23 May 2023 13:13:18 -0400
-X-MC-Unique: GrPxPye5NiuvRcUuQhgTnA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2F6A29ABA06;
- Tue, 23 May 2023 17:13:17 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.107])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1E427C1ED99;
- Tue, 23 May 2023 17:13:16 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Aarushi Mehta <mehta.aaru20@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Julia Suvorova <jusual@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Fam Zheng <fam@euphon.net>, Stefan Hajnoczi <stefanha@redhat.com>,
- xen-devel@lists.xenproject.org, eblake@redhat.com,
- Anthony Perard <anthony.perard@citrix.com>, qemu-block@nongnu.org
-Subject: [PATCH v2 6/6] block: remove bdrv_co_io_plug() API
-Date: Tue, 23 May 2023 13:13:00 -0400
-Message-Id: <20230523171300.132347-7-stefanha@redhat.com>
-In-Reply-To: <20230523171300.132347-1-stefanha@redhat.com>
-References: <20230523171300.132347-1-stefanha@redhat.com>
+ bh=YDOcPGeZtbnrpKBEp7RgLgAeEfVxVFDXfIxNlq710eY=;
+ b=GuMpLkHPryOVxsfXbkOcKJi4XnK0efMuD0QcudCJYM3e2IEQtZJzo9p5LmVHLdwIzStBlW
+ MXRcwzeOCqhvjcTafj2Zk/ZaYI1ZP4fhC1MpYKTN3jvzjCh8ndYZCO3/Sd/CMlRBx/4x3A
+ v50Zoy8FhRKdTmL9V41Kp6U1jyuKd8c=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-92-paABs9sSPCuznsy0nDFCsQ-1; Tue, 23 May 2023 13:17:50 -0400
+X-MC-Unique: paABs9sSPCuznsy0nDFCsQ-1
+Received: by mail-il1-f199.google.com with SMTP id
+ e9e14a558f8ab-331828cdc2dso7560305ab.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 10:17:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684862270; x=1687454270;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YDOcPGeZtbnrpKBEp7RgLgAeEfVxVFDXfIxNlq710eY=;
+ b=GUkZ1dmQ37Irrb463Yb5+GSS9KE+65+/JqTHFuQVoSfJdGVJ/RekqSOmrtpo4gLktp
+ 7q9WoTO6Z8PtSEPDy638HcSxcU9gUF/LnMQb8i7nCHMrrQyX03RRkT0Yf7GNb5+iyQPr
+ W9zffnvWyBF3Ox5iUDif3t43/3wmM61tgg/+JxcK8ECaSsipJUB/69HEjJ8K33EYLehZ
+ o8t22t7ytA/IuQ6ZbWwh5yKwE6A4Lc2iuOS5eA0XgmpyZCN2Sg730ftaHS21F/h1QEhR
+ 0FAFjZ/7gzbdGlVcuTavnvG2kFmtrAZFOMku/NmYQhGbPWon23cwCH57bonrqUTreXyR
+ FBXA==
+X-Gm-Message-State: AC+VfDzIz0XXxOyjMEuofktqJpWFhsXU+6u6eUguKzupz4zbiU1RrayB
+ wbKWXFzT+nKV2woPW1RpmD7DWFCKY3r+HU0wyxkWvi0vqYIE99zIE0NaxKVoK+jnY44adTT1F7V
+ 31DOXLzYz7rvWERw=
+X-Received: by 2002:a92:680b:0:b0:32b:665d:c816 with SMTP id
+ d11-20020a92680b000000b0032b665dc816mr8695302ilc.28.1684862269957; 
+ Tue, 23 May 2023 10:17:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4hxukjRalLaoZ9TBfLXOuV5DBNOwaWGGQJCmj0aKweQrdtIuKvTjGOuc9rWN6jakvlGMiX/w==
+X-Received: by 2002:a92:680b:0:b0:32b:665d:c816 with SMTP id
+ d11-20020a92680b000000b0032b665dc816mr8695290ilc.28.1684862269736; 
+ Tue, 23 May 2023 10:17:49 -0700 (PDT)
+Received: from redhat.com ([38.15.36.239]) by smtp.gmail.com with ESMTPSA id
+ f2-20020a056e0204c200b0032ca1426ddesm2468357ils.55.2023.05.23.10.17.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 May 2023 10:17:48 -0700 (PDT)
+Date: Tue, 23 May 2023 11:17:47 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Matthew Rosato <mjrosato@linux.ibm.com>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org,
+ minwoo.im@samsung.com, clg@redhat.com, chao.p.peng@intel.com
+Subject: Re: [PATCH v2] vfio/pci: Fix a use-after-free issue
+Message-ID: <20230523111747.747878e5.alex.williamson@redhat.com>
+In-Reply-To: <d3e51ee1-b943-07ef-35fa-8cac13705f59@linux.ibm.com>
+References: <20230517024651.82248-1-zhenzhong.duan@intel.com>
+ <d3e51ee1-b943-07ef-35fa-8cac13705f59@linux.ibm.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,109 +101,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No block driver implements .bdrv_co_io_plug() anymore. Get rid of the
-function pointers.
+On Tue, 23 May 2023 13:00:53 -0400
+Matthew Rosato <mjrosato@linux.ibm.com> wrote:
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
----
- include/block/block-io.h         |  3 ---
- include/block/block_int-common.h | 11 ----------
- block/io.c                       | 37 --------------------------------
- 3 files changed, 51 deletions(-)
+> On 5/16/23 10:46 PM, Zhenzhong Duan wrote:
+> > vbasedev->name is freed wrongly which leads to garbage VFIO trace log.
+> > Fix it by allocating a dup of vbasedev->name and then free the dup.
+> > 
+> > Fixes: 2dca1b37a7 ("vfio/pci: add support for VF token")
+> > Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+> > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>  
+> 
+> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> 
+> Also verified that this resolves an issue seen on s390, as we were
+> seeing not just garbage logs but QEMU crashes in certain cases e.g.
+> during device unplug.  Thanks!
 
-diff --git a/include/block/block-io.h b/include/block/block-io.h
-index a27e471a87..43af816d75 100644
---- a/include/block/block-io.h
-+++ b/include/block/block-io.h
-@@ -259,9 +259,6 @@ void coroutine_fn bdrv_co_leave(BlockDriverState *bs, AioContext *old_ctx);
- 
- AioContext *child_of_bds_get_parent_aio_context(BdrvChild *c);
- 
--void coroutine_fn GRAPH_RDLOCK bdrv_co_io_plug(BlockDriverState *bs);
--void coroutine_fn GRAPH_RDLOCK bdrv_co_io_unplug(BlockDriverState *bs);
--
- bool coroutine_fn GRAPH_RDLOCK
- bdrv_co_can_store_new_dirty_bitmap(BlockDriverState *bs, const char *name,
-                                    uint32_t granularity, Error **errp);
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 6492a1e538..958962aa3a 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -753,11 +753,6 @@ struct BlockDriver {
-     void coroutine_fn GRAPH_RDLOCK_PTR (*bdrv_co_debug_event)(
-         BlockDriverState *bs, BlkdebugEvent event);
- 
--    /* io queue for linux-aio */
--    void coroutine_fn GRAPH_RDLOCK_PTR (*bdrv_co_io_plug)(BlockDriverState *bs);
--    void coroutine_fn GRAPH_RDLOCK_PTR (*bdrv_co_io_unplug)(
--        BlockDriverState *bs);
--
-     /**
-      * bdrv_drain_begin is called if implemented in the beginning of a
-      * drain operation to drain and stop any internal sources of requests in
-@@ -1227,12 +1222,6 @@ struct BlockDriverState {
-     unsigned int in_flight;
-     unsigned int serialising_in_flight;
- 
--    /*
--     * counter for nested bdrv_io_plug.
--     * Accessed with atomic ops.
--     */
--    unsigned io_plugged;
--
-     /* do we need to tell the quest if we have a volatile write cache? */
-     int enable_write_cache;
- 
-diff --git a/block/io.c b/block/io.c
-index 4d54fda593..56b0c1ce6c 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -3219,43 +3219,6 @@ void *qemu_try_blockalign0(BlockDriverState *bs, size_t size)
-     return mem;
- }
- 
--void coroutine_fn bdrv_co_io_plug(BlockDriverState *bs)
--{
--    BdrvChild *child;
--    IO_CODE();
--    assert_bdrv_graph_readable();
--
--    QLIST_FOREACH(child, &bs->children, next) {
--        bdrv_co_io_plug(child->bs);
--    }
--
--    if (qatomic_fetch_inc(&bs->io_plugged) == 0) {
--        BlockDriver *drv = bs->drv;
--        if (drv && drv->bdrv_co_io_plug) {
--            drv->bdrv_co_io_plug(bs);
--        }
--    }
--}
--
--void coroutine_fn bdrv_co_io_unplug(BlockDriverState *bs)
--{
--    BdrvChild *child;
--    IO_CODE();
--    assert_bdrv_graph_readable();
--
--    assert(bs->io_plugged);
--    if (qatomic_fetch_dec(&bs->io_plugged) == 1) {
--        BlockDriver *drv = bs->drv;
--        if (drv && drv->bdrv_co_io_unplug) {
--            drv->bdrv_co_io_unplug(bs);
--        }
--    }
--
--    QLIST_FOREACH(child, &bs->children, next) {
--        bdrv_co_io_unplug(child->bs);
--    }
--}
--
- /* Helper that undoes bdrv_register_buf() when it fails partway through */
- static void GRAPH_RDLOCK
- bdrv_register_buf_rollback(BlockDriverState *bs, void *host, size_t size,
--- 
-2.40.1
+Thanks for the testing and reminder, I'll get a pull request out for
+this.  Thanks,
+
+Alex
+
+> > ---
+> > v2: "toke" -> "token", Cedric
+> >     Update with Alex suggested change
+> > 
+> >  hw/vfio/pci.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> > index bf27a3990564..73874a94de12 100644
+> > --- a/hw/vfio/pci.c
+> > +++ b/hw/vfio/pci.c
+> > @@ -2994,7 +2994,7 @@ static void vfio_realize(PCIDevice *pdev,
+> > Error **errp) qemu_uuid_unparse(&vdev->vf_token, uuid);
+> >          name = g_strdup_printf("%s vf_token=%s", vbasedev->name,
+> > uuid); } else {
+> > -        name = vbasedev->name;
+> > +        name = g_strdup(vbasedev->name);
+> >      }
+> >  
+> >      ret = vfio_get_device(group, name, vbasedev, errp);  
+> 
 
 
