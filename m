@@ -2,65 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90C970E692
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 22:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 662B570E696
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 22:37:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1YkL-0000PW-6J; Tue, 23 May 2023 16:36:41 -0400
+	id 1q1YkI-0000Mh-E1; Tue, 23 May 2023 16:36:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1q1YkJ-0000OQ-GI
- for qemu-devel@nongnu.org; Tue, 23 May 2023 16:36:39 -0400
+ id 1q1YkF-0000Ll-VG
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 16:36:35 -0400
 Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1q1YkD-0005U5-T5
- for qemu-devel@nongnu.org; Tue, 23 May 2023 16:36:39 -0400
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+ id 1q1YkE-0005UG-8B
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 16:36:35 -0400
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
  by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34NI19Ww015811
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:30 GMT
+ 34NK84Ru022046
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
  h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding;
- s=qcppdkim1; bh=QRBcYMzUtluNKOQNK2OZaRcG9C1dDdbE6eLQ+7gTFUQ=;
- b=hRlIgJDHGSPIYKbxiecSfZGTMEejimDn9pPkh0/4E9ZYiL/QOgRnzSLBOLlQNQ21MTo8
- EoUz4uT/4d1MDCJtYW8BuMAQNdx1mVj6XrW8v2juKmHIWkDEgDwjz0In6mq+mR+I98f9
- WsxqZg7aM3q9z9BYl6bdk85jJVc66N/A91Xj5Ups6TY2oNQx9egQQ8BSyp+WbzHmJjln
- 0r7jX/ieBF7k4UZ4qmPL07s1fkTwceG8SUcTfFHnSdtpHbC2O4Vuy1cQ/PcOsDRJzP7E
- IkErwwbXlwia5gpCUFxuwYaJD7m1UUTOV3B2CVuYsVJZbsC4kGNgHsocgQeNgk5OVhuQ lA== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=qcppdkim1;
+ bh=6gYIsrxnpEoDRMWGSCaHoMZzNttFGJ3YmoA0FetGEbo=;
+ b=HBJfW4CmurMoOGBK7LAqJF+G+FBBnYmrdcxish/SqgBy4aIeXNiVL6rA1I2h1sitBauV
+ zJ8pb6y/o9TvW6KVZj2UexIkhLC9WepntPaM1BtvY75by1ttbwZ5E0g8W5nDKN+1o5v6
+ QY/GJmNauVr3PXqHE8g4AG1bhVqiBjC4eXC1ZDIrUpy1MPxS6YOnPzmqRPio+Tl77bH5
+ ifnQR7AHYXid1YBeUDHZAKpesrFLM8Eyb+A/O6dbNt/EjMdGKhXHn4sEYvRfDBTQkyst
+ 2aKy6Y8ROPSuvUsCvoPEWyIegXh70OrqQZQMFj3UifvdY9Kq/8bC78xdGKbSJIQFD39s Jg== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
  [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qr8qrbybq-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qrpmm2d8q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:31 +0000
+Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
+ by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 34NKXe6A021350
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:30 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 3qpq9kujbe-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
  for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:30 +0000
-Received: from pps.filterd (NALASPPMTA05.qualcomm.com [127.0.0.1])
- by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 34NKaTGt003009
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 3qrdtpqdbb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:29 +0000
-Received: from NALASPPMTA05.qualcomm.com (NALASPPMTA05.qualcomm.com
+Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com
  [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34NKaTl8003004
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:29 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34NKaULT025391
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 20:36:30 GMT
 Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
  [10.47.235.147])
- by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 34NKaS0t003003
+ by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 34NKaSIl025383
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 May 2023 20:36:29 +0000
+ Tue, 23 May 2023 20:36:30 +0000
 Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
- id A345C741F; Tue, 23 May 2023 17:36:28 -0300 (-03)
+ id AFC807425; Tue, 23 May 2023 17:36:28 -0300 (-03)
 From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 To: qemu-devel@nongnu.org
 Cc: tsimpson@quicinc.com, bcain@quicinc.com, quic_mliebel@quicinc.com
-Subject: [PATCH 0/2] Hexagon: two minor cleanups to comments and python scripts
-Date: Tue, 23 May 2023 17:36:25 -0300
-Message-Id: <cover.1684873957.git.quic_mathbern@quicinc.com>
+Subject: [PATCH 1/2] target/hexagon/*.py: remove undef vars from bad_register()
+Date: Tue, 23 May 2023 17:36:26 -0300
+Message-Id: <ccd8a781537de107a9acfc0610a29837245d0a26.1684873957.git.quic_mathbern@quicinc.com>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <cover.1684873957.git.quic_mathbern@quicinc.com>
+References: <cover.1684873957.git.quic_mathbern@quicinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QCInternal: smtphost
@@ -69,17 +72,17 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-GUID: mjiGXzcAjhBGI1sKKkEL5PpAD-FtXtB5
-X-Proofpoint-ORIG-GUID: mjiGXzcAjhBGI1sKKkEL5PpAD-FtXtB5
+X-Proofpoint-ORIG-GUID: IqhbyTWxXjZOQPOHcQLxHLrY-_iONf7K
+X-Proofpoint-GUID: IqhbyTWxXjZOQPOHcQLxHLrY-_iONf7K
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-05-23_13,2023-05-23_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 phishscore=0
- adultscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1015
- mlxlogscore=742 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305230164
+ phishscore=0 clxscore=1015
+ mlxscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 mlxlogscore=642 spamscore=0 malwarescore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305230164
 Received-SPF: pass client-ip=205.220.168.131;
  envelope-from=mathbern@qualcomm.com; helo=mx0a-0031df01.pphosted.com
 X-Spam_score_int: -24
@@ -104,20 +107,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are two minor follow ups to the last Hexagon pull, updating some
-stale code comments and removing undefined variables from error messages
-at python scripts.
+Some calls to `hex_common.bad_register()` in Hexagon python files are
+passing undefined variables. Let's remove those.
 
-Matheus Tavares Bernardino (2):
-  target/hexagon/*.py: remove undef vars from bad_register()
-  Hexagon: fix outdated `hex_new_*` references in comments
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+---
+ target/hexagon/gen_helper_funcs.py | 8 ++++----
+ target/hexagon/gen_tcg_funcs.py    | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
- target/hexagon/genptr.c            | 10 +++++-----
- target/hexagon/translate.c         |  2 +-
- target/hexagon/gen_helper_funcs.py |  8 ++++----
- target/hexagon/gen_tcg_funcs.py    |  6 +++---
- 4 files changed, 13 insertions(+), 13 deletions(-)
-
+diff --git a/target/hexagon/gen_helper_funcs.py b/target/hexagon/gen_helper_funcs.py
+index e80550f94e..367d08aceb 100755
+--- a/target/hexagon/gen_helper_funcs.py
++++ b/target/hexagon/gen_helper_funcs.py
+@@ -87,9 +87,9 @@ def gen_helper_arg_opn(f, regtype, regid, i, tag):
+         elif hex_common.is_new_val(regtype, regid, tag):
+             gen_helper_arg_new(f, regtype, regid, i)
+         else:
+-            hex_common.bad_register(regtype, regid, toss, numregs)
++            hex_common.bad_register(regtype, regid)
+     else:
+-        hex_common.bad_register(regtype, regid, toss, numregs)
++        hex_common.bad_register(regtype, regid)
+ 
+ 
+ def gen_helper_arg_imm(f, immlett):
+@@ -135,7 +135,7 @@ def gen_helper_dest_decl_opn(f, regtype, regid, i):
+         else:
+             gen_helper_dest_decl(f, regtype, regid, i)
+     else:
+-        hex_common.bad_register(regtype, regid, toss, numregs)
++        hex_common.bad_register(regtype, regid)
+ 
+ 
+ def gen_helper_src_var_ext(f, regtype, regid):
+@@ -185,7 +185,7 @@ def gen_helper_return_opn(f, regtype, regid, i):
+         else:
+             gen_helper_return(f, regtype, regid, i)
+     else:
+-        hex_common.bad_register(regtype, regid, toss, numregs)
++        hex_common.bad_register(regtype, regid)
+ 
+ 
+ ##
+diff --git a/target/hexagon/gen_tcg_funcs.py b/target/hexagon/gen_tcg_funcs.py
+index c73467b840..c87ea856f7 100755
+--- a/target/hexagon/gen_tcg_funcs.py
++++ b/target/hexagon/gen_tcg_funcs.py
+@@ -354,9 +354,9 @@ def genptr_src_read_opn(f, regtype, regid, tag):
+         elif hex_common.is_new_val(regtype, regid, tag):
+             genptr_src_read_new(f, regtype, regid)
+         else:
+-            hex_common.bad_register(regtype, regid, toss, numregs)
++            hex_common.bad_register(regtype, regid)
+     else:
+-        hex_common.bad_register(regtype, regid, toss, numregs)
++        hex_common.bad_register(regtype, regid)
+ 
+ 
+ def gen_helper_call_opn(f, tag, regtype, regid, toss, numregs, i):
+@@ -468,7 +468,7 @@ def genptr_dst_write_opn(f, regtype, regid, tag):
+         else:
+             genptr_dst_write(f, tag, regtype, regid)
+     else:
+-        hex_common.bad_register(regtype, regid, toss, numregs)
++        hex_common.bad_register(regtype, regid)
+ 
+ 
+ ##
 -- 
 2.37.2
 
