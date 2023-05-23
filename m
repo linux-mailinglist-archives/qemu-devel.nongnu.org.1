@@ -2,43 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AADB70E1AE
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4343570E1B1
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:27:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Up0-0005Kj-1y; Tue, 23 May 2023 12:25:14 -0400
+	id 1q1Uqn-0007Dk-O2; Tue, 23 May 2023 12:27:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q1Uov-0005JZ-0f; Tue, 23 May 2023 12:25:10 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q1Uos-00076o-Lc; Tue, 23 May 2023 12:25:08 -0400
-Received: from dev005.ch-qa.vzint.dev ([172.29.1.10])
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1q1UnN-00DnIw-1h;
- Tue, 23 May 2023 18:24:48 +0200
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, shmuel.eiderman@oracle.com,
- andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH 2/2] qemu-iotests: 024: add rebasing test case for
- overlay_size > backing_size
-Date: Tue, 23 May 2023 19:24:58 +0300
-Message-Id: <20230523162458.704266-3-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230523162458.704266-1-andrey.drobyshev@virtuozzo.com>
-References: <20230523162458.704266-1-andrey.drobyshev@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1Uqi-0007CQ-EB
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:27:01 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1Uqg-0007kA-Uz
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:27:00 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3f60dfc6028so442565e9.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:26:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684859216; x=1687451216;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=J7tMrbx2GNAkgaNipKnQX61t7gDNpZTI3gWYy93sp/M=;
+ b=y5hKEIn6CCOxEPUTbiVG/sUei5JeqNiQdOGN+RaMmz63mQQpkWdBd8LDGPiyJ6+fQP
+ 37RdEjUpa+slKKudX06MHxu0C2TiUOhDrogRBy3WnqbPhfKqpzKLwBaiN5g0pvYUR+1V
+ 8zEpHEGf9eqdTChfLepo7xo/aKEkBn0vAltqmBVP2ksvifozfP1elislRpIkdiwllcCV
+ ISr4yQ0MS/X1bTpwj0BVyAtgFxLrd2OwyWaLCjx7rbV+xFKwU0Rzs7v0+8XWMAPLk+Ak
+ nhBz2rb03RUmbQwNLjECU8z/WRVZ6pdwyym3QVfqj6CCyH26FBUfj2LcBgGLbQJbpcPO
+ uiRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684859216; x=1687451216;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=J7tMrbx2GNAkgaNipKnQX61t7gDNpZTI3gWYy93sp/M=;
+ b=jvKGXEdHzy5dM2pCzsdpbVostBDnogXyFaryHDoXfOganzIBNOc51IgvDyviHY54EU
+ vkM17p/sCpa8yRSR01ecQRJGPpWjm2zeeSyumFWnTfdcBEFlgpEjbm1B4C8wyOedRKaI
+ ZHFchRIr13B00aFTHfOlZ8ZTKrVVUKHW7F8L4JbWElTaDa1KyuHAhpv7Z5YmyKHY1Zox
+ rOEYru405d2VAa+JmbNwD6Z9Pemax63v1R7O6wnorPIdVYnyxuYfz7Qy8qADZ9juxmYR
+ I2nU0sdTcFvEUigkaDLH9wCntqYelO1WXq6Mh/jXZ711n/LjQIsldEYwoPqjNX8/UHdd
+ tppg==
+X-Gm-Message-State: AC+VfDwJ6dPvNr+G1R1XsDnkgN/14IHD8ofp3juq/bzJjqhyT4u5vhKV
+ TUfuIhXLR3qojaQDZIKajwET+A==
+X-Google-Smtp-Source: ACHHUZ5EeYU38WS+CKchRkhdJ5OhpElRTKZZ867pjAG2kh86mQ2abg0L7fbUSUUxQv33VdJMeyllZg==
+X-Received: by 2002:a7b:cbc4:0:b0:3f4:21ff:b91f with SMTP id
+ n4-20020a7bcbc4000000b003f421ffb91fmr10590173wmi.28.1684859216296; 
+ Tue, 23 May 2023 09:26:56 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ h1-20020a1ccc01000000b003eddc6aa5fasm15563956wmb.39.2023.05.23.09.26.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 May 2023 09:26:56 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 81C331FFBB;
+ Tue, 23 May 2023 17:26:55 +0100 (BST)
+References: <20230523134733.678646-1-richard.henderson@linaro.org>
+ <20230523134733.678646-9-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, Juan Quintela <quintela@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 08/27] migration: Build migration_files once
+Date: Tue, 23 May 2023 17:26:50 +0100
+In-reply-to: <20230523134733.678646-9-richard.henderson@linaro.org>
+Message-ID: <87sfbn10a8.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111;
- envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -51,114 +94,21 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before previous commit, rebase was getting infitely stuck in case of
-rebasing within the same backing chain and when overlay_size > backing_size.
-Let's add this case to the rebasing test 024 to make sure it doesn't
-break again.
 
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- tests/qemu-iotests/024     | 48 ++++++++++++++++++++++++++++++++++++++
- tests/qemu-iotests/024.out | 23 ++++++++++++++++++
- 2 files changed, 71 insertions(+)
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-diff --git a/tests/qemu-iotests/024 b/tests/qemu-iotests/024
-index 25a564a150..5b6c2d973c 100755
---- a/tests/qemu-iotests/024
-+++ b/tests/qemu-iotests/024
-@@ -199,6 +199,54 @@ echo
- # $BASE_OLD and $BASE_NEW)
- $QEMU_IMG map "$OVERLAY" | _filter_qemu_img_map
- 
-+# Check that rebase within the chain is working when
-+# overlay_size > old_backing_size
-+#
-+# base_new <-- base_old <-- overlay
-+#
-+# Backing (new): 11 11 11 11
-+# Backing (old): 22 22 22 22
-+# Overlay:       -- -- -- -- --
-+#
-+# As a result, overlay should contain data identical to base_old, with the
-+# last cluster remaining unallocated.
-+
-+echo
-+echo "=== Test rebase within one backing chain ==="
-+echo
-+
-+echo "Creating backing chain"
-+echo
-+
-+TEST_IMG=$BASE_NEW _make_test_img $(( CLUSTER_SIZE * 4 ))
-+TEST_IMG=$BASE_OLD _make_test_img -b "$BASE_NEW" -F $IMGFMT \
-+    $(( CLUSTER_SIZE * 4 ))
-+TEST_IMG=$OVERLAY _make_test_img -b "$BASE_OLD" -F $IMGFMT \
-+    $(( CLUSTER_SIZE * 5 ))
-+
-+echo
-+echo "Fill backing files with data"
-+echo
-+
-+$QEMU_IO "$BASE_NEW" -c "write -P 0x11 0 $(( CLUSTER_SIZE * 4 ))" \
-+    | _filter_qemu_io
-+$QEMU_IO "$BASE_OLD" -c "write -P 0x22 0 $(( CLUSTER_SIZE * 4 ))" \
-+    | _filter_qemu_io
-+
-+echo
-+echo "Rebase onto another image in the same chain"
-+echo
-+
-+$QEMU_IMG rebase -b "$BASE_NEW" -F $IMGFMT "$OVERLAY"
-+
-+# Verify the data is correct
-+$QEMU_IO "$OVERLAY" -c "read -P 0x22 0 $(( CLUSTER_SIZE * 4 ))" \
-+    | _filter_qemu_io
-+
-+echo
-+
-+# Verify that cluster #5 remained unallocated
-+$QEMU_IMG map "$OVERLAY" | _filter_qemu_img_map
- 
- # success, all done
- echo "*** done"
-diff --git a/tests/qemu-iotests/024.out b/tests/qemu-iotests/024.out
-index 973a5a3711..fb63cac07c 100644
---- a/tests/qemu-iotests/024.out
-+++ b/tests/qemu-iotests/024.out
-@@ -171,4 +171,27 @@ read 65536/65536 bytes at offset 196608
- Offset          Length          File
- 0               0x30000         TEST_DIR/subdir/t.IMGFMT
- 0x30000         0x10000         TEST_DIR/subdir/t.IMGFMT.base_new
-+
-+=== Test rebase within one backing chain ===
-+
-+Creating backing chain
-+
-+Formatting 'TEST_DIR/subdir/t.IMGFMT.base_new', fmt=IMGFMT size=262144
-+Formatting 'TEST_DIR/subdir/t.IMGFMT.base_old', fmt=IMGFMT size=262144 backing_file=TEST_DIR/subdir/t.IMGFMT.base_new backing_fmt=IMGFMT
-+Formatting 'TEST_DIR/subdir/t.IMGFMT', fmt=IMGFMT size=327680 backing_file=TEST_DIR/subdir/t.IMGFMT.base_old backing_fmt=IMGFMT
-+
-+Fill backing files with data
-+
-+wrote 262144/262144 bytes at offset 0
-+256 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 262144/262144 bytes at offset 0
-+256 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+Rebase onto another image in the same chain
-+
-+read 262144/262144 bytes at offset 0
-+256 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+Offset          Length          File
-+0               0x40000         TEST_DIR/subdir/t.IMGFMT
- *** done
--- 
-2.31.1
+> The items in migration_files are built for libmigration and included
+> info softmmu_ss from there; no need to also include them directly.
+>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
