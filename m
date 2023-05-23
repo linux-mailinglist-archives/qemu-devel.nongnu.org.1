@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD8370DBF0
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2288C70DBF2
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:06:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Ql5-0002Pa-MB; Tue, 23 May 2023 08:04:55 -0400
+	id 1q1QlA-0002R9-1w; Tue, 23 May 2023 08:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1Ql4-0002On-BZ
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:54 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1q1Ql8-0002Ql-9T
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:58 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1Ql2-0008QY-1o
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:54 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f41dceb93bso47512135e9.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:04:51 -0700 (PDT)
+ id 1q1Ql2-0008Qj-F2
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:58 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-30948709b3cso4009486f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:04:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684843490; x=1687435490;
+ d=linaro.org; s=google; t=1684843491; x=1687435491;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xbN6BYbhg9Tc9GAYch8/jujIr0chTMGn9JipZlla0d0=;
- b=Qx3qIYWEErLGhZBj/GkloiSqv8yDf7Zclo7kTGmeddsHnwWysd9SDHZaK+ZJdqTR41
- Mm42oDfMglQjrhgZXSDbuOuXg+uE27H01cUjS1OfQRdG5Ts9h6TtqBiGnFIqgiGLYY2d
- 35GmLoiJFT5WY46+y9T04mp59z0LBjup6jjOv8/JwE0ORe7PU6rYkb3pWtJ8d0kLpcvA
- FLvuryf2oUAagNpVIHcDakPf5qRvgRJrdzQHjhupCRM+N0dz7xt9BQoSVd40yl/eIY4v
- k/9Y1+IDC3U0d+JO/Kx6kXUdtmaDCS1JNR7yZLvq8Y+9OlcvATIxbMfhaj2NAi3O0maQ
- sc1A==
+ bh=CP4iW2arzPiOFlsv2K+bA4KJE/pPkFARYRAohYFYWwc=;
+ b=DfQW+/OP3KoNl5K+arAy3j2tf9Py0CE4MyMjxN8dBMdbvtyCN2DqZ7/1C2S9oZHsXN
+ DxpB7md074AMUeF+2Jnq1a6K5q2wpc/qOjXuY1SiMcQGc0/ZPVKlZP7dnlT2rfw0KLfY
+ B3ybDj2W3YHa0cSwZm02bTcZaxnERA8Y4/CNDHukibz//2esYkZsD0rIjccc+3GkcQy5
+ qEtDEJD/Xhz9BzO7r5sUKd5HAXigQn1EfnWq/8GHbOxW1cHLsDJCkNYrBj3yPiloe8wF
+ EaM7Qi7h98U7VB8NkhtfGiY8yCIrRuXRsbR+psX3XOp5pn+usc6zzHoODYIG9Axuj48u
+ LbmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684843490; x=1687435490;
+ d=1e100.net; s=20221208; t=1684843491; x=1687435491;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xbN6BYbhg9Tc9GAYch8/jujIr0chTMGn9JipZlla0d0=;
- b=l7iJfzhUuvzqiHkuG7K5QVolU5fnd2GDh7mdIY4JwIG4X5+vt+ylRYOKtYuaqj26HT
- kUQsiUDTYYrfv3KQ7wsNA60LqWJw9JWnDdXRG8jIg2Qrtu2Utr/d6+rGOFgKTouOdkfV
- 8Wg7nbTL+TJ6vsYyYz9+WMEDrBkv2ZZp7toTFccXL7Ii4DgdwhDPsUWW8xYznD3hlyug
- tUivRpIiwur9SX+efZiaDAkgoWeJz73qfF3cqVHccF2kGt4XzBZSS0gKA8rEipjASNMP
- MGw8Vce65o/VOFUNB54Q8XnXPU3LUpeiEKW7Ml/ArznJfu6UXETHg+8QjiFnITJZ0T7D
- M1Uw==
-X-Gm-Message-State: AC+VfDxPlSMcMa6nycRMZAejfpRZfY/wfRm4oZVSDnixWLaLDZ9fFWUM
- nImvgdCCcY1n6Bz+wSO0mlcKsXV4JCSTLgZFvo0=
-X-Google-Smtp-Source: ACHHUZ4+MOTjQgpghsERQnZtYPmfoUFU2xP6yyUy8Frp0fO0BeLRGCRDlFPcmiQAKCzXid9fby4W0A==
-X-Received: by 2002:a1c:6a09:0:b0:3f6:1e6:d5a2 with SMTP id
- f9-20020a1c6a09000000b003f601e6d5a2mr5789238wmc.4.1684843490616; 
- Tue, 23 May 2023 05:04:50 -0700 (PDT)
+ bh=CP4iW2arzPiOFlsv2K+bA4KJE/pPkFARYRAohYFYWwc=;
+ b=OjeKUpsDQW3LGvSS2oxEU0g6kc9h+jUY3X/M7Irs+l3tubJuKnt01/evbiK5zNjLbx
+ 809nXLYoITCS+gwv7NUHwuDhj7co6mUCLROY9mGwRl/7FpywiBQkwkNYz05tVUyIV7Ka
+ KAiMc5D+mc+QwzBMgXCyFb+b8iVJkSrD/CDEkvHIKVm5WBrZ1ksE8QYrLby8y9Mo3lHx
+ f/M3gjApW9LFLa9NVLbwDutmyB8gMPwgF/HoFoKEIA2MB2BOJqr8bbAyo/C/rc77xprE
+ Hzt29JeNrC2OgN5kc4kIwC4qxhhlE/A04kxH119GXyHpGeZTKYCJjB/crLfLNOCe6wqB
+ kl3g==
+X-Gm-Message-State: AC+VfDxKE3CKjjonz674GRcbMD+La9yn8qV5PCCYeYwovVFePaXkK+aV
+ LZZSw8X4naLLO1rLh5KzDkhCEvBrP20hwJPzJYU=
+X-Google-Smtp-Source: ACHHUZ7TyKoAx1cYmWUIvgrjoDKMGz28slyKgMp90/8uKsyRvSUHNzjudrtdB539W5FEjBAKkEuskA==
+X-Received: by 2002:a5d:694e:0:b0:309:4227:6d1a with SMTP id
+ r14-20020a5d694e000000b0030942276d1amr8761817wrw.70.1684843491185; 
+ Tue, 23 May 2023 05:04:51 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  l17-20020adfe591000000b003079c402762sm10848778wrm.19.2023.05.23.05.04.50
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 3/6] scripts/decodetree: Pass lvalue-formatter function to
- str_extract()
-Date: Tue, 23 May 2023 13:04:44 +0100
-Message-Id: <20230523120447.728365-4-peter.maydell@linaro.org>
+Subject: [PATCH 4/6] scripts/decodetree: Implement a topological sort
+Date: Tue, 23 May 2023 13:04:45 +0100
+Message-Id: <20230523120447.728365-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523120447.728365-1-peter.maydell@linaro.org>
 References: <20230523120447.728365-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,114 +91,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To support referring to other named fields in field definitions, we
-need to pass the str_extract() method a function which tells it how
-to emit the code for a previously initialized named field.  (In
-Pattern::output_code() the other field will be "u.f_foo.field", and
-in Format::output_extract() it is "a->field".)
+To support named fields, we will need to be able to do a topological
+sort (so that we ensure that we output the assignment to field A
+before the assignment to field B if field B refers to field A by
+name). The good news is that there is a tsort in the python standard
+library; the bad news is that it was only added in Python 3.9.
 
-Refactor the two callsites that currently do "output code to
-initialize each field", and have them pass a lambda that defines how
-to format the lvalue in each case.  This is then used both in
-emitting the LHS of the assignment and also passed down to
-str_extract() as a new argument (unused at the moment, but will be
-used in the following patch).
+To bridge the gap between our current minimum supported Python
+version and 3.9, provide a local implementation that has the
+same API as the stdlib version for the parts we care about.
+In future when QEMU's minimum Python version requirement reaches
+3.9 we can delete this code and replace it with an 'import' line.
+
+The core of this implementation is based on
+https://code.activestate.com/recipes/578272-topological-sort/
+which is MIT-licensed.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- scripts/decodetree.py | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ scripts/decodetree.py | 74 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
 diff --git a/scripts/decodetree.py b/scripts/decodetree.py
-index a03dc6b5e3e..33f4252b4ee 100644
+index 33f4252b4ee..e1fd995eaab 100644
 --- a/scripts/decodetree.py
 +++ b/scripts/decodetree.py
-@@ -205,7 +205,7 @@ def __str__(self):
-             s = ''
-         return str(self.pos) + ':' + s + str(self.len)
+@@ -53,6 +53,80 @@
+ re_fmt_ident = '@[a-zA-Z0-9_]*'
+ re_pat_ident = '[a-zA-Z0-9_]*'
  
--    def str_extract(self):
-+    def str_extract(self, lvalue_formatter):
-         global bitop_width
-         s = 's' if self.sign else ''
-         return f'{s}extract{bitop_width}(insn, {self.pos}, {self.len})'
-@@ -228,12 +228,12 @@ def __init__(self, subs, mask):
-     def __str__(self):
-         return str(self.subs)
- 
--    def str_extract(self):
-+    def str_extract(self, lvalue_formatter):
-         global bitop_width
-         ret = '0'
-         pos = 0
-         for f in reversed(self.subs):
--            ext = f.str_extract()
-+            ext = f.str_extract(lvalue_formatter)
-             if pos == 0:
-                 ret = ext
-             else:
-@@ -264,7 +264,7 @@ def __init__(self, value):
-     def __str__(self):
-         return str(self.value)
- 
--    def str_extract(self):
-+    def str_extract(self, lvalue_formatter):
-         return str(self.value)
- 
-     def __cmp__(self, other):
-@@ -283,8 +283,9 @@ def __init__(self, func, base):
-     def __str__(self):
-         return self.func + '(' + str(self.base) + ')'
- 
--    def str_extract(self):
--        return self.func + '(ctx, ' + self.base.str_extract() + ')'
-+    def str_extract(self, lvalue_formatter):
-+        return (self.func + '(ctx, '
-+                + self.base.str_extract(lvalue_formatter) + ')')
- 
-     def __eq__(self, other):
-         return self.func == other.func and self.base == other.base
-@@ -304,7 +305,7 @@ def __init__(self, func):
-     def __str__(self):
-         return self.func
- 
--    def str_extract(self):
-+    def str_extract(self, lvalue_formatter):
-         return self.func + '(ctx)'
- 
-     def __eq__(self, other):
-@@ -357,6 +358,11 @@ def __str__(self):
- 
-     def str1(self, i):
-         return str_indent(i) + self.__str__()
++# Local implementation of a topological sort. We use the same API that
++# the Python graphlib does, so that when QEMU moves forward to a
++# baseline of Python 3.9 or newer this code can all be dropped and
++# replaced with:
++#    from graphlib import TopologicalSorter, CycleError
++#
++# https://docs.python.org/3.9/library/graphlib.html#graphlib.TopologicalSorter
++#
++# We only implement the parts of TopologicalSorter we care about:
++#  ts = TopologicalSorter(graph=None)
++#    create the sorter. graph is a dictionary whose keys are
++#    nodes and whose values are lists of the predecessors of that node.
++#    (That is, if graph contains "A" -> ["B", "C"] then we must output
++#    B and C before A.)
++#  ts.static_order()
++#    returns a list of all the nodes in sorted order, or raises CycleError
++#  CycleError
++#    exception raised if there are cycles in the graph. The second
++#    element in the args attribute is a list of nodes which form a
++#    cycle; the first and last element are the same, eg [a, b, c, a]
++#    (Our implementation doesn't give the order correctly.)
++#
++# For our purposes we can assume that the data set is always small
++# (typically 10 nodes or less, actual links in the graph very rare),
++# so we don't need to worry about efficiency of implementation.
++#
++# The core of this implementation is from
++# https://code.activestate.com/recipes/578272-topological-sort/
++# (but updated to Python 3), and is under the MIT license.
 +
-+    def output_fields(self, indent, lvalue_formatter):
-+        for n, f in self.fields.items():
-+            output(indent, lvalue_formatter(n), ' = ',
-+                   f.str_extract(lvalue_formatter), ';\n')
- # end General
- 
- 
-@@ -370,8 +376,7 @@ def extract_name(self):
-     def output_extract(self):
-         output('static void ', self.extract_name(), '(DisasContext *ctx, ',
-                self.base.struct_name(), ' *a, ', insntype, ' insn)\n{\n')
--        for n, f in self.fields.items():
--            output('    a->', n, ' = ', f.str_extract(), ';\n')
-+        self.output_fields(str_indent(4), lambda n: 'a->' + n)
-         output('}\n\n')
- # end Format
- 
-@@ -395,8 +400,7 @@ def output_code(self, i, extracted, outerbits, outermask):
-         if not extracted:
-             output(ind, self.base.extract_name(),
-                    '(ctx, &u.f_', arg, ', insn);\n')
--        for n, f in self.fields.items():
--            output(ind, 'u.f_', arg, '.', n, ' = ', f.str_extract(), ';\n')
-+        self.output_fields(ind, lambda n: 'u.f_' + arg + '.' + n)
-         output(ind, 'if (', translate_prefix, '_', self.name,
-                '(ctx, &u.f_', arg, ')) return true;\n')
- 
++class CycleError(ValueError):
++    """Subclass of ValueError raised if cycles exist in the graph"""
++    pass
++
++class TopologicalSorter:
++    """Topologically sort a graph"""
++    def __init__(self, graph=None):
++        self.graph = graph
++
++    def static_order(self):
++        # We do the sort right here, unlike the stdlib version
++        from functools import reduce
++        data = {}
++        r = []
++
++        if not self.graph:
++            return []
++
++        # This code wants the values in the dict to be specifically sets
++        for k, v in self.graph.items():
++            data[k] = set(v)
++
++        # Find all items that don't depend on anything.
++        extra_items_in_deps = (reduce(set.union, data.values())
++                               - set(data.keys()))
++        # Add empty dependencies where needed
++        data.update({item:{} for item in extra_items_in_deps})
++        while True:
++            ordered = set(item for item, dep in data.items() if not dep)
++            if not ordered:
++                break
++            r.extend(ordered)
++            data = {item: (dep - ordered)
++                    for item, dep in data.items()
++                        if item not in ordered}
++        if data:
++            # This doesn't give as nice results as the stdlib, which
++            # gives you the cycle by listing the nodes in order. Here
++            # we only know the nodes in the cycle but not their order.
++            raise CycleError(f'nodes are in a cycle', list(data.keys()))
++
++        return r
++# end TopologicalSorter
++
+ def error_with_file(file, lineno, *args):
+     """Print an error message from file:line and args and exit."""
+     global output_file
 -- 
 2.34.1
 
