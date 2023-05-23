@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67F370E1E1
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4228F70E1EE
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:38:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Uzg-0008Up-Ij; Tue, 23 May 2023 12:36:16 -0400
+	id 1q1Uzv-0000fR-SH; Tue, 23 May 2023 12:36:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Uze-0008Tt-B9
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:14 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Uzs-0000T6-Ri
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:29 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Uzc-0001a3-8G
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:14 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3f6094cb26eso458185e9.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:36:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1Uzk-0001bZ-H4
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:26 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3f6077660c6so792025e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:36:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684859770; x=1687451770;
+ d=linaro.org; s=google; t=1684859777; x=1687451777;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2/nlgPLhLbIsykS3dfTZmYeBfdaG3SqKteCE5YtDUbs=;
- b=E3OiAtLcYCc+oNau0yNrzuqvE6y6mHF+NR0VFAMvcS06mzBM5ltNJ9usCYHgJ5HrsG
- v/S4B4pQTFG9refhWhSy2P1wHvbQ2xHbVepIkqlQjnleX1LQCwavJMWy6BF9NpBlXk9u
- 9b+swkqFc/mG6pdrgKeutw+kmWKFiG8mSpINufCZsEjpDQXDZAnAlgan6aQaRFexttF5
- Nb5ByQ1YlBeB6PCW7cZfkXynAQbi5G2d5FZG25BSlFIboJ+4KlyABGvCy6ZFhgHpJBlu
- 2+r/FPPMOuLJzxY7qa9fPaclZYC90X/vEwxzBdcF7FtNwJ+NrUYuWxXmFJhvuh1vhNWY
- rEng==
+ bh=9Gn+HBFJ064NVzM7YmEXvqcvjJjkdoC6PwfC7PPhyMY=;
+ b=SSqzoM0Q/DaDxV78ankhptGCeuezA4AZlLMlhIpKL0OlSZ5n+k8djkali1bO5Nt8rk
+ uqZiG9gXa6mpA7KTCxflsp4VF+tFbojRkhycldXEU0gCrnigaqRNkPqBGW8xbVgw/UwP
+ EC7FwUUgdm4INPzQLoNSb52uM1v3pn900OztBmLnaSd/URgSCVVfYknMld5UEUzBFfBS
+ bo3VZPiJ3wRGyxD+I764aN+5nTkimi6Wf0+x+qS+yHkYIrDYJR4U8VMW5Dhwwo6I4rrb
+ 3E6fdoBH9FzvNgznYby/K2aOWwAZ9Wd8cpTpYJTAJHZoo/MQ657ykBpwsmBLK0UCd39S
+ hG+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684859770; x=1687451770;
+ d=1e100.net; s=20221208; t=1684859777; x=1687451777;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2/nlgPLhLbIsykS3dfTZmYeBfdaG3SqKteCE5YtDUbs=;
- b=NWJlpxgGTplqGrvlnCsAcbd4VwtsxXBBpQQXHmxu6mTRDjmhVU3CAIuxH5ePtW7Wq6
- O2x+ezCWwVP+ScwwE9OzQgF4t/Llnm5JmXFtAdeYycDCwbJx5jcco9Ab5tzWNQNGZYjH
- M9SmL4wJP/0Wq+N5o3rocKUXqDulkvVZvnVV7bPkhbl0lKazGMRH1+69r4NgJZ0Hc8yc
- NYNfcHwVTsCfXplfM0uo8dxil65a38w5avOsniwYRsWMu/zH7MQ5rPa2iZX+7r4ONFQV
- gUWrEUs3nHCBuMFco12CfkREHf98cFQRXe57hvUi8cm+VfMLpHdK5el5IH3Oh/ySRG+e
- w41Q==
-X-Gm-Message-State: AC+VfDx7is1vMsP6uucPMn1c84oq0eLTryalNt+Ay/bc3ufW5r3Hk/K4
- OBse6kGb91X+6E+TIqcJqn6+Mw1LSaMf5aiInuk=
-X-Google-Smtp-Source: ACHHUZ75hO2g2x/kpMNOadKblZKBCbnHwhjCPpNYVeCVi90tTG2bZO7b1AVitERoMEpJoqrf2XWOoQ==
-X-Received: by 2002:a5d:50d2:0:b0:2cf:e517:c138 with SMTP id
- f18-20020a5d50d2000000b002cfe517c138mr9579070wrt.66.1684859770636; 
- Tue, 23 May 2023 09:36:10 -0700 (PDT)
+ bh=9Gn+HBFJ064NVzM7YmEXvqcvjJjkdoC6PwfC7PPhyMY=;
+ b=lcN/HGYwzpq1wIMfj8OGjfRDDnSstM4yqn6/JT5nCsZ0XPraJ9c438ijDgXc44HPAR
+ j58scE+2/xwjsH1BKeoBPt2Cwr4PYxShEyMO4HFTI0y4Lo4KVLIOgqR3w1NcRhndAYY0
+ VQXFG0RVW42UXT1SfEzPbkm+4uuL3KJUxzRwojqFUmueMIGHJB/8YklE6OSq66oJX0ys
+ cgOtOkiYhQ/A7aG4O+CNPOARrBTZzYb2A66i8g93Q3jGG8TQ9dz8x1uuvc6MGecmw8V6
+ 3vs1hKMZr88FHybOa6gzcxWuuIw8ORkMoIZCHD+ONPsVyySGVgbvEtvO1H5WvQItpim8
+ D3mQ==
+X-Gm-Message-State: AC+VfDxQVVuDB/GS0CWqH3DNPS1ha5VmVLmIHUdfHwsbaTjmy83aPLiN
+ XRRJNKKbFehnXHGmidT/a1nOK6vzKf19lObQd7g=
+X-Google-Smtp-Source: ACHHUZ4j+9tz+X7tqPwMzajs8Vabw9JDETD32VA4MNx9VnKii8n0epbBkq4oJ01C8Ps0TQ8qoNN40g==
+X-Received: by 2002:a7b:cd01:0:b0:3f4:2327:53c2 with SMTP id
+ f1-20020a7bcd01000000b003f4232753c2mr11349659wmj.19.1684859777178; 
+ Tue, 23 May 2023 09:36:17 -0700 (PDT)
 Received: from localhost.localdomain
  (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
  by smtp.gmail.com with ESMTPSA id
- w6-20020a5d6086000000b003064600cff9sm11600325wrt.38.2023.05.23.09.36.08
+ v16-20020a1cf710000000b003f4fe09aa43sm15572466wmh.8.2023.05.23.09.36.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 May 2023 09:36:10 -0700 (PDT)
+ Tue, 23 May 2023 09:36:16 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
@@ -70,25 +70,24 @@ Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
-Subject: [PATCH 01/11] softmmu: Introduce
- qemu_target_page_mask/qemu_target_page_align helpers
-Date: Tue, 23 May 2023 18:35:50 +0200
-Message-Id: <20230523163600.83391-2-philmd@linaro.org>
+Subject: [PATCH 02/11] hw/scsi: Introduce VHOST_SCSI_COMMON symbol in Kconfig
+Date: Tue, 23 May 2023 18:35:51 +0200
+Message-Id: <20230523163600.83391-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230523163600.83391-1-philmd@linaro.org>
 References: <20230523163600.83391-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,51 +103,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since TARGET_PAGE_MASK and TARGET_PAGE_ALIGN are poisoned in
-target-agnostic code, introduce the qemu_target_page_mask()
-and qemu_target_page_align() helpers to get these values from
-target-agnostic code at runtime.
+Instead of adding 'vhost-scsi-common.c' twice (for VHOST_SCSI and
+VHOST_USER_SCSI), have it depend on VHOST_SCSI_COMMON, selected by
+both symbols.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/target_page.h |  2 ++
- softmmu/physmem.c          | 10 ++++++++++
- 2 files changed, 12 insertions(+)
+ hw/scsi/Kconfig     | 6 ++++++
+ hw/scsi/meson.build | 6 ++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/target_page.h b/include/exec/target_page.h
-index bbf37aea17..660416920b 100644
---- a/include/exec/target_page.h
-+++ b/include/exec/target_page.h
-@@ -15,6 +15,8 @@
- #define EXEC_TARGET_PAGE_H
+diff --git a/hw/scsi/Kconfig b/hw/scsi/Kconfig
+index e7b34dc8e2..1feab84c4c 100644
+--- a/hw/scsi/Kconfig
++++ b/hw/scsi/Kconfig
+@@ -48,13 +48,19 @@ config VIRTIO_SCSI
+     depends on VIRTIO
+     select SCSI
  
- size_t qemu_target_page_size(void);
-+unsigned qemu_target_page_mask(void);
-+uint64_t qemu_target_page_align(uint64_t value);
- int qemu_target_page_bits(void);
- int qemu_target_page_bits_min(void);
- 
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index efaed36773..14fcba4fb2 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -3347,6 +3347,16 @@ size_t qemu_target_page_size(void)
-     return TARGET_PAGE_SIZE;
- }
- 
-+unsigned qemu_target_page_mask(void)
-+{
-+    return TARGET_PAGE_MASK;
-+}
++config VHOST_SCSI_COMMON
++    bool
++    depends on VIRTIO
 +
-+uint64_t qemu_target_page_align(uint64_t value)
-+{
-+    return TARGET_PAGE_ALIGN(value);
-+}
+ config VHOST_SCSI
+     bool
+     default y
++    select VHOST_SCSI_COMMON
+     depends on VIRTIO && VHOST_KERNEL
+ 
+ config VHOST_USER_SCSI
+     bool
+     # Only PCI devices are provided for now
+     default y if VIRTIO_PCI
++    select VHOST_SCSI_COMMON
+     depends on VIRTIO && VHOST_USER && LINUX
+diff --git a/hw/scsi/meson.build b/hw/scsi/meson.build
+index 923a34f344..fa9198e69f 100644
+--- a/hw/scsi/meson.build
++++ b/hw/scsi/meson.build
+@@ -17,8 +17,10 @@ specific_scsi_ss = ss.source_set()
+ 
+ virtio_scsi_ss = ss.source_set()
+ virtio_scsi_ss.add(files('virtio-scsi.c', 'virtio-scsi-dataplane.c'))
+-virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi-common.c', 'vhost-scsi.c'))
+-virtio_scsi_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-scsi-common.c', 'vhost-user-scsi.c'))
 +
- int qemu_target_page_bits(void)
- {
-     return TARGET_PAGE_BITS;
++virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI_COMMON', if_true: files('vhost-scsi-common.c'))
++virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi.c'))
++virtio_scsi_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi.c'))
+ specific_scsi_ss.add_all(when: 'CONFIG_VIRTIO_SCSI', if_true: virtio_scsi_ss)
+ 
+ specific_scsi_ss.add(when: 'CONFIG_SPAPR_VSCSI', if_true: files('spapr_vscsi.c'))
 -- 
 2.38.1
 
