@@ -2,62 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFB970D54B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 09:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD7170D534
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 09:36:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1MYe-00063F-22; Tue, 23 May 2023 03:35:48 -0400
+	id 1q1MYb-0005pR-MZ; Tue, 23 May 2023 03:35:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1MXa-0004CT-9G
- for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q1MXh-0004Kq-IH
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1MXY-0004Q8-MF
- for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:42 -0400
+ id 1q1MXe-0004Qo-DO
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 03:34:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684827280;
+ s=mimecast20190719; t=1684827283;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3ZiWcY0kXWnN6izFkVl1FHTEqNZnsw11atbi3LkjRZM=;
- b=VSSIrpuQo0QFhtSLMq2s9XVXGv2T527pA1Is8kgvkLbuoPf+FIyHq11pDQ8+vQD9CF6ucJ
- zKsZF1xGveNYvEIMkklj8EHv8lNzMZ+hFu8zEvT/DkUi0Lh9dGj67Vs/3OB1EtRb/uerYO
- d5dkOw11FN8Iyavy7FlqacUVPIamMlE=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+geZvF+58+w9wC+o2zr+Vk+xMXqTt/r5+Zpz9kOvkc4=;
+ b=ESu3DbOtx9vX1HREL3UfncepYEKI94a8fIYHTmDPiacQ8Jq6gA+eo5cmrd1X5p9RYF9Ucj
+ CAtKd8zqqsCkAyy0JEXjn+KpLtGDy3SssQ9ra3p+MAz7omPSocsBj5Evg+aU9QbX/qnAph
+ ycj3M+GPqoGyCVvzZFb5zkLBrcV9nxs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-232-cqtSuZJ_PXWrp7ccNZjWFg-1; Tue, 23 May 2023 03:34:37 -0400
-X-MC-Unique: cqtSuZJ_PXWrp7ccNZjWFg-1
+ us-mta-247-TkJU7MhqOr6c9v9x02gcMw-1; Tue, 23 May 2023 03:34:40 -0400
+X-MC-Unique: TkJU7MhqOr6c9v9x02gcMw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 59A5B29DD984;
- Tue, 23 May 2023 07:34:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C048811E7F;
+ Tue, 23 May 2023 07:34:40 +0000 (UTC)
 Received: from localhost.localdomain (ovpn-12-45.pek2.redhat.com [10.72.12.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2A3232166B25;
- Tue, 23 May 2023 07:34:34 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 02BE62166B25;
+ Tue, 23 May 2023 07:34:37 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org,
 	peter.maydell@linaro.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 38/50] igb: Implement Tx SCTP CSO
-Date: Tue, 23 May 2023 15:32:26 +0800
-Message-Id: <20230523073238.54236-39-jasowang@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 39/50] igb: Strip the second VLAN tag for extended VLAN
+Date: Tue, 23 May 2023 15:32:27 +0800
+Message-Id: <20230523073238.54236-40-jasowang@redhat.com>
 In-Reply-To: <20230523073238.54236-1-jasowang@redhat.com>
 References: <20230523073238.54236-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,100 +82,216 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/igb_core.c   | 12 +++++++-----
- hw/net/net_tx_pkt.c | 18 ++++++++++++++++++
- hw/net/net_tx_pkt.h |  8 ++++++++
- 3 files changed, 33 insertions(+), 5 deletions(-)
+ hw/net/e1000e_core.c |  3 ++-
+ hw/net/igb_core.c    | 14 ++++++++++++--
+ hw/net/net_rx_pkt.c  | 15 ++++++---------
+ hw/net/net_rx_pkt.h  | 19 ++++++++++---------
+ include/net/eth.h    |  4 ++--
+ net/eth.c            | 52 +++++++++++++++++++++++++++++++++-------------------
+ 6 files changed, 65 insertions(+), 42 deletions(-)
 
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index 0b939ff..d601386 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -1711,7 +1711,8 @@ e1000e_receive_internal(E1000ECore *core, const struct iovec *iov, int iovcnt,
+     }
+ 
+     net_rx_pkt_attach_iovec_ex(core->rx_pkt, iov, iovcnt, iov_ofs,
+-                               e1000x_vlan_enabled(core->mac), core->mac[VET]);
++                               e1000x_vlan_enabled(core->mac) ? 0 : -1,
++                               core->mac[VET], 0);
+ 
+     e1000e_rss_parse_packet(core, core->rx_pkt, &rss_info);
+     e1000e_rx_ring_init(core, &rxr, rss_info.queue);
 diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 95d46d6..5eacf1c 100644
+index 5eacf1c..688eaf7 100644
 --- a/hw/net/igb_core.c
 +++ b/hw/net/igb_core.c
-@@ -440,8 +440,9 @@ igb_tx_insert_vlan(IGBCore *core, uint16_t qn, struct igb_tx *tx,
- static bool
- igb_setup_tx_offloads(IGBCore *core, struct igb_tx *tx)
+@@ -1611,6 +1611,7 @@ igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
+     E1000E_RxRing rxr;
+     E1000E_RSSInfo rss_info;
+     size_t total_size;
++    int strip_vlan_index;
+     int i;
+ 
+     trace_e1000e_rx_receive_iov(iovcnt);
+@@ -1672,9 +1673,18 @@ igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
+ 
+         igb_rx_ring_init(core, &rxr, i);
+ 
++        if (!igb_rx_strip_vlan(core, rxr.i)) {
++            strip_vlan_index = -1;
++        } else if (core->mac[CTRL_EXT] & BIT(26)) {
++            strip_vlan_index = 1;
++        } else {
++            strip_vlan_index = 0;
++        }
++
+         net_rx_pkt_attach_iovec_ex(core->rx_pkt, iov, iovcnt, iov_ofs,
+-                                   igb_rx_strip_vlan(core, rxr.i),
+-                                   core->mac[VET] & 0xffff);
++                                   strip_vlan_index,
++                                   core->mac[VET] & 0xffff,
++                                   core->mac[VET] >> 16);
+ 
+         total_size = net_rx_pkt_get_total_len(core->rx_pkt) +
+             e1000x_fcs_len(core->mac);
+diff --git a/hw/net/net_rx_pkt.c b/hw/net/net_rx_pkt.c
+index 3575c8b..32e5f3f 100644
+--- a/hw/net/net_rx_pkt.c
++++ b/hw/net/net_rx_pkt.c
+@@ -137,20 +137,17 @@ void net_rx_pkt_attach_iovec(struct NetRxPkt *pkt,
+ 
+ void net_rx_pkt_attach_iovec_ex(struct NetRxPkt *pkt,
+                                 const struct iovec *iov, int iovcnt,
+-                                size_t iovoff, bool strip_vlan,
+-                                uint16_t vet)
++                                size_t iovoff, int strip_vlan_index,
++                                uint16_t vet, uint16_t vet_ext)
  {
-+    uint32_t idx = (tx->first_olinfo_status >> 4) & 1;
-+
-     if (tx->first_cmd_type_len & E1000_ADVTXD_DCMD_TSE) {
--        uint32_t idx = (tx->first_olinfo_status >> 4) & 1;
-         uint32_t mss = tx->ctx[idx].mss_l4len_idx >> E1000_ADVTXD_MSS_SHIFT;
-         if (!net_tx_pkt_build_vheader(tx->tx_pkt, true, true, mss)) {
-             return false;
-@@ -452,10 +453,11 @@ igb_setup_tx_offloads(IGBCore *core, struct igb_tx *tx)
-         return true;
-     }
+     uint16_t tci = 0;
+     uint16_t ploff = iovoff;
+     assert(pkt);
  
--    if (tx->first_olinfo_status & E1000_ADVTXD_POTS_TXSM) {
--        if (!net_tx_pkt_build_vheader(tx->tx_pkt, false, true, 0)) {
--            return false;
--        }
-+    if ((tx->first_olinfo_status & E1000_ADVTXD_POTS_TXSM) &&
-+        !((tx->ctx[idx].type_tucmd_mlhl & E1000_ADVTXD_TUCMD_L4T_SCTP) ?
-+          net_tx_pkt_update_sctp_checksum(tx->tx_pkt) :
-+          net_tx_pkt_build_vheader(tx->tx_pkt, false, true, 0))) {
-+        return false;
-     }
+-    if (strip_vlan) {
+-        pkt->ehdr_buf_len = eth_strip_vlan_ex(iov, iovcnt, iovoff, vet,
+-                                              &pkt->ehdr_buf,
+-                                              &ploff, &tci);
+-    } else {
+-        pkt->ehdr_buf_len = 0;
+-    }
++    pkt->ehdr_buf_len = eth_strip_vlan_ex(iov, iovcnt, iovoff,
++                                          strip_vlan_index, vet, vet_ext,
++                                          &pkt->ehdr_buf,
++                                          &ploff, &tci);
  
-     if (tx->first_olinfo_status & E1000_ADVTXD_POTS_IXSM) {
-diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
-index af8f77a..2e5f58b 100644
---- a/hw/net/net_tx_pkt.c
-+++ b/hw/net/net_tx_pkt.c
-@@ -16,6 +16,7 @@
-  */
+     pkt->tci = tci;
  
- #include "qemu/osdep.h"
-+#include "qemu/crc32c.h"
- #include "net/eth.h"
- #include "net/checksum.h"
- #include "net/tap.h"
-@@ -135,6 +136,23 @@ void net_tx_pkt_update_ip_checksums(struct NetTxPkt *pkt)
-                  pkt->virt_hdr.csum_offset, &csum, sizeof(csum));
- }
- 
-+bool net_tx_pkt_update_sctp_checksum(struct NetTxPkt *pkt)
-+{
-+    uint32_t csum = 0;
-+    struct iovec *pl_start_frag = pkt->vec + NET_TX_PKT_PL_START_FRAG;
-+
-+    if (iov_from_buf(pl_start_frag, pkt->payload_frags, 8, &csum, sizeof(csum)) < sizeof(csum)) {
-+        return false;
-+    }
-+
-+    csum = cpu_to_le32(iov_crc32c(0xffffffff, pl_start_frag, pkt->payload_frags));
-+    if (iov_from_buf(pl_start_frag, pkt->payload_frags, 8, &csum, sizeof(csum)) < sizeof(csum)) {
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
- static void net_tx_pkt_calculate_hdr_len(struct NetTxPkt *pkt)
- {
-     pkt->hdr_len = pkt->vec[NET_TX_PKT_L2HDR_FRAG].iov_len +
-diff --git a/hw/net/net_tx_pkt.h b/hw/net/net_tx_pkt.h
-index 4d7233e..0a716e7 100644
---- a/hw/net/net_tx_pkt.h
-+++ b/hw/net/net_tx_pkt.h
-@@ -117,6 +117,14 @@ void net_tx_pkt_update_ip_checksums(struct NetTxPkt *pkt);
- void net_tx_pkt_update_ip_hdr_checksum(struct NetTxPkt *pkt);
+diff --git a/hw/net/net_rx_pkt.h b/hw/net/net_rx_pkt.h
+index ce8dbdb..55ec67a 100644
+--- a/hw/net/net_rx_pkt.h
++++ b/hw/net/net_rx_pkt.h
+@@ -223,18 +223,19 @@ void net_rx_pkt_attach_iovec(struct NetRxPkt *pkt,
+ /**
+ * attach scatter-gather data to rx packet
+ *
+-* @pkt:            packet
+-* @iov:            received data scatter-gather list
+-* @iovcnt          number of elements in iov
+-* @iovoff          data start offset in the iov
+-* @strip_vlan:     should the module strip vlan from data
+-* @vet:            VLAN tag Ethernet type
++* @pkt:              packet
++* @iov:              received data scatter-gather list
++* @iovcnt:           number of elements in iov
++* @iovoff:           data start offset in the iov
++* @strip_vlan_index: index of Q tag if it is to be stripped. negative otherwise.
++* @vet:              VLAN tag Ethernet type
++* @vet_ext:          outer VLAN tag Ethernet type
+ *
+ */
+ void net_rx_pkt_attach_iovec_ex(struct NetRxPkt *pkt,
+-                                   const struct iovec *iov, int iovcnt,
+-                                   size_t iovoff, bool strip_vlan,
+-                                   uint16_t vet);
++                                const struct iovec *iov, int iovcnt,
++                                size_t iovoff, int strip_vlan_index,
++                                uint16_t vet, uint16_t vet_ext);
  
  /**
-+ * Calculate the SCTP checksum.
-+ *
-+ * @pkt:            packet
-+ *
-+ */
-+bool net_tx_pkt_update_sctp_checksum(struct NetTxPkt *pkt);
+  * attach data to rx packet
+diff --git a/include/net/eth.h b/include/net/eth.h
+index 75e7f15..3b80b6e 100644
+--- a/include/net/eth.h
++++ b/include/net/eth.h
+@@ -347,8 +347,8 @@ eth_strip_vlan(const struct iovec *iov, int iovcnt, size_t iovoff,
+                uint16_t *payload_offset, uint16_t *tci);
+ 
+ size_t
+-eth_strip_vlan_ex(const struct iovec *iov, int iovcnt, size_t iovoff,
+-                  uint16_t vet, void *new_ehdr_buf,
++eth_strip_vlan_ex(const struct iovec *iov, int iovcnt, size_t iovoff, int index,
++                  uint16_t vet, uint16_t vet_ext, void *new_ehdr_buf,
+                   uint16_t *payload_offset, uint16_t *tci);
+ 
+ uint16_t
+diff --git a/net/eth.c b/net/eth.c
+index 7f02aea..649e66b 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -269,36 +269,50 @@ eth_strip_vlan(const struct iovec *iov, int iovcnt, size_t iovoff,
+ }
+ 
+ size_t
+-eth_strip_vlan_ex(const struct iovec *iov, int iovcnt, size_t iovoff,
+-                  uint16_t vet, void *new_ehdr_buf,
++eth_strip_vlan_ex(const struct iovec *iov, int iovcnt, size_t iovoff, int index,
++                  uint16_t vet, uint16_t vet_ext, void *new_ehdr_buf,
+                   uint16_t *payload_offset, uint16_t *tci)
+ {
+     struct vlan_header vlan_hdr;
+-    struct eth_header *new_ehdr = (struct eth_header *) new_ehdr_buf;
+-
+-    size_t copied = iov_to_buf(iov, iovcnt, iovoff,
+-                               new_ehdr, sizeof(*new_ehdr));
+-
+-    if (copied < sizeof(*new_ehdr)) {
+-        return 0;
+-    }
++    uint16_t *new_ehdr_proto;
++    size_t new_ehdr_size;
++    size_t copied;
+ 
+-    if (be16_to_cpu(new_ehdr->h_proto) == vet) {
+-        copied = iov_to_buf(iov, iovcnt, iovoff + sizeof(*new_ehdr),
+-                            &vlan_hdr, sizeof(vlan_hdr));
++    switch (index) {
++    case 0:
++        new_ehdr_proto = &PKT_GET_ETH_HDR(new_ehdr_buf)->h_proto;
++        new_ehdr_size = sizeof(struct eth_header);
++        copied = iov_to_buf(iov, iovcnt, iovoff, new_ehdr_buf, new_ehdr_size);
++        break;
+ 
+-        if (copied < sizeof(vlan_hdr)) {
++    case 1:
++        new_ehdr_proto = &PKT_GET_VLAN_HDR(new_ehdr_buf)->h_proto;
++        new_ehdr_size = sizeof(struct eth_header) + sizeof(struct vlan_header);
++        copied = iov_to_buf(iov, iovcnt, iovoff, new_ehdr_buf, new_ehdr_size);
++        if (be16_to_cpu(PKT_GET_ETH_HDR(new_ehdr_buf)->h_proto) != vet_ext) {
+             return 0;
+         }
++        break;
+ 
+-        new_ehdr->h_proto = vlan_hdr.h_proto;
++    default:
++        return 0;
++    }
+ 
+-        *tci = be16_to_cpu(vlan_hdr.h_tci);
+-        *payload_offset = iovoff + sizeof(*new_ehdr) + sizeof(vlan_hdr);
+-        return sizeof(struct eth_header);
++    if (copied < new_ehdr_size || be16_to_cpu(*new_ehdr_proto) != vet) {
++        return 0;
++    }
 +
-+/**
-  * get length of all populated data.
-  *
-  * @pkt:            packet
++    copied = iov_to_buf(iov, iovcnt, iovoff + new_ehdr_size,
++                        &vlan_hdr, sizeof(vlan_hdr));
++    if (copied < sizeof(vlan_hdr)) {
++        return 0;
+     }
+ 
+-    return 0;
++    *new_ehdr_proto = vlan_hdr.h_proto;
++    *payload_offset = iovoff + new_ehdr_size + sizeof(vlan_hdr);
++    *tci = be16_to_cpu(vlan_hdr.h_tci);
++
++    return new_ehdr_size;
+ }
+ 
+ void
 -- 
 2.7.4
 
