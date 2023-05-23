@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3932B70E782
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 23:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F1A70E781
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 23:40:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Zj7-0000b9-0d; Tue, 23 May 2023 17:39:29 -0400
+	id 1q1ZjB-0000c2-0d; Tue, 23 May 2023 17:39:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q1Zj5-0000aa-1k; Tue, 23 May 2023 17:39:27 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ id 1q1Zj8-0000bS-6w; Tue, 23 May 2023 17:39:30 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q1Zj3-0004gE-HY; Tue, 23 May 2023 17:39:26 -0400
+ id 1q1Zj6-0004gg-IV; Tue, 23 May 2023 17:39:29 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 15A3422557;
- Tue, 23 May 2023 21:39:24 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 1B6DA1FDCB;
+ Tue, 23 May 2023 21:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1684877964; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1684877967; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MZRkBMV9CBMUFXLX/xkNC4zvHhFkiT+22nxJpPXJ7Lk=;
- b=Dg57z3XPQmfXOiDWsAqw2d8WXR+A2o4vC+KdPEPl4l1l8eemDiCB6wp0Y9xZCa8TBc3BWz
- 0LfCyEkqAyNIHKHgShs6gWk7nNDy+3sn9N9mOoHvVfgQIr9EChAklOZVzZzymuefpdQ5Ws
- r9slKaMncw4qO10ybr3Pq+MTqcsZlRU=
+ bh=8UtTA4VS+v6RK2oMpfABPplNec6WNdoTQcTTtAspvnQ=;
+ b=ZFN45fZ8pNmgR39ZjjnpZOXw63X4QHuDxlraulPSEdmbwpyNBjan6nyjuIlz9y+NZZujKp
+ MKpcM9axn0OiqNzhHwi7ZGMXCfline18ToIEtVdE44gzTTFuN58ev1zU5BHbM17TNTEvDq
+ 2z5kCJ7woZ24LtRPhYbjqZoJDrfMWv0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1684877964;
+ s=susede2_ed25519; t=1684877967;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MZRkBMV9CBMUFXLX/xkNC4zvHhFkiT+22nxJpPXJ7Lk=;
- b=LCXhv7PLaXGnpztF8uCdM9T76Xiix3D9Im+gOIl4P+iIHSdFbggXn3GZ7jcQFoPimdIbTZ
- M8ZsPOSXEIB61TBA==
+ bh=8UtTA4VS+v6RK2oMpfABPplNec6WNdoTQcTTtAspvnQ=;
+ b=6V1fACaHflbVjqW1vmCNkItt+YcjBXhkjBWFnetDu6HejqKvv3KUY1KN/Rqip+Duida0Ah
+ pJ0pCYHpHxsOAjAA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7A9A913588;
- Tue, 23 May 2023 21:39:21 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8241413588;
+ Tue, 23 May 2023 21:39:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id iEE5EYkybWQ7CwAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 23 May 2023 21:39:21 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id aDshE4wybWQ7CwAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 23 May 2023 21:39:24 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
@@ -56,17 +56,17 @@ Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Jo=C3=A3o=20Silva?= <jsilva@suse.de>, Lin Ma <lma@suse.com>,
  Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
  Eric Blake <eblake@redhat.com>
-Subject: [RFC PATCH 5/6] block: Allow bdrv_get_allocated_file_size to run in
- bdrv context
-Date: Tue, 23 May 2023 18:39:02 -0300
-Message-Id: <20230523213903.18418-6-farosas@suse.de>
+Subject: [RFC PATCH 6/6] block: Add a thread-pool version of fstat
+Date: Tue, 23 May 2023 18:39:03 -0300
+Message-Id: <20230523213903.18418-7-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230523213903.18418-1-farosas@suse.de>
 References: <20230523213903.18418-1-farosas@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -89,59 +89,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're about to move calls to 'fstat' into the thread-pool to avoid
-blocking VCPU threads should the system call take too long.
+From: João Silva <jsilva@suse.de>
 
-To achieve that we first need to make sure none of its callers is
-holding the aio_context lock, otherwise yielding before scheduling the
-aiocb handler would result in a deadlock when the qemu_global_mutex is
-released and another thread tries to acquire the aio_context.
+The fstat call can take a long time to finish when running over
+NFS. Add a version of it that runs in the thread pool.
 
+Adapt one of its users, raw_co_get_allocated_file size to use the new
+version. That function is called via QMP under the qemu_global_mutex
+so it has a large chance of blocking VCPU threads in case it takes too
+long to finish.
+
+Signed-off-by: João Silva <jsilva@suse.de>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- block/qapi.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ block/file-posix.c      | 40 +++++++++++++++++++++++++++++++++++++---
+ include/block/raw-aio.h |  4 +++-
+ 2 files changed, 40 insertions(+), 4 deletions(-)
 
-diff --git a/block/qapi.c b/block/qapi.c
-index ae6cd1c2ff..cd197abf1f 100644
---- a/block/qapi.c
-+++ b/block/qapi.c
-@@ -222,6 +222,26 @@ int bdrv_query_snapshot_info_list(BlockDriverState *bs,
-     return 0;
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 0ab158efba..0a29a6cc43 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -227,6 +227,9 @@ typedef struct RawPosixAIOData {
+         struct {
+             unsigned long op;
+         } zone_mgmt;
++        struct {
++            struct stat *st;
++        } fstat;
+     };
+ } RawPosixAIOData;
+ 
+@@ -2644,6 +2647,34 @@ static void raw_close(BlockDriverState *bs)
+     }
  }
  
-+static int64_t bdrv_get_actual_size(BlockDriverState *bs)
++static int handle_aiocb_fstat(void *opaque)
 +{
-+    int64_t size;
-+    AioContext *old_ctx = NULL;
++    RawPosixAIOData *aiocb = opaque;
 +
-+    if (qemu_in_coroutine()) {
-+        aio_context_release(bdrv_get_aio_context(bs));
-+        old_ctx = bdrv_co_enter(bs);
++    if (fstat(aiocb->aio_fildes, aiocb->fstat.st) < 0) {
++        return -errno;
 +    }
 +
-+    size = bdrv_get_allocated_file_size(bs);
++    return 0;
++}
 +
-+    if (qemu_in_coroutine() && old_ctx) {
-+        bdrv_co_leave(bs, old_ctx);
-+        aio_context_acquire(bdrv_get_aio_context(bs));
-+    }
++static int coroutine_fn raw_co_fstat(BlockDriverState *bs, struct stat *st)
++{
++    BDRVRawState *s = bs->opaque;
++    RawPosixAIOData acb;
 +
-+    return size;
++    acb = (RawPosixAIOData) {
++        .bs             = bs,
++        .aio_fildes     = s->fd,
++        .aio_type       = QEMU_AIO_FSTAT,
++        .fstat          = {
++            .st = st,
++        },
++    };
++
++    return raw_thread_pool_submit(handle_aiocb_fstat, &acb);
 +}
 +
  /**
-  * Helper function for other query info functions.  Store information about @bs
-  * in @info, setting @errp on error.
-@@ -250,7 +270,7 @@ static void bdrv_do_query_node_info(BlockDriverState *bs,
-     info->filename        = g_strdup(bs->filename);
-     info->format          = g_strdup(bdrv_get_format_name(bs));
-     info->virtual_size    = size;
--    info->actual_size     = bdrv_get_allocated_file_size(bs);
-+    info->actual_size     = bdrv_get_actual_size(bs);
-     info->has_actual_size = info->actual_size >= 0;
-     if (bs->encrypted) {
-         info->encrypted = true;
+  * Truncates the given regular file @fd to @offset and, when growing, fills the
+  * new space according to @prealloc.
+@@ -2883,11 +2914,14 @@ static int64_t coroutine_fn raw_co_getlength(BlockDriverState *bs)
+ static int64_t coroutine_fn raw_co_get_allocated_file_size(BlockDriverState *bs)
+ {
+     struct stat st;
+-    BDRVRawState *s = bs->opaque;
++    int ret;
+ 
+-    if (fstat(s->fd, &st) < 0) {
+-        return -errno;
++    ret = raw_co_fstat(bs, &st);
++
++    if (ret) {
++        return ret;
+     }
++
+     return (int64_t)st.st_blocks * 512;
+ }
+ 
+diff --git a/include/block/raw-aio.h b/include/block/raw-aio.h
+index 0fe85ade77..7dc6d24e21 100644
+--- a/include/block/raw-aio.h
++++ b/include/block/raw-aio.h
+@@ -31,6 +31,7 @@
+ #define QEMU_AIO_ZONE_REPORT  0x0100
+ #define QEMU_AIO_ZONE_MGMT    0x0200
+ #define QEMU_AIO_ZONE_APPEND  0x0400
++#define QEMU_AIO_FSTAT        0x0800
+ #define QEMU_AIO_TYPE_MASK \
+         (QEMU_AIO_READ | \
+          QEMU_AIO_WRITE | \
+@@ -42,7 +43,8 @@
+          QEMU_AIO_TRUNCATE | \
+          QEMU_AIO_ZONE_REPORT | \
+          QEMU_AIO_ZONE_MGMT | \
+-         QEMU_AIO_ZONE_APPEND)
++         QEMU_AIO_ZONE_APPEND | \
++         QEMU_AIO_FSTAT)
+ 
+ /* AIO flags */
+ #define QEMU_AIO_MISALIGNED   0x1000
 -- 
 2.35.3
 
