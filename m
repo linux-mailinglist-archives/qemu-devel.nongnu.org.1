@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA8D70DA22
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C99570DA36
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:19:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P4R-0007d5-M2; Tue, 23 May 2023 06:16:47 -0400
+	id 1q1P4Q-0007Sf-Pk; Tue, 23 May 2023 06:16:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P3p-0006n7-Hl; Tue, 23 May 2023 06:16:10 -0400
+ id 1q1P3q-0006ni-VF; Tue, 23 May 2023 06:16:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P3n-0001uL-RO; Tue, 23 May 2023 06:16:09 -0400
+ id 1q1P3p-0001ue-68; Tue, 23 May 2023 06:16:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 400DF7CFB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9CD657CFC;
  Tue, 23 May 2023 13:15:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 84B80728B;
+ by tsrv.corpit.ru (Postfix) with SMTP id ACE57728C;
  Tue, 23 May 2023 13:15:50 +0300 (MSK)
-Received: (nullmailer pid 85517 invoked by uid 1000);
+Received: (nullmailer pid 85520 invoked by uid 1000);
  Tue, 23 May 2023 10:15:48 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Peter Xu <peterx@redhat.com>,
  Juan Quintela <quintela@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 45/59] migration: Minor control flow simplification
-Date: Tue, 23 May 2023 13:15:05 +0300
-Message-Id: <20230523101536.85424-9-mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 46/59] migration: Attempt disk reactivation in more
+ failure scenarios
+Date: Tue, 23 May 2023 13:15:06 +0300
+Message-Id: <20230523101536.85424-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
@@ -61,41 +63,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Blake <eblake@redhat.com>
 
-No need to declare a temporary variable.
+Commit fe904ea824 added a fail_inactivate label, which tries to
+reactivate disks on the source after a failure while s->state ==
+MIGRATION_STATUS_ACTIVE, but didn't actually use the label if
+qemu_savevm_state_complete_precopy() failed.  This failure to
+reactivate is also present in commit 6039dd5b1c (also covering the new
+s->state == MIGRATION_STATUS_DEVICE state) and 403d18ae (ensuring
+s->block_inactive is set more reliably).
 
-Suggested-by: Juan Quintela <quintela@redhat.com>
-Fixes: 1df36e8c6289 ("migration: Handle block device inactivation failures better")
+Consolidate the two labels back into one - no matter HOW migration is
+failed, if there is any chance we can reach vm_start() after having
+attempted inactivation, it is essential that we have tried to restart
+disks before then.  This also makes the cleanup more like
+migrate_fd_cancel().
+
+Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Eric Blake <eblake@redhat.com>
+Message-Id: <20230502205212.134680-1-eblake@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
-(cherry picked from commit 5d39f44d7ac5c63f53d4d0900ceba9521bc27e49)
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 6dab4c93ecfae48e2e67b984d1032c1e988d3005)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: minor context tweak near added comment in migration/migration.c)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index cb0d42c061..08007cef4e 100644
+index 08007cef4e..99f86bd6c2 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -3436,7 +3436,6 @@ static void migration_completion(MigrationState *s)
-         ret = global_state_store();
- 
-         if (!ret) {
--            bool inactivate = !migrate_colo_enabled();
-             ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
-             trace_migration_completion_vm_stop(ret);
-             if (ret >= 0) {
-@@ -3444,10 +3443,10 @@ static void migration_completion(MigrationState *s)
+@@ -3443,6 +3443,11 @@ static void migration_completion(MigrationState *s)
                                              MIGRATION_STATUS_DEVICE);
              }
              if (ret >= 0) {
--                s->block_inactive = inactivate;
-+                s->block_inactive = !migrate_colo_enabled();
++                /*
++                 * Inactivate disks except in COLO, and track that we
++                 * have done so in order to remember to reactivate
++                 * them if migration fails or is cancelled.
++                 */
+                 s->block_inactive = !migrate_colo_enabled();
                  qemu_file_set_rate_limit(s->to_dst_file, INT64_MAX);
                  ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
--                                                         inactivate);
-+                                                         s->block_inactive);
-             }
+@@ -3487,13 +3492,13 @@ static void migration_completion(MigrationState *s)
+         rp_error = await_return_path_close_on_source(s);
+         trace_migration_return_path_end_after(rp_error);
+         if (rp_error) {
+-            goto fail_invalidate;
++            goto fail;
+         }
+     }
+ 
+     if (qemu_file_get_error(s->to_dst_file)) {
+         trace_migration_completion_file_err();
+-        goto fail_invalidate;
++        goto fail;
+     }
+ 
+     if (migrate_colo_enabled() && s->state == MIGRATION_STATUS_ACTIVE) {
+@@ -3507,26 +3512,25 @@ static void migration_completion(MigrationState *s)
+ 
+     return;
+ 
+-fail_invalidate:
+-    /* If not doing postcopy, vm_start() will be called: let's regain
+-     * control on images.
+-     */
+-    if (s->state == MIGRATION_STATUS_ACTIVE ||
+-        s->state == MIGRATION_STATUS_DEVICE) {
++fail:
++    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
++                              s->state == MIGRATION_STATUS_DEVICE)) {
++        /*
++         * If not doing postcopy, vm_start() will be called: let's
++         * regain control on images.
++         */
+         Error *local_err = NULL;
+ 
+         qemu_mutex_lock_iothread();
+         bdrv_activate_all(&local_err);
+         if (local_err) {
+             error_report_err(local_err);
+-            s->block_inactive = true;
+         } else {
+             s->block_inactive = false;
          }
          qemu_mutex_unlock_iothread();
+     }
+ 
+-fail:
+     migrate_set_state(&s->state, current_active_state,
+                       MIGRATION_STATUS_FAILED);
+ }
 -- 
 2.39.2
 
