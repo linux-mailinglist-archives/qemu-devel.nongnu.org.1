@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066D770F1E1
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 11:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F62716FB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 23:29:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1kX5-00018o-Oc; Wed, 24 May 2023 05:11:47 -0400
+	id 1q46ss-0004OG-7t; Tue, 30 May 2023 17:28:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1q1kX3-00018F-Ny
- for qemu-devel@nongnu.org; Wed, 24 May 2023 05:11:45 -0400
-Received: from esa2.hc1455-7.c3s2.iphmx.com ([207.54.90.48])
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1q45eP-0005Gw-7F
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 16:09:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1q1kX2-0000dr-5n
- for qemu-devel@nongnu.org; Wed, 24 May 2023 05:11:45 -0400
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="117781871"
-X-IronPort-AV: E=Sophos;i="6.00,188,1681138800"; d="scan'208";a="117781871"
-Received: from unknown (HELO oym-r2.gw.nic.fujitsu.com) ([210.162.30.90])
- by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 May 2023 18:11:37 +0900
-Received: from oym-m1.gw.nic.fujitsu.com (oym-nat-oym-m1.gw.nic.fujitsu.com
- [192.168.87.58])
- by oym-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id CA5DBCD7E1
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 18:11:34 +0900 (JST)
-Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com
- [192.51.206.22])
- by oym-m1.gw.nic.fujitsu.com (Postfix) with ESMTP id 0ABC31582D
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 18:11:34 +0900 (JST)
-Received: from cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id 538CC6CB3C
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 18:11:33 +0900 (JST)
-Received: from G08CNEXHBPEKD10.g08.fujitsu.local (unknown [10.167.33.114])
- by cn.fujitsu.com (Postfix) with ESMTP id A7ECB4D8CABA;
- Fri, 19 May 2023 16:57:19 +0800 (CST)
-Received: from G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.114) by
- G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Fri, 19 May 2023 16:57:19 +0800
-Received: from localhost.localdomain (10.167.226.45) by
- G08CNEXHBPEKD10.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- id 15.1.2507.23 via Frontend Transport; Fri, 19 May 2023 16:57:19 +0800
-From: Li Zhijian <lizhijian@cn.fujitsu.com>
-To: <Jonathan.Cameron@huawei.com>, <qemu-devel@nongnu.org>
-CC: <ben.widawsky@intel.com>, <dan.j.williams@intel.com>, <mst@redhat.com>,
- <peter.maydell@linaro.org>, Li Zhijian <lizhijian@cn.fujitsu.com>
-Subject: [PATCH 2/2] docs/clx: Change to lowercase as others
-Date: Fri, 19 May 2023 16:58:02 +0800
-Message-ID: <20230519085802.2106900-2-lizhijian@cn.fujitsu.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230519085802.2106900-1-lizhijian@cn.fujitsu.com>
-References: <20230519085802.2106900-1-lizhijian@cn.fujitsu.com>
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1q45eJ-0008PK-Eh
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 16:09:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685477334;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wYEicFXBq89pEXm0o82iac+c7i14XLlx4VHXnpqIxKo=;
+ b=gyM2nrZFOGuT6F/s1vJn9rLp6qiXevjtmsyCWHq4joXvxQaGd0H+YgOPz7T7oiED9+7rbF
+ 1F7DHk8QLJijBjhL0PBrcNHaGEZ4e9uxRI/oPDzc63ZlSsNnbcguNjhG2oEkKr/HBzXgtn
+ M+uK4sgbi6/4LJ8Wly3hfjmAaiRzyFk=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-368-Aeev7evnOPG-tWhlkukAyQ-1; Tue, 30 May 2023 16:07:44 -0400
+X-MC-Unique: Aeev7evnOPG-tWhlkukAyQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-96fd6bd135dso539408366b.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:07:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685477263; x=1688069263;
+ h=mime-version:user-agent:message-id:references:date:in-reply-to
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wYEicFXBq89pEXm0o82iac+c7i14XLlx4VHXnpqIxKo=;
+ b=OscWIeFTDL9ALBYeR4UacNHPWFV76mZtHN6m8oudmPn0iBNkJxOKEQuKdxWfgFSpS9
+ MBdXdXNW4lz6eLWsqeKEmZgAXExKmkvI9yQFg5Jm7kkM8+vz89LqxSYP+BAXprxSTpw6
+ Fd8iVuPLDPDes0wJMi05K3at/XSDGdnIoCZrVFpfFHORkE1vCJl18mE6B0sG0DR22Xq3
+ 3rj7QZeQXdLPQk5V7tBC8lJcw+GX+g/lBDJHaOGjLx+m/yhvrRjNvDzxMmO+Nj5MhjE1
+ P0IFnZEObc8+4caahWi1GaxZBGjj0NzZsP0GH2k+rxSeMH13u+P6pQdKyf9CX8nRbJmo
+ L5Cg==
+X-Gm-Message-State: AC+VfDxvoXffWkQZj0CIUEiRHj9QKCSbGNNJLaSDcv15c2Wm+Y14QUYb
+ N/7jxYHWElEU0RfVU7DhLSaGE469jyKccVuTs/0GgU+uoOYFSixRaIOdLIPwE7M5V6aZ1gNPTWC
+ nhgyIHzV7Na/XHpc=
+X-Received: by 2002:a17:907:72c2:b0:974:2100:a2be with SMTP id
+ du2-20020a17090772c200b009742100a2bemr3202461ejc.7.1685477263243; 
+ Tue, 30 May 2023 13:07:43 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5zbV8+W9mmheIVZJtMy/qUgHhx1UF2fpRS/liWLPRetI6Vq8IiivCl76Fqi1kyp1NeVnAQBg==
+X-Received: by 2002:a17:907:72c2:b0:974:2100:a2be with SMTP id
+ du2-20020a17090772c200b009742100a2bemr3202445ejc.7.1685477262933; 
+ Tue, 30 May 2023 13:07:42 -0700 (PDT)
+Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
+ by smtp.gmail.com with ESMTPSA id
+ j23-20020a17090643d700b0095850aef138sm7789623ejn.6.2023.05.30.13.07.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 13:07:42 -0700 (PDT)
+From: Milan Zamazal <mzamazal@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com,
+    stefanha@redhat.com,
+    alex.bennee@linaro.org
+Subject: [PATCH 1/4] hw/virtio: Add boilerplate for vhost-user-scmi device
+In-Reply-To: <cover.1685476786.git.mzamazal@redhat.com>
+Date: Tue, 23 May 2023 10:02:11 +0200
+References: <cover.1685476786.git.mzamazal@redhat.com>
+Message-Id: <7d73441dab998ebe99d78f8f47293bc8ad27f061.1685476786.git.mzamazal@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-yoursite-MailScanner-ID: A7ECB4D8CABA.A49C1
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: lizhijian@fujitsu.com
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-27646.005
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-27646.005
-X-TMASE-Result: 10--2.797300-10.000000
-X-TMASE-MatchedRID: H76PVFvSJl4xhcKMC/TCz836paW7ZnFowTlc9CcHMZerwqxtE531VICu
- qghmtWfXFCHhi2BgUo7jTi7tnrhclZ4727V5seKPboT9s9dVCZrM1/5oKB8u2psoi2XrUn/Jn6K
- dMrRsL14qtq5d3cxkNahCE/Dxslu+hWF4CHR7+BQgt48YwZpyKCRQfozVHiV6KnQDLadWR9NlN+
- gj35/8f9wk+zyU1Od9I0EDdr7SnlD2f41qzUd1+xJYk/e1wi1SU/JCITmuhS7oZbNFHtbIdPl43
- iPWIJMPxwTT797Vag8=
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=207.54.90.48; envelope-from=lizhijian@fujitsu.com;
- helo=esa2.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 17
+X-Spam_score: 1.7
+X-Spam_bar: +
+X-Spam_report: (1.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ DKIM_INVALID=0.1, DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 30 May 2023 17:28:00 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,51 +100,411 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using the same style except the 'Topo' abbreviation.
+This creates the QEMU side of the vhost-user-scmi device which connects to
+the remote daemon.  It is based on code of similar vhost-user devices.
 
-Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
+Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
 ---
-I'm not a native speaker, feel free to correct me.
----
- docs/system/devices/cxl.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ MAINTAINERS                         |   6 +
+ hw/virtio/Kconfig                   |   5 +
+ hw/virtio/meson.build               |   1 +
+ hw/virtio/vhost-user-scmi.c         | 306 ++++++++++++++++++++++++++++
+ include/hw/virtio/vhost-user-scmi.h |  30 +++
+ 5 files changed, 348 insertions(+)
+ create mode 100644 hw/virtio/vhost-user-scmi.c
+ create mode 100644 include/hw/virtio/vhost-user-scmi.h
 
-diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
-index d3577a4d6da..56414d25871 100644
---- a/docs/system/devices/cxl.rst
-+++ b/docs/system/devices/cxl.rst
-@@ -157,7 +157,7 @@ responsible for allocating appropriate ranges from within the CFMWs
- and exposing those via normal memory configurations as would be done
- for system RAM.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4b025a7b63..1ce2f3dabe 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2202,6 +2202,12 @@ F: hw/virtio/vhost-user-gpio*
+ F: include/hw/virtio/vhost-user-gpio.h
+ F: tests/qtest/libqos/virtio-gpio.*
  
--Example system Topology. x marks the match in each decoder level::
-+Example system topology. x marks the match in each decoder level::
++vhost-user-scmi
++R: mzamazal@redhat.com
++S: Supported
++F: hw/virtio/vhost-user-scmi*
++F: include/hw/virtio/vhost-user-scmi.h
++
+ virtio-crypto
+ M: Gonglei <arei.gonglei@huawei.com>
+ S: Supported
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+index 89e9e426d8..2515d4ff68 100644
+--- a/hw/virtio/Kconfig
++++ b/hw/virtio/Kconfig
+@@ -90,3 +90,8 @@ config VHOST_VDPA_DEV
+     bool
+     default y
+     depends on VIRTIO && VHOST_VDPA && LINUX
++
++config VHOST_USER_SCMI
++    bool
++    default y
++    depends on VIRTIO && VHOST_USER
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index bdec78bfc6..c3eeb23942 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -32,6 +32,7 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
+ specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'], if_true: files('vhost-user-gpio-pci.c'))
++specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
  
-   |<------------------SYSTEM PHYSICAL ADDRESS MAP (1)----------------->|
-   |    __________   __________________________________   __________    |
-@@ -187,8 +187,8 @@ Example system Topology. x marks the match in each decoder level::
-        ___________|___   __________|__   __|_________   ___|_________
-    (3)|  Root Port 0  | | Root Port 1 | | Root Port 2| | Root Port 3 |
-       |  Appears in   | | Appears in  | | Appears in | | Appear in   |
--      |  PCI topology | | PCI Topology| | PCI Topo   | | PCI Topo    |
--      |  As 0c:00.0   | | as 0c:01.0  | | as de:00.0 | | as de:01.0  |
-+      |  PCI topology | | PCI topology| | PCI Topo   | | PCI Topo    |
-+      |  as 0c:00.0   | | as 0c:01.0  | | as de:00.0 | | as de:01.0  |
-       |_______________| |_____________| |____________| |_____________|
-             |                  |               |              |
-             |                  |               |              |
-@@ -272,7 +272,7 @@ Example topology involving a switch::
-       |  Root Port 0  |
-       |  Appears in   |
-       |  PCI topology |
--      |  As 0c:00.0   |
-+      |  as 0c:00.0   |
-       |___________x___|
-                   |
-                   |
+ virtio_pci_ss = ss.source_set()
+diff --git a/hw/virtio/vhost-user-scmi.c b/hw/virtio/vhost-user-scmi.c
+new file mode 100644
+index 0000000000..d386fb2df9
+--- /dev/null
++++ b/hw/virtio/vhost-user-scmi.c
+@@ -0,0 +1,306 @@
++/*
++ * Vhost-user SCMI virtio device
++ *
++ * SPDX-FileCopyrightText: Red Hat, Inc.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Implementation based on other vhost-user devices in QEMU.
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qemu/error-report.h"
++#include "hw/virtio/virtio-bus.h"
++#include "hw/virtio/vhost-user-scmi.h"
++#include "standard-headers/linux/virtio_ids.h"
++#include "standard-headers/linux/virtio_scmi.h"
++#include "trace.h"
++
++/*
++ * In this version, we don't support VIRTIO_SCMI_F_SHARED_MEMORY.
++ * Note that VIRTIO_SCMI_F_SHARED_MEMORY is currently not supported in
++ * Linux VirtIO SCMI guest driver.
++ */
++static const int feature_bits[] = {
++    VIRTIO_F_VERSION_1,
++    VIRTIO_F_NOTIFY_ON_EMPTY,
++    VIRTIO_RING_F_INDIRECT_DESC,
++    VIRTIO_RING_F_EVENT_IDX,
++    VIRTIO_F_RING_RESET,
++    VIRTIO_SCMI_F_P2A_CHANNELS,
++    VHOST_INVALID_FEATURE_BIT
++};
++
++static int vu_scmi_start(VirtIODevice *vdev)
++{
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
++    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
++    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
++    struct vhost_dev *vhost_dev = &scmi->vhost_dev;
++    int ret, i;
++
++    if (!k->set_guest_notifiers) {
++        error_report("binding does not support guest notifiers");
++        return -ENOSYS;
++    }
++
++    ret = vhost_dev_enable_notifiers(vhost_dev, vdev);
++    if (ret < 0) {
++        error_report("Error enabling host notifiers: %d", ret);
++        return ret;
++    }
++
++    ret = k->set_guest_notifiers(qbus->parent, vhost_dev->nvqs, true);
++    if (ret < 0) {
++        error_report("Error binding guest notifier: %d", ret);
++        goto err_host_notifiers;
++    }
++
++    vhost_ack_features(&scmi->vhost_dev, feature_bits, vdev->guest_features);
++
++    ret = vhost_dev_start(&scmi->vhost_dev, vdev, true);
++    if (ret < 0) {
++        error_report("Error starting vhost-user-scmi: %d", ret);
++        goto err_guest_notifiers;
++    }
++
++    /*
++     * guest_notifier_mask/pending not used yet, so just unmask
++     * everything here. virtio-pci will do the right thing by
++     * enabling/disabling irqfd.
++     */
++    for (i = 0; i < scmi->vhost_dev.nvqs; i++) {
++        vhost_virtqueue_mask(&scmi->vhost_dev, vdev, i, false);
++    }
++    return 0;
++
++err_guest_notifiers:
++    k->set_guest_notifiers(qbus->parent, vhost_dev->nvqs, false);
++err_host_notifiers:
++    vhost_dev_disable_notifiers(vhost_dev, vdev);
++
++    return ret;
++}
++
++static void vu_scmi_stop(VirtIODevice *vdev)
++{
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
++    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
++    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
++    struct vhost_dev *vhost_dev = &scmi->vhost_dev;
++    int ret;
++
++    if (!k->set_guest_notifiers) {
++        return;
++    }
++
++    vhost_dev_stop(vhost_dev, vdev, true);
++
++    ret = k->set_guest_notifiers(qbus->parent, vhost_dev->nvqs, false);
++    if (ret < 0) {
++        error_report("vhost guest notifier cleanup failed: %d", ret);
++        return;
++    }
++    vhost_dev_disable_notifiers(vhost_dev, vdev);
++}
++
++static void vu_scmi_set_status(VirtIODevice *vdev, uint8_t status)
++{
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
++    bool should_start = virtio_device_should_start(vdev, status);
++
++    if (!scmi->connected) {
++        return;
++    }
++    if (vhost_dev_is_started(&scmi->vhost_dev) == should_start) {
++        return;
++    }
++
++    if (should_start) {
++        vu_scmi_start(vdev);
++    } else {
++        vu_scmi_stop(vdev);
++    }
++}
++
++static uint64_t vu_scmi_get_features(VirtIODevice *vdev, uint64_t features,
++                                     Error **errp)
++{
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
++
++    return vhost_get_features(&scmi->vhost_dev, feature_bits, features);
++}
++
++static void vu_scmi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
++{
++    /*
++     * Not normally called; it's the daemon that handles the queue;
++     * however virtio's cleanup path can call this.
++     */
++}
++
++static void vu_scmi_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
++{
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
++
++    if (idx == VIRTIO_CONFIG_IRQ_IDX) {
++        return;
++    }
++
++    vhost_virtqueue_mask(&scmi->vhost_dev, vdev, idx, mask);
++}
++
++static bool vu_scmi_guest_notifier_pending(VirtIODevice *vdev, int idx)
++{
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
++
++    return vhost_virtqueue_pending(&scmi->vhost_dev, idx);
++}
++
++static void vu_scmi_connect(DeviceState *dev)
++{
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
++
++    if (scmi->connected) {
++        return;
++    }
++    scmi->connected = true;
++
++    /* restore vhost state */
++    if (virtio_device_started(vdev, vdev->status)) {
++        vu_scmi_start(vdev);
++    }
++}
++
++static void vu_scmi_disconnect(DeviceState *dev)
++{
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
++
++    if (!scmi->connected) {
++        return;
++    }
++    scmi->connected = false;
++
++    if (vhost_dev_is_started(&scmi->vhost_dev)) {
++        vu_scmi_stop(vdev);
++    }
++}
++
++static void vu_scmi_event(void *opaque, QEMUChrEvent event)
++{
++    DeviceState *dev = opaque;
++
++    switch (event) {
++    case CHR_EVENT_OPENED:
++        vu_scmi_connect(dev);
++        break;
++    case CHR_EVENT_CLOSED:
++        vu_scmi_disconnect(dev);
++        break;
++    case CHR_EVENT_BREAK:
++    case CHR_EVENT_MUX_IN:
++    case CHR_EVENT_MUX_OUT:
++        /* Ignore */
++        break;
++    }
++}
++
++static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserSCMI *scmi)
++{
++    virtio_delete_queue(scmi->cmd_vq);
++    virtio_delete_queue(scmi->event_vq);
++    g_free(scmi->vhost_dev.vqs);
++    virtio_cleanup(vdev);
++    vhost_user_cleanup(&scmi->vhost_user);
++}
++
++static void vu_scmi_device_realize(DeviceState *dev, Error **errp)
++{
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(dev);
++    int ret;
++
++    if (!scmi->chardev.chr) {
++        error_setg(errp, "vhost-user-scmi: chardev is mandatory");
++        return;
++    }
++
++    vdev->host_features |= (1ULL << VIRTIO_SCMI_F_P2A_CHANNELS);
++
++    if (!vhost_user_init(&scmi->vhost_user, &scmi->chardev, errp)) {
++        return;
++    }
++
++    virtio_init(vdev, VIRTIO_ID_SCMI, 0);
++
++    scmi->cmd_vq = virtio_add_queue(vdev, 256, vu_scmi_handle_output);
++    scmi->event_vq = virtio_add_queue(vdev, 256, vu_scmi_handle_output);
++    scmi->vhost_dev.nvqs = 2;
++    scmi->vhost_dev.vqs = g_new0(struct vhost_virtqueue, scmi->vhost_dev.nvqs);
++
++    ret = vhost_dev_init(&scmi->vhost_dev, &scmi->vhost_user,
++                         VHOST_BACKEND_TYPE_USER, 0, errp);
++    if (ret < 0) {
++        error_setg_errno(errp, -ret,
++                         "vhost-user-scmi: vhost_dev_init() failed");
++        do_vhost_user_cleanup(vdev, scmi);
++        return;
++    }
++
++    qemu_chr_fe_set_handlers(&scmi->chardev, NULL, NULL, vu_scmi_event, NULL,
++                             dev, NULL, true);
++
++    return;
++}
++
++static void vu_scmi_device_unrealize(DeviceState *dev)
++{
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
++    VHostUserSCMI *scmi = VHOST_USER_SCMI(dev);
++
++    vu_scmi_set_status(vdev, 0);
++    vhost_dev_cleanup(&scmi->vhost_dev);
++    do_vhost_user_cleanup(vdev, scmi);
++}
++
++static const VMStateDescription vu_scmi_vmstate = {
++    .name = "vhost-user-scmi",
++    .unmigratable = 1,
++};
++
++static Property vu_scmi_properties[] = {
++    DEFINE_PROP_CHR("chardev", VHostUserSCMI, chardev),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void vu_scmi_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
++
++    device_class_set_props(dc, vu_scmi_properties);
++    dc->vmsd = &vu_scmi_vmstate;
++    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
++    vdc->realize = vu_scmi_device_realize;
++    vdc->unrealize = vu_scmi_device_unrealize;
++    vdc->get_features = vu_scmi_get_features;
++    vdc->set_status = vu_scmi_set_status;
++    vdc->guest_notifier_mask = vu_scmi_guest_notifier_mask;
++    vdc->guest_notifier_pending = vu_scmi_guest_notifier_pending;
++}
++
++static const TypeInfo vu_scmi_info = {
++    .name = TYPE_VHOST_USER_SCMI,
++    .parent = TYPE_VIRTIO_DEVICE,
++    .instance_size = sizeof(VHostUserSCMI),
++    .class_init = vu_scmi_class_init,
++};
++
++static void vu_scmi_register_types(void)
++{
++    type_register_static(&vu_scmi_info);
++}
++
++type_init(vu_scmi_register_types)
+diff --git a/include/hw/virtio/vhost-user-scmi.h b/include/hw/virtio/vhost-user-scmi.h
+new file mode 100644
+index 0000000000..6175a74ebd
+--- /dev/null
++++ b/include/hw/virtio/vhost-user-scmi.h
+@@ -0,0 +1,30 @@
++/*
++ * Vhost-user SCMI virtio device
++ *
++ * Copyright (c) 2023 Red Hat, Inc.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef _QEMU_VHOST_USER_SCMI_H
++#define _QEMU_VHOST_USER_SCMI_H
++
++#include "hw/virtio/virtio.h"
++#include "hw/virtio/vhost.h"
++#include "hw/virtio/vhost-user.h"
++
++#define TYPE_VHOST_USER_SCMI "vhost-user-scmi"
++OBJECT_DECLARE_SIMPLE_TYPE(VHostUserSCMI, VHOST_USER_SCMI);
++
++struct VHostUserSCMI {
++    VirtIODevice parent;
++    CharBackend chardev;
++    struct vhost_virtqueue *vhost_vqs;
++    struct vhost_dev vhost_dev;
++    VhostUserState vhost_user;
++    VirtQueue *cmd_vq;
++    VirtQueue *event_vq;
++    bool connected;
++};
++
++#endif /* _QEMU_VHOST_USER_SCMI_H */
 -- 
-2.31.1
-
-
+2.38.5
 
 
