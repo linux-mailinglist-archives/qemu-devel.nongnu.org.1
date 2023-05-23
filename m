@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7BE70DB24
+	by mail.lfdr.de (Postfix) with ESMTPS id A573B70DB26
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 13:06:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Pp2-0004Tc-LS; Tue, 23 May 2023 07:04:56 -0400
+	id 1q1Pp8-0004V9-Rj; Tue, 23 May 2023 07:05:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pp0-0004TB-4L
- for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pp4-0004Tz-9Z
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Poy-0002dD-KF
- for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pp2-0002eE-RP
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684839891;
+ s=mimecast20190719; t=1684839896;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QPvbxejgj/zHqMIwqaEznsRDu2txeXcjWw0YpkveP5k=;
- b=G4w8ZP8OQugyqrbvNL8gTCnAtQdazPF3oLPRAlhNsBPW2VTlTKU2DiCZbm+/8VTcJfvvc2
- qtKOwI/Ghe4NI5Sw9Ixujh1HtPAcGNXKYgaIJx5AIQe6wyxlRPqlNhA3Ww02JzLEXt5tNs
- X1U/rDJE+pAtFjbggrE3WFKsMPBxlw0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rM30N0KaR37ESOUKaGeDS2dtk3N/C0zbCYN4eye2Plc=;
+ b=DvnP828NqaoZndO4bHI39FH6KqB2oWXgd49hngjCpeJBl3YMBhYJo7zm9qK0IK+OUChHag
+ BWikZK9pappgx2W70RV4eNn2flddUeJlGEnPLiM0Y/vIyYnz0Bz+rZ3eDtqdZq41h36lYR
+ ZlSLUFCbDFDiZAUdQp+j0q323Oco7nA=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-169-9EK3HNsoNEyTBkSirQCivg-1; Tue, 23 May 2023 07:04:48 -0400
-X-MC-Unique: 9EK3HNsoNEyTBkSirQCivg-1
+ us-mta-411-UPBcsx_JNKKAqs_c3FwZGA-1; Tue, 23 May 2023 07:04:51 -0400
+X-MC-Unique: UPBcsx_JNKKAqs_c3FwZGA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08874811E78;
- Tue, 23 May 2023 11:04:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF9DA2A5955D;
+ Tue, 23 May 2023 11:04:50 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.186])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 188F39D73;
- Tue, 23 May 2023 11:04:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9782F7AF5;
+ Tue, 23 May 2023 11:04:48 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
  Max Filippov <jcmvbkbc@gmail.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 1/5] hw/hppa: Use MachineClass->default_nic in the hppa machine
-Date: Tue, 23 May 2023 13:04:31 +0200
-Message-Id: <20230523110435.1375774-2-thuth@redhat.com>
+Subject: [PATCH 2/5] hw/alpha: Use MachineClass->default_nic in the alpha
+ machine
+Date: Tue, 23 May 2023 13:04:32 +0200
+Message-Id: <20230523110435.1375774-3-thuth@redhat.com>
 In-Reply-To: <20230523110435.1375774-1-thuth@redhat.com>
 References: <20230523110435.1375774-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,38 +85,38 @@ default NIC is usable or not (for example when compiling with the
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/hppa/machine.c | 4 +++-
+ hw/alpha/dp264.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 8fea5fa6b8..b00a91ecfe 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -177,6 +177,7 @@ static void machine_hppa_init(MachineState *machine)
+diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
+index 4161f559a7..03495e1e60 100644
+--- a/hw/alpha/dp264.c
++++ b/hw/alpha/dp264.c
+@@ -49,6 +49,7 @@ static void clipper_init(MachineState *machine)
      const char *kernel_filename = machine->kernel_filename;
      const char *kernel_cmdline = machine->kernel_cmdline;
      const char *initrd_filename = machine->initrd_filename;
 +    MachineClass *mc = MACHINE_GET_CLASS(machine);
-     DeviceState *dev, *dino_dev, *lasi_dev;
+     AlphaCPU *cpus[4];
      PCIBus *pci_bus;
-     ISABus *isa_bus;
-@@ -272,7 +273,7 @@ static void machine_hppa_init(MachineState *machine)
+     PCIDevice *pci_dev;
+@@ -124,7 +125,7 @@ static void clipper_init(MachineState *machine)
  
+     /* Network setup.  e1000 is good enough, failing Tulip support.  */
      for (i = 0; i < nb_nics; i++) {
-         if (!enable_lasi_lan()) {
--            pci_nic_init_nofail(&nd_table[i], pci_bus, "tulip", NULL);
-+            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
-         }
+-        pci_nic_init_nofail(&nd_table[i], pci_bus, "e1000", NULL);
++        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
      }
  
-@@ -462,6 +463,7 @@ static void hppa_machine_init_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_size = 512 * MiB;
-     mc->default_boot_order = "cd";
+     /* Super I/O */
+@@ -213,6 +214,7 @@ static void clipper_machine_init(MachineClass *mc)
+     mc->is_default = true;
+     mc->default_cpu_type = ALPHA_CPU_TYPE_NAME("ev67");
      mc->default_ram_id = "ram";
-+    mc->default_nic = "tulip";
- 
-     nc->nmi_monitor_handler = hppa_nmi;
++    mc->default_nic = "e1000";
  }
+ 
+ DEFINE_MACHINE("clipper", clipper_machine_init)
 -- 
 2.31.1
 
