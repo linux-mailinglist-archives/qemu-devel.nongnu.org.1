@@ -2,95 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764FC70DDF5
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:51:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A483E70DE02
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:53:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SQB-0002kr-4Q; Tue, 23 May 2023 09:51:27 -0400
+	id 1q1SQR-0004fR-3V; Tue, 23 May 2023 09:51:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q1SPu-0002Qf-4s
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:51:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q1SPs-0002DM-Mz
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:51:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684849866;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2X02jT7y+8OLrfdFCK/L8Zp+Fxh6PaHD/EYM66pcoKs=;
- b=h8WnvHbgL960pKycWvWi3cglty1SuzSI70RP9BAJx7iTLKpqxc8L3g3LweE8BQLC57LXQK
- GfILS7EjdmvVJljq7Hqzvf9Jnz16mzVlkR+D9shSsEgDx7CxkW0UNObFQM1kUmQX+hDa2u
- ykTq7MbhccCTXlA2wEbeYssL8YXpD/A=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-378-GBTxWkklOmqLB7kDLFseqQ-1; Tue, 23 May 2023 09:51:04 -0400
-X-MC-Unique: GBTxWkklOmqLB7kDLFseqQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30940b01998so2727287f8f.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:51:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q1SQK-0004Mg-Vx
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:51:37 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q1SQE-0002GQ-TZ
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:51:36 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-510d1972d5aso1459844a12.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:51:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684849889; x=1687441889;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BfscCTbdmN2yfoE2s7O+uig1XfvqHdnwKPHBDoX4nZs=;
+ b=z8TU5XPn/tB0G7xiqmt9iuWv4rvZ89q6e2NHEpTdDQSzK/Ku3xtpM5eTgB84pJTkyg
+ 33m+mTGvsIys6sYd8ruK2XIQTeXvq00+lwc8D+8hbWv0WD2A1JwUrFDhhV3GV2KFPKig
+ KY9DivDZ25ubpynrbBQ/WqUKID2RE18ws1strLYLoJVnfOyfqomQx05apl0qgF4Lvm0D
+ 1PcMuIsNl/5qzekoP1jJPp2eubzeLTcOEpK+ojo4Hj3uD3l/NqEyD+WUfgWBTvmTXIxS
+ k/1r9XCoss+tWGl/9lJ9M42hRwZ3j3/kF1WVuFEMgVu9ZCtmc5V98ufmRjlYFwt0AslY
+ CP7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684849863; x=1687441863;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2X02jT7y+8OLrfdFCK/L8Zp+Fxh6PaHD/EYM66pcoKs=;
- b=X8nVERZ77GMxOvUPYwjnMsCegihg+wEirNRzseALXxdc6DcfF+2TGMePc9bik5+21Q
- XIJ9HoC/l9T2xUevvcXANVixuIDGwVK3KGYKOZJgH8PGzx0d/D6cmukvr3el2VIR0q2l
- UW2v//qh1cbdtUp2XlCizuoLenrqgvj4Cudd7Z9mM+FxbPT/+jG9JaGKFecJKvfnh0lb
- OOb0s8dzRMVdg6SAv1kLxMY4E4E5tUb0L5PYgsfFv9xXCmMV+EANIgHsXDCv9xZPXYjb
- tosuJl6JPSFY1YZm97uB7/9WSbBTFv7MTBDQgVv+DXyLxOiHg2ONu7xqqtacJKvZriQV
- Zs5w==
-X-Gm-Message-State: AC+VfDxqrzINgg59sDKKgl/0YzjiYfH6Y2WoqKd16nvyMPDIqNrvfZQG
- NdWtbg5uhHCpDp1j8QOA6Yf+QJIuV+oAWRyzrAyA8s8uPPnmFdTzxa41i/772YK5EH+7ImEC/zz
- VE8NIAK38yhYThMs=
-X-Received: by 2002:adf:ee0e:0:b0:309:452c:2189 with SMTP id
- y14-20020adfee0e000000b00309452c2189mr11043821wrn.57.1684849863533; 
- Tue, 23 May 2023 06:51:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ74AFy9yQVZudsuKeP0kPLBkZsYteHLhJcDCQalgHnq2l4ekD0Hf/+HfEZLoVRv2JMcAZUw0g==
-X-Received: by 2002:adf:ee0e:0:b0:309:452c:2189 with SMTP id
- y14-20020adfee0e000000b00309452c2189mr11043800wrn.57.1684849863184; 
- Tue, 23 May 2023 06:51:03 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74c:b400:5c8b:a0b2:f57e:e1cd?
- (p200300cbc74cb4005c8ba0b2f57ee1cd.dip0.t-ipconnect.de.
- [2003:cb:c74c:b400:5c8b:a0b2:f57e:e1cd])
- by smtp.gmail.com with ESMTPSA id
- f5-20020a5d4dc5000000b002fe13ec49fasm11112830wru.98.2023.05.23.06.51.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 06:51:02 -0700 (PDT)
-Message-ID: <b91fe1b1-0bfd-cf1f-14dc-457a765c3dce@redhat.com>
-Date: Tue, 23 May 2023 15:51:02 +0200
+ d=1e100.net; s=20221208; t=1684849889; x=1687441889;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BfscCTbdmN2yfoE2s7O+uig1XfvqHdnwKPHBDoX4nZs=;
+ b=CWOoyZCUNe8F3usOZ7FWS6XDDesvzy2ivSRqc+0925HGrw1dLywPvV81zgOlqncElT
+ tWcU/DlqxUlLwmPIkelhi88OjoeZWSmvMQdc3c0STjh/yQaVpYQPdkY0xoBNGaRux0PL
+ pthI6RmYg9DvJUYPCbjG1fDpJ3SnsiafxydPyLTGalB3exQkhsA/7loDaGFjnjo+OFkL
+ LskS6npt05ytxOi58tk/KC22BYlBsYIT/A6zGmo5I9aedpD5EmiK3slHn26LBLBxwK9y
+ DER6I8yvudNM51X7oa12MgZQtljik2Var/3PJckzab+MPK24fjX1mCQopyFvndC9b56Y
+ apPA==
+X-Gm-Message-State: AC+VfDxo5ep6FGAUdpEYt1+GvSaGs5cZFISXFAX8YazuFmpgXpzF7RmF
+ oHh9OLlYqCeSsDvQvRPwG9L1NX3Bz5AdLPxVSuBOlUe5pZgI9RDS
+X-Google-Smtp-Source: ACHHUZ79HGtM4/zTvioBuSL1BxduJFKKkHFs657R5vgczKdWa7ypiIwoGLXBa3Cvk2rIuv6AtgMY56h/e+Vfch087S0=
+X-Received: by 2002:aa7:c90d:0:b0:510:da8d:2cf1 with SMTP id
+ b13-20020aa7c90d000000b00510da8d2cf1mr9940963edt.18.1684849889462; Tue, 23
+ May 2023 06:51:29 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 17/27] target/s390x: Use cpu_{ld,st}*_mmu in do_csst
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20230523134733.678646-1-richard.henderson@linaro.org>
- <20230523134733.678646-18-richard.henderson@linaro.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230523134733.678646-18-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230519062137.1251741-1-tommy.wu@sifive.com>
+In-Reply-To: <20230519062137.1251741-1-tommy.wu@sifive.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 23 May 2023 14:51:18 +0100
+Message-ID: <CAFEAcA_4dW6eakYv9O2hxd-pSF_BOkEd7GjCjV6UZwhdESLOxg@mail.gmail.com>
+Subject: Re: [PATCH] hw/dma/xilinx_axidma: Check DMASR.HALTED to prevent
+ infinite loop.
+To: Tommy Wu <tommy.wu@sifive.com>
+Cc: qemu-devel@nongnu.org, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Alistair Francis <alistair@alistair23.me>, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,26 +88,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23.05.23 15:47, Richard Henderson wrote:
-> Use cpu_ld16_mmu and cpu_st16_mmu to eliminate the special case,
-> and change all of the *_data_ra functions to match.
-> 
-> Note that we check the alignment of both compare and store
-> pointers at the top of the function, so MO_ALIGN* may be
-> safely removed from the individual memory operations.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
-> Cc: qemu-s390x@nongnu.org
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
+On Fri, 19 May 2023 at 07:21, Tommy Wu <tommy.wu@sifive.com> wrote:
+>
+> When we receive a packet from the xilinx_axienet and then try to s2mem
+> through the xilinx_axidma, if the descriptor ring buffer is full in the
+> xilinx axidma driver, we=E2=80=99ll assert the DMASR.HALTED in the
+> function : stream_process_s2mem and return 0. In the end, we=E2=80=99ll b=
+e stuck in
+> an infinite loop in axienet_eth_rx_notify.
+>
+> This patch checks the DMASR.HALTED state when we try to push data
+> from xilinx axi-enet to xilinx axi-dma. When the DMASR.HALTED is asserted=
+,
+> we will not keep pushing the data and then prevent the infinte loop.
+>
+> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
 
--- 
-Thanks,
 
-David / dhildenb
+Applied to target-arm.next, thanks.
 
+-- PMM
 
