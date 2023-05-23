@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2857370DECE
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7C270DED9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:12:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1STV-0007Ad-K3; Tue, 23 May 2023 09:54:53 -0400
+	id 1q1STi-0008ST-9k; Tue, 23 May 2023 09:55:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSV-00056F-VI
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:52 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1q1SSX-00057f-03
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:54 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSU-00034Z-9L
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:51 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-64d3fbb8c1cso4743854b3a.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:49 -0700 (PDT)
+ id 1q1SSV-00038b-DD
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:52 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-64d3e5e5980so4971099b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684850029; x=1687442029;
+ d=linaro.org; s=google; t=1684850030; x=1687442030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=wDxG1Fumi/VCBapDyQzvtsqcUgkmKE+Qvv/KLvwRg5E=;
- b=qylaO6wjLa6jrS/JoLX/9+IqF+DFMk/RzcFJyd6qnv/x3RqqBbhEhK5UeO33/vOR4t
- rl8zyo7bKL6nm4nSNC9Pva1M+GVpr5Khk9IswI+ZouP3rMAfQ3ULhKLgbNkNpeHzQ/Gt
- GoQlfTpxPpxfHdizQ5IHPWb699rbXrRGXRSVbSGUICLx38BFhrU3iqOgXc8jeCVDO4LA
- 7f3ZGL3jGW3dR22joqJnGlVbElex+gdEJ9Kp7CzDQdbeh67zv1scO2oJTcZGxPa97iQH
- SCF1BK37Qse30+5FdgaMWqXKezNDdAKOqEh68q0hdmNQQnV5tLQB/jwB2zNoQi3kW3qM
- vMmQ==
+ :reply-to; bh=Eu9NQtb2FUQWFu9rVl+RtTj4i7Vm9wmVlC22z1EyvKw=;
+ b=E/wbr1Urw+1b0wYhdpsyx/a7B28ufV68QreggBfw9CTKCvrSGbaTy9GadpwxTiziAT
+ tuwFgFh7Bi+BGQyiJp97KBmZ8hjglsbedBljdmH+NLmEvF0Rdz+a9Ld6oJNjHVgW62uL
+ BibcwdonmPwiJnFztqvPeomjJym1LbFEcy74BXyFVHUuhva2QdW1KaDNV9Do0Y+zx80m
+ ROMywTwWYEPtwxX1iqaTne6z8ILx0Gx/2zZmRUf/Dhk4yzSa8Z0yw3WYg9kY40G1HvzJ
+ vVTyJxWcJlHLvJGk9xkPlsSIjRN5rvYfgesibMBDB9vZKYbpn8XeoX+eL4nA+vNkHLzh
+ Abrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684850029; x=1687442029;
+ d=1e100.net; s=20221208; t=1684850030; x=1687442030;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wDxG1Fumi/VCBapDyQzvtsqcUgkmKE+Qvv/KLvwRg5E=;
- b=TyN4txqapCrJjZKOmeWHoh+O82Sg5UWrJnJ8EtVQ8mjKNQnpTbwYoY19Zjb9x221fx
- Ks2U+OucYVMo5QB9NOtK9BFkvu6dUjuTVZ46hL1MTwdXcJSmJoGfjkjWxNdDw7J2RHRj
- sAKnw20K8Xg66aPGrMNGJoqP6pud2Ha4JtDVOf1IxMmCFb838mG+8a+6NhUTPxrkYqUl
- wGyfOaXbK5QtKmXRrEf45/bgIUCKe8hd02YRCGcKzwAlt5Jx5hCp24i4gv1peaUVr4PU
- 9AJoOfjLoR6Qqeajt9CVqOzrUWBPuubvQIDa92c1SF9wMogaWOwI7Uwyh7/asIY2a0Rr
- nQJQ==
-X-Gm-Message-State: AC+VfDzijzaxeZKb1vLPQFBizuBkTF7XgjWpqNCWAS8MyReTHzEulg5B
- wGXMzyVu8DXD65TllA9C2d+FCtdkCtj9SsLCLiE=
-X-Google-Smtp-Source: ACHHUZ6f0QBm6LjuwBSx7wCdRZNkN2rWWxXFuwZcUnMQtNoEiHe2lQpXabwSPAnGTGOeWNXpIVnblA==
-X-Received: by 2002:a05:6a00:1a46:b0:62a:d752:acc5 with SMTP id
- h6-20020a056a001a4600b0062ad752acc5mr21424417pfv.32.1684850029449; 
- Tue, 23 May 2023 06:53:49 -0700 (PDT)
+ bh=Eu9NQtb2FUQWFu9rVl+RtTj4i7Vm9wmVlC22z1EyvKw=;
+ b=c0naECXXRQVZeNRP1PmiskGW4hdWPixO+YKkSitZFzsfjWVst3roVuLExxqQaS7xIa
+ UT87mtc6zZM3bf2aWNvrjS2axBVMONWmQyHND6JoGQJhn1t2hT/XF4i7Ir143OgImhLT
+ cQYTctTJoErAQX6YcwX5ajamd+Zj2uBqfGe4jXkb/Jw2S6m9E5578vqMvMpxEZ0WLI1N
+ uI670kUbMQkmnyBs/XroIO1AlUVhDsISUYIm+8JYpCzKE0qdrVoFatUahYhuw3Tx0/je
+ 3H7jZyBI0Ole/pjSGqyMqiqS12+BjVrhLXdgGNRxAbBOvrSr90LXUl19MASvUvo+vk96
+ UEfA==
+X-Gm-Message-State: AC+VfDy4fAEqYdc19vYDgq0PrdKPc1V32NzkdRPaJPfbBUWOBAwjVAgA
+ h8Kzfh3ORqDOSljzChp5GZ0DauTfiujANA+OKSM=
+X-Google-Smtp-Source: ACHHUZ4e7SizPq5LUd34k/B8B6T8qQ7M+zvXFA/kg2LpiN63Nf0Uu+c5/+5d4W8sDodHgeNL9F5PYA==
+X-Received: by 2002:a05:6a00:2d04:b0:64f:4812:8c7e with SMTP id
+ fa4-20020a056a002d0400b0064f48128c7emr1527332pfb.19.1684850030153; 
+ Tue, 23 May 2023 06:53:50 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.48
+ b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 23 May 2023 06:53:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 31/52] exec-all: Widen tb_page_addr_t for user-only
-Date: Tue, 23 May 2023 06:53:01 -0700
-Message-Id: <20230523135322.678948-32-richard.henderson@linaro.org>
+Subject: [PATCH v2 32/52] exec-all: Widen TranslationBlock pc and cs_base to
+ 64-bits
+Date: Tue, 23 May 2023 06:53:02 -0700
+Message-Id: <20230523135322.678948-33-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523135322.678948-1-richard.henderson@linaro.org>
 References: <20230523135322.678948-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,29 +91,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a step toward making TranslationBlock agnostic
-to the address size of the guest.
+This makes TranslationBlock agnostic to the address size of the guest.
+Use vaddr for pc, since that's always a virtual address.
+Use uint64_t for cs_base, since usage varies between guests.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
  include/exec/exec-all.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/tcg/cpu-exec.c    | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index ecded1f112..8c8526d9f8 100644
+index 8c8526d9f8..58ac1a91c2 100644
 --- a/include/exec/exec-all.h
 +++ b/include/exec/exec-all.h
-@@ -34,8 +34,8 @@
-    addresses in userspace mode.  Define tb_page_addr_t to be an appropriate
-    type.  */
- #if defined(CONFIG_USER_ONLY)
--typedef abi_ulong tb_page_addr_t;
--#define TB_PAGE_ADDR_FMT TARGET_ABI_FMT_lx
-+typedef vaddr tb_page_addr_t;
-+#define TB_PAGE_ADDR_FMT "%" VADDR_PRIx
- #else
- typedef ram_addr_t tb_page_addr_t;
- #define TB_PAGE_ADDR_FMT RAM_ADDR_FMT
+@@ -519,7 +519,7 @@ struct TranslationBlock {
+      * Unwind information is taken as offsets from the page, to be
+      * deposited into the "current" PC.
+      */
+-    target_ulong pc;
++    vaddr pc;
+ 
+     /*
+      * Target-specific data associated with the TranslationBlock, e.g.:
+@@ -528,7 +528,7 @@ struct TranslationBlock {
+      * s390x: instruction data for EXECUTE,
+      * sparc: the next pc of the instruction queue (for delay slots).
+      */
+-    target_ulong cs_base;
++    uint64_t cs_base;
+ 
+     uint32_t flags; /* flags defining in which context the code was generated */
+     uint32_t cflags;    /* compile flags */
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index bc0e1c3299..9fe07c31fb 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -302,7 +302,7 @@ static void log_cpu_exec(target_ulong pc, CPUState *cpu,
+ {
+     if (qemu_log_in_addr_range(pc)) {
+         qemu_log_mask(CPU_LOG_EXEC,
+-                      "Trace %d: %p [" TARGET_FMT_lx
++                      "Trace %d: %p [%08" PRIx64
+                       "/" TARGET_FMT_lx "/%08x/%08x] %s\n",
+                       cpu->cpu_index, tb->tc.ptr, tb->cs_base, pc,
+                       tb->flags, tb->cflags, lookup_symbol(pc));
 -- 
 2.34.1
 
