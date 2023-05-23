@@ -2,53 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D37070D376
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 07:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DADB70D3AB
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 08:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1L1F-0005o0-ML; Tue, 23 May 2023 01:57:13 -0400
+	id 1q1LG1-0008VU-JT; Tue, 23 May 2023 02:12:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1q1L1D-0005ns-Kh
- for qemu-devel@nongnu.org; Tue, 23 May 2023 01:57:11 -0400
-Received: from mailout02.t-online.de ([194.25.134.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1q1L1B-0001IX-Ak
- for qemu-devel@nongnu.org; Tue, 23 May 2023 01:57:11 -0400
-Received: from fwd76.dcpf.telekom.de (fwd76.aul.t-online.de [10.223.144.102])
- by mailout02.t-online.de (Postfix) with SMTP id 3787829AFD;
- Tue, 23 May 2023 07:57:03 +0200 (CEST)
-Received: from [192.168.211.200] ([79.208.24.239]) by fwd76.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1q1L14-1RcIDp0; Tue, 23 May 2023 07:57:02 +0200
-Message-ID: <4571c74f-e401-d62c-995a-10bacd9fb417@t-online.de>
-Date: Tue, 23 May 2023 07:57:02 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LFl-0008SP-Rw
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:14 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1LFk-0005Fg-E9
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 02:12:13 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3f41d087a84so30990285e9.1
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 23:12:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684822330; x=1687414330;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dVduBQdrAQ/JitmbuXJOwhpd3wkRFgWVzK14sta4Hho=;
+ b=vCePpB1tAOUKUDaavDFVn3RTGCYQA7+ia8SH5XeZXmCUbdkl6Pc//7WTUCT3CmJmXs
+ 7ARwdmqLBetrfYsaHz6zCcc+OCTVaN/U1crtM1KYPkTTa4cUVY47Sw2ueYAQRooVTV54
+ wqUs7uVdM1CFGDnTV7VGzrD3xZA1fiH3gfzH6ikMEUE5Q2Clon1nSVSuH1p8HUwvOnp1
+ nwxhMJlgdAj6Ga31jPH3/4uSxGX202lbQmNhR9fjKzQRUSnip0VUGTkyfam2b22c9wKj
+ twXR3bBKjZyJlo7xtfa8frQPjD9pZNCfADZBm8ipbVioBDWF48eigM2ZTk9T3SVtpWyW
+ K1NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684822330; x=1687414330;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dVduBQdrAQ/JitmbuXJOwhpd3wkRFgWVzK14sta4Hho=;
+ b=BfhEp9xmx6o5W3sdRmpPGPcMvXpB3UrziD5A2KdUfqB5velwkfKsbCw8kMglO3/Emo
+ 1EFDcl17qwP7v1QS77JY8WxwOqo/qW7KX0THmNLyR4hRt5lYbztULSSCeaRUQrO6S8/f
+ bhhT5CMD/WbeIpiroMjWsWWoYBsjSy8cjWbet0n2OYbR3xEWAjAhjjCAdpAmaNuMnlrp
+ iLe6YXVS3aiNPh9t56XtHXlSxpFgYRMnF0e+FBsI0+yJnD/XB59otb+zfmOUapV8q28f
+ FKojncCbHe2aeKC4a25eHjO7vKw1FOMbkeMUkbR8hO8SQvuvZus3tBTaXKgzemirj+xc
+ URww==
+X-Gm-Message-State: AC+VfDyOrBwvC1sZLwwR40LSGy7fGO/bz3yt9CU6HhgBelIfF55fagJF
+ J/A+PxkSdhfqi2fn33Qkc9Nk/9iJblbgxHBKjtg=
+X-Google-Smtp-Source: ACHHUZ5NYcIuw2v2H/oXDL7QaBofJ/TuFZA5JC1GbnEyNApzUjEMsEuuT/V58BzXAfTwoZr0wJLkcw==
+X-Received: by 2002:a05:600c:2256:b0:3f1:7848:6740 with SMTP id
+ a22-20020a05600c225600b003f178486740mr9184172wmm.8.1684822330351; 
+ Mon, 22 May 2023 23:12:10 -0700 (PDT)
+Received: from localhost.localdomain
+ (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
+ by smtp.gmail.com with ESMTPSA id
+ h19-20020a05600c28d300b003f427cba193sm13674971wmd.41.2023.05.22.23.12.08
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 22 May 2023 23:12:09 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Sergio Lopez <slp@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/4] hw: Minor simplifications using proper QOM getter macros
+Date: Tue, 23 May 2023 08:12:03 +0200
+Message-Id: <20230523061207.48818-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] meson: remove -no-pie linker flag
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com
-References: <20230522080816.66320-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <20230522080816.66320-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1684821422-16FFE3A1-387615E9/0/0 CLEAN NORMAL
-X-TOI-MSGID: 53bf01d3-9af0-4b3f-b64b-d04b07ee056c
-Received-SPF: none client-ip=194.25.134.17; envelope-from=vr_qemu@t-online.de;
- helo=mailout02.t-online.de
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,53 +94,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 22.05.23 um 10:08 schrieb Paolo Bonzini:
-> The large comment in the patch says it all; the -no-pie flag is broken and
-> this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
-> ("build: move remaining compiler flag tests to meson", 2023-05-18).
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1664
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   meson.build | 13 +++++++++----
->   1 file changed, 9 insertions(+), 4 deletions(-)
->
-> diff --git a/meson.build b/meson.build
-> index 0a5cdefd4d3d..6733b2917081 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -267,10 +267,15 @@ endif
->   # has explicitly disabled PIE we need to extend our cflags.
->   if not get_option('b_pie')
->     qemu_common_flags += cc.get_supported_arguments('-fno-pie')
-> -  if not get_option('prefer_static')
-> -    # No PIE is implied by -static which we added above.
-> -    qemu_ldflags += cc.get_supported_link_arguments('-no-pie')
-> -  endif
-> +  # What about linker flags?  For a static build, no PIE is implied by -static
-> +  # which we added above.  For dynamic linking, adding -no-pie is messy because
-> +  # it overrides -shared: the linker then wants to build an executable instead
-> +  # of a shared library and the build fails.  Before moving this code to Meson,
-> +  # we went through a dozen different commits affecting the usage of -no-pie,
-> +  # ultimately settling for a completely broken one that added -no-pie to the
-> +  # compiler flags together with -fno-pie... except that -no-pie is a linker
-> +  # flag that has no effect on the compiler command line.  So, don't add
-> +  # -no-pie anywhere and cross fingers.
->   endif
->   
->   if not get_option('stack_protector').disabled()
+Enforce QOM style. Besides, using the proper QOM macros
+slightly simplifies the code.
 
-QEMU builds again on Windows with MSYS2 mingw64.
+Philippe Mathieu-Daudé (4):
+  hw/core/cpu: Simplify realize() using MACHINE_GET_CLASS() macro
+  hw/i386/microvm: Simplify using object_dynamic_cast()
+  hw/pci/pci: Simplify pci_bar_address() using MACHINE_GET_CLASS() macro
+  hw/usb/hcd-ehci-pci: Simplify using DEVICE_GET_CLASS() macro
 
-I also tried to build QEMU on Windows with libslirp from the subproject 
-folder. The issue reported in 
-https://gitlab.com/qemu-project/qemu/-/issues/1664 is fixed, but it now 
-fails with a different error. This is a libslirp bug. See 
-https://gitlab.freedesktop.org/slirp/libslirp/-/issues/68. The revision 
-in subprojects/slirp.wrap should be at least 
-fc5eaaf6f68d5cff76468c63984c33c4fb51506d.
+ hw/core/cpu-common.c  | 3 +--
+ hw/i386/microvm.c     | 3 +--
+ hw/pci/pci.c          | 4 +---
+ hw/usb/hcd-ehci-pci.c | 2 +-
+ 4 files changed, 4 insertions(+), 8 deletions(-)
 
-Building QEMU on my Linux system works fine.
+-- 
+2.38.1
 
-Tested-by: Volker Rümelin <vr_qemu@t-online.de>
 
