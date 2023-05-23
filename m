@@ -2,78 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E8D70D67D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD34970D683
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:01:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1MwY-0003Gt-Lw; Tue, 23 May 2023 04:00:30 -0400
+	id 1q1MxJ-0004nk-7z; Tue, 23 May 2023 04:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q1MwI-0003GC-Q2
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:00:15 -0400
-Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q1MwE-00012b-2n
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:00:14 -0400
-Received: by mail-ua1-x92a.google.com with SMTP id
- a1e0cc1a2514c-783f1443b70so2298829241.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 01:00:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1684828809; x=1687420809;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Rgi5BNGeZTlSTTlXJsJz1hU1LXhIB/GE/+C9XJ/3yR0=;
- b=P8qbhTjtjUb489CpWYP+IngUOFmStTVphzJEbSbAlZgOsbaXH0/p04SsmcO9qtsXP7
- g/dIi0qFsQqtbn/QWgEprK1M3f6FSzEae+DRowDV6isa4WuM9baH+5PEBjT8ZkQNk8yQ
- 6dqTw+qqUksfScUY9vmF8khOi9Gav/9PY9R499OHegdwBG+SQWbMxrLwm1nBjKk+gdsd
- kIYmFEsbvTGThh2uLaaqh7XnikgVwrNxtAcJNRTRIscLaFHky0vmeWx9KwFWwI/hJyi3
- 2Nn5EbhFwQb1olEMss71oMHu5nau0tuamC8opBDT1Y3wnuJw7QuhqKUnQlDWAUFC4J78
- daxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684828809; x=1687420809;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Rgi5BNGeZTlSTTlXJsJz1hU1LXhIB/GE/+C9XJ/3yR0=;
- b=AwcIjwA+dLFhnm4OLIs/ciLDuR49TQYHeqTdJ6LqhetBM4sz/7VsDDj2AREvtE+F9k
- hy6lMxDR8wnmAjqp/HM9N7qxpTz+tJqyJD1uVP3OKYbHfyqq+v9dvuq0BGuWT5ii3/H2
- BUhjW+UnDO0UCPzQMdVqmQRd1CjjlbK1W2gLR81cg2Tg++XKfg589WQnolQfT3mk0VZT
- tExvmYVU9tgneOVtzurxefiXaYTpNRVBfjeRcwtGIifUOZnQ7PQZO0F/Q07t/QHv1BLb
- lZGKarA7iHpL3WDGchZZKukcKK0f4od23q95N6Rr5Jr0SyLVgt9hoM0dBYqK9JRxReHN
- gZ2A==
-X-Gm-Message-State: AC+VfDyqg0cNZTd6VgOU6oqxCeABzbMS08duCGquMBOvFkDbWC2UZecK
- zCdnDq2rkjnY9DZS6hdvl5vujXzgGUS9U1+QfTRvDA==
-X-Google-Smtp-Source: ACHHUZ4W8SEaWeWx9647c8gJ3u5tBNqxfv1/m3AOnkiJLrL7PLcmc+Auf5BHQ1fS3yD5u0lT1oyixG6TSuRFv7KrC4o=
-X-Received: by 2002:a67:fbda:0:b0:437:db07:eb3a with SMTP id
- o26-20020a67fbda000000b00437db07eb3amr3504382vsr.22.1684828808719; Tue, 23
- May 2023 01:00:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q1MxG-0004ji-M5
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:01:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q1MxE-0001AC-NC
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:01:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684828871;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=BIB5rKV2YyXJQaMY8AsL4h4OAEln7o6vIZCuxYgaxxA=;
+ b=XZ7rMPwM/3Vk6QDV4E3X1ZqGUNSWjuPPUcVGok/q3BegitpFP3xI1iIRmAO9QWA0WPxvyk
+ rNPbzwhBk6j9ERVwxzAt0v5atAKSrihxG6lrv6JkgYgfvEBC8y7mJgcMRGgxhMXRf2Ojwb
+ KpjizvIOe9ubte4yEOqfwc76wwJTbTc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-195-lidiXEX-NGS5WxPLOrJ48g-1; Tue, 23 May 2023 04:00:53 -0400
+X-MC-Unique: lidiXEX-NGS5WxPLOrJ48g-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B4E5811E8E;
+ Tue, 23 May 2023 08:00:53 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.40])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4CAB49D73;
+ Tue, 23 May 2023 08:00:52 +0000 (UTC)
+Date: Tue, 23 May 2023 09:00:50 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, vr_qemu@t-online.de, marcandre.lureau@redhat.com
+Subject: Re: [PATCH] meson: remove -no-pie linker flag
+Message-ID: <ZGxysnpYm8FtL0VM@redhat.com>
+References: <20230522080816.66320-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20221130015444.1459842-1-tommy.wu@sifive.com>
- <20221130015444.1459842-4-tommy.wu@sifive.com>
- <db28b205-4797-4bc0-09c9-53d54c0ce268@redhat.com>
-In-Reply-To: <db28b205-4797-4bc0-09c9-53d54c0ce268@redhat.com>
-From: Tommy Wu <tommy.wu@sifive.com>
-Date: Tue, 23 May 2023 15:59:59 +0800
-Message-ID: <CANj3q_njMYYYpp4a46R17o8PiEZMpTL4BbB5NBjegHCKCp4wMQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] tests/qtest: sifive-e-aon-watchdog-test.c : Add
- QTest of watchdog of sifive_e
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- palmer@dabbelt.com, bin.meng@windriver.com, jim.shu@sifive.com, 
- frank.chang@sifive.com
-Content-Type: multipart/alternative; boundary="000000000000a6c6bb05fc57c6c0"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
- envelope-from=tommy.wu@sifive.com; helo=mail-ua1-x92a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230522080816.66320-1-pbonzini@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,217 +75,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a6c6bb05fc57c6c0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Mon, May 22, 2023 at 10:08:16AM +0200, Paolo Bonzini wrote:
+> The large comment in the patch says it all; the -no-pie flag is broken and
+> this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
+> ("build: move remaining compiler flag tests to meson", 2023-05-18).
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1664
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  meson.build | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index 0a5cdefd4d3d..6733b2917081 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -267,10 +267,15 @@ endif
+>  # has explicitly disabled PIE we need to extend our cflags.
+>  if not get_option('b_pie')
+>    qemu_common_flags += cc.get_supported_arguments('-fno-pie')
+> -  if not get_option('prefer_static')
+> -    # No PIE is implied by -static which we added above.
+> -    qemu_ldflags += cc.get_supported_link_arguments('-no-pie')
+> -  endif
+> +  # What about linker flags?  For a static build, no PIE is implied by -static
+> +  # which we added above.  For dynamic linking, adding -no-pie is messy because
+> +  # it overrides -shared: the linker then wants to build an executable instead
+> +  # of a shared library and the build fails.  Before moving this code to Meson,
+> +  # we went through a dozen different commits affecting the usage of -no-pie,
+> +  # ultimately settling for a completely broken one that added -no-pie to the
+> +  # compiler flags together with -fno-pie... except that -no-pie is a linker
+> +  # flag that has no effect on the compiler command line.  So, don't add
+> +  # -no-pie anywhere and cross fingers.
+>  endif
 
-Hi Thomas,
-Sorry for the very late reply.
-Thanks for the code review! I'll send patch v4 to fix these issues.
+I'm curious why we need to do anything ?  I would have thought that meson
+should handle 'b_pie' itself, passing the right args to $CC that it feels
+are appropriate. I don't recall seeing other apps using meson trying to
+handle b_pie logic - what's special about QEMU ? IOW, is it possible to
+delete this entire b_pie condition and thus avoid worrying about this
+problem ?
 
-On Wed, Nov 30, 2022 at 7:29=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
-e:
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-> On 30/11/2022 02.54, Tommy Wu wrote:
-> > Add some simple tests of the watchdog timer in the always-on domain
-> device
-> > of HiFive 1 rev b.
-> >
-> > Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-> > ---
-> ...
-> > diff --git a/tests/qtest/sifive-e-aon-watchdog-test.c
-> b/tests/qtest/sifive-e-aon-watchdog-test.c
-> > new file mode 100644
-> > index 0000000000..1f454c266a
-> > --- /dev/null
-> > +++ b/tests/qtest/sifive-e-aon-watchdog-test.c
-> > @@ -0,0 +1,650 @@
->
-> I'd suggest to add at least add a SPDX identifier so that people know
-> which
-> license this file has. A short comment on what is being tested here would
-> also be nice (though it is already quite obvious from the file name).
->
-> > +#include "qemu/osdep.h"
-> > +#include "qemu/timer.h"
-> > +#include "qemu/bitops.h"
-> > +#include "libqtest-single.h"
->
-> Note that libqtest-single.h restricts your code to testing with one QEMU
-> binary. If you want to write code that is a little bit more future-proof
-> (e.g. if some of the functions should be used with migration testing late=
-r
-> etc.), I'd suggest to get along without libqtest-single.h and pass the
-> QTestState around as a parameter of the functions.
->
-> [...]
-> > +static void test_wdogcfg(void)
-> > +{
-> > +    uint32_t tmp_cfg;
-> > +
-> > +    test_init();
-> > +
-> > +    tmp_cfg =3D readl(WDOG_BASE + WDOGCFG);
-> > +    writel(WDOG_BASE + WDOGCFG, 0xFFFFFFFF);
-> > +    g_assert(readl(WDOG_BASE + WDOGCFG) =3D=3D tmp_cfg);
-> > +
-> > +    writel(WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-> > +    writel(WDOG_BASE + WDOGCFG, 0xFFFFFFFF);
-> > +    g_assert(0xFFFFFFFF =3D=3D readl(WDOG_BASE + WDOGCFG));
-> > +
-> > +    tmp_cfg =3D readl(WDOG_BASE + WDOGCFG);
-> > +    g_assert(15 =3D=3D
-> > +             FIELD_EX32(tmp_cfg,
-> > +                        AON_WDT_WDOGCFG,
-> > +                        SCALE));
-> > +    g_assert(1 =3D=3D
-> > +             FIELD_EX32(tmp_cfg,
-> > +                        AON_WDT_WDOGCFG,
-> > +                         RSTEN));
-> > +    g_assert(1 =3D=3D
-> > +             FIELD_EX32(tmp_cfg,
-> > +                        AON_WDT_WDOGCFG,
-> > +                        ZEROCMP));
-> > +    g_assert(1 =3D=3D
-> > +             FIELD_EX32(tmp_cfg,
-> > +                        AON_WDT_WDOGCFG,
-> > +                        EN_ALWAYS));
-> > +    g_assert(1 =3D=3D
-> > +             FIELD_EX32(tmp_cfg,
-> > +                        AON_WDT_WDOGCFG,
-> > +                        EN_CORE_AWAKE));
-> > +    g_assert(1 =3D=3D
-> > +             FIELD_EX32(tmp_cfg,
-> > +                        AON_WDT_WDOGCFG,
-> > +                        IP0));
->
-> Just a matter of taste, but at least I would prefer the statements on one
-> line as long as they still fit into 80 columns.
->
->   Thomas
->
->
-
---000000000000a6c6bb05fc57c6c0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi Thomas,<div>Sorry for the very late reply.</div><div>Th=
-anks for the code review! I&#39;ll send patch v4 to fix these issues.</div>=
-</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=
-On Wed, Nov 30, 2022 at 7:29=E2=80=AFPM Thomas Huth &lt;<a href=3D"mailto:t=
-huth@redhat.com">thuth@redhat.com</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
-b(204,204,204);padding-left:1ex">On 30/11/2022 02.54, Tommy Wu wrote:<br>
-&gt; Add some simple tests of the watchdog timer in the always-on domain de=
-vice<br>
-&gt; of HiFive 1 rev b.<br>
-&gt; <br>
-&gt; Signed-off-by: Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" tar=
-get=3D"_blank">tommy.wu@sifive.com</a>&gt;<br>
-&gt; ---<br>
-...<br>
-&gt; diff --git a/tests/qtest/sifive-e-aon-watchdog-test.c b/tests/qtest/si=
-five-e-aon-watchdog-test.c<br>
-&gt; new file mode 100644<br>
-&gt; index 0000000000..1f454c266a<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/tests/qtest/sifive-e-aon-watchdog-test.c<br>
-&gt; @@ -0,0 +1,650 @@<br>
-<br>
-I&#39;d suggest to add at least add a SPDX identifier so that people know w=
-hich <br>
-license this file has. A short comment on what is being tested here would <=
-br>
-also be nice (though it is already quite obvious from the file name).<br>
-<br>
-&gt; +#include &quot;qemu/osdep.h&quot;<br>
-&gt; +#include &quot;qemu/timer.h&quot;<br>
-&gt; +#include &quot;qemu/bitops.h&quot;<br>
-&gt; +#include &quot;libqtest-single.h&quot;<br>
-<br>
-Note that libqtest-single.h restricts your code to testing with one QEMU <b=
-r>
-binary. If you want to write code that is a little bit more future-proof <b=
-r>
-(e.g. if some of the functions should be used with migration testing later =
-<br>
-etc.), I&#39;d suggest to get along without libqtest-single.h and pass the =
-<br>
-QTestState around as a parameter of the functions.<br>
-<br>
-[...]<br>
-&gt; +static void test_wdogcfg(void)<br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 uint32_t tmp_cfg;<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 test_init();<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 tmp_cfg =3D readl(WDOG_BASE + WDOGCFG);<br>
-&gt; +=C2=A0 =C2=A0 writel(WDOG_BASE + WDOGCFG, 0xFFFFFFFF);<br>
-&gt; +=C2=A0 =C2=A0 g_assert(readl(WDOG_BASE + WDOGCFG) =3D=3D tmp_cfg);<br=
->
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 writel(WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);<br>
-&gt; +=C2=A0 =C2=A0 writel(WDOG_BASE + WDOGCFG, 0xFFFFFFFF);<br>
-&gt; +=C2=A0 =C2=A0 g_assert(0xFFFFFFFF =3D=3D readl(WDOG_BASE + WDOGCFG));=
-<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 tmp_cfg =3D readl(WDOG_BASE + WDOGCFG);<br>
-&gt; +=C2=A0 =C2=A0 g_assert(15 =3D=3D<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FIELD_EX32(tmp_cfg,<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 AON_WDT_WDOGCFG,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 SCALE));<br>
-&gt; +=C2=A0 =C2=A0 g_assert(1 =3D=3D<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FIELD_EX32(tmp_cfg,<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 AON_WDT_WDOGCFG,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0RSTEN));<br>
-&gt; +=C2=A0 =C2=A0 g_assert(1 =3D=3D<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FIELD_EX32(tmp_cfg,<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 AON_WDT_WDOGCFG,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 ZEROCMP));<br>
-&gt; +=C2=A0 =C2=A0 g_assert(1 =3D=3D<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FIELD_EX32(tmp_cfg,<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 AON_WDT_WDOGCFG,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 EN_ALWAYS));<br>
-&gt; +=C2=A0 =C2=A0 g_assert(1 =3D=3D<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FIELD_EX32(tmp_cfg,<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 AON_WDT_WDOGCFG,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 EN_CORE_AWAKE));<br>
-&gt; +=C2=A0 =C2=A0 g_assert(1 =3D=3D<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FIELD_EX32(tmp_cfg,<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 AON_WDT_WDOGCFG,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 IP0));<br>
-<br>
-Just a matter of taste, but at least I would prefer the statements on one <=
-br>
-line as long as they still fit into 80 columns.<br>
-<br>
-=C2=A0 Thomas<br>
-<br>
-</blockquote></div>
-
---000000000000a6c6bb05fc57c6c0--
 
