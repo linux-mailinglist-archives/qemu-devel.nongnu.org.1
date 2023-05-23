@@ -2,59 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD34970D683
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 244E970D695
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:04:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1MxJ-0004nk-7z; Tue, 23 May 2023 04:01:17 -0400
+	id 1q1MzQ-0005tS-EG; Tue, 23 May 2023 04:03:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1MxG-0004ji-M5
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:01:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q1Mz8-0005pV-Py
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:03:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1MxE-0001AC-NC
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:01:14 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q1Mz7-0001VJ-8s
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:03:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684828871;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=BIB5rKV2YyXJQaMY8AsL4h4OAEln7o6vIZCuxYgaxxA=;
- b=XZ7rMPwM/3Vk6QDV4E3X1ZqGUNSWjuPPUcVGok/q3BegitpFP3xI1iIRmAO9QWA0WPxvyk
- rNPbzwhBk6j9ERVwxzAt0v5atAKSrihxG6lrv6JkgYgfvEBC8y7mJgcMRGgxhMXRf2Ojwb
- KpjizvIOe9ubte4yEOqfwc76wwJTbTc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-195-lidiXEX-NGS5WxPLOrJ48g-1; Tue, 23 May 2023 04:00:53 -0400
-X-MC-Unique: lidiXEX-NGS5WxPLOrJ48g-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B4E5811E8E;
- Tue, 23 May 2023 08:00:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.40])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4CAB49D73;
- Tue, 23 May 2023 08:00:52 +0000 (UTC)
-Date: Tue, 23 May 2023 09:00:50 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, vr_qemu@t-online.de, marcandre.lureau@redhat.com
-Subject: Re: [PATCH] meson: remove -no-pie linker flag
-Message-ID: <ZGxysnpYm8FtL0VM@redhat.com>
-References: <20230522080816.66320-1-pbonzini@redhat.com>
+ s=mimecast20190719; t=1684828988;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rpSHZ/Udm8Mm0hEPNkv9UG8xxF7MSI6mCaU5MlWOD/8=;
+ b=OqbNe32qkFHBzUlIEVetGB1DTSUWE4hlTRHEtZIIV4BjeDCxztJX/TvcPv7PCAMxhgNgee
+ AYCeZWZaDrUQVgV3eHNuTePvqgsJuE4BIfzUoDbmMxWDpoJXf04eMs9+/9QOGX27EdTfIx
+ Zizmbt/XFn9y40URVWjGOnn1gFoBAXE=
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
+ [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-tLETkb7cNYauqVzzj8PmvA-1; Tue, 23 May 2023 04:03:04 -0400
+X-MC-Unique: tLETkb7cNYauqVzzj8PmvA-1
+Received: by mail-ua1-f72.google.com with SMTP id
+ a1e0cc1a2514c-77ab850888bso2384408241.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 01:03:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684828983; x=1687420983;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rpSHZ/Udm8Mm0hEPNkv9UG8xxF7MSI6mCaU5MlWOD/8=;
+ b=CJ/WaSPxMr2njhN43nachZHKBn8sHIc93+e7Y4lERr9vcf/XBASY5BJYqknrNDA72R
+ 67ng4DvSjell/cXPEEwYKAeVBsi6y4B5jWs6ocva7kyYIPZ73tQOpLwnBMnP3VzR+zur
+ zQEwH5zJjAfJYjW7vrb1gaDYoiJHVQK+dbGlTlblX/t+QOq6Yq8Nsj3D2w+6wXiQFT+p
+ fAzcLzSQkfxTXjgxINv46v1nHpEDJ18ugv4uQgCPtYSIzIO9lxVgFyH02W6urC+1xS1E
+ 7YsQzTtkkHY/T62H7NDm9SyvL0yreP/1evmtVFsXumV6N7KelA/bwxZtBbSHH5Or4Tiy
+ W84g==
+X-Gm-Message-State: AC+VfDzHhv3IGIakJQSl/ZFtSocH/egjZYcq/F6St9zyZMnmFKm4PWPf
+ njGqBqR8yAxuHutdpJ/iwc1/TAUABARRisOUa816DDhG6JeP7KR9Sy9JTVp8MDwpsk+5/KyTs+z
+ Mig0PJFP0w0to9oiYnKUdP7G5YyHF0zQ=
+X-Received: by 2002:a67:db90:0:b0:42f:cfdc:4803 with SMTP id
+ f16-20020a67db90000000b0042fcfdc4803mr3025529vsk.33.1684828983472; 
+ Tue, 23 May 2023 01:03:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5edv883Pad2+6Eak9a51rqdCtR9tBEOUbmF8hpSTqyqVqXG9tSUQOFhtfMbU40t7i3wWW5CJ8gQ9iHZCq2fiM=
+X-Received: by 2002:a67:db90:0:b0:42f:cfdc:4803 with SMTP id
+ f16-20020a67db90000000b0042fcfdc4803mr3025526vsk.33.1684828983220; Tue, 23
+ May 2023 01:03:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230522080816.66320-1-pbonzini@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+References: <20230522080816.66320-1-pbonzini@redhat.com>
+ <ZGxysnpYm8FtL0VM@redhat.com>
+In-Reply-To: <ZGxysnpYm8FtL0VM@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 23 May 2023 10:02:51 +0200
+Message-ID: <CABgObfa+EG62MV-9xG7dtxiXj5ocosXS8kNneAoM_kTbmo0CbA@mail.gmail.com>
+Subject: Re: [PATCH] meson: remove -no-pie linker flag
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, vr_qemu@t-online.de, marcandre.lureau@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -75,56 +91,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 22, 2023 at 10:08:16AM +0200, Paolo Bonzini wrote:
-> The large comment in the patch says it all; the -no-pie flag is broken and
-> this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
-> ("build: move remaining compiler flag tests to meson", 2023-05-18).
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1664
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  meson.build | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index 0a5cdefd4d3d..6733b2917081 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -267,10 +267,15 @@ endif
->  # has explicitly disabled PIE we need to extend our cflags.
->  if not get_option('b_pie')
->    qemu_common_flags += cc.get_supported_arguments('-fno-pie')
-> -  if not get_option('prefer_static')
-> -    # No PIE is implied by -static which we added above.
-> -    qemu_ldflags += cc.get_supported_link_arguments('-no-pie')
-> -  endif
-> +  # What about linker flags?  For a static build, no PIE is implied by -static
-> +  # which we added above.  For dynamic linking, adding -no-pie is messy because
-> +  # it overrides -shared: the linker then wants to build an executable instead
-> +  # of a shared library and the build fails.  Before moving this code to Meson,
-> +  # we went through a dozen different commits affecting the usage of -no-pie,
-> +  # ultimately settling for a completely broken one that added -no-pie to the
-> +  # compiler flags together with -fno-pie... except that -no-pie is a linker
-> +  # flag that has no effect on the compiler command line.  So, don't add
-> +  # -no-pie anywhere and cross fingers.
->  endif
+On Tue, May 23, 2023 at 10:00=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
+redhat.com> wrote:
+> I'm curious why we need to do anything ?  I would have thought that meson
+> should handle 'b_pie' itself, passing the right args to $CC that it feels
+> are appropriate. I don't recall seeing other apps using meson trying to
+> handle b_pie logic - what's special about QEMU ? IOW, is it possible to
+> delete this entire b_pie condition and thus avoid worrying about this
+> problem ?
 
-I'm curious why we need to do anything ?  I would have thought that meson
-should handle 'b_pie' itself, passing the right args to $CC that it feels
-are appropriate. I don't recall seeing other apps using meson trying to
-handle b_pie logic - what's special about QEMU ? IOW, is it possible to
-delete this entire b_pie condition and thus avoid worrying about this
-problem ?
+The issue is that Meson only has "enable PIE" or "leave PIE to the
+compiler default", while QEMU also has "disable PIE"---which is the
+messy one.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Paolo
 
 
