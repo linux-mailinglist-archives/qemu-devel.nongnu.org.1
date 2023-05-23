@@ -2,87 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8466970E2C1
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 19:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB2E70E2CE
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 19:38:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Vq4-0004Ij-C4; Tue, 23 May 2023 13:30:24 -0400
+	id 1q1VwB-0006cj-KC; Tue, 23 May 2023 13:36:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1Vq2-0004I7-A1
- for qemu-devel@nongnu.org; Tue, 23 May 2023 13:30:22 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1Vpz-0007HQ-IP
- for qemu-devel@nongnu.org; Tue, 23 May 2023 13:30:22 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4f4bd608cf4so146704e87.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 10:30:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684863013; x=1687455013;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=0pabE7NQiyY2gNvPqjKOjWLJIy9hK2vs/rDgVs//+QM=;
- b=DUvtk56hS19HpM26azZ//QrbFtFPA4dOZrHSs4GKWvhFm/0lIUNq1T88eGskoLmqm3
- x96jxsTzTs/0E26KrA2LrEKC0Rr/MKrGRxx4FR6dgISfglxwwy5p6rAPcThoLWjya2NN
- hy3fWnWoA0ddBtCoeuk2LGDjwzGd5/ZQyhLIxHVrUxBhCslZoXNmFCKbEBEVH/mykNnO
- oLUJkLSqBTBqKlL3UqLkGgXUH3+P1EWqRYY18e0UE8jLzlpjZjDAs+lF/Ot/SsR4BscX
- zzDNx8C3XSm4cGi6YcwhszhunfAGJH0TE7G7u4sYnUhEdXhN8EscDwTMQtkTVQJpIvum
- 8Qzg==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q1Vw9-0006cA-CW
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 13:36:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q1Vw7-0000an-Rs
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 13:36:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684863396;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gfJbutzzYxQWthbTzlNFe2Uhx0+f5U/JnhWMlHGECRg=;
+ b=NGY4nsztrB3zOIoSf+9KPBDJqmFgBuQyKoZHd+hAweraDURGdQHRHYbjU5RGvG/E6Gf+7S
+ CMzib1oRa2uu0pGdq4LR3W2NdVjjxmVbv5wG6B1TZu8ENoN/R1j6pP3GZTM4hRqlM6cFAW
+ cnCu3FMnB63GZOVR5ClDXgOlLWNUq+Y=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-142-_1TRGG20NBipf376ILZD4Q-1; Tue, 23 May 2023 13:36:35 -0400
+X-MC-Unique: _1TRGG20NBipf376ILZD4Q-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-513e916ed47so94842a12.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 10:36:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684863013; x=1687455013;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0pabE7NQiyY2gNvPqjKOjWLJIy9hK2vs/rDgVs//+QM=;
- b=TJng49sCvZVCo2s2x7bg09Q8yffZS/YmahSJ+qMVz7R/zdGjIAWserk7V6MdJ7kJ/Y
- /5hDTUA80jInvy3JOeC887bSct4/Oti3oiqxkqVzC9nzuRqHXcZkD6u67/uxaB6wNPYl
- 2ty7kbbJ72s5g04DJ223J7WsyLH/UHxUnOawntuKRGHmGBGJ5SZ0Y/CIxk+5xGkIP6go
- GHvORpgTD9rYk+GjV2CLugiQfkRH4Qj1AKIqulLBtJFg4tjUP3eSDWMlWuTD7uV/6C4b
- lC6bG2k9v2TqUYyzRDIDHXgCAiSCve5pXMwX19Tdk3fIM1N/dcejMeZTymwjGFMZWkg/
- Gzfw==
-X-Gm-Message-State: AC+VfDzL4VDjV9qNJ6QRcN63HnF+sSVSq9bVT+c594mL9Z5QUhjZ2cUY
- fV8h7/oJdxYjh6XIHSPBwy1m/A==
-X-Google-Smtp-Source: ACHHUZ5cmZh3i7hCJdzJn4VOdK+ScwUFyUs1/K07NQGZKInVP4UubSx+T6wLxqbwY8iQR8XlDLIalQ==
-X-Received: by 2002:ac2:4c8a:0:b0:4f3:78e5:fe93 with SMTP id
- d10-20020ac24c8a000000b004f378e5fe93mr4878524lfl.6.1684863013373; 
- Tue, 23 May 2023 10:30:13 -0700 (PDT)
-Received: from [192.168.200.206] (83.21.125.167.ipv4.supernova.orange.pl.
- [83.21.125.167]) by smtp.gmail.com with ESMTPSA id
- j14-20020ac253ae000000b004f2391fe9a6sm1412487lfh.266.2023.05.23.10.30.12
+ d=1e100.net; s=20221208; t=1684863393; x=1687455393;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gfJbutzzYxQWthbTzlNFe2Uhx0+f5U/JnhWMlHGECRg=;
+ b=CYsorplfEoLqb3LMV0T+dF3Jkx2QmoIYl0IFEcCwHw92X3XS7xyDCJSnBkikwJSDnQ
+ EyLuqyhqX1CJuq6Qa5mV1sKpantov8J3oEXUgZgPSa2HfIkzNuOr88+gYmZXnR64Ju6j
+ U3Qjz+1WJndMIp89MKYRGAjNOQ+Ik4JOgyjKF4YmXxangSzD4LZ6LEGp4Tun1KrBgSj6
+ ZMqSecctt/yH44nh49NOCZ3uq+GAEMGDZbyQALDewzjWrzRWa3ZsLsTDN/YTcZGqFxq/
+ PEtypymgT+m+RCQArK/+uZ0uWuKhOHGUV6zun3H1vKzYC26CgWhU3EQrbEZqVXVo4ADP
+ /W0Q==
+X-Gm-Message-State: AC+VfDzqpu6ZdzeDR2DytipWVuPrk2S8arCbA8VdAN3wdC46IokrCd6y
+ hJji7KUE1Ht6RCQZapyhHZBbboSNawG5dCFthq9kt7IuKQnTlmHq7AY2rbFdkZ8UvvdKDq8Xtj2
+ gaXkbQhYr7SgAW5ijUP7HMlc=
+X-Received: by 2002:a17:907:96aa:b0:96f:d556:b926 with SMTP id
+ hd42-20020a17090796aa00b0096fd556b926mr7644627ejc.77.1684863393538; 
+ Tue, 23 May 2023 10:36:33 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5+IKX6Dz3IZZuDzAdxN3koN+Wi12qmTfrHxUty4B8254KmAINFukvdnNzbx4UUGcGDlvyucQ==
+X-Received: by 2002:a17:907:96aa:b0:96f:d556:b926 with SMTP id
+ hd42-20020a17090796aa00b0096fd556b926mr7644616ejc.77.1684863393269; 
+ Tue, 23 May 2023 10:36:33 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d723:b0c7:8fa2:ce55:2d0c:5fa3?
+ (p200300cfd723b0c78fa2ce552d0c5fa3.dip0.t-ipconnect.de.
+ [2003:cf:d723:b0c7:8fa2:ce55:2d0c:5fa3])
+ by smtp.gmail.com with ESMTPSA id
+ h14-20020a170906854e00b009534211cc97sm4616322ejy.159.2023.05.23.10.36.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 10:30:12 -0700 (PDT)
-Message-ID: <4101dedc-91d7-1735-4655-81082931b79d@linaro.org>
-Date: Tue, 23 May 2023 19:30:11 +0200
+ Tue, 23 May 2023 10:36:32 -0700 (PDT)
+Message-ID: <0fb47100-5169-6acc-0f3f-06e3c934bc09@redhat.com>
+Date: Tue, 23 May 2023 19:36:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 1/2] docs: sbsa: correct graphics card name
-Content-Language: pl-PL, en-GB, en-HK
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <CAFEAcA9GamGybSzd8FKBtmZ2qMgjRFy6D=Vhu1y0dL8m9Sa80w@mail.gmail.com>
- <20230523155644.678524-1-marcin.juszkiewicz@linaro.org>
- <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
+Subject: Re: [PATCH v3 05/19] cutils: Fix wraparound parsing in qemu_strtoui
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, qemu-stable@nongnu.org
+References: <20230522190441.64278-1-eblake@redhat.com>
+ <20230522190441.64278-6-eblake@redhat.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230522190441.64278-6-eblake@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x133.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,51 +103,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 23.05.2023 o 19:11, Thomas Huth pisze:
-> On 23/05/2023 17.56, Marcin Juszkiewicz wrote:
->> We moved from VGA to Bochs to have PCIe card.
->>
->> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
->> ---
->>   docs/system/arm/sbsa.rst | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
->> index b499d7e927..fea4992df2 100644
->> --- a/docs/system/arm/sbsa.rst
->> +++ b/docs/system/arm/sbsa.rst
->> @@ -27,6 +27,6 @@ The sbsa-ref board supports:
->>     - System bus EHCI controller
->>     - CDROM and hard disc on AHCI bus
->>     - E1000E ethernet card on PCIe bus
->> -  - VGA display adaptor on PCIe bus
->> +  - Bochs display adaptor on PCIe bus
->>     - A generic SBSA watchdog device
-> 
-> While you're at it, I'd suggest to replace "adaptor" with "adapter" 
-> which seems to be way more common in the QEMU sources:
-> 
-> $ grep -r adaptor * | wc -l
-> 5
-> $ grep -r adapter * | wc -l
-> 385
-> 
-> With that changed:
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+On 22.05.23 21:04, Eric Blake wrote:
+> While we were matching 32-bit strtol in qemu_strtoi, our use of a
+> 64-bit parse was leaking through for some inaccurate answers in
+> qemu_strtoui in comparison to a 32-bit strtoul (see the unit test for
+> examples).  The comment for that function even described what we have
+> to do for a correct parse, but didn't implement it correctly: since
+> strtoull checks for overflow against the wrong values and then
+> negates, we have to temporarily undo negation before checking for
+> overflow against our desired value.
+>
+> Our int wrappers would be a lot easier to write if libc had a
+> guaranteed 32-bit parser even on platforms with 64-bit long.
+>
+> Whether we parse C2x binary strings like "0b1000" is currently up to
+> what libc does; our unit tests intentionally don't cover that at the
+> moment, though.
+>
+> Fixes: 473a2a331e ("cutils: add qemu_strtoi & qemu_strtoui parsers for int/unsigned int types", v2.12.0)
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> CC: qemu-stable@nongnu.org
+> ---
+>
+> v3: rewrite with better comments in code and commit message [Hanna];
+> fix additional problems with wraparound, cc qemu-stable although this
+> has been long-standing enough to be low priority, R-b dropped
+> ---
+>   tests/unit/test-cutils.c | 20 +++++++++-----------
+>   util/cutils.c            | 25 +++++++++++++++++++------
+>   2 files changed, 28 insertions(+), 17 deletions(-)
 
-Thanks. changed.
-
-
-> PS: An idea for another patch: I think the "config SBSA_REF" in 
-> hw/arm/Kconfig should select BOCHS_DISPLAY now, since this board seems 
-> to always require this card now 
-
-Thanks, patch sent.
-
-> (is there a reason why it can't be disabled with "-vga none" or "-nodefaults"?)
-
-That's something I need to check how it should be done. Should it also 
-drop default_nic?
-
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
 
