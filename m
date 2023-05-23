@@ -2,54 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7162D70DD79
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1941C70DD7B
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:32:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1S6L-000431-Hf; Tue, 23 May 2023 09:30:57 -0400
+	id 1q1S6u-0004YZ-Q5; Tue, 23 May 2023 09:31:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q1S6G-00042Q-PS
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:30:54 -0400
-Received: from rev.ng ([5.9.113.41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1q1S6E-0005td-Ox
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:30:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
- Cc:To:Subject:Reply-To:MIME-Version:Date:Message-ID:Sender:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=LuiHUK/mJOjCGV29hwJPXrewxx6iPYCtsz4QG7Z+B1o=; b=gzFamER6jAKFOw6qdPI9iq3hMv
- PgpX1mS725B0xUjklw9A6ZisP+BcGEWULzlSGmQLaR6fHJrA/IdZEqAxy7jqhp2mFmtzdqc+lAC0v
- tz+Qc0BoD8dGFqnmhnU6nUmnl+VLYAV1CLmY5pQ2a6GC3E5oqNlhAzGcn/rroagvI+t0=;
-Message-ID: <5de92654-52e3-6042-de5e-b2334b737c13@rev.ng>
-Date: Tue, 23 May 2023 15:29:59 +0200
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1S6o-0004QW-E0
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:31:26 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1S6k-00060D-C3
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:31:25 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3f607059b4eso14709765e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:31:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684848681; x=1687440681;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=H/KBsUqWNdjivhE+3jdUjdUH7nTc0sJdE9VJvA7rvNM=;
+ b=qG3nT0zImh3j/HWnut0aJhATYpD43LMqAJ4DJC1MrSlg30Wy2Tff93TNd3bG86KRSW
+ 4zH+h6SxKys1c6IwAr1eZ4KufXmTgwm6SAZD4mFM1TXHAqFdz8+DkfdFnxc/UJbFPZBI
+ kbO5vlhZ/n4Rk4LB541fStzV96RmP4b5tdGjH5Y6JVryyxv9v+DlYEhLUss1q59puhaI
+ NYp0Py640BdkQl+tAtXTQqWguPsnev9SEvG/fSUi5OrecVQfBhpEsGKGEn0fz/HRyApd
+ ATGWH6DT5khZEoKpY7siVAXBYrq68SE2RdzZAS7qKxlZ37psaPEVPMUL6y8ymQY9hUlp
+ gwTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684848681; x=1687440681;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=H/KBsUqWNdjivhE+3jdUjdUH7nTc0sJdE9VJvA7rvNM=;
+ b=hvlJxgSHhrFKf//2qXld7dZ79DrnfYn7ml8+h0yzNFjshKQ7JFAjumbjVg6p3ym/1R
+ Qk3/Empj27Xt+LOGUGFoa7mjAfaFXHiWjaZim41QZxQPsU/ISpv+aNA0qijSPbo5Wqp8
+ GwwONBjSuGpg/YJBhvNH4W6Icq9x+2NME2WNTtUZE+en7gPQThRcxkgetSnhU774TlK3
+ iQAGiOd6LJPDxKYuh/GYyqtrExIRwgy+AFaXXJax86dGhBWAxwXjPnbp2bE9Ukc6IOTC
+ NXelu8hC/rFghIiTzfrUziTwO1rPbml9syClt8x7rvPyxA5miZRfWXFL8QnCKP8ItiRK
+ FL9A==
+X-Gm-Message-State: AC+VfDyktdnxaDiGYwWi1L01V7QVaBCehTuj744Hqnylbwh94vk7l4yp
+ kzCCouz3GZC2v9Z3vAORfoqCW3c1HCf+bAPlbgiRbw==
+X-Google-Smtp-Source: ACHHUZ5jv1Rd00qwcQvmxPCYq7ueEW51nTxb3Q2n0bwvVzH4Ut2L9JfjN6hf22WPhlM7Qj7fLtVniw==
+X-Received: by 2002:a1c:7215:0:b0:3f6:1a3:4cee with SMTP id
+ n21-20020a1c7215000000b003f601a34ceemr6399620wmc.14.1684848680718; 
+ Tue, 23 May 2023 06:31:20 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ f9-20020a1cc909000000b003f180d5b145sm11764735wmb.40.2023.05.23.06.31.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 May 2023 06:31:20 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id D6CAD1FFBB;
+ Tue, 23 May 2023 14:31:19 +0100 (BST)
+References: <20230522153144.30610-1-philmd@linaro.org>
+ <20230522153144.30610-5-philmd@linaro.org>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, Peter
+ Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 04/12] hw/char/pl011: Display register name in trace events
+Date: Tue, 23 May 2023 14:31:15 +0100
+In-reply-to: <20230522153144.30610-5-philmd@linaro.org>
+Message-ID: <87353n5g48.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: Help finding Coverity defects for generated Hexagon code
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
- <4ffdd486-ec7d-49c7-1330-0d0b090735b9@rev.ng>
- <CAFEAcA9ZctmXrCAwsAk6eBeF4ojB4QBwq16TsdcGZPHTin6LEg@mail.gmail.com>
- <CABgObfa7N+A=ReW-jme=Nx+wt7rZPcpuy-ANmxepcJMxeXeeWA@mail.gmail.com>
-Content-Language: en-US
-Organization: rev.ng
-In-Reply-To: <CABgObfa7N+A=ReW-jme=Nx+wt7rZPcpuy-ANmxepcJMxeXeeWA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,53 +96,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  anjo@rev.ng
-X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 5/23/23 12:29, Paolo Bonzini wrote:
-> On Tue, May 23, 2023 at 11:18 AM Peter Maydell <peter.maydell@linaro.org> wrote:
->> On Mon, 22 May 2023 at 21:24, Anton Johansson <anjo@rev.ng> wrote:
->>> Hi,
->>>
->>> coverity recently reported some defects in code generated by idef-parser
->>> (email attached). These defects are expected and we plan to emit a
->>> /* coverity[event_tag] */ comment to disable the specific event triggered.
->> We don't mark coverity false positives with comments in the
->> source. For the free online scanner, we just mark them as
->> false positives in the GUI (with an explanation of why they're
->> false positives).
-> They aren't visible in the GUI because the whole "hexagon generated
-> files" component is marked as not-analyzed; which apparently means it
-> _is_ analyzed and visible in the emails but not in the GUI.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Ah right...
+> To avoid knowing the register addresses by heart,
+> display their name along in the trace events.
+>
+> Since the MMIO region is 4K wide (0x1000 bytes),
+> displaying the address with 3 digits is enough,
+> so reduce the address format.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-> The event tag for this error should be "dead_error_condition". In
-> theory, the hexagon generated files could be a good exception to the
-> rules that we don't mark false positives in the source, but finding
-> the right line to add the tag can be messy.
-If we decide to mark these in source, my plan was to simply emit
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-     if (qemu_tmp_2 >= 64) {
-         /* coverity[dead_error_condition] */
-         tcg_gen_movi_i64(tmp_5, 0);
-     } else {
-         tcg_gen_shli_i64(tmp_5, tmp_4, qemu_tmp_2);
-     }
-
-for all of these safety checks around shifts/extracts where the defect could
-trigger. Maybe this is overreaching as we would also mark similar 
-branches in
-other instructions that are alive, but if we knew they were dead at 
-translation
-time we could simply not emit them to begin with.
-
--- 
-Anton Johansson,
-rev.ng Labs Srl.
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
