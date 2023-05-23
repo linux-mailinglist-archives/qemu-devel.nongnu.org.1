@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6958E70D1AF
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA56B70D191
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:46:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1I28-0007JF-Dg; Mon, 22 May 2023 22:45:56 -0400
+	id 1q1I29-0007SV-C3; Mon, 22 May 2023 22:45:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I1o-000669-0d
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:45:37 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1q1I1n-00065f-4b
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:45:36 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I1e-0004Um-4g
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:45:33 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-5346d150972so5039901a12.3
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:45:25 -0700 (PDT)
+ id 1q1I1i-0004XY-AC
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:45:34 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2553b0938a9so1855246a91.0
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:45:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809924; x=1687401924;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809928; x=1687401928;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=42hUpLFpyentR+DHl1F+aZnZuTEaFvKzVFAAW2jc9FM=;
- b=Om4EwKanCzYynDfQyZKeHqaYRZi+vXexnEXTYNo8RaA31CvA5uJ2evCaz8bBYlZJEX
- FqNBHgY5dEDpGazRAFW8YvILZqdCfkI/hJumeMrzpM0WZBBdvWf0Vrf+OhTxozHur2RF
- R9IUcZPOlsBRVp6D9JFlCzuPlfjGZbT/iaTcnUst7DBJUW1WQsUH6O8yuhFXUfX4QO6o
- sjXFg3gmCYEzo9IIKYDtq88MRfRk9SGXk1uuj/NJJ4lw0X0h5HP105htnS+iNG365ONL
- keCv4y7YmxNtAbjA0KBf/s7Az/ssIxyvgKuV+nvQdr+v6NpzcTa/mT1scu4zBpZ8wvDv
- 3ZLQ==
+ bh=vzPAbEmJEB50Ysp/pj8sTC2FsTwLihV0BgZPulCV70A=;
+ b=G1IGJwkezi9qMAXkLAHJRkl4gV6pJWGuL/vIr+BEK+zTgcasvv9X3UwsLnKLuuDWXs
+ QusxjKu8CHNbjxzPF5RJ0Q2uusgiN66nb39AiIKasKo0eIfn3WZJ3XWUiFiESrWkrUkU
+ S9QQqksGuM5njhcUQdRQKkGqfT4aZzjgaHvQhn3bGtBZkZHPpFaMFLFqtR8FQMvNadD0
+ TcT7G8pPbnx7bBJ11g8ZzSxgsedMpy/eC+f0BOyV+qQuchzX6AG0EZZfgUBnwJdtwwjr
+ P7uggc5GWWy/PpfqxtLarP3LA+RXD5SXwugMySL2lVEMxid6zwwN/A8xBMMzQ4Mkv4OP
+ cEHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684809924; x=1687401924;
+ d=1e100.net; s=20221208; t=1684809928; x=1687401928;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=42hUpLFpyentR+DHl1F+aZnZuTEaFvKzVFAAW2jc9FM=;
- b=Mm9Ht1/D9DIEPfQgBP9Te4lWT9hP3KnsTdOTYGfbfdjHHT9/McbLutC7++c43fX3Fq
- Oo2hN07bKnFtXRGTF/Rer27vvthCy0pbSuQxbuhzhLljmO2heyfPfZRfix9iqhm35Wdt
- XD7AQor7voCYkzo5wFaroOfgILVEZ4CqGKCvqPphROud9ELPZVGieVRSGo5m9KDnnGpW
- plfyRFOu0dOGcVWWny9PXlwN3GHrfJ797P3F7OnfA18MZCPu75omfq67GB51FU1QbV6C
- 8YA6TqF3aX/ICIdBeXScUkXsqEK5097RTY2ok5H//JDJiklxxTP+k0wXUfi77zseSQ9v
- /Kxw==
-X-Gm-Message-State: AC+VfDylQqwdp64Ui8LbKHtHB29lfg1bw+rzOy4uBSMNFjVcgksUbgQ7
- CMSDa/nR+EOKvCFz5AlBNDmhEw==
-X-Google-Smtp-Source: ACHHUZ70Fru1y1EA2qZHviLN1CXKNVZpiSb7yNKAOV4uKG6CIF9LftLOx7Nm2lUoiZpB0ZV29jSxUA==
-X-Received: by 2002:a17:90b:300f:b0:253:30f9:1849 with SMTP id
- hg15-20020a17090b300f00b0025330f91849mr11183155pjb.12.1684809924768; 
- Mon, 22 May 2023 19:45:24 -0700 (PDT)
+ bh=vzPAbEmJEB50Ysp/pj8sTC2FsTwLihV0BgZPulCV70A=;
+ b=C8H07EfGTKNGo4yjJYGf8zlsfaNDvlRYOVF/FYxdXDLt8VY9hVYLusK3rHsKafCIxK
+ 7uDEzjWEgIJGvSYMdvXzyUCIs5NXKMwAiwtXg6r7uRavIr+lA08N9xYMBl9+arWsdIyd
+ a0j00DwFhYuPi/chCmhXE26anZlXE9T9OHQ1DIILXjRT8QES50qzNTX2OoBLiJBjC1dm
+ eTQsxPrZ5oKtmTLIY+S9lLagR6jmx9cGeILzri39V9IHxjzwHvkIe05b7May7BHo0H5R
+ 8ibpJFe+fCaHuY/eTyY5rz7/ILQyUM04cAvlxC8WMaK0DVbRefwIz984Jy/9dJHlXkVy
+ KDaA==
+X-Gm-Message-State: AC+VfDzi26m67ARlp3+o9DfQ4RLgcD+GV/t0Q/cUrUhHn6vIIPmMSuRE
+ 15J+k38aJovKaDsBePjY0NTx4g==
+X-Google-Smtp-Source: ACHHUZ5qnWtaQClkZaVy5x6Ho3BcHygWABNpAxpdE1w11toj6iiHUkfNFbeRltSXVJv+XXh4GSt0Sg==
+X-Received: by 2002:a17:90a:648e:b0:255:7e1b:ca6d with SMTP id
+ h14-20020a17090a648e00b002557e1bca6dmr3687449pjj.7.1684809928420; 
+ Mon, 22 May 2023 19:45:28 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.45.21
+ o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.45.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 19:45:24 -0700 (PDT)
+ Mon, 22 May 2023 19:45:27 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
@@ -69,23 +69,23 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org, Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 27/48] igb: Clear EICR bits for delayed MSI-X interrupts
-Date: Tue, 23 May 2023 11:43:18 +0900
-Message-Id: <20230523024339.50875-28-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 28/48] e1000e: Rename a variable in
+ e1000e_receive_internal()
+Date: Tue, 23 May 2023 11:43:19 +0900
+Message-Id: <20230523024339.50875-29-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 References: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,76 +101,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Section 7.3.4.1 says:
-> When auto-clear is enabled for an interrupt cause, the EICR bit is
-> set when a cause event mapped to this vector occurs. When the EITR
-> Counter reaches zero, the MSI-X message is sent on PCIe. Then the
-> EICR bit is cleared and enabled to be set by a new cause event
+Rename variable "n" to "causes", which properly represents the content
+of the variable.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/igb_core.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ hw/net/e1000e_core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 20645c4764..edda07e564 100644
---- a/hw/net/igb_core.c
-+++ b/hw/net/igb_core.c
-@@ -97,23 +97,31 @@ igb_lower_legacy_irq(IGBCore *core)
-     pci_set_irq(core->owner, 0);
- }
- 
--static void igb_msix_notify(IGBCore *core, unsigned int vector)
-+static void igb_msix_notify(IGBCore *core, unsigned int cause)
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index 7dce448657..aea70b74d9 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -1650,7 +1650,7 @@ static ssize_t
+ e1000e_receive_internal(E1000ECore *core, const struct iovec *iov, int iovcnt,
+                         bool has_vnet)
  {
-     PCIDevice *dev = core->owner;
-     uint16_t vfn;
-+    uint32_t effective_eiac;
-+    unsigned int vector;
+-    uint32_t n = 0;
++    uint32_t causes = 0;
+     uint8_t buf[ETH_ZLEN];
+     struct iovec min_iov;
+     size_t size, orig_size;
+@@ -1723,32 +1723,32 @@ e1000e_receive_internal(E1000ECore *core, const struct iovec *iov, int iovcnt,
  
--    vfn = 8 - (vector + 2) / IGBVF_MSIX_VEC_NUM;
-+    vfn = 8 - (cause + 2) / IGBVF_MSIX_VEC_NUM;
-     if (vfn < pcie_sriov_num_vfs(core->owner)) {
-         dev = pcie_sriov_get_vf_at_index(core->owner, vfn);
-         assert(dev);
--        vector = (vector + 2) % IGBVF_MSIX_VEC_NUM;
--    } else if (vector >= IGB_MSIX_VEC_NUM) {
-+        vector = (cause + 2) % IGBVF_MSIX_VEC_NUM;
-+    } else if (cause >= IGB_MSIX_VEC_NUM) {
-         qemu_log_mask(LOG_GUEST_ERROR,
-                       "igb: Tried to use vector unavailable for PF");
-         return;
-+    } else {
-+        vector = cause;
-     }
- 
-     msix_notify(dev, vector);
-+
-+    trace_e1000e_irq_icr_clear_eiac(core->mac[EICR], core->mac[EIAC]);
-+    effective_eiac = core->mac[EIAC] & BIT(cause);
-+    core->mac[EICR] &= ~effective_eiac;
- }
- 
- static inline void
-@@ -1834,7 +1842,6 @@ igb_eitr_should_postpone(IGBCore *core, int idx)
- static void igb_send_msix(IGBCore *core)
- {
-     uint32_t causes = core->mac[EICR] & core->mac[EIMS];
--    uint32_t effective_eiac;
-     int vector;
- 
-     for (vector = 0; vector < IGB_INTR_NUM; ++vector) {
-@@ -1842,10 +1849,6 @@ static void igb_send_msix(IGBCore *core)
- 
-             trace_e1000e_irq_msix_notify_vec(vector);
-             igb_msix_notify(core, vector);
--
--            trace_e1000e_irq_icr_clear_eiac(core->mac[EICR], core->mac[EIAC]);
--            effective_eiac = core->mac[EIAC] & BIT(vector);
--            core->mac[EICR] &= ~effective_eiac;
+         /* Perform small receive detection (RSRPD) */
+         if (total_size < core->mac[RSRPD]) {
+-            n |= E1000_ICS_SRPD;
++            causes |= E1000_ICS_SRPD;
          }
+ 
+         /* Perform ACK receive detection */
+         if  (!(core->mac[RFCTL] & E1000_RFCTL_ACK_DIS) &&
+              (e1000e_is_tcp_ack(core, core->rx_pkt))) {
+-            n |= E1000_ICS_ACK;
++            causes |= E1000_ICS_ACK;
+         }
+ 
+         /* Check if receive descriptor minimum threshold hit */
+         rdmts_hit = e1000e_rx_descr_threshold_hit(core, rxr.i);
+-        n |= e1000e_rx_wb_interrupt_cause(core, rxr.i->idx, rdmts_hit);
++        causes |= e1000e_rx_wb_interrupt_cause(core, rxr.i->idx, rdmts_hit);
+ 
+         trace_e1000e_rx_written_to_guest(rxr.i->idx);
+     } else {
+-        n |= E1000_ICS_RXO;
++        causes |= E1000_ICS_RXO;
+         retval = 0;
+ 
+         trace_e1000e_rx_not_written_to_guest(rxr.i->idx);
      }
- }
+ 
+-    if (!e1000e_intrmgr_delay_rx_causes(core, &n)) {
+-        trace_e1000e_rx_interrupt_set(n);
+-        e1000e_set_interrupt_cause(core, n);
++    if (!e1000e_intrmgr_delay_rx_causes(core, &causes)) {
++        trace_e1000e_rx_interrupt_set(causes);
++        e1000e_set_interrupt_cause(core, causes);
+     } else {
+-        trace_e1000e_rx_interrupt_delayed(n);
++        trace_e1000e_rx_interrupt_delayed(causes);
+     }
+ 
+     return retval;
 -- 
 2.40.1
 
