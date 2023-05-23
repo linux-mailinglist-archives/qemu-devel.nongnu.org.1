@@ -2,73 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E37D70DF5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D83A70DF6C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:36:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1T6I-0006X6-Hp; Tue, 23 May 2023 10:34:58 -0400
+	id 1q1T7Y-0007Q1-53; Tue, 23 May 2023 10:36:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1T6A-0006Wi-Fb
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:34:50 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1T68-0005gi-Ta
- for qemu-devel@nongnu.org; Tue, 23 May 2023 10:34:50 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-510db954476so1536148a12.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:34:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684852487; x=1687444487;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=j7s2C9SI6XB8wAsyLEfISzV45J7HRyP9cRK/x0Uw9Po=;
- b=cZvUg5WuhQoe2e+PVHIDjt3MPuG3HUqSpQZqKAhHe6fvLk7eHDL5iQs5L5r3UhneeV
- qoLCUzCeyA0AQLUg8Ym4LQrrswQHOkDhwRPXIj9aTEQsubAe5qjxmvVFrsCKGgtZZwA3
- 9Wo4TRufNmltet+VQ1JG2FS4n5HRJtgta09Yqr/2AT34N1Ay4DSMgPOcfqSbjAfWbAWq
- zMxLttix/s15d+nCgyrPdstf6EpFPB2R2KXoK7hLokS3E5y1dPUyERduH7KBL8P9tJ/B
- +t8Dki4M8ZIXifPecFObLPwHHCmRsOuEzlJaihRSFB5V/5xoiG01/+dd9MIVx1YE4Tma
- e8cA==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1T7V-0007PW-DY
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 10:36:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1T7T-0006HY-TP
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 10:36:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684852570;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=w7vU7mDKi8jfo4a2JcT7cBkT7na3/1PWsgYYvBA0muM=;
+ b=KkuFLkmHJ5NMGleR0eCzZUDeYm7USXVve4yuAzRdFbdSwVFZfzmsoXnzArmLB+3ZCOEPeW
+ QflHdYw+WZobX6Bqb4BaqePSbSfjEP6weXCTtgadt0pzHqA+H4uWM+bHbwEgqqK89CEcmK
+ HYq6WF2bb326K5RbP9WCe/gkpYD7KEc=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-mWxvp_YkOGq8VFZ45RwGtA-1; Tue, 23 May 2023 10:36:08 -0400
+X-MC-Unique: mWxvp_YkOGq8VFZ45RwGtA-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2555076ea4dso2660483a91.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:36:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684852487; x=1687444487;
+ d=1e100.net; s=20221208; t=1684852568; x=1687444568;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=j7s2C9SI6XB8wAsyLEfISzV45J7HRyP9cRK/x0Uw9Po=;
- b=dsouApIGw2S0LBqoaQ1yxG8uufbkA4sJNRYS+kkxHgI+M6r/Gtb7Ui5nPq58WHOLuN
- nAY6L2d2tX+pFHblHZ9uOwYsX3qx/EiDWwxSQNOhjjErl+Ifjaw6VVUvrtLIWlbVZDpW
- qBBH/Sl8LixB16UX1iRvQt9GVX3b93KVWMdW8LZlG8feXx8YtFiixHDq3Wp2wo+fGMts
- hAQKGlI0LLJZFEk6BBIGBdobCdgFRcXwlu9bhlipIS8oFBhwkS7MMAKGkzAOnwUT1xH5
- nZV/b3sNvFM0xCwoGhw4EZ2g2vFGg9NpXVwyuBTdTzGS4McGGsNfDHwz6rv1J5t/ryQN
- 77QA==
-X-Gm-Message-State: AC+VfDz9+6OS6Wru1b3+ECL5be1MoQewQs5EdNxtwxX/EqFzPE+VkU74
- dfJYHQRTISKpJnzjUZa7HMxhRFwWIyotyW/4HYOjnVn0W6rcwL/M
-X-Google-Smtp-Source: ACHHUZ7Hg2BGlDuddJjwQ7Wb+PxVd/C/0J8EsRFx6GFZGvdXSzzJmNrtu1ypGEtOkKljXHdTmTA0/5adKUI1MhXGHx0=
-X-Received: by 2002:aa7:d916:0:b0:50b:d57c:2a7c with SMTP id
- a22-20020aa7d916000000b0050bd57c2a7cmr11676626edr.18.1684852487434; Tue, 23
- May 2023 07:34:47 -0700 (PDT)
+ bh=w7vU7mDKi8jfo4a2JcT7cBkT7na3/1PWsgYYvBA0muM=;
+ b=CNifUQGdIXYmRJz5gzgE254AOURm3w9kqpW+BnXX+eXC6CMkgek2XkkSBUzl5W0m93
+ IluHZE+ivJJRn/ogkQg4KPXSM99uLm5XIMN+IOBF8cLjMc1Y7J47Xrycu2baVQcUVHGs
+ Din7DN7IEKOUT69aIxTEMlkLRs18XRmyybXx3hhhPbP6SRjTOHIDr8spVelwiTKCoc2U
+ A8EBRdUmA3B+SSYaaoyKXjDm4vgbLmbjDCx6yp4MbPs/v5zADKIxSsHXl9FUVA185hjB
+ fnTUWep3Fxw05x0lFWqv/Fi8h1028Mdb4kZL89xLJzbsjvesN4OTO9sKNRQbW8KJ6ve5
+ MLzQ==
+X-Gm-Message-State: AC+VfDwR7Avgl/PlFcI0daLsjlye4imYBrCs5m5HO2C5C6LHDka3VnQ0
+ EbktTHf6T1uZ3g2X94zK9JzjP92DyERuvD1EMWMnqmzp2sb0z+q26aA6g6M+LtR/MiPlINbQsal
+ L8Khey6ILJFRONdOUgVXIBoZJgb/+18c=
+X-Received: by 2002:a17:90b:3587:b0:24d:ebfe:be93 with SMTP id
+ mm7-20020a17090b358700b0024debfebe93mr13185181pjb.37.1684852567919; 
+ Tue, 23 May 2023 07:36:07 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5IgVrS8y1zJELoENjwm7tbwIxLOt9lBUuH5Ieq44Y8fCGbZNkRCvEXsr3CmO4nvc1GCMqvBIz7fcpM2f+TpX0=
+X-Received: by 2002:a17:90b:3587:b0:24d:ebfe:be93 with SMTP id
+ mm7-20020a17090b358700b0024debfebe93mr13185159pjb.37.1684852567465; Tue, 23
+ May 2023 07:36:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAFEAcA_=Zp9YBcJDsCZ-UoMUyjBoG8XMkgfjS3_iGX9hWzM0=Q@mail.gmail.com>
- <4141b7a3-b288-7431-918f-959a3d97f526@linaro.org>
-In-Reply-To: <4141b7a3-b288-7431-918f-959a3d97f526@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 23 May 2023 15:34:36 +0100
-Message-ID: <CAFEAcA9RpqQ1m5jhQGz-YgBEtqNV+GpXV1FZQEVAhTsZ83WO=A@mail.gmail.com>
-Subject: Re: proposed schedule for 8.1 release
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+References: <20230416222838.36642-1-mateusz.p.albecki@gmail.com>
+ <20230416222838.36642-2-mateusz.p.albecki@gmail.com>
+ <CAFn=p-bcAW9aMymmWeVSMeyuT88YDZ2iYVh-t1GoogbBBPFjSw@mail.gmail.com>
+ <CAGe=PKEvnnjBQVx-rNDXjmwvQ272S2DLw-xEDjp1vVuU30i4Hw@mail.gmail.com>
+In-Reply-To: <CAGe=PKEvnnjBQVx-rNDXjmwvQ272S2DLw-xEDjp1vVuU30i4Hw@mail.gmail.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 23 May 2023 10:35:56 -0400
+Message-ID: <CAFn=p-bVdQ6E10F9FmapMcBvEUMX7hOjr-kz7FgfQL+cdJHV+A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/ide/core.c: fix handling of unsupported commands
+To: Mateusz Albecki <mateusz.p.albecki@gmail.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Mateusz Albecki <mateusz.albecki@outlook.com>, 
+ Niklas Cassel <niklas.cassel@wdc.com>, Niklas Cassel <nks@flawful.org>
+Content-Type: multipart/alternative; boundary="000000000000c8764b05fc5d4e0d"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,32 +95,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2 May 2023 at 16:52, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 5/2/23 15:44, Peter Maydell wrote:
-> > Hi; I figured we could put some dates into the proposed 8.1
-> > schedule. Here's a starter:
-> >
-> > 2023-07-11 Soft feature freeze
-> > 2023-07-18 Hard feature freeze. Tag rc0
-> > 2023-07-25 Tag rc1
-> > 2023-08-01 Tag rc2
-> > 2023-08-08 Tag rc3
-> > 2023-08-15 Release; or tag rc4 if needed
-> > 2023-08-22 Release if we needed an rc4
-> >
-> > (dates picked largely to ensure that we don't slip into
-> > September)
-> >
-> > Richard, you're doing merges, so the most important
-> > question is whether this works for you :-)
->
-> Looks reasonable.  I have some holiday scheduled between rc0 and rc1, but I'm sure we can
-> work that out.
+--000000000000c8764b05fc5d4e0d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In the absence of any other comments I've marked this as
-the actual schedule on the wiki.
+On Mon, May 22, 2023 at 5:16=E2=80=AFPM Mateusz Albecki <mateusz.p.albecki@=
+gmail.com>
+wrote:
+>
+> Certainly seems like my patch is wrong as it will make the abort path
+execute ide_cmd_done twice. During debug I came to the conclusion that
+ide_cmd_done is not called at all as I was getting timeouts on the driver
+side while waiting for D2H FIS. I am still not sure how I was getting this
+behavior if the problem was actually with setting correct error bits. Even
+so I think it can be safely assumed that Niklas' change will solve the
+issue, I will try to verify it in a couple of days and if I see any problem
+I will come back to you.
+>
+> Mateusz
 
--- PMM
+Great, thanks :)
+
+I'm waiting to hear back from Niklas, but I'm hoping to take their patches
+this cycle as I think they look quite good.
+
+Thank you for submitting bug reports and patches :~)
+
+--js
+
+--000000000000c8764b05fc5d4e0d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><br>
+<br>
+On Mon, May 22, 2023 at 5:16=E2=80=AFPM Mateusz Albecki &lt;<a href=3D"mail=
+to:mateusz.p.albecki@gmail.com" target=3D"_blank" rel=3D"noreferrer">mateus=
+z.p.albecki@gmail.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Certainly seems like my patch is wrong as it will make the abort path =
+execute ide_cmd_done twice. During debug I came to the conclusion that ide_=
+cmd_done is not called at all as I was getting timeouts on the driver side =
+while waiting for D2H FIS. I am still not sure how I was getting this behav=
+ior if the problem was actually with setting correct error bits. Even so I =
+think it can be safely assumed that Niklas&#39; change will solve the issue=
+, I will try to verify it in a couple of days and if I see any problem I wi=
+ll come back to you.<br>
+&gt;<br>
+&gt; Mateusz<br><br><div dir=3D"auto">Great, thanks :)</div><div dir=3D"aut=
+o"><br></div><div dir=3D"auto">I&#39;m waiting to hear back from Niklas, bu=
+t I&#39;m hoping to take their patches this cycle as I think they look quit=
+e good.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Thank you for su=
+bmitting bug reports and patches :~)</div><div dir=3D"auto"><br></div><div =
+dir=3D"auto">--js</div></div>
+
+--000000000000c8764b05fc5d4e0d--
+
 
