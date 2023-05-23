@@ -2,73 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9D170D6CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3128D70D717
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:18:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1N6P-0007sH-K5; Tue, 23 May 2023 04:10:41 -0400
+	id 1q1NCg-0001iW-5D; Tue, 23 May 2023 04:17:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q1N6N-0007rr-Bd
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:10:39 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q1NCV-0001eV-9Q
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:17:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q1N6L-0003Sr-Ey
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:10:39 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q1NCS-0004vq-PF
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:16:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684829436;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1684829815;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MrwnZp6yeMQOmeCBRF+viYsURs0tplrgN8AkC8JRKGw=;
- b=jC11KvsyajZBWcf1rT4o+Q4nZbjcWmtQih6yLLcE6iun9aJbpiI1IAgSfkYHOMslJY7Jyo
- tUPkD0NBnCAWs21zDhi/tVsULqJmX5SWpxGR9U/LJszP6DDdjutWBqIP7oYd4LBt9LgJ2Z
- Ou2pKziJBkhEH3E4pE/ChkNp1WIxsTQ=
+ bh=fdp/g9lnifdsUO8tjPCaEoS9vU5bVWWZWFmjxNMAAo0=;
+ b=H9PayWid6XOmHRf360FQiN/SafW5CjQTg5496p05AIHmd+SvChpobTYWS9PqGM2aVKAV8x
+ GeRc0CO1LwyBzUXgrptzyZRa9hJEB/hTAymS26IMlYrywJvJydu3Zhb3K7nDCCAOM+rOLM
+ /Gvp3EHpapSWCct7YZptsi5Pwd8+1ZM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-641-_5opcnalPbW_CGWkF2Ksqw-1; Tue, 23 May 2023 04:10:33 -0400
-X-MC-Unique: _5opcnalPbW_CGWkF2Ksqw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-275-QtahyG2tObOwGPPBwpV-4w-1; Tue, 23 May 2023 04:16:51 -0400
+X-MC-Unique: QtahyG2tObOwGPPBwpV-4w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 92698185A794;
- Tue, 23 May 2023 08:10:32 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3BA2E40C6CD7;
- Tue, 23 May 2023 08:10:32 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 32B1521E692E; Tue, 23 May 2023 10:10:31 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: <qemu-devel@nongnu.org>,  Michael Tsirkin <mst@redhat.com>,  Fan Ni
- <fan.ni@samsung.com>,  <linux-cxl@vger.kernel.org>,
- <linuxarm@huawei.com>,  Ira Weiny <ira.weiny@intel.com>,  Alison
- Schofield <alison.schofield@intel.com>,  Michael Roth
- <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Dave
- Jiang <dave.jiang@intel.com>,  =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>,  Eric Blake <eblake@redhat.com>,  Mike Maslenkin
- <mike.maslenkin@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v5 5/7] hw/cxl/events: Add injection of General Media
- Events
-References: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
- <20230423165140.16833-6-Jonathan.Cameron@huawei.com>
- <87lehgq1cy.fsf@pond.sub.org> <20230522135737.000079c4@Huawei.com>
-Date: Tue, 23 May 2023 10:10:31 +0200
-In-Reply-To: <20230522135737.000079c4@Huawei.com> (Jonathan Cameron's message
- of "Mon, 22 May 2023 13:57:37 +0100")
-Message-ID: <87fs7na2o8.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7FAF885A5B5;
+ Tue, 23 May 2023 08:16:51 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.40])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8EBF0C1ED99;
+ Tue, 23 May 2023 08:16:50 +0000 (UTC)
+Date: Tue, 23 May 2023 09:16:47 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Mauro Matteo Cascella <mcascell@redhat.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@redhat.com,
+ jacek.halon@gmail.com
+Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
+ cursor_alloc
+Message-ID: <ZGx2bzKuwO6e4E2L@redhat.com>
+References: <20230508141813.1086562-1-mcascell@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230508141813.1086562-1-mcascell@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -89,212 +80,135 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
+On Mon, May 08, 2023 at 04:18:13PM +0200, Mauro Matteo Cascella wrote:
+> The cursor_alloc function still accepts a signed integer for both the cursor
+> width and height. A specially crafted negative width/height could make datasize
+> wrap around and cause the next allocation to be 0, potentially leading to a
+> heap buffer overflow. Modify QEMUCursor struct and cursor_alloc prototype to
+> accept unsigned ints.
+> 
+I concur with Marc-Andre that there is no code path that can
+actually trigger an overflow:
 
-> On Mon, 22 May 2023 09:19:57 +0200
-> Markus Armbruster <armbru@redhat.com> wrote:
->
->> Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
->>=20
->> > From: Ira Weiny <ira.weiny@intel.com>
->> >
->> > To facilitate testing provide a QMP command to inject a general media
->> > event.  The event can be added to the log specified.
->> >
->> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
->> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>=20=20
->>=20
->> [...]
->>=20
->> > diff --git a/qapi/cxl.json b/qapi/cxl.json
->> > index ca3af3f0b2..9dcd308a49 100644
->> > --- a/qapi/cxl.json
->> > +++ b/qapi/cxl.json
->> > @@ -5,6 +5,56 @@
->> >  # =3D CXL devices
->> >  ##
->> >=20=20
->> > +##
->> > +# @CxlEventLog:
->> > +#
->> > +# CXL has a number of separate event logs for different types of even=
-t.=20=20
->>=20
->> types of events
->>=20
->> > +# Each such event log is handled and signaled independently.
->> > +#
->> > +# @informational: Information Event Log
->> > +# @warning: Warning Event Log
->> > +# @failure: Failure Event Log
->> > +# @fatal: Fatal Event Log=20=20
->>=20
->> Are these proper nouns?  If not, the words should not be capitalized.
->
-> By your definition below of them being capitalized in the CXL spec then
-> yes, they are all proper nouns.
 
-Good.
+  hw/display/ati.c:        s->cursor = cursor_alloc(64, 64);
+  hw/display/vhost-user-gpu.c:            s->current_cursor = cursor_alloc(64, 64);
+  hw/display/virtio-gpu.c:            s->current_cursor = cursor_alloc(64, 64);
 
-> ...
->
->> > +#
->> > +# Inject an event record for a General Media Event (CXL r3.0 8.2.9.2.=
-1.1)=20=20
->>=20
->> What's "CXL r3.0", and where could a reader find it?
->
-> We have docs in docs/system/devices/cxl.rst that include the consortium
-> website which has download links on the front page.
+Not exploitable as fixed size
 
-cxl.rst has
+  hw/display/qxl-render.c:    c = cursor_alloc(cursor->header.width, cursor->header.height);
 
-    References
-    ----------
+Cursor header defined as:
 
-     - Consortium website for specifications etc:
-       http://www.computeexpresslink.org
-     - Compute Express link Revision 2 specification, October 2020
-     - CEDT CFMWS & QTG _DSM ECN May 2021
+  typedef struct SPICE_ATTR_PACKED QXLCursorHeader {
+      uint64_t unique;
+      uint16_t type;
+      uint16_t width;
+      uint16_t height;
+      uint16_t hot_spot_x;
+      uint16_t hot_spot_y;
+  } QXLCursorHeader;
 
-Should the second reference be updated to 3.0?  Exact title seems to be
-"The Compute Express Link=E2=84=A2 (CXL=E2=84=A2) 3.0 specification".  Not =
-sure we need
-to bother with the "=E2=84=A2" in a reference.
+So no negative values can be passed to cursor_alloc()
 
->                                                      I'm not sure we want=
- to
-> have lots of references to the URL spread throughout QEMU.  I can add one
-> somewhere in cxl.json if you think it is important to have one here as we=
-ll.
 
-You could add an introduction right under the "# =3D CXL devices" heading,
-and include a full reference to the specification there.  Suitably
-abbreviated references like the ones you use in this patch should then
-be fine.
+  hw/display/vmware_vga.c:    qc = cursor_alloc(c->width, c->height);
 
-Please link to cxl.rst, too: add a label to cxl.rst, :ref: it from
-cxl.json.
+Where 'c' is defined as:
 
->> Aside: the idea of a document with numbered section nested six levels
->> deep is kind of horrifying :)
->
-> Agreed!
->
->>=20
->> Again, capitalize "General Media Event" only if it's a proper noun.  If
->> "CXL r3.0" capitalizes it this way, it is.
->
-> It does capitalize it.
->
-> ...
->
->>=20
->> > +# @flags: header flags=20=20
->>=20
->> Either specify the header flags here, or point to specification.
->
-> Added a reference - same reason as below, the contents is being added to
-> with each version and we don't want to bake what is supported in this
-> interface if we can avoid it.
+  struct vmsvga_cursor_definition_s {
+      uint32_t width;
+      uint32_t height;
+      int id;
+      uint32_t bpp;
+      int hot_x;
+      int hot_y;
+      uint32_t mask[1024];
+      uint32_t image[4096];
+  };
 
-Symbolic flags are a much friendlier interface, but limit the interface
-to what QEMU understands.
+and is also already bounds checked:
 
-With a numeric encoding of flags, QEMU can serve as dumb transport
-between peers who may understand more flags than QEMU does.  One peer is
-the QMP client.  Who is the other peer?  Guest software?
+            if (cursor.width > 256
+                || cursor.height > 256
+                || cursor.bpp > 32
+                || SVGA_BITMAP_SIZE(x, y) > ARRAY_SIZE(cursor.mask)
+                || SVGA_PIXMAP_SIZE(x, y, cursor.bpp)
+                    > ARRAY_SIZE(cursor.image)) {
+                    goto badcmd;
+            }
 
-Can flags be useful even though the QEMU device model doesn't understand
-them?  Are they safe?  See below for a more general take on this.
+> Fixes: CVE-2023-1601
+> Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_alloc (CVE-2021-4206)")
 
->> > +# @physaddr: Physical Address=20=20
->>=20
->> Perhaps "Guest physical address"
->>=20
->> Address of what?
->
-> Changed already based on Phillipe's feedback on v6 to
-> Physical address (relative to @path device)
->
-> In CXL terms it's a Device Physical Address (DPA) which
-> are independent of the host (or guest) physical addresses with
-> runtime controllable mappings.
-> I'll change it to=20
->
-> @dpa: Device Physical Address (relative to @path device)
-> (and Device Physical Address is capitalized like that in the CXL spec)
+Given there is no possible codepath that can overflow, CVE-2023-1601
+looks invalid to me. It should be clsoed as not-a-bug and these two
+Fixes lines removed.
 
-Better, because the difference to guest physical address is now clear.
+> Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
+> Reported-by: Jacek Halon <jacek.halon@gmail.com>
+> ---
+>  include/ui/console.h | 4 ++--
+>  ui/cursor.c          | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
->> We have no consistent naming convention for guest physical addresses.  I
->> see @addr, @memaddr, @gpa.  Let's not add yet another name for the same
->> thing without need.
->
-> It's none of the above (except may addr which is so vague)
->
-> I'll change to dpa.
->
-> Also added a note that some of the lower bits encode flags
-> Not this is probably why the spec uses a different name - Physical
-> Address  to distinguish this from DPA - I'll keep that naming in the
-> implementation of the record, but it's not needed in the injection
-> interface where I think DPA is less confusing.
->
->>=20
->> > +# @descriptor: Descriptor=20=20
->>=20
->> No.
->
-> Ok this indeed ended up sparse.
->
-> It is a tricky balance as I don't think it makes sense to just
-> duplicate large chunks of the spec.=20
-> I'll have a go at summarizing what sort of things are in each.
-> As I mention below, we could break, these down fully at the cost
-> of constant updates as the CXL spec evolves to add new subfields
-> or values for existing fields.  This one for example currently has
-> 3 bits, Uncorrectable Event, Threshold Event, Poison List Overflow event.
-> The next one currently has 3 bits defined as well, but there are 3 more
-> queued up for inclusion.
->
-> Realistically no one is going to write a descriptor without
-> looking at the specification for the field definitions and understanding
-> the physical geometry of their device (which will be device specific).
->
-> I'm fine with tweaking the balance though if you think that makes sense.
+Even though it isn't fixing a bug, the change itself still makes
+sense, because there's no reason a negative width/height is ever
+appropriate. This protects us against accidentally introducing
+future bugs, so with the two CVE Fixes lines removed:
 
-This is about picking an appropriate level of abstraction for the QMP
-interface.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-In your patch, it is basically a few named sequences of bits.  The
-interface changes only when new named entities get added to the spec.
-Spec revisions may also add new uses of existing entities' bits, but the
-interface doesn't care.
 
-The lowest imaginable level is a single sequence of bits.  Basically the
-named bit sequences pasted together.  Now the interface changes only
-when we run out of bits.  Mind, I'm merely exploring the limits here.
+> 
+> diff --git a/include/ui/console.h b/include/ui/console.h
+> index 2a8fab091f..92a4d90a1b 100644
+> --- a/include/ui/console.h
+> +++ b/include/ui/console.h
+> @@ -144,13 +144,13 @@ typedef struct QemuUIInfo {
+>  
+>  /* cursor data format is 32bit RGBA */
+>  typedef struct QEMUCursor {
+> -    int                 width, height;
+> +    uint32_t            width, height;
+>      int                 hot_x, hot_y;
+>      int                 refcount;
+>      uint32_t            data[];
+>  } QEMUCursor;
+>  
+> -QEMUCursor *cursor_alloc(int width, int height);
+> +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height);
+>  QEMUCursor *cursor_ref(QEMUCursor *c);
+>  void cursor_unref(QEMUCursor *c);
+>  QEMUCursor *cursor_builtin_hidden(void);
+> diff --git a/ui/cursor.c b/ui/cursor.c
+> index 6fe67990e2..b5fcb64839 100644
+> --- a/ui/cursor.c
+> +++ b/ui/cursor.c
+> @@ -90,7 +90,7 @@ QEMUCursor *cursor_builtin_left_ptr(void)
+>      return cursor_parse_xpm(cursor_left_ptr_xpm);
+>  }
+>  
+> -QEMUCursor *cursor_alloc(int width, int height)
+> +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height)
+>  {
+>      QEMUCursor *c;
+>      size_t datasize = width * height * sizeof(uint32_t);
+> -- 
+> 2.40.1
+> 
+> 
 
-At higher levels we use symbols rather than bits.  This interface needs
-to change when symbols get added to the spec.
-
-I figure the deciding question is the QEMU device model's role in all
-this.
-
-When something can be used safely only when the device model knows it,
-providing a symbolic interface doesn't add to the things QEMU needs to
-know.  Moreover, the interface can't be misused.
-
-For things where the device model acts as a dumb transport, i.e. only
-management application and guest need to know it, not having to put he
-knowledge into QEMU just to enable it to transport bits makes some
-sense.  It may enable misuse.
-
-So, can you tell us a bit more about what the device model needs to
-know to function?
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
