@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AF770D183
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E211D70D184
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 04:44:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1I0F-00035D-86; Mon, 22 May 2023 22:43:59 -0400
+	id 1q1I0H-00035U-U7; Mon, 22 May 2023 22:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I0D-00034k-BU
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:43:57 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1q1I0G-00035H-7w
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:00 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1I0B-00041s-AF
- for qemu-devel@nongnu.org; Mon, 22 May 2023 22:43:56 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-25345ca8748so5727822a91.1
- for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:43:54 -0700 (PDT)
+ id 1q1I0E-00043m-KB
+ for qemu-devel@nongnu.org; Mon, 22 May 2023 22:44:00 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-25343f0c693so4663927a91.3
+ for <qemu-devel@nongnu.org>; Mon, 22 May 2023 19:43:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809834; x=1687401834;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mi0jD2YLKTaI07qPDskQj0RKQG2ZJagqsigHELyRUFM=;
- b=0rgWW4D+g0B8tVasEkc81X3+hZjmZXAh6GfBlzRNWcu76W0S6JQx9JJnvEnjBYWsa6
- 9EwKnfBlEiX7FQTUtj0C/uffZlywTIXR28+7OdoY8X7UNO78eLTA/IggwtQTlmbs3Mal
- eDhnF9PtnSwmYAzXm9wtAgZjxLuTMy21vegfx0PeFvA4rvq+cUnq+P/40po4FKbRVcV+
- f7YOyt9qS23ATofBdOw5cMivaOMPmSA4Eh21B6edRVK5JD4+FeBDNmCxjazJ9s474FU8
- zjkKPcLIJsJbSm5hX+5kOjrRj0ijXeZ4SPqsAiF2ArlTHnKsIXv0KbEZ1vMLbK4p6nTF
- wxWg==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684809837; x=1687401837;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YV5jLwKxJCy8fH3BR1nWl7y3w5hfwEqFDtdAfG5oNfs=;
+ b=5Injns11iiNztnTw3y0hcY2mp2Cvo4wctnTpfiqQ2r3Fy3JYPhwZt2MPARoSkyijM7
+ dGku6tkdGk/SVSusaF8HR4f/Qz7WEhQI9ub2FClwUlWxiCI58c2pUey964otZ8VZVxcO
+ XiJPu7gs1RZzp4luwKoObTGnyD5FdToGeFrPOPCyyxwkrsMBIgw9keZ6ouDPYf/7a4va
+ RJqkarqEwQdIaEYSQVfflcLXqaswrUvBBAEQ1u6VnYENDXWe53x5UjN1GL4ffiT9Wfzs
+ PYDGMKad3V/q2uTSzerecPNIxGdCyHkfa6zcHy0wxE+HD700GZWmXiHuuNPqDH1hbNp3
+ ys3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684809834; x=1687401834;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mi0jD2YLKTaI07qPDskQj0RKQG2ZJagqsigHELyRUFM=;
- b=JTi7ufLBH7F5hGTGUwuO4As6GNUlvwz9z7qzQefc+I3TdkrYBsO9QL+BJzNrXcoiPz
- 6LanhSz0WKUXDeAWVdaUBN50J4/kECOOFcu+fwHEiArS9GY6qSIGY0Q054Wdk1SlKvjI
- 8QQPDM8esMiIfnBPQg/zlWMsYHlv75sk0VtkYPbeymCxi6IADot5bxExkXl/ZrA/7A20
- YfYNcO68yUCFuTaEOYrDcITMBLwTA62a9YkRwlMy8VxEHyQbVXrxpS4vY6fpijEP/rmW
- +rEPMhXt7nsM+vcpopJkl2ZlFcQkqHSUry9QXAzDx076NflQxNIivLIqHI6Tttiwjqcn
- M6fw==
-X-Gm-Message-State: AC+VfDzZF455BKRp/ptF3oceYHmf6EXX2Zp1uNDgc1o95iSswlR5SbWf
- 35cK36BxjBT5W40K/H8kfNxfmw==
-X-Google-Smtp-Source: ACHHUZ5ah0HFRWptWnxG4PUkCS5OgGR11dGVn9YyRtO8fSpF7AWhZNsTPkcgxXX9zYk7Im0Tqn/eKQ==
-X-Received: by 2002:a17:90a:690d:b0:255:a1d9:4486 with SMTP id
- r13-20020a17090a690d00b00255a1d94486mr1174927pjj.1.1684809833725; 
- Mon, 22 May 2023 19:43:53 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684809837; x=1687401837;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YV5jLwKxJCy8fH3BR1nWl7y3w5hfwEqFDtdAfG5oNfs=;
+ b=OrLh7Ub4mVUJ7w+mUYHnMrAHpDFo965LS9kFWvhpm3zdpaUvvWlIzecTtbWI64SxSj
+ Fr5UkpFWI2K+f35wiblq0koncngF8cn13RHQ71gYZxUo6fDGcivNACq9tCcxdrCqYMlG
+ IDKIGFt39Sc/fhAfCs0/5SW+NsIaMrnicam90jeosXqXYlf/76kRqs2JPtbAPChFY5+e
+ s5Qh3xXHW1Mf8Aa9nh+V5uIYyfvRfrI4cN2WVMDWMuPybgYtcZ8S1FFAVRzd9CMrxIc6
+ VERqOp8+WkJiDRgSxiJsDY6XO5acj/eL96EwBwA8FF8tYJkb9Xtgy/8vjc7GgZaG84J+
+ xoew==
+X-Gm-Message-State: AC+VfDwYqWCj/z5MM5hTtACmoFvtGLLeQc7LdTlBTxxdOV9bWO27PHo5
+ Ml8hf+sQVHRuJePsy/dtB1wwcg==
+X-Google-Smtp-Source: ACHHUZ6Oc0tlyH/pUphDuP3qeWcuBUNdZmh9J6UcLlkvD2nZ/13pMIEKkFnLZ1impYmlcngGSxAk5A==
+X-Received: by 2002:a17:90b:4b01:b0:250:faff:e201 with SMTP id
+ lx1-20020a17090b4b0100b00250faffe201mr12093934pjb.36.1684809837183; 
+ Mon, 22 May 2023 19:43:57 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.43.50
+ o10-20020a17090aac0a00b002467717fa60sm4769847pjq.16.2023.05.22.19.43.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 May 2023 19:43:53 -0700 (PDT)
+ Mon, 22 May 2023 19:43:56 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
@@ -68,15 +69,16 @@ Cc: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org, Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 00/48] igb: Fix for DPDK
-Date: Tue, 23 May 2023 11:42:51 +0900
-Message-Id: <20230523024339.50875-1-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 01/48] hw/net/net_tx_pkt: Decouple implementation from PCI
+Date: Tue, 23 May 2023 11:42:52 +0900
+Message-Id: <20230523024339.50875-2-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230523024339.50875-1-akihiko.odaki@daynix.com>
+References: <20230523024339.50875-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1033;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1033.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,133 +100,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: <366bbcafdb6e0373f0deb105153768a8c0bded87.camel@gmail.com>
-("[PATCH 0/1] e1000e: Fix tx/rx counters")
+This is intended to be followed by another change for the interface.
+It also fixes the leak of memory mapping when the specified memory is
+partially mapped.
 
-This series has fixes and feature additions to pass DPDK Test Suite with
-igb. It also includes a few minor changes related to networking.
+Fixes: e263cd49c7 ("Packet abstraction for VMWARE network devices")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ hw/net/net_tx_pkt.h |  9 ++++++++
+ hw/net/net_tx_pkt.c | 53 ++++++++++++++++++++++++++++-----------------
+ 2 files changed, 42 insertions(+), 20 deletions(-)
 
-Patch [01, 10] are bug fixes.
-Patch [11, 14] delete code which is unnecessary.
-Patch [15, 33] are minor changes.
-Patch [34, 46] implement new features.
-Patch [47, 48] update documentations.
-
-While this includes so many patches, it is not necessary to land them at
-once. Only bug fix patches may be applied first, for example.
-
-V4 -> V5:
-- Fixed L2 packet type bit location.
-
-V3 -> V4:
-- Renamed "min_buf variable to "buf". (Sriram Yagnaraman)
-- Added patch "igb: Clear-on-read ICR when ICR.INTA is set".
-  (Sriram Yagnaraman)
-
-V2 -> V3:
-- Fixed parameter name in hw/net/net_tx_pkt. (Philippe Mathieu-Daudé)
-- Added patch "igb: Clear IMS bits when committing ICR access".
-- Added patch "igb: Clear EICR bits for delayed MSI-X interrupts".
-- Added patch "e1000e: Rename a variable in e1000e_receive_internal()".
-- Added patch "igb: Rename a variable in igb_receive_internal()".
-- Added patch "e1000e: Notify only new interrupts".
-- Added patch "igb: Notify only new interrupts".
-
-V1 -> V2:
-- Dropped patch "Include the second VLAN tag in the buffer". The second
-  VLAN tag is not used at the point and unecessary.
-- Added patch "e1000x: Rename TcpIpv6 into TcpIpv6Ex".
-- Split patch "hw/net/net_tx_pkt: Decouple from PCI".
-  (Philippe Mathieu-Daudé)
-- Added advanced Rx descriptor packet encoding definitions.
-  (Sriram Yagnaraman)
-- Added some constants to eth.h to derive packet oversize thresholds.
-- Added IGB_TX_FLAGS_VLAN_SHIFT usage.
-- Renamed patch "igb: Fix igb_mac_reg_init alignment".
-  (Philippe Mathieu-Daudé)
-- Fixed size check for packets with double VLAN. (Sriram Yagnaraman)
-- Fixed timing to timestamp Tx packet.
-
-Akihiko Odaki (48):
-  hw/net/net_tx_pkt: Decouple implementation from PCI
-  hw/net/net_tx_pkt: Decouple interface from PCI
-  e1000x: Fix BPRC and MPRC
-  igb: Fix Rx packet type encoding
-  igb: Do not require CTRL.VME for tx VLAN tagging
-  igb: Clear IMS bits when committing ICR access
-  net/net_rx_pkt: Use iovec for net_rx_pkt_set_protocols()
-  e1000e: Always copy ethernet header
-  igb: Always copy ethernet header
-  Fix references to igb Avocado test
-  tests/avocado: Remove unused imports
-  tests/avocado: Remove test_igb_nomsi_kvm
-  hw/net/net_tx_pkt: Remove net_rx_pkt_get_l4_info
-  net/eth: Rename eth_setup_vlan_headers_ex
-  e1000x: Share more Rx filtering logic
-  e1000x: Take CRC into consideration for size check
-  e1000x: Rename TcpIpv6 into TcpIpv6Ex
-  e1000e: Always log status after building rx metadata
-  igb: Always log status after building rx metadata
-  igb: Remove goto
-  igb: Read DCMD.VLE of the first Tx descriptor
-  e1000e: Reset packet state after emptying Tx queue
-  vmxnet3: Reset packet state after emptying Tx queue
-  igb: Add more definitions for Tx descriptor
-  igb: Share common VF constants
-  igb: Fix igb_mac_reg_init coding style alignment
-  igb: Clear EICR bits for delayed MSI-X interrupts
-  e1000e: Rename a variable in e1000e_receive_internal()
-  igb: Rename a variable in igb_receive_internal()
-  net/eth: Use void pointers
-  net/eth: Always add VLAN tag
-  hw/net/net_rx_pkt: Enforce alignment for eth_header
-  tests/qtest/libqos/igb: Set GPIE.Multiple_MSIX
-  igb: Implement MSI-X single vector mode
-  igb: Use UDP for RSS hash
-  igb: Implement Rx SCTP CSO
-  igb: Implement Tx SCTP CSO
-  igb: Strip the second VLAN tag for extended VLAN
-  igb: Filter with the second VLAN tag for extended VLAN
-  igb: Implement igb-specific oversize check
-  igb: Implement Rx PTP2 timestamp
-  igb: Implement Tx timestamp
-  e1000e: Notify only new interrupts
-  igb: Notify only new interrupts
-  igb: Clear-on-read ICR when ICR.INTA is set
-  vmxnet3: Do not depend on PC
-  MAINTAINERS: Add a reviewer for network packet abstractions
-  docs/system/devices/igb: Note igb is tested for DPDK
-
- MAINTAINERS                                   |   3 +-
- docs/system/devices/igb.rst                   |  14 +-
- hw/net/e1000e_core.h                          |   2 -
- hw/net/e1000x_common.h                        |   9 +-
- hw/net/e1000x_regs.h                          |  24 +-
- hw/net/igb_common.h                           |  24 +-
- hw/net/igb_regs.h                             |  67 +-
- hw/net/net_rx_pkt.h                           |  38 +-
- hw/net/net_tx_pkt.h                           |  46 +-
- include/net/eth.h                             |  29 +-
- include/qemu/crc32c.h                         |   1 +
- hw/net/e1000.c                                |  41 +-
- hw/net/e1000e_core.c                          | 292 +++----
- hw/net/e1000x_common.c                        |  79 +-
- hw/net/igb.c                                  |  10 +-
- hw/net/igb_core.c                             | 717 ++++++++++--------
- hw/net/igbvf.c                                |   7 -
- hw/net/net_rx_pkt.c                           | 107 ++-
- hw/net/net_tx_pkt.c                           | 101 ++-
- hw/net/virtio-net.c                           |   7 +-
- hw/net/vmxnet3.c                              |  22 +-
- net/eth.c                                     | 100 +--
- tests/qtest/libqos/igb.c                      |   1 +
- util/crc32c.c                                 |   8 +
- hw/net/Kconfig                                |   2 +-
- hw/net/trace-events                           |  19 +-
- .../org.centos/stream/8/x86_64/test-avocado   |   3 +-
- tests/avocado/netdev-ethtool.py               |  17 +-
- 28 files changed, 969 insertions(+), 821 deletions(-)
-
+diff --git a/hw/net/net_tx_pkt.h b/hw/net/net_tx_pkt.h
+index e5ce6f20bc..5eb123ef90 100644
+--- a/hw/net/net_tx_pkt.h
++++ b/hw/net/net_tx_pkt.h
+@@ -153,6 +153,15 @@ void net_tx_pkt_dump(struct NetTxPkt *pkt);
+  */
+ void net_tx_pkt_reset(struct NetTxPkt *pkt, PCIDevice *dev);
+ 
++/**
++ * Unmap a fragment mapped from a PCI device.
++ *
++ * @context:        PCI device owning fragment
++ * @base:           pointer to fragment
++ * @len:            length of fragment
++ */
++void net_tx_pkt_unmap_frag_pci(void *context, void *base, size_t len);
++
+ /**
+  * Send packet to qemu. handles sw offloads if vhdr is not supported.
+  *
+diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
+index 8dc8568ba2..aca12ff035 100644
+--- a/hw/net/net_tx_pkt.c
++++ b/hw/net/net_tx_pkt.c
+@@ -384,10 +384,9 @@ void net_tx_pkt_setup_vlan_header_ex(struct NetTxPkt *pkt,
+     }
+ }
+ 
+-bool net_tx_pkt_add_raw_fragment(struct NetTxPkt *pkt, hwaddr pa,
+-    size_t len)
++static bool net_tx_pkt_add_raw_fragment_common(struct NetTxPkt *pkt,
++                                               void *base, size_t len)
+ {
+-    hwaddr mapped_len = 0;
+     struct iovec *ventry;
+     assert(pkt);
+ 
+@@ -395,23 +394,12 @@ bool net_tx_pkt_add_raw_fragment(struct NetTxPkt *pkt, hwaddr pa,
+         return false;
+     }
+ 
+-    if (!len) {
+-        return true;
+-     }
+-
+     ventry = &pkt->raw[pkt->raw_frags];
+-    mapped_len = len;
++    ventry->iov_base = base;
++    ventry->iov_len = len;
++    pkt->raw_frags++;
+ 
+-    ventry->iov_base = pci_dma_map(pkt->pci_dev, pa,
+-                                   &mapped_len, DMA_DIRECTION_TO_DEVICE);
+-
+-    if ((ventry->iov_base != NULL) && (len == mapped_len)) {
+-        ventry->iov_len = mapped_len;
+-        pkt->raw_frags++;
+-        return true;
+-    } else {
+-        return false;
+-    }
++    return true;
+ }
+ 
+ bool net_tx_pkt_has_fragments(struct NetTxPkt *pkt)
+@@ -465,8 +453,9 @@ void net_tx_pkt_reset(struct NetTxPkt *pkt, PCIDevice *pci_dev)
+         assert(pkt->raw);
+         for (i = 0; i < pkt->raw_frags; i++) {
+             assert(pkt->raw[i].iov_base);
+-            pci_dma_unmap(pkt->pci_dev, pkt->raw[i].iov_base,
+-                          pkt->raw[i].iov_len, DMA_DIRECTION_TO_DEVICE, 0);
++            net_tx_pkt_unmap_frag_pci(pkt->pci_dev,
++                                      pkt->raw[i].iov_base,
++                                      pkt->raw[i].iov_len);
+         }
+     }
+     pkt->pci_dev = pci_dev;
+@@ -476,6 +465,30 @@ void net_tx_pkt_reset(struct NetTxPkt *pkt, PCIDevice *pci_dev)
+     pkt->l4proto = 0;
+ }
+ 
++void net_tx_pkt_unmap_frag_pci(void *context, void *base, size_t len)
++{
++    pci_dma_unmap(context, base, len, DMA_DIRECTION_TO_DEVICE, 0);
++}
++
++bool net_tx_pkt_add_raw_fragment(struct NetTxPkt *pkt, hwaddr pa,
++    size_t len)
++{
++    dma_addr_t mapped_len = len;
++    void *base = pci_dma_map(pkt->pci_dev, pa, &mapped_len,
++                             DMA_DIRECTION_TO_DEVICE);
++    if (!base) {
++        return false;
++    }
++
++    if (mapped_len != len ||
++        !net_tx_pkt_add_raw_fragment_common(pkt, base, len)) {
++        net_tx_pkt_unmap_frag_pci(pkt->pci_dev, base, mapped_len);
++        return false;
++    }
++
++    return true;
++}
++
+ static void net_tx_pkt_do_sw_csum(struct NetTxPkt *pkt,
+                                   struct iovec *iov, uint32_t iov_len,
+                                   uint16_t csl)
 -- 
 2.40.1
 
