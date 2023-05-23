@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179E370E097
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 17:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0296170E09C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 17:34:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Tzn-0007bb-PC; Tue, 23 May 2023 11:32:19 -0400
+	id 1q1U1b-00035r-49; Tue, 23 May 2023 11:34:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1TzQ-0007YU-Uh
- for qemu-devel@nongnu.org; Tue, 23 May 2023 11:31:57 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1q1U1Y-00035O-IS
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 11:34:08 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1TzP-0002P0-B8
- for qemu-devel@nongnu.org; Tue, 23 May 2023 11:31:56 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-64d41763796so3000688b3a.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:31:53 -0700 (PDT)
+ id 1q1U1W-0002nX-Kg
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 11:34:08 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-64d1a0d640cso4606586b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684855913; x=1687447913;
+ d=linaro.org; s=google; t=1684856045; x=1687448045;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1+gXJ86s0iju1Tv+h9rhT2Zv/H7OCxTcxpLdnvZGHmE=;
- b=v1zphuEDbD0gDZEk83V2hkkDo93rsJp3vMU4dnESH6iVdGDNl9mRClfKKkfpeTXDZA
- drICepfg7obhKuzr//CrQTNpviQWOuBqrtQfKuvVfjpyUqtzTCUIwnyazJEDI7qvyvfH
- +HZqkoQ0HZ92WVsBUBPTM8/M0VOSxlECwqSwAwG3aazYSU5meOtdc2v0JczvEqL/iH9L
- +uUxZcR/qg8U+LicujY6kepx1rvmbBvDNsZUL1hQwh+vbkEyBLFm6M815YQp8BmWI5cP
- MUV51JSZAZd032ByuM3bJ52eePP9ylZt/LQhmy9oijEBRW7EjBq1a0x9zLrRZMIDozB9
- 9JvA==
+ bh=4O6hvzNlC2ottsJv+LnzbHWmgE2ikpfWnIjCi8CmnNY=;
+ b=cOH7EDLGZSecWBWCU7P91nFIK/W+J0q+vVW85htez5pLXsNCnQO8Y+RVWSQrvyYi8X
+ mBRxfwRBfy+HFthBa6qgrxeftYGg5NIU3lHeldh+viFK0Yb8ze5ESsFli1SLhzjRKZpH
+ Y4UmW0DGBSVA6QhC8XNhEiHAs8/kUdghAUo7mYv3s/bp6P5FtTv5D1YMcsU/p+TN15MU
+ 1+Wb9FM/d+hvR7dVdK+ejeqxZRM2uB1jlzA6mU7VbZgPQAhqgPl04nqEsoaUCyD3pxex
+ IrlF0KyM+IlURXOkVAddPDuXdUD+HNhAi7FqW0dpVcH4fVexC842U5T+fBxhuGV45Nlr
+ 6Qbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684855913; x=1687447913;
+ d=1e100.net; s=20221208; t=1684856045; x=1687448045;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1+gXJ86s0iju1Tv+h9rhT2Zv/H7OCxTcxpLdnvZGHmE=;
- b=TrwsG1BQ1uJWQ4BKRYGN4eNGHT/LorLCQDTlr4wiFaHHhzgmYH56U7MAr0eSJSozr/
- d2t1k5m/bdJcQNFp0bvbMwSjnq0e0LXJ1X9FPozMqCH07ehZA0ngUDB+JCghIPGO99rD
- p+e/I9Qdx+keW8MUT1kdaxmMsj9YQrN+pWvtmBSCTGwqlKMp788ESvU1QZA2mv8IUguI
- XMCd8aeqPKw/+4sPVMd8h4JTY3YVpmWVEmFJR2/N2VVnlwIbFsE0PZYkp32/rW2PnQsX
- qYjjEL4QnDJ7PSH/ulXN7Ucb3WS0YVEB2Du+pPp2ouip5XF2EqemwJLXcEIRAEz6R7W6
- BY6g==
-X-Gm-Message-State: AC+VfDwvNyDi2/cTbPtVrYdkKC82QOJJBbEdNTrNnYFSoqWXEZEQ0YQY
- l7U0VCH6ejQ3ndSW35NOT/0BpQ==
-X-Google-Smtp-Source: ACHHUZ5wL+vzyQr9iqTRGVI1mloL/WaK6+xzpdk6fdiDaatYZBL9XNq2av2OdrbD9x4diIeqU2mDVQ==
-X-Received: by 2002:a05:6a20:160e:b0:10b:6b1f:acf1 with SMTP id
- l14-20020a056a20160e00b0010b6b1facf1mr9627047pzj.29.1684855912611; 
- Tue, 23 May 2023 08:31:52 -0700 (PDT)
+ bh=4O6hvzNlC2ottsJv+LnzbHWmgE2ikpfWnIjCi8CmnNY=;
+ b=FYNI5lMmi4o9Av14eqmSxj35rcx2AVvfnYJUqO0WAiR6qakgQIO39soaKbdCHGI1gX
+ 5RKJiJ58rZG4eABnhpgF0TRIJ+/RaWY2pXSSQMf9f8AF4PVcYlnkfzEsPQ62ECOL3dxk
+ eFKZLCFChEuxEx9UO1qmN6i0XZyziWk8t3LJGkY2J13e3x5eptfIkLRfJtMzeMMF4EoY
+ pTV7SLHBtSOsvnW0P00WrONXxcfoHBMsHP/dMw8Fyodc0FUBcKBlQWZodDwZ3ttLrdJ5
+ tH3dXI9imKnfzxnfrYKhkmY2J8TSAxjQK4POcbVGo146aOLoegUmter6N3Z+TqgGujaS
+ cKcw==
+X-Gm-Message-State: AC+VfDxheBB++E1NH+nJtp1v2MzwJiYb3p9/tWyY5TdnZWCqaQjZCQza
+ Iuq+haWVvFxA00yL0wIZdbGigw==
+X-Google-Smtp-Source: ACHHUZ7sMJxYd2CtUJua5srsXEScJv9dvdYvpKHLToHl834l3mt7+1THxchO4C+UyHBWIMnK3gimgQ==
+X-Received: by 2002:a05:6a20:a128:b0:10c:5d65:83ec with SMTP id
+ q40-20020a056a20a12800b0010c5d6583ecmr3417925pzk.5.1684856045184; 
+ Tue, 23 May 2023 08:34:05 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
  ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- r25-20020a632059000000b0053031f7a367sm6144199pgm.85.2023.05.23.08.31.51
+ a26-20020a62bd1a000000b0064f45b20703sm1199700pff.64.2023.05.23.08.34.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 08:31:52 -0700 (PDT)
-Message-ID: <57f69ad1-2546-535b-75fe-f5e3d858504b@linaro.org>
-Date: Tue, 23 May 2023 08:31:50 -0700
+ Tue, 23 May 2023 08:34:04 -0700 (PDT)
+Message-ID: <cb97eb41-1417-86a4-e26a-0e0da3e22c6f@linaro.org>
+Date: Tue, 23 May 2023 08:34:03 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: Help finding Coverity defects for generated Hexagon code
+Subject: Re: [RFC PATCH] softfloat: use QEMU_FLATTEN to avoid mistaken isra
+ inlining
 Content-Language: en-US
-To: anjo@rev.ng, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <6467d9133bd9f_57b172b16e2c9d98835043@prd-scan-dashboard-0.mail>
- <4ffdd486-ec7d-49c7-1330-0d0b090735b9@rev.ng>
- <CAFEAcA9ZctmXrCAwsAk6eBeF4ojB4QBwq16TsdcGZPHTin6LEg@mail.gmail.com>
- <CABgObfa7N+A=ReW-jme=Nx+wt7rZPcpuy-ANmxepcJMxeXeeWA@mail.gmail.com>
- <5de92654-52e3-6042-de5e-b2334b737c13@rev.ng>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, Aurelien Jarno
+ <aurelien@aurel32.net>, Peter Maydell <peter.maydell@linaro.org>
+References: <20230523131107.3680641-1-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <5de92654-52e3-6042-de5e-b2334b737c13@rev.ng>
+In-Reply-To: <20230523131107.3680641-1-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,47 +98,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/23 06:29, Anton Johansson via wrote:
+On 5/23/23 06:11, Alex Bennée wrote:
+> Balton discovered that asserts for the extract/deposit calls had a
+> significant impact on a lame benchmark on qemu-ppc. Replicating with:
 > 
-> On 5/23/23 12:29, Paolo Bonzini wrote:
->> On Tue, May 23, 2023 at 11:18 AM Peter Maydell <peter.maydell@linaro.org> wrote:
->>> On Mon, 22 May 2023 at 21:24, Anton Johansson <anjo@rev.ng> wrote:
->>>> Hi,
->>>>
->>>> coverity recently reported some defects in code generated by idef-parser
->>>> (email attached). These defects are expected and we plan to emit a
->>>> /* coverity[event_tag] */ comment to disable the specific event triggered.
->>> We don't mark coverity false positives with comments in the
->>> source. For the free online scanner, we just mark them as
->>> false positives in the GUI (with an explanation of why they're
->>> false positives).
->> They aren't visible in the GUI because the whole "hexagon generated
->> files" component is marked as not-analyzed; which apparently means it
->> _is_ analyzed and visible in the emails but not in the GUI.
+>    ./qemu-ppc64 ~/lsrc/tests/lame.git-svn/builds/ppc64/frontend/lame \
+>      -h pts-trondheim-3.wav pts-trondheim-3.mp3
 > 
-> Ah right...
+> showed up the pack/unpack routines not eliding the assert checks as it
+> should have done causing them to prominently figure in the profile:
 > 
->> The event tag for this error should be "dead_error_condition". In
->> theory, the hexagon generated files could be a good exception to the
->> rules that we don't mark false positives in the source, but finding
->> the right line to add the tag can be messy.
-> If we decide to mark these in source, my plan was to simply emit
+>    11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
+>    11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+>     8.26%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
+>     6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+>     5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+>     4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
+>     4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
+>     3.62%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
 > 
->      if (qemu_tmp_2 >= 64) {
->          /* coverity[dead_error_condition] */
->          tcg_gen_movi_i64(tmp_5, 0);
->      } else {
->          tcg_gen_shli_i64(tmp_5, tmp_4, qemu_tmp_2);
->      }
+> After this patch the same test runs 31 seconds faster with a profile
+> where the generated code dominates more:
 > 
-> for all of these safety checks around shifts/extracts where the defect could
-> trigger. Maybe this is overreaching as we would also mark similar branches in
-> other instructions that are alive, but if we knew they were dead at translation
-> time we could simply not emit them to begin with.
+> +   14.12%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619420
+> +   13.30%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000616850
+> +   12.58%    12.19%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+> +   10.62%     0.00%  qemu-ppc64  [unknown]                [.] 0x000000400061bf70
+> +    9.91%     9.73%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
+> +    7.84%     7.82%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+> +    6.47%     5.78%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize.constprop.0
+> +    6.46%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000620130
+> +    6.42%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619400
+> +    6.17%     6.04%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+> +    5.85%     0.00%  qemu-ppc64  [unknown]                [.] 0x00000040006167e0
+> +    5.74%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000b693fcffffd3
+> +    5.45%     4.78%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
+> 
+> Suggested-by: Richard Henderson<richard.henderson@linaro.org>
+> Message-Id:<ec9cfe5a-d5f2-466d-34dc-c35817e7e010@linaro.org>
+> [AJB: Patchified rth's suggestion]
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> Cc: BALATON Zoltan<balaton@eik.bme.hu>
+> ---
+>   fpu/softfloat.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
 
-It would be simpler to do better constant propagation and folding in the generator than to 
-do the markup.  All of the cases for which it warns are really quite trivial.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
