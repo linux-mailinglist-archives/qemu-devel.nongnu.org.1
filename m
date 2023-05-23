@@ -2,44 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9881B70DA50
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 611FC70DA4B
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:20:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P88-0005Yg-Cf; Tue, 23 May 2023 06:20:36 -0400
+	id 1q1P7y-0004sx-VT; Tue, 23 May 2023 06:20:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P7u-0004oE-Ke; Tue, 23 May 2023 06:20:22 -0400
+ id 1q1P7u-0004od-PW; Tue, 23 May 2023 06:20:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P7r-00030M-KG; Tue, 23 May 2023 06:20:22 -0400
+ id 1q1P7s-00030Z-UV; Tue, 23 May 2023 06:20:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5C9257D38;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7FE6B7D39;
  Tue, 23 May 2023 13:20:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A6103729F;
+ by tsrv.corpit.ru (Postfix) with SMTP id D11CC72A0;
  Tue, 23 May 2023 13:20:14 +0300 (MSK)
-Received: (nullmailer pid 86067 invoked by uid 1000);
+Received: (nullmailer pid 86070 invoked by uid 1000);
  Tue, 23 May 2023 10:20:14 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Daniil Kovalev <dkovalev@compiler-toolchain-for.me>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Laurent Vivier <laurent@vivier.eu>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.3 33/45] tests/docker: bump the xtensa base to
- debian:11-slim
-Date: Tue, 23 May 2023 13:17:10 +0300
-Message-Id: <20230523102014.85954-2-mjt@tls.msk.ru>
+Subject: [Stable-7.2.3 34/45] linux-user: Fix mips fp64 executables loading
+Date: Tue, 23 May 2023 13:17:11 +0300
+Message-Id: <20230523102014.85954-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.3-20230523131604@cover.tls.msk.ru>
 References: <qemu-stable-7.2.3-20230523131604@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,33 +60,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Bennée <alex.bennee@linaro.org>
+From: Daniil Kovalev <dkovalev@compiler-toolchain-for.me>
 
-Stretch is going out of support so things like security updates will
-fail. As the toolchain itself is binary it hopefully won't mind the
-underlying OS being updated.
+If a program requires fr1, we should set the FR bit of CP0 control status
+register and add F64 hardware flag. The corresponding `else if` branch
+statement is copied from the linux kernel sources (see `arch_check_elf` function
+in linux/arch/mips/kernel/elf.c).
 
-Message-Id: <20230503091244.1450613-3-alex.bennee@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 3217b84f3cd813a7daffc64b26543c313f3a042a)
+Signed-off-by: Daniil Kovalev <dkovalev@compiler-toolchain-for.me>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Message-Id: <20230404052153.16617-1-dkovalev@compiler-toolchain-for.me>
+Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+(cherry picked from commit a0f8d2701b205d9d7986aa555e0566b13dc18fa0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/docker/dockerfiles/debian-xtensa-cross.docker b/tests/docker/dockerfiles/debian-xtensa-cross.docker
-index 2f11b3b7bc..aebfabdd6e 100644
---- a/tests/docker/dockerfiles/debian-xtensa-cross.docker
-+++ b/tests/docker/dockerfiles/debian-xtensa-cross.docker
-@@ -5,7 +5,7 @@
- # using a prebuilt toolchains for Xtensa cores from:
- # https://github.com/foss-xtensa/toolchain/releases
- #
--FROM docker.io/library/debian:stretch-slim
-+FROM docker.io/library/debian:11-slim
- 
- RUN apt-get update && \
-     DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
+diff --git a/linux-user/mips/cpu_loop.c b/linux-user/mips/cpu_loop.c
+index d5c1c7941d..8735e58bad 100644
+--- a/linux-user/mips/cpu_loop.c
++++ b/linux-user/mips/cpu_loop.c
+@@ -290,7 +290,10 @@ void target_cpu_copy_regs(CPUArchState *env, struct target_pt_regs *regs)
+             env->CP0_Status |= (1 << CP0St_FR);
+             env->hflags |= MIPS_HFLAG_F64;
+         }
+-    } else  if (!prog_req.fre && !prog_req.frdefault &&
++    } else if (prog_req.fr1) {
++        env->CP0_Status |= (1 << CP0St_FR);
++        env->hflags |= MIPS_HFLAG_F64;
++    } else if (!prog_req.fre && !prog_req.frdefault &&
+           !prog_req.fr1 && !prog_req.single && !prog_req.soft) {
+         fprintf(stderr, "qemu: Can't find a matching FPU mode\n");
+         exit(1);
 -- 
 2.39.2
 
