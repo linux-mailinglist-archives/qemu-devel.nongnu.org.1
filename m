@@ -2,71 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A351370D792
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8253170D7AD
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:38:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1NTf-0002Ny-Hq; Tue, 23 May 2023 04:34:43 -0400
+	id 1q1NW6-0003yH-RW; Tue, 23 May 2023 04:37:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1NTd-0002NL-IT
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:34:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1NTc-0008QJ-2k
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:34:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684830879;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CKUtKbf24g/3TATqyp/2bpOVtso5F93RzoOXJfZdHOU=;
- b=XdSOss4PDUllYGRsfWzW1q+txVv8yX9DbiBXd5VzTczDmCthP7WhkUZhE3avS6Xf/kqv32
- o+mc3OaHEzJleWuuEV6V3ct8tGI9OyVg6vOSNJNRZXo0j5rHBEB09QP5RJpnH2BHndf7TX
- aqYRhleGmBRIJKGu9RsnWTe0Cf66EYU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-373-RVIgyhP5NIOUty-DNMOSyA-1; Tue, 23 May 2023 04:34:38 -0400
-X-MC-Unique: RVIgyhP5NIOUty-DNMOSyA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C7673811E7C
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 08:34:37 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.40])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 21FE72166B25;
- Tue, 23 May 2023 08:34:37 +0000 (UTC)
-Date: Tue, 23 May 2023 09:34:35 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Camilla Conte <cconte@redhat.com>
-Cc: qemu-devel@nongnu.org, thuth@redhat.com
-Subject: Re: [PATCH v2 4/5] Add CI variable RUNNER_TAG
-Message-ID: <ZGx6mzWYCkqmUvHa@redhat.com>
-References: <20230522174153.46801-1-cconte@redhat.com>
- <20230522174153.46801-5-cconte@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1NW4-0003xe-T1
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:37:12 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1NW3-0000y4-0x
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:37:12 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-307a8386946so4626334f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 01:37:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684831029; x=1687423029;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AzFYTbCcnw0azLRxoF431Tt+lfeGHY+xCEtszAoLKtY=;
+ b=cmWIfm7PKZ5wxurdkLnOdh4iyu6c2eZydAsyCiqABiH2Mw6REvWV5JDk7m2cdkwG6K
+ fg7MdPjYfs3ZD/ex1axNEAdm8WoOKY+XzBgY7N+eG3yiAxTp38X4yPIL7GduuNH2+mTR
+ ugsvvjNxlVfwU1R7Q2fQZc2nJTvmS3d82mxP3jzLMOR1JjqEQCz7enfWKCl9PSc5svgG
+ enTY6WNj4TxRy+Az7Og0+RkjHIdOPy31gkdO8IiXZl+F17lE0aXFWJqKNOSxNhjJgBuO
+ zDllPsEaz1eno+bz//PKKQqoatQnFF+K8RxCUlGHgdqNdUfdBfX7TEKP7p+u4HF+WB/M
+ 4+HQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684831029; x=1687423029;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AzFYTbCcnw0azLRxoF431Tt+lfeGHY+xCEtszAoLKtY=;
+ b=Bvj7IheUeW3wX0eIJRnR99arbxB7Wum3+qKa7Z9sQyTnBy7YHu8li377/+PqIJ8Cns
+ eiEYu33x+7+SqWukPcO9DaBDQHoIiqb9a9GxZOv+3sUrSnW6bkhGA/j+aaCJB5PtLiZV
+ aSEM6wLjulec1my0v0Petzp854s8q1mgp4hNBMr1ibxAUou08r8uXMxY7TMnDODnACGa
+ LbDzhtds3MflvoMSoUPG6XVXJu0Q8drtY08mXivIMaXnBSWEQopC/PYQUmhFjFcwpYiI
+ ijy2nX+kQmnAjP5wattD5f84TgMv8MC3ufGZlrpRLCA4Bxg6tOkbN97oCuG+eNPCV470
+ 116w==
+X-Gm-Message-State: AC+VfDy/T6nigmvZA/hmS+r/TleLRCnmDa3fYRgggwmGoNgg0QLvzs9F
+ RRNOaSMFTcKXOlQEixQMZ1nmMg==
+X-Google-Smtp-Source: ACHHUZ67Z9vfVZeD0IsKg2sgYvXZm1dAYvbzRHOHFdw4lasEoy7/NNKS+DfgSAo1FLt+e0VM5QOA9w==
+X-Received: by 2002:adf:e58c:0:b0:307:c0c4:109a with SMTP id
+ l12-20020adfe58c000000b00307c0c4109amr9119922wrm.6.1684831028888; 
+ Tue, 23 May 2023 01:37:08 -0700 (PDT)
+Received: from [192.168.69.115] (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr.
+ [176.184.48.94]) by smtp.gmail.com with ESMTPSA id
+ n7-20020a7bcbc7000000b003f318be9442sm14148541wmi.40.2023.05.23.01.37.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 01:37:08 -0700 (PDT)
+Message-ID: <8a9c7803-5c1c-3e68-6506-14eae205d11e@linaro.org>
+Date: Tue, 23 May 2023 10:37:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
+ cursor_alloc
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>,
+ Mauro Matteo Cascella <mcascell@redhat.com>, qemu-devel@nongnu.org,
+ kraxel@redhat.com, jacek.halon@gmail.com,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230508141813.1086562-1-mcascell@redhat.com>
+ <CAJ+F1CK2V22PMYP4PQwH+VYKhR32GKxFK5eRODE928iu3LVodA@mail.gmail.com>
+ <fcf99624-9a48-6760-a28d-bb88bce6572f@linaro.org>
+ <ZGx0ylB10aLWchuf@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <ZGx0ylB10aLWchuf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230522174153.46801-5-cconte@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,34 +96,115 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 22, 2023 at 06:41:53PM +0100, Camilla Conte wrote:
-> This allows to set a job tag dinamically.
-
-typo -  s/dinamically/dynamically/
-
-can be fixed when a maintainer queues this, no need to repost
-just for this typo.
-
-> We need this to be able to select the Kubernetes runner.
-> See https://wiki.qemu.org/Testing/CI/KubernetesRunners.
+On 23/5/23 10:09, Daniel P. Berrangé wrote:
+> On Mon, May 22, 2023 at 08:55:02PM +0200, Philippe Mathieu-Daudé wrote:
+>> On 9/5/23 09:13, Marc-André Lureau wrote:
+>>> Hi
+>>>
+>>> On Mon, May 8, 2023 at 6:21 PM Mauro Matteo Cascella
+>>> <mcascell@redhat.com <mailto:mcascell@redhat.com>> wrote:
+>>>
+>>>      The cursor_alloc function still accepts a signed integer for both
+>>>      the cursor
+>>>      width and height. A specially crafted negative width/height could
+>>>      make datasize
+>>>      wrap around and cause the next allocation to be 0, potentially
+>>>      leading to a
+>>>      heap buffer overflow. Modify QEMUCursor struct and cursor_alloc
+>>>      prototype to
+>>>      accept unsigned ints.
+>>>
+>>>      Fixes: CVE-2023-1601
+>>>      Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_alloc
+>>>      (CVE-2021-4206)")
+>>>      Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com
+>>>      <mailto:mcascell@redhat.com>>
+>>>      Reported-by: Jacek Halon <jacek.halon@gmail.com
+>>>      <mailto:jacek.halon@gmail.com>>
+>>>
+>>>
+>>> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com
+>>> <mailto:marcandre.lureau@redhat.com>>
+>>>
+>>> It looks like this is not exploitable, QXL code uses u16 types, and
+>>
+>> 0xffff * 0xffff * 4 still overflows on 32-bit host, right?
 > 
-> Signed-off-by: Camilla Conte <cconte@redhat.com>
-> ---
->  .gitlab-ci.d/qemu-project.yml | 7 +++++++
->  1 file changed, 7 insertions(+)
+> cursor_alloc() will reject 0xffff:
+> 
+>      if (width > 512 || height > 512) {
+>          return NULL;
+>      }
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+I hadn't looked at the source file (the 'datasize' assignation
+made me incorrectly think it'd be use before sanitized).
 
+Still I wonder why can't we use a simple 'unsigned' type instead
+of a uint32_t, but I won't insist.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>>
+>>> VMWare VGA checks for values > 256. Other paths use fixed size.
+>>>
+>>>      ---
+>>>        include/ui/console.h | 4 ++--
+>>>        ui/cursor.c          | 2 +-
+>>>        2 files changed, 3 insertions(+), 3 deletions(-)
+>>>
+>>>      diff --git a/include/ui/console.h b/include/ui/console.h
+>>>      index 2a8fab091f..92a4d90a1b 100644
+>>>      --- a/include/ui/console.h
+>>>      +++ b/include/ui/console.h
+>>>      @@ -144,13 +144,13 @@ typedef struct QemuUIInfo {
+>>>
+>>>        /* cursor data format is 32bit RGBA */
+>>>        typedef struct QEMUCursor {
+>>>      -    int                 width, height;
+>>>      +    uint32_t            width, height;
+>>>            int                 hot_x, hot_y;
+>>>            int                 refcount;
+>>>            uint32_t            data[];
+>>>        } QEMUCursor;
+>>>
+>>>      -QEMUCursor *cursor_alloc(int width, int height);
+>>>      +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height);
+>>>        QEMUCursor *cursor_ref(QEMUCursor *c);
+>>>        void cursor_unref(QEMUCursor *c);
+>>>        QEMUCursor *cursor_builtin_hidden(void);
+>>>      diff --git a/ui/cursor.c b/ui/cursor.c
+>>>      index 6fe67990e2..b5fcb64839 100644
+>>>      --- a/ui/cursor.c
+>>>      +++ b/ui/cursor.c
+>>>      @@ -90,7 +90,7 @@ QEMUCursor *cursor_builtin_left_ptr(void)
+>>>            return cursor_parse_xpm(cursor_left_ptr_xpm);
+>>>        }
+>>>
+>>>      -QEMUCursor *cursor_alloc(int width, int height)
+>>>      +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height)
+>>>        {
+>>>            QEMUCursor *c;
+>>
+>> Can't we check width/height > 0 && <= SOME_LIMIT_THAT_MAKES_SENSE?
+>>
+>> Maybe a 16K * 16K cursor is future proof and safe enough.
+>>
+>>>            size_t datasize = width * height * sizeof(uint32_t);
+
+-------------------------------^
+
+>>>      --     2.40.1
+>>>
+>>>
+>>>
+>>>
+>>> -- 
+>>> Marc-André Lureau
+>>
+>>
+> 
+> With regards,
+> Daniel
 
 
