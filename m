@@ -2,51 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D4E70E783
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 23:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A27370E780
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 23:40:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Zit-0000HZ-Fz; Tue, 23 May 2023 17:39:15 -0400
+	id 1q1Ziv-0000MM-0u; Tue, 23 May 2023 17:39:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q1Zir-0000Gt-Gd; Tue, 23 May 2023 17:39:13 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ id 1q1Zit-0000I8-5P; Tue, 23 May 2023 17:39:15 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q1Zip-0004cu-PO; Tue, 23 May 2023 17:39:13 -0400
+ id 1q1Zir-0004dA-Ln; Tue, 23 May 2023 17:39:14 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A0C631FDB8;
- Tue, 23 May 2023 21:39:08 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id AD81E21C42;
+ Tue, 23 May 2023 21:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1684877948; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Tl1Ha8/UnXrGmUc3Fh5FuFg4ca4yFMZzzEPaoH5Pt1k=;
- b=04kg//zSlbAdwVF2KFqfYi6FHW4fnJ8V4V5vtpxHsErD2rWIrX5gV98XshYvePlvmZA8h0
- G5nDjwFP6LrP34HHzTxNT3LPso5QPLi7lPqN4LHRhfKTzVaGHK9RX47U9WBcNjNygVd1q4
- dUO6H1zUq93G86D+JMkMtMJSn+HB0Mw=
+ t=1684877951; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nu4XEIgIikhgA/W/+uLWgdX+OIPEQni+cYXERvD8oYk=;
+ b=v+XfrDR3au5D5pb3V7FBsZbQkU3c5xNTbi480WcCMXKm0/6E/cqtkmq6P3nVVa9jGmVwq3
+ ALS7wIUYVo5XSNXuI/o7ku/rIRYRKwd//rp2d0OmFs5MTzA24AdeIL30n0wwnsxbgW/0f+
+ 8HjXEMZeIqm8lwP4rYeqRtaRENG32pQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1684877948;
+ s=susede2_ed25519; t=1684877951;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Tl1Ha8/UnXrGmUc3Fh5FuFg4ca4yFMZzzEPaoH5Pt1k=;
- b=q8K2HRRVOtnb6J1Foxs/Iq7e86FxHiRcV0Y4AKSsMMV3SAlWB7Aq0iB5SMIQ9wb1zS+J9O
- rFV6qCHcF3mAkFAg==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nu4XEIgIikhgA/W/+uLWgdX+OIPEQni+cYXERvD8oYk=;
+ b=DtuY59Cbi/AqZH2db2xOM5KswC2mJdwWnWU1OFhJhnaD7ISIMRjnMKY9pU4QdYuLCTP3SP
+ +sCw5mLRGdmh4HCw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 106EA13588;
- Tue, 23 May 2023 21:39:05 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1755813588;
+ Tue, 23 May 2023 21:39:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id cOjDMnkybWQ7CwAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 23 May 2023 21:39:05 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id gPeyNHwybWQ7CwAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 23 May 2023 21:39:08 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
@@ -54,16 +56,16 @@ Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Jo=C3=A3o=20Silva?= <jsilva@suse.de>, Lin Ma <lma@suse.com>,
  Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
  Eric Blake <eblake@redhat.com>
-Subject: [RFC PATCH 0/6] block: Make raw_co_get_allocated_file_size
- asynchronous
-Date: Tue, 23 May 2023 18:38:57 -0300
-Message-Id: <20230523213903.18418-1-farosas@suse.de>
+Subject: [RFC PATCH 1/6] block: Remove bdrv_query_block_node_info
+Date: Tue, 23 May 2023 18:38:58 -0300
+Message-Id: <20230523213903.18418-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20230523213903.18418-1-farosas@suse.de>
+References: <20230523213903.18418-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -86,56 +88,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As discussed in another thread [1], here's an RFC addressing a VCPU
-softlockup encountered when issuing QMP commands that target a disk
-placed on NFS.
+The last call site of this function has been removed by commit
+c04d0ab026 ("qemu-img: Let info print block graph").
 
-Since QMP commands happen with the qemu_global_mutex locked, any
-command that takes too long to finish will block other threads waiting
-to take the global mutex. One such thread could be a VCPU thread going
-out of the guest to handle IO.
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ block/qapi.c         | 27 ---------------------------
+ include/block/qapi.h |  3 ---
+ 2 files changed, 30 deletions(-)
 
-This is the case when issuing the QMP command query-block, which
-eventually calls raw_co_get_allocated_file_size(). This function makes
-an 'fstat' call that has been observed to take a long time (seconds)
-over NFS.
-
-NFS latency issues aside, we can improve the situation by not blocking
-VCPU threads while the command is running.
-
-Move the 'fstat' call into the thread-pool and make the necessary
-adaptations to ensure raw_co_get_allocated_file_size runs in a
-coroutine in the block driver aio_context.
-
-1- Question about QMP and BQL
-https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03141.html
-
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/876583685
-
-Fabiano Rosas (3):
-  block: Remove bdrv_query_block_node_info
-  block: Mark bdrv_co_get_allocated_file_size() as mixed
-  block: Allow bdrv_get_allocated_file_size to run in bdrv context
-
-João Silva (1):
-  block: Add a thread-pool version of fstat
-
-Lin Ma (2):
-  Convert query-block/info_block to coroutine
-  Convert query-block/info_block to coroutine
-
- block/file-posix.c             | 40 ++++++++++++++++++++++++--
- block/monitor/block-hmp-cmds.c |  2 +-
- block/qapi.c                   | 51 +++++++++++++++-------------------
- blockdev.c                     |  6 ++--
- hmp-commands-info.hx           |  1 +
- include/block/block-hmp-cmds.h |  2 +-
- include/block/block-io.h       |  2 +-
- include/block/qapi.h           |  3 --
- include/block/raw-aio.h        |  4 ++-
- qapi/block-core.json           |  5 ++--
- 10 files changed, 72 insertions(+), 44 deletions(-)
-
+diff --git a/block/qapi.c b/block/qapi.c
+index f34f95e0ef..79bf80c503 100644
+--- a/block/qapi.c
++++ b/block/qapi.c
+@@ -309,33 +309,6 @@ out:
+     aio_context_release(bdrv_get_aio_context(bs));
+ }
+ 
+-/**
+- * bdrv_query_block_node_info:
+- * @bs: block node to examine
+- * @p_info: location to store node information
+- * @errp: location to store error information
+- *
+- * Store image information about @bs in @p_info.
+- *
+- * @p_info will be set only on success. On error, store error in @errp.
+- */
+-void bdrv_query_block_node_info(BlockDriverState *bs,
+-                                BlockNodeInfo **p_info,
+-                                Error **errp)
+-{
+-    BlockNodeInfo *info;
+-    ERRP_GUARD();
+-
+-    info = g_new0(BlockNodeInfo, 1);
+-    bdrv_do_query_node_info(bs, info, errp);
+-    if (*errp) {
+-        qapi_free_BlockNodeInfo(info);
+-        return;
+-    }
+-
+-    *p_info = info;
+-}
+-
+ /**
+  * bdrv_query_image_info:
+  * @bs: block node to examine
+diff --git a/include/block/qapi.h b/include/block/qapi.h
+index 18d48ddb70..8663971c58 100644
+--- a/include/block/qapi.h
++++ b/include/block/qapi.h
+@@ -36,9 +36,6 @@ BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
+ int bdrv_query_snapshot_info_list(BlockDriverState *bs,
+                                   SnapshotInfoList **p_list,
+                                   Error **errp);
+-void bdrv_query_block_node_info(BlockDriverState *bs,
+-                                BlockNodeInfo **p_info,
+-                                Error **errp);
+ void bdrv_query_image_info(BlockDriverState *bs,
+                            ImageInfo **p_info,
+                            bool flat,
 -- 
 2.35.3
 
