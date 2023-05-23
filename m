@@ -2,167 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E019670DD34
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C2970DD3E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:11:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Rkn-0000A8-Dr; Tue, 23 May 2023 09:08:41 -0400
+	id 1q1RnM-0002G1-QR; Tue, 23 May 2023 09:11:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q1RkZ-00007d-Bj
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:08:27 -0400
-Received: from mga06b.intel.com ([134.134.136.31] helo=mga06.intel.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q1RkX-0001Aw-24
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:08:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1684847305; x=1716383305;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=dHm3IZnBpmdjJxE4T0V+sWMg8PsT6Tqt2F473h8aibM=;
- b=BJ71wopP2kmqxObPICsCB7j23EABQKLM2Rp3U7dr2Bo0tapJHX54tK/S
- gz0poJIP0WwXnp1OmW+wWUwGGyBx7nN57F/o6UuOUvOMs4FR8ovTMYM77
- BRTgwMEWriyGJUv3qi/MVQp/gdcUHO7k0V2SijYF2OKgboDKtEHdff6Mb
- lYSDXdJGACuuJybo4WIjJatVe5oq1hoMnaNuEqmtIClnSvqv/XzFjnmxL
- ARcObE3zgn4MaO+EQCUz2eUTvopswuB1jtS+1Jjr/ovL3NzxcdGDDnWI1
- qgc3mvpgYeH9b6oJ1FaxrB+pe8VhfCELmI5WiN7RajjcU6q18CkojoXW2 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="416689616"
-X-IronPort-AV: E=Sophos;i="6.00,186,1681196400"; d="scan'208";a="416689616"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2023 06:08:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="773834935"
-X-IronPort-AV: E=Sophos;i="6.00,186,1681196400"; d="scan'208";a="773834935"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmsmga004.fm.intel.com with ESMTP; 23 May 2023 06:08:18 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 23 May 2023 06:08:18 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 23 May 2023 06:08:17 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Tue, 23 May 2023 06:08:17 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.108)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Tue, 23 May 2023 06:08:17 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T+7rNRAPDsSaKKCRJHmM2AQY6yXwL13At3pHn6kAyPW8Q3OepZ9enGCPEoFirj2PIpZiS8XT6A2LAUsSEC1iDZiDdEg2aqmRWckPWbIA1cDDk3ycLbtBhTt+cbnBwIWVM2yKRpRUtEkCyQu4sMHEuIFKHZHrrxIjh613Vk0K8Q+Cl7kLJRNh/znvuHMVO/xeONR+Gg9VhWJibAEfRhCxw8kyk/SAOFEQfmW0EfbiwkYi7ISz4477zz8OYrvYTI3hVdd3rR0+OZMQUG29xjOWAqnqkxlcjEqNxGO8NdyzcPL4wAg+ponlUT1e8ySej0SejyYIlVh5fDnLVzlIR2+3tA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f4F8bzVtux9PDsXmtLbNHI/rkqxRqiHOW13NZ6SNuVo=;
- b=Lxtn1Q+ZXQ3oIfVn6hy+gHAq8l4cNWKrSToNlpeeWY76xflrcl+p+gb9B/Yj94JjSnno0d24mSxM/G0I1eK3L0cMQojU0MHmiBTOdROpLs/fneb+jHhoYK3GkfwDYobFxcFLfqy7YUtOpLaCHxsXQRBUrO2LlxvxhDX2iDvx1RSSAhggVwzAv5uS+VbhYOSwL4r8nuGBFIrqWmyeY1IimupCfpJuvm/1uSHjRCgOe2QLI13BrLq9vOCdXCFR16QZOhIOaHG1TWl97B2MxTCdoRvJrJVwgWMiNTPWR2qr98Mpb24QV4qbp0XrnshpIv3RSDwDh1LpGSpGgWOev3LmsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN2PR11MB4511.namprd11.prod.outlook.com (2603:10b6:208:189::18)
- by SA3PR11MB7626.namprd11.prod.outlook.com (2603:10b6:806:307::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.28; Tue, 23 May
- 2023 13:08:16 +0000
-Received: from MN2PR11MB4511.namprd11.prod.outlook.com
- ([fe80::3e0f:6791:2a1c:c4cf]) by MN2PR11MB4511.namprd11.prod.outlook.com
- ([fe80::3e0f:6791:2a1c:c4cf%3]) with mapi id 15.20.6411.028; Tue, 23 May 2023
- 13:08:16 +0000
-Message-ID: <fcdb02eb-1c35-d0b0-bd38-347193a41370@intel.com>
-Date: Tue, 23 May 2023 21:08:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v12 02/15] accel: collecting TB execution count
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>, 
- <alex.bennee@linaro.org>
-CC: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>, Paolo Bonzini
- <pbonzini@redhat.com>
-References: <20230518135757.1442654-1-fei2.wu@intel.com>
- <20230518135757.1442654-3-fei2.wu@intel.com>
- <0bf482cc-fb96-0ada-f166-50d99b4952a5@linaro.org>
-From: "Wu, Fei" <fei2.wu@intel.com>
-In-Reply-To: <0bf482cc-fb96-0ada-f166-50d99b4952a5@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR04CA0185.apcprd04.prod.outlook.com
- (2603:1096:4:14::23) To MN2PR11MB4511.namprd11.prod.outlook.com
- (2603:10b6:208:189::18)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1RnI-0002FU-P6
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:11:16 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1RnG-0001nD-Tm
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:11:16 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f607839b89so14481025e9.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:11:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684847473; x=1687439473;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=C57svFkKes9NwdaXS0ZScXex1YkRfVJ4tVoU6xmVn+4=;
+ b=fqqPc154b+NjCa2MZTGZCn4m2YNJpNijA4msH1lo5kXHKxyjyZWO1V1KjqlbsMAap7
+ XATV+5igq3XzHNZZJH1bzmR92MloED2P9wKiXKKvkoM1e6GxYNL7SwEsGMmamv2kQOPB
+ ot8j7aj8K4fa2i70//sTZsa39ddHSqLoqydrynIDxLGhfdMISRj/hAAVsfTLEeJkDqTE
+ 1wGAD8rMWWQ2jMFXw5i6NtJkV0Eew+3jVXyDReMtDoeW31rlh6HpdJ70gXUz5uKtWQVY
+ dz98HXf/L+7P76NEJ3Fg/TRfopkQFe6Co1c8a7f7HYUxrE12eyT/734PT/oKyXQQ/YYM
+ GTcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684847473; x=1687439473;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=C57svFkKes9NwdaXS0ZScXex1YkRfVJ4tVoU6xmVn+4=;
+ b=SHhjQgNHyjabDcH0+GYJIDgxIwjrRfFG0LjlHZRo18wAb9oleMAML+ROvMWn3ZdXQ/
+ 5Kj/lgxEKrrsTxh0lQIkPp4/dt8F5zk9eznqs1RidoJOi4Pqqw7fl27lwjWe+8C25PGg
+ prFZ7sMkIwHRf56LEKg6PEnXAgIZYYfHlc5fk11aykMeB+Od/s5LjVT85P8Zp7IJSAkW
+ V+wEuLn4JaDRa39zkdYajYijGHN4TQojVs0AyIDWr9gvUqroUauOhtmHGczUAEqs2ohr
+ QyCpHY9BbX6JQ9BE7UzS0ad8XiCqHS2a0TdP6wleYXGkJcP9Mt2ZzQPfkCrGOpnbhXPI
+ i1wA==
+X-Gm-Message-State: AC+VfDyuJpGxP9jcbVLiK5Z3ceZnd8vgosPY48rD4Q43HH2CfuHUuDIh
+ hSzRC1iFlYs/JlwFvPoEWbCTuw==
+X-Google-Smtp-Source: ACHHUZ7MoLBhFMl+AOBFDHwJupeTrQ00SgE3ik3kJzP/vaiUe4ErVYrWYuEE90cRnaHp1IDdit/mVA==
+X-Received: by 2002:a05:600c:22d1:b0:3f5:ffe3:46a7 with SMTP id
+ 17-20020a05600c22d100b003f5ffe346a7mr6433320wmg.9.1684847473256; 
+ Tue, 23 May 2023 06:11:13 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n21-20020a7bc5d5000000b003f42a75ac2asm11773335wmk.23.2023.05.23.06.11.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 May 2023 06:11:13 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 8827C1FFBB;
+ Tue, 23 May 2023 14:11:12 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Aurelien Jarno <aurelien@aurel32.net>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [RFC PATCH] softfloat: use QEMU_FLATTEN to avoid mistaken isra
+ inlining
+Date: Tue, 23 May 2023 14:11:07 +0100
+Message-Id: <20230523131107.3680641-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR11MB4511:EE_|SA3PR11MB7626:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64867d96-6ea8-4ff8-8675-08db5b8ec553
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YasmCbBATZWM7DPO7OQlc2W8m1cQidgMMWyynnkLiXahC9/bzii7/nrd8F5/BweFLuGuSI5UeQ9YHJbLjGAA22jHitl2Oowr4lTNvPEJfz33BHWN6Um8qPSwgabTUTseQNmxUos8MF+AVh+dCMCaxB5oIp94KZzlbP1Y8PSbW2QYLCEIys79F6T032DZ7vajPUCknF5WQgRHJEDhMtnNicC8nIp6Wlp4KiQmBXUwUPfQBRu21T5V69TFctJxXU9LOCwmulj70zZvs4EwUNeXzlKKAyK3vtEdAREvruS1AkRI7bypMe/DpRhLo+TvoTmJclGYRPZnQQcC2kk2H+m8I0ocvO2n0iwtavkfyTiW39fYZA2G3mFIoE+469dg+HP4adFIheqHVXD1d1diH8bzy+a30dtAaRiXcJwT8T08I7JE3ltcfpiB+QLJenMPluoxELGHpNrgB+qyDyni0NDt0CaOl+yJtIOIs2AJ3UFccWkqIUt6pb9PyNVwRp7OP1AmtRozqGfQvu63KXnp3HIMjAKbe6m9NOYUFqWWD/avY89l4ffAChTIe7tLlx4dLGafh+zngIYV9AgaG1sF1YyH4XpVIdJ4sJs00CWEFJzghmEOArDXyWsjPRiy/iLs24JM3jUL9ySFK4GDNq222u6wkA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MN2PR11MB4511.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(136003)(346002)(376002)(39860400002)(366004)(396003)(451199021)(31696002)(41300700001)(5660300002)(82960400001)(4326008)(38100700002)(316002)(8936002)(8676002)(66476007)(66946007)(66556008)(86362001)(36756003)(83380400001)(31686004)(6486002)(6666004)(26005)(6512007)(186003)(6506007)(2616005)(54906003)(53546011)(2906002)(478600001)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WXpQVzRHWFk4TFU2enoxa0VtTHNiQ3lUUnFrTVZzeC81dU96V3FxS2hFSmdF?=
- =?utf-8?B?WklOdmlLZHl6RmdxSFlGaXBseWxhZ0VFN252ODFXNFZrWW9JdWQ4VjFmZnVa?=
- =?utf-8?B?SEhzK01kY0ZSQjh4K0xxZjhvdEVabStsZEpseHBiL1dEWUhpOFlvSENXRlpM?=
- =?utf-8?B?emRLMlNmR2F6SEZSNGk1U2xpVzBsUFgrRWFwVVM5RnhlRWd1UDJnUWNoUURq?=
- =?utf-8?B?NG1CT2FPYUswbVF3T2JGbUdXYmxuM1dPRzBUUnp4Y04zWC9PK0xyMUhCckF5?=
- =?utf-8?B?RXh6ckNzMElMcU44OUI3VkV5TjYyb3Z6VndTc09qK0QvaktaWitBeXBMUnVU?=
- =?utf-8?B?SmNmYzhQRlVnRGlZZ0NiU2FxTGhBWUpOT3BGcjQvcEd0WVREdXBzeFRtTERX?=
- =?utf-8?B?K3pYMGdUaEZsU1JRVEhFR1dDVDNwMEthdFlwbkJyb2pOT3R4MkhMZG9HS1lj?=
- =?utf-8?B?a1Y2UmNCRkdNaTRNVlBkY05NTE1tM1NaZnc2V2Z6SlhoNzhGaWxLMFVpSThn?=
- =?utf-8?B?NUlZNEFWb2U5bzB6WUVTZzZVNEVMVVRJY1JtZ2tIeXFtU2M2MThFbnZ4WmFT?=
- =?utf-8?B?RzVKZ3QzdFpNZjM3N21UZElWQWFSb3FJdjl4RGU5TFhDREpudktsYTU3cmlM?=
- =?utf-8?B?RTVQTW13ZDBYT2NUTDRiSEpsc3YrZ0I2TW5aYXZTT3IycnJiU1dBSzFLdE0y?=
- =?utf-8?B?RWcyMmUxUWtHZTlCS0l2bWU1aGRUbC83aFNKWDJUcEZYc1lMMjdRNHlyQWJy?=
- =?utf-8?B?endjNDRMVzZaTWNxZXN1VXV4by92NHZEaVJ2a3ZpRHZqczV3L253N2xIczdO?=
- =?utf-8?B?S0NPTENPb1J2amRvNWJZd0JVNkZHMTZXUGRnZi9meldqQ2FOdFI3Y3E0Wndp?=
- =?utf-8?B?aDk1WldhdEVXR2xrWEsxdlAwVzhaWk9yRHoySHh1U0NETTgwU25ySkpsMHZx?=
- =?utf-8?B?YXBkbVQ1R29TNTQ3NUhyNVZyK3VGdmRzTlRYcFpoZWlaSkd1N3E3UFhpM0pq?=
- =?utf-8?B?bTVhMzE0bDJ6a1ZNMmx4Q010K2c3U0pFRTFycVpIL1dLZytQQ3RVMG1URi84?=
- =?utf-8?B?US9HYTQ2VUt1c0o5L0dMTGtLa0ZHcDNZbmQ0WEhVazhLcjdHY1FzV0J1RzF1?=
- =?utf-8?B?dHNZQjUvTFdUa3RiQVdNNTJGMHMrL2Z0azJMMjRkckt6c3lldXFxNDdLbmY1?=
- =?utf-8?B?QUVtNkdBdm9wK2dsbnNHVHMyMlQ4OVIwNlUrTjI2SmZ4T2RFQ3B0UFd3alJB?=
- =?utf-8?B?bHFYam1ITjBEUnJ2Z2ozSDkwN283QWdNbEFUMng5U1BGdjhBbmFPc1NzMXd0?=
- =?utf-8?B?cU84dmNFT1dLd0NCOFYyYnN2cUtvdTJNT3RZbjlSeTBvUm8rTTJFSENraHl1?=
- =?utf-8?B?aUFPMkQ4eWNBdzBwNnI4NVBuNjhES1lRS1BhTVpiR09xVmhiNFVKWElrbGxM?=
- =?utf-8?B?N2hjWEJGVVlTbUh1QmZwODhSellNb05EWlBMdEVuOEtlWDl6bnU1WFplM2lT?=
- =?utf-8?B?K2ZBcTEzcUg3TEdZWWlWVVI3SnhNR3UyTHV1WG0rOG5HTzFaUTg4b2lsNHly?=
- =?utf-8?B?MHhDb3lxOWJXS1BrcmswRDgzVE9lNTEzZURIaGhxbTdmUnd5QjNUM1VhLzV4?=
- =?utf-8?B?VWRFYkZSRnZEZU1PNEJKeGlZVkdmUDMxZlo0R2JxcVI0b0YvMTNqOWtnQ0pY?=
- =?utf-8?B?Sm5Id0xES24xSmUxMytKRWdZSTVYMm1ScXhTV2E4VzB5dTVqVy9BZ3FpNVBC?=
- =?utf-8?B?YVpuMHQ3OUc0M2dKTVlhQnNZNmd4cFd5ejJ6cVF5UHFpSUpBT0FxSTBsOW9x?=
- =?utf-8?B?aXMxU2RvaDZrQ0Z2VCtBdFRLS3dibFh6QkljVmZpb3FDaGNac1prc0xyaWVT?=
- =?utf-8?B?d0dUYWp1N3pSU2wxWHZwZ3c2Y2V6S3RNbk1uczhKeWlIa0l0M00raWNHZ1pI?=
- =?utf-8?B?ZnkvSis0VHRtVFBMc25halpmMTQzWFVMR0pjS1psVnlwQU43YUkyc0lxVFZy?=
- =?utf-8?B?dVdYY2ZGWVVFakoweSt2dDZJVGd1dkVzb3lhWldsbnU0emdXczdSSjRCS0JQ?=
- =?utf-8?B?WWVtRk1uUGs0dFN3NEsxcHpiNCtBZkJNRUVNeVlmbDNpOGdwZTNLN1dLdW5q?=
- =?utf-8?Q?2wMrVnOWb2+EirbYzShQo/RvM?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64867d96-6ea8-4ff8-8675-08db5b8ec553
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB4511.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2023 13:08:16.0544 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S5OChRz5ofRXDw0xhOIbo//x92PFwxWGqNhkLqEyxtNaHn6O58O7acLD0AipQPLOz2HhS6kYvLumb69zUMj19Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7626
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.31; envelope-from=fei2.wu@intel.com;
- helo=mga06.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -179,94 +96,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/2023 8:45 AM, Richard Henderson wrote:
-> On 5/18/23 06:57, Fei Wu wrote:
->> +void HELPER(inc_exec_freq)(void *ptr)
->> +{
->> +    TBStatistics *stats = (TBStatistics *) ptr;
->> +    tcg_debug_assert(stats);
->> +    ++stats->executions.normal;
->> +}
-> ...
->> +static inline void gen_tb_exec_count(TranslationBlock *tb)
->> +{
->> +    if (tb_stats_enabled(tb, TB_EXEC_STATS)) {
->> +        TCGv_ptr ptr = tcg_temp_new_ptr();
->> +        tcg_gen_movi_ptr(ptr, (intptr_t)tb->tb_stats);
->> +        gen_helper_inc_exec_freq(ptr);
->> +    }
->> +}
-> 
-> This is 3 host instructions, easily expanded inline:
-> 
-> --- a/accel/tcg/translator.c
-> +++ b/accel/tcg/translator.c
-> @@ -11,6 +11,7 @@
->  #include "qemu/error-report.h"
->  #include "tcg/tcg.h"
->  #include "tcg/tcg-op.h"
-> +#include "tcg/tcg-temp-internal.h"
->  #include "exec/exec-all.h"
->  #include "exec/gen-icount.h"
->  #include "exec/log.h"
-> @@ -18,6 +19,30 @@
->  #include "exec/plugin-gen.h"
->  #include "exec/replay-core.h"
-> 
-> +
-> +static void gen_tb_exec_count(TranslationBlock *tb)
-> +{
-> +    if (tb_stats_enabled(tb, TB_EXEC_STATS)) {
-> +        TCGv_ptr ptr = tcg_temp_ebb_new_ptr();
-> +
-> +        tcg_gen_movi_ptr(ptr, (intptr_t)&tb->tb_stats->executions.normal);
-> +        if (sizeof(tb->tb_stats->executions.normal) == 4) {
-> +            TCGv_i32 t = tcg_temp_ebb_new_i32();
-> +            tcg_gen_ld_i32(t, ptr, 0);
-> +            tcg_gen_addi_i32(t, t, 1);
-> +            tcg_gen_st_i32(t, ptr, 0);
-> +            tcg_temp_free_i32(t);
-> +        } else {
-> +            TCGv_i64 t = tcg_temp_ebb_new_i64();
-> +            tcg_gen_ld_i64(t, ptr, 0);
-> +            tcg_gen_addi_i64(t, t, 1);
-> +            tcg_gen_st_i64(t, ptr, 0);
-> +            tcg_temp_free_i64(t);
-> +        }
-> +        tcg_temp_free_ptr(ptr);
-> +    }
-> +}
-> +
->  bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest)
->  {
->      /* Suppress goto_tb if requested. */
-> 
-> 
-> I'm not expecially keen on embedding the TBStatistics pointer directly
-> like this; for most hosts we will have to put this constant into the
-> constant pool.  Whereas the pointer already exists at tb->tb_stats, and
-> tb is at a constant displacement prior to the code, so we already have
-> mechanisms for generating pc-relative addresses.
-> 
-> However, that's premature optimization.  Let's get it working first.
-> 
-Here is the coremark results on a 4c qemu-system-riscv64, coremark takes
-1cpu in this test.
+Balton discovered that asserts for the extract/deposit calls had a
+significant impact on a lame benchmark on qemu-ppc. Replicating with:
 
-(tb_stats stop)                         Iterations/Sec   : 5358.012664
-(tb_stats start all)
-    helper - qatomic_inc(normal)        Iterations/Sec   : 2416.626390
-    helper - ++normal                   Iterations/Sec   : 4307.559767
-    no helper - inline add              Iterations/Sec   : 5168.930031
+  ./qemu-ppc64 ~/lsrc/tests/lame.git-svn/builds/ppc64/frontend/lame \
+    -h pts-trondheim-3.wav pts-trondheim-3.mp3
 
-Also if coremark runs on 4cpu, tb_stats will cost much more even in the
-inline case, it's an extreme case though.
+showed up the pack/unpack routines not eliding the assert checks as it
+should have done causing them to prominently figure in the profile:
 
-Thanks,
-Fei.
+  11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
+  11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+   8.26%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
+   6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+   5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+   4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
+   4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
+   3.62%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
 
-> 
-> r~
-> 
+After this patch the same test runs 31 seconds faster with a profile
+where the generated code dominates more:
+
++   14.12%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619420
++   13.30%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000616850
++   12.58%    12.19%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
++   10.62%     0.00%  qemu-ppc64  [unknown]                [.] 0x000000400061bf70
++    9.91%     9.73%  qemu-ppc64  qemu-ppc64               [.] helper_compute_fprf_float64
++    7.84%     7.82%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
++    6.47%     5.78%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize.constprop.0
++    6.46%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000620130
++    6.42%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000004000619400
++    6.17%     6.04%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
++    5.85%     0.00%  qemu-ppc64  [unknown]                [.] 0x00000040006167e0
++    5.74%     0.00%  qemu-ppc64  [unknown]                [.] 0x0000b693fcffffd3
++    5.45%     4.78%  qemu-ppc64  qemu-ppc64               [.] float64r32_round_pack_canonical
+
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <ec9cfe5a-d5f2-466d-34dc-c35817e7e010@linaro.org>
+[AJB: Patchified rth's suggestion]
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ fpu/softfloat.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index 108f9cb224..42e6c188b4 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -593,27 +593,27 @@ static void unpack_raw64(FloatParts64 *r, const FloatFmt *fmt, uint64_t raw)
+     };
+ }
+ 
+-static inline void float16_unpack_raw(FloatParts64 *p, float16 f)
++static void QEMU_FLATTEN float16_unpack_raw(FloatParts64 *p, float16 f)
+ {
+     unpack_raw64(p, &float16_params, f);
+ }
+ 
+-static inline void bfloat16_unpack_raw(FloatParts64 *p, bfloat16 f)
++static void QEMU_FLATTEN bfloat16_unpack_raw(FloatParts64 *p, bfloat16 f)
+ {
+     unpack_raw64(p, &bfloat16_params, f);
+ }
+ 
+-static inline void float32_unpack_raw(FloatParts64 *p, float32 f)
++static void QEMU_FLATTEN float32_unpack_raw(FloatParts64 *p, float32 f)
+ {
+     unpack_raw64(p, &float32_params, f);
+ }
+ 
+-static inline void float64_unpack_raw(FloatParts64 *p, float64 f)
++static void QEMU_FLATTEN float64_unpack_raw(FloatParts64 *p, float64 f)
+ {
+     unpack_raw64(p, &float64_params, f);
+ }
+ 
+-static void floatx80_unpack_raw(FloatParts128 *p, floatx80 f)
++static void QEMU_FLATTEN floatx80_unpack_raw(FloatParts128 *p, floatx80 f)
+ {
+     *p = (FloatParts128) {
+         .cls = float_class_unclassified,
+@@ -623,7 +623,7 @@ static void floatx80_unpack_raw(FloatParts128 *p, floatx80 f)
+     };
+ }
+ 
+-static void float128_unpack_raw(FloatParts128 *p, float128 f)
++static void QEMU_FLATTEN float128_unpack_raw(FloatParts128 *p, float128 f)
+ {
+     const int f_size = float128_params.frac_size - 64;
+     const int e_size = float128_params.exp_size;
+@@ -650,27 +650,27 @@ static uint64_t pack_raw64(const FloatParts64 *p, const FloatFmt *fmt)
+     return ret;
+ }
+ 
+-static inline float16 float16_pack_raw(const FloatParts64 *p)
++static float16 QEMU_FLATTEN float16_pack_raw(const FloatParts64 *p)
+ {
+     return make_float16(pack_raw64(p, &float16_params));
+ }
+ 
+-static inline bfloat16 bfloat16_pack_raw(const FloatParts64 *p)
++static bfloat16 QEMU_FLATTEN bfloat16_pack_raw(const FloatParts64 *p)
+ {
+     return pack_raw64(p, &bfloat16_params);
+ }
+ 
+-static inline float32 float32_pack_raw(const FloatParts64 *p)
++static float32 QEMU_FLATTEN float32_pack_raw(const FloatParts64 *p)
+ {
+     return make_float32(pack_raw64(p, &float32_params));
+ }
+ 
+-static inline float64 float64_pack_raw(const FloatParts64 *p)
++static float64 QEMU_FLATTEN float64_pack_raw(const FloatParts64 *p)
+ {
+     return make_float64(pack_raw64(p, &float64_params));
+ }
+ 
+-static float128 float128_pack_raw(const FloatParts128 *p)
++static float128 QEMU_FLATTEN float128_pack_raw(const FloatParts128 *p)
+ {
+     const int f_size = float128_params.frac_size - 64;
+     const int e_size = float128_params.exp_size;
+-- 
+2.39.2
 
 
