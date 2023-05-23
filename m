@@ -2,83 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D0070E604
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 21:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D1370E610
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 21:54:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Y13-00015M-PZ; Tue, 23 May 2023 15:49:53 -0400
+	id 1q1Y58-0007yM-KE; Tue, 23 May 2023 15:54:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q1Y11-00012v-Eh; Tue, 23 May 2023 15:49:51 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q1Y0z-00048k-Md; Tue, 23 May 2023 15:49:51 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-510e419d701so501469a12.1; 
- Tue, 23 May 2023 12:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684871386; x=1687463386;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4nwYNmsV4rDlYdUeQmy7CmqzD7Q9Vfrmw6KR+LAlXtA=;
- b=cA3F974mhJeeuFCFFrOt5Q62z6rowHi77vJCtrz+Nuau4mvM+AO1J0FG9EU6k+Dxuy
- g+Kc5bJOUMgAGxeWXPAU76jhUZzqlpzb5eg4h42SyjKdfriVvPdFZHDCChclp5uR97OM
- bXeY0qgdTKuQoiGL04hWzYTuehjh0jD4BfsL7olj6SZazUUCk8N346r3q3rQXFvX6kwq
- c+yQP2viCAGI8cm8+d3BiA3Ftj9BWUuvLjjIDLOAhtNRTUimvKVIkcCM5s3La3Fnt9i2
- e4i5zqA7oVVTwMqlUiktsohoUqd07PDubC2/V/Hap//cwlByHo4b+WGaHNBpE+SyX1np
- 9T9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684871386; x=1687463386;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4nwYNmsV4rDlYdUeQmy7CmqzD7Q9Vfrmw6KR+LAlXtA=;
- b=Yu5DCIWjX8ewQC5qpQWrhF8QdrTLm5UPF5yFHg/nk6kbTEDm7k6D6UOj4xlQDgfcf/
- ueO0EWQXAsaUGWg+uBOm+9BXJM1WPX/R1+8wJL2znyOpnjT7piPzYjfs0+TgVPeizA/4
- k7TKyCl5+lBQiP0WiF+Q7i7rUmb9jr2BpdXCee5xXHcPZOhTWJUZlSqvgl2sV4ghTBbX
- DtnrQxDSyOWEJSn43oQMY+XGCtt0im2yepX++/W+CwgBZBEDNe+OmRKhmBx8Yt28mhKT
- 98M29AJU4d5BVy4qmsK50qgagBhcaMDC3jf6WWTvOptPhn2P/EH4iQ+wIvNPaBuFuJD+
- 9PDQ==
-X-Gm-Message-State: AC+VfDx0B9LgZHLO0aZajL9poDRpKG2XxGTHH8uvG6O8bYCoxXhbcsPR
- 7K7XUQJltFzdNAaaXS5P4Y0TKIAhOKk=
-X-Google-Smtp-Source: ACHHUZ4LveUIWLjAIXLg8e632UZ7J9sR9glQrVNa5KHT87t1fTzuQNKC7FBGox7x01qzcCivyOzA+w==
-X-Received: by 2002:a17:907:3f16:b0:96f:48ad:73be with SMTP id
- hq22-20020a1709073f1600b0096f48ad73bemr19737191ejc.44.1684871385845; 
- Tue, 23 May 2023 12:49:45 -0700 (PDT)
-Received: from Provence.localdomain
- (dynamic-077-183-025-113.77.183.pool.telefonica.de. [77.183.25.113])
- by smtp.gmail.com with ESMTPSA id
- k17-20020a1709063e1100b0096f641a4c01sm4800593eji.179.2023.05.23.12.49.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 12:49:45 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Huacai Chen <chenhuacai@kernel.org>, John Snow <jsnow@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 6/6] hw/ide/piix: Move registration of VMStateDescription
- to DeviceClass
-Date: Tue, 23 May 2023 21:49:30 +0200
-Message-Id: <20230523194930.124352-7-shentey@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230523194930.124352-1-shentey@gmail.com>
-References: <20230523194930.124352-1-shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q1Y54-0007yA-A8
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 15:54:02 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q1Y52-0005XM-8O
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 15:54:02 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 807747FDD;
+ Tue, 23 May 2023 22:53:58 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 06C8173B6;
+ Tue, 23 May 2023 22:53:57 +0300 (MSK)
+Message-ID: <1d43383e-e13c-0217-b1df-3572826ff87d@tls.msk.ru>
+Date: Tue, 23 May 2023 22:53:56 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/50] Net patches
+Content-Language: en-US
+To: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20230523073238.54236-1-jasowang@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230523073238.54236-1-jasowang@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,71 +59,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The modern, declarative way to set up VM state handling is to assign to
-DeviceClass::vmsd attribute.
+23.05.2023 10:31, Jason Wang wrote:
 
-There shouldn't be any change in behavior since dc->vmsd causes
-vmstate_register_with_alias_id() to be called on the instance during
-the instance init phase. vmstate_register() was also called during the
-instance init phase which forwards to vmstate_register_with_alias_id()
-internally. Checking the migration schema before and after this patch confirms:
+>    https://github.com/jasowang/qemu.git tags/net-pull-request
 
-before:
-> qemu-system-x86_64 -S
-> qemu > migrate -d exec:cat>before.mig
+I might be wrong but it looks like besides the rtl8139 fix which went
+to -stable already, and "e1000e: Fix tx/rx counters" change which has
+been agreed upon before, there are a few other changes which are worth
+to have in -stable, in 8.0 and some even in 7.2. What do you think,
+which ones are important for -stable?
 
-after:
-> qemu-system-x86_64 -S
-> qemu > migrate -d exec:cat>after.mig
+If there's stable material in the future, please Cc: qemu-stable@nongnu.org.
 
-> analyze-migration.py -d desc -f before.mig > before.json
-> analyze-migration.py -d desc -f after.mig > after.json
-> diff before.json after.json
--> empty
+Thanks,
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- hw/ide/piix.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+/mjt
 
-diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index 47e0b474c3..151f206046 100644
---- a/hw/ide/piix.c
-+++ b/hw/ide/piix.c
-@@ -28,7 +28,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "migration/vmstate.h"
- #include "qapi/error.h"
- #include "hw/pci/pci.h"
- #include "hw/ide/piix.h"
-@@ -159,8 +158,6 @@ static void pci_piix_ide_realize(PCIDevice *dev, Error **errp)
-     bmdma_setup_bar(d);
-     pci_register_bar(dev, 4, PCI_BASE_ADDRESS_SPACE_IO, &d->bmdma_bar);
- 
--    vmstate_register(VMSTATE_IF(dev), 0, &vmstate_ide_pci, d);
--
-     for (unsigned i = 0; i < 2; i++) {
-         if (!pci_piix_init_bus(d, i, errp)) {
-             return;
-@@ -186,6 +183,7 @@ static void piix3_ide_class_init(ObjectClass *klass, void *data)
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
- 
-     dc->reset = piix_ide_reset;
-+    dc->vmsd = &vmstate_ide_pci;
-     k->realize = pci_piix_ide_realize;
-     k->exit = pci_piix_ide_exitfn;
-     k->vendor_id = PCI_VENDOR_ID_INTEL;
-@@ -208,6 +206,7 @@ static void piix4_ide_class_init(ObjectClass *klass, void *data)
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
- 
-     dc->reset = piix_ide_reset;
-+    dc->vmsd = &vmstate_ide_pci;
-     k->realize = pci_piix_ide_realize;
-     k->exit = pci_piix_ide_exitfn;
-     k->vendor_id = PCI_VENDOR_ID_INTEL;
--- 
-2.40.1
+> Akihiko Odaki (48):
+>        hw/net/net_tx_pkt: Decouple implementation from PCI
+>        hw/net/net_tx_pkt: Decouple interface from PCI
+>        e1000x: Fix BPRC and MPRC
+>        igb: Fix Rx packet type encoding
+>        igb: Do not require CTRL.VME for tx VLAN tagging
+>        igb: Clear IMS bits when committing ICR access
+>        net/net_rx_pkt: Use iovec for net_rx_pkt_set_protocols()
+>        e1000e: Always copy ethernet header
+>        igb: Always copy ethernet header
+>        Fix references to igb Avocado test
+>        tests/avocado: Remove unused imports
+>        tests/avocado: Remove test_igb_nomsi_kvm
+>        hw/net/net_tx_pkt: Remove net_rx_pkt_get_l4_info
+>        net/eth: Rename eth_setup_vlan_headers_ex
+>        e1000x: Share more Rx filtering logic
+>        e1000x: Take CRC into consideration for size check
+>        e1000x: Rename TcpIpv6 into TcpIpv6Ex
+>        e1000e: Always log status after building rx metadata
+>        igb: Always log status after building rx metadata
+>        igb: Remove goto
+>        igb: Read DCMD.VLE of the first Tx descriptor
+>        e1000e: Reset packet state after emptying Tx queue
+>        vmxnet3: Reset packet state after emptying Tx queue
+>        igb: Add more definitions for Tx descriptor
+>        igb: Share common VF constants
+>        igb: Fix igb_mac_reg_init coding style alignment
+>        igb: Clear EICR bits for delayed MSI-X interrupts
+>        e1000e: Rename a variable in e1000e_receive_internal()
+>        igb: Rename a variable in igb_receive_internal()
+>        net/eth: Use void pointers
+>        net/eth: Always add VLAN tag
+>        hw/net/net_rx_pkt: Enforce alignment for eth_header
+>        tests/qtest/libqos/igb: Set GPIE.Multiple_MSIX
+>        igb: Implement MSI-X single vector mode
+>        igb: Use UDP for RSS hash
+>        igb: Implement Rx SCTP CSO
+>        igb: Implement Tx SCTP CSO
+>        igb: Strip the second VLAN tag for extended VLAN
+>        igb: Filter with the second VLAN tag for extended VLAN
+>        igb: Implement igb-specific oversize check
+>        igb: Implement Rx PTP2 timestamp
+>        igb: Implement Tx timestamp
+>        e1000e: Notify only new interrupts
+>        igb: Notify only new interrupts
+>        igb: Clear-on-read ICR when ICR.INTA is set
+>        vmxnet3: Do not depend on PC
+>        MAINTAINERS: Add a reviewer for network packet abstractions
+>        docs/system/devices/igb: Note igb is tested for DPDK
 
 
