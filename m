@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A461B70DC10
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB3070DC4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:16:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1QsU-0001GG-VH; Tue, 23 May 2023 08:12:35 -0400
+	id 1q1QvV-0002z8-Ay; Tue, 23 May 2023 08:15:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1QsT-0001G8-3o
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:12:33 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q1QvL-0002sx-5C
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:15:31 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1QsR-00037m-Dy
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:12:32 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f60804faf4so12015125e9.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:12:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1q1QvG-0004JL-8q
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:15:29 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6af6f4a0e11so1939335a34.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:15:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684843949; x=1687435949;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eLCIjeaWgd+Oo8ckseJyPYmuJp2RN0wEy5okXijkZx8=;
- b=ehgzCrJvX6p8McSAqBpWmqib3VZxOHZJfC7Awe25TRdoUVyrjGntft+j/4zIEIlV8h
- UVQrJwOc1DmcQLjG3OR4LS/ihuBvfPO2BulTOLwAV72ELo3+bOljDmP4u9EsjoT5IKl3
- KVL5jAiZ4Qdxv8HkgBcAd9TCXAZqRPgPnB+fI2gk2qwTfS4bvZQfpORGz9UUFmk2wbl9
- MEJwb1QcWg/KKiJgWbrhHA+DlgI1joZp7FS/i2CP3SC2NiAa+YaqiLmst0EmL2hF8hQO
- 0uaxRRR0NGk/OYC8pz4oB0nCK2Bu3BpSsesMhx9RGveSDHfBpgG5ObiSESx7hAMJF+0C
- B8pA==
+ d=ventanamicro.com; s=google; t=1684844123; x=1687436123;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=C08OibMexkSAbPRQ6igdl6rDK1SBWXg8P93MkwjVikc=;
+ b=TWhwRqwYaSgd2DB6j9iM+AsaxlPi5V3vsBF0a1jZCRkjpkGpeaSjprf7c6KltnlOra
+ 3neJi8+J1nrFm+qtZlSPD8whdjAhyNH+RjvumN3BOL+JHmW3JxF2+Ilg0itBJft6kuNd
+ 94EK+Pt4NGNtF4T4fhs6L/F5/7cDf6Um7d4JqBci5Mpb4+Ox1JtR2O+5u+oIiszTSUly
+ wknPYGU6JuElwqlxqHlgwVNBPTrvMmnel6EFOqQrdqOOlWOywjNsWEFkK4I15ZZqeUIa
+ FMPEd8BkCEcdlaegBL0mELQIPVkghrig7gkplIXB8tg0LXejuxD/k+u7rYRSAYTKJe1j
+ eW7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684843949; x=1687435949;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=eLCIjeaWgd+Oo8ckseJyPYmuJp2RN0wEy5okXijkZx8=;
- b=GPKQQLWxcQMmIDqPxMG6mpFrakcg2hkBkObAonfM2mVgNmgy8yHyuaJol4MjAu4u67
- cTMp8IS2XXJ3YSGKkwDbDLA725j1E0yr3IvAFnQYGk80QT1LA3CIjLJrdNApBdkidQYv
- ssfluhYKs66nkReEEjIuzKpINpjqioEsnbTv1WvFDmY1ghqDguHFXLIfbhNKyHWUrrCD
- zWeyZJH92dc7/PpQxguVH4nV+nqC33ZxFuGXwrV6loc3kJoB4IPOiT5dXJuETB+w2i32
- 3cx6TZugu12tleMrK+Rks+dTX5uqGldGvpLNQ8XB+jnlWTn1tuSVomaXDdaI1RxCoomt
- 07HA==
-X-Gm-Message-State: AC+VfDzRGNsDus3dwqVUe4j3RAgJnmW0hPs2ZMwLrT943SRtEMT7cFB9
- RQpN6qDuK//BhBklMnFPOCqfEw==
-X-Google-Smtp-Source: ACHHUZ7jakmQw+txd+knfz3rFZTXs3AzTck+Yxa7VPADNvkI6+RM50RVZjiZh9LQastsWUVvwIarOQ==
-X-Received: by 2002:a1c:c903:0:b0:3eb:42fc:fb30 with SMTP id
- f3-20020a1cc903000000b003eb42fcfb30mr10363174wmb.32.1684843948862; 
- Tue, 23 May 2023 05:12:28 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- 18-20020a05600c229200b003f42d8dd7d1sm14978500wmf.7.2023.05.23.05.12.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 05:12:28 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 02E421FFBB;
- Tue, 23 May 2023 13:12:28 +0100 (BST)
-References: <20230505155336.137393-1-alex.bennee@linaro.org>
- <20230505155336.137393-7-alex.bennee@linaro.org>
- <06247db2-f76a-e8fd-4a8e-84a60cfab3f2@linaro.org>
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, Christian Schoenebeck
- <qemu_oss@crudebyte.com>, Michael Roth <michael.roth@amd.com>, Eric Blake
- <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Greg Kurz
- <groug@kaod.org>, Eduardo Habkost <eduardo@habkost.net>, Yanan Wang
- <wangyanan55@huawei.com>, Kyle Evans <kevans@freebsd.org>, Warner Losh
- <imp@bsdimp.com>, Richard Henderson <richard.henderson@linaro.org>, Markus
- Armbruster <armbru@redhat.com>, Riku Voipio <riku.voipio@iki.fi>
-Subject: Re: [PATCH v3 06/10] trace: remove code that depends on setting vcpu
-Date: Tue, 23 May 2023 13:11:45 +0100
-In-reply-to: <06247db2-f76a-e8fd-4a8e-84a60cfab3f2@linaro.org>
-Message-ID: <87jzwz5jro.fsf@linaro.org>
+ d=1e100.net; s=20221208; t=1684844123; x=1687436123;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=C08OibMexkSAbPRQ6igdl6rDK1SBWXg8P93MkwjVikc=;
+ b=Dtyl4n5LzeKsbpfCZig3L5FkaSVa+HUlMcvYS83c5PFrAFlktZrMKYXscAXJboadF2
+ s2Dqc617hO3zuNoM+LIPRO5wsOrwf4uivwslVzxbivZFHKPx6J6z3SW6XiEWWxKHr+Vn
+ MLnEwVTo3QkkFJhVeNwl/WlThS083i9woo0gb33b71r7H+r6wrdqGZp56Qz9naWATwv/
+ ZuDoyarbSwumI+ix6Sr1OwYXzE22gZLfB7clxZ0uacv04sY4pGlGxLJZDN/0NaTfdL6j
+ GAnlv7GsL+WVNEBmkYUdAQENCZa1i2xeOJXTRkstYDM+4uNRA2LVEAini+F5VrlvajBB
+ 8odw==
+X-Gm-Message-State: AC+VfDyzzcO2+aH5sFt9rjO4cpsG2HgoFC3LMrgPXQVL7r3UTERhrOH4
+ hOpHHp6fJLUiP2OkeO/euUdgCw==
+X-Google-Smtp-Source: ACHHUZ6DvvhglU1GdfdCjzJYSA5S7ckuQJri6dNK3HyyVuP9QRUCaRboP2NVDHBwBo/nsS3m4x8bqA==
+X-Received: by 2002:a9d:7ad0:0:b0:6a5:f719:c2f2 with SMTP id
+ m16-20020a9d7ad0000000b006a5f719c2f2mr7672383otn.30.1684844122850; 
+ Tue, 23 May 2023 05:15:22 -0700 (PDT)
+Received: from [192.168.68.107] (200-162-225-121.static-corp.ajato.com.br.
+ [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
+ g7-20020a9d6c47000000b006ae7c3eaf4esm1495931otq.26.2023.05.23.05.15.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 05:15:22 -0700 (PDT)
+Message-ID: <e90416b3-ec16-2455-8369-a0320bf25b51@ventanamicro.com>
+Date: Tue, 23 May 2023 09:15:18 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 2/8] target/riscv: Split RISCVCPUConfig declarations
+ from cpu.h into cpu_cfg.h
+Content-Language: en-US
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230523093539.203909-1-liweiwei@iscas.ac.cn>
+ <20230523093539.203909-3-liweiwei@iscas.ac.cn>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230523093539.203909-3-liweiwei@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x331.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,63 +99,293 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> On 5/5/23 17:53, Alex Benn=C3=A9e wrote:
-<snip>
->> --- a/trace/trace-hmp-cmds.c
->> +++ b/trace/trace-hmp-cmds.c
->> @@ -37,16 +37,9 @@ void hmp_trace_event(Monitor *mon, const QDict *qdict)
->>   {
->>       const char *tp_name =3D qdict_get_str(qdict, "name");
->>       bool new_state =3D qdict_get_bool(qdict, "option");
->> -    bool has_vcpu =3D qdict_haskey(qdict, "vcpu");
->> -    int vcpu =3D qdict_get_try_int(qdict, "vcpu", 0);
->>       Error *local_err =3D NULL;
->>   -    if (vcpu < 0) {
->> -        monitor_printf(mon, "argument vcpu must be positive");
->> -        return;
->> -    }
->> -
->> -    qmp_trace_event_set_state(tp_name, new_state, true, true, has_vcpu,=
- vcpu, &local_err);
->> +    qmp_trace_event_set_state(tp_name, new_state, true, true, false, 0,=
- &local_err);
->>       if (local_err) {
->>           error_report_err(local_err);
->>       }
->> @@ -80,8 +73,6 @@ void hmp_trace_file(Monitor *mon, const QDict *qdict)
->>   void hmp_info_trace_events(Monitor *mon, const QDict *qdict)
->>   {
->>       const char *name =3D qdict_get_try_str(qdict, "name");
->> -    bool has_vcpu =3D qdict_haskey(qdict, "vcpu");
->> -    int vcpu =3D qdict_get_try_int(qdict, "vcpu", 0);
->>       TraceEventInfoList *events;
->>       TraceEventInfoList *elem;
->>       Error *local_err =3D NULL;
->> @@ -89,12 +80,8 @@ void hmp_info_trace_events(Monitor *mon, const QDict =
-*qdict)
->>       if (name =3D=3D NULL) {
->>           name =3D "*";
->>       }
->> -    if (vcpu < 0) {
->> -        monitor_printf(mon, "argument vcpu must be positive");
->> -        return;
->> -    }
->>   -    events =3D qmp_trace_event_get_state(name, has_vcpu, vcpu,
->> &local_err);
->> +    events =3D qmp_trace_event_get_state(name, false, 0, &local_err);
->>       if (local_err) {
->>           error_report_err(local_err);
->>           return;
->
-> We can simplify further by removing 'bool has_vcpu, int64_t vcpu' from
-> qmp_trace_event_set_state/qmp_trace_event_get_state, which are now
-> always false/0.
+On 5/23/23 06:35, Weiwei Li wrote:
+> Split RISCVCPUConfig declarations to prepare for passing it to disas.
+> 
+> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+> ---
 
-Isn't qmp_trace_event_get_state generated by the headers?
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+>   target/riscv/cpu.h     | 114 +---------------------------------
+>   target/riscv/cpu_cfg.h | 136 +++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 137 insertions(+), 113 deletions(-)
+>   create mode 100644 target/riscv/cpu_cfg.h
+> 
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index de7e43126a..dc1229b69c 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -27,6 +27,7 @@
+>   #include "qom/object.h"
+>   #include "qemu/int128.h"
+>   #include "cpu_bits.h"
+> +#include "cpu_cfg.h"
+>   #include "qapi/qapi-types-common.h"
+>   #include "cpu-qom.h"
+>   
+> @@ -368,119 +369,6 @@ struct CPUArchState {
+>       uint64_t kvm_timer_frequency;
+>   };
+>   
+> -/*
+> - * map is a 16-bit bitmap: the most significant set bit in map is the maximum
+> - * satp mode that is supported. It may be chosen by the user and must respect
+> - * what qemu implements (valid_1_10_32/64) and what the hw is capable of
+> - * (supported bitmap below).
+> - *
+> - * init is a 16-bit bitmap used to make sure the user selected a correct
+> - * configuration as per the specification.
+> - *
+> - * supported is a 16-bit bitmap used to reflect the hw capabilities.
+> - */
+> -typedef struct {
+> -    uint16_t map, init, supported;
+> -} RISCVSATPMap;
+> -
+> -struct RISCVCPUConfig {
+> -    bool ext_zba;
+> -    bool ext_zbb;
+> -    bool ext_zbc;
+> -    bool ext_zbkb;
+> -    bool ext_zbkc;
+> -    bool ext_zbkx;
+> -    bool ext_zbs;
+> -    bool ext_zca;
+> -    bool ext_zcb;
+> -    bool ext_zcd;
+> -    bool ext_zce;
+> -    bool ext_zcf;
+> -    bool ext_zcmp;
+> -    bool ext_zcmt;
+> -    bool ext_zk;
+> -    bool ext_zkn;
+> -    bool ext_zknd;
+> -    bool ext_zkne;
+> -    bool ext_zknh;
+> -    bool ext_zkr;
+> -    bool ext_zks;
+> -    bool ext_zksed;
+> -    bool ext_zksh;
+> -    bool ext_zkt;
+> -    bool ext_ifencei;
+> -    bool ext_icsr;
+> -    bool ext_icbom;
+> -    bool ext_icboz;
+> -    bool ext_zicond;
+> -    bool ext_zihintpause;
+> -    bool ext_smstateen;
+> -    bool ext_sstc;
+> -    bool ext_svadu;
+> -    bool ext_svinval;
+> -    bool ext_svnapot;
+> -    bool ext_svpbmt;
+> -    bool ext_zdinx;
+> -    bool ext_zawrs;
+> -    bool ext_zfh;
+> -    bool ext_zfhmin;
+> -    bool ext_zfinx;
+> -    bool ext_zhinx;
+> -    bool ext_zhinxmin;
+> -    bool ext_zve32f;
+> -    bool ext_zve64f;
+> -    bool ext_zve64d;
+> -    bool ext_zmmul;
+> -    bool ext_zvfh;
+> -    bool ext_zvfhmin;
+> -    bool ext_smaia;
+> -    bool ext_ssaia;
+> -    bool ext_sscofpmf;
+> -    bool rvv_ta_all_1s;
+> -    bool rvv_ma_all_1s;
+> -
+> -    uint32_t mvendorid;
+> -    uint64_t marchid;
+> -    uint64_t mimpid;
+> -
+> -    /* Vendor-specific custom extensions */
+> -    bool ext_xtheadba;
+> -    bool ext_xtheadbb;
+> -    bool ext_xtheadbs;
+> -    bool ext_xtheadcmo;
+> -    bool ext_xtheadcondmov;
+> -    bool ext_xtheadfmemidx;
+> -    bool ext_xtheadfmv;
+> -    bool ext_xtheadmac;
+> -    bool ext_xtheadmemidx;
+> -    bool ext_xtheadmempair;
+> -    bool ext_xtheadsync;
+> -    bool ext_XVentanaCondOps;
+> -
+> -    uint8_t pmu_num;
+> -    char *priv_spec;
+> -    char *user_spec;
+> -    char *bext_spec;
+> -    char *vext_spec;
+> -    uint16_t vlen;
+> -    uint16_t elen;
+> -    uint16_t cbom_blocksize;
+> -    uint16_t cboz_blocksize;
+> -    bool mmu;
+> -    bool pmp;
+> -    bool epmp;
+> -    bool debug;
+> -    bool misa_w;
+> -
+> -    bool short_isa_string;
+> -
+> -#ifndef CONFIG_USER_ONLY
+> -    RISCVSATPMap satp_mode;
+> -#endif
+> -};
+> -
+> -typedef struct RISCVCPUConfig RISCVCPUConfig;
+> -
+>   /*
+>    * RISCVCPU:
+>    * @env: #CPURISCVState
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> new file mode 100644
+> index 0000000000..c4a627d335
+> --- /dev/null
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -0,0 +1,136 @@
+> +/*
+> + * QEMU RISC-V CPU CFG
+> + *
+> + * Copyright (c) 2016-2017 Sagar Karandikar, sagark@eecs.berkeley.edu
+> + * Copyright (c) 2017-2018 SiFive, Inc.
+> + * Copyright (c) 2021-2023 PLCT Lab
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms and conditions of the GNU General Public License,
+> + * version 2 or later, as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> + * more details.
+> + *
+> + * You should have received a copy of the GNU General Public License along with
+> + * this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef RISCV_CPU_CFG_H
+> +#define RISCV_CPU_CFG_H
+> +
+> +/*
+> + * map is a 16-bit bitmap: the most significant set bit in map is the maximum
+> + * satp mode that is supported. It may be chosen by the user and must respect
+> + * what qemu implements (valid_1_10_32/64) and what the hw is capable of
+> + * (supported bitmap below).
+> + *
+> + * init is a 16-bit bitmap used to make sure the user selected a correct
+> + * configuration as per the specification.
+> + *
+> + * supported is a 16-bit bitmap used to reflect the hw capabilities.
+> + */
+> +typedef struct {
+> +    uint16_t map, init, supported;
+> +} RISCVSATPMap;
+> +
+> +struct RISCVCPUConfig {
+> +    bool ext_zba;
+> +    bool ext_zbb;
+> +    bool ext_zbc;
+> +    bool ext_zbkb;
+> +    bool ext_zbkc;
+> +    bool ext_zbkx;
+> +    bool ext_zbs;
+> +    bool ext_zca;
+> +    bool ext_zcb;
+> +    bool ext_zcd;
+> +    bool ext_zce;
+> +    bool ext_zcf;
+> +    bool ext_zcmp;
+> +    bool ext_zcmt;
+> +    bool ext_zk;
+> +    bool ext_zkn;
+> +    bool ext_zknd;
+> +    bool ext_zkne;
+> +    bool ext_zknh;
+> +    bool ext_zkr;
+> +    bool ext_zks;
+> +    bool ext_zksed;
+> +    bool ext_zksh;
+> +    bool ext_zkt;
+> +    bool ext_ifencei;
+> +    bool ext_icsr;
+> +    bool ext_icbom;
+> +    bool ext_icboz;
+> +    bool ext_zicond;
+> +    bool ext_zihintpause;
+> +    bool ext_smstateen;
+> +    bool ext_sstc;
+> +    bool ext_svadu;
+> +    bool ext_svinval;
+> +    bool ext_svnapot;
+> +    bool ext_svpbmt;
+> +    bool ext_zdinx;
+> +    bool ext_zawrs;
+> +    bool ext_zfh;
+> +    bool ext_zfhmin;
+> +    bool ext_zfinx;
+> +    bool ext_zhinx;
+> +    bool ext_zhinxmin;
+> +    bool ext_zve32f;
+> +    bool ext_zve64f;
+> +    bool ext_zve64d;
+> +    bool ext_zmmul;
+> +    bool ext_zvfh;
+> +    bool ext_zvfhmin;
+> +    bool ext_smaia;
+> +    bool ext_ssaia;
+> +    bool ext_sscofpmf;
+> +    bool rvv_ta_all_1s;
+> +    bool rvv_ma_all_1s;
+> +
+> +    uint32_t mvendorid;
+> +    uint64_t marchid;
+> +    uint64_t mimpid;
+> +
+> +    /* Vendor-specific custom extensions */
+> +    bool ext_xtheadba;
+> +    bool ext_xtheadbb;
+> +    bool ext_xtheadbs;
+> +    bool ext_xtheadcmo;
+> +    bool ext_xtheadcondmov;
+> +    bool ext_xtheadfmemidx;
+> +    bool ext_xtheadfmv;
+> +    bool ext_xtheadmac;
+> +    bool ext_xtheadmemidx;
+> +    bool ext_xtheadmempair;
+> +    bool ext_xtheadsync;
+> +    bool ext_XVentanaCondOps;
+> +
+> +    uint8_t pmu_num;
+> +    char *priv_spec;
+> +    char *user_spec;
+> +    char *bext_spec;
+> +    char *vext_spec;
+> +    uint16_t vlen;
+> +    uint16_t elen;
+> +    uint16_t cbom_blocksize;
+> +    uint16_t cboz_blocksize;
+> +    bool mmu;
+> +    bool pmp;
+> +    bool epmp;
+> +    bool debug;
+> +    bool misa_w;
+> +
+> +    bool short_isa_string;
+> +
+> +#ifndef CONFIG_USER_ONLY
+> +    RISCVSATPMap satp_mode;
+> +#endif
+> +};
+> +
+> +typedef struct RISCVCPUConfig RISCVCPUConfig;
+> +#endif
 
