@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A64670E6CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 22:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADCE70E6DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 22:54:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Yqs-0001wX-KA; Tue, 23 May 2023 16:43:26 -0400
+	id 1q1Yzn-0006tU-Gk; Tue, 23 May 2023 16:52:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1Yqr-0001w2-2r
- for qemu-devel@nongnu.org; Tue, 23 May 2023 16:43:25 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1Yqp-00079f-Hw
- for qemu-devel@nongnu.org; Tue, 23 May 2023 16:43:24 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-53404873a19so48801a12.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 13:43:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684874601; x=1687466601;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BMgov0LAt+U6Q3gImADTtS4AI5GTurQxkgpCyPXD2OA=;
- b=qKDqGNUtH/fbafGeG450B7kS+15Qwnpj9EYMpVSQc3KZZZZvYem1eyuUURD7o9wGIA
- LPzbKHzE7wiV5idv1trlnTQXAXaTeDol0pQD3bB5P4ZBdUpEmoP+KwGYqpBYtY5SEBHU
- ChHb0mXPxq5fjSxckEIfQHMzLc4lBVVB//TCL9nH8y86ocYeiXRpltXQttuHpM88pKJ8
- /Y0ArtQip2h2D9DEoMqYKPd79WHYuUzaUzLb55YxOeB/j8E36f4N77KHLX3/40uNe0Q/
- 7B5dGBFZZAH9zP0rYTt0x+IH+myhtUulRmcQgYMQ3yNyO5dBK1H+hkJ2fC78mNGDPwXY
- Y/bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684874601; x=1687466601;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BMgov0LAt+U6Q3gImADTtS4AI5GTurQxkgpCyPXD2OA=;
- b=WoKbcGmsx1vj1aX4m/x89mWMjP0sa5V0y/rfot7CWDSM4Zvk2agntE33MiqzqCh1Kf
- /XAjqs3WGzUkHaEzzZ4Ylz+LzzJ/zwnb5dRHSEe0kMGXidW2KywQnUL4YVgaKXzvNbg2
- wiHUxC5ERdXZsE4TXqG+mWr/GI1+zQ5n7i7aM78Ps9Aq8NOKwCokrx9+4lQqgfGYtHyh
- cIcA8VvZCnIAHeIHDvM0UGBcsSvPbgvpP32Bb5/4EOXWLFHFBSdOJxJEAOwXmsSSEN44
- vGG5TLmjVHt9W1Lw2oXgEgaXf9UT0Ymz723b/oZ+ZcYQfXv5PDiqMx0qhkZ9D/j+1BG4
- 8lRw==
-X-Gm-Message-State: AC+VfDzcSwzZ2AfEtODIQLgQxWfY3w+Jg2XbK7dwMbSXY65lZwKbzymf
- UmBLeiByWZTcQQ86AjFBG+q34w==
-X-Google-Smtp-Source: ACHHUZ5TNmyOWleQUzceZWoCYWxuerW6RmgtFA5RC+6b1B+UgLM2YmjfTTecF1o9j30wZP4sWGEWTQ==
-X-Received: by 2002:a17:902:da87:b0:1af:bdeb:a09c with SMTP id
- j7-20020a170902da8700b001afbdeba09cmr6419184plx.31.1684874601389; 
- Tue, 23 May 2023 13:43:21 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
- ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
- by smtp.gmail.com with ESMTPSA id
- b6-20020a170902d50600b001a95aef9728sm7235525plg.19.2023.05.23.13.43.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 13:43:20 -0700 (PDT)
-Message-ID: <eb0615ee-31c1-1b88-02b7-f2ec189727ad@linaro.org>
-Date: Tue, 23 May 2023 13:43:19 -0700
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q1Yzm-0006tC-1W
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 16:52:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q1Yzk-0000wB-J1
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 16:52:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684875153;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jpfxhZe73n6bQX1TX9kE0D0tE8B/rP44DikI5+6cGR4=;
+ b=bDNHGxpgWnoyBt1eRAWwYOGfbk4y4U1TYG1gh097cDGSA39BAZSjIEN+3EeznElXqTJXfS
+ FvbMNZZsCYdaeD8CSM+5csLXdS+tRzLggcal1ukTX7aoS5gUDnAxv8QaNU1a32VaF74PqH
+ NM7fX/iFDRJndPP5jr3+WFI1BTYIgO0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-125-3WeMiFhgOViuFurm9zoqNg-1; Tue, 23 May 2023 16:52:29 -0400
+X-MC-Unique: 3WeMiFhgOViuFurm9zoqNg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 59E66811E78;
+ Tue, 23 May 2023 20:52:29 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.61])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9B0BD140E961;
+ Tue, 23 May 2023 20:52:28 +0000 (UTC)
+Date: Tue, 23 May 2023 16:52:26 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Erik Schilling <erik.schilling@linaro.org>,
+ Jason Wang <jasowang@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Gerd Hoffmann <kraxel@redhat.com>, virtio-fs@redhat.com,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 06/13] include/hw/virtio: document some more usage of
+ notifiers
+Message-ID: <20230523205226.GE140337@fedora>
+References: <20230418162140.373219-1-alex.bennee@linaro.org>
+ <20230418162140.373219-7-alex.bennee@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 7/7] target/riscv: Remove pc_succ_insn from DisasContext
-Content-Language: en-US
-To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-References: <20230523135939.299246-1-liweiwei@iscas.ac.cn>
- <20230523135939.299246-8-liweiwei@iscas.ac.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523135939.299246-8-liweiwei@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="pEofnJd+Ev51ey3k"
+Content-Disposition: inline
+In-Reply-To: <20230418162140.373219-7-alex.bennee@linaro.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,17 +93,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/23 06:59, Weiwei Li wrote:
-> pc_succ_insn is no longer useful after the introduce of cur_insn_len
-> and all pc related value use diff value instead of absolute value.
-> 
-> Signed-off-by: Weiwei Li<liweiwei@iscas.ac.cn>
-> Signed-off-by: Junqiang Wang<wangjunqiang@iscas.ac.cn>
+
+--pEofnJd+Ev51ey3k
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Apr 18, 2023 at 05:21:33PM +0100, Alex Benn=E9e wrote:
+> Lets document some more of the core VirtIODevice structure.
+>=20
+> Signed-off-by: Alex Benn=E9e <alex.bennee@linaro.org>
 > ---
->   target/riscv/translate.c | 7 +------
->   1 file changed, 1 insertion(+), 6 deletions(-)
+>  include/hw/virtio/virtio.h | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+> index 1ba7a9dd74..ef77e9ef0e 100644
+> --- a/include/hw/virtio/virtio.h
+> +++ b/include/hw/virtio/virtio.h
+> @@ -150,10 +150,18 @@ struct VirtIODevice
+>      VMChangeStateEntry *vmstate;
+>      char *bus_name;
+>      uint8_t device_endian;
+> +    /**
+> +     * @user_guest_notifier_mask: gate usage of ->guest_notifier_mask() =
+callback.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+s/user_/use_/
 
-r~
+> +     * This is used to suppress the masking of guest updates for
+> +     * vhost-user devices which are asynchronous by design.
+
+What is the exact reason why masking is not supported by vhost-user?
+
+Only vhost-user-net and vhost-user-crypto set use_guest_notifier_mask to
+false. Do the other vhost-user devices need to set it to false too?
+
+> +     */
+>      bool use_guest_notifier_mask;
+>      AddressSpace *dma_as;
+>      QLIST_HEAD(, VirtQueue) *vector_queues;
+>      QTAILQ_ENTRY(VirtIODevice) next;
+> +    /**
+> +     * @config_notifier: the event notifier that handles config events
+
+Using VIRTIO spec terminology:
+"the event notifier that sends Configuration Change Notifications"
+
+> +     */
+>      EventNotifier config_notifier;
+>  };
+> =20
+> --=20
+> 2.39.2
+>=20
+
+--pEofnJd+Ev51ey3k
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRtJ4oACgkQnKSrs4Gr
+c8g59wgAyC/aLNruLTM1w0JWagBD1NcaOr44bvzMZQWgxcTGmewWz4H9iXRBwKjo
+qZwOLXLJep5/XbgaCokCYOjBJVOG6WS1Ied43h0wQf3rNmkszL4BJlwsp31JCgyC
+9/UXz18J9PxTu0tjINL9UIWYcoZsLlPO308q4ArZ0Pvy7vUAaD7F2ged044SCA2H
+z0Vv2cY/Fc6woEwLULeztv3dWwl8gpMkgufSan+YLkfXlOfiAERrYvpRjubFEvIQ
+sxYIM04R/jn2F4fFxpp6vgCKXp4TQ3ILoJ7a9zPv15bFM+2kVy0yb/zNQ6xBBxhi
+R0+dyZCccrtD9nmW1zfkLFDfhAC/rA==
+=BgtP
+-----END PGP SIGNATURE-----
+
+--pEofnJd+Ev51ey3k--
+
 
