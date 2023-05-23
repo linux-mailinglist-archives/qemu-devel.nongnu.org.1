@@ -2,72 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3128D70D717
+	by mail.lfdr.de (Postfix) with ESMTPS id 236D770D716
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 10:18:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1NCg-0001iW-5D; Tue, 23 May 2023 04:17:10 -0400
+	id 1q1NCq-0001pR-GL; Tue, 23 May 2023 04:17:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1NCV-0001eV-9Q
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:17:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q1NCS-0004vq-PF
- for qemu-devel@nongnu.org; Tue, 23 May 2023 04:16:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684829815;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fdp/g9lnifdsUO8tjPCaEoS9vU5bVWWZWFmjxNMAAo0=;
- b=H9PayWid6XOmHRf360FQiN/SafW5CjQTg5496p05AIHmd+SvChpobTYWS9PqGM2aVKAV8x
- GeRc0CO1LwyBzUXgrptzyZRa9hJEB/hTAymS26IMlYrywJvJydu3Zhb3K7nDCCAOM+rOLM
- /Gvp3EHpapSWCct7YZptsi5Pwd8+1ZM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-275-QtahyG2tObOwGPPBwpV-4w-1; Tue, 23 May 2023 04:16:51 -0400
-X-MC-Unique: QtahyG2tObOwGPPBwpV-4w-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7FAF885A5B5;
- Tue, 23 May 2023 08:16:51 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.40])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8EBF0C1ED99;
- Tue, 23 May 2023 08:16:50 +0000 (UTC)
-Date: Tue, 23 May 2023 09:16:47 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@redhat.com,
- jacek.halon@gmail.com
-Subject: Re: [PATCH] ui/cursor: incomplete check for integer overflow in
- cursor_alloc
-Message-ID: <ZGx2bzKuwO6e4E2L@redhat.com>
-References: <20230508141813.1086562-1-mcascell@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1NCo-0001nz-Vm
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:17:18 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1NCn-00054V-2R
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 04:17:18 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-307d20548adso4493871f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 01:17:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684829835; x=1687421835;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wOg/ElcURmgDjsZY9jcV4KohG5mmMl8xig9nVa8Ef+c=;
+ b=WxlpC3DOOxmyrTKM5LLaQQq5oZihx9HzRY8EGWuTtLHKytE0LiWEp2aClJ2XRmoHt4
+ +u7VVu4ce55pZVsH0X2vDVHs5DM1Qk3MJLi2O0BAWXtgQ3468u7z1733jEet8RfD7hx/
+ g1YpKrHVwPrmCgv1vDGUkEDaXxOUFf265MkbcPN+Zi89Ma6OoTDfRl7zcqW6Zi6qVgGM
+ gQcaiCrexorkyTRbeREriT0A2vfC3mjqbMvygtf9iGhhHFrkvSIjEM99EaCkQ1OC6gpj
+ /YjD1MpLiF4Yjk3TT851KT82ezAcISttcT/5Fmil7mlnyEVOL8dvnEqm0jEY5YhjMbUq
+ Dv2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684829835; x=1687421835;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wOg/ElcURmgDjsZY9jcV4KohG5mmMl8xig9nVa8Ef+c=;
+ b=BmM1OT1hxHvaqVes5Qha0hVewZzWTTCh8Ekb0co85+pLtPf3u79poT4sA2IXTBVsjx
+ H8Kcey00P+I8iU0timE7mAcqgT4pXOdpu1WfnAAB2LjjIJpwGduuZurKsQfNH8TT6KvM
+ FQntotNybaM8z/EtaXCZu1jA8Ax5dDYpMjavcPqlUhA5qa4d/NmFlgpbotG1PBy2jlf3
+ aPU3Fnb/7J2NfCKvDg8jSW6g6JAMbHs2c3kZlEQDBmYH8Uv8MuEnz0dd5LEklbZfUXSd
+ FXH0Il5F6JBsyuFpO7xqPfUFD1n+LWza/vbE2n6P/qL4rWCKTaO+z4rUB/h1jaA6lkJR
+ 0y0A==
+X-Gm-Message-State: AC+VfDzzzL/ieihBovZUClIOkhBDy9zCwZfJ97S0Kc+fdv8rjVJQ7iA2
+ x532UPSMprQyOkH/vWWKQQ8I4Q==
+X-Google-Smtp-Source: ACHHUZ6758k9u2YBeQGtPjxrLtID+09Cbo03iV1sQek63dOIp6f4a3PhyY1e87o4ZlZzta26WzaPiA==
+X-Received: by 2002:a5d:4210:0:b0:306:5149:3aa8 with SMTP id
+ n16-20020a5d4210000000b0030651493aa8mr8634358wrq.24.1684829835416; 
+ Tue, 23 May 2023 01:17:15 -0700 (PDT)
+Received: from [192.168.69.115] (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr.
+ [176.184.48.94]) by smtp.gmail.com with ESMTPSA id
+ n6-20020a7bcbc6000000b003f42d8dd7ffsm10742432wmi.19.2023.05.23.01.17.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 01:17:15 -0700 (PDT)
+Message-ID: <324353de-39e9-c7e1-953b-44f97f86c1f6@linaro.org>
+Date: Tue, 23 May 2023 10:16:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v2] meson: move -no-pie from linker to compiler
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, vr_qemu@t-online.de,
+ richard.henderson@linaro.org
+References: <20230523073029.19549-1-pbonzini@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230523073029.19549-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230508141813.1086562-1-mcascell@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,135 +90,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 08, 2023 at 04:18:13PM +0200, Mauro Matteo Cascella wrote:
-> The cursor_alloc function still accepts a signed integer for both the cursor
-> width and height. A specially crafted negative width/height could make datasize
-> wrap around and cause the next allocation to be 0, potentially leading to a
-> heap buffer overflow. Modify QEMUCursor struct and cursor_alloc prototype to
-> accept unsigned ints.
+On 23/5/23 09:30, Paolo Bonzini wrote:
+> The large comment in the patch says it all; the -no-pie flag is broken and
+> this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
+> ("build: move remaining compiler flag tests to meson", 2023-05-18).  And
+> some distros made things even worse, so we have to add it to the compiler
+> command line.
 > 
-I concur with Marc-Andre that there is no code path that can
-actually trigger an overflow:
-
-
-  hw/display/ati.c:        s->cursor = cursor_alloc(64, 64);
-  hw/display/vhost-user-gpu.c:            s->current_cursor = cursor_alloc(64, 64);
-  hw/display/virtio-gpu.c:            s->current_cursor = cursor_alloc(64, 64);
-
-Not exploitable as fixed size
-
-  hw/display/qxl-render.c:    c = cursor_alloc(cursor->header.width, cursor->header.height);
-
-Cursor header defined as:
-
-  typedef struct SPICE_ATTR_PACKED QXLCursorHeader {
-      uint64_t unique;
-      uint16_t type;
-      uint16_t width;
-      uint16_t height;
-      uint16_t hot_spot_x;
-      uint16_t hot_spot_y;
-  } QXLCursorHeader;
-
-So no negative values can be passed to cursor_alloc()
-
-
-  hw/display/vmware_vga.c:    qc = cursor_alloc(c->width, c->height);
-
-Where 'c' is defined as:
-
-  struct vmsvga_cursor_definition_s {
-      uint32_t width;
-      uint32_t height;
-      int id;
-      uint32_t bpp;
-      int hot_x;
-      int hot_y;
-      uint32_t mask[1024];
-      uint32_t image[4096];
-  };
-
-and is also already bounds checked:
-
-            if (cursor.width > 256
-                || cursor.height > 256
-                || cursor.bpp > 32
-                || SVGA_BITMAP_SIZE(x, y) > ARRAY_SIZE(cursor.mask)
-                || SVGA_PIXMAP_SIZE(x, y, cursor.bpp)
-                    > ARRAY_SIZE(cursor.image)) {
-                    goto badcmd;
-            }
-
-> Fixes: CVE-2023-1601
-> Fixes: fa892e9a ("ui/cursor: fix integer overflow in cursor_alloc (CVE-2021-4206)")
-
-Given there is no possible codepath that can overflow, CVE-2023-1601
-looks invalid to me. It should be clsoed as not-a-bug and these two
-Fixes lines removed.
-
-> Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
-> Reported-by: Jacek Halon <jacek.halon@gmail.com>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1664
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  include/ui/console.h | 4 ++--
->  ui/cursor.c          | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
-
-Even though it isn't fixing a bug, the change itself still makes
-sense, because there's no reason a negative width/height is ever
-appropriate. This protects us against accidentally introducing
-future bugs, so with the two CVE Fixes lines removed:
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-
+>   meson.build | 19 ++++++++++++++-----
+>   1 file changed, 14 insertions(+), 5 deletions(-)
 > 
-> diff --git a/include/ui/console.h b/include/ui/console.h
-> index 2a8fab091f..92a4d90a1b 100644
-> --- a/include/ui/console.h
-> +++ b/include/ui/console.h
-> @@ -144,13 +144,13 @@ typedef struct QemuUIInfo {
->  
->  /* cursor data format is 32bit RGBA */
->  typedef struct QEMUCursor {
-> -    int                 width, height;
-> +    uint32_t            width, height;
->      int                 hot_x, hot_y;
->      int                 refcount;
->      uint32_t            data[];
->  } QEMUCursor;
->  
-> -QEMUCursor *cursor_alloc(int width, int height);
-> +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height);
->  QEMUCursor *cursor_ref(QEMUCursor *c);
->  void cursor_unref(QEMUCursor *c);
->  QEMUCursor *cursor_builtin_hidden(void);
-> diff --git a/ui/cursor.c b/ui/cursor.c
-> index 6fe67990e2..b5fcb64839 100644
-> --- a/ui/cursor.c
-> +++ b/ui/cursor.c
-> @@ -90,7 +90,7 @@ QEMUCursor *cursor_builtin_left_ptr(void)
->      return cursor_parse_xpm(cursor_left_ptr_xpm);
->  }
->  
-> -QEMUCursor *cursor_alloc(int width, int height)
-> +QEMUCursor *cursor_alloc(uint32_t width, uint32_t height)
->  {
->      QEMUCursor *c;
->      size_t datasize = width * height * sizeof(uint32_t);
-> -- 
-> 2.40.1
-> 
-> 
+> diff --git a/meson.build b/meson.build
+> index 0a5cdefd4d3d..20accae99281 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -265,12 +265,21 @@ endif
+>   
+>   # Meson currently only handles pie as a boolean for now, so if the user
+>   # has explicitly disabled PIE we need to extend our cflags.
+> +#
+> +# -no-pie is supposedly a linker flag that has no effect on the compiler
+> +# command line, but some distros, that didn't quite know what they were
+> +# doing, made local changes to gcc's specs file that turned it into
+> +# a compiler command-line flag.
+> +#
+> +# What about linker flags?  For a static build, no PIE is implied by -static
+> +# which we added above (and if it's not because of the same specs patching,
+> +# there's nothing we can do: compilation will fail, report a bug to your
+> +# distro and do not use --disable-pie in the meanwhile).  For dynamic linking,
+> +# instead, we can't add -no-pie because it overrides -shared: the linker then
+> +# tries to build an executable instead of a shared library and fails.  So
+> +# don't add -no-pie anywhere and cross fingers. :(
+>   if not get_option('b_pie')
+> -  qemu_common_flags += cc.get_supported_arguments('-fno-pie')
+> -  if not get_option('prefer_static')
+> -    # No PIE is implied by -static which we added above.
+> -    qemu_ldflags += cc.get_supported_link_arguments('-no-pie')
+> -  endif
+> +  qemu_common_flags += cc.get_supported_arguments('-fno-pie', '-no-pie')
+>   endif
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+This removes this annoying warning with Clang on Darwin/Aarch64:
+
+clang: warning: argument unused during compilation: '-no-pie' 
+[-Wunused-command-line-argument]
+
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
