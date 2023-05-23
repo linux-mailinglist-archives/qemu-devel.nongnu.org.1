@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDBC70E95F
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6928B70E964
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:14:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1b76-0004GZ-T0; Tue, 23 May 2023 19:08:20 -0400
+	id 1q1bC2-0005Yv-P4; Tue, 23 May 2023 19:13:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1b75-0004Fo-8o
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:08:19 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1q1bC1-0005Yl-2G
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:13:25 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1b73-00048m-M4
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:08:19 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-64d1a0d640cso78398b3a.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:08:17 -0700 (PDT)
+ id 1q1bBz-0005Ww-4R
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:13:24 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1ae6dce19f7so1825625ad.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:13:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684883296; x=1687475296;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1684883600; x=1687475600;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=agWRIHU9XDYYlngosvlI3QCegPFWYfLdC9lyTEPdwcY=;
- b=SG3GdkHokaYFNuno9xUchjeq68BaAruxB2GxB81IWskGZ8+z5o7v08tUN4bVnvr0Io
- CTaci8sICorCywsRxXZptEp+cOZyQnmJWBn/eSHoUrE//CjaXN9gD4vz6TWKR1WdL9ej
- EUJlslZGey/Mlm/10gQQoU7RptoXT4x8FZ3KPeC7VCbEO3Rz7PBFQveFeY9OQ4ZMZYSX
- e82nkKPcvBwe8qql74PM4piuOdl83lwBlBOewGtw1ROIYr65rqUCn6ysbSAsl0760PWJ
- aT5oNx5AqNKGW8K2TutzTIloN0BvlPfv34NJeAn+KTk/K0c9cGxEYpPAeindgIVSaEL9
- aSkQ==
+ bh=v5ZMY7v+hEy6f6hz7e5KCwcqGgSFUM8FoccxMWbb6pw=;
+ b=ZaG5NtHgXOIauuIcN3bR+QQXf3+q93z27g20NpqRo4Bq03cXuAVU2zJlnXJrdTyajt
+ P34UEJA75D8WNM42s48pgH4yO+Ht+C4bGLrfjrQazybnk6jDQarWsoFYguMMRjXq/R9Y
+ iMd5xIjtODkzza8XPiP7R9ugQzvYvNRMJT9Bibk6PCYioUSaTnp9ShoCon+mILxHS0TU
+ wcqKjFgzCMenw5XdXRUwzPTgE6bDFMq3gq+HhNfhmA+vzGkpX+STPmm6xWokfLCHQIPy
+ Dupkcjo22lq7XhFXVBwKNe3iEMeU8sxmg2WFCzSFiRzy0CR2zmfYZIHnBy80OFlEUojJ
+ vi6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684883296; x=1687475296;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1684883600; x=1687475600;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=agWRIHU9XDYYlngosvlI3QCegPFWYfLdC9lyTEPdwcY=;
- b=eLba33bZ++4XByJEC8jm33YNeI2k94oZqF/JCqoLlbK39awu8KQhnWx31fN1dHYrLf
- NrddbN4y1mA/gUdAIdAslNGrUbtE0P6euCm/Kl2DEiehl4qvaCq/1nS3LcXYU7IJ45u1
- 9M47zOY+m3OSR6jkaFTrdP5+ZLEmcfJJV1O5MGgcqr4fVrlqSIiV3uldbMzYibYXjeNJ
- 61tR0c5N3xAvQTBFMvsclZN7kExtfqfKziDXNVNhjntxP+HD2X9VzMZAdglJ9R6OhI1s
- NzKfj25ZhptTOJSDLKT5ioByi2rOgEjQ3skOU/0M9vIxdY1rr4CwCory7o8PU5bvHajp
- xmfA==
-X-Gm-Message-State: AC+VfDwBRzAn53P+g5ZhywZ28UT3E3tf03eUcPs7+odwz96PuOr0hvJI
- gigR93f/J19KTM7mroCx0TWThw==
-X-Google-Smtp-Source: ACHHUZ6qAJsKZgY5f/4ptugzbBwZoeDgRQFdKKa0bhFuRf/0m6d9+WEE8zGfcrhDTqLVUNC+/ZRZcg==
-X-Received: by 2002:a17:902:db03:b0:1ac:712d:2049 with SMTP id
- m3-20020a170902db0300b001ac712d2049mr18702374plx.6.1684883296088; 
- Tue, 23 May 2023 16:08:16 -0700 (PDT)
+ bh=v5ZMY7v+hEy6f6hz7e5KCwcqGgSFUM8FoccxMWbb6pw=;
+ b=i+PWy+BKMLAHqFsv9pvMtIa8pDFY9/Ev6bFDPQVpclImK0s9vgvbPAmMBCtWbllFdg
+ ETRSCR3vGiILvdY6mrUHqPAc2m8W+wPSLEgawY47CIFFAmMUoXglYdhkzSoGunmPXPE2
+ fuDZVt35kTU0a2+c/dfD4/e9V2MM2DUkdamhtGanZdHcTFZph6CkwxZCD3ha5TVZgXED
+ sAw5JIVcJhXqcwZjaUJeN4YM7vzEdfngOtxQVe6Aubf6JiyeMuEnN33K1UdNrUBsOo6C
+ lDYGseyzXiXGdpYJnMI0pseRHWaZrT5I8DBamKNAwKLgafdmSwq6MtJOLB3iYfwAloK2
+ NXHQ==
+X-Gm-Message-State: AC+VfDxseLI78h91TC5bwxmvVK/cfrKp7lTW8iaZLRrSyUcL2U3sXz4N
+ dmWYekSdH66PpN/IgmmLq4PEnQ==
+X-Google-Smtp-Source: ACHHUZ54eQUkQ/lXcQWGi9PzuTFKolblKnSAjnrG6xBvpvJnEXdTjcOwg4uyUZsp3CisPhuJDlPwoQ==
+X-Received: by 2002:a17:902:e541:b0:1ac:2f98:e94d with SMTP id
+ n1-20020a170902e54100b001ac2f98e94dmr18104365plf.67.1684883599871; 
+ Tue, 23 May 2023 16:13:19 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
  ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- s19-20020a170903201300b001add2ba4459sm7287588pla.32.2023.05.23.16.08.15
+ u5-20020a17090341c500b001aae909cfbbsm7296558ple.119.2023.05.23.16.13.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 16:08:15 -0700 (PDT)
-Message-ID: <078396c4-b86c-3b46-63e1-a62e88e814eb@linaro.org>
-Date: Tue, 23 May 2023 16:08:13 -0700
+ Tue, 23 May 2023 16:13:19 -0700 (PDT)
+Message-ID: <468ad917-112e-7f5f-91b5-91e93d8d918f@linaro.org>
+Date: Tue, 23 May 2023 16:13:17 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 01/11] softmmu: Introduce
- qemu_target_page_mask/qemu_target_page_align helpers
+Subject: Re: [PATCH 02/11] hw/scsi: Introduce VHOST_SCSI_COMMON symbol in
+ Kconfig
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Peter Xu <peterx@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- David Hildenbrand <david@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Eric Farman <farman@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
- Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
 References: <20230523163600.83391-1-philmd@linaro.org>
- <20230523163600.83391-2-philmd@linaro.org>
+ <20230523163600.83391-3-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523163600.83391-2-philmd@linaro.org>
+In-Reply-To: <20230523163600.83391-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -109,9 +98,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/23/23 09:35, Philippe Mathieu-Daudé wrote:
-> +unsigned qemu_target_page_mask(void);
+> Instead of adding 'vhost-scsi-common.c' twice (for VHOST_SCSI and
+> VHOST_USER_SCSI), have it depend on VHOST_SCSI_COMMON, selected by
+> both symbols.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   hw/scsi/Kconfig     | 6 ++++++
+>   hw/scsi/meson.build | 6 ++++--
+>   2 files changed, 10 insertions(+), 2 deletions(-)
 
-Should be signed int, so that it sign-extends to whatever needed width.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
