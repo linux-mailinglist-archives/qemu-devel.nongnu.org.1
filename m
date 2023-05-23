@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4410B70E4DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 20:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABCCF70E4DC
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 20:43:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1WxJ-0003Sw-0g; Tue, 23 May 2023 14:41:57 -0400
+	id 1q1Wy1-0003fB-8f; Tue, 23 May 2023 14:42:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1WxG-0003SZ-U2
- for qemu-devel@nongnu.org; Tue, 23 May 2023 14:41:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Wxy-0003eJ-CB
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 14:42:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1WxF-00077Y-GD
- for qemu-devel@nongnu.org; Tue, 23 May 2023 14:41:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Wxw-0007E1-TE
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 14:42:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684867312;
+ s=mimecast20190719; t=1684867356;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9XaOSRmRG4UWXvpzQWNqCUYDwzqHlmfd4KiTEhK843A=;
- b=hz7xmSFstIH7qNDCm6KKsiXj61HxR6HtMoH1bchV1jZ2mL5sK9dveekOCcTzqlYzeJRY/a
- H99jlbFIEyH/qSYrwYAUF85m1DIWTsZcg6XyZlCBaGdSiBB1DszRwrJySNgdqBhPussQXX
- iovB1LC6C7VxZ8I7EL4iMcg6wvmvz7E=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BbkO4TkUp342IBhxzdgblyltTwBSWWdRylYTlmsbJxc=;
+ b=RikQiyBpHLTqnT/dLopshYZMixbXViAYo5T9N8wmZkSV6KphB+mJSQHl/7NM64R3NzJEAr
+ rb2I9brHJ4BsyJwZkR9ePaMnjbZbdbUz6QrmuV5FrBF0dvvRDoa1Oud4opOwp25DsPkcSH
+ wvPZJWjR1DYIKvZY3ATMz+iw2GqY9UI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-OvA1guT6NpyTlsMPYTAQdA-1; Tue, 23 May 2023 14:41:48 -0400
-X-MC-Unique: OvA1guT6NpyTlsMPYTAQdA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30a8f6d7bbdso1032656f8f.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 11:41:48 -0700 (PDT)
+ us-mta-28-1kIQByg_Na21M8u_aJpbIA-1; Tue, 23 May 2023 14:42:34 -0400
+X-MC-Unique: 1kIQByg_Na21M8u_aJpbIA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f611d31577so437625e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 11:42:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684867307; x=1687459307;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1684867353; x=1687459353;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9XaOSRmRG4UWXvpzQWNqCUYDwzqHlmfd4KiTEhK843A=;
- b=aqwneEpNJGGfQkbGjYnFoZTRLlhbSB7gJ0slL4acKIlQKzI+kaKTo2BOqOqzJDI5xe
- NvPwY6CMtG8mjilu+IThhdUwkDVRI4IofaTatRHMhcfbLEzdnQSZu12PLOepPaQcNby2
- xhOilGsQqBaNerGS9YTy40Rl+ruv+VXkSSUtQG+o1P2NN1NxIwwuEDQQtMwXTbIwsqLm
- QR8gKm8ymy/c7m1+Je5dnBvCtFHgNHwrfRoKbXfpFqHvAh+EQnzr51KkvoINC53yyrwY
- y0wEmZInoMFuk24ETBZz+pvPJvFg/0BXVVjSDceXLErBm19JAvbgI+5Fj+jrtACKv45c
- zjKA==
-X-Gm-Message-State: AC+VfDyjQR0L95HDeI0MSPmfB7wz5wEcvSLpidrk6wImQu5QDi3zIUI7
- kRQJb+GtCRiMy/t65lxJWwhEXYQd9/a7KdRbl49/zz+sLNiktxjC4VGNvl9BVackCxaPhBL/2U4
- PlyCGz/OxLW87w44=
-X-Received: by 2002:adf:e8ce:0:b0:309:50e7:7d0 with SMTP id
- k14-20020adfe8ce000000b0030950e707d0mr10241181wrn.31.1684867307336; 
- Tue, 23 May 2023 11:41:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4OkUzeZokAnR61rWPwYdDHWm0uuVzigKpBUKFnV+xSgx6McKeqLKzoTE0ln5y2uVplNghqiA==
-X-Received: by 2002:adf:e8ce:0:b0:309:50e7:7d0 with SMTP id
- k14-20020adfe8ce000000b0030950e707d0mr10241170wrn.31.1684867307066; 
- Tue, 23 May 2023 11:41:47 -0700 (PDT)
+ bh=BbkO4TkUp342IBhxzdgblyltTwBSWWdRylYTlmsbJxc=;
+ b=AzTqTk0Pq/ota7t4byTjyb6lkGC9s8zawKYe4mpxO4cUge/518VYmvHj9pVAmDMua1
+ 0rh9dVJYX9/L+fHlV4W2A1hvxCQTl6P6Ak43RikrYg1coPXeEZ2o8SpQkCsISVsLrlnn
+ J1vOEU1QPstjQj/UgW7kITfCZIElH/HhOMk5L3OVsG8bnWeojdKMLFHcDDM5NILy7suT
+ zbm+5Syw4QEYvTEELsj+CF5ugS61UdPTOB9XQMj5YgWU/fixx74On3iry0awzRQ8QRzM
+ m/LuWe8WAQcIS3pDKMLl0o05xIvrHVDQlDWEzdVXeHTvWI9BPUK4WP4PqAs4zD89y43e
+ Z9GQ==
+X-Gm-Message-State: AC+VfDyA/uQDy/ITgcp/rKFDSZU53lrMrKp7An7kpOlFrlKR0AJrPY29
+ rCRc8Jn0G570gsth1wooCYfPFUr2HpdqA2MtvbJQJ9mbjlFUdplSm+dWIULFjJWKEzrnmpbM9HL
+ tiAOGjg+NiJm05Mc=
+X-Received: by 2002:a5d:518f:0:b0:30a:900b:6bf4 with SMTP id
+ k15-20020a5d518f000000b0030a900b6bf4mr5182870wrv.0.1684867353254; 
+ Tue, 23 May 2023 11:42:33 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6cMHLHq+CdGZ9YvmY5PtjWsb9itwLs+bOcghC0QIF+kINj71pAEgAs3E2FRUQheoda5eOJgg==
+X-Received: by 2002:a5d:518f:0:b0:30a:900b:6bf4 with SMTP id
+ k15-20020a5d518f000000b0030a900b6bf4mr5182861wrv.0.1684867352926; 
+ Tue, 23 May 2023 11:42:32 -0700 (PDT)
 Received: from [192.168.8.105] (tmo-117-143.customers.d1-online.com.
  [80.187.117.143]) by smtp.gmail.com with ESMTPSA id
- c11-20020a5d4ccb000000b0030631dcbea6sm11843839wrt.77.2023.05.23.11.41.45
+ j15-20020a5d464f000000b003012030a0c6sm11920149wrs.18.2023.05.23.11.42.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 11:41:46 -0700 (PDT)
-Message-ID: <49fa8502-70f9-cdc4-1058-9d4202400db6@redhat.com>
-Date: Tue, 23 May 2023 20:41:44 +0200
+ Tue, 23 May 2023 11:42:32 -0700 (PDT)
+Message-ID: <56635bf3-254e-fe15-ee95-916abd7d2d70@redhat.com>
+Date: Tue, 23 May 2023 20:42:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
+Subject: Re: [PATCH v2 3/3] hw/arm/Kconfig: sbsa-ref uses Bochs display
 Content-Language: en-US
 To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
  Peter Maydell <peter.maydell@linaro.org>
-References: <CAFEAcA9GamGybSzd8FKBtmZ2qMgjRFy6D=Vhu1y0dL8m9Sa80w@mail.gmail.com>
- <20230523155644.678524-1-marcin.juszkiewicz@linaro.org>
- <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
- <4101dedc-91d7-1735-4655-81082931b79d@linaro.org>
+References: <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
+ <20230523172855.679018-1-marcin.juszkiewicz@linaro.org>
+ <20230523172855.679018-3-marcin.juszkiewicz@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 1/2] docs: sbsa: correct graphics card name
-In-Reply-To: <4101dedc-91d7-1735-4655-81082931b79d@linaro.org>
+In-Reply-To: <20230523172855.679018-3-marcin.juszkiewicz@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -104,62 +103,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/05/2023 19.30, Marcin Juszkiewicz wrote:
-...
->> (is there a reason why it can't be disabled with "-vga none" or 
->> "-nodefaults"?)
+On 23/05/2023 19.28, Marcin Juszkiewicz wrote:
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> ---
+>   hw/arm/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> That's something I need to check how it should be done.
+> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> index 0f42c556d7..4484de67e8 100644
+> --- a/hw/arm/Kconfig
+> +++ b/hw/arm/Kconfig
+> @@ -249,6 +249,7 @@ config SBSA_REF
+>       select PL061 # GPIO
+>       select USB_EHCI_SYSBUS
+>       select WDT_SBSA
+> +    select BOCHS_DISPLAY
+>   
+>   config SABRELITE
+>       bool
 
-Other boards set mc->default_display in their ...class_init
-function and then use pci_vga_init() (or vga_interface_type)
-to instantiate their default display adapter ... however, that
-does not seem to support the bochs adapter yet (see
-vga_interfaces[] in softmmu/vl.c).
-
-Not sure whether it's worth the effort to extend vga_interfaces[]
-in vl.c, but you could at least check whether vga_interface_type
-is VGA_NONE and skip the creation of the bochs adapter in that
-case?
-
-> Should it also drop default_nic?
-
-Seems like sbsa-ref already uses nd_table[], so "-net none" should
-already work. For "configure --without-default-devices" builds, we
-still need a patch like this on top, though:
-
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -596,6 +596,7 @@ static void create_pcie(SBSAMachineState *sms)
-      hwaddr size_mmio_high = sbsa_ref_memmap[SBSA_PCIE_MMIO_HIGH].size;
-      hwaddr base_pio = sbsa_ref_memmap[SBSA_PCIE_PIO].base;
-      int irq = sbsa_ref_irqmap[SBSA_PCIE];
-+    MachineClass *mc = MACHINE_GET_CLASS(sms);
-      MemoryRegion *mmio_alias, *mmio_alias_high, *mmio_reg;
-      MemoryRegion *ecam_alias, *ecam_reg;
-      DeviceState *dev;
-@@ -641,7 +642,7 @@ static void create_pcie(SBSAMachineState *sms)
-              NICInfo *nd = &nd_table[i];
-  
-              if (!nd->model) {
--                nd->model = g_strdup("e1000e");
-+                nd->model = g_strdup(mc->default_nic);
-              }
-  
-              pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-@@ -858,6 +859,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
-      mc->minimum_page_bits = 12;
-      mc->block_default_type = IF_IDE;
-      mc->no_cdrom = 1;
-+    mc->default_nic = "e1000e";
-      mc->default_ram_size = 1 * GiB;
-      mc->default_ram_id = "sbsa-ref.ram";
-      mc->default_cpus = 4;
-
-(I'm doing that default_nic change for a lot of other boards
-currently, so I can send a proper patch for this later)
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
