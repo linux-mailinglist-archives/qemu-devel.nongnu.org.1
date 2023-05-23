@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB75470E1DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D49270E1DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 18:36:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1UzN-0008MA-Lp; Tue, 23 May 2023 12:35:57 -0400
+	id 1q1Uzb-0008TH-9C; Tue, 23 May 2023 12:36:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1UzF-0008Lh-Ea
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:35:49 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1UzY-0008SO-RP
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:08 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1UzD-0001Vt-RB
- for qemu-devel@nongnu.org; Tue, 23 May 2023 12:35:49 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-309382efe13so4845119f8f.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:35:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1UzV-0001YX-Qs
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 12:36:08 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3f50020e0f8so34949485e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 09:36:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684859746; x=1687451746;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+95n7p8tDosOcNyUfqtncNqAQHx8ULaM37Gd9yYsTuQ=;
- b=ZWfWRuAw1i9GOaxC73EXq4v9pVJ07zA0fJy1JqmaK4kMwsByn8zwamCAyEu62nQqdQ
- OXUEhUMlEcZ55EWMvw/Kum9z6zcs5MNBGNBBFmg2DR445rKBIIgdZahv5pCyiwar2szX
- eoh/HfP9gixeu1amn2nsKkGe1bPHtf4io+0gbdTH6jvNaCyarf7/oOUU4lFmDih1lDt/
- CBciyUwtW6+hyIADFgCHgM/aQF+PVFnCQ/wDIzfz8psXUYIVrfs6pR4JA48cVXGpSEGn
- YKd3cy6wF92t0zbGePqDS7ZwrEjobpaeTycfSr6WfnvhYLpcniqD1yFe1WWNKVI4r8Ux
- I+MQ==
+ d=linaro.org; s=google; t=1684859764; x=1687451764;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KptRZgpfBYhnMYPTPi1yHumyOrnlOIit30ThB+yVWk4=;
+ b=F7EyYfEj6ZREzAMVemN+LI+RJJw8lI7ll1z9ITfpS6jKfySxhd+udhvaq3dWf4jfuL
+ dZfH+kRTpHzGVUPRxQylBLYOFzKIBqvBtb3HIs9blDBEetJVNpEu9xqaq0JsoiEW8LW4
+ pYxAiMnfx9szVefNDrHLlv6QzxYOm0NgV6fAba6qBmPcn3kGn+QTPu4Wu9U51TmhKttF
+ cq9c9StYDARaoTjSA56L89egZc2LLGQ9r/tmJ0q9BTq0lkuBw5n0+Tj6yqgy72qRC0T8
+ qmY0xAjYJ3CwpAtEvKMIyncAyt+LI/FaqygrWMxkxQVUPgQSFdH08l8stQzzboHbWA71
+ Jryw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684859746; x=1687451746;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=+95n7p8tDosOcNyUfqtncNqAQHx8ULaM37Gd9yYsTuQ=;
- b=AyFgPWhqKKAHAIzxTWaG3CAMna1W/bVAoQ2PVnxLk/tVEPL/d3zWz2bBQzv3QOYOyl
- 7/apnMZNgygUweCWnulmDOLL9Db5cCiTKuMpntSg1yEWA/8gtkTQK7+DHfh/cX/4UtIg
- WybcD4X/4wekXROMxqdmJbdTF5VgckbsvxkLNzbYGAKL/rIwfs1GZEbC1lKg0cPohBY3
- mAyFZTPwIi7B6gIPRAzlOEhY8gfMyC3usHwjGQgegXO1Per3Pm0fWAntC8JZ7aIjbwA2
- Wm4wNeGz5zsHmnGteCtnMFFqSnsdbXDqEhpcTBIixCexSqTNv0rdSin+1IuwINeGRbjT
- NGuw==
-X-Gm-Message-State: AC+VfDxX0UTbHkOiEyYWOqdoSOaVIVukLYXx5Af+8qYi8FgnXx2AgMva
- UfXK64BmIxEdC/rbI6SM60ipNw==
-X-Google-Smtp-Source: ACHHUZ46DCIqQGHmZIHKCINpxCHuWMANLRj2Ga5CH8RNvFzJO7KTrT4madbTaA32Bq8g7jo40oPTcg==
-X-Received: by 2002:adf:e54e:0:b0:309:3a83:cf38 with SMTP id
- z14-20020adfe54e000000b003093a83cf38mr10421810wrm.0.1684859746301; 
- Tue, 23 May 2023 09:35:46 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1684859764; x=1687451764;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KptRZgpfBYhnMYPTPi1yHumyOrnlOIit30ThB+yVWk4=;
+ b=buYmAtlYkx92vIgH86ny9xjGFmt5mxAJhx5IVmgLeFGCinOPcUj7VjHNoeWn9XvWWM
+ o5Kd7o/m8DWD6di1ER62lNI0tqq7dUeH9Iqx0T8R6lwYc15KngDzZdEBhUnJYm7Lsp94
+ Ulyyk/jBcwLc/zLiQCv32LBDjSRZS84x7kVjIK3mk/PSddk/5EyhqqAaHodQr2sjFIoH
+ 6ZSVhIDiT9HdbeX0TOmr9fcSGOEYtwD61enTGaI2AZDmxJTdnSSFobOpZmx2Oitd/MvC
+ 7nceWcwlbrU23xWynnYw0C6DumgLM1MLF8esvhGAcBnB7W4zVSbHZzBFC/UKC08PATrr
+ jaOw==
+X-Gm-Message-State: AC+VfDwN2ZzgkFdl79YcEKn3qPzDjvz3psbsE5d4Ha3BuxI7P10aihxm
+ MkSYHzSHqD5i8QFDhB5UJOnGZmSzPJpFyWLCDO4=
+X-Google-Smtp-Source: ACHHUZ5Flp0ZHQz6Lee6Pa0Iw1+gZqn7f4AXd5pCUUkyx++VmFJn2NYv+G4Uesb3EhsYbYYzUA7THQ==
+X-Received: by 2002:a5d:4e87:0:b0:30a:3ae0:f455 with SMTP id
+ e7-20020a5d4e87000000b0030a3ae0f455mr7118540wru.2.1684859764200; 
+ Tue, 23 May 2023 09:36:04 -0700 (PDT)
+Received: from localhost.localdomain
+ (vil69-h02-176-184-48-94.dsl.sta.abo.bbox.fr. [176.184.48.94])
  by smtp.gmail.com with ESMTPSA id
- u3-20020a7bc043000000b003f4f89bc48dsm15486170wmc.15.2023.05.23.09.35.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 09:35:46 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 98EA61FFBB;
- Tue, 23 May 2023 17:35:45 +0100 (BST)
-References: <20230523134733.678646-1-richard.henderson@linaro.org>
- <20230523134733.678646-14-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.6; emacs 29.0.91
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: peter.maydell@linaro.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 13/27] include/qemu: Move CONFIG_ATOMIC128_OPT
- handling to atomic128.h
-Date: Tue, 23 May 2023 17:35:41 +0100
-In-reply-to: <20230523134733.678646-14-richard.henderson@linaro.org>
-Message-ID: <877csz0zvi.fsf@linaro.org>
+ c14-20020a056000104e00b00307b5376b2csm11488661wrx.90.2023.05.23.09.36.01
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 23 May 2023 09:36:03 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Peter Xu <peterx@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ David Hildenbrand <david@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Eric Farman <farman@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
+Subject: [PATCH 00/11] hw/virtio: Build various target-agnostic objects just
+ once
+Date: Tue, 23 May 2023 18:35:49 +0200
+Message-Id: <20230523163600.83391-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,17 +101,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Less controvertial than my first approach [*] which caches
+the access_is_big_endian value in VirtIODevice state, this
+series just remove a unnecessary / pointless dependency on
+"virtio-access.h", allowing to build various virtio objects
+once for all targets.
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+First we introduce the qemu_target_page_mask() and _align()
+helpers, similar to the _size() and _bits() equivalents,
+then we mostly perform meson.build massages. Mostly trivial.
 
-> Not only the routines in ldst_atomicity.c.inc need markup,
-> but also the ones in the headers.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Last patch is RFC in case there is a performance issue.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+https://lore.kernel.org/qemu-devel/20221212230517.28872-11-philmd@linaro.org/
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Philippe Mathieu-Daudé (11):
+  softmmu: Introduce qemu_target_page_mask/qemu_target_page_align
+    helpers
+  hw/scsi: Introduce VHOST_SCSI_COMMON symbol in Kconfig
+  hw/scsi: Rearrange meson.build
+  hw/scsi: Rename target-specific source set as
+    'specific_virtio_scsi_ss'
+  hw/virtio: Introduce VHOST_VSOCK_COMMON symbol in Kconfig
+  hw/virtio/virtio-mem: Use qemu_ram_get_fd() helper
+  hw/virtio/vhost-vsock: Include missing 'virtio/virtio-bus.h' header
+  hw/virtio/virtio-iommu: Use target-agnostic qemu_target_page_mask()
+  hw/virtio: Remove unnecessary 'virtio-access.h' header
+  hw/virtio: Build various target-agnostic objects just once
+  hw/virtio: Make vhost-vdpa.c target-agnostic to build it once
+
+ include/exec/target_page.h      |  2 ++
+ hw/block/dataplane/virtio-blk.c |  1 -
+ hw/s390x/virtio-ccw.c           |  1 -
+ hw/scsi/vhost-scsi.c            |  1 -
+ hw/scsi/vhost-user-scsi.c       |  1 -
+ hw/scsi/virtio-scsi-dataplane.c |  1 -
+ hw/virtio/vdpa-dev.c            |  1 -
+ hw/virtio/vhost-vdpa.c          | 17 ++++++++---------
+ hw/virtio/vhost-vsock-common.c  |  2 +-
+ hw/virtio/vhost.c               |  1 -
+ hw/virtio/virtio-crypto.c       |  1 -
+ hw/virtio/virtio-iommu.c        |  4 ++--
+ hw/virtio/virtio-mem.c          |  3 +--
+ softmmu/physmem.c               | 10 ++++++++++
+ hw/block/dataplane/meson.build  |  2 +-
+ hw/scsi/Kconfig                 |  6 ++++++
+ hw/scsi/meson.build             | 19 ++++++++++++-------
+ hw/virtio/Kconfig               |  6 ++++++
+ hw/virtio/meson.build           | 17 ++++++++++-------
+ 19 files changed, 59 insertions(+), 37 deletions(-)
+
+-- 
+2.38.1
+
 
