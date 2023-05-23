@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A27370E780
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 23:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2CE70E789
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 23:40:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Ziv-0000MM-0u; Tue, 23 May 2023 17:39:17 -0400
+	id 1q1Zj3-0000Wp-JS; Tue, 23 May 2023 17:39:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q1Zit-0000I8-5P; Tue, 23 May 2023 17:39:15 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ id 1q1Zj1-0000Ur-Tv; Tue, 23 May 2023 17:39:23 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q1Zir-0004dA-Ln; Tue, 23 May 2023 17:39:14 -0400
+ id 1q1Ziu-0004dY-JH; Tue, 23 May 2023 17:39:23 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id AD81E21C42;
- Tue, 23 May 2023 21:39:11 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id BB2C121DA9;
+ Tue, 23 May 2023 21:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1684877951; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1684877954; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nu4XEIgIikhgA/W/+uLWgdX+OIPEQni+cYXERvD8oYk=;
- b=v+XfrDR3au5D5pb3V7FBsZbQkU3c5xNTbi480WcCMXKm0/6E/cqtkmq6P3nVVa9jGmVwq3
- ALS7wIUYVo5XSNXuI/o7ku/rIRYRKwd//rp2d0OmFs5MTzA24AdeIL30n0wwnsxbgW/0f+
- 8HjXEMZeIqm8lwP4rYeqRtaRENG32pQ=
+ bh=0Pqxkh+UqJz8d819PPN1K8WPCbsTUsWPaKk2eD138Ss=;
+ b=EM73MyjxjyBz6SUyFbqL1E7gOupknS5jXQZGNk22ktZsgf4o/NjENUVzufyRw51Wp/6btQ
+ T8BIMpAYvqQk0AA2ST69pgzK1hj4o/AIbIUZM9ep+AQsPDu8kjDN/1kJY1XGmJ46QRsgPz
+ clgxnEHjSY/rDGoeIU1Qa/8iLwLjmcM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1684877951;
+ s=susede2_ed25519; t=1684877954;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nu4XEIgIikhgA/W/+uLWgdX+OIPEQni+cYXERvD8oYk=;
- b=DtuY59Cbi/AqZH2db2xOM5KswC2mJdwWnWU1OFhJhnaD7ISIMRjnMKY9pU4QdYuLCTP3SP
- +sCw5mLRGdmh4HCw==
+ bh=0Pqxkh+UqJz8d819PPN1K8WPCbsTUsWPaKk2eD138Ss=;
+ b=Ca1X4rNaSGhvhvrMYoV3a4x4qnqu+WGRBZV5k1Is9Y/O/XUuvKCftCBFLiLNDzdar3bds/
+ x+hQbVFE4rYFH6Cw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1755813588;
- Tue, 23 May 2023 21:39:08 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2484A13588;
+ Tue, 23 May 2023 21:39:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id gPeyNHwybWQ7CwAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 23 May 2023 21:39:08 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id SE2wN38ybWQ7CwAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 23 May 2023 21:39:11 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
@@ -56,23 +56,22 @@ Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Jo=C3=A3o=20Silva?= <jsilva@suse.de>, Lin Ma <lma@suse.com>,
  Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
  Eric Blake <eblake@redhat.com>
-Subject: [RFC PATCH 1/6] block: Remove bdrv_query_block_node_info
-Date: Tue, 23 May 2023 18:38:58 -0300
-Message-Id: <20230523213903.18418-2-farosas@suse.de>
+Subject: [RFC PATCH 2/6] block: Mark bdrv_co_get_allocated_file_size() as mixed
+Date: Tue, 23 May 2023 18:38:59 -0300
+Message-Id: <20230523213903.18418-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230523213903.18418-1-farosas@suse.de>
 References: <20230523213903.18418-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
  helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,67 +87,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The last call site of this function has been removed by commit
-c04d0ab026 ("qemu-img: Let info print block graph").
+Some callers of this function are about to be converted to use
+coroutines, so allow it to be executed both inside and outside a
+coroutine.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- block/qapi.c         | 27 ---------------------------
- include/block/qapi.h |  3 ---
- 2 files changed, 30 deletions(-)
+ include/block/block-io.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/qapi.c b/block/qapi.c
-index f34f95e0ef..79bf80c503 100644
---- a/block/qapi.c
-+++ b/block/qapi.c
-@@ -309,33 +309,6 @@ out:
-     aio_context_release(bdrv_get_aio_context(bs));
- }
+diff --git a/include/block/block-io.h b/include/block/block-io.h
+index a27e471a87..c1f96faca5 100644
+--- a/include/block/block-io.h
++++ b/include/block/block-io.h
+@@ -87,7 +87,7 @@ int64_t co_wrapper_mixed_bdrv_rdlock bdrv_getlength(BlockDriverState *bs);
+ int64_t coroutine_fn GRAPH_RDLOCK
+ bdrv_co_get_allocated_file_size(BlockDriverState *bs);
  
--/**
-- * bdrv_query_block_node_info:
-- * @bs: block node to examine
-- * @p_info: location to store node information
-- * @errp: location to store error information
-- *
-- * Store image information about @bs in @p_info.
-- *
-- * @p_info will be set only on success. On error, store error in @errp.
-- */
--void bdrv_query_block_node_info(BlockDriverState *bs,
--                                BlockNodeInfo **p_info,
--                                Error **errp)
--{
--    BlockNodeInfo *info;
--    ERRP_GUARD();
--
--    info = g_new0(BlockNodeInfo, 1);
--    bdrv_do_query_node_info(bs, info, errp);
--    if (*errp) {
--        qapi_free_BlockNodeInfo(info);
--        return;
--    }
--
--    *p_info = info;
--}
--
- /**
-  * bdrv_query_image_info:
-  * @bs: block node to examine
-diff --git a/include/block/qapi.h b/include/block/qapi.h
-index 18d48ddb70..8663971c58 100644
---- a/include/block/qapi.h
-+++ b/include/block/qapi.h
-@@ -36,9 +36,6 @@ BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
- int bdrv_query_snapshot_info_list(BlockDriverState *bs,
-                                   SnapshotInfoList **p_list,
-                                   Error **errp);
--void bdrv_query_block_node_info(BlockDriverState *bs,
--                                BlockNodeInfo **p_info,
--                                Error **errp);
- void bdrv_query_image_info(BlockDriverState *bs,
-                            ImageInfo **p_info,
-                            bool flat,
+-int64_t co_wrapper_bdrv_rdlock
++int64_t co_wrapper_mixed_bdrv_rdlock
+ bdrv_get_allocated_file_size(BlockDriverState *bs);
+ 
+ BlockMeasureInfo *bdrv_measure(BlockDriver *drv, QemuOpts *opts,
 -- 
 2.35.3
 
