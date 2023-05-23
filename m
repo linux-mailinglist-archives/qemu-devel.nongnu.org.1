@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6EA70DB22
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 13:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7BE70DB24
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 13:06:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1Pp1-0004Sx-8s; Tue, 23 May 2023 07:04:55 -0400
+	id 1q1Pp2-0004Tc-LS; Tue, 23 May 2023 07:04:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pox-0004SH-IN
- for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pp0-0004TB-4L
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Pov-0002c8-Rb
- for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1Poy-0002dD-KF
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 07:04:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684839888;
+ s=mimecast20190719; t=1684839891;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=kn5u4R+VPKfB4NezWg2H36ZuXLpsz4C/GTaMIy2LLz4=;
- b=c9f+PVQcXOcK29TggU+vugYbuw1d1bu8n96I0Dmb1nS/8V4/wGXPPv+1yTgA+yjxhAF/bv
- W9gtIE9GW8jjN9DeeZgHuuA0XH8+Z60T5Wfj8Ukts6OFacdFde+qj3ocLgtqcOiW/Gse0c
- RKA5JFmL25KImyrgGhTM+ymQhLm5hn0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QPvbxejgj/zHqMIwqaEznsRDu2txeXcjWw0YpkveP5k=;
+ b=G4w8ZP8OQugyqrbvNL8gTCnAtQdazPF3oLPRAlhNsBPW2VTlTKU2DiCZbm+/8VTcJfvvc2
+ qtKOwI/Ghe4NI5Sw9Ixujh1HtPAcGNXKYgaIJx5AIQe6wyxlRPqlNhA3Ww02JzLEXt5tNs
+ X1U/rDJE+pAtFjbggrE3WFKsMPBxlw0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-392-Nb9aR8leMEKrUf6hs6eMfw-1; Tue, 23 May 2023 07:04:46 -0400
-X-MC-Unique: Nb9aR8leMEKrUf6hs6eMfw-1
+ us-mta-169-9EK3HNsoNEyTBkSirQCivg-1; Tue, 23 May 2023 07:04:48 -0400
+X-MC-Unique: 9EK3HNsoNEyTBkSirQCivg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BF6B13C13A09;
- Tue, 23 May 2023 11:04:45 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 08874811E78;
+ Tue, 23 May 2023 11:04:48 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.186])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6B8007AF5;
- Tue, 23 May 2023 11:04:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 188F39D73;
+ Tue, 23 May 2023 11:04:45 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
  Max Filippov <jcmvbkbc@gmail.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 0/5] Use MachineClass->default_nic in more machines
-Date: Tue, 23 May 2023 13:04:30 +0200
-Message-Id: <20230523110435.1375774-1-thuth@redhat.com>
+Subject: [PATCH 1/5] hw/hppa: Use MachineClass->default_nic in the hppa machine
+Date: Tue, 23 May 2023 13:04:31 +0200
+Message-Id: <20230523110435.1375774-2-thuth@redhat.com>
+In-Reply-To: <20230523110435.1375774-1-thuth@redhat.com>
+References: <20230523110435.1375774-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -74,29 +77,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These patches are required for running more tests with "make check"
-on builds that use "--without-default-devices". By marking the
-default NIC in the generic MachineClass, the main code can decide
-whether the NIC is available in the binary or not, so the instantiation
-can be skipped if it has not been compiled in.
+Mark the default NIC via the new MachineClass->default_nic setting
+so that the machine-defaults code in vl.c can decide whether the
+default NIC is usable or not (for example when compiling with the
+"--without-default-devices" configure switch).
 
-See https://lore.kernel.org/qemu-devel/20230512124033.502654-5-thuth@redhat.com/
-and the other patches in that series for more information.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/hppa/machine.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thomas Huth (5):
-  hw/hppa: Use MachineClass->default_nic in the hppa machine
-  hw/alpha: Use MachineClass->default_nic in the alpha machine
-  hw/arm: Use MachineClass->default_nic in the virt machine
-  hw/loongarch64: Use MachineClass->default_nic in the virt machine
-  hw/xtensa: Use MachineClass->default_nic in the virt machine
-
- hw/alpha/dp264.c    | 4 +++-
- hw/arm/virt.c       | 4 +++-
- hw/hppa/machine.c   | 4 +++-
- hw/loongarch/virt.c | 4 +++-
- hw/xtensa/virt.c    | 9 ++++++---
- 5 files changed, 18 insertions(+), 7 deletions(-)
-
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 8fea5fa6b8..b00a91ecfe 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -177,6 +177,7 @@ static void machine_hppa_init(MachineState *machine)
+     const char *kernel_filename = machine->kernel_filename;
+     const char *kernel_cmdline = machine->kernel_cmdline;
+     const char *initrd_filename = machine->initrd_filename;
++    MachineClass *mc = MACHINE_GET_CLASS(machine);
+     DeviceState *dev, *dino_dev, *lasi_dev;
+     PCIBus *pci_bus;
+     ISABus *isa_bus;
+@@ -272,7 +273,7 @@ static void machine_hppa_init(MachineState *machine)
+ 
+     for (i = 0; i < nb_nics; i++) {
+         if (!enable_lasi_lan()) {
+-            pci_nic_init_nofail(&nd_table[i], pci_bus, "tulip", NULL);
++            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
+         }
+     }
+ 
+@@ -462,6 +463,7 @@ static void hppa_machine_init_class_init(ObjectClass *oc, void *data)
+     mc->default_ram_size = 512 * MiB;
+     mc->default_boot_order = "cd";
+     mc->default_ram_id = "ram";
++    mc->default_nic = "tulip";
+ 
+     nc->nmi_monitor_handler = hppa_nmi;
+ }
 -- 
 2.31.1
 
