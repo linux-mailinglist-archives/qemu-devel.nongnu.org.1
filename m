@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D674070E9DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D07A670E9F4
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 02:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1bu1-0004Mb-2V; Tue, 23 May 2023 19:58:53 -0400
+	id 1q1bu8-0004Ou-95; Tue, 23 May 2023 19:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1btl-0004J4-Cv
+ id 1q1btl-0004J5-Cw
  for qemu-devel@nongnu.org; Tue, 23 May 2023 19:58:37 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1btb-0001ng-5j
+ id 1q1btc-0001rp-Dr
  for qemu-devel@nongnu.org; Tue, 23 May 2023 19:58:37 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-64d426e63baso168733b3a.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:58:26 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-64d5b4c3ffeso102462b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:58:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684886306; x=1687478306;
+ d=linaro.org; s=google; t=1684886307; x=1687478307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r5f4Ylw8IiZ84PTvuG5q1Iu6daSgx3AqNPjCHwsi6/0=;
- b=qPwjaFS0qgy3Ro2PjaQ0cezPAsMbPyAi2tZlsGpAbg27vZHmH9vJ9SaN7N2RSnkehn
- LLo1+XEBB1zeQI1eunjmXKa1+xBupSc7m/NXto82qk8hUd/G8mdgqvFuqA0X4HGZ590y
- wn6OMbm4F+VbQSTxHrjKjs27OyPcvicsDN5ZEdiQK5+CKeqMwMyNTloStmRPoeH5UbnY
- 66dv5kl50BrLL63YhptlJr/ggjuUpw0/AvIw6DNr+jPjPlQ0PDDIrw8HWzBxsHrrlPES
- 8j472ZFNSHazRRgetQK++On+OUoj2RoGvYLmOKHaIXDFV/E2JxoMs3bL16FmEo0PFIhp
- jNRA==
+ bh=3dmtEq6kmVE3RGdrdH/eSfhix7HRQOKB/pXZ4u4czNE=;
+ b=dxMp/su4auZGrrxiQBjq4afhP5rhz+Jao3vaoth+fd3PI9eQcjfG9m4Ug3yCYLw7Qc
+ EKoQC/Q/oSIWDLMm8BlgSv/SM5RyV0n8sn2McfQwzkFg+xusYIout824De4/wEtyGuNt
+ f/uvfMpmgbvgNpTtT+Vw0BLeiZTEYolc4SL01V7/En1PQx6nw5D8vyC884vGBLp5CPeL
+ kgaGHSxMGJValIS9hHgFRLsMXL4HHgRrlxx1I6sQDHSOWgRPu+dJ+ewEDlV1J0ieddxM
+ z0FoZ+7oNb/JyIlugY/GaB/xBQ/+olevL/+nJIIN/W99mJaeqeOg4taD/kvV0tnrpfay
+ YHgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684886306; x=1687478306;
+ d=1e100.net; s=20221208; t=1684886307; x=1687478307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r5f4Ylw8IiZ84PTvuG5q1Iu6daSgx3AqNPjCHwsi6/0=;
- b=CjsZmw4MlMNFCSpRScP+IYHcELibgm1DxsqR77Vm4ZKr3mSVW15xvPO/nohWGIRb7H
- HZPS8Y/4KF5wrmwJ5lZEgGq69hUULU/U27w8CFg8dSP15V68+GEmx2UxxJQZ6y21sihO
- aW0ufGQtujEAB1G4NQNZBY2Wj0VIKCzCH1Yo2roDQKF/sUQPTT/6y3zNvDjMNd7ZpJ/F
- b+dtgmZcopc3flEnLZbNoHPPjKq754FkIB6yyuKPPOh7hVsBbzild4is2V1xw0pwhEYI
- KC4mDJSTuMzSjZi5tSy52lrOTozbt7J2gk84XCiWDbm5iQqqlAgQh9mR0FfBkQ+pfQKe
- /PqQ==
-X-Gm-Message-State: AC+VfDwE4HQFssaWkWLcXtOAbqjaV1sH1Y/GqHXYvACxIE3C1ImowApl
- aqeIX93vj+zb7UnFYjF5+iNoqTzoYcsGuLTRkHk=
-X-Google-Smtp-Source: ACHHUZ4hm+LPHOV1j9oR5ZQzBc1fLJnHa02uzPaM/ZpOXF2qdjZR/SMA4LWLMIp/ps8FcznfKv0jiA==
-X-Received: by 2002:a05:6a21:3293:b0:10b:7b64:706 with SMTP id
- yt19-20020a056a21329300b0010b7b640706mr10352933pzb.13.1684886306417; 
- Tue, 23 May 2023 16:58:26 -0700 (PDT)
+ bh=3dmtEq6kmVE3RGdrdH/eSfhix7HRQOKB/pXZ4u4czNE=;
+ b=hW9xuQa4UUNIOOmbgpLksTni7heLcwmjWBhzfvyms4tpG7TQKPV6A8Im5nk57npMVY
+ Auq0WGRzrxyajA1weKefURbWfA6Os977eK7IM1iOablN8l521IKKe3jXYDmwN2UYtmIc
+ eWTkSIvWQo75JKTMCIC4nj0EHw9eRKPL5Ry8RcMS1zhpPvrbozZ2Op3bzXhRl5663At0
+ gEtxkQHyXgcjYZu91Kx65ftQIiKuxuhcMBH0LApMaZop+P+polzEm6o2QSlvfmzHxdYS
+ C94vcMW6SUoVLiQIOYargXL/Fddxx2YiY98Vk3bA4L/6JBadZTZtnfRvwHnV79NFqCRH
+ esJg==
+X-Gm-Message-State: AC+VfDwVq7Z7K1B33utDRvjf+BB54HkzAGDFuShi/R1+v9dxtoiGaUwB
+ iZ/MP0kgW23UY54hCHTE6nzulQuXqdP8VUuvorM=
+X-Google-Smtp-Source: ACHHUZ7ycotBLApiLL+wOf7czpkQrFmjVqximqsTWdw8mSiK7Y0bLsIMPBBTOXbccyVy9fE6w2dEJg==
+X-Received: by 2002:a05:6a00:2d13:b0:64c:b45f:fc86 with SMTP id
+ fa19-20020a056a002d1300b0064cb45ffc86mr746573pfb.17.1684886307248; 
+ Tue, 23 May 2023 16:58:27 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- p18-20020aa78612000000b0063b7c42a070sm6285041pfn.68.2023.05.23.16.58.25
+ p18-20020aa78612000000b0063b7c42a070sm6285041pfn.68.2023.05.23.16.58.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 23 May 2023 16:58:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 24/28] tcg: Split out tcg/debug-assert.h
-Date: Tue, 23 May 2023 16:58:00 -0700
-Message-Id: <20230523235804.747803-25-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 25/28] qemu/atomic128: Improve cmpxchg fallback for atomic16_set
+Date: Tue, 23 May 2023 16:58:01 -0700
+Message-Id: <20230523235804.747803-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523235804.747803-1-richard.henderson@linaro.org>
 References: <20230523235804.747803-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,78 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Use __sync_bool_compare_and_swap_16 to control the loop,
+rather than a separate comparison.
+
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/debug-assert.h | 17 +++++++++++++++++
- include/tcg/tcg.h          |  9 +--------
- MAINTAINERS                |  1 +
- 3 files changed, 19 insertions(+), 8 deletions(-)
- create mode 100644 include/tcg/debug-assert.h
+ host/include/generic/host/atomic128-ldst.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/include/tcg/debug-assert.h b/include/tcg/debug-assert.h
-new file mode 100644
-index 0000000000..596765a3d2
---- /dev/null
-+++ b/include/tcg/debug-assert.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Define tcg_debug_assert
-+ * Copyright (c) 2008 Fabrice Bellard
-+ */
+diff --git a/host/include/generic/host/atomic128-ldst.h b/host/include/generic/host/atomic128-ldst.h
+index 79d208b7a4..80fff0643a 100644
+--- a/host/include/generic/host/atomic128-ldst.h
++++ b/host/include/generic/host/atomic128-ldst.h
+@@ -58,11 +58,14 @@ atomic16_read_rw(Int128 *ptr)
+ static inline void ATTRIBUTE_ATOMIC128_OPT
+ atomic16_set(Int128 *ptr, Int128 val)
+ {
+-    Int128 old = *ptr, cmp;
++    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
++    __int128_t old;
++    Int128Alias new;
 +
-+#ifndef TCG_DEBUG_ASSERT_H
-+#define TCG_DEBUG_ASSERT_H
-+
-+#if defined CONFIG_DEBUG_TCG || defined QEMU_STATIC_ANALYSIS
-+# define tcg_debug_assert(X) do { assert(X); } while (0)
-+#else
-+# define tcg_debug_assert(X) \
-+    do { if (!(X)) { __builtin_unreachable(); } } while (0)
-+#endif
-+
-+#endif
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index cd6327b175..072c35f7f5 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -34,6 +34,7 @@
- #include "tcg/tcg-mo.h"
- #include "tcg-target.h"
- #include "tcg/tcg-cond.h"
-+#include "tcg/debug-assert.h"
++    new.s = val;
+     do {
+-        cmp = old;
+-        old = atomic16_cmpxchg(ptr, cmp, val);
+-    } while (int128_ne(old, cmp));
++        old = *ptr_align;
++    } while (!__sync_bool_compare_and_swap_16(ptr_align, old, new.i));
+ }
  
- /* XXX: make safe guess about sizes */
- #define MAX_OP_PER_INSTR 266
-@@ -222,14 +223,6 @@ typedef uint64_t tcg_insn_unit;
- /* The port better have done this.  */
- #endif
- 
--
--#if defined CONFIG_DEBUG_TCG || defined QEMU_STATIC_ANALYSIS
--# define tcg_debug_assert(X) do { assert(X); } while (0)
--#else
--# define tcg_debug_assert(X) \
--    do { if (!(X)) { __builtin_unreachable(); } } while (0)
--#endif
--
- typedef struct TCGRelocation TCGRelocation;
- struct TCGRelocation {
-     QSIMPLEQ_ENTRY(TCGRelocation) next;
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1a32066231..1c93ab0ee5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -159,6 +159,7 @@ F: include/sysemu/tcg.h
- F: include/hw/core/tcg-cpu-ops.h
- F: host/include/*/host/cpuinfo.h
- F: util/cpuinfo-*.c
-+F: include/tcg/
- 
- FPU emulation
- M: Aurelien Jarno <aurelien@aurel32.net>
+ #else
 -- 
 2.34.1
 
