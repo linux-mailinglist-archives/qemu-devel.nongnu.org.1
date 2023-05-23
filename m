@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD5970E969
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA7870E978
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:24:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1bDx-0006ow-AE; Tue, 23 May 2023 19:15:25 -0400
+	id 1q1bLp-00088x-Lw; Tue, 23 May 2023 19:23:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1bDt-0006nh-Rg
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:15:21 -0400
+ id 1q1bLn-00088m-E3
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:23:31 -0400
 Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1bDs-00064M-8C
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:15:21 -0400
+ id 1q1bLl-0008R8-LO
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:23:30 -0400
 Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-64f47448aeaso92446b3a.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:15:19 -0700 (PDT)
+ d2e1a72fcca58-64d30ab1ef2so82322b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:23:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684883718; x=1687475718;
+ d=linaro.org; s=google; t=1684884208; x=1687476208;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VJ8vvIz03QK/Am/P5PPi6e+Ex+weJOXye4jWDybuDfM=;
- b=WfEsLCh9UIN2oLFjE9xQYmD9+gHDrXdYuuclY+sOR4Njdl1It05Z/QwDSeZfWnwyPK
- DG3ZfRSu33KXwFTQ5yeRFlEVwYABI4pmDrpzMxvmpjcz02umnrLHBd+SltESI9yGmjiz
- fFvYK9jKmBx1YDR4ofKzB8g3PtfXWaZLyrudPiQwej1KFRmUqmSzbHR1qzEf0XqTyNuY
- 0SH/3P8lF3u03fQgFwHNgxZ4DuqkG/ZX0NGd3LT2HBBmni6LMix53eC4QXdznJda4avL
- sOiS+64mheane+X2F48XmnMU0lHb/akDErYe9ODvglwWNfaHBGcW69yNQMlWmuds3JMT
- rTRg==
+ bh=GtM93wOpYenhPlRPlFCtCxIQAcVXrZFRAiIyX7giBko=;
+ b=siKP+vPlirwZ+IJVDfs1/3E2ICKE1YTeKRlB6VN7ZMBzEyJT++H3yI5+zLgghiYvjg
+ rBpmB3XqqdmTyhpEY0gDi7lv7ydvUCNYXuYNnSxuUM50airOj2kV3eA1oklx1jq16Epi
+ DceEPyosXma6JTPe6WfJkPjZ9JtyPFYdzZPwCwNsi9LpOYRLD8eyu5Fkyk3vbwyr56FZ
+ O3Grgp/1BbsSOhiMNyeVndxrlG95sJkpMDA7GBA1f2YNzI/tv8Ndx+hED8a0700dZwcq
+ s4mbb9h52OCLEIH/nLXYOKM5MEym63Y8rwG2Trbm1x+Yv/9Gi2eqVv8+886imN0gP9DR
+ PaNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684883718; x=1687475718;
+ d=1e100.net; s=20221208; t=1684884208; x=1687476208;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VJ8vvIz03QK/Am/P5PPi6e+Ex+weJOXye4jWDybuDfM=;
- b=JXa4enaMUCbqxWjdh4D52689bBxGKWJrqqfmRo7/ANpL1N3/owWspZVr3NiTxz35q7
- UoLGYnWQEUMcCzUFAa445eFhuSqkN1Mc2TbVa2wenKPeCg/3QOrrqJ35eqDsVXysBYAd
- ucxKC9eVNh3hEueFnwXyFuRuVARETRIaNT9MI29SdXSIwQKhoE2zlo5nTIAOoLVSDiLi
- FoxApwRCwCOX0dOC4c+eH7xqsfAVd66h03uIqjIQDrJLnG6WVNdbC8smtY99Obvawb44
- 4YZ8+iOfOQS/bb6dx4lhLF5ZVY+UArX+fzqYntsSCLBx/11YB0x5aCfwFnneQHDgzibG
- 4uBQ==
-X-Gm-Message-State: AC+VfDzUZf7ENdc6FaHoCGpAJuTQcJz/uWUdDkUDpe6FE55X4U0dKDzo
- pLsckXqQIXHn+uJhvC+4JNNTR2fAQn6PgN4aDPY=
-X-Google-Smtp-Source: ACHHUZ7hTb7FV6E5zQ+B/bJpPTJF2DLtFkhCWr6phfpjympD10GO5DB7cXGkP40vaPpl2T7vcWwfKA==
-X-Received: by 2002:a17:903:2287:b0:1a9:bdf8:f551 with SMTP id
- b7-20020a170903228700b001a9bdf8f551mr18243015plh.69.1684883718658; 
- Tue, 23 May 2023 16:15:18 -0700 (PDT)
+ bh=GtM93wOpYenhPlRPlFCtCxIQAcVXrZFRAiIyX7giBko=;
+ b=bziNCyMDFp2nqsDr7TyNN32iq7yVOZrTzXK33TqW2iZ/O/YGPJpjiG94SS6F2aq0Wo
+ 9EmDeG0AKJXe63sadl18kXRtjb4OpJLlZDiEpGRc5W6ziHhyLxV/vI0C5Ma78g6OKihD
+ rUXIIo4yNbxD6jeeVLTY1Cz5xc02XpwYgfE/R2dFk6SOWR51NuK3Z6ZXmJ8cNB574cW7
+ 6KshJSPlqPeH69MC7X3Z7WxPkwjLtnyJfkrR0o6WHSGBJkhoIdVepUEF4gYpIRi83bbP
+ kkfCjOoQas3j2yDHAOzjYbHhrftnheXWoQ8Kwf8GF65bA0e1Vs3DzM7NVtp9iYiDk+od
+ VT3Q==
+X-Gm-Message-State: AC+VfDwwyz4ZNnp1YkLG44IwWFi8ScZ4JrKKwBnc17+VBV1h2NbeyLZb
+ wWTRzso4N1v/aXQqRQV+1+K38A==
+X-Google-Smtp-Source: ACHHUZ7ECJUnEd9BQzxs+mFfaLWX8f83dZhpRpxOgBQsHglRoL9dIn17trjsh4Q58aIH3kDNcykIwg==
+X-Received: by 2002:a05:6a20:1611:b0:10c:d33a:5c50 with SMTP id
+ l17-20020a056a20161100b0010cd33a5c50mr2052568pzj.36.1684884208031; 
+ Tue, 23 May 2023 16:23:28 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
  ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- e15-20020a17090ab38f00b0024752ff8061sm94060pjr.12.2023.05.23.16.15.17
+ q26-20020a62e11a000000b0063b675f01a5sm5831914pfh.11.2023.05.23.16.23.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 16:15:18 -0700 (PDT)
-Message-ID: <0f9ff5f9-fa26-1ece-97e9-1181d87a2f2c@linaro.org>
-Date: Tue, 23 May 2023 16:15:16 -0700
+ Tue, 23 May 2023 16:23:27 -0700 (PDT)
+Message-ID: <d6fdda38-5303-5acd-18af-bb93feb11b3d@linaro.org>
+Date: Tue, 23 May 2023 16:23:25 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 04/11] hw/scsi: Rename target-specific source set as
- 'specific_virtio_scsi_ss'
+Subject: Re: [PATCH 05/11] hw/virtio: Introduce VHOST_VSOCK_COMMON symbol in
+ Kconfig
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20230523163600.83391-1-philmd@linaro.org>
- <20230523163600.83391-5-philmd@linaro.org>
+ <20230523163600.83391-6-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523163600.83391-5-philmd@linaro.org>
+In-Reply-To: <20230523163600.83391-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
@@ -98,16 +98,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/23/23 09:35, Philippe Mathieu-Daudé wrote:
-> Following the SCSI variable named '[specific_]scsi_ss', rename the
-> target-specific VirtIO/SCSI set prefixed with 'specific_'. This will
-> help when adding target-agnostic VirtIO/SCSI set in few commits.
-> 
-> No logical change.
+> Instead of adding 'vhost-vsock-common.c' twice (for VHOST_VSOCK
+> and VHOST_USER_VSOCK), have it depend on VHOST_VSOCK_COMMON,
+> selected by both symbols.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   hw/scsi/meson.build | 13 +++++++------
->   1 file changed, 7 insertions(+), 6 deletions(-)
+>   hw/virtio/Kconfig     | 6 ++++++
+>   hw/virtio/meson.build | 5 +++--
+>   2 files changed, 9 insertions(+), 2 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
