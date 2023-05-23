@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A3C70DA3B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0744B70DA24
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 12:17:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1P4V-0008Bz-D8; Tue, 23 May 2023 06:16:51 -0400
+	id 1q1P4X-0008Re-10; Tue, 23 May 2023 06:16:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P4E-00079f-5Y; Tue, 23 May 2023 06:16:35 -0400
+ id 1q1P4G-0007Aj-Cf; Tue, 23 May 2023 06:16:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q1P4C-0001vf-Fa; Tue, 23 May 2023 06:16:33 -0400
+ id 1q1P4E-0001w6-DZ; Tue, 23 May 2023 06:16:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 268937CFE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5E8DE7CFF;
  Tue, 23 May 2023 13:15:52 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2EFF7728E;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9C4DA728F;
  Tue, 23 May 2023 13:15:51 +0300 (MSK)
-Received: (nullmailer pid 85526 invoked by uid 1000);
+Received: (nullmailer pid 85529 invoked by uid 1000);
  Tue, 23 May 2023 10:15:48 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Th=C3=A9o=20Maillart?= <tmaillart@freebox.fr>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 48/59] scsi-generic: fix buffer overflow on block
- limits inquiry
-Date: Tue, 23 May 2023 13:15:08 +0300
-Message-Id: <20230523101536.85424-12-mjt@tls.msk.ru>
+ Gabriele Svelto <gsvelto@mozilla.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 49/59] target/i386: fix operand size for VCOMI/VUCOMI
+ instructions
+Date: Tue, 23 May 2023 13:15:09 +0300
+Message-Id: <20230523101536.85424-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230523131351@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,46 +62,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Using linux 6.x guest, at boot time, an inquiry on a scsi-generic
-device makes qemu crash.  This is caused by a buffer overflow when
-scsi-generic patches the block limits VPD page.
+Compared to other SSE instructions, VUCOMISx and VCOMISx are different:
+the single and double precision versions are distinguished through a
+prefix, however they use no-prefix and 0x66 for SS and SD respectively.
+Scalar values usually are associated with 0xF2 and 0xF3.
 
-Do the operations on a temporary on-stack buffer that is guaranteed
-to be large enough.
+Because of these, they incorrectly perform a 128-bit memory load instead
+of a 32- or 64-bit load.  Fix this by writing a custom decoding function.
 
-Reported-by: Théo Maillart <tmaillart@freebox.fr>
-Analyzed-by: Théo Maillart <tmaillart@freebox.fr>
+I tested that the reproducer is fixed and the test-avx output does not
+change.
+
+Reported-by: Gabriele Svelto <gsvelto@mozilla.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1637
+Fixes: f8d19eec0d53 ("target/i386: reimplement 0x0f 0x28-0x2f, add AVX", 2022-10-18)
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 9bd634b2f5e2f10fe35d7609eb83f30583f2e15a)
+(cherry picked from commit 2b55e479e6fcbb466585fd25077a50c32e10dc3a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
-index ac9fa662b4..2417f0ad84 100644
---- a/hw/scsi/scsi-generic.c
-+++ b/hw/scsi/scsi-generic.c
-@@ -191,12 +191,16 @@ static int scsi_handle_inquiry_reply(SCSIGenericReq *r, SCSIDevice *s, int len)
-     if ((s->type == TYPE_DISK || s->type == TYPE_ZBC) &&
-         (r->req.cmd.buf[1] & 0x01)) {
-         page = r->req.cmd.buf[2];
--        if (page == 0xb0) {
-+        if (page == 0xb0 && r->buflen >= 8) {
-+            uint8_t buf[16] = {};
-+            uint8_t buf_used = MIN(r->buflen, 16);
-             uint64_t max_transfer = calculate_max_transfer(s);
--            stl_be_p(&r->buf[8], max_transfer);
--            /* Also take care of the opt xfer len. */
--            stl_be_p(&r->buf[12],
--                    MIN_NON_ZERO(max_transfer, ldl_be_p(&r->buf[12])));
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 4fdd87750b..48fefaffdf 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -783,6 +783,17 @@ static void decode_0F2D(DisasContext *s, CPUX86State *env, X86OpEntry *entry, ui
+     *entry = *decode_by_prefix(s, opcodes_0F2D);
+ }
+ 
++static void decode_VxCOMISx(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
++{
++    /*
++     * VUCOMISx and VCOMISx are different and use no-prefix and 0x66 for SS and SD
++     * respectively.  Scalar values usually are associated with 0xF2 and 0xF3, for
++     * which X86_VEX_REPScalar exists, but here it has to be decoded by hand.
++     */
++    entry->s1 = entry->s2 = (s->prefix & PREFIX_DATA ? X86_SIZE_sd : X86_SIZE_ss);
++    entry->gen = (*b == 0x2E ? gen_VUCOMI : gen_VCOMI);
++}
 +
-+            memcpy(buf, r->buf, buf_used);
-+            stl_be_p(&buf[8], max_transfer);
-+            stl_be_p(&buf[12], MIN_NON_ZERO(max_transfer, ldl_be_p(&buf[12])));
-+            memcpy(r->buf + 8, buf + 8, buf_used - 8);
-+
-         } else if (s->needs_vpd_bl_emulation && page == 0x00 && r->buflen >= 4) {
-             /*
-              * Now we're capable of supplying the VPD Block Limits
+ static void decode_sse_unary(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
+ {
+     if (!(s->prefix & (PREFIX_REPZ | PREFIX_REPNZ))) {
+@@ -871,8 +882,8 @@ static const X86OpEntry opcodes_0F[256] = {
+     [0x2B] = X86_OP_GROUP0(0F2B),
+     [0x2C] = X86_OP_GROUP0(0F2C),
+     [0x2D] = X86_OP_GROUP0(0F2D),
+-    [0x2E] = X86_OP_ENTRY3(VUCOMI,     None,None, V,x, W,x,  vex4 p_00_66),
+-    [0x2F] = X86_OP_ENTRY3(VCOMI,      None,None, V,x, W,x,  vex4 p_00_66),
++    [0x2E] = X86_OP_GROUP3(VxCOMISx,   None,None, V,x, W,x,  vex3 p_00_66), /* VUCOMISS/SD */
++    [0x2F] = X86_OP_GROUP3(VxCOMISx,   None,None, V,x, W,x,  vex3 p_00_66), /* VCOMISS/SD */
+ 
+     [0x38] = X86_OP_GROUP0(0F38),
+     [0x3a] = X86_OP_GROUP0(0F3A),
 -- 
 2.39.2
 
