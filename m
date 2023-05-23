@@ -2,71 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01CB70DCA4
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D6470DCA3
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:33:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1RAw-0006o6-QK; Tue, 23 May 2023 08:31:38 -0400
+	id 1q1RBU-0006qN-GY; Tue, 23 May 2023 08:32:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q1RAv-0006ny-Ed
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:31:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1q1RBK-0006q4-T7; Tue, 23 May 2023 08:32:03 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q1RAt-0000yh-Q4
- for qemu-devel@nongnu.org; Tue, 23 May 2023 08:31:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684845094;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Y0lpoOx5rA7rJEV9kwy33zh3UAmlXqcvwj8rPirDw4E=;
- b=NQ7mfNhQgnuE2nCh+oMaJPc5ceiiXDI+CJQYkv5pLb6InqOpJHysloKpa3NRWddQVh7OVy
- fiX5VBhEvD1vNLA8LYLw82wh7Wf4jpTvcHr+OdKfDCfCZg5zZgj+KtfyB330wbpr8+uIs7
- WlWuv07mvokoaCCBmDXiB13HFCwKv2Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-265-w4aj2i2WMTC9v8H2mArOow-1; Tue, 23 May 2023 08:31:32 -0400
-X-MC-Unique: w4aj2i2WMTC9v8H2mArOow-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16B45811E94;
- Tue, 23 May 2023 12:31:32 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AE1FC2166B28;
- Tue, 23 May 2023 12:31:31 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8A3C721E692E; Tue, 23 May 2023 14:31:30 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org,  philmd@linaro.org,  wangyanan55@huawei.com,
- pbonzini@redhat.com,  thuth@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Subject: The madness of ad hoc special IDs (was: [PATCH] machine: do not
- crash if default RAM backend name has been stollen)
-References: <20230522131717.3780533-1-imammedo@redhat.com>
-Date: Tue, 23 May 2023 14:31:30 +0200
-In-Reply-To: <20230522131717.3780533-1-imammedo@redhat.com> (Igor Mammedov's
- message of "Mon, 22 May 2023 15:17:17 +0200")
-Message-ID: <877csz6xgd.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1q1RBG-000147-0L; Tue, 23 May 2023 08:32:02 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 21DA946974;
+ Tue, 23 May 2023 14:31:43 +0200 (CEST)
+Message-ID: <5023cb18-9e9a-4666-e6b5-a7eb0e8dbd6c@proxmox.com>
+Date: Tue, 23 May 2023 14:31:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 09/12] migration: Use migration_transferred_bytes() to
+ calculate rate_limit
+Content-Language: en-US
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Leonardo Bras <leobras@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Greg Kurz <groug@kaod.org>, Halil Pasic <pasic@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ Peter Xu <peterx@redhat.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>, John Snow <jsnow@redhat.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-block@nongnu.org,
+ Eric Blake <eblake@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230518171304.95006-1-quintela@redhat.com>
+ <20230518171304.95006-10-quintela@redhat.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <20230518171304.95006-10-quintela@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,66 +75,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Igor Mammedov <imammedo@redhat.com> writes:
+Am 18.05.23 um 19:13 schrieb Juan Quintela:
+> diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+> index feec7d7369..97759a45f3 100644
+> --- a/migration/migration-stats.c
+> +++ b/migration/migration-stats.c
+> @@ -24,7 +24,9 @@ bool migration_rate_exceeded(QEMUFile *f)
+>          return true;
+>      }
+>  
+> -    uint64_t rate_limit_used = stat64_get(&mig_stats.rate_limit_used);
+> +    uint64_t rate_limit_start = stat64_get(&mig_stats.rate_limit_start);
+> +    uint64_t rate_limit_current = migration_transferred_bytes(f);
+> +    uint64_t rate_limit_used = rate_limit_current - rate_limit_start;
+>      uint64_t rate_limit_max = stat64_get(&mig_stats.rate_limit_max);
+>  
+>      if (rate_limit_max == RATE_LIMIT_DISABLED) {
 
-> QEMU aborts when default RAM backend should be used (i.e. no
-> explicit '-machine memory-backend=' specified) but user
-> has created an object which 'id' equals to default RAM backend
-> name used by board.
->
->  $QEMU -machine pc \
->        -object memory-backend-ram,id=pc.ram,size=4294967296
->
->  Actual results:
->  QEMU 7.2.0 monitor - type 'help' for more information
->  (qemu) Unexpected error in object_property_try_add() at ../qom/object.c:1239:
->  qemu-kvm: attempt to add duplicate property 'pc.ram' to object (type 'container')
->  Aborted (core dumped)
->
-> Instead of abort, check for the conflicting 'id' and exit with
-> an error, suggesting how to remedy the issue.
+Hi,
+just wanted to let you know that the call to
+migration_transferred_bytes(f) here can introduce a huge performance
+penalty when taking a snapshot. I ran into the issue when testing
+something else, with a single-disk snapshot. Without this call it takes
+about two seconds, with the call about two minutes.
 
-This is an instance of an (unfortunately common) anti-pattern.
-
-The point of an ID is to *identify*.  To do that, IDs of the same kind
-must be unique.  "Of the same kind" because we let different kinds of
-objects have the same ID[*].
-
-IDs are arbitrary strings.  The user may pick any ID, as long as it's
-unique.  Unique not only among the user's IDs, but the system's, too.
-
-Every time we add code that picks an ID, we break backward
-compatibility: user configurations that use this ID no longer work.
-Thus, system-picked IDs are part of the external interface.
-
-We don't treat them as such.  They are pretty much undocumented, and
-when we add new ones, we break the external interface silently.
-
-How exactly things go wrong on a clash is detail from an interface
-design point of view.  This patch changes one instance from "crash" to
-"fatal error".  No objections, just pointing out we're playing whack a
-mole there.
-
-The fundamental mistake we made was not reserving IDs for the system's
-own use.
-
-The excuse I heard back then was that IDs are for the user, and the
-system isn't supposed to pick any.  Well, it does.
-
-To stop creating more moles, we need to reserve IDs for the system's
-use, and let the system pick only reserved IDs going forward.
-
-There would be two kinds of reserved IDs: 1. an easily documented,
-easily checked ID pattern, e.g. "starts with <prefix>", to be used by
-the system going forward, and 2. the messy zoo of system IDs we have
-accumulated so far.
-
-Thoughts?
-
-[...]
-
-
-[*] Questionable idea if you ask me, but tangential to the point I'm
-trying to make in this memo.
+Best Regards,
+Fiona
 
 
