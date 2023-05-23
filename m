@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A249170DE3C
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:57:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9488570DE24
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:54:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1STV-0007Ae-Mk; Tue, 23 May 2023 09:54:54 -0400
+	id 1q1ST1-0006CC-LB; Tue, 23 May 2023 09:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSN-0004xv-CE
+ id 1q1SSN-0004xw-CN
  for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:45 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSK-00033T-GY
+ id 1q1SSK-00033Z-H9
  for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:42 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-64d2e8a842cso3796477b3a.3
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:39 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-64d2e8a842cso3796494b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684850018; x=1687442018;
+ d=linaro.org; s=google; t=1684850019; x=1687442019;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WPQBaswIL5gnAeFH0J21sek4FINXtGXGMKXaBWTmSWg=;
- b=iecY4XBe8xGsyvF5KZfOu2H1chE4haPRyj0TjMwk4dduer4AKHPHa+nGHsO9IB8VSa
- 9P09LZJ4ZC4+Ds5vZewgYg19CDNZi3sZvZrB82tkq43G9eMudLg2m7hWPjCcB/6A9+HR
- oAvN6rhHmXyUAwhTmWpFM1Ov7WAzijzhkpZ0t+cCt13j9hzgD5VXYrMpKWD+jqB3tfp+
- WPiqpkK+BQ803+3AHkiregeTLlLj5zacXWb7f75sNXhDyCqQqlWuKd3vJ1lNfKj1TXti
- 27kacT55Gz0Wtmzd0hiRAn69q0owhvaaDuBtCLpHFgpg38xql+meX77DtV8azGsHLHga
- f3eg==
+ :reply-to; bh=byv7QZQSLFh7nyIZS76P7wjGuStySRLZzDv41rBbtmM=;
+ b=K57IpWc/RZ/KgPib/q1zfVCJZ7ZU9iPnZqbB0FMYkLL3w9vUKWRuDKyJw94n+ewC61
+ o+m6aEZ/fTjGxt2Dnn5Yzym5oVv2fXr4ZGUjygOulK9dcOlGLjo2gfo3PvlfahMRQYpC
+ dAjteAaAVoB4AtZpsqkRU36/H0u4B5QKCI0Yx6LvbSwCZwzeqJ0zDcGhdNlkoCtAtP8f
+ fZl0zz1eCs6AmzR0vGT3J83c255eVktxVMo/6SM2h3WvzEFU+1ebllCH6jh0n9m2VrOF
+ 4JhAG0LoHKfEr5YfkDofoeYQ7GcyIRV1P4L0OpJ6EbSrCxFS34/N37uJZ/ys7fM125WP
+ vHlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684850018; x=1687442018;
+ d=1e100.net; s=20221208; t=1684850019; x=1687442019;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WPQBaswIL5gnAeFH0J21sek4FINXtGXGMKXaBWTmSWg=;
- b=D6kCd+LDrL6nxUH9ZN/6IwDIcfBUUJ2UCwWGY9RdAVn3NbYQgwpV/rO383U9IpCZQn
- xmyeJ66EsCPgjdbHVwRHxR4dXU/BBjtC7NdwUJLtRF4B0obH7IXd3Ezn8ypblBfYV8XY
- Y3u4g/PtYBE3i81RYnjnQBkFjPRZcuIDHpLW1zTkRwYn2VlB76WUKrWRl2Ahatz1fi5S
- UwyPo2cBl7c8UWKihh64XE3gmNzzJMZTlc3X2ed7VUWHs2IsbTgSnd2eNsPPNnnWzPkQ
- YA9tJvqd0dmln0xVMEgT8RStywjrAzIaYjthaqtSyPlYxoE3BePXiGfGH0m6QcE8vo9J
- /PQA==
-X-Gm-Message-State: AC+VfDwvVSMsTc7XEX+y0pRi87snA06xjQYuUqGDpb7VhIR9kLztjjgO
- p671UKwQolf0aB88r+fGv7Gu5p2c/11paL5PyWw=
-X-Google-Smtp-Source: ACHHUZ6tg0IQgSFe0zDpx6/eovL/7T4HQN18X2c/NKUeewGRnyQr7el3MCKr8+TO/oaPEyLxD4hsXw==
-X-Received: by 2002:a05:6a00:1487:b0:64f:3fc8:5d26 with SMTP id
- v7-20020a056a00148700b0064f3fc85d26mr3460352pfu.9.1684850018110; 
- Tue, 23 May 2023 06:53:38 -0700 (PDT)
+ bh=byv7QZQSLFh7nyIZS76P7wjGuStySRLZzDv41rBbtmM=;
+ b=B5haMpyPTQEmadvlNoNGGKcBaZsALFH3haB0JReFiQMJtnVWpVqakq1jE2q6IrrBqW
+ D4MCoXK490XJ2EFYHv6HQcpgLpSKT4bYF7jqs/auql8lqHw8ZqinPnaaFLhXTa59Z7I+
+ dyU8Yfgryipt+Z4e7hcmduXU8LBKpC5zcVOnm06TriqmctPmVxCisQYmvH9r1BfhM6g9
+ seWn39d63pafkwsK1iuaZJe7DHsvMHdcT3Cx938h3JYHCEy38+RDCTrPzM6drE1LSjBL
+ ng5zmUv70XsgE5Kgfd4FcCJ8Iu/v6nNxy0ogppWasHDRwnJ+x1D5zCOfosT4eik8695B
+ H8tA==
+X-Gm-Message-State: AC+VfDxFlDlbJpppL3GB6vJlSzrCb9Z8udnZhfxGYXwdNHBMBe9oSXaq
+ f0qkpWI9LvXe9L2TqhyxV+nwBg8QbVO/p6eC35M=
+X-Google-Smtp-Source: ACHHUZ48TvdEzh4UYf/3DKg+teDXTS/hvx3s7IpOcourvdSlmaow8IzJvKtJO7iPev0/eWZZMShwEg==
+X-Received: by 2002:aa7:88c4:0:b0:64c:f4f9:de87 with SMTP id
+ k4-20020aa788c4000000b0064cf4f9de87mr19587500pff.18.1684850019001; 
+ Tue, 23 May 2023 06:53:39 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.37
+ b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:53:37 -0700 (PDT)
+ Tue, 23 May 2023 06:53:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 17/52] target/arm: Include helper-gen.h in translator.h
-Date: Tue, 23 May 2023 06:52:47 -0700
-Message-Id: <20230523135322.678948-18-richard.henderson@linaro.org>
+Subject: [PATCH v2 18/52] target/hexagon: Include helper-gen.h where needed
+Date: Tue, 23 May 2023 06:52:48 -0700
+Message-Id: <20230523135322.678948-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523135322.678948-1-richard.henderson@linaro.org>
 References: <20230523135322.678948-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,82 +91,59 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This had been included via tcg-op-common.h via tcg-op.h,
-but that is going away.
-
-It is needed for inlines within translator.h, so we might as well
-do it there and not individually in each translator c file.
+but that is going away.  In idef-parser.y, shuffle some
+tcg related includes into a more logical order.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate.h     | 1 +
- target/arm/tcg/translate-a64.c | 2 --
- target/arm/tcg/translate-sme.c | 1 -
- target/arm/tcg/translate-sve.c | 2 --
- target/arm/tcg/translate.c     | 2 --
- 5 files changed, 1 insertion(+), 7 deletions(-)
+ target/hexagon/genptr.c                  | 1 +
+ target/hexagon/translate.c               | 1 +
+ target/hexagon/idef-parser/idef-parser.y | 3 ++-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index a9d1f4adc2..868a3abd0d 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -2,6 +2,7 @@
- #define TARGET_ARM_TRANSLATE_H
- 
- #include "exec/translator.h"
-+#include "exec/helper-gen.h"
- #include "internals.h"
- 
- 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 741a608739..bc0cb98955 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -29,8 +29,6 @@
- #include "qemu/host-utils.h"
- #include "semihosting/semihost.h"
- #include "exec/gen-icount.h"
--#include "exec/helper-proto.h"
--#include "exec/helper-gen.h"
- #include "exec/log.h"
- #include "cpregs.h"
- #include "translate-a64.h"
-diff --git a/target/arm/tcg/translate-sme.c b/target/arm/tcg/translate-sme.c
-index e3adba314e..b0812d9dd6 100644
---- a/target/arm/tcg/translate-sme.c
-+++ b/target/arm/tcg/translate-sme.c
-@@ -23,7 +23,6 @@
+diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
+index cb2aa28a19..2cb7061a69 100644
+--- a/target/hexagon/genptr.c
++++ b/target/hexagon/genptr.c
+@@ -20,6 +20,7 @@
+ #include "internal.h"
+ #include "tcg/tcg-op.h"
  #include "tcg/tcg-op-gvec.h"
- #include "tcg/tcg-gvec-desc.h"
++#include "exec/helper-gen.h"
+ #include "insn.h"
+ #include "opcodes.h"
  #include "translate.h"
--#include "exec/helper-gen.h"
- #include "translate-a64.h"
- #include "fpu/softfloat.h"
- 
-diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 92ab290106..106baf311f 100644
---- a/target/arm/tcg/translate-sve.c
-+++ b/target/arm/tcg/translate-sve.c
-@@ -27,8 +27,6 @@
- #include "arm_ldst.h"
- #include "translate.h"
- #include "internals.h"
--#include "exec/helper-proto.h"
--#include "exec/helper-gen.h"
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index b18f1a9051..f36442c6d5 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -20,6 +20,7 @@
+ #include "cpu.h"
+ #include "tcg/tcg-op.h"
+ #include "tcg/tcg-op-gvec.h"
++#include "exec/helper-gen.h"
+ #include "exec/cpu_ldst.h"
  #include "exec/log.h"
- #include "translate-a64.h"
- #include "fpu/softfloat.h"
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 7468476724..c89825ad6a 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -30,8 +30,6 @@
- #include "qemu/bitops.h"
- #include "arm_ldst.h"
- #include "semihosting/semihost.h"
--#include "exec/helper-proto.h"
--#include "exec/helper-gen.h"
- #include "exec/log.h"
- #include "cpregs.h"
+ #include "internal.h"
+diff --git a/target/hexagon/idef-parser/idef-parser.y b/target/hexagon/idef-parser/idef-parser.y
+index 5c983954ed..cd2612eb8c 100644
+--- a/target/hexagon/idef-parser/idef-parser.y
++++ b/target/hexagon/idef-parser/idef-parser.y
+@@ -843,13 +843,14 @@ int main(int argc, char **argv)
+     fputs("#include \"qemu/log.h\"\n", output_file);
+     fputs("#include \"cpu.h\"\n", output_file);
+     fputs("#include \"internal.h\"\n", output_file);
++    fputs("#include \"tcg/tcg.h\"\n", output_file);
+     fputs("#include \"tcg/tcg-op.h\"\n", output_file);
++    fputs("#include \"exec/helper-gen.h\"\n", output_file);
+     fputs("#include \"insn.h\"\n", output_file);
+     fputs("#include \"opcodes.h\"\n", output_file);
+     fputs("#include \"translate.h\"\n", output_file);
+     fputs("#define QEMU_GENERATE\n", output_file);
+     fputs("#include \"genptr.h\"\n", output_file);
+-    fputs("#include \"tcg/tcg.h\"\n", output_file);
+     fputs("#include \"macros.h\"\n", output_file);
+     fprintf(output_file, "#include \"%s\"\n", argv[ARG_INDEX_EMITTER_H]);
  
 -- 
 2.34.1
