@@ -2,85 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2426B70E40C
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 19:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2F970E410
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 19:51:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1W92-0002TY-KB; Tue, 23 May 2023 13:50:00 -0400
+	id 1q1WA7-0003YD-1i; Tue, 23 May 2023 13:51:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1W90-0002OD-Q3
- for qemu-devel@nongnu.org; Tue, 23 May 2023 13:49:58 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1W8z-0003Eo-7T
- for qemu-devel@nongnu.org; Tue, 23 May 2023 13:49:58 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-64d426e63baso66688b3a.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 10:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684864195; x=1687456195;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MFDeKYNhzW5LPD9hj/JuzMFAFSB9w9UyysZyv1sLGJ8=;
- b=D6dh4Oa8ENFV9c9SXnm5ieanYdR7QSRVwHdDoHFe4K5dNKMQv6tNRj0lDl75+058J5
- pJ2iNZWhvjcxUOUwb1KhlkEb6NDyGr3WOC1lupK/jjnN+XO5crYFdT+DC33KNQGcTQ5S
- 4bOcH2p88kQe4xXUak4H1MQdZWu6FUcHdyQgF5N5fs455vakSK7FHXD0ZbaJ5s8mSOd0
- /bpcqUEe3zY8CYGUaYS3afGO373UvGP8oikGtL3b2tUdBezTBQScF0c/rW+1jjuQVaJr
- SERgQitLjpDBWf8/vJzCnxVZWNMDUllBpK1PED5ReDwQMZ/b4OIADtA5m1sRzaF9V8KZ
- 155Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684864195; x=1687456195;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MFDeKYNhzW5LPD9hj/JuzMFAFSB9w9UyysZyv1sLGJ8=;
- b=DMAkpy6ge/U9nioktdt43IZdjiWNwkzYpgF1xlu0ym9g1jyFKz2bf3MPqpmTJBIy9n
- HDD+ZeYzTstgY/PK0chv9SSnrdU61WZV5lAQoVrkF/rS3TaXYQzQnFDKMeUFrP0E0Nia
- 1fWdmSJu0eLfI8GyXCmpYEXajDAWwfOxfY/Yuy6b5Mzh2FzBWIajgCVFYuBHwO3dTj4e
- DV5yWaoPKHxVipNi9BfAje4rOtZihbidIg3svovSctMA4kIndHbdaGf+ruamPLO4+sU3
- ZvvZCwAP/2jDltxgi4ZJ1GA/q9oK9nXZewweXdkwUUjGJej23uMVwbtuxUhdSWBsN4Tz
- 2lgQ==
-X-Gm-Message-State: AC+VfDwiHYKVZKuySyE4QUQPoju+/yyr9U5YBk6y8HEzgTx8BKBvwX6X
- j/1f7pja2xfEO/4NTvcxV0sgGQ==
-X-Google-Smtp-Source: ACHHUZ7r2WogQOMrXjkYJILT9/DNJxH+CIlrITlVnRYeR2Hl8iCNNlzVm0WRakPUSvFy3q2Lc7g0Kg==
-X-Received: by 2002:a05:6a00:1a46:b0:62a:d752:acc5 with SMTP id
- h6-20020a056a001a4600b0062ad752acc5mr22431663pfv.32.1684864195556; 
- Tue, 23 May 2023 10:49:55 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:c13a:d73:4f88:3654?
- ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
- by smtp.gmail.com with ESMTPSA id
- x6-20020a056a00270600b0064c98c87384sm6018421pfv.44.2023.05.23.10.49.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 10:49:55 -0700 (PDT)
-Message-ID: <2394ce4a-85a1-40df-da75-c0eea4fc8e6f@linaro.org>
-Date: Tue, 23 May 2023 10:49:53 -0700
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q1WA4-0003X0-H2
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 13:51:04 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1q1WA2-0003oA-Hv
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 13:51:04 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 841ED746361;
+ Tue, 23 May 2023 19:51:00 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 48013746335; Tue, 23 May 2023 19:51:00 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 45DBB74632B;
+ Tue, 23 May 2023 19:51:00 +0200 (CEST)
+Date: Tue, 23 May 2023 19:51:00 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Richard Henderson <richard.henderson@linaro.org>
+cc: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
+ qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [RFC PATCH] softfloat: use QEMU_FLATTEN to avoid mistaken isra
+ inlining
+In-Reply-To: <65f5f7e7-4685-1a63-1551-b71308c88021@linaro.org>
+Message-ID: <17bb5696-4cd8-4290-73ec-4e8ca9a3f33f@eik.bme.hu>
+References: <20230523131107.3680641-1-alex.bennee@linaro.org>
+ <8920aa58-505c-92df-cff0-4ee232ca6f8b@eik.bme.hu>
+ <65f5f7e7-4685-1a63-1551-b71308c88021@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 1/6] tests/decodetree/check.sh: Exit failure for all
- failures
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20230523120447.728365-1-peter.maydell@linaro.org>
- <20230523120447.728365-2-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230523120447.728365-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed; boundary="3866299591-1940768574-1684864260=:574"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,21 +64,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/23 05:04, Peter Maydell wrote:
-> The check.sh script doesn't set its exit status to 1 for failures in
-> the succ_* (should-pass) tests, only for the err_* (should-error)
-> tests.  This means that even on a test failure meson will report that
-> the test suite passed.  Set the exit status for all failures.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> In an ideal world we'd tell meson how to run each test, so that
-> we got per-test pass/fail/log information, I suppose.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+--3866299591-1940768574-1684864260=:574
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-But I've also just sent a conversion to meson.
+On Tue, 23 May 2023, Richard Henderson wrote:
+> On 5/23/23 06:57, BALATON Zoltan wrote:
+>> This solves the softfloat related usages, the rest probably are lower 
+>> overhead, I could not measure any more improvement with removing asserts on 
+>> top of this patch. I still have these functions high in my profiling 
+>> result:
+>> 
+>> children  self    command          symbol
+>> 11.40%    10.86%  qemu-system-ppc  helper_compute_fprf_float64
+>
+> You might need to dig in with perf here, but my first guess is
+>
+> #define COMPUTE_CLASS(tp)                                      \
+> static int tp##_classify(tp arg)                               \
+> {                                                              \
+>    int ret = tp##_is_neg(arg) * is_neg;                       \
+>    if (unlikely(tp##_is_any_nan(arg))) {                      \
+>        float_status dummy = { };  /* snan_bit_is_one = 0 */   \
+>        ret |= (tp##_is_signaling_nan(arg, &dummy)             \
+>                ? is_snan : is_qnan);                          \
+>    } else if (unlikely(tp##_is_infinity(arg))) {              \
+>        ret |= is_inf;                                         \
+>    } else if (tp##_is_zero(arg)) {                            \
+>        ret |= is_zero;                                        \
+>    } else if (tp##_is_zero_or_denormal(arg)) {                \
+>        ret |= is_denormal;                                    \
+>    } else {                                                   \
+>        ret |= is_normal;                                      \
+>    }                                                          \
+>    return ret;                                                \
+> }
+>
+> The tests are poorly ordered, testing many unlikely things before the most 
+> likely thing (normal).  A better ordering would be
+>
+>    if (likely(tp##_is_normal(arg))) {
+>    } else if (tp##_is_zero(arg)) {
+>    } else if (tp##_is_zero_or_denormal(arg)) {
+>    } else if (tp##_is_infinity(arg)) {
+>    } else {
+>        // nan case
+>    }
+>
+> Secondly, we compute the classify bitmask, and then deconstruct the mask 
+> again in set_fprf_from_class.  Since we don't use the classify bitmask for 
+> anything else, better would be to compute the fprf value directly in the 
+> if-ladder.
 
+Thanks for the guidance. Alex, will you make a patch of this too or should 
+I try to figure out how to do that? I'm not sure I understood everything 
+in the above but read only once.
 
-r~
+Regards,
+BALATON Zoltan
+
+>> 11.25%     0.61%  qemu-system-ppc  helper_fmadds
+>
+> This is unsurprising, and nothing much that can be done.
+> All of the work is in muladd doing the arithmetic.
+>
+>> Unrelated to this patch I also started to see random crashes with a DSI on 
+>> a dcbz instruction now which did not happen before (or not frequently 
+>> enough for me to notice). I did not bisect that as it happens randomly but 
+>> I wonder if it could be related to recent unaligned access changes or some 
+>> other TCG change? Any idea what to check?
+>
+> No idea.
+>
+>
+> r~
+>
+>
+--3866299591-1940768574-1684864260=:574--
 
