@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BEB70DE04
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0024970DDFF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:52:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SMi-0000UP-PQ; Tue, 23 May 2023 09:47:52 -0400
+	id 1q1SMi-0000U0-KQ; Tue, 23 May 2023 09:47:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SMf-0000Hi-MS
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:49 -0400
+ id 1q1SMg-0000NE-3l
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:50 -0400
 Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SMd-000175-IL
+ id 1q1SMe-00013T-0z
  for qemu-devel@nongnu.org; Tue, 23 May 2023 09:47:49 -0400
 Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-64d5f65a2f7so2014712b3a.1
+ d2e1a72fcca58-64d18d772bdso6812853b3a.3
  for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:47:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684849666; x=1687441666;
+ d=linaro.org; s=google; t=1684849667; x=1687441667;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2DqFQEVjlcRQv07fj6FpnhLPU4q7Af597SdqlFdm/+U=;
- b=hcOc3ftnldIG8D8G0l6d7WeujSpQ/+j/KpzJcqYwAFWPzVBxuHn5PtdyWjf7baHmn6
- CjS89sPL1mCXRu1YO2liOcWQSAa+n6xDsDCaQF0jsxvIzUMnsPmSIwhPVLFWe2z+BMoY
- Jy4ZTHhUNU1hl/E0XzSlsB5kbHknEkO8wrWSBbHuwgO49gVRLSOKGAP5+FTo+0lYyIDG
- J1RpSRMuXIQtkuCDGUSWYh7He3WF7Zzo+Ur/mXjRDWrrU+ez7jbcbYyAPrYVg6ywU+9F
- eDDNuqZ7K9As/kvcrc2urHMvBgdlA/o42liF/Ly36KztbsrSui6sqxq+vtj6ZmCJgWcv
- U/VA==
+ bh=LDPGtChIiM90g/ZXe1/z5yfO/noMZETMdebtBSg+Cq0=;
+ b=Qrr8eJBvPY4ej9Arezd//AWGFol956Gz9QHzsy4RejIdkbt2UnWWrqtnl7q1YpavLh
+ rxBo+gw5xNVc5mLz05fPSdZHL3g6N4hcopbBXhb4D8e/KWfgxzWyj8sJdzakzglxHkKJ
+ rZcJNYPOa+y4Qtm5tZCR/YGPt1VIS+fihXZC4VEApd8CG7rRtA3JLljnT6ib8VivE1EL
+ PXtx0FLbBim9EeGor+XpiY/x/ar2XNqg71uPFrli3TBNwYr+GyaAkG1zSRCfnxdsT6gm
+ te+kGKOAPRJLlAFNF1Cj38XFqgznzo0CCXrDEa2nBzv+vPaXD72j2S7TKdhJq6DbaEC7
+ Mgzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684849666; x=1687441666;
+ d=1e100.net; s=20221208; t=1684849667; x=1687441667;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2DqFQEVjlcRQv07fj6FpnhLPU4q7Af597SdqlFdm/+U=;
- b=IVagL8MdwIQ/cCRd7u9oE0qnVqybyIV4MeffHsQODRRVFYZP/dMtSEUk7t688hEiRf
- oubP7jXd+q6uaX6BdhzyVjGD16TgGzXpY79P+GSrwDumL8U0op34jRVPjPRaod/h6fbV
- A6QGpV1j6jISe3w+7w2Qqz3sR6KsFTUOjoFVuEES9J6zR+YM50nO7IYbaJHSDGedek9Y
- WPdIMQpvhvbKu8olmlEUxeBVn59gMg+yXnR8ivvTGzAJ/2zKuOmnH40sqzkAo5/a30aV
- oZ6j5WrcwPm8X9uylqdG4+GlSWa4fdKygMgC5TRtvw6EMk5k5JkThmmiFerjLFTqjeTb
- VCcw==
-X-Gm-Message-State: AC+VfDwFNE6vDNpMUqdGazSd13L+7rHwQxHhKvXa8+xjcGff3bv0eFNo
- Go0eSJgoUO9hslCqSxev14jR1MKe1fSgIgKvtPA=
-X-Google-Smtp-Source: ACHHUZ5KWYmXT2Ued3HfW3UzT4qxG1huyvBOaGIgPpItaHUAntmFElcNjlsH/Bi6B2eyl+4Aerx/Qw==
-X-Received: by 2002:a05:6a20:c701:b0:105:53:998 with SMTP id
- hi1-20020a056a20c70100b0010500530998mr12486354pzb.12.1684849666339; 
- Tue, 23 May 2023 06:47:46 -0700 (PDT)
+ bh=LDPGtChIiM90g/ZXe1/z5yfO/noMZETMdebtBSg+Cq0=;
+ b=UhBTSOkBRXPy1sUbWhZxj8tT81k3eRQ6NbTNrZQ8OJPs2EO+Yzf/OoOPb4uCAPLJWM
+ l4SQDHuwgwaSyAzQEEn8BiIupV5s+XATtQn90XgljPD6lK9pKHYAU1Cu1ffbyOK3DMEq
+ RKt1XXofc3PaVzGX9/MyO8j7nUfiH8Ma6ZZwKmU4QgRHZLsVyrGGyRLBj6UnCtCgtzqH
+ 6ScbNIFJv4udldV40CIbb+tBUkUKd6ZuttX8LBNUtP38NV2n7jVHVMWQscEXEut+sFGs
+ 3Kmnm28imyRTnDhX+RSLNaioF7tdjSDecLrn4uOnuL31MXn+5Cnj7umi8jZ/PLcdDCX3
+ wIcQ==
+X-Gm-Message-State: AC+VfDxzoPNUfz+d0/Fr3PI4timSIt8gkY+pgTWBzLNvHuuc9yUDNKE/
+ 60MR5/lTAMcTHvbkO/iaVY6K709LkHIG7GEJh6M=
+X-Google-Smtp-Source: ACHHUZ5K+Qobsi3sAu2tT6WsNzLf+SySvtls/Vq1HNOfztyuclzcNLQGxXYmSVnw26/EotTgC1oPrA==
+X-Received: by 2002:a05:6a00:a92:b0:64d:277c:77c3 with SMTP id
+ b18-20020a056a000a9200b0064d277c77c3mr17325330pfl.23.1684849667227; 
+ Tue, 23 May 2023 06:47:47 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- j4-20020aa79284000000b0064d1349dc31sm5737122pfa.199.2023.05.23.06.47.45
+ j4-20020aa79284000000b0064d1349dc31sm5737122pfa.199.2023.05.23.06.47.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 06:47:45 -0700 (PDT)
+ Tue, 23 May 2023 06:47:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PATCH v2 13/27] include/qemu: Move CONFIG_ATOMIC128_OPT handling to
- atomic128.h
-Date: Tue, 23 May 2023 06:47:19 -0700
-Message-Id: <20230523134733.678646-14-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>
+Subject: [PATCH v2 14/27] target/ppc: Use tcg_gen_qemu_{ld, st}_i128 for LQARX,
+ LQ, STQ
+Date: Tue, 23 May 2023 06:47:20 -0700
+Message-Id: <20230523134733.678646-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523134733.678646-1-richard.henderson@linaro.org>
 References: <20230523134733.678646-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
  envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
@@ -92,159 +96,235 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not only the routines in ldst_atomicity.c.inc need markup,
-but also the ones in the headers.
+No need to roll our own, as this is now provided by tcg.
+This was the last use of retxl, so remove that too.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/generic/host/atomic128-cas.h  | 12 ++++++++----
- host/include/generic/host/atomic128-ldst.h | 18 ++++++++++++------
- include/qemu/atomic128.h                   | 17 +++++++++++++++++
- accel/tcg/ldst_atomicity.c.inc             | 17 -----------------
- 4 files changed, 37 insertions(+), 27 deletions(-)
+Cc: qemu-ppc@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: "Cédric Le Goater" <clg@kaod.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>
+Cc: Greg Kurz <groug@kaod.org>
+---
+ target/ppc/cpu.h                           |  1 -
+ target/ppc/helper.h                        |  9 ----
+ target/ppc/mem_helper.c                    | 48 --------------------
+ target/ppc/translate.c                     | 34 ++-------------
+ target/ppc/translate/fixedpoint-impl.c.inc | 51 +++-------------------
+ 5 files changed, 11 insertions(+), 132 deletions(-)
 
-diff --git a/host/include/generic/host/atomic128-cas.h b/host/include/generic/host/atomic128-cas.h
-index 513622fe34..991d3da082 100644
---- a/host/include/generic/host/atomic128-cas.h
-+++ b/host/include/generic/host/atomic128-cas.h
-@@ -12,24 +12,28 @@
- #define HOST_ATOMIC128_CAS_H
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 1c02596d9f..0f9f2e1a0c 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1124,7 +1124,6 @@ struct CPUArchState {
+                            /* used to speed-up TLB assist handlers */
  
- #if defined(CONFIG_ATOMIC128)
--static inline Int128 atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
-+static inline Int128 ATTRIBUTE_ATOMIC128_OPT
-+atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
- {
-+    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
-     Int128Alias r, c, n;
+     target_ulong nip;      /* next instruction pointer */
+-    uint64_t retxh;        /* high part of 128-bit helper return */
  
-     c.s = cmp;
-     n.s = new;
--    r.i = qatomic_cmpxchg__nocheck((__int128_t *)ptr, c.i, n.i);
-+    r.i = qatomic_cmpxchg__nocheck(ptr_align, c.i, n.i);
-     return r.s;
- }
- # define HAVE_CMPXCHG128 1
- #elif defined(CONFIG_CMPXCHG128)
--static inline Int128 atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
-+static inline Int128 ATTRIBUTE_ATOMIC128_OPT
-+atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
- {
-+    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
-     Int128Alias r, c, n;
+     /* when a memory exception occurs, the access type is stored here */
+     int access_type;
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index 0beaca5c7a..38efbc351c 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -810,12 +810,3 @@ DEF_HELPER_4(DSCLIQ, void, env, fprp, fprp, i32)
  
-     c.s = cmp;
-     n.s = new;
--    r.i = __sync_val_compare_and_swap_16((__int128_t *)ptr, c.i, n.i);
-+    r.i = __sync_val_compare_and_swap_16(ptr_align, c.i, n.i);
-     return r.s;
- }
- # define HAVE_CMPXCHG128 1
-diff --git a/host/include/generic/host/atomic128-ldst.h b/host/include/generic/host/atomic128-ldst.h
-index e7354a9255..46911dfb61 100644
---- a/host/include/generic/host/atomic128-ldst.h
-+++ b/host/include/generic/host/atomic128-ldst.h
-@@ -12,32 +12,38 @@
- #define HOST_ATOMIC128_LDST_H
- 
- #if defined(CONFIG_ATOMIC128)
--static inline Int128 atomic16_read(Int128 *ptr)
-+static inline Int128 ATTRIBUTE_ATOMIC128_OPT
-+atomic16_read(Int128 *ptr)
- {
-+    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
-     Int128Alias r;
- 
--    r.i = qatomic_read__nocheck((__int128_t *)ptr);
-+    r.i = qatomic_read__nocheck(ptr_align);
-     return r.s;
- }
- 
--static inline void atomic16_set(Int128 *ptr, Int128 val)
-+static inline void ATTRIBUTE_ATOMIC128_OPT
-+atomic16_set(Int128 *ptr, Int128 val)
- {
-+    __int128_t *ptr_align = __builtin_assume_aligned(ptr, 16);
-     Int128Alias v;
- 
-     v.s = val;
--    qatomic_set__nocheck((__int128_t *)ptr, v.i);
-+    qatomic_set__nocheck(ptr_align, v.i);
- }
- 
- # define HAVE_ATOMIC128 1
- #elif !defined(CONFIG_USER_ONLY) && HAVE_CMPXCHG128
--static inline Int128 atomic16_read(Int128 *ptr)
-+static inline Int128 ATTRIBUTE_ATOMIC128_OPT
-+atomic16_read(Int128 *ptr)
- {
-     /* Maybe replace 0 with 0, returning the old value.  */
-     Int128 z = int128_make64(0);
-     return atomic16_cmpxchg(ptr, z, z);
- }
- 
--static inline void atomic16_set(Int128 *ptr, Int128 val)
-+static inline void ATTRIBUTE_ATOMIC128_OPT
-+atomic16_set(Int128 *ptr, Int128 val)
- {
-     Int128 old = *ptr, cmp;
-     do {
-diff --git a/include/qemu/atomic128.h b/include/qemu/atomic128.h
-index 3a8adb4d47..34554bf0ac 100644
---- a/include/qemu/atomic128.h
-+++ b/include/qemu/atomic128.h
-@@ -15,6 +15,23 @@
- 
- #include "qemu/int128.h"
- 
-+/*
-+ * If __alignof(unsigned __int128) < 16, GCC may refuse to inline atomics
-+ * that are supported by the host, e.g. s390x.  We can force the pointer to
-+ * have our known alignment with __builtin_assume_aligned, however prior to
-+ * GCC 13 that was only reliable with optimization enabled.  See
-+ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107389
-+ */
-+#if defined(CONFIG_ATOMIC128_OPT)
-+# if !defined(__OPTIMIZE__)
-+#  define ATTRIBUTE_ATOMIC128_OPT  __attribute__((optimize("O1")))
-+# endif
-+# define CONFIG_ATOMIC128
-+#endif
-+#ifndef ATTRIBUTE_ATOMIC128_OPT
-+# define ATTRIBUTE_ATOMIC128_OPT
-+#endif
-+
- /*
-  * GCC is a house divided about supporting large atomic operations.
-  *
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index ba5db7c366..b89631bbef 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -16,23 +16,6 @@
- #endif
- #define HAVE_al8_fast      (ATOMIC_REG_SIZE >= 8)
- 
--/*
-- * If __alignof(unsigned __int128) < 16, GCC may refuse to inline atomics
-- * that are supported by the host, e.g. s390x.  We can force the pointer to
-- * have our known alignment with __builtin_assume_aligned, however prior to
-- * GCC 13 that was only reliable with optimization enabled.  See
-- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107389
-- */
--#if defined(CONFIG_ATOMIC128_OPT)
--# if !defined(__OPTIMIZE__)
--#  define ATTRIBUTE_ATOMIC128_OPT  __attribute__((optimize("O1")))
--# endif
--# define CONFIG_ATOMIC128
+ DEF_HELPER_1(tbegin, void, env)
+ DEF_HELPER_FLAGS_1(fixup_thrm, TCG_CALL_NO_RWG, void, env)
+-
+-#ifdef TARGET_PPC64
+-DEF_HELPER_FLAGS_3(lq_le_parallel, TCG_CALL_NO_WG, i64, env, tl, i32)
+-DEF_HELPER_FLAGS_3(lq_be_parallel, TCG_CALL_NO_WG, i64, env, tl, i32)
+-DEF_HELPER_FLAGS_5(stq_le_parallel, TCG_CALL_NO_WG,
+-                   void, env, tl, i64, i64, i32)
+-DEF_HELPER_FLAGS_5(stq_be_parallel, TCG_CALL_NO_WG,
+-                   void, env, tl, i64, i64, i32)
 -#endif
--#ifndef ATTRIBUTE_ATOMIC128_OPT
--# define ATTRIBUTE_ATOMIC128_OPT
+diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
+index 1578887a8f..46eae65819 100644
+--- a/target/ppc/mem_helper.c
++++ b/target/ppc/mem_helper.c
+@@ -367,54 +367,6 @@ target_ulong helper_lscbx(CPUPPCState *env, target_ulong addr, uint32_t reg,
+     return i;
+ }
+ 
+-#ifdef TARGET_PPC64
+-uint64_t helper_lq_le_parallel(CPUPPCState *env, target_ulong addr,
+-                               uint32_t opidx)
+-{
+-    Int128 ret;
+-
+-    /* We will have raised EXCP_ATOMIC from the translator.  */
+-    assert(HAVE_ATOMIC128);
+-    ret = cpu_atomic_ldo_le_mmu(env, addr, opidx, GETPC());
+-    env->retxh = int128_gethi(ret);
+-    return int128_getlo(ret);
+-}
+-
+-uint64_t helper_lq_be_parallel(CPUPPCState *env, target_ulong addr,
+-                               uint32_t opidx)
+-{
+-    Int128 ret;
+-
+-    /* We will have raised EXCP_ATOMIC from the translator.  */
+-    assert(HAVE_ATOMIC128);
+-    ret = cpu_atomic_ldo_be_mmu(env, addr, opidx, GETPC());
+-    env->retxh = int128_gethi(ret);
+-    return int128_getlo(ret);
+-}
+-
+-void helper_stq_le_parallel(CPUPPCState *env, target_ulong addr,
+-                            uint64_t lo, uint64_t hi, uint32_t opidx)
+-{
+-    Int128 val;
+-
+-    /* We will have raised EXCP_ATOMIC from the translator.  */
+-    assert(HAVE_ATOMIC128);
+-    val = int128_make128(lo, hi);
+-    cpu_atomic_sto_le_mmu(env, addr, val, opidx, GETPC());
+-}
+-
+-void helper_stq_be_parallel(CPUPPCState *env, target_ulong addr,
+-                            uint64_t lo, uint64_t hi, uint32_t opidx)
+-{
+-    Int128 val;
+-
+-    /* We will have raised EXCP_ATOMIC from the translator.  */
+-    assert(HAVE_ATOMIC128);
+-    val = int128_make128(lo, hi);
+-    cpu_atomic_sto_be_mmu(env, addr, val, opidx, GETPC());
+-}
 -#endif
 -
- #if defined(CONFIG_ATOMIC128)
- # define HAVE_al16_fast    true
+ /*****************************************************************************/
+ /* Altivec extension helpers */
+ #if HOST_BIG_ENDIAN
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index f603f1a939..1720570b9b 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -3757,6 +3757,7 @@ static void gen_lqarx(DisasContext *ctx)
+ {
+     int rd = rD(ctx->opcode);
+     TCGv EA, hi, lo;
++    TCGv_i128 t16;
+ 
+     if (unlikely((rd & 1) || (rd == rA(ctx->opcode)) ||
+                  (rd == rB(ctx->opcode)))) {
+@@ -3772,36 +3773,9 @@ static void gen_lqarx(DisasContext *ctx)
+     lo = cpu_gpr[rd + 1];
+     hi = cpu_gpr[rd];
+ 
+-    if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
+-        if (HAVE_ATOMIC128) {
+-            TCGv_i32 oi = tcg_temp_new_i32();
+-            if (ctx->le_mode) {
+-                tcg_gen_movi_i32(oi, make_memop_idx(MO_LE | MO_128 | MO_ALIGN,
+-                                                    ctx->mem_idx));
+-                gen_helper_lq_le_parallel(lo, cpu_env, EA, oi);
+-            } else {
+-                tcg_gen_movi_i32(oi, make_memop_idx(MO_BE | MO_128 | MO_ALIGN,
+-                                                    ctx->mem_idx));
+-                gen_helper_lq_be_parallel(lo, cpu_env, EA, oi);
+-            }
+-            tcg_gen_ld_i64(hi, cpu_env, offsetof(CPUPPCState, retxh));
+-        } else {
+-            /* Restart with exclusive lock.  */
+-            gen_helper_exit_atomic(cpu_env);
+-            ctx->base.is_jmp = DISAS_NORETURN;
+-            return;
+-        }
+-    } else if (ctx->le_mode) {
+-        tcg_gen_qemu_ld_i64(lo, EA, ctx->mem_idx, MO_LEUQ | MO_ALIGN_16);
+-        tcg_gen_mov_tl(cpu_reserve, EA);
+-        gen_addr_add(ctx, EA, EA, 8);
+-        tcg_gen_qemu_ld_i64(hi, EA, ctx->mem_idx, MO_LEUQ);
+-    } else {
+-        tcg_gen_qemu_ld_i64(hi, EA, ctx->mem_idx, MO_BEUQ | MO_ALIGN_16);
+-        tcg_gen_mov_tl(cpu_reserve, EA);
+-        gen_addr_add(ctx, EA, EA, 8);
+-        tcg_gen_qemu_ld_i64(lo, EA, ctx->mem_idx, MO_BEUQ);
+-    }
++    t16 = tcg_temp_new_i128();
++    tcg_gen_qemu_ld_i128(t16, EA, ctx->mem_idx, DEF_MEMOP(MO_128 | MO_ALIGN));
++    tcg_gen_extr_i128_i64(lo, hi, t16);
+ 
+     tcg_gen_st_tl(hi, cpu_env, offsetof(CPUPPCState, reserve_val));
+     tcg_gen_st_tl(lo, cpu_env, offsetof(CPUPPCState, reserve_val2));
+diff --git a/target/ppc/translate/fixedpoint-impl.c.inc b/target/ppc/translate/fixedpoint-impl.c.inc
+index 02d86b77a8..f47f1a50e8 100644
+--- a/target/ppc/translate/fixedpoint-impl.c.inc
++++ b/target/ppc/translate/fixedpoint-impl.c.inc
+@@ -72,7 +72,7 @@ static bool do_ldst_quad(DisasContext *ctx, arg_D *a, bool store, bool prefixed)
+ #if defined(TARGET_PPC64)
+     TCGv ea;
+     TCGv_i64 low_addr_gpr, high_addr_gpr;
+-    MemOp mop;
++    TCGv_i128 t16;
+ 
+     REQUIRE_INSNS_FLAGS(ctx, 64BX);
+ 
+@@ -101,51 +101,14 @@ static bool do_ldst_quad(DisasContext *ctx, arg_D *a, bool store, bool prefixed)
+         low_addr_gpr = cpu_gpr[a->rt + 1];
+         high_addr_gpr = cpu_gpr[a->rt];
+     }
++    t16 = tcg_temp_new_i128();
+ 
+-    if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
+-        if (HAVE_ATOMIC128) {
+-            mop = DEF_MEMOP(MO_128);
+-            TCGv_i32 oi = tcg_constant_i32(make_memop_idx(mop, ctx->mem_idx));
+-            if (store) {
+-                if (ctx->le_mode) {
+-                    gen_helper_stq_le_parallel(cpu_env, ea, low_addr_gpr,
+-                                               high_addr_gpr, oi);
+-                } else {
+-                    gen_helper_stq_be_parallel(cpu_env, ea, high_addr_gpr,
+-                                               low_addr_gpr, oi);
+-
+-                }
+-            } else {
+-                if (ctx->le_mode) {
+-                    gen_helper_lq_le_parallel(low_addr_gpr, cpu_env, ea, oi);
+-                    tcg_gen_ld_i64(high_addr_gpr, cpu_env,
+-                                   offsetof(CPUPPCState, retxh));
+-                } else {
+-                    gen_helper_lq_be_parallel(high_addr_gpr, cpu_env, ea, oi);
+-                    tcg_gen_ld_i64(low_addr_gpr, cpu_env,
+-                                   offsetof(CPUPPCState, retxh));
+-                }
+-            }
+-        } else {
+-            /* Restart with exclusive lock.  */
+-            gen_helper_exit_atomic(cpu_env);
+-            ctx->base.is_jmp = DISAS_NORETURN;
+-        }
++    if (store) {
++        tcg_gen_concat_i64_i128(t16, low_addr_gpr, high_addr_gpr);
++        tcg_gen_qemu_st_i128(t16, ea, ctx->mem_idx, DEF_MEMOP(MO_128));
+     } else {
+-        mop = DEF_MEMOP(MO_UQ);
+-        if (store) {
+-            tcg_gen_qemu_st_i64(low_addr_gpr, ea, ctx->mem_idx, mop);
+-        } else {
+-            tcg_gen_qemu_ld_i64(low_addr_gpr, ea, ctx->mem_idx, mop);
+-        }
+-
+-        gen_addr_add(ctx, ea, ea, 8);
+-
+-        if (store) {
+-            tcg_gen_qemu_st_i64(high_addr_gpr, ea, ctx->mem_idx, mop);
+-        } else {
+-            tcg_gen_qemu_ld_i64(high_addr_gpr, ea, ctx->mem_idx, mop);
+-        }
++        tcg_gen_qemu_ld_i128(t16, ea, ctx->mem_idx, DEF_MEMOP(MO_128));
++        tcg_gen_extr_i128_i64(low_addr_gpr, high_addr_gpr, t16);
+     }
  #else
+     qemu_build_not_reached();
 -- 
 2.34.1
 
