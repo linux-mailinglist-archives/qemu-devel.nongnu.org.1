@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA4870E9F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 02:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A31B70E9DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:59:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1bto-0004Kv-Kj; Tue, 23 May 2023 19:58:40 -0400
+	id 1q1btm-0004Jn-TM; Tue, 23 May 2023 19:58:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1btk-0004Hz-Tt
+ id 1q1btk-0004Hu-Pd
  for qemu-devel@nongnu.org; Tue, 23 May 2023 19:58:36 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1btU-0001p2-Sc
- for qemu-devel@nongnu.org; Tue, 23 May 2023 19:58:35 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-64d247a023aso102390b3a.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:58:20 -0700 (PDT)
+ id 1q1btW-0001pF-AF
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 19:58:34 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-64d4e45971bso103384b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 16:58:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684886299; x=1687478299;
+ d=linaro.org; s=google; t=1684886300; x=1687478300;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GVDyu1oYCGf+OD0d59Mxeocg+USbpsSUkgPTmIhL5kQ=;
- b=dBXtp3xh/XhB0Uodr+R/RpjvReog32U0tWS7SI3zJEDSIFGGAOZEW21Sv0X2Ijd3Zx
- 3VwoIG3cGaro1dv8hBdUV1ldjS3Ph2iCiYf4xCfRuzaY14++MgEqxyeQGUmxeOEnlncR
- NBXULwh6LYamEbXsw4uT6BsEqvw5QmlJKwOIXUMNxRwbfZ+Op0B1XHL7ND3LW8IMQj/X
- EZRUrgNs8BGv6rUMyADie1aSt365sCH9C1zFM8uBT/YXG3uJpw7YxvN1JTUls0CsyFPP
- IjLbgpLJzEVYN1gL3GorH6C9kab8Zq1oqF26HxFpueXT4CL0sb7OLue+08pIvOIG2Le2
- oQJw==
+ bh=6h4wH/HlwcEwYXgME8pcPio0lwnlB9jo/ZTVy+Ahgvg=;
+ b=bp3j6DLr0gnH0zMmKntQnuVQSbCusjDje6OmQMmJD4IPUAPh2ccM2awGE8URClRYEy
+ RyeU3D+gQOLY1HTesdp9dZ9yVcKLNOFoPA8ZJz/prWJl/6sIXtWoTXKiOCJPsNsmp9xy
+ 5q2N1K9m2MZ0a7szg8vv/ld9Ip3WSaO4A+ab0K2MSLbwrfqGhApWIIOdWngVpx9O1qbv
+ sqIDO7kmy7blGGxrVMwjgGONblrVOiLvgzYOFiiJRb6L40wNtBXRjC+GkFt9Onvnk7WM
+ Ck6cDHAEuBUeoeQ5mHj1xxOJ/9/f1uXfm2Schff9CpAzeyEu3JdXxWkwX4xMp+aUpqxG
+ 8CfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684886299; x=1687478299;
+ d=1e100.net; s=20221208; t=1684886300; x=1687478300;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GVDyu1oYCGf+OD0d59Mxeocg+USbpsSUkgPTmIhL5kQ=;
- b=TOyKho+j8iirR+4LlGXhYSrTYG+yp8o5cuLssFIHGtqRFr/1VgJB9gRpgTGPy+Xitx
- wCzymjwdX6AXC+yABYYH2A7iZBTOjiauuTq+EIDDcAjAYWX1Xi89UWxNlphTQL5BFyvO
- eHtF/XXNoVyTN+331r//1lcB280eOooXH/s8qGyawrjt3FRhYF6VQlVHppDi+oaymjH4
- 4Hppc3MrWU/HnYtC1WjwfaJTqWrl4hdzlnA9AKiZg/i0kV6lR5jOfHkPcopg7HguWLbW
- dD5Wla/FhAarUSK2AFX7dp/dLncH3A4twJHMLAjM5K1U2M57meNYOP+COzTPmBgdU4SG
- Gn1w==
-X-Gm-Message-State: AC+VfDyqDQPCh6obXN45aLQwPOpCItwrI4ij6WwnmFMZancStj8rkE9O
- 7S2dCPAo41u18Fyr4e4o4eoiYInrF3YLXKlUie0=
-X-Google-Smtp-Source: ACHHUZ4xHWS5GqBqTbFSaT+JjByrqdvUvSTMT/MZz3M2ZI2oBEB/Mvx7OglSxzjzKaQR0Sh0Odtz5w==
-X-Received: by 2002:a05:6a00:985:b0:647:370c:2c2a with SMTP id
- u5-20020a056a00098500b00647370c2c2amr1034079pfg.6.1684886299405; 
- Tue, 23 May 2023 16:58:19 -0700 (PDT)
+ bh=6h4wH/HlwcEwYXgME8pcPio0lwnlB9jo/ZTVy+Ahgvg=;
+ b=U6RZaUktGqUSl9ovqrIASRXNEsOunFKtJtsWw8VR/t9ATxi3V8nu+Pqr0Nrj5QMhIO
+ qjaH86XhoKqhDd+pToPEGyrL8Q6ny3rzyhby+tIhidYSopwEjxSvlwGRpWhE9PW033e0
+ /ISIYqNwo7OxilJStEtXooM0z4dWGHCce0wFsjJHN+qBnfZ8ujSL7WjAmN/+Y6hBWOwU
+ /CcMxYSPKBh5NvtbEJocJ4u05NwTjw3lQRJLo56VxNrP6jdQwdwt2ofC0SjygrxyXm4t
+ PaL5xYXUo1tYI1IbmoEwsvlBa2p2Y1F3j8cZKQB0cWjYkz4T/M6rhOv6/lWOIFuyF9ud
+ 7CcQ==
+X-Gm-Message-State: AC+VfDwW0r6EUQtqEC8dcA5yKw32j15UhpZT5JGSH+FBD61zHeNZRLP3
+ LmoNObtLVpuK1dKFCmxMKNakXqlzmYh+93stYq0=
+X-Google-Smtp-Source: ACHHUZ79X6Rp00cWP6xtRid8SCviP7mRU6rGDS24J8PmFWRgq0jZv1OrQo/c20x3WjF+VwwzTZvEVA==
+X-Received: by 2002:aa7:88d4:0:b0:64c:ecf7:f49a with SMTP id
+ k20-20020aa788d4000000b0064cecf7f49amr909425pff.21.1684886300361; 
+ Tue, 23 May 2023 16:58:20 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- p18-20020aa78612000000b0063b7c42a070sm6285041pfn.68.2023.05.23.16.58.18
+ p18-20020aa78612000000b0063b7c42a070sm6285041pfn.68.2023.05.23.16.58.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 May 2023 16:58:19 -0700 (PDT)
+ Tue, 23 May 2023 16:58:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 16/28] accel/tcg: Unify cpu_{ld,st}*_{be,le}_mmu
-Date: Tue, 23 May 2023 16:57:52 -0700
-Message-Id: <20230523235804.747803-17-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 17/28] target/s390x: Use cpu_{ld,st}*_mmu in do_csst
+Date: Tue, 23 May 2023 16:57:53 -0700
+Message-Id: <20230523235804.747803-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523235804.747803-1-richard.henderson@linaro.org>
 References: <20230523235804.747803-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,965 +93,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With the current structure of cputlb.c, there is no difference
-between the little-endian and big-endian entry points, aside
-from the assert.  Unify the pairs of functions.
+Use cpu_ld16_mmu and cpu_st16_mmu to eliminate the special case,
+and change all of the *_data_ra functions to match.
 
-The only use of the functions with explicit endianness was in
-target/sparc64, and that was only to satisfy the assert: the
-correct endianness is already built into memop.
+Note that we check the alignment of both compare and store
+pointers at the top of the function, so MO_ALIGN* may be
+safely removed from the individual memory operations.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu_ldst.h     |  58 ++-----
- accel/tcg/cputlb.c          | 122 +++-----------
- accel/tcg/user-exec.c       | 322 ++++++++++--------------------------
- target/arm/tcg/m_helper.c   |   4 +-
- target/sparc/ldst_helper.c  |  18 +-
- accel/tcg/ldst_common.c.inc |  24 +--
- 6 files changed, 137 insertions(+), 411 deletions(-)
+ target/s390x/tcg/mem_helper.c | 66 ++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 39 deletions(-)
 
-diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index 7c867c94c3..fc1d3d9301 100644
---- a/include/exec/cpu_ldst.h
-+++ b/include/exec/cpu_ldst.h
-@@ -207,43 +207,21 @@ void cpu_stq_le_mmuidx_ra(CPUArchState *env, abi_ptr ptr, uint64_t val,
-                           int mmu_idx, uintptr_t ra);
+diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
+index 0e0d66b3b6..c757612244 100644
+--- a/target/s390x/tcg/mem_helper.c
++++ b/target/s390x/tcg/mem_helper.c
+@@ -1737,6 +1737,11 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
+                         uint64_t a2, bool parallel)
+ {
+     uint32_t mem_idx = cpu_mmu_index(env, false);
++    MemOpIdx oi16 = make_memop_idx(MO_TE | MO_128, mem_idx);
++    MemOpIdx oi8 = make_memop_idx(MO_TE | MO_64, mem_idx);
++    MemOpIdx oi4 = make_memop_idx(MO_TE | MO_32, mem_idx);
++    MemOpIdx oi2 = make_memop_idx(MO_TE | MO_16, mem_idx);
++    MemOpIdx oi1 = make_memop_idx(MO_8, mem_idx);
+     uintptr_t ra = GETPC();
+     uint32_t fc = extract32(env->regs[0], 0, 8);
+     uint32_t sc = extract32(env->regs[0], 8, 8);
+@@ -1780,15 +1785,17 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
+         }
+     }
  
- uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr ptr, MemOpIdx oi, uintptr_t ra);
--uint16_t cpu_ldw_be_mmu(CPUArchState *env, abi_ptr ptr,
--                        MemOpIdx oi, uintptr_t ra);
--uint32_t cpu_ldl_be_mmu(CPUArchState *env, abi_ptr ptr,
--                        MemOpIdx oi, uintptr_t ra);
--uint64_t cpu_ldq_be_mmu(CPUArchState *env, abi_ptr ptr,
--                        MemOpIdx oi, uintptr_t ra);
--uint16_t cpu_ldw_le_mmu(CPUArchState *env, abi_ptr ptr,
--                        MemOpIdx oi, uintptr_t ra);
--uint32_t cpu_ldl_le_mmu(CPUArchState *env, abi_ptr ptr,
--                        MemOpIdx oi, uintptr_t ra);
--uint64_t cpu_ldq_le_mmu(CPUArchState *env, abi_ptr ptr,
--                        MemOpIdx oi, uintptr_t ra);
--
--Int128 cpu_ld16_be_mmu(CPUArchState *env, abi_ptr addr,
--                       MemOpIdx oi, uintptr_t ra);
--Int128 cpu_ld16_le_mmu(CPUArchState *env, abi_ptr addr,
--                       MemOpIdx oi, uintptr_t ra);
-+uint16_t cpu_ldw_mmu(CPUArchState *env, abi_ptr ptr, MemOpIdx oi, uintptr_t ra);
-+uint32_t cpu_ldl_mmu(CPUArchState *env, abi_ptr ptr, MemOpIdx oi, uintptr_t ra);
-+uint64_t cpu_ldq_mmu(CPUArchState *env, abi_ptr ptr, MemOpIdx oi, uintptr_t ra);
-+Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr, MemOpIdx oi, uintptr_t ra);
+-    /* All loads happen before all stores.  For simplicity, load the entire
+-       store value area from the parameter list.  */
+-    svh = cpu_ldq_data_ra(env, pl + 16, ra);
+-    svl = cpu_ldq_data_ra(env, pl + 24, ra);
++    /*
++     * All loads happen before all stores.  For simplicity, load the entire
++     * store value area from the parameter list.
++     */
++    svh = cpu_ldq_mmu(env, pl + 16, oi8, ra);
++    svl = cpu_ldq_mmu(env, pl + 24, oi8, ra);
  
- void cpu_stb_mmu(CPUArchState *env, abi_ptr ptr, uint8_t val,
-                  MemOpIdx oi, uintptr_t ra);
--void cpu_stw_be_mmu(CPUArchState *env, abi_ptr ptr, uint16_t val,
--                    MemOpIdx oi, uintptr_t ra);
--void cpu_stl_be_mmu(CPUArchState *env, abi_ptr ptr, uint32_t val,
--                    MemOpIdx oi, uintptr_t ra);
--void cpu_stq_be_mmu(CPUArchState *env, abi_ptr ptr, uint64_t val,
--                    MemOpIdx oi, uintptr_t ra);
--void cpu_stw_le_mmu(CPUArchState *env, abi_ptr ptr, uint16_t val,
--                    MemOpIdx oi, uintptr_t ra);
--void cpu_stl_le_mmu(CPUArchState *env, abi_ptr ptr, uint32_t val,
--                    MemOpIdx oi, uintptr_t ra);
--void cpu_stq_le_mmu(CPUArchState *env, abi_ptr ptr, uint64_t val,
--                    MemOpIdx oi, uintptr_t ra);
--
--void cpu_st16_be_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
--                     MemOpIdx oi, uintptr_t ra);
--void cpu_st16_le_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
--                     MemOpIdx oi, uintptr_t ra);
-+void cpu_stw_mmu(CPUArchState *env, abi_ptr ptr, uint16_t val,
-+                 MemOpIdx oi, uintptr_t ra);
-+void cpu_stl_mmu(CPUArchState *env, abi_ptr ptr, uint32_t val,
-+                 MemOpIdx oi, uintptr_t ra);
-+void cpu_stq_mmu(CPUArchState *env, abi_ptr ptr, uint64_t val,
-+                 MemOpIdx oi, uintptr_t ra);
-+void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
-+                  MemOpIdx oi, uintptr_t ra);
+     switch (fc) {
+     case 0:
+         {
+-            uint32_t nv = cpu_ldl_data_ra(env, pl, ra);
++            uint32_t nv = cpu_ldl_mmu(env, pl, oi4, ra);
+             uint32_t cv = env->regs[r3];
+             uint32_t ov;
  
- uint32_t cpu_atomic_cmpxchgb_mmu(CPUArchState *env, target_ulong addr,
-                                  uint32_t cmpv, uint32_t newv,
-@@ -416,9 +394,6 @@ static inline CPUTLBEntry *tlb_entry(CPUArchState *env, uintptr_t mmu_idx,
- # define cpu_ldsw_mmuidx_ra   cpu_ldsw_be_mmuidx_ra
- # define cpu_ldl_mmuidx_ra    cpu_ldl_be_mmuidx_ra
- # define cpu_ldq_mmuidx_ra    cpu_ldq_be_mmuidx_ra
--# define cpu_ldw_mmu          cpu_ldw_be_mmu
--# define cpu_ldl_mmu          cpu_ldl_be_mmu
--# define cpu_ldq_mmu          cpu_ldq_be_mmu
- # define cpu_stw_data         cpu_stw_be_data
- # define cpu_stl_data         cpu_stl_be_data
- # define cpu_stq_data         cpu_stq_be_data
-@@ -428,9 +403,6 @@ static inline CPUTLBEntry *tlb_entry(CPUArchState *env, uintptr_t mmu_idx,
- # define cpu_stw_mmuidx_ra    cpu_stw_be_mmuidx_ra
- # define cpu_stl_mmuidx_ra    cpu_stl_be_mmuidx_ra
- # define cpu_stq_mmuidx_ra    cpu_stq_be_mmuidx_ra
--# define cpu_stw_mmu          cpu_stw_be_mmu
--# define cpu_stl_mmu          cpu_stl_be_mmu
--# define cpu_stq_mmu          cpu_stq_be_mmu
- #else
- # define cpu_lduw_data        cpu_lduw_le_data
- # define cpu_ldsw_data        cpu_ldsw_le_data
-@@ -444,9 +416,6 @@ static inline CPUTLBEntry *tlb_entry(CPUArchState *env, uintptr_t mmu_idx,
- # define cpu_ldsw_mmuidx_ra   cpu_ldsw_le_mmuidx_ra
- # define cpu_ldl_mmuidx_ra    cpu_ldl_le_mmuidx_ra
- # define cpu_ldq_mmuidx_ra    cpu_ldq_le_mmuidx_ra
--# define cpu_ldw_mmu          cpu_ldw_le_mmu
--# define cpu_ldl_mmu          cpu_ldl_le_mmu
--# define cpu_ldq_mmu          cpu_ldq_le_mmu
- # define cpu_stw_data         cpu_stw_le_data
- # define cpu_stl_data         cpu_stl_le_data
- # define cpu_stq_data         cpu_stq_le_data
-@@ -456,9 +425,6 @@ static inline CPUTLBEntry *tlb_entry(CPUArchState *env, uintptr_t mmu_idx,
- # define cpu_stw_mmuidx_ra    cpu_stw_le_mmuidx_ra
- # define cpu_stl_mmuidx_ra    cpu_stl_le_mmuidx_ra
- # define cpu_stq_mmuidx_ra    cpu_stq_le_mmuidx_ra
--# define cpu_stw_mmu          cpu_stw_le_mmu
--# define cpu_stl_mmu          cpu_stl_le_mmu
--# define cpu_stq_mmu          cpu_stq_le_mmu
+@@ -1801,8 +1808,8 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
+                 ov = cpu_atomic_cmpxchgl_be_mmu(env, a1, cv, nv, oi, ra);
  #endif
+             } else {
+-                ov = cpu_ldl_data_ra(env, a1, ra);
+-                cpu_stl_data_ra(env, a1, (ov == cv ? nv : ov), ra);
++                ov = cpu_ldl_mmu(env, a1, oi4, ra);
++                cpu_stl_mmu(env, a1, (ov == cv ? nv : ov), oi4, ra);
+             }
+             cc = (ov != cv);
+             env->regs[r3] = deposit64(env->regs[r3], 32, 32, ov);
+@@ -1811,21 +1818,20 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
  
- uint8_t cpu_ldb_code_mmu(CPUArchState *env, abi_ptr addr,
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index ae0fbcdee2..b1e13d165c 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2575,89 +2575,45 @@ uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr addr, MemOpIdx oi, uintptr_t ra)
-     return ret;
- }
+     case 1:
+         {
+-            uint64_t nv = cpu_ldq_data_ra(env, pl, ra);
++            uint64_t nv = cpu_ldq_mmu(env, pl, oi8, ra);
+             uint64_t cv = env->regs[r3];
+             uint64_t ov;
  
--uint16_t cpu_ldw_be_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
-+uint16_t cpu_ldw_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
- {
-     uint16_t ret;
- 
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_BEUW);
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
-     ret = do_ld2_mmu(env, addr, oi, ra, MMU_DATA_LOAD);
-     plugin_load_cb(env, addr, oi);
-     return ret;
- }
- 
--uint32_t cpu_ldl_be_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
-+uint32_t cpu_ldl_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
- {
-     uint32_t ret;
- 
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_BEUL);
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
-     ret = do_ld4_mmu(env, addr, oi, ra, MMU_DATA_LOAD);
-     plugin_load_cb(env, addr, oi);
-     return ret;
- }
- 
--uint64_t cpu_ldq_be_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
-+uint64_t cpu_ldq_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
- {
-     uint64_t ret;
- 
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_BEUQ);
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
-     ret = do_ld8_mmu(env, addr, oi, ra, MMU_DATA_LOAD);
-     plugin_load_cb(env, addr, oi);
-     return ret;
- }
- 
--uint16_t cpu_ldw_le_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    uint16_t ret;
--
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_LEUW);
--    ret = do_ld2_mmu(env, addr, oi, ra, MMU_DATA_LOAD);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
--uint32_t cpu_ldl_le_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    uint32_t ret;
--
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_LEUL);
--    ret = do_ld4_mmu(env, addr, oi, ra, MMU_DATA_LOAD);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
--uint64_t cpu_ldq_le_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    uint64_t ret;
--
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_LEUQ);
--    ret = do_ld8_mmu(env, addr, oi, ra, MMU_DATA_LOAD);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
--Int128 cpu_ld16_be_mmu(CPUArchState *env, abi_ptr addr,
--                       MemOpIdx oi, uintptr_t ra)
-+Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
-+                    MemOpIdx oi, uintptr_t ra)
- {
-     Int128 ret;
- 
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP|MO_SIZE)) == (MO_BE|MO_128));
--    ret = do_ld16_mmu(env, addr, oi, ra);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
--Int128 cpu_ld16_le_mmu(CPUArchState *env, abi_ptr addr,
--                       MemOpIdx oi, uintptr_t ra)
--{
--    Int128 ret;
--
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP|MO_SIZE)) == (MO_LE|MO_128));
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
-     ret = do_ld16_mmu(env, addr, oi, ra);
-     plugin_load_cb(env, addr, oi);
-     return ret;
-@@ -3045,66 +3001,34 @@ void cpu_stb_mmu(CPUArchState *env, target_ulong addr, uint8_t val,
-     plugin_store_cb(env, addr, oi);
- }
- 
--void cpu_stw_be_mmu(CPUArchState *env, target_ulong addr, uint16_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
-+void cpu_stw_mmu(CPUArchState *env, target_ulong addr, uint16_t val,
-+                 MemOpIdx oi, uintptr_t retaddr)
- {
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_BEUW);
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
-     do_st2_mmu(env, addr, val, oi, retaddr);
-     plugin_store_cb(env, addr, oi);
- }
- 
--void cpu_stl_be_mmu(CPUArchState *env, target_ulong addr, uint32_t val,
-+void cpu_stl_mmu(CPUArchState *env, target_ulong addr, uint32_t val,
-                     MemOpIdx oi, uintptr_t retaddr)
- {
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_BEUL);
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
-     do_st4_mmu(env, addr, val, oi, retaddr);
-     plugin_store_cb(env, addr, oi);
- }
- 
--void cpu_stq_be_mmu(CPUArchState *env, target_ulong addr, uint64_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
-+void cpu_stq_mmu(CPUArchState *env, target_ulong addr, uint64_t val,
-+                 MemOpIdx oi, uintptr_t retaddr)
- {
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_BEUQ);
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
-     do_st8_mmu(env, addr, val, oi, retaddr);
-     plugin_store_cb(env, addr, oi);
- }
- 
--void cpu_stw_le_mmu(CPUArchState *env, target_ulong addr, uint16_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
-+void cpu_st16_mmu(CPUArchState *env, target_ulong addr, Int128 val,
-+                  MemOpIdx oi, uintptr_t retaddr)
- {
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_LEUW);
--    do_st2_mmu(env, addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
--void cpu_stl_le_mmu(CPUArchState *env, target_ulong addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_LEUL);
--    do_st4_mmu(env, addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
--void cpu_stq_le_mmu(CPUArchState *env, target_ulong addr, uint64_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP | MO_SIZE)) == MO_LEUQ);
--    do_st8_mmu(env, addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
--void cpu_st16_be_mmu(CPUArchState *env, target_ulong addr, Int128 val,
--                     MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP|MO_SIZE)) == (MO_BE|MO_128));
--    do_st16_mmu(env, addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
--void cpu_st16_le_mmu(CPUArchState *env, target_ulong addr, Int128 val,
--                     MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & (MO_BSWAP|MO_SIZE)) == (MO_LE|MO_128));
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
-     do_st16_mmu(env, addr, val, oi, retaddr);
-     plugin_store_cb(env, addr, oi);
- }
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 36ad8284a5..19c2849c21 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -940,8 +940,8 @@ uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr addr,
-     return ret;
- }
- 
--static uint16_t do_ld2_he_mmu(CPUArchState *env, abi_ptr addr,
--                              MemOp mop, uintptr_t ra)
-+static uint16_t do_ld2_mmu(CPUArchState *env, abi_ptr addr,
-+                           MemOp mop, uintptr_t ra)
- {
-     void *haddr;
-     uint16_t ret;
-@@ -950,59 +950,35 @@ static uint16_t do_ld2_he_mmu(CPUArchState *env, abi_ptr addr,
-     haddr = cpu_mmu_lookup(env, addr, mop, ra, MMU_DATA_LOAD);
-     ret = load_atom_2(env, ra, haddr, mop);
-     clear_helper_retaddr();
-+
-+    if (mop & MO_BSWAP) {
-+        ret = bswap16(ret);
-+    }
-     return ret;
- }
- 
- tcg_target_ulong helper_lduw_mmu(CPUArchState *env, uint64_t addr,
-                                  MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--    uint16_t ret = do_ld2_he_mmu(env, addr, mop, ra);
--
--    if (mop & MO_BSWAP) {
--        ret = bswap16(ret);
--    }
--    return ret;
-+    return do_ld2_mmu(env, addr, get_memop(oi), ra);
- }
- 
- tcg_target_ulong helper_ldsw_mmu(CPUArchState *env, uint64_t addr,
-                                  MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--    int16_t ret = do_ld2_he_mmu(env, addr, mop, ra);
-+    return (int16_t)do_ld2_mmu(env, addr, get_memop(oi), ra);
-+}
- 
--    if (mop & MO_BSWAP) {
--        ret = bswap16(ret);
--    }
-+uint16_t cpu_ldw_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
-+{
-+    uint16_t ret = do_ld2_mmu(env, addr, get_memop(oi), ra);
-+    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
-     return ret;
- }
- 
--uint16_t cpu_ldw_be_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--    uint16_t ret;
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_BE);
--    ret = do_ld2_he_mmu(env, addr, mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return cpu_to_be16(ret);
--}
--
--uint16_t cpu_ldw_le_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--    uint16_t ret;
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_LE);
--    ret = do_ld2_he_mmu(env, addr, mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return cpu_to_le16(ret);
--}
--
--static uint32_t do_ld4_he_mmu(CPUArchState *env, abi_ptr addr,
--                              MemOp mop, uintptr_t ra)
-+static uint32_t do_ld4_mmu(CPUArchState *env, abi_ptr addr,
-+                           MemOp mop, uintptr_t ra)
- {
-     void *haddr;
-     uint32_t ret;
-@@ -1011,59 +987,35 @@ static uint32_t do_ld4_he_mmu(CPUArchState *env, abi_ptr addr,
-     haddr = cpu_mmu_lookup(env, addr, mop, ra, MMU_DATA_LOAD);
-     ret = load_atom_4(env, ra, haddr, mop);
-     clear_helper_retaddr();
-+
-+    if (mop & MO_BSWAP) {
-+        ret = bswap32(ret);
-+    }
-     return ret;
- }
- 
- tcg_target_ulong helper_ldul_mmu(CPUArchState *env, uint64_t addr,
-                                  MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--    uint32_t ret = do_ld4_he_mmu(env, addr, mop, ra);
--
--    if (mop & MO_BSWAP) {
--        ret = bswap32(ret);
--    }
--    return ret;
-+    return do_ld4_mmu(env, addr, get_memop(oi), ra);
- }
- 
- tcg_target_ulong helper_ldsl_mmu(CPUArchState *env, uint64_t addr,
-                                  MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--    int32_t ret = do_ld4_he_mmu(env, addr, mop, ra);
-+    return (int32_t)do_ld4_mmu(env, addr, get_memop(oi), ra);
-+}
- 
--    if (mop & MO_BSWAP) {
--        ret = bswap32(ret);
--    }
-+uint32_t cpu_ldl_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
-+{
-+    uint32_t ret = do_ld4_mmu(env, addr, get_memop(oi), ra);
-+    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
-     return ret;
- }
- 
--uint32_t cpu_ldl_be_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--    uint32_t ret;
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_BE);
--    ret = do_ld4_he_mmu(env, addr, mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return cpu_to_be32(ret);
--}
--
--uint32_t cpu_ldl_le_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--    uint32_t ret;
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_LE);
--    ret = do_ld4_he_mmu(env, addr, mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return cpu_to_le32(ret);
--}
--
--static uint64_t do_ld8_he_mmu(CPUArchState *env, abi_ptr addr,
--                              MemOp mop, uintptr_t ra)
-+static uint64_t do_ld8_mmu(CPUArchState *env, abi_ptr addr,
-+                           MemOp mop, uintptr_t ra)
- {
-     void *haddr;
-     uint64_t ret;
-@@ -1072,14 +1024,6 @@ static uint64_t do_ld8_he_mmu(CPUArchState *env, abi_ptr addr,
-     haddr = cpu_mmu_lookup(env, addr, mop, ra, MMU_DATA_LOAD);
-     ret = load_atom_8(env, ra, haddr, mop);
-     clear_helper_retaddr();
--    return ret;
--}
--
--uint64_t helper_ldq_mmu(CPUArchState *env, uint64_t addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--    uint64_t ret = do_ld8_he_mmu(env, addr, mop, ra);
- 
-     if (mop & MO_BSWAP) {
-         ret = bswap64(ret);
-@@ -1087,32 +1031,22 @@ uint64_t helper_ldq_mmu(CPUArchState *env, uint64_t addr,
-     return ret;
- }
- 
--uint64_t cpu_ldq_be_mmu(CPUArchState *env, abi_ptr addr,
-+uint64_t helper_ldq_mmu(CPUArchState *env, uint64_t addr,
-                         MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--    uint64_t ret;
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_BE);
--    ret = do_ld8_he_mmu(env, addr, mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return cpu_to_be64(ret);
-+    return do_ld8_mmu(env, addr, get_memop(oi), ra);
- }
- 
--uint64_t cpu_ldq_le_mmu(CPUArchState *env, abi_ptr addr,
--                        MemOpIdx oi, uintptr_t ra)
-+uint64_t cpu_ldq_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--    uint64_t ret;
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_LE);
--    ret = do_ld8_he_mmu(env, addr, mop, ra);
-+    uint64_t ret = do_ld8_mmu(env, addr, get_memop(oi), ra);
-     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return cpu_to_le64(ret);
-+    return ret;
- }
- 
--static Int128 do_ld16_he_mmu(CPUArchState *env, abi_ptr addr,
--                             MemOp mop, uintptr_t ra)
-+static Int128 do_ld16_mmu(CPUArchState *env, abi_ptr addr,
-+                          MemOp mop, uintptr_t ra)
- {
-     void *haddr;
-     Int128 ret;
-@@ -1121,14 +1055,6 @@ static Int128 do_ld16_he_mmu(CPUArchState *env, abi_ptr addr,
-     haddr = cpu_mmu_lookup(env, addr, mop, ra, MMU_DATA_LOAD);
-     ret = load_atom_16(env, ra, haddr, mop);
-     clear_helper_retaddr();
--    return ret;
--}
--
--Int128 helper_ld16_mmu(CPUArchState *env, uint64_t addr,
--                       MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--    Int128 ret = do_ld16_he_mmu(env, addr, mop, ra);
- 
-     if (mop & MO_BSWAP) {
-         ret = bswap128(ret);
-@@ -1136,38 +1062,22 @@ Int128 helper_ld16_mmu(CPUArchState *env, uint64_t addr,
-     return ret;
- }
- 
-+Int128 helper_ld16_mmu(CPUArchState *env, uint64_t addr,
-+                       MemOpIdx oi, uintptr_t ra)
-+{
-+    return do_ld16_mmu(env, addr, get_memop(oi), ra);
-+}
-+
- Int128 helper_ld_i128(CPUArchState *env, uint64_t addr, MemOpIdx oi)
- {
-     return helper_ld16_mmu(env, addr, oi, GETPC());
- }
- 
--Int128 cpu_ld16_be_mmu(CPUArchState *env, abi_ptr addr,
--                       MemOpIdx oi, uintptr_t ra)
-+Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
-+                    MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--    Int128 ret;
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_BE);
--    ret = do_ld16_he_mmu(env, addr, mop, ra);
-+    Int128 ret = do_ld16_mmu(env, addr, get_memop(oi), ra);
-     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    if (!HOST_BIG_ENDIAN) {
--        ret = bswap128(ret);
--    }
--    return ret;
--}
--
--Int128 cpu_ld16_le_mmu(CPUArchState *env, abi_ptr addr,
--                       MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--    Int128 ret;
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_LE);
--    ret = do_ld16_he_mmu(env, addr, mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    if (HOST_BIG_ENDIAN) {
--        ret = bswap128(ret);
--    }
-     return ret;
- }
- 
-@@ -1195,13 +1105,17 @@ void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
-     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
- }
- 
--static void do_st2_he_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
--                          MemOp mop, uintptr_t ra)
-+static void do_st2_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
-+                       MemOp mop, uintptr_t ra)
- {
-     void *haddr;
- 
-     tcg_debug_assert((mop & MO_SIZE) == MO_16);
-     haddr = cpu_mmu_lookup(env, addr, mop, ra, MMU_DATA_STORE);
-+
-+    if (mop & MO_BSWAP) {
-+        val = bswap16(val);
-+    }
-     store_atom_2(env, ra, haddr, mop, val);
-     clear_helper_retaddr();
- }
-@@ -1209,41 +1123,27 @@ static void do_st2_he_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
- void helper_stw_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
-                     MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--
--    if (mop & MO_BSWAP) {
--        val = bswap16(val);
--    }
--    do_st2_he_mmu(env, addr, val, mop, ra);
-+    do_st2_mmu(env, addr, val, get_memop(oi), ra);
- }
- 
--void cpu_stw_be_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
-+void cpu_stw_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
-                     MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_BE);
--    do_st2_he_mmu(env, addr, be16_to_cpu(val), mop, ra);
-+    do_st2_mmu(env, addr, val, get_memop(oi), ra);
-     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
- }
- 
--void cpu_stw_le_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_LE);
--    do_st2_he_mmu(env, addr, le16_to_cpu(val), mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
--static void do_st4_he_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
--                          MemOp mop, uintptr_t ra)
-+static void do_st4_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
-+                       MemOp mop, uintptr_t ra)
- {
-     void *haddr;
- 
-     tcg_debug_assert((mop & MO_SIZE) == MO_32);
-     haddr = cpu_mmu_lookup(env, addr, mop, ra, MMU_DATA_STORE);
-+
-+    if (mop & MO_BSWAP) {
-+        val = bswap32(val);
-+    }
-     store_atom_4(env, ra, haddr, mop, val);
-     clear_helper_retaddr();
- }
-@@ -1251,41 +1151,27 @@ static void do_st4_he_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
- void helper_stl_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
-                     MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--
--    if (mop & MO_BSWAP) {
--        val = bswap32(val);
--    }
--    do_st4_he_mmu(env, addr, val, mop, ra);
-+    do_st4_mmu(env, addr, val, get_memop(oi), ra);
- }
- 
--void cpu_stl_be_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t ra)
-+void cpu_stl_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
-+                 MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_BE);
--    do_st4_he_mmu(env, addr, be32_to_cpu(val), mop, ra);
-+    do_st4_mmu(env, addr, val, get_memop(oi), ra);
-     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
- }
- 
--void cpu_stl_le_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_LE);
--    do_st4_he_mmu(env, addr, le32_to_cpu(val), mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
--static void do_st8_he_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
--                          MemOp mop, uintptr_t ra)
-+static void do_st8_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
-+                       MemOp mop, uintptr_t ra)
- {
-     void *haddr;
- 
-     tcg_debug_assert((mop & MO_SIZE) == MO_64);
-     haddr = cpu_mmu_lookup(env, addr, mop, ra, MMU_DATA_STORE);
-+
-+    if (mop & MO_BSWAP) {
-+        val = bswap64(val);
-+    }
-     store_atom_8(env, ra, haddr, mop, val);
-     clear_helper_retaddr();
- }
-@@ -1293,41 +1179,27 @@ static void do_st8_he_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
- void helper_stq_mmu(CPUArchState *env, uint64_t addr, uint64_t val,
-                     MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--
--    if (mop & MO_BSWAP) {
--        val = bswap64(val);
--    }
--    do_st8_he_mmu(env, addr, val, mop, ra);
-+    do_st8_mmu(env, addr, val, get_memop(oi), ra);
- }
- 
--void cpu_stq_be_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
-+void cpu_stq_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
-                     MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_BE);
--    do_st8_he_mmu(env, addr, cpu_to_be64(val), mop, ra);
-+    do_st8_mmu(env, addr, val, get_memop(oi), ra);
-     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
- }
- 
--void cpu_stq_le_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_LE);
--    do_st8_he_mmu(env, addr, cpu_to_le64(val), mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
--static void do_st16_he_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
--                           MemOp mop, uintptr_t ra)
-+static void do_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
-+                        MemOp mop, uintptr_t ra)
- {
-     void *haddr;
- 
-     tcg_debug_assert((mop & MO_SIZE) == MO_128);
-     haddr = cpu_mmu_lookup(env, addr, mop, ra, MMU_DATA_STORE);
-+
-+    if (mop & MO_BSWAP) {
-+        val = bswap128(val);
-+    }
-     store_atom_16(env, ra, haddr, mop, val);
-     clear_helper_retaddr();
- }
-@@ -1335,12 +1207,7 @@ static void do_st16_he_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
- void helper_st16_mmu(CPUArchState *env, uint64_t addr, Int128 val,
-                      MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--
--    if (mop & MO_BSWAP) {
--        val = bswap128(val);
--    }
--    do_st16_he_mmu(env, addr, val, mop, ra);
-+    do_st16_mmu(env, addr, val, get_memop(oi), ra);
- }
- 
- void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
-@@ -1348,29 +1215,10 @@ void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
-     helper_st16_mmu(env, addr, val, oi, GETPC());
- }
- 
--void cpu_st16_be_mmu(CPUArchState *env, abi_ptr addr,
--                     Int128 val, MemOpIdx oi, uintptr_t ra)
-+void cpu_st16_mmu(CPUArchState *env, abi_ptr addr,
-+                  Int128 val, MemOpIdx oi, uintptr_t ra)
- {
--    MemOp mop = get_memop(oi);
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_BE);
--    if (!HOST_BIG_ENDIAN) {
--        val = bswap128(val);
--    }
--    do_st16_he_mmu(env, addr, val, mop, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
--void cpu_st16_le_mmu(CPUArchState *env, abi_ptr addr,
--                     Int128 val, MemOpIdx oi, uintptr_t ra)
--{
--    MemOp mop = get_memop(oi);
--
--    tcg_debug_assert((mop & MO_BSWAP) == MO_LE);
--    if (HOST_BIG_ENDIAN) {
--        val = bswap128(val);
--    }
--    do_st16_he_mmu(env, addr, val, mop, ra);
-+    do_st16_mmu(env, addr, val, get_memop(oi), ra);
-     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
- }
- 
-diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
-index 9758f225d6..9cef70e5c9 100644
---- a/target/arm/tcg/m_helper.c
-+++ b/target/arm/tcg/m_helper.c
-@@ -1937,8 +1937,8 @@ static bool do_v7m_function_return(ARMCPU *cpu)
-          */
-         mmu_idx = arm_v7m_mmu_idx_for_secstate(env, true);
-         oi = make_memop_idx(MO_LEUL, arm_to_core_mmu_idx(mmu_idx));
--        newpc = cpu_ldl_le_mmu(env, frameptr, oi, 0);
--        newpsr = cpu_ldl_le_mmu(env, frameptr + 4, oi, 0);
-+        newpc = cpu_ldl_mmu(env, frameptr, oi, 0);
-+        newpsr = cpu_ldl_mmu(env, frameptr + 4, oi, 0);
- 
-         /* Consistency checks on new IPSR */
-         newpsr_exc = newpsr & XPSR_EXCP;
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 7972d56a72..981a47d8bb 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -1334,25 +1334,13 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
-                 ret = cpu_ldb_mmu(env, addr, oi, GETPC());
-                 break;
-             case 2:
--                if (asi & 8) {
--                    ret = cpu_ldw_le_mmu(env, addr, oi, GETPC());
--                } else {
--                    ret = cpu_ldw_be_mmu(env, addr, oi, GETPC());
--                }
-+                ret = cpu_ldw_mmu(env, addr, oi, GETPC());
-                 break;
-             case 4:
--                if (asi & 8) {
--                    ret = cpu_ldl_le_mmu(env, addr, oi, GETPC());
--                } else {
--                    ret = cpu_ldl_be_mmu(env, addr, oi, GETPC());
--                }
-+                ret = cpu_ldl_mmu(env, addr, oi, GETPC());
-                 break;
-             case 8:
--                if (asi & 8) {
--                    ret = cpu_ldq_le_mmu(env, addr, oi, GETPC());
--                } else {
--                    ret = cpu_ldq_be_mmu(env, addr, oi, GETPC());
--                }
-+                ret = cpu_ldq_mmu(env, addr, oi, GETPC());
-                 break;
-             default:
+             if (parallel) {
+ #ifdef CONFIG_ATOMIC64
+-                MemOpIdx oi = make_memop_idx(MO_TEUQ | MO_ALIGN, mem_idx);
+-                ov = cpu_atomic_cmpxchgq_be_mmu(env, a1, cv, nv, oi, ra);
++                ov = cpu_atomic_cmpxchgq_be_mmu(env, a1, cv, nv, oi8, ra);
+ #else
+                 /* Note that we asserted !parallel above.  */
                  g_assert_not_reached();
-diff --git a/accel/tcg/ldst_common.c.inc b/accel/tcg/ldst_common.c.inc
-index 6ac8d871a3..5f8144b33a 100644
---- a/accel/tcg/ldst_common.c.inc
-+++ b/accel/tcg/ldst_common.c.inc
-@@ -26,7 +26,7 @@ uint32_t cpu_lduw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-                                int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_BEUW | MO_UNALN, mmu_idx);
--    return cpu_ldw_be_mmu(env, addr, oi, ra);
-+    return cpu_ldw_mmu(env, addr, oi, ra);
- }
+ #endif
+             } else {
+-                ov = cpu_ldq_data_ra(env, a1, ra);
+-                cpu_stq_data_ra(env, a1, (ov == cv ? nv : ov), ra);
++                ov = cpu_ldq_mmu(env, a1, oi8, ra);
++                cpu_stq_mmu(env, a1, (ov == cv ? nv : ov), oi8, ra);
+             }
+             cc = (ov != cv);
+             env->regs[r3] = ov;
+@@ -1834,27 +1840,19 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
  
- int cpu_ldsw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-@@ -39,21 +39,21 @@ uint32_t cpu_ldl_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-                               int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_BEUL | MO_UNALN, mmu_idx);
--    return cpu_ldl_be_mmu(env, addr, oi, ra);
-+    return cpu_ldl_mmu(env, addr, oi, ra);
- }
+     case 2:
+         {
+-            uint64_t nvh = cpu_ldq_data_ra(env, pl, ra);
+-            uint64_t nvl = cpu_ldq_data_ra(env, pl + 8, ra);
+-            Int128 nv = int128_make128(nvl, nvh);
++            Int128 nv = cpu_ld16_mmu(env, pl, oi16, ra);
+             Int128 cv = int128_make128(env->regs[r3 + 1], env->regs[r3]);
+             Int128 ov;
  
- uint64_t cpu_ldq_be_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-                               int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_BEUQ | MO_UNALN, mmu_idx);
--    return cpu_ldq_be_mmu(env, addr, oi, ra);
-+    return cpu_ldq_mmu(env, addr, oi, ra);
- }
- 
- uint32_t cpu_lduw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-                                int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_LEUW | MO_UNALN, mmu_idx);
--    return cpu_ldw_le_mmu(env, addr, oi, ra);
-+    return cpu_ldw_mmu(env, addr, oi, ra);
- }
- 
- int cpu_ldsw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-@@ -66,14 +66,14 @@ uint32_t cpu_ldl_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-                               int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_LEUL | MO_UNALN, mmu_idx);
--    return cpu_ldl_le_mmu(env, addr, oi, ra);
-+    return cpu_ldl_mmu(env, addr, oi, ra);
- }
- 
- uint64_t cpu_ldq_le_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-                               int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_LEUQ | MO_UNALN, mmu_idx);
--    return cpu_ldq_le_mmu(env, addr, oi, ra);
-+    return cpu_ldq_mmu(env, addr, oi, ra);
- }
- 
- void cpu_stb_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
-@@ -87,42 +87,42 @@ void cpu_stw_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
-                           int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_BEUW | MO_UNALN, mmu_idx);
--    cpu_stw_be_mmu(env, addr, val, oi, ra);
-+    cpu_stw_mmu(env, addr, val, oi, ra);
- }
- 
- void cpu_stl_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
-                           int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_BEUL | MO_UNALN, mmu_idx);
--    cpu_stl_be_mmu(env, addr, val, oi, ra);
-+    cpu_stl_mmu(env, addr, val, oi, ra);
- }
- 
- void cpu_stq_be_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint64_t val,
-                           int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_BEUQ | MO_UNALN, mmu_idx);
--    cpu_stq_be_mmu(env, addr, val, oi, ra);
-+    cpu_stq_mmu(env, addr, val, oi, ra);
- }
- 
- void cpu_stw_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
-                           int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_LEUW | MO_UNALN, mmu_idx);
--    cpu_stw_le_mmu(env, addr, val, oi, ra);
-+    cpu_stw_mmu(env, addr, val, oi, ra);
- }
- 
- void cpu_stl_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint32_t val,
-                           int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_LEUL | MO_UNALN, mmu_idx);
--    cpu_stl_le_mmu(env, addr, val, oi, ra);
-+    cpu_stl_mmu(env, addr, val, oi, ra);
- }
- 
- void cpu_stq_le_mmuidx_ra(CPUArchState *env, abi_ptr addr, uint64_t val,
-                           int mmu_idx, uintptr_t ra)
- {
-     MemOpIdx oi = make_memop_idx(MO_LEUQ | MO_UNALN, mmu_idx);
--    cpu_stq_le_mmu(env, addr, val, oi, ra);
-+    cpu_stq_mmu(env, addr, val, oi, ra);
- }
- 
- /*--------------------------*/
+             if (!parallel) {
+-                uint64_t oh = cpu_ldq_data_ra(env, a1 + 0, ra);
+-                uint64_t ol = cpu_ldq_data_ra(env, a1 + 8, ra);
+-
+-                ov = int128_make128(ol, oh);
++                ov = cpu_ld16_mmu(env, a1, oi16, ra);
+                 cc = !int128_eq(ov, cv);
+                 if (cc) {
+                     nv = ov;
+                 }
+-
+-                cpu_stq_data_ra(env, a1 + 0, int128_gethi(nv), ra);
+-                cpu_stq_data_ra(env, a1 + 8, int128_getlo(nv), ra);
++                cpu_st16_mmu(env, a1, nv, oi16, ra);
+             } else if (HAVE_CMPXCHG128) {
+-                MemOpIdx oi = make_memop_idx(MO_TE | MO_128 | MO_ALIGN, mem_idx);
+-                ov = cpu_atomic_cmpxchgo_be_mmu(env, a1, cv, nv, oi, ra);
++                ov = cpu_atomic_cmpxchgo_be_mmu(env, a1, cv, nv, oi16, ra);
+                 cc = !int128_eq(ov, cv);
+             } else {
+                 /* Note that we asserted !parallel above.  */
+@@ -1876,29 +1874,19 @@ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
+     if (cc == 0) {
+         switch (sc) {
+         case 0:
+-            cpu_stb_data_ra(env, a2, svh >> 56, ra);
++            cpu_stb_mmu(env, a2, svh >> 56, oi1, ra);
+             break;
+         case 1:
+-            cpu_stw_data_ra(env, a2, svh >> 48, ra);
++            cpu_stw_mmu(env, a2, svh >> 48, oi2, ra);
+             break;
+         case 2:
+-            cpu_stl_data_ra(env, a2, svh >> 32, ra);
++            cpu_stl_mmu(env, a2, svh >> 32, oi4, ra);
+             break;
+         case 3:
+-            cpu_stq_data_ra(env, a2, svh, ra);
++            cpu_stq_mmu(env, a2, svh, oi8, ra);
+             break;
+         case 4:
+-            if (!parallel) {
+-                cpu_stq_data_ra(env, a2 + 0, svh, ra);
+-                cpu_stq_data_ra(env, a2 + 8, svl, ra);
+-            } else if (HAVE_ATOMIC128) {
+-                MemOpIdx oi = make_memop_idx(MO_TEUQ | MO_ALIGN_16, mem_idx);
+-                Int128 sv = int128_make128(svl, svh);
+-                cpu_atomic_sto_be_mmu(env, a2, sv, oi, ra);
+-            } else {
+-                /* Note that we asserted !parallel above.  */
+-                g_assert_not_reached();
+-            }
++            cpu_st16_mmu(env, a2, int128_make128(svl, svh), oi16, ra);
+             break;
+         default:
+             g_assert_not_reached();
 -- 
 2.34.1
 
