@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2BA716FB6
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 23:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FB770DF8B
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:42:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q46sv-0004S5-TM; Tue, 30 May 2023 17:28:05 -0400
+	id 1q1TCN-0004Ho-NN; Tue, 23 May 2023 10:41:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1q45f1-0005Ku-Lg
- for qemu-devel@nongnu.org; Tue, 30 May 2023 16:09:39 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1TCL-0004EV-PP
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 10:41:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1q45en-0008Qv-Jt
- for qemu-devel@nongnu.org; Tue, 30 May 2023 16:09:39 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1TCI-0007Up-Q8
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 10:41:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685477364;
+ s=mimecast20190719; t=1684852869;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=zvlMIxRSHy+ZBHSg2xmRNgHncexJlOV1pEUIH2vuNMA=;
- b=KQpnN8XW6l+EA1o/nUT7ll7RN/uhWu73XQxMq8DjDLuprPCWJaQLq4LRj9jTNKIErZySF3
- fJETuY4+81xU7FWNzm5brF6Eqdpi4anY/CL4ybMtlotmZZxvmQ43CEy/j+p9L3fB7pzanb
- 8jYJAEFE/1rLp7WLMuNcST11EsXfMwU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eoVSCYLvX/niD9VEyeXYZeucnv3QQ9euIX0bVgRHy5U=;
+ b=HupruXO6cYiweL/IsSixk8UgMd5AWqYyTGuFQYWMqqUpYSWV/ZmUhn2fAAuzT7wqKVVQa2
+ Jr99VYOj20S6Wdu2C3NPFEckqNrNuy5GMM5KpvG/g/vtnhStRnz32ub5rc1H/3ipDPQ0ij
+ p4paclCm5XJkc+HKUz2Ng9m//WKx/8I=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-01xmSpBDPbOqIDvolO_8-w-1; Tue, 30 May 2023 16:08:13 -0400
-X-MC-Unique: 01xmSpBDPbOqIDvolO_8-w-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-94a34e35f57so422015566b.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:08:12 -0700 (PDT)
+ us-mta-412-cFslAIOKNAWs-0UtyXX6LA-1; Tue, 23 May 2023 10:41:08 -0400
+X-MC-Unique: cFslAIOKNAWs-0UtyXX6LA-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-25332df5afaso4153292a91.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 07:41:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685477290; x=1688069290;
- h=mime-version:user-agent:message-id:references:date:in-reply-to
- :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zvlMIxRSHy+ZBHSg2xmRNgHncexJlOV1pEUIH2vuNMA=;
- b=VPjnqF5UowDZadEPOgY2JjjVNaxIPVJWr9pSM+3zE4v/zimD2HDK/3/sdt8CXUX8Xc
- I7BKXOpTRrDh05h2W8r8TkWU5I4gGFpkK9164AqqUiCJWDJ8n8vTgwdJOZa3X0HzAtRT
- 1I4zPeyZduWWjaKK/zw/EJ8xvsPY6xdt7JOpRZqMNdlNPytG2UU3yyf5PYNAK8nx2Qq6
- tY8h7rKfd0jhpMmukfuyoZcBHKUvmOswJShGxJ3nWyBn5G9WgdSRsbxcQFvGgJcSTceB
- aTBpT+KyEQm1MeHeU7nocXcS+MqKT1/7DvOrjOe+vf99QcfnJKDueW3phfQcqCAHVLii
- WWKQ==
-X-Gm-Message-State: AC+VfDxdI0oftuliFch7yfPcL52iDdOaBKsVHLCJq4pOD+vrm48AocDB
- ELsSietB/+qPWc8qONQd9MdYcbVOHEDj6yTpQnAI+XvmbGH7wfuZJ/SYom6q488ycs3Bf/O9KHe
- qW8ffclee5uE3ypk=
-X-Received: by 2002:a17:907:7295:b0:961:a67:296 with SMTP id
- dt21-20020a170907729500b009610a670296mr3107951ejc.11.1685477290249; 
- Tue, 30 May 2023 13:08:10 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Qvpr7mwX7B0KnOB7pTG+adZJZjSnAuOs36b61MKGx5f9uxYrFK9yipouhkY4ctG+pB5iDfQ==
-X-Received: by 2002:a17:907:7295:b0:961:a67:296 with SMTP id
- dt21-20020a170907729500b009610a670296mr3107942ejc.11.1685477290041; 
- Tue, 30 May 2023 13:08:10 -0700 (PDT)
-Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
- by smtp.gmail.com with ESMTPSA id
- b12-20020a170906150c00b0097381fe7aaasm7763567ejd.180.2023.05.30.13.08.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 13:08:09 -0700 (PDT)
-From: Milan Zamazal <mzamazal@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com,
-    stefanha@redhat.com,
-    alex.bennee@linaro.org
-Subject: [PATCH 4/4] tests/qtest: enable tests for virtio-scmi
-In-Reply-To: <cover.1685476786.git.mzamazal@redhat.com>
-Date: Tue, 23 May 2023 16:38:58 +0200
-References: <cover.1685476786.git.mzamazal@redhat.com>
-Message-Id: <e20e0b6dae56d520619cbf2883aa4c3004fa06b7.1685476786.git.mzamazal@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ d=1e100.net; s=20221208; t=1684852866; x=1687444866;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eoVSCYLvX/niD9VEyeXYZeucnv3QQ9euIX0bVgRHy5U=;
+ b=bZDXEhgsSoq0OsaLwieGUyu9J+dzX6AwemHMgNoR1/MTTHQvmpQbTItgSdydOIaR2u
+ VuLjKuAB4z6lQZkpnRf6AL1+JLB4nCIasQaK7bXVVM/+suD5gK+/8k9C0upAeF9Vymwj
+ XZzcebYszGaAcDBcRw1kWFwnsbj2Wm05sN5UP+30EZVdeGttkld499G3h+t/qIgA401N
+ lwgwJQ4ayzYgrGUeBwPCPV9a2A+j090zytnPUPKNbfXSpC0U2facv9ikkSv4p+zDVApF
+ PrJZ0M6dSxMHu05UFVSeZjJnI4LfiBlllCEimELd5B2unqkkdGh9sG2FkViTDWdqPvwF
+ YFgg==
+X-Gm-Message-State: AC+VfDwNGOR6EFhnVRpfUVdvySNcDmNN7GmhlBJEAqFIs+Q2lnjTA7sI
+ eoEXTZURzlwg2bVv9X8L4q2P+lipPDi2RoLYtJDznOSgYPIKDyH0HargZvA21UHO+NZjP1X7qeN
+ XaWAin+UmZmcOJpNI2noxkq7wlr7itl9J/tS/FhY=
+X-Received: by 2002:a17:90a:17ec:b0:253:45e5:af5c with SMTP id
+ q99-20020a17090a17ec00b0025345e5af5cmr13951049pja.32.1684852866583; 
+ Tue, 23 May 2023 07:41:06 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ79mXoLvuZ5NabkBIAasdVpgJ8Lj/TNatDoZfD8LSZhtU16hv/H66VoSxIODRx47stwqV9yVNQ9Ot912F4BUas=
+X-Received: by 2002:a17:90a:17ec:b0:253:45e5:af5c with SMTP id
+ q99-20020a17090a17ec00b0025345e5af5cmr13951041pja.32.1684852866363; Tue, 23
+ May 2023 07:41:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
+References: <20230517163406.2593480-1-jsnow@redhat.com>
+In-Reply-To: <20230517163406.2593480-1-jsnow@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 23 May 2023 10:40:55 -0400
+Message-ID: <CAFn=p-a42EPq9LzQ+No3crhxCchUDxQH7eYcAEmtiq0mXz7HnA@mail.gmail.com>
+Subject: Re: [PATCH 0/5] python: backport socket changes from python-qemu-qmp
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Beraldo Leal <bleal@redhat.com>, 
+ Daniel Berrange <berrange@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000994b9f05fc5d60f8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- DKIMWL_WL_HIGH=-0.167, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 30 May 2023 17:28:00 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,332 +93,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't have a virtio-scmi implementation in QEMU and only support a
-vhost-user backend.  This is very similar to virtio-gpio and we add the same
-set of tests, just passing some vhost-user messages over the control socket.
+--000000000000994b9f05fc5d60f8
+Content-Type: text/plain; charset="UTF-8"
 
-Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
----
- MAINTAINERS                      |   1 +
- tests/qtest/libqos/meson.build   |   1 +
- tests/qtest/libqos/virtio-scmi.c | 174 +++++++++++++++++++++++++++++++
- tests/qtest/libqos/virtio-scmi.h |  34 ++++++
- tests/qtest/vhost-user-test.c    |  44 ++++++++
- 5 files changed, 254 insertions(+)
- create mode 100644 tests/qtest/libqos/virtio-scmi.c
- create mode 100644 tests/qtest/libqos/virtio-scmi.h
+On Wed, May 17, 2023, 12:34 PM John Snow <jsnow@redhat.com> wrote:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1ce2f3dabe..26a5bad736 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2207,6 +2207,7 @@ R: mzamazal@redhat.com
- S: Supported
- F: hw/virtio/vhost-user-scmi*
- F: include/hw/virtio/vhost-user-scmi.h
-+F: tests/qtest/libqos/virtio-scmi.*
- 
- virtio-crypto
- M: Gonglei <arei.gonglei@huawei.com>
-diff --git a/tests/qtest/libqos/meson.build b/tests/qtest/libqos/meson.build
-index cc209a8de5..90aae42a22 100644
---- a/tests/qtest/libqos/meson.build
-+++ b/tests/qtest/libqos/meson.build
-@@ -46,6 +46,7 @@ libqos_srcs = files(
-         'virtio-serial.c',
-         'virtio-iommu.c',
-         'virtio-gpio.c',
-+        'virtio-scmi.c',
-         'generic-pcihost.c',
- 
-         # qgraph machines:
-diff --git a/tests/qtest/libqos/virtio-scmi.c b/tests/qtest/libqos/virtio-scmi.c
-new file mode 100644
-index 0000000000..ce8f4d5c06
---- /dev/null
-+++ b/tests/qtest/libqos/virtio-scmi.c
-@@ -0,0 +1,174 @@
-+/*
-+ * virtio-scmi nodes for testing
-+ *
-+ * SPDX-FileCopyrightText: Linaro Ltd
-+ * SPDX-FileCopyrightText: Red Hat, Inc.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Based on virtio-gpio.c, doing basically the same thing.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "standard-headers/linux/virtio_config.h"
-+#include "../libqtest.h"
-+#include "qemu/module.h"
-+#include "qgraph.h"
-+#include "virtio-scmi.h"
-+
-+static QGuestAllocator *alloc;
-+
-+static void virtio_scmi_cleanup(QVhostUserSCMI *scmi)
-+{
-+    QVirtioDevice *vdev = scmi->vdev;
-+    int i;
-+
-+    for (i = 0; i < 2; i++) {
-+        qvirtqueue_cleanup(vdev->bus, scmi->queues[i], alloc);
-+    }
-+    g_free(scmi->queues);
-+}
-+
-+/*
-+ * This handles the VirtIO setup from the point of view of the driver
-+ * frontend and therefore doesn't present any vhost specific features
-+ * and in fact masks of the re-used bit.
-+ */
-+static void virtio_scmi_setup(QVhostUserSCMI *scmi)
-+{
-+    QVirtioDevice *vdev = scmi->vdev;
-+    uint64_t features;
-+    int i;
-+
-+    features = qvirtio_get_features(vdev);
-+    features &= ~QVIRTIO_F_BAD_FEATURE;
-+    qvirtio_set_features(vdev, features);
-+
-+    scmi->queues = g_new(QVirtQueue *, 2);
-+    for (i = 0; i < 2; i++) {
-+        scmi->queues[i] = qvirtqueue_setup(vdev, alloc, i);
-+    }
-+    qvirtio_set_driver_ok(vdev);
-+}
-+
-+static void *qvirtio_scmi_get_driver(QVhostUserSCMI *v_scmi,
-+                                     const char *interface)
-+{
-+    if (!g_strcmp0(interface, "vhost-user-scmi")) {
-+        return v_scmi;
-+    }
-+    if (!g_strcmp0(interface, "virtio")) {
-+        return v_scmi->vdev;
-+    }
-+
-+    g_assert_not_reached();
-+}
-+
-+static void *qvirtio_scmi_device_get_driver(void *object,
-+                                            const char *interface)
-+{
-+    QVhostUserSCMIDevice *v_scmi = object;
-+    return qvirtio_scmi_get_driver(&v_scmi->scmi, interface);
-+}
-+
-+/* virtio-scmi (mmio) */
-+static void qvirtio_scmi_device_destructor(QOSGraphObject *obj)
-+{
-+    QVhostUserSCMIDevice *scmi_dev = (QVhostUserSCMIDevice *) obj;
-+    virtio_scmi_cleanup(&scmi_dev->scmi);
-+}
-+
-+static void qvirtio_scmi_device_start_hw(QOSGraphObject *obj)
-+{
-+    QVhostUserSCMIDevice *scmi_dev = (QVhostUserSCMIDevice *) obj;
-+    virtio_scmi_setup(&scmi_dev->scmi);
-+}
-+
-+static void *virtio_scmi_device_create(void *virtio_dev,
-+                                       QGuestAllocator *t_alloc,
-+                                       void *addr)
-+{
-+    QVhostUserSCMIDevice *virtio_device = g_new0(QVhostUserSCMIDevice, 1);
-+    QVhostUserSCMI *interface = &virtio_device->scmi;
-+
-+    interface->vdev = virtio_dev;
-+    alloc = t_alloc;
-+
-+    virtio_device->obj.get_driver = qvirtio_scmi_device_get_driver;
-+    virtio_device->obj.start_hw = qvirtio_scmi_device_start_hw;
-+    virtio_device->obj.destructor = qvirtio_scmi_device_destructor;
-+
-+    return &virtio_device->obj;
-+}
-+
-+/* virtio-scmi-pci */
-+static void qvirtio_scmi_pci_destructor(QOSGraphObject *obj)
-+{
-+    QVhostUserSCMIPCI *scmi_pci = (QVhostUserSCMIPCI *) obj;
-+    QOSGraphObject *pci_vobj =  &scmi_pci->pci_vdev.obj;
-+
-+    virtio_scmi_cleanup(&scmi_pci->scmi);
-+    qvirtio_pci_destructor(pci_vobj);
-+}
-+
-+static void qvirtio_scmi_pci_start_hw(QOSGraphObject *obj)
-+{
-+    QVhostUserSCMIPCI *scmi_pci = (QVhostUserSCMIPCI *) obj;
-+    QOSGraphObject *pci_vobj =  &scmi_pci->pci_vdev.obj;
-+
-+    qvirtio_pci_start_hw(pci_vobj);
-+    virtio_scmi_setup(&scmi_pci->scmi);
-+}
-+
-+static void *qvirtio_scmi_pci_get_driver(void *object, const char *interface)
-+{
-+    QVhostUserSCMIPCI *v_scmi = object;
-+
-+    if (!g_strcmp0(interface, "pci-device")) {
-+        return v_scmi->pci_vdev.pdev;
-+    }
-+    return qvirtio_scmi_get_driver(&v_scmi->scmi, interface);
-+}
-+
-+static void *virtio_scmi_pci_create(void *pci_bus, QGuestAllocator *t_alloc,
-+                                    void *addr)
-+{
-+    QVhostUserSCMIPCI *virtio_spci = g_new0(QVhostUserSCMIPCI, 1);
-+    QVhostUserSCMI *interface = &virtio_spci->scmi;
-+    QOSGraphObject *obj = &virtio_spci->pci_vdev.obj;
-+
-+    virtio_pci_init(&virtio_spci->pci_vdev, pci_bus, addr);
-+    interface->vdev = &virtio_spci->pci_vdev.vdev;
-+    alloc = t_alloc;
-+
-+    obj->get_driver = qvirtio_scmi_pci_get_driver;
-+    obj->start_hw = qvirtio_scmi_pci_start_hw;
-+    obj->destructor = qvirtio_scmi_pci_destructor;
-+
-+    return obj;
-+}
-+
-+static void virtio_scmi_register_nodes(void)
-+{
-+    QPCIAddress addr = {
-+        .devfn = QPCI_DEVFN(4, 0),
-+    };
-+
-+    QOSGraphEdgeOptions edge_opts = { };
-+
-+    /* vhost-user-scmi-device */
-+    edge_opts.extra_device_opts = "id=scmi,chardev=chr-vhost-user-test "
-+        "-global virtio-mmio.force-legacy=false";
-+    qos_node_create_driver("vhost-user-scmi-device",
-+                            virtio_scmi_device_create);
-+    qos_node_consumes("vhost-user-scmi-device", "virtio-bus", &edge_opts);
-+    qos_node_produces("vhost-user-scmi-device", "vhost-user-scmi");
-+
-+    /* virtio-scmi-pci */
-+    edge_opts.extra_device_opts = "id=scmi,addr=04.0,chardev=chr-vhost-user-test";
-+    add_qpci_address(&edge_opts, &addr);
-+    qos_node_create_driver("vhost-user-scmi-pci", virtio_scmi_pci_create);
-+    qos_node_consumes("vhost-user-scmi-pci", "pci-bus", &edge_opts);
-+    qos_node_produces("vhost-user-scmi-pci", "vhost-user-scmi");
-+}
-+
-+libqos_init(virtio_scmi_register_nodes);
-diff --git a/tests/qtest/libqos/virtio-scmi.h b/tests/qtest/libqos/virtio-scmi.h
-new file mode 100644
-index 0000000000..cb5670da6e
---- /dev/null
-+++ b/tests/qtest/libqos/virtio-scmi.h
-@@ -0,0 +1,34 @@
-+/*
-+ * virtio-scmi structures
-+ *
-+ * SPDX-FileCopyrightText: Red Hat, Inc.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef TESTS_LIBQOS_VIRTIO_SCMI_H
-+#define TESTS_LIBQOS_VIRTIO_SCMI_H
-+
-+#include "qgraph.h"
-+#include "virtio.h"
-+#include "virtio-pci.h"
-+
-+typedef struct QVhostUserSCMI QVhostUserSCMI;
-+typedef struct QVhostUserSCMIPCI QVhostUserSCMIPCI;
-+typedef struct QVhostUserSCMIDevice QVhostUserSCMIDevice;
-+
-+struct QVhostUserSCMI {
-+    QVirtioDevice *vdev;
-+    QVirtQueue **queues;
-+};
-+
-+struct QVhostUserSCMIPCI {
-+    QVirtioPCIDevice pci_vdev;
-+    QVhostUserSCMI scmi;
-+};
-+
-+struct QVhostUserSCMIDevice {
-+    QOSGraphObject obj;
-+    QVhostUserSCMI scmi;
-+};
-+
-+#endif
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index 8ab10732f8..2377780fb0 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -33,6 +33,7 @@
- #include "standard-headers/linux/virtio_ids.h"
- #include "standard-headers/linux/virtio_net.h"
- #include "standard-headers/linux/virtio_gpio.h"
-+#include "standard-headers/linux/virtio_scmi.h"
- 
- #ifdef CONFIG_LINUX
- #include <sys/vfs.h>
-@@ -145,6 +146,7 @@ enum {
- enum {
-     VHOST_USER_NET,
-     VHOST_USER_GPIO,
-+    VHOST_USER_SCMI,
- };
- 
- typedef struct TestServer {
-@@ -1157,3 +1159,45 @@ static void register_vhost_gpio_test(void)
-                  "vhost-user-gpio", test_read_guest_mem, &opts);
- }
- libqos_init(register_vhost_gpio_test);
-+
-+static uint64_t vu_scmi_get_features(TestServer *s)
-+{
-+    return 0x1ULL << VIRTIO_F_VERSION_1 |
-+        0x1ULL << VIRTIO_SCMI_F_P2A_CHANNELS |
-+        0x1ULL << VHOST_USER_F_PROTOCOL_FEATURES;
-+}
-+
-+static void vu_scmi_get_protocol_features(TestServer *s, CharBackend *chr,
-+                                          VhostUserMsg *msg)
-+{
-+    msg->flags |= VHOST_USER_REPLY_MASK;
-+    msg->size = sizeof(m.payload.u64);
-+    msg->payload.u64 = 1ULL << VHOST_USER_PROTOCOL_F_MQ;
-+
-+    qemu_chr_fe_write_all(chr, (uint8_t *)msg, VHOST_USER_HDR_SIZE + msg->size);
-+}
-+
-+static struct vhost_user_ops g_vu_scmi_ops = {
-+    .type = VHOST_USER_SCMI,
-+
-+    .append_opts = append_vhost_gpio_opts,
-+
-+    .get_features = vu_scmi_get_features,
-+    .set_features = vu_net_set_features,
-+    .get_protocol_features = vu_scmi_get_protocol_features,
-+};
-+
-+static void register_vhost_scmi_test(void)
-+{
-+    QOSGraphTestOptions opts = {
-+        .before = vhost_user_test_setup,
-+        .subprocess = true,
-+        .arg = &g_vu_scmi_ops,
-+    };
-+
-+    qemu_add_opts(&qemu_chardev_opts);
-+
-+    qos_add_test("scmi/read-guest-mem/memfile",
-+                 "vhost-user-scmi", test_read_guest_mem, &opts);
-+}
-+libqos_init(register_vhost_scmi_test);
--- 
-2.38.5
+> This is a small patchset designed to backport the changes made to the
+> qemu.qmp code to utilize pre-existing sockets. This contains some small
+> changes to machine.py to match the new API. This is necessary to do
+> before dropping qemu.qmp from qemu.git so we can utilize the future
+> 0.0.3 version of qemu.qmp.
+>
+> (This should also fix the bug where the buffering limit was not being
+> applied properly
+
+
+^to
+
+connections utilizing pre-existing sockets.)
+>
+> John Snow (5):
+>   python/qmp: allow sockets to be passed to connect()
+>   python/qmp/legacy: allow using sockets for connect()
+>   python/machine: use connect-based interface for existing sockets
+>   python/qmp/legacy: remove open_with_socket() calls
+>   Revert "python/qmp/protocol: add open_with_socket()"
+>
+>  python/qemu/machine/machine.py | 17 +++++++------
+>  python/qemu/qmp/legacy.py      | 26 +++++++++-----------
+>  python/qemu/qmp/protocol.py    | 45 +++++++++++++++-------------------
+>  3 files changed, 41 insertions(+), 47 deletions(-)
+>
+> --
+> 2.40.0
+>
+
+ping - I'll send a PR for this on Friday if no objections. It just
+synchronizes the two codebases ahead of my plan to finally delete the
+duplication once and for all.
+
+(and *that* series will need some good review and attention.)
+
+--js
+
+>
+
+--000000000000994b9f05fc5d60f8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Wed, May 17, 2023, 12:34 PM John Snow &lt;<a href=
+=3D"mailto:jsnow@redhat.com">jsnow@redhat.com</a>&gt; wrote:<br></div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #cc=
+c solid;padding-left:1ex">This is a small patchset designed to backport the=
+ changes made to the<br>
+qemu.qmp code to utilize pre-existing sockets. This contains some small<br>
+changes to machine.py to match the new API. This is necessary to do<br>
+before dropping qemu.qmp from qemu.git so we can utilize the future<br>
+0.0.3 version of qemu.qmp.<br>
+<br>
+(This should also fix the bug where the buffering limit was not being<br>
+applied properly </blockquote></div></div><div dir=3D"auto"><br></div><div =
+dir=3D"auto">^to</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div cl=
+ass=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0=
+ .8ex;border-left:1px #ccc solid;padding-left:1ex">connections utilizing pr=
+e-existing sockets.)<br>
+<br>
+John Snow (5):<br>
+=C2=A0 python/qmp: allow sockets to be passed to connect()<br>
+=C2=A0 python/qmp/legacy: allow using sockets for connect()<br>
+=C2=A0 python/machine: use connect-based interface for existing sockets<br>
+=C2=A0 python/qmp/legacy: remove open_with_socket() calls<br>
+=C2=A0 Revert &quot;python/qmp/protocol: add open_with_socket()&quot;<br>
+<br>
+=C2=A0python/qemu/machine/machine.py | 17 +++++++------<br>
+=C2=A0python/qemu/qmp/legacy.py=C2=A0 =C2=A0 =C2=A0 | 26 +++++++++---------=
+--<br>
+=C2=A0python/qemu/qmp/protocol.py=C2=A0 =C2=A0 | 45 +++++++++++++++--------=
+-----------<br>
+=C2=A03 files changed, 41 insertions(+), 47 deletions(-)<br>
+<br>
+-- <br>
+2.40.0<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"=
+auto">ping - I&#39;ll send a PR for this on Friday if no objections. It jus=
+t synchronizes the two codebases ahead of my plan to finally delete the dup=
+lication once and for all.</div><div dir=3D"auto"><br></div><div dir=3D"aut=
+o">(and *that* series will need some good review and attention.)</div><div =
+dir=3D"auto"><br></div><div dir=3D"auto">--js</div><div dir=3D"auto"><div c=
+lass=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 =
+0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+</blockquote></div></div></div>
+
+--000000000000994b9f05fc5d60f8--
 
 
