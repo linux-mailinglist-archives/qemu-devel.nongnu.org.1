@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFE170DEEB
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 16:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC60170DE25
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:54:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SSy-0005wG-CM; Tue, 23 May 2023 09:54:20 -0400
+	id 1q1SSj-00058G-Su; Tue, 23 May 2023 09:54:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSH-0004bX-So
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:39 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1q1SSK-0004uH-Mr
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:41 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1SSD-00031u-PF
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:36 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-64d2ca9ef0cso3750548b3a.1
+ id 1q1SSE-00032E-Di
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:53:37 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-64d426e63baso4407743b3a.0
  for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684850012; x=1687442012;
+ d=linaro.org; s=google; t=1684850013; x=1687442013;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FMynriKgHY7/a7Zeekt4jsXQMXu8INdJVu2wztuImV0=;
- b=nzLdzEiT2fInIGnjrcnAuX+RYtWr+1bokG/EpdUQyYK+NsGi+HPcbLgP79AutX5/pQ
- Uf7feEw/FiNvhcEMpWZ7emAAheSTWKgqDfrF0Rnh+c++5n2rg1mV91LmUwL0h3afUIkt
- BimW2RiSBChYoArovaGXsTDWaAAmFJjEK4CH2doB24ZAriZ55nebaBjt9ydlwGNRHhib
- oAKhLF5zEGkjQsFIIBaZragcdJk1VL0mdqfWNEu2PTV4wS6kE740iB6NMqMlwTBWj/kw
- rdedSqPBT78L6BLQdyRNxwHtkXCCIlGBpzUgDm/Zlfp2WhYDL+7u/eq7ej/FmrgXbHSo
- J8Fg==
+ :reply-to; bh=fjia3Wxg3tvISCHmEv9hWQkEs32v9NCdixUCeRZrr9g=;
+ b=D3Stj5FhKIT3w5YpkpoZ5z4Hi+aCiPolr+7VooIiXOy5Km+GT+iAtReUErBrvo2s44
+ e4BzcfLxd/sqyLQSrcTwbVLH9oMs7m9rw0lqMrubZ+aeJRrsVEFawwYbcPNj2Ze9buQ/
+ BIjFyJeEX6P7Y0U4eK343AshbBQjEUhMOZr5E4hM9rkk6zbwiO5npcMPgE4PiRsLp/a9
+ ylmqpdZjEu4A/4iHWWsijH5tkvjP5bRRjcqyU0XeVtaG/97NZliXpnxghPBr+yEPXUM+
+ qH5MMcHtGdPquuAHDB/ff1V0vO1s+/ckIcl3yGKsOuI8qwM3h96N9qjO9DvY2PCTab5O
+ PNsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684850012; x=1687442012;
+ d=1e100.net; s=20221208; t=1684850013; x=1687442013;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FMynriKgHY7/a7Zeekt4jsXQMXu8INdJVu2wztuImV0=;
- b=cl+q9CiTrm5haFOSP7iyOB/BTenn40O+QLCDdmcJStZtomloVn4G8TLyG/YoyGvD6n
- 6h3yqfYP+FdCtdBQKqmnCC9L3KytGz9KIpCxxSNzSs5vxUHJHH7hIGOq1Em+OIfPfmMT
- vcu4gNT+PkcQMm/9zNVwfvpXDqjHx5UbPlVaVWb4TPfn9cJ2OVr+C5OBqNaFQBbd5NXe
- MblEgQHph73MkdMZx+YX9rGY+lLNzSBjV7cKA4plysKSzY7YVbh7iQt6bQZqjw3yAPu5
- 36KTOkhApGL6VUzd5pyp1D0ru/Mw5IufYnhLItSLfJqnk1eeiHEtVL+3yU60tsysn/bI
- 4wjw==
-X-Gm-Message-State: AC+VfDy8sRuD9+tQ1O2O6jiPyh2LJB0VEWcwsgdWir2mUuajbNecQ3tY
- siLju5iPrhdY3agHXt1q1tDbyJ3pu4xkYF+ti6E=
-X-Google-Smtp-Source: ACHHUZ6Quni6Xr2uS5VDzCrJZXGBAR6qBqXOGOMXP3DzIUFY0PMxFHhsh/PY4BPNBaKsGHDg2wJ6MA==
-X-Received: by 2002:a05:6a00:1798:b0:64d:22d:adb3 with SMTP id
- s24-20020a056a00179800b0064d022dadb3mr16641362pfg.1.1684850012466; 
- Tue, 23 May 2023 06:53:32 -0700 (PDT)
+ bh=fjia3Wxg3tvISCHmEv9hWQkEs32v9NCdixUCeRZrr9g=;
+ b=DXVixYQ6YrpDBBIXaFZMIJ0Epuidx8+2Z3Zem52w78xNr+DzPkc5yWyFpTN7tE+s2w
+ ZPOnHAcgy67jz5UNFxJjGNZDOuzHdLQN1SL0xL3PYCbNytPFDUoXlA9AHSwCOZ8P7VHJ
+ PswfB3j5gXyZQwVegZ3YsOB5GKxh0BQEbqBuup16J+IwOC3bv+DGsjfrEfTTtCPmEiWI
+ jo+5ckc/q6OxEtTKe2BBHDRw+9djTR2QyIRo+jOwo9CeFYieVrmtggxxnAIUT/ekm18U
+ rHC5bgMsvuicRTEoFV9AkNtgL0PXf/+nRvgbhp6ehqWOSIVeS5rCzblrgynlZEeEw1YY
+ hiXQ==
+X-Gm-Message-State: AC+VfDz1UUe9Oi0AzgpxLAwdg2MEskmWQS7SKxH8YtIK5m6rC0UCa7Lj
+ iFOGQ6gN07yzluYC3gqXbB+l1tIld3SWV16ZXDs=
+X-Google-Smtp-Source: ACHHUZ4DicjP4xFNMSsXcoCilRywXxdQHFLqjCDFZC2PYKeTjDNlq+rTyXqHOO38HzR5rYKj1oRwsw==
+X-Received: by 2002:a05:6a00:1994:b0:647:3de:c0ff with SMTP id
+ d20-20020a056a00199400b0064703dec0ffmr15050210pfl.30.1684850013182; 
+ Tue, 23 May 2023 06:53:33 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:c13a:d73:4f88:3654])
  by smtp.gmail.com with ESMTPSA id
- b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.31
+ b8-20020aa78708000000b0064d27a28451sm5796111pfo.100.2023.05.23.06.53.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 23 May 2023 06:53:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 10/52] *: Add missing includes of tcg/debug-assert.h
-Date: Tue, 23 May 2023 06:52:40 -0700
-Message-Id: <20230523135322.678948-11-richard.henderson@linaro.org>
+Subject: [PATCH v2 11/52] *: Add missing includes of tcg/tcg.h
+Date: Tue, 23 May 2023 06:52:41 -0700
+Message-Id: <20230523135322.678948-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230523135322.678948-1-richard.henderson@linaro.org>
 References: <20230523135322.678948-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,65 +90,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This had been pulled in from tcg/tcg.h, via exec/cpu_ldst.h,
-via exec/exec-all.h, but the include of tcg.h will be removed.
+This had been pulled in from exec/cpu_ldst.h, via exec/exec-all.h,
+but the include of tcg.h will be removed.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/avr/cpu.c      | 1 +
- target/rx/cpu.c       | 1 +
- target/rx/op_helper.c | 1 +
- target/tricore/cpu.c  | 1 +
- 4 files changed, 4 insertions(+)
+ accel/tcg/monitor.c             | 1 +
+ accel/tcg/tcg-accel-ops-mttcg.c | 2 +-
+ accel/tcg/tcg-accel-ops-rr.c    | 2 +-
+ target/i386/helper.c            | 3 +++
+ target/openrisc/sys_helper.c    | 1 +
+ 5 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index a24c23c247..8f741f258c 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -24,6 +24,7 @@
+diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
+index 92fce580f1..f171bc6f5e 100644
+--- a/accel/tcg/monitor.c
++++ b/accel/tcg/monitor.c
+@@ -15,6 +15,7 @@
+ #include "sysemu/cpus.h"
+ #include "sysemu/cpu-timers.h"
+ #include "sysemu/tcg.h"
++#include "tcg/tcg.h"
+ #include "internal.h"
+ 
+ 
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+index d50239e0e2..5d72c9b1bd 100644
+--- a/accel/tcg/tcg-accel-ops-mttcg.c
++++ b/accel/tcg/tcg-accel-ops-mttcg.c
+@@ -32,7 +32,7 @@
+ #include "qemu/guest-random.h"
  #include "exec/exec-all.h"
- #include "cpu.h"
- #include "disas/dis-asm.h"
-+#include "tcg/debug-assert.h"
+ #include "hw/boards.h"
+-
++#include "tcg/tcg.h"
+ #include "tcg-accel-ops.h"
+ #include "tcg-accel-ops-mttcg.h"
  
- static void avr_cpu_set_pc(CPUState *cs, vaddr value)
- {
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 67452e310c..157e57da0f 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -24,6 +24,7 @@
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index b6d10fa9a2..70b9b89073 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -32,7 +32,7 @@
+ #include "qemu/notify.h"
+ #include "qemu/guest-random.h"
  #include "exec/exec-all.h"
- #include "hw/loader.h"
- #include "fpu/softfloat.h"
-+#include "tcg/debug-assert.h"
+-
++#include "tcg/tcg.h"
+ #include "tcg-accel-ops.h"
+ #include "tcg-accel-ops-rr.h"
+ #include "tcg-accel-ops-icount.h"
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 8857444819..682d10d98a 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -28,6 +28,9 @@
+ #include "monitor/monitor.h"
+ #endif
+ #include "qemu/log.h"
++#ifdef CONFIG_TCG
++#include "tcg/tcg.h"
++#endif
  
- static void rx_cpu_set_pc(CPUState *cs, vaddr value)
+ void cpu_sync_avx_hflag(CPUX86State *env)
  {
-diff --git a/target/rx/op_helper.c b/target/rx/op_helper.c
-index acce650185..dc0092ca99 100644
---- a/target/rx/op_helper.c
-+++ b/target/rx/op_helper.c
-@@ -23,6 +23,7 @@
- #include "exec/helper-proto.h"
- #include "exec/cpu_ldst.h"
- #include "fpu/softfloat.h"
-+#include "tcg/debug-assert.h"
+diff --git a/target/openrisc/sys_helper.c b/target/openrisc/sys_helper.c
+index ccdee3b8be..110f157601 100644
+--- a/target/openrisc/sys_helper.c
++++ b/target/openrisc/sys_helper.c
+@@ -26,6 +26,7 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/boards.h"
+ #endif
++#include "tcg/tcg.h"
  
- static inline G_NORETURN
- void raise_exception(CPURXState *env, int index,
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index d0a9272961..7fa113fed2 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -22,6 +22,7 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "qemu/error-report.h"
-+#include "tcg/debug-assert.h"
+ #define TO_SPR(group, number) (((group) << 11) + (number))
  
- static inline void set_feature(CPUTriCoreState *env, int feature)
- {
 -- 
 2.34.1
 
