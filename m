@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2803B70E944
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 00:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA6470E958
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 01:04:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1aph-0003vQ-Lo; Tue, 23 May 2023 18:50:21 -0400
+	id 1q1b1u-0005iO-Ee; Tue, 23 May 2023 19:02:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q1apY-0003vC-LU; Tue, 23 May 2023 18:50:12 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1q1b1s-0005iC-0a; Tue, 23 May 2023 19:02:56 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q1apW-0006Z1-DA; Tue, 23 May 2023 18:50:12 -0400
+ id 1q1b1p-00022Q-RG; Tue, 23 May 2023 19:02:55 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id EB7A5746361;
- Wed, 24 May 2023 00:50:02 +0200 (CEST)
+ by localhost (Postfix) with SMTP id D482F746361;
+ Wed, 24 May 2023 01:02:50 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6D1B374635C; Wed, 24 May 2023 00:50:02 +0200 (CEST)
+ id 93BE674635C; Wed, 24 May 2023 01:02:50 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 69AA1746335;
- Wed, 24 May 2023 00:50:02 +0200 (CEST)
-Date: Wed, 24 May 2023 00:50:02 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8F189746335;
+ Wed, 24 May 2023 01:02:50 +0200 (CEST)
+Date: Wed, 24 May 2023 01:02:50 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Richard Henderson <richard.henderson@linaro.org>
 cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, qemu-ppc@nongnu.org
 Subject: Re: [PATCH] target/ppc: Merge COMPUTE_CLASS and COMPUTE_FPRF
 In-Reply-To: <20230523202507.688859-1-richard.henderson@linaro.org>
-Message-ID: <7a436ae9-067d-c810-f76a-8f4fd23d87fd@eik.bme.hu>
+Message-ID: <e73e7d2d-275c-1489-1837-64c72db8b98d@eik.bme.hu>
 References: <20230523202507.688859-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -63,27 +63,7 @@ On Tue, 23 May 2023, Richard Henderson wrote:
 > value from the start.
 >
 > Reorder the tests to check the most likely cases first.
-
-This seems to work in that it makes the function go down in the profile 
-but does not seem to gain much speed, that is still about the same. The 
-profile looks like this with this patch (above these there are only 
-cpu_exec TCG related functions and muladd, fmadds helper but all with 
-less self percent, the ones with above 5% self count are all here):
-
-children   self   command          symbol
-10.54%     3.08%  qemu-system-ppc  float64r32_round_pack_canonical
-  8.67%     0.43%  qemu-system-ppc  parts64_uncanon
-  8.50%     0.62%  qemu-system-ppc  helper_fmuls
-  7.96%     7.96%  qemu-system-ppc  parts64_uncanon_normal
-  7.84%     1.78%  qemu-system-ppc  float64r32_mul
-  7.77%     6.69%  qemu-system-ppc  parts64_muladd
-  7.72%     1.88%  qemu-system-ppc  helper_float_check_status
-  7.70%     7.20%  qemu-system-ppc  helper_compute_fprf_float64
-  6.67%     0.48%  qemu-system-ppc  helper_fadds
-
-Regards,
-BALATON Zoltan
-
+>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
 > target/ppc/fpu_helper.c | 78 ++++++++++++-----------------------------
@@ -172,6 +152,13 @@ BALATON Zoltan
 > +            fprf = 0x00 << FPSCR_FPRF;                            \
 > +        } else {                                                  \
 > +            fprf = 0x11 << FPSCR_FPRF;                            \
+
+If everything above is always shifted by FPSCR_FPRF then maybe it's easier 
+to read with doing the shift once below an not in every case above.
+
+Regards,
+BALATON Zoltan
+
 > +        }                                                         \
 > +    }                                                             \
 > +    env->fpscr = (env->fpscr & ~FP_FPRF) | fprf;                  \
