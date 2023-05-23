@@ -2,98 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAA470E50F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 21:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F375A70E540
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 21:21:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1XG8-0004JE-UI; Tue, 23 May 2023 15:01:27 -0400
+	id 1q1XXa-0002OV-Do; Tue, 23 May 2023 15:19:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=50045f452=nsaenz@amazon.es>)
- id 1q1XF6-0003vJ-J0
- for qemu-devel@nongnu.org; Tue, 23 May 2023 15:00:20 -0400
-Received: from smtp-fw-52002.amazon.com ([52.119.213.150])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q1XXO-0002OD-GR
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 15:19:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=50045f452=nsaenz@amazon.es>)
- id 1q1XF2-0002EK-Th
- for qemu-devel@nongnu.org; Tue, 23 May 2023 15:00:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1684868418; x=1716404418;
- h=mime-version:content-transfer-encoding:date:cc:subject:
- from:to:message-id:references:in-reply-to;
- bh=2f6hgtyoF3npyINkvFYDynw82+STAB4fWRrWAyFHWQA=;
- b=Id1PkYIR2NjfDPguZt44UONAxDHYYaIUiLaQKQkGK3V/cf/2kyq1FAjF
- Kp1W/xIlSl/VFobtjzG1OIC/Paov+kZRxwxuja995yw55azLN2OJ8oCVH
- aXUz3dwFdWMkcxa4b1htzf9XayHvA2Y5nychMfFMNHHo7/SYWofTZaiRB w=;
-X-IronPort-AV: E=Sophos;i="6.00,187,1681171200"; d="scan'208";a="564743059"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
- email-inbound-relay-pdx-1box-2bm6-32cf6363.us-west-2.amazon.com)
- ([10.43.8.6]) by smtp-border-fw-52002.iad7.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2023 19:00:09 +0000
-Received: from EX19D004EUC001.ant.amazon.com
- (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
- by email-inbound-relay-pdx-1box-2bm6-32cf6363.us-west-2.amazon.com (Postfix)
- with ESMTPS id 98D7A80457; Tue, 23 May 2023 19:00:05 +0000 (UTC)
-Received: from localhost (10.13.235.138) by EX19D004EUC001.ant.amazon.com
- (10.252.51.190) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Tue, 23 May
- 2023 18:59:51 +0000
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q1XXM-0006fK-GT
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 15:19:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684869551;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ESSxzZLf9mcEHtLF2kYUwJME/SxM5ayrapzxhF0aGxI=;
+ b=MSPuXHwDWufeH8/al9Mu4RZ212FHMWoxjwLrohILvBNSZRVzPtArZtG92bZBbaBV4gvha1
+ vF8NbDBrwKgc7urFnq6Y2F+8Ic+TO/ly1evzA86VbHcdZYKHJ0vVpcbMR/GKGtKwmPQ9w0
+ R3MCekw8g46o9dvQG5/FE7mIN65mZ4s=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-135-oopLKMblPqegKwC_yhg4zw-1; Tue, 23 May 2023 15:19:09 -0400
+X-MC-Unique: oopLKMblPqegKwC_yhg4zw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 454563C0BE42;
+ Tue, 23 May 2023 19:19:09 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.46])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E5F3940D1B60;
+ Tue, 23 May 2023 19:19:08 +0000 (UTC)
+Date: Tue, 23 May 2023 14:19:07 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+Subject: Re: [PATCH v3 04/19] test-cutils: Test more integer corner cases
+Message-ID: <dl65ot7lh2hstviwk2yltgun2jgnz2vypvgoid6d3zstku52xf@trj4rhrs7qri>
+References: <20230522190441.64278-1-eblake@redhat.com>
+ <20230522190441.64278-5-eblake@redhat.com>
+ <5720a801-a6b7-1b9e-efdb-bceb7e55c6ce@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Date: Tue, 23 May 2023 18:59:47 +0000
-CC: Chao Peng <chao.p.peng@linux.intel.com>, <kvm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
- <linux-api@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <qemu-devel@nongnu.org>, <graf@amazon.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, "Vitaly Kuznetsov"
- <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, Jim Mattson
- <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Arnd Bergmann <arnd@arndb.de>, "Naoya Horiguchi"
- <naoya.horiguchi@nec.com>, Miaohe Lin <linmiaohe@huawei.com>,
- <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Hugh Dickins
- <hughd@google.com>, Jeff Layton <jlayton@kernel.org>, "J . Bruce Fields"
- <bfields@fieldses.org>, Andrew Morton <akpm@linux-foundation.org>, "Shuah
- Khan" <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>, Steven Price
- <steven.price@arm.com>, "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
- Vlastimil Babka <vbabka@suse.cz>, "Vishal Annapurve" <vannapurve@google.com>, 
- Yu Zhang <yu.c.zhang@linux.intel.com>, "Kirill A . Shutemov"
- <kirill.shutemov@linux.intel.com>, <luto@kernel.org>,
- <jun.nakajima@intel.com>, <dave.hansen@intel.com>, <ak@linux.intel.com>,
- <david@redhat.com>, <aarcange@redhat.com>, <ddutile@redhat.com>,
- <dhildenb@redhat.com>, Quentin Perret <qperret@google.com>,
- <tabba@google.com>, Michael Roth <michael.roth@amd.com>, <mhocko@suse.com>,
- <wei.w.wang@intel.com>, <anelkz@amazon.de>
-Subject: Re: [PATCH v10 2/9] KVM: Introduce per-page memory attributes
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
-To: Sean Christopherson <seanjc@google.com>
-Message-ID: <CSTLMGOZVEV7.3B9QXJ2STLLLF@dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com>
-X-Mailer: aerc 0.15.2-21-g30c1a30168df-dirty
-References: <20221202061347.1070246-1-chao.p.peng@linux.intel.com>
- <20221202061347.1070246-3-chao.p.peng@linux.intel.com>
- <CSQFE7I30W27.2TPDIHOTZNRIZ@dev-dsk-nsaenz-1b-189b39ae.eu-west-1.amazon.com>
- <ZGe+m+uFzpiW7wlr@google.com>
-In-Reply-To: <ZGe+m+uFzpiW7wlr@google.com>
-X-Originating-IP: [10.13.235.138]
-X-ClientProxiedBy: EX19D032UWA004.ant.amazon.com (10.13.139.56) To
- EX19D004EUC001.ant.amazon.com (10.252.51.190)
-Precedence: Bulk
-Received-SPF: pass client-ip=52.119.213.150;
- envelope-from=prvs=50045f452=nsaenz@amazon.es; helo=smtp-fw-52002.amazon.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5720a801-a6b7-1b9e-efdb-bceb7e55c6ce@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -105,84 +78,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Sean,
+On Tue, May 23, 2023 at 07:25:28PM +0200, Hanna Czenczek wrote:
+> On 22.05.23 21:04, Eric Blake wrote:
+> > We have quite a few undertested and underdocumented integer parsing
+> > corner cases.  To ensure that any changes we make in the code are
+> > intentional rather than accidental semantic changes, it is time to add
+> > more unit tests of existing behavior.
+> > 
+> 
+> > +    if (LONG_MAX == INT_MAX) {
+> > +        str = "0xffffffff00000001"; /* ULLONG_MAX - UNIT_MAX + 1 (not 1) */
+> 
+> s/UNIT/UINT/
 
-On Fri May 19, 2023 at 6:23 PM UTC, Sean Christopherson wrote:
-> On Fri, May 19, 2023, Nicolas Saenz Julienne wrote:
-> > Hi,
-> > On Fri Dec 2, 2022 at 6:13 AM UTC, Chao Peng wrote:
+Yep, and this comment is new to v3.
 
-[...]
+> 
+> > +        endptr = "somewhere";
+> > +        res = 999;
+> > +        err = qemu_strtol(str, &endptr, 0, &res);
+> > +        g_assert_cmpint(err, ==, -ERANGE);
+> > +        g_assert_cmpint(res, ==, LONG_MIN);
+> > +        g_assert_true(endptr == str + strlen(str));
+> > +    }
+> 
+> [...]
+> 
+> > @@ -1325,31 +1799,87 @@ static void test_qemu_strtoul_max(void)
+> 
+> [...]
+> 
+> >   static void test_qemu_strtoul_underflow(void)
+> >   {
+> > -    const char *str = "-99999999999999999999999999999999999999999999";
+> > -    char f = 'X';
+> > -    const char *endptr = &f;
+> > -    unsigned long res = 999;
+> > +    const char *str;
+> > +    const char *endptr;
+> > +    unsigned long res;
+> >       int err;
+> > 
+> > +    /* 1 less than -ULONG_MAX */
+> > +    str = ULONG_MAX == UINT_MAX ? "-4294967296" : "-18446744073709551616";
+> > +    endptr = "somewhere";
+> > +    res = 999;
+> >       err = qemu_strtoul(str, &endptr, 0, &res);
+> > +    g_assert_cmpint(err, ==, -ERANGE);
+> > +    g_assert_cmpint(res, ==, ULONG_MAX);
+> 
+> Should be g_assert_cmpuint().
 
-> > VSM introduces isolated guest execution contexts called Virtual Trust
-> > Levels (VTL) [2]. Each VTL has its own memory access protections,
-> > virtual processors states, interrupt controllers and overlay pages. VTL=
-s
-> > are hierarchical and might enforce memory protections on less privilege=
-d
-> > VTLs. Memory protections are enforced on a per-GPA granularity.
-> >
-> > We implemented this in the past by using a separate address space per
-> > VTL and updating memory regions on protection changes. But having to
-> > update the memory slot layout for every permission change scales poorly=
-,
-> > especially as we have to perform 100.000s of these operations at boot
-> > (see [1] for a little more context).
-> >
-> > I believe the biggest barrier for us to use memory attributes is not
-> > having the ability to target specific address spaces, or to the very
-> > least having some mechanism to maintain multiple independent layers of
-> > attributes.
->
-> Can you elaborate on "specific address spaces"?  In KVM, that usually mea=
-ns SMM,
-> but the VTL comment above makes me think you're talking about something e=
-ntirely
-> different.  E.g. can you provide a brief summary of the requirements/expe=
-ctations?
+Looks like I missed one of the spots, even though I did get most of
+them from your same comment on v2.
 
-Let me refresh some concepts first. VTLs are vCPU modes implemented by
-the hypervisor. Lower VTLs switch into higher VTLs [1] through a
-hypercall or asynchronously through interrupts. Each VTL has its own CPU
-architectural state, lapic and MSR state (applies to only some MSRs).
-These are saved/restored when switching VTLS [2]. Additionally, VTLs
-share a common GPA->HPA mapping, but protection bits differ depending on
-which VTL the CPU is on. Privileged VTLs might revoke R/W/X(+MBEC,
-optional) access bits from lower VTLs on a per-GPA basis.
+I can fix both things before applying, if it goes through my tree, or
+trust that whoever else queues it can do likewise.
 
-In order to deal with the per-VTL memory protection bits, we extended
-the number of KVM address spaces and assigned one to each VTL. The
-hypervisor initializes all VTLs address spaces with the same mappings
-and protections, they are expected to diverge during runtime. Operations
-that rely on memory slots for GPA->HPA/HVA translations (including page
-faults) are already address space aware, so adding VTL support was
-fairly simple.
+> 
+> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+> 
 
-Ultimately, when a privileged VTL enforces memory protections on lower
-VTLs we update that VTL's address space memory regions to reflect them.
-Protection changes are requested through a hypercall, which expects the
-new protection to be visible system wide upon returning from it. These
-hypercalls happen around 100000+ times during boot, so we introduced an
-"atomic memory slot update" API similar to Emanuele's [3] that allows
-splitting memory regions/changing permissions concurrent with other
-vCPUs.
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
 
-Now, if we had a way to map memory attributes to specific VTLs, we could
-use that instead. Actually, we wouldn't need to extend address spaces at
-all to support this (we might still need them to support Overlay Pages,
-but that's another story).
-
-Hope it makes a little more sense now. :)
-
-Nicolas
-
-[1] In practice we've only seen VTL0 and VTL1 being used. The spec
-    supports up to 16 VTLs.
-
-[2] One can draw an analogy with arm's TrustZone. The hypervisor plays
-    the role of EL3. Windows (VTL0) runs in Non-Secure (EL0/EL1) and the
-    secure kernel (VTL1) in Secure World (EL1s/EL0s).
-
-[3] https://lore.kernel.org/all/20220909104506.738478-1-eesposit@redhat.com=
-/
 
