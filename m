@@ -2,90 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2602716FB3
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 23:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 971E870DBF5
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 14:06:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q46su-0004RJ-Sl; Tue, 30 May 2023 17:28:04 -0400
+	id 1q1Ql5-0002PC-2g; Tue, 23 May 2023 08:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1q45gk-0005Xo-VX
- for qemu-devel@nongnu.org; Tue, 30 May 2023 16:11:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1q45gj-0000Mu-AI
- for qemu-devel@nongnu.org; Tue, 30 May 2023 16:11:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685477484;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qwq4WGliWyi5M0GOYrCBfVerBIOzlsWqb7IJX2cJ28M=;
- b=WxnOHmIsActcHhvi4q1/0ZUzr9xSpGo33AspNcEA4t89pKd6GdwIY0p+E5QWuE9yWyoaFB
- KESjvmPTuu/9sl88WbB94VhQlHuMjpBvq2bhMrwb6nwqn4SCxJ5D6zjAnWEQWsZF0HUziC
- yiRFyrroEIqDos4DC2MQTRamcVKeI90=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-RcWSFMlBOTOjOZWfrFvsxQ-1; Tue, 30 May 2023 16:07:57 -0400
-X-MC-Unique: RcWSFMlBOTOjOZWfrFvsxQ-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-514abe67064so1433636a12.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:07:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q1Ql3-0002OL-38
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:53 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q1Ql0-0008Q9-Oa
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 08:04:52 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f60dfc5f93so3008565e9.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 05:04:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684843489; x=1687435489;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=m48o9UKPJBNyKWN1u+Z5qrJZ+esObNyORYdpABQw87E=;
+ b=F2GgIQoy3gd8+ezAAco5cDdO1sKt2iRWc3EKBADr+KcGXkQym1XRE9dJ2y5XvAOmjT
+ 1ZGUY8gtNi94SrLeeoZxVambCG2OBh5NEA+O3MPlGbMZdZ9Xycw8nVTOX+1MCmjRH3FL
+ +jTYdSi5dX1twhCk0g20HdLgICUX7aStFWQgJIl3h3HlZYTqaDBNfFE1nZabx+39AXNX
+ P0VHF27x84s0B7YzcLxPUZDbwnpUcgbJw4XsZcJp6K2QYfmpCNjr8uSCyfuaNvRDKMxN
+ qE565m5d3p2hLd0iHyciN+4fOZK7J3BqhrMHwKptedzAptMKyZ455aupQan4uVmB7fuD
+ Pndg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685477275; x=1688069275;
- h=mime-version:user-agent:message-id:references:date:in-reply-to
- :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qwq4WGliWyi5M0GOYrCBfVerBIOzlsWqb7IJX2cJ28M=;
- b=dHBnJhfmryHizWWxLVJxx2MLHzeU2evMZKfig20bCqx9ADp9o3BIx5B5qhJkzXaexq
- WKCeu7JLb6gcfjPoPf/n/UkkOEQJtkxN2DdrJVAAv6Xg3D3nLwMVNxwuXjRdIAJMBZjB
- P3C5tjYdcd27NQgbkYhfW1K1ULLlXkG55R9h7FH2lPT/lD5oxEE7+ROUlmOvFkPu1ZHC
- cSuiwxAE7uQVy1QIyRp1ifSDYApr7L/leWGeQWHAYs4RYDHHuByZ5tOqs8F5cP6hS3RM
- raHAoJGwtjbsCTP74dAaqcJHVnyHJ8N5Suo7PTRESi0LyO9X5ffusBnXiJxBzdA6mMkP
- fvbA==
-X-Gm-Message-State: AC+VfDyMSVasJSCdHVProupBIvO2msEWUstRn+2ltJZg9cPlDId2q9x4
- hYYP0GlXKA089udUqFgz7Is6qm8Vi7edggsklOsIwsIZtKxYl+7GHrl1kZvyWR6P8sU83ZW9Dal
- z4q+/74WfwAoT5cWMI/w5W9s=
-X-Received: by 2002:a17:907:2d0a:b0:974:1ef7:1e33 with SMTP id
- gs10-20020a1709072d0a00b009741ef71e33mr3390602ejc.8.1685477275573; 
- Tue, 30 May 2023 13:07:55 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4mibgyJwxiIyU+QExUuhO42uPYcAQAEhu4L53Kb5nRU7DYWiYl40leV6OhLNDeH0T23820lA==
-X-Received: by 2002:a17:907:2d0a:b0:974:1ef7:1e33 with SMTP id
- gs10-20020a1709072d0a00b009741ef71e33mr3390592ejc.8.1685477275339; 
- Tue, 30 May 2023 13:07:55 -0700 (PDT)
-Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
+ d=1e100.net; s=20221208; t=1684843489; x=1687435489;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=m48o9UKPJBNyKWN1u+Z5qrJZ+esObNyORYdpABQw87E=;
+ b=PobNTM7qhd5ClgHYOmPuA7ZvMzmCxW9WcAKrhSHJL2of4hIo03DYSPAqVftXdTfm+Y
+ OtSm+zftQebC+3UZ0ifh2iNghvUGMYLZuDb3JxCTZ0dprZNRxnOOnmlFj4s0NObVPNdG
+ 75cVz4/hHAmsi3cn5TQXMMCMFl3i7n+ZNdMO0TLbuB2HXV8RyjW1X7aggTLx4b+nSSPL
+ 6LJvY2naPJ7rg0XoU8rB62Prk7hyqwsohRH76F1zyEHlLr5wxHEgNA3mCr+Wio/nAbTC
+ N0G5m2MGoxWop6fBR4LHOIAcDZJIFkqF8mgldMOp2YJ32NaRlx3mQjrQECAz/Uq22i3v
+ SG+w==
+X-Gm-Message-State: AC+VfDwThVB2GJyWZmAtI11IZqaE5sSybqoysyW6UyH8ZgsKqQkq2Nhk
+ YVo7GcbUB+Eqnh87Se8WbWDh+/RGl+l0ufhLPJg=
+X-Google-Smtp-Source: ACHHUZ7m4VZiC5Cr1bHDC/EVqWOgEhit6DmLAXmP7fHW2XrATrd4MjQkkirfn6Ym3eu3C8rs2HuCPA==
+X-Received: by 2002:a05:600c:2288:b0:3f4:298f:4d01 with SMTP id
+ 8-20020a05600c228800b003f4298f4d01mr9497434wmf.26.1684843489018; 
+ Tue, 23 May 2023 05:04:49 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- gz24-20020a170906f2d800b00965c529f103sm7771631ejb.86.2023.05.30.13.07.54
+ l17-20020adfe591000000b003079c402762sm10848778wrm.19.2023.05.23.05.04.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 13:07:54 -0700 (PDT)
-From: Milan Zamazal <mzamazal@redhat.com>
+ Tue, 23 May 2023 05:04:48 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mst@redhat.com,
-    stefanha@redhat.com,
-    alex.bennee@linaro.org
-Subject: [PATCH 2/4] hw/virtio: Add vhost-user-scmi-pci boilerplate
-In-Reply-To: <cover.1685476786.git.mzamazal@redhat.com>
-Date: Tue, 23 May 2023 10:19:03 +0200
-References: <cover.1685476786.git.mzamazal@redhat.com>
-Message-Id: <0c2293785dcef01d5f1e64aa7e7f8236b501bade.1685476786.git.mzamazal@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 0/6] decodetree: support named fields
+Date: Tue, 23 May 2023 13:04:41 +0100
+Message-Id: <20230523120447.728365-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mzamazal@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- DKIMWL_WL_HIGH=-0.167, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 30 May 2023 17:28:00 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,104 +88,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows is to instantiate a vhost-user-scmi device as part of a PCI bus.
-It is mostly boilerplate similar to the other vhost-user-*-pci boilerplates
-of similar devices.
+This patchset adds support to the decodetree generator
+for "named fields", where one field can refer to some
+other already extracted field, as well as to portions
+of the instruction word. The specific case where I want
+this is for some load/store insns in the A64 decoder:
 
-Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
----
- hw/virtio/meson.build           |  1 +
- hw/virtio/vhost-user-scmi-pci.c | 68 +++++++++++++++++++++++++++++++++
- 2 files changed, 69 insertions(+)
- create mode 100644 hw/virtio/vhost-user-scmi-pci.c
+# Load/store with an unsigned 12 bit immediate, which is scaled by the
+# element size. The function gets the sz:imm and returns the scaled immediate.
+# For vectors, opc bit 1 (insn bit 23) is effectively bit 2 of the size.
+%uimm_scaled    10:12 sz:3 !function=uimm_scaled
+@ldst_uimm      .. ... . .. .. ............ rn:5 rt:5 &ldst_imm unpriv=0 p=0 w=0 imm=%uimm_scaled
+STR_i           sz:2 111 0 01 00 ............ ..... ..... @ldst_uimm sign=0 ext=0
+LDR_i           00 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=0
+LDR_i           01 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=1
+LDR_i           10 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=2
+LDR_i           11 111 0 01 01 ............ ..... ..... @ldst_uimm sign=0 ext=1 sz=3
+LDR_i           00 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=0
+LDR_i           01 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=1
+LDR_i           10 111 0 01 10 ............ ..... ..... @ldst_uimm sign=1 ext=0 sz=2
+LDR_i           00 111 0 01 11 ............ ..... ..... @ldst_uimm sign=1 ext=1 sz=0
+LDR_i           01 111 0 01 11 ............ ..... ..... @ldst_uimm sign=1 ext=1 sz=1
 
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index c3eeb23942..bdea57b2ef 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -33,6 +33,7 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
- specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'], if_true: files('vhost-user-gpio-pci.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
-+specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SCMI'], if_true: files('vhost-user-scmi-pci.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
- 
- virtio_pci_ss = ss.source_set()
-diff --git a/hw/virtio/vhost-user-scmi-pci.c b/hw/virtio/vhost-user-scmi-pci.c
-new file mode 100644
-index 0000000000..7f53af7fce
---- /dev/null
-+++ b/hw/virtio/vhost-user-scmi-pci.c
-@@ -0,0 +1,68 @@
-+/*
-+ * Vhost-user SCMI virtio device PCI glue
-+ *
-+ * SPDX-FileCopyrightText: Red Hat, Inc.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/virtio/vhost-user-scmi.h"
-+#include "hw/virtio/virtio-pci.h"
-+
-+struct VHostUserSCMIPCI {
-+    VirtIOPCIProxy parent_obj;
-+    VHostUserSCMI vdev;
-+};
-+
-+typedef struct VHostUserSCMIPCI VHostUserSCMIPCI;
-+
-+#define TYPE_VHOST_USER_SCMI_PCI "vhost-user-scmi-pci-base"
-+
-+DECLARE_INSTANCE_CHECKER(VHostUserSCMIPCI, VHOST_USER_SCMI_PCI,
-+                         TYPE_VHOST_USER_SCMI_PCI)
-+
-+static void vhost_user_scmi_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-+{
-+    VHostUserSCMIPCI *dev = VHOST_USER_SCMI_PCI(vpci_dev);
-+    DeviceState *vdev = DEVICE(&dev->vdev);
-+
-+    vpci_dev->nvectors = 1;
-+    qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
-+}
-+
-+static void vhost_user_scmi_pci_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
-+    PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
-+    k->realize = vhost_user_scmi_pci_realize;
-+    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
-+    pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
-+    pcidev_k->device_id = 0; /* Set by virtio-pci based on virtio id */
-+    pcidev_k->revision = 0x00;
-+    pcidev_k->class_id = PCI_CLASS_COMMUNICATION_OTHER;
-+}
-+
-+static void vhost_user_scmi_pci_instance_init(Object *obj)
-+{
-+    VHostUserSCMIPCI *dev = VHOST_USER_SCMI_PCI(obj);
-+
-+    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
-+                                TYPE_VHOST_USER_SCMI);
-+}
-+
-+static const VirtioPCIDeviceTypeInfo vhost_user_scmi_pci_info = {
-+    .base_name = TYPE_VHOST_USER_SCMI_PCI,
-+    .non_transitional_name = "vhost-user-scmi-pci",
-+    .instance_size = sizeof(VHostUserSCMIPCI),
-+    .instance_init = vhost_user_scmi_pci_instance_init,
-+    .class_init = vhost_user_scmi_pci_class_init,
-+};
-+
-+static void vhost_user_scmi_pci_register(void)
-+{
-+    virtio_pci_types_register(&vhost_user_scmi_pci_info);
-+}
-+
-+type_init(vhost_user_scmi_pci_register);
+Here we need to manually decode the sz field in bits 31:30 because
+of the complexity of the sign/ext and the parts of the encode space
+that are UNDEF (or are prefetch). And we want to use a !function
+to do the "scale the immediate offset by the size of the datatype"
+so we can use the same LDR_i and STR_i trans_ functions that we
+already have for the unscaled-immediate loads and stores.
+
+But at the moment you can't re-decode bits in a %field that are fixed
+in the instruction pattern, and you can't refer to the
+already-decoded sz value directly. This patchset implements the
+syntax used above where the %field can refer to another field,
+e.g. 'sz:2'.
+
+Patch 1 fixes a trivial bug in the check.sh script that meant
+that failures weren't reported up to meson.
+
+thanks
+-- PMM
+
+Peter Maydell (6):
+  tests/decodetree/check.sh: Exit failure for all failures
+  docs: Document decodetree named field syntax
+  scripts/decodetree: Pass lvalue-formatter function to str_extract()
+  scripts/decodetree: Implement a topological sort
+  scripts/decodetree: Implement named field support
+  tests/decode: Add tests for various named-field cases
+
+ docs/devel/decodetree.rst            |  33 +++-
+ tests/decode/err_field1.decode       |   2 +-
+ tests/decode/err_field10.decode      |   7 +
+ tests/decode/err_field7.decode       |   7 +
+ tests/decode/err_field8.decode       |   8 +
+ tests/decode/err_field9.decode       |  14 ++
+ tests/decode/succ_named_field.decode |  19 +++
+ scripts/decodetree.py                | 239 +++++++++++++++++++++++++--
+ tests/decode/check.sh                |   1 +
+ 9 files changed, 310 insertions(+), 20 deletions(-)
+ create mode 100644 tests/decode/err_field10.decode
+ create mode 100644 tests/decode/err_field7.decode
+ create mode 100644 tests/decode/err_field8.decode
+ create mode 100644 tests/decode/err_field9.decode
+ create mode 100644 tests/decode/succ_named_field.decode
+
 -- 
-2.38.5
+2.34.1
 
 
