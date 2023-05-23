@@ -2,73 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29AA70DDF9
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 764FC70DDF5
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 May 2023 15:51:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1SPV-0000eF-7y; Tue, 23 May 2023 09:50:45 -0400
+	id 1q1SQB-0002kr-4Q; Tue, 23 May 2023 09:51:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1SPR-0000R3-7a
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:50:42 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1SPP-00022N-4z
- for qemu-devel@nongnu.org; Tue, 23 May 2023 09:50:40 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-96fbc74fbf1so545886166b.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:50:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684849837; x=1687441837;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=seuBDgT9aF3afRV8J7nFDrWYb03Aj0cUgIJWViRMfsE=;
- b=qHPK1/n4lZCOh5w5zb38bjb2SIHP5Jt4xh19NAW9RK0HcB69vXlOygCatqSrgNFkJ9
- mWWjRk2Nxax0iBxNiVbYLyzXwKy/C6RKOGUZZetDHehdjW0xvvWDqe4/01jXbEKtmUkk
- 3kNgO8kuXG400MfksNG2tF4hqQxaTUl8gJjcjhOKcxWCcAtTaBqXWh+aL7zarBj3Pt5S
- NBQQSTdgU5dtUkFnCsFvvZqc0YoXvSHnU6DzhHsQsA7Sg2K/Ls+1TzLv2JKzfsKd82Qr
- QTVN3FmvTB4Vu/e5w3Xtxzlwqs2ENF8WQAJX/rPbM3MjU36R5jFpqPUZbt0gFqV4SWBV
- o8Jg==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q1SPu-0002Qf-4s
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:51:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q1SPs-0002DM-Mz
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 09:51:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684849866;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2X02jT7y+8OLrfdFCK/L8Zp+Fxh6PaHD/EYM66pcoKs=;
+ b=h8WnvHbgL960pKycWvWi3cglty1SuzSI70RP9BAJx7iTLKpqxc8L3g3LweE8BQLC57LXQK
+ GfILS7EjdmvVJljq7Hqzvf9Jnz16mzVlkR+D9shSsEgDx7CxkW0UNObFQM1kUmQX+hDa2u
+ ykTq7MbhccCTXlA2wEbeYssL8YXpD/A=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-378-GBTxWkklOmqLB7kDLFseqQ-1; Tue, 23 May 2023 09:51:04 -0400
+X-MC-Unique: GBTxWkklOmqLB7kDLFseqQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-30940b01998so2727287f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 06:51:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684849837; x=1687441837;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1684849863; x=1687441863;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=seuBDgT9aF3afRV8J7nFDrWYb03Aj0cUgIJWViRMfsE=;
- b=jEtYPFBDi35btXJl0lzBRo0tlnLwEluBPLBAt1Hd8Ch/67uYX9dTlpvU0wWnBIOMTr
- znxUsi7WICKRjTOziCgP9r8vOw7RbI/FgTeVfGUlLnYF1CDheHKsGRatgfob78m2jJhh
- j/SRs8hJyg3Q7oplm4u6PZuBQQpEI0IhBjdVSTzJAyXC7KlqH0ysUsNXsBlwIpWzQgy/
- ve1mmb7b5T//FVDo8tZdJ+lyNd0IOw51qTq2zcnJkjvMVYLCCKwICnM3x0AjnoyHyt5H
- 73t4qjJKooIGhg1Cun/WuWPl2rjiu1M04cvnWAk4Q7J5qaHOP1eNHzLGRg86p/7v9qdv
- ZjGw==
-X-Gm-Message-State: AC+VfDyNcnWn3LZ/gjPdDUd48SwuH9QEGvDkMWQPO1JKNVrsibSQyPF1
- AoPcief5fiQrZwIXxRVG4O+0SI9EeZAuX/JzdTt9aA==
-X-Google-Smtp-Source: ACHHUZ4JmGc2W0IHalbXmi4dzrL3aEVT8JfOtAyWutZKNsZuPprgZKzf8O3yRSRB7GPJBWWFR8Mu9TzYiZkVt6EIsK0=
-X-Received: by 2002:a17:907:26ca:b0:969:bac4:8e22 with SMTP id
- bp10-20020a17090726ca00b00969bac48e22mr12548923ejc.26.1684849837343; Tue, 23
- May 2023 06:50:37 -0700 (PDT)
+ bh=2X02jT7y+8OLrfdFCK/L8Zp+Fxh6PaHD/EYM66pcoKs=;
+ b=X8nVERZ77GMxOvUPYwjnMsCegihg+wEirNRzseALXxdc6DcfF+2TGMePc9bik5+21Q
+ XIJ9HoC/l9T2xUevvcXANVixuIDGwVK3KGYKOZJgH8PGzx0d/D6cmukvr3el2VIR0q2l
+ UW2v//qh1cbdtUp2XlCizuoLenrqgvj4Cudd7Z9mM+FxbPT/+jG9JaGKFecJKvfnh0lb
+ OOb0s8dzRMVdg6SAv1kLxMY4E4E5tUb0L5PYgsfFv9xXCmMV+EANIgHsXDCv9xZPXYjb
+ tosuJl6JPSFY1YZm97uB7/9WSbBTFv7MTBDQgVv+DXyLxOiHg2ONu7xqqtacJKvZriQV
+ Zs5w==
+X-Gm-Message-State: AC+VfDxqrzINgg59sDKKgl/0YzjiYfH6Y2WoqKd16nvyMPDIqNrvfZQG
+ NdWtbg5uhHCpDp1j8QOA6Yf+QJIuV+oAWRyzrAyA8s8uPPnmFdTzxa41i/772YK5EH+7ImEC/zz
+ VE8NIAK38yhYThMs=
+X-Received: by 2002:adf:ee0e:0:b0:309:452c:2189 with SMTP id
+ y14-20020adfee0e000000b00309452c2189mr11043821wrn.57.1684849863533; 
+ Tue, 23 May 2023 06:51:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ74AFy9yQVZudsuKeP0kPLBkZsYteHLhJcDCQalgHnq2l4ekD0Hf/+HfEZLoVRv2JMcAZUw0g==
+X-Received: by 2002:adf:ee0e:0:b0:309:452c:2189 with SMTP id
+ y14-20020adfee0e000000b00309452c2189mr11043800wrn.57.1684849863184; 
+ Tue, 23 May 2023 06:51:03 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c74c:b400:5c8b:a0b2:f57e:e1cd?
+ (p200300cbc74cb4005c8ba0b2f57ee1cd.dip0.t-ipconnect.de.
+ [2003:cb:c74c:b400:5c8b:a0b2:f57e:e1cd])
+ by smtp.gmail.com with ESMTPSA id
+ f5-20020a5d4dc5000000b002fe13ec49fasm11112830wru.98.2023.05.23.06.51.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 06:51:02 -0700 (PDT)
+Message-ID: <b91fe1b1-0bfd-cf1f-14dc-457a765c3dce@redhat.com>
+Date: Tue, 23 May 2023 15:51:02 +0200
 MIME-Version: 1.0
-References: <20230517105303.453161-1-marcin.juszkiewicz@linaro.org>
-In-Reply-To: <20230517105303.453161-1-marcin.juszkiewicz@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 23 May 2023 14:50:26 +0100
-Message-ID: <CAFEAcA9GamGybSzd8FKBtmZ2qMgjRFy6D=Vhu1y0dL8m9Sa80w@mail.gmail.com>
-Subject: Re: [PATCH v2] hw/arm/sbsa-ref: add GIC node into DT
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Leif Lindholm <quic_llindhol@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 17/27] target/s390x: Use cpu_{ld,st}*_mmu in do_csst
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20230523134733.678646-1-richard.henderson@linaro.org>
+ <20230523134733.678646-18-richard.henderson@linaro.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230523134733.678646-18-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,20 +106,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 May 2023 at 11:53, Marcin Juszkiewicz
-<marcin.juszkiewicz@linaro.org> wrote:
->
-> Let add GIC information into DeviceTree as part of SBSA-REF versioning.
->
-> Trusted Firmware will read it and provide to next firmware level.
->
-> Bumps platform version to 0.1 one so we can check is node is present.
->
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+On 23.05.23 15:47, Richard Henderson wrote:
+> Use cpu_ld16_mmu and cpu_st16_mmu to eliminate the special case,
+> and change all of the *_data_ra functions to match.
+> 
+> Note that we check the alignment of both compare and store
+> pointers at the top of the function, so MO_ALIGN* may be
+> safely removed from the individual memory operations.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> Cc: qemu-s390x@nongnu.org
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+> ---
 
-Are we documenting anywhere what the format/requirements/versions
-of this board-to-firmware interface are ?
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-thanks
--- PMM
+-- 
+Thanks,
+
+David / dhildenb
+
 
