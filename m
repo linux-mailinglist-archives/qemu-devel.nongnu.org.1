@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB1F70F130
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 10:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC5670F12E
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 10:40:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1k1n-00057q-K8; Wed, 24 May 2023 04:39:27 -0400
+	id 1q1k1p-00059H-Hr; Wed, 24 May 2023 04:39:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1k1k-00056R-UE; Wed, 24 May 2023 04:39:24 -0400
+ id 1q1k1l-00057c-MK; Wed, 24 May 2023 04:39:25 -0400
 Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1k1j-0000MA-C6; Wed, 24 May 2023 04:39:24 -0400
+ id 1q1k1j-0000M9-Ca; Wed, 24 May 2023 04:39:25 -0400
 Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 4AF942602AC;
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 2A307260BBC;
  Wed, 24 May 2023 10:39:20 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at juszkiewicz.com.pl
 Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
  by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id r4NjRbBBMfsa; Wed, 24 May 2023 10:39:17 +0200 (CEST)
+ with ESMTP id PBN7Kpnp3Ogx; Wed, 24 May 2023 10:39:18 +0200 (CEST)
 Received: from applejack.lan (83.21.125.167.ipv4.supernova.orange.pl
  [83.21.125.167])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 2565F260249;
- Wed, 24 May 2023 10:39:16 +0200 (CEST)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id C6B4F2602AC;
+ Wed, 24 May 2023 10:39:17 +0200 (CEST)
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH 1/3] hw/arm/sbsa-ref: honor "-vga none" argument
-Date: Wed, 24 May 2023 10:39:11 +0200
-Message-Id: <20230524083913.696175-1-marcin.juszkiewicz@linaro.org>
+Subject: [PATCH 2/3] hw/arm/sbsa-ref: add gfx card only if we have pci
+Date: Wed, 24 May 2023 10:39:12 +0200
+Message-Id: <20230524083913.696175-2-marcin.juszkiewicz@linaro.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
+In-Reply-To: <20230524083913.696175-1-marcin.juszkiewicz@linaro.org>
 References: <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
+ <20230524083913.696175-1-marcin.juszkiewicz@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: softfail client-ip=213.251.184.221;
@@ -63,28 +64,32 @@ Reply-To: 20230524082037.1620952-1-thuth@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In case someone wants to run without graphics card.
+Creation of network card is guarded with check do we
+have pci bus. Do the same with graphics card.
 
 Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 ---
- hw/arm/sbsa-ref.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/arm/sbsa-ref.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 9c3e670ec6..c540b2f1ba 100644
+index c540b2f1ba..9a3d77d6b6 100644
 --- a/hw/arm/sbsa-ref.c
 +++ b/hw/arm/sbsa-ref.c
-@@ -649,7 +649,9 @@ static void create_pcie(SBSAMachineState *sms)
+@@ -647,10 +647,10 @@ static void create_pcie(SBSAMachineState *sms)
+ 
+             pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
          }
+-    }
+ 
+-    if (vga_interface_type != VGA_NONE) {
+-        pci_create_simple(pci->bus, -1, "bochs-display");
++        if (vga_interface_type != VGA_NONE) {
++            pci_create_simple(pci->bus, -1, "bochs-display");
++        }
      }
  
--    pci_create_simple(pci->bus, -1, "bochs-display");
-+    if (vga_interface_type != VGA_NONE) {
-+        pci_create_simple(pci->bus, -1, "bochs-display");
-+    }
- 
      create_smmu(sms, pci->bus);
- }
 -- 
 2.40.1
 
