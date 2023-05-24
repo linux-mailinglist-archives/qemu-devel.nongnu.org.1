@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAD170FFB6
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 23:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCC470FFBB
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 23:13:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1vlW-0001CQ-5P; Wed, 24 May 2023 17:11:26 -0400
+	id 1q1vlb-0001Dc-Eu; Wed, 24 May 2023 17:11:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vlU-0001CF-9g
- for qemu-devel@nongnu.org; Wed, 24 May 2023 17:11:24 -0400
+ id 1q1vlY-0001Cy-Lb
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 17:11:28 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vlS-0001ww-Ov
- for qemu-devel@nongnu.org; Wed, 24 May 2023 17:11:24 -0400
+ id 1q1vlX-0001xh-3e
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 17:11:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=sgrLlmEQFPE5n5gMOmYlFvRgIdJy4BPn5Xy9X7/sycU=; b=KU7pU2do2x0xTDLid6kRb02UHU
- Eb+wGPQzjm6MieK6LT6/y/RJLrtEDG1eHpFIDPBzGws5LoyMDwy853njG6N23sugrpKnDRnJreoOX
- OmgvQktPcRwGetlEZKPkBGZsbapldi1UBam9zDVcfPeRv5bIABmKc48ZzRCBwzQnvs++a31/BD3j3
- aq7tiax074J96qPGma++Ip5bG2hos/Z2k9xHPxmySsidY1WwS+UfUFNlR9G4VxSk6LObVH6D7jtoY
- ev7nqeAs/jZMj5fnDQMFJO0qjwMB3IZglJOpAN97sPpyjU3wKzCSUwRcGiZzbTsal+uDWm3H/Xyt3
- lZXARYBFuC7cr4CBqRr7Co7yB/0NWdbiZEs+QavIqkloAwkMQXZzu6rv+PP/obERqLfOxaoKPLJsX
- eTE6okeVfiTsDEk8gcfCEcuDU/+RTEdYLtoqbAgm+WXf2QnTx2wmprtA+2jmLRhuR2baDvsqlpYxT
- o4mPe0GqOV9iMlOpM5jOHQsR2TvxwOaID5J8oKRtv4E+cMhHDAGZTAIEF4Y9/jjFBIxhED++5NRf9
- 6capJqKgfycz9XpLNqa84WRBmK2TXc9nVUNwTaOF0Mdwzbu4zu4YIOWnilXhknPd1AHHekNLU91F7
- ykvZGMs4/a4x+mO5s7w3DlJ20Oo7wCrtFQj23BKOA=;
+ bh=zJXbXBIFRyKxZRHU1YwZtLM7uzSs0hYuUBhKs+2crCc=; b=BXrqe5kn9TuuMnYTUemdS3gG8W
+ lx7UGkSrwq43z/urP4TP4Ged6GsuQjCKQq6/Vc7VcvMTcJ5SJpHjOGVrC1OcJtlVVvvykeHbtEGZo
+ quHxFL+HTgenKAxp/Ac/B/0yW8CjnDDvn4pJ4T1WmZZLwoeZMCApiOtTncukrF22vviF5TOuk7vfN
+ oq1ixsnQ2Ruk2rfzFovpgb4m80HvZCCt/WYdDg15dZiqIablYJw1a7MiEFaDBPkq7JwUV3O9DG1Ch
+ qZbTh6q+pW2mauGR6GwwNgf3kWe/Hxvh2mdBLtfu5lMuONl7SS5/F1xJB5fH/rH2EJiYZlo8A+Pt3
+ ndqfl+yyFnXedA4sHRKaMc+EVd+RTvfgfz2GNtPwCNByIwysGsL9xuUVo6zh+YrklOVcysSXaiPQh
+ hcH6e/CpIupf3nXLL922UJZoHnuPP69H1qSUcxNcx7fzAuF+DvEupnuT4bMkaR/fbR6HSHJ5uCVdA
+ Ptnh2AL1uq5LtLE0D1VhSVmvi1NOck+GsP1G8duY5LbB/ajNVxVP3ENPwL0+7OwWdeHlOaUCpph5z
+ FQCyd2scrTkx+7zMXS8Sz6fqmezspZpn523VSRYHCUCdOcdqOYJQ/3wQatI46KxA85ACFcauo/c1h
+ +6EkugJRQ3jXAOxGfUy+0M5UcunZ73W/xfLUJHI3w=;
 Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vlL-0005XR-3L; Wed, 24 May 2023 22:11:19 +0100
+ id 1q1vlP-0005XR-8I; Wed, 24 May 2023 22:11:23 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 24 May 2023 22:10:36 +0100
-Message-Id: <20230524211104.686087-3-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 24 May 2023 22:10:37 +0100
+Message-Id: <20230524211104.686087-4-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
 References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 02/30] q800: introduce Q800MachineState
+Subject: [PATCH 03/30] q800: rename q800_init() to q800_machine_init()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,92 +76,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This provides an overall container and owner for Machine-related objects such
-as MemoryRegions.
+This will enable us later to distinguish between QOM initialisation and machine
+initialisation.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- MAINTAINERS            |  1 +
- hw/m68k/q800.c         |  2 ++
- include/hw/m68k/q800.h | 37 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 40 insertions(+)
- create mode 100644 include/hw/m68k/q800.h
+ hw/m68k/q800.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1c93ab0ee5..86a1b88863 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1234,6 +1234,7 @@ F: include/hw/misc/mac_via.h
- F: include/hw/nubus/*
- F: include/hw/display/macfb.h
- F: include/hw/block/swim.h
-+F: include/hw/m68k/q800.h
- 
- virt
- M: Laurent Vivier <laurent@vivier.eu>
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 1aead224e2..bdccd93c7f 100644
+index bdccd93c7f..976da06231 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -38,6 +38,7 @@
- #include "standard-headers/asm-m68k/bootinfo.h"
- #include "standard-headers/asm-m68k/bootinfo-mac.h"
- #include "bootinfo.h"
-+#include "hw/m68k/q800.h"
- #include "hw/misc/mac_via.h"
- #include "hw/input/adb.h"
- #include "hw/nubus/mac-nubus-bridge.h"
-@@ -748,6 +749,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
- static const TypeInfo q800_machine_typeinfo = {
-     .name       = MACHINE_TYPE_NAME("q800"),
-     .parent     = TYPE_MACHINE,
-+    .instance_size = sizeof(Q800MachineState),
-     .class_init = q800_machine_class_init,
+@@ -361,7 +361,7 @@ static uint8_t fake_mac_rom[] = {
+     0x60, 0xFE                          /* bras [self] */
  };
  
-diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-new file mode 100644
-index 0000000000..560fd6f93d
---- /dev/null
-+++ b/include/hw/m68k/q800.h
-@@ -0,0 +1,37 @@
-+/*
-+ * QEMU Motorla 680x0 Macintosh hardware System Emulator
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
+-static void q800_init(MachineState *machine)
++static void q800_machine_init(MachineState *machine)
+ {
+     M68kCPU *cpu = NULL;
+     int linux_boot;
+@@ -737,8 +737,9 @@ static const size_t hw_compat_q800_len = G_N_ELEMENTS(hw_compat_q800);
+ static void q800_machine_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
 +
-+#ifndef HW_Q800_H
-+#define HW_Q800_H
-+
-+/*
-+ * The main Q800 machine
-+ */
-+
-+struct Q800MachineState {
-+    MachineState parent_obj;
-+};
-+
-+#define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
-+OBJECT_DECLARE_SIMPLE_TYPE(Q800MachineState, q800, Q800_MACHINE, MachineState)
-+
-+#endif
+     mc->desc = "Macintosh Quadra 800";
+-    mc->init = q800_init;
++    mc->init = q800_machine_init;
+     mc->default_cpu_type = M68K_CPU_TYPE_NAME("m68040");
+     mc->max_cpus = 1;
+     mc->block_default_type = IF_SCSI;
 -- 
 2.30.2
 
