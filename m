@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA51270F81E
+	by mail.lfdr.de (Postfix) with ESMTPS id CE92670F81D
 	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 15:57:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1oxz-0000Bg-8K; Wed, 24 May 2023 09:55:51 -0400
+	id 1q1oyw-0000aW-N4; Wed, 24 May 2023 09:56:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1oxx-0000BY-3m
- for qemu-devel@nongnu.org; Wed, 24 May 2023 09:55:49 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1oyu-0000Yg-0x
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 09:56:48 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1oxv-0006yy-6v
- for qemu-devel@nongnu.org; Wed, 24 May 2023 09:55:48 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3078d1c8828so829508f8f.3
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 06:55:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1oys-00078I-32
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 09:56:47 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f603d4bc5bso11700275e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 06:56:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684936545; x=1687528545;
+ d=linaro.org; s=google; t=1684936604; x=1687528604;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=a6fSjh319S26h/k2r8NwOY8AqMPdFpMMQgUCsjr6qGQ=;
- b=t4pmhfIJq51DKdtCvnaRPyGi39bsLHIIVh7bcExrJD2g9KThRsRzHkerApyDvzwsfN
- thgr/OFEkr5AqUjA+KfDVP8gsAuvq9v7DkX3O8jrhfbobIH6t9krewod7H3kGogfRj1a
- f1+uQEmvjhwXCSMjzCBkO7k9KVKzUK99OVUTNFdAE+CHw24iSnOtu9gEJixiow6JshMt
- sSTYyXUsWXSpavuOmPJlFONZqd2cBihaZXQiPyMz/E2BxTISqJ0xOAro+/qWMC9qj6lH
- LlxTnF4aB9fIYAK4vNPJ9fHRoSkJmXj6ygY8F2wTb5Q7HIaIn5Ng57q7gCS7kbv7m5k1
- 5jOw==
+ bh=G06u1uXvgp2pbGhuuLT0ZE49azJQkIpZ/Jtp+y5ITBY=;
+ b=JqaXKzF4lY0gFqEPLsJZZtZeNg+rufCjUKqqfS+mQbllwIMe2omOXsO+dFtDquX14b
+ bwesBeNkMA01dxE+TWcrH4ueFfGpgKMXiC5EF8LJj6QV2AG4HTgxudKYUSWQU1CSHw7c
+ 0wnQUmaHAjxQfYoBQv+S2YSt6B/TwunGUpwpwFd6bmYc8WjYPiUeDIMK7ohQ6/0CrMwW
+ UfwbuLw/OB3CQDio7an9a9ZxjvLp1Q+BphxBxnty03mCmDIroHAX9Hw4+SW6+hHqx1Dc
+ 131E38OezzbVm+LiKwMyTK9bjqm9j8PCbPfvvTdY7WJgLNOCBPggoZapZMBxyqe1f14Z
+ Ydjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684936545; x=1687528545;
+ d=1e100.net; s=20221208; t=1684936604; x=1687528604;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a6fSjh319S26h/k2r8NwOY8AqMPdFpMMQgUCsjr6qGQ=;
- b=eVa5+ujnFgaGxFGqD0WM9uhg60aJx3JDcWb2wDwz0Zenron0cVrEf2fHDr1gZKPOc3
- +Ek25vg/D794TOUtQsXLSrOsY2ev5wqw3MFQN34O/HI3v2bRlyX26T5lf0xhSZEGSonU
- bURkTUUhdipv8zWQqb5a59bWPlcjP28SFQ4R8vndmqTlpLaiAAD9atsoXOU140V5JtEI
- Hg7f/s2dsWL++8ak4xYy1K8I5QWgf20JslIdQ5mCbnRSjjJfcG7MyIxYB4VacONx3s92
- 2pbdZecuBSnx8BlQD8SMYhXqS1GrLZ2raVLo5wcGC5onIySUb8z+8A1rrvWMneTtdvtO
- 05gQ==
-X-Gm-Message-State: AC+VfDzj99dVprqaAcitVRXa9E85VNOKUD0uqxXoPvyavVF2PxLQGmfF
- wtRqapMOPhsDbinLDyPivurTOQ==
-X-Google-Smtp-Source: ACHHUZ5iN8lxxi/XI3IVDp4DH/yHcrpMqW0nfZCoyIllPU/M24darlm7HvYsMsZiVyoC4cV2bseAdA==
-X-Received: by 2002:adf:ee49:0:b0:306:3b78:fe33 with SMTP id
- w9-20020adfee49000000b003063b78fe33mr13563036wro.32.1684936545256; 
- Wed, 24 May 2023 06:55:45 -0700 (PDT)
+ bh=G06u1uXvgp2pbGhuuLT0ZE49azJQkIpZ/Jtp+y5ITBY=;
+ b=TrCJmKHd6ZZ7QPw3VmVw6+HYmZWPj/BrNoeKaM/KcdZK+EBI0Qq7ohTkOTjComu1rK
+ BFlAj5lVFnlxc0xHc3si3AUkRX9YEuqaVZogqYxts416zTZnDA5d1hdbjK6ToEZJlZMD
+ mLmafaac+Xk+t6AxPltCnjtaUHaa8sW822XtuRgVvI1s5fuTFL/BfQOnp83yXy5b+k8B
+ c/gdybRBzg4bh6eJKINz5iBTc8irTPNvfb7xsJILo7i63zZbrI1KuVi+u73ICXkBDEGA
+ ky6W+hNyQJdjRRz4+Za8Itcn7UFQJgBbNYJvgUkVdqvTZcuByd1mmGOeG//xO9tEYzu8
+ OMxg==
+X-Gm-Message-State: AC+VfDx1FeQgdDgdwe6YHt3W4jwy+dW+rczbmvKnZMtDH+svldssEaOJ
+ /2ghoFz7w34/HbzIHfq4JumaVg==
+X-Google-Smtp-Source: ACHHUZ6TsTUA0CFICb/kQ3ywLZy5cHZ03CIt8EeAdDpxl1BkZ7TchnBJoHWeYZ0oCqdRTNqVzxNrtQ==
+X-Received: by 2002:a7b:ca47:0:b0:3f6:11e9:de8e with SMTP id
+ m7-20020a7bca47000000b003f611e9de8emr2037691wml.4.1684936604517; 
+ Wed, 24 May 2023 06:56:44 -0700 (PDT)
 Received: from [192.168.69.115] (fac34-h02-176-184-31-193.dsl.sta.abo.bbox.fr.
  [176.184.31.193]) by smtp.gmail.com with ESMTPSA id
- o9-20020adfeac9000000b0030633152664sm14639606wrn.87.2023.05.24.06.55.43
+ y19-20020a05600c365300b003f6041f5a6csm2475819wmq.12.2023.05.24.06.56.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 May 2023 06:55:44 -0700 (PDT)
-Message-ID: <a6f38498-8717-46ea-6aeb-9d85e6be9c1e@linaro.org>
-Date: Wed, 24 May 2023 15:55:42 +0200
+ Wed, 24 May 2023 06:56:44 -0700 (PDT)
+Message-ID: <64d0bf03-508d-9655-cf2e-6041a179a48e@linaro.org>
+Date: Wed, 24 May 2023 15:56:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 0/5] Use MachineClass->default_nic in more machines
+Subject: Re: [PATCH v5 04/10] scripts/qapi: document the tool that generated
+ the file
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Max Filippov <jcmvbkbc@gmail.com>, Jason Wang <jasowang@redhat.com>
-References: <20230523110435.1375774-1-thuth@redhat.com>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Kyle Evans <kevans@freebsd.org>, libvir-list@redhat.com,
+ Greg Kurz <groug@kaod.org>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Warner Losh <imp@bsdimp.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Michael Roth <michael.roth@amd.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Riku Voipio <riku.voipio@iki.fi>, Paolo Bonzini <pbonzini@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+References: <20230524133952.3971948-1-alex.bennee@linaro.org>
+ <20230524133952.3971948-5-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230523110435.1375774-1-thuth@redhat.com>
+In-Reply-To: <20230524133952.3971948-5-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,24 +103,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/5/23 13:04, Thomas Huth wrote:
-> These patches are required for running more tests with "make check"
-> on builds that use "--without-default-devices". By marking the
-> default NIC in the generic MachineClass, the main code can decide
-> whether the NIC is available in the binary or not, so the instantiation
-> can be skipped if it has not been compiled in.
+On 24/5/23 15:39, Alex Bennée wrote:
+> This makes it a little easier for developers to find where things
+> where being generated.
 > 
-> See https://lore.kernel.org/qemu-devel/20230512124033.502654-5-thuth@redhat.com/
-> and the other patches in that series for more information.
-> 
-> Thomas Huth (5):
->    hw/hppa: Use MachineClass->default_nic in the hppa machine
->    hw/alpha: Use MachineClass->default_nic in the alpha machine
->    hw/arm: Use MachineClass->default_nic in the virt machine
->    hw/loongarch64: Use MachineClass->default_nic in the virt machine
->    hw/xtensa: Use MachineClass->default_nic in the virt machine
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Message-Id: <20230523125000.3674739-5-alex.bennee@linaro.org>
+> ---
+>   scripts/qapi/gen.py | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
