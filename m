@@ -2,64 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7B270F223
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 11:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B4470F297
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 11:23:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1kfj-0000cj-O1; Wed, 24 May 2023 05:20:43 -0400
+	id 1q1khC-0001RE-M1; Wed, 24 May 2023 05:22:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q1kfh-0000aH-MP
- for qemu-devel@nongnu.org; Wed, 24 May 2023 05:20:41 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1khA-0001Qj-EF
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 05:22:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q1kfe-0003So-Ng
- for qemu-devel@nongnu.org; Wed, 24 May 2023 05:20:40 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QR5Gm73tGz67M49;
- Wed, 24 May 2023 17:19:12 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 24 May
- 2023 10:20:34 +0100
-Date: Wed, 24 May 2023 10:20:33 +0100
-To: Markus Armbruster <armbru@redhat.com>
-CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira
- Weiny <ira.weiny@intel.com>, Alison Schofield <alison.schofield@intel.com>,
- Michael Roth <michael.roth@amd.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
- Huth" <thuth@redhat.com>
-Subject: Re: [PATCH v5 5/7] hw/cxl/events: Add injection of General Media
- Events
-Message-ID: <20230524102033.00002d41@huawei.com>
-In-Reply-To: <20230524101158.0000579d@huawei.com>
-References: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
- <20230423165140.16833-6-Jonathan.Cameron@huawei.com>
- <87lehgq1cy.fsf@pond.sub.org> <20230522135737.000079c4@Huawei.com>
- <87fs7na2o8.fsf@pond.sub.org> <20230523113543.00006a1f@Huawei.com>
- <87ttw35i6q.fsf@pond.sub.org> <20230524101158.0000579d@huawei.com>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1kh8-0003kG-U3
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 05:22:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684920130;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2k84SUV0s+m+tq128j2/TPhmTT8TB8HkIYVKtJnbpR4=;
+ b=iLSeUaP6VKpAy5yAVeQ5WkagRyIochCcOZFk6zpMYozN+q+gTU51yRJkQkygCNwp0vcjht
+ tyNgfIanaWNyO4KHILI1Imn/oazpidT0M2wiDh1HFZOI+g1MpSygS2CzHQ5tEp+yPEBriw
+ bpKr3kSMU6PtOTCPV5NnOWj/T11ZCjE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-675-gI0cqSCTMpizxQ_2S9TzsQ-1; Wed, 24 May 2023 05:22:08 -0400
+X-MC-Unique: gI0cqSCTMpizxQ_2S9TzsQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3093e600770so364991f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 02:22:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684920127; x=1687512127;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2k84SUV0s+m+tq128j2/TPhmTT8TB8HkIYVKtJnbpR4=;
+ b=YsO1SIxAdcF/Qh8ZO27TfGtkMQM53byRolBP4pl9/7cWTOd9defK877wDR00diZ+t9
+ zx1IyWIgRhWxHkRsDoGYw+EeepgV/WTvpyDM3+8QhLelTbGv/4rPQ7p1iK7OrRNcEMyA
+ juJ6KyiQrADQ7VXc8UvPkY2LMllw5Ajub4T4E6n5byoIXiqeF8sMrYe8SwsMPmlaldB7
+ sRPDQlCQZ9drSoghtr7GeA/IcTbF9yfDVje5W8voBi8McxmZwBtq/FmB+WqFHVyWG/6N
+ GHSE8YFrQDDoo+aFT/h7+1AqnDzobte9hJAP1wf551QFwkP2sPlpI2T7qL8+kJANNGFG
+ UnIg==
+X-Gm-Message-State: AC+VfDyFvIZq6RbItZ9rhBgXJxQFzKuRis0G9OSHYVqqpBol0g8bow6s
+ 7qFgE0/i1vn1LUA52cFnmqlcim/rGuGJV4OFAIbrAc8exJYaKHF2ZTbsAlEaNAk1vFDmBEy+f8W
+ dR4RxM5vRKTle4J0=
+X-Received: by 2002:a5d:68cd:0:b0:309:5188:5928 with SMTP id
+ p13-20020a5d68cd000000b0030951885928mr12382621wrw.35.1684920127266; 
+ Wed, 24 May 2023 02:22:07 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6G+kl8je9bjPRELErhfUw0d2upQ8Y9GXrpLOTE+WfY/NqvQNZGmyN71DFZk0dQQOoT2DYEIQ==
+X-Received: by 2002:a5d:68cd:0:b0:309:5188:5928 with SMTP id
+ p13-20020a5d68cd000000b0030951885928mr12382607wrw.35.1684920126937; 
+ Wed, 24 May 2023 02:22:06 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-176-64.web.vodafone.de.
+ [109.43.176.64]) by smtp.gmail.com with ESMTPSA id
+ t1-20020a5d6a41000000b003063176ef09sm14035255wrw.6.2023.05.24.02.22.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 May 2023 02:22:06 -0700 (PDT)
+Message-ID: <6dfa9cdb-2efb-8991-e810-f08b4a215321@redhat.com>
+Date: Wed, 24 May 2023 11:22:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: 20230524082037.1620952-1-thuth@redhat.com, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+References: <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
+ <20230524083913.696175-1-marcin.juszkiewicz@linaro.org>
+ <20230524083913.696175-3-marcin.juszkiewicz@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 3/3] hw/arm/sbsa-ref: use MachineClass->default_display
+In-Reply-To: <20230524083913.696175-3-marcin.juszkiewicz@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -74,139 +101,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 24 May 2023 10:11:58 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On 24/05/2023 10.39, Marcin Juszkiewicz wrote:
+> Mark the default graphica via the new MachineClass->default_display
+> setting so that the machine-defaults code in vl.c can decide whether the
+> default graphics is usable or not (for example when compiling with the
+> "--without-default-devices" configure switch).
+> 
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> ---
+>   hw/arm/sbsa-ref.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index 9a3d77d6b6..30ce7f7db4 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -649,7 +649,7 @@ static void create_pcie(SBSAMachineState *sms)
+>           }
+>   
+>           if (vga_interface_type != VGA_NONE) {
+> -            pci_create_simple(pci->bus, -1, "bochs-display");
+> +            pci_create_simple(pci->bus, -1, mc->default_display);
 
-> On Tue, 23 May 2023 14:46:37 +0200
-> Markus Armbruster <armbru@redhat.com> wrote:
->=20
-> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
-> >=20
-> > >> >   =20
-> > >> >> > +#
-> > >> >> > +# Inject an event record for a General Media Event (CXL r3.0 8=
-.2.9.2.1.1)     =20
-> > >> >>=20
-> > >> >> What's "CXL r3.0", and where could a reader find it?   =20
-> > >> >
-> > >> > We have docs in docs/system/devices/cxl.rst that include the conso=
-rtium
-> > >> > website which has download links on the front page.   =20
-> > >>=20
-> > >> cxl.rst has
-> > >>=20
-> > >>     References
-> > >>     ----------
-> > >>=20
-> > >>      - Consortium website for specifications etc:
-> > >>        http://www.computeexpresslink.org
-> > >>      - Compute Express link Revision 2 specification, October 2020
-> > >>      - CEDT CFMWS & QTG _DSM ECN May 2021
-> > >>=20
-> > >> Should the second reference be updated to 3.0?  Exact title seems to=
- be
-> > >> "The Compute Express Link=E2=84=A2 (CXL=E2=84=A2) 3.0 specification"=
-.  Not sure we need
-> > >> to bother with the "=E2=84=A2" in a reference. =20
-> > >
-> > > Yes. On the todo list is to update all the references to latest relea=
-sed
-> > > specification because old ones are unobtainable to non consortium mem=
-bers
-> > > unless they grabbed a copy in the past.
-> > >
-> > > Annoyingly this will be a repeated requirement as new spec versions a=
-re released
-> > > but the cadence should be fairly low.
-> > > =20
-> > >>  =20
-> > >> >                                                      I'm not sure =
-we want to
-> > >> > have lots of references to the URL spread throughout QEMU.  I can =
-add one
-> > >> > somewhere in cxl.json if you think it is important to have one her=
-e as well.   =20
-> > >>=20
-> > >> You could add an introduction right under the "# =3D CXL devices" he=
-ading,
-> > >> and include a full reference to the specification there.  Suitably
-> > >> abbreviated references like the ones you use in this patch should th=
-en
-> > >> be fine. =20
-> > >
-> > > I tried doing that - it resulted in the index including an entry with=
- all the text.
-> > > So on the webpage, the contents list to the left includes whatever te=
-xt you put
-> > > in that block.
-> > > =20
-> > > I'm not sure why, or how to fix that. =20
-> >=20
-> > Show me what you tried (as a patch or something I can git-pull), and
-> > I'll have a look.
-> >=20
-> > [...]
-> >=20
-> Very simple to replicate the issue - see below.
->=20
-> Result of this is an extra
-> "Test text" entry in the index to the left of the html docs.
->=20
-> In qemu-qmp-ref.html we have
->=20
-> <li class=3D"toctree-l3"><a class=3D"reference internal" href=3D"#qapidoc=
--3297">CXL devices</a><ul>
-> <li class=3D"toctree-l4"><a class=3D"reference internal" href=3D"#qapidoc=
--3298">Test text</a></li>
-> <li class=3D"toctree-l4"><a class=3D"reference internal" href=3D"#qapidoc=
--3301"><code class=3D"docutils literal notranslate"><span class=3D"pre">Cxl=
-EventLog</span></code> (Enum)</a></li>
+Based-on: <20230524082037.1620952-1-thuth@redhat.com>
+(otherwise you don't have the "mc" variable available here)
 
-Experimented and dived in the code a bit more and got reminded of how bad m=
-y python is
-(which is why I was avoiding looking at this :)
-One option would be to give the extra text a meaningful title so that ends =
-up in the contents list.
+>           }
+>       }
+>   
+> @@ -865,6 +865,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
+>       mc->default_ram_size = 1 * GiB;
+>       mc->default_ram_id = "sbsa-ref.ram";
+>       mc->default_cpus = 4;
+> +    mc->default_display = "bochs-display";
 
-> --- a/qapi/cxl.json
-> +++ b/qapi/cxl.json
-> @@ -3,6 +3,8 @@
->=20
->  ##
->  # =3D CXL devices
-> +#
-> +# CXL Background
-> +#
-> +# Actually useful text.
->  ##
->=20
->  ##
+I guess this might not work as expected yet...
 
-Can't do
-=3D=3D CXL Background
+The code in vl.c looks through the vga_interfaces[] array and warns if it 
+cannot find the default_display there... and since there is no entry for the 
+bochs-display in that array, you likely now always get this warning message, 
+even if it is available?
 
-though to get it nicely formatted as then we loose all the actual entries f=
-rom the
-contents list.  I guess they dropped down one too many levels.
+So I think you either have to drop this patch, or you've got to add an entry 
+for the bochs-display to vga_interfaces[], too.
 
->=20
-> diff --git a/qapi/cxl.json b/qapi/cxl.json
-> index 05c560cfe5..9f7f0485ae 100644
-> --- a/qapi/cxl.json
-> +++ b/qapi/cxl.json
-> @@ -3,6 +3,8 @@
->=20
->  ##
->  # =3D CXL devices
-> +#
-> +# Test text
->  ##
->=20
->  ##
+  Thomas
 
 
