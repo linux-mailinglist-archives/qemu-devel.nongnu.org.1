@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9471F70F9ED
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B6570F9F6
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:22:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1qFS-00053x-7O; Wed, 24 May 2023 11:17:58 -0400
+	id 1q1qIa-0006Uo-JE; Wed, 24 May 2023 11:21:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1q1qFP-00052v-Ht
- for qemu-devel@nongnu.org; Wed, 24 May 2023 11:17:56 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1q1qFN-0003kL-IL
- for qemu-devel@nongnu.org; Wed, 24 May 2023 11:17:55 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1ae52ce3250so3717645ad.2
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 08:17:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1684941471; x=1687533471;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Aqer011XrU8QhlLWL3VDVFSSZ44UDQ23B1rg3lZglNU=;
- b=jBNov6dUmetFuYmtOyd2dntEmACdnH96b2Z9CFqmn7lnA2cinRUqFdAtIAUj0SAT0E
- AdwDUVfusZ1Hc0lKaCOhvAnYk7tg5EvEaT9oBF2FzaYkAJBCmygrbXbJ+byMB+lwoXCw
- QedMkvc7ercrDqca1iCYh8+UDubh81URyafXM7u6dh9MK9ww3nZ23aiCZVtyeI7xAMk2
- 5FPBYeSwfAtThvIpsNE3fQ59TLP4880ABtn+2NJ67IW73oh6xB6lKfZ1+6QFltExnRQW
- y0ueAAIqDJwN5h9TekS6pGncjEr5Km1LWZcc8yQIqf6/zwi1wkbSRnmXwE8DTdWklz6F
- I2og==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1qIU-0006H1-96
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 11:21:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q1qIS-0004Ze-CH
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 11:21:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684941656;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JdljUTN50ccARt2cX/Ux2spcnkZExIScarAgUoX/pj0=;
+ b=Ydbo2p3F3NJtDxCbP7nQmU2fSWfJp8+cd3DTryGjdAkYcx+3RE+Q0r4YJ8M0VsM+NXO4HO
+ SjTwSfdibEFWUrfsBHyBt+MGWX33EeGXAPxaZgnpcAtsFpOysPdmMG2kfETEiR9L/8YWrT
+ fjQvaG2AGmc6w4K0cqeVxkC/4jiSogk=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-646-zwUt68LYP8GCUtd9HPtp2g-1; Wed, 24 May 2023 11:20:54 -0400
+X-MC-Unique: zwUt68LYP8GCUtd9HPtp2g-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-52855ba7539so240942a12.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 08:20:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684941471; x=1687533471;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Aqer011XrU8QhlLWL3VDVFSSZ44UDQ23B1rg3lZglNU=;
- b=IkyTvmaXpGNJ7Pd/Y0VuQrP1ijcDmRk7FyUQFeMS/vEedeWRh1ipkkKUVlP4kpG6En
- HEXhx7Cqe7BenGrN3RQuFHBZmuyqZZtDvtZOyMnaAXfrfLC+ExLzjurGgTr5ij2YTZcm
- Owq+QfmqESNHN/vQdr65uykAPnnh0qqx7tvgjYmV9SYoyjr1KxXybkH7pkjZ5a+Vi22Y
- rYYxI4K90FddCICJMDU+qwF4EIp1+87Vh+o7KA/BCaFfGaSrqni1+zENUVzH9kZuV0hQ
- K5a4ef2BW2DpcOMU1KWWXPo7mADJ58Qvc1mDA3VkwyGKbQUvwdVz9X8PiEYyLCCUGNJK
- 5M7Q==
-X-Gm-Message-State: AC+VfDwSgCs6JsHq8h8pLfsRG11rUuEYqVrHqvyNM4gzuua6hX3v8rDS
- yS2jabzbhmMW8xfivwYsFJ+dRmBg8GZE+fkq9qrdbw==
-X-Google-Smtp-Source: ACHHUZ4ZsL7+OZfNCcKhV6rWYzlv/625WkZb1gFftUIBFmfRzmzdqItHMrmszh2tpJt3FWTL9wb94zSAvISynzNEqFc=
-X-Received: by 2002:a17:902:6bc2:b0:1ae:6e7b:9bb4 with SMTP id
- m2-20020a1709026bc200b001ae6e7b9bb4mr15649550plt.59.1684941471069; Wed, 24
- May 2023 08:17:51 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684941653; x=1687533653;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JdljUTN50ccARt2cX/Ux2spcnkZExIScarAgUoX/pj0=;
+ b=PqsO5XWQBzW98by1Xm4F/IqPVqj7DkHspCx8Ed9idS1BmKL+4AMBP+EHDyuVJqfG7r
+ QgSR+p8cCmXifGkETP60COr7HmZVG4YrTPvptXZ4aQiBMrijrWJWO6EQaZCs51OhmZHk
+ 2deH8LFH9Le4hWL84TW7sm40kOxmK+oNLehRVZFceG0QPhu1jSOabmyWGAft8jqAlKYo
+ tT3plOjlZaS1XzL5uDz9SNS3mBsvHS8bVwwtzDs/5IGyCbqpy1jFR2nAZeIqn5ZlzOqG
+ qt+PlMS8F4QJ8oYsdzSp4Bo2Ap9aBcYDch1+F5I+PoO1eKRbrB9G9cnttdDJDk6jTBrS
+ b4tw==
+X-Gm-Message-State: AC+VfDztJwbyMVgRT3LXXLuf5xIr+dJJLuPErGYwTXK0kuMInUya0mUw
+ zb3o6PzlQuj4YnCCluABX1XIhtaMho1z3YXHpDT/Atgy+4Wi28UFwWsb5j6As0H/7VxsxfaEC3y
+ sJS5V03Gr0RolduSIda44U1h0Fn3RKwo=
+X-Received: by 2002:a17:90a:9483:b0:233:fb7d:845a with SMTP id
+ s3-20020a17090a948300b00233fb7d845amr17564406pjo.4.1684941652979; 
+ Wed, 24 May 2023 08:20:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ59q4US8Js45Ofmsy0XQgtzljJEvnVCJCuIRDooEHf9LNob9zLOy9F4QfquaSKkQZrl1Cs5oaoKfn/hgMHSwqY=
+X-Received: by 2002:a17:90a:9483:b0:233:fb7d:845a with SMTP id
+ s3-20020a17090a948300b00233fb7d845amr17564386pjo.4.1684941652591; Wed, 24 May
+ 2023 08:20:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230524143714.565792-1-chigot@adacore.com>
- <14ef3e93-65b2-5c27-5126-3a67e73dc9da@linaro.org>
-In-Reply-To: <14ef3e93-65b2-5c27-5126-3a67e73dc9da@linaro.org>
-From: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Date: Wed, 24 May 2023 17:17:40 +0200
-Message-ID: <CAJ307EjQMw_sg-2wNRqOSSC8OjXn5Z_4mdYZZBZTOnfEaZaVwA@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm/xlnx-zynqmp: fix unsigned error when checking the
- RPUs number
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, edgar.iglesias@gmail.com, 
- alistair@alistair23.me, peter.maydell@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=chigot@adacore.com; helo=mail-pl1-x62b.google.com
+References: <20230416222838.36642-1-mateusz.p.albecki@gmail.com>
+ <20230416222838.36642-2-mateusz.p.albecki@gmail.com>
+ <CAFn=p-bcAW9aMymmWeVSMeyuT88YDZ2iYVh-t1GoogbBBPFjSw@mail.gmail.com>
+ <CAGe=PKEvnnjBQVx-rNDXjmwvQ272S2DLw-xEDjp1vVuU30i4Hw@mail.gmail.com>
+ <CAFn=p-bVdQ6E10F9FmapMcBvEUMX7hOjr-kz7FgfQL+cdJHV+A@mail.gmail.com>
+ <ZG3II3qlIjmuSZzm@flawful.org>
+In-Reply-To: <ZG3II3qlIjmuSZzm@flawful.org>
+From: John Snow <jsnow@redhat.com>
+Date: Wed, 24 May 2023 11:20:41 -0400
+Message-ID: <CAFn=p-bJM4GpAg=U308EftJCzjAUYOh1exm4Cuz=6FDFgUuHHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/ide/core.c: fix handling of unsupported commands
+To: Niklas Cassel <nks@flawful.org>
+Cc: Mateusz Albecki <mateusz.p.albecki@gmail.com>,
+ qemu-devel <qemu-devel@nongnu.org>, 
+ Mateusz Albecki <mateusz.albecki@outlook.com>,
+ Niklas Cassel <niklas.cassel@wdc.com>
+Content-Type: multipart/alternative; boundary="000000000000ab9ba105fc720cd3"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,72 +98,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 24, 2023 at 5:06=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> Hi Cl=C3=A9ment,
->
-> On 24/5/23 16:37, Cl=C3=A9ment Chigot wrote:
-> > When passing --smp with a number lower than XLNX_ZYNQMP_NUM_APU_CPUS,
-> > the expression (ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS) will result
-> > in a positive number as ms->smp.cpus is a unsigned int.
-> > This will raise the following error afterwards, as Qemu will try to
-> > instantiate some additional RPUs.
-> >    | $ qemu-system-aarch64 --smp 1 -M xlnx-zcu102
-> >    | **
-> >    | ERROR:../src/tcg/tcg.c:777:tcg_register_thread:
-> >    |   assertion failed: (n < tcg_max_ctxs)
-> >
-> > Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
-> > ---
-> >   hw/arm/xlnx-zynqmp.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
-> > index 335cfc417d..5905a33015 100644
-> > --- a/hw/arm/xlnx-zynqmp.c
-> > +++ b/hw/arm/xlnx-zynqmp.c
-> > @@ -213,7 +213,7 @@ static void xlnx_zynqmp_create_rpu(MachineState *ms=
-, XlnxZynqMPState *s,
-> >                                      const char *boot_cpu, Error **errp=
-)
-> >   {
-> >       int i;
-> > -    int num_rpus =3D MIN(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS,
-> > +    int num_rpus =3D MIN((int)(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS=
-),
-> >                          XLNX_ZYNQMP_NUM_RPU_CPUS);
-> >
-> >       if (num_rpus <=3D 0) {
->
-> Can we set mc->min_cpus in xlnx_zcu102_machine_class_init() instead?
->
-> -- >8 --
-> diff --git a/hw/arm/xlnx-zcu102.c b/hw/arm/xlnx-zcu102.c
-> index 4c84bb932a..60a2710e21 100644
-> --- a/hw/arm/xlnx-zcu102.c
-> +++ b/hw/arm/xlnx-zcu102.c
-> @@ -269,6 +269,7 @@ static void
-> xlnx_zcu102_machine_class_init(ObjectClass *oc, void *data)
->       mc->block_default_type =3D IF_IDE;
->       mc->units_per_default_bus =3D 1;
->       mc->ignore_memory_transaction_failures =3D true;
-> +    mc->min_cpus =3D XLNX_ZYNQMP_NUM_APU_CPUS;
->       mc->max_cpus =3D XLNX_ZYNQMP_NUM_APU_CPUS + XLNX_ZYNQMP_NUM_RPU_CPU=
-S;
->       mc->default_cpus =3D XLNX_ZYNQMP_NUM_APU_CPUS;
->       mc->default_ram_id =3D "ddr-ram";
-> ---
->
-> $ qemu-system-aarch64 -M xlnx-zcu102 -smp 1
-> qemu-system-aarch64: Invalid SMP CPUs 1. The min CPUs supported by
-> machine 'xlnx-zcu102' is 4
+--000000000000ab9ba105fc720cd3
+Content-Type: text/plain; charset="UTF-8"
 
-We encountered this issue when we were trying to emulate a zynqmp with
-only two cortex-a53 cores. I don't have the full context but this was
-probably to debug a race condition or something like that.
-Thus, I would like to keep the possibility of lowering the CPU number,
-even if it doesn't match the real board.
+On Wed, May 24, 2023, 4:17 AM Niklas Cassel <nks@flawful.org> wrote:
 
-Cl=C3=A9ment
+> On Tue, May 23, 2023 at 10:35:56AM -0400, John Snow wrote:
+> > On Mon, May 22, 2023 at 5:16???PM Mateusz Albecki <
+> mateusz.p.albecki@gmail.com>
+> > wrote:
+> > >
+> > > Certainly seems like my patch is wrong as it will make the abort path
+> > execute ide_cmd_done twice. During debug I came to the conclusion that
+> > ide_cmd_done is not called at all as I was getting timeouts on the driver
+> > side while waiting for D2H FIS. I am still not sure how I was getting
+> this
+> > behavior if the problem was actually with setting correct error bits.
+> Even
+> > so I think it can be safely assumed that Niklas' change will solve the
+> > issue, I will try to verify it in a couple of days and if I see any
+> problem
+> > I will come back to you.
+> > >
+> > > Mateusz
+> >
+> > Great, thanks :)
+> >
+> > I'm waiting to hear back from Niklas, but I'm hoping to take their
+> patches
+> > this cycle as I think they look quite good.
+>
+> Hello John,
+>
+> Unfortunately, I've noticed an increase in boot time during
+> the initial SeaBIOS part of QEMU with my changes.
+>
+> Will need to debug to see which change is causing this.
+>
+> I'm at a conference this week, so it might take until next
+> week until I have time to figure out why this is happening.
+>
+> So unfortunately, I think we need to hold off with my series
+> for now.
+>
+
+Shame. Feel free to resend it once you've isolated the problem and I'll try
+to fast-track it, since it'd be nice to have my more embarrassing mistakes
+for NCQ fixed :)
+
+(If I become hard to reach, please ping me with a direct, non-patch email
+so it bubbles up to the top of my inbox.)
+
+((...by the way, what are you working on? What motivates the interest in
+AHCI/SATA now? Can you say?))
+
+
+> If Mateusz can confirm that
+> https://lists.gnu.org/archive/html/qemu-devel/2023-04/msg05552.html
+> solves his issue, and that it does not cause an increased boot
+> time for SeaBIOS, perhaps that patch could be picked up separately.
+>
+>
+> Kind regards,
+> Niklas
+>
+>
+
+--000000000000ab9ba105fc720cd3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Wed, May 24, 2023, 4:17 AM Niklas Cassel &lt;<a hre=
+f=3D"mailto:nks@flawful.org">nks@flawful.org</a>&gt; wrote:<br></div><block=
+quote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc=
+ solid;padding-left:1ex">On Tue, May 23, 2023 at 10:35:56AM -0400, John Sno=
+w wrote:<br>
+&gt; On Mon, May 22, 2023 at 5:16???PM Mateusz Albecki &lt;<a href=3D"mailt=
+o:mateusz.p.albecki@gmail.com" target=3D"_blank" rel=3D"noreferrer">mateusz=
+.p.albecki@gmail.com</a>&gt;<br>
+&gt; wrote:<br>
+&gt; &gt;<br>
+&gt; &gt; Certainly seems like my patch is wrong as it will make the abort =
+path<br>
+&gt; execute ide_cmd_done twice. During debug I came to the conclusion that=
+<br>
+&gt; ide_cmd_done is not called at all as I was getting timeouts on the dri=
+ver<br>
+&gt; side while waiting for D2H FIS. I am still not sure how I was getting =
+this<br>
+&gt; behavior if the problem was actually with setting correct error bits. =
+Even<br>
+&gt; so I think it can be safely assumed that Niklas&#39; change will solve=
+ the<br>
+&gt; issue, I will try to verify it in a couple of days and if I see any pr=
+oblem<br>
+&gt; I will come back to you.<br>
+&gt; &gt;<br>
+&gt; &gt; Mateusz<br>
+&gt; <br>
+&gt; Great, thanks :)<br>
+&gt; <br>
+&gt; I&#39;m waiting to hear back from Niklas, but I&#39;m hoping to take t=
+heir patches<br>
+&gt; this cycle as I think they look quite good.<br>
+<br>
+Hello John,<br>
+<br>
+Unfortunately, I&#39;ve noticed an increase in boot time during<br>
+the initial SeaBIOS part of QEMU with my changes.<br>
+<br>
+Will need to debug to see which change is causing this.<br>
+<br>
+I&#39;m at a conference this week, so it might take until next<br>
+week until I have time to figure out why this is happening.<br>
+<br>
+So unfortunately, I think we need to hold off with my series<br>
+for now.<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=
+=3D"auto">Shame. Feel free to resend it once you&#39;ve isolated the proble=
+m and I&#39;ll try to fast-track it, since it&#39;d be nice to have my more=
+ embarrassing mistakes for NCQ fixed :)</div><div dir=3D"auto"><br></div><d=
+iv dir=3D"auto">(If I become hard to reach, please ping me with a direct, n=
+on-patch email so it bubbles up to the top of my inbox.)</div><div dir=3D"a=
+uto"><br></div><div dir=3D"auto">((...by the way, what are you working on? =
+What motivates the interest in AHCI/SATA now? Can you say?))</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquot=
+e class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc sol=
+id;padding-left:1ex">
+<br>
+If Mateusz can confirm that<br>
+<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-04/msg05552.h=
+tml" rel=3D"noreferrer noreferrer" target=3D"_blank">https://lists.gnu.org/=
+archive/html/qemu-devel/2023-04/msg05552.html</a><br>
+solves his issue, and that it does not cause an increased boot<br>
+time for SeaBIOS, perhaps that patch could be picked up separately.<br>
+<br>
+<br>
+Kind regards,<br>
+Niklas<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000ab9ba105fc720cd3--
+
 
