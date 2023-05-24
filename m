@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2C770F434
+	by mail.lfdr.de (Postfix) with ESMTPS id 6898670F435
 	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:29:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1lit-00082c-Cm; Wed, 24 May 2023 06:28:07 -0400
+	id 1q1lio-0007yX-OR; Wed, 24 May 2023 06:27:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1liX-0007pl-EC; Wed, 24 May 2023 06:27:42 -0400
+ id 1q1lia-0007r4-1a; Wed, 24 May 2023 06:27:46 -0400
 Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1liU-0000OI-RM; Wed, 24 May 2023 06:27:41 -0400
+ id 1q1liX-0000Oo-Ql; Wed, 24 May 2023 06:27:43 -0400
 Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 95279260BC0;
- Wed, 24 May 2023 12:27:36 +0200 (CEST)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id EFB0B260B8B;
+ Wed, 24 May 2023 12:27:38 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at juszkiewicz.com.pl
 Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
  by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id X8FxYvjZTYBK; Wed, 24 May 2023 12:27:34 +0200 (CEST)
+ with ESMTP id 0b1UX0hO68vl; Wed, 24 May 2023 12:27:36 +0200 (CEST)
 Received: from applejack.lan (83.21.125.167.ipv4.supernova.orange.pl
  [83.21.125.167])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 64814260287;
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id DA9622609C0;
  Wed, 24 May 2023 12:27:34 +0200 (CEST)
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 1/5] hw/arm: Use MachineClass->default_nic in the sbsa-ref
- machine
-Date: Wed, 24 May 2023 12:27:25 +0200
-Message-Id: <20230524102729.810892-2-marcin.juszkiewicz@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: [PATCH v3 2/5] Add Bochs to list of vga_interfaces
+Date: Wed, 24 May 2023 12:27:26 +0200
+Message-Id: <20230524102729.810892-3-marcin.juszkiewicz@linaro.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230524102729.810892-1-marcin.juszkiewicz@linaro.org>
 References: <20230524102729.810892-1-marcin.juszkiewicz@linaro.org>
@@ -63,47 +63,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+arm/sbsa-ref uses Bochs-display graphics card and without it being
+present in vga_interfaces "-vga none" argument handling cannot be added.
 
-Mark the default NIC via the new MachineClass->default_nic setting
-so that the machine-defaults code in vl.c can decide whether the
-default NIC is usable or not (for example when compiling with the
-"--without-default-devices" configure switch).
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 ---
- hw/arm/sbsa-ref.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/sysemu/sysemu.h | 2 +-
+ softmmu/vl.c            | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 792371fdce..9c3e670ec6 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -596,6 +596,7 @@ static void create_pcie(SBSAMachineState *sms)
-     hwaddr size_mmio_high = sbsa_ref_memmap[SBSA_PCIE_MMIO_HIGH].size;
-     hwaddr base_pio = sbsa_ref_memmap[SBSA_PCIE_PIO].base;
-     int irq = sbsa_ref_irqmap[SBSA_PCIE];
-+    MachineClass *mc = MACHINE_GET_CLASS(sms);
-     MemoryRegion *mmio_alias, *mmio_alias_high, *mmio_reg;
-     MemoryRegion *ecam_alias, *ecam_reg;
-     DeviceState *dev;
-@@ -641,7 +642,7 @@ static void create_pcie(SBSAMachineState *sms)
-             NICInfo *nd = &nd_table[i];
+diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
+index 25be2a692e..9713a1b470 100644
+--- a/include/sysemu/sysemu.h
++++ b/include/sysemu/sysemu.h
+@@ -29,7 +29,7 @@ extern int autostart;
  
-             if (!nd->model) {
--                nd->model = g_strdup("e1000e");
-+                nd->model = g_strdup(mc->default_nic);
-             }
+ typedef enum {
+     VGA_NONE, VGA_STD, VGA_CIRRUS, VGA_VMWARE, VGA_XENFB, VGA_QXL,
+-    VGA_TCX, VGA_CG3, VGA_DEVICE, VGA_VIRTIO,
++    VGA_TCX, VGA_CG3, VGA_DEVICE, VGA_VIRTIO, VGA_BOCHS,
+     VGA_TYPE_MAX,
+ } VGAInterfaceType;
  
-             pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-@@ -858,6 +859,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
-     mc->minimum_page_bits = 12;
-     mc->block_default_type = IF_IDE;
-     mc->no_cdrom = 1;
-+    mc->default_nic = "e1000e";
-     mc->default_ram_size = 1 * GiB;
-     mc->default_ram_id = "sbsa-ref.ram";
-     mc->default_cpus = 4;
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index b0b96f67fa..07e6030875 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -216,6 +216,7 @@ static struct {
+     { .driver = "ati-vga",              .flag = &default_vga       },
+     { .driver = "vhost-user-vga",       .flag = &default_vga       },
+     { .driver = "virtio-vga-gl",        .flag = &default_vga       },
++    { .driver = "bochs-display",        .flag = &default_vga       },
+ };
+ 
+ static QemuOptsList qemu_rtc_opts = {
+@@ -935,6 +936,11 @@ static const VGAInterfaceInfo vga_interfaces[VGA_TYPE_MAX] = {
+         .name = "CG3 framebuffer",
+         .class_names = { "cgthree" },
+     },
++    [VGA_BOCHS] = {
++        .opt_name = "bochs-display",
++        .name = "Bochs framebuffer",
++        .class_names = { "bochs-display" },
++    },
+ #ifdef CONFIG_XEN_BACKEND
+     [VGA_XENFB] = {
+         .opt_name = "xenfb",
 -- 
 2.40.1
 
