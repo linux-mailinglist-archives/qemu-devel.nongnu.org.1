@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98EC70F4F4
+	by mail.lfdr.de (Postfix) with ESMTPS id E339470F4F5
 	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 13:20:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1mWV-00015I-Is; Wed, 24 May 2023 07:19:19 -0400
+	id 1q1mWT-00013l-F9; Wed, 24 May 2023 07:19:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1q1mWR-000132-8l; Wed, 24 May 2023 07:19:15 -0400
+ id 1q1mWR-000133-8p; Wed, 24 May 2023 07:19:15 -0400
 Received: from wout2-smtp.messagingengine.com ([64.147.123.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1q1mWO-0005Tc-Fg; Wed, 24 May 2023 07:19:14 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.west.internal (Postfix) with ESMTP id 94A473200CCF;
- Wed, 24 May 2023 07:19:08 -0400 (EDT)
+ id 1q1mWO-0005U0-UL; Wed, 24 May 2023 07:19:14 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.west.internal (Postfix) with ESMTP id 02C33320094B;
+ Wed, 24 May 2023 07:19:10 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Wed, 24 May 2023 07:19:09 -0400
+ by compute1.internal (MEProxy); Wed, 24 May 2023 07:19:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:message-id:mime-version
- :reply-to:sender:subject:subject:to:to; s=fm3; t=1684927148; x=
- 1685013548; bh=5aYB7tac5/njghVjksmKJWxEDdCW26JNiVA2EAaA/KM=; b=g
- HVKtj3GErmjqX22YWYbs6zJR93xHYMK9zVoCTHFlyU5jL7qWarOoFfxE3+25G2wC
- PVBPGqcYCJ228+VyUKcPOiW1kh3ixaTaWOuZs94VtGSAdFrIUcha81M+o81z6vND
- tBlTO4V7RKZwKkw01CZHbDd6+V78XCsUfE0mMXyg8tp6Lp+YMiVXCGSCj3gJzagQ
- RTuRR6TKdRhLY0LtB6Lx7o0vqH+K9WbGeSOek7OMnBD7xPW76OYbTyVkDBYPM7uM
- jZYrX6DSij/TBdARvrVXhqIZ/t++ryPdEikdFweeMcYQRA94xm1b52ZUmHicUo1v
- mPuITFWhY951NuHcK6kEg==
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm3; t=1684927150; x=
+ 1685013550; bh=3bvbGpFH5nB/9p9vzminXpFAEYUzSqm0I9KkDrSD2rw=; b=c
+ Wpees63T8upCEsBMnI9TiqyZShqAgJ/LicN7y3vHjNUQV2a+f5xXt7hFgGrjjCUM
+ +VDsjfEOEPVYJyuV/0x85mJMkZIQOzKIg4bX6dYpNnWhAableCZuWvoia/nZK/Hg
+ tnK7EgQWnVLwf55OW7NpfIAEz7cD8CMh4nJs9GdZjDXkmf7cz8ztRKjqD2gaVNVS
+ UzOGIh0sOfx0Jnoc2tUnSJK4VWCK+b8ckFoqbwHmMK0cDwE4TkWnbF9DcgZ+1ecv
+ lPAQY1Znu6JZcJ6uVq02rg/ospiKEPSv+2FG6bGRAYlQEHgX0dudT1Vd43N4JxBT
+ cwvyiIfWreq/dvdCUHGFA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:sender
- :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm1; t=1684927148; x=1685013548; bh=5
- aYB7tac5/njghVjksmKJWxEDdCW26JNiVA2EAaA/KM=; b=MfinN0p6iyhW5ewZD
- ogmjp44EPky+D7RFQpzpfylGlDEnKp0ovin2XAWlAFgNRFBN3fBTS64P6PuGjzS0
- bdyguSg1ZF9HzFWMneVu/g3FjxW7kUxnbsVXTT4QUd+0Jq3Fl/MpjvZ/nn2P6be0
- e3eW9fyWT0CWJ6LJIvKjZsFUyaEnmFIhYEgOyWbuxDbmy/ylK6cprkPo7ESTCzvT
- Ue+6tFfZh5vJpyb3LtKlRKJLydOshg8OCFYirb+/swg8nU2pYJxRoWd7Wy79rRRf
- 6A3O0oQBAeTYJ9rrTldavGVycYV6ka3mNSPZXnfO5TtGu7EsRqzUep5QBMbOG/v5
- MNLOw==
-X-ME-Sender: <xms:q_JtZG41nW9GTmpqrki-SgJZMHOtbad1p4u6EFFQuH-uorVE2xK1FQ>
- <xme:q_JtZP6vTrFAQIfajENWVzThsxXxcjrpQWOPIyo3v1UIGsfSzAZWnIfuwlbqTjHuO
- O9d24ZK7Esw8uz3xwk>
-X-ME-Received: <xmr:q_JtZFd7J6pxb9twVCtvmaJ4rw8XFzEiMTQdle-EUrfOJroN02Ao6MG7UNxnUMicrbkAMJ_zRa-a>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejhedgfeejucetufdoteggodetrfdotf
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1684927150; x=
+ 1685013550; bh=3bvbGpFH5nB/9p9vzminXpFAEYUzSqm0I9KkDrSD2rw=; b=F
+ UCjZgcZqyhJrNRYNYDTlYt3S/qtMJVxKSXIAN3N9ZyLAnOPDF5R4FR9Pnnv/RH4y
+ 9C1jMRlM6aznw+rFfeMp+TUn1BtQTT+8laHU82YG7K3FzCaNJmMhpT/j21UBOaxT
+ nGe2DVBTKuR+wUU31JY+Pskxg0cf6Lvn84JoMz71+ZdUFwR/bKhoZzm3Oa/wXBXE
+ blKmAn9VvCZwPU+GNQf5lkvLMxsVj2aR3Lh3pK8WEygF4RyWYFdtFV9qRUYFcw7W
+ syZOuxSaJzQw/8RAgoFxYYWU7xH/PZHLVM3s1X2nHlIoiIFo64ibTYNMI09a1tMa
+ v+Kgm21LTdv4pP/QWhSLw==
+X-ME-Sender: <xms:rvJtZBuuBsHdQEabMB4vbd7na0gjvdO1tseXOqKkQ89DqB5NSkueKw>
+ <xme:rvJtZKd_HmN92bpYVAcAwT6Dv15AgU8pwmPNFlfH4OBBC9zqZKHAPc7kfJQoeCeQO
+ 5VPkcMqiV-GITI52Pc>
+X-ME-Received: <xmr:rvJtZEy8ABJalElRZ2AOvfsmaPoUpVjd3Qun_eLY82PDg1PPT0QOqZOKJPWdZJwYVujsaatBIBQq>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejhedgfeekucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefufffkofgtggfgsehtkeertdertdejnecuhfhrohhmpefmlhgruhhs
- ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
- gvrhhnpedukedvgfeujedvgfdvfefffffhheeitdeijeekleefvdfhgedvvddtfeeukefg
- ueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
- hssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:q_JtZDIat1bqpC32n7nVN7MCgrtUCGK1-OWPmVESxBhRSAK4K5IS_g>
- <xmx:q_JtZKLX2ivQDSur327XyymJTFmFyDTHKBfIhxPHjZTyHZGQJHHeyQ>
- <xmx:q_JtZEz4JxDqpt0YDMRtMtUKl7vNdVf7Tp5ihNfslEmuFTBLlbg_bw>
- <xmx:rPJtZPG6z4CmkpMhgRrHupqixzgn62gJLEjghlNatuHINn97045vmw>
+ cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghu
+ shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
+ htvghrnhepudehueeuueektedutddtvddvvdefheefkeelveetkeeffeeuieefveduudfh
+ heetnecuffhomhgrihhnpehruhhhshdrthhonecuvehluhhsthgvrhfuihiivgeptdenuc
+ frrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:rvJtZIPgbxZYOeEyJORPmxtvPLX852tcjwrmqbWQRe63a3Evjg7Orw>
+ <xmx:rvJtZB8OYOAtApe0O-zH44QLmB4-dVZrHrHQtIL2ky6m6CIuGnOYsQ>
+ <xmx:rvJtZIV5ED2F-hMCOSsR2rIPc8Vf9_Gwn8eK5j_sOCBzo_KgFl4Xag>
+ <xmx:rvJtZNY5xLNvaFj-E3IlUq69-L7UyVkv52SvpiYEEdMey-qbWCZsqQ>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 May 2023 07:19:06 -0400 (EDT)
+ 24 May 2023 07:19:09 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Klaus Jensen <its@irrelevant.dk>,
  Keith Busch <kbusch@kernel.org>,
  Jesper Devantier <j.devantier@samsung.com>,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH 0/4] hw/nvme: tp4146 misc
-Date: Wed, 24 May 2023 13:19:00 +0200
-Message-Id: <20230524111904.91179-1-its@irrelevant.dk>
+Subject: [PATCH 1/4] hw/nvme: fix verification of number of ruhis
+Date: Wed, 24 May 2023 13:19:01 +0200
+Message-Id: <20230524111904.91179-2-its@irrelevant.dk>
 X-Mailer: git-send-email 2.40.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230524111904.91179-1-its@irrelevant.dk>
+References: <20230524111904.91179-1-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=581; i=k.jensen@samsung.com;
- h=from:subject; bh=nqVRfn6zZcgW85tJ90KHxKddiNnCnLxThKgydP0Zmzg=;
- b=owJ4nJvAy8zAxej7cL1hrj/vS8bTakkMKbmflm+rmBe1ry/eTXK3+erEnpVs4mWXLdUKNhSWK
- H/393yav7GT0ZiFgZGLQVZMkSVIw3hV6aM7zxa5px2AGcTKBDKFgYtTACYSFs/+P1pk2S3jvXW+
- pxnL2Lo413jdn9r2rbewU6PgZliTTJ/z9hvPn2XG3V9SFfM8Qu3uoc+RE9efWy2p4Dh/hvtzo7B
- FwhdVvabHaZ81erOsRHvhg2cmS/S8XQpNJBv6V8S6qvfadWofF+aVEfqSof+41WbVupz430fS9L
- 7dK58WzWLmcFHH0M7j38yghAjfLi2zvecYTy20leWOsLvrp+HS/euo1OmkC3LMBvImBmlBG3mtK
- qsMfa+pKEhxr5Sb1f6s9Mv1Baza2r8OGNe0m3nLWodMTG95/mRDmOTWc/G1cxsE+U86G0qaS87d
- 8ESpmmvnQd1WxrrKLy4u97b73z4lZLs20vCcZEHaBN+fxQDjjJ4H
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1684; i=k.jensen@samsung.com;
+ h=from:subject; bh=ynMkYum9LI91n9UwJ7qIOfxthXLwXcu/Btdf/0Xz4Tg=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGRt8qhqc2W5WimuJybNSD77nQ3RuYtISuPjx
+ xwtyAA6iBIzPYkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkbfKoAAoJEE3hrzFt
+ Tw3pELcH/2PpynuzwtYHXeaSf8OxxeYqU0szpzw4Sjg5NnJyX+x0sVPvY9+i3putGerpwbbUJgK
+ chBeteNskJ4JlZByMDUQAPkbniUZAX+aQYWtvn5HpPN3N/GGk7yYogS40YRvhazM7gnvKR6s5oG
+ 8+lV01y2Q1XwEYl3+TEmJAFUVlUscAKeDs2D88gkM8DBZl+q+TUG7LJsKz2q4p4BOrkd9JMU/jn
+ Ugh1QP6yYQpzAGxapdxwAlE0VAT7NQdfwA4oR0b5Xm6l4uf9Xoo5qUWzT5wQ05WaTBrKbxZzAqR
+ SJxXN8scntlPW1OhVkSZPWbsAboUVBII7YTkzOhIkPihcyPRyUS+o6Ih
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -114,20 +115,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-A set of fixes and small quality-of-life improvements for the TP4146
-("Flexible Data Placement") support.
+Fix a off-by-one error when verifying the number of reclaim unit handle
+identifiers specified in fdp.ruhs. To make the fix nicer, move the
+verification of the fdp.nruh parameter to an earlier point.
 
-Klaus Jensen (4):
-  hw/nvme: fix verification of number of ruhis
-  hw/nvme: verify uniqueness of reclaim unit handle identifiers
-  hw/nvme: add placement handle list ranges
-  docs: update hw/nvme documentation for TP4146
+Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+---
+ hw/nvme/ns.c     | 4 +---
+ hw/nvme/subsys.c | 6 ++++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
- docs/system/devices/nvme.rst | 37 +++++++++++++++++++++++-
- hw/nvme/ns.c                 | 55 ++++++++++++++++++++++++++++--------
- hw/nvme/subsys.c             |  6 ++--
- 3 files changed, 84 insertions(+), 14 deletions(-)
-
+diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
+index 547c0b154312..050fdaf50fcd 100644
+--- a/hw/nvme/ns.c
++++ b/hw/nvme/ns.c
+@@ -438,9 +438,7 @@ static bool nvme_ns_init_fdp(NvmeNamespace *ns, Error **errp)
+ 
+     /* parse the placement handle identifiers */
+     while ((token = qemu_strsep(&p, ";")) != NULL) {
+-        ns->fdp.nphs += 1;
+-        if (ns->fdp.nphs > NVME_FDP_MAXPIDS ||
+-            ns->fdp.nphs == endgrp->fdp.nruh) {
++        if (ns->fdp.nphs++ == endgrp->fdp.nruh) {
+             error_setg(errp, "too many placement handles");
+             free(r);
+             return false;
+diff --git a/hw/nvme/subsys.c b/hw/nvme/subsys.c
+index 24ddec860e45..d30bb8bfd5b4 100644
+--- a/hw/nvme/subsys.c
++++ b/hw/nvme/subsys.c
+@@ -158,8 +158,10 @@ static bool nvme_subsys_setup_fdp(NvmeSubsystem *subsys, Error **errp)
+ 
+     endgrp->fdp.nrg = subsys->params.fdp.nrg;
+ 
+-    if (!subsys->params.fdp.nruh) {
+-        error_setg(errp, "fdp.nruh must be non-zero");
++    if (!subsys->params.fdp.nruh ||
++        subsys->params.fdp.nruh > NVME_FDP_MAXPIDS) {
++        error_setg(errp, "fdp.nruh must be non-zero and less than %u",
++                   NVME_FDP_MAXPIDS);
+         return false;
+     }
+ 
 -- 
 2.40.0
 
