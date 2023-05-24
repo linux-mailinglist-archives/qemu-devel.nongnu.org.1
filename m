@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D358570EC5C
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 06:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB0870EC81
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 06:23:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1flp-0002yr-52; Wed, 24 May 2023 00:06:41 -0400
+	id 1q1g0h-0000La-C4; Wed, 24 May 2023 00:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1flc-0002yZ-QK
- for qemu-devel@nongnu.org; Wed, 24 May 2023 00:06:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q1flZ-00041E-JA
- for qemu-devel@nongnu.org; Wed, 24 May 2023 00:06:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684901184;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nsDgFdZyzyF+FSZ5LYkFSiKrw5WHgOIcLbpdyp7FNTw=;
- b=fxdJan9yLa5OGkWEz3tp+9mm22fsFIzQRPuiVBXdWsuntgTR1Ghm8mUz7/+OhVFAwPpNkM
- LhQwMN8y7a6LIpR+kEcPU+/71vnhNrZzFu1+3vhHncMHVWQrM2MQpP7Z7P2QfSSKfGg91R
- HrvvpVwSiOjpJkx711SHbQ97HvYYdQc=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-hZnLUGX8MRWhi0jEIxwpBw-1; Wed, 24 May 2023 00:06:22 -0400
-X-MC-Unique: hZnLUGX8MRWhi0jEIxwpBw-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-4f495fc7a43so168334e87.0
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 21:06:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q1g0e-0000L5-Ke
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 00:22:00 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q1g0c-0006yL-O5
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 00:22:00 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-64d1e96c082so313940b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 21:21:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684902117; x=1687494117;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bZh4NyyyBk8B5rLzJKawJuBggrYGxexQpXUHwb3xZNw=;
+ b=v6FJCmITcSgjWZLQUn2juQ3r0vTHo5jcd0Xw6aogBrUwtiQ9pOLXWpDguUFsAmVDLN
+ bJGn4nR+gqJV/dRpwsK+6yVv//SIuwP/Sk3gsgzgFbAZ2eDaMJp9J0NNth1uUycNYbYB
+ fq/C17NUReipBadNPF+pTz9ODGHg29DJKF2J5rYciv6O7iwpVgWtJtrLSdKtvmfMgJAd
+ uxTU1ihl0k/6azmFZ8k/aBTYQzyIWFYurTH/rM8+bq/nQgwEUMApUFGJGCcJOS52S5Ms
+ XcJnwTdKD+CC8etj6swmGP63IUZQBaHFpubAwWwOEVvAmgWmkPltjR/nDxPr4Kvq9Eor
+ BXvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684901181; x=1687493181;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nsDgFdZyzyF+FSZ5LYkFSiKrw5WHgOIcLbpdyp7FNTw=;
- b=Xw19HASHpbhFywx3TZSpHLpTqw7zy/9wUv6RQ/Frq8XLhC/Uzlx/AmXuOm98+hwug5
- HLOza+L9RaBQgPda4wU77ilUWN4bJkXNupZY+M25tTvTgP7ZLHst1x3hw8a72aVGCCZ/
- /7MXpM8zyhAt4/A3PEIIilVQUbGi2YPot9PjpysjD0bic2C3HETTgpvXGZb3ARwUDIMC
- gSkHx5dWeW1Co2MlodUY0TKClfnQ7gTCyWJblHnQ4OlUtcRWlPfvZeq1SsLXgGzxtVO7
- obSSzaoJoE4nFU04ZBz7JagWBFpr/EyPDy2ZlHVwd4GmRGUGN7NIxniunUSM5Otb1CFG
- +LVQ==
-X-Gm-Message-State: AC+VfDwyEBWcI2Wij0pdWUnICot5o9n5dWg2EH6RyCDIxoskYrXKHPuF
- +vY39gLhJImtU2oyNaz3p6b8rHEuyuWjQWV2W0YB60zWLMiE4a9ObCwa6cLLx8nbYGAhDIN1wUJ
- 29dh6Cgo2EltKtEThKh2nGe6mk1lNeUM=
-X-Received: by 2002:ac2:599a:0:b0:4f3:80a3:b40a with SMTP id
- w26-20020ac2599a000000b004f380a3b40amr3827292lfn.69.1684901180890; 
- Tue, 23 May 2023 21:06:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6Cr+oC+hp53P0dXjXMrJp7bi1H5L+s1v0KD5hNzsKSXgPJk/r/dPwcIAv9l7U3M3JnBW4fQYEWhKeXuXoByrM=
-X-Received: by 2002:ac2:599a:0:b0:4f3:80a3:b40a with SMTP id
- w26-20020ac2599a000000b004f380a3b40amr3827290lfn.69.1684901180548; Tue, 23
- May 2023 21:06:20 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684902117; x=1687494117;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bZh4NyyyBk8B5rLzJKawJuBggrYGxexQpXUHwb3xZNw=;
+ b=WhJTMphE9XBIijtDDPesBeYqW7hP+RZB7rv+rA3DeQwooVjMkatn9E4bjmXltx5r/h
+ mYZMp0MfFJqoN5i3X9+t0e5FgvAIYnqQVBlWDV5S6iOwJzS6LMcCJa8kYwrU7gIfQPds
+ HiZSCiqlNqWpXBTrNrpsW8PUstTOwu8TT8s+8uyv3yVvag2kGg5/Tw5kwE9/hFVXanp9
+ GUOpZEeFFNz85m7P2VXE2+Oyqxw1pAu+HGnx96gOJdvRTZ5mRU1OKGetDILaUeR36yUA
+ P6UnvfOYEaue3CMV80hFXXtLn2KlXwtN9L2+lyg9hTRnBZd7wZYaYp2Yn7qXSujiFS4/
+ V/8Q==
+X-Gm-Message-State: AC+VfDx8EMJbbD6o6lCWCNuwG9uzcCZX2oCjIfN7lfg3NpcyANgeJ51O
+ c2HS6n1LtIu333ofdeZUmYx8Zw==
+X-Google-Smtp-Source: ACHHUZ5J6u/rHRzl9SX0Tx8SG09VaTswdB2eLOg5FN6OByCz167A03wUXwTvC5LWm1flVhRL2LHu9g==
+X-Received: by 2002:aa7:88d5:0:b0:64c:b460:c47b with SMTP id
+ k21-20020aa788d5000000b0064cb460c47bmr1679804pff.15.1684902116707; 
+ Tue, 23 May 2023 21:21:56 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ j18-20020aa78d12000000b0063b7a0b9cc5sm6457884pfe.186.2023.05.23.21.21.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 May 2023 21:21:56 -0700 (PDT)
+Message-ID: <6bc3fdb9-21af-ca3f-b757-0fea27828c39@daynix.com>
+Date: Wed, 24 May 2023 13:21:54 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/50] Net patches
+To: Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org
 References: <20230523073238.54236-1-jasowang@redhat.com>
  <1d43383e-e13c-0217-b1df-3572826ff87d@tls.msk.ru>
-In-Reply-To: <1d43383e-e13c-0217-b1df-3572826ff87d@tls.msk.ru>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 24 May 2023 12:06:09 +0800
-Message-ID: <CACGkMEssJ8=_ityBAN-T29JwTGDB+=-cbq0pfNqZtOE6-RmjCA@mail.gmail.com>
-Subject: Re: [PULL 00/50] Net patches
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ <CACGkMEssJ8=_ityBAN-T29JwTGDB+=-cbq0pfNqZtOE6-RmjCA@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CACGkMEssJ8=_ityBAN-T29JwTGDB+=-cbq0pfNqZtOE6-RmjCA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::436;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,86 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 24, 2023 at 3:54=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> wr=
-ote:
->
-> 23.05.2023 10:31, Jason Wang wrote:
->
-> >    https://github.com/jasowang/qemu.git tags/net-pull-request
->
-> I might be wrong but it looks like besides the rtl8139 fix which went
-> to -stable already, and "e1000e: Fix tx/rx counters" change which has
-> been agreed upon before, there are a few other changes which are worth
-> to have in -stable, in 8.0 and some even in 7.2. What do you think,
-> which ones are important for -stable?
+On 2023/05/24 13:06, Jason Wang wrote:
+> On Wed, May 24, 2023 at 3:54 AM Michael Tokarev <mjt@tls.msk.ru> wrote:
+>>
+>> 23.05.2023 10:31, Jason Wang wrote:
+>>
+>>>     https://github.com/jasowang/qemu.git tags/net-pull-request
+>>
+>> I might be wrong but it looks like besides the rtl8139 fix which went
+>> to -stable already, and "e1000e: Fix tx/rx counters" change which has
+>> been agreed upon before, there are a few other changes which are worth
+>> to have in -stable, in 8.0 and some even in 7.2. What do you think,
+>> which ones are important for -stable?
+> 
+> I'm not sure, most fixes are for igb, considering igb is complicated
+> and just introduced since 8.0, it should be considered as a technical
+> preview somehow. Then I'm not sure whether or not it's worth it to
+> backport them. For the rest, it looks like it should be fine to go for
+> -stable.
+> 
+> Akihiko, what's your thoughts? >
+> Thanks
 
-I'm not sure, most fixes are for igb, considering igb is complicated
-and just introduced since 8.0, it should be considered as a technical
-preview somehow. Then I'm not sure whether or not it's worth it to
-backport them. For the rest, it looks like it should be fine to go for
--stable.
+I think it is fine to backport all of patches with Fixes: tags as there 
+are only five such patches for igb. Namely, they are:
+- [PULL 05/50] igb: Fix Rx packet type encoding
+- [PULL 06/50] igb: Do not require CTRL.VME for tx VLAN tagging
+- [PULL 07/50] igb: Clear IMS bits when committing ICR access
+- [PULL 08/50] net/net_rx_pkt: Use iovec for net_rx_pkt_set_protocols()
+- [PULL 10/50] igb: Always copy ethernet header
 
-Akihiko, what's your thoughts?
+That said, if that looks too many, you may backport only the last two 
+patches, which fixes possible out-of-bounds accesses:
+- [PULL 08/50] net/net_rx_pkt: Use iovec for net_rx_pkt_set_protocols()
+- [PULL 10/50] igb: Always copy ethernet header
 
-Thanks
+The other patches are just behavioral changes which do not corrupt QEMU 
+state so they are not that important.
 
->
-> If there's stable material in the future, please Cc: qemu-stable@nongnu.o=
-rg.
->
-> Thanks,
->
-> /mjt
->
-> > Akihiko Odaki (48):
-> >        hw/net/net_tx_pkt: Decouple implementation from PCI
-> >        hw/net/net_tx_pkt: Decouple interface from PCI
-> >        e1000x: Fix BPRC and MPRC
-> >        igb: Fix Rx packet type encoding
-> >        igb: Do not require CTRL.VME for tx VLAN tagging
-> >        igb: Clear IMS bits when committing ICR access
-> >        net/net_rx_pkt: Use iovec for net_rx_pkt_set_protocols()
-> >        e1000e: Always copy ethernet header
-> >        igb: Always copy ethernet header
-> >        Fix references to igb Avocado test
-> >        tests/avocado: Remove unused imports
-> >        tests/avocado: Remove test_igb_nomsi_kvm
-> >        hw/net/net_tx_pkt: Remove net_rx_pkt_get_l4_info
-> >        net/eth: Rename eth_setup_vlan_headers_ex
-> >        e1000x: Share more Rx filtering logic
-> >        e1000x: Take CRC into consideration for size check
-> >        e1000x: Rename TcpIpv6 into TcpIpv6Ex
-> >        e1000e: Always log status after building rx metadata
-> >        igb: Always log status after building rx metadata
-> >        igb: Remove goto
-> >        igb: Read DCMD.VLE of the first Tx descriptor
-> >        e1000e: Reset packet state after emptying Tx queue
-> >        vmxnet3: Reset packet state after emptying Tx queue
-> >        igb: Add more definitions for Tx descriptor
-> >        igb: Share common VF constants
-> >        igb: Fix igb_mac_reg_init coding style alignment
-> >        igb: Clear EICR bits for delayed MSI-X interrupts
-> >        e1000e: Rename a variable in e1000e_receive_internal()
-> >        igb: Rename a variable in igb_receive_internal()
-> >        net/eth: Use void pointers
-> >        net/eth: Always add VLAN tag
-> >        hw/net/net_rx_pkt: Enforce alignment for eth_header
-> >        tests/qtest/libqos/igb: Set GPIE.Multiple_MSIX
-> >        igb: Implement MSI-X single vector mode
-> >        igb: Use UDP for RSS hash
-> >        igb: Implement Rx SCTP CSO
-> >        igb: Implement Tx SCTP CSO
-> >        igb: Strip the second VLAN tag for extended VLAN
-> >        igb: Filter with the second VLAN tag for extended VLAN
-> >        igb: Implement igb-specific oversize check
-> >        igb: Implement Rx PTP2 timestamp
-> >        igb: Implement Tx timestamp
-> >        e1000e: Notify only new interrupts
-> >        igb: Notify only new interrupts
-> >        igb: Clear-on-read ICR when ICR.INTA is set
-> >        vmxnet3: Do not depend on PC
-> >        MAINTAINERS: Add a reviewer for network packet abstractions
-> >        docs/system/devices/igb: Note igb is tested for DPDK
->
-
+Regards,
+Akihiko Odaki
 
