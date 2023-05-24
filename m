@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37A170F437
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2C770F434
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:29:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1lix-00082d-4H; Wed, 24 May 2023 06:28:07 -0400
+	id 1q1lit-00082c-Cm; Wed, 24 May 2023 06:28:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1liX-0007pk-Cb; Wed, 24 May 2023 06:27:42 -0400
+ id 1q1liX-0007pl-EC; Wed, 24 May 2023 06:27:42 -0400
 Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1liU-0000OC-RR; Wed, 24 May 2023 06:27:41 -0400
+ id 1q1liU-0000OI-RM; Wed, 24 May 2023 06:27:41 -0400
 Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 608C7260C32;
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 95279260BC0;
  Wed, 24 May 2023 12:27:36 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at juszkiewicz.com.pl
 Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
  by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 7nvkcb2TaNJL; Wed, 24 May 2023 12:27:34 +0200 (CEST)
+ with ESMTP id X8FxYvjZTYBK; Wed, 24 May 2023 12:27:34 +0200 (CEST)
 Received: from applejack.lan (83.21.125.167.ipv4.supernova.orange.pl
  [83.21.125.167])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id CBB31260249;
- Wed, 24 May 2023 12:27:33 +0200 (CEST)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 64814260287;
+ Wed, 24 May 2023 12:27:34 +0200 (CEST)
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH v3 0/5] hw/arm/sbsa-ref: sort out graphics a bit
-Date: Wed, 24 May 2023 12:27:24 +0200
-Message-Id: <20230524102729.810892-1-marcin.juszkiewicz@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v3 1/5] hw/arm: Use MachineClass->default_nic in the sbsa-ref
+ machine
+Date: Wed, 24 May 2023 12:27:25 +0200
+Message-Id: <20230524102729.810892-2-marcin.juszkiewicz@linaro.org>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230524102729.810892-1-marcin.juszkiewicz@linaro.org>
+References: <20230524102729.810892-1-marcin.juszkiewicz@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: softfail client-ip=213.251.184.221;
@@ -61,26 +63,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth gave me some hints on how to improve sbsa-ref configuration
-when it comes to graphics.
+From: Thomas Huth <thuth@redhat.com>
 
-With this patchset we are able to start sbsa-ref if qemu is build with
-"--without-default-devices" argument given to configure script.
+Mark the default NIC via the new MachineClass->default_nic setting
+so that the machine-defaults code in vl.c can decide whether the
+default NIC is usable or not (for example when compiling with the
+"--without-default-devices" configure switch).
 
-Marcin Juszkiewicz (4):
-  Add Bochs to list of vga_interfaces
-  hw/arm/sbsa-ref: honor "-vga none" argument
-  hw/arm/sbsa-ref: add gfx card only if we have pci
-  hw/arm/sbsa-ref: use MachineClass->default_display
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/arm/sbsa-ref.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thomas Huth (1):
-  hw/arm: Use MachineClass->default_nic in the sbsa-ref machine
-
- hw/arm/sbsa-ref.c       | 11 ++++++++---
- include/sysemu/sysemu.h |  2 +-
- softmmu/vl.c            |  6 ++++++
- 3 files changed, 15 insertions(+), 4 deletions(-)
-
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 792371fdce..9c3e670ec6 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -596,6 +596,7 @@ static void create_pcie(SBSAMachineState *sms)
+     hwaddr size_mmio_high = sbsa_ref_memmap[SBSA_PCIE_MMIO_HIGH].size;
+     hwaddr base_pio = sbsa_ref_memmap[SBSA_PCIE_PIO].base;
+     int irq = sbsa_ref_irqmap[SBSA_PCIE];
++    MachineClass *mc = MACHINE_GET_CLASS(sms);
+     MemoryRegion *mmio_alias, *mmio_alias_high, *mmio_reg;
+     MemoryRegion *ecam_alias, *ecam_reg;
+     DeviceState *dev;
+@@ -641,7 +642,7 @@ static void create_pcie(SBSAMachineState *sms)
+             NICInfo *nd = &nd_table[i];
+ 
+             if (!nd->model) {
+-                nd->model = g_strdup("e1000e");
++                nd->model = g_strdup(mc->default_nic);
+             }
+ 
+             pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
+@@ -858,6 +859,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
+     mc->minimum_page_bits = 12;
+     mc->block_default_type = IF_IDE;
+     mc->no_cdrom = 1;
++    mc->default_nic = "e1000e";
+     mc->default_ram_size = 1 * GiB;
+     mc->default_ram_id = "sbsa-ref.ram";
+     mc->default_cpus = 4;
 -- 
 2.40.1
 
