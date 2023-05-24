@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0996170F9AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B7870F9B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:04:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1q1r-0007EI-2S; Wed, 24 May 2023 11:03:55 -0400
+	id 1q1q2J-0000kf-Sz; Wed, 24 May 2023 11:04:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1q1l-0006ma-W6
- for qemu-devel@nongnu.org; Wed, 24 May 2023 11:03:50 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1q1q2G-0000hi-9j
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 11:04:20 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1q1j-0007sU-HE
- for qemu-devel@nongnu.org; Wed, 24 May 2023 11:03:49 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f427118644so11963525e9.0
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 08:03:47 -0700 (PDT)
+ id 1q1q2B-0007yq-VL
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 11:04:20 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso695606f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 08:04:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684940626; x=1687532626;
+ d=linaro.org; s=google; t=1684940654; x=1687532654;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3mCJkaKVUyfsWnJ+UKM1NbNndW4jAHBbawP6IeKsjBU=;
- b=i0mv37k0Cp5Zhs5JJZ3mlrCrgSUCqpv7hwAfQd3kHbxUapveEs4bnSZTUIWZbxWsmb
- gGy3mwx68beqQ2NY+U5lpLHp1IGjG1nwgCOAa5sEoLmdkU24zzr7ODdgEgg8648VEM7+
- s5uwR1Oi5RtXYTX0C3N4kUsusPnFA+MY/sixvYOF89VVRGdzvh/Hsz8N7nWy85Nsez2e
- sxqkVGmVeRugATov4m/VyC+BvdmJEIXDvzIF72TxsJyWKHlBpZJSvR+KGiyQVayKjnkE
- CrMLF15hhDR1CebwI7jogVOQGYEUcVXj7so8y7ElU792xgZRvpZ3oFuacvm9jEpucDLN
- ylLw==
+ bh=CI83zH0C0bABgoGhwUWm8OnfyA/jE6wxGzjvYow+xeE=;
+ b=xEj3yzWcxOH/A/nG8dG89BvTQFwHHSSj21yjWWMeAbrksdDQ53WxcpTtpB+Yt9Suf0
+ OSfRQc+Gj/G3rQ+7bg7TojE52pKWxvrsPTv0IReOq8Ky9gWz8JtPjOcDf9+nZpoU3t+t
+ RlJx3aibuMuPoExzCdrdQf1lMvbd4+WbB6XbwvyK8MpX5U5+he+U2ZpscTCWaaBMjhrp
+ PZ9TcPRzBF5e3HVcGt+9BZLBt7WnpfJugsFMyIw/GW4k1DUk9mTPFkrAA4Y0uj3kQvaH
+ ODJurGJto0yVbByndXHAGdOFf1JVlmrGd9a7RnVtoLEkglQ1dx12cMjPwED3twTv/uqq
+ sEqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684940626; x=1687532626;
+ d=1e100.net; s=20221208; t=1684940654; x=1687532654;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=3mCJkaKVUyfsWnJ+UKM1NbNndW4jAHBbawP6IeKsjBU=;
- b=dQ3uh+6Y/LZ9TaL3tHCw+eUjVBsnYSERJM/H6iUy95WjS092jI6GITCjRvWP1W6T+R
- 9ulwSIBrMwNeR+z/eB+haByegwPdOc12k8lrInNSl4bulD+bPu1FJ8Tn2X8W9UIQ1ifm
- uvYfrOId/kq3BXff7QRVySd/rLjkeIgIJCgdmk4ZtuFjh3pRwndeZDhwmSZV0jUQzwlq
- RS+b7HM1BmgV6WnmdpkkhsW7uGohJ9zXt0NMMETLI6r4Z8wrm4aqQ9d6i46lMqz6wuFL
- lIAghYoyoi8Cf3caixgoTslZp+fMyGUpOSYieBxsw6PeolqbLbIQfjBxtIKiClZzGYoN
- GIRA==
-X-Gm-Message-State: AC+VfDz0VoAcLkL9ch197Kym8jGrOGv4s4b15UPZKEARI+OsimIKWc7m
- 4uGpSCiLPZaR8i9lqjTLQ//sHQ==
-X-Google-Smtp-Source: ACHHUZ4055B3g1WasRi8I8a7hT177kqWtAcerv1SVggRCUycjWquPyHqVIlR2GAOfiRGkSIiqXcgfA==
-X-Received: by 2002:a1c:7307:0:b0:3f6:3ad:16a with SMTP id
- d7-20020a1c7307000000b003f603ad016amr39553wmb.31.1684940625849; 
- Wed, 24 May 2023 08:03:45 -0700 (PDT)
+ bh=CI83zH0C0bABgoGhwUWm8OnfyA/jE6wxGzjvYow+xeE=;
+ b=fpMnNfoY+DLC1epAL2StKTTwpi3gznKwTWkeKT0CqBDv384U110WAV/s/yi99+xHD2
+ D7Nrg1An5WN+6uDwEUEgz+dpBeGbmev7lhPsLj27hK89RMSEIwiHMouVlVDYrTaFsIbg
+ DbMkZmpI66e25jbOK1kV6+SBpkgHrphdHkhwUTLIUTmuDlMYQt0ynvm7fnppThu04vRF
+ zLdxl/tATwJGWREku0Ix7MsUI77e06/LibPkjqUpzS5qHARBNkIfgnRKZzVLpqJoZpc9
+ Iumat3eAPWFgtsBSSYT21Nwr63WKOAvu1eJrd3cpbuaKKQbTM9bw0QkoakeQjcWRqfSi
+ InFA==
+X-Gm-Message-State: AC+VfDw9+KuW7UT77q7pzGBgktQV0lgjlGeZo7G5jCsdxjEK6opKf9UM
+ e79k+mnzxrD3TXDmCdHwFbV+Qg==
+X-Google-Smtp-Source: ACHHUZ65PgyKRbkZNgneuExUdMkUbDOVvyeQAG/Ehhi+p4XnhGL38VLCtgfx1/ALpFma+Un1y3puiw==
+X-Received: by 2002:adf:df09:0:b0:307:c0c4:109a with SMTP id
+ y9-20020adfdf09000000b00307c0c4109amr84509wrl.6.1684940654313; 
+ Wed, 24 May 2023 08:04:14 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- n11-20020a7bcbcb000000b003f5ffba9ae1sm2622210wmi.24.2023.05.24.08.03.45
+ o10-20020a1c750a000000b003f423dfc686sm2583212wmc.45.2023.05.24.08.04.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 May 2023 08:03:45 -0700 (PDT)
+ Wed, 24 May 2023 08:04:14 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 312861FFBB;
- Wed, 24 May 2023 16:03:45 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 940481FFBB;
+ Wed, 24 May 2023 16:04:13 +0100 (BST)
 References: <20230524093744.88442-1-philmd@linaro.org>
- <20230524093744.88442-7-philmd@linaro.org>
+ <20230524093744.88442-8-philmd@linaro.org>
 User-agent: mu4e 1.11.6; emacs 29.0.91
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
@@ -76,16 +76,16 @@ Cc: Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>, Paolo
  qemu-s390x@nongnu.org, Cornelia Huck <cohuck@redhat.com>, Halil Pasic
  <pasic@linux.ibm.com>, qemu-block@nongnu.org, Kevin Wolf
  <kwolf@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 06/10] hw/virtio/virtio-mem: Use qemu_ram_get_fd()
- helper
-Date: Wed, 24 May 2023 16:03:40 +0100
-In-reply-to: <20230524093744.88442-7-philmd@linaro.org>
-Message-ID: <87y1ldvkj2.fsf@linaro.org>
+Subject: Re: [PATCH v2 07/10] hw/virtio/vhost-vsock: Include missing
+ 'virtio/virtio-bus.h' header
+Date: Wed, 24 May 2023 16:04:06 +0100
+In-reply-to: <20230524093744.88442-8-philmd@linaro.org>
+Message-ID: <87ttw1vkia.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,15 +111,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> Avoid accessing RAMBlock internals, use the provided
-> qemu_ram_get_fd() getter to get the file descriptor.
+> Instead of having "virtio/virtio-bus.h" implicitly included,
+> explicitly include it, to avoid when rearranging headers:
 >
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
+>   hw/virtio/vhost-vsock-common.c: In function =E2=80=98vhost_vsock_common=
+_start=E2=80=99:
+>   hw/virtio/vhost-vsock-common.c:51:5: error: unknown type name =E2=80=98=
+VirtioBusClass=E2=80=99; did you mean =E2=80=98VirtioDeviceClass=E2=80=99?
+>      51 |     VirtioBusClass *k =3D VIRTIO_BUS_GET_CLASS(qbus);
+>         |     ^~~~~~~~~~~~~~
+>         |     VirtioDeviceClass
+>   hw/virtio/vhost-vsock-common.c:51:25: error: implicit declaration of
+> function =E2=80=98VIRTIO_BUS_GET_CLASS=E2=80=99; did you mean =E2=80=98VI=
+RTIO_DEVICE_CLASS=E2=80=99?
+> [-Werror=3Dimplicit-function-declaration]
+>      51 |     VirtioBusClass *k =3D VIRTIO_BUS_GET_CLASS(qbus);
+>         |                         ^~~~~~~~~~~~~~~~~~~~
+>         |                         VIRTIO_DEVICE_CLASS
+>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
+> ---
+>  hw/virtio/vhost-vsock-common.c | 1 +
+>  1 file changed, 1 insertion(+)
 --=20
 Alex Benn=C3=A9e
 Virtualisation Tech Lead @ Linaro
