@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10ED70FC20
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 19:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E21BC70FC72
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 19:18:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1rsR-0002XU-4K; Wed, 24 May 2023 13:02:19 -0400
+	id 1q1s6Y-0006Mi-If; Wed, 24 May 2023 13:16:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1rsO-0002XE-PP
- for qemu-devel@nongnu.org; Wed, 24 May 2023 13:02:16 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1q1s6W-0006Im-8f
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 13:16:52 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1rsL-0002X6-LR
- for qemu-devel@nongnu.org; Wed, 24 May 2023 13:02:15 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-528dd896165so417551a12.2
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 10:02:12 -0700 (PDT)
+ id 1q1s6U-00064h-La
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 13:16:52 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-52cb78647ecso416353a12.1
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 10:16:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684947732; x=1687539732;
+ d=linaro.org; s=google; t=1684948609; x=1687540609;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ywLnbG7wPesMLVjNCkTHwdnzeKOs4xw3gMPE/Y1czLE=;
- b=esn+0GdJWJ//nEICDGUBQAMM4MqhzrauqNglviMjYNF3w0M9xgmGPP+k/3M/S5y+9D
- FKaD9PlYksnIxlCFgDxMhLiISWqiA1rjmoSNoN36zXsokyEYRiK55WQISEruDGDJ7har
- bOS/tADyWGxWF9Pe7zeKdsbROI0xAh0HiSJlnblTn7AVYl4MoI1WlU5LAZI9aYo2XHg6
- 6cSPSm6j2vM5fO+rK38cTa2frLVUTxbdRLNUoKwHHpoSwqs6eEg4WwhkyPQrWPUnaQ4A
- S1P9517rR5GFH1sBJKSft6UjyXqJRHMtud8EuIAyc7XogLhMbMQYsB/HYMBW7GvH6+ke
- WTxw==
+ bh=N1jCPZGzUZx2R5fAkIKTQSo4Ro/fUaj18sYgDSrz+4A=;
+ b=RFPKkTSwV1Arzwea7frwbEDCGmGTihGcbLn0QcCIUYrCisXUmeYtfiUPJ5W7TlFyLG
+ pE38MOjYny/gLvxfJ7a/CVBHVR233kvF9i92lkv2Fwc+/wNmSx3Zc5+LCyvsbsAmOlw0
+ SCsR9SbvEP8izpEntz5PpWfkcvEWWxqrT7wF5+Px5IvsugEohPM5Ww15LrDVH1jNUNRN
+ hgUJfa+Lccw99tSr2L61uh4Dvk66kqoQEZC5084W7MQMHN2tGllGcduibxwZ8xlggDtL
+ sLsxd4flBGLm9140A/796dyceT6bc7NYaK6kAz9elKRadgO908DipuBfXz5bc08iBbuP
+ Cb3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684947732; x=1687539732;
+ d=1e100.net; s=20221208; t=1684948609; x=1687540609;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ywLnbG7wPesMLVjNCkTHwdnzeKOs4xw3gMPE/Y1czLE=;
- b=BCbHyOnMxNACBTn1pTY2dOtImpSiRaOG5AgXHT0eOmxaAPpG8h8YlVXAiUsBDjwJ85
- eqFu1y4Y5elP6YwrqJvppegnMAAoxD0MxymIFYYthp3vEZDATgJ7kbLjAchBwLj/SrcY
- kZXEVowc2iVgR7ucEaP/0raPy8xU25KaRNQAJbTS6ytuZOsj6ukHJxnxVrIQ06D6RUB/
- sKkKSp8Uo0lyuW1WgwAmkxFYF2Z3ayVqMxENGl1mYZyQQa54edLRMQS9A3xBgVSvB+va
- mgqdAfSt7LBhwTBJGI9JlL+g4FrP5rEuocu47Bgs9S0MIcqNhO9/M0HR3C/ATCCmLaNV
- wnog==
-X-Gm-Message-State: AC+VfDzQdtC7qryRotFMSOJ6r6yEcGKIRQkFmaJYgn2rX1D8LNvjRoPb
- p+qcoC+S4EUafkqHet3QBMnDnw==
-X-Google-Smtp-Source: ACHHUZ7/4lqEBvxcKPcaPWMbRQlQ+rwLFc4iGEusi3bEWS1HK2xZHhPygnu2zHmwL+BuLe0+2lZGUg==
-X-Received: by 2002:a17:90a:ea06:b0:255:6c5b:3660 with SMTP id
- w6-20020a17090aea0600b002556c5b3660mr9230978pjy.20.1684947731482; 
- Wed, 24 May 2023 10:02:11 -0700 (PDT)
+ bh=N1jCPZGzUZx2R5fAkIKTQSo4Ro/fUaj18sYgDSrz+4A=;
+ b=eeX3cQzYzHqwNC1E4Qv1+k8UQqnV+gDgIEoR2FJjHqka7CaKIdzakmGxNgwMisRAIX
+ A7goM2YjxmQuDijIH1GJdzjgMm4eEtwXQceAKnYCQxhEk9/6t9Vdcj/1hTdJjZwhpGWK
+ g4tEuVrUbzznN1sUscXa9gVL5h0EsgQAk/iBdX1NnhJ+dsQklEOb1S6fBbrkOyOqSxBu
+ rg9xwajYvkWs1TFz+1p9zz3p1+z41mbrHXm3VJc1B9WwBm4IosN3acIYg09NxK0HB9J9
+ SvNPZkI7kqlO3X66uxLIljWTcFD+pYB+AtRBhGrRXHGmcnvzCg/J0zbLAlWEwnqjQQiP
+ ZDBQ==
+X-Gm-Message-State: AC+VfDxV9TT+2P9zycGnvYGwXCj/vw0NjvRIEiebxWhH/fu1z8ZV6dMj
+ FtLC2zzewfEPIPIlHNhqS8+jXA==
+X-Google-Smtp-Source: ACHHUZ44d81YVv2kP6EKOI8IXZAXZpUxamijVlBR4VXHU3MBeHHHklUi6vJwHYtywDIxTJTP87Lvsw==
+X-Received: by 2002:a17:903:41cf:b0:1ad:bb89:16f6 with SMTP id
+ u15-20020a17090341cf00b001adbb8916f6mr21771387ple.50.1684948609276; 
+ Wed, 24 May 2023 10:16:49 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:6b03:9af2:33c1:3d6b?
  ([2602:ae:1598:4c01:6b03:9af2:33c1:3d6b])
  by smtp.gmail.com with ESMTPSA id
- 72-20020a63044b000000b00528da88275bsm8152478pge.47.2023.05.24.10.02.10
+ l12-20020a170902d34c00b0019e5fc21663sm8967437plk.218.2023.05.24.10.16.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 May 2023 10:02:10 -0700 (PDT)
-Message-ID: <fd8a711d-7940-c990-bbed-7c4d9a46a664@linaro.org>
-Date: Wed, 24 May 2023 10:02:09 -0700
+ Wed, 24 May 2023 10:16:48 -0700 (PDT)
+Message-ID: <c6a2f3a9-1d4e-36de-9841-ad28927a3554@linaro.org>
+Date: Wed, 24 May 2023 10:16:46 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v12 02/15] accel: collecting TB execution count
+Subject: Re: [PATCH] checkpatch: Prefer DEFINE_TYPES() over type_init /
+ type_register_static
 Content-Language: en-US
-To: "Wu, Fei" <fei2.wu@intel.com>, qemu-devel@nongnu.org,
- alex.bennee@linaro.org
-Cc: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230518135757.1442654-1-fei2.wu@intel.com>
- <20230518135757.1442654-3-fei2.wu@intel.com>
- <0bf482cc-fb96-0ada-f166-50d99b4952a5@linaro.org>
- <8adea3c0-ca06-1dd0-366b-f7eba9be6890@intel.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20230524145444.32820-1-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <8adea3c0-ca06-1dd0-366b-f7eba9be6890@intel.com>
+In-Reply-To: <20230524145444.32820-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,85 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/24/23 06:35, Wu, Fei wrote:
-> On 5/23/2023 8:45 AM, Richard Henderson wrote:
->> On 5/18/23 06:57, Fei Wu wrote:
->>> +void HELPER(inc_exec_freq)(void *ptr)
->>> +{
->>> +    TBStatistics *stats = (TBStatistics *) ptr;
->>> +    tcg_debug_assert(stats);
->>> +    ++stats->executions.normal;
->>> +}
->> ...
->>> +static inline void gen_tb_exec_count(TranslationBlock *tb)
->>> +{
->>> +    if (tb_stats_enabled(tb, TB_EXEC_STATS)) {
->>> +        TCGv_ptr ptr = tcg_temp_new_ptr();
->>> +        tcg_gen_movi_ptr(ptr, (intptr_t)tb->tb_stats);
->>> +        gen_helper_inc_exec_freq(ptr);
->>> +    }
->>> +}
->>
->> This is 3 host instructions, easily expanded inline:
->>
->> --- a/accel/tcg/translator.c
->> +++ b/accel/tcg/translator.c
->> @@ -11,6 +11,7 @@
->>   #include "qemu/error-report.h"
->>   #include "tcg/tcg.h"
->>   #include "tcg/tcg-op.h"
->> +#include "tcg/tcg-temp-internal.h"
->>   #include "exec/exec-all.h"
->>   #include "exec/gen-icount.h"
->>   #include "exec/log.h"
->> @@ -18,6 +19,30 @@
->>   #include "exec/plugin-gen.h"
->>   #include "exec/replay-core.h"
->>
->> +
->> +static void gen_tb_exec_count(TranslationBlock *tb)
->> +{
->> +    if (tb_stats_enabled(tb, TB_EXEC_STATS)) {
->> +        TCGv_ptr ptr = tcg_temp_ebb_new_ptr();
->> +
->> +        tcg_gen_movi_ptr(ptr, (intptr_t)&tb->tb_stats->executions.normal);
->> +        if (sizeof(tb->tb_stats->executions.normal) == 4) {
->> +            TCGv_i32 t = tcg_temp_ebb_new_i32();
->> +            tcg_gen_ld_i32(t, ptr, 0);
->> +            tcg_gen_addi_i32(t, t, 1);
->> +            tcg_gen_st_i32(t, ptr, 0);
->> +            tcg_temp_free_i32(t);
->> +        } else {
->> +            TCGv_i64 t = tcg_temp_ebb_new_i64();
->> +            tcg_gen_ld_i64(t, ptr, 0);
->> +            tcg_gen_addi_i64(t, t, 1);
->> +            tcg_gen_st_i64(t, ptr, 0);
->> +            tcg_temp_free_i64(t);
->> +        }
->> +        tcg_temp_free_ptr(ptr);
->> +    }
->> +}
->> +
->>   bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest)
->>   {
->>       /* Suppress goto_tb if requested. */
->>
->>
->> I'm not expecially keen on embedding the TBStatistics pointer directly
->> like this; for most hosts we will have to put this constant into the
->> constant pool.  Whereas the pointer already exists at tb->tb_stats, and
->> tb is at a constant displacement prior to the code, so we already have
->> mechanisms for generating pc-relative addresses.
->>
->> However, that's premature optimization.  Let's get it working first.
->>
-> Richard, have you reviewed the whole series? I will integrate your
-> change to next version.
+On 5/24/23 07:54, Philippe Mathieu-Daudé wrote:
+> When multiple QOM types are registered in the same file, it
+> is clearer and simpler to use the the DEFINE_TYPES() macro.
+> 
+> Add a rule to checkpatch.pl to suggest using DEFINE_TYPES()
+> instead of type_init() / type_register_static().
+> 
+> Suggested-by: Daniel Henrique Barboza<dbarboza@ventanamicro.com>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   scripts/checkpatch.pl | 6 ++++++
+>   1 file changed, 6 insertions(+)
 
-No, it's difficult to see what's going on.
-In your next revision, please remove CONFIG_PROFILER entirely first, which was what I was 
-planning to do locally.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
