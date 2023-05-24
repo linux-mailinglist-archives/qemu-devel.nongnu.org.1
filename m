@@ -2,84 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9120870F994
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 180F570F996
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:02:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1pzh-0003Q6-V4; Wed, 24 May 2023 11:01:42 -0400
+	id 1q1q0U-0005TP-7C; Wed, 24 May 2023 11:02:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1q1pzc-00036C-BV; Wed, 24 May 2023 11:01:36 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1q0M-00059U-CO
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 11:02:25 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1q1pzY-0007GI-0y; Wed, 24 May 2023 11:01:33 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4f3edc05aa5so1033910e87.3; 
- Wed, 24 May 2023 08:01:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1q0J-0007PY-4P
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 11:02:22 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3f607766059so11727505e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 08:02:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684940489; x=1687532489;
- h=user-agent:in-reply-to:content-transfer-encoding
- :content-disposition:mime-version:references:message-id:subject:cc
- :to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=fnZcFpA1raT2phgdxzy0J18VWQN6dw0vNhg65nImvOA=;
- b=s2TPJpDLv+7hzz4Sa/mELmja9sg5jq8G7nllinXuD4NyrZegvLkTmCpY0TZ2AAbAGT
- hhzmU3lVWLCvvjyIYhyuEx2g20kp3xASRsd9h9hq2oEcq1/jOvCVmnPkW3tsAMjC2YcR
- ZKf68cLnc6LVPaka+Zi2MsHqBU4OmZPWm34WO1KUgJHK1qYbiucqCqOxVs5pAq9qql5p
- I2y3dFM7BhYS2Z+iHCwneawYrCKBga1h8cjc60K6NCG6r8oX4P/tMPvFJPOAJAandsNj
- EOqv0PDTO83UkWISmDHvyJwsu9pKHF5+/AT7ZzVM6W/i0WZghcgMTM/Wpka562uR70dh
- j3uQ==
+ d=linaro.org; s=google; t=1684940537; x=1687532537;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+d0/3/edTxnWdpkva6kGosm89VVlGTnLooegwt2jwt4=;
+ b=jtbVrO9xC8tev8eXQ4ZWii+GZszSMa6LV36Jn2k6NmWi5hv8xZtMqihukxu8VmGlx1
+ vznlvcL8yGvWEIvKr9AE/5QUDoYd8R5FXrTn2yJG3seAmu5mgkTab2nn6llO7k/Bq/88
+ bmi6mJf/DulFmyvUK157VuifZQpa1for0eL8D0W80DTU8/he9JjRJPMUC/SUnJ4mXIzh
+ AGY89hmX7UX0X4oIFGyPx4gbWV9uxPBmTJk4c8G8pCCywxp0IlMvTWz8eKrrSSIaP9Ip
+ 4qHYK0/L58zcN4mV8rWgtCWeWkV/t2w2998EZm098PfEP6GtZrk7maubOh8hzqZhJxmq
+ TqgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684940489; x=1687532489;
- h=user-agent:in-reply-to:content-transfer-encoding
- :content-disposition:mime-version:references:message-id:subject:cc
- :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fnZcFpA1raT2phgdxzy0J18VWQN6dw0vNhg65nImvOA=;
- b=ct926i0IhtXFxpiYDbO4RAqihtGf13Bpn3ZWdcFEb/Tq05517ZwWK+2MSLwtpwOdun
- NVSI+Jr9DwH66jnCGIdaxYJ31VheMPNov+9LD+7j9SMF/CzmLj6McvLK9lGXpiFOpiK6
- R8xdlxtSIjDev8YVEz9dTMvkwGDq4p508aXNOpBwipRvVvWUnGO7zNn/1pIQdxb2JVp9
- p+f3F0BADKjJHz8X5xZSU/llHIc9TzEAOR4sjXsGqPzbDNrqad0Xtar9NGKwmW3whDwi
- 4VR+SH4z04/ve1KulKjkCqnYcOPgHd47nWR8W3nNE1G3ys+Su3WM30bghcHpkJJz44Ri
- wnRg==
-X-Gm-Message-State: AC+VfDzfFUJnvWWKbq3p5TzSyN3wPidD96piw7vPIatB5v1ir8g+l//7
- 6+8A7R264Z4Tyk9vYAr6sP0=
-X-Google-Smtp-Source: ACHHUZ6JPHF4kiizBrDtH6RwYBdBClY7qsU2L6JQq/XwtDZLQcUHIGeFeCn6Jp7QU/VBPRRLOZ3BdQ==
-X-Received: by 2002:ac2:44d4:0:b0:4f4:7a2:643b with SMTP id
- d20-20020ac244d4000000b004f407a2643bmr2916317lfm.14.1684940488463; 
- Wed, 24 May 2023 08:01:28 -0700 (PDT)
-Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
+ d=1e100.net; s=20221208; t=1684940537; x=1687532537;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=+d0/3/edTxnWdpkva6kGosm89VVlGTnLooegwt2jwt4=;
+ b=IkqPKHbEwzUP6/Qwompynm06hssMeRBekUOpNyZa1s1aX9n2mTJ+8VUxm52q1xr5Q7
+ aW5Lj8KOqvZYCcBDimROQYLQVCyMwId8foIdSIQ7bEKPu9Ofnu1B+CL07CPtyys6gwCL
+ YLzjHaKG47z72oCtHUPR2HKlY+LwK12hzG8jqlW0cdxuvsQzND1+XK3u4jCN0fs+EjEp
+ Yp1sE39XvDR7ESHiLNMp0jv1zoN5oGL2qzdTpwYNIwC/bt+BLfmbQuA/I7muxnMWUHcW
+ Cjz4KiemFbbAaGV4Q5NybvSzrKRDf9DXH5sZw4X9iYcNmeJ0IZfLlSdGFf3fT+X9mPZF
+ K49A==
+X-Gm-Message-State: AC+VfDy4SwmJWs1oDnbkTNowoVuukXjwAPfFu9joBAK5qRfJICQVU/RB
+ ii2KNYVBf85SYa5644fwcm1EtA==
+X-Google-Smtp-Source: ACHHUZ6bMea/XvG4BcQdGwyllEkG2kh9ULfkiLbJNqAOqFy+bk6dUe5x46XnNrFkSVZntAuvcD6hUQ==
+X-Received: by 2002:a7b:cd93:0:b0:3f4:20ec:7601 with SMTP id
+ y19-20020a7bcd93000000b003f420ec7601mr28242wmj.34.1684940536934; 
+ Wed, 24 May 2023 08:02:16 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- u17-20020ac25191000000b004f1400630d3sm1736043lfi.35.2023.05.24.08.01.27
+ o10-20020a1c750a000000b003f423dfc686sm2578186wmc.45.2023.05.24.08.02.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 May 2023 08:01:28 -0700 (PDT)
-Date: Wed, 24 May 2023 17:01:26 +0200
-From: Francisco Iglesias <frasse.iglesias@gmail.com>
-To: =?iso-8859-1?Q?Cl=E9ment?= Chigot <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, edgar.iglesias@gmail.com,
- alistair@alistair23.me, peter.maydell@linaro.org
-Subject: Re: [PATCH] hw/arm/xlnx-zynqmp: fix unsigned error when checking the
- RPUs number
-Message-ID: <20230524150126.GG6984@fralle-msi>
-References: <20230524143714.565792-1-chigot@adacore.com>
+ Wed, 24 May 2023 08:02:16 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id ED82F1FFBB;
+ Wed, 24 May 2023 16:02:15 +0100 (BST)
+References: <20230524093744.88442-1-philmd@linaro.org>
+ <20230524093744.88442-2-philmd@linaro.org>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Eric Farman <farman@linux.ibm.com>, Peter
+ Xu <peterx@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Raphael Norwitz <raphael.norwitz@nutanix.com>, Ilya
+ Leoshkevich <iii@linux.ibm.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eric Auger <eric.auger@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>, David Hildenbrand
+ <david@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-s390x@nongnu.org, Cornelia Huck <cohuck@redhat.com>, Halil Pasic
+ <pasic@linux.ibm.com>, qemu-block@nongnu.org, Kevin Wolf
+ <kwolf@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 01/10] softmmu: Introduce qemu_target_page_mask() helper
+Date: Wed, 24 May 2023 16:02:09 +0100
+In-reply-to: <20230524093744.88442-2-philmd@linaro.org>
+Message-ID: <87bki9wz60.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230524143714.565792-1-chigot@adacore.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -1020
-X-Spam_score: -102.1
-X-Spam_bar: ---------------------------------------------------
-X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_WELCOMELIST=-0.01,
- USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,41 +107,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On [2023 May 24] Wed 16:37:14, Clément Chigot wrote:
-> When passing --smp with a number lower than XLNX_ZYNQMP_NUM_APU_CPUS,
-> the expression (ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS) will result
-> in a positive number as ms->smp.cpus is a unsigned int.
-> This will raise the following error afterwards, as Qemu will try to
-> instantiate some additional RPUs.
->   | $ qemu-system-aarch64 --smp 1 -M xlnx-zcu102
->   | **
->   | ERROR:../src/tcg/tcg.c:777:tcg_register_thread:
->   |   assertion failed: (n < tcg_max_ctxs)
-> 
-> Signed-off-by: Clément Chigot <chigot@adacore.com>
 
-Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
-Tested-by: Francisco Iglesias <frasse.iglesias@gmail.com>
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> ---
->  hw/arm/xlnx-zynqmp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
-> index 335cfc417d..5905a33015 100644
-> --- a/hw/arm/xlnx-zynqmp.c
-> +++ b/hw/arm/xlnx-zynqmp.c
-> @@ -213,7 +213,7 @@ static void xlnx_zynqmp_create_rpu(MachineState *ms, XlnxZynqMPState *s,
->                                     const char *boot_cpu, Error **errp)
->  {
->      int i;
-> -    int num_rpus = MIN(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS,
-> +    int num_rpus = MIN((int)(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS),
->                         XLNX_ZYNQMP_NUM_RPU_CPUS);
->  
->      if (num_rpus <= 0) {
-> -- 
-> 2.25.1
-> 
-> 
+> Since TARGET_PAGE_MASK is poisoned in target-agnostic code,
+> introduce the qemu_target_page_mask() helper to get this
+> value from target-agnostic code at runtime.
+>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
