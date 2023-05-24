@@ -2,110 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295D470FFA5
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 23:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A683270FFAF
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 23:11:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1vfY-0007Lk-A2; Wed, 24 May 2023 17:05:16 -0400
+	id 1q1vlS-0001Bq-Hk; Wed, 24 May 2023 17:11:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
- id 1q1vfV-0007Km-Gb
- for qemu-devel@nongnu.org; Wed, 24 May 2023 17:05:13 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q1vlQ-0001Bi-RV
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 17:11:20 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
- id 1q1vfQ-0008VQ-E6
- for qemu-devel@nongnu.org; Wed, 24 May 2023 17:05:10 -0400
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34OKx7uq018706; Wed, 24 May 2023 21:04:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=0IusaswoV4GMJ2krC0g9zaR7+NoenIcA9sZufP1qfbs=;
- b=Pn2tBz5Uml86ZbHPbF67KQqgCh73xR1i5yg3+TTBB9MLfOHQJBgnxJvGEGTnO1sjnbb5
- U3hN6SQPVGqczxdXEc5jZ3BsRuG4v1PjwOlJ+BUwBbaWu+Gb3kIhHgI2dJBJPsyyvDlc
- ARiZPVoxGryM9wKzC1smnDkbMLUTn0aGCjNLX7jJ+uzKz+02TGLf7WIxRqGxPINN1O7b
- H6OfnfxKsUpexRRPsIok/i/FsmrmmJJiNBeLOKhyCebYuCM7GoxBrHUKCD7zLJFN1tYw
- 9ScZ+UfUU+jIHpa/GwHnf1SHGoNE2ZSw01qWH55IQJ4A/JSEPQvbLCoS3Id3Q46OwxcM vQ== 
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qsqqj89sj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 May 2023 21:04:10 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com
- [10.52.223.231])
- by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34OL495t029551
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 May 2023 21:04:09 GMT
-Received: from [10.110.74.38] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 24 May
- 2023 14:04:07 -0700
-Message-ID: <1e10da25-5704-18ee-b0ce-6de704e6f0e1@quicinc.com>
-Date: Wed, 24 May 2023 14:04:07 -0700
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q1vlN-0001vP-UI
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 17:11:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=/wf2LIiA96/UTok0wnH9i2X5KOWIWZoM7yuCpUX6JOg=; b=KkdCm5HgRBILUKqElWY4ugplHu
+ gzvxuHorGf7rLQObdrMPJJO7X5QMfkrPsOvK5r6+jV0tlqoW0eyyBU78USrpaGq7l/yTIiddaMG7J
+ 9sUdjNGxYQFFMnkGcNodWbMpTrFCkq5Fn+7D06Wg+415JSyl/7pOd5cu15/2YxLcJBsxjrkPWrI2m
+ zL500Mm7iQSJ9hm4QxpJxQSFFSipGgVtpBrzX5OicPuzUslQieINkBFx6od74u25w6ZeQ+rGq1vfa
+ R3GOtfY9YicLr1I8Iox0rY9U+nE0wFjeY/t6+tb7OvUI96sVG2mKrWQaPGsytLTPgg8wa/NjjmOLs
+ j1PW/LcNzGwGBeOdiMKghm6uTKmjxMHXDu1t7SACxbVXQsgVogo3/yfbOYVpDxxZIu5dGwLWso9ig
+ +c35Em/Lm3krKqFDc/9PHOH9h0kW+ct9erUKF4cT6CrAnj/oxq0Kl37bao4fndDUyOlJXsohLIAIs
+ ZmAFHyJNuFt5P1RZQr+YZEcw7bFPcGr0eM0VsXS1502jqlCL068n3Z7IidieF40uWyO5hDvLC3/Xm
+ wo/U1CWgE2AmXLZN8O2+5sWbQG9+n2N8jG8Fq1RWTR8J+X+bWeaZhWDn2Ji9V2iTg/bFACVeMmOCb
+ f5PoM4+hV5IMZ3++SXUOZEqTO3BG+t7jptA9nHelg=;
+Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q1vlC-0005XR-NB; Wed, 24 May 2023 22:11:10 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: laurent@vivier.eu,
+	qemu-devel@nongnu.org
+Date: Wed, 24 May 2023 22:10:34 +0100
+Message-Id: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
-Content-Language: en-US
-To: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>
-CC: Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
- James Morris <jamorris@linux.microsoft.com>, John Andersen
- <john.s.andersen@intel.com>, Liran Alon <liran.alon@oracle.com>,
- "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>, Marian Rotariu
- <marian.c.rotariu@gmail.com>, =?UTF-8?Q?Mihai_Don=c8=9bu?=
- <mdontu@bitdefender.com>, =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?=
- <nicu.citu@icloud.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Thara
- Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>, Zahra
- Tarkhani <ztarkhani@microsoft.com>, =?UTF-8?Q?=c8=98tefan_=c8=98icleru?=
- <ssicleru@bitdefender.com>,
- <dev@lists.cloudhypervisor.org>, <kvm@vger.kernel.org>,
- <linux-hardening@vger.kernel.org>, <linux-hyperv@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <qemu-devel@nongnu.org>,
- <virtualization@lists.linux-foundation.org>, <x86@kernel.org>,
- <xen-devel@lists.xenproject.org>
-References: <20230505152046.6575-1-mic@digikod.net>
-From: Trilok Soni <quic_tsoni@quicinc.com>
-In-Reply-To: <20230505152046.6575-1-mic@digikod.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: 05vNi3kgc2wfcP2iD9QY9INL0A2A4C1U
-X-Proofpoint-ORIG-GUID: 05vNi3kgc2wfcP2iD9QY9INL0A2A4C1U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-24_15,2023-05-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 clxscore=1011
- lowpriorityscore=0 spamscore=0 phishscore=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305240176
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_tsoni@quicinc.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH 00/30] q800: add support for booting MacOS Classic
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.107,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,51 +75,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/5/2023 8:20 AM, Mickaël Salaün wrote:
-> Hi,
-> 
-> This patch series is a proof-of-concept that implements new KVM features
-> (extended page tracking, MBEC support, CR pinning) and defines a new API to
-> protect guest VMs. No VMM (e.g., Qemu) modification is required.
-> 
-> The main idea being that kernel self-protection mechanisms should be delegated
-> to a more privileged part of the system, hence the hypervisor. It is still the
-> role of the guest kernel to request such restrictions according to its
+This series contains the remaining patches needed to allow QEMU's q800
+machine to boot MacOS Classic when used in conjunction with a real
+Quadra 800 ROM image. In fact with this series applied it is possible
+to boot all of the following OSs:
 
-Only for the guest kernel images here? Why not for the host OS kernel? 
-Embedded devices w/ Android you have mentioned below supports the host 
-OS as well it seems, right?
+  - MacOS 7.1 - 8.1, with or without virtual memory enabled
+  - A/UX 3.0.1
+  - NetBSD 9.3
+  - Linux (via EMILE)
 
-Do we suggest that all the functionalities should be implemented in the 
-Hypervisor (NS-EL2 for ARM) or even at Secure EL like Secure-EL1 (ARM).
+If you are ready to experience some 90s nostalgia then all you need is
+to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
+suitable install ISO as follows:
 
-I am hoping that whatever we suggest the interface here from the Guest 
-to the Hypervisor becomes the ABI right?
+  # Prepare a PRAM image
+  $ qemu-img create -f raw pram.img 256b
+
+  # Launch QEMU with blank disk and install CDROM
+  $ ./qemu-system-m68k \
+      -M q800 \
+      -m 128 \
+      -bios Quadra800.rom \
+      -drive file=pram.img,format=raw,if=mtd \
+      -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
+      -device scsi-hd,scsi-id=0,drive=hd \
+      -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
+      -device scsi-cd,scsi-id=3,drive=cd
+
+And off you go! For more in-depth information about the installation process
+I highly recommend the installation guide over at emaculation.com [1].
+Compatibility is generally very good, and I'm pleased to report it is possible
+to run one of the most popular productivity apps from the 90s [2].
+
+I'd like to add a big thank you to all the people who have helped me work on
+this series, including testing on real hardware, answering questions about
+MacOS Classic internals and helping to diagnose and fix bugs in the 68k
+emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
+Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
+Elliot Nunn, and SolraBizna.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[1] https://www.emaculation.com/doku.php/qemu
+[2] https://www.youtube.com/watch?v=yI21gURQ1Ew
 
 
-> 
-> # Current limitations
-> 
-> The main limitation of this patch series is the statically enforced
-> permissions. This is not an issue for kernels without module but this needs to
-> be addressed.  Mechanisms that dynamically impact kernel executable memory are
-> not handled for now (e.g., kernel modules, tracepoints, eBPF JIT), and such
-> code will need to be authenticated.  Because the hypervisor is highly
-> privileged and critical to the security of all the VMs, we don't want to
-> implement a code authentication mechanism in the hypervisor itself but delegate
-> this verification to something much less privileged. We are thinking of two
-> ways to solve this: implement this verification in the VMM or spawn a dedicated
-> special VM (similar to Windows's VBS). There are pros on cons to each approach:
-> complexity, verification code ownership (guest's or VMM's), access to guest
-> memory (i.e., confidential computing).
+Mark Cave-Ayland (30):
+  q800: fix up minor spacing issues in hw_compat_q800 GlobalProperty
+    array
+  q800: introduce Q800MachineState
+  q800: rename q800_init() to q800_machine_init()
+  q800: move CPU object into Q800MachineState
+  q800: move ROM memory region to Q800MachineState
+  q800: move GLUE device to Q800MachineState
+  q800: introduce mac-io container memory region
+  q800: reimplement mac-io region aliasing using IO memory region
+  q800: add djMEMC memory controller
+  q800: add machine id register
+  q800: implement additional machine id bits on VIA1 port A
+  q800: add IOSB subsystem
+  q800: allow accesses to RAM area even if less memory is available
+  audio: add Apple Sound Chip (ASC) emulation
+  asc: generate silence if FIFO empty but engine still running
+  q800: add Apple Sound Chip (ASC) audio to machine
+  q800: add easc bool machine class property to switch between ASC and
+    EASC
+  swim: add trace events for IWM and ISM registers
+  swim: split into separate IWM and ISM register blocks
+  swim: update IWM/ISM register block decoding
+  mac_via: work around underflow in TimeDBRA timing loop in SETUPTIMEK
+  mac_via: fix rtc command decoding from PRAM addresses 0x0 to 0xf
+  mac_via: fix rtc command decoding for the PRAM seconds registers
+  mac_via: workaround NetBSD ADB bus enumeration issue
+  mac_via: implement ADB_STATE_IDLE state if shift register in input
+    mode
+  mac_via: always clear ADB interrupt when switching to A/UX mode
+  q800: add ESCC alias at 0xc000
+  q800: add alias for MacOS toolbox ROM at 0x40000000
+  mac_via: extend timer calibration hack to work with A/UX
+  mac_via: work around QEMU unaligned MMIO access bug
 
-Do you foresee the performance regressions due to lot of tracking here? 
-Production kernels do have lot of tracepoints and we use it as feature 
-in the GKI kernel for the vendor hooks implementation and in those cases 
-every vendor driver is a module. Separate VM further fragments this 
-design and delegates more of it to proprietary solutions?
+ MAINTAINERS               |   7 +
+ hw/audio/Kconfig          |   3 +
+ hw/audio/asc.c            | 691 ++++++++++++++++++++++++++++++++++++++
+ hw/audio/meson.build      |   1 +
+ hw/audio/trace-events     |  10 +
+ hw/block/swim.c           | 261 +++++++++-----
+ hw/block/trace-events     |   8 +
+ hw/m68k/Kconfig           |   3 +
+ hw/m68k/q800.c            | 312 ++++++++++++++---
+ hw/misc/Kconfig           |   6 +
+ hw/misc/djmemc.c          | 154 +++++++++
+ hw/misc/iosb.c            | 156 +++++++++
+ hw/misc/mac_via.c         | 288 +++++++++++++++-
+ hw/misc/meson.build       |   2 +
+ hw/misc/trace-events      |  11 +
+ include/hw/audio/asc.h    |  75 +++++
+ include/hw/block/swim.h   |  21 +-
+ include/hw/m68k/q800.h    |  50 +++
+ include/hw/misc/djmemc.h  |  46 +++
+ include/hw/misc/iosb.h    |  41 +++
+ include/hw/misc/mac_via.h |   7 +-
+ 21 files changed, 1993 insertions(+), 160 deletions(-)
+ create mode 100644 hw/audio/asc.c
+ create mode 100644 hw/misc/djmemc.c
+ create mode 100644 hw/misc/iosb.c
+ create mode 100644 include/hw/audio/asc.h
+ create mode 100644 include/hw/m68k/q800.h
+ create mode 100644 include/hw/misc/djmemc.h
+ create mode 100644 include/hw/misc/iosb.h
 
-Do you have any performance numbers w/ current RFC?
+-- 
+2.30.2
 
----Trilok Soni
 
