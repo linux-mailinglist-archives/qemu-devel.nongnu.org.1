@@ -2,69 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BD770FEF4
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 22:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6965370FEFC
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 22:11:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1uge-0004Ba-AB; Wed, 24 May 2023 16:02:20 -0400
+	id 1q1unh-0008RA-Jk; Wed, 24 May 2023 16:09:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1ugc-0004BK-Gd
- for qemu-devel@nongnu.org; Wed, 24 May 2023 16:02:18 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1q1unf-0008R2-OV
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 16:09:35 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1ugb-0001z3-0W
- for qemu-devel@nongnu.org; Wed, 24 May 2023 16:02:18 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-64d3491609fso1027156b3a.3
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 13:02:15 -0700 (PDT)
+ id 1q1und-0003Bz-SV
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 16:09:35 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-52867360efcso558666a12.2
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 13:09:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684958534; x=1687550534;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=o6cJbzSvYvQOTGDtz8/CCuAgm74mnMDf42v4W8C12Tg=;
- b=zy8PP7c7oDa2jK3hIASl9H64D4L6pE8jDIAlaFjQZWR9R9Bm3HZd5P2lyEyz0rhuJS
- H2ct0RuQ6XLWQ6oWbLIDQ38w94wVY5ZuJLlLOKsFpQpDMF5135kj4yz5h2hjBctx6EZ7
- 7cfvnwYWUVAzocAqtQtk0bsU9GpEoONVTcxemykLjgnmzwTlnMYXS1W/nt1cPrJ/U7Jx
- sjGgHB4tlTxQgBLQmPLBacA6jNdh+QWBLUi9meqfWW7RJk49Xdn+/CnI1ksp4bvPcNvz
- CtbdFTzH6lNfnc/Rs9DRApf2XcFEoegueLoUxgF5jharQyZq/wIp6lW6JnCXrpUcrI0I
- ERww==
+ d=linaro.org; s=google; t=1684958972; x=1687550972;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vzWfapRqWf1J7ulEfahuGQQiOOxlJodOrEc7Xqm1JYo=;
+ b=rTaaN1/GPYDDzWTRAv6DALU4omzmBoPcMDXzQxgCIFxqVLn7owPPp2nsRG+Zyt2fwG
+ IpwsVEc5+ZF+xiiBKgoEVZC+pFr1KAW5powg8pswVu+9/d17EqH/sRAHShztJHLjL0+3
+ T3a+98d5tBoO+SL306t35CrcajY5gTjy7Vyh5rIN9alznVJUnRvc33Rpx19q+MGuZRVU
+ KiJgT16r/OplMqedaIGLhYNdIF9GEAzod0xtGZtGhhrITMeoDuz+gRFXlWBFfK7DkyM0
+ L7G69Npk8cOus6bZ11uJVrr+pf7YPp6y44Ty+K6GWH4P6abd4v8TRM3nletRAzobY1hi
+ soFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684958534; x=1687550534;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o6cJbzSvYvQOTGDtz8/CCuAgm74mnMDf42v4W8C12Tg=;
- b=lACDLn69lAccGk8A6FZegCIouFdIOrd3t1SwHezv12+tiOoY0mnz8O1/xavuPQvBmf
- wMaXJuHFvfi4O6shlgfWsLIw1CcK292koXgj1GXj0F4LrGnzGnOXWQlGGPi5LekLF1C4
- DYD3vt7IClXO2dNGvX/3uEotnCGYUjMjepOM18xXBwfi5L59UB857k3DLxfjleFiwpfV
- YxURTBwNKi7zUCPEKvfiK2eXm8MnCXXRfK7nk4E+PweaTu4Kp0Mgls0Zeum/6azeqlwD
- S2bdrfaHGV+GOkz7bU4JAKq7Vd6wvktK2i+aybaW/KutBlnp1OQiCTwaMPqXLuwkWvDO
- Oqjg==
-X-Gm-Message-State: AC+VfDy0Ovu/hsOsMpSif3Aw8mQNqbCJW9H0/LK0eMi9GRhZGgIA9Pyz
- za20Md/a9eISLO+mCGxqaBmbsf2/25zpUtBr00I=
-X-Google-Smtp-Source: ACHHUZ5TjFuns05dmwvpWoxZyJbkBjo4nMCz4r9FJIsBguMgJLAh/ebrbq2ATekCFDFofopotQP88g==
-X-Received: by 2002:a17:903:2303:b0:1af:a03:8d82 with SMTP id
- d3-20020a170903230300b001af0a038d82mr19489397plh.57.1684958534351; 
- Wed, 24 May 2023 13:02:14 -0700 (PDT)
-Received: from stoup.. ([2602:ae:1598:4c01:6b03:9af2:33c1:3d6b])
+ d=1e100.net; s=20221208; t=1684958972; x=1687550972;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=vzWfapRqWf1J7ulEfahuGQQiOOxlJodOrEc7Xqm1JYo=;
+ b=jVnQ/f+hVE/nVZuJSHd3ZE2NB6fqgnpyCcaRDJb7jOZ42pz34+RDxj2mZaj6qlk4sC
+ dQyvAsg7bTQyxKweU9/v3ELkK0pwoJYOoBE6/d5AV3oBp40gzBae0e5C30PY86dmgwGH
+ qwGtZgYWuiyQ2WQOZYjCKMw5XBZmM2mPTxbIdBo8wxsJQI74WBpSVU7zjFor5IdVNQhY
+ iAEG1KUviHn/Cf+4mPWTuuw0TZfCPXU+6AFd2YZP4nf8Ts4CgQe0jo0pHrve6hea9pgq
+ FjcpassL3YRWt4YA/4ihNfc6ssEveDFmEDfd9zHsMt8H7y3qo8sX9cfvlidchwOEYSDO
+ QCyg==
+X-Gm-Message-State: AC+VfDyW++NprlEW3jkKef7hQcY5acWFBJZI3zgospsTEsnZkR2IlbLb
+ A3/FzcKPLshrrd7/0ZJr0ZACV7QkGfHTivTYRyo=
+X-Google-Smtp-Source: ACHHUZ6ncfEHPDDF9n5/uiULtTBTpiu7TSd1Z31g+/N24gZlxD5QEPXu4OmfPu7u8iNaSsNCRINcPg==
+X-Received: by 2002:a17:903:1112:b0:1aa:f818:7a23 with SMTP id
+ n18-20020a170903111200b001aaf8187a23mr21022372plh.27.1684958972490; 
+ Wed, 24 May 2023 13:09:32 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:6b03:9af2:33c1:3d6b?
+ ([2602:ae:1598:4c01:6b03:9af2:33c1:3d6b])
  by smtp.gmail.com with ESMTPSA id
- 21-20020a170902c11500b001a98f064a2asm9151705pli.48.2023.05.24.13.02.13
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 May 2023 13:02:13 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH] tcg: Fix register move type in tcg_out_ld_helper_ret
-Date: Wed, 24 May 2023 13:02:12 -0700
-Message-Id: <20230524200212.1354804-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ l12-20020a170902d34c00b001a63ba28052sm9149901plk.69.2023.05.24.13.09.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 May 2023 13:09:32 -0700 (PDT)
+Message-ID: <b7ef4d65-1b2c-c435-b448-9b6bec39cd96@linaro.org>
+Date: Wed, 24 May 2023 13:09:30 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To: Eldon Stegall <eldon-qemu@eldondev.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Subject: New container build error: mountpoint does not exit
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,32 +93,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The first move was incorrectly using TCG_TYPE_I32 while the second
-move was correctly using TCG_TYPE_REG.  This prevents a 64-bit host
-from moving all 128-bits of the return value.
+Hi Eldon,
 
-Fixes: ebebea53ef8 ("tcg: Support TCG_TYPE_I128 in tcg_out_{ld,st}_helper_{args,ret}")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/tcg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+New this morning are some odd failures in the container build stage, e.g
 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index ac30d484f5..2352ca4ade 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -5736,8 +5736,8 @@ static void tcg_out_ld_helper_ret(TCGContext *s, const TCGLabelQemuLdst *ldst,
-     mov[0].dst = ldst->datalo_reg;
-     mov[0].src =
-         tcg_target_call_oarg_reg(TCG_CALL_RET_NORMAL, HOST_BIG_ENDIAN);
--    mov[0].dst_type = TCG_TYPE_I32;
--    mov[0].src_type = TCG_TYPE_I32;
-+    mov[0].dst_type = TCG_TYPE_REG;
-+    mov[0].src_type = TCG_TYPE_REG;
-     mov[0].src_ext = TCG_TARGET_REG_BITS == 32 ? MO_32 : MO_64;
- 
-     mov[1].dst = ldst->datahi_reg;
--- 
-2.34.1
+https://gitlab.com/qemu-project/qemu/-/jobs/4345796216#L235
 
+cgroups: cgroup mountpoint does not exist: unknown
+
+There are several such failures in that pipeline. I've not seen this before, nor was it 
+happening yesterday.
+
+Any ideas?
+
+
+r~
 
