@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0ACF70FFC6
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 23:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F18C970FFD1
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 23:13:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1vnD-0006Fw-8Y; Wed, 24 May 2023 17:13:11 -0400
+	id 1q1vnJ-0007Hk-7i; Wed, 24 May 2023 17:13:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vn9-0005vj-4u
- for qemu-devel@nongnu.org; Wed, 24 May 2023 17:13:07 -0400
+ id 1q1vnF-00070m-Pm
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 17:13:13 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vn7-0002JR-AD
- for qemu-devel@nongnu.org; Wed, 24 May 2023 17:13:06 -0400
+ id 1q1vnC-0002KI-Mb
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 17:13:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=U2U5OEm7QFAvoVpU8mTDsKr9yywgDGzYKhTMIGnYMbc=; b=DmIrvLiDSRLD2EFKib04b61NiK
- WqS7IiLkYXI5nBZixsfpT8OC5pXyzrKQ1YmPAEn1cx0p5A/r4gnLuQkng8XnpEs23X7oLaDK1RNuG
- 7vtQ+/cj7dgs2ty0AzZkIKlLcd8OKgohsit2NZuVv4D05/F4XgmxcibJoimm6A76f1aeDsEEOsU/a
- lTNfb8CvAxgsGzx1l9o2ewP4Jk6lvTSWShNSAOUlBLXHU8q8dt67RXn/1Qz006UM2+cu6OIKqwwdu
- 14jJezhpvdsdGGVPYnckIqI8jViCCHBfIRz4ADRaVeaDtjciUYhtn40v0zsVqyZKkxgGJQOrmnUpp
- 9uXd52gH9ICGmApmYU4+5bYMcUSugbB+hWwXRIgPAPAa1ZO78EhG1UQ9i4qk0N4p2zNuBDgBHvmyi
- gnHuVMF0nCf6wIjRP5tuybThJV/rwndIbIjNUEBgPKFsuCSMlA4qCV8bHk0Pok5CtPUBKNQeM20xX
- 04WEi9qb6rFcKPY0tkzA9BbUPegophkYjzjN81+CYjosBOfDBttccdeqh815NDryYQgkLSj63AO4R
- rR9oYYa9jxMbV+1eZiJDHP0S8CCkcYISn3A8FmOLbmqJEoLYWH/pVtVA7JFmYXRQle8sv0CUqGzjx
- QYTL2MKAaaTS8fyL68YmmsAq8agmQiFP4gvNyc7cI=;
+ bh=W0B8qcuLZ3opG8CQ/3oV6l6s2KGTedCPNPswvMXxdxA=; b=vEPtHr0yzkVJ+xuUR+gWiFHxB4
+ 5EKkUMTcciSXOb5cxY4JVxWj09dSMARUc3xtra28CB58DAMSZGxhrzLWspreZok5vmSXLeiBHOlF1
+ VIWc2/eT4yHE82ZXMVGT7P3P7FBby42+anVa1UZ9s4TqXveKYqBRxb0IoBzVsYDQgI42MJ1HZxqah
+ GmKHHfzjZTIDlCyekt85kQEF6NDTJLUvpjf7YktWwxnTMbbZ6RF60yqSeOt/2TI7I8eWPbdJDtqDO
+ Y8C1CSi6aj29E18SVs4B2HUSPt6RlCv9Swc0jIY8d21eqZTg8btAQcavf8efXXseSt6j84tSJerVg
+ UUrpRzSmPB745uYKQIquN1iAMcHS7r98Dolv+O+qhQqkLPB9dmzRBLdhf3JrAcf9Ih0fglKJKDmwg
+ HX2FGMSu8pwBKt0qngh4yn0iV82gDmXeNB4YCZb2g2VWvwyX1SZkfmUZFxu+ed6oxu/rExpIdgFI/
+ Y9Barex60g6pHW0Tenj/zKaBbqx3wOW4iMJ9IwNhNSK253lIaJridEpxXod/Opt4IThL73XauIos3
+ hKStmx7Pe1yiZfg7U4ipiwWaSYpRTRUQ1Eqt/7/Xh/d98aWnSXMLZc5nkHhPSzZo6Rr/DoxF8dpxM
+ mPiLGzzBVUi1jjyzFRlYpyMbc118oG4jyxB6liKxc=;
 Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vmp-0005XR-KN; Wed, 24 May 2023 22:12:51 +0100
+ id 1q1vmt-0005XR-Q6; Wed, 24 May 2023 22:12:56 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 24 May 2023 22:11:03 +0100
-Message-Id: <20230524211104.686087-30-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 24 May 2023 22:11:04 +0100
+Message-Id: <20230524211104.686087-31-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
 References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 29/30] mac_via: extend timer calibration hack to work with A/UX
+Subject: [PATCH 30/30] mac_via: work around QEMU unaligned MMIO access bug
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,105 +76,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The A/UX timer calibration loop runs continuously until 2 consecutive iterations
-differ by at least 0x492 timer ticks. Modern hosts execute the timer calibration
-loop so fast that this situation never occurs causing a hang on boot.
+During the kernel timer calibration routine A/UX performs an unaligned access
+across the T1CL and T1CH registers to read the entire 16-bit value in a
+single memory access.
 
-Use a similar method to Shoebill which is to randomly add 0x500 to the T2
-counter value during calibration to enable it to eventually succeed.
+This triggers a bug in the QEMU softtlb implementation whereby the 2 separate
+accesses are combined incorrectly losing the high byte of the counter (see
+https://gitlab.com/qemu-project/qemu/-/issues/360 for more detail). Since
+A/UX requires a minimum difference of 0x500 between 2 subsequent reads to
+succeed then this causes the timer calibration routine to get stuck in an
+infinite loop.
+
+Add a temporary workaround for the QEMU unaligned MMIO access bug whereby
+these special accesses are detected and the 8-byte result copied into both
+halves of the 16-bit access which allows the existing softtlb implementation
+to return the correct result.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/misc/mac_via.c | 55 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 53 insertions(+), 2 deletions(-)
+ hw/m68k/q800.c            |  1 +
+ hw/misc/mac_via.c         | 42 +++++++++++++++++++++++++++++++++++++++
+ hw/misc/trace-events      |  1 +
+ include/hw/misc/mac_via.h |  4 +++-
+ 4 files changed, 47 insertions(+), 1 deletion(-)
 
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index bf4acb5db7..918cc8f695 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -443,6 +443,7 @@ static const MemoryRegionOps macio_alias_ops = {
+     .valid = {
+         .min_access_size = 1,
+         .max_access_size = 4,
++        .unaligned = true,     /* For VIA1 via1_unaligned_hack_state() */
+     },
+ };
+ 
 diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index ee44cb4437..4ec1ee18dd 100644
+index 4ec1ee18dd..45c8dee9f4 100644
 --- a/hw/misc/mac_via.c
 +++ b/hw/misc/mac_via.c
-@@ -973,6 +973,7 @@ static void via1_timer_calibration_hack(MOS6522Q800VIA1State *v1s, int addr,
-             v1s->timer_hack_state = 4;
-         }
-         break;
-+
-     case 4:
-         /*
-          * This is the normal post-calibration timer state: we should
-@@ -983,6 +984,38 @@ static void via1_timer_calibration_hack(MOS6522Q800VIA1State *v1s, int addr,
-             /* Looks like there has been a reset? */
-             v1s->timer_hack_state = 1;
-         }
-+
-+        if (addr == VIA_REG_T2CL && val == 0xf0) {
-+            /* VIA_REG_T2CH: high byte of counter (A/UX) */
-+            v1s->timer_hack_state = 5;
-+        }
-+        break;
-+    case 5:
-+        if (addr == VIA_REG_T2CH && val == 0x3c) {
-+            /* VIA_REG_T2CL: low byte of counter (A/UX) */
-+            v1s->timer_hack_state = 6;
-+        } else {
-+            v1s->timer_hack_state = 0;
-+        }
-+        break;
-+    case 6:
-+        if ((addr == VIA_REG_IER && val == 0x20) || addr == VIA_REG_T2CH) {
-+            /* End of A/UX timer calibration routine, or another write */
-+            v1s->timer_hack_state = 7;
-+        } else {
-+            v1s->timer_hack_state = 0;
-+        }
-+        break;
-+    case 7:
-+        /*
-+         * This is the normal post-calibration timer state once both the
-+         * MacOS toolbox and A/UX have been calibrated, until we see a write
-+         * to VIA_REG_PCR to suggest a reset
-+         */
-+        if (addr == VIA_REG_PCR && val == 0x22) {
-+            /* Looks like there has been a reset? */
-+            v1s->timer_hack_state = 1;
-+        }
-         break;
-     default:
-         g_assert_not_reached();
-@@ -995,8 +1028,9 @@ static void via1_timer_calibration_hack(MOS6522Q800VIA1State *v1s, int addr,
+@@ -1026,12 +1026,47 @@ static void via1_timer_calibration_hack(MOS6522Q800VIA1State *v1s, int addr,
+     }
+ }
  
++static bool via1_unaligned_hack_state(MOS6522Q800VIA1State *v1s, hwaddr addr,
++                                      int size)
++{
++    /*
++     * Workaround for bug in QEMU whereby load_helper() doesn't correctly
++     * handle combining unaligned memory accesses: see QEMU issue
++     * https://gitlab.com/qemu-project/qemu/-/issues/360 for all the
++     * details.
++     *
++     * Its only known use is during the A/UX timer calibration loop which
++     * runs on kernel startup.
++     */
++    switch (v1s->unaligned_hack_state) {
++    case 0:
++        /* First half of unaligned access */
++        if (addr == 0x11fe && size == 2) {
++            v1s->unaligned_hack_state = 1;
++            trace_via1_unaligned_hack_state(v1s->unaligned_hack_state);
++            return true;
++        }
++        return false;
++    case 1:
++        /* Second half of unaligned access */
++        if (addr == 0x1200 && size == 2) {
++            v1s->unaligned_hack_state = 0;
++            trace_via1_unaligned_hack_state(v1s->unaligned_hack_state);
++            return true;
++        }
++        return false;
++    default:
++        g_assert_not_reached();
++    }
++}
++
  static uint64_t mos6522_q800_via1_read(void *opaque, hwaddr addr, unsigned size)
  {
--    MOS6522Q800VIA1State *s = MOS6522_Q800_VIA1(opaque);
--    MOS6522State *ms = MOS6522(s);
-+    MOS6522Q800VIA1State *v1s = MOS6522_Q800_VIA1(opaque);
-+    MOS6522State *ms = MOS6522(v1s);
-+    int64_t now;
+     MOS6522Q800VIA1State *v1s = MOS6522_Q800_VIA1(opaque);
+     MOS6522State *ms = MOS6522(v1s);
+     int64_t now;
      uint64_t ret;
++    hwaddr oldaddr = addr;
  
      addr = (addr >> 9) & 0xf;
-@@ -1007,6 +1041,23 @@ static uint64_t mos6522_q800_via1_read(void *opaque, hwaddr addr, unsigned size)
-         /* Quadra 800 Id */
-         ret = (ret & ~VIA1A_CPUID_MASK) | VIA1A_CPUID_Q800;
+     ret = mos6522_read(ms, addr, size);
+@@ -1059,6 +1094,12 @@ static uint64_t mos6522_q800_via1_read(void *opaque, hwaddr addr, unsigned size)
+         }
          break;
-+    case VIA_REG_T2CH:
-+        if (v1s->timer_hack_state == 6) {
-+            /*
-+             * The A/UX timer calibration loop runs continuously until 2
-+             * consecutive iterations differ by at least 0x492 timer ticks.
-+             * Modern hosts execute the timer calibration loop so fast that
-+             * this situation never occurs causing a hang on boot. Use a
-+             * similar method to Shoebill which is to randomly add 0x500 to
-+             * the T2 counter value during calibration to enable it to
-+             * eventually succeed.
-+             */
-+            now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+            if (now & 1) {
-+                ret += 0x5;
-+            }
-+        }
-+        break;
      }
++
++    if (via1_unaligned_hack_state(v1s, oldaddr, size)) {
++        /* Splat return byte into word to fix unaligned access combine */
++        ret |= ret << 8;
++    }
++
      return ret;
  }
+ 
+@@ -1126,6 +1167,7 @@ static const MemoryRegionOps mos6522_q800_via1_ops = {
+     .valid = {
+         .min_access_size = 1,
+         .max_access_size = 4,
++        .unaligned = true,     /* For VIA1 via1_unaligned_hack_state() */
+     },
+ };
+ 
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index 7206bd5d93..8867cef356 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -252,6 +252,7 @@ via1_adb_poll(uint8_t data, const char *vadbint, int status, int index, int size
+ via1_adb_netbsd_enum_hack(void) "using NetBSD enum hack"
+ via1_auxmode(int mode) "setting auxmode to %d"
+ via1_timer_hack_state(int state) "setting timer_hack_state to %d"
++via1_unaligned_hack_state(int state) "setting unaligned_hack_state to %d"
+ 
+ # grlib_ahb_apb_pnp.c
+ grlib_ahb_pnp_read(uint64_t addr, unsigned size, uint32_t value) "AHB PnP read addr:0x%03"PRIx64" size:%u data:0x%08x"
+diff --git a/include/hw/misc/mac_via.h b/include/hw/misc/mac_via.h
+index 63cdcf7c69..0a12737552 100644
+--- a/include/hw/misc/mac_via.h
++++ b/include/hw/misc/mac_via.h
+@@ -77,8 +77,10 @@ struct MOS6522Q800VIA1State {
+ 
+     /* SETUPTIMEK hack */
+     int timer_hack_state;
+-};
+ 
++    /* Unaligned access hack */
++    int unaligned_hack_state;
++};
+ 
+ /* VIA 2 */
+ #define VIA2_IRQ_SCSI_DATA_BIT  CA2_INT_BIT
 -- 
 2.30.2
 
