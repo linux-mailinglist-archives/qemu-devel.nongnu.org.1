@@ -2,42 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2655C70F166
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 10:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F158870F165
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 10:48:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1k9s-0001gr-0z; Wed, 24 May 2023 04:47:48 -0400
+	id 1q1k9r-0001gp-Mg; Wed, 24 May 2023 04:47:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=pqJs=BN=redhat.com=clg@ozlabs.org>)
- id 1q1k9p-0001ep-FU
+ id 1q1k9p-0001eo-DM
  for qemu-devel@nongnu.org; Wed, 24 May 2023 04:47:45 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=pqJs=BN=redhat.com=clg@ozlabs.org>)
- id 1q1k9n-0002Lx-Mk
+ id 1q1k9n-0002MO-Oj
  for qemu-devel@nongnu.org; Wed, 24 May 2023 04:47:45 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QR4ZF1gV1z4x3m;
- Wed, 24 May 2023 18:47:33 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QR4ZJ3QDcz4x4N;
+ Wed, 24 May 2023 18:47:36 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QR4ZC1nSxz4x3g;
- Wed, 24 May 2023 18:47:30 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QR4ZF5SJ6z4x3g;
+ Wed, 24 May 2023 18:47:33 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 0/2] vfio queue
-Date: Wed, 24 May 2023 10:47:22 +0200
-Message-Id: <20230524084724.2511267-1-clg@redhat.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 1/2] vfio/pci: Fix a use-after-free issue
+Date: Wed, 24 May 2023 10:47:23 +0200
+Message-Id: <20230524084724.2511267-2-clg@redhat.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230524084724.2511267-1-clg@redhat.com>
+References: <20230524084724.2511267-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -64,32 +69,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit aa33508196f4e2da04625bee36e1f7be5b9267e7:
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-  Merge tag 'mem-2023-05-23' of https://github.com/davidhildenbrand/qemu into staging (2023-05-23 10:57:25 -0700)
+vbasedev->name is freed wrongly which leads to garbage VFIO trace log.
+Fix it by allocating a dup of vbasedev->name and then free the dup.
 
-are available in the Git repository at:
+Fixes: 2dca1b37a760 ("vfio/pci: add support for VF token")
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Acked-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/vfio/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20230524
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index bf27a3990564..73874a94de12 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2994,7 +2994,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+         qemu_uuid_unparse(&vdev->vf_token, uuid);
+         name = g_strdup_printf("%s vf_token=%s", vbasedev->name, uuid);
+     } else {
+-        name = vbasedev->name;
++        name = g_strdup(vbasedev->name);
+     }
+ 
+     ret = vfio_get_device(group, name, vbasedev, errp);
+-- 
+2.40.1
 
-for you to fetch changes up to dbdea0dbfe2cef9ef6c752e9077e4fc98724194c:
-
-  util/vfio-helpers: Use g_file_read_link() (2023-05-24 09:21:22 +0200)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Fix for a memory corruption due to an extra free
-* Fix for a compile breakage
-
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      util/vfio-helpers: Use g_file_read_link()
-
-Zhenzhong Duan (1):
-      vfio/pci: Fix a use-after-free issue
-
- hw/vfio/pci.c       | 2 +-
- util/vfio-helpers.c | 8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
 
