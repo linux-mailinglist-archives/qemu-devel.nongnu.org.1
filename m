@@ -2,53 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF2170F3FD
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA9670F42C
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:28:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1lZv-0003SZ-Uo; Wed, 24 May 2023 06:18:47 -0400
+	id 1q1lhy-0007Yi-2h; Wed, 24 May 2023 06:27:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1lZn-0003Px-Vd; Wed, 24 May 2023 06:18:39 -0400
-Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1lZk-0006dQ-8N; Wed, 24 May 2023 06:18:39 -0400
-Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id A89E4260BBC;
- Wed, 24 May 2023 12:18:34 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at juszkiewicz.com.pl
-Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
- by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id nOMNevhq1k0c; Wed, 24 May 2023 12:18:33 +0200 (CEST)
-Received: from applejack.lan (83.21.125.167.ipv4.supernova.orange.pl
- [83.21.125.167])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id E4F35260C32;
- Wed, 24 May 2023 12:18:30 +0200 (CEST)
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH v2 5/5] hw/arm/sbsa-ref: use MachineClass->default_display
-Date: Wed, 24 May 2023 12:18:23 +0200
-Message-Id: <20230524101823.810737-5-marcin.juszkiewicz@linaro.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230524101823.810737-1-marcin.juszkiewicz@linaro.org>
-References: <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
- <20230524101823.810737-1-marcin.juszkiewicz@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q1lht-0007XW-KJ
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 06:27:01 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q1lhT-0000Fl-3w
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 06:27:00 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-510f525e06cso1759389a12.2
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 03:26:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684923990; x=1687515990;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=a9f6EDMg8YEdFnJeREidO18b8o+K6y8nrTE5EGasYD0=;
+ b=Gic+DaeNBUmQCM+IrL8TpQuH2rnqW2vNVFZN32/uGduafgyfy/c9NrKKjSVbXJmuvh
+ oDnm4aEugeaQTFnwurIvTzpEPtjAlQoHFuqGvAP44uoR1tlJtNKcno1OkqVgC3avsFEZ
+ pK/lNW38SuKIqlE6IkEWBV1Y7AwlCP3/crNzhzq83PFeb4fdgTmYyVAyR7w663WmZghq
+ S7gbnCUyb4OIl+5uf3eSJii3r0U58q6uJXEPZhQew/IFV8lgJmrkAsr81h8yipKQ7+5p
+ 6xJyYpQF4EL5K/NrjDtBTn07bVjiJzbwoOA/KUuyYHSzcp0Aaysoq89G1LCv9zeZnezH
+ EbDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684923990; x=1687515990;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=a9f6EDMg8YEdFnJeREidO18b8o+K6y8nrTE5EGasYD0=;
+ b=BIqUdFZCRd+2EBQXiPudZPj7QF6QbePcwLrXn9W8YsbKV56udTmjGZr2huyljIi+0p
+ 4U3C0FQcQyWv3w0KbY7vohy6YiUZBUaZ9it8kx7BtwI96kTq+pZ9PJWuub5yFS67B4M/
+ vjNqRRDzDs8kuUmqLvMP9mDPxMJOwgq6ik7j2ibkvrm8hTvF/zEzEgx3tLBN+mWDLn2e
+ mqrPiZuvPtpeYFOur6iDrLfdTPCtnzwqRuMvaLiPRQ/WCzlYp7xNsh0FkpCwK8lXDW+U
+ lMwGzJcuATlK0oZ7q6gzc9hCwTy/s97f2YLzuQvl3N/N8mtQVOGqcWPh/gvXdcvb2SDg
+ VmqQ==
+X-Gm-Message-State: AC+VfDzmYlR+7bleVbox9LQ5WI31V2swbaATa1yNrtGMvQRnisgro15c
+ nFcRAcC7gc5omOFrKmiuacbF5+U4K4WZ0K4Gaka2IsTrxlR0WHwn
+X-Google-Smtp-Source: ACHHUZ44Ns4/8YfxFOaZw7vFXbswC1pmHwpL0vrYqtK0igcamxvJobNl0eOOFZoWaYwsL9lA8yCBL5G158PIxHARc6A=
+X-Received: by 2002:aa7:d9c3:0:b0:50b:cae1:d7a3 with SMTP id
+ v3-20020aa7d9c3000000b0050bcae1d7a3mr1796293eds.14.1684923990265; Wed, 24 May
+ 2023 03:26:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: softfail client-ip=213.251.184.221;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_SOFTFAIL=0.665, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20230523120447.728365-1-peter.maydell@linaro.org>
+ <20230523120447.728365-7-peter.maydell@linaro.org>
+In-Reply-To: <20230523120447.728365-7-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 24 May 2023 11:26:04 +0100
+Message-ID: <CAFEAcA-5DvFB1JiCwj1Gb7WUST4-OAyJ8nYDQax_msFZuFNhnQ@mail.gmail.com>
+Subject: Re: [PATCH 6/6] tests/decode: Add tests for various named-field cases
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,38 +84,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mark the default graphica via the new MachineClass->default_display
-setting so that the machine-defaults code in vl.c can decide whether the
-default graphics is usable or not (for example when compiling with the
-"--without-default-devices" configure switch).
+On Tue, 23 May 2023 at 13:04, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> Add some tests for various cases of named-field use, both ones that
+> should work and ones that should be diagnosed as errors.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>  tests/decode/err_field1.decode       |  2 +-
+>  tests/decode/err_field10.decode      |  7 +++++++
+>  tests/decode/err_field7.decode       |  7 +++++++
+>  tests/decode/err_field8.decode       |  8 ++++++++
+>  tests/decode/err_field9.decode       | 14 ++++++++++++++
+>  tests/decode/succ_named_field.decode | 19 +++++++++++++++++++
+>  6 files changed, 56 insertions(+), 1 deletion(-)
+>  create mode 100644 tests/decode/err_field10.decode
+>  create mode 100644 tests/decode/err_field7.decode
+>  create mode 100644 tests/decode/err_field8.decode
+>  create mode 100644 tests/decode/err_field9.decode
+>  create mode 100644 tests/decode/succ_named_field.decode
+>
+> diff --git a/tests/decode/err_field1.decode b/tests/decode/err_field1.decode
+> index e07a5a73e0e..85c3f326d07 100644
+> --- a/tests/decode/err_field1.decode
+> +++ b/tests/decode/err_field1.decode
+> @@ -2,4 +2,4 @@
+>  # See the COPYING.LIB file in the top-level directory.
+>
+>  # Diagnose invalid field syntax
+> -%field asdf
+> +%field 1asdf
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
----
- hw/arm/sbsa-ref.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I just realized that this specific change needs to go before patch 5:
+it's updating an existing test because "asdf" used to be invalid
+syntax and now is not. Otherwise bisection will break.
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 9a3d77d6b6..30ce7f7db4 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -649,7 +649,7 @@ static void create_pcie(SBSAMachineState *sms)
-         }
- 
-         if (vga_interface_type != VGA_NONE) {
--            pci_create_simple(pci->bus, -1, "bochs-display");
-+            pci_create_simple(pci->bus, -1, mc->default_display);
-         }
-     }
- 
-@@ -865,6 +865,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_size = 1 * GiB;
-     mc->default_ram_id = "sbsa-ref.ram";
-     mc->default_cpus = 4;
-+    mc->default_display = "bochs-display";
-     mc->possible_cpu_arch_ids = sbsa_ref_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = sbsa_ref_cpu_index_to_props;
-     mc->get_default_cpu_node_id = sbsa_ref_get_default_cpu_node_id;
--- 
-2.40.1
-
+-- PMM
 
