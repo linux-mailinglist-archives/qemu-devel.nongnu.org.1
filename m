@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21BC70FC72
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 19:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 204EF70FCA0
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 19:27:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1s6Y-0006Mi-If; Wed, 24 May 2023 13:16:54 -0400
+	id 1q1sFT-0001vJ-V0; Wed, 24 May 2023 13:26:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1s6W-0006Im-8f
- for qemu-devel@nongnu.org; Wed, 24 May 2023 13:16:52 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1sFS-0001rn-0a
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 13:26:06 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1s6U-00064h-La
- for qemu-devel@nongnu.org; Wed, 24 May 2023 13:16:52 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-52cb78647ecso416353a12.1
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 10:16:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q1sFQ-0007ex-IR
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 13:26:05 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3f6094cb2ebso10224325e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 10:26:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684948609; x=1687540609;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=N1jCPZGzUZx2R5fAkIKTQSo4Ro/fUaj18sYgDSrz+4A=;
- b=RFPKkTSwV1Arzwea7frwbEDCGmGTihGcbLn0QcCIUYrCisXUmeYtfiUPJ5W7TlFyLG
- pE38MOjYny/gLvxfJ7a/CVBHVR233kvF9i92lkv2Fwc+/wNmSx3Zc5+LCyvsbsAmOlw0
- SCsR9SbvEP8izpEntz5PpWfkcvEWWxqrT7wF5+Px5IvsugEohPM5Ww15LrDVH1jNUNRN
- hgUJfa+Lccw99tSr2L61uh4Dvk66kqoQEZC5084W7MQMHN2tGllGcduibxwZ8xlggDtL
- sLsxd4flBGLm9140A/796dyceT6bc7NYaK6kAz9elKRadgO908DipuBfXz5bc08iBbuP
- Cb3w==
+ d=linaro.org; s=google; t=1684949163; x=1687541163;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Uzc2DFSoaAaI+P+gk8ZL2wWCBJdisEYgALqzw2L63wc=;
+ b=icsUH4mkbf/+eAn4S9FthF4X3fzAYAaSUqhAKjdKOSH2mj3tVanGQDawscdzyhGgHw
+ Gem2GKtesVeLO5aaJPyRNGiHh5jTaaBIiBvCXr9JpPNpLY9XSiuEdq27miRS7BZkq3tD
+ AMsu1k1IOmScHw1JO678ztgFVEevg2UhmD1++Ai6QttrXkvPu1kmSyUAP+RIAhAzmYwO
+ edBKQxepDD60LZXYP7vASCmW2Mup1VpMDZrndK/u0ptnJc2O2JQNVbKibx6tQjTS3bqz
+ BE8dSIpDi5TYGx6L95l5cDmbclxc1eIZJO9RWO55FIykXARLl8vYejM2llOPtxs3P0fr
+ rQog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684948609; x=1687540609;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N1jCPZGzUZx2R5fAkIKTQSo4Ro/fUaj18sYgDSrz+4A=;
- b=eeX3cQzYzHqwNC1E4Qv1+k8UQqnV+gDgIEoR2FJjHqka7CaKIdzakmGxNgwMisRAIX
- A7goM2YjxmQuDijIH1GJdzjgMm4eEtwXQceAKnYCQxhEk9/6t9Vdcj/1hTdJjZwhpGWK
- g4tEuVrUbzznN1sUscXa9gVL5h0EsgQAk/iBdX1NnhJ+dsQklEOb1S6fBbrkOyOqSxBu
- rg9xwajYvkWs1TFz+1p9zz3p1+z41mbrHXm3VJc1B9WwBm4IosN3acIYg09NxK0HB9J9
- SvNPZkI7kqlO3X66uxLIljWTcFD+pYB+AtRBhGrRXHGmcnvzCg/J0zbLAlWEwnqjQQiP
- ZDBQ==
-X-Gm-Message-State: AC+VfDxV9TT+2P9zycGnvYGwXCj/vw0NjvRIEiebxWhH/fu1z8ZV6dMj
- FtLC2zzewfEPIPIlHNhqS8+jXA==
-X-Google-Smtp-Source: ACHHUZ44d81YVv2kP6EKOI8IXZAXZpUxamijVlBR4VXHU3MBeHHHklUi6vJwHYtywDIxTJTP87Lvsw==
-X-Received: by 2002:a17:903:41cf:b0:1ad:bb89:16f6 with SMTP id
- u15-20020a17090341cf00b001adbb8916f6mr21771387ple.50.1684948609276; 
- Wed, 24 May 2023 10:16:49 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:6b03:9af2:33c1:3d6b?
- ([2602:ae:1598:4c01:6b03:9af2:33c1:3d6b])
+ d=1e100.net; s=20221208; t=1684949163; x=1687541163;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Uzc2DFSoaAaI+P+gk8ZL2wWCBJdisEYgALqzw2L63wc=;
+ b=XpEF7WuVr6yxBj+szMIfQx2tV9bh7Irg6ua+XNl9IXHwIJPtNvbOHGxVJeoj60WqSk
+ esiiiPt1VEcCdssEQMibZSPdxS+UGnWVU/ZMgGrcY/shIv76QjfxEsOvN9NWNCEKDd1s
+ Fgd6qIrW3F5FG50Xhwv2nY/bwegIwVO/64h2TPE6TS+Y2FCkej0avpzTLVvBHoPVc6Mk
+ R2PZOvWBZIdwcMhzRgKgfbazks2uoJ3nKpeIdri5lg1peIo3JeSbxYVFjQrgXmRPtCtC
+ PyvYVeGkDvudDp1Q0x6xbRaGfWmlL+yN63JLXi35XXgB0Lglv+BOz+54VYagro9xRBHj
+ vkhw==
+X-Gm-Message-State: AC+VfDwTBEAJVNW+mIMukNpURst8UY5/pacVPmEg0IkkupQoVyLXhFrq
+ PAWu/hqkFY9cgodR4AJdhSlzMg==
+X-Google-Smtp-Source: ACHHUZ7TBKhSXhKbEaoy7IhzIlLYWcYA4GsRG7LhQ+Q1rin+n0Vk+6BbYuA/I6ZFyHZfiVIUQ1WD6Q==
+X-Received: by 2002:a1c:7c05:0:b0:3f6:113f:9184 with SMTP id
+ x5-20020a1c7c05000000b003f6113f9184mr425982wmc.19.1684949162952; 
+ Wed, 24 May 2023 10:26:02 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- l12-20020a170902d34c00b0019e5fc21663sm8967437plk.218.2023.05.24.10.16.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 May 2023 10:16:48 -0700 (PDT)
-Message-ID: <c6a2f3a9-1d4e-36de-9841-ad28927a3554@linaro.org>
-Date: Wed, 24 May 2023 10:16:46 -0700
+ z10-20020a7bc7ca000000b003f602e2b653sm2989941wmk.28.2023.05.24.10.26.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 May 2023 10:26:02 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 294871FFBB;
+ Wed, 24 May 2023 18:26:02 +0100 (BST)
+References: <20230524165355.3157700-1-tsimpson@quicinc.com>
+ <20230524165355.3157700-2-tsimpson@quicinc.com>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Taylor Simpson <tsimpson@quicinc.com>
+Cc: richard.henderson@linaro.org, philmd@linaro.org, ale@rev.ng,
+ anjo@rev.ng, bcain@quicinc.com, quic_mathbern@quicinc.com,
+ quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/1] Hexagon (target/hexagon) Change Hexagon maintainer
+Date: Wed, 24 May 2023 18:24:27 +0100
+In-reply-to: <20230524165355.3157700-2-tsimpson@quicinc.com>
+Message-ID: <878rddvdxx.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] checkpatch: Prefer DEFINE_TYPES() over type_init /
- type_register_static
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230524145444.32820-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230524145444.32820-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.107,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,20 +98,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/24/23 07:54, Philippe Mathieu-Daudé wrote:
-> When multiple QOM types are registered in the same file, it
-> is clearer and simpler to use the the DEFINE_TYPES() macro.
-> 
-> Add a rule to checkpatch.pl to suggest using DEFINE_TYPES()
-> instead of type_init() / type_register_static().
-> 
-> Suggested-by: Daniel Henrique Barboza<dbarboza@ventanamicro.com>
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   scripts/checkpatch.pl | 6 ++++++
->   1 file changed, 6 insertions(+)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Taylor Simpson <tsimpson@quicinc.com> writes:
 
-r~
+> Change Hexagon maintainer from Taylor Simpson to Brian Cain
+> Put Taylor's gmail address in .mailmap
+>
+> Signed-off-by: Taylor Simpson <tsimpson@quicinc.com>
+
+Thanks for all your efforts getting in Hexagon up-streamed and
+supporting it over the years.
+
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
