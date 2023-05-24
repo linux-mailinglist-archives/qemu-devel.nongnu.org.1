@@ -2,96 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C135370FF57
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 22:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D940970FF83
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 22:55:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1vC1-0007F7-4r; Wed, 24 May 2023 16:34:45 -0400
+	id 1q1vUC-0003eF-62; Wed, 24 May 2023 16:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterz@infradead.org>)
- id 1q1vBt-0007CX-At
- for qemu-devel@nongnu.org; Wed, 24 May 2023 16:34:39 -0400
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterz@infradead.org>)
- id 1q1vBm-0008Tb-AW
- for qemu-devel@nongnu.org; Wed, 24 May 2023 16:34:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=xfybRCqfmly451via0zB+H/Q+AApSu2iaDmN5fGZ/x4=; b=IgXiGZt/AjIkZyk47M6JmzSETo
- 5JvYqmTY0S/6CNcf6rOgIUGkx8fCELILrDrVXemYkb5BPYKAn0HI2Y6XB5K+3xzooX2AKsZSw2rzz
- mh9MKJ/BLQiIqzzeKOeINobvgbeJqtrrw702L1m+480O4PgbeQxZTVHsPTxFOgTQXwjhkEFw9ES3j
- jYrlmoMd2O6KMc0tFDq7r+mdPcC6sbWD0mdmLQKvSrN/CRbmjwjlImLpNC1DyVuMY2O6L3UPugOJF
- IUkQyLOL6dwpJlAiac2Dvj+LDhnldubALNgI54EHmr7EPEHVm08LfHTcHZ65apsu3c2zLqTuflfCR
- 76pcnqHw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1q1vAx-00BWOr-Uz; Wed, 24 May 2023 20:33:40 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AD8D830013F;
- Wed, 24 May 2023 22:33:36 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id D6F5F20A78733; Wed, 24 May 2023 22:33:36 +0200 (CEST)
-Date: Wed, 24 May 2023 22:33:36 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Kautuk Consul <kconsul@linux.vnet.ibm.com>,
- Chao Peng <chao.p.peng@linux.intel.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
- linux-doc@vger.kernel.org, qemu-devel@nongnu.org,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Wanpeng Li <wanpengli@tencent.com>,
- Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
- Hugh Dickins <hughd@google.com>, Jeff Layton <jlayton@kernel.org>,
- "J . Bruce Fields" <bfields@fieldses.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Steven Price <steven.price@arm.com>,
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
- Vlastimil Babka <vbabka@suse.cz>, Vishal Annapurve <vannapurve@google.com>,
- Yu Zhang <yu.c.zhang@linux.intel.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- luto@kernel.org, jun.nakajima@intel.com, dave.hansen@intel.com,
- ak@linux.intel.com, david@redhat.com, aarcange@redhat.com,
- ddutile@redhat.com, dhildenb@redhat.com,
- Quentin Perret <qperret@google.com>,
- Michael Roth <michael.roth@amd.com>, mhocko@suse.com,
- Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH v7 08/14] KVM: Rename mmu_notifier_*
-Message-ID: <20230524203336.GC3447678@hirez.programming.kicks-ass.net>
-References: <20220706082016.2603916-1-chao.p.peng@linux.intel.com>
- <20220706082016.2603916-9-chao.p.peng@linux.intel.com>
- <ZGxo9ylqYI8JXjGn@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <ZGzLf4zgxpBjghaF@google.com>
- <ZG2qv9sWl2RUnGqd@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <ZG5wg3VbG4rCYrfk@google.com>
+ (Exim 4.90_1) (envelope-from <madvenka@linux.microsoft.com>)
+ id 1q1vU8-0003e7-Gy
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 16:53:28 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <madvenka@linux.microsoft.com>) id 1q1vU5-0005Cx-Ac
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 16:53:27 -0400
+Received: from [192.168.4.26] (unknown [47.186.50.133])
+ by linux.microsoft.com (Postfix) with ESMTPSA id E7B6E20FBA6D;
+ Wed, 24 May 2023 13:53:19 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E7B6E20FBA6D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1684961602;
+ bh=jaoGaATWl6qH0LBuT7PMpFhq3wR8UB0SRjcinmr2MGw=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=gdGCklkn+W2FG8nWXMknVmZRf7MOqfBXFQSg1XVTieJjYv2pZpbSK13nBh6SaoEhT
+ jcL639wc1nVXAHEnmQmaX6AIuaD25yFRRA9zSSEUAf6N/FK7V8PguD80UGHHcNbtZY
+ /rfQmT61JJHHOojvC0XgtjYl2COQYPXjTiszLZkM=
+Message-ID: <b1ffbf50-7728-64a1-5d46-10331a17530d@linux.microsoft.com>
+Date: Wed, 24 May 2023 15:53:18 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZG5wg3VbG4rCYrfk@google.com>
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=peterz@infradead.org; helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v1 2/9] KVM: x86/mmu: Add support for prewrite page
+ tracking
+To: Sean Christopherson <seanjc@google.com>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8?=
+ =?UTF-8?Q?n?= <mic@digikod.net>
+Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>, Liran Alon
+ <liran.alon@oracle.com>, Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <20230505152046.6575-1-mic@digikod.net>
+ <20230505152046.6575-3-mic@digikod.net> <ZFUumGdZDNs1tkQA@google.com>
+ <6412bf27-4d05-eab8-3db1-d4efa44af3aa@digikod.net>
+ <ZFU9YzqG/T+Ty9gY@google.com>
+Content-Language: en-US
+From: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>
+In-Reply-To: <ZFU9YzqG/T+Ty9gY@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=madvenka@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -198
+X-Spam_score: -19.9
+X-Spam_bar: -------------------
+X-Spam_report: (-19.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ NICE_REPLY_A=-0.107, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,30 +91,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 24, 2023 at 01:16:03PM -0700, Sean Christopherson wrote:
 
-> Atomics aren't memory barriers on all architectures, e.g. see the various
-> definitions of smp_mb__after_atomic().
+
+On 5/5/23 12:31, Sean Christopherson wrote:
+> On Fri, May 05, 2023, Mickaï¿½l Salaï¿½n wrote:
+>>
+>> On 05/05/2023 18:28, Sean Christopherson wrote:
+>>> I have no doubt that we'll need to solve performance and scaling issues with the
+>>> memory attributes implementation, e.g. to utilize xarray multi-range support
+>>> instead of storing information on a per-4KiB-page basis, but AFAICT, the core
+>>> idea is sound.  And a very big positive from a maintenance perspective is that
+>>> any optimizations, fixes, etc. for one use case (CoCo vs. hardening) should also
+>>> benefit the other use case.
+>>>
+>>> [1] https://lore.kernel.org/all/20230311002258.852397-22-seanjc@google.com
+>>> [2] https://lore.kernel.org/all/Y2WB48kD0J4VGynX@google.com
+>>> [3] https://lore.kernel.org/all/Y1a1i9vbJ%2FpVmV9r@google.com
+>>
+>> I agree, I used this mechanism because it was easier at first to rely on a
+>> previous work, but while I was working on the MBEC support, I realized that
+>> it's not the optimal way to do it.
+>>
+>> I was thinking about using a new special EPT bit similar to
+>> EPT_SPTE_HOST_WRITABLE, but it may not be portable though. What do you
+>> think?
 > 
-> Even if atomic operations did provide barriers, using an atomic would be overkill
-> and a net negative.  On strongly ordered architectures like x86, memory barriers are
-> just compiler barriers, whereas atomics may be more expensive. 
+> On x86, SPTEs are even more ephemeral than memslots.  E.g. for historical reasons,
+> KVM zaps all SPTEs if _any_ memslot is deleted, which is problematic if the guest
+> is moving around BARs, using option ROMs, etc.
+> 
+> ARM's pKVM tracks metadata in its stage-2 PTEs, i.e. doesn't need an xarray to
+> otrack attributes, but that works only because pKVM is more privileged than the
+> host kernel, and the shared vs. private memory attribute that pKVM cares about
+> is very, very restricted in how it can be used and changed.
+> 
+> I tried shoehorning private vs. shared metadata into x86's SPTEs in the past, and
+> it ended up being a constant battle with the kernel, e.g. page migration, and with
+> KVM itself, e.g. the above memslot mess.
 
-Not quite, smp_{r,w}mb() and smp_mb__{before,after}_atomic() are
-compiler barriers on the TSO archs, but smp_mb() very much isn't. TSO
-still allows stores to be delayed vs later loads (iow it doesn't pretend
-to hide the store buffer).
+Sorry for the delay in responding to this. I wanted to study the KVM code and fully
+understand your comment before responding.
 
-> Of course, the only
-> accesses outside of mmu_lock are reads, so on x86 that "atomic" access is just a
-> READ_ONCE() load, but that's not the case for all architectures.
+Yes, I quite agree with you. I will make an attempt to address this in the next version.
+I am working on it right now.
 
-This is true on *all* archs. atomic_set() and atomic_read() are no more
-and no less than WRITE_ONCE() / READ_ONCE().
+Thanks.
 
-> Anyways, the point is that atomics and memory barriers are different things that
-> serve different purposes.
-
-This is true; esp. on the weakly ordered architectures where atomics do
-not naturally imply any ordering.
+Madhavan
 
