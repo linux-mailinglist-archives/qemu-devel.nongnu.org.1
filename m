@@ -2,85 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB0870EC81
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 06:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BED70EC85
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 06:24:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1g0h-0000La-C4; Wed, 24 May 2023 00:22:03 -0400
+	id 1q1g2L-000111-Qc; Wed, 24 May 2023 00:23:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1g0e-0000L5-Ke
- for qemu-devel@nongnu.org; Wed, 24 May 2023 00:22:00 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q1g0c-0006yL-O5
- for qemu-devel@nongnu.org; Wed, 24 May 2023 00:22:00 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-64d1e96c082so313940b3a.1
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 21:21:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1684902117; x=1687494117;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bZh4NyyyBk8B5rLzJKawJuBggrYGxexQpXUHwb3xZNw=;
- b=v6FJCmITcSgjWZLQUn2juQ3r0vTHo5jcd0Xw6aogBrUwtiQ9pOLXWpDguUFsAmVDLN
- bJGn4nR+gqJV/dRpwsK+6yVv//SIuwP/Sk3gsgzgFbAZ2eDaMJp9J0NNth1uUycNYbYB
- fq/C17NUReipBadNPF+pTz9ODGHg29DJKF2J5rYciv6O7iwpVgWtJtrLSdKtvmfMgJAd
- uxTU1ihl0k/6azmFZ8k/aBTYQzyIWFYurTH/rM8+bq/nQgwEUMApUFGJGCcJOS52S5Ms
- XcJnwTdKD+CC8etj6swmGP63IUZQBaHFpubAwWwOEVvAmgWmkPltjR/nDxPr4Kvq9Eor
- BXvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684902117; x=1687494117;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bZh4NyyyBk8B5rLzJKawJuBggrYGxexQpXUHwb3xZNw=;
- b=WhJTMphE9XBIijtDDPesBeYqW7hP+RZB7rv+rA3DeQwooVjMkatn9E4bjmXltx5r/h
- mYZMp0MfFJqoN5i3X9+t0e5FgvAIYnqQVBlWDV5S6iOwJzS6LMcCJa8kYwrU7gIfQPds
- HiZSCiqlNqWpXBTrNrpsW8PUstTOwu8TT8s+8uyv3yVvag2kGg5/Tw5kwE9/hFVXanp9
- GUOpZEeFFNz85m7P2VXE2+Oyqxw1pAu+HGnx96gOJdvRTZ5mRU1OKGetDILaUeR36yUA
- P6UnvfOYEaue3CMV80hFXXtLn2KlXwtN9L2+lyg9hTRnBZd7wZYaYp2Yn7qXSujiFS4/
- V/8Q==
-X-Gm-Message-State: AC+VfDx8EMJbbD6o6lCWCNuwG9uzcCZX2oCjIfN7lfg3NpcyANgeJ51O
- c2HS6n1LtIu333ofdeZUmYx8Zw==
-X-Google-Smtp-Source: ACHHUZ5J6u/rHRzl9SX0Tx8SG09VaTswdB2eLOg5FN6OByCz167A03wUXwTvC5LWm1flVhRL2LHu9g==
-X-Received: by 2002:aa7:88d5:0:b0:64c:b460:c47b with SMTP id
- k21-20020aa788d5000000b0064cb460c47bmr1679804pff.15.1684902116707; 
- Tue, 23 May 2023 21:21:56 -0700 (PDT)
-Received: from [157.82.204.253] ([157.82.204.253])
- by smtp.gmail.com with ESMTPSA id
- j18-20020aa78d12000000b0063b7a0b9cc5sm6457884pfe.186.2023.05.23.21.21.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 May 2023 21:21:56 -0700 (PDT)
-Message-ID: <6bc3fdb9-21af-ca3f-b757-0fea27828c39@daynix.com>
-Date: Wed, 24 May 2023 13:21:54 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/50] Net patches
-To: Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org
-References: <20230523073238.54236-1-jasowang@redhat.com>
- <1d43383e-e13c-0217-b1df-3572826ff87d@tls.msk.ru>
- <CACGkMEssJ8=_ityBAN-T29JwTGDB+=-cbq0pfNqZtOE6-RmjCA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <LMa@suse.com>)
+ id 1q1g2K-00010o-Eu; Wed, 24 May 2023 00:23:44 -0400
+Received: from mail-vi1eur04on060e.outbound.protection.outlook.com
+ ([2a01:111:f400:fe0e::60e]
+ helo=EUR04-VI1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <LMa@suse.com>)
+ id 1q1g2I-00079C-HL; Wed, 24 May 2023 00:23:44 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GwXB2tuXL1rGQXDs3nF6Mb/NNDHBhbTTZhLXmE2GEeAB4CB6KBfbY5pBHT5loQbuswt3EvqkHSymnqNmnA9bQahvxSexRdOQ7yQUUF8LS3bYSFHhej525e1fZSpcxc5UKvUxLhKNmwvJb1JL3aJ/KWUKDQBT3shKBXr+Ik0GF909mIB0ShpamDmlbqfBGzgwMtWqEHqVCMt1WAhGVwrx3NWZu1Rdh/ngqW26OS+hJfQ0grFL9vAF+NDjkyJIbFPVrf/hf896tEnhsjLEpUC83L9nmRt8cupmZUvEam2JB/1MX9kVvB1jTJwzT7vM+anKSTTIz9KWVMHIlD0fqiAxaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cAI6HkmK5u5WXfYUI0NE6v/dSKZ06H/sj/lUHuP1hYQ=;
+ b=Xju+UIDrTFSN03UR19PJzTWCfNFE+2W0Mvv7iWRSIh0+ouDdgdxu68PwJbPM8MytZs3L3Ir4Au0Vs0uZIj4PTBpbTIIuwV7fDeTgp6KY9f59j0mGr3ts3Xzayp3hqxOoCvhOoAqENz6dJ0+AnJUlWqnBMOYsd7BSX3cx6e6EmcvZsGac3YUUBvWFK8J7S5CrytmmOQRXKIm1sGsFCHlTgPx77NJN03o4arVcgB+aLko9lkDWyEQEZK30MCkrMKAOBHIV4oQwAbuUxHGtFvq0WbvM0xfNen0HqAH+DgotIJIReuDkMrnGNImC/+UZY6n2XhEScHpxVNIAXQd6cf/3/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cAI6HkmK5u5WXfYUI0NE6v/dSKZ06H/sj/lUHuP1hYQ=;
+ b=eCrt0koESgADSamsXjF/S4vpLz3GIS7yCnfZKMD4UpjdgKgJ/4Q45r2C34RHGPmdKLghmMR3twhZd4ILvszGc4bIM3ppH+K8LlIMDfzdUkRboGoWXfMS2OZWeGmdga4hfeZgWtiyks2Y3XA2Csz3imZD6yMxIv6JhVnuDl58rGjSJtnTsL6mqvnMpcMKqoTK/WJf9oQ0Wze156pqmoCUIG8uARU34RFvYtx8C8JPAMKYZM5vzwS/DPo1i2CvSC6l3K3EBYKpebS7AUxNjFiJfOmQsC7Y3snP9L3wGoQcO5i9xrGQmeVXdtlOY/Oot2367Qyxe2O8mZAV84cSDwVYMw==
+Received: from AM9PR04MB8602.eurprd04.prod.outlook.com (2603:10a6:20b:439::12)
+ by AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.25; Wed, 24 May
+ 2023 04:23:36 +0000
+Received: from AM9PR04MB8602.eurprd04.prod.outlook.com
+ ([fe80::e9bc:73d8:7880:68e5]) by AM9PR04MB8602.eurprd04.prod.outlook.com
+ ([fe80::e9bc:73d8:7880:68e5%4]) with mapi id 15.20.6433.015; Wed, 24 May 2023
+ 04:23:36 +0000
+From: Lin Ma <LMa@suse.com>
+To: Fabiano Rosas <farosas@suse.de>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "qemu-block@nongnu.org" <qemu-block@nongnu.org>, Kevin Wolf
+ <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, =?iso-8859-1?Q?Jo=E3o_Silva?= <jsilva@suse.de>, Claudio
+ Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>, Eric Blake
+ <eblake@redhat.com>
+Subject: Re: [RFC PATCH 4/6] Convert query-block/info_block to coroutine
+Thread-Topic: [RFC PATCH 4/6] Convert query-block/info_block to coroutine
+Thread-Index: AQHZjb8K1VEZUiL0nUmQTegjiVoIK69o0uzS
+Date: Wed, 24 May 2023 04:23:35 +0000
+Message-ID: <AM9PR04MB860233F22701D1A5483216EAC5419@AM9PR04MB8602.eurprd04.prod.outlook.com>
+References: <20230523213903.18418-1-farosas@suse.de>
+ <20230523213903.18418-5-farosas@suse.de>
+In-Reply-To: <20230523213903.18418-5-farosas@suse.de>
+Accept-Language: en-US
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CACGkMEssJ8=_ityBAN-T29JwTGDB+=-cbq0pfNqZtOE6-RmjCA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=suse.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR04MB8602:EE_|AS4PR04MB9338:EE_
+x-ms-office365-filtering-correlation-id: 0fad1a7d-adef-4ff1-8f8c-08db5c0ea454
+x-ld-processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: apHQufyBS9lvN2RdY00n2Qd6PMqhCaFwFkXRJ5X7b+9TxamjVFOKKPrTIkNXWm1vZzba/d4FOq4rXk4dIT/moUE6I//Dcr8Md1yy6m11ETqqHdpaCAXJelb3z26v2NSpdkxeHCRi2ju7c2ctGNp5IfW6eIO37zCiix6JZasLUl2hIW74qA2rZMF1LeZAwbJ6c3BLA2oPGCp1ArMrV7SdYi90806s9Z/fhgZNMNCFse6RjB5Vs4EBqnAVqknHZiMmvtefAXU7DT3371La8QLrsu6/LJ4cDTkQroq3nxXUwn18wK/fwRWsgEDOr1LAHWPOToB5K3bMLh9Dr+MdS2wQfD1uwgnzpjQgkJPhJ328kzyc+mGpzC+I7zfEsu4fgYUNN7fmmx+Kmql/jY7XBPm+dXHp6YL1LiBzJ7KoPlJbFuMDAFBtiGceXVBwIqtHydL494gbTL+n7tBJXsH6A3Qa2t9CIwEr/WnOH6+uImp2vg86r4czsWKgXd8WqEuKa0eef5ORec58YcjSOOoNFHLBByFyph9XekFk+VEhXwFQLvUFYOjKCHCjU+mXZWMulGnEP6OtlCTB0lJyVvWcEyanRiCGDFEjnPluDS/WT2tAlkZmWfTOsNgc2p0dTxJrBcoS
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM9PR04MB8602.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(396003)(39860400002)(376002)(346002)(136003)(366004)(451199021)(8676002)(83380400001)(8936002)(55016003)(66556008)(478600001)(4326008)(33656002)(86362001)(38100700002)(91956017)(66946007)(64756008)(66476007)(122000001)(66446008)(52536014)(76116006)(5660300002)(110136005)(54906003)(316002)(2906002)(71200400001)(7696005)(186003)(41300700001)(38070700005)(6506007)(26005)(9686003)(53546011);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?IPGY/IVFV8L5NqH+zqFG5c2riLM64kgEuibWl/Q5zvpDVQ6qrMH9gJzFZd?=
+ =?iso-8859-1?Q?V/vrDsW3aLt0heqDG9yFHY8enDwtL90Ry/VZzIbH0HXlCWIu1GoXh2OeQ/?=
+ =?iso-8859-1?Q?QW0p2lQt7yRgbgtaFN8DE8UiVQ8GLR5jwi95PCW/lHATSFtQnrY1CIK3Jq?=
+ =?iso-8859-1?Q?M4dAXhbgh/QQJroM2y6yEAPFYDx6tZuNz0WG0JZntVUIaQR5dEl8j3oPnN?=
+ =?iso-8859-1?Q?lr1kNfTVqpeDSVxxe+RxCfSvRxz3Bhge/DQogSbp0ggsmt16byszCgoSZo?=
+ =?iso-8859-1?Q?Ugm1OINYPUf53g6TlX0QIBWD7FJc17VRrxKReHRJBAOjm0O2wMMbiIJPG7?=
+ =?iso-8859-1?Q?r8gxWuxwK5j6q/GseP4Noy+FdCHFFAGQeFn2ra5fsvqclUK3OOy11PJEez?=
+ =?iso-8859-1?Q?i31MiodCJL1J/qH40xE42b/PDNn9DI0kDJCdljDChv5NkIlxTmEfQBKqDr?=
+ =?iso-8859-1?Q?8oA0u4wy5ptS8Te8DD32dJqztZdAwSVl3W/5zwRU0CBfHWKqMupstcyDWa?=
+ =?iso-8859-1?Q?s7jBn06mEyZ2Q6KzYBMgOzGtKeY0NE2UWsGYOQqa85ZsxgJfvzfLnDN2yl?=
+ =?iso-8859-1?Q?2UuBR9IiMe+b4svL2/sXw4FpfTqR7Mu4yxAji7f/93Ya7iNQG8VGUhBwA9?=
+ =?iso-8859-1?Q?QLkdrWDupLsD7qpB+kLMXTXYI8mncBRR45DGpDNxn06vjmZmvJTXYvr3f1?=
+ =?iso-8859-1?Q?Q+EsWvnYGY4ye6H8j4YHxtULy3RpV6Ks8AcWfsfjg66wvhrEzoGJhN+h21?=
+ =?iso-8859-1?Q?jwKUqOiGal0Fn1BiY8yqTqmlD4Z3yqdH3gu45XxfNJ1UGK3ZXUTYiDirqs?=
+ =?iso-8859-1?Q?tneyCgwfn8jGR50k5SEEWTGg3f0EdjFXQ+bFoCQqT00E2VH5nzKhwPEoUb?=
+ =?iso-8859-1?Q?v9nmXAMni7Dr1j6LKcORKh1AQhs9Rg5H3JgTaFVn94E55nc7xhcclqQDXt?=
+ =?iso-8859-1?Q?+lJh6TFgs8sM+FDq651IxMkJW+E8dM/PgyrhVPfLVEMUdlCTXN7HiJ+8fo?=
+ =?iso-8859-1?Q?IuxQCKHU5W9A2OntMVp2gPrS4BTzldeg+LIwo/OjDJBWBVFVjz1DHdjbAj?=
+ =?iso-8859-1?Q?uQx8mmD8MEn0WPOrPOwneAbNMo7nvpyR9ScSy/96tXXYUElkJkMdBGLeFb?=
+ =?iso-8859-1?Q?9OKA5crb8VhJOJgtYBFuSHACJ66fiOMrruAUu8g7mKAy3KucRD/AvmQmrA?=
+ =?iso-8859-1?Q?0k9yBiDGjYYXRfn9MVCwwj9r4DmMKk03llvukFrWLX1Fo9GTfpwl1jE0yV?=
+ =?iso-8859-1?Q?ZffU6QhTVpHyPCgjbmZh9jfwZxN3WHISvP9p0RLWiTMzIis9sDeCPncuoS?=
+ =?iso-8859-1?Q?4l88ytRiP7v9wRi+PknA7AJYvLFN1IzBCbHnCUTWw6SL1bEkhWMbYL6tnh?=
+ =?iso-8859-1?Q?CFG55iPKej2OgAwmAGJk0AOv5EtntLNmwd78ConfQWIRRlO3UeN3mnxxp1?=
+ =?iso-8859-1?Q?Y+EiR4wedInS/3tjrK5I2rmwrkS0cPsZufPrmiUwAOHhwLlObb2b89YNZa?=
+ =?iso-8859-1?Q?Em0aXv8WOzZrvtffNSvzFx32SF/Tf63BLuOwjFb37rmvOr36Gu7p9GprcX?=
+ =?iso-8859-1?Q?OIx8i4NAj8ty6AX6Se3A7vSoVVuc30NQoRevkgNjZXD2dLzKrw=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8602.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fad1a7d-adef-4ff1-8f8c-08db5c0ea454
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 May 2023 04:23:35.8775 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: t/gBfrV5swMglOMMy9GWAE6CozgFlEERoDm2cBdzz1H98MXb027tGn0JqK4IlRL9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9338
+Received-SPF: pass client-ip=2a01:111:f400:fe0e::60e;
+ envelope-from=LMa@suse.com; helo=EUR04-VI1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,44 +140,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/05/24 13:06, Jason Wang wrote:
-> On Wed, May 24, 2023 at 3:54 AM Michael Tokarev <mjt@tls.msk.ru> wrote:
->>
->> 23.05.2023 10:31, Jason Wang wrote:
->>
->>>     https://github.com/jasowang/qemu.git tags/net-pull-request
->>
->> I might be wrong but it looks like besides the rtl8139 fix which went
->> to -stable already, and "e1000e: Fix tx/rx counters" change which has
->> been agreed upon before, there are a few other changes which are worth
->> to have in -stable, in 8.0 and some even in 7.2. What do you think,
->> which ones are important for -stable?
-> 
-> I'm not sure, most fixes are for igb, considering igb is complicated
-> and just introduced since 8.0, it should be considered as a technical
-> preview somehow. Then I'm not sure whether or not it's worth it to
-> backport them. For the rest, it looks like it should be fine to go for
-> -stable.
-> 
-> Akihiko, what's your thoughts? >
-> Thanks
+The commit title/message are duplicated to previous one, Here should
+use "query-named-block-nodes" instead.
 
-I think it is fine to backport all of patches with Fixes: tags as there 
-are only five such patches for igb. Namely, they are:
-- [PULL 05/50] igb: Fix Rx packet type encoding
-- [PULL 06/50] igb: Do not require CTRL.VME for tx VLAN tagging
-- [PULL 07/50] igb: Clear IMS bits when committing ICR access
-- [PULL 08/50] net/net_rx_pkt: Use iovec for net_rx_pkt_set_protocols()
-- [PULL 10/50] igb: Always copy ethernet header
+Lin
 
-That said, if that looks too many, you may backport only the last two 
-patches, which fixes possible out-of-bounds accesses:
-- [PULL 08/50] net/net_rx_pkt: Use iovec for net_rx_pkt_set_protocols()
-- [PULL 10/50] igb: Always copy ethernet header
+________________________________________
+From: Fabiano Rosas <farosas@suse.de>
+Sent: Wednesday, May 24, 2023 5:39 AM
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org; Kevin Wolf; Hanna Reitz; Markus Armbruster; Jo=
+=E3o Silva; Lin Ma; Claudio Fontana; Dario Faggioli; Eric Blake
+Subject: [RFC PATCH 4/6] Convert query-block/info_block to coroutine
 
-The other patches are just behavioral changes which do not corrupt QEMU 
-state so they are not that important.
+From: Lin Ma <lma@suse.com>
 
-Regards,
-Akihiko Odaki
+Sometimes the query-block performs time-consuming I/O(say waiting for
+the fstat of NFS complete), So let's make this QMP handler runs in a
+coroutine.
+
+The following patch moves the fstat() into a thread pool.
+
+Signed-off-by: Lin Ma <lma@suse.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ blockdev.c           | 6 +++---
+ qapi/block-core.json | 3 ++-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/blockdev.c b/blockdev.c
+index 5d56b79df4..6412548662 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -2804,9 +2804,9 @@ void qmp_drive_backup(DriveBackup *backup, Error **er=
+rp)
+     blockdev_do_action(&action, errp);
+ }
+
+-BlockDeviceInfoList *qmp_query_named_block_nodes(bool has_flat,
+-                                                 bool flat,
+-                                                 Error **errp)
++BlockDeviceInfoList *coroutine_fn qmp_query_named_block_nodes(bool has_fla=
+t,
++                                                              bool flat,
++                                                              Error **errp=
+)
+ {
+     bool return_flat =3D has_flat && flat;
+
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index da95fe456c..0559c38412 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -1972,7 +1972,8 @@
+ { 'command': 'query-named-block-nodes',
+   'returns': [ 'BlockDeviceInfo' ],
+   'data': { '*flat': 'bool' },
+-  'allow-preconfig': true }
++  'allow-preconfig': true,
++  'coroutine': true}
+
+ ##
+ # @XDbgBlockGraphNodeType:
+--
+2.35.3
+
 
