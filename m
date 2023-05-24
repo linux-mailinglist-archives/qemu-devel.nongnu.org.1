@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F3270FCC4
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 19:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D4A70FD7B
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 20:07:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1sRL-0008F2-76; Wed, 24 May 2023 13:38:24 -0400
+	id 1q1sro-0005ko-JH; Wed, 24 May 2023 14:05:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1sRJ-00089p-1z
- for qemu-devel@nongnu.org; Wed, 24 May 2023 13:38:21 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1srj-0005kG-KY
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 14:05:39 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q1sRG-0001md-T6
- for qemu-devel@nongnu.org; Wed, 24 May 2023 13:38:20 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-64d24136663so936356b3a.0
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 10:38:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1srh-0008Bk-A9
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 14:05:38 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-30959c0dfd6so1124749f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 11:05:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684949897; x=1687541897;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Bs800fg5CKmMHGSXaOcoJapkzNZtDhJHKEk1IzMosJM=;
- b=LwFQpRAYKILsLMajA4RLocobxDuT3fUlHv8MPAo818spoGY8cLaydC5S5kM7yxXi38
- j0CXWljCunjO12kEIzizR+92cpk1WM+SkH05+lbdqEBll9DsMaD6fnqe+7JMZIJrBE/H
- PcuNMOQmbNGNUr8/tE2D7ACUw/qQJBTD7mWT9lDRbWScH6Z312/Uyx4k87xKWBKQEl+m
- jKYufVUVDtrgVUZ3VcdOvEuIXJxlV71exFd/XH1FmSFdsFBsRMgbrWFg69Lv3769/7Xe
- 3QdLrlFXBtuPOg6Pk3SMfr11Bz+DDkiDngwmcm9DRJKENgEudlHTWk7gfGzZDqEg9wfU
- 6q0g==
+ d=linaro.org; s=google; t=1684951535; x=1687543535;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yyc5DvBuxeNgI/lsmvFNUJb3vzcZk2BrdJyyvyHOlsM=;
+ b=rYTBPjDvuU+oLcB5AYf9+7OWFMojmI25IcliPjCMv7oh3gGZGt2zx1Ou4IFZ0iL3Us
+ zAoXtJn85zsi94Ce6lzSaslCyMlwwKba3nNxXNedAzGRz8rUicRNoJOmRcs7xXkoSqZT
+ wQnh+7jg38vTXak0CixHLbaMFT3etU36/BGE5J0KIJovw+9qLMW+QL/oyi3Jz70ELpfd
+ gyKjtGMmWoa7EH5GbNzPTw4I2tlAj6TAo2vEwM29WNMbLbiP6IZgbrftNhJaNLGBG8YD
+ VdEg7MuBkG8ZIE8UUu/LYuGvfecDRSZKUNoTK6SGsakMxD6ldJqctY7fNp6zdEqcSsXQ
+ 2f0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684949897; x=1687541897;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Bs800fg5CKmMHGSXaOcoJapkzNZtDhJHKEk1IzMosJM=;
- b=FpNYN3aY1aC5KWsQ9N72+021bP3+PXdlS4J/iJiRL8BsF68booTRHTbPeiBN4e+J7N
- LNZDkaZU07aWOMz2jl0S7pM+nUNMTmqc59Fka2DK443KncuAneZISia68VrTXPMNQ4u/
- ///69w7WKZoZzV+wqeI5z37DTvsn4EvsrOnKyscQ9EEqMXUvf7Krzi97VPmKb2phfrvG
- H/KJTAtlk85sJERp34AtyyRNrT64oCMr96qGsbvDUaYCl5Z4t67SVUvKoKc57X3qDL5T
- R6PvImscy3zx0kOknYM2ZJuAExhzIjvlqgvXvOzZpmNenYxiC/uvCwQl2Z9qJBEqic2i
- V1lg==
-X-Gm-Message-State: AC+VfDzWNFZ0PwzoVQ0nKYewrk0wCVmkr1JjMxkaHaSmIIX73wT5dvwR
- jOVZBuCIMZVanSikpb4lTw/uhnm246/Sww2/bfQ=
-X-Google-Smtp-Source: ACHHUZ6ib5Kgm30HbygyCWcYAfLddEMvEGRD/vKtaSHQO/ePVfG0HE+c+Ic4Q4Pc5HaQERf58KnLzw==
-X-Received: by 2002:a05:6a20:5486:b0:107:1f22:10d5 with SMTP id
- i6-20020a056a20548600b001071f2210d5mr22914387pzk.52.1684949897090; 
- Wed, 24 May 2023 10:38:17 -0700 (PDT)
-Received: from stoup.. ([2602:ae:1598:4c01:6b03:9af2:33c1:3d6b])
+ d=1e100.net; s=20221208; t=1684951535; x=1687543535;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yyc5DvBuxeNgI/lsmvFNUJb3vzcZk2BrdJyyvyHOlsM=;
+ b=lndMYecHOJbV83ePe49KtrZCdqqUfoDuiYpSOWJbc44CGeYRd7filkgKmD3zxO+E9M
+ pxxeIbG2nlNZz1+qkcU/P2FF7iqiRbJaBGD9lguQ2Go+CvpdUeZebhY7+3W4PeQE7ri5
+ Y5mWha80ntqeA16oSbJ3JWBogJvymvpwCAc5VBBbaeKKVegFsPajpfP4KlU+yOQtxRoa
+ PlHfmyCe1YHQ+Jccq7MpS6GuAfQZYazTQnfpJaMBR82e9+pefp3YnexHU/lGXtWdVG1N
+ dCJowRE5Ifq1U8yaYz2xVRtmPltQevKzO/oON3SGWURw3Hakc8kPqj/zTpTZ91qy9o+x
+ ABVQ==
+X-Gm-Message-State: AC+VfDwWgeRRsVH7yVGszaK+fSZoN2DpDgyWTB3UTVB5PolDuyjxqh+q
+ SdVAFIUBND9itpzq6vBWlWVLgw==
+X-Google-Smtp-Source: ACHHUZ72+Yqg9LNmddCd1W6zPsFFVGOVmyWtA/wPV8MsVRwJIntMXCHRTNLHpemtb137uCKYz53+EA==
+X-Received: by 2002:a5d:5185:0:b0:309:471c:9916 with SMTP id
+ k5-20020a5d5185000000b00309471c9916mr479261wrv.0.1684951535380; 
+ Wed, 24 May 2023 11:05:35 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.135.174])
  by smtp.gmail.com with ESMTPSA id
- 5-20020a631945000000b0053b9bb98331sm5415843pgz.20.2023.05.24.10.38.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 May 2023 10:38:16 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH] tests/decode: Emit TAP
-Date: Wed, 24 May 2023 10:38:15 -0700
-Message-Id: <20230524173815.1148653-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ i14-20020adffdce000000b003095bd71159sm15429459wrs.7.2023.05.24.11.05.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 May 2023 11:05:34 -0700 (PDT)
+Message-ID: <f87ac9d2-8eb7-6a5f-9f41-2d615fe9a40a@linaro.org>
+Date: Wed, 24 May 2023 20:05:33 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH] meson.build: Fix glib -Wno-unused-function workaround
+Content-Language: en-US
+To: Nicolas Saenz Julienne <nsaenz@amazon.com>, pbonzini@redhat.com
+Cc: marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ hilmd@linaro.org, qemu-devel@nongnu.org
+References: <20230524173123.66483-1-nsaenz@amazon.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230524173123.66483-1-nsaenz@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.107,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,83 +93,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We currently print FAIL for the failure of a succ_* test, but don't
-return a failure exit code.  Instead, convert the script to emit
-Test Anything Protocol, which gives visibility into each subtest
-as well as not relying on exit codes.
+On 24/5/23 19:31, Nicolas Saenz Julienne wrote:
+> We want to only enable '-Wno-unused-function' if glib's version is
+> smaller than '2.57.2' and has a G_DEFINE_AUTOPTR_CLEANUP_FUNC()
+> implementation that doesn't take into account unused functions. But the
+> compilation test isn't working as intended as '-Wunused-function' isn't
+> enabled while running it.
+> 
+> Let's enable it.
+> 
+> Fixes: fc9a809e0d28 ("build: move glib detection and workarounds to meson")
+> Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+> 
+> ---
+> 
+> Meson logs before:
+> 
+>    Running compile:
+>    Working directory:  /local/home/nsaenz/c/qemu/build/meson-private/tmp5fgb3xnk
+>    Command line:  clang -m64 -mcx16 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include /local/home/nsaenz/c/qemu/build/meson-private/tmp5fgb3xnk/testfile.c -o /local/home/nsaenz/c/qemu/build/meson-private/tmp5fgb3xnk/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Werror=implicit-function-declaration -Werror=unknown-warning-option -Werror=unused-command-line-argument -Werror=ignored-optimization-argument -std=gnu11 -Werror
+> 
+>    Code:
+> 
+>      #include <glib.h>
+>      typedef struct Foo {
+>        int i;
+>      } Foo;
+>      static void foo_free(Foo *f)
+>      {
+>        g_free(f);
+>      }
+>      G_DEFINE_AUTOPTR_CLEANUP_FUNC(Foo, foo_free)
+>      int main(void) { return 0; }
+>    Compiler stdout:
+> 
+>    Compiler stderr:
+> 
+> 
+> Meson logs after:
+> 
+>    Running compile:
+>    Working directory:  /local/home/nsaenz/c/qemu/build/meson-private/tmp1fnp2s4u
+>    Command line:  clang -m64 -mcx16 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include /local/home/nsaenz/c/qemu/build/meson-private/tmp1fnp2s4u/testfile.c -o /local/home/nsaenz/c/qemu/build/meson-private/tmp1fnp2s4u/output.obj -c -D_FILE_OFFSET_BITS=64 -O0 -Werror=implicit-function-declaration -Werror=unknown-warning-option -Werror=unused-command-line-argument -Werror=ignored-optimization-argument -std=gnu11 -Wunused-function -Werror
+> 
+>    Code:
+> 
+>      #include <glib.h>
+>      typedef struct Foo {
+>        int i;
+>      } Foo;
+>      static void foo_free(Foo *f)
+>      {
+>        g_free(f);
+>      }
+>      G_DEFINE_AUTOPTR_CLEANUP_FUNC(Foo, foo_free)
+>      int main(void) { return 0; }
+>    Compiler stdout:
+> 
+>    Compiler stderr:
+>     /local/home/nsaenz/c/qemu/build/meson-private/tmp1fnp2s4u/testfile.c:10:3: error: unused function 'glib_autoptr_cleanup_Foo' [-Werror,-Wunused-function]
+>      G_DEFINE_AUTOPTR_CLEANUP_FUNC(Foo, foo_free)
+>      ^
+>    /usr/include/glib-2.0/glib/gmacros.h:461:22: note: expanded from macro 'G_DEFINE_AUTOPTR_CLEANUP_FUNC'
+>      static inline void _GLIB_AUTOPTR_FUNC_NAME(TypeName) (TypeName **_ptr) { if (*_ptr) (func) (*_ptr); }         \
+>                         ^
+>    /usr/include/glib-2.0/glib/gmacros.h:441:43: note: expanded from macro '_GLIB_AUTOPTR_FUNC_NAME'
+>    #define _GLIB_AUTOPTR_FUNC_NAME(TypeName) glib_autoptr_cleanup_##TypeName
+>                                              ^
+>    <scratch space>:58:1: note: expanded from here
+>    glib_autoptr_cleanup_Foo
+>    ^
+> 
+>   meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index ef181ff2df..71a4fcee52 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -780,7 +780,7 @@ if not cc.compiles('''
+>       g_free(f);
+>     }
+>     G_DEFINE_AUTOPTR_CLEANUP_FUNC(Foo, foo_free)
+> -  int main(void) { return 0; }''', dependencies: glib_pc, args: ['-Werror'])
+> +  int main(void) { return 0; }''', dependencies: glib_pc, args: ['-Wunused-function', '-Werror'])
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/decode/check.sh | 36 ++++++++++++++++++++++++++----------
- tests/meson.build     |  1 +
- 2 files changed, 27 insertions(+), 10 deletions(-)
+Oops, thanks!
 
-diff --git a/tests/decode/check.sh b/tests/decode/check.sh
-index 95445a0115..a3d879a099 100755
---- a/tests/decode/check.sh
-+++ b/tests/decode/check.sh
-@@ -4,21 +4,37 @@
- 
- PYTHON=$1
- DECODETREE=$2
--E=0
-+E_FILES=`echo err_*.decode`
-+S_FILES=`echo succ_*.decode`
- 
--# All of these tests should produce errors
--for i in err_*.decode; do
-+j=0
-+for i in $E_FILES $S_FILES; do
-+    j=`expr $j + 1`
-+done
-+
-+echo 1..$j
-+
-+j=0
-+for i in $E_FILES; do
-+    j=`expr $j + 1`
-+    n=`basename $i .decode`
-     if $PYTHON $DECODETREE $i > /dev/null 2> /dev/null; then
--        # Pass, aka failed to fail.
--        echo FAIL: $i 1>&2
--        E=1
-+        # Failed to fail.
-+        echo not ok $j $n
-+    else
-+        echo ok $j $n
-     fi
- done
- 
--for i in succ_*.decode; do
--    if ! $PYTHON $DECODETREE $i > /dev/null 2> /dev/null; then
--        echo FAIL:$i 1>&2
-+for i in $S_FILES; do
-+    j=`expr $j + 1`
-+    n=`basename $i .decode`
-+    if $PYTHON $DECODETREE $i > /dev/null 2> /dev/null; then
-+        # Succeeded.
-+        echo ok $j $n
-+    else
-+        echo not ok $j $n
-     fi
- done
- 
--exit $E
-+exit 0
-diff --git a/tests/meson.build b/tests/meson.build
-index 8e318ec513..137ef85ab6 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -77,6 +77,7 @@ endif
- test('decodetree', sh,
-      args: [ files('decode/check.sh'), config_host['PYTHON'], files('../scripts/decodetree.py') ],
-      workdir: meson.current_source_dir() / 'decode',
-+     protocol: 'tap', verbose: true,
-      suite: 'decodetree')
- 
- if 'CONFIG_TCG' in config_all
--- 
-2.34.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
