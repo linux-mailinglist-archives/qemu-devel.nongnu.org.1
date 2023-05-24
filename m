@@ -2,74 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407E070EFCA
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 09:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36ABE70EFEB
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 09:52:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1jB6-0000MX-52; Wed, 24 May 2023 03:45:01 -0400
+	id 1q1jHC-0001hH-So; Wed, 24 May 2023 03:51:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1q1jB3-0000Lz-6o; Wed, 24 May 2023 03:44:57 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1q1jAz-0001qd-RG; Wed, 24 May 2023 03:44:56 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-510e419d701so1533111a12.1; 
- Wed, 24 May 2023 00:44:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1684914290; x=1687506290;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=azQlUZaekqzVbw1xVCGpAP01lrzfd5dmP8lio3pw1+c=;
- b=QHSnrNv0xyMrvWCnoM7btu0au2mK1N+3tZMyOEHyu6Wm16Q2LDM5BbZzFYIu4jBfbv
- qm6qgTwEjNkgemMUGXJpEXH74vXRWNioCWSL0pO/nyzE8um2r/EFKiSnPY19/Yb6fq0Q
- hO604X5nWxC7J3OFJE/xhuefqZMS2xJmz+tTI=
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1jH9-0001gz-DQ
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 03:51:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1jH7-0004XY-UW
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 03:51:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684914672;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IZRD/7r4gmCZWu2ZRSEfG8TTygVEKEQeNeOqmzxlJQI=;
+ b=fcVt44t+/cDE664YZIZwEITPXXA4/GRfF0bE9UrFx1TwPLjd0Qxr3/UXPO5e6fL0p3ZtAF
+ ftTXeVnvQhImLh3fZcsO0QzuoZpNvOCKmKMbuH0RpvlLM9U87ulMRL5G747UN61NRQJ2kt
+ xRA+u2S1Jzo4MxwoQl9P+YBb2oKaw8I=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-180-hL6IxZGhN6CRjYW9WyF94w-1; Wed, 24 May 2023 03:51:11 -0400
+X-MC-Unique: hL6IxZGhN6CRjYW9WyF94w-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f5df65f9f4so2479865e9.2
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 00:51:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684914290; x=1687506290;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=azQlUZaekqzVbw1xVCGpAP01lrzfd5dmP8lio3pw1+c=;
- b=YmAYO7qGb1CM3fKRm2YkwqiZG4IqVz5kcHQPgOzUg3Hm+Ztr7PhBkYp88cdm3fynGH
- +yu5Bvsid0btW9yPfhQ3IqEe0IuagerJShWYEHVhm6MzmCtCUwYhYQuuS4giPkR+L+Q/
- OEsbgzBFL0vkEOQDdBQoyRkqgoC3KS70GJYhqyCQ/M9I61o209OUUyAPip68iZrRZvGJ
- Em7ge68+etHFncJ9VqJDCXO8+UrbYAsRne2+WrvEX/dzq0ehquGdaQccFkHOEftIQPw3
- UQR/5eIWk00YL39dAOQA0a21XBXi/Mx3eeRnbVi+b9Z/v8gAETOUfpUi/i3T3MH30pTe
- 7TwQ==
-X-Gm-Message-State: AC+VfDwsJj6cUSHEKLM6LoNPNxuSF6bRrtqdMZtxkAjYPZAnNuBu6YWE
- Af18TMJGLUOZL0CgVBak3L8b1WrEAkb860Uvw74ZEBQ1+gg=
-X-Google-Smtp-Source: ACHHUZ6n3nC0S345/SP2Xmepu7h/ZLY8+2dtOvgCc4D7om94kB7Q5aNAgFcrpw+TUojfTM4Ormg95y0hWe8Xzu3XHeI=
-X-Received: by 2002:a17:907:26ca:b0:969:bac4:8e22 with SMTP id
- bp10-20020a17090726ca00b00969bac48e22mr14984418ejc.26.1684914290329; Wed, 24
- May 2023 00:44:50 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684914670; x=1687506670;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IZRD/7r4gmCZWu2ZRSEfG8TTygVEKEQeNeOqmzxlJQI=;
+ b=fGD0sSpf6tii7GW2vg/G8B1xop7No64rRVALwEDVDgPmksnz29H6P25//HboNFyDWn
+ Rt17YCgnwpwPVl083L0aB3cIRpvfaxzW52wrc/HJUgMvH9KIllx/4ssdRwpPM+VSYa2F
+ CuVTgxXxS9d6o4OIBcdDrBNHTGWRMiq5uC3BWR66NFNnfEQHY0TnDC6nTvtrzYK5PZXc
+ veXE5Fof8Yl85Z2dzR1FeeBo4RF5pB+SXao4KjF2vSc3cL1kEMxBu4Xm4L03MCgt+w48
+ 3hfS+f7Ba1keRKnDEPTZdY0aVfL68qtTNEEpkmO0U8LJ7KM4cEhtMlpu/93fY8/QnH6g
+ nyiQ==
+X-Gm-Message-State: AC+VfDzh736ci4aMwWL6zAOlygggaWeXjySxna1KIeqazQOnzY8w6BpX
+ IAFyWFVCHWIpO0K3KKigBRSACZWI0K07szS1mTdKqOl44vLbQH3xYSYwCLT7z7iy/9yHl6+J/MY
+ BtQZhV+0vSC1H19s3xXHEbbo=
+X-Received: by 2002:a05:600c:20c:b0:3f4:2266:8cf0 with SMTP id
+ 12-20020a05600c020c00b003f422668cf0mr12236967wmi.10.1684914670275; 
+ Wed, 24 May 2023 00:51:10 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7pyR/EeMa9XKiY4wPmzLfJ/JVIdVDMWKa2uM+hICwPSZ53SLT4n/HDeXXSbnGFAHRD9t4xBQ==
+X-Received: by 2002:a05:600c:20c:b0:3f4:2266:8cf0 with SMTP id
+ 12-20020a05600c020c00b003f422668cf0mr12236948wmi.10.1684914669984; 
+ Wed, 24 May 2023 00:51:09 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-176-64.web.vodafone.de.
+ [109.43.176.64]) by smtp.gmail.com with ESMTPSA id
+ 17-20020a05600c231100b003f31d44f0cbsm1357941wmo.29.2023.05.24.00.51.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 May 2023 00:51:09 -0700 (PDT)
+Message-ID: <3930f337-53b3-075f-a518-0c25bd75e21f@redhat.com>
+Date: Wed, 24 May 2023 09:51:08 +0200
 MIME-Version: 1.0
-References: <20230523214520.2102894-1-ninad@linux.ibm.com>
- <20230523214520.2102894-2-ninad@linux.ibm.com>
- <7fadea2f-39e0-902f-848a-8f9bd7ff1f52@kaod.org>
-In-Reply-To: <7fadea2f-39e0-902f-848a-8f9bd7ff1f52@kaod.org>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 24 May 2023 07:44:38 +0000
-Message-ID: <CACPK8XeSBh+SMWPZ68rkeRnOcTFE0_SFcCNoYZr85DLhzGsgtQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] hw/arm/aspeed:Add vpd data for Rainier machine
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=joel.stan@gmail.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 0/6] meson: use subprojects for bundled projects
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
+ richard.henderson@linaro.org, qemu-s390x <qemu-s390x@nongnu.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>
+References: <20230519085647.1104775-1-pbonzini@redhat.com>
+ <CAFEAcA-nMG_5u4pADASoQNF_MCCXHMCB3APTtVLohzTzCmJ3cQ@mail.gmail.com>
+ <ZGdCL3Ka2JSeo+XD@redhat.com>
+ <8c5c87b0-79e3-02c1-b093-3d636a9853b0@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <8c5c87b0-79e3-02c1-b093-3d636a9853b0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,156 +107,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 24 May 2023 at 06:38, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> On 5/23/23 23:45, Ninad Palsule wrote:
-> > The current modeling of Rainier machine creates zero filled VPDs(EEPROM=
-s).
-> > This makes some services and applications unhappy and causing them to f=
-ail.
-> > Hence this drop adds some fabricated data for system and BMC FRU so tha=
-t
-> > vpd services are happy and active.
-> >
-> > Tested:
-> >     - The system-vpd.service is active.
-> >     - VPD service related to bmc is active.
-> >
-> > Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->
-> You can keep the R-b tag when you resend, unless there are a lot of chang=
-es.
->
-> Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org>
->
-> Since I am curious, I started a rainier machine under QEMU and ran some
-> commands :
->
->    root@p10bmc:~# hexdump -C /sys/bus/i2c/devices/i2c-8/8-0050/eeprom
->    00000000  00 00 00 00 00 00 00 00  00 00 00 84 28 00 52 54  |.........=
-...(.RT|
->    00000010  04 56 48 44 52 56 44 02  01 00 50 54 0e 56 54 4f  |.VHDRVD..=
-.PT.VTO|
->    00000020  43 00 00 37 00 4a 00 00  00 00 00 50 46 08 00 00  |C..7.J...=
-..PF...|
->    00000030  00 00 00 00 00 00 00 00  46 00 52 54 04 56 54 4f  |........F=
-.RT.VTO|
->    00000040  43 50 54 38 56 49 4e 49  00 00 81 00 3a 00 00 00  |CPT8VINI.=
-...:...|
->    00000050  00 00 56 53 59 53 00 00  bb 00 27 00 00 00 00 00  |..VSYS...=
-.'.....|
->    00000060  56 43 45 4e 00 00 e2 00  27 00 00 00 00 00 56 53  |VCEN....'=
-.....VS|
->    00000070  42 50 00 00 09 01 19 00  00 00 00 00 50 46 01 00  |BP.......=
-...PF..|
->    00000080  00 00 36 00 52 54 04 56  49 4e 49 44 52 04 44 45  |..6.RT.VI=
-NIDR.DE|
->    00000090  53 43 48 57 02 30 31 43  43 04 33 34 35 36 46 4e  |SCHW.01CC=
-.3456FN|
->    000000a0  04 46 52 34 39 53 4e 04  53 52 31 32 50 4e 04 50  |.FR49SN.S=
-R12PN.P|
->    000000b0  52 39 39 50 46 04 00 00  00 00 00 00 23 00 52 54  |R99PF....=
-...#.RT|
->    000000c0  04 56 53 59 53 53 45 07  49 42 4d 53 59 53 31 54  |.VSYSSE.I=
-BMSYS1T|
->    000000d0  4d 08 32 32 32 32 2d 32  32 32 50 46 04 00 00 00  |M.2222-22=
-2PF....|
->    000000e0  00 00 00 23 00 52 54 04  56 43 45 4e 53 45 07 31  |...#.RT.V=
-CENSE.1|
->    000000f0  32 33 34 35 36 37 46 43  08 31 31 31 31 2d 31 31  |234567FC.=
-1111-11|
->    00000100  31 50 46 04 00 00 00 00  00 00 15 00 52 54 04 56  |1PF......=
-...RT.V|
->    00000110  53 42 50 49 4d 04 50 00  10 01 50 46 04 00 00 00  |SBPIM.P..=
-.PF....|
->    00000120  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |.........=
-.......|
->    *
->    00002000
->    root@p10bmc:~# hexdump -C /sys/bus/i2c/devices/i2c-8/8-0051/eeprom
->    00000000  00 00 00 00 00 00 00 00  00 00 00 84 28 00 52 54  |.........=
-...(.RT|
->    00000010  04 56 48 44 52 56 44 02  01 00 50 54 0e 56 54 4f  |.VHDRVD..=
-.PT.VTO|
->    00000020  43 00 00 37 00 20 00 00  00 00 00 50 46 08 00 00  |C..7. ...=
-..PF...|
->    00000030  00 00 00 00 00 00 00 00  1c 00 52 54 04 56 54 4f  |.........=
-.RT.VTO|
->    00000040  43 50 54 0e 56 49 4e 49  00 00 57 00 1e 00 00 00  |CPT.VINI.=
-.W.....|
->    00000050  00 00 50 46 01 00 00 00  1a 00 52 54 04 56 49 4e  |..PF.....=
-.RT.VIN|
->    00000060  49 44 52 04 44 45 53 43  48 57 02 30 31 50 46 04  |IDR.DESCH=
-W.01PF.|
->    00000070  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |.........=
-.......|
->
-> and
->
->    root@p10bmc:~# systemctl status  com.ibm.VPD.Manager.service  -l
->    * com.ibm.VPD.Manager.service - IBM VPD Manager
->         Loaded: loaded (/lib/systemd/system/com.ibm.VPD.Manager.service; =
-enabled; preset: enabled)
->         Active: active (running) since Wed 2023-05-24 06:26:34 UTC; 1min =
-28s ago
->       Main PID: 2784 (vpd-manager)
->            CPU: 101ms
->         CGroup: /system.slice/com.ibm.VPD.Manager.service
->                 `-2784 /usr/bin/vpd-manager
+On 19/05/2023 13.48, Paolo Bonzini wrote:
+> On 5/19/23 11:32, Daniel P. Berrangé wrote:
+>> Feels like we should be able to figure out some way to get rid of all
+>> the submodules though, except for the roms, which are special and ok to
+>> leave IMHO
+> 
+> Hmm, almost.  roms/SLOF is used to build pc-bios/s390-ccw/s390-netboot.img, 
+> so right now GIT_SUBMODULE and GIT_SUBMODULE_ACTION could not be removed 
+> even without counting the tests/fp submodules.  That's about 10,000 lines of 
+> code, or about 20% of all of SLOF; it might be a bit too much for vendoring.
+> 
+> Adding Thomas for ideas...
 
-When it works we should be able to do things like this, I'm told:
+Sorry, I also don't have any good ideas here. We could maybe copy the libs 
+from the SLOF repository over into the s390-ccw folder, but that's kind of 
+ugly, too (there aren't many updates in SLOF anymore, so it wouldn't at 
+least hurt too much from a synchronization point of view) ... CC:-ing 
+qemu-s390x mailing list, maybe somebody else there has a better idea.
 
-vpd-tool -r -O /system/chassis/motherboard -R VSYS -K TM
-{
-    "/system/chassis/motherboard": {
-        "TM": "2222-222"
-    }
-}
+  Thomas
 
-
->
-> But, I also got this :
->
->    root@p10bmc:~# [   91.656331] watchdog: watchdog0: watchdog did not st=
-op!
->    [   91.734858] systemd-shutdown[1]: Using hardware watchdog 'aspeed_wd=
-t', version 0, device /dev/watchdog0
->    [   91.735766] systemd-shutdown[1]: Watchdog running with a timeout of=
- 1min.
->    [   91.987363] systemd-shutdown[1]: Syncing filesystems and block devi=
-ces.
->    [   93.471897] systemd-shutdown[1]: Sending SIGTERM to remaining proce=
-sses...
->
-> and the machine rebooted.
->
-> Joel had the same problem :
->
->    https://github.com/openbmc/qemu/issues/39
->
-> Is it unrelated ? I haven't started a rainier in 2 years at least so I ca=
-n
-> not tell.
-
-I don't think it's related to Ninad's patches.
-
-I am able to reproduce the issue on my old Skylake x86 machine, but it
-doesn't happen on my M1 mac mini.
-
-I suspect the emulation is moving too slowly, but the host's wall
-clock is still ticking, so all of a sudden the BMC finds out that time
-has passed an the watchdog bites. I could be wrong.
-
-The rainier firmware crashes all over the place due to missing
-hardware. These crashes cause applications to core dump due to
-OpenBMC's C++ exception throwing coding style, causing the system to
-go even slower which leads to more timeouts and more crashes. Ninad's
-work is the first piece in an attempt to get us to "BMC ready" without
-any services crashing.
-
-The status quo does make it hard to test.
-
-Cheers,
-
-Joel
 
