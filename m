@@ -2,66 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A4670EB11
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 04:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9926870EB25
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 04:12:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1doJ-0008Il-Vc; Tue, 23 May 2023 22:01:07 -0400
+	id 1q1dxN-0008Su-2s; Tue, 23 May 2023 22:10:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q1doG-0008DP-W2; Tue, 23 May 2023 22:01:05 -0400
+ id 1q1dxH-0008Sh-Gg; Tue, 23 May 2023 22:10:23 -0400
 Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1q1doB-0004MT-6j; Tue, 23 May 2023 22:01:03 -0400
-Received: from localhost.localdomain (unknown [61.165.37.98])
- by APP-05 (Coremail) with SMTP id zQCowADn7o7Rb21kM1P9Aw--.22464S4;
- Wed, 24 May 2023 10:00:51 +0800 (CST)
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
- Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH v7 2/2] target/riscv: Update cur_pmmask/base when xl changes
-Date: Wed, 24 May 2023 09:59:33 +0800
-Message-Id: <20230524015933.17349-3-liweiwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230524015933.17349-1-liweiwei@iscas.ac.cn>
-References: <20230524015933.17349-1-liweiwei@iscas.ac.cn>
+ id 1q1dxD-0006H4-K8; Tue, 23 May 2023 22:10:23 -0400
+Received: from [192.168.0.120] (unknown [61.165.37.98])
+ by APP-05 (Coremail) with SMTP id zQCowABnbZEAcm1kwjT+Aw--.23144S2;
+ Wed, 24 May 2023 10:10:09 +0800 (CST)
+Message-ID: <cae11418-a33c-f35f-1604-a9b241f452a5@iscas.ac.cn>
+Date: Wed, 24 May 2023 10:10:08 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc: liweiwei@iscas.ac.cn, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ frank.chang@sifive.com, alistair.francis@wdc.com, apatel@ventanamicro.com,
+ palmer@rivosinc.com, dbarboza@ventanamicro.com, bin.meng@windriver.com,
+ zhiwei_liu@linux.alibaba.com
+Subject: Re: [PATCH 1/2] target/riscv: Add a function to refresh the dynamic
+ CSRs xml.
+To: Tommy Wu <tommy.wu@sifive.com>
+References: <20230523114454.717708-1-tommy.wu@sifive.com>
+ <20230523114454.717708-2-tommy.wu@sifive.com>
+ <5d3558a0-8b7f-8b84-a4e0-a6f4404a56b6@iscas.ac.cn>
+ <CANj3q_=E_TfaHLn4rHQp4jy5U0LXoXCFDjYVwh7c85h_oB_F7Q@mail.gmail.com>
+Content-Language: en-US
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <CANj3q_=E_TfaHLn4rHQp4jy5U0LXoXCFDjYVwh7c85h_oB_F7Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowADn7o7Rb21kM1P9Aw--.22464S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7GFW8XrW3uFy8uF1xGFWfZrb_yoWDWFgE9F
- 4I9F95X3y0g3ZayFyDAa4F9ry0vry0gr1jv3W3Kr45Gryj9rZrJ3Wvqwn7Jr15Zr4DJrnx
- AwnrX3W7Cr12vjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUbyAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
- 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUXwA2048vs2IY02
- 0Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
- wVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84
- ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1U
- M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
- v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
- F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
- IY04v7MxkIecxEwVAFwVW8JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8
- JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1V
- AFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xII
- jxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4
- A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU
- 0xZFpf9x0JU2PfdUUUUU=
+X-CM-TRANSID: zQCowABnbZEAcm1kwjT+Aw--.23144S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZFyktF48trWrKFWUCr13XFb_yoW5Kr4rpr
+ 4kCa98CryUXr97Jw1ftr4DXF15Aw4UGanF934kXasrJw4UW3yYvr4q93Z09rn8Ga1I9r1j
+ vF1Y9rsxZr47ArJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUB014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+ 6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+ 4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+ Yx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
+ WUJVW8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+ Y2ka0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCY02Avz4vE14v_Gr1l42xK82IYc2Ij64
+ vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+ jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+ x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+ 8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+ 0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUF3kuDUUUU
 X-Originating-IP: [61.165.37.98]
 X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
 Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
  helo=cstnet.cn
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,38 +82,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-write_mstatus() can only change current xl when in debug mode.
-And we need update cur_pmmask/base in this case.
 
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
----
- target/riscv/csr.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+On 2023/5/24 09:59, Tommy Wu wrote:
+> Hi Weiwei Li,
+>
+> `dyn_csr_base_reg` will be used in `riscv_refresh_dynamic_csr_xml`
+> We can initialize this variable when the cpu is realized.
+I didn't find this initialization in following code.
+> And used this variable in `riscv_refresh_dynamic_csr_xml`.
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index cf7da4f87f..ad73691878 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1324,8 +1324,15 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
-         mstatus = set_field(mstatus, MSTATUS64_SXL, xl);
-     }
-     env->mstatus = mstatus;
--    env->xl = cpu_recompute_xl(env);
- 
-+    /*
-+     * Except in debug mode, UXL/SXL can only be modified by higher
-+     * privilege mode. So xl will not be changed in normal mode.
-+     */
-+    if (env->debugger) {
-+        env->xl = cpu_recompute_xl(env);
-+        riscv_cpu_update_mask(env);
-+    }
-     return RISCV_EXCP_NONE;
- }
- 
--- 
-2.25.1
+That's my question. In riscv_refresh_dynamic_csr_xml() , 
+cpu->dyn_csr_base_reg is passed to riscv_gen_dynamic_csr_xml() as base_reg.
+
+And then base_reg is assigned to cpu->dyn_csr_base_reg again in it. So 
+it's unchanged in this progress.
+
+Another question is  dyn_csr_base_reg seems have no additional function 
+currently.
+
+Regards,
+
+Weiwei Li
+
+>
+> Best regards,
+> Tommy
+>
+>
+> On Tue, May 23, 2023 at 10:38 PM Weiwei Li <liweiwei@iscas.ac.cn> wrote:
+>
+>
+>     On 2023/5/23 19:44, Tommy Wu wrote:
+>     > When we change the cpu extension state after the cpu is
+>     > realized, we cannot print the value of some CSRs in the remote
+>     > gdb debugger. The root cause is that the dynamic CSR xml is
+>     > generated when the cpu is realized.
+>     >
+>     > This patch add a function to refresh the dynamic CSR xml after
+>     > the cpu is realized.
+>     >
+>     > Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+>     > Reviewed-by: Frank Chang <frank.chang@sifive.com>
+>     > ---
+>     >   target/riscv/cpu.h     |  2 ++
+>     >   target/riscv/gdbstub.c | 12 ++++++++++++
+>     >   2 files changed, 14 insertions(+)
+>     >
+>     > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>     > index de7e43126a..dc8e592275 100644
+>     > --- a/target/riscv/cpu.h
+>     > +++ b/target/riscv/cpu.h
+>     > @@ -494,6 +494,7 @@ struct ArchCPU {
+>     >       CPUNegativeOffsetState neg;
+>     >       CPURISCVState env;
+>     >
+>     > +    int dyn_csr_base_reg;
+>
+>     dyn_csr_base_reg  seems have no additional effect on the function.
+>
+>     And It remains unmodified in following
+>     riscv_refresh_dynamic_csr_xml().
+>
+>     Regards,
+>
+>     Weiwei Li
+>
+>     >       char *dyn_csr_xml;
+>     >       char *dyn_vreg_xml;
+>     >
+>     > @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int csrno,
+>     riscv_csr_operations *ops);
+>     >   void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);
+>     >
+>     >   void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
+>     > +void riscv_refresh_dynamic_csr_xml(CPUState *cs);
+>     >
+>     >   uint8_t satp_mode_max_from_map(uint32_t map);
+>     >   const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+>     > diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+>     > index 524bede865..9e97ee2c35 100644
+>     > --- a/target/riscv/gdbstub.c
+>     > +++ b/target/riscv/gdbstub.c
+>     > @@ -230,6 +230,8 @@ static int
+>     riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
+>     >           bitsize = 64;
+>     >       }
+>     >
+>     > +    cpu->dyn_csr_base_reg = base_reg;
+>     > +
+>     >       g_string_printf(s, "<?xml version=\"1.0\"?>");
+>     >       g_string_append_printf(s, "<!DOCTYPE feature SYSTEM
+>     \"gdb-target.dtd\">");
+>     >       g_string_append_printf(s, "<feature
+>     name=\"org.gnu.gdb.riscv.csr\">");
+>     > @@ -349,3 +351,13 @@ void
+>     riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
+>     >                                    "riscv-csr.xml", 0);
+>     >       }
+>     >   }
+>     > +
+>     > +void riscv_refresh_dynamic_csr_xml(CPUState *cs)
+>     > +{
+>     > +    RISCVCPU *cpu = RISCV_CPU(cs);
+>     > +    if (!cpu->dyn_csr_xml) {
+>     > +        g_assert_not_reached();
+>     > +    }
+>     > +    g_free(cpu->dyn_csr_xml);
+>     > +    riscv_gen_dynamic_csr_xml(cs, cpu->dyn_csr_base_reg);
+>     > +}
+>
 
 
