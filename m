@@ -2,129 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BED70EC85
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 06:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B91C70ED2A
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 07:37:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1g2L-000111-Qc; Wed, 24 May 2023 00:23:45 -0400
+	id 1q1hAW-0004kW-Cq; Wed, 24 May 2023 01:36:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <LMa@suse.com>)
- id 1q1g2K-00010o-Eu; Wed, 24 May 2023 00:23:44 -0400
-Received: from mail-vi1eur04on060e.outbound.protection.outlook.com
- ([2a01:111:f400:fe0e::60e]
- helo=EUR04-VI1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <LMa@suse.com>)
- id 1q1g2I-00079C-HL; Wed, 24 May 2023 00:23:44 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GwXB2tuXL1rGQXDs3nF6Mb/NNDHBhbTTZhLXmE2GEeAB4CB6KBfbY5pBHT5loQbuswt3EvqkHSymnqNmnA9bQahvxSexRdOQ7yQUUF8LS3bYSFHhej525e1fZSpcxc5UKvUxLhKNmwvJb1JL3aJ/KWUKDQBT3shKBXr+Ik0GF909mIB0ShpamDmlbqfBGzgwMtWqEHqVCMt1WAhGVwrx3NWZu1Rdh/ngqW26OS+hJfQ0grFL9vAF+NDjkyJIbFPVrf/hf896tEnhsjLEpUC83L9nmRt8cupmZUvEam2JB/1MX9kVvB1jTJwzT7vM+anKSTTIz9KWVMHIlD0fqiAxaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cAI6HkmK5u5WXfYUI0NE6v/dSKZ06H/sj/lUHuP1hYQ=;
- b=Xju+UIDrTFSN03UR19PJzTWCfNFE+2W0Mvv7iWRSIh0+ouDdgdxu68PwJbPM8MytZs3L3Ir4Au0Vs0uZIj4PTBpbTIIuwV7fDeTgp6KY9f59j0mGr3ts3Xzayp3hqxOoCvhOoAqENz6dJ0+AnJUlWqnBMOYsd7BSX3cx6e6EmcvZsGac3YUUBvWFK8J7S5CrytmmOQRXKIm1sGsFCHlTgPx77NJN03o4arVcgB+aLko9lkDWyEQEZK30MCkrMKAOBHIV4oQwAbuUxHGtFvq0WbvM0xfNen0HqAH+DgotIJIReuDkMrnGNImC/+UZY6n2XhEScHpxVNIAXQd6cf/3/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cAI6HkmK5u5WXfYUI0NE6v/dSKZ06H/sj/lUHuP1hYQ=;
- b=eCrt0koESgADSamsXjF/S4vpLz3GIS7yCnfZKMD4UpjdgKgJ/4Q45r2C34RHGPmdKLghmMR3twhZd4ILvszGc4bIM3ppH+K8LlIMDfzdUkRboGoWXfMS2OZWeGmdga4hfeZgWtiyks2Y3XA2Csz3imZD6yMxIv6JhVnuDl58rGjSJtnTsL6mqvnMpcMKqoTK/WJf9oQ0Wze156pqmoCUIG8uARU34RFvYtx8C8JPAMKYZM5vzwS/DPo1i2CvSC6l3K3EBYKpebS7AUxNjFiJfOmQsC7Y3snP9L3wGoQcO5i9xrGQmeVXdtlOY/Oot2367Qyxe2O8mZAV84cSDwVYMw==
-Received: from AM9PR04MB8602.eurprd04.prod.outlook.com (2603:10a6:20b:439::12)
- by AS4PR04MB9338.eurprd04.prod.outlook.com (2603:10a6:20b:4e6::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.25; Wed, 24 May
- 2023 04:23:36 +0000
-Received: from AM9PR04MB8602.eurprd04.prod.outlook.com
- ([fe80::e9bc:73d8:7880:68e5]) by AM9PR04MB8602.eurprd04.prod.outlook.com
- ([fe80::e9bc:73d8:7880:68e5%4]) with mapi id 15.20.6433.015; Wed, 24 May 2023
- 04:23:36 +0000
-From: Lin Ma <LMa@suse.com>
-To: Fabiano Rosas <farosas@suse.de>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "qemu-block@nongnu.org" <qemu-block@nongnu.org>, Kevin Wolf
- <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, =?iso-8859-1?Q?Jo=E3o_Silva?= <jsilva@suse.de>, Claudio
- Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>, Eric Blake
- <eblake@redhat.com>
-Subject: Re: [RFC PATCH 4/6] Convert query-block/info_block to coroutine
-Thread-Topic: [RFC PATCH 4/6] Convert query-block/info_block to coroutine
-Thread-Index: AQHZjb8K1VEZUiL0nUmQTegjiVoIK69o0uzS
-Date: Wed, 24 May 2023 04:23:35 +0000
-Message-ID: <AM9PR04MB860233F22701D1A5483216EAC5419@AM9PR04MB8602.eurprd04.prod.outlook.com>
-References: <20230523213903.18418-1-farosas@suse.de>
- <20230523213903.18418-5-farosas@suse.de>
-In-Reply-To: <20230523213903.18418-5-farosas@suse.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=suse.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8602:EE_|AS4PR04MB9338:EE_
-x-ms-office365-filtering-correlation-id: 0fad1a7d-adef-4ff1-8f8c-08db5c0ea454
-x-ld-processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: apHQufyBS9lvN2RdY00n2Qd6PMqhCaFwFkXRJ5X7b+9TxamjVFOKKPrTIkNXWm1vZzba/d4FOq4rXk4dIT/moUE6I//Dcr8Md1yy6m11ETqqHdpaCAXJelb3z26v2NSpdkxeHCRi2ju7c2ctGNp5IfW6eIO37zCiix6JZasLUl2hIW74qA2rZMF1LeZAwbJ6c3BLA2oPGCp1ArMrV7SdYi90806s9Z/fhgZNMNCFse6RjB5Vs4EBqnAVqknHZiMmvtefAXU7DT3371La8QLrsu6/LJ4cDTkQroq3nxXUwn18wK/fwRWsgEDOr1LAHWPOToB5K3bMLh9Dr+MdS2wQfD1uwgnzpjQgkJPhJ328kzyc+mGpzC+I7zfEsu4fgYUNN7fmmx+Kmql/jY7XBPm+dXHp6YL1LiBzJ7KoPlJbFuMDAFBtiGceXVBwIqtHydL494gbTL+n7tBJXsH6A3Qa2t9CIwEr/WnOH6+uImp2vg86r4czsWKgXd8WqEuKa0eef5ORec58YcjSOOoNFHLBByFyph9XekFk+VEhXwFQLvUFYOjKCHCjU+mXZWMulGnEP6OtlCTB0lJyVvWcEyanRiCGDFEjnPluDS/WT2tAlkZmWfTOsNgc2p0dTxJrBcoS
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM9PR04MB8602.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(39860400002)(376002)(346002)(136003)(366004)(451199021)(8676002)(83380400001)(8936002)(55016003)(66556008)(478600001)(4326008)(33656002)(86362001)(38100700002)(91956017)(66946007)(64756008)(66476007)(122000001)(66446008)(52536014)(76116006)(5660300002)(110136005)(54906003)(316002)(2906002)(71200400001)(7696005)(186003)(41300700001)(38070700005)(6506007)(26005)(9686003)(53546011);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?IPGY/IVFV8L5NqH+zqFG5c2riLM64kgEuibWl/Q5zvpDVQ6qrMH9gJzFZd?=
- =?iso-8859-1?Q?V/vrDsW3aLt0heqDG9yFHY8enDwtL90Ry/VZzIbH0HXlCWIu1GoXh2OeQ/?=
- =?iso-8859-1?Q?QW0p2lQt7yRgbgtaFN8DE8UiVQ8GLR5jwi95PCW/lHATSFtQnrY1CIK3Jq?=
- =?iso-8859-1?Q?M4dAXhbgh/QQJroM2y6yEAPFYDx6tZuNz0WG0JZntVUIaQR5dEl8j3oPnN?=
- =?iso-8859-1?Q?lr1kNfTVqpeDSVxxe+RxCfSvRxz3Bhge/DQogSbp0ggsmt16byszCgoSZo?=
- =?iso-8859-1?Q?Ugm1OINYPUf53g6TlX0QIBWD7FJc17VRrxKReHRJBAOjm0O2wMMbiIJPG7?=
- =?iso-8859-1?Q?r8gxWuxwK5j6q/GseP4Noy+FdCHFFAGQeFn2ra5fsvqclUK3OOy11PJEez?=
- =?iso-8859-1?Q?i31MiodCJL1J/qH40xE42b/PDNn9DI0kDJCdljDChv5NkIlxTmEfQBKqDr?=
- =?iso-8859-1?Q?8oA0u4wy5ptS8Te8DD32dJqztZdAwSVl3W/5zwRU0CBfHWKqMupstcyDWa?=
- =?iso-8859-1?Q?s7jBn06mEyZ2Q6KzYBMgOzGtKeY0NE2UWsGYOQqa85ZsxgJfvzfLnDN2yl?=
- =?iso-8859-1?Q?2UuBR9IiMe+b4svL2/sXw4FpfTqR7Mu4yxAji7f/93Ya7iNQG8VGUhBwA9?=
- =?iso-8859-1?Q?QLkdrWDupLsD7qpB+kLMXTXYI8mncBRR45DGpDNxn06vjmZmvJTXYvr3f1?=
- =?iso-8859-1?Q?Q+EsWvnYGY4ye6H8j4YHxtULy3RpV6Ks8AcWfsfjg66wvhrEzoGJhN+h21?=
- =?iso-8859-1?Q?jwKUqOiGal0Fn1BiY8yqTqmlD4Z3yqdH3gu45XxfNJ1UGK3ZXUTYiDirqs?=
- =?iso-8859-1?Q?tneyCgwfn8jGR50k5SEEWTGg3f0EdjFXQ+bFoCQqT00E2VH5nzKhwPEoUb?=
- =?iso-8859-1?Q?v9nmXAMni7Dr1j6LKcORKh1AQhs9Rg5H3JgTaFVn94E55nc7xhcclqQDXt?=
- =?iso-8859-1?Q?+lJh6TFgs8sM+FDq651IxMkJW+E8dM/PgyrhVPfLVEMUdlCTXN7HiJ+8fo?=
- =?iso-8859-1?Q?IuxQCKHU5W9A2OntMVp2gPrS4BTzldeg+LIwo/OjDJBWBVFVjz1DHdjbAj?=
- =?iso-8859-1?Q?uQx8mmD8MEn0WPOrPOwneAbNMo7nvpyR9ScSy/96tXXYUElkJkMdBGLeFb?=
- =?iso-8859-1?Q?9OKA5crb8VhJOJgtYBFuSHACJ66fiOMrruAUu8g7mKAy3KucRD/AvmQmrA?=
- =?iso-8859-1?Q?0k9yBiDGjYYXRfn9MVCwwj9r4DmMKk03llvukFrWLX1Fo9GTfpwl1jE0yV?=
- =?iso-8859-1?Q?ZffU6QhTVpHyPCgjbmZh9jfwZxN3WHISvP9p0RLWiTMzIis9sDeCPncuoS?=
- =?iso-8859-1?Q?4l88ytRiP7v9wRi+PknA7AJYvLFN1IzBCbHnCUTWw6SL1bEkhWMbYL6tnh?=
- =?iso-8859-1?Q?CFG55iPKej2OgAwmAGJk0AOv5EtntLNmwd78ConfQWIRRlO3UeN3mnxxp1?=
- =?iso-8859-1?Q?Y+EiR4wedInS/3tjrK5I2rmwrkS0cPsZufPrmiUwAOHhwLlObb2b89YNZa?=
- =?iso-8859-1?Q?Em0aXv8WOzZrvtffNSvzFx32SF/Tf63BLuOwjFb37rmvOr36Gu7p9GprcX?=
- =?iso-8859-1?Q?OIx8i4NAj8ty6AX6Se3A7vSoVVuc30NQoRevkgNjZXD2dLzKrw=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
+ id 1q1h9w-0004jb-7U
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 01:35:40 -0400
+Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
+ id 1q1h9t-0005Vg-LX
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 01:35:39 -0400
+Received: by mail-vs1-xe32.google.com with SMTP id
+ ada2fe7eead31-43943447fb9so169846137.2
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 22:35:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1684906536; x=1687498536;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HcmmS6W1Dr1XG/1SXPF0Jm9xXiHLTJHeCt9Suq6wYZU=;
+ b=OtCN0qOnTJ3TJQFu57ucLnPLVHoWNq4c4kEefLdjBpXRyiiQ+m7pYRKi40VmJYlRpt
+ XU/5Q2Juh5ksUJj/SqDfKO1StBx8SqIvwqJOUyjLf9SxQzCKUTDPV6TpFuZHZPaxQ/xt
+ R3kjtdCUMAmJ+zXYgx/swf260hdpD/GlYcgeUgztEohxm2oZLZikE1skXhs/Q2m02gUX
+ QWx5KxfTQEi72+ho9IJ82Pzsy1CsQW9Pb12GhpsOwEZf1mbQtXb6lK7g6HYZic0T+mgY
+ sLvUi8TZl04el82itRHj6Eq3D+aGLvht27DHJwllnRkbZvGjfGqozksfZWqQoLPuvqYd
+ twmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684906536; x=1687498536;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HcmmS6W1Dr1XG/1SXPF0Jm9xXiHLTJHeCt9Suq6wYZU=;
+ b=UAhFpz8sUSM4ckWu9eD/ClMw0CRfONpOTG34cmhZNRF9D1KIvciPuik9EI1o+NXH2I
+ cR0JJVfsIbqNDUc2vcjSDGWt0DK3RAC+pvANqPiR6wQ/ZQHs4INDGiRa+pznXq8jZ13b
+ HlL03BqASwR+7JzixYDDREC6HJ2jgVCh9NlcKJrtNY2CMcGsS2E2iePNg/Pr3Zcl/NDV
+ Q09TXfzmwwr457hEt4fCU/i4muuScdgOjTsucNYxxRCQWVty214Hm5NgXd/aHjpxGhpZ
+ ToCK+oOoPNjP6rx4gltm6DkaX4KWDYXuaug+G8+setZT5tTPgb3UlQk1jNadWvRiyAC6
+ L7cA==
+X-Gm-Message-State: AC+VfDyQq60ATesLlE0exyB0eJbZVmajp1jDVPYsmlT5EapgwZSEG+a4
+ K3P2h91f6dv/FezHBS8bms7WJtibDOGtySwVqgeYjg==
+X-Google-Smtp-Source: ACHHUZ4RcZBa9l9/0yjZVcY2XARhUp1iJKozEz3rj9RShhzcBREEajc2XckGBMdGeAkZawrucSkwY3b+rfiUDsr5NMU=
+X-Received: by 2002:a05:6102:3177:b0:42c:9864:3adf with SMTP id
+ l23-20020a056102317700b0042c98643adfmr4081048vsm.31.1684906536373; Tue, 23
+ May 2023 22:35:36 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8602.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0fad1a7d-adef-4ff1-8f8c-08db5c0ea454
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 May 2023 04:23:35.8775 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: t/gBfrV5swMglOMMy9GWAE6CozgFlEERoDm2cBdzz1H98MXb027tGn0JqK4IlRL9
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9338
-Received-SPF: pass client-ip=2a01:111:f400:fe0e::60e;
- envelope-from=LMa@suse.com; helo=EUR04-VI1-obe.outbound.protection.outlook.com
+References: <20230523114454.717708-1-tommy.wu@sifive.com>
+ <20230523114454.717708-2-tommy.wu@sifive.com>
+ <5d3558a0-8b7f-8b84-a4e0-a6f4404a56b6@iscas.ac.cn>
+ <CANj3q_=E_TfaHLn4rHQp4jy5U0LXoXCFDjYVwh7c85h_oB_F7Q@mail.gmail.com>
+ <cae11418-a33c-f35f-1604-a9b241f452a5@iscas.ac.cn>
+In-Reply-To: <cae11418-a33c-f35f-1604-a9b241f452a5@iscas.ac.cn>
+From: Tommy Wu <tommy.wu@sifive.com>
+Date: Wed, 24 May 2023 13:35:26 +0800
+Message-ID: <CANj3q_==LB7v7-OGtjWbNO5NUzTz--capnGZnnbiV+kru_Ayhg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/riscv: Add a function to refresh the dynamic
+ CSRs xml.
+To: Weiwei Li <liweiwei@iscas.ac.cn>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, frank.chang@sifive.com, 
+ alistair.francis@wdc.com, apatel@ventanamicro.com, palmer@rivosinc.com, 
+ dbarboza@ventanamicro.com, bin.meng@windriver.com, 
+ zhiwei_liu@linux.alibaba.com
+Content-Type: multipart/alternative; boundary="00000000000094af6605fc69df33"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
+ envelope-from=tommy.wu@sifive.com; helo=mail-vs1-xe32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_KAM_HTML_FONT_INVALID=0.01,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -140,69 +93,407 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The commit title/message are duplicated to previous one, Here should
-use "query-named-block-nodes" instead.
+--00000000000094af6605fc69df33
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Lin
+Hi WeiWei Li,
 
-________________________________________
-From: Fabiano Rosas <farosas@suse.de>
-Sent: Wednesday, May 24, 2023 5:39 AM
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org; Kevin Wolf; Hanna Reitz; Markus Armbruster; Jo=
-=E3o Silva; Lin Ma; Claudio Fontana; Dario Faggioli; Eric Blake
-Subject: [RFC PATCH 4/6] Convert query-block/info_block to coroutine
 
-From: Lin Ma <lma@suse.com>
+When the CPU is realizing, it will call `riscv_gen_dynamic_csr_xml` for the
+first time with the correct `base_reg` value.
 
-Sometimes the query-block performs time-consuming I/O(say waiting for
-the fstat of NFS complete), So let's make this QMP handler runs in a
-coroutine.
+code flow :
 
-The following patch moves the fstat() into a thread pool.
+riscv_cpu_realize
 
-Signed-off-by: Lin Ma <lma@suse.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- blockdev.c           | 6 +++---
- qapi/block-core.json | 3 ++-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+=E2=86=92 riscv_cpu_register_gdb_regs_for_features
 
-diff --git a/blockdev.c b/blockdev.c
-index 5d56b79df4..6412548662 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -2804,9 +2804,9 @@ void qmp_drive_backup(DriveBackup *backup, Error **er=
-rp)
-     blockdev_do_action(&action, errp);
- }
+     =E2=86=92 riscv_gen_dynamic_csr_xml
 
--BlockDeviceInfoList *qmp_query_named_block_nodes(bool has_flat,
--                                                 bool flat,
--                                                 Error **errp)
-+BlockDeviceInfoList *coroutine_fn qmp_query_named_block_nodes(bool has_fla=
-t,
-+                                                              bool flat,
-+                                                              Error **errp=
-)
- {
-     bool return_flat =3D has_flat && flat;
+The functionality of `cpu->dyn_csr_base_reg` is to record the `base_reg`
+from
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index da95fe456c..0559c38412 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -1972,7 +1972,8 @@
- { 'command': 'query-named-block-nodes',
-   'returns': [ 'BlockDeviceInfo' ],
-   'data': { '*flat': 'bool' },
--  'allow-preconfig': true }
-+  'allow-preconfig': true,
-+  'coroutine': true}
+`riscv_cpu_register_gdb_regs_for_features`.
 
- ##
- # @XDbgBlockGraphNodeType:
---
-2.35.3
+When we try to refresh the dynamic CSRs xml, we will call the function
+`riscv_gen_dynamic_csr_xml`
 
+for the second time, and then we can give the correct `base_reg` value to
+the function
+
+`riscv_gen_dynamic_csr_xml`, because we've record this value in the `
+cpu->dyn_csr_base_reg`.
+
+Best Regards,
+
+Tommy
+
+
+On Wed, May 24, 2023 at 10:10=E2=80=AFAM Weiwei Li <liweiwei@iscas.ac.cn> w=
+rote:
+
+>
+> On 2023/5/24 09:59, Tommy Wu wrote:
+> > Hi Weiwei Li,
+> >
+> > `dyn_csr_base_reg` will be used in `riscv_refresh_dynamic_csr_xml`
+> > We can initialize this variable when the cpu is realized.
+> I didn't find this initialization in following code.
+> > And used this variable in `riscv_refresh_dynamic_csr_xml`.
+>
+> That's my question. In riscv_refresh_dynamic_csr_xml() ,
+> cpu->dyn_csr_base_reg is passed to riscv_gen_dynamic_csr_xml() as base_re=
+g.
+>
+> And then base_reg is assigned to cpu->dyn_csr_base_reg again in it. So
+> it's unchanged in this progress.
+>
+> Another question is  dyn_csr_base_reg seems have no additional function
+> currently.
+>
+> Regards,
+>
+> Weiwei Li
+>
+> >
+> > Best regards,
+> > Tommy
+> >
+> >
+> > On Tue, May 23, 2023 at 10:38=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.c=
+n> wrote:
+> >
+> >
+> >     On 2023/5/23 19:44, Tommy Wu wrote:
+> >     > When we change the cpu extension state after the cpu is
+> >     > realized, we cannot print the value of some CSRs in the remote
+> >     > gdb debugger. The root cause is that the dynamic CSR xml is
+> >     > generated when the cpu is realized.
+> >     >
+> >     > This patch add a function to refresh the dynamic CSR xml after
+> >     > the cpu is realized.
+> >     >
+> >     > Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+> >     > Reviewed-by: Frank Chang <frank.chang@sifive.com>
+> >     > ---
+> >     >   target/riscv/cpu.h     |  2 ++
+> >     >   target/riscv/gdbstub.c | 12 ++++++++++++
+> >     >   2 files changed, 14 insertions(+)
+> >     >
+> >     > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> >     > index de7e43126a..dc8e592275 100644
+> >     > --- a/target/riscv/cpu.h
+> >     > +++ b/target/riscv/cpu.h
+> >     > @@ -494,6 +494,7 @@ struct ArchCPU {
+> >     >       CPUNegativeOffsetState neg;
+> >     >       CPURISCVState env;
+> >     >
+> >     > +    int dyn_csr_base_reg;
+> >
+> >     dyn_csr_base_reg  seems have no additional effect on the function.
+> >
+> >     And It remains unmodified in following
+> >     riscv_refresh_dynamic_csr_xml().
+> >
+> >     Regards,
+> >
+> >     Weiwei Li
+> >
+> >     >       char *dyn_csr_xml;
+> >     >       char *dyn_vreg_xml;
+> >     >
+> >     > @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int csrno,
+> >     riscv_csr_operations *ops);
+> >     >   void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);
+> >     >
+> >     >   void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
+> >     > +void riscv_refresh_dynamic_csr_xml(CPUState *cs);
+> >     >
+> >     >   uint8_t satp_mode_max_from_map(uint32_t map);
+> >     >   const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+> >     > diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+> >     > index 524bede865..9e97ee2c35 100644
+> >     > --- a/target/riscv/gdbstub.c
+> >     > +++ b/target/riscv/gdbstub.c
+> >     > @@ -230,6 +230,8 @@ static int
+> >     riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
+> >     >           bitsize =3D 64;
+> >     >       }
+> >     >
+> >     > +    cpu->dyn_csr_base_reg =3D base_reg;
+> >     > +
+> >     >       g_string_printf(s, "<?xml version=3D\"1.0\"?>");
+> >     >       g_string_append_printf(s, "<!DOCTYPE feature SYSTEM
+> >     \"gdb-target.dtd\">");
+> >     >       g_string_append_printf(s, "<feature
+> >     name=3D\"org.gnu.gdb.riscv.csr\">");
+> >     > @@ -349,3 +351,13 @@ void
+> >     riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
+> >     >                                    "riscv-csr.xml", 0);
+> >     >       }
+> >     >   }
+> >     > +
+> >     > +void riscv_refresh_dynamic_csr_xml(CPUState *cs)
+> >     > +{
+> >     > +    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> >     > +    if (!cpu->dyn_csr_xml) {
+> >     > +        g_assert_not_reached();
+> >     > +    }
+> >     > +    g_free(cpu->dyn_csr_xml);
+> >     > +    riscv_gen_dynamic_csr_xml(cs, cpu->dyn_csr_base_reg);
+> >     > +}
+> >
+>
+>
+
+--00000000000094af6605fc69df33
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><span id=3D"gmail-docs-internal-guid-314a45fe-7fff-75e1-2b=
+57-58eb012ba379"><p dir=3D"ltr" style=3D"line-height:1.38;margin-top:0pt;ma=
+rgin-bottom:0pt"><span style=3D"font-size:11pt;font-family:Arial;color:rgb(=
+0,0,0);background-color:transparent;font-variant-numeric:normal;font-varian=
+t-east-asian:normal;font-variant-alternates:normal;vertical-align:baseline;=
+white-space:pre-wrap">Hi WeiWei Li,</span></p><p dir=3D"ltr" style=3D"line-=
+height:1.38;margin-top:0pt;margin-bottom:0pt"><span style=3D"font-size:11pt=
+;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-varia=
+nt-numeric:normal;font-variant-east-asian:normal;font-variant-alternates:no=
+rmal;vertical-align:baseline;white-space:pre-wrap"><br></span></p><p dir=3D=
+"ltr" style=3D"line-height:1.38;margin-top:0pt;margin-bottom:0pt"><span sty=
+le=3D"font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:tr=
+ansparent;font-variant-numeric:normal;font-variant-east-asian:normal;font-v=
+ariant-alternates:normal;vertical-align:baseline;white-space:pre-wrap">When=
+ the CPU is realizing, it will call `riscv_gen_dynamic_csr_xml` for the fir=
+st time with the correct `base_reg` value.</span></p><br><p dir=3D"ltr" sty=
+le=3D"line-height:1.38;margin-top:0pt;margin-bottom:0pt"><span style=3D"fon=
+t-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent=
+;font-variant-numeric:normal;font-variant-east-asian:normal;font-variant-al=
+ternates:normal;vertical-align:baseline;white-space:pre-wrap">code flow :=
+=C2=A0</span></p><p dir=3D"ltr" style=3D"line-height:1.38;margin-top:0pt;ma=
+rgin-bottom:0pt"><span style=3D"font-size:11pt;font-family:Arial;color:rgb(=
+0,0,0);background-color:transparent;font-variant-numeric:normal;font-varian=
+t-east-asian:normal;font-variant-alternates:normal;vertical-align:baseline;=
+white-space:pre-wrap">riscv_cpu_realize</span></p><p dir=3D"ltr" style=3D"l=
+ine-height:1.38;margin-top:0pt;margin-bottom:0pt"><span style=3D"font-size:=
+11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;font-v=
+ariant-numeric:normal;font-variant-east-asian:normal;font-variant-alternate=
+s:normal;vertical-align:baseline;white-space:pre-wrap">=E2=86=92 riscv_cpu_=
+register_gdb_regs_for_features</span></p><p dir=3D"ltr" style=3D"line-heigh=
+t:1.38;margin-top:0pt;margin-bottom:0pt"><span style=3D"font-size:11pt;font=
+-family:Arial;color:rgb(0,0,0);background-color:transparent;font-variant-nu=
+meric:normal;font-variant-east-asian:normal;font-variant-alternates:normal;=
+vertical-align:baseline;white-space:pre-wrap">=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=E2=86=92 riscv_gen_dynamic_csr_xml</span></p><br><p dir=3D"ltr" style=
+=3D"line-height:1.38;margin-top:0pt;margin-bottom:0pt"><span style=3D"font-=
+size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;f=
+ont-variant-numeric:normal;font-variant-east-asian:normal;font-variant-alte=
+rnates:normal;vertical-align:baseline;white-space:pre-wrap">The functionali=
+ty of `</span><span style=3D"font-size:11pt;font-family:Arial;font-variant-=
+numeric:normal;font-variant-east-asian:normal;font-variant-alternates:norma=
+l;vertical-align:baseline;white-space:pre-wrap">cpu-&gt;dyn_csr_base_reg</s=
+pan><span style=3D"font-size:11pt;font-family:Arial;color:rgb(0,0,0);backgr=
+ound-color:transparent;font-variant-numeric:normal;font-variant-east-asian:=
+normal;font-variant-alternates:normal;vertical-align:baseline;white-space:p=
+re-wrap">` is to record the `base_reg` from</span></p><p dir=3D"ltr" style=
+=3D"line-height:1.38;margin-top:0pt;margin-bottom:0pt"><span style=3D"font-=
+size:11pt;font-family:Arial;color:rgb(0,0,0);background-color:transparent;f=
+ont-variant-numeric:normal;font-variant-east-asian:normal;font-variant-alte=
+rnates:normal;vertical-align:baseline;white-space:pre-wrap">`riscv_cpu_regi=
+ster_gdb_regs_for_features`.</span></p><br><p dir=3D"ltr" style=3D"line-hei=
+ght:1.38;margin-top:0pt;margin-bottom:0pt"><span style=3D"font-size:11pt;fo=
+nt-family:Arial;color:rgb(0,0,0);background-color:transparent;font-variant-=
+numeric:normal;font-variant-east-asian:normal;font-variant-alternates:norma=
+l;vertical-align:baseline;white-space:pre-wrap">When we try to refresh the =
+dynamic CSRs xml, we will call the function `riscv_gen_dynamic_csr_xml`</sp=
+an></p><p dir=3D"ltr" style=3D"line-height:1.38;margin-top:0pt;margin-botto=
+m:0pt"><span style=3D"font-size:11pt;font-family:Arial;color:rgb(0,0,0);bac=
+kground-color:transparent;font-variant-numeric:normal;font-variant-east-asi=
+an:normal;font-variant-alternates:normal;vertical-align:baseline;white-spac=
+e:pre-wrap">for the second time, and then we can give the correct `base_reg=
+` value to the function</span></p><p dir=3D"ltr" style=3D"line-height:1.38;=
+margin-top:0pt;margin-bottom:0pt"><span style=3D"font-size:11pt;font-family=
+:Arial;color:rgb(0,0,0);background-color:transparent;font-variant-numeric:n=
+ormal;font-variant-east-asian:normal;font-variant-alternates:normal;vertica=
+l-align:baseline;white-space:pre-wrap">`riscv_gen_dynamic_csr_xml`, because=
+ we&#39;ve record this value in the </span><span style=3D"background-color:=
+transparent;font-variant-numeric:normal;font-variant-east-asian:normal;font=
+-variant-alternates:normal;font-size:11pt;font-family:Arial;color:rgb(0,0,0=
+);vertical-align:baseline;white-space:pre-wrap">`</span><span style=3D"font=
+-variant-numeric:normal;font-variant-east-asian:normal;font-variant-alterna=
+tes:normal;font-size:11pt;font-family:Arial;vertical-align:baseline;white-s=
+pace:pre-wrap">cpu-&gt;dyn_csr_base_reg</span><span style=3D"background-col=
+or:transparent;font-variant-numeric:normal;font-variant-east-asian:normal;f=
+ont-variant-alternates:normal;font-size:11pt;font-family:Arial;color:rgb(0,=
+0,0);vertical-align:baseline;white-space:pre-wrap">`.</span></p><br><p dir=
+=3D"ltr" style=3D"line-height:1.38;margin-top:0pt;margin-bottom:0pt"><span =
+style=3D"font-size:11pt;font-family:Arial;color:rgb(0,0,0);background-color=
+:transparent;font-variant-numeric:normal;font-variant-east-asian:normal;fon=
+t-variant-alternates:normal;vertical-align:baseline;white-space:pre-wrap">B=
+est Regards,</span></p><p dir=3D"ltr" style=3D"line-height:1.38;margin-top:=
+0pt;margin-bottom:0pt"><span style=3D"font-size:11pt;font-family:Arial;colo=
+r:rgb(0,0,0);background-color:transparent;font-variant-numeric:normal;font-=
+variant-east-asian:normal;font-variant-alternates:normal;vertical-align:bas=
+eline;white-space:pre-wrap">Tommy</span></p></span><br class=3D"gmail-Apple=
+-interchange-newline"></div><br><div class=3D"gmail_quote"><div dir=3D"ltr"=
+ class=3D"gmail_attr">On Wed, May 24, 2023 at 10:10=E2=80=AFAM Weiwei Li &l=
+t;<a href=3D"mailto:liweiwei@iscas.ac.cn">liweiwei@iscas.ac.cn</a>&gt; wrot=
+e:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
+On 2023/5/24 09:59, Tommy Wu wrote:<br>
+&gt; Hi=C2=A0Weiwei Li,<br>
+&gt;<br>
+&gt; `dyn_csr_base_reg` will be used in `riscv_refresh_dynamic_csr_xml`<br>
+&gt; We can initialize this variable when the cpu is realized.<br>
+I didn&#39;t find this initialization in following code.<br>
+&gt; And used this variable in `riscv_refresh_dynamic_csr_xml`.<br>
+<br>
+That&#39;s my question. In riscv_refresh_dynamic_csr_xml() , <br>
+cpu-&gt;dyn_csr_base_reg is passed to riscv_gen_dynamic_csr_xml() as base_r=
+eg.<br>
+<br>
+And then base_reg is assigned to cpu-&gt;dyn_csr_base_reg again in it. So <=
+br>
+it&#39;s unchanged in this progress.<br>
+<br>
+Another question is=C2=A0 dyn_csr_base_reg seems have no additional functio=
+n <br>
+currently.<br>
+<br>
+Regards,<br>
+<br>
+Weiwei Li<br>
+<br>
+&gt;<br>
+&gt; Best=C2=A0regards,<br>
+&gt; Tommy<br>
+&gt;<br>
+&gt;<br>
+&gt; On Tue, May 23, 2023 at 10:38=E2=80=AFPM Weiwei Li &lt;<a href=3D"mail=
+to:liweiwei@iscas.ac.cn" target=3D"_blank">liweiwei@iscas.ac.cn</a>&gt; wro=
+te:<br>
+&gt;<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0On 2023/5/23 19:44, Tommy Wu wrote:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; When we change the cpu extension state after t=
+he cpu is<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; realized, we cannot print the value of some CS=
+Rs in the remote<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; gdb debugger. The root cause is that the dynam=
+ic CSR xml is<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; generated when the cpu is realized.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; This patch add a function to refresh the dynam=
+ic CSR xml after<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; the cpu is realized.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; Signed-off-by: Tommy Wu &lt;<a href=3D"mailto:=
+tommy.wu@sifive.com" target=3D"_blank">tommy.wu@sifive.com</a>&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; Reviewed-by: Frank Chang &lt;<a href=3D"mailto=
+:frank.chang@sifive.com" target=3D"_blank">frank.chang@sifive.com</a>&gt;<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; ---<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0target/riscv/cpu.h=C2=A0 =C2=A0 =
+=C2=A0|=C2=A0 2 ++<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0target/riscv/gdbstub.c | 12 ++++++=
+++++++<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A02 files changed, 14 insertions(+)<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; diff --git a/target/riscv/cpu.h b/target/riscv=
+/cpu.h<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; index de7e43126a..dc8e592275 100644<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; --- a/target/riscv/cpu.h<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +++ b/target/riscv/cpu.h<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; @@ -494,6 +494,7 @@ struct ArchCPU {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0CPUNegativeOffsetSta=
+te neg;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0CPURISCVState env;<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0 int dyn_csr_base_reg;<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0dyn_csr_base_reg=C2=A0 seems have no additional eff=
+ect on the function.<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0And It remains unmodified in following<br>
+&gt;=C2=A0 =C2=A0 =C2=A0riscv_refresh_dynamic_csr_xml().<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0Regards,<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0Weiwei Li<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0char *dyn_csr_xml;<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0char *dyn_vreg_xml;<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int=
+ csrno,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0riscv_csr_operations *ops);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0void riscv_set_csr_ops(int csrno, =
+riscv_csr_operations *ops);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0void riscv_cpu_register_gdb_regs_f=
+or_features(CPUState *cs);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +void riscv_refresh_dynamic_csr_xml(CPUState *=
+cs);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0uint8_t satp_mode_max_from_map(uin=
+t32_t map);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0const char *satp_mode_str(uint8_t =
+satp_mode, bool is_32_bit);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; diff --git a/target/riscv/gdbstub.c b/target/r=
+iscv/gdbstub.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; index 524bede865..9e97ee2c35 100644<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; --- a/target/riscv/gdbstub.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +++ b/target/riscv/gdbstub.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; @@ -230,6 +230,8 @@ static int<br>
+&gt;=C2=A0 =C2=A0 =C2=A0riscv_gen_dynamic_csr_xml(CPUState *cs, int base_re=
+g)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0bitsiz=
+e =3D 64;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0 cpu-&gt;dyn_csr_base_reg =3D ba=
+se_reg;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_string_printf(s, &=
+quot;&lt;?xml version=3D\&quot;1.0\&quot;?&gt;&quot;);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_string_append_prin=
+tf(s, &quot;&lt;!DOCTYPE feature SYSTEM<br>
+&gt;=C2=A0 =C2=A0 =C2=A0\&quot;gdb-target.dtd\&quot;&gt;&quot;);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_string_append_prin=
+tf(s, &quot;&lt;feature<br>
+&gt;=C2=A0 =C2=A0 =C2=A0name=3D\&quot;org.gnu.gdb.riscv.csr\&quot;&gt;&quot=
+;);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; @@ -349,3 +351,13 @@ void<br>
+&gt;=C2=A0 =C2=A0 =C2=A0riscv_cpu_register_gdb_regs_for_features(CPUState *=
+cs)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 &quot;riscv-csr.xml&quot;, 0);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +void riscv_refresh_dynamic_csr_xml(CPUState *=
+cs)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0 RISCVCPU *cpu =3D RISCV_CPU(cs)=
+;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0 if (!cpu-&gt;dyn_csr_xml) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_assert_not_reac=
+hed();<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0 g_free(cpu-&gt;dyn_csr_xml);<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0 riscv_gen_dynamic_csr_xml(cs, c=
+pu-&gt;dyn_csr_base_reg);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0&gt; +}<br>
+&gt;<br>
+<br>
+</blockquote></div>
+
+--00000000000094af6605fc69df33--
 
