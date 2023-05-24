@@ -2,72 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F0470F444
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:32:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD49570F490
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:50:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1lmT-0005Ul-Tf; Wed, 24 May 2023 06:31:45 -0400
+	id 1q1m32-0004ZY-IM; Wed, 24 May 2023 06:48:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1lmD-0005UN-9h
- for qemu-devel@nongnu.org; Wed, 24 May 2023 06:31:29 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q1lmB-0001oI-OV
- for qemu-devel@nongnu.org; Wed, 24 May 2023 06:31:29 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-513fd8cc029so1694403a12.3
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 03:31:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684924282; x=1687516282;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ldZu5D1nrOy+8us2rh9980tv+QWYS1zaM5b3/sLyPLI=;
- b=nE+U1IECLBHx+1sNZ+OX5MrvX8WyfFpamN3sGtVMWlN2ewaKLx0ry/2HHcp8LdZNym
- txkrAu9Blb+hLAAwF/rDZODUVcpQiznmPEPQq/aUAeeknRPNrIEqGBW8HJNYZ3eEdh7R
- FIaiLlobsq19FvgBDYMUV7FVphBzEiyEh0VM8ej2CU5jQQopmbfZlcsREqooq3J4U5rn
- 9AoqVRr+3kkq8bdnOUJZW7BRLcnuuvkVQYUBTDFTp94rydkqF3zQPlS4npCbWSpWq1/L
- NWyg/SUFfGm0mrvCaQUbsJBc2myNiFEZQGGUoOiJJQgn6Syq0gkC8P+Y+0SjEyBOGMa7
- oxmg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1m30-0004Xh-7q
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 06:48:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1m2x-0005KA-MR
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 06:48:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684925320;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=X15Mf24DkIGVaX1jnOTT/tlssYH8biTu4oGf/QpgFNA=;
+ b=cMwwj1I1Xl+rHLkLiKVM/5GF7EUFQvO7vkkZEY2ND9lBX6WITwkM7T7a6KZGkxVGw/ndtW
+ J1vr+kYhxqQ1pJkPXwrFJIcfFpUZo89swuSBJSuvFAW6oHHKDzEg7NgdQItTg2IxKAQpaQ
+ H+7H3kuHyw2uPZ/Nkj0q5qBxrbrBE28=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-600-PkLXhSQwPHKBhNRX5-kscg-1; Wed, 24 May 2023 06:48:38 -0400
+X-MC-Unique: PkLXhSQwPHKBhNRX5-kscg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f50aa22cd2so5113285e9.1
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 03:48:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684924282; x=1687516282;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ldZu5D1nrOy+8us2rh9980tv+QWYS1zaM5b3/sLyPLI=;
- b=QZ9r/VQkdrweFDP/I29tuooZPGd0jg6UJolEfsTuiLm+/kBijLXnOUjL4jxH6RadKq
- pIntWiN7zto8lbgh83vOqCdrhK0dTNaIvhtLeZFanVAEhUrwPxA+JgG+yRNwSGOLMX7/
- sK9W6QN4YnkWD/WsPpff6njo2O8IfbXkoKwhrrXwsAa1tNBKYZCYuIDUqGcRL+RJgJRW
- +4gIoGUmRjJULq5kdlLOQyfVNgmpGmKbXCXma+4CppQpQ+iOeIBzLNq8DxhSPw6EdVPd
- DuhLSOdpAfExKYRU1Iz6ENlv6dM2m6F9tYGT915CKgEgGwJXrIHFpStPPHNfPXagX8YC
- 7JHQ==
-X-Gm-Message-State: AC+VfDwM7un2lV1Dn16vt6nls889HLWRZPWVn8E5evvMwVFawvBkqhZN
- E241IMk0Yo+jrfN8hX//BdAVL223YP6k5JB9N0+XIw==
-X-Google-Smtp-Source: ACHHUZ51nictspdE/zADeGFD2gbH+zZilIAtEWY+QIetMzNNz6+nIWELIAhTF4S+YxDSOqj9SuLIIvBICyaXwHE47mA=
-X-Received: by 2002:a50:fe89:0:b0:50b:cadd:21e6 with SMTP id
- d9-20020a50fe89000000b0050bcadd21e6mr1647125edt.8.1684924282147; Wed, 24 May
- 2023 03:31:22 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1684925317; x=1687517317;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=X15Mf24DkIGVaX1jnOTT/tlssYH8biTu4oGf/QpgFNA=;
+ b=k7kNJ+gxN/hQ1zX8pgAnrjeQhhPwBxKPmynC0kuWZIvgiL7vkNqhIvlNctem66Q//4
+ Bk60k6eScmRma1Xq/zp+93cCkScmmbw1SiEfvZNw2X2B7bClE2vzNQX+a+QOqDHt2+UE
+ GAsByel8o1CtGigI1aeE4Bbqtau9IcQfgXaK58c7ioGErFKoUfy3TPyGvDbue+0zm5kt
+ V1jxPoANF8uQu6idGRV0iJ7LNIerSuHQyaaoLw89sOgw12XZaHrAC//OcSdK4GCUWsrq
+ U/NwRbT4l190QMeuC2seFkmTU3ZlPYo944/cFr7k6TgTtVWLmnxvMvZtJpGK2bUZtQWD
+ Il8w==
+X-Gm-Message-State: AC+VfDyCvcs7jOAGPuNVyRXU9YBbHGireb8lpZ+ubcNQvjxsNUbsd6oC
+ w0I1P+UJgazasSp1ZZ5Thg5sxCBg4piw0gPmwexgeHNpcJMpZh3YnZ1v5Kb7QYNO0CUQICtKWZU
+ G5DUWih8bBsSqJY0=
+X-Received: by 2002:a05:600c:ad2:b0:3f6:d2:d8c0 with SMTP id
+ c18-20020a05600c0ad200b003f600d2d8c0mr9367742wmr.19.1684925317659; 
+ Wed, 24 May 2023 03:48:37 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7WMPPn2BtinfxHo6IMua8QEfKBaJ7CTVvZxTaSIPrWxruwM3c/Px6oUAn7YfCWfPauNzn52Q==
+X-Received: by 2002:a05:600c:ad2:b0:3f6:d2:d8c0 with SMTP id
+ c18-20020a05600c0ad200b003f600d2d8c0mr9367722wmr.19.1684925317388; 
+ Wed, 24 May 2023 03:48:37 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-176-64.web.vodafone.de.
+ [109.43.176.64]) by smtp.gmail.com with ESMTPSA id
+ b21-20020a05600c4e1500b003f4283f5c1bsm7127605wmq.2.2023.05.24.03.48.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 May 2023 03:48:36 -0700 (PDT)
+Message-ID: <933facc7-d6e8-0b6d-d115-a0777bb82a4e@redhat.com>
+Date: Wed, 24 May 2023 12:48:35 +0200
 MIME-Version: 1.0
-References: <20230523223844.719056-1-richard.henderson@linaro.org>
-In-Reply-To: <20230523223844.719056-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 24 May 2023 11:30:56 +0100
-Message-ID: <CAFEAcA89YToWdvwprxQgaMBpp4KVFqj8asXpBBcikg8zseSv0w@mail.gmail.com>
-Subject: Re: [PATCH] meson: Adjust check for __int128_t
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 2/5] Add Bochs to list of vga_interfaces
+Content-Language: en-US
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20230524102729.810892-1-marcin.juszkiewicz@linaro.org>
+ <20230524102729.810892-3-marcin.juszkiewicz@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230524102729.810892-3-marcin.juszkiewicz@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,18 +102,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 23 May 2023 at 23:39, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Remove the signed * signed check, leaving the signed * unsigned check.
-> This link test runs foul of -fsanitize=undefined, where clang-11 has
-> an undefined reference to __muloti4 to check for signed overflow.
+On 24/05/2023 12.27, Marcin Juszkiewicz wrote:
+> arm/sbsa-ref uses Bochs-display graphics card and without it being
+> present in vga_interfaces "-vga none" argument handling cannot be added.
+> 
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> ---
+>   include/sysemu/sysemu.h | 2 +-
+>   softmmu/vl.c            | 6 ++++++
+>   2 files changed, 7 insertions(+), 1 deletion(-)
 
-If you can't do a signed * signed multiply then that sounds
-to me like "int128_t doesn't work on this compiler". We
-specifically added this check to catch "some clang with
--fsanitize=undefined don't actually correctly compile
-int128_t * int128_t" in commit 464e3671f9.
+Sorry for not noticing it earlier ... but while you're at it, please also 
+add an entry for VGA_BOCHS to pci_vga_init(), so that other machines could 
+benefit from this automatically, too.
 
--- PMM
+  Thomas
+
+
 
