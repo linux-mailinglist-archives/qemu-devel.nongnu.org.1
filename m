@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6AA670EB08
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 03:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A692A70EB10
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 04:01:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1dfB-0004vn-4H; Tue, 23 May 2023 21:51:41 -0400
+	id 1q1dmt-0006vD-Eo; Tue, 23 May 2023 21:59:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q1df6-0004th-G6
- for qemu-devel@nongnu.org; Tue, 23 May 2023 21:51:37 -0400
-Received: from mail-vs1-xe31.google.com ([2607:f8b0:4864:20::e31])
+ id 1q1dmp-0006tf-Q3
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 21:59:35 -0400
+Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1q1df4-0001ib-Hz
- for qemu-devel@nongnu.org; Tue, 23 May 2023 21:51:36 -0400
-Received: by mail-vs1-xe31.google.com with SMTP id
- ada2fe7eead31-4361225a745so123019137.2
- for <qemu-devel@nongnu.org>; Tue, 23 May 2023 18:51:33 -0700 (PDT)
+ id 1q1dmm-0003oy-Lb
+ for qemu-devel@nongnu.org; Tue, 23 May 2023 21:59:35 -0400
+Received: by mail-ua1-x933.google.com with SMTP id
+ a1e0cc1a2514c-7841f18f9f7so184773241.0
+ for <qemu-devel@nongnu.org>; Tue, 23 May 2023 18:59:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1684893093; x=1687485093;
+ d=sifive.com; s=google; t=1684893571; x=1687485571;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=PaT5JBWKLiVkSD4dl1jsmJZf0hxmIMjtdz0wDNpT38Q=;
- b=LSoIHsqff1E+HeVJZUXtuYckCNv+8CtT1s+YeTNAIIhxuOB2tp6sdmf9wniFDe1/e6
- 1GNvg3U0i+3vyajIXJ5qZEsd/lTzTiWfi+96+xR6HHZrHL7ND/ADuIogryvhCxn1QfQ/
- +XkgeBQP1YYkZJfaweqYv90/rVZvzZv96xwNpPSMFF4KStjex1JwazTerBw8Qx5vk84+
- fIkQeZfdQDmuOX3paLx3GpL5Mwcqm3r12WXjMpwI6jdxFBooPtywf4JX9J7UNsk14f4V
- eruFxdtjshKZyq4r4sQCICf6wbk+FWkzn+8fnkDKuN7GdKqZKViE1+NF6uL+yHyjV9zk
- HZUA==
+ bh=ZfJcgXUarV83iXX5buusi5S0c342ea7yX5a9TKFopP4=;
+ b=dURV2sC6gz1s5UDHcolfnsJ7ClN7ZyoBMEMlY4Ch+lFEWrLX7RI/daXQPI5ISku21I
+ AEfplnAuay/ajU+wjlU1j3ei0xn3jxwJJaZT6rm+XV4mk7IZOzyYNKw1+NwjGk4hxBx8
+ ZSRkGK5tLCDdoES8bq3uVdo6eOENigVXGkUHl5qcj+NlvkOP5/qLGEpqEcEhNMztjSFT
+ +HPLyxoO8gEZgpj2mGHRKx23VuYZL1TLQmQmT7JIpWmWKKckgk9QfxrZhuqItmkelTSp
+ cQULm5wLubObsAe0GS2FnCo28t9Jg7Rfl4AeQ43z1eC3x1FCnOr48/l29cNCW6fr56l5
+ IFFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684893093; x=1687485093;
+ d=1e100.net; s=20221208; t=1684893571; x=1687485571;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=PaT5JBWKLiVkSD4dl1jsmJZf0hxmIMjtdz0wDNpT38Q=;
- b=hXKGEZ7luF0glL7lCQ1CvQ7Zi3Wmq/vYNP0jCxO6XER0POuilrgNk6+xCSaX3dnUze
- 2lQzwHoepn3R1DC5KC7kMwTF8Ie8qII1nKVdDuaJttf4GGxsmKofS+dyDyprKNL43eml
- xnCz1FCZroGnA0FhEnk/cCR4OotCJhERtOc3mXkO80N3WBUmTB8ED0l461SaMYJkqVZm
- vqmlIJbRuZ0FvCmEg6Fw0nyQrACu1tfgaEQUF5Jf2fFLy8uAzAjB+zRdv7CKLQqeDJzA
- E1I3DLlGAx/cEfEE41JYMgnOSePRmcj3Fr1D0JZLtZtSjdcKM2aJ+L1wPd3kWzL8fSbm
- D+pQ==
-X-Gm-Message-State: AC+VfDxsT3NMi6SiJlRIce4SKaIsUlXyu8nfqgYa7QeFl4pmklbvdCxd
- 9mEvyINpaIXK21WrmQt/kMOup0ZrQCAJ+Oy+orMe4g==
-X-Google-Smtp-Source: ACHHUZ7FmxnwhLv2FouxR7P6/mQWDFLonRvc5FnYrX5S77JnYQ2RAabDX7mefrB9YGePEzsng8iUAIn7x1tMefZU4m8=
-X-Received: by 2002:a67:cf48:0:b0:42f:f915:8cd with SMTP id
- f8-20020a67cf48000000b0042ff91508cdmr4014967vsm.5.1684893092960; Tue, 23 May
- 2023 18:51:32 -0700 (PDT)
+ bh=ZfJcgXUarV83iXX5buusi5S0c342ea7yX5a9TKFopP4=;
+ b=SLtaMkTV+IeTarK5l+Q0u7B8qzFGGRkm2IetHKCQkS6jNKWQKfHbWj92Rjz6la+f/H
+ ULfkMEo0v1g6EAJ0ehweM+4r6zzg5GLneeXE1x7E8EDkpZ6zZGcYaedZplppYDyeSe+q
+ eysIlw6I0ebrjbw1RrQSIB1Bf8LaqCX/QjiRzoQvpGArWlDOStIACIsPoZCff297qpm/
+ NGIXHqyXh5saVr0xrgrrU6d7/hyiWzpahlObDiFb5HSpRhzBj+q2tIWIXimvmAf3dR2H
+ DK0lXcqVf+cmwpjxMln4BWoEM5YyeU09pNS65MiudpLaMqPnAO+a9gWfaYc0M2lVc9CA
+ /DXQ==
+X-Gm-Message-State: AC+VfDxfivWlEPzkmTJuf6Aci2cX0EiG/7y5i+j7UDBkPQghcfAftXit
+ LelSjns/aeKyJsbAUsR9uwzRw5lgIlLemOx8kYVB6A==
+X-Google-Smtp-Source: ACHHUZ4Y4CXtWSTEac9l/RKNnitB3SJOeI54YHViyXMjMhCd8/W51rLzEGkk110vaiFgYT+d/xarwDaWkPUOJZeJTrk=
+X-Received: by 2002:a67:f3d3:0:b0:436:22fe:1d9 with SMTP id
+ j19-20020a67f3d3000000b0043622fe01d9mr4674210vsn.10.1684893571337; Tue, 23
+ May 2023 18:59:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230523114454.717708-1-tommy.wu@sifive.com>
- <20230523114454.717708-3-tommy.wu@sifive.com>
- <a1c36ae3-7875-0178-fcca-33abed1816f2@iscas.ac.cn>
-In-Reply-To: <a1c36ae3-7875-0178-fcca-33abed1816f2@iscas.ac.cn>
+ <20230523114454.717708-2-tommy.wu@sifive.com>
+ <5d3558a0-8b7f-8b84-a4e0-a6f4404a56b6@iscas.ac.cn>
+In-Reply-To: <5d3558a0-8b7f-8b84-a4e0-a6f4404a56b6@iscas.ac.cn>
 From: Tommy Wu <tommy.wu@sifive.com>
-Date: Wed, 24 May 2023 09:51:22 +0800
-Message-ID: <CANj3q_nn5puBEdfzCgwUtT9bkhUUzopf-2qa0xC7LcRs_i_uhw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] hw/intc: riscv_imsic: Refresh the CSRs xml after
- updating the state of the cpu.
+Date: Wed, 24 May 2023 09:59:21 +0800
+Message-ID: <CANj3q_=E_TfaHLn4rHQp4jy5U0LXoXCFDjYVwh7c85h_oB_F7Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/riscv: Add a function to refresh the dynamic
+ CSRs xml.
 To: Weiwei Li <liweiwei@iscas.ac.cn>
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, frank.chang@sifive.com, 
  alistair.francis@wdc.com, apatel@ventanamicro.com, palmer@rivosinc.com, 
  dbarboza@ventanamicro.com, bin.meng@windriver.com, 
  zhiwei_liu@linux.alibaba.com
-Content-Type: multipart/alternative; boundary="0000000000004a716705fc66bec3"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e31;
- envelope-from=tommy.wu@sifive.com; helo=mail-vs1-xe31.google.com
+Content-Type: multipart/alternative; boundary="000000000000cdf15a05fc66da67"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::933;
+ envelope-from=tommy.wu@sifive.com; helo=mail-ua1-x933.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,144 +90,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004a716705fc66bec3
+--000000000000cdf15a05fc66da67
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi Weiwei Li,
-Yes, you're right,  `riscv_refresh_dynamic_csr_xml()`  can only be called
-when
-cpu->dyn_csr_xml isn't a NULL pointer here.
 
-The cpu->dyn_csr_xml will be set when the cpu is realized.
+`dyn_csr_base_reg` will be used in `riscv_refresh_dynamic_csr_xml`
+We can initialize this variable when the cpu is realized. And used this
+variable in `riscv_refresh_dynamic_csr_xml`.
 
-Best Regards,
+Best regards,
 Tommy
 
 
-On Tue, May 23, 2023 at 10:44=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.cn> w=
+On Tue, May 23, 2023 at 10:38=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.cn> w=
 rote:
 
 >
 > On 2023/5/23 19:44, Tommy Wu wrote:
-> > Originally, when we set the ext_smaia to true, we still cannot print th=
-e
-> > AIA CSRs in the remote gdb debugger, because the dynamic CSR xml is
+> > When we change the cpu extension state after the cpu is
+> > realized, we cannot print the value of some CSRs in the remote
+> > gdb debugger. The root cause is that the dynamic CSR xml is
 > > generated when the cpu is realized.
 > >
-> > This patch refreshes the dynamic CSR xml after we update the ext_smaia,
-> > so that we can print the AIA CSRs in the remote gdb debugger.
+> > This patch add a function to refresh the dynamic CSR xml after
+> > the cpu is realized.
 > >
 > > Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
 > > Reviewed-by: Frank Chang <frank.chang@sifive.com>
 > > ---
-> >   hw/intc/riscv_imsic.c | 4 ++++
-> >   1 file changed, 4 insertions(+)
+> >   target/riscv/cpu.h     |  2 ++
+> >   target/riscv/gdbstub.c | 12 ++++++++++++
+> >   2 files changed, 14 insertions(+)
 > >
-> > diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
-> > index fea3385b51..97a51d535b 100644
-> > --- a/hw/intc/riscv_imsic.c
-> > +++ b/hw/intc/riscv_imsic.c
-> > @@ -350,6 +350,10 @@ static void riscv_imsic_realize(DeviceState *dev,
-> Error **errp)
-> >           } else {
-> >               rcpu->cfg.ext_smaia =3D true;
-> >           }
-> > +
-> > +        /* Refresh the dynamic csr xml for the gdbstub. */
-> > +        riscv_refresh_dynamic_csr_xml(cpu);
-> > +
+> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> > index de7e43126a..dc8e592275 100644
+> > --- a/target/riscv/cpu.h
+> > +++ b/target/riscv/cpu.h
+> > @@ -494,6 +494,7 @@ struct ArchCPU {
+> >       CPUNegativeOffsetState neg;
+> >       CPURISCVState env;
+> >
+> > +    int dyn_csr_base_reg;
 >
-> There is an assert in riscv_refresh_dynamic_csr_xml():
+> dyn_csr_base_reg  seems have no additional effect on the function.
 >
-> +    if (!cpu->dyn_csr_xml) {
-> +        g_assert_not_reached();
-> +    }
->
-> So I think riscv_refresh_dynamic_csr_xml() can only be called when
-> cpu->dyn_csr_xml is true here.
+> And It remains unmodified in following riscv_refresh_dynamic_csr_xml().
 >
 > Regards,
 >
 > Weiwei Li
 >
-> >           riscv_cpu_set_aia_ireg_rmw_fn(env, (imsic->mmode) ? PRV_M :
-> PRV_S,
-> >                                         riscv_imsic_rmw, imsic);
+> >       char *dyn_csr_xml;
+> >       char *dyn_vreg_xml;
+> >
+> > @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int csrno,
+> riscv_csr_operations *ops);
+> >   void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);
+> >
+> >   void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
+> > +void riscv_refresh_dynamic_csr_xml(CPUState *cs);
+> >
+> >   uint8_t satp_mode_max_from_map(uint32_t map);
+> >   const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+> > diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+> > index 524bede865..9e97ee2c35 100644
+> > --- a/target/riscv/gdbstub.c
+> > +++ b/target/riscv/gdbstub.c
+> > @@ -230,6 +230,8 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs,
+> int base_reg)
+> >           bitsize =3D 64;
 > >       }
+> >
+> > +    cpu->dyn_csr_base_reg =3D base_reg;
+> > +
+> >       g_string_printf(s, "<?xml version=3D\"1.0\"?>");
+> >       g_string_append_printf(s, "<!DOCTYPE feature SYSTEM
+> \"gdb-target.dtd\">");
+> >       g_string_append_printf(s, "<feature
+> name=3D\"org.gnu.gdb.riscv.csr\">");
+> > @@ -349,3 +351,13 @@ void
+> riscv_cpu_register_gdb_regs_for_features(CPUState *cs)
+> >                                    "riscv-csr.xml", 0);
+> >       }
+> >   }
+> > +
+> > +void riscv_refresh_dynamic_csr_xml(CPUState *cs)
+> > +{
+> > +    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> > +    if (!cpu->dyn_csr_xml) {
+> > +        g_assert_not_reached();
+> > +    }
+> > +    g_free(cpu->dyn_csr_xml);
+> > +    riscv_gen_dynamic_csr_xml(cs, cpu->dyn_csr_base_reg);
+> > +}
 >
 >
 
---0000000000004a716705fc66bec3
+--000000000000cdf15a05fc66da67
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Hi Weiwei Li,<br>Yes, you&#39;re right,=C2=A0 `riscv_refre=
-sh_dynamic_csr_xml()`=C2=A0 can only be called when<br>cpu-&gt;dyn_csr_xml =
-isn&#39;t a NULL pointer here.<div><br></div><div>The cpu-&gt;dyn_csr_xml w=
-ill be set when the cpu is realized.</div><div><br></div><div>Best=C2=A0Reg=
-ards,</div><div>Tommy</div><div><br></div></div><br><div class=3D"gmail_quo=
-te"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, May 23, 2023 at 10:44=E2=
-=80=AFPM Weiwei Li &lt;<a href=3D"mailto:liweiwei@iscas.ac.cn">liweiwei@isc=
-as.ac.cn</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
-"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
-ft:1ex"><br>
+<div dir=3D"ltr">Hi=C2=A0Weiwei Li,<div><br></div><div>`dyn_csr_base_reg` w=
+ill be used in `<span style=3D"color:rgb(0,0,0)">riscv_refresh_dynamic_csr_=
+xml`</span><br></div><div><font color=3D"#000000">We can initialize this va=
+riable when the cpu is realized. And used this variable in `</font><span st=
+yle=3D"color:rgb(0,0,0)">riscv_refresh_dynamic_csr_xml`.</span></div><div><=
+span style=3D"color:rgb(0,0,0)"><br></span></div><div><span style=3D"color:=
+rgb(0,0,0)">Best=C2=A0regards,</span></div><div><span style=3D"color:rgb(0,=
+0,0)">Tommy</span></div><div><span style=3D"color:rgb(0,0,0)"><br></span></=
+div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_at=
+tr">On Tue, May 23, 2023 at 10:38=E2=80=AFPM Weiwei Li &lt;<a href=3D"mailt=
+o:liweiwei@iscas.ac.cn">liweiwei@iscas.ac.cn</a>&gt; wrote:<br></div><block=
+quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
+px solid rgb(204,204,204);padding-left:1ex"><br>
 On 2023/5/23 19:44, Tommy Wu wrote:<br>
-&gt; Originally, when we set the ext_smaia to true, we still cannot print t=
-he<br>
-&gt; AIA CSRs in the remote gdb debugger, because the dynamic CSR xml is<br=
->
+&gt; When we change the cpu extension state after the cpu is<br>
+&gt; realized, we cannot print the value of some CSRs in the remote<br>
+&gt; gdb debugger. The root cause is that the dynamic CSR xml is<br>
 &gt; generated when the cpu is realized.<br>
 &gt;<br>
-&gt; This patch refreshes the dynamic CSR xml after we update the ext_smaia=
-,<br>
-&gt; so that we can print the AIA CSRs in the remote gdb debugger.<br>
+&gt; This patch add a function to refresh the dynamic CSR xml after<br>
+&gt; the cpu is realized.<br>
 &gt;<br>
 &gt; Signed-off-by: Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" tar=
 get=3D"_blank">tommy.wu@sifive.com</a>&gt;<br>
 &gt; Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang@sifive.com"=
  target=3D"_blank">frank.chang@sifive.com</a>&gt;<br>
 &gt; ---<br>
-&gt;=C2=A0 =C2=A0hw/intc/riscv_imsic.c | 4 ++++<br>
-&gt;=C2=A0 =C2=A01 file changed, 4 insertions(+)<br>
+&gt;=C2=A0 =C2=A0target/riscv/cpu.h=C2=A0 =C2=A0 =C2=A0|=C2=A0 2 ++<br>
+&gt;=C2=A0 =C2=A0target/riscv/gdbstub.c | 12 ++++++++++++<br>
+&gt;=C2=A0 =C2=A02 files changed, 14 insertions(+)<br>
 &gt;<br>
-&gt; diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c<br>
-&gt; index fea3385b51..97a51d535b 100644<br>
-&gt; --- a/hw/intc/riscv_imsic.c<br>
-&gt; +++ b/hw/intc/riscv_imsic.c<br>
-&gt; @@ -350,6 +350,10 @@ static void riscv_imsic_realize(DeviceState *dev,=
- Error **errp)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0} else {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0rcpu-&gt;cfg.ext=
-_smaia =3D true;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Refresh the dynamic csr xml for the gd=
-bstub. */<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 riscv_refresh_dynamic_csr_xml(cpu);<br>
-&gt; +<br>
+&gt; diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h<br>
+&gt; index de7e43126a..dc8e592275 100644<br>
+&gt; --- a/target/riscv/cpu.h<br>
+&gt; +++ b/target/riscv/cpu.h<br>
+&gt; @@ -494,6 +494,7 @@ struct ArchCPU {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0CPUNegativeOffsetState neg;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0CPURISCVState env;<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; +=C2=A0 =C2=A0 int dyn_csr_base_reg;<br>
 <br>
-There is an assert in riscv_refresh_dynamic_csr_xml():<br>
+dyn_csr_base_reg=C2=A0 seems have no additional effect on the function.<br>
 <br>
-+=C2=A0 =C2=A0 if (!cpu-&gt;dyn_csr_xml) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_assert_not_reached();<br>
-+=C2=A0 =C2=A0 }<br>
-<br>
-So I think riscv_refresh_dynamic_csr_xml() can only be called when <br>
-cpu-&gt;dyn_csr_xml is true here.<br>
+And It remains unmodified in following riscv_refresh_dynamic_csr_xml().<br>
 <br>
 Regards,<br>
 <br>
 Weiwei Li<br>
 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0riscv_cpu_set_aia_ireg_rmw_fn(=
-env, (imsic-&gt;mmode) ? PRV_M : PRV_S,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0riscv_imsic_rmw, imsic);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0char *dyn_csr_xml;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0char *dyn_vreg_xml;<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; @@ -781,6 +782,7 @@ void riscv_get_csr_ops(int csrno, riscv_csr_operat=
+ions *ops);<br>
+&gt;=C2=A0 =C2=A0void riscv_set_csr_ops(int csrno, riscv_csr_operations *op=
+s);<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0void riscv_cpu_register_gdb_regs_for_features(CPUState *cs=
+);<br>
+&gt; +void riscv_refresh_dynamic_csr_xml(CPUState *cs);<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0uint8_t satp_mode_max_from_map(uint32_t map);<br>
+&gt;=C2=A0 =C2=A0const char *satp_mode_str(uint8_t satp_mode, bool is_32_bi=
+t);<br>
+&gt; diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c<br>
+&gt; index 524bede865..9e97ee2c35 100644<br>
+&gt; --- a/target/riscv/gdbstub.c<br>
+&gt; +++ b/target/riscv/gdbstub.c<br>
+&gt; @@ -230,6 +230,8 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs,=
+ int base_reg)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0bitsize =3D 64;<br>
 &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; +=C2=A0 =C2=A0 cpu-&gt;dyn_csr_base_reg =3D base_reg;<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_string_printf(s, &quot;&lt;?xml version=3D=
+\&quot;1.0\&quot;?&gt;&quot;);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_string_append_printf(s, &quot;&lt;!DOCTYPE=
+ feature SYSTEM \&quot;gdb-target.dtd\&quot;&gt;&quot;);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0g_string_append_printf(s, &quot;&lt;feature =
+name=3D\&quot;org.gnu.gdb.riscv.csr\&quot;&gt;&quot;);<br>
+&gt; @@ -349,3 +351,13 @@ void riscv_cpu_register_gdb_regs_for_features(CPU=
+State *cs)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;riscv-csr.xml=
+&quot;, 0);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0}<br>
+&gt; +<br>
+&gt; +void riscv_refresh_dynamic_csr_xml(CPUState *cs)<br>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 RISCVCPU *cpu =3D RISCV_CPU(cs);<br>
+&gt; +=C2=A0 =C2=A0 if (!cpu-&gt;dyn_csr_xml) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_assert_not_reached();<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 g_free(cpu-&gt;dyn_csr_xml);<br>
+&gt; +=C2=A0 =C2=A0 riscv_gen_dynamic_csr_xml(cs, cpu-&gt;dyn_csr_base_reg)=
+;<br>
+&gt; +}<br>
 <br>
 </blockquote></div>
 
---0000000000004a716705fc66bec3--
+--000000000000cdf15a05fc66da67--
 
