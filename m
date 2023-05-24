@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECB770FFCA
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 23:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8983070FFD5
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 23:14:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1vn0-00049Z-7R; Wed, 24 May 2023 17:12:58 -0400
+	id 1q1vn1-0004YT-Gm; Wed, 24 May 2023 17:12:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vmt-0003qW-IO
- for qemu-devel@nongnu.org; Wed, 24 May 2023 17:12:53 -0400
+ id 1q1vmt-0003qX-QL
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 17:12:54 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vmq-0002Cn-VV
+ id 1q1vmr-0002DV-Di
  for qemu-devel@nongnu.org; Wed, 24 May 2023 17:12:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
@@ -24,25 +24,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=L7nuLEQTrkwuy5/EBzvC3FEBlp1hMl0MRLYUJtTKR+0=; b=0ODWCGKW8fqJPoM9csPWA7NhrR
- rl4DMlg2Kv+NgMrj2ze/IjAI0BPFi2qQnxrwRZZXIRIGNZ4MheCLeQLZd9ygGlxpV8qTpbBUlz0Yn
- UBs7EqPp5LFZrfnZe6xOEuaxVBFuyexE3A6hVJ3q2y9CZz5FUb8RCYOZnPQAjCXMH3610nwX6Y69N
- LgqcyRDB1xmDtrdbKZRxamud6QmyL8YDu6FaWuhS3Et/WZ3FCYtxur4FghSXW8C6R4d17hkNocimD
- fcC5ch9/NIdIECFXgkJpi5xUWPgA90UPR2zz5TVkcHamJVPFzEu1VVmlG7eYZ9K46cmMSqczZxV95
- mlbOVKVbLnUwOW+0J2FeBDCaVLLP39tqz8cho8Mq+ZuVHcMD7saShXZWDURNHAi+mUSKO6RXBuN9D
- uzTejfTmaYuYQQ8qHrqJMp5+FZ701LpO5rTzZhu4jrG3yfV0YH0m64w4FrKRj3cMOtLLhlz2KxisQ
- WvneGzJleLhDFn5aSSN6OpdAPsf2uZ4q8V78SCVi9i5v2VZ/6BRY5gcnWOtEyiM9AVXoGgvG+PeLn
- uf4K90/HWx1NoW75qhG1MBM7rlJRUQClZHjasGGWBUsADtG6olMeSSxiHmuLWnVjEEPtGExy6Hq2J
- sXtyY7taor3aY0U2ejIGdaka7a8AE3FkUtsYUolws=;
+ bh=Etj0Y/r26aMyxSkJBfiWqE18oDsTFfbbtn7h/espvPI=; b=03i7o82CJhL3NZ3L2uF69BbF9O
+ GPDdAt1LBDd8JYy7ySIsy57bRoUBnPRvdGCWzVYNRIJbigFeGzUJ5hG5QckWxCoo+8k46eEJxzu55
+ LNPMJQOmhKS20kfQn7nNOXs7ETC8PmSuqRl6n4JyrWV2fKCXZUQaKlIl4fbreF2njmlAiMV+ywB3x
+ xEkcKeK1jsNJq3Sh3oinKUSvc7EgHnUbBtI8+WlcCpvXwBk+mUG1Qpi0O7r7g5Od3d5WnsmEo6+04
+ m57crFBVWFl5bgPu31Rpubu093shNTUy7KDPt1a/f/YJSqU1+d0FwEXHjF39z6q9TbCFGMY2dwQHc
+ LRln2vZ6uoM1Fg3Vgeap9H3rk4ETtByoThpLauiyWLNt2aFd86NP2N47w51b855zJVZk/yEDEfsZn
+ tYy9V4aGwdeFRc1Ab11wIzjgrNv3CpKUohlkC84DFrKWoxnL37geIQBwniPu9GODZ1eMTnPRX/dIQ
+ 1TQ30W8OEsRlTgmDplV4yV/VVKrm6zQPO/eAOY2Q0GGSqyXXi5GPNEarjnk7QBSIKlaz0JThddr28
+ e8/YrLwCD2GLQO4k5epnObtNHXzQ7JXJt/YMHlW42dNHUW2fe4/XBLtSL0fIi5xAUp4wW0mBA0MkP
+ Bb/6X6IgOp2d2nR/zUowRn7CQhs1ygp4SoAETkz9g=;
 Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q1vmY-0005XR-78; Wed, 24 May 2023 22:12:30 +0100
+ id 1q1vmY-0005XR-HH; Wed, 24 May 2023 22:12:34 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 24 May 2023 22:10:56 +0100
-Message-Id: <20230524211104.686087-23-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 24 May 2023 22:10:57 +0100
+Message-Id: <20230524211104.686087-24-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
 References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
@@ -50,8 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 22/30] mac_via: fix rtc command decoding from PRAM addresses
- 0x0 to 0xf
+Subject: [PATCH 23/30] mac_via: fix rtc command decoding for the PRAM seconds
+ registers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,28 +77,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A comparison between the rtc command table included in the comment and the code
-itself shows that the decoding for PRAM addresses 0x0 to 0xf is being done on
-the raw command, and not the shifted version held in value.
+Analysis of the MacOS toolbox ROM code shows that on startup it attempts 2
+separate reads of the seconds registers with commands 0x9d...0x91 followed by
+0x8d..0x81 without resetting the command to its initial value. The PRAM seconds
+value is only accepted when the values of the 2 separate reads match.
+
+From this we conclude that bit 4 of the rtc command is not decoded or we don't
+care about its value when reading the PRAM seconds registers. Implement this
+decoding change so that both reads return successfully which allows the MacOS
+toolbox ROM to correctly set the date/time.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/misc/mac_via.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/misc/mac_via.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index 62f0988537..d7067030db 100644
+index d7067030db..5d5334b0f6 100644
 --- a/hw/misc/mac_via.c
 +++ b/hw/misc/mac_via.c
-@@ -403,7 +403,7 @@ static int via1_rtc_compact_cmd(uint8_t value)
-         } else if ((value & 0x1c) == 0x08) {
-             /* RAM address 0x10 to 0x13 */
-             return read | (REG_PRAM_ADDR + 0x10 + (value & 0x03));
--        } else if ((value & 0x43) == 0x41) {
-+        } else if ((value & 0x10) == 0x10) {
-             /* RAM address 0x00 to 0x0f */
-             return read | (REG_PRAM_ADDR + (value & 0x0f));
-         }
+@@ -366,10 +366,10 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
+  *
+  * Command byte    Register addressed by the command
+  *
+- * z0000001        Seconds register 0 (lowest-order byte)
+- * z0000101        Seconds register 1
+- * z0001001        Seconds register 2
+- * z0001101        Seconds register 3 (highest-order byte)
++ * z00x0001        Seconds register 0 (lowest-order byte)
++ * z00x0101        Seconds register 1
++ * z00x1001        Seconds register 2
++ * z00x1101        Seconds register 3 (highest-order byte)
+  * 00110001        Test register (write-only)
+  * 00110101        Write-Protect Register (write-only)
+  * z010aa01        RAM address 100aa ($10-$13) (first 20 bytes only)
+@@ -377,6 +377,7 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
+  * z0111aaa        Extended memory designator and sector number
+  *
+  * For a read request, z=1, for a write z=0
++ * The letter x indicates don't care
+  * The letter a indicates bits whose value depend on what parameter
+  * RAM byte you want to address
+  */
+@@ -393,7 +394,7 @@ static int via1_rtc_compact_cmd(uint8_t value)
+     }
+     if ((value & 0x03) == 0x01) {
+         value >>= 2;
+-        if ((value & 0x1c) == 0) {
++        if ((value & 0x18) == 0) {
+             /* seconds registers */
+             return read | (REG_0 + (value & 0x03));
+         } else if ((value == 0x0c) && !read) {
 -- 
 2.30.2
 
