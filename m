@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BD170F951
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 16:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FDD70F987
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:00:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1pt9-0000EQ-2b; Wed, 24 May 2023 10:54:55 -0400
+	id 1q1pxk-0006Iu-Tt; Wed, 24 May 2023 10:59:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1pt3-0000Cc-SY
- for qemu-devel@nongnu.org; Wed, 24 May 2023 10:54:49 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1pxa-0006G7-19
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 10:59:30 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1pt2-0003m7-Aq
- for qemu-devel@nongnu.org; Wed, 24 May 2023 10:54:49 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3094910b150so938525f8f.0
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 07:54:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1pxS-0006E9-UY
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 10:59:25 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-30a1fdde3d6so923579f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 07:59:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684940086; x=1687532086;
+ d=linaro.org; s=google; t=1684940349; x=1687532349;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9f6o8mLqQnxOh6vgR38BZJ8OPkTvpAnTkJylvoS4PnQ=;
- b=cOMZ9Qz7l8NvyPzK/Ugm+LRmo/I99A1hMA1L4XnYUhItD2fVoAzcvhNn2UY3diRqf/
- 8NZs6yc6D9zztLsSIbi4g8SndsQh48OBpMGquOQKT5bxCZcpjGOOIDaptQ2xY/Y9wi+c
- aultUELRvrNKnC5DB6lcy5bZAJ23Cj+NbVyDKbuq+qBWw4EckfUi9voA1P8+PXUunhh/
- ECeO5/bLq4r76amwK2AI2VijWxi07gLqsZCzMNZHdoZCxpkIsY77gr3SlUHgP51c8caI
- PMsj+RbSS7cUJDW+JCoVoieYk2d/hiBoxhfhvw877auxWJP/VlJVwN56pDyaPPBytXdu
- P/Qg==
+ bh=u+I66XzF83QGfQRczDmREp33WLCVxh4y1YWigeQWiZY=;
+ b=jeWWkeNLDAYu+p0La/YDqVv1DGE470Bv0h6Y0xE6uBRuYo91XJvlFHKV1EL6vNOLtE
+ 57/7SI3Zk0FocY+q1XErC/UPNah2mOFQHKr7AQ5dHugxuaSrhV2f3uI02sbyFXp+6L8o
+ cs59vMW6UBtpwhYSQuBuOhZJn7Zmt1yyZdIIZggs8BFfi1qsbpN0UEE8qig7gCGmGiNE
+ OwslX2ohnOJpkgR4970AM1VwiK4W5afnngzle8g1Ccrd8BjeuU2APjAdDswvLVlbgsqM
+ pZHALrIU8E7ZK7TLEUyIxauOGFV+VpTQIKmAiF8WauWkYLkUIWrEF6uZ4+XFVlzlFGg7
+ 7r3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684940086; x=1687532086;
+ d=1e100.net; s=20221208; t=1684940349; x=1687532349;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=9f6o8mLqQnxOh6vgR38BZJ8OPkTvpAnTkJylvoS4PnQ=;
- b=PLT6hueTQddacu9gmYROmFdQTcvoF/AuEAnEgYZ6mdUjn52FxgFCSVlVryRhwoQ9Kd
- tt3uu+yzP3D56GWMw8bA9HgvuVJTGCyPr94ulXHBmStLEN7H7cu87cERoxWf51BYF+Y0
- Mas6TLgcccZk84XSWRLljyD8iKdf00CFiJom8VdOcNjVDtn03V9YlnB8Y6LHAiZJt91R
- D1cI4HeEMo3D8s60d2pYk/ir+w3ET9gLyzsRI2/IE1ajVHq4TlDh1z/gPa1WuZ4f1VgW
- ZfY/mr9unXDwxR0i3Uy+XxHCUwPKGmm68bsNr/NZ3K3walDoDifzMeys5IFkF8ScKV4g
- wT+A==
-X-Gm-Message-State: AC+VfDw8xloeKKGa6t/Aw2/tXd62kSJKBax//+ZMk/Ekj5VwNW0T+LH1
- NuF1EFlIZjgGAGiTMLIUgcUdn8ZI4J4p2K/efUwy3g==
-X-Google-Smtp-Source: ACHHUZ5iosOS5Jg50ACgLCe3DyJ2p8aXXuUifq7OQmRL+wbQxtMCu+uKE0N8Nq+aBZd1QFMmGEYPRw==
-X-Received: by 2002:a5d:564e:0:b0:307:7e68:3a47 with SMTP id
- j14-20020a5d564e000000b003077e683a47mr32453wrw.37.1684940086340; 
- Wed, 24 May 2023 07:54:46 -0700 (PDT)
+ bh=u+I66XzF83QGfQRczDmREp33WLCVxh4y1YWigeQWiZY=;
+ b=XuFs2uTwTTWnYuw9QJ0qX8qcJ+LBPNrP7FLwE+000aEZPCm4SSOAX8+Li1lWPHhDtl
+ GiLFWZmDpSvBUv+zoygTgAYBoiy3vT/Sq9FhiqoV9+zudXX9NSy6tSXUq7Y6q2t0qDDe
+ DLJXm6yB3a9A3gxRTHwIjxsvhl5diIbzuH8DVuMCLzcDOmv80i/pMBBNFyaqJMByH4uJ
+ tB5h3TB8aFr8pf/7b1b6cMDLwR/rMnItaCY1k/F471DoWukY68n9NkriUin6j1ZVr3y+
+ AMaQME53NSMxik85a4+c9ZD2DUpYj1GUOE89933UqwY8H5oa+Ak/tBxVnHO1aKedAftc
+ H5gQ==
+X-Gm-Message-State: AC+VfDxB7BqX8Q+8aMphN/0MGWDoRiQTJmtK2Tj0qIU9pFbNKcJzB/LM
+ MlAAcTTlIQt68zpW85Gap6KqCnVv2I35giULypWrjQ==
+X-Google-Smtp-Source: ACHHUZ6TbDmHZzVAHp7I3aAv1WejrAeUaR/onE78uld1DpJX/ljo/K0YsVVCN9GcCvfbCWcrjfyONQ==
+X-Received: by 2002:a05:6000:1246:b0:306:2fd3:2edb with SMTP id
+ j6-20020a056000124600b003062fd32edbmr38452wrx.61.1684940348943; 
+ Wed, 24 May 2023 07:59:08 -0700 (PDT)
 Received: from localhost.localdomain
  (fac34-h02-176-184-31-193.dsl.sta.abo.bbox.fr. [176.184.31.193])
  by smtp.gmail.com with ESMTPSA id
- w4-20020adfee44000000b0030785b864f1sm14704997wro.65.2023.05.24.07.54.45
+ j15-20020a5d464f000000b00307d58b3da9sm14700936wrs.25.2023.05.24.07.59.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 May 2023 07:54:45 -0700 (PDT)
+ Wed, 24 May 2023 07:59:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH] checkpatch: Prefer DEFINE_TYPES() over type_init /
- type_register_static
-Date: Wed, 24 May 2023 16:54:43 +0200
-Message-Id: <20230524145444.32820-1-philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/10] hw/arm/realview: Introduce abstract RealviewMachineClass
+Date: Wed, 24 May 2023 16:58:56 +0200
+Message-Id: <20230524145906.33156-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,35 +90,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When multiple QOM types are registered in the same file, it
-is clearer and simpler to use the the DEFINE_TYPES() macro.
+Probably still spring housekeeping stuff.
+QOM'ify Realview machines further by introducing a common
+(abstract) MachineClass, and set the read-only fields in
+the class_init() instead of machine_init() method.
 
-Add a rule to checkpatch.pl to suggest using DEFINE_TYPES()
-instead of type_init() / type_register_static().
+At least the diff-stat is negative :)
 
-Suggested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- scripts/checkpatch.pl | 6 ++++++
- 1 file changed, 6 insertions(+)
+Philippe Mathieu-Daudé (10):
+  hw/arm/realview: Simplify using 'break' statement
+  hw/arm/realview: Declare QOM types using DEFINE_TYPES() macro
+  hw/arm/realview: Introduce abstract RealviewMachineClass
+  hw/arm/realview: Factor realview_common_class_init() out
+  hw/arm/realview: Move 'board_id' to RealviewMachineClass
+  hw/arm/realview: Move 'is_pb' to RealviewMachineClass
+  hw/arm/realview: Move 'mpcore_periphbase' to RealviewMachineClass
+  hw/arm/realview: Move 'loader_start' to RealviewMachineClass
+  hw/arm/realview: Use generic realview_common_machine_init()
+  hw/arm/realview: Set MachineClass::default_nic in machine_class_init()
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index eeaec436eb..db8029635c 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2877,6 +2877,12 @@ sub process {
- 		if ($line =~ /^module_init\s*\(/) {
- 			ERROR("please use block_init(), type_init() etc. instead of module_init()\n" . $herecurr);
- 		}
-+
-+# recommend DEFINE_TYPES() over type_init()/type_register_static()
-+		if ($line =~ /\b(type_init|type_register_static)\(/) {
-+			WARN("consider using DEFINE_TYPES() in preference to type_init()\n" . $herecurr);
-+		}
-+
- # check for various ops structs, ensure they are const.
- 		my $struct_ops = qr{AIOCBInfo|
- 				BdrvActionOps|
+ hw/arm/realview.c | 177 +++++++++++++++++++---------------------------
+ 1 file changed, 74 insertions(+), 103 deletions(-)
+
 -- 
 2.38.1
 
