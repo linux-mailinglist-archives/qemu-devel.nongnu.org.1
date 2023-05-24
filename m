@@ -2,90 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC50B70F1FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 11:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7B270F223
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 11:21:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1kcv-0008Dh-DO; Wed, 24 May 2023 05:17:49 -0400
+	id 1q1kfj-0000cj-O1; Wed, 24 May 2023 05:20:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1kct-0008DV-1l
- for qemu-devel@nongnu.org; Wed, 24 May 2023 05:17:47 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1kcr-0002dU-A7
- for qemu-devel@nongnu.org; Wed, 24 May 2023 05:17:46 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3f611ccd08cso5791465e9.1
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 02:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684919863; x=1687511863;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TCNjNl4Ctm8lg8hBacptZvWBBK+jcutSIYAIOZHkiCg=;
- b=TYVFUM6ZPwnJM7YIXPBXfqOqM8Vw9ULSODNImx6WZi+eqZA6oxjibcVr2PvgpcCLtg
- 1bnmQfkIkSrJXxe4q1xm3fTsvSBkGnzG8D0iN5lT6D746L0AxI7/+lweXe+RRhPAvY6L
- iQ6gXSAuKRownJJ/qHtBsNKR9hs072Q2Owg8tEw9BEOmozdlAlu50BRfnVGGygvNspa7
- byocF1Hxg7R9joHrQvMIAeJnjWLlE/gdtOOU8NJDNejxNY9PRdAtHyk+etnXMSslnHXI
- oHzqCdipk+uAyf1lMm0IuRj1FePwQFfAZCYNgH1LtVuknyJBodkRR8iOrw6P+HW+F1X4
- 1N8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684919863; x=1687511863;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TCNjNl4Ctm8lg8hBacptZvWBBK+jcutSIYAIOZHkiCg=;
- b=TanSjLZuIF+zYCYHJ0DUquxYoaCvlWEED2ORrrie0x8su0iazCFOl7noI+KNRY4BZW
- uaCriu+3sBvm9A2BnXj1B2uDVlNPY93Iw0smkeAx4tx3LQRW01CORHr6db+/HkAk1c8x
- 0YwRuiSyzjOT3AM/0bcXArMw3VsOVZWXBq81IvlfqyObLJ2X4RMGRY/spKAZY73HYftP
- dao9CHxeNo+3Cx+Icyqr4lklOdoe3AF259mTPRgZsQ0Z71J43nC3jLxU2ZM3Fxkhkg56
- 6ftOBPaWDpqvht3/8jS1O+J3bVOCuWz5EMdgNhwjcwMTrpwvDqQpsySuBnxF15PJxz6h
- NXHw==
-X-Gm-Message-State: AC+VfDw9kML8m95kqmW/xNqXixWIFxb5ksFXpaGEBdUyyTCCvZXcCcrW
- negnUhJ/kW5c9HmqScW3uVvUFxhCPzy101qH2Py4tQ==
-X-Google-Smtp-Source: ACHHUZ5K1us5spWHqgZW5DyN04NApd8ALoXEmD8rg45zal9SYAgE32eCBDXd/QtszdIGRSRYXO69tw==
-X-Received: by 2002:a05:600c:5114:b0:3f1:80d0:906b with SMTP id
- o20-20020a05600c511400b003f180d0906bmr12490786wms.4.1684919863365; 
- Wed, 24 May 2023 02:17:43 -0700 (PDT)
-Received: from [192.168.69.115] (fac34-h02-176-184-31-246.dsl.sta.abo.bbox.fr.
- [176.184.31.246]) by smtp.gmail.com with ESMTPSA id
- o19-20020a05600c059300b003f60119ee08sm1590169wmd.43.2023.05.24.02.17.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 May 2023 02:17:42 -0700 (PDT)
-Message-ID: <e3468060-43d7-40bb-5c26-ba9a6699ecaa@linaro.org>
-Date: Wed, 24 May 2023 11:17:39 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q1kfh-0000aH-MP
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 05:20:41 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q1kfe-0003So-Ng
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 05:20:40 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QR5Gm73tGz67M49;
+ Wed, 24 May 2023 17:19:12 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 24 May
+ 2023 10:20:34 +0100
+Date: Wed, 24 May 2023 10:20:33 +0100
+To: Markus Armbruster <armbru@redhat.com>
+CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira
+ Weiny <ira.weiny@intel.com>, Alison Schofield <alison.schofield@intel.com>,
+ Michael Roth <michael.roth@amd.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
+ <dave.jiang@intel.com>, <berrange@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>
+Subject: Re: [PATCH v5 5/7] hw/cxl/events: Add injection of General Media
+ Events
+Message-ID: <20230524102033.00002d41@huawei.com>
+In-Reply-To: <20230524101158.0000579d@huawei.com>
+References: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
+ <20230423165140.16833-6-Jonathan.Cameron@huawei.com>
+ <87lehgq1cy.fsf@pond.sub.org> <20230522135737.000079c4@Huawei.com>
+ <87fs7na2o8.fsf@pond.sub.org> <20230523113543.00006a1f@Huawei.com>
+ <87ttw35i6q.fsf@pond.sub.org> <20230524101158.0000579d@huawei.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v4 05/10] qapi: make the vcpu parameters deprecated for 8.1
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Greg Kurz <groug@kaod.org>, Michael Roth <michael.roth@amd.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Warner Losh <imp@bsdimp.com>,
- Eduardo Habkost <eduardo@habkost.net>, Markus Armbruster
- <armbru@redhat.com>, Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Kyle Evans <kevans@freebsd.org>, Riku Voipio <riku.voipio@iki.fi>,
- Eric Blake <eblake@redhat.com>, libvir-list@redhat.com,
- Yanan Wang <wangyanan55@huawei.com>
-References: <20230523125000.3674739-1-alex.bennee@linaro.org>
- <20230523125000.3674739-6-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230523125000.3674739-6-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,93 +74,139 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/5/23 14:49, Alex Bennée wrote:
-> I don't think I can remove the parameters directly but certainly mark
-> them as deprecated.
-> 
-> Message-Id: <20230420150009.1675181-6-alex.bennee@linaro.org>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-Id: <20230503091756.1453057-6-alex.bennee@linaro.org>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <20230505155336.137393-6-alex.bennee@linaro.org>
-> 
-> ---
-> v4
->    - used @deprecated in json
->    - added note to deprecated.rst
-> ---
->   docs/about/deprecated.rst |  9 +++++++++
->   qapi/trace.json           | 38 ++++++++++++++++++--------------------
->   2 files changed, 27 insertions(+), 20 deletions(-)
+On Wed, 24 May 2023 10:11:58 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
+> On Tue, 23 May 2023 14:46:37 +0200
+> Markus Armbruster <armbru@redhat.com> wrote:
+>=20
+> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
+> >=20
+> > >> >   =20
+> > >> >> > +#
+> > >> >> > +# Inject an event record for a General Media Event (CXL r3.0 8=
+.2.9.2.1.1)     =20
+> > >> >>=20
+> > >> >> What's "CXL r3.0", and where could a reader find it?   =20
+> > >> >
+> > >> > We have docs in docs/system/devices/cxl.rst that include the conso=
+rtium
+> > >> > website which has download links on the front page.   =20
+> > >>=20
+> > >> cxl.rst has
+> > >>=20
+> > >>     References
+> > >>     ----------
+> > >>=20
+> > >>      - Consortium website for specifications etc:
+> > >>        http://www.computeexpresslink.org
+> > >>      - Compute Express link Revision 2 specification, October 2020
+> > >>      - CEDT CFMWS & QTG _DSM ECN May 2021
+> > >>=20
+> > >> Should the second reference be updated to 3.0?  Exact title seems to=
+ be
+> > >> "The Compute Express Link=E2=84=A2 (CXL=E2=84=A2) 3.0 specification"=
+.  Not sure we need
+> > >> to bother with the "=E2=84=A2" in a reference. =20
+> > >
+> > > Yes. On the todo list is to update all the references to latest relea=
+sed
+> > > specification because old ones are unobtainable to non consortium mem=
+bers
+> > > unless they grabbed a copy in the past.
+> > >
+> > > Annoyingly this will be a repeated requirement as new spec versions a=
+re released
+> > > but the cadence should be fairly low.
+> > > =20
+> > >>  =20
+> > >> >                                                      I'm not sure =
+we want to
+> > >> > have lots of references to the URL spread throughout QEMU.  I can =
+add one
+> > >> > somewhere in cxl.json if you think it is important to have one her=
+e as well.   =20
+> > >>=20
+> > >> You could add an introduction right under the "# =3D CXL devices" he=
+ading,
+> > >> and include a full reference to the specification there.  Suitably
+> > >> abbreviated references like the ones you use in this patch should th=
+en
+> > >> be fine. =20
+> > >
+> > > I tried doing that - it resulted in the index including an entry with=
+ all the text.
+> > > So on the webpage, the contents list to the left includes whatever te=
+xt you put
+> > > in that block.
+> > > =20
+> > > I'm not sure why, or how to fix that. =20
+> >=20
+> > Show me what you tried (as a patch or something I can git-pull), and
+> > I'll have a look.
+> >=20
+> > [...]
+> >=20
+> Very simple to replicate the issue - see below.
+>=20
+> Result of this is an extra
+> "Test text" entry in the index to the left of the html docs.
+>=20
+> In qemu-qmp-ref.html we have
+>=20
+> <li class=3D"toctree-l3"><a class=3D"reference internal" href=3D"#qapidoc=
+-3297">CXL devices</a><ul>
+> <li class=3D"toctree-l4"><a class=3D"reference internal" href=3D"#qapidoc=
+-3298">Test text</a></li>
+> <li class=3D"toctree-l4"><a class=3D"reference internal" href=3D"#qapidoc=
+-3301"><code class=3D"docutils literal notranslate"><span class=3D"pre">Cxl=
+EventLog</span></code> (Enum)</a></li>
 
-> @@ -52,19 +53,17 @@
->   #
->   # @name: Event name pattern (case-sensitive glob).
->   #
-> -# @vcpu: The vCPU to query (any by default; since 2.7).
-> +# @vcpu: The vCPU to query (since 2.7).
+Experimented and dived in the code a bit more and got reminded of how bad m=
+y python is
+(which is why I was avoiding looking at this :)
+One option would be to give the extra text a meaningful title so that ends =
+up in the contents list.
+
+> --- a/qapi/cxl.json
+> +++ b/qapi/cxl.json
+> @@ -3,6 +3,8 @@
+>=20
+>  ##
+>  # =3D CXL devices
 > +#
-> +# Features:
-> +# @deprecated: Member @vcpu is deprecated, and always false.
->   #
->   # Returns: a list of @TraceEventInfo for the matching events
->   #
->   # An event is returned if:
->   #
-> -# - its name matches the @name pattern, and
-> -# - if @vcpu is given, the event has the "vcpu" property.
-> -#
-> -# Therefore, if @vcpu is given, the operation will only match per-vCPU
-> -# events, returning their state on the specified vCPU. Special case:
-> -# if @name is an exact match, @vcpu is given and the event does not
-> -# have the "vcpu" property, an error is returned.
-> +# - its name matches the @name pattern
-> +#   There are no longer any per-vCPU events
+> +# CXL Background
+> +#
+> +# Actually useful text.
+>  ##
+>=20
+>  ##
 
-Maybe convert the 2 spaces by a newline, or even better simply:
+Can't do
+=3D=3D CXL Background
 
-   # An event is returned if its name matches the @name pattern
-   # (There are no longer any per-vCPU events).
+though to get it nicely formatted as then we loose all the actual entries f=
+rom the
+contents list.  I guess they dropped down one too many levels.
 
->   #
->   # Since: 2.2
->   #
-> @@ -75,7 +74,8 @@
->   # <- { "return": [ { "name": "qemu_memalign", "state": "disabled", "vcpu": false } ] }
->   ##
->   { 'command': 'trace-event-get-state',
-> -  'data': {'name': 'str', '*vcpu': 'int'},
-> +  'data': {'name': 'str',
-> +           '*vcpu': {'type': 'int', 'features': ['deprecated'] } },
->     'returns': ['TraceEventInfo'] }
->   
->   ##
-> @@ -91,15 +91,13 @@
->   #
->   # @vcpu: The vCPU to act upon (all by default; since 2.7).
->   #
-> -# An event's state is modified if:
-> +# Features:
-> +# @deprecated: Member @vcpu is deprecated, and always false.
->   #
-> -# - its name matches the @name pattern, and
-> -# - if @vcpu is given, the event has the "vcpu" property.
-> +# An event's state is modified if:
->   #
-> -# Therefore, if @vcpu is given, the operation will only match per-vCPU
-> -# events, setting their state on the specified vCPU. Special case: if
-> -# @name is an exact match, @vcpu is given and the event does not have
-> -# the "vcpu" property, an error is returned.
-> +# - its name matches the @name pattern
-> +#   There are no longer any per-vCPU events
+>=20
+> diff --git a/qapi/cxl.json b/qapi/cxl.json
+> index 05c560cfe5..9f7f0485ae 100644
+> --- a/qapi/cxl.json
+> +++ b/qapi/cxl.json
+> @@ -3,6 +3,8 @@
+>=20
+>  ##
+>  # =3D CXL devices
+> +#
+> +# Test text
+>  ##
+>=20
+>  ##
 
-Ditto.
-
-Otherwise:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
