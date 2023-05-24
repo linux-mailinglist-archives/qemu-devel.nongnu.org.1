@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E339470F4F5
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 13:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87ABF70F4F6
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 13:20:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1mWT-00013l-F9; Wed, 24 May 2023 07:19:17 -0400
+	id 1q1mWV-00014h-1X; Wed, 24 May 2023 07:19:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1q1mWR-000133-8p; Wed, 24 May 2023 07:19:15 -0400
+ id 1q1mWT-00013n-2y; Wed, 24 May 2023 07:19:17 -0400
 Received: from wout2-smtp.messagingengine.com ([64.147.123.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1q1mWO-0005U0-UL; Wed, 24 May 2023 07:19:14 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailout.west.internal (Postfix) with ESMTP id 02C33320094B;
- Wed, 24 May 2023 07:19:10 -0400 (EDT)
+ id 1q1mWR-0005Ud-JC; Wed, 24 May 2023 07:19:16 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.west.internal (Postfix) with ESMTP id 36EE33200CB3;
+ Wed, 24 May 2023 07:19:13 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute1.internal (MEProxy); Wed, 24 May 2023 07:19:11 -0400
+ by compute4.internal (MEProxy); Wed, 24 May 2023 07:19:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm3; t=1684927150; x=
- 1685013550; bh=3bvbGpFH5nB/9p9vzminXpFAEYUzSqm0I9KkDrSD2rw=; b=c
- Wpees63T8upCEsBMnI9TiqyZShqAgJ/LicN7y3vHjNUQV2a+f5xXt7hFgGrjjCUM
- +VDsjfEOEPVYJyuV/0x85mJMkZIQOzKIg4bX6dYpNnWhAableCZuWvoia/nZK/Hg
- tnK7EgQWnVLwf55OW7NpfIAEz7cD8CMh4nJs9GdZjDXkmf7cz8ztRKjqD2gaVNVS
- UzOGIh0sOfx0Jnoc2tUnSJK4VWCK+b8ckFoqbwHmMK0cDwE4TkWnbF9DcgZ+1ecv
- lPAQY1Znu6JZcJ6uVq02rg/ospiKEPSv+2FG6bGRAYlQEHgX0dudT1Vd43N4JxBT
- cwvyiIfWreq/dvdCUHGFA==
+ :reply-to:sender:subject:subject:to:to; s=fm3; t=1684927152; x=
+ 1685013552; bh=MPxNR/d+Be05qsqUSN3DCTwFXaX/ZTGQ2ty+dh5pFmI=; b=K
+ Ui2qBN/SjB9B+3auCdo88/yHXq8LPcyVQbDzpVUhkqlTjT8PJTapNVPPJvkBNRpr
+ VFqV/2nyfjjwnFz0I0kQfnNDCXQn94vg359AP8mbu6xMX4ciGCXLZG/q08f74Zp3
+ 6JyeDZ1f7EfcbgzT5ckJ9RoNuOVVwzd5rj5jpp4a48Wk60HQoEW+0j8ASuX4Fbgr
+ lRnaTF1vXl8/7IMmIBqPHc3dChC0FJwB0ntAj1a1bibRctXbxvoZ0TeIKjMtEKx5
+ qq1OizHx2UXWyQKlmje6pAz9mBBsgbw/kp9aQ1diZEZ4f91BTy6DLV9HBBcO4EcG
+ jx/vz7EunoIE8FycGl49A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1684927150; x=
- 1685013550; bh=3bvbGpFH5nB/9p9vzminXpFAEYUzSqm0I9KkDrSD2rw=; b=F
- UCjZgcZqyhJrNRYNYDTlYt3S/qtMJVxKSXIAN3N9ZyLAnOPDF5R4FR9Pnnv/RH4y
- 9C1jMRlM6aznw+rFfeMp+TUn1BtQTT+8laHU82YG7K3FzCaNJmMhpT/j21UBOaxT
- nGe2DVBTKuR+wUU31JY+Pskxg0cf6Lvn84JoMz71+ZdUFwR/bKhoZzm3Oa/wXBXE
- blKmAn9VvCZwPU+GNQf5lkvLMxsVj2aR3Lh3pK8WEygF4RyWYFdtFV9qRUYFcw7W
- syZOuxSaJzQw/8RAgoFxYYWU7xH/PZHLVM3s1X2nHlIoiIFo64ibTYNMI09a1tMa
- v+Kgm21LTdv4pP/QWhSLw==
-X-ME-Sender: <xms:rvJtZBuuBsHdQEabMB4vbd7na0gjvdO1tseXOqKkQ89DqB5NSkueKw>
- <xme:rvJtZKd_HmN92bpYVAcAwT6Dv15AgU8pwmPNFlfH4OBBC9zqZKHAPc7kfJQoeCeQO
- 5VPkcMqiV-GITI52Pc>
-X-ME-Received: <xmr:rvJtZEy8ABJalElRZ2AOvfsmaPoUpVjd3Qun_eLY82PDg1PPT0QOqZOKJPWdZJwYVujsaatBIBQq>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1684927152; x=
+ 1685013552; bh=MPxNR/d+Be05qsqUSN3DCTwFXaX/ZTGQ2ty+dh5pFmI=; b=c
+ VovPdn93wJfO163k+u3tzMiXCgAsNvG1gCFM7LOeZxBtNk/RjCLpQIUE7DXtK5+a
+ xMIEJWcKAM6u6s4ItBCHgn36t+DYNwQST/DWWZgQxG+j94+vb6Rydk76OadpsDnt
+ CZeAeJMofZ0LYIHDaeekdcHEIkHEs2+ie4JHZlK6PZCGRf1ESK6Vv0A+f2ZnKbdM
+ bhKTlfhd4O0VNlmrGn4dsjqF4ka5BTEU78Y717xLVnyOOGMMKjnKIsBS2LIWYhSV
+ 1zlX4X0YzDzJi+MZYpIv+auvhKVej3ifOCl1vSGsOC8G+cJcAnxaOyKLN00fX4wj
+ 5NIu5KfQF1H4Wt1ybYzpw==
+X-ME-Sender: <xms:sPJtZOuO-SLr8OTe2rA0_g7bHBGXY1a2VrliyI5yDXxZKEq7751MtA>
+ <xme:sPJtZDcYQ-1u9Nhnjtq2OutPRnFJkjHbQc51aRG6gSCFhc4x1wyFFmlhKssjzeP4N
+ Ykjb1LSwcXlXYF_PaQ>
+X-ME-Received: <xmr:sPJtZJwRZ0klr8AB4LpyfljmnYjC-mtgq8L73XeHk1KgBiIm99cbyMI31wLXbPVonyW5m2PMkmR8>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejhedgfeekucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
  cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghu
  shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
- htvghrnhepudehueeuueektedutddtvddvvdefheefkeelveetkeeffeeuieefveduudfh
- heetnecuffhomhgrihhnpehruhhhshdrthhonecuvehluhhsthgvrhfuihiivgeptdenuc
- frrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:rvJtZIPgbxZYOeEyJORPmxtvPLX852tcjwrmqbWQRe63a3Evjg7Orw>
- <xmx:rvJtZB8OYOAtApe0O-zH44QLmB4-dVZrHrHQtIL2ky6m6CIuGnOYsQ>
- <xmx:rvJtZIV5ED2F-hMCOSsR2rIPc8Vf9_Gwn8eK5j_sOCBzo_KgFl4Xag>
- <xmx:rvJtZNY5xLNvaFj-E3IlUq69-L7UyVkv52SvpiYEEdMey-qbWCZsqQ>
+ htvghrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudej
+ udegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
+ htshesihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:sPJtZJMTaKM_dt4aipXRIbriKzbR_V0dj94O8RO3NretEmNVYR6HTw>
+ <xmx:sPJtZO8rrtbyWBVDVfV_w4xKLfqaykBVlp15CH2tuIXZzMNqe_QnpQ>
+ <xmx:sPJtZBUL3CYvOgaQyX6UpPvQMXWCBDqe3p1OJzn6si60UQdqrBOg_Q>
+ <xmx:sPJtZCaOK5194PR49VAi3AFeutPYg1AF8GC95wvx8ke9RS1PlmPg8w>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 May 2023 07:19:09 -0400 (EDT)
+ 24 May 2023 07:19:11 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Klaus Jensen <its@irrelevant.dk>,
  Keith Busch <kbusch@kernel.org>,
  Jesper Devantier <j.devantier@samsung.com>,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH 1/4] hw/nvme: fix verification of number of ruhis
-Date: Wed, 24 May 2023 13:19:01 +0200
-Message-Id: <20230524111904.91179-2-its@irrelevant.dk>
+Subject: [PATCH 2/4] hw/nvme: verify uniqueness of reclaim unit handle
+ identifiers
+Date: Wed, 24 May 2023 13:19:02 +0200
+Message-Id: <20230524111904.91179-3-its@irrelevant.dk>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230524111904.91179-1-its@irrelevant.dk>
 References: <20230524111904.91179-1-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1684; i=k.jensen@samsung.com;
- h=from:subject; bh=ynMkYum9LI91n9UwJ7qIOfxthXLwXcu/Btdf/0Xz4Tg=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGRt8qhqc2W5WimuJybNSD77nQ3RuYtISuPjx
- xwtyAA6iBIzPYkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkbfKoAAoJEE3hrzFt
- Tw3pELcH/2PpynuzwtYHXeaSf8OxxeYqU0szpzw4Sjg5NnJyX+x0sVPvY9+i3putGerpwbbUJgK
- chBeteNskJ4JlZByMDUQAPkbniUZAX+aQYWtvn5HpPN3N/GGk7yYogS40YRvhazM7gnvKR6s5oG
- 8+lV01y2Q1XwEYl3+TEmJAFUVlUscAKeDs2D88gkM8DBZl+q+TUG7LJsKz2q4p4BOrkd9JMU/jn
- Ugh1QP6yYQpzAGxapdxwAlE0VAT7NQdfwA4oR0b5Xm6l4uf9Xoo5qUWzT5wQ05WaTBrKbxZzAqR
- SJxXN8scntlPW1OhVkSZPWbsAboUVBII7YTkzOhIkPihcyPRyUS+o6Ih
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1006; i=k.jensen@samsung.com;
+ h=from:subject; bh=QWGUVmkW2V21EYR2tjvALqDu+O3R+BdYoLEGmbgoPL0=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGRt8qhhDGpoUoHt5+oqDFnzManrrwazyP9hi
+ TL1WniFbsenC4kBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkbfKoAAoJEE3hrzFt
+ Tw3pRMIIAKuuDLnS1KJb5GY6wvL0fshBVAH/V/cTa3PhtHR06b7YgHBuxFqoN7HulGxaY/qnh52
+ xYLwNRvgQNHakUlcsXvbErkYSiFim9pHChLdNAcz26oE0TV0bPPj+MQsu5VTMt5HaN3WKMjpDeH
+ fOAwHOFdrNb1A9hroto0JXrPT+UCd39/ieJpMFmvFlG40lINCROuaWN5UJp2ZKnQYUuVjn3CkV0
+ axuskkik6rg/wd75iuWBTaspLOW/X+LN2zs5N2f0mGMbVDPomatedYi8gPfEgZciczxIXU3Ivie
+ aY1ytqBcHflQdja4z9KY5wneW/eDwni3Dj2wMPtO8Ut5tUE/DGcuRK9h
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -115,49 +116,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-Fix a off-by-one error when verifying the number of reclaim unit handle
-identifiers specified in fdp.ruhs. To make the fix nicer, move the
-verification of the fdp.nruh parameter to an earlier point.
+Verify that a reclaim unit handle identifier is only specified once in
+fdp.ruhs.
 
 Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ns.c     | 4 +---
- hw/nvme/subsys.c | 6 ++++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ hw/nvme/ns.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
-index 547c0b154312..050fdaf50fcd 100644
+index 050fdaf50fcd..c4ea2033bb1c 100644
 --- a/hw/nvme/ns.c
 +++ b/hw/nvme/ns.c
-@@ -438,9 +438,7 @@ static bool nvme_ns_init_fdp(NvmeNamespace *ns, Error **errp)
+@@ -453,6 +453,17 @@ static bool nvme_ns_init_fdp(NvmeNamespace *ns, Error **errp)
  
-     /* parse the placement handle identifiers */
-     while ((token = qemu_strsep(&p, ";")) != NULL) {
--        ns->fdp.nphs += 1;
--        if (ns->fdp.nphs > NVME_FDP_MAXPIDS ||
--            ns->fdp.nphs == endgrp->fdp.nruh) {
-+        if (ns->fdp.nphs++ == endgrp->fdp.nruh) {
-             error_setg(errp, "too many placement handles");
-             free(r);
-             return false;
-diff --git a/hw/nvme/subsys.c b/hw/nvme/subsys.c
-index 24ddec860e45..d30bb8bfd5b4 100644
---- a/hw/nvme/subsys.c
-+++ b/hw/nvme/subsys.c
-@@ -158,8 +158,10 @@ static bool nvme_subsys_setup_fdp(NvmeSubsystem *subsys, Error **errp)
+     free(r);
  
-     endgrp->fdp.nrg = subsys->params.fdp.nrg;
++    /* verify that the ruhids are unique */
++    for (unsigned int i = 0; i < ns->fdp.nphs; i++) {
++        for (unsigned int j = i + 1; j < ns->fdp.nphs; j++) {
++            if (ruhids[i] == ruhids[j]) {
++                error_setg(errp, "duplicate reclaim unit handle identifier: %u",
++                           ruhids[i]);
++                return false;
++            }
++        }
++    }
++
+     ph = ns->fdp.phs = g_new(uint16_t, ns->fdp.nphs);
  
--    if (!subsys->params.fdp.nruh) {
--        error_setg(errp, "fdp.nruh must be non-zero");
-+    if (!subsys->params.fdp.nruh ||
-+        subsys->params.fdp.nruh > NVME_FDP_MAXPIDS) {
-+        error_setg(errp, "fdp.nruh must be non-zero and less than %u",
-+                   NVME_FDP_MAXPIDS);
-         return false;
-     }
- 
+     ruhid = ruhids;
 -- 
 2.40.0
 
