@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D549670F98A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F187D70F98E
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 17:01:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1py1-0006kc-MG; Wed, 24 May 2023 10:59:57 -0400
+	id 1q1py8-0006vB-HX; Wed, 24 May 2023 11:00:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1pxz-0006eF-QO
- for qemu-devel@nongnu.org; Wed, 24 May 2023 10:59:55 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1py6-0006tj-LP
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 11:00:02 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1pxy-0006XJ-CF
- for qemu-devel@nongnu.org; Wed, 24 May 2023 10:59:55 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3094871953bso697798f8f.0
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 07:59:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q1py4-0006YU-S8
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 11:00:02 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3f603d4bc5bso12488475e9.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 08:00:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684940393; x=1687532393;
+ d=linaro.org; s=google; t=1684940398; x=1687532398;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vXln/1eI6qFBBphN0wAdNEHB1hgU4t96Zx44NnYHfMg=;
- b=aUQOiuM8khuFhFB5866CK13bpsMuZVoiPDRsMlOHnDSlH98FUuOS09p5oU4QKvF2IU
- mbWDVtEZVE2s9Qm4F9+TWAT/bvYgsVFJCc9WBLa5vPfefuYDORL4lWIOL5dcCpbnNEPq
- ggoHcFI/LvKSBIL6j27y0bOqACrdGDc8RXyW2F+KBCrd7wxFKB9ly4xNNtpjf6GyFXuj
- +uKBjNfWK3epULafF2V4W+8vS+DKZ/aIXEXQECV5iy36hoLZQIyZgx//insbriqiS6y6
- As0ze+lawE0xLzKNWL332NFe3hQSCPQLbnDEVrufD408INHNjio9EzOoa39ytYw960sY
- tn+g==
+ bh=mkUxPfgunl3171HVbZ04V4mGlWy5lVrjE2KtHggEcpE=;
+ b=dsRaViDu/uGfGzKQ+/hybnBXxuMs8bn7JOsECmoJkLmcGCsHvYrAIQxdqlf0FZZj30
+ NeoWdHbmpJUmpYKIxeFpnM2+ypHIm3laMcHCC8oUa3Mu2JS+NH5qBQF/hCiQKk4XGKF9
+ XYZrCN6xpJQE7aTn1CalLBAzmnMl10c1pjaiJGyg4zSec7jiBuIuLJWKHEFoYmEhiwsz
+ 8OtjKjtZVV7u0lzZrlTy21jqooVYYbpPb4wKQ/6fXkyuPM8CVMwppSgIYt1nH2JeHZiL
+ Y7JFgweZI60asp6uYctAuzRgAMHjsyTfjKJq9Vt8CiNyKTrua9anysZzQDkZa12x8m4/
+ nQzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684940393; x=1687532393;
+ d=1e100.net; s=20221208; t=1684940398; x=1687532398;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vXln/1eI6qFBBphN0wAdNEHB1hgU4t96Zx44NnYHfMg=;
- b=YPH40rt52bgMwt9cCpX+9fFbGZgJOuOo03bRoFi6yX+xWuTVcXXw2zlyiAn1Y5Ql7W
- eHz9BgBfbirNtMX4YYmEgxLISqsiBXN8Pgos+oQUdFyy9hCDfjcOpt7S0hzXcntopvmM
- yvfmw8nFAQjkfTxTsBdaytpu3bWiYl9qdOP+0m+oCw/OW1r+MUyNCdKzAL0Z+ZttbeE7
- 1Tv7ZsxgFxYnnlTVqCh5trIScLFdGykvf7Kj7dFgwS78AVCkPP6pG0y+s1M7HB8KZRpQ
- fufrTpsSsBrAUimiHDHcps90/vdyUadGpXQmutaoZbHCZiOYeEkJAJlwcA/D6dx70zjK
- r5Xw==
-X-Gm-Message-State: AC+VfDxSbAk+C2OJHUS+Qi5WsYHF4DxsvOHk9MxXtcudtKeu9rUeQoIJ
- Z9Ue52bkU74VqcJReS3lXncN9vgMqKpOBeDKmJURHQ==
-X-Google-Smtp-Source: ACHHUZ5Q95UapRkUXIxR7O9qLz+ijPGfqEAaDifNHCvwjFPaeMS3/gir70Nl0h+2zkzqu0tImhGFWA==
-X-Received: by 2002:a5d:6889:0:b0:306:30ea:a072 with SMTP id
- h9-20020a5d6889000000b0030630eaa072mr29449wru.53.1684940392785; 
- Wed, 24 May 2023 07:59:52 -0700 (PDT)
+ bh=mkUxPfgunl3171HVbZ04V4mGlWy5lVrjE2KtHggEcpE=;
+ b=QhszjcaDbPaYztjX7/93zBhnp4utG4l3IxZrivUYWPpOLEJwsg7+pKckBvOZK11zL+
+ +B9EqGqVDh6KLTm5pcIobhKDBg0JLRvoTIWCbvlAAG1/JPLagPoVlllA9iHzqaiOzufZ
+ lPocE3/AiVR2fs01PJLyTK2DFMSc7abyX/fp8vQPnD8pMpL6OhK9SH/qHYbrp/LcdE6+
+ NbHZALWqU23fugik4mWEt7ifBDw07SEaIrKD8aNHcARrhNnfXePPFfnjgTn0d68g8ID3
+ T0JcvKOBYC+TLzmXod1sQUWHXyaI/tYNIDFqDrtKE9srXXvck9MIW5Qa0MAscsdyC5ya
+ R5rA==
+X-Gm-Message-State: AC+VfDwZKG4Grsif9jopp6VYWJLjqHyT3e6aZ/nWvzeiPiqJtVSpTcrT
+ 3S8M6zK6gEoFI7UgWvL7OaaxZjQ025PG019cTAXMWA==
+X-Google-Smtp-Source: ACHHUZ6hHmgA9Wcty0v3S3xc9zTTw3nhWtU+REJ4snF/otQ9yy7ZDVOIdCaizp0j5+elH6lZ//GCug==
+X-Received: by 2002:a7b:c40a:0:b0:3f1:72fb:461a with SMTP id
+ k10-20020a7bc40a000000b003f172fb461amr104066wmi.2.1684940398197; 
+ Wed, 24 May 2023 07:59:58 -0700 (PDT)
 Received: from localhost.localdomain
  (fac34-h02-176-184-31-193.dsl.sta.abo.bbox.fr. [176.184.31.193])
  by smtp.gmail.com with ESMTPSA id
- j1-20020a056000124100b003047ea78b42sm14758972wrx.43.2023.05.24.07.59.51
+ f21-20020a7bc8d5000000b003f60a446fe5sm2613241wml.29.2023.05.24.07.59.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 May 2023 07:59:52 -0700 (PDT)
+ Wed, 24 May 2023 07:59:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 08/10] hw/arm/realview: Move 'loader_start' to
- RealviewMachineClass
-Date: Wed, 24 May 2023 16:59:04 +0200
-Message-Id: <20230524145906.33156-9-philmd@linaro.org>
+Subject: [PATCH 09/10] hw/arm/realview: Use generic
+ realview_common_machine_init()
+Date: Wed, 24 May 2023 16:59:05 +0200
+Message-Id: <20230524145906.33156-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230524145906.33156-1-philmd@linaro.org>
 References: <20230524145906.33156-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,43 +94,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of having each machine instance resolve its loader
-start address, set it once in their class_init() handler.
+The realview_board_type enum is now unused. Remove it and have
+all instances use the common realview_common_machine_init()
+method.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/realview.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/arm/realview.c | 46 ++--------------------------------------------
+ 1 file changed, 2 insertions(+), 44 deletions(-)
 
 diff --git a/hw/arm/realview.c b/hw/arm/realview.c
-index 8a3b5a48b1..917a1b22df 100644
+index 917a1b22df..b7bb384000 100644
 --- a/hw/arm/realview.c
 +++ b/hw/arm/realview.c
-@@ -36,6 +36,7 @@ struct RealviewMachineClass {
-     int board_id;
-     bool is_pb;
-     hwaddr mpcore_periphbase;
-+    hwaddr loader_start;
+@@ -54,13 +54,6 @@ static struct arm_boot_info realview_binfo = {
+     .smp_bootreg_addr = SMP_BOOTREG_ADDR,
  };
- typedef struct RealviewMachineClass RealviewMachineClass;
  
-@@ -376,7 +377,7 @@ static void realview_init(MachineState *machine,
+-enum realview_board_type {
+-    BOARD_EB,
+-    BOARD_EB_MPCORE,
+-    BOARD_PB_A8,
+-    BOARD_PBX_A9,
+-};
+-
+ static void split_irq_from_named(DeviceState *src, const char* outname,
+                                  qemu_irq out1, qemu_irq out2) {
+     DeviceState *splitter = qdev_new(TYPE_SPLIT_IRQ);
+@@ -75,8 +68,7 @@ static void split_irq_from_named(DeviceState *src, const char* outname,
+                                 qdev_get_gpio_in(splitter, 0));
+ }
  
-     realview_binfo.ram_size = ram_size;
-     realview_binfo.board_id = rmc->board_id;
--    realview_binfo.loader_start = (board_type == BOARD_PB_A8 ? 0x70000000 : 0);
-+    realview_binfo.loader_start = rmc->loader_start;
+-static void realview_init(MachineState *machine,
+-                          enum realview_board_type board_type)
++static void realview_common_machine_init(MachineState *machine)
+ {
+     RealviewMachineClass *rmc = REALVIEW_MACHINE_GET_CLASS(machine);
+     ARMCPU *cpu = NULL;
+@@ -103,17 +95,6 @@ static void realview_init(MachineState *machine,
+     ram_addr_t low_ram_size;
+     ram_addr_t ram_size = machine->ram_size;
+ 
+-    switch (board_type) {
+-    case BOARD_EB:
+-        break;
+-    case BOARD_EB_MPCORE:
+-        break;
+-    case BOARD_PB_A8:
+-        break;
+-    case BOARD_PBX_A9:
+-        break;
+-    }
+-
+     for (n = 0; n < smp_cpus; n++) {
+         Object *cpuobj = object_new(machine->cpu_type);
+ 
+@@ -381,30 +362,11 @@ static void realview_init(MachineState *machine,
      arm_load_kernel(ARM_CPU(first_cpu), machine, &realview_binfo);
  }
  
-@@ -443,6 +444,7 @@ static void realview_pb_a8_class_init(ObjectClass *oc, void *data)
+-static void realview_eb_init(MachineState *machine)
+-{
+-    realview_init(machine, BOARD_EB);
+-}
+-
+-static void realview_eb_mpcore_init(MachineState *machine)
+-{
+-    realview_init(machine, BOARD_EB_MPCORE);
+-}
+-
+-static void realview_pb_a8_init(MachineState *machine)
+-{
+-    realview_init(machine, BOARD_PB_A8);
+-}
+-
+-static void realview_pbx_a9_init(MachineState *machine)
+-{
+-    realview_init(machine, BOARD_PBX_A9);
+-}
+-
+ static void realview_common_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+ 
++    mc->init = realview_common_machine_init;
+     mc->ignore_memory_transaction_failures = true;
+ }
+ 
+@@ -414,7 +376,6 @@ static void realview_eb_class_init(ObjectClass *oc, void *data)
+     RealviewMachineClass *rmc = REALVIEW_MACHINE_CLASS(oc);
+ 
+     mc->desc = "ARM RealView Emulation Baseboard (ARM926EJ-S)";
+-    mc->init = realview_eb_init;
+     mc->block_default_type = IF_SCSI;
+     mc->default_cpu_type = ARM_CPU_TYPE_NAME("arm926");
+     rmc->board_id = 0x33b;
+@@ -426,7 +387,6 @@ static void realview_eb_mpcore_class_init(ObjectClass *oc, void *data)
+     RealviewMachineClass *rmc = REALVIEW_MACHINE_CLASS(oc);
+ 
+     mc->desc = "ARM RealView Emulation Baseboard (ARM11MPCore)";
+-    mc->init = realview_eb_mpcore_init;
+     mc->block_default_type = IF_SCSI;
+     mc->max_cpus = 4;
+     mc->default_cpu_type = ARM_CPU_TYPE_NAME("arm11mpcore");
+@@ -440,7 +400,6 @@ static void realview_pb_a8_class_init(ObjectClass *oc, void *data)
+     RealviewMachineClass *rmc = REALVIEW_MACHINE_CLASS(oc);
+ 
+     mc->desc = "ARM RealView Platform Baseboard for Cortex-A8";
+-    mc->init = realview_pb_a8_init;
      mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a8");
      rmc->board_id = 0x769;
      rmc->is_pb = true;
-+    rmc->loader_start = 0x70000000;
- }
+@@ -453,7 +412,6 @@ static void realview_pbx_a9_class_init(ObjectClass *oc, void *data)
+     RealviewMachineClass *rmc = REALVIEW_MACHINE_CLASS(oc);
  
- static void realview_pbx_a9_class_init(ObjectClass *oc, void *data)
+     mc->desc = "ARM RealView Platform Baseboard Explore for Cortex-A9";
+-    mc->init = realview_pbx_a9_init;
+     mc->max_cpus = 4;
+     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a9");
+     rmc->board_id = 0x76d;
 -- 
 2.38.1
 
