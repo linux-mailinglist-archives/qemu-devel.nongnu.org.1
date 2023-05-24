@@ -2,96 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F54770F8EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 16:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA3770F94B
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 16:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1pgc-0001RR-J0; Wed, 24 May 2023 10:41:58 -0400
+	id 1q1pqq-000798-C2; Wed, 24 May 2023 10:52:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1q1pga-0001Qm-D6
- for qemu-devel@nongnu.org; Wed, 24 May 2023 10:41:56 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1q1pgX-0000d5-U6
- for qemu-devel@nongnu.org; Wed, 24 May 2023 10:41:56 -0400
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34OCdSoR032308
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 14:41:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=qcppdkim1;
- bh=LyMUZewBARAdqxQ2wrazrfhfVR30f4zG1AFUvyUSQ2k=;
- b=i1BnkRRfPEJhXIPB2pVMf2H3E/OjVn/5655okR+FCTvKn1zXi7J87iC10Cq6f1m6FAlj
- aHs0RPSSTxRl03YvDX3LKyyD+tTUYt72mojZMI8OTjhYifLuIrn1nswAdLG4Resz1DK9
- sYLg10sTly/7ZAAOntoe+w3WKFLaUBAagtU5gXgFw3QBiXxzNUB86lUA1QzxuGz92I7i
- lyvNvkBhrfFpIf1uAl0GtLi1MbQx7RyI0lKIq6tmLpJRKv6Zu7xVtcWmBP9V9lARQBl5
- sF5B7WmCfbRLYbWFinEEYZ6Y4QMFi7mfQbLNmHjzoUNCM/prLBlw/IYfdHrFRvAUklcZ 3g== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qs05sas5n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 14:41:51 +0000
-Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
- by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 34OEfo3l026643
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 14:41:50 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 3qpq9m0pr2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 14:41:50 +0000
-Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com
- [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34OEfogx026633
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 14:41:50 GMT
-Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
- [10.47.235.147])
- by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 34OEfno6026629
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 24 May 2023 14:41:50 +0000
-Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
- id D4357744B; Wed, 24 May 2023 11:41:49 -0300 (-03)
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: qemu-devel@nongnu.org
-Cc: tsimpson@quicinc.com, bcain@quicinc.com, quic_mliebel@quicinc.com
-Subject: [PATCH v2 2/2] Hexagon: fix outdated `hex_new_*` comments
-Date: Wed, 24 May 2023 11:41:48 -0300
-Message-Id: <8e1689e28dd7b1318369b55127cf47b82ab75921.1684939078.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <cover.1684939078.git.quic_mathbern@quicinc.com>
-References: <cover.1684939078.git.quic_mathbern@quicinc.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1pqo-00078g-Cb
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 10:52:30 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1pqm-00039O-Bi
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 10:52:30 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-64d44b198baso725713b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 07:52:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684939946; x=1687531946;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DGp93xQy0Nyt16jgwOStM88xX4q4N32qdWohG+u5zMQ=;
+ b=kI8sZu4y/ApaoWnxcpAUcM1ntU4kpN9Dxitqcb/uyGl+yW0MGSTniSFgNWyLZYM7zl
+ 9uX1egTYRnPg51MdifxMrUsLnU5j4H5OZYC4KopRmQlsShUnJBBTZSn69ARfLZuQEJMa
+ fJcS/RxqWDegAPEdEjqCGizOzumz2lGPd+qfFHDguR6xlQcJ0biHZLJhQ9HAksO2xQM6
+ umh1GBS83sbck6IYa+0dG2kCihKTK3mJAzqmkESbo+Greoxh4hbZ3vT1IuHXMLaA3pcB
+ V4fsCSGdkYmMPrAB3SFbvBpv7gwYPy/AVo7uzdvCgG1ao8tzqE6jBbkQ9KlkhAWRCr3z
+ TPvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684939946; x=1687531946;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DGp93xQy0Nyt16jgwOStM88xX4q4N32qdWohG+u5zMQ=;
+ b=eZXo4pijxwZ0wExX/srzuT4tEMeLijXeZ9xI0tsz/IVjmABhmwJR7pQ9RhXFmPuOzl
+ J/ePEhRx8EIsv9rp3Ho6Sm00Uz/NaDOTInQEK2D7Vk1Rg0zv9nNEuNjN17Pb/c6+2xoW
+ wWJOLqKvyHg95NgCBBmDZxU3CXTHJ+5+Zp2M/nkb5Kq+ZKqgezYDIUiK2KSahdKa9o9g
+ R4Vobup9u7e1Nh1HDeHjuDkMlRUKBUog4P7K20Ojox320RVobJKOaNlwx646HS8DcBoK
+ vtxg1bbHONuWBIrB78I6FoByIC3fFFxUIgQj5YurAQl7LVKRyH+RPUa4I4+RxbVwWqji
+ YxPw==
+X-Gm-Message-State: AC+VfDwCs1Q6tmHJFWNFh8gqqL8faq8JdpmGlSKu67a5K8ysYsT9lcLS
+ 4HtP1DHOfrnQh24wuxCFJS+srQ==
+X-Google-Smtp-Source: ACHHUZ6fv2CHpPdmgOkirWxMe+VEGWF0sie6rNExVB8P+CRHum0hOgR5yl8TSVuhFC6V5PikpKIbew==
+X-Received: by 2002:a05:6a00:24cc:b0:64d:40e0:5580 with SMTP id
+ d12-20020a056a0024cc00b0064d40e05580mr2975751pfv.3.1684939946472; 
+ Wed, 24 May 2023 07:52:26 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:6b03:9af2:33c1:3d6b?
+ ([2602:ae:1598:4c01:6b03:9af2:33c1:3d6b])
+ by smtp.gmail.com with ESMTPSA id
+ d26-20020aa7869a000000b00640ddad2e0dsm7570555pfo.47.2023.05.24.07.52.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 May 2023 07:52:25 -0700 (PDT)
+Message-ID: <87904ed2-d83f-52ef-e22e-7c9ff715a6b5@linaro.org>
+Date: Wed, 24 May 2023 07:52:24 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 01/10] softmmu: Introduce qemu_target_page_mask() helper
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20230524093744.88442-1-philmd@linaro.org>
+ <20230524093744.88442-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230524093744.88442-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: uSVlFXvvVXGNG-UurvHerwr3BXgQKbXa
-X-Proofpoint-ORIG-GUID: uSVlFXvvVXGNG-UurvHerwr3BXgQKbXa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-24_09,2023-05-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0 clxscore=1015
- bulkscore=0 mlxlogscore=621 priorityscore=1501 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
- definitions=main-2305240120
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=mathbern@qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.107,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,86 +96,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some code comments refer to hex_new_value and hex_new_pred_value, which
-have been transferred to DisasContext and, in the case of hex_new_value,
-should now be accessed through get_result_gpr().
+On 5/24/23 02:37, Philippe Mathieu-Daudé wrote:
+> Since TARGET_PAGE_MASK is poisoned in target-agnostic code,
+> introduce the qemu_target_page_mask() helper to get this
+> value from target-agnostic code at runtime.
+> 
+> Reviewed-by: Thomas Huth<thuth@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   include/exec/target_page.h | 1 +
+>   softmmu/physmem.c          | 5 +++++
+>   2 files changed, 6 insertions(+)
 
-In order to fix this outdated comments and also avoid having to tweak
-them whenever we make a variable name change in the future, let's
-replace them with pseudocode.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Suggested-by: Taylor Simpson <tsimpson@quicinc.com>
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
----
- target/hexagon/genptr.c    | 26 ++++++++++++--------------
- target/hexagon/translate.c |  2 +-
- 2 files changed, 13 insertions(+), 15 deletions(-)
-
-diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
-index cb2aa28a19..bcb287dd8b 100644
---- a/target/hexagon/genptr.c
-+++ b/target/hexagon/genptr.c
-@@ -878,9 +878,9 @@ static void gen_endloop0(DisasContext *ctx)
-      */
-     if (!ctx->is_tight_loop) {
-         /*
--         *    if (hex_gpr[HEX_REG_LC0] > 1) {
--         *        PC = hex_gpr[HEX_REG_SA0];
--         *        hex_new_value[HEX_REG_LC0] = hex_gpr[HEX_REG_LC0] - 1;
-+         *    if (LC0 > 1) {
-+         *        PC = SA0;
-+         *        LC0--;
-          *    }
-          */
-         TCGLabel *label3 = gen_new_label();
-@@ -897,9 +897,9 @@ static void gen_endloop0(DisasContext *ctx)
- static void gen_endloop1(DisasContext *ctx)
- {
-     /*
--     *    if (hex_gpr[HEX_REG_LC1] > 1) {
--     *        PC = hex_gpr[HEX_REG_SA1];
--     *        hex_new_value[HEX_REG_LC1] = hex_gpr[HEX_REG_LC1] - 1;
-+     *    if (LC1 > 1) {
-+     *        PC = SA1;
-+     *        LC1--;
-      *    }
-      */
-     TCGLabel *label = gen_new_label();
-@@ -946,14 +946,12 @@ static void gen_endloop01(DisasContext *ctx)
-     gen_set_label(label2);
- 
-     /*
--     *    if (hex_gpr[HEX_REG_LC0] > 1) {
--     *        PC = hex_gpr[HEX_REG_SA0];
--     *        hex_new_value[HEX_REG_LC0] = hex_gpr[HEX_REG_LC0] - 1;
--     *    } else {
--     *        if (hex_gpr[HEX_REG_LC1] > 1) {
--     *            hex_next_pc = hex_gpr[HEX_REG_SA1];
--     *            hex_new_value[HEX_REG_LC1] = hex_gpr[HEX_REG_LC1] - 1;
--     *        }
-+     *    if (LC0 > 1) {
-+     *        PC = SA0;
-+     *        LC0--;
-+     *    } else if (LC1 > 1) {
-+     *        PC = SA1;
-+     *        LC1--;
-      *    }
-      */
-     tcg_gen_brcondi_tl(TCG_COND_LEU, hex_gpr[HEX_REG_LC0], 1, label3);
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index b18f1a9051..8838ab2364 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -556,7 +556,7 @@ static void gen_start_packet(DisasContext *ctx)
-     }
- 
-     /*
--     * Preload the predicated pred registers into hex_new_pred_value[pred_num]
-+     * Preload the predicated pred registers into ctx->new_pred_value[pred_num]
-      * Only endloop instructions conditionally write to pred registers
-      */
-     if (ctx->need_commit && pkt->pkt_has_endloop) {
--- 
-2.37.2
-
+r~
 
