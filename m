@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3AB7111C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 19:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BD770FEF4
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 22:03:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2EXC-0007iG-Eh; Thu, 25 May 2023 13:13:54 -0400
+	id 1q1uge-0004Ba-AB; Wed, 24 May 2023 16:02:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q2EXA-0007h1-Nh
- for qemu-devel@nongnu.org; Thu, 25 May 2023 13:13:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q2EX8-0001eR-RZ
- for qemu-devel@nongnu.org; Thu, 25 May 2023 13:13:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685034830;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SdjpHAWvX8URSv7CTSo6yI4LC/WzXYrrywaCg9aNOmQ=;
- b=HKqDSd4a/UR/6e4phEz6GNjAf5chiRi+Zp5BqvHeE2K063M1E9DZZfPb6J9Xuy9S5Df3FE
- g2xFzfexDScZxXosJEKuw7JcttAeM1zrhchuatSqnELU8fWwVk3sMKtyUWYFE33v5oRZ9L
- K83WdBR7nWNSRF2aIt9dtpVCmBndmMs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-219-f84HUxG6PwGfwNYI4AHG2A-1; Thu, 25 May 2023 13:13:44 -0400
-X-MC-Unique: f84HUxG6PwGfwNYI4AHG2A-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D8B86811E78;
- Thu, 25 May 2023 17:13:43 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E46F7492B00;
- Thu, 25 May 2023 17:13:42 +0000 (UTC)
-Date: Wed, 24 May 2023 15:36:34 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org, Aarushi Mehta <mehta.aaru20@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Julia Suvorova <jusual@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Paul Durrant <paul@xen.org>, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Fam Zheng <fam@euphon.net>,
- xen-devel@lists.xenproject.org, eblake@redhat.com,
- Anthony Perard <anthony.perard@citrix.com>, qemu-block@nongnu.org
-Subject: Re: [PATCH v2 5/6] block/linux-aio: convert to blk_io_plug_call() API
-Message-ID: <20230524193634.GB17357@fedora>
-References: <20230523171300.132347-1-stefanha@redhat.com>
- <20230523171300.132347-6-stefanha@redhat.com>
- <n6hik7dbl26lomhxvfal2kjrq6jhdiknjepb372dvxavuwiw6q@3l3mo4eywoxq>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1ugc-0004BK-Gd
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 16:02:18 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q1ugb-0001z3-0W
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 16:02:18 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-64d3491609fso1027156b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 13:02:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684958534; x=1687550534;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=o6cJbzSvYvQOTGDtz8/CCuAgm74mnMDf42v4W8C12Tg=;
+ b=zy8PP7c7oDa2jK3hIASl9H64D4L6pE8jDIAlaFjQZWR9R9Bm3HZd5P2lyEyz0rhuJS
+ H2ct0RuQ6XLWQ6oWbLIDQ38w94wVY5ZuJLlLOKsFpQpDMF5135kj4yz5h2hjBctx6EZ7
+ 7cfvnwYWUVAzocAqtQtk0bsU9GpEoONVTcxemykLjgnmzwTlnMYXS1W/nt1cPrJ/U7Jx
+ sjGgHB4tlTxQgBLQmPLBacA6jNdh+QWBLUi9meqfWW7RJk49Xdn+/CnI1ksp4bvPcNvz
+ CtbdFTzH6lNfnc/Rs9DRApf2XcFEoegueLoUxgF5jharQyZq/wIp6lW6JnCXrpUcrI0I
+ ERww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684958534; x=1687550534;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=o6cJbzSvYvQOTGDtz8/CCuAgm74mnMDf42v4W8C12Tg=;
+ b=lACDLn69lAccGk8A6FZegCIouFdIOrd3t1SwHezv12+tiOoY0mnz8O1/xavuPQvBmf
+ wMaXJuHFvfi4O6shlgfWsLIw1CcK292koXgj1GXj0F4LrGnzGnOXWQlGGPi5LekLF1C4
+ DYD3vt7IClXO2dNGvX/3uEotnCGYUjMjepOM18xXBwfi5L59UB857k3DLxfjleFiwpfV
+ YxURTBwNKi7zUCPEKvfiK2eXm8MnCXXRfK7nk4E+PweaTu4Kp0Mgls0Zeum/6azeqlwD
+ S2bdrfaHGV+GOkz7bU4JAKq7Vd6wvktK2i+aybaW/KutBlnp1OQiCTwaMPqXLuwkWvDO
+ Oqjg==
+X-Gm-Message-State: AC+VfDy0Ovu/hsOsMpSif3Aw8mQNqbCJW9H0/LK0eMi9GRhZGgIA9Pyz
+ za20Md/a9eISLO+mCGxqaBmbsf2/25zpUtBr00I=
+X-Google-Smtp-Source: ACHHUZ5TjFuns05dmwvpWoxZyJbkBjo4nMCz4r9FJIsBguMgJLAh/ebrbq2ATekCFDFofopotQP88g==
+X-Received: by 2002:a17:903:2303:b0:1af:a03:8d82 with SMTP id
+ d3-20020a170903230300b001af0a038d82mr19489397plh.57.1684958534351; 
+ Wed, 24 May 2023 13:02:14 -0700 (PDT)
+Received: from stoup.. ([2602:ae:1598:4c01:6b03:9af2:33c1:3d6b])
+ by smtp.gmail.com with ESMTPSA id
+ 21-20020a170902c11500b001a98f064a2asm9151705pli.48.2023.05.24.13.02.13
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 May 2023 13:02:13 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] tcg: Fix register move type in tcg_out_ld_helper_ret
+Date: Wed, 24 May 2023 13:02:12 -0700
+Message-Id: <20230524200212.1354804-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="GYXeKr/XNUj7Tdkf"
-Content-Disposition: inline
-In-Reply-To: <n6hik7dbl26lomhxvfal2kjrq6jhdiknjepb372dvxavuwiw6q@3l3mo4eywoxq>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,224 +87,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The first move was incorrectly using TCG_TYPE_I32 while the second
+move was correctly using TCG_TYPE_REG.  This prevents a 64-bit host
+from moving all 128-bits of the return value.
 
---GYXeKr/XNUj7Tdkf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: ebebea53ef8 ("tcg: Support TCG_TYPE_I128 in tcg_out_{ld,st}_helper_{args,ret}")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/tcg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Wed, May 24, 2023 at 10:52:03AM +0200, Stefano Garzarella wrote:
-> On Tue, May 23, 2023 at 01:12:59PM -0400, Stefan Hajnoczi wrote:
-> > Stop using the .bdrv_co_io_plug() API because it is not multi-queue
-> > block layer friendly. Use the new blk_io_plug_call() API to batch I/O
-> > submission instead.
-> >=20
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > Reviewed-by: Eric Blake <eblake@redhat.com>
-> > ---
-> > include/block/raw-aio.h |  7 -------
-> > block/file-posix.c      | 28 ----------------------------
-> > block/linux-aio.c       | 41 +++++++++++------------------------------
-> > 3 files changed, 11 insertions(+), 65 deletions(-)
-> >=20
-> > diff --git a/include/block/raw-aio.h b/include/block/raw-aio.h
-> > index da60ca13ef..0f63c2800c 100644
-> > --- a/include/block/raw-aio.h
-> > +++ b/include/block/raw-aio.h
-> > @@ -62,13 +62,6 @@ int coroutine_fn laio_co_submit(int fd, uint64_t off=
-set, QEMUIOVector *qiov,
-> >=20
-> > void laio_detach_aio_context(LinuxAioState *s, AioContext *old_context);
-> > void laio_attach_aio_context(LinuxAioState *s, AioContext *new_context);
-> > -
-> > -/*
-> > - * laio_io_plug/unplug work in the thread's current AioContext, theref=
-ore the
-> > - * caller must ensure that they are paired in the same IOThread.
-> > - */
-> > -void laio_io_plug(void);
-> > -void laio_io_unplug(uint64_t dev_max_batch);
-> > #endif
-> > /* io_uring.c - Linux io_uring implementation */
-> > #ifdef CONFIG_LINUX_IO_URING
-> > diff --git a/block/file-posix.c b/block/file-posix.c
-> > index 7baa8491dd..ac1ed54811 100644
-> > --- a/block/file-posix.c
-> > +++ b/block/file-posix.c
-> > @@ -2550,26 +2550,6 @@ static int coroutine_fn raw_co_pwritev(BlockDriv=
-erState *bs, int64_t offset,
-> >     return raw_co_prw(bs, offset, bytes, qiov, QEMU_AIO_WRITE);
-> > }
-> >=20
-> > -static void coroutine_fn raw_co_io_plug(BlockDriverState *bs)
-> > -{
-> > -    BDRVRawState __attribute__((unused)) *s =3D bs->opaque;
-> > -#ifdef CONFIG_LINUX_AIO
-> > -    if (s->use_linux_aio) {
-> > -        laio_io_plug();
-> > -    }
-> > -#endif
-> > -}
-> > -
-> > -static void coroutine_fn raw_co_io_unplug(BlockDriverState *bs)
-> > -{
-> > -    BDRVRawState __attribute__((unused)) *s =3D bs->opaque;
-> > -#ifdef CONFIG_LINUX_AIO
-> > -    if (s->use_linux_aio) {
-> > -        laio_io_unplug(s->aio_max_batch);
-> > -    }
-> > -#endif
-> > -}
-> > -
-> > static int coroutine_fn raw_co_flush_to_disk(BlockDriverState *bs)
-> > {
-> >     BDRVRawState *s =3D bs->opaque;
-> > @@ -3914,8 +3894,6 @@ BlockDriver bdrv_file =3D {
-> >     .bdrv_co_copy_range_from =3D raw_co_copy_range_from,
-> >     .bdrv_co_copy_range_to  =3D raw_co_copy_range_to,
-> >     .bdrv_refresh_limits =3D raw_refresh_limits,
-> > -    .bdrv_co_io_plug        =3D raw_co_io_plug,
-> > -    .bdrv_co_io_unplug      =3D raw_co_io_unplug,
-> >     .bdrv_attach_aio_context =3D raw_aio_attach_aio_context,
-> >=20
-> >     .bdrv_co_truncate                   =3D raw_co_truncate,
-> > @@ -4286,8 +4264,6 @@ static BlockDriver bdrv_host_device =3D {
-> >     .bdrv_co_copy_range_from =3D raw_co_copy_range_from,
-> >     .bdrv_co_copy_range_to  =3D raw_co_copy_range_to,
-> >     .bdrv_refresh_limits =3D raw_refresh_limits,
-> > -    .bdrv_co_io_plug        =3D raw_co_io_plug,
-> > -    .bdrv_co_io_unplug      =3D raw_co_io_unplug,
-> >     .bdrv_attach_aio_context =3D raw_aio_attach_aio_context,
-> >=20
-> >     .bdrv_co_truncate                   =3D raw_co_truncate,
-> > @@ -4424,8 +4400,6 @@ static BlockDriver bdrv_host_cdrom =3D {
-> >     .bdrv_co_pwritev        =3D raw_co_pwritev,
-> >     .bdrv_co_flush_to_disk  =3D raw_co_flush_to_disk,
-> >     .bdrv_refresh_limits    =3D cdrom_refresh_limits,
-> > -    .bdrv_co_io_plug        =3D raw_co_io_plug,
-> > -    .bdrv_co_io_unplug      =3D raw_co_io_unplug,
-> >     .bdrv_attach_aio_context =3D raw_aio_attach_aio_context,
-> >=20
-> >     .bdrv_co_truncate                   =3D raw_co_truncate,
-> > @@ -4552,8 +4526,6 @@ static BlockDriver bdrv_host_cdrom =3D {
-> >     .bdrv_co_pwritev        =3D raw_co_pwritev,
-> >     .bdrv_co_flush_to_disk  =3D raw_co_flush_to_disk,
-> >     .bdrv_refresh_limits    =3D cdrom_refresh_limits,
-> > -    .bdrv_co_io_plug        =3D raw_co_io_plug,
-> > -    .bdrv_co_io_unplug      =3D raw_co_io_unplug,
-> >     .bdrv_attach_aio_context =3D raw_aio_attach_aio_context,
-> >=20
-> >     .bdrv_co_truncate                   =3D raw_co_truncate,
-> > diff --git a/block/linux-aio.c b/block/linux-aio.c
-> > index 442c86209b..5021aed68f 100644
-> > --- a/block/linux-aio.c
-> > +++ b/block/linux-aio.c
-> > @@ -15,6 +15,7 @@
-> > #include "qemu/event_notifier.h"
-> > #include "qemu/coroutine.h"
-> > #include "qapi/error.h"
-> > +#include "sysemu/block-backend.h"
-> >=20
-> > /* Only used for assertions.  */
-> > #include "qemu/coroutine_int.h"
-> > @@ -46,7 +47,6 @@ struct qemu_laiocb {
-> > };
-> >=20
-> > typedef struct {
-> > -    int plugged;
-> >     unsigned int in_queue;
-> >     unsigned int in_flight;
-> >     bool blocked;
-> > @@ -236,7 +236,7 @@ static void qemu_laio_process_completions_and_submi=
-t(LinuxAioState *s)
-> > {
-> >     qemu_laio_process_completions(s);
-> >=20
-> > -    if (!s->io_q.plugged && !QSIMPLEQ_EMPTY(&s->io_q.pending)) {
-> > +    if (!QSIMPLEQ_EMPTY(&s->io_q.pending)) {
-> >         ioq_submit(s);
-> >     }
-> > }
-> > @@ -277,7 +277,6 @@ static void qemu_laio_poll_ready(EventNotifier *opa=
-que)
-> > static void ioq_init(LaioQueue *io_q)
-> > {
-> >     QSIMPLEQ_INIT(&io_q->pending);
-> > -    io_q->plugged =3D 0;
-> >     io_q->in_queue =3D 0;
-> >     io_q->in_flight =3D 0;
-> >     io_q->blocked =3D false;
-> > @@ -354,31 +353,11 @@ static uint64_t laio_max_batch(LinuxAioState *s, =
-uint64_t dev_max_batch)
-> >     return max_batch;
-> > }
-> >=20
-> > -void laio_io_plug(void)
-> > +static void laio_unplug_fn(void *opaque)
-> > {
-> > -    AioContext *ctx =3D qemu_get_current_aio_context();
-> > -    LinuxAioState *s =3D aio_get_linux_aio(ctx);
-> > +    LinuxAioState *s =3D opaque;
-> >=20
-> > -    s->io_q.plugged++;
-> > -}
-> > -
-> > -void laio_io_unplug(uint64_t dev_max_batch)
-> > -{
-> > -    AioContext *ctx =3D qemu_get_current_aio_context();
-> > -    LinuxAioState *s =3D aio_get_linux_aio(ctx);
-> > -
-> > -    assert(s->io_q.plugged);
-> > -    s->io_q.plugged--;
-> > -
-> > -    /*
-> > -     * Why max batch checking is performed here:
-> > -     * Another BDS may have queued requests with a higher dev_max_batc=
-h and
-> > -     * therefore in_queue could now exceed our dev_max_batch. Re-check=
- the max
-> > -     * batch so we can honor our device's dev_max_batch.
-> > -     */
-> > -    if (s->io_q.in_queue >=3D laio_max_batch(s, dev_max_batch) ||
->=20
-> Why are we removing this condition?
-> Could the same situation occur with the new API?
-
-The semantics of unplug_fn() are different from .bdrv_co_unplug():
-1. unplug_fn() is only called when the last blk_io_unplug() call occurs,
-   not every time blk_io_unplug() is called.
-2. unplug_fn() is per-thread, not per-BlockDriverState, so there is no
-   way to get per-BlockDriverState fields like dev_max_batch.
-
-Therefore this condition cannot be moved to laio_unplug_fn().
-
-How important is this condition? I believe that dropping it does not
-have much of an effect but maybe I missed something.
-
-Also, does it make sense to define per-BlockDriverState batching limits
-when the AIO engine (Linux AIO or io_uring) is thread-local and shared
-between all BlockDriverStates? I believe the fundamental reason (that we
-discovered later) why dev_max_batch is effective is because the Linux
-kernel processes 32 I/O request submissions at a time. Anything above 32
-adds latency without a batching benefit.
-
-Stefan
-
---GYXeKr/XNUj7Tdkf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRuZ0IACgkQnKSrs4Gr
-c8h/zwgAkZBovDywM+nj3pwJJe206j/dS6hWP+DFJEHkWevLQELYi6+0p5Vxt94o
-1Ri/jvcDuX+JPYuDiWJ5VVahwfnU4Je4NtU5XX5HDWKRcstewKDalmdQeePchKXX
-0T/x2oGpn4GVZGXle/mxqmkm9A1Nf6amsdz/4baA1WDGJQHsRNPN7WBRL4RKj6UQ
-ENIqYrhzXma5dlXadstRE9cjKcwgD2Te/4sh3gKB7axxjQYzFlXtxsoWxw9zlrEZ
-feHF3vznLdocukGw/BR+sXLAKxd591Hdaw/o8LKrJQclLSNvOnC43d9vAN/PrFwU
-E2o8ur8zGvrC5ggwZhrZ/uhfbbLDFg==
-=Hpse
------END PGP SIGNATURE-----
-
---GYXeKr/XNUj7Tdkf--
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index ac30d484f5..2352ca4ade 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -5736,8 +5736,8 @@ static void tcg_out_ld_helper_ret(TCGContext *s, const TCGLabelQemuLdst *ldst,
+     mov[0].dst = ldst->datalo_reg;
+     mov[0].src =
+         tcg_target_call_oarg_reg(TCG_CALL_RET_NORMAL, HOST_BIG_ENDIAN);
+-    mov[0].dst_type = TCG_TYPE_I32;
+-    mov[0].src_type = TCG_TYPE_I32;
++    mov[0].dst_type = TCG_TYPE_REG;
++    mov[0].src_type = TCG_TYPE_REG;
+     mov[0].src_ext = TCG_TARGET_REG_BITS == 32 ? MO_32 : MO_64;
+ 
+     mov[1].dst = ldst->datahi_reg;
+-- 
+2.34.1
 
 
