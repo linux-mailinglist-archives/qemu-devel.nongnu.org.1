@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7992370F495
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5943E70F49D
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:54:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1m58-0005az-7J; Wed, 24 May 2023 06:51:02 -0400
+	id 1q1m8U-000740-36; Wed, 24 May 2023 06:54:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1q1m55-0005aT-Uz
- for qemu-devel@nongnu.org; Wed, 24 May 2023 06:51:00 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ id 1q1m8R-00073L-4K
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 06:54:27 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1q1m54-0005zK-9a
- for qemu-devel@nongnu.org; Wed, 24 May 2023 06:50:59 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2af2696fd1cso10475101fa.2
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 03:50:57 -0700 (PDT)
+ id 1q1m8P-0006jp-9Y
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 06:54:26 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2af2b74d258so10321801fa.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 03:54:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1684925456; x=1687517456;
+ d=gmail.com; s=20221208; t=1684925663; x=1687517663;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=IL6Ttl+nbXCgstUFPXpwdGdyy9LC5mjm5oGa50AqgtY=;
- b=muTbtFx5pY/ASe+54SW26aUaBp0ddrho4z9sZ/mxCRjUKrAnd/1wudyudaZIiCLfjJ
- 4VL5i6pJzRUrWpbhgAaEsKZq9jCAN2kmz+LMImYSnLVeYuaYgggy0yQI9zaZvmwzowTE
- Dapg27FJKdTawVxJ520v8fKcb6mO2/169h6UlSSaudL+dQPGQp+sCsRQ1ypsDGhSOA5U
- HIjcKTJ7nfhoJKEw5LlrUBTwGO9tz24g4kDATqbpeAL2cKdKzkiIMUBppDYu85zCcKrT
- 9dXJLgz+kVRq6i+LiN/87lV+vSxg5LlExYys8xecXWEIX6GL3GAQuol1nHGDxlTNHJXs
- 8QUg==
+ bh=o3z/ww8ylbz4hPfmw9RwYPhZLyBNkzTB2pGCbvuU18w=;
+ b=qGHNXUo4L3JYlIXdOptFA/MS9g/ReZKsm0zFlOEL+VaRgCfaDXkMavacmcNfp4Gjab
+ XLvPhxyMhp/sb2rVwBBudSmReN+II+iuNAe/7xZgusQ38QECiy9LZxpntaO+Y1uLn6HD
+ jUhpgNmhRnhTlLDnbmHmqndub1OsRok7dDale8uGASq4Qz3AmRzmPy+eyrZTp0vYQLTn
+ hNnnSo7QyK6p64Ww3+Acj/MoVvsHtG6JjRd6NfM6czK5W2Rb5dJFER8oc1pjp2VQCoyg
+ cmB16pV5AEygyGzRvit+t3z0ZhMYZWAxZkYH/EGxiL7+8Y/SXchfzCjur6Rhd2J+yJSJ
+ vtRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684925456; x=1687517456;
+ d=1e100.net; s=20221208; t=1684925663; x=1687517663;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=IL6Ttl+nbXCgstUFPXpwdGdyy9LC5mjm5oGa50AqgtY=;
- b=P7AQV3rWRJFZ7KXW3ikG5/Sx0ZdNJN8hsN3Qw428NhKLScnE+JLPCnf17FvnOOAu0j
- EcRlcYzc/T8Qt69pIGFyfDIqyv5qond0lWfRpOHmcFBQM5t7d819tfa3T9QIF4XRfvCt
- FINlJvFiUZezfFwMv3PkGrOW8m+w9uylVQFo4jx4O/Bgs4Hln2P406NSMMpkpvIziACp
- Cf6zaD8OK9l3hRHdVC/ogrQ/LLNNaLz0/8O1TUQHnw44gMp+A36GGaqBYvWcpm+8wy81
- OrMhnRYOBjj/hQKHsKijPf0FF13us35pCBpEpIflnhXwPcwAv1DdC/2FRS43YTYpZfKS
- clwA==
-X-Gm-Message-State: AC+VfDxT3TyuYIe7sPHmT2ltgURXb1Z4s2XPVWaAa78SmMyrZEP8sFpR
- HLTd0B7e5fXFYFuMBHtVK3C+aJtTdsVNXYBhZJw=
-X-Google-Smtp-Source: ACHHUZ65ghK46iI0X3f4L9PiIPdItwW4Wo/b4ILwRu7+7iJIj3Yr1ssQnR3JJDnwIYU7CxgeyFBSKnZz0vxX1CNnS4g=
-X-Received: by 2002:a2e:8845:0:b0:2ac:840c:4cb2 with SMTP id
- z5-20020a2e8845000000b002ac840c4cb2mr6245470ljj.25.1684925455397; Wed, 24 May
- 2023 03:50:55 -0700 (PDT)
+ bh=o3z/ww8ylbz4hPfmw9RwYPhZLyBNkzTB2pGCbvuU18w=;
+ b=jFhmZBtdRBVMoJ9N1IFN3KUznqCpeXnDtOl18fmKZ29ftefxXM1rB55dPMnEZLwg3R
+ ljeWnA4n0Uk8wZ0cjLIaufcyzQd7tvgdjTxP//RFi1J4K1qkDKkLj9Lk7XBU8qLnFYae
+ 6uzbbgDvJypmqPASoY4A88OZAlBtvlOvRBzeRBJiJvI+RlD71zdbTXUDqh5PjSUk5PPR
+ RzfFeO+m82ppKeE/g/zMdQ2V3YrnXwZA4Whz8lkVEfe3OmVxCKonNrpCOCdZIRIYfPuX
+ vaOyLmRYAy7q3XLOQfdfsRJI3QenareTeh++k2NUKKbUDXAHmwPr8v2GwdZuXXo3alFJ
+ U3Zw==
+X-Gm-Message-State: AC+VfDxfJav8PJ9qGHRdj7G0dXYk5nWQQhaVLXJGVfDVwYGM6IFIG0hq
+ eHIoip0xf+sI9GcGdeTpCr6LJuL/+WDxOBB77qd1eBdyq/c=
+X-Google-Smtp-Source: ACHHUZ65XvWRErZgk+JzLZ3h5N9Yjsb3UmUA5O7U7G8c7TSaQIah4gUUFKh6UyZjeQQ8UmU7MVi56M73n7bleALhxYM=
+X-Received: by 2002:a2e:3503:0:b0:2af:1dd5:b068 with SMTP id
+ z3-20020a2e3503000000b002af1dd5b068mr6974757ljz.48.1684925662878; Wed, 24 May
+ 2023 03:54:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230515132518.1025853-1-marcandre.lureau@redhat.com>
- <20230518173438-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230518173438-mutt-send-email-mst@kernel.org>
+References: <20230515132440.1025315-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20230515132440.1025315-1-marcandre.lureau@redhat.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 24 May 2023 14:50:44 +0400
-Message-ID: <CAJ+F1CLnw5e1qsf2TC96F1dmXzk+gmja1mUeQeOZCEpob9upYg@mail.gmail.com>
-Subject: Re: [PATCH] virtio-gpu: add a FIXME for virtio_gpu_load()
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com
-Content-Type: multipart/alternative; boundary="0000000000003df6eb05fc6e472a"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-lj1-x22d.google.com
+Date: Wed, 24 May 2023 14:54:11 +0400
+Message-ID: <CAJ+F1CLvoLSF=91XpFUorfdUN8e=cz9P2v+EmTdY90DPLUOtTw@mail.gmail.com>
+Subject: Re: [PATCH] win32: wrap socket close() with an exception handler
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, berrange@redhat.com, Stefan Weil <sw@weilnetz.de>
+Content-Type: multipart/alternative; boundary="0000000000009be1d605fc6e5307"
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,56 +84,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003df6eb05fc6e472a
+--0000000000009be1d605fc6e5307
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Michael
+On Mon, May 15, 2023 at 5:25=E2=80=AFPM <marcandre.lureau@redhat.com> wrote=
+:
 
-On Fri, May 19, 2023 at 1:35=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
-
-> On Mon, May 15, 2023 at 05:25:18PM +0400, marcandre.lureau@redhat.com
-> wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > It looks like the virtio_gpu_load() does not compute and set the offset=
-,
-> > the same way virtio_gpu_set_scanout() does. This probably results in
-> > incorrect display until the scanout/framebuffer is updated again, I
-> > guess we should fix it, although I haven't checked this yet.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 >
-> I guess it's a way to ping Gerd ;)
-> Better to just fix it though, no?
+> Since commit abe34282 ("win32: avoid mixing SOCKET and file descriptor
+> space"), we set HANDLE_FLAG_PROTECT_FROM_CLOSE on the socket FD, to
+> prevent closing the HANDLE with CloseHandle. This raises an exception
+> which under gdb is fatal, and qemu exits.
+>
+> Let's catch the expected error instead.
+>
+> Note: this appears to work, but the mingw64 macro is not well documented
+> or tested, and it's not obvious how it is meant to be used.
+>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 >
 
-Indeed, it's just lack of time and priority, and also figure out a good way
-to test this.
-
-thanks
+ping
 
 
-> > ---
-> >  hw/display/virtio-gpu.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> > index 66ac9b6cc5..66cddd94d9 100644
-> > --- a/hw/display/virtio-gpu.c
-> > +++ b/hw/display/virtio-gpu.c
-> > @@ -1289,6 +1289,7 @@ static int virtio_gpu_load(QEMUFile *f, void
-> *opaque, size_t size,
-> >      /* load & apply scanout state */
-> >      vmstate_load_state(f, &vmstate_virtio_gpu_scanouts, g, 1);
-> >      for (i =3D 0; i < g->parent_obj.conf.max_outputs; i++) {
-> > +        /* FIXME: should take scanout.r.{x,y} into account */
-> >          scanout =3D &g->parent_obj.scanout[i];
-> >          if (!scanout->resource_id) {
-> >              continue;
-> > --
-> > 2.40.1
+> ---
+>  include/sysemu/os-win32.h |  4 ++++
+>  util/oslib-win32.c        | 23 +++++++++++++++++------
+>  2 files changed, 21 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
+> index 15c296e0eb..65f6c9ea57 100644
+> --- a/include/sysemu/os-win32.h
+> +++ b/include/sysemu/os-win32.h
+> @@ -259,6 +259,10 @@ ssize_t qemu_recv_wrap(int sockfd, void *buf, size_t
+> len, int flags);
+>  ssize_t qemu_recvfrom_wrap(int sockfd, void *buf, size_t len, int flags,
+>                             struct sockaddr *addr, socklen_t *addrlen);
+>
+> +EXCEPTION_DISPOSITION
+> +win32_close_exception_handler(struct _EXCEPTION_RECORD*, void*,
+> +                              struct _CONTEXT*, void*);
+> +
+>  #ifdef __cplusplus
+>  }
+>  #endif
+> diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+> index a98638729a..fafbab80b4 100644
+> --- a/util/oslib-win32.c
+> +++ b/util/oslib-win32.c
+> @@ -479,6 +479,13 @@ int qemu_bind_wrap(int sockfd, const struct sockaddr
+> *addr,
+>      return ret;
+>  }
+>
+> +EXCEPTION_DISPOSITION
+> +win32_close_exception_handler(struct _EXCEPTION_RECORD*,
+> +                              void*, struct _CONTEXT*, void*)
+> +{
+> +    return EXCEPTION_EXECUTE_HANDLER;
+> +}
+> +
+>  #undef close
+>  int qemu_close_socket_osfhandle(int fd)
+>  {
+> @@ -504,12 +511,16 @@ int qemu_close_socket_osfhandle(int fd)
+>          return -1;
+>      }
+>
+> -    /*
+> -     * close() returns EBADF since we PROTECT_FROM_CLOSE the underlying
+> handle,
+> -     * but the FD is actually freed
+> -     */
+> -    if (close(fd) < 0 && errno !=3D EBADF) {
+> -        return -1;
+> +    __try1(win32_close_exception_handler) {
+> +        /*
+> +         * close() returns EBADF since we PROTECT_FROM_CLOSE the
+> underlying
+> +         * handle, but the FD is actually freed
+> +         */
+> +        if (close(fd) < 0 && errno !=3D EBADF) {
+> +            return -1;
+> +        }
+> +    }
+> +    __except1 {
+>      }
+>
+>      if (!SetHandleInformation((HANDLE)s, flags, flags)) {
+> --
+> 2.40.1
 >
 >
 >
@@ -142,68 +183,116 @@ thanks
 --=20
 Marc-Andr=C3=A9 Lureau
 
---0000000000003df6eb05fc6e472a
+--0000000000009be1d605fc6e5307
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi Michael<br></div><br><div class=3D"gma=
-il_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, May 19, 2023 at 1:3=
-5=E2=80=AFAM Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com">mst@r=
-edhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">On Mon, May 15, 2023 at 05:25:18PM +0400, <a href=3D"mailto:marc=
-andre.lureau@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a> =
-wrote:<br>
-&gt; From: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@re=
-dhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
-&gt; <br>
-&gt; It looks like the virtio_gpu_load() does not compute and set the offse=
-t,<br>
-&gt; the same way virtio_gpu_set_scanout() does. This probably results in<b=
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, May 15, 2023 at 5:25=E2=80=AF=
+PM &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@redh=
+at.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
+:1ex">From: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@r=
+edhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
+<br>
+Since commit abe34282 (&quot;win32: avoid mixing SOCKET and file descriptor=
+<br>
+space&quot;), we set HANDLE_FLAG_PROTECT_FROM_CLOSE on the socket FD, to<br=
+>
+prevent closing the HANDLE with CloseHandle. This raises an exception<br>
+which under gdb is fatal, and qemu exits.<br>
+<br>
+Let&#39;s catch the expected error instead.<br>
+<br>
+Note: this appears to work, but the mingw64 macro is not well documented<br=
+>
+or tested, and it&#39;s not obvious how it is meant to be used.<br>
+<br>
+Signed-off-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lurea=
+u@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br></bl=
+ockquote><div><br></div><div>ping</div><div>=C2=A0<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex">
+---<br>
+=C2=A0include/sysemu/os-win32.h |=C2=A0 4 ++++<br>
+=C2=A0util/oslib-win32.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 23 +++++++++++++++++-=
+-----<br>
+=C2=A02 files changed, 21 insertions(+), 6 deletions(-)<br>
+<br>
+diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h<br>
+index 15c296e0eb..65f6c9ea57 100644<br>
+--- a/include/sysemu/os-win32.h<br>
++++ b/include/sysemu/os-win32.h<br>
+@@ -259,6 +259,10 @@ ssize_t qemu_recv_wrap(int sockfd, void *buf, size_t l=
+en, int flags);<br>
+=C2=A0ssize_t qemu_recvfrom_wrap(int sockfd, void *buf, size_t len, int fla=
+gs,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 struct sockaddr *addr, socklen_t *addrlen);<br>
+<br>
++EXCEPTION_DISPOSITION<br>
++win32_close_exception_handler(struct _EXCEPTION_RECORD*, void*,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct _CONTEXT*, void*);<br>
++<br>
+=C2=A0#ifdef __cplusplus<br>
+=C2=A0}<br>
+=C2=A0#endif<br>
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c<br>
+index a98638729a..fafbab80b4 100644<br>
+--- a/util/oslib-win32.c<br>
++++ b/util/oslib-win32.c<br>
+@@ -479,6 +479,13 @@ int qemu_bind_wrap(int sockfd, const struct sockaddr *=
+addr,<br>
+=C2=A0 =C2=A0 =C2=A0return ret;<br>
+=C2=A0}<br>
+<br>
++EXCEPTION_DISPOSITION<br>
++win32_close_exception_handler(struct _EXCEPTION_RECORD*,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 void*, struct _CONTEXT*, void*)<br>
++{<br>
++=C2=A0 =C2=A0 return EXCEPTION_EXECUTE_HANDLER;<br>
++}<br>
++<br>
+=C2=A0#undef close<br>
+=C2=A0int qemu_close_socket_osfhandle(int fd)<br>
+=C2=A0{<br>
+@@ -504,12 +511,16 @@ int qemu_close_socket_osfhandle(int fd)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -1;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+-=C2=A0 =C2=A0 /*<br>
+-=C2=A0 =C2=A0 =C2=A0* close() returns EBADF since we PROTECT_FROM_CLOSE th=
+e underlying handle,<br>
+-=C2=A0 =C2=A0 =C2=A0* but the FD is actually freed<br>
+-=C2=A0 =C2=A0 =C2=A0*/<br>
+-=C2=A0 =C2=A0 if (close(fd) &lt; 0 &amp;&amp; errno !=3D EBADF) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -1;<br>
++=C2=A0 =C2=A0 __try1(win32_close_exception_handler) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* close() returns EBADF since we PROTECT=
+_FROM_CLOSE the underlying<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* handle, but the FD is actually freed<b=
 r>
-&gt; incorrect display until the scanout/framebuffer is updated again, I<br=
->
-&gt; guess we should fix it, although I haven&#39;t checked this yet.<br>
-&gt; <br>
-&gt; Signed-off-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.=
-lureau@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br=
->
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (close(fd) &lt; 0 &amp;&amp; errno !=3D EBA=
+DF) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -1;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 __except1 {<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
 <br>
-I guess it&#39;s a way to ping Gerd ;)<br>
-Better to just fix it though, no?<br></blockquote><div><br></div><div>Indee=
-d, it&#39;s just lack of time and priority, and also figure out a good way =
-to test this.</div><div>=C2=A0</div><div>thanks</div><div><br></div><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
-x solid rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; ---<br>
-&gt;=C2=A0 hw/display/virtio-gpu.c | 1 +<br>
-&gt;=C2=A0 1 file changed, 1 insertion(+)<br>
-&gt; <br>
-&gt; diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c<br>
-&gt; index 66ac9b6cc5..66cddd94d9 100644<br>
-&gt; --- a/hw/display/virtio-gpu.c<br>
-&gt; +++ b/hw/display/virtio-gpu.c<br>
-&gt; @@ -1289,6 +1289,7 @@ static int virtio_gpu_load(QEMUFile *f, void *op=
-aque, size_t size,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 /* load &amp; apply scanout state */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 vmstate_load_state(f, &amp;vmstate_virtio_gpu_scan=
-outs, g, 1);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 for (i =3D 0; i &lt; g-&gt;parent_obj.conf.max_out=
-puts; i++) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* FIXME: should take scanout.r.{x,y} int=
-o account */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 scanout =3D &amp;g-&gt;parent_obj.sc=
-anout[i];<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!scanout-&gt;resource_id) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 continue;<br>
-&gt; -- <br>
-&gt; 2.40.1<br>
+=C2=A0 =C2=A0 =C2=A0if (!SetHandleInformation((HANDLE)s, flags, flags)) {<b=
+r>
+-- <br>
+2.40.1<br>
 <br>
 <br>
 </blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
 fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
 =A9 Lureau<br></div></div>
 
---0000000000003df6eb05fc6e472a--
+--0000000000009be1d605fc6e5307--
 
