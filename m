@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D034370EF76
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 09:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D403570EF7F
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 09:35:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1iyz-0001kJ-4h; Wed, 24 May 2023 03:32:29 -0400
+	id 1q1j11-0002tz-To; Wed, 24 May 2023 03:34:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1iyr-0001hO-8Q
- for qemu-devel@nongnu.org; Wed, 24 May 2023 03:32:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1j0z-0002sK-UQ
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 03:34:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1iyp-0005PH-0W
- for qemu-devel@nongnu.org; Wed, 24 May 2023 03:32:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1j0y-00066A-Da
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 03:34:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684913538;
+ s=mimecast20190719; t=1684913671;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7zZMujTuJhdtYfPmPVtjqj8Osmcq+LsNTPt354vzLMQ=;
- b=DDFEdVwxIbEq2S2YVZ1TpiS9pj/2GK464RM9EVYUddM06PwTR48uRzQaY4F40FUTatqY7r
- Du1lqCaRe2/Vg5AOdtasD8hUc6CtxpUus7/kMmH7y5YyyfyM+sob4ygGqXM0PPK8avGOaA
- eBh5nVrAJXdlaZn25UAPLVWXj+bZI18=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XQ+AnM2/E3xApIGY+KniRAi8RAIJ8xqiVJ99TmF6Z/E=;
+ b=XoZjbaaNUwZrnsBiqVJLnuwil8pDUY7eYw5whfxovYolalbEqobNPpCbtBH3BeybbyaUzx
+ bjBfLR9M4T/jJnlBF16wwl+4xUVp+7+Nj9Owzt4RPnlVQHfzWHwXHqEgrVfyaZf4qul44p
+ O0ACCsK0uqSTwDMYhwV7R7CueAVkVkk=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-R79YJS80NXmo48THE5YDQg-1; Wed, 24 May 2023 03:32:16 -0400
-X-MC-Unique: R79YJS80NXmo48THE5YDQg-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-50dfa390825so828396a12.3
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 00:32:16 -0700 (PDT)
+ us-mta-652-4AzGZuc7Nva0d25Q7SbPqQ-1; Wed, 24 May 2023 03:34:28 -0400
+X-MC-Unique: 4AzGZuc7Nva0d25Q7SbPqQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-510526d2a5fso2426372a12.0
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 00:34:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684913536; x=1687505536;
+ d=1e100.net; s=20221208; t=1684913667; x=1687505667;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7zZMujTuJhdtYfPmPVtjqj8Osmcq+LsNTPt354vzLMQ=;
- b=UC2E5SiwwefDqo0/lI/8IEy5KImK/FF42F7a9cEF4i6rV5XJNqVb+D1R4+FnD0yBCR
- 68/OYfwAcTulQo0Tjxuf0PEAeXrDt0TH6LWQ5Yc40LzQCGQNaNMnS59ZgmIA9k2Kyn7M
- 7UWAjasBQ49OMj0aDVCkteX8KEZxOuD+cVuM4fGCFfZl9FOgYYeW/Yw713h6uZ1Olonb
- o80nw+FX6WLjCSqd5g9rDB4PS7ntZFm/oX+hkFeVEYCZl/XFSW034ZwR0St50FV0eKnI
- lCilJZyf02BtqtQDfGK6ODT8qnAzkZQ2DsFXIr4m+lwRuJHaiAGL9S4X5Lz2TxTnmu5H
- Vm3w==
-X-Gm-Message-State: AC+VfDyFnd2yGeUzNfLEVZZSX/gkKrXCZFv7zSsd1ISBY0XwEQO4zCH1
- lfyglKuP3O6nWhBB2yrkWsGxZZ/35fVn4f50HTo2i7jbdj7nTU1b3S6v/sLr7cRBiEqGvv4KV68
- rIigmljruKiMtsNQ=
-X-Received: by 2002:a05:6402:2038:b0:50b:d4e8:3173 with SMTP id
- ay24-20020a056402203800b0050bd4e83173mr1297092edb.8.1684913535945; 
- Wed, 24 May 2023 00:32:15 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6Q0zd3s+PqDpn2Y/pwznwKeCvUTrmhgMmk2NqWQ+cxzK0nU0kLlRxoDxcv9n7XAH4PEmu9JA==
-X-Received: by 2002:a05:6402:2038:b0:50b:d4e8:3173 with SMTP id
- ay24-20020a056402203800b0050bd4e83173mr1297062edb.8.1684913535684; 
- Wed, 24 May 2023 00:32:15 -0700 (PDT)
+ bh=XQ+AnM2/E3xApIGY+KniRAi8RAIJ8xqiVJ99TmF6Z/E=;
+ b=iwSXdr5sSaFAB3/n2feNPMOdfduAY/JNcHw6VRiwwuHtF0PiLirq9r6n40Eqm9+2J5
+ X2eXbHTjiZ5NZquWaDpsNcNoAe5RPZoDtPCvs3VIfVP//ozUdSQwRgaFZ4O037+K1bsY
+ QZZJ5vV6ymwBOZcNIeWRkeFXyn0kWTrxSjMd1LW2tKYYTfLAMwkBUg1fokStalMqtQG5
+ p0eMTDUkpxIkrBDdRaU+B3Gkq8PfAYIXQt4EYMtHAG0Va7vC2Xg+0QbFOKtkauslFgvt
+ jDyUgUnZCdVxztkWkwBY8PoaIUKvCmTQx9AgskakFeA4eRsoAEYWWhySrLxx9YU4IDbB
+ quhA==
+X-Gm-Message-State: AC+VfDzO+EEDvdGWwySUbHahOnEEmSCJmpAfaEHpzPmc4orM1iCVBg+S
+ OiZ0wZujchP5zkdLERg0+PSS5D/NuHB5EVXW110+np/nmVE5BsC2rYDMbBrf2uncExSs4Mj2ysH
+ QxiL00vcriVKsMj0=
+X-Received: by 2002:a17:907:9708:b0:959:b757:e49 with SMTP id
+ jg8-20020a170907970800b00959b7570e49mr16836859ejc.1.1684913667078; 
+ Wed, 24 May 2023 00:34:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4p9Qa/b1sn33+U6Iim73Nsfc1b+4+wIaFJp7tGVCR+J/2iA2niQmWY0/XL9KzZhCckhLWUVQ==
+X-Received: by 2002:a17:907:9708:b0:959:b757:e49 with SMTP id
+ jg8-20020a170907970800b00959b7570e49mr16836835ejc.1.1684913666770; 
+ Wed, 24 May 2023 00:34:26 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-176-64.web.vodafone.de.
  [109.43.176.64]) by smtp.gmail.com with ESMTPSA id
- b17-20020aa7c911000000b00502689a06b2sm4708084edt.91.2023.05.24.00.32.13
+ s14-20020a170906c30e00b0094f410225c7sm5251756ejz.169.2023.05.24.00.34.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 May 2023 00:32:15 -0700 (PDT)
-Message-ID: <289fee09-ced3-bb69-44fb-2bc8d5968dd2@redhat.com>
-Date: Wed, 24 May 2023 09:32:12 +0200
+ Wed, 24 May 2023 00:34:26 -0700 (PDT)
+Message-ID: <d8986a58-16c0-58d3-3b65-946cd13a2501@redhat.com>
+Date: Wed, 24 May 2023 09:34:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 10/11] hw/virtio: Build various target-agnostic objects
- just once
+Subject: Re: [RFC PATCH 11/11] hw/virtio: Make vhost-vdpa.c target-agnostic to
+ build it once
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -84,9 +84,9 @@ Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
 References: <20230523163600.83391-1-philmd@linaro.org>
- <20230523163600.83391-11-philmd@linaro.org>
+ <20230523163600.83391-12-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230523163600.83391-11-philmd@linaro.org>
+In-Reply-To: <20230523163600.83391-12-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -114,18 +114,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/05/2023 18.35, Philippe Mathieu-Daudé wrote:
-> The previous commit remove the unnecessary "virtio-access.h"
-> header. These files no longer have target-specific dependency.
-> Move them to the generic 'softmmu_ss' source set.
+On 23/05/2023 18.36, Philippe Mathieu-Daudé wrote:
+> Replace TARGET_PAGE_MASK -> qemu_target_page_mask() and
+> TARGET_PAGE_ALIGN() -> qemu_target_page_align() so we don't
+> need the target-specific "cpu.h" header.
+> 
+> These macros are used in the MemoryListener add/del handlers
+> (vhost_vdpa_listener_skipped_section is only called by
+> vhost_vdpa_listener_region_add) which are not hot-path.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/block/dataplane/meson.build |  2 +-
->   hw/scsi/meson.build            | 10 +++++++---
->   hw/virtio/meson.build          | 11 ++++++-----
->   3 files changed, 14 insertions(+), 9 deletions(-)
+>   hw/virtio/vhost-vdpa.c | 16 ++++++++--------
+>   hw/virtio/meson.build  |  3 ++-
+>   2 files changed, 10 insertions(+), 9 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
