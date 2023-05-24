@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD48470EF3A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 09:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9970970EF3D
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 09:18:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1ikU-0006ik-L1; Wed, 24 May 2023 03:17:30 -0400
+	id 1q1ilW-0007SG-NU; Wed, 24 May 2023 03:18:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1ikS-0006iG-2N
- for qemu-devel@nongnu.org; Wed, 24 May 2023 03:17:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1ilP-0007RZ-7a
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 03:18:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1ikQ-0005ii-NI
- for qemu-devel@nongnu.org; Wed, 24 May 2023 03:17:27 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1ilM-0006KL-F3
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 03:18:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684912646;
+ s=mimecast20190719; t=1684912703;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qfhVnW1+xMguL58me2qfT/dx9arnckGTFXzDzkOrYAM=;
- b=Tc8pG2QLATDtyRdwcoJx7ckDPjHEYsNPeUGw2bx6cOsUQePpakcgrkAKYu48K8jnEItpU3
- iBME+kmW3XbeoJbqAl/GpjO9m8MsrZSeq9fWCQhKIoZ5uYjYQA/RgII8KnisDXxAC90kpk
- uPeGZDO5k5rwsiqcxtnuqH6MjSrY2vc=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lMdtoctcsWO73vd4RtYmvxNPKdN3z3+rmprdLGh/5oY=;
+ b=JPsLq4+7UxDdxaCokoDL7FocCjKtKvM43aUNOH5lVYm6dHA5hDhRCADIlqc+VtSe/ZL/8n
+ hZPu9pnT2qt0qR2m3RHQFrS4FYQhWw1bn+8+dtADsibd2Mq7yQpTHne7Wi2GsmF4ewWqV3
+ RcAeME5NbW6MMnIfxXMxPJvWUvch8/4=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-542-FHbGVWxMNdez88OJau-ObQ-1; Wed, 24 May 2023 03:17:24 -0400
-X-MC-Unique: FHbGVWxMNdez88OJau-ObQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-94a34e35f57so49620266b.3
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 00:17:24 -0700 (PDT)
+ us-mta-651-ZQbhScg1N4OQAjaw16UEaw-1; Wed, 24 May 2023 03:18:21 -0400
+X-MC-Unique: ZQbhScg1N4OQAjaw16UEaw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-513f5318ff2so706395a12.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 00:18:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684912643; x=1687504643;
+ d=1e100.net; s=20221208; t=1684912701; x=1687504701;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qfhVnW1+xMguL58me2qfT/dx9arnckGTFXzDzkOrYAM=;
- b=OcBxLl6Kz2eRR9Z4ZBTCZJC2JE4/NfDkOIB71JdXGObgv6wd3Q4VM7+vAOPkJg0BGs
- c+wZlxTou+mCCdZb8tbmUPcO4NbMJQJ+4hnWsegGkPAD9GWi+sBhkhnZZX1PpanqKv0A
- rnA92OooYGoFzzeaJOXy2N8gLO4yfLu3fkUtnJNOg2/cGmdr9PQd8S4w5zRooU3cNiTA
- Rrro49e765yWsu/WlLEsHfA0BoQh6B3vgUDKBazkD97Ht9IV45ahBScL3pookWFBttNm
- Za44KRfW8OUWHvsH7H+IgueEKo23NY31LRk2voefYq/IfiNoByc7VMqD7rMAYiZU0Hko
- AjDw==
-X-Gm-Message-State: AC+VfDyC/uvd7yBtD2GRpp81qzDWXdTCy9kEmJsBcU56ZAKodFM0qWeR
- t5OqiQoYOuv1cb0vcWRM1uWElAz3h2Cy5nQn7tfV/nACeNvyo72NO7Fx1km0Zcp4iBA2eUqggCX
- aqq8jo4YL0G0msjc=
-X-Received: by 2002:a17:907:3e97:b0:966:350f:f43b with SMTP id
- hs23-20020a1709073e9700b00966350ff43bmr18752988ejc.9.1684912643256; 
- Wed, 24 May 2023 00:17:23 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ421kCUR/d4/Ogje37D7jFfKNz3nTL8rz2dl81Qkupactk9gpMoTB2YfUSjkqjGpAX9ZK0vKQ==
-X-Received: by 2002:a17:907:3e97:b0:966:350f:f43b with SMTP id
- hs23-20020a1709073e9700b00966350ff43bmr18752963ejc.9.1684912643000; 
- Wed, 24 May 2023 00:17:23 -0700 (PDT)
+ bh=lMdtoctcsWO73vd4RtYmvxNPKdN3z3+rmprdLGh/5oY=;
+ b=eQXJm+0ISDwiNlKdwZDBn1JAWHk4Ws8hwbSoI8q6JCPuD83oQ2Mt14pcTgKhSROcXT
+ g5IaO/8OMKFzrI+d8blKGq0w2xOQJ2qM8IwXkaOUQOYm6L6uk+upagmiOf7TvpnprB3D
+ evneHnpz1d81aJInQaowvzjR27KBQ3mKtf+RjCn2y/YXXVVfwY81faUFde5LcDd9tAaL
+ xDdiZRXiMos1LBf3J/kJ4Uy81e4xJA5mD5cJVLDcg+59y07u3m9+rL3QswekmAbIME6E
+ LxXBKim1j5j2dMWWrzWoHAvfGhLRxLVhuS+PSkT4ZwRC2Tm+Ff8sZlw5u8LEJ0p2ld+n
+ CoQg==
+X-Gm-Message-State: AC+VfDxqNoaRRjGRWb075NeSoZUuPrX75shciIkswZDTKvUQuB1CZyJq
+ lcfNFCJH65ggP57ifN6YCd2QjwTf8J5DXowYWf8//eOgETSxAW7nlu0lTcvDYS21zMs2Rbg5L+G
+ kNOJsE/6C8PqzaRE=
+X-Received: by 2002:aa7:c3ca:0:b0:50d:f881:1afc with SMTP id
+ l10-20020aa7c3ca000000b0050df8811afcmr1230346edr.23.1684912700806; 
+ Wed, 24 May 2023 00:18:20 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7n4gA1+XgnTiC1K3FloWqxXRRliYnj0ctbf3ZAAC4WSPgizAumoFSxJ2m5UDp5bNd6TdLCDg==
+X-Received: by 2002:aa7:c3ca:0:b0:50d:f881:1afc with SMTP id
+ l10-20020aa7c3ca000000b0050df8811afcmr1230327edr.23.1684912700533; 
+ Wed, 24 May 2023 00:18:20 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-176-64.web.vodafone.de.
  [109.43.176.64]) by smtp.gmail.com with ESMTPSA id
- u10-20020a17090657ca00b00960005e09a3sm5392438ejr.61.2023.05.24.00.17.21
+ y25-20020a056402135900b00510d6795eddsm4780232edw.48.2023.05.24.00.18.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 May 2023 00:17:22 -0700 (PDT)
-Message-ID: <dfe264c9-a1d9-609a-6c80-502e3213aed1@redhat.com>
-Date: Wed, 24 May 2023 09:17:20 +0200
+ Wed, 24 May 2023 00:18:20 -0700 (PDT)
+Message-ID: <0e3874e7-3751-904f-9780-2bad7711d656@redhat.com>
+Date: Wed, 24 May 2023 09:18:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 07/11] hw/virtio/vhost-vsock: Include missing
- 'virtio/virtio-bus.h' header
+Subject: Re: [PATCH 08/11] hw/virtio/virtio-iommu: Use target-agnostic
+ qemu_target_page_mask()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -84,12 +84,12 @@ Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  Cornelia Huck <cohuck@redhat.com>, Eric Auger <eric.auger@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
 References: <20230523163600.83391-1-philmd@linaro.org>
- <20230523163600.83391-8-philmd@linaro.org>
+ <20230523163600.83391-9-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230523163600.83391-8-philmd@linaro.org>
+In-Reply-To: <20230523163600.83391-9-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -98,7 +98,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,12 +115,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 23/05/2023 18.35, Philippe Mathieu-Daudé wrote:
-> Instead of having "virtio/virtio-bus.h" implicitly included,
-> explicit it, to avoid when rearranging headers:
+> In order to have virtio-iommu.c become target-agnostic,
+> we need to avoid using TARGET_PAGE_MASK. Get it with the
+> qemu_target_page_mask() helper.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/virtio/virtio-iommu.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+> index 1cd258135d..85905a9e3d 100644
+> --- a/hw/virtio/virtio-iommu.c
+> +++ b/hw/virtio/virtio-iommu.c
+> @@ -20,6 +20,7 @@
+>   #include "qemu/osdep.h"
+>   #include "qemu/log.h"
+>   #include "qemu/iov.h"
+> +#include "exec/target_page.h"
+>   #include "hw/qdev-properties.h"
+>   #include "hw/virtio/virtio.h"
+>   #include "sysemu/kvm.h"
+> @@ -1164,7 +1165,7 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+>        * in vfio realize
+>        */
+>       s->config.bypass = s->boot_bypass;
+> -    s->config.page_size_mask = TARGET_PAGE_MASK;
+> +    s->config.page_size_mask = qemu_target_page_mask();
+>       s->config.input_range.end = UINT64_MAX;
+>       s->config.domain_range.end = UINT32_MAX;
+>       s->config.probe_size = VIOMMU_PROBE_SIZE;
 
-s/explicit it/explicitly include it/ ?
-
-With that change:
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
