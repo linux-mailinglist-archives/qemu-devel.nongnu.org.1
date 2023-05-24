@@ -2,93 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59E070F880
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 16:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5645870F8E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 16:39:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1pK8-0000qB-Hv; Wed, 24 May 2023 10:18:44 -0400
+	id 1q1pcc-0007G3-Vg; Wed, 24 May 2023 10:37:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1pK0-0000pX-5q
- for qemu-devel@nongnu.org; Wed, 24 May 2023 10:18:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q1pJy-0003HP-Aa
- for qemu-devel@nongnu.org; Wed, 24 May 2023 10:18:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684937913;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oRL4br8rQ4fNGs5xVXBCwyQFdbEwpLBE3Moduh9YvJw=;
- b=A7j1Pk1HCyex0ncHHyWlooGl6pwP5dlJ3RRRTyhXQl7Yd3v3DxskBhjcKFZgOtOz6iB3wl
- Lji4cpE7dHXvDIwTHhBzY3kqAbrgdvW3juiDhqNiaEWmtx9zOzvSS3zJNmJtijaYAXsG+m
- hotIINKQ4xSvI698q43ZRznPc18e3vc=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-GMxOo_M9PY2QZO1WvNFvgg-1; Wed, 24 May 2023 10:18:30 -0400
-X-MC-Unique: GMxOo_M9PY2QZO1WvNFvgg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-62386d1f3ecso6443456d6.2
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 07:18:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1q1pcY-0007Fm-Kl
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 10:37:47 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
+ id 1q1pcM-0007qn-Ub
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 10:37:43 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3f60e536250so13561415e9.1
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 07:37:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=adacore.com; s=google; t=1684939047; x=1687531047;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4CLXJNIE8AnmMaFUz3EhGB103d1OicktN0ykzKSWRh4=;
+ b=Hj0wevK72gW+XsAwSRhyF8trZpIHmYzZcutuX/wyrQGksai1u5tdtnPPmGaeZ+rNUT
+ uboIIWFgoL3lv/UQJpn1OWNUsiMbWtzpAPVLOgs89Mg7Y/bIgvjRWJ7tIzs7EEm7Jb5e
+ 2os8Dauy94DwVPNXZhsdVZz1NPIEJf2uUw1UweuPFdVs8CPla7FXgT3KWSH4W7nRQr/9
+ FYc8Lf/yVSy/S9+93dR4W/8cPv/FDuVcYEsIZkh9GNBrfuEKyqMPK9tBlAQhTIFJiWC+
+ RXhBA8ejqbcb8zScMDgABftgsh68uISAlZ3TyENthx45ocLVngLB4vyTjB9jSjac1Y/V
+ 4hLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684937910; x=1687529910;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oRL4br8rQ4fNGs5xVXBCwyQFdbEwpLBE3Moduh9YvJw=;
- b=IC3KMjarFmWkXOGXMKj7yIo2VjiljJadHPsNdwaKkQ9t7GqbmDX8aZh8ETiZJIJLWG
- A3cBwdtc+zFarxA0hrf71h52zWEjwo0E7O0tKyxCGmodd51PAA0gG2KYUf6hS0A1cjXT
- j+sOzyaw2vDru7HPEkJwhoGvvm8Fec4cqyL2+E9N2f/lIz3hbH2HSFy02EHjnIF9ETwm
- Hti5QLbdPIIkVUCewkRJ/nHehbvWtv55J6bW/09Vcua/69aqa1yAizqTLggN7KUS8MeV
- YKZVxWSH8om52sqGK4OjCUMFBP0lv1c0iZr1Juj1Tri/HUlmbcqE1A3y6BHXnxP4IXfz
- qG1Q==
-X-Gm-Message-State: AC+VfDymQOn6NnjhRdE/gg0NzM66OHaG4/fvBlvtVQCObu/UYFNU85Uc
- MSN/tUMVta0sgmMVBKmnuKD1xlcuSNY7ASYG5KijYMi3K7gv28ISSz07OSE9n6MTgyxqPOWM3mj
- fYF+iVS2dWIFH/44=
-X-Received: by 2002:a05:6214:528a:b0:56e:bfda:a14f with SMTP id
- kj10-20020a056214528a00b0056ebfdaa14fmr25221772qvb.9.1684937910389; 
- Wed, 24 May 2023 07:18:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7J74dKPNA0NsqnWjYd0Yr1u5F24iFbOuTJNy8g1Uv1tF9pDEom9lPlmMna/IFWxK/+i72F5w==
-X-Received: by 2002:a05:6214:528a:b0:56e:bfda:a14f with SMTP id
- kj10-20020a056214528a00b0056ebfdaa14fmr25221747qvb.9.1684937910152; 
- Wed, 24 May 2023 07:18:30 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-176-64.web.vodafone.de.
- [109.43.176.64]) by smtp.gmail.com with ESMTPSA id
- u11-20020a0cf88b000000b0061b7bbb7624sm3601142qvn.130.2023.05.24.07.18.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 May 2023 07:18:29 -0700 (PDT)
-Message-ID: <8833f725-9834-b131-5d79-13592969257a@redhat.com>
-Date: Wed, 24 May 2023 16:18:22 +0200
+ d=1e100.net; s=20221208; t=1684939047; x=1687531047;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4CLXJNIE8AnmMaFUz3EhGB103d1OicktN0ykzKSWRh4=;
+ b=iG4eFInHpl/Nv3cOnY4f3vkTwRYtT08AlsKkatgjAFbsO2UFft+q4HMj/1Yw0BajZi
+ B+R+Xy3jVT0hgexrodeQ0H2SjHrPwuGc5eIdx2dFKKesbV/NkoUDko/I2xE6QvuVfaw7
+ Ak/RWfORPu2YwO1jQm0ZAogqexj1tjfrcgLyFHAHi239e6cERqW7xfjB80iQTZwsfq12
+ R5HIU6OHw2/MqfxegPmqfTEuVSwGhHmv6qRADITxdUOAe5mKKcR1UfSrlbwPskdatueo
+ qCsf9p3g5aFl/ecyX4B0r2zjoXZfNlKm5D6wc8MFjlc4axnvzL/zwxFg74uJKcpn68pO
+ J1DQ==
+X-Gm-Message-State: AC+VfDxMYNJh7tCObf7HmS8epwkBZVrM0cMUI2DKwR94/ZYcPd2j0dEK
+ 5ouRFqwkRlm2KwDEiW3lIsMhwXxoHvVKoUyADrE=
+X-Google-Smtp-Source: ACHHUZ48GSFwR24EznQBGHlJE9tbfiYWWgdkstT+h4hJCLjaLM7ICSKl9FdxX9hkcJl1oo54KQV/jQ==
+X-Received: by 2002:a5d:6e8f:0:b0:2ff:801b:dec6 with SMTP id
+ k15-20020a5d6e8f000000b002ff801bdec6mr13440148wrz.20.1684939047378; 
+ Wed, 24 May 2023 07:37:27 -0700 (PDT)
+Received: from chigot-Dell.home ([2a01:cb15:8123:8100:c59d:d6:6f27:fde6])
+ by smtp.gmail.com with ESMTPSA id
+ q9-20020adffec9000000b002ceacff44c7sm14669319wrs.83.2023.05.24.07.37.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 May 2023 07:37:26 -0700 (PDT)
+From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, edgar.iglesias@gmail.com, alistair@alistair23.me,
+ peter.maydell@linaro.org,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
+Subject: [PATCH] hw/arm/xlnx-zynqmp: fix unsigned error when checking the RPUs
+ number
+Date: Wed, 24 May 2023 16:37:14 +0200
+Message-Id: <20230524143714.565792-1-chigot@adacore.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] tests/qtest: Run arm-specific tests only if the required
- machine is available
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>
-References: <20230524080600.1618137-1-thuth@redhat.com>
- <1d3d36da-3b7a-ebbe-6339-0c707b329e45@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <1d3d36da-3b7a-ebbe-6339-0c707b329e45@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.107, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,50 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/05/2023 16.01, Philippe Mathieu-Daudé wrote:
-> On 24/5/23 10:06, Thomas Huth wrote:
->> pflash-cfi02-test.c always uses the "musicpal" machine for testing,
->> test-arm-mptimer.c always uses the "vexpress-a9" machine, and
->> microbit-test.c requires the "microbit" machine, so we should only
->> run these tests if the machines have been enabled in the configuration.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   tests/qtest/meson.build | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
->> index 4c5585ac0f..087f2dc9d7 100644
->> --- a/tests/qtest/meson.build
->> +++ b/tests/qtest/meson.build
->> @@ -198,14 +198,15 @@ qtests_arm = \
->>     (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? 
->> ['cmsdk-apb-dualtimer-test'] : []) + \
->>     (config_all_devices.has_key('CONFIG_CMSDK_APB_TIMER') ? 
->> ['cmsdk-apb-timer-test'] : []) + \
->>     (config_all_devices.has_key('CONFIG_CMSDK_APB_WATCHDOG') ? 
->> ['cmsdk-apb-watchdog-test'] : []) + \
->> -  (config_all_devices.has_key('CONFIG_PFLASH_CFI02') ? 
->> ['pflash-cfi02-test'] : []) +         \
->> +  (config_all_devices.has_key('CONFIG_PFLASH_CFI02') and
->> +   config_all_devices.has_key('CONFIG_MUSICPAL') ? ['pflash-cfi02-test'] 
->> : []) + \
->>     (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed : []) 
->> + \
->>     (config_all_devices.has_key('CONFIG_NPCM7XX') ? qtests_npcm7xx : []) + \
->>     (config_all_devices.has_key('CONFIG_GENERIC_LOADER') ? 
->> ['hexloader-test'] : []) + \
->>     (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? 
->> ['tpm-tis-i2c-test'] : []) + \
->> +  (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] : 
->> []) + \
-> 
-> Also ARM_MPTIMER?
+When passing --smp with a number lower than XLNX_ZYNQMP_NUM_APU_CPUS,
+the expression (ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS) will result
+in a positive number as ms->smp.cpus is a unsigned int.
+This will raise the following error afterwards, as Qemu will try to
+instantiate some additional RPUs.
+  | $ qemu-system-aarch64 --smp 1 -M xlnx-zcu102
+  | **
+  | ERROR:../src/tcg/tcg.c:777:tcg_register_thread:
+  |   assertion failed: (n < tcg_max_ctxs)
 
-Not needed: config VEXPRESS selects ARM_MPTIMER, so there is no way that 
-VEXPRESS could be set, but ARM_MPTIMER is not selected.
+Signed-off-by: Clément Chigot <chigot@adacore.com>
+---
+ hw/arm/xlnx-zynqmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Thomas
-
+diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
+index 335cfc417d..5905a33015 100644
+--- a/hw/arm/xlnx-zynqmp.c
++++ b/hw/arm/xlnx-zynqmp.c
+@@ -213,7 +213,7 @@ static void xlnx_zynqmp_create_rpu(MachineState *ms, XlnxZynqMPState *s,
+                                    const char *boot_cpu, Error **errp)
+ {
+     int i;
+-    int num_rpus = MIN(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS,
++    int num_rpus = MIN((int)(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS),
+                        XLNX_ZYNQMP_NUM_RPU_CPUS);
+ 
+     if (num_rpus <= 0) {
+-- 
+2.25.1
 
 
