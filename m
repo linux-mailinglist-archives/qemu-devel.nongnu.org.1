@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807A070F1E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 11:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D8370F1EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 11:14:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1kXb-0001yn-V0; Wed, 24 May 2023 05:12:20 -0400
+	id 1q1kZ0-0004JL-17; Wed, 24 May 2023 05:13:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q1kXX-0001sN-53
- for qemu-devel@nongnu.org; Wed, 24 May 2023 05:12:15 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1q1kYx-0004Ij-9M
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 05:13:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q1kXQ-0000mi-Vq
- for qemu-devel@nongnu.org; Wed, 24 May 2023 05:12:14 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QR51838d4z6H7vb;
- Wed, 24 May 2023 17:07:24 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 24 May
- 2023 10:11:59 +0100
-Date: Wed, 24 May 2023 10:11:58 +0100
-To: Markus Armbruster <armbru@redhat.com>
-CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira
- Weiny <ira.weiny@intel.com>, Alison Schofield <alison.schofield@intel.com>,
- Michael Roth <michael.roth@amd.com>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, <berrange@redhat.com>, Eric Blake
- <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
- Huth" <thuth@redhat.com>
-Subject: Re: [PATCH v5 5/7] hw/cxl/events: Add injection of General Media
- Events
-Message-ID: <20230524101158.0000579d@huawei.com>
-In-Reply-To: <87ttw35i6q.fsf@pond.sub.org>
-References: <20230423165140.16833-1-Jonathan.Cameron@huawei.com>
- <20230423165140.16833-6-Jonathan.Cameron@huawei.com>
- <87lehgq1cy.fsf@pond.sub.org> <20230522135737.000079c4@Huawei.com>
- <87fs7na2o8.fsf@pond.sub.org> <20230523113543.00006a1f@Huawei.com>
- <87ttw35i6q.fsf@pond.sub.org>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1q1kYv-0001Fe-1A
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 05:13:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1684919620;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Bbv1NFPEU76z7fLBHyf+a899oJiRN9oFdiA237+1jXI=;
+ b=Qvz1RMBVDfq9DB7InB++u5fHlmsAcQVCG9gM9yxA8qwiQH6pU5LmT4egDqMCbHOqTpobJd
+ n3r/0nlOjN+aEV2nQ0/uPX4Sv382qROi7RiVmVjihrtigZ0YWC5/aa0rYF7m6ATbC6nOqr
+ C3Viwdn5lwsW2/KmKkwSb5HRs272pMI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-299-ImNd7dGmPmeLqX4CPsIwgA-1; Wed, 24 May 2023 05:13:36 -0400
+X-MC-Unique: ImNd7dGmPmeLqX4CPsIwgA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 394A73801EDC;
+ Wed, 24 May 2023 09:13:36 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.224.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5B6A5482062;
+ Wed, 24 May 2023 09:13:34 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, Albert Esteve <aesteve@redhat.com>,
+ marcandre.lureau@gmail.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ cohuck@redhat.com, Fam Zheng <fam@euphon.net>
+Subject: [PATCH v3 0/4] Virtio shared dma-buf
+Date: Wed, 24 May 2023 11:13:29 +0200
+Message-Id: <20230524091333.201767-1-aesteve@redhat.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,104 +74,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 23 May 2023 14:46:37 +0200
-Markus Armbruster <armbru@redhat.com> wrote:
+v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
+v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
+v2 -> v3:
+    - Change UUID hash function strategy to djb
+    - Add qemu_uuid_is_equal wrapper
 
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> writes:
->=20
-> >> >   =20
-> >> >> > +#
-> >> >> > +# Inject an event record for a General Media Event (CXL r3.0 8.2=
-.9.2.1.1)     =20
-> >> >>=20
-> >> >> What's "CXL r3.0", and where could a reader find it?   =20
-> >> >
-> >> > We have docs in docs/system/devices/cxl.rst that include the consort=
-ium
-> >> > website which has download links on the front page.   =20
-> >>=20
-> >> cxl.rst has
-> >>=20
-> >>     References
-> >>     ----------
-> >>=20
-> >>      - Consortium website for specifications etc:
-> >>        http://www.computeexpresslink.org
-> >>      - Compute Express link Revision 2 specification, October 2020
-> >>      - CEDT CFMWS & QTG _DSM ECN May 2021
-> >>=20
-> >> Should the second reference be updated to 3.0?  Exact title seems to be
-> >> "The Compute Express Link=E2=84=A2 (CXL=E2=84=A2) 3.0 specification". =
- Not sure we need
-> >> to bother with the "=E2=84=A2" in a reference. =20
-> >
-> > Yes. On the todo list is to update all the references to latest released
-> > specification because old ones are unobtainable to non consortium membe=
-rs
-> > unless they grabbed a copy in the past.
-> >
-> > Annoyingly this will be a repeated requirement as new spec versions are=
- released
-> > but the cadence should be fairly low.
-> > =20
-> >>  =20
-> >> >                                                      I'm not sure we=
- want to
-> >> > have lots of references to the URL spread throughout QEMU.  I can ad=
-d one
-> >> > somewhere in cxl.json if you think it is important to have one here =
-as well.   =20
-> >>=20
-> >> You could add an introduction right under the "# =3D CXL devices" head=
-ing,
-> >> and include a full reference to the specification there.  Suitably
-> >> abbreviated references like the ones you use in this patch should then
-> >> be fine. =20
-> >
-> > I tried doing that - it resulted in the index including an entry with a=
-ll the text.
-> > So on the webpage, the contents list to the left includes whatever text=
- you put
-> > in that block.
-> > =20
-> > I'm not sure why, or how to fix that. =20
->=20
-> Show me what you tried (as a patch or something I can git-pull), and
-> I'll have a look.
->=20
-> [...]
->=20
-Very simple to replicate the issue - see below.
+This patch covers the required steps to add support for virtio cross-device resource sharing[1],
+which support is already available in the kernel.
 
-Result of this is an extra
-"Test text" entry in the index to the left of the html docs.
+The main usecase will be sharing dma buffers from virtio-gpu devices (as the exporter
+-see VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID in [2]), to virtio-video (under discussion)
+devices (as the buffer-user or importer). Therefore, even though virtio specs talk about
+resources or objects[3], this patch adds the infrastructure with dma-bufs in mind.
+Note that virtio specs let the devices themselves define what a vitio object is.
 
-In qemu-qmp-ref.html we have
+These are the main parts that are covered in the patch:
 
-<li class=3D"toctree-l3"><a class=3D"reference internal" href=3D"#qapidoc-3=
-297">CXL devices</a><ul>
-<li class=3D"toctree-l4"><a class=3D"reference internal" href=3D"#qapidoc-3=
-298">Test text</a></li>
-<li class=3D"toctree-l4"><a class=3D"reference internal" href=3D"#qapidoc-3=
-301"><code class=3D"docutils literal notranslate"><span class=3D"pre">CxlEv=
-entLog</span></code> (Enum)</a></li>
+- Add hash_func and key_equal_func to uuid
+- Shared resources table, to hold all resources that can be shared in the host and their assigned UUID
+- Internal shared table API for virtio devices to add, lookup and remove resources
+- Unit test to verify the API.
+- New message to the vhost-user protocol to allow backend to interact with the shared
+  table API through the control socket
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index 05c560cfe5..9f7f0485ae 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -3,6 +3,8 @@
+Applies cleanly to 1c12355
 
- ##
- # =3D CXL devices
-+#
-+# Test text
- ##
+[1] - https://lwn.net/Articles/828988/
+[2] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-3730006
+[3] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-10500011
 
- ##
+Albert Esteve (4):
+  uuid: add hash_func and equal_func
+  virtio-dmabuf: introduce virtio-dmabuf
+  vhost-user: add shared_object msg
+  vhost-user: refactor send_resp code
+
+ MAINTAINERS                               |   7 ++
+ docs/interop/vhost-user.rst               |  15 +++
+ hw/display/meson.build                    |   1 +
+ hw/display/virtio-dmabuf.c                |  90 +++++++++++++++++
+ hw/virtio/vhost-user.c                    |  90 ++++++++++++++---
+ include/hw/virtio/virtio-dmabuf.h         |  59 ++++++++++++
+ include/qemu/uuid.h                       |   2 +
+ subprojects/libvhost-user/libvhost-user.c |  88 +++++++++++++++++
+ subprojects/libvhost-user/libvhost-user.h |  56 +++++++++++
+ tests/unit/meson.build                    |   1 +
+ tests/unit/test-uuid.c                    |  27 ++++++
+ tests/unit/test-virtio-dmabuf.c           | 112 ++++++++++++++++++++++
+ util/uuid.c                               |  14 +++
+ 13 files changed, 549 insertions(+), 13 deletions(-)
+ create mode 100644 hw/display/virtio-dmabuf.c
+ create mode 100644 include/hw/virtio/virtio-dmabuf.h
+ create mode 100644 tests/unit/test-virtio-dmabuf.c
+
+-- 
+2.40.0
+
 
