@@ -2,52 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4441470F433
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F0470F444
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 12:32:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1liy-0008HP-4q; Wed, 24 May 2023 06:28:08 -0400
+	id 1q1lmT-0005Ul-Tf; Wed, 24 May 2023 06:31:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1lic-0007tV-Os; Wed, 24 May 2023 06:27:47 -0400
-Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q1liY-0000PE-ID; Wed, 24 May 2023 06:27:45 -0400
-Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id B4743260BBC;
- Wed, 24 May 2023 12:27:40 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at juszkiewicz.com.pl
-Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
- by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 0v95eSEzGZ7Z; Wed, 24 May 2023 12:27:39 +0200 (CEST)
-Received: from applejack.lan (83.21.125.167.ipv4.supernova.orange.pl
- [83.21.125.167])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 85571260249;
- Wed, 24 May 2023 12:27:36 +0200 (CEST)
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH v3 5/5] hw/arm/sbsa-ref: use MachineClass->default_display
-Date: Wed, 24 May 2023 12:27:29 +0200
-Message-Id: <20230524102729.810892-6-marcin.juszkiewicz@linaro.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230524102729.810892-1-marcin.juszkiewicz@linaro.org>
-References: <20230524102729.810892-1-marcin.juszkiewicz@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q1lmD-0005UN-9h
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 06:31:29 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q1lmB-0001oI-OV
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 06:31:29 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-513fd8cc029so1694403a12.3
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 03:31:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1684924282; x=1687516282;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ldZu5D1nrOy+8us2rh9980tv+QWYS1zaM5b3/sLyPLI=;
+ b=nE+U1IECLBHx+1sNZ+OX5MrvX8WyfFpamN3sGtVMWlN2ewaKLx0ry/2HHcp8LdZNym
+ txkrAu9Blb+hLAAwF/rDZODUVcpQiznmPEPQq/aUAeeknRPNrIEqGBW8HJNYZ3eEdh7R
+ FIaiLlobsq19FvgBDYMUV7FVphBzEiyEh0VM8ej2CU5jQQopmbfZlcsREqooq3J4U5rn
+ 9AoqVRr+3kkq8bdnOUJZW7BRLcnuuvkVQYUBTDFTp94rydkqF3zQPlS4npCbWSpWq1/L
+ NWyg/SUFfGm0mrvCaQUbsJBc2myNiFEZQGGUoOiJJQgn6Syq0gkC8P+Y+0SjEyBOGMa7
+ oxmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1684924282; x=1687516282;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ldZu5D1nrOy+8us2rh9980tv+QWYS1zaM5b3/sLyPLI=;
+ b=QZ9r/VQkdrweFDP/I29tuooZPGd0jg6UJolEfsTuiLm+/kBijLXnOUjL4jxH6RadKq
+ pIntWiN7zto8lbgh83vOqCdrhK0dTNaIvhtLeZFanVAEhUrwPxA+JgG+yRNwSGOLMX7/
+ sK9W6QN4YnkWD/WsPpff6njo2O8IfbXkoKwhrrXwsAa1tNBKYZCYuIDUqGcRL+RJgJRW
+ +4gIoGUmRjJULq5kdlLOQyfVNgmpGmKbXCXma+4CppQpQ+iOeIBzLNq8DxhSPw6EdVPd
+ DuhLSOdpAfExKYRU1Iz6ENlv6dM2m6F9tYGT915CKgEgGwJXrIHFpStPPHNfPXagX8YC
+ 7JHQ==
+X-Gm-Message-State: AC+VfDwM7un2lV1Dn16vt6nls889HLWRZPWVn8E5evvMwVFawvBkqhZN
+ E241IMk0Yo+jrfN8hX//BdAVL223YP6k5JB9N0+XIw==
+X-Google-Smtp-Source: ACHHUZ51nictspdE/zADeGFD2gbH+zZilIAtEWY+QIetMzNNz6+nIWELIAhTF4S+YxDSOqj9SuLIIvBICyaXwHE47mA=
+X-Received: by 2002:a50:fe89:0:b0:50b:cadd:21e6 with SMTP id
+ d9-20020a50fe89000000b0050bcadd21e6mr1647125edt.8.1684924282147; Wed, 24 May
+ 2023 03:31:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: softfail client-ip=213.251.184.221;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_SOFTFAIL=0.665, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20230523223844.719056-1-richard.henderson@linaro.org>
+In-Reply-To: <20230523223844.719056-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 24 May 2023 11:30:56 +0100
+Message-ID: <CAFEAcA89YToWdvwprxQgaMBpp4KVFqj8asXpBBcikg8zseSv0w@mail.gmail.com>
+Subject: Re: [PATCH] meson: Adjust check for __int128_t
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,38 +84,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mark the default graphica via the new MachineClass->default_display
-setting so that the machine-defaults code in vl.c can decide whether the
-default graphics is usable or not (for example when compiling with the
-"--without-default-devices" configure switch).
+On Tue, 23 May 2023 at 23:39, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Remove the signed * signed check, leaving the signed * unsigned check.
+> This link test runs foul of -fsanitize=undefined, where clang-11 has
+> an undefined reference to __muloti4 to check for signed overflow.
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
----
- hw/arm/sbsa-ref.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+If you can't do a signed * signed multiply then that sounds
+to me like "int128_t doesn't work on this compiler". We
+specifically added this check to catch "some clang with
+-fsanitize=undefined don't actually correctly compile
+int128_t * int128_t" in commit 464e3671f9.
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 9a3d77d6b6..30ce7f7db4 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -649,7 +649,7 @@ static void create_pcie(SBSAMachineState *sms)
-         }
- 
-         if (vga_interface_type != VGA_NONE) {
--            pci_create_simple(pci->bus, -1, "bochs-display");
-+            pci_create_simple(pci->bus, -1, mc->default_display);
-         }
-     }
- 
-@@ -865,6 +865,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_size = 1 * GiB;
-     mc->default_ram_id = "sbsa-ref.ram";
-     mc->default_cpus = 4;
-+    mc->default_display = "bochs-display";
-     mc->possible_cpu_arch_ids = sbsa_ref_possible_cpu_arch_ids;
-     mc->cpu_index_to_instance_props = sbsa_ref_cpu_index_to_props;
-     mc->get_default_cpu_node_id = sbsa_ref_get_default_cpu_node_id;
--- 
-2.40.1
-
+-- PMM
 
