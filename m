@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6480D70F7EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 15:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8F570F7EE
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 May 2023 15:41:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1oil-0008OA-4q; Wed, 24 May 2023 09:40:07 -0400
+	id 1q1oik-0008KL-Cp; Wed, 24 May 2023 09:40:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1oie-0008D8-CM
+ id 1q1oie-0008DA-Dj
  for qemu-devel@nongnu.org; Wed, 24 May 2023 09:40:01 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q1oib-0003lx-Rc
+ id 1q1oib-0003m7-Rg
  for qemu-devel@nongnu.org; Wed, 24 May 2023 09:39:59 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-30a892c45c4so574973f8f.3
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 06:39:56 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3078a3f3b5fso853753f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 24 May 2023 06:39:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1684935595; x=1687527595;
+ d=linaro.org; s=google; t=1684935596; x=1687527596;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PoFcFHhtN//HYJuXe8yUkXS88yzA5U5AjAGE2C88aFE=;
- b=LlL26XbmMqIfnVRJ7mQFf7knn5B5u2RUadIjfMQsOyXG6MbF6R+l2RnUtwGnS62/Vx
- F1sOBi4u4L3ioU94rOtWQPR82AOdW9UieLb35LxDtuUoEKr1/JhPTS5+V+hoQFJPZ6v/
- NjzQ3xH3xLpXjrocmcscbKIjIsMlNTRlWl0LIKxyrPqJQDfe+CkIRjuU32slCAG4F08P
- 5rOq4p7kGJW35FiiG07axucTX1aa58DEj6agRcvMapLUIh1tWuz4/C6dH2S+77izOoCx
- pbqdwGdpuVBiQtDIQRuMgzOJfQzy2wkk1YPXvLGBN4p9oA7DmJ28jEqInumDapjGYPOg
- xWIg==
+ bh=o8t/+YNw/1eSOPZpziklGn9RfJ8rpI03v6Iz3JI+Nis=;
+ b=c7r/IPmz4+dCI2ecMOxeIYY/cmrdZ0Ww4+tpx2GLjdV6yJ/zaBwYChz3kF1lRfksR8
+ zbTdA64H1xf8fI9rNnph1G3cysabyea57TSuTI4iRwYCzhVUmVojzxaDXweixWgjWWQu
+ bLDrTzeLUoLzv+YbAW2/2a2YSoHNPvpGOj3p09mgbuvy5+f/bOxKphmtpBIo/fMW2Dzp
+ cOw5Rbwh57is3ULKQmc8eI62IWI8tkPTUlgJ4GIKxdqKc1cT8JG9HyB8liS6G2OhdOnk
+ 7oYFef9EQGZbQkckzPAklUwuQO46990P+ZetUZJ9ebod/JzcRdVtD6w9oIFhjSFOfEpz
+ vQJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684935595; x=1687527595;
+ d=1e100.net; s=20221208; t=1684935596; x=1687527596;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PoFcFHhtN//HYJuXe8yUkXS88yzA5U5AjAGE2C88aFE=;
- b=N/ZuIAO882Q/7oxZVjYUcYeqVrGlVfntTWrDw4vueh04Fzl0qkWUp/nYfWJkH/G57J
- no1dNF44Yr/2SlGw7WABIErKH/l9Nj1515AR74YsweJ4QZ4Hzp7Xt4X7IPx7wf0poHjC
- rdCRtUoWYsdOWGfMLDKh9fFhb3OSNrgGdqtJH8QMFYNqvhDub/mcsebhQgqDZjtbQkNg
- L3LIpn797YOkf4yBriMoCPxUnRj+A/NVehDkfEfX03sXN0qYJ4kAOEKuq8Rsxv8cbVYm
- zK/nzbrCJVr8cH5G2/Rux6td+b9Du/CKU/VUaQPc4QkViY6mPX4FyD3kfS8evtN6Q/9D
- velA==
-X-Gm-Message-State: AC+VfDxppzchonpyfw52SwVo9Gq3b+NRwYkj8hGFhZumSqzxgwCnt3Ab
- w5BSbj/N2rZv8e0omzDv78rclg==
-X-Google-Smtp-Source: ACHHUZ5cwfELyyiwnD3SgO3pqe5iGq3OUgj5BOEuQirsO5OwCqF+nOds3unAu3kRFVqtuKw+F4B52w==
-X-Received: by 2002:adf:e6cb:0:b0:2d1:3eb9:c3c2 with SMTP id
- y11-20020adfe6cb000000b002d13eb9c3c2mr12314606wrm.54.1684935595144; 
- Wed, 24 May 2023 06:39:55 -0700 (PDT)
+ bh=o8t/+YNw/1eSOPZpziklGn9RfJ8rpI03v6Iz3JI+Nis=;
+ b=QLJ832G2iYayHFtMeTj5VUM7zWOiTK5gn0+tKqcFi/AU9aTMfHV0Z6Atxfe95jaZJV
+ 1jKiE2bfQwzyGJu9CeEzRZXsiFFGwung+68boBQDYopdYa0fjVkPs072GlbIHzWSH1KY
+ BPeZ8xNP8asrn4LdGNSMx4tPyz0OnY4NSTrBAhkwyy4B2bE6ZbE8OxfIFnfVuNtT4rJv
+ oQk4/gdMJgduK7ucAjkjCVWeXUlgaVQ8d5J7eIdvLre3I8IH8hSkh/8TvbKvtX1ll6Ov
+ laq6e/28Ck4h8NA7trNVcZu6k30rfZJL7bf4vC66xoSEboRttn47/JOB6amEEXnYVFrE
+ VPjQ==
+X-Gm-Message-State: AC+VfDzrdfBnaazp3/5sZIexhEAgRGgSOkf6iC/Yc2p5oJbx3Si1YkX/
+ iYez+l5YQS4Ih4kB0/3JSk+NSA==
+X-Google-Smtp-Source: ACHHUZ7WiV4ar2GeoaU5mLZzfpI9+F9Q6tNauywUrRvQOGndNRpx3D/pxBEcmO0iBYQa0aWt43JvVQ==
+X-Received: by 2002:a5d:6ace:0:b0:306:3945:65e9 with SMTP id
+ u14-20020a5d6ace000000b00306394565e9mr13786975wrw.3.1684935596080; 
+ Wed, 24 May 2023 06:39:56 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- p17-20020a5d4e11000000b003063772a55bsm14538281wrt.61.2023.05.24.06.39.53
+ y10-20020adff6ca000000b002f103ca90cdsm14555961wrp.101.2023.05.24.06.39.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 May 2023 06:39:54 -0700 (PDT)
+ Wed, 24 May 2023 06:39:55 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 64B031FFBF;
+ by zen.linaroharston (Postfix) with ESMTP id 7F1751FFC0;
  Wed, 24 May 2023 14:39:53 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Stefan Hajnoczi <stefanha@redhat.com>,
@@ -73,18 +73,17 @@ Cc: Kyle Evans <kevans@freebsd.org>, libvir-list@redhat.com,
  Riku Voipio <riku.voipio@iki.fi>, Paolo Bonzini <pbonzini@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v5 04/10] scripts/qapi: document the tool that generated the
- file
-Date: Wed, 24 May 2023 14:39:46 +0100
-Message-Id: <20230524133952.3971948-5-alex.bennee@linaro.org>
+Subject: [PATCH v5 05/10] qapi: make the vcpu parameters deprecated for 8.1
+Date: Wed, 24 May 2023 14:39:47 +0100
+Message-Id: <20230524133952.3971948-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230524133952.3971948-1-alex.bennee@linaro.org>
 References: <20230524133952.3971948-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,56 +106,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This makes it a little easier for developers to find where things
-where being generated.
+I don't think I can remove the parameters directly but certainly mark
+them as deprecated.
 
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230523125000.3674739-5-alex.bennee@linaro.org>
----
- scripts/qapi/gen.py | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Message-Id: <20230523125000.3674739-6-alex.bennee@linaro.org>
 
-diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
-index 8f8f784f4a..2ea27ef31c 100644
---- a/scripts/qapi/gen.py
-+++ b/scripts/qapi/gen.py
-@@ -13,6 +13,7 @@
+---
+v5
+  - reword match description
+  - fix reference to return for set operation
+---
+ docs/about/deprecated.rst |  9 +++++++++
+ qapi/trace.json           | 40 +++++++++++++++++----------------------
+ 2 files changed, 26 insertions(+), 23 deletions(-)
+
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index e934e0a13a..e44cde057f 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -254,6 +254,15 @@ it. Since all recent x86 hardware from the past >10 years is capable of the
+ QEMU API (QAPI) events
+ ----------------------
  
- from contextlib import contextmanager
- import os
-+import sys
- import re
- from typing import (
-     Dict,
-@@ -162,7 +163,7 @@ def __init__(self, fname: str, blurb: str, pydoc: str):
++``vcpu`` trace events (since 8.1)
++'''''''''''''''''''''''''''''''''
++
++The ability to instrument QEMU helper functions with vcpu aware trace
++points was removed in 7.0. However the QAPI still exposed the vcpu
++parameter. This argument has now been deprecated and the remaining
++used trace points converted to plain trace points selected just by
++name.
++
+ ``MEM_UNPLUG_ERROR`` (since 6.2)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
  
-     def _top(self) -> str:
-         return mcgen('''
--/* AUTOMATICALLY GENERATED, DO NOT MODIFY */
-+/* AUTOMATICALLY GENERATED by %(tool)s DO NOT MODIFY */
+diff --git a/qapi/trace.json b/qapi/trace.json
+index 6bf0af0946..e561f3d3da 100644
+--- a/qapi/trace.json
++++ b/qapi/trace.json
+@@ -37,13 +37,14 @@
+ #
+ # @vcpu: Whether this is a per-vCPU event (since 2.7).
+ #
+-# An event is per-vCPU if it has the "vcpu" property in the
+-# "trace-events" files.
++# Features:
++# @deprecated: Member @vcpu is deprecated, and always false.
+ #
+ # Since: 2.2
+ ##
+ { 'struct': 'TraceEventInfo',
+-  'data': {'name': 'str', 'state': 'TraceEventState', 'vcpu': 'bool'} }
++  'data': {'name': 'str', 'state': 'TraceEventState',
++           'vcpu': { 'type': 'bool', 'features': ['deprecated'] } } }
  
- /*
- %(blurb)s
-@@ -174,6 +175,7 @@ def _top(self) -> str:
-  */
+ ##
+ # @trace-event-get-state:
+@@ -52,19 +53,15 @@
+ #
+ # @name: Event name pattern (case-sensitive glob).
+ #
+-# @vcpu: The vCPU to query (any by default; since 2.7).
++# @vcpu: The vCPU to query (since 2.7).
+ #
+-# Returns: a list of @TraceEventInfo for the matching events
+-#
+-# An event is returned if:
++# Features:
++# @deprecated: Member @vcpu is deprecated, and always false.
+ #
+-# - its name matches the @name pattern, and
+-# - if @vcpu is given, the event has the "vcpu" property.
++# Returns: a list of @TraceEventInfo for the matching events
+ #
+-# Therefore, if @vcpu is given, the operation will only match per-vCPU
+-# events, returning their state on the specified vCPU. Special case:
+-# if @name is an exact match, @vcpu is given and the event does not
+-# have the "vcpu" property, an error is returned.
++# An event is returned if its name matches the @name pattern
++# (There are no longer any per-vCPU events).
+ #
+ # Since: 2.2
+ #
+@@ -75,7 +72,8 @@
+ # <- { "return": [ { "name": "qemu_memalign", "state": "disabled", "vcpu": false } ] }
+ ##
+ { 'command': 'trace-event-get-state',
+-  'data': {'name': 'str', '*vcpu': 'int'},
++  'data': {'name': 'str',
++           '*vcpu': {'type': 'int', 'features': ['deprecated'] } },
+   'returns': ['TraceEventInfo'] }
  
- ''',
-+                     tool=str(os.path.basename(sys.argv[0])),
-                      blurb=self._blurb, copyright=self._copyright)
- 
-     def _bottom(self) -> str:
-@@ -195,7 +197,9 @@ def _bottom(self) -> str:
- 
- class QAPIGenTrace(QAPIGen):
-     def _top(self) -> str:
--        return super()._top() + '# AUTOMATICALLY GENERATED, DO NOT MODIFY\n\n'
-+        return super()._top() + (
-+            '# AUTOMATICALLY GENERATED by '
-+            f"{os.path.basename(sys.argv[0])}, DO NOT MODIFY\n\n" )
- 
- 
- @contextmanager
+ ##
+@@ -91,15 +89,11 @@
+ #
+ # @vcpu: The vCPU to act upon (all by default; since 2.7).
+ #
+-# An event's state is modified if:
+-#
+-# - its name matches the @name pattern, and
+-# - if @vcpu is given, the event has the "vcpu" property.
++# Features:
++# @deprecated: Member @vcpu is deprecated, and always false.
+ #
+-# Therefore, if @vcpu is given, the operation will only match per-vCPU
+-# events, setting their state on the specified vCPU. Special case: if
+-# @name is an exact match, @vcpu is given and the event does not have
+-# the "vcpu" property, an error is returned.
++# An event is enabled if its name matches the @name pattern
++# (There are no longer any per-vCPU events).
+ #
+ # Since: 2.2
+ #
+@@ -111,4 +105,4 @@
+ ##
+ { 'command': 'trace-event-set-state',
+   'data': {'name': 'str', 'enable': 'bool', '*ignore-unavailable': 'bool',
+-           '*vcpu': 'int'} }
++           '*vcpu': {'type': 'int', 'features': ['deprecated'] } } }
 -- 
 2.39.2
 
