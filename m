@@ -2,92 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8578C7110CF
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 18:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCAB71114B
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 18:49:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2DgU-0007ev-BX; Thu, 25 May 2023 12:19:26 -0400
+	id 1q2E81-0007O8-8O; Thu, 25 May 2023 12:47:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1q2DgO-0007dE-Ut
- for qemu-devel@nongnu.org; Thu, 25 May 2023 12:19:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1q2E7x-0007Nl-Jn; Thu, 25 May 2023 12:47:49 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1q2DgL-0006kU-RE
- for qemu-devel@nongnu.org; Thu, 25 May 2023 12:19:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685031556;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JNYP9SOltQneIi9s/jsPF2x3y5hZPkfpFVxAZ9GC424=;
- b=KHQwBBRZxTmcQ9MM8EtRDWzx5Hvg0VJRjVxbNUe0uB3a0XrVDYd/p5kDcKE+2tQbsSWRQ7
- V3kENykrD0SbHdGnh1SgLyfZXJ/D/0hbaJv/gm1XnyHJouK55FDXx2cCQGeP7uhYZcNGVj
- bKk0dnp7Thyb9/X2ZmpWDsCuNTwhEBI=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-PQ-ecl_IPte3FHqYb0OmlA-1; Thu, 25 May 2023 12:19:15 -0400
-X-MC-Unique: PQ-ecl_IPte3FHqYb0OmlA-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1ae4c498f0cso16299875ad.2
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 09:19:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685031554; x=1687623554;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JNYP9SOltQneIi9s/jsPF2x3y5hZPkfpFVxAZ9GC424=;
- b=i+p0LFZJXscOX8tIbWtN8H32C6LNagRcAZ09vxc0/bTcuGahOJG5z8Uwfwc+IDnGAI
- y3YCOVQKiev6qXRuMMvDR7Ga6AYeLOoqwjeJnjvX/umb1kMqEBU8uHWTE/dJ6kGZNRUV
- hMOJDPKgNeepCwPQfIaqXhbpKe48vGWL4r4ZyAsVGfgrUFuUjk2OM5ex5np2TDIba7j3
- qypCRJKNShqNCf/x93t9slMYTlToPICAjXU0cryF9rSRvx7PcraysnKElaTUpQNYc9Ej
- o1EopTvpm3HXfJN7mwJ9PHzGNRLoG9MYyugbx7bPgmLY2wi3YT6pPthZEAWl558+s93s
- 4MWg==
-X-Gm-Message-State: AC+VfDwSrIk+S+gQlyvw/DE7b07+5VSG/ApoMt1NVF8k8g5x11xm85HU
- nDIU1+oHNxlv0HCH5I33H5q4HBr2TqLcje2al/bBaYMydRuwnixxtN5vp2KltnhQASo5kHt/U++
- yXsHCFNT/qvaYO9EZBIa2rthM8atAyWk=
-X-Received: by 2002:a17:902:db07:b0:1ab:797:afbe with SMTP id
- m7-20020a170902db0700b001ab0797afbemr2941945plx.8.1685031554169; 
- Thu, 25 May 2023 09:19:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ53fIciQR1uP3iCNNZLBoAVcJZ6PcmNKONco4QqSkkcVJv2QLO5fcW7bYzAid2xkHcwTjiDI2cUbhhHQ5d5G/o=
-X-Received: by 2002:a17:902:db07:b0:1ab:797:afbe with SMTP id
- m7-20020a170902db0700b001ab0797afbemr2941918plx.8.1685031553850; Thu, 25 May
- 2023 09:19:13 -0700 (PDT)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 25 May 2023 16:19:12 +0000
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20230523102805.100160-1-sunilvl@ventanamicro.com>
- <CABJz62MQ5uRHUP4LLKt=AxTf-Sz0aTEOLWDz=9ftK=H3tZ9JUg@mail.gmail.com>
- <ZG5KgLQ4H/leWKJi@sunil-laptop>
- <CABJz62NHXrBKkc3Gux0TXOjUCO4up-OunwJ6UO94ts+rTgVsAg@mail.gmail.com>
- <ZG94lvAYggnRBfLQ@sunil-laptop>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1q2E7v-0004uj-Ej; Thu, 25 May 2023 12:47:49 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id B7898471B3;
+ Thu, 25 May 2023 18:47:31 +0200 (CEST)
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-devel@nongnu.org
+Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
+ eblake@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
+ stefanha@redhat.com, fam@euphon.net, qemu-block@nongnu.org,
+ pbonzini@redhat.com, t.lamprecht@proxmox.com
+Subject: [PATCH v2] migration: hold the BQL during setup
+Date: Thu, 25 May 2023 18:47:26 +0200
+Message-Id: <20230525164726.45176-1-f.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-In-Reply-To: <ZG94lvAYggnRBfLQ@sunil-laptop>
-Date: Thu, 25 May 2023 16:19:12 +0000
-Message-ID: <CABJz62NUpY35u2ykPXVHp8a_RUyjCnC1_DpWsYNuSBftHe4qBQ@mail.gmail.com>
-Subject: Re: [PATCH v3] hw/riscv: virt: Assume M-mode FW in pflash0 only when
- "-bios none"
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Heinrich Schuchardt <xypron.glpk@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,54 +53,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 25, 2023 at 08:32:46PM +0530, Sunil V L wrote:
-> On Thu, May 25, 2023 at 01:43:28PM +0000, Andrea Bolognani wrote:
-> > I have also tried booting an openSUSE Tumbleweed "JeOS" image, since
-> > that's the only distro I'm aware of that uses UEFI boot on RISC-V at
-> > this point - though they use U-Boot's UEFI support rather than edk2.
-> >
-> > During that attempt, I ended up in the edk2 shell. Running
-> >
-> >   fs0:\efi\boot\bootriscv64.efi
-> >
-> > brings up GRUB just fine, but selecting the default boot entry
-> > results in
-> >
-> >   Loading Linux 6.3.2-1-default ...
-> >   Loading initial ramdisk ...
-> >   EFI stub: Booting Linux Kernel...
-> >   EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path
-> >   EFI stub: Generating empty DTB
-> >   EFI stub: Exiting boot services...
-> >
-> > being printed, after which it's back to OpenSBI and from there to
-> > edk2 again.
->
-> Thanks!. Please add -machine acpi=off in qemu command to boot the
-> kernel.
+This is intended to be a semantic revert of commit 9b09503752
+("migration: run setup callbacks out of big lock"). There have been so
+many changes since that commit (e.g. a new setup callback
+dirty_bitmap_save_setup() that also needs to be adapted now), it's
+easier to do the revert manually.
 
-Yup, that worked! It booted all the way to the login prompt :)
+For snapshots, the bdrv_writev_vmstate() function is used during setup
+(in QIOChannelBlock backing the QEMUFile), but not holding the BQL
+while calling it could lead to an assertion failure. To understand
+how, first note the following:
 
-Note that libvirt automatically adds acpi=off, so that won't be a
-concern for libvirt users.
+1. Generated coroutine wrappers for block layer functions spawn the
+coroutine and use AIO_WAIT_WHILE()/aio_poll() to wait for it.
+2. If the host OS switches threads at an inconvenient time, it can
+happen that a bottom half scheduled for the main thread's AioContext
+is executed as part of a vCPU thread's aio_poll().
 
-> > > > Going further and testing libvirt integration. After hacking around
-> > > > other issues, I finally stumbled upon this error:
-> > > >
-> > > >   qemu-system-riscv64: Property 'virt-machine.pflash0' not found
-> > >
-> > > Thanks!. This needs some investigation. Let me look into supporting
-> > > this.
-> >
-> > Yes please! It's critical to libvirt integration. Feel free to CC me
-> > when you post patches and I'll gladly test them.
->
-> Sure, I have the fix ready. I need to convert this into a patch series
-> now. Will send it soon and thanks in advance for helping with testing.
+An example leading to the assertion failure is as follows:
 
-Excellent! Looking forward to it :)
+main thread:
+1. A snapshot-save QMP command gets issued.
+2. snapshot_save_job_bh() is scheduled.
 
+vCPU thread:
+3. aio_poll() for the main thread's AioContext is called (e.g. when
+the guest writes to a pflash device, as part of blk_pwrite which is a
+generated coroutine wrapper).
+4. snapshot_save_job_bh() is executed as part of aio_poll().
+3. qemu_savevm_state() is called.
+4. qemu_mutex_unlock_iothread() is called. Now
+qemu_get_current_aio_context() returns 0x0.
+5. bdrv_writev_vmstate() is executed during the usual savevm setup
+via qemu_fflush(). But this function is a generated coroutine wrapper,
+so it uses AIO_WAIT_WHILE. There, the assertion
+assert(qemu_get_current_aio_context() == qemu_get_aio_context());
+will fail.
+
+To fix it, ensure that the BQL is held during setup. While it would
+only be needed for snapshots, adapting migration too avoids additional
+logic for conditional locking/unlocking in the setup callbacks.
+Writing the header could (in theory) also trigger qemu_fflush() and
+thus bdrv_writev_vmstate(), so the locked section also covers the
+qemu_savevm_state_header() call, even for migration for consistentcy.
+
+The comment in ram_init_bitmaps() was introduced by 4987783400
+("migration: fix incorrect memory_global_dirty_log_start outside BQL")
+and is removed, because it referred to the qemu_mutex_lock_iothread()
+call.
+
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+---
+ include/migration/register.h   | 2 +-
+ migration/block-dirty-bitmap.c | 3 ---
+ migration/block.c              | 5 -----
+ migration/migration.c          | 6 ++++++
+ migration/ram.c                | 3 ---
+ migration/savevm.c             | 2 --
+ 6 files changed, 7 insertions(+), 14 deletions(-)
+
+diff --git a/include/migration/register.h b/include/migration/register.h
+index a8dfd8fefd..ed8c42063b 100644
+--- a/include/migration/register.h
++++ b/include/migration/register.h
+@@ -20,6 +20,7 @@ typedef struct SaveVMHandlers {
+     /* This runs inside the iothread lock.  */
+     SaveStateHandler *save_state;
+ 
++    int (*save_setup)(QEMUFile *f, void *opaque);
+     void (*save_cleanup)(void *opaque);
+     int (*save_live_complete_postcopy)(QEMUFile *f, void *opaque);
+     int (*save_live_complete_precopy)(QEMUFile *f, void *opaque);
+@@ -45,7 +46,6 @@ typedef struct SaveVMHandlers {
+     int (*save_live_iterate)(QEMUFile *f, void *opaque);
+ 
+     /* This runs outside the iothread lock!  */
+-    int (*save_setup)(QEMUFile *f, void *opaque);
+     /* Note for save_live_pending:
+      * must_precopy:
+      * - must be migrated in precopy or in stopped state
+diff --git a/migration/block-dirty-bitmap.c b/migration/block-dirty-bitmap.c
+index 032fc5f405..03cb2e72ee 100644
+--- a/migration/block-dirty-bitmap.c
++++ b/migration/block-dirty-bitmap.c
+@@ -1214,9 +1214,7 @@ static int dirty_bitmap_save_setup(QEMUFile *f, void *opaque)
+     DBMSaveState *s = &((DBMState *)opaque)->save;
+     SaveBitmapState *dbms = NULL;
+ 
+-    qemu_mutex_lock_iothread();
+     if (init_dirty_bitmap_migration(s) < 0) {
+-        qemu_mutex_unlock_iothread();
+         return -1;
+     }
+ 
+@@ -1224,7 +1222,6 @@ static int dirty_bitmap_save_setup(QEMUFile *f, void *opaque)
+         send_bitmap_start(f, s, dbms);
+     }
+     qemu_put_bitmap_flags(f, DIRTY_BITMAP_MIG_FLAG_EOS);
+-    qemu_mutex_unlock_iothread();
+     return 0;
+ }
+ 
+diff --git a/migration/block.c b/migration/block.c
+index b9580a6c7e..4df7862f07 100644
+--- a/migration/block.c
++++ b/migration/block.c
+@@ -722,18 +722,13 @@ static int block_save_setup(QEMUFile *f, void *opaque)
+     trace_migration_block_save("setup", block_mig_state.submitted,
+                                block_mig_state.transferred);
+ 
+-    qemu_mutex_lock_iothread();
+     ret = init_blk_migration(f);
+     if (ret < 0) {
+-        qemu_mutex_unlock_iothread();
+         return ret;
+     }
+ 
+     /* start track dirty blocks */
+     ret = set_dirty_tracking();
+-
+-    qemu_mutex_unlock_iothread();
+-
+     if (ret) {
+         return ret;
+     }
+diff --git a/migration/migration.c b/migration/migration.c
+index 5de7f734b9..c1b3c515e9 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2929,7 +2929,9 @@ static void *migration_thread(void *opaque)
+     object_ref(OBJECT(s));
+     update_iteration_initial_status(s);
+ 
++    qemu_mutex_lock_iothread();
+     qemu_savevm_state_header(s->to_dst_file);
++    qemu_mutex_unlock_iothread();
+ 
+     /*
+      * If we opened the return path, we need to make sure dst has it
+@@ -2957,7 +2959,9 @@ static void *migration_thread(void *opaque)
+         qemu_savevm_send_colo_enable(s->to_dst_file);
+     }
+ 
++    qemu_mutex_lock_iothread();
+     qemu_savevm_state_setup(s->to_dst_file);
++    qemu_mutex_unlock_iothread();
+ 
+     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+                                MIGRATION_STATUS_ACTIVE);
+@@ -3068,8 +3072,10 @@ static void *bg_migration_thread(void *opaque)
+     ram_write_tracking_prepare();
+ #endif
+ 
++    qemu_mutex_lock_iothread();
+     qemu_savevm_state_header(s->to_dst_file);
+     qemu_savevm_state_setup(s->to_dst_file);
++    qemu_mutex_unlock_iothread();
+ 
+     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+                                MIGRATION_STATUS_ACTIVE);
+diff --git a/migration/ram.c b/migration/ram.c
+index 9fb076fa58..1a2edef527 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -2881,8 +2881,6 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
+ 
+ static void ram_init_bitmaps(RAMState *rs)
+ {
+-    /* For memory_global_dirty_log_start below.  */
+-    qemu_mutex_lock_iothread();
+     qemu_mutex_lock_ramlist();
+ 
+     WITH_RCU_READ_LOCK_GUARD() {
+@@ -2894,7 +2892,6 @@ static void ram_init_bitmaps(RAMState *rs)
+         }
+     }
+     qemu_mutex_unlock_ramlist();
+-    qemu_mutex_unlock_iothread();
+ 
+     /*
+      * After an eventual first bitmap sync, fixup the initial bitmap
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 03795ce8dc..be97770620 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1624,10 +1624,8 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+     memset(&compression_counters, 0, sizeof(compression_counters));
+     ms->to_dst_file = f;
+ 
+-    qemu_mutex_unlock_iothread();
+     qemu_savevm_state_header(f);
+     qemu_savevm_state_setup(f);
+-    qemu_mutex_lock_iothread();
+ 
+     while (qemu_file_get_error(f) == 0) {
+         if (qemu_savevm_state_iterate(f, false) > 0) {
 -- 
-Andrea Bolognani / Red Hat / Virtualization
+2.39.2
+
 
 
