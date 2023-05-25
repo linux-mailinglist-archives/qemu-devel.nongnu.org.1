@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53884710E16
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E11BE710E1A
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:17:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Bl9-0004f3-O2; Thu, 25 May 2023 10:16:07 -0400
+	id 1q2Bkw-0004Yk-Cr; Thu, 25 May 2023 10:15:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bks-0004WZ-N3
+ id 1q2Bkr-0004WV-BD
  for qemu-devel@nongnu.org; Thu, 25 May 2023 10:15:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bkr-0007ZX-79
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:15:50 -0400
+ id 1q2Bko-0007YF-RQ
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:15:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685024148;
+ s=mimecast20190719; t=1685024145;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CbaiOJ+X9dPem4hTQLiSjkY45220lj4bM9vCCks40hU=;
- b=hTAbNcFdQAyy8W5VIzeQEx80cDFPtl8y6kkxX9d8j4F4g3BWa+cmsT4ZB4Rq54pbU4pdRG
- pbQa5Pft4VsCgwSCDRq1VX/eAf59og0X4kiwflp4ZOHWHD7GlbqJ5n2s/2vhutE2tdyxFp
- uayDU4AXYgbAfwvIwZq718Bb4Tw4wb0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Ue2IISUToeEGa1zJJrZYBh+J7bbH46VZA+Gd1EDOEyQ=;
+ b=NBUOqvm3xusWjawmKF8fEjFIQAGlvb197TB7C+fgCw+T8+jFI3woSj9+vLjVftZmvZ5t/S
+ GsBHzs+0mKreY8QPMsFIyknNEtEpJp9nWSX1dQ8IfDoxZAfG3D4fHkN+l0tABu7+g4g7JC
+ dpQrBUgHMHC8Gy/banQ5xF6bOZJ2Dj8=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-K5Pt6cZgNuicshNX-XV2bQ-1; Thu, 25 May 2023 10:15:39 -0400
-X-MC-Unique: K5Pt6cZgNuicshNX-XV2bQ-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-513f4c301e8so2758181a12.2
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:39 -0700 (PDT)
+ us-mta-451-uAMTOqJuNHCJOQG__m1PAg-1; Thu, 25 May 2023 10:15:41 -0400
+X-MC-Unique: uAMTOqJuNHCJOQG__m1PAg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-96f46e5897eso85654366b.3
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685024138; x=1687616138;
+ d=1e100.net; s=20221208; t=1685024139; x=1687616139;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CbaiOJ+X9dPem4hTQLiSjkY45220lj4bM9vCCks40hU=;
- b=WYwtC9oBjbQZ/sXtVnc2DYvtBY7SVCXxESdaSa8cAY72Pz1FDjvULgmLa5BGeyJ8M4
- n07JeNjRX/Kk6cnG9qM8D3+TG6RZRBqwcS2M3Xj38dDgiKyQywbPBmN7p5S0LmOxWD1b
- bqBAnbXK0fuFqGYB27tJwM8CZtOadDvG6PGI7DNJLPwR52rNzgGYyTRlDYZH5CYVSB8N
- mlDQlFaAC8fIHZY513a9iHTSJ31PuedTL1wrOhKQezGvb0MLSB+MUwMyB2Sg0c7ZIIpk
- y4RWETOqljdrKjjOwiGUv8E2aPdtxg8FdmdXDBdQX5meB8q+toyFS9wf7AAA1RN+XxQi
- qfvw==
-X-Gm-Message-State: AC+VfDyD4OzxPQZywVLLVKdi0GhDBSpTEYz70KPtE6wElIAFfR67z+lb
- 8PUUOoSwm9ipY43X79byM7gWrgG4fRAJI/EMqXidG1Dh1/RBNfsnEcuXHATzOo0HdOa398uU7x6
- LW1bA3SPnAfiAckAfXwC3mU2wcyKotkPBd97zGfij6z3lzb4dRc1ct9ZnC/8bIcmEAgTohI9qp5
- 4=
-X-Received: by 2002:aa7:d448:0:b0:509:d7d0:d71a with SMTP id
- q8-20020aa7d448000000b00509d7d0d71amr5074986edr.26.1685024138006; 
- Thu, 25 May 2023 07:15:38 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4ohVSuPlRq9hKLYVvwpQu99Byyl4T1ent/ynfk2oV/YRPbwfvYgtrZpWbMrILwhJsh6tTyNw==
-X-Received: by 2002:aa7:d448:0:b0:509:d7d0:d71a with SMTP id
- q8-20020aa7d448000000b00509d7d0d71amr5074973edr.26.1685024137774; 
- Thu, 25 May 2023 07:15:37 -0700 (PDT)
+ bh=Ue2IISUToeEGa1zJJrZYBh+J7bbH46VZA+Gd1EDOEyQ=;
+ b=eL75luDgcSnumlEqktMv+Za7uhbo8jNPa+j9ohEGlThHF0LLEHO1De7ACc+NK4UAK+
+ Vr3+DxYHEH54s6yiXABDzan0wgLd1fe2/zbp5sfHvGlDDwmuwPJYKJzOAEJphigzKrGx
+ oh8DWOySScclK9oMDxAcPs4sruB+OzTBEIlEalI68+tKLKbxJ6CFyvT9A4r9WsbiwyJP
+ xOUeQkljJA/CpNukqv7afsq5s4fjw+JmVe/CEnKD78DxVZ1i3DgcEr9S5jWlQiJQJv1O
+ rjrg6Wlo9KL9pt6sMuyhrjTZATvyNArhQ0UyrmfYvIoQk4JKpWA1G68D1bUO8IJnuRX9
+ rFHQ==
+X-Gm-Message-State: AC+VfDwGTJPwnVQBClhOiT8B88zOwfbyoEHYDFcVs2WCDcYSZYAIDiCy
+ wLhqInMJzdqmhWybuFtCzgJGuDpUmJOq5EXzpiZny/CCnh/16i6S8/aONyoR0g48mYj7g2HdmdF
+ oqo728/mHcLhhEF0oKKUZk/DPGCRZOFnRH4oBYBrZ2s3Ne0J9DmoDIwKrcbCqq4IymSLwnaxbNp
+ M=
+X-Received: by 2002:a17:907:60cc:b0:970:132f:698f with SMTP id
+ hv12-20020a17090760cc00b00970132f698fmr2386779ejc.2.1685024139543; 
+ Thu, 25 May 2023 07:15:39 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5EtY2hCqm9r+Bh5dftpTRBSduBwcdXSMnk3iEa4aQb+dV8+MNOuDqLw4vXllhzOW8ZCDMDig==
+X-Received: by 2002:a17:907:60cc:b0:970:132f:698f with SMTP id
+ hv12-20020a17090760cc00b00970132f698fmr2386738ejc.2.1685024139094; 
+ Thu, 25 May 2023 07:15:39 -0700 (PDT)
 Received: from [192.168.10.117] ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
  by smtp.gmail.com with ESMTPSA id
- d8-20020a50fb08000000b00502689a06b2sm583730edq.91.2023.05.25.07.15.36
+ t14-20020a170906948e00b0096f8d8bd046sm889250ejx.187.2023.05.25.07.15.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 07:15:37 -0700 (PDT)
+ Thu, 25 May 2023 07:15:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/20] meson: fix rule for qemu-ga installer
-Date: Thu, 25 May 2023 16:15:15 +0200
-Message-Id: <20230525141532.295817-4-pbonzini@redhat.com>
+Subject: [PULL 04/20] meson: move -no-pie from linker to compiler
+Date: Thu, 25 May 2023 16:15:16 +0200
+Message-Id: <20230525141532.295817-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230525141532.295817-1-pbonzini@redhat.com>
 References: <20230525141532.295817-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,28 +100,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The bindir variable is not available in the "glib" variable, which is an internal
-dependency (created with "declare_dependency").  Use glib_pc instead, which contains
-the variable as it is instantiated from glib-2.0.pc.
+The large comment in the patch says it all; the -no-pie flag is broken and
+this is why it was not included in QEMU_LDFLAGS before commit a988b4c5614
+("build: move remaining compiler flag tests to meson", 2023-05-18).  And
+some distros made things even worse, so we have to add it to the compiler
+command line.
 
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1664
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qga/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/qga/meson.build b/qga/meson.build
-index 622b5f94a232..d3291b4376cb 100644
---- a/qga/meson.build
-+++ b/qga/meson.build
-@@ -154,7 +154,7 @@ if targetos == 'windows'
-                               qemu_ga_msi_arch[cpu],
-                               qemu_ga_msi_vss,
-                               '-D', 'BUILD_DIR=' + meson.project_build_root(),
--                              '-D', 'BIN_DIR=' + glib.get_variable('bindir'),
-+                              '-D', 'BIN_DIR=' + glib_pc.get_variable('bindir'),
-                               '-D', 'QEMU_GA_VERSION=' + config_host['QEMU_GA_VERSION'],
-                               '-D', 'QEMU_GA_MANUFACTURER=' + config_host['QEMU_GA_MANUFACTURER'],
-                               '-D', 'QEMU_GA_DISTRO=' + config_host['QEMU_GA_DISTRO'],
+diff --git a/meson.build b/meson.build
+index 448b71ad5b5c..2e47608353d1 100644
+--- a/meson.build
++++ b/meson.build
+@@ -265,12 +265,21 @@ endif
+ 
+ # Meson currently only handles pie as a boolean for now, so if the user
+ # has explicitly disabled PIE we need to extend our cflags.
++#
++# -no-pie is supposedly a linker flag that has no effect on the compiler
++# command line, but some distros, that didn't quite know what they were
++# doing, made local changes to gcc's specs file that turned it into
++# a compiler command-line flag.
++#
++# What about linker flags?  For a static build, no PIE is implied by -static
++# which we added above (and if it's not because of the same specs patching,
++# there's nothing we can do: compilation will fail, report a bug to your
++# distro and do not use --disable-pie in the meanwhile).  For dynamic linking,
++# instead, we can't add -no-pie because it overrides -shared: the linker then
++# tries to build an executable instead of a shared library and fails.  So
++# don't add -no-pie anywhere and cross fingers. :(
+ if not get_option('b_pie')
+-  qemu_common_flags += cc.get_supported_arguments('-fno-pie')
+-  if not get_option('prefer_static')
+-    # No PIE is implied by -static which we added above.
+-    qemu_ldflags += cc.get_supported_link_arguments('-no-pie')
+-  endif
++  qemu_common_flags += cc.get_supported_arguments('-fno-pie', '-no-pie')
+ endif
+ 
+ if not get_option('stack_protector').disabled()
 -- 
 2.40.1
 
