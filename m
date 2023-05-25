@@ -2,131 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA17C710394
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 05:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF287103E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 06:13:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q222h-0000Vg-FY; Wed, 24 May 2023 23:53:35 -0400
+	id 1q22L4-0005eQ-AW; Thu, 25 May 2023 00:12:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kconsul@linux.vnet.ibm.com>)
- id 1q222d-0000VM-UT
- for qemu-devel@nongnu.org; Wed, 24 May 2023 23:53:31 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <eldon-qemu@eldondev.com>)
+ id 1q22L2-0005e2-92
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 00:12:32 -0400
+Received: from [209.195.0.149] (helo=npcomp.net)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kconsul@linux.vnet.ibm.com>)
- id 1q222b-0003OU-ID
- for qemu-devel@nongnu.org; Wed, 24 May 2023 23:53:31 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34P3Be6x026169; Thu, 25 May 2023 03:52:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=v6ZXU6gtBWqPvIHL/d+qw2nLh7zTm1pTEzgdqM8BY18=;
- b=B6YqZS1jPqUF06BXEDrHfDzumBPLwVJwEDM6Mlu3IE2H6cUE7J6o6ibyuUr7Tzm/OaMs
- hhautrhEj/2PGY+41qIPtpYoflgWRj/JHrKKa9zF8uUSpIAis0gld8gLLP+5xJWW1GMe
- sX5+Xajub5MRLWHzRBG5eH/M/bUHF1GEUu7rxcIMZLxBXx/wlfZFX6cDKHX6px+mzpwm
- kuLEs7WvC0qpOzkjLZTxIq9PsF/ZaNyTduC2Dxkedp6GGbQ4D0E1zA1TyvuZ0HZLdVXV
- 5URnhC0WaDcCJ3qGCDSNvi50mCcjSmiVmP1CVeL0qUJlMWAvIaqH4Z7WiSQkdl5V8cea +A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qsyjagq7v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 May 2023 03:52:29 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34P3qS3q008921;
- Thu, 25 May 2023 03:52:28 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qsyjagq71-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 May 2023 03:52:28 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34P0fMmO026389;
- Thu, 25 May 2023 03:52:25 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qppdk284d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 May 2023 03:52:25 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34P3qNT118350798
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 May 2023 03:52:23 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4097C20043;
- Thu, 25 May 2023 03:52:23 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D2F4420040;
- Thu, 25 May 2023 03:52:14 +0000 (GMT)
-Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown
- [9.109.216.99])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 25 May 2023 03:52:14 +0000 (GMT)
-Date: Thu, 25 May 2023 09:22:12 +0530
-From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Chao Peng <chao.p.peng@linux.intel.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
- linux-doc@vger.kernel.org, qemu-devel@nongnu.org,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
- Joerg Roedel <joro@8bytes.org>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
- Hugh Dickins <hughd@google.com>, Jeff Layton <jlayton@kernel.org>,
- "J . Bruce Fields" <bfields@fieldses.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Steven Price <steven.price@arm.com>,
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
- Vlastimil Babka <vbabka@suse.cz>, Vishal Annapurve <vannapurve@google.com>,
- Yu Zhang <yu.c.zhang@linux.intel.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- luto@kernel.org, jun.nakajima@intel.com, dave.hansen@intel.com,
- ak@linux.intel.com, david@redhat.com, aarcange@redhat.com,
- ddutile@redhat.com, dhildenb@redhat.com,
- Quentin Perret <qperret@google.com>,
- Michael Roth <michael.roth@amd.com>, mhocko@suse.com,
- Muchun Song <songmuchun@bytedance.com>
-Subject: Re: [PATCH v7 08/14] KVM: Rename mmu_notifier_*
-Message-ID: <ZG7bbAkRfHkBijZb@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
-References: <20220706082016.2603916-1-chao.p.peng@linux.intel.com>
- <20220706082016.2603916-9-chao.p.peng@linux.intel.com>
- <ZGxo9ylqYI8JXjGn@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <ZGzLf4zgxpBjghaF@google.com>
- <ZG2qv9sWl2RUnGqd@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
- <ZG5wg3VbG4rCYrfk@google.com>
- <20230524203336.GC3447678@hirez.programming.kicks-ass.net>
+ (Exim 4.90_1) (envelope-from <eldon-qemu@eldondev.com>)
+ id 1q22L0-0001IN-4D
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 00:12:32 -0400
+Received: by npcomp.net (Postfix, from userid 1000)
+ id 3D531131EA5; Thu, 25 May 2023 04:12:27 +0000 ()
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=eldondev.com;
+ s=eldondev; t=1684987947;
+ bh=ocox5Fe519yiqsgr/X5QdeJSJjNeVbJyFLIZytGGxbM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=INGTJkQe21ctChT9vePyIF+6/AVoc+MXsTxbqkLnzCoPQpuNWmRhjv2ILPsd3bcoV
+ Bae7OKlD1GahoxqV2+a7P8nP8MSw7v6R6RdKYq5UgV+jwYaNEJa0SkFulKQ5ZWXDLI
+ zqqPflC8golLEr/VIYG1Dfsnpj/CXJ3NHKWdqPKc=
+Date: Thu, 25 May 2023 04:12:27 +0000
+From: Eldon Stegall <eldon-qemu@eldondev.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: New container build error: mountpoint does not exit
+Message-ID: <ZG7gK6ZFgSSvBGBV@invalid>
+References: <b7ef4d65-1b2c-c435-b448-9b6bec39cd96@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230524203336.GC3447678@hirez.programming.kicks-ass.net>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JMCMkBzE0_vErxya7Uw2ZgGvqaMed5tP
-X-Proofpoint-ORIG-GUID: bS2bLfFp6dr_ipd_3qmflAOTtlaGVqG_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-24_17,2023-05-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 phishscore=0 clxscore=1011 spamscore=0 adultscore=0
- suspectscore=0 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=901 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2304280000 definitions=main-2305250027
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=kconsul@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <b7ef4d65-1b2c-c435-b448-9b6bec39cd96@linaro.org>
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 209.195.0.149 (failed)
+Received-SPF: pass client-ip=209.195.0.149;
+ envelope-from=eldon-qemu@eldondev.com; helo=npcomp.net
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RDNS_NONE=0.793,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -142,33 +63,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023-05-24 22:33:36, Peter Zijlstra wrote:
-> On Wed, May 24, 2023 at 01:16:03PM -0700, Sean Christopherson wrote:
+On Wed, May 24, 2023 at 01:09:30PM -0700, Richard Henderson wrote:
+> Hi Eldon,
 > 
-> > Atomics aren't memory barriers on all architectures, e.g. see the various
-> > definitions of smp_mb__after_atomic().
-> > 
-> > Even if atomic operations did provide barriers, using an atomic would be overkill
-> > and a net negative.  On strongly ordered architectures like x86, memory barriers are
-> > just compiler barriers, whereas atomics may be more expensive. 
+> New this morning are some odd failures in the container build stage, e.g
 > 
-> Not quite, smp_{r,w}mb() and smp_mb__{before,after}_atomic() are
-> compiler barriers on the TSO archs, but smp_mb() very much isn't. TSO
-> still allows stores to be delayed vs later loads (iow it doesn't pretend
-> to hide the store buffer).
+> https://gitlab.com/qemu-project/qemu/-/jobs/4345796216#L235
 > 
-> > Of course, the only
-> > accesses outside of mmu_lock are reads, so on x86 that "atomic" access is just a
-> > READ_ONCE() load, but that's not the case for all architectures.
+> cgroups: cgroup mountpoint does not exist: unknown
 > 
-> This is true on *all* archs. atomic_set() and atomic_read() are no more
-> and no less than WRITE_ONCE() / READ_ONCE().
+> There are several such failures in that pipeline. I've not seen this before, nor was it 
+> happening yesterday.
 > 
-> > Anyways, the point is that atomics and memory barriers are different things that
-> > serve different purposes.
-> 
-> This is true; esp. on the weakly ordered architectures where atomics do
-> not naturally imply any ordering.
+> Any ideas?
 
-Thanks for the information, everyone.
+Hi Richard,
+If I had to guess, it's probably related to some changes in
+Camille's patchset. My first guess is that it is related to 
+https://gitlab.com/qemu-project/qemu/-/commit/5f63a67adb58478974b91f5e5c2b1222b5c7f2cc
+
+which downgrades docker-in-docker from latest to stable-dind.
+
+I'm not sure how the stable tags are treated with docker, but it
+does seem that those tags haven't been updated in a couple of years.
+
+This person on SO seems to have fixed a similar issue in gitlab ci
+by upgrading: https://stackoverflow.com/q/70707572
+
+The cgroups error leads me to believe that the older dind service is 
+expecting cgroups v1, while the hardware runner is running FCOS with
+cgroups v2.
+ 
+I ran a test with just that patch omitted on my repo, with better
+results:
+
+https://gitlab.com/eldondev/qemu/-/pipelines/878387857
+
+I will see if the opensbi build which also uses stable-dind and failed
+in that pipeline is successful when attempting to use latest dind
+instead.
+
+If using stable is compelling, I can work on making the hardware runner
+support it.
+
+Thanks,
+Eldon
+
+
 
