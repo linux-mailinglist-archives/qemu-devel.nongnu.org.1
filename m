@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37689711A1A
+	by mail.lfdr.de (Postfix) with ESMTPS id 689C6711A1D
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 00:21:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2JJt-00026A-Q3; Thu, 25 May 2023 18:20:29 -0400
+	id 1q2JJu-00027U-OA; Thu, 25 May 2023 18:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3J99vZAgKCs4Du5E6vuE08805y.w86Ay6E-xyFy578707E.8B0@flex--talumbau.bounces.google.com>)
- id 1q2JJr-00025D-Oy
- for qemu-devel@nongnu.org; Thu, 25 May 2023 18:20:27 -0400
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ <3Kd9vZAgKCtAFw7G8xwG2AA270.yA8C08G-z0H079A929G.AD2@flex--talumbau.bounces.google.com>)
+ id 1q2JJs-00025n-JK
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 18:20:28 -0400
+Received: from mail-io1-xd49.google.com ([2607:f8b0:4864:20::d49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3J99vZAgKCs4Du5E6vuE08805y.w86Ay6E-xyFy578707E.8B0@flex--talumbau.bounces.google.com>)
- id 1q2JJp-0004RX-Kb
- for qemu-devel@nongnu.org; Thu, 25 May 2023 18:20:27 -0400
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-5653213f5c0so4263957b3.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 15:20:24 -0700 (PDT)
+ <3Kd9vZAgKCtAFw7G8xwG2AA270.yA8C08G-z0H079A929G.AD2@flex--talumbau.bounces.google.com>)
+ id 1q2JJq-0004SJ-Th
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 18:20:28 -0400
+Received: by mail-io1-xd49.google.com with SMTP id
+ ca18e2360f4ac-76c5c78bc24so31556439f.2
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 15:20:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1685053224; x=1687645224;
+ d=google.com; s=20221208; t=1685053225; x=1687645225;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=ubBrZ8nAFimVTuMHp6nxPEPus94HZpyzs0dejBNFzO8=;
- b=AK4H1JjLe5gTLfzqHg1BtFZKQi/zr7zix6xMHvV0NeuHVzmAk7V+3Ind0cFHKMfaB5
- I7Oh1fQy4xofsDyBVlInP/D6U3kjth7rgZmNfdPYuqYqhFqbE0bI625m+VCF2N4BfUN4
- ng+ERCmiyBM6i0gr+gLPE5lGiB1OdfWDIpR3Y8kYUnVGL+PLDfxZlaE8xf/0j+Dpcb+j
- fqJ1LKQjQ5tYyaqSM6cEYm+e7xDZwmyIBBeYiCHhKUUwkNV6imXHp50+QkDKpr7BTSb2
- W4MyU+NvMvTRv/D3UTX/4ZLl2rtdnozOngnmqXAS97mt/3puxSU4QvOttRV6XftLpaTT
- TPdw==
+ bh=4cMvgGN5jzGaGfRSZF3eild5fkvOSBVOFI0ZHu7w7Hw=;
+ b=J+NKjPtLyljqS7tpbK6nNpA5igNAy3Kyp4N11DqBWNqtHhLVMcbpftBk1J+5t8Fnp5
+ iLODQY4jMS48+wbk3M3qjuEO4pQgGXK2cjIXpxv0LUSZwcgvBqSZCSxnAHfRQLYOIM7P
+ NWiaDbncu9arR05XhhAfVl0g11edH4gh9m1KvLdITijYzOR1fpUNXL/ai10omIUQ2pA5
+ iKvi70CuT1Mgnc9fAU1r39sCB1ppAKZjCtSEhk0KkzNN5yIPaz545OBLj0zxl2Tu4S6N
+ uaOl9TUnNCJXThJQh98hAIh6/lLpAj+tuQcoOx7EYSQT1MtYWmL7O/s7bt3nbAKGQ08h
+ 8HUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685053224; x=1687645224;
+ d=1e100.net; s=20221208; t=1685053225; x=1687645225;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ubBrZ8nAFimVTuMHp6nxPEPus94HZpyzs0dejBNFzO8=;
- b=Ks93OJ330uNekzt4rGMGWiKZZWkOqMd5F9wLmKayBQexQ5zenjLEiIW54ik2NAJY5t
- 6AVQRVr4nj49+82paLJ3z6BtQA2G6y7xGAG2sja+5yjqiLRabrHGYI15Hx6LeIwYfXuK
- QrI86zmlBU1+tELuckS+VD3txFb/D3JrberJZF9Vlc7FB8HIUWoyjIlDkRoRiNo7jjNw
- eQWHi9ebcJOmdA9iCP4TXEKPMzhGKZT0pZQdFRT60oks9R8hxfDjCP7F7+j+k1ggkbKW
- oWaXGfczPiPPw9GueIWUI8/YxE8wQv3frhK3DrCAb5u1k92LeXj+aDcnN8v/MHQTWASJ
- yBww==
-X-Gm-Message-State: AC+VfDwDbGXsdy9mDDglCFIpCXAIbQpJqAVRx2qrAqOUiHKElS3UnKwy
- 8lS7j3NjcqpZo4sJvVXYne+osOBCiXqeqo1Yjx3v9GIVgEOlFRUepY2K1d20OBnm7dQA2OU8S5X
- Twd4gUfnwAg7nlP7OB30pnq+Do+1z7me9HgoPMqci3UTzVIk3bZcFhWesvVC4djsb2Q==
-X-Google-Smtp-Source: ACHHUZ5JVlUlU+5wCi9Z5u/PMrQm7zDS3WBItQthIFah5CX+c88JqRlG2X6T304HtQVogPD1MZ6gYKlzTKwLrw==
+ bh=4cMvgGN5jzGaGfRSZF3eild5fkvOSBVOFI0ZHu7w7Hw=;
+ b=dNOTUvCh4EImRCi8TyA/bTESijReUst3v2COMdC9W/T8JdfKJmbtlOjVKEgjB4z/87
+ uMXtnLN+xg9AvjvoJiasGpXmYAVl4iMTjmM9Vq1YtfMk0JYhNIfZLwQX9aJQn1q11lX8
+ xGW02JVGKKGcUFOLJ1AqQd2JNrECgKKh7qjqPpWXXHQbtQ5pOPn0W9RxzoP+ZqfOQkmY
+ iXgg2pshxYWR3BKNq3SqA8LBavNVjNWcJyiux7UIFLM6WEmlNiOMfaU3Fs2e5KK3AT6F
+ 7GiDuNeEwGJ9l3126/pmhVSA2OncUU4w+t54ILffUi1V+MQhtBsq6wZ1UkdrW2DVL8KF
+ i1bw==
+X-Gm-Message-State: AC+VfDw/a+jl+AnQxCPFManps7sK+k3I58e8I2FkaEJdb/L9KirYF0Iu
+ QbQ7apn9HsFhOl9GEmwvBWmmq8WjuzbKApRq6vM5KknUDNVDTA3Gmu+2fr06qAX7ZHpByFB0nTX
+ rnWpoINEVeGkbcTpNWYAUpN4YHb2SPK0MkengLMEMAUMhOaW5dmWnX2ivh8lfyZXhHQ==
+X-Google-Smtp-Source: ACHHUZ5gSsYihOU/xjt27sq6scp7ahHAdVFG82Kj2KENmUDu43KeiKxciNBupPs6j+hBQ8/VJK0hcR15S6GNdw==
 X-Received: from talumbau.c.googlers.com
  ([fda3:e722:ac3:cc00:2b:ff92:c0a8:90d])
- (user=talumbau job=sendgmr) by 2002:a81:e707:0:b0:55a:5aa0:ffe9 with SMTP id
- x7-20020a81e707000000b0055a5aa0ffe9mr612608ywl.7.1685053223961; Thu, 25 May
- 2023 15:20:23 -0700 (PDT)
-Date: Thu, 25 May 2023 22:20:14 +0000
+ (user=talumbau job=sendgmr) by 2002:a92:cb44:0:b0:335:479a:8eaa with SMTP id
+ f4-20020a92cb44000000b00335479a8eaamr13163675ilq.6.1685053225074; Thu, 25 May
+ 2023 15:20:25 -0700 (PDT)
+Date: Thu, 25 May 2023 22:20:15 +0000
 In-Reply-To: <20230525222016.35333-1-talumbau@google.com>
 Mime-Version: 1.0
 References: <20230525222016.35333-1-talumbau@google.com>
-Message-ID: <20230525222016.35333-4-talumbau@google.com>
-Subject: [RFC PATCH v2 3/5] virtio-balloon: Add QMP functions for Working Set
+Message-ID: <20230525222016.35333-5-talumbau@google.com>
+Subject: [RFC PATCH v2 4/5] virtio-balloon: Add HMP functions for Working Set
 From: "T.J. Alumbaugh" <talumbau@google.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@redhat.com>,
@@ -71,9 +71,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>, 
  Eric Blake <eblake@redhat.com>, "T.J. Alumbaugh" <talumbau@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3J99vZAgKCs4Du5E6vuE08805y.w86Ay6E-xyFy578707E.8B0@flex--talumbau.bounces.google.com;
- helo=mail-yw1-x114a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d49;
+ envelope-from=3Kd9vZAgKCtAFw7G8xwG2AA270.yA8C08G-z0H079A929G.AD2@flex--talumbau.bounces.google.com;
+ helo=mail-io1-xd49.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -97,387 +97,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  - Adds QMP function 'working-set-config'
-  - Adds QMP function 'working-set-request'
-  - Retrieve working set via 'guest-working-set' property on balloon
+- Adds 'working_set_request', 'working_set_config' HMP functions
 
->> cat script.py
+Start qemu with '-monitor telnet:127.0.0.1:4444,server=on,wait=off'
 
-NAME = "name"
-SOCKET = 'vm.sock'
-BALLOON =  "/machine/peripheral/balloon0"
+>> telnet localhost 4444
 
-import json
-import asyncio
-from qemu.qmp import QMPClient
-
-async def main():
-    client = QMPClient(NAME)
-    await client.connect(SOCKET)
-    config = { "i0": 200, "i1": 800, "i2": 3000, "refresh": 750, "report": 1000 }
-    await client.execute('working-set-config', config)
-    await client.execute('working-set-request')
-    property = {"path":BALLOON, "property":"guest-working-set"}
-    res = await client.execute('qom-get', property)
-    return res
-
-if __name__ == "__main__":
-    ret = asyncio.run(main())
-    print(json.dumps(ret, indent=2))
-
->> (Execute qemu with flag '-qmp unix:path=vm.sock,server=on,wait=off'
->> (Perform normal activities on VM to exercise MM code)
-
->> python3 script.py
+(qemu) working_set_config 200 800 3000 750 1000
+(qemu) working_set_request
+(qemu) qom-get /machine/peripheral/balloon0 guest-working-set
 {
-  "working_set": {
-    "ws3": {
-      "memory-size-bytes": {
-        "anon": 890478592,
-        "file": 1285832704
-      },
-      "idle-age": 4294967292
-    },
-    "ws2": {
-      "memory-size-bytes": {
-        "anon": 173465600,
-        "file": 83353600
-      },
-      "idle-age": 3000
-    },
-    "ws1": {
-      "memory-size-bytes": {
-        "anon": 44236800,
-        "file": 20889600
-      },
-      "idle-age": 800
-    },
-    "ws0": {
-      "memory-size-bytes": {
-        "anon": 14540800,
-        "file": 6963200
-      },
-      "idle-age": 200
+    "working_set": {
+        "ws3": {
+            "memory-size-bytes": {
+                "anon": 298287104,
+                "file": 647041024
+            },
+            "idle-age": 4294967292
+        },
+        "ws2": {
+            "memory-size-bytes": {
+                "anon": 4505600,
+                "file": 2252800
+            },
+            "idle-age": 3000
+        },
+        "ws1": {
+            "memory-size-bytes": {
+                "anon": 1228800,
+                "file": 614400
+            },
+            "idle-age": 800
+        },
+        "ws0": {
+            "memory-size-bytes": {
+                "anon": 409600,
+                "file": 204800
+            },
+            "idle-age": 200
+        }
     }
-  }
 }
 
 Signed-off-by: T.J. Alumbaugh <talumbau@google.com>
 ---
- hw/virtio/virtio-balloon-pci.c |  2 +
- hw/virtio/virtio-balloon.c     | 67 ++++++++++++++++++++++++++++++++--
- include/sysemu/balloon.h       |  9 ++++-
- monitor/monitor.c              |  1 +
- qapi/machine.json              | 66 +++++++++++++++++++++++++++++++++
- softmmu/balloon.c              | 31 +++++++++++++++-
- 6 files changed, 170 insertions(+), 6 deletions(-)
+ hmp-commands.hx            | 26 ++++++++++++++++++++++++++
+ hw/core/machine-hmp-cmds.c | 21 +++++++++++++++++++++
+ include/monitor/hmp.h      |  2 ++
+ 3 files changed, 49 insertions(+)
 
-diff --git a/hw/virtio/virtio-balloon-pci.c b/hw/virtio/virtio-balloon-pci.c
-index ce2645ba71..7b781c8bab 100644
---- a/hw/virtio/virtio-balloon-pci.c
-+++ b/hw/virtio/virtio-balloon-pci.c
-@@ -68,6 +68,8 @@ static void virtio_balloon_pci_instance_init(Object *obj)
-     object_property_add_alias(obj, "guest-stats-polling-interval",
-                               OBJECT(&dev->vdev),
-                               "guest-stats-polling-interval");
-+    object_property_add_alias(obj, "guest-working-set", OBJECT(&dev->vdev),
-+                              "guest-working-set");
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 2cbd0f77a0..8ed044b23f 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1398,6 +1398,32 @@ SRST
+   Request VM to change its memory allocation to *value* (in MB).
+ ERST
+ 
++    {
++        .name       = "working_set_config",
++        .args_type  = "i0:i,i1:i,i2:i,refresh:i,report:i",
++        .params     = "bin intervals 0-2, refresh and report thresholds",
++        .help       = "Working Set intervals, refresh/report thresholds (ms)",
++        .cmd        = hmp_working_set_config,
++    },
++
++SRST
++``working_set_config``
++  Set the intervals (in ms), refresh, report thresholds for Working Set reporting
++ERST
++
++    {
++        .name       = "working_set_request",
++        .args_type  = "",
++        .params     = "",
++        .help       = "Request the Working Set of the guest.",
++        .cmd        = hmp_working_set_request,
++    },
++
++SRST
++``working_set_request``
++  Request the Working Set from the guest.
++ERST
++
+     {
+         .name       = "set_link",
+         .args_type  = "name:s,up:b",
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index c3e55ef9e9..3c0a7694a2 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -237,6 +237,27 @@ void hmp_balloon(Monitor *mon, const QDict *qdict)
+     hmp_handle_error(mon, err);
  }
  
- static const VirtioPCIDeviceTypeInfo virtio_balloon_pci_info = {
-diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
-index 23481e51b8..a124d95534 100644
---- a/hw/virtio/virtio-balloon.c
-+++ b/hw/virtio/virtio-balloon.c
-@@ -229,7 +229,7 @@ static void virtio_balloon_receive_working_set(VirtIODevice *vdev,
-     }
- }
- 
--static __attribute__((unused)) void virtio_balloon_send_working_set_request(
-+static void virtio_balloon_send_working_set_request(
-     VirtIODevice *vdev, VirtQueue *vq)
- {
-     VirtQueueElement *elem;
-@@ -248,7 +248,7 @@ static __attribute__((unused)) void virtio_balloon_send_working_set_request(
-     g_free(elem);
- }
- 
--static __attribute__((unused)) void virtio_balloon_send_working_set_config(
-+static void virtio_balloon_send_working_set_config(
-     VirtIODevice *vdev, VirtQueue *vq,
-     uint64_t i0, uint64_t i1, uint64_t i2,
-     uint64_t refresh, uint64_t report)
-@@ -353,6 +353,43 @@ static void balloon_stats_poll_cb(void *opaque)
-     s->stats_vq_elem = NULL;
- }
- 
-+static void balloon_working_set_get_all(Object *obj, Visitor *v,
-+                                        const char *name, void *opaque,
-+                                        Error **errp)
++void hmp_working_set_request(Monitor *mon, const QDict *qdict)
 +{
 +    Error *err = NULL;
-+    VirtIOBalloon *s = VIRTIO_BALLOON(obj);
-+    char ws_buf[4];
-+    WorkingSetInfo *wsinfo;
-+    int i;
 +
-+    if (!visit_start_struct(v, name, NULL, 0, &err)) {
-+        goto out;
-+    }
-+
-+    if (!visit_start_struct(v, "working_set", NULL, 0, &err)) {
-+        goto out_end;
-+    }
-+    for (i = 0; i < VIRTIO_BALLOON_WS_NR_BINS; i++) {
-+        wsinfo = s->ws + i;
-+        sprintf(ws_buf, "ws%d", i);
-+        if (!visit_type_WorkingSetInfo(v, ws_buf, &wsinfo, &err)) {
-+            goto out_nested;
-+        }
-+    }
-+    visit_check_struct(v, &err);
-+out_nested:
-+    visit_end_struct(v, NULL);
-+
-+    if (!err) {
-+        visit_check_struct(v, &err);
-+    }
-+out_end:
-+    visit_end_struct(v, NULL);
-+out:
-+    error_propagate(errp, err);
++    qmp_working_set_request(&err);
++    hmp_handle_error(mon, err);
 +}
 +
- static void balloon_stats_get_all(Object *obj, Visitor *v, const char *name,
-                                   void *opaque, Error **errp)
++void hmp_working_set_config(Monitor *mon, const QDict *qdict)
++{
++    uint64_t i0 = qdict_get_int(qdict, "i0");
++    uint64_t i1 = qdict_get_int(qdict, "i1");
++    uint64_t i2 = qdict_get_int(qdict, "i2");
++    uint64_t refresh = qdict_get_int(qdict, "refresh");
++    uint64_t report = qdict_get_int(qdict, "report");
++    Error *err = NULL;
++
++    qmp_working_set_config(i0, i1, i2, refresh, report, &err);
++    hmp_handle_error(mon, err);
++}
++
+ void hmp_info_memory_devices(Monitor *mon, const QDict *qdict)
  {
-@@ -917,6 +954,25 @@ static void virtio_balloon_stat(void *opaque, BalloonInfo *info)
-                                              VIRTIO_BALLOON_PFN_SHIFT);
- }
- 
-+static void virtio_balloon_working_set_request(void *opaque)
-+{
-+    VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+
-+    virtio_balloon_send_working_set_request(vdev, dev->notification_vq);
-+}
-+
-+static void virtio_balloon_working_set_config(void *opaque, uint64_t i0,
-+                                              uint64_t i1, uint64_t i2,
-+                                              uint64_t refresh, uint64_t report)
-+{
-+    VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+
-+    virtio_balloon_send_working_set_config(vdev, dev->notification_vq, i0, i1,
-+                                           i2, refresh, report);
-+}
-+
- static void virtio_balloon_to_target(void *opaque, ram_addr_t target)
- {
-     VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
-@@ -992,7 +1048,9 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
-     virtio_init(vdev, VIRTIO_ID_BALLOON, virtio_balloon_config_size(s));
- 
-     ret = qemu_add_balloon_handler(virtio_balloon_to_target,
--                                   virtio_balloon_stat, s);
-+                                   virtio_balloon_stat,
-+                                   virtio_balloon_working_set_request,
-+                                   virtio_balloon_working_set_config, s);
- 
-     if (ret < 0) {
-         error_setg(errp, "Only one balloon device is supported");
-@@ -1148,6 +1206,9 @@ static void virtio_balloon_instance_init(Object *obj)
-                         balloon_stats_get_poll_interval,
-                         balloon_stats_set_poll_interval,
-                         NULL, NULL);
-+
-+    object_property_add(obj, "guest-working-set", "guest working set",
-+                        balloon_working_set_get_all, NULL, NULL, NULL);
- }
- 
- static const VMStateDescription vmstate_virtio_balloon = {
-diff --git a/include/sysemu/balloon.h b/include/sysemu/balloon.h
-index 867687b73a..1f504d1a31 100644
---- a/include/sysemu/balloon.h
-+++ b/include/sysemu/balloon.h
-@@ -18,10 +18,17 @@
- #include "qapi/qapi-types-machine.h"
- 
- typedef void (QEMUBalloonEvent)(void *opaque, ram_addr_t target);
-+typedef void (QEMUBalloonWorkingSetRequest)(void *opaque);
-+typedef void (QEMUBalloonWorkingSetConfig)(void *opaque, uint64_t i0,
-+                                  uint64_t i1, uint64_t i2, uint64_t refresh,
-+                                  uint64_t report);
- typedef void (QEMUBalloonStatus)(void *opaque, BalloonInfo *info);
- 
- int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
--                             QEMUBalloonStatus *stat_func, void *opaque);
-+                             QEMUBalloonStatus *stat_func,
-+                             QEMUBalloonWorkingSetRequest *ws_func,
-+                             QEMUBalloonWorkingSetConfig *config_func,
-+                             void *opaque);
- void qemu_remove_balloon_handler(void *opaque);
- 
- #endif
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 602535696c..fad1b4aed5 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -333,6 +333,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_WORKING_SET_EVENT] = { 1000 * SCALE_MS },
- };
- 
- /*
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 37660d8f2a..5e03ff21e2 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1055,6 +1055,57 @@
- ##
- { 'command': 'balloon', 'data': {'value': 'int'} }
- 
-+##
-+# @working-set-config:
-+#
-+# Specify the config parameters for Working Set reporting.
-+#
-+# @i0: the endpoint of the first interval (in ms)
-+#
-+# @i1: the endpoint of the second interval (in ms)
-+#
-+# @i2: the endpoint of the third interval (in ms)
-+#
-+# @refresh: the refresh threshold (in ms) for Working Set reporting
-+#
-+# @report: the report threshold (in ms) for Working Set reporting
-+#
-+# Returns: - Nothing on success
-+#          - If no balloon device is present, DeviceNotActive
-+#
-+# Example:
-+#
-+# -> { "execute": "working-set-config",
-+#                 "arguments": { "i0": 100,
-+#                                "i1": 500,
-+#                                "i2": 2000,
-+#                                "refresh": 750,
-+#                                "report": 1000 } }
-+# <- { "return": {} }
-+#
-+##
-+{ 'command': 'working-set-config', 'data': {'i0': 'uint64',
-+                                            'i1': 'uint64',
-+                                            'i2': 'uint64',
-+                                            'refresh': 'uint64',
-+                                            'report': 'uint64'} }
-+##
-+# @working-set-request:
-+#
-+# Request the Working Set report from the guest.
-+#
-+# Returns: - Nothing on success
-+#          - If no balloon device is present, DeviceNotActive
-+#
-+# Example:
-+#
-+# -> { "execute": "working-set-request", "arguments": {} }
-+# <- { "return": {} }
-+#
-+##
-+{ 'command': 'working-set-request', 'data': {} }
-+
-+
- ##
- # @BalloonInfo:
- #
-@@ -1113,6 +1164,21 @@
- { 'event': 'BALLOON_CHANGE',
-   'data': { 'actual': 'int' } }
- 
-+##
-+# @WORKING_SET_EVENT:
-+#
-+# Emitted when the guest sends a new Working Set report.
-+#
-+# Note: this event is rate-limited.
-+#
-+# Example:
-+#
-+# <- { "event": "WORKING_SET_EVENT",
-+#      "timestamp": { "seconds": 1267020223, "microseconds": 435656 } }
-+#
-+##
-+{ 'event': 'WORKING_SET_EVENT' }
-+
- ##
- # @MemoryInfo:
- #
-diff --git a/softmmu/balloon.c b/softmmu/balloon.c
-index e0e8969a4b..f27852949a 100644
---- a/softmmu/balloon.c
-+++ b/softmmu/balloon.c
-@@ -35,6 +35,8 @@
- 
- static QEMUBalloonEvent *balloon_event_fn;
- static QEMUBalloonStatus *balloon_stat_fn;
-+static QEMUBalloonWorkingSetRequest *balloon_ws_request_fn;
-+static QEMUBalloonWorkingSetConfig *balloon_ws_config_fn;
- static void *balloon_opaque;
- 
- static bool have_balloon(Error **errp)
-@@ -53,9 +55,13 @@ static bool have_balloon(Error **errp)
- }
- 
- int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
--                             QEMUBalloonStatus *stat_func, void *opaque)
-+                             QEMUBalloonStatus *stat_func,
-+                             QEMUBalloonWorkingSetRequest *ws_request_func,
-+                             QEMUBalloonWorkingSetConfig *ws_config_func,
-+                             void *opaque)
- {
--    if (balloon_event_fn || balloon_stat_fn || balloon_opaque) {
-+    if (balloon_event_fn || balloon_stat_fn || balloon_ws_request_fn \
-+        || balloon_ws_config_fn || balloon_opaque) {
-         /* We're already registered one balloon handler.  How many can
-          * a guest really have?
-          */
-@@ -63,6 +69,8 @@ int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
-     }
-     balloon_event_fn = event_func;
-     balloon_stat_fn = stat_func;
-+    balloon_ws_request_fn = ws_request_func;
-+    balloon_ws_config_fn = ws_config_func;
-     balloon_opaque = opaque;
-     return 0;
- }
-@@ -104,3 +112,22 @@ void qmp_balloon(int64_t target, Error **errp)
-     trace_balloon_event(balloon_opaque, target);
-     balloon_event_fn(balloon_opaque, target);
- }
-+
-+void qmp_working_set_request(Error **errp)
-+{
-+    if (!have_balloon(errp)) {
-+        return;
-+    }
-+
-+    balloon_ws_request_fn(balloon_opaque);
-+}
-+
-+void qmp_working_set_config(uint64_t i0, uint64_t i1, uint64_t i2,
-+                            uint64_t refresh, uint64_t report, Error **errp)
-+{
-+    if (!have_balloon(errp)) {
-+        return;
-+    }
-+
-+    balloon_ws_config_fn(balloon_opaque, i0, i1, i2, refresh, report);
-+}
+     Error *err = NULL;
+diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
+index 13f9a2dedb..a1e6c5e92a 100644
+--- a/include/monitor/hmp.h
++++ b/include/monitor/hmp.h
+@@ -59,6 +59,8 @@ void hmp_nmi(Monitor *mon, const QDict *qdict);
+ void hmp_info_network(Monitor *mon, const QDict *qdict);
+ void hmp_set_link(Monitor *mon, const QDict *qdict);
+ void hmp_balloon(Monitor *mon, const QDict *qdict);
++void hmp_working_set_config(Monitor *mon, const QDict *qdict);
++void hmp_working_set_request(Monitor *mon, const QDict *qdict);
+ void hmp_loadvm(Monitor *mon, const QDict *qdict);
+ void hmp_savevm(Monitor *mon, const QDict *qdict);
+ void hmp_delvm(Monitor *mon, const QDict *qdict);
 -- 
 2.41.0.rc0.172.g3f132b7071-goog
 
