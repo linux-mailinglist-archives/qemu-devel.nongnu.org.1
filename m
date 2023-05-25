@@ -2,62 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F790710C50
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA122710C59
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:49:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2ANU-0007v3-2u; Thu, 25 May 2023 08:47:36 -0400
+	id 1q2ANV-0007wl-Es; Thu, 25 May 2023 08:47:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2ANN-0007ug-Ug
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:47:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2ANT-0007vf-C9
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:47:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2ANM-0001xf-C7
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:47:29 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2ANM-0001xr-Er
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:47:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685018846;
+ s=mimecast20190719; t=1685018847;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=l3EbLp4MvEn5fyXqQ92CPB7by2yJkY5PWeTOZsnubm0=;
- b=QzU4obnQu/TleHcLV2Z31AdRK7LiKaNdZna36s7jnkYp/Br/e4nliGpWxC0yLDLBOj+BRd
- 1aK0/mnx+M8lFACvOQZhQIuWQ51EqaWoWE2foNdf+WDBbSOw9O+wN3siZC6egHOaXXicW+
- dFp4rB6z5uHyp2Ve4j75n36YO367s5w=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GPVs2kKtPRU8XSyl16h/2UIVKV6EOye4ZDdJCZn67ew=;
+ b=bYZyS5YOKiq7QwBXXEJnxsi6tnV9OIbZ7f0+ydBHrnjy68H5f9U2AMDD2NvM9WeEINki/C
+ 4TJl09MUCJUoHD+j7O++peDSV6TM9T4y8j7Uo/rsT01gl/1zKYY6DjeNyTsaJd5oFcv9os
+ GyEN54xHWe62FcjWxAjhBDk+4zCcghI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-121-f__xSgLFMMC59rcLxnvnXw-1; Thu, 25 May 2023 08:47:23 -0400
-X-MC-Unique: f__xSgLFMMC59rcLxnvnXw-1
+ us-mta-642-MAHHq4BmPh6sygt6cLIltQ-1; Thu, 25 May 2023 08:47:24 -0400
+X-MC-Unique: MAHHq4BmPh6sygt6cLIltQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1BFB38032E4;
- Thu, 25 May 2023 12:47:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 53A8D811E7F;
+ Thu, 25 May 2023 12:47:24 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.166])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DC3857AF5;
- Thu, 25 May 2023 12:47:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 54CCB9D73;
+ Thu, 25 May 2023 12:47:23 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, hreitz@redhat.com,
  eblake@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH 00/12] block: Fix blockdev-create with iothreads
-Date: Thu, 25 May 2023 14:47:01 +0200
-Message-Id: <20230525124713.401149-1-kwolf@redhat.com>
+Subject: [PATCH 01/12] block-coroutine-wrapper: Take AioContext lock in
+ no_co_wrappers
+Date: Thu, 25 May 2023 14:47:02 +0200
+Message-Id: <20230525124713.401149-2-kwolf@redhat.com>
+In-Reply-To: <20230525124713.401149-1-kwolf@redhat.com>
+References: <20230525124713.401149-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,54 +77,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series started with the last patch, an iotest that tests the fixes
-for .bdrv_co_create() that were made in commit b2ab5f545f ('block:
-bdrv/blk_co_unref() for calls in coroutine context').
+All of the functions that currently take a BlockDriverState, BdrvChild
+or BlockBackend as their first parameter expect the associated
+AioContext to be locked when they are called. In the case of
+no_co_wrappers, they are called from bottom halves directly in the main
+loop, so no other caller can be expected to take the lock for them. This
+can result in assertion failures because a lock that isn't taken is
+released in nested event loops.
 
-Unfortunately, it turned out that much more is wrong about creating
-images in an iothread. In particular, AioContext locking is messy and in
-many cases wrong. (Only one more reason to get rid of them.) This series
-fixes all the hangs and crashes I saw while making the final test case
-pass.
+Looking at the first parameter is already done by co_wrappers to decide
+where the coroutine should run, so doing the same in no_co_wrappers is
+only consistent. Take the lock in the generated bottom halves to fix the
+problem.
 
-Note that this series isn't fully bisectable. Some of the existing bugs
-cancel each other out, so after fixing one, some test cases will break
-until the other one is fixed, too.
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ include/block/block-common.h       |  3 +++
+ block/block-backend.c              |  7 ++++++-
+ scripts/block-coroutine-wrapper.py | 25 +++++++++++++++----------
+ 3 files changed, 24 insertions(+), 11 deletions(-)
 
-Kevin Wolf (12):
-  block-coroutine-wrapper: Take AioContext lock in no_co_wrappers
-  block: Clarify locking rules for bdrv_open(_inherit)()
-  block: Take main AioContext lock when calling bdrv_open()
-  block-backend: Fix blk_new_open() for iothreads
-  mirror: Hold main AioContext lock for calling bdrv_open_backing_file()
-  qcow2: Fix open with 'file' in iothread
-  raw-format: Fix open with 'file' in iothread
-  copy-before-write: Fix open with child in iothread
-  block: Take AioContext lock in bdrv_open_driver()
-  block: Fix AioContext locking in bdrv_insert_node()
-  iotests: Make verify_virtio_scsi_pci_or_ccw() public
-  iotests: Test blockdev-create in iothread
-
- include/block/block-common.h                  |  3 +
- block.c                                       | 33 ++++++---
- block/block-backend.c                         | 36 ++++++++--
- block/copy-before-write.c                     | 21 ++++--
- block/mirror.c                                |  6 ++
- block/qapi-sysemu.c                           |  3 +
- block/qcow2.c                                 |  8 ++-
- block/raw-format.c                            |  5 ++
- blockdev.c                                    | 29 ++++++--
- qemu-nbd.c                                    |  4 ++
- tests/unit/test-block-iothread.c              |  4 +-
- scripts/block-coroutine-wrapper.py            | 25 ++++---
- tests/qemu-iotests/iotests.py                 |  2 +-
- tests/qemu-iotests/256                        |  2 +-
- tests/qemu-iotests/tests/iothreads-create     | 67 +++++++++++++++++++
- tests/qemu-iotests/tests/iothreads-create.out |  4 ++
- 16 files changed, 210 insertions(+), 42 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/iothreads-create
- create mode 100644 tests/qemu-iotests/tests/iothreads-create.out
-
+diff --git a/include/block/block-common.h b/include/block/block-common.h
+index 93196229ac..e15395f2cb 100644
+--- a/include/block/block-common.h
++++ b/include/block/block-common.h
+@@ -65,6 +65,9 @@
+  * scheduling a BH in the bottom half that runs the respective non-coroutine
+  * function. The coroutine yields after scheduling the BH and is reentered when
+  * the wrapped function returns.
++ *
++ * If the first parameter of the function is a BlockDriverState, BdrvChild or
++ * BlockBackend pointer, the AioContext lock for it is taken in the wrapper.
+  */
+ #define no_co_wrapper
+ 
+diff --git a/block/block-backend.c b/block/block-backend.c
+index ca537cd0ad..26447664ab 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -2394,9 +2394,14 @@ void blk_op_unblock_all(BlockBackend *blk, Error *reason)
+ 
+ AioContext *blk_get_aio_context(BlockBackend *blk)
+ {
+-    BlockDriverState *bs = blk_bs(blk);
++    BlockDriverState *bs;
+     IO_CODE();
+ 
++    if (!blk) {
++        return qemu_get_aio_context();
++    }
++
++    bs = blk_bs(blk);
+     if (bs) {
+         AioContext *ctx = bdrv_get_aio_context(blk_bs(blk));
+         assert(ctx == blk->ctx);
+diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
+index 60e9b3107c..d4a183db61 100644
+--- a/scripts/block-coroutine-wrapper.py
++++ b/scripts/block-coroutine-wrapper.py
+@@ -88,16 +88,7 @@ def __init__(self, wrapper_type: str, return_type: str, name: str,
+                 raise ValueError(f"no_co function can't be rdlock: {self.name}")
+             self.target_name = f'{subsystem}_{subname}'
+ 
+-        t = self.args[0].type
+-        if t == 'BlockDriverState *':
+-            ctx = 'bdrv_get_aio_context(bs)'
+-        elif t == 'BdrvChild *':
+-            ctx = 'bdrv_get_aio_context(child->bs)'
+-        elif t == 'BlockBackend *':
+-            ctx = 'blk_get_aio_context(blk)'
+-        else:
+-            ctx = 'qemu_get_aio_context()'
+-        self.ctx = ctx
++        self.ctx = self.gen_ctx()
+ 
+         self.get_result = 's->ret = '
+         self.ret = 'return s.ret;'
+@@ -109,6 +100,17 @@ def __init__(self, wrapper_type: str, return_type: str, name: str,
+             self.co_ret = ''
+             self.return_field = ''
+ 
++    def gen_ctx(self, prefix: str = '') -> str:
++        t = self.args[0].type
++        if t == 'BlockDriverState *':
++            return f'bdrv_get_aio_context({prefix}bs)'
++        elif t == 'BdrvChild *':
++            return f'bdrv_get_aio_context({prefix}child->bs)'
++        elif t == 'BlockBackend *':
++            return f'blk_get_aio_context({prefix}blk)'
++        else:
++            return 'qemu_get_aio_context()'
++
+     def gen_list(self, format: str) -> str:
+         return ', '.join(format.format_map(arg.__dict__) for arg in self.args)
+ 
+@@ -262,8 +264,11 @@ def gen_no_co_wrapper(func: FuncDecl) -> str:
+ static void {name}_bh(void *opaque)
+ {{
+     {struct_name} *s = opaque;
++    AioContext *ctx = {func.gen_ctx('s->')};
+ 
++    aio_context_acquire(ctx);
+     {func.get_result}{name}({ func.gen_list('s->{name}') });
++    aio_context_release(ctx);
+ 
+     aio_co_wake(s->co);
+ }}
 -- 
 2.40.1
 
