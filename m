@@ -2,97 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29861710B27
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7DC710B29
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:35:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q29EQ-0006cq-QM; Thu, 25 May 2023 07:34:10 -0400
+	id 1q29FJ-0008CA-S5; Thu, 25 May 2023 07:35:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1q29EO-0006bM-80; Thu, 25 May 2023 07:34:08 -0400
-Received: from wout1-smtp.messagingengine.com ([64.147.123.24])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q29FA-0007jn-PZ; Thu, 25 May 2023 07:34:56 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1q29EL-0002CE-PS; Thu, 25 May 2023 07:34:08 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailout.west.internal (Postfix) with ESMTP id ADC0932003C0;
- Thu, 25 May 2023 07:33:58 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute1.internal (MEProxy); Thu, 25 May 2023 07:33:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm3; t=1685014438; x=
- 1685100838; bh=A1EUSiH05ybJpEadn0UkunleNidrximLxi3rOwhFAeY=; b=X
- dV7DSghp/EEUUS6T/E5DzXcAxhSTbP4yqeQIwfDOyszPJeOGhMOCMDBtY3mLBVJW
- k6iPug57dp4SF16hjYXBuM9aBQo6dHRPnJYkQ0RajUnoQMeJhx8FbDUngSxGdRze
- mmBlaubWO5MFgQQFDBr1USd9eFoyW6x5+sgvJ5+S6mQSeRmsLBEf3dAMnsI/MhTY
- 4mCNzlu+UyIwdaFkgVXuQBCPU03h7+pm4V/MLZRg/cOAGO+Kb6dr6Qsbtf+iO6oF
- KsaY3X90e/oUivVIPf2kZz41bdoFdGeVJ9LoOFR0hmJJjIr91ArTu/Hitw23ulQm
- 98T6zpSsaTs0mcqlNaGEQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; t=1685014438; x=1685100838; bh=A1EUSiH05ybJp
- Eadn0UkunleNidrximLxi3rOwhFAeY=; b=utdajSZL01/fLQ8SSkXHZegbfBwYY
- CnTuy6NEA7mvkzSNlHCmX1+lbpo2K1/UtCEsai6zFFXJtV99mq/EeEtiOUxn9oif
- vzhDHSu6MBHAllPypp+FDZa3E8X/Dl2eN9fiiiSJsi33pBE1NfepnGD1RN8dDmLY
- PJfBU7QWdp0DdlaJAQrhpesOwS06l8buRv5TgHR6nDnPUL7tBY4gSTa1yqDnGTQz
- D+2QcRclvxk+N94a4pxMBkxGqBXZN2soq4SYWIiKdcTatworOIDlgwsukmec/NoQ
- 0RSlQhW78u7Q9Y/uXBaeNaefiS8hjJ/k4YL0/W3fe0SnN5SLrppMYsjUQ==
-X-ME-Sender: <xms:pEdvZGrOFYrCJNufg6W2u_R_nxYUCH9WwWJCpegwWOHsVCsFiiT2Dw>
- <xme:pEdvZEo7auBCqfOvHLxyntIOKwDBBHlS441hE6n4zLU4chsJAnQps4NKg0lvrqk5a
- 2bO3j2L5mvYAnhTdOE>
-X-ME-Received: <xmr:pEdvZLMSGMrvq0nYG93PYLxwHv5cPSS2lpF0_zQ3FZ8mMEUq-Z96OceCL3_3wbNRHxCD>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejjedggedtucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepmfhlrghu
- shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
- htvghrnhepffduvdfhheejudfgieejueeileegveduvdelhfekhffgteetffdtvdekveei
- leefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
- dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:pEdvZF409Gh6Zw0sUQCAkqDUY2SjyImIg1avld-BQdmIdt-LiuO3Pg>
- <xmx:pEdvZF6E8h3R4PKiajqjVZRzDqNt9onIzVXaZnzf4O7Vh5OGpBT5Sg>
- <xmx:pEdvZFhsva55sIJDvH2Ag6gSIjSPe85XJ8UIK8Ze_vrDU5aQZeiTLw>
- <xmx:pkdvZEInH1HrtXyjkDjRXDixJXy2ahugwX67iotjRQdr42cgY6XnXQ>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 25 May 2023 07:33:54 -0400 (EDT)
-Date: Thu, 25 May 2023 13:33:52 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel@nongnu.org, Corey Minyard <cminyard@mvista.com>,
- Jeremy Kerr <jk@codeconstruct.com.au>, qemu-arm@nongnu.org,
- Peter Delevoryas <peter@pjd.dev>, Keith Busch <kbusch@kernel.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Jason Wang <jasowang@redhat.com>, Lior Weintraub <liorw@pliops.com>,
- qemu-block@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Matt Johnston <matt@codeconstruct.com.au>,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH v2 1/3] hw/i2c: add mctp core
-Message-ID: <ZG9HoKFzvIngzomZ@cormorant.local>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q29F9-0002KH-1q; Thu, 25 May 2023 07:34:56 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QRm7S1g4vz6J652;
+ Thu, 25 May 2023 19:30:12 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 25 May
+ 2023 12:34:50 +0100
+Date: Thu, 25 May 2023 12:34:49 +0100
+To: Klaus Jensen <its@irrelevant.dk>
+CC: <qemu-devel@nongnu.org>, Corey Minyard <cminyard@mvista.com>, Jeremy Kerr
+ <jk@codeconstruct.com.au>, <qemu-arm@nongnu.org>, Peter Delevoryas
+ <peter@pjd.dev>, Keith Busch <kbusch@kernel.org>, "=?ISO-8859-1?Q?C=E9dric?=
+ Le Goater" <clg@kaod.org>, Jason Wang <jasowang@redhat.com>, Lior Weintraub
+ <liorw@pliops.com>, <qemu-block@nongnu.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Matt Johnston <matt@codeconstruct.com.au>, Klaus
+ Jensen <k.jensen@samsung.com>
+Subject: Re: [PATCH v2 3/3] hw/nvme: add nvme management interface model
+Message-ID: <20230525123449.00001d60@Huawei.com>
+In-Reply-To: <20230425063540.46143-4-its@irrelevant.dk>
 References: <20230425063540.46143-1-its@irrelevant.dk>
- <20230425063540.46143-2-its@irrelevant.dk>
- <20230525122711.00002a61@Huawei.com>
+ <20230425063540.46143-4-its@irrelevant.dk>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="8ZwLm31Fr6bPAHsP"
-Content-Disposition: inline
-In-Reply-To: <20230525122711.00002a61@Huawei.com>
-Received-SPF: pass client-ip=64.147.123.24; envelope-from=its@irrelevant.dk;
- helo=wout1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,70 +66,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 25 Apr 2023 08:35:40 +0200
+Klaus Jensen <its@irrelevant.dk> wrote:
 
---8ZwLm31Fr6bPAHsP
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Klaus Jensen <k.jensen@samsung.com>
+> 
+> Add the 'nmi-i2c' device that emulates an NVMe Management Interface
+> controller.
+> 
+> Initial support is very basic (Read NMI DS, Configuration Get).
+> 
+> This is based on previously posted code by Padmakar Kalghatgi, Arun
+> Kumar Agasar and Saurav Kumar.
+> 
+> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 
-On May 25 12:27, Jonathan Cameron wrote:
-> On Tue, 25 Apr 2023 08:35:38 +0200
-> Klaus Jensen <its@irrelevant.dk> wrote:
->=20
-> > From: Klaus Jensen <k.jensen@samsung.com>
-> >=20
-> > Add an abstract MCTP over I2C endpoint model. This implements MCTP
-> > control message handling as well as handling the actual I2C transport
-> > (packetization).
-> >=20
-> > Devices are intended to derive from this and implement the class
-> > methods.
-> >=20
-> > Parts of this implementation is inspired by code[1] previously posted by
-> > Jonathan Cameron.
-> >=20
-> >   [1]: https://lore.kernel.org/qemu-devel/20220520170128.4436-1-Jonatha=
-n.Cameron@huawei.com/
-> >=20
-> > Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
->=20
-> This is very useful for the CXL MCTP CCI support - got rid of most of the
-> nasty code when I moved over to using this (will post code shortly)
->=20
-> A few comments inline - but all trivial stuff.
->=20
-> What I can give now though is:
-> Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
+I don't have time to do too much spec diving so this is very superficial...
 
-Hi Jonathan,
+Mostly commenting because it gave me a build error.
 
-This came at just the right time! I was finally preparing v3 since Lior
-is also requesting that this gets merged sooner rather than later ;)
+> diff --git a/hw/nvme/nmi-i2c.c b/hw/nvme/nmi-i2c.c
+> new file mode 100644
+> index 000000000000..81738f185bba
+> --- /dev/null
+> +++ b/hw/nvme/nmi-i2c.c
+> @@ -0,0 +1,382 @@
+...
 
-I'll work in your very resonable comments (thanks!) and ship it.
+> +static void nmi_handle_mi_config_get(NMIDevice *nmi, NMIRequest *request)
+> +{
+> +    uint32_t dw0 = le32_to_cpu(request->dw0);
+> +    uint8_t identifier = dw0 & 0xff;
+> +    uint8_t *buf;
+> +
+> +    trace_nmi_handle_mi_config_get(identifier);
+> +
+> +    switch (identifier) {
+> +    case NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ:
+> +        buf = (uint8_t[]) {
+> +            0x0, 0x1, 0x0, 0x0,
+> +        };
+> +
+> +        break;
+> +
+> +    case NMI_CMD_CONFIGURATION_GET_HEALTH_STATUS_CHANGE:
+> +        buf = (uint8_t[]) {
+> +            0x0, 0x0, 0x0, 0x0,
+> +        };
+> +
+> +        break;
+> +
+> +    case NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSION_UNIT:
+> +        buf = (uint8_t[]) {
+> +            0x0, 0x40, 0x0, 0x0,
+> +        };
+> +
+> +        break;
+
+No default, which gave me a build error as buf is uninitialized.
+
+> +    }
+> +
+> +    memcpy(nmi->scratch + nmi->pos, buf, 4);
+> +    nmi->pos += 4;
+> +}
+> +
+> +enum {
+> +    NMI_CMD_READ_NMI_DS         = 0x0,
+> +    NMI_CMD_CONFIGURATION_GET   = 0x4,
+> +};
+> +
 
 
-Thanks again,
-Klaus
+> +static size_t nmi_get_message_types(MCTPI2CEndpoint *mctp, uint8_t *data,
+> +                                    size_t maxlen)
+> +{
+> +    uint8_t buf[] = {
+> +        0x0, 0x1, 0x4,
 
---8ZwLm31Fr6bPAHsP
-Content-Type: application/pgp-signature; name="signature.asc"
+PLDM?  Are you using that so far?  Maybe keep it for when you
+add PLDM support?
 
------BEGIN PGP SIGNATURE-----
+> +    };
+> +
+> +    memcpy(data, buf, sizeof(buf));
+> +
+> +    return sizeof(buf);
+> +}
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmRvR58ACgkQTeGvMW1P
-Dem5wAgAgd0shlQK2sUpGuTmGXBGFdi3vmQxPihacby/QkvzzHrzMFXl6xPc3sx+
-a6v3lQ0WWBhc9uN0v/ZeXvwN3CVkLJIOBAyyRDYSJOeQi9ZhL70dLlf5TPe+J3AR
-FBuO08jWVfipMCuMxsUJKlv94iS1MqQ2egh54ziWMMKpZ9qRvtQLPFacLPKoDWpX
-3gveU+XewSYjovt74ZR+tUire0KrnFuAflI/XE3+OuQEDruMl7ZuTF8W9y7HTSba
-4jZMz1q12kkJIp06lvsVW4HsmZEHxRKE0wdGF6xr4rxrW/uZROPwcdEu+7V+hZJU
-3vFRK9tJx81y2BuTMpBZUVluT1KTRw==
-=1OCM
------END PGP SIGNATURE-----
-
---8ZwLm31Fr6bPAHsP--
 
