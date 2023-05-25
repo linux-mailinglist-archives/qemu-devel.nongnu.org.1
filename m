@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03721710E19
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0443B710E40
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:24:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2BlJ-0004lO-O9; Thu, 25 May 2023 10:16:17 -0400
+	id 1q2BlL-0004lX-0P; Thu, 25 May 2023 10:16:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bl7-0004fD-88
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q2Bl7-0004fS-Sx
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bl3-0007eK-Sw
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:03 -0400
+ id 1q2Bl5-0007ev-N6
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685024161;
+ s=mimecast20190719; t=1685024163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YcyOskrg26ldLftCyL08wJ83ZLvx5fXvsC3Lu+udNq4=;
- b=aCp8YAQCDJCgMdrG1R502vlnYTHmjuXi1G+ObAHipOeC5yaaAGmWaz9LTRONcYPOlSJhVv
- zP0L1nmHqSrimeWx1aN0pMaC5xiPgIuInxmR9Fzp9Z70RS2BeoPtCT/S686bXIaSwLYStc
- CkBFCFu1Lj1lrjV9YR0OEWQfxkSQ7V8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=F+X2yMp/rrkiuznHlbFPis928m34/lXQlFacSTwXix4=;
+ b=g5bH0wYETyZng397sE3iWLsgxFBDF/KobJYLQqdPYt6Xqzc5fssGOVjJyOaJPt2lZf17OJ
+ LP0eDj9X+0kxyyl8k2fwjVgY2Eyo0SbsuFRVoXP/k+h3BY9/j3mCUJlNupwLJIO5RPjPAw
+ bF+GJANez6yVNsCHdWyOOR6Az+DGMCM=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-CH-QH4aHPNmar2QndXK2aQ-1; Thu, 25 May 2023 10:15:54 -0400
-X-MC-Unique: CH-QH4aHPNmar2QndXK2aQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9715654aba1so78933066b.0
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:52 -0700 (PDT)
+ us-mta-159-Zq7ZJ6o3Myuvlec304ng2g-1; Thu, 25 May 2023 10:15:56 -0400
+X-MC-Unique: Zq7ZJ6o3Myuvlec304ng2g-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-50bcd245040so2776595a12.0
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685024151; x=1687616151;
+ d=1e100.net; s=20221208; t=1685024152; x=1687616152;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YcyOskrg26ldLftCyL08wJ83ZLvx5fXvsC3Lu+udNq4=;
- b=DLgGzIHtTqgIA/R+F6HwO0NLaYOBUYvsVOwXHCx5/2cVudPs/VEk4tn4n8/lGWyWhC
- 4C68K+k8No+RRgRpQn0BZrPCiItG0QdmvzxavvTsHhMqF023kapCiWZJjNNhO6Ezd0Yr
- rdocay+DX9zuKr87wbV3wsS4PG1RQpwG8uzt6WVmRYqGkYewwKFoeZDl/VH/zTKMSiRF
- K9OBYqF39Ho0Gmz0BGV1SCxOoQ+vSOElKg/5Aqv1YWqzt/Xk1zoBl1io/3lYFbswS/0I
- F5SnjZvjGXxroDgdWueyKdjXzh7ZoxqtOmYRy0cC15vv8z48UNxr4LsHwUor62QRWOQe
- AWYg==
-X-Gm-Message-State: AC+VfDyHi1d1/Z+jqWUQpVzCq+CU3DP1x2KrZ64IVWMnOz0JtfKiJsuB
- oCqX30n76nLHuuy09TvmCqYpWwJcX4ihVFEbmt9EzF/d30uWSMI7jeWcn3L/ZLGf5iGQ90T2/bh
- dhlKGctYIUWbpj1I0V3Z1GEYJAg46jN2zrqPKCj6FfLOrdogFx5U58hnSlUAGYwvgCyAei8ST4n
- g=
-X-Received: by 2002:a17:907:2d1e:b0:969:9c0c:4c97 with SMTP id
- gs30-20020a1709072d1e00b009699c0c4c97mr1667502ejc.1.1685024150757; 
- Thu, 25 May 2023 07:15:50 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6Q0BjyZC59jHG5oBx4ykEJPF+OojZbn1cDfqFtxRt2UzZ9Cey4NXWQYMryS2imjzNmeFxfRg==
-X-Received: by 2002:a17:907:2d1e:b0:969:9c0c:4c97 with SMTP id
- gs30-20020a1709072d1e00b009699c0c4c97mr1667480ejc.1.1685024150397; 
- Thu, 25 May 2023 07:15:50 -0700 (PDT)
+ bh=F+X2yMp/rrkiuznHlbFPis928m34/lXQlFacSTwXix4=;
+ b=hfINVD5cBe5sEWe/e6niFTSERyk44lm8H4bv3s+Yoc8CtY6zi4mFNXfj0tKsJmWT0K
+ SA7ZCZ1G1VKlJrdTV1xVTSdNtlOUGtZZDF6JepQj2W9U6hHKYdVsWGMxXOH4SDz8ITSq
+ zD8kdavj6tiaL6XbWO35jdeuVvRtRnPo7mfoyfd3Ll1m6M7Xz3EriHaIbf0sHUaWSeda
+ XgePf2cOFd0UMamtkaWc9pH6b/xoe+tdGXkz+qFu2l32acM6WOE98OgwjpS2NUmvKbTk
+ bcxASVYT6PI1DoVMOIWU1BMfB88ZhPX80XHzgiSxtEsb56sA2d/tNWx2k7tR0WOOkoMg
+ tzLg==
+X-Gm-Message-State: AC+VfDxMrexTui7VfaTQEP6NoXZ+e5fVuwTuc4Xr4vdjqy0aU9JEhp6n
+ jBW4S/yrMrk4uOtVuUVsH9Ib/bt8ZCWOvrQy5GC8VPG8j8EkgLrNf8RjcVXpzYdFKaBU+60+I2K
+ 5qvoqB482rBhRLrl4CXa1J0I0kV6MQ6acHhMi+VbLclAYNNxAYK8uG3cYkZ3J37Q8D/EnTlBgog
+ E=
+X-Received: by 2002:aa7:c252:0:b0:510:6217:9994 with SMTP id
+ y18-20020aa7c252000000b0051062179994mr4539759edo.39.1685024152264; 
+ Thu, 25 May 2023 07:15:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4ugXZPk/qPYvhrAavxM+9kBbQa4CD4aNjYwcdrk9wIJbVJ/FYXAYT4NtU5GUAGJsURB7mPYA==
+X-Received: by 2002:aa7:c252:0:b0:510:6217:9994 with SMTP id
+ y18-20020aa7c252000000b0051062179994mr4539750edo.39.1685024152008; 
+ Thu, 25 May 2023 07:15:52 -0700 (PDT)
 Received: from [192.168.10.117] ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
  by smtp.gmail.com with ESMTPSA id
- q3-20020a170906144300b00966238a202esm904624ejc.7.2023.05.25.07.15.49
+ y26-20020aa7c25a000000b0051421010690sm610052edo.21.2023.05.25.07.15.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 07:15:49 -0700 (PDT)
+ Thu, 25 May 2023 07:15:51 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/20] softmmu/ioport.c: make MemoryRegionPortioList owner of
- portio_list MemoryRegions
-Date: Thu, 25 May 2023 16:15:23 +0200
-Message-Id: <20230525141532.295817-12-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 12/20] monitor: use QEMU_LOCK_GUARD a bit more
+Date: Thu, 25 May 2023 16:15:24 +0200
+Message-Id: <20230525141532.295817-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230525141532.295817-1-pbonzini@redhat.com>
 References: <20230525141532.295817-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,92 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-Currently when portio_list MemoryRegions are freed using portio_list_destroy() the RCU
-thread segfaults generating a backtrace similar to that below:
-
-    #0 0x5555599a34b6 in phys_section_destroy ../softmmu/physmem.c:996
-    #1 0x5555599a37a3 in phys_sections_free ../softmmu/physmem.c:1011
-    #2 0x5555599b24aa in address_space_dispatch_free ../softmmu/physmem.c:2430
-    #3 0x55555996a283 in flatview_destroy ../softmmu/memory.c:292
-    #4 0x55555a2cb9fb in call_rcu_thread ../util/rcu.c:284
-    #5 0x55555a29b71d in qemu_thread_start ../util/qemu-thread-posix.c:541
-    #6 0x7ffff4a0cea6 in start_thread nptl/pthread_create.c:477
-    #7 0x7ffff492ca2e in __clone (/lib/x86_64-linux-gnu/libc.so.6+0xfca2e)
-
-The problem here is that portio_list_destroy() unparents the portio_list
-MemoryRegions causing them to be freed immediately, however the flatview
-still has a reference to the MemoryRegion and so causes a use-after-free
-segfault when the RCU thread next updates the flatview.
-
-Solve the lifetime issue by making MemoryRegionPortioList the owner of the
-portio_list MemoryRegions, and then reparenting them to the portio_list
-owner. This ensures that they can be accessed as QOM children via the
-portio_list owner, yet the MemoryRegionPortioList owns the refcount.
-
-Update portio_list_destroy() to unparent the MemoryRegion from the
-portio_list owner (while keeping mrpio->mr live until finalization of the
-MemoryRegionPortioList), so that the portio_list MemoryRegions remain
-allocated until flatview_destroy() removes the final refcount upon the
-next flatview update.
-
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230419151652.362717-4-mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- softmmu/ioport.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ monitor/monitor.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/softmmu/ioport.c b/softmmu/ioport.c
-index 33720fe5664a..b66e0a5a8ebc 100644
---- a/softmmu/ioport.c
-+++ b/softmmu/ioport.c
-@@ -229,6 +229,8 @@ static void portio_list_add_1(PortioList *piolist,
-                               unsigned off_low, unsigned off_high)
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index 602535696c59..4b11bca2a21d 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -161,10 +161,9 @@ static gboolean monitor_unblocked(void *do_not_use, GIOCondition cond,
  {
-     MemoryRegionPortioList *mrpio;
-+    Object *owner;
-+    char *name;
-     unsigned i;
+     Monitor *mon = opaque;
  
-     /* Copy the sub-list and null-terminate it.  */
-@@ -245,8 +247,25 @@ static void portio_list_add_1(PortioList *piolist,
-         mrpio->ports[i].base = start + off_low;
-     }
- 
--    memory_region_init_io(&mrpio->mr, piolist->owner, &portio_ops, mrpio,
-+    /*
-+     * The MemoryRegion owner is the MemoryRegionPortioList since that manages
-+     * the lifecycle via the refcount
-+     */
-+    memory_region_init_io(&mrpio->mr, OBJECT(mrpio), &portio_ops, mrpio,
-                           piolist->name, off_high - off_low);
-+
-+    /* Reparent the MemoryRegion to the piolist owner */
-+    object_ref(&mrpio->mr);
-+    object_unparent(OBJECT(&mrpio->mr));
-+    if (!piolist->owner) {
-+        owner = container_get(qdev_get_machine(), "/unattached");
-+    } else {
-+        owner = piolist->owner;
-+    }
-+    name = g_strdup_printf("%s[*]", piolist->name);
-+    object_property_add_child(owner, name, OBJECT(&mrpio->mr));
-+    g_free(name);
-+
-     if (piolist->flush_coalesced_mmio) {
-         memory_region_set_flush_coalesced(&mrpio->mr);
-     }
-@@ -308,6 +327,7 @@ static void memory_region_portio_list_finalize(Object *obj)
- {
-     MemoryRegionPortioList *mrpio = MEMORY_REGION_PORTIO_LIST(obj);
- 
-+    object_unref(&mrpio->mr);
-     g_free(mrpio->ports);
+-    qemu_mutex_lock(&mon->mon_lock);
++    QEMU_LOCK_GUARD(&mon->mon_lock);
+     mon->out_watch = 0;
+     monitor_flush_locked(mon);
+-    qemu_mutex_unlock(&mon->mon_lock);
+     return FALSE;
  }
  
+@@ -203,9 +202,8 @@ static void monitor_flush_locked(Monitor *mon)
+ 
+ void monitor_flush(Monitor *mon)
+ {
+-    qemu_mutex_lock(&mon->mon_lock);
++    QEMU_LOCK_GUARD(&mon->mon_lock);
+     monitor_flush_locked(mon);
+-    qemu_mutex_unlock(&mon->mon_lock);
+ }
+ 
+ /* flush at every end of line */
 -- 
 2.40.1
 
