@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB68C71118E
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 19:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D8A7111CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 19:15:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2EKH-0004ZG-2M; Thu, 25 May 2023 13:00:33 -0400
+	id 1q2EYe-0000ef-V9; Thu, 25 May 2023 13:15:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2EJu-0004Y7-RQ
- for qemu-devel@nongnu.org; Thu, 25 May 2023 13:00:12 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1q2EYY-0000cx-GS
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 13:15:18 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2EJs-0007l6-VY
- for qemu-devel@nongnu.org; Thu, 25 May 2023 13:00:10 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-64d5b4c3ffeso1830869b3a.2
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 10:00:07 -0700 (PDT)
+ id 1q2EYT-0001xg-Kq
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 13:15:18 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-64d5b4c400fso2722722b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 10:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685034006; x=1687626006;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zfJ5sDaD5Eigy3wjJQlySka7C8RlP5SjSYtqHDSStgE=;
- b=tO/6PGk3sh44mk9jatSioB/4GkvY/jsBbJVufQ5xu1qoHgAad6F/HPw+GelBQ5RlAp
- j4eZ5+BXP6Ex0YoN9fXdxXQQ88Y1Q9ATTrKHw44pYmq9+Opz0TxFD6UNOU/zhOyDsDrK
- Zwscqr1k9tlSLx7P7xip6pTvbpt1tMWgo9K5k62VSw73AylENSPCRZdezOa1uKNn3xLR
- EvAmpY8d/fhh+oN8Q/vcNzjC9+B52xmSm7yDAZS1JztJM31eQ0pYgw1WjGCe5vMXULFW
- eSvHYGE1jgteXHQVYiVz/XUN/KpKmyttXEIyd71wDx0/lVxBEQBQtZNs/MlS+Iz+HO8D
- CAmQ==
+ d=linaro.org; s=google; t=1685034912; x=1687626912;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=eersNOkoYzk0XbAOQptNxJ2J8i2voZJcClyO2hfwM/E=;
+ b=JGeNMNXC91nCpO4uJPiqjmVJ7+BzsU+t4PcE07xCTvlI9RVuigpa6iWIXXVhN0mcAP
+ KTP+wbiqVNacT4IsnDAB2KGx5NOpFxLt/uAabR4OkQymObOxEI5nX3mmls7ywwh1Zm+D
+ c508AJCUnI8pH+/mODf3gzcx12yayC6PtoISRGchXRN4CrK1TpaEgAJkafWekOF8kJxN
+ 9fCGIyi5l0FuWQK8+/uIzS0XTLElq/lXPO5LrchUsrBt4rzaYGUCJc8OjPgeSsrHspjn
+ nQpfkYv3ZbgqYjW3lQnpRoCUsZamDsf6mU8Z9lY/ziD57BTlwcC9AhOdMSgxaXrDvnuc
+ XMmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685034006; x=1687626006;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=zfJ5sDaD5Eigy3wjJQlySka7C8RlP5SjSYtqHDSStgE=;
- b=ZpTkItQZsg+618Tshvr5SMY86D76XLcwfyElG76zNc5tCIrxUffJZ3nUa7qlsNFBPK
- kbNkc+8pzJqj9Dydy69TVQr+qGkIhpritDe7sdoDPYGrYa6ZNalCBUCmmsHGB0xfvqjx
- tR6dLk/rnR7H2jciObDPiZhtbEW20lQUdPgtgHt3cScfNzCs+Ui70lXrqzEcOcyQu8VA
- os8wJSM/w9Ubm+lFq4RMcSqbguS0HaoAHV4rWvESqh5UotIvxCA+s7HHCvybECsXkA43
- EpOMt54Z8mZfOzw1KFcmjbDLgLOSo+zt0zaFN7HHRzEzu+CvqK1OafThtlPpHKwjs7Xv
- JJ6g==
-X-Gm-Message-State: AC+VfDwG0xgAyGELHbpJT59QgnYQgp6mUDM1bdsT0uyKyQtIxZoTnMOY
- zpgARRffpoq4w2pr5kM1hYq938ntlUSaPDJND+c=
-X-Google-Smtp-Source: ACHHUZ7R+ymdsfnZoHYlBwycnGXoaAL+ChiIEi2uQDXrEdvXQfbNrT50Vvzs1it8hBuVy1UdirP4dQ==
-X-Received: by 2002:a05:6a00:1a16:b0:64d:277c:4ab2 with SMTP id
- g22-20020a056a001a1600b0064d277c4ab2mr9765764pfv.24.1685034006163; 
- Thu, 25 May 2023 10:00:06 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685034912; x=1687626912;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eersNOkoYzk0XbAOQptNxJ2J8i2voZJcClyO2hfwM/E=;
+ b=WZMgoy18VwIKLSkrvXwdEpAMMgIeeKbcX4FuJ6RfCahqlg5SyJe7y++bJFcJ5/vRV8
+ afDnsFYPP+dSrh7MWkCzlr7WuLK1qB5VIew6sxZOvSYs537yk4q8A7oOw0kgFuLP9qJ3
+ Gv6FPiHCWBMQVsEFXM4PyIviWd1BUuh/Q/WpgABgvjIvAy18xKefX5j3v09ffsn0DoPA
+ u4w3gIqcBTzm16malr8Hb7yVHJKKVWQG20MUsBnJsNAZPLH89B69nJCDy9ik5IGLXDHk
+ UoU5XXc3tvBOJ9HjJ1lVQWEblzt2E0tgm8ql5CS6rPfbyI3sOFI3wixzo4C9uGzkPCcV
+ SGJw==
+X-Gm-Message-State: AC+VfDwH4zDindrJrXU1+jz2ifTNkmau1lfRKf1PwzrDz6X3oWKco98j
+ 87MaFwOEAeO7JvSrXf3Wh14j7lBHYWBBSydzPRY=
+X-Google-Smtp-Source: ACHHUZ4OLF7SNfcy6nykaRIzTmwd41hcWBRE4gfAvcheT4j98A+Iq7UBkQcAJcUBBCq5sLneIC/YLQ==
+X-Received: by 2002:a05:6a21:3613:b0:101:62c7:9db1 with SMTP id
+ yg19-20020a056a21361300b0010162c79db1mr17587471pzb.55.1685034911791; 
+ Thu, 25 May 2023 10:15:11 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:7ac5:31cc:3997:3a16?
  ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
  by smtp.gmail.com with ESMTPSA id
- j15-20020a62b60f000000b0063b6451cd01sm1398683pff.121.2023.05.25.10.00.05
+ e6-20020a656786000000b0053f1d55676fsm1330114pgr.2.2023.05.25.10.15.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 10:00:05 -0700 (PDT)
-Message-ID: <7b9511f8-eca4-8a27-9d4e-31a6f16a6bb0@linaro.org>
-Date: Thu, 25 May 2023 10:00:03 -0700
+ Thu, 25 May 2023 10:15:10 -0700 (PDT)
+Message-ID: <d1bd457d-3fde-3d7d-040c-b0a0bd43d8a5@linaro.org>
+Date: Thu, 25 May 2023 10:15:09 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
+Subject: Re: [PULL 00/20] Misc patches for 2023-05-25
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230525141532.295817-1-pbonzini@redhat.com>
 Content-Language: en-US
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-Subject: tests/avocado/virtio-gpu.py:VirtioGPUx86.test_vhost_user_vga_virgl:
- ERROR
+In-Reply-To: <20230525141532.295817-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,18 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi guys,
+On 5/25/23 07:15, Paolo Bonzini wrote:
+> The following changes since commit 886c0453cbf10eebd42a9ccf89c3e46eb389c357:
+> 
+>    Merge tag 'pull-qapi-2023-05-17-v2' ofhttps://repo.or.cz/qemu/armbru  into staging (2023-05-22 15:54:21 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/bonzini/qemu.git  tags/for-upstream
+> 
+> for you to fetch changes up to cd9b15bb62e4c422c3ed5fd69c613ecd5409838e:
+> 
+>    monitor: do not use mb_read/mb_set (2023-05-25 15:40:13 +0200)
+> 
+> ----------------------------------------------------------------
+> * hot-unplug fixes for ioport
+> * purge qatomic_mb_read/set from monitor
+> * build system fixes and cleanups
+> * OHCI fix from gitlab
+> * provide EPYC-Rome CPU model not susceptible to XSAVES erratum
 
-https://gitlab.com/qemu-project/qemu/-/jobs/4352476431
-https://gitlab.com/qemu-project/qemu/-/jobs/4352476434
-
-This test ERRORs on the azure k8s runners with
-
-qemu-system-x86_64: egl: no drm render node available
-qemu-system-x86_64: egl: render node init failed
-
-Can we please SKIP the test if the required resource is not available?
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
 r~
+
 
