@@ -2,74 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D58C711AA0
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 01:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 516D4711AE6
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 01:52:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2KLj-0005zQ-Nn; Thu, 25 May 2023 19:26:27 -0400
+	id 1q2Kjo-0006Gy-Qw; Thu, 25 May 2023 19:51:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2KLe-0005vE-Mh
- for qemu-devel@nongnu.org; Thu, 25 May 2023 19:26:24 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1q2Kjl-0006GU-UT
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 19:51:17 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2KLY-0005qf-VF
- for qemu-devel@nongnu.org; Thu, 25 May 2023 19:26:22 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1afbc02c602so11983255ad.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 16:26:16 -0700 (PDT)
+ id 1q2Kjj-0003Ns-PU
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 19:51:17 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-52cbd7d0c37so85475a12.3
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 16:51:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685057176; x=1687649176;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9dWxpkriL89hdVCzkPxCT8S4I2dcQ51ihNaTFHcE9jo=;
- b=GIS7GXDcYWW+HuFG94328LSD+e96Nwuq8mKeQLBJjTeDvRGMT+eNs/ILNn3TZnuZCm
- r1AlS1ma2ZyYDCD0Nst4uuSfBSw1plXP8pipyFIlE+z2cWgc//2AGAbF278bRQvkkFz+
- 0i0/7S2mqf2bU01B02Tzt49xbdQrSQwEDAzW0AHPJ3pejEuHKzHFIbKX8sEldAxzbCuw
- oVUQTmvXXylVSFz5ISqfOPdQ56FWkswt2kjau7kqgGQbQl41zZtHVkTGI54II1MLoKiF
- 17IWsUaHxv6mjO2FxogfZ8W7EIixFl3dhSgq9HpH9iYglsouigptA9IMP+twp9ik5GfB
- qMVw==
+ d=linaro.org; s=google; t=1685058674; x=1687650674;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=grxtGqzdDW3pij35DCIXzbwm/3Rbmj2aBugCYZSOGiE=;
+ b=kFyu/NBMrE0qXF+yPkuk3RXNDVN1ecK5QimHPjG3DjuRssf0GEcIYFRJCYC8oCwtS2
+ RKKcxE0qmurOSLnNbDRgRPr83N7YiJKx4Zf2hxDNdr+ZpdIvRmvBYOqDIrVuZSexJkp5
+ cuuT+gRL9CakkG7ReMZjh4pBPr+JdobdLqkeH+hcswLBAvi2bcP5XHMOHjxMFITVKRQ1
+ 3EjtFNpCvpif43iD/szDLTy6au0LWah9S6tM1yMbT81XsAaJeEK/hXpAQVhwEJ+rg77z
+ dzZrH89PGaCcBV6PXN9HQc/XNZmUkjYdIklcpd+m+eFSkqO5PB6OlPu36SSzJ9viF7RT
+ HXIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685057176; x=1687649176;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9dWxpkriL89hdVCzkPxCT8S4I2dcQ51ihNaTFHcE9jo=;
- b=lYPDd/05FOVY3Qmth2HVGMZp/YcrdcUC0vE8KdZT7XtvLU0aNDy6wxdNSP+00qLVSY
- KYtSA8EyIMASQIH4TOxJDsN+WSOP5VMGKp6Hjh7hp36zhGe0pfVcZ7CP4/5CcL1eNpUU
- o/ExhtQFVoxb7d8dFfxE1daph+eUa5MevqVGTrckPdE1J6ZrWdF5MRtn5qmfzXtx8SxC
- XkhGX70evZ+XuKBfYPzIYer5a3RExX6J4DNhkmCvCPx29mUl0qWAwFDFnxBl+ImVzOBH
- meSUSZ7guo4PmWtYlcuk3ZltsB/DP6lnTL+9ac139KpV5+qQ/7iLNJODVHfSZ0LTfbo9
- SRlQ==
-X-Gm-Message-State: AC+VfDxS0BiFNolf/2HqPAkPd7q5VzHWn/TppD6pTfwagc8fjgad+Ib0
- 1VH1kZpAsRgxlsM7DMLdHlSEG8xZACZ4PrDLphY=
-X-Google-Smtp-Source: ACHHUZ6SYQ2KE7NzwKKaefMb6eXN3CqB8CosFjY/9Er+n82cTigvwuFnJveuYSf+kbEqmezjBqPDdA==
-X-Received: by 2002:a17:903:1ca:b0:1a1:d54b:71df with SMTP id
- e10-20020a17090301ca00b001a1d54b71dfmr3306831plh.0.1685057175701; 
- Thu, 25 May 2023 16:26:15 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685058674; x=1687650674;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=grxtGqzdDW3pij35DCIXzbwm/3Rbmj2aBugCYZSOGiE=;
+ b=LMEHozOUxqum2L0hZhXUosJX8rmClri+L/zSjuafxYyoD7jmQ2bj5l5wwKqIBQDQ0I
+ e64LxI//WOfPGH9NB5XyH4xwngnHK3mtblz5h40e0fiJ3U2sCuR8+HHSGIKmhKIw5JAJ
+ b0gWGwPiza7k9S4q862z2m0bqkqK7MENclZ3gHq/ztYxnFrFOJ0Uv0rAThvQSSMPSSIA
+ IWVRVn4ANvziXR9EQNhKXUEQsaRgtemh7nnDSBRmhla3jKvh/5WrfXpd5v32fwuazUD+
+ 7cgtnc+7zwGMIWnwSeuBQGGB75xGHWyxz7yNaGR/y0+p5CY28HxTgPfLNyp5OMuh9xry
+ RKcg==
+X-Gm-Message-State: AC+VfDytLOQtzvI2lII1tBINgexHiQVjBVxxVRmd0Gdd9JHw4NA1j12m
+ 4ZSRKuLijK8tQbNpMbFqsFa6SZSwSCCqFrqQiek=
+X-Google-Smtp-Source: ACHHUZ5slsW/RD9dPnDO/y+NKbhbPjqhuL4t0ZPzVRyQcp1imu0TlvXTqpXBC+D11TG238MqmqpVeg==
+X-Received: by 2002:a05:6a20:3d1c:b0:10f:bb1:ca50 with SMTP id
+ y28-20020a056a203d1c00b0010f0bb1ca50mr5086601pzi.10.1685058673885; 
+ Thu, 25 May 2023 16:51:13 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
  by smtp.gmail.com with ESMTPSA id
- s15-20020a170902ea0f00b0019e60c645b1sm1885036plg.305.2023.05.25.16.26.15
+ b19-20020a639313000000b0051b0e564963sm1653141pge.49.2023.05.25.16.51.13
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 16:26:15 -0700 (PDT)
+ Thu, 25 May 2023 16:51:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 20/20] target/arm: Enable FEAT_LSE2 for -cpu max
-Date: Thu, 25 May 2023 16:25:58 -0700
-Message-Id: <20230525232558.1758967-21-richard.henderson@linaro.org>
+Subject: [PATCH] accel/tcg: Fix check for page writeability in
+ load_atomic16_or_exit
+Date: Thu, 25 May 2023 16:51:12 -0700
+Message-Id: <20230525235112.1759488-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230525232558.1758967-1-richard.henderson@linaro.org>
-References: <20230525232558.1758967-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,37 +88,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+PAGE_WRITE is current writability, as modified by TB protection;
+PAGE_WRITE_ORG is the original page writability.
+
+Fixes: cdfac37be0d ("accel/tcg: Honor atomicity of loads")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- docs/system/arm/emulation.rst | 1 +
- target/arm/tcg/cpu64.c        | 1 +
- 2 files changed, 2 insertions(+)
+ accel/tcg/ldst_atomicity.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 7338987875..ecbbd63adf 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -50,6 +50,7 @@ the following architecture extensions:
- - FEAT_LRCPC (Load-acquire RCpc instructions)
- - FEAT_LRCPC2 (Load-acquire RCpc instructions v2)
- - FEAT_LSE (Large System Extensions)
-+- FEAT_LSE2 (Large System Extensions v2)
- - FEAT_LVA (Large Virtual Address space)
- - FEAT_MTE (Memory Tagging Extension)
- - FEAT_MTE2 (Memory Tagging Extension)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 886674a443..2976f94ae4 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -644,6 +644,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64MMFR2, IESB, 1);     /* FEAT_IESB */
-     t = FIELD_DP64(t, ID_AA64MMFR2, VARANGE, 1);  /* FEAT_LVA */
-     t = FIELD_DP64(t, ID_AA64MMFR2, ST, 1);       /* FEAT_TTST */
-+    t = FIELD_DP64(t, ID_AA64MMFR2, AT, 1);       /* FEAT_LSE2 */
-     t = FIELD_DP64(t, ID_AA64MMFR2, IDS, 1);      /* FEAT_IDST */
-     t = FIELD_DP64(t, ID_AA64MMFR2, FWB, 1);      /* FEAT_S2FWB */
-     t = FIELD_DP64(t, ID_AA64MMFR2, TTL, 1);      /* FEAT_TTL */
+diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+index 0f6b3f8ab6..57163f5ca2 100644
+--- a/accel/tcg/ldst_atomicity.c.inc
++++ b/accel/tcg/ldst_atomicity.c.inc
+@@ -191,7 +191,7 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+      * another process, because the fallback start_exclusive solution
+      * provides no protection across processes.
+      */
+-    if (!page_check_range(h2g(p), 16, PAGE_WRITE)) {
++    if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
+         return *p;
+     }
+ #endif
 -- 
 2.34.1
 
