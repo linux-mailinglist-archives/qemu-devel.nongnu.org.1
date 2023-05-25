@@ -2,105 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADD37117C2
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 21:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6AC71185C
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 22:44:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2H63-0002uP-HO; Thu, 25 May 2023 15:58:03 -0400
+	id 1q2HnT-0002K9-Vt; Thu, 25 May 2023 16:42:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.vnet.ibm.com>)
- id 1q2H61-0002u9-K9; Thu, 25 May 2023 15:58:01 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q2HnO-0002Jc-Ef
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 16:42:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.vnet.ibm.com>)
- id 1q2H5y-0002CZ-N1; Thu, 25 May 2023 15:58:01 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34PJn1Rx001730; Thu, 25 May 2023 19:57:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=K4sjjUpWu4qp8a03WcUL80jIiCG1mi7qnzMivpinndg=;
- b=FhVYFnYjYLLa7Hi1BFsawqmES2CbsKl/whqxA3U2TNX1NUXrqHIROJoFyu58fYvNq8W+
- +F25x4Oj1RV0Fe8U2l39C4glIq02EQoNeUchsG/gT2F3k0Dc68DaXlamXgDrowheQcFu
- 87D7GsRBPC2y9YWAAgX6c+2j2rd4ubvHWRFqZGEulEr8yyrX7+/My/yU1EF7thYNSrlV
- 1fnT+j/88wSt6FVzoxnz4Aci03YQg/ZuCQNUtIq7VjRTp04ouLATAbz9lUZJCOg/1nhp
- rI8/vtuPrJR0Mk4XnfqmC/JasGrtEBFloNw/+60nUiQwtcb1QCxTPBqBOChHs8vzOsUD 0Q== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qtd681j07-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 May 2023 19:57:46 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34PG7Z4w030528;
- Thu, 25 May 2023 19:57:45 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
- by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3qppe7u624-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 May 2023 19:57:45 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34PJviqd6095502
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 May 2023 19:57:44 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 037BD58052;
- Thu, 25 May 2023 19:57:44 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B96BE5805D;
- Thu, 25 May 2023 19:57:43 +0000 (GMT)
-Received: from [9.61.0.148] (unknown [9.61.0.148])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 25 May 2023 19:57:43 +0000 (GMT)
-Message-ID: <ba1e794c-ee3a-0dff-b008-7fac4b007255@linux.vnet.ibm.com>
-Date: Thu, 25 May 2023 14:57:43 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 1/1] hw/arm/aspeed:Add vpd data for Rainier machine
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>
-Cc: Ninad Palsule <ninad@linux.ibm.com>,
- Cameron Esfahani via <qemu-devel@nongnu.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9_via?= <qemu-arm@nongnu.org>
-References: <20230523214520.2102894-1-ninad@linux.ibm.com>
- <20230523214520.2102894-2-ninad@linux.ibm.com>
- <7fadea2f-39e0-902f-848a-8f9bd7ff1f52@kaod.org>
- <CACPK8XeSBh+SMWPZ68rkeRnOcTFE0_SFcCNoYZr85DLhzGsgtQ@mail.gmail.com>
- <80168e3a-b0f6-463e-b473-8488a897ef16@app.fastmail.com>
- <164e53c1-03dd-a530-8c91-357a10517556@kaod.org>
-From: Ninad Palsule <ninad@linux.vnet.ibm.com>
-In-Reply-To: <164e53c1-03dd-a530-8c91-357a10517556@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: V5zcooxMh-CO9m7koVU0Ia5i560VBeva
-X-Proofpoint-ORIG-GUID: V5zcooxMh-CO9m7koVU0Ia5i560VBeva
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q2Hmy-0002x8-7r
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 16:42:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685047342;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xHVU0qWkedVoNajGMwVw+ggsw6U+IVBERYKT5P0/pF4=;
+ b=asfJ5Tx2ZRGyWzqogu+EiSFOEAzskSGBrcbT1/3cRN4EjmhFj5MrxFFIN6TNdLWNGjH6Bn
+ 4RZcvE4PZWBF4LLjWv9+nofOm7An0hK+OGYRH+kRg1FQ51hVh9uz4obE3BGqD0WSdydfaK
+ YNBRMTg9ajDX8ZYAwTmdtpkQxyMy+AM=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-471-AX9miwJ4NjmDtg-MZZGGqg-1; Thu, 25 May 2023 16:42:20 -0400
+X-MC-Unique: AX9miwJ4NjmDtg-MZZGGqg-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-530a1b22514so1166079a12.1
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 13:42:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685047340; x=1687639340;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xHVU0qWkedVoNajGMwVw+ggsw6U+IVBERYKT5P0/pF4=;
+ b=UbT0FlFY423eWTuKXnsgdeqX3mPlBMhQ/d5e3LKNtUxLoXlhumarOjpPfc/zIzfFTD
+ p7FPBu6Hcuc0TcT/1Nud2/IXh1TbqpV94ebslqJ6hnKdjeY29cmVXCv2d/d0g/GlQ8su
+ TnC0sGVPZ2Wk3c+G+lkKZGuJF7iqhC8YTwKaCf1WBJYbZAOrCcYwiHEfDhoz7mzlJ5Hy
+ xlxxxbc2Ib5JyuG4n4wRN/yq3ZPKVPdsaGu7Pz9iZNK7+CcAXDuhejZV23/Jc6giNBxH
+ ajA9OruXE26V4gmLWxOIGs82xVqI/mDpPPZr5pG6gpf9ABCQzI9qJGFeJcaIn8WnpC1K
+ IxvQ==
+X-Gm-Message-State: AC+VfDyW47Wltzqk1Nx0KTuMprEpt+4+3XlRpcNIHFZ4E+Sb88UOBKVe
+ FjJiVUtmx2dx/4T8m0soTFX6Kz2OjgBUB/fYOzEtDtqH+Ez+/5t3RrOkj8xAhDZ5a++fRmwn5k1
+ knKhbLxCdyx78Qin+2TeNAm2LX7WLBIE=
+X-Received: by 2002:a17:902:ab8a:b0:1ac:aac1:e344 with SMTP id
+ f10-20020a170902ab8a00b001acaac1e344mr2618107plr.36.1685047339745; 
+ Thu, 25 May 2023 13:42:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4aOb3actQ/vjQIUj8Pp3wled4Yvk1aHp6n+tRSQEkao0EigQgJ/Sf29yLgjS2+2e2G65MIXcmIbSHkYD9r0LI=
+X-Received: by 2002:a17:902:ab8a:b0:1ac:aac1:e344 with SMTP id
+ f10-20020a170902ab8a00b001acaac1e344mr2618083plr.36.1685047339299; Thu, 25
+ May 2023 13:42:19 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-25_12,2023-05-25_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- mlxlogscore=822 phishscore=0 malwarescore=0 suspectscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305250165
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=ninad@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+References: <20230516105908.527838-1-pbonzini@redhat.com>
+ <20230516105908.527838-6-pbonzini@redhat.com>
+In-Reply-To: <20230516105908.527838-6-pbonzini@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Thu, 25 May 2023 16:42:08 -0400
+Message-ID: <CAFn=p-a=druvECmrOJv7o5ydK4Unm3xda8N6FAiRCA+CEdjyTg@mail.gmail.com>
+Subject: Re: [PATCH v2 06/27] mkvenv: add ensure subcommand
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, berrange@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,47 +92,344 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+On Tue, May 16, 2023 at 6:59=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+>
+> From: John Snow <jsnow@redhat.com>
+>
+> This command is to be used to add various packages (or ensure they're
+> already present) into the configure-provided venv in a modular fashion.
+>
+> Examples:
+>
+> mkvenv ensure --online --dir "${source_dir}/python/wheels/" "meson>=3D0.6=
+1.5"
+> mkvenv ensure --online "sphinx>=3D1.6.0"
+> mkvenv ensure "qemu.qmp=3D=3D0.0.2"
+>
+> It's designed to look for packages in three places, in order:
+>
+> (1) In system packages, if the version installed is already good
+> enough. This way your distribution-provided meson, sphinx, etc are
+> always used as first preference.
+>
+> (2) In a vendored packages directory. Here I am suggesting
+> qemu.git/python/wheels/ as that directory. This is intended to serve as
+> a replacement for vendoring the meson source for QEMU tarballs. It is
+> also highly likely to be extremely useful for packaging the "qemu.qmp"
+> package in source distributions for platforms that do not yet package
+> qemu.qmp separately.
+>
+> (3) Online, via PyPI, ***only when "--online" is passed***. This is only
+> ever used as a fallback if the first two sources do not have an
+> appropriate package that meets the requirement. The ability to build
+> QEMU and run tests *completely offline* is not impinged.
+>
+
+I should point out that the commit message here is no longer true,
+this order isn't explicitly maintained, because:
+
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> Message-Id: <20230511035435.734312-7-jsnow@redhat.com>
+> [Use distlib to lookup distributions. - Paolo]
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  python/scripts/mkvenv.py | 135 ++++++++++++++++++++++++++++++++++++++-
+>  python/setup.cfg         |  10 +++
+>  python/tests/minreqs.txt |   3 +
+>  3 files changed, 145 insertions(+), 3 deletions(-)
+>
+> diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
+> index 2a3d73a51db4..fd4b62c70ffa 100644
+> --- a/python/scripts/mkvenv.py
+> +++ b/python/scripts/mkvenv.py
+> @@ -11,6 +11,7 @@
+>  Commands:
+>    command     Description
+>      create    create a venv
+> +    ensure    Ensure that the specified package is installed.
+>
+>  --------------------------------------------------
+>
+> @@ -22,6 +23,18 @@
+>  options:
+>    -h, --help  show this help message and exit
+>
+> +--------------------------------------------------
+> +
+> +usage: mkvenv ensure [-h] [--online] [--dir DIR] dep_spec...
+> +
+> +positional arguments:
+> +  dep_spec    PEP 508 Dependency specification, e.g. 'meson>=3D0.61.5'
+> +
+> +options:
+> +  -h, --help  show this help message and exit
+> +  --online    Install packages from PyPI, if necessary.
+> +  --dir DIR   Path to vendored packages where we may install from.
+> +
+>  """
+>
+>  # Copyright (C) 2022-2023 Red Hat, Inc.
+> @@ -43,8 +56,17 @@
+>  import sys
+>  import sysconfig
+>  from types import SimpleNamespace
+> -from typing import Any, Optional, Union
+> +from typing import (
+> +    Any,
+> +    Optional,
+> +    Sequence,
+> +    Union,
+> +)
+>  import venv
+> +import warnings
+> +
+> +import distlib.database
+> +import distlib.version
+>
+>
+>  # Do not add any mandatory dependencies from outside the stdlib:
+> @@ -309,6 +331,77 @@ def _stringify(data: Union[str, bytes]) -> str:
+>      print(builder.get_value("env_exe"))
+>
+>
+> +def pip_install(
+> +    args: Sequence[str],
+> +    online: bool =3D False,
+> +    wheels_dir: Optional[Union[str, Path]] =3D None,
+> +) -> None:
+> +    """
+> +    Use pip to install a package or package(s) as specified in @args.
+> +    """
+> +    loud =3D bool(
+> +        os.environ.get("DEBUG")
+> +        or os.environ.get("GITLAB_CI")
+> +        or os.environ.get("V")
+> +    )
+> +
+> +    full_args =3D [
+> +        sys.executable,
+> +        "-m",
+> +        "pip",
+> +        "install",
+> +        "--disable-pip-version-check",
+> +        "-v" if loud else "-q",
+> +    ]
+> +    if not online:
+> +        full_args +=3D ["--no-index"]
+> +    if wheels_dir:
+> +        full_args +=3D ["--find-links", f"file://{str(wheels_dir)}"]
+> +    full_args +=3D list(args)
+> +    subprocess.run(
+> +        full_args,
+> +        check=3DTrue,
+> +    )
+> +
+> +
+> +def ensure(
+> +    dep_specs: Sequence[str],
+> +    online: bool =3D False,
+> +    wheels_dir: Optional[Union[str, Path]] =3D None,
+> +) -> None:
+> +    """
+> +    Use pip to ensure we have the package specified by @dep_specs.
+> +
+> +    If the package is already installed, do nothing. If online and
+> +    wheels_dir are both provided, prefer packages found in wheels_dir
+> +    first before connecting to PyPI.
+> +
+> +    :param dep_specs:
+> +        PEP 508 dependency specifications. e.g. ['meson>=3D0.61.5'].
+> +    :param online: If True, fall back to PyPI.
+> +    :param wheels_dir: If specified, search this path for packages.
+> +    """
+> +    with warnings.catch_warnings():
+> +        warnings.filterwarnings(
+> +            "ignore", category=3DUserWarning, module=3D"distlib"
+> +        )
+> +        dist_path =3D distlib.database.DistributionPath(include_egg=3DTr=
+ue)
+> +        absent =3D []
+> +        for spec in dep_specs:
+> +            matcher =3D distlib.version.LegacyMatcher(spec)
+> +            dist =3D dist_path.get_distribution(matcher.name)
+> +            if dist is None or not matcher.match(dist.version):
+> +                absent.append(spec)
+> +            else:
+> +                logger.info("found %s", dist)
+> +
+
+^ This change to determine if a package is installed or not instead of
+using pip to figure it out for us, means that ...
+
+> +    if absent:
+> +        # Some packages are missing or aren't a suitable version,
+> +        # install a suitable (possibly vendored) package.
+> +        print(f"mkvenv: installing {', '.join(absent)}", file=3Dsys.stde=
+rr)
+> +        pip_install(args=3Dabsent, online=3Donline, wheels_dir=3Dwheels_=
+dir)
+> +
+
+^ a single invocation to pip will actually consider both online and
+offline sources simultaneously, and chooses the "best version" between
+all sources, with no weighting or preference given to the offline
+source.
+
+The only way to prefer an offline source to the exclusion of an online
+one is with two separate pip_install invocations; so a suitable patch
+here (sans some error management) might be:
+
+if wheels_dir and online:
+    try:
+        pip_install(args=3Dabsent, wheels_dir)
+        return
+    except CalledProcessError:
+        pass
+
+pip_install(args=3Dabsent, online=3Donline, wheels_dir=3Dwheels_dir)
 
 
-On 5/25/23 1:37 AM, Cédric Le Goater wrote:
-> [ ... ]
->
->> However, regarding Cédric's log above, a reboot is expected on the first
->> boot of a fresh image when there's valid VPD available. For the first
->> boot of a fresh image we configure the kernel with a minimal devicetree
->> that allows us to read the VPD data. This determines the system we're
->> actually on and configures an appropriate devicetree for subsequent
->> boots. We then reboot to pick up the new devicetree.
->
-> Yes. Then, the behavior looks correct under QEMU :
->
->   https://www.kaod.org/qemu/aspeed/rainier/rainer.log
->
-> Here are the services which still have with some issues :
->
-> * clear-once.service                loaded failed failed          
-> Clear one time boot overrides
-> * ncsi-linkspeed@eth0.service       loaded failed failed          Set 
-> eth0 gigabit link speed
-> * ncsi-linkspeed@eth1.service       loaded failed failed          Set 
-> eth1 gigabit link speed
-> * obmc-flash-bios-init.service      loaded failed failed          
-> Setup Host FW directories
-> * system-vpd.service                loaded failed failed          
-> System VPD Collection
-> * trace-enable.service              loaded failed failed          
-> Enable Linux trace events in the boot loader
+It *may* be a good idea to implement this so that a meson release in
+the middle of an RC freeze does not accidentally change the build
+process for a large number of people all at once - It's a risk that
+still exists with e.g. Fedora updates et al, but generally downstream
+distros lag behind PyPI and we usually have lead time to work to
+integrate bleeding edge python package versions (for example, I can
+usually fix pylint errors in cutting edge PyPI packages before they
+hit Fedora.)
 
-On my system system-vpd.service was active. I couldn't run your build on 
-my development machine.
+That said, your changes here *do* improve the speed a lot - question,
+why are we using LegacyMatcher instead of ... not a Legacy version? I
+don't see good docs for this one on the distlib site. (Is this what
+pip itself is using somewhere?)
 
-I am still checking it.
+--js
 
+> +
+>  def _add_create_subcommand(subparsers: Any) -> None:
+>      subparser =3D subparsers.add_parser("create", help=3D"create a venv"=
+)
+>      subparser.add_argument(
+> @@ -319,13 +412,42 @@ def _add_create_subcommand(subparsers: Any) -> None=
+:
+>      )
 >
-> C.
+>
+> +def _add_ensure_subcommand(subparsers: Any) -> None:
+> +    subparser =3D subparsers.add_parser(
+> +        "ensure", help=3D"Ensure that the specified package is installed=
+."
+> +    )
+> +    subparser.add_argument(
+> +        "--online",
+> +        action=3D"store_true",
+> +        help=3D"Install packages from PyPI, if necessary.",
+> +    )
+> +    subparser.add_argument(
+> +        "--dir",
+> +        type=3Dstr,
+> +        action=3D"store",
+> +        help=3D"Path to vendored packages where we may install from.",
+> +    )
+> +    subparser.add_argument(
+> +        "dep_specs",
+> +        type=3Dstr,
+> +        action=3D"store",
+> +        help=3D"PEP 508 Dependency specification, e.g. 'meson>=3D0.61.5'=
+",
+> +        nargs=3D"+",
+> +    )
+> +
+> +
+>  def main() -> int:
+>      """CLI interface to make_qemu_venv. See module docstring."""
+>      if os.environ.get("DEBUG") or os.environ.get("GITLAB_CI"):
+>          # You're welcome.
+>          logging.basicConfig(level=3Dlogging.DEBUG)
+> -    elif os.environ.get("V"):
+> -        logging.basicConfig(level=3Dlogging.INFO)
+> +    else:
+> +        if os.environ.get("V"):
+> +            logging.basicConfig(level=3Dlogging.INFO)
+> +
+> +        # These are incredibly noisy even for V=3D1
+> +        logging.getLogger("distlib.metadata").addFilter(lambda record: F=
+alse)
+> +        logging.getLogger("distlib.database").addFilter(lambda record: F=
+alse)
+>
+>      parser =3D argparse.ArgumentParser(
+>          prog=3D"mkvenv",
+> @@ -339,6 +461,7 @@ def main() -> int:
+>      )
+>
+>      _add_create_subcommand(subparsers)
+> +    _add_ensure_subcommand(subparsers)
+>
+>      args =3D parser.parse_args()
+>      try:
+> @@ -348,6 +471,12 @@ def main() -> int:
+>                  system_site_packages=3DTrue,
+>                  clear=3DTrue,
+>              )
+> +        if args.command =3D=3D "ensure":
+> +            ensure(
+> +                dep_specs=3Dargs.dep_specs,
+> +                online=3Dargs.online,
+> +                wheels_dir=3Dargs.dir,
+> +            )
+>          logger.debug("mkvenv.py %s: exiting", args.command)
+>      except Ouch as exc:
+>          print("\n*** Ouch! ***\n", file=3Dsys.stderr)
+> diff --git a/python/setup.cfg b/python/setup.cfg
+> index 5b25f810fa8b..d680374b2950 100644
+> --- a/python/setup.cfg
+> +++ b/python/setup.cfg
+> @@ -36,6 +36,7 @@ packages =3D
+>  # Remember to update tests/minreqs.txt if changing anything below:
+>  devel =3D
+>      avocado-framework >=3D 90.0
+> +    distlib >=3D 0.3.6
+>      flake8 >=3D 3.6.0
+>      fusepy >=3D 2.0.4
+>      isort >=3D 5.1.2
+> @@ -112,6 +113,15 @@ ignore_missing_imports =3D True
+>  [mypy-pkg_resources]
+>  ignore_missing_imports =3D True
+>
+> +[mypy-distlib]
+> +ignore_missing_imports =3D True
+> +
+> +[mypy-distlib.database]
+> +ignore_missing_imports =3D True
+> +
+> +[mypy-distlib.version]
+> +ignore_missing_imports =3D True
+> +
+>  [pylint.messages control]
+>  # Disable the message, report, category or checker with the given id(s).=
+ You
+>  # can either give multiple identifiers separated by comma (,) or put thi=
+s
+> diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
+> index dfb8abb155f4..7ecf5e7fe483 100644
+> --- a/python/tests/minreqs.txt
+> +++ b/python/tests/minreqs.txt
+> @@ -16,6 +16,9 @@ urwid=3D=3D2.1.2
+>  urwid-readline=3D=3D0.13
+>  Pygments=3D=3D2.9.0
+>
+> +# Dependencies for mkvenv
+> +distlib=3D=3D0.3.6
+> +
+>  # Dependencies for FUSE support for qom-fuse
+>  fusepy=3D=3D2.0.4
+>
+> --
+> 2.40.1
 >
 >
->
->
+
 
