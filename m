@@ -2,43 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE4071130E
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEE271130F
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:03:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2FIM-0003hN-Mw; Thu, 25 May 2023 14:02:40 -0400
+	id 1q2FJ4-0004cx-BF; Thu, 25 May 2023 14:03:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q2FI4-0003bW-NY; Thu, 25 May 2023 14:02:20 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2FIw-0004X4-W0
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:03:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1q2FI1-0003J7-QG; Thu, 25 May 2023 14:02:20 -0400
-Received: from dev005.ch-qa.vzint.dev ([172.29.1.10])
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1q2FGW-002Ggr-1y;
- Thu, 25 May 2023 20:02:12 +0200
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, shmuel.eiderman@oracle.com,
- andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v2 2/2] qemu-iotests: 024: add rebasing test case for
- overlay_size > backing_size
-Date: Thu, 25 May 2023 21:02:13 +0300
-Message-Id: <20230525180213.902012-3-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230525180213.902012-1-andrey.drobyshev@virtuozzo.com>
-References: <20230525180213.902012-1-andrey.drobyshev@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2FIu-0003SV-Bj
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:03:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685037791;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=NH3SrGZ+F7wGIGejdkJMF89luqdwQhNViRZoVsrhVxg=;
+ b=PObknF6XrLY1AzX41KEYnFNmq5jMkzCLMsoKKwmNg/c7K36nWxAgtyGa9MGtMvFF5jEefe
+ X/RDtElxTHK22gQFjEG1QdODSd2Pg+p2FPd8qpVRhOy2slSIlfB0ZpPcj1sAaIfhz/915k
+ xygZDdGrqX6N1LCinQSFGyY0NgSq3DY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-411-FNLJ9GtiPRaHSzvkfo9PHQ-1; Thu, 25 May 2023 14:03:00 -0400
+X-MC-Unique: FNLJ9GtiPRaHSzvkfo9PHQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B51D53C13934;
+ Thu, 25 May 2023 18:02:59 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8F6ADC0448E;
+ Thu, 25 May 2023 18:02:59 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 81B7E21E692E; Thu, 25 May 2023 20:02:58 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
+ dgilbert@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
+ eblake@redhat.com,  manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v5 8/9] migration: Introduced MigrateChannelList struct
+ to migration code flow.
+References: <20230519094617.7078-1-het.gala@nutanix.com>
+ <20230519094617.7078-9-het.gala@nutanix.com>
+Date: Thu, 25 May 2023 20:02:58 +0200
+In-Reply-To: <20230519094617.7078-9-het.gala@nutanix.com> (Het Gala's message
+ of "Fri, 19 May 2023 09:46:16 +0000")
+Message-ID: <871qj4jnl9.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111;
- envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -51,130 +80,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before previous commit, rebase was getting infitely stuck in case of
-rebasing within the same backing chain and when overlay_size > backing_size.
-Let's add this case to the rebasing test 024 to make sure it doesn't
-break again.
+Het Gala <het.gala@nutanix.com> writes:
 
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- tests/qemu-iotests/024     | 57 ++++++++++++++++++++++++++++++++++++++
- tests/qemu-iotests/024.out | 30 ++++++++++++++++++++
- 2 files changed, 87 insertions(+)
+> Integrated MigrateChannelList with all transport backends (socket, exec
+> and rdma) for both source and destination migration code flow.
+>
+> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
 
-diff --git a/tests/qemu-iotests/024 b/tests/qemu-iotests/024
-index 25a564a150..98a7c8fd65 100755
---- a/tests/qemu-iotests/024
-+++ b/tests/qemu-iotests/024
-@@ -199,6 +199,63 @@ echo
- # $BASE_OLD and $BASE_NEW)
- $QEMU_IMG map "$OVERLAY" | _filter_qemu_img_map
- 
-+# Check that rebase within the chain is working when
-+# overlay_size > old_backing_size
-+#
-+# base_new <-- base_old <-- overlay
-+#
-+# Backing (new): 11 11 11 11 11
-+# Backing (old): 22 22 22 22
-+# Overlay:       -- -- -- -- --
-+#
-+# As a result, overlay should contain data identical to base_old, with the
-+# last cluster remaining unallocated.
-+
-+echo
-+echo "=== Test rebase within one backing chain ==="
-+echo
-+
-+echo "Creating backing chain"
-+echo
-+
-+TEST_IMG=$BASE_NEW _make_test_img $(( CLUSTER_SIZE * 5 ))
-+TEST_IMG=$BASE_OLD _make_test_img -b "$BASE_NEW" -F $IMGFMT \
-+    $(( CLUSTER_SIZE * 4 ))
-+TEST_IMG=$OVERLAY _make_test_img -b "$BASE_OLD" -F $IMGFMT \
-+    $(( CLUSTER_SIZE * 5 ))
-+
-+echo
-+echo "Fill backing files with data"
-+echo
-+
-+$QEMU_IO "$BASE_NEW" -c "write -P 0x11 0 $(( CLUSTER_SIZE * 5 ))" \
-+    | _filter_qemu_io
-+$QEMU_IO "$BASE_OLD" -c "write -P 0x22 0 $(( CLUSTER_SIZE * 4 ))" \
-+    | _filter_qemu_io
-+
-+echo
-+echo "Check the last cluster is zeroed in overlay before the rebase"
-+echo
-+$QEMU_IO "$OVERLAY" -c "read -P 0x00 $(( CLUSTER_SIZE * 4 )) $CLUSTER_SIZE" \
-+    | _filter_qemu_io
-+
-+echo
-+echo "Rebase onto another image in the same chain"
-+echo
-+
-+$QEMU_IMG rebase -b "$BASE_NEW" -F $IMGFMT "$OVERLAY"
-+
-+echo "Verify that data is read the same before and after rebase"
-+echo
-+
-+# Verify the first 4 clusters are still read the same as in the old base
-+$QEMU_IO "$OVERLAY" -c "read -P 0x22 0 $(( CLUSTER_SIZE * 4 ))" \
-+    | _filter_qemu_io
-+# Verify the last cluster still reads as zeroes
-+$QEMU_IO "$OVERLAY" -c "read -P 0x00 $(( CLUSTER_SIZE * 4 )) $CLUSTER_SIZE" \
-+    | _filter_qemu_io
-+
-+echo
- 
- # success, all done
- echo "*** done"
-diff --git a/tests/qemu-iotests/024.out b/tests/qemu-iotests/024.out
-index 973a5a3711..245fe8b1d1 100644
---- a/tests/qemu-iotests/024.out
-+++ b/tests/qemu-iotests/024.out
-@@ -171,4 +171,34 @@ read 65536/65536 bytes at offset 196608
- Offset          Length          File
- 0               0x30000         TEST_DIR/subdir/t.IMGFMT
- 0x30000         0x10000         TEST_DIR/subdir/t.IMGFMT.base_new
-+
-+=== Test rebase within one backing chain ===
-+
-+Creating backing chain
-+
-+Formatting 'TEST_DIR/subdir/t.IMGFMT.base_new', fmt=IMGFMT size=327680
-+Formatting 'TEST_DIR/subdir/t.IMGFMT.base_old', fmt=IMGFMT size=262144 backing_file=TEST_DIR/subdir/t.IMGFMT.base_new backing_fmt=IMGFMT
-+Formatting 'TEST_DIR/subdir/t.IMGFMT', fmt=IMGFMT size=327680 backing_file=TEST_DIR/subdir/t.IMGFMT.base_old backing_fmt=IMGFMT
-+
-+Fill backing files with data
-+
-+wrote 327680/327680 bytes at offset 0
-+320 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+wrote 262144/262144 bytes at offset 0
-+256 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+Check the last cluster is zeroed in overlay before the rebase
-+
-+read 65536/65536 bytes at offset 262144
-+64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+Rebase onto another image in the same chain
-+
-+Verify that data is read the same before and after rebase
-+
-+read 262144/262144 bytes at offset 0
-+256 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+read 65536/65536 bytes at offset 262144
-+64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
- *** done
--- 
-2.31.1
+clang warns for me:
+
+../migration/migration.c:497:13: warning: variable 'addrs' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../migration/migration.c:503:54: note: uninitialized use occurs here
+    if (!migration_channels_and_transport_compatible(addrs, errp)) {
+                                                     ^~~~~
+../migration/migration.c:497:9: note: remove the 'if' if its condition is always true
+        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../migration/migration.c:497:13: warning: variable 'addrs' is used uninitialized whenever '&&' condition is false [-Wsometimes-uninitialized]
+        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+            ^~~
+../migration/migration.c:503:54: note: uninitialized use occurs here
+    if (!migration_channels_and_transport_compatible(addrs, errp)) {
+                                                     ^~~~~
+../migration/migration.c:497:13: note: remove the '&&' if its condition is always true
+        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+            ^~~~~~
+../migration/migration.c:477:36: note: initialize the variable 'addrs' to silence this warning
+    g_autoptr(MigrateAddress) addrs;
+                                   ^
+                                    = NULL
+../migration/migration.c:1735:13: warning: variable 'addrs' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../migration/migration.c:1741:54: note: uninitialized use occurs here
+    if (!migration_channels_and_transport_compatible(addrs, errp)) {
+                                                     ^~~~~
+../migration/migration.c:1735:9: note: remove the 'if' if its condition is always true
+        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../migration/migration.c:1735:13: warning: variable 'addrs' is used uninitialized whenever '&&' condition is false [-Wsometimes-uninitialized]
+        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+            ^~~
+../migration/migration.c:1741:54: note: uninitialized use occurs here
+    if (!migration_channels_and_transport_compatible(addrs, errp)) {
+                                                     ^~~~~
+../migration/migration.c:1735:13: note: remove the '&&' if its condition is always true
+        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+            ^~~~~~
+../migration/migration.c:1715:36: note: initialize the variable 'addrs' to silence this warning
+    g_autoptr(MigrateAddress) addrs;
+                                   ^
+                                    = NULL
+4 warnings generated.
 
 
