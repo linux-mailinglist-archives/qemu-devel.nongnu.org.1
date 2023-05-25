@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF01710E39
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA768710E38
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:22:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2BlI-0004iF-TH; Thu, 25 May 2023 10:16:16 -0400
+	id 1q2BlL-0004mT-Mq; Thu, 25 May 2023 10:16:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2BlA-0004gN-0T
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:09 -0400
+ id 1q2Bl7-0004fQ-SY
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bl7-0007fc-UN
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:07 -0400
+ id 1q2Bl5-0007ez-Px
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685024165;
+ s=mimecast20190719; t=1685024163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nl9YV0klK4c1Ul2Mo+osatIzoXVRjqjEwHKUgZuQG0k=;
- b=AByi5opGCRAKHQad0otfcv1GaDtTZIrsQuvAYv84CUA6KYHq8vWKfOZFPNWhdbjdz/M5QS
- LB1+WvLmhnNOnuJcoYCov3SA4SzMyU8OSlrXjSejj0yPqrfpuRKjE45zSTgrZIClIOOO2k
- w/qXDNOokMIALrYmpandetUI8fy7Zs8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SJIcYdZiEX3LyHd3jqDR3lyTstBBflPYOIz6+wi9CP8=;
+ b=UtZ2gzGdBMS8pfEr6uvILoptOdIQkNWwXrajh3Gmi2FS7Sr+6M5dUv7ewySOq7/zqvYWzS
+ n1xExujEH4SoLMZknld8IXADbhBSJyWPnxIjMSrBzVzg6DINkrI6PkhE9XAXGIR+/aIT46
+ /gwV48doR8T63mN9M9elD2/YDjli2AI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-Cl4a1RUrMCqO22nAoYX4bQ-1; Thu, 25 May 2023 10:15:59 -0400
-X-MC-Unique: Cl4a1RUrMCqO22nAoYX4bQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-96f6fee8123so71057166b.0
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:58 -0700 (PDT)
+ us-mta-279-LpJ4kMZPMr-qBc7tzOw8kQ-1; Thu, 25 May 2023 10:16:01 -0400
+X-MC-Unique: LpJ4kMZPMr-qBc7tzOw8kQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-96f4f1bb838so69138866b.3
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685024157; x=1687616157;
+ d=1e100.net; s=20221208; t=1685024158; x=1687616158;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nl9YV0klK4c1Ul2Mo+osatIzoXVRjqjEwHKUgZuQG0k=;
- b=jxpXv+dUIWp1bBO8RwqT3wSdz1YD+KP9nceiLa48sI136vKlCGCRPtRp83UEMRejz0
- f7VlZXGGkgQh9hkKRuzC0fRdqPW6Y7O8hzDohPeQH8vrH5YLejqMTyWjrhE+6JghHmtv
- uexdpPhBMPe0QRTLRFfUoGdm8k5T7K22G4MlbizhXoz5yOoaZnxffCIY8GXqClEe8G49
- j+t0vAAYmCm7kKBawjTkoYH/JpXXQ0CmW7J6X8Ezf9n4ABFhh+EAkZqBbx1MySWDZIpN
- RTlmKR8llLkEtgG2Vv0qvICn10ntVS7i4L0B7siPW8cFU+UfXFFnWKEAsu1qK8MJgrKQ
- xkYQ==
-X-Gm-Message-State: AC+VfDxKM5efzPQPO+AvPzJ7s0/KlxOlAaHwbgWU6B8eknl/MyV8xp1i
- ceTJlqi+yxvdZFVkQT9XeWj1VTUgsrLtbybTe9ITNllzooF8T8VcnElJPEeFauutbX2M0MWoENS
- UYMo/h2hPKMEP08F7zqv7rVxw6bIN4D58OPkREaA1zkOLxQhJyu0j+JvQafJeq1/UvGe+JhFeb5
- U=
-X-Received: by 2002:a17:907:a0a:b0:971:5a79:29ff with SMTP id
- bb10-20020a1709070a0a00b009715a7929ffmr1562420ejc.48.1685024157087; 
+ bh=SJIcYdZiEX3LyHd3jqDR3lyTstBBflPYOIz6+wi9CP8=;
+ b=RSP1yu/Lyt8klckyuwMMRoP1FD72UmbW/xz+yrbvofJhrGgFXsrZRjK38H9EfbmBt4
+ +Z5UDwqHbfol3hJllUfQN7rpyCk5LD98HQyGp4jPzH7VDCSpZUNYp48Io9wkqXFZ1ncR
+ lPmv+OI2J3CW2qUlIOnHsQUEMQUgu8XAHorlIqrrPj6vuIkTIo6Z9A1P4g+8YwHJy3Gj
+ Lni1Ohj1E8fTatoS+SJWG6f2aZZt1P18DAS2IZUyqTU3gpDaQaEdV5cAOpGX/qcic1DX
+ aemmlhCsEMCgPHOMU/rxmUQTJQ4bKtzVuCT2YrsIEPGz2MDhJP4h9SaL5a6Sguls4+Be
+ n4xw==
+X-Gm-Message-State: AC+VfDzEoc8mXgK03nRzMWlDrNA6eCRAByCe/OCxIOyyIvrgG9gFm679
+ AbHcVXtw1jx3C7kt/uHUahzfbneLU2cQWnX0RKHm1oUuowrZwVJzRDxBEvzsg7PWVDTzHp73Sm9
+ gfMFR4UHFQDTOKrVlehrak0T+ryFa+CJqV86xRbyAYQvmKkKsRxJ4Yb2FFDO6fQWDoE2FnKOdSG
+ w=
+X-Received: by 2002:a17:907:707:b0:96b:1608:3563 with SMTP id
+ xb7-20020a170907070700b0096b16083563mr1767506ejb.58.1685024158138; 
+ Thu, 25 May 2023 07:15:58 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6pOLYk1iCVewesqi5FE8h4Yhkx2gKELsU1EeMazv7m6VNEnoOs4mXiV3dvgVVG96EEbBoRQg==
+X-Received: by 2002:a17:907:707:b0:96b:1608:3563 with SMTP id
+ xb7-20020a170907070700b0096b16083563mr1767479ejb.58.1685024157704; 
  Thu, 25 May 2023 07:15:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ76WxchKBj9jYIH4J4u/jA35DHx9fWY5rBgjwjYyYcuYxpV2kOqbFP1L79eFihFSUnwdTfGpQ==
-X-Received: by 2002:a17:907:a0a:b0:971:5a79:29ff with SMTP id
- bb10-20020a1709070a0a00b009715a7929ffmr1562389ejc.48.1685024156597; 
- Thu, 25 May 2023 07:15:56 -0700 (PDT)
 Received: from [192.168.10.117] ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
  by smtp.gmail.com with ESMTPSA id
- v24-20020a170906b01800b0096f6e2f4d9esm880665ejy.83.2023.05.25.07.15.55
+ k12-20020a170906128c00b00965a52d2bf6sm876614ejb.88.2023.05.25.07.15.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 07:15:56 -0700 (PDT)
+ Thu, 25 May 2023 07:15:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/20] monitor: do not use mb_read/mb_set for suspend_cnt
-Date: Thu, 25 May 2023 16:15:27 +0200
-Message-Id: <20230525141532.295817-16-pbonzini@redhat.com>
+Subject: [PULL 16/20] monitor: cleanup detection of qmp_dispatcher_co shutting
+ down
+Date: Thu, 25 May 2023 16:15:28 +0200
+Message-Id: <20230525141532.295817-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230525141532.295817-1-pbonzini@redhat.com>
 References: <20230525141532.295817-1-pbonzini@redhat.com>
@@ -100,253 +101,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Clean up monitor_event to just use monitor_suspend/monitor_resume,
-using mon->mux_out to protect against incorrect nesting (especially
-on startup).
+Instead of overloading qmp_dispatcher_co_busy, make the coroutine
+pointer NULL.  This will make things break spectacularly if somebody
+tries to start a request after monitor_cleanup().
 
-The only remaining case of reading suspend_cnt is in the can_read
-callback, which is just advisory and can use qatomic_read.
-
-As an extra benefit, mux_out is now simply protected by mon_lock.
-Also, moving the prompt to the beginning of the main loop removes
-it from the output in some error cases where QEMU does not actually
-start successfully.  It is not a full fix and it would be nice to
-also remove the monitor heading, but this is already a small (though
-unintentional) improvement.
+AIO_WAIT_WHILE_UNLOCKED() does not need qatomic_mb_read(), because
+the macro contains all the necessary memory barriers.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- monitor/hmp.c                 | 41 ++++++++++++++++-------------------
- monitor/monitor-internal.h    |  3 +--
- monitor/monitor.c             |  9 ++++++--
- tests/qemu-iotests/051.out    |  4 ++--
- tests/qemu-iotests/051.pc.out | 20 ++++++++---------
- 5 files changed, 39 insertions(+), 38 deletions(-)
+ monitor/monitor.c | 2 +-
+ monitor/qmp.c     | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/monitor/hmp.c b/monitor/hmp.c
-index 5cab56d355c8..69c1b7e98abb 100644
---- a/monitor/hmp.c
-+++ b/monitor/hmp.c
-@@ -1401,45 +1401,42 @@ static void monitor_read(void *opaque, const uint8_t *buf, int size)
- static void monitor_event(void *opaque, QEMUChrEvent event)
- {
-     Monitor *mon = opaque;
--    MonitorHMP *hmp_mon = container_of(mon, MonitorHMP, common);
- 
-     switch (event) {
-     case CHR_EVENT_MUX_IN:
-         qemu_mutex_lock(&mon->mon_lock);
--        mon->mux_out = 0;
--        qemu_mutex_unlock(&mon->mon_lock);
--        if (mon->reset_seen) {
--            readline_restart(hmp_mon->rs);
-+        if (mon->mux_out) {
-+            mon->mux_out = 0;
-             monitor_resume(mon);
--            monitor_flush(mon);
--        } else {
--            qatomic_mb_set(&mon->suspend_cnt, 0);
-         }
-+        qemu_mutex_unlock(&mon->mon_lock);
-         break;
- 
-     case CHR_EVENT_MUX_OUT:
--        if (mon->reset_seen) {
--            if (qatomic_mb_read(&mon->suspend_cnt) == 0) {
--                monitor_printf(mon, "\n");
--            }
--            monitor_flush(mon);
--            monitor_suspend(mon);
--        } else {
--            qatomic_inc(&mon->suspend_cnt);
--        }
-         qemu_mutex_lock(&mon->mon_lock);
--        mon->mux_out = 1;
-+        if (!mon->mux_out) {
-+            if (mon->reset_seen && !mon->suspend_cnt) {
-+                monitor_puts_locked(mon, "\n");
-+            } else {
-+                monitor_flush_locked(mon);
-+            }
-+            monitor_suspend(mon);
-+            mon->mux_out = 1;
-+        }
-         qemu_mutex_unlock(&mon->mon_lock);
-         break;
- 
-     case CHR_EVENT_OPENED:
-         monitor_printf(mon, "QEMU %s monitor - type 'help' for more "
-                        "information\n", QEMU_VERSION);
--        if (!mon->mux_out) {
--            readline_restart(hmp_mon->rs);
--            readline_show_prompt(hmp_mon->rs);
--        }
-+        qemu_mutex_lock(&mon->mon_lock);
-         mon->reset_seen = 1;
-+        if (!mon->mux_out) {
-+            /* Suspend-resume forces the prompt to be printed.  */
-+            monitor_suspend(mon);
-+            monitor_resume(mon);
-+        }
-+        qemu_mutex_unlock(&mon->mon_lock);
-         mon_refcount++;
-         break;
- 
-diff --git a/monitor/monitor-internal.h b/monitor/monitor-internal.h
-index 53e3808054c7..61c9b6916db3 100644
---- a/monitor/monitor-internal.h
-+++ b/monitor/monitor-internal.h
-@@ -94,7 +94,6 @@ typedef struct HMPCommand {
- 
- struct Monitor {
-     CharBackend chr;
--    int reset_seen;
-     int suspend_cnt;            /* Needs to be accessed atomically */
-     bool is_qmp;
-     bool skip_flush;
-@@ -115,8 +114,8 @@ struct Monitor {
-     QLIST_HEAD(, mon_fd_t) fds;
-     GString *outbuf;
-     guint out_watch;
--    /* Read under either BQL or mon_lock, written with BQL+mon_lock.  */
-     int mux_out;
-+    int reset_seen;
- };
- 
- struct MonitorHMP {
 diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 20e33e28d20d..15f97538ef2b 100644
+index 15f97538ef2b..c4ed2547c25f 100644
 --- a/monitor/monitor.c
 +++ b/monitor/monitor.c
-@@ -569,10 +569,15 @@ static void monitor_accept_input(void *opaque)
- {
-     Monitor *mon = opaque;
+@@ -686,7 +686,7 @@ void monitor_cleanup(void)
  
--    if (!monitor_is_qmp(mon)) {
-+    qemu_mutex_lock(&mon->mon_lock);
-+    if (!monitor_is_qmp(mon) && mon->reset_seen) {
-         MonitorHMP *hmp_mon = container_of(mon, MonitorHMP, common);
-         assert(hmp_mon->rs);
-+        readline_restart(hmp_mon->rs);
-+        qemu_mutex_unlock(&mon->mon_lock);
-         readline_show_prompt(hmp_mon->rs);
-+    } else {
-+        qemu_mutex_unlock(&mon->mon_lock);
-     }
+     AIO_WAIT_WHILE_UNLOCKED(NULL,
+                    (aio_poll(iohandler_get_aio_context(), false),
+-                    qatomic_mb_read(&qmp_dispatcher_co_busy)));
++                    qatomic_read(&qmp_dispatcher_co)));
  
-     qemu_chr_fe_accept_input(&mon->chr);
-@@ -603,7 +608,7 @@ int monitor_can_read(void *opaque)
- {
-     Monitor *mon = opaque;
+     /*
+      * We need to explicitly stop the I/O thread (but not destroy it),
+diff --git a/monitor/qmp.c b/monitor/qmp.c
+index 092c527b6fc9..f0cc6dc886f8 100644
+--- a/monitor/qmp.c
++++ b/monitor/qmp.c
+@@ -226,6 +226,7 @@ void coroutine_fn monitor_qmp_dispatcher_co(void *data)
  
--    return !qatomic_mb_read(&mon->suspend_cnt);
-+    return !qatomic_read(&mon->suspend_cnt);
- }
+         /* On shutdown, don't take any more requests from the queue */
+         if (qmp_dispatcher_co_shutdown) {
++            qatomic_set(&qmp_dispatcher_co, NULL);
+             return;
+         }
  
- void monitor_list_append(Monitor *mon)
-diff --git a/tests/qemu-iotests/051.out b/tests/qemu-iotests/051.out
-index e5ddb03bda1d..d46215640506 100644
---- a/tests/qemu-iotests/051.out
-+++ b/tests/qemu-iotests/051.out
-@@ -74,7 +74,7 @@ QEMU_PROG: -drive file=TEST_DIR/t.qcow2,node-name=foo#12: Invalid node-name: 'fo
- 
- Testing: -device virtio-scsi -device scsi-hd
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -device scsi-hd: drive property not set
-+QEMU_PROG: -device scsi-hd: drive property not set
- 
- 
- === Overriding backing file ===
-@@ -134,7 +134,7 @@ QEMU X.Y.Z monitor - type 'help' for more information
- 
- Testing: -drive if=virtio
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -drive if=virtio: Device needs media, but drive is empty
-+QEMU_PROG: -drive if=virtio: Device needs media, but drive is empty
- 
- 
- === Attach to node in non-default iothread ===
-diff --git a/tests/qemu-iotests/051.pc.out b/tests/qemu-iotests/051.pc.out
-index bade1ff3b929..4d4af5a486df 100644
---- a/tests/qemu-iotests/051.pc.out
-+++ b/tests/qemu-iotests/051.pc.out
-@@ -74,7 +74,7 @@ QEMU_PROG: -drive file=TEST_DIR/t.qcow2,node-name=foo#12: Invalid node-name: 'fo
- 
- Testing: -device virtio-scsi -device scsi-hd
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -device scsi-hd: drive property not set
-+QEMU_PROG: -device scsi-hd: drive property not set
- 
- 
- === Overriding backing file ===
-@@ -142,11 +142,11 @@ QEMU X.Y.Z monitor - type 'help' for more information
- 
- Testing: -drive if=ide
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: Device needs media, but drive is empty
-+QEMU_PROG: Device needs media, but drive is empty
- 
- Testing: -drive if=virtio
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -drive if=virtio: Device needs media, but drive is empty
-+QEMU_PROG: -drive if=virtio: Device needs media, but drive is empty
- 
- Testing: -drive if=none,id=disk -device ide-cd,drive=disk
- QEMU X.Y.Z monitor - type 'help' for more information
-@@ -158,22 +158,22 @@ QEMU X.Y.Z monitor - type 'help' for more information
- 
- Testing: -drive if=none,id=disk -device ide-hd,drive=disk
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -device ide-hd,drive=disk: Device needs media, but drive is empty
-+QEMU_PROG: -device ide-hd,drive=disk: Device needs media, but drive is empty
- 
- Testing: -drive if=none,id=disk -device lsi53c895a -device scsi-hd,drive=disk
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -device scsi-hd,drive=disk: Device needs media, but drive is empty
-+QEMU_PROG: -device scsi-hd,drive=disk: Device needs media, but drive is empty
- 
- 
- === Attach to node in non-default iothread ===
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=none,node-name=disk -object iothread,id=thread0 -device virtio-scsi,iothread=thread0,id=virtio-scsi0 -device scsi-hd,bus=virtio-scsi0.0,drive=disk,share-rw=on -device ide-hd,drive=disk,share-rw=on
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -device ide-hd,drive=disk,share-rw=on: Cannot change iothread of active block backend
-+QEMU_PROG: -device ide-hd,drive=disk,share-rw=on: Cannot change iothread of active block backend
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=none,node-name=disk -object iothread,id=thread0 -device virtio-scsi,iothread=thread0,id=virtio-scsi0 -device scsi-hd,bus=virtio-scsi0.0,drive=disk,share-rw=on -device virtio-blk-pci,drive=disk,share-rw=on
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -device virtio-blk-pci,drive=disk,share-rw=on: Cannot change iothread of active block backend
-+QEMU_PROG: -device virtio-blk-pci,drive=disk,share-rw=on: Cannot change iothread of active block backend
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=none,node-name=disk -object iothread,id=thread0 -device virtio-scsi,iothread=thread0,id=virtio-scsi0 -device scsi-hd,bus=virtio-scsi0.0,drive=disk,share-rw=on -device lsi53c895a,id=lsi0 -device scsi-hd,bus=lsi0.0,drive=disk,share-rw=on
- QEMU X.Y.Z monitor - type 'help' for more information
-@@ -185,7 +185,7 @@ QEMU X.Y.Z monitor - type 'help' for more information
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=none,node-name=disk -object iothread,id=thread0 -device virtio-scsi,iothread=thread0,id=virtio-scsi0 -device scsi-hd,bus=virtio-scsi0.0,drive=disk,share-rw=on -device virtio-blk-pci,drive=disk,iothread=thread0,share-rw=on
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -device virtio-blk-pci,drive=disk,iothread=thread0,share-rw=on: Cannot change iothread of active block backend
-+QEMU_PROG: -device virtio-blk-pci,drive=disk,iothread=thread0,share-rw=on: Cannot change iothread of active block backend
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=none,node-name=disk -object iothread,id=thread0 -device virtio-scsi,iothread=thread0,id=virtio-scsi0 -device scsi-hd,bus=virtio-scsi0.0,drive=disk,share-rw=on -device virtio-scsi,id=virtio-scsi1,iothread=thread0 -device scsi-hd,bus=virtio-scsi1.0,drive=disk,share-rw=on
- QEMU X.Y.Z monitor - type 'help' for more information
-@@ -204,7 +204,7 @@ QEMU X.Y.Z monitor - type 'help' for more information
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=ide,readonly=on
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: Block node is read-only
-+QEMU_PROG: Block node is read-only
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=virtio,readonly=on
- QEMU X.Y.Z monitor - type 'help' for more information
-@@ -220,7 +220,7 @@ QEMU X.Y.Z monitor - type 'help' for more information
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=none,id=disk,readonly=on -device ide-hd,drive=disk
- QEMU X.Y.Z monitor - type 'help' for more information
--(qemu) QEMU_PROG: -device ide-hd,drive=disk: Block node is read-only
-+QEMU_PROG: -device ide-hd,drive=disk: Block node is read-only
- 
- Testing: -drive file=TEST_DIR/t.qcow2,if=none,id=disk,readonly=on -device lsi53c895a -device scsi-hd,drive=disk
- QEMU X.Y.Z monitor - type 'help' for more information
+@@ -250,6 +251,7 @@ void coroutine_fn monitor_qmp_dispatcher_co(void *data)
+              * yielded and were reentered from monitor_cleanup()
+              */
+             if (qmp_dispatcher_co_shutdown) {
++                qatomic_set(&qmp_dispatcher_co, NULL);
+                 return;
+             }
+         }
 -- 
 2.40.1
 
