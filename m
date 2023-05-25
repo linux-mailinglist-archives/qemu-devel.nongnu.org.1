@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1173E7113B2
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 499017113B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:31:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2FiO-0006it-5T; Thu, 25 May 2023 14:29:32 -0400
+	id 1q2FjD-0006sj-Q0; Thu, 25 May 2023 14:30:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2FiL-0006id-FI
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:29:29 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2FiJ-0002GS-Po
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:29:29 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-64d2467d640so74590b3a.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 11:29:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685039366; x=1687631366;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uKACPzrv6hqkGClezXwchSBgyJy8s7TNKnVLvoRITzI=;
- b=rs56Wi506GIkPS8oLYET9caO4wgmqfdm76qyKu1y5q2GVSIsB5hbZt9GVCYYtEXC/u
- 9Wq1gCp9nPRtJACfQMqdfJLCzh0N69OsKB8LQ4iymJR0e5oB87ZzyFtRYqmaLvzzf5YU
- BcyArG2hNpeIWZebiQGEiy3y7379VV27HmX8IPMnMmwFgcURb8KLApCXyWQMyYHXgva/
- i2G3dhTJPNNoBimhNCG5jSJtnY3j8U2FMzm7zZ9XLqIahOrxkEieqpCLSb75z1Eb4qKN
- 8ygcl12CktmX+Na2uaD0AUDnfiQgiCHMROEl0GyK6EZ/zmsgwvZ+XHG50D3/PcJlvsNi
- ACAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685039366; x=1687631366;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uKACPzrv6hqkGClezXwchSBgyJy8s7TNKnVLvoRITzI=;
- b=WqRiWzfigyHCxvMFcOtlJbz9WkVpeY+cVMATwvx1E/KAjKuNHuf+gI70J8jhP/cKOI
- ipE8tpFmYFYYviVS5S6AVqE0qZ66hqTUHec86fJVmjmswSL5CQozski8eSHEsYRgWB5/
- iZq/D1g46iMCZXU7EReEyeLSROKK6mtseA7Duo/mVY9aZWAo1lx7mcgRPlLV4Qceb0Rg
- ga6fAkS4gKBsXBMZnduIeah4uR9YKJ0gN+Nrn/t9q2VooZYbFwrmwG5anTrodvVsIxn7
- NJQOrl10YiizJxI5GFsyNoApTgTFoqTdlZcP+PoS8dbvaJkpqMJsxX7BJpSU8tqAXphd
- 9CJw==
-X-Gm-Message-State: AC+VfDztaGOvK68sxNBFmA+/KjWMldI6WQKx1AQBcE9NQlSCJsXjcHqM
- 9oXwtQqUmK66sTo/Ebax3uQGdebxFYnEbS0EMow=
-X-Google-Smtp-Source: ACHHUZ4fWhO/omS9SQwvLCjYcx6pJc29grUYRa5QnXzMkFxKCZlTFtl/DAl8fTC6fsx/aWB0uUw/xQ==
-X-Received: by 2002:a05:6a20:4423:b0:10c:14c2:b766 with SMTP id
- ce35-20020a056a20442300b0010c14c2b766mr15282331pzb.35.1685039365687; 
- Thu, 25 May 2023 11:29:25 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:7ac5:31cc:3997:3a16?
- ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
- by smtp.gmail.com with ESMTPSA id
- 2-20020a631842000000b0052c22778e64sm1447654pgy.66.2023.05.25.11.29.24
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 11:29:25 -0700 (PDT)
-Message-ID: <d1ab807e-3a9a-91b9-ad52-2d46c06ff54b@linaro.org>
-Date: Thu, 25 May 2023 11:29:23 -0700
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2Fj1-0006sH-MO
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:30:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2Fiz-0002X2-Qi
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:30:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685039408;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MpC4P43HJGfyt3jUOilL3+PuFA3yzzQ8ABWXheZoCxg=;
+ b=WuskJdxGf6QxAlPXGWSYSYDQxUPxi8WHZuHxdiJxo5h4GBLShgNK+C3vzUckLPvEbq37r7
+ oOJYzZroZ/HUg6dD/OS0vRtAuyrYadROe30vpBoP9F7pHETYj2AUZ5gozM7cVFPfbo93y3
+ fA3xiWJIfh09V/sImB9/AXe4nxGGOps=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-320-eaj_YzhKPHKPDgJDRSv8hQ-1; Thu, 25 May 2023 14:30:05 -0400
+X-MC-Unique: eaj_YzhKPHKPDgJDRSv8hQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C5FD858F1C;
+ Thu, 25 May 2023 18:30:05 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DE1CB492B0E;
+ Thu, 25 May 2023 18:30:04 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D149521E692E; Thu, 25 May 2023 20:30:03 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Jonathon Jongsma <jjongsma@redhat.com>,  qemu-devel@nongnu.org,  Kevin
+ Wolf <kwolf@redhat.com>,  qemu-block@nongnu.org,  Hanna Reitz
+ <hreitz@redhat.com>,  sgarzare@redhat.com
+Subject: Re: [PATCH v3 1/1] block/blkio: use qemu_open() to support fd
+ passing for virtio-blk
+References: <20230511091527.46620-1-sgarzare@redhat.com>
+ <20230511091527.46620-2-sgarzare@redhat.com>
+ <1a89ee2e-2368-4051-f9ec-018641721484@redhat.com>
+ <q2odwrndg3gt6z25hdxb3t2xxavd64hkp4b23zhzycevhrwx64@25r5r6sidyok>
+ <e8fcb4cf-3667-2bdf-a163-d81bdfb71bfa@redhat.com>
+ <vcinivshe3tf4iod7ys236fq5ovzhyhei5zvo2uf636fpb2vtr@swcn25px5h5z>
+ <20230517143023.GA65838@fedora>
+Date: Thu, 25 May 2023 20:30:03 +0200
+In-Reply-To: <20230517143023.GA65838@fedora> (Stefan Hajnoczi's message of
+ "Wed, 17 May 2023 10:30:23 -0400")
+Message-ID: <87edn4i7ro.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: io-qcow2 failures on zfs
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel <qemu-devel@nongnu.org>
-References: <7b1805ad-56fd-77f7-48f7-fdf80f6a2e5b@linaro.org>
-In-Reply-To: <7b1805ad-56fd-77f7-48f7-fdf80f6a2e5b@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,29 +87,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping.
+Stefan Hajnoczi <stefanha@redhat.com> writes:
 
-On 5/19/23 15:44, Richard Henderson wrote:
-> I'm doing some testing on one of the Linaro build machines and I reliably see
-> 
-> Summary of Failures:
-> 
-> 712/790 qemu:block / io-qcow2-150                                                 ERROR 
->         5.24s   exit status 1
-> 777/790 qemu:block / io-qcow2-copy-before-write                                   ERROR 
->        16.31s   exit status 1
-> 779/790 qemu:block / io-qcow2-244                                                 ERROR 
->        37.10s   exit status 1
-> 
-> This is x86_64 ubuntu 22.04, same as my laptop, so the only thing I can think is the 
-> filesystem type:
-> 
-> hackpool-0/home/richard.henderson /home/richard.henderson zfs 
-> rw,nosuid,nodev,noatime,xattr,noacl 0 0
-> 
-> Any thoughts?
-> 
-> 
-> r~
+> On Wed, May 17, 2023 at 09:19:26AM +0200, Stefano Garzarella wrote:
+>> CCing Markus for some advice.
+>> 
+>> On Tue, May 16, 2023 at 11:04:21AM -0500, Jonathon Jongsma wrote:
+
+[...]
+
+>> > I need some way to determine that the particular qemu binary can accept
+>> > a /dev/fdset/ path for vdpa block devices. libvirt uses a variety of
+>> > methods to determine capabilities for a given qemu binary, including
+>> > querying the qmp schema, commands, object types, specific device/object
+>> > properties, etc. For example, right now I can determine (via querying
+>> > the qmp schema) whether virtio-blk-vhost-vdpa is a valid type for the
+>> > blockdev-add command by querying the qmp schema. I need something more
+>> > than that but I'm not sure how to do it without introducing a separate
+>> > 'fd' parameter. Any ideas?
+>> 
+>> The only thing I can think of is to make a mix between v2 and v3. I mean add
+>> both the new `fd` parameter, and support qemu_open() on `path`.
+>> 
+>> That way libvirt (or other users) can check that fd passing is supported and
+>> use `fd` or fdset with `path`.
+>> 
+>> Obviously I would have liked to implement only one of the two methods, but
+>> if this helps, maybe it makes sense to support both.
+>> 
+>> What do you think?
+>
+> Markus: Is a preferred way to make this new path handling behavior
+> introspectable? I vaguely remember a way for QMP clients to query
+> strings that describe QMP behavior that's not otherwise
+> introspectable...
+
+Let me try to answer this without first reading the entire thread.
+
+QMP introspection lets you find out things like whether a command is
+there, or whether an an argument is there, and what its type is.
+Suffices most of the time.
+
+However, behavior can certainly change while the introspection data
+remains the same.  When a management application needs to know about the
+change, we better expose the change in introspection somehow.
+
+The "obvious" way to do that would be some arbitrary change that *is*
+visible in introspection.  Meh.
+
+The modern way is to add a suitable "feature".
+docs/devel/qapi-code-gen.rst:
+
+    Features
+    --------
+
+    Syntax::
+
+        FEATURES = [ FEATURE, ... ]
+        FEATURE = STRING
+                | { 'name': STRING, '*if': COND }
+
+    Sometimes, the behaviour of QEMU changes compatibly, but without a
+    change in the QMP syntax (usually by allowing values or operations
+    that previously resulted in an error).  QMP clients may still need to
+    know whether the extension is available.
+
+    For this purpose, a list of features can be specified for definitions,
+    enumeration values, and struct members.  Each feature list member can
+    either be ``{ 'name': STRING, '*if': COND }``, or STRING, which is
+    shorthand for ``{ 'name': STRING }``.
+
+    The optional 'if' member specifies a conditional.  See `Configuring
+    the schema`_ below for more on this.
+
+    Example::
+
+     { 'struct': 'TestType',
+       'data': { 'number': 'int' },
+       'features': [ 'allow-negative-numbers' ] }
+
+    The feature strings are exposed to clients in introspection, as
+    explained in section `Client JSON Protocol introspection`_.
+
+    Intended use is to have each feature string signal that this build of
+    QEMU shows a certain behaviour.
+
+For a real example, see commit c6bdc312f30 (qapi: Add
+'@allow-write-only-overlay' feature for 'blockdev-snapshot').
+
+Does this answer your question?
 
 
