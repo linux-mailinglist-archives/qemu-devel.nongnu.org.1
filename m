@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB107106FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 10:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A94647106E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 10:11:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q263n-0007Ym-Va; Thu, 25 May 2023 04:11:00 -0400
+	id 1q263p-0007aa-68; Thu, 25 May 2023 04:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q263L-0007Ut-Bi
- for qemu-devel@nongnu.org; Thu, 25 May 2023 04:10:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q263V-0007Xm-8o
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 04:10:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q263J-0001os-6G
- for qemu-devel@nongnu.org; Thu, 25 May 2023 04:10:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q263P-0001pV-JB
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 04:10:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685002228;
+ s=mimecast20190719; t=1685002230;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YkKQUfjL3wE0QSB8TZN27tG7NeesjqAFU0QKdSba0Zc=;
- b=MHfAmZqbLFUR/ieJdVhbCewvZAdVo1J4P6+KdQtcXtVdViW8ziByjpMPAgmCJklAudvJBE
- RZ+53HiFubTVqfHcRy/yNk2yS5hFF0GRtHC5mhSLqCYM1LHBG/yTH/+IXjvdHqR9SGhOua
- /+SfLXLdN5vFDuZiymiNBbGTWEU0bpg=
+ bh=L/6hVTanJJCeePDiYYpj7FAlQnkkPLhqWkjlTZACNuU=;
+ b=KwdrKm0w2hVu2PakBp8obcUugPiMy0Ez1/9yN42ixAPITzhzaamwZ9GdxlsgaH6SMEdlIn
+ gi8YEGQh13oAuuTQyk/F6l5BhpRz+X3hL7FNiojpdPzvA5MK9h03rB0FlAx1tJU338Fht2
+ iu6q0itP1KSADSKJd0cBJppn6IUEz74=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-31-qGHMK3RIOfC2iBcLEnXMPA-1; Thu, 25 May 2023 04:10:25 -0400
-X-MC-Unique: qGHMK3RIOfC2iBcLEnXMPA-1
+ us-mta-221-y6ZScc86PnWjkRvtoBlo0Q-1; Thu, 25 May 2023 04:10:26 -0400
+X-MC-Unique: y6ZScc86PnWjkRvtoBlo0Q-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B0911185A78B;
- Thu, 25 May 2023 08:10:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E060185A78F;
+ Thu, 25 May 2023 08:10:26 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.52])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6BFEE40C1258;
- Thu, 25 May 2023 08:10:23 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EEC8B400E118;
+ Thu, 25 May 2023 08:10:24 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
  Fabiano Rosas <farosas@suse.de>
 Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 2/4] tests/qtest: Check for virtio-blk before using -cdrom
- with the arm virt machine
-Date: Thu, 25 May 2023 10:10:14 +0200
-Message-Id: <20230525081016.1870364-3-thuth@redhat.com>
+Subject: [PATCH 3/4] tests/qtest/rtl8139-test: Check whether the rtl8139
+ device is available
+Date: Thu, 25 May 2023 10:10:15 +0200
+Message-Id: <20230525081016.1870364-4-thuth@redhat.com>
 In-Reply-To: <20230525081016.1870364-1-thuth@redhat.com>
 References: <20230525081016.1870364-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -78,49 +78,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The arm "virt" machine needs "virtio-blk-pci" for devices that get attached
-via the "-cdrom" option. Since this is an optional device that might not
-be available in the binary, we should check for the availability of this
-device first before using it.
+Though we are already using CONFIG_RTL8139_PCI in the meson.build file
+for testing whether the rtl8139 device is available or not, this is not
+enough: The CONFIG switch might have been selected by another target
+(e.g. the mips fuloong2e machine has the rtl8139 chip soldered on the
+board), so CONFIG_RTL8139_PCI ends up in config_all_devices and the
+test then gets executed on x86. We need an additional run-time check
+to be on the safe side to make this test also work when configure has
+been run with "--without-default-devices".
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/bios-tables-test.c | 2 +-
- tests/qtest/cdrom-test.c       | 6 +++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ tests/qtest/rtl8139-test.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index 159e4edb8f..ed1c69cf01 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -2164,7 +2164,7 @@ int main(int argc, char *argv[])
-             }
-         }
-     } else if (strcmp(arch, "aarch64") == 0) {
--        if (has_tcg) {
-+        if (has_tcg && qtest_has_device("virtio-blk-pci")) {
-             qtest_add_func("acpi/virt", test_acpi_virt_tcg);
-             qtest_add_func("acpi/virt/acpihmatvirt",
-                             test_acpi_virt_tcg_acpi_hmat);
-diff --git a/tests/qtest/cdrom-test.c b/tests/qtest/cdrom-test.c
-index d1cc375849..f2a8d91929 100644
---- a/tests/qtest/cdrom-test.c
-+++ b/tests/qtest/cdrom-test.c
-@@ -264,9 +264,13 @@ int main(int argc, char **argv)
-         const char *armmachines[] = {
-             "realview-eb", "realview-eb-mpcore", "realview-pb-a8",
-             "realview-pbx-a9", "versatileab", "versatilepb", "vexpress-a15",
--            "vexpress-a9", "virt", NULL
-+            "vexpress-a9", NULL
-         };
-         add_cdrom_param_tests(armmachines);
-+        if (qtest_has_device("virtio-blk-pci")) {
-+            const char *virtmachine[] = { "virt", NULL };
-+            add_cdrom_param_tests(virtmachine);
-+        }
-     } else {
-         const char *nonemachine[] = { "none", NULL };
-         add_cdrom_param_tests(nonemachine);
+diff --git a/tests/qtest/rtl8139-test.c b/tests/qtest/rtl8139-test.c
+index 4bd240e9ee..4dc0a0d22e 100644
+--- a/tests/qtest/rtl8139-test.c
++++ b/tests/qtest/rtl8139-test.c
+@@ -209,6 +209,10 @@ int main(int argc, char **argv)
+ 
+     g_test_init(&argc, &argv, NULL);
+ 
++    if (!qtest_has_device("rtl8139")) {
++        return 0;
++    }
++
+     qtest_start("-device rtl8139");
+ 
+     qtest_add_func("/rtl8139/nop", nop);
 -- 
 2.31.1
 
