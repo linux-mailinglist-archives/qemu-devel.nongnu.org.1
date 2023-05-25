@@ -2,83 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5DF710AF8
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29861710B27
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:34:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q29Ck-0004tn-05; Thu, 25 May 2023 07:32:26 -0400
+	id 1q29EQ-0006cq-QM; Thu, 25 May 2023 07:34:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q29Ce-0004su-54
- for qemu-devel@nongnu.org; Thu, 25 May 2023 07:32:20 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q29Ca-0001ro-IS
- for qemu-devel@nongnu.org; Thu, 25 May 2023 07:32:19 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-19a308a045aso683896fac.0
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 04:32:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1685014333; x=1687606333;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=8d9J6tlT/clGvujmhcFZWasgpps2lZcyhFN3pP4zcsI=;
- b=UiHKz/nfiWAeWIKSYEdGHw8EeIW3YrHHSt+q8U/VfnHqNPXRKqfWtdjb+tRnrz/Y9/
- Y4QEJzbBCoOl2KNWMYah0ona59rAqjUxlUzwn85tqKW6J9n6FGEjYZWR73yakiSMnEKK
- kIjng+JCU0MewBoxd08ReWukJhYM4rhJfCgmZ/Uuz07JaGfzA9Kpv0AhBGQI1agRbY6a
- wz/0YNkXm/MGbkhirvi3cTQBhVObiXKMA4JnMmGBXJssuJdKgfaRLav+507EyHGQgapw
- 984vkXeOLYx4iYUEibo3fEweskygrtvHn0nhS3RBfEYJw1P9iQ1QmpbEjs0gt8KMsizX
- 3WFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685014333; x=1687606333;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8d9J6tlT/clGvujmhcFZWasgpps2lZcyhFN3pP4zcsI=;
- b=WOsnns+NzWKK+JudseHhp/+h1FCLGruEtdvAkAqCHjrASHCeAJVdfYfWzxNR74oQLa
- niLV1WXfYynWXswpY1LM5L6uTzh3GgNS7smkMZzIFc/b70QVA10G9M75z9lfpz0eeBTJ
- w/4DY9BHFRidKFU7sCc9Z0D5n5RMi+tF7H4GTeZe49WZOgNO/Pj/rDjsYp+HnTQdxM+U
- y0LBqnxaSWOID1hn2P+btbh2lSFmfxAgtwS6GgVr24pkgQu8kdrKRojZ1iwkgIsAWkYo
- NSxWFEhefz+Ay7Zgs1b44zfx7aiEPZ1GKoQtSDUYljpz6kZ6JGhcK8NmTO/LevZlBvA1
- v02g==
-X-Gm-Message-State: AC+VfDxmiwF4USP0jdVj5efpRANQXhHjwi9RujPkXAA/WxX2S7LqggpZ
- 3IqzFWi81551i+5aX33ODaBTUw==
-X-Google-Smtp-Source: ACHHUZ6szCkQYQLjnzI8zjIn+B1k3ZJP2kNHt5Gux5t5T9tw5EPUOn0K79cEAl13vXpZBmARtMrpJg==
-X-Received: by 2002:a05:6870:d243:b0:192:7320:ce with SMTP id
- h3-20020a056870d24300b00192732000cemr1685827oac.40.1685014333469; 
- Thu, 25 May 2023 04:32:13 -0700 (PDT)
-Received: from [192.168.68.107] (200-162-225-121.static-corp.ajato.com.br.
- [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
- b5-20020a056870b24500b00172428894e0sm519919oam.28.2023.05.25.04.32.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 04:32:12 -0700 (PDT)
-Message-ID: <5c251e47-dc63-5aa4-87c3-818f471b709c@ventanamicro.com>
-Date: Thu, 25 May 2023 08:32:09 -0300
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1q29EO-0006bM-80; Thu, 25 May 2023 07:34:08 -0400
+Received: from wout1-smtp.messagingengine.com ([64.147.123.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1q29EL-0002CE-PS; Thu, 25 May 2023 07:34:08 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.west.internal (Postfix) with ESMTP id ADC0932003C0;
+ Thu, 25 May 2023 07:33:58 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute1.internal (MEProxy); Thu, 25 May 2023 07:33:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm3; t=1685014438; x=
+ 1685100838; bh=A1EUSiH05ybJpEadn0UkunleNidrximLxi3rOwhFAeY=; b=X
+ dV7DSghp/EEUUS6T/E5DzXcAxhSTbP4yqeQIwfDOyszPJeOGhMOCMDBtY3mLBVJW
+ k6iPug57dp4SF16hjYXBuM9aBQo6dHRPnJYkQ0RajUnoQMeJhx8FbDUngSxGdRze
+ mmBlaubWO5MFgQQFDBr1USd9eFoyW6x5+sgvJ5+S6mQSeRmsLBEf3dAMnsI/MhTY
+ 4mCNzlu+UyIwdaFkgVXuQBCPU03h7+pm4V/MLZRg/cOAGO+Kb6dr6Qsbtf+iO6oF
+ KsaY3X90e/oUivVIPf2kZz41bdoFdGeVJ9LoOFR0hmJJjIr91ArTu/Hitw23ulQm
+ 98T6zpSsaTs0mcqlNaGEQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1685014438; x=1685100838; bh=A1EUSiH05ybJp
+ Eadn0UkunleNidrximLxi3rOwhFAeY=; b=utdajSZL01/fLQ8SSkXHZegbfBwYY
+ CnTuy6NEA7mvkzSNlHCmX1+lbpo2K1/UtCEsai6zFFXJtV99mq/EeEtiOUxn9oif
+ vzhDHSu6MBHAllPypp+FDZa3E8X/Dl2eN9fiiiSJsi33pBE1NfepnGD1RN8dDmLY
+ PJfBU7QWdp0DdlaJAQrhpesOwS06l8buRv5TgHR6nDnPUL7tBY4gSTa1yqDnGTQz
+ D+2QcRclvxk+N94a4pxMBkxGqBXZN2soq4SYWIiKdcTatworOIDlgwsukmec/NoQ
+ 0RSlQhW78u7Q9Y/uXBaeNaefiS8hjJ/k4YL0/W3fe0SnN5SLrppMYsjUQ==
+X-ME-Sender: <xms:pEdvZGrOFYrCJNufg6W2u_R_nxYUCH9WwWJCpegwWOHsVCsFiiT2Dw>
+ <xme:pEdvZEo7auBCqfOvHLxyntIOKwDBBHlS441hE6n4zLU4chsJAnQps4NKg0lvrqk5a
+ 2bO3j2L5mvYAnhTdOE>
+X-ME-Received: <xmr:pEdvZLMSGMrvq0nYG93PYLxwHv5cPSS2lpF0_zQ3FZ8mMEUq-Z96OceCL3_3wbNRHxCD>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejjedggedtucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepmfhlrghu
+ shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
+ htvghrnhepffduvdfhheejudfgieejueeileegveduvdelhfekhffgteetffdtvdekveei
+ leefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+ dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:pEdvZF409Gh6Zw0sUQCAkqDUY2SjyImIg1avld-BQdmIdt-LiuO3Pg>
+ <xmx:pEdvZF6E8h3R4PKiajqjVZRzDqNt9onIzVXaZnzf4O7Vh5OGpBT5Sg>
+ <xmx:pEdvZFhsva55sIJDvH2Ag6gSIjSPe85XJ8UIK8Ze_vrDU5aQZeiTLw>
+ <xmx:pkdvZEInH1HrtXyjkDjRXDixJXy2ahugwX67iotjRQdr42cgY6XnXQ>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 25 May 2023 07:33:54 -0400 (EDT)
+Date: Thu, 25 May 2023 13:33:52 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: qemu-devel@nongnu.org, Corey Minyard <cminyard@mvista.com>,
+ Jeremy Kerr <jk@codeconstruct.com.au>, qemu-arm@nongnu.org,
+ Peter Delevoryas <peter@pjd.dev>, Keith Busch <kbusch@kernel.org>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Jason Wang <jasowang@redhat.com>, Lior Weintraub <liorw@pliops.com>,
+ qemu-block@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Matt Johnston <matt@codeconstruct.com.au>,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: Re: [PATCH v2 1/3] hw/i2c: add mctp core
+Message-ID: <ZG9HoKFzvIngzomZ@cormorant.local>
+References: <20230425063540.46143-1-its@irrelevant.dk>
+ <20230425063540.46143-2-its@irrelevant.dk>
+ <20230525122711.00002a61@Huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] checkpatch: Prefer DEFINE_TYPES() over type_init /
- type_register_static
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20230524145444.32820-1-philmd@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230524145444.32820-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x29.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="8ZwLm31Fr6bPAHsP"
+Content-Disposition: inline
+In-Reply-To: <20230525122711.00002a61@Huawei.com>
+Received-SPF: pass client-ip=64.147.123.24; envelope-from=its@irrelevant.dk;
+ helo=wout1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,42 +109,66 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--8ZwLm31Fr6bPAHsP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 5/24/23 11:54, Philippe Mathieu-Daudé wrote:
-> When multiple QOM types are registered in the same file, it
-> is clearer and simpler to use the the DEFINE_TYPES() macro.
-> 
-> Add a rule to checkpatch.pl to suggest using DEFINE_TYPES()
-> instead of type_init() / type_register_static().
-> 
+On May 25 12:27, Jonathan Cameron wrote:
+> On Tue, 25 Apr 2023 08:35:38 +0200
+> Klaus Jensen <its@irrelevant.dk> wrote:
+>=20
+> > From: Klaus Jensen <k.jensen@samsung.com>
+> >=20
+> > Add an abstract MCTP over I2C endpoint model. This implements MCTP
+> > control message handling as well as handling the actual I2C transport
+> > (packetization).
+> >=20
+> > Devices are intended to derive from this and implement the class
+> > methods.
+> >=20
+> > Parts of this implementation is inspired by code[1] previously posted by
+> > Jonathan Cameron.
+> >=20
+> >   [1]: https://lore.kernel.org/qemu-devel/20220520170128.4436-1-Jonatha=
+n.Cameron@huawei.com/
+> >=20
+> > Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+>=20
+> This is very useful for the CXL MCTP CCI support - got rid of most of the
+> nasty code when I moved over to using this (will post code shortly)
+>=20
+> A few comments inline - but all trivial stuff.
+>=20
+> What I can give now though is:
+> Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
 
-Nice!
+Hi Jonathan,
 
-> Suggested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
+This came at just the right time! I was finally preparing v3 since Lior
+is also requesting that this gets merged sooner rather than later ;)
+
+I'll work in your very resonable comments (thanks!) and ship it.
 
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Thanks again,
+Klaus
 
->   scripts/checkpatch.pl | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index eeaec436eb..db8029635c 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -2877,6 +2877,12 @@ sub process {
->   		if ($line =~ /^module_init\s*\(/) {
->   			ERROR("please use block_init(), type_init() etc. instead of module_init()\n" . $herecurr);
->   		}
-> +
-> +# recommend DEFINE_TYPES() over type_init()/type_register_static()
-> +		if ($line =~ /\b(type_init|type_register_static)\(/) {
-> +			WARN("consider using DEFINE_TYPES() in preference to type_init()\n" . $herecurr);
-> +		}
-> +
->   # check for various ops structs, ensure they are const.
->   		my $struct_ops = qr{AIOCBInfo|
->   				BdrvActionOps|
+--8ZwLm31Fr6bPAHsP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmRvR58ACgkQTeGvMW1P
+Dem5wAgAgd0shlQK2sUpGuTmGXBGFdi3vmQxPihacby/QkvzzHrzMFXl6xPc3sx+
+a6v3lQ0WWBhc9uN0v/ZeXvwN3CVkLJIOBAyyRDYSJOeQi9ZhL70dLlf5TPe+J3AR
+FBuO08jWVfipMCuMxsUJKlv94iS1MqQ2egh54ziWMMKpZ9qRvtQLPFacLPKoDWpX
+3gveU+XewSYjovt74ZR+tUire0KrnFuAflI/XE3+OuQEDruMl7ZuTF8W9y7HTSba
+4jZMz1q12kkJIp06lvsVW4HsmZEHxRKE0wdGF6xr4rxrW/uZROPwcdEu+7V+hZJU
+3vFRK9tJx81y2BuTMpBZUVluT1KTRw==
+=1OCM
+-----END PGP SIGNATURE-----
+
+--8ZwLm31Fr6bPAHsP--
 
