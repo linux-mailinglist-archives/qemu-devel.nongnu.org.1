@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CD9710D17
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 15:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423FC710D2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 15:24:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Ar9-0007n3-G7; Thu, 25 May 2023 09:18:15 -0400
+	id 1q2Ave-0002NM-UP; Thu, 25 May 2023 09:22:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2Ar6-0007ZQ-Kc
- for qemu-devel@nongnu.org; Thu, 25 May 2023 09:18:13 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q2AvX-0002LO-Pt
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 09:22:48 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2Ar4-00028a-TV
- for qemu-devel@nongnu.org; Thu, 25 May 2023 09:18:12 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-64d44b198baso754812b3a.0
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 06:18:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q2AvV-0003RD-6t
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 09:22:47 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-96f588bc322so94519866b.1
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 06:22:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685020689; x=1687612689;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=N+p+ZJAQtDR8XfmnUBNYetcXF4C9Wm+xwp2UcFDR9hM=;
- b=DPPYSsgQlcEJHknO6C+jrzuQohw/DFTDG+jgwbsuQ7SfF68ua5ppomgfsfJQOpgg4O
- znDxKBflY46f6cUqGPwNg9+Lp/UEAvqY2QNEHcYzvdcOn9NR8evyJRa+jTWDltpyd7P9
- oUQPtWWzVcFwmtiOkWbfbgCNxo/f4oBovd+mvYIfd1R+eULiA58tnu1ndoSL/v0zhJHR
- NJa8X73F+dUILihh+3LvFdQeSeVnss+uCeDTphU8915cOD5gXP6+CqKCoBCKr9vvW6qA
- b6/BE7R0w5uDQubge2xZHa+BOteY8K8gduvlJsX6ovD48YjhKpeJctBbck7mP5IQ6Uyd
- 8abA==
+ d=linaro.org; s=google; t=1685020962; x=1687612962;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=H71FODySlCyndoNQTOrrBgKE+vWkxJA/oQSAYxvajfg=;
+ b=uE/VsPEHpqexLiIp5IQb/Mc74bf9XwS58zACRXkLNt5r0Azi2/ZPGGlNTdnd2UYkEy
+ u1xmXEMvLwrS+d96QYd88dhOh3VwzXvUge8Eu232O5K3SSvOckh9efGCiqGypwOKJH7N
+ 5MBrHAVRSi/CyXrcJNPGdIHtqt15l/zJEY5xt4+ZGy33FlKAv86QcSizXxzCKgYbzcVC
+ /FAMSkCNgcke8cW+GsS17sKhsJg7i839MPEsiFmuIp0b7MvqAPsvFd/eY1Uvk/CXXBHa
+ hjm9PhHGgkh35RfNPQE8zRuNlafKuIALrYD/hhkNdMarV6KfV4zb+tW6UDFX4Lgl4wyn
+ daew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685020689; x=1687612689;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=N+p+ZJAQtDR8XfmnUBNYetcXF4C9Wm+xwp2UcFDR9hM=;
- b=PcZP59S72THv6+9DmggxVJYCS1MZ/ehIgfwM4g8n1NzZq5GcszIbfim6Aw0qk2PBja
- 5meOKcgi4FJ0YU4DZBincK5+Q2XTCqMaXS72l700PzPEVLH8KGruTutVMEFbb5kfX833
- hgjcQBn7uAaN4KO/tid8SXkVtfUAyEjFIj4Ee7aidO1+F+sQYW2US/86xiXLhfhb2MsZ
- 7dyi9BFDi9vzZlBHba4Y5aLZLltKvSNliTBQHUei4o7sVHpPX8Eq1pb91ggFbRdm+S/M
- NcHIf5df6VGBMrSol+pB2RqX/PgikTlfsUNkS+jsm0dN9QLBM75a7Nrbpr+3JDGLg3Jf
- OAfg==
-X-Gm-Message-State: AC+VfDwQgeL51ZojEn2tv5gMZvOPycw+kF4FFxpQalu2WiyCq5Sbg2qw
- hJlHqYdFQ/Ho5fGbLq94li1B7w==
-X-Google-Smtp-Source: ACHHUZ6+KYqlASGhhNuvAir1jhv5by/nso75tR4q4T7Hf0PqIj/nY7Q9Ibuvfp7E65RTA30zt8Qvew==
-X-Received: by 2002:a05:6a00:99a:b0:645:834c:f521 with SMTP id
- u26-20020a056a00099a00b00645834cf521mr3822890pfg.17.1685020689456; 
- Thu, 25 May 2023 06:18:09 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:7ac5:31cc:3997:3a16?
- ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
- by smtp.gmail.com with ESMTPSA id
- v5-20020aa78505000000b0063a04905379sm1176395pfn.137.2023.05.25.06.18.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 06:18:09 -0700 (PDT)
-Message-ID: <8cea8ba1-7a7b-1e2a-3b4b-0100f4a5b9a5@linaro.org>
-Date: Thu, 25 May 2023 06:18:06 -0700
+ d=1e100.net; s=20221208; t=1685020962; x=1687612962;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=H71FODySlCyndoNQTOrrBgKE+vWkxJA/oQSAYxvajfg=;
+ b=C7AvncwT+mldoASZwHDmz3C0hRn7tN3t5MLsNWNqf8J2zeHdytUe4tpSHyATHRd9Qq
+ K9ry/qzhCdGFlLy2mIngoKMVSYQNP+sEgnBiEmYIZaAU6oq5RJ9syyMOlLOn/Bo70CUT
+ uUTC9ioDmdsECTwAQOq+/ZknjYlms/hf8NVR9LwygTsEbG7fuAuhyUETjVMGbXkX2QMy
+ HJ5YVMPBGitLQ2k0R8EahkqwiRYU/D7wKM8eDjyUY7KCzvsi3d1IRK3RwjMQa03uI2al
+ XPyh4wRcEW/QIoetbm1l5a3CCauxmZXWsJA5W6oKTaKOBmllXIc35UFxO5bHm2IwRBCl
+ +Rbg==
+X-Gm-Message-State: AC+VfDwhjSc7KPw1L54GP0uQaxOAGnCRXfRRnDEgNwnjR6XpexraMRQv
+ c3DRH9bf4uXURCxsAzQieWYQ/1NIy02/SE6612M9Cg==
+X-Google-Smtp-Source: ACHHUZ60F6Vxr4YhvUEDXxizB87yrXGNOUvXeBAPUq6VVcWru8llrtHHfQkZMoaIjEpHep1eDwasgcXuChXaC5KSiDg=
+X-Received: by 2002:a17:906:478b:b0:957:2d2a:e8a2 with SMTP id
+ cw11-20020a170906478b00b009572d2ae8a2mr2316961ejc.27.1685020961909; Thu, 25
+ May 2023 06:22:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2] target/loongarch: Fix the vinsgr2vr/vpickve2gr
- instructions cause system coredump
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, philmd@linaro.org, alex.bennee@linaro.org,
- maobibo@loongson.cn, yangxiaojuan@loongson.cn
-References: <20230525120005.2223413-1-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230525120005.2223413-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230524173815.1148653-1-richard.henderson@linaro.org>
+ <CAFEAcA9+BGdG6bShPQ+SZzJNOjMAMJ2fVYqpcvR4vOVums+dMQ@mail.gmail.com>
+ <17eba1f4-f768-6dd9-5503-01901cf21a53@linaro.org>
+In-Reply-To: <17eba1f4-f768-6dd9-5503-01901cf21a53@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 25 May 2023 14:22:30 +0100
+Message-ID: <CAFEAcA-ePaGWeswXEPJ7ff-omRX=v+dEx1NnX3c1c7hzO_e_6w@mail.gmail.com>
+Subject: Re: [PATCH] tests/decode: Emit TAP
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,19 +86,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/25/23 05:00, Song Gao wrote:
-> The vinsgr2vr/vpickve2gr instructions need use get_src/get_dst to get
-> gpr registers value, not cpu_gpr[]. The $zero register does not
-> have cpu_gpr[0] allocated.
-> 
-> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1662
-> 
-> Signed-off-by: Song Gao<gaosong@loongson.cn>
-> ---
->   target/loongarch/insn_trans/trans_lsx.c.inc | 39 ++++++++++++++-------
->   1 file changed, 26 insertions(+), 13 deletions(-)
+On Thu, 25 May 2023 at 14:11, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 5/25/23 03:00, Peter Maydell wrote:
+> > On Wed, 24 May 2023 at 18:38, Richard Henderson
+> > <richard.henderson@linaro.org> wrote:
+> >>
+> >> We currently print FAIL for the failure of a succ_* test, but don't
+> >> return a failure exit code.  Instead, convert the script to emit
+> >> Test Anything Protocol, which gives visibility into each subtest
+> >> as well as not relying on exit codes.
+> >>
+> >> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> >> ---
+> >>   tests/decode/check.sh | 36 ++++++++++++++++++++++++++----------
+> >>   tests/meson.build     |  1 +
+> >>   2 files changed, 27 insertions(+), 10 deletions(-)
+> >>
+> >> diff --git a/tests/decode/check.sh b/tests/decode/check.sh
+> >> index 95445a0115..a3d879a099 100755
+> >> --- a/tests/decode/check.sh
+> >> +++ b/tests/decode/check.sh
+> >> @@ -4,21 +4,37 @@
+> >>
+> >>   PYTHON=$1
+> >>   DECODETREE=$2
+> >> -E=0
+> >> +E_FILES=`echo err_*.decode`
+> >> +S_FILES=`echo succ_*.decode`
+> >
+> > If you run shellcheck on this script it produces some
+> > style complaints. Notably:
+> >
+> >   * $(...) is better than `...`
+> >   * j=$(($j + 1))  is better than j=`expr $j + 1`
+> >
+> > At least some of its "missing quoting" complaints are
+> > also legitimate, notably on $PYTHON and $DECODETREE.
+>
+> "Better" in what sense?  Also, this is /bin/sh, not /bin/bash, so I'm never certain what
+> I'm really allowed to use.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+checkpatch checks POSIX syntax if the script starts with #!/bin/sh.
+(It's a pretty good tool for spotting "this thing you used
+isn't actually POSIX", in fact.)
 
-r~
+shellcheck's rationales are
+https://www.shellcheck.net/wiki/SC2003 (for expr)
+ -- the POSIX spec itself says "avoid expr in new scripts".
+    (Also I think shell builtin arithmetic should be more efficient
+    than spawning the expr binary)
+https://www.shellcheck.net/wiki/SC2006 (for backticks)
+ -- backticks have some awkward issues; for consistency
+    I think it's better to use $() everywhere even in
+    the kind of simple case where `` has no problems
+
+configure doesn't have any backticks in it.
+
+thanks
+-- PMM
 
