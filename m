@@ -2,81 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3521710C7C
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7269E710C98
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:57:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2AVI-0001bQ-Rp; Thu, 25 May 2023 08:55:40 -0400
+	id 1q2AWM-0002y7-Aj; Thu, 25 May 2023 08:56:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q2AVF-0001aw-Jw
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:55:38 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q2AVD-0004OX-Qj
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:55:37 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-51426347bd2so3278739a12.2
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 05:55:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685019333; x=1687611333;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wnmdK1okFEDTpG2HnSm1Ma2k5nLE93zVWkO2eo3JDt8=;
- b=i1ThRSoi4Pi+lk6otkvkqL1fGzBoQz6m1oGgKy3ksdPU9WJB9eCybPET9Ycds1ul/H
- fcviK/R5nfIKLYCSuBcTLwY3EjEdzxd1G+aykY5+6TssPUmTmdiGmwL6a0l9lVHgnMLJ
- Z0VmsUPeXrKVtTeGc/KTwySW56w0m137BqbZfZUywrljPchGHv11Vya+CdzFyggbHLDT
- DIRD0aVYn6TMi9kMVK5E4z37xZFQCOwcQk7SN4Pxtpx/NqhqrXLRasKCoXicKSoDGUWj
- TLLkS+teJSJlLNDvcdWs0EFoOggO6oHSlxdNHb+KvJeq9ZAPW1yefHIflyLnnvsJLuZI
- QkZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685019333; x=1687611333;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wnmdK1okFEDTpG2HnSm1Ma2k5nLE93zVWkO2eo3JDt8=;
- b=DbsRqO/+OMjXhNcEiol6F2cHnySCc0HZP8j3jqnaZp08N/NYOBRgR1NqgtOujjSdGJ
- lt59vlCBCmYTefNtjCj2jlOe26TnznuSk4asU+HMZ5o0GDBgEqCeAwJZ9DV/pEEt6fPp
- bTSTelOKo2bHAzAZxIjH4ltEBtWNSw5jRQMzxLoxSPqll83Zo1lqvzhbeNzBaLpk6AGt
- uDz0nnMyM7YVlLFm1abzOrUvwdjperm8HCbcD5ObURI4cnwq1jFwYS7SlEMq6iwjnduy
- ppFV2NHswCWerKD5Shp8kwMPLL2rEADDNEdIwrq1X4tQPuL6FmV6HomzSvUDlDI3Edqv
- 25Kw==
-X-Gm-Message-State: AC+VfDxy1zbzs/bgBzoQ3ESan65xPlQa7t4ryfVaiYJ1jadQGSkVxp9g
- EMgQJ2noRIXAXipbcvoJ4U0Fo8Y/3lcdGrTASEeLXA==
-X-Google-Smtp-Source: ACHHUZ7RzGG6CIfkdRteLHTtjZLPLrU/LVW6L4fMWA2d28PeDuS2HyfAsvAcm3e7uzxYqr0SXI0ADdqACo8y1Nrx9XA=
-X-Received: by 2002:aa7:d1c8:0:b0:50d:89a3:d909 with SMTP id
- g8-20020aa7d1c8000000b0050d89a3d909mr4186530edp.30.1685019333545; Thu, 25 May
- 2023 05:55:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1q2AWI-0002xg-Hv
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:56:42 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1q2AWF-0004YO-8D
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:56:42 -0400
+Received: from loongson.cn (unknown [10.20.42.57])
+ by gateway (Coremail) with SMTP id _____8Cx6fEBW29k1P8AAA--.2669S3;
+ Thu, 25 May 2023 20:56:33 +0800 (CST)
+Received: from [10.20.42.57] (unknown [10.20.42.57])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxLL4BW29kZ4V3AA--.841S3; 
+ Thu, 25 May 2023 20:56:33 +0800 (CST)
+Subject: Re: [PATCH 4/5] hw/loongarch64: Use MachineClass->default_nic in the
+ virt machine
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Helge Deller <deller@gmx.de>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Max Filippov <jcmvbkbc@gmail.com>,
+ Jason Wang <jasowang@redhat.com>
+References: <20230523110435.1375774-1-thuth@redhat.com>
+ <20230523110435.1375774-5-thuth@redhat.com>
+From: Song Gao <gaosong@loongson.cn>
+Message-ID: <cfabe205-fac7-1f94-af94-006b0c8545e5@loongson.cn>
+Date: Thu, 25 May 2023 20:56:33 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <20230522153144.30610-1-philmd@linaro.org>
- <20230522153144.30610-10-philmd@linaro.org>
- <CAFEAcA_7dkWB9qPkzYmW6_F1eaAet0PPk0PHywGS2EpAkFAsUQ@mail.gmail.com>
- <87zg5stvyi.fsf@linaro.org>
-In-Reply-To: <87zg5stvyi.fsf@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 25 May 2023 13:55:22 +0100
-Message-ID: <CAFEAcA9EYLWnm6kEZGJn=Ah_wy1oE+8u0bZuVPq8=wTxtUo_Hw@mail.gmail.com>
-Subject: Re: [PATCH 09/12] hw/char/pl011: Check if transmitter is enabled
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+In-Reply-To: <20230523110435.1375774-5-thuth@redhat.com>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8BxLL4BW29kZ4V3AA--.841S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjvJXoW7Kw48Zr4ftF1DuryDCF1ftFb_yoW8AF4kpF
+ W5uF1kAFZ3XrWkJas7Z3s8Xr1rArs293yS9F17tr10ka4Durn8Wr48J3s0qFWqya93XF18
+ Zr9Yk342qF1S9rJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+ bIxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
+ 1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
+ wVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM2
+ 8EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr0_GcWl
+ e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xvF2
+ IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4U
+ McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67vIY487Mx
+ AIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_
+ Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwI
+ xGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8
+ JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcV
+ C2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8PCzJUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-0.091, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,44 +83,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 25 May 2023 at 13:52, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > On Mon, 22 May 2023 at 16:32, Philippe Mathieu-Daud=C3=A9 <philmd@linar=
-o.org> wrote:
-> >>
-> >> Do not transmit characters when UART or transmitter are disabled.
-> >>
-> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> >
-> > Last time somebody tried to add checks on the tx/rx enable bits
-> > for the PL011 it broke 'make check' because the hand-rolled
-> > UART code in boot-serial-test and migration-test doesn't
-> > set up the UART control register strictly correctly:
-> >
-> > https://lore.kernel.org/qemu-devel/CAFEAcA8ZDmjP7G0eVpxcB1jiSGarZAbqPV0=
-xr5WquR213mBUBg@mail.gmail.com/
-> >
-> > Given that imposing these checks doesn't help anything
-> > much and might break naive bare-metal tested-only-on-QEMU
-> > code, is it worthwhile ?
->
-> Surely we aim to be a correct model so the fix should be in our naive
-> and incorrect code?
 
-In our own test suites, sure -- we should probably fix that
-even if we don't change the PL011 model to require it.
-But if we let this kind of thing get past us in our own testsuite,
-it suggests there's probably a lot of similar naive code out
-there in the world -- these Arm boards with PL011s are pretty
-commonly used for "my first bare metal assembly program" stuff
-and there's a lot of cargo-culting of how to do things like
-serial output, and programs that were never tested on any
-real hardware...
 
-thanks
--- PMM
+ÔÚ 2023/5/23 ÏÂÎç7:04, Thomas Huth Ð´µÀ:
+> Mark the default NIC via the new MachineClass->default_nic setting
+> so that the machine-defaults code in vl.c can decide whether the
+> default NIC is usable or not (for example when compiling with the
+> "--without-default-devices" configure switch).
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   hw/loongarch/virt.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+Tested-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+
+Thanks.
+Song Gao
+> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+> index 2b7588e32a..ceddec1b23 100644
+> --- a/hw/loongarch/virt.c
+> +++ b/hw/loongarch/virt.c
+> @@ -474,6 +474,7 @@ static DeviceState *create_platform_bus(DeviceState *pch_pic)
+>   
+>   static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *lams)
+>   {
+> +    MachineClass *mc = MACHINE_GET_CLASS(lams);
+>       DeviceState *gpex_dev;
+>       SysBusDevice *d;
+>       PCIBus *pci_bus;
+> @@ -528,7 +529,7 @@ static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *
+>           NICInfo *nd = &nd_table[i];
+>   
+>           if (!nd->model) {
+> -            nd->model = g_strdup("virtio");
+> +            nd->model = g_strdup(mc->default_nic);
+>           }
+>   
+>           pci_nic_init_nofail(nd, pci_bus, nd->model, NULL);
+> @@ -1038,6 +1039,7 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
+>       mc->default_boot_order = "c";
+>       mc->no_cdrom = 1;
+>       mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
+> +    mc->default_nic = "virtio-net-pci";
+>       hc->plug = loongarch_machine_device_plug_cb;
+>       hc->pre_plug = virt_machine_device_pre_plug;
+>       hc->unplug_request = virt_machine_device_unplug_request;
+
 
