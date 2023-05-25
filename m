@@ -2,97 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42592710205
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 02:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94BEC710211
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 02:39:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q1yt4-0008EL-DT; Wed, 24 May 2023 20:31:27 -0400
+	id 1q1z00-0002bE-Vi; Wed, 24 May 2023 20:38:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@aj.id.au>)
- id 1q1ysm-0008DQ-G3; Wed, 24 May 2023 20:31:10 -0400
-Received: from wout5-smtp.messagingengine.com ([64.147.123.21])
+ (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
+ id 1q1yzz-0002Vr-8N
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 20:38:35 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@aj.id.au>)
- id 1q1ysi-0001mH-DA; Wed, 24 May 2023 20:31:08 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailout.west.internal (Postfix) with ESMTP id 208653200312;
- Wed, 24 May 2023 20:30:57 -0400 (EDT)
-Received: from imap50 ([10.202.2.100])
- by compute6.internal (MEProxy); Wed, 24 May 2023 20:30:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=cc
- :cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
- 1684974656; x=1685061056; bh=YfG9zvQQaoepnMMNfqy6+0+2t7ayqDlcNWh
- DHjm2lcM=; b=Swn4lhOeh2zK21cBKQR5jA04+SHWhgQKrAoBe2uAysYZZfmcTG9
- ET15y4oC0o5Xuzc1ZjFjsqCf869rBjJ4kF179Z4Jhix2PbrJnmPSx/GEhE/Gz+ii
- WQSjiI3SHUMxz/Y+pXR058fG1AEAlG8fNYIZmPnMimh0xjUvENCGdiJTy4BejAbR
- 36OzejhAvfC9O4zW0b2xpLZzUOBFAstw/CwBhPI6WxN/JDieOWAMhXYBqQyo3Prq
- waWb00OR/SbNkqYICohO8bxHXmx6u2zAlYO0IbQtJmESH0U74z/BRlntJ3B122G9
- ZqvPhOmBXtjG2+BRL1XEj4wGxmmZAFSaXuA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
- 1684974656; x=1685061056; bh=YfG9zvQQaoepnMMNfqy6+0+2t7ayqDlcNWh
- DHjm2lcM=; b=S2mB6oLMv0IWQOJXEl/s3hO3mnZmxZaN6eAtqToRsGexpsFKD1g
- mWUP1CJNuNJ9/LraWnspSjJDPIZ+ihGD8nIe0eOVC8jJJhzBPtTTpxvV1lK0HOe/
- D4SzUxsHKzUq43N+n4jj4cCPGg6uFShsRtpDojsum06tf5zegx9VFFdstT3D7VKP
- kNcXi+npv64Mzr9+Fir2iuwTa6SXedwAoGFXJKrM0UzuSWmwyW+q57yAOIL3AaJL
- yEe1urKsFMOmii1UCKQT7/RHDV+Yu939hUHXHLrcusFIZEDYytZDIctA5Hft88Z4
- RbmYC+8lSnPFLjiW1qoEbA3Qpvw1Slfeq2A==
-X-ME-Sender: <xms:QKxuZELxonq0O2fZNGCD75eFEKJARqzlo1SlZ_6CHuQ0bewxv3Dbhg>
- <xme:QKxuZEIh8Ii0lnoT2cO22oBQeG-4XPDjvo2XUrakyPx9yWv2Wgy_JGRF_yhTVuwyP
- XXrYQ8UuaVj6LQtSg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejiedgfeehucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
- nhgurhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecugg
- ftrfgrthhtvghrnhepleekteeivdfgkeeuheetkeeufefgueffvdeiudeihefgfeeliefh
- gefhledvfeefnecuffhomhgrihhnpehgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorh
- hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghn
- ughrvgifsegrjhdrihgurdgruh
-X-ME-Proxy: <xmx:QKxuZEvNV-jCLdXmf-Hxlg2KuJMp3wdKqVJv29EUdTFNyFmN1uy4Ew>
- <xmx:QKxuZBY3219vh-7ASvS_nmhAKpS3cyiBDLU1vCdciTi4tco0z_JCLA>
- <xmx:QKxuZLb8X9y_1WiOxz4URLtVkHjhQ8KtWMV1Jch7YOngwvNgoaRtyA>
- <xmx:QKxuZHGJ0P11_b9JV6xDLjBBNX2tkMuKibp2tx4XHDzGQsy0gpCjOA>
-Feedback-ID: idfb84289:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 5BFBF1700093; Wed, 24 May 2023 20:30:56 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-441-ga3ab13cd6d-fm-20230517.001-ga3ab13cd
-Mime-Version: 1.0
-Message-Id: <80168e3a-b0f6-463e-b473-8488a897ef16@app.fastmail.com>
-In-Reply-To: <CACPK8XeSBh+SMWPZ68rkeRnOcTFE0_SFcCNoYZr85DLhzGsgtQ@mail.gmail.com>
-References: <20230523214520.2102894-1-ninad@linux.ibm.com>
- <20230523214520.2102894-2-ninad@linux.ibm.com>
- <7fadea2f-39e0-902f-848a-8f9bd7ff1f52@kaod.org>
- <CACPK8XeSBh+SMWPZ68rkeRnOcTFE0_SFcCNoYZr85DLhzGsgtQ@mail.gmail.com>
-Date: Thu, 25 May 2023 10:00:35 +0930
-From: "Andrew Jeffery" <andrew@aj.id.au>
-To: "Joel Stanley" <joel@jms.id.au>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: "Ninad Palsule" <ninad@linux.ibm.com>,
- "Cameron Esfahani via" <qemu-devel@nongnu.org>,
- "Peter Maydell" <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9_via?= <qemu-arm@nongnu.org>
-Subject: Re: [PATCH v3 1/1] hw/arm/aspeed:Add vpd data for Rainier machine
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=64.147.123.21; envelope-from=andrew@aj.id.au;
- helo=wout5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
+ id 1q1yzx-0004Dv-8R
+ for qemu-devel@nongnu.org; Wed, 24 May 2023 20:38:35 -0400
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34P0TOdZ014158; Thu, 25 May 2023 00:37:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=/e6B8PzwIMOA1NUnKfCKwK2WyRgcsLlUL/WWtMhoXOo=;
+ b=p3qB04b9XJKftly38O5+vr0J26dCdM35VoVjloUmf9fYS0RaN82z0Hr3YOWh4ZJQsIjf
+ BZiPx+ihcB08jdCDDKbmzPherYn1S2m1s//fnj9cxWlR23hvxTUQUVj+hShpm/tBZn5v
+ jDiBZ5ioeyyjMpK+LEvalgHQPiEK8wKmXBNCpReedGyLTdn2zyAqM3iDTmQKde8ORkWM
+ T86J62r2qVscXNPcq/nHDEto456qzSc9BtrhHoCSk2cNbiTANPUKFw9/ulvZYESobBSt
+ WF7jcasL0f/+Lab6joyPDPm4sna1+eyFr3WPINyTsoOpta5EBv9ueff6H1jxJGX7j1Tt ww== 
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qscautcq9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 May 2023 00:37:18 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com
+ [10.52.223.231])
+ by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34P0bGcV018047
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 May 2023 00:37:16 GMT
+Received: from [10.110.74.38] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 24 May
+ 2023 17:37:15 -0700
+Message-ID: <cf1d6831-dac9-f738-44b4-a9dbc575b7e9@quicinc.com>
+Date: Wed, 24 May 2023 17:37:14 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
+Content-Language: en-US
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "mic@digikod.net"
+ <mic@digikod.net>, "Christopherson,, Sean" <seanjc@google.com>,
+ "bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
+ <dave.hansen@linux.intel.com>, "keescook@chromium.org"
+ <keescook@chromium.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "wanpengli@tencent.com"
+ <wanpengli@tencent.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "yuanyu@google.com"
+ <yuanyu@google.com>, "jamorris@linux.microsoft.com"
+ <jamorris@linux.microsoft.com>, "marian.c.rotariu@gmail.com"
+ <marian.c.rotariu@gmail.com>, "Graf, Alexander" <graf@amazon.com>,
+ "Andersen, John S" <john.s.andersen@intel.com>,
+ "madvenka@linux.microsoft.com" <madvenka@linux.microsoft.com>,
+ "liran.alon@oracle.com" <liran.alon@oracle.com>, "ssicleru@bitdefender.com"
+ <ssicleru@bitdefender.com>, "tgopinath@microsoft.com"
+ <tgopinath@microsoft.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ "will@kernel.org" <will@kernel.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "dev@lists.cloudhypervisor.org" <dev@lists.cloudhypervisor.org>,
+ "mdontu@bitdefender.com" <mdontu@bitdefender.com>,
+ "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "virtualization@lists.linux-foundation.org"
+ <virtualization@lists.linux-foundation.org>, "nicu.citu@icloud.com"
+ <nicu.citu@icloud.com>,
+ "ztarkhani@microsoft.com" <ztarkhani@microsoft.com>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20230505152046.6575-1-mic@digikod.net>
+ <93726a7b9498ec66db21c5792079996d5fed5453.camel@intel.com>
+From: Trilok Soni <quic_tsoni@quicinc.com>
+In-Reply-To: <93726a7b9498ec66db21c5792079996d5fed5453.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: IbOKlK9jsOZG2ChFhg5i0OOOj4Du3a1t
+X-Proofpoint-GUID: IbOKlK9jsOZG2ChFhg5i0OOOj4Du3a1t
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-24_17,2023-05-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
+ phishscore=0 bulkscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305250003
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_tsoni@quicinc.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.107,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,69 +131,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On Wed, 24 May 2023, at 17:14, Joel Stanley wrote:
-> On Wed, 24 May 2023 at 06:38, C=C3=A9dric Le Goater <clg@kaod.org> wro=
-te:
+On 5/24/2023 3:20 PM, Edgecombe, Rick P wrote:
+> On Fri, 2023-05-05 at 17:20 +0200, Mickaël Salaün wrote:
+>> # How does it work?
 >>
->> But, I also got this :
+>> This implementation mainly leverages KVM capabilities to control the
+>> Second
+>> Layer Address Translation (or the Two Dimensional Paging e.g.,
+>> Intel's EPT or
+>> AMD's RVI/NPT) and Mode Based Execution Control (Intel's MBEC)
+>> introduced with
+>> the Kaby Lake (7th generation) architecture. This allows to set
+>> permissions on
+>> memory pages in a complementary way to the guest kernel's managed
+>> memory
+>> permissions. Once these permissions are set, they are locked and
+>> there is no
+>> way back.
 >>
->>    root@p10bmc:~# [   91.656331] watchdog: watchdog0: watchdog did no=
-t stop!
->>    [   91.734858] systemd-shutdown[1]: Using hardware watchdog 'aspee=
-d_wdt', version 0, device /dev/watchdog0
->>    [   91.735766] systemd-shutdown[1]: Watchdog running with a timeou=
-t of 1min.
->>    [   91.987363] systemd-shutdown[1]: Syncing filesystems and block =
-devices.
->>    [   93.471897] systemd-shutdown[1]: Sending SIGTERM to remaining p=
-rocesses...
+>> A first KVM_HC_LOCK_MEM_PAGE_RANGES hypercall enables the guest
+>> kernel to lock
+>> a set of its memory page ranges with either the HEKI_ATTR_MEM_NOWRITE
+>> or the
+>> HEKI_ATTR_MEM_EXEC attribute. The first one denies write access to a
+>> specific
+>> set of pages (allow-list approach), and the second only allows kernel
+>> execution
+>> for a set of pages (deny-list approach).
 >>
->> and the machine rebooted.
+>> The current implementation sets the whole kernel's .rodata (i.e., any
+>> const or
+>> __ro_after_init variables, which includes critical security data such
+>> as LSM
+>> parameters) and .text sections as non-writable, and the .text section
+>> is the
+>> only one where kernel execution is allowed. This is possible thanks
+>> to the new
+>> MBEC support also brough by this series (otherwise the vDSO would
+>> have to be
+>> executable). Thanks to this hardware support (VT-x, EPT and MBEC),
+>> the
+>> performance impact of such guest protection is negligible.
 >>
->> Joel had the same problem :
+>> The second KVM_HC_LOCK_CR_UPDATE hypercall enables guests to pin some
+>> of its
+>> CPU control register flags (e.g., X86_CR0_WP, X86_CR4_SMEP,
+>> X86_CR4_SMAP),
+>> which is another complementary hardening mechanism.
 >>
->>    https://github.com/openbmc/qemu/issues/39
+>> Heki can be enabled with the heki=1 boot command argument.
 >>
->> Is it unrelated ? I haven't started a rainier in 2 years at least so =
-I can
->> not tell.
->
-> I don't think it's related to Ninad's patches.
->
-> I am able to reproduce the issue on my old Skylake x86 machine, but it
-> doesn't happen on my M1 mac mini.
->
-> I suspect the emulation is moving too slowly, but the host's wall
-> clock is still ticking, so all of a sudden the BMC finds out that time
-> has passed an the watchdog bites. I could be wrong.
+>>
+> 
+> Can the guest kernel ask the host VMM's emulated devices to DMA into
+> the protected data? It should go through the host userspace mappings I
+> think, which don't care about EPT permissions. Or did I miss where you
+> are protecting that another way? There are a lot of easy ways to ask
+> the host to write to guest memory that don't involve the EPT. You
+> probably need to protect the host userspace mappings, and also the
+> places in KVM that kmap a GPA provided by the guest.
+> 
+> [ snip ]
+> 
+>>
+>> # Current limitations
+>>
+>> The main limitation of this patch series is the statically enforced
+>> permissions. This is not an issue for kernels without module but this
+>> needs to
+>> be addressed.  Mechanisms that dynamically impact kernel executable
+>> memory are
+>> not handled for now (e.g., kernel modules, tracepoints, eBPF JIT),
+>> and such
+>> code will need to be authenticated.  Because the hypervisor is highly
+>> privileged and critical to the security of all the VMs, we don't want
+>> to
+>> implement a code authentication mechanism in the hypervisor itself
+>> but delegate
+>> this verification to something much less privileged. We are thinking
+>> of two
+>> ways to solve this: implement this verification in the VMM or spawn a
+>> dedicated
+>> special VM (similar to Windows's VBS). There are pros on cons to each
+>> approach:
+>> complexity, verification code ownership (guest's or VMM's), access to
+>> guest
+>> memory (i.e., confidential computing).
+> 
+> The kernel often creates writable aliases in order to write to
+> protected data (kernel text, etc). Some of this is done right as text
+> is being first written out (alternatives for example), and some happens
+> way later (jump labels, etc). So for verification, I wonder what stage
+> you would be verifying? If you want to verify the end state, you would
+> have to maintain knowledge in the verifier of all the touch-ups the
+> kernel does. I think it would get very tricky.
 
-Yeah, I also suspect this is occurring. In some cases we see output
-like:
+Right and for the ARM (from what I know) is that Erratas can be applied
+using the alternatives fwk when you hotplug in the CPU post boot.
 
-```
-[  295.474921] hrtimer: interrupt took 411679950 ns
-Watchdog timer 0 expired.
-```
-
-This suggests that we've exhausted the three iterations of the hrtimer
-callback list from the hrtimer interrupt[1]. Too much stuff happening
-for the time-keeping we have.
-
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-tree/kernel/time/hrtimer.c?h=3Dv6.3#n1869
-
-However, regarding C=C3=A9dric's log above, a reboot is expected on the =
-first
-boot of a fresh image when there's valid VPD available. For the first
-boot of a fresh image we configure the kernel with a minimal devicetree
-that allows us to read the VPD data. This determines the system we're
-actually on and configures an appropriate devicetree for subsequent
-boots. We then reboot to pick up the new devicetree.
-
-The devicetree to use is stored in the u-boot environment (in
-`fitconfig`).
-
-Andrew
+---Trilok Soni
 
