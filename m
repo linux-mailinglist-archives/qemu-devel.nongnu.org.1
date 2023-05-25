@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAA8711375
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90434711399
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:21:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2FW3-0000f8-Av; Thu, 25 May 2023 14:16:47 -0400
+	id 1q2FZr-0002gD-C6; Thu, 25 May 2023 14:20:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q2FVm-0000ZC-6K
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:16:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q2FZp-0002ev-8m
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:20:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q2FVk-0007gK-Re
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:16:29 -0400
+ id 1q2FZn-0000T9-RQ
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:20:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685038588;
+ s=mimecast20190719; t=1685038839;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ye2Zoa3by9989JCLGqQMTFd0M0unviRO5bGkXL9ipqU=;
- b=GqYKTXcwcUOJZbk8bYhhE/I+ULQhnSaFdFTgPhMleDQ+j3KF13J0C8sqAf/Jb+sKYSimPF
- 3UV8eAqHDi3L/549P0vY+o4XDT4Q4V3T+QAwZ45Ao2/5NSNO3b4mAoVsSo6SBbgyTegDq2
- 6qA1A1Q9MCXGjlohRv0+ocvoYbJ7QTQ=
+ bh=JG/Tzio0TA6sof9Ms9wVzivAbTmZ7sd8afw77Cggp3w=;
+ b=C4qd4EoH6PgQFG9Yn5Q8S+4vEEiyNmpSzR9eNW5PdosQHUeIGcteSYfN2TfEsC0wmiOrQj
+ Zry1q4lWztgb0Koy7X7WLLqoRTcwf0u1+5jQ7QOBMArxg4aU1omzq3bNA+mRvBgCGRNKLr
+ zVutXGPF6JeVKIE6Yx8Vk91em5PFQZY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-671-JmPYmkxENj-SFL9WPMH67Q-1; Thu, 25 May 2023 14:16:26 -0400
-X-MC-Unique: JmPYmkxENj-SFL9WPMH67Q-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-28-MNp46OTcO8Szjsq-BmN_kw-1; Thu, 25 May 2023 14:20:35 -0400
+X-MC-Unique: MNp46OTcO8Szjsq-BmN_kw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DFFF685A5A8;
- Thu, 25 May 2023 18:16:25 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E386B80331C;
+ Thu, 25 May 2023 18:20:34 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.5])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6C32D48205E;
- Thu, 25 May 2023 18:16:25 +0000 (UTC)
-Date: Thu, 25 May 2023 14:16:23 -0400
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 736D340C6CDD;
+ Thu, 25 May 2023 18:20:34 +0000 (UTC)
+Date: Thu, 25 May 2023 14:20:32 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Kevin Wolf <kwolf@redhat.com>
 Cc: qemu-block@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
  qemu-devel@nongnu.org
-Subject: Re: [PATCH 02/12] block: Clarify locking rules for
- bdrv_open(_inherit)()
-Message-ID: <20230525181623.GD132697@fedora>
+Subject: Re: [PATCH 03/12] block: Take main AioContext lock when calling
+ bdrv_open()
+Message-ID: <20230525182032.GE132697@fedora>
 References: <20230525124713.401149-1-kwolf@redhat.com>
- <20230525124713.401149-3-kwolf@redhat.com>
+ <20230525124713.401149-4-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Ojg3I3GlZPBtT3gS"
+ protocol="application/pgp-signature"; boundary="+q18cXZmenuX6Q9/"
 Content-Disposition: inline
-In-Reply-To: <20230525124713.401149-3-kwolf@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <20230525124713.401149-4-kwolf@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,39 +82,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---Ojg3I3GlZPBtT3gS
+--+q18cXZmenuX6Q9/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 25, 2023 at 02:47:03PM +0200, Kevin Wolf wrote:
-> These functions specify that the caller must hold the "@filename
-> AioContext lock". This doesn't make sense, file names don't have an
-> AioContext. New BlockDriverStates always start in the main AioContext,
-> so this is what we really need here.
->=20
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->  block.c | 10 ++--------
->  1 file changed, 2 insertions(+), 8 deletions(-)
+On Thu, May 25, 2023 at 02:47:04PM +0200, Kevin Wolf wrote:
+> The function documentation already says that all callers must hold the
+> main AioContext lock, but not all of them do. This can cause assertion
+> failures when functions called by bdrv_open() try to drop the lock. Fix
+> a few more callers to take the lock before calling bdrv_open().
 
+Did you audit the code to check that there are no cases where
+aio_context_acquire() is now called twice, leading to aio_poll() hangs?
+
+Otherwise:
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
---Ojg3I3GlZPBtT3gS
+--+q18cXZmenuX6Q9/
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRvpfcACgkQnKSrs4Gr
-c8iubgf/YxzV25/y1u12U8qXVoSyYiZMIkXJeR/BPRasZ7S6wcZKoTz5ToUgsPYc
-Ru23tFQuN7N/S75qNf840FS0nxTHaeTQgA/lxz/BMds7MjEFJ966J1300VysjKxF
-N4TlrHx+GkZvoGCLXQNvtELY/lFp1/LVy1DtWPIITSZSMxVdXsveMkz7iCwgfRzK
-xuKekn9z+z2kcPovNiMkG1kTlgPQz1WbW/9SGsE1Hd28my66rTkhrsHO3B5DY7OB
-vTFfqoWggiAl/sX9AhdMYvL0JkDiaz6Dm4j1FV6XJF8mNCQlNoFOWudz6u+x9+yZ
-N6ktct3p/ONkDxe5+4CwLFLG6yQJsg==
-=0DBC
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRvpvAACgkQnKSrs4Gr
+c8gPRggAlSTrUgERtst4xV9HH4ZHpZAjINGHIYKUYbUPa4aW5zaujM80YoLKKKo+
+XxExgkSs/lFSuweebh6FNramgYgpHB+idi8K78IOKP+6i0HxzOTwT4XOSlEF9BhM
+vxckHqyYz2QtF86o0FreFs1+X+Hnflw1vr2Ku8trBrJbRN0uotPNPWMovXrCW1ZG
+SvJ08R4jpAWbUwuM2gON4tRX1X20rSSS5xtpMEUtCC3bBZB24iBbbIMcskpt8WBn
+dYIQqqMz3o+4vj7O+4937tzC+J8YwCaE82oAigZFoK+KiBKNM//PlNsdfw4IcxRp
+K4rbIAym0ZCF0ABZ8D65flr95CYa0Q==
+=KbT+
 -----END PGP SIGNATURE-----
 
---Ojg3I3GlZPBtT3gS--
+--+q18cXZmenuX6Q9/--
 
 
