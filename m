@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0815271070C
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 10:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0F471071A
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 10:15:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q265g-000364-Eb; Thu, 25 May 2023 04:12:56 -0400
+	id 1q267V-0003p3-2E; Thu, 25 May 2023 04:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q265e-00035d-LM
- for qemu-devel@nongnu.org; Thu, 25 May 2023 04:12:54 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q267R-0003oo-2n
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 04:14:45 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q265c-0002Hi-5r
- for qemu-devel@nongnu.org; Thu, 25 May 2023 04:12:54 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3f50020e0f8so1869545e9.0
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 01:12:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q267P-0002cv-6s
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 04:14:44 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3f6cbdf16d2so2051495e9.2
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 01:14:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685002370; x=1687594370;
+ d=linaro.org; s=google; t=1685002480; x=1687594480;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=mwEYr+h9v7iFge5HOPml4q+J2nB29/aeNvJnD1CE9UY=;
- b=jnCk6PU4pN2rnpWsCOUQIfSHKf07ajio/tdevLB2A0BhLzyG/Ilc4bXqYB37rZGSWo
- gRKe5NECc7nweJbklih/dNxSAzMMrOgLONz2WjDSIotvH/vhdus4Ci1AYS/yu9y2M47e
- 3zVN8DC3TbitvYEh2IEI9VY6t3Sq12zh4POqXBf3jhvlcZUlSHWyPpI0K0fHT6SZSReW
- nZ6z08nbzo7cwJX7z48WEM5J4pV+yT0r4+gZLfQC/eERAaQnoqdm5MZAu7RPSfV4I/hC
- nu3RnaIjrdkZb1H7PHoU+CCECX/e+YIN3pI6BW9nbOkwZ9zmNUUvTuelsxfj+w4/ozGP
- bcuA==
+ bh=tNdecoAq2Rjqipza+KMc32wG3VY5/+2OGEbpVA0JfL8=;
+ b=i0A3fnb89fjuWnJsRYcRUcFf+qxQ4ayVRiHw8H2jChmldBatMK8doJClUssenVMrE/
+ yKo6AJ6LnHaB5kEwEJ/vbtgGG8kRlzwvbapRZwbLojvpt2OWlNbC2Pg9JAsBL1W13tjq
+ 1h27qrPdh5PceUsDxhpXDFVxx9iYdBYitT9XjPeIP9A9oP+MEfV4AGry4lQff3SLD7nb
+ 8SktIkCo78iSKKrqHI0eWDfPpEMJkkvSvoR66nWvu5TO16P0WIDYpnoutN4c7kq0SUGt
+ mj/7adzwC3PdWG3QnXhBfD+SRciez8RnYGLFSuNKEG6Th2tKCjsuygxqkyQW6Wv3lXD5
+ wzRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685002370; x=1687594370;
+ d=1e100.net; s=20221208; t=1685002480; x=1687594480;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mwEYr+h9v7iFge5HOPml4q+J2nB29/aeNvJnD1CE9UY=;
- b=eRdn1bh0ayQ58mjkNn23tlX3dkBNbGithw886KG2TVXqOGQUtw+vv9w7K0GbQ1Hvfq
- gfZtjTpFA27z0gUbmKy25WzBIYaEhK7mFENOkSI7pccUwi2S6PFpfO7Zhl5fX/LsqXRA
- CuKU2EUs9HmO/eJii4emMyDV++NRVJCSMmHTG8lHzrQPPnKeD0bZf7cqZZVUhwoqkQp6
- oLI02F+vzl1euUTNpOmIe6F44sDyxa6C9qNIKWEl51j1mhGxe+/cs3EqcEBCftrH+fEk
- C9nF3sTrM91IR0mkYKtPG0WajFXlxk2/5CxlSJz/S3eR+7jEwitlBpcMAXpLh79MOspG
- 5NaQ==
-X-Gm-Message-State: AC+VfDxU5rchzv1HA23mMd39pxNvmNsvNILHOTN4We5jEHt+OdIjVf4l
- IMD7y1rCrnD19bNE1FwNbpXpGw==
-X-Google-Smtp-Source: ACHHUZ7gTgtnVHJZV5H2+VS01UWlPSQ/CC8Re2S5/5ms3yZvf+7CDA3G8NI/wQtZVi5cjYxW7mTG+Q==
-X-Received: by 2002:a05:600c:4e45:b0:3f5:867:1aba with SMTP id
- e5-20020a05600c4e4500b003f508671abamr1542764wmq.15.1685002370324; 
- Thu, 25 May 2023 01:12:50 -0700 (PDT)
+ bh=tNdecoAq2Rjqipza+KMc32wG3VY5/+2OGEbpVA0JfL8=;
+ b=hxNd0SkyoxgkD0me/FOs6EbxDNriCSUKmKGsbCOSyDzCYi9OO5s2UaHp5nl9OSzT1G
+ 1qc1LFFTSouh7l0eeVQoB4d/ZownbQdnn2S/hO1PBhuSCVpNGkby/MPApCJht+iIQs1J
+ MaqBbv/Z8p8eeAr5hXKZNsU0brCx1+/oVhjt7/NDOT0AuDoiL3k0n241ZdYjKetVdh4m
+ aLRlyJCO3XyL9zchPuys3aTWYAzWh0708qbxBHVXFtZTGurjXRTV3nUfz3lrAqIvhCK4
+ Y6A6QQ8gglkdpYx03QlAcUTdEPcftdRuw8MGONREo1ShI+1R5GzxG6yPvuv0k5L+SZhW
+ FeXQ==
+X-Gm-Message-State: AC+VfDy7UVbScOWJvP9tOwLg2HEr+cTqf1WiHIWyLExcyW6UsofMcCTX
+ Z0fHjGQC4C2Yp48hgzIecwEHnw==
+X-Google-Smtp-Source: ACHHUZ6zWMcEgbLVf6IKLehp1fNWIZAq9XnHEQUsFBcQRZmzuPrNLEC4S/pzhms5LeHfVQ++UvSkyw==
+X-Received: by 2002:a1c:7304:0:b0:3f1:9b85:e305 with SMTP id
+ d4-20020a1c7304000000b003f19b85e305mr1824459wmb.34.1685002480026; 
+ Thu, 25 May 2023 01:14:40 -0700 (PDT)
 Received: from [192.168.69.115] (cor91-h02-176-184-30-254.dsl.sta.abo.bbox.fr.
  [176.184.30.254]) by smtp.gmail.com with ESMTPSA id
- k10-20020a7bc40a000000b003f606869603sm4866154wmi.6.2023.05.25.01.12.49
+ c3-20020a05600c0ac300b003f50e88ffc1sm4929199wmr.0.2023.05.25.01.14.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 01:12:50 -0700 (PDT)
-Message-ID: <0fd19b1f-1cf5-3252-4ad3-71e58f2a141a@linaro.org>
-Date: Thu, 25 May 2023 10:12:48 +0200
+ Thu, 25 May 2023 01:14:39 -0700 (PDT)
+Message-ID: <d1487606-f8db-6ada-1f08-fed5b4ae9d33@linaro.org>
+Date: Thu, 25 May 2023 10:14:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 09/30] q800: add djMEMC memory controller
+Subject: Re: [PATCH 10/30] q800: add machine id register
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
  qemu-devel@nongnu.org
 References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
- <20230524211104.686087-10-mark.cave-ayland@ilande.co.uk>
+ <20230524211104.686087-11-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230524211104.686087-10-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230524211104.686087-11-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,76 +94,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 24/5/23 23:10, Mark Cave-Ayland wrote:
-> The djMEMC controller is used to store information related to the physical memory
-> configuration.
+> MacOS reads this address to identify the hardware.
+> 
+> This is a basic implementation returning the ID of Quadra 800.
+> 
+> Details:
+> 
+>    http://mess.redump.net/mess/driver_info/mac_technical_notes
+> 
+> "There are 3 ID schemes [...]
+>   The third and most scalable is a machine ID register at 0x5ffffffc.
+>   The top word must be 0xa55a to be valid. Then bits 15-11 are 0 for
+>   consumer Macs, 1 for portables, 2 for high-end 68k, and 3 for high-end
+>   PowerPC. Bit 10 is 1 if additional ID bits appear elsewhere (e.g. in VIA1).
+>   The rest of the bits are a per-model identifier.
+> 
+>   Model                          Lower 16 bits of ID
+> ...
+>   Quadra/Centris 610/650/800     0x2BAD"
 > 
 > Co-developed-by: Laurent Vivier <laurent@vivier.eu>
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->   MAINTAINERS              |   2 +
->   hw/m68k/Kconfig          |   1 +
->   hw/m68k/q800.c           |   9 +++
->   hw/misc/Kconfig          |   3 +
->   hw/misc/djmemc.c         | 154 +++++++++++++++++++++++++++++++++++++++
->   hw/misc/meson.build      |   1 +
->   hw/misc/trace-events     |   4 +
->   include/hw/m68k/q800.h   |   2 +
->   include/hw/misc/djmemc.h |  46 ++++++++++++
->   9 files changed, 222 insertions(+)
->   create mode 100644 hw/misc/djmemc.c
->   create mode 100644 include/hw/misc/djmemc.h
+>   hw/m68k/q800.c         | 29 +++++++++++++++++++++++++++++
+>   include/hw/m68k/q800.h |  1 +
+>   2 files changed, 30 insertions(+)
 
-
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index f15f1eaff9..456407898e 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -40,6 +40,7 @@
->   #include "bootinfo.h"
->   #include "hw/m68k/q800.h"
->   #include "hw/misc/mac_via.h"
-> +#include "hw/misc/djmemc.h"
->   #include "hw/input/adb.h"
->   #include "hw/nubus/mac-nubus-bridge.h"
->   #include "hw/display/macfb.h"
-> @@ -66,6 +67,7 @@
->   #define SONIC_PROM_BASE       (IO_BASE + 0x08000)
->   #define SONIC_BASE            (IO_BASE + 0x0a000)
->   #define SCC_BASE              (IO_BASE + 0x0c020)
-> +#define DJMEMC_BASE           (IO_BASE + 0x0e000)
->   #define ESP_BASE              (IO_BASE + 0x10000)
->   #define ESP_PDMA              (IO_BASE + 0x10100)
->   #define ASC_BASE              (IO_BASE + 0x14000)
-> @@ -492,6 +494,13 @@ static void q800_machine_init(MachineState *machine)
->                                &error_abort);
->       sysbus_realize_and_unref(SYS_BUS_DEVICE(m->glue), &error_fatal);
->   
-> +    /* djMEMC memory controller */
-> +    m->djmemc = qdev_new(TYPE_DJMEMC);
-> +    sysbus = SYS_BUS_DEVICE(m->djmemc);
-> +    sysbus_realize_and_unref(sysbus, &error_fatal);
-> +    memory_region_add_subregion(&m->macio, DJMEMC_BASE - IO_BASE,
-> +                                sysbus_mmio_get_region(sysbus, 0));
-
-
-> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-> index 8d788a7072..d0e37cc665 100644
-> --- a/include/hw/m68k/q800.h
-> +++ b/include/hw/m68k/q800.h
-> @@ -33,6 +33,8 @@ struct Q800MachineState {
->       M68kCPU *cpu;
->       MemoryRegion rom;
->       DeviceState *glue;
-> +    DeviceState *djmemc;
-
-While I like the simplicity of using pointer to common QOM parent
-type, isn't the consensus to have QOM objects embed their children
-state? Maybe we never agreed on that explicitly :) So here I'd rather:
-
-         DJMEMCState djmemc;
-
->       MemoryRegion macio;
->       MemoryRegion macio_alias;
->   };
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
