@@ -2,71 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0832710975
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 12:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B95D71097A
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 12:09:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q27qn-0007vq-MN; Thu, 25 May 2023 06:05:41 -0400
+	id 1q27tj-0001YV-Jg; Thu, 25 May 2023 06:08:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q27qj-0007tt-Ax
- for qemu-devel@nongnu.org; Thu, 25 May 2023 06:05:37 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1q27th-0001Xz-U7
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 06:08:41 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q27qh-0003v8-Ld
- for qemu-devel@nongnu.org; Thu, 25 May 2023 06:05:37 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-50bcb00a4c2so3515029a12.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 03:05:35 -0700 (PDT)
+ id 1q27te-0004K7-LV
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 06:08:39 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-510d1972d5aso3573165a12.0
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 03:08:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685009134; x=1687601134;
+ d=linaro.org; s=google; t=1685009317; x=1687601317;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=N5Vp1FQA5Pj3pdinX5mQO1qAqFA2PIXogTWP4Vq7diw=;
- b=QdNQmncRtZWbe9SCnt4CIOj56oGTAOLZvG6LecPDWpVbfTOorisArxYE9Bq8xO10Z1
- rVA1BrEAFW20AEmP/cQaUI71Nw2cOETPTAvDxZjh/9yiIcsLcWr6tEJLc/f4ZQFYnIOA
- UAbAYqOT0zhFhPOvRvKAxokUAP3UU+uqnRXasXkeA1A6CzAsbJTRi3Y0mS7DwXiPB42M
- X5PeSV9hBYXX2MbTlk/0eykcgGQz7aP0oBSmFK1NJQyATiLexOUAWlJb5nXlsx8942HK
- x6fuutjS/d0V/SV6C2fdCis2B+r7tHwEsWg7mEl2C3M+H6Dwc25SCtqihEaZ8xlCYYZG
- szKQ==
+ bh=EisLXafH+ZAfhp7I9z0OiXumwDmsVY8hcBpzulyBU4Y=;
+ b=jHsWoVOuVsq3QmOWRhIso29bqqp0K5T1OHPVv9iDrBrDuDQdBKovZDO/kgbQR4F0uY
+ Vlz2eHFb5IXDxiQIDBy2/ofM/7Ebqk87s8uAKBxiJlBm9HHBZEv3jechJCCXMdhQytnw
+ Cog8b+Brpyji1/W1Q0kiF+yFZ8gGsMghb84C0vEdgSjdek7akPFWkP2jgPCOJTXGGZIj
+ kEH1tx6wAHRexV+yL0U56PczALx5rdOaf2uQbYivziZcOd3uZDeHgPTFCjVB9TyyY7TM
+ 1TTAlskTUma0KMBcYsDlYeiLjrkiOxqlBogQAL4tqFDLfiyc3DD2wQNvUGlmKUMc0P6L
+ ui5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685009134; x=1687601134;
+ d=1e100.net; s=20221208; t=1685009317; x=1687601317;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=N5Vp1FQA5Pj3pdinX5mQO1qAqFA2PIXogTWP4Vq7diw=;
- b=VnsNyTg2FHr/1DUq4q7gpTZSxgj7I1L7cC8Ca8XchlY8eL8EUXBHUKky9VaFsEkrwD
- Mju72xWxon1oeF1JUiIKSxJYD67wrASw5+zfCI3cteTO0dE25lEELCefBAOnq4e7N/Pi
- bxIdrKF0gdMmoWj9RpzsvXKQm5rkAuoYHN3b3istN09SVgGOGR1ikGHqcuDZkSgVso/Z
- oHCm09Pdj5eGK1eKp75v1AmZ6DhMvSTIhVNDlRHFLE1uzSoZaZAd7y4mzvWXVGKbydAF
- pHaOWzblSEB8+aDQPV7rNz7Evz5JO2PVg96Nx7WM/mPLQ6V4L8IG2m33rM6Q2Mi1C60M
- NdsQ==
-X-Gm-Message-State: AC+VfDx1SDWoxAoyVTpuZJdnLXENUAw4WS+uMXBVEHNbMxOEeB1HSiIK
- BqHJOpFPC7CgSlkxnfUqUORHnW961QkgcbqwLr7yqg==
-X-Google-Smtp-Source: ACHHUZ5CDdNzkLaCGhG+2QsHKx7JGXJcvH0xxWIpz3Q3fpqYzzhT9qd1QTZNTkoizHCZR9yPWOildo/r9YUOFNix7Ts=
-X-Received: by 2002:a17:907:da3:b0:967:21:5887 with SMTP id
- go35-20020a1709070da300b0096700215887mr1062135ejc.40.1685009133930; Thu, 25
- May 2023 03:05:33 -0700 (PDT)
+ bh=EisLXafH+ZAfhp7I9z0OiXumwDmsVY8hcBpzulyBU4Y=;
+ b=J4u70tNF2K3D6ZAVe1B83vGE6VJjHMdhtuhq7jrRRhniGeEbMUUp9nE+oICPui/xKy
+ LyD2vbC6srp4tT2qXseILLlARfOVhqjnmNl1U88tvtqjItdLwPxWqrWGUmdB2BUu8pM0
+ PtsGPC9knKL2kTIhC2JqMTJY1pTuj0Xvyh02wW7BdW0BybktYDf7PrqgwwjtHZ/aVAw8
+ B11oXz7+xOfpH080R+YHrBRMMk43TVoT3FlIvgMGO/vEDN08F+O9xZNRe99T0aguXId6
+ Z0l/tDcW7AFXBZmGHy/rBQSO22xCxGg/oItLcCdk29G9icUuQfHewCs305Qv38mf7LLj
+ s5xg==
+X-Gm-Message-State: AC+VfDzYOWuNL7FtUAbCj0VYquZtI/NVLkxVgM9/bm316sfq9MV7TpuN
+ 2YQTxf6m/h8C9RKkMB5FcDszkcNNM4za0SPPErQ05wVj9sjAT1BG
+X-Google-Smtp-Source: ACHHUZ77O4Q28Eul5vbpSYJgwZSDNDP74V+jTLzVs4B+REO8SYseBQpOD1KB2sRPL2pX1rjFE+x3SKSQzJJTB65OPxA=
+X-Received: by 2002:a05:6402:3451:b0:510:ee0f:1eab with SMTP id
+ l17-20020a056402345100b00510ee0f1eabmr3415504edc.41.1685009317028; Thu, 25
+ May 2023 03:08:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAFEAcA9GamGybSzd8FKBtmZ2qMgjRFy6D=Vhu1y0dL8m9Sa80w@mail.gmail.com>
- <20230523155644.678524-1-marcin.juszkiewicz@linaro.org>
- <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
- <4101dedc-91d7-1735-4655-81082931b79d@linaro.org>
- <49fa8502-70f9-cdc4-1058-9d4202400db6@redhat.com>
-In-Reply-To: <49fa8502-70f9-cdc4-1058-9d4202400db6@redhat.com>
+References: <20230524113308.834675-1-marcin.juszkiewicz@linaro.org>
+In-Reply-To: <20230524113308.834675-1-marcin.juszkiewicz@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 25 May 2023 11:05:23 +0100
-Message-ID: <CAFEAcA8OUP9vnJwRxcT7AUWPD5ANhc17ETgePYPe2=-N_ZvCsw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] docs: sbsa: correct graphics card name
-To: Thomas Huth <thuth@redhat.com>
-Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>
+Date: Thu, 25 May 2023 11:08:25 +0100
+Message-ID: <CAFEAcA8VxcdRvrRN2-pztriakGsXoGhaEcyptJ9z-0rPua0HGw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] hw/arm/sbsa-ref: platform version 0.1
+To: marcin.juszkiewicz@linaro.org
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Leif Lindholm <quic_llindhol@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,27 +85,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 23 May 2023 at 19:41, Thomas Huth <thuth@redhat.com> wrote:
+On Wed, 24 May 2023 at 12:33, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
 >
-> On 23/05/2023 19.30, Marcin Juszkiewicz wrote:
-> ...
-> >> (is there a reason why it can't be disabled with "-vga none" or
-> >> "-nodefaults"?)
-> >
-> > That's something I need to check how it should be done.
+> About year ago support for setting platform version for sbsa-ref was
+> added with "0.0" value.
 >
-> Other boards set mc->default_display in their ...class_init
-> function and then use pci_vga_init() (or vga_interface_type)
-> to instantiate their default display adapter ... however, that
-> does not seem to support the bochs adapter yet (see
-> vga_interfaces[] in softmmu/vl.c).
+> This patchset bumps it to "0.1" as we export basic GIC information via
+> DeviceTree to the firmware. TF-A will then take it and provide to EDK2
+> via Secure Monitor Call (instead of using hardcoded values).
 >
-> Not sure whether it's worth the effort to extend vga_interfaces[]
-> in vl.c
+> Basic documentation about platform changes added.
+>
+> Marcin Juszkiewicz (3):
+>   hw/arm/sbsa-ref: add GIC node into DT
+>   docs: sbsa: correct graphics card name
+>   docs: sbsa: document platform version changes
 
-Isn't that a legacy-command-line-option thing? I feel like
-the recommended way to select a different graphics card
-these days would be to use -device my-pci-vga-card ...
+The cover message subject says there should be 4 patches
+in this series, but there are only 3 listed here and
+only 3 emails arrived on list. Is there a missing patch?
 
 thanks
 -- PMM
