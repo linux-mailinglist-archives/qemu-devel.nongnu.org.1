@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FC771064B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 09:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C802D7106D6
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 10:04:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q25RC-0002Gy-OP; Thu, 25 May 2023 03:31:06 -0400
+	id 1q25v7-0001Wo-2K; Thu, 25 May 2023 04:02:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q25R8-0002G8-UV
- for qemu-devel@nongnu.org; Thu, 25 May 2023 03:31:03 -0400
+ id 1q25up-0001WB-Vl
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 04:01:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q25R7-00012j-A1
- for qemu-devel@nongnu.org; Thu, 25 May 2023 03:31:02 -0400
+ id 1q25um-0007bc-5P
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 04:01:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684999860;
+ s=mimecast20190719; t=1685001698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
  bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=izaNKzx+afQ1aguYgWYucwLmQyDuknL+1ErpnhzjF+AFq/f7+tdVHtccFsP3iXyCy5LR3b
- qkqsYp1R7MTqqhmWOX+EH5iS6FbU0ZsLEnKnhLnAgpc0+wtQT+4RTdOo5yPccUzuOOoSeU
- 94aA9u+CNEmvHY19S//ib2v2bcMgiQ0=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ b=RzhBmC1bo0eTz6jUmVxyQSKcpfYLGHgihsGKfjKapvYIIpE9RT4riupq1PG2WWq2yM5fzy
+ eca86+JVwt9BGuSR7J53Gaw7jht3xkZnObkhMTqTmYoWRt9OfLgkxa0ZdipWUHZ1zmFu98
+ bJAGk6nBUxpZY1YllYNHBQvi6jJT8vw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-417-_UGtmhK2NKerTUh8-XAqEA-1; Thu, 25 May 2023 03:30:59 -0400
-X-MC-Unique: _UGtmhK2NKerTUh8-XAqEA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-96f83b44939so29296966b.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 00:30:59 -0700 (PDT)
+ us-mta-581-DBH_Gn0LORSlubRxiIqIow-1; Thu, 25 May 2023 04:01:36 -0400
+X-MC-Unique: DBH_Gn0LORSlubRxiIqIow-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-94a341efd9aso43760366b.0
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 01:01:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684999858; x=1687591858;
+ d=1e100.net; s=20221208; t=1685001695; x=1687593695;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=XfLc25f2I/irzfnHk9W4H85eJt2r9i6KAlThYBerGNVjdLD5ZWit8zOpstwx9W6Oqt
- kWW/g6u0HKfKp3k80sxlSzB4V7Dr1tmEcQCkxP+bt1jrPK9bbHRtNjbSDb+NI2SUPZOY
- jpSxHFsq1wmf8B91Sn5Cy2x8NiCUtIvQB1m5gMYz7nOHhFPHHa2sjVo9gf8HVr56fwWJ
- 9ndP4ltThoT99xvrVxaufPHQZuCbIEzY0L9LWDmwTVbIBIeiBZi0QKl3nXSROaIZWYSH
- jYbrFyVOxCBYqm0aEmxStt5pQqNQ38fP5bP5RVYs9GW8ivn7Wk23ML9z49d1UYefFdrk
- OKAQ==
-X-Gm-Message-State: AC+VfDyOdwliKkPOi4Kh9xF2XiGFkM1eLNW8qIP+AZpeEkD2kdRFpY4w
- vSyr5T73tEZ92Pymv7O4dPlK66Ber5n1P7jgYTr+AW/PDtwQiAp2zLEN+SIzAhOEnN84cskh+Q7
- TlFwArLU0vxkYKKc=
-X-Received: by 2002:a17:907:7b9b:b0:96f:9881:178b with SMTP id
- ne27-20020a1709077b9b00b0096f9881178bmr785321ejc.26.1684999858192; 
- Thu, 25 May 2023 00:30:58 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5GGdX2aHMtEIZQFbRjl0jw/8Yva31vUMibufiV6fDoX2O9Xvp9dVLG2a8BBx87zVaBQQ0IQA==
-X-Received: by 2002:a17:907:7b9b:b0:96f:9881:178b with SMTP id
- ne27-20020a1709077b9b00b0096f9881178bmr785289ejc.26.1684999857802; 
- Thu, 25 May 2023 00:30:57 -0700 (PDT)
+ b=GKn92CsJ5h/RM1uJWLX/hYu53WUbds7kUGwVbRTLdI4PdXSRzG/mhUn7Xm/HgX+eVU
+ uCiQhmpOuAbw3TVLL33GWyt8E3IxyK96Lb69iLYrxhkzO5kDXnmpgQMosYIXD4qZCCXN
+ q9QrQT99DVBLxY6IF+b6ZSOMbJaOUovIVjsMUfu9yYVB7Tb5KFGCmHXSb4HqZC+DB41I
+ WlVX83ySo/+k16UlDGVfFk3eM+bfhbNvC4fGtxZ3dl1gvMKVCbHFwTnHhLkxfpV4CTBC
+ ODM5CRoZGWzA/mIZKlNJcNfkHUJ0YU89O6X0cCWZ0w/q1MLq0dLuyW9zSMAe+/0CbZlA
+ 4dVQ==
+X-Gm-Message-State: AC+VfDyBJ9U9Avby3Rze/qT0MavPbqTBt0Vun3F4C4kvJ/uojxVDvda8
+ 85xMA3TJa4Lq6i8Px29Q3L2WX3J/lJDUPTAdIA3vUF6AMh7Kv9dWyddLrCpYfLTFVRzuH9fcsfo
+ fnhE6lGJ2dJTj+Ro=
+X-Received: by 2002:a17:907:d8a:b0:961:8d21:a471 with SMTP id
+ go10-20020a1709070d8a00b009618d21a471mr993924ejc.58.1685001695046; 
+ Thu, 25 May 2023 01:01:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6rEbrjyVoT4d+bJNhMrupzz65ITSg5hO2kM9qBNTSRBEU5al7U0zgTmRj9HPm7Wqu7ajBRSw==
+X-Received: by 2002:a17:907:d8a:b0:961:8d21:a471 with SMTP id
+ go10-20020a1709070d8a00b009618d21a471mr993888ejc.58.1685001694660; 
+ Thu, 25 May 2023 01:01:34 -0700 (PDT)
 Received: from [192.168.10.117] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- j4-20020a170906410400b00965a4350411sm452139ejk.9.2023.05.25.00.30.56
+ n6-20020a170906118600b0094f282fc29asm474414eja.207.2023.05.25.01.01.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 00:30:57 -0700 (PDT)
+ Thu, 25 May 2023 01:01:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
-To: Maksim Davydov <davydov-max@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, yc-core@yandex-team.ru, babu.moger@amd.com,
- pbonzini@redhat.com, richard.henderson@linaro.org, xiaoyao.li@intel.com,
- mst@redhat.com
-Subject: Re: [PATCH] target/i386: EPYC-Rome model without XSAVES
-Date: Thu, 25 May 2023 09:30:56 +0200
-Message-Id: <20230525073056.139621-1-pbonzini@redhat.com>
+To: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Cc: pbonzini@redhat.com, philmd@linaro.org, marcandre.lureau@redhat.com,
+ berrange@redhat.com, thuth@redhat.com, hilmd@linaro.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] meson.build: Fix glib -Wno-unused-function workaround
+Date: Thu, 25 May 2023 10:01:33 +0200
+Message-Id: <20230525080133.142912-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230524213748.8918-1-davydov-max@yandex-team.ru>
+In-Reply-To: <20230524173123.66483-1-nsaenz@amazon.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
