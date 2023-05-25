@@ -2,66 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF670710967
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 12:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0832710975
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 12:07:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q27ll-0004eG-Ry; Thu, 25 May 2023 06:00:29 -0400
+	id 1q27qn-0007vq-MN; Thu, 25 May 2023 06:05:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q27lk-0004e3-1h
- for qemu-devel@nongnu.org; Thu, 25 May 2023 06:00:28 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1q27qj-0007tt-Ax
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 06:05:37 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q27lh-0002V0-PP
- for qemu-devel@nongnu.org; Thu, 25 May 2023 06:00:27 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-510e90d785fso3526761a12.2
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 03:00:24 -0700 (PDT)
+ id 1q27qh-0003v8-Ld
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 06:05:37 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-50bcb00a4c2so3515029a12.1
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 03:05:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685008823; x=1687600823;
+ d=linaro.org; s=google; t=1685009134; x=1687601134;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kiV8v/LYkR0Olbc5nUfPxouV8qF/v9cnDRmIXqEHKL8=;
- b=HprYFjnSI6PEg6cxBs3Jb9SbObZaLBimU+2Zs8nq3bevFu5TAC7pLr9WLGyYyGSAkJ
- 8V5Pw+H+VDZl9Ve0f3+9qEo/+Ux5IT0fqwQq4/F8lcGYSNRu3TyjAeG5Bp6aA1+q6Jt/
- VLJdTPMEHg2VZ2jFbnMPeQqRMm+xHP1c9lIntau5I2eFiEL1Tp3SPKxXr5MFjbkM8skj
- NmIz8RhKKiS5U0K3wm50Cb+OzASzTaZvAgHhv7PLvX4oLC3ro/4P1voAY9a2LeIXyS1M
- fuBqLibmsKKjjn96BBtKNMLW+hB8fV6oTE2ldVdhhSsay5UCch0gabYKA7WEmTj50onq
- W5AA==
+ bh=N5Vp1FQA5Pj3pdinX5mQO1qAqFA2PIXogTWP4Vq7diw=;
+ b=QdNQmncRtZWbe9SCnt4CIOj56oGTAOLZvG6LecPDWpVbfTOorisArxYE9Bq8xO10Z1
+ rVA1BrEAFW20AEmP/cQaUI71Nw2cOETPTAvDxZjh/9yiIcsLcWr6tEJLc/f4ZQFYnIOA
+ UAbAYqOT0zhFhPOvRvKAxokUAP3UU+uqnRXasXkeA1A6CzAsbJTRi3Y0mS7DwXiPB42M
+ X5PeSV9hBYXX2MbTlk/0eykcgGQz7aP0oBSmFK1NJQyATiLexOUAWlJb5nXlsx8942HK
+ x6fuutjS/d0V/SV6C2fdCis2B+r7tHwEsWg7mEl2C3M+H6Dwc25SCtqihEaZ8xlCYYZG
+ szKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685008823; x=1687600823;
+ d=1e100.net; s=20221208; t=1685009134; x=1687601134;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=kiV8v/LYkR0Olbc5nUfPxouV8qF/v9cnDRmIXqEHKL8=;
- b=LJSN5H3n4DHotMqptN0QTKXzeKyUel/uWaMwyGxQU1JAdrxS/6TdSHMTiViyxoVgW9
- krPV9poyt14MP74EIJSoe6grFSnaC+dDvQ5l4xF2oS+ufmjtHJ5QjOleZ+BPVRWu9XM2
- jpEdw8u+wX/GJ3DkAuF+Ozru4/wTJjmCLXGY5zWz56YEaZhf9Jj+TIahnPAJcfYmvJbX
- Hw2Ckazd0wd08YLN8tFWHTNLLlGM3E46GFGPbqDjHMP1ystIybCPgzLz3e+GX9nWbGLT
- gH8SqFJX+28YLEopjohlKj7aiaUtEswRi2yMzJVHw1Ujly+3Jtp19/Zz3xb8XVWNxGyF
- deWw==
-X-Gm-Message-State: AC+VfDw4WAOgg38E0mlZ77t93ntBcYrHIAK/ApcgT5qkiijb5kTax/6Z
- 3TbViDHS4w3OWOJG066fmaFtz2Ls92wyJwt0h8pERw==
-X-Google-Smtp-Source: ACHHUZ4QqJ3iPuex25lv1ZJLX2hY3LGF35ELkiyqeUqOIRuykDboHJVfb+hM23oXphrVeyyr0L5p3GIAn+AGiohhrzw=
-X-Received: by 2002:a05:6402:3451:b0:510:ee0f:1eab with SMTP id
- l17-20020a056402345100b00510ee0f1eabmr3398742edc.41.1685008823600; Thu, 25
- May 2023 03:00:23 -0700 (PDT)
+ bh=N5Vp1FQA5Pj3pdinX5mQO1qAqFA2PIXogTWP4Vq7diw=;
+ b=VnsNyTg2FHr/1DUq4q7gpTZSxgj7I1L7cC8Ca8XchlY8eL8EUXBHUKky9VaFsEkrwD
+ Mju72xWxon1oeF1JUiIKSxJYD67wrASw5+zfCI3cteTO0dE25lEELCefBAOnq4e7N/Pi
+ bxIdrKF0gdMmoWj9RpzsvXKQm5rkAuoYHN3b3istN09SVgGOGR1ikGHqcuDZkSgVso/Z
+ oHCm09Pdj5eGK1eKp75v1AmZ6DhMvSTIhVNDlRHFLE1uzSoZaZAd7y4mzvWXVGKbydAF
+ pHaOWzblSEB8+aDQPV7rNz7Evz5JO2PVg96Nx7WM/mPLQ6V4L8IG2m33rM6Q2Mi1C60M
+ NdsQ==
+X-Gm-Message-State: AC+VfDx1SDWoxAoyVTpuZJdnLXENUAw4WS+uMXBVEHNbMxOEeB1HSiIK
+ BqHJOpFPC7CgSlkxnfUqUORHnW961QkgcbqwLr7yqg==
+X-Google-Smtp-Source: ACHHUZ5CDdNzkLaCGhG+2QsHKx7JGXJcvH0xxWIpz3Q3fpqYzzhT9qd1QTZNTkoizHCZR9yPWOildo/r9YUOFNix7Ts=
+X-Received: by 2002:a17:907:da3:b0:967:21:5887 with SMTP id
+ go35-20020a1709070da300b0096700215887mr1062135ejc.40.1685009133930; Thu, 25
+ May 2023 03:05:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230524173815.1148653-1-richard.henderson@linaro.org>
-In-Reply-To: <20230524173815.1148653-1-richard.henderson@linaro.org>
+References: <CAFEAcA9GamGybSzd8FKBtmZ2qMgjRFy6D=Vhu1y0dL8m9Sa80w@mail.gmail.com>
+ <20230523155644.678524-1-marcin.juszkiewicz@linaro.org>
+ <e682f6d5-acbe-7910-54ef-4d75c88a3d28@redhat.com>
+ <4101dedc-91d7-1735-4655-81082931b79d@linaro.org>
+ <49fa8502-70f9-cdc4-1058-9d4202400db6@redhat.com>
+In-Reply-To: <49fa8502-70f9-cdc4-1058-9d4202400db6@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 25 May 2023 11:00:12 +0100
-Message-ID: <CAFEAcA9+BGdG6bShPQ+SZzJNOjMAMJ2fVYqpcvR4vOVums+dMQ@mail.gmail.com>
-Subject: Re: [PATCH] tests/decode: Emit TAP
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 25 May 2023 11:05:23 +0100
+Message-ID: <CAFEAcA8OUP9vnJwRxcT7AUWPD5ANhc17ETgePYPe2=-N_ZvCsw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] docs: sbsa: correct graphics card name
+To: Thomas Huth <thuth@redhat.com>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,41 +89,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 24 May 2023 at 18:38, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Tue, 23 May 2023 at 19:41, Thomas Huth <thuth@redhat.com> wrote:
 >
-> We currently print FAIL for the failure of a succ_* test, but don't
-> return a failure exit code.  Instead, convert the script to emit
-> Test Anything Protocol, which gives visibility into each subtest
-> as well as not relying on exit codes.
+> On 23/05/2023 19.30, Marcin Juszkiewicz wrote:
+> ...
+> >> (is there a reason why it can't be disabled with "-vga none" or
+> >> "-nodefaults"?)
+> >
+> > That's something I need to check how it should be done.
 >
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  tests/decode/check.sh | 36 ++++++++++++++++++++++++++----------
->  tests/meson.build     |  1 +
->  2 files changed, 27 insertions(+), 10 deletions(-)
+> Other boards set mc->default_display in their ...class_init
+> function and then use pci_vga_init() (or vga_interface_type)
+> to instantiate their default display adapter ... however, that
+> does not seem to support the bochs adapter yet (see
+> vga_interfaces[] in softmmu/vl.c).
 >
-> diff --git a/tests/decode/check.sh b/tests/decode/check.sh
-> index 95445a0115..a3d879a099 100755
-> --- a/tests/decode/check.sh
-> +++ b/tests/decode/check.sh
-> @@ -4,21 +4,37 @@
->
->  PYTHON=$1
->  DECODETREE=$2
-> -E=0
-> +E_FILES=`echo err_*.decode`
-> +S_FILES=`echo succ_*.decode`
+> Not sure whether it's worth the effort to extend vga_interfaces[]
+> in vl.c
 
-If you run shellcheck on this script it produces some
-style complaints. Notably:
-
- * $(...) is better than `...`
- * j=$(($j + 1))  is better than j=`expr $j + 1`
-
-At least some of its "missing quoting" complaints are
-also legitimate, notably on $PYTHON and $DECODETREE.
+Isn't that a legacy-command-line-option thing? I feel like
+the recommended way to select a different graphics card
+these days would be to use -device my-pci-vga-card ...
 
 thanks
 -- PMM
