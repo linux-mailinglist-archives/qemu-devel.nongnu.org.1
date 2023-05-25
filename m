@@ -2,86 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C411710B7B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 653B9710B9C
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:02:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q29W8-0000pz-KA; Thu, 25 May 2023 07:52:28 -0400
+	id 1q29e9-0003pf-Dz; Thu, 25 May 2023 08:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q29W6-0000ph-Nu
- for qemu-devel@nongnu.org; Thu, 25 May 2023 07:52:26 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q29W5-0005ey-4Q
- for qemu-devel@nongnu.org; Thu, 25 May 2023 07:52:26 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-30a892c45c4so1337871f8f.3
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 04:52:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685015543; x=1687607543;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0oqRax4MlyMzhzeXFryR9eQyY3DxKwGrC69JW+tBCro=;
- b=EbJWBXH8h2qd79CXLSKXqaSMZqbBGELT4rGCRIiT4BhHOJZzgXWVlUMDA5dJyjVcpP
- GKBDUbSOSXmtPCWhHpt6u3Jne7HgoBkC80p0s4z2ZDZgU1wO0CnpndRYS1aEhXObpXw5
- 7XdCb9QGlhkhFdDJ+cTSGYhXC4SISwQ5gQ/ZtRJfXeKumVmMOXbvyX8KxDmfIWtZgbdu
- 0DZp4KsWdRm0hmew6UEbfKLS/vw1G1By2J9ruYW37nQLnwM+7VYfku/NPVGF8oyujcCc
- WtjOlTwkoopztj7IzoxJgeXlVhD6rSf8llzZfKmwSP8POYjs3iwzlGx4KCvs5r4izrGf
- gU1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685015543; x=1687607543;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0oqRax4MlyMzhzeXFryR9eQyY3DxKwGrC69JW+tBCro=;
- b=W8wI8Xrl5NrY0c4faWrGxcgTbLXLPMi2hpHvzlTW9914CEM8zOshUSWvpUsMTUeKid
- K2G5lHfHfYRk2Bs+TlL7bPefR5go85+VnZfSvEKgfI6HB+c58tDPhL/AdnhHcgv7uXCM
- OC0mhmf76YoyLndSI2ZiEo8uwM3v9Wa++3AhlgDFeu6mXSQppmdjvAkcHkZXb9KEmSIs
- 6Guq97n0ifJfGMYkDFY5UsHtiIXlYbA1Y0uAY1TUprKfbPNMch8oh3w7pNUz3TqE73j/
- XeXiwGAvQcVy14yXzfQiGTmst9e0QxpkFMh1hQlVjIsk+F1QJ26I91nfi9F1S/FXf+Hd
- mDGw==
-X-Gm-Message-State: AC+VfDzQ3LV0AXxJH/8Pwkn8iO326Xl9tKgpXLcnkCOKUKY3AI54txVK
- KEEzNNvHCd6Z8cQouRWat/M2Vg==
-X-Google-Smtp-Source: ACHHUZ7nEnXcAY4Lcqafb6HOwTWWLaKo9KfsbLw9hlyTh7YIE2lVwgyCUEWexMdCRfOtXxO2mlbrJQ==
-X-Received: by 2002:a5d:6806:0:b0:306:5149:3aa8 with SMTP id
- w6-20020a5d6806000000b0030651493aa8mr1878387wru.24.1685015543361; 
- Thu, 25 May 2023 04:52:23 -0700 (PDT)
-Received: from [192.168.69.115] (cor91-h02-176-184-30-254.dsl.sta.abo.bbox.fr.
- [176.184.30.254]) by smtp.gmail.com with ESMTPSA id
- y3-20020a5d4703000000b002f103ca90cdsm1536311wrq.101.2023.05.25.04.52.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 04:52:22 -0700 (PDT)
-Message-ID: <f161aafa-6613-1f4e-4f0e-f426f760787b@linaro.org>
-Date: Thu, 25 May 2023 13:52:20 +0200
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1q29dn-0003n0-4M
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:00:25 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1q29di-00076n-It
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:00:21 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxGvLGTW9kQPsAAA--.2593S3;
+ Thu, 25 May 2023 20:00:07 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxD7_GTW9kI2d3AA--.430S2; 
+ Thu, 25 May 2023 20:00:06 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
+ alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn
+Subject: [PATCH v2] target/loongarch: Fix the vinsgr2vr/vpickve2gr
+ instructions cause system coredump
+Date: Thu, 25 May 2023 20:00:05 +0800
+Message-Id: <20230525120005.2223413-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/2] hw/vfio: Add nr of dirty pages to
- vfio_get_dirty_bitmap tracepoint
-Content-Language: en-US
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>
-References: <20230525114321.71066-1-joao.m.martins@oracle.com>
- <20230525114321.71066-3-joao.m.martins@oracle.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230525114321.71066-3-joao.m.martins@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8DxD7_GTW9kI2d3AA--.430S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjvJXoWxZw48GrW5Zr4rXrWDtw43ZFb_yoWruw1rpw
+ 1Fv34xZr4UZr1fZ3s3K3s0gFn09F4IyryUKwnY9wn5K3y7tr1DJa1DJ39I9ryxA3WkW395
+ tFyUZ3WUWF4DJaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+ b0kFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
+ AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF
+ 7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x
+ 0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE
+ 44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26rWlOx8S6xCaFVCjc4
+ AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIE
+ Y20_WwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E74
+ 80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0
+ I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04
+ k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7Cj
+ xVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7xRE6wZ7UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,64 +74,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joao,
+The vinsgr2vr/vpickve2gr instructions need use get_src/get_dst to get
+gpr registers value, not cpu_gpr[]. The $zero register does not
+have cpu_gpr[0] allocated.
 
-On 25/5/23 13:43, Joao Martins wrote:
-> Include the number of dirty pages on the vfio_get_dirty_bitmap tracepoint.
-> These are fetched from the newly added return value in
-> cpu_physical_memory_set_lebitmap().
-> 
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> ---
->   hw/vfio/common.c     | 7 ++++---
->   hw/vfio/trace-events | 2 +-
->   2 files changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 4d01ea351515..3c9af2fed1b1 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -1747,6 +1747,7 @@ static int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
->       bool all_device_dirty_tracking =
->           vfio_devices_all_device_dirty_tracking(container);
->       VFIOBitmap vbmap;
-> +    uint64_t dirty;
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1662
 
-Could we rename this 'dirty_pages'?
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ target/loongarch/insn_trans/trans_lsx.c.inc | 39 ++++++++++++++-------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
->       int ret;
->   
->       if (!container->dirty_pages_supported && !all_device_dirty_tracking) {
-> @@ -1771,11 +1772,11 @@ static int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
->           goto out;
->       }
->   
-> -    cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
-> -                                           vbmap.pages);
-> +    dirty = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
-> +                                                   vbmap.pages);
->   
->       trace_vfio_get_dirty_bitmap(container->fd, iova, size, vbmap.size,
-> -                                ram_addr);
-> +                                ram_addr, dirty);
->   out:
->       g_free(vbmap.bitmap);
->   
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index 646e42fd27f9..9265a406eda1 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -120,7 +120,7 @@ vfio_region_sparse_mmap_header(const char *name, int index, int nr_areas) "Devic
->   vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long end) "sparse entry %d [0x%lx - 0x%lx]"
->   vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
->   vfio_dma_unmap_overflow_workaround(void) ""
-> -vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64
-> +vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty=%"PRIu64
-
-Ditto.
-
->   vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
->   
->   # platform.c
+diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
+index 0be2b5a3a8..68779daff6 100644
+--- a/target/loongarch/insn_trans/trans_lsx.c.inc
++++ b/target/loongarch/insn_trans/trans_lsx.c.inc
+@@ -3963,106 +3963,119 @@ TRANS(vsetallnez_d, gen_cv, gen_helper_vsetallnez_d)
+ 
+ static bool trans_vinsgr2vr_b(DisasContext *ctx, arg_vr_i *a)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_st8_i64(cpu_gpr[a->rj], cpu_env,
++    tcg_gen_st8_i64(src, cpu_env,
+                     offsetof(CPULoongArchState, fpr[a->vd].vreg.B(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vinsgr2vr_h(DisasContext *ctx, arg_vr_i *a)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_st16_i64(cpu_gpr[a->rj], cpu_env,
++    tcg_gen_st16_i64(src, cpu_env,
+                     offsetof(CPULoongArchState, fpr[a->vd].vreg.H(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vinsgr2vr_w(DisasContext *ctx, arg_vr_i *a)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_st32_i64(cpu_gpr[a->rj], cpu_env,
++    tcg_gen_st32_i64(src, cpu_env,
+                      offsetof(CPULoongArchState, fpr[a->vd].vreg.W(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vinsgr2vr_d(DisasContext *ctx, arg_vr_i *a)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_st_i64(cpu_gpr[a->rj], cpu_env,
++    tcg_gen_st_i64(src, cpu_env,
+                    offsetof(CPULoongArchState, fpr[a->vd].vreg.D(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_b(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld8s_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld8s_i64(dst, cpu_env,
+                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_h(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld16s_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld16s_i64(dst, cpu_env,
+                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_w(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld32s_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld32s_i64(dst, cpu_env,
+                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_d(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld_i64(dst, cpu_env,
+                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_bu(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld8u_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld8u_i64(dst, cpu_env,
+                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_hu(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld16u_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld16u_i64(dst, cpu_env,
+                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_wu(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld32u_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld32u_i64(dst, cpu_env,
+                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
+     return true;
+ }
+ 
+ static bool trans_vpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
+ {
++    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
+     CHECK_SXE;
+-    tcg_gen_ld_i64(cpu_gpr[a->rd], cpu_env,
++    tcg_gen_ld_i64(dst, cpu_env,
+                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
+     return true;
+ }
+ 
+ static bool gvec_dup(DisasContext *ctx, arg_vr *a, MemOp mop)
+ {
++    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
+     CHECK_SXE;
+ 
+     tcg_gen_gvec_dup_i64(mop, vec_full_offset(a->vd),
+-                         16, ctx->vl/8, cpu_gpr[a->rj]);
++                         16, ctx->vl/8, src);
+     return true;
+ }
+ 
+-- 
+2.39.1
 
 
