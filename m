@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86789710AF7
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA22710B28
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:35:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q28uY-00036w-1w; Thu, 25 May 2023 07:13:38 -0400
+	id 1q28vR-0003lr-RQ; Thu, 25 May 2023 07:14:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q28uU-00036G-W5
- for qemu-devel@nongnu.org; Thu, 25 May 2023 07:13:35 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q28vP-0003io-F1
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 07:14:31 -0400
 Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q28uT-00044z-Eo
- for qemu-devel@nongnu.org; Thu, 25 May 2023 07:13:34 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1q28vN-0004Cb-QK
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 07:14:31 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 9C72721D42;
- Thu, 25 May 2023 11:13:30 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 680CE21A8E;
+ Thu, 25 May 2023 11:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1685013210; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1685013268; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=4SBlbVnYKuBwj6vxW73JBDj4hM8cjwRATkbGx8hQE/E=;
- b=Q/kgEvHSLb8THwQj+dZG9H8T1es3/3RVIDJOizggHPQbHZGhmRSP9oMIaaPOAUgW+iVeis
- SOrbEUUCOEXRH4NuNkYGnUmFAvJr2wAsSRWxvt0oyterfiZjf9JGKdUlu8ucckZk7GAOX6
- oMImNvehgw66CnolYw2b8N6DfC4Zreo=
+ bh=jOFhriZnR+1eLaIDmiZOxjmMynYYI+YkzKNvwbAlF60=;
+ b=WX3vxU4L/h9ZrVs/SfCfbfw1uHNrbtVN9ymMxday5w9z8hYeTi+o51JOa6q3Zosd1/SlQb
+ t+h3Soviho9pzYKfWWg87gX54xIiRSNvaDBCl7poZlmEtUQZLnOBnoHvIimYfGV0Mj1qX8
+ m7xZ+v//2lKUrgA+tNBViZHjddS9XiY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1685013210;
+ s=susede2_ed25519; t=1685013268;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=4SBlbVnYKuBwj6vxW73JBDj4hM8cjwRATkbGx8hQE/E=;
- b=amF2AODmObkRyMZRnsoqkLu4HZTcCdZIulZ0IRc6OcPfz5kyWmXktJxYt+6JxzlmdMnbTM
- BGSa0qk/4AjmcACQ==
+ bh=jOFhriZnR+1eLaIDmiZOxjmMynYYI+YkzKNvwbAlF60=;
+ b=0wI+a24UVpaPtsCMUQQfIdJPQ/Zuj5VYKAcuqpQf4Zgap6YkPznMIF0e60D+VCSExtSf7y
+ 3btTD57H/1bswvDw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2176B13356;
- Thu, 25 May 2023 11:13:29 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E9AA913356;
+ Thu, 25 May 2023 11:14:27 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 9iw4NtlCb2ScEwAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 25 May 2023 11:13:29 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id 4W5PLBNDb2T9EwAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 25 May 2023 11:14:27 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, Laurent Vivier
  <lvivier@redhat.com>
 Cc: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH 2/4] tests/qtest: Check for virtio-blk before using
- -cdrom with the arm virt machine
-In-Reply-To: <20230525081016.1870364-3-thuth@redhat.com>
+Subject: Re: [PATCH 3/4] tests/qtest/rtl8139-test: Check whether the rtl8139
+ device is available
+In-Reply-To: <20230525081016.1870364-4-thuth@redhat.com>
 References: <20230525081016.1870364-1-thuth@redhat.com>
- <20230525081016.1870364-3-thuth@redhat.com>
-Date: Thu, 25 May 2023 08:13:27 -0300
-Message-ID: <877cswbr54.fsf@suse.de>
+ <20230525081016.1870364-4-thuth@redhat.com>
+Date: Thu, 25 May 2023 08:14:25 -0300
+Message-ID: <874jo0br3i.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
@@ -87,20 +87,17 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Thomas Huth <thuth@redhat.com> writes:
 
-> The arm "virt" machine needs "virtio-blk-pci" for devices that get attached
-> via the "-cdrom" option. Since this is an optional device that might not
-> be available in the binary, we should check for the availability of this
-> device first before using it.
+> Though we are already using CONFIG_RTL8139_PCI in the meson.build file
+> for testing whether the rtl8139 device is available or not, this is not
+> enough: The CONFIG switch might have been selected by another target
+> (e.g. the mips fuloong2e machine has the rtl8139 chip soldered on the
+> board), so CONFIG_RTL8139_PCI ends up in config_all_devices and the
+> test then gets executed on x86. We need an additional run-time check
+> to be on the safe side to make this test also work when configure has
+> been run with "--without-default-devices".
 >
-
-We're still producing a binary that exposes runtime options that may not
-work depending on the state of seemingly unrelated config options. And
-barfs QEMU implementation details at the user:
-
-qemu-system-aarch64: -cdrom foo.qcow2: 'virtio-blk' (alias
-'virtio-blk-pci') is not a valid device model name
-
-Anyway, this patch is good so:
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+
 
