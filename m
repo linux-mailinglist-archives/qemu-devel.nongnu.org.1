@@ -2,77 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDF5710CF4
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 15:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D94CB710D01
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 15:10:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2AcO-0006m2-2e; Thu, 25 May 2023 09:03:00 -0400
+	id 1q2Ai1-0001Ty-JL; Thu, 25 May 2023 09:08:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2AcK-0006gT-B5
- for qemu-devel@nongnu.org; Thu, 25 May 2023 09:02:57 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2Ahw-0001S3-2V
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 09:08:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2AcI-0006GA-Pz
- for qemu-devel@nongnu.org; Thu, 25 May 2023 09:02:56 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2Ahu-0008Dd-3q
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 09:08:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685019773;
+ s=mimecast20190719; t=1685020121;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=8Fu6o5t8wb43yw9p+EuL5teDEcgI/rv0eYWbd9B3H2g=;
- b=JwLXmo98BajFTB+AzirR6B0bWmLdh8yoxJnv89vWfMlvZyg3hYlonpTZiZwMehg+W6sBre
- VgRe+SJQxihlchFPYEhazeHkhGaoC9N/4PeALIBYDFEp2+5XfZhT8trR2f6VFExUepl1g7
- UNKL/hP+AlZMBeomAcEH5fk4+WUD5jQ=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-oa965K2wOaKQJWGKS4s2rA-1; Thu, 25 May 2023 09:02:51 -0400
-X-MC-Unique: oa965K2wOaKQJWGKS4s2rA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-623b86d929dso2685016d6.0
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 06:02:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685019770; x=1687611770;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8Fu6o5t8wb43yw9p+EuL5teDEcgI/rv0eYWbd9B3H2g=;
- b=jIBTyfCkLf+6hbA7RO4faGOsuAHhy8B8TZhepuCAEHD7MT5HQjLfEK9W8I4TvXhXRg
- 2y9VDyRai9lGAwaztVd9Bj/epEzaEV0RcKP0RcQx8ES0ZRhYzmY8bd3BI+zWsoGKR/6R
- S2mwiTwpO8iIaYd9k+Qd0OmYFet4XaVVeB4p7jZpTy8IfI5xMudxHaZodYKtA62BQIQv
- i9R2rid52TUa3VvdwSLf9AjpHpm5G3b5csCV8IGDbDcciH0LRSTy5BFYjfa/dHZVjArh
- VOY7wBc7hkAx3IHHnPLZ894Td0HSfA1rEKtB9bA9pM+e5Gk+WKYcDxHyTEVk4DJXla3F
- dTig==
-X-Gm-Message-State: AC+VfDzYZF6OhdwUbrve/5BNP6ORiHkZ1mS1w1nnWE6S+JhAim7oTzI1
- QfXo8aLqsn/ckzjECYlREBsWGdTNNP7t0KpekQlIC+kg29BdsBhK598bsV1Lb+fMxVcWAUqmGAb
- IKe1jZ0/N0dWzO+U=
-X-Received: by 2002:a05:6214:300f:b0:621:65de:f60c with SMTP id
- ke15-20020a056214300f00b0062165def60cmr28957039qvb.3.1685019769803; 
- Thu, 25 May 2023 06:02:49 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Fg1JtOSFNVu8h0SvyjVNR7ILq77SRyJq3FDuWi1m+713YLszqAueDIPf/WyGpPx0EPajtOQ==
-X-Received: by 2002:a05:6214:300f:b0:621:65de:f60c with SMTP id
- ke15-20020a056214300f00b0062165def60cmr28957006qvb.3.1685019769436; 
- Thu, 25 May 2023 06:02:49 -0700 (PDT)
-Received: from x1n ([70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- w7-20020a0cc247000000b0060f5a75b750sm378715qvh.99.2023.05.25.06.02.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 06:02:48 -0700 (PDT)
-Date: Thu, 25 May 2023 09:02:43 -0400
-From: Peter Xu <peterx@redhat.com>
-To: P J P <ppandit@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>, Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH] vhost: release memory objects in error path
-Message-ID: <ZG9cc0yEAJ06N0XY@x1n>
-References: <20230522181021.403585-1-ppandit@redhat.com>
+ bh=MvS0gVWHWKUbqVn2qVYS9i4DRi8s++aOYqAAidNZmNw=;
+ b=hE0JprM6OR3tkRLpfysF4vH8ntlnUC/V4JWGxQ3faOgGqPrhOKglCDGjS+n6UlKKTp6Q38
+ Y2PewPbfDtGLu+WdXrIQiILKGz0lxHOyeb4bke5riT1Z7ANIxO52xrSIHgVogVjxbtjmGn
+ e5rxSv/ct47nHPpCmF4WXutuGKNaIvk=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-602-8yUMu30vMeS_ZwAereptmg-1; Thu, 25 May 2023 09:08:37 -0400
+X-MC-Unique: 8yUMu30vMeS_ZwAereptmg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CD73429AB443;
+ Thu, 25 May 2023 13:08:36 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 908A920296C6;
+ Thu, 25 May 2023 13:08:36 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 9A45D21E692E; Thu, 25 May 2023 15:08:35 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Andrei Gudkov <gudkov.andrei@huawei.com>
+Cc: <qemu-devel@nongnu.org>,  <quintela@redhat.com>,  <peterx@redhat.com>,
+ <leobras@redhat.com>,  <eblake@redhat.com>
+Subject: Re: [PATCH] qapi: better docs for calc-dirty-rate and friends
+References: <fe7d32a621ebd69ef6974beb2499c0b5dccb9e19.1684854849.git.gudkov.andrei@huawei.com>
+Date: Thu, 25 May 2023 15:08:35 +0200
+In-Reply-To: <fe7d32a621ebd69ef6974beb2499c0b5dccb9e19.1684854849.git.gudkov.andrei@huawei.com>
+ (Andrei Gudkov's message of "Tue, 23 May 2023 18:19:56 +0300")
+Message-ID: <87sfbkpnho.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230522181021.403585-1-ppandit@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,76 +79,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Prasad,
+Andrei Gudkov <gudkov.andrei@huawei.com> writes:
 
-On Mon, May 22, 2023 at 11:40:21PM +0530, P J P wrote:
-> From: Prasad Pandit <pjp@fedoraproject.org>
-> 
-> vhost_dev_start function does not release memory objects in case
-> of an error. This may crash the guest with:
-> 
->   stack trace of thread 125653:
->   Program terminated with signal SIGSEGV, Segmentation fault
->   #0  memory_listener_register (qemu-kvm + 0x6cda0f)
->   #1  vhost_dev_start (qemu-kvm + 0x699301)
->   #2  vhost_net_start (qemu-kvm + 0x45b03f)
->   #3  virtio_net_set_status (qemu-kvm + 0x665672)
->   #4  qmp_set_link (qemu-kvm + 0x548fd5)
->   #5  net_vhost_user_event (qemu-kvm + 0x552c45)
->   #6  tcp_chr_connect (qemu-kvm + 0x88d473)
->   #7  tcp_chr_new_client (qemu-kvm + 0x88cf83)
->   #8  tcp_chr_accept (qemu-kvm + 0x88b429)
->   #9  qio_net_listener_channel_func (qemu-kvm + 0x7ac07c)
->   #10 g_main_context_dispatch (libglib-2.0.so.0 + 0x54e2f)
->   ===
-> 
-> Release memory_listener and virtqueue objects in the error path.
-> 
-> Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
-
-From the patch change itself it looks all right here.
-
-IIRC this bug used to only reproduce on rt kernels, is it still the case?
-
-Here besides doing correct unregister, does it also mean that even if
-event_notifier_init() failed there's totally no error message anywhere?
-Should we dump something when it fails?  And did you check why that failed?
-
-Thanks,
-
+> Rewrote calc-dirty-rate documentation. Briefly described
+> different modes of dirty page rate measurement. Added some
+> examples. Fixed obvious grammar errors.
+>
+> Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
 > ---
->  hw/virtio/vhost.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index 23da579ce2..e261ae7c49 100644
-> --- a/hw/virtio/vhost.c
-> +++ b/hw/virtio/vhost.c
-> @@ -1942,7 +1942,7 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
->      r = event_notifier_init(
->          &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier, 0);
->      if (r < 0) {
-> -        return r;
-> +        goto fail_vq;
->      }
->      event_notifier_test_and_clear(
->          &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
-> @@ -2004,6 +2004,9 @@ fail_vq:
->      }
->  
->  fail_mem:
-> +    if (vhost_dev_has_iommu(hdev)) {
-> +        memory_listener_unregister(&hdev->iommu_listener);
-> +    }
->  fail_features:
->      vdev->vhost_started = false;
->      hdev->started = false;
-> -- 
-> 2.40.1
-> 
-> 
+>  qapi/migration.json | 107 +++++++++++++++++++++++++++++++-------------
+>  1 file changed, 77 insertions(+), 30 deletions(-)
+>
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 179af0c4d8..19b51444b5 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -1735,14 +1735,14 @@
+>  ##
+>  # @DirtyRateStatus:
+>  #
+> -# An enumeration of dirtyrate status.
+> +# Dirty page rate measurement status.
+>  #
+> -# @unstarted: the dirtyrate thread has not been started.
+> +# @unstarted: measuring thread has not been started yet
+>  #
+> -# @measuring: the dirtyrate thread is measuring.
+> +# @measuring: measuring thread is running
+>  #
+> -# @measured: the dirtyrate thread has measured and results are
+> -#     available.
+> +# @measured: dirty page rate is measured and the results are
+> +#     available
+>  #
+>  # Since: 5.2
+>  ##
+> @@ -1752,13 +1752,14 @@
+>  ##
+>  # @DirtyRateMeasureMode:
+>  #
+> -# An enumeration of mode of measuring dirtyrate.
+> +# Method used to measure dirty page rate.  Differences between
+> +# available methods are explained in @calc-dirty-rate.
+>  #
+> -# @page-sampling: calculate dirtyrate by sampling pages.
+> +# @page-sampling: use page sampling
+>  #
+> -# @dirty-ring: calculate dirtyrate by dirty ring.
+> +# @dirty-ring: use dirty ring
+>  #
+> -# @dirty-bitmap: calculate dirtyrate by dirty bitmap.
+> +# @dirty-bitmap: use dirty bitmap
+>  #
+>  # Since: 6.2
+>  ##
+> @@ -1768,26 +1769,25 @@
+>  ##
+>  # @DirtyRateInfo:
+>  #
+> -# Information about current dirty page rate of vm.
+> +# Information about measured dirty page rate.
+>  #
+>  # @dirty-rate: an estimate of the dirty page rate of the VM in units
+> -#     of MB/s, present only when estimating the rate has completed.
+> +#     of MiB/s. Value is present only when @status is 'measured'.
 
--- 
-Peter Xu
+For consistency, please put two spaces between setences.
+
+>  #
+> -# @status: status containing dirtyrate query status includes
+> -#     'unstarted' or 'measuring' or 'measured'
+> +# @status: current status of dirty page rate measurements
+>  #
+>  # @start-time: start time in units of second for calculation
+>  #
+> -# @calc-time: time in units of second for sample dirty pages
+> +# @calc-time: time period in units of second for which dirty page
+> +#     rate was measured
+
+Maybe
+
+   # @calc-time: time period for which dirty page rate was measured
+   #     (in seconds)
+
+>  #
+> -# @sample-pages: page count per GB for sample dirty pages the default
+> -#     value is 512 (since 6.1)
+> +# @sample-pages: number of sampled pages per each GiB of guest
+
+per GiB
+
+> +#     memory.  Value is valid only in page-sampling mode (Since 6.1)
+
+Suggest "Valid only in ..."
+
+>  #
+> -# @mode: mode containing method of calculate dirtyrate includes
+> -#     'page-sampling' and 'dirty-ring' (Since 6.2)
+> +# @mode: mode that was used to measure dirty page rate (Since 6.2)
+>  #
+> -# @vcpu-dirty-rate: dirtyrate for each vcpu if dirty-ring mode
+> -#     specified (Since 6.2)
+> +# @vcpu-dirty-rate: dirty rate for each vCPU if dirty-ring mode
+> +#     was specified (Since 6.2)
+>  #
+>  # Since: 5.2
+>  ##
+> @@ -1803,15 +1803,50 @@
+>  ##
+>  # @calc-dirty-rate:
+>  #
+> -# start calculating dirty page rate for vm
+> -#
+> -# @calc-time: time in units of second for sample dirty pages
+> -#
+> -# @sample-pages: page count per GB for sample dirty pages the default
+> -#     value is 512 (since 6.1)
+> -#
+> -# @mode: mechanism of calculating dirtyrate includes 'page-sampling'
+> -#     and 'dirty-ring' (Since 6.1)
+> +# Starts measuring dirty page rate of the VM.  Results can be
+
+Imperative mood: "Start measuring ..."
+
+> +# retrieved with @query-dirty-rate after measurements are completed.
+> +#
+> +# Dirty page rate is the number of pages changed in a given time
+> +# period expressed in MiB/s.  The following methods of calculation
+> +# are available:
+> +#
+> +# 1. In page sampling mode, a random subset of pages are selected
+> +#    and hashed twice: once in the beginning of measurement time
+
+Suggest "once at the beginning"
+
+> +#    period, another one -- in the end.  If two hashes for some page
+
+Suggest ", and once again at the end".
+
+> +#    are different, the page is counted as changed.  Since this
+> +#    method relies on sampling and hashing, calculated dirty page
+> +#    rate is only the estimation of its true value.  Setting
+> +#    @sample-pages to higher value improves estimation quality but
+
+Suggest "Increasing @sample-pages improves estimation quality at the
+cost ..."
+
+> +#    at the cost of higher computational overhead.
+> +#
+> +# 2. Dirty bitmap mode captures writes to memory by temporarily
+> +#    revoking write access to all pages and counting page faults.
+
+Comma before "and".
+
+> +#    Information about modified pages is collected into bitmap,
+
+"into a bitmap"
+
+> +#    where each bit corresponds to one guest page.  This mode
+> +#    requires that KVM accelerator property "dirty-ring-size=N"
+
+Suggest just "dirty-ring-size" (omit "=N").
+
+> +#    is *not* set.
+> +#
+> +# 3. Dirty ring mode is similar to dirty bitmap mode, but the
+> +#    information about modified pages is collected into ring buffer.
+> +#    This mode tracks page modification per each vCPU separately.
+
+Either "for each vCPU" or "per vCPU".
+
+> +#    It requires that KVM accelerator property "dirty-ring-size=N"
+> +#    is set.
+
+Suggest just "dirty-ring-size" (omit "=N").
+
+> +#
+> +# @calc-time: time period in units of second for which dirty page rate
+> +#    is calculated.  Note that larger @calc-time values will typically
+> +#    result in smaller dirty page rates because page dirtying is a
+> +#    one-time event.  Once some page is counted as dirty during
+> +#    @calc-time period, further writes to this page will not increase
+> +#    dirty page rate anymore.
+
+Please indent one more, for consistency.
+
+> +#
+> +# @sample-pages: number of sampled pages per each GiB of guest memory.
+> +#     Default value is 512.  For 4KiB guest pages this corresponds to
+> +#     sampling ratio of 0.2%.  This argument is used only in page
+> +#     sampling mode. (Since 6.1)
+
+Two spaces between '.' and '(', please.
+
+> +#
+> +# @mode: mechanism for tracking dirty pages.  Default value is
+> +#    'page-sampling'.  Others are 'dirty-bitmap' and 'dirty-ring'.
+> +#    (Since 6.1)
+>  #
+>  # Since: 5.2
+>  #
+> @@ -1828,9 +1863,21 @@
+>  ##
+>  # @query-dirty-rate:
+>  #
+> -# query dirty page rate in units of MB/s for vm
+> +# Query results of the most recent invocation of @calc-dirty-rate.
+>  #
+>  # Since: 5.2
+> +#
+> +# Examples:
+> +#
+> +# 1. Measurement is in progress:
+> +#
+> +# <- {"status": "measuring", "sample-pages": 512,
+> +#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
+> +#
+> +# 2. Measurement has been completed:
+> +#
+> +# <- {"status": "measured", "sample-pages": 512, "dirty-rate": 108,
+> +#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
+>  ##
+>  { 'command': 'query-dirty-rate', 'returns': 'DirtyRateInfo' }
+
+This is *sooo* much better than before.  Thank you!
+
+An R-by from a migration maintainer would be nice.
+
+If you agree with my suggestions, I can apply them in my tree, saving
+you a respin.  Let me know.
+
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
