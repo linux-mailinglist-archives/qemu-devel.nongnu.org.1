@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA86710BB8
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A575A710BF4
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:22:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q29kQ-0000wk-2P; Thu, 25 May 2023 08:07:14 -0400
+	id 1q29y8-0003pr-L9; Thu, 25 May 2023 08:21:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q29kI-0000vf-M7
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:07:06 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q29xw-0003pQ-E8
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:21:12 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q29kD-0000Rg-Va
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:07:06 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f6094cb2ebso3848775e9.3
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 05:07:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q29xt-0003HI-Te
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:21:11 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-96fffe11714so100166366b.0
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 05:21:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685016420; x=1687608420;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=L2uv7Q7ZnDtTuxAfDbORIWXUwCaDJBLgKwq1sJytB6k=;
- b=k+0TFpATCFSDXpX+9U5EF7mRcSNiD8Vzk/RCTQYR4n0rm8FuJb5yuTuEjd9xAijmN+
- hK+vskUBTCXFoOMR/+WtuPPyEY6fvDEhtPzg36Q0kQtDwzY69wkvdekeglyID4FpK3oR
- EKR706Klv+O44Tmq0HfFXjvgenI7GPZcwJqU+r1HaMVJJHAl7TAo65OnL0nYwN2gsRxp
- xnFSoIbhB5XbkPic6FP02/v2V5Ej6dsy5XvQ06BZFvDoPspqWgbkiqNAHkR5rjf235wC
- sWPAv7t7CFqo1mYvCMn77CnO5eFmALDPWEQtvGqNenQhIAphy5LIHYxEf6TqU8Jbq4YG
- kCpg==
+ d=linaro.org; s=google; t=1685017268; x=1687609268;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=xt73mBk/BF3DP3yChIeQbwO/64UdUHjyoYKQoOnbBmU=;
+ b=iPOhRAYrHJ42CkOi2u2lvNoOXrzjUGWmA/iQKjVqco0cBiGwJ6FEzHOQ8UZXumOk33
+ 4n3l0XS0WrqD7B3SHkNxl2UYWHVWQnFI+R+yYpHVpkAzL/malAx5+EO5r7qJWQNRN01j
+ Hu5XQAG7N4SWOtVtLMlN2KB7BgwriAjut2EpkZWOmI1VpssSTqpdbcMsdoLaPZenFtnC
+ BqGbVuGGDn8Fe783kSWulw3GZ6DbxmeO5xgtabwJ2bASTzUHK8Zg4tEPL2RWwiEwPfD7
+ MNngMC8iJMBNwPTiBuNGIIn5bIX/CPPvMteJZh+hFxbwhUbBrbvOQuQ36YguP/xviwH7
+ d6sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685016420; x=1687608420;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=L2uv7Q7ZnDtTuxAfDbORIWXUwCaDJBLgKwq1sJytB6k=;
- b=kswsPJC7bQL2HrQvoIzbFBUD4WE+TposrJZVHgPwl1DKLd1i69NtQskYaNmiATs5CR
- syNDHtSSP6i5FwGUI7rnLjmiigEqnXfh3fsw9VZvUqxsPEPo/lQgutks1VG8oC13PKHZ
- 5gzW/q3qEq4bAWlGsasEm3cYv38q6BmXiA660uJZoEkaM8YaveK/YFMJBii3VvGUg/7c
- odPthrz9n/a1KrtpuE7qwTXfAyN2esKsAudljkcllcmg+Irgwq8IbS+TdTtpQkz4RWkB
- qPIdMG4nJIfImGpENlfR/obJ8PNRR+UsFkK2DW9KhvttpBL8Mt90MgWxdDOYKfUGmrJ+
- Mc+A==
-X-Gm-Message-State: AC+VfDwt2pjfWqj/THU5sYKTpy2e/ULodiCpscvVTEcECsQDtPb7bTGi
- INBFtZGD5Ak4yRK4Ira9gCOW4g==
-X-Google-Smtp-Source: ACHHUZ480q2SsY5LO3jMlHTn1krZ+7Gtj1rhiPSuSVwcKW+YdhjK+KKomjprDwZVDzB2p5k62MKpUA==
-X-Received: by 2002:a05:600c:2255:b0:3f6:1e6:d5a2 with SMTP id
- a21-20020a05600c225500b003f601e6d5a2mr2411559wmm.4.1685016420247; 
- Thu, 25 May 2023 05:07:00 -0700 (PDT)
-Received: from [192.168.69.115] (cor91-h02-176-184-30-254.dsl.sta.abo.bbox.fr.
- [176.184.30.254]) by smtp.gmail.com with ESMTPSA id
- v7-20020a05600c214700b003f4f89bc48dsm5647135wml.15.2023.05.25.05.06.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 05:06:59 -0700 (PDT)
-Message-ID: <1f33d65c-39a2-ceff-56dc-1982499066c6@linaro.org>
-Date: Thu, 25 May 2023 14:06:58 +0200
+ d=1e100.net; s=20221208; t=1685017268; x=1687609268;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xt73mBk/BF3DP3yChIeQbwO/64UdUHjyoYKQoOnbBmU=;
+ b=jerRm6XrNmlGlA5pywDWR1CvfXQpZZCVlILrP/IxHp1pw0u3z3y4aFFoTF86EbWVcH
+ RiMjsPErDibEEd+M6Ndzj+nWUmr4ibenqz1Vk69AWnlgu4meTGeDIlr82LGt1DajVI4v
+ npD9yPv9S81QEenZdL4htE4qaK4SDPcICLfk5slQxZFuNTqXexjrQl8sPYzilcx5d2Oy
+ F1Y0t2Jc9JW0qbBv8fD8Sm5L7AZjXFidlVyUE9M38W1GM3jfBqt7MtJBM7VU+Mm84k/q
+ 8B3b3QJ0VjORfXqDtlf0aHy9TaXLzfd5mlzoLcYqkDiaF7EVmJtHid3/Ks+iL0f8WUnk
+ S/qA==
+X-Gm-Message-State: AC+VfDzT3WsYgf1qYR/sDWW6xP4erjbO/x0ifhwlNQDAWe23taUDuFGK
+ 1kqmILiYGl9PqtzpF5ltmMWNLl632oHDn3wUxlQotw==
+X-Google-Smtp-Source: ACHHUZ4Gfyl99n1iWrKvxDzOfSxkHaiIvsXX3Byp5HGT+QCm0fqkNT5kXWfRi7MDXOvYmygihs+Paq9jxmClpB9LsjY=
+X-Received: by 2002:a17:907:360e:b0:96a:ee54:9f19 with SMTP id
+ bk14-20020a170907360e00b0096aee549f19mr1419675ejc.48.1685017268318; Thu, 25
+ May 2023 05:21:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v4 2/3] hw/riscv: sifive_e: Support the watchdog timer of
- HiFive 1 rev b.
-Content-Language: en-US
-To: Tommy Wu <tommy.wu@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: alistair.francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
- jim.shu@sifive.com, frank.chang@sifive.com, thuth@redhat.com,
- liweiwei@iscas.ac.cn
-References: <20230523084910.304679-1-tommy.wu@sifive.com>
- <20230523084910.304679-3-tommy.wu@sifive.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230523084910.304679-3-tommy.wu@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230524080600.1618137-1-thuth@redhat.com>
+In-Reply-To: <20230524080600.1618137-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 25 May 2023 13:20:57 +0100
+Message-ID: <CAFEAcA_eNTydi4cnX0E8Pg6aO_b-1zL=tMNibcn-vO97JdJYXQ@mail.gmail.com>
+Subject: Re: [PATCH] tests/qtest: Run arm-specific tests only if the required
+ machine is available
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,38 +86,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/5/23 10:49, Tommy Wu wrote:
-> Create the AON device when we realize the sifive_e machine.
-> This patch only implemented the functionality of the watchdog timer,
-> not all the functionality of the AON device.
-> 
-> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-> Reviewed-by: Frank Chang <frank.chang@sifive.com>
+On Wed, 24 May 2023 at 09:06, Thomas Huth <thuth@redhat.com> wrote:
+>
+> pflash-cfi02-test.c always uses the "musicpal" machine for testing,
+> test-arm-mptimer.c always uses the "vexpress-a9" machine, and
+> microbit-test.c requires the "microbit" machine, so we should only
+> run these tests if the machines have been enabled in the configuration.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   hw/riscv/Kconfig            |  1 +
->   hw/riscv/sifive_e.c         | 13 +++++++++++--
->   include/hw/riscv/sifive_e.h |  8 +++++---
->   3 files changed, 17 insertions(+), 5 deletions(-)
+>  tests/qtest/meson.build | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> index 4c5585ac0f..087f2dc9d7 100644
+> --- a/tests/qtest/meson.build
+> +++ b/tests/qtest/meson.build
+> @@ -198,14 +198,15 @@ qtests_arm = \
+>    (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? ['cmsdk-apb-dualtimer-test'] : []) + \
+>    (config_all_devices.has_key('CONFIG_CMSDK_APB_TIMER') ? ['cmsdk-apb-timer-test'] : []) + \
+>    (config_all_devices.has_key('CONFIG_CMSDK_APB_WATCHDOG') ? ['cmsdk-apb-watchdog-test'] : []) + \
+> -  (config_all_devices.has_key('CONFIG_PFLASH_CFI02') ? ['pflash-cfi02-test'] : []) +         \
+> +  (config_all_devices.has_key('CONFIG_PFLASH_CFI02') and
+> +   config_all_devices.has_key('CONFIG_MUSICPAL') ? ['pflash-cfi02-test'] : []) + \
+>    (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed : []) + \
+>    (config_all_devices.has_key('CONFIG_NPCM7XX') ? qtests_npcm7xx : []) + \
+>    (config_all_devices.has_key('CONFIG_GENERIC_LOADER') ? ['hexloader-test'] : []) + \
+>    (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
+> +  (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] : []) + \
+> +  (config_all_devices.has_key('CONFIG_MICROBIT') ? ['microbit-test'] : []) + \
+>    ['arm-cpu-features',
+> -   'microbit-test',
+> -   'test-arm-mptimer',
+>     'boot-serial-test']
 
+Applied to target-arm.next, thanks.
 
-> diff --git a/include/hw/riscv/sifive_e.h b/include/hw/riscv/sifive_e.h
-> index b824a79e2d..a094b47e0b 100644
-> --- a/include/hw/riscv/sifive_e.h
-> +++ b/include/hw/riscv/sifive_e.h
-> @@ -35,6 +35,7 @@ typedef struct SiFiveESoCState {
->       /*< public >*/
->       RISCVHartArrayState cpus;
->       DeviceState *plic;
-> +    DeviceState *aon;
+>  # TODO: once aarch64 TCG is fixed on ARM 32 bit host, make bios-tables-test unconditional
 
-Preferably allocate the device state in the SoC, similar to gpio:
+Aside: I wonder what we meant by this... Added in
+commit ab6b6a7777449905a in 2019 with no further detail.
 
-         SiFiveEAONState aon;
-
->       SIFIVEGPIOState gpio;
->       MemoryRegion xip_mem;
->       MemoryRegion mask_rom;
-> @@ -76,9 +77,10 @@ enum {
->   };
->   
+-- PMM
 
