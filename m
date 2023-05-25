@@ -2,97 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B92C710D29
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 15:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13987710D35
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 15:26:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2AvR-0002Kq-U4; Thu, 25 May 2023 09:22:41 -0400
+	id 1q2AyZ-0004Bs-Ce; Thu, 25 May 2023 09:25:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2AvP-0002Ke-EL
- for qemu-devel@nongnu.org; Thu, 25 May 2023 09:22:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2AyL-00049e-S5
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 09:25:42 -0400
+Received: from smtp-190b.mail.infomaniak.ch ([185.125.25.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2AvN-0003Mx-OA
- for qemu-devel@nongnu.org; Thu, 25 May 2023 09:22:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685020956;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rQ/jPBwEYF5QfIsLieFKHfj9jvymk5OtIb7oY4RB6TI=;
- b=b6W9uYZqxQUBC8+FMDBVo3aDuVfd/HXQiYz2c6paiBOi55ahLyvy05zlPqKdx+UExFkvyI
- Axg7oX1qtV3HJ6/TLKDj4AL+2EDgvPtsDRvldsoVAaiWW/Wqq8uoIiiPk4sr+YP3GJMYon
- s/Ymu13VMg+j/by8D5U4AzNx20LOQ14=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-9kYLbs_wMMqCPjX-9mPk0g-1; Thu, 25 May 2023 09:22:34 -0400
-X-MC-Unique: 9kYLbs_wMMqCPjX-9mPk0g-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9737cde2ce8so70823866b.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 06:22:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685020953; x=1687612953;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rQ/jPBwEYF5QfIsLieFKHfj9jvymk5OtIb7oY4RB6TI=;
- b=EPmqpMDfONSM7qQqNY8RFVsDVzCURhTMK5RGAuYXilO0z6aFzc/z3zSYq0FPO7hJBs
- WGi/Bi+H0f+t+IQZPSa/IRjax2K8oaoDXG44FNCyhFVIne3evZ+6knUGEtY0Vi2b1+3S
- Cq1QokiJMCg3phxcXpmvUbO0PSI8hxALd1AW4a3hlwxNTiac1JpRL5cUBqu5x4qsvpUK
- 2SrcDIaNBznwjxmUhVcMb5TClW0i6CLvtsKxGfXDVHYxFS/ThlVfqedEphn1AZf92/s6
- tZax5LketyfAyykuV4CfDGzXUbteFqPXpUP/+Q1C1VzSU1OYhVisyA1CxPpf6WynOYhp
- v+1w==
-X-Gm-Message-State: AC+VfDyv8LthmEzFJP/ZSUoLrCTzzny4oEvK3+XODs8pACZKqH9EgVzX
- OXElOLvkoRFSDaCRMGN3fOuhuBqSCP1M7+RvDCigHPaWWWIMypRU5ao27ZhKHu91+9ycoqCXep3
- UkFj9RnVbxj/am/M=
-X-Received: by 2002:a17:907:7fa2:b0:95f:64d8:f795 with SMTP id
- qk34-20020a1709077fa200b0095f64d8f795mr1699870ejc.27.1685020953255; 
- Thu, 25 May 2023 06:22:33 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ56HnzTUvSAgiJCiSUhNZhuiKU7mnWesCpwt5EfnNI/WVj1HGHvCPj/7SSy/PMTo0RwIpirwQ==
-X-Received: by 2002:a17:907:7fa2:b0:95f:64d8:f795 with SMTP id
- qk34-20020a1709077fa200b0095f64d8f795mr1699850ejc.27.1685020952908; 
- Thu, 25 May 2023 06:22:32 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:48f9:bea:a04c:3dfe?
- ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
- by smtp.googlemail.com with ESMTPSA id
- d21-20020a170906371500b0094f1fe1696bsm835011ejc.216.2023.05.25.06.22.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 06:22:32 -0700 (PDT)
-Message-ID: <77189848-d618-9f55-4ae9-92756e635371@redhat.com>
-Date: Thu, 25 May 2023 15:22:31 +0200
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2AyJ-0004K4-JX
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 09:25:41 -0400
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
+ by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QRphW6LYlzMqNXH;
+ Thu, 25 May 2023 15:25:31 +0200 (CEST)
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA
+ id 4QRphL6y4hzMrvhL; Thu, 25 May 2023 15:25:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+ s=20191114; t=1685021131;
+ bh=FnMYgGOtsnzYjWDK5xXufVoQQ5U2qAP20b96T/ZBHdg=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=N/UVINRRySa+8dk6MOPMQdB5xSfG70ugF/mQ8iSHsAXEhJ3x5cnQ644+BuQ9671BQ
+ zwHHW8JkLMYSrp/tJcXYwsHIYERU1eHBBUHAhpe4S2ynd7Zz3nYjsu9tDLnvH3P5lj
+ 9BBmh81fJGEtVFfk8S66LDxQxXZ1KMberOvy83Ck=
+Message-ID: <0b069bc3-0362-d8ec-fc2a-05dd65218c39@digikod.net>
+Date: Thu, 25 May 2023 15:25:09 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [RFC PATCH] softfloat: use QEMU_FLATTEN to avoid mistaken isra
- inlining
+User-Agent: 
+Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
+To: Trilok Soni <quic_tsoni@quicinc.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>
+Cc: Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>, Liran Alon
+ <liran.alon@oracle.com>,
+ "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>,
+ Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <20230505152046.6575-1-mic@digikod.net>
+ <1e10da25-5704-18ee-b0ce-6de704e6f0e1@quicinc.com>
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Aurelien Jarno <aurelien@aurel32.net>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230523131107.3680641-1-alex.bennee@linaro.org>
- <8920aa58-505c-92df-cff0-4ee232ca6f8b@eik.bme.hu>
- <65f5f7e7-4685-1a63-1551-b71308c88021@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <65f5f7e7-4685-1a63-1551-b71308c88021@linaro.org>
+From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <1e10da25-5704-18ee-b0ce-6de704e6f0e1@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Infomaniak-Routing: alpha
+Received-SPF: pass client-ip=185.125.25.11; envelope-from=mic@digikod.net;
+ helo=smtp-190b.mail.infomaniak.ch
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,119 +89,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/23 16:33, Richard Henderson wrote:
+
+On 24/05/2023 23:04, Trilok Soni wrote:
+> On 5/5/2023 8:20 AM, Mickaël Salaün wrote:
+>> Hi,
+>>
+>> This patch series is a proof-of-concept that implements new KVM features
+>> (extended page tracking, MBEC support, CR pinning) and defines a new API to
+>> protect guest VMs. No VMM (e.g., Qemu) modification is required.
+>>
+>> The main idea being that kernel self-protection mechanisms should be delegated
+>> to a more privileged part of the system, hence the hypervisor. It is still the
+>> role of the guest kernel to request such restrictions according to its
+> 
+> Only for the guest kernel images here? Why not for the host OS kernel?
+
+As explained in the Future work section, protecting the host would be 
+useful, but that doesn't really fit with the KVM model. The Protected 
+KVM project is a first step to help in this direction [11].
+
+In a nutshell, KVM is close to a type-2 hypervisor, and the host kernel 
+is also part of the hypervisor.
+
+
+> Embedded devices w/ Android you have mentioned below supports the host
+> OS as well it seems, right?
+
+What do you mean?
+
+
+> 
+> Do we suggest that all the functionalities should be implemented in the
+> Hypervisor (NS-EL2 for ARM) or even at Secure EL like Secure-EL1 (ARM).
+
+KVM runs in EL2. TrustZone is mainly used to enforce DRM, which means 
+that we may not control the related code.
+
+This patch series is dedicated to hypervisor-enforced kernel integrity, 
+then KVM.
+
+> 
+> I am hoping that whatever we suggest the interface here from the Guest
+> to the Hypervisor becomes the ABI right?
+
+Yes, hypercalls are part of the KVM ABI.
+
 > 
 > 
-> The tests are poorly ordered, testing many unlikely things before the 
-> most likely thing (normal).  A better ordering would be
+>>
+>> # Current limitations
+>>
+>> The main limitation of this patch series is the statically enforced
+>> permissions. This is not an issue for kernels without module but this needs to
+>> be addressed.  Mechanisms that dynamically impact kernel executable memory are
+>> not handled for now (e.g., kernel modules, tracepoints, eBPF JIT), and such
+>> code will need to be authenticated.  Because the hypervisor is highly
+>> privileged and critical to the security of all the VMs, we don't want to
+>> implement a code authentication mechanism in the hypervisor itself but delegate
+>> this verification to something much less privileged. We are thinking of two
+>> ways to solve this: implement this verification in the VMM or spawn a dedicated
+>> special VM (similar to Windows's VBS). There are pros on cons to each approach:
+>> complexity, verification code ownership (guest's or VMM's), access to guest
+>> memory (i.e., confidential computing).
 > 
->      if (likely(tp##_is_normal(arg))) {
->      } else if (tp##_is_zero(arg)) {
->      } else if (tp##_is_zero_or_denormal(arg)) {
->      } else if (tp##_is_infinity(arg)) {
->      } else {
->          // nan case
->      }
+> Do you foresee the performance regressions due to lot of tracking here?
+
+The performance impact of execution prevention should be negligible 
+because once configured the hypervisor do nothing except catch 
+illegitimate access attempts.
+
+
+> Production kernels do have lot of tracepoints and we use it as feature
+> in the GKI kernel for the vendor hooks implementation and in those cases
+> every vendor driver is a module.
+
+As explained in this section, dynamic kernel modifications such as 
+tracepoints or modules are not currently supported by this patch series. 
+Handling tracepoints is possible but requires more work to define and 
+check legitimate changes. This proposal is still useful for static 
+kernels though.
+
+
+> Separate VM further fragments this
+> design and delegates more of it to proprietary solutions?
+
+What do you mean? KVM is not a proprietary solution.
+
+For dynamic checks, this would require code not run by KVM itself, but 
+either the VMM or a dedicated VM. In this case, the dynamic 
+authentication code could come from the guest VM or from the VMM itself. 
+In the former case, it is more challenging from a security point of view 
+but doesn't rely on external (proprietary) solution. In the latter case, 
+open-source VMMs should implement the specification to provide the 
+required service (e.g. check kernel module signature).
+
+The goal of the common API layer provided by this RFC is to share code 
+as much as possible between different hypervisor backends.
+
+
 > 
-> Secondly, we compute the classify bitmask, and then deconstruct the mask 
-> again in set_fprf_from_class.  Since we don't use the classify bitmask 
-> for anything else, better would be to compute the fprf value directly in 
-> the if-ladder.
+> Do you have any performance numbers w/ current RFC?
 
-So something like this:
-
-diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
-index a66e16c2128c..daed97ca178e 100644
---- a/target/ppc/fpu_helper.c
-+++ b/target/ppc/fpu_helper.c
-@@ -141,62 +141,30 @@ static inline int ppc_float64_get_unbiased_exp(float64 f)
-      return ((f >> 52) & 0x7FF) - 1023;
-  }
-  
--/* Classify a floating-point number.  */
--enum {
--    is_normal   = 1,
--    is_zero     = 2,
--    is_denormal = 4,
--    is_inf      = 8,
--    is_qnan     = 16,
--    is_snan     = 32,
--    is_neg      = 64,
--};
--
--#define COMPUTE_CLASS(tp)                                      \
--static int tp##_classify(tp arg)                               \
--{                                                              \
--    int ret = tp##_is_neg(arg) * is_neg;                       \
--    if (unlikely(tp##_is_any_nan(arg))) {                      \
--        float_status dummy = { };  /* snan_bit_is_one = 0 */   \
--        ret |= (tp##_is_signaling_nan(arg, &dummy)             \
--                ? is_snan : is_qnan);                          \
--    } else if (unlikely(tp##_is_infinity(arg))) {              \
--        ret |= is_inf;                                         \
--    } else if (tp##_is_zero(arg)) {                            \
--        ret |= is_zero;                                        \
--    } else if (tp##_is_zero_or_denormal(arg)) {                \
--        ret |= is_denormal;                                    \
--    } else {                                                   \
--        ret |= is_normal;                                      \
--    }                                                          \
--    return ret;                                                \
--}
--
--COMPUTE_CLASS(float16)
--COMPUTE_CLASS(float32)
--COMPUTE_CLASS(float64)
--COMPUTE_CLASS(float128)
--
--static void set_fprf_from_class(CPUPPCState *env, int class)
-+static void set_fprf(CPUPPCState *env, uint8_t ret)
-  {
--    static const uint8_t fprf[6][2] = {
--        { 0x04, 0x08 },  /* normalized */
--        { 0x02, 0x12 },  /* zero */
--        { 0x14, 0x18 },  /* denormalized */
--        { 0x05, 0x09 },  /* infinity */
--        { 0x11, 0x11 },  /* qnan */
--        { 0x00, 0x00 },  /* snan -- flags are undefined */
--    };
--    bool isneg = class & is_neg;
--
-      env->fpscr &= ~FP_FPRF;
--    env->fpscr |= fprf[ctz32(class)][isneg] << FPSCR_FPRF;
-+    env->fpscr |= ret << FPSCR_FPRF;
-  }
-  
--#define COMPUTE_FPRF(tp)                                \
--void helper_compute_fprf_##tp(CPUPPCState *env, tp arg) \
--{                                                       \
--    set_fprf_from_class(env, tp##_classify(arg));       \
-+#define COMPUTE_FPRF(tp)                                       \
-+void helper_compute_fprf_##tp(CPUPPCState *env, tp arg)        \
-+{                                                              \
-+    int ret;                                                   \
-+    if (tp##_is_normal(arg)) {                                 \
-+        ret = 0x0408;                                          \
-+    } else if (tp##_is_zero(arg)) {                            \
-+        ret = 0x0212;                                          \
-+    } else if (tp##_is_zero_or_denormal(arg)) {                \
-+        ret = 0x1418;                                          \
-+    } else if (unlikely(tp##_is_infinity(arg))) {              \
-+        ret = 0x0509;                                          \
-+    } else {                                                   \
-+        float_status dummy = { };  /* snan_bit_is_one = 0 */   \
-+        ret = (tp##_is_signaling_nan(arg, &dummy)              \
-+               ? 0x0000 : 0x1111);                             \
-+    }                                                          \
-+    set_fprf(env, tp##_is_neg(arg) ? (uint8_t)ret : ret >> 8); \
-  }
-  
-  COMPUTE_FPRF(float16)
-
-
-Not tested beyond compilation, but if Zoltan reports that it helps
-I can write a commit message and submit it.
-
-Paolo
-
+No, but the only hypervisor performance impact is at boot time and 
+should be negligible. I'll try to get some numbers for the 
+hardware-enforcement impact, but it should be negligible too.
 
