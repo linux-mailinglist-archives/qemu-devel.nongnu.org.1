@@ -2,89 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C802D7106D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 10:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1C77106E1
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 10:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q25v7-0001Wo-2K; Thu, 25 May 2023 04:02:01 -0400
+	id 1q260g-0005pk-Bj; Thu, 25 May 2023 04:07:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q25up-0001WB-Vl
- for qemu-devel@nongnu.org; Thu, 25 May 2023 04:01:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q25um-0007bc-5P
- for qemu-devel@nongnu.org; Thu, 25 May 2023 04:01:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685001698;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=RzhBmC1bo0eTz6jUmVxyQSKcpfYLGHgihsGKfjKapvYIIpE9RT4riupq1PG2WWq2yM5fzy
- eca86+JVwt9BGuSR7J53Gaw7jht3xkZnObkhMTqTmYoWRt9OfLgkxa0ZdipWUHZ1zmFu98
- bJAGk6nBUxpZY1YllYNHBQvi6jJT8vw=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-581-DBH_Gn0LORSlubRxiIqIow-1; Thu, 25 May 2023 04:01:36 -0400
-X-MC-Unique: DBH_Gn0LORSlubRxiIqIow-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-94a341efd9aso43760366b.0
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 01:01:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q260c-0005pP-R6
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 04:07:42 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q260b-0000tq-A7
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 04:07:42 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3093a7b71fbso1727774f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 01:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685002059; x=1687594059;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YRot7csRaiLN2Kch1Bdcl1t2bJRWPjwFArO/OyEsHkQ=;
+ b=YQCTKoWHGxLIqhvXX0jBPGAt6MPHCTISgN60WSml9MB2hDcwtvhJtFnqsQC7zJxl5p
+ Q4q/hnIHOMTzKhBKHKpb6URbOnrAELw/lXT+0m8UhUB/pIE4Z+367xj5C8SDQzZ1x+O9
+ XegME8dENt0ow/Ff15YMj6TkpQGqXQzC22rjO6/5QTu2/0iBBhpcqK4mk2yh+UEvzR1i
+ kazm5aGtNjPtD1jhJrxjk2X3Rz0ewRXa8JmibxDzHHMNOBF8tko9pc545qmvLlopveLf
+ my3GAgl8i13JOUe/dh+d27lXbMDtrWCbVttNA4JivYVc83tUFCD4tED5XsP0A9sMp+UL
+ bZGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685001695; x=1687593695;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=GKn92CsJ5h/RM1uJWLX/hYu53WUbds7kUGwVbRTLdI4PdXSRzG/mhUn7Xm/HgX+eVU
- uCiQhmpOuAbw3TVLL33GWyt8E3IxyK96Lb69iLYrxhkzO5kDXnmpgQMosYIXD4qZCCXN
- q9QrQT99DVBLxY6IF+b6ZSOMbJaOUovIVjsMUfu9yYVB7Tb5KFGCmHXSb4HqZC+DB41I
- WlVX83ySo/+k16UlDGVfFk3eM+bfhbNvC4fGtxZ3dl1gvMKVCbHFwTnHhLkxfpV4CTBC
- ODM5CRoZGWzA/mIZKlNJcNfkHUJ0YU89O6X0cCWZ0w/q1MLq0dLuyW9zSMAe+/0CbZlA
- 4dVQ==
-X-Gm-Message-State: AC+VfDyBJ9U9Avby3Rze/qT0MavPbqTBt0Vun3F4C4kvJ/uojxVDvda8
- 85xMA3TJa4Lq6i8Px29Q3L2WX3J/lJDUPTAdIA3vUF6AMh7Kv9dWyddLrCpYfLTFVRzuH9fcsfo
- fnhE6lGJ2dJTj+Ro=
-X-Received: by 2002:a17:907:d8a:b0:961:8d21:a471 with SMTP id
- go10-20020a1709070d8a00b009618d21a471mr993924ejc.58.1685001695046; 
- Thu, 25 May 2023 01:01:35 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6rEbrjyVoT4d+bJNhMrupzz65ITSg5hO2kM9qBNTSRBEU5al7U0zgTmRj9HPm7Wqu7ajBRSw==
-X-Received: by 2002:a17:907:d8a:b0:961:8d21:a471 with SMTP id
- go10-20020a1709070d8a00b009618d21a471mr993888ejc.58.1685001694660; 
- Thu, 25 May 2023 01:01:34 -0700 (PDT)
-Received: from [192.168.10.117] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.gmail.com with ESMTPSA id
- n6-20020a170906118600b0094f282fc29asm474414eja.207.2023.05.25.01.01.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 01:01:34 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Cc: pbonzini@redhat.com, philmd@linaro.org, marcandre.lureau@redhat.com,
- berrange@redhat.com, thuth@redhat.com, hilmd@linaro.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] meson.build: Fix glib -Wno-unused-function workaround
-Date: Thu, 25 May 2023 10:01:33 +0200
-Message-Id: <20230525080133.142912-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230524173123.66483-1-nsaenz@amazon.com>
-References: 
+ d=1e100.net; s=20221208; t=1685002059; x=1687594059;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YRot7csRaiLN2Kch1Bdcl1t2bJRWPjwFArO/OyEsHkQ=;
+ b=Le7XaNrtdsHnYxs146ZMKjHWEQlt6Hqd/TcB7a3y7WMwJPmlP15PTWO6xzqjTRBm/L
+ PU/HwmNoqehBp5Qf3JjK52uw7xRw8sEmM0A6upTWkUzo4EjlFoaWLMN1k2AhDfCp0jAz
+ Y7uSwZnLIJvkseLLoS1iBt192R2B79Si67kdTPQiv7BkqPuJ/BNTUC7OMguGYzScfngM
+ DLy1WycaZIyh0tVg52WaQYgNMZNmUzcJhxazyapI0n5cmyf7QbxAk8OB/uZFdSfEX12i
+ a+r2SxrwfFwXV0OKYTit/iPxZq9D+Cyumzsw5piezVJMtJzfx5U/SrSgK1SHb0dTLvrW
+ HU9g==
+X-Gm-Message-State: AC+VfDwwqeLI0aPplbcwseF8MrCsIFiYKkHVcya1oZvqy65/7bi8Pkot
+ BLKF/T1j42LjzxpJV4PyqiKVjyRONZArZj9I1Co=
+X-Google-Smtp-Source: ACHHUZ7Hv1cwjtGxQjKQvP1n88ow7IAyFEVOWaQNQV3yiy+MV/U6rXe8Zdx5sIUMV8T+DzA7z8OLKw==
+X-Received: by 2002:adf:eac3:0:b0:309:838:8c21 with SMTP id
+ o3-20020adfeac3000000b0030908388c21mr1534572wrn.38.1685002059008; 
+ Thu, 25 May 2023 01:07:39 -0700 (PDT)
+Received: from [192.168.69.115] (cor91-h02-176-184-30-254.dsl.sta.abo.bbox.fr.
+ [176.184.30.254]) by smtp.gmail.com with ESMTPSA id
+ r11-20020a5d494b000000b00300aee6c9cesm909671wrs.20.2023.05.25.01.07.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 May 2023 01:07:38 -0700 (PDT)
+Message-ID: <32730af0-f4ba-221c-7b44-e034ac3c37bb@linaro.org>
+Date: Thu, 25 May 2023 10:07:36 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH 04/30] q800: move CPU object into Q800MachineState
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org
+References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
+ <20230524211104.686087-5-mark.cave-ayland@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230524211104.686087-5-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.107,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,8 +93,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+On 24/5/23 23:10, Mark Cave-Ayland wrote:
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   hw/m68k/q800.c         | 10 +++++-----
+>   include/hw/m68k/q800.h |  4 +++-
+>   2 files changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+> index 976da06231..ee6175ceb4 100644
+> --- a/hw/m68k/q800.c
+> +++ b/hw/m68k/q800.c
+> @@ -363,7 +363,7 @@ static uint8_t fake_mac_rom[] = {
+>   
+>   static void q800_machine_init(MachineState *machine)
+>   {
+> -    M68kCPU *cpu = NULL;
+> +    Q800MachineState *m = Q800_MACHINE(machine);
+>       int linux_boot;
+>       int32_t kernel_size;
+>       uint64_t elf_entry;
+> @@ -406,8 +406,8 @@ static void q800_machine_init(MachineState *machine)
+>       }
+>   
+>       /* init CPUs */
+> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+> -    qemu_register_reset(main_cpu_reset, cpu);
+> +    m->cpu = M68K_CPU(cpu_create(machine->cpu_type));
+> +    qemu_register_reset(main_cpu_reset, m->cpu);
+>   
+>       /* RAM */
+>       memory_region_add_subregion(get_system_memory(), 0, machine->ram);
 
-Paolo
+
+> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+> index 560fd6f93d..5867c3ae33 100644
+> --- a/include/hw/m68k/q800.h
+> +++ b/include/hw/m68k/q800.h
+> @@ -29,9 +29,11 @@
+>   
+>   struct Q800MachineState {
+>       MachineState parent_obj;
+> +
+> +    M68kCPU *cpu;
+
+This is a good opportunity to allocate M68kCPU in Q800MachineState
+and call object_initialize_child/qdev_realize instead of cpu_create.
+
+Can be done later, so meanwhile:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+>   };
+>   
+>   #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
+> -OBJECT_DECLARE_SIMPLE_TYPE(Q800MachineState, q800, Q800_MACHINE, MachineState)
+> +OBJECT_DECLARE_SIMPLE_TYPE(Q800MachineState, Q800_MACHINE)
+>   
+>   #endif
 
 
