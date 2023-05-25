@@ -2,80 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BB17112FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 19:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DD9711370
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:16:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2FE7-0002Om-J0; Thu, 25 May 2023 13:58:15 -0400
+	id 1q2FVE-0007mu-In; Thu, 25 May 2023 14:15:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2FE5-0002NV-HM
- for qemu-devel@nongnu.org; Thu, 25 May 2023 13:58:13 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2FE3-0002NR-I8
- for qemu-devel@nongnu.org; Thu, 25 May 2023 13:58:13 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-309550d4f73so986834f8f.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 10:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685037489; x=1687629489;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2JVT+kc6UWaLkLbQHTU0GmzVy0hhDpI/SkYTipoY5A4=;
- b=F3opaujsktw87CGkUArW6VsDLqg2cIp1+pj+n5/tBF7kqL+w+mEOOpd/JZy+bRZaok
- doOuSzZXGndfT+YVYkOSxukK8o81JfU/qwAkzNFueMYv2XZ5caLxUyiRWtCYtadkFOBh
- 5MA3Lw3NG7+HvPx12/mg7MoaZCUqHJQId/lemgvEeriaDGi+Dnrh3SGAVHKMm1q61xA1
- SDR96+38A8GgWk3Rv8LluOhSwCT02JHpthjJQ4XGIiwP6UZ+UVYMkyLZgVTSAHrWF6Lm
- e7Gs44NWs5mI45tX7WTqVZuxKMuPLMVXxlv/Ohp7gaRNJQWOTI9QtNxgDAAmzGvejP+x
- n5KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685037489; x=1687629489;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2JVT+kc6UWaLkLbQHTU0GmzVy0hhDpI/SkYTipoY5A4=;
- b=lVPfsZsACuRNYY0TDb6o5woS2TiXdMtuivgZ9Vs9vMe4scByc4oSjgK8s77pcTWI1w
- zYFovSlAChPm2jg6qH6QblkaGAc7kEb+hBeP9KbZWmMQfSNB9nqUMymlpMpH/CtnycSH
- NirsVbLnYBJ7qWc2bjyqS8AzxND3epk6LjRQPi3hop/2uoVmZi3PNnwq9Z26MayHybWx
- fT6bbaN4wTo+yw7N2zFwYkZWbj9JXFo84hz3eZrZ7lC3rKKO2CJ668JnEr6UIx4ZJgUk
- dxyn+FkOce59dgEyyGw4uXibz6yHja/IxqoCBso26WzOBSaP+b/2y7tSY1Bv++yQY0LC
- NRKA==
-X-Gm-Message-State: AC+VfDzUcP5C0zFKe93g5bx89Q41aGkFQxh0oOHFeTDZFGpIBdB4NyDl
- H6403AljsSF+WqBQANuYRNhfAg==
-X-Google-Smtp-Source: ACHHUZ6DEpga8umq4nXa5OinHFCGdL9c5rClbwJSooedrsYMSdrygnCDaXqpMfoMkgkZUvdteyITIg==
-X-Received: by 2002:a5d:5185:0:b0:30a:c5dc:6c47 with SMTP id
- k5-20020a5d5185000000b0030ac5dc6c47mr1681418wrv.34.1685037489630; 
- Thu, 25 May 2023 10:58:09 -0700 (PDT)
-Received: from [192.168.69.115] (cor91-h02-176-184-30-254.dsl.sta.abo.bbox.fr.
- [176.184.30.254]) by smtp.gmail.com with ESMTPSA id
- e16-20020a5d5950000000b003078cd719ffsm2481889wri.95.2023.05.25.10.58.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 10:58:09 -0700 (PDT)
-Message-ID: <2a8469e0-760a-356c-0f61-bc3aa705f1d1@linaro.org>
-Date: Thu, 25 May 2023 19:58:07 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q2FVC-0007lT-1c
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:15:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q2FVA-0007QZ-K1
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:15:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685038551;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hutoyO5sd+W5YyennJ0MMe61YV4uJEOnksCli5+jx+M=;
+ b=hyRKhPgAvxEgZvI0XNINdv5Fbx1MbHdJpS+C6wjY8sW8Lcn1o5kD9wmLjTuWCZmbPy1PPl
+ 1+3mOPqQTHRQj17qIHHBtBG3XhgeviOtCvHJXENJ9BZ4CgKnNbMAZ1ZrMTmzGtc5hjZDLE
+ VHReArewdBRuZ+uXWd60soQVMrc+NJQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-214-MfaufnROOk6lLmL5Q1oRhA-1; Thu, 25 May 2023 14:15:49 -0400
+X-MC-Unique: MfaufnROOk6lLmL5Q1oRhA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F36BF85A5AA;
+ Thu, 25 May 2023 18:15:48 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5ADE2C154D1;
+ Thu, 25 May 2023 18:15:48 +0000 (UTC)
+Date: Thu, 25 May 2023 13:59:07 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Jagannathan Raman <jag.raman@oracle.com>, qemu-devel@nongnu.org,
+ elena.ufimtseva@oracle.com
+Subject: Re: [PATCH v1 1/2] vfio-user: update comments
+Message-ID: <20230525175907.GA132697@fedora>
+References: <cover.1684338236.git.jag.raman@oracle.com>
+ <7340a298bcda0268b3decdd772ebce84bfcedcd5.1684338236.git.jag.raman@oracle.com>
+ <87fs7ko3o4.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 18/30] swim: add trace events for IWM and ISM registers
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
- <20230524211104.686087-19-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230524211104.686087-19-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="cvDcho2HtA0NMQa9"
+Content-Disposition: inline
+In-Reply-To: <87fs7ko3o4.fsf@pond.sub.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,31 +81,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/5/23 23:10, Mark Cave-Ayland wrote:
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/block/swim.c       | 14 ++++++++++++++
->   hw/block/trace-events |  7 +++++++
->   2 files changed, 21 insertions(+)
 
+--cvDcho2HtA0NMQa9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> diff --git a/hw/block/trace-events b/hw/block/trace-events
-> index 34be8b9135..c041ec45e3 100644
-> --- a/hw/block/trace-events
-> +++ b/hw/block/trace-events
-> @@ -90,3 +90,10 @@ m25p80_read_data(void *s, uint32_t pos, uint8_t v) "[%p] Read data 0x%"PRIx32"=0
->   m25p80_read_sfdp(void *s, uint32_t addr, uint8_t v) "[%p] Read SFDP 0x%"PRIx32"=0x%"PRIx8
->   m25p80_binding(void *s) "[%p] Binding to IF_MTD drive"
->   m25p80_binding_no_bdrv(void *s) "[%p] No BDRV - binding to RAM"
-> +
-> +# swim.c
-> +swim_swimctrl_read(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
-> +swim_swimctrl_write(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
-> +swim_iwmctrl_read(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
-> +swim_iwmctrl_write(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
+On Thu, May 25, 2023 at 05:02:03PM +0200, Markus Armbruster wrote:
+> Jagannathan Raman <jag.raman@oracle.com> writes:
+>=20
+> > Clarify the behavior of TYPE_VFU_OBJECT when TYPE_REMOTE_MACHINE enables
+> > the auto-shutdown property. Also, add notes to VFU_OBJECT_ERROR.
+> >
+> > Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
+> > ---
+> >  hw/remote/vfio-user-obj.c | 14 +++++++++++---
+> >  1 file changed, 11 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
+> > index 88ffafc73e..8b10c32a3c 100644
+> > --- a/hw/remote/vfio-user-obj.c
+> > +++ b/hw/remote/vfio-user-obj.c
+> > @@ -30,6 +30,11 @@
+> >   *
+> >   * notes - x-vfio-user-server could block IO and monitor during the
+> >   *         initialization phase.
+> > + *
+> > + *         When x-remote machine has the auto-shutdown property
+> > + *         enabled (default), x-vfio-user-server terminates after the =
+last
+> > + *         client disconnects. Otherwise, it will continue running unt=
+il
+> > + *         explicitly killed.
+> >   */
+> > =20
+> >  #include "qemu/osdep.h"
+> > @@ -61,9 +66,12 @@
+> >  OBJECT_DECLARE_TYPE(VfuObject, VfuObjectClass, VFU_OBJECT)
+> > =20
+> >  /**
+> > - * VFU_OBJECT_ERROR - reports an error message. If auto_shutdown
+> > - * is set, it aborts the machine on error. Otherwise, it logs an
+> > - * error message without aborting.
+> > + * VFU_OBJECT_ERROR - reports an error message.
+> > + *
+> > + * If auto_shutdown is set, it aborts the machine on error. Otherwise,
+> > + * it logs an error message without aborting. auto_shutdown is disabled
+> > + * when the server serves clients from multiple VMs; as such, an error
+> > + * from one VM shouldn't be able to disrupt other VM's services.
+> >   */
+> >  #define VFU_OBJECT_ERROR(o, fmt, ...)                                 =
+    \
+> >      {                                                                 =
+    \
+>=20
+> I still very much doubt an error can be severe enough to justify abort()
+> in one configuration, yet harmless enough to permit carrying on in
+> another configuration.  But this patch merely documents what the code
+> does, so
 
-Preferably 'unsigned reg', otherwise:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+In both cases this vfio-user device is broken after the error occurs.
+The difference in behavior is that in a multi-device server the other
+devices should not be disrupted when one of them breaks.
 
+Stefan
+
+--cvDcho2HtA0NMQa9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRvoesACgkQnKSrs4Gr
+c8gc1AgAoddwxLuvVv3K4JSn88qtcg02zITs9uRitujy9L/p0dCEgblUG4jG5OUr
+pFQkRjdS//YQEQDzbZvwn2zSdNPFCtkjpRCUbEjASbZxl4dIugkDwJXTxHVwKgJg
+np9pZ/UnJxKn/GnC81CCCEziHoiuUHDegJkBdnKaa++gBCEjJMOsA1e9idp3zYiP
+T5jqkziWU6qIbeKavGKjT9DpHlD8/KQdPaZwNzxoj5HnIwDmEpl2AsfaqZLKWFI2
+BpClCe6poU6t94iLSD8HUNpBIVRyv75tWesbcfPoMY7CwA58kazKonI/q758novj
+RMWgUo+xPfAmx9P0qW/8TdtrdWy37A==
+=7UFJ
+-----END PGP SIGNATURE-----
+
+--cvDcho2HtA0NMQa9--
 
 
