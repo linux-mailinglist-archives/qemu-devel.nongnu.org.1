@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA768710E38
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1EA710E22
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:19:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2BlL-0004mT-Mq; Thu, 25 May 2023 10:16:19 -0400
+	id 1q2BlJ-0004jQ-Gs; Thu, 25 May 2023 10:16:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bl7-0004fQ-SY
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:07 -0400
+ id 1q2BlA-0004gQ-KU
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bl5-0007ez-Px
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:05 -0400
+ id 1q2Bl9-0007fz-2K
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:16:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685024163;
+ s=mimecast20190719; t=1685024166;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SJIcYdZiEX3LyHd3jqDR3lyTstBBflPYOIz6+wi9CP8=;
- b=UtZ2gzGdBMS8pfEr6uvILoptOdIQkNWwXrajh3Gmi2FS7Sr+6M5dUv7ewySOq7/zqvYWzS
- n1xExujEH4SoLMZknld8IXADbhBSJyWPnxIjMSrBzVzg6DINkrI6PkhE9XAXGIR+/aIT46
- /gwV48doR8T63mN9M9elD2/YDjli2AI=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eiK10lJM3Fr+F6lAulMixwUliXSAcQs4di3viP4dGw0=;
+ b=AsfVU9JumCWVcY0/bA3VvypWDSdUVr18nqY8xCTxbMXD6WVymSYMIs6bVIyxuI6wft2QYF
+ Z8ulvh/xhJ44JSZCrEb2lyMIW0LeacoZMQ69BAmgqFVhcQ/OeKu0RYuzsugvB87eF7ANSr
+ TBa/9EzYjlmtprJiQfuTkkO7KT7BThE=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-LpJ4kMZPMr-qBc7tzOw8kQ-1; Thu, 25 May 2023 10:16:01 -0400
-X-MC-Unique: LpJ4kMZPMr-qBc7tzOw8kQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-96f4f1bb838so69138866b.3
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:59 -0700 (PDT)
+ us-mta-511-mOSMhz2iM4-od70QX53O7A-1; Thu, 25 May 2023 10:16:03 -0400
+X-MC-Unique: mOSMhz2iM4-od70QX53O7A-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-510eb233a81so2350156a12.1
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:16:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685024158; x=1687616158;
+ d=1e100.net; s=20221208; t=1685024159; x=1687616159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SJIcYdZiEX3LyHd3jqDR3lyTstBBflPYOIz6+wi9CP8=;
- b=RSP1yu/Lyt8klckyuwMMRoP1FD72UmbW/xz+yrbvofJhrGgFXsrZRjK38H9EfbmBt4
- +Z5UDwqHbfol3hJllUfQN7rpyCk5LD98HQyGp4jPzH7VDCSpZUNYp48Io9wkqXFZ1ncR
- lPmv+OI2J3CW2qUlIOnHsQUEMQUgu8XAHorlIqrrPj6vuIkTIo6Z9A1P4g+8YwHJy3Gj
- Lni1Ohj1E8fTatoS+SJWG6f2aZZt1P18DAS2IZUyqTU3gpDaQaEdV5cAOpGX/qcic1DX
- aemmlhCsEMCgPHOMU/rxmUQTJQ4bKtzVuCT2YrsIEPGz2MDhJP4h9SaL5a6Sguls4+Be
- n4xw==
-X-Gm-Message-State: AC+VfDzEoc8mXgK03nRzMWlDrNA6eCRAByCe/OCxIOyyIvrgG9gFm679
- AbHcVXtw1jx3C7kt/uHUahzfbneLU2cQWnX0RKHm1oUuowrZwVJzRDxBEvzsg7PWVDTzHp73Sm9
- gfMFR4UHFQDTOKrVlehrak0T+ryFa+CJqV86xRbyAYQvmKkKsRxJ4Yb2FFDO6fQWDoE2FnKOdSG
- w=
-X-Received: by 2002:a17:907:707:b0:96b:1608:3563 with SMTP id
- xb7-20020a170907070700b0096b16083563mr1767506ejb.58.1685024158138; 
- Thu, 25 May 2023 07:15:58 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6pOLYk1iCVewesqi5FE8h4Yhkx2gKELsU1EeMazv7m6VNEnoOs4mXiV3dvgVVG96EEbBoRQg==
-X-Received: by 2002:a17:907:707:b0:96b:1608:3563 with SMTP id
- xb7-20020a170907070700b0096b16083563mr1767479ejb.58.1685024157704; 
- Thu, 25 May 2023 07:15:57 -0700 (PDT)
+ bh=eiK10lJM3Fr+F6lAulMixwUliXSAcQs4di3viP4dGw0=;
+ b=iS62CZX0czhMQIdOCGp8bhuXcigSfgh8wKMZ7+CL0PitDKn7umAPxTlHzL+KRLBPJt
+ EE49uAKibZ4f5LrjueHCZkOs6QqDLRnw9xELI3agc8xxFwWwrFm+8+SuFd8JkVx5iWOZ
+ ylp/4DgpNbDlhimCpTk+OI+PMca8j3eHQ0I734qrtuwee4Evrgzw73QyKY2uI2ZSJo9r
+ WcICpm+6i+Tqd4ioUKroo/ycAcfad9fR5nypshmVHN866qyQ9am8OcoQ0tk7LZnrs8rE
+ 6iUbRe7hPKxsdYHU5W6rRqSbFF87yTvaBxkBCk5+M1Dorjz4bi5c6SmYg3CT22LlTbZY
+ LCmw==
+X-Gm-Message-State: AC+VfDwUcPGkvNrtwcuUPviK77KPhIM3pq+uhXn6uvf2EPSAS+V0rbra
+ J25t3BzP8P5QGZz5A6Nj6AmvhiwVcBh4L8oLJs5T5HpQTv6l+KXE+AEdM3yD/4OB2OXEt76WQIk
+ IRdWv5PGubZKkfUIATsvRLy3/jMd7Fqm2ppqvRKANWczL8yQGNWeOSTN+N2nKJ25QXMMFSfA6NU
+ g=
+X-Received: by 2002:a05:6402:3457:b0:50b:d495:106c with SMTP id
+ l23-20020a056402345700b0050bd495106cmr4269197edc.8.1685024159735; 
+ Thu, 25 May 2023 07:15:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7q4dmTyWa+2quxd0ChOihR6UaWq7uemWA10zlT2zMu7sIIepItO6/9W7R/i78duJWp9AeVlg==
+X-Received: by 2002:a05:6402:3457:b0:50b:d495:106c with SMTP id
+ l23-20020a056402345700b0050bd495106cmr4269176edc.8.1685024159380; 
+ Thu, 25 May 2023 07:15:59 -0700 (PDT)
 Received: from [192.168.10.117] ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
  by smtp.gmail.com with ESMTPSA id
- k12-20020a170906128c00b00965a52d2bf6sm876614ejb.88.2023.05.25.07.15.57
+ d27-20020a056402517b00b0050c0d651fb1sm594076ede.75.2023.05.25.07.15.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 07:15:57 -0700 (PDT)
+ Thu, 25 May 2023 07:15:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/20] monitor: cleanup detection of qmp_dispatcher_co shutting
- down
-Date: Thu, 25 May 2023 16:15:28 +0200
-Message-Id: <20230525141532.295817-17-pbonzini@redhat.com>
+Subject: [PULL 17/20] monitor: cleanup fetching of QMP requests
+Date: Thu, 25 May 2023 16:15:29 +0200
+Message-Id: <20230525141532.295817-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230525141532.295817-1-pbonzini@redhat.com>
 References: <20230525141532.295817-1-pbonzini@redhat.com>
@@ -101,52 +100,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of overloading qmp_dispatcher_co_busy, make the coroutine
-pointer NULL.  This will make things break spectacularly if somebody
-tries to start a request after monitor_cleanup().
+Use a continue statement so that "after going to sleep" is treated the same
+way as "after processing a request".  Pull the monitor_lock critical
+section out of monitor_qmp_requests_pop_any_with_lock() and protect
+qmp_dispatcher_co_shutdown with the monitor_lock.
 
-AIO_WAIT_WHILE_UNLOCKED() does not need qatomic_mb_read(), because
-the macro contains all the necessary memory barriers.
+The two changes are complex to separate because monitor_qmp_dispatcher_co()
+previously had a complicated logic to check for shutdown both before
+and after going to sleep.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- monitor/monitor.c | 2 +-
- monitor/qmp.c     | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ monitor/monitor.c |  9 +++++++--
+ monitor/qmp.c     | 40 +++++++++++++++-------------------------
+ 2 files changed, 22 insertions(+), 27 deletions(-)
 
 diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 15f97538ef2b..c4ed2547c25f 100644
+index c4ed2547c25f..042a1ab918f9 100644
 --- a/monitor/monitor.c
 +++ b/monitor/monitor.c
-@@ -686,7 +686,7 @@ void monitor_cleanup(void)
+@@ -56,7 +56,10 @@ IOThread *mon_iothread;
+ /* Coroutine to dispatch the requests received from I/O thread */
+ Coroutine *qmp_dispatcher_co;
  
-     AIO_WAIT_WHILE_UNLOCKED(NULL,
-                    (aio_poll(iohandler_get_aio_context(), false),
--                    qatomic_mb_read(&qmp_dispatcher_co_busy)));
-+                    qatomic_read(&qmp_dispatcher_co)));
+-/* Set to true when the dispatcher coroutine should terminate */
++/*
++ * Set to true when the dispatcher coroutine should terminate.  Protected
++ * by monitor_lock.
++ */
+ bool qmp_dispatcher_co_shutdown;
  
-     /*
-      * We need to explicitly stop the I/O thread (but not destroy it),
+ /*
+@@ -679,7 +682,9 @@ void monitor_cleanup(void)
+      * we'll just leave them in the queue without sending a response
+      * and monitor_data_destroy() will free them.
+      */
+-    qmp_dispatcher_co_shutdown = true;
++    WITH_QEMU_LOCK_GUARD(&monitor_lock) {
++        qmp_dispatcher_co_shutdown = true;
++    }
+     if (!qatomic_xchg(&qmp_dispatcher_co_busy, true)) {
+         aio_co_wake(qmp_dispatcher_co);
+     }
 diff --git a/monitor/qmp.c b/monitor/qmp.c
-index 092c527b6fc9..f0cc6dc886f8 100644
+index f0cc6dc886f8..dfc215632865 100644
 --- a/monitor/qmp.c
 +++ b/monitor/qmp.c
-@@ -226,6 +226,7 @@ void coroutine_fn monitor_qmp_dispatcher_co(void *data)
+@@ -178,8 +178,6 @@ static QMPRequest *monitor_qmp_requests_pop_any_with_lock(void)
+     Monitor *mon;
+     MonitorQMP *qmp_mon;
  
-         /* On shutdown, don't take any more requests from the queue */
-         if (qmp_dispatcher_co_shutdown) {
-+            qatomic_set(&qmp_dispatcher_co, NULL);
-             return;
+-    QEMU_LOCK_GUARD(&monitor_lock);
+-
+     QTAILQ_FOREACH(mon, &mon_list, entry) {
+         if (!monitor_is_qmp(mon)) {
+             continue;
+@@ -215,6 +213,10 @@ void coroutine_fn monitor_qmp_dispatcher_co(void *data)
+     MonitorQMP *mon;
+ 
+     while (true) {
++        /*
++         * busy must be set to true again by whoever
++         * rescheduled us to avoid double scheduling
++         */
+         assert(qatomic_mb_read(&qmp_dispatcher_co_busy) == true);
+ 
+         /*
+@@ -224,36 +226,23 @@ void coroutine_fn monitor_qmp_dispatcher_co(void *data)
+          */
+         qatomic_mb_set(&qmp_dispatcher_co_busy, false);
+ 
+-        /* On shutdown, don't take any more requests from the queue */
+-        if (qmp_dispatcher_co_shutdown) {
+-            qatomic_set(&qmp_dispatcher_co, NULL);
+-            return;
++        WITH_QEMU_LOCK_GUARD(&monitor_lock) {
++            /* On shutdown, don't take any more requests from the queue */
++            if (qmp_dispatcher_co_shutdown) {
++                return NULL;
++            }
++
++            req_obj = monitor_qmp_requests_pop_any_with_lock();
          }
  
-@@ -250,6 +251,7 @@ void coroutine_fn monitor_qmp_dispatcher_co(void *data)
-              * yielded and were reentered from monitor_cleanup()
+-        while (!(req_obj = monitor_qmp_requests_pop_any_with_lock())) {
++        if (!req_obj) {
+             /*
+              * No more requests to process.  Wait to be reentered from
+              * handle_qmp_command() when it pushes more requests, or
+              * from monitor_cleanup() when it requests shutdown.
               */
-             if (qmp_dispatcher_co_shutdown) {
-+                qatomic_set(&qmp_dispatcher_co, NULL);
-                 return;
-             }
+-            if (!qmp_dispatcher_co_shutdown) {
+-                qemu_coroutine_yield();
+-
+-                /*
+-                 * busy must be set to true again by whoever
+-                 * rescheduled us to avoid double scheduling
+-                 */
+-                assert(qatomic_xchg(&qmp_dispatcher_co_busy, false) == true);
+-            }
+-
+-            /*
+-             * qmp_dispatcher_co_shutdown may have changed if we
+-             * yielded and were reentered from monitor_cleanup()
+-             */
+-            if (qmp_dispatcher_co_shutdown) {
+-                qatomic_set(&qmp_dispatcher_co, NULL);
+-                return;
+-            }
++            qemu_coroutine_yield();
++            continue;
          }
+ 
+         trace_monitor_qmp_in_band_dequeue(req_obj,
+@@ -342,6 +331,7 @@ void coroutine_fn monitor_qmp_dispatcher_co(void *data)
+         aio_co_schedule(iohandler_get_aio_context(), qmp_dispatcher_co);
+         qemu_coroutine_yield();
+     }
++    qatomic_set(&qmp_dispatcher_co, NULL);
+ }
+ 
+ static void handle_qmp_command(void *opaque, QObject *req, Error *err)
 -- 
 2.40.1
 
