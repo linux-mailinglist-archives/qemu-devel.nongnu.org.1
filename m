@@ -2,63 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653B9710B9C
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51342710BB7
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:07:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q29e9-0003pf-Dz; Thu, 25 May 2023 08:00:45 -0400
+	id 1q29ix-0007vz-4I; Thu, 25 May 2023 08:05:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1q29dn-0003n0-4M
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:00:25 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1q29di-00076n-It
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:00:21 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxGvLGTW9kQPsAAA--.2593S3;
- Thu, 25 May 2023 20:00:07 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxD7_GTW9kI2d3AA--.430S2; 
- Thu, 25 May 2023 20:00:06 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
- alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn
-Subject: [PATCH v2] target/loongarch: Fix the vinsgr2vr/vpickve2gr
- instructions cause system coredump
-Date: Thu, 25 May 2023 20:00:05 +0800
-Message-Id: <20230525120005.2223413-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q29it-0007q6-16
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:05:39 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q29iq-0008Vy-2B
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:05:38 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3063433fa66so1407194f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 05:05:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685016334; x=1687608334;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1VT8D+1qTtwceXxG41J2CQeYmmAgAGRK7J0zx1X4uUY=;
+ b=kxegAE2+ZkfoJuB2FeRHxXSWA2I+dHP21mdDthtsXJsiYLy7c4SHnFKESP1n+5jUcQ
+ tqe7RSeKekW7pWlP2ASXRP5xZYYewIaGrwzAPSjDhlkfjT2Q+RQf4hB2e4SKEAQ4UjVx
+ SX4IRji5Vp5r4eIy/cm3XUMa7GowOHmRxWq1FKfzRKCE0oWepNcT6dVxyrI1ZYq6YEAT
+ MRg8jA/vsVhHctXFOqUcqq8BfjBMJLMehUuyqovl6eakUx+TsStxS9p6Du52ZbONByCB
+ 0Kgixdjrb5I9xUrKP97mIEJYhfxpduuBphkNj7F3SPMl3enyyIGQiJ+FrDs+MoKI1VAL
+ 9ItA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685016334; x=1687608334;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1VT8D+1qTtwceXxG41J2CQeYmmAgAGRK7J0zx1X4uUY=;
+ b=Bm9HQzZhgTLIC4rilND0d0HkbWSNNJHEI1IsLrrsDO2okoCZ40O7LMN0wr63GhIJNH
+ 7hkTbm3ZHGXVBHqixnjaLD/zLp2TsBG2xJdH8kci+UaOFh1TQ6wYW5KL86LTB1uGcGYT
+ 5L5rhnv2LRp/rXLYQox774+ee4g2rZuKaprpoWklRhD5eW5LrpFpGPVD8WJ5fT/BWNaS
+ OcHA9Uc82zjGpBhaFo5F+++sNQEcqBc8m4oMVzsvFWlj7HAw3o10Q4L5pmFbpTroTfm/
+ QRBfUgTH4uaa2QNo55lGjcKqeGdK0KKD9CnfI2REmGSkjQj6dbnTaq4/Nbtjzc9fsqGe
+ +dxQ==
+X-Gm-Message-State: AC+VfDwfwJM3PdGK3FClwXP6etYnTOg6447bGj3Lj/2edxt1GOi1dXin
+ Y+NiUOe5diIdkW7uXT4MmnwdJA==
+X-Google-Smtp-Source: ACHHUZ56IS0xIXsNxsCdgrfp4KdhuwZ7WC1/XAj6iiPp8fYLCGaxviahD6uROwM+qMGQxCg+6Hl4lw==
+X-Received: by 2002:a05:6000:1246:b0:309:49e3:efb4 with SMTP id
+ j6-20020a056000124600b0030949e3efb4mr2041076wrx.63.1685016333944; 
+ Thu, 25 May 2023 05:05:33 -0700 (PDT)
+Received: from [192.168.69.115] (cor91-h02-176-184-30-254.dsl.sta.abo.bbox.fr.
+ [176.184.30.254]) by smtp.gmail.com with ESMTPSA id
+ q2-20020adff502000000b003062c0ef959sm1607079wro.69.2023.05.25.05.05.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 May 2023 05:05:33 -0700 (PDT)
+Message-ID: <e9ab4620-2878-45c1-264b-305c41958213@linaro.org>
+Date: Thu, 25 May 2023 14:05:31 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxD7_GTW9kI2d3AA--.430S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjvJXoWxZw48GrW5Zr4rXrWDtw43ZFb_yoWruw1rpw
- 1Fv34xZr4UZr1fZ3s3K3s0gFn09F4IyryUKwnY9wn5K3y7tr1DJa1DJ39I9ryxA3WkW395
- tFyUZ3WUWF4DJaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
- b0kFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
- AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF
- 7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x
- 0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE
- 44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26rWlOx8S6xCaFVCjc4
- AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIE
- Y20_WwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E74
- 80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0
- I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04
- k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7Cj
- xVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7xRE6wZ7UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v4 1/3] hw/misc: sifive_e_aon: Support the watchdog timer
+ of HiFive 1 rev b.
+Content-Language: en-US
+To: Tommy Wu <tommy.wu@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: alistair.francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
+ jim.shu@sifive.com, frank.chang@sifive.com, thuth@redhat.com,
+ liweiwei@iscas.ac.cn
+References: <20230523084910.304679-1-tommy.wu@sifive.com>
+ <20230523084910.304679-2-tommy.wu@sifive.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230523084910.304679-2-tommy.wu@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,155 +97,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vinsgr2vr/vpickve2gr instructions need use get_src/get_dst to get
-gpr registers value, not cpu_gpr[]. The $zero register does not
-have cpu_gpr[0] allocated.
+Hi Tommy,
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1662
+On 23/5/23 10:49, Tommy Wu wrote:
+> The watchdog timer is in the always-on domain device of HiFive 1 rev b,
+> so this patch added the AON device to the sifive_e machine. This patch
+> only implemented the functionality of the watchdog timer.
+> 
+> Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+> Reviewed-by: Frank Chang <frank.chang@sifive.com>
+> ---
+>   hw/misc/Kconfig                |   3 +
+>   hw/misc/meson.build            |   1 +
+>   hw/misc/sifive_e_aon.c         | 326 +++++++++++++++++++++++++++++++++
+>   include/hw/misc/sifive_e_aon.h |  60 ++++++
+>   4 files changed, 390 insertions(+)
+>   create mode 100644 hw/misc/sifive_e_aon.c
+>   create mode 100644 include/hw/misc/sifive_e_aon.h
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/insn_trans/trans_lsx.c.inc | 39 ++++++++++++++-------
- 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
-index 0be2b5a3a8..68779daff6 100644
---- a/target/loongarch/insn_trans/trans_lsx.c.inc
-+++ b/target/loongarch/insn_trans/trans_lsx.c.inc
-@@ -3963,106 +3963,119 @@ TRANS(vsetallnez_d, gen_cv, gen_helper_vsetallnez_d)
- 
- static bool trans_vinsgr2vr_b(DisasContext *ctx, arg_vr_i *a)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_st8_i64(cpu_gpr[a->rj], cpu_env,
-+    tcg_gen_st8_i64(src, cpu_env,
-                     offsetof(CPULoongArchState, fpr[a->vd].vreg.B(a->imm)));
-     return true;
- }
- 
- static bool trans_vinsgr2vr_h(DisasContext *ctx, arg_vr_i *a)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_st16_i64(cpu_gpr[a->rj], cpu_env,
-+    tcg_gen_st16_i64(src, cpu_env,
-                     offsetof(CPULoongArchState, fpr[a->vd].vreg.H(a->imm)));
-     return true;
- }
- 
- static bool trans_vinsgr2vr_w(DisasContext *ctx, arg_vr_i *a)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_st32_i64(cpu_gpr[a->rj], cpu_env,
-+    tcg_gen_st32_i64(src, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vd].vreg.W(a->imm)));
-     return true;
- }
- 
- static bool trans_vinsgr2vr_d(DisasContext *ctx, arg_vr_i *a)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_st_i64(cpu_gpr[a->rj], cpu_env,
-+    tcg_gen_st_i64(src, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vd].vreg.D(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_b(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld8s_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld8s_i64(dst, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_h(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld16s_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld16s_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_w(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld32s_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld32s_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_d(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld_i64(dst, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_bu(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld8u_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld8u_i64(dst, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_hu(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld16u_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld16u_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_wu(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld32u_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld32u_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
-     return true;
- }
- 
- static bool trans_vpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
- {
-+    TCGv dst = gpr_dst(ctx, a->rd, EXT_NONE);
-     CHECK_SXE;
--    tcg_gen_ld_i64(cpu_gpr[a->rd], cpu_env,
-+    tcg_gen_ld_i64(dst, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
-     return true;
- }
- 
- static bool gvec_dup(DisasContext *ctx, arg_vr *a, MemOp mop)
- {
-+    TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
-     CHECK_SXE;
- 
-     tcg_gen_gvec_dup_i64(mop, vec_full_offset(a->vd),
--                         16, ctx->vl/8, cpu_gpr[a->rj]);
-+                         16, ctx->vl/8, src);
-     return true;
- }
- 
--- 
-2.39.1
+> +REG32(AON_WDT_WDOGCFG, 0x0)
+> +    FIELD(AON_WDT_WDOGCFG, SCALE, 0, 4)
+> +    FIELD(AON_WDT_WDOGCFG, RSVD0, 4, 4)
+> +    FIELD(AON_WDT_WDOGCFG, RSTEN, 8, 1)
+> +    FIELD(AON_WDT_WDOGCFG, ZEROCMP, 9, 1)
+> +    FIELD(AON_WDT_WDOGCFG, RSVD1, 10, 2)
+> +    FIELD(AON_WDT_WDOGCFG, EN_ALWAYS, 12, 1)
+> +    FIELD(AON_WDT_WDOGCFG, EN_CORE_AWAKE, 13, 1)
+> +    FIELD(AON_WDT_WDOGCFG, RSVD2, 14, 14)
+> +    FIELD(AON_WDT_WDOGCFG, IP0, 28, 1)
+> +    FIELD(AON_WDT_WDOGCFG, RSVD3, 29, 3)
+> +REG32(AON_WDT_WDOGCOUNT, 0x8)
 
+Adding:
+
+        FIELD(AON_WDT_WDOGCOUNT, VALUE, 0, 31)
+
+...
+
+> +REG32(AON_WDT_WDOGS, 0x10)
+> +REG32(AON_WDT_WDOGFEED, 0x18)
+> +REG32(AON_WDT_WDOGKEY, 0x1c)
+> +REG32(AON_WDT_WDOGCMP0, 0x20)
+> +
+> +static void sifive_e_aon_wdt_update_wdogcount(SiFiveEAONState *r)
+> +{
+> +    int64_t now;
+> +    if (0 == FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_ALWAYS) &&
+> +        0 == FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE)) {
+> +        return;
+> +    }
+> +
+> +    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+> +    r->wdogcount += muldiv64(now - r->wdog_restart_time,
+> +                             r->wdogclk_freq, NANOSECONDS_PER_SECOND);
+> +
+> +    /* Clean the most significant bit. */
+> +    r->wdogcount = ((r->wdogcount << 1) >> 1);
+
+... you could use:
+
+        r->wdogcount &= R_AON_WDT_WDOGCOUNT_VALUE_MASK
+
+> +    r->wdog_restart_time = now;
+> +}
+> +
+> +static void sifive_e_aon_wdt_update_state(SiFiveEAONState *r)
+> +{
+> +    uint16_t wdogs;
+> +    bool cmp_signal = false;
+> +    sifive_e_aon_wdt_update_wdogcount(r);
+> +    wdogs = (uint16_t)(r->wdogcount >>
+> +                           FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, SCALE));
+> +
+> +    if (wdogs >= r->wdogcmp0) {
+> +        cmp_signal = true;
+> +        if (1 == FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, ZEROCMP)) {
+> +            r->wdogcount = 0;
+> +            wdogs = 0;
+> +        }
+> +    }
+> +
+> +    if (cmp_signal) {
+> +        if (1 == FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, RSTEN)) {
+
+You sometimes check bit equality, ...
+
+> +            watchdog_perform_action();
+> +        }
+> +        r->wdogcfg = FIELD_DP32(r->wdogcfg, AON_WDT_WDOGCFG, IP0, 1);
+> +    }
+> +
+> +    qemu_set_irq(r->wdog_irq, FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, IP0));
+> +
+> +    if (wdogs < r->wdogcmp0 &&
+> +        (FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_ALWAYS) ||
+
+... sometimes you don't. Code style consistency would be better.
+
+(Also, most of QEMU code base check equality using constant value
+on the right side of the comparaison).
+
+> +         FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE))) {
+> +        int64_t next = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+> +        next += muldiv64((r->wdogcmp0 - wdogs) <<
+> +                         FIELD_EX32(r->wdogcfg, AON_WDT_WDOGCFG, SCALE),
+> +                         NANOSECONDS_PER_SECOND, r->wdogclk_freq);
+> +        timer_mod(r->wdog_timer, next);
+> +    } else {
+> +        timer_mod(r->wdog_timer, INT64_MAX);
+> +    }
+> +}
+
+> +static void sifive_e_aon_init(Object *obj)
+> +{
+> +    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
+> +    SiFiveEAONState *r = SIFIVE_E_AON(obj);
+> +
+> +    memory_region_init_io(&r->mmio, OBJECT(r), &sifive_e_aon_ops, r,
+> +                          TYPE_SIFIVE_E_AON, SIFIVE_E_AON_MAX);
+> +    sysbus_init_mmio(sbd, &r->mmio);
+> +
+> +    /* watchdog timer */
+> +    r->wdogclk_freq = SIFIVE_E_LFCLK_DEFAULT_FREQ;
+> +    sysbus_init_irq(sbd, &r->wdog_irq);
+> +}
+> +
+> +static void sifive_e_aon_realize(DeviceState *dev, Error **errp)
+> +{
+> +    SiFiveEAONState *r = SIFIVE_E_AON(dev);
+> +
+> +    /* watchdog timer */
+> +    r->wdog_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+> +                                 sifive_e_aon_wdt_expired_cb, r);
+
+You should be able to create the timer in sifive_e_aon_init().
+
+> +}
+
+Regards,
+
+Phil.
 
