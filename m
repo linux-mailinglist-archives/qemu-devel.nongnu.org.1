@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F50711367
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB75711363
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:14:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2FQK-0008QJ-Nn; Thu, 25 May 2023 14:10:52 -0400
+	id 1q2FQK-0008QU-Tm; Thu, 25 May 2023 14:10:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2FQH-0008Ou-VA
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:50 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1q2FQJ-0008Pn-Aq
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:51 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2FQG-0005tz-E3
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:49 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1ae454844edso12664085ad.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 11:10:48 -0700 (PDT)
+ id 1q2FQH-0005uY-Fa
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:51 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-64d3491609fso25807b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 11:10:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685038247; x=1687630247;
+ d=linaro.org; s=google; t=1685038248; x=1687630248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4eRrB/YLKSQzVfKVxSy8PAe4EeBLzt+yH82sZfIehHU=;
- b=hiHFQeRtHzJ7a42LoGLjs3aq9gwpnOLYamUKZ7l0Vvxxv5+e4HKzWEq3LsIJRUO/Ej
- /DjNVb1bencKDN2SbuBLluJQ76XPhAIiP3GqEOnLcQI4usMndiY4P3kh8WGWAUI8QEY/
- hQkjLs1aZB8mPwEh1TawxNAJzsGgxbXdk/cpQsfNdgkkQdO8v6n6cmln8oA3mq3V372i
- Dbmv5BcBfIqD0wyPqQYPUdmgWpKlWNlLPZeWKZypQ2nvugYGZVtb+kDwq7jKkWDtatnP
- CBEjOiHGoxYzIrcrYLJkIxrqREs7Wll+x9MZQP8gPDi0um0FhuRlQC/a/og9t+muXjiy
- VrAw==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LAz6IQhwfHAIXCDgKk50JRYG1wGTuelZa2J+mZizWjY=;
+ b=QIcTSAUgbVq8fq/+X13tQczgg82DEln/Axf15QUdb+agdlqDgyG8X61uniiTJ/TXtN
+ k8Ro0f4RUCpHo2wJS4Y2fNrYDrv0Id66Np/JFdQZ+O7WBzquwqo6xw+H5KdGSwSyBDX+
+ rEqBsyNoIc2Ym36OVq1YZSizAEJykD4qRuX8bmLX7hW56cVEbm6FNPIpKHeS8s3dW9eK
+ dwtrm2H2ouvV0wpybKV9MbggnzTJ9qWHsEwvoEoJmfhgO0c69fbgOruGUDrgUFzoDeGu
+ cOSnixTa3vh5inuvt/0CF3Vvmk+y+RFvdFxk15/tMkw0FCdDWnCIeBRM1Y2dx+j3egZf
+ IH6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685038247; x=1687630247;
+ d=1e100.net; s=20221208; t=1685038248; x=1687630248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4eRrB/YLKSQzVfKVxSy8PAe4EeBLzt+yH82sZfIehHU=;
- b=PHrw4i6qvqxfW2vB7YQYVZYK5tRXono1m4aaSyScQGeGR+6S9fqd9q6VBlUB7sTr/w
- n3GickOzGK1VeDri+00Pg2gjzkyuuApjfaW4Vzf6iP9dM+8G36YzO9YWf+VOy1EfKfrJ
- o9t7ZyhJpyLVOmc9wkdn61XfQTGhwl+2NTj73WR3xKpZXYWLqt4GJwp5zG4w4mzvZgL3
- dhpctsq8SRyme+jCafYjgHBmnt3bbo/Jnc7bNbWL2Gy9ac9Y5XIrGTLjpMNgE28AhhTJ
- mKIYQlwzYrpErol4gK6+WV6q2nqppfYizFFQ3eue/oHYRJuQDIXFlsDMZJ8GT+abNaL9
- 1eZg==
-X-Gm-Message-State: AC+VfDz6bIzjdX7jrQiuJnfd11UsOHliIVP+1pgTdTRwMWBLPF5GHCo9
- ZrIgj+Dxv9T4MObMviaZMAN9u5L0S+cDByG5lKs=
-X-Google-Smtp-Source: ACHHUZ5PFU4klIEnJzFFqkTEyR+IsdBc7n3SifFbDAbBMSpQx1mk1+VHuzeH69TUyF710rybanOPTQ==
-X-Received: by 2002:a17:902:c94e:b0:1af:e999:a070 with SMTP id
- i14-20020a170902c94e00b001afe999a070mr3130658pla.14.1685038247166; 
- Thu, 25 May 2023 11:10:47 -0700 (PDT)
+ bh=LAz6IQhwfHAIXCDgKk50JRYG1wGTuelZa2J+mZizWjY=;
+ b=S//xHShRBVMlHjIkr1l3H+AWbhtjxC2HhD5u/kJ1EUi+Md/k43UQ91NWydCGVtUwP8
+ 8HyXDAIdgS3/YYG9IV3UYWZ8moLtFWz1iMwJOGbxhWC0hHkmfRtftzbg1mYRmM2nBi9D
+ 2C36VYAF28YrrPjSz6JA2fwUL5FMFpNKYlCHAFN5DRPqP0ExMWAlkA5ODEnuHfuUKrtQ
+ yQp2hKtVnQPnNhgNe3cQUGoJep+kk7WVVxCVscraQ9BdOwD3Gzw3QwWkft4X8jCvywBR
+ fSAwoe33vEiztr6uVhDvldHrrLvmlzmrRhH9r5RlH/iwKXMxLVYRJduIJ6I94e+umhoJ
+ CiUA==
+X-Gm-Message-State: AC+VfDxPl1n8AhnNBLlkmfXvnaZBs2CBAaxtV5fmcEVDkH2V7nYcVtZw
+ /mTOW/AYgWGqKOBHRFxndUt+zuu+FFRXN/De7VE=
+X-Google-Smtp-Source: ACHHUZ4jEezLxKURL5vpsJ+rjm/cUOmmBOtMO7d2p5/2QtGVDCbKJmEef4xFUDjXUMIpU5u7epFu+w==
+X-Received: by 2002:a05:6a21:339f:b0:10b:3b4d:8c16 with SMTP id
+ yy31-20020a056a21339f00b0010b3b4d8c16mr18854025pzb.38.1685038248080; 
+ Thu, 25 May 2023 11:10:48 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
  by smtp.gmail.com with ESMTPSA id
- m18-20020a170902db1200b001aae64e9b36sm1710243plx.114.2023.05.25.11.10.46
- for <qemu-devel@nongnu.org>
+ m18-20020a170902db1200b001aae64e9b36sm1710243plx.114.2023.05.25.11.10.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 11:10:46 -0700 (PDT)
+ Thu, 25 May 2023 11:10:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/23] tcg/mips: Use qemu_build_not_reached for LO/HI_OFF
-Date: Thu, 25 May 2023 11:10:24 -0700
-Message-Id: <20230525181036.1559435-12-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 12/23] tcg/mips: Replace MIPS_BE with HOST_BIG_ENDIAN
+Date: Thu, 25 May 2023 11:10:25 -0700
+Message-Id: <20230525181036.1559435-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230525181036.1559435-1-richard.henderson@linaro.org>
 References: <20230525181036.1559435-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,33 +92,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The new(ish) macro produces a compile-time error instead
-of a link-time error.
+Since e03b56863d2b, which replaced HOST_WORDS_BIGENDIAN
+with HOST_BIG_ENDIAN, there is no need to define a second
+symbol which is [0,1].
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/mips/tcg-target.c.inc | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ tcg/mips/tcg-target.c.inc | 46 +++++++++++++++++----------------------
+ 1 file changed, 20 insertions(+), 26 deletions(-)
 
 diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-index b86a0679af..fd92cc30ca 100644
+index fd92cc30ca..3274d9aace 100644
 --- a/tcg/mips/tcg-target.c.inc
 +++ b/tcg/mips/tcg-target.c.inc
-@@ -37,11 +37,9 @@
- # define LO_OFF  (MIPS_BE * 4)
+@@ -27,14 +27,8 @@
+ #include "../tcg-ldst.c.inc"
+ #include "../tcg-pool.c.inc"
+ 
+-#if HOST_BIG_ENDIAN
+-# define MIPS_BE  1
+-#else
+-# define MIPS_BE  0
+-#endif
+-
+ #if TCG_TARGET_REG_BITS == 32
+-# define LO_OFF  (MIPS_BE * 4)
++# define LO_OFF  (HOST_BIG_ENDIAN * 4)
  # define HI_OFF  (4 - LO_OFF)
  #else
--/* To assert at compile-time that these values are never used
--   for TCG_TARGET_REG_BITS == 64.  */
--int link_error(void);
--# define LO_OFF  link_error()
--# define HI_OFF  link_error()
-+/* Assert at compile-time that these values are never used for 64-bit. */
-+# define LO_OFF  ({ qemu_build_not_reached(); 0; })
-+# define HI_OFF  ({ qemu_build_not_reached(); 0; })
- #endif
+ /* Assert at compile-time that these values are never used for 64-bit. */
+@@ -1439,7 +1433,7 @@ static void tcg_out_qemu_ld_direct(TCGContext *s, TCGReg lo, TCGReg hi,
+         /* Prefer to load from offset 0 first, but allow for overlap.  */
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_opc_imm(s, OPC_LD, lo, base, 0);
+-        } else if (MIPS_BE ? hi != base : lo == base) {
++        } else if (HOST_BIG_ENDIAN ? hi != base : lo == base) {
+             tcg_out_opc_imm(s, OPC_LW, hi, base, HI_OFF);
+             tcg_out_opc_imm(s, OPC_LW, lo, base, LO_OFF);
+         } else {
+@@ -1455,10 +1449,10 @@ static void tcg_out_qemu_ld_direct(TCGContext *s, TCGReg lo, TCGReg hi,
+ static void tcg_out_qemu_ld_unalign(TCGContext *s, TCGReg lo, TCGReg hi,
+                                     TCGReg base, MemOp opc, TCGType type)
+ {
+-    const MIPSInsn lw1 = MIPS_BE ? OPC_LWL : OPC_LWR;
+-    const MIPSInsn lw2 = MIPS_BE ? OPC_LWR : OPC_LWL;
+-    const MIPSInsn ld1 = MIPS_BE ? OPC_LDL : OPC_LDR;
+-    const MIPSInsn ld2 = MIPS_BE ? OPC_LDR : OPC_LDL;
++    const MIPSInsn lw1 = HOST_BIG_ENDIAN ? OPC_LWL : OPC_LWR;
++    const MIPSInsn lw2 = HOST_BIG_ENDIAN ? OPC_LWR : OPC_LWL;
++    const MIPSInsn ld1 = HOST_BIG_ENDIAN ? OPC_LDL : OPC_LDR;
++    const MIPSInsn ld2 = HOST_BIG_ENDIAN ? OPC_LDR : OPC_LDL;
+     bool sgn = opc & MO_SIGN;
  
- #ifdef CONFIG_DEBUG_TCG
+     switch (opc & MO_SIZE) {
+@@ -1497,10 +1491,10 @@ static void tcg_out_qemu_ld_unalign(TCGContext *s, TCGReg lo, TCGReg hi,
+             tcg_out_opc_imm(s, ld1, lo, base, 0);
+             tcg_out_opc_imm(s, ld2, lo, base, 7);
+         } else {
+-            tcg_out_opc_imm(s, lw1, MIPS_BE ? hi : lo, base, 0 + 0);
+-            tcg_out_opc_imm(s, lw2, MIPS_BE ? hi : lo, base, 0 + 3);
+-            tcg_out_opc_imm(s, lw1, MIPS_BE ? lo : hi, base, 4 + 0);
+-            tcg_out_opc_imm(s, lw2, MIPS_BE ? lo : hi, base, 4 + 3);
++            tcg_out_opc_imm(s, lw1, HOST_BIG_ENDIAN ? hi : lo, base, 0 + 0);
++            tcg_out_opc_imm(s, lw2, HOST_BIG_ENDIAN ? hi : lo, base, 0 + 3);
++            tcg_out_opc_imm(s, lw1, HOST_BIG_ENDIAN ? lo : hi, base, 4 + 0);
++            tcg_out_opc_imm(s, lw2, HOST_BIG_ENDIAN ? lo : hi, base, 4 + 3);
+         }
+         break;
+ 
+@@ -1550,8 +1544,8 @@ static void tcg_out_qemu_st_direct(TCGContext *s, TCGReg lo, TCGReg hi,
+         if (TCG_TARGET_REG_BITS == 64) {
+             tcg_out_opc_imm(s, OPC_SD, lo, base, 0);
+         } else {
+-            tcg_out_opc_imm(s, OPC_SW, MIPS_BE ? hi : lo, base, 0);
+-            tcg_out_opc_imm(s, OPC_SW, MIPS_BE ? lo : hi, base, 4);
++            tcg_out_opc_imm(s, OPC_SW, HOST_BIG_ENDIAN ? hi : lo, base, 0);
++            tcg_out_opc_imm(s, OPC_SW, HOST_BIG_ENDIAN ? lo : hi, base, 4);
+         }
+         break;
+     default:
+@@ -1562,10 +1556,10 @@ static void tcg_out_qemu_st_direct(TCGContext *s, TCGReg lo, TCGReg hi,
+ static void tcg_out_qemu_st_unalign(TCGContext *s, TCGReg lo, TCGReg hi,
+                                     TCGReg base, MemOp opc)
+ {
+-    const MIPSInsn sw1 = MIPS_BE ? OPC_SWL : OPC_SWR;
+-    const MIPSInsn sw2 = MIPS_BE ? OPC_SWR : OPC_SWL;
+-    const MIPSInsn sd1 = MIPS_BE ? OPC_SDL : OPC_SDR;
+-    const MIPSInsn sd2 = MIPS_BE ? OPC_SDR : OPC_SDL;
++    const MIPSInsn sw1 = HOST_BIG_ENDIAN ? OPC_SWL : OPC_SWR;
++    const MIPSInsn sw2 = HOST_BIG_ENDIAN ? OPC_SWR : OPC_SWL;
++    const MIPSInsn sd1 = HOST_BIG_ENDIAN ? OPC_SDL : OPC_SDR;
++    const MIPSInsn sd2 = HOST_BIG_ENDIAN ? OPC_SDR : OPC_SDL;
+ 
+     switch (opc & MO_SIZE) {
+     case MO_16:
+@@ -1584,10 +1578,10 @@ static void tcg_out_qemu_st_unalign(TCGContext *s, TCGReg lo, TCGReg hi,
+             tcg_out_opc_imm(s, sd1, lo, base, 0);
+             tcg_out_opc_imm(s, sd2, lo, base, 7);
+         } else {
+-            tcg_out_opc_imm(s, sw1, MIPS_BE ? hi : lo, base, 0 + 0);
+-            tcg_out_opc_imm(s, sw2, MIPS_BE ? hi : lo, base, 0 + 3);
+-            tcg_out_opc_imm(s, sw1, MIPS_BE ? lo : hi, base, 4 + 0);
+-            tcg_out_opc_imm(s, sw2, MIPS_BE ? lo : hi, base, 4 + 3);
++            tcg_out_opc_imm(s, sw1, HOST_BIG_ENDIAN ? hi : lo, base, 0 + 0);
++            tcg_out_opc_imm(s, sw2, HOST_BIG_ENDIAN ? hi : lo, base, 0 + 3);
++            tcg_out_opc_imm(s, sw1, HOST_BIG_ENDIAN ? lo : hi, base, 4 + 0);
++            tcg_out_opc_imm(s, sw2, HOST_BIG_ENDIAN ? lo : hi, base, 4 + 3);
+         }
+         break;
+ 
 -- 
 2.34.1
 
