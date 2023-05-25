@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C25711366
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC9A711360
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:13:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2FQD-0008LF-4e; Thu, 25 May 2023 14:10:45 -0400
+	id 1q2FQD-0008LE-4F; Thu, 25 May 2023 14:10:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2FQA-0008KW-Gj
+ id 1q2FQA-0008L2-Ug
  for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:42 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2FQ8-0005r0-Ur
+ id 1q2FQ9-0005rF-D6
  for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:42 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-5289cf35eeaso959762a12.1
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-53033a0b473so1364170a12.0
  for <qemu-devel@nongnu.org>; Thu, 25 May 2023 11:10:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685038239; x=1687630239;
+ d=linaro.org; s=google; t=1685038240; x=1687630240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Pa1EeTfFR0ENE9IkClE4tlmnlEbqM1UBLr9L+Mye/pg=;
- b=oGcymjk6WjCFadaPZ0SMB39eqAIxQoBHewHSDNpmsXP8k3+mSKgCA1MZcxhAompG0y
- 86zunIWzuFXf2HepMuV8tD0XAh+wb22MQ8QUfkQdFxm9QsgcCHTzA2qrb3Jt5hli/zsW
- NYLiv+IPgXNMJJIvSpjycmUBt2ePl6tNb72dHvuPGZ4o39ch4zHEmm4LqwbgXvGN2nsF
- VX/MJDr6w1h/9XNbmvDzkuOm3MS0ZIJHwWZoT7YvJykzK1p4O9KVXpZ3xIs6sGDlaA2l
- KFtrJsabjhV81CvoJ/CI8ZFxRpZsrUNV/mK1Nw29WRGwgmhRtoFc8o6TDl16FPPLgVaU
- EFlA==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=GEPJWGV9qjZFqAWTKDf53jYOVNIumZGIjC2oht8GWBQ=;
+ b=MDwVezQKJS3JEjoHU9ug+4DozLugbY3dI7gO7RC3TBiAFtopjKRgqfZX3oJN5zo8Fe
+ uVnnhlnGib8vNpSiED6ISoDRgGzMqUANI1xccjBPbBiCLK20dxOYaD0I9QxeQTF8K63h
+ yOughAh/ZUoopgO6Lpol+Gr1lhNgOTKuePbjqLzTIa+/9YTYwiVrv6Cb85GFan/mmqx1
+ zdG8ST6YGNpD4vQsan3rseyLdb1KVD92BPq+SbjHFc2qu5RNdHxphPwjKBsK0DzCUieA
+ UwNW1zD9QJZg0jyfZn9Vt9fO13WYTEnekLvJrVW5TPSXSk7tjUKO831ltjo261tWq9Zn
+ Ib8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685038239; x=1687630239;
+ d=1e100.net; s=20221208; t=1685038240; x=1687630240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pa1EeTfFR0ENE9IkClE4tlmnlEbqM1UBLr9L+Mye/pg=;
- b=ZhhGphtrmuqWjmT0g9nKxrh+RKDWdr8oaGj8UPbAaB1ze8hz9NJoun01etmnMnMI/w
- dbUfKRotioq0b0fhE/P2SHS2WKS/ImNSQSOCowqohBaGgAmqMaMquYN9Xhp1DBzFotc0
- 4ShdYsLIF0BhbU4DuWHtYSjJmRfHBglU2Nmu8M/sn68ECLQ6QykDCuLm9nQfzlbEWkcq
- P/jShVWy3mcdutFZ4RdK4m0poIOysyS5yI3E0JRfUNU2AHEjuNZbDLp0Gv9n9Kjx4Uyg
- v/c8UsAKce0Znx9ZC3aUv6yH17+fUubvDP4oYcUQI61sVLCJAA+Pl054xUCJlrM9eIay
- T7WQ==
-X-Gm-Message-State: AC+VfDzcvk6AL2V7Nevg8ntH6W4w+q1CJIGDgasMo/bsoPqEwW4eQorj
- /ozh+kGVTl8iY7HTOFEu/DSwITzdpS9mtHlcqJg=
-X-Google-Smtp-Source: ACHHUZ5Z8GQySCiEvl51j0YwNO7+ttm9NCnFVwS3OeaX2euAw0+7wlXbISQ0SEV+NqiG+EgjcbXi5Q==
-X-Received: by 2002:a17:902:f551:b0:1a1:cb18:7f99 with SMTP id
- h17-20020a170902f55100b001a1cb187f99mr2321729plf.30.1685038239382; 
- Thu, 25 May 2023 11:10:39 -0700 (PDT)
+ bh=GEPJWGV9qjZFqAWTKDf53jYOVNIumZGIjC2oht8GWBQ=;
+ b=iVpQlPqOYJCmsRbk+POqwb20EFpFd5IMx41ttdTcvI2PRnUQSlVzY3d+KXW7vpatvG
+ fn9b7JCBpISQgrsiFoExRgkXXO9i0IZ805WQWban6cIeTXwXL/0THbD9Tlxrwptei4L4
+ /im2dVzO5Z53NaGrJIqXPMZZre5pUFEqNmppopdBAwB2sjKEQIKheWcFHIp2q5SHjgnn
+ 4ITpMhyiewj3/jWKBuoqa5F5jULob60jD/1WDIJH6tduV60Kifj037whtgmP8BxdAwe5
+ L9zB+yUKRvcQEGyePmXj0GYqPxpS62B2sr09jtgFhwyxYAtPze3rfY1oBp5b32vbmLLW
+ 88ng==
+X-Gm-Message-State: AC+VfDzE2jRNua9RrI3wIYmeGc8iyXEg6YoW34LioLczkZKm5zysjcCJ
+ frs/5vOCO58lPDGrkVIYlj9wM+UnFC3w7denyKU=
+X-Google-Smtp-Source: ACHHUZ6OW4QTf8tP26bv7OAJvQtKpXCHob8M6d67fkS0GfCsPDMd+GKdL0gezleQ/zleBHPMpsAmOw==
+X-Received: by 2002:a17:903:41ca:b0:1a6:abac:9cc with SMTP id
+ u10-20020a17090341ca00b001a6abac09ccmr2709438ple.66.1685038240135; 
+ Thu, 25 May 2023 11:10:40 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
  by smtp.gmail.com with ESMTPSA id
- m18-20020a170902db1200b001aae64e9b36sm1710243plx.114.2023.05.25.11.10.38
+ m18-20020a170902db1200b001aae64e9b36sm1710243plx.114.2023.05.25.11.10.39
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 11:10:38 -0700 (PDT)
+ Thu, 25 May 2023 11:10:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-Subject: [PULL 02/23] tcg/mips: Move TCG_GUEST_BASE_REG to S7
-Date: Thu, 25 May 2023 11:10:15 -0700
-Message-Id: <20230525181036.1559435-3-richard.henderson@linaro.org>
+Subject: [PULL 03/23] tcg/mips: Unify TCG_GUEST_BASE_REG tests
+Date: Thu, 25 May 2023 11:10:16 -0700
+Message-Id: <20230525181036.1559435-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230525181036.1559435-1-richard.henderson@linaro.org>
 References: <20230525181036.1559435-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,36 +90,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No functional change; just moving the saved reserved regs to the end.
+In tcg_out_qemu_ld/st, we already check for guest_base matching int16_t.
+Mirror that when setting up TCG_GUEST_BASE_REG in the prologue.
 
-Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/mips/tcg-target.c.inc | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tcg/mips/tcg-target.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
-index ee6c2eb872..f322891797 100644
+index f322891797..ccb3a1cd9a 100644
 --- a/tcg/mips/tcg-target.c.inc
 +++ b/tcg/mips/tcg-target.c.inc
-@@ -86,7 +86,7 @@ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
- #define TCG_TMP3  TCG_REG_T7
+@@ -2312,7 +2312,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+     }
  
  #ifndef CONFIG_SOFTMMU
--#define TCG_GUEST_BASE_REG TCG_REG_S1
-+#define TCG_GUEST_BASE_REG TCG_REG_S7
- #endif
- 
- /* check if we really need so many registers :P */
-@@ -2190,7 +2190,7 @@ static const int tcg_target_callee_save_regs[] = {
-     TCG_REG_S4,
-     TCG_REG_S5,
-     TCG_REG_S6,
--    TCG_REG_S7,
-+    TCG_REG_S7,       /* used for guest_base */
-     TCG_REG_S8,       /* used for the global env (TCG_AREG0) */
-     TCG_REG_RA,       /* should be last for ABI compliance */
- };
+-    if (guest_base) {
++    if (guest_base != (int16_t)guest_base) {
+         tcg_out_movi(s, TCG_TYPE_PTR, TCG_GUEST_BASE_REG, guest_base);
+         tcg_regset_set_reg(s->reserved_regs, TCG_GUEST_BASE_REG);
+     }
 -- 
 2.34.1
 
