@@ -2,54 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20475710B4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C5A710B51
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 13:44:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q29MQ-0003Mq-EK; Thu, 25 May 2023 07:42:26 -0400
+	id 1q29Nw-00044V-7r; Thu, 25 May 2023 07:44:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q29MF-0003Me-Eb
- for qemu-devel@nongnu.org; Thu, 25 May 2023 07:42:15 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1q29Nh-00043e-Sw
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 07:43:47 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q29M9-0003uf-RY
- for qemu-devel@nongnu.org; Thu, 25 May 2023 07:42:15 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QRmMW5PNqz67cHj;
- Thu, 25 May 2023 19:40:39 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 25 May
- 2023 12:42:04 +0100
-Date: Thu, 25 May 2023 12:42:03 +0100
-To: Li Zhijian <lizhijian@cn.fujitsu.com>
-CC: <qemu-devel@nongnu.org>, <ben.widawsky@intel.com>,
- <dan.j.williams@intel.com>, <mst@redhat.com>, <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/2] docs/cxl: Correct CFMW number
-Message-ID: <20230525124203.00000c50@Huawei.com>
-In-Reply-To: <20230519085802.2106900-1-lizhijian@cn.fujitsu.com>
-References: <20230519085802.2106900-1-lizhijian@cn.fujitsu.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1q29Ng-0004B5-20
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 07:43:45 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34PBfYtV032063; Thu, 25 May 2023 11:43:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-03-30; bh=s9wYIVY7XZMUjjFLaqUN3mf5mMn69t8r517bYVE4i+g=;
+ b=0Lp1KdsjLejY5rlyGabn50bxJx1ndUGFFF5bpGavuqs/jJyMjMGSryvLCb0Ibulm1Whn
+ Bn++T0AjeMRxynuqf5wzl67nAhQJFMzy/RFsRX4SEsLyzjpMc6tiwlS5nV0vsGQ25/a4
+ 8lfPo2f196CdH/ZxslcXesbHYx7Ti7tESIpwbyCa9bgHGu/448UiodzONQ3M2Oe7zxdm
+ 2ahp209+EG6oaSNe/3J13Q0fPr2B6g3zR2q3ubXRGKbX7R1MbXV+5tChxoSvdtPjl6ry
+ gnBtpyEV8MCIXCV+IWH1qFXt2jysRbRneU3Ol/YSMojJjinqGKsXb2AwKjOceWxacE8m EQ== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qt712804d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 May 2023 11:43:35 +0000
+Received: from pps.filterd
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 34PBdrZO027217; Thu, 25 May 2023 11:43:35 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3qqk2g84j6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 May 2023 11:43:34 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34PBe13D020951;
+ Thu, 25 May 2023 11:43:33 GMT
+Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-196-224.vpn.oracle.com
+ [10.175.196.224])
+ by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 3qqk2g84e8-1; Thu, 25 May 2023 11:43:33 +0000
+From: Joao Martins <joao.m.martins@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
+Subject: [PATCH v2 0/2] hw/vfio: Improve vfio_get_dirty_bitmap() tracepoint
+Date: Thu, 25 May 2023 12:43:19 +0100
+Message-Id: <20230525114321.71066-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-25_06,2023-05-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ mlxlogscore=434 phishscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305250098
+X-Proofpoint-ORIG-GUID: RIPkQexJfnbDeoBlVOxUPmplIEACPeV0
+X-Proofpoint-GUID: RIPkQexJfnbDeoBlVOxUPmplIEACPeV0
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,55 +96,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 May 2023 16:58:01 +0800
-Li Zhijian <lizhijian@cn.fujitsu.com> wrote:
+Hey,
 
-> The 'Notes:' in this document mentioned CFMW{0-2}, but the figure missed
-> CFMW2.
-> 
-> Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
+This tiny series changes the tracepoint to include the number of
+dirty pages via the vfio_get_dirty_bitmap. I find it useful for
+observability in general to understand the number of dirty pages in an
+IOVA range. With dirty tracking supported by device or IOMMU it's specially
+relevant data to include in the tracepoint.
 
-> ---
-> I'm totally new to CXL, so i have little confidence to this change :)
-I believe this one is already fixed upstream by Brice Goglin
-https://gitlab.com/qemu-project/qemu/-/commit/ca4750583a597e97cbf8cec008d228f95d22c4
-
-Otherwise was good!
+First patch changes the return value to be the number of dirty pages in
+the helper function setting dirty bits and the second patch expands the
+VFIO tracepoint to include the dirty pages.
 
 Thanks,
+	Joao
 
-Jonathan
+Changes since v1[1]:
+* Make the nr of dirty pages a retval similar to sync variant of helper in
+  patch 1 (Cedric)
+* Stash number of bits set in bitmap quad in a variable and reuse in
+  GLOBAL_DIRTY_RATE in patch 1
+* Drop init to 0 given that we always initialize the @dirty used in the
+  tracepoint
 
-> ---
->  docs/system/devices/cxl.rst | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
-> index dce43476129..d3577a4d6da 100644
-> --- a/docs/system/devices/cxl.rst
-> +++ b/docs/system/devices/cxl.rst
-> @@ -162,7 +162,7 @@ Example system Topology. x marks the match in each decoder level::
->    |<------------------SYSTEM PHYSICAL ADDRESS MAP (1)----------------->|
->    |    __________   __________________________________   __________    |
->    |   |          | |                                  | |          |   |
-> -  |   | CFMW 0   | |  CXL Fixed Memory Window 1       | | CFMW 1   |   |
-> +  |   | CFMW 0   | |  CXL Fixed Memory Window 1       | | CFMW 2   |   |
->    |   | HB0 only | |  Configured to interleave memory | | HB1 only |   |
->    |   |          | |  memory accesses across HB0/HB1  | |          |   |
->    |   |__________| |_____x____________________________| |__________|   |
-> @@ -247,7 +247,7 @@ Example topology involving a switch::
->    |<------------------SYSTEM PHYSICAL ADDRESS MAP (1)----------------->|
->    |    __________   __________________________________   __________    |
->    |   |          | |                                  | |          |   |
-> -  |   | CFMW 0   | |  CXL Fixed Memory Window 1       | | CFMW 1   |   |
-> +  |   | CFMW 0   | |  CXL Fixed Memory Window 1       | | CFMW 2   |   |
->    |   | HB0 only | |  Configured to interleave memory | | HB1 only |   |
->    |   |          | |  memory accesses across HB0/HB1  | |          |   |
->    |   |____x_____| |__________________________________| |__________|   |
+[1] https://lore.kernel.org/qemu-devel/20230523151217.46427-1-joao.m.martins@oracle.com/
+
+Joao Martins (2):
+  exec/ram_addr: return nr of dirty pages in cpu_physical_memory_set_dirty_lebitmap()
+  hw/vfio: Add nr of dirty pages to vfio_get_dirty_bitmap tracepoint
+
+ hw/vfio/common.c        |  7 ++++---
+ hw/vfio/trace-events    |  2 +-
+ include/exec/ram_addr.h | 21 +++++++++++++++------
+ 3 files changed, 20 insertions(+), 10 deletions(-)
+
+-- 
+2.31.1
 
 
