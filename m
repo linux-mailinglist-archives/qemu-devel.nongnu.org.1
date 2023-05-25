@@ -2,97 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CE1710C47
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F790710C50
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:47:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2AL7-0006da-Qq; Thu, 25 May 2023 08:45:09 -0400
+	id 1q2ANU-0007v3-2u; Thu, 25 May 2023 08:47:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2AL4-0006af-AO
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:45:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2ANN-0007ug-Ug
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:47:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2AKs-0000tH-1u
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:45:06 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2ANM-0001xf-C7
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:47:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685018691;
+ s=mimecast20190719; t=1685018846;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BBNRQ3NjgiL0Rq9L+84UlRsJOqmrsIqjTi4yn7L/pjQ=;
- b=Goh83m9H6WJFShkDc+t/ccmpJkB6jRvzAoCgOvIm9O/pBKbI9jDWXtYG/UPuwsndyV3gO4
- BT3jvvvuy5jr+vj4Ifs5oUBoAm0xWNboSXY4HW4DegIoGxTJma4HAfCXXj8LZCRFh74ryj
- DRSB1Si8iz8KxsadZYArKUpj+dU31VQ=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-500-rMEJMwd3MQG4FiNGZH5bYQ-1; Thu, 25 May 2023 08:44:50 -0400
-X-MC-Unique: rMEJMwd3MQG4FiNGZH5bYQ-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-74faf5008bbso47298785a.0
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 05:44:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685018690; x=1687610690;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BBNRQ3NjgiL0Rq9L+84UlRsJOqmrsIqjTi4yn7L/pjQ=;
- b=R25IBPSwxJ1QDC9f4Z/BuikcvoH6eoY+nI3TlTYkF/E42QNtam7IAb5sxHfpZq4DRs
- IewMM6ApzlDnJEXXZyTGFpEfgUTaOhyzGik9Y59+438krQtKbgR0Bf0xDmWL+Or/Ykhb
- hQzmEFODga2ExYV3SEF5vqC1cc1qnhcJBXLST136M8rW/zkkAPr3Z14BNLs2uJDvpgZy
- RtXj6OWM+MzFNvLf9yoR9GRbBatdxBSo/pie6N8t+67DXYvsdvQwQ/igqkNZm+dAVAxf
- 8Ib4H11P3TZ/2jPVsV0IM+GZ3h5i0Z3ixZO/Vo7qmTh6qWPuUk5bFysrcxzDtkEiKoO3
- w4dQ==
-X-Gm-Message-State: AC+VfDytEi8SX29DZB32un+I5X9M+9qnSAdnBNohFew9VUA35tKSbQWR
- Ff5ExP+49CyT0xAFaxJZhjAanNQ0HazHqkHbqdUoZPbOL7+vI6ydMQUQbzFeX4hYcHFlinV5e2Z
- cu6sJIzI4ql3x+mg=
-X-Received: by 2002:a37:603:0:b0:75c:9cba:3768 with SMTP id
- 3-20020a370603000000b0075c9cba3768mr1478578qkg.4.1685018690035; 
- Thu, 25 May 2023 05:44:50 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5QMix6kr+70QzIHmbbAhAjau4cyUaGWk/GuvCCIX6H8IHTOkZKBN6SAxs78gvZt4AWfiY1jQ==
-X-Received: by 2002:a37:603:0:b0:75c:9cba:3768 with SMTP id
- 3-20020a370603000000b0075c9cba3768mr1478559qkg.4.1685018689756; 
- Thu, 25 May 2023 05:44:49 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- u22-20020a05620a121600b007579ff44f0dsm345169qkj.124.2023.05.25.05.44.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 05:44:49 -0700 (PDT)
-Date: Thu, 25 May 2023 08:44:47 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Yishai Hadas <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Maor Gottlieb <maorg@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>,
- Tarun Gupta <targupta@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: Re: [PATCH v3 2/7] migration: Implement switchover ack logic
-Message-ID: <ZG9YP45oULV3YJl4@x1n>
-References: <20230521151808.24804-1-avihaih@nvidia.com>
- <20230521151808.24804-3-avihaih@nvidia.com> <ZG5mOKlGtQEyywyQ@x1n>
- <541dc36f-618e-a2c5-a27f-51db65abecbd@nvidia.com>
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=l3EbLp4MvEn5fyXqQ92CPB7by2yJkY5PWeTOZsnubm0=;
+ b=QzU4obnQu/TleHcLV2Z31AdRK7LiKaNdZna36s7jnkYp/Br/e4nliGpWxC0yLDLBOj+BRd
+ 1aK0/mnx+M8lFACvOQZhQIuWQ51EqaWoWE2foNdf+WDBbSOw9O+wN3siZC6egHOaXXicW+
+ dFp4rB6z5uHyp2Ve4j75n36YO367s5w=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-121-f__xSgLFMMC59rcLxnvnXw-1; Thu, 25 May 2023 08:47:23 -0400
+X-MC-Unique: f__xSgLFMMC59rcLxnvnXw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1BFB38032E4;
+ Thu, 25 May 2023 12:47:23 +0000 (UTC)
+Received: from merkur.fritz.box (unknown [10.39.194.166])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DC3857AF5;
+ Thu, 25 May 2023 12:47:21 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, stefanha@redhat.com, hreitz@redhat.com,
+ eblake@redhat.com, qemu-devel@nongnu.org
+Subject: [PATCH 00/12] block: Fix blockdev-create with iothreads
+Date: Thu, 25 May 2023 14:47:01 +0200
+Message-Id: <20230525124713.401149-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <541dc36f-618e-a2c5-a27f-51db65abecbd@nvidia.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,25 +73,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 25, 2023 at 12:51:46PM +0300, Avihai Horon wrote:
-> However, there is one issue -- we can't send the ACK up here [1], as at that
-> point the return path has not been created yet.
-> A possible solution is to check for mis->switchover_ack_pending_num == 0
-> when we create the return path and send the ACK there.
-> It's not as clean as checking the number of users and ACKing here in the
-> same place, but it works.
-> 
-> Do you think it's OK? or do you have another idea?
+This series started with the last patch, an iotest that tests the fixes
+for .bdrv_co_create() that were made in commit b2ab5f545f ('block:
+bdrv/blk_co_unref() for calls in coroutine context').
 
-Good point. It looks fine to me as we create the return path mostly at the
-very early stage right after the migration headers.
+Unfortunately, it turned out that much more is wrong about creating
+images in an iothread. In particular, AioContext locking is messy and in
+many cases wrong. (Only one more reason to get rid of them.) This series
+fixes all the hangs and crashes I saw while making the final test case
+pass.
 
-Let's just add a comment describing the ordering fact?  IMHO it's about
-switchover_ack_pending_num won't be used before setup of the return path
-due to current wire protocol (we create return path before sending mostly
-anything else), so setup it there is fine.
+Note that this series isn't fully bisectable. Some of the existing bugs
+cancel each other out, so after fixing one, some test cases will break
+until the other one is fixed, too.
+
+Kevin Wolf (12):
+  block-coroutine-wrapper: Take AioContext lock in no_co_wrappers
+  block: Clarify locking rules for bdrv_open(_inherit)()
+  block: Take main AioContext lock when calling bdrv_open()
+  block-backend: Fix blk_new_open() for iothreads
+  mirror: Hold main AioContext lock for calling bdrv_open_backing_file()
+  qcow2: Fix open with 'file' in iothread
+  raw-format: Fix open with 'file' in iothread
+  copy-before-write: Fix open with child in iothread
+  block: Take AioContext lock in bdrv_open_driver()
+  block: Fix AioContext locking in bdrv_insert_node()
+  iotests: Make verify_virtio_scsi_pci_or_ccw() public
+  iotests: Test blockdev-create in iothread
+
+ include/block/block-common.h                  |  3 +
+ block.c                                       | 33 ++++++---
+ block/block-backend.c                         | 36 ++++++++--
+ block/copy-before-write.c                     | 21 ++++--
+ block/mirror.c                                |  6 ++
+ block/qapi-sysemu.c                           |  3 +
+ block/qcow2.c                                 |  8 ++-
+ block/raw-format.c                            |  5 ++
+ blockdev.c                                    | 29 ++++++--
+ qemu-nbd.c                                    |  4 ++
+ tests/unit/test-block-iothread.c              |  4 +-
+ scripts/block-coroutine-wrapper.py            | 25 ++++---
+ tests/qemu-iotests/iotests.py                 |  2 +-
+ tests/qemu-iotests/256                        |  2 +-
+ tests/qemu-iotests/tests/iothreads-create     | 67 +++++++++++++++++++
+ tests/qemu-iotests/tests/iothreads-create.out |  4 ++
+ 16 files changed, 210 insertions(+), 42 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/iothreads-create
+ create mode 100644 tests/qemu-iotests/tests/iothreads-create.out
 
 -- 
-Peter Xu
+2.40.1
 
 
