@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F42271134B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A61D71134C
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:12:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2FQA-0008KM-VD; Thu, 25 May 2023 14:10:42 -0400
+	id 1q2FQC-0008LD-UA; Thu, 25 May 2023 14:10:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2FQ9-0008Jt-IY
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:41 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1q2FQA-0008KK-C4
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:42 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2FQ7-0005qQ-Ki
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:41 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-64d577071a6so52318b3a.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 11:10:38 -0700 (PDT)
+ id 1q2FQ8-0005qn-MZ
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:10:42 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1ae54b623c2so16879305ad.3
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 11:10:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685038237; x=1687630237;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=GxJHOoQNtuW2GBLhr39GmqXx79tIU7ZtrnBz6ePI+1c=;
- b=fToUoziSUXgONL/fxtXtpGGVo+yGn4Wl2EjTpZCen3DHzh/cMyhEXO6ANCLhY7ACY+
- 3oHU9EijLtGKNEBcC2jr0HjLqupd90CPbBYtUU7Gu+yDfZAeFvdc8uwxroy0moeHip9t
- SauKygz4PJfCc4cV+PVY220+Ee5n1SnlIHTAe/pBx06hIsM7pLaJDZO4Sb/mAZdXxRF0
- ZT+alK0e9iJCtzk747pjDYGKtUG1aYjX/i0OeS59s71Je+Qe0yooJT3o3LsblSGvS357
- 1IK+XaeQwAsNz7hEW7ilyUbcL1VQ+pg7k6d2qPWAO9gLpxiIiCCbwhpKldpulnblWdKj
- B+VQ==
+ d=linaro.org; s=google; t=1685038238; x=1687630238;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8ZDJh+YnFUCknSRFGXVYE0jRPMbbTzyNWKw2JHeS1ag=;
+ b=Nl2HW8jUkETIgYamiCxDmE40ZQgscvzyTP9DVZm2vud0T8/CnnqK8LQnGr2mJuoKDf
+ UiRNREb4AYiW7v77jpeN6mSbCpylXW/IX8jUjQqfECchJuof2/CpnMtPAwj1Q+CNGx9Z
+ /6R0vqWf7jDq5lChlu4WXtSL5n7v6GwSaKbIZYQ4K7sfemRW4jBBHWE/F6Vx7QXEqz3v
+ fuHuGmi/YCmyT5zbrnERuQoPCOc5fqLTcB2sELyICGeKMbicrk7kLe7TXZALHsKYTgPQ
+ OpTEsGYZsO6jXgnaUWhLJ42T/On98+PuddYWG0yLyVCunIXiHGm6CiKJX35OIYgMsMZ+
+ NvyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685038237; x=1687630237;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GxJHOoQNtuW2GBLhr39GmqXx79tIU7ZtrnBz6ePI+1c=;
- b=PBgE7wRUR1BklcylagWzz9Rf26aZvW3HbZf6Zy5sXTl/9y8YCHwavDhW4RRoyAsljk
- Cbqpy74kMH2huCdoGce+qa0tdgf7ydLCVdRaLe6w+1G/N3HcJQoRkk84s766jcEpdHqd
- 2rzcX2AjIGvc44iyFgAlLb8gd5A9IWGLs55cPFWgBrbZdifHWC8bRy8Ag5cTPRkC6oRz
- MTQ6sVHHwuoKb/Ln/oKv4CSZDhw2QDyuKfj65L1pt7Rx0thoruYZt+TI9B0VqKdEauJJ
- 226vmfyQnjp9yMXFOWEvT2DucSND2+a6bA+aRuCyQqkATTyr8lb6xvAip9eAJI5PO4AZ
- Wg2A==
-X-Gm-Message-State: AC+VfDx/4T0v+OVCEeiiZ1ePAvLGI4zWehkNDSMFzAjhBQNvYnIA4YMZ
- XtTW2rPvuzZik0h/tUAYQ4ozEHGABZoaNJHQFJc=
-X-Google-Smtp-Source: ACHHUZ6VB5n2ov4QN8l/rbztSbC0gFV3JoWVtp6ZbSl4NvNz5Om3noHxe3/+BfZZNmJ8H/5+lyYZkg==
-X-Received: by 2002:a05:6a21:6d9f:b0:10a:e388:fcb5 with SMTP id
- wl31-20020a056a216d9f00b0010ae388fcb5mr23568900pzb.13.1685038237635; 
- Thu, 25 May 2023 11:10:37 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685038238; x=1687630238;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8ZDJh+YnFUCknSRFGXVYE0jRPMbbTzyNWKw2JHeS1ag=;
+ b=WBEExABVALsTZDWIkvtrw7MPMGs9Q3iG8OOP0NgFhkPfEjU4ctSIS9xw/pZmhD/d3K
+ nukqm/CqBc2NjxM9ZjszZIiEbl+BCA6gv7vUXQ5uclp/5fGz9gzPZEvkX7f6lZ4gb+yl
+ RzqQBJMKHMFEmXH0011ZdsYjJZ9jvaRsS0Ve0++SWfRJjKlN6SiaIk3zLGJxkkSd8kDc
+ Sa09g/RnRoASt/khv1/DEBhJmDdGfT7n1Pf2UlgmdKjnnYWXBu4Hw05kI4QehBW0knfT
+ AIcl/WWjkQhtXP1l69gVOPIEiD8YBcuIb+23zxAbfGwTP9/GT+iqpTNklR+yWnxO2xa8
+ b/IQ==
+X-Gm-Message-State: AC+VfDwWgKprxgxe8/cMVmJgBWaKjORrBL647OpZFxpE0gkRNFTyTvrz
+ RkOGbtHMg9hJrt/L9VNukNGAVubmxfdZpnvqJr4=
+X-Google-Smtp-Source: ACHHUZ5vuhQQR58t8W9l/57LO5zRTbxAyJKCwt+WBUax06QUeisMsp2LDItcP69ybk4bDf5UD0DRuA==
+X-Received: by 2002:a17:902:ab8e:b0:1af:e295:ad56 with SMTP id
+ f14-20020a170902ab8e00b001afe295ad56mr2309323plr.49.1685038238531; 
+ Thu, 25 May 2023 11:10:38 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
  by smtp.gmail.com with ESMTPSA id
- m18-20020a170902db1200b001aae64e9b36sm1710243plx.114.2023.05.25.11.10.36
- for <qemu-devel@nongnu.org>
+ m18-20020a170902db1200b001aae64e9b36sm1710243plx.114.2023.05.25.11.10.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 11:10:37 -0700 (PDT)
+ Thu, 25 May 2023 11:10:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/23] tcg patch queue
-Date: Thu, 25 May 2023 11:10:13 -0700
-Message-Id: <20230525181036.1559435-1-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
+Subject: [PULL 01/23] tcg/mips: Move TCG_AREG0 to S8
+Date: Thu, 25 May 2023 11:10:14 -0700
+Message-Id: <20230525181036.1559435-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230525181036.1559435-1-richard.henderson@linaro.org>
+References: <20230525181036.1559435-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,60 +92,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit b300c134465465385045ab705b68a42699688332:
+No functional change; just moving the saved reserved regs to the end.
 
-  Merge tag 'pull-vfio-20230524' of https://github.com/legoater/qemu into staging (2023-05-24 14:23:41 -0700)
+Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/mips/tcg-target.h     | 2 +-
+ tcg/mips/tcg-target.c.inc | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-are available in the Git repository at:
+diff --git a/tcg/mips/tcg-target.h b/tcg/mips/tcg-target.h
+index 7277a117ef..46b63e59cc 100644
+--- a/tcg/mips/tcg-target.h
++++ b/tcg/mips/tcg-target.h
+@@ -76,7 +76,7 @@ typedef enum {
+     TCG_REG_RA,
+ 
+     TCG_REG_CALL_STACK = TCG_REG_SP,
+-    TCG_AREG0 = TCG_REG_S0,
++    TCG_AREG0 = TCG_REG_S8,
+ } TCGReg;
+ 
+ /* used for function call generation */
+diff --git a/tcg/mips/tcg-target.c.inc b/tcg/mips/tcg-target.c.inc
+index ef146b193c..ee6c2eb872 100644
+--- a/tcg/mips/tcg-target.c.inc
++++ b/tcg/mips/tcg-target.c.inc
+@@ -2183,7 +2183,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+ }
+ 
+ static const int tcg_target_callee_save_regs[] = {
+-    TCG_REG_S0,       /* used for the global env (TCG_AREG0) */
++    TCG_REG_S0,
+     TCG_REG_S1,
+     TCG_REG_S2,
+     TCG_REG_S3,
+@@ -2191,7 +2191,7 @@ static const int tcg_target_callee_save_regs[] = {
+     TCG_REG_S5,
+     TCG_REG_S6,
+     TCG_REG_S7,
+-    TCG_REG_S8,
++    TCG_REG_S8,       /* used for the global env (TCG_AREG0) */
+     TCG_REG_RA,       /* should be last for ABI compliance */
+ };
+ 
+-- 
+2.34.1
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230525
-
-for you to fetch changes up to a30498fcea5a8b9c544324ccfb0186090104b229:
-
-  tcg/riscv: Support CTZ, CLZ from Zbb (2023-05-25 15:29:36 +0000)
-
-----------------------------------------------------------------
-tcg/mips:
-  - Constant formation improvements
-  - Replace MIPS_BE with HOST_BIG_ENDIAN
-  - General cleanups
-tcg/riscv:
-  - Improve setcond
-  - Support movcond
-  - Support Zbb, Zba
-
-----------------------------------------------------------------
-Richard Henderson (23):
-      tcg/mips: Move TCG_AREG0 to S8
-      tcg/mips: Move TCG_GUEST_BASE_REG to S7
-      tcg/mips: Unify TCG_GUEST_BASE_REG tests
-      tcg/mips: Create and use TCG_REG_TB
-      tcg/mips: Split out tcg_out_movi_one
-      tcg/mips: Split out tcg_out_movi_two
-      tcg/mips: Use the constant pool for 64-bit constants
-      tcg/mips: Aggressively use the constant pool for n64 calls
-      tcg/mips: Try tb-relative addresses in tcg_out_movi
-      tcg/mips: Try three insns with shift and add in tcg_out_movi
-      tcg/mips: Use qemu_build_not_reached for LO/HI_OFF
-      tcg/mips: Replace MIPS_BE with HOST_BIG_ENDIAN
-      disas/riscv: Decode czero.{eqz,nez}
-      tcg/riscv: Probe for Zba, Zbb, Zicond extensions
-      tcg/riscv: Support ANDN, ORN, XNOR from Zbb
-      tcg/riscv: Support ADD.UW, SEXT.B, SEXT.H, ZEXT.H from Zba+Zbb
-      tcg/riscv: Use ADD.UW for guest address generation
-      tcg/riscv: Support rotates from Zbb
-      tcg/riscv: Support REV8 from Zbb
-      tcg/riscv: Support CPOP from Zbb
-      tcg/riscv: Improve setcond expansion
-      tcg/riscv: Implement movcond
-      tcg/riscv: Support CTZ, CLZ from Zbb
-
- tcg/mips/tcg-target.h          |   3 +-
- tcg/riscv/tcg-target-con-set.h |   3 +
- tcg/riscv/tcg-target-con-str.h |   1 +
- tcg/riscv/tcg-target.h         |  48 ++--
- disas/riscv.c                  |   6 +
- tcg/mips/tcg-target.c.inc      | 308 ++++++++++++++++-----
- tcg/riscv/tcg-target.c.inc     | 612 ++++++++++++++++++++++++++++++++++++-----
- 7 files changed, 825 insertions(+), 156 deletions(-)
 
