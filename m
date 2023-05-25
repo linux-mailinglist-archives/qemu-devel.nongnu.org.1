@@ -2,111 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD61711431
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF3571146B
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 20:38:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2FoG-0001UL-Od; Thu, 25 May 2023 14:35:36 -0400
+	id 1q2FqW-0003St-IF; Thu, 25 May 2023 14:37:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
- id 1q2Fnz-0001Ni-Ji
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:35:23 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q2FqU-0003SL-UC
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:37:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
- id 1q2Fnx-0003cI-Jv
- for qemu-devel@nongnu.org; Thu, 25 May 2023 14:35:19 -0400
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34PFGFcD001882; Thu, 25 May 2023 18:34:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=YlvFsbEPrwbVAdxwxMbKnxn1gExf5XgZ9Xo7rbW6dUQ=;
- b=Lzyf9aLPcAqinix9YfLlsRAGGN+gR2pGIMlP8b/TpYgMTdhl/3rPyJ97zvP/hy/rFL48
- cqe4Pi8D360VWoL8sYMXdrz3fQmuqTWxk7EjcGsPO8A4qjig2fE0oOs8zCtvb5BhmMB9
- sAdHk7SIWExI5l2C0Z5IPdzh1SSC8+UsT4WL8RiZ4aJdj3SoEqluyXexy6vivclVNQRp
- xfywfC0GZvFljCxVu48w6+0GrjH6HI80FeJdCtLJPgWUaVFWinxGnDMoTThNWZaZkTrb
- fqWNgaubCjXAnculU0WyTmLSQbSFozQhX9Eign2tg15P5DGaZoNtC7o225DL42lxfvDi MA== 
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qt27n1j61-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 May 2023 18:34:31 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com
- [10.52.223.231])
- by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34PIYDC6001496
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 May 2023 18:34:13 GMT
-Received: from [10.110.51.179] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Thu, 25 May
- 2023 11:34:12 -0700
-Message-ID: <e17da8f4-4d5d-adb7-02c9-631ffdfc9037@quicinc.com>
-Date: Thu, 25 May 2023 11:34:11 -0700
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1q2FqT-0004Ea-A5
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 14:37:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685039872;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4r3qYxneeA4YJy/Q3KXkKdfuD89XMkaoJ1c8oKEi/1A=;
+ b=PaB38F7+NekZRPDzXxjDw57oEMhFIDXoVfds4RNnY9qgUcNvflXGyHsNQ2DJbBtustKNfn
+ Q26FVKQ86tUylQnlQS8abpE9HJeikwSrujJZ8VUD66gXvQgMXc4+sXwKLHIpurSo09kJ4X
+ psfYQ525cNzyxtWo5Q13hAjq+JyG2R4=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-437-t-JFKiZDPvaKD1h3HpsPmg-1; Thu, 25 May 2023 14:37:50 -0400
+X-MC-Unique: t-JFKiZDPvaKD1h3HpsPmg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 73754381D1F3;
+ Thu, 25 May 2023 18:37:50 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EE09520296C6;
+ Thu, 25 May 2023 18:37:49 +0000 (UTC)
+Date: Thu, 25 May 2023 14:37:48 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 04/12] block-backend: Fix blk_new_open() for iothreads
+Message-ID: <20230525183748.GF132697@fedora>
+References: <20230525124713.401149-1-kwolf@redhat.com>
+ <20230525124713.401149-5-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
-Content-Language: en-US
-To: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>
-CC: Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
- James Morris <jamorris@linux.microsoft.com>, John Andersen
- <john.s.andersen@intel.com>, Liran Alon <liran.alon@oracle.com>,
- "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>, Marian Rotariu
- <marian.c.rotariu@gmail.com>, =?UTF-8?Q?Mihai_Don=c8=9bu?=
- <mdontu@bitdefender.com>, =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?=
- <nicu.citu@icloud.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Thara
- Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>, Zahra
- Tarkhani <ztarkhani@microsoft.com>, =?UTF-8?Q?=c8=98tefan_=c8=98icleru?=
- <ssicleru@bitdefender.com>,
- <dev@lists.cloudhypervisor.org>, <kvm@vger.kernel.org>,
- <linux-hardening@vger.kernel.org>, <linux-hyperv@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <qemu-devel@nongnu.org>,
- <virtualization@lists.linux-foundation.org>, <x86@kernel.org>,
- <xen-devel@lists.xenproject.org>
-References: <20230505152046.6575-1-mic@digikod.net>
- <1e10da25-5704-18ee-b0ce-6de704e6f0e1@quicinc.com>
- <0b069bc3-0362-d8ec-fc2a-05dd65218c39@digikod.net>
-From: Trilok Soni <quic_tsoni@quicinc.com>
-In-Reply-To: <0b069bc3-0362-d8ec-fc2a-05dd65218c39@digikod.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: uBbHTCakZngacL0OpkU9CBmNWESa7i53
-X-Proofpoint-GUID: uBbHTCakZngacL0OpkU9CBmNWESa7i53
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-25_10,2023-05-25_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- mlxlogscore=999 adultscore=0 priorityscore=1501 suspectscore=0
- clxscore=1015 mlxscore=0 bulkscore=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305250156
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_tsoni@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="c8uiaRYCFr46ISxp"
+Content-Disposition: inline
+In-Reply-To: <20230525124713.401149-5-kwolf@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,147 +80,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/25/2023 6:25 AM, Mickaël Salaün wrote:
-> 
-> On 24/05/2023 23:04, Trilok Soni wrote:
->> On 5/5/2023 8:20 AM, Mickaël Salaün wrote:
->>> Hi,
->>>
->>> This patch series is a proof-of-concept that implements new KVM features
->>> (extended page tracking, MBEC support, CR pinning) and defines a new 
->>> API to
->>> protect guest VMs. No VMM (e.g., Qemu) modification is required.
->>>
->>> The main idea being that kernel self-protection mechanisms should be 
->>> delegated
->>> to a more privileged part of the system, hence the hypervisor. It is 
->>> still the
->>> role of the guest kernel to request such restrictions according to its
->>
->> Only for the guest kernel images here? Why not for the host OS kernel?
-> 
-> As explained in the Future work section, protecting the host would be 
-> useful, but that doesn't really fit with the KVM model. The Protected 
-> KVM project is a first step to help in this direction [11].
-> 
-> In a nutshell, KVM is close to a type-2 hypervisor, and the host kernel 
-> is also part of the hypervisor.
-> 
-> 
->> Embedded devices w/ Android you have mentioned below supports the host
->> OS as well it seems, right?
-> 
-> What do you mean?
 
-I think you have answered this above w/ pKVM and I was referring the 
-host protection as well w/ Heki. The link/references below refers to the 
-Android OS it seems and not guest VM.
+--c8uiaRYCFr46ISxp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> 
->>
->> Do we suggest that all the functionalities should be implemented in the
->> Hypervisor (NS-EL2 for ARM) or even at Secure EL like Secure-EL1 (ARM).
-> 
-> KVM runs in EL2. TrustZone is mainly used to enforce DRM, which means 
-> that we may not control the related code.
-> 
-> This patch series is dedicated to hypervisor-enforced kernel integrity, 
-> then KVM.
-> 
->>
->> I am hoping that whatever we suggest the interface here from the Guest
->> to the Hypervisor becomes the ABI right?
-> 
-> Yes, hypercalls are part of the KVM ABI.
+On Thu, May 25, 2023 at 02:47:05PM +0200, Kevin Wolf wrote:
+> This fixes blk_new_open() to not assume that bs is in the main context.
+>=20
+> In particular, the BlockBackend must be created with the right
+> AioContext because it will refuse to move to a different context
+> afterwards. (blk->allow_aio_context_change is false.)
+>=20
+> Use this opportunity to use blk_insert_bs() instead of duplicating the
+> bdrv_root_attach_child() call. This is consistent with what
+> blk_new_with_bs() does. Add comments to document the locking rules.
+>=20
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  block/block-backend.c | 27 +++++++++++++++++++++------
+>  1 file changed, 21 insertions(+), 6 deletions(-)
 
-Sure. I just hope that they are extensible enough to support for other 
-Hypervisors too. I am not sure if they are on this list like ACRN / Xen 
-and see if it fits their need too.
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Is there any other Hypervisor you plan to test this feature as well?
+--c8uiaRYCFr46ISxp
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> 
->>
->>
->>>
->>> # Current limitations
->>>
->>> The main limitation of this patch series is the statically enforced
->>> permissions. This is not an issue for kernels without module but this 
->>> needs to
->>> be addressed.  Mechanisms that dynamically impact kernel executable 
->>> memory are
->>> not handled for now (e.g., kernel modules, tracepoints, eBPF JIT), 
->>> and such
->>> code will need to be authenticated.  Because the hypervisor is highly
->>> privileged and critical to the security of all the VMs, we don't want to
->>> implement a code authentication mechanism in the hypervisor itself 
->>> but delegate
->>> this verification to something much less privileged. We are thinking 
->>> of two
->>> ways to solve this: implement this verification in the VMM or spawn a 
->>> dedicated
->>> special VM (similar to Windows's VBS). There are pros on cons to each 
->>> approach:
->>> complexity, verification code ownership (guest's or VMM's), access to 
->>> guest
->>> memory (i.e., confidential computing).
->>
->> Do you foresee the performance regressions due to lot of tracking here?
-> 
-> The performance impact of execution prevention should be negligible 
-> because once configured the hypervisor do nothing except catch 
-> illegitimate access attempts.
+-----BEGIN PGP SIGNATURE-----
 
-Yes, if you are using the static kernel only and not considering the 
-other dynamic patching features like explained. They need to be thought 
-upon differently to reduce the likely impact.
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmRvqvwACgkQnKSrs4Gr
+c8h3UggAktJItivaZHPJ4QSIIGTngnKrd8L8gq2KEM9M4HCkCGRwhjdRt6pMY1Dd
+e4Xb0WjN8SAyG+ECJUPptSoVY20Ygdd2sB9YPHOixZXxejiblH3hrrDUPpZcn5zB
+DaJ5x11OQ5tsxBpFSGl6Th145V7MPW3aWq2XJtZ4xrtkKB1J9pt8WZVTpY+1aICp
+U6qiWToHwtUhfuHjg9txyklL+90iu0OCPROQgoaxdH7CT8kFf+InIgRhOYIRTKYh
+coWh6EJtAr18hF90+OegHSbZcJ0Ql4Z06J+Szlk0vwEuoHyOFt6aEGT2JZiAHX+q
+uXYHEJv9D5gY2+SVuTX2+vewggezgA==
+=ffRa
+-----END PGP SIGNATURE-----
 
-> 
-> 
->> Production kernels do have lot of tracepoints and we use it as feature
->> in the GKI kernel for the vendor hooks implementation and in those cases
->> every vendor driver is a module.
-> 
-> As explained in this section, dynamic kernel modifications such as 
-> tracepoints or modules are not currently supported by this patch series. 
-> Handling tracepoints is possible but requires more work to define and 
-> check legitimate changes. This proposal is still useful for static 
-> kernels though.
-> 
-> 
->> Separate VM further fragments this
->> design and delegates more of it to proprietary solutions?
-> 
-> What do you mean? KVM is not a proprietary solution.
-
-Ah, I was referring the VBS Windows VM mentioned in the above text. Is 
-it open-source? The reference of VM (or dedicated VM) didn't mention 
-that VM itself will be open-source running Linux kernel.
-
-> 
-> For dynamic checks, this would require code not run by KVM itself, but 
-> either the VMM or a dedicated VM. In this case, the dynamic 
-> authentication code could come from the guest VM or from the VMM itself. 
-> In the former case, it is more challenging from a security point of view 
-> but doesn't rely on external (proprietary) solution. In the latter case, 
-> open-source VMMs should implement the specification to provide the 
-> required service (e.g. check kernel module signature).
-> 
-> The goal of the common API layer provided by this RFC is to share code 
-> as much as possible between different hypervisor backends.
-> 
-> 
->>
->> Do you have any performance numbers w/ current RFC?
-> 
-> No, but the only hypervisor performance impact is at boot time and 
-> should be negligible. I'll try to get some numbers for the 
-> hardware-enforcement impact, but it should be negligible too.
-
-Thanks. Please share the data once you have it ready.
-
----Trilok Soni
+--c8uiaRYCFr46ISxp--
 
 
