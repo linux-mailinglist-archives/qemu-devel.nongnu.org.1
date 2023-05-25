@@ -2,111 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7647710FCB
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 17:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B74710FCC
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 17:39:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2D2K-0003Ln-Rq; Thu, 25 May 2023 11:37:56 -0400
+	id 1q2D2I-0003Jy-E9; Thu, 25 May 2023 11:37:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
- id 1q2D2H-0003Jp-TM
- for qemu-devel@nongnu.org; Thu, 25 May 2023 11:37:53 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12])
+ id 1q2D2G-0003Hu-9r
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 11:37:52 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
- id 1q2D2E-0000ny-Mq
- for qemu-devel@nongnu.org; Thu, 25 May 2023 11:37:53 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
- by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id
- 20230525153745euoutp0239d104c740741d25907a1baea2fb6f5d~ibQHZmL5M0292402924euoutp02Z
+ id 1q2D2D-0000o2-6A
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 11:37:52 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+ by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
+ 20230525153745euoutp017163aa13a15646b3e181ae3d8c1b9fbc~ibQHw6t1v0295002950euoutp01P
  for <qemu-devel@nongnu.org>; Thu, 25 May 2023 15:37:45 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com
- 20230525153745euoutp0239d104c740741d25907a1baea2fb6f5d~ibQHZmL5M0292402924euoutp02Z
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
+ 20230525153745euoutp017163aa13a15646b3e181ae3d8c1b9fbc~ibQHw6t1v0295002950euoutp01P
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
  s=mail20170921; t=1685029065;
- bh=HnUWazik/RcbkpE38Ii94NHLcI0ykUtfyb/ADn8jrlM=;
+ bh=6+yeCNnYMU7Bn+UWrdDvD034/jL7YTPt+NNRRS/nSME=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=LErrvDXkzR4bWjSE42Z1IBgjAW3NmxOsPcUCws4BlRAv08ybAd/Drj0A33MQp0auP
- rwKQxLD6xMyXxXRTKo3MgNOtGajKgu1+OHQufMKDifqOeBcCj9O6Kflnl1fyFaqmf2
- 7B/5a49Od1iy2EPGtF8dFZ7Auu5hjPcjeQIeYxrk=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+ b=D8z2Jielw9hDZMDNWx61vdRWOJtyGkFKz55X9V9uQiNL+G/kfLuSUaU4Rje7qDvDS
+ +Pqf3f4UjEPYcRhmVEUpidzQd7fh0UOZKdlV8hX+gekmDrQ8hReMttve3PhvPmMgXG
+ i8g+yBfKi8B6ztZKDtWQKY88Le+SN6qFDdGrtDCc=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
  eucas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230525153744eucas1p2990b72353361ecba748066367f147b38~ibQG-af6r2758927589eucas1p2k;
- Thu, 25 May 2023 15:37:44 +0000 (GMT)
+ 20230525153745eucas1p29b1bbe18c1e4617355a2b486112fe60e~ibQHicujl0108501085eucas1p2B;
+ Thu, 25 May 2023 15:37:45 +0000 (GMT)
 Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
- eusmges3new.samsung.com (EUCPMTA) with SMTP id 94.52.37758.8C08F646; Thu, 25
- May 2023 16:37:44 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+ eusmges2new.samsung.com (EUCPMTA) with SMTP id ED.28.11320.9C08F646; Thu, 25
+ May 2023 16:37:45 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
  eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
- 20230525153744eucas1p1844ba0a10563caff4bb0f92c82f30f7d~ibQGwAQMN0128401284eucas1p12;
- Thu, 25 May 2023 15:37:44 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
- eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20230525153744eusmtrp101bdbf492039ca411ad1910a8bd7fd3f~ibQGvdeVK0103701037eusmtrp1E;
- Thu, 25 May 2023 15:37:44 +0000 (GMT)
-X-AuditID: cbfec7f5-815ff7000002937e-59-646f80c8bfa7
+ 20230525153745eucas1p1cd6d947ed0cd46a8fdf637b514c237ff~ibQHMlqJn0128401284eucas1p13;
+ Thu, 25 May 2023 15:37:45 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+ eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20230525153745eusmtrp2b96a068ccd0285686e1b94b19ab87f78~ibQHL-YFw0985909859eusmtrp29;
+ Thu, 25 May 2023 15:37:45 +0000 (GMT)
+X-AuditID: cbfec7f4-97dff70000022c38-da-646f80c95c9c
 Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
- eusmgms1.samsung.com (EUCPMTA) with SMTP id D9.C4.10549.8C08F646; Thu, 25
+ eusmgms2.samsung.com (EUCPMTA) with SMTP id 5B.A7.14344.8C08F646; Thu, 25
  May 2023 16:37:44 +0100 (BST)
 Received: from AMDN5139.EU.corp.samsungelectronics.net (unknown
  [106.210.135.112]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20230525153744eusmtip286fc9ba5aa70a961f62a3f8e9a73aa10~ibQGNwG9C1970019700eusmtip2U;
- Thu, 25 May 2023 15:37:43 +0000 (GMT)
+ 20230525153744eusmtip277d75860e9b8db66ea893769550678a9~ibQGr18Az1886218862eusmtip23;
+ Thu, 25 May 2023 15:37:44 +0000 (GMT)
 From: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
 To: qemu-devel@nongnu.org, akihiko.odaki@daynix.com
 Cc: sriram.yagnaraman@est.tech, jasowang@redhat.com, k.kwiecien@samsung.com,
  m.sochacki@samsung.com
-Subject: [PATCH v9 3/7] igb: RX descriptors guest writting refactoring
-Date: Thu, 25 May 2023 17:37:29 +0200
-Message-Id: <20230525153733.4104-4-t.dzieciol@partner.samsung.com>
+Subject: [PATCH v9 4/7] igb: RX payload guest writting refactoring
+Date: Thu, 25 May 2023 17:37:30 +0200
+Message-Id: <20230525153733.4104-5-t.dzieciol@partner.samsung.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230525153733.4104-1-t.dzieciol@partner.samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupmleLIzCtJLcpLzFFi42LZduzned0TDfkpBievGVh8PrWW3WLZpc9M
- Fo3z57BabL36g93ieO8OFoveTS+YHNg8Trw9yOpx4dE5Zo8n1zYzebzfd5XNo2/LKsYA1igu
- m5TUnMyy1CJ9uwSujB8rF7AWbPevuPfpKGMDY7d5FyMnh4SAicSaOyuYuxi5OIQEVjBK9K5+
- DuV8YZToOdzDBOF8ZpR48+80K0zL/bUTWCESyxkl9pzcwALhtDNJ3Nl5EayKTcBM4tGXeUA2
- B4eIgLHEx3ZxkDCzQKrE0T8HWUBsYQE3iXmbF4LZLAKqEo1PTzOD2LwCThKzFnYzQiyTl5h5
- 6Ts7yBhOAWeJlV8rIUoEJU7OfMICMVJeonnrbLCrJQS2cEisv/2TGaLXRaJj234WCFtY4tXx
- LewQtozE6ck9UPFyiZ9nt7FDNLcAPTN1MlSRtcSlrT/B7mcW0JRYv0sfIuwo8f55CzNIWEKA
- T+LGW0GIG/gkJm2bDhXmlehoE4Ko1pH4tmkmG0RYSmLhjTqIsIfE7+0PGCcwKs5C8swsJM/M
- Qli7gJF5FaN4amlxbnpqsXFearlecWJucWleul5yfu4mRmB6Of3v+NcdjCtefdQ7xMjEwXiI
- UYKDWUmEd0NOfooQb0piZVVqUX58UWlOavEhRmkOFiVxXm3bk8lCAumJJanZqakFqUUwWSYO
- TqkGpjx27ZdxVrLLRVdq+sqq35jxTcb9sXdy/cK5Xw5Pz9vytez85oln5kxYNvm4/tPTvMud
- H2k+2pF2cn+dBMfsh1492mw86qoqvvukXLk1Ip3/RmlHVLH9ndxmxPBQQKLVdGXx60PJ7c3i
- 0/+vne5Ux9t9nufq3FVbD3dKrD6Rk776mvqBN9YeNe7XZl6xlDm84vJc9RJh38ezfBbMT2l4
- cZXn5xVfsyyZEr3d7veWGt+e0RH067VxhdgJ2cMm0wxSp2748/Zn3rqlwTYmS6fZBb3u2xP4
- oITv/jQuYTF2Hd2QOXmKPT0Gzdk+/K3/Nfzc/j+Y9upCyU/nqawbsqL97v63t7q7/2m2Q5X4
- tDiHlUosxRmJhlrMRcWJAAXmMeaeAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrJLMWRmVeSWpSXmKPExsVy+t/xe7onGvJTDGbOkLP4fGotu8WyS5+Z
- LBrnz2G12Hr1B7vF8d4dLBa9m14wObB5nHh7kNXjwqNzzB5Prm1m8ni/7yqbR9+WVYwBrFF6
- NkX5pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6GT9WLmAt
- 2O5fce/TUcYGxm7zLkZODgkBE4n7ayewgthCAksZJZ6cKoeIS0ns6/nPDmELS/y51sXWxcgF
- VNPKJPFuYytYA5uAmcSjL/OAbA4OEQFTiWd7JUHCzAKZEqdf7WMDsYUF3CTmbV7IAmKzCKhK
- ND49zQxi8wo4Scxa2M0IMV9eYual7+wgYzgFnCVWfq2EOMdJYvuHaawQ5YISJ2c+YYEYLy/R
- vHU28wRGgVlIUrOQpBYwMq1iFEktLc5Nzy021CtOzC0uzUvXS87P3cQIjINtx35u3sE479VH
- vUOMTByMhxglOJiVRHg35OSnCPGmJFZWpRblxxeV5qQWH2I0BTp7IrOUaHI+MBLzSuINzQxM
- DU3MLA1MLc2MlcR5PQs6EoUE0hNLUrNTUwtSi2D6mDg4pRqY1h1qD3OQfOQrONftenVWxcac
- C7dl8qvr7PZd/cj0a15s6Ptri7T/pMvd39m7qrOPj83ynj7ninUPbv+dYdPtGTGNRS/Vr39V
- nurx6nlsmtzv+g4mBSuLKtRkT9xnJP+uNmm/1knma7rFz2p6k9If6czmPbuS5esb10j/C3uC
- Y6KVI1SqLecebA5kz5tU57CLc5tR2pRzG6V2n3u2+mn1+h1191LE5yos2/I01mGZ5Y/8nMT3
- 580+Rd3j54rOs9HauoPptqIUNysDw8eb+SIbv/mHJfiVb9tok3zmkDenRPmW9e0TD03WFZto
- HWcauTpk2cz1DwRnxeX8rZCtOys/We9+3PdTLevNP58q5BFRYinOSDTUYi4qTgQAXDnGFwwD
- AAA=
-X-CMS-MailID: 20230525153744eucas1p1844ba0a10563caff4bb0f92c82f30f7d
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupmleLIzCtJLcpLzFFi42LZduzned2TDfkpBp3TRC0+n1rLbrHs0mcm
+ i8b5c1gttl79wW5xvHcHi0XvphdMDmweJ94eZPW48Ogcs8eTa5uZPN7vu8rm0bdlFWMAaxSX
+ TUpqTmZZapG+XQJXxqnmDSwFc9IrprS0MzUwrnLqYuTkkBAwkXi3YidLFyMXh5DACkaJv4fu
+ M0E4XxglHq6bzwrhfGaUuHbyEBNMy/Xfq6ASyxklHr2ezA7htDNJfP/5D6yKTcBM4tGXeUBV
+ HBwiAsYSH9vFQcLMAqkSR/8cZAGxhQWcJP7f7gezWQRUJXb+aWMEsXmB4ls+t7BDLJOXmHnp
+ OzvIGE4BZ4mVXyshSgQlTs58wgIxUl6ieetsZpATJATWckhseXuaBaLXRWLe7TtQRwtLvDq+
+ BWqmjMT/nfOh4uUSP89uY4dobmGU2DN1MlSRtcSlrT/B7mcW0JRYv0sfIuwo8a1nDyNIWEKA
+ T+LGW0GIG/gkJm2bzgwR5pXoaBOCqNaR+LZpJhtEWEpi4Y06iLCHxO1zf9knMCrOQvLMLCTP
+ zEJYu4CReRWjeGppcW56arFRXmq5XnFibnFpXrpecn7uJkZgejn97/iXHYzLX33UO8TIxMF4
+ iFGCg1lJhHdDTn6KEG9KYmVValF+fFFpTmrxIUZpDhYlcV5t25PJQgLpiSWp2ampBalFMFkm
+ Dk6pBiYW7up2u5fak5PSz16/cH3ONi5G34oJdu/LlOVUPlwNmlHkmWyUbD03hH2KmQ7T1YgP
+ un+DltRJ/p8fvGTD7IBJDx22Jy9KkS34u9Se0+//vksSTHfi2QsObLYN3uyqpb482UByUam+
+ TLfGPu4wlRsmvZMef3/kmJl5a0mwW036iXMq+U0vI6+UT1Hhbljef3cei+b9b1Nv+/xau37a
+ saCieIWKEm+r909if7yRjXgszcJ8WHLKvKv7Xm6OuOL0eNsXk4TH0yxFQp0ZfOUFDrjLPa6b
+ vKZsSk77Wbtq4Yt3T15+emGrd2JQ8vkEOZ5/77mFFh1vYJymun6mlugVge9S1Ycaf9btDtLo
+ 3735oZESS3FGoqEWc1FxIgB03g2/ngMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrJLMWRmVeSWpSXmKPExsVy+t/xe7onG/JTDObrWHw+tZbdYtmlz0wW
+ jfPnsFpsvfqD3eJ47w4Wi95NL5gc2DxOvD3I6nHh0TlmjyfXNjN5vN93lc2jb8sqxgDWKD2b
+ ovzSklSFjPziElulaEMLIz1DSws9IxNLPUNj81grI1MlfTublNSczLLUIn27BL2MU80bWArm
+ pFdMaWlnamBc5dTFyMkhIWAicf33KtYuRi4OIYGljBIHr+xggUhISezr+c8OYQtL/LnWxQZR
+ 1Mok8fXVdFaQBJuAmcSjL/OAbA4OEQFTiWd7JUHCzAKZEqdf7WMDsYUFnCT+3+4Hm8kioCqx
+ 808bI4jNCxTf8rkFar68xMxL39lBxnAKOEus/FoJEhYCKtn+YRorRLmgxMmZT1ggxstLNG+d
+ zTyBUWAWktQsJKkFjEyrGEVSS4tz03OLjfSKE3OLS/PS9ZLzczcxAuNg27GfW3Ywrnz1Ue8Q
+ IxMH4yFGCQ5mJRHeDTn5KUK8KYmVValF+fFFpTmpxYcYTYHOnsgsJZqcD4zEvJJ4QzMDU0MT
+ M0sDU0szYyVxXs+CjkQhgfTEktTs1NSC1CKYPiYOTqkGpjk7DtgHHr/XOePD9zRPadc98uv1
+ LL9o2WRruZbdObD/wN2IyWuLJKt5Ij3DFJIim6Yabby8fI2l0vwPJZ8EVVP4tj5imvtAf3cs
+ p4NjO+/hlG8H2fLVJylodtgufXPjVMbkHWsffVvIJRxvPWVmbWy3sv/OqS+5Nk15Y5xXyrTD
+ Q7vya7r1G0d7wQ8yt7MMNGU4JP9NWys7e0K4WeTlm6vPMczoqVtxQOWr2LRkDgV/FzPxI59r
+ FPZ/XTQx1DLBlOe0/ZQ4jlM9nBvmzCyuWT91nafclZm3U4T9Baevz79u/Tzj8h+ZFZ72EmWB
+ 8/fW27pNXqooa/aCeWpK5fKLQY4VDamGh/cJ7gtX2xJjr8RSnJFoqMVcVJwIAGu2dJcMAwAA
+X-CMS-MailID: 20230525153745eucas1p1cd6d947ed0cd46a8fdf637b514c237ff
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20230525153744eucas1p1844ba0a10563caff4bb0f92c82f30f7d
+X-RootMTR: 20230525153745eucas1p1cd6d947ed0cd46a8fdf637b514c237ff
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20230525153744eucas1p1844ba0a10563caff4bb0f92c82f30f7d
+X-CMS-RootMailID: 20230525153745eucas1p1cd6d947ed0cd46a8fdf637b514c237ff
 References: <20230525153733.4104-1-t.dzieciol@partner.samsung.com>
- <CGME20230525153744eucas1p1844ba0a10563caff4bb0f92c82f30f7d@eucas1p1.samsung.com>
-Received-SPF: none client-ip=210.118.77.12;
- envelope-from=t.dzieciol@partner.samsung.com; helo=mailout2.w1.samsung.com
+ <CGME20230525153745eucas1p1cd6d947ed0cd46a8fdf637b514c237ff@eucas1p1.samsung.com>
+Received-SPF: none client-ip=210.118.77.11;
+ envelope-from=t.dzieciol@partner.samsung.com; helo=mailout1.w1.samsung.com
 X-Spam_score_int: -69
 X-Spam_score: -7.0
 X-Spam_bar: -------
@@ -134,283 +133,343 @@ descriptors RX modes, especially packet-split modes.
 
 Signed-off-by: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
 ---
- hw/net/igb_core.c   | 170 +++++++++++++++++++++++---------------------
- hw/net/igb_regs.h   |  10 +--
- hw/net/trace-events |   4 +-
- 3 files changed, 96 insertions(+), 88 deletions(-)
+ hw/net/e1000e_core.c     |  18 ++--
+ hw/net/igb_core.c        | 214 +++++++++++++++++++++++++--------------
+ tests/qtest/libqos/igb.c |   5 +
+ 3 files changed, 151 insertions(+), 86 deletions(-)
 
-diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 051980b4f5..3a6df0d55e 100644
---- a/hw/net/igb_core.c
-+++ b/hw/net/igb_core.c
-@@ -1281,15 +1281,11 @@ igb_verify_csum_in_sw(IGBCore *core,
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index f6b628eaef..f29e5e2897 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -1418,11 +1418,11 @@ e1000e_write_hdr_to_rx_buffers(E1000ECore *core,
  }
  
  static void
--igb_build_rx_metadata(IGBCore *core,
--                      struct NetRxPkt *pkt,
--                      bool is_eop,
--                      const E1000E_RSSInfo *rss_info, uint16_t etqf, bool ts,
--                      uint16_t *pkt_info, uint16_t *hdr_info,
--                      uint32_t *rss,
--                      uint32_t *status_flags,
--                      uint16_t *ip_id,
--                      uint16_t *vlan_tag)
-+igb_build_rx_metadata_common(IGBCore *core,
-+                             struct NetRxPkt *pkt,
-+                             bool is_eop,
-+                             uint32_t *status_flags,
-+                             uint16_t *vlan_tag)
+-e1000e_write_to_rx_buffers(E1000ECore *core,
+-                           hwaddr ba[MAX_PS_BUFFERS],
+-                           e1000e_ba_state *bastate,
+-                           const char *data,
+-                           dma_addr_t data_len)
++e1000e_write_payload_frag_to_rx_buffers(E1000ECore *core,
++                                        hwaddr ba[MAX_PS_BUFFERS],
++                                        e1000e_ba_state *bastate,
++                                        const char *data,
++                                        dma_addr_t data_len)
  {
-     struct virtio_net_hdr *vhdr;
-     bool hasip4, hasip6, csum_valid;
-@@ -1298,7 +1294,6 @@ igb_build_rx_metadata(IGBCore *core,
-     *status_flags = E1000_RXD_STAT_DD;
+     while (data_len > 0) {
+         uint32_t cur_buf_len = core->rxbuf_sizes[bastate->cur_idx];
+@@ -1594,8 +1594,10 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
+                 while (copy_size) {
+                     iov_copy = MIN(copy_size, iov->iov_len - iov_ofs);
  
-     /* No additional metadata needed for non-EOP descriptors */
--    /* TODO: EOP apply only to status so don't skip whole function. */
-     if (!is_eop) {
-         goto func_exit;
-     }
-@@ -1315,59 +1310,6 @@ igb_build_rx_metadata(IGBCore *core,
-         trace_e1000e_rx_metadata_vlan(*vlan_tag);
-     }
+-                    e1000e_write_to_rx_buffers(core, ba, &bastate,
+-                                            iov->iov_base + iov_ofs, iov_copy);
++                    e1000e_write_payload_frag_to_rx_buffers(core, ba, &bastate,
++                                                            iov->iov_base +
++                                                            iov_ofs,
++                                                            iov_copy);
  
--    /* Packet parsing results */
--    if ((core->mac[RXCSUM] & E1000_RXCSUM_PCSD) != 0) {
--        if (rss_info->enabled) {
--            *rss = cpu_to_le32(rss_info->hash);
--            trace_igb_rx_metadata_rss(*rss);
--        }
--    } else if (hasip4) {
--            *status_flags |= E1000_RXD_STAT_IPIDV;
--            *ip_id = cpu_to_le16(net_rx_pkt_get_ip_id(pkt));
--            trace_e1000e_rx_metadata_ip_id(*ip_id);
--    }
--
--    if (pkt_info) {
--        *pkt_info = rss_info->enabled ? rss_info->type : 0;
--
--        if (etqf < 8) {
--            *pkt_info |= (BIT(11) | etqf) << 4;
--        } else {
--            if (hasip4) {
--                *pkt_info |= E1000_ADVRXD_PKT_IP4;
--            }
--
--            if (hasip6) {
--                *pkt_info |= E1000_ADVRXD_PKT_IP6;
--            }
--
--            switch (l4hdr_proto) {
--            case ETH_L4_HDR_PROTO_TCP:
--                *pkt_info |= E1000_ADVRXD_PKT_TCP;
--                break;
--
--            case ETH_L4_HDR_PROTO_UDP:
--                *pkt_info |= E1000_ADVRXD_PKT_UDP;
--                break;
--
--            case ETH_L4_HDR_PROTO_SCTP:
--                *pkt_info |= E1000_ADVRXD_PKT_SCTP;
--                break;
--
--            default:
--                break;
--            }
--        }
--    }
--
--    if (hdr_info) {
--        *hdr_info = 0;
--    }
--
--    if (ts) {
--        *status_flags |= BIT(16);
--    }
--
-     /* RX CSO information */
-     if (hasip6 && (core->mac[RFCTL] & E1000_RFCTL_IPV6_XSUM_DIS)) {
-         trace_e1000e_rx_metadata_ipv6_sum_disabled();
-@@ -1423,43 +1365,108 @@ func_exit:
- static inline void
- igb_write_lgcy_rx_descr(IGBCore *core, struct e1000_rx_desc *desc,
-                         struct NetRxPkt *pkt,
--                        const E1000E_RSSInfo *rss_info, uint16_t etqf, bool ts,
-+                        const E1000E_RSSInfo *rss_info,
-                         uint16_t length)
- {
--    uint32_t status_flags, rss;
--    uint16_t ip_id;
-+    uint32_t status_flags;
+                     copy_size -= iov_copy;
+                     iov_ofs += iov_copy;
+@@ -1607,7 +1609,7 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
  
-     assert(!rss_info->enabled);
-+
-+    memset(desc, 0, sizeof(*desc));
-     desc->length = cpu_to_le16(length);
--    desc->csum = 0;
-+    igb_build_rx_metadata_common(core, pkt, pkt != NULL,
-+                                 &status_flags,
-+                                 &desc->special);
- 
--    igb_build_rx_metadata(core, pkt, pkt != NULL,
--                          rss_info, etqf, ts,
--                          NULL, NULL, &rss,
--                          &status_flags, &ip_id,
--                          &desc->special);
-     desc->errors = (uint8_t) (le32_to_cpu(status_flags) >> 24);
-     desc->status = (uint8_t) le32_to_cpu(status_flags);
+                 if (desc_offset + desc_size >= total_size) {
+                     /* Simulate FCS checksum presence in the last descriptor */
+-                    e1000e_write_to_rx_buffers(core, ba, &bastate,
++                    e1000e_write_payload_frag_to_rx_buffers(core, ba, &bastate,
+                           (const char *) &fcs_pad, e1000x_fcs_len(core->mac));
+                 }
+             }
+diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
+index 3a6df0d55e..8e32f39ece 100644
+--- a/hw/net/igb_core.c
++++ b/hw/net/igb_core.c
+@@ -941,6 +941,14 @@ igb_has_rxbufs(IGBCore *core, const E1000ERingInfo *r, size_t total_size)
+                          bufsize;
  }
  
-+static uint16_t
-+igb_rx_desc_get_packet_type(IGBCore *core, struct NetRxPkt *pkt, uint16_t etqf)
++static uint32_t
++igb_rxhdrbufsize(IGBCore *core, const E1000ERingInfo *r)
 +{
-+    uint16_t pkt_type;
-+    bool hasip4, hasip6;
-+    EthL4HdrProto l4hdr_proto;
-+
-+    if (etqf < 8) {
-+        pkt_type = BIT(11) | etqf;
-+        return pkt_type;
-+    }
-+
-+    net_rx_pkt_get_protocols(pkt, &hasip4, &hasip6, &l4hdr_proto);
-+
-+    if (hasip6 && !(core->mac[RFCTL] & E1000_RFCTL_IPV6_DIS)) {
-+        pkt_type = E1000_ADVRXD_PKT_IP6;
-+    } else if (hasip4) {
-+        pkt_type = E1000_ADVRXD_PKT_IP4;
-+    } else {
-+        pkt_type = 0;
-+    }
-+
-+    switch (l4hdr_proto) {
-+    case ETH_L4_HDR_PROTO_TCP:
-+        pkt_type |= E1000_ADVRXD_PKT_TCP;
-+        break;
-+    case ETH_L4_HDR_PROTO_UDP:
-+        pkt_type |= E1000_ADVRXD_PKT_UDP;
-+        break;
-+    case ETH_L4_HDR_PROTO_SCTP:
-+        pkt_type |= E1000_ADVRXD_PKT_SCTP;
-+        break;
-+    default:
-+        break;
-+    }
-+
-+    return pkt_type;
++    uint32_t srrctl = core->mac[E1000_SRRCTL(r->idx) >> 2];
++    return (srrctl & E1000_SRRCTL_BSIZEHDRSIZE_MASK) >>
++           E1000_SRRCTL_BSIZEHDRSIZE_SHIFT;
 +}
 +
- static inline void
- igb_write_adv_rx_descr(IGBCore *core, union e1000_adv_rx_desc *desc,
-                        struct NetRxPkt *pkt,
-                        const E1000E_RSSInfo *rss_info, uint16_t etqf, bool ts,
-                        uint16_t length)
+ void
+ igb_start_recv(IGBCore *core)
  {
-+    bool hasip4, hasip6;
-+    EthL4HdrProto l4hdr_proto;
-+    uint16_t rss_type = 0, pkt_type;
-+    bool eop = (pkt != NULL);
-+    uint32_t adv_desc_status_error = 0;
-     memset(&desc->wb, 0, sizeof(desc->wb));
+@@ -1231,6 +1239,21 @@ igb_read_adv_rx_descr(IGBCore *core, union e1000_adv_rx_desc *desc,
+     *buff_addr = le64_to_cpu(desc->read.pkt_addr);
+ }
  
-     desc->wb.upper.length = cpu_to_le16(length);
-+    igb_build_rx_metadata_common(core, pkt, eop,
-+                                 &desc->wb.upper.status_error,
-+                                 &desc->wb.upper.vlan);
++typedef struct IGBPacketRxDMAState {
++    size_t size;
++    size_t total_size;
++    size_t ps_hdr_len;
++    size_t desc_size;
++    size_t desc_offset;
++    uint32_t rx_desc_packet_buf_size;
++    uint32_t rx_desc_header_buf_size;
++    struct iovec *iov;
++    size_t iov_ofs;
++    bool is_first;
++    uint16_t written;
++    hwaddr ba;
++} IGBPacketRxDMAState;
 +
-+    if (!eop) {
+ static inline void
+ igb_read_rx_descr(IGBCore *core, union e1000_rx_desc_union *desc,
+                   hwaddr *buff_addr)
+@@ -1514,19 +1537,6 @@ igb_pci_dma_write_rx_desc(IGBCore *core, PCIDevice *dev, dma_addr_t addr,
+     }
+ }
+ 
+-static void
+-igb_write_to_rx_buffers(IGBCore *core,
+-                        PCIDevice *d,
+-                        hwaddr ba,
+-                        uint16_t *written,
+-                        const char *data,
+-                        dma_addr_t data_len)
+-{
+-    trace_igb_rx_desc_buff_write(ba, *written, data, data_len);
+-    pci_dma_write(d, ba + *written, data, data_len);
+-    *written += data_len;
+-}
+-
+ static void
+ igb_update_rx_stats(IGBCore *core, const E1000ERingInfo *rxi,
+                     size_t pkt_size, size_t pkt_fcs_size)
+@@ -1552,6 +1562,93 @@ igb_rx_descr_threshold_hit(IGBCore *core, const E1000ERingInfo *rxi)
+            ((core->mac[E1000_SRRCTL(rxi->idx) >> 2] >> 20) & 31) * 16;
+ }
+ 
++static void
++igb_truncate_to_descriptor_size(IGBPacketRxDMAState *pdma_st, size_t *size)
++{
++    if (*size > pdma_st->rx_desc_packet_buf_size) {
++        *size = pdma_st->rx_desc_packet_buf_size;
++    }
++}
++
++static void
++igb_write_payload_frag_to_rx_buffers(IGBCore *core,
++                                     PCIDevice *d,
++                                     hwaddr ba,
++                                     uint16_t *written,
++                                     uint32_t cur_buf_len,
++                                     const char *data,
++                                     dma_addr_t data_len)
++{
++    trace_igb_rx_desc_buff_write(ba, *written, data, data_len);
++    pci_dma_write(d, ba + *written, data, data_len);
++    *written += data_len;
++}
++
++static void
++igb_write_payload_to_rx_buffers(IGBCore *core,
++                                struct NetRxPkt *pkt,
++                                PCIDevice *d,
++                                IGBPacketRxDMAState *pdma_st,
++                                size_t *copy_size)
++{
++    static const uint32_t fcs_pad;
++    size_t iov_copy;
++
++    /* Copy packet payload */
++    while (*copy_size) {
++        iov_copy = MIN(*copy_size, pdma_st->iov->iov_len - pdma_st->iov_ofs);
++        igb_write_payload_frag_to_rx_buffers(core, d,
++                                             pdma_st->ba,
++                                             &pdma_st->written,
++                                             pdma_st->rx_desc_packet_buf_size,
++                                             pdma_st->iov->iov_base +
++                                             pdma_st->iov_ofs,
++                                             iov_copy);
++
++        *copy_size -= iov_copy;
++        pdma_st->iov_ofs += iov_copy;
++        if (pdma_st->iov_ofs == pdma_st->iov->iov_len) {
++            pdma_st->iov++;
++            pdma_st->iov_ofs = 0;
++        }
++    }
++
++    if (pdma_st->desc_offset + pdma_st->desc_size >= pdma_st->total_size) {
++        /* Simulate FCS checksum presence in the last descriptor */
++        igb_write_payload_frag_to_rx_buffers(core, d,
++                                             pdma_st->ba,
++                                             &pdma_st->written,
++                                             pdma_st->rx_desc_packet_buf_size,
++                                             (const char *) &fcs_pad,
++                                             e1000x_fcs_len(core->mac));
++    }
++}
++
++static void
++igb_write_to_rx_buffers(IGBCore *core,
++                        struct NetRxPkt *pkt,
++                        PCIDevice *d,
++                        IGBPacketRxDMAState *pdma_st)
++{
++    size_t copy_size;
++
++    if (!pdma_st->ba) {
++        /* as per intel docs; skip descriptors with null buf addr */
++        trace_e1000e_rx_null_descriptor();
 +        return;
 +    }
 +
-+    net_rx_pkt_get_protocols(pkt, &hasip4, &hasip6, &l4hdr_proto);
-+
-+    if ((core->mac[RXCSUM] & E1000_RXCSUM_PCSD) != 0) {
-+        if (rss_info->enabled) {
-+            desc->wb.lower.hi_dword.rss = cpu_to_le32(rss_info->hash);
-+            rss_type = rss_info->type;
-+            trace_igb_rx_metadata_rss(desc->wb.lower.hi_dword.rss, rss_type);
-+        }
-+    } else if (hasip4) {
-+            adv_desc_status_error |= E1000_RXD_STAT_IPIDV;
-+            desc->wb.lower.hi_dword.csum_ip.ip_id =
-+                cpu_to_le16(net_rx_pkt_get_ip_id(pkt));
-+            trace_e1000e_rx_metadata_ip_id(
-+                desc->wb.lower.hi_dword.csum_ip.ip_id);
++    if (pdma_st->desc_offset >= pdma_st->size) {
++        return;
 +    }
 +
-+    if (ts) {
-+        adv_desc_status_error |= BIT(16);
-+    }
++    pdma_st->desc_size = pdma_st->total_size - pdma_st->desc_offset;
++    igb_truncate_to_descriptor_size(pdma_st, &pdma_st->desc_size);
++    copy_size = pdma_st->size - pdma_st->desc_offset;
++    igb_truncate_to_descriptor_size(pdma_st, &copy_size);
++    igb_write_payload_to_rx_buffers(core, pkt, d, pdma_st, &copy_size);
++}
++
+ static void
+ igb_write_packet_to_guest(IGBCore *core, struct NetRxPkt *pkt,
+                           const E1000E_RxRing *rxr,
+@@ -1561,91 +1658,52 @@ igb_write_packet_to_guest(IGBCore *core, struct NetRxPkt *pkt,
+     PCIDevice *d;
+     dma_addr_t base;
+     union e1000_rx_desc_union desc;
+-    size_t desc_size;
+-    size_t desc_offset = 0;
+-    size_t iov_ofs = 0;
+-
+-    struct iovec *iov = net_rx_pkt_get_iovec(pkt);
+-    size_t size = net_rx_pkt_get_total_len(pkt);
+-    size_t total_size = size + e1000x_fcs_len(core->mac);
+-    const E1000ERingInfo *rxi = rxr->i;
+-    size_t bufsize = igb_rxbufsize(core, rxi);
+-
++    const E1000ERingInfo *rxi;
++    size_t rx_desc_len;
++
++    IGBPacketRxDMAState pdma_st = {0};
++    pdma_st.is_first = true;
++    pdma_st.size = net_rx_pkt_get_total_len(pkt);
++    pdma_st.total_size = pdma_st.size + e1000x_fcs_len(core->mac);
++
++    rxi = rxr->i;
++    rx_desc_len = core->rx_desc_len;
++    pdma_st.rx_desc_packet_buf_size = igb_rxbufsize(core, rxi);
++    pdma_st.rx_desc_header_buf_size = igb_rxhdrbufsize(core, rxi);
++    pdma_st.iov = net_rx_pkt_get_iovec(pkt);
+     d = pcie_sriov_get_vf_at_index(core->owner, rxi->idx % 8);
+     if (!d) {
+         d = core->owner;
+     }
  
--    igb_build_rx_metadata(core, pkt, pkt != NULL,
--                          rss_info, etqf, ts,
--                          &desc->wb.lower.lo_dword.pkt_info,
--                          &desc->wb.lower.lo_dword.hdr_info,
--                          &desc->wb.lower.hi_dword.rss,
--                          &desc->wb.upper.status_error,
--                          &desc->wb.lower.hi_dword.csum_ip.ip_id,
--                          &desc->wb.upper.vlan);
-+    pkt_type = igb_rx_desc_get_packet_type(core, pkt, etqf);
-+    trace_e1000e_rx_metadata_pkt_type(pkt_type);
-+    desc->wb.lower.lo_dword.pkt_info = cpu_to_le16(rss_type | (pkt_type << 4));
-+    desc->wb.upper.status_error |= cpu_to_le32(adv_desc_status_error);
+     do {
+-        hwaddr ba;
+-        uint16_t written = 0;
++        pdma_st.written = 0;
+         bool is_last = false;
+ 
+-        desc_size = total_size - desc_offset;
+-
+-        if (desc_size > bufsize) {
+-            desc_size = bufsize;
+-        }
+-
+         if (igb_ring_empty(core, rxi)) {
+             return;
+         }
+ 
+         base = igb_ring_head_descr(core, rxi);
++        pci_dma_read(d, base, &desc, rx_desc_len);
++        trace_e1000e_rx_descr(rxi->idx, base, rx_desc_len);
+ 
+-        pci_dma_read(d, base, &desc, core->rx_desc_len);
+-
+-        trace_e1000e_rx_descr(rxi->idx, base, core->rx_desc_len);
+-
+-        igb_read_rx_descr(core, &desc, &ba);
+-
+-        if (ba) {
+-            if (desc_offset < size) {
+-                static const uint32_t fcs_pad;
+-                size_t iov_copy;
+-                size_t copy_size = size - desc_offset;
+-                if (copy_size > bufsize) {
+-                    copy_size = bufsize;
+-                }
+-
+-                /* Copy packet payload */
+-                while (copy_size) {
+-                    iov_copy = MIN(copy_size, iov->iov_len - iov_ofs);
+-
+-                    igb_write_to_rx_buffers(core, d, ba, &written,
+-                                            iov->iov_base + iov_ofs, iov_copy);
++        igb_read_rx_descr(core, &desc, &pdma_st.ba);
+ 
+-                    copy_size -= iov_copy;
+-                    iov_ofs += iov_copy;
+-                    if (iov_ofs == iov->iov_len) {
+-                        iov++;
+-                        iov_ofs = 0;
+-                    }
+-                }
+-
+-                if (desc_offset + desc_size >= total_size) {
+-                    /* Simulate FCS checksum presence in the last descriptor */
+-                    igb_write_to_rx_buffers(core, d, ba, &written,
+-                          (const char *) &fcs_pad, e1000x_fcs_len(core->mac));
+-                }
+-            }
+-        } else { /* as per intel docs; skip descriptors with null buf addr */
+-            trace_e1000e_rx_null_descriptor();
+-        }
+-        desc_offset += desc_size;
+-        if (desc_offset >= total_size) {
++        igb_write_to_rx_buffers(core, pkt, d, &pdma_st);
++        pdma_st.desc_offset += pdma_st.desc_size;
++        if (pdma_st.desc_offset >= pdma_st.total_size) {
+             is_last = true;
+         }
+ 
+         igb_write_rx_descr(core, &desc, is_last ? core->rx_pkt : NULL,
+-                           rss_info, etqf, ts, written);
+-        igb_pci_dma_write_rx_desc(core, d, base, &desc, core->rx_desc_len);
+-
+-        igb_ring_advance(core, rxi, core->rx_desc_len / E1000_MIN_RX_DESC_LEN);
+-
+-    } while (desc_offset < total_size);
++                           rss_info, etqf, ts, pdma_st.written);
++        igb_pci_dma_write_rx_desc(core, d, base, &desc, rx_desc_len);
++        igb_ring_advance(core, rxi,
++                         rx_desc_len / E1000_MIN_RX_DESC_LEN);
++    } while (pdma_st.desc_offset < pdma_st.total_size);
+ 
+-    igb_update_rx_stats(core, rxi, size, total_size);
++    igb_update_rx_stats(core, rxi, pdma_st.size, pdma_st.total_size);
  }
  
- static inline void
-@@ -1468,8 +1475,7 @@ igb_write_rx_descr(IGBCore *core, union e1000_rx_desc_union *desc,
-                    uint16_t etqf, bool ts, uint16_t length)
- {
-     if (igb_rx_use_legacy_descriptor(core)) {
--        igb_write_lgcy_rx_descr(core, &desc->legacy, pkt, rss_info,
--                                etqf, ts, length);
-+        igb_write_lgcy_rx_descr(core, &desc->legacy, pkt, rss_info, length);
-     } else {
-         igb_write_adv_rx_descr(core, &desc->adv, pkt, rss_info,
-                                etqf, ts, length);
-diff --git a/hw/net/igb_regs.h b/hw/net/igb_regs.h
-index 82ff195dfc..71a8833229 100644
---- a/hw/net/igb_regs.h
-+++ b/hw/net/igb_regs.h
-@@ -692,11 +692,11 @@ union e1000_adv_rx_desc {
+ static bool
+diff --git a/tests/qtest/libqos/igb.c b/tests/qtest/libqos/igb.c
+index a603468beb..f40c4ec4cd 100644
+--- a/tests/qtest/libqos/igb.c
++++ b/tests/qtest/libqos/igb.c
+@@ -109,6 +109,11 @@ static void igb_pci_start_hw(QOSGraphObject *obj)
+                         E1000_RAH_AV | E1000_RAH_POOL_1 |
+                         le16_to_cpu(*(uint16_t *)(address + 4)));
  
- #define E1000_STATUS_NUM_VFS_SHIFT 14
- 
--#define E1000_ADVRXD_PKT_IP4 BIT(4)
--#define E1000_ADVRXD_PKT_IP6 BIT(6)
--#define E1000_ADVRXD_PKT_TCP BIT(8)
--#define E1000_ADVRXD_PKT_UDP BIT(9)
--#define E1000_ADVRXD_PKT_SCTP BIT(10)
-+#define E1000_ADVRXD_PKT_IP4  BIT(0)
-+#define E1000_ADVRXD_PKT_IP6  BIT(2)
-+#define E1000_ADVRXD_PKT_TCP  BIT(4)
-+#define E1000_ADVRXD_PKT_UDP  BIT(5)
-+#define E1000_ADVRXD_PKT_SCTP BIT(6)
- 
- static inline uint8_t igb_ivar_entry_rx(uint8_t i)
- {
-diff --git a/hw/net/trace-events b/hw/net/trace-events
-index e4a98b2c7d..159df09014 100644
---- a/hw/net/trace-events
-+++ b/hw/net/trace-events
-@@ -279,7 +279,7 @@ igb_link_set_ext_params(bool asd_check, bool speed_select_bypass, bool pfrstd) "
- igb_rx_desc_buff_size(uint32_t b) "buffer size: %u"
- igb_rx_desc_buff_write(uint64_t addr, uint16_t offset, const void* source, uint32_t len) "addr: 0x%"PRIx64", offset: %u, from: %p, length: %u"
- 
--igb_rx_metadata_rss(uint32_t rss) "RSS data: 0x%X"
-+igb_rx_metadata_rss(uint32_t rss, uint16_t rss_pkt_type) "RSS data: rss: 0x%X, rss_pkt_type: 0x%X"
- 
- igb_irq_icr_clear_gpie_nsicr(void) "Clearing ICR on read due to GPIE.NSICR enabled"
- igb_irq_set_iam(uint32_t icr) "Update IAM: 0x%x"
-@@ -294,6 +294,8 @@ igb_irq_eitr_set(uint32_t eitr_num, uint32_t val) "EITR[%u] = 0x%x"
- igb_set_pfmailbox(uint32_t vf_num, uint32_t val) "PFMailbox[%d]: 0x%x"
- igb_set_vfmailbox(uint32_t vf_num, uint32_t val) "VFMailbox[%d]: 0x%x"
- 
-+igb_wrn_rx_desc_modes_not_supp(int desc_type) "Not supported descriptor type: %d"
++    /* Set supported receive descriptor mode */
++    e1000e_macreg_write(&d->e1000e,
++                        E1000_SRRCTL(0),
++                        E1000_SRRCTL_DESCTYPE_ADV_ONEBUF);
 +
- # igbvf.c
- igbvf_wrn_io_addr_unknown(uint64_t addr) "IO unknown register 0x%"PRIx64
- 
+     /* Enable receive */
+     e1000e_macreg_write(&d->e1000e, E1000_RFCTL, E1000_RFCTL_EXTEN);
+     e1000e_macreg_write(&d->e1000e, E1000_RCTL, E1000_RCTL_EN);
 -- 
 2.25.1
 
