@@ -2,90 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B50711170
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 18:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB68C71118E
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 19:01:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2EEj-0003K7-M1; Thu, 25 May 2023 12:54:49 -0400
+	id 1q2EKH-0004ZG-2M; Thu, 25 May 2023 13:00:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1q2EEh-0003Ja-Mq
- for qemu-devel@nongnu.org; Thu, 25 May 2023 12:54:47 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2EJu-0004Y7-RQ
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 13:00:12 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1q2EEg-0006Ll-85
- for qemu-devel@nongnu.org; Thu, 25 May 2023 12:54:47 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6ad13a1fbceso1293427a34.2
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 09:54:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2EJs-0007l6-VY
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 13:00:10 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-64d5b4c3ffeso1830869b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 10:00:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1685033685; x=1687625685;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=pQEAy0LhIbDL76aAiiMzyqY3WLz9EzhyYRF8ON1xaCY=;
- b=BEMrH4Sg6AYiBdJgi3cNLSEL8NrUalnBHSesDMHPeqUyFyg0rxSPx27Qx4lMtAEBoe
- 33sbV/SSpEFaLaTtsjQvuJJceFclaU7gEkupl2l1dEGu5zi+xbh4c/1LrOuiTwoegKUb
- sQCmNd/HoJH5J+f5TZggTQFjJ4PsR8sPzCcVOIKzBMUOphOZ/BIgGGTvuYfaJh9GKjq9
- lSDA/wQ8c3jz++9sNEvcHw8YDx0oZMo/5o//3uqpw4LgQXcdj2jpb+3FpZ1QEt2msmX6
- JFYgp7jwYBBwvvRR9U1ZDgKj/ASPzTuGzndKjbVlsnD2QHikKE+vH08+KQy3kPsnjCqV
- rgcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685033685; x=1687625685;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1685034006; x=1687626006;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pQEAy0LhIbDL76aAiiMzyqY3WLz9EzhyYRF8ON1xaCY=;
- b=MkP0qI8A2w9f2P/bgQSt9vaHZjusW+iy3+N0VvgdRody6PCJqFRdxaiZnDUsqYMGki
- 7X4Xy9wgvMvMFX8g0gov/0E31esArOz0dTY0133mXnwCMI1uu6GmhH+5ug9VGqadhn5K
- i4tjP3SamN2qdNK3STEEhlxlt1nSKUC58o2Hb+Z7/wAh3c82XvcfY0+CTbiwAbquzX0f
- yHCoJ3apNyKA1AZkWDlFpuT8EY5BWS+nJX1r189gafCPWUnuaUXR1D0oVgKixeDji4kt
- Jq0gcBSE55LKE46HDNIBUzLSjHEifNGaMr/UtafHXruTphvpmlO8g8Ac577/34D1SFVm
- J1Cg==
-X-Gm-Message-State: AC+VfDzlaoTyg0bH6cliZyywAJIm6pfkIg/wMMYNCz9QH73zESo74JQu
- 7PTqM1U9Zm4eKiLEH5B4tpiubA==
-X-Google-Smtp-Source: ACHHUZ4KGYTmll31uL4n9T4nxiEIZ1/uAwVV4NxVJ16xkYJxPYMdSPODwd/FAVWMgvx0HXE9Za98cg==
-X-Received: by 2002:a05:6808:1917:b0:398:2c02:20a2 with SMTP id
- bf23-20020a056808191700b003982c0220a2mr137482oib.17.1685033685146; 
- Thu, 25 May 2023 09:54:45 -0700 (PDT)
-Received: from sunil-laptop ([106.51.186.3]) by smtp.gmail.com with ESMTPSA id
- w16-20020a056808091000b003907c4bc505sm678664oih.11.2023.05.25.09.54.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 09:54:44 -0700 (PDT)
-Date: Thu, 25 May 2023 22:24:37 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Andrea Bolognani <abologna@redhat.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Heinrich Schuchardt <xypron.glpk@gmx.de>
-Subject: Re: [PATCH v3] hw/riscv: virt: Assume M-mode FW in pflash0 only when
- "-bios none"
-Message-ID: <ZG+SzQYPoyYfMFVi@sunil-laptop>
-References: <20230523102805.100160-1-sunilvl@ventanamicro.com>
- <CABJz62MQ5uRHUP4LLKt=AxTf-Sz0aTEOLWDz=9ftK=H3tZ9JUg@mail.gmail.com>
- <ZG5KgLQ4H/leWKJi@sunil-laptop>
- <CABJz62NHXrBKkc3Gux0TXOjUCO4up-OunwJ6UO94ts+rTgVsAg@mail.gmail.com>
- <ZG94lvAYggnRBfLQ@sunil-laptop>
- <CABJz62NUpY35u2ykPXVHp8a_RUyjCnC1_DpWsYNuSBftHe4qBQ@mail.gmail.com>
+ bh=zfJ5sDaD5Eigy3wjJQlySka7C8RlP5SjSYtqHDSStgE=;
+ b=tO/6PGk3sh44mk9jatSioB/4GkvY/jsBbJVufQ5xu1qoHgAad6F/HPw+GelBQ5RlAp
+ j4eZ5+BXP6Ex0YoN9fXdxXQQ88Y1Q9ATTrKHw44pYmq9+Opz0TxFD6UNOU/zhOyDsDrK
+ Zwscqr1k9tlSLx7P7xip6pTvbpt1tMWgo9K5k62VSw73AylENSPCRZdezOa1uKNn3xLR
+ EvAmpY8d/fhh+oN8Q/vcNzjC9+B52xmSm7yDAZS1JztJM31eQ0pYgw1WjGCe5vMXULFW
+ eSvHYGE1jgteXHQVYiVz/XUN/KpKmyttXEIyd71wDx0/lVxBEQBQtZNs/MlS+Iz+HO8D
+ CAmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685034006; x=1687626006;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=zfJ5sDaD5Eigy3wjJQlySka7C8RlP5SjSYtqHDSStgE=;
+ b=ZpTkItQZsg+618Tshvr5SMY86D76XLcwfyElG76zNc5tCIrxUffJZ3nUa7qlsNFBPK
+ kbNkc+8pzJqj9Dydy69TVQr+qGkIhpritDe7sdoDPYGrYa6ZNalCBUCmmsHGB0xfvqjx
+ tR6dLk/rnR7H2jciObDPiZhtbEW20lQUdPgtgHt3cScfNzCs+Ui70lXrqzEcOcyQu8VA
+ os8wJSM/w9Ubm+lFq4RMcSqbguS0HaoAHV4rWvESqh5UotIvxCA+s7HHCvybECsXkA43
+ EpOMt54Z8mZfOzw1KFcmjbDLgLOSo+zt0zaFN7HHRzEzu+CvqK1OafThtlPpHKwjs7Xv
+ JJ6g==
+X-Gm-Message-State: AC+VfDwG0xgAyGELHbpJT59QgnYQgp6mUDM1bdsT0uyKyQtIxZoTnMOY
+ zpgARRffpoq4w2pr5kM1hYq938ntlUSaPDJND+c=
+X-Google-Smtp-Source: ACHHUZ7R+ymdsfnZoHYlBwycnGXoaAL+ChiIEi2uQDXrEdvXQfbNrT50Vvzs1it8hBuVy1UdirP4dQ==
+X-Received: by 2002:a05:6a00:1a16:b0:64d:277c:4ab2 with SMTP id
+ g22-20020a056a001a1600b0064d277c4ab2mr9765764pfv.24.1685034006163; 
+ Thu, 25 May 2023 10:00:06 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:7ac5:31cc:3997:3a16?
+ ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
+ by smtp.gmail.com with ESMTPSA id
+ j15-20020a62b60f000000b0063b6451cd01sm1398683pff.121.2023.05.25.10.00.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 May 2023 10:00:05 -0700 (PDT)
+Message-ID: <7b9511f8-eca4-8a27-9d4e-31a6f16a6bb0@linaro.org>
+Date: Thu, 25 May 2023 10:00:03 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABJz62NUpY35u2ykPXVHp8a_RUyjCnC1_DpWsYNuSBftHe4qBQ@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-ot1-x32c.google.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+Subject: tests/avocado/virtio-gpu.py:VirtioGPUx86.test_vhost_user_vga_virgl:
+ ERROR
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,61 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 25, 2023 at 04:19:12PM +0000, Andrea Bolognani wrote:
-> On Thu, May 25, 2023 at 08:32:46PM +0530, Sunil V L wrote:
-> > On Thu, May 25, 2023 at 01:43:28PM +0000, Andrea Bolognani wrote:
-> > > I have also tried booting an openSUSE Tumbleweed "JeOS" image, since
-> > > that's the only distro I'm aware of that uses UEFI boot on RISC-V at
-> > > this point - though they use U-Boot's UEFI support rather than edk2.
-> > >
-> > > During that attempt, I ended up in the edk2 shell. Running
-> > >
-> > >   fs0:\efi\boot\bootriscv64.efi
-> > >
-> > > brings up GRUB just fine, but selecting the default boot entry
-> > > results in
-> > >
-> > >   Loading Linux 6.3.2-1-default ...
-> > >   Loading initial ramdisk ...
-> > >   EFI stub: Booting Linux Kernel...
-> > >   EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path
-> > >   EFI stub: Generating empty DTB
-> > >   EFI stub: Exiting boot services...
-> > >
-> > > being printed, after which it's back to OpenSBI and from there to
-> > > edk2 again.
-> >
-> > Thanks!. Please add -machine acpi=off in qemu command to boot the
-> > kernel.
-> 
-> Yup, that worked! It booted all the way to the login prompt :)
-> 
-> Note that libvirt automatically adds acpi=off, so that won't be a
-> concern for libvirt users.
-> 
-Great!. Thanks. Since we decided to keep acpi enabled by default in
-qemu similar to other architectures, we need to turn this off until
-complete ACPI support is merged in linux kernel. Thanks for the
-information that libvirt turns it off by default.
+Hi guys,
 
-> > > > > Going further and testing libvirt integration. After hacking around
-> > > > > other issues, I finally stumbled upon this error:
-> > > > >
-> > > > >   qemu-system-riscv64: Property 'virt-machine.pflash0' not found
-> > > >
-> > > > Thanks!. This needs some investigation. Let me look into supporting
-> > > > this.
-> > >
-> > > Yes please! It's critical to libvirt integration. Feel free to CC me
-> > > when you post patches and I'll gladly test them.
-> >
-> > Sure, I have the fix ready. I need to convert this into a patch series
-> > now. Will send it soon and thanks in advance for helping with testing.
-> 
-> Excellent! Looking forward to it :)
-> 
-Sent.
+https://gitlab.com/qemu-project/qemu/-/jobs/4352476431
+https://gitlab.com/qemu-project/qemu/-/jobs/4352476434
 
-Thanks,
-Sunil
+This test ERRORs on the azure k8s runners with
+
+qemu-system-x86_64: egl: no drm render node available
+qemu-system-x86_64: egl: render node init failed
+
+Can we please SKIP the test if the required resource is not available?
+
+
+r~
 
