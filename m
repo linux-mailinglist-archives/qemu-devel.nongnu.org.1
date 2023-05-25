@@ -2,71 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C558710C45
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7840E710C46
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 14:45:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2AJw-00053v-ES; Thu, 25 May 2023 08:43:56 -0400
+	id 1q2AKe-0005RA-FG; Thu, 25 May 2023 08:44:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q2AJt-00053R-9o
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:43:53 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q2AKb-0005Qg-Um
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:44:37 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q2AJr-0000Sz-FQ
- for qemu-devel@nongnu.org; Thu, 25 May 2023 08:43:53 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-51190fd46c3so3793324a12.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 05:43:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q2AKa-0000kZ-4e
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 08:44:37 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3078cc99232so2029617f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 05:44:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685018629; x=1687610629;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1685018674; x=1687610674;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HA/F61vPeDrWGjErZmjlvsJKcEf5NVSbiqdZpYg9p9Y=;
- b=Ap4kOfp5QNIRWGZJuY8IJfMF9AYF6RtLJ+8AtZYTBgrKyrLCl1MZvmUyeP8qZsclLh
- oNiotE3JtovoWZ3b8gCagWTWGkAzJ3CGCX/jR/+qy02E8UFsi2337UZaR3lStdjFTQdE
- bJY6BV7WhlhJqJmCEKkCOWieOoyOiunKd1APTGsoZo74EBNskIP0vFtFdOjKXthR+eYa
- DvIPm+Nrgl/lWahI5s525NGfNnbfwHm9i/bAhFHrYbJJCYqhEQEhvxVq3GaJ3bNJKeZf
- CcWHJUI85e+RQXlkkclq0LwZgfh6LWiBLTfJP6YWKpxcYdxEf4xkj3Wn4vBsDfedw/6y
- 8/bg==
+ bh=id/Zq5XB2mYJQm6VYe6hxE5/akwCUV/BsTYBt6PNqSk=;
+ b=qcckRUqkeylcBK/S751U7I9gtXZ0rsaZPX6Y4RsBEhEcutIECAYmLig49Gr0VimVb1
+ BFu1i4uUV8Ji0fsOt7x92nZEPRYBPnLGcjihT4yX/siAk88fROFuY3iViICtAAjwOq3o
+ 6Ame0WH7gN0QKM2HSoppTmQA1zFTQg9OcttqqnjLu3NmlARX7fD72mmnDFSQr0LhjZXJ
+ W+wDdpUZl7SJLMKS7TsIqOEFD8hXY7CATevM9DCHs5fWUuPkPeHdTSBzBOyameNEubxp
+ X4S1sYoZM5jRUBnxn+Q6uo+Gllkj73kqvn6DwSJFxYfwJZUkDcUEmPimLl/ODEDJeqe2
+ IjEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685018629; x=1687610629;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HA/F61vPeDrWGjErZmjlvsJKcEf5NVSbiqdZpYg9p9Y=;
- b=gMDkwZsZ3sD5z+540+8ujr+j3qttbGY8cm/2hqu+ykXBicUjqy2q6GpD5mdwX7RzaC
- vpAbPdR3iE7ur48+F2NoWov4Tq/v4CV1Ye0H1QczNWf1wbHSn0As9zJQTicl8GI1h+Oa
- 0bAamBvzi/2VsDmeB8ZVGnWIMdNFIDWco4b9sKyUyeuONl/Ujz6N3YPys6T48XWYeCA9
- eTtHJfJziydEBeOeg34PgbM257NAuE5gFRqy/uSxzd7BuvW0dtugZXylg9165+kyW/GR
- Uw35dvKrejte3f83xnBGU9OH1yHCDsESc9Pg4YOCfTQwxa4ArtyUH+a+HqwYu9bkU7+1
- fwMQ==
-X-Gm-Message-State: AC+VfDy1+xD3OB0XSb3xr/E5rTS0awgcEGPt8UncRJLWXe7L24sz1W24
- P2qscRq8OD94kk1bOid2u3cUR2vSal/wS7Lj/K2piQ==
-X-Google-Smtp-Source: ACHHUZ54k+tq09adFd4X0oDtfRncAFlwpZ2jgVz0+6NQOO59yIIbI37BDa/F+1Cm/vkriPqia4ecpAWtrMVytHB7GE0=
-X-Received: by 2002:aa7:c949:0:b0:50b:c62f:9ff0 with SMTP id
- h9-20020aa7c949000000b0050bc62f9ff0mr3368720edt.30.1685018629652; Thu, 25 May
- 2023 05:43:49 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685018674; x=1687610674;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=id/Zq5XB2mYJQm6VYe6hxE5/akwCUV/BsTYBt6PNqSk=;
+ b=Z+XWFBI5IW9fPGSzE5qvRByBAyDwPxCECcAHpIcddHV2kYjzrixRLf7m83cFsFXPtF
+ ojgL6xHcAyt6xQ+Fqannw13iwQOimQ/kEQ4mtGukmqWkZaZjTRmQHZlXGxL5imsTPey7
+ Ii8B1rUWYobDaT9cK7hI20Rb/ruNZP0g98v7O/htvIy6ugr3PbVILdgKc3kJUtxHwekE
+ pgx4leAE44SNc0KTANn+oZ+DOaQW+L4M/rYzlRXflK5Fhzme2ZhF2Yp7M3FuFnotzYF/
+ 4rUC3mNB0cA90xICQQGHNQnf9UqExUaqP1+XONw8iwOhTUq2OkcTI05/T7z7iqnXK2Zn
+ 2eBw==
+X-Gm-Message-State: AC+VfDwsXQu/VO+ZANQR6rvH4k5P092p0FZfJ9YX049WVxoQG+o/i553
+ e1bJ73mllwVoJ04lH+sxVrqOKg==
+X-Google-Smtp-Source: ACHHUZ4PnnegAB7CnsKUv0RAgN+KrA8KP1zH3D6nT2NLvLyuSvMi2n1/W2luEvotTZI4xybCkTBBhA==
+X-Received: by 2002:a05:6000:892:b0:309:22ba:dcdf with SMTP id
+ cs18-20020a056000089200b0030922badcdfmr2269084wrb.32.1685018673798; 
+ Thu, 25 May 2023 05:44:33 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ a16-20020a5d4d50000000b003047ea78b42sm1732368wru.43.2023.05.25.05.44.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 May 2023 05:44:33 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id A8E711FFBB;
+ Thu, 25 May 2023 13:44:32 +0100 (BST)
+References: <20230524133952.3971948-1-alex.bennee@linaro.org>
+ <20230524133952.3971948-6-alex.bennee@linaro.org>
+ <87353kskvz.fsf@pond.sub.org>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, Kyle
+ Evans <kevans@freebsd.org>, libvir-list@redhat.com, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Greg Kurz
+ <groug@kaod.org>, Eric
+ Blake <eblake@redhat.com>, Warner Losh <imp@bsdimp.com>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Michael Roth <michael.roth@amd.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Christian Schoenebeck
+ <qemu_oss@crudebyte.com>, Riku Voipio <riku.voipio@iki.fi>, Paolo  Bonzini
+ <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>
+Subject: Re: [PATCH v5 05/10] qapi: make the vcpu parameters deprecated for 8.1
+Date: Thu, 25 May 2023 13:43:56 +0100
+In-reply-to: <87353kskvz.fsf@pond.sub.org>
+Message-ID: <874jo0vavj.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230524145906.33156-1-philmd@linaro.org>
- <20230524145906.33156-2-philmd@linaro.org>
- <78cc4cd6-f961-a271-6d00-b04d5a5732ff@linaro.org>
-In-Reply-To: <78cc4cd6-f961-a271-6d00-b04d5a5732ff@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 25 May 2023 13:43:38 +0100
-Message-ID: <CAFEAcA-BocRfJ4SmA+Sy0t+LUrVvPkbRW9gGfGjG0Le-UFyG7w@mail.gmail.com>
-Subject: Re: [PATCH 01/10] hw/arm/realview: Simplify using 'break' statement
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,71 +106,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 24 May 2023 at 20:01, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+
+Markus Armbruster <armbru@redhat.com> writes:
+
+> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 >
-> On 5/24/23 07:58, Philippe Mathieu-Daud=C3=A9 wrote:
-> > The 'break' statement terminates the execution of the nearest
-> > enclosing 'for' statement in which it appears.
-> >
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> > ---
-> >   hw/arm/realview.c | 6 ++----
-> >   1 file changed, 2 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/hw/arm/realview.c b/hw/arm/realview.c
-> > index a5aa2f046a..a52ff35084 100644
-> > --- a/hw/arm/realview.c
-> > +++ b/hw/arm/realview.c
-> > @@ -88,7 +88,6 @@ static void realview_init(MachineState *machine,
-> >       I2CBus *i2c;
-> >       int n;
-> >       unsigned int smp_cpus =3D machine->smp.cpus;
-> > -    int done_nic =3D 0;
-> >       qemu_irq cpu_irq[4];
-> >       int is_mpcore =3D 0;
-> >       int is_pb =3D 0;
-> > @@ -294,14 +293,13 @@ static void realview_init(MachineState *machine,
-> >       for(n =3D 0; n < nb_nics; n++) {
-> >           nd =3D &nd_table[n];
-> >
-> > -        if (!done_nic && (!nd->model ||
-> > -                    strcmp(nd->model, is_pb ? "lan9118" : "smc91c111")=
- =3D=3D 0)) {
-> > +        if (!nd->model || strcmp(nd->model, is_pb ? "lan9118" : "smc91=
-c111") =3D=3D 0) {
-> >               if (is_pb) {
-> >                   lan9118_init(nd, 0x4e000000, pic[28]);
-> >               } else {
-> >                   smc91c111_init(nd, 0x4e000000, pic[28]);
-> >               }
-> > -            done_nic =3D 1;
-> > +            break;
+>> I don't think I can remove the parameters directly but certainly mark
+>> them as deprecated.
+>>
+>> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Message-Id: <20230523125000.3674739-6-alex.bennee@linaro.org>
+>>
+>> ---
+>> v5
+>>   - reword match description
+>>   - fix reference to return for set operation
+>> ---
+>>  docs/about/deprecated.rst |  9 +++++++++
+>>  qapi/trace.json           | 40 +++++++++++++++++----------------------
+>>  2 files changed, 26 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+>> index e934e0a13a..e44cde057f 100644
+>> --- a/docs/about/deprecated.rst
+>> +++ b/docs/about/deprecated.rst
+>> @@ -254,6 +254,15 @@ it. Since all recent x86 hardware from the past >10=
+ years is capable of the
+>>  QEMU API (QAPI) events
+>>  ----------------------
 >
-> While I agree this preserves existing behaviour, it doesn't seem like the=
- logic is
-> actually correct.  This will only ever connect 1 of nb_nics.
+> Not this patch's fault: the headline should be "QEMU Machine Protocol
+> (QMP) events".  The section should directly follow section "QEMU Machine
+> Protocol (QMP) commands".
+>
+> I'd go one step farther, and fuse the two sections under the heading
+> "QEMU Machine Protocol (QMP)".
+>
+>>=20=20
+>> +``vcpu`` trace events (since 8.1)
+>> +'''''''''''''''''''''''''''''''''
+>> +
+>> +The ability to instrument QEMU helper functions with vcpu aware trace
+>
+> Should this be "vCPU-aware"?
+>
+>> +points was removed in 7.0. However the QAPI still exposed the vcpu
+>
+> s/the QAPI/QMP/
+>
+>> +parameter. This argument has now been deprecated and the remaining
+>> +used trace points converted to plain trace points selected just by
+>
+> "remaining trace points that used it"?
+>
+>> +name.
+>> +
+>>  ``MEM_UNPLUG_ERROR`` (since 6.2)
+>>  ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+>>=20=20
+>> diff --git a/qapi/trace.json b/qapi/trace.json
+>> index 6bf0af0946..e561f3d3da 100644
+>> --- a/qapi/trace.json
+>> +++ b/qapi/trace.json
+>> @@ -37,13 +37,14 @@
+>>  #
+>>  # @vcpu: Whether this is a per-vCPU event (since 2.7).
+>>  #
+>> -# An event is per-vCPU if it has the "vcpu" property in the
+>> -# "trace-events" files.
+>> +# Features:
+>> +# @deprecated: Member @vcpu is deprecated, and always false.
+>>  #
+>>  # Since: 2.2
+>>  ##
+>>  { 'struct': 'TraceEventInfo',
+>> -  'data': {'name': 'str', 'state': 'TraceEventState', 'vcpu': 'bool'} }
+>> +  'data': {'name': 'str', 'state': 'TraceEventState',
+>> +           'vcpu': { 'type': 'bool', 'features': ['deprecated'] } } }
+>>=20=20
+>>  ##
+>>  # @trace-event-get-state:
+>> @@ -52,19 +53,15 @@
+>>  #
+>>  # @name: Event name pattern (case-sensitive glob).
+>>  #
+>> -# @vcpu: The vCPU to query (any by default; since 2.7).
+>> +# @vcpu: The vCPU to query (since 2.7).
+>>  #
+>> -# Returns: a list of @TraceEventInfo for the matching events
+>> -#
+>> -# An event is returned if:
+>> +# Features:
+>> +# @deprecated: Member @vcpu is deprecated, and always false.
+>
+> This isn't quite right: parameter @vcpu cannot be false, it's int.
+>
+> I figure specifying the parameter makes no sense anymore, because if you
+> do, the command will return an empty list.  Correct?
 
-Does it preserve the existing behaviour, though? I think the
-intent of the code is:
- * we only create one at most hard-wired NIC (the lan9118 or smc91c111,
-   depending on the board type), and we do that for the
-   first entry in the nd_table which specifies a matching 'model'
- * every other NIC is a PCI rtl8139 (or ignored if the board
-   has no PCI)
+Well its not longer checked so I guess "and always ignored" would be
+more correct.
 
-Maybe I'm misreading the current code, but it looks to me
-like it does this: done_nic is a flag for "did we create
-the hardwired device", and we only create the hardwired
-device if the flag is false and the NIC model matches.
-Once we've created the hardwired device we set done_nic
-to true and the if() will then always take us into the
-rtl8139 part.
-
-On the other hand, this patch using break means that
-once the hardwired NIC has been created we'll exit the
-loop entirely and won't create any subsequent PCI devices.
-
-thanks
--- PMM
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
