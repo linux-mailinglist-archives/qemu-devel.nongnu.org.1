@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FBF710E14
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53884710E16
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 16:17:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Bkt-0004Qt-T9; Thu, 25 May 2023 10:15:51 -0400
+	id 1q2Bl9-0004f3-O2; Thu, 25 May 2023 10:16:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bkl-0004NO-L8
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:15:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q2Bks-0004WZ-N3
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:15:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Bkj-0007Wz-9g
- for qemu-devel@nongnu.org; Thu, 25 May 2023 10:15:43 -0400
+ id 1q2Bkr-0007ZX-79
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 10:15:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685024140;
+ s=mimecast20190719; t=1685024148;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6rWFKlVMy0k6QsZKVGs7nbdEOS1yECUynhVrbATw6mE=;
- b=jTVof/mgM46xQHGiCi8hzTKjjm0E76Qqm2kmnI89ofrKr0VHVAhIabgNQWYkxMgsxbxUy2
- e54TkLZV1pOHCRAphIjO8qL634mSJV7PTRFOHeSxy6Tt2I2ES1K3dxMXmXcnh9SPjIq5Aj
- +9lcNwlzE34m2mDWMAmt6fxBhAGvLnU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CbaiOJ+X9dPem4hTQLiSjkY45220lj4bM9vCCks40hU=;
+ b=hTAbNcFdQAyy8W5VIzeQEx80cDFPtl8y6kkxX9d8j4F4g3BWa+cmsT4ZB4Rq54pbU4pdRG
+ pbQa5Pft4VsCgwSCDRq1VX/eAf59og0X4kiwflp4ZOHWHD7GlbqJ5n2s/2vhutE2tdyxFp
+ uayDU4AXYgbAfwvIwZq718Bb4Tw4wb0=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-461-vwj1a1wBOQiBN5bSTRRvyw-1; Thu, 25 May 2023 10:15:38 -0400
-X-MC-Unique: vwj1a1wBOQiBN5bSTRRvyw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-96f9aa23593so69026166b.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:37 -0700 (PDT)
+ us-mta-190-K5Pt6cZgNuicshNX-XV2bQ-1; Thu, 25 May 2023 10:15:39 -0400
+X-MC-Unique: K5Pt6cZgNuicshNX-XV2bQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-513f4c301e8so2758181a12.2
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 07:15:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685024136; x=1687616136;
+ d=1e100.net; s=20221208; t=1685024138; x=1687616138;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6rWFKlVMy0k6QsZKVGs7nbdEOS1yECUynhVrbATw6mE=;
- b=XHGdEZf1Gayq7jeWh4mzn/bYfwaXOA8Gkb71Dy5BMoW7fUkHlQdPnDVJrAvX3GK66J
- y7PEiPNQVENyTsVMlO3cElcQgwigLBQfB638y+3SPj4TKjFy0oIx+mkqY3uya2zCUoWD
- p1OMdeBGwegVLCpYsROKpgF+CS4tWbH1VFCob7GvjaD4He0W1qSrQ6YDkWsW3uZKSteZ
- Ymk24bR+pm/QIDrJrB+4XVMZJpyjKSvRZrkOG/KQ0qFx86Q8aVm83DoOW+ss4qIDc9c+
- ifUTbNw9Auxvj1jmy49b4800TU3/nKLcRfnFHNWR2LaxhOPllx2sOskcMAdHVR9qIKkS
- ma3g==
-X-Gm-Message-State: AC+VfDxBHGNGIhRML7uPbI7WxB05n/8l5z5nVWHzJdaI6PAjAxcIm2I1
- zp9DAIIHtnP5pMeC+KwkA2zIeGKxTmEtSTRKSG0chHYSMmOMXjQyL+9uG+er4gvfsSAkah12Q0N
- Z8MOiaXTaq6cJi9LyOj0BqjIljCXgx5EVPGmEXD6YX/DvKQ4SkVOCZHuT3zI3vCokH507AxcWgG
- A=
-X-Received: by 2002:a17:907:7288:b0:94f:4102:25c8 with SMTP id
- dt8-20020a170907728800b0094f410225c8mr2007805ejc.61.1685024136465; 
- Thu, 25 May 2023 07:15:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4zmLoTpFvXAEsM791/Ongute9HpMDYoxaU9v3+f8yfXQcTGXTZ/dVmrW22l38EffjvYDNdVQ==
-X-Received: by 2002:a17:907:7288:b0:94f:4102:25c8 with SMTP id
- dt8-20020a170907728800b0094f410225c8mr2007783ejc.61.1685024136123; 
- Thu, 25 May 2023 07:15:36 -0700 (PDT)
+ bh=CbaiOJ+X9dPem4hTQLiSjkY45220lj4bM9vCCks40hU=;
+ b=WYwtC9oBjbQZ/sXtVnc2DYvtBY7SVCXxESdaSa8cAY72Pz1FDjvULgmLa5BGeyJ8M4
+ n07JeNjRX/Kk6cnG9qM8D3+TG6RZRBqwcS2M3Xj38dDgiKyQywbPBmN7p5S0LmOxWD1b
+ bqBAnbXK0fuFqGYB27tJwM8CZtOadDvG6PGI7DNJLPwR52rNzgGYyTRlDYZH5CYVSB8N
+ mlDQlFaAC8fIHZY513a9iHTSJ31PuedTL1wrOhKQezGvb0MLSB+MUwMyB2Sg0c7ZIIpk
+ y4RWETOqljdrKjjOwiGUv8E2aPdtxg8FdmdXDBdQX5meB8q+toyFS9wf7AAA1RN+XxQi
+ qfvw==
+X-Gm-Message-State: AC+VfDyD4OzxPQZywVLLVKdi0GhDBSpTEYz70KPtE6wElIAFfR67z+lb
+ 8PUUOoSwm9ipY43X79byM7gWrgG4fRAJI/EMqXidG1Dh1/RBNfsnEcuXHATzOo0HdOa398uU7x6
+ LW1bA3SPnAfiAckAfXwC3mU2wcyKotkPBd97zGfij6z3lzb4dRc1ct9ZnC/8bIcmEAgTohI9qp5
+ 4=
+X-Received: by 2002:aa7:d448:0:b0:509:d7d0:d71a with SMTP id
+ q8-20020aa7d448000000b00509d7d0d71amr5074986edr.26.1685024138006; 
+ Thu, 25 May 2023 07:15:38 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4ohVSuPlRq9hKLYVvwpQu99Byyl4T1ent/ynfk2oV/YRPbwfvYgtrZpWbMrILwhJsh6tTyNw==
+X-Received: by 2002:aa7:d448:0:b0:509:d7d0:d71a with SMTP id
+ q8-20020aa7d448000000b00509d7d0d71amr5074973edr.26.1685024137774; 
+ Thu, 25 May 2023 07:15:37 -0700 (PDT)
 Received: from [192.168.10.117] ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
  by smtp.gmail.com with ESMTPSA id
- z11-20020a170906714b00b0096f89fd4bf8sm900032ejj.122.2023.05.25.07.15.34
+ d8-20020a50fb08000000b00502689a06b2sm583730edq.91.2023.05.25.07.15.36
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 07:15:35 -0700 (PDT)
+ Thu, 25 May 2023 07:15:37 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Nicolas Saenz Julienne <nsaenz@amazon.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/20] meson.build: Fix glib -Wno-unused-function workaround
-Date: Thu, 25 May 2023 16:15:14 +0200
-Message-Id: <20230525141532.295817-3-pbonzini@redhat.com>
+Subject: [PULL 03/20] meson: fix rule for qemu-ga installer
+Date: Thu, 25 May 2023 16:15:15 +0200
+Message-Id: <20230525141532.295817-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230525141532.295817-1-pbonzini@redhat.com>
 References: <20230525141532.295817-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,39 +100,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+The bindir variable is not available in the "glib" variable, which is an internal
+dependency (created with "declare_dependency").  Use glib_pc instead, which contains
+the variable as it is instantiated from glib-2.0.pc.
 
-We want to only enable '-Wno-unused-function' if glib's version is
-smaller than '2.57.2' and has a G_DEFINE_AUTOPTR_CLEANUP_FUNC()
-implementation that doesn't take into account unused functions. But the
-compilation test isn't working as intended as '-Wunused-function' isn't
-enabled while running it.
-
-Let's enable it.
-
-Fixes: fc9a809e0d28 ("build: move glib detection and workarounds to meson")
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230524173123.66483-1-nsaenz@amazon.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 2 +-
+ qga/meson.build | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 0a5cdefd4d3d..448b71ad5b5c 100644
---- a/meson.build
-+++ b/meson.build
-@@ -770,7 +770,7 @@ if not cc.compiles('''
-     g_free(f);
-   }
-   G_DEFINE_AUTOPTR_CLEANUP_FUNC(Foo, foo_free)
--  int main(void) { return 0; }''', dependencies: glib_pc, args: ['-Werror'])
-+  int main(void) { return 0; }''', dependencies: glib_pc, args: ['-Wunused-function', '-Werror'])
-   glib_cflags += cc.get_supported_arguments('-Wno-unused-function')
- endif
- glib = declare_dependency(dependencies: [glib_pc, gmodule],
+diff --git a/qga/meson.build b/qga/meson.build
+index 622b5f94a232..d3291b4376cb 100644
+--- a/qga/meson.build
++++ b/qga/meson.build
+@@ -154,7 +154,7 @@ if targetos == 'windows'
+                               qemu_ga_msi_arch[cpu],
+                               qemu_ga_msi_vss,
+                               '-D', 'BUILD_DIR=' + meson.project_build_root(),
+-                              '-D', 'BIN_DIR=' + glib.get_variable('bindir'),
++                              '-D', 'BIN_DIR=' + glib_pc.get_variable('bindir'),
+                               '-D', 'QEMU_GA_VERSION=' + config_host['QEMU_GA_VERSION'],
+                               '-D', 'QEMU_GA_MANUFACTURER=' + config_host['QEMU_GA_MANUFACTURER'],
+                               '-D', 'QEMU_GA_DISTRO=' + config_host['QEMU_GA_DISTRO'],
 -- 
 2.40.1
 
