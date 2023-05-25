@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CC3711A1C
+	by mail.lfdr.de (Postfix) with ESMTPS id 37689711A1A
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 00:21:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2JJs-00025Q-EH; Thu, 25 May 2023 18:20:28 -0400
+	id 1q2JJt-00026A-Q3; Thu, 25 May 2023 18:20:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3Jt9vZAgKCs0Ct4D5utDz77z4x.v759x5D-wxEx4676z6D.7Az@flex--talumbau.bounces.google.com>)
- id 1q2JJq-00024p-7X
- for qemu-devel@nongnu.org; Thu, 25 May 2023 18:20:26 -0400
-Received: from mail-io1-xd4a.google.com ([2607:f8b0:4864:20::d4a])
+ <3J99vZAgKCs4Du5E6vuE08805y.w86Ay6E-xyFy578707E.8B0@flex--talumbau.bounces.google.com>)
+ id 1q2JJr-00025D-Oy
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 18:20:27 -0400
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3Jt9vZAgKCs0Ct4D5utDz77z4x.v759x5D-wxEx4676z6D.7Az@flex--talumbau.bounces.google.com>)
- id 1q2JJo-0004R1-2Q
- for qemu-devel@nongnu.org; Thu, 25 May 2023 18:20:25 -0400
-Received: by mail-io1-xd4a.google.com with SMTP id
- ca18e2360f4ac-772d796bbe5so15828939f.2
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 15:20:23 -0700 (PDT)
+ <3J99vZAgKCs4Du5E6vuE08805y.w86Ay6E-xyFy578707E.8B0@flex--talumbau.bounces.google.com>)
+ id 1q2JJp-0004RX-Kb
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 18:20:27 -0400
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-5653213f5c0so4263957b3.1
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 15:20:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1685053223; x=1687645223;
+ d=google.com; s=20221208; t=1685053224; x=1687645224;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=Y0fzL/+svKRfui1lk596I4QM9Yoz7EeoVyPyltQze/Y=;
- b=Dl4icuFiLdPlv6UEgxtS5UdRjWmbQrwaoSkEU9ey4Zt7xymLd/Be9o5z+9WAl2l0b9
- /TdvnI+7Ox1KqKW7FKonO+NFo7MIjdIW0dhM+lZmfOmOHCnUldYp7oDN6dPI0qoM2VmX
- BRJSyOmAq4pJFlx3GhK5r8E6RoTxc0p/dM1nKMtv/+gDdadnjwvNCMShtHGWxbCxtCto
- gzVhUtWL6QP0oB/PaMclMAu4qTNo9L1eUQuq6OIWpReybkOwn8szfx+HI6sIDPxSh3U1
- Ok/Xl5MWi/CXZVU3qm6spAqMtkCO3fQtTra5iYrgCh2lv4vjhNdV5dBloTW0ynPFM12n
- PSlw==
+ bh=ubBrZ8nAFimVTuMHp6nxPEPus94HZpyzs0dejBNFzO8=;
+ b=AK4H1JjLe5gTLfzqHg1BtFZKQi/zr7zix6xMHvV0NeuHVzmAk7V+3Ind0cFHKMfaB5
+ I7Oh1fQy4xofsDyBVlInP/D6U3kjth7rgZmNfdPYuqYqhFqbE0bI625m+VCF2N4BfUN4
+ ng+ERCmiyBM6i0gr+gLPE5lGiB1OdfWDIpR3Y8kYUnVGL+PLDfxZlaE8xf/0j+Dpcb+j
+ fqJ1LKQjQ5tYyaqSM6cEYm+e7xDZwmyIBBeYiCHhKUUwkNV6imXHp50+QkDKpr7BTSb2
+ W4MyU+NvMvTRv/D3UTX/4ZLl2rtdnozOngnmqXAS97mt/3puxSU4QvOttRV6XftLpaTT
+ TPdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685053223; x=1687645223;
+ d=1e100.net; s=20221208; t=1685053224; x=1687645224;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y0fzL/+svKRfui1lk596I4QM9Yoz7EeoVyPyltQze/Y=;
- b=DwEpfpPEMQ14dWCF4HAhxOfBt0P4Ymavm3CLfVtcO3CjFsC3IxZnZ/3k3wRghtL92D
- KI67n1cb5IxcMXxvP4yjikOA581MrkTTI6wT6yhosS0zCOKiOnlIsLRMCCLZtnbhKLgh
- ATxl4RdX7AP3E0eoJswKlGgFmVaDSILa2ctca7TUHs+sgBceSNbPxUMlIGp9NwaovmeU
- X4XmsG7HtMXoYw46v6Fb6XRiPUCLrN34XySgwUjG1Di/z4a31bfX+ACAR25b3ckDu9vq
- H8hxGpC8LjbzPj+eEmIW0iTi8LRRB239Ma0kI3pQtsQQIZZ8gP5wbHa00OsMYrsx0mmz
- wnJw==
-X-Gm-Message-State: AC+VfDzq/GdhUW+PUNVtbhVRjghR/2BsBntuxKkL1E7JGC9HCKqk5BeW
- K/h80r9MOxAxSjVscUge43BCyzSRu/MnDvfuBFODox9QB0ZXPod6lx3uxDAsKsrntS5hJAfw9u9
- AY/AciT3REuT/efcxLxzcLjPklnEu72kNtSFDxM/PfBoEUycJ7rZ6xRKZGrDlScfYRw==
-X-Google-Smtp-Source: ACHHUZ56oBqZ0JpgvPYGOmieGOIEKAdkODLKSMwXCArw+EkqnPO9r3gabaZEHvF9+ALabPuy0oqZnJlUGqfECg==
+ bh=ubBrZ8nAFimVTuMHp6nxPEPus94HZpyzs0dejBNFzO8=;
+ b=Ks93OJ330uNekzt4rGMGWiKZZWkOqMd5F9wLmKayBQexQ5zenjLEiIW54ik2NAJY5t
+ 6AVQRVr4nj49+82paLJ3z6BtQA2G6y7xGAG2sja+5yjqiLRabrHGYI15Hx6LeIwYfXuK
+ QrI86zmlBU1+tELuckS+VD3txFb/D3JrberJZF9Vlc7FB8HIUWoyjIlDkRoRiNo7jjNw
+ eQWHi9ebcJOmdA9iCP4TXEKPMzhGKZT0pZQdFRT60oks9R8hxfDjCP7F7+j+k1ggkbKW
+ oWaXGfczPiPPw9GueIWUI8/YxE8wQv3frhK3DrCAb5u1k92LeXj+aDcnN8v/MHQTWASJ
+ yBww==
+X-Gm-Message-State: AC+VfDwDbGXsdy9mDDglCFIpCXAIbQpJqAVRx2qrAqOUiHKElS3UnKwy
+ 8lS7j3NjcqpZo4sJvVXYne+osOBCiXqeqo1Yjx3v9GIVgEOlFRUepY2K1d20OBnm7dQA2OU8S5X
+ Twd4gUfnwAg7nlP7OB30pnq+Do+1z7me9HgoPMqci3UTzVIk3bZcFhWesvVC4djsb2Q==
+X-Google-Smtp-Source: ACHHUZ5JVlUlU+5wCi9Z5u/PMrQm7zDS3WBItQthIFah5CX+c88JqRlG2X6T304HtQVogPD1MZ6gYKlzTKwLrw==
 X-Received: from talumbau.c.googlers.com
  ([fda3:e722:ac3:cc00:2b:ff92:c0a8:90d])
- (user=talumbau job=sendgmr) by 2002:a6b:e30b:0:b0:775:3e80:4e3b with SMTP id
- u11-20020a6be30b000000b007753e804e3bmr679636ioc.2.1685053222906; Thu, 25 May
- 2023 15:20:22 -0700 (PDT)
-Date: Thu, 25 May 2023 22:20:13 +0000
+ (user=talumbau job=sendgmr) by 2002:a81:e707:0:b0:55a:5aa0:ffe9 with SMTP id
+ x7-20020a81e707000000b0055a5aa0ffe9mr612608ywl.7.1685053223961; Thu, 25 May
+ 2023 15:20:23 -0700 (PDT)
+Date: Thu, 25 May 2023 22:20:14 +0000
 In-Reply-To: <20230525222016.35333-1-talumbau@google.com>
 Mime-Version: 1.0
 References: <20230525222016.35333-1-talumbau@google.com>
-Message-ID: <20230525222016.35333-3-talumbau@google.com>
-Subject: [RFC PATCH v2 2/5] virtio-balloon: device has Working Set Reporting
+Message-ID: <20230525222016.35333-4-talumbau@google.com>
+Subject: [RFC PATCH v2 3/5] virtio-balloon: Add QMP functions for Working Set
 From: "T.J. Alumbaugh" <talumbau@google.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@redhat.com>,
@@ -71,9 +71,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>, 
  Eric Blake <eblake@redhat.com>, "T.J. Alumbaugh" <talumbau@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d4a;
- envelope-from=3Jt9vZAgKCs0Ct4D5utDz77z4x.v759x5D-wxEx4676z6D.7Az@flex--talumbau.bounces.google.com;
- helo=mail-io1-xd4a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3J99vZAgKCs4Du5E6vuE08805y.w86Ay6E-xyFy578707E.8B0@flex--talumbau.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -97,359 +97,387 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- - working_set_vq to receive Working Set reports from guest
- - notification_vq to send config or request to guest
- - add working set as object property on device
+  - Adds QMP function 'working-set-config'
+  - Adds QMP function 'working-set-request'
+  - Retrieve working set via 'guest-working-set' property on balloon
+
+>> cat script.py
+
+NAME = "name"
+SOCKET = 'vm.sock'
+BALLOON =  "/machine/peripheral/balloon0"
+
+import json
+import asyncio
+from qemu.qmp import QMPClient
+
+async def main():
+    client = QMPClient(NAME)
+    await client.connect(SOCKET)
+    config = { "i0": 200, "i1": 800, "i2": 3000, "refresh": 750, "report": 1000 }
+    await client.execute('working-set-config', config)
+    await client.execute('working-set-request')
+    property = {"path":BALLOON, "property":"guest-working-set"}
+    res = await client.execute('qom-get', property)
+    return res
+
+if __name__ == "__main__":
+    ret = asyncio.run(main())
+    print(json.dumps(ret, indent=2))
+
+>> (Execute qemu with flag '-qmp unix:path=vm.sock,server=on,wait=off'
+>> (Perform normal activities on VM to exercise MM code)
+
+>> python3 script.py
+{
+  "working_set": {
+    "ws3": {
+      "memory-size-bytes": {
+        "anon": 890478592,
+        "file": 1285832704
+      },
+      "idle-age": 4294967292
+    },
+    "ws2": {
+      "memory-size-bytes": {
+        "anon": 173465600,
+        "file": 83353600
+      },
+      "idle-age": 3000
+    },
+    "ws1": {
+      "memory-size-bytes": {
+        "anon": 44236800,
+        "file": 20889600
+      },
+      "idle-age": 800
+    },
+    "ws0": {
+      "memory-size-bytes": {
+        "anon": 14540800,
+        "file": 6963200
+      },
+      "idle-age": 200
+    }
+  }
+}
 
 Signed-off-by: T.J. Alumbaugh <talumbau@google.com>
 ---
- hw/virtio/virtio-balloon.c         | 164 ++++++++++++++++++++++++++++-
- include/hw/virtio/virtio-balloon.h |  13 ++-
- qapi/misc.json                     |  26 +++++
- 3 files changed, 200 insertions(+), 3 deletions(-)
+ hw/virtio/virtio-balloon-pci.c |  2 +
+ hw/virtio/virtio-balloon.c     | 67 ++++++++++++++++++++++++++++++++--
+ include/sysemu/balloon.h       |  9 ++++-
+ monitor/monitor.c              |  1 +
+ qapi/machine.json              | 66 +++++++++++++++++++++++++++++++++
+ softmmu/balloon.c              | 31 +++++++++++++++-
+ 6 files changed, 170 insertions(+), 6 deletions(-)
 
+diff --git a/hw/virtio/virtio-balloon-pci.c b/hw/virtio/virtio-balloon-pci.c
+index ce2645ba71..7b781c8bab 100644
+--- a/hw/virtio/virtio-balloon-pci.c
++++ b/hw/virtio/virtio-balloon-pci.c
+@@ -68,6 +68,8 @@ static void virtio_balloon_pci_instance_init(Object *obj)
+     object_property_add_alias(obj, "guest-stats-polling-interval",
+                               OBJECT(&dev->vdev),
+                               "guest-stats-polling-interval");
++    object_property_add_alias(obj, "guest-working-set", OBJECT(&dev->vdev),
++                              "guest-working-set");
+ }
+ 
+ static const VirtioPCIDeviceTypeInfo virtio_balloon_pci_info = {
 diff --git a/hw/virtio/virtio-balloon.c b/hw/virtio/virtio-balloon.c
-index d004cf29d2..23481e51b8 100644
+index 23481e51b8..a124d95534 100644
 --- a/hw/virtio/virtio-balloon.c
 +++ b/hw/virtio/virtio-balloon.c
-@@ -27,6 +27,7 @@
- #include "exec/address-spaces.h"
- #include "qapi/error.h"
- #include "qapi/qapi-events-machine.h"
-+#include "qapi/qapi-visit-misc.h"
- #include "qapi/visitor.h"
- #include "trace.h"
- #include "qemu/error-report.h"
-@@ -169,6 +170,119 @@ static void balloon_deflate_page(VirtIOBalloon *balloon,
+@@ -229,7 +229,7 @@ static void virtio_balloon_receive_working_set(VirtIODevice *vdev,
      }
  }
  
-+/*
-+ * reset_working_set - Mark all items in the array as unset
-+ *
-+ * This function needs to be called at device initialization and
-+ * whenever a new Working Set config is specified.
-+ */
-+static inline void reset_working_set(VirtIOBalloon *dev)
+-static __attribute__((unused)) void virtio_balloon_send_working_set_request(
++static void virtio_balloon_send_working_set_request(
+     VirtIODevice *vdev, VirtQueue *vq)
+ {
+     VirtQueueElement *elem;
+@@ -248,7 +248,7 @@ static __attribute__((unused)) void virtio_balloon_send_working_set_request(
+     g_free(elem);
+ }
+ 
+-static __attribute__((unused)) void virtio_balloon_send_working_set_config(
++static void virtio_balloon_send_working_set_config(
+     VirtIODevice *vdev, VirtQueue *vq,
+     uint64_t i0, uint64_t i1, uint64_t i2,
+     uint64_t refresh, uint64_t report)
+@@ -353,6 +353,43 @@ static void balloon_stats_poll_cb(void *opaque)
+     s->stats_vq_elem = NULL;
+ }
+ 
++static void balloon_working_set_get_all(Object *obj, Visitor *v,
++                                        const char *name, void *opaque,
++                                        Error **errp)
 +{
++    Error *err = NULL;
++    VirtIOBalloon *s = VIRTIO_BALLOON(obj);
++    char ws_buf[4];
++    WorkingSetInfo *wsinfo;
 +    int i;
++
++    if (!visit_start_struct(v, name, NULL, 0, &err)) {
++        goto out;
++    }
++
++    if (!visit_start_struct(v, "working_set", NULL, 0, &err)) {
++        goto out_end;
++    }
 +    for (i = 0; i < VIRTIO_BALLOON_WS_NR_BINS; i++) {
-+        dev->ws[i].idle_age = 0;
-+        if (dev->ws[i].memory_size_bytes) {
-+            dev->ws[i].memory_size_bytes->anon = 0;
-+            dev->ws[i].memory_size_bytes->file = 0;
-+        } else {
-+            dev->ws[i].memory_size_bytes = g_malloc0(sizeof(MemoryBin));
++        wsinfo = s->ws + i;
++        sprintf(ws_buf, "ws%d", i);
++        if (!visit_type_WorkingSetInfo(v, ws_buf, &wsinfo, &err)) {
++            goto out_nested;
 +        }
 +    }
++    visit_check_struct(v, &err);
++out_nested:
++    visit_end_struct(v, NULL);
++
++    if (!err) {
++        visit_check_struct(v, &err);
++    }
++out_end:
++    visit_end_struct(v, NULL);
++out:
++    error_propagate(errp, err);
 +}
 +
-+static void virtio_balloon_receive_working_set(VirtIODevice *vdev,
-+                                               VirtQueue *vq)
-+{
-+    VirtIOBalloon *s = VIRTIO_BALLOON(vdev);
-+    VirtQueueElement *elem;
-+    VirtIOBalloonWorkingSet ws;
-+    size_t offset = 0;
-+    int count = 0;
-+
-+    elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-+    if (!elem) {
-+        return;
-+    }
-+
-+    if (s->working_set_vq_elem != NULL) {
-+        /* This should never happen if the driver follows the spec. */
-+        virtqueue_push(vq, s->working_set_vq_elem, 0);
-+        virtio_notify(vdev, vq);
-+        g_free(s->working_set_vq_elem);
-+    }
-+
-+    s->working_set_vq_elem = elem;
-+
-+    /* Initialize the Working Set to get rid of any stale values. */
-+    reset_working_set(s);
-+
-+    while (iov_to_buf(elem->out_sg, elem->out_num, offset, &ws,
-+                      sizeof(ws)) == sizeof(ws)) {
-+        uint64_t idle_age_ms = virtio_tswap64(vdev, ws.idle_age_ms);
-+        uint64_t bytes_anon = virtio_tswap64(vdev, ws.memory_size_bytes[0]);
-+        uint64_t bytes_file = virtio_tswap64(vdev, ws.memory_size_bytes[1]);
-+        s->ws[count].idle_age = idle_age_ms;
-+        s->ws[count].memory_size_bytes->anon = bytes_anon;
-+        s->ws[count].memory_size_bytes->file = bytes_file;
-+        offset += sizeof(ws);
-+        count++;
-+    }
-+}
-+
-+static __attribute__((unused)) void virtio_balloon_send_working_set_request(
-+    VirtIODevice *vdev, VirtQueue *vq)
-+{
-+    VirtQueueElement *elem;
-+    size_t sz = 0;
-+    uint16_t tag = 0;
-+
-+    elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-+    if (!elem) {
-+        return;
-+    }
-+    tag = VIRTIO_BALLOON_WS_REQUEST;
-+    sz = iov_from_buf(elem->in_sg, elem->in_num, 0, &tag, sizeof(tag));
-+    assert(sz == sizeof(tag));
-+    virtqueue_push(vq, elem, sz);
-+    virtio_notify(vdev, vq);
-+    g_free(elem);
-+}
-+
-+static __attribute__((unused)) void virtio_balloon_send_working_set_config(
-+    VirtIODevice *vdev, VirtQueue *vq,
-+    uint64_t i0, uint64_t i1, uint64_t i2,
-+    uint64_t refresh, uint64_t report)
-+{
-+    VirtIOBalloon *s = VIRTIO_BALLOON(vdev);
-+    VirtQueueElement *elem;
-+    uint16_t tag = 0;
-+    size_t sz = 0;
-+    elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-+    if (!elem) {
-+        return;
-+    }
-+
-+    tag = VIRTIO_BALLOON_WS_CONFIG;
-+    s->ws_intervals[0] = i0;
-+    s->ws_intervals[1] = i1;
-+    s->ws_intervals[2] = i2;
-+    s->ws_refresh_threshold = refresh;
-+    s->ws_report_threshold = report;
-+
-+    sz = iov_from_buf(elem->in_sg, elem->in_num, 0, &tag, sizeof(tag));
-+    assert(sz == sizeof(uint16_t));
-+    sz += iov_from_buf(elem->in_sg, elem->in_num, sz, s->ws_intervals,
-+                       (VIRTIO_BALLOON_WS_NR_BINS - 1) * \
-+                       sizeof(s->ws_intervals[0]));
-+    sz += iov_from_buf(elem->in_sg, elem->in_num, sz, &s->ws_refresh_threshold,
-+                       sizeof(uint64_t));
-+    sz += iov_from_buf(elem->in_sg, elem->in_num, sz, &s->ws_report_threshold,
-+                       sizeof(uint64_t));
-+    virtqueue_push(vq, elem, sz);
-+    virtio_notify(vdev, vq);
-+    g_free(elem);
-+}
-+
- static const char *balloon_stat_names[] = {
-    [VIRTIO_BALLOON_S_SWAP_IN] = "stat-swap-in",
-    [VIRTIO_BALLOON_S_SWAP_OUT] = "stat-swap-out",
-@@ -697,8 +811,11 @@ static size_t virtio_balloon_config_size(VirtIOBalloon *s)
-     if (s->qemu_4_0_config_size) {
-         return sizeof(struct virtio_balloon_config);
-     }
-+    if (virtio_has_feature(features, VIRTIO_BALLOON_F_WS_REPORTING)) {
-+        return sizeof(struct virtio_balloon_config);
-+   }
-     if (virtio_has_feature(features, VIRTIO_BALLOON_F_PAGE_POISON)) {
--        return sizeof(struct virtio_balloon_config);
-+        return offsetof(struct virtio_balloon_config, working_set_num_bins);
-     }
-     if (virtio_has_feature(features, VIRTIO_BALLOON_F_FREE_PAGE_HINT)) {
-         return offsetof(struct virtio_balloon_config, poison_val);
-@@ -714,6 +831,7 @@ static void virtio_balloon_get_config(VirtIODevice *vdev, uint8_t *config_data)
-     config.num_pages = cpu_to_le32(dev->num_pages);
-     config.actual = cpu_to_le32(dev->actual);
-     config.poison_val = cpu_to_le32(dev->poison_val);
-+    config.working_set_num_bins = (uint8_t) VIRTIO_BALLOON_WS_NR_BINS;
- 
-     if (dev->free_page_hint_status == FREE_PAGE_HINT_S_REQUESTED) {
-         config.free_page_hint_cmd_id =
-@@ -748,6 +866,14 @@ static bool virtio_balloon_page_poison_support(void *opaque)
-     return virtio_vdev_has_feature(vdev, VIRTIO_BALLOON_F_PAGE_POISON);
- }
- 
-+static bool virtio_balloon_working_set_reporting_support(void *opaque)
-+{
-+    VirtIOBalloon *s = opaque;
-+    VirtIODevice *vdev = VIRTIO_DEVICE(s);
-+
-+    return virtio_vdev_has_feature(vdev, VIRTIO_BALLOON_F_WS_REPORTING);
-+}
-+
- static void virtio_balloon_set_config(VirtIODevice *vdev,
-                                       const uint8_t *config_data)
+ static void balloon_stats_get_all(Object *obj, Visitor *v, const char *name,
+                                   void *opaque, Error **errp)
  {
-@@ -766,6 +892,10 @@ static void virtio_balloon_set_config(VirtIODevice *vdev,
-     if (virtio_balloon_page_poison_support(dev)) {
-         dev->poison_val = le32_to_cpu(config.poison_val);
-     }
-+    dev->working_set_num_bins = 0;
-+    if (virtio_balloon_working_set_reporting_support(dev)) {
-+        dev->working_set_num_bins = config.working_set_num_bins;
-+    }
-     trace_virtio_balloon_set_config(dev->actual, oldactual);
+@@ -917,6 +954,25 @@ static void virtio_balloon_stat(void *opaque, BalloonInfo *info)
+                                              VIRTIO_BALLOON_PFN_SHIFT);
  }
  
-@@ -775,6 +905,7 @@ static uint64_t virtio_balloon_get_features(VirtIODevice *vdev, uint64_t f,
-     VirtIOBalloon *dev = VIRTIO_BALLOON(vdev);
-     f |= dev->host_features;
-     virtio_add_feature(&f, VIRTIO_BALLOON_F_STATS_VQ);
-+    virtio_add_feature(&f, VIRTIO_BALLOON_F_WS_REPORTING);
- 
-     return f;
- }
-@@ -896,6 +1027,13 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
-                                            virtio_balloon_handle_report);
-     }
- 
-+    if (virtio_has_feature(s->host_features, VIRTIO_BALLOON_F_WS_REPORTING)) {
-+        s->working_set_vq = virtio_add_queue(vdev, 32,
-+            virtio_balloon_receive_working_set);
-+        s->notification_vq = virtio_add_queue(vdev, 32, NULL);
-+    }
++static void virtio_balloon_working_set_request(void *opaque)
++{
++    VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
 +
-+    reset_working_set(s);
-     reset_stats(s);
- }
- 
-@@ -922,6 +1060,12 @@ static void virtio_balloon_device_unrealize(DeviceState *dev)
-     if (s->reporting_vq) {
-         virtio_delete_queue(s->reporting_vq);
-     }
-+    if (s->working_set_vq) {
-+        virtio_delete_queue(s->working_set_vq);
-+    }
-+    if (s->notification_vq) {
-+        virtio_delete_queue(s->notification_vq);
-+    }
-     virtio_cleanup(vdev);
- }
- 
-@@ -938,7 +1082,11 @@ static void virtio_balloon_device_reset(VirtIODevice *vdev)
-         g_free(s->stats_vq_elem);
-         s->stats_vq_elem = NULL;
-     }
--
-+    if (s->working_set_vq_elem != NULL) {
-+        virtqueue_unpop(s->working_set_vq, s->working_set_vq_elem, 0);
-+        g_free(s->working_set_vq_elem);
-+        s->working_set_vq_elem = NULL;
-+    }
-     s->poison_val = 0;
- }
- 
-@@ -953,6 +1101,16 @@ static void virtio_balloon_set_status(VirtIODevice *vdev, uint8_t status)
-         virtio_balloon_receive_stats(vdev, s->svq);
-     }
- 
-+    if (!s->working_set_vq_elem && vdev->vm_running &&
-+        (status & VIRTIO_CONFIG_S_DRIVER_OK) &&
-+         virtqueue_rewind(s->working_set_vq, 1)) {
-+        /*
-+         * poll working set queue for the element we have discarded when the VM
-+         * was stopped
-+         */
-+        virtio_balloon_receive_working_set(vdev, s->working_set_vq);
-+    }
++    virtio_balloon_send_working_set_request(vdev, dev->notification_vq);
++}
 +
-     if (virtio_balloon_free_page_support(s)) {
-         /*
-          * The VM is woken up and the iothread was blocked, so signal it to
-@@ -1011,6 +1169,8 @@ static Property virtio_balloon_properties[] = {
-                     VIRTIO_BALLOON_F_PAGE_POISON, true),
-     DEFINE_PROP_BIT("free-page-reporting", VirtIOBalloon, host_features,
-                     VIRTIO_BALLOON_F_REPORTING, false),
-+    DEFINE_PROP_BIT("working-set", VirtIOBalloon, host_features,
-+                    VIRTIO_BALLOON_F_WS_REPORTING, true),
-     /* QEMU 4.0 accidentally changed the config size even when free-page-hint
-      * is disabled, resulting in QEMU 3.1 migration incompatibility.  This
-      * property retains this quirk for QEMU 4.1 machine types.
-diff --git a/include/hw/virtio/virtio-balloon.h b/include/hw/virtio/virtio-balloon.h
-index 5139cf8ab6..a7a6655f50 100644
---- a/include/hw/virtio/virtio-balloon.h
-+++ b/include/hw/virtio/virtio-balloon.h
-@@ -17,6 +17,7 @@
- 
- #include "standard-headers/linux/virtio_balloon.h"
- #include "hw/virtio/virtio.h"
-+#include "qapi/qapi-types-misc.h"
- #include "sysemu/iothread.h"
- #include "qom/object.h"
- 
-@@ -25,7 +26,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(VirtIOBalloon, VIRTIO_BALLOON)
- 
- #define VIRTIO_BALLOON_FREE_PAGE_HINT_CMD_ID_MIN 0x80000000
- 
-+#define VIRTIO_BALLOON_WS_NR_BINS 4  /* Number of bins in Working Set report */
++static void virtio_balloon_working_set_config(void *opaque, uint64_t i0,
++                                              uint64_t i1, uint64_t i2,
++                                              uint64_t refresh, uint64_t report)
++{
++    VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
 +
- typedef struct virtio_balloon_stat VirtIOBalloonStat;
-+typedef struct virtio_balloon_working_set VirtIOBalloonWorkingSet;
++    virtio_balloon_send_working_set_config(vdev, dev->notification_vq, i0, i1,
++                                           i2, refresh, report);
++}
++
+ static void virtio_balloon_to_target(void *opaque, ram_addr_t target)
+ {
+     VirtIOBalloon *dev = VIRTIO_BALLOON(opaque);
+@@ -992,7 +1048,9 @@ static void virtio_balloon_device_realize(DeviceState *dev, Error **errp)
+     virtio_init(vdev, VIRTIO_ID_BALLOON, virtio_balloon_config_size(s));
  
- typedef struct virtio_balloon_stat_modern {
-        uint16_t tag;
-@@ -42,13 +46,19 @@ enum virtio_balloon_free_page_hint_status {
+     ret = qemu_add_balloon_handler(virtio_balloon_to_target,
+-                                   virtio_balloon_stat, s);
++                                   virtio_balloon_stat,
++                                   virtio_balloon_working_set_request,
++                                   virtio_balloon_working_set_config, s);
  
- struct VirtIOBalloon {
-     VirtIODevice parent_obj;
--    VirtQueue *ivq, *dvq, *svq, *free_page_vq, *reporting_vq;
-+    VirtQueue *ivq, *dvq, *svq, *free_page_vq, *reporting_vq, *working_set_vq,
-+              *notification_vq;
-     uint32_t free_page_hint_status;
-     uint32_t num_pages;
-     uint32_t actual;
-     uint32_t free_page_hint_cmd_id;
-     uint64_t stats[VIRTIO_BALLOON_S_NR];
-+    WorkingSetInfo ws[VIRTIO_BALLOON_WS_NR_BINS];
-+    uint64_t ws_intervals[VIRTIO_BALLOON_WS_NR_BINS - 1];
-+    uint64_t ws_refresh_threshold;
-+    uint64_t ws_report_threshold;
-     VirtQueueElement *stats_vq_elem;
-+    VirtQueueElement *working_set_vq_elem;
-     size_t stats_vq_offset;
-     QEMUTimer *stats_timer;
-     IOThread *iothread;
-@@ -71,6 +81,7 @@ struct VirtIOBalloon {
+     if (ret < 0) {
+         error_setg(errp, "Only one balloon device is supported");
+@@ -1148,6 +1206,9 @@ static void virtio_balloon_instance_init(Object *obj)
+                         balloon_stats_get_poll_interval,
+                         balloon_stats_set_poll_interval,
+                         NULL, NULL);
++
++    object_property_add(obj, "guest-working-set", "guest working set",
++                        balloon_working_set_get_all, NULL, NULL, NULL);
+ }
  
-     bool qemu_4_0_config_size;
-     uint32_t poison_val;
-+    uint8_t working_set_num_bins;
- };
+ static const VMStateDescription vmstate_virtio_balloon = {
+diff --git a/include/sysemu/balloon.h b/include/sysemu/balloon.h
+index 867687b73a..1f504d1a31 100644
+--- a/include/sysemu/balloon.h
++++ b/include/sysemu/balloon.h
+@@ -18,10 +18,17 @@
+ #include "qapi/qapi-types-machine.h"
+ 
+ typedef void (QEMUBalloonEvent)(void *opaque, ram_addr_t target);
++typedef void (QEMUBalloonWorkingSetRequest)(void *opaque);
++typedef void (QEMUBalloonWorkingSetConfig)(void *opaque, uint64_t i0,
++                                  uint64_t i1, uint64_t i2, uint64_t refresh,
++                                  uint64_t report);
+ typedef void (QEMUBalloonStatus)(void *opaque, BalloonInfo *info);
+ 
+ int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
+-                             QEMUBalloonStatus *stat_func, void *opaque);
++                             QEMUBalloonStatus *stat_func,
++                             QEMUBalloonWorkingSetRequest *ws_func,
++                             QEMUBalloonWorkingSetConfig *config_func,
++                             void *opaque);
+ void qemu_remove_balloon_handler(void *opaque);
  
  #endif
-diff --git a/qapi/misc.json b/qapi/misc.json
-index ff070ec828..4ba8c74b64 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -550,6 +550,32 @@
-  'returns': ['CommandLineOptionInfo'],
-  'allow-preconfig': true}
+diff --git a/monitor/monitor.c b/monitor/monitor.c
+index 602535696c..fad1b4aed5 100644
+--- a/monitor/monitor.c
++++ b/monitor/monitor.c
+@@ -333,6 +333,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
+     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
+     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
++    [QAPI_EVENT_WORKING_SET_EVENT] = { 1000 * SCALE_MS },
+ };
+ 
+ /*
+diff --git a/qapi/machine.json b/qapi/machine.json
+index 37660d8f2a..5e03ff21e2 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1055,6 +1055,57 @@
+ ##
+ { 'command': 'balloon', 'data': {'value': 'int'} }
  
 +##
-+# @MemoryBin:
++# @working-set-config:
 +#
-+# A bin of memory with a size in bytes. File-backed and
-+# anonymous memory are tracked separately.
++# Specify the config parameters for Working Set reporting.
 +#
-+# @anon: number of bytes of anonymous memory
-+# @file: number of bytes of file-backed memory
++# @i0: the endpoint of the first interval (in ms)
++#
++# @i1: the endpoint of the second interval (in ms)
++#
++# @i2: the endpoint of the third interval (in ms)
++#
++# @refresh: the refresh threshold (in ms) for Working Set reporting
++#
++# @report: the report threshold (in ms) for Working Set reporting
++#
++# Returns: - Nothing on success
++#          - If no balloon device is present, DeviceNotActive
++#
++# Example:
++#
++# -> { "execute": "working-set-config",
++#                 "arguments": { "i0": 100,
++#                                "i1": 500,
++#                                "i2": 2000,
++#                                "refresh": 750,
++#                                "report": 1000 } }
++# <- { "return": {} }
++#
 +##
-+{ 'struct': 'MemoryBin',
-+  'data': { 'anon': 'uint64',
-+            'file': 'uint64' } }
++{ 'command': 'working-set-config', 'data': {'i0': 'uint64',
++                                            'i1': 'uint64',
++                                            'i2': 'uint64',
++                                            'refresh': 'uint64',
++                                            'report': 'uint64'} }
++##
++# @working-set-request:
++#
++# Request the Working Set report from the guest.
++#
++# Returns: - Nothing on success
++#          - If no balloon device is present, DeviceNotActive
++#
++# Example:
++#
++# -> { "execute": "working-set-request", "arguments": {} }
++# <- { "return": {} }
++#
++##
++{ 'command': 'working-set-request', 'data': {} }
 +
-+##
-+# @WorkingSetInfo:
-+#
-+# A bin of memory of the given size that has been idle at most `idle-age` ms
-+#
-+# @idle-age: guest-relative time (in milliseconds)
-+#
-+# @memory-size-bytes: A MemoryBin with file and anon info.
-+##
-+{ 'struct': 'WorkingSetInfo',
-+  'data': { 'idle-age': 'uint64',
-+            'memory-size-bytes': 'MemoryBin' } }
 +
  ##
- # @RTC_CHANGE:
+ # @BalloonInfo:
  #
+@@ -1113,6 +1164,21 @@
+ { 'event': 'BALLOON_CHANGE',
+   'data': { 'actual': 'int' } }
+ 
++##
++# @WORKING_SET_EVENT:
++#
++# Emitted when the guest sends a new Working Set report.
++#
++# Note: this event is rate-limited.
++#
++# Example:
++#
++# <- { "event": "WORKING_SET_EVENT",
++#      "timestamp": { "seconds": 1267020223, "microseconds": 435656 } }
++#
++##
++{ 'event': 'WORKING_SET_EVENT' }
++
+ ##
+ # @MemoryInfo:
+ #
+diff --git a/softmmu/balloon.c b/softmmu/balloon.c
+index e0e8969a4b..f27852949a 100644
+--- a/softmmu/balloon.c
++++ b/softmmu/balloon.c
+@@ -35,6 +35,8 @@
+ 
+ static QEMUBalloonEvent *balloon_event_fn;
+ static QEMUBalloonStatus *balloon_stat_fn;
++static QEMUBalloonWorkingSetRequest *balloon_ws_request_fn;
++static QEMUBalloonWorkingSetConfig *balloon_ws_config_fn;
+ static void *balloon_opaque;
+ 
+ static bool have_balloon(Error **errp)
+@@ -53,9 +55,13 @@ static bool have_balloon(Error **errp)
+ }
+ 
+ int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
+-                             QEMUBalloonStatus *stat_func, void *opaque)
++                             QEMUBalloonStatus *stat_func,
++                             QEMUBalloonWorkingSetRequest *ws_request_func,
++                             QEMUBalloonWorkingSetConfig *ws_config_func,
++                             void *opaque)
+ {
+-    if (balloon_event_fn || balloon_stat_fn || balloon_opaque) {
++    if (balloon_event_fn || balloon_stat_fn || balloon_ws_request_fn \
++        || balloon_ws_config_fn || balloon_opaque) {
+         /* We're already registered one balloon handler.  How many can
+          * a guest really have?
+          */
+@@ -63,6 +69,8 @@ int qemu_add_balloon_handler(QEMUBalloonEvent *event_func,
+     }
+     balloon_event_fn = event_func;
+     balloon_stat_fn = stat_func;
++    balloon_ws_request_fn = ws_request_func;
++    balloon_ws_config_fn = ws_config_func;
+     balloon_opaque = opaque;
+     return 0;
+ }
+@@ -104,3 +112,22 @@ void qmp_balloon(int64_t target, Error **errp)
+     trace_balloon_event(balloon_opaque, target);
+     balloon_event_fn(balloon_opaque, target);
+ }
++
++void qmp_working_set_request(Error **errp)
++{
++    if (!have_balloon(errp)) {
++        return;
++    }
++
++    balloon_ws_request_fn(balloon_opaque);
++}
++
++void qmp_working_set_config(uint64_t i0, uint64_t i1, uint64_t i2,
++                            uint64_t refresh, uint64_t report, Error **errp)
++{
++    if (!have_balloon(errp)) {
++        return;
++    }
++
++    balloon_ws_config_fn(balloon_opaque, i0, i1, i2, refresh, report);
++}
 -- 
 2.41.0.rc0.172.g3f132b7071-goog
 
