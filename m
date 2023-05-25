@@ -2,90 +2,176 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1425710D7F
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 15:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8A2710D90
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 15:48:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2BFh-0001PC-Bz; Thu, 25 May 2023 09:43:37 -0400
+	id 1q2BJi-0002Y0-Be; Thu, 25 May 2023 09:47:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1q2BFf-0001NK-Hs
- for qemu-devel@nongnu.org; Thu, 25 May 2023 09:43:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1q2BJf-0002XG-Aa
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 09:47:44 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1q2BFc-0000pI-CM
- for qemu-devel@nongnu.org; Thu, 25 May 2023 09:43:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685022211;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=g1xlDOtW55fsHDEqZYD02dvREbm6bxmXVm1xX4Q9G4U=;
- b=EkI2T0wMYnxHQfVQse2K8xTTtkJJWoWEHL5XImiwrYYFjEhrjUyRPBv1EGRQ+KGIuzdxTc
- KFrwIZQgJ3nUgRUbNn2WzBdXTSxUu4UauARJtf1empz/mxiaWeVrh7aJ0hA/GAMSpyiFv3
- GrL3ypNEGfaJrMWW+8tYlANuKc9svWw=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-YZdjg9LfNjeWGZQhdurB_Q-1; Thu, 25 May 2023 09:43:30 -0400
-X-MC-Unique: YZdjg9LfNjeWGZQhdurB_Q-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-2553b096ddfso706785a91.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 06:43:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685022209; x=1687614209;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g1xlDOtW55fsHDEqZYD02dvREbm6bxmXVm1xX4Q9G4U=;
- b=buthM0zS9P0/KfEfIKBh2iJYRSin2c8iY/yxj5mt55bvXP+/YGQlg5xD1JydCxgace
- WhFk5FLXx2C3JsWQjC9T42IDUiF9TvdtNBp10kRdYe0GvFC3PKc4eFw9J/AWjzKAwzaw
- TxKoW2lN5RZvnhe8Oomh/tMF1UZbdlcFIju0zxxoZaoIOnRDbInxMc2hYNpczXqn/+CO
- K/ad74HSdtH3BZjo3OivULMJO+cta65STZdLqugZBdUofLfv2FHjd5afsnMjNVccXb8I
- LLhWuMpXPpn0zljCK+CuFI+SgQApbon6MXsmfzgfLDrvX89T7mES5ScUOjQ4/o07UAfO
- JFdg==
-X-Gm-Message-State: AC+VfDyTYJavn0ZV9OQ6CMHkokVPO/STf/TssB4uq727Yh69qQfs2IPw
- ySJJ58VLwV93eCNr1SP3sawbpRkQvt+id8s4+XZpNFvmcIzyANI6R2/ijxJcnK+bqDx5QNg7H++
- 8I4uDaS7vR47ufVA9s3a2rSsXjg2QnCA=
-X-Received: by 2002:a17:90a:4e83:b0:244:d441:8f68 with SMTP id
- o3-20020a17090a4e8300b00244d4418f68mr1871117pjh.16.1685022209440; 
- Thu, 25 May 2023 06:43:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ59M1DA9WZiMqyj0BAjZMPFcA/KfWigEDwq2/KA0Jci5J54iUz9eNGBLAdPTo85u4YllJXzFWz0VGIZEBlatsc=
-X-Received: by 2002:a17:90a:4e83:b0:244:d441:8f68 with SMTP id
- o3-20020a17090a4e8300b00244d4418f68mr1871087pjh.16.1685022209051; Thu, 25 May
- 2023 06:43:29 -0700 (PDT)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 25 May 2023 13:43:28 +0000
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20230523102805.100160-1-sunilvl@ventanamicro.com>
- <CABJz62MQ5uRHUP4LLKt=AxTf-Sz0aTEOLWDz=9ftK=H3tZ9JUg@mail.gmail.com>
- <ZG5KgLQ4H/leWKJi@sunil-laptop>
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1q2BJc-0001f5-Mt
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 09:47:43 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34PDYvj7012235; Thu, 25 May 2023 13:47:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=jpnzOs5kUvosweGXOPWICN3fnhvlrQXskTOFjDYVDBw=;
+ b=Cfi+HPPIHrltNu/QxMhSeaHesHYiB5IuIQDjkIQqXDPxui69AnH1y60gARE0MhMvSa54
+ wG1arAtB33cjf37nGFL1np7N1gcIkooe7xhWNJELEK4QB4VmoqNyvdHDDylP2lNNOLJY
+ pGzHilQi+uPwCLG9QaUymdihVL7ENATeiJCRmyEDLo8Bg2j5Ay9H7//qeZUQ6SrZuEnY
+ F87mk33YaEySgTT3KSoiEjwtHFlT4XcXzYp3DHK8kf3WLnAh30hojOlgvUrKE68ZqwNT
+ n7yHuzZkKgcWlbe8FRWiy3VN9xm4eazekZnaDvAAvhZxhuWUL1Cj857oBJA0GzLIUJ/W eg== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qt8pcg12s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 May 2023 13:47:36 +0000
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 34PDB9FX028580; Thu, 25 May 2023 13:47:36 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2107.outbound.protection.outlook.com [104.47.58.107])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3qqk2tw45p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 May 2023 13:47:36 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MCQPWDlymvsqiFXY5DrcIQ4S5z+pngNJG3/xIGWNXAdi0eu92zQWouQus64lxFAZ1rJOIZK7+AA2huvRAU18tVHR3k4ibsAiOdj2yosa3EN31dkQhJBfydAVgn6HBVRw3T8r26Tpg2pZJzPS0CBu5HNpukIZLD+5FyEN9O7Z6FgR4juBWdusFVPZwEONyWxHaiSB8I1CSS/sk/h5cQolK1A8+YR4ljGvjPmw93KxbNpPS6dU5+HVxrb9lwnwPx91JJwl8U8LoalEcF8qWXcABRq3BYVyfz0rbVkYX02Ij5kzORb95sx7SG/IY1Bfe0xLN9+hssbFH+1vE6gbWrOmgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jpnzOs5kUvosweGXOPWICN3fnhvlrQXskTOFjDYVDBw=;
+ b=iKns6EVCCv2DveQE4f7Pnuf3CextC7h+98dPf1riP2WQXnBTMEnjnyLe61xmdnk3xGmoGbfejcaGVl7LqJ/oC915NQpkxmnkTmEdgJxfrSBHnTXww8/rAq88+I/z1pO90jNU1weohC8/TDVLANHpo1yKqNABInoo1w2HddEd+U9w8IpyNwLNGW1JVdVINzxeaMZDz89el+FdXmXFiQwlWJRVjWXbeRv1Ay52hhnRIDwyEW+OSYEX3PRJXC/OLhmbaFPipWA44vdIy7YZD1+dcFKFMrHbYrk/uBJCNUYrqTMpPoOKvovyN8r/kmzib1jMz0o6uQr0nAsWeBmkyJ1csw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jpnzOs5kUvosweGXOPWICN3fnhvlrQXskTOFjDYVDBw=;
+ b=p7eWwg9TCYsEuM8/cvPJaikQa5v7I25fG8cUA1wGRXFLh7qyje52dEScQtLPvLLqYOYgKQ768SXgK46kR199LE0T8cDvQfJHQtSrJnRcp8EWhZcuoChTGNOwxPSQ638CoHDJ1RvIwOO+tlgBEHrgUGsJNhI+jQCl6QM5UsxbeM4=
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
+ by CYYPR10MB7651.namprd10.prod.outlook.com (2603:10b6:930:bc::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15; Thu, 25 May
+ 2023 13:47:32 +0000
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::b176:d5b0:55e9:1c2b]) by BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::b176:d5b0:55e9:1c2b%3]) with mapi id 15.20.6433.017; Thu, 25 May 2023
+ 13:47:32 +0000
+Message-ID: <4e8a19de-f56a-0dd5-6eed-5a9d8caa270e@oracle.com>
+Date: Thu, 25 May 2023 14:47:26 +0100
+Subject: Re: [PATCH v2 1/2] exec/ram_addr: return nr of dirty pages in
+ cpu_physical_memory_set_dirty_lebitmap()
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Avihai Horon <avihaih@nvidia.com>
+References: <20230525114321.71066-1-joao.m.martins@oracle.com>
+ <20230525114321.71066-2-joao.m.martins@oracle.com> <ZG9fungk+x/F0vD+@x1n>
+From: Joao Martins <joao.m.martins@oracle.com>
+In-Reply-To: <ZG9fungk+x/F0vD+@x1n>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0173.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18a::16) To BLAPR10MB4835.namprd10.prod.outlook.com
+ (2603:10b6:208:331::11)
 MIME-Version: 1.0
-In-Reply-To: <ZG5KgLQ4H/leWKJi@sunil-laptop>
-Date: Thu, 25 May 2023 13:43:28 +0000
-Message-ID: <CABJz62NHXrBKkc3Gux0TXOjUCO4up-OunwJ6UO94ts+rTgVsAg@mail.gmail.com>
-Subject: Re: [PATCH v3] hw/riscv: virt: Assume M-mode FW in pflash0 only when
- "-bios none"
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Heinrich Schuchardt <xypron.glpk@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|CYYPR10MB7651:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7df3a1b5-1ece-4d46-28d5-08db5d269698
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: knQvxPHZIbMMxkIYPXDbDWRvpXhwq4PrD6K/m6DpBaPxExkFT8yDwlXdpXhhfp1MuAh8gMLvO2vX3IYEV93Khe8SSurT2lD66rltMPVgIBLLnvVe0Ki0f2lFsVlbvPdln9K1EZjBYPUd5ufn+WCXUkBDKwKJwb+gJ0VS8VNuZsyBals/5xBYiEofURTbmcQKwxeDfsAXt+p49dwEzNfEzcF5LBlIj9XTq1l9XiEFfj0Zgp5CQt5NPz1o0oBBWdRylWo1unsm48iEYrg72hIOOO9ORV/g3FBu2uLdJddsR4MiawtfH0fC4+PYmfs3oTcOETxhVL9jRxX1ar6vHERleawziIQcwTJbCYBV/jia5uCmE4OFy4cFWmO4wbS3cQmJlrGck4zrJnHA1VjdZlmNr7b/22iI1dsuWYdjwoFa6QNKCOjVCwlw/VzhOzjAPZlWt5Cww496Qo/nyQHoly/sV5uXMYLrFuBQU3VuBVOXUImkHj3MNYyJ5IyH8qH6pzfEjiJkZFbPBge1kDDbwOOORf7GwDAqlUBKUiE+ZXkfAqlV+ElXw4AGWThj4mSkCvRgn0xf/MvMBnafaPQxBj1f95iDqeOHBfn22aGw9F/Xjr6mO03HjBBJBMMY5arOiLArHTeWMufe7UkQeesmgmC16g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(39860400002)(396003)(136003)(346002)(376002)(366004)(451199021)(2906002)(2616005)(36756003)(186003)(8936002)(8676002)(6512007)(5660300002)(26005)(53546011)(6506007)(478600001)(66946007)(66476007)(66556008)(6916009)(4326008)(31696002)(86362001)(54906003)(38100700002)(31686004)(6486002)(316002)(41300700001)(6666004)(14143004)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bmhwRXhsT0tqeVB6Y3Vad3FYZmtFZ2ZZTjVqY0o3ZHd0UzVuUllFeThWTm1M?=
+ =?utf-8?B?NVVtQWxndWV5NS8vOHByaVNNZFJLcHBJVjdmUFVPR003TkNqWmt2dkxTZXVm?=
+ =?utf-8?B?cm01aUZFanBENDkzNllmSXhJenRlcTRDYitZU1JycTdCeVRBM00vRERPNHBz?=
+ =?utf-8?B?TERzRWhOVlB5Nm5KcTVZM0l6TTJoZmhmd0pDMEJHQlkrMU1DSEE0ZlN2eXBL?=
+ =?utf-8?B?amwvSXhHSTdSUFdpNVF3Y0hlbzhRSU5DYVhEcENJQlc0d0FiQUlnSTFKb3FP?=
+ =?utf-8?B?M1FhNFNXMXNMZjZPOGlXVEZuVEVETXgxM2ZoYTZ3R0NuUE9aYlJvTWFhVzhh?=
+ =?utf-8?B?WmhEblZodU1hWEZnaytkNlN0WUM3TzNWcjBYSkVLOXpnKytnbFhiYTBMSlZQ?=
+ =?utf-8?B?bEphWnNyWEk3UzM1eC9EbHNISS8rUGZzcnFleElOQjI5Wmd1UDFTRDh3RmtL?=
+ =?utf-8?B?RGdoMW03NHlrQ0VyTTU2a2dYcmt1R0VOWldNK0RFZi9ZRFp0UU5WNHdsVzFU?=
+ =?utf-8?B?ejVnNERHNTk3UUIwbjBmWnNSdnAzZXhVT0Q0WnJpSUJOWU5ydzlPcGpaQ2VM?=
+ =?utf-8?B?M0NMQ2FQb1B2RGx0MXo4WDdBQjlNb3VGN2tvRncvakZiVjNrNWx6djBaNmFC?=
+ =?utf-8?B?QnRZUUdUVHVEc1FiRmljZ0ZoWEsxZG9zaXZKVmlrakJTZXJwQ0N4dWVwMGR0?=
+ =?utf-8?B?bm9ZUHpybXpXekNUOHI1UG1rb0haQ3VZTkVSZnJLZytHWCtnRHRkREJ3TGJ2?=
+ =?utf-8?B?aXZzeUV6WXBCaS9sYlI5K1JIZ2VVQVBYTjBubWRkT0Y0ZVZTQ3hpTUoySHdL?=
+ =?utf-8?B?enNGbUhhejhsc2N6UnZDRnFERHQvT3lQOHpZTGZDdlFpS1FDRDlQTW95RSti?=
+ =?utf-8?B?dXR5Q1ZzZEQ4THY2RGZlR0c1OWRybjNOQmJRbmRWT3dRcGNEVkZyM2V6VXJw?=
+ =?utf-8?B?bUZEMGhPYkJQcHNIUFQ1YUlHQnhNazBMbkdrWmR6bGdCRmRsMXZMamFNdXo4?=
+ =?utf-8?B?aEFhUmxlalRCbTFlRW9FN2NtUUt3aDJQdHpQSnZvOVc2ZU9abnVWaGdycm1j?=
+ =?utf-8?B?cjdxTHJxYUtyWHoyanh5R21VajE2L2JjOEhXbmtTMW5hYzNVMkFSeENrVlRt?=
+ =?utf-8?B?KzR2SlZUSmFDZE1vTGdWcmFCVzkwdmpMOFlnVDR3R0tKNmtPVTBQNjJUM3Zl?=
+ =?utf-8?B?bGFCbXREQkpHc2xGT1dUVVNvdG1RQjNMNU91SnA2UDFMUFNJMlpUeHJidWYr?=
+ =?utf-8?B?b2cvb0xWZEd6Ym1wVXMzbGF1Z2ZGRytlZGtEalk4OGsxZWRYblVJSWQyaEZF?=
+ =?utf-8?B?UGt5VTJUS2ZwOHNaWkF2WGl6TDdvQ1dUeGRHWXhBWk9FM3NqUHBwR2N0MEpp?=
+ =?utf-8?B?cUU3ZFNnRUJIbEhkanpvZ0hOWFpQMUVTM3BFbU1uNEpjcnNnVFQwcHcrZjRV?=
+ =?utf-8?B?cjlxSHkyZ1NFMmxZVTZIZ0xOZ1dzOG01cG41bHZXVDJ0QSszYmNZR1Q3L2po?=
+ =?utf-8?B?bGFLNzEzM1Rma0RjVVFkZk5qcDg1Tkx2aVUrSXdRYnUxTG5sVWN1UytNVWNY?=
+ =?utf-8?B?T1BNcEtPZzVXb293T3J4YXViT0hBRnhDb0grYU1sOGdjNTFRZDQwVTZJcXM4?=
+ =?utf-8?B?UURRTktZYXp4Q0VVYnF5d0RrMnlJd1FJdHE2OURYQ3Fyb1NTUmFkb1drNDlC?=
+ =?utf-8?B?ZFZXQTE3UDRabVArNC9ZeC93ampUTitxTWpxUzlNTTBWOFJRb0hKRUR1aGlp?=
+ =?utf-8?B?bUZqbXd3TVF4a1FwUUtBT0FXNGo4aERKczEyaS9VMCtFVGVjeXBFbkh6SWdX?=
+ =?utf-8?B?Szh1QTQxY1NxMHdmcTR2U2dRTG5UQjE5QnRUU2w5MXUvekFoblhZTndOTzFQ?=
+ =?utf-8?B?cnVHUG5yWWh2ZXNFZGRnN1YzUXFvMWI0WUtIajU0MTlObEF3NkpwWkNYRVlS?=
+ =?utf-8?B?Zi9iRlRvSFV2WVBXOEFKeU16TjkwSDFGdG5YcmtNemM5TEFiMEYxYjdVT1hR?=
+ =?utf-8?B?cVNJekFyVTNlbnUvNEUyclByVjVPTlh5NG5oOEJzRytWOHlVYWhHS2ZSNEhN?=
+ =?utf-8?B?VTNVcGVMcnNkZDUrcjlnN00vN0piU0hVeDVRZ0FFZStxd2hHQ2RtK0s4VTMy?=
+ =?utf-8?B?SS9hQ1ZwdVNFbTZ4em1PTDhYbzIrYjlmcE1YQ1BzQnNxbVNCV24vRjhsSU5H?=
+ =?utf-8?B?U1E9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: zf/h+SWrieoRiC9yUbZKcWpUNWUMPVM1Nfr9s6rspT31H7QKDIv0LCDYOK6ExNJcjN4Q8IOjO8vnAwQdvD5v3DBfXEjYFyIgsaJz8n/496+G7+mxGrCipyDQnyNJEZNnyyrx/q8mgm/KT9Dt0l6H3g24TTTSOThXK5XMM71tuR+pGLoSQ2OImC9gcmhyRjeItAJKwGsib4f52MnZv7tAT7puGuY4W8ZMbKfTNyu4RZVaLT/Mx1vShCi9MA71o+EsmJ79jBk5cuc+M30pB3MlZtp4ej9d3kvdv/R+lrdbJ10rYh+X6RCol/f4rx/Xa2nFtAy1a1PJ4pY1yxotEZZ36smocMGYCMiPqy4yAog4bR5klW3z2hvFxQCEmzep885YeJBge9fsEXtEh9FJDGeYLUyahjNDaN1HWs0KWLgOWVt+yyylMM27kr38Yk7JfO+Dez5cTtxR4S/WmzDkBLwHuvkH09ouTwAiFEHtXIwmgmIGOiWwomrXYRSHe7R8VxsZ25yyDIcE4dM8IoDCUXk42ALbNd11uXf+MpTmSQndosJuSUhdbpBLaHTBz3s1fyRT07AYWz3DIBNhcVX+WXxVWU1te3tIbz1matJXAwLq26bYQfXlBvQo3o5M/KprOYpV8hiWPZdIJg7Igon6+lCBiSTkXyNabyAT7mrJhwzTTosBtr2F+NEARJhiyerkQuqg3NU6VAeqFqgWKWOEjJlF/LTLOSSybivoyTo1I3tVVajlW0rh6QsPR/RwMYLLYzp08RB/JE/2ieUbPWuRhnp7v58LuBhmF2hOT1og+/JA/gSKm5XDXNm/rcsoTl1/T3G2GzdsFdxeUl6dM8WSzWpLFg==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7df3a1b5-1ece-4d46-28d5-08db5d269698
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2023 13:47:32.1771 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mz80+2TtFU6ZaB0qYZBqXlge/Lute6fUBdxTEfe0xTuMReXgDt897rGAFpIGzxKV9M5cJpXhAAIYjSnI4g323WMdFPhZedOd483eHO4+dQg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR10MB7651
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-25_07,2023-05-25_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ malwarescore=0 adultscore=0
+ mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305250114
+X-Proofpoint-GUID: uZwiwz65Z6H7YNRHzoxup59EvqWux_yM
+X-Proofpoint-ORIG-GUID: uZwiwz65Z6H7YNRHzoxup59EvqWux_yM
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,69 +187,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 24, 2023 at 11:03:52PM +0530, Sunil V L wrote:
-> On Wed, May 24, 2023 at 03:50:34PM +0000, Andrea Bolognani wrote:
-> > First off, the only RISC-V edk2 build readily accessible to me (from
-> > the edk2-riscv64 Fedora package) is configured to work off a R/W
-> > pflash1. You said that you have edk2 patches making R/O CODE pflash0
-> > and R/W VARS pflash1 ready. Any chance you could make either the
-> > build output, or the patches and some hints on how to build edk2
-> > after applying them, somewhere?
->
-> Please build EDK2 using the branch
-> https://github.com/vlsunil/edk2/tree/separate_code_vars.
->
-> The instructions to build is in
-> https://github.com/vlsunil/riscv-uefi-edk2-docs/wiki/RISC-V-Qemu-Virt-support#build-edk2
->
-> However, now it will create two images for code and vars.
+On 25/05/2023 14:16, Peter Xu wrote:
+> On Thu, May 25, 2023 at 12:43:20PM +0100, Joao Martins wrote:
+>> In preparation for including the number of dirty pages in the
+>> vfio_get_dirty_bitmap() tracepoint, return the number of dirty pages in
+>> cpu_physical_memory_set_dirty_lebitmap() similar to
+>> cpu_physical_memory_sync_dirty_bitmap().
+> 
+> The patch itself looks good to me, but it's slightly different from sync
+> version because that was only for MIGRATION bitmap, meanwhile it counts
+> newly dirtied ones (so exclude already dirtied ones even if re-dirtied in
+> the MIGRATION bitmap), while this one counts any dirty bits in *bitmap.
+> 
+Good callout.
 
-Following your pointers, I was able to build suitable edk2 images and
-verify that they work with a patched QEMU, so
+> Shall we perhaps state it somewhere explicitly?  A comment for retval might
+> be suitable above the function?
+> 
 
-  Tested-by: Andrea Bolognani <abologna@redhat.com>
+Yeap, Something like this?
 
-Note, however, that said testing was limited to verifying that edk2
-would come up.
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index 8b8f271d0731..deaf746421da 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -333,6 +333,13 @@ static inline void
+cpu_physical_memory_set_dirty_range(ram_addr_t start,
+ }
 
-I have also tried booting an openSUSE Tumbleweed "JeOS" image, since
-that's the only distro I'm aware of that uses UEFI boot on RISC-V at
-this point - though they use U-Boot's UEFI support rather than edk2.
-
-During that attempt, I ended up in the edk2 shell. Running
-
-  fs0:\efi\boot\bootriscv64.efi
-
-brings up GRUB just fine, but selecting the default boot entry
-results in
-
-  Loading Linux 6.3.2-1-default ...
-  Loading initial ramdisk ...
-  EFI stub: Booting Linux Kernel...
-  EFI stub: Loaded initrd from LINUX_EFI_INITRD_MEDIA_GUID device path
-  EFI stub: Generating empty DTB
-  EFI stub: Exiting boot services...
-
-being printed, after which it's back to OpenSBI and from there to
-edk2 again.
-
-I feel that this has probably more to do with the way the openSUSE
-image has been built than edk2, but I thought I'd report my
-experience nonetheless in case there's any useful information that
-can be gathered from it :)
-
-> > Going further and testing libvirt integration. After hacking around
-> > other issues, I finally stumbled upon this error:
-> >
-> >   qemu-system-riscv64: Property 'virt-machine.pflash0' not found
->
-> Thanks!. This needs some investigation. Let me look into supporting
-> this.
-
-Yes please! It's critical to libvirt integration. Feel free to CC me
-when you post patches and I'll gladly test them.
-
--- 
-Andrea Bolognani / Red Hat / Virtualization
-
+ #if !defined(_WIN32)
++
++/*
++ * Contrary to cpu_physical_memory_sync_dirty_bitmap() this function returns
++ * the number of dirty pages in @bitmap passed as argument. On the other hand,
++ * cpu_physical_memory_sync_dirty_bitmap() returns newly dirtied pages that
++ * weren't set in the global migration bitmap.
++ */
+ static inline
+ uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+                                                 ram_addr_t start,
 
