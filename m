@@ -2,103 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC747105D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 08:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B76DF7105E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 May 2023 09:02:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q24rU-0006wW-J8; Thu, 25 May 2023 02:54:12 -0400
+	id 1q24xp-0000fR-76; Thu, 25 May 2023 03:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leobras@redhat.com>)
- id 1q24rF-0006vN-Um
- for qemu-devel@nongnu.org; Thu, 25 May 2023 02:53:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q24xX-0000Zw-Be
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 03:00:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leobras@redhat.com>)
- id 1q24rC-0001bj-Kc
- for qemu-devel@nongnu.org; Thu, 25 May 2023 02:53:55 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q24xV-00038B-Md
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 03:00:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1684997633;
+ s=mimecast20190719; t=1684998024;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CmRqvg37wwQUbq1I3Fl8rBbJgpBLYJSUYMNnDcbxk0I=;
- b=QsKAagiClT6N1Nkw8gSxTxMj/3ybEMW0fQgHeLN5obghJ/OIaw0DMCyTVCw33IFIOqsnWm
- yILqVxzyv7+YjLsUhd3IbSlYrxdcZli6DzATHbzaB7HRBIKUukAQ3WKbmBfr3aPu5ZT3Hi
- +xNCj3bwroLTe+3soFb/YpVE+5MmINc=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=A4jYotIEo3d4GX3qK1xIgc8Gxn3eKK+7K37T5a5EjYI=;
+ b=a4EQ/mRIcTQd4qg0nEHFDmICU4s8ePrXOOUGnkk5kmrUBnNKm6louuK8S30RdchUobePe0
+ AhO9wox4odc1va3HO38bWlMQcC4uRU6+Z34y5u2RVTOnvv19oNighvBk5qC5j7z/nE5pOV
+ KuUTfiVEp7uhL3dtiMOJxC/reLlK8SQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-262-0_EDr5yGMi6_fIEO7fhs4w-1; Thu, 25 May 2023 02:53:52 -0400
-X-MC-Unique: 0_EDr5yGMi6_fIEO7fhs4w-1
-Received: by mail-ot1-f71.google.com with SMTP id
- 46e09a7af769-6af834246c3so553547a34.2
- for <qemu-devel@nongnu.org>; Wed, 24 May 2023 23:53:52 -0700 (PDT)
+ us-mta-25-mBvQiR8lOWmZkZ-1-LzkWg-1; Thu, 25 May 2023 03:00:23 -0400
+X-MC-Unique: mBvQiR8lOWmZkZ-1-LzkWg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f603b8eb61so1410475e9.0
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 00:00:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1684997631; x=1687589631;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CmRqvg37wwQUbq1I3Fl8rBbJgpBLYJSUYMNnDcbxk0I=;
- b=YkHJMVRCay6nQ3AVV66fI0h8SOXfizb3MdP87zJVx9jmVF1QW0GIy0O6rr3CpxFQjn
- uJAbCeVbQMIU0DlzsgpdxbGrmmI9U29b9SFqMtJdM/DSqdviqbmXtzpQItBOQHfWJaAT
- 21wdCqO8l12M7xKcfJHBrL9dwYnBm9LmeS5gbHZPF4lmN9B68BR+w4GppWtouciIqyHE
- lIGPVTTQqzSwG5tQYonuQmrDhzMQvJGZfB3S9cJ/CpqgNy86mbHWfQVeMFbT2SH2a5uy
- v2Cv8FSvrItTL85gTxRhDTNO2pMBNNhZv7FaY7OJ1NF9G7RySJFeKGjt5H+GDnenbVU1
- WgdA==
-X-Gm-Message-State: AC+VfDxiQgy06LtktA70RQFDtj3EtCQL2tQwDT8QgqpHgAKvBohPM3ul
- UvhMewnm1Bo3Fc3oRl3UkC/FrEGFdR2w9oYznnrqbWy3IQIEPArRppX48Ll8MiBJo5pXunR1D5g
- CAAL7PHp6DKSCO5Q=
-X-Received: by 2002:a05:6808:4:b0:398:2483:ef4e with SMTP id
- u4-20020a056808000400b003982483ef4emr4919425oic.3.1684997631369; 
- Wed, 24 May 2023 23:53:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7PjwrV8SN19/bQOSPEsu7eAvGBaVNSu/HYBJc1JXWaZYEuAZhEmqEffBs9JkSySZLhzMniMQ==
-X-Received: by 2002:a05:6808:4:b0:398:2483:ef4e with SMTP id
- u4-20020a056808000400b003982483ef4emr4919401oic.3.1684997631132; 
- Wed, 24 May 2023 23:53:51 -0700 (PDT)
-Received: from ?IPv6:2804:1b3:a803:7f0c:32e1:e970:713a:f05b?
- ([2804:1b3:a803:7f0c:32e1:e970:713a:f05b])
- by smtp.gmail.com with ESMTPSA id
- w6-20020a4ad026000000b0054fdb673104sm149726oor.9.2023.05.24.23.53.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 May 2023 23:53:50 -0700 (PDT)
-Message-ID: <2c4b36a2e78ede439a466fc676ce700cbf6db0ec.camel@redhat.com>
-Subject: Re: [PATCH v2 10/16] migration: Don't abuse qemu_file transferred
- for RDMA
-From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras@redhat.com>
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Greg Kurz <groug@kaod.org>, 
- qemu-s390x@nongnu.org, Fam Zheng <fam@euphon.net>, Ilya Leoshkevich
- <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, John Snow
- <jsnow@redhat.com>, qemu-ppc@nongnu.org, Daniel Henrique Barboza
- <danielhb413@gmail.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, Richard Henderson
- <richard.henderson@linaro.org>, David Gibson <david@gibson.dropbear.id.au>,
- David Hildenbrand <david@redhat.com>, Stefan Hajnoczi
- <stefanha@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- qemu-block@nongnu.org,  =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Eric Blake <eblake@redhat.com>, Thomas Huth <thuth@redhat.com>,  Vladimir
- Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Date: Thu, 25 May 2023 03:53:45 -0300
-In-Reply-To: <20230515195709.63843-11-quintela@redhat.com>
-References: <20230515195709.63843-1-quintela@redhat.com>
- <20230515195709.63843-11-quintela@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1 
+ d=1e100.net; s=20221208; t=1684998022; x=1687590022;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=A4jYotIEo3d4GX3qK1xIgc8Gxn3eKK+7K37T5a5EjYI=;
+ b=l3IjDVqVFgZDXpIlO8iA4xK7nc88qWrd6vXjYLHBUXCgDLzUV2wdE1AZUtFJLzKAx6
+ TSvEcYJUhiJvs3G/YzoqCFMxbeOi61o6RskeCJUl/LBk2dE957JHakBSrO3reRvXT1ur
+ t38fEh/b1HMFP0oukufsGzMnGccd7vGpNkwNJoaHdvFNgYIrciUdD1407bgs7FtGhxw/
+ wZxSg5fw44lfF3hkKs8bcfQetEjQh2Ux6QR7JXFhkwxiAbN0mwSooEJ5u0HDRfYB4iM2
+ zEV/ExF1wp5Zltebz/zgrGV1o5Fcp+Yxob4MktJKf6Z6tsZMbZ9T1caWBcxSFNbx2HCi
+ Nt3A==
+X-Gm-Message-State: AC+VfDxksHlYQX/+qzR0TL2gyrW3g+qm++2BXf23OFUQ7p0iCWHAZ/fO
+ xx+14H3r8HcUP2wfwcTq6IREniZSK8SJFwTFnxCatxK4WiLI+OMVr3y4ONyBLgQUfsNijTg4vSK
+ GmA1AjpIQMSJRthQ=
+X-Received: by 2002:a7b:c4d5:0:b0:3f6:1141:7cc1 with SMTP id
+ g21-20020a7bc4d5000000b003f611417cc1mr1584800wmk.26.1684998022033; 
+ Thu, 25 May 2023 00:00:22 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ67sNhXGiCWMEC33rfKm3jKjz1JK7EQKNXMkKM3Vv9dYyOSX5dAEO/BvL0jlv1Hw9ZDOwyVcA==
+X-Received: by 2002:a7b:c4d5:0:b0:3f6:1141:7cc1 with SMTP id
+ g21-20020a7bc4d5000000b003f611417cc1mr1584782wmk.26.1684998021670; 
+ Thu, 25 May 2023 00:00:21 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-30.web.vodafone.de.
+ [109.43.177.30]) by smtp.gmail.com with ESMTPSA id
+ v24-20020a1cf718000000b003f606c4ad33sm4632454wmh.32.2023.05.25.00.00.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 May 2023 00:00:20 -0700 (PDT)
+Message-ID: <1d52351d-4559-d632-4161-626fdbf2517d@redhat.com>
+Date: Thu, 25 May 2023 09:00:19 +0200
 MIME-Version: 1.0
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=leobras@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC 3/3] s390-ccw: Getting rid of ulong
+Content-Language: en-US
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Kyle Evans <kevans@freebsd.org>, Warner Losh <imp@bsdimp.com>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, qemu-s390x@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230510143925.4094-1-quintela@redhat.com>
+ <20230510143925.4094-4-quintela@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230510143925.4094-4-quintela@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ NICE_REPLY_A=-0.107, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,113 +107,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2023-05-15 at 21:57 +0200, Juan Quintela wrote:
-> Just create a variable for it, the same way that multifd does.  This
-> way it is safe to use for other thread, etc, etc.
->=20
+On 10/05/2023 16.39, Juan Quintela wrote:
+> Any good reason why this still exist?
+> I can understand u* and __u* to be linux kernel like, but ulong?
+> 
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
 > ---
->  migration/migration-stats.h |  4 ++++
->  migration/migration-stats.c |  5 +++--
->  migration/rdma.c            | 22 ++++++++++++++++++++--
->  migration/trace-events      |  2 +-
->  4 files changed, 28 insertions(+), 5 deletions(-)
->=20
-> diff --git a/migration/migration-stats.h b/migration/migration-stats.h
-> index 9568b5b473..2e3e894307 100644
-> --- a/migration/migration-stats.h
-> +++ b/migration/migration-stats.h
-> @@ -89,6 +89,10 @@ typedef struct {
->       * Maximum amount of data we can send in a cycle.
->       */
->      Stat64 rate_limit_max;
-> +    /*
-> +     * Number of bytes sent through RDMA.
-> +     */
-> +    Stat64 rdma_bytes;
->      /*
->       * How long has the setup stage took.
->       */
-> diff --git a/migration/migration-stats.c b/migration/migration-stats.c
-> index abf2d38b18..4d8e9f93b7 100644
-> --- a/migration/migration-stats.c
-> +++ b/migration/migration-stats.c
-> @@ -68,8 +68,9 @@ void migration_rate_reset(QEMUFile *f)
->  uint64_t migration_transferred_bytes(QEMUFile *f)
->  {
->      uint64_t multifd =3D stat64_get(&mig_stats.multifd_bytes);
-> +    uint64_t rdma =3D stat64_get(&mig_stats.rdma_bytes);
->      uint64_t qemu_file =3D qemu_file_transferred(f);
-> =20
-> -    trace_migration_transferred_bytes(qemu_file, multifd);
-> -    return qemu_file + multifd;
-> +    trace_migration_transferred_bytes(qemu_file, multifd, rdma);
-> +    return qemu_file + multifd + rdma;
->  }
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index 2e4dcff1c9..074456f9df 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -2122,9 +2122,18 @@ retry:
->                      return -EIO;
->                  }
-> =20
-> +                /*
-> +                 * TODO: Here we are sending something, but we are not
-> +                 * accounting for anything transferred.  The following i=
-s wrong:
-> +                 *
-> +                 * stat64_add(&mig_stats.rdma_bytes, sge.length);
-> +                 *
-> +                 * because we are using some kind of compression.  I
-> +                 * would think that head.len would be the more similar
-> +                 * thing to a correct value.
-> +                 */
->                  stat64_add(&mig_stats.zero_pages,
->                             sge.length / qemu_target_page_size());
-> -
->                  return 1;
->              }
-> =20
-> @@ -2232,8 +2241,17 @@ retry:
-> =20
->      set_bit(chunk, block->transit_bitmap);
->      stat64_add(&mig_stats.normal_pages, sge.length / qemu_target_page_si=
-ze());
-> +    /*
-> +     * We are adding to transferred the amount of data written, but no
-> +     * overhead at all.  I will asume that RDMA is magicaly and don't
-> +     * need to transfer (at least) the addresses where it wants to
-> +     * write the pages.  Here it looks like it should be something
-> +     * like:
-> +     *     sizeof(send_wr) + sge.length
-> +     * but this being RDMA, who knows.
-> +     */
-> +    stat64_add(&mig_stats.rdma_bytes, sge.length);
->      ram_transferred_add(sge.length);
-> -    qemu_file_credit_transfer(f, sge.length);
->      rdma->total_writes++;
-> =20
->      return 0;
-> diff --git a/migration/trace-events b/migration/trace-events
-> index cdaef7a1ea..54ae5653fd 100644
-> --- a/migration/trace-events
-> +++ b/migration/trace-events
-> @@ -187,7 +187,7 @@ process_incoming_migration_co_postcopy_end_main(void)=
- ""
->  postcopy_preempt_enabled(bool value) "%d"
-> =20
->  # migration-stats
-> -migration_transferred_bytes(uint64_t qemu_file, uint64_t multifd) "qemu_=
-file %" PRIu64 " multifd %" PRIu64
-> +migration_transferred_bytes(uint64_t qemu_file, uint64_t multifd, uint64=
-_t rdma) "qemu_file %" PRIu64 " multifd %" PRIu64 " RDMA %" PRIu64
-> =20
->  # channel.c
->  migration_set_incoming_channel(void *ioc, const char *ioctype) "ioc=3D%p=
- ioctype=3D%s"
+>   pc-bios/s390-ccw/helper.h        |  2 +-
+>   pc-bios/s390-ccw/s390-ccw.h      |  7 +++----
+>   pc-bios/s390-ccw/virtio-blkdev.c | 12 ++++++------
+>   pc-bios/s390-ccw/virtio-scsi.c   |  4 ++--
+>   pc-bios/s390-ccw/virtio-scsi.h   |  2 +-
+>   pc-bios/s390-ccw/virtio.c        | 12 ++++++------
+>   pc-bios/s390-ccw/virtio.h        |  4 ++--
+>   7 files changed, 21 insertions(+), 22 deletions(-)
 
-
-Reviewed-by: Leonardo Bras <leobras@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
