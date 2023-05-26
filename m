@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDFB712CDC
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 20:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2BC712CDF
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 20:54:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2cWu-00067m-OE; Fri, 26 May 2023 14:51:12 -0400
+	id 1q2cZB-00072I-1f; Fri, 26 May 2023 14:53:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1q2cWs-00066u-Th
- for qemu-devel@nongnu.org; Fri, 26 May 2023 14:51:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q2cZ9-000721-8d
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 14:53:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1q2cWp-0007DQ-Rn
- for qemu-devel@nongnu.org; Fri, 26 May 2023 14:51:10 -0400
+ id 1q2cZ0-0007zf-TB
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 14:53:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685127066;
+ s=mimecast20190719; t=1685127202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ruqHerJBc+Zz5dbS8OoBa37ROvFT/UJizITpia+7IcE=;
- b=crhX0b0EMRFZX4uzjZuq2PDlPKJmd+SdoFx7jpicR7cO/+qSRL/XTix2EeI7aTv4UGgkfI
- RGzMpBVnzKVhAVlQZE4mu3OurKAAlgythd+9x8THOLjHi6HfIO4SLL+Rb3Gox+dkErcyBz
- eIfiZWqned/MnVH5SgWIT4uBTFvOpGw=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kAn2HwbHdsyvFX0tyAYL0RoykzACuXlbehwwoLUZIzo=;
+ b=fnbwChfMfOUCjrzNg4f6YE5Rw4/I20IqU5J9Ctyyw/+JN4cxwQlP/i9r3k4Jjs3epDrYha
+ +UF2GD+7YiqxNNUpkLZ3knPEgyfsy9IBpIo33VL2ayx+m4X9cyYeu3lEmcSgLNbVSoJwmU
+ MAshZEn0Kn9nMX0TtiGK7pMKPFm1esM=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-18-tVHRsGuDNga1-Ci-0wihxQ-1; Fri, 26 May 2023 14:51:04 -0400
-X-MC-Unique: tVHRsGuDNga1-Ci-0wihxQ-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-3f6aaa6df23so7148911cf.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 11:51:04 -0700 (PDT)
+ us-mta-493-wVEvubGuONKdbCc0LofsVQ-1; Fri, 26 May 2023 14:53:20 -0400
+X-MC-Unique: wVEvubGuONKdbCc0LofsVQ-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-3f6a96a6170so15647111cf.2
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 11:53:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685127064; x=1687719064;
+ d=1e100.net; s=20221208; t=1685127200; x=1687719200;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ruqHerJBc+Zz5dbS8OoBa37ROvFT/UJizITpia+7IcE=;
- b=erG/8nXeT21+D56QMOgox/+xFRHU1QKHGKH9iL83K+7g+UL1ksxGZj+5w5XZFUcGDI
- VMlzz9oEsbePFi6NLZipVK+W3cPay/rHA8SJS6xp4ZUl3z+Dbrmh63XZNUEEYczr06kn
- wN3f3+uCKrmZTt14vEwpaDchRHPbnJh/wMdo5+gwHr5BfJ8oPWWxcbx1N7sK7jRaWBBw
- msCZccNg5Cu5w1jMZWMVyijbWo75WvFFjuB56rit2Xxb4bHndP30cYIj856LYUUgGeyi
- NB00qL6KY1jIqz2Nd5I8AyRhAAkNnYfPA7uQAUf/OCX3QEqImwGJtX677zNF9Ca3HcJj
- hEbw==
-X-Gm-Message-State: AC+VfDzhgf4n9Ic9DscRkPbHzxN5VXjdHCqzTapxjQPdWRNo1xEeHRii
- +jbSAc4Nk7YrkvqRO4Vuj23YyvrLvb9VZXoOPOCMYk1pUVCUgtt4Lp8IDs+rnkhx0IHtEnk8M4w
- SSP+2QdW2zlQzUHwEEsqLgHYehnpb5KU=
-X-Received: by 2002:ac8:7d51:0:b0:3f5:2341:5435 with SMTP id
- h17-20020ac87d51000000b003f523415435mr2937834qtb.61.1685127064139; 
- Fri, 26 May 2023 11:51:04 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6tfmq4XfYomB9rlhdQZq7KNA2cSJw4WHGm3kqJaJzKpLaSTsve6+buOR/l0Q5OPBfgPbpMKdFHBAUSkT2qzwE=
-X-Received: by 2002:ac8:7d51:0:b0:3f5:2341:5435 with SMTP id
- h17-20020ac87d51000000b003f523415435mr2937818qtb.61.1685127063887; Fri, 26
- May 2023 11:51:03 -0700 (PDT)
+ bh=kAn2HwbHdsyvFX0tyAYL0RoykzACuXlbehwwoLUZIzo=;
+ b=EGJvzW0jJ8zxABZYnLHEpXyzI3U8iqEp3PTl4GJ3ZRFkSNTcaQzX8LgFphkW6ql+fW
+ +SYI05eGqlN0ZIf/ga+T9P4H/I9l8RNDS1cXJHM23g+oCOh48WOqIsy2ZJ/A/ra5dfDz
+ UdticWtR6nRFxpi2MZE/TcaQFg8iquofKria6rq3pJYPo8B96ZALScbXrwov/aFTSqqx
+ IteQpKGMZxsffuxIXiT6XNS01fLOUKj2hEjasJvTF4iZ+94+Rwa/9tKwjOraEiH4k226
+ voDiISg34lpBVeGIIXU38v75qPmfzv9h6OCz0u+akAy+VHJ9amEQESheU/CkyKLvQcWG
+ c5/A==
+X-Gm-Message-State: AC+VfDzqPvMKZcOyQ+Mk3JI0wkSk1kAgQK4ZIHVL3TKOrVtPY3AGFJQ/
+ 4Xe150RS02ttWXgsg9sw4BMx1eqv1CDKS/HGU8LLMnzGG9lmUGXkHVOzKxXSD39RUbTk+5mvWcb
+ GyxqTTUsL6VYpiRpS+paaTnefv36o9RE=
+X-Received: by 2002:ac8:5795:0:b0:3f5:4da8:1a83 with SMTP id
+ v21-20020ac85795000000b003f54da81a83mr3055202qta.3.1685127200372; 
+ Fri, 26 May 2023 11:53:20 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5GgVhXWCosQnjV8c+Y9oi0gc2dodytb3wX6S049X6BOmDAGs+liJyIecZ5fkHpbjrHj1ydKQCixtVs3auLFUA=
+X-Received: by 2002:ac8:5795:0:b0:3f5:4da8:1a83 with SMTP id
+ v21-20020ac85795000000b003f54da81a83mr3055182qta.3.1685127200146; Fri, 26 May
+ 2023 11:53:20 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230515195709.63843-1-quintela@redhat.com>
- <20230515195709.63843-3-quintela@redhat.com>
- <1e3a3735a5ba81abb562e8f6c21ab33f38992af5.camel@redhat.com>
- <87a5xr4iy8.fsf@secure.mitica>
-In-Reply-To: <87a5xr4iy8.fsf@secure.mitica>
+ <20230515195709.63843-4-quintela@redhat.com>
+ <35a04e2de57e02745c18076990ce63fa6f61f5a4.camel@redhat.com>
+ <875y8f4it8.fsf@secure.mitica>
+In-Reply-To: <875y8f4it8.fsf@secure.mitica>
 From: Leonardo Bras Soares Passos <leobras@redhat.com>
-Date: Fri, 26 May 2023 15:50:52 -0300
-Message-ID: <CAJ6HWG7N_YGNxU4dd4DMumFjqWWhQRqP=RngkAUYQ52E-29G5g@mail.gmail.com>
-Subject: Re: [PATCH v2 02/16] migration: Correct transferred bytes value
+Date: Fri, 26 May 2023 15:53:09 -0300
+Message-ID: <CAJ6HWG4TY=N56BBq6UmHC_unznHLMd7uwvo4_cT0GTrYUKGRWQ@mail.gmail.com>
+Subject: Re: [PATCH v2 03/16] migration: Move setup_time to mig_stats
 To: quintela@redhat.com
 Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
  Greg Kurz <groug@kaod.org>, 
@@ -86,7 +86,7 @@ Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lsoaresp@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lsoaresp@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -110,123 +110,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 26, 2023 at 5:04=E2=80=AFAM Juan Quintela <quintela@redhat.com>=
+On Fri, May 26, 2023 at 5:07=E2=80=AFAM Juan Quintela <quintela@redhat.com>=
  wrote:
 >
 > Leonardo Br=C3=A1s <leobras@redhat.com> wrote:
 > > On Mon, 2023-05-15 at 21:56 +0200, Juan Quintela wrote:
-> >> We forget several places to add to trasferred amount of data.  With
-> >> this fixes I get:
-> >>
-> >>    qemu_file_transferred() + multifd_bytes =3D=3D transferred
-> >>
-> >> The only place whrer this is not true is during devices sending.  But
-> >> going all through the full tree searching for devices that use
-> >> QEMUFile directly is a bit too much.
-> >>
-> >> Multifd, precopy and xbzrle work as expected. Postocpy still misses 35
-> >> bytes, but searching for them is getting complicated, so I stop here.
+> >> It is a time that needs to be cleaned each time cancel migration.
+> >> Once there create migration_time_since() to calculate how time since a
+> >> time in the past.
 > >>
 > >> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> >>
 > >> ---
-> >>  migration/ram.c       | 14 ++++++++++++++
-> >>  migration/savevm.c    | 19 +++++++++++++++++--
-> >>  migration/vmstate.c   |  3 +++
-> >>  migration/meson.build |  2 +-
-> >>  4 files changed, 35 insertions(+), 3 deletions(-)
 > >>
-> >> diff --git a/migration/ram.c b/migration/ram.c
-> >> index f69d8d42b0..fd5a8db0f8 100644
-> >> --- a/migration/ram.c
-> >> +++ b/migration/ram.c
-> >> @@ -337,6 +337,7 @@ int64_t ramblock_recv_bitmap_send(QEMUFile *file,
+> >> Rename to migration_time_since (c=C3=A9dric)
+> >> ---
+> >>  migration/migration-stats.h | 13 +++++++++++++
+> >>  migration/migration.h       |  1 -
+> >>  migration/migration-stats.c |  7 +++++++
+> >>  migration/migration.c       |  9 ++++-----
+> >>  4 files changed, 24 insertions(+), 6 deletions(-)
 > >>
-> >>      g_free(le_bitmap);
+> >> diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+> >> index e782f1b0df..21402af9e4 100644
+> >> --- a/migration/migration-stats.h
+> >> +++ b/migration/migration-stats.h
+> >> @@ -75,6 +75,10 @@ typedef struct {
+> >>       * Number of bytes sent during precopy stage.
+> >>       */
+> >>      Stat64 precopy_bytes;
+> >> +    /*
+> >> +     * How long has the setup stage took.
+> >> +     */
+> >> +    Stat64 setup_time;
+> >>      /*
+> >>       * Total number of bytes transferred.
+> >>       */
+> >> @@ -87,4 +91,13 @@ typedef struct {
 > >>
-> >> +    stat64_add(&mig_stats.transferred, 8 + size + 8);
-> >>      if (qemu_file_get_error(file)) {
-> >>          return qemu_file_get_error(file);
-> >>      }
-> >> @@ -1392,6 +1393,7 @@ static int find_dirty_block(RAMState *rs, PageSe=
-archStatus *pss)
-> >>                      return ret;
-> >>                  }
-> >>                  qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-> >> +                stat64_add(&mig_stats.transferred, 8);
-> >>                  qemu_fflush(f);
-> >>              }
-> >>              /*
-> >> @@ -3020,6 +3022,7 @@ static int ram_save_setup(QEMUFile *f, void *opa=
-que)
-> >>      RAMState **rsp =3D opaque;
-> >>      RAMBlock *block;
-> >>      int ret;
-> >> +    size_t size =3D 0;
+> >>  extern MigrationAtomicStats mig_stats;
 > >>
-> >>      if (compress_threads_save_setup()) {
-> >>          return -1;
-> >> @@ -3038,16 +3041,20 @@ static int ram_save_setup(QEMUFile *f, void *o=
-paque)
-> >>          qemu_put_be64(f, ram_bytes_total_with_ignored()
-> >>                           | RAM_SAVE_FLAG_MEM_SIZE);
+> >> +/**
+> >> + * migration_time_since: Calculate how much time has passed
+> >> + *
+> >> + * @stats: migration stats
+> >> + * @since: reference time since we want to calculate
+> >> + *
+> >> + * Returns: Nothing.  The time is stored in val.
+> >> + */
+> >> +void migration_time_since(MigrationAtomicStats *stats, int64_t since)=
+;
+> >>  #endif
+> >> diff --git a/migration/migration.h b/migration/migration.h
+> >> index 48a46123a0..27aa3b1035 100644
+> >> --- a/migration/migration.h
+> >> +++ b/migration/migration.h
+> >> @@ -316,7 +316,6 @@ struct MigrationState {
+> >>      int64_t downtime;
+> >>      int64_t expected_downtime;
+> >>      bool capabilities[MIGRATION_CAPABILITY__MAX];
+> >> -    int64_t setup_time;
+> >>      /*
+> >>       * Whether guest was running when we enter the completion stage.
+> >>       * If migration is interrupted by any reason, we need to continue
+> >> diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+> >> index 2f2cea965c..3431453c90 100644
+> >> --- a/migration/migration-stats.c
+> >> +++ b/migration/migration-stats.c
+> >> @@ -12,6 +12,13 @@
 > >>
-> >> +        size +=3D 8;
-> >>          RAMBLOCK_FOREACH_MIGRATABLE(block) {
-> >>              qemu_put_byte(f, strlen(block->idstr));
-> >>              qemu_put_buffer(f, (uint8_t *)block->idstr, strlen(block-=
->idstr));
-> >>              qemu_put_be64(f, block->used_length);
-> >> +            size +=3D 1 + strlen(block->idstr) + 8;
+> >>  #include "qemu/osdep.h"
+> >>  #include "qemu/stats64.h"
+> >> +#include "qemu/timer.h"
+> >>  #include "migration-stats.h"
+> >>
+> >>  MigrationAtomicStats mig_stats;
+> >> +
+> >> +void migration_time_since(MigrationAtomicStats *stats, int64_t since)
+> >> +{
+> >> +    int64_t now =3D qemu_clock_get_ms(QEMU_CLOCK_HOST);
+> >> +    stat64_set(&stats->setup_time, now - since);
+> >> +}
 > >
-> > I was thinking some of them would look better with sizeof()s instead of=
- given
-> > literal number, such as:
+> > IIUC this calculates a time delta and saves on stats->setup_time, is th=
+at right?
 > >
-> > size +=3D sizeof(Byte) + strlen(block->idstr) + sizeof(block->used_leng=
-th);
+> > It took me some time to understand that, since the function name is
+> > migration_time_since(), which seems more generic.
 > >
-> > Maybe too much?
+> > Would not be more intuitive to name it migration_setup_time_set() or so=
+?
 >
-> I dropped this patch for two reasons:
->
-> - reviewers gave me a bad time with it O:-)
-> - it was there only so if anyone was meassuring that new counters are
->   the same that old counters.
->
-> But as I have already checked that, we don't need it.
->
-> I drop it on the next round that I send.
-> > Maybe, it would be nice to have qemu_put_* to return the value, and in =
-this
-> > case:
-> >
-> > size +=3D qemu_put_be64(...)
-> >
-> > What do you think?
->
-> Even more important than that is to return an error value, but that
-> is a very long project.
->
-> See on my next series that qemu_fflush() return errors, so code gets
-> simplifed:
->
-> qemu_fflush(file);
-> if (qemu_file_get_error(file)) {
->     handle error;
-> }
->
-> to:
->
-> qemu_fflush(file);
-> if (qemu_file_get_error(file)) {
->     handle error;
-> }
->
+> Dropped this.
+> Other reviewer commented that this was not a counter, what is right.  So
+> I left the times for future work (it don't interfere with current
+> cleanups).
 
-They look the same to me, what changed?
+Oh, it makes sense.
 
-> We need to do basically all qemu_put_*() and qemu_get_*() functions, but
-> it is a step on the right direction.
+>
+>
+> > I could not see MigrationState->setup_time being initialized as 0 in th=
+is patch.
+> > In a quick look in the code I noticed there is no initialization of thi=
+s struct,
+> > but on qemu_savevm_state() and migrate_prepare() we have:
+> >
+> > memset(&mig_stats, 0, sizeof(mig_stats));
+> >
+> > I suppose this is enough, right?
+>
+> Yeap.  All migration_stats() are initialized to zero at the start of
+> qemu, or when we start a migration.
+>
+> After a migration, it don't matter if it finished with/without error,
+> they are there with the right value until we start another migration (in
+> the case of error, of course).
+
+That's great to simplify the code.
+Thanks!
+
 >
 > Later, Juan.
 >
