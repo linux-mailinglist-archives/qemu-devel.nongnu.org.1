@@ -2,49 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B74712A0A
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B35C2712A09
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:56:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2ZmD-0003h6-IA; Fri, 26 May 2023 11:54:49 -0400
+	id 1q2Zn6-0004PS-JH; Fri, 26 May 2023 11:55:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1q2Zm5-0003eZ-Hd; Fri, 26 May 2023 11:54:41 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1q2Zlu-0007v4-Rv; Fri, 26 May 2023 11:54:32 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 63FF24736E;
- Fri, 26 May 2023 17:54:21 +0200 (CEST)
-Message-ID: <df578cfe-1151-1e27-19c5-39dff2042f77@proxmox.com>
-Date: Fri, 26 May 2023 17:54:20 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2Zn1-0004MV-Pu
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:55:39 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2Zmy-00008v-Ke
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:55:38 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-534696e4e0aso584287a12.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:55:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685116534; x=1687708534;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/7XBjsNTlyTJXytuq08uMo1C4/N4C+2V/Dt5G0nQqbI=;
+ b=Nyf7+iEb7QGMvme6NQyolVVAGjMzr/0EYM71awle5WsDK1WVDqmO50jJD9AA9iYFQc
+ Im2ZBTGyS+opU6iMpGyc3KQRi+gtG3mLyr/PB7pRlwSqy65c4+qnFBtzyjdhcppbNi0X
+ jYEIl4EOc4NdI4fzwzZwgVrBuR2mtR6O5hD7oUykTwZEdrbCMDSbGFvWHXNa0yoRekPN
+ 2oY79vpdNUAr1soAzI1Fb7FcGoAvzlo0EG/MP9SpBh6BYpypr/IQ0qBcvVlgaxZaQwdh
+ zmAszhS7Q7eyFbiHA/U5r2tuGBb/MxXfWjWeketWtjIkALhh+e2dSfcn0j0FvFfAAlEr
+ hkKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685116534; x=1687708534;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/7XBjsNTlyTJXytuq08uMo1C4/N4C+2V/Dt5G0nQqbI=;
+ b=Mv1rbQ0u8Whv2LRltDS7EZifRuiskFyXnGkuyhUf1lrDsUBJ1FEHL+bZGLyiMuX6nG
+ dPiLaN6msJOSBN8YZpEfy9GyHoNwJAywV59FSmOW7FTt2/MOnFkCMLKhNdPSn3rg+RwW
+ c6B6s/18r8gDJpR54ABpcK42BATvWkT/KFkqNvv0hG1f777S3SwrHXxAZ7/PxjFCsufv
+ t5JbgBB2nxkJ97Oxt/QpByGZ+hMj5ygoVkiBTD42IP2CjSM0qjnsz9OEMgYC6TsQ43uY
+ 1RjL7/WBzKo+XqWBLgbFj0Y2G6IIFTIf559F/KZRKNR8j0KFfKadro6kvs8xJjzVqndW
+ Tn3w==
+X-Gm-Message-State: AC+VfDxbyU0DlPDjOgsB9YZOZCu0XW8cdPVMwauLJG3DV9Ao8goKar42
+ 06KEPUZii9qBD5a1xGcUXGJ9KF5FUsmxe+uGpjI=
+X-Google-Smtp-Source: ACHHUZ6HyTJfNkUP0zNgPsrn3oPLu19s79dvbyV9V8LUK3/jBdmlanL6Q7SgOwNkb4NLVCNTv4+urA==
+X-Received: by 2002:a17:902:e5c8:b0:1ad:fa2e:17fc with SMTP id
+ u8-20020a170902e5c800b001adfa2e17fcmr3351541plf.2.1685116534142; 
+ Fri, 26 May 2023 08:55:34 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
+ ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
+ by smtp.gmail.com with ESMTPSA id
+ n6-20020a170902e54600b001afa7040a70sm3413086plf.276.2023.05.26.08.55.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 08:55:33 -0700 (PDT)
+Message-ID: <3e797413-a8ee-ecd3-8775-b22107cd0418@linaro.org>
+Date: Fri, 26 May 2023 08:55:31 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2] migration: hold the BQL during setup
+Subject: Re: [PATCH] atomics: eliminate mb_read/mb_set
 Content-Language: en-US
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, leobras@redhat.com,
- eblake@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
- stefanha@redhat.com, fam@euphon.net, qemu-block@nongnu.org,
- pbonzini@redhat.com, t.lamprecht@proxmox.com
-References: <20230525164726.45176-1-f.ebner@proxmox.com>
- <87sfbj1jq7.fsf@secure.mitica>
- <74785ad6-ea07-6b11-61ea-fd796daf21ad@proxmox.com>
-In-Reply-To: <74785ad6-ea07-6b11-61ea-fd796daf21ad@proxmox.com>
-Content-Type: text/plain; charset=UTF-8
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230526081810.423315-1-pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230526081810.423315-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.092,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,56 +94,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 26.05.23 um 15:47 schrieb Fiona Ebner:
-> Am 26.05.23 um 12:16 schrieb Juan Quintela:
->> Nak
->>
->> Sometimes it works, and sometimes it hangs.
+On 5/26/23 01:18, Paolo Bonzini wrote:
+> qatomic_mb_read and qatomic_mb_set were the very first atomic primitives
+> introduced for QEMU; their semantics are unclear and they provide a false
+> sense of safety.
 > 
-> Sorry, I originally only ran the tests for x86_64 (native for me). I now
-> ran into the hang too, with qtest-aarch64/migration-test and
-> qtest-i386/migration-test.
+> The last use of qatomic_mb_read() has been removed, so delete it.
+> qatomic_mb_set() instead can survive as an optimized
+> qatomic_set()+smp_mb(), similar to Linux's smp_store_mb(), but
+> rename it to qatomic_set_mb() to match the order of the two
+> operations.
 > 
->> Can you take a look?
-> 
-> Will do!
-> 
+> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+> ---
+>   accel/tcg/cpu-exec.c              |  2 +-
+>   accel/tcg/tcg-accel-ops-mttcg.c   |  2 +-
+>   accel/tcg/tcg-accel-ops-rr.c      |  4 ++--
+>   docs/devel/atomics.rst            | 27 ++++-----------------------
+>   include/qemu/atomic.h             |  4 ++--
+>   monitor/qmp.c                     |  2 +-
+>   softmmu/cpus.c                    |  2 +-
+>   softmmu/physmem.c                 |  2 +-
+>   target/arm/hvf/hvf.c              |  2 +-
+>   tests/unit/test-aio-multithread.c |  2 +-
+>   util/qemu-coroutine-lock.c        |  4 ++--
+>   11 files changed, 17 insertions(+), 36 deletions(-)
 
-So I took a look at the multifd_send_state->params[$i] and noticed that
-the IOChannel c is still NULL and running is still false, while the
-name, page_size, etc. have already been initialized.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-So it seems like that socket_send_channel_create() did not manage to
-execute multifd_new_send_channel_async() yet, telling from the following
-in multifd_save_setup():
-
->         p->page_size = qemu_target_page_size();
->         p->page_count = page_count;
-> 
->         if (migrate_zero_copy_send()) {
->             p->write_flags = QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
->         } else {
->             p->write_flags = 0;
->         }
-> 
->         socket_send_channel_create(multifd_new_send_channel_async, p);
->     }
-
-I guess the execution of multifd_new_send_channel_async() after
-socket_send_channel_create() somehow depends on the main thread doing
-something? But the main thread is waiting on the BQL.
-
-Should I introduce an unlocked section around multifd_send_sync_main()
-in ram_save_setup() and hope for the best? The tests ran two times
-without errors for me afterwards. Is there an easy way to only run the
-single problematic test cases again?
-
-There's still the risk there's something else that needs an unlocked
-section. In that regard, v1 of the patch is safer, because it doesn't
-change which sections are inside or outside the BQL for migration, just
-for snapshot.
-
-Best Regards,
-Fiona
-
+r~
 
