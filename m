@@ -2,61 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99ACA711E38
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 05:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 156BF711E7E
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 05:39:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Nkr-0005kd-9E; Thu, 25 May 2023 23:04:37 -0400
+	id 1q2OHe-0004Lx-0b; Thu, 25 May 2023 23:38:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fanwj@mail.ustc.edu.cn>)
- id 1q2Nko-0005kG-Dh
- for qemu-devel@nongnu.org; Thu, 25 May 2023 23:04:34 -0400
-Received: from email.ustc.edu.cn ([2001:da8:d800::8] helo=ustc.edu.cn)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <fanwj@mail.ustc.edu.cn>) id 1q2Nkj-00057a-HA
- for qemu-devel@nongnu.org; Thu, 25 May 2023 23:04:34 -0400
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q2OHb-0004Kn-Jv; Thu, 25 May 2023 23:38:27 -0400
+Received: from mail-vs1-xe31.google.com ([2607:f8b0:4864:20::e31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1q2OHZ-0002aZ-HX; Thu, 25 May 2023 23:38:27 -0400
+Received: by mail-vs1-xe31.google.com with SMTP id
+ ada2fe7eead31-439367c12ceso164873137.0; 
+ Thu, 25 May 2023 20:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mail.ustc.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
- In-Reply-To:References:Content-Transfer-Encoding:Content-Type:
- MIME-Version:Message-ID; bh=Cv/gsxaLEoI0Lo3TKh+B6Y8FJ1J0mhyD+xIK
- ppzmHU8=; b=CA8mWi+1xaQqxPj6GN/eP8mAdPcEbYuSjPQQLvCF+hYV9ut5Pqb7
- 7r5H7AK08wMcIQxzwSDP0C5vqKGRsnhwrhBxiSKxrvKQs/G8dq6T8UOkYP6tMzDR
- 8zQWbzTKEI2Yeb0Xy7Fsb7yldFd17C/H1vDtQ3KPVKz/PxMo1wUmQ40=
-Received: by ajax-webmail-newmailweb.ustc.edu.cn (Coremail) ; Fri, 26 May
- 2023 10:56:33 +0800 (GMT+08:00)
-X-Originating-IP: [120.253.225.34]
-Date: Fri, 26 May 2023 10:56:33 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-To: "Richard Henderson" <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, laurent@vivier.eu
-Subject: Re: Re: [PATCH] linux-user/i386: Properly align signal frame
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT3.0.8 dev build
- 20210401(c5ff3689) Copyright (c) 2002-2023 www.mailtech.cn ustccn
-In-Reply-To: <fa83ba4a-0d85-a923-a3d7-089c4d7c4be2@linaro.org>
-References: <20230524054647.1093758-1-richard.henderson@linaro.org>
- <fa83ba4a-0d85-a923-a3d7-089c4d7c4be2@linaro.org>
-X-SendMailWithSms: false
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+ d=gmail.com; s=20221208; t=1685072304; x=1687664304;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gebbvLecwxmC4j6HVqVaGnssKKu6mrz7ssMgpBbb4qU=;
+ b=T8iXa5m/NlHEfMZdyMn7/uImE9TvrWH0cDy5P6trX7pqoJY5e66vyzb1bi0Dvn83lI
+ 8EOmDKUv60FvLKhbedUuRrBqsS1PSnkQ77AMviBEsJtCMbE51/m1sC5IN3coiJJh+vmH
+ xQBy4dfdlFN3N5Xr1Z9nKv/IDptrFG7FvmmcLzatIV8KOF/+VzL8Lb2/uGUuIlVyzYfL
+ EqI78y4GQMgXbI2mhKzDmFt2fH8LDo8GvLyiwxlmPd9acdRRGsycHNBg68txQCoESR+f
+ 1BY8QAeNR8CjhO4xBQOjZ5u3ChnmadeSsseI1MxntYyCTbp9HOV4ONnD+dVXIrYx5HBI
+ se6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685072304; x=1687664304;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gebbvLecwxmC4j6HVqVaGnssKKu6mrz7ssMgpBbb4qU=;
+ b=cLFVedgroHPHLRnuaLlEvmgSEv6uYPFqgWKuU9yu5AjNdFDW6Wg0NOxx6L9baFw5GV
+ Q4Jn0l52LChnMKBoICmNh5g0iJ1xZRFwYE+jNAMnPQ39JSxWFuFoy3TFzHbLjBn3ImJh
+ 47tdr9vH+kF1KLANxBBtXpCxlOZOdeGER2jXpFk3S10DIDtrsJrU/rp2rA5K4jnGPhix
+ S4MmTbkOqtVmTals/vdlg6Vg6WP4+MyNDab8y4dzXtW81k3im4fT56/IsIfydkuXSv6Q
+ dt1QvOrkklo0HiRhOOk+OVhVmOefbUXrVxWt0jfvAnhLuMFmr4yPVD6Pdxq0vvBY2f+D
+ wSxA==
+X-Gm-Message-State: AC+VfDzfxX8da6sLrKvDDe8AVqUphCtu60qgCYPXH0Tg0k6MT1PvZph4
+ xdIC2PH6T3oNipJteUtm8cRxG+BHvta4yc5gK7Y=
+X-Google-Smtp-Source: ACHHUZ6XCYGMbxfSt5lrq692v6f1bHsRH5/fTTJcmX4u0P6CJhqpHeMnEuQ7/NZ3nQ8QbJEWgKvspHV8HYPa8zlPPX4=
+X-Received: by 2002:a05:6102:34e7:b0:434:6978:fdc6 with SMTP id
+ bi7-20020a05610234e700b004346978fdc6mr147486vsb.11.1685072303973; Thu, 25 May
+ 2023 20:38:23 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <3cba4226.1d2fb.18855fc889f.Coremail.fanwj@mail.ustc.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: LkAmygAHD7PhH3BkWIRUAA--.2W
-X-CM-SenderInfo: pidq4yo6pdxzwoxv3uoohg3hdfq/1tbiAQ0BEFQhoTcMRgADs3
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
- CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
- daVFxhVjvjDU=
-Received-SPF: pass client-ip=2001:da8:d800::8;
- envelope-from=fanwj@mail.ustc.edu.cn; helo=ustc.edu.cn
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+References: <20230523102805.100160-1-sunilvl@ventanamicro.com>
+In-Reply-To: <20230523102805.100160-1-sunilvl@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 26 May 2023 13:37:57 +1000
+Message-ID: <CAKmqyKNOU65R3Yc=K=xHZKb00_e88HkGG8jwO=qfng1fg78aAw@mail.gmail.com>
+Subject: Re: [PATCH v3] hw/riscv: virt: Assume M-mode FW in pflash0 only when
+ "-bios none"
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Heinrich Schuchardt <xypron.glpk@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e31;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe31.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,221 +89,218 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  fanwj@mail.ustc.edu.cn
-From: fanwj--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoiVGhlIGJlZ2lubmluZyBvZiB0aGUgc3RydWN0dXJlLCB3aXRoIHByZXRhZGRyLCBzaG91bGQg
-YmUganVzdCBiZWxvdyAxNi1ieXRlIGFsaWdubWVudC4iDQoNCkl0IGlzIGluY29ycmVjdCEgVGhl
-IGJlZ2lubmluZyBvZiB0aGUgc3RydWN0dXJlLCB3aXRoIHByZXRhZGRyIG5vdCBhbGlnbmVkIGFz
-IDE2LWJ5dGUhDQpPbiB4ODYtNjQsIEl0IGFsaWduZWQgYXMgKDE2biAtIHNpemVvZih2b2lkKikp
-IGJlY2F1c2Ugb2YgaW5zdHJ1Y3Rpb24gImNhbGwiICENCg0KDQoNCg0KDQo+IC0tLS0t5Y6f5aeL
-6YKu5Lu2LS0tLS0NCj4g5Y+R5Lu25Lq6OiAiUmljaGFyZCBIZW5kZXJzb24iIDxyaWNoYXJkLmhl
-bmRlcnNvbkBsaW5hcm8ub3JnPg0KPiDlj5HpgIHml7bpl7Q6IDIwMjMtMDUtMjQgMTM6NTA6NDMg
-KOaYn+acn+S4iSkNCj4g5pS25Lu25Lq6OiBxZW11LWRldmVsQG5vbmdudS5vcmcNCj4g5oqE6YCB
-OiBmYW53akBtYWlsLnVzdGMuZWR1LmNuLCBsYXVyZW50QHZpdmllci5ldQ0KPiDkuLvpopg6IFJl
-OiBbUEFUQ0hdIGxpbnV4LXVzZXIvaTM4NjogUHJvcGVybHkgYWxpZ24gc2lnbmFsIGZyYW1lDQo+
-IA0KPiBPbiA1LzIzLzIzIDIyOjQ2LCBSaWNoYXJkIEhlbmRlcnNvbiB3cm90ZToNCj4gPiBUaGUg
-YmVnaW5uaW5nIG9mIHRoZSBzdHJ1Y3R1cmUsIHdpdGggcHJldGFkZHIsIHNob3VsZCBiZSBqdXN0
-IGJlbG93DQo+ID4gMTYtYnl0ZSBhbGlnbm1lbnQuICBEaXNjb25uZWN0IGZwc3RhdGUgZnJvbSBz
-aWdmcmFtZSwganVzdCBsaWtlIHRoZQ0KPiA+IGtlcm5lbCBkb2VzLg0KPiA+IA0KPiA+IFNpZ25l
-ZC1vZmYtYnk6IFJpY2hhcmQgSGVuZGVyc29uIDxyaWNoYXJkLmhlbmRlcnNvbkBsaW5hcm8ub3Jn
-Pg0KPiA+IC0tLQ0KPiA+ICAgbGludXgtdXNlci9pMzg2L3NpZ25hbC5jICAgICAgICAgfCAxMDQg
-KysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLQ0KPiA+ICAgdGVzdHMvdGNnL3g4Nl82NC9z
-aWdzdGFjay5jICAgICAgfCAgMzMgKysrKysrKysrKw0KPiA+ICAgdGVzdHMvdGNnL3g4Nl82NC9N
-YWtlZmlsZS50YXJnZXQgfCAgIDEgKw0KPiA+ICAgMyBmaWxlcyBjaGFuZ2VkLCA5MCBpbnNlcnRp
-b25zKCspLCA0OCBkZWxldGlvbnMoLSkNCj4gPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy90
-Y2cveDg2XzY0L3NpZ3N0YWNrLmMNCj4gDQo+IE9vcHMsIG1lYW50IHRvIGFkZA0KPiANCj4gUmVz
-b2x2ZXM6IGh0dHBzOi8vZ2l0bGFiLmNvbS9xZW11LXByb2plY3QvcWVtdS8tL2lzc3Vlcy8xNjQ4
-DQo+IA0KPiByfg0KPiANCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvbGludXgtdXNlci9pMzg2L3Np
-Z25hbC5jIGIvbGludXgtdXNlci9pMzg2L3NpZ25hbC5jDQo+ID4gaW5kZXggNjBmYTA3ZDZmOS4u
-YzQ5NDY3ZGU3OCAxMDA2NDQNCj4gPiAtLS0gYS9saW51eC11c2VyL2kzODYvc2lnbmFsLmMNCj4g
-PiArKysgYi9saW51eC11c2VyL2kzODYvc2lnbmFsLmMNCj4gPiBAQCAtMTkxLDE2ICsxOTEsNyBA
-QCBzdHJ1Y3Qgc2lnZnJhbWUgew0KPiA+ICAgICAgIHN0cnVjdCB0YXJnZXRfZnBzdGF0ZSBmcHN0
-YXRlX3VudXNlZDsNCj4gPiAgICAgICBhYmlfdWxvbmcgZXh0cmFtYXNrW1RBUkdFVF9OU0lHX1dP
-UkRTLTFdOw0KPiA+ICAgICAgIGNoYXIgcmV0Y29kZVs4XTsNCj4gPiAtDQo+ID4gLSAgICAvKg0K
-PiA+IC0gICAgICogVGhpcyBmaWVsZCB3aWxsIGJlIDE2LWJ5dGUgYWxpZ25lZCBpbiBtZW1vcnku
-ICBBcHBseWluZyBRRU1VX0FMSUdORUQNCj4gPiAtICAgICAqIHRvIGl0IGVuc3VyZXMgdGhhdCB0
-aGUgYmFzZSBvZiB0aGUgZnJhbWUgaGFzIGFuIGFwcHJvcHJpYXRlIGFsaWdubWVudA0KPiA+IC0g
-ICAgICogdG9vLg0KPiA+IC0gICAgICovDQo+ID4gLSAgICBzdHJ1Y3QgdGFyZ2V0X2Zwc3RhdGUg
-ZnBzdGF0ZSBRRU1VX0FMSUdORUQoOCk7DQo+ID4gICB9Ow0KPiA+IC0jZGVmaW5lIFRBUkdFVF9T
-SUdGUkFNRV9GWFNBVkVfT0ZGU0VUICggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBcDQo+ID4gLSAgICBvZmZzZXRvZihzdHJ1Y3Qgc2lnZnJhbWUsIGZwc3RhdGUpICsgVEFSR0VU
-X0ZQU1RBVEVfRlhTQVZFX09GRlNFVCkNCj4gPiAgIA0KPiA+ICAgc3RydWN0IHJ0X3NpZ2ZyYW1l
-IHsNCj4gPiAgICAgICBhYmlfdWxvbmcgcHJldGNvZGU7DQo+ID4gQEAgLTIxMCwyNyArMjAxLDIx
-IEBAIHN0cnVjdCBydF9zaWdmcmFtZSB7DQo+ID4gICAgICAgc3RydWN0IHRhcmdldF9zaWdpbmZv
-IGluZm87DQo+ID4gICAgICAgc3RydWN0IHRhcmdldF91Y29udGV4dCB1YzsNCj4gPiAgICAgICBj
-aGFyIHJldGNvZGVbOF07DQo+ID4gLSAgICBzdHJ1Y3QgdGFyZ2V0X2Zwc3RhdGUgZnBzdGF0ZSBR
-RU1VX0FMSUdORUQoOCk7DQo+ID4gICB9Ow0KPiA+IC0jZGVmaW5lIFRBUkdFVF9SVF9TSUdGUkFN
-RV9GWFNBVkVfT0ZGU0VUICggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcDQo+ID4g
-LSAgICBvZmZzZXRvZihzdHJ1Y3QgcnRfc2lnZnJhbWUsIGZwc3RhdGUpICsgVEFSR0VUX0ZQU1RB
-VEVfRlhTQVZFX09GRlNFVCkNCj4gPiAgICNlbHNlDQo+ID4gLQ0KPiA+ICAgc3RydWN0IHJ0X3Np
-Z2ZyYW1lIHsNCj4gPiAgICAgICBhYmlfdWxvbmcgcHJldGNvZGU7DQo+ID4gICAgICAgc3RydWN0
-IHRhcmdldF91Y29udGV4dCB1YzsNCj4gPiAgICAgICBzdHJ1Y3QgdGFyZ2V0X3NpZ2luZm8gaW5m
-bzsNCj4gPiAtICAgIHN0cnVjdCB0YXJnZXRfZnBzdGF0ZSBmcHN0YXRlIFFFTVVfQUxJR05FRCgx
-Nik7DQo+ID4gICB9Ow0KPiA+IC0jZGVmaW5lIFRBUkdFVF9SVF9TSUdGUkFNRV9GWFNBVkVfT0ZG
-U0VUICggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcDQo+ID4gLSAgICBvZmZzZXRv
-ZihzdHJ1Y3QgcnRfc2lnZnJhbWUsIGZwc3RhdGUpICsgVEFSR0VUX0ZQU1RBVEVfRlhTQVZFX09G
-RlNFVCkNCj4gPiAgICNlbmRpZg0KPiA+ICAgDQo+ID4gICAvKg0KPiA+ICAgICogU2V0IHVwIGEg
-c2lnbmFsIGZyYW1lLg0KPiA+ICAgICovDQo+ID4gICANCj4gPiAtc3RhdGljIHZvaWQgeHNhdmVf
-c2lnY29udGV4dChDUFVYODZTdGF0ZSAqZW52LCBzdHJ1Y3QgdGFyZ2V0X2Zwc3RhdGVfZnhzYXZl
-ICpmeHNhdmUsDQo+ID4gK3N0YXRpYyB2b2lkIHhzYXZlX3NpZ2NvbnRleHQoQ1BVWDg2U3RhdGUg
-KmVudiwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgdGFyZ2V0X2Zw
-c3RhdGVfZnhzYXZlICpmeHNhdmUsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IGFiaV91bG9uZyBmeHNhdmVfYWRkcikNCj4gPiAgIHsNCj4gPiAgICAgICBpZiAoIShlbnYtPmZl
-YXR1cmVzW0ZFQVRfMV9FQ1hdICYgQ1BVSURfRVhUX1hTQVZFKSkgew0KPiA+IEBAIC0yNjYsOCAr
-MjUxLDkgQEAgc3RhdGljIHZvaWQgeHNhdmVfc2lnY29udGV4dChDUFVYODZTdGF0ZSAqZW52LCBz
-dHJ1Y3QgdGFyZ2V0X2Zwc3RhdGVfZnhzYXZlICpmeHMNCj4gPiAgIH0NCj4gPiAgIA0KPiA+ICAg
-c3RhdGljIHZvaWQgc2V0dXBfc2lnY29udGV4dChzdHJ1Y3QgdGFyZ2V0X3NpZ2NvbnRleHQgKnNj
-LA0KPiA+IC0gICAgICAgIHN0cnVjdCB0YXJnZXRfZnBzdGF0ZSAqZnBzdGF0ZSwgQ1BVWDg2U3Rh
-dGUgKmVudiwgYWJpX3Vsb25nIG1hc2ssDQo+ID4gLSAgICAgICAgYWJpX3Vsb25nIGZwc3RhdGVf
-YWRkcikNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgdGFyZ2V0X2Zw
-c3RhdGUgKmZwc3RhdGUsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQ1BVWDg2
-U3RhdGUgKmVudiwgYWJpX3Vsb25nIG1hc2ssDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgYWJpX3Vsb25nIGZwc3RhdGVfYWRkcikNCj4gPiAgIHsNCj4gPiAgICAgICBDUFVTdGF0
-ZSAqY3MgPSBlbnZfY3B1KGVudik7DQo+ID4gICAjaWZuZGVmIFRBUkdFVF9YODZfNjQNCj4gPiBA
-QCAtMzQ3LDEwICszMzMsMTEgQEAgc3RhdGljIHZvaWQgc2V0dXBfc2lnY29udGV4dChzdHJ1Y3Qg
-dGFyZ2V0X3NpZ2NvbnRleHQgKnNjLA0KPiA+ICAgICogRGV0ZXJtaW5lIHdoaWNoIHN0YWNrIHRv
-IHVzZS4uDQo+ID4gICAgKi8NCj4gPiAgIA0KPiA+IC1zdGF0aWMgaW5saW5lIGFiaV91bG9uZw0K
-PiA+IC1nZXRfc2lnZnJhbWUoc3RydWN0IHRhcmdldF9zaWdhY3Rpb24gKmthLCBDUFVYODZTdGF0
-ZSAqZW52LCBzaXplX3QgZnhzYXZlX29mZnNldCkNCj4gPiArc3RhdGljIGFiaV91bG9uZyBnZXRf
-c2lnZnJhbWUoc3RydWN0IHRhcmdldF9zaWdhY3Rpb24gKmthLCBDUFVYODZTdGF0ZSAqZW52LA0K
-PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaXplX3QgKmZyYW1lX3NpemUsIGFi
-aV91bG9uZyAqZnBzYXZlX2FkZHIpDQo+ID4gICB7DQo+ID4gLSAgICB1bnNpZ25lZCBsb25nIGVz
-cDsNCj4gPiArICAgIGFiaV91bG9uZyBlc3AsIG9yaWc7DQo+ID4gKyAgICBzaXplX3QgZnBzYXZl
-X3NpemU7DQo+ID4gICANCj4gPiAgICAgICAvKiBEZWZhdWx0IHRvIHVzaW5nIG5vcm1hbCBzdGFj
-ayAqLw0KPiA+ICAgICAgIGVzcCA9IGdldF9zcF9mcm9tX2NwdXN0YXRlKGVudik7DQo+ID4gQEAg
-LTM3MSwxNiArMzU4LDIzIEBAIGdldF9zaWdmcmFtZShzdHJ1Y3QgdGFyZ2V0X3NpZ2FjdGlvbiAq
-a2EsIENQVVg4NlN0YXRlICplbnYsIHNpemVfdCBmeHNhdmVfb2Zmc2V0DQo+ID4gICAgICAgICAg
-IH0NCj4gPiAgICNlbmRpZg0KPiA+ICAgICAgIH0NCj4gPiArICAgIG9yaWcgPSBlc3A7DQo+ID4g
-ICANCj4gPiAtICAgIGlmICghKGVudi0+ZmVhdHVyZXNbRkVBVF8xX0VEWF0gJiBDUFVJRF9GWFNS
-KSkgew0KPiA+IC0gICAgICAgIHJldHVybiAoZXNwIC0gKGZ4c2F2ZV9vZmZzZXQgKyBUQVJHRVRf
-RlhTQVZFX1NJWkUpKSAmIC04dWw7DQo+ID4gLSAgICB9IGVsc2UgaWYgKCEoZW52LT5mZWF0dXJl
-c1tGRUFUXzFfRUNYXSAmIENQVUlEX0VYVF9YU0FWRSkpIHsNCj4gPiAtICAgICAgICByZXR1cm4g
-KChlc3AgLSBUQVJHRVRfRlhTQVZFX1NJWkUpICYgLTE2dWwpIC0gZnhzYXZlX29mZnNldDsNCj4g
-PiArICAgIGlmICghKGVudi0+ZmVhdHVyZXNbRkVBVF8xX0VDWF0gJiBDUFVJRF9FWFRfWFNBVkUp
-KSB7DQo+ID4gKyAgICAgICAgZnBzYXZlX3NpemUgPSBUQVJHRVRfRlhTQVZFX1NJWkU7DQo+ID4g
-KyAgICAgICAgZXNwID0gUk9VTkRfRE9XTihlc3AgLSBmcHNhdmVfc2l6ZSwgMTYpOw0KPiA+ICAg
-ICAgIH0gZWxzZSB7DQo+ID4gLSAgICAgICAgc2l6ZV90IHhzdGF0ZV9zaXplID0NCj4gPiAtICAg
-ICAgICAgICAgICAgeHNhdmVfYXJlYV9zaXplKGVudi0+eGNyMCwgZmFsc2UpICsgVEFSR0VUX0ZQ
-X1hTVEFURV9NQUdJQzJfU0laRTsNCj4gPiAtICAgICAgICByZXR1cm4gKChlc3AgLSB4c3RhdGVf
-c2l6ZSkgJiAtNjR1bCkgLSBmeHNhdmVfb2Zmc2V0Ow0KPiA+ICsgICAgICAgIGZwc2F2ZV9zaXpl
-ID0geHNhdmVfYXJlYV9zaXplKGVudi0+eGNyMCwgZmFsc2UpDQo+ID4gKyAgICAgICAgICAgICAg
-ICAgICAgICArIFRBUkdFVF9GUF9YU1RBVEVfTUFHSUMyX1NJWkU7DQo+ID4gKyAgICAgICAgZXNw
-ID0gUk9VTkRfRE9XTihlc3AgLSBmcHNhdmVfc2l6ZSwgNjQpOw0KPiA+ICAgICAgIH0NCj4gPiAr
-ICAgICpmcHNhdmVfYWRkciA9IGVzcDsNCj4gPiArDQo+ID4gKyAgICBlc3AgPSBlc3AgLSAqZnJh
-bWVfc2l6ZSArIHNpemVvZihhYmlfdWxvbmcpOw0KPiA+ICsgICAgZXNwID0gUk9VTkRfRE9XTihl
-c3AsIDE2KSAtIHNpemVvZihhYmlfdWxvbmcpOw0KPiA+ICsNCj4gPiArICAgICpmcmFtZV9zaXpl
-ID0gb3JpZyAtIGVzcDsNCj4gPiArICAgIHJldHVybiBlc3A7DQo+ID4gICB9DQo+ID4gICANCj4g
-PiAgICNpZm5kZWYgVEFSR0VUX1g4Nl82NA0KPiA+IEBAIC00MDUsMjYgKzM5OSwzNCBAQCB2b2lk
-IHNldHVwX2ZyYW1lKGludCBzaWcsIHN0cnVjdCB0YXJnZXRfc2lnYWN0aW9uICprYSwNCj4gPiAg
-ICAgICAgICAgICAgICAgICAgdGFyZ2V0X3NpZ3NldF90ICpzZXQsIENQVVg4NlN0YXRlICplbnYp
-DQo+ID4gICB7DQo+ID4gICAgICAgYWJpX3Vsb25nIGZyYW1lX2FkZHI7DQo+ID4gKyAgICBhYmlf
-dWxvbmcgZnBzdGF0ZV9hZGRyOw0KPiA+ICsgICAgc2l6ZV90IGZyYW1lX3NpemU7DQo+ID4gICAg
-ICAgc3RydWN0IHNpZ2ZyYW1lICpmcmFtZTsNCj4gPiArICAgIHN0cnVjdCB0YXJnZXRfZnBzdGF0
-ZSAqZnBzdGF0ZTsNCj4gPiAgICAgICBpbnQgaTsNCj4gPiAgIA0KPiA+IC0gICAgZnJhbWVfYWRk
-ciA9IGdldF9zaWdmcmFtZShrYSwgZW52LCBUQVJHRVRfU0lHRlJBTUVfRlhTQVZFX09GRlNFVCk7
-DQo+ID4gKyAgICBmcmFtZV9zaXplID0gc2l6ZW9mKHN0cnVjdCBzaWdmcmFtZSk7DQo+ID4gKyAg
-ICBmcmFtZV9hZGRyID0gZ2V0X3NpZ2ZyYW1lKGthLCBlbnYsICZmcmFtZV9zaXplLCAmZnBzdGF0
-ZV9hZGRyKTsNCj4gPiAgICAgICB0cmFjZV91c2VyX3NldHVwX2ZyYW1lKGVudiwgZnJhbWVfYWRk
-cik7DQo+ID4gICANCj4gPiAtICAgIGlmICghbG9ja191c2VyX3N0cnVjdChWRVJJRllfV1JJVEUs
-IGZyYW1lLCBmcmFtZV9hZGRyLCAwKSkNCj4gPiArICAgIGZyYW1lID0gbG9ja191c2VyKFZFUklG
-WV9XUklURSwgZnJhbWVfYWRkciwgZnJhbWVfc2l6ZSwgZmFsc2UpOw0KPiA+ICsgICAgaWYgKCFm
-cmFtZSkgew0KPiA+ICAgICAgICAgICBnb3RvIGdpdmVfc2lnc2VndjsNCj4gPiArICAgIH0NCj4g
-PiArICAgIGZwc3RhdGUgPSAodm9pZCAqKWZyYW1lICsgKGZwc3RhdGVfYWRkciAtIGZyYW1lX2Fk
-ZHIpOw0KPiA+ICAgDQo+ID4gICAgICAgX19wdXRfdXNlcihzaWcsICZmcmFtZS0+c2lnKTsNCj4g
-PiAgIA0KPiA+IC0gICAgc2V0dXBfc2lnY29udGV4dCgmZnJhbWUtPnNjLCAmZnJhbWUtPmZwc3Rh
-dGUsIGVudiwgc2V0LT5zaWdbMF0sDQo+ID4gLSAgICAgICAgICAgIGZyYW1lX2FkZHIgKyBvZmZz
-ZXRvZihzdHJ1Y3Qgc2lnZnJhbWUsIGZwc3RhdGUpKTsNCj4gPiArICAgIHNldHVwX3NpZ2NvbnRl
-eHQoJmZyYW1lLT5zYywgZnBzdGF0ZSwgZW52LCBzZXQtPnNpZ1swXSwgZnBzdGF0ZV9hZGRyKTsN
-Cj4gPiAgIA0KPiA+IC0gICAgZm9yKGkgPSAxOyBpIDwgVEFSR0VUX05TSUdfV09SRFM7IGkrKykg
-ew0KPiA+ICsgICAgZm9yIChpID0gMTsgaSA8IFRBUkdFVF9OU0lHX1dPUkRTOyBpKyspIHsNCj4g
-PiAgICAgICAgICAgX19wdXRfdXNlcihzZXQtPnNpZ1tpXSwgJmZyYW1lLT5leHRyYW1hc2tbaSAt
-IDFdKTsNCj4gPiAgICAgICB9DQo+ID4gICANCj4gPiAtICAgIC8qIFNldCB1cCB0byByZXR1cm4g
-ZnJvbSB1c2Vyc3BhY2UuICBJZiBwcm92aWRlZCwgdXNlIGEgc3R1Yg0KPiA+IC0gICAgICAgYWxy
-ZWFkeSBpbiB1c2Vyc3BhY2UuICAqLw0KPiA+ICsgICAgLyoNCj4gPiArICAgICAqIFNldCB1cCB0
-byByZXR1cm4gZnJvbSB1c2Vyc3BhY2UuDQo+ID4gKyAgICAgKiBJZiBwcm92aWRlZCwgdXNlIGEg
-c3R1YiBhbHJlYWR5IGluIHVzZXJzcGFjZS4NCj4gPiArICAgICAqLw0KPiA+ICAgICAgIGlmIChr
-YS0+c2FfZmxhZ3MgJiBUQVJHRVRfU0FfUkVTVE9SRVIpIHsNCj4gPiAgICAgICAgICAgX19wdXRf
-dXNlcihrYS0+c2FfcmVzdG9yZXIsICZmcmFtZS0+cHJldGNvZGUpOw0KPiA+ICAgICAgIH0gZWxz
-ZSB7DQo+ID4gQEAgLTQ0MywxMSArNDQ1LDEwIEBAIHZvaWQgc2V0dXBfZnJhbWUoaW50IHNpZywg
-c3RydWN0IHRhcmdldF9zaWdhY3Rpb24gKmthLA0KPiA+ICAgICAgIGNwdV94ODZfbG9hZF9zZWco
-ZW52LCBSX0NTLCBfX1VTRVJfQ1MpOw0KPiA+ICAgICAgIGVudi0+ZWZsYWdzICY9IH5URl9NQVNL
-Ow0KPiA+ICAgDQo+ID4gLSAgICB1bmxvY2tfdXNlcl9zdHJ1Y3QoZnJhbWUsIGZyYW1lX2FkZHIs
-IDEpOw0KPiA+IC0NCj4gPiArICAgIHVubG9ja191c2VyKGZyYW1lLCBmcmFtZV9hZGRyLCBmcmFt
-ZV9zaXplKTsNCj4gPiAgICAgICByZXR1cm47DQo+ID4gICANCj4gPiAtZ2l2ZV9zaWdzZWd2Og0K
-PiA+ICsgZ2l2ZV9zaWdzZWd2Og0KPiA+ICAgICAgIGZvcmNlX3NpZ3NlZ3Yoc2lnKTsNCj4gPiAg
-IH0NCj4gPiAgICNlbmRpZg0KPiA+IEBAIC00NTgsMTcgKzQ1OSwyNCBAQCB2b2lkIHNldHVwX3J0
-X2ZyYW1lKGludCBzaWcsIHN0cnVjdCB0YXJnZXRfc2lnYWN0aW9uICprYSwNCj4gPiAgICAgICAg
-ICAgICAgICAgICAgICAgdGFyZ2V0X3NpZ3NldF90ICpzZXQsIENQVVg4NlN0YXRlICplbnYpDQo+
-ID4gICB7DQo+ID4gICAgICAgYWJpX3Vsb25nIGZyYW1lX2FkZHI7DQo+ID4gKyAgICBhYmlfdWxv
-bmcgZnBzdGF0ZV9hZGRyOw0KPiA+ICsgICAgc2l6ZV90IGZyYW1lX3NpemU7DQo+ID4gICAjaWZu
-ZGVmIFRBUkdFVF9YODZfNjQNCj4gPiAgICAgICBhYmlfdWxvbmcgYWRkcjsNCj4gPiAgICNlbmRp
-Zg0KPiA+ICAgICAgIHN0cnVjdCBydF9zaWdmcmFtZSAqZnJhbWU7DQo+ID4gKyAgICBzdHJ1Y3Qg
-dGFyZ2V0X2Zwc3RhdGUgKmZwc3RhdGU7DQo+ID4gICAgICAgaW50IGk7DQo+ID4gICANCj4gPiAt
-ICAgIGZyYW1lX2FkZHIgPSBnZXRfc2lnZnJhbWUoa2EsIGVudiwgVEFSR0VUX1JUX1NJR0ZSQU1F
-X0ZYU0FWRV9PRkZTRVQpOw0KPiA+ICsgICAgZnJhbWVfc2l6ZSA9IHNpemVvZihzdHJ1Y3QgcnRf
-c2lnZnJhbWUpOw0KPiA+ICsgICAgZnJhbWVfYWRkciA9IGdldF9zaWdmcmFtZShrYSwgZW52LCAm
-ZnJhbWVfc2l6ZSwgJmZwc3RhdGVfYWRkcik7DQo+ID4gICAgICAgdHJhY2VfdXNlcl9zZXR1cF9y
-dF9mcmFtZShlbnYsIGZyYW1lX2FkZHIpOw0KPiA+ICAgDQo+ID4gLSAgICBpZiAoIWxvY2tfdXNl
-cl9zdHJ1Y3QoVkVSSUZZX1dSSVRFLCBmcmFtZSwgZnJhbWVfYWRkciwgMCkpDQo+ID4gKyAgICBm
-cmFtZSA9IGxvY2tfdXNlcihWRVJJRllfV1JJVEUsIGZyYW1lX2FkZHIsIGZyYW1lX3NpemUsIGZh
-bHNlKTsNCj4gPiArICAgIGlmICghZnJhbWUpIHsNCj4gPiAgICAgICAgICAgZ290byBnaXZlX3Np
-Z3NlZ3Y7DQo+ID4gKyAgICB9DQo+ID4gKyAgICBmcHN0YXRlID0gKHZvaWQgKilmcmFtZSArIChm
-cHN0YXRlX2FkZHIgLSBmcmFtZV9hZGRyKTsNCj4gPiAgIA0KPiA+ICAgICAgIC8qIFRoZXNlIGZp
-ZWxkcyBhcmUgb25seSBpbiBydF9zaWdmcmFtZSBvbiAzMiBiaXQgKi8NCj4gPiAgICNpZm5kZWYg
-VEFSR0VUX1g4Nl82NA0KPiA+IEBAIC00OTAsMTAgKzQ5OCwxMCBAQCB2b2lkIHNldHVwX3J0X2Zy
-YW1lKGludCBzaWcsIHN0cnVjdCB0YXJnZXRfc2lnYWN0aW9uICprYSwNCj4gPiAgICAgICB9DQo+
-ID4gICAgICAgX19wdXRfdXNlcigwLCAmZnJhbWUtPnVjLnR1Y19saW5rKTsNCj4gPiAgICAgICB0
-YXJnZXRfc2F2ZV9hbHRzdGFjaygmZnJhbWUtPnVjLnR1Y19zdGFjaywgZW52KTsNCj4gPiAtICAg
-IHNldHVwX3NpZ2NvbnRleHQoJmZyYW1lLT51Yy50dWNfbWNvbnRleHQsICZmcmFtZS0+ZnBzdGF0
-ZSwgZW52LA0KPiA+IC0gICAgICAgICAgICBzZXQtPnNpZ1swXSwgZnJhbWVfYWRkciArIG9mZnNl
-dG9mKHN0cnVjdCBydF9zaWdmcmFtZSwgZnBzdGF0ZSkpOw0KPiA+ICsgICAgc2V0dXBfc2lnY29u
-dGV4dCgmZnJhbWUtPnVjLnR1Y19tY29udGV4dCwgZnBzdGF0ZSwgZW52LA0KPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICBzZXQtPnNpZ1swXSwgZnBzdGF0ZV9hZGRyKTsNCj4gPiAgIA0KPiA+IC0g
-ICAgZm9yKGkgPSAwOyBpIDwgVEFSR0VUX05TSUdfV09SRFM7IGkrKykgew0KPiA+ICsgICAgZm9y
-IChpID0gMDsgaSA8IFRBUkdFVF9OU0lHX1dPUkRTOyBpKyspIHsNCj4gPiAgICAgICAgICAgX19w
-dXRfdXNlcihzZXQtPnNpZ1tpXSwgJmZyYW1lLT51Yy50dWNfc2lnbWFzay5zaWdbaV0pOw0KPiA+
-ICAgICAgIH0NCj4gPiAgIA0KPiA+IEBAIC01MzMsMTUgKzU0MSwxNSBAQCB2b2lkIHNldHVwX3J0
-X2ZyYW1lKGludCBzaWcsIHN0cnVjdCB0YXJnZXRfc2lnYWN0aW9uICprYSwNCj4gPiAgICAgICBj
-cHVfeDg2X2xvYWRfc2VnKGVudiwgUl9TUywgX19VU0VSX0RTKTsNCj4gPiAgICAgICBlbnYtPmVm
-bGFncyAmPSB+VEZfTUFTSzsNCj4gPiAgIA0KPiA+IC0gICAgdW5sb2NrX3VzZXJfc3RydWN0KGZy
-YW1lLCBmcmFtZV9hZGRyLCAxKTsNCj4gPiAtDQo+ID4gKyAgICB1bmxvY2tfdXNlcihmcmFtZSwg
-ZnJhbWVfYWRkciwgZnJhbWVfc2l6ZSk7DQo+ID4gICAgICAgcmV0dXJuOw0KPiA+ICAgDQo+ID4g
-LWdpdmVfc2lnc2VndjoNCj4gPiArIGdpdmVfc2lnc2VndjoNCj4gPiAgICAgICBmb3JjZV9zaWdz
-ZWd2KHNpZyk7DQo+ID4gICB9DQo+ID4gICANCj4gPiAtc3RhdGljIGludCB4cnN0b3Jfc2lnY29u
-dGV4dChDUFVYODZTdGF0ZSAqZW52LCBzdHJ1Y3QgdGFyZ2V0X2Zwc3RhdGVfZnhzYXZlICpmeHNh
-dmUsDQo+ID4gK3N0YXRpYyBpbnQgeHJzdG9yX3NpZ2NvbnRleHQoQ1BVWDg2U3RhdGUgKmVudiwN
-Cj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgdGFyZ2V0X2Zwc3RhdGVf
-ZnhzYXZlICpmeHNhdmUsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFiaV91
-bG9uZyBmeHNhdmVfYWRkcikNCj4gPiAgIHsNCj4gPiAgICAgICBpZiAoZW52LT5mZWF0dXJlc1tG
-RUFUXzFfRUNYXSAmIENQVUlEX0VYVF9YU0FWRSkgew0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy90
-Y2cveDg2XzY0L3NpZ3N0YWNrLmMgYi90ZXN0cy90Y2cveDg2XzY0L3NpZ3N0YWNrLmMNCj4gPiBu
-ZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAwMDAwMDAwMDAuLjA2Y2I4NDc1NjkNCj4g
-PiAtLS0gL2Rldi9udWxsDQo+ID4gKysrIGIvdGVzdHMvdGNnL3g4Nl82NC9zaWdzdGFjay5jDQo+
-ID4gQEAgLTAsMCArMSwzMyBAQA0KPiA+ICsjaW5jbHVkZSA8c3RkbGliLmg+DQo+ID4gKyNpbmNs
-dWRlIDxhc3NlcnQuaD4NCj4gPiArI2luY2x1ZGUgPHNpZ25hbC5oPg0KPiA+ICsjaW5jbHVkZSA8
-c3RkaW50Lmg+DQo+ID4gKw0KPiA+ICt2b2lkIF9fYXR0cmlidXRlX18oKG5vaW5saW5lKSkgYmFy
-KHZvaWQpDQo+ID4gK3sNCj4gPiArICAgIGV4aXQoRVhJVF9TVUNDRVNTKTsNCj4gPiArfQ0KPiA+
-ICsNCj4gPiArdm9pZCBfX2F0dHJpYnV0ZV9fKChub2lubGluZSwgbXNfYWJpKSkgZm9vKHZvaWQp
-DQo+ID4gK3sNCj4gPiArICAgIC8qDQo+ID4gKyAgICAgKiBXaXRoIG1zX2FiaSwgdGhlcmUgYXJl
-IGNhbGwtc2F2ZWQgeG1tIHJlZ2lzdGVycywgd2hpY2ggYXJlIGZvcmNlZA0KPiA+ICsgICAgICog
-dG8gdGhlIHN0YWNrIGFyb3VuZCB0aGUgY2FsbCB0byBzeXN2X2FiaSBiYXIoKS4gIElmIHRoZSBz
-aWduYWwNCj4gPiArICAgICAqIHN0YWNrIGZyYW1lIGlzIG5vdCBwcm9wZXJseSBhbGlnbmVkLCBt
-b3ZhcHMgd2lsbCByYWlzZSAjR1AuDQo+ID4gKyAgICAgKi8NCj4gPiArICAgIGJhcigpOw0KPiA+
-ICt9DQo+ID4gKw0KPiA+ICt2b2lkIHNpZ2hhbmRsZXIoaW50IG51bSkNCj4gPiArew0KPiA+ICsg
-ICAgdm9pZCogc3AgPSBfX2J1aWx0aW5fZHdhcmZfY2ZhKCk7DQo+ID4gKyAgICBhc3NlcnQoKHVp
-bnRwdHJfdClzcCAlIDE2ID09IDApOw0KPiA+ICsgICAgZm9vKCk7DQo+ID4gK30NCj4gPiArDQo+
-ID4gK2ludCBtYWluKHZvaWQpDQo+ID4gK3sNCj4gPiArICAgIHNpZ25hbChTSUdVU1IxLCBzaWdo
-YW5kbGVyKTsNCj4gPiArICAgIHJhaXNlKFNJR1VTUjEpOw0KPiA+ICsgICAgYWJvcnQoKTsNCj4g
-PiArfQ0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy90Y2cveDg2XzY0L01ha2VmaWxlLnRhcmdldCBi
-L3Rlc3RzL3RjZy94ODZfNjQvTWFrZWZpbGUudGFyZ2V0DQo+ID4gaW5kZXggZTY0YWFiMWI4MS4u
-ZDk2MTU5OWY2NCAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy90Y2cveDg2XzY0L01ha2VmaWxlLnRh
-cmdldA0KPiA+ICsrKyBiL3Rlc3RzL3RjZy94ODZfNjQvTWFrZWZpbGUudGFyZ2V0DQo+ID4gQEAg
-LTEzLDYgKzEzLDcgQEAgWDg2XzY0X1RFU1RTICs9IHZzeXNjYWxsDQo+ID4gICBYODZfNjRfVEVT
-VFMgKz0gbm9leGVjDQo+ID4gICBYODZfNjRfVEVTVFMgKz0gY21weGNoZw0KPiA+ICAgWDg2XzY0
-X1RFU1RTICs9IGFkb3gNCj4gPiArWDg2XzY0X1RFU1RTICs9IHNpZ3N0YWNrDQo+ID4gICBURVNU
-Uz0kKE1VTFRJQVJDSF9URVNUUykgJChYODZfNjRfVEVTVFMpIHRlc3QteDg2XzY0DQo+ID4gICBl
-bHNlDQo+ID4gICBURVNUUz0kKE1VTFRJQVJDSF9URVNUUykNCj4gDQo=
+On Tue, May 23, 2023 at 8:29=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.com=
+> wrote:
+>
+> Currently, virt machine supports two pflash instances each with
+> 32MB size. However, the first pflash is always assumed to
+> contain M-mode firmware and reset vector is set to this if
+> enabled. Hence, for S-mode payloads like EDK2, only one pflash
+> instance is available for use. This means both code and NV variables
+> of EDK2 will need to use the same pflash.
+>
+> The OS distros keep the EDK2 FW code as readonly. When non-volatile
+> variables also need to share the same pflash, it is not possible
+> to keep it as readonly since variables need write access.
+>
+> To resolve this issue, the code and NV variables need to be separated.
+> But in that case we need an extra flash. Hence, modify the convention
+> such that pflash0 will contain the M-mode FW only when "-bios none"
+> option is used. Otherwise, pflash0 will contain the S-mode payload FW.
+> This enables both pflash instances available for EDK2 use.
+>
+> Example usage:
+> 1) pflash0 containing M-mode FW
+> qemu-system-riscv64 -bios none -pflash <mmode_fw> -machine virt
+> or
+> qemu-system-riscv64 -bios none \
+> -drive file=3D<mmode_fw>,if=3Dpflash,format=3Draw,unit=3D0 -machine virt
+>
+> 2) pflash0 containing S-mode payload like EDK2
+> qemu-system-riscv64 -pflash <smode_fw_code> -pflash <smode_vars> -machine=
+  virt
+> or
+> qemu-system-riscv64 -bios <opensbi_fw> \
+> -pflash <smode_fw_code> \
+> -pflash <smode_vars> \
+> -machine  virt
+> or
+> qemu-system-riscv64 -bios <opensbi_fw> \
+> -drive file=3D<smode_fw_code>,if=3Dpflash,format=3Draw,unit=3D0,readonly=
+=3Don \
+> -drive file=3D<smode_fw_vars>,if=3Dpflash,format=3Draw,unit=3D1 \
+> -machine virt
+>
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
+
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
+> ---
+>
+> The issue is reported at
+> https://salsa.debian.org/qemu-team/edk2/-/commit/c345655a0149f64c5020bfc1=
+e53c619ce60587f6
+>
+> The patch is based on Alistair's riscv-to-apply.next branch.
+>
+> Changes since v2:
+>         1) Reverted v2 changes and used v1 approach so that pflash0 can b=
+e used
+>            for code and pflash1 for variable store.
+>         2) Rebased to latest riscv-to-apply.next branch.
+>         3) Added documentation for pflash usage.
+>
+> Changes since v1:
+>         1) Simplified the fix such that it doesn't break current EDK2.
+>
+>  docs/system/riscv/virt.rst | 33 ++++++++++++++++++++++++
+>  hw/riscv/virt.c            | 51 ++++++++++++++------------------------
+>  2 files changed, 52 insertions(+), 32 deletions(-)
+>
+> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+> index 4b16e41d7f..4ac0d38fdf 100644
+> --- a/docs/system/riscv/virt.rst
+> +++ b/docs/system/riscv/virt.rst
+> @@ -53,6 +53,39 @@ with the default OpenSBI firmware image as the -bios. =
+It also supports
+>  the recommended RISC-V bootflow: U-Boot SPL (M-mode) loads OpenSBI fw_dy=
+namic
+>  firmware and U-Boot proper (S-mode), using the standard -bios functional=
+ity.
+>
+> +Using flash devices
+> +-------------------
+> +
+> +The first flash device (pflash0) can contain either ROM code like Oreboo=
+t
+> +or S-mode payload firmware code like EDK2. If the pflash0 contains the
+> +ROM code, -bios should be set to none. Otherwise, pflash0 is assumed to
+> +contain S-mode payload code.
+> +
+> +Firmware images used for pflash should be of size 32M.
+> +
+> +To boot as ROM code like Oreboot:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-riscv64 -bios none -pflash <rom_code_image> \
+> +       ... other args ....
+> +
+> +To boot as S-mode payload like EDK2:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-riscv64 -pflash <s-mode_fw_code> -pflash <smode_fw_vars>=
+ \
+> +       ... other args ....
+> +
+> +To boot as read-only S-mode payload like EDK2:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-riscv64 -bios <opensbi_fw> \
+> +       -drive file=3D<smode_fw_code>,if=3Dpflash,format=3Draw,unit=3D0,r=
+eadonly=3Don \
+> +       -drive file=3D<smode_fw_vars>,if=3Dpflash,format=3Draw,unit=3D1 \
+> +       ... other args ....
+> +
+>  Machine-specific options
+>  ------------------------
+>
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index 4e3efbee16..1187a60d6e 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -1245,7 +1245,7 @@ static void virt_machine_done(Notifier *notifier, v=
+oid *data)
+>      target_ulong firmware_end_addr, kernel_start_addr;
+>      const char *firmware_name =3D riscv_default_firmware_name(&s->soc[0]=
+);
+>      uint32_t fdt_load_addr;
+> -    uint64_t kernel_entry;
+> +    uint64_t kernel_entry =3D 0;
+>
+>      /*
+>       * Only direct boot kernel is currently supported for KVM VM,
+> @@ -1266,42 +1266,29 @@ static void virt_machine_done(Notifier *notifier,=
+ void *data)
+>      firmware_end_addr =3D riscv_find_and_load_firmware(machine, firmware=
+_name,
+>                                                       start_addr, NULL);
+>
+> -    if (drive_get(IF_PFLASH, 0, 1)) {
+> -        /*
+> -         * S-mode FW like EDK2 will be kept in second plash (unit 1).
+> -         * When both kernel, initrd and pflash options are provided in t=
+he
+> -         * command line, the kernel and initrd will be copied to the fw_=
+cfg
+> -         * table and opensbi will jump to the flash address which is the
+> -         * entry point of S-mode FW. It is the job of the S-mode FW to l=
+oad
+> -         * the kernel and initrd using fw_cfg table.
+> -         *
+> -         * If only pflash is given but not -kernel, then it is the job o=
+f
+> -         * of the S-mode firmware to locate and load the kernel.
+> -         * In either case, the next_addr for opensbi will be the flash a=
+ddress.
+> -         */
+> -        riscv_setup_firmware_boot(machine);
+> -        kernel_entry =3D virt_memmap[VIRT_FLASH].base +
+> -                       virt_memmap[VIRT_FLASH].size / 2;
+> -    } else if (machine->kernel_filename) {
+> +    if (drive_get(IF_PFLASH, 0, 0)) {
+> +        if (machine->firmware && !strcmp(machine->firmware, "none")) {
+> +            /*
+> +             * Pflash was supplied but bios is none, let's overwrite the
+> +             * address we jump to after reset to the base of the flash.
+> +             */
+> +            start_addr =3D virt_memmap[VIRT_FLASH].base;
+> +        } else {
+> +            /*
+> +             * Pflash was supplied but bios is not none. In this case,
+> +             * base of the flash would contain S-mode payload.
+> +             */
+> +            riscv_setup_firmware_boot(machine);
+> +            kernel_entry =3D virt_memmap[VIRT_FLASH].base;
+> +        }
+> +    }
+> +
+> +    if (machine->kernel_filename && !kernel_entry) {
+>          kernel_start_addr =3D riscv_calc_kernel_start_addr(&s->soc[0],
+>                                                           firmware_end_ad=
+dr);
+>
+>          kernel_entry =3D riscv_load_kernel(machine, &s->soc[0],
+>                                           kernel_start_addr, true, NULL);
+> -    } else {
+> -       /*
+> -        * If dynamic firmware is used, it doesn't know where is the next=
+ mode
+> -        * if kernel argument is not set.
+> -        */
+> -        kernel_entry =3D 0;
+> -    }
+> -
+> -    if (drive_get(IF_PFLASH, 0, 0)) {
+> -        /*
+> -         * Pflash was supplied, let's overwrite the address we jump to a=
+fter
+> -         * reset to the base of the flash.
+> -         */
+> -        start_addr =3D virt_memmap[VIRT_FLASH].base;
+>      }
+>
+>      fdt_load_addr =3D riscv_compute_fdt_addr(memmap[VIRT_DRAM].base,
+> --
+> 2.34.1
+>
+>
 
