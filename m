@@ -2,65 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4273C7122C8
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A2E7122C7
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:56:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2TEL-0005tM-3Z; Fri, 26 May 2023 04:55:25 -0400
+	id 1q2TEV-0005yp-BI; Fri, 26 May 2023 04:55:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2TEJ-0005sn-Ez
- for qemu-devel@nongnu.org; Fri, 26 May 2023 04:55:23 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q2TER-0005y5-TG
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:55:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2TEH-0006Ji-QR
- for qemu-devel@nongnu.org; Fri, 26 May 2023 04:55:23 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q2TEQ-0006NA-Bj
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:55:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685091319;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BK02zztPL0GoROyCOP6mcsZLiAnqXJ27p3pPuTBXD/g=;
- b=f7QdS+xqhxIDxO8ckTWJrk37VabsLEV/fgMWKCrqwVsAwG2eoQvTL6ieixtTDFmm8Vn8xU
- RjttvT1+2a9zO/DRCT2XuTmhlLyHo6qf7N5SBL5phfry3SX2Hv1NYFfU8Io+tAfRrqaPY3
- bjEuTysKlZhLf6Pxmgzgv7UXzSAwLSc=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-286-q_YreTlaPxef-tIJI0YI4g-1; Fri, 26 May 2023 04:55:01 -0400
-X-MC-Unique: q_YreTlaPxef-tIJI0YI4g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F14003825BBC
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:55:00 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D129D1121314
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:55:00 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C2D2021E692E; Fri, 26 May 2023 10:54:59 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Krempa <pkrempa@redhat.com>
-Cc: libvir-list@redhat.com,  Andrea Bolognani <abologna@redhat.com>,
- qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: query-command-line-options
-References: <cover.1677511354.git.pkrempa@redhat.com>
- <8718b22eda052662087087b4ce659b054974c9e0.1677511354.git.pkrempa@redhat.com>
- <CABJz62PHsQHiyo06PtfcDeS1LddYyDw2pC_seObtZcLR5cPQyQ@mail.gmail.com>
- <Y/zng8+7s05O0tRd@angien.pipo.sk>
- <CABJz62OMWXAx_ExYqvvg1DvcHkiP+SkwNMQZ+56QwoHpsNBqGA@mail.gmail.com>
- <87jzzsc320.fsf_-_@pond.sub.org> <ZAdKHkUIKjPLhFn7@angien.pipo.sk>
-Date: Fri, 26 May 2023 10:54:59 +0200
-In-Reply-To: <ZAdKHkUIKjPLhFn7@angien.pipo.sk> (Peter Krempa's message of
- "Tue, 7 Mar 2023 15:28:46 +0100")
-Message-ID: <87sfbjcw0s.fsf@pond.sub.org>
+ s=mimecast20190719; t=1685091329;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=gRK3S2ZyQSdewueIapIOeT+/yJmBHA9usxo545mnMeg=;
+ b=Kp0MHc7U51VBGFaov1cFqAC2D53qGzMEZAb3vFT3nQcAzavhuVJ7SHS85POILjNnmtwcL4
+ cYmYqcXthZmW1Q16ksD31Rl6ISiWKY1Z5lMuPLsGhyIo9Z+FOmKOSWTfVY8UCtyiC263q7
+ rV2mXYbhjvCBbMJ3K9IhF+P8gY+VdmI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-qIffJ19nPhuqGh_FGqEayw-1; Fri, 26 May 2023 04:55:20 -0400
+X-MC-Unique: qIffJ19nPhuqGh_FGqEayw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30a88ed463eso204780f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 01:55:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685091319; x=1687683319;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gRK3S2ZyQSdewueIapIOeT+/yJmBHA9usxo545mnMeg=;
+ b=a1jRg6ZjgVIrO9BiRaDDGVLrbMGGGEI8VsQXEAKpqbmedJ8gWu/cb0zMohXq82lNWF
+ k1sql1PDwzBquVpbhZ44/6r3rloktKT9zexAxV/ygC6D/KU2Xk7pxmqLkwShg0G3L4lc
+ 6FajrzZui+/CkFvx4MiJSXN884UqIFdtNrWdZziKxP4ZXTManL6dF3jUAVDSnS5kbbSc
+ vKgNz7lkawd0+tfF5gLs0xaX9ubl5aATLSRG7nCez06pz0BEMcqTgDGYxh5RgEPMjqwE
+ TiicEFo3mSXIuGTQuPptYh+oNEV0qsawKNWJ/XdXcX4RCgmPOFaTi6pjowr5TX1Mi1fY
+ BF/Q==
+X-Gm-Message-State: AC+VfDxXhu2G+qFTyxL/5nuWBaPjkR8oIdujlSxC5kYgjGuQ6Nxe0+X0
+ BCFTH4mpJiKEtWJxdux/Nbw+lpdEGNLLg0lZHL2vE++epxMpCNtcUNgs4OxYr5/iCMBiWhVikc+
+ TsmAKs5/PDPQi6is=
+X-Received: by 2002:adf:ef4c:0:b0:2f9:61d4:1183 with SMTP id
+ c12-20020adfef4c000000b002f961d41183mr812109wrp.45.1685091319664; 
+ Fri, 26 May 2023 01:55:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5RGIpVax1JV4yrZm08Vf5i7Bzw6/gnfL4bJrcrve18k6ajlgRJsOgF0doH5ieRHUrtiRmMsA==
+X-Received: by 2002:adf:ef4c:0:b0:2f9:61d4:1183 with SMTP id
+ c12-20020adfef4c000000b002f961d41183mr812088wrp.45.1685091319377; 
+ Fri, 26 May 2023 01:55:19 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ a16-20020adfdd10000000b0030647449730sm4474117wrm.74.2023.05.26.01.55.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 May 2023 01:55:18 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org,  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Leonardo Bras <leobras@redhat.com>,  David Hildenbrand
+ <david@redhat.com>,  Christian Borntraeger <borntraeger@linux.ibm.com>,
+ qemu-s390x@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Thomas
+ Huth <thuth@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>,  David Gibson
+ <david@gibson.dropbear.id.au>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Fam
+ Zheng <fam@euphon.net>,  Vladimir Sementsov-Ogievskiy
+ <vsementsov@yandex-team.ru>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Greg Kurz <groug@kaod.org>,  Halil Pasic <pasic@linux.ibm.com>,  Paolo
+ Bonzini <pbonzini@redhat.com>,  qemu-ppc@nongnu.org,  Peter Xu
+ <peterx@redhat.com>,  Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Hailiang Zhang <zhanghailiang@xfusion.com>,  John Snow
+ <jsnow@redhat.com>,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ qemu-block@nongnu.org,  Eric Blake <eblake@redhat.com>,  Jason Wang
+ <jasowang@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,
+ Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PULL 09/12] migration: Use migration_transferred_bytes() to
+ calculate rate_limit
+In-Reply-To: <5023cb18-9e9a-4666-e6b5-a7eb0e8dbd6c@proxmox.com> (Fiona Ebner's
+ message of "Tue, 23 May 2023 14:31:41 +0200")
+References: <20230518171304.95006-1-quintela@redhat.com>
+ <20230518171304.95006-10-quintela@redhat.com>
+ <5023cb18-9e9a-4666-e6b5-a7eb0e8dbd6c@proxmox.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Fri, 26 May 2023 10:55:18 +0200
+Message-ID: <877csv3215.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -68,7 +103,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,109 +116,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stefan, one question regarding your commit 40e07370f21 inline.
-
-Peter Krempa <pkrempa@redhat.com> writes:
-
-[...]
-
-> In fact I strive to eliminate it after your suggestions, but we can't
-> still detect the few outstanding flags from anywhere else.
+Fiona Ebner <f.ebner@proxmox.com> wrote:
+> Am 18.05.23 um 19:13 schrieb Juan Quintela:
+>> diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+>> index feec7d7369..97759a45f3 100644
+>> --- a/migration/migration-stats.c
+>> +++ b/migration/migration-stats.c
+>> @@ -24,7 +24,9 @@ bool migration_rate_exceeded(QEMUFile *f)
+>>          return true;
+>>      }
+>>  
+>> -    uint64_t rate_limit_used = stat64_get(&mig_stats.rate_limit_used);
+>> +    uint64_t rate_limit_start = stat64_get(&mig_stats.rate_limit_start);
+>> +    uint64_t rate_limit_current = migration_transferred_bytes(f);
+>> +    uint64_t rate_limit_used = rate_limit_current - rate_limit_start;
+>>      uint64_t rate_limit_max = stat64_get(&mig_stats.rate_limit_max);
+>>  
+>>      if (rate_limit_max == RATE_LIMIT_DISABLED) {
 >
-> List of currently outstanding queries using query-command-line-options:
+> Hi,
+> just wanted to let you know that the call to
+> migration_transferred_bytes(f) here can introduce a huge performance
+> penalty when taking a snapshot. I ran into the issue when testing
+> something else, with a single-disk snapshot. Without this call it takes
+> about two seconds, with the call about two minutes.
 
-Let me translate these into English questions:
+Ouch.
 
->     { "fsdev", "multidevs", QEMU_CAPS_FSDEV_MULTIDEVS },
+Now that everything is reviewed for that series I can sent the new set
+of patches.  As I drop the counter it should just get the speed back.
 
-Does -fsdev have parameter "multidevs"?
+New series comming that removed rate_limit counter altogether.
 
-It does since v4.2.
+Can you take a look after I send it?
 
-Aside: not documented in -help.
+Thanks for the report.
 
-9p seems entirely absent from the QAPI schema.
+And now that we are at it.  How are you testing this?
 
->     { "machine", "hpet", QEMU_CAPS_MACHINE_HPET },
+As you appears to be the bigger user of snapshots (or at least the
+louder).  Creating tests/qtest/snapshot-test.c could be a good idea.
 
-Does -machine have parameter "hpet"?
+1st to check this kind of breakage.
+2nd so I be sure that we don't "pesimize" your use case.
 
-Aside: not documented in -help.
+Hint, hint.
 
-Since this is a special case in q-c-l-o (commit 40e07370f21 qemu-config:
-restore "machine" in qmp_query_command_line_options()), the actual
-question is whether any non-abstract machine class has a property
-"hpet".
+2 seconds vs 2 minutes.
 
-PC machines do since v5.2. (the HPET device is older, but it wasn't
-configured with a machine property until v5.2).
+A more detailed explanation that what are you doing would be great.
+I.e. you are taking lots of snapshots by second or what?
 
-Aside: "any non-abstract machine class"...  I think it used to be just
-the current machine.  See the code taken out by commit d8fb7d0969d (vl:
-switch -M parsing to keyval).  Accident in commit 40e07370f21?  Stefan?
-
-There's CONFIG_HPET, but I can't see offhand how it plays together with
-the machine property.
-
-We could check for the machine property directly: check the properties
-of the machine class in question with qom-list-properties, e.g.
-
-    {"execute": "qom-list-properties",
-     "arguments": {"typename": "pc-q35-8.1-machine"}}
-
-To find all non-abstract machine classes, use
-
-    {"execute": "qom-list-types", "arguments": {"implements": "machine"}}
-
->     { "sandbox", NULL, QEMU_CAPS_SECCOMP_SANDBOX },
-
-Does option -sandbox exist?
-
-It does since v1.2.  If CONFIG_SECCOMP is off, actually using it is a
-fatal error.  Compiling out the option entirely would be more useful, I
-guess.
-
-Is this probe still useful?
-
->     { "spice", NULL, QEMU_CAPS_SPICE },
-
-Does option -spice exist?
-
-Since v7.0, it exists when CONFIG_SPICE is on.  I believe using it can
-still fail when the module can't be loaded.
-
-From v0.14 to v6.2 it exists even when CONFIG_SPICE is off, but actually
-using it is a fatal error.
-
->     { "spice", "gl", QEMU_CAPS_SPICE_GL },
-
-Does option -spice have parameter "gl"?
-
-It does when CONFIG_OPENGL and CONFIG_OPENGL are both on (since v2.6).
-
-query-display-options returns a value "gl" (since v2.12).  *Maybe*
-that's a suitable witness.
-
->     { "spice", "rendernode", QEMU_CAPS_SPICE_RENDERNODE },
-
-Does option -spice have parameter "rendernode"?
-
-It does when CONFIG_OPENGL and CONFIG_OPENGL are both on (since v2.9).
-
-Maybe query-display-options can serve for this one, too.
-
->     { "vnc", "power-control", QEMU_CAPS_VNC_POWER_CONTROL },
-
-Does option -vnc have parameter "power-control"?
-
-It does since v6.0.
-
-Aside: -help does not document any of its parameters.
-
-query-display-options is not implemented for VNC.  If we implement it,
-it might become a suitable witness.
+Later, Juan.
 
 
