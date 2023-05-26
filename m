@@ -2,70 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C71A712326
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B840471232F
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:16:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2TVF-0006Qp-UG; Fri, 26 May 2023 05:12:53 -0400
+	id 1q2TXX-0007NA-4T; Fri, 26 May 2023 05:15:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2TVD-0006Q1-Tu
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:12:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2TVC-0001eY-Fp
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:12:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685092369;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PTgbFY+X6gh7CWke0cbo8IWGbnzSU6BzdXGh/4776Os=;
- b=bfW0kleoXJfENZEvOChC23CR/cROKcTdvytLmXcos9IvYBZMopLw63CUcNm4CaFI7G/HXT
- G2zKjrgaHDFwxnIJMuQx1BlRG7ziLh4ug/Jwk+Bsdf8t8XFOIWTL6GpqTRYRzV1JP+Po9x
- vrP3Jhm/kYhVoPHU0edSWrdHqR1ksrs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-140-2DpJFnvlPx-NIU9ZvBQ88g-1; Fri, 26 May 2023 05:12:45 -0400
-X-MC-Unique: 2DpJFnvlPx-NIU9ZvBQ88g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A4B7811E86;
- Fri, 26 May 2023 09:12:45 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.231])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 929402166B2B;
- Fri, 26 May 2023 09:12:43 +0000 (UTC)
-Date: Fri, 26 May 2023 11:12:42 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- =?iso-8859-1?Q?Jo=E3o?= Silva <jsilva@suse.de>,
- Lin Ma <lma@suse.com>, Claudio Fontana <cfontana@suse.de>,
- Dario Faggioli <dfaggioli@suse.com>, Eric Blake <eblake@redhat.com>
-Subject: Re: [RFC PATCH 2/6] block: Mark bdrv_co_get_allocated_file_size() as
- mixed
-Message-ID: <ZHB4CpsdCO4qg7NW@redhat.com>
-References: <20230523213903.18418-1-farosas@suse.de>
- <20230523213903.18418-3-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TXP-0007Mb-0r
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:15:08 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TXN-00027q-DO
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:15:06 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f60b3f32b4so3456025e9.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 02:15:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685092504; x=1687684504;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HcxotIymuKgPv9JlBeexmHsVC4dTpSlBSdw2E1CAOBc=;
+ b=Ht/Ejd3zZQJ2bRW0ksKq14JmgEr0eYjrjdHzXD+Hzh8XIeF6zC40Na/W6ZeoKrhJ31
+ yrWDgTr4Sjjz6FYhTyW8Ba16j7FcvbHQ2jOiaSuC+W22YpwGHsqKGT4JU01r2SzMhOLa
+ 4IlmipBhGXh1ydOUpYyOObdma69zfpdyN1720D6TQ2JEE+LJhab+BalLg4ANELPLg2he
+ uhuNosLq9z6ECsXd3GZneR6UdrlXt2Uyp25QEbqQLrgUwe7NT6SG+ickbVbVlifiXnud
+ MRwh7YSPNXGPYcrlhjhWmmzidRA9c/qY2deDHFMMDHP2Q/YftSWRf1tKQycExCP5/mJo
+ lIUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685092504; x=1687684504;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HcxotIymuKgPv9JlBeexmHsVC4dTpSlBSdw2E1CAOBc=;
+ b=kdiX2FaanTn+QcouNMIF7pnCsy7VRNWgNlUo8ifvasBDpbPwkAnaaCU2CvDaznUcwQ
+ cK24MtdNY38T3+UhcgD8KszwS2ALoISjB3iZQWb91zgMLTItkirKy82Nl15R/zAckXKu
+ v24lmp0zEqLTf8DOrJozgq/Mv31KEVT3rdQNNndHGf3RUeuWCdMAHmlS1lOm9lIC/PFu
+ qZAylUuY6WkuWRFz9OuzNNWE4HMq62tJ4Hxb7lFpfKNf/ckoYrE4wFLgkTSo+tCrsDsQ
+ ost4PmT/zUP15Q48ETpsWEGfTs2wd29WlUy8BSbVNm08YwX3IpL+bkmyNCupJ0pXOzlL
+ mINg==
+X-Gm-Message-State: AC+VfDzpspqSpsrzrNjIk9wyYVch7thwJOJ9ER9EDIL3O0tL/TQpo23y
+ 4yUIGisXW4EvSt6CTCv61sFRI5SyfutFnxMWux0=
+X-Google-Smtp-Source: ACHHUZ6zlSjF4sLJbzVKde8KZenwp9jn14oA43MoNL2aRVEYkTfQLd16QprZa5uymenHL3JPSUVWXA==
+X-Received: by 2002:a05:600c:b55:b0:3f6:174:8c32 with SMTP id
+ k21-20020a05600c0b5500b003f601748c32mr1042679wmr.6.1685092503737; 
+ Fri, 26 May 2023 02:15:03 -0700 (PDT)
+Received: from [192.168.69.115] (vit94-h02-176-184-29-207.dsl.sta.abo.bbox.fr.
+ [176.184.29.207]) by smtp.gmail.com with ESMTPSA id
+ o10-20020a1c750a000000b003f4248dcfcbsm8229663wmc.30.2023.05.26.02.15.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 02:15:03 -0700 (PDT)
+Message-ID: <d5a005f4-f612-3a45-873a-0381dbfdc962@linaro.org>
+Date: Fri, 26 May 2023 11:15:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230523213903.18418-3-farosas@suse.de>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v2 14/27] tests/vm: add py310-expat to NetBSD
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: jsnow@redhat.com, berrange@redhat.com
+References: <20230516105908.527838-1-pbonzini@redhat.com>
+ <20230516105908.527838-14-pbonzini@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230516105908.527838-14-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,41 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 23.05.2023 um 23:38 hat Fabiano Rosas geschrieben:
-> Some callers of this function are about to be converted to use
-> coroutines, so allow it to be executed both inside and outside a
-> coroutine.
+On 16/5/23 12:58, Paolo Bonzini wrote:
+> From: John Snow <jsnow@redhat.com>
 > 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-
-This is not a sufficient justification for introducing a new mixed
-function (we want to get rid of them, not add new ones).
-
-You need to explain why the new coroutine callers can't directly call
-bdrv_co_get_allocated_file_size() instead of going through the wrapper.
-This is usually only the case if you have a function that doesn't know
-whether it runs in coroutine context or not. Functions that you
-explicitly convert to coroutine_fn know for sure.
-
->  include/block/block-io.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> NetBSD cannot successfully run "ensurepip" without access to the pyexpat
+> module, which NetBSD debundles. Like the Debian patch, it would be
+> strictly faster long term to install pip/setuptools, and I recommend
+> developers at their workstations take that approach instead.
 > 
-> diff --git a/include/block/block-io.h b/include/block/block-io.h
-> index a27e471a87..c1f96faca5 100644
-> --- a/include/block/block-io.h
-> +++ b/include/block/block-io.h
-> @@ -87,7 +87,7 @@ int64_t co_wrapper_mixed_bdrv_rdlock bdrv_getlength(BlockDriverState *bs);
->  int64_t coroutine_fn GRAPH_RDLOCK
->  bdrv_co_get_allocated_file_size(BlockDriverState *bs);
->  
-> -int64_t co_wrapper_bdrv_rdlock
-> +int64_t co_wrapper_mixed_bdrv_rdlock
->  bdrv_get_allocated_file_size(BlockDriverState *bs);
+> For the purposes of a throwaway VM, there's not really a speed
+> difference for who is responsible for installing pip; us (needs
+> py310-pip) or Python (needs py310-expat).
+> 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Message-Id: <20230511035435.734312-14-jsnow@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   tests/vm/netbsd | 1 +
+>   1 file changed, 1 insertion(+)
 
-You're changing bdrv_get_allocated_file_size() (which is the
-function you really mean), but the subject line talks about
-bdrv_co_get_allocated_file_size().
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Kevin
 
 
