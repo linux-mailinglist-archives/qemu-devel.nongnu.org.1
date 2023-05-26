@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448AC711FA1
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 08:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DD3711FC0
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 08:20:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2QcW-0003P9-A3; Fri, 26 May 2023 02:08:12 -0400
+	id 1q2QnG-0007MD-9q; Fri, 26 May 2023 02:19:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2QcU-0003P1-Ev
- for qemu-devel@nongnu.org; Fri, 26 May 2023 02:08:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1q2Qmp-0007Bq-HB
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 02:18:51 -0400
+Received: from smtpout3.mo529.mail-out.ovh.net ([46.105.54.81])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2QcS-0005uO-2j
- for qemu-devel@nongnu.org; Fri, 26 May 2023 02:08:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685081286;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7MWQhxFCRwhIwQGoDN1HqtuRjcYzy4cQtiubU3YUOrA=;
- b=ixD6759n09u14slLlc33ofR6e3M3UUcVvPeaO220d3RfNP5u3Ov2s7g8Ok/+lNWWAnOmPn
- s4ldJAZmyLPcQyrHzNXSWEIvFNKew6CdsA0QuQzE/LAJZjqgsMjeobm9VqZoj9U9yliGaP
- GOoW53HlpECsOGIXD2PdTXO0NhmoIPU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-563--vbPOdqbNL67OgN7zUQ9Jg-1; Fri, 26 May 2023 02:08:01 -0400
-X-MC-Unique: -vbPOdqbNL67OgN7zUQ9Jg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F5302811BC7;
- Fri, 26 May 2023 06:08:00 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E8CAB40C6CCF;
- Fri, 26 May 2023 06:07:59 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E4E9C21E692E; Fri, 26 May 2023 08:07:58 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Dinah Baum <dinahbaum123@gmail.com>
-Cc: qemu-devel@nongnu.org,  Eduardo Habkost <eduardo@habkost.net>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?=
- <philmd@linaro.org>,  Yanan Wang <wangyanan55@huawei.com>,  Richard
- Henderson <richard.henderson@linaro.org>,  Paolo Bonzini
- <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 3/3] cpu, qdict, vl: Enable printing options for CPU
- type
-References: <20230404011956.90375-1-dinahbaum123@gmail.com>
- <20230404011956.90375-4-dinahbaum123@gmail.com>
-Date: Fri, 26 May 2023 08:07:58 +0200
-In-Reply-To: <20230404011956.90375-4-dinahbaum123@gmail.com> (Dinah Baum's
- message of "Mon, 3 Apr 2023 21:19:56 -0400")
-Message-ID: <878rdbfww1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1q2Qmn-0007zP-Fz
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 02:18:51 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.35])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 7F3922059B;
+ Fri, 26 May 2023 06:18:45 +0000 (UTC)
+Received: from kaod.org (37.59.142.106) by DAG4EX2.mxp5.local (172.16.2.32)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 26 May
+ 2023 08:18:45 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-106R00611beb345-3319-414e-ab01-588248bf14c9,
+ 6F597A683095702A73A6C7CDE7888C96B2985428) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <72d241c8-635c-0c8d-4822-15a35fb9748d@kaod.org>
+Date: Fri, 26 May 2023 08:18:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 1/1] hw/arm/aspeed:Add vpd data for Rainier machine
+Content-Language: en-US
+To: Ninad Palsule <ninad@linux.vnet.ibm.com>, Andrew Jeffery
+ <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>
+CC: Ninad Palsule <ninad@linux.ibm.com>, Cameron Esfahani via
+ <qemu-devel@nongnu.org>, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9_via?= <qemu-arm@nongnu.org>
+References: <20230523214520.2102894-1-ninad@linux.ibm.com>
+ <20230523214520.2102894-2-ninad@linux.ibm.com>
+ <7fadea2f-39e0-902f-848a-8f9bd7ff1f52@kaod.org>
+ <CACPK8XeSBh+SMWPZ68rkeRnOcTFE0_SFcCNoYZr85DLhzGsgtQ@mail.gmail.com>
+ <80168e3a-b0f6-463e-b473-8488a897ef16@app.fastmail.com>
+ <164e53c1-03dd-a530-8c91-357a10517556@kaod.org>
+ <ba1e794c-ee3a-0dff-b008-7fac4b007255@linux.vnet.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <ba1e794c-ee3a-0dff-b008-7fac4b007255@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.106]
+X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG4EX2.mxp5.local
+ (172.16.2.32)
+X-Ovh-Tracer-GUID: f6a16c6a-557a-49ad-80e0-82a1244324e4
+X-Ovh-Tracer-Id: 5711971703202941801
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeejkedguddtiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepleefhfegueeuiefhkedtjefhfffhtdevteetgeekueduvdekvdeukeeuheefkeeinecuffhomhgrihhnpehkrghougdrohhrghenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtiedpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegtlhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepnhhinhgrugeslhhinhhugidrvhhnvghtrdhisghmrdgtohhmpdgrnhgurhgvfiesrghjrdhiugdrrghupdhjohgvlhesjhhmshdrihgurdgruhdpnhhinhgrugeslhhinhhugidrihgsmhdrtghomhdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorhhgpdhqvghmuhdqrghrmhesnhhonhhgnhhurdhorhhgpdfovfetjfhosh
+ htpehmohehvdelpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=46.105.54.81; envelope-from=clg@kaod.org;
+ helo=smtpout3.mo529.mail-out.ovh.net
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,343 +82,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is really, really, *really* for maintainers of the code parsing
--cpu to review.  Code parsing -cpu:
+On 5/25/23 21:57, Ninad Palsule wrote:
+> Hello Cedric,
+> 
+> 
+> On 5/25/23 1:37 AM, Cédric Le Goater wrote:
+>> [ ... ]
+>>
+>>> However, regarding Cédric's log above, a reboot is expected on the first
+>>> boot of a fresh image when there's valid VPD available. For the first
+>>> boot of a fresh image we configure the kernel with a minimal devicetree
+>>> that allows us to read the VPD data. This determines the system we're
+>>> actually on and configures an appropriate devicetree for subsequent
+>>> boots. We then reboot to pick up the new devicetree.
+>>
+>> Yes. Then, the behavior looks correct under QEMU :
+>>
+>>   https://www.kaod.org/qemu/aspeed/rainier/rainer.log
+>>
+>> Here are the services which still have with some issues :
+>>
+>> * clear-once.service                loaded failed failed Clear one time boot overrides
+>> * ncsi-linkspeed@eth0.service       loaded failed failed          Set eth0 gigabit link speed
+>> * ncsi-linkspeed@eth1.service       loaded failed failed          Set eth1 gigabit link speed
+>> * obmc-flash-bios-init.service      loaded failed failed Setup Host FW directories
+>> * system-vpd.service                loaded failed failed System VPD Collection
+>> * trace-enable.service              loaded failed failed Enable Linux trace events in the boot loader
+> 
+> On my system system-vpd.service was active. I couldn't run your build on my development machine.
 
-* parse_cpu_option() in cpu.c
+That's how I run it :
 
-  Eduardo Habkost <eduardo@habkost.net> (supporter:Machine core)
-  Marcel Apfelbaum <marcel.apfelbaum@gmail.com> (supporter:Machine core)
-  "Philippe Mathieu-Daud=C3=A9" <philmd@linaro.org> (reviewer:Machine core)
-  Yanan Wang <wangyanan55@huawei.com> (reviewer:Machine core)
+   qemu-system-arm -M rainier-bmc -net user -drive file=./mmc-p10bmc.qcow2,format=qcow2,if=sd,id=sd2,index=2 -nographic -snapshot -serial mon:stdio
 
-* cpu_common_parse_features() in hw/core/cpu-common.c
+You will need to use my branch to have emmc support.
 
-  No maintainers *boggle*
+Thanks,
 
-* x86_cpu_parse_featurestr() in qemu/target/i386/cpu.c
-
-  No maintainers *BOGGLE*
-
-* sparc_cpu_parse_features() in target/sparc/cpu.c
-
-  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> (maintainer:SPARC TCG CP=
-Us)
-  Artyom Tarasenko <atar4qemu@gmail.com> (maintainer:SPARC TCG CPUs)
-
-Paolo, Richard, Eduardo, care to get these covered in MAINTAINERS?
-
-Since the patch has been waiting for review for so long, I'll give it a
-try, even though I'm only passingly familiar with -cpu parsing.
-
-Paolo, I have a question for you further down.
-
-Dinah Baum <dinahbaum123@gmail.com> writes:
-
-> Change parsing of -cpu argument to allow -cpu cpu,help
-> to print options for the CPU type similar to
-> how the '-device' option works.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1480
->
-> Signed-off-by: Dinah Baum <dinahbaum123@gmail.com>
-> ---
->  cpu.c                     | 41 +++++++++++++++++++++++++++++++++++++++
->  include/exec/cpu-common.h |  2 ++
->  include/qapi/qmp/qdict.h  |  2 ++
->  qemu-options.hx           |  7 ++++---
->  qobject/qdict.c           |  5 +++++
->  softmmu/vl.c              | 36 ++++++++++++++++++++++++++++++++--
->  6 files changed, 88 insertions(+), 5 deletions(-)
->
-> diff --git a/cpu.c b/cpu.c
-> index daf4e1ff0d..5f8a72e51f 100644
-> --- a/cpu.c
-> +++ b/cpu.c
-> @@ -23,7 +23,9 @@
->  #include "exec/target_page.h"
->  #include "hw/qdev-core.h"
->  #include "hw/qdev-properties.h"
-> +#include "qemu/cutils.h"
->  #include "qemu/error-report.h"
-> +#include "qemu/qemu-print.h"
->  #include "migration/vmstate.h"
->  #ifdef CONFIG_USER_ONLY
->  #include "qemu.h"
-> @@ -43,6 +45,8 @@
->  #include "trace/trace-root.h"
->  #include "qemu/accel.h"
->  #include "qemu/plugin.h"
-> +#include "qapi/qmp/qdict.h"
-> +#include "qapi/qmp/qobject.h"
->=20=20
->  uintptr_t qemu_host_page_size;
->  intptr_t qemu_host_page_mask;
-> @@ -312,6 +316,43 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion=
-(CpuModelExpansionType type,
->      return get_cpu_model_expansion_info(type, model, errp);
->  }
->=20=20
-> +void list_cpu_model_expansion(CpuModelExpansionType type,
-> +                              CpuModelInfo *model,
-> +                              Error **errp)
-> +{
-> +    CpuModelExpansionInfo *expansion_info;
-> +    QDict *qdict;
-> +    QDictEntry *qdict_entry;
-> +    const char *key;
-> +    QObject *obj;
-> +    QType q_type;
-> +    GPtrArray *array;
-> +    int i;
-> +    const char *type_name;
-> +
-> +    expansion_info =3D get_cpu_model_expansion_info(type, model, errp);
-> +    if (expansion_info) {
-
-Avoid nesting:
-
-       if (!expansion_info) {
-           return;
-       }
-
-       ... work with expansion_info ...
-
-> +        qdict =3D qobject_to(QDict, expansion_info->model->props);
-> +        if (qdict) {
-
-Likewise.
-
-> +            qemu_printf("%s features:\n", model->name);
-> +            array =3D g_ptr_array_new();
-
-Name it @props, please.
-
-> +            for (qdict_entry =3D (QDictEntry *)qdict_first(qdict); qdict=
-_entry;
-> +                 qdict_entry =3D (QDictEntry *)qdict_next(qdict, qdict_e=
-ntry)) {
-> +                g_ptr_array_add(array, qdict_entry);
-> +            }
-
-@qdict can change while we're using it here (if it could, your code
-would be wrong).  So, no need for a flexible array.  Create a dynamic
-one with g_new(QDictEntry, qdict_size(qdict), fill it, then sort with
-qsort().
-
-> +            g_ptr_array_sort(array, (GCompareFunc)dict_key_compare);
-
-Casting function pointers is iffy.  The clean way is to define the
-function so it is a GCompareFunc exactly, and have it cast its arguments
-if necessary.
-
-> +            for (i =3D 0; i < array->len; i++) {
-> +                qdict_entry =3D array->pdata[i];
-> +                key =3D qdict_entry_key(qdict_entry);
-> +                obj =3D qdict_get(qdict, key);
-> +                q_type =3D qobject_type(obj);
-> +                type_name =3D QType_str(q_type);
-> +                qemu_printf("  %s=3D<%s>\n", key, type_name);
-
-Contract to
-
-                   qemu_printf("  %s=3D<%s>\n",
-                               key, QType_str(qobject_type(obj)));
-
-Actually, don't use QType_str(), because the type comes out as "qnum",
-"qstring", "qbool" (bad), or as "qdict", "qlist" (worse), or as "qnull"
-(still worse, but impossible, I think).
-
-Is CpuModelInfo the appropriate source?  Could we get properties
-straight from QOM instead, like we do for "-device TYPE,help" and
-"-object TYPE,help"?  I guess this question is for Paolo.
-
-> +            }
-> +        }
-> +    }
-> +}
-> +
->  #if defined(CONFIG_USER_ONLY)
->  void tb_invalidate_phys_addr(target_ulong addr)
->  {
-> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-> index ec6024dfde..8fc05307ad 100644
-> --- a/include/exec/cpu-common.h
-> +++ b/include/exec/cpu-common.h
-> @@ -174,5 +174,7 @@ typedef void (*cpu_model_expansion_func)(CpuModelExpa=
-nsionType type,
->  CpuModelExpansionInfo *get_cpu_model_expansion_info(CpuModelExpansionTyp=
-e type,
->                                                      CpuModelInfo *model,
->                                                      Error **errp);
-> +void list_cpu_model_expansion(CpuModelExpansionType type,
-> +                              CpuModelInfo *model, Error **errp);
->=20=20
->  #endif /* CPU_COMMON_H */
-> diff --git a/include/qapi/qmp/qdict.h b/include/qapi/qmp/qdict.h
-> index 82e90fc072..1ff9523a13 100644
-> --- a/include/qapi/qmp/qdict.h
-> +++ b/include/qapi/qmp/qdict.h
-> @@ -68,4 +68,6 @@ const char *qdict_get_try_str(const QDict *qdict, const=
- char *key);
->=20=20
->  QDict *qdict_clone_shallow(const QDict *src);
->=20=20
-> +int dict_key_compare(QDictEntry **entry1, QDictEntry **entry2);
-> +
->  #endif /* QDICT_H */
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 59bdf67a2c..10601626b7 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -169,11 +169,12 @@ SRST
->  ERST
->=20=20
->  DEF("cpu", HAS_ARG, QEMU_OPTION_cpu,
-> -    "-cpu cpu        select CPU ('-cpu help' for list)\n", QEMU_ARCH_ALL)
-> +    "-cpu cpu        select CPU ('-cpu help' for list)\n"
-> +    "                use '-cpu cpu,help' to print possible properties\n"=
-, QEMU_ARCH_ALL)
->  SRST
->  ``-cpu model``
-> -    Select CPU model (``-cpu help`` for list and additional feature
-> -    selection)
-> +    Select CPU model (``-cpu help`` and ``-cpu cpu,help``) for list and =
-additional feature
-> +    selection
->  ERST
->=20=20
->  DEF("accel", HAS_ARG, QEMU_OPTION_accel,
-> diff --git a/qobject/qdict.c b/qobject/qdict.c
-> index 8faff230d3..31407e62f6 100644
-> --- a/qobject/qdict.c
-> +++ b/qobject/qdict.c
-> @@ -447,3 +447,8 @@ void qdict_unref(QDict *q)
->  {
->      qobject_unref(q);
->  }
-> +
-> +int dict_key_compare(QDictEntry **entry1, QDictEntry **entry2)
-> +{
-> +    return g_strcmp0(qdict_entry_key(*entry1), qdict_entry_key(*entry2));
-> +}
-
-This file's external functions start with qdict_, not dict_.
-
-There is just one caller.  Let's put the function next to it, and make
-it static.
-
-> diff --git a/softmmu/vl.c b/softmmu/vl.c
-> index ea20b23e4c..af6753a7e3 100644
-> --- a/softmmu/vl.c
-> +++ b/softmmu/vl.c
-> @@ -500,6 +500,15 @@ static QemuOptsList qemu_action_opts =3D {
->      },
->  };
->=20=20
-> +static QemuOptsList qemu_cpu_opts =3D {
-> +    .name =3D "cpu",
-> +    .implied_opt_name =3D "cpu",
-> +    .head =3D QTAILQ_HEAD_INITIALIZER(qemu_cpu_opts.head),
-> +    .desc =3D {
-> +        { /* end of list */ }
-> +    },
-> +};
-> +
->  const char *qemu_get_vm_name(void)
->  {
->      return qemu_name;
-> @@ -1147,6 +1156,26 @@ static int device_init_func(void *opaque, QemuOpts=
- *opts, Error **errp)
->      return 0;
->  }
->=20=20
-> +static int cpu_help_func(void *opaque, QemuOpts *opts, Error **errp)
-> +{
-> +    CpuModelInfo *model;
-> +
-> +    if (cpu_option && is_help_option(cpu_option)) {
-> +        list_cpus(cpu_option);
-> +        return 1;
-> +    }
-> +
-> +    if (!cpu_option || !qemu_opt_has_help_opt(opts)) {
-> +        return 0;
-> +    }
-> +
-> +    model =3D g_new0(CpuModelInfo, 1);
-> +    model->name =3D (char *)qemu_opt_get(opts, "cpu");
-> +    /* TODO: handle other expansion cases */
-> +    list_cpu_model_expansion(CPU_MODEL_EXPANSION_TYPE_FULL, model, errp);
-> +    return 1;
-> +}
-> +
->  static int chardev_init_func(void *opaque, QemuOpts *opts, Error **errp)
->  {
->      Error *local_err =3D NULL;
-> @@ -2431,8 +2460,9 @@ static void qemu_process_help_options(void)
->       * type and the user did not specify one, so that the user doesn't n=
-eed
->       * to say '-cpu help -machine something'.
->       */
-> -    if (cpu_option && is_help_option(cpu_option)) {
-> -        list_cpus(cpu_option);
-> +    Error *errp =3D NULL;
-> +    if (qemu_opts_foreach(qemu_find_opts("cpu"),
-> +                          cpu_help_func, NULL, &errp)) {
->          exit(0);
->      }
->=20=20
-> @@ -2673,6 +2703,7 @@ void qemu_init(int argc, char **argv)
->      qemu_add_opts(&qemu_semihosting_config_opts);
->      qemu_add_opts(&qemu_fw_cfg_opts);
->      qemu_add_opts(&qemu_action_opts);
-> +    qemu_add_opts(&qemu_cpu_opts);
->      module_call_init(MODULE_INIT_OPTS);
->=20=20
->      error_init(argv[0]);
-> @@ -2724,6 +2755,7 @@ void qemu_init(int argc, char **argv)
->              switch(popt->index) {
->              case QEMU_OPTION_cpu:
->                  /* hw initialization will check this */
-> +                qemu_opts_parse_noisily(qemu_find_opts("cpu"), optarg, t=
-rue);
-
-No :)
-
-We have bespoke parsers for the argument of -cpu: parse_cpu_option()
-together with CPUClass methods parse_features().  The syntax they parse
-is superficially similar to QemuOpts (parts separated with comma), but
-it's not the same.  If it was, we'd use QemuOpts and ditch the bespoke
-parsers.
-
-If qemu_opts_parse_noisily() rejects @optarg here, it reports an error,
-and we continue anyway.
-
-If parse_cpu_option() also rejects @optarg later on, the error is
-reported twice.  Bad.
-
-If it doesn't, the error qemu_opts_parse_noisily() reported is bogus.
-
-If both succeed, they may well yield different parse results.  I can try
-to dig up examples if necessary.
-
-As far as I can see, you use the result of qemu_opts_parse_noisily()
-only with cpu_help_func().  Can we slot the help feature into the
-bespoke parser instead?  Let's have a look.
-
-When the argument of -cpu is "help", qemu_process_help_options() shows
-help and exits before we call parse_cpu_option().
-
-parse_cpu_option() splits the argument of -cpu at the first comma into
-CPU class name and features.
-
-If you factor the splitting out of parse_cpu_option(), you can call it
-from qemu_process_help_options(), then check whether the features are
-"help".
-
->                  cpu_option =3D optarg;
->                  break;
->              case QEMU_OPTION_hda:
+C.
 
 
