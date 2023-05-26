@@ -2,99 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAE271290F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD984712959
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:24:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2YyS-0004LD-9U; Fri, 26 May 2023 11:03:24 -0400
+	id 1q2ZGn-0001I9-4V; Fri, 26 May 2023 11:22:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q2YyP-0004Jk-Np
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:03:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2ZGh-0001Hn-De
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:22:16 -0400
+Received: from smtp-8faf.mail.infomaniak.ch ([83.166.143.175])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q2YyO-00069i-3Y
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:03:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685113399;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YK3XQHcYhqlcBukeuGWEe8d/R/PU0qLq2Uekkg/vHIU=;
- b=AWJwTzMD/C7l+6n80ACCOCwMfquKgkY+NUxAZcMhNfbqQ5U6WSfQBAu9bH5TjBbFUVRGIh
- Z8nBuadKemxby3YRwze/TPaWXzb5cui0TJMlDkVRWUWo/28InIQ9f9cOe0uSIl6jw4KKc0
- UgUo/ytPbs7/l4Zs3j6bFo5ZcPXN2pQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-IMiNBJ7tMCSpMXk3gDE4pg-1; Fri, 26 May 2023 11:03:18 -0400
-X-MC-Unique: IMiNBJ7tMCSpMXk3gDE4pg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-96fae2a13a5so82884966b.2
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:03:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685113397; x=1687705397;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YK3XQHcYhqlcBukeuGWEe8d/R/PU0qLq2Uekkg/vHIU=;
- b=QRXRkG3EjQnzZ05KdknL9SFI9ZqBxUP7FUX659ycIuYQAg0mdWmWWDOe6nvQpyS27E
- DxMpm8joIkJ0782EkiuxvxjUncJpL0cSOeSKM1mGTzwnvv/OKrz0P5vdpTLV2u6xgPtK
- qJQHsVQ12mKoP9ImEvLRKNrcts7ho1/cZEBH8inpcy3XgBkPyFn8gkCMIVQ9HVm4pdGB
- 0DKEhrZzvNqUt0aSDsDbAR2hsJsYtnKC/pb7kejpX3pZqhHbho8mOQRRcneJg8AuEdho
- 9mnW3GmP1YWH8cEjWzIrHa2TbzeZVxOsWy71jY+3ESryTi9AErrnJdP55CT2FwzWlFef
- QOgg==
-X-Gm-Message-State: AC+VfDz1QUcevZcMEI5uMp+AZ8Ke0PoDbqD5+JQg5bYVMFimRrXZ219U
- j+60KH8lh1F2Q6JBVMBXCC3LH+pS1/c0rmyrLy6m1QExzHRvg3IwRB8kXxqVQ78DJVN8SrEbmY6
- l1u8DqMWNboXiPasW2O7lDjt6/6hRtbm7Fgydu8NWn5DD4vJPtYtzUoIHKCsu8qSsh9WAfPUSS1
- M=
-X-Received: by 2002:a17:907:930b:b0:94e:ec32:ba28 with SMTP id
- bu11-20020a170907930b00b0094eec32ba28mr2317054ejc.29.1685113396699; 
- Fri, 26 May 2023 08:03:16 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6ndf8M68H1YLG0GHmt5qafQB6ThhM8SWvJ5dDtfJrn0TrbRRSlIFtnuI/lAXTHDi3ONuMBrw==
-X-Received: by 2002:a17:907:930b:b0:94e:ec32:ba28 with SMTP id
- bu11-20020a170907930b00b0094eec32ba28mr2317008ejc.29.1685113396172; 
- Fri, 26 May 2023 08:03:16 -0700 (PDT)
-Received: from step1.. (host-87-12-25-16.business.telecomitalia.it.
- [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
- q15-20020a1709066b0f00b0096b4c3489e6sm2274066ejr.177.2023.05.26.08.03.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 08:03:15 -0700 (PDT)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jonathon Jongsma <jjongsma@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v4 2/2] qapi: add '@fdset' feature for
- BlockdevOptionsVirtioBlkVhostVdpa
-Date: Fri, 26 May 2023 17:03:04 +0200
-Message-Id: <20230526150304.158206-3-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230526150304.158206-1-sgarzare@redhat.com>
-References: <20230526150304.158206-1-sgarzare@redhat.com>
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2ZGf-0001Zq-HD
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:22:15 -0400
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+ by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QSTDb2m0HzMqJtD;
+ Fri, 26 May 2023 17:22:07 +0200 (CEST)
+Received: from unknown by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA
+ id 4QSTDW5jBkzMpq8r; Fri, 26 May 2023 17:22:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+ s=20191114; t=1685114527;
+ bh=q+ImSjEjmZCszdCMwbCdSpVg4DvQ3poPxVGa8t7f7U4=;
+ h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+ b=tQXLni40CMr4EfzplXOAcaiNi5QkukQ3CoKpUm7sPlK7iwEW6fPx8nY8GaaUiadIG
+ M5KO5fQyWE3EVFklsTrG7jSk0ERYB4XC8Vvc3kkq30lc7cfnaZ5NXLcagUfQK3M2xQ
+ HRaKSJVPM1hu3rh60mZzFma3PA+dy4ElTuUEFWyU=
+Message-ID: <58a803f6-c3de-3362-673f-767767a43f9c@digikod.net>
+Date: Fri, 26 May 2023 17:22:03 +0200
 MIME-Version: 1.0
-Content-type: text/plain
+User-Agent: 
+Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
+Content-Language: en-US
+From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Christopherson,, Sean" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "keescook@chromium.org" <keescook@chromium.org>,
+ "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "wanpengli@tencent.com" <wanpengli@tencent.com>,
+ "vkuznets@redhat.com" <vkuznets@redhat.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "yuanyu@google.com" <yuanyu@google.com>,
+ "jamorris@linux.microsoft.com" <jamorris@linux.microsoft.com>,
+ "marian.c.rotariu@gmail.com" <marian.c.rotariu@gmail.com>,
+ "Graf, Alexander" <graf@amazon.com>,
+ "Andersen, John S" <john.s.andersen@intel.com>,
+ "madvenka@linux.microsoft.com" <madvenka@linux.microsoft.com>,
+ "liran.alon@oracle.com" <liran.alon@oracle.com>,
+ "ssicleru@bitdefender.com" <ssicleru@bitdefender.com>,
+ "tgopinath@microsoft.com" <tgopinath@microsoft.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, "will@kernel.org"
+ <will@kernel.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "dev@lists.cloudhypervisor.org" <dev@lists.cloudhypervisor.org>,
+ "mdontu@bitdefender.com" <mdontu@bitdefender.com>,
+ "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "virtualization@lists.linux-foundation.org"
+ <virtualization@lists.linux-foundation.org>,
+ "nicu.citu@icloud.com" <nicu.citu@icloud.com>,
+ "ztarkhani@microsoft.com" <ztarkhani@microsoft.com>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20230505152046.6575-1-mic@digikod.net>
+ <93726a7b9498ec66db21c5792079996d5fed5453.camel@intel.com>
+ <facfd178-3157-80b4-243b-a5c8dabadbfb@digikod.net>
+In-Reply-To: <facfd178-3157-80b4-243b-a5c8dabadbfb@digikod.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Infomaniak-Routing: alpha
+Received-SPF: pass client-ip=83.166.143.175; envelope-from=mic@digikod.net;
+ helo=smtp-8faf.mail.infomaniak.ch
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,68 +100,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the fd
-passing through the new 'fd' property.
 
-Since now we are using qemu_open() on '@path' if the virtio-blk driver
-supports the fd passing, let's announce it.
-In this way, the management layer can pass the file descriptor of an
-already opened vhost-vdpa character device. This is useful especially
-when the device can only be accessed with certain privileges.
+On 25/05/2023 15:59, Mickaël Salaün wrote:
+> 
+> On 25/05/2023 00:20, Edgecombe, Rick P wrote:
+>> On Fri, 2023-05-05 at 17:20 +0200, Mickaël Salaün wrote:
+>>> # How does it work?
+>>>
+>>> This implementation mainly leverages KVM capabilities to control the
+>>> Second
+>>> Layer Address Translation (or the Two Dimensional Paging e.g.,
+>>> Intel's EPT or
+>>> AMD's RVI/NPT) and Mode Based Execution Control (Intel's MBEC)
+>>> introduced with
+>>> the Kaby Lake (7th generation) architecture. This allows to set
+>>> permissions on
+>>> memory pages in a complementary way to the guest kernel's managed
+>>> memory
+>>> permissions. Once these permissions are set, they are locked and
+>>> there is no
+>>> way back.
+>>>
+>>> A first KVM_HC_LOCK_MEM_PAGE_RANGES hypercall enables the guest
+>>> kernel to lock
+>>> a set of its memory page ranges with either the HEKI_ATTR_MEM_NOWRITE
+>>> or the
+>>> HEKI_ATTR_MEM_EXEC attribute. The first one denies write access to a
+>>> specific
+>>> set of pages (allow-list approach), and the second only allows kernel
+>>> execution
+>>> for a set of pages (deny-list approach).
+>>>
+>>> The current implementation sets the whole kernel's .rodata (i.e., any
+>>> const or
+>>> __ro_after_init variables, which includes critical security data such
+>>> as LSM
+>>> parameters) and .text sections as non-writable, and the .text section
+>>> is the
+>>> only one where kernel execution is allowed. This is possible thanks
+>>> to the new
+>>> MBEC support also brough by this series (otherwise the vDSO would
+>>> have to be
+>>> executable). Thanks to this hardware support (VT-x, EPT and MBEC),
+>>> the
+>>> performance impact of such guest protection is negligible.
+>>>
+>>> The second KVM_HC_LOCK_CR_UPDATE hypercall enables guests to pin some
+>>> of its
+>>> CPU control register flags (e.g., X86_CR0_WP, X86_CR4_SMEP,
+>>> X86_CR4_SMAP),
+>>> which is another complementary hardening mechanism.
+>>>
+>>> Heki can be enabled with the heki=1 boot command argument.
+>>>
+>>>
+>>
+>> Can the guest kernel ask the host VMM's emulated devices to DMA into
+>> the protected data? It should go through the host userspace mappings I
+>> think, which don't care about EPT permissions. Or did I miss where you
+>> are protecting that another way? There are a lot of easy ways to ask
+>> the host to write to guest memory that don't involve the EPT. You
+>> probably need to protect the host userspace mappings, and also the
+>> places in KVM that kmap a GPA provided by the guest.
+> 
+> Good point, I'll check this confused deputy attack. Extended KVM
+> protections should indeed handle all ways to map guests' memory. I'm
+> wondering if current VMMs would gracefully handle such new restrictions
+> though.
 
-Add the '@fdset' feature only when the virtio-blk-vhost-vdpa driver
-in libblkio supports it.
-
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
-
-Notes:
-    v4:
-    - added this patch to allow libvirt to discover we support fdset [Markus]
-
- meson.build          | 4 ++++
- qapi/block-core.json | 8 +++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/meson.build b/meson.build
-index 78890f0155..8ea911f7b4 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2108,6 +2108,10 @@ config_host_data.set('CONFIG_LZO', lzo.found())
- config_host_data.set('CONFIG_MPATH', mpathpersist.found())
- config_host_data.set('CONFIG_MPATH_NEW_API', mpathpersist_new_api)
- config_host_data.set('CONFIG_BLKIO', blkio.found())
-+if blkio.found()
-+  config_host_data.set('CONFIG_BLKIO_VHOST_VDPA_FD',
-+                       blkio.version().version_compare('>=1.3.0'))
-+endif
- config_host_data.set('CONFIG_CURL', curl.found())
- config_host_data.set('CONFIG_CURSES', curses.found())
- config_host_data.set('CONFIG_GBM', gbm.found())
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 98d9116dae..1538d84ef4 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -3955,10 +3955,16 @@
- #
- # @path: path to the vhost-vdpa character device.
- #
-+# Features:
-+# @fdset: Member @path supports the special "/dev/fdset/N" path (since 8.1)
-+#
- # Since: 7.2
- ##
- { 'struct': 'BlockdevOptionsVirtioBlkVhostVdpa',
--  'data': { 'path': 'str' },
-+  'data': { 'path': { 'type': 'str',
-+                      'features': [ { 'name' :'fdset',
-+                                      'if': 'CONFIG_BLKIO_VHOST_VDPA_FD' } ]
-+            } },
-   'if': 'CONFIG_BLKIO' }
- 
- ##
--- 
-2.40.1
-
+I guess the host could map arbitrary data to the guest, so that need to 
+be handled, but how could the VMM (not the host kernel) bypass/update 
+EPT initially used for the guest (and potentially later mapped to the host)?
 
