@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC3F7127FF
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8EA7127FE
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:06:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Y44-0000H2-Bi; Fri, 26 May 2023 10:05:08 -0400
+	id 1q2Y4I-0000Mg-BC; Fri, 26 May 2023 10:05:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2Y40-0000GT-TR
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:05:04 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1q2Y4F-0000Li-FV; Fri, 26 May 2023 10:05:19 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2Y3z-0000sV-AV
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:05:04 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3f6077660c6so5748925e9.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:05:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685109901; x=1687701901;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=J72BzWYbijrZepyjdTGnY7swll5B4dqMgDn/MnBhBDk=;
- b=aeoT67e9shGqa/zpYgAFvksDTDz5VUGVPP4vyJ+X2wq8MX+WvNFIzZkVm7Wy3thxxx
- GbSaR5tWp/+xU6+xKCbAQQe41KIPMcagJ3erz1M7KqueGmCsO1fdcvcn6E5R0Xejx8E7
- CCa+5OYYrpwfUF2u+aRUL5tPEtKBaw9FJ+NEBSj564OBP7SCTqacLFteabJrCQs2oWPU
- 9QZMvaUW6FlXDfLzzSqDwYMgF77ixFm2NnqfVAOJ/XG3jw/81fX4U65hPH64vT2lb9hq
- wZNFVB1jui7scE9flErvzosIM0H7+Lsv2utkT1npzFkROGT71oR2ZqOHWzPrq9SD0BG1
- ro8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685109901; x=1687701901;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J72BzWYbijrZepyjdTGnY7swll5B4dqMgDn/MnBhBDk=;
- b=aYAcgu0TwyX1LpGUTXJvyABKj0oeBhWo6uxZQFMY9pXDaS4aKNCslQT9dACnQhCWTk
- Izh2pxDCUR3vm8KWcTf0SOuSlF2CH2YHOzWbncY3GzmXO8RccrLF8gXzI4fQYm/arRLM
- Iw4fOA3B7ecnUzW7ui61xwh58FisxylrWgTK1BH3oSfQBNlO0TnYpSpYQPapxrKIjYbj
- rrJwhBPvnsBwfuTiyeOrdTyJSS/Uq3BCnbYf+TfLl1xdS1ky1dOBeAlpIqWpHpVAgycT
- zt6eFDDcjWv4mqOCM3elzBcCPNBvT1eL1UaJnxTCr0MLC4GuOgvdnLS22p9cvyjsnJZr
- kugw==
-X-Gm-Message-State: AC+VfDys4nBGARx7rEmvf39doOduHIWLj1VAIjW/LXI1bbVfwzxLQZlm
- BaMIvMhiRyxjfaXcLluKzkTBeA==
-X-Google-Smtp-Source: ACHHUZ5dY3YclxAbmtv/EOrtbjh5x9Op3gLlFO5dZt4fLNE0vXbTc5kvqf1bBkz6R1XxP8iWPI2Yog==
-X-Received: by 2002:a1c:7407:0:b0:3f6:cfc7:8bce with SMTP id
- p7-20020a1c7407000000b003f6cfc78bcemr1815704wmc.22.1685109901410; 
- Fri, 26 May 2023 07:05:01 -0700 (PDT)
-Received: from [192.168.69.115] (vit94-h02-176-184-29-207.dsl.sta.abo.bbox.fr.
- [176.184.29.207]) by smtp.gmail.com with ESMTPSA id
- s15-20020a7bc38f000000b003f6028a4c85sm8884022wmj.16.2023.05.26.07.04.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 07:05:01 -0700 (PDT)
-Message-ID: <3eb1d51e-7393-2dbb-a233-e9ff05be56f0@linaro.org>
-Date: Fri, 26 May 2023 16:04:59 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1q2Y4D-00015D-5M; Fri, 26 May 2023 10:05:19 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 5B5971F86C;
+ Fri, 26 May 2023 14:05:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1685109911; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+WAMmg+6DhVXBeZaK+4ytscykqDtaJa8xMmoZwcTwEM=;
+ b=bkd4ZQ3zM/636s1Wtz6lE9djXZOO2K+9D4BMZWTN/C6cH7EWYC70S60zWgnJD6mao/gYDk
+ 2qZksEOeSANxGG0987Bb+7jQF0IJeTidmiDthZ7Qt1p8/Sd6KJNoiJMUGOJqa3H22TmIIO
+ nrzbDCDEdpuK/SAPbMRBVgXsfhGhfD4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1685109911;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+WAMmg+6DhVXBeZaK+4ytscykqDtaJa8xMmoZwcTwEM=;
+ b=PWDmRH4NP8UbrMF0AIKcPDFuX9vGaQ2zJT878EB/OjSFgH2S0XZaxe8A2BEBUIQ9ckUQNk
+ ovDfHlyN2bb7sqCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D3DB2138E6;
+ Fri, 26 May 2023 14:05:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 0VgwJ5a8cGSfbgAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 26 May 2023 14:05:10 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Kevin Wolf
+ <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, =?utf-8?Q?Jo=C3=A3o?= Silva <jsilva@suse.de>, Lin Ma
+ <lma@suse.com>,
+ Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: Re: [RFC PATCH 3/6] Convert query-block/info_block to coroutine
+In-Reply-To: <i2zakx3qtd5kodcay6uablx7pawdkx2sh2pl33ump4ssxwhuiv@z7auumqij7ry>
+References: <20230523213903.18418-1-farosas@suse.de>
+ <20230523213903.18418-4-farosas@suse.de>
+ <i2zakx3qtd5kodcay6uablx7pawdkx2sh2pl33ump4ssxwhuiv@z7auumqij7ry>
+Date: Fri, 26 May 2023 11:05:08 -0300
+Message-ID: <87bki79oiz.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v5 3/3] docs/system: riscv: Add pflash usage details
-Content-Language: en-US
-To: Sunil V L <sunilvl@ventanamicro.com>, qemu-riscv@nongnu.org
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrea Bolognani <abologna@redhat.com>
-References: <20230526121006.76388-1-sunilvl@ventanamicro.com>
- <20230526121006.76388-4-sunilvl@ventanamicro.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230526121006.76388-4-sunilvl@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,18 +88,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/5/23 14:10, Sunil V L wrote:
-> pflash devices can be used in virt machine for different
-> purposes like for ROM code or S-mode FW payload. Add a
-> section in the documentation on how to use pflash devices
-> for different purposes.
-> 
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> ---
->   docs/system/riscv/virt.rst | 29 +++++++++++++++++++++++++++++
->   1 file changed, 29 insertions(+)
+Eric Blake <eblake@redhat.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> On Tue, May 23, 2023 at 06:39:00PM -0300, Fabiano Rosas wrote:
+>> From: Lin Ma <lma@suse.com>
+>> 
+>> Sometimes the query-block performs time-consuming I/O(say waiting for
+>> the fstat of NFS complete), So let's make this QMP handler runs in a
+>> coroutine.
+>
+> Grammar suggestions:
+>
+> Sometimes the query-block command performs time-consuming I/O (say
+> waiting for the fstat of NFS to complete), so let's make this QMP
+> handler run in a coroutine.
+>
 
+Thanks!
 
+>> 
+>> The following patch moves the fstat() into a thread pool.
+>> 
+>> Signed-off-by: Lin Ma <lma@suse.com>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>
+>> ---
+>> +++ b/qapi/block-core.json
+>> @@ -838,7 +838,7 @@
+>>  #    }
+>>  ##
+>>  { 'command': 'query-block', 'returns': ['BlockInfo'],
+>> -  'allow-preconfig': true }
+>> +  'allow-preconfig': true, 'coroutine': true }
+>
+> Rereading docs/devel/qapi-code-gen.rst:
+>
+> | Coroutine safety can be hard to prove, similar to thread safety.  Common
+> | pitfalls are:
+> | 
+> | - The global mutex isn't held across ``qemu_coroutine_yield()``, so
+> |   operations that used to assume that they execute atomically may have
+> |   to be more careful to protect against changes in the global state.
+> | 
+> | - Nested event loops (``AIO_WAIT_WHILE()`` etc.) are problematic in
+> |   coroutine context and can easily lead to deadlocks.  They should be
+> |   replaced by yielding and reentering the coroutine when the condition
+> |   becomes false.
+> | 
+> | Since the command handler may assume coroutine context, any callers
+> | other than the QMP dispatcher must also call it in coroutine context.
+> | In particular, HMP commands calling such a QMP command handler must be
+> | marked ``.coroutine = true`` in hmp-commands.hx.
+>
+> I agree that you also need to change the HMP handler, but the commit
+> message didn't mention that other than in the subject line.  The
+
+Ok, I'll update the message for v2.
+
+> commit message could also do a better job at explaining how you have
+> audited that merely adding the coroutine marker is safe (ie. that all
+> of the calls made by query_block are already coroutine safe).  While
+> the intent behind this patch is on the right track, I'm not sure if I
+> have enough information to say whether it is safe, or if there are
+> other lurking problems we will need to fix first.
+
+Fair point, I've been trusting the tests too much. A closer code audit
+is necessary indeed.
 
