@@ -2,82 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FEF7122A6
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4273C7122C8
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:56:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2T8M-0004i1-6U; Fri, 26 May 2023 04:49:14 -0400
+	id 1q2TEL-0005tM-3Z; Fri, 26 May 2023 04:55:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q2T8K-0004hU-5B
- for qemu-devel@nongnu.org; Fri, 26 May 2023 04:49:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2TEJ-0005sn-Ez
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:55:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q2T8H-0004oV-L6
- for qemu-devel@nongnu.org; Fri, 26 May 2023 04:49:11 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2TEH-0006Ji-QR
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:55:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685090948;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=bVJZ/yFCfppIAAEs4M+JRqoPasQ/93SkVCEvfupkLZI=;
- b=CJh+zxxcWHjjtEI0s9xgLycXuRYasEv1eIXRmADzGkdI1r+FDmOKQtA65q2YcnO91Vi5Vs
- 4AH7V+x2NZ5FY4XyVlhaRHKAMI2/dTZ2j0FjenocMIbdoQKjhXJw9D+L0vCCH+BsWhzWWu
- S1H9SA9R4L1o3Gdo51+WgBmN/6M/fv8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-d5sWKwN1MsmKZ8TfKyPBGg-1; Fri, 26 May 2023 04:49:07 -0400
-X-MC-Unique: d5sWKwN1MsmKZ8TfKyPBGg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-30ac89cc4faso346114f8f.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 01:49:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685090946; x=1687682946;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bVJZ/yFCfppIAAEs4M+JRqoPasQ/93SkVCEvfupkLZI=;
- b=MYuzaocAHL13/48jnWCK27gY2V0nfYfNUSHxqQvUz/+7CqbhzWBG8jMYvI790jBDVp
- kFPAW4eRPiOOm6EF1WFbJPJSnC/aM+tPjtnLVI/hxwG4rKgcPTKCDJePL8ne4L7n6U8h
- 8LRM/D07fQJgTRsGKUi1kqqmZbU7GcbaNWCihcc9SamSoVJOFWNmze7O+dslhGat4WlT
- cQCdEGO9hknclXSc0fa9Vz9D+nJkScWYXUGd+sebEbDCEKrz3yrjrHSF/NVAF6zSOI6M
- YzUOJhIDDBJpn4HS67nkcfW0OGHMefAT8JcGFpXMIvB6zU3MuLCZvtWJyJpO5gfzz0Pf
- TXEg==
-X-Gm-Message-State: AC+VfDy6c7h6UAkhmEQxjkr1tZp2dbapknsS7SWh/BRP3EAKacM7NlFV
- 86s8l6f9fW1bLYQt9R+7iofHIky8nagCyfhbKoaaaea9KBxO/fGc3yGhW1eOXMefGfNzvqCyClA
- FPMgu77vN8FFPhu0=
-X-Received: by 2002:a5d:6ac4:0:b0:30a:8e6a:3d77 with SMTP id
- u4-20020a5d6ac4000000b0030a8e6a3d77mr921430wrw.1.1685090945954; 
- Fri, 26 May 2023 01:49:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ61Y4vYZB103i5DqgZkwMUpewyL39uhFNHJb85dwXGLhNMYnACFvzNMJaurjfl3QewKE//kkQ==
-X-Received: by 2002:a5d:6ac4:0:b0:30a:8e6a:3d77 with SMTP id
- u4-20020a5d6ac4000000b0030a8e6a3d77mr921404wrw.1.1685090945674; 
- Fri, 26 May 2023 01:49:05 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- e2-20020adffc42000000b002ff2c39d072sm4347577wrs.104.2023.05.26.01.49.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 01:49:05 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
- eblake@redhat.com,  vsementsov@yandex-team.ru,  jsnow@redhat.com,
- stefanha@redhat.com,  fam@euphon.net,  qemu-block@nongnu.org,
- pbonzini@redhat.com,  t.lamprecht@proxmox.com
-Subject: Re: [PATCH v2] migration: hold the BQL during setup
-In-Reply-To: <20230525164726.45176-1-f.ebner@proxmox.com> (Fiona Ebner's
- message of "Thu, 25 May 2023 18:47:26 +0200")
-References: <20230525164726.45176-1-f.ebner@proxmox.com>
+ s=mimecast20190719; t=1685091319;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=BK02zztPL0GoROyCOP6mcsZLiAnqXJ27p3pPuTBXD/g=;
+ b=f7QdS+xqhxIDxO8ckTWJrk37VabsLEV/fgMWKCrqwVsAwG2eoQvTL6ieixtTDFmm8Vn8xU
+ RjttvT1+2a9zO/DRCT2XuTmhlLyHo6qf7N5SBL5phfry3SX2Hv1NYFfU8Io+tAfRrqaPY3
+ bjEuTysKlZhLf6Pxmgzgv7UXzSAwLSc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-286-q_YreTlaPxef-tIJI0YI4g-1; Fri, 26 May 2023 04:55:01 -0400
+X-MC-Unique: q_YreTlaPxef-tIJI0YI4g-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F14003825BBC
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:55:00 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D129D1121314
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:55:00 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C2D2021E692E; Fri, 26 May 2023 10:54:59 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Krempa <pkrempa@redhat.com>
+Cc: libvir-list@redhat.com,  Andrea Bolognani <abologna@redhat.com>,
+ qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: query-command-line-options
+References: <cover.1677511354.git.pkrempa@redhat.com>
+ <8718b22eda052662087087b4ce659b054974c9e0.1677511354.git.pkrempa@redhat.com>
+ <CABJz62PHsQHiyo06PtfcDeS1LddYyDw2pC_seObtZcLR5cPQyQ@mail.gmail.com>
+ <Y/zng8+7s05O0tRd@angien.pipo.sk>
+ <CABJz62OMWXAx_ExYqvvg1DvcHkiP+SkwNMQZ+56QwoHpsNBqGA@mail.gmail.com>
+ <87jzzsc320.fsf_-_@pond.sub.org> <ZAdKHkUIKjPLhFn7@angien.pipo.sk>
+Date: Fri, 26 May 2023 10:54:59 +0200
+In-Reply-To: <ZAdKHkUIKjPLhFn7@angien.pipo.sk> (Peter Krempa's message of
+ "Tue, 7 Mar 2023 15:28:46 +0100")
+Message-ID: <87sfbjcw0s.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Fri, 26 May 2023 10:49:04 +0200
-Message-ID: <87bki732bj.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,67 +81,109 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fiona Ebner <f.ebner@proxmox.com> wrote:
-> This is intended to be a semantic revert of commit 9b09503752
-> ("migration: run setup callbacks out of big lock"). There have been so
-> many changes since that commit (e.g. a new setup callback
-> dirty_bitmap_save_setup() that also needs to be adapted now), it's
-> easier to do the revert manually.
->
-> For snapshots, the bdrv_writev_vmstate() function is used during setup
-> (in QIOChannelBlock backing the QEMUFile), but not holding the BQL
-> while calling it could lead to an assertion failure. To understand
-> how, first note the following:
->
-> 1. Generated coroutine wrappers for block layer functions spawn the
-> coroutine and use AIO_WAIT_WHILE()/aio_poll() to wait for it.
-> 2. If the host OS switches threads at an inconvenient time, it can
-> happen that a bottom half scheduled for the main thread's AioContext
-> is executed as part of a vCPU thread's aio_poll().
->
-> An example leading to the assertion failure is as follows:
->
-> main thread:
-> 1. A snapshot-save QMP command gets issued.
-> 2. snapshot_save_job_bh() is scheduled.
->
-> vCPU thread:
-> 3. aio_poll() for the main thread's AioContext is called (e.g. when
-> the guest writes to a pflash device, as part of blk_pwrite which is a
-> generated coroutine wrapper).
-> 4. snapshot_save_job_bh() is executed as part of aio_poll().
-> 3. qemu_savevm_state() is called.
-> 4. qemu_mutex_unlock_iothread() is called. Now
-> qemu_get_current_aio_context() returns 0x0.
-> 5. bdrv_writev_vmstate() is executed during the usual savevm setup
-> via qemu_fflush(). But this function is a generated coroutine wrapper,
-> so it uses AIO_WAIT_WHILE. There, the assertion
-> assert(qemu_get_current_aio_context() == qemu_get_aio_context());
-> will fail.
->
-> To fix it, ensure that the BQL is held during setup. While it would
-> only be needed for snapshots, adapting migration too avoids additional
-> logic for conditional locking/unlocking in the setup callbacks.
-> Writing the header could (in theory) also trigger qemu_fflush() and
-> thus bdrv_writev_vmstate(), so the locked section also covers the
-> qemu_savevm_state_header() call, even for migration for consistentcy.
->
-> The comment in ram_init_bitmaps() was introduced by 4987783400
-> ("migration: fix incorrect memory_global_dirty_log_start outside BQL")
-> and is removed, because it referred to the qemu_mutex_lock_iothread()
-> call.
->
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Stefan, one question regarding your commit 40e07370f21 inline.
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Peter Krempa <pkrempa@redhat.com> writes:
 
-I think we will take this bit, because the problem exist and this is
-best solution that I can came with.
+[...]
 
-Later, Juan.
+> In fact I strive to eliminate it after your suggestions, but we can't
+> still detect the few outstanding flags from anywhere else.
+>
+> List of currently outstanding queries using query-command-line-options:
+
+Let me translate these into English questions:
+
+>     { "fsdev", "multidevs", QEMU_CAPS_FSDEV_MULTIDEVS },
+
+Does -fsdev have parameter "multidevs"?
+
+It does since v4.2.
+
+Aside: not documented in -help.
+
+9p seems entirely absent from the QAPI schema.
+
+>     { "machine", "hpet", QEMU_CAPS_MACHINE_HPET },
+
+Does -machine have parameter "hpet"?
+
+Aside: not documented in -help.
+
+Since this is a special case in q-c-l-o (commit 40e07370f21 qemu-config:
+restore "machine" in qmp_query_command_line_options()), the actual
+question is whether any non-abstract machine class has a property
+"hpet".
+
+PC machines do since v5.2. (the HPET device is older, but it wasn't
+configured with a machine property until v5.2).
+
+Aside: "any non-abstract machine class"...  I think it used to be just
+the current machine.  See the code taken out by commit d8fb7d0969d (vl:
+switch -M parsing to keyval).  Accident in commit 40e07370f21?  Stefan?
+
+There's CONFIG_HPET, but I can't see offhand how it plays together with
+the machine property.
+
+We could check for the machine property directly: check the properties
+of the machine class in question with qom-list-properties, e.g.
+
+    {"execute": "qom-list-properties",
+     "arguments": {"typename": "pc-q35-8.1-machine"}}
+
+To find all non-abstract machine classes, use
+
+    {"execute": "qom-list-types", "arguments": {"implements": "machine"}}
+
+>     { "sandbox", NULL, QEMU_CAPS_SECCOMP_SANDBOX },
+
+Does option -sandbox exist?
+
+It does since v1.2.  If CONFIG_SECCOMP is off, actually using it is a
+fatal error.  Compiling out the option entirely would be more useful, I
+guess.
+
+Is this probe still useful?
+
+>     { "spice", NULL, QEMU_CAPS_SPICE },
+
+Does option -spice exist?
+
+Since v7.0, it exists when CONFIG_SPICE is on.  I believe using it can
+still fail when the module can't be loaded.
+
+From v0.14 to v6.2 it exists even when CONFIG_SPICE is off, but actually
+using it is a fatal error.
+
+>     { "spice", "gl", QEMU_CAPS_SPICE_GL },
+
+Does option -spice have parameter "gl"?
+
+It does when CONFIG_OPENGL and CONFIG_OPENGL are both on (since v2.6).
+
+query-display-options returns a value "gl" (since v2.12).  *Maybe*
+that's a suitable witness.
+
+>     { "spice", "rendernode", QEMU_CAPS_SPICE_RENDERNODE },
+
+Does option -spice have parameter "rendernode"?
+
+It does when CONFIG_OPENGL and CONFIG_OPENGL are both on (since v2.9).
+
+Maybe query-display-options can serve for this one, too.
+
+>     { "vnc", "power-control", QEMU_CAPS_VNC_POWER_CONTROL },
+
+Does option -vnc have parameter "power-control"?
+
+It does since v6.0.
+
+Aside: -help does not document any of its parameters.
+
+query-display-options is not implemented for VNC.  If we implement it,
+it might become a suitable witness.
 
 
