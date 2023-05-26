@@ -2,52 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72A371238A
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD4D712395
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:28:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Thx-0002rC-8D; Fri, 26 May 2023 05:26:01 -0400
+	id 1q2Tji-0003de-6m; Fri, 26 May 2023 05:27:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1q2Thr-0002qE-56
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:25:55 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1q2Tho-000450-EI
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:25:54 -0400
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QSKCp63v4z67QQK;
- Fri, 26 May 2023 17:20:54 +0800 (CST)
-Received: from localhost (10.199.58.101) by lhrpeml500004.china.huawei.com
- (7.191.163.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 26 May
- 2023 10:25:35 +0100
-Date: Fri, 26 May 2023 12:25:30 +0300
-To: Markus Armbruster <armbru@redhat.com>
-CC: <qemu-devel@nongnu.org>, <quintela@redhat.com>, <peterx@redhat.com>,
- <leobras@redhat.com>, <eblake@redhat.com>
-Subject: Re: [PATCH] qapi: better docs for calc-dirty-rate and friends
-Message-ID: <ZHB7CrcBsRDbHXdM@DESKTOP-0LHM7NF.china.huawei.com>
-References: <fe7d32a621ebd69ef6974beb2499c0b5dccb9e19.1684854849.git.gudkov.andrei@huawei.com>
- <87sfbkpnho.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1q2Tje-0003cv-M8
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:27:46 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1q2TjZ-0004PV-Sr
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:27:46 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxlPCIe3Bkn2MBAA--.3539S3;
+ Fri, 26 May 2023 17:27:36 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxkrCHe3Bk2Vp5AA--.3791S2; 
+ Fri, 26 May 2023 17:27:35 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org
+Subject: [PULL 0/2] loongarch-to-apply queue
+Date: Fri, 26 May 2023 17:27:33 +0800
+Message-Id: <20230526092735.2549714-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <87sfbkpnho.fsf@pond.sub.org>
-X-Originating-IP: [10.199.58.101]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- lhrpeml500004.china.huawei.com (7.191.163.9)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxkrCHe3Bk2Vp5AA--.3791S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjvdXoW7XFy5ZrWUXw4rWFW3Gw47CFg_yoWkGrX_WF
+ yxXFy8GrWUW3WUJFWYkry5J34DC3y8Grn0yF1jqrW7AF9rXF15Jr4qqFs5Zr1jqF1xJrn8
+ Ar47tr1rCr1UJjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8wcxFpf9Il3svdxBIdaVrn0
+ xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUU5
+ 37CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+ vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7Cj
+ xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x
+ 0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E
+ 6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VWrMcvjeVCFs4IE7x
+ kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv
+ 6cx26rWl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+ 8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0xvE
+ 2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
+ xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
+ 7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0zRVWlkUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,244 +69,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  <gudkov.andrei@huawei.com>
-From: gudkov.andrei--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 25, 2023 at 03:08:35PM +0200, Markus Armbruster wrote:
-> Andrei Gudkov <gudkov.andrei@huawei.com> writes:
-> 
-> > Rewrote calc-dirty-rate documentation. Briefly described
-> > different modes of dirty page rate measurement. Added some
-> > examples. Fixed obvious grammar errors.
-> >
-> > Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
-> > ---
-> >  qapi/migration.json | 107 +++++++++++++++++++++++++++++++-------------
-> >  1 file changed, 77 insertions(+), 30 deletions(-)
-> >
-> > diff --git a/qapi/migration.json b/qapi/migration.json
-> > index 179af0c4d8..19b51444b5 100644
-> > --- a/qapi/migration.json
-> > +++ b/qapi/migration.json
-> > @@ -1735,14 +1735,14 @@
-> >  ##
-> >  # @DirtyRateStatus:
-> >  #
-> > -# An enumeration of dirtyrate status.
-> > +# Dirty page rate measurement status.
-> >  #
-> > -# @unstarted: the dirtyrate thread has not been started.
-> > +# @unstarted: measuring thread has not been started yet
-> >  #
-> > -# @measuring: the dirtyrate thread is measuring.
-> > +# @measuring: measuring thread is running
-> >  #
-> > -# @measured: the dirtyrate thread has measured and results are
-> > -#     available.
-> > +# @measured: dirty page rate is measured and the results are
-> > +#     available
-> >  #
-> >  # Since: 5.2
-> >  ##
-> > @@ -1752,13 +1752,14 @@
-> >  ##
-> >  # @DirtyRateMeasureMode:
-> >  #
-> > -# An enumeration of mode of measuring dirtyrate.
-> > +# Method used to measure dirty page rate.  Differences between
-> > +# available methods are explained in @calc-dirty-rate.
-> >  #
-> > -# @page-sampling: calculate dirtyrate by sampling pages.
-> > +# @page-sampling: use page sampling
-> >  #
-> > -# @dirty-ring: calculate dirtyrate by dirty ring.
-> > +# @dirty-ring: use dirty ring
-> >  #
-> > -# @dirty-bitmap: calculate dirtyrate by dirty bitmap.
-> > +# @dirty-bitmap: use dirty bitmap
-> >  #
-> >  # Since: 6.2
-> >  ##
-> > @@ -1768,26 +1769,25 @@
-> >  ##
-> >  # @DirtyRateInfo:
-> >  #
-> > -# Information about current dirty page rate of vm.
-> > +# Information about measured dirty page rate.
-> >  #
-> >  # @dirty-rate: an estimate of the dirty page rate of the VM in units
-> > -#     of MB/s, present only when estimating the rate has completed.
-> > +#     of MiB/s. Value is present only when @status is 'measured'.
-> 
-> For consistency, please put two spaces between setences.
-> 
-> >  #
-> > -# @status: status containing dirtyrate query status includes
-> > -#     'unstarted' or 'measuring' or 'measured'
-> > +# @status: current status of dirty page rate measurements
-> >  #
-> >  # @start-time: start time in units of second for calculation
-> >  #
-> > -# @calc-time: time in units of second for sample dirty pages
-> > +# @calc-time: time period in units of second for which dirty page
-> > +#     rate was measured
-> 
-> Maybe
-> 
->    # @calc-time: time period for which dirty page rate was measured
->    #     (in seconds)
-> 
-> >  #
-> > -# @sample-pages: page count per GB for sample dirty pages the default
-> > -#     value is 512 (since 6.1)
-> > +# @sample-pages: number of sampled pages per each GiB of guest
-> 
-> per GiB
-> 
-> > +#     memory.  Value is valid only in page-sampling mode (Since 6.1)
-> 
-> Suggest "Valid only in ..."
-> 
-> >  #
-> > -# @mode: mode containing method of calculate dirtyrate includes
-> > -#     'page-sampling' and 'dirty-ring' (Since 6.2)
-> > +# @mode: mode that was used to measure dirty page rate (Since 6.2)
-> >  #
-> > -# @vcpu-dirty-rate: dirtyrate for each vcpu if dirty-ring mode
-> > -#     specified (Since 6.2)
-> > +# @vcpu-dirty-rate: dirty rate for each vCPU if dirty-ring mode
-> > +#     was specified (Since 6.2)
-> >  #
-> >  # Since: 5.2
-> >  ##
-> > @@ -1803,15 +1803,50 @@
-> >  ##
-> >  # @calc-dirty-rate:
-> >  #
-> > -# start calculating dirty page rate for vm
-> > -#
-> > -# @calc-time: time in units of second for sample dirty pages
-> > -#
-> > -# @sample-pages: page count per GB for sample dirty pages the default
-> > -#     value is 512 (since 6.1)
-> > -#
-> > -# @mode: mechanism of calculating dirtyrate includes 'page-sampling'
-> > -#     and 'dirty-ring' (Since 6.1)
-> > +# Starts measuring dirty page rate of the VM.  Results can be
-> 
-> Imperative mood: "Start measuring ..."
-> 
-> > +# retrieved with @query-dirty-rate after measurements are completed.
-> > +#
-> > +# Dirty page rate is the number of pages changed in a given time
-> > +# period expressed in MiB/s.  The following methods of calculation
-> > +# are available:
-> > +#
-> > +# 1. In page sampling mode, a random subset of pages are selected
-> > +#    and hashed twice: once in the beginning of measurement time
-> 
-> Suggest "once at the beginning"
-> 
-> > +#    period, another one -- in the end.  If two hashes for some page
-> 
-> Suggest ", and once again at the end".
-> 
-> > +#    are different, the page is counted as changed.  Since this
-> > +#    method relies on sampling and hashing, calculated dirty page
-> > +#    rate is only the estimation of its true value.  Setting
-> > +#    @sample-pages to higher value improves estimation quality but
-> 
-> Suggest "Increasing @sample-pages improves estimation quality at the
-> cost ..."
-> 
-> > +#    at the cost of higher computational overhead.
-> > +#
-> > +# 2. Dirty bitmap mode captures writes to memory by temporarily
-> > +#    revoking write access to all pages and counting page faults.
-> 
-> Comma before "and".
-> 
-> > +#    Information about modified pages is collected into bitmap,
-> 
-> "into a bitmap"
-> 
-> > +#    where each bit corresponds to one guest page.  This mode
-> > +#    requires that KVM accelerator property "dirty-ring-size=N"
-> 
-> Suggest just "dirty-ring-size" (omit "=N").
-> 
-> > +#    is *not* set.
-> > +#
-> > +# 3. Dirty ring mode is similar to dirty bitmap mode, but the
-> > +#    information about modified pages is collected into ring buffer.
-> > +#    This mode tracks page modification per each vCPU separately.
-> 
-> Either "for each vCPU" or "per vCPU".
-> 
-> > +#    It requires that KVM accelerator property "dirty-ring-size=N"
-> > +#    is set.
-> 
-> Suggest just "dirty-ring-size" (omit "=N").
-> 
-> > +#
-> > +# @calc-time: time period in units of second for which dirty page rate
-> > +#    is calculated.  Note that larger @calc-time values will typically
-> > +#    result in smaller dirty page rates because page dirtying is a
-> > +#    one-time event.  Once some page is counted as dirty during
-> > +#    @calc-time period, further writes to this page will not increase
-> > +#    dirty page rate anymore.
-> 
-> Please indent one more, for consistency.
-> 
-> > +#
-> > +# @sample-pages: number of sampled pages per each GiB of guest memory.
-> > +#     Default value is 512.  For 4KiB guest pages this corresponds to
-> > +#     sampling ratio of 0.2%.  This argument is used only in page
-> > +#     sampling mode. (Since 6.1)
-> 
-> Two spaces between '.' and '(', please.
-> 
-> > +#
-> > +# @mode: mechanism for tracking dirty pages.  Default value is
-> > +#    'page-sampling'.  Others are 'dirty-bitmap' and 'dirty-ring'.
-> > +#    (Since 6.1)
-> >  #
-> >  # Since: 5.2
-> >  #
-> > @@ -1828,9 +1863,21 @@
-> >  ##
-> >  # @query-dirty-rate:
-> >  #
-> > -# query dirty page rate in units of MB/s for vm
-> > +# Query results of the most recent invocation of @calc-dirty-rate.
-> >  #
-> >  # Since: 5.2
-> > +#
-> > +# Examples:
-> > +#
-> > +# 1. Measurement is in progress:
-> > +#
-> > +# <- {"status": "measuring", "sample-pages": 512,
-> > +#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
-> > +#
-> > +# 2. Measurement has been completed:
-> > +#
-> > +# <- {"status": "measured", "sample-pages": 512, "dirty-rate": 108,
-> > +#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
-> >  ##
-> >  { 'command': 'query-dirty-rate', 'returns': 'DirtyRateInfo' }
-> 
-> This is *sooo* much better than before.  Thank you!
-> 
-> An R-by from a migration maintainer would be nice.
-> 
-> If you agree with my suggestions, I can apply them in my tree, saving
-> you a respin.  Let me know.
+The following changes since commit a3cb6d5004ff638aefe686ecd540718a793bd1b1:
 
-Yes, sure. Please include also suggestion about wr-protect from Peter. Thanks.
+  Merge tag 'pull-tcg-20230525' of https://gitlab.com/rth7680/qemu into staging (2023-05-25 11:11:52 -0700)
 
-> 
-> Acked-by: Markus Armbruster <armbru@redhat.com>
+are available in the Git repository at:
+
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20230526
+
+for you to fetch changes up to 65bfaaae6ac79ebc623acc0ce28cc3bd4fe8b5e5:
+
+  target/loongarch: Fix the vinsgr2vr/vpickve2gr instructions cause system coredump (2023-05-26 17:21:16 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20230526
+
+----------------------------------------------------------------
+Song Gao (2):
+      target/loongarch: Fix LD/ST{LE/GT} instructions get wrong CSR_ERA and CSR_BADV
+      target/loongarch: Fix the vinsgr2vr/vpickve2gr instructions cause system coredump
+
+ target/loongarch/cpu.c                      |  2 +-
+ target/loongarch/insn_trans/trans_lsx.c.inc | 39 +++++++++++++++++++----------
+ target/loongarch/op_helper.c                |  6 +++--
+ 3 files changed, 31 insertions(+), 16 deletions(-)
+
 
