@@ -2,75 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44782712A5F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4CC712A74
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:17:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2a0b-0004Tk-Nl; Fri, 26 May 2023 12:09:41 -0400
+	id 1q2a6w-0005A3-PU; Fri, 26 May 2023 12:16:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2a0Y-0004PR-Tw
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:09:38 -0400
-Received: from smtp-bc0c.mail.infomaniak.ch ([45.157.188.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2a0V-0002mH-DO
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:09:38 -0400
-Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
- by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QSVHH60KKzMqG8D;
- Fri, 26 May 2023 18:09:31 +0200 (CEST)
-Received: from unknown by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA
- id 4QSVHD3cfwzMpq8P; Fri, 26 May 2023 18:09:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
- s=20191114; t=1685117371;
- bh=GWA0mFQb+8wMidUB9IFkGhraKuBAw7wtqDQzDAqbLj0=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=SHueMjFNo3rqrLqDwx3uLeE8+X5tcivE1oEPiVsupYo6ZiLJ/vTPNLG6eFJuARjXz
- EChyFftAMsPJ3se0xTmj43Dxi+ekN6Tb9V8ErOqv9uDvNm67z7yhPpfobsNkHwpj/z
- M1TjsYiSKBpBQcpWBvcaYrXlssdnU8/pqhuOht+c=
-Message-ID: <4142c8dc-5385-fb1d-4f8b-2a98bb3f99af@digikod.net>
-Date: Fri, 26 May 2023 18:09:14 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2a6Z-00059E-RC
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:15:59 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2a6X-0004Gj-U8
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:15:51 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-64d3fbb8c1cso1311077b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:15:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685117747; x=1687709747;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9jV4/BYEdcjuF8yaNFIke23zmTuRLb1apLAvv73BGeE=;
+ b=ugAnrS9bDCqdunO7yMeqOn2f8DfVTmonpt/CDxqDTAPCKFEsH3cDmcHHP9BzCKj9LR
+ YLwVNoSI6OCJylqWcA1VlObR1EsskZq9Vo8iHMqjIWuFnAbgIlogyafLAqQMPbTb+MRX
+ MCJdftY4aoq3IkvXW6h0C9h6uivHHpVbfgg5PvOxG/7cHcFqCjgAMqJF+pDZifdWPVbQ
+ HZOimSX6RTsKDVJdaUmZWwihn7A8ujauYKK01kAlk4fiO9qo+qCBSTeKB40ZaXtRWHRg
+ X98Ov+BjHZAZTr8sV5Dx83PvfT2T4xCMa3RuTT3ERn+Mig+VLSmINW5K2JASMnfUEXfT
+ 1EvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685117747; x=1687709747;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9jV4/BYEdcjuF8yaNFIke23zmTuRLb1apLAvv73BGeE=;
+ b=GT5v18kOHIwGNjBrR37MyYUIOPxzI263Wy4H7od3pKM6ZQTEyxkzyirt0pSuveIk7a
+ a+NgKnKlupFhMsIur0bdToWIZapqp+V6FrNBFCLCO69j3U3WR5iaUR+9STwpTmuRDdbt
+ 3xwhjKJSd++KD7ppkz6nxzIQZELKsIqO7KY8lCezO/hbAc8ppXugIcaZzzR25+YbKNS1
+ ZU4tBwV7td34dwVfW+/LcjelfzBqRIl8f4/ko0A+tFf8vPZTUOonqfLkjnb4Si/Cr/60
+ 5KRQCxxOD6+b+PMhXW8foZ0FoepCqhBqaJnHRHoEklqA1UbGqMdFQVQjAA8BIywtOSI2
+ HLqQ==
+X-Gm-Message-State: AC+VfDxBKfWjaYTFHaClKUJj19AOQVYTtYxTBxUvpi6wpz0UrhDLc2pb
+ 7krFKAMEOPyZWq6JfNROzJDLhg==
+X-Google-Smtp-Source: ACHHUZ7HqDcNK7TpdQ5GKgGggk+16zxzIcqTEhLivjIPwh6oQi/Jqaevr0ZDx0oc9UuAqxGgSGAYIg==
+X-Received: by 2002:a05:6a21:980d:b0:10d:d0cd:c1c7 with SMTP id
+ ue13-20020a056a21980d00b0010dd0cdc1c7mr2257792pzb.15.1685117746701; 
+ Fri, 26 May 2023 09:15:46 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
+ ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
+ by smtp.gmail.com with ESMTPSA id
+ oj16-20020a17090b4d9000b00252a7b73486sm2993188pjb.29.2023.05.26.09.15.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 09:15:46 -0700 (PDT)
+Message-ID: <fdfdaa79-8d86-64e7-007f-07e424ac0b80@linaro.org>
+Date: Fri, 26 May 2023 09:15:44 -0700
 MIME-Version: 1.0
-User-Agent: 
-Subject: Re: [ANNOUNCE] KVM Microconference at LPC 2023
-To: Paolo Bonzini <pbonzini@redhat.com>,
- James Morris <jamorris@linux.microsoft.com>
-Cc: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
- John Andersen <john.s.andersen@intel.com>, Liran Alon
- <liran.alon@oracle.com>,
- "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>,
- Marian Rotariu <marian.c.rotariu@gmail.com>,
- =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
- =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
- Zahra Tarkhani <ztarkhani@microsoft.com>,
- =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
- dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
- x86@kernel.org, xen-devel@lists.xenproject.org
-References: <2f19f26e-20e5-8198-294e-27ea665b706f@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v5 10/10] accel/tcg: include cs_base in our hash
+ calculations
 Content-Language: en-US
-From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-In-Reply-To: <2f19f26e-20e5-8198-294e-27ea665b706f@redhat.com>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+References: <20230524133952.3971948-1-alex.bennee@linaro.org>
+ <20230524133952.3971948-11-alex.bennee@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230524133952.3971948-11-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-Received-SPF: pass client-ip=45.157.188.12; envelope-from=mic@digikod.net;
- helo=smtp-bc0c.mail.infomaniak.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,105 +97,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-See James Morris's proposal here: 
-https://lore.kernel.org/all/17f62cb1-a5de-2020-2041-359b8e96b8c0@linux.microsoft.com/
+On 5/24/23 06:39, Alex Bennée wrote:
+> We weren't using cs_base in the hash calculations before. Since the
+> arm front end moved a chunk of flags in a378206a20 (target/arm: Move
+> mode specific TB flags to tb->cs_base) they comprise of an important
+> part of the execution state.
+> 
+> Widen the tb_hash_func to include cs_base and expand to qemu_xxhash8()
+> to accommodate it.
+> 
+> My initial benchmark shows very little difference in the
+> runtime.
+> 
+> Before:
+> 
+> armhf
+> 
+> ➜  hyperfine -w 2 -m 20 "./arm-softmmu/qemu-system-arm -cpu cortex-a15 -machine type=virt,highmem=off -display none -m 2048 -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-armhf -device scsi-hd,drive=hd -smp 4 -kernel /home/alex/lsrc/linux.git/builds/arm/arch/arm/boot/zImage -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark.service' -snapshot"
+> Benchmark 1: ./arm-softmmu/qemu-system-arm -cpu cortex-a15 -machine type=virt,highmem=off -display none -m 2048 -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-armhf -device scsi-hd,drive=hd -smp 4 -kernel /home/alex/lsrc/linux.git/builds/arm/arch/arm/boot/zImage -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark.service' -snapshot
+>    Time (mean ± σ):     24.627 s ±  2.708 s    [User: 34.309 s, System: 1.797 s]
+>    Range (min … max):   22.345 s … 29.864 s    20 runs
+> 
+> arm64
+> 
+> ➜  hyperfine -w 2 -n 20 "./qemu-system-aarch64 -cpu max,pauth-impdef=on -machine type=virt,virtualization=on,gic-version=3 -display none -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22,hostfwd=tcp::1234-:1234 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-arm64 -device scsi-hd,drive=hd -smp 4 -kernel ~/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image.gz -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark-pigz.service' -snapshot"
+> Benchmark 1: 20
+>    Time (mean ± σ):     62.559 s ±  2.917 s    [User: 189.115 s, System: 4.089 s]
+>    Range (min … max):   59.997 s … 70.153 s    10 runs
+> 
+> After:
+> 
+> armhf
+> 
+> Benchmark 1: ./arm-softmmu/qemu-system-arm -cpu cortex-a15 -machine type=virt,highmem=off -display none -m 2048 -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-armhf -device scsi-hd,drive=hd -smp 4 -kernel /home/alex/lsrc/linux.git/builds/arm/arch/arm/boot/zImage -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark.service' -snapshot
+>    Time (mean ± σ):     24.223 s ±  2.151 s    [User: 34.284 s, System: 1.906 s]
+>    Range (min … max):   22.000 s … 28.476 s    20 runs
+> 
+> arm64
+> 
+> hyperfine -w 2 -n 20 "./qemu-system-aarch64 -cpu max,pauth-impdef=on -machine type=virt,virtualization=on,gic-version=3 -display none -serial mon:stdio -netdev user,id=unet,hostfwd=tcp::2222-:22,hostfwd=tcp::1234-:1234 -device virtio-net-pci,netdev=unet -device virtio-scsi-pci -blockdev driver=raw,node-name=hd,discard=unmap,file.driver=host_device,file.filename=/dev/zen-disk/debian-bullseye-arm64 -device scsi-hd,drive=hd -smp 4 -kernel ~/lsrc/linux.git/builds/arm64/arch/arm64/boot/Image.gz -append 'console=ttyAMA0 root=/dev/sda2 systemd.unit=benchmark-pigz.service' -snapshot"
+> Benchmark 1: 20
+>    Time (mean ± σ):     62.769 s ±  1.978 s    [User: 188.431 s, System: 5.269 s]
+>    Range (min … max):   60.285 s … 66.868 s    10 runs
+> 
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> Message-Id:<20230523125000.3674739-11-alex.bennee@linaro.org>
 
-On 26/05/2023 04:36, James Morris wrote:
- > [Side topic]
- >
- > Would folks be interested in a Linux Plumbers Conference MC on this
- > topic generally, across different hypervisors, VMMs, and architectures?
- >
- > If so, please let me know who the key folk would be and we can try 
-writing
- > up an MC proposal.
-
-The fine-grain memory management proposal from James Gowans looks 
-interesting, especially the "side-car" virtual machines: 
-https://lore.kernel.org/all/88db2d9cb42e471692ff1feb0b9ca855906a9d95.camel@amazon.com/
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
-On 09/05/2023 11:55, Paolo Bonzini wrote:
-> Hi all!
-> 
-> We are planning on submitting a CFP to host a KVM Microconference at
-> Linux Plumbers Conference 2023. To help justify the proposal, we would
-> like to gather a list of folks that would likely attend, and crowdsource
-> a list of topics to include in the proposal.
-> 
-> For both this year and future years, the intent is that a KVM
-> Microconference will complement KVM Forum, *NOT* supplant it. As you
-> probably noticed, KVM Forum is going through a somewhat radical change in
-> how it's organized; the conference is now free and (with some help from
-> Red Hat) organized directly by the KVM and QEMU communities. Despite the
-> unexpected changes and some teething pains, community response to KVM
-> Forum continues to be overwhelmingly positive! KVM Forum will remain
-> the venue of choice for KVM/userspace collaboration, for educational
-> content covering both KVM and userspace, and to discuss new features in
-> QEMU and other userspace projects.
-> 
-> At least on the x86 side, however, the success of KVM Forum led us
-> virtualization folks to operate in relative isolation. KVM depends on
-> and impacts multiple subsystems (MM, scheduler, perf) in profound ways,
-> and recently we’ve seen more and more ideas/features that require
-> non-trivial changes outside KVM and buy-in from stakeholders that
-> (typically) do not attend KVM Forum. Linux Plumbers Conference is a
-> natural place to establish such collaboration within the kernel.
-> 
-> Therefore, the aim of the KVM Microconference will be:
-> * to provide a setting in which to discuss KVM and kernel internals
-> * to increase collaboration and reduce friction with other subsystems
-> * to discuss system virtualization issues that require coordination with
-> other subsystems (such as VFIO, or guest support in arch/)
-> 
-> Below is a rough draft of the planned CFP submission.
-> 
-> Thanks!
-> 
-> Paolo Bonzini (KVM Maintainer)
-> Sean Christopherson (KVM x86 Co-Maintainer)
-> Marc Zyngier (KVM ARM Co-Maintainer)
-> 
-> 
-> ===================
-> KVM Microconference
-> ===================
-> 
-> KVM (Kernel-based Virtual Machine) enables the use of hardware features
-> to improve the efficiency, performance, and security of virtual machines
-> created and managed by userspace.  KVM was originally developed to host
-> and accelerate "full" virtual machines running a traditional kernel and
-> operating system, but has long since expanded to cover a wide array of use
-> cases, e.g. hosting real time workloads, sandboxing untrusted workloads,
-> deprivileging third party code, reducing the trusted computed base of
-> security sensitive workloads, etc.  As KVM's use cases have grown, so too
-> have the requirements placed on KVM and the interactions between it and
-> other kernel subsystems.
-> 
-> The KVM Microconference will focus on how to evolve KVM and adjacent
-> subsystems in order to satisfy new and upcoming requirements: serving
-> guest memory that cannot be accessed by host userspace[1], providing
-> accurate, feature-rich PMU/perf virtualization in cloud VMs[2], etc.
-> 
-> 
-> Potential Topics:
->     - Serving inaccessible/unmappable memory for KVM guests (protected VMs)
->     - Optimizing mmu_notifiers, e.g. reducing TLB flushes and spurious zapping
->     - Supporting multiple KVM modules (for non-disruptive upgrades)
->     - Improving and hardening KVM+perf interactions
->     - Implementing arch-agnostic abstractions in KVM (e.g. MMU)
->     - Defining KVM requirements for hardware vendors
->     - Utilizing "fault" injection to increase test coverage of edge cases
->     - KVM vs VFIO (e.g. memory types, a rather hot topic on the ARM side)
-> 
-> 
-> Key Attendees:
->     - Paolo Bonzini <pbonzini@redhat.com> (KVM Maintainer)
->     - Sean Christopherson <seanjc@google.com>  (KVM x86 Co-Maintainer)
->     - Your name could be here!
-> 
-> [1] https://lore.kernel.org/all/20221202061347.1070246-1-chao.p.peng@linux.intel.com
-> [2] https://lore.kernel.org/all/CALMp9eRBOmwz=mspp0m5Q093K3rMUeAsF3vEL39MGV5Br9wEQQ@mail.gmail.com
-> 
-> 
+r~
 
