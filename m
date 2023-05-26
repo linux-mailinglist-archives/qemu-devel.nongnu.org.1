@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B840471232F
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B5171232E
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:16:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2TXX-0007NA-4T; Fri, 26 May 2023 05:15:15 -0400
+	id 1q2TXj-0007SV-Pu; Fri, 26 May 2023 05:15:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TXP-0007Mb-0r
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:15:08 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TXi-0007RF-5D
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:15:26 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TXN-00027q-DO
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:15:06 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f60b3f32b4so3456025e9.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 02:15:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TXg-00029d-Hm
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:15:25 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3f6a6b9c079so3561325e9.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 02:15:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685092504; x=1687684504;
+ d=linaro.org; s=google; t=1685092523; x=1687684523;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=HcxotIymuKgPv9JlBeexmHsVC4dTpSlBSdw2E1CAOBc=;
- b=Ht/Ejd3zZQJ2bRW0ksKq14JmgEr0eYjrjdHzXD+Hzh8XIeF6zC40Na/W6ZeoKrhJ31
- yrWDgTr4Sjjz6FYhTyW8Ba16j7FcvbHQ2jOiaSuC+W22YpwGHsqKGT4JU01r2SzMhOLa
- 4IlmipBhGXh1ydOUpYyOObdma69zfpdyN1720D6TQ2JEE+LJhab+BalLg4ANELPLg2he
- uhuNosLq9z6ECsXd3GZneR6UdrlXt2Uyp25QEbqQLrgUwe7NT6SG+ickbVbVlifiXnud
- MRwh7YSPNXGPYcrlhjhWmmzidRA9c/qY2deDHFMMDHP2Q/YftSWRf1tKQycExCP5/mJo
- lIUQ==
+ bh=PfoGayieKw5/sD44StzWS//YErReMrlfOIYAOd2iBlE=;
+ b=ca6wr6NR6EoDZxPKisNDr1gGpBG5tN8RAzbgsLV1IY7ANp4r7dmJscYGL+50W/ikkZ
+ 9lq/Vbc5OWJ5J1o8dlmHKS163V1Lf3Pz0An5rJCu+v6SYJJoOBQT8rm8MO2cbejyfqA5
+ npfAO2uUn2iUnC4FkqjL4RsiY95E4mZhUerboxFQNa8wIcYCqtiPjRtd4UGxf33Z4B4v
+ 93Fs09HHPA+He1kZQ52ObZLVgNee8BLDJ42Y9aRjR2vIH0qx2J4d8SIyygtKeWeCZ8HV
+ xLYCwiK2qCqNUJSeUvJq+0KDRV4bAL7Xi1XYRj6BJY2yI7MUA/cvczRCerx7T/31/E+U
+ YBpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685092504; x=1687684504;
+ d=1e100.net; s=20221208; t=1685092523; x=1687684523;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HcxotIymuKgPv9JlBeexmHsVC4dTpSlBSdw2E1CAOBc=;
- b=kdiX2FaanTn+QcouNMIF7pnCsy7VRNWgNlUo8ifvasBDpbPwkAnaaCU2CvDaznUcwQ
- cK24MtdNY38T3+UhcgD8KszwS2ALoISjB3iZQWb91zgMLTItkirKy82Nl15R/zAckXKu
- v24lmp0zEqLTf8DOrJozgq/Mv31KEVT3rdQNNndHGf3RUeuWCdMAHmlS1lOm9lIC/PFu
- qZAylUuY6WkuWRFz9OuzNNWE4HMq62tJ4Hxb7lFpfKNf/ckoYrE4wFLgkTSo+tCrsDsQ
- ost4PmT/zUP15Q48ETpsWEGfTs2wd29WlUy8BSbVNm08YwX3IpL+bkmyNCupJ0pXOzlL
- mINg==
-X-Gm-Message-State: AC+VfDzpspqSpsrzrNjIk9wyYVch7thwJOJ9ER9EDIL3O0tL/TQpo23y
- 4yUIGisXW4EvSt6CTCv61sFRI5SyfutFnxMWux0=
-X-Google-Smtp-Source: ACHHUZ6zlSjF4sLJbzVKde8KZenwp9jn14oA43MoNL2aRVEYkTfQLd16QprZa5uymenHL3JPSUVWXA==
-X-Received: by 2002:a05:600c:b55:b0:3f6:174:8c32 with SMTP id
- k21-20020a05600c0b5500b003f601748c32mr1042679wmr.6.1685092503737; 
- Fri, 26 May 2023 02:15:03 -0700 (PDT)
+ bh=PfoGayieKw5/sD44StzWS//YErReMrlfOIYAOd2iBlE=;
+ b=Ltiq31CA8hR5MbuEkBVscJzhJHv36b+rxmYKfhbfqeSKlLYGn+2r7V8Hfgq2CeNijm
+ PDhrCyXFIjwDewDVz1D8uUO7GbKqLQUorh9daMtz9dLiPijcKQAoQeFn2Sa0PnCImH0K
+ /X2iiIbaRFJ/JK0C/mCOYiPYwAMlmuDRt4rBjxRTOB3r+6WK+4mwNdqhBGEfU9pd8qOp
+ aFNyBlgBtle1OBCSGtPLSnOO5HhvfXmxYkgbaZvpKUDSXoliTeU9srdvqwwuH9K3v/Gt
+ YmJXNPkTRcDg7vf2uF25Gez65SIUgORSmbDLC8b5o/0yo7dVaF8e7eW4qYCMTqlFXsWO
+ 3f9w==
+X-Gm-Message-State: AC+VfDwOjRXsk0BQsk9Gja+mqPKwIvPvCUypXm/hNYeDIl3+c8g6VD+7
+ ZL1Lug94b+kKOG4B1VlZjUCX/g==
+X-Google-Smtp-Source: ACHHUZ4lA3KVqlJyqk54qypXnK7ZH2uNnQUfbFMArjMRbV7z8Sa5gsPAH4JFX3CJ4hYDQFFeQNTdpw==
+X-Received: by 2002:a7b:c407:0:b0:3f4:ed25:8aa9 with SMTP id
+ k7-20020a7bc407000000b003f4ed258aa9mr942519wmi.36.1685092523144; 
+ Fri, 26 May 2023 02:15:23 -0700 (PDT)
 Received: from [192.168.69.115] (vit94-h02-176-184-29-207.dsl.sta.abo.bbox.fr.
  [176.184.29.207]) by smtp.gmail.com with ESMTPSA id
- o10-20020a1c750a000000b003f4248dcfcbsm8229663wmc.30.2023.05.26.02.15.02
+ x21-20020a05600c21d500b003f6041f5a6csm4553582wmj.12.2023.05.26.02.15.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 02:15:03 -0700 (PDT)
-Message-ID: <d5a005f4-f612-3a45-873a-0381dbfdc962@linaro.org>
-Date: Fri, 26 May 2023 11:15:01 +0200
+ Fri, 26 May 2023 02:15:22 -0700 (PDT)
+Message-ID: <dea2e42e-b710-c7dd-a6fb-c770e65b1ac9@linaro.org>
+Date: Fri, 26 May 2023 11:15:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 14/27] tests/vm: add py310-expat to NetBSD
+Subject: Re: [PATCH v2 13/27] tests/vm: Configure netbsd to use Python 3.10
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 Cc: jsnow@redhat.com, berrange@redhat.com
 References: <20230516105908.527838-1-pbonzini@redhat.com>
- <20230516105908.527838-14-pbonzini@redhat.com>
+ <20230516105908.527838-13-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230516105908.527838-14-pbonzini@redhat.com>
+In-Reply-To: <20230516105908.527838-13-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,18 +96,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 16/5/23 12:58, Paolo Bonzini wrote:
 > From: John Snow <jsnow@redhat.com>
 > 
-> NetBSD cannot successfully run "ensurepip" without access to the pyexpat
-> module, which NetBSD debundles. Like the Debian patch, it would be
-> strictly faster long term to install pip/setuptools, and I recommend
-> developers at their workstations take that approach instead.
-> 
-> For the purposes of a throwaway VM, there's not really a speed
-> difference for who is responsible for installing pip; us (needs
-> py310-pip) or Python (needs py310-expat).
+> NetBSD removes some packages from the Python stdlib, but only
+> re-packages them for Python 3.10. Switch to using Python 3.10.
 > 
 > Signed-off-by: John Snow <jsnow@redhat.com>
 > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Message-Id: <20230511035435.734312-14-jsnow@redhat.com>
+> Message-Id: <20230511035435.734312-13-jsnow@redhat.com>
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
 >   tests/vm/netbsd | 1 +
