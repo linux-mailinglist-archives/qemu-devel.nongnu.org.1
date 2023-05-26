@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20547712B30
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5041712B39
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2ahi-0002zN-RT; Fri, 26 May 2023 12:54:14 -0400
+	id 1q2ahl-000315-Re; Fri, 26 May 2023 12:54:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q2ahd-0002w8-0c
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:54:09 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1q2ahf-0002xa-2K
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:54:11 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q2ahb-0002G9-7s
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:54:08 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-30aa1eb95a0so878161f8f.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:54:06 -0700 (PDT)
+ id 1q2ahc-0002GZ-Mw
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:54:10 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3093a6311dcso911246f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:54:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685120046; x=1687712046;
+ d=linaro.org; s=google; t=1685120047; x=1687712047;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hQ4C0OH2eXL3stB8nBityndanYvrzr6EMyO8JmAb43Q=;
- b=JSciatZzZT+/LKY+y2KMXH0kosb+UexjoTuKmWDeQhMg+M8fhDC4D+T2zX3FQMnYt8
- 4Sefc2oCh5mAc10Aw8zlMMhMuTEP/gKy99sYIQ0UnATZhio4p85UD+CA8tlx+vSHjEdI
- VXpox2/Qjm6vRGnzWyj9YWZCrGFtZPB8bY+gxXPFlz2SiNsJAxprUAlr0ylHXgjAUa/k
- vwTFcauy1gn5fbuB4aRlpbPKV+vj+uWMbJMuFEhUwLd8vSjgOcYJKvFx75THaEBml3TR
- kekYiLQPwbiNsQl0J2w5rpbRTyYwMGXjNRR75B3TK5t06+RGwNv2xdokByb8wmxdsMFf
- 7/qA==
+ bh=3qgsN4w6AIkE7OcQlghBZXzSqdUnp6/ExqaL1Iy/vfA=;
+ b=DlPz1quHbCMHyJ1aJk43DhZ5WSQR0QuAIx2VdGAVdgV2xU/rRduGtQJL1tOjXnORPZ
+ UsX/1stj3qBkTwpYbHh6Gg7bhBCObfUFlBQzBbdQY+Iqj5SktvThfOyggLwrLynOcWQ3
+ NcQYcj7yFozgfs6lsvEEMIhuPnSWJHklwVJSGxaTZnbTy8Sd0ddokVicvK/0TXSX7ArN
+ xvf6s7ZCX6j+CsU2apz7hPwxeecehEup9PZA8oaPsLnjhckfdFfKiwx6FdHJuizqVdDI
+ hdlLlfOhbbMHytV4lgnJIdp8BZWkq/I1RO569ETLaWQmYsM3zUiMPA696KnPjNhL9aHb
+ ImEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685120046; x=1687712046;
+ d=1e100.net; s=20221208; t=1685120047; x=1687712047;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hQ4C0OH2eXL3stB8nBityndanYvrzr6EMyO8JmAb43Q=;
- b=HykILAWyjq9PdEvc0ZZ+dfg5uCnS5VxUR7/6uWIWXAwmWC85HEp4LmgtYZh9l9CFfC
- 6JjT53kDExs7Rm5bKPZASoyCVOSe+/GaF+NbD5PNXk/y9kR/7RRgGo43sT5LHVFIRthC
- FmGw5/ECx7/1LinXc5fEZPEfdtd5XUw96+ohFWGAYaZPES5Z/qpvEmbzGtyQuPiTgcJK
- NaT8IUb51dSbfnYqFxF2Zt8AsRh42bMwbxSh0WVXegBln/i+cOSNxdlDQImR6p9flZmj
- WBj18DDXenKBrKhNtqRF+8SFxzlsPCT3aBcVNn+lqV6GZhcLEAq+CwByVioWAUPuqToe
- BOfw==
-X-Gm-Message-State: AC+VfDwXWYqmHMJhNswUS6AI3AX2WqXxnne8ardyANHzdcDDwq+1Fron
- bDm3b92IdEis7sRZ+VMEKBa5Qw==
-X-Google-Smtp-Source: ACHHUZ5eceDSZOhMP8OXzX8FmEtpFASs3JOtlPla8NLP2sO/kFtqnu+PwhgZ6fWG9Drt7COSWnUKUQ==
-X-Received: by 2002:adf:f604:0:b0:30a:9043:8f1d with SMTP id
- t4-20020adff604000000b0030a90438f1dmr1570311wrp.5.1685120045787; 
- Fri, 26 May 2023 09:54:05 -0700 (PDT)
+ bh=3qgsN4w6AIkE7OcQlghBZXzSqdUnp6/ExqaL1Iy/vfA=;
+ b=bdGgPui+3DLhkWG6t4td+u+FbEcv1BbvGoJ+fOCexfP0jIRiVIFtig5dhADc6jBOcS
+ Ijxro7zarxPIt5425rKmMap9WRDHPr1jTCrotFZhnqUACydlaPaUkXeyDmSgA00wd/Mk
+ Q55QnikpH0jcyOUzfJjv4OTTQkq1ITtnDYejyFRaxsnwVz3og3pL1ylPDJBuQqPmUHc6
+ a9veFd7qwxvm+gp2z8heHcxSiHJ3aqUnAao8qsezfDB8GIJZxXube648Hv60UGG5eszT
+ YgCZVs7FXxqDZwl05mS4h+v7gGQautvKcjtJoEnlYarrZpgdNOOUUipV4OarHK4vs8vH
+ wPCA==
+X-Gm-Message-State: AC+VfDz5KobX2snmnt8ObgesjoIb2SRiBY49iKzvhBZFBIIRqlIK5kae
+ Au7St/TfVGbRJRJrmsWNCyJKJg==
+X-Google-Smtp-Source: ACHHUZ7/9+VDRFi6EkulRfwi+gK3F+Upgsx4nsE0RRGND/uNzMjNGacaptDQjNR6pf57StwDGnAskw==
+X-Received: by 2002:adf:cd8e:0:b0:306:3ec8:289d with SMTP id
+ q14-20020adfcd8e000000b003063ec8289dmr2029922wrj.46.1685120047085; 
+ Fri, 26 May 2023 09:54:07 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- g14-20020a5d540e000000b00307a86a4bcesm5659872wrv.35.2023.05.26.09.54.04
+ q18-20020adffed2000000b003047dc162f7sm5578183wrs.67.2023.05.26.09.54.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 26 May 2023 09:54:05 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id C8C651FFBF;
- Fri, 26 May 2023 17:54:03 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 5BCDD1FFBD;
+ Fri, 26 May 2023 17:54:04 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
@@ -73,17 +73,17 @@ Cc: Riku Voipio <riku.voipio@iki.fi>, Markus Armbruster <armbru@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v6 06/11] qapi: make the vcpu parameters deprecated for 8.1
-Date: Fri, 26 May 2023 17:53:56 +0100
-Message-Id: <20230526165401.574474-7-alex.bennee@linaro.org>
+Subject: [PATCH v6 07/11] trace: remove code that depends on setting vcpu
+Date: Fri, 26 May 2023 17:53:57 +0100
+Message-Id: <20230526165401.574474-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230526165401.574474-1-alex.bennee@linaro.org>
 References: <20230526165401.574474-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,126 +106,533 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I don't think I can remove the parameters directly but certainly mark
-them as deprecated.
+Now we no longer have any events that are for vcpus we can start
+excising the code from the trace control. As the vcpu parameter is
+encoded as part of QMP we just stub out the has_vcpu/vcpu parameters
+rather than alter the API.
 
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230524133952.3971948-6-alex.bennee@linaro.org>
-
+Message-Id: <20230524133952.3971948-7-alex.bennee@linaro.org>
 ---
-v6
-  - s/QAPI/QMP/
-  - /and always false./and always ignored./
----
- docs/about/deprecated.rst |  7 +++++++
- qapi/trace.json           | 40 +++++++++++++++++----------------------
- 2 files changed, 24 insertions(+), 23 deletions(-)
+ trace/control-internal.h |  10 ----
+ trace/control-vcpu.h     |  16 ------
+ trace/control.h          |  48 -----------------
+ hw/core/cpu-common.c     |   2 -
+ stubs/trace-control.c    |  13 -----
+ trace/control-target.c   | 108 ++++-----------------------------------
+ trace/control.c          |  16 ------
+ trace/qmp.c              |  74 +++------------------------
+ trace/trace-hmp-cmds.c   |  18 ++-----
+ 9 files changed, 20 insertions(+), 285 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 7c45a64363..0743459862 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -226,6 +226,13 @@ QEMU Machine Protocol (QMP) events
+diff --git a/trace/control-internal.h b/trace/control-internal.h
+index 0178121720..8d818d359b 100644
+--- a/trace/control-internal.h
++++ b/trace/control-internal.h
+@@ -25,16 +25,6 @@ static inline uint32_t trace_event_get_id(TraceEvent *ev)
+     return ev->id;
+ }
  
- Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
+-static inline uint32_t trace_event_get_vcpu_id(TraceEvent *ev)
+-{
+-    return 0;
+-}
+-
+-static inline bool trace_event_is_vcpu(TraceEvent *ev)
+-{
+-    return false;
+-}
+-
+ static inline const char * trace_event_get_name(TraceEvent *ev)
+ {
+     assert(ev != NULL);
+diff --git a/trace/control-vcpu.h b/trace/control-vcpu.h
+index 0f98ebe7b5..800fc5a219 100644
+--- a/trace/control-vcpu.h
++++ b/trace/control-vcpu.h
+@@ -30,13 +30,6 @@
+      trace_event_get_vcpu_state_dynamic_by_vcpu_id(                     \
+          vcpu, _ ## id ## _EVENT.vcpu_id))
  
-+``vcpu`` trace events (since 8.1)
-+'''''''''''''''''''''''''''''''''
-+
-+The ability to instrument QEMU helper functions with vCPU-aware trace
-+points was removed in 7.0. However QMP still exposed the vcpu
-+parameter. This argument has now been deprecated and the remaining
-+remaining trace points that used it are selected just by name.
+-/**
+- * trace_event_get_vcpu_state_dynamic:
+- *
+- * Get the dynamic tracing state of an event for the given vCPU.
+- */
+-static bool trace_event_get_vcpu_state_dynamic(CPUState *vcpu, TraceEvent *ev);
+-
+ #include "control-internal.h"
  
- Human Monitor Protocol (HMP) commands
- -------------------------------------
-diff --git a/qapi/trace.json b/qapi/trace.json
-index 6bf0af0946..39b752fc88 100644
---- a/qapi/trace.json
-+++ b/qapi/trace.json
-@@ -37,13 +37,14 @@
- #
- # @vcpu: Whether this is a per-vCPU event (since 2.7).
- #
--# An event is per-vCPU if it has the "vcpu" property in the
--# "trace-events" files.
-+# Features:
-+# @deprecated: Member @vcpu is deprecated, and always ignored.
- #
- # Since: 2.2
- ##
- { 'struct': 'TraceEventInfo',
--  'data': {'name': 'str', 'state': 'TraceEventState', 'vcpu': 'bool'} }
-+  'data': {'name': 'str', 'state': 'TraceEventState',
-+           'vcpu': { 'type': 'bool', 'features': ['deprecated'] } } }
+ static inline bool
+@@ -51,13 +44,4 @@ trace_event_get_vcpu_state_dynamic_by_vcpu_id(CPUState *vcpu,
+     }
+ }
  
- ##
- # @trace-event-get-state:
-@@ -52,19 +53,15 @@
- #
- # @name: Event name pattern (case-sensitive glob).
- #
--# @vcpu: The vCPU to query (any by default; since 2.7).
-+# @vcpu: The vCPU to query (since 2.7).
- #
--# Returns: a list of @TraceEventInfo for the matching events
--#
--# An event is returned if:
-+# Features:
-+# @deprecated: Member @vcpu is deprecated, and always ignored.
- #
--# - its name matches the @name pattern, and
--# - if @vcpu is given, the event has the "vcpu" property.
-+# Returns: a list of @TraceEventInfo for the matching events
- #
--# Therefore, if @vcpu is given, the operation will only match per-vCPU
--# events, returning their state on the specified vCPU. Special case:
--# if @name is an exact match, @vcpu is given and the event does not
--# have the "vcpu" property, an error is returned.
-+# An event is returned if its name matches the @name pattern
-+# (There are no longer any per-vCPU events).
- #
- # Since: 2.2
- #
-@@ -75,7 +72,8 @@
- # <- { "return": [ { "name": "qemu_memalign", "state": "disabled", "vcpu": false } ] }
- ##
- { 'command': 'trace-event-get-state',
--  'data': {'name': 'str', '*vcpu': 'int'},
-+  'data': {'name': 'str',
-+           '*vcpu': {'type': 'int', 'features': ['deprecated'] } },
-   'returns': ['TraceEventInfo'] }
+-static inline bool trace_event_get_vcpu_state_dynamic(CPUState *vcpu,
+-                                                      TraceEvent *ev)
+-{
+-    uint32_t vcpu_id;
+-    assert(trace_event_is_vcpu(ev));
+-    vcpu_id = trace_event_get_vcpu_id(ev);
+-    return trace_event_get_vcpu_state_dynamic_by_vcpu_id(vcpu, vcpu_id);
+-}
+-
+ #endif
+diff --git a/trace/control.h b/trace/control.h
+index 23b8393b29..dfd209edd8 100644
+--- a/trace/control.h
++++ b/trace/control.h
+@@ -89,23 +89,6 @@ static bool trace_event_is_pattern(const char *str);
+  */
+ static uint32_t trace_event_get_id(TraceEvent *ev);
  
- ##
-@@ -91,15 +89,11 @@
- #
- # @vcpu: The vCPU to act upon (all by default; since 2.7).
- #
--# An event's state is modified if:
--#
--# - its name matches the @name pattern, and
--# - if @vcpu is given, the event has the "vcpu" property.
-+# Features:
-+# @deprecated: Member @vcpu is deprecated, and always ignored.
- #
--# Therefore, if @vcpu is given, the operation will only match per-vCPU
--# events, setting their state on the specified vCPU. Special case: if
--# @name is an exact match, @vcpu is given and the event does not have
--# the "vcpu" property, an error is returned.
-+# An event is enabled if its name matches the @name pattern
-+# (There are no longer any per-vCPU events).
- #
- # Since: 2.2
- #
-@@ -111,4 +105,4 @@
- ##
- { 'command': 'trace-event-set-state',
-   'data': {'name': 'str', 'enable': 'bool', '*ignore-unavailable': 'bool',
--           '*vcpu': 'int'} }
-+           '*vcpu': {'type': 'int', 'features': ['deprecated'] } } }
+-/**
+- * trace_event_get_vcpu_id:
+- *
+- * Get the per-vCPU identifier of an event.
+- *
+- * Special value #TRACE_VCPU_EVENT_NONE means the event is not vCPU-specific
+- * (does not have the "vcpu" property).
+- */
+-static uint32_t trace_event_get_vcpu_id(TraceEvent *ev);
+-
+-/**
+- * trace_event_is_vcpu:
+- *
+- * Whether this is a per-vCPU event.
+- */
+-static bool trace_event_is_vcpu(TraceEvent *ev);
+-
+ /**
+  * trace_event_get_name:
+  *
+@@ -172,21 +155,6 @@ static bool trace_event_get_state_dynamic(TraceEvent *ev);
+  */
+ void trace_event_set_state_dynamic(TraceEvent *ev, bool state);
+ 
+-/**
+- * trace_event_set_vcpu_state_dynamic:
+- *
+- * Set the dynamic tracing state of an event for the given vCPU.
+- *
+- * Pre-condition: trace_event_get_vcpu_state_static(ev) == true
+- *
+- * Note: Changes for execution-time events with the 'tcg' property will not be
+- *       propagated until the next TB is executed (iff executing in TCG mode).
+- */
+-void trace_event_set_vcpu_state_dynamic(CPUState *vcpu,
+-                                        TraceEvent *ev, bool state);
+-
+-
+-
+ /**
+  * trace_init_backends:
+  *
+@@ -205,22 +173,6 @@ bool trace_init_backends(void);
+  */
+ void trace_init_file(void);
+ 
+-/**
+- * trace_init_vcpu:
+- * @vcpu: Added vCPU.
+- *
+- * Set initial dynamic event state for a hot-plugged vCPU.
+- */
+-void trace_init_vcpu(CPUState *vcpu);
+-
+-/**
+- * trace_fini_vcpu:
+- * @vcpu: Removed vCPU.
+- *
+- * Disable dynamic event state for a hot-unplugged vCPU.
+- */
+-void trace_fini_vcpu(CPUState *vcpu);
+-
+ /**
+  * trace_list_events:
+  * @f: Where to send output.
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index 951477a7fd..f4e51c8a1b 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -211,7 +211,6 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
+     }
+ 
+     /* NOTE: latest generic point where the cpu is fully realized */
+-    trace_init_vcpu(cpu);
+ }
+ 
+ static void cpu_common_unrealizefn(DeviceState *dev)
+@@ -219,7 +218,6 @@ static void cpu_common_unrealizefn(DeviceState *dev)
+     CPUState *cpu = CPU(dev);
+ 
+     /* NOTE: latest generic point before the cpu is fully unrealized */
+-    trace_fini_vcpu(cpu);
+     cpu_exec_unrealizefn(cpu);
+ }
+ 
+diff --git a/stubs/trace-control.c b/stubs/trace-control.c
+index 7f856e5c24..b428f34c87 100644
+--- a/stubs/trace-control.c
++++ b/stubs/trace-control.c
+@@ -36,16 +36,3 @@ void trace_event_set_state_dynamic(TraceEvent *ev, bool state)
+         }
+     }
+ }
+-
+-void trace_event_set_vcpu_state_dynamic(CPUState *vcpu,
+-                                        TraceEvent *ev, bool state)
+-{
+-    /* should never be called on non-target binaries */
+-    abort();
+-}
+-
+-void trace_init_vcpu(CPUState *vcpu)
+-{
+-    /* should never be called on non-target binaries */
+-    abort();
+-}
+diff --git a/trace/control-target.c b/trace/control-target.c
+index a10752924b..97f21e476d 100644
+--- a/trace/control-target.c
++++ b/trace/control-target.c
+@@ -36,112 +36,22 @@ void trace_event_set_state_dynamic_init(TraceEvent *ev, bool state)
+ 
+ void trace_event_set_state_dynamic(TraceEvent *ev, bool state)
+ {
+-    CPUState *vcpu;
+     assert(trace_event_get_state_static(ev));
+-    if (trace_event_is_vcpu(ev) && likely(first_cpu != NULL)) {
+-        CPU_FOREACH(vcpu) {
+-            trace_event_set_vcpu_state_dynamic(vcpu, ev, state);
+-        }
+-    } else {
+-        /*
+-         * Without the "vcpu" property, dstate can only be 1 or 0. With it, we
+-         * haven't instantiated any vCPU yet, so we will set a global state
+-         * instead, and trace_init_vcpu will reconcile it afterwards.
+-         */
+-        bool state_pre = *ev->dstate;
+-        if (state_pre != state) {
+-            if (state) {
+-                trace_events_enabled_count++;
+-                *ev->dstate = 1;
+-            } else {
+-                trace_events_enabled_count--;
+-                *ev->dstate = 0;
+-            }
+-        }
+-    }
+-}
+ 
+-static void trace_event_synchronize_vcpu_state_dynamic(
+-    CPUState *vcpu, run_on_cpu_data ignored)
+-{
+-    bitmap_copy(vcpu->trace_dstate, vcpu->trace_dstate_delayed,
+-                CPU_TRACE_DSTATE_MAX_EVENTS);
+-    tcg_flush_jmp_cache(vcpu);
+-}
+-
+-void trace_event_set_vcpu_state_dynamic(CPUState *vcpu,
+-                                        TraceEvent *ev, bool state)
+-{
+-    uint32_t vcpu_id;
+-    bool state_pre;
+-    assert(trace_event_get_state_static(ev));
+-    assert(trace_event_is_vcpu(ev));
+-    vcpu_id = trace_event_get_vcpu_id(ev);
+-    state_pre = test_bit(vcpu_id, vcpu->trace_dstate);
++    /*
++     * There is no longer a "vcpu" property, dstate can only be 1 or
++     * 0. With it, we haven't instantiated any vCPU yet, so we will
++     * set a global state instead, and trace_init_vcpu will reconcile
++     * it afterwards.
++     */
++    bool state_pre = *ev->dstate;
+     if (state_pre != state) {
+         if (state) {
+             trace_events_enabled_count++;
+-            set_bit(vcpu_id, vcpu->trace_dstate_delayed);
+-            (*ev->dstate)++;
++            *ev->dstate = 1;
+         } else {
+             trace_events_enabled_count--;
+-            clear_bit(vcpu_id, vcpu->trace_dstate_delayed);
+-            (*ev->dstate)--;
+-        }
+-        if (vcpu->created) {
+-            /*
+-             * Delay changes until next TB; we want all TBs to be built from a
+-             * single set of dstate values to ensure consistency of generated
+-             * tracing code.
+-             */
+-            async_run_on_cpu(vcpu, trace_event_synchronize_vcpu_state_dynamic,
+-                             RUN_ON_CPU_NULL);
+-        } else {
+-            trace_event_synchronize_vcpu_state_dynamic(vcpu, RUN_ON_CPU_NULL);
+-        }
+-    }
+-}
+-
+-static bool adding_first_cpu1(void)
+-{
+-    CPUState *cpu;
+-    size_t count = 0;
+-    CPU_FOREACH(cpu) {
+-        count++;
+-        if (count > 1) {
+-            return false;
+-        }
+-    }
+-    return true;
+-}
+-
+-static bool adding_first_cpu(void)
+-{
+-    QEMU_LOCK_GUARD(&qemu_cpu_list_lock);
+-
+-    return adding_first_cpu1();
+-}
+-
+-void trace_init_vcpu(CPUState *vcpu)
+-{
+-    TraceEventIter iter;
+-    TraceEvent *ev;
+-    trace_event_iter_init_all(&iter);
+-    while ((ev = trace_event_iter_next(&iter)) != NULL) {
+-        if (trace_event_is_vcpu(ev) &&
+-            trace_event_get_state_static(ev) &&
+-            trace_event_get_state_dynamic(ev)) {
+-            if (adding_first_cpu()) {
+-                /* check preconditions */
+-                assert(*ev->dstate == 1);
+-                /* disable early-init state ... */
+-                *ev->dstate = 0;
+-                trace_events_enabled_count--;
+-                /* ... and properly re-enable */
+-                trace_event_set_vcpu_state_dynamic(vcpu, ev, true);
+-            } else {
+-                trace_event_set_vcpu_state_dynamic(vcpu, ev, true);
+-            }
++            *ev->dstate = 0;
+         }
+     }
+ }
+diff --git a/trace/control.c b/trace/control.c
+index 5dfb609954..1a48a7e266 100644
+--- a/trace/control.c
++++ b/trace/control.c
+@@ -262,22 +262,6 @@ void trace_init_file(void)
+ #endif
+ }
+ 
+-void trace_fini_vcpu(CPUState *vcpu)
+-{
+-    TraceEventIter iter;
+-    TraceEvent *ev;
+-
+-    trace_event_iter_init_all(&iter);
+-    while ((ev = trace_event_iter_next(&iter)) != NULL) {
+-        if (trace_event_is_vcpu(ev) &&
+-            trace_event_get_state_static(ev) &&
+-            trace_event_get_vcpu_state_dynamic(vcpu, ev)) {
+-            /* must disable to affect the global counter */
+-            trace_event_set_vcpu_state_dynamic(vcpu, ev, false);
+-        }
+-    }
+-}
+-
+ bool trace_init_backends(void)
+ {
+ #ifdef CONFIG_TRACE_SIMPLE
+diff --git a/trace/qmp.c b/trace/qmp.c
+index 3b4f4702b4..aa760f1fc4 100644
+--- a/trace/qmp.c
++++ b/trace/qmp.c
+@@ -13,20 +13,7 @@
+ #include "control-vcpu.h"
+ 
+ 
+-static CPUState *get_cpu(bool has_vcpu, int vcpu, Error **errp)
+-{
+-    if (has_vcpu) {
+-        CPUState *cpu = qemu_get_cpu(vcpu);
+-        if (cpu == NULL) {
+-            error_setg(errp, "invalid vCPU index %u", vcpu);
+-        }
+-        return cpu;
+-    } else {
+-        return NULL;
+-    }
+-}
+-
+-static bool check_events(bool has_vcpu, bool ignore_unavailable, bool is_pattern,
++static bool check_events(bool ignore_unavailable, bool is_pattern,
+                          const char *name, Error **errp)
+ {
+     if (!is_pattern) {
+@@ -38,12 +25,6 @@ static bool check_events(bool has_vcpu, bool ignore_unavailable, bool is_pattern
+             return false;
+         }
+ 
+-        /* error for non-vcpu event */
+-        if (has_vcpu && !trace_event_is_vcpu(ev)) {
+-            error_setg(errp, "event \"%s\" is not vCPU-specific", name);
+-            return false;
+-        }
+-
+         /* error for unavailable event */
+         if (!ignore_unavailable && !trace_event_get_state_static(ev)) {
+             error_setg(errp, "event \"%s\" is disabled", name);
+@@ -70,22 +51,13 @@ TraceEventInfoList *qmp_trace_event_get_state(const char *name,
+                                               bool has_vcpu, int64_t vcpu,
+                                               Error **errp)
+ {
+-    Error *err = NULL;
+     TraceEventInfoList *events = NULL;
+     TraceEventIter iter;
+     TraceEvent *ev;
+     bool is_pattern = trace_event_is_pattern(name);
+-    CPUState *cpu;
+-
+-    /* Check provided vcpu */
+-    cpu = get_cpu(has_vcpu, vcpu, &err);
+-    if (err) {
+-        error_propagate(errp, err);
+-        return NULL;
+-    }
+ 
+     /* Check events */
+-    if (!check_events(has_vcpu, true, is_pattern, name, errp)) {
++    if (!check_events(true, is_pattern, name, errp)) {
+         return NULL;
+     }
+ 
+@@ -93,33 +65,17 @@ TraceEventInfoList *qmp_trace_event_get_state(const char *name,
+     trace_event_iter_init_pattern(&iter, name);
+     while ((ev = trace_event_iter_next(&iter)) != NULL) {
+         TraceEventInfo *value;
+-        bool is_vcpu = trace_event_is_vcpu(ev);
+-        if (has_vcpu && !is_vcpu) {
+-            continue;
+-        }
+ 
+         value = g_new(TraceEventInfo, 1);
+-        value->vcpu = is_vcpu;
+         value->name = g_strdup(trace_event_get_name(ev));
+ 
+         if (!trace_event_get_state_static(ev)) {
+             value->state = TRACE_EVENT_STATE_UNAVAILABLE;
+         } else {
+-            if (has_vcpu) {
+-                if (is_vcpu) {
+-                    if (trace_event_get_vcpu_state_dynamic(cpu, ev)) {
+-                        value->state = TRACE_EVENT_STATE_ENABLED;
+-                    } else {
+-                        value->state = TRACE_EVENT_STATE_DISABLED;
+-                    }
+-                }
+-                /* else: already skipped above */
++            if (trace_event_get_state_dynamic(ev)) {
++                value->state = TRACE_EVENT_STATE_ENABLED;
+             } else {
+-                if (trace_event_get_state_dynamic(ev)) {
+-                    value->state = TRACE_EVENT_STATE_ENABLED;
+-                } else {
+-                    value->state = TRACE_EVENT_STATE_DISABLED;
+-                }
++                value->state = TRACE_EVENT_STATE_DISABLED;
+             }
+         }
+         QAPI_LIST_PREPEND(events, value);
+@@ -133,21 +89,12 @@ void qmp_trace_event_set_state(const char *name, bool enable,
+                                bool has_vcpu, int64_t vcpu,
+                                Error **errp)
+ {
+-    Error *err = NULL;
+     TraceEventIter iter;
+     TraceEvent *ev;
+     bool is_pattern = trace_event_is_pattern(name);
+-    CPUState *cpu;
+-
+-    /* Check provided vcpu */
+-    cpu = get_cpu(has_vcpu, vcpu, &err);
+-    if (err) {
+-        error_propagate(errp, err);
+-        return;
+-    }
+ 
+     /* Check events */
+-    if (!check_events(has_vcpu, has_ignore_unavailable && ignore_unavailable,
++    if (!check_events(has_ignore_unavailable && ignore_unavailable,
+                       is_pattern, name, errp)) {
+         return;
+     }
+@@ -155,14 +102,9 @@ void qmp_trace_event_set_state(const char *name, bool enable,
+     /* Apply changes (all errors checked above) */
+     trace_event_iter_init_pattern(&iter, name);
+     while ((ev = trace_event_iter_next(&iter)) != NULL) {
+-        if (!trace_event_get_state_static(ev) ||
+-            (has_vcpu && !trace_event_is_vcpu(ev))) {
++        if (!trace_event_get_state_static(ev)) {
+             continue;
+         }
+-        if (has_vcpu) {
+-            trace_event_set_vcpu_state_dynamic(cpu, ev, enable);
+-        } else {
+-            trace_event_set_state_dynamic(ev, enable);
+-        }
++        trace_event_set_state_dynamic(ev, enable);
+     }
+ }
+diff --git a/trace/trace-hmp-cmds.c b/trace/trace-hmp-cmds.c
+index 792876c34a..86211fce27 100644
+--- a/trace/trace-hmp-cmds.c
++++ b/trace/trace-hmp-cmds.c
+@@ -37,16 +37,10 @@ void hmp_trace_event(Monitor *mon, const QDict *qdict)
+ {
+     const char *tp_name = qdict_get_str(qdict, "name");
+     bool new_state = qdict_get_bool(qdict, "option");
+-    bool has_vcpu = qdict_haskey(qdict, "vcpu");
+-    int vcpu = qdict_get_try_int(qdict, "vcpu", 0);
+     Error *local_err = NULL;
+ 
+-    if (vcpu < 0) {
+-        monitor_printf(mon, "argument vcpu must be positive");
+-        return;
+-    }
+-
+-    qmp_trace_event_set_state(tp_name, new_state, true, true, has_vcpu, vcpu, &local_err);
++    qmp_trace_event_set_state(tp_name, new_state,
++                              true, true, false, 0, &local_err);
+     if (local_err) {
+         error_report_err(local_err);
+     }
+@@ -80,8 +74,6 @@ void hmp_trace_file(Monitor *mon, const QDict *qdict)
+ void hmp_info_trace_events(Monitor *mon, const QDict *qdict)
+ {
+     const char *name = qdict_get_try_str(qdict, "name");
+-    bool has_vcpu = qdict_haskey(qdict, "vcpu");
+-    int vcpu = qdict_get_try_int(qdict, "vcpu", 0);
+     TraceEventInfoList *events;
+     TraceEventInfoList *elem;
+     Error *local_err = NULL;
+@@ -89,12 +81,8 @@ void hmp_info_trace_events(Monitor *mon, const QDict *qdict)
+     if (name == NULL) {
+         name = "*";
+     }
+-    if (vcpu < 0) {
+-        monitor_printf(mon, "argument vcpu must be positive");
+-        return;
+-    }
+ 
+-    events = qmp_trace_event_get_state(name, has_vcpu, vcpu, &local_err);
++    events = qmp_trace_event_get_state(name, false, 0, &local_err);
+     if (local_err) {
+         error_report_err(local_err);
+         return;
 -- 
 2.39.2
 
