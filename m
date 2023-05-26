@@ -2,90 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B3E7121D6
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB517121D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:08:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2STn-0000uT-FB; Fri, 26 May 2023 04:07:19 -0400
+	id 1q2SU8-0000zZ-3K; Fri, 26 May 2023 04:07:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2STk-0000u4-Am
- for qemu-devel@nongnu.org; Fri, 26 May 2023 04:07:16 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q2SU6-0000yz-7B
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:07:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2STh-0003wt-U0
- for qemu-devel@nongnu.org; Fri, 26 May 2023 04:07:15 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q2SU4-0003yp-FV
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:07:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685088433;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1685088455;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7rj6mlL93a2054rvUvJhZOabZvE3jhZrKhvFxSZ8eE4=;
- b=EZ2DfN3fmmqwEBsFUhXaDUEGAUe5fcZ6xpep+LePu+97LHNf3+oRxaxqZp5h1cQovjAEFb
- SBWfXsb2TiRx+WyMDKtAfZiw+Wj74t0E8F4MAfOsxjlR+oOr95zv0xjNczJE5Zd4thTnZ2
- ObVdjVH+utJM0dqPd98Fnwz2Fx6nzsY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gSuUfRBLWUb0PoeqwthI9WA9PmbRW0xz8BxB1E59LOo=;
+ b=Tzfh2nEMZxpgAGv32o1c7KKSuvRmtuijpuqpjYDYZ4Ep8merfSlinBXnlvuUOiQXeaV54J
+ uD1yLcUfCIgY5cCayrLebxpYYssG6dn0z0I6EdYInKHm4XjHtwsZj+AomaYq5Wymo3RA3j
+ Dvr/fh4qIAXZD80srkTTzPyWBnPnEzw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-QHnXAsGLMRGXsZY7wfD2_w-1; Fri, 26 May 2023 04:07:11 -0400
-X-MC-Unique: QHnXAsGLMRGXsZY7wfD2_w-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30940b01998so180940f8f.3
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 01:07:11 -0700 (PDT)
+ us-mta-615-62n9x_BcOHGmNP0lVbyK-g-1; Fri, 26 May 2023 04:07:34 -0400
+X-MC-Unique: 62n9x_BcOHGmNP0lVbyK-g-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30aa0cc2152so268037f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 01:07:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685088431; x=1687680431;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1685088453; x=1687680453;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7rj6mlL93a2054rvUvJhZOabZvE3jhZrKhvFxSZ8eE4=;
- b=T0sTekXII9CcnK9/IkqsQwQp8tb73O1G95ABwRUR2WH4XEK3Zfn149ErcYAFiYY3qr
- 2DJxXRJyIsmS/uAc9LCMwKTSJ8Jxr8laQh6LtJGoAVSxG1or7pXUOY/VGWfTdAZr/9J0
- QsVWkxLt5FMQ8/OlIxdbmwYnzWL5uXA8eRmH8jZw6kvCFx35zzJ+Sa1oX07cPaTWLF6u
- vsejVYV2Gjs8nEmR37dbDzeK//oolLMzeaWmbN5G7iksb4psRQ5iETeCIoo9befq3V1F
- J9NoTTti3x8KIlpkk0EgzJuefTvrhFqkqN9Vs9QaWEwVyJhTQsWIxnG8YLkgD8mEq8rS
- VtaQ==
-X-Gm-Message-State: AC+VfDyuapn752mqLUatgzICrsSOFk/N0lx8KIR9jDqjduQYSbZpwEXP
- pzq+RCacv3bmKz0ITWM50JR7RHCEaSD9cLHujmPFKZRq3xViBrjVP/Hda25DoWk62/8E+HD9DB9
- bd6Rd+r+q1C3pYNQ=
-X-Received: by 2002:a05:6000:1204:b0:30a:c35d:25d5 with SMTP id
- e4-20020a056000120400b0030ac35d25d5mr720157wrx.26.1685088430912; 
- Fri, 26 May 2023 01:07:10 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6AHWn+n2I2SdU7H00n8/vTzxduiRn+Wr+lra63oNVVZtcLGh1zHYtMVvUuz7Lc2VxN3PLJQA==
-X-Received: by 2002:a05:6000:1204:b0:30a:c35d:25d5 with SMTP id
- e4-20020a056000120400b0030ac35d25d5mr720129wrx.26.1685088430621; 
- Fri, 26 May 2023 01:07:10 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-176-189.web.vodafone.de.
- [109.43.176.189]) by smtp.gmail.com with ESMTPSA id
- k7-20020a5d66c7000000b00307a83ea722sm4203751wrw.58.2023.05.26.01.07.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 01:07:10 -0700 (PDT)
-Message-ID: <9b2b8178-5567-a9f3-ade1-a6b2e55ea133@redhat.com>
-Date: Fri, 26 May 2023 10:07:09 +0200
+ bh=gSuUfRBLWUb0PoeqwthI9WA9PmbRW0xz8BxB1E59LOo=;
+ b=FO7qS9p6QQ/KzQU1/0jg5D29tuFWX2CQzTLW5lhH9lZ9wBAxQOTbSfd3yzhozoBNI7
+ msdvu0ywb9JcI0iTJgLsB3uxI+enBPPWTfqp2F4O7J0ElDT+e3ruZ1Twd7OY6oGftknA
+ Un5FIkJJlkGaMK9KL/sqZbaP8HESw3chwPLIZYXSdPzX6F4XI4WBNPIVlGgod69W5aLn
+ L8T+1AXaYNid/rBsy5J1enhY6njC2qTt7eU/V5peRqcd5vqVwg0AMNY03+Udd1PaAq3/
+ 7a8h37NrUkQJvF6G/lvPsxzeoZ/oy8jIBQqeRZvWqfafIuVriDfqJJckuu6Pu2sqY+Sw
+ HShA==
+X-Gm-Message-State: AC+VfDx6zGHHigF+fT1/+jIkJushvJ922gseEFRTel1g6QlFtD7fZwAA
+ e+HDNudRYpadZILWhx5TSkbKMbImVZym4Tw0bfPplJpJWKfHsqKntPzkn/cbiLT+R0BWsKHDBKB
+ VdwBKKdnik8WYEZY=
+X-Received: by 2002:a5d:5044:0:b0:309:382e:b046 with SMTP id
+ h4-20020a5d5044000000b00309382eb046mr694198wrt.60.1685088453527; 
+ Fri, 26 May 2023 01:07:33 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6hLWhTEkKwJQwn2gP5UPJGKgh1/IGX+yUbZBM1iYKGqetMjStvpbDMvzjY1bMgZwfEMBFSgg==
+X-Received: by 2002:a5d:5044:0:b0:309:382e:b046 with SMTP id
+ h4-20020a5d5044000000b00309382eb046mr694160wrt.60.1685088453202; 
+ Fri, 26 May 2023 01:07:33 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ o12-20020adfcf0c000000b002c71b4d476asm4251964wrj.106.2023.05.26.01.07.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 May 2023 01:07:32 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Leonardo =?utf-8?Q?Br=C3=A1s?= <leobras@redhat.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Greg Kurz
+ <groug@kaod.org>,  qemu-s390x@nongnu.org,  Fam Zheng <fam@euphon.net>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,  Halil Pasic <pasic@linux.ibm.com>,
+ John Snow <jsnow@redhat.com>,  qemu-ppc@nongnu.org,  Daniel Henrique
+ Barboza <danielhb413@gmail.com>,  Harsh Prateek Bora
+ <harshpb@linux.ibm.com>,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  David Gibson
+ <david@gibson.dropbear.id.au>,  David Hildenbrand <david@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,  Eric Farman
+ <farman@linux.ibm.com>,  qemu-block@nongnu.org,  =?utf-8?Q?C=C3=A9dric?= Le
+ Goater <clg@kaod.org>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Vladimir Sementsov-Ogievskiy
+ <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH v2 03/16] migration: Move setup_time to mig_stats
+In-Reply-To: <35a04e2de57e02745c18076990ce63fa6f61f5a4.camel@redhat.com>
+ ("Leonardo =?utf-8?Q?Br=C3=A1s=22's?= message of "Wed, 24 May 2023 22:18:27
+ -0300")
+References: <20230515195709.63843-1-quintela@redhat.com>
+ <20230515195709.63843-4-quintela@redhat.com>
+ <35a04e2de57e02745c18076990ce63fa6f61f5a4.camel@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Fri, 26 May 2023 10:07:31 +0200
+Message-ID: <875y8f4it8.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] pnv_lpc: disable reentrancy detection for lpc-hc
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-devel@nongnu.org, Frederic Barrat <fbarrat@linux.ibm.com>,
- Alexander Bulekov <alxndr@bu.edu>
-References: <20230526073850.2772197-1-clg@kaod.org>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230526073850.2772197-1-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,42 +114,119 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/05/2023 09.38, Cédric Le Goater wrote:
-> From: Alexander Bulekov <alxndr@bu.edu>
-> 
-> As lpc-hc is designed for re-entrant calls from xscom, mark it
-> re-entrancy safe.
-> 
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
-> [clg: mark opb_master_regs as re-entrancy safe also ]
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/ppc/pnv_lpc.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-> index 01f44c19ebba..605d3908617a 100644
-> --- a/hw/ppc/pnv_lpc.c
-> +++ b/hw/ppc/pnv_lpc.c
-> @@ -734,10 +734,13 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
->       /* Create MMIO regions for LPC HC and OPB registers */
->       memory_region_init_io(&lpc->opb_master_regs, OBJECT(dev), &opb_master_ops,
->                             lpc, "lpc-opb-master", LPC_OPB_REGS_OPB_SIZE);
-> +    lpc->opb_master_regs.disable_reentrancy_guard = true;
->       memory_region_add_subregion(&lpc->opb_mr, LPC_OPB_REGS_OPB_ADDR,
->                                   &lpc->opb_master_regs);
->       memory_region_init_io(&lpc->lpc_hc_regs, OBJECT(dev), &lpc_hc_ops, lpc,
->                             "lpc-hc", LPC_HC_REGS_OPB_SIZE);
-> +    /* xscom writes to lpc-hc. As such mark lpc-hc re-entrancy safe */
-> +    lpc->lpc_hc_regs.disable_reentrancy_guard = true;
->       memory_region_add_subregion(&lpc->opb_mr, LPC_HC_REGS_OPB_ADDR,
->                                   &lpc->lpc_hc_regs);
->   
+Leonardo Br=C3=A1s <leobras@redhat.com> wrote:
+> On Mon, 2023-05-15 at 21:56 +0200, Juan Quintela wrote:
+>> It is a time that needs to be cleaned each time cancel migration.
+>> Once there create migration_time_since() to calculate how time since a
+>> time in the past.
+>>=20
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>>=20
+>> ---
+>>=20
+>> Rename to migration_time_since (c=C3=A9dric)
+>> ---
+>>  migration/migration-stats.h | 13 +++++++++++++
+>>  migration/migration.h       |  1 -
+>>  migration/migration-stats.c |  7 +++++++
+>>  migration/migration.c       |  9 ++++-----
+>>  4 files changed, 24 insertions(+), 6 deletions(-)
+>>=20
+>> diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+>> index e782f1b0df..21402af9e4 100644
+>> --- a/migration/migration-stats.h
+>> +++ b/migration/migration-stats.h
+>> @@ -75,6 +75,10 @@ typedef struct {
+>>       * Number of bytes sent during precopy stage.
+>>       */
+>>      Stat64 precopy_bytes;
+>> +    /*
+>> +     * How long has the setup stage took.
+>> +     */
+>> +    Stat64 setup_time;
+>>      /*
+>>       * Total number of bytes transferred.
+>>       */
+>> @@ -87,4 +91,13 @@ typedef struct {
+>>=20=20
+>>  extern MigrationAtomicStats mig_stats;
+>>=20=20
+>> +/**
+>> + * migration_time_since: Calculate how much time has passed
+>> + *
+>> + * @stats: migration stats
+>> + * @since: reference time since we want to calculate
+>> + *
+>> + * Returns: Nothing.  The time is stored in val.
+>> + */
+>> +void migration_time_since(MigrationAtomicStats *stats, int64_t since);
+>>  #endif
+>> diff --git a/migration/migration.h b/migration/migration.h
+>> index 48a46123a0..27aa3b1035 100644
+>> --- a/migration/migration.h
+>> +++ b/migration/migration.h
+>> @@ -316,7 +316,6 @@ struct MigrationState {
+>>      int64_t downtime;
+>>      int64_t expected_downtime;
+>>      bool capabilities[MIGRATION_CAPABILITY__MAX];
+>> -    int64_t setup_time;
+>>      /*
+>>       * Whether guest was running when we enter the completion stage.
+>>       * If migration is interrupted by any reason, we need to continue
+>> diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+>> index 2f2cea965c..3431453c90 100644
+>> --- a/migration/migration-stats.c
+>> +++ b/migration/migration-stats.c
+>> @@ -12,6 +12,13 @@
+>>=20=20
+>>  #include "qemu/osdep.h"
+>>  #include "qemu/stats64.h"
+>> +#include "qemu/timer.h"
+>>  #include "migration-stats.h"
+>>=20=20
+>>  MigrationAtomicStats mig_stats;
+>> +
+>> +void migration_time_since(MigrationAtomicStats *stats, int64_t since)
+>> +{
+>> +    int64_t now =3D qemu_clock_get_ms(QEMU_CLOCK_HOST);
+>> +    stat64_set(&stats->setup_time, now - since);
+>> +}
+>
+> IIUC this calculates a time delta and saves on stats->setup_time, is that=
+ right?
+>
+> It took me some time to understand that, since the function name is
+> migration_time_since(), which seems more generic.
+>
+> Would not be more intuitive to name it migration_setup_time_set() or so?
 
-Tested-by: Thomas Huth <thuth@redhat.com>
+Dropped this.
+Other reviewer commented that this was not a counter, what is right.  So
+I left the times for future work (it don't interfere with current
+cleanups).
+
+
+> I could not see MigrationState->setup_time being initialized as 0 in this=
+ patch.
+> In a quick look in the code I noticed there is no initialization of this =
+struct,
+> but on qemu_savevm_state() and migrate_prepare() we have:
+>
+> memset(&mig_stats, 0, sizeof(mig_stats));
+>
+> I suppose this is enough, right?
+
+Yeap.  All migration_stats() are initialized to zero at the start of
+qemu, or when we start a migration.
+
+After a migration, it don't matter if it finished with/without error,
+they are there with the right value until we start another migration (in
+the case of error, of course).
+
+Later, Juan.
 
 
