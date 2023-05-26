@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC73C712CE5
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 20:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A93712CF5
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 21:00:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2caU-0008AZ-AJ; Fri, 26 May 2023 14:54:54 -0400
+	id 1q2cew-00015e-Hf; Fri, 26 May 2023 14:59:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1q2caR-00089Y-7U
- for qemu-devel@nongnu.org; Fri, 26 May 2023 14:54:51 -0400
+ id 1q2ceu-00014Q-02
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 14:59:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1q2caP-00006d-0p
- for qemu-devel@nongnu.org; Fri, 26 May 2023 14:54:50 -0400
+ id 1q2ces-00026d-9i
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 14:59:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685127287;
+ s=mimecast20190719; t=1685127565;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IQNQU2i72QEIPgZZ4pRVRrz+a8NOF1r+i4gywlQR/u0=;
- b=Ho8HCWEROckXz/kNFchIXiXhLkaYvxPV4WpUq4VFluOcsu1obSDSm/WAIgGVlfPP+B8qwZ
- ZxTe1/D7OGOBcvAEaIPrLqXs6WUANxH6RmBeuMn/UPYVaRXjVkT0ogoXDHKd2l1y/lWlA6
- 0GhBNkdpndaYBspW+m/9yap8fYsgFLo=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jCksdv77Y4XLdOGGXxGAMVOJQFLHTDhZI8K3aG7sZsU=;
+ b=WRg9Zean8zn0lXqW3FJXKa8Xx/1fUK+atEZW19FES86X4zEBBuSv9fr0hTP788yLOVxrIu
+ AZZqvh/zdupXAyHpQrnuypvko0LwqTbKyrMucV7o5HFW5LWlPIY8IyqMV5qEnUDHkWUL2I
+ HXNGzBMOTOXcE//EhIkuAodlBHY9V2s=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596--6fEvqvSNtK-Ze4e5kaKlg-1; Fri, 26 May 2023 14:54:38 -0400
-X-MC-Unique: -6fEvqvSNtK-Ze4e5kaKlg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-62386d1f3ecso8568346d6.2
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 11:54:37 -0700 (PDT)
+ us-mta-638-QtqeUK7UPp-0NCGP20YHZg-1; Fri, 26 May 2023 14:59:24 -0400
+X-MC-Unique: QtqeUK7UPp-0NCGP20YHZg-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-3f6b0c739adso7075781cf.3
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 11:59:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685127277; x=1687719277;
+ d=1e100.net; s=20221208; t=1685127563; x=1687719563;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IQNQU2i72QEIPgZZ4pRVRrz+a8NOF1r+i4gywlQR/u0=;
- b=FR57R8QP47hQ9676u7kafdQF2OTBeH85nh5SwyW2R0KfzhodrZha1+QPZkOPgUI5Tl
- ynKBVDsRearS6Bue7gXEvf21m3FIznDfK1ZppsttpsiF0aZ0a1mibawfgzmqV0zl20tD
- zeAH65h8I+UwLyf3yzlGSa5pIno7rM9cQNdh1VexNvw9DeTLYs4UGgAt85cck73MZejR
- fTfNyDvgLZt0dUZL2OojAQdBMcoUzQr+IOSBr8zVcJpxINEqpuq0tmbfAs1Olu/69Umk
- vKRsJbU6m9rxfjTJWkEN1Uv9MOu6Pj9SFmmLVeLH4jCLhQ4gNqGESbuQWU+H0b9Fhz7H
- kEaA==
-X-Gm-Message-State: AC+VfDxw5CBpGcvtQ6XApL/DHDf4iX8jtEjNbK5xsRjAiEVbrU/vifhu
- hY8JOA7Ors7/RBCiokmo7vF3WaW1glTUL5A3j6/4gg8z7MoVw20LL+Qm++6KMM1LkSolJyrR0pG
- ddOfVcgZ/QJP2rydQSkKBPQC0loy1s/M=
-X-Received: by 2002:a05:6214:5193:b0:625:b752:6574 with SMTP id
- kl19-20020a056214519300b00625b7526574mr3104543qvb.55.1685127277194; 
- Fri, 26 May 2023 11:54:37 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4v4j1/mS9wLMzCMluRBvthbUc7RFgWYJUYE9Xr11lSXZrIDM9OcBk4aEEZChfTc6IFFYlfKDNkjxdlIbgjvL0=
-X-Received: by 2002:a05:6214:5193:b0:625:b752:6574 with SMTP id
- kl19-20020a056214519300b00625b7526574mr3104534qvb.55.1685127276949; Fri, 26
- May 2023 11:54:36 -0700 (PDT)
+ bh=jCksdv77Y4XLdOGGXxGAMVOJQFLHTDhZI8K3aG7sZsU=;
+ b=U8XhD3GkSerjk/XqBf2jhQ53mURR5rH2VOw8IUcMgOmnQdMlisj1KCzKuKC9cgJE9q
+ zWq77bLHsmDVf1H7Yw/Y4XPs6xQTtAhDdZBtfn7vZ/04cEIluf/+TDkhfOm6P2bb2rSr
+ MkUwOS/Otb58QdZwb/Xxb0wi6mu87pxpg9k5kzsJwJUBs+y7nq81sHF+ktUiQHFJEzVy
+ wAP/PJsN3AMuU2mI8IS89sDYfNWKIIudSbZmAOPgEM85+7EoSf7jFqaDvOXgSvhOZyG6
+ hTN/WNM/zOBTBf4RRVhvmGbg7btmGAAst/QTyne3lFL8OwkuTdA34gNcJkQQaWVhYROU
+ yZ5Q==
+X-Gm-Message-State: AC+VfDwc+XxoJppE2rqdhnmFlSYUnRp6L7aPZbGled2vZRdDNqEGJ1Ea
+ qcpPz5Xahd7HJipkoJTu2SapRZxi2ez9fEG7nD+LsPAuNnLlg4JpKIFkVzrPCcwS53Qm0vkNT6y
+ mDvju2bevHZ8TRlxFOEQ2WutWG9DmzlCNso6SJekOKg==
+X-Received: by 2002:a05:622a:86:b0:3f6:a490:49c0 with SMTP id
+ o6-20020a05622a008600b003f6a49049c0mr2838285qtw.49.1685127563392; 
+ Fri, 26 May 2023 11:59:23 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5yWl4xEudEtTjqQMeMXSVZw1eUWLkgxX+qZf1nYePbIExzq2MCSYmjk/ezaUhVQU75kbyN1Zau/2uXGILqWyE=
+X-Received: by 2002:a05:622a:86:b0:3f6:a490:49c0 with SMTP id
+ o6-20020a05622a008600b003f6a49049c0mr2838271qtw.49.1685127563137; Fri, 26 May
+ 2023 11:59:23 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230515195709.63843-1-quintela@redhat.com>
- <20230515195709.63843-5-quintela@redhat.com>
- <d964a469a3231e1d98b2b39a5348832eecf44bf9.camel@redhat.com>
- <871qj34iq9.fsf@secure.mitica>
-In-Reply-To: <871qj34iq9.fsf@secure.mitica>
+ <20230515195709.63843-9-quintela@redhat.com>
+ <6f0660992a1bab629c52f5c3a869e730e299a0e8.camel@redhat.com>
+ <87wn0v33sv.fsf@secure.mitica>
+In-Reply-To: <87wn0v33sv.fsf@secure.mitica>
 From: Leonardo Bras Soares Passos <leobras@redhat.com>
-Date: Fri, 26 May 2023 15:54:25 -0300
-Message-ID: <CAJ6HWG680HSyPa+JeBtknGrh1D7NSD0Gm53EMnubVs2_HqZ8Sg@mail.gmail.com>
-Subject: Re: [PATCH v2 04/16] qemu-file: Account for rate_limit usage on
- qemu_fflush()
+Date: Fri, 26 May 2023 15:59:12 -0300
+Message-ID: <CAJ6HWG6XO_LUSnny-Nj-wuE2YpsYnN97dakirUfdOnDn1UX4qw@mail.gmail.com>
+Subject: Re: [PATCH v2 08/16] migration: Use migration_transferred_bytes() to
+ calculate rate_limit
 To: quintela@redhat.com
 Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
  Greg Kurz <groug@kaod.org>, 
@@ -111,78 +111,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 26, 2023 at 5:09=E2=80=AFAM Juan Quintela <quintela@redhat.com>=
+On Fri, May 26, 2023 at 5:17=E2=80=AFAM Juan Quintela <quintela@redhat.com>=
  wrote:
 >
 > Leonardo Br=C3=A1s <leobras@redhat.com> wrote:
-> > On Mon, 2023-05-15 at 21:56 +0200, Juan Quintela wrote:
-> >> That is the moment we know we have transferred something.
-> >>
+> > On Mon, 2023-05-15 at 21:57 +0200, Juan Quintela wrote:
 > >> Signed-off-by: Juan Quintela <quintela@redhat.com>
 > >> Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org>
 > >> ---
-> >>  migration/qemu-file.c | 7 +++----
-> >>  1 file changed, 3 insertions(+), 4 deletions(-)
+> >>  migration/migration-stats.h | 8 +++++++-
+> >>  migration/migration-stats.c | 7 +++++--
+> >>  migration/migration.c       | 2 +-
+> >>  3 files changed, 13 insertions(+), 4 deletions(-)
 > >>
-> >> diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-> >> index 4bc875b452..956bd2a580 100644
-> >> --- a/migration/qemu-file.c
-> >> +++ b/migration/qemu-file.c
-> >> @@ -302,7 +302,9 @@ void qemu_fflush(QEMUFile *f)
-> >>                                     &local_error) < 0) {
-> >>              qemu_file_set_error_obj(f, -EIO, local_error);
-> >>          } else {
-> >> -            f->total_transferred +=3D iov_size(f->iov, f->iovcnt);
-> >> +            uint64_t size =3D iov_size(f->iov, f->iovcnt);
-> >> +            qemu_file_acct_rate_limit(f, size);
-> >> +            f->total_transferred +=3D size;
-> >>          }
+> >> diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+> >> index 91fda378d3..f1465c2ebe 100644
+> >> --- a/migration/migration-stats.h
+> >> +++ b/migration/migration-stats.h
+> >> @@ -81,6 +81,10 @@ typedef struct {
+> >>       * Number of bytes sent during precopy stage.
+> >>       */
+> >>      Stat64 precopy_bytes;
+> >> +    /*
+> >> +     * Amount of transferred data at the start of current cycle.
+> >> +     */
+> >> +    Stat64 rate_limit_start;
+> >>      /*
+> >>       * Maximum amount of data we can send in a cycle.
+> >>       */
+> >> @@ -136,8 +140,10 @@ uint64_t migration_rate_get(void);
+> >>   * migration_rate_reset: Reset the rate limit counter.
+> >>   *
+> >>   * This is called when we know we start a new transfer cycle.
+> >> + *
+> >> + * @f: QEMUFile used for main migration channel
+> >>   */
+> >> -void migration_rate_reset(void);
+> >> +void migration_rate_reset(QEMUFile *f);
 > >>
-> >>          qemu_iovec_release_ram(f);
-> >> @@ -519,7 +521,6 @@ void qemu_put_buffer_async(QEMUFile *f, const uint=
-8_t *buf, size_t size,
-> >>          return;
+> >>  /**
+> >>   * migration_rate_set: Set the maximum amount that can be transferred=
+.
+> >> diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+> >> index 301392d208..da2bb69a15 100644
+> >> --- a/migration/migration-stats.c
+> >> +++ b/migration/migration-stats.c
+> >> @@ -31,7 +31,9 @@ bool migration_rate_exceeded(QEMUFile *f)
+> >>          return true;
 > >>      }
 > >>
-> >> -    f->rate_limit_used +=3D size;
-> >>      add_to_iovec(f, buf, size, may_free);
-> >>  }
-> >>
-> >> @@ -537,7 +538,6 @@ void qemu_put_buffer(QEMUFile *f, const uint8_t *b=
-uf, size_t size)
-> >>              l =3D size;
-> >>          }
-> >>          memcpy(f->buf + f->buf_index, buf, l);
-> >> -        f->rate_limit_used +=3D l;
-> >>          add_buf_to_iovec(f, l);
-> >>          if (qemu_file_get_error(f)) {
-> >>              break;
-> >> @@ -554,7 +554,6 @@ void qemu_put_byte(QEMUFile *f, int v)
-> >>      }
-> >>
-> >>      f->buf[f->buf_index] =3D v;
-> >> -    f->rate_limit_used++;
-> >>      add_buf_to_iovec(f, 1);
-> >>  }
-> >>
+> >> -    uint64_t rate_limit_used =3D stat64_get(&mig_stats.rate_limit_use=
+d);
+> >> +    uint64_t rate_limit_start =3D stat64_get(&mig_stats.rate_limit_st=
+art);
+> >> +    uint64_t rate_limit_current =3D migration_transferred_bytes(f);
+> >> +    uint64_t rate_limit_used =3D rate_limit_current - rate_limit_star=
+t;
+> >>      uint64_t rate_limit_max =3D stat64_get(&mig_stats.rate_limit_max)=
+;
 > >
-> > If we are counting transferred data at fflush, it makes sense to increa=
-se rate-
-> > limit accounting at the same place. It may be less granular, but is mor=
-e
-> > efficient.
+> > So, IIUC, instead of updating mig_stats.rate_limit_used every time data=
+ is sent,
+> > the idea is to 'reset' it to migration_transferred_bytes() at the begin=
+ning of a
+> > cycle, and read migration_transferred_bytes() again for checking if the=
+ limit
+> > was not crossed.
+> >
+> > Its a nice change since there is no need to update 2 counters, when 1 i=
+s enough.
+> >
+> > I think it would look nicer if squashed with 9/16, though. It would mak=
+e it more
+> > clear this is being added to replace migration_rate_account() strategy.
+> >
+> > What do you think?
 >
-> Yeap, the whole point is that in my next series, rate_limit_used
-> dissapear, we just use transferred for both things(*).
->
-> Later, Juan.
->
-> *: It is a bit more complicated than that, but we go from three counters
->  to a single counter.
->
+> Already in tree.
 
-Seems great to simplify stuff.
-Thanks!
-Leo
+My bad.
+After I ended up reviewing the patchset I noticed a lot of it was
+already in the PULL request.
+
+>
+> Done this way because on my tree there was an intermediate patch that
+> did something like:
+>
+>
+>     uint64_t rate_limit_used =3D stat64_get(&mig_stats.rate_limit_used);
+>     uint64_t rate_limit_start =3D stat64_get(&mig_stats.rate_limit_start)=
+;
+>     uint64_t rate_limit_current =3D migration_transferred_bytes(f);
+>     uint64_t rate_limit_used_new =3D rate_limit_current - rate_limit_star=
+t;
+>
+>     if (rate_limit_used_new !=3D rate_limit_used) {
+>         printf("rate_limit old %lu new %lu\n", ...);
+>     }
+>
+> So I was sure that the counter that I was replacing had the same value
+> that the new one.
+
+Oh, I see.
+You kept both to verify the implementation.
+Makes sense
+
+>
+> This is the reason why I fixed transferred atomic in the previous patch,
+> not because it mattered on the big scheme of things (migration_test was
+> missing something like 100KB for the normal stage when I started, that
+> for calculations don't matter).  But to check if I was doing the things
+> right it mattered.  With that patch my replacement counter was exact,
+> and none of the if's triggered.
+>
+> Except for the device transffer stages, there I missed something like
+> 900KB, but it made no sense to go all over the tree to fix a counter
+> that I was going to remove later.
+
+Yeah, it makes no sense to invest time on stuff that will be removed later.
+
+Thanks for helping me understand this :)
+
+>
+> Regards, Juan.
+>
 
 
