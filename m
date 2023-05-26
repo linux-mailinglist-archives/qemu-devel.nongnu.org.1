@@ -2,103 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989CB7121A7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 09:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 813B37121A8
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 09:56:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2SIM-000357-R8; Fri, 26 May 2023 03:55:30 -0400
+	id 1q2SIN-00035o-MR; Fri, 26 May 2023 03:55:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1q2SIK-00034O-2C; Fri, 26 May 2023 03:55:28 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q2SIM-00035F-5P
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 03:55:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1q2SIH-0001Mq-LK; Fri, 26 May 2023 03:55:27 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34Q7cxKm000430; Fri, 26 May 2023 07:55:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=osFeAjpMUYdLuuhYIbQcBYeMyeR/1AANZwRX2ZjVXf4=;
- b=NyWYjm5iHZggMjZ/pKGnjQXaHueFDX8KMdAxv1A62ub7hGyc0cmSQx+m7mGGwupJFs3a
- dHvhWImCbDeVYxJv3l5vACTIn/j2Jkmgt4ipo/s0w2FqwFysUxEHzASb2x2v7tXf8JT7
- zAsVNmUMOF+Z+D++VRDSEnXqIRmHaAjbaFH+4UqkcPd/hPPnsyyLx2eN3K+ji2VZGs19
- 1BmnibzUXQhnvRqdImEvmIKIHcxXgJ+qbUT05VLbTTCzA+xqYPGbRDGfcI6SfmUStiIU
- RicWCDUFDr0ghypRfmGVrkmkSvDRKKQVOQARnCVwCuc1NjcJfUitUtze33lw4ESmyV1X 6Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qtrc00k7q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 07:55:19 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34Q7d0CI000617;
- Fri, 26 May 2023 07:55:19 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qtrc00k6p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 07:55:18 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34Q1d0wv026986;
- Fri, 26 May 2023 07:55:17 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qppdk2tjv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 07:55:17 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34Q7tEt916712252
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 May 2023 07:55:14 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CB0F920043;
- Fri, 26 May 2023 07:55:14 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 651DF20040;
- Fri, 26 May 2023 07:55:14 +0000 (GMT)
-Received: from [9.171.59.191] (unknown [9.171.59.191])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 26 May 2023 07:55:14 +0000 (GMT)
-Message-ID: <1be662bb-d530-1a31-dfb6-750776b607a1@linux.ibm.com>
-Date: Fri, 26 May 2023 09:55:13 +0200
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q2SIK-0001Ol-CS
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 03:55:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685087727;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=sb+z89tDZonl3xiR0bG5FH4KJEXKYCWAxu27JmgGx7g=;
+ b=eqqRORe03ue5ilXgXiUzIYtV8EXxVwawoJcL6449eUFFHzOsGPPTjjkv42h93ZNijPeTEK
+ kdr0b07h3kkvWQDESylSozDwm4vCeWed6jR34DmtEJMkSbK/YHV3WMe3RoagQdwBnxrzd6
+ pqSDf0kX3WsBwKQfeYC7ImG6ZW/wWgc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-CWz4z_gAPbC1RwKswXDLpw-1; Fri, 26 May 2023 03:55:25 -0400
+X-MC-Unique: CWz4z_gAPbC1RwKswXDLpw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30ab548ba06so290808f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 00:55:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685087724; x=1687679724;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sb+z89tDZonl3xiR0bG5FH4KJEXKYCWAxu27JmgGx7g=;
+ b=SNmzS8q9Mcly5P5L5ASWhun8J6S85h2gLQM2S+5NU1gDqtzjHXu/TpCZwnu02OWYci
+ nMMt4eS6amEQ5DxxjaY/qifHYIu2uNprI61dGVKrG8cTR1vERi0t6FJhv0/Uj3FHF4Ct
+ FJS0hBy++qfdY4XYRYUECMxYu+K6Th/5OyEC+jT35cX6qZSXM1P0/4rXIaDsU0yhhLOh
+ r29akk2Ei0vhO6qV+UyoEa3YDzotVfOQzBBnJPucezc/uG5DFXs1Q29W9pCSDNRqYgld
+ G1KY2Z6RVE38YfakiGf2xcAFFEstywc2kbMEWHOGdrun+EEgizEl8LVfP9xa65qadR+m
+ RlBw==
+X-Gm-Message-State: AC+VfDx4S37ptgr4rrBPO140Z2wE8K7Y6v6C43vnSXfme4FXDBebcV8U
+ 6x17MPfT8c9LJiyD1N7Uz93b0CLqzqouVh/lfCPfmIUWk5seCFZJNC0R+q4xG+UYEyLvxLE7bDU
+ 7zCEVzdxcgdFQ3c8=
+X-Received: by 2002:adf:f3c9:0:b0:30a:c35d:25d3 with SMTP id
+ g9-20020adff3c9000000b0030ac35d25d3mr846227wrp.52.1685087724437; 
+ Fri, 26 May 2023 00:55:24 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7YpLhsQXaRpYLe83D6dEuiS6KJVUz3PGXIl0sow72/+M8Fs2lyIcrIGsX7S0vKaxtjXdNb6w==
+X-Received: by 2002:adf:f3c9:0:b0:30a:c35d:25d3 with SMTP id
+ g9-20020adff3c9000000b0030ac35d25d3mr846199wrp.52.1685087724067; 
+ Fri, 26 May 2023 00:55:24 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ b14-20020adff90e000000b00307972e46fasm4091929wrr.107.2023.05.26.00.55.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 May 2023 00:55:23 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Jiri Denemark <jdenemar@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,  Fiona Ebner
+ <f.ebner@proxmox.com>,  Leonardo Bras <leobras@redhat.com>,  Eduardo
+ Habkost <eduardo@habkost.net>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,  Peter Xu <peterx@redhat.com>,
+ qemu-devel@nongnu.org,  Daniel Berrange <berrange@redhat.com>
+Subject: Re: [PATCH v1 1/1] hw/pci: Disable PCI_ERR_UNCOR_MASK register for
+ machine type < 8.0
+In-Reply-To: <ZGuJXf9B0xEeDGe6@orkuz.int.mamuti.net> (Jiri Denemark's message
+ of "Mon, 22 May 2023 17:25:17 +0200")
+References: <20230503002701.854329-1-leobras@redhat.com>
+ <7f308149-5495-d415-5e51-1fa15fc20f84@proxmox.com>
+ <20230511064306-mutt-send-email-mst@kernel.org>
+ <8735435c0c.fsf@secure.mitica> <ZGuJXf9B0xEeDGe6@orkuz.int.mamuti.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Fri, 26 May 2023 09:55:22 +0200
+Message-ID: <87ilcf4jdh.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] pnv_lpc: disable reentrancy detection for lpc-hc
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-devel@nongnu.org, Alexander Bulekov <alxndr@bu.edu>
-References: <20230526073850.2772197-1-clg@kaod.org>
-Content-Language: en-US
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230526073850.2772197-1-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qzcpqul23idZR1YRJzRazlpnB-r8vRax
-X-Proofpoint-ORIG-GUID: gMBDvyKjcuRTw9B-ywWQotH6zvLyDiKa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-26_01,2023-05-25_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- bulkscore=0 mlxlogscore=693 spamscore=0 mlxscore=0 priorityscore=1501
- malwarescore=0 clxscore=1015 impostorscore=0 adultscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305260063
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,50 +105,136 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Jiri Denemark <jdenemar@redhat.com> wrote:
+> On Thu, May 11, 2023 at 13:43:47 +0200, Juan Quintela wrote:
+>> "Michael S. Tsirkin" <mst@redhat.com> wrote:
+>> 
+>> [Added libvirt people to the party, see the end of the message ]
+>
+> Sorry, I'm not that much into parties :-)
+>
+>> That would fix the:
+>> 
+>> qemu-8.0 -M pc-7.2 -> qemu-8.0.1 -M pc-7.2
+>> 
+>> It is worth it?  Dunno.  That is my question.
+>> 
+>> And knowing from what qemu it has migrated from would not help.  We
+>> would need to add a new tweak and means:
+>> 
+>> This is a pc-7.2 machine that has been isntantiated in a qemu-8.0 and
+>> has the pciaerr bug.  But wait, we have _that_.
+>> 
+>> And it is called
+>> 
+>> +    { TYPE_PCI_DEVICE, "x-pcie-err-unc-mask", "off" },
+>> 
+>> from the patch.
+>> 
+>> We can teach libvirt about this glitch, and if he is migrating a pc-7.2
+>> machine in qemu-8.0 machine, And they want to migrate to a new qemu
+>> (call it qemu-8.1), it needs to be started:
+>> 
+>> qemu-8.1 -M pc-7.2 <whatever pci devices need to do>,x-pci-err-unc-mask="true"
+>> 
+>> Until the user reboots it and then that property can be reset to default
+>> value.
+>
+> Hmm and what would happen if eventually this machine gets migrated back
+> to qemu-8.0?
+
+It works.
+migrating to qemu-7.2 is what is not going to work.
+To migrate to qemu-8.0, you just need to drop the
+"x-pci-err-unc-mask=true" bit.  And it would work.
+
+So, to be clear, this machine can migrate to:
+
+- qemu-8.0, you just need to drop the "x-pci-err-unc-mask=true" bit
+
+- qemu-8.0.1 or newer, you just need to maintain the
+  "x-pci-err-unc-mask=true" bit.
+
+Let's just assume that qemu-7.2.1 don't get the
+"x-pci-err-unc-mask=true" bit, so it will not be able to migrate there.
 
 
-On 26/05/2023 09:38, Cédric Le Goater wrote:
-> From: Alexander Bulekov <alxndr@bu.edu>
-> 
-> As lpc-hc is designed for re-entrant calls from xscom, mark it
-> re-entrancy safe.
-> 
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
-> [clg: mark opb_master_regs as re-entrancy safe also ]
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
+> Or even when the machine is stopped, started again, and
+> then migrated to qemu-8.0?
+
+If you do what I call a hard reset (i.e. poweroff + poweron so qemu
+dies), you should drop the "x-pci-err-unc-mask=true" bit.  And then you
+can migrate to qemu-7.2 and all qemu-8.0.1 and newer.
+
+Basically what we need is a "mark" inside libvirt that means something
+like:
+
+- this is weird machine that looks like pc-7.2
+- but has "x-pci-err-unc-mask=true"
+- so it can only migrate to qemu-8.0 and newer.
+- but if it even reboots in qemu-8.0.1 or newer, we want it back to
+  become a "normal" pc-7.2 machine (i.e. drop the
+  x-pci-err-unc-mask=true).
+
+That would be the perfect world.  But as we are in an imperfect world,
+something like:
+
+- this machine started in qemu-8.0 -M pc-7.2, we know this is broken and
+  it can't migrate outside of qemu-8.0 because it would fail to go to
+  either qemu-7.2 or qemu-8.0.1.
+
+I would argue that if you do the second option doing the "right" option
+i.e. the first one is not much more complicated, but that is a question
+that you should be better to answer.
+
+And then we have the other Michael question.  How can we export that
+information so libvirt can use it.
+
+In this case we can comunicate libvirt:
+- In qemu-8.0 we broke pc-7.2.
+- The problem is fixed in qemu-8.0.1 using property
+  "x-pci-err-unc-mask=false".
+- You can migrate from qemu-8.0 in newer if you set that property as
+  true.
+- Guests started in qemu-8.0 -M pc-7.2 should reboot in qemu-8.0.1 or
+  newer to become "normal pc-7.2".
+- If we publish this on qemu, we can only publish it on qemu-8.0.1 and
+  newer.
+- Or we can publish it somewhere else and any libvirt can take this
+  information.
+- Or we can comunicate this to libvirt, and they incorporate it on their
+  source anywhere that you see fit.
+
+The point here is that when we use a property on a machine type, it can
+be for two reasons:
+
+- We detected at the right time that we changed the value of something,
+  and we did the right thing on hw_compat_X_Y, so libvirt needs to do
+  nothing.
+
+- We *DID NOT* detect that we broke compatibility before release, and we
+  need to make a property to identify that problem.  This is where we
+  need to do this dance.
+
+Notice that normally we detect lots of problems during development and
+this *should* not happen.  But when it happens, we need to be able to do
+something.
+
+And also notice that normally we broke just some device, not a whole
+machine type.  But as you can see we have broke it this time.  We are
+trying to automate the detection of this kind of failures, but we are
+still on design stage, so we need to plan how to handle this.
+
+Any comments?
+
+Later, Juan.
 
 
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-Thanks,
-
-   Fred
 
 
->   hw/ppc/pnv_lpc.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-> index 01f44c19ebba..605d3908617a 100644
-> --- a/hw/ppc/pnv_lpc.c
-> +++ b/hw/ppc/pnv_lpc.c
-> @@ -734,10 +734,13 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
->       /* Create MMIO regions for LPC HC and OPB registers */
->       memory_region_init_io(&lpc->opb_master_regs, OBJECT(dev), &opb_master_ops,
->                             lpc, "lpc-opb-master", LPC_OPB_REGS_OPB_SIZE);
-> +    lpc->opb_master_regs.disable_reentrancy_guard = true;
->       memory_region_add_subregion(&lpc->opb_mr, LPC_OPB_REGS_OPB_ADDR,
->                                   &lpc->opb_master_regs);
->       memory_region_init_io(&lpc->lpc_hc_regs, OBJECT(dev), &lpc_hc_ops, lpc,
->                             "lpc-hc", LPC_HC_REGS_OPB_SIZE);
-> +    /* xscom writes to lpc-hc. As such mark lpc-hc re-entrancy safe */
-> +    lpc->lpc_hc_regs.disable_reentrancy_guard = true;
->       memory_region_add_subregion(&lpc->opb_mr, LPC_HC_REGS_OPB_ADDR,
->                                   &lpc->lpc_hc_regs);
->   
+
 
