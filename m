@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF31712B34
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20547712B30
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:55:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2ahi-0002za-UM; Fri, 26 May 2023 12:54:14 -0400
+	id 1q2ahi-0002zN-RT; Fri, 26 May 2023 12:54:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q2ahc-0002w7-EE
+ id 1q2ahd-0002w8-0c
  for qemu-devel@nongnu.org; Fri, 26 May 2023 12:54:09 -0400
 Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1q2aha-0002G5-RI
+ id 1q2ahb-0002G9-7s
  for qemu-devel@nongnu.org; Fri, 26 May 2023 12:54:08 -0400
 Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3095557dd99so931003f8f.1
+ ffacd0b85a97d-30aa1eb95a0so878161f8f.1
  for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:54:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685120045; x=1687712045;
+ d=linaro.org; s=google; t=1685120046; x=1687712046;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NY+/D6uwmW9rrz2yvSXdT57IZ1FuZiPWd8jiwfrxi4Q=;
- b=K1vw9RCgs4z+aELg0bmShVXdsWfCWvjhZyTpKZh7/WXV3MdEXNTTJrMhvvl7Lcqn15
- XwiHd7kk/RQf9p1Ldvjap6eVETNuGBIsPG25KT4aROms8uzlx7w0RfQT8+qyk+jI46C5
- LmJRHgBTE0pD6OVCx1wPm80cD3OB/Eko3HgLtmcmVeSkr4vy8O35fCoDX7vxD4DqF/vV
- 4a4nYb5ssMtHYCS74WsSMX4KmAdtbI8CrGTS/27bUPByHam4ROzjRf8T6332H9zOXeLd
- OxSrJm2Sjl7yaUOBXUcSSAZTK8/2rUkHztWVm9eZp0NK7m8OtbxRXGT4Y6zKgTX3ScAb
- NKBQ==
+ bh=hQ4C0OH2eXL3stB8nBityndanYvrzr6EMyO8JmAb43Q=;
+ b=JSciatZzZT+/LKY+y2KMXH0kosb+UexjoTuKmWDeQhMg+M8fhDC4D+T2zX3FQMnYt8
+ 4Sefc2oCh5mAc10Aw8zlMMhMuTEP/gKy99sYIQ0UnATZhio4p85UD+CA8tlx+vSHjEdI
+ VXpox2/Qjm6vRGnzWyj9YWZCrGFtZPB8bY+gxXPFlz2SiNsJAxprUAlr0ylHXgjAUa/k
+ vwTFcauy1gn5fbuB4aRlpbPKV+vj+uWMbJMuFEhUwLd8vSjgOcYJKvFx75THaEBml3TR
+ kekYiLQPwbiNsQl0J2w5rpbRTyYwMGXjNRR75B3TK5t06+RGwNv2xdokByb8wmxdsMFf
+ 7/qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685120045; x=1687712045;
+ d=1e100.net; s=20221208; t=1685120046; x=1687712046;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NY+/D6uwmW9rrz2yvSXdT57IZ1FuZiPWd8jiwfrxi4Q=;
- b=Xro9KO0fDnvV1tLLIpG1zWTtjExQJqARYhOH5EzpDnU8HrgtwYYrIKc4Aqr9uJaPwN
- qz3tOb4ym7I4fo/TIvvHA3NA12P5Ykney0kQSHuw3hiSAxxZdwwSv1gdz9AeD4YveMxd
- 52qYyRytW0/G9BiZpUDbheaQ0CW6/WhlFls+wKvq1evEL8bJEjt7GVMom5cCNxMNJKSW
- LE+jafj/UYwgZYCkwTbGGZWEsKwrUkbBMNMSG35kwfHh9m4pDIzZ8uawLoU/F28/HEpe
- z3cW8c5PA5ykU+zaWpW2GlMPw4uS//Hk6P4S3Gr8e2oRrBMhdmixlJlPiUjEL/hYseWw
- onFw==
-X-Gm-Message-State: AC+VfDy8SO9ETl7Il1jOLf3R5cS3C+yBAQNs+y1k0Pj8FgdYI7Vul/86
- B9R8PWL3B/PW1y0hoNo59Bcgyg==
-X-Google-Smtp-Source: ACHHUZ6A6z62k1x8OgUEAReHH4Czd6iAthNlBji8V+Gk/77DZ8Nj4X0vkznGFVEUZX+yhcNja628aA==
-X-Received: by 2002:adf:e644:0:b0:309:3a83:cf43 with SMTP id
- b4-20020adfe644000000b003093a83cf43mr1898839wrn.27.1685120045507; 
+ bh=hQ4C0OH2eXL3stB8nBityndanYvrzr6EMyO8JmAb43Q=;
+ b=HykILAWyjq9PdEvc0ZZ+dfg5uCnS5VxUR7/6uWIWXAwmWC85HEp4LmgtYZh9l9CFfC
+ 6JjT53kDExs7Rm5bKPZASoyCVOSe+/GaF+NbD5PNXk/y9kR/7RRgGo43sT5LHVFIRthC
+ FmGw5/ECx7/1LinXc5fEZPEfdtd5XUw96+ohFWGAYaZPES5Z/qpvEmbzGtyQuPiTgcJK
+ NaT8IUb51dSbfnYqFxF2Zt8AsRh42bMwbxSh0WVXegBln/i+cOSNxdlDQImR6p9flZmj
+ WBj18DDXenKBrKhNtqRF+8SFxzlsPCT3aBcVNn+lqV6GZhcLEAq+CwByVioWAUPuqToe
+ BOfw==
+X-Gm-Message-State: AC+VfDwXWYqmHMJhNswUS6AI3AX2WqXxnne8ardyANHzdcDDwq+1Fron
+ bDm3b92IdEis7sRZ+VMEKBa5Qw==
+X-Google-Smtp-Source: ACHHUZ5eceDSZOhMP8OXzX8FmEtpFASs3JOtlPla8NLP2sO/kFtqnu+PwhgZ6fWG9Drt7COSWnUKUQ==
+X-Received: by 2002:adf:f604:0:b0:30a:9043:8f1d with SMTP id
+ t4-20020adff604000000b0030a90438f1dmr1570311wrp.5.1685120045787; 
  Fri, 26 May 2023 09:54:05 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- s17-20020a5d69d1000000b00304adbeeabbsm5692586wrw.99.2023.05.26.09.54.04
+ g14-20020a5d540e000000b00307a86a4bcesm5659872wrv.35.2023.05.26.09.54.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 09:54:04 -0700 (PDT)
+ Fri, 26 May 2023 09:54:05 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 852B41FFBE;
+ by zen.linaroharston (Postfix) with ESMTP id C8C651FFBF;
  Fri, 26 May 2023 17:54:03 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org,
@@ -73,10 +73,9 @@ Cc: Riku Voipio <riku.voipio@iki.fi>, Markus Armbruster <armbru@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v6 05/11] docs/deprecated: move QMP events bellow QMP command
- section
-Date: Fri, 26 May 2023 17:53:55 +0100
-Message-Id: <20230526165401.574474-6-alex.bennee@linaro.org>
+Subject: [PATCH v6 06/11] qapi: make the vcpu parameters deprecated for 8.1
+Date: Fri, 26 May 2023 17:53:56 +0100
+Message-Id: <20230526165401.574474-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230526165401.574474-1-alex.bennee@linaro.org>
 References: <20230526165401.574474-1-alex.bennee@linaro.org>
@@ -107,51 +106,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Also rename the section to make the fact this is part of the
-management protocol even clearer.
+I don't think I can remove the parameters directly but certainly mark
+them as deprecated.
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230524133952.3971948-6-alex.bennee@linaro.org>
+
 ---
- docs/about/deprecated.rst | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+v6
+  - s/QAPI/QMP/
+  - /and always false./and always ignored./
+---
+ docs/about/deprecated.rst |  7 +++++++
+ qapi/trace.json           | 40 +++++++++++++++++----------------------
+ 2 files changed, 24 insertions(+), 23 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index e934e0a13a..7c45a64363 100644
+index 7c45a64363..0743459862 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -218,6 +218,15 @@ instruction per translated block" mode (which can be set on the
- command line or via the HMP, but not via QMP). The information remains
- available via the HMP 'info jit' command.
+@@ -226,6 +226,13 @@ QEMU Machine Protocol (QMP) events
  
-+QEMU Machine Protocol (QMP) events
-+----------------------------------
+ Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
+ 
++``vcpu`` trace events (since 8.1)
++'''''''''''''''''''''''''''''''''
 +
-+``MEM_UNPLUG_ERROR`` (since 6.2)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
-+
-+
++The ability to instrument QEMU helper functions with vCPU-aware trace
++points was removed in 7.0. However QMP still exposed the vcpu
++parameter. This argument has now been deprecated and the remaining
++remaining trace points that used it are selected just by name.
+ 
  Human Monitor Protocol (HMP) commands
  -------------------------------------
+diff --git a/qapi/trace.json b/qapi/trace.json
+index 6bf0af0946..39b752fc88 100644
+--- a/qapi/trace.json
++++ b/qapi/trace.json
+@@ -37,13 +37,14 @@
+ #
+ # @vcpu: Whether this is a per-vCPU event (since 2.7).
+ #
+-# An event is per-vCPU if it has the "vcpu" property in the
+-# "trace-events" files.
++# Features:
++# @deprecated: Member @vcpu is deprecated, and always ignored.
+ #
+ # Since: 2.2
+ ##
+ { 'struct': 'TraceEventInfo',
+-  'data': {'name': 'str', 'state': 'TraceEventState', 'vcpu': 'bool'} }
++  'data': {'name': 'str', 'state': 'TraceEventState',
++           'vcpu': { 'type': 'bool', 'features': ['deprecated'] } } }
  
-@@ -251,15 +260,6 @@ it. Since all recent x86 hardware from the past >10 years is capable of the
- 64-bit x86 extensions, a corresponding 64-bit OS should be used instead.
+ ##
+ # @trace-event-get-state:
+@@ -52,19 +53,15 @@
+ #
+ # @name: Event name pattern (case-sensitive glob).
+ #
+-# @vcpu: The vCPU to query (any by default; since 2.7).
++# @vcpu: The vCPU to query (since 2.7).
+ #
+-# Returns: a list of @TraceEventInfo for the matching events
+-#
+-# An event is returned if:
++# Features:
++# @deprecated: Member @vcpu is deprecated, and always ignored.
+ #
+-# - its name matches the @name pattern, and
+-# - if @vcpu is given, the event has the "vcpu" property.
++# Returns: a list of @TraceEventInfo for the matching events
+ #
+-# Therefore, if @vcpu is given, the operation will only match per-vCPU
+-# events, returning their state on the specified vCPU. Special case:
+-# if @name is an exact match, @vcpu is given and the event does not
+-# have the "vcpu" property, an error is returned.
++# An event is returned if its name matches the @name pattern
++# (There are no longer any per-vCPU events).
+ #
+ # Since: 2.2
+ #
+@@ -75,7 +72,8 @@
+ # <- { "return": [ { "name": "qemu_memalign", "state": "disabled", "vcpu": false } ] }
+ ##
+ { 'command': 'trace-event-get-state',
+-  'data': {'name': 'str', '*vcpu': 'int'},
++  'data': {'name': 'str',
++           '*vcpu': {'type': 'int', 'features': ['deprecated'] } },
+   'returns': ['TraceEventInfo'] }
  
- 
--QEMU API (QAPI) events
------------------------
--
--``MEM_UNPLUG_ERROR`` (since 6.2)
--''''''''''''''''''''''''''''''''''''''''''''''''''''''''
--
--Use the more generic event ``DEVICE_UNPLUG_GUEST_ERROR`` instead.
--
--
- System emulator machines
- ------------------------
- 
+ ##
+@@ -91,15 +89,11 @@
+ #
+ # @vcpu: The vCPU to act upon (all by default; since 2.7).
+ #
+-# An event's state is modified if:
+-#
+-# - its name matches the @name pattern, and
+-# - if @vcpu is given, the event has the "vcpu" property.
++# Features:
++# @deprecated: Member @vcpu is deprecated, and always ignored.
+ #
+-# Therefore, if @vcpu is given, the operation will only match per-vCPU
+-# events, setting their state on the specified vCPU. Special case: if
+-# @name is an exact match, @vcpu is given and the event does not have
+-# the "vcpu" property, an error is returned.
++# An event is enabled if its name matches the @name pattern
++# (There are no longer any per-vCPU events).
+ #
+ # Since: 2.2
+ #
+@@ -111,4 +105,4 @@
+ ##
+ { 'command': 'trace-event-set-state',
+   'data': {'name': 'str', 'enable': 'bool', '*ignore-unavailable': 'bool',
+-           '*vcpu': 'int'} }
++           '*vcpu': {'type': 'int', 'features': ['deprecated'] } } }
 -- 
 2.39.2
 
