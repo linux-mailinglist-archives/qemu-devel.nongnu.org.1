@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FED712A46
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E274E712A3D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:10:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Zzf-0004DB-HG; Fri, 26 May 2023 12:08:43 -0400
+	id 1q2Zzh-0004GD-P7; Fri, 26 May 2023 12:08:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Zza-0004BO-38
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q2Zzc-0004C6-61
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2ZzX-0002dE-V1
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:37 -0400
+ id 1q2ZzZ-0002db-SQ
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685117315;
+ s=mimecast20190719; t=1685117316;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Fzs0h2LMkCyS2RcHmjcBAfl2R0ztIYcRkkcOdDDYgWk=;
- b=UAIEopr+aky9m8vbQ89nuI5cioIijWKmgYVB4fiTRcdcTLOgpO9HBLQBTRyBmir/36vAre
- r4w61Jks6AKPOKxz+v8rXIOlOCvLHGP27dx9lLqntC1oPh+zpiR9LI3+Rhn33UsvpmUn/O
- PPI1123Ui1+G8DNtfzeQ4o2Ms4qzabk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Sd3T10HXiJPTxzvEoZFcDCGXr7r+Y/M31alTpJVCV8w=;
+ b=IXAg5I/voFOTN7UK8S1/VcNPL6kTPvvzVHgnkEK+6zOnHXlBH/NtgfT8oeoTDIJdEmXXSH
+ vRz/v0yd+nt6AOabVjWbL2uS8zhVxWWS+mYFpVA00XqY1rZy5OZ2EZilcEBiA6xs4fwhNV
+ /+M3wcTlMsCPLdjcy2Jyuq0rLz5hp14=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-RjS0zBG2PiGgORXZQJiX0A-1; Fri, 26 May 2023 12:08:33 -0400
-X-MC-Unique: RjS0zBG2PiGgORXZQJiX0A-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-970e0152da7so112843766b.2
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:08:33 -0700 (PDT)
+ us-mta-253-vxNI--SiOPOStY-62onSBA-1; Fri, 26 May 2023 12:08:35 -0400
+X-MC-Unique: vxNI--SiOPOStY-62onSBA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-96fd6bd135dso114926866b.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:08:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685117312; x=1687709312;
+ d=1e100.net; s=20221208; t=1685117313; x=1687709313;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fzs0h2LMkCyS2RcHmjcBAfl2R0ztIYcRkkcOdDDYgWk=;
- b=LdnVO0Fts0MqyCIPRs/F53oz489+MpS0o6gjDE5C8Mn0bmakF4LS/3tMgOc5EhFDph
- mCpiiqS5rkvsEX9+rEoWTh7TfrvYxDhBPUQUalFZji+X17FwBHcp9LxnGtthm8NN6CHH
- pvfkj5wpRoQg/eri4L6CJccH+RKhuc7tdmujLL/Y6jaMUo5TRZZ7q8goAGuIYTJ3nNzZ
- NiK4paCEN9VpvIbJ798/Ny7WhM4fK3VVvOeSjb7YTrJ3y7QF++JarNbta+Urq1wxsOKR
- KHMg/4djdtCc49a7VddaKvxUfCZmZ9mC6OZ8fZSlZWYLk2ZQyBSNK7PljJznnAgH0d5p
- /zRA==
-X-Gm-Message-State: AC+VfDy7R+QaTMpbHECMKcQCCCMVIrK1GSPqi3m7B2S0OO09GzAq4ggt
- Ww18QRB0xLs/AVxhaYx61XtYGpNKFFr3buteRWOoqWjX0fGeXjaNrI5Tf5jxjb57X7Yi8ydjFFi
- iAbkRhyi21I4WJIKmWIXuCS2xl4CqYMt1ynZj0H9QJhlLhWz9zaYfscjab74fwsU9Zdyo0bi4Dx
- E=
-X-Received: by 2002:a17:907:80a:b0:94f:2852:1d2b with SMTP id
- wv10-20020a170907080a00b0094f28521d2bmr2253876ejb.72.1685117311774; 
- Fri, 26 May 2023 09:08:31 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5AjMZyHpEAKtHO60KZkEJ5LSNkPg29ccnrV/GRV/FE2UDMYsmwxh6ZaN6FUPbRraSdNqdyOg==
-X-Received: by 2002:a17:907:80a:b0:94f:2852:1d2b with SMTP id
- wv10-20020a170907080a00b0094f28521d2bmr2253859ejb.72.1685117311525; 
- Fri, 26 May 2023 09:08:31 -0700 (PDT)
+ bh=Sd3T10HXiJPTxzvEoZFcDCGXr7r+Y/M31alTpJVCV8w=;
+ b=OWQXT3VBqzuoIIc7g9q17PqJyA4ow4Bkzg0Tcj1BBselpCD9+0CqiXC6HIJSjPB211
+ VuN4RY19MbRZb4CA5H/ZiBeyGO784P2GczdowLu+p06bQ6adWIx99AHlw8WS9xIwitLR
+ 79qEAx2175ve35efGvxSJZYdAuOiuTKUxcWlGm6SlKgh+0cJgwG586564exLTlPxcB5k
+ oKjZvQfFPqb63+LOFpFQ4gQs/AsLWcblO7ZT4zObaC4p11sJAApewsqSaBsprezLX0DE
+ 5iPKbQmspaYg2Lf4SJztjkI2l4YEpgD0V3AQGdcTmUhmz3S8f3ety++udsKcz1ma2H20
+ Qr7g==
+X-Gm-Message-State: AC+VfDyA6bI09JpGIODgXBMNuoCuUHaB6a84+KdD2XIO5uqgJPyVaIcB
+ PgLkdkXMHLhGg0VdwZT0RRxIOt21PDFYW+jnYn0lStnpJU7EFG1hHx5AxFC9iyiAbuEe4oo8dMs
+ 40lYD9NMrNb37fgz/y2D4ABCsi/FbvuGueCifRmI5Nv7vrg0GyMBIA62ezshFVHZyiApQTNE0Qo
+ Y=
+X-Received: by 2002:a17:907:94c3:b0:94f:8aff:c8b3 with SMTP id
+ dn3-20020a17090794c300b0094f8affc8b3mr2654506ejc.28.1685117313194; 
+ Fri, 26 May 2023 09:08:33 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7ujyTu1C/N0mQxwf8g6TvPwzPSsVdZCD5RLCZH6nS7TJ6K7GD9dYSXuaZpdWXPEZFHC6LcbA==
+X-Received: by 2002:a17:907:94c3:b0:94f:8aff:c8b3 with SMTP id
+ dn3-20020a17090794c300b0094f8affc8b3mr2654488ejc.28.1685117312972; 
+ Fri, 26 May 2023 09:08:32 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- z11-20020a170906714b00b0096f89fd4bf8sm2307767ejj.122.2023.05.26.09.08.30
+ h26-20020a1709062dda00b00969f2d5267asm2326252eji.114.2023.05.26.09.08.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 09:08:30 -0700 (PDT)
+ Fri, 26 May 2023 09:08:32 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 03/12] Makefile: remove $(TESTS_PYTHON)
-Date: Fri, 26 May 2023 18:08:15 +0200
-Message-Id: <20230526160824.655279-4-pbonzini@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>,
+	qemu-stable@nongnu.org
+Subject: [PULL 04/12] configure: unset harmful environment variables
+Date: Fri, 26 May 2023 18:08:16 +0200
+Message-Id: <20230526160824.655279-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230526160824.655279-1-pbonzini@redhat.com>
 References: <20230526160824.655279-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,71 +101,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is now the same as $(PYTHON), since the latter always points at pyvenv/bin/python3.
+Apart from CLICOLOR_FORCE and GREP_OPTIONS, there are other variables
+that are listed in the Autoconf manual.  While Autoconf neutralizes them
+very early, and assumes it does not (yet) run in a shell that has "unset",
+QEMU assumes that the user invoked configure under a POSIX shell, and
+therefore can simply use "unset" to clear them.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+CDPATH is particularly nasty because it messes up "cd ... && pwd".
+
+Reported-by: Juan Quintela <quintela@redhat.com>
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/Makefile.include    | 8 +++-----
- tests/vm/Makefile.include | 2 +-
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ configure | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index 5b838ec438b0..0184ef223737 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -89,11 +89,9 @@ distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
- # Build up our target list from the filtered list of ninja targets
- TARGETS=$(patsubst libqemu-%.fa, %, $(filter libqemu-%.fa, $(ninja-targets)))
+diff --git a/configure b/configure
+index 80ca1c922151..9cdce69b7852 100755
+--- a/configure
++++ b/configure
+@@ -4,9 +4,8 @@
+ #
  
--TESTS_VENV_DIR=$(BUILD_DIR)/pyvenv
- TESTS_VENV_TOKEN=$(BUILD_DIR)/pyvenv/tests.group
- TESTS_VENV_REQ=$(SRC_PATH)/tests/requirements.txt
- TESTS_RESULTS_DIR=$(BUILD_DIR)/tests/results
--TESTS_PYTHON=$(TESTS_VENV_DIR)/bin/python3
- ifndef AVOCADO_TESTS
- 	AVOCADO_TESTS=tests/avocado
- endif
-@@ -109,7 +107,7 @@ else
- endif
+ # Unset some variables known to interfere with behavior of common tools,
+-# just as autoconf does.
+-CLICOLOR_FORCE= GREP_OPTIONS=
+-unset CLICOLOR_FORCE GREP_OPTIONS
++# just as autoconf does.  Unlike autoconf, we assume that unset exists.
++unset CLICOLOR_FORCE GREP_OPTIONS BASH_ENV ENV MAIL MAILPATH CDPATH
  
- quiet-venv-pip = $(quiet-@)$(call quiet-command-run, \
--    $(TESTS_PYTHON) -m pip -q --disable-pip-version-check $1, \
-+    $(PYTHON) -m pip -q --disable-pip-version-check $1, \
-     "VENVPIP","$1")
- 
- $(TESTS_VENV_TOKEN): $(TESTS_VENV_REQ)
-@@ -131,7 +129,7 @@ FEDORA_31_DOWNLOAD=$(filter $(FEDORA_31_ARCHES),$(FEDORA_31_ARCHES_CANDIDATES))
- # download one specific Fedora 31 image
- get-vm-image-fedora-31-%: check-venv
- 	$(call quiet-command, \
--             $(TESTS_PYTHON) -m avocado vmimage get \
-+             $(PYTHON) -m avocado vmimage get \
-              --distro=fedora --distro-version=31 --arch=$*, \
- 	"AVOCADO", "Downloading avocado tests VM image for $*")
- 
-@@ -142,7 +140,7 @@ JOBS_OPTION=$(lastword -j1 $(filter-out -j, $(filter -j%,$(MAKEFLAGS))))
- 
- check-avocado: check-venv $(TESTS_RESULTS_DIR) get-vm-images
- 	$(call quiet-command, 							\
--            $(TESTS_PYTHON) -m avocado 						\
-+            $(PYTHON) -m avocado 						\
-             --show=$(AVOCADO_SHOW) run --job-results-dir=$(TESTS_RESULTS_DIR) 	\
-             $(if $(AVOCADO_TAGS),, 						\
- 			--filter-by-tags-include-empty 				\
-diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
-index c2a8ca1c175a..f0f5d32fb0f0 100644
---- a/tests/vm/Makefile.include
-+++ b/tests/vm/Makefile.include
-@@ -5,7 +5,7 @@ ifeq ($(realpath $(SRC_PATH)),$(realpath .))
- VM_PYTHON = PYTHONPATH=$(SRC_PATH)/python /usr/bin/env python3
- VM_VENV =
- else
--VM_PYTHON = $(TESTS_PYTHON)
-+VM_PYTHON = $(PYTHON)
- VM_VENV = check-venv
- endif
- 
+ # Don't allow CCACHE, if present, to use cached results of compile tests!
+ export CCACHE_RECACHE=yes
 -- 
 2.40.1
 
