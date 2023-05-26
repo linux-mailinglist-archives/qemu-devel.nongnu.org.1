@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3373712A45
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0640712A35
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:09:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Zzt-0004Jn-CM; Fri, 26 May 2023 12:08:57 -0400
+	id 1q2Zzj-0004H2-1p; Fri, 26 May 2023 12:08:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Zzr-0004JZ-1k
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:55 -0400
+ id 1q2Zzg-0004Fh-Iz
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Zzd-0002e7-S5
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:54 -0400
+ id 1q2Zzd-0002fh-Vn
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685117319;
+ s=mimecast20190719; t=1685117320;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LOMsYPI48p6M+QNMAUBxDQ/hy4HQGwgc/IU9K0zz3UU=;
- b=WBkw1gbQV92Fz5Zkjs2+YvTxYLVz3dmLwuohO16BXuiA91Q6OSz95WfqzDxs5nZzjR4Hbx
- FWyCqMSiomyqy878HAadHW66MbJmfKtRf7sfp/zwsHdsJi3LUbjTkfAHj4IrhUbSDbMR4E
- etJHdmuGnyRRh7WGse36hQb6qqusvr0=
+ bh=q24lgTZzDX54EUdjECo2U6h6oXNEyLIGSU/uCnCASvs=;
+ b=UcEwJ3GlK1LLZn+r1GSAm8aDFJ7YuV4f2wtYrNDSo07+O06ShVNQo2w+NULT+pyRsQj4zP
+ nE3s9hR5TGM16lhIX5ESXHKr6kkyjZKvk2Oe6hV1v/2MoEtCvElN/ndNpYJwvVmtElWG1u
+ J2sKQ8yZTj9g2nsNqK4iRPaqXAVJGRE=
 Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
  [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-Dve02pWrMBWrUDTSayVDkg-1; Fri, 26 May 2023 12:08:37 -0400
-X-MC-Unique: Dve02pWrMBWrUDTSayVDkg-1
+ us-mta-101-AnwNs9bcPliJRGdD2Pvk8g-1; Fri, 26 May 2023 12:08:39 -0400
+X-MC-Unique: AnwNs9bcPliJRGdD2Pvk8g-1
 Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-513f337d478so816683a12.3
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:08:37 -0700 (PDT)
+ 4fb4d7f45d1cf-513e916ed47so835673a12.2
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:08:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685117316; x=1687709316;
+ d=1e100.net; s=20221208; t=1685117318; x=1687709318;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LOMsYPI48p6M+QNMAUBxDQ/hy4HQGwgc/IU9K0zz3UU=;
- b=DZqhPLK141YeBcuAKMyEqnGBPIQVmTX7UGxnGSBN9YA+2MoBRYPV62clIevxeAr0ZX
- cW3udbQ6M+qy7sQi98VNRGYjykcd/GScpfaBTHCxpmtnmBzqjpYPPdShdstHDwsL+BDt
- D3FDjIU/3/oFW6E39olX5r6chJD2SqPWzgrX1vgRUvBIYB31KWsIzFbtxgSk0l2Ujs2H
- hXMC5Fl49PkNWn5jl+KKRm3LJeCbFozdfLZdNrA4VQgCXyLaUe+Ta23jTJheXG0Lp/+t
- hhAfRhbN5rm7o1snXrcDjNFKNr18++8tTkdsmuPL4C2zruhhGXanqxSAjudvhbYaT7Lo
- uY5A==
-X-Gm-Message-State: AC+VfDynNgcjH94vZHiCbwufyhQJmvnZ+2Q/DEtL7DTfmmd8RJZ/ibXH
- dUujljsNbiubNO96WTTwgMZ3A6Ksacry56Oefll3VUuZF4Z/fmbzBQHlu2HJRqCqksbhUA5THmT
- AxdR/I+a5clANmEakt86sNIX2cuPPxpVDYUtq2F0TTa0snX/37Y+pIYSTN3XjD+DaDt1iPlXnlz
- o=
-X-Received: by 2002:a17:907:3f83:b0:970:c9f:2db6 with SMTP id
- hr3-20020a1709073f8300b009700c9f2db6mr2601220ejc.63.1685117316425; 
- Fri, 26 May 2023 09:08:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7TVEbAaY8TKEl0Mvx3EfDJ0myzPgC8xsEKJyNtlwdiqTqLBajpODNi9R3QEZPT865fsEYixg==
-X-Received: by 2002:a17:907:3f83:b0:970:c9f:2db6 with SMTP id
- hr3-20020a1709073f8300b009700c9f2db6mr2601195ejc.63.1685117316088; 
- Fri, 26 May 2023 09:08:36 -0700 (PDT)
+ bh=q24lgTZzDX54EUdjECo2U6h6oXNEyLIGSU/uCnCASvs=;
+ b=eMV/ChOMMLBeM8IT8EUX6o/XvVZ2s1gMQmUxfMNZK4KiSnNHvyFF4XyFbzNDpw+s0p
+ AfENwJoJolHf01hqWWvS6qkLzLmyZ77VsGphCQvRFlWS6/YOAsbKqyQnuk9WIK3C0Ued
+ RT/T/8CLQ5x6X627yLrnIs/7PdBKJ3e4U9dMahxKD4rLV1BW/iqimwkjLvb6aERdBcv6
+ /2afgeAQ8HbWLwvw7o8Ssay7PRjTtZzwPNecGUgNhpjzEtDbKmY8KFqXjPQeIALnwu5G
+ m2+dbjyYBLoC/RsqiSlqtQD7uuBTzTwMBoP+vcu6K45g2AAJdOOWVUd9hLNIog98wf7Y
+ /pnQ==
+X-Gm-Message-State: AC+VfDwmNstoHcrZRhfi5KOCHna2TMobPXEzvqplxAA6bupHtmn5RM64
+ O4BMs8cn0n7pxS6oSzoPDROYmax9KWshffMEVHMxvFuyRUO9GXcOvnIjawcKWC6HFvhJJzdX7i3
+ YN1FGbiXJHQGXEUqbxkSi3zSgo6FwekMlEE4hrjyIHXgtRi+hl/oW45dpbRD2oyyEqWBiACv/aA
+ k=
+X-Received: by 2002:a17:907:3603:b0:961:8570:4589 with SMTP id
+ bk3-20020a170907360300b0096185704589mr2382308ejc.30.1685117317798; 
+ Fri, 26 May 2023 09:08:37 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4HW0b63GucBO193TiLcH7DecRsJXTWgr9wbvgOFKIWdLRICrh2nYWhSQy+73Pa+HlOvGrFNA==
+X-Received: by 2002:a17:907:3603:b0:961:8570:4589 with SMTP id
+ bk3-20020a170907360300b0096185704589mr2382287ejc.30.1685117317482; 
+ Fri, 26 May 2023 09:08:37 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- ce23-20020a170906b25700b0096f8bb60c96sm2330411ejb.100.2023.05.26.09.08.35
+ b20-20020a17090636d400b0096fc35ca733sm2276497ejc.41.2023.05.26.09.08.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 09:08:35 -0700 (PDT)
+ Fri, 26 May 2023 09:08:37 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 06/12] meson: Add static glib dependency for initrd-stress.img
-Date: Fri, 26 May 2023 18:08:18 +0200
-Message-Id: <20230526160824.655279-7-pbonzini@redhat.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 07/12] slirp: update wrap to latest master
+Date: Fri, 26 May 2023 18:08:19 +0200
+Message-Id: <20230526160824.655279-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230526160824.655279-1-pbonzini@redhat.com>
 References: <20230526160824.655279-1-pbonzini@redhat.com>
@@ -83,7 +83,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,49 +100,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+It is recommended to use SSIZE_T for ssize_t on win32, but the commit
+that is being used for slirp.wrap uses int.  Update to include the fix
+as well as the other bugfix commit "ip: Enforce strict aliasing".
 
-We recently moved glib detection code to meson but this changes the
-linker command line from -lglib-2.0 to using a path to libglib-2.0.so.
-This does not work for static linking, which is used by stress.c:
-
- $ make V=1 tests/migration/initrd-stress.img
- cc -m64 -mcx16 -o tests/migration/stress ... -static -Wl,--start-group
- /usr/lib64/libglib-2.0.so -Wl,--end-group
- ...
- bin/ld: attempted static link of dynamic object `/usr/lib64/libglib-2.0.so'
-
-Add a specific dependency for stress.c, which is linked statically.
-The compiler command line is now:
-
- cc -m64 -mcx16 -o tests/migration/stress ... -static -pthread
- -Wl,--start-group -lm /usr/lib64/libpcre.a -lglib-2.0 -Wl,--end-group
-
-Fixes: fc9a809e0d ("build: move glib detection and workarounds to meson")
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20230525212044.30222-3-farosas@suse.de>
+Reported-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/migration/meson.build | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ subprojects/slirp.wrap | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/migration/meson.build b/tests/migration/meson.build
-index dd562355a16e..ac71f1329014 100644
---- a/tests/migration/meson.build
-+++ b/tests/migration/meson.build
-@@ -1,9 +1,11 @@
- sysprof = dependency('sysprof-capture-4', required: false)
-+glib_static = dependency('glib-2.0', version: glib_req_ver, required: false,
-+                         method: 'pkg-config', static: true)
+diff --git a/subprojects/slirp.wrap b/subprojects/slirp.wrap
+index ace4f26102f5..08291a4cf99a 100644
+--- a/subprojects/slirp.wrap
++++ b/subprojects/slirp.wrap
+@@ -1,6 +1,6 @@
+ [wrap-git]
+ url = https://gitlab.freedesktop.org/slirp/libslirp
+-revision = 15c52d697529eb3e78c5d8aa324d61715bce33b6
++revision = 26be815b86e8d49add8c9a8b320239b9594ff03d
  
- stress = executable(
-   'stress',
-   files('stress.c'),
--  dependencies: [glib, sysprof],
-+  dependencies: [glib_static, sysprof],
-   link_args: ['-static'],
-   build_by_default: false,
- )
+ [provide]
+ slirp = libslirp_dep
 -- 
 2.40.1
 
