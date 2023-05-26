@@ -2,60 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41912712B8D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 19:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3CD3712BB8
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 19:25:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2b3U-0007CJ-Pk; Fri, 26 May 2023 13:16:44 -0400
+	id 1q2bB1-0001lo-8I; Fri, 26 May 2023 13:24:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q2b3S-00079b-Lf
- for qemu-devel@nongnu.org; Fri, 26 May 2023 13:16:42 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q2bAy-0001lE-EB; Fri, 26 May 2023 13:24:28 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q2b3Q-0006ej-Nf
- for qemu-devel@nongnu.org; Fri, 26 May 2023 13:16:42 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QSWkP274Lz67gZ9;
- Sat, 27 May 2023 01:14:37 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Fri, 26 May 2023 18:16:38 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>
-CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
- <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>, Eric
- Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>, Thomas
- Huth <thuth@redhat.com>
-Subject: [PATCH v8 7/7] hw/cxl/events: Add injection of Memory Module Events
-Date: Fri, 26 May 2023 18:13:04 +0100
-Message-ID: <20230526171304.1613-8-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230526171304.1613-1-Jonathan.Cameron@huawei.com>
-References: <20230526171304.1613-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q2bAw-0007kn-VQ; Fri, 26 May 2023 13:24:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=yaHounYOxznC2dmDyiMNMKaOaeUdwXRxw+2bwttEFx8=; b=O2h2CPdxyXyzU9HAP2lLyU7/EP
+ 2Y5BkLEnljWkr1zR6QLnIZIrWJDjNk5fnKKPDRrwllDJLcg89Dg+1IWzqO4d2fo9CtTMqvftB3INZ
+ brv3FbQu2qYoAIHqZdTdaon+sM3LHXKcJxIwWgq7cH7KqCjpovMft0L9KVbiPOgkLGC2G36spGCct
+ HRjxcR/nCLII1xRAFp7gYjQfOpSFIfD+wfvMaApkNIWbYpUiM1TLavybj1yGjFL/X4ZHoVdwiKflP
+ YQXbNFQPYKDAjZ7e4nyAwpnDlvnzZvASkEy96YtRuMSEygRj9Be48zspRpfQwSD5v1jWrQQF5Vto0
+ PR5VPYr+ege527Xr87wHvTrLXcJxH1D3nC944QzVNvKdHqqLCWwOYt1avJdFbIWmqE69QX5NesrwO
+ 62Z1NG05Xv+LBZ3Dh6KE9W9JdVl+qhCz9Xz7jgj5phyWa2SvhNR8q/wjTjHzQ6oHGE+36VlRphKbY
+ tVWtZMv6sk0fWWsIf2zKJR9ASHhNT4fF4PaKtCEjHITabrbt++tHV5ijYCnd0DY+L2RK5Ely6uHEh
+ y4jMulKsq582nCEHXaiG0s6+hWu6n9A1VE5EfRpRbWq30mbLn1NJWAnxfJy+LNrFfmD873WKnJ6LQ
+ FhLEKFtBbH8k5TWUTly9PeV6WPUiPjrcLJu+4poaY=;
+Received: from [2a00:23c4:8bac:6900:b726:cf58:4c12:f013]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1q2bAm-000CLh-86; Fri, 26 May 2023 18:24:16 +0100
+Message-ID: <a36c6acc-6b27-884a-cf2a-521435feed40@ilande.co.uk>
+Date: Fri, 26 May 2023 18:24:17 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230526125323.2386324-1-thuth@redhat.com>
+ <e2854ac5-e786-fcdf-453a-5a4fd343e871@eik.bme.hu>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <e2854ac5-e786-fcdf-453a-5a4fd343e871@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-SA-Exim-Connect-IP: 2a00:23c4:8bac:6900:b726:cf58:4c12:f013
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH] hw/ppc/mac_newworld: Check for the availability of
+ pci-ohci before using it
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,229 +77,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These events include a copy of the device health information at the
-time of the event. Actually using the emulated device health would
-require a lot of controls to manipulate that state.  Given the aim
-of this injection code is to just test the flows when events occur,
-inject the contents of the device health state as well.
+On 26/05/2023 14:30, BALATON Zoltan wrote:
 
-Future work may add more sophisticate device health emulation
-including direct generation of these records when events occur
-(such as a temperature threshold being crossed).  That does not
-reduce the usefulness of this more basic generation of the events.
+> On Fri, 26 May 2023, Thomas Huth wrote:
+>> pci-ohci might habe been disabled in the QEMU binary (e.g. when "configure"
+>> has been run with "--without-default-devices"). Thus we should check
+>> for its availability before blindly using it.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>> hw/ppc/mac_newworld.c | 3 ++-
+>> 1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
+>> index 535710314a..c7cca430e1 100644
+>> --- a/hw/ppc/mac_newworld.c
+>> +++ b/hw/ppc/mac_newworld.c
+>> @@ -349,7 +349,8 @@ static void ppc_core99_init(MachineState *machine)
+>>                                     sysbus_mmio_get_region(s, 3));
+>>     }
+>>
+>> -    machine->usb |= defaults_enabled() && !machine->usb_disabled;
+>> +    machine->usb |= defaults_enabled() && !machine->usb_disabled &&
+>> +                    module_object_class_by_name("pci-ohci") != 0;
+> 
+> Considering that PowerMacs have an OHCI controller built in soldered to the 
+> motherboard should this depend on it instead and not rely on pulling it in with 
+> PCI_DEVICES and --without-default-devices disabling it?
+> 
+> Currently it's not quite emulating a real Mac but I think we should aim for going 
+> that way rather than to keep emulating random Mac hardware.
 
-Acked-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- qapi/cxl.json               | 53 +++++++++++++++++++++++++++++++
- include/hw/cxl/cxl_events.h | 19 ++++++++++++
- hw/mem/cxl_type3.c          | 62 +++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3_stubs.c    | 12 +++++++
- 4 files changed, 146 insertions(+)
+Indeed that's correct: New World Macs should always have USB ports built-in. I guess 
+the problem here is that this isn't being indicated correctly via Kconfig and/or the 
+machine->usb_disabled logic?
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index 36bf9fa202..a2e1280573 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -140,6 +140,59 @@
-             '*column': 'uint16', '*correction-mask': [ 'uint64' ]
-            }}
- 
-+##
-+# @cxl-inject-memory-module-event:
-+#
-+# Inject an event record for a Memory Module Event (CXL r3.0
-+# 8.2.9.2.1.3). This event includes a copy of the Device Health
-+# info at the time of the event.
-+#
-+# @path: CXL type 3 device canonical QOM path
-+#
-+# @log: Event Log to add the event to
-+#
-+# @flags: Event Record Flags.  See CXL r3.0 Table 8-42 Common Event
-+#     Record Format, Event Record Flags for subfield definitions.
-+#
-+# @type: Device Event Type.  See CXL r3.0 Table 8-45 Memory Module
-+#     Event Record for bit definitions for bit definiions.
-+#
-+# @health-status: Overall health summary bitmap.  See CXL r3.0 Table
-+#     8-100 Get Health Info Output Payload, Health Status for bit
-+#     definitions.
-+#
-+# @media-status: Overall media health summary.  See CXL r3.0 Table
-+#     8-100 Get Health Info Output Payload, Media Status for bit
-+#     definitions.
-+#
-+# @additional-status: See CXL r3.0 Table 8-100 Get Health Info Output
-+#     Payload, Additional Status for subfield definitions.
-+#
-+# @life-used: Percentage (0-100) of factory expected life span.
-+#
-+# @temperature: Device temperature in degrees Celsius.
-+#
-+# @dirty-shutdown-count: Number of times the device has been unable
-+#     to determine whether data loss may have occurred.
-+#
-+# @corrected-volatile-error-count: Total number of correctable errors
-+#     in volatile memory.
-+#
-+# @corrected-persistent-error-count: Total number correctable errors
-+#     in persistent memory
-+#
-+# Since: 8.1
-+##
-+{ 'command': 'cxl-inject-memory-module-event',
-+  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags' : 'uint8',
-+            'type': 'uint8', 'health-status': 'uint8',
-+            'media-status': 'uint8', 'additional-status': 'uint8',
-+            'life-used': 'uint8', 'temperature' : 'int16',
-+            'dirty-shutdown-count': 'uint32',
-+            'corrected-volatile-error-count': 'uint32',
-+            'corrected-persistent-error-count': 'uint32'
-+            }}
-+
- ##
- # @cxl-inject-poison:
- #
-diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index a39e30d973..089ba2091f 100644
---- a/include/hw/cxl/cxl_events.h
-+++ b/include/hw/cxl/cxl_events.h
-@@ -146,4 +146,23 @@ typedef struct CXLEventDram {
-     uint8_t reserved[0x17];
- } QEMU_PACKED CXLEventDram;
- 
-+/*
-+ * Memory Module Event Record
-+ * CXL Rev 3.0 Section 8.2.9.2.1.3: Table 8-45
-+ * All fields little endian.
-+ */
-+typedef struct CXLEventMemoryModule {
-+    CXLEventRecordHdr hdr;
-+    uint8_t type;
-+    uint8_t health_status;
-+    uint8_t media_status;
-+    uint8_t additional_status;
-+    uint8_t life_used;
-+    int16_t temperature;
-+    uint32_t dirty_shutdown_count;
-+    uint32_t corrected_volatile_error_count;
-+    uint32_t corrected_persistent_error_count;
-+    uint8_t reserved[0x3d];
-+} QEMU_PACKED CXLEventMemoryModule;
-+
- #endif /* CXL_EVENTS_H */
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 3c07b1b7a3..4e314748d3 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1201,6 +1201,11 @@ static const QemuUUID dram_uuid = {
-                  0x4e, 0x9b, 0xfb, 0x5c, 0x96, 0x24),
- };
- 
-+static const QemuUUID memory_module_uuid = {
-+    .data = UUID(0xfe927475, 0xdd59, 0x4339, 0xa5, 0x86,
-+                 0x79, 0xba, 0xb1, 0x13, 0xb7, 0x74),
-+};
-+
- #define CXL_GMER_VALID_CHANNEL                          BIT(0)
- #define CXL_GMER_VALID_RANK                             BIT(1)
- #define CXL_GMER_VALID_DEVICE                           BIT(2)
-@@ -1408,6 +1413,63 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-     return;
- }
- 
-+void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-+                                        uint8_t flags, uint8_t type,
-+                                        uint8_t health_status,
-+                                        uint8_t media_status,
-+                                        uint8_t additional_status,
-+                                        uint8_t life_used,
-+                                        int16_t temperature,
-+                                        uint32_t dirty_shutdown_count,
-+                                        uint32_t corrected_volatile_error_count,
-+                                        uint32_t corrected_persistent_error_count,
-+                                        Error **errp)
-+{
-+    Object *obj = object_resolve_path(path, NULL);
-+    CXLEventMemoryModule module;
-+    CXLEventRecordHdr *hdr = &module.hdr;
-+    CXLDeviceState *cxlds;
-+    CXLType3Dev *ct3d;
-+    uint8_t enc_log;
-+    int rc;
-+
-+    if (!obj) {
-+        error_setg(errp, "Unable to resolve path");
-+        return;
-+    }
-+    if (!object_dynamic_cast(obj, TYPE_CXL_TYPE3)) {
-+        error_setg(errp, "Path does not point to a CXL type 3 device");
-+        return;
-+    }
-+    ct3d = CXL_TYPE3(obj);
-+    cxlds = &ct3d->cxl_dstate;
-+
-+    rc = ct3d_qmp_cxl_event_log_enc(log);
-+    if (rc < 0) {
-+        error_setg(errp, "Unhandled error log type");
-+        return;
-+    }
-+    enc_log = rc;
-+
-+    memset(&module, 0, sizeof(module));
-+    cxl_assign_event_header(hdr, &memory_module_uuid, flags, sizeof(module),
-+                            cxl_device_get_timestamp(&ct3d->cxl_dstate));
-+
-+    module.type = type;
-+    module.health_status = health_status;
-+    module.media_status = media_status;
-+    module.additional_status = additional_status;
-+    module.life_used = life_used;
-+    stw_le_p(&module.temperature, temperature);
-+    stl_le_p(&module.dirty_shutdown_count, dirty_shutdown_count);
-+    stl_le_p(&module.corrected_volatile_error_count, corrected_volatile_error_count);
-+    stl_le_p(&module.corrected_persistent_error_count, corrected_persistent_error_count);
-+
-+    if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&module)) {
-+        cxl_event_irq_assert(ct3d);
-+    }
-+}
-+
- static void ct3_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-index e904c5d089..f3e4a9fa72 100644
---- a/hw/mem/cxl_type3_stubs.c
-+++ b/hw/mem/cxl_type3_stubs.c
-@@ -26,6 +26,18 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-                                bool has_correction_mask, uint64List *correction_mask,
-                                Error **errp) {}
- 
-+void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-+                                        uint8_t flags, uint8_t type,
-+                                        uint8_t health_status,
-+                                        uint8_t media_status,
-+                                        uint8_t additional_status,
-+                                        uint8_t life_used,
-+                                        int16_t temperature,
-+                                        uint32_t dirty_shutdown_count,
-+                                        uint32_t corrected_volatile_error_count,
-+                                        uint32_t corrected_persistent_error_count,
-+                                        Error **errp) {}
-+
- void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
-                            Error **errp)
- {
--- 
-2.39.2
+> Regards,
+> BALATON Zoltan
+> 
+>>     has_pmu = (core99_machine->via_config != CORE99_VIA_CONFIG_CUDA);
+>>     has_adb = (core99_machine->via_config == CORE99_VIA_CONFIG_CUDA ||
+>>                core99_machine->via_config == CORE99_VIA_CONFIG_PMU_ADB);
+
+
+ATB,
+
+Mark.
 
 
