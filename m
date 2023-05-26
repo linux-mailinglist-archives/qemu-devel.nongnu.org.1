@@ -2,75 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148D171298F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB417129B1
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:36:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2ZQG-0003rD-LD; Fri, 26 May 2023 11:32:08 -0400
+	id 1q2ZTz-0007Ar-Vc; Fri, 26 May 2023 11:36:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q2ZQF-0003qY-81
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:32:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2ZTv-0007Ad-NH
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:35:55 -0400
+Received: from smtp-190e.mail.infomaniak.ch ([185.125.25.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q2ZQ8-0003Ml-D7
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:32:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685115118;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jbnYQBiFK220eRkY8qup0icET08+1wIZ3Jse7v5+QIg=;
- b=MTEvps3hlDiut9Lg9wi8d0wSIzLZlfG5AmxiXSKav9ibYrSpjGj+R1lb9OuC7wC4arPK8y
- c9aQA1i2mXJCWBOUi4Tuj6ewIOQvuCgJObXfznIp77VXDG/A0TBiuTAqz2kXXFqS1/bqvS
- NyFs7UNe5RCooGo+PG1eKp4LIU3wtQg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-184-6RYkU9viMWaV-xbN75tqcQ-1; Fri, 26 May 2023 11:31:54 -0400
-X-MC-Unique: 6RYkU9viMWaV-xbN75tqcQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BEC51185A791;
- Fri, 26 May 2023 15:31:53 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 19280400E117;
- Fri, 26 May 2023 15:31:50 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Parav Pandit <parav@mellanox.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, longpeng2@huawei.com,
- Shannon Nelson <snelson@pensando.io>, Laurent Vivier <lvivier@redhat.com>,
- si-wei.liu@oracle.com, Cindy Lu <lulu@redhat.com>,
- Lei Yang <leiyang@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>,
- Dragos Tatulea <dtatulea@nvidia.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Gautam Dawar <gdawar@xilinx.com>,
- Jason Wang <jasowang@redhat.com>, Liuxiangdong <liuxiangdong5@huawei.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, alvaro.karsz@solid-run.com,
- Zhu Lingshan <lingshan.zhu@intel.com>
-Subject: [PATCH v4 2/2] vdpa: move CVQ isolation check to net_init_vhost_vdpa
-Date: Fri, 26 May 2023 17:31:43 +0200
-Message-Id: <20230526153143.470745-3-eperezma@redhat.com>
-In-Reply-To: <20230526153143.470745-1-eperezma@redhat.com>
-References: <20230526153143.470745-1-eperezma@redhat.com>
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2ZTt-0004Ji-Hk
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:35:55 -0400
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
+ by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QSTXP6kHdzMqPDr;
+ Fri, 26 May 2023 17:35:49 +0200 (CEST)
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA
+ id 4QSTXL3K3rz1Sjg; Fri, 26 May 2023 17:35:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+ s=20191114; t=1685115349;
+ bh=IVLXl6zuTaxu1Zgxrh25RMUzIB63fNH4/OIZK2HDhZ0=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=kVMTGpVqhamFd/35Tv8GgGxW+MQc9ut6C15rUQoLevvrCTeKGaS+bLkhx73UqS/CF
+ F+QUQYt6dTBHCqDv3OJzGYoC8livFVhydjlyIX+RYotxBnPtUyqUMczbhbmQDNz+Be
+ GJfCUWCNzFZiETlN+G79KrUNM0ssQag3MigoVxSk=
+Message-ID: <caa8c89c-cae4-5a40-d6a1-f93ba7045d83@digikod.net>
+Date: Fri, 26 May 2023 17:35:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: 
+Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
+Content-Language: en-US
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Christopherson,, Sean" <seanjc@google.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "bp@alien8.de" <bp@alien8.de>, "keescook@chromium.org"
+ <keescook@chromium.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "wanpengli@tencent.com" <wanpengli@tencent.com>,
+ "vkuznets@redhat.com" <vkuznets@redhat.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "liran.alon@oracle.com" <liran.alon@oracle.com>,
+ "marian.c.rotariu@gmail.com" <marian.c.rotariu@gmail.com>,
+ "Graf, Alexander" <graf@amazon.com>,
+ "Andersen, John S" <john.s.andersen@intel.com>,
+ "madvenka@linux.microsoft.com" <madvenka@linux.microsoft.com>,
+ "ssicleru@bitdefender.com" <ssicleru@bitdefender.com>,
+ "yuanyu@google.com" <yuanyu@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "tgopinath@microsoft.com" <tgopinath@microsoft.com>,
+ "jamorris@linux.microsoft.com" <jamorris@linux.microsoft.com>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "will@kernel.org" <will@kernel.org>,
+ "dev@lists.cloudhypervisor.org" <dev@lists.cloudhypervisor.org>,
+ "mdontu@bitdefender.com" <mdontu@bitdefender.com>,
+ "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "virtualization@lists.linux-foundation.org"
+ <virtualization@lists.linux-foundation.org>,
+ "nicu.citu@icloud.com" <nicu.citu@icloud.com>,
+ "ztarkhani@microsoft.com" <ztarkhani@microsoft.com>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20230505152046.6575-1-mic@digikod.net>
+ <93726a7b9498ec66db21c5792079996d5fed5453.camel@intel.com>
+ <facfd178-3157-80b4-243b-a5c8dabadbfb@digikod.net>
+ <7cb6c4c28c077bb9f866c2d795e918610e77d49f.camel@intel.com>
+From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <7cb6c4c28c077bb9f866c2d795e918610e77d49f.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Infomaniak-Routing: alpha
+Received-SPF: pass client-ip=185.125.25.14; envelope-from=mic@digikod.net;
+ helo=smtp-190e.mail.infomaniak.ch
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,277 +102,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Evaluating it at start time instead of initialization time may make the
-guest capable of dynamically adding or removing migration blockers.
 
-Also, moving to initialization reduces the number of ioctls in the
-migration, reducing failure possibilities.
+On 25/05/2023 17:52, Edgecombe, Rick P wrote:
+> On Thu, 2023-05-25 at 15:59 +0200, Mickaël Salaün wrote:
+> [ snip ]
+> 
+>>> The kernel often creates writable aliases in order to write to
+>>> protected data (kernel text, etc). Some of this is done right as
+>>> text
+>>> is being first written out (alternatives for example), and some
+>>> happens
+>>> way later (jump labels, etc). So for verification, I wonder what
+>>> stage
+>>> you would be verifying? If you want to verify the end state, you
+>>> would
+>>> have to maintain knowledge in the verifier of all the touch-ups the
+>>> kernel does. I think it would get very tricky.
+>>
+>> For now, in the static kernel case, all rodata and text GPA is
+>> restricted, so aliasing such memory in a writable way before or after
+>> the KVM enforcement would still restrict write access to this memory,
+>> which could be an issue but not a security one. Do you have such
+>> examples in mind?
+>>
+> 
+> On x86, look at all the callers of the text_poke() family. In
+> arch/x86/include/asm/text-patching.h.
 
-As a drawback we need to check for CVQ isolation twice: one time with no
-MQ negotiated and another one acking it, as long as the device supports
-it.  This is because Vring ASID / group management is based on vq
-indexes, but we don't know the index of CVQ before negotiating MQ.
+OK, thanks!
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
----
-v2: Take out the reset of the device from vhost_vdpa_cvq_is_isolated
-v3: Only record cvq_isolated, true if the device have cvq isolated in
-    both !MQ and MQ configurations.
-v4: Only probe one of MQ or !MQ.
-v4: Merge vhost_vdpa_cvq_is_isolated in vhost_vdpa_probe_cvq_isolation
-    as there is only one call now.
-v4: Call ioctl directly instead of adding functions.
----
- net/vhost-vdpa.c | 154 ++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 111 insertions(+), 43 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 3fb833fe76..0cafccd334 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -43,6 +43,10 @@ typedef struct VhostVDPAState {
- 
-     /* The device always have SVQ enabled */
-     bool always_svq;
-+
-+    /* The device can isolate CVQ in its own ASID */
-+    bool cvq_isolated;
-+
-     bool started;
- } VhostVDPAState;
- 
-@@ -362,15 +366,8 @@ static NetClientInfo net_vhost_vdpa_info = {
-         .check_peer_type = vhost_vdpa_check_peer_type,
- };
- 
--/**
-- * Get vring virtqueue group
-- *
-- * @device_fd  vdpa device fd
-- * @vq_index   Virtqueue index
-- *
-- * Return -errno in case of error, or vq group if success.
-- */
--static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index)
-+static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index,
-+                                          Error **errp)
- {
-     struct vhost_vring_state state = {
-         .index = vq_index,
-@@ -379,8 +376,7 @@ static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index)
- 
-     if (unlikely(r < 0)) {
-         r = -errno;
--        error_report("Cannot get VQ %u group: %s", vq_index,
--                     g_strerror(errno));
-+        error_setg_errno(errp, errno, "Cannot get VQ %u group", vq_index);
-         return r;
-     }
- 
-@@ -480,9 +476,9 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
- {
-     VhostVDPAState *s, *s0;
-     struct vhost_vdpa *v;
--    uint64_t backend_features;
-     int64_t cvq_group;
--    int cvq_index, r;
-+    int r;
-+    Error *err = NULL;
- 
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
-@@ -502,41 +498,22 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
-     /*
-      * If we early return in these cases SVQ will not be enabled. The migration
-      * will be blocked as long as vhost-vdpa backends will not offer _F_LOG.
--     *
--     * Calling VHOST_GET_BACKEND_FEATURES as they are not available in v->dev
--     * yet.
-      */
--    r = ioctl(v->device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features);
--    if (unlikely(r < 0)) {
--        error_report("Cannot get vdpa backend_features: %s(%d)",
--            g_strerror(errno), errno);
--        return -1;
-+    if (!vhost_vdpa_net_valid_svq_features(v->dev->features, NULL)) {
-+        return 0;
-     }
--    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID)) ||
--        !vhost_vdpa_net_valid_svq_features(v->dev->features, NULL)) {
-+
-+    if (!s->cvq_isolated) {
-         return 0;
-     }
- 
--    /*
--     * Check if all the virtqueues of the virtio device are in a different vq
--     * than the last vq. VQ group of last group passed in cvq_group.
--     */
--    cvq_index = v->dev->vq_index_end - 1;
--    cvq_group = vhost_vdpa_get_vring_group(v->device_fd, cvq_index);
-+    cvq_group = vhost_vdpa_get_vring_group(v->device_fd,
-+                                           v->dev->vq_index_end - 1,
-+                                           &err);
-     if (unlikely(cvq_group < 0)) {
-+        error_report_err(err);
-         return cvq_group;
-     }
--    for (int i = 0; i < cvq_index; ++i) {
--        int64_t group = vhost_vdpa_get_vring_group(v->device_fd, i);
--
--        if (unlikely(group < 0)) {
--            return group;
--        }
--
--        if (group == cvq_group) {
--            return 0;
--        }
--    }
- 
-     r = vhost_vdpa_set_address_space_id(v, cvq_group, VHOST_VDPA_NET_CVQ_ASID);
-     if (unlikely(r < 0)) {
-@@ -799,6 +776,87 @@ static const VhostShadowVirtqueueOps vhost_vdpa_net_svq_ops = {
-     .avail_handler = vhost_vdpa_net_handle_ctrl_avail,
- };
- 
-+/**
-+ * Probe if CVQ is isolated
-+ *
-+ * @device_fd         The vdpa device fd
-+ * @features          Features offered by the device.
-+ * @cvq_index         The control vq pair index
-+ *
-+ * Returns <0 in case of failure, 0 if false and 1 if true.
-+ */
-+static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-+                                          int cvq_index, Error **errp)
-+{
-+    uint64_t backend_features;
-+    int64_t cvq_group;
-+    uint8_t status = VIRTIO_CONFIG_S_ACKNOWLEDGE |
-+                     VIRTIO_CONFIG_S_DRIVER |
-+                     VIRTIO_CONFIG_S_FEATURES_OK;
-+    int r;
-+
-+    ERRP_GUARD();
-+
-+    r = ioctl(device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features);
-+    if (unlikely(r < 0)) {
-+        error_setg_errno(errp, errno, "Cannot get vdpa backend_features");
-+        return r;
-+    }
-+
-+    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID))) {
-+        return 0;
-+    }
-+
-+    r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, errno, "Cannot set features");
-+    }
-+
-+    r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, -r, "Cannot set device features");
-+        goto out;
-+    }
-+
-+    cvq_group = vhost_vdpa_get_vring_group(device_fd, cvq_index, errp);
-+    if (unlikely(cvq_group < 0)) {
-+        if (cvq_group != -ENOTSUP) {
-+            r = cvq_group;
-+            goto out;
-+        }
-+
-+        /*
-+         * The kernel report VHOST_BACKEND_F_IOTLB_ASID if the vdpa frontend
-+         * support ASID even if the parent driver does not.  The CVQ cannot be
-+         * isolated in this case.
-+         */
-+        error_free(*errp);
-+        *errp = NULL;
-+        r = 0;
-+        goto out;
-+    }
-+
-+    for (int i = 0; i < cvq_index; ++i) {
-+        int64_t group = vhost_vdpa_get_vring_group(device_fd, i, errp);
-+        if (unlikely(group < 0)) {
-+            r = group;
-+            goto out;
-+        }
-+
-+        if (group == (int64_t)cvq_group) {
-+            r = 0;
-+            goto out;
-+        }
-+    }
-+
-+    r = 1;
-+
-+out:
-+    status = 0;
-+    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    return r;
-+}
-+
- static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-                                        const char *device,
-                                        const char *name,
-@@ -808,16 +866,25 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-                                        bool is_datapath,
-                                        bool svq,
-                                        struct vhost_vdpa_iova_range iova_range,
--                                       uint64_t features)
-+                                       uint64_t features,
-+                                       Error **errp)
- {
-     NetClientState *nc = NULL;
-     VhostVDPAState *s;
-     int ret = 0;
-     assert(name);
-+    int cvq_isolated;
-+
-     if (is_datapath) {
-         nc = qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
-                                  name);
-     } else {
-+        cvq_isolated = vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, features,
-+                                                      queue_pair_index * 2, errp);
-+        if (unlikely(cvq_isolated < 0)) {
-+            return NULL;
-+        }
-+
-         nc = qemu_new_net_control_client(&net_vhost_vdpa_cvq_info, peer,
-                                          device, name);
-     }
-@@ -844,6 +911,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
- 
-         s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
-         s->vhost_vdpa.shadow_vq_ops_opaque = s;
-+        s->cvq_isolated = cvq_isolated;
- 
-         /*
-          * TODO: We cannot migrate devices with CVQ as there is no way to set
-@@ -972,7 +1040,7 @@ int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
-     for (i = 0; i < queue_pairs; i++) {
-         ncs[i] = net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
-                                      vdpa_device_fd, i, 2, true, opts->x_svq,
--                                     iova_range, features);
-+                                     iova_range, features, errp);
-         if (!ncs[i])
-             goto err;
-     }
-@@ -980,7 +1048,7 @@ int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
-     if (has_cvq) {
-         nc = net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
-                                  vdpa_device_fd, i, 1, false,
--                                 opts->x_svq, iova_range, features);
-+                                 opts->x_svq, iova_range, features, errp);
-         if (!nc)
-             goto err;
-     }
--- 
-2.31.1
+> 
+>>
+>>>
+>>> It also seems it will be a decent ask for the guest kernel to keep
+>>> track of GPA permissions as well as normal virtual memory
+>>> pemirssions,
+>>> if this thing is not widely used.
+>>
+>> This would indeed be required to properly handle the dynamic cases.
+>>
+>>
+>>>
+>>> So I wondering if you could go in two directions with this:
+>>> 1. Make this a feature only for super locked down kernels (no
+>>> modules,
+>>> etc). Forbid any configurations that might modify text. But eBPF is
+>>> used for seccomp, so you might be turning off some security
+>>> protections
+>>> to get this.
+>>
+>> Good idea. For "super locked down kernels" :) , we should disable all
+>> kernel executable changes with the related kernel build configuration
+>> (e.g. eBPF JIT, kernel module, kprobes…) to make sure there is no
+>> such
+>> legitimate access. This looks like an acceptable initial feature.
+> 
+> How many users do you think will want this protection but not
+> protections that would have to be disabled? The main one that came to
+> mind for me is cBPF seccomp stuff.
+> 
+> But also, the alternative to JITing cBPF is the eBPF interpreter which
+> AFAIU is considered a juicy enough target for speculative attacks that
+> they created an option to compile it out. And leaving an interpreter in
+> the kernel means any data could be "executed" in the normal non-
+> speculative scenario, kind of working around the hypervisor executable
+> protections. Dropping e/cBPF entirely would be an option, but then I
+> wonder how many users you have left. Hopefully that is all correct,
+> it's hard to keep track with the pace of BPF development.
 
+seccomp-bpf doesn't rely on JIT, so it is not an issue. For eBPF, JIT is 
+optional, but other text changes may be required according to the eBPF 
+program type (e.g. using kprobes).
+
+
+> 
+> I wonder if it might be a good idea to POC the guest side before
+> settling on the KVM interface. Then you can also look at the whole
+> thing and judge how much usage it would get for the different options
+> of restrictions.
+
+The next step is to handle dynamic permissions, but it will be easier to 
+first implement that in KVM itself (which already has the required 
+authentication code). The current interface may be flexible enough 
+though, only new attribute flags should be required (and potentially an 
+async mode). Anyway, this will enable to look at the whole thing.
+
+
+> 
+>>
+>>
+>>> 2. Loosen the rules to allow the protections to not be so one-way
+>>> enable. Get less security, but used more widely.
+>>
+>> This is our goal. I think both static and dynamic cases are
+>> legitimate
+>> and have value according to the level of security sought. This should
+>> be
+>> a build-time configuration.
+> 
+> Yea, the proper way to do this is probably to move all text handling
+> stuff into a separate domain of some sort, like you mentioned
+> elsewhere. It would be quite a job.
+
+Not necessarily to move this code, but to make sure that the changes are 
+legitimate (e.g. text signatures, legitimate addresses). This doesn't 
+need to be perfect but it should improve the current state by increasing 
+the cost of attacks.
 
