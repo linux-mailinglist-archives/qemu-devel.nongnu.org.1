@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95ABF7128C1
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 034E07128CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:44:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Ydv-0000p4-NH; Fri, 26 May 2023 10:42:11 -0400
+	id 1q2YfI-0001li-13; Fri, 26 May 2023 10:43:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2Ydt-0000oa-Bs
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:42:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2Ydr-0002Un-S4
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:42:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685112126;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ieigWw+knjd+bDImnDjGfHT/hiK2SjnWXaTgRtJjXXo=;
- b=XYjdmhT2O0JBWs9COdU/ojtr7nVxBSWVoUaWwmYzY/DaO0adyUYojYiHonoUsaOmqfynnA
- Ut0o6LXzDCO8rpSRTQeAHpJ9s1kSVMmDcepUG1nMxfDPidSJ7D88zo5mv3vNoeAcRPDlWb
- 680KstSJldS/uS51H+nGpJscZKMCNfU=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-2Y0Gxy8uNcC0o-125hAyTQ-1; Fri, 26 May 2023 10:42:05 -0400
-X-MC-Unique: 2Y0Gxy8uNcC0o-125hAyTQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-75b147a2548so19378085a.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:42:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2YfG-0001lT-Km
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 10:43:34 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2YfE-0002n5-Un
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 10:43:34 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1b01d912924so2790885ad.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:43:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685112211; x=1687704211;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=WztnphZLEEeEQr5+KwHAmPlH2eB1wGQQqMl99B4fNXk=;
+ b=ZMIM2Bs5LlGeZv7M69TGQzJHuAgb8GGN9DdYSW8WOnixhI2mcdsUNoWE7mpcD7f30T
+ nHO2sYPIMDLXKB+WQvi9itV69MnRFf20jZUCgJdlMFvw8fJK4wZA0OGQrLL+HseE9v4P
+ 1jUH8zFRYPa30c+SlfeNjgoy2Sko9kjtdattbILpQkjYDNl7pzJr2T3HOtmldr/BVDmA
+ Edubmh8DgdiN/QZ4SlydBIh1WsHJaeZnR4ccTRgJRRDHaUWSzJeMdwIFneOiBtgH+2w4
+ 0hHxTo1oxS5n6mGBPMwVWVK6DdGNVmfprDAw7VVnixjo5RBw38m/I5x5V4+tJq9gRoWq
+ e+RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685112124; x=1687704124;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ieigWw+knjd+bDImnDjGfHT/hiK2SjnWXaTgRtJjXXo=;
- b=DGaRsw5+v2kGBOD8UirU1/F+4xs3bcGlPzn4JtpP7beClc4KitIrDp6+v9rTr53yDV
- 0CwrlEUoIxY7x20z09K4TLFWEJdhmEEcmcW6Q6aVjjdBJUv6qkgEDrsX8gvjpENO+jLX
- juWu1zTYZELreOCOQGJeGSGIbN563dONSxqhSWP2gTnSuK0hFzo3DZofsNwsKkSjI3ns
- Afy8FrkLOIns7Fkl5l7pIANTkFW6DTPsp7aGXXbQU2BBjOC+TYpZ+5sh4Kw6+m5NKa97
- lyC8iXDGSNnuh/LCG+g9ej61PRG0RFZKUJe7xEHQQv1lYCD1AHorjy+CU0Zz1nsCB3N6
- neSg==
-X-Gm-Message-State: AC+VfDz7Vjgz+ZMW4NIFFY/XB+L5CPx02ERJlHhy1SJf9IKJX8bSkBj4
- eHIhqZlf1miJEqfZflWBb+C63IJZwZdHRXNa3xW/3uhnc5wbdhBfASFm2mt0oFizs4GvkuwSznB
- /tWkDKLk4J4pOhiQ=
-X-Received: by 2002:a05:620a:4387:b0:75b:23a1:69ec with SMTP id
- a7-20020a05620a438700b0075b23a169ecmr2028247qkp.3.1685112124816; 
- Fri, 26 May 2023 07:42:04 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5puqUq9j2q+LuB1st2iU9MS7VysNFBnh3HrbEF0YuVg4NaOGQtnIfUHBvAoXs9ITG3119tGw==
-X-Received: by 2002:a05:620a:4387:b0:75b:23a1:69ec with SMTP id
- a7-20020a05620a438700b0075b23a169ecmr2028224qkp.3.1685112124507; 
- Fri, 26 May 2023 07:42:04 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- y15-20020a37e30f000000b00759273c10eesm1209069qki.33.2023.05.26.07.41.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 07:41:48 -0700 (PDT)
-Date: Fri, 26 May 2023 10:41:32 -0400
-From: Peter Xu <peterx@redhat.com>
-To: P J P <ppandit@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH v1] vhost: release memory objects in error path
-Message-ID: <ZHDFHMYIbwiVHgJ4@x1n>
-References: <20230526074051.22122-1-ppandit@redhat.com>
+ d=1e100.net; s=20221208; t=1685112211; x=1687704211;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WztnphZLEEeEQr5+KwHAmPlH2eB1wGQQqMl99B4fNXk=;
+ b=kYNMCGIR2PSxmei9RsKkkAafxoSRs24LlvlJszYY1AI7+N/yShJZQB32D+16i84TZb
+ myLBTuysKwY+tD/gyXb/3QkvCL+hEqfv9xWnZuoI/Y6L8v53VK6qzg9ds0MPpdvR4KPM
+ SCXdInOpa10JRX24VxDwkyhagr4Hv3wvR2o/XjniryEzhkZAv4VLDwwrfmWt1YYTGISi
+ xVih2sRmEB5/GQjvUQMNFS2u9a398YI3pZVW4XsdoilD5hCDhyhJsNBFw+Yt3V/KOM/0
+ bQB0085iRL3bhiBQPOKF/Ej5h1XADzDRHgI8sI9XLIr0/Z9NZATEWepQB2u6oVSTmzqJ
+ ccpQ==
+X-Gm-Message-State: AC+VfDxf3nnNSMaYdCkqgVosc2lQPKoKsi/HODniVyTdrrYbxgxRA2/n
+ er+zDxzUOnaExE+yJuW/YO7/og==
+X-Google-Smtp-Source: ACHHUZ6Ix8OWNZTqsunhcG2GycrWo+C/EdpITtCSenLZGEnPRkeseuNBZXBPkKw8rO3XZAt9qSX+oA==
+X-Received: by 2002:a17:902:ab5a:b0:1a9:b8c3:c2c2 with SMTP id
+ ij26-20020a170902ab5a00b001a9b8c3c2c2mr2573715plb.37.1685112211093; 
+ Fri, 26 May 2023 07:43:31 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
+ ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
+ by smtp.gmail.com with ESMTPSA id
+ t13-20020a1709027fcd00b001aaf536b1e3sm3401188plb.123.2023.05.26.07.43.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 07:43:30 -0700 (PDT)
+Message-ID: <8f315f7c-2778-855a-0879-f928f9ca8054@linaro.org>
+Date: Fri, 26 May 2023 07:43:28 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230526074051.22122-1-ppandit@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 01/20] target/arm: Add commentary for
+ CPUARMState.exclusive_high
+Content-Language: en-US
+To: quintela@redhat.com, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20230525232558.1758967-1-richard.henderson@linaro.org>
+ <20230525232558.1758967-2-richard.henderson@linaro.org>
+ <dbb368d0-839c-ad09-01de-09b1a62416af@linaro.org>
+ <87zg5r1kxx.fsf@secure.mitica>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <87zg5r1kxx.fsf@secure.mitica>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,43 +100,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 26, 2023 at 01:10:51PM +0530, P J P wrote:
-> From: Prasad Pandit <pjp@fedoraproject.org>
+On 5/26/23 02:49, Juan Quintela wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>> Hi,
+>>
+>> On 26/5/23 01:25, Richard Henderson wrote:
+>>> Document the meaning of exclusive_high in a big-endian context,
+>>> and why we can't change it now.
+>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>> ---
+>>>    target/arm/cpu.h | 7 +++++++
+>>>    1 file changed, 7 insertions(+)
+>>> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+>>> index d469a2637b..4e16eab82e 100644
+>>> --- a/target/arm/cpu.h
+>>> +++ b/target/arm/cpu.h
+>>> @@ -677,8 +677,15 @@ typedef struct CPUArchState {
+>>>            uint64_t zcr_el[4];   /* ZCR_EL[1-3] */
+>>>            uint64_t smcr_el[4];  /* SMCR_EL[1-3] */
+>>>        } vfp;
+>>> +
+>>>        uint64_t exclusive_addr;
+>>>        uint64_t exclusive_val;
+>>> +    /*
+>>> +     * Contains the 'val' for the second 64-bit register of LDXP, which comes
+>>> +     * from the higher address, not the high part of a complete 128-bit value.
+>>> +     * This is perhaps confusingly named, but the name is now baked into the
+>>> +     * migration format.
+>>> +     */
+>>>        uint64_t exclusive_high;
+>>
+>> Can't we rename the field if we add the old name to check_fields_match()
+>> in scripts/vmstate-static-checker.py?
+>>
+>> Juan, could we store this renamed information directly in the code in
+>> VMState? Maybe adding some VMSTATE_KEY_ALIAS(_old_key, _new_key) macro
+>> and have the migration/ code magically deal with that :)
+>>
+>> I.e. here:
+>>
+>>    VMSTATE_KEY_ALIAS("exclusive_val", high_addr),
 > 
-> vhost_dev_start function does not release memory objects in case
-> of an error. This may crash the guest with:
+> You are asking for magic?
+> In VMState, that nobody understands.
 > 
->   stack trace of thread 125653:
->   Program terminated with signal SIGSEGV, Segmentation fault
->   #0  memory_listener_register (qemu-kvm + 0x6cda0f)
->   #1  vhost_dev_start (qemu-kvm + 0x699301)
->   #2  vhost_net_start (qemu-kvm + 0x45b03f)
->   #3  virtio_net_set_status (qemu-kvm + 0x665672)
->   #4  qmp_set_link (qemu-kvm + 0x548fd5)
->   #5  net_vhost_user_event (qemu-kvm + 0x552c45)
->   #6  tcp_chr_connect (qemu-kvm + 0x88d473)
->   #7  tcp_chr_new_client (qemu-kvm + 0x88cf83)
->   #8  tcp_chr_accept (qemu-kvm + 0x88b429)
->   #9  qio_net_listener_channel_func (qemu-kvm + 0x7ac07c)
->   #10 g_main_context_dispatch (libglib-2.0.so.0 + 0x54e2f)
+> Sniff.
 > 
-> Release memory_listener and virtqueue objects in the error path.
-
-IMHO it'll still good to mention that it's not event_notifier_init() that
-failed but vhost_set_mem_table(), since that is probably not crystal clear.
-The event_notifier_init() change is just something to fix altogether (or
-with a separate patch, but this is fine by me).
-
-Please also consider adding a "Bugzilla:" link to the original bug report.
-
+> I remembered that VMState only cares about values, not for field names.
+> We can rename fields without any trouble....
 > 
-> Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+> Until we arrive to dump_vmstate_vmsf().
+> 
+> But I think we can have both things, the only thing that we really care
+> about vmstate dump is to do comparisons.  And for doing comparisons you
+> should be using vmstate-static-checker.py
+> 
+> That already have support for this.  Look up:
+> 
+> check_fields_match()
+> 
+> and see how it renamed other fields.
+> 
+> As you know better how to do this, can you play with the script and see
+> if you can get what you want?
+> 
+> If not, I can try to modify the script to get to what you need.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+It's not worth any effort to rename.  Just needed documentation.
 
-Thanks!
 
--- 
-Peter Xu
+r~
 
 
