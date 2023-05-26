@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D4671246D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 12:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04ABF71247A
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 12:21:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2UYG-0003LK-9d; Fri, 26 May 2023 06:20:04 -0400
+	id 1q2UY4-0003Gy-Lk; Fri, 26 May 2023 06:19:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q2UYE-0003Kv-8L
- for qemu-devel@nongnu.org; Fri, 26 May 2023 06:20:02 -0400
+ id 1q2UY2-0003Gc-BP
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 06:19:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q2UXy-0002U0-TK
- for qemu-devel@nongnu.org; Fri, 26 May 2023 06:20:02 -0400
+ id 1q2UY0-0002UP-13
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 06:19:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685096386;
+ s=mimecast20190719; t=1685096387;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PVmfpV9mD/s62qZGuo88cSiRjG0U84n1jCjGrHIxJg8=;
- b=J6CNCrUb7wRaiAjg4R8ITvFA7pJdCSCyD/yBVRTu3wf+Msi28nr86VL9fj7Tq7nA7QJCv7
- XvO6b/4oSJkmoQD2irgv1xIj+WgBoUtbCL6CkDUxWRVpgS/bd2EkZXyqcSGy2WIKjsVWGB
- qwTN15h8lr6TjbFlM1WWCGAPeZsaFgs=
+ bh=C2YTYEqWh8Vaz5v4GY4lxnm7G+zQwXZax2lE0FstfF8=;
+ b=ZdD03dmCHLCT6m4haQvhk1YOa9lwxi5xjaA+Cpmok1mUpz5q2GdBhKKV8I80zE7ABm0ppm
+ ZJGg3Kqpr49XH7iwmnaddt5q2LgLpNzpQizWrDc7pl5VYeFZQXELcHfHDlFqikDZZ81bBh
+ 93+9O6pYQ2igOK6FYYyIuFNXcdr4a5o=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-645-PHfJCc1mNSC7tPpXYXjLLg-1; Fri, 26 May 2023 06:19:42 -0400
-X-MC-Unique: PHfJCc1mNSC7tPpXYXjLLg-1
+ us-mta-669-mdVwT3l8NjiK8XAPyVc6Lg-1; Fri, 26 May 2023 06:19:44 -0400
+X-MC-Unique: mdVwT3l8NjiK8XAPyVc6Lg-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E3168002BF;
- Fri, 26 May 2023 10:19:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA64A8015D8;
+ Fri, 26 May 2023 10:19:43 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.51])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2A65240C1438;
- Fri, 26 May 2023 10:19:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9715540C125C;
+ Fri, 26 May 2023 10:19:42 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Beraldo Leal <bleal@redhat.com>,
@@ -50,10 +50,10 @@ Cc: Beraldo Leal <bleal@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 2/5] gitlab: allow overriding name of the upstream
- repository
-Date: Fri, 26 May 2023 11:19:31 +0100
-Message-Id: <20230526101934.935969-3-berrange@redhat.com>
+Subject: [PATCH v2 3/5] gitlab: stable staging branches publish containers in
+ a separate tag
+Date: Fri, 26 May 2023 11:19:32 +0100
+Message-Id: <20230526101934.935969-4-berrange@redhat.com>
 In-Reply-To: <20230526101934.935969-1-berrange@redhat.com>
 References: <20230526101934.935969-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -67,8 +67,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,105 +84,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CI rules have special logic for what happens in upstream. To enable
-contributors who modify CI rules to test this logic, however, they need
-to be able to override which repo is considered upstream. This
-introduces the 'QEMU_CI_UPSTREAM' variable
+If the stable staging branches publish containers under the 'latest' tag
+they will clash with containers published on the primary staging branch,
+as well  as with each other. This introduces logic that overrides the
+container tag when jobs run against the stable staging branches.
 
-  git push gitlab <branch> -o ci.variable=QEMU_CI_UPSTREAM=berrange
-
-to make it look as if my namespace is the actual upstream. Namespace in
-this context refers to the path fragement in gitlab URLs that is above
-the repository. Typically this will be the contributor's gitlab login
-name.
+The CI_COMMIT_REF_SLUG variable we use expands to the git branch name,
+but with most special characters removed, such that it is valid as a
+docker tag name. eg 'staging-8.0' will get a slug of 'staging-8-0'
 
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- .gitlab-ci.d/base.yml      | 19 ++++++++++++-------
- docs/devel/ci-jobs.rst.inc |  6 ++++++
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ .gitlab-ci.d/base.yml | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
 diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
-index fba9d31cc6..a1d734267a 100644
+index a1d734267a..f379c182a7 100644
 --- a/.gitlab-ci.d/base.yml
 +++ b/.gitlab-ci.d/base.yml
-@@ -5,6 +5,11 @@ variables:
+@@ -1,7 +1,7 @@
+ 
+ variables:
+-  # On stable branches this needs changing. Should also be
+-  # overridden per pipeline if running pipelines concurrently
++  # On stable branches this is changed by later rules. Should also
++  # be overridden per pipeline if running pipelines concurrently
    # for different branches in contributor forks.
    QEMU_CI_CONTAINER_TAG: latest
  
-+  # For purposes of CI rules, upstream is the gitlab.com/qemu-project
-+  # namespace. When testing CI, it might be usefult to override this
-+  # to point to a fork repo
-+  QEMU_CI_UPSTREAM: qemu-project
-+
- # The order of rules defined here is critically important.
- # They are evaluated in order and first match wins.
+@@ -16,6 +16,9 @@ variables:
+ # Thus we group them into a number of stages, ordered from
+ # most restrictive to least restrictive
  #
-@@ -30,23 +35,23 @@ variables:
-       when: never
++# For pipelines running for stable "staging-X.Y" branches
++# we must override QEMU_CI_CONTAINER_TAG
++#
+ .base_job_template:
+   variables:
+     # Each script line from will be in a collapsible section in the job output
+@@ -61,11 +64,23 @@ variables:
+     #############################################################
  
-     # Publishing jobs should only run on the default branch in upstream
--    - if: '$QEMU_JOB_PUBLISH == "1" && $CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
-+    - if: '$QEMU_JOB_PUBLISH == "1" && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
-       when: never
- 
-     # Non-publishing jobs should only run on staging branches in upstream
--    - if: '$QEMU_JOB_PUBLISH != "1" && $CI_PROJECT_NAMESPACE == "qemu-project" && $CI_COMMIT_BRANCH !~ /staging/'
-+    - if: '$QEMU_JOB_PUBLISH != "1" && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH !~ /staging/'
-       when: never
- 
-     # Jobs only intended for forks should always be skipped on upstream
--    - if: '$QEMU_JOB_ONLY_FORKS == "1" && $CI_PROJECT_NAMESPACE == "qemu-project"'
-+    - if: '$QEMU_JOB_ONLY_FORKS == "1" && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM'
-       when: never
- 
-     # Forks don't get pipelines unless QEMU_CI=1 or QEMU_CI=2 is set
--    - if: '$QEMU_CI != "1" && $QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != "qemu-project"'
-+    - if: '$QEMU_CI != "1" && $QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
-       when: never
- 
-     # Avocado jobs don't run in forks unless $QEMU_CI_AVOCADO_TESTING is set
--    - if: '$QEMU_JOB_AVOCADO && $QEMU_CI_AVOCADO_TESTING != "1" && $CI_PROJECT_NAMESPACE != "qemu-project"'
-+    - if: '$QEMU_JOB_AVOCADO && $QEMU_CI_AVOCADO_TESTING != "1" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
-       when: never
- 
- 
-@@ -66,7 +71,7 @@ variables:
-       allow_failure: true
- 
-     # Avocado jobs can be manually start in forks if $QEMU_CI_AVOCADO_TESTING is unset
--    - if: '$QEMU_JOB_AVOCADO && $CI_PROJECT_NAMESPACE != "qemu-project"'
-+    - if: '$QEMU_JOB_AVOCADO && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
+     # Optional jobs should not be run unless manually triggered
++    - if: '$QEMU_JOB_OPTIONAL && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
++      when: manual
++      allow_failure: true
++      variables:
++        QEMU_CI_CONTAINER_TAG: $CI_COMMIT_REF_SLUG
++
+     - if: '$QEMU_JOB_OPTIONAL'
        when: manual
        allow_failure: true
  
-@@ -78,7 +83,7 @@ variables:
- 
-     # Forks pipeline jobs don't start automatically unless
-     # QEMU_CI=2 is set
--    - if: '$QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != "qemu-project"'
-+    - if: '$QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
+     # Skipped jobs should not be run unless manually triggered
++    - if: '$QEMU_JOB_SKIPPED && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
++      when: manual
++      allow_failure: true
++      variables:
++        QEMU_CI_CONTAINER_TAG: $CI_COMMIT_REF_SLUG
++
+     - if: '$QEMU_JOB_SKIPPED'
+       when: manual
+       allow_failure: true
+@@ -87,4 +102,9 @@ variables:
        when: manual
  
      # Jobs can run if any jobs they depend on were successful
-diff --git a/docs/devel/ci-jobs.rst.inc b/docs/devel/ci-jobs.rst.inc
-index f72537853b..f9ef14f2eb 100644
---- a/docs/devel/ci-jobs.rst.inc
-+++ b/docs/devel/ci-jobs.rst.inc
-@@ -75,6 +75,12 @@ in a handful of namespaces
-    'latest', but if running pipelines for different branches
-    concurrently, it should be overridden per pipeline.
- 
-+ * QEMU_CI_UPSTREAM - gitlab namespace that is considerd to be
-+   the 'upstream'. This defaults to 'qemu-project'. Contributors
-+   may choose to override this if they are modifying rules in
-+   base.yml and need to validate how they will operate when in
-+   an upstream context, as opposed to their fork context.
++    - if: '$QEMU_JOB_SKIPPED && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
++      when: on_success
++      variables:
++        QEMU_CI_CONTAINER_TAG: $CI_COMMIT_REF_SLUG
 +
-  * nnn - other misc variables not falling into the above
-    categories, or using different names for historical reasons
-    and not yet converted.
+     - when: on_success
 -- 
 2.40.1
 
