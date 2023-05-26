@@ -2,88 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7543271217E
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 09:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 989CB7121A7
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 09:56:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2SCO-0001sf-EO; Fri, 26 May 2023 03:49:20 -0400
+	id 1q2SIM-000357-R8; Fri, 26 May 2023 03:55:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1q2SCM-0001ro-Al
- for qemu-devel@nongnu.org; Fri, 26 May 2023 03:49:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1q2SIK-00034O-2C; Fri, 26 May 2023 03:55:28 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1q2SCK-0008GX-Iz
- for qemu-devel@nongnu.org; Fri, 26 May 2023 03:49:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685087355;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=kfbqS1Kld0fYIdHR4XSa7rFC+bosN/HxPJ6cUXkcl+4=;
- b=cWeLIgx5NVxkfCS4O87SMmK+UXXtYYg137HQziFdkrKHPvjWqUR9JoeiGErdCihvL/ByO9
- hnl83/XigvemjwJY7YyLSPGG/ohA4XqlkvrV6OmADwLKrHPJ8QOlscoOXdSsYqsD3lgpT/
- eF+TIih4kgAkOGzhBoyVGFkErEI1KJI=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-nc39jF6qMkWadtoF2bB3yg-1; Fri, 26 May 2023 03:49:14 -0400
-X-MC-Unique: nc39jF6qMkWadtoF2bB3yg-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-2533e0cd8f2so474457a91.2
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 00:49:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685087353; x=1687679353;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kfbqS1Kld0fYIdHR4XSa7rFC+bosN/HxPJ6cUXkcl+4=;
- b=QfX+nfy84RHsD8WD6+jFE3M9xQ25NHj2mcLbuvqkgD2ZfVKxvx1kJ6g7P8GbHjgKIr
- Jh1cAMWEIbcMIFhdpBw8gSazkJ8vCvwtz++Vle3kO9hEIynM2Wfb90xFiLrs1EajJ0aH
- O3Q09XK8pP/653V2IqdZPiVVmbbC+hymCMHZBq0ekQTANWcydSqBzLsRc9v1PwdDeq2Q
- Iv14Qj4uRO1NyzeyFg3SiOIGNOsSl/YUzDWYrlTq8ABJCB6AlsEKpvDQF7T+EyLPXdX3
- ut76eqs6QMn0+8ZNUyl7uhK9VufBvuPDg0IRsd+rI6MdMsytjGhqBTq8afGjbwO+pKRg
- BF0Q==
-X-Gm-Message-State: AC+VfDyABl3yfGvCmLiGTHtW0Kn7JDCmT27J2jg0TXtPauqtAFryI/v4
- PYcj+eJnuJ5ksB9l7cbjuOfrFtRK0/ttT2lM2bDqWtsykbANpx0zN0zMdzzoEXvPf4HeXJTXWY4
- jY2eTG5JK8fUocV5asqPk98mixQBBHzg=
-X-Received: by 2002:a17:90a:7a8d:b0:250:b16:f498 with SMTP id
- q13-20020a17090a7a8d00b002500b16f498mr1245037pjf.47.1685087352955; 
- Fri, 26 May 2023 00:49:12 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7gFGOgcXAfc6jLGOavv5CglChKRk0fRQXZvZ6vqRKqR+/MjuVyqyRWi4VM/R223oHyfECBB9ZRmG3ozutIsoM=
-X-Received: by 2002:a17:90a:7a8d:b0:250:b16:f498 with SMTP id
- q13-20020a17090a7a8d00b002500b16f498mr1245020pjf.47.1685087352629; Fri, 26
- May 2023 00:49:12 -0700 (PDT)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 26 May 2023 03:49:11 -0400
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20230525164803.17992-1-sunilvl@ventanamicro.com>
- <CABJz62MFZzx3jBgW6TtGFD9emY+DAbbftSybD8ZouC65n3-auA@mail.gmail.com>
- <20230526-b0d8b56e9688dea7ae9d00d5@orel>
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1q2SIH-0001Mq-LK; Fri, 26 May 2023 03:55:27 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34Q7cxKm000430; Fri, 26 May 2023 07:55:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=osFeAjpMUYdLuuhYIbQcBYeMyeR/1AANZwRX2ZjVXf4=;
+ b=NyWYjm5iHZggMjZ/pKGnjQXaHueFDX8KMdAxv1A62ub7hGyc0cmSQx+m7mGGwupJFs3a
+ dHvhWImCbDeVYxJv3l5vACTIn/j2Jkmgt4ipo/s0w2FqwFysUxEHzASb2x2v7tXf8JT7
+ zAsVNmUMOF+Z+D++VRDSEnXqIRmHaAjbaFH+4UqkcPd/hPPnsyyLx2eN3K+ji2VZGs19
+ 1BmnibzUXQhnvRqdImEvmIKIHcxXgJ+qbUT05VLbTTCzA+xqYPGbRDGfcI6SfmUStiIU
+ RicWCDUFDr0ghypRfmGVrkmkSvDRKKQVOQARnCVwCuc1NjcJfUitUtze33lw4ESmyV1X 6Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qtrc00k7q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 May 2023 07:55:19 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34Q7d0CI000617;
+ Fri, 26 May 2023 07:55:19 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qtrc00k6p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 May 2023 07:55:18 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34Q1d0wv026986;
+ Fri, 26 May 2023 07:55:17 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qppdk2tjv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 May 2023 07:55:17 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34Q7tEt916712252
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 May 2023 07:55:14 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB0F920043;
+ Fri, 26 May 2023 07:55:14 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 651DF20040;
+ Fri, 26 May 2023 07:55:14 +0000 (GMT)
+Received: from [9.171.59.191] (unknown [9.171.59.191])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 26 May 2023 07:55:14 +0000 (GMT)
+Message-ID: <1be662bb-d530-1a31-dfb6-750776b607a1@linux.ibm.com>
+Date: Fri, 26 May 2023 09:55:13 +0200
 MIME-Version: 1.0
-In-Reply-To: <20230526-b0d8b56e9688dea7ae9d00d5@orel>
-Date: Fri, 26 May 2023 03:49:11 -0400
-Message-ID: <CABJz62Nk-U+qHQjn6G2-bN8i9RcMEZWdYTyi7wqC=7BVjDSBWQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] hw/riscv/virt: pflash improvements
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: Sunil V L <sunilvl@ventanamicro.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] pnv_lpc: disable reentrancy detection for lpc-hc
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-devel@nongnu.org, Alexander Bulekov <alxndr@bu.edu>
+References: <20230526073850.2772197-1-clg@kaod.org>
+Content-Language: en-US
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+In-Reply-To: <20230526073850.2772197-1-clg@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qzcpqul23idZR1YRJzRazlpnB-r8vRax
+X-Proofpoint-ORIG-GUID: gMBDvyKjcuRTw9B-ywWQotH6zvLyDiKa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-26_01,2023-05-25_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ bulkscore=0 mlxlogscore=693 spamscore=0 mlxscore=0 priorityscore=1501
+ malwarescore=0 clxscore=1015 impostorscore=0 adultscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305260063
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,44 +114,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 26, 2023 at 08:39:07AM +0200, Andrew Jones wrote:
-> On Thu, May 25, 2023 at 11:03:52AM -0700, Andrea Bolognani wrote:
-> > With these patches applied, libvirt built from the master branch,
-> > edk2 built from your branch and a JSON firmware descriptor for it
-> > installed (attached), it's finally possible to boot an unmodified
-> > openSUSE Tumbleweed RISC-V disk image by simply including
-> >
-> >   <os firmware='efi'>
->
-> Hi Andrea,
->
-> I'm a bit concerned that we don't also need to add some XML in order to
-> disable ACPI right now. RISC-V guest kernels will support ACPI in the
-> near future. Ideally a default libvirt VM using edk2 will also use ACPI.
-> Will there be a problem with changing that default later? If so, then
-> I'd change it now and continue burdening developers a bit longer by
-> requiring them to explicitly disable it.
 
-libvirt doesn't enable ACPI by default on any architecture, not even
-x86_64. virt-manager will enable it by default if it's advertised as
-available on the architecture in the capabilities XML.
 
-However, it looks like the corresponding code in libvirt is not as
-dynamic as I would have assumed: instead, we hardcode the list of
-architectures that advertise ACPI support available, and at the
-moment that list does *not* include RISC-V :)
+On 26/05/2023 09:38, Cédric Le Goater wrote:
+> From: Alexander Bulekov <alxndr@bu.edu>
+> 
+> As lpc-hc is designed for re-entrant calls from xscom, mark it
+> re-entrancy safe.
+> 
+> Reported-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
+> [clg: mark opb_master_regs as re-entrancy safe also ]
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
 
-I think it would make sense to fix this, but I want to make sure I
-understand the impact. Is this just an UEFI thing? All my other
-RISC-V guests (Fedora, Ubuntu, FreeBSD) boot just fine when I turn
-ACPI on. In fact, even the openSUSE one works with ACPI on, as long
-as the UEFI implementation used is the U-Boot one rather than edk2.
 
-So, are edk2 users the only ones who would (temporarily) need to
-manually turn ACPI off if virt-manager started enabling it by
-default?
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
--- 
-Andrea Bolognani / Red Hat / Virtualization
+Thanks,
 
+   Fred
+
+
+>   hw/ppc/pnv_lpc.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+> index 01f44c19ebba..605d3908617a 100644
+> --- a/hw/ppc/pnv_lpc.c
+> +++ b/hw/ppc/pnv_lpc.c
+> @@ -734,10 +734,13 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
+>       /* Create MMIO regions for LPC HC and OPB registers */
+>       memory_region_init_io(&lpc->opb_master_regs, OBJECT(dev), &opb_master_ops,
+>                             lpc, "lpc-opb-master", LPC_OPB_REGS_OPB_SIZE);
+> +    lpc->opb_master_regs.disable_reentrancy_guard = true;
+>       memory_region_add_subregion(&lpc->opb_mr, LPC_OPB_REGS_OPB_ADDR,
+>                                   &lpc->opb_master_regs);
+>       memory_region_init_io(&lpc->lpc_hc_regs, OBJECT(dev), &lpc_hc_ops, lpc,
+>                             "lpc-hc", LPC_HC_REGS_OPB_SIZE);
+> +    /* xscom writes to lpc-hc. As such mark lpc-hc re-entrancy safe */
+> +    lpc->lpc_hc_regs.disable_reentrancy_guard = true;
+>       memory_region_add_subregion(&lpc->opb_mr, LPC_HC_REGS_OPB_ADDR,
+>                                   &lpc->lpc_hc_regs);
+>   
 
