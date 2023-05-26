@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7A3711B21
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 02:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 966C3711B20
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 02:27:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2LFO-0002fC-MH; Thu, 25 May 2023 20:23:58 -0400
+	id 1q2LFV-0002im-GB; Thu, 25 May 2023 20:24:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2LFN-0002ed-MT
- for qemu-devel@nongnu.org; Thu, 25 May 2023 20:23:57 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1q2LFT-0002gn-37
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 20:24:03 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2LFF-0002Cl-31
- for qemu-devel@nongnu.org; Thu, 25 May 2023 20:23:57 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-64d18d772bdso438518b3a.3
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 17:23:48 -0700 (PDT)
+ id 1q2LFG-0002DI-GP
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 20:24:02 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-64d44b198baso265041b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 17:23:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685060628; x=1687652628;
+ d=linaro.org; s=google; t=1685060629; x=1687652629;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8PelXVvmbJtXORMvHTpXHymW8juD44eXP1zIzDNEopo=;
- b=TQY8ejxP1hQn2OBtZ9M8n2clES6hnmTmDM+Po+iGq/3X7lHnhOkwIvdpFefgKIaokP
- RhWHHgDtPcuNa9gggpTFRjmpqSrV/zaat++QNHWlY+UhKeBQFDZEiFlRiSnn+wIf8UrW
- PZ8z32ALQg6Pxr079xIjgGMprbZxcNc+eOKZ0tjpcV0BiBw1fDNJv6RyQX6tZxsAT+2W
- fLeXTyhZHuMnoGaLcn0RA+q8UzwXsVoAAQEq7bnuJNf4Cg1LoRL+sO+sOwvZvpxrjk0E
- S4QKkcXZKxomrdF3ixxh2/r/Luv9P91JbJmZ8TEKr6d+7i4L1ElpbE5VdCVhorLvQd83
- lC1w==
+ bh=S6NQFZiOtbz6npGqiyw8uq/rNuokDU9J11iDsc0p5sk=;
+ b=NEk6PwrpN1tWfEBYxVopvFRF1iSf5H5UL3yV8vltA+oSrwiIfIcNoWKJf/aGJrB2eZ
+ 3i68wjSdFNpjBd93m4oxq9hN//7Q2H0Uu4CIJ8DRGlLMcA/okrI985niyK6JqR1cTVJg
+ maX4aABJhCnnAMk0n9DNMkwb7arE7EXUrD4He+4kg+jmlA9PBkvrMyLynII85yiMizzU
+ G4TZwnmlGEQxmEeh5w2mAb0d0prYUZ+JWT/EVhBBTWjaq+Nb1nWiOflRsarhNeP9rLWE
+ C0D0gMFgI2OjJtK9aK/CsO+TCa4D95hChq9xywyX8/FpTnmXhUBpiovE43dItN8uv1zB
+ 3EVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685060628; x=1687652628;
+ d=1e100.net; s=20221208; t=1685060629; x=1687652629;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8PelXVvmbJtXORMvHTpXHymW8juD44eXP1zIzDNEopo=;
- b=eoQXXQOTXjK0MZaG6Kln/VM/eO1wQ69vH80TFLs0fmJyLHyDgWFEIry7u1gvoIMOAY
- 4eys2CJEHpqb/cdGy9IHMDTDQ1VgLQJqBehTAN93eTB7Ji+Tsri0v15nQf3FEggmbMBW
- YDVc5gF8mfaA6n/7OcpdcZQ9iOrdsEcEZM2mheuZA2ewYALzqycZYbbzy9tevswUIl0I
- cLL+sGGz33HC8P8vqWord9t7hHCN+0f8hYyeGbOc8LjMSb0N87V8jI3G8YyAe/DvdQju
- By1Sp377zncdi+eETSBgCfq+7WuNIdVgbpgCq44qBwW9QVfBm/pEjbahd1MSyGMSj9dY
- rD+g==
-X-Gm-Message-State: AC+VfDyHSfydmehq0bUyjvmN2nTuBij5Qs8D1SxsK3vrjt/P4OPItP1N
- 7d4WdSMAelVdcuEIHyJNzyBNsj9y2V5Tqxh/U+g=
-X-Google-Smtp-Source: ACHHUZ6Knx2hAO58N+KPD6XiC1bZQwS28vzGQUpljvRXj4CgTJh2L3XbRgx3KvZHvZlmBffV1PExMw==
-X-Received: by 2002:a05:6a21:796:b0:10d:b160:3d4f with SMTP id
- mg22-20020a056a21079600b0010db1603d4fmr6246334pzb.38.1685060627890; 
- Thu, 25 May 2023 17:23:47 -0700 (PDT)
+ bh=S6NQFZiOtbz6npGqiyw8uq/rNuokDU9J11iDsc0p5sk=;
+ b=dAfsAmk0GHYx9T+3+u5FHFbY0g84Vw9KX8YUA+cavYcX9OP5kaUw0g3niIiKcuTPRF
+ PcAeSsGuKqGejwZ4l1xfSKZJX7tc8x51UUpaEG8YPnlIimLnBGFQPl+TZHTKE0DG5xCd
+ TFpSk+yHjAvcBjwG5puV5fDMNHYQv+iQOZKGJS4tCjDzAJ8QyuEdP5+yxSaDO0lTYYqc
+ GAukSAe8aUQzkb7roaEMs3XdRo3zz4kSdWsNJBEtLMruflRpVaNFudRGS7K/jCRpxO+Y
+ pqwp1uALfEL1L3HPiyi1jkxTC0/Vo1ui7yzN68AHqYOaQFv2PeKqcsU22qvtN9tYOuMO
+ 7TLQ==
+X-Gm-Message-State: AC+VfDxj5BGvBN7Hyd81RgiaeD/MDSDzu+vih9DIs1/f3Hf5NBJkM/s/
+ a7rVUMZC36vNt4V8+FQp1ONDi7ZRDUzolIhVN1c=
+X-Google-Smtp-Source: ACHHUZ7Ile414kasxPuMVlVTDt6ydInGvoFxA86BMglMS8DNL8mQh9xafaxVmFHQXqYAaJy0R2eIgQ==
+X-Received: by 2002:aa7:8891:0:b0:63b:54e4:871b with SMTP id
+ z17-20020aa78891000000b0063b54e4871bmr3705pfe.8.1685060628738; 
+ Thu, 25 May 2023 17:23:48 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:7ac5:31cc:3997:3a16])
  by smtp.gmail.com with ESMTPSA id
- s188-20020a635ec5000000b0053491d92b65sm1675593pgb.84.2023.05.25.17.23.47
+ s188-20020a635ec5000000b0053491d92b65sm1675593pgb.84.2023.05.25.17.23.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 May 2023 17:23:47 -0700 (PDT)
+ Thu, 25 May 2023 17:23:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v4 15/16] accel/tcg: Add aarch64 lse2
- load_atom_extract_al16_or_al8
-Date: Thu, 25 May 2023 17:23:33 -0700
-Message-Id: <20230526002334.1760495-16-richard.henderson@linaro.org>
+Subject: [PATCH v4 16/16] accel/tcg: Add aarch64 store_atom_insert_al16
+Date: Thu, 25 May 2023 17:23:34 -0700
+Message-Id: <20230526002334.1760495-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230526002334.1760495-1-richard.henderson@linaro.org>
 References: <20230526002334.1760495-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,56 +93,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- .../aarch64/host/load-extract-al16-al8.h      | 40 +++++++++++++++++++
- 1 file changed, 40 insertions(+)
- create mode 100644 host/include/aarch64/host/load-extract-al16-al8.h
+ host/include/aarch64/host/store-insert-al16.h | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+ create mode 100644 host/include/aarch64/host/store-insert-al16.h
 
-diff --git a/host/include/aarch64/host/load-extract-al16-al8.h b/host/include/aarch64/host/load-extract-al16-al8.h
+diff --git a/host/include/aarch64/host/store-insert-al16.h b/host/include/aarch64/host/store-insert-al16.h
 new file mode 100644
-index 0000000000..bd677c5e26
+index 0000000000..1943155bc6
 --- /dev/null
-+++ b/host/include/aarch64/host/load-extract-al16-al8.h
-@@ -0,0 +1,40 @@
++++ b/host/include/aarch64/host/store-insert-al16.h
+@@ -0,0 +1,47 @@
 +/*
 + * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Atomic extract 64 from 128-bit, AArch64 version.
++ * Atomic store insert into 128-bit, AArch64 version.
 + *
 + * Copyright (C) 2023 Linaro, Ltd.
 + */
 +
-+#ifndef AARCH64_LOAD_EXTRACT_AL16_AL8_H
-+#define AARCH64_LOAD_EXTRACT_AL16_AL8_H
-+
-+#include "host/cpuinfo.h"
-+#include "tcg/debug-assert.h"
++#ifndef AARCH64_STORE_INSERT_AL16_H
++#define AARCH64_STORE_INSERT_AL16_H
 +
 +/**
-+ * load_atom_extract_al16_or_al8:
-+ * @pv: host address
-+ * @s: object size in bytes, @s <= 8.
++ * store_atom_insert_al16:
++ * @p: host address
++ * @val: shifted value to store
++ * @msk: mask for value to store
 + *
-+ * Load @s bytes from @pv, when pv % s != 0.  If [p, p+s-1] does not
-+ * cross an 16-byte boundary then the access must be 16-byte atomic,
-+ * otherwise the access must be 8-byte atomic.
++ * Atomically store @val to @p masked by @msk.
 + */
-+static inline uint64_t load_atom_extract_al16_or_al8(void *pv, int s)
++static inline void ATTRIBUTE_ATOMIC128_OPT
++store_atom_insert_al16(Int128 *ps, Int128 val, Int128 msk)
 +{
-+    uintptr_t pi = (uintptr_t)pv;
-+    __int128_t *ptr_align = (__int128_t *)(pi & ~7);
-+    int shr = (pi & 7) * 8;
-+    uint64_t l, h;
-+
 +    /*
-+     * With FEAT_LSE2, LDP is single-copy atomic if 16-byte aligned
-+     * and single-copy atomic on the parts if 8-byte aligned.
-+     * All we need do is align the pointer mod 8.
++     * GCC only implements __sync* primitives for int128 on aarch64.
++     * We can do better without the barriers, and integrating the
++     * arithmetic into the load-exclusive/store-conditional pair.
 +     */
-+    tcg_debug_assert(HAVE_ATOMIC128_RO);
-+    asm("ldp %0, %1, %2" : "=r"(l), "=r"(h) : "m"(*ptr_align));
-+    return (l >> shr) | (h << (-shr & 63));
++    uint64_t tl, th, vl, vh, ml, mh;
++    uint32_t fail;
++
++    qemu_build_assert(!HOST_BIG_ENDIAN);
++    vl = int128_getlo(val);
++    vh = int128_gethi(val);
++    ml = int128_getlo(msk);
++    mh = int128_gethi(msk);
++
++    asm("0: ldxp %[l], %[h], %[mem]\n\t"
++        "bic %[l], %[l], %[ml]\n\t"
++        "bic %[h], %[h], %[mh]\n\t"
++        "orr %[l], %[l], %[vl]\n\t"
++        "orr %[h], %[h], %[vh]\n\t"
++        "stxp %w[f], %[l], %[h], %[mem]\n\t"
++        "cbnz %w[f], 0b\n"
++        : [mem] "+Q"(*ps), [f] "=&r"(fail), [l] "=&r"(tl), [h] "=&r"(th)
++        : [vl] "r"(vl), [vh] "r"(vh), [ml] "r"(ml), [mh] "r"(mh));
 +}
 +
-+#endif /* AARCH64_LOAD_EXTRACT_AL16_AL8_H */
++#endif /* AARCH64_STORE_INSERT_AL16_H */
 -- 
 2.34.1
 
