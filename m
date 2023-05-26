@@ -2,90 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B7C7121B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFF17121C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:02:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2SML-0004du-8l; Fri, 26 May 2023 03:59:38 -0400
+	id 1q2SOs-0005Wr-1I; Fri, 26 May 2023 04:02:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q2SMI-0004dT-64
- for qemu-devel@nongnu.org; Fri, 26 May 2023 03:59:34 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2SOn-0005WM-9A
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:02:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q2SMG-00020C-RJ
- for qemu-devel@nongnu.org; Fri, 26 May 2023 03:59:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2SOl-0002eJ-SF
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:02:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685087972;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ZnptlWYq96+28nV0LA/J+jGkM3GiIjHPRLEQ0pTEhTk=;
- b=ZbFdnMo0xMd+aeRaCA92cFawejCWCt3rogVPLcxV8VrX03eFfbsefvce8bXGdL1EuGzirT
- rURXjHNgf/eoP8xTOie95bVp5oONgsv7qx7pMzibwPqgX6J3rYCwaaxAh1Eh9fE+kU1bRY
- q/gfud+CtXDXCJwYrmAvLxHi0Xmreuo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1685088127;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gv7BppRhwmi+BKHwjNyLohMWxBDW2wK0ahUSQ15bND0=;
+ b=Nw6/2yRJlTzlZ1ULHTyGN+CdsSZ4xr925rb7qZvj03IwYwb/86xIgPUDWiPgK2mflCz4dm
+ GmyGUB4sEcMtkoHuUmf8HOMRDtox8VXI/iUep4pE8uOGKDIF5c7JwsTBNwdQngcFvECwCu
+ OlhRhIQwWEfAeIKa1cjN/4ebdeUf0is=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-Koqg4pemPEiBngGeJ6JgKg-1; Fri, 26 May 2023 03:59:30 -0400
-X-MC-Unique: Koqg4pemPEiBngGeJ6JgKg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30a8f6d7bbdso175879f8f.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 00:59:30 -0700 (PDT)
+ us-mta-290--rx0ls1ONZip68bzCcogXQ-1; Fri, 26 May 2023 04:02:05 -0400
+X-MC-Unique: -rx0ls1ONZip68bzCcogXQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f518f2900eso3646765e9.2
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 01:02:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685087969; x=1687679969;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZnptlWYq96+28nV0LA/J+jGkM3GiIjHPRLEQ0pTEhTk=;
- b=YdSRE8idmAbjDf7nxjnpaBrP0Nft3Zlq6kF1a3fjEO1Xwlz5kAud5NLICmCZlH4uj2
- ka+V0p1helkGcNhdfJC4RVKtMRYvT7+dPwBGBQc6ngDDEppS7faZFc7os4mHdh8DnnlY
- FQngVWdw6E56pz4I79a2eENgG5m3gebhpq9dIGfWHTaUOc/jkMqJeG1WkaVe2F7UZphM
- dwCtEBhfIfnU0iw2Nga+5CP2mVZJggufehwhp75h8oBJFRA1jYYHFzpLpGrTNvYHlvvq
- +I/f9sUawU1M7VMvSSGv0jyyNFXVM/etXvrOK5e4TGY0Zv34NZRggzfaHBhw0QCm5ewM
- DyEQ==
-X-Gm-Message-State: AC+VfDzLo8DJaITgUavsQDRH0+gjhT702ps21YYXLoGpjU1kxNJ9yVa+
- CtwWoXz7AoO0gYCvAdkwTqvcOGVU6xSelsjn5YV2Pl1oumFE1wviK4n9BjRSoQFjLagJELMs0+E
- CUmjcnCIRzDTVaMzudEB/uAnEhQ==
-X-Received: by 2002:a5d:6644:0:b0:304:6fef:f375 with SMTP id
- f4-20020a5d6644000000b003046feff375mr679421wrw.70.1685087968933; 
- Fri, 26 May 2023 00:59:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5vUl6E6MHFh6G96TcNB+yRXSz+rHozoleH6zyfwi7zW3DLJDSJEzEVg/9Y0c9u5ckevM0QRQ==
-X-Received: by 2002:a5d:6644:0:b0:304:6fef:f375 with SMTP id
- f4-20020a5d6644000000b003046feff375mr679407wrw.70.1685087968647; 
- Fri, 26 May 2023 00:59:28 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- q14-20020adff50e000000b00307acec258esm4255304wro.3.2023.05.26.00.59.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 00:59:28 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org,  pbonzini@redhat.com,  leobras@redhat.com,
- peterx@redhat.com,  yc-core@yandex-team.ru
-Subject: Re: [PATCH 0/5] Restore vmstate on cancelled/failed migration
-In-Reply-To: <19a170c1-fd9f-e62e-ed17-0315b566cd7f@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Thu, 18 May 2023 17:49:01 +0300")
-References: <20230517123752.21615-1-vsementsov@yandex-team.ru>
- <871qjdevcj.fsf@secure.mitica>
- <19a170c1-fd9f-e62e-ed17-0315b566cd7f@yandex-team.ru>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Fri, 26 May 2023 09:59:27 +0200
-Message-ID: <87edn34j6o.fsf@secure.mitica>
+ d=1e100.net; s=20221208; t=1685088124; x=1687680124;
+ h=content-transfer-encoding:in-reply-to:subject:from:cc:references:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gv7BppRhwmi+BKHwjNyLohMWxBDW2wK0ahUSQ15bND0=;
+ b=G5SztJLBWK+ktN80eyf9Kgp4uQNaGuCehoSuseAtx1kh0b0FfNtVE6W/Ik9zDatOGW
+ 24pqk92ORhvdwZTfvu2LAG1CBZ4ADI9dSYJZTNp5XdiKPXenFP70EvqSPHC72Nt14ec9
+ Xhk38s2kQrhfrAasnPKgFhQ4FqxjisgSOSL5Fif6d+xpDM566+rmqZ8olVt8AwFH8Bnz
+ w8D6N0/KO5LMvS5JGCMmUwFqYnm4iphEvxsotgRUpz39wuSUxne0pyk6yPl/LjDtuOM7
+ K8+C3Eyrwi82qZX8LWVUF25N7Kt/1mgYhvScXTSVpOYs+N4yYccSuqVyFktq/v2fAFZD
+ Ya1w==
+X-Gm-Message-State: AC+VfDzUQdXNJXxevi4RncI97NLCjCfehzPScs0phQhBEDhdlW/h17Rh
+ Ja7bZomL3bjmPcJSbsWUMSJvsjfTlCFwGbmohaWcMKKVV5o7/u/dGwouldpt7xEIxaKc8hS5VtS
+ vF92T1NKKEY5v2CA=
+X-Received: by 2002:a7b:cd15:0:b0:3f6:490:a7f3 with SMTP id
+ f21-20020a7bcd15000000b003f60490a7f3mr681078wmj.9.1685088124114; 
+ Fri, 26 May 2023 01:02:04 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7ilgr/2eBvayv5KFHO9qh98zlxESyQPPHib59LlF59SlsN4r2wkDfceOgnibHbrh2zbVBsJA==
+X-Received: by 2002:a7b:cd15:0:b0:3f6:490:a7f3 with SMTP id
+ f21-20020a7bcd15000000b003f60490a7f3mr681060wmj.9.1685088123816; 
+ Fri, 26 May 2023 01:02:03 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-176-189.web.vodafone.de.
+ [109.43.176.189]) by smtp.gmail.com with ESMTPSA id
+ p25-20020a7bcc99000000b003f1751016desm4442574wma.28.2023.05.26.01.02.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 01:02:03 -0700 (PDT)
+Message-ID: <333138b6-401b-d863-c2cf-90e36d16cc97@redhat.com>
+Date: Fri, 26 May 2023 10:02:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>, Qemu-block <qemu-block@nongnu.org>
+References: <7b1805ad-56fd-77f7-48f7-fdf80f6a2e5b@linaro.org>
+ <d1ab807e-3a9a-91b9-ad52-2d46c06ff54b@linaro.org>
+Cc: Hanna Czenczek <hreitz@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Kevin Wolf <kwolf@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: io-qcow2 failures on zfs
+In-Reply-To: <d1ab807e-3a9a-91b9-ad52-2d46c06ff54b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,47 +100,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> wrote:
-> On 18.05.23 14:23, Juan Quintela wrote:
->> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> wrote:
->>> Hi all.
->>>
->>> The problem I want to solve is that guest-panicked state may be lost
->>> when migration is failed (or cancelled) after source stop.
->>>
->>> Still, I try to go further and restore all possible paused states in the
->>> same way. The key patch is the last one and others are refactoring and
->>> preparation.
->> Hi
->> I like and agree with the spirit of the series in general.  But I
->> think
->> that we need to drop the "never fail in global_state_store()".  We
->> shouldn't kill a guest because we found a bug on migration.
->> 
->
-> Why migration is better in this sense than non-migration? We have a
-> lot of places where we just assert things instead of creating
-> unreachable error messages. I think assert/abort is always better in
-> such cases. Really, if we fail in this assertion it means that memory
-> is corrupted, and stopping the execution is the best thing to do.
->
-> (Should we consider the case that in future we add 100 character length vmstate? I hope we should not)
+On 25/05/2023 20.29, Richard Henderson wrote:
+> Ping.
+> 
+> On 5/19/23 15:44, Richard Henderson wrote:
+>> I'm doing some testing on one of the Linaro build machines and I reliably see
+>>
+>> Summary of Failures:
+>>
+>> 712/790 qemu:block / 
+>> io-qcow2-150                                                 ERROR         
+>> 5.24s   exit status 1
+>> 777/790 qemu:block / 
+>> io-qcow2-copy-before-write                                   ERROR        
+>> 16.31s   exit status 1
+>> 779/790 qemu:block / 
+>> io-qcow2-244                                                 ERROR        
+>> 37.10s   exit status 1
+>>
+>> This is x86_64 ubuntu 22.04, same as my laptop, so the only thing I can 
+>> think is the filesystem type:
+>>
+>> hackpool-0/home/richard.henderson /home/richard.henderson zfs 
+>> rw,nosuid,nodev,noatime,xattr,noacl 0 0
+>>
+>> Any thoughts?
 
-Ok, I give up and integrate the series as they are O:-)
+What output do you get when running the tests directly? i.e.:
 
-I agree that this is a case that shouldn't happen, so assert() is not as
-out of question.
+cd tests/qemu-iotests/
+./check -qcow2 150
+./check -qcow2 copy-before-write
+./check -qcow2 244
 
-What I am trying to get migration is to really detect errors and be able
-to recover from them.  My long term crusade is getting rid of
-qemu_file_get_error() and just check the return value for functions that
-do IO.  Yes, it is a big long term because we need to change the whole
-interface to something saner.
-
-Later, Juan.
+  Thomas
 
 
