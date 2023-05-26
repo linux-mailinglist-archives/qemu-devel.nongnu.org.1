@@ -2,60 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5A4712B53
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 19:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 689A3712B67
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 19:08:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2apW-0005U2-OU; Fri, 26 May 2023 13:02:18 -0400
+	id 1q2aum-00076M-MM; Fri, 26 May 2023 13:07:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q2apU-0005Ra-HD
- for qemu-devel@nongnu.org; Fri, 26 May 2023 13:02:16 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q2apS-0004Hs-GR
- for qemu-devel@nongnu.org; Fri, 26 May 2023 13:02:16 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QSWLd5GCJz6J74w;
- Sat, 27 May 2023 00:57:29 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Fri, 26 May 2023 18:02:12 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>
-CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
- <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>, Eric
- Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>, Thomas
- Huth <thuth@redhat.com>
-Subject: [PATCH v8 4/4] hw/cxl: Add clear poison mailbox command support.
-Date: Fri, 26 May 2023 18:00:10 +0100
-Message-ID: <20230526170010.574-5-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230526170010.574-1-Jonathan.Cameron@huawei.com>
-References: <20230526170010.574-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2auk-00076A-Qd
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 13:07:42 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2auj-0005I8-6B
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 13:07:42 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-25355609a04so1073042a91.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 10:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685120859; x=1687712859;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7KCFF8fuAyO7w0earSoVfEnZisT63NEg0lck/5lAnKY=;
+ b=MD9OQbXogfvvHYEWBd89FvSPyXeYmFFYXfWw1QbMsLfeSZtQxUtDkXRi0VqXwLiF8i
+ Svih8KlaAQycgtpZTyMVEOLQLsIMXKKBbhbzUhh6H+GJJumZLLMSNl8KqUHtUQNCgB9g
+ 0/eULzfOWChcBX/FQSUv5b9lPQDZvtuZT9yB8If5+Oo4eQW3FHP/XqJkla3RC1SpeYNc
+ QDQn4QyVCP8TTFuFr1r7uUKFPJycCohiWYp7zfQD6LFEVGLlLUXdB210RvfHzSzJtS0c
+ tfNmtFg3Kp4U6Oe4mg6QjiCxXV2/fAapcJajC/z4RebDRtPI2QIdgHLhPQVqzv453Hb/
+ hdrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685120859; x=1687712859;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7KCFF8fuAyO7w0earSoVfEnZisT63NEg0lck/5lAnKY=;
+ b=D0sQ2o6fq0L5Iiu6WWysT1uN8IV0F5VVTNJfz/cMyh4dGqLQrhxzaPLr+vuH1ZXTZQ
+ 7Ab+PczekY1dVBRtZN0WBjSJkiaHi8GhH/ktJOBtvTjeR/S4mDpo6jNwcxq6BRvA+GyS
+ YK8rh9BW2Bvxwe1wn0uzv6owCIZJsI9qKCS00fKnCOoRdgyBfVkBuD1VPcaPNTPzBQob
+ bFx4fyspmly7AJ8+9AfJ8s/7/vjxAv1KLVgtXN5yCJ1HCBOtIVoTuDZdkxsM1bB0/6Vx
+ uE9VLLkkrIXWvymZDz3I5z12YEHWvNThUIZKeRda2k+8X6nVIv8Ch8i23Xv1FKhqmAUR
+ IwgQ==
+X-Gm-Message-State: AC+VfDzHdjWkR/brxLXxhdsXpVUXptLJPEci851QU4auELi5UeYtvvVE
+ cd3X7hX9cgdNrOfu8fHbwNP6fQ==
+X-Google-Smtp-Source: ACHHUZ4pBssw+gBMphAgPVQeHkd6Po8vR3qkUSnYDcziHwpJ4qrVheey6sF3WzCiVdhfkeqd30s47A==
+X-Received: by 2002:a17:90b:4a51:b0:253:3cfa:e310 with SMTP id
+ lb17-20020a17090b4a5100b002533cfae310mr3083081pjb.19.1685120859264; 
+ Fri, 26 May 2023 10:07:39 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
+ ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
+ by smtp.gmail.com with ESMTPSA id
+ w13-20020a17090a460d00b0024dfbac9e2fsm4752916pjg.21.2023.05.26.10.07.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 10:07:38 -0700 (PDT)
+Message-ID: <aed8ee53-9482-8932-d2e8-d3b520de809f@linaro.org>
+Date: Fri, 26 May 2023 10:07:36 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 6/6] tests/decode: Add tests for various named-field cases
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230523120447.728365-1-peter.maydell@linaro.org>
+ <20230523120447.728365-7-peter.maydell@linaro.org>
+ <CAFEAcA-5DvFB1JiCwj1Gb7WUST4-OAyJ8nYDQax_msFZuFNhnQ@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA-5DvFB1JiCwj1Gb7WUST4-OAyJ8nYDQax_msFZuFNhnQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,198 +93,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current implementation is very simple so many of the corner
-cases do not exist (e.g. fragmenting larger poison list entries)
+On 5/24/23 03:26, Peter Maydell wrote:
+> On Tue, 23 May 2023 at 13:04, Peter Maydell <peter.maydell@linaro.org> wrote:
+>>
+>> Add some tests for various cases of named-field use, both ones that
+>> should work and ones that should be diagnosed as errors.
+>>
+>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>> ---
+>>   tests/decode/err_field1.decode       |  2 +-
+>>   tests/decode/err_field10.decode      |  7 +++++++
+>>   tests/decode/err_field7.decode       |  7 +++++++
+>>   tests/decode/err_field8.decode       |  8 ++++++++
+>>   tests/decode/err_field9.decode       | 14 ++++++++++++++
+>>   tests/decode/succ_named_field.decode | 19 +++++++++++++++++++
+>>   6 files changed, 56 insertions(+), 1 deletion(-)
+>>   create mode 100644 tests/decode/err_field10.decode
+>>   create mode 100644 tests/decode/err_field7.decode
+>>   create mode 100644 tests/decode/err_field8.decode
+>>   create mode 100644 tests/decode/err_field9.decode
+>>   create mode 100644 tests/decode/succ_named_field.decode
+>>
+>> diff --git a/tests/decode/err_field1.decode b/tests/decode/err_field1.decode
+>> index e07a5a73e0e..85c3f326d07 100644
+>> --- a/tests/decode/err_field1.decode
+>> +++ b/tests/decode/err_field1.decode
+>> @@ -2,4 +2,4 @@
+>>   # See the COPYING.LIB file in the top-level directory.
+>>
+>>   # Diagnose invalid field syntax
+>> -%field asdf
+>> +%field 1asdf
+> 
+> I just realized that this specific change needs to go before patch 5:
+> it's updating an existing test because "asdf" used to be invalid
+> syntax and now is not. Otherwise bisection will break.
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- include/hw/cxl/cxl_device.h |  1 +
- hw/cxl/cxl-mailbox-utils.c  | 82 +++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3.c          | 37 +++++++++++++++++
- 3 files changed, 120 insertions(+)
+Really?  The test still fails here at patch 5:
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 32c234ea91..73328a52cf 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -298,6 +298,7 @@ struct CXLType3Class {
-                         uint64_t offset);
-     void (*set_lsa)(CXLType3Dev *ct3d, const void *buf, uint64_t size,
-                     uint64_t offset);
-+    bool (*set_cacheline)(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data);
- };
- 
- MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 6c476ad7f4..e3401b6be8 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -65,6 +65,7 @@ enum {
-     MEDIA_AND_POISON = 0x43,
-         #define GET_POISON_LIST        0x0
-         #define INJECT_POISON          0x1
-+        #define CLEAR_POISON           0x2
- };
- 
- /* 8.2.8.4.5.1 Command Return Codes */
-@@ -512,6 +513,85 @@ static CXLRetCode cmd_media_inject_poison(struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
- }
- 
-+static CXLRetCode cmd_media_clear_poison(struct cxl_cmd *cmd,
-+                                         CXLDeviceState *cxl_dstate,
-+                                         uint16_t *len_unused)
-+{
-+    CXLType3Dev *ct3d = container_of(cxl_dstate, CXLType3Dev, cxl_dstate);
-+    CXLPoisonList *poison_list = &ct3d->poison_list;
-+    CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
-+    struct clear_poison_pl {
-+        uint64_t dpa;
-+        uint8_t data[64];
-+    };
-+    CXLPoison *ent;
-+    uint64_t dpa;
-+
-+    struct clear_poison_pl *in = (void *)cmd->payload;
-+
-+    dpa = ldq_le_p(&in->dpa);
-+    if (dpa + CXL_CACHE_LINE_SIZE > cxl_dstate->mem_size) {
-+        return CXL_MBOX_INVALID_PA;
-+    }
-+
-+    /* Clearing a region with no poison is not an error so always do so */
-+    if (cvc->set_cacheline) {
-+        if (!cvc->set_cacheline(ct3d, dpa, in->data)) {
-+            return CXL_MBOX_INTERNAL_ERROR;
-+        }
-+    }
-+
-+    QLIST_FOREACH(ent, poison_list, node) {
-+        /*
-+         * Test for contained in entry. Simpler than general case
-+         * as clearing 64 bytes and entries 64 byte aligned
-+         */
-+        if ((dpa >= ent->start) && (dpa < ent->start + ent->length)) {
-+            break;
-+        }
-+    }
-+    if (!ent) {
-+        return CXL_MBOX_SUCCESS;
-+    }
-+
-+    QLIST_REMOVE(ent, node);
-+    ct3d->poison_list_cnt--;
-+
-+    if (dpa > ent->start) {
-+        CXLPoison *frag;
-+        /* Cannot overflow as replacing existing entry */
-+
-+        frag = g_new0(CXLPoison, 1);
-+
-+        frag->start = ent->start;
-+        frag->length = dpa - ent->start;
-+        frag->type = ent->type;
-+
-+        QLIST_INSERT_HEAD(poison_list, frag, node);
-+        ct3d->poison_list_cnt++;
-+    }
-+
-+    if (dpa + CXL_CACHE_LINE_SIZE < ent->start + ent->length) {
-+        CXLPoison *frag;
-+
-+        if (ct3d->poison_list_cnt == CXL_POISON_LIST_LIMIT) {
-+            cxl_set_poison_list_overflowed(ct3d);
-+        } else {
-+            frag = g_new0(CXLPoison, 1);
-+
-+            frag->start = dpa + CXL_CACHE_LINE_SIZE;
-+            frag->length = ent->start + ent->length - frag->start;
-+            frag->type = ent->type;
-+            QLIST_INSERT_HEAD(poison_list, frag, node);
-+            ct3d->poison_list_cnt++;
-+        }
-+    }
-+    /* Any fragments have been added, free original entry */
-+    g_free(ent);
-+
-+    return CXL_MBOX_SUCCESS;
-+}
-+
- #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
- #define IMMEDIATE_DATA_CHANGE (1 << 2)
- #define IMMEDIATE_POLICY_CHANGE (1 << 3)
-@@ -543,6 +623,8 @@ static struct cxl_cmd cxl_cmd_set[256][256] = {
-         cmd_media_get_poison_list, 16, 0 },
-     [MEDIA_AND_POISON][INJECT_POISON] = { "MEDIA_AND_POISON_INJECT_POISON",
-         cmd_media_inject_poison, 8, 0 },
-+    [MEDIA_AND_POISON][CLEAR_POISON] = { "MEDIA_AND_POISON_CLEAR_POISON",
-+        cmd_media_clear_poison, 72, 0 },
- };
- 
- void cxl_process_mailbox(CXLDeviceState *cxl_dstate)
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index ab600735eb..d751803188 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -947,6 +947,42 @@ static void set_lsa(CXLType3Dev *ct3d, const void *buf, uint64_t size,
-      */
- }
- 
-+static bool set_cacheline(CXLType3Dev *ct3d, uint64_t dpa_offset, uint8_t *data)
-+{
-+    MemoryRegion *vmr = NULL, *pmr = NULL;
-+    AddressSpace *as;
-+
-+    if (ct3d->hostvmem) {
-+        vmr = host_memory_backend_get_memory(ct3d->hostvmem);
-+    }
-+    if (ct3d->hostpmem) {
-+        pmr = host_memory_backend_get_memory(ct3d->hostpmem);
-+    }
-+
-+    if (!vmr && !pmr) {
-+        return false;
-+    }
-+
-+    if (dpa_offset + CXL_CACHE_LINE_SIZE > ct3d->cxl_dstate.mem_size) {
-+        return false;
-+    }
-+
-+    if (vmr) {
-+        if (dpa_offset < memory_region_size(vmr)) {
-+            as = &ct3d->hostvmem_as;
-+        } else {
-+            as = &ct3d->hostpmem_as;
-+            dpa_offset -= memory_region_size(vmr);
-+        }
-+    } else {
-+        as = &ct3d->hostpmem_as;
-+    }
-+
-+    address_space_write(as, dpa_offset, MEMTXATTRS_UNSPECIFIED, &data,
-+                        CXL_CACHE_LINE_SIZE);
-+    return true;
-+}
-+
- void cxl_set_poison_list_overflowed(CXLType3Dev *ct3d)
- {
-         ct3d->poison_list_overflowed = true;
-@@ -1168,6 +1204,7 @@ static void ct3_class_init(ObjectClass *oc, void *data)
-     cvc->get_lsa_size = get_lsa_size;
-     cvc->get_lsa = get_lsa;
-     cvc->set_lsa = set_lsa;
-+    cvc->set_cacheline = set_cacheline;
- }
- 
- static const TypeInfo ct3d_info = {
--- 
-2.39.2
+/home/rth/qemu/bld/../src/tests/decode/err_field1.decode:5: error: invalid field token "asdf"
+
+
+r~
 
 
