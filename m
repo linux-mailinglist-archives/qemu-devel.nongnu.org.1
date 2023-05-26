@@ -2,90 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB417129B1
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E797129BB
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:38:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2ZTz-0007Ar-Vc; Fri, 26 May 2023 11:36:00 -0400
+	id 1q2ZVi-00080R-H0; Fri, 26 May 2023 11:37:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2ZTv-0007Ad-NH
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:35:55 -0400
-Received: from smtp-190e.mail.infomaniak.ch ([185.125.25.14])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q2ZVf-0007zD-Mw
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:37:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2ZTt-0004Ji-Hk
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:35:55 -0400
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
- by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QSTXP6kHdzMqPDr;
- Fri, 26 May 2023 17:35:49 +0200 (CEST)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA
- id 4QSTXL3K3rz1Sjg; Fri, 26 May 2023 17:35:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
- s=20191114; t=1685115349;
- bh=IVLXl6zuTaxu1Zgxrh25RMUzIB63fNH4/OIZK2HDhZ0=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=kVMTGpVqhamFd/35Tv8GgGxW+MQc9ut6C15rUQoLevvrCTeKGaS+bLkhx73UqS/CF
- F+QUQYt6dTBHCqDv3OJzGYoC8livFVhydjlyIX+RYotxBnPtUyqUMczbhbmQDNz+Be
- GJfCUWCNzFZiETlN+G79KrUNM0ssQag3MigoVxSk=
-Message-ID: <caa8c89c-cae4-5a40-d6a1-f93ba7045d83@digikod.net>
-Date: Fri, 26 May 2023 17:35:45 +0200
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q2ZVe-0004bh-5g
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:37:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685115461;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+54B3w9+z/3ivqFbdQ5tyWss4Ab4+nh200yk/a7igx4=;
+ b=AkD0MckY0dd7rsiA2EwhDtbj9PFNCFpZayOqdEYV1himrgvpcMXYIJ7i9+ZVSJAs7g5ygx
+ g4KBMapnanXms++4zy5+3Ge3BCKxnADedz5MmlUFv3pLB7BhwWo5OcP9Qoyl+w8oQ5Pj/b
+ danliV2vzsjUj0YZA3kS8a4b2+HCtrw=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-65-ngitXRt7PrqJT75A5fMKag-1; Fri, 26 May 2023 11:37:39 -0400
+X-MC-Unique: ngitXRt7PrqJT75A5fMKag-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 883DA1C0ED0D
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 15:37:39 +0000 (UTC)
+Received: from eperezma.remote.csb (unknown [10.39.193.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6FB187AE4;
+ Fri, 26 May 2023 15:37:38 +0000 (UTC)
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Cindy Lu <lulu@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH] vdpa: Remove status in reset tracing
+Date: Fri, 26 May 2023 17:37:36 +0200
+Message-Id: <20230526153736.472443-1-eperezma@redhat.com>
 MIME-Version: 1.0
-User-Agent: 
-Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
-Content-Language: en-US
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Christopherson,, Sean" <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "bp@alien8.de" <bp@alien8.de>, "keescook@chromium.org"
- <keescook@chromium.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "wanpengli@tencent.com" <wanpengli@tencent.com>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "liran.alon@oracle.com" <liran.alon@oracle.com>,
- "marian.c.rotariu@gmail.com" <marian.c.rotariu@gmail.com>,
- "Graf, Alexander" <graf@amazon.com>,
- "Andersen, John S" <john.s.andersen@intel.com>,
- "madvenka@linux.microsoft.com" <madvenka@linux.microsoft.com>,
- "ssicleru@bitdefender.com" <ssicleru@bitdefender.com>,
- "yuanyu@google.com" <yuanyu@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "tgopinath@microsoft.com" <tgopinath@microsoft.com>,
- "jamorris@linux.microsoft.com" <jamorris@linux.microsoft.com>,
- "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "will@kernel.org" <will@kernel.org>,
- "dev@lists.cloudhypervisor.org" <dev@lists.cloudhypervisor.org>,
- "mdontu@bitdefender.com" <mdontu@bitdefender.com>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "virtualization@lists.linux-foundation.org"
- <virtualization@lists.linux-foundation.org>,
- "nicu.citu@icloud.com" <nicu.citu@icloud.com>,
- "ztarkhani@microsoft.com" <ztarkhani@microsoft.com>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20230505152046.6575-1-mic@digikod.net>
- <93726a7b9498ec66db21c5792079996d5fed5453.camel@intel.com>
- <facfd178-3157-80b4-243b-a5c8dabadbfb@digikod.net>
- <7cb6c4c28c077bb9f866c2d795e918610e77d49f.camel@intel.com>
-From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-In-Reply-To: <7cb6c4c28c077bb9f866c2d795e918610e77d49f.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-Received-SPF: pass client-ip=185.125.25.14; envelope-from=mic@digikod.net;
- helo=smtp-190e.mail.infomaniak.ch
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,111 +77,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+It is always 0 and it is not useful to route call through file
+descriptor.
 
-On 25/05/2023 17:52, Edgecombe, Rick P wrote:
-> On Thu, 2023-05-25 at 15:59 +0200, Mickaël Salaün wrote:
-> [ snip ]
-> 
->>> The kernel often creates writable aliases in order to write to
->>> protected data (kernel text, etc). Some of this is done right as
->>> text
->>> is being first written out (alternatives for example), and some
->>> happens
->>> way later (jump labels, etc). So for verification, I wonder what
->>> stage
->>> you would be verifying? If you want to verify the end state, you
->>> would
->>> have to maintain knowledge in the verifier of all the touch-ups the
->>> kernel does. I think it would get very tricky.
->>
->> For now, in the static kernel case, all rodata and text GPA is
->> restricted, so aliasing such memory in a writable way before or after
->> the KVM enforcement would still restrict write access to this memory,
->> which could be an issue but not a security one. Do you have such
->> examples in mind?
->>
-> 
-> On x86, look at all the callers of the text_poke() family. In
-> arch/x86/include/asm/text-patching.h.
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+---
 
-OK, thanks!
+Commit extracted from series [1], Message-Id
+<20230509154435.1410162-1-eperezma@redhat.com>, as this change is not
+needed anymore there but the patch makes sense by itself.
 
+[1] https://lore.kernel.org/qemu-devel/20230518172138-mutt-send-email-mst@kernel.org/T/
+---
+ hw/virtio/vhost-vdpa.c | 2 +-
+ hw/virtio/trace-events | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-> 
->>
->>>
->>> It also seems it will be a decent ask for the guest kernel to keep
->>> track of GPA permissions as well as normal virtual memory
->>> pemirssions,
->>> if this thing is not widely used.
->>
->> This would indeed be required to properly handle the dynamic cases.
->>
->>
->>>
->>> So I wondering if you could go in two directions with this:
->>> 1. Make this a feature only for super locked down kernels (no
->>> modules,
->>> etc). Forbid any configurations that might modify text. But eBPF is
->>> used for seccomp, so you might be turning off some security
->>> protections
->>> to get this.
->>
->> Good idea. For "super locked down kernels" :) , we should disable all
->> kernel executable changes with the related kernel build configuration
->> (e.g. eBPF JIT, kernel module, kprobes…) to make sure there is no
->> such
->> legitimate access. This looks like an acceptable initial feature.
-> 
-> How many users do you think will want this protection but not
-> protections that would have to be disabled? The main one that came to
-> mind for me is cBPF seccomp stuff.
-> 
-> But also, the alternative to JITing cBPF is the eBPF interpreter which
-> AFAIU is considered a juicy enough target for speculative attacks that
-> they created an option to compile it out. And leaving an interpreter in
-> the kernel means any data could be "executed" in the normal non-
-> speculative scenario, kind of working around the hypervisor executable
-> protections. Dropping e/cBPF entirely would be an option, but then I
-> wonder how many users you have left. Hopefully that is all correct,
-> it's hard to keep track with the pace of BPF development.
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index b3094e8a8b..dc593042d7 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -860,7 +860,7 @@ static int vhost_vdpa_reset_device(struct vhost_dev *dev)
+     uint8_t status = 0;
+ 
+     ret = vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &status);
+-    trace_vhost_vdpa_reset_device(dev, status);
++    trace_vhost_vdpa_reset_device(dev);
+     v->suspended = false;
+     return ret;
+ }
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+index 8f8d05cf9b..6265231683 100644
+--- a/hw/virtio/trace-events
++++ b/hw/virtio/trace-events
+@@ -44,7 +44,7 @@ vhost_vdpa_set_mem_table(void *dev, uint32_t nregions, uint32_t padding) "dev: %
+ vhost_vdpa_dump_regions(void *dev, int i, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, uint64_t flags_padding) "dev: %p %d: guest_phys_addr: 0x%"PRIx64" memory_size: 0x%"PRIx64" userspace_addr: 0x%"PRIx64" flags_padding: 0x%"PRIx64
+ vhost_vdpa_set_features(void *dev, uint64_t features) "dev: %p features: 0x%"PRIx64
+ vhost_vdpa_get_device_id(void *dev, uint32_t device_id) "dev: %p device_id %"PRIu32
+-vhost_vdpa_reset_device(void *dev, uint8_t status) "dev: %p status: 0x%"PRIx8
++vhost_vdpa_reset_device(void *dev) "dev: %p"
+ vhost_vdpa_get_vq_index(void *dev, int idx, int vq_idx) "dev: %p idx: %d vq idx: %d"
+ vhost_vdpa_set_vring_ready(void *dev) "dev: %p"
+ vhost_vdpa_dump_config(void *dev, const char *line) "dev: %p %s"
+-- 
+2.31.1
 
-seccomp-bpf doesn't rely on JIT, so it is not an issue. For eBPF, JIT is 
-optional, but other text changes may be required according to the eBPF 
-program type (e.g. using kprobes).
-
-
-> 
-> I wonder if it might be a good idea to POC the guest side before
-> settling on the KVM interface. Then you can also look at the whole
-> thing and judge how much usage it would get for the different options
-> of restrictions.
-
-The next step is to handle dynamic permissions, but it will be easier to 
-first implement that in KVM itself (which already has the required 
-authentication code). The current interface may be flexible enough 
-though, only new attribute flags should be required (and potentially an 
-async mode). Anyway, this will enable to look at the whole thing.
-
-
-> 
->>
->>
->>> 2. Loosen the rules to allow the protections to not be so one-way
->>> enable. Get less security, but used more widely.
->>
->> This is our goal. I think both static and dynamic cases are
->> legitimate
->> and have value according to the level of security sought. This should
->> be
->> a build-time configuration.
-> 
-> Yea, the proper way to do this is probably to move all text handling
-> stuff into a separate domain of some sort, like you mentioned
-> elsewhere. It would be quite a job.
-
-Not necessarily to move this code, but to make sure that the changes are 
-legitimate (e.g. text signatures, legitimate addresses). This doesn't 
-need to be perfect but it should improve the current state by increasing 
-the cost of attacks.
 
