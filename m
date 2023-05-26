@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C484F71222F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D750B71225C
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 10:37:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2SoI-0005Ew-B3; Fri, 26 May 2023 04:28:30 -0400
+	id 1q2SwI-0008Sg-5Z; Fri, 26 May 2023 04:36:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q2SoG-0005EY-Dt
- for qemu-devel@nongnu.org; Fri, 26 May 2023 04:28:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q2SoE-0000WN-UZ
- for qemu-devel@nongnu.org; Fri, 26 May 2023 04:28:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685089706;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=ZUx0l85WkeAFALN8rKwG/i6ZAb1+WrzNxGK8CA4tNcs=;
- b=Lx6i9HwFMw8KHHwV7trTn+EsFALdYj0HkKffzeG7x06mW66/EnPLWfFowpNFbYJaCr4peQ
- +FB9jy//ZCSfnU87RL+KkneReL92BZyOohzL0yhhLpxPxx6F7Q+cctVmYY6tZHaAgeRoPE
- hBsTZI/KilpyOFxlSio3HFtjmheKaV8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-PM3xz6u2Mbu5qohZ0s_oag-1; Fri, 26 May 2023 04:28:24 -0400
-X-MC-Unique: PM3xz6u2Mbu5qohZ0s_oag-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f50aa22cd2so3534085e9.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 01:28:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1q2Sw9-0008SE-Rl
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:36:38 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1q2Sw7-0002Hv-42
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 04:36:37 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1ae408f4d1aso3825105ad.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 01:36:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1685090188; x=1687682188;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hL4uswsB26zz5CjaJg8Rcg22UjWkpBjcm1U92qjXixE=;
+ b=MQlA0CBw90cz5I0plXZZhmFVNgfNvCMrs2TGrqr0ifoE/DRO34aoHEvsD/8/+5o5Zy
+ gMsAiugeJqy/mnqip6zLzWvAbjTHaURcQVXi5BUiM531pr417iivzp+y9uXoppUti8TM
+ Sxm3cBHQ8PKP+BIi/Z7yZyiqf0ex33JZTW7rOaLhT6jAKpIB3Mm3VK1MgsIAvuNjd5jk
+ OD7iIRRNHe2TXFJ6AJUl0Dgf0TAPbV5Y4JvSM1OTe1gSbhxOkBIHc+gW3ZBPRwzLqJNA
+ i5N87TsgDyTicGf1wx+UyO99EQ+7BYvAz4Eb/AF+cAnO7/SLwELjECILDVgnpSt1zJry
+ LsBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685089703; x=1687681703;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZUx0l85WkeAFALN8rKwG/i6ZAb1+WrzNxGK8CA4tNcs=;
- b=eph24hJpbPq2+Vg/4OJIft+QKPxBKxRk0ELkNdOfbi8eAJVmlRVK4perlxnflwaprq
- n5r57qPsn6mleUHbLRAujPPK4tDb9hV0BglHNZc4xT9rcFTHjmDqves3ywQLcmxXiaZk
- cjh3z0bFsU9fCtHp6cTkctJIfCbToUsrgRRoFACnPNxeKFMoNQHADa0XVS+p97WLgOSP
- TZaT1v9VaYR6VOH7Y3GwBeVWh/3aBDp/ArPMnR0siSJOqKDgbdzRZKdkyHACqriAPV87
- zClhFKEmshg223fMQo1boSU6lxJ/tJdNoYQR3SUfIwTn9VvlzQrFS0c4NjuWlj0k4B5h
- t0iQ==
-X-Gm-Message-State: AC+VfDwvUZfr6/lyrs+L7r9PQaldXcClgtmXrBAEIlDpiS99LMO3G2c9
- 5gP17Jw76uMIdg12aHhc1KI5kANOikfv+Azv0PTj/91et1R5DTq0BrNFvXlD5Q8eku1dagCr8ll
- EPkORQNTUt6xaIrA=
-X-Received: by 2002:a7b:ca4d:0:b0:3f6:d2:d8c0 with SMTP id
- m13-20020a7bca4d000000b003f600d2d8c0mr979702wml.19.1685089703703; 
- Fri, 26 May 2023 01:28:23 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4z/yMK98XmaIN7s2RzKkctU/dZz2KormB/ZAS4b77V01fPxKrJV3CEYjJE5OwMT8HD6+mIrg==
-X-Received: by 2002:a7b:ca4d:0:b0:3f6:d2:d8c0 with SMTP id
- m13-20020a7bca4d000000b003f600d2d8c0mr979687wml.19.1685089703395; 
- Fri, 26 May 2023 01:28:23 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- m19-20020a7bcb93000000b003f605566610sm8100908wmi.13.2023.05.26.01.28.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 01:28:22 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org,  pbonzini@redhat.com,  leobras@redhat.com,
- peterx@redhat.com,  yc-core@yandex-team.ru
-Subject: Re: [PATCH 2/5] migration: never fail in global_state_store()
-In-Reply-To: <20230517123752.21615-3-vsementsov@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Wed, 17 May 2023 15:37:49 +0300")
-References: <20230517123752.21615-1-vsementsov@yandex-team.ru>
- <20230517123752.21615-3-vsementsov@yandex-team.ru>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Fri, 26 May 2023 10:28:22 +0200
-Message-ID: <87fs7j33a1.fsf@secure.mitica>
+ d=1e100.net; s=20221208; t=1685090188; x=1687682188;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hL4uswsB26zz5CjaJg8Rcg22UjWkpBjcm1U92qjXixE=;
+ b=mHx5T4At6pZnNQ0XZiq71AhPXBKKGZl0alYL2IeRFbycNaj7bE8tx8MVmunY49xy7r
+ CbYZTfp0r3fHPWRTNKFir6l3miVXbhB2bAQ3rFZNcAR0iGUuIwgRLJi44CbBGSFaQaOY
+ Thd3fpEOc7SAw1Ql4a5T6Ki4J3kYBJ+GMtSC5Zh4qyMYYCwObGPRz6rotfoHChVF1mul
+ PFvMmeKMqxHfDeRTD1CPztct3AwhdMMSoydcU1hmS/LvEWep6wwCYGl62Jiys99F5guB
+ 39qKsMXwRUcWNLtfq6TLHlUbC8U5PblevmnfAff/0yjmpWD/MhAkPgBQhOaSR6WceqgN
+ 2t6Q==
+X-Gm-Message-State: AC+VfDz9Ns7BbQUIP0BsoNNs5ndUUzrFlGqGgvlkGjSBHCtokoDzXEH5
+ hATav8HPfFQhPqbORF6pjHF+IQ==
+X-Google-Smtp-Source: ACHHUZ47KVu942r3gBk6Hhqw9Ay4TY8Xwhf9jEtwdko1etDL371JlorWg0tHfVogtI223uK0ckNSZQ==
+X-Received: by 2002:a17:902:b18f:b0:1ad:fc06:d7c0 with SMTP id
+ s15-20020a170902b18f00b001adfc06d7c0mr1642964plr.1.1685090188625; 
+ Fri, 26 May 2023 01:36:28 -0700 (PDT)
+Received: from [10.3.43.196] ([61.213.176.11])
+ by smtp.gmail.com with ESMTPSA id
+ bg4-20020a1709028e8400b001a9873495f2sm2690090plb.233.2023.05.26.01.36.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 01:36:28 -0700 (PDT)
+Message-ID: <6c5bb6a2-9177-ee9f-be7d-7394e8e54ff0@bytedance.com>
+Date: Fri, 26 May 2023 16:34:21 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: Re: [PATCH] cryptodev: fix memory leak during stats query
+Content-Language: en-US
+To: mst@redhat.com
+Cc: Peter Maydell <peter.maydell@linaro.org>, arei.gonglei@huawei.com,
+ qemu-devel@nongnu.org
+References: <20230503115437.262469-1-pizhenwei@bytedance.com>
+ <CAFEAcA-rXQwFAj9pz9vtqdk3i5KYDcf_w2-s78VtF7NYQJvsvw@mail.gmail.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
+In-Reply-To: <CAFEAcA-rXQwFAj9pz9vtqdk3i5KYDcf_w2-s78VtF7NYQJvsvw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,19 +93,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> wrote:
-> Actually global_state_store() can never fail. Let's get rid of extra
-> error paths.
->
-> To make things clear, use new runstate_get() and use same approach for
-> global_state_store() and global_state_store_running().
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
 
+On 5/3/23 20:59, Peter Maydell wrote:
+> On Wed, 3 May 2023 at 12:54, zhenwei pi <pizhenwei@bytedance.com> wrote:
+>>
+>> object_get_canonical_path already returns newly allocated memory, this
+>> means no additional g_strdup required. Remove g_strdup to avoid memory
+>> leak.
+>>
+>> Fixes: Coverity CID 1508074
+>> Fixes: f2b901098 ("cryptodev: Support query-stats QMP command")
+>> Cc: Peter Maydell <peter.maydell@linaro.org>
+>> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+>> ---
+> 
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> 
+> thanks
+> -- PMM
+
+Hi, Michael
+
+This patch has been ignored, could you please merge this in next PR?
+
+-- 
+zhenwei pi
 
