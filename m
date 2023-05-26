@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BC7712A33
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FED712A46
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:11:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Zzg-0004F8-Ti; Fri, 26 May 2023 12:08:44 -0400
+	id 1q2Zzf-0004DB-HG; Fri, 26 May 2023 12:08:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Zza-0004BP-38
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:39 -0400
+ id 1q2Zza-0004BO-38
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2ZzX-0002d6-Fq
+ id 1q2ZzX-0002dE-V1
  for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685117314;
+ s=mimecast20190719; t=1685117315;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=p/jNkPoTNc33RHmtgQTu7JrJl3cHFubTvj/jW5MYZE4=;
- b=Lck3IMNh2lkJxfVwDLmYWZmDdXarXKarXllRsqnZ5Kvhpq8Kx0Nta2Z18Vdh9Fi5gGfpOf
- UO7hEf2APhfgyGulwn8Mdq51l5pmqJ2MsXPp/Bzlc4neYuxkH4TNBbt4cIsU3K/D25F5KE
- R6AdUs10flRHfYni625eQPbUlqly+PA=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Fzs0h2LMkCyS2RcHmjcBAfl2R0ztIYcRkkcOdDDYgWk=;
+ b=UAIEopr+aky9m8vbQ89nuI5cioIijWKmgYVB4fiTRcdcTLOgpO9HBLQBTRyBmir/36vAre
+ r4w61Jks6AKPOKxz+v8rXIOlOCvLHGP27dx9lLqntC1oPh+zpiR9LI3+Rhn33UsvpmUn/O
+ PPI1123Ui1+G8DNtfzeQ4o2Ms4qzabk=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-8Rw9vacfMnCN_wqXd3Qygw-1; Fri, 26 May 2023 12:08:31 -0400
-X-MC-Unique: 8Rw9vacfMnCN_wqXd3Qygw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5147e3dfccdso493077a12.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:08:31 -0700 (PDT)
+ us-mta-136-RjS0zBG2PiGgORXZQJiX0A-1; Fri, 26 May 2023 12:08:33 -0400
+X-MC-Unique: RjS0zBG2PiGgORXZQJiX0A-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-970e0152da7so112843766b.2
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:08:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685117310; x=1687709310;
+ d=1e100.net; s=20221208; t=1685117312; x=1687709312;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p/jNkPoTNc33RHmtgQTu7JrJl3cHFubTvj/jW5MYZE4=;
- b=JAMv6y6eKC5PRwRSyvsdJ/SbPyVnSbX00RD2plpXfXvHVykrrbRdx/rUwrxWNd6l4E
- DF0HvwaL7JCvbXeXhFPcXpoH46sxBjCivhDV0vBm8gX9gx0p7DicZS5LfskWKf5/dRvw
- u2yT5vUUeEC8U68wLSliPwcPpbS40VRXSP4hoPDDKFlXekYMGGLydath01P/BkIxv+rc
- wS5yr5EuyF2pteN0HAwXLjAM649cGhTjyT1kDuMStsYGGqv4TeXYdU0L6hXwjOAvjdCU
- gjW/8PRljd2wGR3BJ9+v7GDPttxVzybuqbOt6ehz0LVWUZ24O9QvJAMw/QUgX/mjaVTa
- DgdQ==
-X-Gm-Message-State: AC+VfDyN5eAU0dWg/4QQ06ptZcIdZ0oUzrG+Ok69GFP7crDO0NoafuTl
- fBT8qZJ1dpu1+MHFEzZC/Jh2nkywd0dcZu2ojQJgHkjUfFqolfu32W09J3lB1C6oBLECaJIsjTr
- ZlBQeT7KPQ1llUT9HFeWETr3Xz0jZ+S4+K12Fs+zT0P2Z/2+AStB59nE/vPwpg+HP2Zd+aGAL7i
- Y=
-X-Received: by 2002:a05:6402:1655:b0:514:75ff:6a86 with SMTP id
- s21-20020a056402165500b0051475ff6a86mr1465963edx.29.1685117310157; 
- Fri, 26 May 2023 09:08:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Y93AtEe6Zw56uSGF4y/k3Cil67bit26uh2XOpvR+f8JtAeJlL1w2HRN8G32ZYe6XeGRmlCA==
-X-Received: by 2002:a05:6402:1655:b0:514:75ff:6a86 with SMTP id
- s21-20020a056402165500b0051475ff6a86mr1465950edx.29.1685117309940; 
- Fri, 26 May 2023 09:08:29 -0700 (PDT)
+ bh=Fzs0h2LMkCyS2RcHmjcBAfl2R0ztIYcRkkcOdDDYgWk=;
+ b=LdnVO0Fts0MqyCIPRs/F53oz489+MpS0o6gjDE5C8Mn0bmakF4LS/3tMgOc5EhFDph
+ mCpiiqS5rkvsEX9+rEoWTh7TfrvYxDhBPUQUalFZji+X17FwBHcp9LxnGtthm8NN6CHH
+ pvfkj5wpRoQg/eri4L6CJccH+RKhuc7tdmujLL/Y6jaMUo5TRZZ7q8goAGuIYTJ3nNzZ
+ NiK4paCEN9VpvIbJ798/Ny7WhM4fK3VVvOeSjb7YTrJ3y7QF++JarNbta+Urq1wxsOKR
+ KHMg/4djdtCc49a7VddaKvxUfCZmZ9mC6OZ8fZSlZWYLk2ZQyBSNK7PljJznnAgH0d5p
+ /zRA==
+X-Gm-Message-State: AC+VfDy7R+QaTMpbHECMKcQCCCMVIrK1GSPqi3m7B2S0OO09GzAq4ggt
+ Ww18QRB0xLs/AVxhaYx61XtYGpNKFFr3buteRWOoqWjX0fGeXjaNrI5Tf5jxjb57X7Yi8ydjFFi
+ iAbkRhyi21I4WJIKmWIXuCS2xl4CqYMt1ynZj0H9QJhlLhWz9zaYfscjab74fwsU9Zdyo0bi4Dx
+ E=
+X-Received: by 2002:a17:907:80a:b0:94f:2852:1d2b with SMTP id
+ wv10-20020a170907080a00b0094f28521d2bmr2253876ejb.72.1685117311774; 
+ Fri, 26 May 2023 09:08:31 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5AjMZyHpEAKtHO60KZkEJ5LSNkPg29ccnrV/GRV/FE2UDMYsmwxh6ZaN6FUPbRraSdNqdyOg==
+X-Received: by 2002:a17:907:80a:b0:94f:2852:1d2b with SMTP id
+ wv10-20020a170907080a00b0094f28521d2bmr2253859ejb.72.1685117311525; 
+ Fri, 26 May 2023 09:08:31 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- g7-20020aa7c847000000b005106975c7a1sm103207edt.23.2023.05.26.09.08.28
+ z11-20020a170906714b00b0096f89fd4bf8sm2307767ejj.122.2023.05.26.09.08.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 09:08:29 -0700 (PDT)
+ Fri, 26 May 2023 09:08:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 02/12] tests/vm: fix and simplify HOST_ARCH definition
-Date: Fri, 26 May 2023 18:08:14 +0200
-Message-Id: <20230526160824.655279-3-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 03/12] Makefile: remove $(TESTS_PYTHON)
+Date: Fri, 26 May 2023 18:08:15 +0200
+Message-Id: <20230526160824.655279-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230526160824.655279-1-pbonzini@redhat.com>
 References: <20230526160824.655279-1-pbonzini@redhat.com>
@@ -102,49 +101,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ARCH is always empty, so just define HOST_ARCH as the result of uname.
-The incorrect definition was not being used because the "ifeq" statement
-is wrong; replace it with the same idiom based on $(realpath) that the
-main Makefile uses.
+It is now the same as $(PYTHON), since the latter always points at pyvenv/bin/python3.
 
-With this change, vm-build-netbsd in a configured tree will not use
-the PYTHONPATH hack.
-
-Reported-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/vm/Makefile.include | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tests/Makefile.include    | 8 +++-----
+ tests/vm/Makefile.include | 2 +-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
+diff --git a/tests/Makefile.include b/tests/Makefile.include
+index 5b838ec438b0..0184ef223737 100644
+--- a/tests/Makefile.include
++++ b/tests/Makefile.include
+@@ -89,11 +89,9 @@ distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
+ # Build up our target list from the filtered list of ninja targets
+ TARGETS=$(patsubst libqemu-%.fa, %, $(filter libqemu-%.fa, $(ninja-targets)))
+ 
+-TESTS_VENV_DIR=$(BUILD_DIR)/pyvenv
+ TESTS_VENV_TOKEN=$(BUILD_DIR)/pyvenv/tests.group
+ TESTS_VENV_REQ=$(SRC_PATH)/tests/requirements.txt
+ TESTS_RESULTS_DIR=$(BUILD_DIR)/tests/results
+-TESTS_PYTHON=$(TESTS_VENV_DIR)/bin/python3
+ ifndef AVOCADO_TESTS
+ 	AVOCADO_TESTS=tests/avocado
+ endif
+@@ -109,7 +107,7 @@ else
+ endif
+ 
+ quiet-venv-pip = $(quiet-@)$(call quiet-command-run, \
+-    $(TESTS_PYTHON) -m pip -q --disable-pip-version-check $1, \
++    $(PYTHON) -m pip -q --disable-pip-version-check $1, \
+     "VENVPIP","$1")
+ 
+ $(TESTS_VENV_TOKEN): $(TESTS_VENV_REQ)
+@@ -131,7 +129,7 @@ FEDORA_31_DOWNLOAD=$(filter $(FEDORA_31_ARCHES),$(FEDORA_31_ARCHES_CANDIDATES))
+ # download one specific Fedora 31 image
+ get-vm-image-fedora-31-%: check-venv
+ 	$(call quiet-command, \
+-             $(TESTS_PYTHON) -m avocado vmimage get \
++             $(PYTHON) -m avocado vmimage get \
+              --distro=fedora --distro-version=31 --arch=$*, \
+ 	"AVOCADO", "Downloading avocado tests VM image for $*")
+ 
+@@ -142,7 +140,7 @@ JOBS_OPTION=$(lastword -j1 $(filter-out -j, $(filter -j%,$(MAKEFLAGS))))
+ 
+ check-avocado: check-venv $(TESTS_RESULTS_DIR) get-vm-images
+ 	$(call quiet-command, 							\
+-            $(TESTS_PYTHON) -m avocado 						\
++            $(PYTHON) -m avocado 						\
+             --show=$(AVOCADO_SHOW) run --job-results-dir=$(TESTS_RESULTS_DIR) 	\
+             $(if $(AVOCADO_TAGS),, 						\
+ 			--filter-by-tags-include-empty 				\
 diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
-index 2cc2203d0916..c2a8ca1c175a 100644
+index c2a8ca1c175a..f0f5d32fb0f0 100644
 --- a/tests/vm/Makefile.include
 +++ b/tests/vm/Makefile.include
-@@ -1,14 +1,12 @@
- # Makefile for VM tests
- 
- # Hack to allow running in an unconfigured build tree
--ifeq ($(wildcard $(SRC_PATH)/config-host.mak),)
-+ifeq ($(realpath $(SRC_PATH)),$(realpath .))
+@@ -5,7 +5,7 @@ ifeq ($(realpath $(SRC_PATH)),$(realpath .))
  VM_PYTHON = PYTHONPATH=$(SRC_PATH)/python /usr/bin/env python3
  VM_VENV =
--HOST_ARCH := $(shell uname -m)
  else
- VM_PYTHON = $(TESTS_PYTHON)
+-VM_PYTHON = $(TESTS_PYTHON)
++VM_PYTHON = $(PYTHON)
  VM_VENV = check-venv
--HOST_ARCH = $(ARCH)
  endif
  
- .PHONY: vm-build-all vm-clean-all
-@@ -23,6 +21,7 @@ ARM64_IMAGES += ubuntu.aarch64 centos.aarch64
- endif
- endif
- 
-+HOST_ARCH = $(shell uname -m)
- ifeq ($(HOST_ARCH),x86_64)
- IMAGES=$(X86_IMAGES) $(if $(USE_TCG),$(ARM64_IMAGES))
- else ifeq ($(HOST_ARCH),aarch64)
 -- 
 2.40.1
 
