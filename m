@@ -2,99 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B3B712824
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BB4712822
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:21:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2YJ7-0005qB-Jm; Fri, 26 May 2023 10:20:41 -0400
+	id 1q2YJW-0005sU-2S; Fri, 26 May 2023 10:21:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tsimpson@qualcomm.com>)
- id 1q2YJ5-0005pB-FJ
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:20:39 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tsimpson@qualcomm.com>)
- id 1q2YJ2-0007CV-Ly
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:20:39 -0400
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34QDuOv2010139; Fri, 26 May 2023 14:20:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-type : content-transfer-encoding; s=qcppdkim1;
- bh=tfRkx1RV0pm/XNJq7P/Pus6COtErLqnqzsu1xbrkqhg=;
- b=Zw5L8frMNMEvojjiXh3zwBzTu94WjDggtrmItG6bKmK9lvSskmI06xPAFds0RazovqDJ
- ButeqX4zBlA934Tc1OPtJkkMRPMEpOByP/9B9yl8JjruT/8xHv19gEbMTyXcg8E3MxFl
- JgrukR/ZcK1GSPCaY6Rkbnwy3GbvzP9UbC8tsQtZ52XU0+RIUw5K5Nf1RScB4WloksuA
- oPWnlz5Oqv2hgC0+t1AB6d97BNs1f0cK2TVO5jbPx7LF4GhFqWxk0ppfS4s5qKIFHzhV
- dRLkK9nPDQQXmT6pWI3iktwS/BBf5wK+SFrlOIUaxHQE8jt5ZIZ+1zdqHKbLL3oWVIcI TA== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qt5ufu4d4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 14:20:32 +0000
-Received: from pps.filterd (NALASPPMTA05.qualcomm.com [127.0.0.1])
- by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 34QEKVd5032706; 
- Fri, 26 May 2023 14:20:31 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 3qt382gsk6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 14:20:31 +0000
-Received: from NALASPPMTA05.qualcomm.com (NALASPPMTA05.qualcomm.com
- [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34QEKUWa032690;
- Fri, 26 May 2023 14:20:30 GMT
-Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-tsimpson-lv.qualcomm.com
- [10.47.204.221])
- by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 34QEKUJV032673
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 14:20:30 +0000
-Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 47164)
- id AF9506D0; Fri, 26 May 2023 07:20:29 -0700 (PDT)
-From: Taylor Simpson <tsimpson@quicinc.com>
-To: qemu-devel@nongnu.org
-Cc: tsimpson@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
- peter.maydell@linaro.org, bcain@quicinc.com, quic_mathbern@quicinc.com,
- stefanha@redhat.com, ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com,
- ltaylorsimpson@gmail.com
-Subject: [PULL 5/5] Hexagon (target/hexagon) Change Hexagon maintainer
-Date: Fri, 26 May 2023 07:20:28 -0700
-Message-Id: <20230526142028.1277954-6-tsimpson@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230526142028.1277954-1-tsimpson@quicinc.com>
-References: <20230526142028.1277954-1-tsimpson@quicinc.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1q2YJK-0005rp-Mn; Fri, 26 May 2023 10:20:54 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1q2YJH-0007FJ-S9; Fri, 26 May 2023 10:20:53 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id E4E981FD88;
+ Fri, 26 May 2023 14:20:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1685110849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XzST/zccVFV9Q3DLL8zPRdDUhTRpUOyutU41z3TCEcA=;
+ b=S6MlerT0yzPN31F0e18REPXyR12key/rnchf5ZK7bcUjDqGN/wDOsoSCVGfidzPplCN9Ou
+ qagAZcl0zQ2/740vbZcFoh7Ex8AUWZSCDxatETxMARH0fXxS8BBkOob071OUnwovjRt8OZ
+ SUFpRSdVDtv74EKjbOcOrG7qpTIsuCA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1685110849;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XzST/zccVFV9Q3DLL8zPRdDUhTRpUOyutU41z3TCEcA=;
+ b=KJd4p/zI7TL38srSqiURb/7vuCavmJ12YByP2RPx6lQnH/cSBFkKOHA36B7iUM6ci7Qc9m
+ 1aIDFgtqjyRt6LAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6E1E2138E6;
+ Fri, 26 May 2023 14:20:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 2lQCDkHAcGSRcwAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 26 May 2023 14:20:49 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Kevin Wolf
+ <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, =?utf-8?Q?Jo=C3=A3o?= Silva <jsilva@suse.de>, Lin Ma
+ <lma@suse.com>,
+ Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>
+Subject: Re: [RFC PATCH 6/6] block: Add a thread-pool version of fstat
+In-Reply-To: <tgkuil4lqa3x7tkzup4shdeie2z2j6uzzrn7ccf42uimjm64yz@7ksw3twdshye>
+References: <20230523213903.18418-1-farosas@suse.de>
+ <20230523213903.18418-7-farosas@suse.de>
+ <tgkuil4lqa3x7tkzup4shdeie2z2j6uzzrn7ccf42uimjm64yz@7ksw3twdshye>
+Date: Fri, 26 May 2023 11:20:47 -0300
+Message-ID: <877csv9nsw.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: igSG_hs6U9w-hpDs4ZgXxVnABKaaWNVc
-X-Proofpoint-GUID: igSG_hs6U9w-hpDs4ZgXxVnABKaaWNVc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-26_05,2023-05-25_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- adultscore=0 priorityscore=1501 mlxlogscore=461 spamscore=0 bulkscore=0
- impostorscore=0 phishscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
- definitions=main-2305260120
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=tsimpson@qualcomm.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,27 +90,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Q2hhbmdlIEhleGFnb24gbWFpbnRhaW5lciBmcm9tIFRheWxvciBTaW1wc29uIHRvIEJyaWFuIENh
-aW4KUHV0IFRheWxvcidzIGdtYWlsIGFkZHJlc3MgaW4gLm1haWxtYXAKClNpZ25lZC1vZmYtYnk6
-IFRheWxvciBTaW1wc29uIDx0c2ltcHNvbkBxdWljaW5jLmNvbT4KUmV2aWV3ZWQtYnk6IEFsZXgg
-QmVubsOpZSA8YWxleC5iZW5uZWVAbGluYXJvLm9yZwpNZXNzYWdlLUlkOiA8MjAyMzA1MjQxNjUz
-NTUuMzE1NzcwMC0yLXRzaW1wc29uQHF1aWNpbmMuY29tPgotLS0KIE1BSU5UQUlORVJTIHwgMiAr
-LQogLm1haWxtYXAgICAgfCAxICsKIDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAx
-IGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvTUFJTlRBSU5FUlMgYi9NQUlOVEFJTkVSUwppbmRl
-eCAxYzkzYWIwZWU1Li40YjAyNWE3YjYzIDEwMDY0NAotLS0gYS9NQUlOVEFJTkVSUworKysgYi9N
-QUlOVEFJTkVSUwpAQCAtMjE4LDcgKzIxOCw3IEBAIEY6IHRlc3RzL3RjZy9jcmlzLwogRjogZGlz
-YXMvY3Jpcy5jCiAKIEhleGFnb24gVENHIENQVXMKLU06IFRheWxvciBTaW1wc29uIDx0c2ltcHNv
-bkBxdWljaW5jLmNvbT4KK006IEJyaWFuIENhaW4gPGJjYWluQHF1aWNpbmMuY29tPgogUzogU3Vw
-cG9ydGVkCiBGOiB0YXJnZXQvaGV4YWdvbi8KIFg6IHRhcmdldC9oZXhhZ29uL2lkZWYtcGFyc2Vy
-LwpkaWZmIC0tZ2l0IGEvLm1haWxtYXAgYi8ubWFpbG1hcAppbmRleCBiYmU2ZDNmZDY5Li5iNTdk
-YTQ4MjdlIDEwMDY0NAotLS0gYS8ubWFpbG1hcAorKysgYi8ubWFpbG1hcApAQCAtNzgsNiArNzgs
-NyBAQCBQaGlsaXBwZSBNYXRoaWV1LURhdWTDqSA8cGhpbG1kQGxpbmFyby5vcmc+IDxwaGlsbWRA
-cmVkaGF0LmNvbT4KIFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGluYXJvLm9yZz4g
-PHBoaWxtZEBmdW5naWJsZS5jb20+CiBTdGVmYW4gQnJhbmtvdmljIDxzdGVmYW4uYnJhbmtvdmlj
-QHN5cm1pYS5jb20+IDxzdGVmYW4uYnJhbmtvdmljQHJ0LXJrLmNvbS5jb20+CiBZb25nYm9rIEtp
-bSA8eW9uZ2Jvay5raW1AbWlwcy5jb20+IDx5b25nYm9rLmtpbUBpbWd0ZWMuY29tPgorVGF5bG9y
-IFNpbXBzb24gPGx0YXlsb3JzaW1wc29uQGdtYWlsLmNvbT4gPHRzaW1wc29uQHF1aWNpbmMuY29t
-PgogCiAjIEFsc28gbGlzdCBwcmVmZXJyZWQgbmFtZSBmb3JtcyB3aGVyZSBwZW9wbGUgaGF2ZSBj
-aGFuZ2VkIHRoZWlyCiAjIGdpdCBhdXRob3IgY29uZmlnLCBvciBoYWQgdXRmOC9sYXRpbjEgZW5j
-b2RpbmcgaXNzdWVzLgotLSAKMi4yNS4xCgo=
+Eric Blake <eblake@redhat.com> writes:
+
+> On Tue, May 23, 2023 at 06:39:03PM -0300, Fabiano Rosas wrote:
+>> From: Jo=C3=A3o Silva <jsilva@suse.de>
+>>=20
+>> The fstat call can take a long time to finish when running over
+>> NFS. Add a version of it that runs in the thread pool.
+>>=20
+>> Adapt one of its users, raw_co_get_allocated_file size to use the new
+>> version. That function is called via QMP under the qemu_global_mutex
+>> so it has a large chance of blocking VCPU threads in case it takes too
+>> long to finish.
+>>=20
+>> Signed-off-by: Jo=C3=A3o Silva <jsilva@suse.de>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  block/file-posix.c      | 40 +++++++++++++++++++++++++++++++++++++---
+>>  include/block/raw-aio.h |  4 +++-
+>>  2 files changed, 40 insertions(+), 4 deletions(-)
+>
+> Should this change occur earlier in the series, before calling
+> commands are marked with QAPI coroutine flags?  Otherwise, you have a
+> bisection bug, where something marked coroutine can end up hanging
+> when it calls a blocking syscall in the wrong context without the help
+> of this patch offloading the syscall into a helper thread.
+
+Hmm, I'm not sure. To submit the work to the thread pool we need to be
+in a coroutine already. If the syscall blocks for too long we'd be
+trading blocking the coroutine vs. blocking a vcpu thread anyway.
+
+I have tested each patch to avoid bisection issues, but maybe it would
+be warranted to merge both parts into a single patch. Or arrange them in
+some other way... I'll experiment with it.
+
 
