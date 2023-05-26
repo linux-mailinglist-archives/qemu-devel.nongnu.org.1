@@ -2,97 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A76E71269D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 14:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A55857126E9
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 14:49:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2WZU-0006vp-Dv; Fri, 26 May 2023 08:29:28 -0400
+	id 1q2Wri-0005ei-H1; Fri, 26 May 2023 08:48:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q2WZS-0006uh-KH
- for qemu-devel@nongnu.org; Fri, 26 May 2023 08:29:26 -0400
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1q2WrS-0005dY-Lo
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 08:48:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q2WZR-0001nS-3Z
- for qemu-devel@nongnu.org; Fri, 26 May 2023 08:29:26 -0400
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1q2WrP-0008HL-7o
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 08:48:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685104164;
+ s=mimecast20190719; t=1685105278;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vU9SCW7hgl1DoVNNHBTqtsYgLzO24nyXmoQyeN0/iK8=;
- b=EZms0a8r51fRZgVxxyeIfENU65NRLtka2EW/XRNbNwTDGb49CBkSnBjQk9bB1Yaa0/ZOS9
- Buh+4dMI9SGTexFNmvh0whluTuHX8irmNTO2z6+xZDlV68Ayo8JnWYhG3uUIDeC4adUmPf
- c9zoZGbO1gZHmsFAiGC1FPXkgFmUccs=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=F6B4dRALKH5sfFoxuEMyrCbIa8hTVTVo6ka4rxPj5lE=;
+ b=ZT/sF3A9GvpW/YsghGa2cC2hgz0ToYQrFrYnxNf1sLcQDDuXXeydHzxTtdsw5qpR2UbrVB
+ W8vARqJqQjXgCnlY4i0wrVqvSBSkqqwR8iiiJrmtGQ2PnP0BRUa7vyBVbpymblYmObiRLw
+ 3F/N1N7/nG/xYhTEqv5Z+F4BoCgJyP8=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-XFTau5tJNpSMWdh_r7VfWA-1; Fri, 26 May 2023 08:29:22 -0400
-X-MC-Unique: XFTau5tJNpSMWdh_r7VfWA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-96f6fee8123so68288766b.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 05:29:22 -0700 (PDT)
+ us-mta-446-LpIkfOXvP32u0PXFL5dXIQ-1; Fri, 26 May 2023 08:47:56 -0400
+X-MC-Unique: LpIkfOXvP32u0PXFL5dXIQ-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1ae721230a1so8682735ad.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 05:47:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685104162; x=1687696162;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vU9SCW7hgl1DoVNNHBTqtsYgLzO24nyXmoQyeN0/iK8=;
- b=HwkZIxAsZlGsEDs6YUdZFiaE3kvj9ZeMxPAiLS8V9KFn97GFfnbrC76UvkZxitNyzd
- neYDUwSErbbw1SaJZiZrtQzUv+jIcd5rnYADODkAcI7UMLTwPE7a0J+BE7ku2QSP1k2A
- WNURhy7EDIgq3u9HrL3CQtnYEckvhjkRzLPRAoYmxT+TQxA+ES0zCEN7iJzjLmrE3h27
- sbH+C8ZBvs5iBf+LOwtHmAw07MAhBD1unjvc8TYBma/Xo8zfSMLtQLgXpx3rVV7N0xpj
- Va7S+J6K9WPoHf2FymqdZonQsH+YI+LHYPoifX2oLkYqeYdBcXjUeKo2SxeR26GrfvNz
- d/HQ==
-X-Gm-Message-State: AC+VfDzpeHAAsbx3mWaxn3X/LJJ3EjdZfUa7YhE1azmxDTnIktbrauAw
- /QZnkYwqUbEPrnM23fk4yMaFvvBvHnPwmicAKv+A6nrhAtjNMjQz9PFJC1fzTQkrR/gC72jHYGI
- evU0EBYUG1UHnNEg=
-X-Received: by 2002:a17:907:9413:b0:967:5c5f:e45c with SMTP id
- dk19-20020a170907941300b009675c5fe45cmr1910717ejc.0.1685104161882; 
- Fri, 26 May 2023 05:29:21 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ52oxCIM0jeLOfWru/Q3WRhzOYb+n3oPEcpFasm/N5nSPhzNk+jxM0hAcDcZhtR1e6L90yUyw==
-X-Received: by 2002:a17:907:9413:b0:967:5c5f:e45c with SMTP id
- dk19-20020a170907941300b009675c5fe45cmr1910681ejc.0.1685104161602; 
- Fri, 26 May 2023 05:29:21 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-12-25-16.business.telecomitalia.it.
- [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
- a8-20020a1709062b0800b00970f0e2dab2sm2069094ejg.112.2023.05.26.05.29.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 05:29:20 -0700 (PDT)
-Date: Fri, 26 May 2023 14:29:18 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>, 
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Auger <eric.auger@redhat.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- David Hildenbrand <david@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-s390x@nongnu.org,
- Cornelia Huck <cohuck@redhat.com>, 
- Halil Pasic <pasic@linux.ibm.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>
-Subject: Re: [PATCH v2 07/10] hw/virtio/vhost-vsock: Include missing
- 'virtio/virtio-bus.h' header
-Message-ID: <ikk6mlowrgajmsqsplaezv3lja6ymdqtrqlvlcegoujox3crpz@xd4pvtpvw7jj>
-References: <20230524093744.88442-1-philmd@linaro.org>
- <20230524093744.88442-8-philmd@linaro.org>
+ d=1e100.net; s=20221208; t=1685105275; x=1687697275;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=F6B4dRALKH5sfFoxuEMyrCbIa8hTVTVo6ka4rxPj5lE=;
+ b=kQt7JLhiltloI13ejPNlHLDLDMXdV1Xe9D6sohCf3ZItXZGHWtWUAa435YmFEXcUfT
+ H06BsbKzmL3Tic+ZmsKfwn9xKrjMo40zRWX31oCtOacm41z8ucX4zDHafIEmH5nWFNXk
+ 9+rS/dBvGSUmSwM/d+4RlQJM40lUfIYf4e5bSa7h1NYh7S/5PdVLlchxrN30vnZWYmTg
+ TOPt5knJIz1XvFIsdTcao++MDj0QG4LRnAoXD6ub6wTg2MjHOuam/cgsAW+ycdEa7XT+
+ k8U+zgJMi0I7hdAXaPPfiVPQqaL5iuy6JNBis5U90uY9aWetqD8AAa/deihOQw4mhJYX
+ swkQ==
+X-Gm-Message-State: AC+VfDyhAqtfMMQ17pY547UqCA6goEMpHF7ZdU5c0YcHB150b5C0OMGh
+ DXZzAyThp5np0uQsHldhm652psoHEOSUUF9ZS4p2aaJIHDImSs/5f4RzeRu6f01iwOmrpspCpbe
+ GWPE6CRuaRBteznl9ffcyjuAHXtgJlBM=
+X-Received: by 2002:a17:903:4095:b0:1aa:ee36:40a5 with SMTP id
+ z21-20020a170903409500b001aaee3640a5mr1876034plc.34.1685105275692; 
+ Fri, 26 May 2023 05:47:55 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6Y4V7vhMTtwb1xST7nZ0UFKAs7mtCfXTvQd/eYOMFZExyBAix+acKMmXnh828gYKdt10/qJxWfvuVC58SE4ks=
+X-Received: by 2002:a17:903:4095:b0:1aa:ee36:40a5 with SMTP id
+ z21-20020a170903409500b001aaee3640a5mr1876016plc.34.1685105275326; Fri, 26
+ May 2023 05:47:55 -0700 (PDT)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 26 May 2023 08:47:54 -0400
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20230526121006.76388-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230524093744.88442-8-philmd@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+In-Reply-To: <20230526121006.76388-1-sunilvl@ventanamicro.com>
+Date: Fri, 26 May 2023 08:47:54 -0400
+Message-ID: <CABJz62OvBz43LLPyqT7f-ktn9f9hyMed-Wm8ezVom2chQmX5Mw@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] hw/riscv/virt: pflash improvements
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -116,27 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 24, 2023 at 11:37:41AM +0200, Philippe Mathieu-Daudé wrote:
->Instead of having "virtio/virtio-bus.h" implicitly included,
->explicitly include it, to avoid when rearranging headers:
+On Fri, May 26, 2023 at 05:40:03PM +0530, Sunil V L wrote:
+> This series improves the pflash usage in RISC-V virt machine with solutions to
+> below issues.
 >
->  hw/virtio/vhost-vsock-common.c: In function ‘vhost_vsock_common_start’:
->  hw/virtio/vhost-vsock-common.c:51:5: error: unknown type name ‘VirtioBusClass’; did you mean ‘VirtioDeviceClass’?
->     51 |     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
->        |     ^~~~~~~~~~~~~~
->        |     VirtioDeviceClass
->  hw/virtio/vhost-vsock-common.c:51:25: error: implicit declaration of function ‘VIRTIO_BUS_GET_CLASS’; did you mean ‘VIRTIO_DEVICE_CLASS’? [-Werror=implicit-function-declaration]
->     51 |     VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
->        |                         ^~~~~~~~~~~~~~~~~~~~
->        |                         VIRTIO_DEVICE_CLASS
+> 1) Currently the first pflash is reserved for ROM/M-mode firmware code. But S-mode
+> payload firmware like EDK2 need both pflash devices to have separate code and variable
+> store so that OS distros can keep the FW code as read-only.
 >
->Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->Reviewed-by: Thomas Huth <thuth@redhat.com>
->---
-> hw/virtio/vhost-vsock-common.c | 1 +
-> 1 file changed, 1 insertion(+)
+> The issue is reported at
+> https://salsa.debian.org/qemu-team/edk2/-/commit/c345655a0149f64c5020bfc1e53c619ce60587f6
+>
+> 2) The latest way of using pflash devices in other architectures and libvirt
+> is by using -blockdev and machine options. However, currently this method is
+> not working in RISC-V.
+>
+> With above issues fixed, added documentation on how to use pflash devices
+> in RISC-V virt machine.
+>
+> This patch series is based on Alistair's riscv-to-apply.next branch.
+>
+> Changes since v4:
+> 	1) Updated patch 2 to avoid accessing private field as per feedback from Philippe.
+> 	2) Updated documentation patch to add read-only for ROM usage.
+> 	3) Rebased to latest riscv-to-apply.next branch and updated tags.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Still works great :)
+
+Tested-by: Andrea Bolognani <abologna@redhat.com>
+
+-- 
+Andrea Bolognani / Red Hat / Virtualization
 
 
