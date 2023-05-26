@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C45E712324
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9F971231B
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2TRN-0002vT-FE; Fri, 26 May 2023 05:08:53 -0400
+	id 1q2TRR-0002yo-UH; Fri, 26 May 2023 05:08:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2TRL-0002v5-GT
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:08:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2TRP-0002wY-KQ
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:08:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2TRK-0000hd-1W
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:08:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2TRO-0000iN-4f
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:08:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685092129;
+ s=mimecast20190719; t=1685092133;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YC6jIvP2QXQOLHf9hCxS1/9g4h0h+RAusucAoyZ/Zjw=;
- b=J6iAdsNmQbbayzzpkyjadZG2ssymxsNFIJsYq6rgpdARpWKib9X+LlfH2pMvqV/ZJLg4HL
- WmJEI1D1DYNhtR4RRIscCyvmgIjsBo92If/+QDtY+Qk0ypgaK4w0fVaSgiAafrfANsfSJT
- 9zWTmTOGd99Czlwv6+fjCy9RnpBDoYU=
+ bh=jQZcidCD9FXsEpzsaTAYOMpwzI84iEJUxvi1todzSl8=;
+ b=ZHelkXEGmkiRQJiSd6fVo77Jw/NuUATle5LAgSQe1SL2rngnEhsIYGfFU5yG/OubY8vR7l
+ I7jb83TnkP4Njw5DfIHVAF1O9phY5dGdg8umCeQRm6kd7J1cLaN7UNlaQpV2fdbZ3X8mBp
+ 2ZScRUGg7WLNchcNJGGhhoikQfkzTfg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-63-Dliami3IMw2N3ZKVvWuGyw-1; Fri, 26 May 2023 05:08:47 -0400
-X-MC-Unique: Dliami3IMw2N3ZKVvWuGyw-1
+ us-mta-173-1LZsr1lDNb2lCHh3zfeyxw-1; Fri, 26 May 2023 05:08:48 -0400
+X-MC-Unique: 1LZsr1lDNb2lCHh3zfeyxw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 091D68015D8;
- Fri, 26 May 2023 09:08:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 211388032F5;
+ Fri, 26 May 2023 09:08:48 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.252])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A8815C154D2;
- Fri, 26 May 2023 09:08:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 55AA3C0448E;
+ Fri, 26 May 2023 09:08:47 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Song Gao <gaosong@loongson.cn>
-Subject: [PULL 04/15] hw/loongarch64: Use MachineClass->default_nic in the
- virt machine
-Date: Fri, 26 May 2023 11:08:29 +0200
-Message-Id: <20230526090840.2225958-5-thuth@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 05/15] hw/xtensa: Use MachineClass->default_nic in the virt
+ machine
+Date: Fri, 26 May 2023 11:08:30 +0200
+Message-Id: <20230526090840.2225958-6-thuth@redhat.com>
 In-Reply-To: <20230526090840.2225958-1-thuth@redhat.com>
 References: <20230526090840.2225958-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -84,46 +83,63 @@ so that the machine-defaults code in vl.c can decide whether the
 default NIC is usable or not (for example when compiling with the
 "--without-default-devices" configure switch).
 
-Message-Id: <20230523110435.1375774-5-thuth@redhat.com>
+Message-Id: <20230523110435.1375774-6-thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Tested-by: Song Gao <gaosong@loongson.cn>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/loongarch/virt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/xtensa/virt.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 2b7588e32a..ceddec1b23 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -474,6 +474,7 @@ static DeviceState *create_platform_bus(DeviceState *pch_pic)
+diff --git a/hw/xtensa/virt.c b/hw/xtensa/virt.c
+index a18e3fc910..b87f842e74 100644
+--- a/hw/xtensa/virt.c
++++ b/hw/xtensa/virt.c
+@@ -38,7 +38,8 @@
+ #include "xtensa_memory.h"
+ #include "xtensa_sim.h"
  
- static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *lams)
+-static void create_pcie(CPUXtensaState *env, int irq_base, hwaddr addr_base)
++static void create_pcie(MachineState *ms, CPUXtensaState *env, int irq_base,
++                        hwaddr addr_base)
  {
-+    MachineClass *mc = MACHINE_GET_CLASS(lams);
-     DeviceState *gpex_dev;
-     SysBusDevice *d;
-     PCIBus *pci_bus;
-@@ -528,7 +529,7 @@ static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *
-         NICInfo *nd = &nd_table[i];
+     hwaddr base_ecam = addr_base + 0x00100000;
+     hwaddr size_ecam =             0x03f00000;
+@@ -54,6 +55,7 @@ static void create_pcie(CPUXtensaState *env, int irq_base, hwaddr addr_base)
+     MemoryRegion *mmio_alias;
+     MemoryRegion *mmio_reg;
  
-         if (!nd->model) {
--            nd->model = g_strdup("virtio");
-+            nd->model = g_strdup(mc->default_nic);
-         }
++    MachineClass *mc = MACHINE_GET_CLASS(ms);
+     DeviceState *dev;
+     PCIHostState *pci;
+     qemu_irq *extints;
+@@ -104,7 +106,7 @@ static void create_pcie(CPUXtensaState *env, int irq_base, hwaddr addr_base)
+             NICInfo *nd = &nd_table[i];
  
-         pci_nic_init_nofail(nd, pci_bus, nd->model, NULL);
-@@ -1038,6 +1039,7 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
-     mc->default_boot_order = "c";
-     mc->no_cdrom = 1;
-     mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
+             if (!nd->model) {
+-                nd->model = g_strdup("virtio");
++                nd->model = g_strdup(mc->default_nic);
+             }
+ 
+             pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
+@@ -117,7 +119,7 @@ static void xtensa_virt_init(MachineState *machine)
+     XtensaCPU *cpu = xtensa_sim_common_init(machine);
+     CPUXtensaState *env = &cpu->env;
+ 
+-    create_pcie(env, 0, 0xf0000000);
++    create_pcie(machine, env, 0, 0xf0000000);
+     xtensa_sim_load_kernel(cpu, machine);
+ }
+ 
+@@ -127,6 +129,7 @@ static void xtensa_virt_machine_init(MachineClass *mc)
+     mc->init = xtensa_virt_init;
+     mc->max_cpus = 32;
+     mc->default_cpu_type = XTENSA_DEFAULT_CPU_TYPE;
 +    mc->default_nic = "virtio-net-pci";
-     hc->plug = loongarch_machine_device_plug_cb;
-     hc->pre_plug = virt_machine_device_pre_plug;
-     hc->unplug_request = virt_machine_device_unplug_request;
+ }
+ 
+ DEFINE_MACHINE("virt", xtensa_virt_machine_init)
 -- 
 2.31.1
 
