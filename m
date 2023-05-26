@@ -2,78 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94AC712B0F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D3B712B20
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:55:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2adD-0000vf-51; Fri, 26 May 2023 12:49:35 -0400
+	id 1q2ahe-0002wW-K8; Fri, 26 May 2023 12:54:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2ad9-0000vE-NH
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:49:32 -0400
-Received: from smtp-190a.mail.infomaniak.ch ([185.125.25.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2ad6-0001aD-Ih
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:49:31 -0400
-Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
- by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QSW9963HFzMqBk5;
- Fri, 26 May 2023 18:49:17 +0200 (CEST)
-Received: from unknown by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA
- id 4QSW954GcnzMpq7x; Fri, 26 May 2023 18:49:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
- s=20191114; t=1685119757;
- bh=aghhZZz/jAHNei4obfycQdpoNYo23x/hMTO/WYvr+D4=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=aNpuEEhr3qfgoQBoABl/c/Soy37k/dWbg29l53qY084NrLE1aBB96NeIw1GJ+t33V
- pd9trvFbpyUukW/iVPpk0eBX/Jwsza/CoS5PoumlcDlW/vnInB0QV0Wjo7cpI7eeQk
- 00f3/lqql1UIb9Yq02grk2akHYn3y+PAXnI212IM=
-Message-ID: <7671b432-569a-d176-315b-d5f66fe205ef@digikod.net>
-Date: Fri, 26 May 2023 18:49:12 +0200
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q2aha-0002vY-Oc
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:54:06 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q2ahZ-0002Fk-6a
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:54:06 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-30ad8f33f1aso550468f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:54:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685120043; x=1687712043;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=aNgvF1U6DPPWVuKO08h1QsvUdyYGXngalDac3kMNIfs=;
+ b=A+ronVnHN0aE07c7PKZ8yDmF/T+akdw63yz8NWqKUId5mcdhQzxxncFJcpvsO2L28B
+ 5VrghQtupeSDu5OJk0DS7VXyjw8uERYfYy2pdAn6tDrRLtYFewm4hUWhqr1T65RDq4Lp
+ 6pMLcT2Dhk/h2wQmpDQUWqgi/MtLy/nSOv/UBYLn4CKZBT+TXiXOlsoiVoPoELVeUZIH
+ hyPt8QPZUECxBbhguWL3+E9IU5Xh6lF5zFRp9WAYNsXOn/XMjZVyDWD5EbKYHJxfedW4
+ wkzhkuegydVbm03rnPjHEuQ2lKpiApw80cSolYM+ypCs10GLtVJ/s5iXDAhNijmiGL7i
+ 655A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685120043; x=1687712043;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aNgvF1U6DPPWVuKO08h1QsvUdyYGXngalDac3kMNIfs=;
+ b=cudtvDQN6CuZeNwA6OvTVLIBTdm0DpZ9kQnn5sGeoJw6f4Un3kKvC0oPDGRP5wfXBv
+ a4yDL/OsaYdap/9DjQepHjnuYKIz7i1sadtbMg4zbxzIjLhuXpUIo0SWoOwXh1DevzSe
+ o8G8/au2nfU3UfQYH12zQaM7Uk4QCNnR2SWkdrh6/OWE/8PumGJ48cAVOnsPxk0Xphib
+ inpweVlZT3LGIjzC459aC1d95rOoccm8N0Y+3wJmNtXqQ2j67gkiFIL5RaY6GW1CMQjA
+ R7u4wpnzGrYnhn4jLplhlYk6ne8tmEcKu3DI6ZPJvUCz6Ex7J0CzMbfFHz5Uemo+Mvet
+ UYPA==
+X-Gm-Message-State: AC+VfDy3s1jlw3cMcpqWeAswmHMPD1S/KzOiUXBZ+XomwT1mGdDn+ib0
+ UmCkzxTrsq3fyaZIHWs4S2hduw==
+X-Google-Smtp-Source: ACHHUZ4VAPQDebypG6Kb+2ocQlu8+ZrvpBdnuxCSyF5EjO6Uxv6GZ6W6lc8VYm6/IYyhHCU74F9Prw==
+X-Received: by 2002:adf:f603:0:b0:305:ed26:8576 with SMTP id
+ t3-20020adff603000000b00305ed268576mr2095682wrp.9.1685120042772; 
+ Fri, 26 May 2023 09:54:02 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ c2-20020adfed82000000b003078a3f3a24sm5647501wro.114.2023.05.26.09.54.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 May 2023 09:54:02 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id ECDAA1FFBB;
+ Fri, 26 May 2023 17:54:01 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Riku Voipio <riku.voipio@iki.fi>, Markus Armbruster <armbru@redhat.com>,
+ Kyle Evans <kevans@freebsd.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Warner Losh <imp@bsdimp.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Greg Kurz <groug@kaod.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, libvir-list@redhat.com,
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v6 00/11] tracing: remove dynamic vcpu state
+Date: Fri, 26 May 2023 17:53:50 +0100
+Message-Id: <20230526165401.574474-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: 
-Subject: Re: [PATCH v1 6/9] KVM: x86: Add Heki hypervisor support
-Content-Language: en-US
-To: Wei Liu <wei.liu@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Kees Cook <keescook@chromium.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
- James Morris <jamorris@linux.microsoft.com>,
- John Andersen <john.s.andersen@intel.com>, Liran Alon
- <liran.alon@oracle.com>,
- "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>,
- Marian Rotariu <marian.c.rotariu@gmail.com>,
- =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
- =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
- Zahra Tarkhani <ztarkhani@microsoft.com>,
- =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
- dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
- x86@kernel.org, xen-devel@lists.xenproject.org
-References: <20230505152046.6575-1-mic@digikod.net>
- <20230505152046.6575-7-mic@digikod.net>
- <ZFlnJRsJh2fX3IJb@liuwe-devbox-debian-v2>
-From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-In-Reply-To: <ZFlnJRsJh2fX3IJb@liuwe-devbox-debian-v2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-Received-SPF: pass client-ip=185.125.25.10; envelope-from=mic@digikod.net;
- helo=smtp-190a.mail.infomaniak.ch
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,50 +103,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Stefan,
 
-On 08/05/2023 23:18, Wei Liu wrote:
-> On Fri, May 05, 2023 at 05:20:43PM +0200, Mickaël Salaün wrote:
->> From: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
->>
->> Each supported hypervisor in x86 implements a struct x86_hyper_init to
->> define the init functions for the hypervisor.  Define a new init_heki()
->> entry point in struct x86_hyper_init.  Hypervisors that support Heki
->> must define this init_heki() function.  Call init_heki() of the chosen
->> hypervisor in init_hypervisor_platform().
->>
->> Create a heki_hypervisor structure that each hypervisor can fill
->> with its data and functions. This will allow the Heki feature to work
->> in a hypervisor agnostic way.
->>
->> Declare and initialize a "heki_hypervisor" structure for KVM so KVM can
->> support Heki.  Define the init_heki() function for KVM.  In init_heki(),
->> set the hypervisor field in the generic "heki" structure to the KVM
->> "heki_hypervisor".  After this point, generic Heki code can access the
->> KVM Heki data and functions.
->>
-> [...]
->> +static void kvm_init_heki(void)
->> +{
->> +	long err;
->> +
->> +	if (!kvm_para_available())
->> +		/* Cannot make KVM hypercalls. */
->> +		return;
->> +
->> +	err = kvm_hypercall3(KVM_HC_LOCK_MEM_PAGE_RANGES, -1, -1, -1);
-> 
-> Why not do a proper version check or capability check here? If the ABI
-> or supported features ever change then we have something to rely on?
+The references dynamic vcpu tracing support was removed when the
+original TCG trace points where removed. However there was still a
+legacy of dynamic trace state to track this in cpu.h and extra hash
+variables to track TBs. While the removed vcpu tracepoints are not in
+generated code (or helpers) they still bring in a bunch of machinery
+to manage the state so I've pulled them out. We keep and rename one
+(cpu_reset) to a static trace points which dump vcpu->index as it is
+useful to f4bug.
 
-The attributes will indeed get extended, but I wanted to have a simple 
-proposal for now.
+v6 new patch to shuffle deprecated, added rth's rb, qapi doc cleanups
 
-Do you mean to get the version of this hypercall e.g., with a dedicated 
-flag, like with the 
-landlock_create_ruleset/LANDLOCK_CREATE_RULESET_VERSION syscall?
+Please queue into your tree.
 
+Alex Bennée (11):
+  *-user: remove the guest_user_syscall tracepoints
+  trace-events: remove the remaining vcpu trace events
+  trace: remove vcpu_id from the TraceEvent structure
+  scripts/qapi: document the tool that generated the file
+  docs/deprecated: move QMP events bellow QMP command section
+  qapi: make the vcpu parameters deprecated for 8.1
+  trace: remove code that depends on setting vcpu
+  trace: remove control-vcpu.h
+  tcg: remove the final vestiges of dstate
+  hw/9pfs: use qemu_xxhash4
+  accel/tcg: include cs_base in our hash calculations
 
-> 
-> Thanks,
-> Wei.
+ docs/about/deprecated.rst     |  25 +++++---
+ qapi/trace.json               |  40 ++++++-------
+ accel/tcg/tb-hash.h           |   6 +-
+ include/exec/exec-all.h       |   3 -
+ include/hw/core/cpu.h         |   5 --
+ include/qemu/xxhash.h         |  23 +++++--
+ include/user/syscall-trace.h  |   4 --
+ trace/control-internal.h      |  10 ----
+ trace/control-vcpu.h          |  63 --------------------
+ trace/control.h               |  48 ---------------
+ trace/event-internal.h        |   2 -
+ accel/tcg/cpu-exec.c          |   7 +--
+ accel/tcg/tb-maint.c          |   5 +-
+ accel/tcg/translate-all.c     |   6 --
+ bsd-user/freebsd/os-syscall.c |   2 -
+ hw/9pfs/9p.c                  |   5 +-
+ hw/core/cpu-common.c          |   6 +-
+ stubs/trace-control.c         |  13 ----
+ trace/control-target.c        | 109 +++-------------------------------
+ trace/control.c               |  28 ---------
+ trace/qmp.c                   |  76 +++---------------------
+ trace/trace-hmp-cmds.c        |  18 +-----
+ util/qsp.c                    |   2 +-
+ hw/core/trace-events          |   3 +
+ scripts/qapi/gen.py           |   9 ++-
+ scripts/tracetool/format/c.py |   6 --
+ scripts/tracetool/format/h.py |  16 +----
+ trace-events                  |  50 ----------------
+ 28 files changed, 94 insertions(+), 496 deletions(-)
+ delete mode 100644 trace/control-vcpu.h
+
+-- 
+2.39.2
+
 
