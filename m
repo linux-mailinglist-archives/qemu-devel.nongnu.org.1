@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E9C711DE9
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 04:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3E5712800
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:06:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2NCg-0000b8-2p; Thu, 25 May 2023 22:29:18 -0400
+	id 1q2Y4o-0000fN-AP; Fri, 26 May 2023 10:05:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q2NCd-0000V9-Ed; Thu, 25 May 2023 22:29:15 -0400
-Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q2NCb-0007fd-Oq; Thu, 25 May 2023 22:29:15 -0400
-Received: by mail-ua1-x930.google.com with SMTP id
- a1e0cc1a2514c-783e5c64d29so298333241.1; 
- Thu, 25 May 2023 19:29:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685068152; x=1687660152;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=shzpP+M/z4nBYvLPHsw8j/FfgBCbX8QORsE6v+pejto=;
- b=X/ziBY9y2GTsGovH+6zUcbHWyvi2w3GbE8TNk+My8tfNpCM0uKPfZVQ/bB178AbNEg
- 98aWsuH4E0bqdAOdNJdua0wr4J062U4I3iddlEYHv3LcPWbrGxHgBzVK5h77VytDYCA7
- ys0UZiLWvwJiJbbrCK6/IAbHt90Cte5BMhAIob1wzCgHqctvmL+UO+YYw5XhdfxYvIeI
- AvPPx0MonrQfKOuIhosJoBpnRxaAzgogF+4MNA4fqzb6iilmEad9wLiTJmuJzAuc8HfP
- yyEmN5FoX2rz5wZ1+oI/SbOqUo5zSBtg7HcQWBA/4Ol9U0MH3Jd1Qdu/Y4USpoQvAkjL
- OTng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685068152; x=1687660152;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=shzpP+M/z4nBYvLPHsw8j/FfgBCbX8QORsE6v+pejto=;
- b=b3lKPlkWAwdzKk64Bt8fYuboNsWDhFNfLdCEdfJ3KMjdQbL/pAvVEAwWPlV5owjNjQ
- g8gZeqdY5oooEXR2pcFqLjWrDv/y6IdTKUN6oLv3uw1BHDpG1Uy/0+3d2lBpFpftakYi
- byhg4RFv6SCoM7ytWpbw6PTLXwVpYmM0qgGC0YO3brQgaeeQuvO7kIOVMxf+eiR631kF
- 1AFeCGjvxf6c76Q+LMgwyQCPBYW0fcvBqCRrDPbGsdK4E0RTMyPxUSwJGgbEJYl0OEeK
- 0/3Crwp1viyvUVk/fj5vpx/MUVseLuQQrU1mh4gz42cmMnjTD1aHvDjwNn1+iMwALwyq
- y/Kw==
-X-Gm-Message-State: AC+VfDzMfC/LSjgovue04vMezQBscUhTe74pEhGFUZrY/BoeErFfh3K3
- tH4NFu/z4EJ6Pr0/U5U9fiozIJVsr3Ay5IelZ6Q=
-X-Google-Smtp-Source: ACHHUZ4+//fPzBed/5QHE5VQn8Z0gSjaDDwqaNzCiszBnXgZbJbHvwqbe39PfOd/w4zwf0gTnQk8IwmklD6np8hKT0g=
-X-Received: by 2002:a05:6102:746:b0:437:d9e9:ebe5 with SMTP id
- v6-20020a056102074600b00437d9e9ebe5mr1558931vsg.10.1685068152320; Thu, 25 May
- 2023 19:29:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jamorris@linux.microsoft.com>)
+ id 1q2NJW-0002mn-IY
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 22:36:22 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <jamorris@linux.microsoft.com>) id 1q2NJU-0000W9-UL
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 22:36:22 -0400
+Received: by linux.microsoft.com (Postfix, from userid 1001)
+ id 1932320FBE98; Thu, 25 May 2023 19:36:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1932320FBE98
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1685068578;
+ bh=QsI2Tqrh7Dq8rATEw0dJAIe6Y8MEWIZaKj+0i4m1b94=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=rc/phama1ktXAiy+vs2NVCSXABwbcfYCYzvoNhWo6b4QznrBTZJyht2XFXGcOWpXT
+ eN3vRQ77IyNVtRNsEt3dUwkwOKfWmDDqOGFtsKRkzHP0DTyYh3PuCH9zyVE+5kTU93
+ rssQ3lVi3y4biGwhIuiBnmIaxdqEKLD8WYOLFyno=
+Received: from localhost (localhost [127.0.0.1])
+ by linux.microsoft.com (Postfix) with ESMTP id 1639D30013A9;
+ Thu, 25 May 2023 19:36:18 -0700 (PDT)
+Date: Thu, 25 May 2023 19:36:18 -0700 (PDT)
+From: James Morris <jamorris@linux.microsoft.com>
+To: =?ISO-8859-15?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
+cc: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+ Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Sean Christopherson <seanjc@google.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, 
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, 
+ Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>, 
+ John Andersen <john.s.andersen@intel.com>, 
+ Liran Alon <liran.alon@oracle.com>, 
+ "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>, 
+ Marian Rotariu <marian.c.rotariu@gmail.com>, 
+ =?UTF-8?Q?Mihai_Don=C8=9Bu?= <mdontu@bitdefender.com>, 
+ =?UTF-8?Q?Nicu=C8=99or_C=C3=AE=C8=9Bu?= <nicu.citu@icloud.com>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>, 
+ Zahra Tarkhani <ztarkhani@microsoft.com>, 
+ =?UTF-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>, 
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org, 
+ x86@kernel.org, xen-devel@lists.xenproject.org
+Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
+In-Reply-To: <20230505152046.6575-1-mic@digikod.net>
+Message-ID: <17f62cb1-a5de-2020-2041-359b8e96b8c0@linux.microsoft.com>
+References: <20230505152046.6575-1-mic@digikod.net>
 MIME-Version: 1.0
-References: <20230523135939.299246-1-liweiwei@iscas.ac.cn>
- <20230523135939.299246-8-liweiwei@iscas.ac.cn>
-In-Reply-To: <20230523135939.299246-8-liweiwei@iscas.ac.cn>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 26 May 2023 12:28:46 +1000
-Message-ID: <CAKmqyKMaLZgZV250B7xap8f7bOYFCw7HZX-FFt1+AY964TO_zA@mail.gmail.com>
-Subject: Re: [PATCH v2 7/7] target/riscv: Remove pc_succ_insn from DisasContext
-To: Weiwei Li <liweiwei@iscas.ac.cn>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::930;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x930.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=jamorris@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -197
+X-Spam_score: -19.8
+X-Spam_bar: -------------------
+X-Spam_report: (-19.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 26 May 2023 10:05:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,78 +87,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 24, 2023 at 12:07=E2=80=AFAM Weiwei Li <liweiwei@iscas.ac.cn> w=
-rote:
->
-> pc_succ_insn is no longer useful after the introduce of cur_insn_len
-> and all pc related value use diff value instead of absolute value.
->
-> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+[Side topic]
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Would folks be interested in a Linux Plumbers Conference MC on this 
+topic generally, across different hypervisors, VMMs, and architectures?
 
-Alistair
+If so, please let me know who the key folk would be and we can try writing 
+up an MC proposal.
 
-> ---
->  target/riscv/translate.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
->
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index 538187f93b..37d731f9c5 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -57,8 +57,6 @@ typedef enum {
->
->  typedef struct DisasContext {
->      DisasContextBase base;
-> -    /* pc_succ_insn points to the instruction following base.pc_next */
-> -    target_ulong pc_succ_insn;
->      target_ulong cur_insn_len;
->      target_ulong pc_save;
->      target_ulong priv_ver;
-> @@ -1147,7 +1145,6 @@ static void decode_opc(CPURISCVState *env, DisasCon=
-text *ctx, uint16_t opcode)
->      /* Check for compressed insn */
->      if (ctx->cur_insn_len =3D=3D 2) {
->          ctx->opcode =3D opcode;
-> -        ctx->pc_succ_insn =3D ctx->base.pc_next + 2;
->          /*
->           * The Zca extension is added as way to refer to instructions in=
- the C
->           * extension that do not include the floating-point loads and st=
-ores
-> @@ -1161,7 +1158,6 @@ static void decode_opc(CPURISCVState *env, DisasCon=
-text *ctx, uint16_t opcode)
->                               translator_lduw(env, &ctx->base,
->                                               ctx->base.pc_next + 2));
->          ctx->opcode =3D opcode32;
-> -        ctx->pc_succ_insn =3D ctx->base.pc_next + 4;
->
->          for (size_t i =3D 0; i < ARRAY_SIZE(decoders); ++i) {
->              if (decoders[i].guard_func(ctx) &&
-> @@ -1182,7 +1178,6 @@ static void riscv_tr_init_disas_context(DisasContex=
-tBase *dcbase, CPUState *cs)
->      uint32_t tb_flags =3D ctx->base.tb->flags;
->
->      ctx->pc_save =3D ctx->base.pc_first;
-> -    ctx->pc_succ_insn =3D ctx->base.pc_first;
->      ctx->priv =3D FIELD_EX32(tb_flags, TB_FLAGS, PRIV);
->      ctx->mem_idx =3D FIELD_EX32(tb_flags, TB_FLAGS, MEM_IDX);
->      ctx->mstatus_fs =3D FIELD_EX32(tb_flags, TB_FLAGS, FS);
-> @@ -1235,7 +1230,7 @@ static void riscv_tr_translate_insn(DisasContextBas=
-e *dcbase, CPUState *cpu)
->
->      ctx->ol =3D ctx->xl;
->      decode_opc(env, ctx, opcode16);
-> -    ctx->base.pc_next =3D ctx->pc_succ_insn;
-> +    ctx->base.pc_next +=3D ctx->cur_insn_len;
->
->      /* Only the first insn within a TB is allowed to cross a page bounda=
-ry. */
->      if (ctx->base.is_jmp =3D=3D DISAS_NEXT) {
-> --
-> 2.25.1
->
->
+
+
+-- 
+James Morris
+<jamorris@linux.microsoft.com>
 
