@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1DB971290E
+	by mail.lfdr.de (Postfix) with ESMTPS id ABAE271290F
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:04:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2YyO-0004J0-Fg; Fri, 26 May 2023 11:03:20 -0400
+	id 1q2YyS-0004LD-9U; Fri, 26 May 2023 11:03:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q2YyL-0004IU-AV
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:03:17 -0400
+ id 1q2YyP-0004Jk-Np
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:03:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q2YyJ-000699-2E
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:03:16 -0400
+ id 1q2YyO-00069i-3Y
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:03:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685113394;
+ s=mimecast20190719; t=1685113399;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D97XDHvGX08ZAoNvHcSNiEbEzSt6MLx+rWCVCdit0M0=;
- b=ZHuQS5HVpRnHLwQ9HmHDxPb59WuFBPzBeSQ8mvmJ/MoDiU5hstKNUP9xxF8JmzSlAYphWp
- 182VG2GTnNJCNXE6AS2AeCGRhozLR0agatrUo9IBQlrP0cVG9oZcwhB6RtaPfRHFVzSz/C
- /07dGtOJH15O8URd+t/eXKmsCmc9oMw=
+ bh=YK3XQHcYhqlcBukeuGWEe8d/R/PU0qLq2Uekkg/vHIU=;
+ b=AWJwTzMD/C7l+6n80ACCOCwMfquKgkY+NUxAZcMhNfbqQ5U6WSfQBAu9bH5TjBbFUVRGIh
+ Z8nBuadKemxby3YRwze/TPaWXzb5cui0TJMlDkVRWUWo/28InIQ9f9cOe0uSIl6jw4KKc0
+ UgUo/ytPbs7/l4Zs3j6bFo5ZcPXN2pQ=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-SMSk8_i2N6eS2ur_FttuPw-1; Fri, 26 May 2023 11:03:12 -0400
-X-MC-Unique: SMSk8_i2N6eS2ur_FttuPw-1
+ us-mta-615-IMiNBJ7tMCSpMXk3gDE4pg-1; Fri, 26 May 2023 11:03:18 -0400
+X-MC-Unique: IMiNBJ7tMCSpMXk3gDE4pg-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-94a34d3e5ebso79198466b.3
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:03:12 -0700 (PDT)
+ a640c23a62f3a-96fae2a13a5so82884966b.2
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:03:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685113391; x=1687705391;
+ d=1e100.net; s=20221208; t=1685113397; x=1687705397;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D97XDHvGX08ZAoNvHcSNiEbEzSt6MLx+rWCVCdit0M0=;
- b=XQuiVQ5ao5BYUBDhxJiPv74xyRADBA7mzWkWZ8Z74GRUMD/0b7IJCaa8cYrxD4nGKD
- RV7mEI1ZxftJJj+XldTH5XbXPdRbwM44b01HZIRiRtt5ik5Yc7JFdL/KL5wwgEolg3QP
- wbImh/+YMeoIJB/juuZ2YErhaUsDX7lk2FneEupKudk57k1QC3Kc/XF+bpZRG4QgHHjd
- KaPR0PZoQ19/Txe3hSIh/2NIMLqZ1X6QpHOnbXNunzomYO7b5zc7evUWBJ2bHSCVxFbC
- 1COCbojRIGZgxHWpVG8kNNQnRn5M8+I4levnJpIA1bssi0DeIzSaAByfiwZYtc+16Utl
- yKGw==
-X-Gm-Message-State: AC+VfDyN2tzp2SOTYfud2Y6dGnSMJe/oZyZ5VlAQMlguu4J+kSTPw3oA
- 3nrlE39YYVFm+Q9cS7hwQkCCoPIZFe9pK9fyo+BCOjFTRYevBMYku/StFCGiL6e4gh4koYm8xx3
- az53mXGlNxa4wOJ8iz7k3uPAujLCYLA6bG2Xw0BkubtUByRjtmwKriAbkVZ0uqDFEPrMwv+8kRR
- Y=
-X-Received: by 2002:a17:907:3f14:b0:94e:cf72:8147 with SMTP id
- hq20-20020a1709073f1400b0094ecf728147mr2531628ejc.48.1685113391436; 
- Fri, 26 May 2023 08:03:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ43SqjUfJxLG6gomGS72TNir6CUA4HfCsRukea2x/7kyM16/EGAoeNYVbmHgAFkfFGRb3p81w==
-X-Received: by 2002:a17:907:3f14:b0:94e:cf72:8147 with SMTP id
- hq20-20020a1709073f1400b0094ecf728147mr2531601ejc.48.1685113391185; 
- Fri, 26 May 2023 08:03:11 -0700 (PDT)
+ bh=YK3XQHcYhqlcBukeuGWEe8d/R/PU0qLq2Uekkg/vHIU=;
+ b=QRXRkG3EjQnzZ05KdknL9SFI9ZqBxUP7FUX659ycIuYQAg0mdWmWWDOe6nvQpyS27E
+ DxMpm8joIkJ0782EkiuxvxjUncJpL0cSOeSKM1mGTzwnvv/OKrz0P5vdpTLV2u6xgPtK
+ qJQHsVQ12mKoP9ImEvLRKNrcts7ho1/cZEBH8inpcy3XgBkPyFn8gkCMIVQ9HVm4pdGB
+ 0DKEhrZzvNqUt0aSDsDbAR2hsJsYtnKC/pb7kejpX3pZqhHbho8mOQRRcneJg8AuEdho
+ 9mnW3GmP1YWH8cEjWzIrHa2TbzeZVxOsWy71jY+3ESryTi9AErrnJdP55CT2FwzWlFef
+ QOgg==
+X-Gm-Message-State: AC+VfDz1QUcevZcMEI5uMp+AZ8Ke0PoDbqD5+JQg5bYVMFimRrXZ219U
+ j+60KH8lh1F2Q6JBVMBXCC3LH+pS1/c0rmyrLy6m1QExzHRvg3IwRB8kXxqVQ78DJVN8SrEbmY6
+ l1u8DqMWNboXiPasW2O7lDjt6/6hRtbm7Fgydu8NWn5DD4vJPtYtzUoIHKCsu8qSsh9WAfPUSS1
+ M=
+X-Received: by 2002:a17:907:930b:b0:94e:ec32:ba28 with SMTP id
+ bu11-20020a170907930b00b0094eec32ba28mr2317054ejc.29.1685113396699; 
+ Fri, 26 May 2023 08:03:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6ndf8M68H1YLG0GHmt5qafQB6ThhM8SWvJ5dDtfJrn0TrbRRSlIFtnuI/lAXTHDi3ONuMBrw==
+X-Received: by 2002:a17:907:930b:b0:94e:ec32:ba28 with SMTP id
+ bu11-20020a170907930b00b0094eec32ba28mr2317008ejc.29.1685113396172; 
+ Fri, 26 May 2023 08:03:16 -0700 (PDT)
 Received: from step1.. (host-87-12-25-16.business.telecomitalia.it.
  [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
- bl17-20020a170906c25100b0094e4eabb402sm2239995ejb.128.2023.05.26.08.03.09
+ q15-20020a1709066b0f00b0096b4c3489e6sm2274066ejr.177.2023.05.26.08.03.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 08:03:10 -0700 (PDT)
+ Fri, 26 May 2023 08:03:15 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>,
@@ -77,10 +77,10 @@ Cc: Hanna Reitz <hreitz@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v4 1/2] block/blkio: use qemu_open() to support fd passing for
- virtio-blk
-Date: Fri, 26 May 2023 17:03:03 +0200
-Message-Id: <20230526150304.158206-2-sgarzare@redhat.com>
+Subject: [PATCH v4 2/2] qapi: add '@fdset' feature for
+ BlockdevOptionsVirtioBlkVhostVdpa
+Date: Fri, 26 May 2023 17:03:04 +0200
+Message-Id: <20230526150304.158206-3-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230526150304.158206-1-sgarzare@redhat.com>
 References: <20230526150304.158206-1-sgarzare@redhat.com>
@@ -111,101 +111,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some virtio-blk drivers (e.g. virtio-blk-vhost-vdpa) supports the fd
-passing. Let's expose this to the user, so the management layer
-can pass the file descriptor of an already opened path.
+The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the fd
+passing through the new 'fd' property.
 
-If the libblkio virtio-blk driver supports fd passing, let's always
-use qemu_open() to open the `path`, so we can handle fd passing
-from the management layer through the "/dev/fdset/N" special path.
+Since now we are using qemu_open() on '@path' if the virtio-blk driver
+supports the fd passing, let's announce it.
+In this way, the management layer can pass the file descriptor of an
+already opened vhost-vdpa character device. This is useful especially
+when the device can only be accessed with certain privileges.
 
+Add the '@fdset' feature only when the virtio-blk-vhost-vdpa driver
+in libblkio supports it.
+
+Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
 
 Notes:
     v4:
-    - modified commit description
-    
-    v3:
-    - use qemu_open() on `path` to simplify libvirt code [Jonathon]
+    - added this patch to allow libvirt to discover we support fdset [Markus]
 
- block/blkio.c | 53 ++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 44 insertions(+), 9 deletions(-)
+ meson.build          | 4 ++++
+ qapi/block-core.json | 8 +++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/block/blkio.c b/block/blkio.c
-index 0cdc99a729..6a6f20f923 100644
---- a/block/blkio.c
-+++ b/block/blkio.c
-@@ -672,25 +672,60 @@ static int blkio_virtio_blk_common_open(BlockDriverState *bs,
- {
-     const char *path = qdict_get_try_str(options, "path");
-     BDRVBlkioState *s = bs->opaque;
--    int ret;
-+    bool fd_supported = false;
-+    int fd, ret;
+diff --git a/meson.build b/meson.build
+index 78890f0155..8ea911f7b4 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2108,6 +2108,10 @@ config_host_data.set('CONFIG_LZO', lzo.found())
+ config_host_data.set('CONFIG_MPATH', mpathpersist.found())
+ config_host_data.set('CONFIG_MPATH_NEW_API', mpathpersist_new_api)
+ config_host_data.set('CONFIG_BLKIO', blkio.found())
++if blkio.found()
++  config_host_data.set('CONFIG_BLKIO_VHOST_VDPA_FD',
++                       blkio.version().version_compare('>=1.3.0'))
++endif
+ config_host_data.set('CONFIG_CURL', curl.found())
+ config_host_data.set('CONFIG_CURSES', curses.found())
+ config_host_data.set('CONFIG_GBM', gbm.found())
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 98d9116dae..1538d84ef4 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3955,10 +3955,16 @@
+ #
+ # @path: path to the vhost-vdpa character device.
+ #
++# Features:
++# @fdset: Member @path supports the special "/dev/fdset/N" path (since 8.1)
++#
+ # Since: 7.2
+ ##
+ { 'struct': 'BlockdevOptionsVirtioBlkVhostVdpa',
+-  'data': { 'path': 'str' },
++  'data': { 'path': { 'type': 'str',
++                      'features': [ { 'name' :'fdset',
++                                      'if': 'CONFIG_BLKIO_VHOST_VDPA_FD' } ]
++            } },
+   'if': 'CONFIG_BLKIO' }
  
-     if (!path) {
-         error_setg(errp, "missing 'path' option");
-         return -EINVAL;
-     }
- 
--    ret = blkio_set_str(s->blkio, "path", path);
--    qdict_del(options, "path");
--    if (ret < 0) {
--        error_setg_errno(errp, -ret, "failed to set path: %s",
--                         blkio_get_error_msg());
--        return ret;
--    }
--
-     if (!(flags & BDRV_O_NOCACHE)) {
-         error_setg(errp, "cache.direct=off is not supported");
-         return -EINVAL;
-     }
-+
-+    if (blkio_get_int(s->blkio, "fd", &fd) == 0) {
-+        fd_supported = true;
-+    }
-+
-+    /*
-+     * If the libblkio driver supports fd passing, let's always use qemu_open()
-+     * to open the `path`, so we can handle fd passing from the management
-+     * layer through the "/dev/fdset/N" special path.
-+     */
-+    if (fd_supported) {
-+        int open_flags;
-+
-+        if (flags & BDRV_O_RDWR) {
-+            open_flags = O_RDWR;
-+        } else {
-+            open_flags = O_RDONLY;
-+        }
-+
-+        fd = qemu_open(path, open_flags, errp);
-+        if (fd < 0) {
-+            return -EINVAL;
-+        }
-+
-+        ret = blkio_set_int(s->blkio, "fd", fd);
-+        if (ret < 0) {
-+            error_setg_errno(errp, -ret, "failed to set fd: %s",
-+                             blkio_get_error_msg());
-+            qemu_close(fd);
-+            return ret;
-+        }
-+    } else {
-+        ret = blkio_set_str(s->blkio, "path", path);
-+        if (ret < 0) {
-+            error_setg_errno(errp, -ret, "failed to set path: %s",
-+                             blkio_get_error_msg());
-+            return ret;
-+        }
-+    }
-+
-+    qdict_del(options, "path");
-+
-     return 0;
- }
- 
+ ##
 -- 
 2.40.1
 
