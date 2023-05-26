@@ -2,66 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D151B7122F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0582712301
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:06:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2TN7-0000m2-Rh; Fri, 26 May 2023 05:04:29 -0400
+	id 1q2TOq-00022l-84; Fri, 26 May 2023 05:06:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2TN5-0000lh-7S
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:04:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q2TN3-000877-5I
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:04:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685091863;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2Boj2PMqSe4LIJM1QUxkgUW4AMSrTp7q6HHy2X3GWuM=;
- b=PwSnuQ7z5wV81O3vTHoVPXPZ17JvWOVpFvt8Gu5Kl3QHEPDXZyfG1X+BhDaRzKjOeeig+n
- WrgYeTB5WU6MG2dji9IU8+mS1yfwnv05G3LtGRmq3Lc4aLi7aPeqvZ5HTbHq1v0TGnMRU9
- HjjkcQ4U/DcNnXpZKofomzYvJ7MNCIQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-343-JRSIJ-ngMV2uaB8c_S6kRg-1; Fri, 26 May 2023 05:04:20 -0400
-X-MC-Unique: JRSIJ-ngMV2uaB8c_S6kRg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50D8C85A5B5;
- Fri, 26 May 2023 09:04:20 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.231])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6EFA4140E95D;
- Fri, 26 May 2023 09:04:19 +0000 (UTC)
-Date: Fri, 26 May 2023 11:04:18 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH 06/12] qcow2: Fix open with 'file' in iothread
-Message-ID: <ZHB2Egc24WlWUuXE@redhat.com>
-References: <20230525124713.401149-1-kwolf@redhat.com>
- <20230525124713.401149-7-kwolf@redhat.com>
- <20230525185125.GH132697@fedora> <ZHBwZ4E8nK/AGArq@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TOn-00022Z-0C
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:06:13 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TOl-0000El-3Y
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:06:12 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f6e4554453so3480385e9.3
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 02:06:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685091968; x=1687683968;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=g2yBSdFvCfahuTVCBlaD6I1eemS7XAMgV+6qm1mZzhA=;
+ b=Uotv4n8DLi2mC2TljBEJeEZA049doxJpy2rh90lDP7n0RWd5V5YRjTz9P5Mlylw8RC
+ KyhS4I2xmJSgXeI9oweBJQiv560ccFT4yUhKITy2HToW8JVtY2E+B6ROjLWzIms4jOp5
+ Ik5juS/n3OtQhQ3xtmzMvFfdVKgf1PFxq8ODtgVc9F4A6cLxaeTwLD2KiLJT54uUAI+T
+ eFynJqQuXexedpzpoOQuecbJZqwdpxqXmXcG/sYWGTEFd4XbWUr45HiddB/mkzWNxBKt
+ ncgHDXjyQ62RpfKaqGwsRq72D9fZ+dlg7EQhUp1A5Fit1vk7aRFMwHtXaoxJ8u6DJbkS
+ iuzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685091968; x=1687683968;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=g2yBSdFvCfahuTVCBlaD6I1eemS7XAMgV+6qm1mZzhA=;
+ b=eGOjGtOtdHMFkPNAgweVMR8NM0RTAHF9rfkvMByH8jNFh64+qR+opKdvSc3vS4/LHi
+ MONnN+TJgHCb9AT1jR1l5xclgDVEMzjlh8uPVFueP8c4Ll1AbDVyGPNAvjRL66nCEkfs
+ 2bi/IZ/jYme3InPwsRYkCj8A4t29fccvn/MHqeJo0+aDVJ0xpgpdLL1whchuEAX8u64t
+ FFWZDepR6y5phI/3kOFQg6+zkrNK9rFah6mu5hYi40XZT6QwRc1GGrHpCFo7vmWxkf1j
+ Eky1LbbxFrB1R+9q5SKh6hD+/ch7wvywfpeZq8//IGSkWDtI44SCsLVzRYAyH01w9iUK
+ 6HBQ==
+X-Gm-Message-State: AC+VfDxRGuENoydp/EruvVHQ5iryQARMvcbTN4//R8Th9OpVxruRlxdM
+ M6Lfiz/YIugJasHApDPZ8DnWVg==
+X-Google-Smtp-Source: ACHHUZ6F/IJJuMjeu3c4R7YV9VmjEEsmaYBMemfWA4FZoT+mZG4Wrhg3eKdbrLq5FULjgVtfRKKyyw==
+X-Received: by 2002:a1c:7911:0:b0:3f6:e79:3a7b with SMTP id
+ l17-20020a1c7911000000b003f60e793a7bmr1064768wme.19.1685091968479; 
+ Fri, 26 May 2023 02:06:08 -0700 (PDT)
+Received: from [192.168.69.115] (vit94-h02-176-184-29-207.dsl.sta.abo.bbox.fr.
+ [176.184.29.207]) by smtp.gmail.com with ESMTPSA id
+ k6-20020a05600c0b4600b003f4fe09aa43sm8342355wmr.8.2023.05.26.02.06.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 02:06:08 -0700 (PDT)
+Message-ID: <9012ee2b-9a35-84b7-d5ff-6bc726a57383@linaro.org>
+Date: Fri, 26 May 2023 11:06:06 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="y/t9MsWFPAhfVgfa"
-Content-Disposition: inline
-In-Reply-To: <ZHBwZ4E8nK/AGArq@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v2 0/4] tests/decode: Convert tests to meson
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, pbonzini@redhat.com
+References: <20230526021228.1777917-1-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230526021228.1777917-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -79,139 +92,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 26/5/23 04:12, Richard Henderson wrote:
 
---y/t9MsWFPAhfVgfa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Richard Henderson (4):
+>    decodetree: Add --test-for-error
+>    decodetree: Fix recursion in prop_format and build_tree
+>    decodetree: Diagnose empty pattern group
+>    tests/decode: Convert tests to meson
 
-Am 26.05.2023 um 10:40 hat Kevin Wolf geschrieben:
-> Am 25.05.2023 um 20:51 hat Stefan Hajnoczi geschrieben:
-> > On Thu, May 25, 2023 at 02:47:07PM +0200, Kevin Wolf wrote:
-> > > qcow2_open() doesn't work correctly when opening the 'file' child mov=
-es
-> > > bs to an iothread, for several reasons:
-> > >=20
-> > > - It uses BDRV_POLL_WHILE() to wait for the qcow2_open_entry()
-> > >   coroutine, which involves dropping the AioContext lock for bs when =
-it
-> > >   is not in the main context - but we don't hold it, so this crashes.
-> > >=20
-> > > - It runs the qcow2_open_entry() coroutine in the current thread inst=
-ead
-> > >   of the new AioContext of bs.
-> > >=20
-> > > - qcow2_open_entry() doesn't notify the main loop when it's done.
-> > >=20
-> > > This patches fixes these issues around delegating work to a coroutine.
-> > > Temporarily dropping the main AioContext lock is not necessary because
-> > > we know we run in the main thread.
-> > >=20
-> > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > > ---
-> > >  block/qcow2.c | 8 ++++++--
-> > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/block/qcow2.c b/block/qcow2.c
-> > > index b00b4e7575..7f3948360d 100644
-> > > --- a/block/qcow2.c
-> > > +++ b/block/qcow2.c
-> > > @@ -1904,6 +1904,8 @@ static void coroutine_fn qcow2_open_entry(void =
-*opaque)
-> > >      qoc->ret =3D qcow2_do_open(qoc->bs, qoc->options, qoc->flags, tr=
-ue,
-> > >                               qoc->errp);
-> > >      qemu_co_mutex_unlock(&s->lock);
-> > > +
-> > > +    aio_wait_kick();
-> > >  }
-> > > =20
-> > >  static int qcow2_open(BlockDriverState *bs, QDict *options, int flag=
-s,
-> > > @@ -1929,8 +1931,10 @@ static int qcow2_open(BlockDriverState *bs, QD=
-ict *options, int flags,
-> > > =20
-> > >      assert(!qemu_in_coroutine());
-> > >      assert(qemu_get_current_aio_context() =3D=3D qemu_get_aio_contex=
-t());
-> > > -    qemu_coroutine_enter(qemu_coroutine_create(qcow2_open_entry, &qo=
-c));
-> > > -    BDRV_POLL_WHILE(bs, qoc.ret =3D=3D -EINPROGRESS);
-> > > +
-> > > +    aio_co_enter(bdrv_get_aio_context(bs),
-> > > +                 qemu_coroutine_create(qcow2_open_entry, &qoc));
-> > > +    AIO_WAIT_WHILE_UNLOCKED(NULL, qoc.ret =3D=3D -EINPROGRESS);
-> >=20
-> > Want to update the doc comment for bdrv_open_file_child() with a warning
-> > that @parent's AioContext can change?
->=20
-> Ok, I'll squash in the following.
->=20
-> I seem to remember that bdrv_open_child() is actually wrong, too,
-> regarding AioContext locking, but I didn't need to fix it for this test
-> case. We need more test cases to break everything. :-)
->=20
-> And the earlier we can get rid of the AioContext lock the better,
-> because it seems really hard to get right across the board.
->=20
-> Kevin
->=20
-> diff --git a/block.c b/block.c
-> index a2f8d5a0c0..263e1e22f3 100644
-> --- a/block.c
-> +++ b/block.c
-> @@ -3644,6 +3644,9 @@ done:
->   * BlockdevRef.
->   *
->   * The BlockdevRef will be removed from the options QDict.
-> + *
-> + * @parent can move to a different AioContext in this functions. Callers=
- must
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-s/functions/function/, in fact. :-)
-
-> + * make sure that their AioContext locking is still correct after this.
->   */
->  BdrvChild *bdrv_open_child(const char *filename,
->                             QDict *options, const char *bdref_key,
-> @@ -3668,6 +3671,9 @@ BdrvChild *bdrv_open_child(const char *filename,
->=20
->  /*
->   * Wrapper on bdrv_open_child() for most popular case: open primary chil=
-d of bs.
-> + *
-> + * @parent can move to a different AioContext in this functions. Callers=
- must
-
-And here, too.
-
-> + * make sure that their AioContext locking is still correct after this.
->   */
->  int bdrv_open_file_child(const char *filename,
->                           QDict *options, const char *bdref_key,
-
-Kevin
-
---y/t9MsWFPAhfVgfa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmRwdhIACgkQfwmycsiP
-L9ZKgw//dAohnRSyzUKiyiHhd+zigIRb23mbmzUtPn9oC+dLE/VfNoPDk/Vylswr
-uEHvNoGMT6O9+L1osHGm/8vnaxUjROfX2r2jT73ucQm6IWsw7m4+QyPjgDrSRb1S
-qmK+fL/S1PGaiD4lJZlZwwbQbKk5K9XTQNYzN0BdV3C2k16hzfsSCk+exruwJf5j
-jEe8ftcRrZoMIqwPy1uzlL9z3I9nbWXsJ/2ymZDXJ+Te2FTRM8hBF6Lpfo3/c0dY
-37+dg5bHTyLYRqKOb02MluoQWIW9A1/iSQYqdusRhfJO7a0vGBjQMmV2VNf/ZSlg
-SUHypn/sMRnHRWbm3+StTO+hT2Qbf3CVhAULdX2+aO9S8+oQ+2vEciGZaKehenMX
-FaddckARvK05TGFUpJK7ekKfVskji4AlIrOtN5LRaB1Nhfl4zajZbQ3FGuvBH4lV
-aSZYW2mc7gFRvYJfIeTvH1CruIASW/FZFcizvWkup2tyTobTge9PavIheAErVKH0
-uMJO6YNhr+mkzHkeCjTh+H1zkSbM6A+MW8bdFV/cNBgPQoCvE9HxvvjZndTzs3hP
-nnQLRd5tQZoZ1Z5KYfQWQ4Q2EosffulrvAYhAViLAJMLYRro1GJRY+viOcL3t0IZ
-x7gq6CmvxIqUE5GxNgG80lwSb5wso23HjzI6F6kkvWQWgUJiBi8=
-=l1FF
------END PGP SIGNATURE-----
-
---y/t9MsWFPAhfVgfa--
 
 
