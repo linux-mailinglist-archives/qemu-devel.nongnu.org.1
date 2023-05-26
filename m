@@ -2,59 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8A571283D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14219712889
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:36:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2YSx-0004YO-DL; Fri, 26 May 2023 10:30:51 -0400
+	id 1q2YXI-0007hI-NH; Fri, 26 May 2023 10:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1q2YSu-0004YG-S4
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:30:49 -0400
-Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2YXG-0007bo-QN
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 10:35:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1q2YSs-0000qq-8C
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:30:48 -0400
-Received: from [IPV6:2a02:a03f:eaf7:ff01:cc6b:6666:e19c:b63f] (unknown
- [IPv6:2a02:a03f:eaf7:ff01:cc6b:6666:e19c:b63f])
- by apollo.dupie.be (Postfix) with ESMTPSA id A85401520F03;
- Fri, 26 May 2023 16:30:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1685111440;
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2YXF-0001Yu-AU
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 10:35:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685111716;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=MFw1+zUSFptioAZ+zKHfkw+2rMN46Jp0UiDKWVS87FY=;
- b=ClPQ6/5x8kZL5U8UB7UONnrRxk1S2ZrCUKeGZmaHzEpjit6hm8kr7I0kwn1RlpjqR1wDN2
- JQBgIPkAqMsVc5HZdUFU2xKMN37F2wUO2bD0x/lX69BOCcmzJfI68GQW2YODJPcGYSgA70
- CdX6+0vm3PZCWcSoXlF6qHDJQ3+IMm9Cp4GpdttWwnwbUd8pZWoySMJQMYVRXxHp/tX6s4
- k+ymZV2NhdD6CGpKBCakn/7MrrZYqh3STK4O+2YoO2jT/OewTsKjwo3MxjvWFP8AiszlPa
- aZ6FvkRn+OQir/RBuByeHo02+d54fNO2gwW6xBqXQ/ZNuuyezYqfah6qYce2ow==
-Message-ID: <065a97d8-f1e5-d87b-06ef-989910b033ee@dupond.be>
-Date: Fri, 26 May 2023 16:30:38 +0200
+ bh=23PSCkpCLEM1XAMPimMBbxbw0zy1QtLjE7VIpVbxVJA=;
+ b=KLg6ki5oVbPjQ7smZpCfgw3MN27CNo+/BYjAbMpkzlj4MQDnRrvcNNj+4J16ecXhsJYUh2
+ FWCjHMCX91YWMwqvbPV0riVGGl44QS/NjlGdM7UWCWDeSrMZ2CUzAulNGF3jNkHk3mTxlT
+ LxMoZPV3xTAk8I0k27VZZd3jTs09miY=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629--rWGzt62O9yj_4XPF4_JIQ-1; Fri, 26 May 2023 10:35:14 -0400
+X-MC-Unique: -rWGzt62O9yj_4XPF4_JIQ-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-623a54565e6so1494526d6.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:35:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685111714; x=1687703714;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=23PSCkpCLEM1XAMPimMBbxbw0zy1QtLjE7VIpVbxVJA=;
+ b=buKMqTCA4hUjZ7f4i3wmV7s5rgQ8KPlBRzHM+/GrBWoh1JRhSahGODvdIQoY+DpNq3
+ N7iGilGHlpux6wgndQDEebNTYixvmaXzuBLIOMkqOlB4SiESamTsNZFGuXMRSkM0l3yS
+ wAA7lUFHE9xs+flSp1zeKYsHs6EB05BjWVGOXEI76Pf4JAQujFJuoINWDcJys2bLMs2D
+ vSOwmP0w3pyjfH9in4tsrmS/fAT8wHrvgGK7MAhEtbk5+Ozlne31aYeM1gFle7plegnH
+ vSr3zc/wzXGblZkVT8aDOYKvRNrK3nNnNxyWVWqQoiKDMGVeKpHgwXVtAWwAsJ2uSE2c
+ WQ5w==
+X-Gm-Message-State: AC+VfDxGtMUIoy7fCP/4UYXQG2tRMYNymTjw8Xn2IPKSsGfc6mifArlz
+ 0RPq2WJutVKAqa28DxMq75pKBlG5j4Xa5Gy5jPV1e2ApD9YgK6dUNjE1XppmzcgLu7AIWFdrYK8
+ p9X06h/viT2DgUL0=
+X-Received: by 2002:a05:6214:4008:b0:616:870c:96b8 with SMTP id
+ kd8-20020a056214400800b00616870c96b8mr2149488qvb.3.1685111714480; 
+ Fri, 26 May 2023 07:35:14 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6r4aJ8YyIofU1+7F8+dMZZeNYM53hrV43dTRgB3F27+SBcixIPkeBzzKC9bu/uNdlf3gt/jg==
+X-Received: by 2002:a05:6214:4008:b0:616:870c:96b8 with SMTP id
+ kd8-20020a056214400800b00616870c96b8mr2149365qvb.3.1685111712648; 
+ Fri, 26 May 2023 07:35:12 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ l12-20020a056214028c00b0061b608dc4c1sm1242350qvv.94.2023.05.26.07.35.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 May 2023 07:35:12 -0700 (PDT)
+Date: Fri, 26 May 2023 10:35:11 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH] vhost: release memory objects in error path
+Message-ID: <ZHDDn62S3MhwLhIp@x1n>
+References: <20230522181021.403585-1-ppandit@redhat.com> <ZG9cc0yEAJ06N0XY@x1n>
+ <CAE8KmOyeV2HB-Fd5PsqVPh7NZBQ7KRH9CrP_7xOsHLac2dwFVA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH] qcow2: add discard-no-unref option
-To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org, kwolf@redhat.com
-References: <20230515073644.166677-1-jean-louis@dupond.be>
- <592e1caf-851a-7af0-2182-b70a62b6f826@redhat.com>
-Content-Language: en-US
-From: Jean-Louis Dupond <jean-louis@dupond.be>
-In-Reply-To: <592e1caf-851a-7af0-2182-b70a62b6f826@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
- envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAE8KmOyeV2HB-Fd5PsqVPh7NZBQ7KRH9CrP_7xOsHLac2dwFVA@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,97 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/05/2023 15:31, Hanna Czenczek wrote:
-> On 15.05.23 09:36, Jean-Louis Dupond wrote:
->> When we for example have a sparse qcow2 image and discard: unmap is 
->> enabled,
->> there can be a lot of fragmentation in the image after some time. 
->> Surely on VM's
->> that do a lot of writes/deletes.
->> This causes the qcow2 image to grow even over 110% of its virtual size,
->> because the free gaps in the image get to small to allocate new
->> continuous clusters. So it allocates new space as the end of the image.
->>
->> Disabling discard is not an option, as discard is needed to keep the
->> incremental backup size as low as possible. Without discard, the
->> incremental backups would become large, as qemu thinks it's just dirty
->> blocks but it doesn't know the blocks are empty/useless.
->> So we need to avoid fragmentation but also 'empty' the useless blocks in
->> the image to have a small incremental backup.
->>
->> Next to that we also want to send the discards futher down the stack, so
->> the underlying blocks are still discarded.
->>
->> Therefor we introduce a new qcow2 option "discard-no-unref". When
->> setting this option to true (defaults to false), the discard requests
->> will still be executed, but it will keep the offset of the cluster. And
->> it will also pass the discard request further down the stack (if
->> discard:unmap is enabled).
->> This will avoid fragmentation and for example on a fully preallocated
->> qcow2 image, this will make sure the image is perfectly continuous.
->
-> I don’t follow how this patch is cleaner than the “block: Add zeroes 
-> discard option” patch.  That patch’s diff stat is +14/-5, this one’s 
-> is 120+/57-.
-Multiple reasons :)
-- It's made for this use-case only, as there might be no other use-cases 
-except this one so the scope for discard=zeroes might be to big
-- This one still handles the discards and passes it to the lower layer, 
-which might be an important reason for the fact you enable discards
-- The diffstat is mostly bigger because of indention changes in 
-update_refcount
->
-> As for better, I don’t want to discount that, but at the same time I 
-> don’t know the reasoning for it.  As far as I understand, this patch 
-> makes qcow2 retain the cluster mapping as-is, and only discards on the 
-> lower layer.  So effectively, instead of marking the cluster as zero 
-> on the qcow2 level, we do so on the filesystem level.  I’m not sure I 
-> see all the implications of that difference.
-We want to keep the cluster mapping to avoid creating holes in the qcow2 
-cluster.
-But we still want to do discards for 2 reasons:
-- Mark the cluster as ZERO, so that incremental backups using dirty 
-bitmaps can just skip this block
-- Discard the data on the lower layer for efficiency reasons (for 
-example if the lower layer has some dedup/compression/whatever), we 
-still want the lower layer to know the block has been emptied
->
-> The advantage I see is that this free up disk space, which the 
-> discard=zeroes wouldn’t do.  I wonder whether that couldn’t be solved 
-> with an orthogonal qcow2-only option, though, which would have the 
-> qcow2 driver always discard zeroed clusters.
-This is an option also indeed. But we will end up with a similar patch 
-(also in size).
->
-> On the other hand, one thing to note is that we’ve had performance 
-> problems in the past with holes in the filesystem level (on tmpfs at 
-> least).  qemu generally can get the information on which clusters are 
-> zero quicker from qcow2 than from the filesystem, which suggests that 
-> even if we want to discard something on the filesystem layer, we 
-> probably also want to mark it as zero on the qcow2 layer.
-This is what we do in discard_in_l2_slice, we mark the entry as 
-QCOW_OFLAG_ZERO when we receive a discard request.
->
-> I also have a small concern about fragmentation on the filesystem 
-> layer – if you use these options to prevent fragmentation, with this 
-> patch, you’re only doing so on the qcow2 layer.  Because the cluster 
-> is then discarded in the filesystem, it’s possible to get 
-> fragmentation there, which might not be desirable.  I don’t think 
-> that’s too important, but I think it’d just be nice to have a 
-> configuration in which the guest can tell qemu what areas it doesn’t 
-> care about, qemu marks these as zero, so that backups are more 
-> efficient; but at the same time, everything stays allocated, so no 
-> fragmentatoin is introduced.
-That would be an additional option/improvement indeed. But it's not that 
-this patch makes the fragmentation worse then it's already the case when 
-you enable discard.
-If you really want this you might even want your lower level storage to 
-just ignore discards instead of fixing it in qcow2.
->
-> Hanna
->
+On Fri, May 26, 2023 at 12:24:07PM +0530, Prasad Pandit wrote:
+> Hello Peter, all
+> 
+> On Thu, 25 May 2023 at 18:33, Peter Xu <peterx@redhat.com> wrote:
+> 
+> > IIRC this bug used to only reproduce on rt kernels, is it still the case?
+> >
+> 
+> * Yes, it's a same crash.
+> 
+> 
+> > Here besides doing correct unregister, does it also mean that even if
+> > event_notifier_init() failed there's totally no error message anywhere?
+> > Should we dump something when it fails?  And did you check why that failed?
+> >
+> 
+> * In the qemu logs we see following error
+> 
+>         VHOST_OPS_DEBUG(r, "vhost_set_mem_table failed");
+>         goto fail_mem
+> 
+> After this execution likely did not reach the event_notifier_init() call,
+> because: goto fail_mem.
 
-Thanks for your review
-Jean-Louis
+Ah so it's not about eventfd, okay!
+
+> 
+> * But in case it fails, no error message gets logged. Do we want to add it
+> in this same patch?
+
+I see you already sent one, will read.
+
+Thanks!
+
+-- 
+Peter Xu
 
 
