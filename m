@@ -2,62 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C467A712569
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 13:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA315712570
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 13:29:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2VZ7-0002fE-Lp; Fri, 26 May 2023 07:25:01 -0400
+	id 1q2VcD-0004RE-TL; Fri, 26 May 2023 07:28:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2VZ3-0002eq-DG
- for qemu-devel@nongnu.org; Fri, 26 May 2023 07:24:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <slp@redhat.com>) id 1q2Vc9-0004Qf-W9
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 07:28:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2VZ1-0002ce-UX
- for qemu-devel@nongnu.org; Fri, 26 May 2023 07:24:57 -0400
+ (Exim 4.90_1) (envelope-from <slp@redhat.com>) id 1q2Vc8-0003Se-4f
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 07:28:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685100295;
+ s=mimecast20190719; t=1685100487;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=NMRzn41hmFsRuRGJF7xaafTgu50VEzev7NjBEnkfFR0=;
- b=FHGPRfWJUncTSMHz5mZzQdDih5es/zh72PbuGyCOI3hfO28hfBhxQD3E8FTbaTJlaFpGNx
- /JS5LecAqcb3KPmzSEesDXtPPFmpOSk+32VmPDcYx2hSdtApisoon2gy5zQF2sBfnYLePj
- EyP2Zh+/RggZXwWwpk0dPkoG8Zu+x9M=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=epoHGUNlNZHzLD1gawlt5oOGUpDvlZyTvUt3ZwXQrlc=;
+ b=S9dYSypL0MOAlHem7pEa6C8HNa28uQpCRqi/hJscBIl3tETNvXaZXy6EB2m3QuqsGw3CUE
+ qJiKGDSOrk9EAJNDR1jdxtfl9o7ZiAzHun/ZBxK16JSwkQNf7RJukR+d4E5hwyEv8gAWnx
+ FMi2HxwR2SgSsuITmbblNqgjUufWHAI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-266-QuD5YCsZNSy8wlIYg9XkPA-1; Fri, 26 May 2023 07:24:51 -0400
-X-MC-Unique: QuD5YCsZNSy8wlIYg9XkPA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-489-85Y1S-HdOGe_I-z1FlFDHA-1; Fri, 26 May 2023 07:28:05 -0400
+X-MC-Unique: 85Y1S-HdOGe_I-z1FlFDHA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 905601C08DAC;
- Fri, 26 May 2023 11:24:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6F925202696C;
- Fri, 26 May 2023 11:24:51 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4FB6B21E692E; Fri, 26 May 2023 13:24:50 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: <gudkov.andrei@huawei.com>
-Cc: <qemu-devel@nongnu.org>,  <quintela@redhat.com>,  <peterx@redhat.com>,
- <leobras@redhat.com>,  <eblake@redhat.com>
-Subject: Re: [PATCH] qapi: better docs for calc-dirty-rate and friends
-References: <fe7d32a621ebd69ef6974beb2499c0b5dccb9e19.1684854849.git.gudkov.andrei@huawei.com>
- <87sfbkpnho.fsf@pond.sub.org>
- <ZHB7CrcBsRDbHXdM@DESKTOP-0LHM7NF.china.huawei.com>
-Date: Fri, 26 May 2023 13:24:50 +0200
-In-Reply-To: <ZHB7CrcBsRDbHXdM@DESKTOP-0LHM7NF.china.huawei.com> (gudkov
- andrei's message of "Fri, 26 May 2023 12:25:30 +0300")
-Message-ID: <87ttvzbail.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7E41F8007D9;
+ Fri, 26 May 2023 11:28:05 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.39.194.90])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 88AB0140E95D;
+ Fri, 26 May 2023 11:28:03 +0000 (UTC)
+From: Sergio Lopez <slp@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Eric Blake <eblake@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Sergio Lopez <slp@redhat.com>
+Subject: [PATCH v5 0/6] Implement virtio-multitouch and enable GTK3 to use it
+Date: Fri, 26 May 2023 13:29:19 +0200
+Message-Id: <20230526112925.38794-1-slp@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=slp@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,79 +78,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-<gudkov.andrei@huawei.com> writes:
+This series adds a virtio-multitouch device to the family of devices emulated
+by virtio-input implementing the Multi-touch protocol as descripted here:
 
-> On Thu, May 25, 2023 at 03:08:35PM +0200, Markus Armbruster wrote:
->> Andrei Gudkov <gudkov.andrei@huawei.com> writes:
->> 
->> > Rewrote calc-dirty-rate documentation. Briefly described
->> > different modes of dirty page rate measurement. Added some
->> > examples. Fixed obvious grammar errors.
->> >
->> > Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
->> > ---
->> >  qapi/migration.json | 107 +++++++++++++++++++++++++++++++-------------
->> >  1 file changed, 77 insertions(+), 30 deletions(-)
->> >
->> > diff --git a/qapi/migration.json b/qapi/migration.json
->> > index 179af0c4d8..19b51444b5 100644
->> > --- a/qapi/migration.json
->> > +++ b/qapi/migration.json
+https://www.kernel.org/doc/html/latest/input/multi-touch-protocol.html?highlight=multi+touch
 
-[...]
+It also extends the GTK UI backend to be able to receive multi-touch events
+and transpose them to a guest, so the latter can recognize them as gestures
+when appropriate.
 
->> > -# @sample-pages: page count per GB for sample dirty pages the default
->> > -#     value is 512 (since 6.1)
->> > +# @sample-pages: number of sampled pages per each GiB of guest
->> 
->> per GiB
->> 
->> > +#     memory.  Value is valid only in page-sampling mode (Since 6.1)
->> 
->> Suggest "Valid only in ..."
+An example of this in action can be seen here:
 
-Outside this patch's scope, but here goes anway: I think we should have
-made this member optional, and present only when it's actually valid.
-Too late.
+ https://fosstodon.org/@slp/109545849296546767
 
-[...]
+Since v4:
+- Minor improvements to the documentation in qapi/ui.json (Markus).
+- Rebase and collect R-b.
 
->> > +# Dirty page rate is the number of pages changed in a given time
->> > +# period expressed in MiB/s.  The following methods of calculation
->> > +# are available:
->> > +#
->> > +# 1. In page sampling mode, a random subset of pages are selected
->> > +#    and hashed twice: once in the beginning of measurement time
->> 
->> Suggest "once at the beginning"
->> 
->> > +#    period, another one -- in the end.  If two hashes for some page
->> 
->> Suggest ", and once again at the end".
->> 
->> > +#    are different, the page is counted as changed.  Since this
->> > +#    method relies on sampling and hashing, calculated dirty page
->> > +#    rate is only the estimation of its true value.  Setting
+Since v3:
+- Use MultiTouch instead of Multitouch and multi-touch instead of multitouch in
+  qapi/ui.json (Markus).
+- Adopt documentation suggestions by Markus to qapi/ui.json.
+- Adapt the references to automatically generated structs after the spelling
+  change.
 
-I'll change this to "is only an estimate of" if you don't mind.
+Since v2:
+- Fix InputMultitouchEvent doc in qapi/ui.json (Marc-André).
+- Use warn_report() instead of fprintf() in gtk.c (Marc-André).
+- Rebase and collect R-b.
 
-[...]
+Since v1:
+- Split 0002 patch to implement ui, virtio-input-hid and virtio-input-pci
+  changes in different patches (Marc-André).
+- Fix versioning in qapi/ui.json (Marc-André).
+- Print a warning if touch->sequence >= INPUT_EVENT_SLOTS_MAX (Marc-André).
+- Only send SYN_REPORT once, if needed (Marc-André).
+- Rebase and collect R-b.
 
->> This is *sooo* much better than before.  Thank you!
->> 
->> An R-by from a migration maintainer would be nice.
+Sergio Lopez (6):
+  virtio-input: generalize virtio_input_key_config()
+  ui: add the infrastructure to support MT events
+  virtio-input: add a virtio-mulitouch device
+  virtio-input-pci: add virtio-multitouch-pci
+  ui: add helpers for virtio-multitouch events
+  ui/gtk: enable backend to send multi-touch events
 
-Got Peter's Acked-by now; all set.
+ hw/input/virtio-input-hid.c      | 156 +++++++++++++++++++++++++++----
+ hw/virtio/virtio-input-pci.c     |  25 ++++-
+ include/hw/virtio/virtio-input.h |   9 +-
+ include/ui/input.h               |   8 ++
+ qapi/ui.json                     |  68 ++++++++++++--
+ replay/replay-input.c            |  18 ++++
+ ui/gtk.c                         |  92 ++++++++++++++++++
+ ui/input.c                       |  42 +++++++++
+ ui/trace-events                  |   1 +
+ 9 files changed, 382 insertions(+), 37 deletions(-)
 
->> If you agree with my suggestions, I can apply them in my tree, saving
->> you a respin.  Let me know.
->
-> Yes, sure. Please include also suggestion about wr-protect from Peter. Thanks.
-
-Done.
-
->> Acked-by: Markus Armbruster <armbru@redhat.com>
-
-Queued.  Thanks!
+-- 
+2.38.1
 
 
