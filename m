@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F307124D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 12:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EACC712522
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 12:57:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Up8-0000sH-PC; Fri, 26 May 2023 06:37:30 -0400
+	id 1q2V7K-0004BJ-QV; Fri, 26 May 2023 06:56:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q2Up3-0000ri-9T
- for qemu-devel@nongnu.org; Fri, 26 May 2023 06:37:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q2Uoo-0008AM-GN
- for qemu-devel@nongnu.org; Fri, 26 May 2023 06:37:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685097429;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ybziAUuXd4rs2HF9ALTbq9GtRNRO33R2vNw/2q48sug=;
- b=gdZXpt4hndTj96opOP2xgLikrTUAJJwoSBg6VFgnII5TMVhyNmds785BNCN9DON9jxv4cW
- ADHUitd+CjDruqMR2FZvy7AxDxIpKuEmFD2OmVggyzIjO0EztND5I2cHXWCwW9DVpvY5wv
- 45At+wFCyEEAajN1jnGfrLNoblrVa/k=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-38-pSHIIYJvOGWQ0RhJSzgAmg-1; Fri, 26 May 2023 06:37:07 -0400
-X-MC-Unique: pSHIIYJvOGWQ0RhJSzgAmg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 878F62A2AD42;
- Fri, 26 May 2023 10:37:07 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.51])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C6B3AC154D1;
- Fri, 26 May 2023 10:37:06 +0000 (UTC)
-Date: Fri, 26 May 2023 11:37:03 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] crypto: Always initialize splitkeylen
-Message-ID: <ZHCLz47myVu/h7uk@redhat.com>
-References: <20230522114737.32686-1-akihiko.odaki@daynix.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1q2V7I-0004B0-Ln
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 06:56:16 -0400
+Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1q2V7H-0004cp-1S
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 06:56:16 -0400
+Received: by mail-yw1-x1133.google.com with SMTP id
+ 00721157ae682-561afe72a73so10799057b3.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 03:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685098574; x=1687690574;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wBwoHGOTPdRBF9QuH3BagRUHLkxHjBwFzHq/xd5Hu0Q=;
+ b=VfwdHfhx2223SoXj1S47Z9qxi0TQw45shm3wAVoJtZucHU/sOTZOz3hXV27vvDpNZ8
+ yO02KvPoJT7X7NzowWOvAVxr0rYxG3APhCvHvQnfoC2Q9qZpbRv5GYYvOsfQ8LSFk2l/
+ Bn7VvS8pzugLk3Y+yNX+AfNaINXc4bZPUygX9Ibtb9Z22CCqvsHp8YWuhLcc0tVWzydI
+ jnib/t6Rr0c2AP/XKBh+9OJCLtPWH2UwoYyDE//MlSkTRbsMqkZpTw+DhUoTSQP/fTuX
+ TjVkbnUbnz5zIP8M0URfOdl6ipWbI0clkrCIvvaJ0ddcG5qH27KVtgHpPqiLP1dE4A2z
+ 80PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685098574; x=1687690574;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wBwoHGOTPdRBF9QuH3BagRUHLkxHjBwFzHq/xd5Hu0Q=;
+ b=PLigdH+Q8VhMT9oAOHSoBktwmh+YJ1apxPhvn+3Fp79Hf8zrnb4lQwEEb/p2dHPL6R
+ WwaZCr429jQUwD6zToeAtZ8l2yQZhCUJ3em2WPA/N5wttbyNn/EMHhgyFMGpyW6IDMaU
+ iFOKiFfPsBIbnyw05SYCt0aHs8brvrDENZvS+n7IoGctvq0M4s8APWgZS4MZ4vSqRcOg
+ +aDpOHQ/CPBzTE7UhPzPoJkZGMiUsqOP3Ulk5tsDQQtzCMbNMfDxHEh5YckuBfthenbG
+ Sc0Bu6PR5CLYyffTLuHerhn77BxPaNE5Idj2//AGRAykI4lPYCDEQcYydJtFSGX4H++A
+ oIlw==
+X-Gm-Message-State: AC+VfDyqWqoBjIldvDAWb1o0+aewhdxyFqpcYHfEF4jHLwzOewIC4vHQ
+ Y694z/ztQZ4wOfgN1NI34QpgYFuB3JUJzLnJn2w=
+X-Google-Smtp-Source: ACHHUZ5qQI5ti8W6erf42uGk0nL/Cp03oOIN+tZCYoPGTBTNMlKLK1tDf0G3y8l5+y+dLmyIHu1MlAsAGHNVq+2NzpQ=
+X-Received: by 2002:a81:5209:0:b0:561:e540:b1b3 with SMTP id
+ g9-20020a815209000000b00561e540b1b3mr1534380ywb.38.1685098573724; Fri, 26 May
+ 2023 03:56:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230522114737.32686-1-akihiko.odaki@daynix.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <ed0f3a6a-75f3-c6d5-8eb9-3f1575fc0766@redhat.com>
+ <CAJSP0QWRLsFyzfP_Hn-frAgh6Xrz_5_JJCoxBQPnY6M60vfLag@mail.gmail.com>
+ <34c16474-2022-455a-a506-58a8d2b6c3a6@redhat.com>
+In-Reply-To: <34c16474-2022-455a-a506-58a8d2b6c3a6@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Fri, 26 May 2023 06:56:01 -0400
+Message-ID: <CAJSP0QUw3YAQoWNutnjoPWoVg4Cp-Cug7RR1MnVWFnes-fC-nQ@mail.gmail.com>
+Subject: Re: Performance improvement with
+ 6d740fb01b9f0f5ea7a82f4d5e458d91940a19ee
+To: =?UTF-8?B?THVrw6HFoSBEb2t0b3I=?= <ldoktor@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
+ envelope-from=stefanha@gmail.com; helo=mail-yw1-x1133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,48 +86,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 22, 2023 at 08:47:37PM +0900, Akihiko Odaki wrote:
-> When _FORTIFY_SOURCE=2, glibc version is 2.35, and GCC version is
-> 12.1.0, the compiler complains as follows:
-> 
-> In file included from /usr/include/string.h:535,
->                  from /home/alarm/q/var/qemu/include/qemu/osdep.h:99,
->                  from ../crypto/block-luks.c:21:
-> In function 'memset',
->     inlined from 'qcrypto_block_luks_store_key' at ../crypto/block-luks.c:843:9:
-> /usr/include/bits/string_fortified.h:59:10: error: 'splitkeylen' may be used uninitialized [-Werror=maybe-uninitialized]
->    59 |   return __builtin___memset_chk (__dest, __ch, __len,
->       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    60 |                                  __glibc_objsize0 (__dest));
->       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
-> ../crypto/block-luks.c: In function 'qcrypto_block_luks_store_key':
-> ../crypto/block-luks.c:699:12: note: 'splitkeylen' was declared here
->   699 |     size_t splitkeylen;
->       |            ^~~~~~~~~~~
-> 
-> It seems the compiler cannot see that splitkeylen will not be used
-> when splitkey is NULL. Suppress the warning by initializing splitkeylen
-> even when splitkey stays NULL.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  crypto/block-luks.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Fri, 26 May 2023 at 04:07, Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.com> w=
+rote:
+>
+> Dne 25. 05. 23 v 17:21 Stefan Hajnoczi napsal(a):
+> > On Thu, 25 May 2023 at 06:18, Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.co=
+m> wrote:
+> >> the perf-ci detected and bisected the 6d740fb - aio-posix: do not nest=
+ poll handlers - as a performance improvement when using multiple concurren=
+t jobs and 4k (22%) as well as 1024k (63%) blocks on aarch64 (on a slow rot=
+ational disk).
+> >>
+> >>     https://ldoktor.github.io/tmp/RedHat-virtlab-arm09/v8.0.0/150-impr=
+ovement.html
+> >>
+> >> Based on the commit message I guess it's expected so take this just as=
+ a record of an improvement.
+> >
+> > The commit was not intended to change performance and I'm not sure why
+> > it happens!
+> >
+>
+> It had and today the x86_64 pipeline finished which shows similar improve=
+ment just not in read but rather in write instead and only for 4k blocks (~=
+40%). For 1024k blocks I can see it scoring a bit better (~1.5%). Reads are=
+ too jittery to really tell anything on that machine. Anyway I have not don=
+e any thorough testing, just a bisection with the most significant setting.
+>
+> From around the same time I can see a NVMe regression in 4k writes, but f=
+irst bisection job showed nothing. I'll increase the range and try again as=
+ each job since that day shows similar drop.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Thanks!
 
-and queued.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Stefan
 
