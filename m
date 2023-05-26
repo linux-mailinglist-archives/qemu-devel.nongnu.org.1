@@ -2,82 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E193712335
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D72A371238A
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:27:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2TZW-0000xo-5n; Fri, 26 May 2023 05:17:18 -0400
+	id 1q2Thx-0002rC-8D; Fri, 26 May 2023 05:26:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TZT-0000xZ-Uf
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:17:15 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2TZQ-0002Tn-MM
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:17:15 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-307d20548adso270303f8f.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 02:17:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685092631; x=1687684631;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mGs6qvIGpfVWqkfTPgW8SQqkWQkSyM2ziHT5LzAEKfI=;
- b=xMo1nyJ9H00LiaZiuB4LKUQnhCZKx65fxDkbCykfxZXKNVqfHyFtkeysLd0+c5EB5G
- 4yPSWC7GBxKAtt/ou54VZ7nLGSpU4bpUDz6vvJTe7OdwJRRpTTB02G31cW/p0pEfP3Ij
- 67s5GiWsou6O6xMkNApAf+SFIjy0B1Atoddsws8gjM87wInNnNB0sOKF7gJVQVfyNaZc
- 6LwAdE6GWmjRW+k3s534XKJAvyHeqPDpucSeCXKm+Qfw6LHU3pOpGpVOe+YxWcJtG1i6
- aKPgxKKV8L64FW8H9gNb47ORc63J5dOCMzVxo6kyr9frNMeSWPplQi/R+lq8ospZKHwM
- NQBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685092631; x=1687684631;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mGs6qvIGpfVWqkfTPgW8SQqkWQkSyM2ziHT5LzAEKfI=;
- b=Wu3fjhS2P9jp+zHN+Qud9AZGSx+E9qv1+CbJeFSUMNYHH0ezoK+lOIoUb9SeyYKixy
- CIYJ8KlIzvwzVeD/R+YNLBdiFLcu6f+TPOMuj08O0POKCeRyRqEIq5oUEVmB7UOi0spU
- jglCrWmEbrsEu2uIJbe92MkXatz13pZRFJsPq4wwqHMS1XGK0iTyzudealzckJDLhTHG
- 5Oce1f8uMBngvf5Gj3e7h/m3/n3yhZQ858PCyqqRa9/QZbZQLqjvGAodksEmi+KALJoQ
- iEdbPKEOxuTvZNLQFV9imXGT5YItinQCGZTSc2A2OeHlzK8ApNCmKv4iqQJP/2XUY7I/
- 7GGA==
-X-Gm-Message-State: AC+VfDzCi33ahcv1toqUtsACrdZ6jh54knA9mYqyhWQX/rMZla22gZVJ
- OQ1i0sdovGTIkju+gd71W30igrI7bCsFmGbkZuY=
-X-Google-Smtp-Source: ACHHUZ7211EZ+G1bJqRq8JuT5h4IlznyISb1q5wZfLxzXffvrVBajVj85FD84qJwe9FTd9uv84/DRA==
-X-Received: by 2002:a05:6000:104c:b0:309:3698:8006 with SMTP id
- c12-20020a056000104c00b0030936988006mr840169wrx.34.1685092631157; 
- Fri, 26 May 2023 02:17:11 -0700 (PDT)
-Received: from [192.168.69.115] (vit94-h02-176-184-29-207.dsl.sta.abo.bbox.fr.
- [176.184.29.207]) by smtp.gmail.com with ESMTPSA id
- e10-20020a5d530a000000b002f6176cc6desm4476654wrv.110.2023.05.26.02.17.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 02:17:10 -0700 (PDT)
-Message-ID: <58812207-f614-b0b6-0ac9-13949d2719c0@linaro.org>
-Date: Fri, 26 May 2023 11:17:09 +0200
+ (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
+ id 1q2Thr-0002qE-56
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:25:55 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
+ id 1q2Tho-000450-EI
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:25:54 -0400
+Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QSKCp63v4z67QQK;
+ Fri, 26 May 2023 17:20:54 +0800 (CST)
+Received: from localhost (10.199.58.101) by lhrpeml500004.china.huawei.com
+ (7.191.163.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 26 May
+ 2023 10:25:35 +0100
+Date: Fri, 26 May 2023 12:25:30 +0300
+To: Markus Armbruster <armbru@redhat.com>
+CC: <qemu-devel@nongnu.org>, <quintela@redhat.com>, <peterx@redhat.com>,
+ <leobras@redhat.com>, <eblake@redhat.com>
+Subject: Re: [PATCH] qapi: better docs for calc-dirty-rate and friends
+Message-ID: <ZHB7CrcBsRDbHXdM@DESKTOP-0LHM7NF.china.huawei.com>
+References: <fe7d32a621ebd69ef6974beb2499c0b5dccb9e19.1684854849.git.gudkov.andrei@huawei.com>
+ <87sfbkpnho.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 12/27] tests/docker: add python3-venv dependency
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: jsnow@redhat.com, berrange@redhat.com
-References: <20230516105908.527838-1-pbonzini@redhat.com>
- <20230516105908.527838-12-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230516105908.527838-12-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <87sfbkpnho.fsf@pond.sub.org>
+X-Originating-IP: [10.199.58.101]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ lhrpeml500004.china.huawei.com (7.191.163.9)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,41 +61,244 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  <gudkov.andrei@huawei.com>
+From: gudkov.andrei--- via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/5/23 12:58, Paolo Bonzini wrote:
-> From: John Snow <jsnow@redhat.com>
+On Thu, May 25, 2023 at 03:08:35PM +0200, Markus Armbruster wrote:
+> Andrei Gudkov <gudkov.andrei@huawei.com> writes:
 > 
-> Several debian-based tests need the python3-venv dependency as a
-> consequence of Debian debundling the "ensurepip" module normally
-> included with Python.
+> > Rewrote calc-dirty-rate documentation. Briefly described
+> > different modes of dirty page rate measurement. Added some
+> > examples. Fixed obvious grammar errors.
+> >
+> > Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
+> > ---
+> >  qapi/migration.json | 107 +++++++++++++++++++++++++++++++-------------
+> >  1 file changed, 77 insertions(+), 30 deletions(-)
+> >
+> > diff --git a/qapi/migration.json b/qapi/migration.json
+> > index 179af0c4d8..19b51444b5 100644
+> > --- a/qapi/migration.json
+> > +++ b/qapi/migration.json
+> > @@ -1735,14 +1735,14 @@
+> >  ##
+> >  # @DirtyRateStatus:
+> >  #
+> > -# An enumeration of dirtyrate status.
+> > +# Dirty page rate measurement status.
+> >  #
+> > -# @unstarted: the dirtyrate thread has not been started.
+> > +# @unstarted: measuring thread has not been started yet
+> >  #
+> > -# @measuring: the dirtyrate thread is measuring.
+> > +# @measuring: measuring thread is running
+> >  #
+> > -# @measured: the dirtyrate thread has measured and results are
+> > -#     available.
+> > +# @measured: dirty page rate is measured and the results are
+> > +#     available
+> >  #
+> >  # Since: 5.2
+> >  ##
+> > @@ -1752,13 +1752,14 @@
+> >  ##
+> >  # @DirtyRateMeasureMode:
+> >  #
+> > -# An enumeration of mode of measuring dirtyrate.
+> > +# Method used to measure dirty page rate.  Differences between
+> > +# available methods are explained in @calc-dirty-rate.
+> >  #
+> > -# @page-sampling: calculate dirtyrate by sampling pages.
+> > +# @page-sampling: use page sampling
+> >  #
+> > -# @dirty-ring: calculate dirtyrate by dirty ring.
+> > +# @dirty-ring: use dirty ring
+> >  #
+> > -# @dirty-bitmap: calculate dirtyrate by dirty bitmap.
+> > +# @dirty-bitmap: use dirty bitmap
+> >  #
+> >  # Since: 6.2
+> >  ##
+> > @@ -1768,26 +1769,25 @@
+> >  ##
+> >  # @DirtyRateInfo:
+> >  #
+> > -# Information about current dirty page rate of vm.
+> > +# Information about measured dirty page rate.
+> >  #
+> >  # @dirty-rate: an estimate of the dirty page rate of the VM in units
+> > -#     of MB/s, present only when estimating the rate has completed.
+> > +#     of MiB/s. Value is present only when @status is 'measured'.
 > 
-> As mkvenv.py stands as of this commit, Debian requires EITHER:
+> For consistency, please put two spaces between setences.
 > 
-> (A) setuptools and pip, or
-> (B) ensurepip
+> >  #
+> > -# @status: status containing dirtyrate query status includes
+> > -#     'unstarted' or 'measuring' or 'measured'
+> > +# @status: current status of dirty page rate measurements
+> >  #
+> >  # @start-time: start time in units of second for calculation
+> >  #
+> > -# @calc-time: time in units of second for sample dirty pages
+> > +# @calc-time: time period in units of second for which dirty page
+> > +#     rate was measured
 > 
-> mkvenv is a few seconds faster if you have setuptools and pip, so
-> developers should prefer the first requirement. For the purposes of CI,
-> the time-save is a wash; it's only a matter of who is responsible for
-> installing pip and when; the timing is about the same.
+> Maybe
 > 
-> Arbitrarily, I chose adding ensurepip to the test configuration because
-> it is normally part of the Python stdlib, and always having it allows us
-> a more consistent cross-platform environment.
+>    # @calc-time: time period for which dirty page rate was measured
+>    #     (in seconds)
 > 
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Message-Id: <20230511035435.734312-12-jsnow@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   tests/docker/dockerfiles/debian-all-test-cross.docker | 3 ++-
->   tests/docker/dockerfiles/debian-hexagon-cross.docker  | 3 ++-
->   tests/docker/dockerfiles/debian-riscv64-cross.docker  | 3 ++-
->   tests/docker/dockerfiles/debian-tricore-cross.docker  | 3 ++-
->   4 files changed, 8 insertions(+), 4 deletions(-)
+> >  #
+> > -# @sample-pages: page count per GB for sample dirty pages the default
+> > -#     value is 512 (since 6.1)
+> > +# @sample-pages: number of sampled pages per each GiB of guest
+> 
+> per GiB
+> 
+> > +#     memory.  Value is valid only in page-sampling mode (Since 6.1)
+> 
+> Suggest "Valid only in ..."
+> 
+> >  #
+> > -# @mode: mode containing method of calculate dirtyrate includes
+> > -#     'page-sampling' and 'dirty-ring' (Since 6.2)
+> > +# @mode: mode that was used to measure dirty page rate (Since 6.2)
+> >  #
+> > -# @vcpu-dirty-rate: dirtyrate for each vcpu if dirty-ring mode
+> > -#     specified (Since 6.2)
+> > +# @vcpu-dirty-rate: dirty rate for each vCPU if dirty-ring mode
+> > +#     was specified (Since 6.2)
+> >  #
+> >  # Since: 5.2
+> >  ##
+> > @@ -1803,15 +1803,50 @@
+> >  ##
+> >  # @calc-dirty-rate:
+> >  #
+> > -# start calculating dirty page rate for vm
+> > -#
+> > -# @calc-time: time in units of second for sample dirty pages
+> > -#
+> > -# @sample-pages: page count per GB for sample dirty pages the default
+> > -#     value is 512 (since 6.1)
+> > -#
+> > -# @mode: mechanism of calculating dirtyrate includes 'page-sampling'
+> > -#     and 'dirty-ring' (Since 6.1)
+> > +# Starts measuring dirty page rate of the VM.  Results can be
+> 
+> Imperative mood: "Start measuring ..."
+> 
+> > +# retrieved with @query-dirty-rate after measurements are completed.
+> > +#
+> > +# Dirty page rate is the number of pages changed in a given time
+> > +# period expressed in MiB/s.  The following methods of calculation
+> > +# are available:
+> > +#
+> > +# 1. In page sampling mode, a random subset of pages are selected
+> > +#    and hashed twice: once in the beginning of measurement time
+> 
+> Suggest "once at the beginning"
+> 
+> > +#    period, another one -- in the end.  If two hashes for some page
+> 
+> Suggest ", and once again at the end".
+> 
+> > +#    are different, the page is counted as changed.  Since this
+> > +#    method relies on sampling and hashing, calculated dirty page
+> > +#    rate is only the estimation of its true value.  Setting
+> > +#    @sample-pages to higher value improves estimation quality but
+> 
+> Suggest "Increasing @sample-pages improves estimation quality at the
+> cost ..."
+> 
+> > +#    at the cost of higher computational overhead.
+> > +#
+> > +# 2. Dirty bitmap mode captures writes to memory by temporarily
+> > +#    revoking write access to all pages and counting page faults.
+> 
+> Comma before "and".
+> 
+> > +#    Information about modified pages is collected into bitmap,
+> 
+> "into a bitmap"
+> 
+> > +#    where each bit corresponds to one guest page.  This mode
+> > +#    requires that KVM accelerator property "dirty-ring-size=N"
+> 
+> Suggest just "dirty-ring-size" (omit "=N").
+> 
+> > +#    is *not* set.
+> > +#
+> > +# 3. Dirty ring mode is similar to dirty bitmap mode, but the
+> > +#    information about modified pages is collected into ring buffer.
+> > +#    This mode tracks page modification per each vCPU separately.
+> 
+> Either "for each vCPU" or "per vCPU".
+> 
+> > +#    It requires that KVM accelerator property "dirty-ring-size=N"
+> > +#    is set.
+> 
+> Suggest just "dirty-ring-size" (omit "=N").
+> 
+> > +#
+> > +# @calc-time: time period in units of second for which dirty page rate
+> > +#    is calculated.  Note that larger @calc-time values will typically
+> > +#    result in smaller dirty page rates because page dirtying is a
+> > +#    one-time event.  Once some page is counted as dirty during
+> > +#    @calc-time period, further writes to this page will not increase
+> > +#    dirty page rate anymore.
+> 
+> Please indent one more, for consistency.
+> 
+> > +#
+> > +# @sample-pages: number of sampled pages per each GiB of guest memory.
+> > +#     Default value is 512.  For 4KiB guest pages this corresponds to
+> > +#     sampling ratio of 0.2%.  This argument is used only in page
+> > +#     sampling mode. (Since 6.1)
+> 
+> Two spaces between '.' and '(', please.
+> 
+> > +#
+> > +# @mode: mechanism for tracking dirty pages.  Default value is
+> > +#    'page-sampling'.  Others are 'dirty-bitmap' and 'dirty-ring'.
+> > +#    (Since 6.1)
+> >  #
+> >  # Since: 5.2
+> >  #
+> > @@ -1828,9 +1863,21 @@
+> >  ##
+> >  # @query-dirty-rate:
+> >  #
+> > -# query dirty page rate in units of MB/s for vm
+> > +# Query results of the most recent invocation of @calc-dirty-rate.
+> >  #
+> >  # Since: 5.2
+> > +#
+> > +# Examples:
+> > +#
+> > +# 1. Measurement is in progress:
+> > +#
+> > +# <- {"status": "measuring", "sample-pages": 512,
+> > +#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
+> > +#
+> > +# 2. Measurement has been completed:
+> > +#
+> > +# <- {"status": "measured", "sample-pages": 512, "dirty-rate": 108,
+> > +#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
+> >  ##
+> >  { 'command': 'query-dirty-rate', 'returns': 'DirtyRateInfo' }
+> 
+> This is *sooo* much better than before.  Thank you!
+> 
+> An R-by from a migration maintainer would be nice.
+> 
+> If you agree with my suggestions, I can apply them in my tree, saving
+> you a respin.  Let me know.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Yes, sure. Please include also suggestion about wr-protect from Peter. Thanks.
 
+> 
+> Acked-by: Markus Armbruster <armbru@redhat.com>
 
