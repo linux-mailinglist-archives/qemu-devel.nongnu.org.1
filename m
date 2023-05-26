@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01786711FC4
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 08:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C21D5711FC3
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 08:21:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2QoJ-0008GQ-Mu; Fri, 26 May 2023 02:20:23 -0400
+	id 1q2Qoi-0008N9-MU; Fri, 26 May 2023 02:20:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q2QoH-0008FM-4c
- for qemu-devel@nongnu.org; Fri, 26 May 2023 02:20:21 -0400
+ id 1q2QoL-0008Jl-DX
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 02:20:25 -0400
 Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1q2QoD-0008M8-CK
- for qemu-devel@nongnu.org; Fri, 26 May 2023 02:20:20 -0400
+ id 1q2QoH-0008NS-OS
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 02:20:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=omCdOhFHnUw+9yCsu1jst9MrfPbhvtaiiSHFwS/SyzA=; b=SqtLnbT1HKMp6uDFEe54jO44yV
- RYAcS2WJUviP35wfngd2h+U55nmmGl9+pfaDtHVQCY0wVQ/p1scZn05lom4UXXrjWAQ1KOlHV86ir
- enXs9Ht0bjCKaWfTEDa7z5SAZVEs88TYmn6oSxmwN2TxYgHklJKaxyEYPnktaTd5e/QY=;
+ bh=ILMhcvw1NAt63EGrBEZ272z0+3BV/di4/2AC5226mFY=; b=lyoKdNdsV43ePY8L8lGcHXMNSs
+ D7MG/kvyYzMlTnc4j77k2DNJB7Slf2g32VdYRFgh0Qs/nJ8OabS1amxYTL5witHI90NmDDGL/HXPq
+ W/4cs2vxxhf8NjqZWbjDEq58kqFsMqpey1/ktiISX/UoNjHY7094etLxNSDTTr5HOPQU=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de
-Subject: [PATCH v2 3/6] tests/tcg/tricore: Add first C program
-Date: Fri, 26 May 2023 08:19:43 +0200
-Message-Id: <20230526061946.54514-4-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v2 4/6] target/tricore: Refactor PCXI/ICR register fields
+Date: Fri, 26 May 2023 08:19:44 +0200
+Message-Id: <20230526061946.54514-5-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230526061946.54514-1-kbastian@mail.uni-paderborn.de>
 References: <20230526061946.54514-1-kbastian@mail.uni-paderborn.de>
@@ -42,8 +42,8 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.5.26.60617, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.5.16.600001
-X-Sophos-SenderHistory: ip=84.184.48.71, fs=405237, da=172691077, mc=7, sc=0,
- hc=7, sp=0, fso=405237, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=84.184.48.71, fs=405243, da=172691083, mc=9, sc=0,
+ hc=9, sp=0, fso=405243, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -70,504 +70,374 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this allows us to exercise the startup code used by GCC to call main().
+starting from ISA version 1.6.1 (previously known as 1.6P/E), some
+bitfields in PCXI and ICR have changed. We also refactor these
+registers using the register fields API.
 
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1453
 ---
- configure                                 |   1 +
- tests/tcg/tricore/Makefile.softmmu-target |  13 +
- tests/tcg/tricore/c/crt0-tc2x.S           | 335 ++++++++++++++++++++++
- tests/tcg/tricore/c/test_boot_to_main.c   |  13 +
- tests/tcg/tricore/c/testdev_assert.h      |  18 ++
- tests/tcg/tricore/link.ld                 |  16 ++
- 6 files changed, 396 insertions(+)
- create mode 100644 tests/tcg/tricore/c/crt0-tc2x.S
- create mode 100644 tests/tcg/tricore/c/test_boot_to_main.c
- create mode 100644 tests/tcg/tricore/c/testdev_assert.h
+v1 -> v2:
+    - Created ice_ie_mask for DisasCtx to simplify SYS_ENABLE and SYS_DISABLE
+      insn translation.
 
-diff --git a/configure b/configure
-index 80ca1c9221..2743977469 100755
---- a/configure
-+++ b/configure
-@@ -1451,6 +1451,7 @@ probe_target_compiler() {
-         container_cross_prefix=tricore-
-         container_cross_as=tricore-as
-         container_cross_ld=tricore-ld
-+        container_cross_cc=tricore-gcc
-         break
-         ;;
-       x86_64)
-diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index 29c75acfb3..f051444991 100644
---- a/tests/tcg/tricore/Makefile.softmmu-target
-+++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -1,8 +1,10 @@
- TESTS_PATH = $(SRC_PATH)/tests/tcg/tricore
- ASM_TESTS_PATH = $(TESTS_PATH)/asm
-+C_TESTS_PATH = $(TESTS_PATH)/c
+ target/tricore/cpu.h       | 39 ++++++++++++-----
+ target/tricore/helper.c    | 45 ++++++++++++++++++++
+ target/tricore/op_helper.c | 85 +++++++++++++++++++-------------------
+ target/tricore/translate.c | 10 ++++-
+ 4 files changed, 123 insertions(+), 56 deletions(-)
+
+diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
+index 47d0ffb745..d98a3fb671 100644
+--- a/target/tricore/cpu.h
++++ b/target/tricore/cpu.h
+@@ -21,6 +21,7 @@
+ #define TRICORE_CPU_H
  
- LDFLAGS = -T$(TESTS_PATH)/link.ld --mcpu=tc162
- ASFLAGS = -mtc162
-+CFLAGS = -mtc162 -c
+ #include "cpu-qom.h"
++#include "hw/registerfields.h"
+ #include "exec/cpu-defs.h"
+ #include "qemu/cpu-float.h"
+ #include "tricore-defs.h"
+@@ -199,13 +200,33 @@ struct ArchCPU {
+ hwaddr tricore_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+ void tricore_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
  
- TESTS += test_abs.asm.tst
- TESTS += test_bmerge.asm.tst
-@@ -20,6 +22,8 @@ TESTS += test_madd.asm.tst
- TESTS += test_msub.asm.tst
- TESTS += test_muls.asm.tst
+-
+-#define MASK_PCXI_PCPN 0xff000000
+-#define MASK_PCXI_PIE_1_3  0x00800000
+-#define MASK_PCXI_PIE_1_6  0x00200000
+-#define MASK_PCXI_UL   0x00400000
+-#define MASK_PCXI_PCXS 0x000f0000
+-#define MASK_PCXI_PCXO 0x0000ffff
++FIELD(PCXI, PCPN_13, 24, 8)
++FIELD(PCXI, PCPN_161, 22, 8)
++FIELD(PCXI, PIE_13, 23, 1)
++FIELD(PCXI, PIE_161, 21, 1)
++FIELD(PCXI, UL_13, 22, 1)
++FIELD(PCXI, UL_161, 20, 1)
++FIELD(PCXI, PCXS, 16, 4)
++FIELD(PCXI, PCXO, 0, 16)
++uint32_t pcxi_get_ul(CPUTriCoreState *env);
++uint32_t pcxi_get_pie(CPUTriCoreState *env);
++uint32_t pcxi_get_pcpn(CPUTriCoreState *env);
++uint32_t pcxi_get_pcxs(CPUTriCoreState *env);
++uint32_t pcxi_get_pcxo(CPUTriCoreState *env);
++void pcxi_set_ul(CPUTriCoreState *env, uint32_t val);
++void pcxi_set_pie(CPUTriCoreState *env, uint32_t val);
++void pcxi_set_pcpn(CPUTriCoreState *env, uint32_t val);
++
++FIELD(ICR, IE_161, 15, 1)
++FIELD(ICR, IE_13, 8, 1)
++FIELD(ICR, PIPN, 16, 8)
++FIELD(ICR, CCPN, 0, 8)
++
++uint32_t icr_get_ie(CPUTriCoreState *env);
++uint32_t icr_get_ccpn(CPUTriCoreState *env);
++
++void icr_set_ccpn(CPUTriCoreState *env, uint32_t val);
++void icr_set_ie(CPUTriCoreState *env, uint32_t val);
  
-+TESTS += test_boot_to_main.c.tst
-+
- QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
+ #define MASK_PSW_USB 0xff000000
+ #define MASK_USB_C   0x80000000
+@@ -228,10 +249,6 @@ void tricore_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
+ #define MASK_CPUID_MOD_32B 0x0000ff00
+ #define MASK_CPUID_REV     0x000000ff
  
- %.pS: $(ASM_TESTS_PATH)/%.S
-@@ -31,5 +35,14 @@ QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
- %.asm.tst: %.o
- 	$(LD) $(LDFLAGS) $< -o $@
+-#define MASK_ICR_PIPN 0x00ff0000
+-#define MASK_ICR_IE_1_3   0x00000100
+-#define MASK_ICR_IE_1_6   0x00008000
+-#define MASK_ICR_CCPN 0x000000ff
  
-+crt0-tc2x.o: $(C_TESTS_PATH)/crt0-tc2x.S
-+	$(AS) $(ASFLAGS) -o $@ $<
+ #define MASK_FCX_FCXS 0x000f0000
+ #define MASK_FCX_FCXO 0x0000ffff
+diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+index 114685cce4..284a749e50 100644
+--- a/target/tricore/helper.c
++++ b/target/tricore/helper.c
+@@ -17,6 +17,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
++#include "hw/registerfields.h"
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "fpu/softfloat-helpers.h"
+@@ -152,3 +153,47 @@ void psw_write(CPUTriCoreState *env, uint32_t val)
+ 
+     fpu_set_state(env);
+ }
 +
-+%.o: $(C_TESTS_PATH)/%.c
-+	$(CC) $(CFLAGS) -o $@ $<
-+
-+%.c.tst: %.o crt0-tc2x.o
-+	$(LD) $(LDFLAGS) -o $@ $^
-+
- # We don't currently support the multiarch system tests
- undefine MULTIARCH_TESTS
-diff --git a/tests/tcg/tricore/c/crt0-tc2x.S b/tests/tcg/tricore/c/crt0-tc2x.S
-new file mode 100644
-index 0000000000..3100da123c
---- /dev/null
-+++ b/tests/tcg/tricore/c/crt0-tc2x.S
-@@ -0,0 +1,335 @@
-+/*
-+ * crt0-tc2x.S -- Startup code for GNU/TriCore applications.
-+ *
-+ * Copyright (C) 1998-2014 HighTec EDV-Systeme GmbH.
-+ *
-+ * This file is part of GCC.
-+ *
-+ * GCC is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 3, or (at your option)
-+ * any later version.
-+ *
-+ * GCC is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * Under Section 7 of GPL version 3, you are granted additional
-+ * permissions described in the GCC Runtime Library Exception, version
-+ * 3.1, as published by the Free Software Foundation.
-+ *
-+ * You should have received a copy of the GNU General Public License and
-+ * a copy of the GCC Runtime Library Exception along with this program;
-+ * see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-+ * <http://www.gnu.org/licenses/>.  */
-+
-+/* Define the Derivate Name as a hexvalue. This value
-+ * is built-in defined in tricore-c.c (from tricore-devices.c)
-+ * the derivate number as a hexvalue (e.g. TC1796 => 0x1796
-+ * This name will be used in the memory.x Memory description to
-+ * to confirm that the crt0.o and the memory.x will be get from
-+ * same directory
-+ */
-+    .section ".startup_code", "ax", @progbits
-+    .global _start
-+    .type _start,@function
-+
-+/* default BMI header (only TC2xxx devices) */
-+    .word   0x00000000
-+    .word   0xb3590070
-+    .word   0x00000000
-+    .word   0x00000000
-+    .word   0x00000000
-+    .word   0x00000000
-+    .word   0x791eb864
-+    .word   0x86e1479b
-+
-+_start:
-+    .code32
-+    j   _startaddr
-+    .align  2
-+
-+_startaddr:
-+    /*
-+     * initialize user and interrupt stack pointers
-+     */
-+    movh.a  %sp,hi:__USTACK         # load %sp
-+    lea %sp,[%sp]lo:__USTACK
-+    movh    %d0,hi:__ISTACK         # load $isp
-+    addi    %d0,%d0,lo:__ISTACK
-+    mtcr    $isp,%d0
-+    isync
-+
-+#;  install trap handlers
-+
-+    movh    %d0,hi:first_trap_table     #; load $btv
-+    addi    %d0,%d0,lo:first_trap_table
-+    mtcr    $btv,%d0
-+    isync
-+
-+    /*
-+     * initialize call depth counter
-+     */
-+
-+    mfcr    %d0,$psw
-+    or  %d0,%d0,0x7f            # disable call depth counting
-+    andn    %d0,%d0,0x80            # clear CDE bit
-+    mtcr    $psw,%d0
-+    isync
-+
-+    /*
-+     * initialize access to system global registers
-+     */
-+
-+    mfcr    %d0,$psw
-+    or  %d0,%d0,0x100           # set GW bit
-+    mtcr    $psw,%d0
-+    isync
-+
-+    /*
-+     * initialize SDA base pointers
-+     */
-+    .global _SMALL_DATA_,_SMALL_DATA2_,_SMALL_DATA3_,_SMALL_DATA4_
-+    .weak _SMALL_DATA_,_SMALL_DATA2_,_SMALL_DATA3_,_SMALL_DATA4_
-+
-+    movh.a  %a0,hi:_SMALL_DATA_     # %a0 addresses .sdata/.sbss
-+    lea %a0,[%a0]lo:_SMALL_DATA_
-+    movh.a  %a1,hi:_SMALL_DATA2_        # %a1 addresses .sdata2/.sbss2
-+    lea %a1,[%a1]lo:_SMALL_DATA2_
-+    movh.a  %a8,hi:_SMALL_DATA3_        # %a8 addresses .sdata3/.sbss3
-+    lea %a8,[%a8]lo:_SMALL_DATA3_
-+    movh.a  %a9,hi:_SMALL_DATA4_        # %a9 addresses .sdata4/.sbss4
-+    lea %a9,[%a9]lo:_SMALL_DATA4_
-+
-+    /*
-+     * reset access to system global registers
-+     */
-+
-+    mfcr    %d0,$psw
-+    andn    %d0,%d0,0x100           # clear GW bit
-+    mtcr    $psw,%d0
-+    isync
-+
-+    /*
-+     * initialize context save areas
-+     */
-+
-+    jl  __init_csa
-+
-+
-+
-+    /*
-+     * handle clear table (i.e., fill BSS with zeros)
-+     */
-+
-+    jl  __clear_table_func
-+
-+
-+    /*
-+     * handle copy table (support for romable code)
-+     */
-+
-+    jl  __copy_table_func
-+
-+
-+    /*
-+     * _exit (main (0, NULL));
-+     */
-+    mov %d4,0               # argc = 0
-+    sub.a   %sp,8
-+    st.w    [%sp]0,%d4
-+    st.w    [%sp]4,%d4
-+    mov.aa  %a4,%sp             # argv
-+
-+    call    main                # int retval = main (0, NULL);
-+    mov.a   %a14,%d2        # move exit code to match trap handler
-+    j   _exit               # _exit (retval);
-+
-+    debug                   # should never come here
-+
-+
-+    /*
-+     * initialize context save areas (CSAs), PCXI, LCX and FCX
-+     */
-+
-+    .global __init_csa
-+    .type __init_csa,function
-+
-+__init_csa:
-+    movh    %d0,0
-+    mtcr    $pcxi,%d0
-+    isync
-+    movh    %d0,hi:__CSA_BEGIN      #; %d0 = begin of CSA
-+    addi    %d0,%d0,lo:__CSA_BEGIN
-+    addi    %d0,%d0,63          #; force alignment (2^6)
-+    andn    %d0,%d0,63
-+    movh    %d2,hi:__CSA_END        #; %d2 = end of CSA
-+    addi    %d2,%d2,lo:__CSA_END
-+    andn    %d2,%d2,63          #; force alignment (2^6)
-+    sub %d2,%d2,%d0
-+    sh  %d2,%d2,-6          #; %d2 = number of CSAs
-+    mov.a   %a3,%d0             #; %a3 = address of first CSA
-+    extr.u  %d0,%d0,28,4            #; %d0 = segment << 16
-+    sh  %d0,%d0,16
-+    lea %a4,0               #; %a4 = previous CSA = 0
-+    st.a    [%a3],%a4           #; store it in 1st CSA
-+    mov.aa  %a4,%a3             #; %a4 = current CSA
-+    lea %a3,[%a3]64         #; %a3 = %a3->nextCSA
-+    mov.d   %d1,%a3
-+    extr.u  %d1,%d1,6,16            #; get CSA index
-+    or  %d1,%d1,%d0         #; add segment number
-+    mtcr    $lcx,%d1            #; initialize LCX
-+    add %d2,%d2,-2          #; CSAs to initialize -= 2
-+    mov.a   %a5,%d2             #; %a5 = loop counter
-+csa_loop:
-+    mov.d   %d1,%a4             #; %d1 = current CSA address
-+    extr.u  %d1,%d1,6,16            #; get CSA index
-+    or  %d1,%d1,%d0         #; add segment number
-+    st.w    [%a3],%d1           #; store "nextCSA" pointer
-+    mov.aa  %a4,%a3             #; %a4 = current CSA address
-+    lea %a3,[%a3]64         #; %a3 = %a3->nextCSA
-+    loop    %a5,csa_loop            #; repeat until done
-+
-+    mov.d   %d1,%a4             #; %d1 = current CSA address
-+    extr.u  %d1,%d1,6,16            #; get CSA index
-+    or  %d1,%d1,%d0         #; add segment number
-+    mtcr    $fcx,%d1            #; initialize FCX
-+    isync
-+    ji  %a11
-+
-+
-+
-+
-+    /*
-+     * handle clear table (i.e., fill BSS with zeros)
-+     */
-+    .global __clear_table_func
-+    .type __clear_table_func,@function
-+
-+__clear_table_func:
-+    mov %d14,0              # %e14 = 0
-+    mov %d15,0
-+    movh.a  %a13,hi:__clear_table       # %a13 = &first table entry
-+    lea %a13,[%a13]lo:__clear_table
-+
-+__clear_table_next:
-+    ld.a    %a15,[%a13+]4           # %a15 = current block base
-+    ld.w    %d3,[%a13+]4            # %d3 = current block length
-+    jeq %d3,-1,__clear_table_done   # length == -1 => end of table
-+    sh  %d0,%d3,-3          # %d0 = length / 8 (doublewords)
-+    and %d1,%d3,7           # %d1 = length % 8 (rem. bytes)
-+    jz  %d0,__clear_word        # block size < 8 => clear word
-+    addi    %d0,%d0,-1          # else doublewords -= 1
-+    mov.a   %a2,%d0             # %a2 = loop counter
-+__clear_dword:
-+    st.d    [%a15+]8,%e14           # clear one doubleword
-+    loop    %a2,__clear_dword
-+__clear_word:
-+    jz  %d1,__clear_table_next
-+    sh  %d0,%d1,-2          # %d0 = length / 4 (words)
-+    and %d1,%d1,3           # %d1 = length % 4 (rem. bytes)
-+    jz  %d0,__clear_hword       # block size < 4 => clear hword
-+    st.w    [%a15+]4,%d15           # clear one word
-+__clear_hword:
-+    jz  %d1,__clear_table_next
-+    sh  %d0,%d1,-1          # %d0 = length / 2 (halfwords)
-+    and %d1,%d1,1           # %d1 = length % 2 (rem. bytes)
-+    jz  %d0,__clear_byte        # block size < 2 => clear byte
-+    st.h    [%a15+]2,%d15           # clear one halfword
-+__clear_byte:
-+    jz  %d1,__clear_table_next
-+    st.b    [%a15],%d15         # clear one byte
-+    j   __clear_table_next      # handle next clear table entry
-+__clear_table_done:
-+
-+    ji  %a11
-+
-+
-+
-+    /*
-+     * handle copy table (support for romable code)
-+     */
-+    .global __copy_table_func
-+    .type __copy_table_func,@function
-+
-+__copy_table_func:
-+    movh.a  %a13,hi:__copy_table        # %a13 = &first table entry
-+    lea %a13,[%a13]lo:__copy_table
-+
-+__copy_table_next:
-+    ld.a    %a15,[%a13+]4           # %a15 = src address
-+    ld.a    %a14,[%a13+]4           # %a14 = dst address
-+    ld.w    %d3,[%a13+]4            # %d3 = block length
-+    jeq %d3,-1,__copy_table_done    # length == -1 => end of table
-+    sh  %d0,%d3,-3          # %d0 = length / 8 (doublewords)
-+    and %d1,%d3,7           # %d1 = lenght % 8 (rem. bytes)
-+    jz  %d0,__copy_word         # block size < 8 => copy word
-+    addi    %d0,%d0,-1          # else doublewords -= 1
-+    mov.a   %a2,%d0             # %a2 = loop counter
-+__copy_dword:
-+    ld.d    %e14,[%a15+]8           # copy one doubleword
-+    st.d    [%a14+]8,%e14
-+    loop    %a2,__copy_dword
-+__copy_word:
-+    jz  %d1,__copy_table_next
-+    sh  %d0,%d1,-2          # %d0 = length / 4 (words)
-+    and %d1,%d1,3           # %d1 = lenght % 4 (rem. bytes)
-+    jz  %d0,__copy_hword        # block size < 4 => copy hword
-+    ld.w    %d14,[%a15+]4           # copy one word
-+    st.w    [%a14+]4,%d14
-+__copy_hword:
-+    jz  %d1,__copy_table_next
-+    sh  %d0,%d1,-1          # %d0 = length / 2 (halfwords)
-+    and %d1,%d1,1           # %d1 = length % 2 (rem. bytes)
-+    jz  %d0,__copy_byte         # block size < 2 => copy byte
-+    ld.h    %d14,[%a15+]2           # copy one halfword
-+    st.h    [%a14+]2,%d14
-+__copy_byte:
-+    jz  %d1,__copy_table_next
-+    ld.b    %d14,[%a15]0            # copy one byte
-+    st.b    [%a14],%d14
-+    j   __copy_table_next       # handle next copy table entry
-+__copy_table_done:
-+
-+    ji  %a11
-+
-+_exit:
-+    movh.a %a15, hi:__TESTDEVICE
-+    lea %a15,[%a15]lo:__TESTDEVICE
-+    mov.d %d2, %a14
-+    st.w [%a15], %d2 # write exit code to testdevice
-+    debug
-+
-+/*============================================================================*
-+ * Exception handlers (exceptions in startup code)
-+ *
-+ * This is a minimal trap vector table, which consists of eight
-+ * entries, each consisting of eight words (32 bytes).
-+ *============================================================================*/
-+
-+
-+#;  .section .traptab, "ax", @progbits
-+
-+.macro trapentry from=0, to=7
-+    mov.u   %d14, \from << 8
-+    add %d14,%d14,%d15
-+    mov.a   %a14,%d14
-+    addih.a %a14,%a14,0 # if we trap, we fail
-+    j   _exit
-+0:
-+    j   0b
-+    nop
-+    rfe
-+    .align 5
-+
-+    .if \to-\from
-+    trapentry "(\from+1)",\to
-+    .endif
-+.endm
-+
-+    .align 8
-+    .global first_trap_table
-+first_trap_table:
-+    trapentry 0, 7
-+
-diff --git a/tests/tcg/tricore/c/test_boot_to_main.c b/tests/tcg/tricore/c/test_boot_to_main.c
-new file mode 100644
-index 0000000000..fa28a5b433
---- /dev/null
-+++ b/tests/tcg/tricore/c/test_boot_to_main.c
-@@ -0,0 +1,13 @@
-+/*
-+ * Copyright (C) 2023 Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-+ *
-+ * This code is licensed under the GPL version 2 or later. See the
-+ * COPYING file in the top-level directory.
-+ */
-+
-+#include "testdev_assert.h"
-+int main(int argc, char **argv)
-+{
-+    testdev_assert(1);
-+    return 0;
-+}
-diff --git a/tests/tcg/tricore/c/testdev_assert.h b/tests/tcg/tricore/c/testdev_assert.h
-new file mode 100644
-index 0000000000..ccd14f5025
---- /dev/null
-+++ b/tests/tcg/tricore/c/testdev_assert.h
-@@ -0,0 +1,18 @@
-+/*
-+ * Copyright (C) 2023 Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-+ *
-+ * This code is licensed under the GPL version 2 or later. See the
-+ * COPYING file in the top-level directory.
-+ */
-+
-+int *testdev = (int *)0xf0000000;
-+
-+#define FAIL 1
-+static inline void testdev_assert(int condition)
-+{
-+    if (!condition) {
-+        *testdev = FAIL;
-+        asm("debug");
-+    }
++#define FIELD_GETTER_WITH_FEATURE(NAME, REG, FIELD, FEATURE)     \
++uint32_t NAME(CPUTriCoreState *env)                             \
++{                                                                \
++    if (tricore_feature(env, TRICORE_FEATURE_##FEATURE)) {       \
++        return FIELD_EX32(env->REG, REG, FIELD ## _ ## FEATURE); \
++    }                                                            \
++    return FIELD_EX32(env->REG, REG, FIELD ## _13);              \
 +}
 +
-diff --git a/tests/tcg/tricore/link.ld b/tests/tcg/tricore/link.ld
-index 364bcdc00a..acc1758c41 100644
---- a/tests/tcg/tricore/link.ld
-+++ b/tests/tcg/tricore/link.ld
-@@ -12,6 +12,7 @@ MEMORY
- /*
-  * Define the sizes of the user and system stacks.
-  */
-+__ISTACK_SIZE = DEFINED (__ISTACK_SIZE) ? __ISTACK_SIZE : 256 ;
- __USTACK_SIZE = DEFINED (__USTACK_SIZE) ? __USTACK_SIZE : 1K ;
- /*
-  * Define the start address and the size of the context save area.
-@@ -20,6 +21,8 @@ __CSA_BEGIN =  0xd0000000 ;
- __CSA_SIZE =  8k ;
- __CSA_END = __CSA_BEGIN + __CSA_SIZE ;
- 
-+__TESTDEVICE = 0xf0000000 ;
++#define FIELD_GETTER(NAME, REG, FIELD)       \
++uint32_t NAME(CPUTriCoreState *env)         \
++{                                            \
++    return FIELD_EX32(env->REG, REG, FIELD); \
++}
 +
- SECTIONS
++#define FIELD_SETTER_WITH_FEATURE(NAME, REG, FIELD, FEATURE)              \
++void NAME(CPUTriCoreState *env, uint32_t val)                            \
++{                                                                         \
++    if (tricore_feature(env, TRICORE_FEATURE_##FEATURE)) {                \
++        env->REG = FIELD_DP32(env->REG, REG, FIELD ## _ ## FEATURE, val); \
++    }                                                                     \
++    env->REG = FIELD_DP32(env->REG, REG, FIELD ## _13, val);              \
++}
++
++#define FIELD_SETTER(NAME, REG, FIELD)                \
++void NAME(CPUTriCoreState *env, uint32_t val)        \
++{                                                     \
++    env->REG = FIELD_DP32(env->REG, REG, FIELD, val); \
++}
++
++FIELD_GETTER_WITH_FEATURE(pcxi_get_pcpn, PCXI, PCPN, 161)
++FIELD_SETTER_WITH_FEATURE(pcxi_set_pcpn, PCXI, PCPN, 161)
++FIELD_GETTER_WITH_FEATURE(pcxi_get_pie, PCXI, PIE, 161)
++FIELD_SETTER_WITH_FEATURE(pcxi_set_pie, PCXI, PIE, 161)
++FIELD_GETTER_WITH_FEATURE(pcxi_get_ul, PCXI, UL, 161)
++FIELD_SETTER_WITH_FEATURE(pcxi_set_ul, PCXI, UL, 161)
++FIELD_GETTER(pcxi_get_pcxs, PCXI, PCXS)
++FIELD_GETTER(pcxi_get_pcxo, PCXI, PCXO)
++
++FIELD_GETTER_WITH_FEATURE(icr_get_ie, ICR, IE, 161)
++FIELD_SETTER_WITH_FEATURE(icr_set_ie, ICR, IE, 161)
++FIELD_GETTER(icr_get_ccpn, ICR, CCPN)
++FIELD_SETTER(icr_set_ccpn, ICR, CCPN)
+diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
+index 532ae6b74c..6fd2cbe20f 100644
+--- a/target/tricore/op_helper.c
++++ b/target/tricore/op_helper.c
+@@ -84,11 +84,10 @@ void raise_exception_sync_internal(CPUTriCoreState *env, uint32_t class, int tin
+       ICR.IE and ICR.CCPN are saved */
+ 
+     /* PCXI.PIE = ICR.IE */
+-    env->PCXI = ((env->PCXI & ~MASK_PCXI_PIE_1_3) +
+-                ((env->ICR & MASK_ICR_IE_1_3) << 15));
++    pcxi_set_pie(env, icr_get_ie(env));
++
+     /* PCXI.PCPN = ICR.CCPN */
+-    env->PCXI = (env->PCXI & 0xffffff) +
+-                ((env->ICR & MASK_ICR_CCPN) << 24);
++    pcxi_set_pcpn(env, icr_get_ccpn(env));
+     /* Update PC using the trap vector table */
+     env->PC = env->BTV | (class << 5);
+ 
+@@ -2461,13 +2460,11 @@ void helper_call(CPUTriCoreState *env, uint32_t next_pc)
+     save_context_upper(env, ea);
+ 
+     /* PCXI.PCPN = ICR.CCPN; */
+-    env->PCXI = (env->PCXI & 0xffffff) +
+-                ((env->ICR & MASK_ICR_CCPN) << 24);
++    pcxi_set_pcpn(env, icr_get_ccpn(env));
+     /* PCXI.PIE = ICR.IE; */
+-    env->PCXI = ((env->PCXI & ~MASK_PCXI_PIE_1_3) +
+-                ((env->ICR & MASK_ICR_IE_1_3) << 15));
++    pcxi_set_pie(env, icr_get_ie(env));
+     /* PCXI.UL = 1; */
+-    env->PCXI |= MASK_PCXI_UL;
++    pcxi_set_ul(env, 1);
+ 
+     /* PCXI[19: 0] = FCX[19: 0]; */
+     env->PCXI = (env->PCXI & 0xfff00000) + (env->FCX & 0xfffff);
+@@ -2506,7 +2503,7 @@ void helper_ret(CPUTriCoreState *env)
+         raise_exception_sync_helper(env, TRAPC_CTX_MNG, TIN3_CSU, GETPC());
+     }
+     /* if (PCXI.UL == 0) then trap(CTYP); */
+-    if ((env->PCXI & MASK_PCXI_UL) == 0) {
++    if (pcxi_get_ul(env) == 0) {
+         /* CTYP trap */
+         cdc_increment(&psw); /* restore to the start of helper */
+         psw_write(env, psw);
+@@ -2516,8 +2513,8 @@ void helper_ret(CPUTriCoreState *env)
+     env->PC = env->gpr_a[11] & 0xfffffffe;
+ 
+     /* EA = {PCXI.PCXS, 6'b0, PCXI.PCXO, 6'b0}; */
+-    ea = ((env->PCXI & MASK_PCXI_PCXS) << 12) +
+-         ((env->PCXI & MASK_PCXI_PCXO) << 6);
++    ea = (pcxi_get_pcxs(env) << 28) |
++         (pcxi_get_pcxo(env) << 6);
+     /* {new_PCXI, new_PSW, A[10], A[11], D[8], D[9], D[10], D[11], A[12],
+         A[13], A[14], A[15], D[12], D[13], D[14], D[15]} = M(EA, 16 * word); */
+     restore_context_upper(env, ea, &new_PCXI, &new_PSW);
+@@ -2559,21 +2556,21 @@ void helper_bisr(CPUTriCoreState *env, uint32_t const9)
+ 
+ 
+     /* PCXI.PCPN = ICR.CCPN */
+-    env->PCXI = (env->PCXI & 0xffffff) +
+-                 ((env->ICR & MASK_ICR_CCPN) << 24);
++    pcxi_set_pcpn(env, icr_get_ccpn(env));
+     /* PCXI.PIE  = ICR.IE */
+-    env->PCXI = ((env->PCXI & ~MASK_PCXI_PIE_1_3) +
+-                 ((env->ICR & MASK_ICR_IE_1_3) << 15));
++    pcxi_set_pie(env, icr_get_ie(env));
+     /* PCXI.UL = 0 */
+-    env->PCXI &= ~(MASK_PCXI_UL);
++    pcxi_set_ul(env, 0);
++
+     /* PCXI[19: 0] = FCX[19: 0] */
+     env->PCXI = (env->PCXI & 0xfff00000) + (env->FCX & 0xfffff);
+     /* FXC[19: 0] = new_FCX[19: 0] */
+     env->FCX = (env->FCX & 0xfff00000) + (new_FCX & 0xfffff);
++
+     /* ICR.IE = 1 */
+-    env->ICR |= MASK_ICR_IE_1_3;
++    icr_set_ie(env, 1);
+ 
+-    env->ICR |= const9; /* ICR.CCPN = const9[7: 0];*/
++    icr_set_ccpn(env, const9);
+ 
+     if (tmp_FCX == env->LCX) {
+         /* FCD trap */
+@@ -2592,7 +2589,7 @@ void helper_rfe(CPUTriCoreState *env)
+         raise_exception_sync_helper(env, TRAPC_CTX_MNG, TIN3_CSU, GETPC());
+     }
+     /* if (PCXI.UL == 0) then trap(CTYP); */
+-    if ((env->PCXI & MASK_PCXI_UL) == 0) {
++    if (pcxi_get_ul(env) == 0) {
+         /* raise CTYP trap */
+         raise_exception_sync_helper(env, TRAPC_CTX_MNG, TIN3_CTYP, GETPC());
+     }
+@@ -2603,14 +2600,15 @@ void helper_rfe(CPUTriCoreState *env)
+     }
+     env->PC = env->gpr_a[11] & ~0x1;
+     /* ICR.IE = PCXI.PIE; */
+-    env->ICR = (env->ICR & ~MASK_ICR_IE_1_3)
+-            + ((env->PCXI & MASK_PCXI_PIE_1_3) >> 15);
++    icr_set_ie(env, pcxi_get_pie(env));
++
+     /* ICR.CCPN = PCXI.PCPN; */
+-    env->ICR = (env->ICR & ~MASK_ICR_CCPN) +
+-               ((env->PCXI & MASK_PCXI_PCPN) >> 24);
++    icr_set_ccpn(env, pcxi_get_pcpn(env));
++
+     /*EA = {PCXI.PCXS, 6'b0, PCXI.PCXO, 6'b0};*/
+-    ea = ((env->PCXI & MASK_PCXI_PCXS) << 12) +
+-         ((env->PCXI & MASK_PCXI_PCXO) << 6);
++    ea = (pcxi_get_pcxs(env) << 28) |
++         (pcxi_get_pcxo(env) << 6);
++
+     /*{new_PCXI, PSW, A[10], A[11], D[8], D[9], D[10], D[11], A[12],
+       A[13], A[14], A[15], D[12], D[13], D[14], D[15]} = M(EA, 16 * word); */
+     restore_context_upper(env, ea, &new_PCXI, &new_PSW);
+@@ -2628,11 +2626,10 @@ void helper_rfm(CPUTriCoreState *env)
  {
-   .text  :
-@@ -32,6 +35,18 @@ SECTIONS
-   {
-     *(.rodata)
-     *(.rodata1)
-+    /*
-+     * Create the clear and copy tables that tell the startup code
-+     * which memory areas to clear and to copy, respectively.
-+     */
-+    . = ALIGN(4) ;
-+    PROVIDE(__clear_table = .) ;
-+    LONG(0 + ADDR(.bss));     LONG(SIZEOF(.bss));
-+    LONG(-1);                 LONG(-1);
-+    PROVIDE(__copy_table = .) ;
-+    LONG(LOADADDR(.data));    LONG(0 + ADDR(.data));    LONG(SIZEOF(.data));
-+    LONG(-1);                 LONG(-1);                 LONG(-1);
-+    . = ALIGN(8);
-   } > data_ram
+     env->PC = (env->gpr_a[11] & ~0x1);
+     /* ICR.IE = PCXI.PIE; */
+-    env->ICR = (env->ICR & ~MASK_ICR_IE_1_3)
+-            | ((env->PCXI & MASK_PCXI_PIE_1_3) >> 15);
++    icr_set_ie(env, pcxi_get_pie(env));
+     /* ICR.CCPN = PCXI.PCPN; */
+-    env->ICR = (env->ICR & ~MASK_ICR_CCPN) |
+-               ((env->PCXI & MASK_PCXI_PCPN) >> 24);
++    icr_set_ccpn(env, pcxi_get_pcpn(env));
++
+     /* {PCXI, PSW, A[10], A[11]} = M(DCX, 4 * word); */
+     env->PCXI = cpu_ldl_data(env, env->DCX);
+     psw_write(env, cpu_ldl_data(env, env->DCX+4));
+@@ -2691,13 +2688,13 @@ void helper_svlcx(CPUTriCoreState *env)
+     save_context_lower(env, ea);
  
-   .data :
-@@ -40,6 +55,7 @@ SECTIONS
-     *(.data)
-     *(.data.*)
-     . = ALIGN(8) ;
-+    __ISTACK = . + __ISTACK_SIZE ;
-     __USTACK = . + __USTACK_SIZE -768;
+     /* PCXI.PCPN = ICR.CCPN; */
+-    env->PCXI = (env->PCXI & 0xffffff) +
+-                ((env->ICR & MASK_ICR_CCPN) << 24);
++    pcxi_set_pcpn(env, icr_get_ccpn(env));
++
+     /* PCXI.PIE = ICR.IE; */
+-    env->PCXI = ((env->PCXI & ~MASK_PCXI_PIE_1_3) +
+-                ((env->ICR & MASK_ICR_IE_1_3) << 15));
++    pcxi_set_pie(env, icr_get_ie(env));
++
+     /* PCXI.UL = 0; */
+-    env->PCXI &= ~MASK_PCXI_UL;
++    pcxi_set_ul(env, 0);
  
-   } > data_ram
+     /* PCXI[19: 0] = FCX[19: 0]; */
+     env->PCXI = (env->PCXI & 0xfff00000) + (env->FCX & 0xfffff);
+@@ -2734,13 +2731,13 @@ void helper_svucx(CPUTriCoreState *env)
+     save_context_upper(env, ea);
+ 
+     /* PCXI.PCPN = ICR.CCPN; */
+-    env->PCXI = (env->PCXI & 0xffffff) +
+-                ((env->ICR & MASK_ICR_CCPN) << 24);
++    pcxi_set_pcpn(env, icr_get_ccpn(env));
++
+     /* PCXI.PIE = ICR.IE; */
+-    env->PCXI = ((env->PCXI & ~MASK_PCXI_PIE_1_3) +
+-                ((env->ICR & MASK_ICR_IE_1_3) << 15));
++    pcxi_set_pie(env, icr_get_ie(env));
++
+     /* PCXI.UL = 1; */
+-    env->PCXI |= MASK_PCXI_UL;
++    pcxi_set_ul(env, 1);
+ 
+     /* PCXI[19: 0] = FCX[19: 0]; */
+     env->PCXI = (env->PCXI & 0xfff00000) + (env->FCX & 0xfffff);
+@@ -2764,13 +2761,15 @@ void helper_rslcx(CPUTriCoreState *env)
+         raise_exception_sync_helper(env, TRAPC_CTX_MNG, TIN3_CSU, GETPC());
+     }
+     /* if (PCXI.UL == 1) then trap(CTYP); */
+-    if ((env->PCXI & MASK_PCXI_UL) != 0) {
++    if (pcxi_get_ul(env) == 1) {
+         /* CTYP trap */
+         raise_exception_sync_helper(env, TRAPC_CTX_MNG, TIN3_CTYP, GETPC());
+     }
+     /* EA = {PCXI.PCXS, 6'b0, PCXI.PCXO, 6'b0}; */
+-    ea = ((env->PCXI & MASK_PCXI_PCXS) << 12) +
+-         ((env->PCXI & MASK_PCXI_PCXO) << 6);
++    /* EA = {PCXI.PCXS, 6'b0, PCXI.PCXO, 6'b0}; */
++    ea = (pcxi_get_pcxs(env) << 28) |
++         (pcxi_get_pcxo(env) << 6);
++
+     /* {new_PCXI, A[11], A[10], A[11], D[8], D[9], D[10], D[11], A[12],
+         A[13], A[14], A[15], D[12], D[13], D[14], D[15]} = M(EA, 16 * word); */
+     restore_context_lower(env, ea, &env->gpr_a[11], &new_PCXI);
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 2646cb3eb5..e7bbfb062d 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -72,6 +72,7 @@ typedef struct DisasContext {
+     int mem_idx;
+     uint32_t hflags, saved_hflags;
+     uint64_t features;
++    uint32_t icr_ie_mask;
+ } DisasContext;
+ 
+ static int has_feature(DisasContext *ctx, int feature)
+@@ -7847,12 +7848,12 @@ static void decode_sys_interrupts(DisasContext *ctx)
+         /* raise EXCP_DEBUG */
+         break;
+     case OPC2_32_SYS_DISABLE:
+-        tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~MASK_ICR_IE_1_3);
++        tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
+         break;
+     case OPC2_32_SYS_DSYNC:
+         break;
+     case OPC2_32_SYS_ENABLE:
+-        tcg_gen_ori_tl(cpu_ICR, cpu_ICR, MASK_ICR_IE_1_3);
++        tcg_gen_ori_tl(cpu_ICR, cpu_ICR, ctx->icr_ie_mask);
+         break;
+     case OPC2_32_SYS_ISYNC:
+         break;
+@@ -8256,6 +8257,11 @@ static void tricore_tr_init_disas_context(DisasContextBase *dcbase,
+     ctx->mem_idx = cpu_mmu_index(env, false);
+     ctx->hflags = (uint32_t)ctx->base.tb->flags;
+     ctx->features = env->features;
++    if (has_feature(ctx, TRICORE_FEATURE_161)) {
++        ctx->icr_ie_mask = R_ICR_IE_161_MASK;
++    } else {
++        ctx->icr_ie_mask = R_ICR_IE_13_MASK;
++    }
+ }
+ 
+ static void tricore_tr_tb_start(DisasContextBase *db, CPUState *cpu)
 -- 
 2.40.1
 
