@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68971711EA5
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C38D711EA4
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 06:09:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2OkK-00025s-FW; Fri, 26 May 2023 00:08:08 -0400
+	id 1q2OkV-000279-Ez; Fri, 26 May 2023 00:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q2OkE-00025e-In
- for qemu-devel@nongnu.org; Fri, 26 May 2023 00:08:02 -0400
+ id 1q2OkR-00026o-Cg
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 00:08:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q2OkC-0008Bd-JG
- for qemu-devel@nongnu.org; Fri, 26 May 2023 00:08:02 -0400
+ id 1q2OkO-0008CD-Sf
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 00:08:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685074078;
+ s=mimecast20190719; t=1685074091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AJBPpEb806tLeYglOYS+8fr1DGF22+gIjh0S/gKxUBw=;
- b=JwP5H7sI/bbetOcZUb34/fcF+l8hOLFiH1OdvlAWX+Sl+2TI6ohZl5AXCBwmv2Mp5ceT3/
- j85xBHk/pSlop7i+JwnePeKZXIDS/MEfBS54Y71IXVnxNQEkhvKjJqa6WPVf9bni3Wt/Kx
- 3SypYTuP5kLRfjmiHpSsVcmtB0Vl0Vw=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vrjd91aASeQ+uyAoZEO6Ta6J507Ti2FSgGDIMTrjYNg=;
+ b=gkPm7ErMKZ1ozOtB3HRMWWdrn5iYTRsiYz9MdQT4Fge4neHp8Q+o7EmBxXg4SY1kW4MWt+
+ /eTMtpMZXaKCgL8acx8cap2xG16NPT64GTziybjZemEKRX3g0QgldZPaG2IG1/2OVj8ixR
+ Kaxd/wkgkWaBnIq1kIw75rOE/+h2z1Y=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-R7fCn2TkN4yrpM-9DtheTg-1; Fri, 26 May 2023 00:07:54 -0400
-X-MC-Unique: R7fCn2TkN4yrpM-9DtheTg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4f0176dcc1eso267952e87.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 21:07:54 -0700 (PDT)
+ us-mta-646-3v7p2ajaOoKR4VzCTM7MXQ-1; Fri, 26 May 2023 00:08:06 -0400
+X-MC-Unique: 3v7p2ajaOoKR4VzCTM7MXQ-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2af25b667d5so1214591fa.1
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 21:08:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685074073; x=1687666073;
+ d=1e100.net; s=20221208; t=1685074085; x=1687666085;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AJBPpEb806tLeYglOYS+8fr1DGF22+gIjh0S/gKxUBw=;
- b=LDhq2h5y333pFZpy2EqxlPVqfybcpgj45H8MrffYqvydcytnLqN+Jr0WpFMWrYuFKT
- YpDv5yAYJ5Z4JEOyAJ7H/ZRIywOMb+lBuHARdirJxEVa3i7q7vtAQBXcl/JmcdbeS+dR
- uDs3EzuXmmfoUOrMGnN6WFtaX2HYEK1Ax6L/1yX035aEfEXKRbNYOs8QCS1hkhJjE2jI
- nF3izMV1A9MySqWOG2q4guxQurRpsDoaFBBss38WQIm3BJN0MSqF32NLLfy/SiSdR7Zs
- InAkJ1MkDL8QdOaH39nKuPu/NoTeA3yXA2WiUwSc0KrJPngjl6XkSkGMGbZMoH3CjLQk
- zSvg==
-X-Gm-Message-State: AC+VfDzsTnx8UqS4rhrpr920h/aAU9fvLE+TYzo3joOQKmWCNGKFBZ8C
- VCPopgMA1q00Cryn3HJJp1rGlZUm8mAD/v50yZF0IBRL/TMSY89y4Dafr0U5PNCEGJb8W30byl0
- MVyzHXdcivMTJkRtEgNDJeOpBSq6D8K0=
-X-Received: by 2002:a05:6512:33c9:b0:4dc:8049:6f36 with SMTP id
- d9-20020a05651233c900b004dc80496f36mr1379043lfg.1.1685074073442; 
- Thu, 25 May 2023 21:07:53 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6q6q/Lx2FxTw7yHSndVqltB4hUnnTCxSaR5Eud8zv2NsV5qgA1Omo1p59TTIO5lsD2aLxtiuPDLz7coKqlyyA=
-X-Received: by 2002:a05:6512:33c9:b0:4dc:8049:6f36 with SMTP id
- d9-20020a05651233c900b004dc80496f36mr1379037lfg.1.1685074073109; Thu, 25 May
- 2023 21:07:53 -0700 (PDT)
+ bh=vrjd91aASeQ+uyAoZEO6Ta6J507Ti2FSgGDIMTrjYNg=;
+ b=XSZkUAD1fEZ8PG1z/xFGahUh2EZo3dpOEq+5UAYBFH2pDGjLVsBPxX5f6S7lHsj0T/
+ 7RBkWg1dYSR4zcuUNTfRQgf+gaiQzLEnbBnYkASPOJYQiE146bfqPrIIpVfv6es9hPSy
+ 1EVSrU0gnbs6600CATIbBsqjPwBOIyK0YKHFycjvsxnOgYFVMLL1suFC6Ot3UECuLlCk
+ I03v8ijbQnUTHGKxSIwP7F8bF6QIY8k9Cew36deBnDjUJBeWJ4g1tLTU2cgmdoGvHHlV
+ kGX+TW1L3foPeTbOj9gLCxZCcG4dNfeUaR/cU0Erf/cZLGcm7JxHHzXB3HFsCng1Tc8b
+ OQxg==
+X-Gm-Message-State: AC+VfDxX+HwQUS8+zAUDY7+1AEk7VSS8Re3WeHBfyp5U5gkQCIpCNNz2
+ fyPA0NsLacJtT8icZR0ohOLpFJfW00JnOSLEK6bJP40+b58kTgHJORVCY7lfDqR4wRRAfvkePen
+ AtViZCHriYsPNCZvcLlXnyoC7pAoAK0k=
+X-Received: by 2002:a19:ee01:0:b0:4f4:b3e2:ff54 with SMTP id
+ g1-20020a19ee01000000b004f4b3e2ff54mr79850lfb.51.1685074085105; 
+ Thu, 25 May 2023 21:08:05 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4VrRbbdQOuGkM2WfSoeLKDl+SbklCTWP88x7C4nD6f0s7Tm3868PpVcNNQYTKbreILhrmz39pm66o5x4dWNNg=
+X-Received: by 2002:a19:ee01:0:b0:4f4:b3e2:ff54 with SMTP id
+ g1-20020a19ee01000000b004f4b3e2ff54mr79842lfb.51.1685074084743; Thu, 25 May
+ 2023 21:08:04 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230525125742.4190-1-viktor@daynix.com>
- <20230525125742.4190-2-viktor@daynix.com>
-In-Reply-To: <20230525125742.4190-2-viktor@daynix.com>
+ <20230525125742.4190-3-viktor@daynix.com>
+In-Reply-To: <20230525125742.4190-3-viktor@daynix.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 26 May 2023 12:07:42 +0800
-Message-ID: <CACGkMEvopt5vjqy3yxxSfFAngDAHo_mt2AZ=6ETacrYueN2GDA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] vhost: register and change IOMMU flag depending on
- Device-TLB state
+Date: Fri, 26 May 2023 12:07:53 +0800
+Message-ID: <CACGkMEubdZ2=jp8wWJbd1_evqNjH7HWy1EskVgvpPkEeACJF4w@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] virtio-net: pass Device-TLB enable/disable events
+ to vhost
 To: Viktor Prutyanov <viktor@daynix.com>
 Cc: mst@redhat.com, qemu-devel@nongnu.org, yan@daynix.com, 
  yuri.benditovich@daynix.com
@@ -99,13 +99,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, May 25, 2023 at 8:58=E2=80=AFPM Viktor Prutyanov <viktor@daynix.com=
 > wrote:
 >
-> The guest can disable or never enable Device-TLB. In these cases,
-> it can't be used even if enabled in QEMU. So, check Device-TLB state
-> before registering IOMMU notifier and select unmap flag depending on
-> that. Also, implement a way to change IOMMU notifier flag if Device-TLB
-> state is changed.
+> If vhost is enabled for virtio-net, Device-TLB enable/disable events
+> must be passed to vhost for proper IOMMU unmap flag selection.
 >
-> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2001312
 > Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
 
 Acked-by: Jason Wang <jasowang@redhat.com>
@@ -113,101 +109,22 @@ Acked-by: Jason Wang <jasowang@redhat.com>
 Thanks
 
 > ---
->  hw/virtio/vhost.c         | 38 ++++++++++++++++++++++++++------------
->  include/hw/virtio/vhost.h |  1 +
->  2 files changed, 27 insertions(+), 12 deletions(-)
+>  hw/net/virtio-net.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index 23da579ce2..e48507b5a1 100644
-> --- a/hw/virtio/vhost.c
-> +++ b/hw/virtio/vhost.c
-> @@ -781,7 +781,6 @@ static void vhost_iommu_region_add(MemoryListener *li=
-stener,
->      Int128 end;
->      int iommu_idx;
->      IOMMUMemoryRegion *iommu_mr;
-> -    int ret;
->
->      if (!memory_region_is_iommu(section->mr)) {
->          return;
-> @@ -796,7 +795,9 @@ static void vhost_iommu_region_add(MemoryListener *li=
-stener,
->      iommu_idx =3D memory_region_iommu_attrs_to_index(iommu_mr,
->                                                     MEMTXATTRS_UNSPECIFIE=
-D);
->      iommu_notifier_init(&iommu->n, vhost_iommu_unmap_notify,
-> -                        IOMMU_NOTIFIER_DEVIOTLB_UNMAP,
-> +                        dev->vdev->device_iotlb_enabled ?
-> +                            IOMMU_NOTIFIER_DEVIOTLB_UNMAP :
-> +                            IOMMU_NOTIFIER_UNMAP,
->                          section->offset_within_region,
->                          int128_get64(end),
->                          iommu_idx);
-> @@ -804,16 +805,8 @@ static void vhost_iommu_region_add(MemoryListener *l=
-istener,
->      iommu->iommu_offset =3D section->offset_within_address_space -
->                            section->offset_within_region;
->      iommu->hdev =3D dev;
-> -    ret =3D memory_region_register_iommu_notifier(section->mr, &iommu->n=
-, NULL);
-> -    if (ret) {
-> -        /*
-> -         * Some vIOMMUs do not support dev-iotlb yet.  If so, try to use=
- the
-> -         * UNMAP legacy message
-> -         */
-> -        iommu->n.notifier_flags =3D IOMMU_NOTIFIER_UNMAP;
-> -        memory_region_register_iommu_notifier(section->mr, &iommu->n,
-> -                                              &error_fatal);
-> -    }
-> +    memory_region_register_iommu_notifier(section->mr, &iommu->n,
-> +                                          &error_fatal);
->      QLIST_INSERT_HEAD(&dev->iommu_list, iommu, iommu_next);
->      /* TODO: can replay help performance here? */
->  }
-> @@ -841,6 +834,27 @@ static void vhost_iommu_region_del(MemoryListener *l=
-istener,
->      }
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index 6df6b7329d..30497c00b5 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -3951,6 +3951,7 @@ static void virtio_net_class_init(ObjectClass *klas=
+s, void *data)
+>      vdc->vmsd =3D &vmstate_virtio_net_device;
+>      vdc->primary_unplug_pending =3D primary_unplug_pending;
+>      vdc->get_vhost =3D virtio_net_get_vhost;
+> +    vdc->toggle_device_iotlb =3D vhost_toggle_device_iotlb;
 >  }
 >
-> +void vhost_toggle_device_iotlb(VirtIODevice *vdev)
-> +{
-> +    VirtioDeviceClass *vdc =3D VIRTIO_DEVICE_GET_CLASS(vdev);
-> +    struct vhost_dev *dev;
-> +    struct vhost_iommu *iommu;
-> +
-> +    if (vdev->vhost_started) {
-> +        dev =3D vdc->get_vhost(vdev);
-> +    } else {
-> +        return;
-> +    }
-> +
-> +    QLIST_FOREACH(iommu, &dev->iommu_list, iommu_next) {
-> +        memory_region_unregister_iommu_notifier(iommu->mr, &iommu->n);
-> +        iommu->n.notifier_flags =3D vdev->device_iotlb_enabled ?
-> +                IOMMU_NOTIFIER_DEVIOTLB_UNMAP : IOMMU_NOTIFIER_UNMAP;
-> +        memory_region_register_iommu_notifier(iommu->mr, &iommu->n,
-> +                                              &error_fatal);
-> +    }
-> +}
-> +
->  static int vhost_virtqueue_set_addr(struct vhost_dev *dev,
->                                      struct vhost_virtqueue *vq,
->                                      unsigned idx, bool enable_log)
-> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-> index f7f10c8fb7..6a173cb9fa 100644
-> --- a/include/hw/virtio/vhost.h
-> +++ b/include/hw/virtio/vhost.h
-> @@ -320,6 +320,7 @@ bool vhost_has_free_slot(void);
->  int vhost_net_set_backend(struct vhost_dev *hdev,
->                            struct vhost_vring_file *file);
->
-> +void vhost_toggle_device_iotlb(VirtIODevice *vdev);
->  int vhost_device_iotlb_miss(struct vhost_dev *dev, uint64_t iova, int wr=
-ite);
->
->  int vhost_virtqueue_start(struct vhost_dev *dev, struct VirtIODevice *vd=
-ev,
+>  static const TypeInfo virtio_net_info =3D {
 > --
 > 2.21.0
 >
