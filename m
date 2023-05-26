@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14219712889
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95ABF7128C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:42:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2YXI-0007hI-NH; Fri, 26 May 2023 10:35:20 -0400
+	id 1q2Ydv-0000p4-NH; Fri, 26 May 2023 10:42:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2YXG-0007bo-QN
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:35:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2Ydt-0000oa-Bs
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 10:42:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2YXF-0001Yu-AU
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:35:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2Ydr-0002Un-S4
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 10:42:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685111716;
+ s=mimecast20190719; t=1685112126;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=23PSCkpCLEM1XAMPimMBbxbw0zy1QtLjE7VIpVbxVJA=;
- b=KLg6ki5oVbPjQ7smZpCfgw3MN27CNo+/BYjAbMpkzlj4MQDnRrvcNNj+4J16ecXhsJYUh2
- FWCjHMCX91YWMwqvbPV0riVGGl44QS/NjlGdM7UWCWDeSrMZ2CUzAulNGF3jNkHk3mTxlT
- LxMoZPV3xTAk8I0k27VZZd3jTs09miY=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ieigWw+knjd+bDImnDjGfHT/hiK2SjnWXaTgRtJjXXo=;
+ b=XYjdmhT2O0JBWs9COdU/ojtr7nVxBSWVoUaWwmYzY/DaO0adyUYojYiHonoUsaOmqfynnA
+ Ut0o6LXzDCO8rpSRTQeAHpJ9s1kSVMmDcepUG1nMxfDPidSJ7D88zo5mv3vNoeAcRPDlWb
+ 680KstSJldS/uS51H+nGpJscZKMCNfU=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629--rWGzt62O9yj_4XPF4_JIQ-1; Fri, 26 May 2023 10:35:14 -0400
-X-MC-Unique: -rWGzt62O9yj_4XPF4_JIQ-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-623a54565e6so1494526d6.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:35:14 -0700 (PDT)
+ us-mta-606-2Y0Gxy8uNcC0o-125hAyTQ-1; Fri, 26 May 2023 10:42:05 -0400
+X-MC-Unique: 2Y0Gxy8uNcC0o-125hAyTQ-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-75b147a2548so19378085a.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:42:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685111714; x=1687703714;
+ d=1e100.net; s=20221208; t=1685112124; x=1687704124;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=23PSCkpCLEM1XAMPimMBbxbw0zy1QtLjE7VIpVbxVJA=;
- b=buKMqTCA4hUjZ7f4i3wmV7s5rgQ8KPlBRzHM+/GrBWoh1JRhSahGODvdIQoY+DpNq3
- N7iGilGHlpux6wgndQDEebNTYixvmaXzuBLIOMkqOlB4SiESamTsNZFGuXMRSkM0l3yS
- wAA7lUFHE9xs+flSp1zeKYsHs6EB05BjWVGOXEI76Pf4JAQujFJuoINWDcJys2bLMs2D
- vSOwmP0w3pyjfH9in4tsrmS/fAT8wHrvgGK7MAhEtbk5+Ozlne31aYeM1gFle7plegnH
- vSr3zc/wzXGblZkVT8aDOYKvRNrK3nNnNxyWVWqQoiKDMGVeKpHgwXVtAWwAsJ2uSE2c
- WQ5w==
-X-Gm-Message-State: AC+VfDxGtMUIoy7fCP/4UYXQG2tRMYNymTjw8Xn2IPKSsGfc6mifArlz
- 0RPq2WJutVKAqa28DxMq75pKBlG5j4Xa5Gy5jPV1e2ApD9YgK6dUNjE1XppmzcgLu7AIWFdrYK8
- p9X06h/viT2DgUL0=
-X-Received: by 2002:a05:6214:4008:b0:616:870c:96b8 with SMTP id
- kd8-20020a056214400800b00616870c96b8mr2149488qvb.3.1685111714480; 
- Fri, 26 May 2023 07:35:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6r4aJ8YyIofU1+7F8+dMZZeNYM53hrV43dTRgB3F27+SBcixIPkeBzzKC9bu/uNdlf3gt/jg==
-X-Received: by 2002:a05:6214:4008:b0:616:870c:96b8 with SMTP id
- kd8-20020a056214400800b00616870c96b8mr2149365qvb.3.1685111712648; 
- Fri, 26 May 2023 07:35:12 -0700 (PDT)
+ bh=ieigWw+knjd+bDImnDjGfHT/hiK2SjnWXaTgRtJjXXo=;
+ b=DGaRsw5+v2kGBOD8UirU1/F+4xs3bcGlPzn4JtpP7beClc4KitIrDp6+v9rTr53yDV
+ 0CwrlEUoIxY7x20z09K4TLFWEJdhmEEcmcW6Q6aVjjdBJUv6qkgEDrsX8gvjpENO+jLX
+ juWu1zTYZELreOCOQGJeGSGIbN563dONSxqhSWP2gTnSuK0hFzo3DZofsNwsKkSjI3ns
+ Afy8FrkLOIns7Fkl5l7pIANTkFW6DTPsp7aGXXbQU2BBjOC+TYpZ+5sh4Kw6+m5NKa97
+ lyC8iXDGSNnuh/LCG+g9ej61PRG0RFZKUJe7xEHQQv1lYCD1AHorjy+CU0Zz1nsCB3N6
+ neSg==
+X-Gm-Message-State: AC+VfDz7Vjgz+ZMW4NIFFY/XB+L5CPx02ERJlHhy1SJf9IKJX8bSkBj4
+ eHIhqZlf1miJEqfZflWBb+C63IJZwZdHRXNa3xW/3uhnc5wbdhBfASFm2mt0oFizs4GvkuwSznB
+ /tWkDKLk4J4pOhiQ=
+X-Received: by 2002:a05:620a:4387:b0:75b:23a1:69ec with SMTP id
+ a7-20020a05620a438700b0075b23a169ecmr2028247qkp.3.1685112124816; 
+ Fri, 26 May 2023 07:42:04 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5puqUq9j2q+LuB1st2iU9MS7VysNFBnh3HrbEF0YuVg4NaOGQtnIfUHBvAoXs9ITG3119tGw==
+X-Received: by 2002:a05:620a:4387:b0:75b:23a1:69ec with SMTP id
+ a7-20020a05620a438700b0075b23a169ecmr2028224qkp.3.1685112124507; 
+ Fri, 26 May 2023 07:42:04 -0700 (PDT)
 Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
  [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- l12-20020a056214028c00b0061b608dc4c1sm1242350qvv.94.2023.05.26.07.35.11
+ y15-20020a37e30f000000b00759273c10eesm1209069qki.33.2023.05.26.07.41.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 07:35:12 -0700 (PDT)
-Date: Fri, 26 May 2023 10:35:11 -0400
+ Fri, 26 May 2023 07:41:48 -0700 (PDT)
+Date: Fri, 26 May 2023 10:41:32 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
+To: P J P <ppandit@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>, Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH] vhost: release memory objects in error path
-Message-ID: <ZHDDn62S3MhwLhIp@x1n>
-References: <20230522181021.403585-1-ppandit@redhat.com> <ZG9cc0yEAJ06N0XY@x1n>
- <CAE8KmOyeV2HB-Fd5PsqVPh7NZBQ7KRH9CrP_7xOsHLac2dwFVA@mail.gmail.com>
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH v1] vhost: release memory objects in error path
+Message-ID: <ZHDFHMYIbwiVHgJ4@x1n>
+References: <20230526074051.22122-1-ppandit@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAE8KmOyeV2HB-Fd5PsqVPh7NZBQ7KRH9CrP_7xOsHLac2dwFVA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230526074051.22122-1-ppandit@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,37 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 26, 2023 at 12:24:07PM +0530, Prasad Pandit wrote:
-> Hello Peter, all
+On Fri, May 26, 2023 at 01:10:51PM +0530, P J P wrote:
+> From: Prasad Pandit <pjp@fedoraproject.org>
 > 
-> On Thu, 25 May 2023 at 18:33, Peter Xu <peterx@redhat.com> wrote:
+> vhost_dev_start function does not release memory objects in case
+> of an error. This may crash the guest with:
 > 
-> > IIRC this bug used to only reproduce on rt kernels, is it still the case?
-> >
+>   stack trace of thread 125653:
+>   Program terminated with signal SIGSEGV, Segmentation fault
+>   #0  memory_listener_register (qemu-kvm + 0x6cda0f)
+>   #1  vhost_dev_start (qemu-kvm + 0x699301)
+>   #2  vhost_net_start (qemu-kvm + 0x45b03f)
+>   #3  virtio_net_set_status (qemu-kvm + 0x665672)
+>   #4  qmp_set_link (qemu-kvm + 0x548fd5)
+>   #5  net_vhost_user_event (qemu-kvm + 0x552c45)
+>   #6  tcp_chr_connect (qemu-kvm + 0x88d473)
+>   #7  tcp_chr_new_client (qemu-kvm + 0x88cf83)
+>   #8  tcp_chr_accept (qemu-kvm + 0x88b429)
+>   #9  qio_net_listener_channel_func (qemu-kvm + 0x7ac07c)
+>   #10 g_main_context_dispatch (libglib-2.0.so.0 + 0x54e2f)
 > 
-> * Yes, it's a same crash.
-> 
-> 
-> > Here besides doing correct unregister, does it also mean that even if
-> > event_notifier_init() failed there's totally no error message anywhere?
-> > Should we dump something when it fails?  And did you check why that failed?
-> >
-> 
-> * In the qemu logs we see following error
-> 
->         VHOST_OPS_DEBUG(r, "vhost_set_mem_table failed");
->         goto fail_mem
-> 
-> After this execution likely did not reach the event_notifier_init() call,
-> because: goto fail_mem.
+> Release memory_listener and virtqueue objects in the error path.
 
-Ah so it's not about eventfd, okay!
+IMHO it'll still good to mention that it's not event_notifier_init() that
+failed but vhost_set_mem_table(), since that is probably not crystal clear.
+The event_notifier_init() change is just something to fix altogether (or
+with a separate patch, but this is fine by me).
+
+Please also consider adding a "Bugzilla:" link to the original bug report.
 
 > 
-> * But in case it fails, no error message gets logged. Do we want to add it
-> in this same patch?
+> Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
 
-I see you already sent one, will read.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
 Thanks!
 
