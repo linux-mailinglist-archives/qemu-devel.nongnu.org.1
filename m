@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35C2712A09
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D74B712A17
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:58:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Zn6-0004PS-JH; Fri, 26 May 2023 11:55:44 -0400
+	id 1q2Zpe-0005wC-C9; Fri, 26 May 2023 11:58:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2Zn1-0004MV-Pu
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:55:39 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1q2Zpd-0005vz-31
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:58:21 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2Zmy-00008v-Ke
- for qemu-devel@nongnu.org; Fri, 26 May 2023 11:55:38 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-534696e4e0aso584287a12.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:55:35 -0700 (PDT)
+ id 1q2Zpb-0000cY-Gu
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:58:20 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-51b33c72686so577409a12.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:58:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685116534; x=1687708534;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1685116698; x=1687708698;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/7XBjsNTlyTJXytuq08uMo1C4/N4C+2V/Dt5G0nQqbI=;
- b=Nyf7+iEb7QGMvme6NQyolVVAGjMzr/0EYM71awle5WsDK1WVDqmO50jJD9AA9iYFQc
- Im2ZBTGyS+opU6iMpGyc3KQRi+gtG3mLyr/PB7pRlwSqy65c4+qnFBtzyjdhcppbNi0X
- jYEIl4EOc4NdI4fzwzZwgVrBuR2mtR6O5hD7oUykTwZEdrbCMDSbGFvWHXNa0yoRekPN
- 2oY79vpdNUAr1soAzI1Fb7FcGoAvzlo0EG/MP9SpBh6BYpypr/IQ0qBcvVlgaxZaQwdh
- zmAszhS7Q7eyFbiHA/U5r2tuGBb/MxXfWjWeketWtjIkALhh+e2dSfcn0j0FvFfAAlEr
- hkKQ==
+ bh=DmcPZLe4B9Hbx4OpD18rHZ9yLwXuM9h4/2gT14dh50I=;
+ b=KULGiC/QubphpgIkp1Od5RcwkwSh+TSxTvgI3ay2fBbZjURHgvJUOEH5nuzYjkEynd
+ S/vsqLVCo4eXLc/JuE6CwoqGRYa64LT0QOS190lmdswJ9YXf4QYWHMGDVn9aIi1Flwmb
+ 08F1vNUQr+4XYWpqv8PHRdg6RJkwk/NzNGWfHbeEwT57H8qouuP1QVQNpGRVOludiaXD
+ vRqDKIRQD7kC4F6KAgd8d/ucPSvzAT2yTvNpdIQeVYJ9SN/OGIQcliefXEVt728xBVgm
+ CZjIu71lrFYhZUt1tStle6uPsIEzi9snls8el0iQXJU5OThHcrDdXvhf2WCdeOW9E1Ge
+ SdZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685116534; x=1687708534;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1685116698; x=1687708698;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/7XBjsNTlyTJXytuq08uMo1C4/N4C+2V/Dt5G0nQqbI=;
- b=Mv1rbQ0u8Whv2LRltDS7EZifRuiskFyXnGkuyhUf1lrDsUBJ1FEHL+bZGLyiMuX6nG
- dPiLaN6msJOSBN8YZpEfy9GyHoNwJAywV59FSmOW7FTt2/MOnFkCMLKhNdPSn3rg+RwW
- c6B6s/18r8gDJpR54ABpcK42BATvWkT/KFkqNvv0hG1f777S3SwrHXxAZ7/PxjFCsufv
- t5JbgBB2nxkJ97Oxt/QpByGZ+hMj5ygoVkiBTD42IP2CjSM0qjnsz9OEMgYC6TsQ43uY
- 1RjL7/WBzKo+XqWBLgbFj0Y2G6IIFTIf559F/KZRKNR8j0KFfKadro6kvs8xJjzVqndW
- Tn3w==
-X-Gm-Message-State: AC+VfDxbyU0DlPDjOgsB9YZOZCu0XW8cdPVMwauLJG3DV9Ao8goKar42
- 06KEPUZii9qBD5a1xGcUXGJ9KF5FUsmxe+uGpjI=
-X-Google-Smtp-Source: ACHHUZ6HyTJfNkUP0zNgPsrn3oPLu19s79dvbyV9V8LUK3/jBdmlanL6Q7SgOwNkb4NLVCNTv4+urA==
-X-Received: by 2002:a17:902:e5c8:b0:1ad:fa2e:17fc with SMTP id
- u8-20020a170902e5c800b001adfa2e17fcmr3351541plf.2.1685116534142; 
- Fri, 26 May 2023 08:55:34 -0700 (PDT)
+ bh=DmcPZLe4B9Hbx4OpD18rHZ9yLwXuM9h4/2gT14dh50I=;
+ b=QE7aoss4r4IeORyjLGiUm26+asuWt6p3+q2WusCpIxYEHKLMxU2HbBcX3BlrTfuXr3
+ JG1icT0iGvVFG/hzDJ5lzlG0e+95RL49ila6d1MvKfcWh/OWqcsLlb3OCYIXhA3J9MmF
+ AqI+cocIyXr4n9/S+wWJCDLV0t4yg4no7J1VRjgYOTCJ3cDnOnXH87TeQhEwnEUu3VSq
+ Da4SfKK0IsLmdsgEPex+HAi1Px85oaUEwEtJktMtPSz+f5u3Bv7nqkNsPOxvjOw6pKE9
+ EU4qsUHckwhUs+7gCKAVuzASAMy/BTf6QLfVdPsBck0NyeZZAQ/01tZS1XuZcRbsiiTK
+ Jw+w==
+X-Gm-Message-State: AC+VfDyocttzqDibzbEz5Nmjr2dZCmUT2N64cht+uv24H8ScgucmbHxK
+ cZA8KKJqRd+5oUgQ1LkWL+YFNw==
+X-Google-Smtp-Source: ACHHUZ64EQ7pHBKqS5arxHe5aduPHvZ1jTYATFDcEWcSwm1HtK8maB/o+GxnKJfsT6ilCLROKlKHsQ==
+X-Received: by 2002:a17:902:bb87:b0:1ae:4bbb:e958 with SMTP id
+ m7-20020a170902bb8700b001ae4bbbe958mr2835964pls.14.1685116697999; 
+ Fri, 26 May 2023 08:58:17 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
  ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
  by smtp.gmail.com with ESMTPSA id
- n6-20020a170902e54600b001afa7040a70sm3413086plf.276.2023.05.26.08.55.33
+ ij30-20020a170902ab5e00b001adbb8991b3sm3499534plb.89.2023.05.26.08.58.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 08:55:33 -0700 (PDT)
-Message-ID: <3e797413-a8ee-ecd3-8775-b22107cd0418@linaro.org>
-Date: Fri, 26 May 2023 08:55:31 -0700
+ Fri, 26 May 2023 08:58:17 -0700 (PDT)
+Message-ID: <ae71eab9-de2e-22ab-7b36-4241a369ae90@linaro.org>
+Date: Fri, 26 May 2023 08:58:15 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH] atomics: eliminate mb_read/mb_set
+Subject: Re: [PATCH v2 2/5] gitlab: allow overriding name of the upstream
+ repository
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20230526081810.423315-1-pbonzini@redhat.com>
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230526101934.935969-1-berrange@redhat.com>
+ <20230526101934.935969-3-berrange@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230526081810.423315-1-pbonzini@redhat.com>
+In-Reply-To: <20230526101934.935969-3-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,31 +102,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/26/23 01:18, Paolo Bonzini wrote:
-> qatomic_mb_read and qatomic_mb_set were the very first atomic primitives
-> introduced for QEMU; their semantics are unclear and they provide a false
-> sense of safety.
+On 5/26/23 03:19, Daniel P. Berrangé wrote:
+> The CI rules have special logic for what happens in upstream. To enable
+> contributors who modify CI rules to test this logic, however, they need
+> to be able to override which repo is considered upstream. This
+> introduces the 'QEMU_CI_UPSTREAM' variable
 > 
-> The last use of qatomic_mb_read() has been removed, so delete it.
-> qatomic_mb_set() instead can survive as an optimized
-> qatomic_set()+smp_mb(), similar to Linux's smp_store_mb(), but
-> rename it to qatomic_set_mb() to match the order of the two
-> operations.
+>    git push gitlab <branch> -o ci.variable=QEMU_CI_UPSTREAM=berrange
 > 
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+> to make it look as if my namespace is the actual upstream. Namespace in
+> this context refers to the path fragement in gitlab URLs that is above
+> the repository. Typically this will be the contributor's gitlab login
+> name.
+> 
+> Reviewed-by: Michael Tokarev<mjt@tls.msk.ru>
+> Signed-off-by: Daniel P. Berrangé<berrange@redhat.com>
 > ---
->   accel/tcg/cpu-exec.c              |  2 +-
->   accel/tcg/tcg-accel-ops-mttcg.c   |  2 +-
->   accel/tcg/tcg-accel-ops-rr.c      |  4 ++--
->   docs/devel/atomics.rst            | 27 ++++-----------------------
->   include/qemu/atomic.h             |  4 ++--
->   monitor/qmp.c                     |  2 +-
->   softmmu/cpus.c                    |  2 +-
->   softmmu/physmem.c                 |  2 +-
->   target/arm/hvf/hvf.c              |  2 +-
->   tests/unit/test-aio-multithread.c |  2 +-
->   util/qemu-coroutine-lock.c        |  4 ++--
->   11 files changed, 17 insertions(+), 36 deletions(-)
+>   .gitlab-ci.d/base.yml      | 19 ++++++++++++-------
+>   docs/devel/ci-jobs.rst.inc |  6 ++++++
+>   2 files changed, 18 insertions(+), 7 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
