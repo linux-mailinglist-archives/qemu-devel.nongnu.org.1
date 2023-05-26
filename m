@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156BF711E7E
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CC9711E7F
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 05:39:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2OHe-0004Lx-0b; Thu, 25 May 2023 23:38:30 -0400
+	id 1q2OHZ-0004Kc-1f; Thu, 25 May 2023 23:38:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q2OHb-0004Kn-Jv; Thu, 25 May 2023 23:38:27 -0400
-Received: from mail-vs1-xe31.google.com ([2607:f8b0:4864:20::e31])
+ (Exim 4.90_1) (envelope-from <helei.sig11@bytedance.com>)
+ id 1q2OHW-0004KE-5H
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 23:38:22 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1q2OHZ-0002aZ-HX; Thu, 25 May 2023 23:38:27 -0400
-Received: by mail-vs1-xe31.google.com with SMTP id
- ada2fe7eead31-439367c12ceso164873137.0; 
- Thu, 25 May 2023 20:38:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <helei.sig11@bytedance.com>)
+ id 1q2OHR-0002ZI-9w
+ for qemu-devel@nongnu.org; Thu, 25 May 2023 23:38:21 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1b00f9c4699so1754695ad.3
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 20:38:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685072304; x=1687664304;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=bytedance.com; s=google; t=1685072290; x=1687664290;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gebbvLecwxmC4j6HVqVaGnssKKu6mrz7ssMgpBbb4qU=;
- b=T8iXa5m/NlHEfMZdyMn7/uImE9TvrWH0cDy5P6trX7pqoJY5e66vyzb1bi0Dvn83lI
- 8EOmDKUv60FvLKhbedUuRrBqsS1PSnkQ77AMviBEsJtCMbE51/m1sC5IN3coiJJh+vmH
- xQBy4dfdlFN3N5Xr1Z9nKv/IDptrFG7FvmmcLzatIV8KOF/+VzL8Lb2/uGUuIlVyzYfL
- EqI78y4GQMgXbI2mhKzDmFt2fH8LDo8GvLyiwxlmPd9acdRRGsycHNBg68txQCoESR+f
- 1BY8QAeNR8CjhO4xBQOjZ5u3ChnmadeSsseI1MxntYyCTbp9HOV4ONnD+dVXIrYx5HBI
- se6w==
+ bh=MfiXV56UR5YcLYk/dwMoW2NczIUtVeHVSPEW7EFcEGo=;
+ b=G2v2AsjNB7WSckxXT7sXDYzJXFjbCnJLQGTTuYXtCFYfuJlc7KQl7j0NzD16rt36NJ
+ nxQ2mzF32n+aHhQ9071jhe56NIwFQnjlm0TWSOO7m5MqMDYhsvCJInYZzv3VS2mCIkyc
+ zUh+ljYxLQrvM8qsX2m3gJpl9zUD98EIMLAXJ5Ld57IiJ+jP0npSHMU2DfYJCLKNio79
+ DEI0EuYQRB4D54LRUxWY3r3sCsw3/MIoxMW0jUm69zZ325/UJZdvzrw3RCihFyGmrhPX
+ uPN0dmAYtq95GbN/MMKUqbpfOk4ZljZSBETEFRVPgkAAjc6b1dywLp3xbdNe6HBfoOUQ
+ mNtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685072304; x=1687664304;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1685072290; x=1687664290;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gebbvLecwxmC4j6HVqVaGnssKKu6mrz7ssMgpBbb4qU=;
- b=cLFVedgroHPHLRnuaLlEvmgSEv6uYPFqgWKuU9yu5AjNdFDW6Wg0NOxx6L9baFw5GV
- Q4Jn0l52LChnMKBoICmNh5g0iJ1xZRFwYE+jNAMnPQ39JSxWFuFoy3TFzHbLjBn3ImJh
- 47tdr9vH+kF1KLANxBBtXpCxlOZOdeGER2jXpFk3S10DIDtrsJrU/rp2rA5K4jnGPhix
- S4MmTbkOqtVmTals/vdlg6Vg6WP4+MyNDab8y4dzXtW81k3im4fT56/IsIfydkuXSv6Q
- dt1QvOrkklo0HiRhOOk+OVhVmOefbUXrVxWt0jfvAnhLuMFmr4yPVD6Pdxq0vvBY2f+D
- wSxA==
-X-Gm-Message-State: AC+VfDzfxX8da6sLrKvDDe8AVqUphCtu60qgCYPXH0Tg0k6MT1PvZph4
- xdIC2PH6T3oNipJteUtm8cRxG+BHvta4yc5gK7Y=
-X-Google-Smtp-Source: ACHHUZ6XCYGMbxfSt5lrq692v6f1bHsRH5/fTTJcmX4u0P6CJhqpHeMnEuQ7/NZ3nQ8QbJEWgKvspHV8HYPa8zlPPX4=
-X-Received: by 2002:a05:6102:34e7:b0:434:6978:fdc6 with SMTP id
- bi7-20020a05610234e700b004346978fdc6mr147486vsb.11.1685072303973; Thu, 25 May
- 2023 20:38:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230523102805.100160-1-sunilvl@ventanamicro.com>
-In-Reply-To: <20230523102805.100160-1-sunilvl@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 26 May 2023 13:37:57 +1000
-Message-ID: <CAKmqyKNOU65R3Yc=K=xHZKb00_e88HkGG8jwO=qfng1fg78aAw@mail.gmail.com>
-Subject: Re: [PATCH v3] hw/riscv: virt: Assume M-mode FW in pflash0 only when
- "-bios none"
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Heinrich Schuchardt <xypron.glpk@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
+ bh=MfiXV56UR5YcLYk/dwMoW2NczIUtVeHVSPEW7EFcEGo=;
+ b=WFkvnNXLLDMH/KqTgtIm4YOS4vvguYM2uO1sfbyx3KjQMrdCOEmfog210i0Hves6a4
+ 5jsMZlY4E4loLPFn01fQudA8k7pEWf8sCHcnHHpgws88gA+hWsOmeiXXIpT65JNFLM3E
+ EzAf1kruIJBFfSXVonXzfA9VO0l/+A3MpKxIbxCCyPs/1yzm+8exb/bCmNJroWKa22II
+ h/e1zLysm9BPS5Wc31gza/RpQl81JHCw7elnsSmP+pDpoSbuvdJupNZa2XmcemS+PA2s
+ VCv8yxD0CfaMxqoQNGkdcrlKmqUGnXkMUBSlIwKhJGyC1u+7TvzXbEgtgiPxoYUCtHPb
+ kL6w==
+X-Gm-Message-State: AC+VfDwSLbUersUQhqqyK/n48MfLyB/IrHT1xuQ9cRZwL68W3/sAPpqZ
+ vLlXpGRKMVmcjHkijxvee+L+Uw==
+X-Google-Smtp-Source: ACHHUZ6AbXVOcZuVX/wYn3vuFfuKlLsKlVJXMDPgALOYNPzrj2LAIgLavKVATvX30BSrrvUIbniWDQ==
+X-Received: by 2002:a17:902:ce05:b0:1ad:f7d9:1ae2 with SMTP id
+ k5-20020a170902ce0500b001adf7d91ae2mr1110149plg.55.1685072290025; 
+ Thu, 25 May 2023 20:38:10 -0700 (PDT)
+Received: from smtpclient.apple ([61.213.176.11])
+ by smtp.gmail.com with ESMTPSA id
+ s15-20020a170902ea0f00b0019e60c645b1sm2086545plg.305.2023.05.25.20.38.07
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 25 May 2023 20:38:09 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: [PATCH] cryptodev: Handle unexpected request to avoid crash
+From: Lei He <helei.sig11@bytedance.com>
+In-Reply-To: <20230427080509.172477-1-pizhenwei@bytedance.com>
+Date: Fri, 26 May 2023 11:38:04 +0800
+Cc: Lei He <helei.sig11@bytedance.com>, mst@redhat.com,
+ arei.gonglei@huawei.com, qemu-devel@nongnu.org,
+ Mauro Matteo Cascella <mcascell@redhat.com>,
+ Xiao Lei <nop.leixiao@gmail.com>, Yongkang Jia <kangel@zju.edu.cn>,
+ Yiming Tao <taoym@zju.edu.cn>
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e31;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe31.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Message-Id: <A4856378-68F6-440B-A0C8-B13EEEF452BC@bytedance.com>
+References: <20230427080509.172477-1-pizhenwei@bytedance.com>
+To: zhenwei pi <pizhenwei@bytedance.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=helei.sig11@bytedance.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,215 +97,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 23, 2023 at 8:29=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.com=
-> wrote:
->
-> Currently, virt machine supports two pflash instances each with
-> 32MB size. However, the first pflash is always assumed to
-> contain M-mode firmware and reset vector is set to this if
-> enabled. Hence, for S-mode payloads like EDK2, only one pflash
-> instance is available for use. This means both code and NV variables
-> of EDK2 will need to use the same pflash.
->
-> The OS distros keep the EDK2 FW code as readonly. When non-volatile
-> variables also need to share the same pflash, it is not possible
-> to keep it as readonly since variables need write access.
->
-> To resolve this issue, the code and NV variables need to be separated.
-> But in that case we need an extra flash. Hence, modify the convention
-> such that pflash0 will contain the M-mode FW only when "-bios none"
-> option is used. Otherwise, pflash0 will contain the S-mode payload FW.
-> This enables both pflash instances available for EDK2 use.
->
-> Example usage:
-> 1) pflash0 containing M-mode FW
-> qemu-system-riscv64 -bios none -pflash <mmode_fw> -machine virt
-> or
-> qemu-system-riscv64 -bios none \
-> -drive file=3D<mmode_fw>,if=3Dpflash,format=3Draw,unit=3D0 -machine virt
->
-> 2) pflash0 containing S-mode payload like EDK2
-> qemu-system-riscv64 -pflash <smode_fw_code> -pflash <smode_vars> -machine=
-  virt
-> or
-> qemu-system-riscv64 -bios <opensbi_fw> \
-> -pflash <smode_fw_code> \
-> -pflash <smode_vars> \
-> -machine  virt
-> or
-> qemu-system-riscv64 -bios <opensbi_fw> \
-> -drive file=3D<smode_fw_code>,if=3Dpflash,format=3Draw,unit=3D0,readonly=
-=3Don \
-> -drive file=3D<smode_fw_vars>,if=3Dpflash,format=3Draw,unit=3D1 \
-> -machine virt
->
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> Reported-by: Heinrich Schuchardt <xypron.glpk@gmx.de>
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
+> On Apr 27, 2023, at 16:05, zhenwei pi <pizhenwei@bytedance.com> wrote:
+>=20
+> Generally guest side should discover which services the device is
+> able to offer, then do requests on device.
+>=20
+> However it's also possible to break this rule in a guest. Handle
+> unexpected request here to avoid NULL pointer dereference.
+>=20
+> Fixes: e7a775fd ('cryptodev: Account statistics')
+> Cc: Gonglei <arei.gonglei@huawei.com>
+> Cc: Mauro Matteo Cascella <mcascell@redhat.com>
+> Cc: Xiao Lei <nop.leixiao@gmail.com>
+> Cc: Yongkang Jia <kangel@zju.edu.cn>
+> Reported-by: Yiming Tao <taoym@zju.edu.cn>
+> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 > ---
->
-> The issue is reported at
-> https://salsa.debian.org/qemu-team/edk2/-/commit/c345655a0149f64c5020bfc1=
-e53c619ce60587f6
->
-> The patch is based on Alistair's riscv-to-apply.next branch.
->
-> Changes since v2:
->         1) Reverted v2 changes and used v1 approach so that pflash0 can b=
-e used
->            for code and pflash1 for variable store.
->         2) Rebased to latest riscv-to-apply.next branch.
->         3) Added documentation for pflash usage.
->
-> Changes since v1:
->         1) Simplified the fix such that it doesn't break current EDK2.
->
->  docs/system/riscv/virt.rst | 33 ++++++++++++++++++++++++
->  hw/riscv/virt.c            | 51 ++++++++++++++------------------------
->  2 files changed, 52 insertions(+), 32 deletions(-)
->
-> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
-> index 4b16e41d7f..4ac0d38fdf 100644
-> --- a/docs/system/riscv/virt.rst
-> +++ b/docs/system/riscv/virt.rst
-> @@ -53,6 +53,39 @@ with the default OpenSBI firmware image as the -bios. =
-It also supports
->  the recommended RISC-V bootflow: U-Boot SPL (M-mode) loads OpenSBI fw_dy=
-namic
->  firmware and U-Boot proper (S-mode), using the standard -bios functional=
-ity.
->
-> +Using flash devices
-> +-------------------
+> backends/cryptodev.c | 10 ++++++++++
+> 1 file changed, 10 insertions(+)
+>=20
+> diff --git a/backends/cryptodev.c b/backends/cryptodev.c
+> index 94ca393cee..d3fe92d8c0 100644
+> --- a/backends/cryptodev.c
+> +++ b/backends/cryptodev.c
+> @@ -191,6 +191,11 @@ static int =
+cryptodev_backend_account(CryptoDevBackend *backend,
+>     if (algtype =3D=3D QCRYPTODEV_BACKEND_ALG_ASYM) {
+>         CryptoDevBackendAsymOpInfo *asym_op_info =3D =
+op_info->u.asym_op_info;
+>         len =3D asym_op_info->src_len;
 > +
-> +The first flash device (pflash0) can contain either ROM code like Oreboo=
-t
-> +or S-mode payload firmware code like EDK2. If the pflash0 contains the
-> +ROM code, -bios should be set to none. Otherwise, pflash0 is assumed to
-> +contain S-mode payload code.
-> +
-> +Firmware images used for pflash should be of size 32M.
-> +
-> +To boot as ROM code like Oreboot:
-> +
-> +.. code-block:: bash
-> +
-> +  $ qemu-system-riscv64 -bios none -pflash <rom_code_image> \
-> +       ... other args ....
-> +
-> +To boot as S-mode payload like EDK2:
-> +
-> +.. code-block:: bash
-> +
-> +  $ qemu-system-riscv64 -pflash <s-mode_fw_code> -pflash <smode_fw_vars>=
- \
-> +       ... other args ....
-> +
-> +To boot as read-only S-mode payload like EDK2:
-> +
-> +.. code-block:: bash
-> +
-> +  $ qemu-system-riscv64 -bios <opensbi_fw> \
-> +       -drive file=3D<smode_fw_code>,if=3Dpflash,format=3Draw,unit=3D0,r=
-eadonly=3Don \
-> +       -drive file=3D<smode_fw_vars>,if=3Dpflash,format=3Draw,unit=3D1 \
-> +       ... other args ....
-> +
->  Machine-specific options
->  ------------------------
->
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 4e3efbee16..1187a60d6e 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -1245,7 +1245,7 @@ static void virt_machine_done(Notifier *notifier, v=
-oid *data)
->      target_ulong firmware_end_addr, kernel_start_addr;
->      const char *firmware_name =3D riscv_default_firmware_name(&s->soc[0]=
-);
->      uint32_t fdt_load_addr;
-> -    uint64_t kernel_entry;
-> +    uint64_t kernel_entry =3D 0;
->
->      /*
->       * Only direct boot kernel is currently supported for KVM VM,
-> @@ -1266,42 +1266,29 @@ static void virt_machine_done(Notifier *notifier,=
- void *data)
->      firmware_end_addr =3D riscv_find_and_load_firmware(machine, firmware=
-_name,
->                                                       start_addr, NULL);
->
-> -    if (drive_get(IF_PFLASH, 0, 1)) {
-> -        /*
-> -         * S-mode FW like EDK2 will be kept in second plash (unit 1).
-> -         * When both kernel, initrd and pflash options are provided in t=
-he
-> -         * command line, the kernel and initrd will be copied to the fw_=
-cfg
-> -         * table and opensbi will jump to the flash address which is the
-> -         * entry point of S-mode FW. It is the job of the S-mode FW to l=
-oad
-> -         * the kernel and initrd using fw_cfg table.
-> -         *
-> -         * If only pflash is given but not -kernel, then it is the job o=
-f
-> -         * of the S-mode firmware to locate and load the kernel.
-> -         * In either case, the next_addr for opensbi will be the flash a=
-ddress.
-> -         */
-> -        riscv_setup_firmware_boot(machine);
-> -        kernel_entry =3D virt_memmap[VIRT_FLASH].base +
-> -                       virt_memmap[VIRT_FLASH].size / 2;
-> -    } else if (machine->kernel_filename) {
-> +    if (drive_get(IF_PFLASH, 0, 0)) {
-> +        if (machine->firmware && !strcmp(machine->firmware, "none")) {
-> +            /*
-> +             * Pflash was supplied but bios is none, let's overwrite the
-> +             * address we jump to after reset to the base of the flash.
-> +             */
-> +            start_addr =3D virt_memmap[VIRT_FLASH].base;
-> +        } else {
-> +            /*
-> +             * Pflash was supplied but bios is not none. In this case,
-> +             * base of the flash would contain S-mode payload.
-> +             */
-> +            riscv_setup_firmware_boot(machine);
-> +            kernel_entry =3D virt_memmap[VIRT_FLASH].base;
+> +        if (unlikely(!backend->asym_stat)) {
+> +            error_report("cryptodev: Unexpected asym operation");
+> +            return -VIRTIO_CRYPTO_NOTSUPP;
 > +        }
-> +    }
+>         switch (op_info->op_code) {
+>         case VIRTIO_CRYPTO_AKCIPHER_ENCRYPT:
+>             CryptodevAsymStatIncEncrypt(backend, len);
+> @@ -210,6 +215,11 @@ static int =
+cryptodev_backend_account(CryptoDevBackend *backend,
+>     } else if (algtype =3D=3D QCRYPTODEV_BACKEND_ALG_SYM) {
+>         CryptoDevBackendSymOpInfo *sym_op_info =3D =
+op_info->u.sym_op_info;
+>         len =3D sym_op_info->src_len;
 > +
-> +    if (machine->kernel_filename && !kernel_entry) {
->          kernel_start_addr =3D riscv_calc_kernel_start_addr(&s->soc[0],
->                                                           firmware_end_ad=
-dr);
->
->          kernel_entry =3D riscv_load_kernel(machine, &s->soc[0],
->                                           kernel_start_addr, true, NULL);
-> -    } else {
-> -       /*
-> -        * If dynamic firmware is used, it doesn't know where is the next=
- mode
-> -        * if kernel argument is not set.
-> -        */
-> -        kernel_entry =3D 0;
-> -    }
-> -
-> -    if (drive_get(IF_PFLASH, 0, 0)) {
-> -        /*
-> -         * Pflash was supplied, let's overwrite the address we jump to a=
-fter
-> -         * reset to the base of the flash.
-> -         */
-> -        start_addr =3D virt_memmap[VIRT_FLASH].base;
->      }
->
->      fdt_load_addr =3D riscv_compute_fdt_addr(memmap[VIRT_DRAM].base,
-> --
+> +        if (unlikely(!backend->sym_stat)) {
+> +            error_report("cryptodev: Unexpected sym operation");
+> +            return -VIRTIO_CRYPTO_NOTSUPP;
+> +        }
+>         switch (op_info->op_code) {
+>         case VIRTIO_CRYPTO_CIPHER_ENCRYPT:
+>             CryptodevSymStatIncEncrypt(backend, len);
+> --=20
 > 2.34.1
->
->
+>=20
+
+Reviewed-by: Lei He <helei.sig11@bytedance.com>
+
+
+Best regards,
+Lei He
+--
+helei.sig11@bytedance.com
+
+
+
 
