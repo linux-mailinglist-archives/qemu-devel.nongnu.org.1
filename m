@@ -2,63 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5684A71304A
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 01:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 768AB713045
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 01:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2gfO-0004fL-Ga; Fri, 26 May 2023 19:16:14 -0400
+	id 1q2gfP-0004fa-2n; Fri, 26 May 2023 19:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q2gfM-0004ec-F3
+ id 1q2gfM-0004ei-J9
  for qemu-devel@nongnu.org; Fri, 26 May 2023 19:16:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1q2gfK-00082B-NN
+ id 1q2gfK-00082L-UV
  for qemu-devel@nongnu.org; Fri, 26 May 2023 19:16:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685142969;
+ s=mimecast20190719; t=1685142970;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eMaYG4q1Nk0spk2aBov6NS66YAeRyg9c57fbvvP0aws=;
- b=TKLiVpxyfBlQ79197HWO/hvl7hlfpOZS2LAYpSHnaCBqVF3lG4gEXe5JuvjFxgEVVxIRs+
- eKiqQcjnOa3F8m8g3CYqJpyVzYHOpfMzUPvJ/bJ4Cbbi7X7ZIgLe3XxoJxOAMmrS7FOj9d
- Qr2FkdOiPvnrTe/i3ggtODEtH/SLebA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ppsSqBFmd85MY/HWcySwkiiUV0ay/ybg6reH9NMFing=;
+ b=Hh+Hjq3RKgjel8nIvcTmpkq5At7MxNNRuML4QEit+eV8eML5A0dHAOUC+FV4P4jxYGWcVX
+ 9g555qD/tkKVWu+UBMZpemP7+kUaDLQ+b7s1T/RIv/B8FU2X/GkE5Ch+BncS9kJB9+w1NI
+ 3PREdGSysLFY4tst6vh9ZIUiYxmxgtQ=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-312-qQk1rReBPKmi1Z8b4mZxZA-1; Fri, 26 May 2023 19:16:06 -0400
-X-MC-Unique: qQk1rReBPKmi1Z8b4mZxZA-1
+ us-mta-461-1svPI7B4MU-_RFXXAGRaeQ-1; Fri, 26 May 2023 19:16:06 -0400
+X-MC-Unique: 1svPI7B4MU-_RFXXAGRaeQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCB55811E7C;
- Fri, 26 May 2023 23:16:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 704BB2A2AD44;
+ Fri, 26 May 2023 23:16:06 +0000 (UTC)
 Received: from omen.home.shazbot.org (unknown [10.22.10.168])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 54128400E118;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0191140C1438;
  Fri, 26 May 2023 23:16:05 +0000 (UTC)
 From: Alex Williamson <alex.williamson@redhat.com>
 To: robin@streamhpc.com,
 	mst@redhat.com,
 	marcel.apfelbaum@gmail.com
 Cc: Alex Williamson <alex.williamson@redhat.com>, qemu-devel@nongnu.org,
- clg@redhat.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v2 2/4] vfio: Implement a common device info helper
-Date: Fri, 26 May 2023 17:15:56 -0600
-Message-Id: <20230526231558.1660396-3-alex.williamson@redhat.com>
+ clg@redhat.com
+Subject: [RFC PATCH v2 3/4] pcie: Add a PCIe capability version helper
+Date: Fri, 26 May 2023 17:15:57 -0600
+Message-Id: <20230526231558.1660396-4-alex.williamson@redhat.com>
 In-Reply-To: <20230526231558.1660396-1-alex.williamson@redhat.com>
 References: <20230526231558.1660396-1-alex.williamson@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,171 +81,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A common helper implementing the realloc algorithm for handling
-capabilities.
+Report the PCIe capability version for a device
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 ---
- hw/s390x/s390-pci-vfio.c      | 37 ++++------------------------
- hw/vfio/common.c              | 46 ++++++++++++++++++++++++++---------
- include/hw/vfio/vfio-common.h |  1 +
- 3 files changed, 41 insertions(+), 43 deletions(-)
+ hw/pci/pcie.c         | 7 +++++++
+ include/hw/pci/pcie.h | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index f51190d4662f..66e8ec3bdef9 100644
---- a/hw/s390x/s390-pci-vfio.c
-+++ b/hw/s390x/s390-pci-vfio.c
-@@ -289,38 +289,11 @@ static void s390_pci_read_pfip(S390PCIBusDevice *pbdev,
-     memcpy(pbdev->zpci_fn.pfip, cap->pfip, CLP_PFIP_NR_SEGMENTS);
+diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+index b8c24cf45f7e..b7f107ed8dd4 100644
+--- a/hw/pci/pcie.c
++++ b/hw/pci/pcie.c
+@@ -274,6 +274,13 @@ uint8_t pcie_cap_get_type(const PCIDevice *dev)
+             PCI_EXP_FLAGS_TYPE) >> PCI_EXP_FLAGS_TYPE_SHIFT;
  }
  
--static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev,
--                                                uint32_t argsz)
-+static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev);
- {
--    struct vfio_device_info *info = g_malloc0(argsz);
--    VFIOPCIDevice *vfio_pci;
--    int fd;
-+    VFIOPCIDevice *vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
- 
--    vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
--    fd = vfio_pci->vbasedev.fd;
--
--    /*
--     * If the specified argsz is not large enough to contain all capabilities
--     * it will be updated upon return from the ioctl.  Retry until we have
--     * a big enough buffer to hold the entire capability chain.  On error,
--     * just exit and rely on CLP defaults.
--     */
--retry:
--    info->argsz = argsz;
--
--    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
--        trace_s390_pci_clp_dev_info(vfio_pci->vbasedev.name);
--        g_free(info);
--        return NULL;
--    }
--
--    if (info->argsz > argsz) {
--        argsz = info->argsz;
--        info = g_realloc(info, argsz);
--        goto retry;
--    }
--
--    return info;
-+    return vfio_get_device_info(vfio_pci->vbasedev.fd);
- }
- 
- /*
-@@ -335,7 +308,7 @@ bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh)
- 
-     assert(fh);
- 
--    info = get_device_info(pbdev, sizeof(*info));
-+    info = get_device_info(pbdev);
-     if (!info) {
-         return false;
-     }
-@@ -356,7 +329,7 @@ void s390_pci_get_clp_info(S390PCIBusDevice *pbdev)
- {
-     g_autofree struct vfio_device_info *info = NULL;
- 
--    info = get_device_info(pbdev, sizeof(*info));
-+    info = get_device_info(pbdev);
-     if (!info) {
-         return;
-     }
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 78358ede2764..ed142296e9fe 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -2843,11 +2843,35 @@ void vfio_put_group(VFIOGroup *group)
-     }
- }
- 
-+struct vfio_device_info *vfio_get_device_info(int fd)
++uint8_t pcie_cap_get_version(const PCIDevice *dev)
 +{
-+    struct vfio_device_info *info;
-+    uint32_t argsz = sizeof(*info);
-+
-+    info = g_malloc0(argsz);
-+
-+retry:
-+    info->argsz = argsz;
-+
-+    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
-+        g_free(info);
-+        return NULL;
-+    }
-+
-+    if (info->argsz > argsz) {
-+        argsz = info->argsz;
-+        info = g_realloc(info, argsz);
-+        goto retry;
-+    }
-+
-+    return info;
++    uint32_t pos = dev->exp.exp_cap;
++    assert(pos > 0);
++    return pci_get_word(dev->config + pos + PCI_EXP_FLAGS) & PCI_EXP_FLAGS_VERS;
 +}
 +
- int vfio_get_device(VFIOGroup *group, const char *name,
-                     VFIODevice *vbasedev, Error **errp)
- {
--    struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
--    int ret, fd;
-+    g_autofree struct vfio_device_info *info = NULL;
-+    int fd;
- 
-     fd = ioctl(group->fd, VFIO_GROUP_GET_DEVICE_FD, name);
-     if (fd < 0) {
-@@ -2859,11 +2883,11 @@ int vfio_get_device(VFIOGroup *group, const char *name,
-         return fd;
-     }
- 
--    ret = ioctl(fd, VFIO_DEVICE_GET_INFO, &dev_info);
--    if (ret) {
-+    info = vfio_get_device_info(fd);
-+    if (!info) {
-         error_setg_errno(errp, errno, "error getting device info");
-         close(fd);
--        return ret;
-+        return -1;
-     }
- 
-     /*
-@@ -2891,14 +2915,14 @@ int vfio_get_device(VFIOGroup *group, const char *name,
-     vbasedev->group = group;
-     QLIST_INSERT_HEAD(&group->device_list, vbasedev, next);
- 
--    vbasedev->num_irqs = dev_info.num_irqs;
--    vbasedev->num_regions = dev_info.num_regions;
--    vbasedev->flags = dev_info.flags;
-+    vbasedev->num_irqs = info->num_irqs;
-+    vbasedev->num_regions = info->num_regions;
-+    vbasedev->flags = info->flags;
-+
-+    trace_vfio_get_device(name, info->flags, info->num_regions, info->num_irqs);
- 
--    trace_vfio_get_device(name, dev_info.flags, dev_info.num_regions,
--                          dev_info.num_irqs);
-+    vbasedev->reset_works = !!(info->flags & VFIO_DEVICE_FLAGS_RESET);
- 
--    vbasedev->reset_works = !!(dev_info.flags & VFIO_DEVICE_FLAGS_RESET);
-     return 0;
- }
- 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index eed244f25f34..a8dcda592c08 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -212,6 +212,7 @@ void vfio_region_finalize(VFIORegion *region);
- void vfio_reset_handler(void *opaque);
- VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp);
- void vfio_put_group(VFIOGroup *group);
-+struct vfio_device_info *vfio_get_device_info(int fd);
- int vfio_get_device(VFIOGroup *group, const char *name,
-                     VFIODevice *vbasedev, Error **errp);
+ /* MSI/MSI-X */
+ /* pci express interrupt message number */
+ /* 7.8.2 PCI Express Capabilities Register: Interrupt Message Number */
+diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
+index 3cc2b159570f..51ab57bc3c50 100644
+--- a/include/hw/pci/pcie.h
++++ b/include/hw/pci/pcie.h
+@@ -93,6 +93,7 @@ void pcie_cap_exit(PCIDevice *dev);
+ int pcie_endpoint_cap_v1_init(PCIDevice *dev, uint8_t offset);
+ void pcie_cap_v1_exit(PCIDevice *dev);
+ uint8_t pcie_cap_get_type(const PCIDevice *dev);
++uint8_t pcie_cap_get_version(const PCIDevice *dev);
+ void pcie_cap_flags_set_vector(PCIDevice *dev, uint8_t vector);
+ uint8_t pcie_cap_flags_get_vector(PCIDevice *dev);
  
 -- 
 2.39.2
