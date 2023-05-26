@@ -2,95 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BBFD711EAD
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 06:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F6B711F15
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 07:07:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2On0-0003Q8-9S; Fri, 26 May 2023 00:10:54 -0400
+	id 1q2Pef-0001xJ-A8; Fri, 26 May 2023 01:06:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q2Omy-0003Q0-U2
- for qemu-devel@nongnu.org; Fri, 26 May 2023 00:10:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@samsung.com>)
+ id 1q2PeR-0001wY-V7
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 01:06:08 -0400
+Received: from mailout4.samsung.com ([203.254.224.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1q2Omw-0000MP-Vf
- for qemu-devel@nongnu.org; Fri, 26 May 2023 00:10:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685074250;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oww1rjUlyYBymHMh7LHhXePu3gtp5QBf+1mrFW7TEFU=;
- b=BMBBKJhSMa97r3rq9Nl/fbK5ererKDcGdKpXvP/Guz/A+Mjn1aTKtmd3TzyNwFPyydGhb4
- 4ZCTFOlW+BmK4G4cd2gLNrvPCJFOmXfhjIgLczYbVPePCUlTvu20ccTjJLaPYh1V8bgJtU
- er/mq69mmoV1fmh0lPIi4twuXvIKAD8=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-325-FyRq0C-SMgqHXNS0tSJLhg-1; Fri, 26 May 2023 00:10:47 -0400
-X-MC-Unique: FyRq0C-SMgqHXNS0tSJLhg-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2af25b667d5so1228321fa.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 21:10:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685074246; x=1687666246;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oww1rjUlyYBymHMh7LHhXePu3gtp5QBf+1mrFW7TEFU=;
- b=SD0frGAWL/BZdGK2c3EeqyCe4FaApxv1B27p3zvPgpCKz18EvihZ9OADT1eUfwH5cf
- LAnjwR1BhAHTwaMeAtX8RXw+vISfvjHX5o++nv9kFnFXioAX0cpf3BwJXPS63z0GQruM
- WLmcmAUN6/883cOhkHWYC7e8tl1gkhesAQ4DZJ/R6CEYNsQOs9C9BYbsF67g6fONxOU3
- DZZXD66mIe/mojcVHpZ1rW9aRUW1pbUR+i91v+b0UZX59k4ZwUIttE5VP4gemrhgkSOR
- IrikWji5ZyMSZEwefgffeahC3Ms79QkBT8e904r4bHfasqGBWrnKlD61qYFuvdMm3S7a
- LE2w==
-X-Gm-Message-State: AC+VfDx2pEIKKg69twpquJAhCuG9mWRAYyMZG9PbSYX6aeJTcPgHEpkB
- igpEXkmWV54OQ8Gx1+VTe26ZgG/FqmZSpJuZHSWgJMDL3Zvl54UBrWjfcyrfX8eMbAqQ8aJ335m
- 0HuV3iEDW6q6dCrhWsoPbALX04GKkDsk=
-X-Received: by 2002:a2e:9510:0:b0:2af:2626:9f23 with SMTP id
- f16-20020a2e9510000000b002af26269f23mr233011ljh.12.1685074246434; 
- Thu, 25 May 2023 21:10:46 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4CM6zH8yiQkDe6hj+Q9RyfHF1KMrCypztmt0YPwwGU1wSeuuHcKhFh04tWnbR8aUdSHrMjLsaJB0Q6KSIPbTM=
-X-Received: by 2002:a2e:9510:0:b0:2af:2626:9f23 with SMTP id
- f16-20020a2e9510000000b002af26269f23mr232995ljh.12.1685074246106; Thu, 25 May
- 2023 21:10:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230509154435.1410162-1-eperezma@redhat.com>
- <20230509154435.1410162-3-eperezma@redhat.com>
- <CACGkMEufH7ZvJxKzbSXpv8G5RodKeh_WHj6iTe=YqG9pdp45nQ@mail.gmail.com>
- <CAJaqyWebY4Ft9cTO8FpWeGiYRik60530HYONTgKy7RtZTDJ6-A@mail.gmail.com>
- <CACGkMEsC0dO-cO0o+-6nhqb=yLJTK6cB7um_JxvpGsAS1EBZUw@mail.gmail.com>
- <CAJaqyWeiRakgCJAn4cxEWBoz_jz7-A46C3bsvYMfUEBL47bpAg@mail.gmail.com>
-In-Reply-To: <CAJaqyWeiRakgCJAn4cxEWBoz_jz7-A46C3bsvYMfUEBL47bpAg@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 26 May 2023 12:10:35 +0800
-Message-ID: <CACGkMEuTf1ojSqjSpXNEFmy23YfeD_Ov1UqDg8omZmq5J=Ymig@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] vdpa: add vhost_vdpa_reset_status_fd
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, Parav Pandit <parav@mellanox.com>, 
- Zhu Lingshan <lingshan.zhu@intel.com>, longpeng2@huawei.com, 
- Stefano Garzarella <sgarzare@redhat.com>, Gautam Dawar <gdawar@xilinx.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Harpreet Singh Anand <hanand@xilinx.com>, alvaro.karsz@solid-run.com, 
- Liuxiangdong <liuxiangdong5@huawei.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- si-wei.liu@oracle.com, 
- Shannon Nelson <snelson@pensando.io>, Lei Yang <leiyang@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Cindy Lu <lulu@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@samsung.com>)
+ id 1q2PeN-0001D0-JI
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 01:06:07 -0400
+Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
+ by mailout4.samsung.com (KnoxPortal) with ESMTP id
+ 20230526050553epoutp04d0f02fca7cf3d155eca8396a0b7e2016~imRtGRCHP1539115391epoutp04E
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 05:05:53 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
+ 20230526050553epoutp04d0f02fca7cf3d155eca8396a0b7e2016~imRtGRCHP1539115391epoutp04E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1685077553;
+ bh=Bled66rrj4FKi3XpyuK12JACVChZ/yGuH64147SAHMQ=;
+ h=Subject:Reply-To:From:To:CC:Date:References:From;
+ b=tkKB0CuuyjUyYDxJBjgNl+OJCNg/lHPS52uXq+Mg2UGS5XknbLbA7T0/IzoIBXImE
+ sieCH6maLjD92EYDPiD4WHSy3dsmqiWMtnbz5IGnfqAmJcStUrdXLb94s3j6i7sAgS
+ LaXntlAA0d5ZD+dUHOQ8US8NdJUHjT1HqF/GysFc=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+ epcas2p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230526050552epcas2p20d16bcc40d79d231cd74a70e6946c596~imRszgdKI2305623056epcas2p24;
+ Fri, 26 May 2023 05:05:52 +0000 (GMT)
+Received: from epsmges2p2.samsung.com (unknown [182.195.36.70]) by
+ epsnrtp4.localdomain (Postfix) with ESMTP id 4QSCYW6dSFz4x9Pv; Fri, 26 May
+ 2023 05:05:51 +0000 (GMT)
+X-AuditID: b6c32a46-b23fd7000001438d-33-64703e2f0dc1
+Received: from epcas2p1.samsung.com ( [182.195.41.53]) by
+ epsmges2p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 25.42.17293.F2E30746; Fri, 26 May 2023 14:05:51 +0900 (KST)
+Mime-Version: 1.0
+Subject: [PATCH 0/3] hw/ufs: Add Universal Flash Storage (UFS) support
+From: Jeuk Kim <jeuk20.kim@samsung.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "kwolf@redhat.com" <kwolf@redhat.com>, "hreitz@redhat.com"
+ <hreitz@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "fam@euphon.net" <fam@euphon.net>, "qemu-block@nongnu.org"
+ <qemu-block@nongnu.org>, Klaus Birkelund Jensen <k.jensen@samsung.com>
+X-Priority: 3
+X-Content-Kind-Code: NORMAL
+X-CPGS-Detection: blocking_info_exchange
+X-Drm-Type: N,general
+X-Msg-Generator: Mail
+X-Msg-Type: PERSONAL
+X-Reply-Demand: N
+Message-ID: <20230526050551epcms2p811ed2ba94fbe7600f811199727f4d0f0@epcms2p8>
+Date: Fri, 26 May 2023 14:05:51 +0900
+X-CMS-MailID: 20230526050551epcms2p811ed2ba94fbe7600f811199727f4d0f0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+X-CPGSPASS: Y
+X-CPGSPASS: Y
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpmk+LIzCtJLcpLzFFi42LZdljTVFffriDF4NskE4uXhzQtruw/z2jx
+ 4G4/o8XJxj2sFksuplrs3/aP1WLWu3Y2i+O9O1gcODx+nGtn83hybTOTx/t9V9k8+rasYgxg
+ icq2yUhNTEktUkjNS85PycxLt1XyDo53jjc1MzDUNbS0MFdSyEvMTbVVcvEJ0HXLzAG6Qkmh
+ LDGnFCgUkFhcrKRvZ1OUX1qSqpCRX1xiq5RakJJTYF6gV5yYW1yal66Xl1piZWhgYGQKVJiQ
+ nfFhVk7BTe6KD3dfsjYw7uToYuTkkBAwkWiZf4Wpi5GLQ0hgB6PE/s/dbF2MHBy8AoISf3cI
+ g9QIC7hJXFk8hxnEFhJQkJizrYMdIq4pMX39RCaQcjYBdYnTC81BwiICxhLHDi9hBhnJLNDB
+ JHHi0EVmiF28EjPan7JA2NIS25dvZYSwNSR+LOuFqhGVuLn6LTuM/f7YfKgaEYnWe2ehagQl
+ HvzcDRWXlDj17TErhD2dUWLBf1OQxRICCxglfjVPh2rQl7jWsRFsMa+Ar0R3z3mwBhYBVYlV
+ D+9DDXKR6N01F8xmFpCX2P4W5GEOIFtTYv0ufRBTQkBZ4sgtFogKPomOw3/ZYd5q2PgbK3vH
+ vCdMELaKxOLmw6wQY6QkNuwOncCoNAsRzrOQrJ2FsHYBI/MqRrHUguLc9NRiowIjeMwm5+du
+ YgSnRi23HYxT3n7QO8TIxMF4iFGCg1lJhHdDTn6KEG9KYmVValF+fFFpTmrxIUZToIcnMkuJ
+ JucDk3NeSbyhiaWBiZmZobmRqYG5kjivtO3JZCGB9MSS1OzU1ILUIpg+Jg5OqQYmD3VdCfVb
+ j1I2WfeEzPT1FPKZepivlSnHaFeadSJPWFPKoQN37uz7Mumm/6oYz+szvgvf+pdm/PxIXIzn
+ H2nXk58qXeZnpG4Jcsx2ss1yiLnhsP769dlnO0MPfJneoVuqIHhNPDmx971VgdUbl0UPNV+L
+ yYn3SR4qvld6N/WAxfEzpUaaZy3b3F5eeqxZs73w4tvi/Y6rso037JQ5lBmh0OF9dtGxfv4a
+ 0QAnBvY9tecZ1upXyxzVLp6/LbH/nYJsGcN63opJyp0ndvs+Db5Z+uzgd7bJa019uJibN/5a
+ 6n0wfye70hTW8y2rBcU5V327sKPu96xC6bn2nw9n1u5pcaty/37C1v9/Vl7sJh8lluKMREMt
+ 5qLiRACekC5gFgQAAA==
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20230526050551epcms2p811ed2ba94fbe7600f811199727f4d0f0
+References: <CGME20230526050551epcms2p811ed2ba94fbe7600f811199727f4d0f0@epcms2p8>
+Received-SPF: pass client-ip=203.254.224.34;
+ envelope-from=jeuk20.kim@samsung.com; helo=mailout4.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,266 +110,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: jeuk20.kim@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 25, 2023 at 1:37=E2=80=AFAM Eugenio Perez Martin
-<eperezma@redhat.com> wrote:
->
-> On Wed, May 17, 2023 at 7:49=E2=80=AFAM Jason Wang <jasowang@redhat.com> =
-wrote:
-> >
-> > On Wed, May 17, 2023 at 1:46=E2=80=AFPM Eugenio Perez Martin
-> > <eperezma@redhat.com> wrote:
-> > >
-> > > On Wed, May 17, 2023 at 5:14=E2=80=AFAM Jason Wang <jasowang@redhat.c=
-om> wrote:
-> > > >
-> > > > On Tue, May 9, 2023 at 11:44=E2=80=AFPM Eugenio P=C3=A9rez <eperezm=
-a@redhat.com> wrote:
-> > > > >
-> > > > > This allows to reset a vhost-vdpa device from external subsystems=
- like
-> > > > > vhost-net, since it does not have any struct vhost_dev by the tim=
-e we
-> > > > > need to use it.
-> > > > >
-> > > > > It is used in subsequent patches to negotiate features
-> > > > > and probe for CVQ ASID isolation.
-> > > > >
-> > > > > Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-> > > > > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> > > > > ---
-> > > > >  include/hw/virtio/vhost-vdpa.h |  1 +
-> > > > >  hw/virtio/vhost-vdpa.c         | 58 +++++++++++++++++++++++-----=
-------
-> > > > >  2 files changed, 41 insertions(+), 18 deletions(-)
-> > > > >
-> > > > > diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/v=
-host-vdpa.h
-> > > > > index c278a2a8de..28de7da91e 100644
-> > > > > --- a/include/hw/virtio/vhost-vdpa.h
-> > > > > +++ b/include/hw/virtio/vhost-vdpa.h
-> > > > > @@ -54,6 +54,7 @@ typedef struct vhost_vdpa {
-> > > > >      VhostVDPAHostNotifier notifier[VIRTIO_QUEUE_MAX];
-> > > > >  } VhostVDPA;
-> > > > >
-> > > > > +void vhost_vdpa_reset_status_fd(int fd);
-> > > > >  int vhost_vdpa_get_iova_range(int fd, struct vhost_vdpa_iova_ran=
-ge *iova_range);
-> > > > >
-> > > > >  int vhost_vdpa_dma_map(struct vhost_vdpa *v, uint32_t asid, hwad=
-dr iova,
-> > > > > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> > > > > index bbabea18f3..7a2053b8d9 100644
-> > > > > --- a/hw/virtio/vhost-vdpa.c
-> > > > > +++ b/hw/virtio/vhost-vdpa.c
-> > > > > @@ -335,38 +335,45 @@ static const MemoryListener vhost_vdpa_memo=
-ry_listener =3D {
-> > > > >      .region_del =3D vhost_vdpa_listener_region_del,
-> > > > >  };
-> > > > >
-> > > > > -static int vhost_vdpa_call(struct vhost_dev *dev, unsigned long =
-int request,
-> > > > > -                             void *arg)
-> > > > > +static int vhost_vdpa_dev_fd(const struct vhost_dev *dev)
-> > > > >  {
-> > > > >      struct vhost_vdpa *v =3D dev->opaque;
-> > > > > -    int fd =3D v->device_fd;
-> > > > > -    int ret;
-> > > > >
-> > > > >      assert(dev->vhost_ops->backend_type =3D=3D VHOST_BACKEND_TYP=
-E_VDPA);
-> > > > > +    return v->device_fd;
-> > > > > +}
-> > > >
-> > > > Nit: unless the vhost_dev structure is opaque to the upper layer, I
-> > > > don't see any advantage for having a dedicated indirect helper to g=
-et
-> > > > device_fd.
-> > > >
-> > >
-> > > The purpose was to not duplicate the assert, but sure it's not mandat=
-ory.
-> >
-> > Ok, but I think for new codes, we'd better avoid assert as much as poss=
-ible.
-> >
->
-> I'll remove it, thanks!
->
-> > >
-> > > > > +
-> > > > > +static int vhost_vdpa_call_fd(int fd, unsigned long int request,=
- void *arg)
-> > > > > +{
-> > > > > +    int ret =3D ioctl(fd, request, arg);
-> > > > >
-> > > > > -    ret =3D ioctl(fd, request, arg);
-> > > > >      return ret < 0 ? -errno : ret;
-> > > > >  }
-> > > > >
-> > > > > -static int vhost_vdpa_add_status(struct vhost_dev *dev, uint8_t =
-status)
-> > > > > +static int vhost_vdpa_call(struct vhost_dev *dev, unsigned long =
-int request,
-> > > > > +                           void *arg)
-> > > > > +{
-> > > > > +    return vhost_vdpa_call_fd(vhost_vdpa_dev_fd(dev), request, a=
-rg);
-> > > > > +}
-> > > > > +
-> > > > > +static int vhost_vdpa_add_status_fd(int fd, uint8_t status)
-> > > > >  {
-> > > > >      uint8_t s;
-> > > > >      int ret;
-> > > > >
-> > > > > -    trace_vhost_vdpa_add_status(dev, status);
-> > > > > -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_GET_STATUS, &s);
-> > > > > +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_GET_STATUS, &s);
-> > > > >      if (ret < 0) {
-> > > > >          return ret;
-> > > > >      }
-> > > > >
-> > > > >      s |=3D status;
-> > > > >
-> > > > > -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &s);
-> > > > > +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_SET_STATUS, &s);
-> > > > >      if (ret < 0) {
-> > > > >          return ret;
-> > > > >      }
-> > > > >
-> > > > > -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_GET_STATUS, &s);
-> > > > > +    ret =3D vhost_vdpa_call_fd(fd, VHOST_VDPA_GET_STATUS, &s);
-> > > > >      if (ret < 0) {
-> > > > >          return ret;
-> > > > >      }
-> > > > > @@ -378,6 +385,12 @@ static int vhost_vdpa_add_status(struct vhos=
-t_dev *dev, uint8_t status)
-> > > > >      return 0;
-> > > > >  }
-> > > > >
-> > > > > +static int vhost_vdpa_add_status(struct vhost_dev *dev, uint8_t =
-status)
-> > > > > +{
-> > > > > +    trace_vhost_vdpa_add_status(dev, status);
-> > > > > +    return vhost_vdpa_add_status_fd(vhost_vdpa_dev_fd(dev), stat=
-us);
-> > > > > +}
-> > > > > +
-> > > > >  int vhost_vdpa_get_iova_range(int fd, struct vhost_vdpa_iova_ran=
-ge *iova_range)
-> > > > >  {
-> > > > >      int ret =3D ioctl(fd, VHOST_VDPA_GET_IOVA_RANGE, iova_range)=
-;
-> > > > > @@ -709,16 +722,20 @@ static int vhost_vdpa_get_device_id(struct =
-vhost_dev *dev,
-> > > > >      return ret;
-> > > > >  }
-> > > > >
-> > > > > +static int vhost_vdpa_reset_device_fd(int fd)
-> > > > > +{
-> > > > > +    uint8_t status =3D 0;
-> > > > > +
-> > > > > +    return vhost_vdpa_call_fd(fd, VHOST_VDPA_SET_STATUS, &status=
-);
-> > > > > +}
-> > > > > +
-> > > > >  static int vhost_vdpa_reset_device(struct vhost_dev *dev)
-> > > > >  {
-> > > > >      struct vhost_vdpa *v =3D dev->opaque;
-> > > > > -    int ret;
-> > > > > -    uint8_t status =3D 0;
-> > > > >
-> > > > > -    ret =3D vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &status)=
-;
-> > > > > -    trace_vhost_vdpa_reset_device(dev);
-> > > > >      v->suspended =3D false;
-> > > > > -    return ret;
-> > > > > +    trace_vhost_vdpa_reset_device(dev);
-> > > > > +    return vhost_vdpa_reset_device_fd(vhost_vdpa_dev_fd(dev));
-> > > > >  }
-> > > > >
-> > > > >  static int vhost_vdpa_get_vq_index(struct vhost_dev *dev, int id=
-x)
-> > > > > @@ -1170,6 +1187,13 @@ static int vhost_vdpa_dev_start(struct vho=
-st_dev *dev, bool started)
-> > > > >      return 0;
-> > > > >  }
-> > > > >
-> > > > > +void vhost_vdpa_reset_status_fd(int fd)
-> > > > > +{
-> > > > > +    vhost_vdpa_reset_device_fd(fd);
-> > > > > +    vhost_vdpa_add_status_fd(fd, VIRTIO_CONFIG_S_ACKNOWLEDGE |
-> > > > > +                                 VIRTIO_CONFIG_S_DRIVER);
-> > > >
-> > > > I would like to rename this function since it does more than just r=
-eset.
-> > > >
-> > >
-> > > vhost_vdpa_set_ready?
-> >
-> > But it doesn't set DRIVER_OK so it might be somehow misleading.
-> >
->
-> I'm still thinking about this. I don't like the original name either
-> (vhost_vdpa_reset_status), but that one was already in the code before
-> this patch. To rename it makes this patch scope bigger.
->
-> The main idea of this function is to stop duplicating code between
-> net/vhost-vdpa and hw/virtio/vdpa. One possibility is to not export
-> vhost_vdpa_reset_status_fd but export vhost_vdpa_reset_device_fd and
-> vhost_vdpa_add_status_fd individually. Does that seem better?
+This patch series adds support for a new PCI-based UFS device.
 
-Probably not, the reason is that at uAPI level, we don't differ reset
-from other status actually:
+The UFS pci device id (PCI_DEVICE_ID_REDHAT_UFS) is not registered
+in the Linux kernel yet, so it does not work right away, but I confirmed
+that it works with Linux when the UFS pci device id is registered.
 
-#define VHOST_VDPA_SET_STATUS           _IOW(VHOST_VIRTIO, 0x72, __u8)
+I have also verified that it works with Windows 10.
 
->
-> The other end is not to offer anything and call raw ioctl as previous
-> code of net/vhost-vdpa. There is a middle ground, like only exporting
-> one of them for sure.
+Jeuk Kim (3):
+  hw/ufs: Initial commit for emulated Universal-Flash-Storage
+  hw/ufs: Support for Query Transfer Requests
+  hw/ufs: Support for UFS logical unit
 
-This might be better.
+ MAINTAINERS              |    6 +
+ hw/Kconfig               |    1 +
+ hw/meson.build           |    1 +
+ hw/ufs/Kconfig           |    4 +
+ hw/ufs/lu.c              | 1441 ++++++++++++++++++++++++++++++++++++
+ hw/ufs/meson.build       |    1 +
+ hw/ufs/trace-events      |   58 ++
+ hw/ufs/trace.h           |    1 +
+ hw/ufs/ufs.c             | 1511 ++++++++++++++++++++++++++++++++++++++
+ hw/ufs/ufs.h             |  130 ++++
+ include/block/ufs.h      | 1251 +++++++++++++++++++++++++++++++
+ include/hw/pci/pci.h     |    1 +
+ include/hw/pci/pci_ids.h |    1 +
+ include/scsi/constants.h |    1 +
+ meson.build              |    1 +
+ 15 files changed, 4409 insertions(+)
+ create mode 100644 hw/ufs/Kconfig
+ create mode 100644 hw/ufs/lu.c
+ create mode 100644 hw/ufs/meson.build
+ create mode 100644 hw/ufs/trace-events
+ create mode 100644 hw/ufs/trace.h
+ create mode 100644 hw/ufs/ufs.c
+ create mode 100644 hw/ufs/ufs.h
+ create mode 100644 include/block/ufs.h
 
-Thanks
-
->
-> What do you think?
->
-> Thanks!
->
-> > Thanks
-> >
-> > >
-> > > Thanks!
-> > >
-> > > > Thanks
-> > > >
-> > > > > +}
-> > > > > +
-> > > > >  static void vhost_vdpa_reset_status(struct vhost_dev *dev)
-> > > > >  {
-> > > > >      struct vhost_vdpa *v =3D dev->opaque;
-> > > > > @@ -1178,9 +1202,7 @@ static void vhost_vdpa_reset_status(struct =
-vhost_dev *dev)
-> > > > >          return;
-> > > > >      }
-> > > > >
-> > > > > -    vhost_vdpa_reset_device(dev);
-> > > > > -    vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
-> > > > > -                               VIRTIO_CONFIG_S_DRIVER);
-> > > > > +    vhost_vdpa_reset_status_fd(vhost_vdpa_dev_fd(dev));
-> > > > >      memory_listener_unregister(&v->listener);
-> > > > >  }
-> > > > >
-> > > > > --
-> > > > > 2.31.1
-> > > > >
-> > > >
-> > >
-> >
->
+-- 
+2.34.1
 
 
