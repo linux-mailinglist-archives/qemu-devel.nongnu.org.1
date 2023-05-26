@@ -2,89 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034E07128CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAF371290D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 17:04:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2YfI-0001li-13; Fri, 26 May 2023 10:43:36 -0400
+	id 1q2YyN-0004I2-Jr; Fri, 26 May 2023 11:03:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2YfG-0001lT-Km
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:43:34 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2YfE-0002n5-Un
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:43:34 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1b01d912924so2790885ad.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:43:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685112211; x=1687704211;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WztnphZLEEeEQr5+KwHAmPlH2eB1wGQQqMl99B4fNXk=;
- b=ZMIM2Bs5LlGeZv7M69TGQzJHuAgb8GGN9DdYSW8WOnixhI2mcdsUNoWE7mpcD7f30T
- nHO2sYPIMDLXKB+WQvi9itV69MnRFf20jZUCgJdlMFvw8fJK4wZA0OGQrLL+HseE9v4P
- 1jUH8zFRYPa30c+SlfeNjgoy2Sko9kjtdattbILpQkjYDNl7pzJr2T3HOtmldr/BVDmA
- Edubmh8DgdiN/QZ4SlydBIh1WsHJaeZnR4ccTRgJRRDHaUWSzJeMdwIFneOiBtgH+2w4
- 0hHxTo1oxS5n6mGBPMwVWVK6DdGNVmfprDAw7VVnixjo5RBw38m/I5x5V4+tJq9gRoWq
- e+RQ==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1q2YyI-0004He-6k
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:03:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1q2YyF-00068t-A0
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 11:03:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685113390;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=vjK/Po5jUs6hTvVB+ALvWn2yxOiB3MQlSmznngmwPyI=;
+ b=Rrl2kJQXltySwnEgPNsG8Em15JglShhODrUpjR/kYLtyN0G3TCXNRz7XUcnXEVEJ/1+RMB
+ wepMqyS8wpE1xHoKoSfdylTmIYyvD2rCey4ib9IoFaXrXn3Y/T7SU6jrvdZBjLBzGKsstX
+ lB5RKti8Mvt2qYCkUb77G9cs41wSG8I=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-137-_HD6osrtMGSJw9CJKpS5qw-1; Fri, 26 May 2023 11:03:09 -0400
+X-MC-Unique: _HD6osrtMGSJw9CJKpS5qw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-96f6944c529so82278666b.2
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 08:03:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685112211; x=1687704211;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WztnphZLEEeEQr5+KwHAmPlH2eB1wGQQqMl99B4fNXk=;
- b=kYNMCGIR2PSxmei9RsKkkAafxoSRs24LlvlJszYY1AI7+N/yShJZQB32D+16i84TZb
- myLBTuysKwY+tD/gyXb/3QkvCL+hEqfv9xWnZuoI/Y6L8v53VK6qzg9ds0MPpdvR4KPM
- SCXdInOpa10JRX24VxDwkyhagr4Hv3wvR2o/XjniryEzhkZAv4VLDwwrfmWt1YYTGISi
- xVih2sRmEB5/GQjvUQMNFS2u9a398YI3pZVW4XsdoilD5hCDhyhJsNBFw+Yt3V/KOM/0
- bQB0085iRL3bhiBQPOKF/Ej5h1XADzDRHgI8sI9XLIr0/Z9NZATEWepQB2u6oVSTmzqJ
- ccpQ==
-X-Gm-Message-State: AC+VfDxf3nnNSMaYdCkqgVosc2lQPKoKsi/HODniVyTdrrYbxgxRA2/n
- er+zDxzUOnaExE+yJuW/YO7/og==
-X-Google-Smtp-Source: ACHHUZ6Ix8OWNZTqsunhcG2GycrWo+C/EdpITtCSenLZGEnPRkeseuNBZXBPkKw8rO3XZAt9qSX+oA==
-X-Received: by 2002:a17:902:ab5a:b0:1a9:b8c3:c2c2 with SMTP id
- ij26-20020a170902ab5a00b001a9b8c3c2c2mr2573715plb.37.1685112211093; 
- Fri, 26 May 2023 07:43:31 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
- ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
- by smtp.gmail.com with ESMTPSA id
- t13-20020a1709027fcd00b001aaf536b1e3sm3401188plb.123.2023.05.26.07.43.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 07:43:30 -0700 (PDT)
-Message-ID: <8f315f7c-2778-855a-0879-f928f9ca8054@linaro.org>
-Date: Fri, 26 May 2023 07:43:28 -0700
+ d=1e100.net; s=20221208; t=1685113387; x=1687705387;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vjK/Po5jUs6hTvVB+ALvWn2yxOiB3MQlSmznngmwPyI=;
+ b=cNujULxnlYl/v+bs5THsu6joNIefRYbFPqt2EhC6x+chfs4Va1R9ime8/xnaUbr2ZB
+ Xx8skevDRxw5sajlSr+1DJTfOdgABd6GpS7cP+t8/QRPU2zOoOI3PT1H2G5K2/a/WuPE
+ X04OEbtTQxh/JwlAro2jF9Ez5+oauAxp5Gd+D2q4YcjBYBl0jZwTMRcI8D5bUbUy5IpW
+ pMScSXizXLEerdsNah9G7sydXuRBpxNMAwGqdx/T+JMQMKTiN5m0uZrEOxyX8UTMbiCz
+ /EZW+w/kfVVF9YlPNCf8Xt3KEg4/5HlqADy2SeAkP1idn70E5LXCufB6bgHAs5q5LrEx
+ u0bQ==
+X-Gm-Message-State: AC+VfDzRKGDLnXA0Y/P8yRBye/MFqxM6HgEhmxRLNtiLngMknbszfVxA
+ o7qKgDY9nMrSMS5dgF6ZBkDKW/cB9QK9a03ef9BMMtGRvzxG2iP8hX9Kznvlw4yThgVTnkfByf2
+ k+A2bBJD08WhwF7O8l75llIGRyRSQQW/WC2/CqgiI/WX+zcE03rp4hg7TOR91EJy46L7kLFDtK4
+ 4=
+X-Received: by 2002:a17:907:7f0c:b0:96f:44b0:b3b7 with SMTP id
+ qf12-20020a1709077f0c00b0096f44b0b3b7mr2789728ejc.7.1685113387460; 
+ Fri, 26 May 2023 08:03:07 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5fDmsqvVfSqefIDzJeXmlWUWG+EhLNWX5HD6EkMXhmcF16Xkp7eRJAyaN4kklB2X1uX+sc7A==
+X-Received: by 2002:a17:907:7f0c:b0:96f:44b0:b3b7 with SMTP id
+ qf12-20020a1709077f0c00b0096f44b0b3b7mr2789670ejc.7.1685113386951; 
+ Fri, 26 May 2023 08:03:06 -0700 (PDT)
+Received: from step1.. (host-87-12-25-16.business.telecomitalia.it.
+ [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
+ me21-20020a170906aed500b0096a16e49b0fsm2232366ejb.51.2023.05.26.08.03.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 May 2023 08:03:06 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jonathon Jongsma <jjongsma@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ qemu-block@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH v4 0/2] block/blkio: support fd passing for
+ virtio-blk-vhost-vdpa driver
+Date: Fri, 26 May 2023 17:03:02 +0200
+Message-Id: <20230526150304.158206-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.40.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 01/20] target/arm: Add commentary for
- CPUARMState.exclusive_high
-Content-Language: en-US
-To: quintela@redhat.com, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20230525232558.1758967-1-richard.henderson@linaro.org>
- <20230525232558.1758967-2-richard.henderson@linaro.org>
- <dbb368d0-839c-ad09-01de-09b1a62416af@linaro.org>
- <87zg5r1kxx.fsf@secure.mitica>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <87zg5r1kxx.fsf@secure.mitica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,75 +108,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/26/23 02:49, Juan Quintela wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->> Hi,
->>
->> On 26/5/23 01:25, Richard Henderson wrote:
->>> Document the meaning of exclusive_high in a big-endian context,
->>> and why we can't change it now.
->>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>> ---
->>>    target/arm/cpu.h | 7 +++++++
->>>    1 file changed, 7 insertions(+)
->>> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
->>> index d469a2637b..4e16eab82e 100644
->>> --- a/target/arm/cpu.h
->>> +++ b/target/arm/cpu.h
->>> @@ -677,8 +677,15 @@ typedef struct CPUArchState {
->>>            uint64_t zcr_el[4];   /* ZCR_EL[1-3] */
->>>            uint64_t smcr_el[4];  /* SMCR_EL[1-3] */
->>>        } vfp;
->>> +
->>>        uint64_t exclusive_addr;
->>>        uint64_t exclusive_val;
->>> +    /*
->>> +     * Contains the 'val' for the second 64-bit register of LDXP, which comes
->>> +     * from the higher address, not the high part of a complete 128-bit value.
->>> +     * This is perhaps confusingly named, but the name is now baked into the
->>> +     * migration format.
->>> +     */
->>>        uint64_t exclusive_high;
->>
->> Can't we rename the field if we add the old name to check_fields_match()
->> in scripts/vmstate-static-checker.py?
->>
->> Juan, could we store this renamed information directly in the code in
->> VMState? Maybe adding some VMSTATE_KEY_ALIAS(_old_key, _new_key) macro
->> and have the migration/ code magically deal with that :)
->>
->> I.e. here:
->>
->>    VMSTATE_KEY_ALIAS("exclusive_val", high_addr),
-> 
-> You are asking for magic?
-> In VMState, that nobody understands.
-> 
-> Sniff.
-> 
-> I remembered that VMState only cares about values, not for field names.
-> We can rename fields without any trouble....
-> 
-> Until we arrive to dump_vmstate_vmsf().
-> 
-> But I think we can have both things, the only thing that we really care
-> about vmstate dump is to do comparisons.  And for doing comparisons you
-> should be using vmstate-static-checker.py
-> 
-> That already have support for this.  Look up:
-> 
-> check_fields_match()
-> 
-> and see how it renamed other fields.
-> 
-> As you know better how to do this, can you play with the script and see
-> if you can get what you want?
-> 
-> If not, I can try to modify the script to get to what you need.
+v4:
+- added patch 02 to allow libvirt to discover we support fdset [Markus]
+- modified the commit description of patch 01
 
-It's not worth any effort to rename.  Just needed documentation.
+v3: https://lore.kernel.org/qemu-devel/20230511091527.46620-1-sgarzare@redhat.com/
+- use qemu_open() on `path` to simplify libvirt code [Jonathon]
+- remove patch 01 since we are not using monitor_fd_param() anymore
 
+v2: https://lore.kernel.org/qemu-devel/20230504092843.62493-1-sgarzare@redhat.com/
+- added patch 01 to use monitor_fd_param() in the blkio module
+- use monitor_fd_param() to parse the fd like vhost devices [Stefan]
 
-r~
+v1: https://lore.kernel.org/qemu-devel/20230502145050.224615-1-sgarzare@redhat.com/
+
+The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the new
+'fd' property. Let's expose this to the user, so the management layer
+can pass the file descriptor of an already opened vhost-vdpa character
+device. This is useful especially when the device can only be accessed
+with certain privileges.
+
+Stefano Garzarella (2):
+  block/blkio: use qemu_open() to support fd passing for virtio-blk
+  qapi: add '@fdset' feature for BlockdevOptionsVirtioBlkVhostVdpa
+
+ meson.build          |  4 ++++
+ qapi/block-core.json |  8 ++++++-
+ block/blkio.c        | 53 ++++++++++++++++++++++++++++++++++++--------
+ 3 files changed, 55 insertions(+), 10 deletions(-)
+
+-- 
+2.40.1
 
 
