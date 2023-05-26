@@ -2,102 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC40F7125F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 13:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAEAD712614
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 13:56:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Vyx-00034U-9q; Fri, 26 May 2023 07:51:43 -0400
+	id 1q2W3S-0008TP-2H; Fri, 26 May 2023 07:56:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1q2Vyj-0002m9-TG
- for qemu-devel@nongnu.org; Fri, 26 May 2023 07:51:32 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q2W3M-0008Ot-5A
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 07:56:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1q2VyU-0008C5-Hj
- for qemu-devel@nongnu.org; Fri, 26 May 2023 07:51:29 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34QBb13O015384; Fri, 26 May 2023 11:51:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=zd4lCrjLjoqz5ghRmdrKomgn7qst/vUfM9oiWXuRTRk=;
- b=XPn6dra6WXaw1GIdUzkiOyokL/dJcS3+NExirtmC0jAFOWPZMxsr9oFMZ+yEtUXgeYhb
- eoampHsGhfWgu90AUxzvxs0KHeBaMyCZGPtRQGljy2nV31ZIrwv9oRqQyeUZQ6AmjQOk
- DTKnjYj0fFVKVrt1cMGp+Yfj8R9Q7dSp9CTvU6hrpjDgnoi5N3w/ETJnhQj/8E3mePFT
- vLrEyIuAkHpzMLX97YgdPdzBwoTKhdVejycblhTWWyBBYryhUWY9MtsDDNtuWkk3Nq/W
- feoSxtQYrLgh1kP5y27tjfM2yMvXhOoQiKjY4dD8f+HYrtBZsMuKXFiE6Y/h9X5/Ed7a JQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qtupngpb3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 11:51:12 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34QBcDIa019093;
- Fri, 26 May 2023 11:51:11 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qtupngp6f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 11:51:11 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34Q4lCpS032233;
- Fri, 26 May 2023 11:51:01 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3qppcuawtp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 May 2023 11:51:01 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34QBovLc57278778
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 May 2023 11:50:57 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFC3E20040;
- Fri, 26 May 2023 11:50:57 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 29E2820049;
- Fri, 26 May 2023 11:50:57 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.55.92])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 26 May 2023 11:50:57 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Cc: "Dominik 'Disconnect3d' Czarnota" <dominik.b.czarnota@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Andreas Arnez <arnez@linux.ibm.com>, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 6/6] tests/tcg: Add a test for info proc mappings
-Date: Fri, 26 May 2023 13:50:41 +0200
-Message-Id: <20230526115041.1362009-7-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230526115041.1362009-1-iii@linux.ibm.com>
-References: <20230526115041.1362009-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q2W3K-00018e-E0
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 07:56:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685102173;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Tj3bPHgQUygW4vkM/m7RuVDN2EAu7BfagOs8r7Ie/GY=;
+ b=HfQntK/W+6Xej/No4mCZhpdpzJeqOhDi7B32mPSJo7CM/0A8HhqwQ8JY+zPt541jw3vB5H
+ 7FjuRItFxPYgixU7dJ5HFhNIlY+y9PrJ9sfsidGISchoODfaEBBS7qV7Taj09onQGzULAO
+ lDUe9a9Id8f4i/Tpvms21M/7ixdEvvE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-605-qz-87vSyOO2aujeZCZYNtw-1; Fri, 26 May 2023 07:56:12 -0400
+X-MC-Unique: qz-87vSyOO2aujeZCZYNtw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D1CA72A2AD5C;
+ Fri, 26 May 2023 11:56:11 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.51])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DD60C7C2A;
+ Fri, 26 May 2023 11:56:07 +0000 (UTC)
+Date: Fri, 26 May 2023 12:56:01 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
+ Li Zhijian <lizhijian@fujitsu.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Zhang Chen <chen.zhang@intel.com>, Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v2 3/6] tests/qtest: capture RESUME events during migration
+Message-ID: <ZHCeUa4a9OYhNMRn@redhat.com>
+References: <20230421171411.566300-1-berrange@redhat.com>
+ <20230421171411.566300-4-berrange@redhat.com>
+ <87leikgama.fsf@secure.mitica> <ZEZRoFtQg/MEdKi1@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UFDlw50AXiBdsoyhY45rL4Q2IW9qtcEs
-X-Proofpoint-GUID: 8ABaibDmj4lH4LSBqxmRRgIItSw2ZxFQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-26_01,2023-05-25_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0 mlxlogscore=941
- bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305260099
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+In-Reply-To: <ZEZRoFtQg/MEdKi1@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,129 +83,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
-Since there are issues with how GDB interprets QEMU's target.xml,
-enable the test only on aarch64 and s390x for now.
+On Mon, Apr 24, 2023 at 10:53:36AM +0100, Daniel P. Berrangé wrote:
+> On Fri, Apr 21, 2023 at 11:59:25PM +0200, Juan Quintela wrote:
+> > Daniel P. Berrangé <berrange@redhat.com> wrote:
+> > > When running migration tests we monitor for a STOP event so we can skip
+> > > redundant waits. This will be needed for the RESUME event too shortly.
+> > >
+> > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > 
+> > Reviewed-by: Juan Quintela <quintela@redhat.com>
+> > 
+> > i.e. it is better that what we have now.
+> > 
+> > But
+> > 
+> > 
+> > > diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+> > > index f6f3c6680f..61396335cc 100644
+> > > --- a/tests/qtest/migration-helpers.c
+> > > +++ b/tests/qtest/migration-helpers.c
+> > > @@ -24,14 +24,20 @@
+> > >  #define MIGRATION_STATUS_WAIT_TIMEOUT 120
+> > >  
+> > >  bool got_stop;
+> > > +bool got_resume;
+> > >  
+> > > -static void check_stop_event(QTestState *who)
+> > > +static void check_events(QTestState *who)
+> > >  {
+> > >      QDict *event = qtest_qmp_event_ref(who, "STOP");
+> > >      if (event) {
+> > >          got_stop = true;
+> > >          qobject_unref(event);
+> > >      }
+> > > +    event = qtest_qmp_event_ref(who, "RESUME");
+> > > +    if (event) {
+> > > +        got_resume = true;
+> > > +        qobject_unref(event);
+> > > +    }
+> > >  }
+> > 
+> > What happens if we receive the events in the order RESUME/STOP (I mean
+> > in the big scheme of things, not that it makes sense in this particular
+> > case).
+> > 
+> > QDict *qtest_qmp_event_ref(QTestState *s, const char *event)
+> > {
+> >     while (s->pending_events) {
+> > 
+> >         GList *first = s->pending_events;
+> >         QDict *response = (QDict *)first->data;
+> > 
+> >         s->pending_events = g_list_delete_link(s->pending_events, first);
+> > 
+> >         if (!strcmp(qdict_get_str(response, "event"), event)) {
+> >             return response;
+> >         }
+> >         qobject_unref(response);
+> >     }
+> >     return NULL;
+> > }
+> > 
+> > if we don't found the event that we are searching for, we just drop it.
+> > Does this makes sense if we are searching only for more than one event?
+> 
+> You are right about this code being broken in general for multiple events.
+> 
+> In this particular series though we're looking at STOP on the src host and
+> RESUME on the dst host, so there's no ordering problem to worry about.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/aarch64/Makefile.target             |  3 +-
- tests/tcg/multiarch/Makefile.target           |  7 +++
- .../multiarch/gdbstub/test-proc-mappings.py   | 55 +++++++++++++++++++
- tests/tcg/s390x/Makefile.target               |  2 +-
- 4 files changed, 65 insertions(+), 2 deletions(-)
- create mode 100644 tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+What I wrote is nonsense. This is broken, because on the dst host,
+check_events will look for STOP and discard all remaining events,
+so we'll never find the RESUME that we are looking for.
 
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 03157954871..38402b0ba1f 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -97,7 +97,8 @@ run-gdbstub-sve-ioctls: sve-ioctls
- 		--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-ioctl.py, \
- 	basic gdbstub SVE ZLEN support)
- 
--EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls
-+EXTRA_RUNS += run-gdbstub-sysregs run-gdbstub-sve-ioctls \
-+              run-gdbstub-proc-mappings
- endif
- endif
- 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 373db696481..cbc0b75787a 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -81,6 +81,13 @@ run-gdbstub-qxfer-auxv-read: sha1
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-qxfer-auxv-read.py, \
- 	basic gdbstub qXfer:auxv:read support)
- 
-+run-gdbstub-proc-mappings: sha1
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(HAVE_GDB_BIN) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-proc-mappings.py, \
-+	proc mappings support)
-+
- run-gdbstub-thread-breakpoint: testthread
- 	$(call run-test, $@, $(GDB_SCRIPT) \
- 		--gdb $(HAVE_GDB_BIN) \
-diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-new file mode 100644
-index 00000000000..657e36a2fc7
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-@@ -0,0 +1,55 @@
-+"""Test that gdbstub has access to proc mappings.
-+
-+This runs as a sourced script (via -x, via run-test.py)."""
-+from __future__ import print_function
-+import gdb
-+import sys
-+
-+
-+n_failures = 0
-+
-+
-+def report(cond, msg):
-+    """Report success/fail of a test"""
-+    if cond:
-+        print("PASS: {}".format(msg))
-+    else:
-+        print("FAIL: {}".format(msg))
-+        global n_failures
-+        n_failures += 1
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    mappings = gdb.execute("info proc mappings", False, True)
-+    report(isinstance(mappings, str), "Fetched the mappings from the inferior")
-+    report("/sha1" in mappings, "Found the test binary name in the mappings")
-+
-+
-+def main():
-+    """Prepare the environment and run through the tests"""
-+    try:
-+        inferior = gdb.selected_inferior()
-+        print("ATTACHED: {}".format(inferior.architecture().name()))
-+    except (gdb.error, AttributeError):
-+        print("SKIPPING (not connected)")
-+        exit(0)
-+
-+    if gdb.parse_and_eval('$pc') == 0:
-+        print("SKIP: PC not set")
-+        exit(0)
-+
-+    try:
-+        # These are not very useful in scripts
-+        gdb.execute("set pagination off")
-+        gdb.execute("set confirm off")
-+
-+        # Run the actual tests
-+        run_test()
-+    except gdb.error:
-+        report(False, "GDB Exception: {}".format(sys.exc_info()[0]))
-+    print("All tests complete: %d failures" % n_failures)
-+    exit(n_failures)
-+
-+
-+main()
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 23dc8b6a63f..73f7cb828e3 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -75,7 +75,7 @@ run-gdbstub-signals-s390x: signals-s390x
- 		--bin $< --test $(S390X_SRC)/gdbstub/test-signals-s390x.py, \
- 	mixing signals and debugging)
- 
--EXTRA_RUNS += run-gdbstub-signals-s390x
-+EXTRA_RUNS += run-gdbstub-signals-s390x run-gdbstub-proc-mappings
- endif
- 
- # MVX versions of sha512
+qtest_qmp_event_ref is essentially broken by design right now and
+I'll need to fix it.
+
+With regards,
+Daniel
 -- 
-2.40.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
