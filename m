@@ -2,64 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CFE712DDF
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 21:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F63712DE7
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 21:51:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2dPm-0003sB-S2; Fri, 26 May 2023 15:47:54 -0400
+	id 1q2dS8-0004br-Ql; Fri, 26 May 2023 15:50:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q2dPk-0003ri-Pu
- for qemu-devel@nongnu.org; Fri, 26 May 2023 15:47:52 -0400
+ id 1q2dS1-0004bX-Ax
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 15:50:13 -0400
 Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q2dPj-0007Sh-B8
- for qemu-devel@nongnu.org; Fri, 26 May 2023 15:47:52 -0400
+ id 1q2dRy-0007uN-RT
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 15:50:12 -0400
 Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-510b6a249a8so2040280a12.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 12:47:50 -0700 (PDT)
+ 4fb4d7f45d1cf-50bcb229adaso1873584a12.2
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 12:50:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685130469; x=1687722469;
+ d=linaro.org; s=google; t=1685130609; x=1687722609;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=7ayqAp/WfCJAImDzhE+cH4YIjqOnRTlTdy/kK1qHrsU=;
- b=NwQkzUHR0H4SGO1uuApNit5ESUCC7qQIH9zijiu81X990lFK+My6AR8c0B199jVmT/
- oZvFX6MOZ9GoTBhHzj/7Feji+yP5NzLCT15ayxrzBt6FEOsPXOMC4w5XlysZpjGAI28S
- o32G5ggbAxDB1ZvaqxA540qw01XU5AV06D8mhFesqxH0NjY938HIsRHClGNHfWsyJonA
- +IiPYLKLbqbmapvJ0oPEih4byJgdBl5c9OQXaudsP/Y1WUHP+qJ4u1qhcUOgReAlxOn1
- A93uukvIWy/bRnoJVb7DlfxtsLqcZDWdOzwvgnT3fvHw9oXncSuuFGBhIXmrI3CO6Uij
- sL1w==
+ bh=XvtOWHZurDXKB52c+RiPUFbI8HU/3qwo/WkBKGphoIM=;
+ b=U+/NrP4RrOqcDkVu7WjACCbMVVZWhcrCVWw+6Lte+GwqkKAKBybRQy6FZwiocsMvIT
+ zpQzBFchHxsSUGhDKn0oAPo97z+OMDsPWfVZLU/x6gQgjP7BYAjkovlmm0o9NTPP0e3o
+ jGTNyzVfnxk3lT7KRaQ+i0rYsv9L2L4IuAw5kkZzES5KTDaQOuGZsxEaeldnJuyAvhev
+ ZIY/1wlFWEuk9c1viY8zF7o/u4A9ypRS3r8mRoB9e7EzDMwCY8cnQ8JHKrPTAA2+8bkW
+ pexOsr4KCeGkRb3WG2XJHpwgNGGS/xvnDoyeP489DbNnxxUPqvdqxl4osoHELM0JTFpJ
+ Xp8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685130469; x=1687722469;
+ d=1e100.net; s=20221208; t=1685130609; x=1687722609;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7ayqAp/WfCJAImDzhE+cH4YIjqOnRTlTdy/kK1qHrsU=;
- b=USI75PLmEHKncP/O82ON6V55y6fpFZJ6jYuJfQ2bIKlFC4KvBzO0a6Gtv7Nv8y0vqy
- YK0GPl/T/npLRfjyrfa4wFcwaPiSig2/cL27+qgg8AcGDAlOTt/i4hXRyFGxoMdjfAXC
- 2Sh/PI4y1IxEW3dAao99XL9YuDeKsm442IDw5Afi+JU3s3MI1mTuwaEwtKofiMhaZAqB
- eaBtmCGfiwdgbNTARRguxgg9KXcthSlQAgu16I+gb0R/rSypJzMqStZOdoP1+rubfF62
- dCPbGZ9Af2zHFy88GGNhBhBFUIdDXtPvbl8UVELuWZf2qFGJUcDWmnBvOi35DfoExCtm
- BRug==
-X-Gm-Message-State: AC+VfDzmCHpbhrB8B9i137HqMbHiEr55TgPN+Wr4h63dnIcQ4kTsHd4e
- Op7IrJQjkSggACq2NB0L8+/GKu0BxDwVU8tkPPR5EA==
-X-Google-Smtp-Source: ACHHUZ5gN6YjS24XMplyb+Xppxqfq1mnNrVvMDSvHFE7BgltAQQjWtSx4F1X8S5kagLbts9IZFKzcPDNEJ/Ons40WqQ=
-X-Received: by 2002:a05:6402:688:b0:50b:c689:8610 with SMTP id
- f8-20020a056402068800b0050bc6898610mr2378562edy.18.1685130469366; Fri, 26 May
- 2023 12:47:49 -0700 (PDT)
+ bh=XvtOWHZurDXKB52c+RiPUFbI8HU/3qwo/WkBKGphoIM=;
+ b=XyiPxDu8Kf83JFNzjXtf7FIyeKrJKJZvBpbRB5alSlGKHfueGjb98dpXZY6bJ9U/D1
+ UsW4+rSnJyL72bHUtc3LqrlRry3p2zBlq5l3zvLSEPQaGIs4AGwqLXlcvnCM0JuQ4cU6
+ TsEypobSQT/rspXIejg6GP7/eLd1QFe2kCjifrGP+SxkbajTD8cKeQGaUxItRXf5T+5N
+ 1mx5eU/lJpPgBuapS5jIXJWYhfxOnWcLXAmhJROInUYRpZK6zh7NvARIIGC4vssbLysN
+ SqaVGWx6gXuNaPm8lyjtWpQoMSFHof1yaTDLNF5JXXJJSimi1HNBLXg2pkozzln1FT10
+ 5q+w==
+X-Gm-Message-State: AC+VfDwmL4TZ50qBlAPf/t3YvhuE1pk5Tt4r9NgcCWdZl/ziSodiDpBV
+ jyLWOK3/GNJQ8UTVj4j6uJSS6BZ5y1tSxGu3aevyGCAE2ECj5EAL
+X-Google-Smtp-Source: ACHHUZ7bq3FqGiGMf3/FS50sjSRJVgftX+QjTdpwGEe/KDrWQhYxNYDRjMeivIPt3ORbx3w+7jF3ljN05nDrx9Kmfnc=
+X-Received: by 2002:a50:e708:0:b0:510:d889:88cd with SMTP id
+ a8-20020a50e708000000b00510d88988cdmr2083821edn.1.1685130609451; Fri, 26 May
+ 2023 12:50:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230404011956.90375-1-dinahbaum123@gmail.com>
- <20230526162821.455a5c4c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230526162821.455a5c4c@imammedo.users.ipa.redhat.com>
+References: <20230523120447.728365-1-peter.maydell@linaro.org>
+ <20230523120447.728365-7-peter.maydell@linaro.org>
+ <CAFEAcA-5DvFB1JiCwj1Gb7WUST4-OAyJ8nYDQax_msFZuFNhnQ@mail.gmail.com>
+ <aed8ee53-9482-8932-d2e8-d3b520de809f@linaro.org>
+In-Reply-To: <aed8ee53-9482-8932-d2e8-d3b520de809f@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 26 May 2023 20:47:21 +0100
-Message-ID: <CAFEAcA8Ap6L_AOoTqU33+A-t7zBZn9OnzEyvT8RZdq26QCV4Wg@mail.gmail.com>
-Subject: Re: [RESEND PATCH v2 0/3] Enable -cpu <cpu>,help
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Dinah Baum <dinahbaum123@gmail.com>, qemu-devel@nongnu.org
+Date: Fri, 26 May 2023 20:49:41 +0100
+Message-ID: <CAFEAcA-3kxCQHQFfUCS7YWVXfaFbN1bPTm1qfHzyKtAS1iyJgg@mail.gmail.com>
+Subject: Re: [PATCH 6/6] tests/decode: Add tests for various named-field cases
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2a00:1450:4864:20::529;
  envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
@@ -85,32 +87,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 26 May 2023 at 15:28, Igor Mammedov <imammedo@redhat.com> wrote:
+On Fri, 26 May 2023 at 18:07, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> On Mon,  3 Apr 2023 21:19:53 -0400
-> Dinah Baum <dinahbaum123@gmail.com> wrote:
+> On 5/24/23 03:26, Peter Maydell wrote:
+> > On Tue, 23 May 2023 at 13:04, Peter Maydell <peter.maydell@linaro.org> wrote:
+> >>
+> >> Add some tests for various cases of named-field use, both ones that
+> >> should work and ones that should be diagnosed as errors.
+> >>
+> >> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> >> ---
+> >>   tests/decode/err_field1.decode       |  2 +-
+> >>   tests/decode/err_field10.decode      |  7 +++++++
+> >>   tests/decode/err_field7.decode       |  7 +++++++
+> >>   tests/decode/err_field8.decode       |  8 ++++++++
+> >>   tests/decode/err_field9.decode       | 14 ++++++++++++++
+> >>   tests/decode/succ_named_field.decode | 19 +++++++++++++++++++
+> >>   6 files changed, 56 insertions(+), 1 deletion(-)
+> >>   create mode 100644 tests/decode/err_field10.decode
+> >>   create mode 100644 tests/decode/err_field7.decode
+> >>   create mode 100644 tests/decode/err_field8.decode
+> >>   create mode 100644 tests/decode/err_field9.decode
+> >>   create mode 100644 tests/decode/succ_named_field.decode
+> >>
+> >> diff --git a/tests/decode/err_field1.decode b/tests/decode/err_field1.decode
+> >> index e07a5a73e0e..85c3f326d07 100644
+> >> --- a/tests/decode/err_field1.decode
+> >> +++ b/tests/decode/err_field1.decode
+> >> @@ -2,4 +2,4 @@
+> >>   # See the COPYING.LIB file in the top-level directory.
+> >>
+> >>   # Diagnose invalid field syntax
+> >> -%field asdf
+> >> +%field 1asdf
+> >
+> > I just realized that this specific change needs to go before patch 5:
+> > it's updating an existing test because "asdf" used to be invalid
+> > syntax and now is not. Otherwise bisection will break.
 >
-> > Part 1 is a refactor/code motion patch for
-> > qapi/machine target required for setup of
-> >
-> > Part 2 which enables query-cpu-model-expansion
-> > on all architectures
-> >
-> > Part 3 implements the '<cpu>,help' feature
-> >
-> > Limitations:
-> > Currently only 'FULL' expansion queries are implemented since
-> > that's the only type enabled on the architectures that
-> > allow feature probing
-> >
-> > Unlike the 'device,help' command, default values aren't
-> > printed
+> Really?  The test still fails here at patch 5:
 >
-> what's wrong with 'device,help' if it's used for cpu devices?
+> /home/rth/qemu/bld/../src/tests/decode/err_field1.decode:5: error: invalid field token "asdf"
 
-Nothing, but almost no creation/configuration of CPUs
-is done with -device. -cpu is by far the more usual way,
-so '-cpu foo,help' should work...
+Oh, right, because there's no trailing size specification
+so it doesn't get recognized as a named field.
 
+thanks
 -- PMM
 
