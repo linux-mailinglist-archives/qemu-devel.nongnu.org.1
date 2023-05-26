@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4B2712F08
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 23:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9773F712F31
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 23:50:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2fCE-00052K-Fb; Fri, 26 May 2023 17:42:02 -0400
+	id 1q2fJT-0006Qy-N1; Fri, 26 May 2023 17:49:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2fCD-00051s-5d
- for qemu-devel@nongnu.org; Fri, 26 May 2023 17:42:01 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2fJR-0006Qh-3g
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 17:49:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2fCB-0003V0-EX
- for qemu-devel@nongnu.org; Fri, 26 May 2023 17:42:00 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2fJP-0004Wt-3i
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 17:49:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685137318;
+ s=mimecast20190719; t=1685137766;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=0RjoQitXWfwgiCkRxQ5+nXq1TiF/02FK3m7Vg6pes6s=;
- b=JJlwl6kX193Y2frW19dv5cj2RCsTpK45oPYDjYrYMzFzlp11RlXyDOSldlamJiI1eOgUm+
- pgfBNOYj9V2AHBD8mvM2aJB2UwklxPouEL3IiDV+BbbxPeXl8LkoIAudWk17W0HKfsYvBw
- pxg5NquCIjTlo5t3jeYrS7wewYYXGRk=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QedGRa0jecldcdCynPAniWXOp29URElQcju/Ij61s0w=;
+ b=gq0eZ6g85VLhoqyEZvHAb7bB90yUqjWInP75mcyf/WUcYmyWCLcEwyrQGyokkqHklDBjg1
+ 7gafjMATPk1mZD1xgRyYxqYIntV8+V8ujjbFyafsJkM2w5fAHF7/kOLIFpiwxLFB0ufv0B
+ b+s2YwgmJQF1A4gaoTY+vmvQ2nPLFiM=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-241-k9N54MfwN3y4LVzepfkoQA-1; Fri, 26 May 2023 17:41:56 -0400
-X-MC-Unique: k9N54MfwN3y4LVzepfkoQA-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-3f6b1853e80so2001371cf.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 14:41:56 -0700 (PDT)
+ us-mta-611-wRnNYE4ENUqQnnfErMHpZw-1; Fri, 26 May 2023 17:49:24 -0400
+X-MC-Unique: wRnNYE4ENUqQnnfErMHpZw-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-75b175cf0d1so26040985a.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 14:49:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685137316; x=1687729316;
+ d=1e100.net; s=20221208; t=1685137763; x=1687729763;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0RjoQitXWfwgiCkRxQ5+nXq1TiF/02FK3m7Vg6pes6s=;
- b=gQ8s8Xziw785m1yXuFngC2gxpC8YAUxoU7Rkk0ZxmH+pvgPdVrvNTJH4QZ2AOK8v2z
- 7nzvfSUeyErxBpg2bNX7ns80JrzwHvxbCE0HPAqRySY4SmiPjoNBF88irB1/fQaAdvSp
- BIclJezBW49oPr0K9cDWOmadZDtZmHCS1+RnK0fSaDDNcNgwjrvMpYfCD2ldKuLy0ycp
- IK7za6LZ8+/NTQlPngNKY8LsQ+JEcLr1LrIV69UlH2Onk5dUKMZZBOhHlNeHx4ioXxEQ
- N6+H6/7e/FZAGJsVodW1kB3lTlbx9MWcE9Z3hJ41VvkOBAE1vbA8fZcVxENOnyOFUTFV
- pkzg==
-X-Gm-Message-State: AC+VfDzYx9RUm9xflsnVOisWyYiTR4YfqPZp5HwtwdX8LAXPARdD7QIf
- NyMxM+4Ggc2G4gLZBb0ZwZAsAGUwo6lg54sIk9rdqGwpaC50T0woiMg0uGPDovHSoY+JiNSdtcH
- L3AsAj3BA6aWJ268=
-X-Received: by 2002:ad4:5d46:0:b0:621:cef:f270 with SMTP id
- jk6-20020ad45d46000000b006210ceff270mr3303957qvb.5.1685137316013; 
- Fri, 26 May 2023 14:41:56 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6nuPPtP1ZpLEkuPNvTC5Uga5BswdlPUfJTPQvJc1aglhO0jB/QpMNJD3SVVVfIsxZ6dzg00Q==
-X-Received: by 2002:ad4:5d46:0:b0:621:cef:f270 with SMTP id
- jk6-20020ad45d46000000b006210ceff270mr3303942qvb.5.1685137315733; 
- Fri, 26 May 2023 14:41:55 -0700 (PDT)
+ bh=QedGRa0jecldcdCynPAniWXOp29URElQcju/Ij61s0w=;
+ b=RyRVYbQ75y72FasDp600lCvk5L/0Sxg9bthKWhpB5gDS/IFfKk6LcQRF1LVJazAmhn
+ pmtLOdMuFuUUHrBfFIVw5LHjZdxpRFYdBK/GEpQD7k4HIJDJ4D9r2PuipDBznTYkgi7B
+ /nfujGvElau33ti8Yd/Y43DZKoZraz9tkj1znumjkOvsbLyvMqnmAIcvcvoUjj5o4GE9
+ VV5B5Rd0ZTPQTEnOvr76j1CwSpm74J+U5tx2k7KSDHYpJ7mylAR7BJvU9H/MVTxt9Rcq
+ 9IPtLT2uSnbGxZu63PdkzM78BtleKpSXvfirdBgOhdnbbLkl6Gb6PcpPsNWgTNGKnrxY
+ Z/RA==
+X-Gm-Message-State: AC+VfDzItJk149f7GCOMnlneixEy1/1Tv1RvzeiiLYYRh9d3ZeVVA28V
+ p5GRRdu5oTaFgCyEDIUpk0EzDOigUXCMKt3QtQMwiMtzY9PLeX9Ovy1a9PF6GZKruJYForQZTAr
+ R9bfk5dvZSX1TF1w=
+X-Received: by 2002:a05:6214:528d:b0:621:65de:f60c with SMTP id
+ kj13-20020a056214528d00b0062165def60cmr3315661qvb.3.1685137763488; 
+ Fri, 26 May 2023 14:49:23 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5+kFoaey11+0FgsG1Tk9tc2fhJuIblwBGkgYn7C8WxhrHaTiHW0K/6UFbvo0BpkUd9KlrGtA==
+X-Received: by 2002:a05:6214:528d:b0:621:65de:f60c with SMTP id
+ kj13-20020a056214528d00b0062165def60cmr3315649qvb.3.1685137763122; 
+ Fri, 26 May 2023 14:49:23 -0700 (PDT)
 Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
  [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- n16-20020a0cbe90000000b0062168714c8fsm1492698qvi.120.2023.05.26.14.41.54
+ mg16-20020a056214561000b0061b63237be3sm1500835qvb.131.2023.05.26.14.49.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 14:41:55 -0700 (PDT)
-Date: Fri, 26 May 2023 17:41:54 -0400
+ Fri, 26 May 2023 14:49:22 -0700 (PDT)
+Date: Fri, 26 May 2023 17:49:21 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v3 00/10] migration: Remove QEMUFileHooks
-Message-ID: <ZHEnorONziJksUaj@x1n>
-References: <20230509120700.78359-1-quintela@redhat.com>
+To: Wei Wang <wei.w.wang@intel.com>
+Cc: quintela@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v1] migration: fix migrate_params_test_apply to set the
+ dest param correctly
+Message-ID: <ZHEpYQ01D7O3MQqM@x1n>
+References: <20230524080157.530968-1-wei.w.wang@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230509120700.78359-1-quintela@redhat.com>
+In-Reply-To: <20230524080157.530968-1-wei.w.wang@intel.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -95,22 +96,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 09, 2023 at 02:06:50PM +0200, Juan Quintela wrote:
-> Hi
+On Wed, May 24, 2023 at 04:01:57PM +0800, Wei Wang wrote:
+> qmp_migrate_set_parameters expects to use tmp for parameters check,
+> so migrate_params_test_apply is expected to copy the related fields from
+> params to tmp. So fix migrate_params_test_apply to use the function
+> parameter, *dest, rather than the global one. The dest->has_xxx (xxx is
+> the feature name) related fields need to be set, as they will be checked
+> by migrate_params_check.
+
+I think it's fine to do as what you suggested, but I don't see much benefit
+either.. the old code IIUC will check all params even if 1 param changed,
+while after your change it only checks the modified ones.
+
+There's slight benefits but not so much, especially "22+, 2-" LOCs, because
+we don't really do this a lot; some more sanity check also makes sense to
+me even if everything is always checked, so we'll hit errors if anything
+accidentally goes wrong too.
+
+Is there a real bug somewhere?
+
 > 
-> Changes in v3:
-> - fix rdma_migration to reset clearly (thanks danp)
-> - redo the cherks for migration/rdma
-> - rebased on top of the counters series:
-> [PATCH 00/21] Migration: More migration atomic counters
-> Based-on: Message-Id: <20230508130909.65420-1-quintela@redhat.com>
-
-Patch 9 should logically be split and spread into previous patches, but not
-a big issue.
-
-For the series:
-
-Reviewed-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Wei Wang <wei.w.wang@intel.com>
+> ---
+>  migration/options.c | 24 ++++++++++++++++++++++--
+>  1 file changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/migration/options.c b/migration/options.c
+> index b62ab30cd5..a560483871 100644
+> --- a/migration/options.c
+> +++ b/migration/options.c
+> @@ -1089,39 +1089,45 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+>  static void migrate_params_test_apply(MigrateSetParameters *params,
+>                                        MigrationParameters *dest)
+>  {
+> -    *dest = migrate_get_current()->parameters;
+> -
+>      /* TODO use QAPI_CLONE() instead of duplicating it inline */
+>  
+>      if (params->has_compress_level) {
+> +        dest->has_compress_level = true;
+>          dest->compress_level = params->compress_level;
+>      }
+>  
+>      if (params->has_compress_threads) {
+> +        dest->has_compress_threads = true;
+>          dest->compress_threads = params->compress_threads;
+>      }
+>  
+>      if (params->has_compress_wait_thread) {
+> +        dest->has_compress_wait_thread = true;
+>          dest->compress_wait_thread = params->compress_wait_thread;
+>      }
+>  
+>      if (params->has_decompress_threads) {
+> +        dest->has_decompress_threads = true;
+>          dest->decompress_threads = params->decompress_threads;
+>      }
+>  
+>      if (params->has_throttle_trigger_threshold) {
+> +        dest->has_throttle_trigger_threshold = true;
+>          dest->throttle_trigger_threshold = params->throttle_trigger_threshold;
+>      }
+>  
+>      if (params->has_cpu_throttle_initial) {
+> +        dest->has_cpu_throttle_initial = true;
+>          dest->cpu_throttle_initial = params->cpu_throttle_initial;
+>      }
+>  
+>      if (params->has_cpu_throttle_increment) {
+> +        dest->has_cpu_throttle_increment = true;
+>          dest->cpu_throttle_increment = params->cpu_throttle_increment;
+>      }
+>  
+>      if (params->has_cpu_throttle_tailslow) {
+> +        dest->has_cpu_throttle_tailslow = true;
+>          dest->cpu_throttle_tailslow = params->cpu_throttle_tailslow;
+>      }
+>  
+> @@ -1136,45 +1142,58 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+>      }
+>  
+>      if (params->has_max_bandwidth) {
+> +        dest->has_max_bandwidth = true;
+>          dest->max_bandwidth = params->max_bandwidth;
+>      }
+>  
+>      if (params->has_downtime_limit) {
+> +        dest->has_downtime_limit = true;
+>          dest->downtime_limit = params->downtime_limit;
+>      }
+>  
+>      if (params->has_x_checkpoint_delay) {
+> +        dest->has_x_checkpoint_delay = true;
+>          dest->x_checkpoint_delay = params->x_checkpoint_delay;
+>      }
+>  
+>      if (params->has_block_incremental) {
+> +        dest->has_block_incremental = true;
+>          dest->block_incremental = params->block_incremental;
+>      }
+>      if (params->has_multifd_channels) {
+> +        dest->has_multifd_channels = true;
+>          dest->multifd_channels = params->multifd_channels;
+>      }
+>      if (params->has_multifd_compression) {
+> +        dest->has_multifd_compression = true;
+>          dest->multifd_compression = params->multifd_compression;
+>      }
+>      if (params->has_xbzrle_cache_size) {
+> +        dest->has_xbzrle_cache_size = true;
+>          dest->xbzrle_cache_size = params->xbzrle_cache_size;
+>      }
+>      if (params->has_max_postcopy_bandwidth) {
+> +        dest->has_max_postcopy_bandwidth = true;
+>          dest->max_postcopy_bandwidth = params->max_postcopy_bandwidth;
+>      }
+>      if (params->has_max_cpu_throttle) {
+> +        dest->has_max_cpu_throttle = true;
+>          dest->max_cpu_throttle = params->max_cpu_throttle;
+>      }
+>      if (params->has_announce_initial) {
+> +        dest->has_announce_initial = true;
+>          dest->announce_initial = params->announce_initial;
+>      }
+>      if (params->has_announce_max) {
+> +        dest->has_announce_max = true;
+>          dest->announce_max = params->announce_max;
+>      }
+>      if (params->has_announce_rounds) {
+> +        dest->has_announce_rounds = true;
+>          dest->announce_rounds = params->announce_rounds;
+>      }
+>      if (params->has_announce_step) {
+> +        dest->has_announce_step = true;
+>          dest->announce_step = params->announce_step;
+>      }
+>  
+> @@ -1321,6 +1340,7 @@ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
+>          params->tls_hostname->u.s = strdup("");
+>      }
+>  
+> +    memset(&tmp, 0, sizeof(MigrationParameters));
+>      migrate_params_test_apply(params, &tmp);
+>  
+>      if (!migrate_params_check(&tmp, errp)) {
+> -- 
+> 2.27.0
+> 
 
 -- 
 Peter Xu
