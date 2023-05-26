@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73148712310
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B524712322
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 11:11:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2TRS-0002zc-OU; Fri, 26 May 2023 05:08:58 -0400
+	id 1q2TRV-000373-HP; Fri, 26 May 2023 05:09:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2TRQ-0002yY-Qj
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:08:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2TRT-000335-8i
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:08:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2TRO-0000iI-Tg
- for qemu-devel@nongnu.org; Fri, 26 May 2023 05:08:56 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2TRR-0000jD-O0
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 05:08:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685092133;
+ s=mimecast20190719; t=1685092137;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a9I59SkqBH9pEciiDCZ+t1+clxWRnm4DnxLKkEpRnlA=;
- b=ORq0e+7ccn1T78tETtpHNvab1YdARixv/Jyo83un6E5UoCmfv6HvpQ4m0ZVC1+pbUB1yPv
- aKaT13aSwEwopjsdf/FM/frzKrjiwnUbIvjnZQbsT/OjNT/M7EuIO7i0IzTGRBrJjz6VX8
- jZH4EK4/a9Yeehx6/neWH4ycicB2Bc8=
+ bh=m8oJSri4O/ld7IJotySeu6D2Ij5y8UgX+DZBTNHtWok=;
+ b=ReW4T8jZiX/Xoxp+jNV4E4ShrDNDATBegV9L6QYS9ASpxQ0QU6dz2BS/yiP4Yd0Bm0CEgV
+ +b4oHoqjuoIkYlkRWcw/AQt7LXbY5WN8HyTi16xzHv1+Kn2uWIvifyU3uyoS/iEtkhPae6
+ 0pRakaaJt1Nsno8fl8ACCTw2pCffZHA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-296-rKknUq7gNi-Y11Q2ZRlgVA-1; Fri, 26 May 2023 05:08:51 -0400
-X-MC-Unique: rKknUq7gNi-Y11Q2ZRlgVA-1
+ us-mta-591-z6fu7JljPki9vYVLR1a3jg-1; Fri, 26 May 2023 05:08:53 -0400
+X-MC-Unique: z6fu7JljPki9vYVLR1a3jg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4341C101A53A;
- Fri, 26 May 2023 09:08:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 49AEB85A5BB;
+ Fri, 26 May 2023 09:08:53 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.252])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8387FC15612;
- Fri, 26 May 2023 09:08:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 867D8C154D1;
+ Fri, 26 May 2023 09:08:51 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 08/15] tests/qtest/usb-hcd-uhci-test: Check whether
- "usb-storage" is available
-Date: Fri, 26 May 2023 11:08:33 +0200
-Message-Id: <20230526090840.2225958-9-thuth@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 09/15] tests/qtest: Check for virtio-blk before using -cdrom
+ with the arm virt machine
+Date: Fri, 26 May 2023 11:08:34 +0200
+Message-Id: <20230526090840.2225958-10-thuth@redhat.com>
 In-Reply-To: <20230526090840.2225958-1-thuth@redhat.com>
 References: <20230526090840.2225958-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -77,32 +77,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "usb-storage" device might not have been compiled into the binary
-(e.g. when compiling with "--without-default-devices"), so we have to
-check first before using it.
+The arm "virt" machine needs "virtio-blk-pci" for devices that get attached
+via the "-cdrom" option. Since this is an optional device that might not
+be available in the binary, we should check for the availability of this
+device first before using it.
 
-Message-Id: <20230525081016.1870364-2-thuth@redhat.com>
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Message-Id: <20230525081016.1870364-3-thuth@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/usb-hcd-uhci-test.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/qtest/bios-tables-test.c | 2 +-
+ tests/qtest/cdrom-test.c       | 6 +++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/usb-hcd-uhci-test.c b/tests/qtest/usb-hcd-uhci-test.c
-index 84ac2f3c1a..28751f53da 100644
---- a/tests/qtest/usb-hcd-uhci-test.c
-+++ b/tests/qtest/usb-hcd-uhci-test.c
-@@ -74,7 +74,9 @@ int main(int argc, char **argv)
-     qtest_add_func("/uhci/pci/init", test_uhci_init);
-     qtest_add_func("/uhci/pci/port1", test_port_1);
-     qtest_add_func("/uhci/pci/hotplug", test_uhci_hotplug);
--    qtest_add_func("/uhci/pci/hotplug/usb-storage", test_usb_storage_hotplug);
-+    if (qtest_has_device("usb-storage")) {
-+        qtest_add_func("/uhci/pci/hotplug/usb-storage", test_usb_storage_hotplug);
-+    }
- 
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-         qs = qtest_pc_boot("%s", cmd);
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 159e4edb8f..ed1c69cf01 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -2164,7 +2164,7 @@ int main(int argc, char *argv[])
+             }
+         }
+     } else if (strcmp(arch, "aarch64") == 0) {
+-        if (has_tcg) {
++        if (has_tcg && qtest_has_device("virtio-blk-pci")) {
+             qtest_add_func("acpi/virt", test_acpi_virt_tcg);
+             qtest_add_func("acpi/virt/acpihmatvirt",
+                             test_acpi_virt_tcg_acpi_hmat);
+diff --git a/tests/qtest/cdrom-test.c b/tests/qtest/cdrom-test.c
+index d1cc375849..f2a8d91929 100644
+--- a/tests/qtest/cdrom-test.c
++++ b/tests/qtest/cdrom-test.c
+@@ -264,9 +264,13 @@ int main(int argc, char **argv)
+         const char *armmachines[] = {
+             "realview-eb", "realview-eb-mpcore", "realview-pb-a8",
+             "realview-pbx-a9", "versatileab", "versatilepb", "vexpress-a15",
+-            "vexpress-a9", "virt", NULL
++            "vexpress-a9", NULL
+         };
+         add_cdrom_param_tests(armmachines);
++        if (qtest_has_device("virtio-blk-pci")) {
++            const char *virtmachine[] = { "virt", NULL };
++            add_cdrom_param_tests(virtmachine);
++        }
+     } else {
+         const char *nonemachine[] = { "none", NULL };
+         add_cdrom_param_tests(nonemachine);
 -- 
 2.31.1
 
