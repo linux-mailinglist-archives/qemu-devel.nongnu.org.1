@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4548B7127FD
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC3F7127FF
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 16:06:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Y3f-0000El-OZ; Fri, 26 May 2023 10:04:43 -0400
+	id 1q2Y44-0000H2-Bi; Fri, 26 May 2023 10:05:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2Y3d-0000EI-Cv
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:04:41 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2Y40-0000GT-TR
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 10:05:04 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2Y3b-0000p1-GB
- for qemu-devel@nongnu.org; Fri, 26 May 2023 10:04:40 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-309550d4f73so1652729f8f.1
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:04:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q2Y3z-0000sV-AV
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 10:05:04 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3f6077660c6so5748925e9.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 07:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685109877; x=1687701877;
+ d=linaro.org; s=google; t=1685109901; x=1687701901;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=RrGu5Z8/SkD7l3Ukj0FwTQqkiFp3LvVlz2cMv2B0iWU=;
- b=IlxMnWE8xS0msvj8ZEF3mllbCkQ+xDTL0a4HDSJL9nm22QkB26G1q3Ezs7EzUHDve2
- ZvDhwDoRcv6I5WrSoGZhAAoDiHA2A3SAFlH48b7Zbh0uENl6e7YkOjkc2PTD1Axb5Yjp
- gZy4D1rz+k2pcARvGo338P1qRkwNPfOtV31Xpf/lqwn5UQlOrfpPBPWr0vKVr1GXTX+u
- 2ADQskyliY9iIB/097l9zrTheEdsNRv/4y85biJg/Cj4LMktWcts3971jozXNmbx1IvW
- cm/FhLwsuYRqQDh41Wvp0DbktgLPMCuqL0HyJIiDQ0ClykEwp7rWMAuE2Deg0Zkpd8iI
- pMEg==
+ bh=J72BzWYbijrZepyjdTGnY7swll5B4dqMgDn/MnBhBDk=;
+ b=aeoT67e9shGqa/zpYgAFvksDTDz5VUGVPP4vyJ+X2wq8MX+WvNFIzZkVm7Wy3thxxx
+ GbSaR5tWp/+xU6+xKCbAQQe41KIPMcagJ3erz1M7KqueGmCsO1fdcvcn6E5R0Xejx8E7
+ CCa+5OYYrpwfUF2u+aRUL5tPEtKBaw9FJ+NEBSj564OBP7SCTqacLFteabJrCQs2oWPU
+ 9QZMvaUW6FlXDfLzzSqDwYMgF77ixFm2NnqfVAOJ/XG3jw/81fX4U65hPH64vT2lb9hq
+ wZNFVB1jui7scE9flErvzosIM0H7+Lsv2utkT1npzFkROGT71oR2ZqOHWzPrq9SD0BG1
+ ro8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685109877; x=1687701877;
+ d=1e100.net; s=20221208; t=1685109901; x=1687701901;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RrGu5Z8/SkD7l3Ukj0FwTQqkiFp3LvVlz2cMv2B0iWU=;
- b=JlT6ZuiV95LRjsmVEtH8F9k2lmpsv8dFrem5cmf1+NsSCTdaJKPA8fLhgzjOa6CzKk
- mJlyh7T/LKuvVVf1ha89K3xYWpRNbSQkBkO+j9LDhlwn/Sy9pK3UOciwGj/RrTYSfoAw
- VuUBTRqdF0KwAzffIdLIHH/okjDfghc2Zyf4CUNL547YCm/8bLoI1JdC6qZ0/3TyQiYH
- CMiAYDn9jHRI9CeAY70Ifdg1Ujv2u/FGu+zZP99mtkd1ruUb+S2of7FV4CQ9yboXQcaS
- XyUCCeTN3tYf0alwxVuY9AhveO0FPtWtOT2Qmoj8UOAEmrewqnEoVSr5zLhGyDlrZVXa
- 3XiA==
-X-Gm-Message-State: AC+VfDzmKk0GNVijIZ61NNGtRb2/ozcWVnqigwkhCszAhF6cPTH1iXg9
- s2cHuT6CuxDdVtQ68gD9bLCTYw==
-X-Google-Smtp-Source: ACHHUZ7A+kgTEnkepuNOiHlWXqoWn4j8/iaFA6yCt8QL0ayYLH+1K2PvmixcK9xbZdgC+kDVWdAGAg==
-X-Received: by 2002:adf:fe84:0:b0:30a:c707:902b with SMTP id
- l4-20020adffe84000000b0030ac707902bmr3401597wrr.25.1685109877400; 
- Fri, 26 May 2023 07:04:37 -0700 (PDT)
+ bh=J72BzWYbijrZepyjdTGnY7swll5B4dqMgDn/MnBhBDk=;
+ b=aYAcgu0TwyX1LpGUTXJvyABKj0oeBhWo6uxZQFMY9pXDaS4aKNCslQT9dACnQhCWTk
+ Izh2pxDCUR3vm8KWcTf0SOuSlF2CH2YHOzWbncY3GzmXO8RccrLF8gXzI4fQYm/arRLM
+ Iw4fOA3B7ecnUzW7ui61xwh58FisxylrWgTK1BH3oSfQBNlO0TnYpSpYQPapxrKIjYbj
+ rrJwhBPvnsBwfuTiyeOrdTyJSS/Uq3BCnbYf+TfLl1xdS1ky1dOBeAlpIqWpHpVAgycT
+ zt6eFDDcjWv4mqOCM3elzBcCPNBvT1eL1UaJnxTCr0MLC4GuOgvdnLS22p9cvyjsnJZr
+ kugw==
+X-Gm-Message-State: AC+VfDys4nBGARx7rEmvf39doOduHIWLj1VAIjW/LXI1bbVfwzxLQZlm
+ BaMIvMhiRyxjfaXcLluKzkTBeA==
+X-Google-Smtp-Source: ACHHUZ5dY3YclxAbmtv/EOrtbjh5x9Op3gLlFO5dZt4fLNE0vXbTc5kvqf1bBkz6R1XxP8iWPI2Yog==
+X-Received: by 2002:a1c:7407:0:b0:3f6:cfc7:8bce with SMTP id
+ p7-20020a1c7407000000b003f6cfc78bcemr1815704wmc.22.1685109901410; 
+ Fri, 26 May 2023 07:05:01 -0700 (PDT)
 Received: from [192.168.69.115] (vit94-h02-176-184-29-207.dsl.sta.abo.bbox.fr.
  [176.184.29.207]) by smtp.gmail.com with ESMTPSA id
- m1-20020adfe0c1000000b0030796e103a1sm5236100wri.5.2023.05.26.07.04.35
+ s15-20020a7bc38f000000b003f6028a4c85sm8884022wmj.16.2023.05.26.07.04.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 07:04:36 -0700 (PDT)
-Message-ID: <c267b027-5b60-ad39-2940-6960be1fb7ba@linaro.org>
-Date: Fri, 26 May 2023 16:04:34 +0200
+ Fri, 26 May 2023 07:05:01 -0700 (PDT)
+Message-ID: <3eb1d51e-7393-2dbb-a233-e9ff05be56f0@linaro.org>
+Date: Fri, 26 May 2023 16:04:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v5 2/3] riscv/virt: Support using pflash via -blockdev
- option
+Subject: Re: [PATCH v5 3/3] docs/system: riscv: Add pflash usage details
 Content-Language: en-US
 To: Sunil V L <sunilvl@ventanamicro.com>, qemu-riscv@nongnu.org
 Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
@@ -70,13 +69,13 @@ Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Andrea Bolognani <abologna@redhat.com>
 References: <20230526121006.76388-1-sunilvl@ventanamicro.com>
- <20230526121006.76388-3-sunilvl@ventanamicro.com>
+ <20230526121006.76388-4-sunilvl@ventanamicro.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230526121006.76388-3-sunilvl@ventanamicro.com>
+In-Reply-To: <20230526121006.76388-4-sunilvl@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,24 +99,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 26/5/23 14:10, Sunil V L wrote:
-> Currently, pflash devices can be configured only via -pflash
-> or -drive options. This is the legacy way and the
-> better way is to use -blockdev as in other architectures.
-> libvirt also has moved to use -blockdev method.
-> 
-> To support -blockdev option, pflash devices need to be
-> created in instance_init itself. So, update the code to
-> move the virt_flash_create() to instance_init. Also, use
-> standard interfaces to detect whether pflash0 is
-> configured or not.
+> pflash devices can be used in virt machine for different
+> purposes like for ROM code or S-mode FW payload. Add a
+> section in the documentation on how to use pflash devices
+> for different purposes.
 > 
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> Reported-by: Andrea Bolognani <abologna@redhat.com>
-> Tested-by: Andrea Bolognani <abologna@redhat.com>
 > ---
->   hw/riscv/virt.c | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
+>   docs/system/riscv/virt.rst | 29 +++++++++++++++++++++++++++++
+>   1 file changed, 29 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 
