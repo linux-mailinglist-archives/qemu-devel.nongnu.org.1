@@ -2,99 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5671712035
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 08:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65125712046
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 08:39:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2R4m-00054e-KW; Fri, 26 May 2023 02:37:24 -0400
+	id 1q2R6a-0005ok-P1; Fri, 26 May 2023 02:39:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2R4k-000542-99
- for qemu-devel@nongnu.org; Fri, 26 May 2023 02:37:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q2R4h-00030o-M0
- for qemu-devel@nongnu.org; Fri, 26 May 2023 02:37:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685083038;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=93VbI4GHkUVZuRhRc6JcdsHOLPlm+XPnCsEV82LN6kg=;
- b=AcgYDtMwIf/J7h+GeSXy3CD/Vjm9z0pCejrWiRYNSpKgTfXZtuiVXqD93wJKrZCLIWX9tf
- K8GOtdN20sZj87aIPzexBK66XBWzZ8ICo/Sa5eTnsaHAp0xw1hV/Nizm0fMsR6G9NWgdGD
- cPvCabyd+xZrh3t+9tNvYoNz5VUiMiU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-117-IT3dasTiPM2eLX3okZcIyA-1; Fri, 26 May 2023 02:37:16 -0400
-X-MC-Unique: IT3dasTiPM2eLX3okZcIyA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f604687a23so1948255e9.1
- for <qemu-devel@nongnu.org>; Thu, 25 May 2023 23:37:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q2R6X-0005o6-8c
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 02:39:14 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1q2R6V-0003EN-Dh
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 02:39:13 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3095557dd99so300797f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 25 May 2023 23:39:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1685083149; x=1687675149;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=rg5h60MxsWXjeHq2ug1lHuq21ZSxcL2rqfT4XQg3dsA=;
+ b=XGx99UQNnv4fVF4zUa8e/ZIeNt5/e81R/MdiTqsfxlC6mg9VhLc5diHhOZDyQr3bXZ
+ uxnnYSGnJ9q2xbMc9wjmrqkiFEfazUBCcaBzaSbVAa9UpZFdw0JDm8ScQcSCZm7UE0R1
+ qaSEF+lcqob7pQFhprR8A1myCuQmSRZsgn/5333oP65hCpWb6qXPRj/W/A48peMpd20N
+ m6FoTvYA5M89cdPEQ2VjFKKD7XXjj9YhkEyaycQ0EkUnMIlLX2xZMX8kC70PTfsAUKqw
+ qyAVvIsMqmbFwIu/PHL6Nzev6FETz50btMAzaW9UiJjdNbPewOVI3c5oxIwue7yH2Ei7
+ J2xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685083035; x=1687675035;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=93VbI4GHkUVZuRhRc6JcdsHOLPlm+XPnCsEV82LN6kg=;
- b=hhqGRSK2+1wEBf9HKPYE+92xv4kEW5B/7FYlL0bOY+H2y52vCLAXpYqxYUjSOa4gRV
- J1V3OgKbQVG5le7X3RvIu5ceMY6d+b7NbdQYgx5NULbyy35ikE5PXbJae/70yD9sygBt
- 26BGV5AGZlcu2xMnHhS8nboZLoBZW6/Sda4oa7Mp6iwtwC15BAkdzeDtyqE7pFMpekq5
- GRxe2NhibE/4OkAIopRBk6rayXKivIvKXmza8s+8958IyF30Oyb6WS8KAZ4hR2ChaAyM
- gUTw4BEGMuOo81TlkrFPniH0lSEK0XhY24Ha6Xl8jDJQ49Zcs+Kmbpjr7FolsjKTti/j
- KbOg==
-X-Gm-Message-State: AC+VfDydqR4iogIUilVQPMlqGo/owU31xmfPGqcVqdosix6bkGk+5azq
- H72kPa91GHo/w8Y7sgs05xmrrN6OYNzqlxtiYseXHpGHtHBmlJoQIM7tfGbRpRxk7eEqJpBLmYV
- kHNJJmmVIPBN+Bwg=
-X-Received: by 2002:a5d:638b:0:b0:307:7a73:bfa9 with SMTP id
- p11-20020a5d638b000000b003077a73bfa9mr550102wru.60.1685083035658; 
- Thu, 25 May 2023 23:37:15 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ56LFAm/JIHolv0y3raZNjxuLIPddj+KwoWXIqP7lNIRZrm+3VEru7WA0ETwIfIERhc9PYdEg==
-X-Received: by 2002:a5d:638b:0:b0:307:7a73:bfa9 with SMTP id
- p11-20020a5d638b000000b003077a73bfa9mr550074wru.60.1685083035387; 
- Thu, 25 May 2023 23:37:15 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-176-189.web.vodafone.de.
- [109.43.176.189]) by smtp.gmail.com with ESMTPSA id
- e7-20020adfef07000000b003079ed1f0a0sm4016587wro.44.2023.05.25.23.37.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 May 2023 23:37:14 -0700 (PDT)
-Message-ID: <fbc8003d-9d91-55a0-940f-240d687aae75@redhat.com>
-Date: Fri, 26 May 2023 08:37:13 +0200
+ d=1e100.net; s=20221208; t=1685083149; x=1687675149;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rg5h60MxsWXjeHq2ug1lHuq21ZSxcL2rqfT4XQg3dsA=;
+ b=f/tGI3GZT16PJLZnCqBN/6OHusR9NyvYCy/wcgQeI7AcLMqaI5Bx4HUTFYLsVrRgIr
+ TV8HH1YIZLM87KfEX4fZM3aWQAnRLR5hH2DiqlCVll0Ntw1w/iuJfSMvuhKAmlOQX0Wn
+ CkWtGpGqbmrAoFcWEVwanoinJiacgOdM6mpJqeoEZzt9FUkVseMQIJCeqWJ0kQxK+8XH
+ phSqcu1uySsOgCPkoAtU7Lc7bRW2fopQaq3+HZqJVN4Uytcrw4fJ/KUisk377D/YkRpq
+ /IKT9OV0fhOK+0FrAuVT2zGkuQU6b6KpAAa3ydJlKZ3TIYcNrIAIefbLZ8lRVXgehZLa
+ VW+A==
+X-Gm-Message-State: AC+VfDyAiN3E51GYL89YWirJWX+n54QjVm/jbjJLbf2f7b7EKq1gSSdl
+ U54DR4IPafORB0Sjw0qIKc6lAg==
+X-Google-Smtp-Source: ACHHUZ5MxmZPqMPziAKQQWWAt9VDst5C/IOrPF5/cMayJzrgjqxeHWuOIXlze5i1nlQUSQYC1kLotg==
+X-Received: by 2002:adf:eb8d:0:b0:306:43a7:c2f0 with SMTP id
+ t13-20020adfeb8d000000b0030643a7c2f0mr507817wrn.31.1685083148873; 
+ Thu, 25 May 2023 23:39:08 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ o16-20020a5d58d0000000b002ffbf2213d4sm4036588wrf.75.2023.05.25.23.39.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 May 2023 23:39:08 -0700 (PDT)
+Date: Fri, 26 May 2023 08:39:07 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Andrea Bolognani <abologna@redhat.com>
+Cc: Sunil V L <sunilvl@ventanamicro.com>, qemu-riscv@nongnu.org, 
+ qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: Re: [PATCH v4 0/3] hw/riscv/virt: pflash improvements
+Message-ID: <20230526-b0d8b56e9688dea7ae9d00d5@orel>
+References: <20230525164803.17992-1-sunilvl@ventanamicro.com>
+ <CABJz62MFZzx3jBgW6TtGFD9emY+DAbbftSybD8ZouC65n3-auA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 1/3] hw/ufs: Initial commit for emulated
- Universal-Flash-Storage
-Content-Language: en-US
-To: jeuk20.kim@samsung.com, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "kwolf@redhat.com" <kwolf@redhat.com>,
- "hreitz@redhat.com" <hreitz@redhat.com>, "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
- "berrange@redhat.com" <berrange@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- Klaus Birkelund Jensen <k.jensen@samsung.com>
-References: <CGME20230526050555epcms2p287be772002cd941cc79226968c319036@epcms2p2>
- <20230526050555epcms2p287be772002cd941cc79226968c319036@epcms2p2>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230526050555epcms2p287be772002cd941cc79226968c319036@epcms2p2>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABJz62MFZzx3jBgW6TtGFD9emY+DAbbftSybD8ZouC65n3-auA@mail.gmail.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,38 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/05/2023 07.05, Jeuk Kim wrote:
-> Universal Flash Storage (UFS) is a high-performance mass storage device
-> with a serial interface. It is primarily used as a high-performance
-> data storage device for embedded applications.
+On Thu, May 25, 2023 at 11:03:52AM -0700, Andrea Bolognani wrote:
+> On Thu, May 25, 2023 at 10:18:00PM +0530, Sunil V L wrote:
+> > This series improves the pflash usage in RISC-V virt machine with solutions to
+> > below issues.
+> >
+> > 1) Currently the first pflash is reserved for ROM/M-mode firmware code. But S-mode
+> > payload firmware like EDK2 need both pflash devices to have separate code and variable
+> > store so that OS distros can keep the FW code as read-only.
+> >
+> > The issue is reported at
+> > https://salsa.debian.org/qemu-team/edk2/-/commit/c345655a0149f64c5020bfc1e53c619ce60587f6
+> >
+> > 2) The latest way of using pflash devices in other architectures and libvirt
+> > is by using -blockdev and machine options. However, currently this method is
+> > not working in RISC-V.
+> >
+> > With above issues fixed, added documentation on how to use pflash devices
+> > in RISC-V virt machine.
+> >
+> > This patch series is based on Alistair's riscv-to-apply.next branch.
+> >
+> > Changes since v3:
+> > 	1) Converted single patch to a series with a cover letter since there are
+> > 	   multiple patches now.
+> > 	2) Added a new patch to enable pflash usage via -blockdev option.
+> > 	3) Separated the documentation change into new patch and updated the
+> > 	   documentation to mention only -blockdev option which seems to be the
+> > 	   recommended way of using pflash.
 > 
-> This commit contains code for UFS device to be recognized
-> as a UFS PCI device.
-> Patches to handle UFS logical unit and Transfer Request will follow.
+> Success! \o/
 > 
-> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
-> ---
->   MAINTAINERS              |    6 +
->   hw/Kconfig               |    1 +
->   hw/meson.build           |    1 +
->   hw/ufs/Kconfig           |    4 +
->   hw/ufs/meson.build       |    1 +
->   hw/ufs/trace-events      |   33 +
->   hw/ufs/trace.h           |    1 +
->   hw/ufs/ufs.c             |  305 ++++++++++
->   hw/ufs/ufs.h             |   42 ++
->   include/block/ufs.h      | 1251 ++++++++++++++++++++++++++++++++++++++
->   include/hw/pci/pci.h     |    1 +
->   include/hw/pci/pci_ids.h |    1 +
->   meson.build              |    1 +
+> With these patches applied, libvirt built from the master branch,
+> edk2 built from your branch and a JSON firmware descriptor for it
+> installed (attached), it's finally possible to boot an unmodified
+> openSUSE Tumbleweed RISC-V disk image by simply including
+> 
+>   <os firmware='efi'>
 
-Do you expect lots of additional files to be added to the hw/ufs/ folder? If 
-the answer is no, then it's maybe a little bit overkill to introduce a 
-separate folder for this. Wouldn't hw/block/ be a good fit for this as well? 
-Or maybe we could introduce hw/flash/ or so and also move the contents of 
-hw/nvme there?
+Hi Andrea,
 
-  Thomas
+I'm a bit concerned that we don't also need to add some XML in order to
+disable ACPI right now. RISC-V guest kernels will support ACPI in the
+near future. Ideally a default libvirt VM using edk2 will also use ACPI.
+Will there be a problem with changing that default later? If so, then
+I'd change it now and continue burdening developers a bit longer by
+requiring them to explicitly disable it.
 
-
+Thanks,
+drew
 
