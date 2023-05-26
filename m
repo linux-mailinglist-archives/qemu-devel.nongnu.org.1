@@ -2,87 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C19B2712A32
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44782712A5F
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 May 2023 18:12:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2Zzo-0004J1-J6; Fri, 26 May 2023 12:08:52 -0400
+	id 1q2a0b-0004Tk-Nl; Fri, 26 May 2023 12:09:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Zzm-0004IR-TB
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2a0Y-0004PR-Tw
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:09:38 -0400
+Received: from smtp-bc0c.mail.infomaniak.ch ([45.157.188.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2Zzk-0002h6-Qg
- for qemu-devel@nongnu.org; Fri, 26 May 2023 12:08:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685117328;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BecGd9dO3ZhSYDouC1mKTnkS4/+M2ywTdjMl2CKrfe4=;
- b=esG2GhRLkh/MFd7dyHi4GKXfqWq1qU++zpJvtUafQNXgv9ibz6f97EbJVm+8RjwZO8xq0p
- Stl9wI9VUzks0hSZSbho4lMZfaEoHoc55syHCIvFYyJISIlxVZIMAjJuk1wyTZwdvJQafW
- Cg5yBmjJqBM1ewXmDPGZwhVI05CAp1A=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-DZgDKjtaM6-0MsG2VnzsqA-1; Fri, 26 May 2023 12:08:46 -0400
-X-MC-Unique: DZgDKjtaM6-0MsG2VnzsqA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-96f83033b48so112363266b.3
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 09:08:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685117325; x=1687709325;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BecGd9dO3ZhSYDouC1mKTnkS4/+M2ywTdjMl2CKrfe4=;
- b=iCNP7CzcCZwUBlvIddRuKZOO81HwyfZg/hzbUiAHzLYhBd3i1tX+rRgLtCg7GF/s23
- Jah/lij3IVfuM7hAqldHVU94E3RIjQNy4IyQtCTjzL3JxT+K5Q+6Mr0fNRfPD8QIICKC
- 55uXvqBQa8WAQs1kt+PLoGCD6diwJOhvmCeRS6j7yXvUeK5vKHzd2dw79LcugsHt3i+j
- NFy2gwnOup8fsVgXLyw5/vKo77bMrLR4o7rHG9IX3rZYLicc+B5j5TGm0blK00IqVFVz
- AJnTZ2n8fT0kZ3PgEnx0wNvBNq43n1juPcub48sm7dcjcT8+4amrC1Owm/MLB3GW15CF
- Re2g==
-X-Gm-Message-State: AC+VfDzqFZtR1iPLJLHW//yOMPA2hFwVWeeHMN70H1HYH2vx00LoUyx8
- 1bMXVdcxlh2+v9h2NwKBpKGfUFq+O/qwUB2f98RimYiEskK5w8Z/XdZuAh/z/KmBvmlA9DIC0Qw
- +5LlmN3oDkY9d8WV3EYlrFeUx98ZqZDXM2gHNK4XdfRL7hMCn+EvERByiWbin1wQLLG5rerLwh9
- E=
-X-Received: by 2002:a17:906:ee88:b0:96a:928c:d382 with SMTP id
- wt8-20020a170906ee8800b0096a928cd382mr2186608ejb.48.1685117325482; 
- Fri, 26 May 2023 09:08:45 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4dM1CoV0rPhbPBGaRFetb5yIVSxZprYHAUI2061DfnkCpdhMEWYgJ+9wBOvZAcUpACBUEP6A==
-X-Received: by 2002:a17:906:ee88:b0:96a:928c:d382 with SMTP id
- wt8-20020a170906ee8800b0096a928cd382mr2186590ejb.48.1685117325099; 
- Fri, 26 May 2023 09:08:45 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.gmail.com with ESMTPSA id
- y17-20020a17090614d100b009658475919csm2291004ejc.188.2023.05.26.09.08.44
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 09:08:44 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PULL 12/12] configure: ignore --make
-Date: Fri, 26 May 2023 18:08:24 +0200
-Message-Id: <20230526160824.655279-13-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230526160824.655279-1-pbonzini@redhat.com>
-References: <20230526160824.655279-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q2a0V-0002mH-DO
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 12:09:38 -0400
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+ by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QSVHH60KKzMqG8D;
+ Fri, 26 May 2023 18:09:31 +0200 (CEST)
+Received: from unknown by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA
+ id 4QSVHD3cfwzMpq8P; Fri, 26 May 2023 18:09:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+ s=20191114; t=1685117371;
+ bh=GWA0mFQb+8wMidUB9IFkGhraKuBAw7wtqDQzDAqbLj0=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=SHueMjFNo3rqrLqDwx3uLeE8+X5tcivE1oEPiVsupYo6ZiLJ/vTPNLG6eFJuARjXz
+ EChyFftAMsPJ3se0xTmj43Dxi+ekN6Tb9V8ErOqv9uDvNm67z7yhPpfobsNkHwpj/z
+ M1TjsYiSKBpBQcpWBvcaYrXlssdnU8/pqhuOht+c=
+Message-ID: <4142c8dc-5385-fb1d-4f8b-2a98bb3f99af@digikod.net>
+Date: Fri, 26 May 2023 18:09:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: 
+Subject: Re: [ANNOUNCE] KVM Microconference at LPC 2023
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ James Morris <jamorris@linux.microsoft.com>
+Cc: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Kees Cook <keescook@chromium.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Vitaly Kuznetsov
+ <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
+ John Andersen <john.s.andersen@intel.com>, Liran Alon
+ <liran.alon@oracle.com>,
+ "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>,
+ Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <2f19f26e-20e5-8198-294e-27ea665b706f@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <2f19f26e-20e5-8198-294e-27ea665b706f@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Infomaniak-Routing: alpha
+Received-SPF: pass client-ip=45.157.188.12; envelope-from=mic@digikod.net;
+ helo=smtp-bc0c.mail.infomaniak.ch
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,117 +88,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Setting the MAKE variable to a GNU Make executable does not really have
-any effect: if a non-GNU Make is used, the QEMU Makefile will fail to
-parse.  Just remove everything related to --make and $make as dead code.
+See James Morris's proposal here: 
+https://lore.kernel.org/all/17f62cb1-a5de-2020-2041-359b8e96b8c0@linux.microsoft.com/
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure   | 18 +-----------------
- meson.build |  1 -
- 2 files changed, 1 insertion(+), 18 deletions(-)
+On 26/05/2023 04:36, James Morris wrote:
+ > [Side topic]
+ >
+ > Would folks be interested in a Linux Plumbers Conference MC on this
+ > topic generally, across different hypervisors, VMMs, and architectures?
+ >
+ > If so, please let me know who the key folk would be and we can try 
+writing
+ > up an MC proposal.
 
-diff --git a/configure b/configure
-index 0e9305848955..d674a9667310 100755
---- a/configure
-+++ b/configure
-@@ -400,20 +400,16 @@ gnu/kfreebsd)
- ;;
- freebsd)
-   bsd="yes"
--  make="${MAKE-gmake}"
-   # needed for kinfo_getvmmap(3) in libutil.h
- ;;
- dragonfly)
-   bsd="yes"
--  make="${MAKE-gmake}"
- ;;
- netbsd)
-   bsd="yes"
--  make="${MAKE-gmake}"
- ;;
- openbsd)
-   bsd="yes"
--  make="${MAKE-gmake}"
- ;;
- darwin)
-   bsd="yes"
-@@ -421,7 +417,6 @@ darwin)
- ;;
- sunos)
-   solaris="yes"
--  make="${MAKE-gmake}"
- ;;
- haiku)
-   pie="no"
-@@ -525,9 +520,6 @@ case "$cpu" in
-     CPU_CFLAGS="-m64 -mcpu=ultrasparc" ;;
- esac
- 
--: ${make=${MAKE-make}}
--
--
- check_py_version() {
-     # We require python >= 3.7.
-     # NB: a True python conditional creates a non-zero return code (Failure)
-@@ -630,7 +622,7 @@ for opt do
-   ;;
-   --objcc=*)
-   ;;
--  --make=*) make="$optarg"
-+  --make=*)
-   ;;
-   --install=*)
-   ;;
-@@ -897,7 +889,6 @@ Advanced options (experts only):
-   --cross-cc-ARCH=CC       use compiler when building ARCH guest test cases
-   --cross-cc-cflags-ARCH=  use compiler flags when building ARCH guest tests
-   --cross-prefix-ARCH=PREFIX cross compiler prefix when building ARCH guest test cases
--  --make=MAKE              use specified make [$make]
-   --python=PYTHON          use specified python [$python]
-   --ninja=NINJA            use specified ninja [$ninja]
-   --smbd=SMBD              use specified smbd [$smbd]
-@@ -950,11 +941,6 @@ then
-     fi
- fi
- 
--if ! has "$make"
--then
--    error_exit "GNU make ($make) not found"
--fi
--
- if ! check_py_version "$python"; then
-   error_exit "Cannot use '$python', Python >= 3.7 is required." \
-              "Use --python=/path/to/python to specify a supported Python." \
-@@ -1777,7 +1763,6 @@ if test "$container" != no; then
-     echo "RUNC=$runc" >> $config_host_mak
- fi
- echo "ROMS=$roms" >> $config_host_mak
--echo "MAKE=$make" >> $config_host_mak
- echo "PYTHON=$python" >> $config_host_mak
- echo "GENISOIMAGE=$genisoimage" >> $config_host_mak
- echo "MESON=$meson" >> $config_host_mak
-@@ -2030,7 +2015,6 @@ preserve_env CXXFLAGS
- preserve_env LD
- preserve_env LDFLAGS
- preserve_env LD_LIBRARY_PATH
--preserve_env MAKE
- preserve_env NM
- preserve_env OBJCFLAGS
- preserve_env OBJCOPY
-diff --git a/meson.build b/meson.build
-index 884b16c74962..2d48aa1e2ef3 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4028,7 +4028,6 @@ summary(summary_info, bool_yn: true, section: 'Directories')
- # Host binaries
- summary_info = {}
- summary_info += {'git':               config_host['GIT']}
--summary_info += {'make':              config_host['MAKE']}
- summary_info += {'python':            '@0@ (version: @1@)'.format(python.full_path(), python.language_version())}
- summary_info += {'sphinx-build':      sphinx_build}
- if config_host.has_key('HAVE_GDB_BIN')
--- 
-2.40.1
+The fine-grain memory management proposal from James Gowans looks 
+interesting, especially the "side-car" virtual machines: 
+https://lore.kernel.org/all/88db2d9cb42e471692ff1feb0b9ca855906a9d95.camel@amazon.com/
 
+
+On 09/05/2023 11:55, Paolo Bonzini wrote:
+> Hi all!
+> 
+> We are planning on submitting a CFP to host a KVM Microconference at
+> Linux Plumbers Conference 2023. To help justify the proposal, we would
+> like to gather a list of folks that would likely attend, and crowdsource
+> a list of topics to include in the proposal.
+> 
+> For both this year and future years, the intent is that a KVM
+> Microconference will complement KVM Forum, *NOT* supplant it. As you
+> probably noticed, KVM Forum is going through a somewhat radical change in
+> how it's organized; the conference is now free and (with some help from
+> Red Hat) organized directly by the KVM and QEMU communities. Despite the
+> unexpected changes and some teething pains, community response to KVM
+> Forum continues to be overwhelmingly positive! KVM Forum will remain
+> the venue of choice for KVM/userspace collaboration, for educational
+> content covering both KVM and userspace, and to discuss new features in
+> QEMU and other userspace projects.
+> 
+> At least on the x86 side, however, the success of KVM Forum led us
+> virtualization folks to operate in relative isolation. KVM depends on
+> and impacts multiple subsystems (MM, scheduler, perf) in profound ways,
+> and recently we’ve seen more and more ideas/features that require
+> non-trivial changes outside KVM and buy-in from stakeholders that
+> (typically) do not attend KVM Forum. Linux Plumbers Conference is a
+> natural place to establish such collaboration within the kernel.
+> 
+> Therefore, the aim of the KVM Microconference will be:
+> * to provide a setting in which to discuss KVM and kernel internals
+> * to increase collaboration and reduce friction with other subsystems
+> * to discuss system virtualization issues that require coordination with
+> other subsystems (such as VFIO, or guest support in arch/)
+> 
+> Below is a rough draft of the planned CFP submission.
+> 
+> Thanks!
+> 
+> Paolo Bonzini (KVM Maintainer)
+> Sean Christopherson (KVM x86 Co-Maintainer)
+> Marc Zyngier (KVM ARM Co-Maintainer)
+> 
+> 
+> ===================
+> KVM Microconference
+> ===================
+> 
+> KVM (Kernel-based Virtual Machine) enables the use of hardware features
+> to improve the efficiency, performance, and security of virtual machines
+> created and managed by userspace.  KVM was originally developed to host
+> and accelerate "full" virtual machines running a traditional kernel and
+> operating system, but has long since expanded to cover a wide array of use
+> cases, e.g. hosting real time workloads, sandboxing untrusted workloads,
+> deprivileging third party code, reducing the trusted computed base of
+> security sensitive workloads, etc.  As KVM's use cases have grown, so too
+> have the requirements placed on KVM and the interactions between it and
+> other kernel subsystems.
+> 
+> The KVM Microconference will focus on how to evolve KVM and adjacent
+> subsystems in order to satisfy new and upcoming requirements: serving
+> guest memory that cannot be accessed by host userspace[1], providing
+> accurate, feature-rich PMU/perf virtualization in cloud VMs[2], etc.
+> 
+> 
+> Potential Topics:
+>     - Serving inaccessible/unmappable memory for KVM guests (protected VMs)
+>     - Optimizing mmu_notifiers, e.g. reducing TLB flushes and spurious zapping
+>     - Supporting multiple KVM modules (for non-disruptive upgrades)
+>     - Improving and hardening KVM+perf interactions
+>     - Implementing arch-agnostic abstractions in KVM (e.g. MMU)
+>     - Defining KVM requirements for hardware vendors
+>     - Utilizing "fault" injection to increase test coverage of edge cases
+>     - KVM vs VFIO (e.g. memory types, a rather hot topic on the ARM side)
+> 
+> 
+> Key Attendees:
+>     - Paolo Bonzini <pbonzini@redhat.com> (KVM Maintainer)
+>     - Sean Christopherson <seanjc@google.com>  (KVM x86 Co-Maintainer)
+>     - Your name could be here!
+> 
+> [1] https://lore.kernel.org/all/20221202061347.1070246-1-chao.p.peng@linux.intel.com
+> [2] https://lore.kernel.org/all/CALMp9eRBOmwz=mspp0m5Q093K3rMUeAsF3vEL39MGV5Br9wEQQ@mail.gmail.com
+> 
+> 
 
