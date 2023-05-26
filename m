@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27FB712FB0
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 00:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E80713037
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 01:05:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2fVB-0008Ri-8r; Fri, 26 May 2023 18:01:37 -0400
+	id 1q2gTF-0000MC-3x; Fri, 26 May 2023 19:03:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2fV5-0008RY-7g
- for qemu-devel@nongnu.org; Fri, 26 May 2023 18:01:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q2fV3-0006By-IA
- for qemu-devel@nongnu.org; Fri, 26 May 2023 18:01:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685138488;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bQSlDH9ntXOQlU7Ll8P1lPCHa234g7C4eC6AaJRMuMQ=;
- b=UZqQJLP4sYQz/tlh6emdAWuoLq5QfMOm7p9F2Q2NbMFd9vESL8dNJGMfS/ikRmeBpkEYPy
- TX3N9XtAKT6eN7daVvcVxp3YC6gQD3s/EZMY/GJ3PfqOlxKwZx3AWoDmAu2yI1s83hY5Z5
- 0N+qtbSb4EA3pQ5onWQDsA42ZPYqXr0=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-lxWt73w3OviBNgwC5_zGUw-1; Fri, 26 May 2023 18:01:26 -0400
-X-MC-Unique: lxWt73w3OviBNgwC5_zGUw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-625891d5ad5so2833796d6.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 15:01:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2gTD-0000Lt-Ao
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 19:03:39 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2gTB-0005iU-I5
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 19:03:39 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5289cf35eeaso1943073a12.1
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 16:03:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685142216; x=1687734216;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6d1HxEApZ2y5Rsy25Mk/iPvMkQL/YxKASTcNKv4W/tk=;
+ b=M872gMC+5XL4sN4P/ir5pK3Y80BopWKxfGx31RcMdh8Fhpv+eFj0cke8KbWlXoIkC6
+ xwXltcVnZ/0wfnWneT2NwrSyRPDE3ZQVNOmRkb/chu62kd82BmqBRBnh5kPXoXFHKR2n
+ 2QcE3cU9SKdXMH9C5HNKEe6gnSCpTdqKqKkFrXNlDE19JwoI9AK8cLdO1HnJOL+4eQMM
+ BmA6iVwhkCtmcpF1EU0LW4wLP0CISh9uxtLWVXuc7bzly/1zeFKdKytA0r/7KH+jUrHO
+ QW2gnsMXcLQQdnQjhVdLKD0IMW2NtXRMD5kmiI5voIvsGcMI1Dcg//Ozgrb+BE+2BjVP
+ XEqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685138486; x=1687730486;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bQSlDH9ntXOQlU7Ll8P1lPCHa234g7C4eC6AaJRMuMQ=;
- b=VhGGEcMKmPxgPB0Zq+i4XjKanGjWiVcuvylKr2nclweEwM50oMLlnKrr9bMSs4eyZu
- p98b0yIeH2kAmkW7iKW5vjNsxepF/JJtdbJPAJI2sdhk41CmQBXZ+e99Xbdfu+4RVgiK
- H6df3/WdP4WIXr/xoEuGWboEQLWg9CoeE9f6f5+zshE4IyxFXdGbqi05zMHrhXzKD2+l
- qPU1SnkLS1dGYo8r7qqhP2Fc7VjCt5zLpTGYFCk41E3RYa36UGlP4pEVxSKcmvCXitF4
- mhJTkLR1QGW0xBEHGn/UNAcRbtQfADdgtOXwFgcw790h+QhIL1A4q9E9Yw8ae8JMMnIp
- Fwcg==
-X-Gm-Message-State: AC+VfDyjS6OTjjOw0fjLyxrQhchVth9/kgfs5vvCi2JzFEGffQZAvzx9
- SgyioGoQodVF6fqRioNxacO//uiTEzDFuKDMbja9ni/i2P1UQyEZWl7k/afYmpYw1trI8oYvEIW
- sruPEJHfq/l4io5Y=
-X-Received: by 2002:a05:6214:5199:b0:625:aa48:e50f with SMTP id
- kl25-20020a056214519900b00625aa48e50fmr3219376qvb.6.1685138486234; 
- Fri, 26 May 2023 15:01:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4m1rfQwyXutpbMniEeTEV8HwzGsqeW+l3b+UmaDRJUdPvYDCYW1EYUEoQIRdc7Q0el1tWYNQ==
-X-Received: by 2002:a05:6214:5199:b0:625:aa48:e50f with SMTP id
- kl25-20020a056214519900b00625aa48e50fmr3219363qvb.6.1685138485976; 
- Fri, 26 May 2023 15:01:25 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- ez9-20020ad45909000000b0061f7cf8207asm1521270qvb.133.2023.05.26.15.01.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 May 2023 15:01:25 -0700 (PDT)
-Date: Fri, 26 May 2023 18:01:24 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-devel@nongnu.org, andrey.gruzdev@virtuozzo.com,
- quintela@redhat.com, leobras@redhat.com
-Subject: Re: [PATCH] migration: stop tracking ram writes when cancelling
- background migration
-Message-ID: <ZHEsNGAPTCGVaps+@x1n>
-References: <20230526115908.196171-1-f.ebner@proxmox.com>
+ d=1e100.net; s=20221208; t=1685142216; x=1687734216;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6d1HxEApZ2y5Rsy25Mk/iPvMkQL/YxKASTcNKv4W/tk=;
+ b=gHHDAR4XO6EgVSG/F67Q5voDtNXa4M7o8JTfU+a7jTFoFCSWMoUN1q7OUYljpdKiAX
+ x2EEH3yHK1VnyroSxuexYnT55LUO7C5R0Fz9X8lnXzPInitxwz1fU8eMKVvtm7tdu4bH
+ neE0WkN0f4M/eOWm5KhLJblmrY2norkXWZJr/e9Gy4Yx7O+GxSF3MuxOWOAiwK+gs/P2
+ SUAtVOmLeM8Z7Kpv0Ef6QLAlQRcU23pw4eDj7iWjxK/CLQ4E0dGXFFZcM5qCK/ZOTzLG
+ wmoQoVb0Kwp+PPkxOu18WZjiP2IGSa5GgYkIWTBW4ZyysP9Gcx6YxCoXx5B7uARtCc2I
+ eDxg==
+X-Gm-Message-State: AC+VfDx28V9/f1jO84g+KCp0mPL5sHMU7/QBr60IiBhpWYVtNZZ8x9m0
+ n9XpB9EVF2Cl/fouRqkkkAEsVA==
+X-Google-Smtp-Source: ACHHUZ7gmCxuUzKFdeVsbr0+bxL9XuXh4imB/OOULLF4vf5DMxlbz4VSaBdP/fDK4gChoDa1n7ASJw==
+X-Received: by 2002:a17:902:ecc2:b0:1ac:750e:33d6 with SMTP id
+ a2-20020a170902ecc200b001ac750e33d6mr708898plh.23.1685142216088; 
+ Fri, 26 May 2023 16:03:36 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
+ ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
+ by smtp.gmail.com with ESMTPSA id
+ y15-20020a1709029b8f00b001ae0b373382sm3714123plp.198.2023.05.26.16.03.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 May 2023 16:03:35 -0700 (PDT)
+Message-ID: <f50688a6-4458-e87c-6009-67e022690b12@linaro.org>
+Date: Fri, 26 May 2023 16:03:33 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230526115908.196171-1-f.ebner@proxmox.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 3/4] target/s390x: Fix LOCFHR taking the wrong half of R2
+Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand
+ <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Mikhail Mitskevich <mitskevichmn@gmail.com>
+References: <20230526181240.1425579-1-iii@linux.ibm.com>
+ <20230526181240.1425579-4-iii@linux.ibm.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230526181240.1425579-4-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,29 +98,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 26, 2023 at 01:59:08PM +0200, Fiona Ebner wrote:
-> Currently, it is only done when the iteration finishes successfully.
-> Not cleaning up the userfaultfd write protection can lead to
-> symptoms/issues such as the process hanging in memmove or GDB not
-> being able to attach.
+On 5/26/23 11:12, Ilya Leoshkevich wrote:
+> LOCFHR should write top-to-top, but QEMU erroneously writes
+> bottom-to-top.
 > 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> Fixes: 45aa9aa3b773 ("target/s390x: Implement load-on-condition-2 insns")
+> Cc:qemu-stable@nongnu.org
+> Reported-by: Mikhail Mitskevich<mitskevichmn@gmail.com>
+> Closes:https://gitlab.com/qemu-project/qemu/-/issues/1668
+> Signed-off-by: Ilya Leoshkevich<iii@linux.ibm.com>
+> ---
+>   target/s390x/tcg/insn-data.h.inc | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> For the success case, the stuff in between the old call and new call
-> site should not depend on tracking to already be stopped, right?
-
-Yes I think so.  There's only device states to be flushed and no guest
-memory should be touched.
-
-Even if we'll touch them, since we've finished migrating all of them so
-they're already unprotected anyway (actually, even during ram save it's
-read-only here from bg thread), so not any problem I can see.
-
-Thanks,
-
--- 
-Peter Xu
-
+r~
 
