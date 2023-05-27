@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F41713523
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0AE713524
 	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 16:20:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2ulN-0007op-Pz; Sat, 27 May 2023 10:19:21 -0400
+	id 1q2ulO-0007p5-1b; Sat, 27 May 2023 10:19:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2ulJ-0007ns-1F
+ id 1q2ulJ-0007oN-ID
  for qemu-devel@nongnu.org; Sat, 27 May 2023 10:19:17 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2ulH-0002GJ-AP
- for qemu-devel@nongnu.org; Sat, 27 May 2023 10:19:16 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1b01d3bb571so7741795ad.2
- for <qemu-devel@nongnu.org>; Sat, 27 May 2023 07:19:14 -0700 (PDT)
+ id 1q2ulH-0002GT-Ls
+ for qemu-devel@nongnu.org; Sat, 27 May 2023 10:19:17 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-52cb8e5e9f5so1224644a12.0
+ for <qemu-devel@nongnu.org>; Sat, 27 May 2023 07:19:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685197153; x=1687789153;
+ d=linaro.org; s=google; t=1685197154; x=1687789154;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2PeQwKwKV8qp9CY2VpKZ0tpDcxwU9A3roabUSRDXyns=;
- b=CN5yD7Rm0sCYOj9kDa1dcUyVRp6zz8NaTKZWfzIyGTpbxaXZlVhN6VU2/hR9ASDtjv
- J3XNU52c89hcaeL2ZViidb5EzHcahp3D7Lm/hHZYCr3VFbuz4yCgG4CSu9ueFMGTmHjK
- IhuxojQp3lH3fs1N2OboqeI1OkW8jAN1uvM7dCxiVl9gqzE9HFrf164sqpXrvBSdS65C
- KZ2r5n1/vkugZuDY1cAK+hJ8dkfF/W6sDsDVdJSlk3zpjz9IwHnGwchdRPHqevWTbUJw
- QuGUC1wRvwQeiVDkkoWcHWs/P/BFFuWJCGKz/qZncLnbfUI41rYqc3PzG559fhL5L3g/
- q6vA==
+ bh=u+CMDJ9rmMCJWN+tP1xmh2RBmH8yQeZ+BBhiYDZHw0M=;
+ b=XVTQgssaL6/74jC50WNAmA023RVUrK/7NYajgEtuuVpcUiPtcI4wLpAJi9z1CGn9Fr
+ MZXOMN8yCGv4uNeVTpVAjS2JovywqO6UGPVskH6iH8noEsxUuNFzAWj0AME9iTjsSwNQ
+ JABKtnl/P/odVrQUwRcN+2dN5NGWlDAHYqSvktmiFrBibxK+AmW8yUdbw3ppLMYeAi5F
+ CLIWLIGXDuYJlT1qKmGNELI61T5dI0JBFiTHJPzUOWIrjsQDqrfI1fX/eyaDee6e+7Xh
+ NVx/1VKml/fgNK9RzROi7EGHoFVs6SGaGfY6RK8ZRMsb2l5ZLGaKWrdyeBvnfe1EZBDb
+ ingw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685197153; x=1687789153;
+ d=1e100.net; s=20221208; t=1685197154; x=1687789154;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2PeQwKwKV8qp9CY2VpKZ0tpDcxwU9A3roabUSRDXyns=;
- b=PulTmdEvV88TwhD0gcBcKrkr8NQCnH80prtl4ZfkVLm9sADnVrUahgQ15FU8iavq64
- 3D2qbUEHJf3rdlr9OjEpiRbLe3378l0KallYsXAt/k8ZopbsIQAaj+Veia8FuxGtSLmv
- f+G418xa6Pm8uiuQD0g7VRHT02WmG0+bhljExYAQkqF2MuTVGKGTjymAh5WTnJZNZy0Q
- 0uUS0SY86PnH6HdqWxr+2flqBG85Lxs4SEAF0ibFq798CdPOda8DtrzqH/HNmgr/sPzN
- DSnOE5HCt/ftbgBOO7obKjHU1SBmXZKelSoMYg7LtsWgZl6WiCp4IKNzZroiq7z+wAXH
- 6Zaw==
-X-Gm-Message-State: AC+VfDyfr+fU7djtUNNRiSaTJPTRnozMVgZbyijGXaCCkizLtkgBRiyo
- HVOWavLxd8EYmClkNl/auRZogNna6quF7dq51Yw=
-X-Google-Smtp-Source: ACHHUZ55stOFPq8971z+0yqTR2WN42ij8wud05MhmKA3akDAYzpn5jdpDA7mQjNhl6Ue1R5aNOpwjQ==
-X-Received: by 2002:a17:902:ce8b:b0:1af:c602:cd52 with SMTP id
- f11-20020a170902ce8b00b001afc602cd52mr6756596plg.67.1685197153632; 
- Sat, 27 May 2023 07:19:13 -0700 (PDT)
+ bh=u+CMDJ9rmMCJWN+tP1xmh2RBmH8yQeZ+BBhiYDZHw0M=;
+ b=Bigr2ZdraL0ESl+McLpwmpQHQzDkRZZqxiO2pR0ijszfSt5TFoIaMGkt4LupylQNV9
+ DGH0O6N7NjbEygQ3coyqIvUMEbSUd8GbukD4fy0hfK7oCngarJ9bDklV8piLgwuw82Ml
+ Rep5mNdFqxZhUaaMDZdMxku+pFREGRXqITFwntfcN/C1TrOPa4KMQt+WE/zJxA/nWqX7
+ BU3QwGI3sbGF37W6PjIBflOnlpvf9HqLUQUmnfdlaMDl0D0Lftk/dJcwY3Z5W3P0aIjh
+ QQ/SoL+XBH5eho7NDjrhrzGx11OH9/g6g9iUFy/hUf/MmKZ4mEDdGbof8HwegAwzn4sQ
+ d2yg==
+X-Gm-Message-State: AC+VfDwBWxE4/nkzhdNnfc/5t8pxgi3Rnl88zFhZ2P29XDBn5oFrtvUN
+ zMTZXzdRHAsptNyxL+AXnzjMd5TjrpyYq+hOjBA=
+X-Google-Smtp-Source: ACHHUZ5N09oDA2RVtWir1JRxC+ljpnnN/NeLl0avt0ln6jxCSTWvdh0zET6YpcZjzZkDVDbW5QmeSw==
+X-Received: by 2002:a17:902:d4ce:b0:1b0:34d5:1bc7 with SMTP id
+ o14-20020a170902d4ce00b001b034d51bc7mr204687plg.20.1685197154469; 
+ Sat, 27 May 2023 07:19:14 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:be31:c162:a57e:7431])
  by smtp.gmail.com with ESMTPSA id
  j20-20020a170902759400b001a988a71617sm1258992pll.192.2023.05.27.07.19.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 May 2023 07:19:13 -0700 (PDT)
+ Sat, 27 May 2023 07:19:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: christoph.muellner@vrull.eu,
 	alex.bennee@linaro.org
-Subject: [PATCH 2/4] tests/tcg/alpha: Add test for cvttq
-Date: Sat, 27 May 2023 07:19:08 -0700
-Message-Id: <20230527141910.1885950-3-richard.henderson@linaro.org>
+Subject: [PATCH 3/4] target/alpha: Use float64_to_int64_modulo for CVTTQ
+Date: Sat, 27 May 2023 07:19:09 -0700
+Message-Id: <20230527141910.1885950-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230527141910.1885950-1-richard.henderson@linaro.org>
 References: <20230527141910.1885950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,113 +92,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test for invalid, integer overflow, and inexact.
-Test for proper result, modulo 2**64.
+For the most part we can use the new generic routine,
+though exceptions need some post-processing to sort
+invalid from integer overflow.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tests/tcg/alpha/test-cvttq.c    | 78 +++++++++++++++++++++++++++++++++
- tests/tcg/alpha/Makefile.target |  2 +-
- 2 files changed, 79 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/alpha/test-cvttq.c
+ target/alpha/fpu_helper.c | 85 +++++++++------------------------------
+ 1 file changed, 18 insertions(+), 67 deletions(-)
 
-diff --git a/tests/tcg/alpha/test-cvttq.c b/tests/tcg/alpha/test-cvttq.c
-new file mode 100644
-index 0000000000..d1ad995312
---- /dev/null
-+++ b/tests/tcg/alpha/test-cvttq.c
-@@ -0,0 +1,78 @@
-+#include <stdio.h>
-+
-+#define FPCR_SUM                (1UL << 63)
-+#define FPCR_INED               (1UL << 62)
-+#define FPCR_UNFD               (1UL << 61)
-+#define FPCR_UNDZ               (1UL << 60)
-+#define FPCR_DYN_SHIFT          58
-+#define FPCR_DYN_CHOPPED        (0UL << FPCR_DYN_SHIFT)
-+#define FPCR_DYN_MINUS          (1UL << FPCR_DYN_SHIFT)
-+#define FPCR_DYN_NORMAL         (2UL << FPCR_DYN_SHIFT)
-+#define FPCR_DYN_PLUS           (3UL << FPCR_DYN_SHIFT)
-+#define FPCR_DYN_MASK           (3UL << FPCR_DYN_SHIFT)
-+#define FPCR_IOV                (1UL << 57)
-+#define FPCR_INE                (1UL << 56)
-+#define FPCR_UNF                (1UL << 55)
-+#define FPCR_OVF                (1UL << 54)
-+#define FPCR_DZE                (1UL << 53)
-+#define FPCR_INV                (1UL << 52)
-+#define FPCR_OVFD               (1UL << 51)
-+#define FPCR_DZED               (1UL << 50)
-+#define FPCR_INVD               (1UL << 49)
-+#define FPCR_DNZ                (1UL << 48)
-+#define FPCR_DNOD               (1UL << 47)
-+#define FPCR_STATUS_MASK        (FPCR_IOV | FPCR_INE | FPCR_UNF \
-+                                 | FPCR_OVF | FPCR_DZE | FPCR_INV)
-+
-+static long test_cvttq(long *ret_e, double d)
-+{
-+    unsigned long reset = (FPCR_INED | FPCR_UNFD | FPCR_OVFD | FPCR_DZED |
-+                           FPCR_INVD | FPCR_DYN_NORMAL);
-+    long r, e;
-+
-+    asm("excb\n\t"
-+        "mt_fpcr %3\n\t"
-+        "excb\n\t"
-+        "cvttq/svic %2, %0\n\t"
-+        "excb\n\t"
-+        "mf_fpcr %1\n\t"
-+        "excb\n\t"
-+        : "=f"(r), "=f"(e)
-+        : "f"(d), "f"(reset));
-+
-+    *ret_e = e & FPCR_STATUS_MASK;
-+    return r;
-+}
-+
-+int main (void)
-+{
-+    static const struct {
-+        double d;
-+        long r;
-+        long e;
-+    } T[] = {
-+        {  1.0,  1, 0 },
-+        { -1.0, -1, 0 },
-+        {  1.5,  1, FPCR_INE },
-+        {  0x1.0p32,   0x0000000100000000ul, 0 },
-+        { -0x1.0p63,   0x8000000000000000ul, 0 },
-+        {  0x1.0p63,   0x8000000000000000ul, FPCR_IOV | FPCR_INE },
-+        {  0x1.0p64,   0x0000000000000000ul, FPCR_IOV | FPCR_INE },
-+        {  0x1.cccp64, 0xccc0000000000000ul, FPCR_IOV | FPCR_INE },
-+        { __builtin_inf(), 0, FPCR_INV },
-+        { __builtin_nan(""), 0, FPCR_INV },
-+    };
-+
-+    int i, err = 0;
-+
-+    for (i = 0; i < sizeof(T)/sizeof(T[0]); i++) {
-+        long e, r = test_cvttq(&e, T[i].d);
-+
-+        if (r != T[i].r || e != T[i].e) {
-+            printf("Fail %a: expect (%016lx : %04lx) got (%016lx : %04lx)\n",
-+                   T[i].d, T[i].r, T[i].e >> 48, r, e >> 48);
-+            err = 1;
-+        }
-+    }
-+    return err;
-+}
-diff --git a/tests/tcg/alpha/Makefile.target b/tests/tcg/alpha/Makefile.target
-index a585080328..b94500a7d9 100644
---- a/tests/tcg/alpha/Makefile.target
-+++ b/tests/tcg/alpha/Makefile.target
-@@ -5,7 +5,7 @@
- ALPHA_SRC=$(SRC_PATH)/tests/tcg/alpha
- VPATH+=$(ALPHA_SRC)
+diff --git a/target/alpha/fpu_helper.c b/target/alpha/fpu_helper.c
+index 3ff8bb456d..63d9e9ce39 100644
+--- a/target/alpha/fpu_helper.c
++++ b/target/alpha/fpu_helper.c
+@@ -453,78 +453,29 @@ uint64_t helper_cvtqs(CPUAlphaState *env, uint64_t a)
  
--ALPHA_TESTS=hello-alpha test-cond test-cmov test-ovf
-+ALPHA_TESTS=hello-alpha test-cond test-cmov test-ovf test-cvttq
- TESTS+=$(ALPHA_TESTS)
+ static uint64_t do_cvttq(CPUAlphaState *env, uint64_t a, int roundmode)
+ {
+-    uint64_t frac, ret = 0;
+-    uint32_t exp, sign, exc = 0;
+-    int shift;
++    float64 fa;
++    int64_t ret;
++    uint32_t exc;
  
- test-cmov: EXTRA_CFLAGS=-DTEST_CMOV
+-    sign = (a >> 63);
+-    exp = (uint32_t)(a >> 52) & 0x7ff;
+-    frac = a & 0xfffffffffffffull;
++    fa = t_to_float64(a);
++    ret = float64_to_int64_modulo(fa, roundmode, &FP_STATUS);
+ 
+-    if (exp == 0) {
+-        if (unlikely(frac != 0) && !env->fp_status.flush_inputs_to_zero) {
+-            goto do_underflow;
+-        }
+-    } else if (exp == 0x7ff) {
+-        exc = FPCR_INV;
+-    } else {
+-        /* Restore implicit bit.  */
+-        frac |= 0x10000000000000ull;
++    exc = get_float_exception_flags(&FP_STATUS);
++    if (unlikely(exc)) {
++        set_float_exception_flags(0, &FP_STATUS);
+ 
+-        shift = exp - 1023 - 52;
+-        if (shift >= 0) {
+-            /* In this case the number is so large that we must shift
+-               the fraction left.  There is no rounding to do.  */
+-            if (shift < 64) {
+-                ret = frac << shift;
+-            }
+-            /* Check for overflow.  Note the special case of -0x1p63.  */
+-            if (shift >= 11 && a != 0xC3E0000000000000ull) {
++        /* We need to massage the resulting exceptions. */
++        if (exc & float_flag_invalid_cvti) {
++            /* Overflow, either normal or infinity. */
++            if (float64_is_infinity(fa)) {
++                exc = FPCR_INV;
++            } else {
+                 exc = FPCR_IOV | FPCR_INE;
+             }
+-        } else {
+-            uint64_t round;
+-
+-            /* In this case the number is smaller than the fraction as
+-               represented by the 52 bit number.  Here we must think
+-               about rounding the result.  Handle this by shifting the
+-               fractional part of the number into the high bits of ROUND.
+-               This will let us efficiently handle round-to-nearest.  */
+-            shift = -shift;
+-            if (shift < 63) {
+-                ret = frac >> shift;
+-                round = frac << (64 - shift);
+-            } else {
+-                /* The exponent is so small we shift out everything.
+-                   Leave a sticky bit for proper rounding below.  */
+-            do_underflow:
+-                round = 1;
+-            }
+-
+-            if (round) {
+-                exc = FPCR_INE;
+-                switch (roundmode) {
+-                case float_round_nearest_even:
+-                    if (round == (1ull << 63)) {
+-                        /* Fraction is exactly 0.5; round to even.  */
+-                        ret += (ret & 1);
+-                    } else if (round > (1ull << 63)) {
+-                        ret += 1;
+-                    }
+-                    break;
+-                case float_round_to_zero:
+-                    break;
+-                case float_round_up:
+-                    ret += 1 - sign;
+-                    break;
+-                case float_round_down:
+-                    ret += sign;
+-                    break;
+-                }
+-            }
+-        }
+-        if (sign) {
+-            ret = -ret;
++        } else if (exc & float_flag_invalid) {
++            exc = FPCR_INV;
++        } else if (exc & float_flag_inexact) {
++            exc = FPCR_INE;
+         }
+     }
+     env->error_code = exc;
 -- 
 2.34.1
 
