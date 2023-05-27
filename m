@@ -2,52 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27037135CE
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 18:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 669767135F7
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 20:02:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2x6p-0000pA-06; Sat, 27 May 2023 12:49:39 -0400
+	id 1q2yE3-0001Qn-0z; Sat, 27 May 2023 14:01:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q2x6m-0000ob-2N
- for qemu-devel@nongnu.org; Sat, 27 May 2023 12:49:36 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q2x6k-0001OU-3T
- for qemu-devel@nongnu.org; Sat, 27 May 2023 12:49:35 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id C636E74638A;
- Sat, 27 May 2023 18:49:27 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 8330774633D; Sat, 27 May 2023 18:49:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 816C9745720;
- Sat, 27 May 2023 18:49:27 +0200 (CEST)
-Date: Sat, 27 May 2023 18:49:27 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Paolo Bonzini <pbonzini@redhat.com>
-cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, thuth@redhat.com, 
- berrange@redhat.com
-Subject: Re: [PATCH 2/5] configure: rename --enable-pypi to --enable-download, 
- control subprojects too
-In-Reply-To: <20230527092851.705884-3-pbonzini@redhat.com>
-Message-ID: <923f7d6b-73c8-eeb0-2e3c-1c129126a950@eik.bme.hu>
-References: <20230527092851.705884-1-pbonzini@redhat.com>
- <20230527092851.705884-3-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q2yE0-0001QZ-SW; Sat, 27 May 2023 14:01:09 -0400
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1q2yDz-0005KJ-20; Sat, 27 May 2023 14:01:08 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-199dd37f0e4so1730601fac.2; 
+ Sat, 27 May 2023 11:01:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685210465; x=1687802465;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LDhFMCWVes8QbcIwN9qyIOXMIG0VumITnbDZGMYvGbE=;
+ b=eRanV8dSm1QfhCwYGIUYji0C/9DQ8BW5eShZkMsh6Cruiv4CvAvxiRT88tGWUJxhjz
+ fxoHXJKr0OzyPURwSIz63gCefBKEyudLgXzseG6WaoJ+bBLBUwc+Iyx/TzDHfMnjoPsm
+ JXK49EQW5jMZMzJVVYwvil1+8nVq8LSx+c42Wp6M32Psh4PidbtNNgNLYeX2qlhlhgq4
+ eg0j9RuETD0OVxqChGqdms4HTz54BDxhn93dZAJPLYgez7hW/xh6rOBxZkKjvZ8RfgZi
+ JlUmlYLl/omsQr7GttHJ3TKCvVywb46PnwgpAAORbveA4T8hw/heLcpkEJMvKIgf8uzT
+ XMzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685210465; x=1687802465;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LDhFMCWVes8QbcIwN9qyIOXMIG0VumITnbDZGMYvGbE=;
+ b=ZWJmv5RTFK5eygbpMkHZXk8XKXGARBhgnAQBiam+sBclopYFN25hflNlJlElPWBZOi
+ s5DOvJw4L/c58iHvZQTbb8v1ESY1uk2zdiJtYrHvRgz8hOK+Yqhe1+5b2csUm3xsle0H
+ ovv7vhuzeEP5yRgmw2c2J5uLNIjmp5BXlZEOkkne2e80brejztBK8sYz5Oxi5apbxFoL
+ NKeG1XnxEFk5dGIAbLoQCj8yskKG8g0jRvlb4JstTwN61EquMVAGWlKgyebpJgfzq7I8
+ PemGn+aPbzZ64mypn4QjZidqT+/Z9jpm2YcCjawBst5AGx3QTDjxmhl756TM0Ib9jUxR
+ nW5w==
+X-Gm-Message-State: AC+VfDwAzZlbsUkvoZiuHMSahDfKQDPPeyNyNEdWhvP1H+BXHDWTthUF
+ czvwWLTUkq7TYtkv7X/QaAo=
+X-Google-Smtp-Source: ACHHUZ7BIIfVVg+DrBrn4+cwATWcPJT5b12nkA6wrKyvxBQPa4CFBtVjpPmFjAlRdosFbo5mdQsMIg==
+X-Received: by 2002:a05:6870:e282:b0:196:51e7:6454 with SMTP id
+ v2-20020a056870e28200b0019651e76454mr2979155oad.51.1685210465315; 
+ Sat, 27 May 2023 11:01:05 -0700 (PDT)
+Received: from [192.168.68.107] (200-162-225-121.static-corp.ajato.com.br.
+ [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
+ dy27-20020a056870c79b00b0019a3bbeeb34sm2980729oab.40.2023.05.27.11.01.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 27 May 2023 11:01:04 -0700 (PDT)
+Message-ID: <e714b0bc-ef68-0183-ac0f-84bfaec1b713@gmail.com>
+Date: Sat, 27 May 2023 15:00:58 -0300
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1077911004-1685206167=:93563"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 3/5] hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Paul Burton <paulburton@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Aurelien Jarno
+ <aurelien@aurel32.net>, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
+ <hpoussin@reactos.org>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-ppc@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230304114043.121024-1-shentey@gmail.com>
+ <20230304114043.121024-4-shentey@gmail.com>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230304114043.121024-4-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,113 +105,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-1077911004-1685206167=:93563
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
 
-On Sat, 27 May 2023, Paolo Bonzini wrote:
-> The behavior of --{enable,disable}-pypi is similar to that of
-> -Dwrapmode={default,nodownload} respectively.  In particular,
-> in both cases a feature needs to be explicitly enabled for the
-> dependency to be downloaded.
->
-> So, use a single option to control both cases.  Now, --enable-slirp
-> will trigger cloning and building of libslirp if the .pc file
-> is not found on the machine.
->
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On 3/4/23 08:40, Bernhard Beschow wrote:
+> Commit cef2e7148e32 ("hw/isa/i82378: Remove intermediate IRQ forwarder")
+> passes s->cpu_intr to i8259_init() in i82378_realize() directly. However, s-
+>> cpu_intr isn't initialized yet since that happens after the south bridge's
+> pci_realize_and_unref() in board code. Fix this by initializing s->cpu_intr
+> before realizing the south bridge.
+> 
+> Fixes: cef2e7148e32 ("hw/isa/i82378: Remove intermediate IRQ forwarder")
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 > ---
-> configure              | 17 +++++++----------
-> subprojects/.gitignore |  3 +++
-> 2 files changed, 10 insertions(+), 10 deletions(-)
-> create mode 100644 subprojects/.gitignore
->
-> diff --git a/configure b/configure
-> index 370e038e63d7..2f908660e4f1 100755
-> --- a/configure
-> +++ b/configure
-> @@ -266,7 +266,7 @@ bsd_user=""
-> plugins="$default_feature"
-> ninja=""
-> python=
-> -pypi="enabled"
-> +download="enabled"
 
-Is this the default? Can it default to disabled so it won't download 
-anytihng unless asked to do that? By default it should just report if 
-something is missing and let the users decide how they want to install it.
 
-Regards,
-BALATON Zoltan
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 
-> bindir="bin"
-> skip_meson=no
-> vfio_user_server="disabled"
-> @@ -756,9 +756,9 @@ for opt do
->   --with-git-submodules=*)
->       git_submodules_action="$optarg"
->   ;;
-> -  --disable-pypi) pypi="disabled"
-> +  --disable-download) download="disabled"
->   ;;
-> -  --enable-pypi) pypi="enabled"
-> +  --enable-download) download="enabled"
->   ;;
->   --enable-plugins) if test "$mingw32" = "yes"; then
->                         error_exit "TCG plugins not currently supported on Windows platforms"
-> @@ -962,7 +962,7 @@ python="$(command -v "$python")"
-> # - venv is allowed to use system packages;
-> # - all setup can be performed offline;
-> # - missing packages may be fetched from PyPI,
-> -#   unless --disable-pypi is passed.
-> +#   unless --disable-download is passed.
-> # - pip is not installed into the venv when possible,
-> #   but ensurepip is called as a fallback when necessary.
->
-> @@ -979,7 +979,7 @@ python="$python -B"
-> mkvenv="$python ${source_path}/python/scripts/mkvenv.py"
->
-> mkvenv_flags=""
-> -if test "$pypi" = "enabled" ; then
-> +if test "$download" = "enabled" ; then
->     mkvenv_flags="--online"
-> fi
->
-> @@ -1002,7 +1002,7 @@ meson="$(cd pyvenv/bin; pwd)/meson"
-> # Conditionally ensure Sphinx is installed.
->
-> mkvenv_flags=""
-> -if test "$pypi" = "enabled" -a "$docs" = "enabled" ; then
-> +if test "$download" = "enabled" -a "$docs" = "enabled" ; then
->     mkvenv_flags="--online"
-> fi
->
-> @@ -1942,11 +1942,8 @@ if test "$skip_meson" = no; then
->
->   rm -rf meson-private meson-info meson-logs
->
-> -  # Prevent meson from automatically downloading wrapped subprojects when missing.
-> -  # You can use 'meson subprojects download' before running configure.
-> -  meson_option_add "--wrap-mode=nodownload"
-> -
->   # Built-in options
-> +  test "$download" = "disabled" && meson_option_add "--wrap-mode=nodownload"
->   test "$bindir" != "bin" && meson_option_add "-Dbindir=$bindir"
->   test "$default_feature" = no && meson_option_add -Dauto_features=disabled
->   test "$static" = yes && meson_option_add -Dprefer_static=true
-> diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-> new file mode 100644
-> index 000000000000..7560ebb0b1a0
-> --- /dev/null
-> +++ b/subprojects/.gitignore
-> @@ -0,0 +1,3 @@
-> +/packagecache
+And queued in ppc-next. Thanks,
+
+
+Daniel
+
+
+
+>   hw/ppc/prep.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+> index d00280c0f8..cfa47c1e44 100644
+> --- a/hw/ppc/prep.c
+> +++ b/hw/ppc/prep.c
+> @@ -270,9 +270,11 @@ static void ibm_40p_init(MachineState *machine)
+>       }
+>   
+>       /* PCI -> ISA bridge */
+> -    i82378_dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(11, 0), "i82378"));
+> +    i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
+>       qdev_connect_gpio_out(i82378_dev, 0,
+>                             qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
+> +    qdev_realize_and_unref(i82378_dev, BUS(pci_bus), &error_fatal);
 > +
-> +/slirp
->
---3866299591-1077911004-1685206167=:93563--
+>       sysbus_connect_irq(pcihost, 0, qdev_get_gpio_in(i82378_dev, 15));
+>       isa_bus = ISA_BUS(qdev_get_child_bus(i82378_dev, "isa.0"));
+>   
 
