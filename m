@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64787130D6
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 02:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DBC7132AB
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 07:49:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2hc6-0007uE-12; Fri, 26 May 2023 20:16:54 -0400
+	id 1q2mmX-0005vB-OB; Sat, 27 May 2023 01:48:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2hc4-0007tq-67
- for qemu-devel@nongnu.org; Fri, 26 May 2023 20:16:52 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q2hc2-0001Bu-D9
- for qemu-devel@nongnu.org; Fri, 26 May 2023 20:16:51 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1ae851f2a7dso20467595ad.0
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 17:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685146608; x=1687738608;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uBzFWJ42rTjH4iuxU0aea0aikK+z7L4cBJsGvXo3a78=;
- b=TdezumPchJfRwgVaJHfZBSpPyVqGUXjte4/R4HP4a6rt24r0h//gFCWSbgHiS79h/u
- /AfWv/fo56y583/wmyCN16vKIRrxHC1xpfLEwbWujNDplkvB4rueBVE9dX7p5B0OguZA
- uMFV6PaB3ghXNZJ/rJGOd1EW4CaMmr95mFoE1jzYC4mfklfRptqgExIn8puyDonDI/DW
- lAJmi3cc0+pbTBU+lXBOR/DXikx4TFUhs5FlC2XJofJSg1oFznX5F6gBra9qs/No3wB8
- 9BdnOqmwut7wH7xe8SEJYNYCwHwxx2itS8u2/cumFCwF4VE3huQN+PWJjScVnM127ROy
- ktJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685146608; x=1687738608;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uBzFWJ42rTjH4iuxU0aea0aikK+z7L4cBJsGvXo3a78=;
- b=lhwgG86JInQPxNLxcH5PwIUUaLnAhAY4I2HRXSciXPXEVFQfognw6UwJ2lOP/RsSPF
- 9i+edIhAUNf0E+FjUJG940nE8sWH3WrEUnHhb6mnHpzTZlIDyk0lqd3vmHGr/K491gk+
- 5VE9Sq/mn+BuRPJIE1J6MgSzEjMe2f06+ASEWUC9XPycmJTIEhoc0Zr5x6nAp1LyhXry
- xmXoYIoU1Tz4VTUIBlqMJ7tmWywlXh3do2iT0oWvcQLMTvMnRHoONlj124LeaiBJPpv/
- cL6dkJsZvDImAMWByuwkttsAGQQhskdMxy1YIqAKTRVJUhb7XZWExFtOgc5dPUWMLkee
- szSQ==
-X-Gm-Message-State: AC+VfDwaD/RtR/Fdqi0uJu23O2EOxjZjKmr6LYFbiPmKYq13eiGiXJlK
- BzbDIO/ZHQmZw6gABU7U0bMStQ==
-X-Google-Smtp-Source: ACHHUZ5ULpqVgyn14BBKckiI39Ly/RQUPryhgQjIt15SpMLYpRsicl4AjIG/WIzKC1mrNGwXWbiKog==
-X-Received: by 2002:a17:902:ecc2:b0:1ac:750e:33d6 with SMTP id
- a2-20020a170902ecc200b001ac750e33d6mr936605plh.23.1685146608542; 
- Fri, 26 May 2023 17:16:48 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
- ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
- by smtp.gmail.com with ESMTPSA id
- o18-20020a170902d4d200b001a1d553de0fsm3740391plg.271.2023.05.26.17.16.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 17:16:48 -0700 (PDT)
-Message-ID: <87334f23-1f01-871b-b7ba-7eb81e43ea84@linaro.org>
-Date: Fri, 26 May 2023 17:16:46 -0700
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2mmU-0005v2-ER
+ for qemu-devel@nongnu.org; Sat, 27 May 2023 01:47:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2mmS-0008VJ-Iu
+ for qemu-devel@nongnu.org; Sat, 27 May 2023 01:47:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685166474;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=x2cLSz5x0dwcnYHsCNtEwKjeqH64D25OQDGG7RfrIVk=;
+ b=Y/7x/ZTQL8QY+Y+Px2PaaqM0TfgYES+3qtdePEeLEIcAjItjVLnWabflwf7NVanrx+/DsE
+ T0/s/TJs5XOajtarldWWPiWZpqK2MrqQZleWuQims1wyp2rU31c0a2TLpzULWZz8HEbFRd
+ 1VBchGtutjS1fCiJC5QNByEjBKkzb60=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-641-Rlj9xgpBPIaNmROQVmAEhQ-1; Sat, 27 May 2023 01:47:48 -0400
+X-MC-Unique: Rlj9xgpBPIaNmROQVmAEhQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 83D87800B2A;
+ Sat, 27 May 2023 05:47:47 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 08421140E954;
+ Sat, 27 May 2023 05:47:47 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E9C0B21E692E; Sat, 27 May 2023 07:47:45 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: <qemu-devel@nongnu.org>,  Michael Tsirkin <mst@redhat.com>,  Fan Ni
+ <fan.ni@samsung.com>,  <linux-cxl@vger.kernel.org>,
+ <linuxarm@huawei.com>,  Ira Weiny <ira.weiny@intel.com>,  Michael Roth
+ <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Dave
+ Jiang <dave.jiang@intel.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,  Mike Maslenkin
+ <mike.maslenkin@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v8 5/7] hw/cxl/events: Add injection of General Media
+ Events
+References: <20230526171304.1613-1-Jonathan.Cameron@huawei.com>
+ <20230526171304.1613-6-Jonathan.Cameron@huawei.com>
+Date: Sat, 27 May 2023 07:47:45 +0200
+In-Reply-To: <20230526171304.1613-6-Jonathan.Cameron@huawei.com> (Jonathan
+ Cameron's message of "Fri, 26 May 2023 18:13:02 +0100")
+Message-ID: <87y1la496m.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/12] (Mostly) build system patches for 2023-05-26
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20230526160824.655279-1-pbonzini@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230526160824.655279-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,29 +88,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/26/23 09:08, Paolo Bonzini wrote:
-> The following changes since commit a3cb6d5004ff638aefe686ecd540718a793bd1b1:
-> 
->    Merge tag 'pull-tcg-20230525' of https://gitlab.com/rth7680/qemu into staging (2023-05-25 11:11:52 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/bonzini/qemu.git tags/for-upstream
-> 
-> for you to fetch changes up to b17bbf835c8998e93fd99b06164f1d63843fe8c9:
-> 
->    configure: ignore --make (2023-05-26 12:36:20 +0200)
-> 
-> ----------------------------------------------------------------
-> * build system fixes and cleanups
-> * use subproject() for the dtc and keycodemapdb submodules
-> * fix virtio memory leak
-> * update slirp.wrap to latest commit in the master branch
+Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+> From: Ira Weiny <ira.weiny@intel.com>
+>
+> To facilitate testing provide a QMP command to inject a general media
+> event.  The event can be added to the log specified.
+>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  qapi/cxl.json               |  74 ++++++++++++++++++++++++
+>  include/hw/cxl/cxl_events.h |  20 +++++++
+>  hw/mem/cxl_type3.c          | 111 ++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3_stubs.c    |  10 ++++
+>  4 files changed, 215 insertions(+)
+>
+> diff --git a/qapi/cxl.json b/qapi/cxl.json
+> index ed1c7eea3a..7f0b432767 100644
+> --- a/qapi/cxl.json
+> +++ b/qapi/cxl.json
 
+[...]
 
-r~
+> +##
+> +# @cxl-inject-general-media-event:
+> +#
+> +# Inject an event record for a General Media Event (CXL r3.0
+> +# 8.2.9.2.1.1).  This event type is reported via one of the event logs
+> +# specified via the log parameter.
+> +#
+> +# @path: CXL type 3 device canonical QOM path
+> +#
+> +# @log: event log to add the event to
+> +#
+> +# @flags: Event Record Flags.  See CXL r3.0 Table 8-42 Common Event
+> +#     Record Format, Event Record Flags for subfield definitions.
+> +#
+> +# @dpa: Device Physical Address (relative to @path device).  Note
+> +#     lower bits include some flags. See CXL r3.0 Table 8-43 General
 
+Two spaces between sentences for consistency, please.
+
+> +#     Media Event Record, Physical Address.
+> +#
+
+[...]
 
 
