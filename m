@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E357132E0
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 09:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFAD7132F6
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 09:24:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2nzw-0004yt-FN; Sat, 27 May 2023 03:05:56 -0400
+	id 1q2oG8-00079j-HW; Sat, 27 May 2023 03:22:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2nzZ-0004yA-A6
- for qemu-devel@nongnu.org; Sat, 27 May 2023 03:05:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2oG6-00079E-Ht
+ for qemu-devel@nongnu.org; Sat, 27 May 2023 03:22:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2nzW-0006aX-UG
- for qemu-devel@nongnu.org; Sat, 27 May 2023 03:05:33 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2oG4-0001pi-9e
+ for qemu-devel@nongnu.org; Sat, 27 May 2023 03:22:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685171129;
+ s=mimecast20190719; t=1685172154;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ZsSaGIZLvCdOpmxVUUi3JSfYTLoxMAqjgExk2RD+pd0=;
- b=AJqYLpII1tdVL+BdoR/Qma5WWxTbx23HFCt3dk6oto5sxZpf4z4hIa/Hv0FcG6+QF3hiYR
- W0bOGAryoa7ey4PIYEpxstXaH91HoMB/vzOQmv4M3U+uhT+bwU9rO9SpXOFFJM2nEW2e++
- W5v9arVXZxhBfIveei8ZTcEg50rHYfQ=
+ bh=OvnOz0OB+ZdbMk3qkycr+oGenXytAsdOZKGJtwfWv04=;
+ b=SLTY0AmeZ9rvMMzB5ocPuegy0TDSOSTbHvdi9eLMOblscJ/incwgSxoHL3ZDsQsHrncSO4
+ iZFYfuqa6sXh/tGUkaMYZukblIRoPXA4s+z2IazFG4Z7f6wKFyedSeZqgWoISozjIHJPPp
+ /Ru15UkuNDeSo+EL62/36Yk9rdHoE1w=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-651-AwjCJUEvP2GFkklCIITl5Q-1; Sat, 27 May 2023 03:05:25 -0400
-X-MC-Unique: AwjCJUEvP2GFkklCIITl5Q-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-550-qvn0lRejMfWi_HXN24FkxA-1; Sat, 27 May 2023 03:22:32 -0400
+X-MC-Unique: qvn0lRejMfWi_HXN24FkxA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE929185A78B;
- Sat, 27 May 2023 07:05:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3EB9D80013A;
+ Sat, 27 May 2023 07:22:32 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 91B1920296C6;
- Sat, 27 May 2023 07:05:24 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 195DF492B00;
+ Sat, 27 May 2023 07:22:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8820421E692E; Sat, 27 May 2023 09:05:23 +0200 (CEST)
+ id B3B9B21E692E; Sat, 27 May 2023 09:22:30 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Andrei Gudkov <gudkov.andrei@huawei.com>
-Cc: <qemu-devel@nongnu.org>,  <eduardo@habkost.net>,
- <marcel.apfelbaum@gmail.com>,  <philmd@linaro.org>,
- <wangyanan55@huawei.com>,  <eblake@redhat.com>
-Subject: Re: [PATCH] [query-memory-size-summary] Report page size
-References: <3200757e8218f65f873e79ab84a4b8382fbfa099.1684483058.git.gudkov.andrei@huawei.com>
- <87jzwwo3yj.fsf@pond.sub.org>
-Date: Sat, 27 May 2023 09:05:23 +0200
-In-Reply-To: <87jzwwo3yj.fsf@pond.sub.org> (Markus Armbruster's message of
- "Thu, 25 May 2023 16:55:48 +0200")
-Message-ID: <87leha1cgc.fsf@pond.sub.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>,  qemu-devel@nongnu.org,
+ philmd@linaro.org,  wangyanan55@huawei.com,  pbonzini@redhat.com,  Peter
+ Maydell <peter.maydell@linaro.org>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>
+Subject: Re: The madness of ad hoc special IDs
+References: <20230522131717.3780533-1-imammedo@redhat.com>
+ <877csz6xgd.fsf@pond.sub.org>
+ <0d4d72b3-4b21-d371-7d15-bb36b33bbbc4@redhat.com>
+Date: Sat, 27 May 2023 09:22:30 +0200
+In-Reply-To: <0d4d72b3-4b21-d371-7d15-bb36b33bbbc4@redhat.com> (Thomas Huth's
+ message of "Tue, 23 May 2023 15:06:40 +0200")
+Message-ID: <87353i1bnt.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,12 +83,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-One more thing: the convention for patch subjects is
+Thomas Huth <thuth@redhat.com> writes:
 
-    subsystem: purpose
+> On 23/05/2023 14.31, Markus Armbruster wrote:
+> ...
+>> To stop creating more moles, we need to reserve IDs for the system's
+>> use, and let the system pick only reserved IDs going forward.
+>
+> Just something to add here: We already have a function for generating
+> internal IDs, the id_generate() function in util/id.c ... our
+> convention is that we use "#" as prefix for those, so for new code
+> (which is not affected by migration backward compatibility problems),
+> we should maybe take care of always using that prefix for internal
+> IDs, too.
 
-Suggest
-
-    qmp: Report page size in query-memory-size-summary
+Valid point.
 
 
