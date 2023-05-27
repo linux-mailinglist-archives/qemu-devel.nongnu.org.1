@@ -2,86 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669767135F7
+	by mail.lfdr.de (Postfix) with ESMTPS id 7770A7135F8
 	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 20:02:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2yE3-0001Qn-0z; Sat, 27 May 2023 14:01:11 -0400
+	id 1q2yEW-0001Wm-L8; Sat, 27 May 2023 14:01:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q2yE0-0001QZ-SW; Sat, 27 May 2023 14:01:09 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ id 1q2yEQ-0001Uc-Fm; Sat, 27 May 2023 14:01:35 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q2yDz-0005KJ-20; Sat, 27 May 2023 14:01:08 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-199dd37f0e4so1730601fac.2; 
- Sat, 27 May 2023 11:01:06 -0700 (PDT)
+ id 1q2yEH-0005NA-PX; Sat, 27 May 2023 14:01:34 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6af8127031cso796147a34.2; 
+ Sat, 27 May 2023 11:01:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685210465; x=1687802465;
+ d=gmail.com; s=20221208; t=1685210484; x=1687802484;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=LDhFMCWVes8QbcIwN9qyIOXMIG0VumITnbDZGMYvGbE=;
- b=eRanV8dSm1QfhCwYGIUYji0C/9DQ8BW5eShZkMsh6Cruiv4CvAvxiRT88tGWUJxhjz
- fxoHXJKr0OzyPURwSIz63gCefBKEyudLgXzseG6WaoJ+bBLBUwc+Iyx/TzDHfMnjoPsm
- JXK49EQW5jMZMzJVVYwvil1+8nVq8LSx+c42Wp6M32Psh4PidbtNNgNLYeX2qlhlhgq4
- eg0j9RuETD0OVxqChGqdms4HTz54BDxhn93dZAJPLYgez7hW/xh6rOBxZkKjvZ8RfgZi
- JlUmlYLl/omsQr7GttHJ3TKCvVywb46PnwgpAAORbveA4T8hw/heLcpkEJMvKIgf8uzT
- XMzg==
+ bh=Y7wzSVRCxMJqVf9oOejwUNkyicyMFFsaeLKC1JSMlGE=;
+ b=eEq3BC8n8jWgPpHKfBkQXMfZuNfyQKwNxkLpbu/zUM4I64ac2GDx9q1kfOBiCgQDmy
+ s6WQLNm+LpxLInqvHl0mztzK0hQF8XORTY+iUUxjplbiZ6bx9LTAKIBIw0/b1Ndcgdhj
+ brOEAShd+vEXtC+7M4EK5c45Iode6bAWPjijcHXTYdVtvlF3xNEXF3CDjTGkAIRCLs/Z
+ aUpY9kFqEo1AM4WWtCUXRuAcSmiOPWA/4BFVhXK7LPqNu4QIicFKzIbnM0uv31tZr3sE
+ Qwrq6to2q/49VM+2MurE94EGUruKnxlWrGVlAyhvtOqGoarTLT5/EPKdNjNrSakneFVu
+ ZX+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685210465; x=1687802465;
+ d=1e100.net; s=20221208; t=1685210484; x=1687802484;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LDhFMCWVes8QbcIwN9qyIOXMIG0VumITnbDZGMYvGbE=;
- b=ZWJmv5RTFK5eygbpMkHZXk8XKXGARBhgnAQBiam+sBclopYFN25hflNlJlElPWBZOi
- s5DOvJw4L/c58iHvZQTbb8v1ESY1uk2zdiJtYrHvRgz8hOK+Yqhe1+5b2csUm3xsle0H
- ovv7vhuzeEP5yRgmw2c2J5uLNIjmp5BXlZEOkkne2e80brejztBK8sYz5Oxi5apbxFoL
- NKeG1XnxEFk5dGIAbLoQCj8yskKG8g0jRvlb4JstTwN61EquMVAGWlKgyebpJgfzq7I8
- PemGn+aPbzZ64mypn4QjZidqT+/Z9jpm2YcCjawBst5AGx3QTDjxmhl756TM0Ib9jUxR
- nW5w==
-X-Gm-Message-State: AC+VfDwAzZlbsUkvoZiuHMSahDfKQDPPeyNyNEdWhvP1H+BXHDWTthUF
- czvwWLTUkq7TYtkv7X/QaAo=
-X-Google-Smtp-Source: ACHHUZ7BIIfVVg+DrBrn4+cwATWcPJT5b12nkA6wrKyvxBQPa4CFBtVjpPmFjAlRdosFbo5mdQsMIg==
-X-Received: by 2002:a05:6870:e282:b0:196:51e7:6454 with SMTP id
- v2-20020a056870e28200b0019651e76454mr2979155oad.51.1685210465315; 
- Sat, 27 May 2023 11:01:05 -0700 (PDT)
+ bh=Y7wzSVRCxMJqVf9oOejwUNkyicyMFFsaeLKC1JSMlGE=;
+ b=LxPwxBDfcJ9ZULFYBR3Hq+9YBidmtu6FiMJNrLFsRPHrWue6osmJPGskfOWSfc2cnz
+ ELPdSjWEMvjGBUYA288a3fqvQ/OKCAFij2ZFHgS8dwy+5rThFo3fLosW2LUbg0nY6Q06
+ gNqlBfBlFYXw1WN+vPVHhdE61MqaK5xuoGA1p7Fh0dkPsj84NENs6zzzfiXU3VVS8HAh
+ zHRlLp6VRdDwlXtHUgpZL5lCrxpieNds7xWbm9CsD227seu0/Lf/BKjf5PcHRSi207b6
+ huNQHpYMBD3az8qHzfezsJBczJNZwTMTLXY7SYW2c7u6qnqOr7gFKLYQc8J04ioQKUOn
+ PVwg==
+X-Gm-Message-State: AC+VfDxS+X9ZWgOx4zjAztkaTcsYNAbuhN8g18TjYUTAyYMZZ9jOkOo9
+ ik+YD71Xz7UhAANlJGBME58=
+X-Google-Smtp-Source: ACHHUZ51HKjqHfIo80Aws26QmFXk0h0hFh5LO3VIIYri4W4ahT0ZDvvgYPZ8tKntHBE8dPSvqRKxxQ==
+X-Received: by 2002:a05:6830:4dc:b0:6a4:2ad5:9aa0 with SMTP id
+ s28-20020a05683004dc00b006a42ad59aa0mr2855025otd.20.1685210484220; 
+ Sat, 27 May 2023 11:01:24 -0700 (PDT)
 Received: from [192.168.68.107] (200-162-225-121.static-corp.ajato.com.br.
  [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
- dy27-20020a056870c79b00b0019a3bbeeb34sm2980729oab.40.2023.05.27.11.01.00
+ c25-20020a9d75d9000000b006ab13915cd4sm2918178otl.81.2023.05.27.11.01.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 27 May 2023 11:01:04 -0700 (PDT)
-Message-ID: <e714b0bc-ef68-0183-ac0f-84bfaec1b713@gmail.com>
-Date: Sat, 27 May 2023 15:00:58 -0300
+ Sat, 27 May 2023 11:01:23 -0700 (PDT)
+Message-ID: <0f728d8e-8965-98e3-70a9-948322113b81@gmail.com>
+Date: Sat, 27 May 2023 15:01:20 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 3/5] hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
+Subject: Re: [PATCH] pnv_lpc: disable reentrancy detection for lpc-hc
 Content-Language: en-US
-To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
-Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Paul Burton <paulburton@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
- BALATON Zoltan <balaton@eik.bme.hu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Aurelien Jarno
- <aurelien@aurel32.net>, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
- <hpoussin@reactos.org>, Eduardo Habkost <eduardo@habkost.net>,
- qemu-ppc@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230304114043.121024-1-shentey@gmail.com>
- <20230304114043.121024-4-shentey@gmail.com>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+ Alexander Bulekov <alxndr@bu.edu>
+References: <20230526073850.2772197-1-clg@kaod.org>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230304114043.121024-4-shentey@gmail.com>
+In-Reply-To: <20230526073850.2772197-1-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x36.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -107,45 +97,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 3/4/23 08:40, Bernhard Beschow wrote:
-> Commit cef2e7148e32 ("hw/isa/i82378: Remove intermediate IRQ forwarder")
-> passes s->cpu_intr to i8259_init() in i82378_realize() directly. However, s-
->> cpu_intr isn't initialized yet since that happens after the south bridge's
-> pci_realize_and_unref() in board code. Fix this by initializing s->cpu_intr
-> before realizing the south bridge.
+On 5/26/23 04:38, Cédric Le Goater wrote:
+> From: Alexander Bulekov <alxndr@bu.edu>
 > 
-> Fixes: cef2e7148e32 ("hw/isa/i82378: Remove intermediate IRQ forwarder")
-> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> As lpc-hc is designed for re-entrant calls from xscom, mark it
+> re-entrancy safe.
+> 
+> Reported-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
+> [clg: mark opb_master_regs as re-entrancy safe also ]
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > ---
 
 
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-
-And queued in ppc-next. Thanks,
+Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 
 Daniel
 
-
-
->   hw/ppc/prep.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+>   hw/ppc/pnv_lpc.c | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
-> diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-> index d00280c0f8..cfa47c1e44 100644
-> --- a/hw/ppc/prep.c
-> +++ b/hw/ppc/prep.c
-> @@ -270,9 +270,11 @@ static void ibm_40p_init(MachineState *machine)
->       }
->   
->       /* PCI -> ISA bridge */
-> -    i82378_dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(11, 0), "i82378"));
-> +    i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
->       qdev_connect_gpio_out(i82378_dev, 0,
->                             qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
-> +    qdev_realize_and_unref(i82378_dev, BUS(pci_bus), &error_fatal);
-> +
->       sysbus_connect_irq(pcihost, 0, qdev_get_gpio_in(i82378_dev, 15));
->       isa_bus = ISA_BUS(qdev_get_child_bus(i82378_dev, "isa.0"));
+> diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+> index 01f44c19ebba..605d3908617a 100644
+> --- a/hw/ppc/pnv_lpc.c
+> +++ b/hw/ppc/pnv_lpc.c
+> @@ -734,10 +734,13 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
+>       /* Create MMIO regions for LPC HC and OPB registers */
+>       memory_region_init_io(&lpc->opb_master_regs, OBJECT(dev), &opb_master_ops,
+>                             lpc, "lpc-opb-master", LPC_OPB_REGS_OPB_SIZE);
+> +    lpc->opb_master_regs.disable_reentrancy_guard = true;
+>       memory_region_add_subregion(&lpc->opb_mr, LPC_OPB_REGS_OPB_ADDR,
+>                                   &lpc->opb_master_regs);
+>       memory_region_init_io(&lpc->lpc_hc_regs, OBJECT(dev), &lpc_hc_ops, lpc,
+>                             "lpc-hc", LPC_HC_REGS_OPB_SIZE);
+> +    /* xscom writes to lpc-hc. As such mark lpc-hc re-entrancy safe */
+> +    lpc->lpc_hc_regs.disable_reentrancy_guard = true;
+>       memory_region_add_subregion(&lpc->opb_mr, LPC_HC_REGS_OPB_ADDR,
+>                                   &lpc->lpc_hc_regs);
 >   
 
