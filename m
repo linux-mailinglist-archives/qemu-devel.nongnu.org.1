@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1942E7130CF
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 02:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B64787130D6
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 02:17:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2hW8-0006mS-7B; Fri, 26 May 2023 20:10:44 -0400
+	id 1q2hc6-0007uE-12; Fri, 26 May 2023 20:16:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q2hW5-0006lt-JR
- for qemu-devel@nongnu.org; Fri, 26 May 2023 20:10:41 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2hc4-0007tq-67
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 20:16:52 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q2hW4-0008Up-2D
- for qemu-devel@nongnu.org; Fri, 26 May 2023 20:10:41 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1b00ecabdf2so12919195ad.2
- for <qemu-devel@nongnu.org>; Fri, 26 May 2023 17:10:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q2hc2-0001Bu-D9
+ for qemu-devel@nongnu.org; Fri, 26 May 2023 20:16:51 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1ae851f2a7dso20467595ad.0
+ for <qemu-devel@nongnu.org>; Fri, 26 May 2023 17:16:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1685146238; x=1687738238;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1685146608; x=1687738608;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qNwhn7tTlfERexFZCJyGlfKeKBkULCRCgD6Fm4bBKjM=;
- b=syXuDElPaNCiZv9TVxaCOmgYqYMBA+c2VgokoUBO2jlkg659RZNXKLbO6NCyAYrOrE
- Go51ohLLYd+IISkmf0EbOkJOEGJBMh0d5OV29fE8JDGZYAQk1r2OnUuD4evE1ENGvqV9
- n/GpBEKWCepj/ZAgsXkgLhMyv5sFwBy5h1K4O9lzocEhkaaP9C6+ug5QlqUAmHNJEHeu
- c6W76iffuu025NQ4Hp2SFUNOnyoJ1Fmzdv/cRHqY9WMm96OsUTdHW68F2Kny424lJfz1
- 0LDD8kPoSwuceNRK+DciQ+PSZaBlB4fSyw5YkClTinXT+UyQ95nSkfpQ0oH03hgtGe1z
- Gq9w==
+ bh=uBzFWJ42rTjH4iuxU0aea0aikK+z7L4cBJsGvXo3a78=;
+ b=TdezumPchJfRwgVaJHfZBSpPyVqGUXjte4/R4HP4a6rt24r0h//gFCWSbgHiS79h/u
+ /AfWv/fo56y583/wmyCN16vKIRrxHC1xpfLEwbWujNDplkvB4rueBVE9dX7p5B0OguZA
+ uMFV6PaB3ghXNZJ/rJGOd1EW4CaMmr95mFoE1jzYC4mfklfRptqgExIn8puyDonDI/DW
+ lAJmi3cc0+pbTBU+lXBOR/DXikx4TFUhs5FlC2XJofJSg1oFznX5F6gBra9qs/No3wB8
+ 9BdnOqmwut7wH7xe8SEJYNYCwHwxx2itS8u2/cumFCwF4VE3huQN+PWJjScVnM127ROy
+ ktJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685146238; x=1687738238;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1685146608; x=1687738608;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qNwhn7tTlfERexFZCJyGlfKeKBkULCRCgD6Fm4bBKjM=;
- b=ayMSntQ5TmtUZFGd4LxJPwX2juUVZp8gp2cg6zCj9JAsMSeCcP1qzrLxXzVOCod1nG
- LBySm+WGSJ2ypSZUQ2hZGbq3EqSefKxyTwQjR7jNAqh611b0zPrdOoAxUOYttpkGwBO1
- 9QUflx4dcLakfLkISZ12HFmh8/vrqFVGXhFh6ZQYzRxxdBfjQnBoKPz4BvVWLZuSVDYa
- irO9BZSUnf1xG9q+HxN1Hzh2WoG+pgaB43CxpaQZR++PsDMMuEVn9AO6QU0cp1h8L6Kg
- P2XT93tdvqimbAzLH6cYsgMbxF8PvYDvNIf3WlhZePh5S4mOp9F4uTuVcbhPDkTrXkbZ
- AAjg==
-X-Gm-Message-State: AC+VfDyAHMBPhpWWUu1Erb5HjT5wSUMm++692xSC1hHQg44RD8YoGZYZ
- +9V0rN/sr0UmnXp7XKtw7lcGdBAgtkiEdviDpsA=
-X-Google-Smtp-Source: ACHHUZ5NilEydZWhtztFpA6SZhwTDwWNqzS02wVeJ4zH+b3KQYj7R3nwfho1bq9jzzrzfwgrEGv4Rw==
-X-Received: by 2002:a17:903:230f:b0:1af:bb27:f55f with SMTP id
- d15-20020a170903230f00b001afbb27f55fmr4989318plh.55.1685146238243; 
- Fri, 26 May 2023 17:10:38 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ bh=uBzFWJ42rTjH4iuxU0aea0aikK+z7L4cBJsGvXo3a78=;
+ b=lhwgG86JInQPxNLxcH5PwIUUaLnAhAY4I2HRXSciXPXEVFQfognw6UwJ2lOP/RsSPF
+ 9i+edIhAUNf0E+FjUJG940nE8sWH3WrEUnHhb6mnHpzTZlIDyk0lqd3vmHGr/K491gk+
+ 5VE9Sq/mn+BuRPJIE1J6MgSzEjMe2f06+ASEWUC9XPycmJTIEhoc0Zr5x6nAp1LyhXry
+ xmXoYIoU1Tz4VTUIBlqMJ7tmWywlXh3do2iT0oWvcQLMTvMnRHoONlj124LeaiBJPpv/
+ cL6dkJsZvDImAMWByuwkttsAGQQhskdMxy1YIqAKTRVJUhb7XZWExFtOgc5dPUWMLkee
+ szSQ==
+X-Gm-Message-State: AC+VfDwaD/RtR/Fdqi0uJu23O2EOxjZjKmr6LYFbiPmKYq13eiGiXJlK
+ BzbDIO/ZHQmZw6gABU7U0bMStQ==
+X-Google-Smtp-Source: ACHHUZ5ULpqVgyn14BBKckiI39Ly/RQUPryhgQjIt15SpMLYpRsicl4AjIG/WIzKC1mrNGwXWbiKog==
+X-Received: by 2002:a17:902:ecc2:b0:1ac:750e:33d6 with SMTP id
+ a2-20020a170902ecc200b001ac750e33d6mr936605plh.23.1685146608542; 
+ Fri, 26 May 2023 17:16:48 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:86cc:4482:68db:2c0f?
+ ([2602:ae:1598:4c01:86cc:4482:68db:2c0f])
  by smtp.gmail.com with ESMTPSA id
- ik24-20020a170902ab1800b001b0142908f7sm1760069plb.291.2023.05.26.17.10.36
+ o18-20020a170902d4d200b001a1d553de0fsm3740391plg.271.2023.05.26.17.16.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 May 2023 17:10:37 -0700 (PDT)
-Message-ID: <0f5b480e-3e45-0134-faf8-25ba785282c7@daynix.com>
-Date: Sat, 27 May 2023 09:10:35 +0900
+ Fri, 26 May 2023 17:16:48 -0700 (PDT)
+Message-ID: <87334f23-1f01-871b-b7ba-7eb81e43ea84@linaro.org>
+Date: Fri, 26 May 2023 17:16:46 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v9 0/7] igb: packet-split descriptors support
+Subject: Re: [PULL 00/12] (Mostly) build system patches for 2023-05-26
 Content-Language: en-US
-To: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>, qemu-devel@nongnu.org
-Cc: sriram.yagnaraman@est.tech, jasowang@redhat.com, k.kwiecien@samsung.com,
- m.sochacki@samsung.com
-References: <CGME20230525153743eucas1p145858f3572c2d53687377a4e879d1e0b@eucas1p1.samsung.com>
- <20230525153733.4104-1-t.dzieciol@partner.samsung.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230525153733.4104-1-t.dzieciol@partner.samsung.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230526160824.655279-1-pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230526160824.655279-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.092, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,44 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/05/26 0:37, Tomasz Dzieciol wrote:
-> Based-on: <20230523024339.50875-1-akihiko.odaki@daynix.com>
-> ("[PATCH v5 00/48] igb: Fix for DPDK")
+On 5/26/23 09:08, Paolo Bonzini wrote:
+> The following changes since commit a3cb6d5004ff638aefe686ecd540718a793bd1b1:
 > 
-> Purposes of this series of patches:
-> * introduce packet-split RX descriptors support. This feature is used by Linux
->    VF driver for MTU values from 2048.
-> * refactor RX descriptor handling for introduction of packet-split RX
->    descriptors support
-> * fix descriptors flags handling
+>    Merge tag 'pull-tcg-20230525' of https://gitlab.com/rth7680/qemu into staging (2023-05-25 11:11:52 -0700)
 > 
-> In addition to comments from previous review endianess issues in
-> igb_write_adv_ps_rx_descr were fixed.
+> are available in the Git repository at:
 > 
-> Tomasz Dzieciol (7):
->    igb: remove TCP ACK detection
->    igb: rename E1000E_RingInfo_st
->    igb: RX descriptors guest writting refactoring
->    igb: RX payload guest writting refactoring
->    igb: add IPv6 extended headers traffic detection
->    igb: packet-split descriptors support
->    e1000e: rename e1000e_ba_state and e1000e_write_hdr_to_rx_buffers
+>    https://gitlab.com/bonzini/qemu.git tags/for-upstream
 > 
->   hw/net/e1000e_core.c     |  78 +++--
->   hw/net/igb_core.c        | 740 ++++++++++++++++++++++++++++-----------
->   hw/net/igb_regs.h        |  20 +-
->   hw/net/trace-events      |   6 +-
->   tests/qtest/libqos/igb.c |   5 +
->   5 files changed, 602 insertions(+), 247 deletions(-)
+> for you to fetch changes up to b17bbf835c8998e93fd99b06164f1d63843fe8c9:
 > 
+>    configure: ignore --make (2023-05-26 12:36:20 +0200)
+> 
+> ----------------------------------------------------------------
+> * build system fixes and cleanups
+> * use subproject() for the dtc and keycodemapdb submodules
+> * fix virtio memory leak
+> * update slirp.wrap to latest commit in the master branch
 
-Please rebase to the current master and remove Based-on: tag. This 
-series should cleanly apply.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-I left some minor comments that does not involve semantic changes so 
-check them out. I think I can give Reviewed-by: and Tested-by: for the 
-next version. Thanks for keeping working on this.
 
-Regards,
-Akihiko Odaki
+r~
+
+
 
