@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DBC7132AB
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6947132AA
 	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 07:49:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2mmX-0005vB-OB; Sat, 27 May 2023 01:48:01 -0400
+	id 1q2mnb-00065s-KO; Sat, 27 May 2023 01:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2mmU-0005v2-ER
- for qemu-devel@nongnu.org; Sat, 27 May 2023 01:47:58 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2mnH-00062H-Tq
+ for qemu-devel@nongnu.org; Sat, 27 May 2023 01:48:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2mmS-0008VJ-Iu
- for qemu-devel@nongnu.org; Sat, 27 May 2023 01:47:58 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q2mnG-00009l-8y
+ for qemu-devel@nongnu.org; Sat, 27 May 2023 01:48:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685166474;
+ s=mimecast20190719; t=1685166525;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=x2cLSz5x0dwcnYHsCNtEwKjeqH64D25OQDGG7RfrIVk=;
- b=Y/7x/ZTQL8QY+Y+Px2PaaqM0TfgYES+3qtdePEeLEIcAjItjVLnWabflwf7NVanrx+/DsE
- T0/s/TJs5XOajtarldWWPiWZpqK2MrqQZleWuQims1wyp2rU31c0a2TLpzULWZz8HEbFRd
- 1VBchGtutjS1fCiJC5QNByEjBKkzb60=
+ bh=VQo61x92vNU5814TkSevjfXePHY9+pwVkn13ZPmZ6gs=;
+ b=bHcsYVEnOwvUNTyQ95ouw2ktkaii+VXXv4k2Sgqp1aoKKx8d7lK2UqpWQ4uCEvVqkRB86r
+ dVc8AGKsyJLSCShkUdBejVcDwdx320jJ5T7mvIT9LkyKYmiRgOkOCSZpkEyDTxOVeqKZl5
+ z1WRWRqB/qPZjxCsUwNUYzVTZ3DInf8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-641-Rlj9xgpBPIaNmROQVmAEhQ-1; Sat, 27 May 2023 01:47:48 -0400
-X-MC-Unique: Rlj9xgpBPIaNmROQVmAEhQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-39-No_iCl-PPSikJDqg06t_oA-1; Sat, 27 May 2023 01:48:41 -0400
+X-MC-Unique: No_iCl-PPSikJDqg06t_oA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 83D87800B2A;
- Sat, 27 May 2023 05:47:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3D5ED811E78;
+ Sat, 27 May 2023 05:48:41 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 08421140E954;
- Sat, 27 May 2023 05:47:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A5C5492B0A;
+ Sat, 27 May 2023 05:48:41 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E9C0B21E692E; Sat, 27 May 2023 07:47:45 +0200 (CEST)
+ id 1FC0A21E692E; Sat, 27 May 2023 07:48:40 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: <qemu-devel@nongnu.org>,  Michael Tsirkin <mst@redhat.com>,  Fan Ni
@@ -52,18 +52,18 @@ Cc: <qemu-devel@nongnu.org>,  Michael Tsirkin <mst@redhat.com>,  Fan Ni
  <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,  Mike Maslenkin
  <mike.maslenkin@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
  <marcandre.lureau@redhat.com>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v8 5/7] hw/cxl/events: Add injection of General Media
+Subject: Re: [PATCH v8 7/7] hw/cxl/events: Add injection of Memory Module
  Events
 References: <20230526171304.1613-1-Jonathan.Cameron@huawei.com>
- <20230526171304.1613-6-Jonathan.Cameron@huawei.com>
-Date: Sat, 27 May 2023 07:47:45 +0200
-In-Reply-To: <20230526171304.1613-6-Jonathan.Cameron@huawei.com> (Jonathan
- Cameron's message of "Fri, 26 May 2023 18:13:02 +0100")
-Message-ID: <87y1la496m.fsf@pond.sub.org>
+ <20230526171304.1613-8-Jonathan.Cameron@huawei.com>
+Date: Sat, 27 May 2023 07:48:40 +0200
+In-Reply-To: <20230526171304.1613-8-Jonathan.Cameron@huawei.com> (Jonathan
+ Cameron's message of "Fri, 26 May 2023 18:13:04 +0100")
+Message-ID: <87wn0u4953.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -90,50 +90,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
 
-> From: Ira Weiny <ira.weiny@intel.com>
+> These events include a copy of the device health information at the
+> time of the event. Actually using the emulated device health would
+> require a lot of controls to manipulate that state.  Given the aim
+> of this injection code is to just test the flows when events occur,
+> inject the contents of the device health state as well.
 >
-> To facilitate testing provide a QMP command to inject a general media
-> event.  The event can be added to the log specified.
+> Future work may add more sophisticate device health emulation
+> including direct generation of these records when events occur
+> (such as a temperature threshold being crossed).  That does not
+> reduce the usefulness of this more basic generation of the events.
 >
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Reviewed-by: Fan Ni <fan.ni@samsung.com>
 > Acked-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  qapi/cxl.json               |  74 ++++++++++++++++++++++++
->  include/hw/cxl/cxl_events.h |  20 +++++++
->  hw/mem/cxl_type3.c          | 111 ++++++++++++++++++++++++++++++++++++
->  hw/mem/cxl_type3_stubs.c    |  10 ++++
->  4 files changed, 215 insertions(+)
+>  qapi/cxl.json               | 53 +++++++++++++++++++++++++++++++
+>  include/hw/cxl/cxl_events.h | 19 ++++++++++++
+>  hw/mem/cxl_type3.c          | 62 +++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3_stubs.c    | 12 +++++++
+>  4 files changed, 146 insertions(+)
 >
 > diff --git a/qapi/cxl.json b/qapi/cxl.json
-> index ed1c7eea3a..7f0b432767 100644
+> index 36bf9fa202..a2e1280573 100644
 > --- a/qapi/cxl.json
 > +++ b/qapi/cxl.json
-
-[...]
-
+> @@ -140,6 +140,59 @@
+>              '*column': 'uint16', '*correction-mask': [ 'uint64' ]
+>             }}
+>  
 > +##
-> +# @cxl-inject-general-media-event:
+> +# @cxl-inject-memory-module-event:
 > +#
-> +# Inject an event record for a General Media Event (CXL r3.0
-> +# 8.2.9.2.1.1).  This event type is reported via one of the event logs
-> +# specified via the log parameter.
+> +# Inject an event record for a Memory Module Event (CXL r3.0
+> +# 8.2.9.2.1.3). This event includes a copy of the Device Health
+
+Two spaces between sentences for consistency, please.
+
+> +# info at the time of the event.
 > +#
 > +# @path: CXL type 3 device canonical QOM path
 > +#
-> +# @log: event log to add the event to
+> +# @log: Event Log to add the event to
 > +#
 > +# @flags: Event Record Flags.  See CXL r3.0 Table 8-42 Common Event
 > +#     Record Format, Event Record Flags for subfield definitions.
 > +#
-> +# @dpa: Device Physical Address (relative to @path device).  Note
-> +#     lower bits include some flags. See CXL r3.0 Table 8-43 General
-
-Two spaces between sentences for consistency, please.
-
-> +#     Media Event Record, Physical Address.
+> +# @type: Device Event Type.  See CXL r3.0 Table 8-45 Memory Module
+> +#     Event Record for bit definitions for bit definiions.
 > +#
+> +# @health-status: Overall health summary bitmap.  See CXL r3.0 Table
+> +#     8-100 Get Health Info Output Payload, Health Status for bit
+> +#     definitions.
+> +#
+> +# @media-status: Overall media health summary.  See CXL r3.0 Table
+> +#     8-100 Get Health Info Output Payload, Media Status for bit
+> +#     definitions.
+> +#
+> +# @additional-status: See CXL r3.0 Table 8-100 Get Health Info Output
+> +#     Payload, Additional Status for subfield definitions.
+> +#
+> +# @life-used: Percentage (0-100) of factory expected life span.
+> +#
+> +# @temperature: Device temperature in degrees Celsius.
+> +#
+> +# @dirty-shutdown-count: Number of times the device has been unable
+> +#     to determine whether data loss may have occurred.
+> +#
+> +# @corrected-volatile-error-count: Total number of correctable errors
+> +#     in volatile memory.
+> +#
+> +# @corrected-persistent-error-count: Total number correctable errors
+
+Total number of correctable errors
+
+> +#     in persistent memory
+> +#
+> +# Since: 8.1
+> +##
+> +{ 'command': 'cxl-inject-memory-module-event',
+> +  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags' : 'uint8',
+> +            'type': 'uint8', 'health-status': 'uint8',
+> +            'media-status': 'uint8', 'additional-status': 'uint8',
+> +            'life-used': 'uint8', 'temperature' : 'int16',
+> +            'dirty-shutdown-count': 'uint32',
+> +            'corrected-volatile-error-count': 'uint32',
+> +            'corrected-persistent-error-count': 'uint32'
+> +            }}
+> +
+>  ##
+>  # @cxl-inject-poison:
+>  #
+
+Neither these nitpicks nor the one on PATCH 5 calls for a respin.
+Simply fix them in the PR.  Thanks!
 
 [...]
 
