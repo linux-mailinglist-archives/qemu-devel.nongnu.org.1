@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C4E713AB4
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 18:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA08F713ABE
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 18:51:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3Jag-0000ZA-O1; Sun, 28 May 2023 12:49:58 -0400
+	id 1q3Jaf-0000Z3-Cj; Sun, 28 May 2023 12:49:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q3Jad-0000Yp-RM; Sun, 28 May 2023 12:49:55 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ id 1q3Jad-0000Yc-BE; Sun, 28 May 2023 12:49:55 -0400
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q3JaZ-0003bl-6w; Sun, 28 May 2023 12:49:55 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-557c7ffea48so902372eaf.1; 
- Sun, 28 May 2023 09:49:50 -0700 (PDT)
+ id 1q3Jab-0003cX-Td; Sun, 28 May 2023 12:49:55 -0400
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-38ea3f8e413so1436133b6e.2; 
+ Sun, 28 May 2023 09:49:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685292589; x=1687884589;
+ d=gmail.com; s=20221208; t=1685292592; x=1687884592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pzN1GHaGp5LFGpm9e56JgC+WWPnZBV+2t51s4e6Bl1Q=;
- b=okkJ0wLWcr9f/aLPcoQXlIf4ij2Edr3nHfHo8znz/ZM1yPvw4erpxjsTVydr/XAWF+
- EHYgXM7tfvh6MrN20CPUEiulFXaiaWud0yOn24S8rJFKCSJCtbQnf2ihwXzGYX9qcSoD
- 6JtpU92srHgfFnz76gmEnob9nRH2Zn40bIPkQZpwKW3ZBd8dn60BTYHw0nYPGOnDUhtB
- G06IYAIb8Ss5eCETIKrD6LPpky8g8FwOKMYkGQIOQdMfX5SphW55vxOxZSofqbJgMcq6
- tsP7mdo3+ao3nVhPfdVoKL2002C6OgEuGdN2JklJ6cp94zCojAO2P7c2g/Z8W5cN1nEw
- f9oA==
+ bh=yl6x8lKukdyzopG2akGEIx/P7NrVHI+Tu1U5FAgEB2c=;
+ b=sxyxHU3VyR0GUqcXzqKp4wrTb9Wp7X4otJ0nYTKAsZ2evHtjgOYffdNHcDfYmIKMzc
+ qvUma1ORSFG2ME+kunWq21tnUic1n/tbVNyk4dI/IW1foMubhDHivS6HpqZOHtgra8bq
+ UJnAGakbIBN36g4Dtc9AQ/TAlH3SyQ+ucxkvBYYLUmazQ4DS0w7q722Xrirw1zTVwT06
+ xPnjrdIk3MKZ8mU0Mx6T4kFT13qOFTC8zK2/voyBuJbm40qqIpZH99A5aZ/pNBTAsVDu
+ 0c+uwrLTgin24hWJBT0T1ixEyCFnq438Vqo5RXUlrOkGR9frAc/962LjVEn2s6uMs2e9
+ x93A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685292589; x=1687884589;
+ d=1e100.net; s=20221208; t=1685292592; x=1687884592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pzN1GHaGp5LFGpm9e56JgC+WWPnZBV+2t51s4e6Bl1Q=;
- b=JK0VdI9MG3VOLIsmtbBXj/f6PWMIky/AA6bUgFNDVXojd9tuYDJVf9/p63yoIdVO6c
- n3W52UNOV4djsrjYapN80/BnzU+/jOsIQG1Esiu8vs/5iYkPEeIEypSc2Vh7NHDDYfM6
- +1XqyEpBXhXQPaNCVV+Mx3qinj0mwLxgLcNLBETck4dXQlk1ySzV0tn4fwkHIwzlvQ0v
- Bh0xL4LYxRPGpirpzFZpr3b/WnxNQsVlz54b5WHeiExRC7K+hCDSLWxPwE+260h7MvlA
- on4kdpB40LKjjkjfH/7P9dfDk6vSlULkP25WP3GxkAxsRkx6Zv6rfBJ6s/VdlbSSWQly
- NV2w==
-X-Gm-Message-State: AC+VfDzwAlzzE+ct6MIV4YZh7Ph9geBSJJzGRqab7HBmCs6o991ZtcoC
- 5lOzLSUFdgDmFGIXrES6/Hn1I+ht//k=
-X-Google-Smtp-Source: ACHHUZ5Fvv14SAC7GsknZmrh71JwIDKFMuB0QIoHCov7qq+SgTzY00Qdx8OCxZBo8tQkGC6YMFd03g==
-X-Received: by 2002:a4a:4146:0:b0:547:4f15:6147 with SMTP id
- x67-20020a4a4146000000b005474f156147mr2177894ooa.0.1685292589406; 
- Sun, 28 May 2023 09:49:49 -0700 (PDT)
+ bh=yl6x8lKukdyzopG2akGEIx/P7NrVHI+Tu1U5FAgEB2c=;
+ b=Xe3AREOWS4owcY/t0YilxmRi0vdz9NwA8B3Kga4j9S3vnHNi3mj7sBQnvrklK8lqFB
+ TJmgKGdAKWe+RsjwIT8Gyd9G0LlO+wXUvu4AS40GyWWTzOmRUDx2NWGrPah5QUaKfOE1
+ 02ZlkMwFZYLzsGxjAb/HQrYRuNx3B9reg2086Yn9wI39bodSbctrNFiQa03zAGwObMl0
+ leIm/VuRKNE6/W5otyD9IRsuDq3wKgwt1ydejr1FtcHs8BY02cvhzWIZUmAGEP3iXJhN
+ DXN4ybAxvzsq240UhlbN8GmTaOVvFijCdtSNa2dYoTdrsG2MNY//GkJAbmeMYxCm+r/J
+ 3BrQ==
+X-Gm-Message-State: AC+VfDxM15eyeO4ZupTjNgp/aYjFL0AmKCJeqGHB28KASuXJWhrxzTcr
+ pPrKhTaCbUunL/X7neVagoIkkxo0mzE=
+X-Google-Smtp-Source: ACHHUZ59RxgQ4PgL4GuQwCZNAIFtj1nlVKqjvk9iT6uvKmAipEeY4cGNsGLNDuoAgR5nZJlMsCExHA==
+X-Received: by 2002:a05:6808:287:b0:398:9ee4:1dac with SMTP id
+ z7-20020a056808028700b003989ee41dacmr4151425oic.32.1685292592385; 
+ Sun, 28 May 2023 09:49:52 -0700 (PDT)
 Received: from grind.. (200-162-225-121.static-corp.ajato.com.br.
  [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
- w4-20020a4adec4000000b0054f85f67f31sm3378830oou.46.2023.05.28.09.49.47
+ w4-20020a4adec4000000b0054f85f67f31sm3378830oou.46.2023.05.28.09.49.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 May 2023 09:49:49 -0700 (PDT)
+ Sun, 28 May 2023 09:49:52 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PULL 06/10] target/ppc: Use SMT4 small core chip type in POWER9/10
- PVRs
-Date: Sun, 28 May 2023 13:49:18 -0300
-Message-Id: <20230528164922.20364-7-danielhb413@gmail.com>
+ richard.henderson@linaro.org, Alexander Bulekov <alxndr@bu.edu>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: [PULL 07/10] pnv_lpc: disable reentrancy detection for lpc-hc
+Date: Sun, 28 May 2023 13:49:19 -0300
+Message-Id: <20230528164922.20364-8-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230528164922.20364-1-danielhb413@gmail.com>
 References: <20230528164922.20364-1-danielhb413@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,43 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Alexander Bulekov <alxndr@bu.edu>
 
-QEMU's PVR value for POWER9 DD2.0 has chip type 1, which is the SMT4
-"small core" type that OpenPOWER processors use. QEMU's PVR for all
-other POWER9/10 have chip type 0, which "enterprise" systems use.
+As lpc-hc is designed for re-entrant calls from xscom, mark it
+re-entrancy safe.
 
-The difference does not really matter to QEMU (because it does not care
-about SMT mode in the target), but for consistency all PVRs should use
-the same chip type. We'll go with the SMT4 OpenPOWER type.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-Id: <20230515160131.394562-1-npiggin@gmail.com>
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
+[clg: mark opb_master_regs as re-entrancy safe also ]
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20230526073850.2772197-1-clg@kaod.org>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- target/ppc/cpu-models.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/ppc/pnv_lpc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
-index 1326493a9a..a77e036b3a 100644
---- a/target/ppc/cpu-models.h
-+++ b/target/ppc/cpu-models.h
-@@ -348,11 +348,11 @@ enum {
-     CPU_POWERPC_POWER8NVL_BASE     = 0x004C0000,
-     CPU_POWERPC_POWER8NVL_v10      = 0x004C0100,
-     CPU_POWERPC_POWER9_BASE        = 0x004E0000,
--    CPU_POWERPC_POWER9_DD1         = 0x004E0100,
-+    CPU_POWERPC_POWER9_DD1         = 0x004E1100,
-     CPU_POWERPC_POWER9_DD20        = 0x004E1200,
-     CPU_POWERPC_POWER10_BASE       = 0x00800000,
--    CPU_POWERPC_POWER10_DD1        = 0x00800100,
--    CPU_POWERPC_POWER10_DD20       = 0x00800200,
-+    CPU_POWERPC_POWER10_DD1        = 0x00801100,
-+    CPU_POWERPC_POWER10_DD20       = 0x00801200,
-     CPU_POWERPC_970_v22            = 0x00390202,
-     CPU_POWERPC_970FX_v10          = 0x00391100,
-     CPU_POWERPC_970FX_v20          = 0x003C0200,
+diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+index 01f44c19eb..605d390861 100644
+--- a/hw/ppc/pnv_lpc.c
++++ b/hw/ppc/pnv_lpc.c
+@@ -734,10 +734,13 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
+     /* Create MMIO regions for LPC HC and OPB registers */
+     memory_region_init_io(&lpc->opb_master_regs, OBJECT(dev), &opb_master_ops,
+                           lpc, "lpc-opb-master", LPC_OPB_REGS_OPB_SIZE);
++    lpc->opb_master_regs.disable_reentrancy_guard = true;
+     memory_region_add_subregion(&lpc->opb_mr, LPC_OPB_REGS_OPB_ADDR,
+                                 &lpc->opb_master_regs);
+     memory_region_init_io(&lpc->lpc_hc_regs, OBJECT(dev), &lpc_hc_ops, lpc,
+                           "lpc-hc", LPC_HC_REGS_OPB_SIZE);
++    /* xscom writes to lpc-hc. As such mark lpc-hc re-entrancy safe */
++    lpc->lpc_hc_regs.disable_reentrancy_guard = true;
+     memory_region_add_subregion(&lpc->opb_mr, LPC_HC_REGS_OPB_ADDR,
+                                 &lpc->lpc_hc_regs);
+ 
 -- 
 2.40.1
 
