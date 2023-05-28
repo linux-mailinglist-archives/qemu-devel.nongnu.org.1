@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4273A71382D
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 09:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7F071383D
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 09:02:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3AOT-0004aE-3w; Sun, 28 May 2023 03:00:47 -0400
+	id 1q3AOZ-00057N-7F; Sun, 28 May 2023 03:00:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ANe-0004Kf-EG; Sun, 28 May 2023 02:59:57 -0400
+ id 1q3ANg-0004LU-8v; Sun, 28 May 2023 02:59:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ANb-0001r6-UB; Sun, 28 May 2023 02:59:53 -0400
+ id 1q3ANc-0001rF-KS; Sun, 28 May 2023 02:59:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DC2328E22;
- Sun, 28 May 2023 09:59:41 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2701B8E23;
+ Sun, 28 May 2023 09:59:42 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 51FD97E2C;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9E3617E2D;
  Sun, 28 May 2023 09:59:41 +0300 (MSK)
-Received: (nullmailer pid 42631 invoked by uid 1000);
+Received: (nullmailer pid 42634 invoked by uid 1000);
  Sun, 28 May 2023 06:59:40 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Ryan Wendland <wendland@live.com.au>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.3 51/53] usb/ohci: Set pad to 0 after frame update
-Date: Sun, 28 May 2023 09:59:24 +0300
-Message-Id: <20230528065940.42582-6-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.3 52/53] hw/scsi/lsi53c895a: Fix reentrancy issues in the
+ LSI controller (CVE-2023-0330)
+Date: Sun, 28 May 2023 09:59:25 +0300
+Message-Id: <20230528065940.42582-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.3-20230528095720@cover.tls.msk.ru>
 References: <qemu-stable-7.2.3-20230528095720@cover.tls.msk.ru>
@@ -59,33 +61,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 
-When the OHCI controller's framenumber is incremented, HccaPad1 register
-should be set to zero (Ref OHCI Spec 4.4)
+We cannot use the generic reentrancy guard in the LSI code, so
+we have to manually prevent endless reentrancy here. The problematic
+lsi_execute_script() function has already a way to detect whether
+too many instructions have been executed - we just have to slightly
+change the logic here that it also takes into account if the function
+has been called too often in a reentrant way.
 
-ReactOS uses hccaPad1 to determine if the OHCI hardware is running,
-consequently it fails this check in current qemu master.
+The code in fuzz-lsi53c895a-test.c has been taken from an earlier
+patch by Mauro Matteo Cascella.
 
-Signed-off-by: Ryan Wendland <wendland@live.com.au>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1048
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 6301460ce9f59885e8feb65185bcfb6b128c8eff)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1563
+Message-Id: <20230522091011.1082574-1-thuth@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit b987718bbb1d0eabf95499b976212dd5f0120d75)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
-index 9d68036d23..c3ab762f54 100644
---- a/hw/usb/hcd-ohci.c
-+++ b/hw/usb/hcd-ohci.c
-@@ -1210,6 +1210,8 @@ static void ohci_frame_boundary(void *opaque)
-     /* Increment frame number and take care of endianness. */
-     ohci->frame_number = (ohci->frame_number + 1) & 0xffff;
-     hcca.frame = cpu_to_le16(ohci->frame_number);
-+    /* When the HC updates frame number, set pad to 0. Ref OHCI Spec 4.4.1*/
-+    hcca.pad = 0;
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index 50979640c3..42532c4744 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -1134,15 +1134,24 @@ static void lsi_execute_script(LSIState *s)
+     uint32_t addr, addr_high;
+     int opcode;
+     int insn_processed = 0;
++    static int reentrancy_level;
++
++    reentrancy_level++;
  
-     if (ohci->done_count == 0 && !(ohci->intr_status & OHCI_INTR_WD)) {
-         if (!ohci->done)
+     s->istat1 |= LSI_ISTAT1_SRUN;
+ again:
+-    if (++insn_processed > LSI_MAX_INSN) {
+-        /* Some windows drivers make the device spin waiting for a memory
+-           location to change.  If we have been executed a lot of code then
+-           assume this is the case and force an unexpected device disconnect.
+-           This is apparently sufficient to beat the drivers into submission.
+-         */
++    /*
++     * Some windows drivers make the device spin waiting for a memory location
++     * to change. If we have executed more than LSI_MAX_INSN instructions then
++     * assume this is the case and force an unexpected device disconnect. This
++     * is apparently sufficient to beat the drivers into submission.
++     *
++     * Another issue (CVE-2023-0330) can occur if the script is programmed to
++     * trigger itself again and again. Avoid this problem by stopping after
++     * being called multiple times in a reentrant way (8 is an arbitrary value
++     * which should be enough for all valid use cases).
++     */
++    if (++insn_processed > LSI_MAX_INSN || reentrancy_level > 8) {
+         if (!(s->sien0 & LSI_SIST0_UDC)) {
+             qemu_log_mask(LOG_GUEST_ERROR,
+                           "lsi_scsi: inf. loop with UDC masked");
+@@ -1596,6 +1605,8 @@ again:
+         }
+     }
+     trace_lsi_execute_script_stop();
++
++    reentrancy_level--;
+ }
+ 
+ static uint8_t lsi_reg_readb(LSIState *s, int offset)
+diff --git a/tests/qtest/fuzz-lsi53c895a-test.c b/tests/qtest/fuzz-lsi53c895a-test.c
+index 392a7ae7ed..9b007def26 100644
+--- a/tests/qtest/fuzz-lsi53c895a-test.c
++++ b/tests/qtest/fuzz-lsi53c895a-test.c
+@@ -8,6 +8,36 @@
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
+ 
++/*
++ * This used to trigger a DMA reentrancy issue
++ * leading to memory corruption bugs like stack
++ * overflow or use-after-free
++ * https://gitlab.com/qemu-project/qemu/-/issues/1563
++ */
++static void test_lsi_dma_reentrancy(void)
++{
++    QTestState *s;
++
++    s = qtest_init("-M q35 -m 512M -nodefaults "
++                   "-blockdev driver=null-co,node-name=null0 "
++                   "-device lsi53c810 -device scsi-cd,drive=null0");
++
++    qtest_outl(s, 0xcf8, 0x80000804); /* PCI Command Register */
++    qtest_outw(s, 0xcfc, 0x7);        /* Enables accesses */
++    qtest_outl(s, 0xcf8, 0x80000814); /* Memory Bar 1 */
++    qtest_outl(s, 0xcfc, 0xff100000); /* Set MMIO Address*/
++    qtest_outl(s, 0xcf8, 0x80000818); /* Memory Bar 2 */
++    qtest_outl(s, 0xcfc, 0xff000000); /* Set RAM Address*/
++    qtest_writel(s, 0xff000000, 0xc0000024);
++    qtest_writel(s, 0xff000114, 0x00000080);
++    qtest_writel(s, 0xff00012c, 0xff000000);
++    qtest_writel(s, 0xff000004, 0xff000114);
++    qtest_writel(s, 0xff000008, 0xff100014);
++    qtest_writel(s, 0xff10002f, 0x000000ff);
++
++    qtest_quit(s);
++}
++
+ /*
+  * This used to trigger a UAF in lsi_do_msgout()
+  * https://gitlab.com/qemu-project/qemu/-/issues/972
+@@ -120,5 +150,8 @@ int main(int argc, char **argv)
+     qtest_add_func("fuzz/lsi53c895a/lsi_do_msgout_cancel_req",
+                    test_lsi_do_msgout_cancel_req);
+ 
++    qtest_add_func("fuzz/lsi53c895a/lsi_dma_reentrancy",
++                   test_lsi_dma_reentrancy);
++
+     return g_test_run();
+ }
 -- 
 2.39.2
 
