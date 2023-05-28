@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46734713829
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75056713822
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:58:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3ALV-0006Qm-SH; Sun, 28 May 2023 02:57:41 -0400
+	id 1q3ALX-0006S1-8u; Sun, 28 May 2023 02:57:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALG-0006Kl-1W; Sun, 28 May 2023 02:57:28 -0400
+ id 1q3ALI-0006Kp-Mt; Sun, 28 May 2023 02:57:30 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALE-0001ak-2p; Sun, 28 May 2023 02:57:25 -0400
+ id 1q3ALH-0001bC-7C; Sun, 28 May 2023 02:57:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 121858DFA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 56A078DFB;
  Sun, 28 May 2023 09:57:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 87F0B7E1A;
+ by tsrv.corpit.ru (Postfix) with SMTP id C98AB7E1B;
  Sun, 28 May 2023 09:57:15 +0300 (MSK)
-Received: (nullmailer pid 42057 invoked by uid 1000);
+Received: (nullmailer pid 42060 invoked by uid 1000);
  Sun, 28 May 2023 06:57:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 62/73] igb: Fix Rx packet type encoding
-Date: Sun, 28 May 2023 09:57:00 +0300
-Message-Id: <20230528065714.42005-3-mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 63/73] igb: Do not require CTRL.VME for tx VLAN tagging
+Date: Sun, 28 May 2023 09:57:01 +0300
+Message-Id: <20230528065714.42005-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
@@ -62,93 +62,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-igb's advanced descriptor uses a packet type encoding different from
-one used in e1000e's extended descriptor. Fix the logic to encode
-Rx packet type accordingly.
+While the datasheet of e1000e says it checks CTRL.VME for tx VLAN
+tagging, igb's datasheet has no such statements. It also says for
+"CTRL.VLE":
+> This register only affects the VLAN Strip in Rx it does not have any
+> influence in the Tx path in the 82576.
+(Appendix A. Changes from the 82575)
 
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
+There is no "CTRL.VLE" so it is more likely that it is a mistake of
+CTRL.VME.
+
+Fixes: fba7c3b788 ("igb: respect VMVIR and VMOLR for VLAN")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit ed447c60b341f1714b3c800d7f9c68898e873f78)
+(cherry picked from commit e209716749cda1581cfc8e582591c0216c30ab0d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 8a9fd1f729..1c7f4eaf76 100644
+index 1c7f4eaf76..bc7af7963a 100644
 --- a/hw/net/igb_core.c
 +++ b/hw/net/igb_core.c
-@@ -1226,7 +1226,6 @@ igb_build_rx_metadata(IGBCore *core,
-     struct virtio_net_hdr *vhdr;
-     bool hasip4, hasip6;
-     EthL4HdrProto l4hdr_proto;
--    uint32_t pkt_type;
- 
-     *status_flags = E1000_RXD_STAT_DD;
- 
-@@ -1265,28 +1264,29 @@ igb_build_rx_metadata(IGBCore *core,
-         trace_e1000e_rx_metadata_ack();
-     }
- 
--    if (hasip6 && (core->mac[RFCTL] & E1000_RFCTL_IPV6_DIS)) {
--        trace_e1000e_rx_metadata_ipv6_filtering_disabled();
--        pkt_type = E1000_RXD_PKT_MAC;
--    } else if (l4hdr_proto == ETH_L4_HDR_PROTO_TCP ||
--               l4hdr_proto == ETH_L4_HDR_PROTO_UDP) {
--        pkt_type = hasip4 ? E1000_RXD_PKT_IP4_XDP : E1000_RXD_PKT_IP6_XDP;
--    } else if (hasip4 || hasip6) {
--        pkt_type = hasip4 ? E1000_RXD_PKT_IP4 : E1000_RXD_PKT_IP6;
--    } else {
--        pkt_type = E1000_RXD_PKT_MAC;
--    }
-+    if (pkt_info) {
-+        *pkt_info = rss_info->enabled ? rss_info->type : 0;
- 
--    trace_e1000e_rx_metadata_pkt_type(pkt_type);
-+        if (hasip4) {
-+            *pkt_info |= E1000_ADVRXD_PKT_IP4;
-+        }
- 
--    if (pkt_info) {
--        if (rss_info->enabled) {
--            *pkt_info = rss_info->type;
-+        if (hasip6) {
-+            *pkt_info |= E1000_ADVRXD_PKT_IP6;
+@@ -402,7 +402,7 @@ igb_tx_insert_vlan(IGBCore *core, uint16_t qn, struct igb_tx *tx,
          }
- 
--        *pkt_info |= (pkt_type << 4);
--    } else {
--        *status_flags |= E1000_RXD_PKT_TYPE(pkt_type);
-+        switch (l4hdr_proto) {
-+        case ETH_L4_HDR_PROTO_TCP:
-+            *pkt_info |= E1000_ADVRXD_PKT_TCP;
-+            break;
-+
-+        case ETH_L4_HDR_PROTO_UDP:
-+            *pkt_info |= E1000_ADVRXD_PKT_UDP;
-+            break;
-+
-+        default:
-+            break;
-+        }
      }
  
-     if (hdr_info) {
-diff --git a/hw/net/igb_regs.h b/hw/net/igb_regs.h
-index c5c5b3c3b8..21ee9a3b2d 100644
---- a/hw/net/igb_regs.h
-+++ b/hw/net/igb_regs.h
-@@ -641,6 +641,11 @@ union e1000_adv_rx_desc {
- 
- #define E1000_STATUS_NUM_VFS_SHIFT 14
- 
-+#define E1000_ADVRXD_PKT_IP4 BIT(4)
-+#define E1000_ADVRXD_PKT_IP6 BIT(6)
-+#define E1000_ADVRXD_PKT_TCP BIT(8)
-+#define E1000_ADVRXD_PKT_UDP BIT(9)
-+
- static inline uint8_t igb_ivar_entry_rx(uint8_t i)
- {
-     return i < 8 ? i * 4 : (i - 8) * 4 + 2;
+-    if (insert_vlan && e1000x_vlan_enabled(core->mac)) {
++    if (insert_vlan) {
+         net_tx_pkt_setup_vlan_header_ex(tx->tx_pkt, vlan,
+             core->mac[VET] & 0xffff);
+     }
 -- 
 2.39.2
 
