@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D693713998
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 15:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B182271398F
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 15:22:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3GKq-0008Ic-8y; Sun, 28 May 2023 09:21:24 -0400
+	id 1q3GKt-0008NQ-4n; Sun, 28 May 2023 09:21:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q3GKo-0008Cr-A7
- for qemu-devel@nongnu.org; Sun, 28 May 2023 09:21:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q3GKq-0008LI-Nn
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 09:21:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q3GKm-0008Fd-Pa
- for qemu-devel@nongnu.org; Sun, 28 May 2023 09:21:22 -0400
+ id 1q3GKp-0008Fy-45
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 09:21:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685280080;
+ s=mimecast20190719; t=1685280082;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yRgd2WXcnIcnRx9qqnV/t9M2085ej0NQRFuRwFwUoqU=;
- b=eWp9OfLI9MaF+0O1z6WarSEtsfoT2DG5D7xFvZrmSJW6sBk8psGweqmmF9YIscae4oGVYI
- ojjdrGbgci4gcJLr/C3pIPrDzZrBVysdjmkjLknIb2XncXRSI9GSnwPFGiskOLrt9W93hs
- yyrBUM13UW2fXyBj7Z0o/MQwqjMXtJQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cZ1o91VFe2jeLlbLXsmNGS8Iude2vfiSWmMIlYVb6Lg=;
+ b=KkBOj41XQFih7TTfG7CCNoSiuxq+qNd6dNVFwR9Jtep4jNxl5bDIEKvuDUqLrHjxzJIXqM
+ WD+7DwJzjinn5UO2gSbe4kDA01oDlNp9ZxWtO0IqpLHWs8eXqB9I+E2Sztxilj3DDXJC+T
+ vV+90fNT7qdA/+0ftWoIrCyxqgfeJSs=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-551-bioQ2JOMNm6GiU5av0perQ-1; Sun, 28 May 2023 09:21:15 -0400
-X-MC-Unique: bioQ2JOMNm6GiU5av0perQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-590-ZfKvrCKVP9CTDEXbcYL4LQ-1; Sun, 28 May 2023 09:21:19 -0400
+X-MC-Unique: ZfKvrCKVP9CTDEXbcYL4LQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 01512800B2A;
- Sun, 28 May 2023 13:21:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D999829AA384;
+ Sun, 28 May 2023 13:21:18 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4630C53BB;
- Sun, 28 May 2023 13:21:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DB2B22166B2B;
+ Sun, 28 May 2023 13:21:17 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, berrange@redhat.com,
@@ -49,18 +49,17 @@ Cc: Markus Armbruster <armbru@redhat.com>, berrange@redhat.com,
  Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mauro Matteo Cascella <mcascell@redhat.com>
-Subject: [PULL 13/19] ui/cursor: make width/height unsigned 16-bit integer
-Date: Sun, 28 May 2023 17:20:10 +0400
-Message-Id: <20230528132016.3218152-14-marcandre.lureau@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>, Sergio Lopez <slp@redhat.com>
+Subject: [PULL 14/19] virtio-input: generalize virtio_input_key_config()
+Date: Sun, 28 May 2023 17:20:11 +0400
+Message-Id: <20230528132016.3218152-15-marcandre.lureau@redhat.com>
 In-Reply-To: <20230528132016.3218152-1-marcandre.lureau@redhat.com>
 References: <20230528132016.3218152-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -85,64 +84,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mauro Matteo Cascella <mcascell@redhat.com>
+From: Sergio Lopez <slp@redhat.com>
 
-Although not actually exploitable at the moment, a negative width/height
-could make datasize wrap around and potentially lead to buffer overflow.
-Since there is no reason a negative width/height is ever appropriate,
-modify QEMUCursor struct and cursor_alloc prototype to accept uint16_t.
-This protects us against accidentally introducing future bugs.
+As there are other bitmap-based config properties that need to be dealt in a
+similar fashion as VIRTIO_INPUT_CFG_EV_BITS, generalize the function to
+receive select and subsel as arguments, and rename it to
+virtio_input_extend_config()
 
-Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
-Reported-by: Jacek Halon <jacek.halon@gmail.com>
-Reported-by: Yair Mizrahi <yairh33@gmail.com>
-Reported-by: Elsayed El-Refa'ei <e.elrefaei99@gmail.com>
+Signed-off-by: Sergio Lopez <slp@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230523163023.608121-1-mcascell@redhat.com>
+Message-Id: <20230526112925.38794-2-slp@redhat.com>
 ---
- include/ui/console.h | 4 ++--
- ui/cursor.c          | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ hw/input/virtio-input-hid.c | 38 ++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 2a8fab091f..ae5ec466c1 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -144,13 +144,13 @@ typedef struct QemuUIInfo {
+diff --git a/hw/input/virtio-input-hid.c b/hw/input/virtio-input-hid.c
+index a7a244a95d..d28dab69ba 100644
+--- a/hw/input/virtio-input-hid.c
++++ b/hw/input/virtio-input-hid.c
+@@ -44,30 +44,31 @@ static const unsigned short axismap_abs[INPUT_AXIS__MAX] = {
  
- /* cursor data format is 32bit RGBA */
- typedef struct QEMUCursor {
--    int                 width, height;
-+    uint16_t            width, height;
-     int                 hot_x, hot_y;
-     int                 refcount;
-     uint32_t            data[];
- } QEMUCursor;
+ /* ----------------------------------------------------------------- */
  
--QEMUCursor *cursor_alloc(int width, int height);
-+QEMUCursor *cursor_alloc(uint16_t width, uint16_t height);
- QEMUCursor *cursor_ref(QEMUCursor *c);
- void cursor_unref(QEMUCursor *c);
- QEMUCursor *cursor_builtin_hidden(void);
-diff --git a/ui/cursor.c b/ui/cursor.c
-index 6fe67990e2..29717b3ecb 100644
---- a/ui/cursor.c
-+++ b/ui/cursor.c
-@@ -90,11 +90,12 @@ QEMUCursor *cursor_builtin_left_ptr(void)
-     return cursor_parse_xpm(cursor_left_ptr_xpm);
+-static void virtio_input_key_config(VirtIOInput *vinput,
+-                                    const unsigned short *keymap,
+-                                    size_t mapsize)
++static void virtio_input_extend_config(VirtIOInput *vinput,
++                                       const unsigned short *map,
++                                       size_t mapsize,
++                                       uint8_t select, uint8_t subsel)
+ {
+-    virtio_input_config keys;
++    virtio_input_config ext;
+     int i, bit, byte, bmax = 0;
+ 
+-    memset(&keys, 0, sizeof(keys));
++    memset(&ext, 0, sizeof(ext));
+     for (i = 0; i < mapsize; i++) {
+-        bit = keymap[i];
++        bit = map[i];
+         if (!bit) {
+             continue;
+         }
+         byte = bit / 8;
+         bit  = bit % 8;
+-        keys.u.bitmap[byte] |= (1 << bit);
++        ext.u.bitmap[byte] |= (1 << bit);
+         if (bmax < byte+1) {
+             bmax = byte+1;
+         }
+     }
+-    keys.select = VIRTIO_INPUT_CFG_EV_BITS;
+-    keys.subsel = EV_KEY;
+-    keys.size   = bmax;
+-    virtio_input_add_config(vinput, &keys);
++    ext.select = select;
++    ext.subsel = subsel;
++    ext.size   = bmax;
++    virtio_input_add_config(vinput, &ext);
  }
  
--QEMUCursor *cursor_alloc(int width, int height)
-+QEMUCursor *cursor_alloc(uint16_t width, uint16_t height)
- {
-     QEMUCursor *c;
-     size_t datasize = width * height * sizeof(uint32_t);
+ static void virtio_input_handle_event(DeviceState *dev, QemuConsole *src,
+@@ -281,8 +282,9 @@ static void virtio_keyboard_init(Object *obj)
  
-+    /* Modern physical hardware typically uses 512x512 sprites */
-     if (width > 512 || height > 512) {
-         return NULL;
-     }
+     vhid->handler = &virtio_keyboard_handler;
+     virtio_input_init_config(vinput, virtio_keyboard_config);
+-    virtio_input_key_config(vinput, qemu_input_map_qcode_to_linux,
+-                            qemu_input_map_qcode_to_linux_len);
++    virtio_input_extend_config(vinput, qemu_input_map_qcode_to_linux,
++                               qemu_input_map_qcode_to_linux_len,
++                               VIRTIO_INPUT_CFG_EV_BITS, EV_KEY);
+ }
+ 
+ static const TypeInfo virtio_keyboard_info = {
+@@ -373,8 +375,9 @@ static void virtio_mouse_init(Object *obj)
+     virtio_input_init_config(vinput, vhid->wheel_axis
+                              ? virtio_mouse_config_v2
+                              : virtio_mouse_config_v1);
+-    virtio_input_key_config(vinput, keymap_button,
+-                            ARRAY_SIZE(keymap_button));
++    virtio_input_extend_config(vinput, keymap_button,
++                               ARRAY_SIZE(keymap_button),
++                               VIRTIO_INPUT_CFG_EV_BITS, EV_KEY);
+ }
+ 
+ static const TypeInfo virtio_mouse_info = {
+@@ -497,8 +500,9 @@ static void virtio_tablet_init(Object *obj)
+     virtio_input_init_config(vinput, vhid->wheel_axis
+                              ? virtio_tablet_config_v2
+                              : virtio_tablet_config_v1);
+-    virtio_input_key_config(vinput, keymap_button,
+-                            ARRAY_SIZE(keymap_button));
++    virtio_input_extend_config(vinput, keymap_button,
++                               ARRAY_SIZE(keymap_button),
++                               VIRTIO_INPUT_CFG_EV_BITS, EV_KEY);
+ }
+ 
+ static const TypeInfo virtio_tablet_info = {
 -- 
 2.40.1
 
