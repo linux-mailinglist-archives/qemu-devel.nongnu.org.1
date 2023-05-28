@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D9E713830
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 09:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4811671382A
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:59:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3ALW-0006Qw-FE; Sun, 28 May 2023 02:57:42 -0400
+	id 1q3ALe-0006TB-Gn; Sun, 28 May 2023 02:57:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALP-0006ML-4f; Sun, 28 May 2023 02:57:36 -0400
+ id 1q3ALP-0006MO-Ly; Sun, 28 May 2023 02:57:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALN-0001cH-Ad; Sun, 28 May 2023 02:57:34 -0400
+ id 1q3ALO-0001cR-21; Sun, 28 May 2023 02:57:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 03E718DFF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 597358E00;
  Sun, 28 May 2023 09:57:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8008D7E1F;
+ by tsrv.corpit.ru (Postfix) with SMTP id BB2B87E20;
  Sun, 28 May 2023 09:57:16 +0300 (MSK)
-Received: (nullmailer pid 42072 invoked by uid 1000);
+Received: (nullmailer pid 42075 invoked by uid 1000);
  Sun, 28 May 2023 06:57:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+Cc: qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Alexander Bulekov <alxndr@bu.edu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 67/73] igb: Always copy ethernet header
-Date: Sun, 28 May 2023 09:57:05 +0300
-Message-Id: <20230528065714.42005-8-mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 68/73] rtl8139: fix large_send_mss divide-by-zero
+Date: Sun, 28 May 2023 09:57:06 +0300
+Message-Id: <20230528065714.42005-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,128 +62,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-igb_receive_internal() used to check the iov length to determine
-copy the iovs to a contiguous buffer, but the check is flawed in two
-ways:
-- It does not ensure that iovcnt > 0.
-- It does not take virtio-net header into consideration.
+If the driver sets large_send_mss to 0 then a divide-by-zero occurs.
+Even if the division wasn't a problem, the for loop that emits MSS-sized
+packets would never terminate.
 
-The size of this copy is just 22 octets, which can be even less than
-the code size required for checks. This (wrong) optimization is probably
-not worth so just remove it. Removing this also allows igb to assume
-aligned accesses for the ethernet header.
+Solve these issues by skipping offloading when large_send_mss=0.
 
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+This issue was found by OSS-Fuzz as part of Alexander Bulekov's device
+fuzzing work. The reproducer is:
+
+  $ cat << EOF | ./qemu-system-i386 -display none -machine accel=qtest, -m \
+  512M,slots=1,maxmem=0xffff000000000000 -machine q35 -nodefaults -device \
+  rtl8139,netdev=net0 -netdev user,id=net0 -device \
+  pc-dimm,id=nv1,memdev=mem1,addr=0xb800a64602800000 -object \
+  memory-backend-ram,id=mem1,size=2M  -qtest stdio
+  outl 0xcf8 0x80000814
+  outl 0xcfc 0xe0000000
+  outl 0xcf8 0x80000804
+  outw 0xcfc 0x06
+  write 0xe0000037 0x1 0x04
+  write 0xe00000e0 0x2 0x01
+  write 0x1 0x1 0x04
+  write 0x3 0x1 0x98
+  write 0xa 0x1 0x8c
+  write 0xb 0x1 0x02
+  write 0xc 0x1 0x46
+  write 0xd 0x1 0xa6
+  write 0xf 0x1 0xb8
+  write 0xb800a646028c000c 0x1 0x08
+  write 0xb800a646028c000e 0x1 0x47
+  write 0xb800a646028c0010 0x1 0x02
+  write 0xb800a646028c0017 0x1 0x06
+  write 0xb800a646028c0036 0x1 0x80
+  write 0xe00000d9 0x1 0x40
+  EOF
+
+Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1582
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/1582
+Cc: qemu-stable@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 6d71357a3b65 ("rtl8139: honor large send MSS value")
+Reported-by: Alexander Bulekov <alxndr@bu.edu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Alexander Bulekov <alxndr@bu.edu>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit dc9ef1bf454811646b3ee6387f1b96f63f538a18)
+(cherry picked from commit 792676c165159c11412346870fd58fd243ab2166)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index adcb8ac6f3..ce2f2186ab 100644
---- a/hw/net/igb_core.c
-+++ b/hw/net/igb_core.c
-@@ -67,6 +67,11 @@ typedef struct IGBTxPktVmdqCallbackContext {
-     NetClientState *nc;
- } IGBTxPktVmdqCallbackContext;
+diff --git a/hw/net/rtl8139.c b/hw/net/rtl8139.c
+index 5a5aaf868d..5f1a4d359b 100644
+--- a/hw/net/rtl8139.c
++++ b/hw/net/rtl8139.c
+@@ -2154,6 +2154,9 @@ static int rtl8139_cplus_transmit_one(RTL8139State *s)
  
-+typedef struct L2Header {
-+    struct eth_header eth;
-+    struct vlan_header vlan;
-+} L2Header;
-+
- static ssize_t
- igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
-                      bool has_vnet, bool *external_tx);
-@@ -960,15 +965,16 @@ igb_rx_is_oversized(IGBCore *core, uint16_t qn, size_t size)
-     return size > (lpe ? max_ethernet_lpe_size : max_ethernet_vlan_size);
- }
+                 int large_send_mss = (txdw0 >> CP_TC_LGSEN_MSS_SHIFT) &
+                                      CP_TC_LGSEN_MSS_MASK;
++                if (large_send_mss == 0) {
++                    goto skip_offload;
++                }
  
--static uint16_t igb_receive_assign(IGBCore *core, const struct eth_header *ehdr,
-+static uint16_t igb_receive_assign(IGBCore *core, const L2Header *l2_header,
-                                    size_t size, E1000E_RSSInfo *rss_info,
-                                    bool *external_tx)
- {
-     static const int ta_shift[] = { 4, 3, 2, 0 };
-+    const struct eth_header *ehdr = &l2_header->eth;
-     uint32_t f, ra[2], *macp, rctl = core->mac[RCTL];
-     uint16_t queues = 0;
-     uint16_t oversized = 0;
--    uint16_t vid = lduw_be_p(&PKT_GET_VLAN_HDR(ehdr)->h_tci) & VLAN_VID_MASK;
-+    uint16_t vid = be16_to_cpu(l2_header->vlan.h_tci) & VLAN_VID_MASK;
-     bool accepted = false;
-     int i;
- 
-@@ -1589,14 +1595,13 @@ static ssize_t
- igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
-                      bool has_vnet, bool *external_tx)
- {
--    static const int maximum_ethernet_hdr_len = (ETH_HLEN + 4);
--
-     uint16_t queues = 0;
-     uint32_t n = 0;
--    uint8_t min_buf[ETH_ZLEN];
-+    union {
-+        L2Header l2_header;
-+        uint8_t octets[ETH_ZLEN];
-+    } buf;
-     struct iovec min_iov;
--    struct eth_header *ehdr;
--    uint8_t *filter_buf;
-     size_t size, orig_size;
-     size_t iov_ofs = 0;
-     E1000E_RxRing rxr;
-@@ -1622,24 +1627,21 @@ igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
-         net_rx_pkt_unset_vhdr(core->rx_pkt);
-     }
- 
--    filter_buf = iov->iov_base + iov_ofs;
-     orig_size = iov_size(iov, iovcnt);
-     size = orig_size - iov_ofs;
- 
-     /* Pad to minimum Ethernet frame length */
--    if (size < sizeof(min_buf)) {
--        iov_to_buf(iov, iovcnt, iov_ofs, min_buf, size);
--        memset(&min_buf[size], 0, sizeof(min_buf) - size);
-+    if (size < sizeof(buf)) {
-+        iov_to_buf(iov, iovcnt, iov_ofs, &buf, size);
-+        memset(&buf.octets[size], 0, sizeof(buf) - size);
-         e1000x_inc_reg_if_not_full(core->mac, RUC);
--        min_iov.iov_base = filter_buf = min_buf;
--        min_iov.iov_len = size = sizeof(min_buf);
-+        min_iov.iov_base = &buf;
-+        min_iov.iov_len = size = sizeof(buf);
-         iovcnt = 1;
-         iov = &min_iov;
-         iov_ofs = 0;
--    } else if (iov->iov_len < maximum_ethernet_hdr_len) {
--        /* This is very unlikely, but may happen. */
--        iov_to_buf(iov, iovcnt, iov_ofs, min_buf, maximum_ethernet_hdr_len);
--        filter_buf = min_buf;
-+    } else {
-+        iov_to_buf(iov, iovcnt, iov_ofs, &buf, sizeof(buf.l2_header));
-     }
- 
-     /* Discard oversized packets if !LPE and !SBP. */
-@@ -1647,11 +1649,12 @@ igb_receive_internal(IGBCore *core, const struct iovec *iov, int iovcnt,
-         return orig_size;
-     }
- 
--    ehdr = PKT_GET_ETH_HDR(filter_buf);
--    net_rx_pkt_set_packet_type(core->rx_pkt, get_eth_packet_type(ehdr));
-+    net_rx_pkt_set_packet_type(core->rx_pkt,
-+                               get_eth_packet_type(&buf.l2_header.eth));
-     net_rx_pkt_set_protocols(core->rx_pkt, iov, iovcnt, iov_ofs);
- 
--    queues = igb_receive_assign(core, ehdr, size, &rss_info, external_tx);
-+    queues = igb_receive_assign(core, &buf.l2_header, size,
-+                                &rss_info, external_tx);
-     if (!queues) {
-         trace_e1000e_rx_flt_dropped();
-         return orig_size;
+                 DPRINTF("+++ C+ mode offloaded task TSO IP data %d "
+                     "frame data %d specified MSS=%d\n",
 -- 
 2.39.2
 
