@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC227139E4
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 16:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0987139E5
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 16:09:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3H3l-00019h-4O; Sun, 28 May 2023 10:07:49 -0400
+	id 1q3H3n-0001Ak-3D; Sun, 28 May 2023 10:07:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1q3H3i-00018J-Tu
- for qemu-devel@nongnu.org; Sun, 28 May 2023 10:07:47 -0400
-Received: from mail-dm6nam12on2062c.outbound.protection.outlook.com
- ([2a01:111:f400:fe59::62c]
- helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ id 1q3H3l-0001AD-AP
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 10:07:49 -0400
+Received: from mail-dm6nam11on2062b.outbound.protection.outlook.com
+ ([2a01:111:f400:7eaa::62b]
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1q3H3d-0002pE-OH
- for qemu-devel@nongnu.org; Sun, 28 May 2023 10:07:46 -0400
+ id 1q3H3g-0002pd-5I
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 10:07:49 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a2AZdAenA8oTwe//bG0OSCjx7nq8Ta41ik/TAY12q2deW3nGsgnlpQvZU2vJuGow7FiUGBzW6D6qs4tmBjNgCZhKp/BlLOh5WF58OzoOQ9mdPlr1Ruv6A0xAzvP8Xrf1TDgJs0Txx4LFIToIOssTB7e+qMEcqOc5In9hGaH851u6wPAD/slfis6sGWWPLNMfdgHV2sukhtvVSCOM3SN8cc2FynbPoPUyaXswbEkcixdsf9R2pNCfjUVaJAqpqVRy8s2UJPAijSnbTZVTa+7WFloORzcDGc8HmYLL84ZcAfZmrpDPgwoYYKWDecs44b9Yx3RAAOL34TKtUdjjoK1Bvg==
+ b=SkpQTjRM/p1PbRhxsBynPXPGD6b0MjkbFsat+xJA7jPVAEGsBIOW9f3xUd1m2e1VT+RdHVMfLRypFKKnG5yycJKjpX1uCO8Di5pUL6bRBBd4ZxZRjFGiYu9eqGBFjI8OalvhxnsNR+F1Gc9C5pNH/uXUoSFQSsNPuJkXx1//+MnQnzjonUEh96O8B0hCBY8TQ99ChtNmdZHjcKYPSx+ncUW+H2mNUbj4o7lzhg1SUkxYacGbvySkpUl1VLZY3m5IQIQ0VMg4mXutuJZzTj88vZK5WWpI8BnkK+rDIEio0mmtwzjB7QPWDdmdX4PNfzk0ARbnJAKx6ke+kaTcNhyLrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h68j4Dm1Q/+H4wT8g4CxjcyAuM4Dnwee3te5mdFcdNY=;
- b=P8vvMQwAxli+DGWFZnhDHmw7FNYF4lG22j/ru4TBdFr0QuAURGTCdk8O5a5mvjv9XaxWiQ6Y7R+yg6zGsOp8cH/BHY4t0YNyaQwgTlsgfK8GZ3rwx6LLDvoSAiDunLD9CSGi4nkyrUIz98OWILkcBbbx397Q+cYqLKoRtyHq9uHcmI9yh6QGRdrlXkBw1jFtTO8X75e7tCPLaPJzyPZAxfJEEKvG3fE40VDu5xPIox14BBhZwnFYcCZUSuEM/2OCEdJ3LdmrBpJytPVtlaPOctbzsmfe4ckrI/3knRug/rs2Bp6Jkk0FYBySB0AdzCzRm2RaAGdaTHujV33UcfFLTQ==
+ bh=V7H9QvzqlZgXyvH+qr47sSSBnIU/d+2AJPqrxvWX8qg=;
+ b=gh46ZbWhB6WVEbuwoXinD/Byux2jnRe4lHv7pso4MOk+fuZhPJEfTFvwN9bCEgpwntP8sftf/a0l+myGpOKuDuu3oWevvr2VYH15ZHC7DcgGsyQJTHV6HpbBPjD3s0/r+sJX9eN3ZKSqOZzrgZukqe35c8txc49n+LmHNgY2kLFiUCryECO8GJawY1xQODe0sebWwtwq4PXWF4hTtJc0GeV+cxfPcpL1IVn8TSjzF4aftXLPNPuVhuOGwkQ+08Bt+z9oOUysp8WJS6apXly5EfXMOdM3LmyJb1YPeqgdrDOj9qdHfLrA2Lksb3EOwYClQLN+Lunumv/9B+3KSLzNHw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -34,18 +34,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h68j4Dm1Q/+H4wT8g4CxjcyAuM4Dnwee3te5mdFcdNY=;
- b=JXrgB5yQQ6TC+xNY7K+9E8OMpHkbrfw3H/o0V4LWSOIfnBFeHNy/hwA5+D7DLHNrfXUPcLhLoUmK60pqAVarzMjPcZ8qY9dPQxFq41ur/SFJvPE415irc64xv2FHOqw7ER7NsLj7DFS3nsqwhXybvbQaTbt3FWLUpIBaeI6xpTlNzHSOwZn4YbmNMei350c3DB2n6Haoh892Hx2XtIj2rFtGCI8nj80RhJOLSinRWbwvs69btvpGx/+YdZWxK8F1/LgJF+7SNNKhOor5/kGNHY3++bMqvguOpKFzU2EcZzMtbrE3V+59BEttmlPM9jgKdjP1MlSqjbnSFqkkR/WrpA==
-Received: from DM6PR06CA0048.namprd06.prod.outlook.com (2603:10b6:5:54::25) by
- BL1PR12MB5048.namprd12.prod.outlook.com (2603:10b6:208:30a::17) with
+ bh=V7H9QvzqlZgXyvH+qr47sSSBnIU/d+2AJPqrxvWX8qg=;
+ b=R7y+Kx8gCewXT9IcyHI6hYxyAqBLyU7/UnLILWyjiQ6hVWhXg5NmupApLw2P6n0p/8+CqSsvkt5yawXhHTiStjjgCU3SZGDOPjbTJBuopZRedIXWwrVO7DObulkM+hUOdGf1HB7yKGFDuUQiDhGKRcGC2OzP4SgU7BjDNdtp2E6DARVbR639uev5yVrK9tD74vhhxVdrDc1RSnSkjK/4wkBG6y157pTBwPfYwrp+eKvkLNWeLzCzBHb+wtduPlf3xPnfJJGqK+yt2QvPpjfXsJ8zbBEr2Zw45rV+fsZKDJN87JyZS6mux+EX05jeLnOAZ2/5gPOi2Y2rLPHULk60pQ==
+Received: from DM6PR06CA0039.namprd06.prod.outlook.com (2603:10b6:5:54::16) by
+ CH3PR12MB8511.namprd12.prod.outlook.com (2603:10b6:610:15c::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.22; Sun, 28 May
- 2023 14:07:35 +0000
+ 2023 14:07:39 +0000
 Received: from DM6NAM11FT036.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:54:cafe::be) by DM6PR06CA0048.outlook.office365.com
- (2603:10b6:5:54::25) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:5:54:cafe::8d) by DM6PR06CA0039.outlook.office365.com
+ (2603:10b6:5:54::16) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.22 via Frontend
- Transport; Sun, 28 May 2023 14:07:35 +0000
+ Transport; Sun, 28 May 2023 14:07:39 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -56,18 +56,18 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.160) by
  DM6NAM11FT036.mail.protection.outlook.com (10.13.172.64) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.18 via Frontend Transport; Sun, 28 May 2023 14:07:35 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ 15.20.6455.18 via Frontend Transport; Sun, 28 May 2023 14:07:39 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Sun, 28 May 2023
- 07:07:28 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ 07:07:34 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Sun, 28 May
- 2023 07:07:28 -0700
+ 2023 07:07:33 -0700
 Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
  with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport; Sun, 28 May
- 2023 07:07:22 -0700
+ 2023 07:07:28 -0700
 From: Avihai Horon <avihaih@nvidia.com>
 To: <qemu-devel@nongnu.org>
 CC: Alex Williamson <alex.williamson@redhat.com>,
@@ -82,41 +82,41 @@ CC: Alex Williamson <alex.williamson@redhat.com>,
  <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>, Avihai Horon
  <avihaih@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta
  <targupta@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v4 5/9] vfio/migration: Refactor vfio_save_block() to return
- saved data size
-Date: Sun, 28 May 2023 17:06:48 +0300
-Message-ID: <20230528140652.8693-6-avihaih@nvidia.com>
+Subject: [PATCH v4 6/9] vfio/migration: Store VFIO migration flags in
+ VFIOMigration
+Date: Sun, 28 May 2023 17:06:49 +0300
+Message-ID: <20230528140652.8693-7-avihaih@nvidia.com>
 X-Mailer: git-send-email 2.21.3
 In-Reply-To: <20230528140652.8693-1-avihaih@nvidia.com>
 References: <20230528140652.8693-1-avihaih@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT036:EE_|BL1PR12MB5048:EE_
-X-MS-Office365-Filtering-Correlation-Id: ecdbef92-44f1-4688-8ecf-08db5f84e30c
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT036:EE_|CH3PR12MB8511:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72b4e3d9-3de4-4cde-c042-08db5f84e567
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: P4jKLxRjf1EJmaNZag2uwq3Df6rF8L//s/sAxpVNdnJYWoh5bv4O/aYzKNCNH6NWQl1062DWX/qoMmmz3N2fJu+tsLh/Si6Lyu5K72EEXg5illl3te72mqpm8TFoZVbAhW7+9bDXCKjQ+mkfKYzmgi8vqKoshidMYDmeddtJC3VwHNkaBT4o56nkkoieafN8vCRqHmvxp9Ll9F0sS+Qn63j0GNa5Rm2wgQAKMPz99O4OVy5Zedbn+p0o2Vqua8yu8WA9Tk9Dg4CESa7iG3re+ujTfoPGcuYMMFQ/oGVC9cZEA0InPJABpivaVKQY1+Vu1h9vzYeJszFvzSa9kVs1Mzpu/qRz0pjqqDVKNuAMCARQCb77OmDoM1q2FxZsPTHzaB/xXZwTryrxRLC11uuM6A/3hnuEz2qyI916LhJcLuNtAmYLGmmrz8GudGerTeNAQE+k60uqBVXqvl+UhltJ/UmZzLiOUYQCik5L4dgBb6Wj+oJZV6iLqnJurOi79YNHybsvBt4VKnVha8JONRc6vF1EpoD43nCEOmOfhbnEn8M09ag0eNTbqDcrs+74gR8xK3dTDW8s6kS5jXsoUa/9PLt8Bpu9a6mZxNTv5oWoevdarVkD62xFb4viJv7FVeV24bE5/inB4s+QwT90vJWOZUskoPVLR3CEfTj0bGF1Wr5UPWFXYvMY8R8ofFCmR0xrvGbHb/7B89M/EB1dnXg+E3MWJbPmv+RYYwPtxbSxVq5gIwwHRbu9K3wqiI/jfPtI
+X-Microsoft-Antispam-Message-Info: l8B8SOxR2HnkuJk3SGCH7FJRnNpSNRUNoKU5qG5lLBeQLiZVrT7pBJqpsG9JMOgLojmKc18uSIlsjq0C79HPPquZndIrHdVnzazNAEIsxlZ0nGppp5ZxPdaijSUNcrk+nV1v8s7KTXb/tJlF0BDxV6u8Is2hpspC0yr2vm0O40YlVzzxYDWNUBcS2rQtwcdOrE4JR/wnUuUbleEvPBppOhxoVd49eGR1d45L3AnSZsNPLBT8Za++ewp6l8k7OfrQ0Wy7+mwO6W5V21BplsHetTZSXtSu1wT9wJ4xxFWIfKvVAgktsz9N/hFWaUdROOZ0s3C9AiymeXO+Rl1tj9cM/BdlecJvUelLeY2ZwFgWkT+r9z8DNe2nwKSoqVrYC+yO5Ec3hwR6wyUHF8x30CYWX9ew/YWAWbsuirDry+zm6j1OHFQ83dQm4xSnYyQFKwQMzjnbdrwCJL1PumFjoPKG1RWXS0/2rXZIgxZ07H9kPakSQPEDSzwQZo+QKCv5MnRfobFzxMDYO/6Qm3w0AomwtkMnWH/ya8iOpD3J7DYwZAfMnN59FlDfey3D2uW9UqCqW+voPELmIkySZn7Dk7x4MsSJl4SU2RDHrthekREjM/RRClqI8+FMewSIaK8rQrV49qihJN1El4JNQWUiTTk+W4Tn42+bMQQVIMWefNJOi0HxEQ/5mpalIwuAs6qd6cpAvfnU3XbmiJnTBTHAOsnx6+ClOstWCR54Alh3mzbHCSpMU/dHp3XGkLRZLiDs7jxs
 X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230028)(4636009)(376002)(346002)(39860400002)(136003)(396003)(451199021)(40470700004)(36840700001)(46966006)(54906003)(478600001)(40460700003)(5660300002)(8676002)(8936002)(7416002)(36756003)(2906002)(86362001)(82310400005)(70206006)(70586007)(4326008)(6916009)(82740400003)(7636003)(356005)(316002)(40480700001)(41300700001)(2616005)(336012)(426003)(186003)(26005)(1076003)(66574015)(47076005)(7696005)(36860700001)(6666004)(83380400001);
+ SFS:(13230028)(4636009)(396003)(346002)(39860400002)(376002)(136003)(451199021)(46966006)(36840700001)(40470700004)(54906003)(478600001)(40460700003)(5660300002)(8676002)(8936002)(7416002)(36756003)(2906002)(86362001)(82310400005)(70206006)(70586007)(4326008)(6916009)(82740400003)(356005)(316002)(7636003)(40480700001)(41300700001)(186003)(36860700001)(1076003)(26005)(47076005)(7696005)(426003)(6666004)(336012)(2616005);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2023 14:07:35.1223 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ecdbef92-44f1-4688-8ecf-08db5f84e30c
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2023 14:07:39.0754 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72b4e3d9-3de4-4cde-c042-08db5f84e567
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
  Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT036.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5048
-Received-SPF: softfail client-ip=2a01:111:f400:fe59::62c;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8511
+Received-SPF: softfail client-ip=2a01:111:f400:7eaa::62b;
  envelope-from=avihaih@nvidia.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
@@ -139,76 +139,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor vfio_save_block() to return the size of saved data on success
-and -errno on error.
+VFIO migration flags are queried once in vfio_migration_init(). Store
+them in VFIOMigration so they can be used later to check the device's
+migration capabilities without re-querying them.
 
-This will be used in next patch to implement VFIO migration pre-copy
-support.
+This will be used in the next patch to check if the device supports
+precopy migration.
 
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
 ---
- hw/vfio/migration.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ include/hw/vfio/vfio-common.h | 1 +
+ hw/vfio/migration.c           | 1 +
+ 2 files changed, 2 insertions(+)
 
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index eed244f25f..5f29dab839 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -66,6 +66,7 @@ typedef struct VFIOMigration {
+     int data_fd;
+     void *data_buffer;
+     size_t data_buffer_size;
++    uint64_t mig_flags;
+ } VFIOMigration;
+ 
+ typedef struct VFIOAddressSpace {
 diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 6b58dddb88..235978fd68 100644
+index 235978fd68..8d33414379 100644
 --- a/hw/vfio/migration.c
 +++ b/hw/vfio/migration.c
-@@ -241,8 +241,8 @@ static int vfio_query_stop_copy_size(VFIODevice *vbasedev,
-     return 0;
- }
+@@ -603,6 +603,7 @@ static int vfio_migration_init(VFIODevice *vbasedev)
+     migration->vbasedev = vbasedev;
+     migration->device_state = VFIO_DEVICE_STATE_RUNNING;
+     migration->data_fd = -1;
++    migration->mig_flags = mig_flags;
  
--/* Returns 1 if end-of-stream is reached, 0 if more data and -errno if error */
--static int vfio_save_block(QEMUFile *f, VFIOMigration *migration)
-+/* Returns the size of saved data on success and -errno on error */
-+static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
- {
-     ssize_t data_size;
+     vbasedev->dirty_pages_supported = vfio_dma_logging_supported(vbasedev);
  
-@@ -252,7 +252,7 @@ static int vfio_save_block(QEMUFile *f, VFIOMigration *migration)
-         return -errno;
-     }
-     if (data_size == 0) {
--        return 1;
-+        return 0;
-     }
- 
-     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_DATA_STATE);
-@@ -262,7 +262,7 @@ static int vfio_save_block(QEMUFile *f, VFIOMigration *migration)
- 
-     trace_vfio_save_block(migration->vbasedev->name, data_size);
- 
--    return qemu_file_get_error(f);
-+    return qemu_file_get_error(f) ?: data_size;
- }
- 
- /* ---------------------------------------------------------------------- */
-@@ -335,6 +335,7 @@ static void vfio_state_pending_exact(void *opaque, uint64_t *must_precopy,
- static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
- {
-     VFIODevice *vbasedev = opaque;
-+    ssize_t data_size;
-     int ret;
- 
-     /* We reach here with device state STOP only */
-@@ -345,11 +346,11 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
-     }
- 
-     do {
--        ret = vfio_save_block(f, vbasedev->migration);
--        if (ret < 0) {
--            return ret;
-+        data_size = vfio_save_block(f, vbasedev->migration);
-+        if (data_size < 0) {
-+            return data_size;
-         }
--    } while (!ret);
-+    } while (data_size);
- 
-     qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-     ret = qemu_file_get_error(f);
 -- 
 2.26.3
 
