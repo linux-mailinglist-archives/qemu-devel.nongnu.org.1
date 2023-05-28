@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75056713822
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 641C4713826
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:59:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3ALX-0006S1-8u; Sun, 28 May 2023 02:57:43 -0400
+	id 1q3ALZ-0006Sj-4W; Sun, 28 May 2023 02:57:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALI-0006Kp-Mt; Sun, 28 May 2023 02:57:30 -0400
+ id 1q3ALI-0006Kq-S8; Sun, 28 May 2023 02:57:30 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALH-0001bC-7C; Sun, 28 May 2023 02:57:28 -0400
+ id 1q3ALH-0001bF-8y; Sun, 28 May 2023 02:57:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 56A078DFB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7763C8DFC;
  Sun, 28 May 2023 09:57:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C98AB7E1B;
- Sun, 28 May 2023 09:57:15 +0300 (MSK)
-Received: (nullmailer pid 42060 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 03EEE7E1C;
+ Sun, 28 May 2023 09:57:16 +0300 (MSK)
+Received: (nullmailer pid 42063 invoked by uid 1000);
  Sun, 28 May 2023 06:57:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 63/73] igb: Do not require CTRL.VME for tx VLAN tagging
-Date: Sun, 28 May 2023 09:57:01 +0300
-Message-Id: <20230528065714.42005-4-mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 64/73] igb: Clear IMS bits when committing ICR access
+Date: Sun, 28 May 2023 09:57:02 +0300
+Message-Id: <20230528065714.42005-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
@@ -62,36 +62,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-While the datasheet of e1000e says it checks CTRL.VME for tx VLAN
-tagging, igb's datasheet has no such statements. It also says for
-"CTRL.VLE":
-> This register only affects the VLAN Strip in Rx it does not have any
-> influence in the Tx path in the 82576.
-(Appendix A. Changes from the 82575)
+The datasheet says contradicting statements regarding ICR accesses so it
+is not reliable to determine the behavior of ICR accesses. However,
+e1000e does clear IMS bits when reading ICR accesses and Linux also
+expects ICR accesses will clear IMS bits according to:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ethernet/intel/igb/igb_main.c?h=v6.2#n8048
 
-There is no "CTRL.VLE" so it is more likely that it is a mistake of
-CTRL.VME.
-
-Fixes: fba7c3b788 ("igb: respect VMVIR and VMOLR for VLAN")
+Fixes: 3a977deebe ("Intrdocue igb device emulation")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit e209716749cda1581cfc8e582591c0216c30ab0d)
+(cherry picked from commit f0b1df5c4502b5ec89f83417924935ab201511d0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 1c7f4eaf76..bc7af7963a 100644
+index bc7af7963a..e0ee70d1d7 100644
 --- a/hw/net/igb_core.c
 +++ b/hw/net/igb_core.c
-@@ -402,7 +402,7 @@ igb_tx_insert_vlan(IGBCore *core, uint16_t qn, struct igb_tx *tx,
-         }
+@@ -2451,16 +2451,16 @@ igb_set_ims(IGBCore *core, int index, uint32_t val)
+ static void igb_commit_icr(IGBCore *core)
+ {
+     /*
+-     * If GPIE.NSICR = 0, then the copy of IAM to IMS will occur only if at
++     * If GPIE.NSICR = 0, then the clear of IMS will occur only if at
+      * least one bit is set in the IMS and there is a true interrupt as
+      * reflected in ICR.INTA.
+      */
+     if ((core->mac[GPIE] & E1000_GPIE_NSICR) ||
+         (core->mac[IMS] && (core->mac[ICR] & E1000_ICR_INT_ASSERTED))) {
+-        igb_set_ims(core, IMS, core->mac[IAM]);
+-    } else {
+-        igb_update_interrupt_state(core);
++        igb_clear_ims_bits(core, core->mac[IAM]);
      }
++
++    igb_update_interrupt_state(core);
+ }
  
--    if (insert_vlan && e1000x_vlan_enabled(core->mac)) {
-+    if (insert_vlan) {
-         net_tx_pkt_setup_vlan_header_ex(tx->tx_pkt, vlan,
-             core->mac[VET] & 0xffff);
-     }
+ static void igb_set_icr(IGBCore *core, int index, uint32_t val)
 -- 
 2.39.2
 
