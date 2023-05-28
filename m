@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA08F713ABE
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 18:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D5D713AB7
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 18:50:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3Jaf-0000Z3-Cj; Sun, 28 May 2023 12:49:57 -0400
+	id 1q3Jai-0000aQ-Br; Sun, 28 May 2023 12:50:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q3Jad-0000Yc-BE; Sun, 28 May 2023 12:49:55 -0400
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1q3Jag-0000aA-6U; Sun, 28 May 2023 12:49:58 -0400
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q3Jab-0003cX-Td; Sun, 28 May 2023 12:49:55 -0400
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-38ea3f8e413so1436133b6e.2; 
- Sun, 28 May 2023 09:49:53 -0700 (PDT)
+ id 1q3Jae-0003cm-JU; Sun, 28 May 2023 12:49:57 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3943fdc59f9so1588553b6e.0; 
+ Sun, 28 May 2023 09:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685292592; x=1687884592;
+ d=gmail.com; s=20221208; t=1685292595; x=1687884595;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yl6x8lKukdyzopG2akGEIx/P7NrVHI+Tu1U5FAgEB2c=;
- b=sxyxHU3VyR0GUqcXzqKp4wrTb9Wp7X4otJ0nYTKAsZ2evHtjgOYffdNHcDfYmIKMzc
- qvUma1ORSFG2ME+kunWq21tnUic1n/tbVNyk4dI/IW1foMubhDHivS6HpqZOHtgra8bq
- UJnAGakbIBN36g4Dtc9AQ/TAlH3SyQ+ucxkvBYYLUmazQ4DS0w7q722Xrirw1zTVwT06
- xPnjrdIk3MKZ8mU0Mx6T4kFT13qOFTC8zK2/voyBuJbm40qqIpZH99A5aZ/pNBTAsVDu
- 0c+uwrLTgin24hWJBT0T1ixEyCFnq438Vqo5RXUlrOkGR9frAc/962LjVEn2s6uMs2e9
- x93A==
+ bh=ALaWyhMssmN731ytAfkeS5ozGxm5FcyKNJFkbSvsWgg=;
+ b=hK8ZDRU3Z+l4oATu9o0LMnxN8Kmt6g8x6X+FvOKiF57lCNyEZwzZrz2YnQBFbmBp9s
+ p377q9aURz8M8/0gBkrbTxH1upO7hj/w3SgRj25cOcVggKI9Qk2KnzAA5W2r5A6XOKuH
+ 0Waorfuw17hqJF2BmMMTIY5R8SmlHXTAYBjcnrvkis2KsmNd/IpK3/7P6C9zAgKdRael
+ UWlrkzB4q4Qy6McQB2EVp+FqLuu4rAM21iYYcPEgZVPARn6/6stzUmjnp2i+d4dc844d
+ S4kFYndtIYHklQWK1bFawIAtHnGn4JOfjWX7ZpXu+Q4wl6bReh6iB14pADku0NnIJRL5
+ HiiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685292592; x=1687884592;
+ d=1e100.net; s=20221208; t=1685292595; x=1687884595;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yl6x8lKukdyzopG2akGEIx/P7NrVHI+Tu1U5FAgEB2c=;
- b=Xe3AREOWS4owcY/t0YilxmRi0vdz9NwA8B3Kga4j9S3vnHNi3mj7sBQnvrklK8lqFB
- TJmgKGdAKWe+RsjwIT8Gyd9G0LlO+wXUvu4AS40GyWWTzOmRUDx2NWGrPah5QUaKfOE1
- 02ZlkMwFZYLzsGxjAb/HQrYRuNx3B9reg2086Yn9wI39bodSbctrNFiQa03zAGwObMl0
- leIm/VuRKNE6/W5otyD9IRsuDq3wKgwt1ydejr1FtcHs8BY02cvhzWIZUmAGEP3iXJhN
- DXN4ybAxvzsq240UhlbN8GmTaOVvFijCdtSNa2dYoTdrsG2MNY//GkJAbmeMYxCm+r/J
- 3BrQ==
-X-Gm-Message-State: AC+VfDxM15eyeO4ZupTjNgp/aYjFL0AmKCJeqGHB28KASuXJWhrxzTcr
- pPrKhTaCbUunL/X7neVagoIkkxo0mzE=
-X-Google-Smtp-Source: ACHHUZ59RxgQ4PgL4GuQwCZNAIFtj1nlVKqjvk9iT6uvKmAipEeY4cGNsGLNDuoAgR5nZJlMsCExHA==
-X-Received: by 2002:a05:6808:287:b0:398:9ee4:1dac with SMTP id
- z7-20020a056808028700b003989ee41dacmr4151425oic.32.1685292592385; 
- Sun, 28 May 2023 09:49:52 -0700 (PDT)
+ bh=ALaWyhMssmN731ytAfkeS5ozGxm5FcyKNJFkbSvsWgg=;
+ b=jQqXICaT42L4h1a0uEMq6rhp26B9RqD01NjDQEBviiKfDg3hKz01/kaGHOW4f7UcWL
+ naiSKqeudlhGJsW268/p/xrfWw+RluU1iHX15sle1n/q8Lg5mnPWpVmVBGm53wX9TkU1
+ WpeB2wR9q79p31tdxeh8PxVzyzgIkHJ59kB5fqJxFG0vC3htTg/NkMhLcACHeaSPYmEW
+ vktZlzlQodkDL+dIDbM2h9kGkujfpUY9s8YD2kLVjXQSspKCvc41vwaWKU1P/Ck57O8a
+ lIjhfjpsDIJA9tWuWgJBL+kUUIO+ENL7cLk1Sr6NbuHjxKC2+HqhGCD5UO95epwOhOf8
+ AH6A==
+X-Gm-Message-State: AC+VfDwbcGh61yf0sGSEcyh+6fguV4ieaggvNkONVXWPh0Bl5UBw3ZG/
+ YXVrVEs3UANAOKBVDMKetQJM/2x0jlI=
+X-Google-Smtp-Source: ACHHUZ43O1AXnJz8tpCmxEizgYw/YaHyrBLqwvNC2xqXw+/eWlzYLsvfomdIHrJ1kvV/GVvBDjnq8Q==
+X-Received: by 2002:a05:6808:2127:b0:399:b0ee:de1 with SMTP id
+ r39-20020a056808212700b00399b0ee0de1mr4347646oiw.49.1685292594859; 
+ Sun, 28 May 2023 09:49:54 -0700 (PDT)
 Received: from grind.. (200-162-225-121.static-corp.ajato.com.br.
  [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
- w4-20020a4adec4000000b0054f85f67f31sm3378830oou.46.2023.05.28.09.49.49
+ w4-20020a4adec4000000b0054f85f67f31sm3378830oou.46.2023.05.28.09.49.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 May 2023 09:49:52 -0700 (PDT)
+ Sun, 28 May 2023 09:49:54 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, Alexander Bulekov <alxndr@bu.edu>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: [PULL 07/10] pnv_lpc: disable reentrancy detection for lpc-hc
-Date: Sun, 28 May 2023 13:49:19 -0300
-Message-Id: <20230528164922.20364-8-danielhb413@gmail.com>
+ richard.henderson@linaro.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 08/10] target/ppc: Merge COMPUTE_CLASS and COMPUTE_FPRF
+Date: Sun, 28 May 2023 13:49:20 -0300
+Message-Id: <20230528164922.20364-9-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230528164922.20364-1-danielhb413@gmail.com>
 References: <20230528164922.20364-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,41 +93,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexander Bulekov <alxndr@bu.edu>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-As lpc-hc is designed for re-entrant calls from xscom, mark it
-re-entrancy safe.
+Instead of computing an artificial "class" bitmask then converting that
+to the fprf value, compute the final value from the start.
 
-Reported-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
-[clg: mark opb_master_regs as re-entrancy safe also ]
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230526073850.2772197-1-clg@kaod.org>
+Reorder the tests to check the most likely cases first.
+
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230523202507.688859-1-richard.henderson@linaro.org>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/pnv_lpc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/ppc/fpu_helper.c | 78 ++++++++++++-----------------------------
+ 1 file changed, 22 insertions(+), 56 deletions(-)
 
-diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-index 01f44c19eb..605d390861 100644
---- a/hw/ppc/pnv_lpc.c
-+++ b/hw/ppc/pnv_lpc.c
-@@ -734,10 +734,13 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
-     /* Create MMIO regions for LPC HC and OPB registers */
-     memory_region_init_io(&lpc->opb_master_regs, OBJECT(dev), &opb_master_ops,
-                           lpc, "lpc-opb-master", LPC_OPB_REGS_OPB_SIZE);
-+    lpc->opb_master_regs.disable_reentrancy_guard = true;
-     memory_region_add_subregion(&lpc->opb_mr, LPC_OPB_REGS_OPB_ADDR,
-                                 &lpc->opb_master_regs);
-     memory_region_init_io(&lpc->lpc_hc_regs, OBJECT(dev), &lpc_hc_ops, lpc,
-                           "lpc-hc", LPC_HC_REGS_OPB_SIZE);
-+    /* xscom writes to lpc-hc. As such mark lpc-hc re-entrancy safe */
-+    lpc->lpc_hc_regs.disable_reentrancy_guard = true;
-     memory_region_add_subregion(&lpc->opb_mr, LPC_HC_REGS_OPB_ADDR,
-                                 &lpc->lpc_hc_regs);
+diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
+index a66e16c212..03150a0f10 100644
+--- a/target/ppc/fpu_helper.c
++++ b/target/ppc/fpu_helper.c
+@@ -141,62 +141,28 @@ static inline int ppc_float64_get_unbiased_exp(float64 f)
+     return ((f >> 52) & 0x7FF) - 1023;
+ }
  
+-/* Classify a floating-point number.  */
+-enum {
+-    is_normal   = 1,
+-    is_zero     = 2,
+-    is_denormal = 4,
+-    is_inf      = 8,
+-    is_qnan     = 16,
+-    is_snan     = 32,
+-    is_neg      = 64,
+-};
+-
+-#define COMPUTE_CLASS(tp)                                      \
+-static int tp##_classify(tp arg)                               \
+-{                                                              \
+-    int ret = tp##_is_neg(arg) * is_neg;                       \
+-    if (unlikely(tp##_is_any_nan(arg))) {                      \
+-        float_status dummy = { };  /* snan_bit_is_one = 0 */   \
+-        ret |= (tp##_is_signaling_nan(arg, &dummy)             \
+-                ? is_snan : is_qnan);                          \
+-    } else if (unlikely(tp##_is_infinity(arg))) {              \
+-        ret |= is_inf;                                         \
+-    } else if (tp##_is_zero(arg)) {                            \
+-        ret |= is_zero;                                        \
+-    } else if (tp##_is_zero_or_denormal(arg)) {                \
+-        ret |= is_denormal;                                    \
+-    } else {                                                   \
+-        ret |= is_normal;                                      \
+-    }                                                          \
+-    return ret;                                                \
+-}
+-
+-COMPUTE_CLASS(float16)
+-COMPUTE_CLASS(float32)
+-COMPUTE_CLASS(float64)
+-COMPUTE_CLASS(float128)
+-
+-static void set_fprf_from_class(CPUPPCState *env, int class)
+-{
+-    static const uint8_t fprf[6][2] = {
+-        { 0x04, 0x08 },  /* normalized */
+-        { 0x02, 0x12 },  /* zero */
+-        { 0x14, 0x18 },  /* denormalized */
+-        { 0x05, 0x09 },  /* infinity */
+-        { 0x11, 0x11 },  /* qnan */
+-        { 0x00, 0x00 },  /* snan -- flags are undefined */
+-    };
+-    bool isneg = class & is_neg;
+-
+-    env->fpscr &= ~FP_FPRF;
+-    env->fpscr |= fprf[ctz32(class)][isneg] << FPSCR_FPRF;
+-}
+-
+-#define COMPUTE_FPRF(tp)                                \
+-void helper_compute_fprf_##tp(CPUPPCState *env, tp arg) \
+-{                                                       \
+-    set_fprf_from_class(env, tp##_classify(arg));       \
++#define COMPUTE_FPRF(tp)                                          \
++void helper_compute_fprf_##tp(CPUPPCState *env, tp arg)           \
++{                                                                 \
++    bool neg = tp##_is_neg(arg);                                  \
++    target_ulong fprf;                                            \
++    if (likely(tp##_is_normal(arg))) {                            \
++        fprf = neg ? 0x08 << FPSCR_FPRF : 0x04 << FPSCR_FPRF;     \
++    } else if (tp##_is_zero(arg)) {                               \
++        fprf = neg ? 0x12 << FPSCR_FPRF : 0x02 << FPSCR_FPRF;     \
++    } else if (tp##_is_zero_or_denormal(arg)) {                   \
++        fprf = neg ? 0x18 << FPSCR_FPRF : 0x14 << FPSCR_FPRF;     \
++    } else if (tp##_is_infinity(arg)) {                           \
++        fprf = neg ? 0x09 << FPSCR_FPRF : 0x05 << FPSCR_FPRF;     \
++    } else {                                                      \
++        float_status dummy = { };  /* snan_bit_is_one = 0 */      \
++        if (tp##_is_signaling_nan(arg, &dummy)) {                 \
++            fprf = 0x00 << FPSCR_FPRF;                            \
++        } else {                                                  \
++            fprf = 0x11 << FPSCR_FPRF;                            \
++        }                                                         \
++    }                                                             \
++    env->fpscr = (env->fpscr & ~FP_FPRF) | fprf;                  \
+ }
+ 
+ COMPUTE_FPRF(float16)
 -- 
 2.40.1
 
