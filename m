@@ -2,85 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04487713632
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 May 2023 21:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D14F8713819
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:42:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q2zQw-0003aA-5C; Sat, 27 May 2023 15:18:34 -0400
+	id 1q3A4t-0000iq-1e; Sun, 28 May 2023 02:40:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2zQs-0003a1-Nx
- for qemu-devel@nongnu.org; Sat, 27 May 2023 15:18:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q3A3z-0000ZS-0M
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 02:39:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q2zQq-0001q9-GT
- for qemu-devel@nongnu.org; Sat, 27 May 2023 15:18:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q3A3w-00060d-Nx
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 02:39:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685215106;
+ s=mimecast20190719; t=1685255970;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=OiqCQIjVBiAOsxVLm+rtbLWVnEn5+VUEeD4u9ZR0DzI=;
- b=cyMHzM8XTMs9jrztB9xtUL3Ee+jbwndFi6ICeaR2cA0QxTW6MRyaFiXjKOJLwXKgkvPVtr
- RkyiuZRIabCM0T7JRKKy2Ao2dDIjwZzmM4jBjN+KnkatZYyi3SsJQ/OBZmq6RTv0uSLaik
- N+toOkXRORFKinuaEav3T9HC7ThAqXQ=
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
- [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+tG1qwQpcI2qU7BK/9e5UD31Go/FNri7bsCkLjz7Jdw=;
+ b=V342NtKtuhkurpqEnIaEXBlwaUlLdcibzGPARtN3vUznLhdPymFAUH5ji2yInXUxpmy8KZ
+ xsMMRp1sAQc5p2dSVdNRoGaKGSeTHYJq+SbrAnc14eXSEZb4Fu7VhiJnhkUW4YZas4anz6
+ 6Lbg+H7alLxqTBJ/JLJJ3G1xNByYHVs=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-p1uJw8XLPiGv_q1bplbs3g-1; Sat, 27 May 2023 15:18:23 -0400
-X-MC-Unique: p1uJw8XLPiGv_q1bplbs3g-1
-Received: by mail-vk1-f199.google.com with SMTP id
- 71dfb90a1353d-45742278ecbso327059e0c.1
- for <qemu-devel@nongnu.org>; Sat, 27 May 2023 12:18:23 -0700 (PDT)
+ us-mta-665-DJpZiUZ0NJO1sac9-Nh4Jw-1; Sun, 28 May 2023 02:39:28 -0400
+X-MC-Unique: DJpZiUZ0NJO1sac9-Nh4Jw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30479b764f9so795299f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 27 May 2023 23:39:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685215103; x=1687807103;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OiqCQIjVBiAOsxVLm+rtbLWVnEn5+VUEeD4u9ZR0DzI=;
- b=awVDFp+7KLR2d3HJ7a0JaqNEDonAIjv9G9zXgNGcM+uhHIS47cBTssFWWyVt0qXDlz
- u4+dplfZPFMbKKh8gAfSEPnxCOQJIgXR7HH/FnOG5RtqHlfAbcwfeNLlKRr2VVpvV/wi
- 2sHPkyFQEfOO3KUe3a6yvQtQUfQgVkhRmdC15Hq61I+ccVNIo25A2SupLKW1cVRuQ/X/
- OdCHYIO+0klO2FV3A7efF/cULPk2TWtsxeEM7KOyff/WVvmQhFnuYzEJKZOJ18Srg0Mu
- 4reZ1p6tzXs6KDqvpyz4QF4bF+ZQPUXOm5lHYzlyl3obYbRbnCfugL7SQfvKpEssb4wf
- 5rtA==
-X-Gm-Message-State: AC+VfDy2ECWoSTpQvABoFDmr1X4htjMuPsAv7BQqRyqNBeWYN6mn13pQ
- mXHgftsOGbzVw/bUcozQsI0vDW3AYynEBjZ0Mt2teqOU/YeJESV/cKLA9b+UJeh1qmYKvyWRV3s
- fKN1WWH0lzG0wHu69Xc0A+Pm664hnZLc=
-X-Received: by 2002:a05:6102:2dc:b0:42f:46d1:ffad with SMTP id
- h28-20020a05610202dc00b0042f46d1ffadmr1815831vsh.22.1685215102800; 
- Sat, 27 May 2023 12:18:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4KAYUOUnuAp7YWZAvguqGzNnt3484W6uJEE/47Fk8fOmLECnmmcEqlkD86LHJOo8YYKmsMw4eKI21nYY0Fo80=
-X-Received: by 2002:a05:6102:2dc:b0:42f:46d1:ffad with SMTP id
- h28-20020a05610202dc00b0042f46d1ffadmr1815830vsh.22.1685215102575; Sat, 27
- May 2023 12:18:22 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685255967; x=1687847967;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+tG1qwQpcI2qU7BK/9e5UD31Go/FNri7bsCkLjz7Jdw=;
+ b=fZCuldXfcz+JeHc0UKfNQTI/Hz/7CYRIMgtWo5lfsiiuseeSzHIgPaAYUDRVlUrIW1
+ t5KDM9GEO2++U7a6LOXezv2t1BhrmdjTBUmEjwALXelNS1vh1iGkBviP++1GlGisDKlQ
+ uSddoco89jTIjRfFFIFWKSpenq3P8ZAR0cd3wyVGsKDJd275DtVelSz5P0L9/1d40FGm
+ SmlQrq6VmqxUWYvObiNUrmCFuCIVnL/9C2kQb5NFUmyTlHvk9QOCpBWR5Y+yqRiczXGH
+ HEwD6/fSelxToCZHV5k7fUjjSt3LNZa19WrFcGEpvGKfaIFDHSQ0M6sY3YfBoNWlByGK
+ f0jw==
+X-Gm-Message-State: AC+VfDxTl3G+yAfePCKX5vhTexefy6LL3bcSzmwFGN9gbu79Wj2Dcw4r
+ 4z9a+QOeq2exB9TokAMvRTTqXoVp1VLNRib77TkvUqIMnjRyOWff0BV2XxVvkhEjxyhkDJl2eE5
+ on71bgHQXxwfkAUU=
+X-Received: by 2002:a5d:630c:0:b0:30a:d7a7:3db4 with SMTP id
+ i12-20020a5d630c000000b0030ad7a73db4mr4828630wru.12.1685255967726; 
+ Sat, 27 May 2023 23:39:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6lMuOJK51islEW91wsfbIW0vQowljjtRRZ1uexryAUNgBvnyJGebZOPm6KqVbl8HCJDEieNg==
+X-Received: by 2002:a5d:630c:0:b0:30a:d7a7:3db4 with SMTP id
+ i12-20020a5d630c000000b0030ad7a73db4mr4828618wru.12.1685255967382; 
+ Sat, 27 May 2023 23:39:27 -0700 (PDT)
+Received: from redhat.com ([2.52.146.27]) by smtp.gmail.com with ESMTPSA id
+ h2-20020adff4c2000000b0030631f199f9sm10008708wrp.34.2023.05.27.23.39.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 27 May 2023 23:39:26 -0700 (PDT)
+Date: Sun, 28 May 2023 02:39:22 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: Jiri Denemark <jdenemar@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
+ Leonardo Bras <leobras@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
+ qemu-devel@nongnu.org, Daniel Berrange <berrange@redhat.com>
+Subject: Re: [PATCH v1 1/1] hw/pci: Disable PCI_ERR_UNCOR_MASK register for
+ machine type < 8.0
+Message-ID: <20230528023313-mutt-send-email-mst@kernel.org>
+References: <20230503002701.854329-1-leobras@redhat.com>
+ <7f308149-5495-d415-5e51-1fa15fc20f84@proxmox.com>
+ <20230511064306-mutt-send-email-mst@kernel.org>
+ <8735435c0c.fsf@secure.mitica>
+ <ZGuJXf9B0xEeDGe6@orkuz.int.mamuti.net>
+ <87ilcf4jdh.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <20230527092851.705884-1-pbonzini@redhat.com>
- <20230527092851.705884-3-pbonzini@redhat.com>
- <923f7d6b-73c8-eeb0-2e3c-1c129126a950@eik.bme.hu>
-In-Reply-To: <923f7d6b-73c8-eeb0-2e3c-1c129126a950@eik.bme.hu>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 27 May 2023 21:18:10 +0200
-Message-ID: <CABgObfbJXaPdLEzp0UXyhO5k4895xibN87Lb60wmtU-cXbDoZg@mail.gmail.com>
-Subject: Re: [PATCH 2/5] configure: rename --enable-pypi to --enable-download, 
- control subprojects too
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Maydell,
- Peter" <peter.maydell@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, "P. Berrange, Daniel" <berrange@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000008f3f0b05fcb1b7f9"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ilcf4jdh.fsf@secure.mitica>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,224 +105,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008f3f0b05fcb1b7f9
-Content-Type: text/plain; charset="UTF-8"
-
-Il sab 27 mag 2023, 18:49 BALATON Zoltan <balaton@eik.bme.hu> ha scritto:
-
-> On Sat, 27 May 2023, Paolo Bonzini wrote:
-> > The behavior of --{enable,disable}-pypi is similar to that of
-> > -Dwrapmode={default,nodownload} respectively.  In particular,
-> > in both cases a feature needs to be explicitly enabled for the
-> > dependency to be downloaded.
->
-> Is this the default? Can it default to disabled so it won't download
-> anytihng unless asked to do that? By default it should just report if
-> something is missing and let the users decide how they want to install it.
->
-
-It is the default but only for features that are explicitly enabled on the
-configure command line. For example sphinx will not be installed unless
---enable-docs is present.
-
-However, if in the future we remove the bundled dtc sources from the
-tarball, that might be an exception in that dtc would be downloaded anyway.
-To be clear, this is not something that is changed by this series.
-
-Paolo
-
-
-> Regards,
-> BALATON Zoltan
->
-> > bindir="bin"
-> > skip_meson=no
-> > vfio_user_server="disabled"
-> > @@ -756,9 +756,9 @@ for opt do
-> >   --with-git-submodules=*)
-> >       git_submodules_action="$optarg"
-> >   ;;
-> > -  --disable-pypi) pypi="disabled"
-> > +  --disable-download) download="disabled"
-> >   ;;
-> > -  --enable-pypi) pypi="enabled"
-> > +  --enable-download) download="enabled"
-> >   ;;
-> >   --enable-plugins) if test "$mingw32" = "yes"; then
-> >                         error_exit "TCG plugins not currently supported
-> on Windows platforms"
-> > @@ -962,7 +962,7 @@ python="$(command -v "$python")"
-> > # - venv is allowed to use system packages;
-> > # - all setup can be performed offline;
-> > # - missing packages may be fetched from PyPI,
-> > -#   unless --disable-pypi is passed.
-> > +#   unless --disable-download is passed.
-> > # - pip is not installed into the venv when possible,
-> > #   but ensurepip is called as a fallback when necessary.
+On Fri, May 26, 2023 at 09:55:22AM +0200, Juan Quintela wrote:
+> Jiri Denemark <jdenemar@redhat.com> wrote:
+> > On Thu, May 11, 2023 at 13:43:47 +0200, Juan Quintela wrote:
+> >> "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> >> 
+> >> [Added libvirt people to the party, see the end of the message ]
 > >
-> > @@ -979,7 +979,7 @@ python="$python -B"
-> > mkvenv="$python ${source_path}/python/scripts/mkvenv.py"
+> > Sorry, I'm not that much into parties :-)
 > >
-> > mkvenv_flags=""
-> > -if test "$pypi" = "enabled" ; then
-> > +if test "$download" = "enabled" ; then
-> >     mkvenv_flags="--online"
-> > fi
+> >> That would fix the:
+> >> 
+> >> qemu-8.0 -M pc-7.2 -> qemu-8.0.1 -M pc-7.2
+> >> 
+> >> It is worth it?  Dunno.  That is my question.
+> >> 
+> >> And knowing from what qemu it has migrated from would not help.  We
+> >> would need to add a new tweak and means:
+> >> 
+> >> This is a pc-7.2 machine that has been isntantiated in a qemu-8.0 and
+> >> has the pciaerr bug.  But wait, we have _that_.
+> >> 
+> >> And it is called
+> >> 
+> >> +    { TYPE_PCI_DEVICE, "x-pcie-err-unc-mask", "off" },
+> >> 
+> >> from the patch.
+> >> 
+> >> We can teach libvirt about this glitch, and if he is migrating a pc-7.2
+> >> machine in qemu-8.0 machine, And they want to migrate to a new qemu
+> >> (call it qemu-8.1), it needs to be started:
+> >> 
+> >> qemu-8.1 -M pc-7.2 <whatever pci devices need to do>,x-pci-err-unc-mask="true"
+> >> 
+> >> Until the user reboots it and then that property can be reset to default
+> >> value.
 > >
-> > @@ -1002,7 +1002,7 @@ meson="$(cd pyvenv/bin; pwd)/meson"
-> > # Conditionally ensure Sphinx is installed.
-> >
-> > mkvenv_flags=""
-> > -if test "$pypi" = "enabled" -a "$docs" = "enabled" ; then
-> > +if test "$download" = "enabled" -a "$docs" = "enabled" ; then
-> >     mkvenv_flags="--online"
-> > fi
-> >
-> > @@ -1942,11 +1942,8 @@ if test "$skip_meson" = no; then
-> >
-> >   rm -rf meson-private meson-info meson-logs
-> >
-> > -  # Prevent meson from automatically downloading wrapped subprojects
-> when missing.
-> > -  # You can use 'meson subprojects download' before running configure.
-> > -  meson_option_add "--wrap-mode=nodownload"
-> > -
-> >   # Built-in options
-> > +  test "$download" = "disabled" && meson_option_add
-> "--wrap-mode=nodownload"
-> >   test "$bindir" != "bin" && meson_option_add "-Dbindir=$bindir"
-> >   test "$default_feature" = no && meson_option_add
-> -Dauto_features=disabled
-> >   test "$static" = yes && meson_option_add -Dprefer_static=true
-> > diff --git a/subprojects/.gitignore b/subprojects/.gitignore
-> > new file mode 100644
-> > index 000000000000..7560ebb0b1a0
-> > --- /dev/null
-> > +++ b/subprojects/.gitignore
-> > @@ -0,0 +1,3 @@
-> > +/packagecache
-> > +
-> > +/slirp
-> >
+> > Hmm and what would happen if eventually this machine gets migrated back
+> > to qemu-8.0?
+> 
+> It works.
+> migrating to qemu-7.2 is what is not going to work.
+> To migrate to qemu-8.0, you just need to drop the
+> "x-pci-err-unc-mask=true" bit.  And it would work.
+> 
+> So, to be clear, this machine can migrate to:
+> 
+> - qemu-8.0, you just need to drop the "x-pci-err-unc-mask=true" bit
+> 
+> - qemu-8.0.1 or newer, you just need to maintain the
+>   "x-pci-err-unc-mask=true" bit.
+> 
+> Let's just assume that qemu-7.2.1 don't get the
+> "x-pci-err-unc-mask=true" bit, so it will not be able to migrate there.
+> 
+> 
+> > Or even when the machine is stopped, started again, and
+> > then migrated to qemu-8.0?
+> 
+> If you do what I call a hard reset (i.e. poweroff + poweron so qemu
+> dies), you should drop the "x-pci-err-unc-mask=true" bit.  And then you
+> can migrate to qemu-7.2 and all qemu-8.0.1 and newer.
+> 
+> Basically what we need is a "mark" inside libvirt that means something
+> like:
+> 
+> - this is weird machine that looks like pc-7.2
+> - but has "x-pci-err-unc-mask=true"
+> - so it can only migrate to qemu-8.0 and newer.
+> - but if it even reboots in qemu-8.0.1 or newer, we want it back to
+>   become a "normal" pc-7.2 machine (i.e. drop the
+>   x-pci-err-unc-mask=true).
+> 
+> That would be the perfect world.  But as we are in an imperfect world,
+> something like:
+> 
+> - this machine started in qemu-8.0 -M pc-7.2, we know this is broken and
+>   it can't migrate outside of qemu-8.0 because it would fail to go to
+>   either qemu-7.2 or qemu-8.0.1.
+> 
+> I would argue that if you do the second option doing the "right" option
+> i.e. the first one is not much more complicated, but that is a question
+> that you should be better to answer.
+> 
+> And then we have the other Michael question.  How can we export that
+> information so libvirt can use it.
+> 
+> In this case we can comunicate libvirt:
+> - In qemu-8.0 we broke pc-7.2.
+> - The problem is fixed in qemu-8.0.1 using property
+>   "x-pci-err-unc-mask=false".
+> - You can migrate from qemu-8.0 in newer if you set that property as
+>   true.
+> - Guests started in qemu-8.0 -M pc-7.2 should reboot in qemu-8.0.1 or
+>   newer to become "normal pc-7.2".
+> - If we publish this on qemu, we can only publish it on qemu-8.0.1 and
+>   newer.
+> - Or we can publish it somewhere else and any libvirt can take this
+>   information.
+> - Or we can comunicate this to libvirt, and they incorporate it on their
+>   source anywhere that you see fit.
 
---0000000000008f3f0b05fcb1b7f9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+And this is not an isolated instance. There are things like this in
+almost each release.
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il sab 27 mag 2023, 18:49 BALATON Zoltan &lt;<a href=
-=3D"mailto:balaton@eik.bme.hu">balaton@eik.bme.hu</a>&gt; ha scritto:<br></=
-div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-lef=
-t:1px #ccc solid;padding-left:1ex">On Sat, 27 May 2023, Paolo Bonzini wrote=
-:<br>
-&gt; The behavior of --{enable,disable}-pypi is similar to that of<br>
-&gt; -Dwrapmode=3D{default,nodownload} respectively.=C2=A0 In particular,<b=
-r>
-&gt; in both cases a feature needs to be explicitly enabled for the<br>
-&gt; dependency to be downloaded.<br>
-<br>
-Is this the default? Can it default to disabled so it won&#39;t download <b=
-r>
-anytihng unless asked to do that? By default it should just report if <br>
-something is missing and let the users decide how they want to install it.<=
-br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">I=
-t is the default but only for features that are explicitly enabled on the c=
-onfigure command line. For example sphinx will not be installed unless --en=
-able-docs is present.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Ho=
-wever, if in the future we remove the bundled dtc sources from the tarball,=
- that might be an exception in that dtc would be downloaded anyway. To be c=
-lear, this is not something that is changed by this series.</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></di=
-v><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_q=
-uote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1e=
-x">
-<br>
-Regards,<br>
-BALATON Zoltan<br>
-<br>
-&gt; bindir=3D&quot;bin&quot;<br>
-&gt; skip_meson=3Dno<br>
-&gt; vfio_user_server=3D&quot;disabled&quot;<br>
-&gt; @@ -756,9 +756,9 @@ for opt do<br>
-&gt;=C2=A0 =C2=A0--with-git-submodules=3D*)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0git_submodules_action=3D&quot;$optarg&quot;<=
-br>
-&gt;=C2=A0 =C2=A0;;<br>
-&gt; -=C2=A0 --disable-pypi) pypi=3D&quot;disabled&quot;<br>
-&gt; +=C2=A0 --disable-download) download=3D&quot;disabled&quot;<br>
-&gt;=C2=A0 =C2=A0;;<br>
-&gt; -=C2=A0 --enable-pypi) pypi=3D&quot;enabled&quot;<br>
-&gt; +=C2=A0 --enable-download) download=3D&quot;enabled&quot;<br>
-&gt;=C2=A0 =C2=A0;;<br>
-&gt;=C2=A0 =C2=A0--enable-plugins) if test &quot;$mingw32&quot; =3D &quot;y=
-es&quot;; then<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0error_exit &quot;TCG plugins not currently supported on=
- Windows platforms&quot;<br>
-&gt; @@ -962,7 +962,7 @@ python=3D&quot;$(command -v &quot;$python&quot;)&q=
-uot;<br>
-&gt; # - venv is allowed to use system packages;<br>
-&gt; # - all setup can be performed offline;<br>
-&gt; # - missing packages may be fetched from PyPI,<br>
-&gt; -#=C2=A0 =C2=A0unless --disable-pypi is passed.<br>
-&gt; +#=C2=A0 =C2=A0unless --disable-download is passed.<br>
-&gt; # - pip is not installed into the venv when possible,<br>
-&gt; #=C2=A0 =C2=A0but ensurepip is called as a fallback when necessary.<br=
->
-&gt;<br>
-&gt; @@ -979,7 +979,7 @@ python=3D&quot;$python -B&quot;<br>
-&gt; mkvenv=3D&quot;$python ${source_path}/python/scripts/mkvenv.py&quot;<b=
-r>
-&gt;<br>
-&gt; mkvenv_flags=3D&quot;&quot;<br>
-&gt; -if test &quot;$pypi&quot; =3D &quot;enabled&quot; ; then<br>
-&gt; +if test &quot;$download&quot; =3D &quot;enabled&quot; ; then<br>
-&gt;=C2=A0 =C2=A0 =C2=A0mkvenv_flags=3D&quot;--online&quot;<br>
-&gt; fi<br>
-&gt;<br>
-&gt; @@ -1002,7 +1002,7 @@ meson=3D&quot;$(cd pyvenv/bin; pwd)/meson&quot;<=
-br>
-&gt; # Conditionally ensure Sphinx is installed.<br>
-&gt;<br>
-&gt; mkvenv_flags=3D&quot;&quot;<br>
-&gt; -if test &quot;$pypi&quot; =3D &quot;enabled&quot; -a &quot;$docs&quot=
-; =3D &quot;enabled&quot; ; then<br>
-&gt; +if test &quot;$download&quot; =3D &quot;enabled&quot; -a &quot;$docs&=
-quot; =3D &quot;enabled&quot; ; then<br>
-&gt;=C2=A0 =C2=A0 =C2=A0mkvenv_flags=3D&quot;--online&quot;<br>
-&gt; fi<br>
-&gt;<br>
-&gt; @@ -1942,11 +1942,8 @@ if test &quot;$skip_meson&quot; =3D no; then<br=
->
-&gt;<br>
-&gt;=C2=A0 =C2=A0rm -rf meson-private meson-info meson-logs<br>
-&gt;<br>
-&gt; -=C2=A0 # Prevent meson from automatically downloading wrapped subproj=
-ects when missing.<br>
-&gt; -=C2=A0 # You can use &#39;meson subprojects download&#39; before runn=
-ing configure.<br>
-&gt; -=C2=A0 meson_option_add &quot;--wrap-mode=3Dnodownload&quot;<br>
-&gt; -<br>
-&gt;=C2=A0 =C2=A0# Built-in options<br>
-&gt; +=C2=A0 test &quot;$download&quot; =3D &quot;disabled&quot; &amp;&amp;=
- meson_option_add &quot;--wrap-mode=3Dnodownload&quot;<br>
-&gt;=C2=A0 =C2=A0test &quot;$bindir&quot; !=3D &quot;bin&quot; &amp;&amp; m=
-eson_option_add &quot;-Dbindir=3D$bindir&quot;<br>
-&gt;=C2=A0 =C2=A0test &quot;$default_feature&quot; =3D no &amp;&amp; meson_=
-option_add -Dauto_features=3Ddisabled<br>
-&gt;=C2=A0 =C2=A0test &quot;$static&quot; =3D yes &amp;&amp; meson_option_a=
-dd -Dprefer_static=3Dtrue<br>
-&gt; diff --git a/subprojects/.gitignore b/subprojects/.gitignore<br>
-&gt; new file mode 100644<br>
-&gt; index 000000000000..7560ebb0b1a0<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/subprojects/.gitignore<br>
-&gt; @@ -0,0 +1,3 @@<br>
-&gt; +/packagecache<br>
-&gt; +<br>
-&gt; +/slirp<br>
-&gt;</blockquote></div></div></div>
 
---0000000000008f3f0b05fcb1b7f9--
+My suggestion is a package with known bugs like this.
+It would list these work arounds in some machine readable
+format and would be essentially append only, making it
+relatively safe even for very old RHEL distros to
+pick up the latest version once in a while.
+
+E.g. the fact we add bug workaround for 10.0 will not affect
+7.2 so you do not need to fork with each release.
+
+
+
+
+> The point here is that when we use a property on a machine type, it can
+> be for two reasons:
+> 
+> - We detected at the right time that we changed the value of something,
+>   and we did the right thing on hw_compat_X_Y, so libvirt needs to do
+>   nothing.
+> 
+> - We *DID NOT* detect that we broke compatibility before release, and we
+>   need to make a property to identify that problem.  This is where we
+>   need to do this dance.
+> 
+> Notice that normally we detect lots of problems during development and
+> this *should* not happen.  But when it happens, we need to be able to do
+> something.
+> 
+> And also notice that normally we broke just some device, not a whole
+> machine type.  But as you can see we have broke it this time.  We are
+> trying to automate the detection of this kind of failures, but we are
+> still on design stage, so we need to plan how to handle this.
+> 
+> Any comments?
+> 
+> Later, Juan.
+> 
+> 
+> 
+> 
 
 
