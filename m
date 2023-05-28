@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B773C713990
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D45E71398D
 	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 15:22:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3GKG-0007b7-CE; Sun, 28 May 2023 09:20:48 -0400
+	id 1q3GKK-0007bq-Ex; Sun, 28 May 2023 09:20:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q3GKC-0007aO-2n
- for qemu-devel@nongnu.org; Sun, 28 May 2023 09:20:44 -0400
+ id 1q3GKG-0007bS-Ud
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 09:20:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1q3GKA-00084N-6t
- for qemu-devel@nongnu.org; Sun, 28 May 2023 09:20:43 -0400
+ id 1q3GKF-00085p-HN
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 09:20:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685280041;
+ s=mimecast20190719; t=1685280046;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CpvPBcShRkyJ+2h3vZMKhYnEn+ZEWfxFamhs6fV9SZY=;
- b=Ga8YceF/vUoI8beUqH8lc+24pWgMdas/KXhbDkrdpzn0lAzWUrbzcf8e2O1NE8LImWw6P6
- Lp8QNjt3JiYWAYlw4tVUSmCG8Sy5xTWLqaYApFmYqEE4D7Zzw9dNO1LppFkLZnqOeQLwGF
- EFHq8IGgjsL4iAaJTzXq1AI/u6hhjIw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Rwa4w3lHrxjFcXn2rIPSMTl2Jjhngi5lCJQjzwXfN8I=;
+ b=ZflFLj+dKiNC9ZKxIc/uz/K1eenMDOmu/Tk/qdLamyTW2XChdti6od9RBrpM1RMPtj86IH
+ pyOvUcID6H9J3xDkgBcSDUAF9Oc0Sfz1fx+sUA3w952q4YG95wtOkct0UVPPCWN03IC2OB
+ TQM6Y52B/3byVFK8wwST7Fo6Hl84SSE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-671-a6gDMBKZO5C2L6777HESNA-1; Sun, 28 May 2023 09:20:38 -0400
-X-MC-Unique: a6gDMBKZO5C2L6777HESNA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-501-oLOMCpaPOkaE3lSTD3_Z_g-1; Sun, 28 May 2023 09:20:42 -0400
+X-MC-Unique: oLOMCpaPOkaE3lSTD3_Z_g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9AD9800BFF;
- Sun, 28 May 2023 13:20:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6841C1C0514E;
+ Sun, 28 May 2023 13:20:42 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 110B0492B0A;
- Sun, 28 May 2023 13:20:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 038F52166B2B;
+ Sun, 28 May 2023 13:20:40 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, berrange@redhat.com,
@@ -50,16 +50,15 @@ Cc: Markus Armbruster <armbru@redhat.com>, berrange@redhat.com,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 04/19] ui/sdl2: fix surface_gl_update_texture: Assertion 'gls'
- failed
-Date: Sun, 28 May 2023 17:20:01 +0400
-Message-Id: <20230528132016.3218152-5-marcandre.lureau@redhat.com>
+Subject: [PULL 05/19] ui/dbus: fix compilation when GBM && !OPENGL
+Date: Sun, 28 May 2023 17:20:02 +0400
+Message-Id: <20230528132016.3218152-6-marcandre.lureau@redhat.com>
 In-Reply-To: <20230528132016.3218152-1-marcandre.lureau@redhat.com>
 References: <20230528132016.3218152-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -87,34 +86,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Before sdl2_gl_update() is called, sdl2_gl_switch() may decide to
-destroy the console window and its associated shaders.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1644
-Fixes: c84ab0a500a8 ("ui/console: optionally update after gfx switch")
+commit 4814d3cbf ("ui/dbus: restrict opengl to gbm-enabled config")
+assumes that whenever GBM is available, OpenGL is. This is not always
+the case, let's further restrict opengl-related paths and fix some
+compilation issues.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Tested-by: Bin Meng <bin.meng@windriver.com>
-Message-Id: <20230511074217.4171842-1-marcandre.lureau@redhat.com>
+Message-Id: <20230515132348.1024663-1-marcandre.lureau@redhat.com>
 ---
- ui/sdl2-gl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ ui/dbus-listener.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
-index 39cab8cde7..bbfa70eac3 100644
---- a/ui/sdl2-gl.c
-+++ b/ui/sdl2-gl.c
-@@ -67,6 +67,10 @@ void sdl2_gl_update(DisplayChangeListener *dcl,
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 911acdc529..defe2220c0 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -50,7 +50,7 @@ struct _DBusDisplayListener {
  
-     assert(scon->opengl);
+ G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJECT)
  
-+    if (!scon->real_window) {
-+        return;
-+    }
-+
-     SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
-     surface_gl_update_texture(scon->gls, scon->surface, x, y, w, h);
-     scon->updates++;
+-#ifdef CONFIG_GBM
++#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
+ static void dbus_update_gl_cb(GObject *source_object,
+                            GAsyncResult *res,
+                            gpointer user_data)
+@@ -239,7 +239,7 @@ static void dbus_refresh(DisplayChangeListener *dcl)
+     graphic_hw_update(dcl->con);
+ }
+ 
+-#ifdef CONFIG_GBM
++#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
+ static void dbus_gl_gfx_update(DisplayChangeListener *dcl,
+                                int x, int y, int w, int h)
+ {
+@@ -302,7 +302,7 @@ static void dbus_gfx_update(DisplayChangeListener *dcl,
+         DBUS_DEFAULT_TIMEOUT, NULL, NULL, NULL);
+ }
+ 
+-#ifdef CONFIG_GBM
++#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
+ static void dbus_gl_gfx_switch(DisplayChangeListener *dcl,
+                                struct DisplaySurface *new_surface)
+ {
+@@ -369,7 +369,7 @@ static void dbus_cursor_define(DisplayChangeListener *dcl,
+         NULL);
+ }
+ 
+-#ifdef CONFIG_GBM
++#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
+ const DisplayChangeListenerOps dbus_gl_dcl_ops = {
+     .dpy_name                = "dbus-gl",
+     .dpy_gfx_update          = dbus_gl_gfx_update,
+@@ -417,7 +417,7 @@ dbus_display_listener_constructed(GObject *object)
+     DBusDisplayListener *ddl = DBUS_DISPLAY_LISTENER(object);
+ 
+     ddl->dcl.ops = &dbus_dcl_ops;
+-#ifdef CONFIG_GBM
++#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
+     if (display_opengl) {
+         ddl->dcl.ops = &dbus_gl_dcl_ops;
+     }
 -- 
 2.40.1
 
