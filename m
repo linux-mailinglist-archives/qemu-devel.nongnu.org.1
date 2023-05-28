@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A308713825
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 042F571382B
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:59:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3ALt-0006Ww-F2; Sun, 28 May 2023 02:58:05 -0400
+	id 1q3ALy-0006bS-Bp; Sun, 28 May 2023 02:58:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALq-0006Um-TK; Sun, 28 May 2023 02:58:02 -0400
+ id 1q3ALt-0006Xn-RE; Sun, 28 May 2023 02:58:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALp-0001eH-6W; Sun, 28 May 2023 02:58:02 -0400
+ id 1q3ALs-0001eZ-AQ; Sun, 28 May 2023 02:58:05 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0F3FB8E04;
+ by isrv.corpit.ru (Postfix) with ESMTP id 337AB8E05;
  Sun, 28 May 2023 09:57:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9BADD7E24;
+ by tsrv.corpit.ru (Postfix) with SMTP id C69427E25;
  Sun, 28 May 2023 09:57:17 +0300 (MSK)
-Received: (nullmailer pid 42087 invoked by uid 1000);
+Received: (nullmailer pid 42090 invoked by uid 1000);
  Sun, 28 May 2023 06:57:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Shaoqin Huang <shahuang@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 72/73] machine: do not crash if default RAM backend
- name has been stolen
-Date: Sun, 28 May 2023 09:57:10 +0300
-Message-Id: <20230528065714.42005-13-mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 73/73] virtio: qmp: fix memory leak
+Date: Sun, 28 May 2023 09:57:11 +0300
+Message-Id: <20230528065714.42005-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
@@ -63,54 +61,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Igor Mammedov <imammedo@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-QEMU aborts when default RAM backend should be used (i.e. no
-explicit '-machine memory-backend=' specified) but user
-has created an object which 'id' equals to default RAM backend
-name used by board.
+The VirtioInfoList is already allocated by QAPI_LIST_PREPEND and
+need not be allocated by the caller.
 
- $QEMU -machine pc \
-       -object memory-backend-ram,id=pc.ram,size=4294967296
+Fixes Coverity CID 1508724.
 
- Actual results:
- QEMU 7.2.0 monitor - type 'help' for more information
- (qemu) Unexpected error in object_property_try_add() at ../qom/object.c:1239:
- qemu-kvm: attempt to add duplicate property 'pc.ram' to object (type 'container')
- Aborted (core dumped)
-
-Instead of abort, check for the conflicting 'id' and exit with
-an error, suggesting how to remedy the issue.
-
-Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2207886
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20230522131717.3780533-1-imammedo@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit a37531f2381c4e294e48b1417089474128388b44)
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 0bfd14149b248e8097ea4da1f9d53beb5c5b0cca)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 5060119952..2f6ccf5623 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1333,6 +1333,14 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
-         }
-     } else if (machine_class->default_ram_id && machine->ram_size &&
-                numa_uses_legacy_mem()) {
-+        if (object_property_find(object_get_objects_root(),
-+                                 machine_class->default_ram_id)) {
-+            error_setg(errp, "object name '%s' is reserved for the default"
-+                " RAM backend, it can't be used for any other purposes."
-+                " Change the object's 'id' to something else",
-+                machine_class->default_ram_id);
-+            return;
-+        }
-         if (!create_default_memdev(current_machine, mem_path, errp)) {
-             return;
+diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+index b70148aba9..3d7ce2ea2f 100644
+--- a/hw/virtio/virtio-qmp.c
++++ b/hw/virtio/virtio-qmp.c
+@@ -666,7 +666,7 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
+ VirtioInfoList *qmp_x_query_virtio(Error **errp)
+ {
+     VirtioInfoList *list = NULL;
+-    VirtioInfoList *node;
++    VirtioInfo *node;
+     VirtIODevice *vdev;
+ 
+     QTAILQ_FOREACH(vdev, &virtio_list, next) {
+@@ -680,11 +680,10 @@ VirtioInfoList *qmp_x_query_virtio(Error **errp)
+             if (!strncmp(is_realized->str, "false", 4)) {
+                 QTAILQ_REMOVE(&virtio_list, vdev, next);
+             } else {
+-                node = g_new0(VirtioInfoList, 1);
+-                node->value = g_new(VirtioInfo, 1);
+-                node->value->path = g_strdup(dev->canonical_path);
+-                node->value->name = g_strdup(vdev->name);
+-                QAPI_LIST_PREPEND(list, node->value);
++                node = g_new(VirtioInfo, 1);
++                node->path = g_strdup(dev->canonical_path);
++                node->name = g_strdup(vdev->name);
++                QAPI_LIST_PREPEND(list, node);
+             }
+            g_string_free(is_realized, true);
          }
 -- 
 2.39.2
