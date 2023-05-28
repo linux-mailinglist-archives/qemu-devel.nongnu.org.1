@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 389CC71383B
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 09:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A308713825
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:59:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3ALv-0006Xm-Lz; Sun, 28 May 2023 02:58:07 -0400
+	id 1q3ALt-0006Ww-F2; Sun, 28 May 2023 02:58:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALr-0006VQ-Gd; Sun, 28 May 2023 02:58:03 -0400
+ id 1q3ALq-0006Um-TK; Sun, 28 May 2023 02:58:02 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALp-0001dT-MR; Sun, 28 May 2023 02:58:03 -0400
+ id 1q3ALp-0001eH-6W; Sun, 28 May 2023 02:58:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D866E8E03;
- Sun, 28 May 2023 09:57:17 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0F3FB8E04;
+ Sun, 28 May 2023 09:57:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 649767E23;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9BADD7E24;
  Sun, 28 May 2023 09:57:17 +0300 (MSK)
-Received: (nullmailer pid 42084 invoked by uid 1000);
+Received: (nullmailer pid 42087 invoked by uid 1000);
  Sun, 28 May 2023 06:57:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
+Cc: qemu-stable@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Shaoqin Huang <shahuang@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 71/73] hw/scsi/lsi53c895a: Fix reentrancy issues in the
- LSI controller (CVE-2023-0330)
-Date: Sun, 28 May 2023 09:57:09 +0300
-Message-Id: <20230528065714.42005-12-mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 72/73] machine: do not crash if default RAM backend
+ name has been stolen
+Date: Sun, 28 May 2023 09:57:10 +0300
+Message-Id: <20230528065714.42005-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,120 +63,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Igor Mammedov <imammedo@redhat.com>
 
-We cannot use the generic reentrancy guard in the LSI code, so
-we have to manually prevent endless reentrancy here. The problematic
-lsi_execute_script() function has already a way to detect whether
-too many instructions have been executed - we just have to slightly
-change the logic here that it also takes into account if the function
-has been called too often in a reentrant way.
+QEMU aborts when default RAM backend should be used (i.e. no
+explicit '-machine memory-backend=' specified) but user
+has created an object which 'id' equals to default RAM backend
+name used by board.
 
-The code in fuzz-lsi53c895a-test.c has been taken from an earlier
-patch by Mauro Matteo Cascella.
+ $QEMU -machine pc \
+       -object memory-backend-ram,id=pc.ram,size=4294967296
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1563
-Message-Id: <20230522091011.1082574-1-thuth@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
+ Actual results:
+ QEMU 7.2.0 monitor - type 'help' for more information
+ (qemu) Unexpected error in object_property_try_add() at ../qom/object.c:1239:
+ qemu-kvm: attempt to add duplicate property 'pc.ram' to object (type 'container')
+ Aborted (core dumped)
+
+Instead of abort, check for the conflicting 'id' and exit with
+an error, suggesting how to remedy the issue.
+
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2207886
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20230522131717.3780533-1-imammedo@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit b987718bbb1d0eabf95499b976212dd5f0120d75)
+(cherry picked from commit a37531f2381c4e294e48b1417089474128388b44)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-index af93557a9a..bbf32d3f73 100644
---- a/hw/scsi/lsi53c895a.c
-+++ b/hw/scsi/lsi53c895a.c
-@@ -1134,15 +1134,24 @@ static void lsi_execute_script(LSIState *s)
-     uint32_t addr, addr_high;
-     int opcode;
-     int insn_processed = 0;
-+    static int reentrancy_level;
-+
-+    reentrancy_level++;
- 
-     s->istat1 |= LSI_ISTAT1_SRUN;
- again:
--    if (++insn_processed > LSI_MAX_INSN) {
--        /* Some windows drivers make the device spin waiting for a memory
--           location to change.  If we have been executed a lot of code then
--           assume this is the case and force an unexpected device disconnect.
--           This is apparently sufficient to beat the drivers into submission.
--         */
-+    /*
-+     * Some windows drivers make the device spin waiting for a memory location
-+     * to change. If we have executed more than LSI_MAX_INSN instructions then
-+     * assume this is the case and force an unexpected device disconnect. This
-+     * is apparently sufficient to beat the drivers into submission.
-+     *
-+     * Another issue (CVE-2023-0330) can occur if the script is programmed to
-+     * trigger itself again and again. Avoid this problem by stopping after
-+     * being called multiple times in a reentrant way (8 is an arbitrary value
-+     * which should be enough for all valid use cases).
-+     */
-+    if (++insn_processed > LSI_MAX_INSN || reentrancy_level > 8) {
-         if (!(s->sien0 & LSI_SIST0_UDC)) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "lsi_scsi: inf. loop with UDC masked");
-@@ -1596,6 +1605,8 @@ again:
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 5060119952..2f6ccf5623 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1333,6 +1333,14 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
          }
-     }
-     trace_lsi_execute_script_stop();
-+
-+    reentrancy_level--;
- }
- 
- static uint8_t lsi_reg_readb(LSIState *s, int offset)
-diff --git a/tests/qtest/fuzz-lsi53c895a-test.c b/tests/qtest/fuzz-lsi53c895a-test.c
-index 2012bd54b7..1b55928b9f 100644
---- a/tests/qtest/fuzz-lsi53c895a-test.c
-+++ b/tests/qtest/fuzz-lsi53c895a-test.c
-@@ -8,6 +8,36 @@
- #include "qemu/osdep.h"
- #include "libqtest.h"
- 
-+/*
-+ * This used to trigger a DMA reentrancy issue
-+ * leading to memory corruption bugs like stack
-+ * overflow or use-after-free
-+ * https://gitlab.com/qemu-project/qemu/-/issues/1563
-+ */
-+static void test_lsi_dma_reentrancy(void)
-+{
-+    QTestState *s;
-+
-+    s = qtest_init("-M q35 -m 512M -nodefaults "
-+                   "-blockdev driver=null-co,node-name=null0 "
-+                   "-device lsi53c810 -device scsi-cd,drive=null0");
-+
-+    qtest_outl(s, 0xcf8, 0x80000804); /* PCI Command Register */
-+    qtest_outw(s, 0xcfc, 0x7);        /* Enables accesses */
-+    qtest_outl(s, 0xcf8, 0x80000814); /* Memory Bar 1 */
-+    qtest_outl(s, 0xcfc, 0xff100000); /* Set MMIO Address*/
-+    qtest_outl(s, 0xcf8, 0x80000818); /* Memory Bar 2 */
-+    qtest_outl(s, 0xcfc, 0xff000000); /* Set RAM Address*/
-+    qtest_writel(s, 0xff000000, 0xc0000024);
-+    qtest_writel(s, 0xff000114, 0x00000080);
-+    qtest_writel(s, 0xff00012c, 0xff000000);
-+    qtest_writel(s, 0xff000004, 0xff000114);
-+    qtest_writel(s, 0xff000008, 0xff100014);
-+    qtest_writel(s, 0xff10002f, 0x000000ff);
-+
-+    qtest_quit(s);
-+}
-+
- /*
-  * This used to trigger a UAF in lsi_do_msgout()
-  * https://gitlab.com/qemu-project/qemu/-/issues/972
-@@ -124,5 +154,8 @@ int main(int argc, char **argv)
-     qtest_add_func("fuzz/lsi53c895a/lsi_do_msgout_cancel_req",
-                    test_lsi_do_msgout_cancel_req);
- 
-+    qtest_add_func("fuzz/lsi53c895a/lsi_dma_reentrancy",
-+                   test_lsi_dma_reentrancy);
-+
-     return g_test_run();
- }
+     } else if (machine_class->default_ram_id && machine->ram_size &&
+                numa_uses_legacy_mem()) {
++        if (object_property_find(object_get_objects_root(),
++                                 machine_class->default_ram_id)) {
++            error_setg(errp, "object name '%s' is reserved for the default"
++                " RAM backend, it can't be used for any other purposes."
++                " Change the object's 'id' to something else",
++                machine_class->default_ram_id);
++            return;
++        }
+         if (!create_default_memdev(current_machine, mem_path, errp)) {
+             return;
+         }
 -- 
 2.39.2
 
