@@ -2,80 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEAD713AC4
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 18:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C352B713B4C
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 19:38:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3Jap-0000cc-4v; Sun, 28 May 2023 12:50:07 -0400
+	id 1q3KKS-0006Ez-Dn; Sun, 28 May 2023 13:37:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q3Jam-0000bb-A7; Sun, 28 May 2023 12:50:04 -0400
-Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q3Jak-0003di-PF; Sun, 28 May 2023 12:50:04 -0400
-Received: by mail-oo1-xc35.google.com with SMTP id
- 006d021491bc7-5552cbcda35so1304844eaf.1; 
- Sun, 28 May 2023 09:50:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685292600; x=1687884600;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uP2QaSuIXsG//a1ZA9+wHtKetoo+PJIJ53Y3HgHjslQ=;
- b=dxKdiowqj9tjq1GjplayWSxxaZNR3WnC0jhaoJ/E1k1PVamRdYJqUEcyQR4sZvEnxQ
- CPXYvE/RERDSqfOH9DaHDkUD5ER7lIjVt4O83HDoun+DVAD1p5jky8nug5ylkxGA0A7/
- BmrpgR7J/28oxBOHPpESWLgJ2QATTmiC0JAviu0oEXxzBPXtGSOa8gyWfEzn2U19Svr6
- KPkzrJvb+vKQUnF5wCO0EQMlvQLh3e1ZGKTKOeVYA9TNSYD1i7UUxGx6gQaOelcyLWnN
- 5vHjiu6ysuLNVXOFk6RZlqk6fmby8ErZigiJ2DL6EZGn5KEbQsyRXEjmhANfylKwAFYv
- yzFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685292600; x=1687884600;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uP2QaSuIXsG//a1ZA9+wHtKetoo+PJIJ53Y3HgHjslQ=;
- b=ZVxTs0dO9HSSxFBBvnPbJJ14Qf9UFQR+i8pzYNm6Iz1tasPhdy9MnaVPEci2ta1L8Q
- d+mgYQapfxE2FV7E+zvdaFoOXIUbtqJRbtOOWG5J6jpoZq40rV1wiFYxFikkrlschZjs
- ygKjeQNCZgz+DqZkS9e4DQqpE9MbqG7XlZThko/P4Jhc/sqvLQRme5PR1Pc3U9Mp2sm7
- wTiWqMSSLvSh7XiQkuvZI0eLrgiGb0JJnw8XOTS/NPjKnCrLpti+yP3+sUanrRxWNRDL
- qTFps7GV0aESIvQEJ3nIRxT+vBydgz5NgE2DNhTuDuvHCjgnLHfp5RAfB9ZsXaG87bsT
- rHyw==
-X-Gm-Message-State: AC+VfDxlCXfaA2EVS+3+Ksg+bIaCHz+FsmEiDOClNL/zQMy0IFgQnFSx
- gFeg9GmHRreOsAZOtcttVbg+m21xWFs=
-X-Google-Smtp-Source: ACHHUZ6kBUOD+ze7beCbCB9N5v/A0nhFWdJvrRIrDSBgKQ2sGJgsJZF30sF83SLG56SEJ41CAgxCNQ==
-X-Received: by 2002:a05:6808:1295:b0:398:5a2a:2219 with SMTP id
- a21-20020a056808129500b003985a2a2219mr6176707oiw.33.1685292600139; 
- Sun, 28 May 2023 09:50:00 -0700 (PDT)
-Received: from grind.. (200-162-225-121.static-corp.ajato.com.br.
- [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
- w4-20020a4adec4000000b0054f85f67f31sm3378830oou.46.2023.05.28.09.49.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 May 2023 09:49:59 -0700 (PDT)
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>,
- Rene Engel <ReneEngel80@emailn.de>
-Subject: [PULL 10/10] ppc/pegasos2: Change default CPU to 7457
-Date: Sun, 28 May 2023 13:49:22 -0300
-Message-Id: <20230528164922.20364-11-danielhb413@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230528164922.20364-1-danielhb413@gmail.com>
-References: <20230528164922.20364-1-danielhb413@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1q3KKE-0006Ei-R1; Sun, 28 May 2023 13:37:03 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1q3KKC-0008Rg-O6; Sun, 28 May 2023 13:37:02 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id B9CD28F2B;
+ Sun, 28 May 2023 20:36:44 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4A0EA7F75;
+ Sun, 28 May 2023 20:36:44 +0300 (MSK)
+Message-ID: <2ccafb44-d09a-e71c-005b-9a36f128b275@tls.msk.ru>
+Date: Sun, 28 May 2023 20:36:44 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
- envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc35.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/10] ppc queue
+Content-Language: en-US
+To: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org,
+ Richard Purdie <richard.purdie@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Bernhard Beschow <shentey@gmail.com>
+References: <20230528164922.20364-1-danielhb413@gmail.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230528164922.20364-1-danielhb413@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,37 +62,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+28.05.2023 19:49, Daniel Henrique Barboza wrote:
+> 
+>    https://gitlab.com/danielhb/qemu.git tags/pull-ppc-20230528
+> 
+> ppc patch queue for 2023-05-28:
+> 
+> This queue includes several assorted fixes for PowerPC SPR
+> emulation, a change in the default Pegasos2 CPU, the addition
+> of AIL mode 3 for spapr, a PIC->CPU interrupt fix for prep and
+> performance enhancements in fpu_helper.c.
 
-Previously 7400 was selected as a safe choice as that is used by other
-machines so it's better tested but AmigaOS does not know this CPU and
-disables some features when running on it. The real hardware has
-7447/7457 G4 CPU so change the default to match that now that it was
-confirmed to work better with AmigaOS.
+ From the patch description, it looks like the following changes
+are suitable for -stable:
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Tested-by: Rene Engel <ReneEngel80@emailn.de>
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-Id: <20230528152937.B8DAD74633D@zero.eik.bme.hu>
-Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
----
- hw/ppc/pegasos2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+01/10 target/ppc: Fix fallback to MFSS for MFFS* instructions on pre 3.0 ISAs
+02/10 target/ppc: Fix width of some 32-bit SPRs
+03/10 target/ppc: Alignment faults do not set DSISR in ISA v3.0 onward
+05/10 hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
 
-diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index f1650be5ee..af5489de26 100644
---- a/hw/ppc/pegasos2.c
-+++ b/hw/ppc/pegasos2.c
-@@ -524,7 +524,7 @@ static void pegasos2_machine_class_init(ObjectClass *oc, void *data)
-     mc->block_default_type = IF_IDE;
-     mc->default_boot_order = "cd";
-     mc->default_display = "std";
--    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("7400_v2.9");
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("7457_v1.2");
-     mc->default_ram_id = "pegasos2.ram";
-     mc->default_ram_size = 512 * MiB;
- 
--- 
-2.40.1
+Or are these not important for -stable?  Or maybe there are other changes
+which should be picked too?
+
+Please add "Cc: qemu-stable@nongnu.org" tag for the future patches which
+needs to be backported to previous/stable version of qemu.
+
+Thanks!
+
+/mjt
+> ---------------------------------------------------------------
+> Alexander Bulekov (1):
+>        pnv_lpc: disable reentrancy detection for lpc-hc
+> 
+> BALATON Zoltan (1):
+>        ppc/pegasos2: Change default CPU to 7457
+> 
+> Bernhard Beschow (1):
+>        hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
+> 
+> Nicholas Piggin (5):
+>        target/ppc: Fix width of some 32-bit SPRs
+>        target/ppc: Alignment faults do not set DSISR in ISA v3.0 onward
+>        spapr: Add SPAPR_CAP_AIL_MODE_3 for AIL mode 3 support for H_SET_MODE hcall
+>        target/ppc: Use SMT4 small core chip type in POWER9/10 PVRs
+>        target/ppc: Add POWER9 DD2.2 model
+> 
+> Richard Henderson (1):
+>        target/ppc: Merge COMPUTE_CLASS and COMPUTE_FPRF
+> 
+> Richard Purdie (1):
+>        target/ppc: Fix fallback to MFSS for MFFS* instructions on pre 3.0 ISAs
+> 
 
 
