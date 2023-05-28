@@ -2,43 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C352B713B4C
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 19:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B16EB713B5E
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 19:44:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3KKS-0006Ez-Dn; Sun, 28 May 2023 13:37:16 -0400
+	id 1q3KQh-0008SW-0A; Sun, 28 May 2023 13:43:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3KKE-0006Ei-R1; Sun, 28 May 2023 13:37:03 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q3KQc-0008S7-0H
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 13:43:39 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3KKC-0008Rg-O6; Sun, 28 May 2023 13:37:02 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q3KQa-000329-58
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 13:43:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B9CD28F2B;
- Sun, 28 May 2023 20:36:44 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 8853D8F2E;
+ Sun, 28 May 2023 20:43:33 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4A0EA7F75;
- Sun, 28 May 2023 20:36:44 +0300 (MSK)
-Message-ID: <2ccafb44-d09a-e71c-005b-9a36f128b275@tls.msk.ru>
-Date: Sun, 28 May 2023 20:36:44 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 148B17F78;
+ Sun, 28 May 2023 20:43:33 +0300 (MSK)
+Message-ID: <25c2b472-eb1a-b5c3-2ff4-f47136a91525@tls.msk.ru>
+Date: Sun, 28 May 2023 20:43:32 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 00/10] ppc queue
+Subject: Re: [PULL 00/19] Ui patches
 Content-Language: en-US
-To: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org,
- Richard Purdie <richard.purdie@linuxfoundation.org>,
- Nicholas Piggin <npiggin@gmail.com>, Bernhard Beschow <shentey@gmail.com>
-References: <20230528164922.20364-1-danielhb413@gmail.com>
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, berrange@redhat.com,
+ Eric Blake <eblake@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Erico Nunes <ernunes@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>, =?UTF-8?Q?Volker_R=c3=bcmelin?=
+ <vr_qemu@t-online.de>
+References: <20230528132016.3218152-1-marcandre.lureau@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230528164922.20364-1-danielhb413@gmail.com>
+In-Reply-To: <20230528132016.3218152-1-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -69
@@ -62,56 +66,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-28.05.2023 19:49, Daniel Henrique Barboza wrote:
+28.05.2023 16:19, marcandre.lureau@redhat.com wrote:
 > 
->    https://gitlab.com/danielhb/qemu.git tags/pull-ppc-20230528
+>    https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
 > 
-> ppc patch queue for 2023-05-28:
+> ----------------------------------------------------------------
+> UI queue
 > 
-> This queue includes several assorted fixes for PowerPC SPR
-> emulation, a change in the default Pegasos2 CPU, the addition
-> of AIL mode 3 for spapr, a PIC->CPU interrupt fix for prep and
-> performance enhancements in fpu_helper.c.
+> - virtio: add virtio-multitouch device
+> - sdl: various keyboard grab fixes
+> - gtk: enable multi-touch events
+> - misc fixes
 
- From the patch description, it looks like the following changes
-are suitable for -stable:
+ From the patch description it looks like quite a few patches should be
+applied to -stable:
 
-01/10 target/ppc: Fix fallback to MFSS for MFFS* instructions on pre 3.0 ISAs
-02/10 target/ppc: Fix width of some 32-bit SPRs
-03/10 target/ppc: Alignment faults do not set DSISR in ISA v3.0 onward
-05/10 hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
+01/19 ui/gtk: fix passing y0_top parameter to scanout
+02/19 ui/gtk: use widget size for cursor motion event
+03/19 ui/gtk-egl: fix scaling for cursor position in scanout mode
+04/19 ui/sdl2: fix surface_gl_update_texture: Assertion 'gls' failed
+05/19 ui/dbus: fix compilation when GBM && !OPENGL
+10/19 ui/sdl2: Grab Alt+Tab also in fullscreen mode
+11/19 ui/sdl2: Grab Alt+F4 also under Windows
+12/19 ui/sdl2: disable SDL_HINT_GRAB_KEYBOARD on Windows
 
-Or are these not important for -stable?  Or maybe there are other changes
-which should be picked too?
+This one is questionable because while it (apparently) fixes an issue,
+it uses somewhat undocumented way to do that:
 
-Please add "Cc: qemu-stable@nongnu.org" tag for the future patches which
-needs to be backported to previous/stable version of qemu.
+06/19 win32: wrap socket close() with an exception handler
+
+Am I right about the -stable thing?
+
+Please add "Cc: qemu-stable@nongnu.org" tag for subsequent patches
+which you think are worth to backport to previous/stable qemu release(s).
 
 Thanks!
 
 /mjt
-> ---------------------------------------------------------------
-> Alexander Bulekov (1):
->        pnv_lpc: disable reentrancy detection for lpc-hc
+
+> ----------------------------------------------------------------
 > 
-> BALATON Zoltan (1):
->        ppc/pegasos2: Change default CPU to 7457
+> Bernhard Beschow (2):
+>    ui/sdl2: Grab Alt+Tab also in fullscreen mode
+>    ui/sdl2: Grab Alt+F4 also under Windows
 > 
-> Bernhard Beschow (1):
->        hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
+> Erico Nunes (3):
+>    ui/gtk: fix passing y0_top parameter to scanout
+>    ui/gtk: use widget size for cursor motion event
+>    ui/gtk-egl: fix scaling for cursor position in scanout mode
 > 
-> Nicholas Piggin (5):
->        target/ppc: Fix width of some 32-bit SPRs
->        target/ppc: Alignment faults do not set DSISR in ISA v3.0 onward
->        spapr: Add SPAPR_CAP_AIL_MODE_3 for AIL mode 3 support for H_SET_MODE hcall
->        target/ppc: Use SMT4 small core chip type in POWER9/10 PVRs
->        target/ppc: Add POWER9 DD2.2 model
+> Marc-André Lureau (6):
+>    ui/sdl2: fix surface_gl_update_texture: Assertion 'gls' failed
+>    ui/dbus: fix compilation when GBM && !OPENGL
+>    win32: wrap socket close() with an exception handler
+>    virtio-gpu: add a FIXME for virtio_gpu_load()
+>    gtk: add gl-area support on win32
+>    ui/dbus: add a FIXME about texture/dmabuf scanout handling
 > 
-> Richard Henderson (1):
->        target/ppc: Merge COMPUTE_CLASS and COMPUTE_FPRF
+> Mauro Matteo Cascella (1):
+>    ui/cursor: make width/height unsigned 16-bit integer
 > 
-> Richard Purdie (1):
->        target/ppc: Fix fallback to MFSS for MFFS* instructions on pre 3.0 ISAs
+> Sergio Lopez (6):
+>    virtio-input: generalize virtio_input_key_config()
+>    ui: add the infrastructure to support MT events
+>    virtio-input: add a virtio-mulitouch device
+>    virtio-input-pci: add virtio-multitouch-pci
+>    ui: add helpers for virtio-multitouch events
+>    ui/gtk: enable backend to send multi-touch events
 > 
+> Volker Rümelin (1):
+>    ui/sdl2: disable SDL_HINT_GRAB_KEYBOARD on Windows
+> 
+
 
 
