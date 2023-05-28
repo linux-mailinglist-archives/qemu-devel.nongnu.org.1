@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79317713823
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73333713827
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:59:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3ALT-0006OC-Rc; Sun, 28 May 2023 02:57:39 -0400
+	id 1q3ALT-0006Nh-4n; Sun, 28 May 2023 02:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3ALC-0006Jk-Dm; Sun, 28 May 2023 02:57:23 -0400
+ id 1q3ALG-0006Km-6o; Sun, 28 May 2023 02:57:28 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1q3AL9-0001Ye-V7; Sun, 28 May 2023 02:57:22 -0400
+ id 1q3ALD-0001ac-T4; Sun, 28 May 2023 02:57:25 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A212B8DF8;
+ by isrv.corpit.ru (Postfix) with ESMTP id E66D38DF9;
  Sun, 28 May 2023 09:57:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 268ED7E18;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5C07D7E19;
  Sun, 28 May 2023 09:57:15 +0300 (MSK)
-Received: (nullmailer pid 42051 invoked by uid 1000);
+Received: (nullmailer pid 42054 invoked by uid 1000);
  Sun, 28 May 2023 06:57:14 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- "timothee.cocault@gmail.com" <timothee.cocault@gmail.com>,
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.1 60/73] e1000e: Fix tx/rx counters
-Date: Sun, 28 May 2023 09:56:58 +0300
-Message-Id: <20230528065714.42005-1-mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 61/73] e1000x: Fix BPRC and MPRC
+Date: Sun, 28 May 2023 09:56:59 +0300
+Message-Id: <20230528065714.42005-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 References: <qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,92 +60,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "timothee.cocault@gmail.com" <timothee.cocault@gmail.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The bytes and packets counter registers are cleared on read.
+Before this change, e1000 and the common code updated BPRC and MPRC
+depending on the matched filter, but e1000e and igb decided to update
+those counters by deriving the packet type independently. This
+inconsistency caused a multicast packet to be counted twice.
 
-Copying the "total counter" registers to the "good counter" registers has
-side effects.
-If the "total" register is never read by the OS, it only gets incremented.
-This leads to exponential growth of the "good" register.
+Updating BPRC and MPRC depending on are fundamentally flawed anyway as
+a filter can be used for different types of packets. For example, it is
+possible to filter broadcast packets with MTA.
 
-This commit increments the counters individually to avoid this.
+Always determine what counters to update by inspecting the packets.
 
-Signed-off-by: Timothée Cocault <timothee.cocault@gmail.com>
+Fixes: 3b27430177 ("e1000: Implementing various counters")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@est.tech>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 8d689f6aae8be096b4a1859be07c1b083865f755)
+(cherry picked from commit f3f9b726afba1f53663768603189e574f80b5907)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/net/e1000.c b/hw/net/e1000.c
-index 23d660619f..59bacb5d3b 100644
+index 59bacb5d3b..18eb6d8876 100644
 --- a/hw/net/e1000.c
 +++ b/hw/net/e1000.c
-@@ -637,9 +637,8 @@ xmit_seg(E1000State *s)
- 
-     e1000x_inc_reg_if_not_full(s->mac_reg, TPT);
-     e1000x_grow_8reg_if_not_full(s->mac_reg, TOTL, s->tx.size + 4);
--    s->mac_reg[GPTC] = s->mac_reg[TPT];
--    s->mac_reg[GOTCL] = s->mac_reg[TOTL];
--    s->mac_reg[GOTCH] = s->mac_reg[TOTH];
-+    e1000x_inc_reg_if_not_full(s->mac_reg, GPTC);
-+    e1000x_grow_8reg_if_not_full(s->mac_reg, GOTCL, s->tx.size + 4);
- }
- 
- static void
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index c0c09b6965..cfa3f55e96 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -711,9 +711,8 @@ e1000e_on_tx_done_update_stats(E1000ECore *core, struct NetTxPkt *tx_pkt)
-         g_assert_not_reached();
+@@ -826,12 +826,10 @@ receive_filter(E1000State *s, const uint8_t *buf, int size)
      }
  
--    core->mac[GPTC] = core->mac[TPT];
--    core->mac[GOTCL] = core->mac[TOTL];
--    core->mac[GOTCH] = core->mac[TOTH];
-+    e1000x_inc_reg_if_not_full(core->mac, GPTC);
-+    e1000x_grow_8reg_if_not_full(core->mac, GOTCL, tot_len);
+     if (ismcast && (rctl & E1000_RCTL_MPE)) {          /* promiscuous mcast */
+-        e1000x_inc_reg_if_not_full(s->mac_reg, MPRC);
+         return 1;
+     }
+ 
+     if (isbcast && (rctl & E1000_RCTL_BAM)) {          /* broadcast enabled */
+-        e1000x_inc_reg_if_not_full(s->mac_reg, BPRC);
+         return 1;
+     }
+ 
+@@ -922,6 +920,7 @@ e1000_receive_iov(NetClientState *nc, const struct iovec *iov, int iovcnt)
+     size_t desc_offset;
+     size_t desc_size;
+     size_t total_size;
++    eth_pkt_types_e pkt_type;
+ 
+     if (!e1000x_hw_rx_enabled(s->mac_reg)) {
+         return -1;
+@@ -971,6 +970,7 @@ e1000_receive_iov(NetClientState *nc, const struct iovec *iov, int iovcnt)
+         size -= 4;
+     }
+ 
++    pkt_type = get_eth_packet_type(PKT_GET_ETH_HDR(filter_buf));
+     rdh_start = s->mac_reg[RDH];
+     desc_offset = 0;
+     total_size = size + e1000x_fcs_len(s->mac_reg);
+@@ -1036,7 +1036,7 @@ e1000_receive_iov(NetClientState *nc, const struct iovec *iov, int iovcnt)
+         }
+     } while (desc_offset < total_size);
+ 
+-    e1000x_update_rx_total_stats(s->mac_reg, size, total_size);
++    e1000x_update_rx_total_stats(s->mac_reg, pkt_type, size, total_size);
+ 
+     n = E1000_ICS_RXT0;
+     if ((rdt = s->mac_reg[RDT]) < s->mac_reg[RDH])
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index cfa3f55e96..a74f1bc245 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -1487,24 +1487,10 @@ e1000e_write_to_rx_buffers(E1000ECore *core,
  }
  
  static void
+-e1000e_update_rx_stats(E1000ECore *core,
+-                       size_t data_size,
+-                       size_t data_fcs_size)
++e1000e_update_rx_stats(E1000ECore *core, size_t pkt_size, size_t pkt_fcs_size)
+ {
+-    e1000x_update_rx_total_stats(core->mac, data_size, data_fcs_size);
+-
+-    switch (net_rx_pkt_get_packet_type(core->rx_pkt)) {
+-    case ETH_PKT_BCAST:
+-        e1000x_inc_reg_if_not_full(core->mac, BPRC);
+-        break;
+-
+-    case ETH_PKT_MCAST:
+-        e1000x_inc_reg_if_not_full(core->mac, MPRC);
+-        break;
+-
+-    default:
+-        break;
+-    }
++    eth_pkt_types_e pkt_type = net_rx_pkt_get_packet_type(core->rx_pkt);
++    e1000x_update_rx_total_stats(core->mac, pkt_type, pkt_size, pkt_fcs_size);
+ }
+ 
+ static inline bool
 diff --git a/hw/net/e1000x_common.c b/hw/net/e1000x_common.c
-index b844af590a..4c8e7dcf70 100644
+index 4c8e7dcf70..7694673bcc 100644
 --- a/hw/net/e1000x_common.c
 +++ b/hw/net/e1000x_common.c
-@@ -220,15 +220,14 @@ e1000x_update_rx_total_stats(uint32_t *mac,
+@@ -80,7 +80,6 @@ bool e1000x_rx_group_filter(uint32_t *mac, const uint8_t *buf)
+     f = mta_shift[(rctl >> E1000_RCTL_MO_SHIFT) & 3];
+     f = (((buf[5] << 8) | buf[4]) >> f) & 0xfff;
+     if (mac[MTA + (f >> 5)] & (1 << (f & 0x1f))) {
+-        e1000x_inc_reg_if_not_full(mac, MPRC);
+         return true;
+     }
  
-     e1000x_increase_size_stats(mac, PRCregs, data_fcs_size);
+@@ -212,13 +211,14 @@ e1000x_rxbufsize(uint32_t rctl)
+ 
+ void
+ e1000x_update_rx_total_stats(uint32_t *mac,
+-                             size_t data_size,
+-                             size_t data_fcs_size)
++                             eth_pkt_types_e pkt_type,
++                             size_t pkt_size,
++                             size_t pkt_fcs_size)
+ {
+     static const int PRCregs[6] = { PRC64, PRC127, PRC255, PRC511,
+                                     PRC1023, PRC1522 };
+ 
+-    e1000x_increase_size_stats(mac, PRCregs, data_fcs_size);
++    e1000x_increase_size_stats(mac, PRCregs, pkt_fcs_size);
      e1000x_inc_reg_if_not_full(mac, TPR);
--    mac[GPRC] = mac[TPR];
-+    e1000x_inc_reg_if_not_full(mac, GPRC);
+     e1000x_inc_reg_if_not_full(mac, GPRC);
      /* TOR - Total Octets Received:
-     * This register includes bytes received in a packet from the <Destination
+@@ -226,8 +226,21 @@ e1000x_update_rx_total_stats(uint32_t *mac,
      * Address> field through the <CRC> field, inclusively.
      * Always include FCS length (4) in size.
      */
-     e1000x_grow_8reg_if_not_full(mac, TORL, data_size + 4);
--    mac[GORCL] = mac[TORL];
--    mac[GORCH] = mac[TORH];
-+    e1000x_grow_8reg_if_not_full(mac, GORCL, data_size + 4);
+-    e1000x_grow_8reg_if_not_full(mac, TORL, data_size + 4);
+-    e1000x_grow_8reg_if_not_full(mac, GORCL, data_size + 4);
++    e1000x_grow_8reg_if_not_full(mac, TORL, pkt_size + 4);
++    e1000x_grow_8reg_if_not_full(mac, GORCL, pkt_size + 4);
++
++    switch (pkt_type) {
++    case ETH_PKT_BCAST:
++        e1000x_inc_reg_if_not_full(mac, BPRC);
++        break;
++
++    case ETH_PKT_MCAST:
++        e1000x_inc_reg_if_not_full(mac, MPRC);
++        break;
++
++    default:
++        break;
++    }
  }
  
  void
+diff --git a/hw/net/e1000x_common.h b/hw/net/e1000x_common.h
+index 911abd8a90..0298e06283 100644
+--- a/hw/net/e1000x_common.h
++++ b/hw/net/e1000x_common.h
+@@ -91,8 +91,9 @@ e1000x_update_regs_on_link_up(uint32_t *mac, uint16_t *phy)
+ }
+ 
+ void e1000x_update_rx_total_stats(uint32_t *mac,
+-                                  size_t data_size,
+-                                  size_t data_fcs_size);
++                                  eth_pkt_types_e pkt_type,
++                                  size_t pkt_size,
++                                  size_t pkt_fcs_size);
+ 
+ void e1000x_core_prepare_eeprom(uint16_t       *eeprom,
+                                 const uint16_t *templ,
 diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index d733fed6cf..826e7a6cf1 100644
+index 826e7a6cf1..8a9fd1f729 100644
 --- a/hw/net/igb_core.c
 +++ b/hw/net/igb_core.c
-@@ -538,9 +538,8 @@ igb_on_tx_done_update_stats(IGBCore *core, struct NetTxPkt *tx_pkt, int qn)
-         g_assert_not_reached();
-     }
+@@ -1437,29 +1437,17 @@ igb_write_to_rx_buffers(IGBCore *core,
  
--    core->mac[GPTC] = core->mac[TPT];
--    core->mac[GOTCL] = core->mac[TOTL];
--    core->mac[GOTCH] = core->mac[TOTH];
-+    e1000x_inc_reg_if_not_full(core->mac, GPTC);
-+    e1000x_grow_8reg_if_not_full(core->mac, GOTCL, tot_len);
+ static void
+ igb_update_rx_stats(IGBCore *core, const E1000E_RingInfo *rxi,
+-                    size_t data_size, size_t data_fcs_size)
++                    size_t pkt_size, size_t pkt_fcs_size)
+ {
+-    e1000x_update_rx_total_stats(core->mac, data_size, data_fcs_size);
+-
+-    switch (net_rx_pkt_get_packet_type(core->rx_pkt)) {
+-    case ETH_PKT_BCAST:
+-        e1000x_inc_reg_if_not_full(core->mac, BPRC);
+-        break;
+-
+-    case ETH_PKT_MCAST:
+-        e1000x_inc_reg_if_not_full(core->mac, MPRC);
+-        break;
+-
+-    default:
+-        break;
+-    }
++    eth_pkt_types_e pkt_type = net_rx_pkt_get_packet_type(core->rx_pkt);
++    e1000x_update_rx_total_stats(core->mac, pkt_type, pkt_size, pkt_fcs_size);
  
      if (core->mac[MRQC] & 1) {
-         uint16_t pool = qn % IGB_NUM_VM_POOLS;
+         uint16_t pool = rxi->idx % IGB_NUM_VM_POOLS;
+ 
+-        core->mac[PVFGORC0 + (pool * 64)] += data_size + 4;
++        core->mac[PVFGORC0 + (pool * 64)] += pkt_size + 4;
+         core->mac[PVFGPRC0 + (pool * 64)]++;
+-        if (net_rx_pkt_get_packet_type(core->rx_pkt) == ETH_PKT_MCAST) {
++        if (pkt_type == ETH_PKT_MCAST) {
+             core->mac[PVFMPRC0 + (pool * 64)]++;
+         }
+     }
 -- 
 2.39.2
 
