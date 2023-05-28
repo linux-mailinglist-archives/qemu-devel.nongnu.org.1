@@ -2,61 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773AC7139E0
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4F97139DF
 	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 16:08:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3H3H-000110-VP; Sun, 28 May 2023 10:07:19 -0400
+	id 1q3H3P-00011Y-3L; Sun, 28 May 2023 10:07:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1q3H3E-0000z0-TB
- for qemu-devel@nongnu.org; Sun, 28 May 2023 10:07:16 -0400
-Received: from mail-mw2nam10on20614.outbound.protection.outlook.com
- ([2a01:111:f400:7e89::614]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ id 1q3H3M-00011B-Ji
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 10:07:24 -0400
+Received: from mail-mw2nam12on20602.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5a::602]
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1q3H3A-0002dd-Oe
- for qemu-devel@nongnu.org; Sun, 28 May 2023 10:07:16 -0400
+ id 1q3H3J-0002f4-Aj
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 10:07:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XN/jFZBz72/X/VboUeXDrJNRtpjIupePCxcCH8B3D0Kf2EgeSWRlwTQOp5Jt6e53Bu/X4/AbzJ3kVreXpCiuCOxjw33gIU8zmCkpFoXQw8ydpeAOGumfDd4qikpy48Ia61BAByW9BPF7pn9NSDzrxLvjJzb+unSMV0TSDTe4ifQp4r95Sf3sI9nFuvx0WN4KgZgIsuFaG71uP7suSAXsJZ0kYYDRoN2TSeu6obo4t6uY3O5d7yxIzdRdrmHv7AQ1w35xbKy2sn6eF1ptNMiqLlNJfq1c3cHvmHzg9QEJJYRw84N1sHZsHR4W+p/X26iWoC7iERCraRXUg47No4Od+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7/fR/Eo4iI9NOC9O6X9QzwGE4haTxTYTv6T53TiKDIk=;
+ b=Iw/4Q9Ctt/LofBlwKy/jIB19IGTbnCXlK1z4+yLVT82M8nsRoTkt67nN2ivvNry7gp2tUqObRRBgJOJN2v43iECSlnZsF53dAwDlQkI5QVTI3CuJfzDUh0o52kdp8f1+YxFtfB0MPe+4p66x+LiJPg9ps5IOuMQEaSALhu8Puw65Q2DidRMIoY1ugxMptYGbglqe7kVPMYSMM3MVWeNC8S2+dZT4CP33JhLOuteUP23I9KrWfyeNyCgQKOPT9HMUc9eutwo5X7/THt2P1LSsqwY2h5JM+ziC3rhoZw2KImWF0kJTjUJHaR4ds4kL83En2sGcg4kDnK3qw+HuZE76dA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iGtJNhI0rkEX+HXr1y1nPgPKZZZ/X/60BjQ6GLKMm98=;
- b=aUEo0dHYwWWBtr1M5erM0k5n334y9JwfYrKVLP+Amdchgqc18OVBFeucqmbkSZkFrCtTWspJWebfspKe8EHBoEa4jLKyA2bzkolOYFk5y5HPQi/OMZ0gCZBPPaQhAYB3MkR0cH/UTI2zl+eLfpJTA21xkYe0ro2Okb+FW0Nv94fXNxH2UUZCRLra7W6dqxjUeHmE1FjleT9N0uIJvXH9NHnFTPJfk6X3ZTXmtqCEIwoS2PFFhmIpPmI5P2kq0bKAYjHrVNsVJJWh2nVvO9waBacnETnwR+OHvJegsNg3Gmu78SzBswiEk7NM7YTvQaO0giDATAS53qhqzIMU3a1DVA==
-Received: from BN9PR03CA0382.namprd03.prod.outlook.com (2603:10b6:408:f7::27)
- by CY8PR12MB7314.namprd12.prod.outlook.com (2603:10b6:930:52::19)
+ bh=7/fR/Eo4iI9NOC9O6X9QzwGE4haTxTYTv6T53TiKDIk=;
+ b=DOml+CBudnzMHzmaISajOURgsaCVAOSLJPeSkxRLBgmgdzhGpJwbe3PHNFgksrckRzOkcPmEcp7vpq0T8K6YS/eHDMHU30jBpNyFSO1mB2bKlGRjUcpo9NPgPaNNV6FoV8yOSVwY+O3Uv18KIqE+TnatNHzambny9hWXiCuZweWMIIIbk5oUIxVIpROsqI4NwBUUDaXIBxrUzSyyy6WhTY3qLhYKVj8L2LFRSHTU0yskOYK84q2FfJtjW/CrjBEyqmfKpKKaJcFeefDcKp0KWGjFBw2lmH/IFoJGws7+rFxzsVugk6P3IaSFKmowadSJXNGXy5Xw5c4V1XrNZQyxPA==
+Received: from BN9PR03CA0708.namprd03.prod.outlook.com (2603:10b6:408:ef::23)
+ by MW4PR12MB7118.namprd12.prod.outlook.com (2603:10b6:303:213::12)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.21; Sun, 28 May
- 2023 14:07:07 +0000
-Received: from BN8NAM11FT046.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:f7:cafe::24) by BN9PR03CA0382.outlook.office365.com
- (2603:10b6:408:f7::27) with Microsoft SMTP Server (version=TLS1_2,
+ 2023 14:07:15 +0000
+Received: from BN8NAM11FT045.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:ef:cafe::62) by BN9PR03CA0708.outlook.office365.com
+ (2603:10b6:408:ef::23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.21 via Frontend
- Transport; Sun, 28 May 2023 14:07:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ Transport; Sun, 28 May 2023 14:07:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN8NAM11FT046.mail.protection.outlook.com (10.13.177.127) with Microsoft SMTP
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN8NAM11FT045.mail.protection.outlook.com (10.13.177.47) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.18 via Frontend Transport; Sun, 28 May 2023 14:07:06 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.6455.18 via Frontend Transport; Sun, 28 May 2023 14:07:15 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Sun, 28 May 2023
- 07:06:59 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ 07:07:05 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Sun, 28 May
- 2023 07:06:58 -0700
+ 2023 07:07:04 -0700
 Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
  with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport; Sun, 28 May
- 2023 07:06:53 -0700
+ 2023 07:06:59 -0700
 From: Avihai Horon <avihaih@nvidia.com>
 To: <qemu-devel@nongnu.org>
 CC: Alex Williamson <alex.williamson@redhat.com>,
@@ -71,39 +82,40 @@ CC: Alex Williamson <alex.williamson@redhat.com>,
  <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>, Avihai Horon
  <avihaih@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta
  <targupta@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v4 0/9] migration: Add switchover ack capability and VFIO
- precopy support
-Date: Sun, 28 May 2023 17:06:43 +0300
-Message-ID: <20230528140652.8693-1-avihaih@nvidia.com>
+Subject: [PATCH v4 1/9] migration: Add switchover ack capability
+Date: Sun, 28 May 2023 17:06:44 +0300
+Message-ID: <20230528140652.8693-2-avihaih@nvidia.com>
 X-Mailer: git-send-email 2.21.3
+In-Reply-To: <20230528140652.8693-1-avihaih@nvidia.com>
+References: <20230528140652.8693-1-avihaih@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT046:EE_|CY8PR12MB7314:EE_
-X-MS-Office365-Filtering-Correlation-Id: da2f302c-e332-479c-ffb1-08db5f84d24a
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT045:EE_|MW4PR12MB7118:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6378db4-bbcc-46f0-5600-08db5f84d74f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2iggcQmIiErfOfb7nmRdZwyV8g+V5W4585YjkOotpMKBib7Xwk1auN0B10oHkckP+q8+JOaUggRLkaT5BxP8+7/BR68NwN2PJtPdf7LtdRYRtpX+oe2sfvjqax/TTH6BO3OmkLj44b0ctqA/Qkzzo21aT4wu+uHSdAyUxXCb6JLvn8b2+Wy/G4FHhLDu+/YhI9nIoItnM6tsnPR8M+McN1LlIX7kP/0z3zStrPpTM/FBVdLxxUhsTOMM6RWq9S7KDy/ib9LvHSEkDoig55o3PIOSWI5AaCbM/Vm3GF9er75ddq/KQbObU9KBMgrvcZ7DVEjQRFHN7qeJP1w+DC6Qu0ycmeSq2XMRKuoo+hFcgC0UaSlOdy4OG1u/85LW+TIHaX/psBBgK7VBGFRPGcmcb21PifMzUp5W1mx5HaUpJ/3qwoKlTrPqd0GisrkRc1XJA3i8MkRV4TogEsO/xhiVC1QEIf3oJ75LtECslyo3zZyKhK3DlWt/4NRi3FsbQX/MOQLe5+MQEfyQJYDupLdP9twbh0MUPnF+liojE3p15sLFMXMDdTTFK3Hktpld4hFvIjh1SfUc6Ck3O/4sDVULOzYxD2tsLEMg4SYTQ0mEiUXS0Yd5A0Ue/nqRFGnKWBqERyYHwYK/R4eZ6uPLtLsUKEmOjYTVPFHpEt2w6FGdZQBHrWx7cn30NZNJxemjOtN0bGFLVIndnFy+Kl0s+H82Uj4OWlIwFzeRWtwxeiPGXNI04uFva+C2tKzLEladoDq4Asq3ssgNFlawgtb5ZgajmGgfyof6v8ar96sUsyui31GQjj6zuDn3vfrLLaC/LrDi
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230028)(4636009)(346002)(396003)(376002)(136003)(39860400002)(451199021)(40470700004)(36840700001)(46966006)(478600001)(2906002)(54906003)(40460700003)(6666004)(5660300002)(70586007)(70206006)(82740400003)(7636003)(356005)(6916009)(4326008)(7416002)(40480700001)(8936002)(8676002)(41300700001)(316002)(86362001)(26005)(1076003)(2616005)(186003)(47076005)(83380400001)(36860700001)(82310400005)(336012)(426003)(966005)(7696005)(36756003);
+X-Microsoft-Antispam-Message-Info: KIQ9QwNbyf/bU8+KgoiPDzfT/cX/DAQAkQ86Mv82SYCmp+QiIJpAIEHbjGwmQQwuC8pdUgLAo/48T/CHqMBm8S0In2rPQgkfad0r4zhVlTiVMEWH8Z3yWTfRH0QXL5qQPh9fGTFQWX5me2rO4QMJFTKbZn1OCSl9jxheDEFJTT+rOY29tiaejHnKs8YFScHM2jK4JyxnF/3R/ykoOsgM600QBbcd6CjpU8dCDuHt3WjmWzbLr2uSLboHzGlrDwUXxLGjsmMLmjmi2qz7yjWmfMRKCX7NQOpYh49c4d252ixCxTLeMHVMsbvQ6Jk7zKI+vKTxL/cuB/XqD/hQYnPgXlI2fKy/7UjafuQI138bLCwoLuSGZynmOUHLyKEVnIdRKNG6z64gmi4EXqbcFyoKFJTvh9VAVH8wmREzmBdDY7+HMJ0b+utY/7xEyOBqjzVOzoqyR0Wb6W311crk60tvjeDiUh11tMt/MtfJiC6/i7gfum1g0e+SJajuQLmT1Km+68MZAV0I2gWvr6tHRDTVlaejji131J/FXaJ8CJTaRrADLV8pe1SerNg0zIvDIK6yvmNKALkx5gxMLhWlKBTe+MGuxqNLCq2mbV0EQ8nzlsbKUkA+vWdUlXumiT6XyBgQ8MpKsWsXWn7RQ6ivZlsp6jA9AtxOFe+YQsN1DAgs3q1Opdm0fJP4QnRQC2FltIjbc/RJxcSy5zsSwfASrJz5iXUKEI06SghcyUGp5CrSx2JlImg+iU+LzgFVTEBpv4z6
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230028)(4636009)(346002)(136003)(376002)(39860400002)(396003)(451199021)(40470700004)(36840700001)(46966006)(54906003)(478600001)(40460700003)(5660300002)(8936002)(8676002)(7416002)(36756003)(86362001)(2906002)(82310400005)(70206006)(70586007)(4326008)(356005)(6916009)(82740400003)(316002)(7636003)(40480700001)(186003)(41300700001)(2616005)(426003)(336012)(1076003)(26005)(47076005)(36860700001)(7696005)(6666004)(83380400001);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2023 14:07:06.9634 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: da2f302c-e332-479c-ffb1-08db5f84d24a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2023 14:07:15.3804 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6378db4-bbcc-46f0-5600-08db5f84d74f
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT046.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT045.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7314
-Received-SPF: softfail client-ip=2a01:111:f400:7e89::614;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7118
+Received-SPF: softfail client-ip=2a01:111:f400:fe5a::602;
  envelope-from=avihaih@nvidia.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
@@ -126,77 +138,6 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello everyone,
-
-This is v4 of the switchover ack series.
-
-Changes from v3 [5]:
-* Rebased on latest master branch.
-* Simplified switchover ack logic (call switchover_ack_needed only in
-  destination). (Peter)
-* Moved caching of VFIO migration flags to a separate patch. (Cedric)
-* Moved adding of x-allow-pre-copy property to a separate patch. (Cedric)
-* Reset VFIOMigration->precopy_{init,dirty}_size in vfio_query_precopy_size()
-  and in vfio_save_cleanup(). (Cedric)
-* Added a reference to VFIO uAPI in vfio_save_block() ENOMSG comment. (Cedric)
-* Added VFIOMigration->precopy_{init,dirty}_size to trace_vfio_save_iterate(). (Cedric)
-* Adapted VFIO migration to switchover ack logic simplification:
-  - Checked migrate_switchover_ack() in vfio_{save,load}_setup() and set
-    VFIOMigration->switchover_ack_needed accordingly.
-  - vfio_switchover_ack_needed() doesn't set VFIOMigration->switchover_ack_needed
-    and only returns its value.
-* Move VFIOMigration->switchover_ack_needed = false to vfio_migration_cleanup()
-  so it will be set to false both in src and dest.
-* Fixed a few typos/coding style. (Peter/Cedric)
-* Added R-b/A-b (didn't add Cedric's R-b on patch #7 as switchover ack
-  changes in patch #2 introduced some changes to patch #7 as well).
-
-Changes from v2 [4]:
-* Rebased on latest master branch.
-* Changed the capability name to "switchover-ack" and the related
-  code/docs accordingly. (Peter)
-* Added a counter for the number of switchover ack users in the source
-  and used it to skip switchover ack if there are no users (instead of
-  setting the switchover acked flag to true). (Peter)
-* Added R-bs.
-
-Changes from v1 [3]:
-* Rebased on latest master branch.
-* Updated to latest QAPI doc comment conventions and refined
-  QAPI docs and capability error message. (Markus)
-* Followed Peter/Juan suggestion and removed the handshake between
-  source and destination.
-  Now the capability must be set on both source and destination.
-  Compatibility of this feature between different QEMU versions or
-  different host capabilities (i.e., kernel) is achieved in the regular
-  way of device properties and hw_comapt_x_y.
-* Replaced is_initial_data_active() and initial_data_loaded()
-  SaveVMHandlers handlers with a notification mechanism. (Peter)
-* Set the capability also in destination in the migration test.
-* Added VFIO device property x-allow-pre-copy to be able to preserve
-  compatibility between different QEMU versions or different host
-  capabilities (i.e., kernel).
-* Changed VFIO precopy initial data implementation according to the
-  above changes.
-* Documented VFIO precopy initial data support in VFIO migration
-  documentation.
-* Added R-bs.
-
-===
-
-This series adds a new migration capability called "switchover ack". The
-purpose of this capability is to reduce migration downtime in cases
-where loading of migration data in the destination can take a lot of
-time, such as with VFIO migration data.
-
-The series then moves to add precopy support and switchover ack support
-for VFIO migration.
-
-Switchover ack is used by VFIO migration, but other migrated devices can
-add support for it and use it as well.
-
-=== Background ===
-
 Migration downtime estimation is calculated based on bandwidth and
 remaining migration data. This assumes that loading of migration data in
 the destination takes a negligible amount of time and that downtime
@@ -204,129 +145,123 @@ depends only on network speed.
 
 While this may be true for RAM, it's not necessarily true for other
 migrated devices. For example, loading the data of a VFIO device in the
-destination might require from the device to allocate resources and
-prepare internal data structures which can take a significant amount of
-time to do.
+destination might require from the device to allocate resources, prepare
+internal data structures and so on. These operations can take a
+significant amount of time which can increase migration downtime.
 
-This poses a problem, as the source may think that the remaining
-migration data is small enough to meet the downtime limit, so it will
-stop the VM and complete the migration, but in fact sending and loading
-the data in the destination may take longer than the downtime limit.
+This patch adds a new capability "switchover ack" that prevents the
+source from stopping the VM and completing the migration until an ACK
+is received from the destination that it's OK to do so.
 
-To solve this, VFIO migration uAPI defines "initial bytes" as part of
-its precopy stream [1]. Initial bytes can be used in various ways to
-improve VFIO migration performance. For example, it can be used to
-transfer device metadata to pre-allocate resources in the destination.
-However, for this to work we need to make sure that all initial bytes
-are sent and loaded in the destination before the source VM is stopped.
+This can be used by migrated devices in various ways to reduce downtime.
+For example, a device can send initial precopy metadata to pre-allocate
+resources in the destination and use this capability to make sure that
+the pre-allocation is completed before the source VM is stopped, so it
+will have full effect.
 
-The new switchover ack migration capability helps us achieve this.
-It prevents the source from stopping the VM and completing the migration
-until an ACK is received from the destination that it's OK to do so.
-Thus, a VFIO device can make sure that its initial bytes were sent
-and loaded in the destination before the source VM is stopped.
+This new capability relies on the return path capability to communicate
+from the destination back to the source.
 
-Note that this relies on the return path capability to communicate from
-the destination back to the source.
+The actual implementation of the capability will be added in the
+following patches.
 
-=== Flow of operation ===
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+---
+ qapi/migration.json | 12 +++++++++++-
+ migration/options.h |  1 +
+ migration/options.c | 21 +++++++++++++++++++++
+ 3 files changed, 33 insertions(+), 1 deletion(-)
 
-To use switchover ack, the capability must be enabled in both the source
-and the destination.
-
-During migration setup, migration code in the destination calls the
-switchover_ack_needed() SaveVMHandlers handler of the migrated devices
-to check if switchover ack is used by them.
-A "switchover_ack_pending_num" counter is increased for each migrated
-device that supports this feature. It will be used later to mark when an
-ACK should be sent to the source.
-
-Migration is active and the source starts to send precopy data as usual.
-In the destination, when a migrated device thinks it's OK to do
-switchover, it notifies the migration code about it and the
-"switchover_ack_pending_num" counter is decreased. For example, for a
-VFIO device it's when the device receives and loads its initial bytes.
-
-When the "switchover_ack_pending_num" counter reaches zero, it means
-that all devices agree to do switchover and an ACK is sent to the
-source, which will now be able to complete the migration when
-appropriate.
-
-=== Test results ===
-
-The below table shows the downtime of two identical migrations. In the
-first migration swithcover ack is disabled and in the second it is
-enabled. The migrated VM is assigned with a mlx5 VFIO device which has
-300MB of device data to be migrated.
-
-+----------------------+-----------------------+----------+
-|    Switchover ack    | VFIO device data size | Downtime |
-+----------------------+-----------------------+----------+
-|       Disabled       |         300MB         |  1900ms  |
-|       Enabled        |         300MB         |  420ms   |
-+----------------------+-----------------------+----------+
-
-Switchover ack gives a roughly 4.5 times improvement in downtime.
-The 1480ms difference is time that is used for resource allocation for
-the VFIO device in the destination. Without switchover ack, this time is
-spent when the source VM is stopped and thus the downtime is much
-higher. With switchover ack, the time is spent when the source VM is
-still running.
-
-=== Patch breakdown ===
-
-- Patches 1-4 add the switchover ack capability.
-- Patches 5-8 add VFIO migration precopy support. Similar version of
-  them was previously sent here [2].
-- Patch 9 adds switchover ack support for VFIO migration.
-
-Thanks for reviewing!
-
-[1]
-https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/vfio.h#L1048
-
-[2]
-https://lore.kernel.org/qemu-devel/20230222174915.5647-3-avihaih@nvidia.com/
-
-[3]
-https://lore.kernel.org/qemu-devel/20230501140141.11743-1-avihaih@nvidia.com/
-
-[4]
-https://lore.kernel.org/qemu-devel/20230517155219.10691-1-avihaih@nvidia.com/
-
-[5]
-https://lore.kernel.org/qemu-devel/20230521151808.24804-1-avihaih@nvidia.com/
-
-Avihai Horon (9):
-  migration: Add switchover ack capability
-  migration: Implement switchover ack logic
-  migration: Enable switchover ack capability
-  tests: Add migration switchover ack capability test
-  vfio/migration: Refactor vfio_save_block() to return saved data size
-  vfio/migration: Store VFIO migration flags in VFIOMigration
-  vfio/migration: Add VFIO migration pre-copy support
-  vfio/migration: Add x-allow-pre-copy VFIO device property
-  vfio/migration: Add support for switchover ack capability
-
- docs/devel/vfio-migration.rst |  45 +++++--
- qapi/migration.json           |  12 +-
- include/hw/vfio/vfio-common.h |   6 +
- include/migration/register.h  |   2 +
- migration/migration.h         |  14 +++
- migration/options.h           |   1 +
- migration/savevm.h            |   1 +
- hw/core/machine.c             |   1 +
- hw/vfio/common.c              |   6 +-
- hw/vfio/migration.c           | 230 +++++++++++++++++++++++++++++++---
- hw/vfio/pci.c                 |   2 +
- migration/migration.c         |  32 ++++-
- migration/options.c           |  17 +++
- migration/savevm.c            |  54 ++++++++
- tests/qtest/migration-test.c  |  26 ++++
- hw/vfio/trace-events          |   4 +-
- migration/trace-events        |   3 +
- 17 files changed, 423 insertions(+), 33 deletions(-)
-
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 179af0c4d8..061ea512e0 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -487,6 +487,16 @@
+ #     and should not affect the correctness of postcopy migration.
+ #     (since 7.1)
+ #
++# @switchover-ack: If enabled, migration will not stop the source VM
++#     and complete the migration until an ACK is received from the
++#     destination that it's OK to do so.  Exactly when this ACK is
++#     sent depends on the migrated devices that use this feature.
++#     For example, a device can use it to make sure some of its data
++#     is sent and loaded in the destination before doing switchover.
++#     This can reduce downtime if devices that support this capability
++#     are present.  'return-path' capability must be enabled to use
++#     it.  (since 8.1)
++#
+ # Features:
+ #
+ # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+@@ -502,7 +512,7 @@
+            'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate',
+            { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+            'validate-uuid', 'background-snapshot',
+-           'zero-copy-send', 'postcopy-preempt'] }
++           'zero-copy-send', 'postcopy-preempt', 'switchover-ack'] }
+ 
+ ##
+ # @MigrationCapabilityStatus:
+diff --git a/migration/options.h b/migration/options.h
+index 45991af3c2..9aaf363322 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -40,6 +40,7 @@ bool migrate_postcopy_ram(void);
+ bool migrate_rdma_pin_all(void);
+ bool migrate_release_ram(void);
+ bool migrate_return_path(void);
++bool migrate_switchover_ack(void);
+ bool migrate_validate_uuid(void);
+ bool migrate_xbzrle(void);
+ bool migrate_zero_blocks(void);
+diff --git a/migration/options.c b/migration/options.c
+index b62ab30cd5..16007afca6 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -185,6 +185,8 @@ Property migration_properties[] = {
+     DEFINE_PROP_MIG_CAP("x-zero-copy-send",
+             MIGRATION_CAPABILITY_ZERO_COPY_SEND),
+ #endif
++    DEFINE_PROP_MIG_CAP("x-switchover-ack",
++                        MIGRATION_CAPABILITY_SWITCHOVER_ACK),
+ 
+     DEFINE_PROP_END_OF_LIST(),
+ };
+@@ -308,6 +310,13 @@ bool migrate_return_path(void)
+     return s->capabilities[MIGRATION_CAPABILITY_RETURN_PATH];
+ }
+ 
++bool migrate_switchover_ack(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    return s->capabilities[MIGRATION_CAPABILITY_SWITCHOVER_ACK];
++}
++
+ bool migrate_validate_uuid(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -547,6 +556,18 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+         }
+     }
+ 
++    if (new_caps[MIGRATION_CAPABILITY_SWITCHOVER_ACK]) {
++        if (!new_caps[MIGRATION_CAPABILITY_RETURN_PATH]) {
++            error_setg(errp, "Capability 'switchover-ack' requires capability "
++                             "'return-path'");
++            return false;
++        }
++
++        /* Disable this capability until it's implemented */
++        error_setg(errp, "'switchover-ack' is not implemented yet");
++        return false;
++    }
++
+     return true;
+ }
+ 
 -- 
 2.26.3
 
