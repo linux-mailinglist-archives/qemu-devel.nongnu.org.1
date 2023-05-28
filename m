@@ -2,93 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14F8713819
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A82713828
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 May 2023 08:59:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3A4t-0000iq-1e; Sun, 28 May 2023 02:40:31 -0400
+	id 1q3ALQ-0006KF-Oq; Sun, 28 May 2023 02:57:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q3A3z-0000ZS-0M
- for qemu-devel@nongnu.org; Sun, 28 May 2023 02:39:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1q3ALC-0006Jl-O4; Sun, 28 May 2023 02:57:23 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q3A3w-00060d-Nx
- for qemu-devel@nongnu.org; Sun, 28 May 2023 02:39:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685255970;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+tG1qwQpcI2qU7BK/9e5UD31Go/FNri7bsCkLjz7Jdw=;
- b=V342NtKtuhkurpqEnIaEXBlwaUlLdcibzGPARtN3vUznLhdPymFAUH5ji2yInXUxpmy8KZ
- xsMMRp1sAQc5p2dSVdNRoGaKGSeTHYJq+SbrAnc14eXSEZb4Fu7VhiJnhkUW4YZas4anz6
- 6Lbg+H7alLxqTBJ/JLJJ3G1xNByYHVs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-DJpZiUZ0NJO1sac9-Nh4Jw-1; Sun, 28 May 2023 02:39:28 -0400
-X-MC-Unique: DJpZiUZ0NJO1sac9-Nh4Jw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-30479b764f9so795299f8f.0
- for <qemu-devel@nongnu.org>; Sat, 27 May 2023 23:39:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685255967; x=1687847967;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+tG1qwQpcI2qU7BK/9e5UD31Go/FNri7bsCkLjz7Jdw=;
- b=fZCuldXfcz+JeHc0UKfNQTI/Hz/7CYRIMgtWo5lfsiiuseeSzHIgPaAYUDRVlUrIW1
- t5KDM9GEO2++U7a6LOXezv2t1BhrmdjTBUmEjwALXelNS1vh1iGkBviP++1GlGisDKlQ
- uSddoco89jTIjRfFFIFWKSpenq3P8ZAR0cd3wyVGsKDJd275DtVelSz5P0L9/1d40FGm
- SmlQrq6VmqxUWYvObiNUrmCFuCIVnL/9C2kQb5NFUmyTlHvk9QOCpBWR5Y+yqRiczXGH
- HEwD6/fSelxToCZHV5k7fUjjSt3LNZa19WrFcGEpvGKfaIFDHSQ0M6sY3YfBoNWlByGK
- f0jw==
-X-Gm-Message-State: AC+VfDxTl3G+yAfePCKX5vhTexefy6LL3bcSzmwFGN9gbu79Wj2Dcw4r
- 4z9a+QOeq2exB9TokAMvRTTqXoVp1VLNRib77TkvUqIMnjRyOWff0BV2XxVvkhEjxyhkDJl2eE5
- on71bgHQXxwfkAUU=
-X-Received: by 2002:a5d:630c:0:b0:30a:d7a7:3db4 with SMTP id
- i12-20020a5d630c000000b0030ad7a73db4mr4828630wru.12.1685255967726; 
- Sat, 27 May 2023 23:39:27 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6lMuOJK51islEW91wsfbIW0vQowljjtRRZ1uexryAUNgBvnyJGebZOPm6KqVbl8HCJDEieNg==
-X-Received: by 2002:a5d:630c:0:b0:30a:d7a7:3db4 with SMTP id
- i12-20020a5d630c000000b0030ad7a73db4mr4828618wru.12.1685255967382; 
- Sat, 27 May 2023 23:39:27 -0700 (PDT)
-Received: from redhat.com ([2.52.146.27]) by smtp.gmail.com with ESMTPSA id
- h2-20020adff4c2000000b0030631f199f9sm10008708wrp.34.2023.05.27.23.39.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 May 2023 23:39:26 -0700 (PDT)
-Date: Sun, 28 May 2023 02:39:22 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Jiri Denemark <jdenemar@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
- Leonardo Bras <leobras@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Peter Xu <peterx@redhat.com>,
- qemu-devel@nongnu.org, Daniel Berrange <berrange@redhat.com>
-Subject: Re: [PATCH v1 1/1] hw/pci: Disable PCI_ERR_UNCOR_MASK register for
- machine type < 8.0
-Message-ID: <20230528023313-mutt-send-email-mst@kernel.org>
-References: <20230503002701.854329-1-leobras@redhat.com>
- <7f308149-5495-d415-5e51-1fa15fc20f84@proxmox.com>
- <20230511064306-mutt-send-email-mst@kernel.org>
- <8735435c0c.fsf@secure.mitica>
- <ZGuJXf9B0xEeDGe6@orkuz.int.mamuti.net>
- <87ilcf4jdh.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1q3AL9-0001Yd-Uf; Sun, 28 May 2023 02:57:22 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 798EA8DF7;
+ Sun, 28 May 2023 09:57:15 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 0C7007E17;
+ Sun, 28 May 2023 09:57:15 +0300 (MSK)
+Received: (nullmailer pid 42046 invoked by uid 1000);
+ Sun, 28 May 2023 06:57:14 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.1 v3 00/59] Patch Round-up for stable 8.0.1,
+ frozen on 2023-05-27
+Date: Sun, 28 May 2023 09:56:57 +0300
+Message-Id: qemu-stable-8.0.1-20230528095540@cover.tls.msk.ru
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ilcf4jdh.fsf@secure.mitica>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, INVALID_MSGID=0.568,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,149 +58,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 26, 2023 at 09:55:22AM +0200, Juan Quintela wrote:
-> Jiri Denemark <jdenemar@redhat.com> wrote:
-> > On Thu, May 11, 2023 at 13:43:47 +0200, Juan Quintela wrote:
-> >> "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> >> 
-> >> [Added libvirt people to the party, see the end of the message ]
-> >
-> > Sorry, I'm not that much into parties :-)
-> >
-> >> That would fix the:
-> >> 
-> >> qemu-8.0 -M pc-7.2 -> qemu-8.0.1 -M pc-7.2
-> >> 
-> >> It is worth it?  Dunno.  That is my question.
-> >> 
-> >> And knowing from what qemu it has migrated from would not help.  We
-> >> would need to add a new tweak and means:
-> >> 
-> >> This is a pc-7.2 machine that has been isntantiated in a qemu-8.0 and
-> >> has the pciaerr bug.  But wait, we have _that_.
-> >> 
-> >> And it is called
-> >> 
-> >> +    { TYPE_PCI_DEVICE, "x-pcie-err-unc-mask", "off" },
-> >> 
-> >> from the patch.
-> >> 
-> >> We can teach libvirt about this glitch, and if he is migrating a pc-7.2
-> >> machine in qemu-8.0 machine, And they want to migrate to a new qemu
-> >> (call it qemu-8.1), it needs to be started:
-> >> 
-> >> qemu-8.1 -M pc-7.2 <whatever pci devices need to do>,x-pci-err-unc-mask="true"
-> >> 
-> >> Until the user reboots it and then that property can be reset to default
-> >> value.
-> >
-> > Hmm and what would happen if eventually this machine gets migrated back
-> > to qemu-8.0?
-> 
-> It works.
-> migrating to qemu-7.2 is what is not going to work.
-> To migrate to qemu-8.0, you just need to drop the
-> "x-pci-err-unc-mask=true" bit.  And it would work.
-> 
-> So, to be clear, this machine can migrate to:
-> 
-> - qemu-8.0, you just need to drop the "x-pci-err-unc-mask=true" bit
-> 
-> - qemu-8.0.1 or newer, you just need to maintain the
->   "x-pci-err-unc-mask=true" bit.
-> 
-> Let's just assume that qemu-7.2.1 don't get the
-> "x-pci-err-unc-mask=true" bit, so it will not be able to migrate there.
-> 
-> 
-> > Or even when the machine is stopped, started again, and
-> > then migrated to qemu-8.0?
-> 
-> If you do what I call a hard reset (i.e. poweroff + poweron so qemu
-> dies), you should drop the "x-pci-err-unc-mask=true" bit.  And then you
-> can migrate to qemu-7.2 and all qemu-8.0.1 and newer.
-> 
-> Basically what we need is a "mark" inside libvirt that means something
-> like:
-> 
-> - this is weird machine that looks like pc-7.2
-> - but has "x-pci-err-unc-mask=true"
-> - so it can only migrate to qemu-8.0 and newer.
-> - but if it even reboots in qemu-8.0.1 or newer, we want it back to
->   become a "normal" pc-7.2 machine (i.e. drop the
->   x-pci-err-unc-mask=true).
-> 
-> That would be the perfect world.  But as we are in an imperfect world,
-> something like:
-> 
-> - this machine started in qemu-8.0 -M pc-7.2, we know this is broken and
->   it can't migrate outside of qemu-8.0 because it would fail to go to
->   either qemu-7.2 or qemu-8.0.1.
-> 
-> I would argue that if you do the second option doing the "right" option
-> i.e. the first one is not much more complicated, but that is a question
-> that you should be better to answer.
-> 
-> And then we have the other Michael question.  How can we export that
-> information so libvirt can use it.
-> 
-> In this case we can comunicate libvirt:
-> - In qemu-8.0 we broke pc-7.2.
-> - The problem is fixed in qemu-8.0.1 using property
->   "x-pci-err-unc-mask=false".
-> - You can migrate from qemu-8.0 in newer if you set that property as
->   true.
-> - Guests started in qemu-8.0 -M pc-7.2 should reboot in qemu-8.0.1 or
->   newer to become "normal pc-7.2".
-> - If we publish this on qemu, we can only publish it on qemu-8.0.1 and
->   newer.
-> - Or we can publish it somewhere else and any libvirt can take this
->   information.
-> - Or we can comunicate this to libvirt, and they incorporate it on their
->   source anywhere that you see fit.
+The following patches are queued for QEMU stable v8.0.1:
 
-And this is not an isolated instance. There are things like this in
-almost each release.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.0
 
+Patch freeze is 2023-05-27, and the release is planned for 2023-05-29:
 
-My suggestion is a package with known bugs like this.
-It would list these work arounds in some machine readable
-format and would be essentially append only, making it
-relatively safe even for very old RHEL distros to
-pick up the latest version once in a while.
+  https://wiki.qemu.org/Planning/8.0
 
-E.g. the fact we add bug workaround for 10.0 will not affect
-7.2 so you do not need to fork with each release.
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
+Thanks!
 
+/mjt
 
-> The point here is that when we use a property on a machine type, it can
-> be for two reasons:
-> 
-> - We detected at the right time that we changed the value of something,
->   and we did the right thing on hw_compat_X_Y, so libvirt needs to do
->   nothing.
-> 
-> - We *DID NOT* detect that we broke compatibility before release, and we
->   need to make a property to identify that problem.  This is where we
->   need to do this dance.
-> 
-> Notice that normally we detect lots of problems during development and
-> this *should* not happen.  But when it happens, we need to be able to do
-> something.
-> 
-> And also notice that normally we broke just some device, not a whole
-> machine type.  But as you can see we have broke it this time.  We are
-> trying to automate the detection of this kind of failures, but we are
-> still on design stage, so we need to plan how to handle this.
-> 
-> Any comments?
-> 
-> Later, Juan.
-> 
-> 
-> 
-> 
+--------------------------------------
+01* 3f9c41c5df96 Paolo Bonzini:
+   vnc: avoid underflow when accessing user-provided address
+02* 72497cff896f Yang Zhong:
+   target/i386: Change wrong XFRM value in SGX CPUID leaf
+03* 542fd43d7932 Axel Heider:
+   hw/timer/imx_epit: don't shadow variable
+04* 25d758175dfb Axel Heider:
+   hw/timer/imx_epit: fix limit check
+05* 0f689cf5ada4 Igor Mammedov:
+   acpi: pcihp: allow repeating hot-unplug requests
+06* 8c1e8fb2e7fc Wang Liang:
+   block/monitor: Fix crash when executing HMP commit
+07* c1654c3e37c3 Alex Bennée:
+   qemu-options: finesse the recommendations around -blockdev
+08* ac64ebbecf80 Peter Maydell:
+   docs/about/deprecated.rst: Add "since 7.1" tag to dtb-kaslr-seed 
+   deprecation
+09* ad5c6ddea327 Akihiko Odaki:
+   target/arm: Initialize debug capabilities only once
+10* d565f58b3842 Peter Maydell:
+   hw/net/msf2-emac: Don't modify descriptor in-place in emac_store_desc()
+11* 0fe43f0abf19 Cédric Le Goater:
+   hw/arm/boot: Make write_bootloader() public as arm_write_bootloader()
+12* 902bba549fc3 Cédric Le Goater:
+   hw/arm/aspeed: Use arm_write_bootloader() to write the bootloader
+13* 0acbdb4c4ab6 Peter Maydell:
+   hw/arm/raspi: Use arm_write_bootloader() to write boot code
+14* 2c5fa0778c3b Peter Maydell:
+   hw/intc/allwinner-a10-pic: Don't use set_bit()/clear_bit()
+15* 7f3a3d3dc433 Peter Maydell:
+   target/arm: Define and use new load_cpu_field_low32()
+16* 3e20d90824c2 Peter Maydell:
+   hw/sd/allwinner-sdhost: Correctly byteswap descriptor fields
+17* a4ae17e5ec51 Peter Maydell:
+   hw/net/allwinner-sun8i-emac: Correctly byteswap descriptor fields
+18* de79b52604e4 Stefan Hajnoczi:
+   block/export: call blk_set_dev_ops(blk, NULL, NULL)
+19* 1098cc3fcf95 Shivaprasad G Bhat:
+   softfloat: Fix the incorrect computation in float32_exp2
+20* ef709860ea12 Paolo Bonzini:
+   meson: leave unnecessary modules out of the build
+21* e2626874a326 Kevin Wolf:
+   block: Fix use after free in blockdev_mark_auto_del()
+22* da4afaff074e Kevin Wolf:
+   block: Consistently call bdrv_activate() outside coroutine
+23* b2ab5f545fa1 Kevin Wolf:
+   block: bdrv/blk_co_unref() for calls in coroutine context
+24* 0c7d204f50c3 Kevin Wolf:
+   block: Don't call no_coroutine_fns in qmp_block_resize()
+25* df3ac6da476e LIU Zhiwei:
+   target/riscv: Fix itrigger when icount is used
+26* eae04c4c131a Bin Meng:
+   target/riscv: Restore the predicate() NULL check behavior
+27* 9136f661c727 Jonathan Cameron:
+   hw/pci-bridge: pci_expander_bridge fix type in pxb_cxl_dev_reset()
+28* 8c313254e61e Richard Henderson:
+   accel/tcg: Fix atomic_mmu_lookup for reads
+29* fcc0b0418fff Peter Maydell:
+   target/arm: Fix handling of SW and NSW bits for stage 2 walks
+30* cd22a0f520f4 Peter Maydell:
+   ui: Fix pixel colour channel order for PNG screenshots
+31* 478dccbb99db Peter Maydell:
+   target/arm: Correct AArch64.S2MinTxSZ 32-bit EL1 input size check
+32* d66ba6dc1cce Cédric Le Goater:
+   async: Suppress GCC13 false positive in aio_bh_poll()
+33* 6a5d81b17201 Shivaprasad G Bhat:
+   tcg: ppc64: Fix mask generation for vextractdm
+34* e8ecdfeb30f0 Ilya Leoshkevich:
+   target/s390x: Fix EXECUTE of relative branches
+35* 970641de0190 Ilya Leoshkevich:
+   s390x/tcg: Fix LDER instruction format
+36* 92e667f6fd58 Jason Andryuk:
+   9pfs/xen: Fix segfault on shutdown
+37* 988998503bc6 Richard Henderson:
+   tcg/i386: Set P_REXW in tcg_out_addi_ptr
+38* 88693ab2a53f Claudio Imbrenda:
+   s390x/pv: Fix spurious warning with asynchronous teardown
+39* 80bd81cadd12 Claudio Imbrenda:
+   util/async-teardown: wire up query-command-line-options
+40* c70bb9a771d4 Lizhi Yang:
+   docs/about/emulation: fix typo
+41* 3217b84f3cd8 Alex Bennée:
+   tests/docker: bump the xtensa base to debian:11-slim
+42* a0f8d2701b20 Daniil Kovalev:
+   linux-user: Fix mips fp64 executables loading
+43* 1e35d327890b Michael Tokarev:
+   linux-user: fix getgroups/setgroups allocations
+44* 403d18ae3842 Eric Blake:
+   migration: Handle block device inactivation failures better
+45* 5d39f44d7ac5 Eric Blake:
+   migration: Minor control flow simplification
+46* 6dab4c93ecfa Eric Blake:
+   migration: Attempt disk reactivation in more failure scenarios
+47* a6771f2f5cbf Richard Henderson:
+   target/arm: Fix vd == vm overlap in sve_ldff1_z
+48* 9bd634b2f5e2 Paolo Bonzini:
+   scsi-generic: fix buffer overflow on block limits inquiry
+49* 2b55e479e6fc Paolo Bonzini:
+   target/i386: fix operand size for VCOMI/VUCOMI instructions
+50* 056d649007bc Xinyu Li:
+   target/i386: fix avx2 instructions vzeroall and vpermdq
+51* 5d410557dea4 Hawkins Jiawei:
+   vhost: fix possible wrap in SVQ descriptor ring
+52* 5ed3dabe57dd Leonardo Bras:
+   hw/pci: Disable PCI_ERR_UNCOR_MASK register for machine type < 8.0
+53* 1fac00f70b32 Eugenio Pérez:
+   virtio-net: not enable vq reset feature unconditionally
+54* 3e69908907f8 Mauro Matteo Cascella:
+   virtio-crypto: fix NULL pointer dereference in virtio_crypto_free_request
+55* 6d740fb01b9f Stefan Hajnoczi:
+   aio-posix: do not nest poll handlers
+56* 844a12a63e12 Stefan Hajnoczi:
+   tested: add test for nested aio_poll() in poll handlers
+57* 58a2e3f5c37b Stefan Hajnoczi:
+   block: compile out assert_bdrv_graph_readable() by default
+58* 80fc5d260002 Kevin Wolf:
+   graph-lock: Disable locking for now
+59* 7c1f51bf38de Kevin Wolf:
+   nbd/server: Fix drained_poll to wake coroutine in right AioContext
+60 8d689f6aae8b timothee.cocault@gmail.com:
+   e1000e: Fix tx/rx counters
+61 f3f9b726afba Akihiko Odaki:
+   e1000x: Fix BPRC and MPRC
+62 ed447c60b341 Akihiko Odaki:
+   igb: Fix Rx packet type encoding
+63 e209716749cd Akihiko Odaki:
+   igb: Do not require CTRL.VME for tx VLAN tagging
+64 f0b1df5c4502 Akihiko Odaki:
+   igb: Clear IMS bits when committing ICR access
+65 2f0fa232b8c3 Akihiko Odaki:
+   net/net_rx_pkt: Use iovec for net_rx_pkt_set_protocols()
+66 310a128eae12 Akihiko Odaki:
+   e1000e: Always copy ethernet header
+67 dc9ef1bf4548 Akihiko Odaki:
+   igb: Always copy ethernet header
+68 792676c16515 Stefan Hajnoczi:
+   rtl8139: fix large_send_mss divide-by-zero
+69 dbdea0dbfe2c Akihiko Odaki:
+   util/vfio-helpers: Use g_file_read_link()
+70 6301460ce9f5 Paolo Bonzini:
+   usb/ohci: Set pad to 0 after frame update
+71 b987718bbb1d Thomas Huth:
+   hw/scsi/lsi53c895a: Fix reentrancy issues in the LSI controller 
+   (CVE-2023-0330)
+72 a37531f2381c Igor Mammedov:
+   machine: do not crash if default RAM backend name has been stolen
+73 0bfd14149b24 Paolo Bonzini:
+   virtio: qmp: fix memory leak
 
+(commit(s) marked with * were in previous series and are not resent)
 
