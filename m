@@ -2,74 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386C8714B81
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 16:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 202E2714BD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 16:13:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3dUp-0008R2-Mx; Mon, 29 May 2023 10:05:15 -0400
+	id 1q3dc3-0002Ct-4d; Mon, 29 May 2023 10:12:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q3dUo-0008Pt-7V; Mon, 29 May 2023 10:05:14 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1q3dUm-00085D-CN; Mon, 29 May 2023 10:05:13 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1q3dbu-0002CW-Lk
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 10:12:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1q3dbs-0001md-8A
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 10:12:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685369550;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=0s8dZVcN+QaEMREYs2yDVB3nklRumXGYJlpyr0UixXY=;
+ b=ggOic34u/jPaUZtMN1WjcgLgUjL1fvI99txzdegZIskfhUDGRGoB5MLeM5iD3wupeBmCi2
+ fLe3lUNRh6eh0l50+d9RUYz22ruqN6bxiNZ4oyTEJmhhkY1xM1K2AQq82EdWsa6+ZPvQZS
+ RBRpQ5osZdrebNQBZG6OrmG739ld3Ts=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-663--gV-zy_MMN2iPkEYp4Sy2Q-1; Mon, 29 May 2023 10:12:29 -0400
+X-MC-Unique: -gV-zy_MMN2iPkEYp4Sy2Q-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id C7B011F8D7;
- Mon, 29 May 2023 14:05:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1685369109; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tuaqVehZpaTUfTQZt+bC/s2xCVD+ZQ2WOnxlCDcqYxw=;
- b=xuNUibAbHoMhX2kLi19Pog7zt1lPdoGOjwLG7bHTYR9U1mhaROORBlcsnb8TgZv7/51ncd
- HOUMjUQjvLKUL1Q7OwGJ4gLxHYfe9y899NgriHz4Ad5Q55TnFG3wAh93FnqxAoukQ4iY1c
- bqc7ywaRbEJUiFJidcDdRExy2NZs6C8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1685369109;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tuaqVehZpaTUfTQZt+bC/s2xCVD+ZQ2WOnxlCDcqYxw=;
- b=srvbEg4zXQbeIWVxTGe6UOVdCK50uDmxyfRrBzTxpZeewxL566BXCjj33TYLKaIPhJlquA
- E71fOqv10TeLWSBw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 50AC41332D;
- Mon, 29 May 2023 14:05:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id nUMqBxWxdGROMQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 29 May 2023 14:05:09 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>, Narayana Murty N
- <nnmlinux@linux.ibm.com>, danielhb413@gmail.com, clg@kaod.org,
- david@gibson.dropbear.id.au, groug@kaod.org
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, npiggin@linux.ibm.com,
- vaibhav@linux.ibm.com, harshpb@linux.ibm.com, sbhat@linux.ibm.com
-Subject: Re: [PATCH v3] target: ppc: Use MSR_HVB bit to get the target
- endianness for memory dump
-In-Reply-To: <CSYG8RTMAB5O.2H9DDPSRE7JR0@wheely>
-References: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
- <CSYG8RTMAB5O.2H9DDPSRE7JR0@wheely>
-Date: Mon, 29 May 2023 11:05:06 -0300
-Message-ID: <87pm6js06l.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B1F253C0C880
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 14:12:28 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.43.2.39])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5C813C154D1
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 14:12:28 +0000 (UTC)
+From: Michal Privoznik <mprivozn@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v2] meson: Avoid implicit declaration of functions
+Date: Mon, 29 May 2023 16:12:26 +0200
+Message-Id: <bc49e796220153190019f5010b8e090e09441158.1685369482.git.mprivozn@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mprivozn@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,75 +73,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Nicholas Piggin" <npiggin@gmail.com> writes:
+While detecting a presence of a function via 'cc.links()'
+gives desired result (i.e. detects whether function is present),
+it also produces a warning on systems where the function is not
+present (into meson-log.txt), e.g.:
 
-> On Tue May 23, 2023 at 2:02 AM AEST, Narayana Murty N wrote:
->> Changes since V2:
->> commit message modified as per feedbak from Nicholas Piggin.
->> Changes since V1:
->> https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.ibm.com/
->> The approach to solve the issue was changed based on feedback from
->> Fabiano Rosas on patch V1.
->> ---
->>  target/ppc/arch_dump.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
->> index f58e6359d5..a8315659d9 100644
->> --- a/target/ppc/arch_dump.c
->> +++ b/target/ppc/arch_dump.c
->> @@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
->>      info->d_machine = PPC_ELF_MACHINE;
->>      info->d_class = ELFCLASS;
->>  
->> -    if (ppc_interrupts_little_endian(cpu, cpu->env.has_hv_mode)) {
->> +    if (ppc_interrupts_little_endian(cpu, !!(cpu->env.msr_mask & MSR_HVB))) {
->>          info->d_endian = ELFDATA2LSB;
->>      } else {
->>          info->d_endian = ELFDATA2MSB;
->
-> Oh, and now I see it cpu_get_dump_info just picks the first CPU to test
-> this! So a test that can change at runtime is surely not the right one.
-> If you use MSR[HV] then if you have a SMP machine that is doing a bunch
-> of things and you want to dump to debug the system, this will just
-> randomly give you a wrong-endian dump if CPU0 just happened to be
-> running some KVM guest.
->
+  qemu.git/build/meson-private/tmph74x3p38/testfile.c:2:34: \
+  warning: implicit declaration of function 'malloc_trim' [-Wimplicit-function-declaration]
 
-Not sure if you are just thinking out loud about MSR_HV or if you
-mistook MSR_HVB for MSR_HV. But just in case:
+We can check whether given function exists via
+'cc.has_function()' or whether STATX_* macros exist via
+'cc.has_header_symbol()'.
 
-The env->msr_mask is what tells us what MSR bits are supported for this
-CPU, i.e. what features it contains. So MSR_HVB is not equivalent to
-MSR[HV], but merely informs that this CPU knows about MSR_HV. We then
-store that information at has_hv_mode. The MSR_HVB bit changes only
-once (at cpu_ppc_set_vhyp), after we decide whether to use vhyp. So:
+Resolves: https://bugs.gentoo.org/898810
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+---
 
-env->has_hv_mode == cpu supports HV mode;
+v2 of:
 
-MSR_HVB=1 == cpu supports HV mode AND we allow the OS to run with MSR_HV=1;
+https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07138.html
 
-MSR_HVB=0 == cpu doesn't support HV mode OR
-             cpu supports HV mode, but we don't allow the OS to run with
-             MSR_HV=1 because QEMU is the HV (i.e. vhyp);
+diff to v1:
+- Drop cc.links() as it's redundant
 
-For the arch_dump code, passing (msr_mask & MSR_HVB) ends up meaning:
-"can this OS ever run with MSR_HV=1?", which for emulated powernv would
-be Yes and for pseries (incl. nested) would be No. So for emulated
-powernv we always look at the emulated HILE and for pseries we always
-look at LPCR_ILE.
+ meson.build | 26 +++++---------------------
+ 1 file changed, 5 insertions(+), 21 deletions(-)
 
-> But even ignoring all of that, let's say you have all the same endian
-> host and guest kernels and dump format... If you dump host memory then
-> you need host kernel and structures to debug guest kernel/image
-> (assuming crash or the person debugging it is smart enough to make sense
-> of it). So I don't see how you can sanely use the crash dump of host
-> memory with the guest kernel. I must still be missing something.
->
+diff --git a/meson.build b/meson.build
+index 2d48aa1e2e..21061b19d4 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1797,8 +1797,7 @@ malloc = []
+ if get_option('malloc') == 'system'
+   has_malloc_trim = \
+     get_option('malloc_trim').allowed() and \
+-    cc.links('''#include <malloc.h>
+-                int main(void) { malloc_trim(0); return 0; }''')
++    cc.has_function('malloc_trim', prefix: '#include <malloc.h>')
+ else
+   has_malloc_trim = false
+   malloc = cc.find_library(get_option('malloc'), required: true)
+@@ -1811,34 +1810,19 @@ if not has_malloc_trim and get_option('malloc_trim').enabled()
+   endif
+ endif
+ 
+-# Check whether the glibc provides statx()
+-
+ gnu_source_prefix = '''
+   #ifndef _GNU_SOURCE
+   #define _GNU_SOURCE
+   #endif
+ '''
+-statx_test = gnu_source_prefix + '''
+-  #include <sys/stat.h>
+-  int main(void) {
+-    struct statx statxbuf;
+-    statx(0, "", 0, STATX_BASIC_STATS, &statxbuf);
+-    return 0;
+-  }'''
+ 
+-has_statx = cc.links(statx_test)
++# Check whether the glibc provides STATX_BASIC_STATS
++
++has_statx = cc.has_header_symbol('sys/stat.h', 'STATX_BASIC_STATS', prefix: gnu_source_prefix)
+ 
+ # Check whether statx() provides mount ID information
+ 
+-statx_mnt_id_test = gnu_source_prefix + '''
+-  #include <sys/stat.h>
+-  int main(void) {
+-    struct statx statxbuf;
+-    statx(0, "", 0, STATX_BASIC_STATS | STATX_MNT_ID, &statxbuf);
+-    return statxbuf.stx_mnt_id;
+-  }'''
+-
+-has_statx_mnt_id = cc.links(statx_mnt_id_test)
++has_statx_mnt_id = cc.has_header_symbol('sys/stat.h', 'STATX_MNT_ID', prefix: gnu_source_prefix)
+ 
+ have_vhost_user_blk_server = get_option('vhost_user_blk_server') \
+   .require(targetos == 'linux',
+-- 
+2.39.3
 
-You're right, the QEMU instance that receives the qmp_dump_guest_memory
-command should generate a memory dump of whatever OS is running in it at
-a direct level.  So the endianness reported in the dump's ELF should
-match the guest OS image ELF (roughly, there's -bios which doesn't
-require an ELF).
 
