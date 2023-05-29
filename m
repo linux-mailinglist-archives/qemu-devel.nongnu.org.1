@@ -2,63 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B6D714C0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 16:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 433C3714C96
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 16:59:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3dq4-0005m9-1n; Mon, 29 May 2023 10:27:12 -0400
+	id 1q3eJg-0006jj-A2; Mon, 29 May 2023 10:57:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q3dq1-0005lt-Sr; Mon, 29 May 2023 10:27:10 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q3eJd-0006jb-BP
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 10:57:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q3dpv-00060Q-R7; Mon, 29 May 2023 10:27:09 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c18:1421:0:640:53a0:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 8C2BE6134E;
- Mon, 29 May 2023 17:26:51 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b64e::1:1e] (unknown
- [2a02:6b8:b081:b64e::1:1e])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id oQMp5F6OnCg0-vHvfvdq8; Mon, 29 May 2023 17:26:51 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1685370411; bh=lqrpr3QShX6k7lsYtBFjCBZEWPqEav9FqttWTbj07WA=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=BQBfo6pMqe4nRcNN2VzNmvXPYpAY9oIjKeSLrQDh0Qgss1EbD16yJx5tVi10TZCXv
- SDfLSbNATTxFRyayMVZPgKUllmuHEecdzplU5AlVbWT0raOeOMt6JosB1tKCEUTm4U
- G5cwyfecjWJ2LeeRKfQdAmkwz8BUyZTfM/wH9RSg=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <7f9afa94-4817-d33a-4565-20b654190e3d@yandex-team.ru>
-Date: Mon, 29 May 2023 17:26:50 +0300
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q3eJb-00070e-JQ
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 10:57:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685372261;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UO4tLmVrwYAoBqEa0jlJFfvLgTHjdu8h3SyzuGVTdBU=;
+ b=Lh2/8Fl0drhBDC77PI6QGsys9JqggjeKrotgGbt6nry89WRpurldzWgGzCv/G4pgd9gZt3
+ MKMHEyzrd3t+vMNMWlUVKljjmoUX6YDvyC+9B2t7ejIbdpwgF3U+/VXhyLkj8/8IsrweEW
+ Ub7Dkly2RIiTDP99TCpvzLkp9M64w0M=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-673-22N3k3Z7Nna83JzNuTB7gg-1; Mon, 29 May 2023 10:57:40 -0400
+X-MC-Unique: 22N3k3Z7Nna83JzNuTB7gg-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-626204b0663so1998976d6.1
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 07:57:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685372260; x=1687964260;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=UO4tLmVrwYAoBqEa0jlJFfvLgTHjdu8h3SyzuGVTdBU=;
+ b=hNZS6GplH/jGMzvmmmBAQdSHUBDBC9m2gI67uicYrMfy3+tFaxZpgHY0qslzkj0awd
+ qM3JmEMudRedpDgL8OiICvKVhnFgK/8XVfeIV5sj6fjd2A+jJ+7PBp2RJPZqo+Ib1EHA
+ g46Byc2z64yWJ0Q+l+iY0NZwkbYlxFzWfbrCvxZXsxtTM7/ouMKxVD8IN4xuw7jb9EhM
+ I3mSKzPT9ryLiPSa+lXzpTG7HH+ddXFVVG+R0w1oouKwxsd9SHpghddh6mbgpygCgMQZ
+ N91D33svUKJpzFwqXzGjAUpEozuKTJRW2BPLEYpjgpHOyHBYaGBqO4Iy3S7Szkd99RtW
+ FDvg==
+X-Gm-Message-State: AC+VfDwsjFzh/8aIWoUTNBly0JH547LFjrHD4V9eLMH93m+aj414Fg8T
+ jNoTCmRfCmTZUtsIPAJIjv4uUohdV/d/PnP5ehXJ2rkw/TKO3RqVTFA1EaCHGGst8g35r/2WZqA
+ zvdi2VLRRbyBUK3o=
+X-Received: by 2002:a05:6214:528a:b0:61b:2111:c2e2 with SMTP id
+ kj10-20020a056214528a00b0061b2111c2e2mr11804868qvb.2.1685372259918; 
+ Mon, 29 May 2023 07:57:39 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ75puNAAJ+9wAs46FAbQWVGC9b5P3Mgr6XYYmu8/jAFh/zwP9Rr5qAhftu+gj5lWDYd4P+CHw==
+X-Received: by 2002:a05:6214:528a:b0:61b:2111:c2e2 with SMTP id
+ kj10-20020a056214528a00b0061b2111c2e2mr11804846qvb.2.1685372259588; 
+ Mon, 29 May 2023 07:57:39 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ e16-20020a0cf750000000b006257e64474asm1526618qvo.113.2023.05.29.07.57.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 May 2023 07:57:39 -0700 (PDT)
+Date: Mon, 29 May 2023 10:57:38 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Wang, Wei W" <wei.w.wang@intel.com>
+Cc: "armbru@redhat.com" <armbru@redhat.com>,
+ "quintela@redhat.com" <quintela@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v1] migration: fix migrate_params_test_apply to set the
+ dest param correctly
+Message-ID: <ZHS9YgSA5Jggd7ay@x1n>
+References: <20230524080157.530968-1-wei.w.wang@intel.com>
+ <ZHEpYQ01D7O3MQqM@x1n>
+ <DS0PR11MB6373304AA3B38CBB22D22BADDC4A9@DS0PR11MB6373.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 03/14] nbd/server: Prepare for alternate-size headers
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-Cc: libguestfs@redhat.com, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>
-References: <20230515195343.1915857-1-eblake@redhat.com>
- <20230515195343.1915857-4-eblake@redhat.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230515195343.1915857-4-eblake@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DS0PR11MB6373304AA3B38CBB22D22BADDC4A9@DS0PR11MB6373.namprd11.prod.outlook.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -76,73 +102,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15.05.23 22:53, Eric Blake wrote:
-> Upstream NBD now documents[1] an extension that supports 64-bit effect
-> lengths in requests.  As part of that extension, the size of the reply
-> headers will change in order to permit a 64-bit length in the reply
-> for symmetry[2].  Additionally, where the reply header is currently
-> 16 bytes for simple reply, and 20 bytes for structured reply; with the
-> extension enabled, there will only be one structured reply type, of 32
-> bytes.  Since we are already wired up to use iovecs, it is easiest to
-> allow for this change in header size by splitting each structured
-> reply across two iovecs, one for the header (which will become
-> variable-length in a future patch according to client negotiation),
-> and the other for the payload, and removing the header from the
-> payload struct definitions.  Interestingly, the client side code never
-> utilized the packed types, so only the server code needs to be
-> updated.
+On Mon, May 29, 2023 at 12:55:30PM +0000, Wang, Wei W wrote:
+> On Saturday, May 27, 2023 5:49 AM, Peter Xu wrote:
+> > On Wed, May 24, 2023 at 04:01:57PM +0800, Wei Wang wrote:
+> > > qmp_migrate_set_parameters expects to use tmp for parameters check, so
+> > > migrate_params_test_apply is expected to copy the related fields from
+> > > params to tmp. So fix migrate_params_test_apply to use the function
+> > > parameter, *dest, rather than the global one. The dest->has_xxx (xxx
+> > > is the feature name) related fields need to be set, as they will be
+> > > checked by migrate_params_check.
+> > 
+> > I think it's fine to do as what you suggested, but I don't see much benefit
+> > either.. the old code IIUC will check all params even if 1 param changed,
+> > while after your change it only checks the modified ones.
+> > 
+> > There's slight benefits but not so much, especially "22+, 2-" LOCs, because
+> > we don't really do this a lot; some more sanity check also makes sense to me
+> > even if everything is always checked, so we'll hit errors if anything
+> > accidentally goes wrong too.
+> > 
+> > Is there a real bug somewhere?
+> 
+> Yes. Please see qmp_migrate_set_parameters:
+> 
+> #1    migrate_params_test_apply(params, &tmp);
+> 
+>  #2   if (!migrate_params_check(&tmp, errp)) {
+>         /* Invalid parameter */
+>         return;
+>     }
+>  #3  migrate_params_apply(params, errp);
+> 
+> #2 tries to do params check using tmp, which is expected to be set up
+> by #1, but #1 didn't use "&tmp",
 
-Actually, it does, since previous patch :) But, it becomes even better now? Anyway some note somewhere is needed I think.
+#1 initialized "&tmp" with current parameters, here:
+
+    *dest = migrate_get_current()->parameters;
+
+?
+
+> so "tmp" doesn’t seem to store the
+> valid values as expected for the check (that is, #2 above isn’t effectively
+> doing any check for the user input params)
+
+Do you have a reproducer where qmp set param will not check properly on
+user input?
 
 > 
-> [1] https://github.com/NetworkBlockDevice/nbd/blob/extension-ext-header/doc/proto.md
-> as of NBD commit e6f3b94a934
-> 
-> [2] Note that on the surface, this is because some future server might
-> permit a 4G+ NBD_CMD_READ and need to reply with that much data in one
-> transaction.  But even though the extended reply length is widened to
-> 64 bits, for now the NBD spec is clear that servers will not reply
-> with more than a maximum payload bounded by the 32-bit
-> NBD_INFO_BLOCK_SIZE field; allowing a client and server to mutually
-> agree to transactions larger than 4G would require yet another
-> extension.
-> 
-> Signed-off-by: Eric Blake <eblake@redhat.com>
+> The alternative fix would be to remove the intermediate "tmp" params,
+> but this might break the usage from commit 1bda8b3c6950, so need thoughts
+> from Markus if we want go for this approach.
 
-
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-
-> ---
->   include/block/nbd.h |  8 +++---
->   nbd/server.c        | 64 ++++++++++++++++++++++++++++-----------------
->   2 files changed, 44 insertions(+), 28 deletions(-)
-> 
-
-[..]
-
-> 
-> -static inline void set_be_chunk(NBDStructuredReplyChunk *chunk, uint16_t flags,
-> -                                uint16_t type, uint64_t handle, uint32_t length)
-> +static inline void set_be_chunk(NBDClient *client, struct iovec *iov,
-
-Suggestion: pass niov here too, and caluculate "length" as a sum of iov lengths starting from second extent automatically.
-
-Also, worth documenting that set_be_chunk() expects half-initialized iov, with .iov_base pointing to NBDReply (IN parameter) and .iov_len unset (OUT parameter), as that's not usual practice
-
-> +                                uint16_t flags, uint16_t type,
-> +                                uint64_t handle, uint32_t length)
->   {
-> +    NBDStructuredReplyChunk *chunk = iov->iov_base;
-> +
-> +    iov->iov_len = sizeof(*chunk);
->       stl_be_p(&chunk->magic, NBD_STRUCTURED_REPLY_MAGIC);
->       stw_be_p(&chunk->flags, flags);
->       stw_be_p(&chunk->type, type);
-
-[..]
+Thanks,
 
 -- 
-Best regards,
-Vladimir
+Peter Xu
 
 
