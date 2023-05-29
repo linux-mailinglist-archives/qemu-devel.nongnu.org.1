@@ -2,91 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329CF714926
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 14:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB64714943
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 14:18:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3biz-0006vs-8F; Mon, 29 May 2023 08:11:45 -0400
+	id 1q3bol-0000zx-8N; Mon, 29 May 2023 08:17:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1q3biw-0006vP-7J
- for qemu-devel@nongnu.org; Mon, 29 May 2023 08:11:42 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1q3biu-0003Ps-FX
- for qemu-devel@nongnu.org; Mon, 29 May 2023 08:11:41 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34T7TGrZ031492; Mon, 29 May 2023 12:11:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-03-30;
- bh=1UAtNPKnpOQzqu8SkGp7lY1q+2CW6YybIezCRQzeQiw=;
- b=yakGilRutZtxhz8tlfpyqwqKpxpjC+ZZlu7sk844OySbDjjIdHB+S/tSd36pJ+lKuoXf
- pY4X2o9WTev1LUxcqHJbQw8q87OcqOw04Qh4DwiTz9mZMAxWAiM/G9LC5IPS/KoE+tUl
- oBAtaJzd3pgpzMWZQw6ZueE55QPsZfXwxTTNJ4ce3zlGztrlOBJ7TmChBefVQ+M+LBcz
- s89aOSFMWERUY+vjDvO1wFhuwrcec3MRaRngJySTU5iH8jFtkBObo0nyPcYATxPxAAh3
- 4dUmKVYPW1UQzzkkbLIBiuX4gk4XKqRhW3Jna3Gbu48rvx7Ip12ep7EFpqKAelWwUwNj nA== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qvhww8tp7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 May 2023 12:11:37 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 34TAxLbm026022; Mon, 29 May 2023 12:11:36 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3qu8a92m9s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 May 2023 12:11:36 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34TCBVLS038099;
- Mon, 29 May 2023 12:11:36 GMT
-Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-183-111.vpn.oracle.com
- [10.175.183.111])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3qu8a92m66-3; Mon, 29 May 2023 12:11:35 +0000
-From: Joao Martins <joao.m.martins@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Avihai Horon <avihaih@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v3 2/2] hw/vfio: Add nr of dirty pages to
- vfio_get_dirty_bitmap tracepoint
-Date: Mon, 29 May 2023 13:11:14 +0100
-Message-Id: <20230529121114.5038-3-joao.m.martins@oracle.com>
-In-Reply-To: <20230529121114.5038-1-joao.m.martins@oracle.com>
-References: <20230529121114.5038-1-joao.m.martins@oracle.com>
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q3boi-0000yC-CU; Mon, 29 May 2023 08:17:40 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q3bof-00052x-6k; Mon, 29 May 2023 08:17:40 -0400
+Received: from localhost.localdomain (unknown [61.165.37.98])
+ by APP-05 (Coremail) with SMTP id zQCowADHzorRl3Rk4iJ2Bw--.20494S2;
+ Mon, 29 May 2023 20:17:23 +0800 (CST)
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
+ Weiwei Li <liweiwei@iscas.ac.cn>
+Subject: [PATCH 0/4] target/riscv: Fix mstatus related problems
+Date: Mon, 29 May 2023 20:17:15 +0800
+Message-Id: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-29_08,2023-05-25_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- phishscore=0 spamscore=0
- adultscore=0 mlxlogscore=892 bulkscore=0 malwarescore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
- definitions=main-2305290105
-X-Proofpoint-ORIG-GUID: -fKXX41wLISoIo4b25SZC_QzLp5qdf-S
-X-Proofpoint-GUID: -fKXX41wLISoIo4b25SZC_QzLp5qdf-S
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-CM-TRANSID: zQCowADHzorRl3Rk4iJ2Bw--.20494S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+ VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYz7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
+ 6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
+ kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8I
+ cVCY1x0267AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2js
+ IEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE
+ 5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeV
+ CFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l
+ FIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+ 0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+ 17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+ C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+ 6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+ 73UjIFyTuYvjfUoOJ5UUUUU
+X-Originating-IP: [61.165.37.98]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,57 +72,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Include the number of dirty pages on the vfio_get_dirty_bitmap tracepoint.
-These are fetched from the newly added return value in
-cpu_physical_memory_set_lebitmap().
+This patchset tries to fix some problems in the fields of mstatus, such as make MPV only work when MPP != PRM.
 
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
----
- hw/vfio/common.c     | 7 ++++---
- hw/vfio/trace-events | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+The port is available here:
+https://github.com/plctlab/plct-qemu/tree/plct-mpv-upstream
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 78358ede2764..fa8fd949b1cf 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1747,6 +1747,7 @@ static int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
- {
-     bool all_device_dirty_tracking =
-         vfio_devices_all_device_dirty_tracking(container);
-+    uint64_t dirty_pages;
-     VFIOBitmap vbmap;
-     int ret;
- 
-@@ -1772,11 +1773,11 @@ static int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
-         goto out;
-     }
- 
--    cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
--                                           vbmap.pages);
-+    dirty_pages = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
-+                                                         vbmap.pages);
- 
-     trace_vfio_get_dirty_bitmap(container->fd, iova, size, vbmap.size,
--                                ram_addr);
-+                                ram_addr, dirty_pages);
- out:
-     g_free(vbmap.bitmap);
- 
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index 646e42fd27f9..cfb60c354de3 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -120,7 +120,7 @@ vfio_region_sparse_mmap_header(const char *name, int index, int nr_areas) "Devic
- vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long end) "sparse entry %d [0x%lx - 0x%lx]"
- vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
- vfio_dma_unmap_overflow_workaround(void) ""
--vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64
-+vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
- vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
- 
- # platform.c
+Weiwei Li (4):
+  target/riscv: Make MPV only work when MPP != PRV_M
+  target/riscv: Remove check on mode for MPRV
+  target/riscv: Support MSTATUS.MPV/GVA only when RVH is enabled
+  target/riscv: Remove redundant assignment to SXL
+
+ target/riscv/cpu_helper.c |  5 +++--
+ target/riscv/csr.c        | 14 ++++----------
+ target/riscv/op_helper.c  |  3 ++-
+ 3 files changed, 9 insertions(+), 13 deletions(-)
+
 -- 
-2.39.3
+2.25.1
 
 
