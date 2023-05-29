@@ -2,83 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCB1714E41
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 18:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA518714E7B
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 18:35:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3feK-0000Yw-FQ; Mon, 29 May 2023 12:23:12 -0400
+	id 1q3fpC-0003Lh-8F; Mon, 29 May 2023 12:34:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q3feH-0000Yn-SN
- for qemu-devel@nongnu.org; Mon, 29 May 2023 12:23:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1q3fp5-0003L2-Nz
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 12:34:19 -0400
+Received: from mga03.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1q3feF-0004Vs-Ak
- for qemu-devel@nongnu.org; Mon, 29 May 2023 12:23:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685377385;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wEXWBeXPsVG7W0oNxPvQcfM6uN38qZ1qgEkgwug1mGU=;
- b=DMzyPfHIxMssW2vXR/iDU18VWvzU6DO6RhwhAgh/cuJfnaltl0TT28i5y5glALxTHlX3hp
- dqrlprwtRYKIhCFe0Iyn3AdqhqgwNfQiMJqasE8Rj/kLzjeZCbwSZk6mmDe3HKhsPcdnr+
- 5JMgiYxcUWbzDnFjegQxTxD6pKGkF9k=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-L8oDfL5yMdydL5amJhPH4w-1; Mon, 29 May 2023 12:19:36 -0400
-X-MC-Unique: L8oDfL5yMdydL5amJhPH4w-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-ba802c775caso7118620276.2
- for <qemu-devel@nongnu.org>; Mon, 29 May 2023 09:19:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685377176; x=1687969176;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=wEXWBeXPsVG7W0oNxPvQcfM6uN38qZ1qgEkgwug1mGU=;
- b=V8Atav5FXOtSlVynxbDtpa/mUzUB+N3lwlwD0vo4P0jSk2WYoT5HCWlu/Mr3MSL6ka
- KGG+VtAWKo0V5yUved++CrvemDHKrZOUf6BgVQKIHgmfKacZuj/AayyaAL4Nc76tLXJW
- 4y6zQvtMQ/aUBZskxdbhSXxdXd+OwG7md2+x0t1hjFFUTUOaH/IpOVOXNeBJhruvE8CV
- IH6g5g7xxxFwt4nxau0y8h0YYlaRBmAui7K21JVo3CbV7rKXJOZlifK4XNxWOIR3QAbG
- jYG5tUAjPfj00eZg6PBv+g3nqfD6rtF7SUT87eB5cZR2JWAUoODGhc4mOq+D9uM/2O54
- nc+w==
-X-Gm-Message-State: AC+VfDzlC2+57KztdUqFGyanVkAb9RGKDPp1C4kfcZHX5NnDveZFos4s
- PFmN3C9HHvi2uNQN847HLmwS94VMsioP0HjjSqFWGwsnZo9KWk/ifykN1AB7y5/gbTO1jCgvjA2
- 9R0ue47B7KPzb7L3ap7YtnYu47M8nuI4=
-X-Received: by 2002:a25:b84b:0:b0:ba1:d8a6:d2b2 with SMTP id
- b11-20020a25b84b000000b00ba1d8a6d2b2mr11923642ybm.7.1685377176484; 
- Mon, 29 May 2023 09:19:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5b4emE8b70LqbTuL7zL+E+WiClNthfxFqIPTysBxgLG2uWqFWLy2nuGFz7neAQ8SZeEiD+xPzSbjcp54IhUt4=
-X-Received: by 2002:a25:b84b:0:b0:ba1:d8a6:d2b2 with SMTP id
- b11-20020a25b84b000000b00ba1d8a6d2b2mr11923629ybm.7.1685377176247; Mon, 29
- May 2023 09:19:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1q3fp3-00075s-GZ
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 12:34:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1685378057; x=1716914057;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/2Jz9GmE+9VKQhEUG9DNVbWL2ZjPLMav1NlJuSKwKPc=;
+ b=NZZF11uGc5lDqBhaZ1uTJFV2Cs8wFWQRWilYDxWG3Gu8Y1EU8McMuizS
+ 0MHV2v6tHvVyNWBWQ9VqshIPyQkqB27xp0po6MVarMxgQfkZPgFaRZc9P
+ pxkBhRVTKshRHZwb24hRMHRTzYXOc6RAvN73JGmW+hi3Kiopd0xWd/rq/
+ gaxFKKsKkwI2TtW/uDgQcYr5X6b8C+raHB6lO4ZbH13dfqtBWeEmPnhqG
+ 9ZJYG5XnKlnl055B72+RLjtTkiGbDI9v9ZCXidPrAUuewU1Gv5ZkikmAw
+ BGST7/1qkWLrqZ+blzCff5k112hUP7WpbYqBfZz/pmmD1iXubl3BDVN/v A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="357991685"
+X-IronPort-AV: E=Sophos;i="6.00,201,1681196400"; d="scan'208";a="357991685"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2023 09:34:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="771215604"
+X-IronPort-AV: E=Sophos;i="6.00,201,1681196400"; d="scan'208";a="771215604"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
+ by fmsmga008.fm.intel.com with ESMTP; 29 May 2023 09:34:12 -0700
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 0/3] hw/smbios: Cleanup topology related variables
+Date: Tue, 30 May 2023 00:43:40 +0800
+Message-Id: <20230529164343.467793-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <cover.1685359572.git.yin31149@gmail.com>
- <ab861a8237c5e337bb0f969e1e8e761bc73901d5.1685359572.git.yin31149@gmail.com>
-In-Reply-To: <ab861a8237c5e337bb0f969e1e8e761bc73901d5.1685359572.git.yin31149@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 29 May 2023 18:19:00 +0200
-Message-ID: <CAJaqyWcURXY7GxM2goKHp55pfb-pCjOSYfDwzjsXbtSP1SnSkg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] vdpa: Add vhost_vdpa_net_load_offloads
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: Jason Wang <jasowang@redhat.com>, 18801353760@163.com,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=134.134.136.65;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mga03.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,79 +75,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 29, 2023 at 3:18=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
->
-> This patch introduces vhost_vdpa_net_load_offloads() to
-> restore offloads state at device's startup.
->
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
->  net/vhost-vdpa.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 37cdc84562..682c749b19 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -680,6 +680,28 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
->      return *s->status !=3D VIRTIO_NET_OK;
->  }
->
-> +static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-> +                                        const VirtIONet *n)
-> +{
-> +    uint64_t features, offloads;
-> +    ssize_t dev_written;
-> +
-> +    features =3D n->parent_obj.guest_features;
-> +    if (!(features & BIT_ULL(VIRTIO_NET_F_CTRL_GUEST_OFFLOADS))) {
-> +        return 0;
-> +    }
-> +
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Maybe we can avoid sending this CVQ command if the guest already uses
-the default values?
+Hi all,
 
-By default all features are enabled if I'm not wrong. I think the best
-way is to expose virtio_net_supported_guest_offloads or
-virtio_net_guest_offloads_by_features and then check if
-n->curr_guest_offloads is the same.
+This patchset is split from my previous hybrid topology RFC [1] for
+easier review.
 
-We should do the same with vhost_vdpa_net_load_mq, but that is out of
-the scope of this series.
+There are three places for topology-related cleanup:
 
-Thanks!
+1. Fix the use of smp.cores.
 
-> +    offloads =3D cpu_to_le64(n->curr_guest_offloads);
-> +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_OFF=
-LOADS,
-> +                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS=
-_SET,
-> +                                          &offloads, sizeof(offloads));
-> +    if (unlikely(dev_written < 0)) {
-> +        return dev_written;
-> +    }
-> +
-> +    return *s->status !=3D VIRTIO_NET_OK;
-> +}
-> +
->  static int vhost_vdpa_net_load(NetClientState *nc)
->  {
->      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> @@ -702,6 +724,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
->      if (unlikely(r)) {
->          return r;
->      }
-> +    r =3D vhost_vdpa_net_load_offloads(s, n);
-> +    if (unlikely(r)) {
-> +        return r;
-> +    }
->
->      return 0;
->  }
-> --
-> 2.25.1
->
+   The meaning of CPU topology members in MachineState.smp has changed
+   since 003f230e37d7 ("machine: Tweak the order of topology members in
+   struct CpuTopology"), but the use of smp.cores based on the original
+   semantics (the number of cores in one package) has not been updated,
+   so here is a cleanup.
+
+2. Consolidate the use of MachineState.smp.
+
+   The socket calculation can be simplified by directly using the
+   MachineState.smp.sockets.
+
+3. Fix thread count in type4.
+
+   I also found that the definition of thread count in type4 doesn't
+   match the spec (smbios 3.0.0) and cleaned it up as well.
+
+[1]: https://mail.gnu.org/archive/html/qemu-devel/2023-02/msg03205.html
+
+
+Regards,
+Zhao
+
+---
+Zhao Liu (3):
+  hw/smbios: Fix smbios_smp_sockets caculation
+  hw/smbios: Fix thread count in type4
+  hw/smbios: Fix core count in type4
+
+ hw/smbios/smbios.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+-- 
+2.34.1
 
 
