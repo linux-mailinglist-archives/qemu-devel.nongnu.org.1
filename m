@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46EB7147CD
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 12:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E75D77147DF
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 12:26:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3Zv3-0002V8-Rw; Mon, 29 May 2023 06:16:05 -0400
+	id 1q3a3V-00047L-Sz; Mon, 29 May 2023 06:24:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1q3Zv0-0002Uz-MP
- for qemu-devel@nongnu.org; Mon, 29 May 2023 06:16:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
- id 1q3Zuv-0002vj-AO
- for qemu-devel@nongnu.org; Mon, 29 May 2023 06:16:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685355342;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=I6zOTKZLVIZVs7nTvc3S6uGSG+ic4b7EvNT5sIrdP6c=;
- b=SefoOyMWPk3bZAqME4Mv9zn1BJPA0EKjh2xMNSCRYv3XPWpY7XjHbUSHZygg+376TD2BET
- z6VqagtrkXXx6tZcmZSysP9dEjrgM0U8FPMUHXKKjaKisfxoQiPVBZaxJ2u/bnSTws6lIg
- svasRfa8z7G2sbvM1faF6JhGWq8RV9I=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-EgFm7xG3PMCQ7Ud99nvggA-1; Mon, 29 May 2023 06:15:40 -0400
-X-MC-Unique: EgFm7xG3PMCQ7Ud99nvggA-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-255ced12531so3588254a91.2
- for <qemu-devel@nongnu.org>; Mon, 29 May 2023 03:15:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q3a3T-00047C-Po
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 06:24:47 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q3a3S-0006Qn-1N
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 06:24:47 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5147a478c38so4438156a12.0
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 03:24:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685355883; x=1687947883;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TmiSPW6qkJCzv5y5ALJIMaVM8aSYBMyGS9WStSD8OIE=;
+ b=fTceKxTgkWnQhLCuVNfA2T97T9UQ3eyzbWpSlcZekcOMYzf31WNoVz4THmAYXDGFj7
+ +d/yaQnlEF+BtVUIqC/aW5x14+4nii/iAQGX8VjvQ+cN5Z8zaEdVVHn37Nd+ozgAry0T
+ CHv+U90pxulYxvPw6057OZKy+vSu/4wnZQDw8Cvw/v0LiYxnuXcCUoaxlFhq3J35ZshL
+ FfV4siAIBP8vv0YDzlAg+NQoBjPRsXUWNz7ND7Abfx9p1aw8s1Y/fQ/6oeZ+eLwcI/ma
+ IaOQ/jEbhAaerixMYAo94O6PsKj2sHU1pSRD2/9ae2EWVEsXqsgJQcG6WV2iDpSetiT+
+ s2ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685355340; x=1687947340;
- h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I6zOTKZLVIZVs7nTvc3S6uGSG+ic4b7EvNT5sIrdP6c=;
- b=Vi9HgZRjPQZrK7DJxI3RHF7/N+zoUXhH5IUTOr6Qnm3d+eGzZpBVBTfD/9GlRidMT5
- JjJJUnsCxUK2No9ye0EfrExclkmoks7sEtiCY6HEUWpsMMyjt9Ah9z7V1Q6Oyo7NCrLj
- i7K0y/F/riL8qEYCrGb8OOjURBqkjvMO6FfQSH1IAulTsKJrBQDVFJVPycZBBirn29Pj
- +01gKaXJfdzjAHR/i/V6hrQYvrmtbLcmyBo603XHeUr7wquCeTohZjckrYqaSSTJXwOA
- 4OtNwVo0VoD3ljCFeN1OWP2cMa2zrrDeiscJqM7jxVPLr8+GlAWo725N592YB9CrvPEx
- M1qg==
-X-Gm-Message-State: AC+VfDyp3oSaH39w1F/VHFABsL/Lpowgp/FvPkLJO13sR0UpntgcF+uh
- /QoPgr7Jvsps9jKj4NgeMAKYZpN6ND/3L1wP5pRsY8Hj5dyNafDDYyy5Evjk2+s57QByqd8vilg
- NNWVn0iFiNc4ja3LBKNABHKNCQHN8vdQ=
-X-Received: by 2002:a17:90b:164c:b0:256:78f9:3aa6 with SMTP id
- il12-20020a17090b164c00b0025678f93aa6mr2472960pjb.49.1685355339779; 
- Mon, 29 May 2023 03:15:39 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7szqioCt+vW3aFEjHmrwH+HDuaunS1iBHf710eMgGIZCwGnJKoRb9R/+vPBVAVS6wGD99+8rT56uB7wuNc/n4=
-X-Received: by 2002:a17:90b:164c:b0:256:78f9:3aa6 with SMTP id
- il12-20020a17090b164c00b0025678f93aa6mr2472946pjb.49.1685355339495; Mon, 29
- May 2023 03:15:39 -0700 (PDT)
-Received: from 744723338238 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 29 May 2023 05:15:38 -0500
-From: Andrea Bolognani <abologna@redhat.com>
-References: <20230428095533.21747-1-cohuck@redhat.com>
- <87v8gkzi5v.fsf@redhat.com>
+ d=1e100.net; s=20221208; t=1685355883; x=1687947883;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TmiSPW6qkJCzv5y5ALJIMaVM8aSYBMyGS9WStSD8OIE=;
+ b=IdcRHdL3h7pn4a3x3pqWlX+WDttzJzbPqnoxuFk+RROdAs8O8Opx3PPj5lafUXLvIH
+ QmQ7/gCmeSCU8R2QQ+4dd+HroLYfsDAbGm5rPBclAczjq+V8mGx6AP/jbtBwH9sCt9CU
+ 63P8bTbO5Dpjn3tIGBez0P3VM0YcCuaJyJkqLZgXnvtq2Z1AP9nIiR6pWnBYOcoSvdUn
+ bcsBJRsobrZlNXWgV6HcJr14kaBCvFzDuE6lne5M3A/UvIlPMmnILY3phcO9wSmzNGJ9
+ JhTS4pQ/EUixDlBr08TUH1DGxobrE5fog/VlY1QeD3Nd0HY7C1U/CFIr3wUppyNjtVA0
+ 30ng==
+X-Gm-Message-State: AC+VfDzaVLCk6leGKVyMoEu7shHGqaV5pkSzFbm5u7t1KobGxWCm9m/e
+ cSyLVUuH7OKIDjz+A+XYEHmyJir6tn5c3yrGi5j1Tg==
+X-Google-Smtp-Source: ACHHUZ411h+hfp6hKXpID2hUVxIQi6cAmN7NO60RZL5nlC2EDO6+szNUnjJGAsaDW9jP1IFd5mmMYrm+Zrs8T9HTfIk=
+X-Received: by 2002:a05:6402:120a:b0:514:95e8:566c with SMTP id
+ c10-20020a056402120a00b0051495e8566cmr3786179edw.42.1685355883565; Mon, 29
+ May 2023 03:24:43 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87v8gkzi5v.fsf@redhat.com>
-Date: Mon, 29 May 2023 05:15:38 -0500
-Message-ID: <CABJz62MGU-49Ucs-CYsd2hdH8mejWtjXXBNcbs92Kx+V=T2EwA@mail.gmail.com>
-Subject: Re: [PATCH v7 0/1] arm: enable MTE for QEMU + kvm
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org, kvm@vger.kernel.org, Eric Auger <eauger@redhat.com>, 
- Juan Quintela <quintela@redhat.com>, Gavin Shan <gshan@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>
+References: <068f343a62de3dbc3764d0ad98111881b04a60d2.1685346951.git.mprivozn@redhat.com>
+In-Reply-To: <068f343a62de3dbc3764d0ad98111881b04a60d2.1685346951.git.mprivozn@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 29 May 2023 11:24:14 +0100
+Message-ID: <CAFEAcA_e9JmNacpFyG+SZareve2HJx+dFQwLbjyhmr6brm=9QQ@mail.gmail.com>
+Subject: Re: [PATCH] meson: Avoid implicit declaration of functions
+To: Michal Privoznik <mprivozn@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.164,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,95 +84,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 22, 2023 at 02:04:28PM +0200, Cornelia Huck wrote:
-> On Fri, Apr 28 2023, Cornelia Huck <cohuck@redhat.com> wrote:
-> > Another open problem is mte vs mte3: tcg emulates mte3, kvm gives the guest
-> > whatever the host supports. Without migration support, this is not too much
-> > of a problem yet, but for compatibility handling, we'll need a way to keep
-> > QEMU from handing out mte3 for guests that might be migrated to a mte3-less
-> > host. We could tack this unto the mte property (specifying the version or
-> > max supported), or we could handle this via cpu properties if we go with
-> > handling compatibility via cpu models (sorting this out for kvm is probably
-> > going to be interesting in general.) In any case, I think we'll need a way
-> > to inform kvm of it.
+On Mon, 29 May 2023 at 08:58, Michal Privoznik <mprivozn@redhat.com> wrote:
 >
-> Before I start to figure out the initialization breakage, I think it
-> might be worth pointing to this open issue again. As Andrea mentioned in
-> https://listman.redhat.com/archives/libvir-list/2023-May/239926.html,
-> libvirt wants to provide a stable guest ABI, not only in the context of
-> migration compatibility (which we can handwave away via the migration
-> blocker.)
-
-Yeah, in order to guarantee a stable guest ABI it's critical that
-libvirt can ask for a *specific* version of MTE (MTE or MTE3) and
-either get exactly that version, or an error on QEMU's side.
-
-> The part I'm mostly missing right now is how to tell KVM to not present
-> mte3 to a guest while running on a mte3 capable host (i.e. the KVM
-> interface for that; it's more a case of "we don't have it right now",
-> though.) I'd expect it to be on the cpu level, rather than on the vm
-> level, but it's not there yet; we also probably want something that's
-> not fighting whatever tcg (or other accels) end up doing.
+> While detecting a presence of a function via 'cc.links()'
+> gives desired result (i.e. detects whether function is present),
+> it also produces a warning on systems where the function is not
+> present, e.g.:
 >
-> I see several options here:
-> - Continue to ignore mte3 and its implications for now. The big risk is
->   that someone might end up implementing support for MTE in libvirt again,
->   with the same stable guest ABI issues as for this version.
-> - Add a "version" qualifier to the mte machine prop (probably with
->   semantics similar to the gic stuff), with the default working with tcg
->   as it does right now (i.e. defaulting to mte3). KVM would only support
->   "no mte" or "same as host" (with no stable guest ABI guarantees) for
->   now. I'm not sure how hairy this might get if we end up with a per-cpu
->   configuration of mte (and other features) with kvm.
-> - Add cpu properties for mte and mte3. I think we've been there before
->   :) It would likely match any KVM infrastructure well, but we gain
->   interactions with the machine property. Also, there's a lot in the
->   whole CPU model area that need proper figuring out first... if we go
->   that route, we won't be able to add MTE support with KVM anytime soon,
->   I fear.
->
-> The second option might be the most promising, except for potential
-> future headaches; but a lot depends on where we want to be going with
-> cpu models for KVM in general.
+>   qemu.git/build/meson-private/tmph74x3p38/testfile.c:2:34: \
+>   warning: implicit declaration of function 'malloc_trim' [-Wimplicit-function-declaration]
 
-What are the arguments for/against making MTE a machine type option
-or CPU feature flag? IIUC on real hardware you get "mte" or "mte3"
-listed in /proc/cpuinfo, so a CPU feature would seem a pretty natural
-fit to me, but I seem to recall that Peter was pushing for keeping it
-a machine property instead.
+Produces a warning where ? On stdout/stderr ?
 
-Working off the assumption that Peter knows what he's doing :) can we
-do something like this?
+The linked bug report says "in the configure logs"
+which is kinda vague. Warnings in the logfiles are
+not a problem; warnings in the terminal output are...
 
-  * introduce a new machine type property mte-version, which accepts
-    either a specific version (2 for MTE and 3 for MTE3), an abstract
-    setting (max and host) or a way to disable MTE entirely (none);
+> diff --git a/meson.build b/meson.build
+> index 2d48aa1e2e..5da4dbac24 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -1797,6 +1797,7 @@ malloc = []
+>  if get_option('malloc') == 'system'
+>    has_malloc_trim = \
+>      get_option('malloc_trim').allowed() and \
+> +    cc.has_function('malloc_trim', prefix: '#include <malloc.h>') and \
+>      cc.links('''#include <malloc.h>
+>                  int main(void) { malloc_trim(0); return 0; }''')
+>  else
 
-  * turn the existing mte machine type option into an alias with the
-    mapping
+This seems super clunky -- surely this isn't the way Meson
+intends people to write tests ?
 
-      mte=off -> mte-version=none
-      mte=on  -> mte-version=max  for TCG
-      mte=on  -> mte-version=host for KVM
-
-    and deprecate it;
-
-  * optionally introduce a new QMP command query-mte-capabilities
-    that can be used by libvirt to figure out ahead of time which MTE
-    versions are available for use on the current hardware.
-
-Yes, this is basically a shameless rip-off of how GIC is handled :)
-I'm pretty satisfied with how that works and see no reason to
-reinvent the wheel.
-
-Note that it's perfectly fine if the lack of KVM-level APIs results
-in mte-version=2 being rejected on MTE3-capable hardware for now!
-What's important is that you don't get a different MTE version than
-what you asked for. I assume that the existing KVM API for enabling
-MTE have good enough granularity to make this work? If not, that's
-going to be a problem :)
-
--- 
-Andrea Bolognani / Red Hat / Virtualization
-
+thanks
+-- PMM
 
