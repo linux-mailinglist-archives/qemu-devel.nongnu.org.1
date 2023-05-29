@@ -2,98 +2,159 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F8E7146A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 10:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 858D071472A
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 11:39:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3Yal-0007fA-4o; Mon, 29 May 2023 04:51:03 -0400
+	id 1q3ZJu-00056Z-ND; Mon, 29 May 2023 05:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q3Yac-0007bo-BC
- for qemu-devel@nongnu.org; Mon, 29 May 2023 04:50:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1q3ZJs-00055z-Re
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 05:37:40 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1q3YaY-0004jE-P1
- for qemu-devel@nongnu.org; Mon, 29 May 2023 04:50:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685350249;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lzKl+ULfTc+HsRslEfywwM+DpjvalmbzGtSUSdUPWng=;
- b=jVZ8PhYKvH698nV5TqP1ssPNohlGS95C2+/OIQIupA54uJWrjWQIHLypVG8qU0d59Fn2hE
- s2RvpDkoSjQgEddSOjnRiMQRsFREmGtaL0sqpK1H/Vqn+myFbKvYiTWHTUS/9C6Z80o9p2
- oxz3PCzbZd5H088u0r/TKyX06oanZK4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-F8wWW9GCOmOBfZ_t44xvCw-1; Mon, 29 May 2023 04:50:47 -0400
-X-MC-Unique: F8wWW9GCOmOBfZ_t44xvCw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f60481749eso16155385e9.1
- for <qemu-devel@nongnu.org>; Mon, 29 May 2023 01:50:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685350246; x=1687942246;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lzKl+ULfTc+HsRslEfywwM+DpjvalmbzGtSUSdUPWng=;
- b=CjMBqxmWTm0Lv3axCtpzmaghN/IB5Mt7y6eiBGlCocciA/7r86gckJWP9igVWMCXte
- 7r8HTNptv9wUhBkgv+bXBWmD9ejXpSX3jJwiX+UlEqKWR9SfWud4Eyn/qTy5zCjNC7O8
- slqmiMf5vS22omJbB67YpvkN5pYDzfrEMAAN3mwfqHvfsiCggNzAwZCR0DbXGFKqwoYD
- vD8jmie1WE7vIfL2QOENc3syLV9gDiFFDSJ12mdwumQiJul0NMef7hHhe5TAcjhtbaUm
- n6ZV/Y0Xn+35/Q1ESNj6JA3t3X1+emB1xqPjLQ2oWbz7f0oLS4707c450AgYdkGRCkLX
- cJdA==
-X-Gm-Message-State: AC+VfDzZo+cqVWwR/GV91yaxSzIVXMsBX8z3bgELPio9gXVRokst4A+D
- dmcQL5P0SIzJkZmQqrjISkGUExKFKPJuuV+8Egdo2ffAAkonqWOvh9sQ+qblQcmMvXp15ghXjxi
- i4rh5L7Li0sM3KxE=
-X-Received: by 2002:a05:600c:3d0d:b0:3f6:eae:7417 with SMTP id
- bh13-20020a05600c3d0d00b003f60eae7417mr6312384wmb.1.1685350246480; 
- Mon, 29 May 2023 01:50:46 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7f6ydC3WQoJ5To9rb9W4gLmOML/1z0QINwg7VZr8e+1JLO+IwB0Gh6MUE4/gSFzctkGKbI+A==
-X-Received: by 2002:a05:600c:3d0d:b0:3f6:eae:7417 with SMTP id
- bh13-20020a05600c3d0d00b003f60eae7417mr6312372wmb.1.1685350246121; 
- Mon, 29 May 2023 01:50:46 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-12-25-16.business.telecomitalia.it.
- [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
- y8-20020a7bcd88000000b003f6038faa19sm16812744wmj.19.2023.05.29.01.50.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 May 2023 01:50:45 -0700 (PDT)
-Date: Mon, 29 May 2023 10:50:34 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Aarushi Mehta <mehta.aaru20@gmail.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Julia Suvorova <jusual@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
- Hanna Reitz <hreitz@redhat.com>, 
- Kevin Wolf <kwolf@redhat.com>, Fam Zheng <fam@euphon.net>,
- xen-devel@lists.xenproject.org, 
- eblake@redhat.com, Anthony Perard <anthony.perard@citrix.com>, 
- qemu-block@nongnu.org
-Subject: Re: [PATCH v2 5/6] block/linux-aio: convert to blk_io_plug_call() API
-Message-ID: <63lutuyufibun4jscbjjlshbqqw6otetzfi67rfnfrxacwutnj@igewwxh4uwys>
-References: <20230523171300.132347-1-stefanha@redhat.com>
- <20230523171300.132347-6-stefanha@redhat.com>
- <n6hik7dbl26lomhxvfal2kjrq6jhdiknjepb372dvxavuwiw6q@3l3mo4eywoxq>
- <20230524193634.GB17357@fedora>
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1q3ZJq-0008F5-PB
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 05:37:40 -0400
+Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34T8qm6i001506; Mon, 29 May 2023 02:37:34 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=proofpoint20171006;
+ bh=wGunqQDUybE5KYyKSPhlJJmxMVvBarKdix2x94HuLLM=;
+ b=Ud+5ZI3EcKU05dEepCG2HmqhhBEJKY178WS93ukQXmn8zs2+pHeTaXRIO6IuNbFiKdTj
+ HaPablv5QoZd7r/97+3jrKkcxxdXitrnypijrmJw6yXnEk3uC+U0i1ib6lHvQ9Bnxpif
+ eG9z+W0icAZaxx/dDCidfIbVQzW9XEeiRaIJJKF86k8qugFTrc/QqlJFIrpD4hKEiFEi
+ am4+BsrHnmRliBysC1EUWfLG8jHCejgea1R2QZg9mc4G5hiJ5ZpZnbhqPBn+fRmsihz+
+ 4M9FvhDShVVp/Sn9Docqjy3JUsLcwY26Wq7lLRgld1BVIdXse48BkwlJChTfFCvccXbl uw== 
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2176.outbound.protection.outlook.com [104.47.56.176])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3quh6ccub3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 May 2023 02:37:34 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PIndXJ98qxq/tzUcN2rONbnEokmo9BmuUPdQa4Gkc9Dc2I4h9RO5szgzNP2myu4FfmedNtxrq4FiU2c7f07R+wdpySWXGp37SCmbVs+Dwtb85IzHB2+ib2+nPW39eHSpEdMehAE563XaTV2w7IRIxwmi98rKYRZzKVVfgfhNc/NmMWULQHm0KFBtnaeSPnb483vinJuwmJz0MguFD0GN+rloVevKcLJCvr+TyZ2qi57BiehP7Q5OVETOxEge1zpdx3mt0sfj6HO0NinBBE9SMWgPfvOBm1SyqoN14wFvLhgcR1zeHhN0bb7mOkOQ9lF9BpDOpOGmZKxpZV6yKx5jzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wGunqQDUybE5KYyKSPhlJJmxMVvBarKdix2x94HuLLM=;
+ b=VrOdeiNiE/gYGfjQTN52wNbx6z6HttkmKssyKPm6jmIcXIouCfXwgWBTMwf3u0TkzFk8nF3sOxjkNUO0vHbvE7RTqzrtWwNo+fhdHHG/5Y3/NB6Uhi/SpHnn+uPBXRXnVuGp4WnkCPtcA0ouocYOBPopq+1hy1u2rqasTSteAZXn5QCQpD8sXVcXqzXBSYpVXzjaw/3Y3Up+p4F88TKliW+ZJSf/53nYEw8VgaDqrTo+oLJB168nGmPw9pnABnS37v3bR8AmQF9WMBkr+PdpzGwrAzipZxB9fuFE3fWLl3pr2KsnZ9CjkA+q+s/HfUWQpMBLxKz7vK62k2+cLS1q2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wGunqQDUybE5KYyKSPhlJJmxMVvBarKdix2x94HuLLM=;
+ b=p82y+GatlghJs+uR69kgfmvK5nTn+GlYzOImW6nFg1UH81hcyBka087ro3izck2FtTJuW7N/6yf/fkG/1BicYfboLHTs22cTwmfylCTh8jto7urVEmqEIjYZQOzYH4rvSzxK7AEPvfblDA0w4Qntq7sZzF7TuyD2YDtkdUmKVw5ulfuv9PaX3HfzVR5hBpC/hx9hJPn6fm5b+vwAdMc3WkgvepQhCboWE64H7NzEYZwK8SzW7BXTS3seMED0RlRmkTP9DBWBDP+1+aL1RjxAr6OCBzCV5TitadfIJWF8hHLtuRBh9Y+ffcbqfLBar564od30vrUNcLE6ITW2bmOIsA==
+Received: from BYAPR02MB4343.namprd02.prod.outlook.com (2603:10b6:a03:57::18)
+ by DM6PR02MB6665.namprd02.prod.outlook.com (2603:10b6:5:214::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Mon, 29 May
+ 2023 09:37:29 +0000
+Received: from BYAPR02MB4343.namprd02.prod.outlook.com
+ ([fe80::1a4c:7e55:b776:43cb]) by BYAPR02MB4343.namprd02.prod.outlook.com
+ ([fe80::1a4c:7e55:b776:43cb%6]) with mapi id 15.20.6433.022; Mon, 29 May 2023
+ 09:37:29 +0000
+Message-ID: <af2e5fbe-75f5-d6dd-df8c-8894cc5b0056@nutanix.com>
+Date: Mon, 29 May 2023 15:07:17 +0530
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v5 1/9] migration: introduced 'MigrateAddress' in QAPI for
+ migration wire protocol.
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
+ dgilbert@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+References: <20230519094617.7078-1-het.gala@nutanix.com>
+ <20230519094617.7078-2-het.gala@nutanix.com> <87sfbkjow3.fsf@pond.sub.org>
+From: Het Gala <het.gala@nutanix.com>
+In-Reply-To: <87sfbkjow3.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA1PR01CA0143.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:71::13) To BYAPR02MB4343.namprd02.prod.outlook.com
+ (2603:10b6:a03:57::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230524193634.GB17357@fedora>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR02MB4343:EE_|DM6PR02MB6665:EE_
+X-MS-Office365-Filtering-Correlation-Id: 14360989-215d-4833-d6c4-08db60285162
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: J2DPpPr+L3f9AysKyqBclSGQ8wGu2tAP+7WZW2QrbI4y5SITP3aYW0F877ZlxOo3unbaA5NGJgnCeb1Kx+Q0yvxDVBZgmsFQDt+KzPxRE8ulOr+NOPgVrXjRh5fJm/QPGCRhj32nxAD4mUb8DAzmGuXcHfdFhfhlCkGKkiUI7n9hPa6TR44GmN/n/TisUAdO2Om5HC2G2F4cR30wYfoMP9QXnHa3TtWbBHlZfWH02GzL953PNhlWl4krvnoR+Mjh91q0SO0VNVLUjhuPbLJP7ZUulI6XgiWCwlpK0zQKleNYoo5qAx9XxqgKhLTYMLa1RJuocq8pMUQvZPh1QozpOIeMabrR52jpRus2fqzqIPtXjmM4uTVJQWBYngZ0xAM79DWOF1uhRQFJ3esu5OZa1fFmgkrR/vqNIqOUuU13N1wt5i+4AqxxklXqDr3zP+hrtG3MM78bY7JBWqTk4R5VyeKW0oMkJ0EPViWPWvkir/jmNrS2YDgG3scN6BacrQTDZMkazFNMwOPnnemixUIjPJ2OgXMAuDZOsy8aMGzTfneK1UmXj2pRtF31vIzjoJFDx21T8pFPK918/1bNAEaLJbRVaR0KiWzoLTVMy4G7HJ7i3drdkzPqs+/qSd2mnhTsaDY0zZ/1qOYPVyht1FRxVQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR02MB4343.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(376002)(396003)(39860400002)(366004)(346002)(136003)(451199021)(107886003)(31686004)(53546011)(186003)(38100700002)(41300700001)(26005)(6506007)(6512007)(6666004)(6486002)(2616005)(478600001)(66899021)(66476007)(66556008)(66946007)(4326008)(6916009)(316002)(44832011)(5660300002)(8676002)(2906002)(86362001)(31696002)(8936002)(36756003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y0hHc2tWdjVsWVNHNS9XOUFFejM5K3R0cXRMOVdjK0JUU2V0ZzliNEtwSUNT?=
+ =?utf-8?B?VmtMVFhqTVg5MmpldmQwVVF1dlFMTGpzU1Zkd0h1WEZJQU9rVXphYnVHTHlk?=
+ =?utf-8?B?UzZ0QllNeEJHMFViSHRPTnpqZHpmWk9GZ1BFODYzRGFjS3daSDJvMHh0WjQy?=
+ =?utf-8?B?bnlISTVvc1VGdlE2ekRNK1NYVXkrUHh6T0FPcTI4ZHBkMEJ2ZVMrRktMYmlO?=
+ =?utf-8?B?MGVCQmJ4aGY2NElzNWtXOEQxT1YrUG82R2hiblVXZ2tYbC9DcVFmT2Rxbng1?=
+ =?utf-8?B?bUlGWmU3UDZ4SXNYS3BvTDBRTHlDdzNMT1dYTU14NmFoME02azJaeU5hejVB?=
+ =?utf-8?B?TzNDSXg3WVM5SGxvK09sdUhsWHFRVlpHbFpOdjlyWHpvTEhVQWZTQjFHUGpi?=
+ =?utf-8?B?aUN3YkFjQzB5RmFFQUZCUWRrYXBuWk5xQVYxZ1FOVG5qQk5hNTMzVldSMmVw?=
+ =?utf-8?B?WUdNWEZLWU1xZjA4eXVOemMxK09nR1c0VVQ5OUI5S3NjS3JHTk5KZWF6WjZY?=
+ =?utf-8?B?QnlkTmxHRW81a0dRdjlBUVBHamVTbW85dWp4R3ZlM2NOTk81MUNvZE1NdmxK?=
+ =?utf-8?B?WXU0Y3JUYTBqMEtiS3MzN25SUVM3T2Qyb2RhK01HZkp5T2xqMmc3d3BlOHRW?=
+ =?utf-8?B?bWxBR2NwUDFsdnJWVVV6RVg2S1JIL2k2MStsSnNoNEY5SDIrZ3BacmhyVmpL?=
+ =?utf-8?B?a0FQcFkrK1V3TDZNOXE5dVJ0d2tXOHVPcEVXUEtZSmpXM0xyN282dk0rcW9Y?=
+ =?utf-8?B?bWVBbWh4QUJ2bXl2YU1iSjMvbVJhbkE0YjdMR2FjcGswc0xuMXVsdVNCN0Yz?=
+ =?utf-8?B?UnpscVZGVzdQZmRnWXhwR2ZZYjh6YSt4T1ZqRG12eHdFR244V213T25ZaUpW?=
+ =?utf-8?B?bEp6SW82S2w5VkhXN2NPTGN1am5zSyszQlNkSWZzUHJBK3RvY0wwSnZZVkYy?=
+ =?utf-8?B?ak5pOFhCY0VYZzhzdUpxQlNlUm0wOW9rOXlMY3BDRXU2QmxDWS95ZHZaTjhU?=
+ =?utf-8?B?Si9NSWNWb0pVd0tpV2pUNXJJNkJNS3VXMlZXWUdpUitiTC9tNFVlUlNURGhs?=
+ =?utf-8?B?ZC9ROWdubExBbTNWZHg5Q05PVmlRUVJtZmtDVm1LRm5Fd2gyalpqYmlEMDB3?=
+ =?utf-8?B?dGczT1FicnJEMWxmMkY3MHFWOHBKZEpQd2lsTDhhcytKcFpJenlBZU1lNHRQ?=
+ =?utf-8?B?c1RqKys0NC9IdHNIQjFQWERMV2pyQXF3ZldXcDBjWG50UlJzKzl6Z2xUcTJL?=
+ =?utf-8?B?U292dytxbEFtZUxGcTRFb3p3Ny9vYUJxNG9oTUJyWWgzRUtjWkhHZnpZRHZG?=
+ =?utf-8?B?UGw5OXdjZEYyc3Q5bnpla0N6R0p3MFpubWUwWnMxUThjV3ZaRVhrS3MzZkM3?=
+ =?utf-8?B?QlMreGV0OFFMdzFYeUxDb3B1eDJSbDhhMVVQZm9RbHNWWTVwUnVzUEJGTVNz?=
+ =?utf-8?B?SFpLU3VQV2JOcmVSbC8vbndZNGZYejExSlJXL2o0c1MyZ0ZtcVd4a1dld1hQ?=
+ =?utf-8?B?SEJpblhNbGlrNEFvdlpCZEl1OTRhZkE0QU9IKzF5SkFwVkdJbU9WbWtobS9Z?=
+ =?utf-8?B?ZWt4YkhhYzFXdlgvUFNUMjQvR2dZaGswMXBVVGxXTmhKQzlsRVdGbUVwL1lN?=
+ =?utf-8?B?cmh6RUVRSTVGSmdXcmJxam44ZjNQSlorYUZvRmpnTExxdXk2cU5mdmdONGJs?=
+ =?utf-8?B?dEk2bllPT05BTmxId2pYYkxHRFdxRWtNM3V2SWp1U2k2eE9PbkVrMXQ2S0o3?=
+ =?utf-8?B?QjRxV0tPOXpnQUdoc204SFV2V0piVVFYMElmQTlraHdwSFdwaUkvV2ptRmdB?=
+ =?utf-8?B?RG96OVhRZjl2NXVnSXgwTlo4Y1BaUVlpT1FqU3NKM1dFWU1uMU1VWjg2MTls?=
+ =?utf-8?B?OWI1ZTdFcHVSaGdoUTB2MTFzVmFJKzNHZm5Bb1JId0pDbTBTa0tZWm9XVy9l?=
+ =?utf-8?B?bjh2dElYTEdmN1d5Q2d4K3kydloyVCtFREh1enZiRHdiQUcvWmVKQVZEMy9a?=
+ =?utf-8?B?WGp0ZGNFSGIwQmdJMXRtTnpwMkViNmlBTEg0UHkxZHNRY2NxSXdhQS9YdDZh?=
+ =?utf-8?B?NHFscVYyMktxUlY1YUxPWVdpOVk0Z2w5bTdPTFJpa0MwM2J1d0xhZzVVeXlE?=
+ =?utf-8?Q?coEQcDI4E70IewPj/PHfSbAtb?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14360989-215d-4833-d6c4-08db60285162
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4343.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2023 09:37:28.9683 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: l9YawpKiVkHiKvv25n4q03/AFm790PtmUAKEqY2G/CeHqvXU/5bCI8TGI7zZZAuETIjdIk6Nr+wFXEZMzqkxTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6665
+X-Proofpoint-ORIG-GUID: IAvLCXn78jDXKywRa4wOWQrzYUvPkk7u
+X-Proofpoint-GUID: IAvLCXn78jDXKywRa4wOWQrzYUvPkk7u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-29_06,2023-05-25_03,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
+ helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.164,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.164,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ NICE_REPLY_A=-0.093, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,210 +170,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 24, 2023 at 03:36:34PM -0400, Stefan Hajnoczi wrote:
->On Wed, May 24, 2023 at 10:52:03AM +0200, Stefano Garzarella wrote:
->> On Tue, May 23, 2023 at 01:12:59PM -0400, Stefan Hajnoczi wrote:
->> > Stop using the .bdrv_co_io_plug() API because it is not multi-queue
->> > block layer friendly. Use the new blk_io_plug_call() API to batch I/O
->> > submission instead.
->> >
->> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->> > Reviewed-by: Eric Blake <eblake@redhat.com>
->> > ---
->> > include/block/raw-aio.h |  7 -------
->> > block/file-posix.c      | 28 ----------------------------
->> > block/linux-aio.c       | 41 +++++++++++------------------------------
->> > 3 files changed, 11 insertions(+), 65 deletions(-)
->> >
->> > diff --git a/include/block/raw-aio.h b/include/block/raw-aio.h
->> > index da60ca13ef..0f63c2800c 100644
->> > --- a/include/block/raw-aio.h
->> > +++ b/include/block/raw-aio.h
->> > @@ -62,13 +62,6 @@ int coroutine_fn laio_co_submit(int fd, uint64_t offset, QEMUIOVector *qiov,
->> >
->> > void laio_detach_aio_context(LinuxAioState *s, AioContext *old_context);
->> > void laio_attach_aio_context(LinuxAioState *s, AioContext *new_context);
->> > -
->> > -/*
->> > - * laio_io_plug/unplug work in the thread's current AioContext, therefore the
->> > - * caller must ensure that they are paired in the same IOThread.
->> > - */
->> > -void laio_io_plug(void);
->> > -void laio_io_unplug(uint64_t dev_max_batch);
->> > #endif
->> > /* io_uring.c - Linux io_uring implementation */
->> > #ifdef CONFIG_LINUX_IO_URING
->> > diff --git a/block/file-posix.c b/block/file-posix.c
->> > index 7baa8491dd..ac1ed54811 100644
->> > --- a/block/file-posix.c
->> > +++ b/block/file-posix.c
->> > @@ -2550,26 +2550,6 @@ static int coroutine_fn raw_co_pwritev(BlockDriverState *bs, int64_t offset,
->> >     return raw_co_prw(bs, offset, bytes, qiov, QEMU_AIO_WRITE);
->> > }
->> >
->> > -static void coroutine_fn raw_co_io_plug(BlockDriverState *bs)
->> > -{
->> > -    BDRVRawState __attribute__((unused)) *s = bs->opaque;
->> > -#ifdef CONFIG_LINUX_AIO
->> > -    if (s->use_linux_aio) {
->> > -        laio_io_plug();
->> > -    }
->> > -#endif
->> > -}
->> > -
->> > -static void coroutine_fn raw_co_io_unplug(BlockDriverState *bs)
->> > -{
->> > -    BDRVRawState __attribute__((unused)) *s = bs->opaque;
->> > -#ifdef CONFIG_LINUX_AIO
->> > -    if (s->use_linux_aio) {
->> > -        laio_io_unplug(s->aio_max_batch);
->> > -    }
->> > -#endif
->> > -}
->> > -
->> > static int coroutine_fn raw_co_flush_to_disk(BlockDriverState *bs)
->> > {
->> >     BDRVRawState *s = bs->opaque;
->> > @@ -3914,8 +3894,6 @@ BlockDriver bdrv_file = {
->> >     .bdrv_co_copy_range_from = raw_co_copy_range_from,
->> >     .bdrv_co_copy_range_to  = raw_co_copy_range_to,
->> >     .bdrv_refresh_limits = raw_refresh_limits,
->> > -    .bdrv_co_io_plug        = raw_co_io_plug,
->> > -    .bdrv_co_io_unplug      = raw_co_io_unplug,
->> >     .bdrv_attach_aio_context = raw_aio_attach_aio_context,
->> >
->> >     .bdrv_co_truncate                   = raw_co_truncate,
->> > @@ -4286,8 +4264,6 @@ static BlockDriver bdrv_host_device = {
->> >     .bdrv_co_copy_range_from = raw_co_copy_range_from,
->> >     .bdrv_co_copy_range_to  = raw_co_copy_range_to,
->> >     .bdrv_refresh_limits = raw_refresh_limits,
->> > -    .bdrv_co_io_plug        = raw_co_io_plug,
->> > -    .bdrv_co_io_unplug      = raw_co_io_unplug,
->> >     .bdrv_attach_aio_context = raw_aio_attach_aio_context,
->> >
->> >     .bdrv_co_truncate                   = raw_co_truncate,
->> > @@ -4424,8 +4400,6 @@ static BlockDriver bdrv_host_cdrom = {
->> >     .bdrv_co_pwritev        = raw_co_pwritev,
->> >     .bdrv_co_flush_to_disk  = raw_co_flush_to_disk,
->> >     .bdrv_refresh_limits    = cdrom_refresh_limits,
->> > -    .bdrv_co_io_plug        = raw_co_io_plug,
->> > -    .bdrv_co_io_unplug      = raw_co_io_unplug,
->> >     .bdrv_attach_aio_context = raw_aio_attach_aio_context,
->> >
->> >     .bdrv_co_truncate                   = raw_co_truncate,
->> > @@ -4552,8 +4526,6 @@ static BlockDriver bdrv_host_cdrom = {
->> >     .bdrv_co_pwritev        = raw_co_pwritev,
->> >     .bdrv_co_flush_to_disk  = raw_co_flush_to_disk,
->> >     .bdrv_refresh_limits    = cdrom_refresh_limits,
->> > -    .bdrv_co_io_plug        = raw_co_io_plug,
->> > -    .bdrv_co_io_unplug      = raw_co_io_unplug,
->> >     .bdrv_attach_aio_context = raw_aio_attach_aio_context,
->> >
->> >     .bdrv_co_truncate                   = raw_co_truncate,
->> > diff --git a/block/linux-aio.c b/block/linux-aio.c
->> > index 442c86209b..5021aed68f 100644
->> > --- a/block/linux-aio.c
->> > +++ b/block/linux-aio.c
->> > @@ -15,6 +15,7 @@
->> > #include "qemu/event_notifier.h"
->> > #include "qemu/coroutine.h"
->> > #include "qapi/error.h"
->> > +#include "sysemu/block-backend.h"
->> >
->> > /* Only used for assertions.  */
->> > #include "qemu/coroutine_int.h"
->> > @@ -46,7 +47,6 @@ struct qemu_laiocb {
->> > };
->> >
->> > typedef struct {
->> > -    int plugged;
->> >     unsigned int in_queue;
->> >     unsigned int in_flight;
->> >     bool blocked;
->> > @@ -236,7 +236,7 @@ static void qemu_laio_process_completions_and_submit(LinuxAioState *s)
->> > {
->> >     qemu_laio_process_completions(s);
->> >
->> > -    if (!s->io_q.plugged && !QSIMPLEQ_EMPTY(&s->io_q.pending)) {
->> > +    if (!QSIMPLEQ_EMPTY(&s->io_q.pending)) {
->> >         ioq_submit(s);
->> >     }
->> > }
->> > @@ -277,7 +277,6 @@ static void qemu_laio_poll_ready(EventNotifier *opaque)
->> > static void ioq_init(LaioQueue *io_q)
->> > {
->> >     QSIMPLEQ_INIT(&io_q->pending);
->> > -    io_q->plugged = 0;
->> >     io_q->in_queue = 0;
->> >     io_q->in_flight = 0;
->> >     io_q->blocked = false;
->> > @@ -354,31 +353,11 @@ static uint64_t laio_max_batch(LinuxAioState *s, uint64_t dev_max_batch)
->> >     return max_batch;
->> > }
->> >
->> > -void laio_io_plug(void)
->> > +static void laio_unplug_fn(void *opaque)
->> > {
->> > -    AioContext *ctx = qemu_get_current_aio_context();
->> > -    LinuxAioState *s = aio_get_linux_aio(ctx);
->> > +    LinuxAioState *s = opaque;
->> >
->> > -    s->io_q.plugged++;
->> > -}
->> > -
->> > -void laio_io_unplug(uint64_t dev_max_batch)
->> > -{
->> > -    AioContext *ctx = qemu_get_current_aio_context();
->> > -    LinuxAioState *s = aio_get_linux_aio(ctx);
->> > -
->> > -    assert(s->io_q.plugged);
->> > -    s->io_q.plugged--;
->> > -
->> > -    /*
->> > -     * Why max batch checking is performed here:
->> > -     * Another BDS may have queued requests with a higher dev_max_batch and
->> > -     * therefore in_queue could now exceed our dev_max_batch. Re-check the max
->> > -     * batch so we can honor our device's dev_max_batch.
->> > -     */
->> > -    if (s->io_q.in_queue >= laio_max_batch(s, dev_max_batch) ||
+
+On 25/05/23 11:04 pm, Markus Armbruster wrote:
+> Het Gala <het.gala@nutanix.com> writes:
+>
+>> This patch introduces well defined MigrateAddress struct and its related child
+>> objects.
 >>
->> Why are we removing this condition?
->> Could the same situation occur with the new API?
+>> The existing argument of 'migrate' and 'migrate-incoming' QAPI - 'uri' is of
+>> string type. The current migration flow follows double encoding scheme for
+>> fetching migration parameters such as 'uri' and this is not an ideal design.
+>>
+>> Motive for intoducing struct level design is to prevent double encoding of QAPI
+>> arguments, as Qemu should be able to directly use the QAPI arguments without
+>> any level of encoding.
+>>
+>> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+>> Signed-off-by: Het Gala <het.gala@nutanix.com>
+>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+>> ---
+>>   qapi/migration.json | 41 +++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 41 insertions(+)
+>>
+>> diff --git a/qapi/migration.json b/qapi/migration.json
+>> index 179af0c4d8..c500744bb7 100644
+>> --- a/qapi/migration.json
+>> +++ b/qapi/migration.json
+>> @@ -1407,6 +1407,47 @@
+>>   ##
+>>   { 'command': 'migrate-continue', 'data': {'state': 'MigrationStatus'} }
+>>   
+>> +##
+>> +# @MigrateTransport:
+> I'd prefer MigrationTransport, because "migration" is a noun, while
+> migrate is a verb.  Verbs are for commands.  For types we use nouns.
+> More of the same below, not noting it again.
 >
->The semantics of unplug_fn() are different from .bdrv_co_unplug():
->1. unplug_fn() is only called when the last blk_io_unplug() call occurs,
->   not every time blk_io_unplug() is called.
->2. unplug_fn() is per-thread, not per-BlockDriverState, so there is no
->   way to get per-BlockDriverState fields like dev_max_batch.
+> Actually, I'd prefer MigrationAddressType, because it's purpose is to
+> serve as discriminator type in union MigrationAddress.
+Okay got it. I kept it Transport as they are different transport 
+mechanisms. But 'MigrationAddressType' looks cleaner and comaptible with 
+'MigrateAddress' union too. Will change that
+>> +#
+>> +# The supported communication transport mechanisms for migration
+>> +#
+>> +# @socket: Supported communication type between two devices for migration.
+>> +#          Socket is able to cover all of 'tcp', 'unix', 'vsock' and
+>> +#          'fd' already
+> Migration is between hosts, not "two devices".
+
+Here we are just talking about socket communication right ? So I thought 
+devices might also work.
+
+Will change that to 'hosts' as this is in context of migration i.e. 
+MigrattionAddressType
+
+> The second sentence confuses me.  What are you trying to say?
+I am trying to say that socket is a union in itslef right, so it covers 
+communication transport mechanisms like tcp, unix, vsock and fd already 
+in it.
+> Also, missing period at the end.
+Ack.
+>> +#
+>> +# @exec: Supported communication type to redirect migration stream into file.
+>> +#
+>> +# @rdma: Supported communication type to redirect rdma type migration stream.
+> What about:
 >
->Therefore this condition cannot be moved to laio_unplug_fn().
+>     ##
+>     # @MigrationTransport:
+>     #
+>     # The migration stream transport mechanisms
+>     #
+>     # @socket: Migrate via socket
+>     #
+>     # @rdma: Migrate via RDMA
+>     #
+>     # @file: Direct the migration stream to a file
 
-I see now.
+Should I change from '@exec' to '@file' ?
 
+Other than that, it looks better than what I proposed. Will change it.
+
+>> +#
+>> +# Since 8.1
+>> +##
+>> +{ 'enum': 'MigrateTransport',
+>> +  'data': ['socket', 'exec', 'rdma'] }
+>> +
+>> +##
+>> +# @MigrateExecCommand:
+> Documentation of @args is missing.
+Ack. Should the naming '@args' be replaced by '@filepath' or @path' or 
+something similar ?
+>> + #
+>> + # Since 8.1
+>> + ##
+> Unwanted indentation.
+Not able to see any unwanted indentation here ?
+>> +{ 'struct': 'MigrateExecCommand',
+>> +   'data': {'args': [ 'str' ] } }
+>> +
+>> +##
+>> +# @MigrateAddress:
+>> +#
+>> +# The options available for communication transport mechanisms for migration
+> Not happy with this sentence (writing good documentation is hard).
 >
->How important is this condition? I believe that dropping it does not
->have much of an effect but maybe I missed something.
-
-With Kevin we agreed to add it to avoid extra latency in some devices,
-but we didn't do much testing on this.
-
-IIRC what solved the performance degradation was the check in
-laio_do_submit() that we still have after this changes.
-
-So it may not have much effect, but maybe it's worth mentioning in
-the commit description.
-
+> Is the address used for the destination only, or for the source as well?
 >
->Also, does it make sense to define per-BlockDriverState batching limits
->when the AIO engine (Linux AIO or io_uring) is thread-local and shared
->between all BlockDriverStates? I believe the fundamental reason (that we
->discovered later) why dev_max_batch is effective is because the Linux
->kernel processes 32 I/O request submissions at a time. Anything above 32
->adds latency without a batching benefit.
-
-This is a good point, maybe we should confirm it with some tests though.
-
-Thanks,
-Stefano
-
+> If destination only, could it be used for the source at least in theory?
+>
+> I'm asking because I need to understand more about intended use to be
+> able to suggest doc improvements.
+This address will be used on both destination and source. In code flow, 
+in later patches, changes on destination as well as source have been 
+made to incorporate same definition.
+>> +#
+>> +# Since 8.1
+>> +##
+>> +{ 'union': 'MigrateAddress',
+>> +  'base': { 'transport' : 'MigrateTransport'},
+>> +  'discriminator': 'transport',
+>> +  'data': {
+>> +    'socket': 'SocketAddress',
+>> +    'exec': 'MigrateExecCommand',
+>> +    'rdma': 'InetSocketAddress' } }
+>> +
+> Aside: a more powerful type system would let us extend SocketAddress
+> with additional variants instead of wrapping it in a union.
+Markus, what do you mean by additional variants here in context of 
+socket? Can you give a small example.
+>>   ##
+>>   # @migrate:
+>>   #
+Regards,
+Het Gala
 
