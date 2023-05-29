@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15EB9714242
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 05:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B80B714244
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 05:20:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3TNt-0007C7-9u; Sun, 28 May 2023 23:17:25 -0400
+	id 1q3TPv-0007uA-LF; Sun, 28 May 2023 23:19:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
- id 1q3TNr-0007Bv-62
- for qemu-devel@nongnu.org; Sun, 28 May 2023 23:17:23 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <zhaotianrui@loongson.cn>) id 1q3TNn-0003aT-Vx
- for qemu-devel@nongnu.org; Sun, 28 May 2023 23:17:22 -0400
-Received: from loongson.cn (unknown [10.20.42.86])
- by gateway (Coremail) with SMTP id _____8AxR_EOGHRk+xsCAA--.5129S3;
- Mon, 29 May 2023 11:12:15 +0800 (CST)
-Received: from [10.20.42.86] (unknown [10.20.42.86])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dx_7MLGHRkH0R+AA--.9920S3; 
- Mon, 29 May 2023 11:12:12 +0800 (CST)
-Subject: Re: [PATCH v1] hw/loongarch: Add numa support
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230518090651.187119-1-gaosong@loongson.cn>
-Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
- philmd@linaro.org, imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
- alex.bennee@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn
-From: Tianrui Zhao <zhaotianrui@loongson.cn>
-Message-ID: <156017ec-c185-7ea0-f96f-50d32a359ae4@loongson.cn>
-Date: Mon, 29 May 2023 11:12:11 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
-MIME-Version: 1.0
-In-Reply-To: <20230518090651.187119-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dx_7MLGHRkH0R+AA--.9920S3
-X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBjvJXoW3KFW7AF1xCF13GF1xCr1xXwb_yoWDtF4fpF
- 4IyrWFgr47JFn3Wws7KF15uF95Awn7Ka17Xa47CrZakF97W34UCrW8K3yayFyDC348XF1Y
- vF4DJr9xW3W7KrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
- bSkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
- 1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
- wVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4
- x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxdM2AI
- xVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4xI64
- kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm
- 72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x
- 0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCF
- I7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r
- 106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AK
- xVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7
- xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_
- GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1RBT5UUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q3TPt-0007td-IG; Sun, 28 May 2023 23:19:29 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q3TPr-0004FD-Me; Sun, 28 May 2023 23:19:29 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1b038064d97so5304305ad.0; 
+ Sun, 28 May 2023 20:19:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685330366; x=1687922366;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=h7vosFpkRZZZVEJdyGzfbjJe7lYI19grZ1pEYfGgbPU=;
+ b=gCNTHnCk95CbcunWhQ2Zm8sU8wx9kXdu2b9l0zlEzIh2VQy4aZZDRODgQBIhKtdGRb
+ 86jc3MeAQ9TYFQwV/oZTTx9MnXuw4YioJL147Bpn37EveswPkaIlcKs7sXdXgH8x0w3m
+ DK1+2aJSdHZDCdfsWiCYUZw47KL3keW3KqQy4KKR6u8h3V3Z6EjTVF2nWELpzoyXHZYG
+ 5fVQpaq6liul8xRGO8nyOnq6OD25OP4SJEL86wk2FGkcUGQ21TZxI8F1T5f58J3tZS+Y
+ xwmDfZYitwl/LdwT/NCdEytyycxDjCMOPr625yo0idNt4s0vO69n5vT6DEg3VusE+fJ8
+ E/+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685330366; x=1687922366;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=h7vosFpkRZZZVEJdyGzfbjJe7lYI19grZ1pEYfGgbPU=;
+ b=VD9XgXJl2yDGNe3M2Wo1uE1AIgbkU576onI5qsWP1i4C9ebnmjzXMFEpETkePIPaDP
+ s+QBhFXrQ6Dr67H1pfgTybWaf49JPmAClLgTqNNfs88yMFWM/jICd4kA0zf8qSKDKWy0
+ PYzxeSw3GFpPLM5x4nt7ev0Gqpyt3/crqaJucMrRj908Ihwl2OrsETxsgbN4/UtUa+d7
+ 8f7uV/W8UX92o5WTVwu22dwFDqrvf6R2JG0Ovwu3qwy4wWOMOT9ZfHC5Qmiz32hNSgx9
+ /pTfbuPWqQG+UT/+dTruPZuu0P8YGsFs7kQBnLVKyeG8Aa81j5PGR6M+aa893UCYICE2
+ VYng==
+X-Gm-Message-State: AC+VfDxU0JUs8dKPLqw8HZ71KKBwcecU77/jggYHrsoGa9wu9HPUckLJ
+ n4/1D64YjSaz9bBktUw/AN8=
+X-Google-Smtp-Source: ACHHUZ6pmij6fviPNVCxWUPOVBWQWyiCnP63C1lLvGrc6ljrDe8Rx70I+gs2MEzQT1/WSdDo1Td59A==
+X-Received: by 2002:a17:902:da84:b0:1ac:92db:9677 with SMTP id
+ j4-20020a170902da8400b001ac92db9677mr6986736plx.28.1685330365759; 
+ Sun, 28 May 2023 20:19:25 -0700 (PDT)
+Received: from localhost ([203.221.142.9]) by smtp.gmail.com with ESMTPSA id
+ x1-20020a170902820100b001a5260a6e6csm6950153pln.206.2023.05.28.20.19.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 28 May 2023 20:19:25 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 29 May 2023 13:19:16 +1000
+Message-Id: <CSYFR1KH5WRY.1DE47N1LKXVJ8@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Narayana Murty N" <nnmlinux@linux.ibm.com>, <danielhb413@gmail.com>,
+ <clg@kaod.org>, <david@gibson.dropbear.id.au>, <groug@kaod.org>
+Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, <farosas@suse.de>,
+ <npiggin@linux.ibm.com>, <vaibhav@linux.ibm.com>, <harshpb@linux.ibm.com>,
+ <sbhat@linux.ibm.com>
+Subject: Re: [PATCH v3] target: ppc: Use MSR_HVB bit to get the target
+ endianness for memory dump
+X-Mailer: aerc 0.14.0
+References: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
+In-Reply-To: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,265 +93,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue May 23, 2023 at 2:02 AM AEST, Narayana Murty N wrote:
+> Currently on PPC64 qemu always dumps the guest memory in
+> Big Endian (BE) format even though the guest running in Little Endian
+> (LE) mode.
 
+The guest? Are you talking about the immediate target, or a
+KVM guest running under that? Or both?
 
-在 2023年05月18日 17:06, Song Gao 写道:
-> 1. Implement some functions for LoongArch numa support;
-> 2. Implement fdt_add_memory_node() for fdt;
-> 3. build_srat() fills node_id and adds build numa memory.
+> So crash tool fails to load the dump as illustrated below:
 >
-> Base-on:
-> https://patchew.org/QEMU/20230518014115.117869-1-gaosong@loongson.cn/
+> Log :
+> $ virsh dump DOMAIN --memory-only dump.file
 >
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> Domain 'DOMAIN' dumped to dump.file
+>
+> $ crash vmlinux dump.file
+>
+> <snip>
+> crash 8.0.2-1.el9
+>
+> WARNING: endian mismatch:
+>           crash utility: little-endian
+>           dump.file: big-endian
+>
+> WARNING: machine type mismatch:
+>           crash utility: PPC64
+>           dump.file: (unknown)
+>
+> crash: dump.file: not a supported file format
+> <snip>
+>
+> This happens because cpu_get_dump_info() passes cpu->env->has_hv_mode
+> to function ppc_interrupts_little_endian(), the cpu->env->has_hv_mode
+> always set for powerNV even though the guest is not running in hv mode.
+> The hv mode should be taken from msr_mask MSR_HVB bit
+> (cpu->env.msr_mask & MSR_HVB). This patch fixes the issue by passing
+> MSR_HVB value to ppc_interrupts_little_endian() in order to determine
+> the guest endianness.
+>
+> The crash tool also expects guest kernel endianness should match the
+> endianness of the dump.
+>
+> The patch was tested on POWER9 box booted with Linux as host in
+> following cases:
+>
+> Host-Endianess Qemu-Target-Machine Qemu-Guest-Endianess  Qemu-Generated-G=
+uest
+>                                                           Memory-Dump-For=
+mat
+> BE             powernv             LE KVM guest                 LE
+> BE             powernv             BE KVM guest                 BE
+> LE             powernv             LE KVM guest                 LE
+> LE             powernv             BE KVM guest                 BE
+> LE             pseries KVM         LE KVM guest                 LE
+> LE             pseries TCG         LE guest                     LE
+
+I'm still having a bit of trouble with this like the others.
+
+First thing first, take "guest" out of it entirely. If I read it right,
+then the dump will be done in whichever endian the OS running on the
+machine has set the interrupt endian mode to, and crash expects that to
+match the vmlinux. Is that correct?
+
+For the powernv machine, when the OS runs a KVM guest, the crash dump
+continues to be generated in the same endianness even if the guest OS is
+the opposite.
+
+If my understanding is correct, I don't see why that is desirable to
+change it to the arbitrary guest setting. The OS running on the target
+is the one you want to debug if you dump from the first QEMU. If you
+want to debug the guest you would dump from the QEMU running in the
+target that is running the guest, no?
+
+For the pseries machine, the TCG nested HV thing probably takes over
+LPCR when running the nested HV guest. I would argue that's wrong and it
+should actually match powernv behaviour.
+
+Thanks,
+Nick
+
+>
+> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 > ---
->   hw/loongarch/acpi-build.c | 42 ++++++++++++-----
->   hw/loongarch/virt.c       | 96 ++++++++++++++++++++++++++++++++++-----
->   2 files changed, 116 insertions(+), 22 deletions(-)
+> Changes since V2:
+> commit message modified as per feedbak from Nicholas Piggin.
+> Changes since V1:
+> https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.=
+ibm.com/
+> The approach to solve the issue was changed based on feedback from
+> Fabiano Rosas on patch V1.
+> ---
+>  target/ppc/arch_dump.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-> index 232344e1c7..bb5adb9c1e 100644
-> --- a/hw/loongarch/acpi-build.c
-> +++ b/hw/loongarch/acpi-build.c
-> @@ -163,11 +163,12 @@ build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
->   static void
->   build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
->   {
-> -    int i, arch_id;
-> +    int i, arch_id, node_id;
-> +    uint64_t mem_len, mem_base;
-> +    int nb_numa_nodes = machine->numa_state->num_nodes;
->       LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
-> -    MachineState *ms = MACHINE(lams);
-> -    MachineClass *mc = MACHINE_GET_CLASS(ms);
-> -    const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(ms);
-> +    MachineClass *mc = MACHINE_GET_CLASS(lams);
-> +    const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(machine);
->       AcpiTable table = { .sig = "SRAT", .rev = 1, .oem_id = lams->oem_id,
->                           .oem_table_id = lams->oem_table_id };
->   
-> @@ -177,12 +178,13 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
->   
->       for (i = 0; i < arch_ids->len; ++i) {
->           arch_id = arch_ids->cpus[i].arch_id;
-> +        node_id = arch_ids->cpus[i].props.node_id;
->   
->           /* Processor Local APIC/SAPIC Affinity Structure */
->           build_append_int_noprefix(table_data, 0, 1);  /* Type  */
->           build_append_int_noprefix(table_data, 16, 1); /* Length */
->           /* Proximity Domain [7:0] */
-> -        build_append_int_noprefix(table_data, 0, 1);
-> +        build_append_int_noprefix(table_data, node_id, 1);
->           build_append_int_noprefix(table_data, arch_id, 1); /* APIC ID */
->           /* Flags, Table 5-36 */
->           build_append_int_noprefix(table_data, 1, 4);
-> @@ -192,15 +194,33 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
->           build_append_int_noprefix(table_data, 0, 4); /* Reserved */
->       }
->   
-> +    /* Node0 */
->       build_srat_memory(table_data, VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE,
->                         0, MEM_AFFINITY_ENABLED);
-> +    mem_base = VIRT_HIGHMEM_BASE;
-> +    if (!nb_numa_nodes) {
-> +        mem_len = machine->ram_size - VIRT_LOWMEM_SIZE;
-> +    } else {
-> +        mem_len = machine->numa_state->nodes[0].node_mem - VIRT_LOWMEM_SIZE;
-> +    }
-> +    build_srat_memory(table_data, mem_base, mem_len, 0, MEM_AFFINITY_ENABLED);
-> +
-> +    /* Node1 - Nodemax */
-> +    if (nb_numa_nodes) {
-> +        mem_base += mem_len;
-> +        for (i = 1; i < nb_numa_nodes; ++i) {
-> +            if (machine->numa_state->nodes[i].node_mem > 0) {
-> +                build_srat_memory(table_data, mem_base,
-> +                                  machine->numa_state->nodes[i].node_mem, i,
-> +                                  MEM_AFFINITY_ENABLED);
-> +                mem_base += machine->numa_state->nodes[i].node_mem;
-> +            }
-> +        }
-> +    }
->   
-> -    build_srat_memory(table_data, VIRT_HIGHMEM_BASE, machine->ram_size - VIRT_LOWMEM_SIZE,
-> -                      0, MEM_AFFINITY_ENABLED);
-> -
-> -    if (ms->device_memory) {
-> -        build_srat_memory(table_data, ms->device_memory->base,
-> -                          memory_region_size(&ms->device_memory->mr),
-> +    if (machine->device_memory) {
-> +        build_srat_memory(table_data, machine->device_memory->base,
-> +                          memory_region_size(&machine->device_memory->mr),
->                             0, MEM_AFFINITY_HOTPLUGGABLE | MEM_AFFINITY_ENABLED);
->       }
->   
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index 6e1c42fb2b..c9235f740e 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -164,11 +164,18 @@ static void fdt_add_cpu_nodes(const LoongArchMachineState *lams)
->       for (num = smp_cpus - 1; num >= 0; num--) {
->           char *nodename = g_strdup_printf("/cpus/cpu@%d", num);
->           LoongArchCPU *cpu = LOONGARCH_CPU(qemu_get_cpu(num));
-> +        CPUState *cs = CPU(cpu);
->   
->           qemu_fdt_add_subnode(ms->fdt, nodename);
->           qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "cpu");
->           qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
->                                   cpu->dtb_compatible);
-> +
-> +        if (ms->possible_cpus->cpus[cs->cpu_index].props.has_node_id) {
-> +            qemu_fdt_setprop_cell(ms->fdt, nodename, "numa-node-id",
-> +                ms->possible_cpus->cpus[cs->cpu_index].props.node_id);
-> +        }
-> +
->           qemu_fdt_setprop_cell(ms->fdt, nodename, "reg", num);
->           qemu_fdt_setprop_cell(ms->fdt, nodename, "phandle",
->                                 qemu_fdt_alloc_phandle(ms->fdt));
-> @@ -280,6 +287,22 @@ static void fdt_add_irqchip_node(LoongArchMachineState *lams)
->       g_free(nodename);
->   }
->   
-> +static void fdt_add_memory_node(MachineState *ms,
-> +                                uint64_t base, uint64_t size, int node_id)
-> +{
-> +    char *nodename = g_strdup_printf("/memory@%lx", base);
-> +
-> +    qemu_fdt_add_subnode(ms->fdt, nodename);
-> +    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
-> +    qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "memory");
-> +
-> +    if (ms->numa_state && ms->numa_state->num_nodes) {
-> +        qemu_fdt_setprop_cell(ms->fdt, nodename, "numa-node-id", node_id);
-> +    }
-> +
-> +    g_free(nodename);
-> +}
-> +
->   #define PM_BASE 0x10080000
->   #define PM_SIZE 0x100
->   #define PM_CTRL 0x10
-> @@ -766,14 +789,17 @@ static void loongarch_init(MachineState *machine)
->       const char *cpu_model = machine->cpu_type;
->       ram_addr_t offset = 0;
->       ram_addr_t ram_size = machine->ram_size;
-> -    uint64_t highram_size = 0;
-> +    uint64_t highram_size = 0, phyAddr = 0;
->       MemoryRegion *address_space_mem = get_system_memory();
->       LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
-> +    int nb_numa_nodes = machine->numa_state->num_nodes;
-> +    NodeInfo *numa_info = machine->numa_state->nodes;
->       int i;
->       hwaddr fdt_base;
->       const CPUArchIdList *possible_cpus;
->       MachineClass *mc = MACHINE_GET_CLASS(machine);
->       CPUState *cpu;
-> +    char *ramName = NULL;
->   
->       if (!cpu_model) {
->           cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
-> @@ -798,17 +824,45 @@ static void loongarch_init(MachineState *machine)
->           machine->possible_cpus->cpus[i].cpu = OBJECT(cpu);
->       }
->       fdt_add_cpu_nodes(lams);
-> -    /* Add memory region */
-> -    memory_region_init_alias(&lams->lowmem, NULL, "loongarch.lowram",
-> -                             machine->ram, 0, 256 * MiB);
-> -    memory_region_add_subregion(address_space_mem, offset, &lams->lowmem);
-> -    offset += 256 * MiB;
-> -    memmap_add_entry(0, 256 * MiB, 1);
-> -    highram_size = ram_size - 256 * MiB;
-> -    memory_region_init_alias(&lams->highmem, NULL, "loongarch.highmem",
-> +
-> +    memory_region_add_subregion(address_space_mem, 0, machine->ram);
-Hi gaosong
-
-Why need we add machine->ram into address_space_mem at 0 addr ? I think 
-it may break the previous system memory space and the address of 
-high_ram is VIRT_HIGHMEM_BASE, so it may should not add the whole ram 
-into system memory space directly.   I think we should remove it, as the 
-following code will add the different ram part into system memory space 
-at right address.
-
-what do you think of it?
-
-Thanks
-Tianrui Zhao
-> +
-> +    /* Node0 memory */
-> +    memmap_add_entry(VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE, 1);
-> +    fdt_add_memory_node(machine, VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE, 0);
-> +    memory_region_init_alias(&lams->lowmem, NULL, "loongarch.node0.lowram",
-> +                             machine->ram, offset, VIRT_LOWMEM_SIZE);
-> +    memory_region_add_subregion(address_space_mem, phyAddr, &lams->lowmem);
-> +
-> +    offset += VIRT_LOWMEM_SIZE;
-> +    if (nb_numa_nodes > 0) {
-> +        assert(numa_info[0].node_mem > VIRT_LOWMEM_SIZE);
-> +        highram_size = numa_info[0].node_mem - VIRT_LOWMEM_SIZE;
-> +    } else {
-> +        highram_size = ram_size - VIRT_LOWMEM_SIZE;
-> +    }
-> +    phyAddr = VIRT_HIGHMEM_BASE;
-> +    memmap_add_entry(phyAddr, highram_size, 1);
-> +    fdt_add_memory_node(machine, phyAddr, highram_size, 0);
-> +    memory_region_init_alias(&lams->highmem, NULL, "loongarch.node0.highram",
->                                machine->ram, offset, highram_size);
-> -    memory_region_add_subregion(address_space_mem, 0x90000000, &lams->highmem);
-> -    memmap_add_entry(0x90000000, highram_size, 1);
-> +    memory_region_add_subregion(address_space_mem, phyAddr, &lams->highmem);
-> +
-> +    /* Node1 - Nodemax memory */
-> +    offset += highram_size;
-> +    phyAddr += highram_size;
-> +
-> +    for (i = 1; i < nb_numa_nodes; i++) {
-> +        MemoryRegion *nodemem = g_new(MemoryRegion, 1);
-> +        ramName = g_strdup_printf("loongarch.node%d.ram", i);
-> +        memory_region_init_alias(nodemem, NULL, ramName, machine->ram,
-> +                                 offset,  numa_info[i].node_mem);
-> +        memory_region_add_subregion(address_space_mem, phyAddr, nodemem);
-> +        memmap_add_entry(phyAddr, numa_info[i].node_mem, 1);
-> +        fdt_add_memory_node(machine, phyAddr, numa_info[i].node_mem, i);
-> +        offset += numa_info[i].node_mem;
-> +        phyAddr += numa_info[i].node_mem;
-> +    }
->   
->       /* initialize device memory address space */
->       if (machine->ram_size < machine->maxram_size) {
-> @@ -1051,6 +1105,21 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
->       return ms->possible_cpus;
->   }
->   
-> +static CpuInstanceProperties
-> +virt_cpu_index_to_props(MachineState *ms, unsigned cpu_index)
-> +{
-> +    MachineClass *mc = MACHINE_GET_CLASS(ms);
-> +    const CPUArchIdList *possible_cpus = mc->possible_cpu_arch_ids(ms);
-> +
-> +    assert(cpu_index < possible_cpus->len);
-> +    return possible_cpus->cpus[cpu_index].props;
-> +}
-> +
-> +static int64_t virt_get_default_cpu_node_id(const MachineState *ms, int idx)
-> +{
-> +    return idx % ms->numa_state->num_nodes;
-> +}
-> +
->   static void loongarch_class_init(ObjectClass *oc, void *data)
->   {
->       MachineClass *mc = MACHINE_CLASS(oc);
-> @@ -1068,6 +1137,11 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
->       mc->default_boot_order = "c";
->       mc->no_cdrom = 1;
->       mc->possible_cpu_arch_ids = virt_possible_cpu_arch_ids;
-> +    mc->cpu_index_to_instance_props = virt_cpu_index_to_props;
-> +    mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
-> +    mc->numa_mem_supported = true;
-> +    mc->auto_enable_numa_with_memhp = true;
-> +    mc->auto_enable_numa_with_memdev = true;
->       mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
->       hc->plug = loongarch_machine_device_plug_cb;
->       hc->pre_plug = virt_machine_device_pre_plug;
+> diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
+> index f58e6359d5..a8315659d9 100644
+> --- a/target/ppc/arch_dump.c
+> +++ b/target/ppc/arch_dump.c
+> @@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+>      info->d_machine =3D PPC_ELF_MACHINE;
+>      info->d_class =3D ELFCLASS;
+> =20
+> -    if (ppc_interrupts_little_endian(cpu, cpu->env.has_hv_mode)) {
+> +    if (ppc_interrupts_little_endian(cpu, !!(cpu->env.msr_mask & MSR_HVB=
+))) {
+>          info->d_endian =3D ELFDATA2LSB;
+>      } else {
+>          info->d_endian =3D ELFDATA2MSB;
+> --=20
+> 2.39.2
 
 
