@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F7C714738
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 11:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B879A714775
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 11:53:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3ZOe-0006QT-8k; Mon, 29 May 2023 05:42:36 -0400
+	id 1q3ZYS-0007wF-Cb; Mon, 29 May 2023 05:52:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q3ZOZ-0006QC-Be; Mon, 29 May 2023 05:42:31 -0400
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1q3ZOT-0000pw-RB; Mon, 29 May 2023 05:42:31 -0400
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-19e82ae057eso2266278fac.3; 
- Mon, 29 May 2023 02:42:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685353343; x=1687945343;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Ljgba1ctfD1nt6nt7vG9eTZqBHW0bi/pqH0uzbVYLTA=;
- b=VtEm093iqysIJf0WhTY+BfTEmkSCENPXpCDLdvQZJYlyrOShfHsXW0RNvo8Fb9EpEq
- 3uMPJyzViKh1YI8OvNtISpDR4yQH4FikkkoT3Qo+neMXnevkwQfGNMtv14hFmPUocKjv
- icb63XXSHKHh/sSbAwheebD2Ao1sOxod575oqRnHdF0tiI6QfVQnEJi/hS64LW/5O3P1
- 27wgw/lrSRHEdOKc78ZW5fykc5SnkBaa2zqhsmMynweH2sdUuBPYudNth5HqXQwUQohc
- 5jU9fAUdTB7zPThkgbhPh0MOdF7q2RhLhDArGCN9i/2wpHq44bg95L3rYfUkNYhzr7tY
- 2sEg==
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1q3ZYQ-0007vi-7z
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 05:52:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1q3ZYO-0003OI-Mc
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 05:52:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685353959;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qwuk3XbFudx6gTGXIRjNA9EjwdNlo/TlIOsjbbP/qUU=;
+ b=R79saFJkUYoYUI7Hrfi69zTQvbnkvzPa1X9Lg7BDdtQrmU0m+KqepprRsJ47X8EAe+l3el
+ kl5v4ZteLtaRRJ7lfbJCSQ7BO8bRWPfX72ISgE+a+emAvPzbTIHlpxuMOXC/3tu9UTM/om
+ ndBTHOWkmiKe/pei3eOA5CK6lF64Xg8=
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
+ [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-675-NyDJcyNfM2yImZun1jP9gg-1; Mon, 29 May 2023 05:52:38 -0400
+X-MC-Unique: NyDJcyNfM2yImZun1jP9gg-1
+Received: by mail-vk1-f199.google.com with SMTP id
+ 71dfb90a1353d-4572aa34839so597584e0c.3
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 02:52:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685353343; x=1687945343;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ljgba1ctfD1nt6nt7vG9eTZqBHW0bi/pqH0uzbVYLTA=;
- b=YsprWlMLpV5YSvrdSO67D4SQlBBCk1eBhOD6vwCbmJSbk9T+5/RM/1AB3A3PY2jZ52
- aT1l0HOnHGnL1XcoIOcN0WFxPu62SS1kHpSOO7xgLF5w4BOcMxoFciggJZUkw8dUg8E8
- ZGYaSDqM+FOx5QPLv9ZcTrSwFuwengaFGOP0u2rFcmslX76df/4o2EVz8UZ1EtQEpMcM
- wWGIhpv8uZqOOdThB0IJ3dJk+wbqZneXZ9MnbvGMSYgQ+7ll5Z7oyndesZDB7+QKwsCL
- epxXLoT0wz0jWXV4IdnKx84eBZQTbTgaN6Vuqe3GGjsR0wpicS75QLUnQH0kwmR1C2yJ
- o9ZQ==
-X-Gm-Message-State: AC+VfDxAmR2s55Af2d8KS+PcPG4E2aoVX7nlr7AWAauSgq8UmZT007T1
- k6z5ByeGzAHu1PVRAw6qDG0=
-X-Google-Smtp-Source: ACHHUZ4ioQgQ8bgffhRurEVpUeX5yJnQOcVPWYMmq9tJhxwB0m33TBfjfNsdBvyWDaqIGBv2w/tylA==
-X-Received: by 2002:a05:6870:5b03:b0:184:7ef3:80f4 with SMTP id
- ds3-20020a0568705b0300b001847ef380f4mr4218809oab.10.1685353343167; 
- Mon, 29 May 2023 02:42:23 -0700 (PDT)
-Received: from [192.168.68.107] (200-162-225-121.static-corp.ajato.com.br.
- [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
- v52-20020a056870957400b001968dd2e1fesm4483221oal.3.2023.05.29.02.42.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 May 2023 02:42:22 -0700 (PDT)
-Message-ID: <a45164d6-2720-20a8-996e-08abc38e92fc@gmail.com>
-Date: Mon, 29 May 2023 06:42:18 -0300
+ d=1e100.net; s=20221208; t=1685353958; x=1687945958;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qwuk3XbFudx6gTGXIRjNA9EjwdNlo/TlIOsjbbP/qUU=;
+ b=bA0nCNxbF77Aik252cTCvBs6Dtt+Ww0zWsmzNklpnUXTn5Vr5214/nBPkXyj8/POpZ
+ jd606ZrYcy92fL7Dk649H9PPlKl8iD25TXj6mcyuMptx5F8YMOkNpJmi+34jeI3QF6c7
+ +PBptaI1NjYX45AD/wb/+NaTfnxIlcpBOGkwFQRMz1HVf4JxaPBv3rBq2dbQBYJ5IKbG
+ nG6avix+s45fr2ZW1GNvGCQLfBUqyI8zSe96Ue81mpTF05m5YjPoj9Kxn85TASu0ZEWx
+ 9LGZ2QA8oBzn8cWEA9XvKJ0GOk5M0n6tagYIRsQGf7uk1lX/JJKVQYWOuVJuj/Jv/20A
+ //Qw==
+X-Gm-Message-State: AC+VfDyM6uT4gK593CNmOySqhuk8pCJbfzseuVT9MMzv1fA/jA+/nv5+
+ 07vIqNKO28sgvzck7o/gfBEhB8OwgEbSkxY1nks8gyyOioE+lKK2Pnb0Pq59SZnjymt6aWjTmlP
+ UXDCVIjIRiaFHRQtHGRD+2UYPZXNbv5Q=
+X-Received: by 2002:a1f:ca01:0:b0:44f:f77f:f37 with SMTP id
+ a1-20020a1fca01000000b0044ff77f0f37mr1975498vkg.11.1685353957875; 
+ Mon, 29 May 2023 02:52:37 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ49N7hudmx8MNcFmjtL6b/HLNes0jQaWqQP6iK8jbRw3ll65M95VzGXLrG+22LZMEX+sbi1E+Ia2E6j4S10jiY=
+X-Received: by 2002:a1f:ca01:0:b0:44f:f77f:f37 with SMTP id
+ a1-20020a1fca01000000b0044ff77f0f37mr1975489vkg.11.1685353957622; Mon, 29 May
+ 2023 02:52:37 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PULL 00/10] ppc queue
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org,
- Richard Purdie <richard.purdie@linuxfoundation.org>,
- Nicholas Piggin <npiggin@gmail.com>, Bernhard Beschow <shentey@gmail.com>
-References: <20230528164922.20364-1-danielhb413@gmail.com>
- <2ccafb44-d09a-e71c-005b-9a36f128b275@tls.msk.ru>
-Content-Language: en-US
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <2ccafb44-d09a-e71c-005b-9a36f128b275@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2c;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2c.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230301142926.18686-1-yuval.shaia.ml@gmail.com>
+ <810d20a1-4af7-ab16-0f38-a4b56dc27f97@msgid.tls.msk.ru>
+In-Reply-To: <810d20a1-4af7-ab16-0f38-a4b56dc27f97@msgid.tls.msk.ru>
+From: Mauro Matteo Cascella <mcascell@redhat.com>
+Date: Mon, 29 May 2023 11:52:26 +0200
+Message-ID: <CAA8xKjWT2enLtrWUb7TVW8rFaPzm+bKBN8T-scQ8TeYdStWCpQ@mail.gmail.com>
+Subject: Re: [PATCH v1] hw/pvrdma: Protect against buggy or malicious guest
+ driver
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Yuval Shaia <yuval.shaia.ml@gmail.com>, qemu-devel@nongnu.org,
+ soulchen8650@gmail.com, 
+ qemu-security@nongnu.org, marcel.apfelbaum@gmail.com, 
+ Laurent Vivier <laurent@vivier.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.093,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.164,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,72 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, May 15, 2023 at 6:13=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wr=
+ote:
+>
+> 01.03.2023 17:29, Yuval Shaia wrote:
+> > Guest driver allocates and initialize page tables to be used as a ring
+> > of descriptors for CQ and async events.
+> > The page table that represents the ring, along with the number of pages
+> > in the page table is passed to the device.
+> > Currently our device supports only one page table for a ring.
+> >
+> > Let's make sure that the number of page table entries the driver
+> > reports, do not exceeds the one page table size.
+> >
+> > Reported-by: Soul Chen <soulchen8650@gmail.com>
+> > Signed-off-by: Yuval Shaia <yuval.shaia.ml@gmail.com>
+> > ---
+> > v0 -> v1:
+> >       * Take ring-state into account
+> >       * Add Reported-by
+> > ---
+> >   hw/rdma/vmw/pvrdma_main.c | 16 +++++++++++++++-
+> >   1 file changed, 15 insertions(+), 1 deletion(-)
+>
+> Fixes: CVE-2023-1544
+>
+> Ping ^2?
 
+Ping ^3?
 
-On 5/28/23 14:36, Michael Tokarev wrote:
-> 28.05.2023 19:49, Daniel Henrique Barboza wrote:
->>
->>    https://gitlab.com/danielhb/qemu.git tags/pull-ppc-20230528
->>
->> ppc patch queue for 2023-05-28:
->>
->> This queue includes several assorted fixes for PowerPC SPR
->> emulation, a change in the default Pegasos2 CPU, the addition
->> of AIL mode 3 for spapr, a PIC->CPU interrupt fix for prep and
->> performance enhancements in fpu_helper.c.
-> 
->  From the patch description, it looks like the following changes
-> are suitable for -stable:
-> 
-> 01/10 target/ppc: Fix fallback to MFSS for MFFS* instructions on pre 3.0 ISAs
-> 02/10 target/ppc: Fix width of some 32-bit SPRs
-> 03/10 target/ppc: Alignment faults do not set DSISR in ISA v3.0 onward
-> 05/10 hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
-> 
-> Or are these not important for -stable?  Or maybe there are other changes
-> which should be picked too?
-
-Patch 1 and perhaps 5 is stable material, and by "stable material" I'm
-interpreting as "bug fixes for issues that were detected in the field
-by users and predates the current release"
-
-Let me know if this is the right approach or not.
-
-> 
-> Please add "Cc: qemu-stable@nongnu.org" tag for the future patches which
-> needs to be backported to previous/stable version of qemu.
-
-I'll keep that in mind next time. Thanks,
-
-
-Daniel
-
-> 
-> Thanks!
-> 
+> Laurent, maybe you can take this one too?
+> I understand the fact you picked up the previous one in this area
+> does not make you pvrdma maintainer, but it is definitely being stuck.. :=
+)
+>
 > /mjt
->> ---------------------------------------------------------------
->> Alexander Bulekov (1):
->>        pnv_lpc: disable reentrancy detection for lpc-hc
->>
->> BALATON Zoltan (1):
->>        ppc/pegasos2: Change default CPU to 7457
->>
->> Bernhard Beschow (1):
->>        hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
->>
->> Nicholas Piggin (5):
->>        target/ppc: Fix width of some 32-bit SPRs
->>        target/ppc: Alignment faults do not set DSISR in ISA v3.0 onward
->>        spapr: Add SPAPR_CAP_AIL_MODE_3 for AIL mode 3 support for H_SET_MODE hcall
->>        target/ppc: Use SMT4 small core chip type in POWER9/10 PVRs
->>        target/ppc: Add POWER9 DD2.2 model
->>
->> Richard Henderson (1):
->>        target/ppc: Merge COMPUTE_CLASS and COMPUTE_FPRF
->>
->> Richard Purdie (1):
->>        target/ppc: Fix fallback to MFSS for MFFS* instructions on pre 3.0 ISAs
->>
-> 
+>
+
+
+--=20
+Mauro Matteo Cascella
+Red Hat Product Security
+PGP-Key ID: BB3410B0
+
 
