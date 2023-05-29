@@ -2,75 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B93714563
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 09:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAED5714585
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 09:31:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3XDs-0005Ca-Ru; Mon, 29 May 2023 03:23:21 -0400
+	id 1q3XKM-0006zw-U3; Mon, 29 May 2023 03:30:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1q3XDc-0005CN-10
- for qemu-devel@nongnu.org; Mon, 29 May 2023 03:23:04 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1q3XKJ-0006zB-TN
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 03:29:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
- id 1q3XDa-0005fs-An
- for qemu-devel@nongnu.org; Mon, 29 May 2023 03:23:03 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1q3XKI-0007UT-47
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 03:29:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685344980;
+ s=mimecast20190719; t=1685345396;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CenTolzvn+9i3qlP68V9j0flAP7KibN/0R/gU36/ncc=;
- b=dXvat8EU+g9a+x2vNSP6UP2kutq69zhExhOBlSlNnYOSgpHpULER9VO5TLiybv8j0Z9VPj
- 6ziI8QGBR18GKXE7I6j92/7YtuuO8wZQ6lb9qMJ5yZX3kc5LnAnhIeYN1bXtG2Qehf/ytx
- GlA7Ni1SFlg4DC/sy9STz/6xwSx60JI=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DHjqh8llwBaoxMwZHs8cm6eGqUObNr/2SbmnsvJ7iJQ=;
+ b=ecFQY4e+qQTzB/89Yf+Pw1Of3YBqsYo14neVIj2JLzJIPxbSkM0NoljKmzk3ahOawL4m0e
+ NAWsHF5HNyn3kNwWXGR9TV8U6Kfa60NpN/3mKkafaXG5IKUPddmtI/V7hJSKCjW99Otm3q
+ 3iL4SFoaJbIB0RwIHj90DW7HSerj/L8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-pTfEojxMM-myrSG5ErM8Rg-1; Mon, 29 May 2023 03:22:58 -0400
-X-MC-Unique: pTfEojxMM-myrSG5ErM8Rg-1
-Received: by mail-vk1-f197.google.com with SMTP id
- 71dfb90a1353d-456edcd3990so609626e0c.0
- for <qemu-devel@nongnu.org>; Mon, 29 May 2023 00:22:58 -0700 (PDT)
+ us-mta-36-8b36NOLhN82XtROkVtJQXQ-1; Mon, 29 May 2023 03:29:54 -0400
+X-MC-Unique: 8b36NOLhN82XtROkVtJQXQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f60481749eso15767815e9.1
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 00:29:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685344978; x=1687936978;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CenTolzvn+9i3qlP68V9j0flAP7KibN/0R/gU36/ncc=;
- b=FE97rPtVO6yIsv5IFWnbvSDbEw4NYygQJXf8N8dBpfFAgFSe01uKMqET7opwGTMvIw
- WTFoe52pveQYA/duHnjBVJrFzf/MK6cl60CjeCexEsyX97pTy3fAFb/bm2MzMhfLjZgw
- GiLCatH/+S9HnWbuAZmVHv0jm/Xiz9Jb2MuXVbJ0jwx6nUeyfh57slLlc/GwEwQg953i
- 1p8yIeUl0vJJcMkqrGmlxu2Ry9Kc7D/hNtF63kuIPe9zMcqazhMUolRFUVoOEONx4Skd
- P1pleNUG/g6VfVLRENfSubH97eMpcHcYYyTVHx8KvnMWYS2LB/y9Hn20a0f4EZSZ+XME
- pmmw==
-X-Gm-Message-State: AC+VfDyhOkAVTFh7UbM33AOebS//v7yVIbQ7rz/S3JfTT0P0x+oXg1Q3
- ULHq6FytnjbEYLSBqHDVpzsutJhZah0Yt+RmftoPkwxpx7wdbXhT5+JholclWaNSNxkHmVK8tm9
- 7FKO+MDScuvQB9MDHQ8VZzNCZVGLxTHCqD/hPYt4=
-X-Received: by 2002:a1f:d3c7:0:b0:457:2d6a:7b4d with SMTP id
- k190-20020a1fd3c7000000b004572d6a7b4dmr2268436vkg.10.1685344977806; 
- Mon, 29 May 2023 00:22:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4L14UfGh5Joav492MhLxdNFG6IuyhZcEo7qile/GhxxfDg6ey+KfLQF9Q4p+wt79hguA/lzkCjYN7JD0qHIa8=
-X-Received: by 2002:a1f:d3c7:0:b0:457:2d6a:7b4d with SMTP id
- k190-20020a1fd3c7000000b004572d6a7b4dmr2268435vkg.10.1685344977524; Mon, 29
- May 2023 00:22:57 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685345393; x=1687937393;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DHjqh8llwBaoxMwZHs8cm6eGqUObNr/2SbmnsvJ7iJQ=;
+ b=GntoRXzn7vYYofAN930+WFGUW6LdPSNUYIV7sDhEXHZoPg2V2Kx83ziHhRbQreu2Up
+ J21o27pFPUBW5svK6ZzSowBWLK3Z+x68be/lMMRE4IJzP5BbCw8vnvgmx4wWYY12iYtr
+ 5B2MuR27a8UhfKw3txoWW3ZbLH3sUcEYj09znPn8PGk5yBVVNKFaMgjRS1yf3jhaeZSW
+ gcMGX2gD6FNyjvzGNoH7UqrJOO3WXRd0s+2vEWgvoitdDwyZaHPlVnN3ILslkW0WU7xr
+ M4me2QGhspf0MO2Oyya4AgF3Lgk5G1OxAjWwILhSvtE+sxVRbdTbWxLH2hvZZmhaIlmx
+ 65aA==
+X-Gm-Message-State: AC+VfDyZqfoS6jFFAR7dvP5rMsQxOARQa8DzHcALM4owJ0L24dX3msiW
+ TH0toOweZ+g20w0p4rEEj1/ES15Mj4345jcTgzInabcbJU6gJsM7a2SYN5AnLLiYDy2i2t7Dsmu
+ tSUBj06YCYeTLySE=
+X-Received: by 2002:a05:600c:2e0c:b0:3f4:255e:e375 with SMTP id
+ o12-20020a05600c2e0c00b003f4255ee375mr5852899wmf.9.1685345393081; 
+ Mon, 29 May 2023 00:29:53 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4N8qMLWNrHbH3uXQKZ4p3M9Q+1iY0XThjmNoIyoyld6HpRojyj/g4R2TBVJIffbqW27ToIFg==
+X-Received: by 2002:a05:600c:2e0c:b0:3f4:255e:e375 with SMTP id
+ o12-20020a05600c2e0c00b003f4255ee375mr5852885wmf.9.1685345392743; 
+ Mon, 29 May 2023 00:29:52 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-25-16.business.telecomitalia.it.
+ [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
+ f9-20020a1c6a09000000b003f4272c2d0csm13188942wmc.36.2023.05.29.00.29.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 May 2023 00:29:51 -0700 (PDT)
+Date: Mon, 29 May 2023 09:29:49 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jonathon Jongsma <jjongsma@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
+ qemu-block@nongnu.org, Thomas Huth <thuth@redhat.com>, 
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: [PATCH v4 2/2] qapi: add '@fdset' feature for
+ BlockdevOptionsVirtioBlkVhostVdpa
+Message-ID: <fkwshw6kunoqgzb25sjxpr6b5dtoknuombf5mqzgrwd6446xd4@hqfoz6rbukyt>
+References: <20230526150304.158206-1-sgarzare@redhat.com>
+ <20230526150304.158206-3-sgarzare@redhat.com>
+ <d3af616d-166f-51e3-b24b-ae36e82c48d4@redhat.com>
 MIME-Version: 1.0
-References: <b70ce1ef-32c6-b645-be61-bd9a2e204952@tls.msk.ru>
-In-Reply-To: <b70ce1ef-32c6-b645-be61-bd9a2e204952@tls.msk.ru>
-From: Mauro Matteo Cascella <mcascell@redhat.com>
-Date: Mon, 29 May 2023 09:22:46 +0200
-Message-ID: <CAA8xKjXCxmi0kmkHPcT1Z8mQSjUOfhWjz3X6fJy-6g6dP6shRA@mail.gmail.com>
-Subject: Re: [PATCH] hw/sd/sdhci: reset data count in
- sdhci_buff_access_is_sequential()
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mcascell@redhat.com;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <d3af616d-166f-51e3-b24b-ae36e82c48d4@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -94,41 +108,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, May 27, 2023 at 11:00=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> w=
-rote:
+On Fri, May 26, 2023 at 04:20:14PM -0500, Jonathon Jongsma wrote:
+>On 5/26/23 10:03 AM, Stefano Garzarella wrote:
+>>The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the fd
+>>passing through the new 'fd' property.
+>>
+>>Since now we are using qemu_open() on '@path' if the virtio-blk driver
+>>supports the fd passing, let's announce it.
+>>In this way, the management layer can pass the file descriptor of an
+>>already opened vhost-vdpa character device. This is useful especially
+>>when the device can only be accessed with certain privileges.
+>>
+>>Add the '@fdset' feature only when the virtio-blk-vhost-vdpa driver
+>>in libblkio supports it.
+>>
+>>Suggested-by: Markus Armbruster <armbru@redhat.com>
+>>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>>---
+>>
+>>Notes:
+>>     v4:
+>>     - added this patch to allow libvirt to discover we support fdset [Markus]
+>>
+>>  meson.build          | 4 ++++
+>>  qapi/block-core.json | 8 +++++++-
+>>  2 files changed, 11 insertions(+), 1 deletion(-)
+>>
+>>diff --git a/meson.build b/meson.build
+>>index 78890f0155..8ea911f7b4 100644
+>>--- a/meson.build
+>>+++ b/meson.build
+>>@@ -2108,6 +2108,10 @@ config_host_data.set('CONFIG_LZO', lzo.found())
+>>  config_host_data.set('CONFIG_MPATH', mpathpersist.found())
+>>  config_host_data.set('CONFIG_MPATH_NEW_API', mpathpersist_new_api)
+>>  config_host_data.set('CONFIG_BLKIO', blkio.found())
+>>+if blkio.found()
+>>+  config_host_data.set('CONFIG_BLKIO_VHOST_VDPA_FD',
+>>+                       blkio.version().version_compare('>=1.3.0'))
+>>+endif
+>>  config_host_data.set('CONFIG_CURL', curl.found())
+>>  config_host_data.set('CONFIG_CURSES', curses.found())
+>>  config_host_data.set('CONFIG_GBM', gbm.found())
+>>diff --git a/qapi/block-core.json b/qapi/block-core.json
+>>index 98d9116dae..1538d84ef4 100644
+>>--- a/qapi/block-core.json
+>>+++ b/qapi/block-core.json
+>>@@ -3955,10 +3955,16 @@
+>>  #
+>>  # @path: path to the vhost-vdpa character device.
+>>  #
+>>+# Features:
+>>+# @fdset: Member @path supports the special "/dev/fdset/N" path (since 8.1)
+>>+#
+>>  # Since: 7.2
+>>  ##
+>>  { 'struct': 'BlockdevOptionsVirtioBlkVhostVdpa',
+>>-  'data': { 'path': 'str' },
+>>+  'data': { 'path': { 'type': 'str',
+>>+                      'features': [ { 'name' :'fdset',
+>>+                                      'if': 'CONFIG_BLKIO_VHOST_VDPA_FD' } ]
+>>+            } },
+>>    'if': 'CONFIG_BLKIO' }
+>>  ##
 >
-> Mon, 7 Nov 2022 11:35:10 +0100, you wrote:
->  > Make sure to reset data_count if it's equal to (or exceeds) block_size=
-.
->  > This prevents an off-by-one read / write when accessing s->fifo_buffer
->  > in sdhci_read_dataport / sdhci_write_dataport, both called right after
->  > sdhci_buff_access_is_sequential.
->  >
->  > Fixes: CVE-2022-3872
 >
-> ..
+>Take this for what it's worth and do what's best for qemu, but... It's 
+>easier for libvirt if the 'features' are on the object rather than on 
+>the 'path' member. Our schema parsing code already supports object 
+>features but does not yet support features on builtin types.
+
+I had done it that way in the first instance :-), then I saw that the 
+members themselves could have their own functionality, and it seemed 
+better.
+
+However I agree that if it's easier for libvirt, then better to move the 
+feature to the whole object.
+
+I'll change that in v5.
+
+Thanks,
+Stefano
+
 >
-> Has this been forgotten, or maybe a better fix is needed?
+>i.e. something like this just works without any refactoring in libvirt:
 >
-> https://lists.nongnu.org/archive/html/qemu-devel/2022-11/msg01068.html
-
-There was a better patch proposed by Philippe:
-https://lists.nongnu.org/archive/html/qemu-devel/2022-11/msg01161.html
-
-Which was later dropped due to a CI failure:
-https://lists.nongnu.org/archive/html/qemu-devel/2022-11/msg01504.html
-
-Not sure what's the current status.
-
-> Thanks,
+>diff --git a/qapi/block-core.json b/qapi/block-core.json
+>index 1538d84ef4..78cfd10cdb 100644
+>--- a/qapi/block-core.json
+>+++ b/qapi/block-core.json
+>@@ -3961,11 +3961,11 @@
+> # Since: 7.2
+> ##
+> { 'struct': 'BlockdevOptionsVirtioBlkVhostVdpa',
+>-  'data': { 'path': { 'type': 'str',
+>-                      'features': [ { 'name' :'fdset',
+>-                                      'if': 
+>'CONFIG_BLKIO_VHOST_VDPA_FD' } ]
+>-            } },
+>-  'if': 'CONFIG_BLKIO' }
+>+  'data': { 'path': 'str' },
+>+  'features': [ { 'name' :'fdset',
+>+                'if': 'CONFIG_BLKIO_VHOST_VDPA_FD' } ],
+>+  'if': 'CONFIG_BLKIO'
+>+ }
 >
-> /mjt
+> ##
+> # @IscsiTransport:
 >
-
-
---
-Mauro Matteo Cascella
-Red Hat Product Security
-PGP-Key ID: BB3410B0
+>
 
 
