@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD89714211
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 04:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B85F71420F
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 04:35:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3Sj8-0001HF-UW; Sun, 28 May 2023 22:35:18 -0400
+	id 1q3Shg-0000bl-FJ; Sun, 28 May 2023 22:33:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1q3Sj4-0001Gm-Vk
- for qemu-devel@nongnu.org; Sun, 28 May 2023 22:35:15 -0400
+ id 1q3She-0000bZ-6t
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 22:33:46 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1q3Sj1-0007Ii-Ap
- for qemu-devel@nongnu.org; Sun, 28 May 2023 22:35:14 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1q3Sha-0006o0-VU
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 22:33:45 -0400
 Received: from loongson.cn (unknown [10.20.42.57])
- by gateway (Coremail) with SMTP id _____8Cx6fHyDnRk+xkCAA--.5082S3;
- Mon, 29 May 2023 10:33:22 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Bx3+vxDnRk+BkCAA--.4806S3;
+ Mon, 29 May 2023 10:33:21 +0800 (CST)
 Received: from [10.20.42.57] (unknown [10.20.42.57])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx8a_sDnRkbDp+AA--.10373S3; 
- Mon, 29 May 2023 10:33:17 +0800 (CST)
+ AQAAf8BxBMXwDnRkbTp+AA--.11074S3; 
+ Mon, 29 May 2023 10:33:20 +0800 (CST)
 Subject: Re: [PATCH v1] hw/loongarch: Add numa support
 To: maobibo <maobibo@loongson.cn>, qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
  philmd@linaro.org, imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
  alex.bennee@linaro.org, yangxiaojuan@loongson.cn
 References: <20230518090651.187119-1-gaosong@loongson.cn>
- <684a5dd5-c67e-3895-562d-d10a2011b9f4@loongson.cn>
+ <73f817df-d8c4-f432-118f-921571591e48@loongson.cn>
 From: Song Gao <gaosong@loongson.cn>
-Message-ID: <28913022-109b-ed71-f740-a692f3a5bc6d@loongson.cn>
-Date: Mon, 29 May 2023 10:33:16 +0800
+Message-ID: <ab0cb3d8-aaa7-bc73-cb4c-720e9b311b0c@loongson.cn>
+Date: Mon, 29 May 2023 10:33:20 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <684a5dd5-c67e-3895-562d-d10a2011b9f4@loongson.cn>
+In-Reply-To: <73f817df-d8c4-f432-118f-921571591e48@loongson.cn>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8Bx8a_sDnRkbDp+AA--.10373S3
+X-CM-TRANSID: AQAAf8BxBMXwDnRkbTp+AA--.11074S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjvJXoW3KFW5Aw1DXFWfCF1rJFyUAwb_yoWkGw13pF
- WIyFWFqr47JFn3Wrs2gr15WFn5Jr1kK3W7Z3y7CFWSkF929ry8CFW8t3yakFyDC348XF1j
- vr4DJr9xW3WxKrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+X-Coremail-Antispam: 1Uk129KBjvJXoW3KFW5Aw1DXFWfCF1rJFyUAwb_yoWkGFWxpF
+ WIyFWFgF47XFn3Wrs2gr15WFn5Arn7K3W7Z3y7CFWSkF97ury8CrW8t3yakFyDC348XF1j
+ vr4DJr9xW3WxKrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
  qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
- baAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
- 1l1IIY67AEw4v_JF0_JFyl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
+ bIxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
+ 1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
  wVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84
  ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1U
  M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4
- xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8
+ xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8
  JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8w
- CY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8
- JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1V
- AFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xII
- jxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4
- A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI
- 43ZEXa7IU829aDUUUUU==
+ CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
+ 6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64
+ vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+ Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0x
+ vEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8czVUUUUUU==
 Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
  helo=mail.loongson.cn
 X-Spam_score_int: -19
@@ -85,11 +84,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-在 2023/5/29 上午8:41, maobibo 写道:
-> Hi gaosong,
+在 2023/5/29 上午8:49, maobibo 写道:
 >
->
-> I reply inline
 > 在 2023/5/18 17:06, Song Gao 写道:
 >> 1. Implement some functions for LoongArch numa support;
 >> 2. Implement fdt_add_memory_node() for fdt;
@@ -154,14 +150,6 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 >> +        mem_len = machine->numa_state->nodes[0].node_mem - VIRT_LOWMEM_SIZE;
 >> +    }
 >> +    build_srat_memory(table_data, mem_base, mem_len, 0, MEM_AFFINITY_ENABLED);
-> how about add one line like this?
-> if (mem_len)
->      build_srat_memory(table_data, mem_base, mem_len, 0, MEM_AFFINITY_ENABLED);
-OK,
-and  I will check  node 0 memory  >= VIRT_LOWMEM_SIZE.
-
-Thanks.
-Song Gao
 >> +
 >> +    /* Node1 - Nodemax */
 >> +    if (nb_numa_nodes) {
@@ -186,16 +174,6 @@ Song Gao
 >> +        build_srat_memory(table_data, machine->device_memory->base,
 >> +                          memory_region_size(&machine->device_memory->mr),
 >>                             0, MEM_AFFINITY_HOTPLUGGABLE | MEM_AFFINITY_ENABLED);
-> is the hugplugable memory is located node 0 or last node?
-last node.  I will correct it.
->
-> With numa support, only srat table is added, what about slic table and hmat table?
-I will add them.
-
-Thanks.
-Song Gao
-> Regards
-> Bibo, Mao
 >>       }
 >>   
 >> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
@@ -337,6 +315,30 @@ Song Gao
 >> +{
 >> +    return idx % ms->numa_state->num_nodes;
 >> +}
+> The logic has some problem, or we should add support for packageid, or
+> do something like riscv.
+>
+> int64_t riscv_numa_get_default_cpu_node_id(const MachineState *ms, int idx)
+> {
+>      int64_t nidx = 0;
+>      
+>      if (ms->numa_state->num_nodes) {
+>          nidx = idx / (ms->smp.cpus / ms->numa_state->num_nodes);
+>          if (ms->numa_state->num_nodes <= nidx) {
+>              nidx = ms->numa_state->num_nodes - 1;
+>          }
+>      }
+>      
+>      return nidx;
+> }
+>
+>
+> Regards
+> Bibo, Mao
+I will correct it .
+
+Thanks.
+Song Gao
 >> +
 >>   static void loongarch_class_init(ObjectClass *oc, void *data)
 >>   {
@@ -348,7 +350,7 @@ Song Gao
 >> +    mc->cpu_index_to_instance_props = virt_cpu_index_to_props;
 >> +    mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
 >> +    mc->numa_mem_supported = true;
->> +    mc->auto_enable_numa_with_memhp = true;ARM_SPI_BASE
+>> +    mc->auto_enable_numa_with_memhp = true;
 >> +    mc->auto_enable_numa_with_memdev = true;
 >>       mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
 >>       hc->plug = loongarch_machine_device_plug_cb;
