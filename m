@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09190714F52
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 20:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 119A0714F54
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 20:21:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3hU1-0007dQ-0n; Mon, 29 May 2023 14:20:41 -0400
+	id 1q3hU3-0007et-Mn; Mon, 29 May 2023 14:20:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1q3hTu-0007cw-Jn
- for qemu-devel@nongnu.org; Mon, 29 May 2023 14:20:34 -0400
-Received: from mail-qk1-x72e.google.com ([2607:f8b0:4864:20::72e])
+ id 1q3hTw-0007df-AJ
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 14:20:36 -0400
+Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1q3hTs-00018a-RP
- for qemu-devel@nongnu.org; Mon, 29 May 2023 14:20:34 -0400
-Received: by mail-qk1-x72e.google.com with SMTP id
- af79cd13be357-75b01271ad4so200713685a.1
- for <qemu-devel@nongnu.org>; Mon, 29 May 2023 11:20:29 -0700 (PDT)
+ id 1q3hTs-00019a-Gw
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 14:20:35 -0400
+Received: by mail-qk1-x730.google.com with SMTP id
+ af79cd13be357-75b17298108so214951185a.0
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 11:20:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1685384428; x=1687976428;
+ d=bytedance.com; s=google; t=1685384430; x=1687976430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HnYi90ggTG0Ds7eZTyC/rI0dhRliL/IK6cmFzV+ubwg=;
- b=SwKgh8ZvhC1yKIvPXbfjcwSnnX3zqussFaWo1bU1+vxKVtwNuj05/liiix4rzTSwXv
- tMD2TvKuWdyjc4ASMnrCWgy7WNKjQsQb8bOPKqccxuyJQNr72T6IhfmjM+2C+vXWmBq7
- HxIPPsLr2mhfZA2pLo4VwIuep+sHgs8teZYnfZ5MYEA847ghPuWTWlsAx/ACB793dpBn
- iAnebh73K4FMr6MY0Pb2izvUX6ucSFObcA0TM8QltHiMEsU8+Tk+HDOcgb6Xc8zqotry
- VHqxVZWxC0f1/soAhPN3FrBZlZ2WQMYqcj8I9qJemI0de/lCX5ECuvD2Z/JUgARsTF/0
- uniw==
+ bh=0JqkkF9dhAzE0OkPFi/BNF1Vq1buivPQjPn42c685Sk=;
+ b=LsbwtNjFfFIRzMXViJZ/XIyzIHoFNUMcSFmz2dyiSvUZwKElAqG9gP8aI3IHNqDsbs
+ 7/wao4b9le7HwbuRDvK/mzXTlP7cavjNX2VjsmQsCohkrkf9d6tMae38WQ2bVE2y5xNH
+ YinKC6/F4HPSqVQXj8xZJIRIPkllrlHC8MomDsSCpVdHumQFC8bB+aupubI/ZgDDP4Ty
+ S19/HGiUn7+TPAkkMAfGZAoX3go6NEVRuRrJ/FYHK3L9AvygqbmSAISwFnrbQgoD3IIR
+ MVnvjFqj5csz8kecbGciR/TVXAfXNV73LP4bsYDvF3oJaj6/ff8TRcxqWgskrZLOkFEf
+ HgnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685384428; x=1687976428;
+ d=1e100.net; s=20221208; t=1685384430; x=1687976430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HnYi90ggTG0Ds7eZTyC/rI0dhRliL/IK6cmFzV+ubwg=;
- b=dlHBPsO8jUiskfHtv9LrFcKt4sR9nIQKoNuIJxWSes/aQXquH6VWKNtPZhiDX5de8v
- KpRIVetf6YbHuSPeWFVNqej+1fg099455+mSlUJCaiX5KznCFLwNrTMH8+ydWC7gY9Tl
- MmdDlX8euTCzz/+s9t7A2+hIPu7e6KdfLPHMIWE6plUdM/gQdahNYpgANJrbUH1CNM3C
- SS3KJSZpvfADkKFt12jCOqWI2UhWIcUu/Qbt8d5i8M6SX1BTW+Il6EP5kCrPFQru9J5r
- rBWsQp+10bFP0Vr7QTujEEgUDhaVxt+VARzVWm6A9YnZl8T5V1227aNMz7Np9kdCAUSA
- zeGg==
-X-Gm-Message-State: AC+VfDzxk0s9fz4wko3Io+pj7d6/RIekresJUPMmRobo5XdRxmF3n6MD
- 0iHfBLbyTAjI2LvwsuTDmWFhiA==
-X-Google-Smtp-Source: ACHHUZ7dOVC6aFr2aRPppOQTh1ca6A8WzVvbcj4g4qV0zfZtKtqkaZbktCJQ4EuZYGKt59WqEAyVrA==
-X-Received: by 2002:a05:620a:4454:b0:75b:7eea:8178 with SMTP id
- w20-20020a05620a445400b0075b7eea8178mr10218452qkp.47.1685384428757; 
- Mon, 29 May 2023 11:20:28 -0700 (PDT)
+ bh=0JqkkF9dhAzE0OkPFi/BNF1Vq1buivPQjPn42c685Sk=;
+ b=c18KXPQpAMF1OUCtUVamkK11y5MjJsYA2UiBdvJrAwHsU2lPVAyqNHGlKoKcM0KZrx
+ DcCxab8qLZ6B9Ceg66MgDpVE0pioQ3A+dGkW+24oEUBoTp8cUADRYmVj0cLc2yk6BBvP
+ yUGlMdUuYvoBgCK1Hf5Ohk65E06RDVq4GyIrFxMt1KXb3KMEAMpu/FKd48Pcp3IjjNbQ
+ oGHtqX/bKIzozLIlygi6cGjTwxJ/AfUE/M/vqKqgwjxAzoAwJoowZWRsL9XBCNEBhQl7
+ +HQkwlzDG7EKVgJLwESe7mCG/JSXjs5vbJ4B7K/13SSvp4Kzwk+l5L0qKzlp8rxvsIq/
+ tDoQ==
+X-Gm-Message-State: AC+VfDwZ0LIZgXq/8dgsjp59SukyvG9mY95zQPIqTSsJhnL05wD7Xtrh
+ ozchr0beb2PWaGtARS2mly2+oRc4Zg6ehKZKhs0=
+X-Google-Smtp-Source: ACHHUZ6u0epKKcxgVMsKOIQFF2U68CdJYEfHbruZuWlCkfA2dx6j0t3jWrcpG3Qrbmn0zA94ftxeUg==
+X-Received: by 2002:a37:396:0:b0:75b:23a1:401 with SMTP id
+ 144-20020a370396000000b0075b23a10401mr8150666qkd.23.1685384430528; 
+ Mon, 29 May 2023 11:20:30 -0700 (PDT)
 Received: from n231-230-216.byted.org ([147.160.184.95])
  by smtp.gmail.com with ESMTPSA id
- b15-20020a05620a126f00b0074e3cf3b44dsm2873314qkl.125.2023.05.29.11.20.28
+ b15-20020a05620a126f00b0074e3cf3b44dsm2873314qkl.125.2023.05.29.11.20.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 May 2023 11:20:28 -0700 (PDT)
+ Mon, 29 May 2023 11:20:30 -0700 (PDT)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: pbonzini@redhat.com,
 	quintela@redhat.com,
 	qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH 1/4] Introduce new instruction set enqcmd/mmovdir64b to the
- build system.
-Date: Mon, 29 May 2023 18:19:58 +0000
-Message-Id: <20230529182001.2232069-2-hao.xiang@bytedance.com>
+Subject: [PATCH 2/4] Add dependency idxd.
+Date: Mon, 29 May 2023 18:19:59 +0000
+Message-Id: <20230529182001.2232069-3-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230529182001.2232069-1-hao.xiang@bytedance.com>
 References: <20230529182001.2232069-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72e;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x72e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::730;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x730.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,76 +93,379 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-1. Enable instruction set enqcmd in build.
-2. Enable instruction set movdir64b in build.
+Idxd is the device driver for DSA (Intel Data Streaming
+Accelerator). The driver is fully functioning since Linux
+kernel 5.19. This change adds the driver's header file used
+for userspace development.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 ---
- meson.build                   | 3 +++
- meson_options.txt             | 4 ++++
- scripts/meson-buildoptions.sh | 6 ++++++
- 3 files changed, 13 insertions(+)
+ linux-headers/linux/idxd.h | 356 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 356 insertions(+)
+ create mode 100644 linux-headers/linux/idxd.h
 
-diff --git a/meson.build b/meson.build
-index 2d48aa1e2e..46f1bb2e34 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2682,6 +2682,8 @@ config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
-     int main(int argc, char *argv[]) { return bar(argv[0]); }
-   '''), error_message: 'AVX512BW not available').allowed())
- 
-+config_host_data.set('CONFIG_DSA_OPT', get_option('enqcmd'))
+diff --git a/linux-headers/linux/idxd.h b/linux-headers/linux/idxd.h
+new file mode 100644
+index 0000000000..1d553bedbd
+--- /dev/null
++++ b/linux-headers/linux/idxd.h
+@@ -0,0 +1,356 @@
++/* SPDX-License-Identifier: LGPL-2.1 WITH Linux-syscall-note */
++/* Copyright(c) 2019 Intel Corporation. All rights rsvd. */
++#ifndef _USR_IDXD_H_
++#define _USR_IDXD_H_
 +
- have_pvrdma = get_option('pvrdma') \
-   .require(rdma.found(), error_message: 'PVRDMA requires OpenFabrics libraries') \
-   .require(cc.compiles(gnu_source_prefix + '''
-@@ -4123,6 +4125,7 @@ summary_info += {'memory allocator':  get_option('malloc')}
- summary_info += {'avx2 optimization': config_host_data.get('CONFIG_AVX2_OPT')}
- summary_info += {'avx512bw optimization': config_host_data.get('CONFIG_AVX512BW_OPT')}
- summary_info += {'avx512f optimization': config_host_data.get('CONFIG_AVX512F_OPT')}
-+summary_info += {'dsa acceleration': config_host_data.get('CONFIG_DSA_OPT')}
- if get_option('gprof')
-   gprof_info = 'YES (deprecated)'
- else
-diff --git a/meson_options.txt b/meson_options.txt
-index 90237389e2..51097da56c 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -117,6 +117,10 @@ option('avx512f', type: 'feature', value: 'disabled',
-        description: 'AVX512F optimizations')
- option('avx512bw', type: 'feature', value: 'auto',
-        description: 'AVX512BW optimizations')
-+option('enqcmd', type: 'boolean', value: false,
-+       description: 'MENQCMD optimizations')
-+option('movdir64b', type: 'boolean', value: false,
-+       description: 'MMOVDIR64B optimizations')
- option('keyring', type: 'feature', value: 'auto',
-        description: 'Linux keyring support')
- 
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 5714fd93d9..5ef4ec36f4 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -81,6 +81,8 @@ meson_options_help() {
-   printf "%s\n" '  avx2            AVX2 optimizations'
-   printf "%s\n" '  avx512bw        AVX512BW optimizations'
-   printf "%s\n" '  avx512f         AVX512F optimizations'
-+  printf "%s\n" '  enqcmd          ENQCMD optimizations'
-+  printf "%s\n" '  movdir64b       MOVDIR64B optimizations'
-   printf "%s\n" '  blkio           libblkio block device driver'
-   printf "%s\n" '  bochs           bochs image format support'
-   printf "%s\n" '  bpf             eBPF support'
-@@ -221,6 +223,10 @@ _meson_option_parse() {
-     --disable-avx512bw) printf "%s" -Davx512bw=disabled ;;
-     --enable-avx512f) printf "%s" -Davx512f=enabled ;;
-     --disable-avx512f) printf "%s" -Davx512f=disabled ;;
-+    --enable-enqcmd) printf "%s" -Denqcmd=true ;;
-+    --disable-enqcmd) printf "%s" -Denqcmd=false ;;
-+    --enable-movdir64b) printf "%s" -Dmovdir64b=true ;;
-+    --disable-movdir64b) printf "%s" -Dmovdir64b=false ;;
-     --enable-gcov) printf "%s" -Db_coverage=true ;;
-     --disable-gcov) printf "%s" -Db_coverage=false ;;
-     --enable-lto) printf "%s" -Db_lto=true ;;
++#ifdef __KERNEL__
++#include <linux/types.h>
++#else
++#include <stdint.h>
++#endif
++
++/* Driver command error status */
++enum idxd_scmd_stat {
++	IDXD_SCMD_DEV_ENABLED = 0x80000010,
++	IDXD_SCMD_DEV_NOT_ENABLED = 0x80000020,
++	IDXD_SCMD_WQ_ENABLED = 0x80000021,
++	IDXD_SCMD_DEV_DMA_ERR = 0x80020000,
++	IDXD_SCMD_WQ_NO_GRP = 0x80030000,
++	IDXD_SCMD_WQ_NO_NAME = 0x80040000,
++	IDXD_SCMD_WQ_NO_SVM = 0x80050000,
++	IDXD_SCMD_WQ_NO_THRESH = 0x80060000,
++	IDXD_SCMD_WQ_PORTAL_ERR = 0x80070000,
++	IDXD_SCMD_WQ_RES_ALLOC_ERR = 0x80080000,
++	IDXD_SCMD_PERCPU_ERR = 0x80090000,
++	IDXD_SCMD_DMA_CHAN_ERR = 0x800a0000,
++	IDXD_SCMD_CDEV_ERR = 0x800b0000,
++	IDXD_SCMD_WQ_NO_SWQ_SUPPORT = 0x800c0000,
++	IDXD_SCMD_WQ_NONE_CONFIGURED = 0x800d0000,
++	IDXD_SCMD_WQ_NO_SIZE = 0x800e0000,
++	IDXD_SCMD_WQ_NO_PRIV = 0x800f0000,
++	IDXD_SCMD_WQ_IRQ_ERR = 0x80100000,
++	IDXD_SCMD_WQ_USER_NO_IOMMU = 0x80110000,
++};
++
++#define IDXD_SCMD_SOFTERR_MASK	0x80000000
++#define IDXD_SCMD_SOFTERR_SHIFT	16
++
++/* Descriptor flags */
++#define IDXD_OP_FLAG_FENCE	0x0001
++#define IDXD_OP_FLAG_BOF	0x0002
++#define IDXD_OP_FLAG_CRAV	0x0004
++#define IDXD_OP_FLAG_RCR	0x0008
++#define IDXD_OP_FLAG_RCI	0x0010
++#define IDXD_OP_FLAG_CRSTS	0x0020
++#define IDXD_OP_FLAG_CR		0x0080
++#define IDXD_OP_FLAG_CC		0x0100
++#define IDXD_OP_FLAG_ADDR1_TCS	0x0200
++#define IDXD_OP_FLAG_ADDR2_TCS	0x0400
++#define IDXD_OP_FLAG_ADDR3_TCS	0x0800
++#define IDXD_OP_FLAG_CR_TCS	0x1000
++#define IDXD_OP_FLAG_STORD	0x2000
++#define IDXD_OP_FLAG_DRDBK	0x4000
++#define IDXD_OP_FLAG_DSTS	0x8000
++
++/* IAX */
++#define IDXD_OP_FLAG_RD_SRC2_AECS	0x010000
++#define IDXD_OP_FLAG_RD_SRC2_2ND	0x020000
++#define IDXD_OP_FLAG_WR_SRC2_AECS_COMP	0x040000
++#define IDXD_OP_FLAG_WR_SRC2_AECS_OVFL	0x080000
++#define IDXD_OP_FLAG_SRC2_STS		0x100000
++#define IDXD_OP_FLAG_CRC_RFC3720	0x200000
++
++/* Opcode */
++enum dsa_opcode {
++	DSA_OPCODE_NOOP = 0,
++	DSA_OPCODE_BATCH,
++	DSA_OPCODE_DRAIN,
++	DSA_OPCODE_MEMMOVE,
++	DSA_OPCODE_MEMFILL,
++	DSA_OPCODE_COMPARE,
++	DSA_OPCODE_COMPVAL,
++	DSA_OPCODE_CR_DELTA,
++	DSA_OPCODE_AP_DELTA,
++	DSA_OPCODE_DUALCAST,
++	DSA_OPCODE_CRCGEN = 0x10,
++	DSA_OPCODE_COPY_CRC,
++	DSA_OPCODE_DIF_CHECK,
++	DSA_OPCODE_DIF_INS,
++	DSA_OPCODE_DIF_STRP,
++	DSA_OPCODE_DIF_UPDT,
++	DSA_OPCODE_CFLUSH = 0x20,
++};
++
++enum iax_opcode {
++	IAX_OPCODE_NOOP = 0,
++	IAX_OPCODE_DRAIN = 2,
++	IAX_OPCODE_MEMMOVE,
++	IAX_OPCODE_DECOMPRESS = 0x42,
++	IAX_OPCODE_COMPRESS,
++	IAX_OPCODE_CRC64,
++	IAX_OPCODE_ZERO_DECOMP_32 = 0x48,
++	IAX_OPCODE_ZERO_DECOMP_16,
++	IAX_OPCODE_ZERO_COMP_32 = 0x4c,
++	IAX_OPCODE_ZERO_COMP_16,
++	IAX_OPCODE_SCAN = 0x50,
++	IAX_OPCODE_SET_MEMBER,
++	IAX_OPCODE_EXTRACT,
++	IAX_OPCODE_SELECT,
++	IAX_OPCODE_RLE_BURST,
++	IAX_OPCODE_FIND_UNIQUE,
++	IAX_OPCODE_EXPAND,
++};
++
++/* Completion record status */
++enum dsa_completion_status {
++	DSA_COMP_NONE = 0,
++	DSA_COMP_SUCCESS,
++	DSA_COMP_SUCCESS_PRED,
++	DSA_COMP_PAGE_FAULT_NOBOF,
++	DSA_COMP_PAGE_FAULT_IR,
++	DSA_COMP_BATCH_FAIL,
++	DSA_COMP_BATCH_PAGE_FAULT,
++	DSA_COMP_DR_OFFSET_NOINC,
++	DSA_COMP_DR_OFFSET_ERANGE,
++	DSA_COMP_DIF_ERR,
++	DSA_COMP_BAD_OPCODE = 0x10,
++	DSA_COMP_INVALID_FLAGS,
++	DSA_COMP_NOZERO_RESERVE,
++	DSA_COMP_XFER_ERANGE,
++	DSA_COMP_DESC_CNT_ERANGE,
++	DSA_COMP_DR_ERANGE,
++	DSA_COMP_OVERLAP_BUFFERS,
++	DSA_COMP_DCAST_ERR,
++	DSA_COMP_DESCLIST_ALIGN,
++	DSA_COMP_INT_HANDLE_INVAL,
++	DSA_COMP_CRA_XLAT,
++	DSA_COMP_CRA_ALIGN,
++	DSA_COMP_ADDR_ALIGN,
++	DSA_COMP_PRIV_BAD,
++	DSA_COMP_TRAFFIC_CLASS_CONF,
++	DSA_COMP_PFAULT_RDBA,
++	DSA_COMP_HW_ERR1,
++	DSA_COMP_HW_ERR_DRB,
++	DSA_COMP_TRANSLATION_FAIL,
++};
++
++enum iax_completion_status {
++	IAX_COMP_NONE = 0,
++	IAX_COMP_SUCCESS,
++	IAX_COMP_PAGE_FAULT_IR = 0x04,
++	IAX_COMP_ANALYTICS_ERROR = 0x0a,
++	IAX_COMP_OUTBUF_OVERFLOW,
++	IAX_COMP_BAD_OPCODE = 0x10,
++	IAX_COMP_INVALID_FLAGS,
++	IAX_COMP_NOZERO_RESERVE,
++	IAX_COMP_INVALID_SIZE,
++	IAX_COMP_OVERLAP_BUFFERS = 0x16,
++	IAX_COMP_INT_HANDLE_INVAL = 0x19,
++	IAX_COMP_CRA_XLAT,
++	IAX_COMP_CRA_ALIGN,
++	IAX_COMP_ADDR_ALIGN,
++	IAX_COMP_PRIV_BAD,
++	IAX_COMP_TRAFFIC_CLASS_CONF,
++	IAX_COMP_PFAULT_RDBA,
++	IAX_COMP_HW_ERR1,
++	IAX_COMP_HW_ERR_DRB,
++	IAX_COMP_TRANSLATION_FAIL,
++	IAX_COMP_PRS_TIMEOUT,
++	IAX_COMP_WATCHDOG,
++	IAX_COMP_INVALID_COMP_FLAG = 0x30,
++	IAX_COMP_INVALID_FILTER_FLAG,
++	IAX_COMP_INVALID_INPUT_SIZE,
++	IAX_COMP_INVALID_NUM_ELEMS,
++	IAX_COMP_INVALID_SRC1_WIDTH,
++	IAX_COMP_INVALID_INVERT_OUT,
++};
++
++#define DSA_COMP_STATUS_MASK		0x7f
++#define DSA_COMP_STATUS_WRITE		0x80
++
++struct dsa_hw_desc {
++	uint32_t	pasid:20;
++	uint32_t	rsvd:11;
++	uint32_t	priv:1;
++	uint32_t	flags:24;
++	uint32_t	opcode:8;
++	uint64_t	completion_addr;
++	union {
++		uint64_t	src_addr;
++		uint64_t	rdback_addr;
++		uint64_t	pattern;
++		uint64_t	desc_list_addr;
++	};
++	union {
++		uint64_t	dst_addr;
++		uint64_t	rdback_addr2;
++		uint64_t	src2_addr;
++		uint64_t	comp_pattern;
++	};
++	union {
++		uint32_t	xfer_size;
++		uint32_t	desc_count;
++	};
++	uint16_t	int_handle;
++	uint16_t	rsvd1;
++	union {
++		uint8_t		expected_res;
++		/* create delta record */
++		struct {
++			uint64_t	delta_addr;
++			uint32_t	max_delta_size;
++			uint32_t 	delt_rsvd;
++			uint8_t 	expected_res_mask;
++		};
++		uint32_t	delta_rec_size;
++		uint64_t	dest2;
++		/* CRC */
++		struct {
++			uint32_t	crc_seed;
++			uint32_t	crc_rsvd;
++			uint64_t	seed_addr;
++		};
++		/* DIF check or strip */
++		struct {
++			uint8_t		src_dif_flags;
++			uint8_t		dif_chk_res;
++			uint8_t		dif_chk_flags;
++			uint8_t		dif_chk_res2[5];
++			uint32_t	chk_ref_tag_seed;
++			uint16_t	chk_app_tag_mask;
++			uint16_t	chk_app_tag_seed;
++		};
++		/* DIF insert */
++		struct {
++			uint8_t		dif_ins_res;
++			uint8_t		dest_dif_flag;
++			uint8_t		dif_ins_flags;
++			uint8_t		dif_ins_res2[13];
++			uint32_t	ins_ref_tag_seed;
++			uint16_t	ins_app_tag_mask;
++			uint16_t	ins_app_tag_seed;
++		};
++		/* DIF update */
++		struct {
++			uint8_t		src_upd_flags;
++			uint8_t		upd_dest_flags;
++			uint8_t		dif_upd_flags;
++			uint8_t		dif_upd_res[5];
++			uint32_t	src_ref_tag_seed;
++			uint16_t	src_app_tag_mask;
++			uint16_t	src_app_tag_seed;
++			uint32_t	dest_ref_tag_seed;
++			uint16_t	dest_app_tag_mask;
++			uint16_t	dest_app_tag_seed;
++		};
++
++		uint8_t		op_specific[24];
++	};
++} __attribute__((packed));
++
++struct iax_hw_desc {
++	uint32_t        pasid:20;
++	uint32_t        rsvd:11;
++	uint32_t        priv:1;
++	uint32_t        flags:24;
++	uint32_t        opcode:8;
++	uint64_t        completion_addr;
++	uint64_t        src1_addr;
++	uint64_t        dst_addr;
++	uint32_t        src1_size;
++	uint16_t        int_handle;
++	union {
++		uint16_t        compr_flags;
++		uint16_t        decompr_flags;
++	};
++	uint64_t        src2_addr;
++	uint32_t        max_dst_size;
++	uint32_t        src2_size;
++	uint32_t	filter_flags;
++	uint32_t	num_inputs;
++} __attribute__((packed));
++
++struct dsa_raw_desc {
++	uint64_t	field[8];
++} __attribute__((packed));
++
++/*
++ * The status field will be modified by hardware, therefore it should be
++ * volatile and prevent the compiler from optimize the read.
++ */
++struct dsa_completion_record {
++	volatile uint8_t	status;
++	union {
++		uint8_t		result;
++		uint8_t		dif_status;
++	};
++	uint16_t		rsvd;
++	uint32_t		bytes_completed;
++	uint64_t		fault_addr;
++	union {
++		/* common record */
++		struct {
++			uint32_t	invalid_flags:24;
++			uint32_t	rsvd2:8;
++		};
++
++		uint32_t	delta_rec_size;
++		uint64_t	crc_val;
++
++		/* DIF check & strip */
++		struct {
++			uint32_t	dif_chk_ref_tag;
++			uint16_t	dif_chk_app_tag_mask;
++			uint16_t	dif_chk_app_tag;
++		};
++
++		/* DIF insert */
++		struct {
++			uint64_t	dif_ins_res;
++			uint32_t	dif_ins_ref_tag;
++			uint16_t	dif_ins_app_tag_mask;
++			uint16_t	dif_ins_app_tag;
++		};
++
++		/* DIF update */
++		struct {
++			uint32_t	dif_upd_src_ref_tag;
++			uint16_t	dif_upd_src_app_tag_mask;
++			uint16_t	dif_upd_src_app_tag;
++			uint32_t	dif_upd_dest_ref_tag;
++			uint16_t	dif_upd_dest_app_tag_mask;
++			uint16_t	dif_upd_dest_app_tag;
++		};
++
++		uint8_t		op_specific[16];
++	};
++} __attribute__((packed));
++
++struct dsa_raw_completion_record {
++	uint64_t	field[4];
++} __attribute__((packed));
++
++struct iax_completion_record {
++	volatile uint8_t        status;
++	uint8_t                 error_code;
++	uint16_t                rsvd;
++	uint32_t                bytes_completed;
++	uint64_t                fault_addr;
++	uint32_t                invalid_flags;
++	uint32_t                rsvd2;
++	uint32_t                output_size;
++	uint8_t                 output_bits;
++	uint8_t                 rsvd3;
++	uint16_t                xor_csum;
++	uint32_t                crc;
++	uint32_t                min;
++	uint32_t                max;
++	uint32_t                sum;
++	uint64_t                rsvd4[2];
++} __attribute__((packed));
++
++struct iax_raw_completion_record {
++	uint64_t	field[8];
++} __attribute__((packed));
++
++#endif
 -- 
 2.30.2
 
