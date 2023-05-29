@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E33A714212
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 04:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC40714222
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 04:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3Sl2-00022u-Fr; Sun, 28 May 2023 22:37:16 -0400
+	id 1q3Ssi-0003JL-Mb; Sun, 28 May 2023 22:45:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q3Sl0-00022l-7f
- for qemu-devel@nongnu.org; Sun, 28 May 2023 22:37:14 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1q3Ssg-0003J5-2i
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 22:45:10 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q3Sky-0007ve-LB
- for qemu-devel@nongnu.org; Sun, 28 May 2023 22:37:14 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-52867360efcso1689257a12.2
- for <qemu-devel@nongnu.org>; Sun, 28 May 2023 19:37:10 -0700 (PDT)
+ id 1q3Ssc-0001rL-87
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 22:45:08 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1b00ecabdf2so26515875ad.2
+ for <qemu-devel@nongnu.org>; Sun, 28 May 2023 19:45:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1685327829; x=1687919829;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Y/66hfExbGZ3tjBqPhYXz7LQz2FFZ7y3XJ1eS2f/Miw=;
- b=RwFyqwJneec2ncHpIiubj3CTjEcmsNCpF6Rbw6LFnf54VtjWfUpwIZ3so32/SDY5n8
- 7IqTfdBh1rFlU4flmXVGvDVzI+UzJ+GSaZQE6IUiOhxB9fA3pQ2mB7DvtjWQ4pyQL5pS
- gbW6gLy9+99FfVhwk5XXB9wVO1I8lxT/quy8Fn8vz/1csZtVvVlMcM7Uw2dm1pCWC0SJ
- 7zAEqyRi5MN6CqZiYxLaF9Z3Mc0ABWFXbzsUUwrQsut9/540zrxsOhl3NZYB3TZ7J8IG
- +qhTgCeb+Cu07XZOmLUr+KydawwTqbagSTkNjxW5FSJzAna6w0uqYZ6zQ8E6wJq/slJU
- b+bA==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1685328303; x=1687920303;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Af8WxHvopZgunjtlKz3WqvWXUDAN5HOeeO8nRu6vx8Q=;
+ b=fNKHu+q58RRy1UT0CNpoOx73VH1LeXTSyg80FcsLKXJAwbcVR2yM38ypXNo+41m7U5
+ uQPAo7jIhRsE+jIqVPxvVvQXI8ino4jCiTui6DDT4M1vglunQQ1Z29NMYdvBoDFlcxQw
+ iLZHfz+goDwv1o+DxWCP+H3INC20deVX9qA+StgW/byL64rteZ9UpAHe2EorlGvsfBjl
+ ZV2H/ua++qU2cHgg0nmNCoWceBx8aDFbs42ymfl1b0cxZBpeRJ94tckh9d0RvzSazA/T
+ fibQwUY+urIrXEV6NoBKhWuVG8OJ/RBYmFYB6hhNRCHKqi9z/eQ4TEU5G4lDZZ4Sekl9
+ jUwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685327829; x=1687919829;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Y/66hfExbGZ3tjBqPhYXz7LQz2FFZ7y3XJ1eS2f/Miw=;
- b=Qt3inn8wnJ/n2nlq5mV2ZdVXT4dhclEWKQNEOc8YXHfBHC/dh0t0UVSfcpcqDe5vLI
- YgpdkZI9tz9hRSbiSGwHBl3hpYVPxWbNFVWm0xdtmKT1QmSGaePFLmB0zEVbskR+5cks
- 7Vx7Iu1kbm/S9frKRHOUKToRBVwRXKNyd3R/rz4LARjNrpUbgIJHjs9qwlKsqBi99XtH
- HW+Fjze473gkzrEZJCMTYkUxIph/QTXFN1ri0qwnvdpqdg6bYJ+MFUJMkgNQMCues+Cg
- DhiqZZBHdWfb86xLNxmj8C4cXkWqs9l8z1MvehIg/CNwbr+++768nv/7EG3ji6ZKYVWL
- IeJQ==
-X-Gm-Message-State: AC+VfDz+Z0rtI0gcSwTfhYJ7TeVCthE+Hr81vm6IOTYyCPticIFznaLI
- IrWzUe7BnlolKlihskq+X0Mecj/vuoOPUoO8Qz4=
-X-Google-Smtp-Source: ACHHUZ7rO+tc18ygsvVBexvFBswve4jSBIXTm0Pl3my3yx6XD9oPj4p2kP7CqgB+2li8kUouLyuwag==
-X-Received: by 2002:a05:6a20:54a6:b0:10d:b160:3d5c with SMTP id
- i38-20020a056a2054a600b0010db1603d5cmr8106770pzk.12.1685327829089; 
- Sun, 28 May 2023 19:37:09 -0700 (PDT)
-Received: from alarm.. ([157.82.203.253]) by smtp.gmail.com with ESMTPSA id
- h15-20020a62b40f000000b0064d2ad04cccsm5882580pfn.175.2023.05.28.19.37.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 May 2023 19:37:08 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH] igb: Remove obsolete workaround for Windows
-Date: Mon, 29 May 2023 11:37:04 +0900
-Message-Id: <20230529023704.9387-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.40.1
+ d=1e100.net; s=20221208; t=1685328303; x=1687920303;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Af8WxHvopZgunjtlKz3WqvWXUDAN5HOeeO8nRu6vx8Q=;
+ b=SALo9htV04ehodDEgO+o3ooE3ZQ1egSUAuYlNYhuQSXh0rFYVPJruy099HTy6/7Cn6
+ HxopGKEk4PRcCX/lxhl8Dn5Qrq4fuzyaUczBrwba/PdY4xd1L4XpXG6FoKhjgWiaF7o9
+ 7SxddFgrWB5TmZwIL4LB3GYpZi9qa2KAKjDCby3OurXNze35E0Z+nGUD8EVJoeKmSgCu
+ 0iSzZzzIDHP1drQSSARk1o9hEi5jgxXQ3os2+prNt5yPxKRcuEUgECXM+Rn0FrCn0ZH5
+ 3UdGOImTBXc14Ep8D62ngueG+qfk/UNet0TY1IXa9AGCPQu4mM1SldSFkur/d98VYIEY
+ yLSA==
+X-Gm-Message-State: AC+VfDyZjSeEWSD/mPHGEw+QvSUvshTFkELGQOsBo92KKoV0SG6mVTKe
+ qB+4El6KdrHMchwlbY3eEOcxJA==
+X-Google-Smtp-Source: ACHHUZ7vA1X/p2IOIQZ6kbBL7eflNrF3dABGjXQhB+06x+gN7tAQkIsE7YLF6h/xK6nY2rbP6k7pMw==
+X-Received: by 2002:a17:903:2345:b0:1af:f4f5:6fae with SMTP id
+ c5-20020a170903234500b001aff4f56faemr12544468plh.54.1685328303410; 
+ Sun, 28 May 2023 19:45:03 -0700 (PDT)
+Received: from [157.82.203.253] ([157.82.203.253])
+ by smtp.gmail.com with ESMTPSA id
+ q12-20020a170902a3cc00b001a64851087bsm5053557plb.272.2023.05.28.19.45.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 28 May 2023 19:45:03 -0700 (PDT)
+Message-ID: <e2bed67c-23ea-6364-bd5a-f7b330346302@daynix.com>
+Date: Mon, 29 May 2023 11:45:00 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] igb: Add Function Level Reset to PF and VF
+Content-Language: en-US
+To: Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: Jason Wang <jasowang@redhat.com>
+References: <20230526173035.69055-1-clg@redhat.com>
+ <DBBP189MB143330236AFF956285CD74F295459@DBBP189MB1433.EURP189.PROD.OUTLOOK.COM>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <DBBP189MB143330236AFF956285CD74F295459@DBBP189MB1433.EURP189.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::636;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,34 +97,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I confirmed it works with Windows even without this workaround. It is
-likely to be a mistake so remove it.
+On 2023/05/28 19:50, Sriram Yagnaraman wrote:
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Sent: Friday, 26 May 2023 19:31
+>> To: qemu-devel@nongnu.org
+>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>; Sriram Yagnaraman
+>> <sriram.yagnaraman@est.tech>; Jason Wang <jasowang@redhat.com>; Cédric
+>> Le Goater <clg@redhat.com>
+>> Subject: [PATCH] igb: Add Function Level Reset to PF and VF
+>>
+>> The Intel 82576EB GbE Controller say that the Physical and Virtual Functions
+>> support Function Level Reset. Add the capability to each device model.
+>>
+>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+>>   hw/net/igb.c   | 3 +++
+>>   hw/net/igbvf.c | 3 +++
+>>   2 files changed, 6 insertions(+)
+>>
+>> diff --git a/hw/net/igb.c b/hw/net/igb.c index 1c989d767725..08e389338dca
+>> 100644
+>> --- a/hw/net/igb.c
+>> +++ b/hw/net/igb.c
+>> @@ -101,6 +101,7 @@ static void igb_write_config(PCIDevice *dev, uint32_t
+>> addr,
+>>
+>>       trace_igb_write_config(addr, val, len);
+>>       pci_default_write_config(dev, addr, val, len);
+>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+>>
+>>       if (range_covers_byte(addr, len, PCI_COMMAND) &&
+>>           (dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) { @@ -427,6
+>> +428,8 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
+>>       }
+>>
+>>       /* PCIe extended capabilities (in order) */
+>> +    pcie_cap_flr_init(pci_dev);
+>> +
+>>       if (pcie_aer_init(pci_dev, 1, 0x100, 0x40, errp) < 0) {
+>>           hw_error("Failed to initialize AER capability");
+>>       }
+>> diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c index
+>> 284ea611848b..0a58dad06802 100644
+>> --- a/hw/net/igbvf.c
+>> +++ b/hw/net/igbvf.c
+>> @@ -204,6 +204,7 @@ static void igbvf_write_config(PCIDevice *dev,
+>> uint32_t addr, uint32_t val,  {
+>>       trace_igbvf_write_config(addr, val, len);
+>>       pci_default_write_config(dev, addr, val, len);
+>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+>>   }
+>>
+>>   static uint64_t igbvf_mmio_read(void *opaque, hwaddr addr, unsigned size)
+>> @@ -266,6 +267,8 @@ static void igbvf_pci_realize(PCIDevice *dev, Error
+>> **errp)
+>>           hw_error("Failed to initialize PCIe capability");
+>>       }
+>>
+>> +    pcie_cap_flr_init(dev);
+> 
+> Sorry for my naive question, and perhaps not related to your patch, IGBVF device class doesn't seem to have any reset functions registered via igbvf_class_init(). So, I am guessing an FLR will not trigger igb_vf_reset(), which is probably what we want.
 
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- hw/net/igb_core.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+You're right. Advertising FLR capability without implementing it can 
+confuse the guest though such probability is quite a low in practice. 
+The reset should be implemented first.
 
-diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 97bb5c84ce..abc9bbe937 100644
---- a/hw/net/igb_core.c
-+++ b/hw/net/igb_core.c
-@@ -2677,12 +2677,7 @@ static uint32_t igb_get_status(IGBCore *core, int index)
-         res |= E1000_STATUS_IOV_MODE;
-     }
- 
--    /*
--     * Windows driver 12.18.9.23 resets if E1000_STATUS_GIO_MASTER_ENABLE is
--     * left set after E1000_CTRL_LRST is set.
--     */
--    if (!(core->mac[CTRL] & E1000_CTRL_GIO_MASTER_DISABLE) &&
--        !(core->mac[CTRL] & E1000_CTRL_LRST)) {
-+    if (!(core->mac[CTRL] & E1000_CTRL_GIO_MASTER_DISABLE)) {
-         res |= E1000_STATUS_GIO_MASTER_ENABLE;
-     }
- 
--- 
-2.40.1
-
+> 
+>> +
+>>       if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
+>>           hw_error("Failed to initialize AER capability");
+>>       }
+>> --
+>> 2.40.1
+> 
 
