@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B80B714244
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 05:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 418A271425C
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 05:44:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3TPv-0007uA-LF; Sun, 28 May 2023 23:19:31 -0400
+	id 1q3TmK-0002FM-Eg; Sun, 28 May 2023 23:42:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3TPt-0007td-IG; Sun, 28 May 2023 23:19:29 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1q3TmH-0002Ej-GM; Sun, 28 May 2023 23:42:37 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3TPr-0004FD-Me; Sun, 28 May 2023 23:19:29 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1b038064d97so5304305ad.0; 
- Sun, 28 May 2023 20:19:27 -0700 (PDT)
+ id 1q3TmF-00039g-Ps; Sun, 28 May 2023 23:42:37 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1b038064d97so5399875ad.0; 
+ Sun, 28 May 2023 20:42:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685330366; x=1687922366;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
+ d=gmail.com; s=20221208; t=1685331754; x=1687923754;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h7vosFpkRZZZVEJdyGzfbjJe7lYI19grZ1pEYfGgbPU=;
- b=gCNTHnCk95CbcunWhQ2Zm8sU8wx9kXdu2b9l0zlEzIh2VQy4aZZDRODgQBIhKtdGRb
- 86jc3MeAQ9TYFQwV/oZTTx9MnXuw4YioJL147Bpn37EveswPkaIlcKs7sXdXgH8x0w3m
- DK1+2aJSdHZDCdfsWiCYUZw47KL3keW3KqQy4KKR6u8h3V3Z6EjTVF2nWELpzoyXHZYG
- 5fVQpaq6liul8xRGO8nyOnq6OD25OP4SJEL86wk2FGkcUGQ21TZxI8F1T5f58J3tZS+Y
- xwmDfZYitwl/LdwT/NCdEytyycxDjCMOPr625yo0idNt4s0vO69n5vT6DEg3VusE+fJ8
- E/+A==
+ bh=4FJjlN4l8ctSQQ9/9iOMpfcxG+GApuiHmudbxDNihBo=;
+ b=sKJQ6tfQw0S2b61y3DETapSxab1zglhm6VxCVSXQ1iGOPCR+PphGJnc++oLIrH2oWc
+ iWz+1Ir7esKauxZEeZGqjIWEhFmoqHEe4fXjQrXscvSL4E16OqpqKMefBtsIB2OWMT3u
+ bA57Lq/BYuVnwKkr5oySy1MIhETJbsFhUAJC8Rnh9nPUX93mLJ92Xj3qAY7+qUj78LvN
+ WuwOeX4mUXF4X5KAJm85C+v5riEs2PvEfnzsM6B6OAXxQ/3KJ5Sj6pYbSPCtqdlQi1bD
+ APQjXYF2j1YnK9nujVI+bdzzTgKQF9WxoSD0v+OFHg4Y7gb5HTWMJx5bhCokuN2SU8N1
+ TZ5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685330366; x=1687922366;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
+ d=1e100.net; s=20221208; t=1685331754; x=1687923754;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=h7vosFpkRZZZVEJdyGzfbjJe7lYI19grZ1pEYfGgbPU=;
- b=VD9XgXJl2yDGNe3M2Wo1uE1AIgbkU576onI5qsWP1i4C9ebnmjzXMFEpETkePIPaDP
- s+QBhFXrQ6Dr67H1pfgTybWaf49JPmAClLgTqNNfs88yMFWM/jICd4kA0zf8qSKDKWy0
- PYzxeSw3GFpPLM5x4nt7ev0Gqpyt3/crqaJucMrRj908Ihwl2OrsETxsgbN4/UtUa+d7
- 8f7uV/W8UX92o5WTVwu22dwFDqrvf6R2JG0Ovwu3qwy4wWOMOT9ZfHC5Qmiz32hNSgx9
- /pTfbuPWqQG+UT/+dTruPZuu0P8YGsFs7kQBnLVKyeG8Aa81j5PGR6M+aa893UCYICE2
- VYng==
-X-Gm-Message-State: AC+VfDxU0JUs8dKPLqw8HZ71KKBwcecU77/jggYHrsoGa9wu9HPUckLJ
- n4/1D64YjSaz9bBktUw/AN8=
-X-Google-Smtp-Source: ACHHUZ6pmij6fviPNVCxWUPOVBWQWyiCnP63C1lLvGrc6ljrDe8Rx70I+gs2MEzQT1/WSdDo1Td59A==
-X-Received: by 2002:a17:902:da84:b0:1ac:92db:9677 with SMTP id
- j4-20020a170902da8400b001ac92db9677mr6986736plx.28.1685330365759; 
- Sun, 28 May 2023 20:19:25 -0700 (PDT)
+ bh=4FJjlN4l8ctSQQ9/9iOMpfcxG+GApuiHmudbxDNihBo=;
+ b=bys6VQCT1X0+sMBX07V9OEx68wd/CRPrBFXnc233ADAtLuYNmxYGqv4l7IwcZ2yMh0
+ LcTbIGV/jowQLhKJVVN/uLCkLaS2mPDpqBBPPJEzuAopfXwgGwWxr/17P6YiBz/BiPSk
+ R2ljBguVS6AjSwOYU4C5A4lJLJd/1O9C8uDcQhXMUpKKl0SxPNK+1NdhzZIXGpNGoV6/
+ 4QvrkVg6qN3D6ieeXii5kbdMVK+gfqGlC+6sw/RTYBIcMcFXqBxlmSc2BtbMYtW8QSKG
+ BI1T8VkhQ1WSeaSn0VdKvxLa9UNwopQpyUyIPyN+vy1du4wMXUZieVFzL27EXhF5tecn
+ iMtQ==
+X-Gm-Message-State: AC+VfDywoTXe0oKkZFlQvBwoLtlAJWFl9RH4kd5qpN3MV19KQAimt+17
+ 2cB6c0NRy7Blwk2GtBcFzvA=
+X-Google-Smtp-Source: ACHHUZ4VIlpjJ5N8aJKpAjFqAHgyXC6iwuOyrYxYF+80hFlhqsA32UI9XVSybpGUpZS/KKa/8TV+wQ==
+X-Received: by 2002:a17:902:e744:b0:1ac:86b5:70d9 with SMTP id
+ p4-20020a170902e74400b001ac86b570d9mr6938780plf.32.1685331754131; 
+ Sun, 28 May 2023 20:42:34 -0700 (PDT)
 Received: from localhost ([203.221.142.9]) by smtp.gmail.com with ESMTPSA id
- x1-20020a170902820100b001a5260a6e6csm6950153pln.206.2023.05.28.20.19.20
+ s17-20020a170902989100b001a245b49731sm3272203plp.128.2023.05.28.20.42.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 May 2023 20:19:25 -0700 (PDT)
+ Sun, 28 May 2023 20:42:33 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 May 2023 13:19:16 +1000
-Message-Id: <CSYFR1KH5WRY.1DE47N1LKXVJ8@wheely>
+Date: Mon, 29 May 2023 13:42:26 +1000
+Message-Id: <CSYG8RTMAB5O.2H9DDPSRE7JR0@wheely>
+Subject: Re: [PATCH v3] target: ppc: Use MSR_HVB bit to get the target
+ endianness for memory dump
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Narayana Murty N" <nnmlinux@linux.ibm.com>, <danielhb413@gmail.com>,
  <clg@kaod.org>, <david@gibson.dropbear.id.au>, <groug@kaod.org>
 Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, <farosas@suse.de>,
  <npiggin@linux.ibm.com>, <vaibhav@linux.ibm.com>, <harshpb@linux.ibm.com>,
  <sbhat@linux.ibm.com>
-Subject: Re: [PATCH v3] target: ppc: Use MSR_HVB bit to get the target
- endianness for memory dump
 X-Mailer: aerc 0.14.0
 References: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
 In-Reply-To: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,88 +94,6 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Tue May 23, 2023 at 2:02 AM AEST, Narayana Murty N wrote:
-> Currently on PPC64 qemu always dumps the guest memory in
-> Big Endian (BE) format even though the guest running in Little Endian
-> (LE) mode.
-
-The guest? Are you talking about the immediate target, or a
-KVM guest running under that? Or both?
-
-> So crash tool fails to load the dump as illustrated below:
->
-> Log :
-> $ virsh dump DOMAIN --memory-only dump.file
->
-> Domain 'DOMAIN' dumped to dump.file
->
-> $ crash vmlinux dump.file
->
-> <snip>
-> crash 8.0.2-1.el9
->
-> WARNING: endian mismatch:
->           crash utility: little-endian
->           dump.file: big-endian
->
-> WARNING: machine type mismatch:
->           crash utility: PPC64
->           dump.file: (unknown)
->
-> crash: dump.file: not a supported file format
-> <snip>
->
-> This happens because cpu_get_dump_info() passes cpu->env->has_hv_mode
-> to function ppc_interrupts_little_endian(), the cpu->env->has_hv_mode
-> always set for powerNV even though the guest is not running in hv mode.
-> The hv mode should be taken from msr_mask MSR_HVB bit
-> (cpu->env.msr_mask & MSR_HVB). This patch fixes the issue by passing
-> MSR_HVB value to ppc_interrupts_little_endian() in order to determine
-> the guest endianness.
->
-> The crash tool also expects guest kernel endianness should match the
-> endianness of the dump.
->
-> The patch was tested on POWER9 box booted with Linux as host in
-> following cases:
->
-> Host-Endianess Qemu-Target-Machine Qemu-Guest-Endianess  Qemu-Generated-G=
-uest
->                                                           Memory-Dump-For=
-mat
-> BE             powernv             LE KVM guest                 LE
-> BE             powernv             BE KVM guest                 BE
-> LE             powernv             LE KVM guest                 LE
-> LE             powernv             BE KVM guest                 BE
-> LE             pseries KVM         LE KVM guest                 LE
-> LE             pseries TCG         LE guest                     LE
-
-I'm still having a bit of trouble with this like the others.
-
-First thing first, take "guest" out of it entirely. If I read it right,
-then the dump will be done in whichever endian the OS running on the
-machine has set the interrupt endian mode to, and crash expects that to
-match the vmlinux. Is that correct?
-
-For the powernv machine, when the OS runs a KVM guest, the crash dump
-continues to be generated in the same endianness even if the guest OS is
-the opposite.
-
-If my understanding is correct, I don't see why that is desirable to
-change it to the arbitrary guest setting. The OS running on the target
-is the one you want to debug if you dump from the first QEMU. If you
-want to debug the guest you would dump from the QEMU running in the
-target that is running the guest, no?
-
-For the pseries machine, the TCG nested HV thing probably takes over
-LPCR when running the nested HV guest. I would argue that's wrong and it
-should actually match powernv behaviour.
-
-Thanks,
-Nick
-
->
-> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-> ---
 > Changes since V2:
 > commit message modified as per feedbak from Nicholas Piggin.
 > Changes since V1:
@@ -201,7 +119,27 @@ ibm.com/
 >          info->d_endian =3D ELFDATA2LSB;
 >      } else {
 >          info->d_endian =3D ELFDATA2MSB;
-> --=20
-> 2.39.2
+
+Oh, and now I see it cpu_get_dump_info just picks the first CPU to test
+this! So a test that can change at runtime is surely not the right one.
+If you use MSR[HV] then if you have a SMP machine that is doing a bunch
+of things and you want to dump to debug the system, this will just
+randomly give you a wrong-endian dump if CPU0 just happened to be
+running some KVM guest.
+
+I know HILE techically does change at runtime, but at least in practice
+it is just boot (and maybe kexec or reboot) so that is the least worst
+option. Part of the problem is perhaps the tools and commands aren't so
+so suited to ppc's bi-endian nature.
+
+But even ignoring all of that, let's say you have all the same endian
+host and guest kernels and dump format... If you dump host memory then
+you need host kernel and structures to debug guest kernel/image
+(assuming crash or the person debugging it is smart enough to make sense
+of it). So I don't see how you can sanely use the crash dump of host
+memory with the guest kernel. I must still be missing something.
+
+Thanks,
+Nick
 
 
