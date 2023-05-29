@@ -2,65 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC435714E7C
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 18:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65822714EB3
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 18:49:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3fpF-0003MT-Gv; Mon, 29 May 2023 12:34:29 -0400
+	id 1q3g2g-0007JB-3b; Mon, 29 May 2023 12:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1q3fpA-0003La-Rf
- for qemu-devel@nongnu.org; Mon, 29 May 2023 12:34:24 -0400
-Received: from mga03.intel.com ([134.134.136.65])
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q3g2Y-0007HB-8I
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 12:48:14 -0400
+Received: from smtp-190d.mail.infomaniak.ch ([2001:1600:3:17::190d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1q3fp6-00075s-0R
- for qemu-devel@nongnu.org; Mon, 29 May 2023 12:34:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1685378060; x=1716914060;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=zvFuRLI9smAGYPpwowT9/Rn2/EsH7SSFkJPHWVone30=;
- b=PEUb0fhobGn4g2RYVgvd3pDDKTKY9LcWUrQuFIq1zlYlgI4ra0/LkpkM
- G0XVM4yzJOxK/9pvGoIF7Z7pIPEdD2fcuGo6WY85+i2wvSWAgG/HHP9hH
- 5OpP3P4ODdJL43ByRfJIp9ICs0mqe+SXCh8UJnyCS5/JWHhpRRYc7+LFZ
- ZxdCGoVD8yS1Tnl8cHbmK5FciahDkSep2rR4lGQqEaCCfzY6pU4G0NQDd
- 32cA2lQZU3Wm4to7EftHFfTS+vtcx66a6EgoNHRNja8sO5NJQjBuZztNa
- 4z+Btx5Y2nO4xy6NnD0rWD8a9SLQ650yC5L3cdpxt9YavFWT/L0Ly4Uha g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="357991693"
-X-IronPort-AV: E=Sophos;i="6.00,201,1681196400"; d="scan'208";a="357991693"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2023 09:34:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="771215628"
-X-IronPort-AV: E=Sophos;i="6.00,201,1681196400"; d="scan'208";a="771215628"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
- by fmsmga008.fm.intel.com with ESMTP; 29 May 2023 09:34:17 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 3/3] hw/smbios: Fix core count in type4
-Date: Tue, 30 May 2023 00:43:43 +0800
-Message-Id: <20230529164343.467793-4-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230529164343.467793-1-zhao1.liu@linux.intel.com>
-References: <20230529164343.467793-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q3g2V-0002Zd-Lx
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 12:48:13 -0400
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+ by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QVM0S0h90zMqS8N;
+ Mon, 29 May 2023 18:48:08 +0200 (CEST)
+Received: from unknown by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA
+ id 4QVM0N4qpgzMpvXY; Mon, 29 May 2023 18:48:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+ s=20191114; t=1685378887;
+ bh=L+AoM15vKXrvn30NczrqA+aX9dwRdpATxmicKsa0b54=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=NIV0lHsv0wTD7BCC4ZXt7w9oowUL9SV7UxKoOT7S1KqEP+2aSUrieQxP9LJP59+mO
+ ZNd3IkCScExVnFAtc3C902qJRT2LHk41z0nJeTFW/IpjysBJPb3bghczvpI3mYK0CS
+ 5fhux6+oZzWtW4Q9BILMrxW1qJ1honAjKd3plkns=
+Message-ID: <901ff104-215c-8e81-fbae-5ecd8fa94449@digikod.net>
+Date: Mon, 29 May 2023 18:48:03 +0200
 MIME-Version: 1.0
+User-Agent: 
+Subject: Re: [PATCH v1 5/9] KVM: x86: Add new hypercall to lock control
+ registers
+Content-Language: en-US
+To: Wei Liu <wei.liu@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
+ James Morris <jamorris@linux.microsoft.com>,
+ John Andersen <john.s.andersen@intel.com>,
+ "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>,
+ Marian Rotariu <marian.c.rotariu@gmail.com>,
+ =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
+ =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
+ Zahra Tarkhani <ztarkhani@microsoft.com>,
+ =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
+ dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ x86@kernel.org, xen-devel@lists.xenproject.org
+References: <20230505152046.6575-1-mic@digikod.net>
+ <20230505152046.6575-6-mic@digikod.net>
+ <ZFlllHjntehpthma@liuwe-devbox-debian-v2>
+From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <ZFlllHjntehpthma@liuwe-devbox-debian-v2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=134.134.136.65;
- envelope-from=zhao1.liu@linux.intel.com; helo=mga03.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Infomaniak-Routing: alpha
+Received-SPF: pass client-ip=2001:1600:3:17::190d;
+ envelope-from=mic@digikod.net; helo=smtp-190d.mail.infomaniak.ch
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,62 +90,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
 
-From SMBIOS 3.0 specification, core count field means:
+On 08/05/2023 23:11, Wei Liu wrote:
+> On Fri, May 05, 2023 at 05:20:42PM +0200, Mickaël Salaün wrote:
+>> This enables guests to lock their CR0 and CR4 registers with a subset of
+>> X86_CR0_WP, X86_CR4_SMEP, X86_CR4_SMAP, X86_CR4_UMIP, X86_CR4_FSGSBASE
+>> and X86_CR4_CET flags.
+>>
+>> The new KVM_HC_LOCK_CR_UPDATE hypercall takes two arguments.  The first
+>> is to identify the control register, and the second is a bit mask to
+>> pin (i.e. mark as read-only).
+>>
+>> These register flags should already be pinned by Linux guests, but once
+>> compromised, this self-protection mechanism could be disabled, which is
+>> not the case with this dedicated hypercall.
+>>
+>> Cc: Borislav Petkov <bp@alien8.de>
+>> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+>> Cc: H. Peter Anvin <hpa@zytor.com>
+>> Cc: Ingo Molnar <mingo@redhat.com>
+>> Cc: Kees Cook <keescook@chromium.org>
+>> Cc: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: Sean Christopherson <seanjc@google.com>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+>> Cc: Wanpeng Li <wanpengli@tencent.com>
+>> Signed-off-by: Mickaël Salaün <mic@digikod.net>
+>> Link: https://lore.kernel.org/r/20230505152046.6575-6-mic@digikod.net
+> [...]
+>>   	hw_cr4 = (cr4_read_shadow() & X86_CR4_MCE) | (cr4 & ~X86_CR4_MCE);
+>>   	if (is_unrestricted_guest(vcpu))
+>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+>> index ffab64d08de3..a529455359ac 100644
+>> --- a/arch/x86/kvm/x86.c
+>> +++ b/arch/x86/kvm/x86.c
+>> @@ -7927,11 +7927,77 @@ static unsigned long emulator_get_cr(struct x86_emulate_ctxt *ctxt, int cr)
+>>   	return value;
+>>   }
+>>   
+>> +#ifdef CONFIG_HEKI
+>> +
+>> +extern unsigned long cr4_pinned_mask;
+>> +
+> 
+> Can this be moved to a header file?
 
-Core Count is the number of cores detected by the BIOS for this
-processor socket. [1]
+Yep, but I'm not sure which one. Any preference Kees?
 
-Before 003f230e37d7 ("machine: Tweak the order of topology members in
-struct CpuTopology"), MachineState.smp.cores means "the number of cores
-in one package", and it's correct to use smp.cores for core count.
 
-But 003f230e37d7 changes the smp.cores' meaning to "the number of cores
-in one die" and doesn't change the original smp.cores' use in smbios as
-well, which makes core count in type4 go wrong.
+> 
+>> +static int heki_lock_cr(struct kvm *const kvm, const unsigned long cr,
+>> +			unsigned long pin)
+>> +{
+>> +	if (!pin)
+>> +		return -KVM_EINVAL;
+>> +
+>> +	switch (cr) {
+>> +	case 0:
+>> +		/* Cf. arch/x86/kernel/cpu/common.c */
+>> +		if (!(pin & X86_CR0_WP))
+>> +			return -KVM_EINVAL;
+>> +
+>> +		if ((read_cr0() & pin) != pin)
+>> +			return -KVM_EINVAL;
+>> +
+>> +		atomic_long_or(pin, &kvm->heki_pinned_cr0);
+>> +		return 0;
+>> +	case 4:
+>> +		/* Checks for irrelevant bits. */
+>> +		if ((pin & cr4_pinned_mask) != pin)
+>> +			return -KVM_EINVAL;
+>> +
+> 
+> It is enforcing the host mask on the guest, right? If the guest's set is a
+> super set of the host's then it will get rejected.
+> 
+> 
+>> +		/* Ignores bits not present in host. */
+>> +		pin &= __read_cr4();
+>> +		atomic_long_or(pin, &kvm->heki_pinned_cr4);
 
-Fix this issue with the correct "cores per socket" caculation.
+We assume that the host's mask is a superset of the guest's mask. I 
+guess we should check the absolute supported bits instead, even if it 
+would be weird for the host to not support these bits.
 
-[1] SMBIOS 3.0.0, section 7.5.6, Processor Information - Core Count
 
-Fixes: 003f230e37d7 ("machine: Tweak the order of topology members in struct CpuTopology")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/smbios/smbios.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+>> +		return 0;
+>> +	}
+>> +	return -KVM_EINVAL;
+>> +}
+>> +
+>> +int heki_check_cr(const struct kvm *const kvm, const unsigned long cr,
+>> +		  const unsigned long val)
+>> +{
+>> +	unsigned long pinned;
+>> +
+>> +	switch (cr) {
+>> +	case 0:
+>> +		pinned = atomic_long_read(&kvm->heki_pinned_cr0);
+>> +		if ((val & pinned) != pinned) {
+>> +			pr_warn_ratelimited(
+>> +				"heki-kvm: Blocked CR0 update: 0x%lx\n", val);
+> 
+> I think if the message contains the VM and VCPU identifier it will
+> become more useful.
 
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index f80a701cdfc1..32e26bffa2df 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -714,6 +714,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     char sock_str[128];
-     size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
-     unsigned cpus_per_socket = ms->smp.max_cpus / ms->smp.sockets;
-+    unsigned cores_per_socket = cpus_per_socket / ms->smp.threads;
- 
-     if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
-         tbl_len = SMBIOS_TYPE_4_LEN_V30;
-@@ -748,7 +749,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     SMBIOS_TABLE_SET_STR(4, asset_tag_number_str, type4.asset);
-     SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
- 
--    t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
-+    t->core_count = (cores_per_socket > 255) ? 0xFF : cores_per_socket;
-     t->core_enabled = t->core_count;
- 
-     t->thread_count = (cpus_per_socket > 255) ? 0xFF : cpus_per_socket;
-@@ -757,7 +758,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     t->processor_family2 = cpu_to_le16(0x01); /* Other */
- 
-     if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
--        t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
-+        t->core_count2 = t->core_enabled2 = cpu_to_le16(cores_per_socket);
-         t->thread_count2 = cpu_to_le16(cpus_per_socket);
-     }
- 
--- 
-2.34.1
-
+Indeed, and this should be the case for all log messages, but I'd left 
+that for future work. ;) I'll update the logs for the next series with a 
+new kvm_warn_ratelimited() helper using VCPU's PID.
 
