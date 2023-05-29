@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4E77141BE
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 03:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCFF7141C4
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 03:51:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3Ryw-0002Lu-Ks; Sun, 28 May 2023 21:47:34 -0400
+	id 1q3S2d-0003Y0-8I; Sun, 28 May 2023 21:51:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3Ryo-0002LC-OU; Sun, 28 May 2023 21:47:27 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1q3S2a-0003VQ-Er; Sun, 28 May 2023 21:51:20 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3Ryn-0005W4-2A; Sun, 28 May 2023 21:47:26 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-64d2c865e4eso2096171b3a.0; 
- Sun, 28 May 2023 18:47:23 -0700 (PDT)
+ id 1q3S2Y-000711-US; Sun, 28 May 2023 21:51:20 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-64d4e45971bso1854335b3a.2; 
+ Sun, 28 May 2023 18:51:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685324842; x=1687916842;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
+ d=gmail.com; s=20221208; t=1685325077; x=1687917077;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L49D+cNuK2RKsmzSPg6AfKLED501Rt2FyNK8bADkyxk=;
- b=Gjd1r6N1jyo/OmkBW9EIOE6mCy3DfCGXn98tMjPzctKU2JZ1O1uK2OVjJDSY/dce9l
- YkRtAzG0glbtv6chfDaHYBelvKUWb74yuGhJn7gzbU356HtUtTE+2r9mfM/mZod3xGyZ
- UnkxAdE8630xVFwHJVve85GgZIx8y40o3i2nOqrN09czb7EUTXdVsjzwUbibNLCvxyjk
- Wo4llKz9bCS9/6Li4bP4Wzi07JGSi4ETFzrxa3DofIK6FDgKWy4AoY3Mjktc74uRJE5H
- tBvm+tmV59GDUn/U27w8wZR8S1iDVahECYxgD/Qhe/Cc5BVDfr3TCHaZgbZxXF8QlQhE
- dbzg==
+ bh=x378eFKzhCZhygFHsf09z1MEwvx+WhaZLL1/t7NaUfA=;
+ b=jCTJAV04v66RQov2GeA62T3Cg/uhceWIciyld7DoglX7B1jGMqmnPKmxms3YhcTgkw
+ dcUrp/LhT1mrRWrR6BhnxNtQ920fvmkYlKyTNnl2gaZOnNvT1YEtsY4CMSurnVh4LRPm
+ KO0+38myDU/cQexqBF99+x94TeS+3c4aK7vk+cRne6fow3RH1oHuCBu0BTQfjMBWgc6m
+ 1+KADbwpuynFkoNF6r7lqeJZXz7+DCsx6znx7aolLBfzlHfMoEZGGnhnudRKxnk2cewn
+ zYw/28tgEvtCyYi69U9B4HDMGAIVWre7+DpBXwrmebySIzSEmQhkY+G872q1W0bq8jyT
+ 2OzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685324842; x=1687916842;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
+ d=1e100.net; s=20221208; t=1685325077; x=1687917077;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=L49D+cNuK2RKsmzSPg6AfKLED501Rt2FyNK8bADkyxk=;
- b=SV9gTXl7rphmjExBvKO28fZIMzlBZjFKoou4j4aop2VsBa9ZslGbsjuQULkcwlx/we
- giNx9XjytXhIpcKL5K9Nvf1mNfU7ITaHslubsY2ODEQic7bWCVbFbSeUKDkVMoae5Qfs
- osubNEW99L/hxJzumMMZ0s6AAYSMFnMN3ho109I1mkAYV6fkqKEZa83cgVQ48PM7+QI/
- d9LbsiLl7H3DpfSivU47MhQB+hhxBI+FLfg3f/Db8WJjkFVy5NLvdHWyhWA8OV9hqvvC
- hTZbLNY2fQC9H+vcpeN5qHGqL2Q24ACNgeXRZjkQWpfpRBKC6kr/Rbnit3k4K4hIoK0D
- iWSA==
-X-Gm-Message-State: AC+VfDyMOgM7sBQfZknB3uRX1Oh/Zq5o1fA/XI3WZRr9hMItLzO7PNyo
- mSvGxUxuID9LYhCd0L6dqWk=
-X-Google-Smtp-Source: ACHHUZ7J+m7AhaWVP65KgmEsq9NV5IFwiLkkOZUEXgX6gIvU5UrGvivdtp94BaG1DtLsuzvvd1OFsQ==
-X-Received: by 2002:a17:903:1105:b0:1ac:a28e:4b29 with SMTP id
- n5-20020a170903110500b001aca28e4b29mr11633341plh.26.1685324842333; 
- Sun, 28 May 2023 18:47:22 -0700 (PDT)
+ bh=x378eFKzhCZhygFHsf09z1MEwvx+WhaZLL1/t7NaUfA=;
+ b=XENodUfKil5Xg69cC1CtkfnSh/r6CTNfnXyVbjjcJar+jmdIdlkwNn/m1BmQJjwsMf
+ mQmCvAXRUDO6tkcwV/lcMC524hxbGo6w42OPMvEAXcgdrfF/kQtliP+QvoBSk1yZnAmQ
+ RsO0cGAkJ5ktBWKI7EOevhBwjeNnjcJTr07Z3eCigxoYcuCpXmi/68C7kZFWALNwmZ1l
+ IyyJWr7D2W2Bo4fFTcIhS3fXc8dCBvmVAV8TRQmULcsNJLk/prEaIEo6z+NTOGRvp3ti
+ AT4mFgIncDnqE9L+4nyEwPAqdtYtXzS1h4oIf5b6Xm+vC1DBFs2SiiS5ZHn4PO0o2TaL
+ bp4A==
+X-Gm-Message-State: AC+VfDwFm0In66jhPrjkl6hfYPcWWQ4zC4fFCYaDJhol7P6DQkjKKt83
+ k3R71VMN/EcZC7VmphwzuKH3mlfn8UY=
+X-Google-Smtp-Source: ACHHUZ4yAmsalDvXpOBX8O9yGCT9Le7uJM9nKahu6nl89CoDqluTSuGU9OCxmmE0JlVqIkrsmdKKPQ==
+X-Received: by 2002:a05:6a00:1489:b0:627:6328:79f1 with SMTP id
+ v9-20020a056a00148900b00627632879f1mr13887347pfu.34.1685325076958; 
+ Sun, 28 May 2023 18:51:16 -0700 (PDT)
 Received: from localhost ([203.221.142.9]) by smtp.gmail.com with ESMTPSA id
- u2-20020a170902e5c200b001a9bcedd598sm6868720plf.11.2023.05.28.18.47.19
+ y21-20020a62b515000000b0064fe06fe712sm583263pfe.129.2023.05.28.18.51.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 May 2023 18:47:21 -0700 (PDT)
+ Sun, 28 May 2023 18:51:16 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 May 2023 11:47:17 +1000
-Message-Id: <CSYDSM05U50R.2WZMPI0PMKU2J@wheely>
-To: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <qemu-ppc@nongnu.org>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>
-Subject: Re: [PATCH v3 0/9] target/ppc: Assorted ppc target fixes
+Date: Mon, 29 May 2023 11:51:11 +1000
+Message-Id: <CSYDVLMGDZV3.1FTXBTBGZIQXK@wheely>
+Cc: <qemu-devel@nongnu.org>, "Frederic Barrat" <frederic.barrat@fr.ibm.com>
+Subject: Re: [PATCH] ppc/pnv: Add initial P9/10 SBE model
 From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.14.0
-References: <20230515092655.171206-1-npiggin@gmail.com>
- <dee25aee-5d4f-fb49-250d-b752e64cd9da@gmail.com>
-In-Reply-To: <dee25aee-5d4f-fb49-250d-b752e64cd9da@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
+References: <20220811075421.1431357-1-npiggin@gmail.com>
+ <3b566ede-ec80-487f-3cb5-9f8d2c2071ad@kaod.org>
+ <39307893-c28b-ece2-9403-322c2884e5f0@kaod.org>
+In-Reply-To: <39307893-c28b-ece2-9403-322c2884e5f0@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,20 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun May 28, 2023 at 4:05 AM AEST, Daniel Henrique Barboza wrote:
->
->
-> On 5/15/23 06:26, Nicholas Piggin wrote:
-> > Hopefully these are getting close to ready now. There is still the
-> > question about doing better with adding test cases for all this, I
-> > haven't exactly got a good answer yet but I do have kvm-unit-tests
-> > for most at least.
->
-> Patches 1 and 4 queued to ppc-next. Thanks,
+On Fri May 26, 2023 at 10:20 PM AEST, C=C3=A9dric Le Goater wrote:
+> On 8/11/22 10:04, C=C3=A9dric Le Goater wrote:
+> > On 8/11/22 09:54, Nicholas Piggin wrote:
 
-Thanks Daniel, been taking a bit of time fixing up your your and
-other comments for the other patches sorry. Much appreciate the help
-so far.
+[snip]
+
+> >> +
+> >> +#define sbe_cmd_dbg(fmt, ...) do { \
+> >> +=C2=A0=C2=A0=C2=A0 if (DEBUG_SBE_CMD) { \
+> >> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fprintf(stderr, "SBE cmd: =
+%s: " fmt, __func__, ## __VA_ARGS__); \
+> >> +=C2=A0=C2=A0=C2=A0 } \
+> >> +} while (0)
+> >=20
+> > Please use trace events instead, with a pnv_sbe_ prefix.
+> >=20
+> > Apart from that, LGTM !
+> >=20
+> > Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org>
+>
+>
+>
+>
+> This looked like an interesting extension to the baremetal models.
+> Did you abandon the idea ? if not, it would be good material for
+> QEMU 8.1. Could you resend please  ? (with the TOD patches)
+
+Hey Cedric,
+
+Yeah I kind of forgot about these for a while, sorry :( Too much
+stuff going on... But by an amazing coincidence I have just started to
+look at these again in the past few days, so I should try to get it
+merged.
 
 Thanks,
 Nick
