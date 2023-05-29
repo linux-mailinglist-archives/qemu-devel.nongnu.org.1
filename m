@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119A0714F54
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 20:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B3F714F53
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 20:21:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3hU3-0007et-Mn; Mon, 29 May 2023 14:20:43 -0400
+	id 1q3hU2-0007ec-Jw; Mon, 29 May 2023 14:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1q3hTw-0007df-AJ
- for qemu-devel@nongnu.org; Mon, 29 May 2023 14:20:36 -0400
-Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
+ id 1q3hTw-0007dz-OT
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 14:20:38 -0400
+Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1q3hTs-00019a-Gw
- for qemu-devel@nongnu.org; Mon, 29 May 2023 14:20:35 -0400
-Received: by mail-qk1-x730.google.com with SMTP id
- af79cd13be357-75b17298108so214951185a.0
- for <qemu-devel@nongnu.org>; Mon, 29 May 2023 11:20:31 -0700 (PDT)
+ id 1q3hTt-00019q-8c
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 14:20:36 -0400
+Received: by mail-qk1-x72b.google.com with SMTP id
+ af79cd13be357-75b191fa0afso200010685a.0
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 11:20:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1685384430; x=1687976430;
+ d=bytedance.com; s=google; t=1685384432; x=1687976432;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0JqkkF9dhAzE0OkPFi/BNF1Vq1buivPQjPn42c685Sk=;
- b=LsbwtNjFfFIRzMXViJZ/XIyzIHoFNUMcSFmz2dyiSvUZwKElAqG9gP8aI3IHNqDsbs
- 7/wao4b9le7HwbuRDvK/mzXTlP7cavjNX2VjsmQsCohkrkf9d6tMae38WQ2bVE2y5xNH
- YinKC6/F4HPSqVQXj8xZJIRIPkllrlHC8MomDsSCpVdHumQFC8bB+aupubI/ZgDDP4Ty
- S19/HGiUn7+TPAkkMAfGZAoX3go6NEVRuRrJ/FYHK3L9AvygqbmSAISwFnrbQgoD3IIR
- MVnvjFqj5csz8kecbGciR/TVXAfXNV73LP4bsYDvF3oJaj6/ff8TRcxqWgskrZLOkFEf
- HgnQ==
+ bh=cw5z9EKJ5wTgcvigkqtkmb/9lbpBGpT9tuRtIHF2xgM=;
+ b=O/vTZqeq/H+kl5jpUgV69Y7Dc/haWtOpN5q1FCpX6XQH0EAiBjTF3wHWUIuKa04V44
+ PDOYk3o1TnNsXcghb1eNgmbvsqUfKe8GcpJppgUxxqeUZ9x6vo0FNwwadMI/JsFxoRbV
+ uvF8sFMw67XrJ0VU+IsykmZSaFIw80fna2PLXxQYix0OqF8aXqZhLuAETn5WyVptX9Te
+ yOAglaqr20Cf/F2TE+AfsQ1SNGI1KEPJuwHWTMWatMvBKhjNuThL9Dj6GLk5ykkgndxe
+ LXMC1Z0pwHtqSau0FaOA+m7IUweU4SajtIcXkrgClGVai+iN2SFI1QzE0WklMKz6luWL
+ ErXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685384430; x=1687976430;
+ d=1e100.net; s=20221208; t=1685384432; x=1687976432;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0JqkkF9dhAzE0OkPFi/BNF1Vq1buivPQjPn42c685Sk=;
- b=c18KXPQpAMF1OUCtUVamkK11y5MjJsYA2UiBdvJrAwHsU2lPVAyqNHGlKoKcM0KZrx
- DcCxab8qLZ6B9Ceg66MgDpVE0pioQ3A+dGkW+24oEUBoTp8cUADRYmVj0cLc2yk6BBvP
- yUGlMdUuYvoBgCK1Hf5Ohk65E06RDVq4GyIrFxMt1KXb3KMEAMpu/FKd48Pcp3IjjNbQ
- oGHtqX/bKIzozLIlygi6cGjTwxJ/AfUE/M/vqKqgwjxAzoAwJoowZWRsL9XBCNEBhQl7
- +HQkwlzDG7EKVgJLwESe7mCG/JSXjs5vbJ4B7K/13SSvp4Kzwk+l5L0qKzlp8rxvsIq/
- tDoQ==
-X-Gm-Message-State: AC+VfDwZ0LIZgXq/8dgsjp59SukyvG9mY95zQPIqTSsJhnL05wD7Xtrh
- ozchr0beb2PWaGtARS2mly2+oRc4Zg6ehKZKhs0=
-X-Google-Smtp-Source: ACHHUZ6u0epKKcxgVMsKOIQFF2U68CdJYEfHbruZuWlCkfA2dx6j0t3jWrcpG3Qrbmn0zA94ftxeUg==
-X-Received: by 2002:a37:396:0:b0:75b:23a1:401 with SMTP id
- 144-20020a370396000000b0075b23a10401mr8150666qkd.23.1685384430528; 
- Mon, 29 May 2023 11:20:30 -0700 (PDT)
+ bh=cw5z9EKJ5wTgcvigkqtkmb/9lbpBGpT9tuRtIHF2xgM=;
+ b=g9KQ0q3n2SXspHvlLQd61a5geXQFZmcY/P8b73+1NXW/lKNq3A5C0AeECQDJ32X0tP
+ yYkO9A3mhA7v47DiTVz/Uw6B8AvkxW7TKnr8ArYsckdrwRz4Sxm8T/qs1KYv5ZPmHIAK
+ sIhn5nLLtz0MGg5ucj/lb3Lubo5X297BatXqQFHx16HtsHN35Lh4SxBLahpGzMirTDZx
+ 6cqwAAfafUN4k354xNqtkoOmjRhjLedIcFyMJO6UGTnl+mf4EWmum5nKF2wg+8/4SXKy
+ kzXS4OXg/VSdJbDl9rJl44T04wdWaSsvd/hfIdZ7nU21349Nmw20wPLi2dy3Kfg10gME
+ /AZg==
+X-Gm-Message-State: AC+VfDwiyTRt1yAKYwoPvFi9FZL6vbZcWX7wjwpa5ZpUxq4nnp4/Qw6M
+ EQ4I5ymr95Q8qsXFnspzoeKyfw==
+X-Google-Smtp-Source: ACHHUZ4ID/4ZatFhLYODlAWSgR53jgWt0PPjebGJOSGFX98JlfLE229WabB5Z1nlERGw3N3u2YxKkQ==
+X-Received: by 2002:a37:4656:0:b0:75b:23a1:d84e with SMTP id
+ t83-20020a374656000000b0075b23a1d84emr6781908qka.16.1685384432187; 
+ Mon, 29 May 2023 11:20:32 -0700 (PDT)
 Received: from n231-230-216.byted.org ([147.160.184.95])
  by smtp.gmail.com with ESMTPSA id
- b15-20020a05620a126f00b0074e3cf3b44dsm2873314qkl.125.2023.05.29.11.20.29
+ b15-20020a05620a126f00b0074e3cf3b44dsm2873314qkl.125.2023.05.29.11.20.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 May 2023 11:20:30 -0700 (PDT)
+ Mon, 29 May 2023 11:20:31 -0700 (PDT)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: pbonzini@redhat.com,
 	quintela@redhat.com,
 	qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH 2/4] Add dependency idxd.
-Date: Mon, 29 May 2023 18:19:59 +0000
-Message-Id: <20230529182001.2232069-3-hao.xiang@bytedance.com>
+Subject: [PATCH 3/4] Implement zero page checking using DSA.
+Date: Mon, 29 May 2023 18:20:00 +0000
+Message-Id: <20230529182001.2232069-4-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230529182001.2232069-1-hao.xiang@bytedance.com>
 References: <20230529182001.2232069-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::730;
- envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x730.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-qk1-x72b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,379 +93,414 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Idxd is the device driver for DSA (Intel Data Streaming
-Accelerator). The driver is fully functioning since Linux
-kernel 5.19. This change adds the driver's header file used
-for userspace development.
+1. Adds a memory comparison function by submitting
+the work to the idxd driver.
+2. Add interface to set bufferiszero accel function
+to DSA offloading.
+3. Fallback to use CPU accel function if DSA offloading
+fails due to page fault.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 ---
- linux-headers/linux/idxd.h | 356 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 356 insertions(+)
- create mode 100644 linux-headers/linux/idxd.h
+ include/qemu/cutils.h |   6 +
+ migration/ram.c       |   4 +
+ util/bufferiszero.c   |  14 ++
+ util/dsa.c            | 295 ++++++++++++++++++++++++++++++++++++++++++
+ util/meson.build      |   1 +
+ 5 files changed, 320 insertions(+)
+ create mode 100644 util/dsa.c
 
-diff --git a/linux-headers/linux/idxd.h b/linux-headers/linux/idxd.h
+diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+index 92c436d8c7..9d0286ac99 100644
+--- a/include/qemu/cutils.h
++++ b/include/qemu/cutils.h
+@@ -188,9 +188,15 @@ char *freq_to_str(uint64_t freq_hz);
+ /* used to print char* safely */
+ #define STR_OR_NULL(str) ((str) ? (str) : "null")
+ 
++typedef bool (*buffer_accel_fn)(const void *, size_t);
++void set_accel(buffer_accel_fn, size_t len);
++void get_fallback_accel(buffer_accel_fn *);
+ bool buffer_is_zero(const void *buf, size_t len);
+ bool test_buffer_is_zero_next_accel(void);
+ 
++int configure_dsa(const char *dsa_path);
++void dsa_cleanup(void);
++
+ /*
+  * Implementation of ULEB128 (http://en.wikipedia.org/wiki/LEB128)
+  * Input is limited to 14-bit numbers
+diff --git a/migration/ram.c b/migration/ram.c
+index 88a6c82e63..b586ac4a99 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -2280,6 +2280,10 @@ static int ram_save_host_page(RAMState *rs, PageSearchStatus *pss)
+             if (preempt_active) {
+                 qemu_mutex_unlock(&rs->bitmap_mutex);
+             }
++            /*
++             * TODO: Make ram_save_target_page asyn to take advantage
++             * of DSA offloading.
++             */
+             tmppages = migration_ops->ram_save_target_page(rs, pss);
+             if (tmppages >= 0) {
+                 pages += tmppages;
+diff --git a/util/bufferiszero.c b/util/bufferiszero.c
+index 3e6a5dfd63..3d089ef1fe 100644
+--- a/util/bufferiszero.c
++++ b/util/bufferiszero.c
+@@ -206,6 +206,7 @@ buffer_zero_avx512(const void *buf, size_t len)
+ static unsigned used_accel = INIT_USED;
+ static unsigned length_to_accel = INIT_LENGTH;
+ static bool (*buffer_accel)(const void *, size_t) = INIT_ACCEL;
++static bool (*buffer_accel_fallback)(const void *, size_t) = INIT_ACCEL;
+ 
+ static unsigned __attribute__((noinline))
+ select_accel_cpuinfo(unsigned info)
+@@ -231,6 +232,7 @@ select_accel_cpuinfo(unsigned info)
+         if (info & all[i].bit) {
+             length_to_accel = all[i].len;
+             buffer_accel = all[i].fn;
++            buffer_accel_fallback = all[i].fn;
+             return all[i].bit;
+         }
+     }
+@@ -272,6 +274,17 @@ bool test_buffer_is_zero_next_accel(void)
+ }
+ #endif
+ 
++void set_accel(buffer_accel_fn fn, size_t len)
++{
++    buffer_accel = fn;
++    length_to_accel = len;
++}
++
++void get_fallback_accel(buffer_accel_fn *fn)
++{
++    *fn = buffer_accel_fallback;
++}
++
+ /*
+  * Checks if a buffer is all zeroes
+  */
+@@ -288,3 +301,4 @@ bool buffer_is_zero(const void *buf, size_t len)
+        includes a check for an unrolled loop over 64-bit integers.  */
+     return select_accel_fn(buf, len);
+ }
++
+diff --git a/util/dsa.c b/util/dsa.c
 new file mode 100644
-index 0000000000..1d553bedbd
+index 0000000000..2fdcdb4f49
 --- /dev/null
-+++ b/linux-headers/linux/idxd.h
-@@ -0,0 +1,356 @@
-+/* SPDX-License-Identifier: LGPL-2.1 WITH Linux-syscall-note */
-+/* Copyright(c) 2019 Intel Corporation. All rights rsvd. */
-+#ifndef _USR_IDXD_H_
-+#define _USR_IDXD_H_
-+
-+#ifdef __KERNEL__
-+#include <linux/types.h>
-+#else
-+#include <stdint.h>
-+#endif
-+
-+/* Driver command error status */
-+enum idxd_scmd_stat {
-+	IDXD_SCMD_DEV_ENABLED = 0x80000010,
-+	IDXD_SCMD_DEV_NOT_ENABLED = 0x80000020,
-+	IDXD_SCMD_WQ_ENABLED = 0x80000021,
-+	IDXD_SCMD_DEV_DMA_ERR = 0x80020000,
-+	IDXD_SCMD_WQ_NO_GRP = 0x80030000,
-+	IDXD_SCMD_WQ_NO_NAME = 0x80040000,
-+	IDXD_SCMD_WQ_NO_SVM = 0x80050000,
-+	IDXD_SCMD_WQ_NO_THRESH = 0x80060000,
-+	IDXD_SCMD_WQ_PORTAL_ERR = 0x80070000,
-+	IDXD_SCMD_WQ_RES_ALLOC_ERR = 0x80080000,
-+	IDXD_SCMD_PERCPU_ERR = 0x80090000,
-+	IDXD_SCMD_DMA_CHAN_ERR = 0x800a0000,
-+	IDXD_SCMD_CDEV_ERR = 0x800b0000,
-+	IDXD_SCMD_WQ_NO_SWQ_SUPPORT = 0x800c0000,
-+	IDXD_SCMD_WQ_NONE_CONFIGURED = 0x800d0000,
-+	IDXD_SCMD_WQ_NO_SIZE = 0x800e0000,
-+	IDXD_SCMD_WQ_NO_PRIV = 0x800f0000,
-+	IDXD_SCMD_WQ_IRQ_ERR = 0x80100000,
-+	IDXD_SCMD_WQ_USER_NO_IOMMU = 0x80110000,
-+};
-+
-+#define IDXD_SCMD_SOFTERR_MASK	0x80000000
-+#define IDXD_SCMD_SOFTERR_SHIFT	16
-+
-+/* Descriptor flags */
-+#define IDXD_OP_FLAG_FENCE	0x0001
-+#define IDXD_OP_FLAG_BOF	0x0002
-+#define IDXD_OP_FLAG_CRAV	0x0004
-+#define IDXD_OP_FLAG_RCR	0x0008
-+#define IDXD_OP_FLAG_RCI	0x0010
-+#define IDXD_OP_FLAG_CRSTS	0x0020
-+#define IDXD_OP_FLAG_CR		0x0080
-+#define IDXD_OP_FLAG_CC		0x0100
-+#define IDXD_OP_FLAG_ADDR1_TCS	0x0200
-+#define IDXD_OP_FLAG_ADDR2_TCS	0x0400
-+#define IDXD_OP_FLAG_ADDR3_TCS	0x0800
-+#define IDXD_OP_FLAG_CR_TCS	0x1000
-+#define IDXD_OP_FLAG_STORD	0x2000
-+#define IDXD_OP_FLAG_DRDBK	0x4000
-+#define IDXD_OP_FLAG_DSTS	0x8000
-+
-+/* IAX */
-+#define IDXD_OP_FLAG_RD_SRC2_AECS	0x010000
-+#define IDXD_OP_FLAG_RD_SRC2_2ND	0x020000
-+#define IDXD_OP_FLAG_WR_SRC2_AECS_COMP	0x040000
-+#define IDXD_OP_FLAG_WR_SRC2_AECS_OVFL	0x080000
-+#define IDXD_OP_FLAG_SRC2_STS		0x100000
-+#define IDXD_OP_FLAG_CRC_RFC3720	0x200000
-+
-+/* Opcode */
-+enum dsa_opcode {
-+	DSA_OPCODE_NOOP = 0,
-+	DSA_OPCODE_BATCH,
-+	DSA_OPCODE_DRAIN,
-+	DSA_OPCODE_MEMMOVE,
-+	DSA_OPCODE_MEMFILL,
-+	DSA_OPCODE_COMPARE,
-+	DSA_OPCODE_COMPVAL,
-+	DSA_OPCODE_CR_DELTA,
-+	DSA_OPCODE_AP_DELTA,
-+	DSA_OPCODE_DUALCAST,
-+	DSA_OPCODE_CRCGEN = 0x10,
-+	DSA_OPCODE_COPY_CRC,
-+	DSA_OPCODE_DIF_CHECK,
-+	DSA_OPCODE_DIF_INS,
-+	DSA_OPCODE_DIF_STRP,
-+	DSA_OPCODE_DIF_UPDT,
-+	DSA_OPCODE_CFLUSH = 0x20,
-+};
-+
-+enum iax_opcode {
-+	IAX_OPCODE_NOOP = 0,
-+	IAX_OPCODE_DRAIN = 2,
-+	IAX_OPCODE_MEMMOVE,
-+	IAX_OPCODE_DECOMPRESS = 0x42,
-+	IAX_OPCODE_COMPRESS,
-+	IAX_OPCODE_CRC64,
-+	IAX_OPCODE_ZERO_DECOMP_32 = 0x48,
-+	IAX_OPCODE_ZERO_DECOMP_16,
-+	IAX_OPCODE_ZERO_COMP_32 = 0x4c,
-+	IAX_OPCODE_ZERO_COMP_16,
-+	IAX_OPCODE_SCAN = 0x50,
-+	IAX_OPCODE_SET_MEMBER,
-+	IAX_OPCODE_EXTRACT,
-+	IAX_OPCODE_SELECT,
-+	IAX_OPCODE_RLE_BURST,
-+	IAX_OPCODE_FIND_UNIQUE,
-+	IAX_OPCODE_EXPAND,
-+};
-+
-+/* Completion record status */
-+enum dsa_completion_status {
-+	DSA_COMP_NONE = 0,
-+	DSA_COMP_SUCCESS,
-+	DSA_COMP_SUCCESS_PRED,
-+	DSA_COMP_PAGE_FAULT_NOBOF,
-+	DSA_COMP_PAGE_FAULT_IR,
-+	DSA_COMP_BATCH_FAIL,
-+	DSA_COMP_BATCH_PAGE_FAULT,
-+	DSA_COMP_DR_OFFSET_NOINC,
-+	DSA_COMP_DR_OFFSET_ERANGE,
-+	DSA_COMP_DIF_ERR,
-+	DSA_COMP_BAD_OPCODE = 0x10,
-+	DSA_COMP_INVALID_FLAGS,
-+	DSA_COMP_NOZERO_RESERVE,
-+	DSA_COMP_XFER_ERANGE,
-+	DSA_COMP_DESC_CNT_ERANGE,
-+	DSA_COMP_DR_ERANGE,
-+	DSA_COMP_OVERLAP_BUFFERS,
-+	DSA_COMP_DCAST_ERR,
-+	DSA_COMP_DESCLIST_ALIGN,
-+	DSA_COMP_INT_HANDLE_INVAL,
-+	DSA_COMP_CRA_XLAT,
-+	DSA_COMP_CRA_ALIGN,
-+	DSA_COMP_ADDR_ALIGN,
-+	DSA_COMP_PRIV_BAD,
-+	DSA_COMP_TRAFFIC_CLASS_CONF,
-+	DSA_COMP_PFAULT_RDBA,
-+	DSA_COMP_HW_ERR1,
-+	DSA_COMP_HW_ERR_DRB,
-+	DSA_COMP_TRANSLATION_FAIL,
-+};
-+
-+enum iax_completion_status {
-+	IAX_COMP_NONE = 0,
-+	IAX_COMP_SUCCESS,
-+	IAX_COMP_PAGE_FAULT_IR = 0x04,
-+	IAX_COMP_ANALYTICS_ERROR = 0x0a,
-+	IAX_COMP_OUTBUF_OVERFLOW,
-+	IAX_COMP_BAD_OPCODE = 0x10,
-+	IAX_COMP_INVALID_FLAGS,
-+	IAX_COMP_NOZERO_RESERVE,
-+	IAX_COMP_INVALID_SIZE,
-+	IAX_COMP_OVERLAP_BUFFERS = 0x16,
-+	IAX_COMP_INT_HANDLE_INVAL = 0x19,
-+	IAX_COMP_CRA_XLAT,
-+	IAX_COMP_CRA_ALIGN,
-+	IAX_COMP_ADDR_ALIGN,
-+	IAX_COMP_PRIV_BAD,
-+	IAX_COMP_TRAFFIC_CLASS_CONF,
-+	IAX_COMP_PFAULT_RDBA,
-+	IAX_COMP_HW_ERR1,
-+	IAX_COMP_HW_ERR_DRB,
-+	IAX_COMP_TRANSLATION_FAIL,
-+	IAX_COMP_PRS_TIMEOUT,
-+	IAX_COMP_WATCHDOG,
-+	IAX_COMP_INVALID_COMP_FLAG = 0x30,
-+	IAX_COMP_INVALID_FILTER_FLAG,
-+	IAX_COMP_INVALID_INPUT_SIZE,
-+	IAX_COMP_INVALID_NUM_ELEMS,
-+	IAX_COMP_INVALID_SRC1_WIDTH,
-+	IAX_COMP_INVALID_INVERT_OUT,
-+};
-+
-+#define DSA_COMP_STATUS_MASK		0x7f
-+#define DSA_COMP_STATUS_WRITE		0x80
-+
-+struct dsa_hw_desc {
-+	uint32_t	pasid:20;
-+	uint32_t	rsvd:11;
-+	uint32_t	priv:1;
-+	uint32_t	flags:24;
-+	uint32_t	opcode:8;
-+	uint64_t	completion_addr;
-+	union {
-+		uint64_t	src_addr;
-+		uint64_t	rdback_addr;
-+		uint64_t	pattern;
-+		uint64_t	desc_list_addr;
-+	};
-+	union {
-+		uint64_t	dst_addr;
-+		uint64_t	rdback_addr2;
-+		uint64_t	src2_addr;
-+		uint64_t	comp_pattern;
-+	};
-+	union {
-+		uint32_t	xfer_size;
-+		uint32_t	desc_count;
-+	};
-+	uint16_t	int_handle;
-+	uint16_t	rsvd1;
-+	union {
-+		uint8_t		expected_res;
-+		/* create delta record */
-+		struct {
-+			uint64_t	delta_addr;
-+			uint32_t	max_delta_size;
-+			uint32_t 	delt_rsvd;
-+			uint8_t 	expected_res_mask;
-+		};
-+		uint32_t	delta_rec_size;
-+		uint64_t	dest2;
-+		/* CRC */
-+		struct {
-+			uint32_t	crc_seed;
-+			uint32_t	crc_rsvd;
-+			uint64_t	seed_addr;
-+		};
-+		/* DIF check or strip */
-+		struct {
-+			uint8_t		src_dif_flags;
-+			uint8_t		dif_chk_res;
-+			uint8_t		dif_chk_flags;
-+			uint8_t		dif_chk_res2[5];
-+			uint32_t	chk_ref_tag_seed;
-+			uint16_t	chk_app_tag_mask;
-+			uint16_t	chk_app_tag_seed;
-+		};
-+		/* DIF insert */
-+		struct {
-+			uint8_t		dif_ins_res;
-+			uint8_t		dest_dif_flag;
-+			uint8_t		dif_ins_flags;
-+			uint8_t		dif_ins_res2[13];
-+			uint32_t	ins_ref_tag_seed;
-+			uint16_t	ins_app_tag_mask;
-+			uint16_t	ins_app_tag_seed;
-+		};
-+		/* DIF update */
-+		struct {
-+			uint8_t		src_upd_flags;
-+			uint8_t		upd_dest_flags;
-+			uint8_t		dif_upd_flags;
-+			uint8_t		dif_upd_res[5];
-+			uint32_t	src_ref_tag_seed;
-+			uint16_t	src_app_tag_mask;
-+			uint16_t	src_app_tag_seed;
-+			uint32_t	dest_ref_tag_seed;
-+			uint16_t	dest_app_tag_mask;
-+			uint16_t	dest_app_tag_seed;
-+		};
-+
-+		uint8_t		op_specific[24];
-+	};
-+} __attribute__((packed));
-+
-+struct iax_hw_desc {
-+	uint32_t        pasid:20;
-+	uint32_t        rsvd:11;
-+	uint32_t        priv:1;
-+	uint32_t        flags:24;
-+	uint32_t        opcode:8;
-+	uint64_t        completion_addr;
-+	uint64_t        src1_addr;
-+	uint64_t        dst_addr;
-+	uint32_t        src1_size;
-+	uint16_t        int_handle;
-+	union {
-+		uint16_t        compr_flags;
-+		uint16_t        decompr_flags;
-+	};
-+	uint64_t        src2_addr;
-+	uint32_t        max_dst_size;
-+	uint32_t        src2_size;
-+	uint32_t	filter_flags;
-+	uint32_t	num_inputs;
-+} __attribute__((packed));
-+
-+struct dsa_raw_desc {
-+	uint64_t	field[8];
-+} __attribute__((packed));
-+
++++ b/util/dsa.c
+@@ -0,0 +1,295 @@
 +/*
-+ * The status field will be modified by hardware, therefore it should be
-+ * volatile and prevent the compiler from optimize the read.
++ * Use Intel Data Streaming Accelerator to offload certain background
++ * operations.
++ *
++ * Copyright (c) 2023 Hao Xiang <hao.xiang@bytedance.com>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
 + */
-+struct dsa_completion_record {
-+	volatile uint8_t	status;
-+	union {
-+		uint8_t		result;
-+		uint8_t		dif_status;
-+	};
-+	uint16_t		rsvd;
-+	uint32_t		bytes_completed;
-+	uint64_t		fault_addr;
-+	union {
-+		/* common record */
-+		struct {
-+			uint32_t	invalid_flags:24;
-+			uint32_t	rsvd2:8;
-+		};
++#include "qemu/osdep.h"
++#include "qemu/cutils.h"
++#include "qemu/bswap.h"
++#include "qemu/error-report.h"
 +
-+		uint32_t	delta_rec_size;
-+		uint64_t	crc_val;
++#ifdef CONFIG_DSA_OPT
 +
-+		/* DIF check & strip */
-+		struct {
-+			uint32_t	dif_chk_ref_tag;
-+			uint16_t	dif_chk_app_tag_mask;
-+			uint16_t	dif_chk_app_tag;
-+		};
++#pragma GCC push_options
++#pragma GCC target("enqcmd")
++#pragma GCC target("movdir64b")
 +
-+		/* DIF insert */
-+		struct {
-+			uint64_t	dif_ins_res;
-+			uint32_t	dif_ins_ref_tag;
-+			uint16_t	dif_ins_app_tag_mask;
-+			uint16_t	dif_ins_app_tag;
-+		};
++#include <linux/idxd.h>
++#include "x86intrin.h"
 +
-+		/* DIF update */
-+		struct {
-+			uint32_t	dif_upd_src_ref_tag;
-+			uint16_t	dif_upd_src_app_tag_mask;
-+			uint16_t	dif_upd_src_app_tag;
-+			uint32_t	dif_upd_dest_ref_tag;
-+			uint16_t	dif_upd_dest_app_tag_mask;
-+			uint16_t	dif_upd_dest_app_tag;
-+		};
++#define DSA_WQ_SIZE 4096
 +
-+		uint8_t		op_specific[16];
-+	};
-+} __attribute__((packed));
++static bool use_simulation;
++static uint64_t total_bytes_checked;
++static uint64_t total_function_calls;
++static uint64_t total_success_count;
++static int max_retry_count;
++static int top_retry_count;
 +
-+struct dsa_raw_completion_record {
-+	uint64_t	field[4];
-+} __attribute__((packed));
++static void *dsa_wq = MAP_FAILED;
++static uint8_t zero_page_buffer[4096];
++static bool dedicated_mode;
++static int length_to_accel = 64;
 +
-+struct iax_completion_record {
-+	volatile uint8_t        status;
-+	uint8_t                 error_code;
-+	uint16_t                rsvd;
-+	uint32_t                bytes_completed;
-+	uint64_t                fault_addr;
-+	uint32_t                invalid_flags;
-+	uint32_t                rsvd2;
-+	uint32_t                output_size;
-+	uint8_t                 output_bits;
-+	uint8_t                 rsvd3;
-+	uint16_t                xor_csum;
-+	uint32_t                crc;
-+	uint32_t                min;
-+	uint32_t                max;
-+	uint32_t                sum;
-+	uint64_t                rsvd4[2];
-+} __attribute__((packed));
++static buffer_accel_fn buffer_zero_fallback;
 +
-+struct iax_raw_completion_record {
-+	uint64_t	field[8];
-+} __attribute__((packed));
++/**
++ * @brief This function opens a DSA device's work queue and
++ *        maps the DSA device memory into the current process.
++ *
++ * @param dsa_wq_path A pointer to the DSA device work queue's file path.
++ * @return A pointer to the mapped memory.
++ */
++static void *map_dsa_device(const char *dsa_wq_path)
++{
++    void *dsa_device;
++    int fd;
++
++    fd = open(dsa_wq_path, O_RDWR);
++    if (fd < 0) {
++        fprintf(stderr, "open %s failed with errno = %d.\n",
++                dsa_wq_path, errno);
++        return MAP_FAILED;
++    }
++    dsa_device = mmap(NULL, DSA_WQ_SIZE, PROT_WRITE,
++                      MAP_SHARED | MAP_POPULATE, fd, 0);
++    close(fd);
++    if (dsa_device == MAP_FAILED) {
++        fprintf(stderr, "mmap failed with errno = %d.\n", errno);
++        return MAP_FAILED;
++    }
++    return dsa_device;
++}
++
++/**
++ * @brief Submits a DSA work item to the device work queue.
++ *
++ * @param wq A pointer to the DSA work queue's device memory.
++ * @param descriptor A pointer to the DSA work item descriptor.
++ * @return Zero if successful, non-zero otherwise.
++ */
++static int submit_wi(void *wq, void *descriptor)
++{
++    int retry = 0;
++
++    _mm_sfence();
++
++    if (dedicated_mode) {
++        _movdir64b(dsa_wq, descriptor);
++    } else {
++        while (true) {
++            if (_enqcmd(dsa_wq, descriptor) == 0) {
++                break;
++            }
++            retry++;
++            if (retry > max_retry_count) {
++                fprintf(stderr, "Submit work retry %d times.\n", retry);
++                exit(1);
++            }
++        }
++    }
++
++    return 0;
++}
++
++/**
++ * @brief Poll for the DSA work item completion.
++ *
++ * @param completion A pointer to the DSA work item completion record.
++ * @param opcode The DSA opcode.
++ * @return Zero if successful, non-zero otherwise.
++ */
++static int poll_completion(struct dsa_completion_record *completion,
++                           enum dsa_opcode opcode)
++{
++    int retry = 0;
++
++    while (true) {
++        if (completion->status != DSA_COMP_NONE) {
++            /* TODO: Error handling here. */
++            if (completion->status != DSA_COMP_SUCCESS &&
++                completion->status != DSA_COMP_PAGE_FAULT_NOBOF) {
++                fprintf(stderr, "DSA opcode %d failed with status = %d.\n",
++                    opcode, completion->status);
++                exit(1);
++            } else {
++                total_success_count++;
++            }
++            break;
++        }
++        retry++;
++        if (retry > max_retry_count) {
++            fprintf(stderr, "Wait for completion retry %d times.\n", retry);
++            exit(1);
++        }
++        _mm_pause();
++    }
++
++    if (retry > top_retry_count) {
++        top_retry_count = retry;
++    }
++
++    return 0;
++}
++
++static bool buffer_zero_dsa_simulation(const void *buf, size_t len)
++{
++    /* TODO: Handle page size greater than 4k. */
++    if (len > sizeof(zero_page_buffer)) {
++        fprintf(stderr, "Page size greater than %lu is not supported by DSA "
++                        "buffer zero checking.\n", sizeof(zero_page_buffer));
++        exit(1);
++    }
++
++    total_bytes_checked += len;
++    total_function_calls++;
++
++    return memcmp(buf, zero_page_buffer, len) == 0;
++}
++
++/**
++ * @brief Sends a memory comparison work item to a DSA device and wait
++ *        for completion.
++ *
++ * @param buf A pointer to the memory buffer for comparison.
++ * @param len Length of the memory buffer for comparison.
++ * @return true if the memory buffer is all zero, false otherwise.
++ */
++static bool buffer_zero_dsa(const void *buf, size_t len)
++{
++    struct dsa_completion_record completion __attribute__((aligned(32)));
++    struct dsa_hw_desc descriptor;
++    uint8_t test_byte;
++
++    /* TODO: Handle page size greater than 4k. */
++    if (len > sizeof(zero_page_buffer)) {
++        fprintf(stderr, "Page size greater than %lu is not supported by DSA "
++                        "buffer zero checking.\n", sizeof(zero_page_buffer));
++        exit(1);
++    }
++
++    total_bytes_checked += len;
++    total_function_calls++;
++
++    memset(&completion, 0, sizeof(completion));
++    memset(&descriptor, 0, sizeof(descriptor));
++
++    descriptor.opcode = DSA_OPCODE_COMPARE;
++    descriptor.flags = IDXD_OP_FLAG_RCR | IDXD_OP_FLAG_CRAV;
++    descriptor.xfer_size = len;
++    descriptor.src_addr = (uintptr_t)buf;
++    descriptor.dst_addr = (uintptr_t)zero_page_buffer;
++    completion.status = 0;
++    descriptor.completion_addr = (uint64_t)&completion;
++
++    /*
++     * TODO: Find a better solution. DSA device can encounter page
++     * fault during the memory comparison operatio. Block on page
++     * fault is turned off for better performance. This temporary
++     * solution reads the first byte of the memory buffer in order
++     * to cause a CPU page fault so that DSA device won't hit that
++     * later.
++     */
++    test_byte = ((uint8_t *)buf)[0];
++    ((uint8_t *)buf)[0] = test_byte;
++
++    submit_wi(dsa_wq, &descriptor);
++    poll_completion(&completion, DSA_OPCODE_COMPARE);
++
++    if (completion.status == DSA_COMP_SUCCESS) {
++        return completion.result == 0;
++    }
++
++    /*
++     * DSA was able to partially complete the operation. Check the
++     * result. If we already know this is not a zero page, we can
++     * return now.
++     */
++    if (completion.bytes_completed != 0 && completion.result != 0) {
++        return false;
++    }
++
++    /* Let's fallback to use CPU to complete it. */
++    return buffer_zero_fallback((uint8_t *)buf + completion.bytes_completed,
++                                len - completion.bytes_completed);
++}
++
++/**
++ * @brief Check if DSA devices are enabled in the current system
++ *        and set DSA offloading for zero page checking operation.
++ *        This function is called during QEMU initialization.
++ *
++ * @param dsa_path A pointer to the DSA device's work queue file path.
++ * @return int Zero if successful, non-zero otherwise.
++ */
++int configure_dsa(const char *dsa_path)
++{
++    dedicated_mode = false;
++    use_simulation = false;
++    max_retry_count = 3000;
++    total_bytes_checked = 0;
++    total_function_calls = 0;
++    total_success_count = 0;
++
++    memset(zero_page_buffer, 0, sizeof(zero_page_buffer));
++
++    dsa_wq = map_dsa_device(dsa_path);
++    if (dsa_wq == MAP_FAILED) {
++        fprintf(stderr, "map_dsa_device failed MAP_FAILED, "
++                "using simulation.\n");
++        return -1;
++    }
++
++    if (use_simulation)
++        set_accel(buffer_zero_dsa_simulation, length_to_accel);
++    else {
++        set_accel(buffer_zero_dsa, length_to_accel);
++        get_fallback_accel(&buffer_zero_fallback);
++    }
++
++    return 0;
++}
++
++/**
++ * @brief Clean up system resources created for DSA offloading.
++ *        This function is called during QEMU process teardown.
++ *
++ */
++void dsa_cleanup(void)
++{
++    if (dsa_wq != MAP_FAILED) {
++        munmap(dsa_wq, DSA_WQ_SIZE);
++    }
++}
++
++#else
++
++int configure_dsa(const char *dsa_path)
++{
++    fprintf(stderr, "Intel Data Streaming Accelerator is not supported "
++                    "on this platform.\n");
++    return -1;
++}
++
++void dsa_cleanup(void) {}
 +
 +#endif
+diff --git a/util/meson.build b/util/meson.build
+index 3a93071d27..f493071c91 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -84,6 +84,7 @@ if have_block or have_ga
+ endif
+ if have_block
+   util_ss.add(files('aio-wait.c'))
++  util_ss.add(files('dsa.c'))
+   util_ss.add(files('buffer.c'))
+   util_ss.add(files('bufferiszero.c'))
+   util_ss.add(files('hbitmap.c'))
 -- 
 2.30.2
 
