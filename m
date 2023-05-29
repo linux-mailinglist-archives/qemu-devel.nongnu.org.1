@@ -2,54 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD917148C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 13:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4509A7148C6
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 13:42:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3bFW-0000gt-9y; Mon, 29 May 2023 07:41:24 -0400
+	id 1q3bGI-0000vl-4L; Mon, 29 May 2023 07:42:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1q3bFL-0000gZ-Sz
- for qemu-devel@nongnu.org; Mon, 29 May 2023 07:41:09 -0400
-Received: from mailout04.t-online.de ([194.25.134.18])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1q3bFt-0000p2-OT
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 07:41:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1q3bFJ-0002Na-56
- for qemu-devel@nongnu.org; Mon, 29 May 2023 07:41:07 -0400
-Received: from fwd88.dcpf.telekom.de (fwd88.aul.t-online.de [10.223.144.114])
- by mailout04.t-online.de (Postfix) with SMTP id B828195B;
- Mon, 29 May 2023 13:40:59 +0200 (CEST)
-Received: from [192.168.211.200] ([79.208.24.239]) by fwd88.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1q3bFC-28tIPZ0; Mon, 29 May 2023 13:40:58 +0200
-Message-ID: <5d1e4924-b797-c2ca-1dd6-94d12bc4f3ed@t-online.de>
-Date: Mon, 29 May 2023 13:40:58 +0200
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1q3bFn-0002X3-Dm
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 07:41:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685360493;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Z++BCADDC8Xu13WJDdimu9dO90uR2P2w1Vy/UUrgugM=;
+ b=N65zK5BNHO5rCbOihzCUy6iJoCV7MvxhoZ4JVC9q+YoGAkIYSn+TIycEysgxnC9XLBj7QT
+ IhTfVXrCOWrHORmyyFFo5fBx9w2Oe8M2iU5W+wyUB1i3DfsNocRovDNVEyhdeU1OLU5H+L
+ qoKrlRjIbu5rQadd47HQkoPupHy3FOw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-466-QAkboWGdPJSeZ-_01JcksQ-1; Mon, 29 May 2023 07:41:32 -0400
+X-MC-Unique: QAkboWGdPJSeZ-_01JcksQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E80A4101A531;
+ Mon, 29 May 2023 11:41:31 +0000 (UTC)
+Received: from kaapi.redhat.com (unknown [10.74.17.140])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E0DFB3543C;
+ Mon, 29 May 2023 11:41:29 +0000 (UTC)
+From: P J P <ppandit@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>,
+ Michael S Tsirkin <mst@redhat.com>, Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PATCH v2 0/2] vhost: release memory objects in an error path
+Date: Mon, 29 May 2023 17:13:31 +0530
+Message-Id: <20230529114333.31686-1-ppandit@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH 15/30] asc: generate silence if FIFO empty but engine
- still running
-Content-Language: de-DE
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
- <20230524211104.686087-16-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <20230524211104.686087-16-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1685360458-18DBAE62-4CD4C56B/0/0 CLEAN NORMAL
-X-TOI-MSGID: 61ab4860-24be-4cd3-a6d8-67a246d7b618
-Received-SPF: none client-ip=194.25.134.18; envelope-from=vr_qemu@t-online.de;
- helo=mailout04.t-online.de
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,49 +75,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> MacOS (un)helpfully leaves the FIFO engine running even when all the samples have
-> been written to the hardware, and expects the FIFO status flags and IRQ to be
-> updated continuously.
->
-> Since not all audio backends guarantee an all-zero output when no data is
-> provided, explicitly generate an all-zero output when this condition occurs to
-> avoid the audio backends re-using their internal buffers and looping audio once
-> the FIFOs are empty.
->
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/audio/asc.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
+Hi,
 
-> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
-> index 04194b1e43..c5173a8d35 100644
-> --- a/hw/audio/asc.c
-> +++ b/hw/audio/asc.c
-> @@ -158,8 +158,10 @@ static int generate_fifo(ASCState *s, int maxsamples)
->       limit = MIN(MAX(s->fifos[0].cnt, s->fifos[1].cnt), maxsamples);
->   
->       /*
-> -     * If starting a new run with no FIFO data present, update the IRQ and
-> -     * continue
-> +     * MacOS (un)helpfully leaves the FIFO engine running even when it has
-> +     * finished writing out samples. Since not all audio backends guarantee an
-> +     * all-zero output when no data is provided, zero out the sample buffer
-> +     * and then update the FIFO flags and IRQ as normal and continue
->        */
->       if (limit == 0 && s->fifos[0].int_status == 0 &&
->               s->fifos[1].int_status == 0) {
-> @@ -168,8 +170,9 @@ static int generate_fifo(ASCState *s, int maxsamples)
->           s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
->                                     ASC_FIFO_STATUS_FULL_EMPTY;
->   
-> +        memset(buf, 0x80, maxsamples << s->shift);
->           asc_raise_irq(s);
-> -        return 0;
-> +        return maxsamples;
->       }
->   
->       while (count < limit) {
+vhost_dev_start function does not release memory objects in case of
+an error. These couple of patches fix this glitch.
+
+Thank you.
+---
+Prasad Pandit (2):
+  vhost: release memory_listener object in error path
+  vhost: release virtqueue objects in error path
+
+ hw/virtio/vhost.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+--
+2.40.1
 
 
