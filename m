@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244DD714A24
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC4F714A23
 	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 15:19:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3clb-0001jb-LD; Mon, 29 May 2023 09:18:31 -0400
+	id 1q3clf-0001k3-9n; Mon, 29 May 2023 09:18:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q3cla-0001jF-DM
- for qemu-devel@nongnu.org; Mon, 29 May 2023 09:18:30 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1q3cld-0001je-BP
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 09:18:33 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1q3clY-0006Pr-Sv
- for qemu-devel@nongnu.org; Mon, 29 May 2023 09:18:30 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-64d577071a6so3909199b3a.1
- for <qemu-devel@nongnu.org>; Mon, 29 May 2023 06:18:28 -0700 (PDT)
+ id 1q3clb-0006QR-OV
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 09:18:33 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-64d2e8a842cso2473665b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 06:18:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685366307; x=1687958307;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Y8plhs8Dd3R9/0mvDG8M8lxTdkwUM8fya1c3ZcQOwgg=;
- b=iDdFvryqUg/caiAZSDTcCHNi6KbemzgEN/uAN2uVeBv1yz4YF97DvN1jdKIjKaHOk3
- PB5rQ9wsHRTt/KupqAlDr7k1OlBOCJWPPmZZJ8Tr48//orWUfLoURShANZArc2hic+C3
- xDg4S40QxONJlGMm1tpsEtcu/wpr4ImFxb091dkU2ksQ9bONR3H0uvhWuzbPH3dSWYoa
- LCyMknbN7JuMTpOZuOkGxXPXUw7ct0yWM4UM/CbILnPGPXY21TSiaYhHzIQtaarlNnca
- PyNekI++djOC/OqPiVh3qOwdtK/v7iUqlLlW56dyoFxc3Nf0QH5ktr92MuUaVc8LqeIi
- U3Zg==
+ d=gmail.com; s=20221208; t=1685366310; x=1687958310;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=e4YOrohZ88Ljh4QERVmNsTb3e4rc0UijJsYXUhf2B1k=;
+ b=rYWDFTauBBZOC7bBRYzSvf7BDpf6XmlkAwMZimr485LbRGlgAcb/qF64kt0ZLFZbU9
+ CV2pcMJA3Bp/+uuK/OUCnFSgtVA9KFkMdA5ELXheiC1LnRs3SpTS2gHs9DCk9zEkP8OB
+ +4q+RC7Fn4RQIxMGq6Xr3UWWooRU0suAjAS6VLPUREvsl3RRlgbVp+nDwYUdHqijnlg9
+ aBV+vwGAdeMksv8ILGIjd0P9EmUD1X96zNeOUHPydjai/iT1KQd5X7Qkx4X1DCAWshAm
+ Wrfy570RbD+8FsLM5IMKYzSMyQmtD8WmWpzzV3SJxmrgPcYc2ccZB8th11E9a8q+eefw
+ iv/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685366307; x=1687958307;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Y8plhs8Dd3R9/0mvDG8M8lxTdkwUM8fya1c3ZcQOwgg=;
- b=X77CX2tu+jVG1zCG7e/JKm6yUm/9najMNl5O1IOc8kiIzVwRO4UYauX9isDH9ec3RO
- T6LGZ3TVV2lNszPJXyODIkiTxypEf2Aqueh2/CZ9f4Her+RK0EL8xlVBX3NubmHd8SGB
- Q9xxnWgGPoMOsRH0hEKK1K37/QvdwZyVBTh+Mrf6nPyT4PGIpGopaTWsR4oiNgFIG9Zq
- YibExW8KLf/RXqqYYipK3XPPjJdX1Hkdpv6Y8GyFpVkdT+LnfrXnE99XaUT3E4TDsZ0P
- fCnhob1X232zBqKyUY7Sb5/Kl7kVFdE800XEKLdCWzZPkTl1pozCy/JPzpObvWBc4odG
- lAEw==
-X-Gm-Message-State: AC+VfDx8EO5TaI5p8aosMiSUuAkcbHoMUoAL9s9GMiUqvkCKkUK34cKw
- 4m0coxZULGv4ONOxoSvvvkY=
-X-Google-Smtp-Source: ACHHUZ6etXkK+4mG6ib35LVSW7in1WlxE13T4liREG5dH45Lp+Jav0zHwIRoYv+6EWLDDoNezEKeiA==
-X-Received: by 2002:a05:6a00:21d4:b0:64c:c5c0:6e01 with SMTP id
- t20-20020a056a0021d400b0064cc5c06e01mr14793580pfj.31.1685366306487; 
- Mon, 29 May 2023 06:18:26 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685366310; x=1687958310;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=e4YOrohZ88Ljh4QERVmNsTb3e4rc0UijJsYXUhf2B1k=;
+ b=TLgY9vmH6DyoxyV2y3sWGiWn2LBuy7enauG7IgAkcW0YPoXGW6ab/uDJNnIaGYLfyA
+ EEf9BIjUizCuc7k0Y+K2ChG73yuEaIj+mBGym2QY9x/snIsAlRDODl76lgJRUyEKUWbC
+ oXwZGoWgfs4DP0Zvm1fPWlFlP8nffh95U3xTPjbkD9gCurY+v4Qy3QOgWfDtmxfVO5w8
+ PSdifjQkbLUyde3VTZuzXSNSHGTeoXmikzKJwPwkdqy01C6C+X60WEuzAZ8EdBwpD+B+
+ OVtViCxodZi3edLYXZvT0OW1xOau+9Y2cFHptEs1AxjEO1Ix6H74YCnmrzxlL5CLy3re
+ dcYQ==
+X-Gm-Message-State: AC+VfDyzuZ+U1toNOVxHLkNFaAy7odG9B3eruR5M/19NLAWsA1A5iHQh
+ lukqOxII6rC4Pgab4k7OH7aHDJrqmliJZA==
+X-Google-Smtp-Source: ACHHUZ5hIdbCcD3NVwRvT4qmdaoPZRKPwlkoQ27cydAnctmF3kjh8dChxyocvEbBST9YoyAEwpbrbg==
+X-Received: by 2002:a17:902:db09:b0:1b0:3e2c:53cc with SMTP id
+ m9-20020a170902db0900b001b03e2c53ccmr4291644plx.27.1685366310217; 
+ Mon, 29 May 2023 06:18:30 -0700 (PDT)
 Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- c6-20020aa78806000000b0064d2d0ff8d5sm6729103pfo.163.2023.05.29.06.18.25
+ x7-20020a170902ec8700b001ab1cdb41d6sm8197975plg.235.2023.05.29.06.18.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 May 2023 06:18:26 -0700 (PDT)
+ Mon, 29 May 2023 06:18:29 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
-To: eperezma@redhat.com
+To: eperezma@redhat.com,
+	Jason Wang <jasowang@redhat.com>
 Cc: yin31149@gmail.com,
 	18801353760@163.com,
 	qemu-devel@nongnu.org
-Subject: [PATCH 0/2] Vhost-vdpa Shadow Virtqueue Offloads support
-Date: Mon, 29 May 2023 21:18:20 +0800
-Message-Id: <cover.1685359572.git.yin31149@gmail.com>
+Subject: [PATCH 1/2] vdpa: Add vhost_vdpa_net_load_offloads
+Date: Mon, 29 May 2023 21:18:21 +0800
+Message-Id: <ab861a8237c5e337bb0f969e1e8e761bc73901d5.1685359572.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1685359572.git.yin31149@gmail.com>
+References: <cover.1685359572.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=yin31149@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -90,18 +94,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series enables shadowed CVQ to intercept Offloads commands
-through shadowed CVQ, update the virtio NIC device model so qemu
-send it in a migration, and the restore of that Offloads state
-in the destination.
+This patch introduces vhost_vdpa_net_load_offloads() to
+restore offloads state at device's startup.
 
-Hawkins Jiawei (2):
-  vdpa: Add vhost_vdpa_net_load_offloads
-  vdpa: Allow VIRTIO_NET_F_CTRL_GUEST_OFFLOADS in SVQ
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+---
+ net/vhost-vdpa.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
- net/vhost-vdpa.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
-
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 37cdc84562..682c749b19 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -680,6 +680,28 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+     return *s->status != VIRTIO_NET_OK;
+ }
+ 
++static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
++                                        const VirtIONet *n)
++{
++    uint64_t features, offloads;
++    ssize_t dev_written;
++
++    features = n->parent_obj.guest_features;
++    if (!(features & BIT_ULL(VIRTIO_NET_F_CTRL_GUEST_OFFLOADS))) {
++        return 0;
++    }
++
++    offloads = cpu_to_le64(n->curr_guest_offloads);
++    dev_written = vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_OFFLOADS,
++                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
++                                          &offloads, sizeof(offloads));
++    if (unlikely(dev_written < 0)) {
++        return dev_written;
++    }
++
++    return *s->status != VIRTIO_NET_OK;
++}
++
+ static int vhost_vdpa_net_load(NetClientState *nc)
+ {
+     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
+@@ -702,6 +724,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+     if (unlikely(r)) {
+         return r;
+     }
++    r = vhost_vdpa_net_load_offloads(s, n);
++    if (unlikely(r)) {
++        return r;
++    }
+ 
+     return 0;
+ }
 -- 
 2.25.1
 
