@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EA17141EA
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 04:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD89714211
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 04:35:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3SSh-0006Sl-Ah; Sun, 28 May 2023 22:18:19 -0400
+	id 1q3Sj8-0001HF-UW; Sun, 28 May 2023 22:35:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3SSf-0006SK-Dr; Sun, 28 May 2023 22:18:17 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3SSd-0001Fp-QW; Sun, 28 May 2023 22:18:17 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1b038064d97so5068305ad.0; 
- Sun, 28 May 2023 19:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685326694; x=1687918694;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=A2EQcEgyU2lJWIY45/6aWodnOtKG+4E5Ef6OQkBkpAM=;
- b=Sip/ORVqQJ419XgHclE9sclaLoeP0HDJtJLXeb+bOCLbVf0mjU3xWQTPOukD4TWxab
- ZDHJAOmm8AYmPz/u5rdQfzZ4nC2PkOOee+wxchHWSRtGkUkl5dW7SzY1c9y2eNw+qHzj
- ko9LT4yIbC0HKtib1K416hHMgjupPGD9SwU1eb+RqKcASVjr7ctOMYydAW6STM4rr7hg
- Yd2moKJ3cYdFbBm+OR3K/Yooerpa2XucFxEp2SrQaEVUqafK9wLNAVsS+DfwgabG5ZF5
- aXs9uWPZ0wIteV3Yn3IdoS1HFzvVOOedjLiijGuEd6ffqsHKARA/4l2oKOghejiUxk4C
- 1Tsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685326694; x=1687918694;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=A2EQcEgyU2lJWIY45/6aWodnOtKG+4E5Ef6OQkBkpAM=;
- b=b/Wh1JUjFrHCI8fvcUURAvJibsX2PoqxIS6DVsa3VCUowc/9rAeMPEWcA2UFicRxcH
- 8BHjYqSem6Ox+ZHbVFRQnf1fdYB69ovuI6kWfgv5GQ0USgpzsd4qLpJ5OnHrB8/ANmK0
- OSLIJqIWYIzUos0XAIXiRbY1CG+UtxynTRsWoasEQ5D6F7xOQFD/OEaqxLvDnKMOK/6p
- b6Fj4npKVfnwZ/mkVYda38UDNLlFg2mpsKE3oAav+d9KhUJax920SS0lB8g6FPygE6O1
- UoAgnVvlEI/E68QbfoFLcxCkTmK6X3C5yBJ2WKExxAfL/ePUJUpkT/HyDzTUFDe5i6Ne
- 64fg==
-X-Gm-Message-State: AC+VfDzdy4RqkIepz8tN5kW89QsON0LQznv1fn9XafbDXfNbLjI2isk2
- mhLRXSw3grH7xS9It11XXbM=
-X-Google-Smtp-Source: ACHHUZ7G2hp/tmSRCAbM7RiB3WCyv5jZavYVyve7FGRe4or8h/Vw+JPM8iOxVMl2DS6SIOliupyeKg==
-X-Received: by 2002:a17:903:244b:b0:1ad:ea13:1914 with SMTP id
- l11-20020a170903244b00b001adea131914mr7424664pls.30.1685326693864; 
- Sun, 28 May 2023 19:18:13 -0700 (PDT)
-Received: from localhost ([203.221.142.9]) by smtp.gmail.com with ESMTPSA id
- 2-20020a170902e9c200b001b02162c86bsm3698438plk.80.2023.05.28.19.18.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 May 2023 19:18:13 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 May 2023 12:18:07 +1000
-Message-Id: <CSYEG7TJD7S7.IYIJXRKLWCZA@wheely>
-Cc: <qemu-ppc@nongnu.org>, <peter.maydell@linaro.org>,
- <richard.henderson@linaro.org>, "Richard Purdie"
- <richard.purdie@linuxfoundation.org>, "Bernhard Beschow"
- <shentey@gmail.com>
-Subject: Re: [PULL 00/10] ppc queue
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Michael Tokarev" <mjt@tls.msk.ru>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.14.0
-References: <20230528164922.20364-1-danielhb413@gmail.com>
- <2ccafb44-d09a-e71c-005b-9a36f128b275@tls.msk.ru>
-In-Reply-To: <2ccafb44-d09a-e71c-005b-9a36f128b275@tls.msk.ru>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1q3Sj4-0001Gm-Vk
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 22:35:15 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1q3Sj1-0007Ii-Ap
+ for qemu-devel@nongnu.org; Sun, 28 May 2023 22:35:14 -0400
+Received: from loongson.cn (unknown [10.20.42.57])
+ by gateway (Coremail) with SMTP id _____8Cx6fHyDnRk+xkCAA--.5082S3;
+ Mon, 29 May 2023 10:33:22 +0800 (CST)
+Received: from [10.20.42.57] (unknown [10.20.42.57])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bx8a_sDnRkbDp+AA--.10373S3; 
+ Mon, 29 May 2023 10:33:17 +0800 (CST)
+Subject: Re: [PATCH v1] hw/loongarch: Add numa support
+To: maobibo <maobibo@loongson.cn>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, peter.maydell@linaro.org,
+ philmd@linaro.org, imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
+ alex.bennee@linaro.org, yangxiaojuan@loongson.cn
+References: <20230518090651.187119-1-gaosong@loongson.cn>
+ <684a5dd5-c67e-3895-562d-d10a2011b9f4@loongson.cn>
+From: Song Gao <gaosong@loongson.cn>
+Message-ID: <28913022-109b-ed71-f740-a692f3a5bc6d@loongson.cn>
+Date: Mon, 29 May 2023 10:33:16 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <684a5dd5-c67e-3895-562d-d10a2011b9f4@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Bx8a_sDnRkbDp+AA--.10373S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjvJXoW3KFW5Aw1DXFWfCF1rJFyUAwb_yoWkGw13pF
+ WIyFWFqr47JFn3Wrs2gr15WFn5Jr1kK3W7Z3y7CFWSkF929ry8CFW8t3yakFyDC348XF1j
+ vr4DJr9xW3WxKrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+ baAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
+ 1l1IIY67AEw4v_JF0_JFyl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
+ wVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84
+ ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_Cr1U
+ M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8CrVACY4
+ xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8
+ JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8w
+ CY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8
+ JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1V
+ AFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xII
+ jxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4
+ A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI
+ 43ZEXa7IU829aDUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,45 +83,275 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon May 29, 2023 at 3:36 AM AEST, Michael Tokarev wrote:
-> 28.05.2023 19:49, Daniel Henrique Barboza wrote:
-> >=20
-> >    https://gitlab.com/danielhb/qemu.git tags/pull-ppc-20230528
-> >=20
-> > ppc patch queue for 2023-05-28:
-> >=20
-> > This queue includes several assorted fixes for PowerPC SPR
-> > emulation, a change in the default Pegasos2 CPU, the addition
-> > of AIL mode 3 for spapr, a PIC->CPU interrupt fix for prep and
-> > performance enhancements in fpu_helper.c.
+
+
+在 2023/5/29 上午8:41, maobibo 写道:
+> Hi gaosong,
 >
->  From the patch description, it looks like the following changes
-> are suitable for -stable:
 >
-> 01/10 target/ppc: Fix fallback to MFSS for MFFS* instructions on pre 3.0 =
-ISAs
-> 02/10 target/ppc: Fix width of some 32-bit SPRs
-> 03/10 target/ppc: Alignment faults do not set DSISR in ISA v3.0 onward
-> 05/10 hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
+> I reply inline
+> 在 2023/5/18 17:06, Song Gao 写道:
+>> 1. Implement some functions for LoongArch numa support;
+>> 2. Implement fdt_add_memory_node() for fdt;
+>> 3. build_srat() fills node_id and adds build numa memory.
+>>
+>> Base-on:
+>> https://patchew.org/QEMU/20230518014115.117869-1-gaosong@loongson.cn/
+>>
+>> Signed-off-by: Song Gao <gaosong@loongson.cn>
+>> ---
+>>   hw/loongarch/acpi-build.c | 42 ++++++++++++-----
+>>   hw/loongarch/virt.c       | 96 ++++++++++++++++++++++++++++++++++-----
+>>   2 files changed, 116 insertions(+), 22 deletions(-)
+>>
+>> diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+>> index 232344e1c7..bb5adb9c1e 100644
+>> --- a/hw/loongarch/acpi-build.c
+>> +++ b/hw/loongarch/acpi-build.c
+>> @@ -163,11 +163,12 @@ build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
+>>   static void
+>>   build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+>>   {
+>> -    int i, arch_id;
+>> +    int i, arch_id, node_id;
+>> +    uint64_t mem_len, mem_base;
+>> +    int nb_numa_nodes = machine->numa_state->num_nodes;
+>>       LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
+>> -    MachineState *ms = MACHINE(lams);
+>> -    MachineClass *mc = MACHINE_GET_CLASS(ms);
+>> -    const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(ms);
+>> +    MachineClass *mc = MACHINE_GET_CLASS(lams);
+>> +    const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(machine);
+>>       AcpiTable table = { .sig = "SRAT", .rev = 1, .oem_id = lams->oem_id,
+>>                           .oem_table_id = lams->oem_table_id };
+>>   
+>> @@ -177,12 +178,13 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+>>   
+>>       for (i = 0; i < arch_ids->len; ++i) {
+>>           arch_id = arch_ids->cpus[i].arch_id;
+>> +        node_id = arch_ids->cpus[i].props.node_id;
+>>   
+>>           /* Processor Local APIC/SAPIC Affinity Structure */
+>>           build_append_int_noprefix(table_data, 0, 1);  /* Type  */
+>>           build_append_int_noprefix(table_data, 16, 1); /* Length */
+>>           /* Proximity Domain [7:0] */
+>> -        build_append_int_noprefix(table_data, 0, 1);
+>> +        build_append_int_noprefix(table_data, node_id, 1);
+>>           build_append_int_noprefix(table_data, arch_id, 1); /* APIC ID */
+>>           /* Flags, Table 5-36 */
+>>           build_append_int_noprefix(table_data, 1, 4);
+>> @@ -192,15 +194,33 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+>>           build_append_int_noprefix(table_data, 0, 4); /* Reserved */
+>>       }
+>>   
+>> +    /* Node0 */
+>>       build_srat_memory(table_data, VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE,
+>>                         0, MEM_AFFINITY_ENABLED);
+>> +    mem_base = VIRT_HIGHMEM_BASE;
+>> +    if (!nb_numa_nodes) {
+>> +        mem_len = machine->ram_size - VIRT_LOWMEM_SIZE;
+>> +    } else {
+>> +        mem_len = machine->numa_state->nodes[0].node_mem - VIRT_LOWMEM_SIZE;
+>> +    }
+>> +    build_srat_memory(table_data, mem_base, mem_len, 0, MEM_AFFINITY_ENABLED);
+> how about add one line like this?
+> if (mem_len)
+>      build_srat_memory(table_data, mem_base, mem_len, 0, MEM_AFFINITY_ENABLED);
+OK,
+and  I will check  node 0 memory  >= VIRT_LOWMEM_SIZE.
+
+Thanks.
+Song Gao
+>> +
+>> +    /* Node1 - Nodemax */
+>> +    if (nb_numa_nodes) {
+>> +        mem_base += mem_len;
+>> +        for (i = 1; i < nb_numa_nodes; ++i) {
+>> +            if (machine->numa_state->nodes[i].node_mem > 0) {
+>> +                build_srat_memory(table_data, mem_base,
+>> +                                  machine->numa_state->nodes[i].node_mem, i,
+>> +                                  MEM_AFFINITY_ENABLED);
+>> +                mem_base += machine->numa_state->nodes[i].node_mem;
+>> +            }
+>> +        }
+>> +    }
+>>   
+>> -    build_srat_memory(table_data, VIRT_HIGHMEM_BASE, machine->ram_size - VIRT_LOWMEM_SIZE,
+>> -                      0, MEM_AFFINITY_ENABLED);
+>> -
+>> -    if (ms->device_memory) {
+>> -        build_srat_memory(table_data, ms->device_memory->base,
+>> -                          memory_region_size(&ms->device_memory->mr),
+>> +    if (machine->device_memory) {
+>> +        build_srat_memory(table_data, machine->device_memory->base,
+>> +                          memory_region_size(&machine->device_memory->mr),
+>>                             0, MEM_AFFINITY_HOTPLUGGABLE | MEM_AFFINITY_ENABLED);
+> is the hugplugable memory is located node 0 or last node?
+last node.  I will correct it.
 >
-> Or are these not important for -stable?  Or maybe there are other changes
-> which should be picked too?
+> With numa support, only srat table is added, what about slic table and hmat table?
+I will add them.
 
-They certainly fix some parts of target emulation, but what is the
-guidance for backporting those type of fixes? Most of the patches I sent
-including 2,3 were just found from inspection or new test code and not
-real software failing.
+Thanks.
+Song Gao
+> Regards
+> Bibo, Mao
+>>       }
+>>   
+>> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+>> index 6e1c42fb2b..c9235f740e 100644
+>> --- a/hw/loongarch/virt.c
+>> +++ b/hw/loongarch/virt.c
+>> @@ -164,11 +164,18 @@ static void fdt_add_cpu_nodes(const LoongArchMachineState *lams)
+>>       for (num = smp_cpus - 1; num >= 0; num--) {
+>>           char *nodename = g_strdup_printf("/cpus/cpu@%d", num);
+>>           LoongArchCPU *cpu = LOONGARCH_CPU(qemu_get_cpu(num));
+>> +        CPUState *cs = CPU(cpu);
+>>   
+>>           qemu_fdt_add_subnode(ms->fdt, nodename);
+>>           qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "cpu");
+>>           qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
+>>                                   cpu->dtb_compatible);
+>> +
+>> +        if (ms->possible_cpus->cpus[cs->cpu_index].props.has_node_id) {
+>> +            qemu_fdt_setprop_cell(ms->fdt, nodename, "numa-node-id",
+>> +                ms->possible_cpus->cpus[cs->cpu_index].props.node_id);
+>> +        }
+>> +
+>>           qemu_fdt_setprop_cell(ms->fdt, nodename, "reg", num);
+>>           qemu_fdt_setprop_cell(ms->fdt, nodename, "phandle",
+>>                                 qemu_fdt_alloc_phandle(ms->fdt));
+>> @@ -280,6 +287,22 @@ static void fdt_add_irqchip_node(LoongArchMachineState *lams)
+>>       g_free(nodename);
+>>   }
+>>   
+>> +static void fdt_add_memory_node(MachineState *ms,
+>> +                                uint64_t base, uint64_t size, int node_id)
+>> +{
+>> +    char *nodename = g_strdup_printf("/memory@%lx", base);
+>> +
+>> +    qemu_fdt_add_subnode(ms->fdt, nodename);
+>> +    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
+>> +    qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "memory");
+>> +
+>> +    if (ms->numa_state && ms->numa_state->num_nodes) {
+>> +        qemu_fdt_setprop_cell(ms->fdt, nodename, "numa-node-id", node_id);
+>> +    }
+>> +
+>> +    g_free(nodename);
+>> +}
+>> +
+>>   #define PM_BASE 0x10080000
+>>   #define PM_SIZE 0x100
+>>   #define PM_CTRL 0x10
+>> @@ -766,14 +789,17 @@ static void loongarch_init(MachineState *machine)
+>>       const char *cpu_model = machine->cpu_type;
+>>       ram_addr_t offset = 0;
+>>       ram_addr_t ram_size = machine->ram_size;
+>> -    uint64_t highram_size = 0;
+>> +    uint64_t highram_size = 0, phyAddr = 0;
+>>       MemoryRegion *address_space_mem = get_system_memory();
+>>       LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
+>> +    int nb_numa_nodes = machine->numa_state->num_nodes;
+>> +    NodeInfo *numa_info = machine->numa_state->nodes;
+>>       int i;
+>>       hwaddr fdt_base;
+>>       const CPUArchIdList *possible_cpus;
+>>       MachineClass *mc = MACHINE_GET_CLASS(machine);
+>>       CPUState *cpu;
+>> +    char *ramName = NULL;
+>>   
+>>       if (!cpu_model) {
+>>           cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
+>> @@ -798,17 +824,45 @@ static void loongarch_init(MachineState *machine)
+>>           machine->possible_cpus->cpus[i].cpu = OBJECT(cpu);
+>>       }
+>>       fdt_add_cpu_nodes(lams);
+>> -    /* Add memory region */
+>> -    memory_region_init_alias(&lams->lowmem, NULL, "loongarch.lowram",
+>> -                             machine->ram, 0, 256 * MiB);
+>> -    memory_region_add_subregion(address_space_mem, offset, &lams->lowmem);
+>> -    offset += 256 * MiB;
+>> -    memmap_add_entry(0, 256 * MiB, 1);
+>> -    highram_size = ram_size - 256 * MiB;
+>> -    memory_region_init_alias(&lams->highmem, NULL, "loongarch.highmem",
+>> +
+>> +    memory_region_add_subregion(address_space_mem, 0, machine->ram);
+>> +
+>> +    /* Node0 memory */
+>> +    memmap_add_entry(VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE, 1);
+>> +    fdt_add_memory_node(machine, VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE, 0);
+>> +    memory_region_init_alias(&lams->lowmem, NULL, "loongarch.node0.lowram",
+>> +                             machine->ram, offset, VIRT_LOWMEM_SIZE);
+>> +    memory_region_add_subregion(address_space_mem, phyAddr, &lams->lowmem);
+>> +
+>> +    offset += VIRT_LOWMEM_SIZE;
+>> +    if (nb_numa_nodes > 0) {
+>> +        assert(numa_info[0].node_mem > VIRT_LOWMEM_SIZE);
+>> +        highram_size = numa_info[0].node_mem - VIRT_LOWMEM_SIZE;
+>> +    } else {
+>> +        highram_size = ram_size - VIRT_LOWMEM_SIZE;
+>> +    }
+>> +    phyAddr = VIRT_HIGHMEM_BASE;
+>> +    memmap_add_entry(phyAddr, highram_size, 1);
+>> +    fdt_add_memory_node(machine, phyAddr, highram_size, 0);
+>> +    memory_region_init_alias(&lams->highmem, NULL, "loongarch.node0.highram",
+>>                                machine->ram, offset, highram_size);
+>> -    memory_region_add_subregion(address_space_mem, 0x90000000, &lams->highmem);
+>> -    memmap_add_entry(0x90000000, highram_size, 1);
+>> +    memory_region_add_subregion(address_space_mem, phyAddr, &lams->highmem);
+>> +
+>> +    /* Node1 - Nodemax memory */
+>> +    offset += highram_size;
+>> +    phyAddr += highram_size;
+>> +
+>> +    for (i = 1; i < nb_numa_nodes; i++) {
+>> +        MemoryRegion *nodemem = g_new(MemoryRegion, 1);
+>> +        ramName = g_strdup_printf("loongarch.node%d.ram", i);
+>> +        memory_region_init_alias(nodemem, NULL, ramName, machine->ram,
+>> +                                 offset,  numa_info[i].node_mem);
+>> +        memory_region_add_subregion(address_space_mem, phyAddr, nodemem);
+>> +        memmap_add_entry(phyAddr, numa_info[i].node_mem, 1);
+>> +        fdt_add_memory_node(machine, phyAddr, numa_info[i].node_mem, i);
+>> +        offset += numa_info[i].node_mem;
+>> +        phyAddr += numa_info[i].node_mem;
+>> +    }
+>>   
+>>       /* initialize device memory address space */
+>>       if (machine->ram_size < machine->maxram_size) {
+>> @@ -1051,6 +1105,21 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
+>>       return ms->possible_cpus;
+>>   }
+>>   
+>> +static CpuInstanceProperties
+>> +virt_cpu_index_to_props(MachineState *ms, unsigned cpu_index)
+>> +{
+>> +    MachineClass *mc = MACHINE_GET_CLASS(ms);
+>> +    const CPUArchIdList *possible_cpus = mc->possible_cpu_arch_ids(ms);
+>> +
+>> +    assert(cpu_index < possible_cpus->len);
+>> +    return possible_cpus->cpus[cpu_index].props;
+>> +}
+>> +
+>> +static int64_t virt_get_default_cpu_node_id(const MachineState *ms, int idx)
+>> +{
+>> +    return idx % ms->numa_state->num_nodes;
+>> +}
+>> +
+>>   static void loongarch_class_init(ObjectClass *oc, void *data)
+>>   {
+>>       MachineClass *mc = MACHINE_CLASS(oc);
+>> @@ -1068,6 +1137,11 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
+>>       mc->default_boot_order = "c";
+>>       mc->no_cdrom = 1;
+>>       mc->possible_cpu_arch_ids = virt_possible_cpu_arch_ids;
+>> +    mc->cpu_index_to_instance_props = virt_cpu_index_to_props;
+>> +    mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
+>> +    mc->numa_mem_supported = true;
+>> +    mc->auto_enable_numa_with_memhp = true;ARM_SPI_BASE
+>> +    mc->auto_enable_numa_with_memdev = true;
+>>       mc->get_hotplug_handler = virt_machine_get_hotplug_handler;
+>>       hc->plug = loongarch_machine_device_plug_cb;
+>>       hc->pre_plug = virt_machine_device_pre_plug;
 
-Should just simple ones go in? 32-bit SPRs do not fix entirely the
-behaviour of all SPRs, just one aspect. In another fix I had (that
-didn't make it in this merge), was a bit more complicated and the
-first iteration caused a deadlock that didn't show up in basic test
-like booting Linux.
-
-My guess is that fixes that correct an issue with real software running
-on the target should be ported to stable. Perhaps "obviously correct"
-small fixes as well. But not sure about larger changes.
-
-Thanks,
-Nick
 
