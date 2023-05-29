@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C3F714DCC
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 18:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCB1714E41
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 May 2023 18:24:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3fLk-0005KH-22; Mon, 29 May 2023 12:04:00 -0400
+	id 1q3feK-0000Yw-FQ; Mon, 29 May 2023 12:23:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q3fLd-0005Jt-UN
- for qemu-devel@nongnu.org; Mon, 29 May 2023 12:03:53 -0400
-Received: from smtp-42ad.mail.infomaniak.ch ([2001:1600:3:17::42ad])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q3feH-0000Yn-SN
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 12:23:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mic@digikod.net>) id 1q3fLa-0007bO-Bo
- for qemu-devel@nongnu.org; Mon, 29 May 2023 12:03:52 -0400
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
- by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QVL131MNPzMqYfG;
- Mon, 29 May 2023 18:03:35 +0200 (CEST)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA
- id 4QVL0w4znNz3vb2; Mon, 29 May 2023 18:03:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
- s=20191114; t=1685376215;
- bh=n6vDyeLcnXuJ2e1Kx1oy6dfLDQBfFmEzNL/ERVZDqQU=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=kQUNssi6VBi8KE2R5ANm9fpqaLV9V+BO/pl/pZOb+r07FAQvClXzKkx8C9t2Hytji
- /4n7ba89FjY/Zfl8t2rhFg1o9pE4iawj/J1DIhc82vGXeZvlW/Z9zID2JwoJwYww3/
- p8LCe3PI5P3tfO/+Mau3UxTlSDY6CLpnXs/pesiA=
-Message-ID: <90ca1173-4ec1-099f-5744-3d6dc29d919d@digikod.net>
-Date: Mon, 29 May 2023 18:03:28 +0200
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1q3feF-0004Vs-Ak
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 12:23:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685377385;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wEXWBeXPsVG7W0oNxPvQcfM6uN38qZ1qgEkgwug1mGU=;
+ b=DMzyPfHIxMssW2vXR/iDU18VWvzU6DO6RhwhAgh/cuJfnaltl0TT28i5y5glALxTHlX3hp
+ dqrlprwtRYKIhCFe0Iyn3AdqhqgwNfQiMJqasE8Rj/kLzjeZCbwSZk6mmDe3HKhsPcdnr+
+ 5JMgiYxcUWbzDnFjegQxTxD6pKGkF9k=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-L8oDfL5yMdydL5amJhPH4w-1; Mon, 29 May 2023 12:19:36 -0400
+X-MC-Unique: L8oDfL5yMdydL5amJhPH4w-1
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-ba802c775caso7118620276.2
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 09:19:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685377176; x=1687969176;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wEXWBeXPsVG7W0oNxPvQcfM6uN38qZ1qgEkgwug1mGU=;
+ b=V8Atav5FXOtSlVynxbDtpa/mUzUB+N3lwlwD0vo4P0jSk2WYoT5HCWlu/Mr3MSL6ka
+ KGG+VtAWKo0V5yUved++CrvemDHKrZOUf6BgVQKIHgmfKacZuj/AayyaAL4Nc76tLXJW
+ 4y6zQvtMQ/aUBZskxdbhSXxdXd+OwG7md2+x0t1hjFFUTUOaH/IpOVOXNeBJhruvE8CV
+ IH6g5g7xxxFwt4nxau0y8h0YYlaRBmAui7K21JVo3CbV7rKXJOZlifK4XNxWOIR3QAbG
+ jYG5tUAjPfj00eZg6PBv+g3nqfD6rtF7SUT87eB5cZR2JWAUoODGhc4mOq+D9uM/2O54
+ nc+w==
+X-Gm-Message-State: AC+VfDzlC2+57KztdUqFGyanVkAb9RGKDPp1C4kfcZHX5NnDveZFos4s
+ PFmN3C9HHvi2uNQN847HLmwS94VMsioP0HjjSqFWGwsnZo9KWk/ifykN1AB7y5/gbTO1jCgvjA2
+ 9R0ue47B7KPzb7L3ap7YtnYu47M8nuI4=
+X-Received: by 2002:a25:b84b:0:b0:ba1:d8a6:d2b2 with SMTP id
+ b11-20020a25b84b000000b00ba1d8a6d2b2mr11923642ybm.7.1685377176484; 
+ Mon, 29 May 2023 09:19:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5b4emE8b70LqbTuL7zL+E+WiClNthfxFqIPTysBxgLG2uWqFWLy2nuGFz7neAQ8SZeEiD+xPzSbjcp54IhUt4=
+X-Received: by 2002:a25:b84b:0:b0:ba1:d8a6:d2b2 with SMTP id
+ b11-20020a25b84b000000b00ba1d8a6d2b2mr11923629ybm.7.1685377176247; Mon, 29
+ May 2023 09:19:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: 
-Subject: Re: [PATCH v1 3/9] virt: Implement Heki common code
-Content-Language: en-US
-To: "Madhavan T. Venkataraman" <madvenka@linux.microsoft.com>,
- Wei Liu <wei.liu@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Kees Cook <keescook@chromium.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
- James Morris <jamorris@linux.microsoft.com>,
- John Andersen <john.s.andersen@intel.com>,
- Marian Rotariu <marian.c.rotariu@gmail.com>,
- =?UTF-8?Q?Mihai_Don=c8=9bu?= <mdontu@bitdefender.com>,
- =?UTF-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
- Zahra Tarkhani <ztarkhani@microsoft.com>,
- =?UTF-8?Q?=c8=98tefan_=c8=98icleru?= <ssicleru@bitdefender.com>,
- dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
- x86@kernel.org, xen-devel@lists.xenproject.org
-References: <20230505152046.6575-1-mic@digikod.net>
- <20230505152046.6575-4-mic@digikod.net>
- <ZFkxhWhjyIzrPkt8@liuwe-devbox-debian-v2>
- <e8fcc1b8-6c0f-9556-a110-bd994d3fe3c6@linux.microsoft.com>
-From: =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
-In-Reply-To: <e8fcc1b8-6c0f-9556-a110-bd994d3fe3c6@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
-Received-SPF: pass client-ip=2001:1600:3:17::42ad;
- envelope-from=mic@digikod.net; helo=smtp-42ad.mail.infomaniak.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <cover.1685359572.git.yin31149@gmail.com>
+ <ab861a8237c5e337bb0f969e1e8e761bc73901d5.1685359572.git.yin31149@gmail.com>
+In-Reply-To: <ab861a8237c5e337bb0f969e1e8e761bc73901d5.1685359572.git.yin31149@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 29 May 2023 18:19:00 +0200
+Message-ID: <CAJaqyWcURXY7GxM2goKHp55pfb-pCjOSYfDwzjsXbtSP1SnSkg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] vdpa: Add vhost_vdpa_net_load_offloads
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: Jason Wang <jasowang@redhat.com>, 18801353760@163.com,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,122 +95,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, May 29, 2023 at 3:18=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> This patch introduces vhost_vdpa_net_load_offloads() to
+> restore offloads state at device's startup.
+>
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> ---
+>  net/vhost-vdpa.c | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 37cdc84562..682c749b19 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -680,6 +680,28 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+>      return *s->status !=3D VIRTIO_NET_OK;
+>  }
+>
+> +static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
+> +                                        const VirtIONet *n)
+> +{
+> +    uint64_t features, offloads;
+> +    ssize_t dev_written;
+> +
+> +    features =3D n->parent_obj.guest_features;
+> +    if (!(features & BIT_ULL(VIRTIO_NET_F_CTRL_GUEST_OFFLOADS))) {
+> +        return 0;
+> +    }
+> +
 
-On 17/05/2023 14:47, Madhavan T. Venkataraman wrote:
-> Sorry for the delay. See inline...
-> 
-> On 5/8/23 12:29, Wei Liu wrote:
->> On Fri, May 05, 2023 at 05:20:40PM +0200, Mickaël Salaün wrote:
->>> From: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
->>>
->>> Hypervisor Enforced Kernel Integrity (Heki) is a feature that will use
->>> the hypervisor to enhance guest virtual machine security.
->>>
->>> Configuration
->>> =============
->>>
->>> Define the config variables for the feature. This feature depends on
->>> support from the architecture as well as the hypervisor.
->>>
->>> Enabling HEKI
->>> =============
->>>
->>> Define a kernel command line parameter "heki" to turn the feature on or
->>> off. By default, Heki is on.
->>
->> For such a newfangled feature can we have it off by default? Especially
->> when there are unsolved issues around dynamically loaded code.
->>
-> 
-> Yes. We can certainly do that.
+Maybe we can avoid sending this CVQ command if the guest already uses
+the default values?
 
-By default the Kconfig option should definitely be off. We also need to 
-change the Kconfig option to only be set if kernel module, JIT, kprobes 
-and other dynamic text change feature are disabled at build time  (see 
-discussion with Sean).
+By default all features are enabled if I'm not wrong. I think the best
+way is to expose virtio_net_supported_guest_offloads or
+virtio_net_guest_offloads_by_features and then check if
+n->curr_guest_offloads is the same.
 
-With this new Kconfig option for the static case, I think the boot 
-option should be on by default because otherwise it would not really be 
-possible to switch back to on later without taking the risk to silently 
-breaking users' machines. However, we should rename this option to 
-something like "heki_static" to be in line with the new Kconfig option.
+We should do the same with vhost_vdpa_net_load_mq, but that is out of
+the scope of this series.
 
-The goal of Heki is to improve and complement kernel self-protection 
-mechanisms (which don't have boot time options), and to make it 
-available to everyone, see 
-https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings
-In practice, it would then be kind of useless to be required to set a 
-boot option to enable Heki (rather than to disable it).
+Thanks!
 
+> +    offloads =3D cpu_to_le64(n->curr_guest_offloads);
+> +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_OFF=
+LOADS,
+> +                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS=
+_SET,
+> +                                          &offloads, sizeof(offloads));
+> +    if (unlikely(dev_written < 0)) {
+> +        return dev_written;
+> +    }
+> +
+> +    return *s->status !=3D VIRTIO_NET_OK;
+> +}
+> +
+>  static int vhost_vdpa_net_load(NetClientState *nc)
+>  {
+>      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> @@ -702,6 +724,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+>      if (unlikely(r)) {
+>          return r;
+>      }
+> +    r =3D vhost_vdpa_net_load_offloads(s, n);
+> +    if (unlikely(r)) {
+> +        return r;
+> +    }
+>
+>      return 0;
+>  }
+> --
+> 2.25.1
+>
 
-> 
->>>
->> [...]
->>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>> index 3604074a878b..5cf5a7a97811 100644
->>> --- a/arch/x86/Kconfig
->>> +++ b/arch/x86/Kconfig
->>> @@ -297,6 +297,7 @@ config X86
->>>   	select FUNCTION_ALIGNMENT_4B
->>>   	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>>   	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->>> +	select ARCH_SUPPORTS_HEKI		if X86_64
->>
->> Why is there a restriction on X86_64?
->>
-> 
-> We want to get the PoC working and reviewed on X64 first. We have tested this only on X64 so far.
-
-X86_64 includes Intel CPUs, which can support EPT and MBEC, which are a 
-requirement for Heki. ARM might have similar features but we're focused 
-on x86 for now.
-
-As a side note, I only have access to an Intel machine, which means that 
-I cannot work on AMD support. However, I'll be pleased to implement such 
-support if I get access to a machine with a recent AMD CPU.
-
-
-> 
->>>   
->>>   config INSTRUCTION_DECODER
->>>   	def_bool y
->>> diff --git a/arch/x86/include/asm/sections.h b/arch/x86/include/asm/sections.h
->>> index a6e8373a5170..42ef1e33b8a5 100644
->>> --- a/arch/x86/include/asm/sections.h
->>> +++ b/arch/x86/include/asm/sections.h
->> [...]
->>>   
->>> +#ifdef CONFIG_HEKI
->>> +
->>> +/*
->>> + * Gather all of the statically defined sections so heki_late_init() can
->>> + * protect these sections in the host page table.
->>> + *
->>> + * The sections are defined under "SECTIONS" in vmlinux.lds.S
->>> + * Keep this array in sync with SECTIONS.
->>> + */
->>
->> This seems a bit fragile, because it requires constant attention from
->> people who care about this functionality. Can this table be
->> automatically generated?
->>
-> 
-> We realize that. But I don't know of a way this can be automatically generated. Also, the permissions for
-> each section is specific to the use of that section. The developer who introduces a new section is the
-> one who will know what the permissions should be.
-> 
-> If any one has any ideas of how we can generate this table automatically or even just add a build time check
-> of some sort, please let us know.
-
-One clean solution might be to parse the vmlinux.lds.S file, extract 
-section and their permission, and fill that into an automatically 
-generated header file.
-
-Another way to do it would be to extract sections and associated 
-permissions with objdump, but that could be an issue because of longer 
-build time.
-
-A better solution would be to extract such sections and associated 
-permissions at boot time. I guess the kernel already has such helpers 
-used in early boot.
 
