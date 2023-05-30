@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6529715DB4
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8554715DB9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:46:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3xhG-00083v-7Z; Tue, 30 May 2023 07:39:26 -0400
+	id 1q3xhH-00084g-JX; Tue, 30 May 2023 07:39:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xh8-0007vo-4C
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:39:19 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xh9-0007xR-Ey
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:39:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xh6-00048i-Kb
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:39:17 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xh8-0004B7-0P
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:39:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685446754;
+ s=mimecast20190719; t=1685446757;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ypSNjxk8rJUKShrG/cQHxTCZ8bHXJz6ssKLCoH3afkk=;
- b=MZeh1QPv1h1rGMLy/ajpIRwgQT/HHCFz6LgjGQLFW0EVOSph3XZrzCrz+Rj1Q3sFSQ/MXQ
- eJpGGrJKP1zULuOxhVha81zBkvN7q1+a51FfzkajPLQW9hRlAmyD5h7/lEUPwG1tnJmhRo
- V0ritnckNSnE42EcvPcLIFjmFkxTXOw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=V7PkcJ6DVo7MMGulOFY19ajlG0QrNz/+An8Z4BW518g=;
+ b=Ge2+h44GyYA/ImnNIMCktLeduMKQj9urwGPkms1Vp344AgYEiarqw+OYOI2ZQoUsBvkMCT
+ N4ALbQ1XwwdB5vLhjp6kJmM5qm5eISNgpw2+5PXu9rYh6MUqmZxNT1Ye1YmTu3D0nM+YjZ
+ xVxZtooJOKDmTJbBBIW6fW0YXqPSOMQ=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-402-4IePjxoQObOgdcDZpBNbfA-1; Tue, 30 May 2023 07:39:08 -0400
-X-MC-Unique: 4IePjxoQObOgdcDZpBNbfA-1
+ us-mta-554-TiiqfpmPNL-OZJ8s-rnmiA-1; Tue, 30 May 2023 07:39:12 -0400
+X-MC-Unique: TiiqfpmPNL-OZJ8s-rnmiA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D7BB9101A53A;
- Tue, 30 May 2023 11:39:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 524973C0CEED;
+ Tue, 30 May 2023 11:39:11 +0000 (UTC)
 Received: from t480s.redhat.com (unknown [10.39.194.167])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D195040CFD48;
- Tue, 30 May 2023 11:39:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 290BD40CFD45;
+ Tue, 30 May 2023 11:39:08 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
@@ -57,9 +57,10 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Subject: [PATCH 06/10] hw/i386/pc: Use memory_devices_init()
-Date: Tue, 30 May 2023 13:38:34 +0200
-Message-Id: <20230530113838.257755-7-david@redhat.com>
+Subject: [PATCH 07/10] hw/i386/acpi-build: Rely on machine->device_memory when
+ building SRAT
+Date: Tue, 30 May 2023 13:38:35 +0200
+Message-Id: <20230530113838.257755-8-david@redhat.com>
 In-Reply-To: <20230530113838.257755-1-david@redhat.com>
 References: <20230530113838.257755-1-david@redhat.com>
 MIME-Version: 1.0
@@ -89,12 +90,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's use our new helper and stop always allocating ms->device_memory.
-Once allcoated, we're sure that the size > 0 and that the base was
-initialized.
+We're already looking at machine->device_memory when calling
+build_srat_memory(), so let's simply avoid going via
+PC_MACHINE_DEVMEM_REGION_SIZE to get the size and rely on
+machine->device_memory directly.
 
-Adjust the code in pc_memory_init() to check for machine->device_memory
-instead of pcmc->has_reserved_memory and machine->device_memory->base.
+Once machine->device_memory is set, we know that the size > 0. The code now
+looks much more similar the hw/arm/virt-acpi-build.c variant.
 
 Cc: Paolo Bonzini <pbonzini@redhat.com>
 Cc: Richard Henderson <richard.henderson@linaro.org>
@@ -103,60 +105,39 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/i386/pc.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ hw/i386/acpi-build.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index bb62c994fa..920aa32b53 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1039,13 +1039,11 @@ void pc_memory_init(PCMachineState *pcms,
-         exit(EXIT_FAILURE);
-     }
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 512162003b..9c74fa17ad 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1950,12 +1950,8 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+     X86MachineState *x86ms = X86_MACHINE(machine);
+     const CPUArchIdList *apic_ids = mc->possible_cpu_arch_ids(machine);
+-    PCMachineState *pcms = PC_MACHINE(machine);
+     int nb_numa_nodes = machine->numa_state->num_nodes;
+     NodeInfo *numa_info = machine->numa_state->nodes;
+-    ram_addr_t hotpluggable_address_space_size =
+-        object_property_get_int(OBJECT(pcms), PC_MACHINE_DEVMEM_REGION_SIZE,
+-                                NULL);
+     AcpiTable table = { .sig = "SRAT", .rev = 1, .oem_id = x86ms->oem_id,
+                         .oem_table_id = x86ms->oem_table_id };
  
--    /* always allocate the device memory information */
--    machine->device_memory = g_malloc0(sizeof(*machine->device_memory));
--
-     /* initialize device memory address space */
-     if (pcmc->has_reserved_memory &&
-         (machine->ram_size < machine->maxram_size)) {
-         ram_addr_t device_mem_size;
-+        hwaddr device_mem_base;
- 
-         if (machine->ram_slots > ACPI_MAX_RAM_SLOTS) {
-             error_report("unsupported amount of memory slots: %"PRIu64,
-@@ -1060,19 +1058,14 @@ void pc_memory_init(PCMachineState *pcms,
-             exit(EXIT_FAILURE);
-         }
- 
--        pc_get_device_memory_range(pcms, &machine->device_memory->base, &device_mem_size);
-+        pc_get_device_memory_range(pcms, &device_mem_base, &device_mem_size);
- 
--        if ((machine->device_memory->base + device_mem_size) <
--            device_mem_size) {
-+        if (device_mem_base + device_mem_size < device_mem_size) {
-             error_report("unsupported amount of maximum memory: " RAM_ADDR_FMT,
-                          machine->maxram_size);
-             exit(EXIT_FAILURE);
-         }
--
--        memory_region_init(&machine->device_memory->mr, OBJECT(pcms),
--                           "device-memory", device_mem_size);
--        memory_region_add_subregion(system_memory, machine->device_memory->base,
--                                    &machine->device_memory->mr);
-+        memory_devices_init(machine, device_mem_base, device_mem_size);
-     }
- 
-     if (pcms->cxl_devices_state.is_enabled) {
-@@ -1120,7 +1113,7 @@ void pc_memory_init(PCMachineState *pcms,
- 
-     rom_set_fw(fw_cfg);
- 
--    if (pcmc->has_reserved_memory && machine->device_memory->base) {
+@@ -2071,9 +2067,10 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+      * Memory devices may override proximity set by this entry,
+      * providing _PXM method if necessary.
+      */
+-    if (hotpluggable_address_space_size) {
 +    if (machine->device_memory) {
-         uint64_t *val = g_malloc(sizeof(*val));
-         PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-         uint64_t res_mem_end = machine->device_memory->base;
+         build_srat_memory(table_data, machine->device_memory->base,
+-                          hotpluggable_address_space_size, nb_numa_nodes - 1,
++                          memory_region_size(&machine->device_memory->mr),
++                          nb_numa_nodes - 1,
+                           MEM_AFFINITY_HOTPLUGGABLE | MEM_AFFINITY_ENABLED);
+     }
+ 
 -- 
 2.40.1
 
