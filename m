@@ -2,74 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5986371671A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 17:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 602A6716782
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 17:48:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q41J5-00059M-T5; Tue, 30 May 2023 11:30:44 -0400
+	id 1q41Yu-0007sk-7q; Tue, 30 May 2023 11:47:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q41J1-00057E-U3
- for qemu-devel@nongnu.org; Tue, 30 May 2023 11:30:39 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q41J0-0002MT-CY
- for qemu-devel@nongnu.org; Tue, 30 May 2023 11:30:39 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2af177f12d1so50696471fa.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 08:30:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685460635; x=1688052635;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=iaTrPRGKkkf4z6lCtMi+5SfTV1OeH7LryHKVi7n7wbs=;
- b=PferG3AGtnbIDLLpQWlRBHiDUiPiqgrFSUzYQBYHqtV40ZDzaC84sgZ4dsOLXzFos/
- XIwQ7h0u5eGwCtsEqz2BCLrj2vV1XzyV+tpUY1cQtZAsKO5D1FpJST8k7iDJHNb4xZqs
- Tgk8kX5olh6wd4NLjN3YvGVcToIFxhkb1rl27F3Kh0VtxIjw5OqoTgNa/FzkJ8cYGybA
- PFZw/dVvs2fFfiIMgEsXlRJYfqoAp0sx+U3bkqr3XOsMUbLvBAOoMxm16RVwqr1y0Cwz
- +Emj6KU9AJJMyw/VJceEMqFdOEROmPz0OTZRcIbZwBVpyySjR6SO3bM8KJzs1plwR2Tb
- A0aQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q41Yo-0007ru-Rd
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 11:46:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q41Yn-0005cT-9z
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 11:46:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685461615;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pmr6MD2p6Nq9Ny0Ab+yP9Ypp4NmhZaUR0mTkVbcsKHA=;
+ b=ZgNksqnFyRkDPl3YK+29mVgeGK6QsWTnKe5kl9c7hnGTdjcudcA7ipJpnH43d+MEJAvAmS
+ 5QGVX0ndMw/ABTNRlOID0oTA24zpinJKW3383U3i2GcArPjt/RRczRsbw62a+vPYzRyAnr
+ dCruIhhFfaem8GDE9MP4Jbsw0uBedS8=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-398-K8oxzWrQMUGQV2Aj-fdZ3g-1; Tue, 30 May 2023 11:46:53 -0400
+X-MC-Unique: K8oxzWrQMUGQV2Aj-fdZ3g-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-3f6c58d57adso9667051cf.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 08:46:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685460635; x=1688052635;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iaTrPRGKkkf4z6lCtMi+5SfTV1OeH7LryHKVi7n7wbs=;
- b=ZIyxX91gra7DmNVdmDclfBaD21BxrdTR/JSoN6/8OwIyU9ezi63ujRDPIhEYcT9gSV
- vYZT9njt7U3ERwuigUbBsrQLkCS29l0gx+diiWfnXmHcTX2bi22c9uiIrja5VFync27Z
- txjAnORHN2mUNTZuUvEVBvaAD3W4TGT1M+KeZp5+TKaG3KPRAH4Q+yy/e3VqD0dWGbjf
- fAZp+s9a+HCxAmX3HD0lav9zezLmk4QlvWk5N4OVFNt3e04SD2VcBez/aE6IG0+oecy0
- clZ8zMNSanLmJ1VgbQBWss+WfSmqk4TghMHmm/vTVP6eWU87z3Z1zMkNcGtQeXd1gKwl
- pMog==
-X-Gm-Message-State: AC+VfDy8fWRbe14hbjL5KIHPGieziHhl/IlrjGgdfv+n7jyDqbO52zaS
- H2fP+hCXupmPnC9/foOTzs+l9bTU5q1nxD7B1xCRdw==
-X-Google-Smtp-Source: ACHHUZ7WMKAQIqoSGoOFDyThRfsgtWM5iHLqsSG0Gud/LMUPQpvmsnes1+ThAlERIXX26K0AAQWPp2XdAybK0HQXb20=
-X-Received: by 2002:a2e:9e47:0:b0:2ab:145e:c04a with SMTP id
- g7-20020a2e9e47000000b002ab145ec04amr1152704ljk.17.1685460635032; Tue, 30 May
- 2023 08:30:35 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685461612; x=1688053612;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pmr6MD2p6Nq9Ny0Ab+yP9Ypp4NmhZaUR0mTkVbcsKHA=;
+ b=FnucSBoQJKGWgt2He+am6OePsma+l7FCiyD2Fk2em+HL8BQkjo9e7GF1sQzgOiKmVO
+ HSAF0fqXsN2HBB/6TSeJTyNDiUv0m9DQo4vUD+fPnEB1Etb/1P9mi6uBJslHRhx1bVUC
+ IC2jl39cQej/6E+PkOTuGqPh0MTN4qevaN0gISkd6xHSLRygZAgW6wYuTmNckH5b9OlI
+ na32Q2G9Q1LrKTwohAUTf5hqv4KszN0xRkLouNIo/0gAdXNCpYzlWaMEt5aWLY349+fh
+ 0SAu5JUev0aP786CBALmS8Gap8ZYL0wgijNWYrHwL1V0ECga8crFsMvDhtyB4PYxsMnu
+ 0s+w==
+X-Gm-Message-State: AC+VfDw+6K11hXd+wPgCdqlQ+UDkxKlBViqbpCJu90vaoJP8jJqy/jv4
+ U7YWNHWppl1ybhe7uLFwwji2msqmB8RlQfOHvNChAuVAVqWN077e+fkUImUiQ4UQtO8dLhGx6ge
+ aNEIUA1cK5l3hHTE=
+X-Received: by 2002:a05:622a:4e:b0:3f7:df68:7b09 with SMTP id
+ y14-20020a05622a004e00b003f7df687b09mr3124867qtw.6.1685461612282; 
+ Tue, 30 May 2023 08:46:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6SU1+X/IIWU3jmJ3PxRL2ZjCyba+WaLwuYKrz+lWsmUAEeyFWmc4lt0A5qsWh8aD7E5Xe0NA==
+X-Received: by 2002:a05:622a:4e:b0:3f7:df68:7b09 with SMTP id
+ y14-20020a05622a004e00b003f7df687b09mr3124842qtw.6.1685461612008; 
+ Tue, 30 May 2023 08:46:52 -0700 (PDT)
+Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
+ [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
+ d4-20020ac851c4000000b003e4d9c91106sm4746365qtn.57.2023.05.30.08.46.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 08:46:51 -0700 (PDT)
+Date: Tue, 30 May 2023 11:46:50 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Andrei Gudkov <gudkov.andrei@huawei.com>
+Cc: qemu-devel@nongnu.org, quintela@redhat.com, eblake@redhat.com,
+ armbru@redhat.com, berrange@redhat.com, zhengchuan@huawei.com
+Subject: Re: [PATCH v2 0/4] Migration time prediction using calc-dirty-rate
+Message-ID: <ZHYaajucX3WbO5oW@x1n>
+References: <cover.1682598010.git.gudkov.andrei@huawei.com>
 MIME-Version: 1.0
-References: <20230525232558.1758967-1-richard.henderson@linaro.org>
- <20230525232558.1758967-19-richard.henderson@linaro.org>
-In-Reply-To: <20230525232558.1758967-19-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 30 May 2023 16:30:24 +0100
-Message-ID: <CAFEAcA-m514=+H6yuWkTWh=NMQFj1Q_4OchA=4KPBaBA=_c8vg@mail.gmail.com>
-Subject: Re: [PATCH v2 18/20] tests/tcg/aarch64: Use stz2g in mte-7.c
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x230.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <cover.1682598010.git.gudkov.andrei@huawei.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,19 +96,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 26 May 2023 at 00:27, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> We have many other instances of stg in the testsuite;
-> change these to provide an instance of stz2g.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  tests/tcg/aarch64/mte-7.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+Hi, Andrei,
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+On Thu, Apr 27, 2023 at 03:42:56PM +0300, Andrei Gudkov via wrote:
+> Afterwards we tried to migrate VM after randomly selecting max downtime
+> and bandwidth limit. Typical prediction error is 6-7%, with only 180 out
+> of 5779 experiments failing badly: prediction error >=25% or incorrectly
+> predicting migration success when in fact it didn't converge.
 
-thanks
--- PMM
+What's the normal size of the VMs when you did the measurements?
+
+A major challenge of convergence issues come from huge VMs and I'm
+wondering whether those are covered in the prediction verifications.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
