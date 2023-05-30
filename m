@@ -2,61 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE81716237
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BFB716240
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:39:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zYC-0002z2-3P; Tue, 30 May 2023 09:38:12 -0400
+	id 1q3zYF-0003IX-8T; Tue, 30 May 2023 09:38:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q3zY7-0002ma-4m
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:38:07 -0400
-Received: from mout.kundenserver.de ([217.72.192.74])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q3zY5-0005Ze-99
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:38:06 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue106 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MCb2L-1pvR5l3BXH-009iJZ; Tue, 30 May 2023 15:38:02 +0200
-Message-ID: <293d2e1f-d8ee-5a17-cbf8-2a7d7b49b6b6@vivier.eu>
-Date: Tue, 30 May 2023 15:38:02 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3zYD-0003BZ-7e
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:38:13 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3zYB-0005bA-DL
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:38:12 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f6d01d390bso46661615e9.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:38:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685453890; x=1688045890;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0TIvREcJQjRw3FtDlTnTg3R1cumfzKc6yJ+R9pjXbe8=;
+ b=b84iLtyoqAnPJ05UX50tPL5DY2zTDqecKIuEyZISqqn38YDmE3qBbwG6Ye9DhsgQeN
+ eXIgvUro2ZMV76yA+T6KVEzK1iwQZ8Ri+nFVYaxBzFq1GiCEp70+8I3WTprw17jKHOeb
+ FLu8rGn/7eHIzN8oWxA+wRi/VPlLuB0Qj33GWG/Yb6e9DBq1kq3s4kgLzIJt+5QvrtJv
+ PcdBfOs0EUL7nUxMrZ95WYT6Biz7y6qlaZj5DvJP4kqxpV3p+i1QQiAxQ8OYZN5B27+S
+ GVEbItOVgMjbR0/jLMEx+PPu5HWc/qFJAXP0RIdJv8g+plA7xP0d3zvUVznvOOx6iYR4
+ uy9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685453890; x=1688045890;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0TIvREcJQjRw3FtDlTnTg3R1cumfzKc6yJ+R9pjXbe8=;
+ b=AmN8uNgcjkI5E2dRA04d/W/T8nTilMjILcZIpD/csWhN0qRgJ8cvvfcG7Bi+RHW4v3
+ mGL2X9AtRkPHRAUsarIrUknkr+5vGkSgNGUvmPfWyTgYDQl19TyNdG46qjXv013W3E/6
+ Njti+cbSCtPKAS8oNIhQhTCcVf1QggLrSSDXSJht5fxVE/K8BePSBfkaSEGo3heY1E2d
+ i/eSJd4TiNfitarIeA41abBIN/uF8TIjIvE0+7X676FnCj6LaKfaoBC5hdxO8UKMI7Uf
+ OqRzt7N3NGNydUdohT3Uy2Z2rriIUnLm5m7phZZj7pnB/RElvUCY8u7bpV1WRP+ERK8v
+ 8UnA==
+X-Gm-Message-State: AC+VfDzAKpg8vAXSN6sGGJSEeHH1J5qGzu7316DBdV6NRscotkLG5Lis
+ bf27uQgi+FBBFnhwqCF4iMsDlw==
+X-Google-Smtp-Source: ACHHUZ7SSvb2V7Kd3xxWO6Ft7DobFyvpA+XnzEM1s0gFQLxoZHm978u1xvLZtZ5RJqNceQf9lHvsDQ==
+X-Received: by 2002:a7b:c44a:0:b0:3f4:2c71:b9ad with SMTP id
+ l10-20020a7bc44a000000b003f42c71b9admr2187866wmi.30.1685453889860; 
+ Tue, 30 May 2023 06:38:09 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.180.1])
+ by smtp.gmail.com with ESMTPSA id
+ k25-20020a05600c1c9900b003f1738d0d13sm33661630wms.1.2023.05.30.06.38.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 May 2023 06:38:09 -0700 (PDT)
+Message-ID: <bd4c064c-39f9-cde2-d392-dff01c404080@linaro.org>
+Date: Tue, 30 May 2023 15:38:06 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 23/30] mac_via: fix rtc command decoding for the PRAM
- seconds registers
-Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
- <20230524211104.686087-24-mark.cave-ayland@ilande.co.uk>
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230524211104.686087-24-mark.cave-ayland@ilande.co.uk>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH V9 00/46] Live Update
+Content-Language: en-US
+To: Steven Sistare <steven.sistare@oracle.com>
+References: <1658851843-236870-1-git-send-email-steven.sistare@oracle.com>
+ <53075574-9e73-f773-ccb1-cca42a719801@oracle.com>
+ <d0a2df99-5935-9b06-cc42-fd93488b59f5@oracle.com>
+Cc: qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Jason Zeng <jason.zeng@linux.intel.com>, Zheng Chuan
+ <zhengchuan@huawei.com>, Mark Kanda <mark.kanda@oracle.com>,
+ Guoyi Tu <tugy@chinatelecom.cn>, Peter Maydell <peter.maydell@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>, David Hildenbrand <david@redhat.com>,
+ John Snow <jsnow@redhat.com>, Peng Liang <tcx4c70@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <d0a2df99-5935-9b06-cc42-fd93488b59f5@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:BROu9bYPvr+cTQ/so883EY1nFWR0wb8TU6QrzltlDnakN1fPINQ
- SzjynBM7AWl+GLg8cYaTqcmULAnboIO9u3jMv7ONj6wrRnl/dvXV86uLGhSrayNexKJTQbC
- kN2M00qoSHPtLLO+aXTZMwv2V20FnVljL/VGYB56mS30TyJczkkD6pOKQRoyNIB4XOt6z2n
- 6kktYOi0ORUH0+SlTTrmA==
-UI-OutboundReport: notjunk:1;M01:P0:x6WcZ8FFZTo=;aTqZlf/9SVfGil4d48pT57VnwuX
- Qlj9xMlpfvpVEvySUYQ38+yZWiHCChk9Z7D9yVEBzhtsSnBg3D3H1VxjCCyQTnGCoKAkmUsuy
- /TozCC+QcSjQTrOiZiaDuKhY9DZUlo2MrWRA4cBfZ7bwGBRsCQTtHnJlY1BBNkWiNADbh50cM
- izsH12a5P8mzYGTzyKGnEj3Ue3aPBZ0NBmYhun4X38ho4xOg27L7CtqYMYdARHhZiUZ7SRsXz
- UIwMkhjd9dumaXjLqHmAm7mznU8ErCOaYWSaz9k/Q8/nSz0J2TQjrcXiK4xQa/BCxyT53AIm6
- AqbNvmZXgzkjngHOQQgOaPuGN58VgzHGTryyT2rvUeVWD5+MJsrg3xyROOJMenx/OAnfqW/H6
- i2Z7Y2vuIj3kJhBN99PL7e+j571wOeLTaFN/DQu3j9ZWVp+Pe+90ZqlBPBIf4JnW+fvDxwr2n
- uGdSOFFJY6Dn3oc521vzg30522yx8oqpQmPkUN4zDtRcwDKvQE0EZrVO3jy5ytY2mdaEz74BR
- VSCwCcKf9zgfKFFgExh/RskO8QX5X7a3O5/qXYt+YP6Kxd8CGL1Qc3wHKgE8ZNGPvqmn8HEEc
- EMOFFv7Czjoa4yOQEKJcfqvSmTNQQC4+djAWf7kJUJ2LL3474alyw+heNbPc9KEDS6afcpJBs
- XrBlu4deUtAUGI4SwxExqbRqYkflAM03o4F5i5NmAQ==
-Received-SPF: none client-ip=217.72.192.74; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,59 +107,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 24/05/2023 à 23:10, Mark Cave-Ayland a écrit :
-> Analysis of the MacOS toolbox ROM code shows that on startup it attempts 2
-> separate reads of the seconds registers with commands 0x9d...0x91 followed by
-> 0x8d..0x81 without resetting the command to its initial value. The PRAM seconds
-> value is only accepted when the values of the 2 separate reads match.
-> 
->  From this we conclude that bit 4 of the rtc command is not decoded or we don't
-> care about its value when reading the PRAM seconds registers. Implement this
-> decoding change so that both reads return successfully which allows the MacOS
-> toolbox ROM to correctly set the date/time.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/misc/mac_via.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-> index d7067030db..5d5334b0f6 100644
-> --- a/hw/misc/mac_via.c
-> +++ b/hw/misc/mac_via.c
-> @@ -366,10 +366,10 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
->    *
->    * Command byte    Register addressed by the command
->    *
-> - * z0000001        Seconds register 0 (lowest-order byte)
-> - * z0000101        Seconds register 1
-> - * z0001001        Seconds register 2
-> - * z0001101        Seconds register 3 (highest-order byte)
-> + * z00x0001        Seconds register 0 (lowest-order byte)
-> + * z00x0101        Seconds register 1
-> + * z00x1001        Seconds register 2
-> + * z00x1101        Seconds register 3 (highest-order byte)
->    * 00110001        Test register (write-only)
->    * 00110101        Write-Protect Register (write-only)
->    * z010aa01        RAM address 100aa ($10-$13) (first 20 bytes only)
-> @@ -377,6 +377,7 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
->    * z0111aaa        Extended memory designator and sector number
->    *
->    * For a read request, z=1, for a write z=0
-> + * The letter x indicates don't care
->    * The letter a indicates bits whose value depend on what parameter
->    * RAM byte you want to address
->    */
-> @@ -393,7 +394,7 @@ static int via1_rtc_compact_cmd(uint8_t value)
->       }
->       if ((value & 0x03) == 0x01) {
->           value >>= 2;
-> -        if ((value & 0x1c) == 0) {
-> +        if ((value & 0x18) == 0) {
->               /* seconds registers */
->               return read | (REG_0 + (value & 0x03));
->           } else if ((value == 0x0c) && !read) {
+Hi Steve,
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+On 7/2/23 19:44, Steven Sistare wrote:
+> To make forward progress on this series and reduce its size, I will be posting
+> those of its patches that can be independently integrated and have some value
+> on their own, to a reduced distribution of reviewers for each.  This is what
+> I plan to break out:
+> 
+> migration: fix populate_vfio_info
+> 
+> memory: RAM_NAMED_FILE flag
+> 
+> memory: flat section iterator
+> 
+> oslib: qemu_clear_cloexec
+> 
+> migration: simplify blockers
+> 
+> migration: simplify notifiers
+> 
+> python/machine: QEMUMachine full_args
+> 
+> python/machine: QEMUMachine reopen_qmp_connection
+> 
+> qapi: strList_from_string
+> qapi: QAPI_LIST_LENGTH
+> qapi: strv_from_strList
+> qapi: strList unit tests
+
+The break out looks good, but I guess it is a bit obsolete (as of
+today), you probably already re-posted some of these patches as
+separate series. Do you mind replying with a "ping" to the posted
+ones which still applies and need to be reviewed?
+
+Thanks,
+
+Phil.
+
+> - Steve
+> 
+> On 12/7/2022 10:48 AM, Steven Sistare wrote:
+>> This series desperately needs review in its intersection with live migration.
+>> The code in other areas has been reviewed and revised multiple times -- thank you!
 
 
