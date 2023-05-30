@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3964716D47
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4755E716D6B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:21:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q44o2-0006JX-EF; Tue, 30 May 2023 15:14:54 -0400
+	id 1q44o1-0006E3-Gp; Tue, 30 May 2023 15:14:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44nq-0005vd-Mk
+ id 1q44ns-0005xh-5R
  for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:44 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44no-0004b7-U1
- for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:42 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-64fbfe0d037so120756b3a.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:14:40 -0700 (PDT)
+ id 1q44np-0004bU-K4
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:43 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-64d5b4c400fso5437093b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:14:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685474079; x=1688066079;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=j8DFII/Utn3dXL/8Iq9AplYqonrV9FdyNAmYCoypIto=;
- b=KRfuYxHgpXd/9YtJG6gOew0ToRT+0hPkFoTgxaeik3t2+NOsfN15ECTzgCxqU6vPNY
- c4ynNjbhF8uOTUPW2IGQ+xvPvWS6KeDm7PMHoW2brhTn9stg2ywGCN0h3X1OIv8kxKez
- CMtBNtzqBsbfg3Y2Bv4JTARESOiq0ss+UrCWc9QhcdejmrY7NJDDXJAWamcZ7WG5F30V
- qglLYQWAftsrIzWvuMv2GzbIw6+H5wSqmk5hDp9YdFOiM+znvbBH4k/xZ2BCM09zRLPI
- NXwIqfU1r/hZfoBJkeNTrMIYLDLbltFsEMxeSmZk6PsTgmH7wmiU9nEhf1/zWrH6m5eH
- ArLg==
+ d=linaro.org; s=google; t=1685474080; x=1688066080;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=v9ZiT6iOGzF/qLv4FneWlWxT5JuhvBvbdJMyfzS4B+I=;
+ b=Jh1E650B8MIKTHMoZhkaJOIV6uycReeoe/IoFyZjyvZl1+XrJuohpMReoZ90V43AO/
+ CrPEuTBO+GjCWIxjwiMixx/C9qfSGnWI25Y2UBp7K5xBPlNZcR/0wDDlOcaoXwF+iSd5
+ hVPxpnAId+SQGwGUVa6/nCGLM0ggVgZSG8BSw2IZ1Wb6h6qDvd7pPmD6ZOEGuyTNbZ3T
+ dlUDFjiGf6mulsKcDWJ+UoKkoKpCm8I5hqxxSE/c8hIXlxzJ0A4j+xqqlxXZQtSH0Vxk
+ ndWMcnS5976f7jQeeGpEFfyflnqU6pZEoe3UhIhgvKXuqNEoeWUJQ2DZa65eSPELVNgw
+ zqbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685474079; x=1688066079;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j8DFII/Utn3dXL/8Iq9AplYqonrV9FdyNAmYCoypIto=;
- b=SCevgg5ioXKox6CsqKvBtiSh79AuPb0ukt6bdWShVCNku9GycqQIMyb1Tl0+ikGjVN
- kLOgne6LTmkFdI89Jbxli0m37O0knPB0GMsrtHtMKBYJDzDsruqyMxYo7ywuOwYpyNlD
- pUZlrrOTN2ipA1LLZpL4n4SJtIExpi2UwGCbKBlsoFMrgcWQUYTfh2Cs0HBkzOk5l0EK
- 7woyUgIG1NcLlsTbfTeb5Mr41fqNYJbW8rEkYdS/dzI3o7zYZJWHAxLpiPg0JL1bEpxj
- bn+sdIIu8vfDAHK9PpFsYKsGBlOXZdj//3NJEZdZds2JnSyDZNFy7Teh7giZveAa7Fj0
- oEfg==
-X-Gm-Message-State: AC+VfDyRS+FP2b1OyooEDphB3cnetXbZtLdW3wQ0WVfakR4bLltQB0B1
- psroHDXAIi+a77deYR8IAGTB5wWOKJObHK+pgdU=
-X-Google-Smtp-Source: ACHHUZ7FYnEE2m9fZB7pXEJfwtnWoQcFx6Ghnl2czK8z/Idxk0UhRJYUMCNBqHwY4FqyqA08q2vXcw==
-X-Received: by 2002:a05:6a20:7d84:b0:10e:96a4:e31d with SMTP id
- v4-20020a056a207d8400b0010e96a4e31dmr13636326pzj.22.1685474079407; 
- Tue, 30 May 2023 12:14:39 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685474080; x=1688066080;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=v9ZiT6iOGzF/qLv4FneWlWxT5JuhvBvbdJMyfzS4B+I=;
+ b=YiY0V9q9UElnrP4U36E3hkWn/myPkPB5e4sIwPyK9rMlqCvV+PrEA+ewUp32f+rMb4
+ Bz1WLhbrH2E6XWt4qCmCVTgyAHLhTnhB+uy8Hzi7IxuSKz5X+gemEoTM43I3dlbyeKeO
+ hG6rNy1e/5LCXjSYUfPIDpSupDuM0+x5fiqQ+gvVBFrZBBUw0fb7vbGtZqyd+llwyFBo
+ 3RrO7suEYIrj/PNIqWt5al78ixnwHnXhQWPywv2YZ3KeXIKzsFGjLztq5hzB7MvvY+mo
+ eNjC6oa1oIW4vp5TFNUfI8e2bQJDNbPpH2WWFAY3qYCll8vsQkyXufM4t8BlmPPDWlIN
+ rtSQ==
+X-Gm-Message-State: AC+VfDy3jlZXNjI17I93aQLbC0j0FBp59WGVV5BWmJv1Z/NghFIvFbk+
+ vXSl9SiMXlVkf7Be33UOlQ+5zXOoWE8M1RYZhjk=
+X-Google-Smtp-Source: ACHHUZ4jM9DHg+5pFsEpZCkefvtJX1VSlR+2uoyHCCADkn6ZeVJcue/WGSGLTExQBuXjo93TjAde4A==
+X-Received: by 2002:a05:6a20:2d0f:b0:10f:5fc:80d5 with SMTP id
+ g15-20020a056a202d0f00b0010f05fc80d5mr3420801pzl.35.1685474080320; 
+ Tue, 30 May 2023 12:14:40 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
  by smtp.gmail.com with ESMTPSA id
- 10-20020a63104a000000b0051806da5cd6sm8926757pgq.60.2023.05.30.12.14.38
+ 10-20020a63104a000000b0051806da5cd6sm8926757pgq.60.2023.05.30.12.14.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 30 May 2023 12:14:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v3 00/20] target/arm: Implement FEAT_LSE2
-Date: Tue, 30 May 2023 12:14:18 -0700
-Message-Id: <20230530191438.411344-1-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v3 01/20] target/arm: Add commentary for
+ CPUARMState.exclusive_high
+Date: Tue, 30 May 2023 12:14:19 -0700
+Message-Id: <20230530191438.411344-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230530191438.411344-1-richard.henderson@linaro.org>
+References: <20230530191438.411344-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,55 +93,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All prerequisites are upstream.  There are still outstanding patches
-to improve the atomic16 support, but those are all optimizations.
+Document the meaning of exclusive_high in a big-endian context,
+and why we can't change it now.
 
-Patches needing r-b:
-  16-target-arm-Relax-ordered-atomic-alignment-checks-.patch
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/cpu.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-
-r~
-
-
-Richard Henderson (20):
-  target/arm: Add commentary for CPUARMState.exclusive_high
-  target/arm: Add feature test for FEAT_LSE2
-  target/arm: Introduce finalize_memop_{atom,pair}
-  target/arm: Use tcg_gen_qemu_ld_i128 for LDXP
-  target/arm: Use tcg_gen_qemu_{st,ld}_i128 for do_fp_{st,ld}
-  target/arm: Use tcg_gen_qemu_st_i128 for STZG, STZ2G
-  target/arm: Use tcg_gen_qemu_{ld,st}_i128 in gen_sve_{ld,st}r
-  target/arm: Sink gen_mte_check1 into load/store_exclusive
-  target/arm: Load/store integer pair with one tcg operation
-  target/arm: Hoist finalize_memop out of do_gpr_{ld,st}
-  target/arm: Hoist finalize_memop out of do_fp_{ld,st}
-  target/arm: Pass memop to gen_mte_check1*
-  target/arm: Pass single_memop to gen_mte_checkN
-  target/arm: Check alignment in helper_mte_check
-  target/arm: Add SCTLR.nAA to TBFLAG_A64
-  target/arm: Relax ordered/atomic alignment checks for LSE2
-  target/arm: Move mte check for store-exclusive
-  tests/tcg/aarch64: Use stz2g in mte-7.c
-  tests/tcg/multiarch: Adjust sigbus.c
-  target/arm: Enable FEAT_LSE2 for -cpu max
-
- docs/system/arm/emulation.rst  |   1 +
- target/arm/cpu.h               |  16 +-
- target/arm/internals.h         |   3 +-
- target/arm/tcg/helper-a64.h    |   3 +
- target/arm/tcg/translate-a64.h |   4 +-
- target/arm/tcg/translate.h     |  65 ++++-
- target/arm/tcg/cpu64.c         |   1 +
- target/arm/tcg/helper-a64.c    |   7 +
- target/arm/tcg/hflags.c        |   6 +
- target/arm/tcg/mte_helper.c    |  18 ++
- target/arm/tcg/translate-a64.c | 477 ++++++++++++++++++++++-----------
- target/arm/tcg/translate-sve.c | 106 +++++---
- target/arm/tcg/translate.c     |   1 +
- tests/tcg/aarch64/mte-7.c      |   3 +-
- tests/tcg/multiarch/sigbus.c   |  13 +-
- 15 files changed, 523 insertions(+), 201 deletions(-)
-
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index d469a2637b..81c0df9c25 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -677,8 +677,16 @@ typedef struct CPUArchState {
+         uint64_t zcr_el[4];   /* ZCR_EL[1-3] */
+         uint64_t smcr_el[4];  /* SMCR_EL[1-3] */
+     } vfp;
++
+     uint64_t exclusive_addr;
+     uint64_t exclusive_val;
++    /*
++     * Contains the 'val' for the second 64-bit register of LDXP, which comes
++     * from the higher address, not the high part of a complete 128-bit value.
++     * In some ways it might be more convenient to record the exclusive value
++     * as the low and high halves of a 128 bit data value, but the current
++     * semantics of these fields are baked into the migration format.
++     */
+     uint64_t exclusive_high;
+ 
+     /* iwMMXt coprocessor state.  */
 -- 
 2.34.1
 
