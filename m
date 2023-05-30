@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A99716C79
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2A8716C5F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:26:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q442e-0001VH-1M; Tue, 30 May 2023 14:25:56 -0400
+	id 1q442l-0001b5-VF; Tue, 30 May 2023 14:26:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q442b-0001UK-Rs
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q442g-0001Zt-Q7
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q442a-0000ja-By
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:53 -0400
+ id 1q442e-0000lM-5P
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685471150;
+ s=mimecast20190719; t=1685471155;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2TY2CO2Lcs363lXyY0wyAxUcLaDeBd8u1b0rResvmco=;
- b=BKa09yy3yZUDwrF7wOcXQivfdwH55Pdh5oLeu175j03mjXr7SQdDvax7A7jpKV4pooEaV0
- uwdv1WDpvXOwhVZJCtFcok7RZqb/or0Xe2n/cIMip42n1RoKn0B4xGiZ45LxvQBTvSSDN4
- MFha0pf47CDjU4JQVexhly4BYH9Z9zE=
+ bh=zQW35MHS3TnLCcUdr3YI2k46h3xUpZF4dkCAIi4Iey8=;
+ b=RzZNI5PFf3bbmVWueRQV1le9KfkiknbrfJ1CN3iVm6J4hC/tOAzmHshMKwSV2GAAcssHBy
+ 1+z4nxyfIPlW43Pxzkq2UNrCZa3cMZTGK/9gysWfUh85WYTCmw60EGay+k9oBpP7Zc2AIz
+ puOAxSRwafoFp5t11039xm5DmrAXsWM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-588-Ehj7AJ3ZMZ6mGqQcM8kr5Q-1; Tue, 30 May 2023 14:25:49 -0400
-X-MC-Unique: Ehj7AJ3ZMZ6mGqQcM8kr5Q-1
+ us-mta-477-m8psjPPKOHiwe8_rO7BE5w-1; Tue, 30 May 2023 14:25:54 -0400
+X-MC-Unique: m8psjPPKOHiwe8_rO7BE5w-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0404C811E7F
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 18:25:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 387B585A5BB
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 18:25:50 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0F01A17103;
- Tue, 30 May 2023 18:25:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 49D1917103;
+ Tue, 30 May 2023 18:25:49 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>
-Subject: [PULL 12/21] migration: Create migrate_rdma()
-Date: Tue, 30 May 2023 20:25:22 +0200
-Message-Id: <20230530182531.6371-13-quintela@redhat.com>
+Subject: [PULL 13/21] migration/rdma: Unfold ram_control_before_iterate()
+Date: Tue, 30 May 2023 20:25:23 +0200
+Message-Id: <20230530182531.6371-14-quintela@redhat.com>
 In-Reply-To: <20230530182531.6371-1-quintela@redhat.com>
 References: <20230530182531.6371-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -78,104 +78,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Helper to say if we are doing a migration over rdma.
+Once there:
+- Remove unused data parameter
+- unfold it in its callers.
+- change all callers to call qemu_rdma_registration_start()
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-Id: <20230509120700.78359-2-quintela@redhat.com>
+Message-Id: <20230509120700.78359-3-quintela@redhat.com>
 ---
- migration/migration.h | 3 +++
- migration/options.h   | 1 +
- migration/migration.c | 1 +
- migration/options.c   | 7 +++++++
- migration/rdma.c      | 4 +++-
- 5 files changed, 15 insertions(+), 1 deletion(-)
+ migration/qemu-file.h |  2 --
+ migration/rdma.h      |  7 +++++++
+ migration/qemu-file.c | 13 +------------
+ migration/ram.c       | 16 +++++++++++++---
+ migration/rdma.c      |  6 ++----
+ 5 files changed, 23 insertions(+), 21 deletions(-)
 
-diff --git a/migration/migration.h b/migration/migration.h
-index 30c3e97635..7359572012 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -440,6 +440,9 @@ struct MigrationState {
+diff --git a/migration/qemu-file.h b/migration/qemu-file.h
+index ed77996201..ced2202137 100644
+--- a/migration/qemu-file.h
++++ b/migration/qemu-file.h
+@@ -55,7 +55,6 @@ typedef int (QEMURamSaveFunc)(QEMUFile *f,
+                               size_t size);
  
-     /* QEMU_VM_VMDESCRIPTION content filled for all non-iterable devices. */
-     JSONWriter *vmdesc;
+ typedef struct QEMUFileHooks {
+-    QEMURamHookFunc *before_ram_iterate;
+     QEMURamHookFunc *after_ram_iterate;
+     QEMURamHookFunc *hook_ram_load;
+     QEMURamSaveFunc *save_page;
+@@ -131,7 +130,6 @@ void qemu_fflush(QEMUFile *f);
+ void qemu_file_set_blocking(QEMUFile *f, bool block);
+ int qemu_file_get_to_fd(QEMUFile *f, int fd, size_t size);
+ 
+-void ram_control_before_iterate(QEMUFile *f, uint64_t flags);
+ void ram_control_after_iterate(QEMUFile *f, uint64_t flags);
+ void ram_control_load_hook(QEMUFile *f, uint64_t flags, void *data);
+ 
+diff --git a/migration/rdma.h b/migration/rdma.h
+index de2ba09dc5..670c67a8cb 100644
+--- a/migration/rdma.h
++++ b/migration/rdma.h
+@@ -22,4 +22,11 @@ void rdma_start_outgoing_migration(void *opaque, const char *host_port,
+ 
+ void rdma_start_incoming_migration(const char *host_port, Error **errp);
+ 
 +
-+    /* Is this a rdma migration */
-+    bool rdma_migration;
- };
++#ifdef CONFIG_RDMA
++int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags);
++#else
++static inline
++int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags) { return 0; }
++#endif
+ #endif
+diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+index 32ef5e9651..6243d6ac59 100644
+--- a/migration/qemu-file.c
++++ b/migration/qemu-file.c
+@@ -32,6 +32,7 @@
+ #include "trace.h"
+ #include "options.h"
+ #include "qapi/error.h"
++#include "rdma.h"
  
- void migrate_set_state(int *state, int old_state, int new_state);
-diff --git a/migration/options.h b/migration/options.h
-index 45991af3c2..33a6bae93c 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -54,6 +54,7 @@ bool migrate_zero_copy_send(void);
- 
- bool migrate_multifd_flush_after_each_section(void);
- bool migrate_postcopy(void);
-+bool migrate_rdma(void);
- bool migrate_tls(void);
- 
- /* capabilities helpers */
-diff --git a/migration/migration.c b/migration/migration.c
-index 7c3425c6fe..31d30a2ac5 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1405,6 +1405,7 @@ void migrate_init(MigrationState *s)
-     s->vm_old_state = -1;
-     s->iteration_initial_bytes = 0;
-     s->threshold_size = 0;
-+    s->rdma_migration = false;
+ #define IO_BUF_SIZE 32768
+ #define MAX_IOV_SIZE MIN_CONST(IOV_MAX, 64)
+@@ -302,18 +303,6 @@ void qemu_fflush(QEMUFile *f)
+     f->iovcnt = 0;
  }
  
- int migrate_add_blocker_internal(Error *reason, Error **errp)
-diff --git a/migration/options.c b/migration/options.c
-index b62ab30cd5..4b99811197 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -350,6 +350,13 @@ bool migrate_postcopy(void)
-     return migrate_postcopy_ram() || migrate_dirty_bitmaps();
- }
- 
-+bool migrate_rdma(void)
-+{
-+    MigrationState *s = migrate_get_current();
-+
-+    return s->rdma_migration;
-+}
-+
- bool migrate_tls(void)
+-void ram_control_before_iterate(QEMUFile *f, uint64_t flags)
+-{
+-    int ret = 0;
+-
+-    if (f->hooks && f->hooks->before_ram_iterate) {
+-        ret = f->hooks->before_ram_iterate(f, flags, NULL);
+-        if (ret < 0) {
+-            qemu_file_set_error(f, ret);
+-        }
+-    }
+-}
+-
+ void ram_control_after_iterate(QEMUFile *f, uint64_t flags)
  {
-     MigrationState *s = migrate_get_current();
-diff --git a/migration/rdma.c b/migration/rdma.c
-index 12d3c23fdc..c11863e614 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -4122,6 +4122,7 @@ void rdma_start_incoming_migration(const char *host_port, Error **errp)
-     int ret;
-     RDMAContext *rdma;
-     Error *local_err = NULL;
-+    MigrationState *s = migrate_get_current();
+     int ret = 0;
+diff --git a/migration/ram.c b/migration/ram.c
+index eab0cb2710..b070278796 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -58,6 +58,7 @@
+ #include "qemu/iov.h"
+ #include "multifd.h"
+ #include "sysemu/runstate.h"
++#include "rdma.h"
+ #include "options.h"
  
-     trace_rdma_start_incoming_migration();
- 
-@@ -4152,7 +4153,7 @@ void rdma_start_incoming_migration(const char *host_port, Error **errp)
+ #include "hw/boards.h" /* for machine_dump_guest_core() */
+@@ -3012,7 +3013,10 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+         }
      }
  
-     trace_rdma_start_incoming_migration_after_rdma_listen();
--
-+    s->rdma_migration = true;
-     qemu_set_fd_handler(rdma->channel->fd, rdma_accept_incoming_migration,
-                         NULL, (void *)(intptr_t)rdma);
-     return;
-@@ -4228,6 +4229,7 @@ void rdma_start_outgoing_migration(void *opaque,
+-    ram_control_before_iterate(f, RAM_CONTROL_SETUP);
++    ret = qemu_rdma_registration_start(f, RAM_CONTROL_SETUP);
++    if (ret < 0) {
++        qemu_file_set_error(f, ret);
++    }
+     ram_control_after_iterate(f, RAM_CONTROL_SETUP);
  
-     trace_rdma_start_outgoing_migration_after_rdma_connect();
+     migration_ops = g_malloc0(sizeof(MigrationOps));
+@@ -3072,7 +3076,10 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+         /* Read version before ram_list.blocks */
+         smp_rmb();
  
-+    s->rdma_migration = true;
-     s->to_dst_file = qemu_fopen_rdma(rdma, "wb");
-     migrate_fd_connect(s, NULL);
-     return;
+-        ram_control_before_iterate(f, RAM_CONTROL_ROUND);
++        ret = qemu_rdma_registration_start(f, RAM_CONTROL_ROUND);
++        if (ret < 0) {
++            qemu_file_set_error(f, ret);
++        }
+ 
+         t0 = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
+         i = 0;
+@@ -3177,7 +3184,10 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+             migration_bitmap_sync_precopy(rs, true);
+         }
+ 
+-        ram_control_before_iterate(f, RAM_CONTROL_FINISH);
++        ret = qemu_rdma_registration_start(f, RAM_CONTROL_FINISH);
++        if (ret < 0) {
++            qemu_file_set_error(f, ret);
++        }
+ 
+         /* try transferring iterative blocks of memory */
+ 
+diff --git a/migration/rdma.c b/migration/rdma.c
+index c11863e614..6ca89ff090 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -3863,13 +3863,12 @@ static int rdma_load_hook(QEMUFile *f, uint64_t flags, void *data)
+     }
+ }
+ 
+-static int qemu_rdma_registration_start(QEMUFile *f,
+-                                        uint64_t flags, void *data)
++int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags)
+ {
+     QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(qemu_file_get_ioc(f));
+     RDMAContext *rdma;
+ 
+-    if (migration_in_postcopy()) {
++    if (!migrate_rdma () || migration_in_postcopy()) {
+         return 0;
+     }
+ 
+@@ -4007,7 +4006,6 @@ static const QEMUFileHooks rdma_read_hooks = {
+ };
+ 
+ static const QEMUFileHooks rdma_write_hooks = {
+-    .before_ram_iterate = qemu_rdma_registration_start,
+     .after_ram_iterate  = qemu_rdma_registration_stop,
+     .save_page          = qemu_rdma_save_page,
+ };
 -- 
 2.40.1
 
