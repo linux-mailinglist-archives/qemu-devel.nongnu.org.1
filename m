@@ -2,83 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB747160DF
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B787160E3
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:00:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3ywt-0006Pl-8F; Tue, 30 May 2023 08:59:39 -0400
+	id 1q3yx9-0006lo-SK; Tue, 30 May 2023 08:59:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3ywU-0006CL-C1
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:59:14 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3ywS-0000Wk-SV
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:59:14 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-30af86a96b4so157356f8f.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 05:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685451551; x=1688043551;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fc0QNYBo/7/8H3C0PU1VdgFRhXbx+g6BrK/2wpkYl38=;
- b=pyKFH3iIddls+HZ4duVm5T/t4A42pfiW3J8W2N5ujiZ03j4NJ+Ky7zhe3FA/RmBLQJ
- Cz/5Nb/qaF2lagc/ow7q1g9/fGNuQFl244RV5wI1zN/S2Wg1vLKB2LY2M8Cq9EMAfjcT
- a4JoBquJmbz2P7FltwXLfmjaoq7e4V5tGaV8d7lIf7qbFwWGn6EX+d3x1dGgt7W0a0pN
- ew1p0qXsmdjFiobS4VoJRSau0XOYjC0xZqRDq1me+ihfCEEIRMokJgRyN7+54euvsuMs
- oEJIsmxwd6yBGi69yXz0WaOoxdn2WGcrB+iKGoKezICj5Kv/eHqoMh2Q4uczgcXnVDZr
- JWFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685451551; x=1688043551;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fc0QNYBo/7/8H3C0PU1VdgFRhXbx+g6BrK/2wpkYl38=;
- b=RgJXekGGZzfWQT3eiWO03tbIrSlrp5qRoQ5tCZkb8ST8xJCZSn3Uey3sonG/M0Q/4j
- dT4XtSI9TsyP3hYznVMkcSoGRQLIeAVpIinYRgQfaVhS9VzEPiwY6gl4suG+mWleZD+y
- XtxkAYabhTL9pAPCjo6Q9SuxZdp8tGNFExVY0/7n28n+VaKALPQikxwtzZt4Gi1zTG8L
- H27rOL5AJ+NXZgnVs1NmDOyXsZ1TWLJU3U9Bhb5Y9rTGgbUpsxY7rrYXYl22xlIvD/wj
- 3i5KPm7z3bSqQMHUbAOPzo+6krDfpS4iaNT/NZnKiu+59OqGkJc2m4s65ah0ftwnfsKB
- vppA==
-X-Gm-Message-State: AC+VfDxm7y7R/Z0KN2qYl7aJW/admuvWTD3XHi+hXHmSdrTHwN3VV/bV
- gTY2XHQ4hxX0UBdvIrrty28Npw==
-X-Google-Smtp-Source: ACHHUZ7dEgfKr1ncMxjLJyRx3fXuajH5yXlix8qOVdWqGhf0IALBiKd0fmauLHkuKgOFpsUqzSiLYw==
-X-Received: by 2002:adf:ea08:0:b0:306:26d7:3805 with SMTP id
- q8-20020adfea08000000b0030626d73805mr1489984wrm.63.1685451551185; 
- Tue, 30 May 2023 05:59:11 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.180.1])
- by smtp.gmail.com with ESMTPSA id
- h4-20020adfe984000000b002fe96f0b3acsm3270710wrm.63.2023.05.30.05.59.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 05:59:10 -0700 (PDT)
-Message-ID: <f20d051b-4daa-1118-4d3f-c9a1403d63c1@linaro.org>
-Date: Tue, 30 May 2023 14:59:09 +0200
+ (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
+ id 1q3yx7-0006l9-8N
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:59:53 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <zhaotianrui@loongson.cn>) id 1q3yx4-0000en-7m
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:59:53 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxQ_BB83VkPJkCAA--.5848S3;
+ Tue, 30 May 2023 20:59:45 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxKL1B83VkHKOAAA--.12887S2; 
+ Tue, 30 May 2023 20:59:45 +0800 (CST)
+From: Tianrui Zhao <zhaotianrui@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn, maobibo@loongson.cn, zhaotianrui@loongson.cn,
+ philmd@linaro.org, richard.henderson@linaro.org, peter.maydell@linaro.org
+Subject: [PATCH] hw/loongarch: Supplement cpu topology arguments
+Date: Tue, 30 May 2023 20:59:45 +0800
+Message-Id: <20230530125945.804060-1-zhaotianrui@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 11/20] target/arm: Hoist finalize_memop out of
- do_fp_{ld, st}
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20230525232558.1758967-1-richard.henderson@linaro.org>
- <20230525232558.1758967-12-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230525232558.1758967-12-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-CM-TRANSID: AQAAf8BxKL1B83VkHKOAAA--.12887S2
+X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
+X-Coremail-Antispam: 1Uk129KBjvJXoW7tF4DtrykZrWkuFy3XFy3twb_yoW8ZryUpw
+ 4qkayjyw43W3s5Zw4DGF9FgFyjyr4kK3WxXa4IgrWF93Wqg3W5XrW8AFZ0vF43Zwn5JFWD
+ ursYk3WagFW8Xr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+ bn8Fc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
+ AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF
+ 7I0E14v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+ 0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xAC
+ xx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VWrMcvjeVCFs4IE7xkEbV
+ WUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx2
+ 6rWl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+ xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+ cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+ AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7Cj
+ xVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvj4RC_MaUUUUU
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,16 +73,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/5/23 01:25, Richard Henderson wrote:
-> We are going to need the complete memop beforehand,
-> so let's not compute it twice.
-> 
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/arm/tcg/translate-a64.c | 43 ++++++++++++++++++----------------
->   1 file changed, 23 insertions(+), 20 deletions(-)
+Supplement LoongArch cpu topology arguments, including support socket
+and threads per core.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Based-on: <20230518014115.117869-1-gaosong@loongson.cn>
+Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+---
+ hw/loongarch/acpi-build.c | 4 ++++
+ hw/loongarch/virt.c       | 9 ++++++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index d4429bac00..51541ac532 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -414,6 +414,10 @@ static void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+     acpi_add_table(table_offsets, tables_blob);
+     build_madt(tables_blob, tables->linker, lams);
+ 
++    acpi_add_table(table_offsets, tables_blob);
++    build_pptt(tables_blob, tables->linker, machine,
++                   lams->oem_id, lams->oem_table_id);
++
+     acpi_add_table(table_offsets, tables_blob);
+     build_srat(tables_blob, tables->linker, machine);
+ 
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 0a9067d4d8..1ace1631d0 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -1046,8 +1046,15 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
+     for (n = 0; n < ms->possible_cpus->len; n++) {
+         ms->possible_cpus->cpus[n].type = ms->cpu_type;
+         ms->possible_cpus->cpus[n].arch_id = n;
++
++        ms->possible_cpus->cpus[n].props.has_socket_id = true;
++        ms->possible_cpus->cpus[n].props.socket_id  =
++                                        n / (ms->smp.cores * ms->smp.threads);
+         ms->possible_cpus->cpus[n].props.has_core_id = true;
+-        ms->possible_cpus->cpus[n].props.core_id = n;
++        ms->possible_cpus->cpus[n].props.core_id =
++                                   (n / ms->smp.threads) % ms->smp.cores;
++        ms->possible_cpus->cpus[n].props.has_thread_id = true;
++        ms->possible_cpus->cpus[n].props.thread_id = n % ms->smp.threads;
+     }
+     return ms->possible_cpus;
+ }
+-- 
+2.27.0
 
 
