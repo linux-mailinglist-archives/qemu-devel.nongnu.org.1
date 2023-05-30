@@ -2,82 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41B4716654
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 17:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A3E7166C6
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 17:15:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q410l-0001wE-EM; Tue, 30 May 2023 11:11:47 -0400
+	id 1q413N-0006bs-HS; Tue, 30 May 2023 11:14:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q410Q-0001kd-Jc
- for qemu-devel@nongnu.org; Tue, 30 May 2023 11:11:26 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q410M-0005Gg-Md
- for qemu-devel@nongnu.org; Tue, 30 May 2023 11:11:26 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-51458187be1so8077041a12.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 08:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685459481; x=1688051481;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pgqSrsE6WKBGhIyN31uqtjp1Dlf7zxgJ52vhXZmBtsY=;
- b=xODxqIyg0seQVT4nv1pMsiqN6j5/WK+Y0wNXor9cDC+6HKNzLcSLNt+o8CXRpIBedY
- b5DEwfp0KGQh8jqhyEEJhz5jfB2XfpMwF1nbbSOAz5IBFpCm7Spe0McvC0vff2+ypDoS
- km4z2eBS/MmzuLlwYnPbQAo8AicazAHa6ah/yEbO+2MR02fj/moCdH21CUm5hMSNMZp2
- q+7VK0wnWS46bkKavY+NdTTVZKy5TaLD+CFDFoUPUb/NjMbm7Ss0tcWy7FkFwKnlHkOw
- TuV/HOSRi7aCEdipAHNr7b9Bibi5q1L3VfGsYQU1B3XLYGgcm3EIalKmfXLcPcGU5ZFT
- hqYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685459481; x=1688051481;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pgqSrsE6WKBGhIyN31uqtjp1Dlf7zxgJ52vhXZmBtsY=;
- b=H3lGJLPmVooMNvbgv3fMNxEJB2jN5XmaDrFimeA8ZY9c9HhvLrFYk1ltV9aPQuR7hX
- N0xT10juMGRWPZP8tsQFHLSDrJp7PMhQGEElIpg6gj+xLw7ERSVoAiphPDACVe75szmg
- ZPTl0Ov7rEyO2UPikv2qkeH5kv8g13eNfVNtgYjJYDHnczJlGqGQTqy44jblECL+OEFs
- t7M7HRk2w7qGkobSKKoLGEZVUIkIzXADiLsFqAPZl/gSEm7oHtEFGH9fvHFs7BUe2Z2w
- i6AkoyEgHhIYXFcnyBOh4rlO2XxprkKOjBDDv7HbrGynAb3iezBYxAyLyobwLKkW+osp
- z2ew==
-X-Gm-Message-State: AC+VfDwYyCGSnMtZINe/uMUNeL2vXBfnYPo+PNMvx64U9ARju6GnPo/C
- Z5c2mRUyN+9/TZWITrxbmgsF9mUZ89gwqCIZlBO40Q==
-X-Google-Smtp-Source: ACHHUZ4ZYySM1dor+T/6PgIX+iqV/c34lN3Kp1KxuNuvqaTAqPEkcI/u6tx5PNfhQBefaBY1aAcsZE3DPp1VjnhBpjs=
-X-Received: by 2002:aa7:cfd8:0:b0:510:f8d7:1f4e with SMTP id
- r24-20020aa7cfd8000000b00510f8d71f4emr1899162edy.3.1685459480851; Tue, 30 May
- 2023 08:11:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q413L-0006Z5-9N
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 11:14:27 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1q413I-00068J-W1
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 11:14:26 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QVwqL3BhWz6DB95;
+ Tue, 30 May 2023 23:12:14 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 30 May
+ 2023 16:14:21 +0100
+Date: Tue, 30 May 2023 16:14:20 +0100
+To: Li Zhijian <lizhijian@cn.fujitsu.com>
+CC: <fan.ni@samsung.com>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] hw/clx: Fix CFMW config memory leak
+Message-ID: <20230530161420.00000784@Huawei.com>
+In-Reply-To: <20230529075956.2235870-1-lizhijian@cn.fujitsu.com>
+References: <20230529075956.2235870-1-lizhijian@cn.fujitsu.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20230525232558.1758967-1-richard.henderson@linaro.org>
- <20230525232558.1758967-2-richard.henderson@linaro.org>
- <dbb368d0-839c-ad09-01de-09b1a62416af@linaro.org>
- <87zg5r1kxx.fsf@secure.mitica>
- <8f315f7c-2778-855a-0879-f928f9ca8054@linaro.org>
-In-Reply-To: <8f315f7c-2778-855a-0879-f928f9ca8054@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 30 May 2023 16:11:09 +0100
-Message-ID: <CAFEAcA8XnaEjh+BhfnfOEqXtEHXGxF-9iC83o8jNH65vhg5R6A@mail.gmail.com>
-Subject: Re: [PATCH v2 01/20] target/arm: Add commentary for
- CPUARMState.exclusive_high
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: quintela@redhat.com,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,74 +61,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 26 May 2023 at 15:44, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 5/26/23 02:49, Juan Quintela wrote:
-> > Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
-> >> Hi,
-> >>
-> >> On 26/5/23 01:25, Richard Henderson wrote:
-> >>> Document the meaning of exclusive_high in a big-endian context,
-> >>> and why we can't change it now.
-> >>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> >>> ---
-> >>>    target/arm/cpu.h | 7 +++++++
-> >>>    1 file changed, 7 insertions(+)
-> >>> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> >>> index d469a2637b..4e16eab82e 100644
-> >>> --- a/target/arm/cpu.h
-> >>> +++ b/target/arm/cpu.h
-> >>> @@ -677,8 +677,15 @@ typedef struct CPUArchState {
-> >>>            uint64_t zcr_el[4];   /* ZCR_EL[1-3] */
-> >>>            uint64_t smcr_el[4];  /* SMCR_EL[1-3] */
-> >>>        } vfp;
-> >>> +
-> >>>        uint64_t exclusive_addr;
-> >>>        uint64_t exclusive_val;
-> >>> +    /*
-> >>> +     * Contains the 'val' for the second 64-bit register of LDXP, wh=
-ich comes
-> >>> +     * from the higher address, not the high part of a complete 128-=
-bit value.
-> >>> +     * This is perhaps confusingly named, but the name is now baked =
-into the
-> >>> +     * migration format.
-> >>> +     */
-> >>>        uint64_t exclusive_high;
-> >>
-> >> Can't we rename the field if we add the old name to check_fields_match=
-()
-> >> in scripts/vmstate-static-checker.py?
+On Mon, 29 May 2023 15:59:56 +0800
+Li Zhijian <lizhijian@cn.fujitsu.com> wrote:
 
-> It's not worth any effort to rename.  Just needed documentation.
+> Only 'fw' pointer is marked as g_autofree, so we shoud free other
+> resource manually in error path.
+> 
+Good spot.
 
-Yeah; the important point here is "we can't trivially switch
-to recording the exclusive value as 'high:low' of a guest
-128 bit value" -- it has to remain "value from low address,
-value from high address". Really what is baked into the
-migration format is that the semantics of the two fields
-are from-low-addr and from-high-addr.
+Patch title typo
+hw/cxl: 
 
-If you replace this:
+It's a bit annoying we can't handle this with more autofree magic.
+That would work for fw->targets but not for the string duplicates.
 
-> >>> +     * This is perhaps confusingly named, but the name is now baked =
-into the
-> >>> +     * migration format.
+One other comment inline,
 
-with:
- * In some ways it might be more convenient to record the
- * exclusive value as the low and high halves of a 128 bit
- * data value, but the current semantics of these fields are
- * baked into the migration format.
+Thanks,
 
-then:
+Jonathan
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-thanks
--- PMM
+> Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
+> ---
+>  hw/cxl/cxl-host.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
+> index 034c7805b3e..dd1a7c83f71 100644
+> --- a/hw/cxl/cxl-host.c
+> +++ b/hw/cxl/cxl-host.c
+> @@ -48,7 +48,7 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
+>      if (object->size % (256 * MiB)) {
+>          error_setg(errp,
+>                     "Size of a CXL fixed memory window must be a multiple of 256MiB");
+> -        return;
+> +        goto err_free;
+
+
+>      }
+>      fw->size = object->size;
+>  
+> @@ -57,7 +57,7 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
+>              cxl_interleave_granularity_enc(object->interleave_granularity,
+>                                             errp);
+>          if (*errp) {
+> -            return;
+> +            goto err_free;
+>          }
+>      } else {
+>          /* Default to 256 byte interleave */
+> @@ -68,6 +68,12 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
+>                                               g_steal_pointer(&fw));
+>  
+>      return;
+> +
+> +err_free:
+> +    for (i = 0; i < fw->num_targets && fw->targets[i]; i++) {
+
+No need to check fw->targets[i]
+
+> +        g_free(fw->targets[i]);
+> +    }
+> +    g_free(fw->targets);
+>  }
+>  
+>  void cxl_fmws_link_targets(CXLState *cxl_state, Error **errp)
+
 
