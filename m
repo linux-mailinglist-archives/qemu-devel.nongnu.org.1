@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F137161FB
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDB07161BC
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zNr-00085a-MM; Tue, 30 May 2023 09:27:36 -0400
+	id 1q3zNN-0006n1-LK; Tue, 30 May 2023 09:27:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMs-0005e8-3S
+ id 1q3zMr-0005e7-Ql
  for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:32 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMo-0001OF-NS
+ id 1q3zMo-0001OW-Oa
  for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:29 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3f6d38a140bso32310855e9.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:26:23 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4f4d6aee530so4702446e87.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:26:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685453182; x=1688045182;
+ d=linaro.org; s=google; t=1685453183; x=1688045183;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=cb7tW0OrRUlLGsWKm9Wt1qUNMT77CsNBwWCPAxZNsz8=;
- b=F99oshoIb0a4BpGIsKNj/qvwufmntZ1c4KVtKoiG66ExFG5FY7RCGwQDWG1Ii8QdRp
- jXNx+1cvzgZFNHrAmFFcnUSZPlldObt0XKhO7R7/XnosIVvAQsObVYju03jXhxG3cTit
- 74jfO5lGqer8P2xnznqtCmnaTnQSO3Ax6zX8ll8WQniI4imGnscFmhKEDW2mKx1Oj/he
- RQByEqMAI5N22yGhb22uGNcgKl+YbgBYbuDGIHLxbkeQoWEm9To1uaAhm1sWwqWSiV0Q
- fUr+s6LAhlWri+o4EPW5g0Iz6QeL+1ErRtYq1UHTZNn0oVS7EAg46CpsSMZa1mN1HXTr
- OP/A==
+ :reply-to; bh=tZZp8qZUnh7rN2MKTpirZeB50VkCYddXBSRoN/swsXM=;
+ b=rnMxpHjOfpzZScZ2fn9OnKFLjNtklExaIa1fBI63+u4bT6K1PxLJJzfFvBUBh/97PD
+ pryI9WogbXnD1vD2YzY4ICwQ7E+UJzILdSrPl636MhfYSoyEDtDK/nW3iAGzqkoy76qt
+ mjn9FiMMq9gx23wWxtpVfHIp4GaAIG1dEGm4G3sBRFnJvIOKDPemcBj7Eg7P3NewLF0V
+ FxfxmVmxYMrQCdPIUQD0wRvsUsfsAPtv9YkLrNIycWBHXlHW0HNWzNWoIj5JvFcwG91U
+ z3T+nYCJqpPxkzTgo5q2ZbsvVJeVxPcW7TabfBbIusmENWbvUqM6gfANM44Nrp1oV9qN
+ fqGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685453182; x=1688045182;
+ d=1e100.net; s=20221208; t=1685453183; x=1688045183;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cb7tW0OrRUlLGsWKm9Wt1qUNMT77CsNBwWCPAxZNsz8=;
- b=SiBNls27eYmDus0X9Rm8ZCea3xNucQ/V3VRDqOEugJRgzmMTUAfFipRPiuA0yrXAbD
- 42mOMWC1sfnif+SHVtsO5CfJLA7j/XIQBBXKB3Xof1TFqi0bvIwP5+19VzoQhsWGlDeq
- IuM/2wiBlugfyoPQkNRSFp9aVD2wdfKPIaRPrQ4RabaLcmuYoemXhSihv7b879GGZMaU
- +dm1mbhvWlqxGqQ1q52g7O8nu81OZmmDSsY+0hrY7n2Jb1awzt+fip3J1QZy7S0JoouO
- voNVDBSdH5QPJULSBhfTLQDwYXSPHxSrBcrhidm4mlCRFiAroeAvDc+mgNiHvgZUbBrr
- Bm5Q==
-X-Gm-Message-State: AC+VfDzOXJ3LtoY2mDmn8spl5yArgjjxWC3quD89Ttgr1kKHsUzruaQD
- 5bWToopzCfrHE6gU+mC6x0rq2Sfk5AshMdI11nI=
-X-Google-Smtp-Source: ACHHUZ53D5dvCw/qDf9Pyk+HKZeNwsL0PfLtbSkxN71MwQKv1i0r0sZ5YgpNuYUR3/iwg+f5vIF1HQ==
-X-Received: by 2002:a05:600c:3b27:b0:3f7:a7c:b039 with SMTP id
- m39-20020a05600c3b2700b003f70a7cb039mr2482938wms.2.1685453182472; 
+ bh=tZZp8qZUnh7rN2MKTpirZeB50VkCYddXBSRoN/swsXM=;
+ b=QvBha2EycGHOOO6MBHSYtPtyIdCCTdbs5Jv00ENmFApw3ECnDLxRMptg4ZbS8EdhpT
+ DUdzDCIcvWEUq9CnlqmRlEzP+G5KBMbZliuLuF3LmoYpV48mZi8e1uic6coQZzFzP5kp
+ 7BUc+3mq/QXGspK547LCUh7JPjUZhx5QqcRCWdwx9IRwMT7ufCXQqsB0c6jSV4RQBuJg
+ UKxMSDve9kjH5uiJxcL/acSAz6sQ0VVaZpRbAod1mt4NQgJ2fcNAARB2ecE8Utp4ZPFe
+ slqKcAgxmCofU5yhXji1HSEAM3mVvkVOWTOu71yoD1Pa7kvrkFAn8fYvIJpiEOiKXlT0
+ etkw==
+X-Gm-Message-State: AC+VfDxvtdGXKj1tMKmTCZodOwjrEYzx4g40b5Qt4Q3MHj6uL6BsecmB
+ scs0fIYuzLOiRAUSXK8RAQwrxz00KYKt0jUY3h4=
+X-Google-Smtp-Source: ACHHUZ7LGDClTLJ1v+D1Kv0pMYHmHyG4BsgmK2MJgyimd6SHZNfKeGvSDabIjO16U8v2aSQHcShCPw==
+X-Received: by 2002:ac2:5637:0:b0:4f3:af46:1941 with SMTP id
+ b23-20020ac25637000000b004f3af461941mr767664lff.34.1685453182889; 
  Tue, 30 May 2023 06:26:22 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 30 May 2023 06:26:22 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/21] fsl-imx6: Add SNVS support for i.MX6 boards
-Date: Tue, 30 May 2023 14:26:00 +0100
-Message-Id: <20230530132620.1583658-2-peter.maydell@linaro.org>
+Subject: [PULL 02/21] hw/arm/smmuv3: Add missing fields for IDR0
+Date: Tue, 30 May 2023 14:26:01 +0100
+Message-Id: <20230530132620.1583658-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230530132620.1583658-1-peter.maydell@linaro.org>
 References: <20230530132620.1583658-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,70 +90,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vitaly Cheptsov <cheptsov@ispras.ru>
+From: Mostafa Saleh <smostafa@google.com>
 
-SNVS is supported on both i.MX6 and i.MX6UL and is needed
-to support shutdown on the board.
+In preparation for adding stage-2 support.
+Add IDR0 fields related to stage-2.
 
-Cc: Peter Maydell <peter.maydell@linaro.org> (odd fixer:SABRELITE / i.MX6)
-Cc: Jean-Christophe Dubois <jcd@tribudubois.net> (reviewer:SABRELITE / i.MX6)
-Cc: qemu-arm@nongnu.org (open list:SABRELITE / i.MX6)
-Cc: qemu-devel@nongnu.org (open list:All patches CC here)
-Signed-off-by: Vitaly Cheptsov <cheptsov@ispras.ru>
-Message-id: 20230515095015.66860-1-cheptsov@ispras.ru
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+VMID16: 16-bit VMID supported.
+S2P: Stage-2 translation supported.
+
+They are described in 6.3.1 SMMU_IDR0.
+
+No functional change intended.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Message-id: 20230516203327.2051088-2-smostafa@google.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/fsl-imx6.h | 2 ++
- hw/arm/fsl-imx6.c         | 8 ++++++++
- 2 files changed, 10 insertions(+)
+ hw/arm/smmuv3-internal.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/hw/arm/fsl-imx6.h b/include/hw/arm/fsl-imx6.h
-index 83291457cf2..5b4d48da084 100644
---- a/include/hw/arm/fsl-imx6.h
-+++ b/include/hw/arm/fsl-imx6.h
-@@ -21,6 +21,7 @@
- #include "hw/cpu/a9mpcore.h"
- #include "hw/misc/imx6_ccm.h"
- #include "hw/misc/imx6_src.h"
-+#include "hw/misc/imx7_snvs.h"
- #include "hw/watchdog/wdt_imx2.h"
- #include "hw/char/imx_serial.h"
- #include "hw/timer/imx_gpt.h"
-@@ -59,6 +60,7 @@ struct FslIMX6State {
-     A9MPPrivState  a9mpcore;
-     IMX6CCMState   ccm;
-     IMX6SRCState   src;
-+    IMX7SNVSState  snvs;
-     IMXSerialState uart[FSL_IMX6_NUM_UARTS];
-     IMXGPTState    gpt;
-     IMXEPITState   epit[FSL_IMX6_NUM_EPITS];
-diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
-index 00dafe3f62d..4fa7f0b95ed 100644
---- a/hw/arm/fsl-imx6.c
-+++ b/hw/arm/fsl-imx6.c
-@@ -53,6 +53,8 @@ static void fsl_imx6_init(Object *obj)
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index e8f0ebf25e3..183d5ac8dca 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -34,10 +34,12 @@ typedef enum SMMUTranslationStatus {
+ /* MMIO Registers */
  
-     object_initialize_child(obj, "src", &s->src, TYPE_IMX6_SRC);
- 
-+    object_initialize_child(obj, "snvs", &s->snvs, TYPE_IMX7_SNVS);
-+
-     for (i = 0; i < FSL_IMX6_NUM_UARTS; i++) {
-         snprintf(name, NAME_SIZE, "uart%d", i + 1);
-         object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIAL);
-@@ -390,6 +392,12 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
-                        qdev_get_gpio_in(DEVICE(&s->a9mpcore),
-                                         FSL_IMX6_ENET_MAC_1588_IRQ));
- 
-+    /*
-+     * SNVS
-+     */
-+    sysbus_realize(SYS_BUS_DEVICE(&s->snvs), &error_abort);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->snvs), 0, FSL_IMX6_SNVSHP_ADDR);
-+
-     /*
-      * Watchdog
-      */
+ REG32(IDR0,                0x0)
++    FIELD(IDR0, S2P,         0 , 1)
+     FIELD(IDR0, S1P,         1 , 1)
+     FIELD(IDR0, TTF,         2 , 2)
+     FIELD(IDR0, COHACC,      4 , 1)
+     FIELD(IDR0, ASID16,      12, 1)
++    FIELD(IDR0, VMID16,      18, 1)
+     FIELD(IDR0, TTENDIAN,    21, 2)
+     FIELD(IDR0, STALL_MODEL, 24, 2)
+     FIELD(IDR0, TERM_MODEL,  26, 1)
 -- 
 2.34.1
 
