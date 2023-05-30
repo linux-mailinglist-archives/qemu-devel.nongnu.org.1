@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A862A715EA6
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAE8715ED8
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:18:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3yEO-0003Mq-QP; Tue, 30 May 2023 08:13:40 -0400
+	id 1q3yHt-0006E1-Av; Tue, 30 May 2023 08:17:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3yEG-00037R-Vj
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:13:36 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3yEB-0005eZ-Ma
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:13:31 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5148f299105so6498160a12.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 05:13:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685448803; x=1688040803;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=djw57wLm2AKVTtEQDzpFrlQDCAohn7opPMijaqpiwnU=;
- b=khrBFellb3EG5PIT9sa/Ms/YpCInzCeVqy261qcEWLwwGhmmDBkGT6IMq7z5oDRY4b
- ykaNmhE8v6Klk5KjjW7pNDRE2qOPFcmk5UKdH60Ef4I1yWiCKJ1qIcUVQElP+ZQF3q8g
- 5F2PSYBEiwNrJ3s/QMEG/TWG/OKDteTGiV+HUOUfk601DUkZ6umgvdn/GLkgOqfNZ5z7
- f/Kj7YduVMiI78ajBmgcWejcMMWS3+97WmZOe2E+52DLyuElOyCRc5wjZVNBHiTIgfb+
- HHGSHmrC4jik4eSquultQSEzkrC1yL1diqanetvCM0l0WQrIVNpcTZiB/5X0ZbNXDU2V
- NWwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685448803; x=1688040803;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=djw57wLm2AKVTtEQDzpFrlQDCAohn7opPMijaqpiwnU=;
- b=EJiD9qDySQ8B/QvDSr0dTMwUHGsb4nE+RIxMx+GrnlaKEhOL1MDCpPbw8BUFhgSMlg
- Thhe/INoPVAHu0vWSkcxYoRgcDj4k9EnklSbmnIkZw824m9ynO4yBXsHvq+/1vHDBga6
- /TgY3DuAirYp/AOm69UWiRUCzXIIWQ/+rDC0tL6hq3x+hw9r+CCojx3L8B09UWm3xVMs
- yG9dgI/AhS17EjznLm/lFIJcYfBInknRVpEF5RLe/E3F2wLzglzO7YEb4ShJlqQGneyU
- 2F04MeBjy8MIMEHnZUnndpJukXSMbt05DMyBKYyTilxqetQ4ofvA1UnjN/Dqve5OfeFq
- 85Qw==
-X-Gm-Message-State: AC+VfDwxb4F95N6DHm2sgnu5O2NGqVbBltPO2+OuK5VgtUvl4TGN8IPu
- rBotQ7lIpugiQ5QYlDY71LxY9qbkRr1GkFADaAiqNWu2NYipGVG9
-X-Google-Smtp-Source: ACHHUZ6A6pDbnE0Zx4DJcA4spQQAtVK4YknEni5OWO03UsS1gWczKhENNZ6EmGDw0Z0ay0MIgAt9q/zS+ojlcHNhAmc=
-X-Received: by 2002:a05:6402:1e89:b0:514:af2b:4131 with SMTP id
- f9-20020a0564021e8900b00514af2b4131mr1906342edf.12.1685448803551; Tue, 30 May
- 2023 05:13:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q3yHo-0006DJ-Gc
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:17:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q3yHm-0006e8-Fo
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:17:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685449029;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FL1KBidFMAPWCwo1oGmz8F8qDk0ZwsjUehX6YpejCr8=;
+ b=WxkGm8Z/sPAxU4il/cAUCoNzm6smh/evbvIYEjMUKtV6AOJJinBgZvlFrZynb4xn74ko9g
+ pm5xU+tH4k9xm1iFyNyABHiuOev6Mfb/mnvwbLaU8DSRoEvD0nh7x/7D57GPlUpPK0eMia
+ mBGAn3f7IasfBrjfLCAhSbyLTgpDNgw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-591-Krt-i-UtOiWwJx98VVQaog-1; Tue, 30 May 2023 08:17:06 -0400
+X-MC-Unique: Krt-i-UtOiWwJx98VVQaog-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0D33185A79B;
+ Tue, 30 May 2023 12:17:05 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.167])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3646720296C6;
+ Tue, 30 May 2023 12:17:05 +0000 (UTC)
+Date: Tue, 30 May 2023 13:17:03 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org
+Subject: Re: [PATCH 1/5] configure: remove --with-git= option
+Message-ID: <ZHXpP29aPqSit6re@redhat.com>
+References: <20230527092851.705884-1-pbonzini@redhat.com>
+ <20230527092851.705884-2-pbonzini@redhat.com>
+ <cb9da1f6-183a-151f-49b2-8ec103bba828@redhat.com>
+ <CABgObfaT_vOxPaF_GXzGyDD5fNoKZDJU1FEb4_B70C1ddDxPjQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230525064345.1152801-1-lienze@kylinos.cn>
- <CAFEAcA_oP+cJL-HdzrS+R83=z8pYcrK-A3Aecm7NChdR4O3X1A@mail.gmail.com>
-In-Reply-To: <CAFEAcA_oP+cJL-HdzrS+R83=z8pYcrK-A3Aecm7NChdR4O3X1A@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 30 May 2023 13:13:12 +0100
-Message-ID: <CAFEAcA8hgOsqz1HtcNJ8GdTDhF9Aecjuxu4JB=S-zYZp1jA=nw@mail.gmail.com>
-Subject: Re: [PATCH] Update copyright dates to 2023
-To: Enze Li <lienze@kylinos.cn>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfaT_vOxPaF_GXzGyDD5fNoKZDJU1FEb4_B70C1ddDxPjQ@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,31 +82,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 25 May 2023 at 10:24, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Thu, 25 May 2023 at 07:45, Enze Li <lienze@kylinos.cn> wrote:
+On Tue, May 30, 2023 at 02:03:11PM +0200, Paolo Bonzini wrote:
+> On Tue, May 30, 2023 at 1:58 PM Thomas Huth <thuth@redhat.com> wrote:
+> > The commit cc84d63a42e31c2a that introduce this switch gave a
+> > rationale:
 > >
-> > I noticed that in the latest version, the copyright string is still
-> > 2022, even though 2023 is halfway through.  This patch fixes that and
-> > fixes the documentation along with it.
+> >      Some users can't run a bare 'git' command, due to need for a transparent
+> >      proxying solution such as 'tsocks'. This adds an argument to configure to
+> >      let users specify such a thing:
 > >
-> > Signed-off-by: Enze Li <lienze@kylinos.cn>
->
-> Whoops, thanks for catching this. These are indeed the
-> only two places that need to be updated (compare commit
-> fd50a00a57509 which was 2022's update).
->
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
->
-> (One day I might try to get the copyright date to be
-> defined in one place rather than two...)
+> >        ./configure --with-git="tsocks git"
+> 
+> I see, thanks for the additional information--it makes sense to
+> include it in the commit message.
+> 
+> My impression is that the "smart HTTP" protocol has made this concern
+> less important. Smart HTTP was introduced in 2009, but back in 2017
+> the git protocol running on port 9418 was still quite common. QEMU
+> itself switched from git to https in 2018 with commit a897f22b596b62,
+> about a year after --with-git was introduced.
 
-I'll take this patch via target-arm.next, since I'm doing a
-pullreq anyway.
+Here is the original thread:
 
-thanks
--- PMM
+  https://lists.nongnu.org/archive/html/qemu-devel/2017-10/msg05005.html
+
+yes it was about 'git://' protocol, and yes, creating a wrapper
+script call 'git' was a viable option too.  I just added --with-git
+as a convenience.
+
+> > But if the plain "git" command is unusable on their system,
+> > they should likely introduce a proper wrapper on their end
+> > for this command anyway, so IMHO it's ok if we remove this
+> > again. Daniel, what do you think?
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
