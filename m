@@ -2,66 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAE8715ED8
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CAE715EDD
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:20:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3yHt-0006E1-Av; Tue, 30 May 2023 08:17:17 -0400
+	id 1q3yJq-00079N-Bm; Tue, 30 May 2023 08:19:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q3yHo-0006DJ-Gc
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:17:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1q3yJ5-0006x5-R7
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:18:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q3yHm-0006e8-Fo
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:17:12 -0400
+ id 1q3yJ4-0006mp-57
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:18:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685449029;
+ s=mimecast20190719; t=1685449107;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FL1KBidFMAPWCwo1oGmz8F8qDk0ZwsjUehX6YpejCr8=;
- b=WxkGm8Z/sPAxU4il/cAUCoNzm6smh/evbvIYEjMUKtV6AOJJinBgZvlFrZynb4xn74ko9g
- pm5xU+tH4k9xm1iFyNyABHiuOev6Mfb/mnvwbLaU8DSRoEvD0nh7x/7D57GPlUpPK0eMia
- mBGAn3f7IasfBrjfLCAhSbyLTgpDNgw=
+ bh=y7EVgy6/odVlhJhbYigTrajNLdRR1HkvHzQk7gWByZE=;
+ b=cCRGVXkSPgUvE0E8ny9YcriDKwvUnW6rnwDJixXYw5Dp9Cj6hH0g0PtWL6AdU/vQZOO1rC
+ DssAXC/nhzcROq8FblMkAhtDSFGyjhmGcxtOabSVWL6hh4qpQlAKm/Y+tS/+ad3gRdRerR
+ 5hUHtQP1Rg9gx6h7dvdTwuUBZaRgAOs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-591-Krt-i-UtOiWwJx98VVQaog-1; Tue, 30 May 2023 08:17:06 -0400
-X-MC-Unique: Krt-i-UtOiWwJx98VVQaog-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-648-wgkmvU3zOfWOsUE3Gtu5gA-1; Tue, 30 May 2023 08:18:26 -0400
+X-MC-Unique: wgkmvU3zOfWOsUE3Gtu5gA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0D33185A79B;
- Tue, 30 May 2023 12:17:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB3F985A5A8;
+ Tue, 30 May 2023 12:18:25 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.167])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3646720296C6;
- Tue, 30 May 2023 12:17:05 +0000 (UTC)
-Date: Tue, 30 May 2023 13:17:03 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9A75D40CFD45;
+ Tue, 30 May 2023 12:18:24 +0000 (UTC)
+Date: Tue, 30 May 2023 13:18:21 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, thuth@redhat.com
 Subject: Re: [PATCH 1/5] configure: remove --with-git= option
-Message-ID: <ZHXpP29aPqSit6re@redhat.com>
+Message-ID: <ZHXpjUP0E8b48nYy@redhat.com>
 References: <20230527092851.705884-1-pbonzini@redhat.com>
  <20230527092851.705884-2-pbonzini@redhat.com>
- <cb9da1f6-183a-151f-49b2-8ec103bba828@redhat.com>
- <CABgObfaT_vOxPaF_GXzGyDD5fNoKZDJU1FEb4_B70C1ddDxPjQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfaT_vOxPaF_GXzGyDD5fNoKZDJU1FEb4_B70C1ddDxPjQ@mail.gmail.com>
+In-Reply-To: <20230527092851.705884-2-pbonzini@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -86,39 +83,29 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 02:03:11PM +0200, Paolo Bonzini wrote:
-> On Tue, May 30, 2023 at 1:58 PM Thomas Huth <thuth@redhat.com> wrote:
-> > The commit cc84d63a42e31c2a that introduce this switch gave a
-> > rationale:
-> >
-> >      Some users can't run a bare 'git' command, due to need for a transparent
-> >      proxying solution such as 'tsocks'. This adds an argument to configure to
-> >      let users specify such a thing:
-> >
-> >        ./configure --with-git="tsocks git"
+On Sat, May 27, 2023 at 11:28:47AM +0200, Paolo Bonzini wrote:
+> There is not really any scenario where one would use any other git
+> binary than "the first git in the PATH" aka $(command -v git).  In
+> fact for example "meson subprojects download" or scripts/checkpatch.pl
+> do not obey the GIT environment variable.
 > 
-> I see, thanks for the additional information--it makes sense to
-> include it in the commit message.
+> Remove the unnecessary knob, but test for the presence of git in
+> the configure and git-submodule.sh scripts.
 > 
-> My impression is that the "smart HTTP" protocol has made this concern
-> less important. Smart HTTP was introduced in 2009, but back in 2017
-> the git protocol running on port 9418 was still quite common. QEMU
-> itself switched from git to https in 2018 with commit a897f22b596b62,
-> about a year after --with-git was introduced.
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  Makefile                 | 2 +-
+>  configure                | 6 ++----
+>  meson.build              | 1 -
+>  scripts/git-submodule.sh | 8 +++++++-
+>  4 files changed, 10 insertions(+), 7 deletions(-)
 
-Here is the original thread:
+If you just update the commit message to say we are intentionally
+reverting functionality from cc84d63a42e31c2afa884fc78610a65ab8ecc06a
+and people should create a wrapper script instead:
 
-  https://lists.nongnu.org/archive/html/qemu-devel/2017-10/msg05005.html
+  Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-yes it was about 'git://' protocol, and yes, creating a wrapper
-script call 'git' was a viable option too.  I just added --with-git
-as a convenience.
-
-> > But if the plain "git" command is unusable on their system,
-> > they should likely introduce a proper wrapper on their end
-> > for this command anyway, so IMHO it's ok if we remove this
-> > again. Daniel, what do you think?
-> 
 
 With regards,
 Daniel
