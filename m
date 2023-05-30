@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21EA716C70
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B108716C5D
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:26:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q442Y-0001Rw-DO; Tue, 30 May 2023 14:25:50 -0400
+	id 1q442f-0001Xm-0T; Tue, 30 May 2023 14:25:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q442V-0001QZ-Gm
+ id 1q442V-0001QY-Fw
  for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q442S-0000da-6W
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:46 -0400
+ id 1q442T-0000em-Mf
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685471143;
+ s=mimecast20190719; t=1685471144;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=j428coaIRiHiCDE2P6IQUI8TpAu8vNrqJ4vgCs3KdUw=;
- b=AREMAd+Mv8nc+EPnBP9Mqwgl3sRZzc3cx7R2QqD8rE3AKfQ8ZKcPpWHzV2Ci8lDYF21fxn
- /tyL1ge9I2zJdHWYnj/984wcg5jGqrIHP+6vHuEhbstV1D/ZqWWXvm4c5zWexwmpBnvODI
- 5dWzwo3L95hUrQCp8aAUJ1lLBshGm/8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yNW9PNobDLu6GJDLCHZ/9WJVueQuyiQfsgeTSMQ289c=;
+ b=ECeB+/pkWNqfCy3VUH7fqiiSvc+uGQ1oy37nGQfw2esJthrHryltM5doOGWq69oECIcQvF
+ fxRDFjqzxFMgBsSnDULiZjvEpfmLvsl7K5gzK7/g4ncRmTBDkFP67agwTuQhRqfozSpTv3
+ XV25GrL6v5sizP6LW08luuHreFtb8rY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-605-YDoouwEwPsuPIdc2T-1yAw-1; Tue, 30 May 2023 14:25:42 -0400
-X-MC-Unique: YDoouwEwPsuPIdc2T-1yAw-1
+ us-mta-675-fWYBRdB2MvGXePvgCMqxUA-1; Tue, 30 May 2023 14:25:43 -0400
+X-MC-Unique: fWYBRdB2MvGXePvgCMqxUA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B8104811E85
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 18:25:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EC5A81C01E93
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 18:25:42 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9B7C417103;
- Tue, 30 May 2023 18:25:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 094EE17103;
+ Tue, 30 May 2023 18:25:41 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>
-Subject: [PULL 06/21] migration: Don't abuse qemu_file transferred for RDMA
-Date: Tue, 30 May 2023 20:25:16 +0200
-Message-Id: <20230530182531.6371-7-quintela@redhat.com>
+Subject: [PULL 07/21] migration/RDMA: It is accounting for zero/normal pages
+ in two places
+Date: Tue, 30 May 2023 20:25:17 +0200
+Message-Id: <20230530182531.6371-8-quintela@redhat.com>
 In-Reply-To: <20230530182531.6371-1-quintela@redhat.com>
 References: <20230530182531.6371-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -78,106 +79,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just create a variable for it, the same way that multifd does.  This
-way it is safe to use for other thread, etc, etc.
+Remove the one in control_save_page().
 
 Reviewed-by: Leonardo Bras <leobras@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-Id: <20230515195709.63843-11-quintela@redhat.com>
+Message-Id: <20230515195709.63843-12-quintela@redhat.com>
 ---
- migration/migration-stats.h |  4 ++++
- migration/migration-stats.c |  5 +++--
- migration/rdma.c            | 22 ++++++++++++++++++++--
- migration/trace-events      |  2 +-
- 4 files changed, 28 insertions(+), 5 deletions(-)
+ migration/ram.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/migration/migration-stats.h b/migration/migration-stats.h
-index ac2260e987..2358caad63 100644
---- a/migration/migration-stats.h
-+++ b/migration/migration-stats.h
-@@ -89,6 +89,10 @@ typedef struct {
-      * Maximum amount of data we can send in a cycle.
-      */
-     Stat64 rate_limit_max;
-+    /*
-+     * Number of bytes sent through RDMA.
-+     */
-+    Stat64 rdma_bytes;
-     /*
-      * Total number of bytes transferred.
-      */
-diff --git a/migration/migration-stats.c b/migration/migration-stats.c
-index f98c8260be..79eea8d865 100644
---- a/migration/migration-stats.c
-+++ b/migration/migration-stats.c
-@@ -61,8 +61,9 @@ void migration_rate_reset(QEMUFile *f)
- uint64_t migration_transferred_bytes(QEMUFile *f)
- {
-     uint64_t multifd = stat64_get(&mig_stats.multifd_bytes);
-+    uint64_t rdma = stat64_get(&mig_stats.rdma_bytes);
-     uint64_t qemu_file = qemu_file_transferred(f);
- 
--    trace_migration_transferred_bytes(qemu_file, multifd);
--    return qemu_file + multifd;
-+    trace_migration_transferred_bytes(qemu_file, multifd, rdma);
-+    return qemu_file + multifd + rdma;
- }
-diff --git a/migration/rdma.c b/migration/rdma.c
-index 2e4dcff1c9..074456f9df 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -2122,9 +2122,18 @@ retry:
-                     return -EIO;
-                 }
- 
-+                /*
-+                 * TODO: Here we are sending something, but we are not
-+                 * accounting for anything transferred.  The following is wrong:
-+                 *
-+                 * stat64_add(&mig_stats.rdma_bytes, sge.length);
-+                 *
-+                 * because we are using some kind of compression.  I
-+                 * would think that head.len would be the more similar
-+                 * thing to a correct value.
-+                 */
-                 stat64_add(&mig_stats.zero_pages,
-                            sge.length / qemu_target_page_size());
+diff --git a/migration/ram.c b/migration/ram.c
+index 88a6c82e63..40b8f9630d 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1162,13 +1162,6 @@ static bool control_save_page(PageSearchStatus *pss, RAMBlock *block,
+     if (ret == RAM_SAVE_CONTROL_DELAYED) {
+         return true;
+     }
 -
-                 return 1;
-             }
+-    if (bytes_xmit > 0) {
+-        stat64_add(&mig_stats.normal_pages, 1);
+-    } else if (bytes_xmit == 0) {
+-        stat64_add(&mig_stats.zero_pages, 1);
+-    }
+-
+     return true;
+ }
  
-@@ -2232,8 +2241,17 @@ retry:
- 
-     set_bit(chunk, block->transit_bitmap);
-     stat64_add(&mig_stats.normal_pages, sge.length / qemu_target_page_size());
-+    /*
-+     * We are adding to transferred the amount of data written, but no
-+     * overhead at all.  I will asume that RDMA is magicaly and don't
-+     * need to transfer (at least) the addresses where it wants to
-+     * write the pages.  Here it looks like it should be something
-+     * like:
-+     *     sizeof(send_wr) + sge.length
-+     * but this being RDMA, who knows.
-+     */
-+    stat64_add(&mig_stats.rdma_bytes, sge.length);
-     ram_transferred_add(sge.length);
--    qemu_file_credit_transfer(f, sge.length);
-     rdma->total_writes++;
- 
-     return 0;
-diff --git a/migration/trace-events b/migration/trace-events
-index cdaef7a1ea..54ae5653fd 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -187,7 +187,7 @@ process_incoming_migration_co_postcopy_end_main(void) ""
- postcopy_preempt_enabled(bool value) "%d"
- 
- # migration-stats
--migration_transferred_bytes(uint64_t qemu_file, uint64_t multifd) "qemu_file %" PRIu64 " multifd %" PRIu64
-+migration_transferred_bytes(uint64_t qemu_file, uint64_t multifd, uint64_t rdma) "qemu_file %" PRIu64 " multifd %" PRIu64 " RDMA %" PRIu64
- 
- # channel.c
- migration_set_incoming_channel(void *ioc, const char *ioctype) "ioc=%p ioctype=%s"
 -- 
 2.40.1
 
