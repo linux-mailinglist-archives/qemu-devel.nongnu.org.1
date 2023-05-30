@@ -2,68 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B168715E2A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5BE715E35
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:58:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3xwX-0005Sm-3s; Tue, 30 May 2023 07:55:13 -0400
+	id 1q3xzi-0002Y7-AE; Tue, 30 May 2023 07:58:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3xwO-0005Oh-Qw
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:55:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q3xze-0002XT-Eu
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:58:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3xwN-0000Eu-CU
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:55:04 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q3xzc-0001Oz-Er
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:58:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685447702;
+ s=mimecast20190719; t=1685447903;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+tx/4HjH10zbER9X9JRjNA48x+P+0ib4/FRHyZB6gfc=;
- b=bHCFGS0MvAWm3SeR9fPI2+Ye0dGu4wX2waex3hW0kHbtSmINb9zx6pcuLgQ7RvrHxOISKi
- VEO45BhjRUl1fSYB/tRsYghW5Tvee35oHFNn0JzdJ/i0c4P7zYsb0wKkYSUM0FtILfmrj7
- 4SmGpT4W7iAA0hYnb/Axou0rA9+u8os=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-563-VMZKlYQrNv2isGE5zru2oQ-1; Tue, 30 May 2023 07:55:01 -0400
-X-MC-Unique: VMZKlYQrNv2isGE5zru2oQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 21C3985A5BA
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 11:55:01 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.195.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3391540C6EC4;
- Tue, 30 May 2023 11:55:00 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PULL 21/21] migration/rdma: Check sooner if we are in postcopy for
- save_page()
-Date: Tue, 30 May 2023 13:54:29 +0200
-Message-Id: <20230530115429.1998-22-quintela@redhat.com>
-In-Reply-To: <20230530115429.1998-1-quintela@redhat.com>
-References: <20230530115429.1998-1-quintela@redhat.com>
+ bh=z/OizjmdwSxoh5Rw6Id2e+/Qf1nb0LjNtqRjBC9yzzQ=;
+ b=FwPyVjojFxmN41LY1gH8wm37pAnIQ5hqv+6kph4XLdwoHsN+kDFDumKnykC/9VxRXFoZFD
+ 3XcaEhituOk69mqyBqAoJk140UTvQI8R8meWYdklKNdU2MtGTkB6J4h6TcXz/Lx46GbBzx
+ LbR3GZSTZbgl9PMpxTddyVnLboAcpEY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-298-aHHKqegAMZyfR4StrH_g6Q-1; Tue, 30 May 2023 07:58:22 -0400
+X-MC-Unique: aHHKqegAMZyfR4StrH_g6Q-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3062e5d0cd3so1682989f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 04:58:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685447901; x=1688039901;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=z/OizjmdwSxoh5Rw6Id2e+/Qf1nb0LjNtqRjBC9yzzQ=;
+ b=hXO0XAwNHZrlwp29gl0Ppo6Q+qPar8jBUMsyQcZo8sGrG/ZC25qgWXb+oIrXHGVO/8
+ dRktsvCju00tUmozybzfa4Iu774iA3eURVhRsEOS4V0cLnzQ7TlRwMQhKOPNKlcIhyXL
+ 4ZzZmuvQkDWvNCGTag6BJzTCPkMz2hrpk/YSA6Zju2MMv/kY92eXT0ZEbB8WOF9eWLsy
+ CSHlhmmhiUUVWUmJVGIHULxDfwdxVOGbMoFzE5FO9y+ZOuy9NkvBHt4DjlUOtvO7RKuC
+ Z0JXRt8wM8Rvm6rX3toJZV251IGj88pLn10mUDRcEREH6u4eZeujMFDmQz8aMfx6Cfgt
+ 3zIw==
+X-Gm-Message-State: AC+VfDyQGLEvgVSLmxvMYwrNW4cTNgFDDSuundNvstmOJ2IlWw+DyTvx
+ L2KrtDdhbLHJIyjI4NeeNnLI0Y0FBiDyweIM9FTnLjZLlISHau+8aTrcCAwpdhiavNhREYMQ2A4
+ ckPUwCwnMe6aB8Bk=
+X-Received: by 2002:a5d:4c42:0:b0:30a:d731:a220 with SMTP id
+ n2-20020a5d4c42000000b0030ad731a220mr1564384wrt.41.1685447900977; 
+ Tue, 30 May 2023 04:58:20 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6MzeEr5rxh3YJSDPfoEtOGEiVWBC0vs7trgxNw4iaV/+6Ja0Q4KxfTWGqb0U/Y54DW9OWl3A==
+X-Received: by 2002:a5d:4c42:0:b0:30a:d731:a220 with SMTP id
+ n2-20020a5d4c42000000b0030ad731a220mr1564376wrt.41.1685447900744; 
+ Tue, 30 May 2023 04:58:20 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-176-11.web.vodafone.de.
+ [109.43.176.11]) by smtp.gmail.com with ESMTPSA id
+ n2-20020a5d6602000000b0030903d44dbcsm3019356wru.33.2023.05.30.04.58.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 May 2023 04:58:20 -0700 (PDT)
+Message-ID: <cb9da1f6-183a-151f-49b2-8ec103bba828@redhat.com>
+Date: Tue, 30 May 2023 13:58:19 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 1/5] configure: remove --with-git= option
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ berrange@redhat.com
+Cc: peter.maydell@linaro.org
+References: <20230527092851.705884-1-pbonzini@redhat.com>
+ <20230527092851.705884-2-pbonzini@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230527092851.705884-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,38 +101,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-Id: <20230509120700.78359-11-quintela@redhat.com>
----
- migration/rdma.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+On 27/05/2023 11.28, Paolo Bonzini wrote:
+> There is not really any scenario where one would use any other git
+> binary than "the first git in the PATH" aka $(command -v git).  In
+> fact for example "meson subprojects download" or scripts/checkpatch.pl
+> do not obey the GIT environment variable.
+> 
+> Remove the unnecessary knob, but test for the presence of git in
+> the configure and git-submodule.sh scripts.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   Makefile                 | 2 +-
+>   configure                | 6 ++----
+>   meson.build              | 1 -
+>   scripts/git-submodule.sh | 8 +++++++-
+>   4 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/migration/rdma.c b/migration/rdma.c
-index cf0681575d..f912a31b45 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -3250,10 +3250,6 @@ static int qemu_rdma_save_page(QEMUFile *f, ram_addr_t block_offset,
-     RDMAContext *rdma;
-     int ret;
- 
--    if (migration_in_postcopy()) {
--        return RAM_SAVE_CONTROL_NOT_SUPP;
--    }
--
-     RCU_READ_LOCK_GUARD();
-     rdma = qatomic_rcu_read(&rioc->rdmaout);
- 
-@@ -3322,7 +3318,7 @@ err:
- int rdma_control_save_page(QEMUFile *f, ram_addr_t block_offset,
-                            ram_addr_t offset, size_t size)
- {
--    if (!migrate_rdma()) {
-+    if (!migrate_rdma() || migration_in_postcopy()) {
-         return RAM_SAVE_CONTROL_NOT_SUPP;
-     }
- 
--- 
-2.40.1
+The commit cc84d63a42e31c2a that introduce this switch gave a
+rationale:
+
+     Some users can't run a bare 'git' command, due to need for a transparent
+     proxying solution such as 'tsocks'. This adds an argument to configure to
+     let users specify such a thing:
+     
+       ./configure --with-git="tsocks git"
+
+But if the plain "git" command is unusable on their system,
+they should likely introduce a proper wrapper on their end
+for this command anyway, so IMHO it's ok if we remove this
+again. Daniel, what do you think?
+
+  Thomas
 
 
