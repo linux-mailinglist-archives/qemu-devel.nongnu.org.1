@@ -2,66 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF9D7161B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4CD7161B3
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:25:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zLR-0004Sx-UL; Tue, 30 May 2023 09:25:02 -0400
+	id 1q3zLp-0004aP-4Y; Tue, 30 May 2023 09:25:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q3zKS-00044t-Po; Tue, 30 May 2023 09:24:12 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3zLM-0004WG-Gs
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:24:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q3zKP-0000J3-R5; Tue, 30 May 2023 09:24:00 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c18:1421:0:640:53a0:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id D8F5D61C01;
- Tue, 30 May 2023 16:23:47 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:a508::1:1d] (unknown
- [2a02:6b8:b081:a508::1:1d])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id kNM0gP6OnuQ0-3GI0NVKU; Tue, 30 May 2023 16:23:47 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1685453027; bh=ERci0jwtCFRZjOHWdX38smSRp6vlvyIGGEnjCzKr7gU=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=HjPH0RB10kkhsb5Di7JkwXV4p2GGnpVPeaDm7p189R8+hDNjfQgjiLRHw8aKIed7t
- 6G3BieVYGP5fIpL6qY08ImBH4GmhqVyP5mr4Oe/qKDHPxXmlzRZfbIZy9j/Lv54eua
- 27m0BYQUGQXCoAem8T8FvZXUR3XV/PZgccLtlqrw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <b81e6f07-7c1c-f1e2-10bc-5c0ea436b5cf@yandex-team.ru>
-Date: Tue, 30 May 2023 16:23:46 +0300
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3zLH-0000bw-OP
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:24:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685453090;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AsWvSWDFZhMk6DBVlQagesaEKcw2j5MUn28Zz407PQs=;
+ b=QW3IDyjfdQ9oE0/JcJFYuJfkAia5Ahg0C4/09IpsG8biA1A2T9QFcwXKu8wuRSiqdF1CFq
+ W+JwCi9GJCtngdLBLnmyTATUGJe+tDKJzvqS4RtfJ6asaJh/d3g44TxKrYQc+CgXOPNZBu
+ t98Dee/VCndzWpenfeEAocLqMicpCC0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-477-vOSMxXGoMKSsOPeNRERkIA-1; Tue, 30 May 2023 09:24:19 -0400
+X-MC-Unique: vOSMxXGoMKSsOPeNRERkIA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-30932d15a30so2687847f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:24:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685453058; x=1688045058;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :from:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AsWvSWDFZhMk6DBVlQagesaEKcw2j5MUn28Zz407PQs=;
+ b=lQdI5mjz09BTKjgt8FxmgcFWn48pnTL2+3HNH9HkjSDk4RJ1etHDtVll/jdwtXfjt1
+ 9AS7/wLML7xZA5raK2n1k0IID4ZoO0/GjhHULThsl7swzdPBBImc/uN30G34tm7Hopb4
+ H/YmCfJPfXPcTePwL/f1PnCq7OeYyV6YogkFR4lC+R4KpvNcqKUo8K58piZw2nD7pR3V
+ xfZgRJ5pGqpQM2dtkTSM51A5y9CY3jZeHPnkd9dXyvw+ccU5MB4a/JVKj/Jq6Fozz+Mt
+ tn4nIPEbOnmibnWty6Obx0Z2wghV4l6CmdYemsuBcoeUfIlstMiiSNM5PImqbl6MJbY1
+ qMVQ==
+X-Gm-Message-State: AC+VfDwa9nTQz4Hcqg3cj880hfTHkW4mKv87WGDD6gUGXT45Yfbcifjr
+ dRHy+lIW4t+KFsENG4QKMmBEyMkzyxSSSbRT/QOQDMBcTBjTWrFAb15sgD8PWAe+pQ2iWlVfpOf
+ Lms+vD7QCHACfHRc=
+X-Received: by 2002:adf:dd92:0:b0:30a:b46a:a443 with SMTP id
+ x18-20020adfdd92000000b0030ab46aa443mr1522355wrl.51.1685453058129; 
+ Tue, 30 May 2023 06:24:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5EBa/rby5zNM8aBHYkcHgcV2QBVaEcvgu+2WxhtRHcBwxQVJ7q2rv5WF0b5bAoRbzhtOAkqw==
+X-Received: by 2002:adf:dd92:0:b0:30a:b46a:a443 with SMTP id
+ x18-20020adfdd92000000b0030ab46aa443mr1522339wrl.51.1685453057798; 
+ Tue, 30 May 2023 06:24:17 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c73c:d500:78e5:f448:8bef:a30?
+ (p200300cbc73cd50078e5f4488bef0a30.dip0.t-ipconnect.de.
+ [2003:cb:c73c:d500:78e5:f448:8bef:a30])
+ by smtp.gmail.com with ESMTPSA id
+ o11-20020a5d670b000000b0030ada01ca78sm3297976wru.10.2023.05.30.06.24.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 May 2023 06:24:17 -0700 (PDT)
+Message-ID: <ab0b1cf4-b4a7-8ebe-81f9-d85317d16c35@redhat.com>
+Date: Tue, 30 May 2023 15:24:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 05/14] nbd: Add types for extended headers
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 02/10] memory-device: Introduce memory_devices_init()
 Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-Cc: libguestfs@redhat.com, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>
-References: <20230515195343.1915857-1-eblake@redhat.com>
- <20230515195343.1915857-6-eblake@redhat.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230515195343.1915857-6-eblake@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230530113838.257755-1-david@redhat.com>
+ <20230530113838.257755-3-david@redhat.com>
+ <7ff1f897-7244-258e-34a5-a4a781f679dc@linaro.org>
+ <2e51c9e4-3716-5f55-b006-30a40b0ea0da@redhat.com>
+Organization: Red Hat
+In-Reply-To: <2e51c9e4-3716-5f55-b006-30a40b0ea0da@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,63 +119,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15.05.23 22:53, Eric Blake wrote:
-> Add the constants and structs necessary for later patches to start
-> implementing the NBD_OPT_EXTENDED_HEADERS extension in both the client
-> and server, matching recent commit e6f3b94a934] in the upstream nbd
-> project.  This patch does not change any existing behavior, but merely
-> sets the stage.
+On 30.05.23 15:04, David Hildenbrand wrote:
+> On 30.05.23 14:29, Philippe Mathieu-Daudé wrote:
+>> Hi David,
+>>
+>> On 30/5/23 13:38, David Hildenbrand wrote:
+>>> Let's intrduce a new helper that we will use to replace existing memory
+>>> device setup code during machine initialization. We'll enforce that the
+>>> size has to be > 0.
+>>>
+>>> Once all machines were converted, we'll only allocate ms->device_memory
+>>> if the size > 0.
+>>>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>     hw/mem/memory-device.c         | 14 ++++++++++++++
+>>>     include/hw/mem/memory-device.h |  2 ++
+>>>     2 files changed, 16 insertions(+)
+>>
+>>
+>>> diff --git a/include/hw/mem/memory-device.h b/include/hw/mem/memory-device.h
+>>> index 48d2611fc5..6e8a10e2f5 100644
+>>> --- a/include/hw/mem/memory-device.h
+>>> +++ b/include/hw/mem/memory-device.h
+>>> @@ -16,6 +16,7 @@
+>>>     #include "hw/qdev-core.h"
+>>>     #include "qapi/qapi-types-machine.h"
+>>>     #include "qom/object.h"
+>>> +#include "exec/hwaddr.h"
+>>>     
+>>>     #define TYPE_MEMORY_DEVICE "memory-device"
+>>>     
+>>> @@ -113,5 +114,6 @@ void memory_device_plug(MemoryDeviceState *md, MachineState *ms);
+>>>     void memory_device_unplug(MemoryDeviceState *md, MachineState *ms);
+>>>     uint64_t memory_device_get_region_size(const MemoryDeviceState *md,
+>>>                                            Error **errp);
+>>> +void memory_devices_init(MachineState *ms, hwaddr base, uint64_t size);
+>>
+>>
+>> While hw/mem/memory-device.c contains the implementation, all callers
+>> are expected to be around Machine object, right? Thus maybe this _init()
+>> could be declared in "hw/boards.h", already included by machines
+>> (eventually renaming as machine_init_memory_devices() ). Then machines
+>> implementation don't have to all include "hw/mem/memory-device.h".
 > 
-> This patch does not change the status quo that neither the client nor
-> server use a packed-struct representation for the request header.
+> Some (arm, i386) want to call the hotplug handle functions either way,
+> so they'll still have to include that header.
 > 
-> Signed-off-by: Eric Blake <eblake@redhat.com>
+> But sure, we can rename to machine_init_memory_devices() and declare it
+> include/hw/boards.h!
 
-
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-
-> ---
->   docs/interop/nbd.txt |  1 +
->   include/block/nbd.h  | 74 ++++++++++++++++++++++++++++++++------------
->   nbd/common.c         | 10 +++++-
->   3 files changed, 65 insertions(+), 20 deletions(-)
-> 
-> diff --git a/docs/interop/nbd.txt b/docs/interop/nbd.txt
-> index f5ca25174a6..abaf4c28a96 100644
-> --- a/docs/interop/nbd.txt
-> +++ b/docs/interop/nbd.txt
-> @@ -69,3 +69,4 @@ NBD_CMD_BLOCK_STATUS for "qemu:dirty-bitmap:", NBD_CMD_CACHE
->   NBD_CMD_FLAG_FAST_ZERO
->   * 5.2: NBD_CMD_BLOCK_STATUS for "qemu:allocation-depth"
->   * 7.1: NBD_FLAG_CAN_MULTI_CONN for shareable writable exports
-> +* 8.1: NBD_OPT_EXTENDED_HEADERS
-> diff --git a/include/block/nbd.h b/include/block/nbd.h
-> index 50626ab2744..d753fb8006f 100644
-> --- a/include/block/nbd.h
-> +++ b/include/block/nbd.h
-> @@ -87,13 +87,24 @@ typedef struct NBDStructuredReplyChunk {
->       uint32_t length; /* length of payload */
->   } QEMU_PACKED NBDStructuredReplyChunk;
-> 
-
-[..]
-
-> -/* Extent chunk for NBD_REPLY_TYPE_BLOCK_STATUS */
-> +/* Extent array for NBD_REPLY_TYPE_BLOCK_STATUS */
-
-Why? NBDExtent is one extent, not extent array.
-
->   typedef struct NBDExtent {
->       uint32_t length;
->       uint32_t flags; /* NBD_STATE_* */
->   } QEMU_PACKED NBDExtent;
-> 
-> +/* Header of NBD_REPLY_TYPE_BLOCK_STATUS_EXT */
-
-
+FWIW, I went with "machine_memory_devices_init()", to mach the style of 
+"machine_run_board_init()".
 
 -- 
-Best regards,
-Vladimir
+Thanks,
+
+David / dhildenb
 
 
