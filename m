@@ -2,71 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9FE7164C3
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 16:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 434787164C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 16:48:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q40ct-0007J6-Sg; Tue, 30 May 2023 10:47:08 -0400
+	id 1q40e6-0000Vq-QM; Tue, 30 May 2023 10:48:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q40cY-0006uI-Ha
- for qemu-devel@nongnu.org; Tue, 30 May 2023 10:46:46 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q40cX-0007An-1E
- for qemu-devel@nongnu.org; Tue, 30 May 2023 10:46:46 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-4f3a9ad31dbso5296191e87.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 07:46:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685458003; x=1688050003;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=abTvgi7dXQPgKjz/i/nLAv1wfSctEKaGwYlJqZgruSs=;
- b=RGdTJYv6y4XcXIVOez4i4/go3ww5RIRg2YvIXYjCP5SD3BmyNeD80Lz8/+pkgveQEI
- LpALFqYKX5eiXpLM+YzOGu4XT1k5BBugow3Vy+7aYk5qRyb7wk4UUHzD5EP5mtboHIxO
- /7/Pipz7wxp+bsgPN2XQPENTmWE9IIicBMWWWCsfh24eUXsdRxNrCuOwTswZAQOBTQn/
- zoda/pWZn7yBKjofoFpSC7xf9N/5K3NMGJLZ7CAdeB/3PaHLOesEeOP8kY+npyPxBBaH
- N2bnQ0U7BajpJPWuouTLAt+/cnDa6+Zx7qSQReWWBYROToLuXAo8woxb64BA4QQWaXR9
- EDsA==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q40do-0000QI-KU
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 10:48:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q40dl-0007YS-Hv
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 10:48:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685458079;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=G+nENtkWx6L0Xb/u+jboX8eYAT1mJ0UNx8oYvuMtglo=;
+ b=GinKWCBsJQdLxWzWoRKWeiqHikq8QpaZPFGoDPnzj+hZDeJKRGxPMZFvOqpcRJSgxj/xrM
+ hG/jQ0G7mqP0NvKVEZyLTo1ALsXRd05Lg//0inS2nhdUnrJOWN4ca4Tby66A1ZLvLhTfVb
+ /Dxzl7wgyBWpk4btwvvqjkJKvt8sp4I=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-186-NbkgfyVIPYW-VCgjBIaKZA-1; Tue, 30 May 2023 10:47:57 -0400
+X-MC-Unique: NbkgfyVIPYW-VCgjBIaKZA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f603b8eb61so26961315e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 07:47:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685458003; x=1688050003;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=abTvgi7dXQPgKjz/i/nLAv1wfSctEKaGwYlJqZgruSs=;
- b=UcsMuYxwwsz6R0vruVPTr1KAPrsd8mpXm5kmirIzJAS6plU91bzT9keMDsDMUbt77v
- YrpIfz8WM8dQQ7Kt7gzVXobuxhPUpw8/aiwGCZDOlNgV+jWS2FgjNFueQ6hg+RAbZuS/
- +X+xsxOq3V/lOtdPuoN3HRplUPtqoaaNXKGXWKvEgawXV1gjrU+quhLFAZdGEbWYbg5b
- JqnhUuiAdtbl/OsvMTg6og5ONDkduDZxXk/9Is+Y8mQm1clLV7/YTICSCr3tVkt+O84I
- 17n5lsUOOn/+vkb28ecEYZbjzF5937LiF1COI6gEq2A9omhnzts0zjjsyYJYWs9l72dI
- BDiA==
-X-Gm-Message-State: AC+VfDwCzpN0D3gHBJp9sypO/4/szD7WJ3HruLxJ34jSOdPJulmJbp6U
- wN1lH6DzmkFeON0EDRzZCiouA516rtW+l9dZOoEBNA==
-X-Google-Smtp-Source: ACHHUZ4eoUr16PhXJTs8qZMUe3cuh6Jb6kpq2wMLS9XtB4bubx2TSliXhgc9nyf1sDfDH2Iq/XMsRPFlouV5XhaLpJ4=
-X-Received: by 2002:a19:ee0d:0:b0:4ed:bdac:7a49 with SMTP id
- g13-20020a19ee0d000000b004edbdac7a49mr744988lfb.54.1685458002999; Tue, 30 May
- 2023 07:46:42 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685458075; x=1688050075;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=G+nENtkWx6L0Xb/u+jboX8eYAT1mJ0UNx8oYvuMtglo=;
+ b=NbHvvKuvG2rtB9r2ymXwZ1U2gNLqDs/Gjp6Im429Jpq+FwPF/ZkIjQjp+POIwJYcBL
+ rCpyz+n/pUjL9+zbgFiZAM6/TcqGvxSHi+h9P2reS92w7nMQYoPtp6kpflaUo/iOzvXg
+ pXb+5kFqCG1okKho3bbdowRlN8GIHYiW4d6fN5iD2DmaigXqcEs4CpmrpmkmhDhbpBF8
+ 1bkTCLlEdYoJXHyNDFBdqcpPDwM14JBEJed8bMMyONZQrCw1YHde+5JcfMSdldm8V5xQ
+ pU2bF9cEpAasRtRlkg03AuVvpYbHvbIz7yrNRxRbJtkMpm8LG2kgqsGUj5TVhw6Orr0D
+ VtYQ==
+X-Gm-Message-State: AC+VfDwZtHZD9vLgdxZRNHVA64T6JapxhcyoECoO6ePUELbFDUkdupza
+ bijYUAXSHccOF3+Odix19Oqaunsl17ffInc3MpjNNNYv32nsVyzPQtOlv+PrST8TBmsyficuZMJ
+ Uha/SgXlob2y8cF7RXS0cZV+Mbg==
+X-Received: by 2002:a1c:4b12:0:b0:3f6:e42:8f9b with SMTP id
+ y18-20020a1c4b12000000b003f60e428f9bmr2228358wma.27.1685458074905; 
+ Tue, 30 May 2023 07:47:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Pw6B8MtIJ2WSR4S4XHTWjWWduqn8iqXFDhWJ08RiyVp3v10GLrpyzQwZAYCK8dO586peTEg==
+X-Received: by 2002:a1c:4b12:0:b0:3f6:e42:8f9b with SMTP id
+ y18-20020a1c4b12000000b003f60e428f9bmr2228343wma.27.1685458074633; 
+ Tue, 30 May 2023 07:47:54 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ j18-20020a5d4492000000b002ffbf2213d4sm3534726wrq.75.2023.05.30.07.47.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 07:47:54 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PULL 00/21] Migration 20230530 patches
+In-Reply-To: <a0fa954e-9903-841d-9c00-c035a6ddc8db@linaro.org> (Richard
+ Henderson's message of "Tue, 30 May 2023 06:23:37 -0700")
+References: <20230530115429.1998-1-quintela@redhat.com>
+ <a0fa954e-9903-841d-9c00-c035a6ddc8db@linaro.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Tue, 30 May 2023 16:47:53 +0200
+Message-ID: <87bki1x4di.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <20230530142430.45834-1-fufuyqqqqqq@gmail.com>
-In-Reply-To: <20230530142430.45834-1-fufuyqqqqqq@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 30 May 2023 15:46:31 +0100
-Message-ID: <CAFEAcA9gb5rVKEQSZWHj3KZBP1Y27YiObFGdvnGj+JEDV2hHxQ@mail.gmail.com>
-Subject: Re: [RFC] Native Library Calls
-To: Yeqi Fu <fufuyqqqqqq@gmail.com>
-Cc: alex.bennee@linaro.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,35 +100,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 30 May 2023 at 15:26, Yeqi Fu <fufuyqqqqqq@gmail.com> wrote:
+Richard Henderson <richard.henderson@linaro.org> wrote:
+> On 5/30/23 04:54, Juan Quintela wrote:
+>> The following changes since commit aa9bbd865502ed517624ab6fe7d4b5d89ca95=
+e43:
+>>    Merge tag 'pull-ppc-20230528' ofhttps://gitlab.com/danielhb/qemu
+>> into staging (2023-05-29 14:31:52 -0700)
+>> are available in the Git repository at:
+>>    https://gitlab.com/juan.quintela/qemu.git
+>> tags/migration-20230530-pull-request
+>> for you to fetch changes up to
+>> d83da4626ebc1462e8f0065d446f97aece681d90:
+>>    migration/rdma: Check sooner if we are in postcopy for
+>> save_page() (2023-05-30 13:27:54 +0200)
+>> ----------------------------------------------------------------
+>> Migration 20230530 Pull request
+>> Hi
+>> On this PULL request:
+>> - Set vmstate migration failure right (vladimir)
+>> - Migration QEMUFileHook removal (juan)
+>> - Migration Atomic counters (juan)
+>> Please apply.
 >
-> This patch introduces a set of feature instructions for native calls
-> and provides helpers to translate these instructions to corresponding
-> native functions. A shared library is also implemented, where native
-> functions are rewritten as feature instructions. At runtime, user
-> programs load the shared library, and feature instructions are
-> executed when native functions are called. This patch is applicable
-> to user programs with architectures x86, x86_64, arm, aarch64, mips,
-> and mips64. To build, compile libnative.c into a shared library for
-> the user program's architecture and run the
-> '../configure --enable-user-native-call && make' command.
+> Fails immediately:
 
-So it's essentially providing a QEMU-specific ABI that
-(somewhat similarly to semihosting) allows guest programs
-to use particular instructions/instruction patterns to
-say "do a memcpy/memset/memcmp" ?
+And here I am, not checking !CONFIG_RDMA
 
-Is this an ABI that's implemented by anybody else?
+Sorry.
 
-I'm pretty strongly negative about this as an idea -- I don't
-think we should be adding QEMU-specific guest-facing ABIs,
-especially if the usage of them is likely to be very very low.
-At any rate, it needs a lot more justification for why it's
-worthwhile than the commit message has provided.
+> In file included from ../src/migration/ram.c:61:
+> ../src/migration/rdma.h:52:5: error: no previous prototype for
+> =E2=80=98rdma_registration_handle=E2=80=99 [-Werror=3Dmissing-prototypes]
+>    52 | int rdma_registration_handle(QEMUFile *f) { return 0; }
+>       |     ^~~~~~~~~~~~~~~~~~~~~~~~
+> ../src/migration/rdma.h:53:5: error: no previous prototype for
+> =E2=80=98rdma_registration_start=E2=80=99 [-Werror=3Dmissing-prototypes]
+>    53 | int rdma_registration_start(QEMUFile *f, uint64_t flags) { return=
+ 0; }
+>       |     ^~~~~~~~~~~~~~~~~~~~~~~
+> ../src/migration/rdma.h:54:5: error: no previous prototype for
+> =E2=80=98rdma_registration_stop=E2=80=99 [-Werror=3Dmissing-prototypes]
+>    54 | int rdma_registration_stop(QEMUFile *f, uint64_t flags) { return =
+0; }
+>       |     ^~~~~~~~~~~~~~~~~~~~~~
+> ../src/migration/rdma.h:55:5: error: no previous prototype for
+> =E2=80=98rdma_block_notification_handle=E2=80=99 [-Werror=3Dmissing-proto=
+types]
+>    55 | int rdma_block_notification_handle(QEMUFile *f, const char *name)=
+ { return 0; }
+>       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ../src/migration/rdma.h:56:5: error: no previous prototype for
+> =E2=80=98rdma_control_save_page=E2=80=99 [-Werror=3Dmissing-prototypes]
+>    56 | int rdma_control_save_page(QEMUFile *f, ram_addr_t block_offset,
+>       |     ^~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+>
+>
+> r~
 
-thanks
--- PMM
 
