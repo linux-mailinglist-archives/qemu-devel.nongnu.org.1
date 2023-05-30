@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B33716D48
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 983CA716D69
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:21:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q44o0-00068y-OF; Tue, 30 May 2023 15:14:52 -0400
+	id 1q44o1-0006E7-Hc; Tue, 30 May 2023 15:14:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44ns-0005xi-5a
- for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:44 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1q44nt-0005ye-KN
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:45 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44nq-0004bm-Bn
- for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:43 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-64d2467d640so5595468b3a.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:14:41 -0700 (PDT)
+ id 1q44nr-0004c2-Sr
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:45 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-64d577071a6so5651734b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:14:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685474081; x=1688066081;
+ d=linaro.org; s=google; t=1685474082; x=1688066082;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=a+TYNNzW8iqKYogWvG6qM6ASiJ8Nk4m8jlgOtvWjt84=;
- b=ma/dtkOEDPpQreXY8gMYkTjSEVDqX2/YCANXPIj+Gp0owpOKo/ioXt1pe11gdmYd8S
- 2uwE/y+NlOiTQF7DZPEQYR1JFYGgcZLVAXSULKlF8FJtPxN/xUo7W2/FY3yUz/qAWq9P
- kFFASK1myDlNeSSiY7uajgAKEYxCDpPQlCCnmbnz1oeVYzbsCM5WZSaRWl8Oeov2+frX
- q8+99LV+FVwNTTzs/HkSluCwgZ7lRcL1vT39W5+yTqENKxEmz7y0G+L+k/ldVQX4PUni
- OPQSAUMP6bpNBd77O0bcDMbuXDBW2t/+Eygy6pU2x7NwEDiTdYoCRUVGuqgoVhdOwFzb
- 0Qtg==
+ bh=vdXQUX7VyfIMGOcc2j+k3ArawY+9z3JYFBb7DTwyza4=;
+ b=s4rVm/zmwfH/VniMnwEZGCBS4TQp47thGkIjSSmrSDZ68v3Xz28kBFzXhhCulWQ+vH
+ 04y1yaoNak7SyfgDb5e+ZnozZWbe3C1t54WsWVkjIc3teb52y1AEzZbyvIjDj+ym4tP+
+ TrDXHM86V6bAy1/x5awKgf8hAEUkDBuHxnUmoGeS6lFpg8zCd8Kcxk/LK8i7oq7DQ0kb
+ //o50Jsb13Mnc2I2H2aIcqbHJaiYQyK/Ae/0QZNtHMMPyLihc0rtrP7l7H3RuXM+jLO8
+ BbUV4OdBNaT3AU4/0OZVrj73ng0Z5jfGA+64xBqi7s/Bq6hRoQRAO1iFMdAet00tGfra
+ WmoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685474081; x=1688066081;
+ d=1e100.net; s=20221208; t=1685474082; x=1688066082;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a+TYNNzW8iqKYogWvG6qM6ASiJ8Nk4m8jlgOtvWjt84=;
- b=CbXipUXyo+wTZChKKRfm+oayAp4J0DPRWjoXFX0Bbn7CQzrFqvqpQ96DtWdP3cXVU/
- nctFfT685UWPjH1dE9gBbxFWsf3cuYwgvzVgFfMi8j3a6qJm3CcJcb0ysq0/kEApshUS
- rd8TXgarxhMKl3jBEgeV0PTsPLjMP56IOO/V8Q0Zm20k48/31QPthdt0DYm8to/uN0qK
- rFOaUW4csi9tZn6RFHZWnrotkrEtDiW4/E3znNLqorGmSILfD1wDND0M6wocQVvtDMNm
- le5OG8bifqfgh+7AAJVkIukGrjzUkOEwKlWmaBp+VbIXGiycOYGRK/yV4bp/ysMaTyu4
- Es0Q==
-X-Gm-Message-State: AC+VfDytPD5Y/p2VcsrLZo739hYkKGeu79zldxep/06FyKa+RJkJ5DOj
- 45p8MKWEDH2btG0yRdccQ4aDWpy4ch2HSTHFI+w=
-X-Google-Smtp-Source: ACHHUZ5cCLiA7xcuLgd1zu75ShUlElnw4UxC4IJUgXbgfLp/eVU2nLrG9iLJs9SlYyaIkANT5roiSA==
-X-Received: by 2002:a05:6a20:1590:b0:110:a7da:b980 with SMTP id
- h16-20020a056a20159000b00110a7dab980mr4124298pzj.12.1685474081047; 
+ bh=vdXQUX7VyfIMGOcc2j+k3ArawY+9z3JYFBb7DTwyza4=;
+ b=OhUE+32dOg/3mRAmL/DuAb/h6DCj7IcmQAy60XedcIrGpQVayM3yAzjWHt91VzzJrK
+ jYDsZnI5QXB15scf8AxI7Rc+7pad4mgwkINHz9iEU2Nh6eFO4gON7dQHwv44QiQKRaEf
+ A5mpn8tFLrLZdcWe1AhEBrA7e76EQ9RZWvrga1+zmkk2lp1eV6TaLqveoulkXX/VjcOp
+ sVbBu1B0Qlp7xmjEm3gOCAik8ayBrLq/MKnizoQziidVDBLUh6Jrqx1MraJ4APurfCkj
+ 7CBhJvSSaMyMEfGkYOOE1Hd1oj8OScpzn3WjHTbSywnlMuFZNZSU5D0dwB/WCmBzcw4s
+ 1hKw==
+X-Gm-Message-State: AC+VfDwqpS7Rfa8+DNYCv2WrTSq4kMQ7n6tzwnVMxQU/cgK/tbarZ65K
+ 3Kl/X4GGA6PTxn6nfgTkwV9WWQ5K/j8wvgxctmg=
+X-Google-Smtp-Source: ACHHUZ7+cj38KUbGXGK10OUaFrrbmONW+g4/Tl3EDTUnI+bNbfFABcFGNUEEqM72a4LVWMqtne+dCg==
+X-Received: by 2002:a05:6a20:1593:b0:10a:cbe6:69ef with SMTP id
+ h19-20020a056a20159300b0010acbe669efmr3804423pzj.37.1685474081829; 
  Tue, 30 May 2023 12:14:41 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
  by smtp.gmail.com with ESMTPSA id
- 10-20020a63104a000000b0051806da5cd6sm8926757pgq.60.2023.05.30.12.14.40
+ 10-20020a63104a000000b0051806da5cd6sm8926757pgq.60.2023.05.30.12.14.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 12:14:40 -0700 (PDT)
+ Tue, 30 May 2023 12:14:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v3 02/20] target/arm: Add feature test for FEAT_LSE2
-Date: Tue, 30 May 2023 12:14:20 -0700
-Message-Id: <20230530191438.411344-3-richard.henderson@linaro.org>
+Subject: [PATCH v3 03/20] target/arm: Introduce finalize_memop_{atom,pair}
+Date: Tue, 30 May 2023 12:14:21 -0700
+Message-Id: <20230530191438.411344-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230530191438.411344-1-richard.henderson@linaro.org>
 References: <20230530191438.411344-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,29 +94,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Let finalize_memop_atom be the new basic function, with
+finalize_memop and finalize_memop_pair testing FEAT_LSE2
+to apply the appropriate atomicity.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/arm/tcg/translate.h     | 39 +++++++++++++++++++++++++++++-----
+ target/arm/tcg/translate-a64.c |  2 ++
+ target/arm/tcg/translate.c     |  1 +
+ 3 files changed, 37 insertions(+), 5 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 81c0df9c25..c1db26b299 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3851,6 +3851,11 @@ static inline bool isar_feature_aa64_st(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR2, ST) != 0;
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index a9d1f4adc2..9a33076c3d 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -85,6 +85,7 @@ typedef struct DisasContext {
+     uint64_t features; /* CPU features bits */
+     bool aarch64;
+     bool thumb;
++    bool lse2;
+     /* Because unallocated encodings generate different exception syndrome
+      * information from traps due to FP being disabled, we can't do a single
+      * "is fp access disabled" check at a high level in the decode tree.
+@@ -552,12 +553,13 @@ static inline TCGv_ptr fpstatus_ptr(ARMFPStatusFlavour flavour)
  }
  
-+static inline bool isar_feature_aa64_lse2(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR2, AT) != 0;
+ /**
+- * finalize_memop:
++ * finalize_memop_atom:
+  * @s: DisasContext
+  * @opc: size+sign+align of the memory operation
++ * @atom: atomicity of the memory operation
+  *
+- * Build the complete MemOp for a memory operation, including alignment
+- * and endianness.
++ * Build the complete MemOp for a memory operation, including alignment,
++ * endianness, and atomicity.
+  *
+  * If (op & MO_AMASK) then the operation already contains the required
+  * alignment, e.g. for AccType_ATOMIC.  Otherwise, this an optionally
+@@ -567,12 +569,39 @@ static inline TCGv_ptr fpstatus_ptr(ARMFPStatusFlavour flavour)
+  * and this is applied here.  Note that there is no way to indicate that
+  * no alignment should ever be enforced; this must be handled manually.
+  */
+-static inline MemOp finalize_memop(DisasContext *s, MemOp opc)
++static inline MemOp finalize_memop_atom(DisasContext *s, MemOp opc, MemOp atom)
+ {
+     if (s->align_mem && !(opc & MO_AMASK)) {
+         opc |= MO_ALIGN;
+     }
+-    return opc | s->be_data;
++    return opc | atom | s->be_data;
 +}
 +
- static inline bool isar_feature_aa64_fwb(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR2, FWB) != 0;
++/**
++ * finalize_memop:
++ * @s: DisasContext
++ * @opc: size+sign+align of the memory operation
++ *
++ * Like finalize_memop_atom, but with default atomicity.
++ */
++static inline MemOp finalize_memop(DisasContext *s, MemOp opc)
++{
++    MemOp atom = s->lse2 ? MO_ATOM_WITHIN16 : MO_ATOM_IFALIGN;
++    return finalize_memop_atom(s, opc, atom);
++}
++
++/**
++ * finalize_memop_pair:
++ * @s: DisasContext
++ * @opc: size+sign+align of the memory operation
++ *
++ * Like finalize_memop_atom, but with atomicity for a pair.
++ * C.f. Pseudocode for Mem[], operand ispair.
++ */
++static inline MemOp finalize_memop_pair(DisasContext *s, MemOp opc)
++{
++    MemOp atom = s->lse2 ? MO_ATOM_WITHIN16_PAIR : MO_ATOM_IFALIGN_PAIR;
++    return finalize_memop_atom(s, opc, atom);
+ }
+ 
+ /**
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 741a608739..967400ed68 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -14110,6 +14110,8 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
+     tcg_debug_assert(dc->tbid & 1);
+ #endif
+ 
++    dc->lse2 = dc_isar_feature(aa64_lse2, dc);
++
+     /* Single step state. The code-generation logic here is:
+      *  SS_ACTIVE == 0:
+      *   generate code with no special handling for single-stepping (except
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 7468476724..7a6a8029e5 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -9183,6 +9183,7 @@ static void arm_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+         dc->sme_trap_nonstreaming =
+             EX_TBFLAG_A32(tb_flags, SME_TRAP_NONSTREAMING);
+     }
++    dc->lse2 = false; /* applies only to aarch64 */
+     dc->cp_regs = cpu->cp_regs;
+     dc->features = env->features;
+ 
 -- 
 2.34.1
 
