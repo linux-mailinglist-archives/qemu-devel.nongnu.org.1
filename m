@@ -2,94 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6FB71626D
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD559716270
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:44:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zde-0002xl-Ch; Tue, 30 May 2023 09:43:50 -0400
+	id 1q3zeT-0004iG-1w; Tue, 30 May 2023 09:44:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3zdV-0002uU-Mh
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:43:42 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q3zeF-0004Tw-VC
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:44:33 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3zdT-0007Ma-36
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:43:40 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-30b023b0068so18917f8f.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:43:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q3zeD-0007dA-Gi
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:44:27 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4effb818c37so4857427e87.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:44:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685454217; x=1688046217;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=89/dBmknNHq10BYbuq2gcqpitFtVoA/p4F7hYUZjx2M=;
- b=IJoc7UArCn7YjfgxS4TXWXLJRgBcih6poEypwSvmQ/X8RLD9dP2YxtuQ4sv7y+Q/7x
- 9gckFAk6fajitJINITuhEtqgDGh8XwXoF4tWt9+AvusY9QzcDIB6VbgoOWVC8eeD/xKo
- nfyRJ/w08Jt32jJq4KwPth09cwSYPBujovP6vfJmpiH+nlJXdaOR+8GPnG6l9RazkevX
- D8s0zA+wcYbmVSnxyIM1yYRA23ueH94b07SPn19YZcDfqupsVpjiGQdEcs7lR2qE77PF
- naXaennOHVE5UZUffyGS0xDOzxOyjJxeUIDBfFKI8F+OpJcM7fMRM5Krft592iKvE8a1
- FFXA==
+ d=linaro.org; s=google; t=1685454264; x=1688046264;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=CXbqrfrcLCfjuCYFtuZW8CIeDUIIoXco0fzPzfIjM2A=;
+ b=ZohZRWgGwDsDGZZmd5/JlYEwgpQpOVHAoxnkttiJcWfdJwaTwGPiuHJN9CqNz/uf+A
+ WYPbERRfDWWUIRTar5Q0netvwyUXmn4mKI4H7UtaQXhFlEPO7tfKD0I6ntfoByyTxcWq
+ ITM9+moLfIemR3M37qiifH2AnY5YusTo7hacB9gHUrBeo01LuOLGpfqXkOCdXXTM/atT
+ TvEB5QcnBMu7e2Rn6AGDzZ7+rlzRcYPWTKq3BO/vOiPf1OKJXGJWq+SnK/ezX9AgOSsi
+ iXqb40ZrLTOHdT2yB3rc7nl29UR8+g4UoDCK1MEEDh1wcISBHTKlD8IelPOZq0oZBT8G
+ yHLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685454217; x=1688046217;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=89/dBmknNHq10BYbuq2gcqpitFtVoA/p4F7hYUZjx2M=;
- b=HWAT6DCRAY0BafIzgSTGNGtW4zKPT8HxdHGQpjoOEfRvauL2+nFrSZj17BTN1ESaoF
- wrs3Yx5CfrcFS5XCJR6Al0DrRuaT9LMIAH5FwtHZce3g3K/rOQJBhjdd2rEPgUcmSTyq
- stT/af+TjFYHuLfwf2msnvKKO0fGKsqhMYnV0C7ygNQ/TYC6zl46RKQzCrLsc7oLvqKA
- HsQq4Eab54uLcgodoDfpFGfy1cxQuQG7tzkvvJE0DwkjhK7JQVWl4XS2lFMf3JAIR6Fn
- O7OAWXKWQ7sj/yXx1FzO3d2xGO+nXkwZeCGISOekTfiUCQuYtQL7h0C+vGw0KPLCeuO+
- 1qSw==
-X-Gm-Message-State: AC+VfDx/2xUaHDa1hk3aWcTLcXW2cSWEBaL+WBHeD4WgYH+ROg0QXqV0
- Rv0e0BoR6dXGCqhoqVqcyjdddlI2R5ZFvseoqgMsCA==
-X-Google-Smtp-Source: ACHHUZ7r0Dc0ovYrIMSryI1XVodsbOzKPVcE5CobwDBIl/N4F4Wj87RzTdf7tnLRmc8idD5DW5TFbQ==
-X-Received: by 2002:adf:fec1:0:b0:30a:e5a6:1840 with SMTP id
- q1-20020adffec1000000b0030ae5a61840mr1785339wrs.17.1685454217346; 
- Tue, 30 May 2023 06:43:37 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.180.1])
- by smtp.gmail.com with ESMTPSA id
- i1-20020a05600011c100b00306c5900c10sm3383721wrx.9.2023.05.30.06.43.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 06:43:36 -0700 (PDT)
-Message-ID: <150fa53f-18b2-6f39-c500-aa5c859dc82c@linaro.org>
-Date: Tue, 30 May 2023 15:43:34 +0200
+ d=1e100.net; s=20221208; t=1685454264; x=1688046264;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CXbqrfrcLCfjuCYFtuZW8CIeDUIIoXco0fzPzfIjM2A=;
+ b=LK2jsAtfCIOLcw8auJPd0ibvq3OFaLnR0OC5Dg+sTRFcUfKDOjQEONSGkSuuGYwAHf
+ tAmsMuBPjfziy7BFs6AIyXC7oMX/lkiPSlEkWV39GXEfqiEjSGRjM30YtI6LdyIOfzqO
+ BLWCBo7RZ1Iuk2ORV9oZy8XdgVtaSySAkEVAOqmfbbniOXF7zEH8G8ub4QszCMKvddnZ
+ K5p+yfbLLQ1QxTLPZ1V7D6ez+jog9LN6b8d5IFl4BOq7Zz607GdFOQdbJONO2XIw6wmL
+ TBGG/57bZQD68tjOWProLUJWkuiTgIuIxf5ELsOjjal4QQxZEticY2HQcdl8YNFgrvIO
+ wk1Q==
+X-Gm-Message-State: AC+VfDwx594w/voAXei534yG5CplNF7cDjKuySYX4fxB4bI8uqnSKTGa
+ YTcfknTBcHpBwei2+vaUNhz54e0avhfzvQA95KQjyQ==
+X-Google-Smtp-Source: ACHHUZ5Rt8VUunivj5HMEbm+VKXMc+gVNpDTu8KV/s2PpOHCQMlJ9SiaSafyyB4ydf7KZ46bYlkZ5hQGXgyUCmEoook=
+X-Received: by 2002:ac2:4859:0:b0:4f3:9930:5b8c with SMTP id
+ 25-20020ac24859000000b004f399305b8cmr795825lfy.25.1685454263888; Tue, 30 May
+ 2023 06:44:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 08/10] hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZE
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230530113838.257755-1-david@redhat.com>
- <20230530113838.257755-9-david@redhat.com>
- <20230530090655-mutt-send-email-mst@kernel.org>
- <9d395d6f-4da9-45c6-bf20-ed33f1c4bca5@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <9d395d6f-4da9-45c6-bf20-ed33f1c4bca5@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230526002334.1760495-1-richard.henderson@linaro.org>
+ <20230526002334.1760495-3-richard.henderson@linaro.org>
+In-Reply-To: <20230526002334.1760495-3-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 30 May 2023 14:44:13 +0100
+Message-ID: <CAFEAcA8E_wbiL=xxc=qzfbhBjTsGVxpMGYex_Ezsn_=47DJP3w@mail.gmail.com>
+Subject: Re: [PATCH v4 02/16] accel/tcg: Fix check for page writeability in
+ load_atomic16_or_exit
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -107,34 +86,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/5/23 15:11, David Hildenbrand wrote:
-> On 30.05.23 15:07, Michael S. Tsirkin wrote:
->> On Tue, May 30, 2023 at 01:38:36PM +0200, David Hildenbrand wrote:
->>> There are no remaining users in the tree, so let's remove it.
->>>
->>> Cc: Paolo Bonzini <pbonzini@redhat.com>
->>> Cc: Richard Henderson <richard.henderson@linaro.org>
->>> Cc: Eduardo Habkost <eduardo@habkost.net>
->>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->>> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>
->>
->> This (with previous patches) means any user changing
->> device-memory-region-size machine property is now broken, right?
-> 
-> We only had a getter, no setter (for good reason).
-> 
->> How do we know there are no users?
-> 
-> We don't. A quick google search makes "device-memory-region-size" and 
-> "qom-get" only pop up in BUG fixes for something that appears to be QEMU 
-> developer driven.
+On Fri, 26 May 2023 at 01:24, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> PAGE_WRITE is current writability, as modified by TB protection;
+> PAGE_WRITE_ORG is the original page writability.
+>
+> Fixes: cdfac37be0d ("accel/tcg: Honor atomicity of loads")
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  accel/tcg/ldst_atomicity.c.inc | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+> index 0f6b3f8ab6..57163f5ca2 100644
+> --- a/accel/tcg/ldst_atomicity.c.inc
+> +++ b/accel/tcg/ldst_atomicity.c.inc
+> @@ -191,7 +191,7 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+>       * another process, because the fallback start_exclusive solution
+>       * provides no protection across processes.
+>       */
+> -    if (!page_check_range(h2g(p), 16, PAGE_WRITE)) {
+> +    if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
+>          return *p;
+>      }
+>  #endif
+> --
+> 2.34.1
 
-This was my analysis.
-> I don't consider it any useful, but if we want to be careful, sure we 
-> can leave it around.
+load_atomic8_or_exit() has a similar condition, so
+we should change either both or neither.
 
-If we want to keep it, we should move it to generic code IMHO,
-not PC machine. Otherwise the less unused code the better :)
+So, if I understand this correctly, !PAGE_WRITE_ORG is a
+stricter test than !PAGE_WRITE, so we're saying "don't
+do a simple non-atomic load if the page was only read-only
+because we've translated code out of it". Why is it
+not OK to do the non-atomic load in that case? I guess
+because we don't have the mmap lock, so some other thread
+might nip in and do an access that causes us to invalidate
+the TBs and move the page back to writeable?
+
+thanks
+-- PMM
 
