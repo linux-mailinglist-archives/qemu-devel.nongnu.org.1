@@ -2,60 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A750715D35
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E9E715D6E
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:40:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3xXH-0004dS-28; Tue, 30 May 2023 07:29:07 -0400
+	id 1q3xgs-0007rV-Qf; Tue, 30 May 2023 07:39:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q3xXF-0004Zj-K2
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:29:05 -0400
-Received: from mout.kundenserver.de ([217.72.192.75])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xgi-0007qL-Gx
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:38:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q3xXD-0000Wq-DU
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:29:04 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue108 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1Mf0FY-1qbLTL36de-00gV5j; Tue, 30 May 2023 13:29:01 +0200
-Message-ID: <54965f14-a57b-046f-6765-079ec9829b71@vivier.eu>
-Date: Tue, 30 May 2023 13:29:01 +0200
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xgg-0003xn-D7
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:38:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685446729;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=W8vQx4/9Or5NihRj56D/+Pk8eevcGnxAnsAvxtdm8kE=;
+ b=HO+SeeEvWBb23EnKAFhpy/Ds7O0WLmGnVgtabiM27CmYnBTOoTf7tR6oPWq/JhIVqz4PCJ
+ hNMQd2xDWvPxAfjP+9Kw595ATef5a2mEu0DotqQVoecDi91IoA78NTqUieX8jfg7np/3vl
+ p2j2RROKKqwCIOhPec7mqb0TH/aOWSo=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-367-G8hdHSg8P_-8I8U0Hx2npg-1; Tue, 30 May 2023 07:38:44 -0400
+X-MC-Unique: G8hdHSg8P_-8I8U0Hx2npg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A50A828237C0;
+ Tue, 30 May 2023 11:38:43 +0000 (UTC)
+Received: from t480s.redhat.com (unknown [10.39.194.167])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4280640CFD45;
+ Tue, 30 May 2023 11:38:39 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Subject: [PATCH 00/10] memory-device: Some cleanups
+Date: Tue, 30 May 2023 13:38:28 +0200
+Message-Id: <20230530113838.257755-1-david@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 18/30] swim: add trace events for IWM and ISM registers
-Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
- <20230524211104.686087-19-mark.cave-ayland@ilande.co.uk>
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230524211104.686087-19-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:/ImjHv/PS0B3yTs6kgK6fgnSmWXJXbCdQIFu5diKv+aVbGAX+lt
- paOQvy6r1d0vVvlwSdeFtyB578+FuhfdF7pNdExTpHPKOhsbp9sgrmC5rOIzwAy/CuJcns5
- ojfX67cF0iH/Piw2CFf8tLlIQDkcDY1n11BxV53YX6EXmaBz9EvLzHmmP6pbXMay7N/9D8t
- PlnvgVqfCelruLzb2RscQ==
-UI-OutboundReport: notjunk:1;M01:P0:b/vXaS/IPZI=;AMDgH74LzqII3ZDL1zd4cVQR3tH
- 9xg6cvNAjlECMrLtycDq/B19yLeWI4dDZC6WR6POlJ1umTwF2FVaqlXk+W9PqbRmYrgQocnpJ
- 6fKx02lU5Tla6YuyIwS31xWqsZH4pPLt69QxUx5EK7OfFwzsWZBauhRp7774IcyU6Ip/D+3rf
- nkEvMSG5HV/Hwrr0QnDIgA/IVD6U86if4zerkQHWEePo8PFwWU6mgn+CVFu/LllLJn4K9/xty
- DEfF0oSq/+F4xIjKPM0NjeBVgPhr8Fej5JC/wXouqozm3EisjG5r/W9ymiV9ZOPpJ+OCxZg4G
- lFH1BrNw//dHRXHDGrAWl54iL8qr710GQKlIswLJmXbE9j+v/Zx2rfaDFgoCnT2Oo2xg81PH9
- CAMTsnkxwssG19LgKR1r3zpR6BcZNoxpYMQCtW5UcedvnLDvXdK0RnFvlBkYpFE92EMizGQhR
- cVlsu0tjfDoiialmIb7ElNd+SKoxtPeXsrqVUHJD/vMMtEsTRMrGoEPcxnMZq717dnhOudPbN
- m6ov91pbU9zA3XqWkd2SDL4gALrCHo8zQ6dX1e1AxVpxRAXbPv+gK2+0H74rjlCxOE3iCzKI0
- BKBlS9Q5hd5GsUHJCw2IaCJgbO4caYmRKGGyA6M69jO96jbPURp123YEPQkLbmOU1Vy7V45aD
- bj41bIS92q/0qQSnpnjwvXcBFKpCcp/x23fAflXYuQ==
-Received-SPF: none client-ip=217.72.192.75; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,96 +87,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 24/05/2023 à 23:10, Mark Cave-Ayland a écrit :
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/block/swim.c       | 14 ++++++++++++++
->   hw/block/trace-events |  7 +++++++
->   2 files changed, 21 insertions(+)
-> 
-> diff --git a/hw/block/swim.c b/hw/block/swim.c
-> index 333da08ce0..7df36ea139 100644
-> --- a/hw/block/swim.c
-> +++ b/hw/block/swim.c
-> @@ -19,6 +19,7 @@
->   #include "hw/block/block.h"
->   #include "hw/block/swim.h"
->   #include "hw/qdev-properties.h"
-> +#include "trace.h"
->   
->   /* IWM registers */
->   
-> @@ -125,6 +126,13 @@
->   #define SWIM_HEDSEL          0x20
->   #define SWIM_MOTON           0x80
->   
-> +static const char *swim_reg_names[] = {
-> +    "WRITE_DATA", "WRITE_MARK", "WRITE_CRC", "WRITE_PARAMETER",
-> +    "WRITE_PHASE", "WRITE_SETUP", "WRITE_MODE0", "WRITE_MODE1",
-> +    "READ_DATA", "READ_MARK", "READ_ERROR", "READ_PARAMETER",
-> +    "READ_PHASE", "READ_SETUP", "READ_STATUS", "READ_HANDSHAKE"
-> +};
-> +
->   static void fd_recalibrate(FDrive *drive)
->   {
->   }
-> @@ -267,6 +275,7 @@ static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
->       reg >>= REG_SHIFT;
->   
->       swimctrl->regs[reg >> 1] = reg & 1;
-> +    trace_swim_iwmctrl_write((reg >> 1), size, (reg & 1));
->   
->       if (swimctrl->regs[IWM_Q6] &&
->           swimctrl->regs[IWM_Q7]) {
-> @@ -297,6 +306,7 @@ static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
->                   if (value == 0x57) {
->                       swimctrl->mode = SWIM_MODE_SWIM;
->                       swimctrl->iwm_switch = 0;
-> +                    trace_swim_iwm_switch();
->                   }
->                   break;
->               }
-> @@ -312,6 +322,7 @@ static uint64_t iwmctrl_read(void *opaque, hwaddr reg, unsigned size)
->   
->       swimctrl->regs[reg >> 1] = reg & 1;
->   
-> +    trace_swim_iwmctrl_read((reg >> 1), size, (reg & 1));
->       return 0;
->   }
->   
-> @@ -327,6 +338,8 @@ static void swimctrl_write(void *opaque, hwaddr reg, uint64_t value,
->   
->       reg >>= REG_SHIFT;
->   
-> +    trace_swim_swimctrl_write(reg, swim_reg_names[reg], size, value);
-> +
->       switch (reg) {
->       case SWIM_WRITE_PHASE:
->           swimctrl->swim_phase = value;
-> @@ -376,6 +389,7 @@ static uint64_t swimctrl_read(void *opaque, hwaddr reg, unsigned size)
->           break;
->       }
->   
-> +    trace_swim_swimctrl_read(reg, swim_reg_names[reg], size, value);
->       return value;
->   }
->   
-> diff --git a/hw/block/trace-events b/hw/block/trace-events
-> index 34be8b9135..c041ec45e3 100644
-> --- a/hw/block/trace-events
-> +++ b/hw/block/trace-events
-> @@ -90,3 +90,10 @@ m25p80_read_data(void *s, uint32_t pos, uint8_t v) "[%p] Read data 0x%"PRIx32"=0
->   m25p80_read_sfdp(void *s, uint32_t addr, uint8_t v) "[%p] Read SFDP 0x%"PRIx32"=0x%"PRIx8
->   m25p80_binding(void *s) "[%p] Binding to IF_MTD drive"
->   m25p80_binding_no_bdrv(void *s) "[%p] No BDRV - binding to RAM"
-> +
-> +# swim.c
-> +swim_swimctrl_read(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
-> +swim_swimctrl_write(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
-> +swim_iwmctrl_read(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
-> +swim_iwmctrl_write(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
-> +swim_iwm_switch(void) "switch from IWM to SWIM mode"
+Working on adding multi-memslot support for virtio-mem (teaching memory
+device code about memory devices that can consume multiple memslots), I
+have some preparatory cleanups in my queue that make sense independent of
+the actual memory-device/virtio-mem extensions.
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+v1 -> v2:
+- Allocate ms->device_memory only if the size > 0.
+- Split it up and include more cleanups
+
+David Hildenbrand (10):
+  memory-device: Unify enabled vs. supported error messages
+  memory-device: Introduce memory_devices_init()
+  hw/arm/virt: Use memory_devices_init()
+  hw/ppc/spapr: Use memory_devices_init()
+  hw/loongarch/virt: Use memory_devices_init()
+  hw/i386/pc: Use memory_devices_init()
+  hw/i386/acpi-build: Rely on machine->device_memory when building SRAT
+  hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZE
+  memory-device: Refactor memory_device_pre_plug()
+  memory-device: Track used region size in DeviceMemoryState
+
+ hw/arm/virt.c                  |  9 +----
+ hw/i386/acpi-build.c           |  9 ++---
+ hw/i386/pc.c                   | 36 +++---------------
+ hw/loongarch/virt.c            | 14 ++-----
+ hw/mem/memory-device.c         | 69 +++++++++++++++-------------------
+ hw/ppc/spapr.c                 | 37 +++++++++---------
+ hw/ppc/spapr_hcall.c           |  2 +-
+ include/hw/boards.h            |  2 +
+ include/hw/i386/pc.h           |  1 -
+ include/hw/mem/memory-device.h |  2 +
+ 10 files changed, 68 insertions(+), 113 deletions(-)
+
+-- 
+2.40.1
 
 
