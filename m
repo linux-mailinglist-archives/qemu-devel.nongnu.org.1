@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034F371699C
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 18:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5245F7169D6
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 18:38:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q42Gs-0005jr-9b; Tue, 30 May 2023 12:32:30 -0400
+	id 1q42IE-00083n-Hu; Tue, 30 May 2023 12:33:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1q42Ge-0005fP-DI
- for qemu-devel@nongnu.org; Tue, 30 May 2023 12:32:16 -0400
-Received: from smtpout1.mo529.mail-out.ovh.net ([178.32.125.2])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42HI-0006TF-SQ
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@kaod.org>) id 1q42Gc-0007yj-5P
- for qemu-devel@nongnu.org; Tue, 30 May 2023 12:32:16 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.108.20.243])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 30BFA207F5;
- Tue, 30 May 2023 16:32:12 +0000 (UTC)
-Received: from kaod.org (37.59.142.103) by DAG8EX2.mxp5.local (172.16.2.72)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 30 May
- 2023 18:32:11 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-103G005d373045d-6a70-4333-8ce2-0b1db3eb68d8,
- 1689548285A2663F4093CB2B261AE0EDF3FE8C9C) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <d561b9e1-feee-6f0f-d8a0-ad7363b1fdb5@kaod.org>
-Date: Tue, 30 May 2023 18:32:11 +0200
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42HG-0008Ee-EW
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 12:32:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685464373;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=V7HJlzowXKR5pawe/urpsIfhEFRl6X8paocs7dzJIOI=;
+ b=h6nDWM+IlxhKEc89NISXSWB7UWvqlHw8ysmlcA9Eg8tuFU3rfx0XlF60Fo8kNBIYzsYZF9
+ SCNk2g3QQ4G43n7DAfY2BM7Mw19IR8BDBMzfOSO1CAQ95P43OwXcojBjrw7K+TmZJXR20L
+ R9cJ8lX9SkKus8CYG9ZQS22K+dvzQHs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-345-RXMcfsmAPGaSq6nICiKuTg-1; Tue, 30 May 2023 12:32:52 -0400
+X-MC-Unique: RXMcfsmAPGaSq6nICiKuTg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C840985A5B5;
+ Tue, 30 May 2023 16:32:51 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.194.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 15FC3C154D2;
+ Tue, 30 May 2023 16:32:50 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	richard.henderson@linaro.org,
+	qemu-devel@nongnu.org
+Subject: [PULL 05/32] mirror: Hold main AioContext lock for calling
+ bdrv_open_backing_file()
+Date: Tue, 30 May 2023 18:32:12 +0200
+Message-Id: <20230530163239.576632-6-kwolf@redhat.com>
+In-Reply-To: <20230530163239.576632-1-kwolf@redhat.com>
+References: <20230530163239.576632-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 2/4] pnv/xive2: Add definition for the ESB cache
- configuration register
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, <danielhb413@gmail.com>,
- <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
-References: <20230530161129.313258-1-fbarrat@linux.ibm.com>
- <20230530161129.313258-3-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230530161129.313258-3-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.103]
-X-ClientProxiedBy: DAG9EX2.mxp5.local (172.16.2.82) To DAG8EX2.mxp5.local
- (172.16.2.72)
-X-Ovh-Tracer-GUID: 7e7a0904-815b-4cd1-b56f-1f4b441dac13
-X-Ovh-Tracer-Id: 2669508680668515296
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekjedguddttdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtucfnvgcuifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeetgeehudegieffkeeftdelffdtjeelfeeggeetlefgudejgefgfeeiveeutdffheenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtfedpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoegtlhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepfhgsrghrrhgrtheslhhinhhugidrihgsmhdrtghomhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpoffvtefjohhsthepmhhohedvledpmhhouggvpehsmhhtphhouhht
-Received-SPF: pass client-ip=178.32.125.2; envelope-from=clg@kaod.org;
- helo=smtpout1.mo529.mail-out.ovh.net
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -74,70 +78,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 18:11, Frederic Barrat wrote:
-> Add basic read/write support for the ESB cache configuration register
-> on P10. We don't model the ESB cache in qemu so reading/writing the
-> register won't do anything, but it avoids logging a guest error when
-> skiboot configures it:
-> 
-> qemu-system-ppc64 -machine powernv10 ... -d guest_errors
->        ...
-> XIVE[0] - VC: invalid read @240
-> XIVE[0] - VC: invalid write @240
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+bdrv_open_backing_file() calls bdrv_open_inherit(), so all callers must
+hold the main AioContext lock.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-Id: <20230525124713.401149-6-kwolf@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ block.c        | 2 ++
+ block/mirror.c | 6 ++++++
+ 2 files changed, 8 insertions(+)
 
-Thanks,
-
-C.
-
-
-> ---
->   hw/intc/pnv_xive2.c      | 7 +++++++
->   hw/intc/pnv_xive2_regs.h | 4 ++++
->   2 files changed, 11 insertions(+)
-> 
-> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index 889e409929..a75ff270ac 100644
-> --- a/hw/intc/pnv_xive2.c
-> +++ b/hw/intc/pnv_xive2.c
-> @@ -955,6 +955,10 @@ static uint64_t pnv_xive2_ic_vc_read(void *opaque, hwaddr offset,
->           val = xive->vc_regs[reg];
->           break;
->   
-> +    case VC_ESBC_CFG:
-> +        val = xive->vc_regs[reg];
-> +        break;
-> +
->       /*
->        * EAS cache updates (not modeled)
->        */
-> @@ -1046,6 +1050,9 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
->           /* ESB update */
->           break;
->   
-> +    case VC_ESBC_CFG:
-> +        break;
-> +
->       /*
->        * EAS cache updates (not modeled)
->        */
-> diff --git a/hw/intc/pnv_xive2_regs.h b/hw/intc/pnv_xive2_regs.h
-> index 8f1e0a1fde..7165dc8704 100644
-> --- a/hw/intc/pnv_xive2_regs.h
-> +++ b/hw/intc/pnv_xive2_regs.h
-> @@ -232,6 +232,10 @@
->   #define  VC_ESBC_FLUSH_POLL_BLOCK_ID_MASK       PPC_BITMASK(32, 35)
->   #define  VC_ESBC_FLUSH_POLL_OFFSET_MASK         PPC_BITMASK(36, 63) /* 28-bit */
->   
-> +/* ESBC configuration */
-> +#define X_VC_ESBC_CFG                           0x148
-> +#define VC_ESBC_CFG                             0x240
-> +
->   /* EASC flush control register */
->   #define X_VC_EASC_FLUSH_CTRL                    0x160
->   #define VC_EASC_FLUSH_CTRL                      0x300
+diff --git a/block.c b/block.c
+index 79bc9c01de..be9ae364fb 100644
+--- a/block.c
++++ b/block.c
+@@ -3478,6 +3478,8 @@ int bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
+  * itself, all options starting with "${bdref_key}." are considered part of the
+  * BlockdevRef.
+  *
++ * The caller must hold the main AioContext lock.
++ *
+  * TODO Can this be unified with bdrv_open_image()?
+  */
+ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
+diff --git a/block/mirror.c b/block/mirror.c
+index b7d92d1378..d3cacd1708 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -662,11 +662,15 @@ static int mirror_exit_common(Job *job)
+     bool abort = job->ret < 0;
+     int ret = 0;
+ 
++    GLOBAL_STATE_CODE();
++
+     if (s->prepared) {
+         return 0;
+     }
+     s->prepared = true;
+ 
++    aio_context_acquire(qemu_get_aio_context());
++
+     mirror_top_bs = s->mirror_top_bs;
+     bs_opaque = mirror_top_bs->opaque;
+     src = mirror_top_bs->backing->bs;
+@@ -789,6 +793,8 @@ static int mirror_exit_common(Job *job)
+     bdrv_unref(mirror_top_bs);
+     bdrv_unref(src);
+ 
++    aio_context_release(qemu_get_aio_context());
++
+     return ret;
+ }
+ 
+-- 
+2.40.1
 
 
