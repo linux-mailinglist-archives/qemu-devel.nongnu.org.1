@@ -2,89 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3695C717071
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 00:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35634717154
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 01:09:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q47Su-0007f0-B5; Tue, 30 May 2023 18:05:17 -0400
+	id 1q48RM-0005oE-Tk; Tue, 30 May 2023 19:07:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q47So-0007eb-NL
- for qemu-devel@nongnu.org; Tue, 30 May 2023 18:05:10 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q47Se-0005eU-Hr
- for qemu-devel@nongnu.org; Tue, 30 May 2023 18:05:10 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-30aa76048fbso3539083f8f.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 15:04:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685484297; x=1688076297;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HUmT6vZ2zrai/GGSrWQD4roADO/JjerDQPKVZ5nXPbs=;
- b=d+EJ+djoezOpzvqEBiidWXoznst/KxAiTlQhcjELW1yKSlAwcsZBzppNDnwUmXnj78
- toagVPOcLdWx7Ta4vEgGLwwwDB58QF4bG9lmDkpLcjn1eNh8l4CQWNlWW3trnRjVRsk0
- BtxlSWj3Y6czlp2Awus4LA6B6B9pZ+74g6mK6TQrVuXTSp3MiNKusZs+2hvaxJ62TM7Q
- WJgzyq0Ve95svFuKwAAK+fsc/U4lVsAMF25ZHQW9Kcqm6SibIBsT18ESntxvK51+BgRj
- WDq2MO/cpmK4uYkkoB3DDX825n2bjhtsee4/lsymtAMo6xMNJ/Td02VnNx1Pn4rp1nu+
- QcMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685484297; x=1688076297;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HUmT6vZ2zrai/GGSrWQD4roADO/JjerDQPKVZ5nXPbs=;
- b=VBoxs+Y/iSJ+wv9gkWSc7QzpiTVwgkATBMjs0eX08oPCLIN5vsVWhWw8vNgoUIMPbI
- Isom0xxsjL7wwwmRcEffQQjl3KeiowOLbWTerdVWuBZznymXKTaEQrks0UHr1oyaBEG2
- atdXMhIFL8huR4rHGdStiRdZT9lv2oJF4AsIaBekxVth+T6/thdTz5evAsKradh0jplA
- aPzwaa0FgoQ8GzFvAuWZaL1MkE/2ywTpmQmHXtQSngW3YZjq9k2cYCe3SVGi9UeezsIV
- SzC2T7Tq3Xw4YIfYQI2li4K78cbhqYxrEqLKSV/Kw5v347I9lcuxXVCLeov/6X5UvWMH
- U+Fg==
-X-Gm-Message-State: AC+VfDxiDXqLdCL+nQAw084Q+Ryy9unRaxkX7rJqLklEnxmdI/rzfsiV
- Q1u5Hue8R3iz7iAPGIjuftV9TQ==
-X-Google-Smtp-Source: ACHHUZ4ei7C7GwDyBlXM5xVfvwU0UFb6gbQw2JX4e1dC4pL4+0EFgV4DF8H4KLsB+o+izE2g8woPgg==
-X-Received: by 2002:a5d:4c8f:0:b0:30a:ecf3:c9e9 with SMTP id
- z15-20020a5d4c8f000000b0030aecf3c9e9mr2761122wrs.5.1685484297157; 
- Tue, 30 May 2023 15:04:57 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.180.1])
- by smtp.gmail.com with ESMTPSA id
- u15-20020a05600c210f00b003f42d8dd7d1sm22262127wml.7.2023.05.30.15.04.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 15:04:56 -0700 (PDT)
-Message-ID: <ad557a25-0cca-518e-9d0f-f69f8bbd98c6@linaro.org>
-Date: Wed, 31 May 2023 00:04:54 +0200
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1q48RK-0005np-IY; Tue, 30 May 2023 19:07:42 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1q48RI-0000am-Eo; Tue, 30 May 2023 19:07:42 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34ULbtSj026640; Tue, 30 May 2023 23:07:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=j5FCUu6sn5+VM4k3fRhWMhw1/dKRueEkqTlgRyiEx8I=;
+ b=VQZXuZXLYABRGXHUNubxKtd9iyFde2ckqRU2E/k6WCQ5dIxxbuRDSGd5+fDbQVBau16/
+ cRs6cbYFE3cYObE9LVsSfPydh+Os6FNnf+qY87OCvv/unORS/8hiJvInV2lsGGKFiX7u
+ BxJgGEfUPjA4cuZsKo+Sf+E6+GN+EBh7+l1q/1IdHRCb3c1Gm4okYWihBF2XGVvlETLJ
+ 7Y05eVBeZuwX7QgQcsmiQFBkduXRsdyYKJwraKn0Wmc+2Ji6x9xTh2TciqvtMGWTBNAM
+ pgWwPxHPfjYH2JsyOsTl1f64PTZ7GMCO5OMB7v/77IpJXoS2DwrRCn+UV6XuseVR9gAY 9w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwqttbguv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 23:07:36 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34UN0YnU008203;
+ Tue, 30 May 2023 23:07:36 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwqttbgun-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 23:07:36 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34UKEo1O016849;
+ Tue, 30 May 2023 23:07:35 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+ by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3qu9g6ja5x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 23:07:35 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34UN7XfT32899732
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 30 May 2023 23:07:33 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4BFF458076;
+ Tue, 30 May 2023 23:07:33 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7057B58075;
+ Tue, 30 May 2023 23:07:32 +0000 (GMT)
+Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown
+ [9.61.88.233]) by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 30 May 2023 23:07:32 +0000 (GMT)
+From: Tony Krowiak <akrowiak@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, mjrosato@linux.ibm.com, jjherne@linux.ibm.com,
+ pasic@linux.ibm.com, fiuczy@linux.ibm.com, thuth@redhat.com,
+ farman@linux.ibm.com, borntraeger@linux.ibm.com,
+ Tony Krowiak <akrowiak@linux.ibm.com>
+Subject: [PATCH 0/2] s390x/ap: fix hang when mdev attached to guest is removed
+Date: Tue, 30 May 2023 18:55:42 -0400
+Message-Id: <20230530225544.280031-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 01/15] hw/pci: Refactor pci_device_iommu_address_space()
-Content-Language: en-US
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>
-References: <20230530175937.24202-1-joao.m.martins@oracle.com>
- <20230530175937.24202-2-joao.m.martins@oracle.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230530175937.24202-2-joao.m.martins@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: IHj08gNVV7lVkSzDtxAktUtUWzBz5sSn
+X-Proofpoint-GUID: n7X1FH5jTTfxvmpCoG3rfie1p2TQhiwP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-30_16,2023-05-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 malwarescore=0
+ adultscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=527
+ impostorscore=0 phishscore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305300188
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=akrowiak@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,80 +110,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joao,
+When a user attempts to remove a vfio-ap mediated device attached to a
+guest, the operation hangs until the mdev's fd is closed by the guest
+(i.e., the guest is shut down). This patch series provides userspace 
+(i.e., qemu) code to handle device unplug requests for AP. When notified
+that the mdev is being removed, the handler will unplug the device, thus
+avoiding the hang condition.
 
-On 30/5/23 19:59, Joao Martins wrote:
-> Rename pci_device_iommu_address_space() into pci_device_iommu_info().
-> In the new function return a new type PCIAddressSpace that encapsulates
-> the AddressSpace pointer that originally was returned.
-> 
-> The new type is added in preparation to expanding it to include the IOMMU
-> memory region as a new field, such that we are able to fetch attributes of
-> the vIOMMU e.g. at vfio migration setup.
-> 
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> ---
->   hw/pci/pci.c         |  9 ++++++---
->   include/hw/pci/pci.h | 21 ++++++++++++++++++++-
+Tony Krowiak (2):
+  linux-headers: Update with vfio_ap IRQ index mapping
+  s390x/ap: Wire up the device request notifier interface
 
-Please consider using scripts/git.orderfile.
+ hw/vfio/ap.c               | 113 +++++++++++++++++++++++++++++++++++++
+ linux-headers/linux/vfio.h |   9 +++
+ 2 files changed, 122 insertions(+)
 
->   2 files changed, 26 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index 1cc7c89036b5..ecf8a543aa77 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -2633,11 +2633,12 @@ static void pci_device_class_base_init(ObjectClass *klass, void *data)
->       }
->   }
->   
-> -AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-> +PCIAddressSpace pci_device_iommu_info(PCIDevice *dev)
->   {
-
-This function is PCI specific, ...
-
->   }
->   
->   void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque)
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index e6d0574a2999..9ffaf47fe2ab 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -363,9 +363,28 @@ void pci_bus_get_w64_range(PCIBus *bus, Range *range);
->   
->   void pci_device_deassert_intx(PCIDevice *dev);
->   
-> +typedef struct PCIAddressSpace {
-> +    AddressSpace *as;
-
-... but here I fail to understand what is PCI specific in this
-structure. You are just trying to an AS with a IOMMU MR, right?
-
-> +} PCIAddressSpace;
-> +
->   typedef AddressSpace *(*PCIIOMMUFunc)(PCIBus *, void *, int);
-> +static inline PCIAddressSpace as_to_pci_as(AddressSpace *as)
-> +{
-> +    PCIAddressSpace ret = { .as = as };
-> +
-> +    return ret;
-> +}
-> +static inline AddressSpace *pci_as_to_as(PCIAddressSpace pci_as)
-> +{
-> +    return pci_as.as;
-> +}
-> +
-> +PCIAddressSpace pci_device_iommu_info(PCIDevice *dev);
-> +static inline AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-> +{
-> +    return pci_as_to_as(pci_device_iommu_info(dev));
-> +}
->   
-> -AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
->   void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque);
->   
->   pcibus_t pci_bar_address(PCIDevice *d,
+-- 
+2.31.1
 
 
