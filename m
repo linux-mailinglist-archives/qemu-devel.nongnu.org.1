@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD559716270
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6251716273
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:45:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zeT-0004iG-1w; Tue, 30 May 2023 09:44:41 -0400
+	id 1q3zf4-0005vE-1g; Tue, 30 May 2023 09:45:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zeF-0004Tw-VC
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:44:33 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zeD-0007dA-Gi
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:44:27 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4effb818c37so4857427e87.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:44:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685454264; x=1688046264;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=CXbqrfrcLCfjuCYFtuZW8CIeDUIIoXco0fzPzfIjM2A=;
- b=ZohZRWgGwDsDGZZmd5/JlYEwgpQpOVHAoxnkttiJcWfdJwaTwGPiuHJN9CqNz/uf+A
- WYPbERRfDWWUIRTar5Q0netvwyUXmn4mKI4H7UtaQXhFlEPO7tfKD0I6ntfoByyTxcWq
- ITM9+moLfIemR3M37qiifH2AnY5YusTo7hacB9gHUrBeo01LuOLGpfqXkOCdXXTM/atT
- TvEB5QcnBMu7e2Rn6AGDzZ7+rlzRcYPWTKq3BO/vOiPf1OKJXGJWq+SnK/ezX9AgOSsi
- iXqb40ZrLTOHdT2yB3rc7nl29UR8+g4UoDCK1MEEDh1wcISBHTKlD8IelPOZq0oZBT8G
- yHLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685454264; x=1688046264;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CXbqrfrcLCfjuCYFtuZW8CIeDUIIoXco0fzPzfIjM2A=;
- b=LK2jsAtfCIOLcw8auJPd0ibvq3OFaLnR0OC5Dg+sTRFcUfKDOjQEONSGkSuuGYwAHf
- tAmsMuBPjfziy7BFs6AIyXC7oMX/lkiPSlEkWV39GXEfqiEjSGRjM30YtI6LdyIOfzqO
- BLWCBo7RZ1Iuk2ORV9oZy8XdgVtaSySAkEVAOqmfbbniOXF7zEH8G8ub4QszCMKvddnZ
- K5p+yfbLLQ1QxTLPZ1V7D6ez+jog9LN6b8d5IFl4BOq7Zz607GdFOQdbJONO2XIw6wmL
- TBGG/57bZQD68tjOWProLUJWkuiTgIuIxf5ELsOjjal4QQxZEticY2HQcdl8YNFgrvIO
- wk1Q==
-X-Gm-Message-State: AC+VfDwx594w/voAXei534yG5CplNF7cDjKuySYX4fxB4bI8uqnSKTGa
- YTcfknTBcHpBwei2+vaUNhz54e0avhfzvQA95KQjyQ==
-X-Google-Smtp-Source: ACHHUZ5Rt8VUunivj5HMEbm+VKXMc+gVNpDTu8KV/s2PpOHCQMlJ9SiaSafyyB4ydf7KZ46bYlkZ5hQGXgyUCmEoook=
-X-Received: by 2002:ac2:4859:0:b0:4f3:9930:5b8c with SMTP id
- 25-20020ac24859000000b004f399305b8cmr795825lfy.25.1685454263888; Tue, 30 May
- 2023 06:44:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
+ id 1q3zf2-0005tG-58
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:45:16 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
+ id 1q3zf0-00083r-E7
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:45:15 -0400
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34U9790u023899
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:45:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=qcppdkim1; bh=NcFKQ6YMlSqijdSM2qIn4y9e89uF1b+CK06/AQHeqms=;
+ b=VUh//IlYh/KvJ7bp9I2yU7K2atsYqzq9S1HmLKNpVZUD/1HyEj/nJNS1onkttpoIHmFL
+ d+fwJsQx01x9a5e+DRnFXU49j+bZXqOlql9cuUiCK2g1KgbrKTiFyODye3l1g1vPTx7x
+ reoZaWAQLMxLjvbTxjGm2uwSgfolU0akOoQGXEYWsBJjsE4qY0KrkH4Nea8DwX83biSj
+ bk/anwobW1ZmxF76+GU5orCsihXdOl3X1UoJj1VQIJX+/HeD04ivMgSHRgL4BdnT0XRp
+ DnFDYQXCl1uW/q9XU1Q+CEap5L7SqYbJdn5I5pBJ1ju5qRUqfJ6bM6pd8LlD3RhErFOk fg== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qw7rts8jw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:45:11 +0000
+Received: from pps.filterd (NALASPPMTA01.qualcomm.com [127.0.0.1])
+ by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 34UDYVX2012478
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:45:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by NALASPPMTA01.qualcomm.com (PPS) with ESMTPS id 3quaxm0h3n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:45:10 +0000
+Received: from NALASPPMTA01.qualcomm.com (NALASPPMTA01.qualcomm.com
+ [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34UDhlK0022026
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:45:10 GMT
+Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
+ [10.47.235.147])
+ by NALASPPMTA01.qualcomm.com (PPS) with ESMTPS id 34UDj9oS024487
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 13:45:10 +0000
+Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
+ id C239A7583; Tue, 30 May 2023 10:45:09 -0300 (-03)
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: qemu-devel@nongnu.org
+Cc: tsimpson@quicinc.com, bcain@quicinc.com, quic_mliebel@quicinc.com
+Subject: [PATCH 0/2] Hexagon tests: fix test_load_tmp2 and non-portable format
+Date: Tue, 30 May 2023 10:45:06 -0300
+Message-Id: <cover.1685454251.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-References: <20230526002334.1760495-1-richard.henderson@linaro.org>
- <20230526002334.1760495-3-richard.henderson@linaro.org>
-In-Reply-To: <20230526002334.1760495-3-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 30 May 2023 14:44:13 +0100
-Message-ID: <CAFEAcA8E_wbiL=xxc=qzfbhBjTsGVxpMGYex_Ezsn_=47DJP3w@mail.gmail.com>
-Subject: Re: [PATCH v4 02/16] accel/tcg: Fix check for page writeability in
- load_atomic16_or_exit
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: BM3i9ZbcS-jwEU2DmctJzxSGidXNILmg
+X-Proofpoint-ORIG-GUID: BM3i9ZbcS-jwEU2DmctJzxSGidXNILmg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-30_10,2023-05-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0
+ phishscore=0 mlxscore=0 mlxlogscore=636 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305300111
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=mathbern@qualcomm.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,46 +104,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 26 May 2023 at 01:24, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> PAGE_WRITE is current writability, as modified by TB protection;
-> PAGE_WRITE_ORG is the original page writability.
->
-> Fixes: cdfac37be0d ("accel/tcg: Honor atomicity of loads")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  accel/tcg/ldst_atomicity.c.inc | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-> index 0f6b3f8ab6..57163f5ca2 100644
-> --- a/accel/tcg/ldst_atomicity.c.inc
-> +++ b/accel/tcg/ldst_atomicity.c.inc
-> @@ -191,7 +191,7 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
->       * another process, because the fallback start_exclusive solution
->       * provides no protection across processes.
->       */
-> -    if (!page_check_range(h2g(p), 16, PAGE_WRITE)) {
-> +    if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
->          return *p;
->      }
->  #endif
-> --
-> 2.34.1
+This series includes two fixes on hexagon test files: one for a
+non-porable printf specifier, and the other for the use of an
+uninitialized register.
 
-load_atomic8_or_exit() has a similar condition, so
-we should change either both or neither.
+Marco Liebel (1):
+  Hexagon (hvx_misc test): fix uninitialized regs at test_load_tmp2
 
-So, if I understand this correctly, !PAGE_WRITE_ORG is a
-stricter test than !PAGE_WRITE, so we're saying "don't
-do a simple non-atomic load if the page was only read-only
-because we've translated code out of it". Why is it
-not OK to do the non-atomic load in that case? I guess
-because we don't have the mmap lock, so some other thread
-might nip in and do an access that causes us to invalidate
-the TBs and move the page back to writeable?
+Matheus Tavares Bernardino (1):
+  Hexagon (tests/.../hex_test.h): use portable printf formats
 
-thanks
--- PMM
+ tests/tcg/hexagon/hex_test.h | 14 ++++++++++----
+ tests/tcg/hexagon/hvx_misc.c |  7 ++++++-
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+
+-- 
+2.37.2
+
 
