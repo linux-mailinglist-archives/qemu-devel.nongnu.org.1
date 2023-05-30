@@ -2,89 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94327715EDF
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE46715EDE
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:20:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3yJr-0007CD-3u; Tue, 30 May 2023 08:19:19 -0400
+	id 1q3yJt-0007CX-7L; Tue, 30 May 2023 08:19:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q3yJA-0006y7-N7
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:18:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q3yJ9-0006th-0z
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:18:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685449114;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wGEdMXWLOZlxhss834tVjbMCI05NaHZQ2dSU3138BTk=;
- b=bBhOMGnbVzLFtvwkrc66E6FM0ogiYTvE2jbR10Vrmzb8FfkI5gALFF+pivmktU7rUECIYK
- cgZBORE8rGFVr5G7gmTgUB6DZtZD9h8DPKwXJmJVVDvtF0THyGgwB087Lvwme/7r+eoCZQ
- 1aRK8NVnUgVdzu9SZbhJE2ByAQw4qgs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-Hi7b6qVaOKSvz60kvGf6pw-1; Tue, 30 May 2023 08:18:33 -0400
-X-MC-Unique: Hi7b6qVaOKSvz60kvGf6pw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f60fb7b31fso16605315e9.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 05:18:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3yJg-00079f-9I
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:19:17 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3yJc-0006wX-CW
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:19:07 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3f6da07feb2so45243015e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 05:18:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685449138; x=1688041138;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=v4t1Wxe3NyuaT4BwvxtqUCLC+60B0bgxTbCFrTqs/oY=;
+ b=hGrTUe+cOFJQomLU0/hyAMqvY2y1hhX6eMUwY2RM2bdg2zxrKmONWZV4tmmgsxHzmJ
+ 2pBEIVwG/60MVrCMEYbz6vnKkaUlnMLaD0aX5wj34jVNPqryVlHe9BlKVmBvCerDqvxs
+ iTWP/Yti8dgbgCmluZPYlClktmZFUT9NdJWLm5rw1+sucM27vHGP4UH5tx9Ycg5v072W
+ sL1hDnVY9a6Ftpg+TFlXZGEYwyKfg1TcMq4Ld1U7wHBTzR/p7L3l/I5ehiluWMHztX5W
+ ecFG4untRQI25U2oQotSoup7eqI2fvMMO/5Rzxw6z4PcUlAb3DTqImNlhhpVTyvK2wry
+ 7u2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685449112; x=1688041112;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1685449138; x=1688041138;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wGEdMXWLOZlxhss834tVjbMCI05NaHZQ2dSU3138BTk=;
- b=f0Qv4GQeXlWO+Q5E/hpo4ecQ0cvn45nRu9UrUOMz/EMe4U4bcoN1RY159+C/T+wW0O
- 6T/z6WSiL757ITs1YHsLhqbl76RbMf0a3PY1t9qFOa5rOb1L3oyhD/o7o31lS9j7AtJU
- qui3BcTtO7vRrLpcAYbcgoLM//88YgD/ZE1oghZ1QH7V2+Y3wtTZpIpwL1RA9Yoleo1J
- aU6TooJyAj4pWIWnDSOqOs+cvmFDqWATM77T2npaD1lXP22AHW+vw2TF8f+TpfywWt/p
- 7VZK56jjs9o9i4l1bGunSyWXcNWDP0/rW7JrSJU3hXQwgeIF61PKiUMw5YXKXKOImCKH
- 0Qbg==
-X-Gm-Message-State: AC+VfDyjHY4TBHtdOGso5hMRT7mIwgWzI8s68LqpXR3cWjKlB9+hTuFo
- ckXECFXnpc6Io7tMLGw9qBp4w31R76g4kPqdjy1MUl7Nwm8s5YmvvdfSvJCLk+B4wnRDAMTxGJh
- tMjPy3P1AquuCDfA=
-X-Received: by 2002:a1c:f615:0:b0:3f6:2ee:6993 with SMTP id
- w21-20020a1cf615000000b003f602ee6993mr1454111wmc.4.1685449112051; 
- Tue, 30 May 2023 05:18:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ44leqoYqUfA4pjQI/I+kPPjLj65hQGXt6bWD6YIgeBanuLCUKefPUaLb0UA/tO5HBCpyC5Iw==
-X-Received: by 2002:a1c:f615:0:b0:3f6:2ee:6993 with SMTP id
- w21-20020a1cf615000000b003f602ee6993mr1454100wmc.4.1685449111744; 
- Tue, 30 May 2023 05:18:31 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-176-11.web.vodafone.de.
- [109.43.176.11]) by smtp.gmail.com with ESMTPSA id
- x21-20020a05600c21d500b003f6041f5a6csm17319225wmj.12.2023.05.30.05.18.30
+ bh=v4t1Wxe3NyuaT4BwvxtqUCLC+60B0bgxTbCFrTqs/oY=;
+ b=GH5ufjScUN907/rML5RMWTljSB5ieJMcjZpBZtThtlCIvVKhr0srX9PHIIWx7r4KFE
+ o17aaq8o28K9QYJzXXLm7zbVeFjiRvPW9XfQTqgyqWQa69lEZtWx+rBSqMUQSIElQ7cB
+ R1zLBICwvDFaa1LR1sReHEa4Z8SFaeLMsr19Jm0pzaHwE2GLF/Cuqv41XLNAeSqdQgHv
+ pNi77BOkeqE/G/P/t/QmreX3f2Dokfc6YzirId40iqBNSeMtKWtMtEUuszSReCgrtAIh
+ cmOysx2LQ8DEURAp7GUpiYjnbXsZaCQhHdhDO15UNaEs2HX4Jq613uNeyOSbBLZWRkkJ
+ 5Jkg==
+X-Gm-Message-State: AC+VfDxnNU81d0iw9IlyWeXOuWweg4L+Zb5rkSUP2OZX2fLH/H+0vtUN
+ 7/HqYynq2RhFLk8sHd8DWPFPaA==
+X-Google-Smtp-Source: ACHHUZ4Mn2cwNQS0gbsUcEdN67Hu0ocMQVdTZCk8azFtbYugqWcnmV505jE4wUdQR+WVYSQXCAkmEQ==
+X-Received: by 2002:a05:600c:ad7:b0:3f2:549b:3ef2 with SMTP id
+ c23-20020a05600c0ad700b003f2549b3ef2mr1671485wmr.17.1685449138157; 
+ Tue, 30 May 2023 05:18:58 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.180.1])
+ by smtp.gmail.com with ESMTPSA id
+ z26-20020a05600c221a00b003f60101074dsm20908772wml.33.2023.05.30.05.18.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 05:18:31 -0700 (PDT)
-Message-ID: <3188708d-f7ae-27c2-7bb2-0ac50b08c79a@redhat.com>
-Date: Tue, 30 May 2023 14:18:30 +0200
+ Tue, 30 May 2023 05:18:57 -0700 (PDT)
+Message-ID: <01dfb308-febf-6def-47b2-29484b04c616@linaro.org>
+Date: Tue, 30 May 2023 14:18:54 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH 02/10] memory-device: Introduce memory_devices_init()
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, berrange@redhat.com,
- qemu-s390x <qemu-s390x@nongnu.org>
-References: <20230527092851.705884-1-pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 0/5] meson: replace submodules with wrap files
-In-Reply-To: <20230527092851.705884-1-pbonzini@redhat.com>
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230530113838.257755-1-david@redhat.com>
+ <20230530113838.257755-3-david@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230530113838.257755-3-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,45 +105,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/05/2023 11.28, Paolo Bonzini wrote:
-> This series replaces git submodules for bundled libraries with .wrap
-> files that can be used directly by meson for subprojects. 
-...
-> The remaining submodules consist of tests/lcitool/libvirt-ci and the
-> firmware in roms/.
-
-We talked about moving the contents of roms/ to a separate repository a 
-couple of times ... maybe it's time now that we really do it?
-
-(However, when I tried to tackle the "do we need to ship the firmware 
-sources with the main tarball" problem the last time, there was no consensus 
-how to do it best, see 
-https://lore.kernel.org/qemu-devel/20221128092555.37102-1-thuth@redhat.com/ 
-... maybe something to discuss at KVM forum...)
-
-> The former is only used in very specific cases,
-> while the latter is mostly used only as a pointer used to create the QEMU
-> tarball.  Unfortunately, git-submodule.sh is still needed for roms/SLOF,
-> parts of which are used in the QEMU build process for pc-bios/s390-ccw;
-> more on this later in this cover letter.
+On 30/5/23 13:38, David Hildenbrand wrote:
+> Let's intrduce a new helper that we will use to replace existing memory
+> device setup code during machine initialization. We'll enforce that the
+> size has to be > 0.
 > 
-> I'm not sure what's the best way to proceed for roms/SLOF.  Some
-> possibilities, in no particular order, include:
+> Once all machines were converted, we'll only allocate ms->device_memory
+> if the size > 0.
 > 
-> * doing nothing
-> 
-> * merging --with-git-submodules with --enable-download, and
->    moving the git-submodule.sh rules from the main Makefile to
->    pc-bios/s390-ccw/ (my favorite option)
-> 
-> * copying the relevant SLOF files into pc-bios/
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   hw/mem/memory-device.c         | 14 ++++++++++++++
+>   include/hw/mem/memory-device.h |  2 ++
+>   2 files changed, 16 insertions(+)
 
-Considering that SLOF is also rather on life support already (there is now 
-VOF for the sPAPR machine instead, Alexey left IBM, ...), I also wouldn't 
-mind the third option, I think.
-
-But of course we can also start with option 2 and go for option 3 later.
-
-  Thomas
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
