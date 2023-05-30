@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8807C715DBA
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6529715DB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:45:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3xhG-00083j-7U; Tue, 30 May 2023 07:39:26 -0400
+	id 1q3xhG-00083v-7Z; Tue, 30 May 2023 07:39:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xh1-0007ul-Iy
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:39:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xh8-0007vo-4C
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:39:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xgz-00045O-6n
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:39:10 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xh6-00048i-Kb
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:39:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685446748;
+ s=mimecast20190719; t=1685446754;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KkLnYI7ZC/XGHU4LuLPG/YHBgPd/PcXz1iS/ExnG6IM=;
- b=Kwg+yrPlitbaRqd2CS3nXebOCuJ2bGC/bcYM7oJexPS8Q5bsciPkIURaM8GmqNpWuT3PMb
- cn6ueAnpRPrYSPwdcKvaZNcuwpQeERtXLpl4yAWEC7QAquUfVb76JR+/ob4ZR+f0cc4HUl
- muWLNF0wF2IZKxzv36d5YI+F3S+M7N8=
+ bh=ypSNjxk8rJUKShrG/cQHxTCZ8bHXJz6ssKLCoH3afkk=;
+ b=MZeh1QPv1h1rGMLy/ajpIRwgQT/HHCFz6LgjGQLFW0EVOSph3XZrzCrz+Rj1Q3sFSQ/MXQ
+ eJpGGrJKP1zULuOxhVha81zBkvN7q1+a51FfzkajPLQW9hRlAmyD5h7/lEUPwG1tnJmhRo
+ V0ritnckNSnE42EcvPcLIFjmFkxTXOw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-609-act1RaTXNdu0yx38jYus9Q-1; Tue, 30 May 2023 07:39:05 -0400
-X-MC-Unique: act1RaTXNdu0yx38jYus9Q-1
+ us-mta-402-4IePjxoQObOgdcDZpBNbfA-1; Tue, 30 May 2023 07:39:08 -0400
+X-MC-Unique: 4IePjxoQObOgdcDZpBNbfA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9107685A5AA;
- Tue, 30 May 2023 11:39:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D7BB9101A53A;
+ Tue, 30 May 2023 11:39:07 +0000 (UTC)
 Received: from t480s.redhat.com (unknown [10.39.194.167])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C5E3D40CFD45;
- Tue, 30 May 2023 11:39:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D195040CFD48;
+ Tue, 30 May 2023 11:39:04 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
@@ -57,15 +57,15 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Subject: [PATCH 05/10] hw/loongarch/virt: Use memory_devices_init()
-Date: Tue, 30 May 2023 13:38:33 +0200
-Message-Id: <20230530113838.257755-6-david@redhat.com>
+Subject: [PATCH 06/10] hw/i386/pc: Use memory_devices_init()
+Date: Tue, 30 May 2023 13:38:34 +0200
+Message-Id: <20230530113838.257755-7-david@redhat.com>
 In-Reply-To: <20230530113838.257755-1-david@redhat.com>
 References: <20230530113838.257755-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -89,55 +89,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's use our new helper.
+Let's use our new helper and stop always allocating ms->device_memory.
+Once allcoated, we're sure that the size > 0 and that the base was
+initialized.
 
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Cc: Song Gao <gaosong@loongson.cn>
+Adjust the code in pc_memory_init() to check for machine->device_memory
+instead of pcmc->has_reserved_memory and machine->device_memory->base.
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/loongarch/virt.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ hw/i386/pc.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index ceddec1b23..a6790714fe 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -45,7 +45,7 @@
- #include "sysemu/block-backend.h"
- #include "hw/block/flash.h"
- #include "qemu/error-report.h"
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index bb62c994fa..920aa32b53 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1039,13 +1039,11 @@ void pc_memory_init(PCMachineState *pcms,
+         exit(EXIT_FAILURE);
+     }
+ 
+-    /* always allocate the device memory information */
+-    machine->device_memory = g_malloc0(sizeof(*machine->device_memory));
 -
-+#include "hw/mem/memory-device.h"
- 
- static void virt_flash_create(LoongArchMachineState *lams)
- {
-@@ -805,8 +805,8 @@ static void loongarch_init(MachineState *machine)
- 
      /* initialize device memory address space */
-     if (machine->ram_size < machine->maxram_size) {
--        machine->device_memory = g_malloc0(sizeof(*machine->device_memory));
-         ram_addr_t device_mem_size = machine->maxram_size - machine->ram_size;
+     if (pcmc->has_reserved_memory &&
+         (machine->ram_size < machine->maxram_size)) {
+         ram_addr_t device_mem_size;
 +        hwaddr device_mem_base;
  
          if (machine->ram_slots > ACPI_MAX_RAM_SLOTS) {
              error_report("unsupported amount of memory slots: %"PRIu64,
-@@ -821,14 +821,8 @@ static void loongarch_init(MachineState *machine)
+@@ -1060,19 +1058,14 @@ void pc_memory_init(PCMachineState *pcms,
              exit(EXIT_FAILURE);
          }
-         /* device memory base is the top of high memory address. */
--        machine->device_memory->base = 0x90000000 + highram_size;
--        machine->device_memory->base =
--            ROUND_UP(machine->device_memory->base, 1 * GiB);
+ 
+-        pc_get_device_memory_range(pcms, &machine->device_memory->base, &device_mem_size);
++        pc_get_device_memory_range(pcms, &device_mem_base, &device_mem_size);
+ 
+-        if ((machine->device_memory->base + device_mem_size) <
+-            device_mem_size) {
++        if (device_mem_base + device_mem_size < device_mem_size) {
+             error_report("unsupported amount of maximum memory: " RAM_ADDR_FMT,
+                          machine->maxram_size);
+             exit(EXIT_FAILURE);
+         }
 -
--        memory_region_init(&machine->device_memory->mr, OBJECT(lams),
+-        memory_region_init(&machine->device_memory->mr, OBJECT(pcms),
 -                           "device-memory", device_mem_size);
--        memory_region_add_subregion(address_space_mem, machine->device_memory->base,
+-        memory_region_add_subregion(system_memory, machine->device_memory->base,
 -                                    &machine->device_memory->mr);
-+        device_mem_base = ROUND_UP(0x90000000 + highram_size, 1 * GiB);
 +        memory_devices_init(machine, device_mem_base, device_mem_size);
      }
  
-     /* Add isa io region */
+     if (pcms->cxl_devices_state.is_enabled) {
+@@ -1120,7 +1113,7 @@ void pc_memory_init(PCMachineState *pcms,
+ 
+     rom_set_fw(fw_cfg);
+ 
+-    if (pcmc->has_reserved_memory && machine->device_memory->base) {
++    if (machine->device_memory) {
+         uint64_t *val = g_malloc(sizeof(*val));
+         PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+         uint64_t res_mem_end = machine->device_memory->base;
 -- 
 2.40.1
 
