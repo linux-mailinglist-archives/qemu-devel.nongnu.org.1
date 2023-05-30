@@ -2,70 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A0B715806
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9DB715823
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:16:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3uOH-0003vY-F0; Tue, 30 May 2023 04:07:37 -0400
+	id 1q3uW4-0005i3-BB; Tue, 30 May 2023 04:15:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q3uO5-0003ub-Vx
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:07:28 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1q3uW1-0005hH-Ii; Tue, 30 May 2023 04:15:38 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q3uO4-0007S8-3X
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:07:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=nwl3yf4GalRI1Z+hDJZ256IAA0Nu2v8VFsWMvLycREc=; b=bK9iCTPUHlrGsK4LGmiXIzQjCI
- VD+++kPiDzPcL8JXyHI4vxh4zVpIUr4Z0BtgZFd9SCEUu4jr+B4AgahrtwVPAKuTE5D8j8L7YLTLJ
- 7SgNOo8UsYjNHi+SWhzGbPo3hCKBA1qJ9B2b2lQt9d01VEkARNuseYQTf2ASzhQpFD0GvjkxlRej0
- 15fbJ3NAiNF8n5VuCjKZawhOHY3p3uVP8r8MA5bguUG39pEECtnam8piIeslJhEkaDrAcF8DjN/Zi
- 1irqjXoTwzJuu/x2gqNErxWvkyMJu+UN6yq/rIJe0ytuuoJ3th76+Ety63/liKyrE2TkPcc5uDerU
- yeEhx332gli3ofjrxmcnOHemQuHmm26qpAHqsGWkP1yDgUDrNhKQVItqTwv4DIu9CASYLD9AS/bkl
- WVwqz6oJjJLUVZIb89z/42QZGJfQnG4P/aIpa1DnYgBOnzI9Fb55pcp8PcZd9sEq3SSHqiuj5UJD+
- NjVKJ4QnDK0vWWlrL1c7USJOwIA9c4m7Opr5noOQEMO/YkZD0wRdbNRZRDwonbnsncokHSTllegfe
- RkCi1gBLZkaYNJ82n/mjLhRhDYGJ6WbVWhZAlUFdQ2laVQBZXw4+GeopHVMhoZCBeyl5QfGV0jXAC
- jtX6rdrHqlSzIl+/UzhIc9hhOiWuA5un1SctpSFaA=;
-Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1q3uNq-0009uT-Uh; Tue, 30 May 2023 09:07:15 +0100
-Message-ID: <6d465d13-7c37-19c7-1b7d-194a8c209518@ilande.co.uk>
-Date: Tue, 30 May 2023 09:07:10 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1q3uVz-0007kS-LF; Tue, 30 May 2023 04:15:37 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 91B7C9477;
+ Tue, 30 May 2023 11:15:32 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 0660C8594;
+ Tue, 30 May 2023 11:15:32 +0300 (MSK)
+Message-ID: <4aa77e25-c224-c2aa-d17d-54d3d04f763e@tls.msk.ru>
+Date: Tue, 30 May 2023 11:15:31 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- laurent@vivier.eu, qemu-devel@nongnu.org
-References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
- <20230524211104.686087-10-mark.cave-ayland@ilande.co.uk>
- <0fd19b1f-1cf5-3252-4ad3-71e58f2a141a@linaro.org>
+ Thunderbird/102.11.0
 Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <0fd19b1f-1cf5-3252-4ad3-71e58f2a141a@linaro.org>
+To: QEMU Developers <qemu-devel@nongnu.org>,
+ qemu-stable <qemu-stable@nongnu.org>
+Cc: Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: stable-8.0.1 re-tagging?
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.130.37.216
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 09/30] q800: add djMEMC memory controller
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,89 +61,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/05/2023 09:12, Philippe Mathieu-Daudé wrote:
+Hi!
 
-> On 24/5/23 23:10, Mark Cave-Ayland wrote:
->> The djMEMC controller is used to store information related to the physical memory
->> configuration.
->>
->> Co-developed-by: Laurent Vivier <laurent@vivier.eu>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   MAINTAINERS              |   2 +
->>   hw/m68k/Kconfig          |   1 +
->>   hw/m68k/q800.c           |   9 +++
->>   hw/misc/Kconfig          |   3 +
->>   hw/misc/djmemc.c         | 154 +++++++++++++++++++++++++++++++++++++++
->>   hw/misc/meson.build      |   1 +
->>   hw/misc/trace-events     |   4 +
->>   include/hw/m68k/q800.h   |   2 +
->>   include/hw/misc/djmemc.h |  46 ++++++++++++
->>   9 files changed, 222 insertions(+)
->>   create mode 100644 hw/misc/djmemc.c
->>   create mode 100644 include/hw/misc/djmemc.h
-> 
-> 
->> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
->> index f15f1eaff9..456407898e 100644
->> --- a/hw/m68k/q800.c
->> +++ b/hw/m68k/q800.c
->> @@ -40,6 +40,7 @@
->>   #include "bootinfo.h"
->>   #include "hw/m68k/q800.h"
->>   #include "hw/misc/mac_via.h"
->> +#include "hw/misc/djmemc.h"
->>   #include "hw/input/adb.h"
->>   #include "hw/nubus/mac-nubus-bridge.h"
->>   #include "hw/display/macfb.h"
->> @@ -66,6 +67,7 @@
->>   #define SONIC_PROM_BASE       (IO_BASE + 0x08000)
->>   #define SONIC_BASE            (IO_BASE + 0x0a000)
->>   #define SCC_BASE              (IO_BASE + 0x0c020)
->> +#define DJMEMC_BASE           (IO_BASE + 0x0e000)
->>   #define ESP_BASE              (IO_BASE + 0x10000)
->>   #define ESP_PDMA              (IO_BASE + 0x10100)
->>   #define ASC_BASE              (IO_BASE + 0x14000)
->> @@ -492,6 +494,13 @@ static void q800_machine_init(MachineState *machine)
->>                                &error_abort);
->>       sysbus_realize_and_unref(SYS_BUS_DEVICE(m->glue), &error_fatal);
->> +    /* djMEMC memory controller */
->> +    m->djmemc = qdev_new(TYPE_DJMEMC);
->> +    sysbus = SYS_BUS_DEVICE(m->djmemc);
->> +    sysbus_realize_and_unref(sysbus, &error_fatal);
->> +    memory_region_add_subregion(&m->macio, DJMEMC_BASE - IO_BASE,
->> +                                sysbus_mmio_get_region(sysbus, 0));
-> 
-> 
->> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
->> index 8d788a7072..d0e37cc665 100644
->> --- a/include/hw/m68k/q800.h
->> +++ b/include/hw/m68k/q800.h
->> @@ -33,6 +33,8 @@ struct Q800MachineState {
->>       M68kCPU *cpu;
->>       MemoryRegion rom;
->>       DeviceState *glue;
->> +    DeviceState *djmemc;
-> 
-> While I like the simplicity of using pointer to common QOM parent
-> type, isn't the consensus to have QOM objects embed their children
-> state? Maybe we never agreed on that explicitly :) So here I'd rather:
-> 
->          DJMEMCState djmemc;
+Yesterday I pushed v8.0.1 tag for 8.0.1 stable qemu release, but in the
+process of publishing it, Michael Roth discovered a regression in iotest
+which we all overlooked when initial patch has been applied to master.
 
-That's a fair comment. In fact it seems that even outside of this series q800.c could 
-do with some better QOM parenting.
+The commit in question is this one:
 
-It's reasonably trivial to fix up the QOM tree within this series, although of course 
-it will make it a bit larger. Let me see if I can fix this for v2.
+commit de79b52604e43fdeba6cee4f5af600b62169f2d2
+Author: Stefan Hajnoczi <stefanha@redhat.com>
+Date:   Tue May 2 17:11:19 2023 -0400
 
->>       MemoryRegion macio;
->>       MemoryRegion macio_alias;
->>   };
+     block/export: call blk_set_dev_ops(blk, NULL, NULL)
 
+It caused iotest 307 to fail, - qemu failed with Sig11.  This has been
+fixed by this commit:
 
-ATB,
+commit a184563778f2b8970eb93291f08108e66432a575
+Author: Kevin Wolf <kwolf@redhat.com>
+Date:   Wed May 10 22:35:55 2023 +0200
 
-Mark.
+     block/export: Fix null pointer dereference in error path
 
+I applied it on top of other 8.0.1 changes, things are now working fine.
+
+The question now is: should we re-tag v8.0.1, or should I push
+v8.0.2 instead (with 8.0.1 not being released and published
+on the download page)?
+
+This is the first time something like this happens, it seems: a bug
+in release is discovered between pushing the tag and publishing
+things, so we haven't been in this situation before, when the tag
+is there but the release should not happen.
+
+I removed the tag for the bad release from gitlab.org qemu repository, -
+I thought the permissions wont let me do that, but it just worked.
+The tag still exists locally and on my clone of qemu repository on
+gitlab.
+
+So I can restore v8.0.1 and push v8.0.2, or I can re-push v8.0.1 for
+the new commit (which would be one extra commit after "Updating version
+for v8.0.1").
+
+I'm for creating new v8.0.1 tag for the new commit.  But I'd like to
+hear opinions of others on this matter, since this is an important
+process which definitely should be public.
+
+The reason for this failure is my misunderstanding: for some reason
+I was sure whole range of tests is done within the CI infrastructure,
+but it turned out even basic iotests aren't run.  It's interesting that
+I did run iotests locally, just to become more famliar with that stuff,
+the day before I cherry-picked the bad commit in question :)
+
+And another lesson for me to learn, - actually 2 - first is to listen
+to myself, since my inner self did think about running more complete
+checks after a bunch of block-io changes which I picked up, but I didn't
+think about that with enough attention. And second is to verify whatever
+I "think" is true, instead of relying on own assumptions, - here, I was
+sure iotests are run within CI infrastructure, but nothing really indicates
+this is the case.
+
+Thanks!
+
+/mjt
 
