@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE86971617B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81ABC716189
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:21:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zGJ-0002NF-3y; Tue, 30 May 2023 09:19:43 -0400
+	id 1q3zGK-0002NG-7u; Tue, 30 May 2023 09:19:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1q3zFf-00021A-LQ
+ id 1q3zFf-00021F-Ne
  for qemu-devel@nongnu.org; Tue, 30 May 2023 09:19:04 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1q3zFb-0006sq-Ua
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:19:02 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9741a0fd134so173929566b.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:18:56 -0700 (PDT)
+ id 1q3zFc-0006tQ-5n
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:19:03 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9700219be87so820375566b.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:18:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1685452736; x=1688044736;
+ d=vrull.eu; s=google; t=1685452737; x=1688044737;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7kKhfZuUHvptmbGv0BOJ1F+/oC8QuzwjZAu+Iu7mwvY=;
- b=XHVnTBh+GAagI1yXqCYh2TUH59DiYf9qIt5dpWKvkBL29q1CIPbyK6XqSVYzDQSXCK
- 6SO/z61l7PpGOEJobtshKxZ0yVxFkcQzGIN12xGW5KHmLSAAdGl424/dP/Xb2zLR+kH7
- xjJraK4FdoBiW0n2v3T4niNmJHwomQ+qkneokFExpr+WNOx7vZqgAOgRsOLtg5D00Ik0
- DLMA8Y4fZX7zaNj+a3eN1utz18bLIzXJz9PGBo2AEETHXHCk4AyeiqGTerN9ljYn2biP
- aoWXYm5Geox81Xeun/sKA0nanaZ+80kFubuDsd/ugroSYJbM5qkhR+wi4yJBrq6/jf3g
- pwMQ==
+ bh=756HFrVNhhi4GGPpR2DHFS5GuJmNUFhEvfDvoBEQo7Q=;
+ b=BdQIxHJ1/AzciBqd/LeOIbE7hScSQll3PWDqdFB3sme6itVlQRlw4gRvqjf7Lg166n
+ Qsrb3/6IuF3edGW8/j3fG1J83k900VteTyR/rSG3fQuBwn7N8MWJGsZQ+gTlgmJKpYAq
+ kSGcXL54EO/Azyg2O9HiPLghF/gxAWf8deahMHC4CCYdtDSMEMVj4Hf+4x7W07yEjLYz
+ pDtDBxYKx2b6qvIo2ocsThdTxZS53jB2xkERgh6c4bYcR2iA/OLFoVD8UojFRy2licOc
+ wz46D1Zqa8pxGC5iQMcsS16EEVWMFdwL+mHTL6RxweJGyci+fh5zGh/ynC6jMCyQNLsW
+ +stg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685452736; x=1688044736;
+ d=1e100.net; s=20221208; t=1685452737; x=1688044737;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7kKhfZuUHvptmbGv0BOJ1F+/oC8QuzwjZAu+Iu7mwvY=;
- b=D9S5ntBHtuWwYkUXvNQLLUPWGVZ+xEr8Sy8x0o3N+/kPQtS7vI8+ILwfnk8LUPK/hE
- rhUt1JLLWWhSLUr78JNbJapuZepvhktJSwCVIY4l25YL8//mj5lYsbXLgFbAuqkE3iK3
- 0LdmZ8qomnzD/0YXQVdyqgf3MKHkZEv7lSt9dj7eWWU5pDCvnVNcGsD3pv/FtSPhgb6D
- MO2lvBZw0fgzYreX11Bg5Y7qSe3qwzGqovPLELsZK5kDoAXg8UrMpb2lXPDPVYrUAJrm
- a9TlLAbOhkdlxHzpdMVeol4D2FITl7LjO2e3Ay4ZUL9ZE/+iWfhDQCklv0ua1V29lHZK
- cBEg==
-X-Gm-Message-State: AC+VfDxnRdoYKNB4TjC4zpmpkIf+jTVh5RuPfW1EZY8AAIESPQzVwGcA
- 5CX1g6TD3tvyK039SPIF/kjExt2+yaFXK4Wa67M=
-X-Google-Smtp-Source: ACHHUZ78d8OpCqwYjRhQvjRwtAijmane9j2qJKMcEjYHs5T+I4Ul2vkLMDwNKgVVrSVylK9//4AseA==
-X-Received: by 2002:a17:906:6a02:b0:96a:3f29:40d9 with SMTP id
- qw2-20020a1709066a0200b0096a3f2940d9mr2550517ejc.25.1685452735990; 
- Tue, 30 May 2023 06:18:55 -0700 (PDT)
+ bh=756HFrVNhhi4GGPpR2DHFS5GuJmNUFhEvfDvoBEQo7Q=;
+ b=LCEc+Ky/TpoLZbE5mG9rAkzrbrTaRI/KtthwZDKS5otV7iIVn/o//QTyal/OxYLCXE
+ gTw/MJNc+etlAwldl4xoqsyoa+KyCZIvX0bWPa/b1BjmjDD3qJmlyRg0FGj42ueUEUsA
+ JzUvWVkO/U8B9pYdUyvx5XcdmmCdUPOp2ybIbFenzcCLKS6RQNobjkly44QjDxeuYDGi
+ cw7xQNT3aTPEFj3qCIimfR3jULxTq5MzBfD8J4IYJZLANm6IG5Z4WLmDDMnrScMnGjXs
+ Uw4C8SUpUx6zH2FSor/m11qmYfmct50VR3L+Z1RAmbforylxU5ZgaGavqiu/8U9JwdBw
+ VmrA==
+X-Gm-Message-State: AC+VfDxE9r5BkWFBw7vBPNHAloStewY8bbIN05mxYnuWxRoxTx/mytiD
+ AYDqTeu3Z7z/PaJ42tca92DdCw==
+X-Google-Smtp-Source: ACHHUZ7hIOz5TOC7XI/rYgfr7kaEqQ66HbzE4XI70TZq2MlhZZ+1uNHIs7sk5U/xiYKQsdfEb5m9bQ==
+X-Received: by 2002:a17:907:9729:b0:973:86d0:656f with SMTP id
+ jg41-20020a170907972900b0097386d0656fmr2546949ejc.24.1685452737221; 
+ Tue, 30 May 2023 06:18:57 -0700 (PDT)
 Received: from beast.fritz.box (62-178-148-172.cable.dynamic.surfer.at.
  [62.178.148.172]) by smtp.gmail.com with ESMTPSA id
- le8-20020a170907170800b0096f803afbe3sm7376156ejc.66.2023.05.30.06.18.55
+ le8-20020a170907170800b0096f803afbe3sm7376156ejc.66.2023.05.30.06.18.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 06:18:55 -0700 (PDT)
+ Tue, 30 May 2023 06:18:56 -0700 (PDT)
 From: Christoph Muellner <christoph.muellner@vrull.eu>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -66,24 +66,24 @@ To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Zhiwei Liu <zhiwei_liu@linux.alibaba.com>
 Cc: =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
  Alistair Francis <Alistair.Francis@wdc.com>
-Subject: [PATCH 7/9] disas/riscv: Provide infrastructure for vendor extensions
-Date: Tue, 30 May 2023 15:18:41 +0200
-Message-Id: <20230530131843.1186637-8-christoph.muellner@vrull.eu>
+Subject: [PATCH 8/9] disas/riscv: Add support for XVentanaCondOps
+Date: Tue, 30 May 2023 15:18:42 +0200
+Message-Id: <20230530131843.1186637-9-christoph.muellner@vrull.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230530131843.1186637-1-christoph.muellner@vrull.eu>
 References: <20230530131843.1186637-1-christoph.muellner@vrull.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,79 +101,128 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Christoph Müllner <christoph.muellner@vrull.eu>
 
-A previous patch provides a pointer to the RISCVCPUConfig data.
-Let's use this to add the necessary code for vendor extensions.
-This patch does not change the current behaviour, but clearly
-defines how vendor extension support can be added to the disassembler.
+This patch adds XVentanaCondOps support to the RISC-V disassembler.
 
+Co-developed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
 ---
- disas/riscv.c | 34 ++++++++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
+ disas/meson.build      |  5 ++++-
+ disas/riscv-xventana.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ disas/riscv-xventana.h | 18 ++++++++++++++++++
+ disas/riscv.c          |  4 ++++
+ 4 files changed, 67 insertions(+), 1 deletion(-)
+ create mode 100644 disas/riscv-xventana.c
+ create mode 100644 disas/riscv-xventana.h
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 086edee6a2..db98e3ea6a 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
- #include "disas/dis-asm.h"
- #include "disas/riscv.h"
-+#include "target/riscv/cpu-config.h"
- 
- typedef enum {
-     /* 0 is reserved for rv_op_illegal. */
-@@ -4599,13 +4600,38 @@ static void decode_inst_decompress(rv_decode *dec, rv_isa isa)
- /* disassemble instruction */
- 
- static void
--disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst)
-+disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
-+            struct disassemble_info *info)
- {
-+    RISCVCPUConfig *cfg = info->private_data;
-     rv_decode dec = { 0 };
-     dec.pc = pc;
-     dec.inst = inst;
--    dec.opcode_data = rvi_opcode_data;
--    decode_inst_opcode(&dec, isa);
+diff --git a/disas/meson.build b/disas/meson.build
+index 832727e4b3..e0ee326411 100644
+--- a/disas/meson.build
++++ b/disas/meson.build
+@@ -6,7 +6,10 @@ common_ss.add(when: 'CONFIG_M68K_DIS', if_true: files('m68k.c'))
+ common_ss.add(when: 'CONFIG_MICROBLAZE_DIS', if_true: files('microblaze.c'))
+ common_ss.add(when: 'CONFIG_MIPS_DIS', if_true: files('mips.c', 'nanomips.c'))
+ common_ss.add(when: 'CONFIG_NIOS2_DIS', if_true: files('nios2.c'))
+-common_ss.add(when: 'CONFIG_RISCV_DIS', if_true: files('riscv.c'))
++common_ss.add(when: 'CONFIG_RISCV_DIS', if_true: files(
++    'riscv.c',
++    'riscv-xventana.c'
++))
+ common_ss.add(when: 'CONFIG_SH4_DIS', if_true: files('sh4.c'))
+ common_ss.add(when: 'CONFIG_SPARC_DIS', if_true: files('sparc.c'))
+ common_ss.add(when: 'CONFIG_XTENSA_DIS', if_true: files('xtensa.c'))
+diff --git a/disas/riscv-xventana.c b/disas/riscv-xventana.c
+new file mode 100644
+index 0000000000..a0224d1fb3
+--- /dev/null
++++ b/disas/riscv-xventana.c
+@@ -0,0 +1,41 @@
++/*
++ * QEMU RISC-V Disassembler for xventana.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-+    static const struct {
-+        bool (*guard_func)(const RISCVCPUConfig *);
-+        const rv_opcode_data *opcode_data;
-+        void (*decode_func)(rv_decode *, rv_isa);
-+    } decoders[] = {
-+        { always_true_p, rvi_opcode_data, decode_inst_opcode },
-+    };
++#include "disas/riscv.h"
++#include "disas/riscv-xventana.h"
 +
-+    for (size_t i = 0; i < ARRAY_SIZE(decoders); i++) {
-+        bool (*guard_func)(const RISCVCPUConfig *) = decoders[i].guard_func;
-+        const rv_opcode_data *opcode_data = decoders[i].opcode_data;
-+        void (*decode_func)(rv_decode *, rv_isa) = decoders[i].decode_func;
++typedef enum {
++    /* 0 is reserved for rv_op_illegal. */
++    ventana_op_vt_maskc = 1,
++    ventana_op_vt_maskcn = 2,
++} rv_ventana_op;
 +
-+        if (guard_func(cfg)) {
-+            dec.opcode_data = opcode_data;
-+            decode_func(&dec, isa);
-+            if (dec.op != rv_op_illegal)
-+                break;
++const rv_opcode_data ventana_opcode_data[] = {
++    { "vt.illegal", rv_codec_illegal, rv_fmt_none, NULL, 0, 0, 0 },
++    { "vt.maskc", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
++    { "vt.maskcn", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
++};
++
++void decode_xventanacondops(rv_decode *dec, rv_isa isa)
++{
++    rv_inst inst = dec->inst;
++    rv_opcode op = rv_op_illegal;
++
++    switch (((inst >> 0) & 0b11)) {
++    case 3:
++        switch (((inst >> 2) & 0b11111)) {
++        case 30:
++            switch (((inst >> 22) & 0b1111111000) | ((inst >> 12) & 0b0000000111)) {
++            case 6: op = ventana_op_vt_maskc; break;
++            case 7: op = ventana_op_vt_maskcn; break;
++            }
++            break;
 +        }
++        break;
 +    }
 +
-+    if (dec.op == rv_op_illegal)
-+        dec.opcode_data = rvi_opcode_data;
++    dec->op = op;
++}
+diff --git a/disas/riscv-xventana.h b/disas/riscv-xventana.h
+new file mode 100644
+index 0000000000..72be9ffa16
+--- /dev/null
++++ b/disas/riscv-xventana.h
+@@ -0,0 +1,18 @@
++/*
++ * QEMU disassembler -- RISC-V specific header (xventana*).
++ *
++ * Copyright (c) 2023 VRULL GmbH
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-     decode_inst_operands(&dec, isa);
-     decode_inst_decompress(&dec, isa);
-     decode_inst_lift_pseudo(&dec);
-@@ -4659,7 +4685,7 @@ print_insn_riscv(bfd_vma memaddr, struct disassemble_info *info, rv_isa isa)
-         break;
-     }
++#ifndef DISAS_RISCV_XVENTANA_H
++#define DISAS_RISCV_XVENTANA_H
++
++#include "disas/riscv.h"
++
++extern const rv_opcode_data ventana_opcode_data[];
++
++void decode_xventanacondops(rv_decode*, rv_isa);
++
++#endif /* DISAS_RISCV_XVENTANA_H */
+diff --git a/disas/riscv.c b/disas/riscv.c
+index db98e3ea6a..4f71333c45 100644
+--- a/disas/riscv.c
++++ b/disas/riscv.c
+@@ -22,6 +22,9 @@
+ #include "disas/riscv.h"
+ #include "target/riscv/cpu-config.h"
  
--    disasm_inst(buf, sizeof(buf), isa, memaddr, inst);
-+    disasm_inst(buf, sizeof(buf), isa, memaddr, inst, info);
-     (*info->fprintf_func)(info->stream, "%s", buf);
++/* Vendor extensions */
++#include "disas/riscv-xventana.h"
++
+ typedef enum {
+     /* 0 is reserved for rv_op_illegal. */
+     rv_op_lui = 1,
+@@ -4614,6 +4617,7 @@ disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
+         void (*decode_func)(rv_decode *, rv_isa);
+     } decoders[] = {
+         { always_true_p, rvi_opcode_data, decode_inst_opcode },
++        { has_XVentanaCondOps_p, ventana_opcode_data, decode_xventanacondops },
+     };
  
-     return len;
+     for (size_t i = 0; i < ARRAY_SIZE(decoders); i++) {
 -- 
 2.40.1
 
