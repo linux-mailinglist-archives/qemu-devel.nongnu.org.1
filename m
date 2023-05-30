@@ -2,197 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B158716936
+	by mail.lfdr.de (Postfix) with ESMTPS id 592AF716935
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 18:25:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q428d-0001Ax-N8; Tue, 30 May 2023 12:23:59 -0400
+	id 1q429O-0001wE-8i; Tue, 30 May 2023 12:24:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rick.p.edgecombe@intel.com>)
- id 1q428W-00010H-Rq
- for qemu-devel@nongnu.org; Tue, 30 May 2023 12:23:56 -0400
-Received: from mga05.intel.com ([192.55.52.43])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q429G-0001rJ-JR
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 12:24:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rick.p.edgecombe@intel.com>)
- id 1q428U-0005vi-7q
- for qemu-devel@nongnu.org; Tue, 30 May 2023 12:23:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1685463830; x=1716999830;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=x9MXvI5HktxoStyqb+CwpnhiQFlP6fmCYRPlaNDXwq0=;
- b=TxPzUL6RR+m3pZG6caiBeDS/iw92C+ymj9XbcM+O24l//I4NZU+W6jx+
- yXr8okO2FblBdVmUR/jUdRAbQXmfYF296SdWezSQ+J+F+11AawAmre3xy
- quLbGRXMcjH3GyxXSTmn/5gjT2MAB9zI3Jl/j5VqABipcw5FIt9FuX3Lg
- AQemB53it6p5GzgyRwaelq9BemWj62m0bsYKkcA+2w4Rzu0l8exaAs6ll
- ogMvgburtk2FsvmLDmIXcDOZz+hiwn8L+iN4apiMmasZKSpUc8EmUKh9A
- LV9n2MprvuAGPM7DTC/nMeqqRw+tZzM+2motUMvTnMnop/oSBodivlh0/ w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="441328378"
-X-IronPort-AV: E=Sophos;i="6.00,204,1681196400"; d="scan'208";a="441328378"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2023 09:23:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10726"; a="850848040"
-X-IronPort-AV: E=Sophos;i="6.00,204,1681196400"; d="scan'208";a="850848040"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmsmga001.fm.intel.com with ESMTP; 30 May 2023 09:23:28 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 30 May 2023 09:23:28 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 30 May 2023 09:23:27 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Tue, 30 May 2023 09:23:27 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.104)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Tue, 30 May 2023 09:23:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IsjHrH8BHNheqbYmCzAUpyOJNIUnadbcSm1qSeAfyqWd1whzOw2jbnzCJetaGP5ctQnhXAInRrxl8UMySINtl1ssxGOzDqYM49YXmB1AtMRco0riCRhDa7bQeu8ZtH8OF7KrCYji7v/uRE96MYzaW286KtGuFGezSJyasElYJrQ4z5zkZiICDxi63Gbf4RMNYfCdvSReY1YZtKlF0motUFHS0cOYbEf5EN/BCyXU4EnK4DgMDrN81Sy80SKZgLJwoTfVUBGn27wJa8+B4jitbKEPiD1zvUG/JqHL17VoS+8o8ruEXZi9hCnnYCvLtqt39biBatCH59khqRDlC1f+GA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x9MXvI5HktxoStyqb+CwpnhiQFlP6fmCYRPlaNDXwq0=;
- b=kK8xDJABZwM6zk/A+VK63cUXvKkeVOOTf3pGno+EDOfHUZxo77rzFUeE55eRyyHxBP6xgOPWRdjKSJYmO/vOM/BzeVu7sWtVEnUu7Oh8r2rQ0SEjuqFgdsRJFZYHogNWZRr5Bp5X3INPMhLGJ4gVdOkf/Q7IZocqh2EdXKWnfEWiULgst7m+kpVZ1L+53h57ZmFhU3FUWAw/sBbel3wPK4TbRj1bIQkvVwW1gp46xnwH+x1lMh5pUR3VwXwI86XPbztcG4rp2MSLs6kHybwiDaQyIgQ8jmBBxKiXoX348q6HnJNVAMlcm6OgWdwo/f2kIz6X7bDPecgwsjM/qRmNbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
- by CY8PR11MB7172.namprd11.prod.outlook.com (2603:10b6:930:93::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Tue, 30 May
- 2023 16:23:22 +0000
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::6984:19a5:fe1c:dfec]) by MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::6984:19a5:fe1c:dfec%7]) with mapi id 15.20.6433.022; Tue, 30 May 2023
- 16:23:22 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "mic@digikod.net" <mic@digikod.net>, "Christopherson,, Sean"
- <seanjc@google.com>, "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "keescook@chromium.org" <keescook@chromium.org>, "hpa@zytor.com"
- <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "wanpengli@tencent.com" <wanpengli@tencent.com>, "vkuznets@redhat.com"
- <vkuznets@redhat.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "liran.alon@oracle.com" <liran.alon@oracle.com>,
- "marian.c.rotariu@gmail.com" <marian.c.rotariu@gmail.com>, "Graf, Alexander"
- <graf@amazon.com>, "Andersen, John S" <john.s.andersen@intel.com>,
- "madvenka@linux.microsoft.com" <madvenka@linux.microsoft.com>,
- "ssicleru@bitdefender.com" <ssicleru@bitdefender.com>, "yuanyu@google.com"
- <yuanyu@google.com>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "tgopinath@microsoft.com"
- <tgopinath@microsoft.com>, "jamorris@linux.microsoft.com"
- <jamorris@linux.microsoft.com>, "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>, "xen-devel@lists.xenproject.org"
- <xen-devel@lists.xenproject.org>, "will@kernel.org" <will@kernel.org>,
- "dev@lists.cloudhypervisor.org" <dev@lists.cloudhypervisor.org>,
- "mdontu@bitdefender.com" <mdontu@bitdefender.com>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "virtualization@lists.linux-foundation.org"
- <virtualization@lists.linux-foundation.org>, "nicu.citu@icloud.com"
- <nicu.citu@icloud.com>, "ztarkhani@microsoft.com" <ztarkhani@microsoft.com>,
- "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
-Thread-Topic: [RFC PATCH v1 0/9] Hypervisor-Enforced Kernel Integrity
-Thread-Index: AQHZf2Ve5xw6RDm4tUGLnlOpizAoCa9qHQcAgAEGdICAAalfgIAGWnSA
-Date: Tue, 30 May 2023 16:23:22 +0000
-Message-ID: <fd1dd8bcc172093ad20243ac1e7bb8fce45b38ef.camel@intel.com>
-References: <20230505152046.6575-1-mic@digikod.net>
- <93726a7b9498ec66db21c5792079996d5fed5453.camel@intel.com>
- <facfd178-3157-80b4-243b-a5c8dabadbfb@digikod.net>
- <58a803f6-c3de-3362-673f-767767a43f9c@digikod.net>
-In-Reply-To: <58a803f6-c3de-3362-673f-767767a43f9c@digikod.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.44.4-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|CY8PR11MB7172:EE_
-x-ms-office365-filtering-correlation-id: 8f4b5d35-bee6-4765-25fc-08db612a2ff9
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: YX9qeLlW9DFH5Keokrei0vuCHyw9t9QA/SZjW2AFBeYVC9TWzOEU+ByQbtuHzJ0A6EL7ONKXFgqJ2j4mxVCLJeUjh5PLtETEgiFZ4I8QWgvTpPex3BvJh4jHK7rA2zCzAyHAq+cs+8bDLqTlh0jrdEj+JnNY/m3pkvgvBiioiTRMJEbaT8eb06bQm+RTzDv9Oy5POZy39cMeExa+Bks9+vRbvVm6BNngtec6u2YmJnZVVZgAHB6VWQRiwNoNjNK4O4whZ8TVm284YHr8xxwIg4F5GTTEfupXMy7W/eFTd+vJZxhOoZ3iHeLUV78r1y+7i0glHk49z8OL4MNnl2dyvPqwz070snQjAziCLodaWK0C5BFFIQqM/BFL8Tl8+4yBJRs1A/F20awtTowCFEIRWo4fV5WgpWEFdVVjj8N2sl/KJSMRYV5kAjTCJQp45uVsdwU+O9r5JVp46qCWMpOqBn4O+1oGVaOYYOAlHodGh0QijmCPCvlxCtGruoXMb3qz3Dq9pmELyhs++WvLNQMasY3MSGXGhX8x9cG7KwK6IRejZu5RmfIDHvUr4NFPeia2YeJPdwu2/QZ9ler4JaXGyFtbdY3+FBZLpY7vxQKWNKZzttUDdAMJ9Xx/NzTUrd1x79Xdb4KBaNciyOGK2m/cqA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MN0PR11MB5963.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(346002)(136003)(39860400002)(376002)(396003)(366004)(451199021)(186003)(2616005)(38100700002)(41300700001)(83380400001)(6506007)(6512007)(26005)(6486002)(66574015)(478600001)(110136005)(54906003)(71200400001)(921005)(4326008)(66476007)(91956017)(66556008)(66446008)(82960400001)(66946007)(76116006)(122000001)(64756008)(316002)(8936002)(8676002)(5660300002)(7406005)(7416002)(2906002)(38070700005)(86362001)(36756003);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NThiVktseEF5UFJpNTVobyt4U3V3ZHpveWs2SndYa3lHeW1WSW90cGVHTndQ?=
- =?utf-8?B?R0RLaDlhZlViT2ZnRVFTK1F4Sjd1aEw5R0wyRkpCVTh6NE9yOE9XU2J6enZp?=
- =?utf-8?B?RWduQWJpT3kzeVBVbU8vODUxMnRMeUZPR1hZUTF6Z1dzc2pPOXFXZkk1NXN0?=
- =?utf-8?B?R3hJK3IyM0p3T2RJL3cyRkhIU2JZOURXOVdkQWt6TWdRZVFUWEZsbjhERFVs?=
- =?utf-8?B?RmQ5MGQwRmNnV2pKU3p1OC9hS05qbUVOdnNscVdHdjVSdWcyZmlqQ3BxUTdr?=
- =?utf-8?B?aTcvS0NXWml6MU5Vb0ovV1JJYzYzcWliZzhiKzV6SUhEYmdYYW80UEZiRFRY?=
- =?utf-8?B?dUVsQmxiSjgzWnc3UzM5cjEyYTJmakEvNEN5OGVpRUlUUzZOZkdNc2Q5amsx?=
- =?utf-8?B?ZWIzODlJNXU4VVQ3SHdyWEw3RzVaTXFyQ3M3ZE91bEtia2xaTXF4N1dXaldu?=
- =?utf-8?B?d3dQWHVtZmxrdkxlTlJ1eWoyemhTZjBDQU94RVpSTDJaWkN6Z3pMTTh4dVpj?=
- =?utf-8?B?MDhTVWRYcUdZdGNQVEIwR3pOcWxFL21vbXdYMndGelg3ODlNdndoZlQxNnJI?=
- =?utf-8?B?VWdaNHNJWmJLUE9QdFM3cFFSeE9vdFZkRGhVSFE0ZVVhbjhwa1pmKzhnWUZy?=
- =?utf-8?B?TCsvcEk3OWJvbGFsQk1jdnhCcFl3T2V1eXIvVVhxMmFLanNrVWZiR1RGazhh?=
- =?utf-8?B?VlpPNWl6YzByeGFmK205aTBrUHA4bS9xSEdiZGdGWFFvOS85T2xrT2NpK1Ft?=
- =?utf-8?B?Tm9vL3RWcVRaR3NwTU1IcTN5bjZDZmZha3RGZVZrNk1wQTFnOU5Xa3lYanNi?=
- =?utf-8?B?Rk00ZGh3ZS9yNmI1NVM5UllNVkdmaDVUNVJpQXF3ZFRnQ1dnZjJWYjFuQWxB?=
- =?utf-8?B?RE41L29taUR3SU1TSWUwbUtnMmg2dFhHa1VwOVQxTTB2TjRBWjZsL1FtQmNi?=
- =?utf-8?B?Y1JwZ3JUNmEvL0Zud3NBMXVxZUs0MndSYUdyUlZvR1huL2czL2NkWXBkSDRD?=
- =?utf-8?B?aGlqMEk3aUVlRE81dytZdStMMkhZNTh1U2xzNDNURVo5ZjJqeGlYWTZmS3d5?=
- =?utf-8?B?a0sxR1lsbGtkbXh2V1lXYmpKdHFTN0FucDYrNXNWSE14N09zTWVFczhsYWw2?=
- =?utf-8?B?YS9MTGhzYUdYdVdOZkhFS1ZOcjZDUmxNMkV3czlYdG4wWmhyUHdtbVR0YmFs?=
- =?utf-8?B?dWI4SnVpQjJ6VXM1NGlJVnpTM2JYTjBSdTlydk1UMlBlb05tMzNwTHI2S3g3?=
- =?utf-8?B?MFFSclZFcHJCY2tLOUNrNVduZ2NpYkYwWFVxc3UyRmRNd1FmQ0UzcmtQVzY4?=
- =?utf-8?B?bUpTY0U5Wm1oMEJJYVBRRkdFK2dRbmF5OXFwWU5hMHgxMVdrcFdNRUNITFBn?=
- =?utf-8?B?SC9oU2xZVk5BS1k3VU5DSXo1SGh0ZUEwdlJIaG1RMGptbi9XLzl5d01jbzRY?=
- =?utf-8?B?c1B5VzBvdFFvZFQrRGM3ZERFa0l4WW0zQXRuYVVPb1hsenpNS09ZczIzZWl0?=
- =?utf-8?B?SXd4Z3pibzFsWXJBVXhiYXUwam5HS3puQThqMDg2NmljQ0tqYXlFdmsrZXNG?=
- =?utf-8?B?TjBqclJCbTlkaVp4emQ2VHEvUEE4aElGQmU5dytqOWNxd3dqenlPNnkwMi91?=
- =?utf-8?B?ZjJrYlBjUVg0aFRibllkV0k5TDRCajQzNHhNVE1VSDJzeVdBd2Yzd3l3MjhV?=
- =?utf-8?B?QWhVZ3J4eDFlTzY2N3pNZnNZcktPSHJWUXFPWW9mRUUwZDZHdXJxdWgvUk11?=
- =?utf-8?B?TkRsQXZqT2RzamN3S1RRZ2gveFROTzFIcUE3RW40bFYxZHhuYlNxQ0pxTVUz?=
- =?utf-8?B?TjVaQ2hURGRqSzdnMk9XSEVld2xRZWV1S1FmQk95d0hkRWxZUkFxcVpXKzVt?=
- =?utf-8?B?TEhYaG01NHhBTTIyelhBcGlrL1VOa3hpT3pYUlJmbm0wMURkeFRhOG1XQjk3?=
- =?utf-8?B?ZG1reHpqSEQ3MnZsZ2ZqbDR6dVBxbFZ4Vkc5ZFc3YmlMWU12elpTNnM4QVNq?=
- =?utf-8?B?a242WUs5QzVMVG5IVmJ1RGpNU3JNSmVGUWJMcWtyMk5RSS9jRVJuZDBCdXg1?=
- =?utf-8?B?TUYyMnQ3SGdkbEpQajZEUHJsWkx1THFVU1h0bDVTVkU1VjN0QlFHVXdlanFw?=
- =?utf-8?B?SVRpMzU5QlZONm1VWklpZmxqaXVTSVRkWXdqak9WdE05cmhtLy81eFB4VE5N?=
- =?utf-8?B?Wmc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5A1BBC9128CF3A4A9AFCB7DF898647AD@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q429E-00069X-B9
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 12:24:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685463875;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+PO7OF1UJIEyhl34/BsyVvrG83vEPKJb7h1Om/b9M+g=;
+ b=TFYWPr1ShaeaFr3cSXk1OBlbi8QoodYj8eac86v8iRCAe5NxQ6OBHrwWF6iGc2KauDb//h
+ t10qTB7HgEM6MsoXeA2DpV9MuLsAhs2yyce8ZYS3GZNl/FfxCSU9GFwCcuE1ccLmmiZZHr
+ nyat6kOyIoN+5OU4i9pJoxrvsfXRByU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-83-ahITsgYMPYCTa1zF2WpWBg-1; Tue, 30 May 2023 12:24:33 -0400
+X-MC-Unique: ahITsgYMPYCTa1zF2WpWBg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0662F87282F;
+ Tue, 30 May 2023 16:24:19 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.4])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E24581121330;
+ Tue, 30 May 2023 16:24:14 +0000 (UTC)
+Date: Tue, 30 May 2023 18:24:13 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Coiby Xu <Coiby.Xu@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ "Richard W.M. Jones" <rjones@redhat.com>,
+ Peter Xu <peterx@redhat.com>, xen-devel@lists.xenproject.org,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Julia Suvorova <jusual@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, eesposit@redhat.com,
+ Fam Zheng <fam@euphon.net>, Aarushi Mehta <mehta.aaru20@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>,
+ Xie Yongji <xieyongji@bytedance.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, qemu-block@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>, Paul Durrant <paul@xen.org>,
+ Stefan Weil <sw@weilnetz.de>, Anthony Perard <anthony.perard@citrix.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Peter Lieven <pl@kamp.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH v6 00/20] block: remove aio_disable_external() API
+Message-ID: <ZHYjLQ3pb+GBav6i@redhat.com>
+References: <20230516190238.8401-1-stefanha@redhat.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f4b5d35-bee6-4765-25fc-08db612a2ff9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 May 2023 16:23:22.4146 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wt9+Xdtquva4HMsuEq9CJzIi1L1ExpeP/Ljhz+DlY9QclYD7odzMJUX9PibUrW/obiBsmUGVoIG9glyjrTDAe18olIYWtMPIb9ij2hRUMZY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7172
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.43;
- envelope-from=rick.p.edgecombe@intel.com; helo=mga05.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230516190238.8401-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -209,37 +94,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gRnJpLCAyMDIzLTA1LTI2IGF0IDE3OjIyICswMjAwLCBNaWNrYcOrbCBTYWxhw7xuIHdyb3Rl
-Og0KPiA+ID4gQ2FuIHRoZSBndWVzdCBrZXJuZWwgYXNrIHRoZSBob3N0IFZNTSdzIGVtdWxhdGVk
-IGRldmljZXMgdG8gRE1BDQo+ID4gPiBpbnRvDQo+ID4gPiB0aGUgcHJvdGVjdGVkIGRhdGE/IEl0
-IHNob3VsZCBnbyB0aHJvdWdoIHRoZSBob3N0IHVzZXJzcGFjZQ0KPiA+ID4gbWFwcGluZ3MgSQ0K
-PiA+ID4gdGhpbmssIHdoaWNoIGRvbid0IGNhcmUgYWJvdXQgRVBUIHBlcm1pc3Npb25zLiBPciBk
-aWQgSSBtaXNzDQo+ID4gPiB3aGVyZSB5b3UNCj4gPiA+IGFyZSBwcm90ZWN0aW5nIHRoYXQgYW5v
-dGhlciB3YXk/IFRoZXJlIGFyZSBhIGxvdCBvZiBlYXN5IHdheXMgdG8NCj4gPiA+IGFzaw0KPiA+
-ID4gdGhlIGhvc3QgdG8gd3JpdGUgdG8gZ3Vlc3QgbWVtb3J5IHRoYXQgZG9uJ3QgaW52b2x2ZSB0
-aGUgRVBULiBZb3UNCj4gPiA+IHByb2JhYmx5IG5lZWQgdG8gcHJvdGVjdCB0aGUgaG9zdCB1c2Vy
-c3BhY2UgbWFwcGluZ3MsIGFuZCBhbHNvDQo+ID4gPiB0aGUNCj4gPiA+IHBsYWNlcyBpbiBLVk0g
-dGhhdCBrbWFwIGEgR1BBIHByb3ZpZGVkIGJ5IHRoZSBndWVzdC4NCj4gPiANCj4gPiBHb29kIHBv
-aW50LCBJJ2xsIGNoZWNrIHRoaXMgY29uZnVzZWQgZGVwdXR5IGF0dGFjay4gRXh0ZW5kZWQgS1ZN
-DQo+ID4gcHJvdGVjdGlvbnMgc2hvdWxkIGluZGVlZCBoYW5kbGUgYWxsIHdheXMgdG8gbWFwIGd1
-ZXN0cycgbWVtb3J5Lg0KPiA+IEknbQ0KPiA+IHdvbmRlcmluZyBpZiBjdXJyZW50IFZNTXMgd291
-bGQgZ3JhY2VmdWxseSBoYW5kbGUgc3VjaCBuZXcNCj4gPiByZXN0cmljdGlvbnMNCj4gPiB0aG91
-Z2guDQo+IA0KPiBJIGd1ZXNzIHRoZSBob3N0IGNvdWxkIG1hcCBhcmJpdHJhcnkgZGF0YSB0byB0
-aGUgZ3Vlc3QsIHNvIHRoYXQgbmVlZA0KPiB0byANCj4gYmUgaGFuZGxlZCwgYnV0IGhvdyBjb3Vs
-ZCB0aGUgVk1NIChub3QgdGhlIGhvc3Qga2VybmVsKSBieXBhc3MvdXBkYXRlDQo+IEVQVCBpbml0
-aWFsbHkgdXNlZCBmb3IgdGhlIGd1ZXN0IChhbmQgcG90ZW50aWFsbHkgbGF0ZXIgbWFwcGVkIHRv
-IHRoZQ0KPiBob3N0KT8NCg0KV2VsbCB0cmFkaXRpb25hbGx5IGJvdGggUUVNVSBhbmQgS1ZNIGFj
-Y2Vzc2VkIGd1ZXN0IG1lbW9yeSB2aWEgaG9zdA0KbWFwcGluZ3MgaW5zdGVhZCBvZiB0aGUgRVBU
-LsKgU28gSSdtIHdvbmRlcmluZyB3aGF0IGlzIHN0b3BwaW5nIHRoZQ0KZ3Vlc3QgZnJvbSBwYXNz
-aW5nIGEgcHJvdGVjdGVkIGdmbiB3aGVuIHNldHRpbmcgdXAgdGhlIERNQSwgYW5kIFFFTVUNCmJl
-aW5nIGVudGljZWQgdG8gd3JpdGUgdG8gaXQ/IFRoZSBlbXVsYXRvciBhcyB3ZWxsIHdvdWxkIHVz
-ZSB0aGVzZSBob3N0DQp1c2Vyc3BhY2UgbWFwcGluZ3MgYW5kIG5vdCBjb25zdWx0IHRoZSBFUFQg
-SUlSQy4NCg0KSSB0aGluayBTZWFuIHdhcyBzdWdnZXN0aW5nIGhvc3QgdXNlcnNwYWNlIHNob3Vs
-ZCBiZSBtb3JlIGludm9sdmVkIGluDQp0aGlzIHByb2Nlc3MsIHNvIHBlcmhhcHMgaXQgY291bGQg
-cHJvdGVjdCBpdHMgb3duIGFsaWFzIG9mIHRoZQ0KcHJvdGVjdGVkIG1lbW9yeSwgZm9yIGV4YW1w
-bGUgbXByb3RlY3QoKSBpdCBhcyByZWFkLW9ubHkuDQoNClRoZXJlIGlzICh3YXM/KSBzb21lIEtW
-TSBQViBmZWF0dXJlcyB0aGF0IGFjY2Vzc2VkIGd1ZXN0IG1lbW9yeSB2aWEgdGhlDQpob3N0IGRp
-cmVjdCBtYXAgYXMgd2VsbC4gSSB3b3VsZCB0aGluayBtcHJvdGVjdCgpIHNob3VsZCBwcm90ZWN0
-IHRoaXMNCmF0IHRoZSBnZXRfdXNlcl9wYWdlcygpIHN0YWdlLCBidXQgaXQgbG9va3MgbGlrZSB0
-aGUgZGV0YWlscyBoYXZlDQpjaGFuZ2VkIHNpbmNlIEkgbGFzdCB1bmRlcnN0b29kIGl0Lg0K
+Am 16.05.2023 um 21:02 hat Stefan Hajnoczi geschrieben:
+> The aio_disable_external() API temporarily suspends file descriptor monitoring
+> in the event loop. The block layer uses this to prevent new I/O requests being
+> submitted from the guest and elsewhere between bdrv_drained_begin() and
+> bdrv_drained_end().
+> 
+> While the block layer still needs to prevent new I/O requests in drained
+> sections, the aio_disable_external() API can be replaced with
+> .drained_begin/end/poll() callbacks that have been added to BdrvChildClass and
+> BlockDevOps.
+> 
+> This newer .bdrained_begin/end/poll() approach is attractive because it works
+> without specifying a specific AioContext. The block layer is moving towards
+> multi-queue and that means multiple AioContexts may be processing I/O
+> simultaneously.
+> 
+> The aio_disable_external() was always somewhat hacky. It suspends all file
+> descriptors that were registered with is_external=true, even if they have
+> nothing to do with the BlockDriverState graph nodes that are being drained.
+> It's better to solve a block layer problem in the block layer than to have an
+> odd event loop API solution.
+> 
+> The approach in this patch series is to implement BlockDevOps
+> .drained_begin/end() callbacks that temporarily stop file descriptor handlers.
+> This ensures that new I/O requests are not submitted in drained sections.
+
+Thanks, applied to the block branch.
+
+Kevin
+
 
