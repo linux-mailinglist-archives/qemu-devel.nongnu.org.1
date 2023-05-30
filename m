@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E757161C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EEC7161B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:27:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zNP-0006zG-Vw; Tue, 30 May 2023 09:27:04 -0400
+	id 1q3zNL-0006LN-17; Tue, 30 May 2023 09:26:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMq-0005cE-Hu
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:30 -0400
+ id 1q3zMs-0005e9-6Q
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:32 -0400
 Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMo-0001Oc-1K
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:28 -0400
+ id 1q3zMo-0001Os-Lg
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:29 -0400
 Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3f70fc4682aso4422785e9.1
+ 5b1f17b1804b1-3f6e1394060so30676055e9.3
  for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:26:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685453183; x=1688045183;
+ d=linaro.org; s=google; t=1685453184; x=1688045184;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NFC85aWPmpGiH1IeRFf6uphswI09B7v+WsN92P6q3Y0=;
- b=VWPhIz5o81UGZ5MB8ND6+7oJAwmZ1MdroDzLdw/vh/IJ8pMrv7PgMIjw6j05ZY+7h6
- tzY1vD9MSv/X1bNlyaneNRboCm1kEX8RnVaSk4vcCK/mBPfiZEvUWj/6Z/xCBoGpOYEh
- b+zAb0vcIc2mSOoT9/T5AoDMljAvXiq9IuGyiwGbB73gVWXFWVp7rdgnhne2kqD1b3Gn
- 7NR3w8nrkit1UoVUM9hDpb9b69Na7+r9fOQ50spr9DiUY8O3bsHi0Ij7mVrMA/bWEkf5
- dcR4ZrjBN1vNEAMVgxdSsacWU6Lz3Ph6zcsJH/Wvz8WIVkoNNDjN7EcG82psnMexiTQR
- uBEA==
+ :reply-to; bh=i//kJ+QR0NanDQ1ngjJLQGRw7mleClMB/UGvXxrStm0=;
+ b=OvXT3yVs+9NCMeJSgyNA/ulY236vPt2yYZ4QwKxYn3GAZJylMPNBPMAPCqG7/mbBSN
+ HiYABvVmLSrsDECmhF/b0B3oFhrlJak75Gr5JoFhjpftpfEDizWeWVMG6zMDAL0BbTrx
+ t5Ezy3Ou0kR3F37sfGKhIzm2g1xvhezRQYZhLx0CSogfz9rBV8yyj5VVceIBQa9ofHuI
+ tAQ9yMiMeqBjVvKsv7b/u8buFY6McQGkICVQkLSuvkT7Wbs+G6yGt52m2IwFFf7H327I
+ M7H4Vc58XKT6l5iW3OdT2T87hecpM5tu+bXNw0Ws0Hz3beGUMOJnErwPMFCt8nngQuvH
+ olHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685453183; x=1688045183;
+ d=1e100.net; s=20221208; t=1685453184; x=1688045184;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NFC85aWPmpGiH1IeRFf6uphswI09B7v+WsN92P6q3Y0=;
- b=CL7VHa/kd7OZ3GsWi93KIuJAg68bnnlrCuLGSG3F4egi4cCb7o3TWgnAfSlihX1+C2
- +S/lvwOaVRrbyMOmmohxPEpA1qR2VGA5+80oUjEKQRZCpEvyUOubsncmVoMogvg2SQZV
- XKTiI2wOxWyFCIeRj18RlfXE2/4S1X9g5mbD11l3Nv1HDLckImMbnU/Jqp+YE4ZkGhO7
- YHQ37h5ZUjR3Z+qVU1TGNiM34yrKlIJvChp3whh+ymAvT9uMcKxlGyzMVkIN3dKMZ5t9
- d7X76ZRnR/2qqyzQSF1kAbKlxHsseFF1HGqWA8Gs417fG2nkwFssz0+Yq6Ho3Mgm4awh
- J+Fw==
-X-Gm-Message-State: AC+VfDxfPtPGkSJmlS9mgzd4uJRDQ6xAdkI86TCMJoDaxFNThRNOoL+a
- 7p2uVZRetAk08/Ose1SHvybGekKKqK1UG4vB1ag=
-X-Google-Smtp-Source: ACHHUZ4G7W3Qbr9ultFmTrffnzwcWHQO0dcDC5Hb/W9K4shNhPHDM0SEyYg7qoseZvmuOyYwhLo8KA==
-X-Received: by 2002:a7b:cd13:0:b0:3f6:f7c:b3fa with SMTP id
- f19-20020a7bcd13000000b003f60f7cb3famr1621686wmj.31.1685453183351; 
+ bh=i//kJ+QR0NanDQ1ngjJLQGRw7mleClMB/UGvXxrStm0=;
+ b=lwbW9sZCtVazLy/j4MDGIuL1zuz0AYKrxA2YgjY8hsqvwLdZD8Uz8VfYoNJ2kOsrEX
+ rN13vtwZUB/qWvBA/si/wdBeCMb5Zrjj5p6LhrZHlN26ljXK608Dg+nvNEET97rXm3+s
+ 25zM9zvHaONJJZV/UZuRxxc+jd+YXAqOeoehizr/PlYstr4CFuh4858cukCRoHwcRBuK
+ T5AUCuQF1KqH7x1fIpuXVrXHNy2tO0lPOaPKrU3YkX/WOvY4+S3W49Ll+4BB0U1VJZ/0
+ xV6qvcV76Q5e13VS9j7hNfL17ebFtD/Q9VdwOoJSK1X/s29O5RKPxYqrEFtrGJvpP4tp
+ irrA==
+X-Gm-Message-State: AC+VfDwaVChPvYH4QwgOIRCOZ/iuQ2Hvyxj0bkoW2xQvk5+k9pzm6nkX
+ uBsTBhv5FuB6Sk9wdltLxBlkNujB8UW/TCTLlBo=
+X-Google-Smtp-Source: ACHHUZ7ONKKUhnbqI9hDBOW3WlEfFXkJctnhbI33jw0nU8VyXKjj/RqH4/fX+vCQkYpi/eKUTk+6Ig==
+X-Received: by 2002:a05:600c:3793:b0:3f6:580:b091 with SMTP id
+ o19-20020a05600c379300b003f60580b091mr1736647wmr.16.1685453183823; 
  Tue, 30 May 2023 06:26:23 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,9 +58,9 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 30 May 2023 06:26:23 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/21] hw/arm/smmuv3: Update translation config to hold stage-2
-Date: Tue, 30 May 2023 14:26:02 +0100
-Message-Id: <20230530132620.1583658-4-peter.maydell@linaro.org>
+Subject: [PULL 04/21] hw/arm/smmuv3: Refactor stage-1 PTW
+Date: Tue, 30 May 2023 14:26:03 +0100
+Message-Id: <20230530132620.1583658-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230530132620.1583658-1-peter.maydell@linaro.org>
 References: <20230530132620.1583658-1-peter.maydell@linaro.org>
@@ -92,92 +92,170 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mostafa Saleh <smostafa@google.com>
 
-In preparation for adding stage-2 support, add a S2 config
-struct(SMMUS2Cfg), composed of the following fields and embedded in
-the main SMMUTransCfg:
- -tsz: Size of IPA input region (S2T0SZ)
- -sl0: Start level of translation (S2SL0)
- -affd: AF Fault Disable (S2AFFD)
- -record_faults: Record fault events (S2R)
- -granule_sz: Granule page shift (based on S2TG)
- -vmid: Virtual Machine ID (S2VMID)
- -vttb: Address of translation table base (S2TTB)
- -eff_ps: Effective PA output range (based on S2PS)
+In preparation for adding stage-2 support, rename smmu_ptw_64 to
+smmu_ptw_64_s1 and refactor some of the code so it can be reused in
+stage-2 page table walk.
 
-They will be used in the next patches in stage-2 address translation.
+Remove AA64 check from PTW as decode_cd already ensures that AA64 is
+used, otherwise it faults with C_BAD_CD.
 
-The fields in SMMUS2Cfg, are reordered to make the shared and stage-1
-fields next to each other, this reordering didn't change the struct
-size (104 bytes before and after).
+A stage member is added to SMMUPTWEventInfo to differentiate
+between stage-1 and stage-2 ptw faults.
 
-Stage-1 only fields: aa64, asid, tt, ttb, tbi, record_faults, oas.
-oas is stage-1 output address size. However, it is used to check
-input address in case stage-1 is unimplemented or bypassed according
-to SMMUv3 manual IHI0070.E "3.4. Address sizes"
+Add stage argument to trace_smmu_ptw_level be consistent with other
+trace events.
 
-Shared fields: stage, disabled, bypassed, aborted, iotlb_*.
-
-No functional change intended.
-
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Eric Auger <eric.auger@redhat.com>
 Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Message-id: 20230516203327.2051088-3-smostafa@google.com
+Message-id: 20230516203327.2051088-4-smostafa@google.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/smmu-common.h | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ include/hw/arm/smmu-common.h | 16 +++++++++++++---
+ hw/arm/smmu-common.c         | 27 ++++++++++-----------------
+ hw/arm/smmuv3.c              |  2 ++
+ hw/arm/trace-events          |  2 +-
+ 4 files changed, 26 insertions(+), 21 deletions(-)
 
 diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
-index 9fcff26357f..9cf3f37929a 100644
+index 9cf3f37929a..97cea8ea060 100644
 --- a/include/hw/arm/smmu-common.h
 +++ b/include/hw/arm/smmu-common.h
-@@ -58,25 +58,41 @@ typedef struct SMMUTLBEntry {
-     uint8_t granule;
- } SMMUTLBEntry;
+@@ -23,9 +23,18 @@
+ #include "hw/pci/pci.h"
+ #include "qom/object.h"
  
-+/* Stage-2 configuration. */
-+typedef struct SMMUS2Cfg {
-+    uint8_t tsz;            /* Size of IPA input region (S2T0SZ) */
-+    uint8_t sl0;            /* Start level of translation (S2SL0) */
-+    bool affd;              /* AF Fault Disable (S2AFFD) */
-+    bool record_faults;     /* Record fault events (S2R) */
-+    uint8_t granule_sz;     /* Granule page shift (based on S2TG) */
-+    uint8_t eff_ps;         /* Effective PA output range (based on S2PS) */
-+    uint16_t vmid;          /* Virtual Machine ID (S2VMID) */
-+    uint64_t vttb;          /* Address of translation table base (S2TTB) */
-+} SMMUS2Cfg;
+-#define SMMU_PCI_BUS_MAX      256
+-#define SMMU_PCI_DEVFN_MAX    256
+-#define SMMU_PCI_DEVFN(sid)   (sid & 0xFF)
++#define SMMU_PCI_BUS_MAX                    256
++#define SMMU_PCI_DEVFN_MAX                  256
++#define SMMU_PCI_DEVFN(sid)                 (sid & 0xFF)
 +
- /*
-  * Generic structure populated by derived SMMU devices
-  * after decoding the configuration information and used as
-  * input to the page table walk
-  */
- typedef struct SMMUTransCfg {
-+    /* Shared fields between stage-1 and stage-2. */
-     int stage;                 /* translation stage */
--    bool aa64;                 /* arch64 or aarch32 translation table */
-     bool disabled;             /* smmu is disabled */
-     bool bypassed;             /* translation is bypassed */
-     bool aborted;              /* translation is aborted */
-+    uint32_t iotlb_hits;       /* counts IOTLB hits */
-+    uint32_t iotlb_misses;     /* counts IOTLB misses*/
-+    /* Used by stage-1 only. */
-+    bool aa64;                 /* arch64 or aarch32 translation table */
-     bool record_faults;        /* record fault events */
-     uint64_t ttb;              /* TT base address */
-     uint8_t oas;               /* output address width */
-     uint8_t tbi;               /* Top Byte Ignore */
-     uint16_t asid;
-     SMMUTransTableInfo tt[2];
--    uint32_t iotlb_hits;       /* counts IOTLB hits for this asid */
--    uint32_t iotlb_misses;     /* counts IOTLB misses for this asid */
-+    /* Used by stage-2 only. */
-+    struct SMMUS2Cfg s2cfg;
- } SMMUTransCfg;
++/* VMSAv8-64 Translation constants and functions */
++#define VMSA_LEVELS                         4
++
++#define VMSA_STRIDE(gran)                   ((gran) - VMSA_LEVELS + 1)
++#define VMSA_BIT_LVL(isz, strd, lvl)        ((isz) - (strd) * \
++                                             (VMSA_LEVELS - (lvl)))
++#define VMSA_IDXMSK(isz, strd, lvl)         ((1ULL << \
++                                             VMSA_BIT_LVL(isz, strd, lvl)) - 1)
  
- typedef struct SMMUDevice {
+ /*
+  * Page table walk error types
+@@ -40,6 +49,7 @@ typedef enum {
+ } SMMUPTWEventType;
+ 
+ typedef struct SMMUPTWEventInfo {
++    int stage;
+     SMMUPTWEventType type;
+     dma_addr_t addr; /* fetched address that induced an abort, if any */
+ } SMMUPTWEventInfo;
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index e7f1c1f2190..50391a8c94e 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -264,7 +264,7 @@ SMMUTransTableInfo *select_tt(SMMUTransCfg *cfg, dma_addr_t iova)
+ }
+ 
+ /**
+- * smmu_ptw_64 - VMSAv8-64 Walk of the page tables for a given IOVA
++ * smmu_ptw_64_s1 - VMSAv8-64 Walk of the page tables for a given IOVA
+  * @cfg: translation config
+  * @iova: iova to translate
+  * @perm: access type
+@@ -276,9 +276,9 @@ SMMUTransTableInfo *select_tt(SMMUTransCfg *cfg, dma_addr_t iova)
+  * Upon success, @tlbe is filled with translated_addr and entry
+  * permission rights.
+  */
+-static int smmu_ptw_64(SMMUTransCfg *cfg,
+-                       dma_addr_t iova, IOMMUAccessFlags perm,
+-                       SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info)
++static int smmu_ptw_64_s1(SMMUTransCfg *cfg,
++                          dma_addr_t iova, IOMMUAccessFlags perm,
++                          SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info)
+ {
+     dma_addr_t baseaddr, indexmask;
+     int stage = cfg->stage;
+@@ -291,14 +291,14 @@ static int smmu_ptw_64(SMMUTransCfg *cfg,
+     }
+ 
+     granule_sz = tt->granule_sz;
+-    stride = granule_sz - 3;
++    stride = VMSA_STRIDE(granule_sz);
+     inputsize = 64 - tt->tsz;
+     level = 4 - (inputsize - 4) / stride;
+-    indexmask = (1ULL << (inputsize - (stride * (4 - level)))) - 1;
++    indexmask = VMSA_IDXMSK(inputsize, stride, level);
+     baseaddr = extract64(tt->ttb, 0, 48);
+     baseaddr &= ~indexmask;
+ 
+-    while (level <= 3) {
++    while (level < VMSA_LEVELS) {
+         uint64_t subpage_size = 1ULL << level_shift(level, granule_sz);
+         uint64_t mask = subpage_size - 1;
+         uint32_t offset = iova_level_offset(iova, inputsize, level, granule_sz);
+@@ -309,7 +309,7 @@ static int smmu_ptw_64(SMMUTransCfg *cfg,
+         if (get_pte(baseaddr, offset, &pte, info)) {
+                 goto error;
+         }
+-        trace_smmu_ptw_level(level, iova, subpage_size,
++        trace_smmu_ptw_level(stage, level, iova, subpage_size,
+                              baseaddr, offset, pte);
+ 
+         if (is_invalid_pte(pte) || is_reserved_pte(pte, level)) {
+@@ -358,6 +358,7 @@ static int smmu_ptw_64(SMMUTransCfg *cfg,
+     info->type = SMMU_PTW_ERR_TRANSLATION;
+ 
+ error:
++    info->stage = 1;
+     tlbe->entry.perm = IOMMU_NONE;
+     return -EINVAL;
+ }
+@@ -376,15 +377,7 @@ error:
+ int smmu_ptw(SMMUTransCfg *cfg, dma_addr_t iova, IOMMUAccessFlags perm,
+              SMMUTLBEntry *tlbe, SMMUPTWEventInfo *info)
+ {
+-    if (!cfg->aa64) {
+-        /*
+-         * This code path is not entered as we check this while decoding
+-         * the configuration data in the derived SMMU model.
+-         */
+-        g_assert_not_reached();
+-    }
+-
+-    return smmu_ptw_64(cfg, iova, perm, tlbe, info);
++    return smmu_ptw_64_s1(cfg, iova, perm, tlbe, info);
+ }
+ 
+ /**
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index 270c80b665f..4e90343996a 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -716,6 +716,8 @@ static IOMMUTLBEntry smmuv3_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+     cached_entry = g_new0(SMMUTLBEntry, 1);
+ 
+     if (smmu_ptw(cfg, aligned_addr, flag, cached_entry, &ptw_info)) {
++        /* All faults from PTW has S2 field. */
++        event.u.f_walk_eabt.s2 = (ptw_info.stage == 2);
+         g_free(cached_entry);
+         switch (ptw_info.type) {
+         case SMMU_PTW_ERR_WALK_EABT:
+diff --git a/hw/arm/trace-events b/hw/arm/trace-events
+index 2dee296c8fb..205ac04573a 100644
+--- a/hw/arm/trace-events
++++ b/hw/arm/trace-events
+@@ -5,7 +5,7 @@ virt_acpi_setup(void) "No fw cfg or ACPI disabled. Bailing out."
+ 
+ # smmu-common.c
+ smmu_add_mr(const char *name) "%s"
+-smmu_ptw_level(int level, uint64_t iova, size_t subpage_size, uint64_t baseaddr, uint32_t offset, uint64_t pte) "level=%d iova=0x%"PRIx64" subpage_sz=0x%zx baseaddr=0x%"PRIx64" offset=%d => pte=0x%"PRIx64
++smmu_ptw_level(int stage, int level, uint64_t iova, size_t subpage_size, uint64_t baseaddr, uint32_t offset, uint64_t pte) "stage=%d level=%d iova=0x%"PRIx64" subpage_sz=0x%zx baseaddr=0x%"PRIx64" offset=%d => pte=0x%"PRIx64
+ smmu_ptw_invalid_pte(int stage, int level, uint64_t baseaddr, uint64_t pteaddr, uint32_t offset, uint64_t pte) "stage=%d level=%d base@=0x%"PRIx64" pte@=0x%"PRIx64" offset=%d pte=0x%"PRIx64
+ smmu_ptw_page_pte(int stage, int level,  uint64_t iova, uint64_t baseaddr, uint64_t pteaddr, uint64_t pte, uint64_t address) "stage=%d level=%d iova=0x%"PRIx64" base@=0x%"PRIx64" pte@=0x%"PRIx64" pte=0x%"PRIx64" page address = 0x%"PRIx64
+ smmu_ptw_block_pte(int stage, int level, uint64_t baseaddr, uint64_t pteaddr, uint64_t pte, uint64_t iova, uint64_t gpa, int bsize_mb) "stage=%d level=%d base@=0x%"PRIx64" pte@=0x%"PRIx64" pte=0x%"PRIx64" iova=0x%"PRIx64" block address = 0x%"PRIx64" block size = %d MiB"
 -- 
 2.34.1
 
