@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FEB716F84
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 23:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CBA716F88
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 23:16:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q46gW-0005Gk-Px; Tue, 30 May 2023 17:15:17 -0400
+	id 1q46hG-0005zb-Kc; Tue, 30 May 2023 17:16:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q46gM-0005GG-CB
- for qemu-devel@nongnu.org; Tue, 30 May 2023 17:15:06 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q46hC-0005xQ-By
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 17:15:58 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q46gB-0004HS-3M
- for qemu-devel@nongnu.org; Tue, 30 May 2023 17:15:06 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-30ad752f433so3362801f8f.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 14:14:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q46h9-0004iT-Pn
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 17:15:58 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3f60804faf4so35710725e9.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 14:15:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685481293; x=1688073293;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1685481354; x=1688073354;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=gtRVJyUXzFxG1pACXeD3+Nrg2XKdLcVr2u1f15JHk4Y=;
- b=dv5N46gtqMU3slWQFLK9hu9J2bhufFdvnuCEM6LxyLHKL8N1rJIvbd6MMfWV/Jv6PS
- sqbeMjSOtKmxGi72lYWlDvisHn8KjKzRcF1KaasNMM+RRKaHfilpRuacUhcUigySeFeU
- +kyoBpudTc61tYdz2GwuU4PocMrpoglOlU9JCDtgR2GgcPgCMZIuLsd2/ZKhwZQGjmW2
- AgCtGqcjMHK6jYvZWq0CcUzB+qAtRp+bnwdxfHSvLTNVOc17015mHpwKQjptI0LMBijk
- DGAg45nchhPEOVQwiqGdJ/xhxStABSXLzARerjfnx4YDSFfJkvg7pVzrnVBr0yUhu5dP
- 1tHg==
+ bh=MvyHidfsbl/GVmFg/rFVhIoYM+nG4iidyd3VfxTk9Qo=;
+ b=LfhsvcAlTb562y9MJH+UHVnvhlBsFQIdP8qrikved/cbQgXaJ6kIZyr4VQPFFr/52L
+ cNtj3mrcUpgj52nuuvz0svHyJMo0EUvM/2mlzzGS9hGkpOn0HOspOBx6nlfJcnA7CuGD
+ VqWLIvSrRFwmxTMXKghQx21L89gWyZFe1ddWCTvj9EKW5vE5qpFhnFV5kbZX3ELJmHMR
+ XKvOAvlGaIoXEHUdbB4Ct+o399+flDqE5u54GNQeidcPeelZbyTt4/WSBg5cMU6OrQt3
+ iEAJ1bf3OaOHQPNU8gxdakULfjTtBY96alxvBydVie2wnkjP1NbsI23toDhVZV0UNZyk
+ 5ecw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685481293; x=1688073293;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1685481354; x=1688073354;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gtRVJyUXzFxG1pACXeD3+Nrg2XKdLcVr2u1f15JHk4Y=;
- b=f+nySqtU0lGdmFI49ceOb/a4y21MflOXeo9VeIglPiWnN0/DuIyJPaNr6nq5FmRJ8E
- MPFBHbohMQDxqAVB2qrXPRC+kY/dneeyH7z0v97KxqV2ZGcqwMyd0BLmBIYWDX9Nq7sK
- VH7mQfNePcor/11Lu8jgiY6tf19hoq9xuArGTG+Mh5TDin8rucqR3Lt0xaWTScBaGzE0
- BeqEeIYGU7w69W1mViwqtYmZfRX8903jghNokzOZBxcTQl3Ghpyx+npkMGdsNZh/P0oB
- 0MQUkrZ+Nt5YVI5ryOeyadJOGkUy2UhQk7qA+hOQjK3TUKNACogR7ywLQHOm3kHYZjRI
- 9EWw==
-X-Gm-Message-State: AC+VfDzh6X7XomchOWgqB8PpO6illGdNnxMi0nBotuqVdVmLiOyBc+j3
- 2CN29qLfelXtG7dyQedA4QpsrA==
-X-Google-Smtp-Source: ACHHUZ6MspnMlGSW/lplwkDnZMffaiD6G13Mv6Ex2UdO5krmPV0d4hiaTNPb+RInXxDgzHr8Q7EXJQ==
-X-Received: by 2002:adf:f292:0:b0:306:3b39:9a3d with SMTP id
- k18-20020adff292000000b003063b399a3dmr2825475wro.15.1685481293174; 
- Tue, 30 May 2023 14:14:53 -0700 (PDT)
+ bh=MvyHidfsbl/GVmFg/rFVhIoYM+nG4iidyd3VfxTk9Qo=;
+ b=UtwVzY7yP5aaxFFoNjSi5lrZHt54JnmwXZ1ceityt/yr8XhOHQ8iqJ1v0YrXSDSLbG
+ 1gN0ajhqT7A7npeS/BDBZZ/LoC5uak6GkgmTD0Ln5MHTCbBOX5WMKMdpskMMnzJ+gEb3
+ qKSly7ukiESCayteko41EAbH+cVNuFNeg52zvt1v6gyOCH5zLoDFPkqUvsiz0gVCz9hc
+ E6tuViYN3+oXW43ffq3Gf+ktXV7o51OyEwAdvO5DxJO3PUz7YJLajzaSWdxDQwx51PCU
+ NlPRUBsELNvGmu1YPTZ+524pzlu/kCN4nLMNt+1mLiAzb+z2FgWbT2PAV0IcXs06U0D6
+ YawQ==
+X-Gm-Message-State: AC+VfDzNeBkLIYpwYIyn0TFtrjC5XimbGHuQRCnFXpYHFxXiP2FReb3i
+ Fuc+tx0OYVy7SO5Tg6LFCXT9PQ==
+X-Google-Smtp-Source: ACHHUZ6RXl/IiEdojP5cu4ZcUDOw9pOaIVqFtAqFClgSJSuQa0mvjA0C8T8QAMLjtXR5USZibQhSHA==
+X-Received: by 2002:a05:600c:2252:b0:3f6:8af:414 with SMTP id
+ a18-20020a05600c225200b003f608af0414mr2596893wmm.30.1685481354073; 
+ Tue, 30 May 2023 14:15:54 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.180.1])
  by smtp.gmail.com with ESMTPSA id
- c17-20020adffb11000000b0030633152664sm4382421wrr.87.2023.05.30.14.14.52
+ g18-20020a7bc4d2000000b003f427687ba7sm18323817wmk.41.2023.05.30.14.15.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 14:14:52 -0700 (PDT)
-Message-ID: <5587a39e-1c17-2997-f679-d43a023149c6@linaro.org>
-Date: Tue, 30 May 2023 23:14:50 +0200
+ Tue, 30 May 2023 14:15:53 -0700 (PDT)
+Message-ID: <0d11b78e-56f7-553a-3e85-0edef9b649ac@linaro.org>
+Date: Tue, 30 May 2023 23:15:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 09/12] m25p80: Introduce an helper to retrieve the
- BlockBackend of a device
+Subject: Re: [PATCH 05/12] hw/ssi: Introduce a ssi_get_cs() helper
 Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
  Alistair Francis <alistair@alistair23.me>
 References: <20230508075859.3326566-1-clg@kaod.org>
- <20230508075859.3326566-10-clg@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230508075859.3326566-10-clg@kaod.org>
+ <20230508075859.3326566-6-clg@kaod.org>
+ <40c8647d-201e-3ceb-97ca-ec98bdc84e88@linaro.org>
+In-Reply-To: <40c8647d-201e-3ceb-97ca-ec98bdc84e88@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,67 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/5/23 09:58, Cédric Le Goater wrote:
-> It will help in getting rid of some drive_get(IF_MTD) calls by
-> retrieving the BlockBackend directly from the m25p80 device.
+On 30/5/23 22:34, Philippe Mathieu-Daudé wrote:
+> On 8/5/23 09:58, Cédric Le Goater wrote:
+>> Simple routine to retrieve a DeviceState object on a SPI bus using its
+>> address/cs. It will be useful for the board to wire the CS lines.
+>>
+>> Cc: Alistair Francis <alistair@alistair23.me>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   include/hw/ssi/ssi.h |  2 ++
+>>   hw/ssi/ssi.c         | 15 +++++++++++++++
+>>   2 files changed, 17 insertions(+)
+>>
+>> diff --git a/include/hw/ssi/ssi.h b/include/hw/ssi/ssi.h
+>> index ffd3a34ba4..c7beabdb09 100644
+>> --- a/include/hw/ssi/ssi.h
+>> +++ b/include/hw/ssi/ssi.h
+>> @@ -112,4 +112,6 @@ SSIBus *ssi_create_bus(DeviceState *parent, const 
+>> char *name);
+>>   uint32_t ssi_transfer(SSIBus *bus, uint32_t val);
+>> +DeviceState *ssi_get_cs(SSIBus *bus, int addr);
+
+Also, this helper should (preferably) return a SSIPeripheral type.
+
+> Previous patch use uint32_t. uint8_t is probably enough,
+> otherwise 'unsigned'? Otherwise
 > 
-> Cc: Alistair Francis <alistair@alistair23.me>
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   include/hw/block/flash.h | 4 ++++
->   hw/block/m25p80.c        | 6 ++++++
->   2 files changed, 10 insertions(+)
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
-> diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
-> index 7198953702..de93756cbe 100644
-> --- a/include/hw/block/flash.h
-> +++ b/include/hw/block/flash.h
-> @@ -76,4 +76,8 @@ uint8_t ecc_digest(ECCState *s, uint8_t sample);
->   void ecc_reset(ECCState *s);
->   extern const VMStateDescription vmstate_ecc_state;
->   
-> +/* m25p80.c */
-> +
-> +BlockBackend *m25p80_get_blk(DeviceState *dev);
-
-- Option 1, declare QOM typedef and use proper type:
-
-   #define TYPE_M25P80 "m25p80-generic"
-   OBJECT_DECLARE_TYPE(Flash, M25P80Class, M25P80)
-
-   BlockBackend *m25p80_get_blk(Flash *dev);
-
-- Option 2, preliminary patch renaming 'Flash' type to
-'M25P80' then option 1 again
-
-- Option 3: no change.
-
-With the QOM style we try to enforce, I'd go for #2.
-
-Still,
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
->   #endif
-> diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-> index dc5ffbc4ff..afc3fdf4d6 100644
-> --- a/hw/block/m25p80.c
-> +++ b/hw/block/m25p80.c
-> @@ -25,6 +25,7 @@
->   #include "qemu/units.h"
->   #include "sysemu/block-backend.h"
->   #include "hw/block/block.h"
-> +#include "hw/block/flash.h"
->   #include "hw/qdev-properties.h"
->   #include "hw/qdev-properties-system.h"
->   #include "hw/ssi/ssi.h"
-> @@ -1830,3 +1831,8 @@ static void m25p80_register_types(void)
->   }
->   
->   type_init(m25p80_register_types)
-> +
-> +BlockBackend *m25p80_get_blk(DeviceState *dev)
-> +{
-> +    return M25P80(dev)->blk;
-> +}
 
 
