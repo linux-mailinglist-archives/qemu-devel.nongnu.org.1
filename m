@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AF27169C2
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 18:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 592A57169B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 18:35:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q42Ir-0002C2-3T; Tue, 30 May 2023 12:34:33 -0400
+	id 1q42Ip-0001wn-Km; Tue, 30 May 2023 12:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42Hh-0006xF-Oz
- for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42Hf-0006ub-O5
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42He-0008Ta-OL
- for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:21 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42Hb-0008T7-RY
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685464396;
+ s=mimecast20190719; t=1685464395;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V82ObSnJng8kkgMQahT0glEPa1kDj9jXvd5kuFAN8yA=;
- b=ZFo/mDCIjrNWUH6GfxzLBfLUvPRF00QIw/lyICaPyF8J39Z8lhQf95BQAwNBRmzbNL4SV+
- vgy1QYC3LHhQyWQRBDE+maquQxJHDrmh6t5i64K3GuEYD0IwVJBdQEKr1CfvOUu2ZYooWE
- jXwBYyM58DJ/n7OU0sSlIlIdHXmGAD0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nJDrUznoYCQG1PNS5ZAcf94x2p7snTAeigQtKar1joI=;
+ b=SZFldM/EL3cq1iQvwHh/+/F4j0puKc+Pr/vmGHbkFqKw9mjUaJhS1JJwbI8VbYNK1ltEQ4
+ 7VrKR+c/R4LJA1XuMrCYIJ7nWzLOZ3KkiSWwELitKSlLiuJK2kvGtphuDfBSzj7OUhwGkc
+ 4L3UwZd8xiXczlMkDcbaaL2l3cl4FiM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-624-ps7tSLSwMuquukPpXvDsTA-1; Tue, 30 May 2023 12:33:13 -0400
-X-MC-Unique: ps7tSLSwMuquukPpXvDsTA-1
+ us-mta-203-DAqEMwObPg2uTP60qgX55g-1; Tue, 30 May 2023 12:33:14 -0400
+X-MC-Unique: DAqEMwObPg2uTP60qgX55g-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AEC101C01E95;
- Tue, 30 May 2023 16:33:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9EAE88027F5;
+ Tue, 30 May 2023 16:33:13 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.4])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 033D4C15612;
- Tue, 30 May 2023 16:33:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E66D2C154D2;
+ Tue, 30 May 2023 16:33:12 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 27/32] block/fuse: do not set is_external=true on FUSE fd
-Date: Tue, 30 May 2023 18:32:34 +0200
-Message-Id: <20230530163239.576632-28-kwolf@redhat.com>
+Subject: [PULL 28/32] virtio: make it possible to detach host notifier from
+ any thread
+Date: Tue, 30 May 2023 18:32:35 +0200
+Message-Id: <20230530163239.576632-29-kwolf@redhat.com>
 In-Reply-To: <20230530163239.576632-1-kwolf@redhat.com>
 References: <20230530163239.576632-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -61,7 +62,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,131 +80,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-This is part of ongoing work to remove the aio_disable_external() API.
+virtio_queue_aio_detach_host_notifier() does two things:
+1. It removes the fd handler from the event loop.
+2. It processes the virtqueue one last time.
 
-Use BlockDevOps .drained_begin/end/poll() instead of
-aio_set_fd_handler(is_external=true).
+The first step can be peformed by any thread and without taking the
+AioContext lock.
 
-As a side-effect the FUSE export now follows AioContext changes like the
-other export types.
+The second step may need the AioContext lock (depending on the device
+implementation) and runs in the thread where request processing takes
+place. virtio-blk and virtio-scsi therefore call
+virtio_queue_aio_detach_host_notifier() from a BH that is scheduled in
+AioContext.
+
+The next patch will introduce a .drained_begin() function that needs to
+call virtio_queue_aio_detach_host_notifier(). .drained_begin() functions
+cannot call aio_poll() to wait synchronously for the BH. It is possible
+for a .drained_poll() callback to asynchronously wait for the BH, but
+that is more complex than necessary here.
+
+Move the virtqueue processing out to the callers of
+virtio_queue_aio_detach_host_notifier() so that the function can be
+called from any thread. This is in preparation for the next patch.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Message-Id: <20230516190238.8401-16-stefanha@redhat.com>
+Message-Id: <20230516190238.8401-17-stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/export/fuse.c | 56 +++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 54 insertions(+), 2 deletions(-)
+ hw/block/dataplane/virtio-blk.c |  7 +++++++
+ hw/scsi/virtio-scsi-dataplane.c | 14 ++++++++++++++
+ hw/virtio/virtio.c              |  3 ---
+ 3 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/block/export/fuse.c b/block/export/fuse.c
-index 06fa41079e..adf3236b5a 100644
---- a/block/export/fuse.c
-+++ b/block/export/fuse.c
-@@ -50,6 +50,7 @@ typedef struct FuseExport {
+diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
+index af1c24c40c..4f5c7cd55f 100644
+--- a/hw/block/dataplane/virtio-blk.c
++++ b/hw/block/dataplane/virtio-blk.c
+@@ -287,8 +287,15 @@ static void virtio_blk_data_plane_stop_bh(void *opaque)
  
-     struct fuse_session *fuse_session;
-     struct fuse_buf fuse_buf;
-+    unsigned int in_flight; /* atomic */
-     bool mounted, fd_handler_set_up;
+     for (i = 0; i < s->conf->num_queues; i++) {
+         VirtQueue *vq = virtio_get_queue(s->vdev, i);
++        EventNotifier *host_notifier = virtio_queue_get_host_notifier(vq);
  
-     char *mountpoint;
-@@ -78,6 +79,42 @@ static void read_from_fuse_export(void *opaque);
- static bool is_regular_file(const char *path, Error **errp);
- 
- 
-+static void fuse_export_drained_begin(void *opaque)
-+{
-+    FuseExport *exp = opaque;
+         virtio_queue_aio_detach_host_notifier(vq, s->ctx);
 +
-+    aio_set_fd_handler(exp->common.ctx,
-+                       fuse_session_fd(exp->fuse_session), false,
-+                       NULL, NULL, NULL, NULL, NULL);
-+    exp->fd_handler_set_up = false;
-+}
-+
-+static void fuse_export_drained_end(void *opaque)
-+{
-+    FuseExport *exp = opaque;
-+
-+    /* Refresh AioContext in case it changed */
-+    exp->common.ctx = blk_get_aio_context(exp->common.blk);
-+
-+    aio_set_fd_handler(exp->common.ctx,
-+                       fuse_session_fd(exp->fuse_session), false,
-+                       read_from_fuse_export, NULL, NULL, NULL, exp);
-+    exp->fd_handler_set_up = true;
-+}
-+
-+static bool fuse_export_drained_poll(void *opaque)
-+{
-+    FuseExport *exp = opaque;
-+
-+    return qatomic_read(&exp->in_flight) > 0;
-+}
-+
-+static const BlockDevOps fuse_export_blk_dev_ops = {
-+    .drained_begin = fuse_export_drained_begin,
-+    .drained_end   = fuse_export_drained_end,
-+    .drained_poll  = fuse_export_drained_poll,
-+};
-+
- static int fuse_export_create(BlockExport *blk_exp,
-                               BlockExportOptions *blk_exp_args,
-                               Error **errp)
-@@ -101,6 +138,15 @@ static int fuse_export_create(BlockExport *blk_exp,
-         }
++        /*
++         * Test and clear notifier after disabling event, in case poll callback
++         * didn't have time to run.
++         */
++        virtio_queue_host_notifier_read(host_notifier);
      }
- 
-+    blk_set_dev_ops(exp->common.blk, &fuse_export_blk_dev_ops, exp);
-+
-+    /*
-+     * We handle draining ourselves using an in-flight counter and by disabling
-+     * the FUSE fd handler. Do not queue BlockBackend requests, they need to
-+     * complete so the in-flight counter reaches zero.
-+     */
-+    blk_set_disable_request_queuing(exp->common.blk, true);
-+
-     init_exports_table();
- 
-     /*
-@@ -224,7 +270,7 @@ static int setup_fuse_export(FuseExport *exp, const char *mountpoint,
-     g_hash_table_insert(exports, g_strdup(mountpoint), NULL);
- 
-     aio_set_fd_handler(exp->common.ctx,
--                       fuse_session_fd(exp->fuse_session), true,
-+                       fuse_session_fd(exp->fuse_session), false,
-                        read_from_fuse_export, NULL, NULL, NULL, exp);
-     exp->fd_handler_set_up = true;
- 
-@@ -246,6 +292,8 @@ static void read_from_fuse_export(void *opaque)
- 
-     blk_exp_ref(&exp->common);
- 
-+    qatomic_inc(&exp->in_flight);
-+
-     do {
-         ret = fuse_session_receive_buf(exp->fuse_session, &exp->fuse_buf);
-     } while (ret == -EINTR);
-@@ -256,6 +304,10 @@ static void read_from_fuse_export(void *opaque)
-     fuse_session_process_buf(exp->fuse_session, &exp->fuse_buf);
- 
- out:
-+    if (qatomic_fetch_dec(&exp->in_flight) == 1) {
-+        aio_wait_kick(); /* wake AIO_WAIT_WHILE() */
-+    }
-+
-     blk_exp_unref(&exp->common);
  }
  
-@@ -268,7 +320,7 @@ static void fuse_export_shutdown(BlockExport *blk_exp)
+diff --git a/hw/scsi/virtio-scsi-dataplane.c b/hw/scsi/virtio-scsi-dataplane.c
+index f3214e1c57..b3a1ed21f7 100644
+--- a/hw/scsi/virtio-scsi-dataplane.c
++++ b/hw/scsi/virtio-scsi-dataplane.c
+@@ -71,12 +71,26 @@ static void virtio_scsi_dataplane_stop_bh(void *opaque)
+ {
+     VirtIOSCSI *s = opaque;
+     VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(s);
++    EventNotifier *host_notifier;
+     int i;
  
-         if (exp->fd_handler_set_up) {
-             aio_set_fd_handler(exp->common.ctx,
--                               fuse_session_fd(exp->fuse_session), true,
-+                               fuse_session_fd(exp->fuse_session), false,
-                                NULL, NULL, NULL, NULL, NULL);
-             exp->fd_handler_set_up = false;
-         }
+     virtio_queue_aio_detach_host_notifier(vs->ctrl_vq, s->ctx);
++    host_notifier = virtio_queue_get_host_notifier(vs->ctrl_vq);
++
++    /*
++     * Test and clear notifier after disabling event, in case poll callback
++     * didn't have time to run.
++     */
++    virtio_queue_host_notifier_read(host_notifier);
++
+     virtio_queue_aio_detach_host_notifier(vs->event_vq, s->ctx);
++    host_notifier = virtio_queue_get_host_notifier(vs->event_vq);
++    virtio_queue_host_notifier_read(host_notifier);
++
+     for (i = 0; i < vs->conf.num_queues; i++) {
+         virtio_queue_aio_detach_host_notifier(vs->cmd_vqs[i], s->ctx);
++        host_notifier = virtio_queue_get_host_notifier(vs->cmd_vqs[i]);
++        virtio_queue_host_notifier_read(host_notifier);
+     }
+ }
+ 
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 272d930721..cb09cb6464 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3516,9 +3516,6 @@ void virtio_queue_aio_attach_host_notifier_no_poll(VirtQueue *vq, AioContext *ct
+ void virtio_queue_aio_detach_host_notifier(VirtQueue *vq, AioContext *ctx)
+ {
+     aio_set_event_notifier(ctx, &vq->host_notifier, true, NULL, NULL, NULL);
+-    /* Test and clear notifier before after disabling event,
+-     * in case poll callback didn't have time to run. */
+-    virtio_queue_host_notifier_read(&vq->host_notifier);
+ }
+ 
+ void virtio_queue_host_notifier_read(EventNotifier *n)
 -- 
 2.40.1
 
