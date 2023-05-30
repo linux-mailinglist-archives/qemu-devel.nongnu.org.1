@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76EE7161F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:31:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99497161C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:28:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zOE-00005W-Hr; Tue, 30 May 2023 09:27:55 -0400
+	id 1q3zNQ-00077S-QD; Tue, 30 May 2023 09:27:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3zMg-0005XA-U5; Tue, 30 May 2023 09:26:24 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1q3zMk-0005Xg-SD; Tue, 30 May 2023 09:26:28 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3zMZ-0001K9-FQ; Tue, 30 May 2023 09:26:13 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-52cb8e5e9f5so2874976a12.0; 
- Tue, 30 May 2023 06:26:10 -0700 (PDT)
+ id 1q3zMf-0001LV-7F; Tue, 30 May 2023 09:26:20 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-64d57cd373fso3841187b3a.1; 
+ Tue, 30 May 2023 06:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685453169; x=1688045169;
+ d=gmail.com; s=20221208; t=1685453172; x=1688045172;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IjONfP8e90/jbnPjI2B9cUahYDVVk0DhhvwAaHcIujU=;
- b=pMFXi/PwqBbTG59SmJ7y4reRoVeqQ5ShJ7xSCK7xzTwobUl8PHZku8hi55Rgs9BMVs
- jLA9/pVdZ2Q/T6lxEGejuplJtpuAmTCd+LEYXkTaou9XsmD2WvW1yKziujeLhQIzroKp
- l0l4p1qlxq1uTZoadB3v8qEBjr9JlCGtt+iNb5vGy4q/uugugjOJ5c839L2h53sRPnMQ
- XTg2SdA02+M/qe4PC5bHpI5QIImfy/7MRbzyAmEUwRc4k0+WtJJc6JKiCCtb6oQebTem
- e7TqGahyz1skIAfI4BEZUPPBRQy6PF0izV7dnWanusluqZIi4PEqQR+Tw1BYLp8MLSAw
- r5mw==
+ bh=iiEW3BusrFaWGEx7T2/uzjxqzKXwgKQfP6cKugumrvc=;
+ b=UdelHdVOUuCJTQgFmnM2bzDhF5SRIWIedm213IIYxx2i6Z03OheTfNiurVAiFFD72e
+ oyFsMxI9XSB/ppwccnFmz0h8EXt/5zkgiqf9Gg1MLBlQWG43icvQ3vXMRs1w6OZ3cOme
+ 2lD4zdkc6OWsw7CVRiQZxfAtVVbMb9tQgy+zhvLIGUZk56xxsX6Zv5iN4qnrZCaRi09n
+ RFu2+GtKpTcMIQrE3ccVGkgxluNh4Ja+3CiHO62IUD8rEj6A19l4Rkigm4iC457rAh2R
+ jUWUNpIH+/B48lWl5VNzjnturx4+rPGvp59bjmb3CMirBJvfTe+ImhRRmEmI3vi0DT3X
+ nrBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685453169; x=1688045169;
+ d=1e100.net; s=20221208; t=1685453172; x=1688045172;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IjONfP8e90/jbnPjI2B9cUahYDVVk0DhhvwAaHcIujU=;
- b=T0W2fJWL+lhZFDL2pwUNHh3EyLKChZutGnnbTT5wkMQydr+LR68m+4t8IEabXWSX4n
- dWxb7yXc4Nu97mMcrwPO6CDCxeGb4EjQMTtDzX07pXpS3yk4YNV4QuWFQuNTv86ntceH
- arCn2qJYFaMyTnPV7NJTh4wpQ+vxXybLR6THaCeAc860E00SnpZnSsZKm51ppG/hseyH
- N71l2NAONNZHstUYOHWtXJnVW3E+WZLitm6Qphqgy+TAc9yNHuefMm/uwWU3ZyqK/BfU
- iARfQmI2l8OvjW5eHroks3rM8L+7Tl+Ppfvgwjw9MF67qJAnzxe9vvSWGpU8Z5Ekg/X/
- szsQ==
-X-Gm-Message-State: AC+VfDywybvPkil8LRbv4PS97QeNPgyI6Ml9ITYy3KGClkzDNTbbYUXd
- hfM/eWqsv48z6zSZBnCmJaZzEBBke/k=
-X-Google-Smtp-Source: ACHHUZ6biXwuqNsww9+1aoSTNNaVpUy3qUPEAPrptjfM6RIusI005Wel4fSXGkL7HBtZam4U+rWW4w==
-X-Received: by 2002:a17:90a:e7cc:b0:255:38ed:9dcd with SMTP id
- kb12-20020a17090ae7cc00b0025538ed9dcdmr11685199pjb.0.1685453168912; 
- Tue, 30 May 2023 06:26:08 -0700 (PDT)
+ bh=iiEW3BusrFaWGEx7T2/uzjxqzKXwgKQfP6cKugumrvc=;
+ b=CXdpGfJL5+F3usKVoH1ZY0BciT2JNbquQhRBsTcc2pB2Fmr2bEqEI4cQYO2Elh/YEd
+ CGjn4W2DX76lF6czhQPrBJ7OQ98PFDDaoLA7MgMKTQBOvtHBxxvYFD6/S1zbgaO9M9uS
+ Y0U8Zc0v83wM0B0Hg6eLs7SziHNiHF0LB6+Qxpa3qsc7bRRj/KgHKuIKs3KfLd4/o91d
+ q05LWD9A2at+wDFQySkyjRAU+7mPxG1E6KTsvYAHqf0RP8g4NiplSk5WeRV7XJBHzz7o
+ desQtDtB551UmuzjNWVo3nOj0dkHwdLuCBtn+ieYdAau1Y7EY3d2ocWZdPXv3Kn0Gu+F
+ sNCg==
+X-Gm-Message-State: AC+VfDx6UoSkmD8W4YshmW0FjmgRxL1CvwTo6j6OvQg0ZgORoYAEAaff
+ mn4SSCzyY93pZybBJOlimjb6NgXMWSA=
+X-Google-Smtp-Source: ACHHUZ7QCWD+FDeuLXOV3molD2dqConkg2oLlUVal050MaCSLVqtf9fYCwvu11jwspL7EC1NrZ8P4Q==
+X-Received: by 2002:a05:6a20:7f84:b0:103:b436:aef7 with SMTP id
+ d4-20020a056a207f8400b00103b436aef7mr11840182pzj.16.1685453171998; 
+ Tue, 30 May 2023 06:26:11 -0700 (PDT)
 Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- w32-20020a634920000000b0050927cb606asm8601514pga.13.2023.05.30.06.26.05
+ w32-20020a634920000000b0050927cb606asm8601514pga.13.2023.05.30.06.26.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 06:26:08 -0700 (PDT)
+ Tue, 30 May 2023 06:26:11 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v4 3/6] target/ppc: Add SRR1 prefix indication to interrupt
- handlers
-Date: Tue, 30 May 2023 23:25:40 +1000
-Message-Id: <20230530132543.385138-4-npiggin@gmail.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v4 4/6] target/ppc: Implement HEIR SPR
+Date: Tue, 30 May 2023 23:25:41 +1000
+Message-Id: <20230530132543.385138-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230530132543.385138-1-npiggin@gmail.com>
 References: <20230530132543.385138-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,146 +90,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ISA v3.1 introduced prefix instructions. Among the changes, various
-synchronous interrupts report whether they were caused by a prefix
-instruction in (H)SRR1.
+The hypervisor emulation assistance interrupt modifies HEIR to
+contain the value of the instruction which caused the exception.
 
-The case of instruction fetch that causes an HDSI due to access of a
-process-scoped table faulting on the partition scoped translation is the
-tricky one. As with ISIs and HISIs, this does not try to set the prefix
-bit because there is no instruction image to be loaded. The HDSI needs
-the originating access type to be passed through to the handler to
-distinguish this from HDSIs that fault translating process scoped tables
-originating from a load or store instruction (in that case the prefix
-bit should be provided).
-
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 44 ++++++++++++++++++++++++++++++++++++++++
- target/ppc/mmu-radix64.c | 14 ++++++++++---
- 2 files changed, 55 insertions(+), 3 deletions(-)
+ target/ppc/cpu.h         |  1 +
+ target/ppc/cpu_init.c    | 23 +++++++++++++++++++++++
+ target/ppc/excp_helper.c | 13 ++++++++++++-
+ 3 files changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 0274617b4a..b4fcaa1d88 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -1348,12 +1348,21 @@ static bool books_vhyp_handles_hv_excp(PowerPCCPU *cpu)
-     return false;
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 0f9f2e1a0c..1f23b81e90 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1652,6 +1652,7 @@ void ppc_compat_add_property(Object *obj, const char *name,
+ #define SPR_HMER              (0x150)
+ #define SPR_HMEER             (0x151)
+ #define SPR_PCR               (0x152)
++#define SPR_HEIR              (0x153)
+ #define SPR_BOOKE_LPIDR       (0x152)
+ #define SPR_BOOKE_TCR         (0x154)
+ #define SPR_BOOKE_TLB0PS      (0x158)
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 723f28fb5a..aa364f36f6 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -1629,6 +1629,7 @@ static void register_8xx_sprs(CPUPPCState *env)
+  * HSRR0   => SPR 314 (Power 2.04 hypv)
+  * HSRR1   => SPR 315 (Power 2.04 hypv)
+  * LPIDR   => SPR 317 (970)
++ * HEIR    => SPR 339 (Power 2.05 hypv) (64-bit reg from 3.1)
+  * EPR     => SPR 702 (Power 2.04 emb)
+  * perf    => 768-783 (Power 2.04)
+  * perf    => 784-799 (Power 2.04)
+@@ -5522,6 +5523,24 @@ static void register_power6_common_sprs(CPUPPCState *env)
+                  0x00000000);
  }
  
-+static bool is_prefix_excp(CPUPPCState *env, uint32_t insn)
++static void register_HEIR32_spr(CPUPPCState *env)
 +{
-+    if (!(env->insns_flags2 & PPC2_ISA310)) {
-+        return false;
-+    }
-+    return ((insn & 0xfc000000) == 0x04000000);
++    spr_register_hv(env, SPR_HEIR, "HEIR",
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 &spr_read_generic, &spr_write_generic32,
++                 0x00000000);
 +}
 +
- static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
++static void register_HEIR64_spr(CPUPPCState *env)
++{
++    spr_register_hv(env, SPR_HEIR, "HEIR",
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 &spr_read_generic, &spr_write_generic,
++                 0x00000000);
++}
++
+ static void register_power8_tce_address_control_sprs(CPUPPCState *env)
  {
-     CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     target_ulong msr, new_msr, vector;
-     int srr0, srr1, lev = -1;
-+    uint32_t insn = 0;
+     spr_register_kvm(env, SPR_TAR, "TAR",
+@@ -5950,6 +5969,7 @@ static void init_proc_POWER7(CPUPPCState *env)
+     register_power5p_ear_sprs(env);
+     register_power5p_tb_sprs(env);
+     register_power6_common_sprs(env);
++    register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
+     register_power7_book4_sprs(env);
  
-     /* new srr1 value excluding must-be-zero bits */
-     msr = env->msr & ~0x783f0000ULL;
-@@ -1392,6 +1401,41 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- 
-     vector |= env->excp_prefix;
- 
-+    switch (excp) {
-+    case POWERPC_EXCP_HDSI:
-+        /* HDSI PRTABLE_FAULT has the originating access type in error_code */
-+        if ((env->spr[SPR_HDSISR] & DSISR_PRTABLE_FAULT) &&
-+            (env->error_code == MMU_INST_FETCH)) {
-+            /*
-+             * Fetch failed due to partition scope translation, so prefix
-+             * indication is not relevant (and attempting to load the
-+             * instruction at NIP would cause recursive faults with the same
-+             * translation).
-+             */
-+            break;
-+        }
-+        /* fall through */
-+    case POWERPC_EXCP_MCHECK:
-+    case POWERPC_EXCP_DSI:
-+    case POWERPC_EXCP_DSEG:
-+    case POWERPC_EXCP_ALIGN:
-+    case POWERPC_EXCP_PROGRAM:
-+    case POWERPC_EXCP_FPU:
-+    case POWERPC_EXCP_TRACE:
-+    case POWERPC_EXCP_HV_EMU:
-+    case POWERPC_EXCP_VPU:
-+    case POWERPC_EXCP_VSXU:
-+    case POWERPC_EXCP_FU:
-+    case POWERPC_EXCP_HV_FU:
-+        insn = ppc_ldl_code(env, env->nip);
-+        if (is_prefix_excp(env, insn)) {
-+            msr |= PPC_BIT(34);
-+        }
-+        break;
-+    default:
-+        break;
-+    }
-+
-     switch (excp) {
-     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
-         if (!FIELD_EX64(env->msr, MSR, ME)) {
-diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-index 1fc1ba3ecf..920084bd8f 100644
---- a/target/ppc/mmu-radix64.c
-+++ b/target/ppc/mmu-radix64.c
-@@ -145,6 +145,13 @@ static void ppc_radix64_raise_hsi(PowerPCCPU *cpu, MMUAccessType access_type,
-     CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
- 
-+    env->error_code = 0;
-+    if (cause & DSISR_PRTABLE_FAULT) {
-+        /* HDSI PRTABLE_FAULT gets the originating access type in error_code */
-+        env->error_code = access_type;
-+        access_type = MMU_DATA_LOAD;
-+    }
-+
-     qemu_log_mask(CPU_LOG_MMU, "%s for %s @0x%"VADDR_PRIx" 0x%"
-                   HWADDR_PRIx" cause %08x\n",
-                   __func__, access_str(access_type),
-@@ -166,7 +173,6 @@ static void ppc_radix64_raise_hsi(PowerPCCPU *cpu, MMUAccessType access_type,
-         env->spr[SPR_HDSISR] = cause;
-         env->spr[SPR_HDAR] = eaddr;
-         env->spr[SPR_ASDR] = g_raddr;
--        env->error_code = 0;
+@@ -6072,6 +6092,7 @@ static void init_proc_POWER8(CPUPPCState *env)
+     register_power5p_ear_sprs(env);
+     register_power5p_tb_sprs(env);
+     register_power6_common_sprs(env);
++    register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
+@@ -6234,6 +6255,7 @@ static void init_proc_POWER9(CPUPPCState *env)
+     register_power5p_ear_sprs(env);
+     register_power5p_tb_sprs(env);
+     register_power6_common_sprs(env);
++    register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
+@@ -6426,6 +6448,7 @@ static void init_proc_POWER10(CPUPPCState *env)
+     register_power5p_ear_sprs(env);
+     register_power5p_tb_sprs(env);
+     register_power6_common_sprs(env);
++    register_HEIR64_spr(env);
+     register_power6_dbg_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index b4fcaa1d88..1533ad0f13 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -1611,13 +1611,24 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_HDECR:     /* Hypervisor decrementer exception         */
+     case POWERPC_EXCP_HDSI:      /* Hypervisor data storage exception        */
+     case POWERPC_EXCP_SDOOR_HV:  /* Hypervisor Doorbell interrupt            */
+-    case POWERPC_EXCP_HV_EMU:
+     case POWERPC_EXCP_HVIRT:     /* Hypervisor virtualization                */
+         srr0 = SPR_HSRR0;
+         srr1 = SPR_HSRR1;
+         new_msr |= (target_ulong)MSR_HVB;
+         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
          break;
-     default:
-         g_assert_not_reached();
-@@ -369,13 +375,14 @@ static bool validate_pate(PowerPCCPU *cpu, uint64_t lpid, ppc_v3_pate_t *pate)
- }
- 
- static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
--                                              MMUAccessType access_type,
-+                                              MMUAccessType orig_access_type,
-                                               vaddr eaddr, hwaddr g_raddr,
-                                               ppc_v3_pate_t pate,
-                                               hwaddr *h_raddr, int *h_prot,
-                                               int *h_page_size, bool pde_addr,
-                                               int mmu_idx, bool guest_visible)
- {
-+    MMUAccessType access_type = orig_access_type;
-     int fault_cause = 0;
-     hwaddr pte_addr;
-     uint64_t pte;
-@@ -404,7 +411,8 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
-             fault_cause |= DSISR_PRTABLE_FAULT;
-         }
-         if (guest_visible) {
--            ppc_radix64_raise_hsi(cpu, access_type, eaddr, g_raddr, fault_cause);
-+            ppc_radix64_raise_hsi(cpu, orig_access_type,
-+                                  eaddr, g_raddr, fault_cause);
-         }
-         return 1;
-     }
++    case POWERPC_EXCP_HV_EMU:
++        env->spr[SPR_HEIR] = insn;
++        if (is_prefix_excp(env, insn)) {
++            uint32_t insn2 = ppc_ldl_code(env, env->nip + 4);
++            env->spr[SPR_HEIR] <<= 32;
++            env->spr[SPR_HEIR] |= insn2;
++        }
++        srr0 = SPR_HSRR0;
++        srr1 = SPR_HSRR1;
++        new_msr |= (target_ulong)MSR_HVB;
++        new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
++        break;
+     case POWERPC_EXCP_VPU:       /* Vector unavailable exception             */
+     case POWERPC_EXCP_VSXU:       /* VSX unavailable exception               */
+     case POWERPC_EXCP_FU:         /* Facility unavailable exception          */
 -- 
 2.40.1
 
