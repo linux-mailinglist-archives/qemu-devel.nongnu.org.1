@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3D8716C03
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AE5716C07
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:12:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q43nv-0006Z6-JE; Tue, 30 May 2023 14:10:43 -0400
+	id 1q43nv-0006ZZ-I1; Tue, 30 May 2023 14:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q43nn-0006T8-4z
+ id 1q43nl-0006T5-EI
  for qemu-devel@nongnu.org; Tue, 30 May 2023 14:10:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1q43nl-0005Be-Jh
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:10:34 -0400
+ id 1q43nj-0005BK-Sg
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:10:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685470232;
+ s=mimecast20190719; t=1685470231;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rzt+VbbYwkajdc2OCuRRgTByjydJmxUvTTyb3ffD+dw=;
- b=KwO58DD4WD5VgsAKCha1J/UUQXDk9jRBBvbx6V49vrmfynCGg7J2bYjl/MPYz4LEtRDSpF
- 5VRvsXBP45kHi/fyGR84G4Otjni3B4hLY6Q/pKzGR5SlH+xqZjI067u5Jn8kuEAJPPKTjv
- 0CIigsJFIhkbAoq92UpChdLDAIOtsWM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lkj3uc2uid1yXWgYT2SgHzDWoawNVZpv4Y6BTe1vm/w=;
+ b=ROVsuPQJ1aNewjvJdx6RZ/jvHKthRerAntzkO6fg/C4NhFY0DBnbEFo/7k1rCg+UxJHqJZ
+ hXBWOXUbTcU+ZeoBuy3nFB4pV3Eu0wSFm5CXO9vDbYBA7hllI+OCwmQOPz+xRYHZ4uup6k
+ FkCY6hyciODwpJdygQrIfcAX7Klki2I=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-395-OtHoLbc0M_edCvjK-HiKEg-1; Tue, 30 May 2023 14:10:25 -0400
-X-MC-Unique: OtHoLbc0M_edCvjK-HiKEg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-634-ALgcGzpOPgWpn7IJbP1-mw-1; Tue, 30 May 2023 14:10:27 -0400
+X-MC-Unique: ALgcGzpOPgWpn7IJbP1-mw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 987AA858EEC;
- Tue, 30 May 2023 18:10:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5FB593C0F223;
+ Tue, 30 May 2023 18:10:27 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.97])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DAFE02166B26;
- Tue, 30 May 2023 18:10:23 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B895E492B0A;
+ Tue, 30 May 2023 18:10:26 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, eblake@redhat.com,
@@ -55,15 +55,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, eblake@redhat.com,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Aarushi Mehta <mehta.aaru20@gmail.com>
-Subject: [PATCH v3 2/6] block/nvme: convert to blk_io_plug_call() API
-Date: Tue, 30 May 2023 14:09:55 -0400
-Message-Id: <20230530180959.1108766-3-stefanha@redhat.com>
+Subject: [PATCH v3 3/6] block/blkio: convert to blk_io_plug_call() API
+Date: Tue, 30 May 2023 14:09:56 -0400
+Message-Id: <20230530180959.1108766-4-stefanha@redhat.com>
 In-Reply-To: <20230530180959.1108766-1-stefanha@redhat.com>
 References: <20230530180959.1108766-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -96,129 +96,134 @@ Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
 v2
-- Remove unused nvme_process_completion_queue_plugged trace event
-  [Stefano]
+- Add missing #include and fix blkio_unplug_fn() prototype [Stefano]
 ---
- block/nvme.c       | 44 ++++++++++++--------------------------------
- block/trace-events |  1 -
- 2 files changed, 12 insertions(+), 33 deletions(-)
+ block/blkio.c | 43 ++++++++++++++++++++++++-------------------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
-diff --git a/block/nvme.c b/block/nvme.c
-index 5b744c2bda..100b38b592 100644
---- a/block/nvme.c
-+++ b/block/nvme.c
-@@ -25,6 +25,7 @@
- #include "qemu/vfio-helpers.h"
- #include "block/block-io.h"
- #include "block/block_int.h"
+diff --git a/block/blkio.c b/block/blkio.c
+index 0cdc99a729..93c6d20d39 100644
+--- a/block/blkio.c
++++ b/block/blkio.c
+@@ -17,6 +17,7 @@
+ #include "qemu/error-report.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qemu/module.h"
 +#include "sysemu/block-backend.h"
- #include "sysemu/replay.h"
- #include "trace.h"
+ #include "exec/memory.h" /* for ram_block_discard_disable() */
  
-@@ -119,7 +120,6 @@ struct BDRVNVMeState {
-     int blkshift;
+ #include "block/block-io.h"
+@@ -325,16 +326,30 @@ static void blkio_detach_aio_context(BlockDriverState *bs)
+                        false, NULL, NULL, NULL, NULL, NULL);
+ }
  
-     uint64_t max_transfer;
--    bool plugged;
- 
-     bool supports_write_zeroes;
-     bool supports_discard;
-@@ -282,7 +282,7 @@ static void nvme_kick(NVMeQueuePair *q)
+-/* Call with s->blkio_lock held to submit I/O after enqueuing a new request */
+-static void blkio_submit_io(BlockDriverState *bs)
++/*
++ * Called by blk_io_unplug() or immediately if not plugged. Called without
++ * blkio_lock.
++ */
++static void blkio_unplug_fn(void *opaque)
  {
-     BDRVNVMeState *s = q->s;
+-    if (qatomic_read(&bs->io_plugged) == 0) {
+-        BDRVBlkioState *s = bs->opaque;
++    BDRVBlkioState *s = opaque;
  
--    if (s->plugged || !q->need_kick) {
-+    if (!q->need_kick) {
-         return;
-     }
-     trace_nvme_kick(s, q->index);
-@@ -387,10 +387,6 @@ static bool nvme_process_completion(NVMeQueuePair *q)
-     NvmeCqe *c;
- 
-     trace_nvme_process_completion(s, q->index, q->inflight);
--    if (s->plugged) {
--        trace_nvme_process_completion_queue_plugged(s, q->index);
--        return false;
--    }
- 
-     /*
-      * Support re-entrancy when a request cb() function invokes aio_poll().
-@@ -480,6 +476,15 @@ static void nvme_trace_command(const NvmeCmd *cmd)
++    WITH_QEMU_LOCK_GUARD(&s->blkio_lock) {
+         blkioq_do_io(s->blkioq, NULL, 0, 0, NULL);
      }
  }
  
-+static void nvme_unplug_fn(void *opaque)
++/*
++ * Schedule I/O submission after enqueuing a new request. Called without
++ * blkio_lock.
++ */
++static void blkio_submit_io(BlockDriverState *bs)
 +{
-+    NVMeQueuePair *q = opaque;
++    BDRVBlkioState *s = bs->opaque;
 +
-+    QEMU_LOCK_GUARD(&q->lock);
-+    nvme_kick(q);
-+    nvme_process_completion(q);
++    blk_io_plug_call(blkio_unplug_fn, s);
 +}
 +
- static void nvme_submit_command(NVMeQueuePair *q, NVMeRequest *req,
-                                 NvmeCmd *cmd, BlockCompletionFunc cb,
-                                 void *opaque)
-@@ -496,8 +501,7 @@ static void nvme_submit_command(NVMeQueuePair *q, NVMeRequest *req,
-            q->sq.tail * NVME_SQ_ENTRY_BYTES, cmd, sizeof(*cmd));
-     q->sq.tail = (q->sq.tail + 1) % NVME_QUEUE_SIZE;
-     q->need_kick++;
--    nvme_kick(q);
--    nvme_process_completion(q);
-+    blk_io_plug_call(nvme_unplug_fn, q);
-     qemu_mutex_unlock(&q->lock);
- }
+ static int coroutine_fn
+ blkio_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
+ {
+@@ -345,9 +360,9 @@ blkio_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
  
-@@ -1567,27 +1571,6 @@ static void nvme_attach_aio_context(BlockDriverState *bs,
+     WITH_QEMU_LOCK_GUARD(&s->blkio_lock) {
+         blkioq_discard(s->blkioq, offset, bytes, &cod, 0);
+-        blkio_submit_io(bs);
      }
+ 
++    blkio_submit_io(bs);
+     qemu_coroutine_yield();
+     return cod.ret;
+ }
+@@ -378,9 +393,9 @@ blkio_co_preadv(BlockDriverState *bs, int64_t offset, int64_t bytes,
+ 
+     WITH_QEMU_LOCK_GUARD(&s->blkio_lock) {
+         blkioq_readv(s->blkioq, offset, iov, iovcnt, &cod, 0);
+-        blkio_submit_io(bs);
+     }
+ 
++    blkio_submit_io(bs);
+     qemu_coroutine_yield();
+ 
+     if (use_bounce_buffer) {
+@@ -423,9 +438,9 @@ static int coroutine_fn blkio_co_pwritev(BlockDriverState *bs, int64_t offset,
+ 
+     WITH_QEMU_LOCK_GUARD(&s->blkio_lock) {
+         blkioq_writev(s->blkioq, offset, iov, iovcnt, &cod, blkio_flags);
+-        blkio_submit_io(bs);
+     }
+ 
++    blkio_submit_io(bs);
+     qemu_coroutine_yield();
+ 
+     if (use_bounce_buffer) {
+@@ -444,9 +459,9 @@ static int coroutine_fn blkio_co_flush(BlockDriverState *bs)
+ 
+     WITH_QEMU_LOCK_GUARD(&s->blkio_lock) {
+         blkioq_flush(s->blkioq, &cod, 0);
+-        blkio_submit_io(bs);
+     }
+ 
++    blkio_submit_io(bs);
+     qemu_coroutine_yield();
+     return cod.ret;
+ }
+@@ -472,22 +487,13 @@ static int coroutine_fn blkio_co_pwrite_zeroes(BlockDriverState *bs,
+ 
+     WITH_QEMU_LOCK_GUARD(&s->blkio_lock) {
+         blkioq_write_zeroes(s->blkioq, offset, bytes, &cod, blkio_flags);
+-        blkio_submit_io(bs);
+     }
+ 
++    blkio_submit_io(bs);
+     qemu_coroutine_yield();
+     return cod.ret;
  }
  
--static void coroutine_fn nvme_co_io_plug(BlockDriverState *bs)
+-static void coroutine_fn blkio_co_io_unplug(BlockDriverState *bs)
 -{
--    BDRVNVMeState *s = bs->opaque;
--    assert(!s->plugged);
--    s->plugged = true;
--}
+-    BDRVBlkioState *s = bs->opaque;
 -
--static void coroutine_fn nvme_co_io_unplug(BlockDriverState *bs)
--{
--    BDRVNVMeState *s = bs->opaque;
--    assert(s->plugged);
--    s->plugged = false;
--    for (unsigned i = INDEX_IO(0); i < s->queue_count; i++) {
--        NVMeQueuePair *q = s->queues[i];
--        qemu_mutex_lock(&q->lock);
--        nvme_kick(q);
--        nvme_process_completion(q);
--        qemu_mutex_unlock(&q->lock);
+-    WITH_QEMU_LOCK_GUARD(&s->blkio_lock) {
+-        blkio_submit_io(bs);
 -    }
 -}
 -
- static bool nvme_register_buf(BlockDriverState *bs, void *host, size_t size,
-                               Error **errp)
- {
-@@ -1664,9 +1647,6 @@ static BlockDriver bdrv_nvme = {
-     .bdrv_detach_aio_context  = nvme_detach_aio_context,
-     .bdrv_attach_aio_context  = nvme_attach_aio_context,
- 
--    .bdrv_co_io_plug          = nvme_co_io_plug,
--    .bdrv_co_io_unplug        = nvme_co_io_unplug,
--
-     .bdrv_register_buf        = nvme_register_buf,
-     .bdrv_unregister_buf      = nvme_unregister_buf,
- };
-diff --git a/block/trace-events b/block/trace-events
-index 32665158d6..048ad27519 100644
---- a/block/trace-events
-+++ b/block/trace-events
-@@ -141,7 +141,6 @@ nvme_kick(void *s, unsigned q_index) "s %p q #%u"
- nvme_dma_flush_queue_wait(void *s) "s %p"
- nvme_error(int cmd_specific, int sq_head, int sqid, int cid, int status) "cmd_specific %d sq_head %d sqid %d cid %d status 0x%x"
- nvme_process_completion(void *s, unsigned q_index, int inflight) "s %p q #%u inflight %d"
--nvme_process_completion_queue_plugged(void *s, unsigned q_index) "s %p q #%u"
- nvme_complete_command(void *s, unsigned q_index, int cid) "s %p q #%u cid %d"
- nvme_submit_command(void *s, unsigned q_index, int cid) "s %p q #%u cid %d"
- nvme_submit_command_raw(int c0, int c1, int c2, int c3, int c4, int c5, int c6, int c7) "%02x %02x %02x %02x %02x %02x %02x %02x"
+ typedef enum {
+     BMRR_OK,
+     BMRR_SKIP,
+@@ -1009,7 +1015,6 @@ static void blkio_refresh_limits(BlockDriverState *bs, Error **errp)
+         .bdrv_co_pwritev         = blkio_co_pwritev, \
+         .bdrv_co_flush_to_disk   = blkio_co_flush, \
+         .bdrv_co_pwrite_zeroes   = blkio_co_pwrite_zeroes, \
+-        .bdrv_co_io_unplug       = blkio_co_io_unplug, \
+         .bdrv_refresh_limits     = blkio_refresh_limits, \
+         .bdrv_register_buf       = blkio_register_buf, \
+         .bdrv_unregister_buf     = blkio_unregister_buf, \
 -- 
 2.40.1
 
