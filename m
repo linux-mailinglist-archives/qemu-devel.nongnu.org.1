@@ -2,89 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C24716FB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 23:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB8D716E9B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 22:24:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q46sv-0004RE-7A; Tue, 30 May 2023 17:28:05 -0400
+	id 1q45sJ-0007Xx-BN; Tue, 30 May 2023 16:23:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1q45eQ-0005HB-W3
- for qemu-devel@nongnu.org; Tue, 30 May 2023 16:09:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1q45eP-0008Pa-GB
- for qemu-devel@nongnu.org; Tue, 30 May 2023 16:09:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685477340;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eN34AIswrLxKAYU4zW7v0Fslw82VFhWKRBinWIzq9b4=;
- b=LX/uIALkMfBH8SkUrgyKoIRjPsVol4FK2AueETm8V41zb8yI9m1MYzuFQspSvIWB+ghrzl
- XoQ2HT3SfiJSp0CGLJVYpD8qehRXITMiqeCLE3d6R64PDjQnv1mN6EPzUJP0kjb8uYFpfQ
- jAlVGNkMQtpf5wb0j7ZYQfB93BDfK+Q=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-250-IwHwSOaDPWOlJaaqJ8GLeg-1; Tue, 30 May 2023 16:07:23 -0400
-X-MC-Unique: IwHwSOaDPWOlJaaqJ8GLeg-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2af1589c75aso26012571fa.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:07:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q45sE-0007Xl-7H
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 16:23:18 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q45sC-0002Js-7K
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 16:23:17 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-53fa455cd94so1197141a12.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:23:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685478192; x=1688070192;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=XRwSUksg9nszQJApX1kjgAVTyu+9IFncfUba/48txXI=;
+ b=XUpLVDQAwb+BlFFc4oP+f7lMACsm8Fb2uHSIxQEhLREn9sritCP7GbC5FiVrdWO2an
+ TwxdRgHykGDPChWYJhcSdb8zLpzHgaEUxqPGBEUQsd72KeKThJ3CNMaUXfWKeYbaFDQJ
+ 2SICy93VfRnKcQRt7W/sePsR16nx2qyyvbkoHajhaP+vGswk4ilJWPgoqkuJU8JwNwqn
+ xI9AxOWyHke78LWqdcMbkRNCOu6L56aPM4m/3UDM/J0mMkqstYW6ywGKq5xSuxzSu4/e
+ aBwuVA5nt7rGO3XUy6ZcJXAYDNFrNbFEruvE7SYwZV92693zf0VsQVd8E8Xy7vqtS3Xi
+ sLJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685477242; x=1688069242;
- h=content-transfer-encoding:mime-version:user-agent:message-id:date
- :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eN34AIswrLxKAYU4zW7v0Fslw82VFhWKRBinWIzq9b4=;
- b=glQv9rVzADOT+WMx6lYF9Q1rkBBsARhgQXCHrxjsdkTaIhakQmq8R/8eI+RB8+ItBc
- A/L9qNZn4ybUyQysg1Uf1FWagWgif3vUXqr5n32IBlOjf1Q5sNYBQbSsPymwDCkbLo26
- pGOAp4189XjKGeORlHbwkeNRPFYTLBxfmdQffu5JKDMAXlF9I99xT1Zi7D8E3WbDBqJt
- q9Kc+DhMg0J8q7OV396b1zr6iUGUsNpZ9dwv+mMzJPqsmI0lGNmDVDwKcuL5ElRP42SY
- yV4OYm/szRaxbGcKciSFjcQqgQdGYVd4KXbHVfXLhzozhRiRqJXOSgvqQUSLCBnDM+Yt
- 9vtg==
-X-Gm-Message-State: AC+VfDwAt0iK1MsPcM1Fd1qnLxwM3abLotGgqJVRUs1SS2/Arva3jI/A
- m8ORIkWi5L1e176AfhMFKxYe+//OMwk+04zB1fTeucxBrUWYyCsCdUQvKkc/Z6b/sOyc44Mb6cj
- gv7q6I6PruS1+Qv4=
-X-Received: by 2002:a2e:9c50:0:b0:2af:160d:888a with SMTP id
- t16-20020a2e9c50000000b002af160d888amr1543471ljj.1.1685477242310; 
- Tue, 30 May 2023 13:07:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6aTMMQQtwGITkoHpc4Ruk7/BxlMQneLtwbBg6Y/C4dSS1CRis5kUp3UKnK58JQrMcXPFpeDg==
-X-Received: by 2002:a2e:9c50:0:b0:2af:160d:888a with SMTP id
- t16-20020a2e9c50000000b002af160d888amr1543464ljj.1.1685477242002; 
- Tue, 30 May 2023 13:07:22 -0700 (PDT)
-Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
+ d=1e100.net; s=20221208; t=1685478193; x=1688070193;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XRwSUksg9nszQJApX1kjgAVTyu+9IFncfUba/48txXI=;
+ b=ExeEyRjIzNlJdmX9/R7Z5dsPxOuADaCyx/DwqFlHntaQf2zf5y4wCZLH4QYyVvt/I7
+ ZIqeA2TJSHeuoQ2bePFbLmSntMze6nIfHdw6YBdZ6uaUkDzkF3z3Z9Ze2YgjhuQY3UXh
+ /8YlZuKIqhCIZpwGFA1h3lS0eXNEGK+iy2JmdemQPnqL0XebLMnGC2f90JY8eXXPnEeP
+ 6ShKAavqaLlQGo29kMa+rUt7qdg24q4ZpTJXx0+hwYjWSsGIqTJoDeIMQibzVvKnQPcc
+ LyU1hWBm9TrcH6WGHdx9fNcHRvf1cgkbpMaFXKJvz5wdxm27h1vMTiZiVCETJUd4JxoR
+ 6uog==
+X-Gm-Message-State: AC+VfDxSFZerQ+lQOdfqXH+71WOMBy1CYKHR5SVBrIdT1RVH4D8crbYz
+ y0ccyU5KPRLSVxPtARDw4C6Mxw==
+X-Google-Smtp-Source: ACHHUZ7xKGzI4EPKQd4F4uT/udoCjqqOWhyVFHh/PoTBDZq9BcnKo+v459RVpDOdlVHxPEIcOguM/A==
+X-Received: by 2002:a17:902:e74c:b0:1ab:267e:2f2d with SMTP id
+ p12-20020a170902e74c00b001ab267e2f2dmr4008445plf.48.1685478192659; 
+ Tue, 30 May 2023 13:23:12 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:35a2:c45d:7485:f488?
+ ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
  by smtp.gmail.com with ESMTPSA id
- rv3-20020a17090710c300b0096f7b7b6f11sm7726662ejb.106.2023.05.30.13.07.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 13:07:21 -0700 (PDT)
-From: Milan Zamazal <mzamazal@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com,
-    stefanha@redhat.com,
-    alex.bennee@linaro.org
-Subject: [PATCH 0/4] Add SCMI vhost-user VIRTIO device
-Date: Tue, 30 May 2023 21:59:46 +0200
-Message-Id: <cover.1685476786.git.mzamazal@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ d7-20020a170902654700b001a9581d3ef5sm189197pln.97.2023.05.30.13.23.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 May 2023 13:23:12 -0700 (PDT)
+Message-ID: <cba70806-7186-fdb2-1ebd-2056871c6bc7@linaro.org>
+Date: Tue, 30 May 2023 13:23:10 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/21] Migration 20230530 patches
+Content-Language: en-US
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Peter Xu <peterx@redhat.com>
+References: <20230530182531.6371-1-quintela@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230530182531.6371-1-quintela@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 30 May 2023 17:28:00 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,39 +96,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series adds a vhost-user VIRTIO device for SCMI.
-It's similar to other similar vhost-user VIRTIO devices.
+On 5/30/23 11:25, Juan Quintela wrote:
+> The following changes since commit aa9bbd865502ed517624ab6fe7d4b5d89ca95e43:
+> 
+>    Merge tag 'pull-ppc-20230528' of https://gitlab.com/danielhb/qemu into staging (2023-05-29 14:31:52 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/juan.quintela/qemu.git tags/migration-20230530-pull-request
+> 
+> for you to fetch changes up to c63c544005e6b1375a9c038f0e0fb8dfb8b249f4:
+> 
+>    migration/rdma: Check sooner if we are in postcopy for save_page() (2023-05-30 19:23:50 +0200)
+> 
+> ----------------------------------------------------------------
+> Migration 20230530 Pull request (take 2)
+> 
+> Hi
+> 
+> Resend last PULL request, this time it compiles when CONFIG_RDMA is
+> not configured in.
+> 
+> [take 1]
+> On this PULL request:
+> 
+> - Set vmstate migration failure right (vladimir)
+> - Migration QEMUFileHook removal (juan)
+> - Migration Atomic counters (juan)
+> 
+> Please apply.
+> 
+> ----------------------------------------------------------------
+> 
+> Juan Quintela (16):
+>    migration: Don't abuse qemu_file transferred for RDMA
+>    migration/RDMA: It is accounting for zero/normal pages in two places
+>    migration/rdma: Remove QEMUFile parameter when not used
+>    migration/rdma: Don't use imaginary transfers
+>    migration: Remove unused qemu_file_credit_transfer()
+>    migration/rdma: Simplify the function that saves a page
+>    migration: Create migrate_rdma()
+>    migration/rdma: Unfold ram_control_before_iterate()
+>    migration/rdma: Unfold ram_control_after_iterate()
+>    migration/rdma: Remove all uses of RAM_CONTROL_HOOK
+>    migration/rdma: Unfold hook_ram_load()
+>    migration/rdma: Create rdma_control_save_page()
+>    qemu-file: Remove QEMUFileHooks
+>    migration/rdma: Move rdma constants from qemu-file.h to rdma.h
+>    migration/rdma: Remove qemu_ prefix from exported functions
+>    migration/rdma: Check sooner if we are in postcopy for save_page()
+> 
+> Vladimir Sementsov-Ogievskiy (5):
+>    runstate: add runstate_get()
+>    migration: never fail in global_state_store()
+>    runstate: drop unused runstate_store()
+>    migration: switch from .vm_was_running to .vm_old_state
+>    migration: restore vmstate on migration failure
 
-I'm aware of the work in progress by Alex Benn=C3=A9e to simplify similar d=
-evices
-and avoid excessive code duplication.  I think the SCMI device support
-doesn't bring anything special and it can be rebased on the given work
-if/once it is merged.
+Appears to introduce multiple avocado failures:
 
-Milan Zamazal (4):
-  hw/virtio: Add boilerplate for vhost-user-scmi device
-  hw/virtio: Add vhost-user-scmi-pci boilerplate
-  tests/qtest: Fix a comment typo in vhost-user-test.c
-  tests/qtest: enable tests for virtio-scmi
+https://gitlab.com/qemu-project/qemu/-/jobs/4378066518#L286
 
- MAINTAINERS                         |   7 +
- hw/virtio/Kconfig                   |   5 +
- hw/virtio/meson.build               |   2 +
- hw/virtio/vhost-user-scmi-pci.c     |  68 +++++++
- hw/virtio/vhost-user-scmi.c         | 306 ++++++++++++++++++++++++++++
- include/hw/virtio/vhost-user-scmi.h |  30 +++
- tests/qtest/libqos/meson.build      |   1 +
- tests/qtest/libqos/virtio-scmi.c    | 174 ++++++++++++++++
- tests/qtest/libqos/virtio-scmi.h    |  34 ++++
- tests/qtest/vhost-user-test.c       |  46 ++++-
- 10 files changed, 672 insertions(+), 1 deletion(-)
- create mode 100644 hw/virtio/vhost-user-scmi-pci.c
- create mode 100644 hw/virtio/vhost-user-scmi.c
- create mode 100644 include/hw/virtio/vhost-user-scmi.h
- create mode 100644 tests/qtest/libqos/virtio-scmi.c
- create mode 100644 tests/qtest/libqos/virtio-scmi.h
+Test summary:
+tests/avocado/migration.py:X86_64.test_migration_with_exec: ERROR
+tests/avocado/migration.py:X86_64.test_migration_with_tcp_localhost: ERROR
+tests/avocado/migration.py:X86_64.test_migration_with_unix: ERROR
+make: *** [/builds/qemu-project/qemu/tests/Makefile.include:142: check-avocado] Error 1
 
---=20
-2.38.5
+https://gitlab.com/qemu-project/qemu/-/jobs/4378066523#L387
+
+Test summary:
+tests/avocado/migration.py:X86_64.test_migration_with_tcp_localhost: ERROR
+tests/avocado/migration.py:X86_64.test_migration_with_unix: ERROR
+make: *** [/builds/qemu-project/qemu/tests/Makefile.include:142: check-avocado] Error 1
+
+Also fails QTEST_QEMU_BINARY=./qemu-system-aarch64 ./tests/qtest/migration-test
+
+../src/migration/rdma.c:408:QIO_CHANNEL_RDMA: Object 0xaaaaf7bba680 is not an instance of 
+type qio-channel-rdma
+qemu-system-aarch64: Not a migration stream
+qemu-system-aarch64: load of migration failed: Invalid argument
+Broken pipe
+
+
+r~
 
 
