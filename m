@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D916716CBF
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2390D716CA4
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:40:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q44GI-0000Te-Rc; Tue, 30 May 2023 14:40:02 -0400
+	id 1q44GK-0000V0-2s; Tue, 30 May 2023 14:40:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q44GG-0000S7-59
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:40:00 -0400
+ id 1q44GH-0000TP-WF
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:40:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q44GD-00048r-QL
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:39:59 -0400
+ id 1q44GG-00049j-Em
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:40:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685471996;
+ s=mimecast20190719; t=1685471999;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1YwXG5f3ncM0Xjakg0KJOZwETAUNV4nQ2cRcIhH4H40=;
- b=i+adfJ8j1WV3mWlJkacf31hICis/j2JTlTXx6U63+hrVnus3Ko+yQCSefNNBVWL2RvR2Je
- fOsgRAMa4Bek/u/nZTOuAbS5ql6S/gkWNF0SbQmBhWDLpT0TB9lPALTfZ78FBDWNW6mEBl
- hlbWwEtz3usIBe2PH2vpWPmc9PxZb6I=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/QGj8+f6K+aX6tT8r5VHQLGrwMiIpRZ389/546zCMoY=;
+ b=KdT8P0SFB7uIbMQP0OGq08sYWfaKUJvrUSSL0EjNnjEcES2RvWWjfpUmOQzXO75kTxFm/t
+ TYgaSmADwbPq7iujT9i5DLQCKXZn/I1BpAIjJPwqvc66GfC2Ipe+xqBCot4UfIyejmbSUE
+ IJdAqVw8d7cknOgCyaublW9P9nPezYs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-517-zz3q8jZyPWiVSY2cKzSYgg-1; Tue, 30 May 2023 14:39:53 -0400
-X-MC-Unique: zz3q8jZyPWiVSY2cKzSYgg-1
+ us-mta-563-QUflfwupO2W0HWpGe--9xA-1; Tue, 30 May 2023 14:39:55 -0400
+X-MC-Unique: QUflfwupO2W0HWpGe--9xA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 01FE929AA386;
- Tue, 30 May 2023 18:39:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D3FD7185A78B;
+ Tue, 30 May 2023 18:39:54 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 69404C154D1;
- Tue, 30 May 2023 18:39:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4AB14C154D1;
+ Tue, 30 May 2023 18:39:53 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Leonardo Bras <leobras@redhat.com>,
@@ -49,10 +49,9 @@ Cc: Leonardo Bras <leobras@redhat.com>,
  Fiona Ebner <f.ebner@proxmox.com>, Peter Xu <peterx@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
  Juan Quintela <quintela@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PATCH v2 04/20] qemu-file: We only call qemu_file_transferred_* on
- the sending side
-Date: Tue, 30 May 2023 20:39:25 +0200
-Message-Id: <20230530183941.7223-5-quintela@redhat.com>
+Subject: [PATCH v2 05/20] qemu_file: Use a stat64 for qemu_file_transferred
+Date: Tue, 30 May 2023 20:39:26 +0200
+Message-Id: <20230530183941.7223-6-quintela@redhat.com>
 In-Reply-To: <20230530183941.7223-1-quintela@redhat.com>
 References: <20230530183941.7223-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -66,7 +65,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,43 +81,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove the increase in qemu_file_fill_buffer() and add asserts to
-qemu_file_transferred* functions.
+This way we can read it from any thread.
+I checked that it gives the same value than the current one.  We never
+use to qemu_files at the same time.
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/qemu-file.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ migration/migration-stats.h | 4 ++++
+ migration/qemu-file.c       | 5 +++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
+diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+index 2358caad63..b7795e7914 100644
+--- a/migration/migration-stats.h
++++ b/migration/migration-stats.h
+@@ -81,6 +81,10 @@ typedef struct {
+      * Number of bytes sent during precopy stage.
+      */
+     Stat64 precopy_bytes;
++    /*
++     * Number of bytes transferred with QEMUFile.
++     */
++    Stat64 qemu_file_transferred;
+     /*
+      * Amount of transferred data at the start of current cycle.
+      */
 diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 7a5c1a5e32..be3dab85cb 100644
+index be3dab85cb..eb0497e532 100644
 --- a/migration/qemu-file.c
 +++ b/migration/qemu-file.c
-@@ -342,7 +342,6 @@ static ssize_t coroutine_mixed_fn qemu_fill_buffer(QEMUFile *f)
+@@ -288,6 +288,7 @@ void qemu_fflush(QEMUFile *f)
+         } else {
+             uint64_t size = iov_size(f->iov, f->iovcnt);
+             f->total_transferred += size;
++            stat64_add(&mig_stats.qemu_file_transferred, size);
+         }
  
-     if (len > 0) {
-         f->buf_size += len;
--        f->total_transferred += len;
-     } else if (len == 0) {
-         qemu_file_set_error_obj(f, -EIO, local_error);
-     } else {
-@@ -632,6 +631,8 @@ uint64_t qemu_file_transferred_noflush(QEMUFile *f)
-     uint64_t ret = f->total_transferred;
+         qemu_iovec_release_ram(f);
+@@ -628,7 +629,7 @@ int coroutine_mixed_fn qemu_get_byte(QEMUFile *f)
+ 
+ uint64_t qemu_file_transferred_noflush(QEMUFile *f)
+ {
+-    uint64_t ret = f->total_transferred;
++    uint64_t ret = stat64_get(&mig_stats.qemu_file_transferred);
      int i;
  
-+    g_assert(qemu_file_is_writable(f));
-+
-     for (i = 0; i < f->iovcnt; i++) {
-         ret += f->iov[i].iov_len;
-     }
-@@ -641,6 +642,7 @@ uint64_t qemu_file_transferred_noflush(QEMUFile *f)
- 
- uint64_t qemu_file_transferred(QEMUFile *f)
+     g_assert(qemu_file_is_writable(f));
+@@ -644,7 +645,7 @@ uint64_t qemu_file_transferred(QEMUFile *f)
  {
-+    g_assert(qemu_file_is_writable(f));
+     g_assert(qemu_file_is_writable(f));
      qemu_fflush(f);
-     return f->total_transferred;
+-    return f->total_transferred;
++    return stat64_get(&mig_stats.qemu_file_transferred);
  }
+ 
+ void qemu_put_be16(QEMUFile *f, unsigned int v)
 -- 
 2.40.1
 
