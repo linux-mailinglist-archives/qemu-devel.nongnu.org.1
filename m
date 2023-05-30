@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B85716D72
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E1D716D52
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:17:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q44o5-0006lB-Lr; Tue, 30 May 2023 15:14:57 -0400
+	id 1q44o3-0006UT-SH; Tue, 30 May 2023 15:14:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44nv-00063u-32
- for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:48 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1q44nv-00063w-73
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:49 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44nr-0004cS-U0
+ id 1q44ns-0004cj-O6
  for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:46 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-64d18d772bdso5568438b3a.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:14:43 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-64d2c865e4eso3692059b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:14:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685474082; x=1688066082;
+ d=linaro.org; s=google; t=1685474083; x=1688066083;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oznYYgRZlnX+t2EBlDXRv+m0lTb2+8Xh7ZDPWTosV5I=;
- b=MlFDRvo3276gw6duv8oO1KLBnmYGMDOXRqb6xJ18gxMqQWdBurGWIV02Tu5HP+BJgz
- 66JPevtPzhqrSwD5MM17u5IEW9r45G1ndXuWMH+i2GIsOIcQUJCa7nQshivU1Pkt0Ydh
- tb1TwlD8ezKFxs3+lUoPB7jHDH5FSHmS0rxVYFADeGP/oHbXhctsNj88vNsjw2p27/Fm
- dqa2BWlm6gi/fJJdzWs2AbqFFLxUC9a95kOAsSvpVH1AQ+JUjT/T9oXRtk0L8pJTUOS3
- 9WZMHWtRC6ckmueP+sTIWnYwgHdcU5z8cRz4yU9sVqDDqhs+69ix1y6HRGYeQndhJSpX
- aqSg==
+ bh=ywmi9L6z6eQWYQYbR+hM2bvxiXGNwKV8h04XC6ZlKog=;
+ b=T5aRfsuUE3ZO5ywinPe7JUT8tv51OHkqz6C4MNc2nh4A7VWQcED5jnCbs7UAhEac1G
+ HO1WytcBZpUFXvA2WUJN95dQZFcs0AM42I0LUuQiRV1T0oWBX1VQ+D07weokPO8SfROb
+ LnzMTdaURvWtPibOwyQPUm7O2wIz4FLsorCbdE2nyKQ48NvE/uUEvyWwhqydz01dxeM9
+ IywIchjMtTd57Bx32KaMLcQwsqC/OGANUWu8XFAOl2E0tGAimGTqmGYHBqp9rshAT7JH
+ dNj8JM4PRW+BDFawOBitd9bcOOjP8BsYABxsTNSNW4oIfNv6xKcnB+sTM8DXqQ6CBCMk
+ JZYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685474082; x=1688066082;
+ d=1e100.net; s=20221208; t=1685474083; x=1688066083;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oznYYgRZlnX+t2EBlDXRv+m0lTb2+8Xh7ZDPWTosV5I=;
- b=Y8LKbo79x8fX2wbkAF9qK6+B7MZ4FlOg9MmgKLlEK5KL+F/s2fqla/yKpcXoSstYcz
- 4QwuHftXQ/NxqkxpnS2MWDDElyJKOpQQpCkcYXCS5HNa3SIn991J86dwVEn+jjdWRsaF
- DXLUIzKzOeSsI77C2sjT1/f8TLgPK5Op5T5oDCX1ft8YOAa233nxMr6/eOJFgRm0+G2M
- zmTwy9xdAIhVgbFkgFoMmW/AXlHOys3LvB3O04jtYcx0btoaTqX6BESSD0SvaBhM5S4V
- eUiUhS6fma24BFHD7HmGdh/w19pRgrCTt5KtfcwqYvKGleIXcIIYoId5tYd2OkSyEFU0
- P+BQ==
-X-Gm-Message-State: AC+VfDxFErd/5fHZm2p6oHM87mxWMiTGJroF6ac8ZRjayB3rzmOlGfqH
- 104P4vRiDrsa1rRk1UT807t4gYcMFUHAVNUb36E=
-X-Google-Smtp-Source: ACHHUZ7tpfU+aQ7rSH03sc6ApfU8v9tZA8KXWhfxTK4WtuqMVmopeokBlhCUPwC1lynBsin9PcIVIQ==
-X-Received: by 2002:a05:6a20:160a:b0:10a:ef03:3346 with SMTP id
- l10-20020a056a20160a00b0010aef033346mr4021874pzj.9.1685474082649; 
- Tue, 30 May 2023 12:14:42 -0700 (PDT)
+ bh=ywmi9L6z6eQWYQYbR+hM2bvxiXGNwKV8h04XC6ZlKog=;
+ b=ACMWjVOrKBBjX5YT2/onUeY2lWzNiVU51TmPg6jUmuDpKuZi4pzPFa49LOMjbiE+Px
+ PHuG9Y9cqAxQlK79ZN8Ah0aJ+xHTrUfXqYa8P235AsANyK6NLYX/JWLMt8sflhb1i3/y
+ 81lzYetzaN4/jwuIKXiIFNPK4hzWGd0ZLx5COIEwe1ZNC9cevYpp6YwSonoeF0i7HI3c
+ e9fLE0QWaKPOiHBHQgVEyct3DQbCh7VWdMapOqtW3NzfJx6bqSbWltCsJiIhu5y+jpoD
+ /9cE6weUv3mBYZw0SB+7gZxbTYDLqMBD1RHPEsV7BAneudayHz3qbJKmV0XUnfmiGnOU
+ MyMw==
+X-Gm-Message-State: AC+VfDyeEpy9tsdg4WKW7xkypwdlwJjQG7KDMbdWYFt5KZSwRHWJEe+W
+ D6/cEGHDmhhSSR5ZrfyFTBzSAJgoH+M9vo03zZE=
+X-Google-Smtp-Source: ACHHUZ6s/1ZgTfpqGLx5ywu1kmYTAO2FUZUQNL3MALh3Pxh+HGWHKFIxcPSPvEseOJFRQhzw9B82Lw==
+X-Received: by 2002:a05:6a00:14cc:b0:643:96bc:b292 with SMTP id
+ w12-20020a056a0014cc00b0064396bcb292mr4540934pfu.5.1685474083439; 
+ Tue, 30 May 2023 12:14:43 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
  by smtp.gmail.com with ESMTPSA id
- 10-20020a63104a000000b0051806da5cd6sm8926757pgq.60.2023.05.30.12.14.41
+ 10-20020a63104a000000b0051806da5cd6sm8926757pgq.60.2023.05.30.12.14.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 12:14:42 -0700 (PDT)
+ Tue, 30 May 2023 12:14:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v3 04/20] target/arm: Use tcg_gen_qemu_ld_i128 for LDXP
-Date: Tue, 30 May 2023 12:14:22 -0700
-Message-Id: <20230530191438.411344-5-richard.henderson@linaro.org>
+Subject: [PATCH v3 05/20] target/arm: Use tcg_gen_qemu_{st,
+ ld}_i128 for do_fp_{st, ld}
+Date: Tue, 30 May 2023 12:14:23 -0700
+Message-Id: <20230530191438.411344-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230530191438.411344-1-richard.henderson@linaro.org>
 References: <20230530191438.411344-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,75 +94,117 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 While we don't require 16-byte atomicity here, using a single larger
-load simplifies the code, and makes it a closer match to STXP.
+operation simplifies the code.  Introduce finalize_memop_asimd for this.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ target/arm/tcg/translate.h     | 24 +++++++++++++++++++++++
+ target/arm/tcg/translate-a64.c | 35 +++++++++++-----------------------
+ 2 files changed, 35 insertions(+), 24 deletions(-)
 
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 9a33076c3d..626cf07970 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -604,6 +604,30 @@ static inline MemOp finalize_memop_pair(DisasContext *s, MemOp opc)
+     return finalize_memop_atom(s, opc, atom);
+ }
+ 
++/**
++ * finalize_memop_asimd:
++ * @s: DisasContext
++ * @opc: size+sign+align of the memory operation
++ *
++ * Like finalize_memop_atom, but with atomicity of AccessType_ASIMD.
++ */
++static inline MemOp finalize_memop_asimd(DisasContext *s, MemOp opc)
++{
++    /*
++     * In the pseudocode for Mem[], with AccessType_ASIMD, size == 16,
++     * if IsAligned(8), the first case provides separate atomicity for
++     * the pair of 64-bit accesses.  If !IsAligned(8), the middle cases
++     * do not apply, and we're left with the final case of no atomicity.
++     * Thus MO_ATOM_IFALIGN_PAIR.
++     *
++     * For other sizes, normal LSE2 rules apply.
++     */
++    if ((opc & MO_SIZE) == MO_128) {
++        return finalize_memop_atom(s, opc, MO_ATOM_IFALIGN_PAIR);
++    }
++    return finalize_memop(s, opc);
++}
++
+ /**
+  * asimd_imm_const: Expand an encoded SIMD constant value
+  *
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 967400ed68..0e720f2612 100644
+index 0e720f2612..6bb68618a0 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -2398,14 +2398,14 @@ static void gen_load_exclusive(DisasContext *s, int rt, int rt2,
-                                TCGv_i64 addr, int size, bool is_pair)
+@@ -921,26 +921,20 @@ static void do_fp_st(DisasContext *s, int srcidx, TCGv_i64 tcg_addr, int size)
  {
-     int idx = get_mem_index(s);
--    MemOp memop = s->be_data;
-+    MemOp memop;
+     /* This writes the bottom N bits of a 128 bit wide vector to memory */
+     TCGv_i64 tmplo = tcg_temp_new_i64();
+-    MemOp mop;
++    MemOp mop = finalize_memop_asimd(s, size);
  
-     g_assert(size <= 3);
-     if (is_pair) {
-         g_assert(size >= 2);
-         if (size == 2) {
-             /* The pair must be single-copy atomic for the doubleword.  */
--            memop |= MO_64 | MO_ALIGN;
-+            memop = finalize_memop(s, MO_64 | MO_ALIGN);
-             tcg_gen_qemu_ld_i64(cpu_exclusive_val, addr, idx, memop);
-             if (s->be_data == MO_LE) {
-                 tcg_gen_extract_i64(cpu_reg(s, rt), cpu_exclusive_val, 0, 32);
-@@ -2415,21 +2415,30 @@ static void gen_load_exclusive(DisasContext *s, int rt, int rt2,
-                 tcg_gen_extract_i64(cpu_reg(s, rt2), cpu_exclusive_val, 0, 32);
-             }
-         } else {
--            /* The pair must be single-copy atomic for *each* doubleword, not
--               the entire quadword, however it must be quadword aligned.  */
--            memop |= MO_64;
--            tcg_gen_qemu_ld_i64(cpu_exclusive_val, addr, idx,
--                                memop | MO_ALIGN_16);
-+            /*
-+             * The pair must be single-copy atomic for *each* doubleword, not
-+             * the entire quadword, however it must be quadword aligned.
-+             * Expose the complete load to tcg, for ease of tlb lookup,
-+             * but indicate that only 8-byte atomicity is required.
-+             */
-+            TCGv_i128 t16 = tcg_temp_new_i128();
+     tcg_gen_ld_i64(tmplo, cpu_env, fp_reg_offset(s, srcidx, MO_64));
  
--            TCGv_i64 addr2 = tcg_temp_new_i64();
--            tcg_gen_addi_i64(addr2, addr, 8);
--            tcg_gen_qemu_ld_i64(cpu_exclusive_high, addr2, idx, memop);
-+            memop = finalize_memop_atom(s, MO_128 | MO_ALIGN_16,
-+                                        MO_ATOM_IFALIGN_PAIR);
-+            tcg_gen_qemu_ld_i128(t16, addr, idx, memop);
- 
-+            if (s->be_data == MO_LE) {
-+                tcg_gen_extr_i128_i64(cpu_exclusive_val,
-+                                      cpu_exclusive_high, t16);
-+            } else {
-+                tcg_gen_extr_i128_i64(cpu_exclusive_high,
-+                                      cpu_exclusive_val, t16);
-+            }
-             tcg_gen_mov_i64(cpu_reg(s, rt), cpu_exclusive_val);
-             tcg_gen_mov_i64(cpu_reg(s, rt2), cpu_exclusive_high);
-         }
+-    if (size < 4) {
+-        mop = finalize_memop(s, size);
++    if (size < MO_128) {
+         tcg_gen_qemu_st_i64(tmplo, tcg_addr, get_mem_index(s), mop);
      } else {
--        memop |= size | MO_ALIGN;
-+        memop = finalize_memop(s, size | MO_ALIGN);
-         tcg_gen_qemu_ld_i64(cpu_exclusive_val, addr, idx, memop);
-         tcg_gen_mov_i64(cpu_reg(s, rt), cpu_exclusive_val);
+-        bool be = s->be_data == MO_BE;
+-        TCGv_i64 tcg_hiaddr = tcg_temp_new_i64();
+         TCGv_i64 tmphi = tcg_temp_new_i64();
++        TCGv_i128 t16 = tcg_temp_new_i128();
+ 
+         tcg_gen_ld_i64(tmphi, cpu_env, fp_reg_hi_offset(s, srcidx));
++        tcg_gen_concat_i64_i128(t16, tmplo, tmphi);
+ 
+-        mop = s->be_data | MO_UQ;
+-        tcg_gen_qemu_st_i64(be ? tmphi : tmplo, tcg_addr, get_mem_index(s),
+-                            mop | (s->align_mem ? MO_ALIGN_16 : 0));
+-        tcg_gen_addi_i64(tcg_hiaddr, tcg_addr, 8);
+-        tcg_gen_qemu_st_i64(be ? tmplo : tmphi, tcg_hiaddr,
+-                            get_mem_index(s), mop);
++        tcg_gen_qemu_st_i128(t16, tcg_addr, get_mem_index(s), mop);
      }
+ }
+ 
+@@ -952,24 +946,17 @@ static void do_fp_ld(DisasContext *s, int destidx, TCGv_i64 tcg_addr, int size)
+     /* This always zero-extends and writes to a full 128 bit wide vector */
+     TCGv_i64 tmplo = tcg_temp_new_i64();
+     TCGv_i64 tmphi = NULL;
+-    MemOp mop;
++    MemOp mop = finalize_memop_asimd(s, size);
+ 
+-    if (size < 4) {
+-        mop = finalize_memop(s, size);
++    if (size < MO_128) {
+         tcg_gen_qemu_ld_i64(tmplo, tcg_addr, get_mem_index(s), mop);
+     } else {
+-        bool be = s->be_data == MO_BE;
+-        TCGv_i64 tcg_hiaddr;
++        TCGv_i128 t16 = tcg_temp_new_i128();
++
++        tcg_gen_qemu_ld_i128(t16, tcg_addr, get_mem_index(s), mop);
+ 
+         tmphi = tcg_temp_new_i64();
+-        tcg_hiaddr = tcg_temp_new_i64();
+-
+-        mop = s->be_data | MO_UQ;
+-        tcg_gen_qemu_ld_i64(be ? tmphi : tmplo, tcg_addr, get_mem_index(s),
+-                            mop | (s->align_mem ? MO_ALIGN_16 : 0));
+-        tcg_gen_addi_i64(tcg_hiaddr, tcg_addr, 8);
+-        tcg_gen_qemu_ld_i64(be ? tmplo : tmphi, tcg_hiaddr,
+-                            get_mem_index(s), mop);
++        tcg_gen_extr_i128_i64(tmplo, tmphi, t16);
+     }
+ 
+     tcg_gen_st_i64(tmplo, cpu_env, fp_reg_offset(s, destidx, MO_64));
 -- 
 2.34.1
 
