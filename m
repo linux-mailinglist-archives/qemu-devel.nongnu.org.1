@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5BE715E35
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15592715E4B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:01:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3xzi-0002Y7-AE; Tue, 30 May 2023 07:58:30 -0400
+	id 1q3y2g-0003kt-Hw; Tue, 30 May 2023 08:01:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q3xze-0002XT-Eu
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:58:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q3y28-0003i5-Ft
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:01:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q3xzc-0001Oz-Er
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:58:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q3y27-0002QF-2s
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:01:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685447903;
+ s=mimecast20190719; t=1685448058;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=z/OizjmdwSxoh5Rw6Id2e+/Qf1nb0LjNtqRjBC9yzzQ=;
- b=FwPyVjojFxmN41LY1gH8wm37pAnIQ5hqv+6kph4XLdwoHsN+kDFDumKnykC/9VxRXFoZFD
- 3XcaEhituOk69mqyBqAoJk140UTvQI8R8meWYdklKNdU2MtGTkB6J4h6TcXz/Lx46GbBzx
- LbR3GZSTZbgl9PMpxTddyVnLboAcpEY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=p2CiVNb+k9zPKo8GHj6Mmt4f+fPc/V6y4e00noFsJf8=;
+ b=RUEtc+8f2ECgZAWKDrXX0cZFqpqMlDhMVgH3paEUVPivte2sA7p3YDd4vCFSyP1QOmlGv6
+ DC7v+0NLJ/HuffZnOvehNvJNvIqpez/dBy2j8JwEqxy1fSDGrYwjPEpMyv54w8xXjs9cGV
+ 85/0fp1VE8zvpZzMVoP0Qb2/oqbCCCI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-aHHKqegAMZyfR4StrH_g6Q-1; Tue, 30 May 2023 07:58:22 -0400
-X-MC-Unique: aHHKqegAMZyfR4StrH_g6Q-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3062e5d0cd3so1682989f8f.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 04:58:21 -0700 (PDT)
+ us-mta-471-k8Mjrp0GNy-LXuEnxn6D6g-1; Tue, 30 May 2023 08:00:56 -0400
+X-MC-Unique: k8Mjrp0GNy-LXuEnxn6D6g-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f70f9995aeso2276265e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 05:00:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685447901; x=1688039901;
+ d=1e100.net; s=20221208; t=1685448055; x=1688040055;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z/OizjmdwSxoh5Rw6Id2e+/Qf1nb0LjNtqRjBC9yzzQ=;
- b=hXO0XAwNHZrlwp29gl0Ppo6Q+qPar8jBUMsyQcZo8sGrG/ZC25qgWXb+oIrXHGVO/8
- dRktsvCju00tUmozybzfa4Iu774iA3eURVhRsEOS4V0cLnzQ7TlRwMQhKOPNKlcIhyXL
- 4ZzZmuvQkDWvNCGTag6BJzTCPkMz2hrpk/YSA6Zju2MMv/kY92eXT0ZEbB8WOF9eWLsy
- CSHlhmmhiUUVWUmJVGIHULxDfwdxVOGbMoFzE5FO9y+ZOuy9NkvBHt4DjlUOtvO7RKuC
- Z0JXRt8wM8Rvm6rX3toJZV251IGj88pLn10mUDRcEREH6u4eZeujMFDmQz8aMfx6Cfgt
- 3zIw==
-X-Gm-Message-State: AC+VfDyQGLEvgVSLmxvMYwrNW4cTNgFDDSuundNvstmOJ2IlWw+DyTvx
- L2KrtDdhbLHJIyjI4NeeNnLI0Y0FBiDyweIM9FTnLjZLlISHau+8aTrcCAwpdhiavNhREYMQ2A4
- ckPUwCwnMe6aB8Bk=
-X-Received: by 2002:a5d:4c42:0:b0:30a:d731:a220 with SMTP id
- n2-20020a5d4c42000000b0030ad731a220mr1564384wrt.41.1685447900977; 
- Tue, 30 May 2023 04:58:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6MzeEr5rxh3YJSDPfoEtOGEiVWBC0vs7trgxNw4iaV/+6Ja0Q4KxfTWGqb0U/Y54DW9OWl3A==
-X-Received: by 2002:a5d:4c42:0:b0:30a:d731:a220 with SMTP id
- n2-20020a5d4c42000000b0030ad731a220mr1564376wrt.41.1685447900744; 
- Tue, 30 May 2023 04:58:20 -0700 (PDT)
+ bh=p2CiVNb+k9zPKo8GHj6Mmt4f+fPc/V6y4e00noFsJf8=;
+ b=aJH7jNHIyXD5Oi/a2XeqJINkdH04ctZyjQi28GgtVfJSHSaQ6S3+/KbSsxegAET6MH
+ Slr6Tj3aacpP1DrPgrC0Zw3CdhuBxyn6C4+ChMJrW4gWDsUR6TgHIoLhtTnGVgNyvcw4
+ +9r+/FhDzsXDL7yuMDLWCOVv9Ha72e5FMH0Kn1iBFocQep1B2waRdXlov9GhJWrdLyMR
+ aob9RR/ROUZd5eJ65JnmwtmNHZprOwwO0lSDBhvsiLsi6ndnHM6iViun6mwT+9W42Qnk
+ 3vzkvEWoA0TLtQ7/tuA/+re2rAF5jXo5bR31PTx28zcCuALKlHUrg2tJsIVKbyzSrMM1
+ YNlg==
+X-Gm-Message-State: AC+VfDwy+TMpGzyVd68/5xMOz5S5KT5aiLyZXi+7BQrDhagcJAHUbtC7
+ Ye5vxA6bkzp7bsLl1jKmHsOkWtmkxA2mvUSrzHA0idj3GrGs6cFal52nJHco2yzc6GZOqIKhbQY
+ keiEE3ApOJMnm2AY=
+X-Received: by 2002:a05:600c:3786:b0:3f6:5166:6da4 with SMTP id
+ o6-20020a05600c378600b003f651666da4mr1411926wmr.31.1685448055564; 
+ Tue, 30 May 2023 05:00:55 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5Oj1Esm3bHjYYocKWpNntSNkW/q6CHu71bAlGw3rSrk97bC/Pv3SMcrZdGCmEkDC8sybNPCA==
+X-Received: by 2002:a05:600c:3786:b0:3f6:5166:6da4 with SMTP id
+ o6-20020a05600c378600b003f651666da4mr1411915wmr.31.1685448055315; 
+ Tue, 30 May 2023 05:00:55 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-176-11.web.vodafone.de.
  [109.43.176.11]) by smtp.gmail.com with ESMTPSA id
- n2-20020a5d6602000000b0030903d44dbcsm3019356wru.33.2023.05.30.04.58.19
+ u4-20020a7bc044000000b003f6f6a6e760sm10705104wmc.32.2023.05.30.05.00.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 04:58:20 -0700 (PDT)
-Message-ID: <cb9da1f6-183a-151f-49b2-8ec103bba828@redhat.com>
-Date: Tue, 30 May 2023 13:58:19 +0200
+ Tue, 30 May 2023 05:00:54 -0700 (PDT)
+Message-ID: <a6f5f4eb-84fa-7604-513d-8451fa5fad59@redhat.com>
+Date: Tue, 30 May 2023 14:00:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 1/5] configure: remove --with-git= option
+Subject: Re: [PATCH 2/5] configure: rename --enable-pypi to --enable-download, 
+ control subprojects too
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- berrange@redhat.com
-Cc: peter.maydell@linaro.org
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, berrange@redhat.com
 References: <20230527092851.705884-1-pbonzini@redhat.com>
- <20230527092851.705884-2-pbonzini@redhat.com>
+ <20230527092851.705884-3-pbonzini@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230527092851.705884-2-pbonzini@redhat.com>
+In-Reply-To: <20230527092851.705884-3-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -102,36 +102,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 27/05/2023 11.28, Paolo Bonzini wrote:
-> There is not really any scenario where one would use any other git
-> binary than "the first git in the PATH" aka $(command -v git).  In
-> fact for example "meson subprojects download" or scripts/checkpatch.pl
-> do not obey the GIT environment variable.
+> The behavior of --{enable,disable}-pypi is similar to that of
+> -Dwrapmode={default,nodownload} respectively.  In particular,
+> in both cases a feature needs to be explicitly enabled for the
+> dependency to be downloaded.
 > 
-> Remove the unnecessary knob, but test for the presence of git in
-> the configure and git-submodule.sh scripts.
+> So, use a single option to control both cases.  Now, --enable-slirp
+> will trigger cloning and building of libslirp if the .pc file
+> is not found on the machine.
 > 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   Makefile                 | 2 +-
->   configure                | 6 ++----
->   meson.build              | 1 -
->   scripts/git-submodule.sh | 8 +++++++-
->   4 files changed, 10 insertions(+), 7 deletions(-)
+>   configure              | 17 +++++++----------
+>   subprojects/.gitignore |  3 +++
+>   2 files changed, 10 insertions(+), 10 deletions(-)
+>   create mode 100644 subprojects/.gitignore
 
-The commit cc84d63a42e31c2a that introduce this switch gave a
-rationale:
-
-     Some users can't run a bare 'git' command, due to need for a transparent
-     proxying solution such as 'tsocks'. This adds an argument to configure to
-     let users specify such a thing:
-     
-       ./configure --with-git="tsocks git"
-
-But if the plain "git" command is unusable on their system,
-they should likely introduce a proper wrapper on their end
-for this command anyway, so IMHO it's ok if we remove this
-again. Daniel, what do you think?
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
