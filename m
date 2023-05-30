@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02335716BC9
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF39716BCA
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:01:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q43eS-0001dA-2l; Tue, 30 May 2023 14:00:56 -0400
+	id 1q43ef-00026e-2G; Tue, 30 May 2023 14:01:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1q43eP-0001ZX-7I
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:00:53 -0400
+ id 1q43eU-0001vs-JG
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:00:58 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1q43eN-0002hm-LW
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:00:52 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ id 1q43eS-0002jh-4K
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:00:58 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34UE4tkr008512; Tue, 30 May 2023 18:00:47 GMT
+ 34UE54jf020902; Tue, 30 May 2023 18:00:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=Ec2yjzcuWoT8Qe2E87T1LVSwwhoAWx9rdoJA8pHb+Ok=;
- b=i5VpUtr9riioSi3Iuwen9Es82WopMNT15RWZJmR9jBsZLp7qjxb/5ET/pwOT121HX0pR
- XxNBzVfbg9fiqklmEeKWspqXyoFOmH5cElmEQyloNgTSLc0Tj+CCx72nUglt19wRF2sE
- GUwl1m0/gL4wGCxcBq394oeyB/ulW0FpaXcCCWJ7Agvac6gIfx5c00Kn1l8LPjMeL4u1
- b8DP0b0muSsoH2ERgqNw0Y9QpUePEprIjBqfCAUk0nm5V4djl6PBCM+la6fhrTyVWWsK
- S+drdlqkRlDaU8zpK7ng8iAVCteQ8q6rx02MYQbrG8+dYgjWTiUfy4NAEF1WOAX8orKv 4w== 
+ bh=hHvviXGKXz7/JvAkgQz3l7QwnqzLJhzckRGwXC/3Pmg=;
+ b=YzOkA8/I0hn/bNMv1kb/UMi7g1Jf/+Q/FsQEgqXgGI2qupz9AKeg3WyApkg3dSrv6O/x
+ 9NrWPhnRAEQb65LovxLXYm+Ie6xGnm4Yb/44urH13+x6mSJ1rNj0fCp65av5laWTcIX+
+ 5W83vpepuPB4J3/HnP9LygoGJVCq0yVUqoIalCDHWsTWym84ckAmClFCbpUt1KjetPjX
+ 8NzPYzoM2dQ2DmlZr7LirvjJ2QSwS3jdqP3tz8PYPs4pit/JklXuxJmyBdup4ZAWVwYX
+ VcvsmcIZIYrC+WEA6eXFGc4aqT1E4MXc85ln3UPEd1sDd4u6B0MZsNBS9wqu4IBiG5rL dw== 
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qvhmjkesw-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qvhb93gfv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 May 2023 18:00:47 +0000
+ Tue, 30 May 2023 18:00:51 +0000
 Received: from pps.filterd
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 34UHmbFm014623; Tue, 30 May 2023 18:00:46 GMT
+ with ESMTP id 34UHfg5K014618; Tue, 30 May 2023 18:00:50 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3qu8a48uwv-1
+ 3qu8a48v34-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 May 2023 18:00:46 +0000
+ Tue, 30 May 2023 18:00:50 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34UHxspX011459;
- Tue, 30 May 2023 18:00:46 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34UHxspZ011459;
+ Tue, 30 May 2023 18:00:50 GMT
 Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-191-61.vpn.oracle.com
  [10.175.191.61])
  by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3qu8a48srr-12; Tue, 30 May 2023 18:00:45 +0000
+ 3qu8a48srr-13; Tue, 30 May 2023 18:00:49 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -66,10 +66,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v3 11/15] vfio/common: Move dirty tracking ranges update to
- helper
-Date: Tue, 30 May 2023 18:59:33 +0100
-Message-Id: <20230530175937.24202-12-joao.m.martins@oracle.com>
+Subject: [PATCH v3 12/15] vfio/common: Support device dirty page tracking with
+ vIOMMU
+Date: Tue, 30 May 2023 18:59:34 +0100
+Message-Id: <20230530175937.24202-13-joao.m.martins@oracle.com>
 In-Reply-To: <20230530175937.24202-1-joao.m.martins@oracle.com>
 References: <20230530175937.24202-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -82,8 +82,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  phishscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
  definitions=main-2305300144
-X-Proofpoint-ORIG-GUID: akBRhUbZ4ZK7OFE2gJj6uasiIVzHqHsH
-X-Proofpoint-GUID: akBRhUbZ4ZK7OFE2gJj6uasiIVzHqHsH
+X-Proofpoint-GUID: gvG2qt7Ghnse6XfhqvrkWZ4taSyibWv2
+X-Proofpoint-ORIG-GUID: gvG2qt7Ghnse6XfhqvrkWZ4taSyibWv2
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -109,73 +109,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Separate the code that update the ranges from the listener, in
-preparation to expand its use to vIOMMU support.
+Currently, device dirty page tracking with vIOMMU is not supported,
+and a blocker is added and the migration is prevented.
 
+When vIOMMU is used, IOVA ranges are DMA mapped/unmapped on the fly as
+requesting by the vIOMMU. These IOVA ranges can potentially be mapped
+anywhere in the vIOMMU IOVA space as advertised by the VMM.
+
+To support device dirty tracking when vIOMMU enabled instead create the
+dirty ranges based on the vIOMMU provided limits, which leads to the
+tracking of the whole IOVA space regardless of what devices use.
+
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- hw/vfio/common.c | 36 +++++++++++++++++++++---------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ hw/vfio/common.c | 64 ++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 54 insertions(+), 10 deletions(-)
 
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 060acccb3443..b8d97577f856 100644
+index b8d97577f856..d2897aceedae 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -1432,20 +1432,10 @@ typedef struct VFIODirtyRangesListener {
-     MemoryListener listener;
- } VFIODirtyRangesListener;
- 
--static void vfio_dirty_tracking_update(MemoryListener *listener,
--                                       MemoryRegionSection *section)
-+static void vfio_dirty_tracking_update(hwaddr iova, hwaddr end,
-+                                       VFIODirtyRanges *range)
- {
--    VFIODirtyRangesListener *dirty = container_of(listener,
--                                                  VFIODirtyRangesListener,
--                                                  listener);
--    VFIODirtyRanges *range = &dirty->ranges;
--    hwaddr iova, end, *min, *max;
--
--    if (!vfio_listener_valid_section(section, "tracking_update") ||
--        !vfio_get_section_iova_range(dirty->container, section,
--                                     &iova, &end, NULL)) {
--        return;
--    }
-+    hwaddr *min, *max;
- 
-     /*
-      * The address space passed to the dirty tracker is reduced to two ranges:
-@@ -1469,12 +1459,28 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
-     }
- 
-     trace_vfio_device_dirty_tracking_update(iova, end, *min, *max);
--    return;
-+}
-+
-+static void vfio_listener_dirty_tracking_update(MemoryListener *listener,
-+                                                MemoryRegionSection *section)
-+{
-+    VFIODirtyRangesListener *dirty = container_of(listener,
-+                                                  VFIODirtyRangesListener,
-+                                                  listener);
-+    hwaddr iova, end;
-+
-+    if (!vfio_listener_valid_section(section, "tracking_update") ||
-+        !vfio_get_section_iova_range(dirty->container, section,
-+                                     &iova, &end, NULL)) {
-+        return;
-+    }
-+
-+    vfio_dirty_tracking_update(iova, end, &dirty->ranges);
+@@ -447,6 +447,31 @@ static bool vfio_viommu_preset(void)
+     return false;
  }
  
- static const MemoryListener vfio_dirty_tracking_listener = {
-     .name = "vfio-tracking",
--    .region_add = vfio_dirty_tracking_update,
-+    .region_add = vfio_listener_dirty_tracking_update,
++static int vfio_viommu_get_max_iova(hwaddr *max_iova)
++{
++    VFIOAddressSpace *space;
++    int ret = -EINVAL;
++
++    QLIST_FOREACH(space, &vfio_address_spaces, list) {
++        if (space->as == &address_space_memory) {
++            continue;
++        }
++
++        if (!space->iommu_mr) {
++            break;
++        }
++
++        ret = memory_region_iommu_get_attr(space->iommu_mr,
++                                           IOMMU_ATTR_MAX_IOVA,
++                                           max_iova);
++        if (ret) {
++            break;
++        }
++    }
++
++    return ret;
++}
++
+ int vfio_block_giommu_migration(Error **errp)
+ {
+     int ret;
+@@ -1483,10 +1508,11 @@ static const MemoryListener vfio_dirty_tracking_listener = {
+     .region_add = vfio_listener_dirty_tracking_update,
  };
  
- static void vfio_dirty_tracking_init(VFIOContainer *container,
+-static void vfio_dirty_tracking_init(VFIOContainer *container,
++static int vfio_dirty_tracking_init(VFIOContainer *container,
+                                      VFIODirtyRanges *ranges)
+ {
+     VFIODirtyRangesListener dirty;
++    int ret;
+ 
+     memset(&dirty, 0, sizeof(dirty));
+     dirty.ranges.min32 = UINT32_MAX;
+@@ -1494,17 +1520,29 @@ static void vfio_dirty_tracking_init(VFIOContainer *container,
+     dirty.listener = vfio_dirty_tracking_listener;
+     dirty.container = container;
+ 
+-    memory_listener_register(&dirty.listener,
+-                             container->space->as);
++    if (vfio_viommu_preset()) {
++        hwaddr iommu_max_iova;
++
++        ret = vfio_viommu_get_max_iova(&iommu_max_iova);
++        if (ret) {
++            return ret;
++        }
++
++        vfio_dirty_tracking_update(0, iommu_max_iova, &dirty.ranges);
++    } else {
++        memory_listener_register(&dirty.listener,
++                                 container->space->as);
++        /*
++         * The memory listener is synchronous, and used to calculate the range
++         * to dirty tracking. Unregister it after we are done as we are not
++         * interested in any follow-up updates.
++         */
++        memory_listener_unregister(&dirty.listener);
++    }
+ 
+     *ranges = dirty.ranges;
+ 
+-    /*
+-     * The memory listener is synchronous, and used to calculate the range
+-     * to dirty tracking. Unregister it after we are done as we are not
+-     * interested in any follow-up updates.
+-     */
+-    memory_listener_unregister(&dirty.listener);
++    return 0;
+ }
+ 
+ static void vfio_devices_dma_logging_stop(VFIOContainer *container)
+@@ -1609,7 +1647,13 @@ static int vfio_devices_dma_logging_start(VFIOContainer *container)
+     VFIOGroup *group;
+     int ret = 0;
+ 
+-    vfio_dirty_tracking_init(container, &ranges);
++    ret = vfio_dirty_tracking_init(container, &ranges);
++    if (ret) {
++        error_report("Failed to init DMA logging ranges, err %d",
++                      ret);
++        return -EOPNOTSUPP;
++    }
++
+     feature = vfio_device_feature_dma_logging_start_create(container,
+                                                            &ranges);
+     if (!feature) {
 -- 
 2.39.3
 
