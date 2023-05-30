@@ -2,86 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5912716496
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 16:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FF87164C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 16:48:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q40Xq-0003Qk-OS; Tue, 30 May 2023 10:41:54 -0400
+	id 1q40cX-0006tc-6d; Tue, 30 May 2023 10:46:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q40XU-0002rF-Sa
- for qemu-devel@nongnu.org; Tue, 30 May 2023 10:41:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q40c9-0006le-Re
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 10:46:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q40XM-0005tF-MB
- for qemu-devel@nongnu.org; Tue, 30 May 2023 10:41:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1q40c6-00077H-VK
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 10:46:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685457682;
+ s=mimecast20190719; t=1685457978;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+QVtSukdWMJFWJbQHDk1BfUiTNQh6fR/w5xCGVr0CCg=;
- b=A4hs0jMTqIO6dtXb28Gvl5mlBZYDhncrjKaxZgpK7YjepjWJlcQp5Te/g99DN2/1Ubp7WH
- 4xHipvUVNMtZbya0DJraFTA5cJ6yUcYcZvgPGHytSRS0jTRiWVaCoHOH+hzDB7eh+YR1yL
- 0y5GDeovu7QA4LW4v93C8ZB0ZX9xIwQ=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=O1HxeF5m3sFufMGO0E7IjEwfIpmMk+aQrABXPvWZqeg=;
+ b=MwVmGI2NzKYVlpcIwQ6YfcWAa8fy9dCrFI0CqIYQqoIEXISgcp0fGh7IvBXzMOt4WuYnGI
+ nG5W1K6pEvF5E8jOm6YQK6OfEr7xSmIorfSBRIifGN7TsOdcXKUsk8ELUjTWtWFjctXgc6
+ 4RrIPxGDT2Sn2J77/GoID57ApEIAl78=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-443-Uxdgp1YkOoqNwLBWq_tHlw-1; Tue, 30 May 2023 10:41:20 -0400
-X-MC-Unique: Uxdgp1YkOoqNwLBWq_tHlw-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-75cb47e5507so9682585a.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 07:41:20 -0700 (PDT)
+ us-mta-523-Gb7TNTmDPUGFVONUsbexMw-1; Tue, 30 May 2023 10:46:17 -0400
+X-MC-Unique: Gb7TNTmDPUGFVONUsbexMw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f60f085cd2so17498055e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 07:46:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685457680; x=1688049680;
+ d=1e100.net; s=20221208; t=1685457972; x=1688049972;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+QVtSukdWMJFWJbQHDk1BfUiTNQh6fR/w5xCGVr0CCg=;
- b=O720TwD9PVJ0JN2GnZS12KCN2rmM1CvHpvW6YbgTlnVevAgpeaN8281AjSW4sF9cL0
- 7vDeXuvagZcBnVJXIybn6HfXjoLsFn5vrgsyILmGp02Tc+Aivsc2GiU6ZMhh4XvNnRaN
- Vll+JspzJTscsYZsSScdU8snqPOV/oaAJjFnaiw7XchwBba3o12OqlDBPuN8uUWBUH5w
- bhVuPdB4L/QfozN46MLnXdXMhN53csWk28tpnLdjChlnZ5OllxXEyvhkRJCri4/QWpKQ
- qk/O1RJIkVt69ljxtcPWeaUW1+KO0nnhDfsHGeg8fUlFGOMa//Y8ZR7ST7MJaeYUBGcl
- tyYA==
-X-Gm-Message-State: AC+VfDy7z70XnD6Xrdur6DLIuffAL+mTKkrE0nDI2Cnc+eld9jSV6B24
- LtxPRgzYzywdZ0NrUEe2NvF+2N931Tx8HRVDMgzkn6GU5tFsAIKd0cYePwUBxE/wGIBZpriwdt2
- dOpjZyP7Lu2mR6sY=
-X-Received: by 2002:a05:620a:2b9a:b0:75b:23a1:82a3 with SMTP id
- dz26-20020a05620a2b9a00b0075b23a182a3mr2149519qkb.4.1685457680267; 
- Tue, 30 May 2023 07:41:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7OsD/YiZrfAtE/BuL5nbN69HPi+LIotc1NklF0tbSEJzNqsCwIJsLAuuRUe2z5H0sVoKAvYA==
-X-Received: by 2002:a05:620a:2b9a:b0:75b:23a1:82a3 with SMTP id
- dz26-20020a05620a2b9a00b0075b23a182a3mr2149507qkb.4.1685457679919; 
- Tue, 30 May 2023 07:41:19 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- y15-20020a37e30f000000b00759273c10eesm4129042qki.33.2023.05.30.07.41.17
+ bh=O1HxeF5m3sFufMGO0E7IjEwfIpmMk+aQrABXPvWZqeg=;
+ b=gYaZszPvJZAB19POak8Fh+eMuMuZ6movcBP45kaLtnA1GizHTXUXhmoT5PZ62ffmfV
+ p1z5bVj0ELxXBnm7l96HASzBn+4z44L1qyQY/tBzT1Z8Yz3pg03ViSx8LsPBvkmQoglF
+ eIt3/i4fl/FCjZZAqbOmfgwKZOczow3AdzrmYtXtAUc9TGDhoKv/r7A/+9SzOKVz0yCZ
+ dtXP1WdVMbtACBV5eYA0j6pKJ7ui22Uxe5SNKobbAhIu9M+UCRqDE9s1irrAVua8HFk5
+ uHGn30bm/nryNhSA7zO0+Abt5m7RCNrgK7zy4ilNtEcyszMtwHZDvC0m52p2JBMpYGiy
+ NIqA==
+X-Gm-Message-State: AC+VfDwReFWNHodDeFxSPU7ceMRWMlCt8GxuWbYO4xzwYAOFZawn3e35
+ qaMDtLy1mV9Ht+lY/uuKM9/skc92GmFe6VA2XmCvS0vrmsejeqf7GkKQ1jAlnnZVmPsDL+193wJ
+ aZyzDE4K+pW7iW1c=
+X-Received: by 2002:a7b:c048:0:b0:3f6:2a6:e2c with SMTP id
+ u8-20020a7bc048000000b003f602a60e2cmr2077405wmc.9.1685457972288; 
+ Tue, 30 May 2023 07:46:12 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4Iz7kyDuKX3yLz9zwz06Q1mjQ4vuUBAKSZCtLgIekoldFFi5bN70ULZi0vK3HkjO4PJDWf3A==
+X-Received: by 2002:a7b:c048:0:b0:3f6:2a6:e2c with SMTP id
+ u8-20020a7bc048000000b003f602a60e2cmr2077385wmc.9.1685457972011; 
+ Tue, 30 May 2023 07:46:12 -0700 (PDT)
+Received: from redhat.com ([2.52.11.69]) by smtp.gmail.com with ESMTPSA id
+ k10-20020a7bc40a000000b003f606869603sm21221562wmi.6.2023.05.30.07.46.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 07:41:18 -0700 (PDT)
-Date: Tue, 30 May 2023 10:41:17 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Wei Wang <wei.w.wang@intel.com>
-Cc: quintela@redhat.com, lei4.wang@intel.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 2/2] qtest/migration-tests.c: use "-incoming defer"
- for postcopy tests
-Message-ID: <ZHYLDSZiP+BQXv6K@x1n>
-References: <20230530090259.189462-1-wei.w.wang@intel.com>
- <20230530090259.189462-3-wei.w.wang@intel.com>
+ Tue, 30 May 2023 07:46:11 -0700 (PDT)
+Date: Tue, 30 May 2023 10:46:01 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Subject: Re: [PATCH 08/10] hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZE
+Message-ID: <20230530104504-mutt-send-email-mst@kernel.org>
+References: <20230530113838.257755-1-david@redhat.com>
+ <20230530113838.257755-9-david@redhat.com>
+ <20230530090655-mutt-send-email-mst@kernel.org>
+ <9d395d6f-4da9-45c6-bf20-ed33f1c4bca5@redhat.com>
+ <f73dfa5c-4efe-a1ad-3ed1-a2c8e783bc27@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230530090259.189462-3-wei.w.wang@intel.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <f73dfa5c-4efe-a1ad-3ed1-a2c8e783bc27@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,61 +111,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 05:02:59PM +0800, Wei Wang wrote:
-> The Postcopy preempt capability requires to be set before incoming
-> starts, so change the postcopy tests to start with deferred incoming and
-> call migrate-incoming after the cap has been set.
+On Tue, May 30, 2023 at 03:41:58PM +0200, David Hildenbrand wrote:
+> On 30.05.23 15:11, David Hildenbrand wrote:
+> > On 30.05.23 15:07, Michael S. Tsirkin wrote:
+> > > On Tue, May 30, 2023 at 01:38:36PM +0200, David Hildenbrand wrote:
+> > > > There are no remaining users in the tree, so let's remove it.
+> > > > 
+> > > > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > > > Cc: Richard Henderson <richard.henderson@linaro.org>
+> > > > Cc: Eduardo Habkost <eduardo@habkost.net>
+> > > > Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> > > > Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+> > > > Signed-off-by: David Hildenbrand <david@redhat.com>
+> > > 
+> > > 
+> > > This (with previous patches) means any user changing
+> > > device-memory-region-size machine property is now broken, right?
+> > 
+> > We only had a getter, no setter (for good reason).
+> > 
+> > > How do we know there are no users?
+> > 
+> > We don't. A quick google search makes "device-memory-region-size" and
+> > "qom-get" only pop up in BUG fixes for something that appears to be QEMU
+> > developer driven.
+> > 
+> > I don't consider it any useful, but if we want to be careful, sure we
+> > can leave it around.
 > 
-> Signed-off-by: Wei Wang <wei.w.wang@intel.com>
-
-Hmm.. so we used to do socket_start_incoming_migration_internal() before
-setting the right num for the preempt test, then I'm curious why it wasn't
-failing before this patch when trying to connect with the preempt channel..
-
-Wei, do you know?
-
-> ---
->  tests/qtest/migration-test.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+> Looking further, libvirt doesn't use it (and never used it).
 > 
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index b99b49a314..31ce3d959c 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -1158,10 +1158,11 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
->                                      QTestState **to_ptr,
->                                      MigrateCommon *args)
->  {
-> -    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-> +    g_autofree char *uri = NULL;
->      QTestState *from, *to;
-> +    QDict *rsp;
->  
-> -    if (test_migrate_start(&from, &to, uri, &args->start)) {
-> +    if (test_migrate_start(&from, &to, "defer", &args->start)) {
->          return -1;
->      }
->  
-> @@ -1180,9 +1181,14 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
->  
->      migrate_ensure_non_converge(from);
->  
-> +    rsp = wait_command(to, "{ 'execute': 'migrate-incoming',"
-> +                           "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
-> +    qobject_unref(rsp);
-> +
->      /* Wait for the first serial output from the source */
->      wait_for_serial("src_serial");
->  
-> +    uri = migrate_get_socket_address(to, "socket-address");
->      migrate_qmp(from, uri, "{}");
->  
->      wait_for_migration_pass(from);
+> I already renamed it in 2018 without anybody complaining:
+> 
+> https://www.mail-archive.com/qemu-devel@nongnu.org/msg532101.html
+> 
+> So I'm quite confident that nobody will really miss this property.
+> 
 > -- 
-> 2.27.0
+> Thanks,
 > 
+> David / dhildenb
+
+OK. In the future we need to be careful and use "x-" prefix for what
+we don't want to expose.
 
 -- 
-Peter Xu
+MST
 
 
