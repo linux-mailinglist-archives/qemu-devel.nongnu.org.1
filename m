@@ -2,74 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5CB716284
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A93387162AF
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:53:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zh3-0001K4-4l; Tue, 30 May 2023 09:47:21 -0400
+	id 1q3zmH-0003ki-R6; Tue, 30 May 2023 09:52:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zgw-0001Dp-9D
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:47:14 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zgu-0000Gf-R4
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:47:14 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51480d3e161so6002669a12.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:47:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685454431; x=1688046431;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Qhq+1FO/EIQe0BRgNkohT6DFOMOYO68w/Ys49eYQmHE=;
- b=VRxTcxTh0IGBGzh+WG0mibQzARWlthxWEZ+GvWD8B4taNGi99hplj7I7JFTyTItHuH
- NVbh5aidxLp1pdA7Zf+6brzHPxfn6M+ja5BRQJU2T1lL3i7BtnE4U6fKPWE5wl4LFFiq
- gclso7+02j7YtMWFA773TQLqVl7y5k8uHC8wG3Vkszyq3V/YA6OxM8qz6sK8zta58iAy
- kcUBMJyE9f1des/at7wKZmCZEQKZmvopFFYXaJbTRobVtV4N7VVz1wThFeR7O3W0T+xv
- Cd+/zv0JCF57oK29GVvqnYaeONu8d1d49GYLAaU6bjGKd1bDGoDWvswqWoEH/pCnSiCJ
- zs1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685454431; x=1688046431;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Qhq+1FO/EIQe0BRgNkohT6DFOMOYO68w/Ys49eYQmHE=;
- b=EGcJ4NDDAqYwrsRsPxnlMIJbBmikWAPi/WIBZAKSm/5ZOkH7oJNTRC/20HvWWkytNr
- 0vqIfAwByg4BLZgsng8LCddZ5VNIT9UVX3HRnDmWy9NcCF97ZFT3bbsWytZww77IdJUw
- EhSJ839Tfhw29mRpsqb5VjdEKbixa6tdlgsemSvTqDLI6NRhl3N5oTBRUONXv4OJo0Mu
- E/jMMDEvhmZh3eNgX8cinltCC29EQf/q2ghzvpDzHTL4ANMHu1amQtYIZ6yW7dJdD/Gn
- 3okT1svvj15GKosFWytH8t1cvb4rOjKwb5mPIfjH3wNan902f4plFoSIcoaawU/4qCoz
- YXag==
-X-Gm-Message-State: AC+VfDwpWhQDYlJdr6GlHo9cHXEu/Ln0Agn8n6oLERmIq/M7kpsoS2Qg
- kJeHWenewNkLLQ5yHTXBslbosZVozHFngJrbyutjlg==
-X-Google-Smtp-Source: ACHHUZ4MHxfBzG9YCECIAjPBWYT34oG5dARm20kgLEdSYcUGya3rMQWIEv+l5/Kz9Ig+qgdzYGNHqy3yhxBfAtj0Il8=
-X-Received: by 2002:a05:6402:31f5:b0:514:a3e5:e434 with SMTP id
- dy21-20020a05640231f500b00514a3e5e434mr1421953edb.34.1685454430986; Tue, 30
- May 2023 06:47:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
+ id 1q3zm6-0003kP-7s; Tue, 30 May 2023 09:52:34 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
+ id 1q3zm2-0001Vw-Lc; Tue, 30 May 2023 09:52:33 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 78FFD6308E;
+ Tue, 30 May 2023 13:52:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C30DC433EF;
+ Tue, 30 May 2023 13:52:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1685454736;
+ bh=3ndAr36uTBwYjy6I77BBaX0Rj0ALeAnFxLE6q/v9q9w=;
+ h=From:To:Cc:Subject:Date:From;
+ b=dGa7mlCe1a3Ou8/ZRKcAhDhOSjbuSLTHvFa3ABPMVScDhWK+XkBst/2iNCzpC8JyD
+ +fR2K85IaKAiRxmCR8iL/NHvsfgW7NvnTGvTxdYcGpb5rObECbUKdvqTv6hjhedtU4
+ GkzJHYunzOa7YciPOancSSN/YBpoYG5iT5VfJjkXZsf94oan9oLXf3embDGYKccgRH
+ 53NCbluPUOmq5lskUqp2Y7jr4Bz6KN5+0v6beGdayjDBInioSIiy1CIwIW1MLtVTuE
+ 9O8//us5foMIe1KS69xENnbXHVXXMgwUWNSnhUwAf6BHUBPkiltDi2sPxS+8DPHie0
+ NdjponWBDUZjQ==
+From: Ard Biesheuvel <ardb@kernel.org>
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
+Subject: [RFC PATCH] target/arm: use x86 intrinsics to implement AES
+ instructions
+Date: Tue, 30 May 2023 15:52:04 +0200
+Message-Id: <20230530135204.2903761-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230526002334.1760495-1-richard.henderson@linaro.org>
- <20230526002334.1760495-4-richard.henderson@linaro.org>
-In-Reply-To: <20230526002334.1760495-4-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 30 May 2023 14:47:00 +0100
-Message-ID: <CAFEAcA_15ewWUW4xEb0fYmt5=6FH+dPDcVEh1__6Kfcc3GPnZA@mail.gmail.com>
-Subject: Re: [PATCH v4 03/16] meson: Split test for __int128_t type from
- __int128_t arithmetic
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2890; i=ardb@kernel.org;
+ h=from:subject; bh=3ndAr36uTBwYjy6I77BBaX0Rj0ALeAnFxLE6q/v9q9w=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaX0f2Mtm1lPQIfLz7Lzf5sPpfVltpTUzFjxJm3uv5NLN
+ 6ZbRVd2lLIwiHEwyIopsgjM/vtu5+mJUrXOs2Rh5rAygQxh4OIUgIlEdDD8j1R8V3zXXUZH/x+f
+ XPOVjb/OCvfeX3br2PIppw7+3BF5YAojw/5V/zpN26Z4ymqqPX0542D94rd8rn4RP99WzeH6XjT
+ NghMA
+X-Developer-Key: i=ardb@kernel.org; a=openpgp;
+ fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,25 +80,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 26 May 2023 at 01:26, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Older versions of clang have missing runtime functions for arithmetic
-> with -fsanitize=undefined (see 464e3671f9d5c), so we cannot use
-> __int128_t for implementing Int128.  But __int128_t is present,
-> data movement works, and can be use for atomic128.
+ARM intrinsics for AES deviate from the x86 ones in the way they cover
+the different stages of each round, and so mapping one to the other is
+not entirely straight-forward. However, with a bit of care, we can still
+use the x86 ones to emulate the ARM ones, which makes them constant time
+(which is an important property in crypto) and substantially more
+efficient.
 
-"and it can be used"
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Cc: Alex Bennée <alex.bennee@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+Suggestions welcome on how to make this more generic across targets and
+compilers etc.
 
->
-> Probe for both CONFIG_INT128_TYPE and CONFIG_INT128, adjust
-> qemu/int128.h to define Int128Alias if CONFIG_INT128_TYPE,
-> and adjust the meson probe for atomics to use has_int128_type.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+ target/arm/tcg/crypto_helper.c | 43 ++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+diff --git a/target/arm/tcg/crypto_helper.c b/target/arm/tcg/crypto_helper.c
+index d28690321f..961112b6bd 100644
+--- a/target/arm/tcg/crypto_helper.c
++++ b/target/arm/tcg/crypto_helper.c
+@@ -18,10 +18,32 @@
+ #include "crypto/sm4.h"
+ #include "vec_internal.h"
+ 
++#ifdef __x86_64
++#pragma GCC target ("aes")
++#include <cpuid.h>
++#include <wmmintrin.h>
++
++static bool have_aes(void)
++{
++    static int cpuid_have_aes = -1;
++
++    if (cpuid_have_aes == -1) {
++        unsigned int eax, ebx, ecx, edx;
++        int ret = __get_cpuid(0x1, &eax, &ebx, &ecx, &edx);
++
++        cpuid_have_aes = ret && (ecx & bit_AES);
++    }
++    return cpuid_have_aes > 0;
++}
++#endif
++
+ union CRYPTO_STATE {
+     uint8_t    bytes[16];
+     uint32_t   words[4];
+     uint64_t   l[2];
++#ifdef __x86_64
++    __m128i    vec;
++#endif
+ };
+ 
+ #if HOST_BIG_ENDIAN
+@@ -54,6 +76,16 @@ static void do_crypto_aese(uint64_t *rd, uint64_t *rn,
+     union CRYPTO_STATE st = { .l = { rn[0], rn[1] } };
+     int i;
+ 
++#ifdef __x86_64__
++    if (have_aes()) {
++        __m128i *d = (__m128i *)rd;
++
++        *d = decrypt ? _mm_aesdeclast_si128(rk.vec ^ st.vec, (__m128i){})
++                     : _mm_aesenclast_si128(rk.vec ^ st.vec, (__m128i){});
++        return;
++    }
++#endif
++
+     /* xor state vector with round key */
+     rk.l[0] ^= st.l[0];
+     rk.l[1] ^= st.l[1];
+@@ -217,6 +249,17 @@ static void do_crypto_aesmc(uint64_t *rd, uint64_t *rm, bool decrypt)
+     union CRYPTO_STATE st = { .l = { rm[0], rm[1] } };
+     int i;
+ 
++#ifdef __x86_64__
++    if (have_aes()) {
++        __m128i *d = (__m128i *)rd;
++
++        *d = decrypt ? _mm_aesdec_si128(_mm_aesenclast_si128(st.vec, (__m128i){}),
++                                        (__m128i){})
++                     : _mm_aesenc_si128(_mm_aesdeclast_si128(st.vec, (__m128i){}),
++                                        (__m128i){});
++        return;
++    }
++#endif
+     for (i = 0; i < 16; i += 4) {
+         CR_ST_WORD(st, i >> 2) =
+             mc[decrypt][CR_ST_BYTE(st, i)] ^
+-- 
+2.39.2
 
-thanks
--- PMM
 
