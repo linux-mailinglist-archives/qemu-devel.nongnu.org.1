@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00A27161EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C77C7161E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:31:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zNT-0007Al-Ld; Tue, 30 May 2023 09:27:07 -0400
+	id 1q3zNT-0007Ao-Ny; Tue, 30 May 2023 09:27:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMy-0005hi-A9
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:37 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1q3zMy-0005hq-Ci
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:38 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMr-0001Qa-U2
+ id 1q3zMs-0001Qo-4d
  for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:34 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4f3a873476bso4839210e87.1
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3f6da07feb2so45997425e9.0
  for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685453188; x=1688045188;
+ d=linaro.org; s=google; t=1685453189; x=1688045189;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IfqETY10NL24k2y0dAUDA/KqEV1DZL6li15ZpnxHU7o=;
- b=S+ouF65k7Pd1naM6RjDAD5yL6mvQm/P3DADR52v22t3nWJ1p5KIQJ4tzN+4YQFgH2Y
- 1FGFXS3BvDNoyJDCEQ15egpNSvU/MWF2Zxu4zBwR/mRvaaGJWQc3O/O8GTxnSxmtIH+t
- sxW7b4xI06eAL5SbcY6bTXXOKfRxw4Rp7ibSNRXy/9n/6A0dy8ki6JIjfUvWJ4PRmOw8
- 639BrHW0fBPn3MO/H/b63i5YTc9Fa+BjAKWnrOooZlp+/zfTH1s8XUX0Hn6LVpLQyYf4
- ylQECk0NHWAtnecNvtycjCzOBrSYXSJZtlgIwSFFOOb2XjpFCYQNBZjArWQnBv3IH6Lj
- KNUg==
+ :reply-to; bh=FLgfReVfP7wBTTpFckQ1yuVt5fJRzYSHomt2VPzsx+w=;
+ b=MRNQXrNqUc0VkzI7RjUnAw+9fmiTA31Im+pAjHym7QgJkldKzTtVF3PWyZg49yyldl
+ 8vFjvHFpw0W1pVXyTPjet2doSY9HhsAq0IWXzsZdDmCmSPzg4pJ7URdCuVMbPUbsUZvD
+ 50L1NcHxcI1BwLSXBGY6K4aMbr2+2kXiyG/207uZEsCv0JWV2JOxTqIYFrs/eyVYGRSJ
+ yKlWuhgjh+tQtIbp3ZsFno5Xv+wAtGx53/fcHduYqI3UZCUPKXKa4ymIE5MFJPlVJaih
+ VSRRihz3nSrxduA9UG9oQnWx8R9pmch9sFRgbcjfeWJL44aLQcrAuBJmNi7/4XNgLxr2
+ NCPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685453188; x=1688045188;
+ d=1e100.net; s=20221208; t=1685453189; x=1688045189;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IfqETY10NL24k2y0dAUDA/KqEV1DZL6li15ZpnxHU7o=;
- b=YJKOeyphrEb972p/XOxm6QUEzDQswe4CizceXb0b1jR12LPst6i0cjWfD1oX+dMLQ+
- kQzwwxF878++NEnKmyA0Uu/H1GnR06Pso8j3D6NppxrQx516dKZZN5Bra+jpqhJGGnw8
- NfgAqMUfumgp60yvuFfrAkRo/2WDRF2Oe0soBk4xYEnTyvyNWjaMYSoJ7LtW28rzk55n
- qfLqTFDNV+ybvfpobMr3M7xHQ/eiqi8Zg8zzTRFYunkCPsKsCKmUO3uRRj6YBr2YTXeM
- BYAsP/+gPHULHEAGOBbK6yVO8j6SObpdYjNsoK+CJkJXhZOZsVrujQKC2PVuuyCDrJ53
- Ywbg==
-X-Gm-Message-State: AC+VfDwwhdGLHva5FnKK6HwLZbJvdzthyFgzhbAeen0OVBnkueA5Mi2t
- ILQU4tPzcp8TvjmATR79xSB5tDCb+kUYqirlV90=
-X-Google-Smtp-Source: ACHHUZ6GvWoK7n2mPVhuWj1KknUPBh4kgfhIVkSipxjSSr27TiX8/HQb7Q66fIk0kiOc3NF2vFGcdQ==
-X-Received: by 2002:ac2:5e8d:0:b0:4f4:b5a8:c24a with SMTP id
- b13-20020ac25e8d000000b004f4b5a8c24amr778061lfq.50.1685453188274; 
+ bh=FLgfReVfP7wBTTpFckQ1yuVt5fJRzYSHomt2VPzsx+w=;
+ b=Chb1gs3A3NWMYtF/IxjelMkektS0kOiKoWX7EO/iTO2IDwN8zPN6SBVOWCeBPjn0jR
+ q5EiynYRuoUpyyujSWAOQITcp0/NdJhma7Xrg7HNEQOFze9EGnES7r8VFN3vbUfU8CCh
+ aexDYlVVa/mFCdCbz0g3bF+aPddh4SBvYLUW0Y/Rpl02WdrSwN+d4ZG2VAlfXlpAHT+u
+ BDyKFKs/nTu/aYniy/C/ywLSXbeu1Ata8N69m4NdEbUu7ujX1hgA4buxgm5jQ9jC6i6Q
+ aVj6P/TB+VJYwF0ZiROvosEPmQB3Y6u5FEcrkEBl1TtLZCoXYvgkKDgjhdzgJXby0wYb
+ za9A==
+X-Gm-Message-State: AC+VfDw66xyyWUDfgJTOh6azs4K90+b0TdxmfvwkYPLXbkO6Ty9P6SRn
+ zSAqxhPxQWaXsaS9dnQK4w6g66Kx1Ge7i/yaHj8=
+X-Google-Smtp-Source: ACHHUZ76py7GM1zKCqm7whjLe2ADK8vXBEZDYwl8CkAR+b0lSws7sCvvZOFCVsghlsr3P6QRB2qKjQ==
+X-Received: by 2002:a1c:7316:0:b0:3f6:7d2:9859 with SMTP id
+ d22-20020a1c7316000000b003f607d29859mr1479119wmb.6.1685453188805; 
  Tue, 30 May 2023 06:26:28 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- p19-20020a1c7413000000b003f60e143d38sm17463615wmc.11.2023.05.30.06.26.27
+ p19-20020a1c7413000000b003f60e143d38sm17463615wmc.11.2023.05.30.06.26.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 30 May 2023 06:26:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/21] tests/qtest: Run arm-specific tests only if the required
- machine is available
-Date: Tue, 30 May 2023 14:26:13 +0100
-Message-Id: <20230530132620.1583658-15-peter.maydell@linaro.org>
+Subject: [PULL 15/21] target/arm: Explicitly select short-format FSR for
+ M-profile
+Date: Tue, 30 May 2023 14:26:14 +0100
+Message-Id: <20230530132620.1583658-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230530132620.1583658-1-peter.maydell@linaro.org>
 References: <20230530132620.1583658-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,44 +91,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+For M-profile, there is no guest-facing A-profile format FSR, but we
+still use the env->exception.fsr field to pass fault information from
+the point where a fault is raised to the code in
+arm_v7m_cpu_do_interrupt() which interprets it and sets the M-profile
+specific fault status registers.  So it doesn't matter whether we
+fill in env->exception.fsr in the short format or the LPAE format, as
+long as both sides agree.  As it happens arm_v7m_cpu_do_interrupt()
+assumes short-form.
 
-pflash-cfi02-test.c always uses the "musicpal" machine for testing,
-test-arm-mptimer.c always uses the "vexpress-a9" machine, and
-microbit-test.c requires the "microbit" machine, so we should only
-run these tests if the machines have been enabled in the configuration.
+In compute_fsr_fsc() we weren't explicitly choosing short-form for
+M-profile, but instead relied on it falling out in the wash because
+arm_s1_regime_using_lpae_format() would be false.  This was broken in
+commit 452c67a4 when we added v8R support, because we said "PMSAv8 is
+always LPAE format" (as it is for v8R), forgetting that we were
+implicitly using this code path on M-profile. At that point we would
+hit a g_assert_not_reached():
+ ERROR:../../target/arm/internals.h:549:arm_fi_to_lfsc: code should not be reached
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-id: 20230524080600.1618137-1-thuth@redhat.com
+#7  0x0000555555e055f7 in arm_fi_to_lfsc (fi=0x7fffecff9a90) at ../../target/arm/internals.h:549
+#8  0x0000555555e05a27 in compute_fsr_fsc (env=0x555557356670, fi=0x7fffecff9a90, target_el=1, mmu_idx=1, ret_fsc=0x7fffecff9a1c)
+    at ../../target/arm/tlb_helper.c:95
+#9  0x0000555555e05b62 in arm_deliver_fault (cpu=0x555557354800, addr=268961344, access_type=MMU_INST_FETCH, mmu_idx=1, fi=0x7fffecff9a90)
+    at ../../target/arm/tlb_helper.c:132
+#10 0x0000555555e06095 in arm_cpu_tlb_fill (cs=0x555557354800, address=268961344, size=1, access_type=MMU_INST_FETCH, mmu_idx=1, probe=false, retaddr=0)
+    at ../../target/arm/tlb_helper.c:260
+
+The specific assertion changed when commit fcc7404eff24b4c added
+"assert not M-profile" to arm_is_secure_below_el3(), because the
+conditions being checked in compute_fsr_fsc() include
+arm_el_is_aa64(), which will end up calling arm_is_secure_below_el3()
+and asserting before we try to call arm_fi_to_lfsc():
+
+#7  0x0000555555efaf43 in arm_is_secure_below_el3 (env=0x5555574665a0) at ../../target/arm/cpu.h:2396
+#8  0x0000555555efb103 in arm_is_el2_enabled (env=0x5555574665a0) at ../../target/arm/cpu.h:2448
+#9  0x0000555555efb204 in arm_el_is_aa64 (env=0x5555574665a0, el=1) at ../../target/arm/cpu.h:2509
+#10 0x0000555555efbdfd in compute_fsr_fsc (env=0x5555574665a0, fi=0x7fffecff99e0, target_el=1, mmu_idx=1, ret_fsc=0x7fffecff996c)
+
+Avoid the assertion and the incorrect FSR format selection by
+explicitly making M-profile use the short-format in this function.
+
+Fixes: 452c67a42704 ("target/arm: Enable TTBCR_EAE for ARMv8-R AArch32")a
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1658
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230523131726.866635-1-peter.maydell@linaro.org
 ---
- tests/qtest/meson.build | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ target/arm/tcg/tlb_helper.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 4c5585ac0f6..087f2dc9d7c 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -198,14 +198,15 @@ qtests_arm = \
-   (config_all_devices.has_key('CONFIG_CMSDK_APB_DUALTIMER') ? ['cmsdk-apb-dualtimer-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_CMSDK_APB_TIMER') ? ['cmsdk-apb-timer-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_CMSDK_APB_WATCHDOG') ? ['cmsdk-apb-watchdog-test'] : []) + \
--  (config_all_devices.has_key('CONFIG_PFLASH_CFI02') ? ['pflash-cfi02-test'] : []) +         \
-+  (config_all_devices.has_key('CONFIG_PFLASH_CFI02') and
-+   config_all_devices.has_key('CONFIG_MUSICPAL') ? ['pflash-cfi02-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed : []) + \
-   (config_all_devices.has_key('CONFIG_NPCM7XX') ? qtests_npcm7xx : []) + \
-   (config_all_devices.has_key('CONFIG_GENERIC_LOADER') ? ['hexloader-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-+  (config_all_devices.has_key('CONFIG_VEXPRESS') ? ['test-arm-mptimer'] : []) + \
-+  (config_all_devices.has_key('CONFIG_MICROBIT') ? ['microbit-test'] : []) + \
-   ['arm-cpu-features',
--   'microbit-test',
--   'test-arm-mptimer',
-    'boot-serial-test']
+diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
+index d5a89bc5141..8df36c2cbf0 100644
+--- a/target/arm/tcg/tlb_helper.c
++++ b/target/arm/tcg/tlb_helper.c
+@@ -75,8 +75,17 @@ static uint32_t compute_fsr_fsc(CPUARMState *env, ARMMMUFaultInfo *fi,
+     ARMMMUIdx arm_mmu_idx = core_to_arm_mmu_idx(env, mmu_idx);
+     uint32_t fsr, fsc;
  
- # TODO: once aarch64 TCG is fixed on ARM 32 bit host, make bios-tables-test unconditional
+-    if (target_el == 2 || arm_el_is_aa64(env, target_el) ||
+-        arm_s1_regime_using_lpae_format(env, arm_mmu_idx)) {
++    /*
++     * For M-profile there is no guest-facing FSR. We compute a
++     * short-form value for env->exception.fsr which we will then
++     * examine in arm_v7m_cpu_do_interrupt(). In theory we could
++     * use the LPAE format instead as long as both bits of code agree
++     * (and arm_fi_to_lfsc() handled the M-profile specific
++     * ARMFault_QEMU_NSCExec and ARMFault_QEMU_SFault cases).
++     */
++    if (!arm_feature(env, ARM_FEATURE_M) &&
++        (target_el == 2 || arm_el_is_aa64(env, target_el) ||
++         arm_s1_regime_using_lpae_format(env, arm_mmu_idx))) {
+         /*
+          * LPAE format fault status register : bottom 6 bits are
+          * status code in the same form as needed for syndrome
 -- 
 2.34.1
 
