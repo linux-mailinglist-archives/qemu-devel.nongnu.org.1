@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FEB7161FE
+	by mail.lfdr.de (Postfix) with ESMTPS id B6AB87161FF
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:33:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zNb-0007l5-GA; Tue, 30 May 2023 09:27:15 -0400
+	id 1q3zNb-0007l4-Hd; Tue, 30 May 2023 09:27:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMy-0005hl-CD
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:38 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1q3zN0-0005if-86
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:43 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMu-0001Rk-7Z
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:35 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4f50a8f6dd7so1364668e87.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:26:31 -0700 (PDT)
+ id 1q3zMu-0001Rs-Nb
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:37 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3f6e4554453so30797195e9.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:26:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685453190; x=1688045190;
+ d=linaro.org; s=google; t=1685453191; x=1688045191;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Osd+ug5T0eLwuQV28tEjnEAHVhvHjnqg8nDEVtg3G/g=;
- b=P5PthRVjGhtaqFWw+47Fshdo3pUnk8uH1iKjq4GdVMUqZhNY4k16XRVcWmJ15tdMOn
- RibHM5eq+TAiFzOF2LajKY1+Pc54dEoM3vF4vqFFRzFss3IAqw2gMSmf70hltZ9xSfZ/
- q1xLRsZGlXcopSk6kIzMUdeNjeyYGuevAp4xvuCSFZAuFf90bovYH96F279B3ayVRBg4
- +UVHapqI+08Y0HYItaGen+dqXSdVmJ5J8JHaYP7Xm2Iy+8CUnYsiZqGehCg+oaUdbdLF
- Ej1MjuZdKXp5qtEP3mczO9U7nq0i2p+pj8W/mNlI/Fs8LYAHxy9dlsTW5Ek7/UD+SXeH
- 8YQA==
+ :reply-to; bh=VByRLMRcj+W57M96tFkVlcg+Nb0eJ3FyT95jZGjkoWI=;
+ b=Drc4w+qhwYMJiUOgJBfJBw6daEfULxwifaJeITSu1NpptB/cmNn/4QbuPSFgqC0Wyx
+ 7A8AsqC2KXlYv2j8S1tSA2N0P60YS+7FhfYNvph86noKDKnWBxcpwbYS5oU3zxnnVfcK
+ AkvwWdntCG0Fs2+PowcpIi+8cMS5/7+w03xb2ziONsF+krQQMt5JuOwuhmfkCbAP3FDu
+ Qw9RS1sqPihBYM9sgQSbp238QvWo/vxUeMg7zuQMqLwhGyQa8qozIH4iHudzxqWhcJnF
+ /UxTVVtrjUoTRiF9mK5Rn4Vms2noRnn/zMFYnsyQvtUDcNvJ6R6z6wnKu1Hh6HqkbCF2
+ cyTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685453190; x=1688045190;
+ d=1e100.net; s=20221208; t=1685453191; x=1688045191;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Osd+ug5T0eLwuQV28tEjnEAHVhvHjnqg8nDEVtg3G/g=;
- b=QcVrKfskL28s2OagTDJpbxaq3RRxM7zdsqrnvxggbubLpnrfJzYxO9gfrQjRLF5nKW
- K/cydBbHySOfTsicqx//hyeBLtv7o3IOEALsBWrZ/BlJICD0z762byuMVzS4s7pkKIb9
- ZYnsbXG6kuI3KdmCgZ1fsiASQ8z5TCl24ahYFvwI1LHXtCJhKL/REr42c1CaFAeFCsTt
- XwNOQsMThHQImz49CJWWDlG+mPwJDjz9HybyJDjm5ZMCMkX+qcXxozFqSR0A/UCaoYqT
- IgOapVBE9GVU/bkuKEABlYyExCQeQqcD4vFHOfg+88de4Bi5RvK65bTk8j9bcVGlqg5e
- 8hTg==
-X-Gm-Message-State: AC+VfDx4CDbjIVarWNXGvuq+iXm6UINY3Ts3yUc+A3drul9l3aapUob3
- IqTprhfi5LkTvOGK6Nf4KYZe02tSs+BXFmGHD0Y=
-X-Google-Smtp-Source: ACHHUZ7VGqABzNBOFfz1z7Y7Rw2Qla4oQkaun0LiTvRk8+LCX2jI2bFKJNrpQ8YSd3KG/i7CZlpdPA==
-X-Received: by 2002:ac2:4435:0:b0:4ef:d5cb:18e0 with SMTP id
- w21-20020ac24435000000b004efd5cb18e0mr686597lfl.43.1685453190367; 
+ bh=VByRLMRcj+W57M96tFkVlcg+Nb0eJ3FyT95jZGjkoWI=;
+ b=ChJFwE2GULFoR8hsgyAfJReAEFA78gzpPj/7jhF6Wx6XDJGKLpWNhqKodC9uw5XxNK
+ awEpiH4UXDRtQWb1i3I48xL7N16MHcJpAB2KPZU1YlZmc0FnY6ZEkEtSbCELbndP6YsK
+ uicfobECHEDlQ0phWjlmK4IwdmU8z+cSIY6BqwFTIALwPoeFBC0ou7GC1GePyRkYQzzl
+ 1QRucdyxN6AjwCZcsRDXwjWCgVEyzpymJRjkx5bqDAPZuRsNqttFaGA8j8IAsZQbgmDl
+ bgugPfiMpTaA7plYCaLfnT4f5oTxrW2StjNYhe3qbnFiQyZM6JxRi5UJvpEHoYfwKM+H
+ ZWTg==
+X-Gm-Message-State: AC+VfDzyDPTruABj5/r7tXs1QpMuzE29I1MXd+DcuVXxo86yZIhddtHG
+ dN/6Uu6oBMW+bjfbdzn5ti4bu9BWxVRUqTW3AVs=
+X-Google-Smtp-Source: ACHHUZ6MS0O3mFDWv+v1DIRCcleTmZsS9GzlLY1loCBEGet3zGmX8JXHWNjtru9G6kvycZ4fM82CHw==
+X-Received: by 2002:a1c:e901:0:b0:3f6:795:6d1a with SMTP id
+ q1-20020a1ce901000000b003f607956d1amr1705128wmc.22.1685453190765; 
  Tue, 30 May 2023 06:26:30 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 30 May 2023 06:26:30 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/21] Update copyright dates to 2023
-Date: Tue, 30 May 2023 14:26:18 +0100
-Message-Id: <20230530132620.1583658-20-peter.maydell@linaro.org>
+Subject: [PULL 20/21] hw/arm/sbsa-ref: add GIC node into DT
+Date: Tue, 30 May 2023 14:26:19 +0100
+Message-Id: <20230530132620.1583658-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230530132620.1583658-1-peter.maydell@linaro.org>
 References: <20230530132620.1583658-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,47 +90,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Enze Li <lienze@kylinos.cn>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-I noticed that in the latest version, the copyright string is still
-2022, even though 2023 is halfway through.  This patch fixes that and
-fixes the documentation along with it.
+Let add GIC information into DeviceTree as part of SBSA-REF versioning.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
+Trusted Firmware will read it and provide to next firmware level.
+
+Bumps platform version to 0.1 one so we can check is node is present.
+
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230525064345.1152801-1-lienze@kylinos.cn
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/conf.py              | 2 +-
- include/qemu/help-texts.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ hw/arm/sbsa-ref.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/docs/conf.py b/docs/conf.py
-index c687ff26630..e84a95e71ce 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -89,7 +89,7 @@
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 9c3e670ec65..de21200ff93 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -29,6 +29,7 @@
+ #include "exec/hwaddr.h"
+ #include "kvm_arm.h"
+ #include "hw/arm/boot.h"
++#include "hw/arm/fdt.h"
+ #include "hw/arm/smmuv3.h"
+ #include "hw/block/flash.h"
+ #include "hw/boards.h"
+@@ -168,6 +169,20 @@ static uint64_t sbsa_ref_cpu_mp_affinity(SBSAMachineState *sms, int idx)
+     return arm_cpu_mp_affinity(idx, clustersz);
+ }
  
- # General information about the project.
- project = u'QEMU'
--copyright = u'2022, The QEMU Project Developers'
-+copyright = u'2023, The QEMU Project Developers'
- author = u'The QEMU Project Developers'
++static void sbsa_fdt_add_gic_node(SBSAMachineState *sms)
++{
++    char *nodename;
++
++    nodename = g_strdup_printf("/intc");
++    qemu_fdt_add_subnode(sms->fdt, nodename);
++    qemu_fdt_setprop_sized_cells(sms->fdt, nodename, "reg",
++                                 2, sbsa_ref_memmap[SBSA_GIC_DIST].base,
++                                 2, sbsa_ref_memmap[SBSA_GIC_DIST].size,
++                                 2, sbsa_ref_memmap[SBSA_GIC_REDIST].base,
++                                 2, sbsa_ref_memmap[SBSA_GIC_REDIST].size);
++
++    g_free(nodename);
++}
+ /*
+  * Firmware on this machine only uses ACPI table to load OS, these limited
+  * device tree nodes are just to let firmware know the info which varies from
+@@ -204,7 +219,7 @@ static void create_fdt(SBSAMachineState *sms)
+      *                        fw compatibility.
+      */
+     qemu_fdt_setprop_cell(fdt, "/", "machine-version-major", 0);
+-    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 0);
++    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 1);
  
- # The version info for the project you're documenting, acts as replacement for
-diff --git a/include/qemu/help-texts.h b/include/qemu/help-texts.h
-index 4f265fed8df..d0359f82e08 100644
---- a/include/qemu/help-texts.h
-+++ b/include/qemu/help-texts.h
-@@ -2,7 +2,7 @@
- #define QEMU_HELP_TEXTS_H
+     if (ms->numa_state->have_numa_distance) {
+         int size = nb_numa_nodes * nb_numa_nodes * 3 * sizeof(uint32_t);
+@@ -260,6 +275,8 @@ static void create_fdt(SBSAMachineState *sms)
  
- /* Copyright string for -version arguments, About dialogs, etc */
--#define QEMU_COPYRIGHT "Copyright (c) 2003-2022 " \
-+#define QEMU_COPYRIGHT "Copyright (c) 2003-2023 " \
-     "Fabrice Bellard and the QEMU Project developers"
+         g_free(nodename);
+     }
++
++    sbsa_fdt_add_gic_node(sms);
+ }
  
- /* Bug reporting information for --help arguments, About dialogs, etc */
+ #define SBSA_FLASH_SECTOR_SIZE (256 * KiB)
 -- 
 2.34.1
 
