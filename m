@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44893715988
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 11:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF547159A7
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 11:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3vLI-0005Or-8U; Tue, 30 May 2023 05:08:36 -0400
+	id 1q3vPx-0006hJ-Eq; Tue, 30 May 2023 05:13:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3vLG-0005Nz-0G
- for qemu-devel@nongnu.org; Tue, 30 May 2023 05:08:34 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3vPv-0006gq-AN
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 05:13:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3vLE-00032x-9Q
- for qemu-devel@nongnu.org; Tue, 30 May 2023 05:08:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3vPt-0005vR-Q2
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 05:13:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685437710;
+ s=mimecast20190719; t=1685438001;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AssS62W1x9CgXENVl9JrHFXt0c31e0c6Caolmap8AdQ=;
- b=Pu6wReOCTpM7khmsffCNGg+Ct4Ahp6VBAb1yre4Z3o3J7iYu4t8gmononnwcRoky08G2DB
- ETs19cKBuzeh/Fpd53OhUcRsuOQpJko3V0e7JZbX7K+Y2ftdhu9nHH7qVsc3LHao2nKBG8
- i57GNRquQiSn824/KxWN0MpyAnO56rI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=I4WWQrAeZvfYQSTPsNgVd3IjtcuOS6fGhmgHxLa1ghk=;
+ b=IsKF5Wgvrgkr1tNYZTsgOo+oSbtqLLmBTrvVSJRQt2J5btdWmH9qO8riDl1YDrTGl6Qn0z
+ gf8qa2XozHKzfBLIZs+uynBQmtPOWb3khFeofEDLJAScqh8GBwvstqurbqctbh7QyD3U8J
+ tHUfngHzXw3IBfi09f/WZn6xBe0Cqlc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-7jpkWzJUO5uVAEd9Q3K1Kg-1; Tue, 30 May 2023 05:08:28 -0400
-X-MC-Unique: 7jpkWzJUO5uVAEd9Q3K1Kg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30793c16c78so5877796f8f.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 02:08:28 -0700 (PDT)
+ us-mta-122-8BKjoaXQN5mo4ND5W4QfGA-1; Tue, 30 May 2023 05:13:19 -0400
+X-MC-Unique: 8BKjoaXQN5mo4ND5W4QfGA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f6089a9689so26478105e9.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 02:13:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685437708; x=1688029708;
+ d=1e100.net; s=20221208; t=1685437998; x=1688029998;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AssS62W1x9CgXENVl9JrHFXt0c31e0c6Caolmap8AdQ=;
- b=USQMRy7+eb0J/hHgvbLXdHDcHb+hBB3KZG0ilIOmiBCTSx1QjBmF/sCEGlyPM/GP2f
- hRC2i0l4BzUZoGnLwDv6HKcqhCRoehLxjOdiTqGs1lXtMBaGEqwcm6Kt//HwQLEJPrMS
- WiWzVfobMOWi9r8mVWZ3M0FBVVZViCxDH7rCEV84LYGEWtRKpyokOh3VBN4ummIxc9Vn
- 4amjqlFV/5vPipiwjvdntcDsSTvHuJdDidthlz4BP3CQ5cL6yw5z3gKkff99Ld3iOIZA
- 2GyQHNJyoUUSDLMiTTknwD3pec0LwAJEgcqHaHgfKpoy5wvkWzBroIxWI249rpi3Cx37
- vgMg==
-X-Gm-Message-State: AC+VfDz3Yq3ERnKIo3Tci3Fui7DCb7Ls842sIJMykj9/8VWGaYEIx1GC
- OwJ7DEEPlMvRbA9Uj9TAA2SwkRLTpSXmZxKAd3mlxsxflIk6fghvRrTO3/7NfkSNxev3WvLFKzy
- theBEnpDpgVDBhDA=
-X-Received: by 2002:a5d:4b44:0:b0:30a:efd3:66a with SMTP id
- w4-20020a5d4b44000000b0030aefd3066amr1114536wrs.40.1685437707902; 
- Tue, 30 May 2023 02:08:27 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4x+b9nPK7ooBwc8JcXypeowd2GIU2z9cGM8zYnfjXQQ4KGHmF4oBqjJVW5o83IT95GQUzYoQ==
-X-Received: by 2002:a5d:4b44:0:b0:30a:efd3:66a with SMTP id
- w4-20020a5d4b44000000b0030aefd3066amr1114512wrs.40.1685437707634; 
- Tue, 30 May 2023 02:08:27 -0700 (PDT)
+ bh=I4WWQrAeZvfYQSTPsNgVd3IjtcuOS6fGhmgHxLa1ghk=;
+ b=bTNrjJ29RmDZxN2UfUDX6p2FOY68+DgqMdlaRvNJXitjlxIJn7JniMPONE/0qdCgY8
+ vvj/Ht77QXBTKmth/wLox/t2Ms8eykvGKkI2eKTR66EljyIKrwWI/7SmJ89IU+ztzB7o
+ 55NxeRhk30uoZeIgXrlpPWn9GkjwQQFlRlkZ7xYAa22MWfYaTefyjLlsVwUMWfnMHE7e
+ IT7/yZF0omvFtt6NozpyhZqeeaY51u/ZHKbqY1Xs0pgEoM0GSVu7coj7s0kID5+px5EQ
+ n20mrjcPZ6FM20iJ0VfA2Yu6OXeESEmYkD+X7IpiPBHAB1pQbYOzhgg3ooU3RPiW7zZN
+ JYTg==
+X-Gm-Message-State: AC+VfDwdUcWDAbTMo/QRIy56tt4D3jaAqLGrtxqGH6SN6F35kZDMNb6w
+ j1E7t0bldHQ3NLgomPyqSLtf1qcXiJ6zVdLPrS3y6FZx655XhhYrKAhvsKcLembX3VMgWx/Wbb6
+ 2RKKPRXp/4d1HkfY=
+X-Received: by 2002:adf:dd92:0:b0:30a:b46a:a443 with SMTP id
+ x18-20020adfdd92000000b0030ab46aa443mr982062wrl.51.1685437998670; 
+ Tue, 30 May 2023 02:13:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4XbI40cjgCxRWDqe1ouHV7cvmaPUJnKncRqU3VHbIlGfiETFLfg0dTr5auRSM0soSv5+bRdQ==
+X-Received: by 2002:adf:dd92:0:b0:30a:b46a:a443 with SMTP id
+ x18-20020adfdd92000000b0030ab46aa443mr982034wrl.51.1685437998371; 
+ Tue, 30 May 2023 02:13:18 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0?
  ([2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0])
  by smtp.gmail.com with ESMTPSA id
- f4-20020adff984000000b0030ae849c70csm2577766wrr.37.2023.05.30.02.08.26
+ b2-20020a5d4b82000000b0030aec5e020fsm2549112wrt.86.2023.05.30.02.13.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 02:08:27 -0700 (PDT)
-Message-ID: <61006d5c-f45b-16ef-c280-66bf379f708f@redhat.com>
-Date: Tue, 30 May 2023 11:08:25 +0200
+ Tue, 30 May 2023 02:13:17 -0700 (PDT)
+Message-ID: <c46934cc-057b-04d9-65cf-9c2f2599367f@redhat.com>
+Date: Tue, 30 May 2023 11:13:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v4 6/9] vfio/migration: Store VFIO migration flags in
- VFIOMigration
+Subject: Re: [PATCH v4 8/9] vfio/migration: Add x-allow-pre-copy VFIO device
+ property
 Content-Language: en-US
 To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -84,9 +84,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>
 References: <20230528140652.8693-1-avihaih@nvidia.com>
- <20230528140652.8693-7-avihaih@nvidia.com>
+ <20230528140652.8693-9-avihaih@nvidia.com>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230528140652.8693-7-avihaih@nvidia.com>
+In-Reply-To: <20230528140652.8693-9-avihaih@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -114,14 +114,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/28/23 16:06, Avihai Horon wrote:
-> VFIO migration flags are queried once in vfio_migration_init(). Store
-> them in VFIOMigration so they can be used later to check the device's
-> migration capabilities without re-querying them.
-> 
-> This will be used in the next patch to check if the device supports
-> precopy migration.
+> Add a new VFIO device property x-allow-pre-copy to keep migration
+> compatibility to/from older QEMU versions that don't have VFIO pre-copy
+> support.
 > 
 > Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
@@ -131,32 +129,61 @@ C.
 
 > ---
 >   include/hw/vfio/vfio-common.h | 1 +
->   hw/vfio/migration.c           | 1 +
->   2 files changed, 2 insertions(+)
+>   hw/core/machine.c             | 1 +
+>   hw/vfio/migration.c           | 3 ++-
+>   hw/vfio/pci.c                 | 2 ++
+>   4 files changed, 6 insertions(+), 1 deletion(-)
 > 
 > diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index eed244f25f..5f29dab839 100644
+> index 1db901c194..a53ecbe2e0 100644
 > --- a/include/hw/vfio/vfio-common.h
 > +++ b/include/hw/vfio/vfio-common.h
-> @@ -66,6 +66,7 @@ typedef struct VFIOMigration {
->       int data_fd;
->       void *data_buffer;
->       size_t data_buffer_size;
-> +    uint64_t mig_flags;
->   } VFIOMigration;
+> @@ -146,6 +146,7 @@ typedef struct VFIODevice {
+>       VFIOMigration *migration;
+>       Error *migration_blocker;
+>       OnOffAuto pre_copy_dirty_page_tracking;
+> +    bool allow_pre_copy;
+>       bool dirty_pages_supported;
+>       bool dirty_tracking;
+>   } VFIODevice;
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index 1000406211..64ac3fe38e 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -41,6 +41,7 @@
 >   
->   typedef struct VFIOAddressSpace {
+>   GlobalProperty hw_compat_8_0[] = {
+>       { "migration", "multifd-flush-after-each-section", "on"},
+> +    { "vfio-pci", "x-allow-pre-copy", "false" },
+>   };
+>   const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
+>   
 > diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 235978fd68..8d33414379 100644
+> index d8f6a22ae1..cb6923ed3f 100644
 > --- a/hw/vfio/migration.c
 > +++ b/hw/vfio/migration.c
-> @@ -603,6 +603,7 @@ static int vfio_migration_init(VFIODevice *vbasedev)
->       migration->vbasedev = vbasedev;
->       migration->device_state = VFIO_DEVICE_STATE_RUNNING;
->       migration->data_fd = -1;
-> +    migration->mig_flags = mig_flags;
+> @@ -323,7 +323,8 @@ static bool vfio_precopy_supported(VFIODevice *vbasedev)
+>   {
+>       VFIOMigration *migration = vbasedev->migration;
 >   
->       vbasedev->dirty_pages_supported = vfio_dma_logging_supported(vbasedev);
+> -    return migration->mig_flags & VFIO_MIGRATION_PRE_COPY;
+> +    return vbasedev->allow_pre_copy &&
+> +           migration->mig_flags & VFIO_MIGRATION_PRE_COPY;
+>   }
 >   
+>   /* ---------------------------------------------------------------------- */
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 73874a94de..c69813af7f 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3335,6 +3335,8 @@ static Property vfio_pci_dev_properties[] = {
+>       DEFINE_PROP_ON_OFF_AUTO("x-pre-copy-dirty-page-tracking", VFIOPCIDevice,
+>                               vbasedev.pre_copy_dirty_page_tracking,
+>                               ON_OFF_AUTO_ON),
+> +    DEFINE_PROP_BOOL("x-allow-pre-copy", VFIOPCIDevice,
+> +                     vbasedev.allow_pre_copy, true),
+>       DEFINE_PROP_ON_OFF_AUTO("display", VFIOPCIDevice,
+>                               display, ON_OFF_AUTO_OFF),
+>       DEFINE_PROP_UINT32("xres", VFIOPCIDevice, display_xres, 0),
 
 
