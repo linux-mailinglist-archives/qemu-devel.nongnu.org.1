@@ -2,107 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9BD7153F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 04:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1CC71540C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 04:50:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3pKt-0000Tt-Fd; Mon, 29 May 2023 22:43:47 -0400
+	id 1q3pQS-0003Vh-PF; Mon, 29 May 2023 22:49:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q3pKq-0000TP-J9
- for qemu-devel@nongnu.org; Mon, 29 May 2023 22:43:44 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1q3pQQ-0003VV-9d
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 22:49:30 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1q3pKn-0005C3-2v
- for qemu-devel@nongnu.org; Mon, 29 May 2023 22:43:44 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-64fec2e0e25so669215b3a.1
- for <qemu-devel@nongnu.org>; Mon, 29 May 2023 19:43:40 -0700 (PDT)
+ id 1q3pQO-0006Sg-OO
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 22:49:30 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-25690e009c8so812140a91.0
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 19:49:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1685414619; x=1688006619;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ejrIrGDi4fwDc42huLgpjGNxWrqatNvW4qPUqySFFzs=;
- b=bA03kVN0LRRXIzKN4XRu7rfTWzkdAzIu5vrroA41QIqCpQkLzqpjwbAKDmNVrQc619
- sel8WanjG9YLk5mNX33VW98hchhdEjHAjMcVWMOs98OW41wGMxEr94iO1KxTFBIMgiPA
- mjJzoZXp3qVL1Firr5Vy8may4ZNLv7dUH3ERx5Uvq1sGdqZ3uKieNa3iZvE0Le9gfN1m
- VutCkV1KEbIvbRwPj4wqIy2kZTcaHUeJZ6aEezuK2d86xDfoF2+Kgn4zuSX2aTRnEtPW
- bA1j++wF+++Qk/bOAfW4Gd9EqnZ4kQYwpQoN9StGcROzUAjdbV6aRYnloFE3Wx4G3OBc
- oGgg==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1685414967; x=1688006967;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6YUyQS0gcguFecxX57szc3ywtCx06jIXTXgj3cUKMj8=;
+ b=D8eJY13AsMPuKUGG5Vh9BkM13fqxSQKH75GKRQaY2JxJD7MhTFu8BW3WHyX/9MbsMD
+ 0eLEbuAvxpyEj34LGnU6LJO7OWkVDjUQUA1mDDKzwceNaD8ofKN/zAzO/tSuF+Jp8jP6
+ 4qpID6qNe+1EqYfggdsqj+HoQLj0sCxuHyOtikL0LrgKAjRgPh/Wq4VXgmA4Pv9c3b8Z
+ 6j7ospCCXAOeFiHaebjvHiCXBU/7A09zbt0SBicAElS7gqaJvfbxXkGqU6mJYzLYw0JA
+ BvlQN7GSMd/g3TmdlDTNMvbO5w73jNxecA1hVPEqNv+3972OUsQzPWsTZzFSp50rrYyE
+ S3Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685414619; x=1688006619;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ejrIrGDi4fwDc42huLgpjGNxWrqatNvW4qPUqySFFzs=;
- b=ReT/UF7aB3dLZPvn3uCN9ByZKbOoC0AF6qvb7USFF7ujUHf+KyzudT8g5hmq5IlZpk
- aCyuaEJUQyqO0SgoPDEzrsy+JDWUVIhyAPCcUB6t3N/duGqO4+/bg3+j2QopbLsTVR3q
- inaWRqd2Vl1m/U7SqxuNLyzCr1QkJwY1HYp5hqvuyCHDLHcTt4zXaQ1zHQMbllpfPAL0
- cTpgJ3t+qQf5D/9p9809JxJ3QBcbZGNuKN5LwOx3J4cX0HT/Y6DWIZqiKn0PAOoFPL5r
- ncSL6pa3YnYN6u+pbWhOfPF93rYSh/X6WdyRrFEwbNtF+QR5GGDnbvppyRQwxFG4lbME
- oFww==
-X-Gm-Message-State: AC+VfDwyVtnOsPOwi7VnSLVpH6gFizlR4j0YVn3JnQBwFypLtufwnEVl
- VWOt2HJ3G7TzPiykXlAImXZSAA==
-X-Google-Smtp-Source: ACHHUZ6aiCOJhP/F1eiuxvqFrg32PvLvuYZpAKh2r88y5LDB6dQkwW+lr4Qrw3EN74hLySTW1nk6pA==
-X-Received: by 2002:a05:6a20:d805:b0:10b:78d7:502 with SMTP id
- iv5-20020a056a20d80500b0010b78d70502mr906865pzb.36.1685414619631; 
- Mon, 29 May 2023 19:43:39 -0700 (PDT)
-Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- 63-20020a630542000000b0051baf3f1b3esm7801785pgf.76.2023.05.29.19.43.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 May 2023 19:43:39 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: Mauro Matteo Cascella <mcascell@redhat.com>, P J P <pj.pandit@yahoo.co.in>,
- Alexander Bulekov <alxndr@bu.edu>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Thomas Huth <huth@tuxfamily.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Subbaraya Sundeep <sundeep.lkml@gmail.com>, Jan Kiszka <jan.kiszka@web.de>,
- Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Sven Schnelle <svens@stackframe.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Rob Herring <robh@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- xen-devel@lists.xenproject.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 2/2] net: Update MemReentrancyGuard for NIC
-Date: Tue, 30 May 2023 11:43:02 +0900
-Message-Id: <20230530024302.14215-3-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230530024302.14215-1-akihiko.odaki@daynix.com>
-References: <20230530024302.14215-1-akihiko.odaki@daynix.com>
+ d=1e100.net; s=20221208; t=1685414967; x=1688006967;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6YUyQS0gcguFecxX57szc3ywtCx06jIXTXgj3cUKMj8=;
+ b=Gq/J0ywAbW4K1BzUY76aZUlqFjRK3BQvwiaTs+3/z+vJ5LWp2MrogZme0ihqL6wYqc
+ EECYbODXB9N2dDZW9UKecpFGCib47sjxO4/kdk8fMEus8Mjz7igKeYuKEYKuVD3lQ5Z7
+ yYzOkXm7uS3ZnGzeDh+3KWV4RoILXZ+e+EjNTgngfbXhmG6Dd+idE+LfX/hkWPAE0LpI
+ hdPNJbwNsxrnFAsHGkUFb+1EGp6Lo2dbcBzuHqVAvpNZ+qRyQz0/lfHMe7Zp8zKEwjJZ
+ KNZG3H9iFv2cGEMvRw0MJhxy6hLrVw3QQs+pjJt/O18fNocbUOJtiHb32q9NiHvscUuy
+ I2Rg==
+X-Gm-Message-State: AC+VfDz5lI5fKqKgsZLhCMSjSTsmpM2K0Cl5y/fSQ1X8vtNpOkrZfeWk
+ 9hc7/OVOhLNq7Rd95i6n5XH9Xw==
+X-Google-Smtp-Source: ACHHUZ5v8rNg3hycBRQkimiztZ1N9gr3hK52ruC/XcUFqVl4mG8C7+I42jwfbzAMJsxORxuJd95SKw==
+X-Received: by 2002:a17:90a:4504:b0:250:1905:ae78 with SMTP id
+ u4-20020a17090a450400b002501905ae78mr1111109pjg.15.1685414967027; 
+ Mon, 29 May 2023 19:49:27 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ m10-20020a17090b068a00b0024df6bbf5d8sm7851958pjz.30.2023.05.29.19.49.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 May 2023 19:49:26 -0700 (PDT)
+Message-ID: <7f1ea2a7-aef1-f090-01ab-218747b167c6@daynix.com>
+Date: Tue, 30 May 2023 11:49:23 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v10 0/7] igb: packet-split descriptors support
+Content-Language: en-US
+To: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>, qemu-devel@nongnu.org
+Cc: sriram.yagnaraman@est.tech, jasowang@redhat.com, k.kwiecien@samsung.com,
+ m.sochacki@samsung.com
+References: <CGME20230529140202eucas1p1920add7c8fd0a0c4efdfac6e9bdf5a7f@eucas1p1.samsung.com>
+ <20230529140153.4053-1-t.dzieciol@partner.samsung.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230529140153.4053-1-t.dzieciol@partner.samsung.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102a.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,81 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recently MemReentrancyGuard was added to DeviceState to record that the
-device is engaging in I/O. The network device backend needs to update it
-when delivering a packet to a device.
+On 2023/05/29 23:01, Tomasz Dzieciol wrote:
+> Purposes of this series of patches:
+> * introduce packet-split RX descriptors support. This feature is used by Linux
+>    VF driver for MTU values from 2048.
+> * refactor RX descriptor handling for introduction of packet-split RX
+>    descriptors support
+> * fix descriptors flags handling
+> 
+> Tomasz Dzieciol (7):
+>    igb: remove TCP ACK detection
+>    igb: rename E1000E_RingInfo_st
+>    igb: RX descriptors guest writting refactoring
+>    igb: RX payload guest writting refactoring
+>    igb: add IPv6 extended headers traffic detection
+>    igb: packet-split descriptors support
+>    e1000e: rename e1000e_ba_state and e1000e_write_hdr_to_rx_buffers
+> 
+>   hw/net/e1000e_core.c     |  78 +++--
+>   hw/net/igb_core.c        | 730 ++++++++++++++++++++++++++++-----------
+>   hw/net/igb_regs.h        |  20 +-
+>   hw/net/trace-events      |   6 +-
+>   tests/qtest/libqos/igb.c |   5 +
+>   5 files changed, 592 insertions(+), 247 deletions(-)
+> 
 
-This implementation follows what bottom half does, but it does not add
-a tracepoint for the case that the network device backend started
-delivering a packet to a device which is already engaging in I/O. This
-is because such reentrancy frequently happens for
-qemu_flush_queued_packets() and is insignificant.
+Thanks for keeping working on this. For the entire series:
 
-Reported-by: Alexander Bulekov <alxndr@bu.edu>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/net/net.h |  1 +
- net/net.c         | 14 ++++++++++++++
- 2 files changed, 15 insertions(+)
-
-diff --git a/include/net/net.h b/include/net/net.h
-index a7d8deaccb..685ec58318 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -124,6 +124,7 @@ typedef QTAILQ_HEAD(NetClientStateList, NetClientState) NetClientStateList;
- typedef struct NICState {
-     NetClientState *ncs;
-     NICConf *conf;
-+    MemReentrancyGuard *reentrancy_guard;
-     void *opaque;
-     bool peer_deleted;
- } NICState;
-diff --git a/net/net.c b/net/net.c
-index 982df2479f..3523cceafc 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -332,6 +332,7 @@ NICState *qemu_new_nic(NetClientInfo *info,
-     nic = g_malloc0(info->size + sizeof(NetClientState) * queues);
-     nic->ncs = (void *)nic + info->size;
-     nic->conf = conf;
-+    nic->reentrancy_guard = reentrancy_guard,
-     nic->opaque = opaque;
- 
-     for (i = 0; i < queues; i++) {
-@@ -805,6 +806,7 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
-                                        int iovcnt,
-                                        void *opaque)
- {
-+    MemReentrancyGuard *owned_reentrancy_guard;
-     NetClientState *nc = opaque;
-     int ret;
- 
-@@ -817,12 +819,24 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
-         return 0;
-     }
- 
-+    if (nc->info->type != NET_CLIENT_DRIVER_NIC ||
-+        qemu_get_nic(nc)->reentrancy_guard->engaged_in_io) {
-+        owned_reentrancy_guard = NULL;
-+    } else {
-+        owned_reentrancy_guard = qemu_get_nic(nc)->reentrancy_guard;
-+        owned_reentrancy_guard->engaged_in_io = true;
-+    }
-+
-     if (nc->info->receive_iov && !(flags & QEMU_NET_PACKET_FLAG_RAW)) {
-         ret = nc->info->receive_iov(nc, iov, iovcnt);
-     } else {
-         ret = nc_sendv_compat(nc, iov, iovcnt, flags);
-     }
- 
-+    if (owned_reentrancy_guard) {
-+        owned_reentrancy_guard->engaged_in_io = false;
-+    }
-+
-     if (ret == 0) {
-         nc->receive_disabled = 1;
-     }
--- 
-2.40.1
-
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
