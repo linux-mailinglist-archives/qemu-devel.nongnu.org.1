@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56B271617E
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE86971617B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:20:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zG8-00029b-4X; Tue, 30 May 2023 09:19:33 -0400
+	id 1q3zGJ-0002NF-3y; Tue, 30 May 2023 09:19:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1q3zFc-0001zS-BF
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:19:02 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1q3zFf-00021A-LQ
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:19:04 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1q3zFY-0006sM-8h
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:18:58 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-96f9cfa7eddso789800066b.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:18:55 -0700 (PDT)
+ id 1q3zFb-0006sq-Ua
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:19:02 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9741a0fd134so173929566b.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:18:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1685452735; x=1688044735;
+ d=vrull.eu; s=google; t=1685452736; x=1688044736;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uMqno0siykPsS3ZNDkSpUapOggK2PTxFDdGkbme8bUM=;
- b=c8+HMQP5Bj2WCCnmRERnLHO5xuREls8b3MiJCmy9ib4dc18XyGlxvOmhxwr9phDytO
- QFWYc8j7PkiGuYnXE/6y4PA3rpZeWWB76hs2Zwa3Wg7u7H1UR3S/Ue+pLCd7jMY7nu1U
- 9ZSaEDB7crfzQY+hjaBWhC28Fl4kWhP9kFnWkOOnIjONSTQ0oG1oH5RqfR+tLjvdJY9Q
- e7qjNNGgLTkDROUMHPEN1K3aTfUTziUVfkYVQH+Qv/JwKzDIGfEytMW0al9wKYKcx8I2
- tSEVqgGReChwa16aiTrcQFi5j/o6yTO4gFLIc7iw28MKGHvbBNuyQX45t5xJkB2cAazy
- covA==
+ bh=7kKhfZuUHvptmbGv0BOJ1F+/oC8QuzwjZAu+Iu7mwvY=;
+ b=XHVnTBh+GAagI1yXqCYh2TUH59DiYf9qIt5dpWKvkBL29q1CIPbyK6XqSVYzDQSXCK
+ 6SO/z61l7PpGOEJobtshKxZ0yVxFkcQzGIN12xGW5KHmLSAAdGl424/dP/Xb2zLR+kH7
+ xjJraK4FdoBiW0n2v3T4niNmJHwomQ+qkneokFExpr+WNOx7vZqgAOgRsOLtg5D00Ik0
+ DLMA8Y4fZX7zaNj+a3eN1utz18bLIzXJz9PGBo2AEETHXHCk4AyeiqGTerN9ljYn2biP
+ aoWXYm5Geox81Xeun/sKA0nanaZ+80kFubuDsd/ugroSYJbM5qkhR+wi4yJBrq6/jf3g
+ pwMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685452735; x=1688044735;
+ d=1e100.net; s=20221208; t=1685452736; x=1688044736;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uMqno0siykPsS3ZNDkSpUapOggK2PTxFDdGkbme8bUM=;
- b=lWFz8mkFkeIq/uS0rkZopX+d1EkeOwx8fQDSrirlbVIZIPOU4DtHvS+Y3xMBfvYJr6
- mYD+4pIBrM8slFi2Cji5tdAlHVmxsFJ6v1DAadY/TxzqZVxaUdc+bil562I4KdC7WsCX
- Fk8uGrYRpzFpTOQAccj7owCfvWzlV0HKILEgAEzyJX11Ju3YGanVAAHXSk/g5P1ZjZEW
- iFUy99XLlAPnFGY0pJkeOA1wjG62lhP0/TdB+mF+LR57+21tiFjXYnICpDXkQDAgrmo9
- XF87H3e8WFFwhvPqAz9imZlwoptbdlJH2Sl8bzy/8ThYL54lxDEkUtLmHyuLqSZ4tZex
- /D9w==
-X-Gm-Message-State: AC+VfDyUbpoSlOnkPAi2SuSDkOL5VaHO6IHSZJ7Ygi5iqnVnI1Tw9yhN
- 1/m8dkOVe+YtiJT4llZqO/+uBw==
-X-Google-Smtp-Source: ACHHUZ58Ss1TseMMLkwOhpyNwWOTOvoX5Tn8nMQ/cLwTSMuqBJL8F3HVg7EhhpgvTY6lz6DSE4f4qw==
-X-Received: by 2002:a17:907:7da4:b0:969:9fd0:7cee with SMTP id
- oz36-20020a1709077da400b009699fd07ceemr2108860ejc.10.1685452734790; 
- Tue, 30 May 2023 06:18:54 -0700 (PDT)
+ bh=7kKhfZuUHvptmbGv0BOJ1F+/oC8QuzwjZAu+Iu7mwvY=;
+ b=D9S5ntBHtuWwYkUXvNQLLUPWGVZ+xEr8Sy8x0o3N+/kPQtS7vI8+ILwfnk8LUPK/hE
+ rhUt1JLLWWhSLUr78JNbJapuZepvhktJSwCVIY4l25YL8//mj5lYsbXLgFbAuqkE3iK3
+ 0LdmZ8qomnzD/0YXQVdyqgf3MKHkZEv7lSt9dj7eWWU5pDCvnVNcGsD3pv/FtSPhgb6D
+ MO2lvBZw0fgzYreX11Bg5Y7qSe3qwzGqovPLELsZK5kDoAXg8UrMpb2lXPDPVYrUAJrm
+ a9TlLAbOhkdlxHzpdMVeol4D2FITl7LjO2e3Ay4ZUL9ZE/+iWfhDQCklv0ua1V29lHZK
+ cBEg==
+X-Gm-Message-State: AC+VfDxnRdoYKNB4TjC4zpmpkIf+jTVh5RuPfW1EZY8AAIESPQzVwGcA
+ 5CX1g6TD3tvyK039SPIF/kjExt2+yaFXK4Wa67M=
+X-Google-Smtp-Source: ACHHUZ78d8OpCqwYjRhQvjRwtAijmane9j2qJKMcEjYHs5T+I4Ul2vkLMDwNKgVVrSVylK9//4AseA==
+X-Received: by 2002:a17:906:6a02:b0:96a:3f29:40d9 with SMTP id
+ qw2-20020a1709066a0200b0096a3f2940d9mr2550517ejc.25.1685452735990; 
+ Tue, 30 May 2023 06:18:55 -0700 (PDT)
 Received: from beast.fritz.box (62-178-148-172.cable.dynamic.surfer.at.
  [62.178.148.172]) by smtp.gmail.com with ESMTPSA id
- le8-20020a170907170800b0096f803afbe3sm7376156ejc.66.2023.05.30.06.18.53
+ le8-20020a170907170800b0096f803afbe3sm7376156ejc.66.2023.05.30.06.18.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 06:18:54 -0700 (PDT)
+ Tue, 30 May 2023 06:18:55 -0700 (PDT)
 From: Christoph Muellner <christoph.muellner@vrull.eu>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -65,26 +65,25 @@ To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Zhiwei Liu <zhiwei_liu@linux.alibaba.com>
 Cc: =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 6/9] target/riscv/cpu: Share RISCVCPUConfig with disassembler
-Date: Tue, 30 May 2023 15:18:40 +0200
-Message-Id: <20230530131843.1186637-7-christoph.muellner@vrull.eu>
+ Alistair Francis <Alistair.Francis@wdc.com>
+Subject: [PATCH 7/9] disas/riscv: Provide infrastructure for vendor extensions
+Date: Tue, 30 May 2023 15:18:41 +0200
+Message-Id: <20230530131843.1186637-8-christoph.muellner@vrull.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230530131843.1186637-1-christoph.muellner@vrull.eu>
 References: <20230530131843.1186637-1-christoph.muellner@vrull.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,32 +101,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Christoph Müllner <christoph.muellner@vrull.eu>
 
-The disassembler needs the available extensions in order
-to properly decode instructions in case of overlapping
-encodings (e.g. for vendor extensions).
-
-Let's use the field 'disassemble_info::private_data' to store
-our RISCVCPUConfig pointer.
+A previous patch provides a pointer to the RISCVCPUConfig data.
+Let's use this to add the necessary code for vendor extensions.
+This patch does not change the current behaviour, but clearly
+defines how vendor extension support can be added to the disassembler.
 
 Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
 ---
- target/riscv/cpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ disas/riscv.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 5b7818dbd1..6f0cd9a0bb 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -819,6 +819,9 @@ static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
- {
-     RISCVCPU *cpu = RISCV_CPU(s);
-     CPURISCVState *env = &cpu->env;
-+    RISCVCPUConfig *cfg = &cpu->cfg;
-+
-+    info->private_data = cfg;
+diff --git a/disas/riscv.c b/disas/riscv.c
+index 086edee6a2..db98e3ea6a 100644
+--- a/disas/riscv.c
++++ b/disas/riscv.c
+@@ -20,6 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "disas/dis-asm.h"
+ #include "disas/riscv.h"
++#include "target/riscv/cpu-config.h"
  
-     switch (env->xl) {
-     case MXL_RV32:
+ typedef enum {
+     /* 0 is reserved for rv_op_illegal. */
+@@ -4599,13 +4600,38 @@ static void decode_inst_decompress(rv_decode *dec, rv_isa isa)
+ /* disassemble instruction */
+ 
+ static void
+-disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst)
++disasm_inst(char *buf, size_t buflen, rv_isa isa, uint64_t pc, rv_inst inst,
++            struct disassemble_info *info)
+ {
++    RISCVCPUConfig *cfg = info->private_data;
+     rv_decode dec = { 0 };
+     dec.pc = pc;
+     dec.inst = inst;
+-    dec.opcode_data = rvi_opcode_data;
+-    decode_inst_opcode(&dec, isa);
++
++    static const struct {
++        bool (*guard_func)(const RISCVCPUConfig *);
++        const rv_opcode_data *opcode_data;
++        void (*decode_func)(rv_decode *, rv_isa);
++    } decoders[] = {
++        { always_true_p, rvi_opcode_data, decode_inst_opcode },
++    };
++
++    for (size_t i = 0; i < ARRAY_SIZE(decoders); i++) {
++        bool (*guard_func)(const RISCVCPUConfig *) = decoders[i].guard_func;
++        const rv_opcode_data *opcode_data = decoders[i].opcode_data;
++        void (*decode_func)(rv_decode *, rv_isa) = decoders[i].decode_func;
++
++        if (guard_func(cfg)) {
++            dec.opcode_data = opcode_data;
++            decode_func(&dec, isa);
++            if (dec.op != rv_op_illegal)
++                break;
++        }
++    }
++
++    if (dec.op == rv_op_illegal)
++        dec.opcode_data = rvi_opcode_data;
++
+     decode_inst_operands(&dec, isa);
+     decode_inst_decompress(&dec, isa);
+     decode_inst_lift_pseudo(&dec);
+@@ -4659,7 +4685,7 @@ print_insn_riscv(bfd_vma memaddr, struct disassemble_info *info, rv_isa isa)
+         break;
+     }
+ 
+-    disasm_inst(buf, sizeof(buf), isa, memaddr, inst);
++    disasm_inst(buf, sizeof(buf), isa, memaddr, inst, info);
+     (*info->fprintf_func)(info->stream, "%s", buf);
+ 
+     return len;
 -- 
 2.40.1
 
