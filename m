@@ -2,86 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F62716B9D
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 19:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8911716BB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 19:56:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q43XW-00059G-9t; Tue, 30 May 2023 13:53:46 -0400
+	id 1q43ZH-0005yI-By; Tue, 30 May 2023 13:55:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q43XT-00057a-TJ
- for qemu-devel@nongnu.org; Tue, 30 May 2023 13:53:43 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q43XN-0000e9-0b
- for qemu-devel@nongnu.org; Tue, 30 May 2023 13:53:38 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1b041cceb16so21441295ad.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 10:53:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685469215; x=1688061215;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JlXuOP3FS+tvAv/Dwg8rDD9UG6GAcIKDnTosL0eBSv8=;
- b=xL57LNrjKvZBsCVUsj168X9O6kYWTV7jcw3gAE/D3zN0IFHRPgSf3eP0SKRd/Wx0S9
- 9Pl6s7pmIDB40b2CJby1nzJY5TliqxoEDokG1J0FKOHb1IunkaJA6O5yZnNS2LhBkwKR
- m1LTolJpgB5lQKJIGtcF8cIQB7uP0v8Ul2chye1F9fptDQlCgjHF7Pbho1c+JUdMCDtP
- tNIpiaAPQui8AhO5gzmLzXBGROygF2Z2yDui9Fxh7rQXCdBpDH90kOFc4HDNkz9H1Jxl
- egv1HgrFOBv1OnuREg/DLO6QhsAQmBPKRCB5LFiU8jsmN2oPEsX70/DNGRjNYaTkCkBk
- hSCQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q43Z3-0005y3-3U
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 13:55:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1q43Z1-0001DI-LS
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 13:55:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685469318;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JYiQKhEdcivdLvy6/30/wVvux22cBYvh8vNCbr/B1hM=;
+ b=YyKeC7VXhCo80pPYLNpeWvGmb2h39uz2x1HbiRwPFCB14eBd0fPuDtbXKpH1D32TMa4+oq
+ rSHJS3zoOKClHdqvs98UOLtAXUn66rVtNQw/l07jGQRZuaATii4NKbdMZRJzui1FMu19ZF
+ SpGrooeKBwfJXOmYSHqPh86b1G5t118=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-X03ALg37OIyLszbUhiAMMQ-1; Tue, 30 May 2023 13:55:17 -0400
+X-MC-Unique: X03ALg37OIyLszbUhiAMMQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30aa0cc2152so2573073f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 10:55:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685469215; x=1688061215;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1685469316; x=1688061316;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JlXuOP3FS+tvAv/Dwg8rDD9UG6GAcIKDnTosL0eBSv8=;
- b=aDNSicySGXGpaMWc+W3+OPmPqeaB+2Pzq2FWaWjIHHjdrdHEuUQ0C7OHcB8xJWGk1U
- V8LyNTRdnDfauOFwDzljV1uX1iJPUMvpQgMV9yLPG57jDZKkp02PZ4ZftXM2UxkcWAlO
- L1R/YwtUbNGtKQ+g3OmwHxTre5d8Y49ueun10e9ysKU2srMtB5gHXHG/AdV+caFTmCKJ
- RG7kxOqQkr59/qLBHDWPTLfmEyXViZ0+UhS08vHdmJo+tELDq+IsD6umU3F/+065mi2r
- 7YqqLl800/kIokauRtv2oJAyufHB0W1QqKr/VHFr9cctx7AjRZfXdwNuI30jEcD8sg/5
- 5OMw==
-X-Gm-Message-State: AC+VfDwGuLyM6i+8thrwfJpAnsK7OxZMTvTMqp7gk1WOM0y4onkXsAGB
- H4Bc1R51I8ZMdsMK3fz9Zgf2Hg==
-X-Google-Smtp-Source: ACHHUZ4zSkHA85QGWeq3m6FvDiW9iiNnx/YBiGnnEpXb8ueAhp6i1X9OxK9hQkCXymQniuiI2BZk0w==
-X-Received: by 2002:a17:902:e546:b0:1b0:3224:e53a with SMTP id
- n6-20020a170902e54600b001b03224e53amr3775818plf.20.1685469214848; 
- Tue, 30 May 2023 10:53:34 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:35a2:c45d:7485:f488?
- ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
- by smtp.gmail.com with ESMTPSA id
- q13-20020a170902bd8d00b001ac8e0ea157sm864699pls.144.2023.05.30.10.53.33
+ bh=JYiQKhEdcivdLvy6/30/wVvux22cBYvh8vNCbr/B1hM=;
+ b=gqeS5IkJr3Jwfif6QfnH/47zhon4QJyu3om1RhDheOtCu78RlDzEJXhMunFMB4MgXL
+ NOsy8wL/h166PZyyex+fhz5ThZDRDiRgY/r14yt0vbgG2+qA/pEts8Pj58PXx81OLu3T
+ auKZH+IySaxxLzI5Jgy7igUTTFc1QLKosoQ4LAxzKYD1afKPWgw31t2UjkFKcK/R+STI
+ IxA3GWRrunfO5uycUI3iCpgkDBBUjqqO/DBwwhcxur6lu6JMGilFLC1LtN286Jmr/DaU
+ bfdR9RSHCvAKoxpWRRqZHKUskEAcqtdx1H0oL4WoKXzXJto9ievqDcIMV+JnhrTqT+2d
+ 1ebQ==
+X-Gm-Message-State: AC+VfDwJHlE3mwoRWjO8vfvHguuJmpoRPHyUha7XPbjrlw69lrQ0O/lB
+ 3xjQ8s+X0kPxTJD5lTvbmYklFZyg+YXXgmgLq9fuLmCe6huGUi6ebmU6QxKUc4Jh0LsKzlIgzvh
+ zC+APREsfiShqBo8=
+X-Received: by 2002:adf:f04c:0:b0:306:3319:e432 with SMTP id
+ t12-20020adff04c000000b003063319e432mr2342295wro.18.1685469316046; 
+ Tue, 30 May 2023 10:55:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4W4zoCQWl9OtR3yBGdciWSV2qOBWHcWHdfkjZ0SANFaqBt1Myy7YHKjitxOyPtaHajvIuvNA==
+X-Received: by 2002:adf:f04c:0:b0:306:3319:e432 with SMTP id
+ t12-20020adff04c000000b003063319e432mr2342283wro.18.1685469315758; 
+ Tue, 30 May 2023 10:55:15 -0700 (PDT)
+Received: from [192.168.8.105] (tmo-065-8.customers.d1-online.com.
+ [80.187.65.8]) by smtp.gmail.com with ESMTPSA id
+ b18-20020a5d6352000000b0030adc30e9f1sm4038175wrw.68.2023.05.30.10.55.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 10:53:34 -0700 (PDT)
-Message-ID: <7a6af6cf-b018-5925-824e-142911ed0e0f@linaro.org>
-Date: Tue, 30 May 2023 10:53:32 -0700
+ Tue, 30 May 2023 10:55:15 -0700 (PDT)
+Message-ID: <6235dc46-86a7-77b3-b758-d001794a6434@redhat.com>
+Date: Tue, 30 May 2023 19:55:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/5] Use docker "stable" tag
+ Thunderbird/102.10.0
+Subject: Re:
+ tests/avocado/virtio-gpu.py:VirtioGPUx86.test_vhost_user_vga_virgl: ERROR
+To: Richard Henderson <richard.henderson@linaro.org>,
+ qemu-devel <qemu-devel@nongnu.org>
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <7b9511f8-eca4-8a27-9d4e-31a6f16a6bb0@linaro.org>
+ <8696ef96-7287-b059-261b-d06d1d3b0c25@linaro.org>
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Camilla Conte <cconte@redhat.com>, qemu-devel@nongnu.org, thuth@redhat.com
-References: <20230522174153.46801-1-cconte@redhat.com>
- <20230522174153.46801-3-cconte@redhat.com> <ZHY0zjnzp6/RSa7Y@redhat.com>
- <ZHY3K88Qs83W3ZPY@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZHY3K88Qs83W3ZPY@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <8696ef96-7287-b059-261b-d06d1d3b0c25@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,48 +104,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 10:49, Daniel P. Berrangé wrote:
-> On Tue, May 30, 2023 at 06:39:26PM +0100, Daniel P. Berrangé wrote:
->> On Mon, May 22, 2023 at 06:41:51PM +0100, Camilla Conte wrote:
->>> Use the same tag in all jobs.
->>>
->>> Signed-off-by: Camilla Conte <cconte@redhat.com>
->>> ---
->>>   .gitlab-ci.d/container-template.yml | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
->>> index 519b8a9482..11569dd900 100644
->>> --- a/.gitlab-ci.d/container-template.yml
->>> +++ b/.gitlab-ci.d/container-template.yml
->>> @@ -3,7 +3,7 @@
->>>     image: docker:stable
->>>     stage: containers
->>>     services:
->>> -    - docker:dind
->>> +    - docker:stable-dind
+On 30/05/2023 17.00, Richard Henderson wrote:
+> Ping.
+> 
+> On 5/25/23 10:00, Richard Henderson wrote:
+>> Hi guys,
 >>
->> For reasons I don't understand, this change is responsible for all our
->> failed CI jobs involving Fedora being unable to resolve DNS
-> 
->> AFAICT, the ':stable-dind' and ':stable' tags are no longer even supported.
-> 
-> And I found confirmation of this:
-> 
->    https://github.com/docker-library/docker/commit/606c63960a4845af7077721eb3900c706f5d0c5e
-> 
-> "This will remove the "test" and "stable" aliases for whatever
->   major release comes after 19.03 (so once the next release comes
->   out, "stable" will become a stale alias).
-> 
->   I'm not 100% sure this is the right answer, but the "stable"
->   alias has definitely been a huge source of confusion very
->   recently (and it doesn't have much meaning anymore anyways
->   given the death of the "edge" channel)."
+>> https://gitlab.com/qemu-project/qemu/-/jobs/4352476431
+>> https://gitlab.com/qemu-project/qemu/-/jobs/4352476434
+>>
+>> This test ERRORs on the azure k8s runners with
+>>
+>> qemu-system-x86_64: egl: no drm render node available
+>> qemu-system-x86_64: egl: render node init failed
+>>
+>> Can we please SKIP the test if the required resource is not available?
 
-Excellent, thanks for the sleuthing.
+Maybe easy to fix... test_virtio_vga_virgl uses:
 
+         try:
+             self.vm.launch()
+         except:
+             # TODO: probably fails because we are missing the VirGL features
+             self.cancel("VirGL not enabled?")
 
-r~
+But the failing test test_vhost_user_vga_virgl just does:
+
+         self.vm.launch()
+
+without checking for an exception. I think we need to add the same "try: ...
+except:" handling as above. I'll send a patch.
+
+  Thomas
 
 
