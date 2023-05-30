@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B7E716DFE
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3900716DF7
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q45In-0006Sn-BJ; Tue, 30 May 2023 15:46:41 -0400
+	id 1q45Iq-0006Uj-5k; Tue, 30 May 2023 15:46:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q45Il-0006RA-34
- for qemu-devel@nongnu.org; Tue, 30 May 2023 15:46:39 -0400
+ id 1q45In-0006Ty-Vt
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 15:46:41 -0400
 Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q45Ij-0004F9-GV
- for qemu-devel@nongnu.org; Tue, 30 May 2023 15:46:38 -0400
+ id 1q45Im-0004Fj-E9
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 15:46:41 -0400
 Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-19f6211d4e1so1849016fac.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:46:37 -0700 (PDT)
+ 586e51a60fabf-19f7f41d9dcso1643953fac.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:46:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1685475996; x=1688067996;
+ d=ventanamicro.com; s=google; t=1685475999; x=1688067999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QS1DGxToErlST7DIPVOrtAe0U4ury3VVrsLqKkjgUmA=;
- b=nbbOZJSq0xLiNLRIK/EEnwTLSUJ+rz+ZkjI8g5numGuCnlCHsp+SNeYttB2OMf1ZWY
- x5/CuRNkz5gfieGqRnqV9g5YFCTN3HhOVXEsG1Bp4kBT7q/IfvdzvHZJKtJko6HUB2Dd
- xG8xYYv82yOu99mXCNHXj1qUeiNKtyWgdjynLIXEgIKg/TOetXdPnr4Sx4MkDI102QHU
- 84++znJOndBv5Yh1XcmhZoeVNc/j4YScZiCN+QZQq1I4/UzZHbBtlU4atNjytcNGJtE5
- UDFhehEKZdURoDxIMuyE3vk0Igg+d3w0EhvMn36yVZNWtPttQFEFzi9vKNwY53FndERc
- ftkg==
+ bh=TtJS64pZP8Myq3aHHVtCKuG+G8XVLuM7yaFoUAKFiIg=;
+ b=F6iey4xNUKNa0z8T1UGiqJkETmPugmnjuo8iKQjCarmc8dM983WsKqHGwQWoqzvRoj
+ OutY7qiBk8EmhsoiQLWWxnxQIQd0NXb2MACooBTPfIiAx4/yy8DIhGka5rPZWiKDyeiL
+ pM+hejkujXhtsulekyrgCntfx5xyXdLeKNKHGsZaP1ErngCEACJMMB+IX1uRB6bREDxp
+ Stem3vT6reh6CFZ5Bb+dtFhUKzMeN0lkuKwu4fjnfKgyK6cznfd8yhoICH0fs2ISGnXT
+ LZdRwTe/esGz5zXKGy1cNGGrxWJKsLdqCm3DXohiwt9KZs4uT2bwarKN1JJ9vVv4zhWJ
+ QUfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685475996; x=1688067996;
+ d=1e100.net; s=20221208; t=1685475999; x=1688067999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QS1DGxToErlST7DIPVOrtAe0U4ury3VVrsLqKkjgUmA=;
- b=E2NDOJvdbDfmhYY/dPig8ejob9FUhoJj/6KNUqY4LdpLD+qm2rmtTvARuXsSWA+Bnf
- vHdlP0kHrJe9R5R5xTEiQLxFnSID/97nd+fqB+4LC1gyMfgqYfunR/SVyS2Jjt3v8H1C
- Daqcmfx53nJXX5aVFjQa9NLP4j+2dBvBpBr3NXdmQPjKXCf2N5aHPrYe7JrgibUiqAjy
- cjbnI5gmf9pv0i9psivCMq1hcaZL+5JV4nwcDnnyZdgYIoycQWNofg8ZMfRlSPUcr/H4
- IJmYgLE71NiSDZDBoShoeGrgkytsWZlVFRhU/5i08/diI+3Hv74MAG9fGmSmF22ZV+7w
- Seqw==
-X-Gm-Message-State: AC+VfDyBTBFjKMdjtadesuO6Mn2RPDiFv3E2EkZIC37Pvxc2x0NTX3u+
- QtYJprG5gV8i58ISYrussnaR7mzug1RI405EX0k=
-X-Google-Smtp-Source: ACHHUZ4r0WWYtsm5Bl52e9SbsZ/Vt+3ACC3A8dNkTmlqcZBTdpTMv4iJ4V2Jjabi7//3qQnjHBF8nQ==
-X-Received: by 2002:a05:6870:a2d5:b0:19e:ae04:95ae with SMTP id
- w21-20020a056870a2d500b0019eae0495aemr1870683oak.40.1685475996014; 
- Tue, 30 May 2023 12:46:36 -0700 (PDT)
+ bh=TtJS64pZP8Myq3aHHVtCKuG+G8XVLuM7yaFoUAKFiIg=;
+ b=OFAWjrRxkzID5AqfM87H72Yb6pRfq8wTiEAFwL6Er/ncKsxGwHDIFPgVuxVOboXs/I
+ O/RH3VZPALwMARwAdV3EOPnX0omv0WHE8sdrBGvTN5fTYEkr9NK15tzRarMIFtV8S593
+ AFguyqTZxo2G0w/FYbwPHId1cSfKJkH8ufPyGcsnDUWVe1PNxrm68YZWuy+Aiuxo/4qI
+ N/WF6hpugy64slXJ9tOcuCFG4STdAQqzqV07lFIdomHXz4o7p9P7m3ws2OFrAv2LFe2g
+ 0hlG/g+BqVF/0YG5oOZmcQIkpHVi+hOuk9kwPDWdWi0XE6lVPiBMrxa80u+eum+/ddI2
+ uf9Q==
+X-Gm-Message-State: AC+VfDxFLweLpfJFUjM1+xeyQ3Reg1KEDq9qGLwY9rYTgPJ9FFCBKGhR
+ FcEFZRjerswh6lkyP/2fXL98ST6DDw8suK7x8Ak=
+X-Google-Smtp-Source: ACHHUZ7Na67M5A9vtLlovDqnH8GofqEl+Jo8BQqS2kiFd3QlJIEAOOOzGEDvnqOmL7Ne5sNoWY3hHg==
+X-Received: by 2002:a05:6870:32c2:b0:19f:5d99:fc75 with SMTP id
+ r2-20020a05687032c200b0019f5d99fc75mr1530927oac.2.1685475999144; 
+ Tue, 30 May 2023 12:46:39 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com
  (200-162-225-121.static-corp.ajato.com.br. [200.162.225.121])
  by smtp.gmail.com with ESMTPSA id
- j3-20020a056870a48300b0019fa8728b05sm342214oal.39.2023.05.30.12.46.33
+ j3-20020a056870a48300b0019fa8728b05sm342214oal.39.2023.05.30.12.46.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 12:46:35 -0700 (PDT)
+ Tue, 30 May 2023 12:46:38 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 01/16] target/riscv: skip features setup for KVM CPUs
-Date: Tue, 30 May 2023 16:46:08 -0300
-Message-Id: <20230530194623.272652-2-dbarboza@ventanamicro.com>
+Subject: [PATCH 02/16] hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode not
+ set
+Date: Tue, 30 May 2023 16:46:09 -0300
+Message-Id: <20230530194623.272652-3-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230530194623.272652-1-dbarboza@ventanamicro.com>
 References: <20230530194623.272652-1-dbarboza@ventanamicro.com>
@@ -94,116 +95,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As it is today it's not possible to use '-cpu host' if the RISC-V host
-has RVH enabled. This is the resulting error:
+The absence of a satp mode in riscv_host_cpu_init() is causing the
+following error:
 
-$ sudo ./qemu/build/qemu-system-riscv64 \
-    -machine virt,accel=kvm -m 2G -smp 1 \
-    -nographic -snapshot -kernel ./guest_imgs/Image  \
+$ sudo ./qemu/build/qemu-system-riscv64  -machine virt,accel=kvm \
+    -m 2G -smp 1  -nographic -snapshot \
+    -kernel ./guest_imgs/Image \
     -initrd ./guest_imgs/rootfs_kvm_riscv64.img \
     -append "earlycon=sbi root=/dev/ram rw" \
     -cpu host
-qemu-system-riscv64: H extension requires priv spec 1.12.0
+**
+ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should not be
+reached
+Bail out! ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should
+not be reached
+Aborted
 
-This happens because we're checking for priv spec for all CPUs, and
-since we're not setting  env->priv_ver for the 'host' CPU, it's being
-default to zero (i.e. PRIV_SPEC_1_10_0).
+The error is triggered from create_fdt_socket_cpus() in hw/riscv/virt.c.
+It's trying to get satp_mode_str for a NULL cpu->cfg.satp_mode.map.
 
-In reality env->priv_ver does not make sense when running with the KVM
-'host' CPU. It's used to gate certain CSRs/extensions during translation
-to make them unavailable if the hart declares an older spec version. It
-doesn't have any other use. E.g. OpenSBI version 1.2 retrieves the spec
-checking if the CSR_MCOUNTEREN, CSR_MCOUNTINHIBIT and CSR_MENVCFG CSRs
-are available [1].
+For this KVM 'cpu' we would need to inherit the satp supported modes
+from the RISC-V host. At this moment this is not possible because the
+KVM driver does not support it. And even when it does we can't just let
+this broken for every other older kernel.
 
-'priv_ver' is just one example. We're doing a lot of feature validation
-and setup during riscv_cpu_realize() that it doesn't apply KVM CPUs.
-Validating the feature set for those CPUs is a KVM problem that should
-be handled in KVM specific code.
-
-The new riscv_cpu_realize_features() helper contains all validation
-logic that are not applicable to KVM CPUs. riscv_cpu_realize() verifies
-if we're dealing with a KVM CPU and, if not, execute the new helper to
-proceed with the usual realize() logic for all other CPUs.
-
-[1] lib/sbi/sbi_hart.c, hart_detect_features()
+Skip the 'mmu-type' FDT node if there's no satp_mode set.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c | 41 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 32 insertions(+), 9 deletions(-)
+ hw/riscv/virt.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 938c7bd87b..72f5433776 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -331,6 +331,15 @@ static void set_satp_mode_default_map(RISCVCPU *cpu)
- }
- #endif
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 4e3efbee16..8aa907e81f 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -243,13 +243,13 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
+             s->soc[socket].hartid_base + cpu);
+         qemu_fdt_add_subnode(ms->fdt, cpu_name);
  
-+static bool riscv_running_KVM(void)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    return kvm_enabled();
-+#else
-+    return false;
-+#endif
-+}
-+
- static void riscv_any_cpu_init(Object *obj)
- {
-     RISCVCPU *cpu = RISCV_CPU(obj);
-@@ -1295,20 +1304,12 @@ static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
-     }
- }
- 
--static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-+static void riscv_cpu_realize_features(DeviceState *dev, Error **errp)
- {
--    CPUState *cs = CPU(dev);
-     RISCVCPU *cpu = RISCV_CPU(dev);
-     CPURISCVState *env = &cpu->env;
--    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(dev);
-     Error *local_err = NULL;
- 
--    cpu_exec_realizefn(cs, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return;
--    }
+-        satp_mode_max = satp_mode_max_from_map(
+-            s->soc[socket].harts[cpu].cfg.satp_mode.map);
+-        sv_name = g_strdup_printf("riscv,%s",
+-                                  satp_mode_str(satp_mode_max, is_32_bit));
+-        qemu_fdt_setprop_string(ms->fdt, cpu_name, "mmu-type", sv_name);
+-        g_free(sv_name);
 -
-     riscv_cpu_validate_misa_mxl(cpu, &local_err);
-     if (local_err != NULL) {
-         error_propagate(errp, local_err);
-@@ -1354,6 +1355,28 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-         }
-      }
- #endif
-+}
-+
-+static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-+{
-+    CPUState *cs = CPU(dev);
-+    RISCVCPU *cpu = RISCV_CPU(dev);
-+    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(dev);
-+    Error *local_err = NULL;
-+
-+    cpu_exec_realizefn(cs, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
-+    }
-+
-+    if (!riscv_running_KVM()) {
-+        riscv_cpu_realize_features(dev, &local_err);
-+        if (local_err != NULL) {
-+            error_propagate(errp, local_err);
-+            return;
++        if (cpu_ptr->cfg.satp_mode.supported != 0) {
++            satp_mode_max = satp_mode_max_from_map(cpu_ptr->cfg.satp_mode.map);
++            sv_name = g_strdup_printf("riscv,%s",
++                                      satp_mode_str(satp_mode_max, is_32_bit));
++            qemu_fdt_setprop_string(ms->fdt, cpu_name, "mmu-type", sv_name);
++            g_free(sv_name);
 +        }
-+    }
  
-     riscv_cpu_finalize_features(cpu, &local_err);
-     if (local_err != NULL) {
+         name = riscv_isa_string(cpu_ptr);
+         qemu_fdt_setprop_string(ms->fdt, cpu_name, "riscv,isa", name);
 -- 
 2.40.1
 
