@@ -2,109 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977FA7152FC
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 03:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D03E715360
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 04:04:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3oIM-0007UM-Gu; Mon, 29 May 2023 21:37:06 -0400
+	id 1q3ogq-0002sz-TU; Mon, 29 May 2023 22:02:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@samsung.com>)
- id 1q3oIJ-0007UE-5q
- for qemu-devel@nongnu.org; Mon, 29 May 2023 21:37:04 -0400
-Received: from mailout2.samsung.com ([203.254.224.25])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@samsung.com>)
- id 1q3oIC-00080s-Fz
- for qemu-devel@nongnu.org; Mon, 29 May 2023 21:37:02 -0400
-Received: from epcas2p3.samsung.com (unknown [182.195.41.55])
- by mailout2.samsung.com (KnoxPortal) with ESMTP id
- 20230530013648epoutp0250f11f176fc3c838efa2321908e1fb49~jyAS7xknx1176711767epoutp02H
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 01:36:48 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
- 20230530013648epoutp0250f11f176fc3c838efa2321908e1fb49~jyAS7xknx1176711767epoutp02H
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1685410608;
- bh=KIPteUOYoEhKBczI05uvmnx3pmAArn+RsMB3Q3+dA2g=;
- h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
- b=elfMI8t5D5omSNEJPaM1yM6NVjzxiWBSnElhtXR7GZMB44El6HlKABKo8JyM3Eu5A
- BCrDlXexAQCyUEzpPv5noTLNf0Fg+MVClBVxphNDBdT/lIvKaNHwXliVz6tHEBmoym
- 1RjY2yQcVJ4nFlaMLNQxrwnQ6S80ffuTylkKC/Ds=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
- epcas2p1.samsung.com (KnoxPortal) with ESMTP id
- 20230530013647epcas2p1cc9829875fecfa2a7553740b1362e02f~jyASqk-Jl3236932369epcas2p1h;
- Tue, 30 May 2023 01:36:47 +0000 (GMT)
-Received: from epsmges2p3.samsung.com (unknown [182.195.36.70]) by
- epsnrtp3.localdomain (Postfix) with ESMTP id 4QVZkR0WCpz4x9Pt; Tue, 30 May
- 2023 01:36:47 +0000 (GMT)
-X-AuditID: b6c32a47-eedff70000001ce0-4e-6475532e6047
-Received: from epcas2p4.samsung.com ( [182.195.41.56]) by
- epsmges2p3.samsung.com (Symantec Messaging Gateway) with SMTP id
- F9.0C.07392.E2355746; Tue, 30 May 2023 10:36:46 +0900 (KST)
-Mime-Version: 1.0
-Subject: Re: [PATCH 1/3] hw/ufs: Initial commit for emulated
- Universal-Flash-Storage
-From: Jeuk Kim <jeuk20.kim@samsung.com>
-To: Thomas Huth <thuth@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kwolf@redhat.com"
- <kwolf@redhat.com>, "hreitz@redhat.com" <hreitz@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "marcel.apfelbaum@gmail.com"
- <marcel.apfelbaum@gmail.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "marcandre.lureau@redhat.com" <marcandre.lureau@redhat.com>,
- "berrange@redhat.com" <berrange@redhat.com>, "philmd@linaro.org"
- <philmd@linaro.org>, "qemu-block@nongnu.org" <qemu-block@nongnu.org>, Klaus
- Birkelund Jensen <k.jensen@samsung.com>
-X-Priority: 3
-X-Content-Kind-Code: NORMAL
-In-Reply-To: <fbc8003d-9d91-55a0-940f-240d687aae75@redhat.com>
-X-CPGS-Detection: blocking_info_exchange
-X-Drm-Type: N,general
-X-Msg-Generator: Mail
-X-Msg-Type: PERSONAL
-X-Reply-Demand: N
-Message-ID: <20230530013646epcms2p392066e0dcbd6613d06977974a4f81c1d@epcms2p3>
-Date: Tue, 30 May 2023 10:36:46 +0900
-X-CMS-MailID: 20230530013646epcms2p392066e0dcbd6613d06977974a4f81c1d
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-X-CPGSPASS: Y
-X-CPGSPASS: Y
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrIJsWRmVeSWpSXmKPExsWy7bCmha5ecGmKweJLNhZv3qxhsnh5SNPi
- wd1+RouTjXtYLZZcTLVY0NbOavGy/QSzxf9fr1gt9m/7x2qxZoWwxax37WwWx3t3sFisPGbj
- wOuxc9Zddo871/aweTy5tpnJ4/2+q2wefVtWMQawRmXbZKQmpqQWKaTmJeenZOal2yp5B8c7
- x5uaGRjqGlpamCsp5CXmptoqufgE6Lpl5gBdqKRQlphTChQKSCwuVtK3synKLy1JVcjILy6x
- VUotSMkpMC/QK07MLS7NS9fLSy2xMjQwMDIFKkzIztiz+DN7wVqeiq+9bewNjG84uhg5OSQE
- TCS+rL7I2sXIxSEksINRYtav/UxdjBwcvAKCEn93CIPUCAuESRw6dZYZxBYSUJCYs62DHSKu
- KTF9/USwcjYBdYnTC81BwiICShLr/u1nARnJLNDPIjH1dyszxC5eiRntT1kgbGmJ7cu3MoLY
- nAJ2EvvWXGGEiGtI/FjWC1UvKnFz9Vt2GPv9sflQNSISrffOQtUISjz4uRsqLilx6ttjVgh7
- OqPEgv+mIEdICCxglPjVPB2qQV/iWsdGsCN4BXwlvt1+BmazCKhKXH66iw2ixkVi2a4XYDaz
- gLzE9rdzmEGeZAZ6eP0ufRBTQkBZ4sgtFogKPomOw3/ZYV5s2PgbK3vHvCdMELaKxOLmw6wT
- GJVnIQJ6FpJdsxB2LWBkXsUollpQnJueWmxUYAyP2+T83E2M4LSq5b6DccbbD3qHGJk4GA8x
- SnAwK4nw2iYWpwjxpiRWVqUW5ccXleakFh9iNAX6ciKzlGhyPjCx55XEG5pYGpiYmRmaG5ka
- mCuJ80rbnkwWEkhPLEnNTk0tSC2C6WPi4JRqYJJeWFZ86X7C/zsudWsqlYUmnPjrV31ro6vi
- 7J03y/6eNz//Z33LkR/dpiU/WSckpr5rc8p+GXvV52NHwpIT5ftqk/x39oqfOzRvW2bS5u6p
- DhMeXxL/+2XTEgZpqanC9sd5xc02V8qvs4wyuHC2LX/GOQ2P28orjhnt/PzFf8kNm8x/bJ8n
- xb6TN9b6c35nj/0aAdPLC6Yz5Ct3nNrBr1n2de6ktOq5B4U33vx8PrpQfpKD+pyHBTZsmSaG
- mfonjuYXZqT6u7HvORNwWjH498L7hwL5T/yQ4boWw8wpzHvSISkvseSR7/rX3kWHjupf9an5
- OUH5W7WGYrBL+yWtyCV8kY/ayjvPLGd9ceoSG78SS3FGoqEWc1FxIgCJ0o7DNAQAAA==
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230526050555epcms2p287be772002cd941cc79226968c319036
-References: <fbc8003d-9d91-55a0-940f-240d687aae75@redhat.com>
- <20230526050555epcms2p287be772002cd941cc79226968c319036@epcms2p2>
- <CGME20230526050555epcms2p287be772002cd941cc79226968c319036@epcms2p3>
-Received-SPF: pass client-ip=203.254.224.25;
- envelope-from=jeuk20.kim@samsung.com; helo=mailout2.samsung.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q3ogn-0002sW-CR
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 22:02:22 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1q3ogl-0004cV-Df
+ for qemu-devel@nongnu.org; Mon, 29 May 2023 22:02:21 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-5343c3daff0so2425634a12.0
+ for <qemu-devel@nongnu.org>; Mon, 29 May 2023 19:02:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1685412138; x=1688004138;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FOEZEL42QoC30coAhKp1zkmMk0GhXymsmav6zWfQuG0=;
+ b=LBrYHpnW2a5EON5WJl9IkqyxxYD9/RA3DT1jAwuoNTd1T0VIxXvjxsaqQPjLcXcS0i
+ qI0XOOtY/TMYDpcGSg9iDZn8MkkimLJ6OzsvwIN+O0DMCBI/CSedtrr0yV7A3DcCdt8G
+ 0DXuU7piBKcr0XU9uF6tNd4Hzg/ysjIxoScX4KXCtHlPhVIFQY9zR6dRkdB8acTqhtXq
+ rHtVtcfD/n5yuPnCzsc3a8sLrEs05ks7xkAFkZh3aZ8unmFZJTwrov9VqGDlvObkSRXb
+ WvLgeIi0I8gu2wdT42R94x8EoKaRieqBr4QnpMxwca19DKCTYX3n4SiSiT0fztSfwKN2
+ reTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685412138; x=1688004138;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FOEZEL42QoC30coAhKp1zkmMk0GhXymsmav6zWfQuG0=;
+ b=bXH5SGc+Bbev+NmN871A4YOVKnLWlfwrYkY4Gh4mWyCHsaT+8bRSlOnDXt2OuOihPS
+ Rrf8ob9TsrS0+oQJ+rzm/YpIkJQ7VcEcaZUOZPhx9rhrrcnoHupWmrs7oeofUCLe5LAN
+ WJSM7AjoWVXnPory9ymDRb35fFabOGqkmapoL1z+tzFjbo03O+7Nqg7nmf03uvY0Hr3b
+ qs3JeF1tNM1/CrkpnCjmQFOsbu+l51pIz7jFa9kPsrH2UHfjkOoXf5i6Sh5eNtrlBhFZ
+ gD4PMXvm+Cm+tYzfte+MzkQiK8EADMvzMV+up5JCHxEshhkt6ekBpXS68zAaQ+QuKaBH
+ Rhew==
+X-Gm-Message-State: AC+VfDzhCUSwQ61WpzgCfORBN8vI5YzohvaGA50gbCU5i1j0qGI+lB0p
+ zotssvMlzIcC9bLUrdPdoDy/aA==
+X-Google-Smtp-Source: ACHHUZ7sJnd5l+xyDssgwnZhzsetLbHDYJsRUZhW9Inq0dasXtSmjBHzkAYJyJlHaeLKfe/vjuDAng==
+X-Received: by 2002:a17:902:c78c:b0:1b0:4baa:ba92 with SMTP id
+ w12-20020a170902c78c00b001b04baaba92mr868628pla.1.1685412137823; 
+ Mon, 29 May 2023 19:02:17 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ jf11-20020a170903268b00b001b03f89daffsm3145369plb.110.2023.05.29.19.02.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 May 2023 19:02:17 -0700 (PDT)
+Message-ID: <5a69feb7-0dcb-6620-536a-e6778f79ccde@daynix.com>
+Date: Tue, 30 May 2023 11:02:14 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] igb: Add Function Level Reset to PF and VF
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: Jason Wang <jasowang@redhat.com>
+References: <20230526173035.69055-1-clg@redhat.com>
+ <DBBP189MB143330236AFF956285CD74F295459@DBBP189MB1433.EURP189.PROD.OUTLOOK.COM>
+ <e2bed67c-23ea-6364-bd5a-f7b330346302@daynix.com>
+ <8fb19b45-0dc3-a3d6-fcf9-5fc8728edf4d@redhat.com>
+ <5ab583be-8e7a-5636-d14c-f04ecd670894@daynix.com>
+ <d5c359c5-79fa-dffc-101b-08c0f08f7071@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <d5c359c5-79fa-dffc-101b-08c0f08f7071@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::534;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x534.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,42 +98,162 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: jeuk20.kim@samsung.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/05/2023 15:37, Thomas Huth wrote:
->On 26/05/2023 07.05, Jeuk Kim wrote:
->> Universal Flash Storage (UFS) is a high-performance mass storage device
->> with a serial interface. It is primarily used as a high-performance
->> data storage device for embedded applications.
->> 
->> This commit contains code for UFS device to be recognized
->> as a UFS PCI device.
->> Patches to handle UFS logical unit and Transfer Request will follow.
->> 
->> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
->> ---
->>   MAINTAINERS              |    6 +
->>   hw/Kconfig               |    1 +
->>   hw/meson.build           |    1 +
->>   hw/ufs/Kconfig           |    4 +
->>   hw/ufs/meson.build       |    1 +
->>   hw/ufs/trace-events      |   33 +
->>   hw/ufs/trace.h           |    1 +
->>   hw/ufs/ufs.c             |  305 ++++++++++
->>   hw/ufs/ufs.h             |   42 ++
->>   include/block/ufs.h      | 1251 ++++++++++++++++++++++++++++++++++++++
->>   include/hw/pci/pci.h     |    1 +
->>   include/hw/pci/pci_ids.h |    1 +
->>   meson.build              |    1 +
->
->Do you expect lots of additional files to be added to the hw/ufs/ folder? If 
->the answer is no, then it's maybe a little bit overkill to introduce a 
->separate folder for this. Wouldn't hw/block/ be a good fit for this as well? 
->Or maybe we could introduce hw/flash/ or so and also move the contents of 
->hw/nvme there?
+On 2023/05/30 0:07, Cédric Le Goater wrote:
+> On 5/29/23 09:45, Akihiko Odaki wrote:
+>> On 2023/05/29 16:01, Cédric Le Goater wrote:
+>>> On 5/29/23 04:45, Akihiko Odaki wrote:
+>>>> On 2023/05/28 19:50, Sriram Yagnaraman wrote:
+>>>>>
+>>>>>> -----Original Message-----
+>>>>>> From: Cédric Le Goater <clg@redhat.com>
+>>>>>> Sent: Friday, 26 May 2023 19:31
+>>>>>> To: qemu-devel@nongnu.org
+>>>>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>; Sriram Yagnaraman
+>>>>>> <sriram.yagnaraman@est.tech>; Jason Wang <jasowang@redhat.com>; 
+>>>>>> Cédric
+>>>>>> Le Goater <clg@redhat.com>
+>>>>>> Subject: [PATCH] igb: Add Function Level Reset to PF and VF
+>>>>>>
+>>>>>> The Intel 82576EB GbE Controller say that the Physical and Virtual 
+>>>>>> Functions
+>>>>>> support Function Level Reset. Add the capability to each device 
+>>>>>> model.
+>>>>>>
+>>>>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>>>> Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
+>>>>>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>>>>>> ---
+>>>>>>   hw/net/igb.c   | 3 +++
+>>>>>>   hw/net/igbvf.c | 3 +++
+>>>>>>   2 files changed, 6 insertions(+)
+>>>>>>
+>>>>>> diff --git a/hw/net/igb.c b/hw/net/igb.c index 
+>>>>>> 1c989d767725..08e389338dca
+>>>>>> 100644
+>>>>>> --- a/hw/net/igb.c
+>>>>>> +++ b/hw/net/igb.c
+>>>>>> @@ -101,6 +101,7 @@ static void igb_write_config(PCIDevice *dev, 
+>>>>>> uint32_t
+>>>>>> addr,
+>>>>>>
+>>>>>>       trace_igb_write_config(addr, val, len);
+>>>>>>       pci_default_write_config(dev, addr, val, len);
+>>>>>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+>>>>>>
+>>>>>>       if (range_covers_byte(addr, len, PCI_COMMAND) &&
+>>>>>>           (dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) { @@ 
+>>>>>> -427,6
+>>>>>> +428,8 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error 
+>>>>>> **errp)
+>>>>>>       }
+>>>>>>
+>>>>>>       /* PCIe extended capabilities (in order) */
+>>>>>> +    pcie_cap_flr_init(pci_dev);
+>>>>>> +
+>>>>>>       if (pcie_aer_init(pci_dev, 1, 0x100, 0x40, errp) < 0) {
+>>>>>>           hw_error("Failed to initialize AER capability");
+>>>>>>       }
+>>>>>> diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c index
+>>>>>> 284ea611848b..0a58dad06802 100644
+>>>>>> --- a/hw/net/igbvf.c
+>>>>>> +++ b/hw/net/igbvf.c
+>>>>>> @@ -204,6 +204,7 @@ static void igbvf_write_config(PCIDevice *dev,
+>>>>>> uint32_t addr, uint32_t val,  {
+>>>>>>       trace_igbvf_write_config(addr, val, len);
+>>>>>>       pci_default_write_config(dev, addr, val, len);
+>>>>>> +    pcie_cap_flr_write_config(dev, addr, val, len);
+>>>>>>   }
+>>>>>>
+>>>>>>   static uint64_t igbvf_mmio_read(void *opaque, hwaddr addr, 
+>>>>>> unsigned size)
+>>>>>> @@ -266,6 +267,8 @@ static void igbvf_pci_realize(PCIDevice *dev, 
+>>>>>> Error
+>>>>>> **errp)
+>>>>>>           hw_error("Failed to initialize PCIe capability");
+>>>>>>       }
+>>>>>>
+>>>>>> +    pcie_cap_flr_init(dev);
+>>>>>
+>>>>> Sorry for my naive question, and perhaps not related to your patch, 
+>>>>> IGBVF device class doesn't seem to have any reset functions 
+>>>>> registered via igbvf_class_init(). So, I am guessing an FLR will 
+>>>>> not trigger igb_vf_reset(), which is probably what we want.
+>>>
+>>> It does through the VTCTRL registers.
+>>>
+>>>> You're right. Advertising FLR capability without implementing it can 
+>>>> confuse the guest though such probability is quite a low in 
+>>>> practice. The reset should be implemented first.
+>>>
+>>>
+>>> I was looking at an issue from a VFIO perspective which does a FLR
+>>> on a device when pass through. Software and FLR are equivalent for
+>>> a VF.
+>>
+>> They should be equivalent according to the datasheet, but 
+>> unfortunately current igbvf implementation does nothing when reset. 
+>> What Sriram proposes is to add code to actually write VTCTRL when FLR 
+>> occurred and make FLR and software reset equivalent. And I think that 
+>> should be done before this change; you should advertise FLR capability 
+>> after the reset is actually implemented.
+> 
+> 
+> AFAICT, the VFs are reset correctly by the OS when created or probed and
+> by QEMU when they are passthrough in a nested guest OS (with this patch).
+> igb_vf_reset() is clearly called in QEMU, see routine e1000_reset_hw_vf()
+> in Linux.
 
-Yes. I plan to add more files to UFS for different functions (UICCMD, MQ, zoned, etc.) like nvme.
-So personally, I think it would be good to keep the hw/ufs/ directory.
+I don't think this patch makes difference for e1000_reset_hw_vf() as it 
+does not rely on FLR.
+
+> 
+> I don't think a reset op is necessary because VFs are software constructs
+> but I don't mind really. If so, then, I wouldn't mimic what the OS does
+> by writing the RST bit in the CTRL register of the VF, I would simply
+> install igb_vf_reset() as a reset handler.
+
+Thinking about the reason why VFIO performs FLR, probably VFIO expects 
+the FLR clears all of states the kernel set to prevent the VF from 
+leaking kernel addresses or addresses of other user space which the VF 
+was assigned to in the past, for example.
+
+Implementing the reset operation is not necessary to make it function 
+but to make it secure, particularly we promise the guest that we clear 
+the VF state by advertising FLR.
+
+Regards,
+Akihiko Odaki
+
+> 
+> Thanks,
+> 
+> C.
+> 
+> 
+> 
+>>
+>> Regards,
+>> Akihiko Odaki
+>>
+>>>
+>>> I am not sure a VF needs more really, since it is all controlled
+>>> by the PF. >
+>>> C.
+>>>
+>>>>
+>>>>>
+>>>>>> +
+>>>>>>       if (pcie_aer_init(dev, 1, 0x100, 0x40, errp) < 0) {
+>>>>>>           hw_error("Failed to initialize AER capability");
+>>>>>>       }
+>>>>>> -- 
+>>>>>> 2.40.1
+>>>>>
+>>>>
+>>>
+>>
+> 
 
