@@ -2,66 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6796B715654
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 09:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0128C71568B
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 09:21:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3tXp-0007pb-Q8; Tue, 30 May 2023 03:13:25 -0400
+	id 1q3teB-00017p-I8; Tue, 30 May 2023 03:19:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q3tXo-0007pR-E1
- for qemu-devel@nongnu.org; Tue, 30 May 2023 03:13:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1q3te1-00017H-Rw
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 03:19:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q3tXm-0007ve-Bj
- for qemu-devel@nongnu.org; Tue, 30 May 2023 03:13:24 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1q3te0-0004n8-56
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 03:19:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685430799;
+ s=mimecast20190719; t=1685431187;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=oBoBSLJnjqZdX2BFSRWq6y3cLfvPWot5qpz31X4KC10=;
- b=MfP6IaW9Jw0xH74hCKSq/WuoiwYVn8UGObGEPZFUjJofHvmvSmSMO/O47duyeb85fzK2BL
- k8/aNIXRqfcRZGrcCgVwNtfbWbQ/gOX8DfjlYuQySFKr1Q8iYC2tCLvSMxfTCIX2rVW6RI
- FxZpP+KmFJGH0RujCCUw7dDAxKZmCF0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-136-elLsXvsCOAijFLmtR14Ogw-1; Tue, 30 May 2023 03:13:15 -0400
-X-MC-Unique: elLsXvsCOAijFLmtR14Ogw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C4EBE80120A;
- Tue, 30 May 2023 07:13:14 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 83DBE112132C;
- Tue, 30 May 2023 07:13:14 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7902121E692E; Tue, 30 May 2023 09:13:13 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
- dgilbert@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
- eblake@redhat.com,  manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-Subject: Re: [PATCH v5 6/9] migration: modified migration QAPIs to accept
- 'channels' argument for migration
-References: <20230519094617.7078-1-het.gala@nutanix.com>
- <20230519094617.7078-7-het.gala@nutanix.com>
- <875y8gjo5h.fsf@pond.sub.org>
- <2837b5c4-2f70-c6b2-8309-13c40540ec1d@nutanix.com>
-Date: Tue, 30 May 2023 09:13:13 +0200
-In-Reply-To: <2837b5c4-2f70-c6b2-8309-13c40540ec1d@nutanix.com> (Het Gala's
- message of "Mon, 29 May 2023 17:03:45 +0530")
-Message-ID: <875y8auwae.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=aENm/YkSJmXfuyaUV6qyugIrR6R8dIXonfT4zqFDy4I=;
+ b=InNnX+e6xo9eFhuorH7V/iJjArVtjHZO4le4Rk1X2k2M6ZCErQ0qrd83NHzuI3qf8bFGgd
+ lYNOWlAYelVHfte7MrzvA3GZkXxuLW1mgvHuSJs41D31W2DrBMJA8BBsZAgfyK/ODu2egu
+ 0epa36pYzXu2zCIStQBQtUQFfoVpsNw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-ftu64WyJN_izYIMCfzu9Fg-1; Tue, 30 May 2023 03:19:46 -0400
+X-MC-Unique: ftu64WyJN_izYIMCfzu9Fg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30af00323b0so472151f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 00:19:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685431184; x=1688023184;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aENm/YkSJmXfuyaUV6qyugIrR6R8dIXonfT4zqFDy4I=;
+ b=Hh0c1DtI45zU/cL1Le8V82/Ut0z1FOnuQOIluNFolKIefMYl+BUdxfp4XAKpMlpcy/
+ BV0WHzNVuoRzplQtSWraGn9sc6DuD5mCimv3HHOD25jr+HPXFlRZFYAfYuMAByl49OWR
+ +bCcKJ1ik0Ab2gKLe9yG+35S7Vv6/t0Or0giCmKPHdcwIHSubosPrdql4TqMXkwRUXNY
+ MnDHBM1+SeCg8OGCK+6MdJCfiXMCHBgrHIxmUPPSk5bw3moe6gwZSzMYIqab7M/HC23F
+ J1edyhgX/jzx3veCwIigDiUFXwC46d+9AVOZpCsl1EhlMt3Hn7XLMYjFi56ZNVqpVc96
+ EK+Q==
+X-Gm-Message-State: AC+VfDzHtMVeS+4p/mALJDWs9Bd2PC6kRVyucSFrD2iyzOHQG3LMV+LR
+ daLj9idQWzXKF6ytG1a3wdmJayEXVsTshaaOwpbncDGCEg8J24yZu/WYQwHEr8TDebngW43PAaw
+ Ntn0BJmoHCrZAp+8YNBdxOA6JeBDjggoHhkMeWmcHJZDv9LkF2GSgRxvNAbGWSCFJwpg2F/PZ24
+ k=
+X-Received: by 2002:adf:ce83:0:b0:2c5:3cd2:b8e with SMTP id
+ r3-20020adfce83000000b002c53cd20b8emr785818wrn.1.1685431184614; 
+ Tue, 30 May 2023 00:19:44 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4306FLzmak/FgduCAns4AJJ9tpy7YnY8ppPdQG9SMacfMzCRhdxGt9kRN8S3N841ZF4nZmkw==
+X-Received: by 2002:adf:ce83:0:b0:2c5:3cd2:b8e with SMTP id
+ r3-20020adfce83000000b002c53cd20b8emr785791wrn.1.1685431184233; 
+ Tue, 30 May 2023 00:19:44 -0700 (PDT)
+Received: from step1.redhat.com (host-87-12-25-16.business.telecomitalia.it.
+ [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
+ q2-20020a05600000c200b003062c0ef959sm2236527wrx.69.2023.05.30.00.19.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 00:19:43 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Jonathon Jongsma <jjongsma@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH v5 0/2] block/blkio: support fd passing for
+ virtio-blk-vhost-vdpa driver
+Date: Tue, 30 May 2023 09:19:39 +0200
+Message-Id: <20230530071941.8954-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.40.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -85,201 +106,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
+v5:
+- moved `features` to the object level to simplify libvirt code [Jonathon]
+- wrapped a line too long in the documentation [Markus]
+- added Stefan R-b tags
 
-> On 25/05/23 11:20 pm, Markus Armbruster wrote:
->> Het Gala <het.gala@nutanix.com> writes:
->>
->>> MigrateChannelList allows to connect accross multiple interfaces. Added
->>> MigrateChannelList struct as argument to migration QAPIs.
->>>
->>> Future patchset series plans to include multiple MigrateChannels
->>> for multiple interfaces to be connected. That is the reason, 'MigrateChannelList'
->>> is the preferred choice of argument over 'MigrateChannel' and making
->>> migration QAPIs future proof.
->>>
->>> For current patchset series, have limited the size of the list to single
->>> element (single interface) as runtime check.
->>>
->>> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
->>> Signed-off-by: Het Gala <het.gala@nutanix.com>
->>> ---
->> [...]
->>
->>> diff --git a/qapi/migration.json b/qapi/migration.json
->>> index c500744bb7..86bbc916d1 100644
->>> --- a/qapi/migration.json
->>> +++ b/qapi/migration.json
->>> @@ -1448,12 +1448,47 @@
->>>       'exec': 'MigrateExecCommand',
->>>       'rdma': 'InetSocketAddress' } }
->>>   +##
->>> +# @MigrateChannelType:
->>
->> As mentioned in my review of PATCH 1, I prefer nouns to verbs for types,
->> i.e.  Migration, not Migrate.  More of the same below, not flagging it
->> again.
->>
-> Ack.
->
-> Also, I forgot ot mention in the 1st patch - even for union and struct namings - nouns are preffered over verbs ? or its just for enum types ?
-> We use structs like - MigrateExecCommand, MigrateChannel --> MigrationExecCommand, MigrationChannel ?
-> and union like - MigrateAddress --> MigrationAddress ?
+v4: https://lore.kernel.org/qemu-devel/20230526150304.158206-1-sgarzare@redhat.com/
+- added patch 02 to allow libvirt to discover we support fdset [Markus]
+- modified the commit description of patch 01
 
-The "types are things, and names of things are nouns" argument applies
-to all types.
+v3: https://lore.kernel.org/qemu-devel/20230511091527.46620-1-sgarzare@redhat.com/
+- use qemu_open() on `path` to simplify libvirt code [Jonathon]
+- remove patch 01 since we are not using monitor_fd_param() anymore
 
-Yes, existing names use verbs in places.  Mildly annoying.
+v2: https://lore.kernel.org/qemu-devel/20230504092843.62493-1-sgarzare@redhat.com/
+- added patch 01 to use monitor_fd_param() in the blkio module
+- use monitor_fd_param() to parse the fd like vhost devices [Stefan]
 
-Renaming them would not create compatibility problems, as types are not
-part of the external interface.  Up to migration maintainers.
+v1: https://lore.kernel.org/qemu-devel/20230502145050.224615-1-sgarzare@redhat.com/
 
->>> +#
->>> +# The supported options for migration channel type requests
->>> +#
->>> +# @main: Support request for main outbound migration control channel
->>> +#
->>> +# Since 8.1
->>> +##
->>> +{ 'enum': 'MigrateChannelType',
->>> +  'data': [ 'main' ] }
->>> +
->>> +##
->>> +# @MigrateChannel:
->>> +#
->>> +# Information regarding migration Channel-type for transferring packets,
->>> +# source and corresponding destination interface for socket connection
->>> +# and number of multifd channels over the interface.
->>> +#
->>> +# @channeltype: Name of Channel type for transfering packet information
->>
->> @channel-type, because "channeltype" is not a word.
->
-> Ack.
->
->>> +#
->>> +# @addr: Information regarding migration parameters of destination interface
->>> +#
->>> +# Since 8.1
->>> +##
->>> +{ 'struct': 'MigrateChannel',
->>> +  'data': {
->>> +       'channeltype': 'MigrateChannelType',
->>> +       'addr': 'MigrateAddress' } }
->>> +
->>>   ##
->>>   # @migrate:
->>>   #
->>>   # Migrates the current running guest to another Virtual Machine.
->>>   #
->>>   # @uri: the Uniform Resource Identifier of the destination VM
->>> +#       for migration thread
->>> +#
->>> +# @channels: Struct containing list of migration channel types, with all
->>> +#            the information regarding destination interfaces required for
->>> +#            initiating a migration stream.
->>
->> Please format like
->>
->>     # @uri: the Uniform Resource Identifier of the destination VM for
->>     #     migration thread
->>     #
->>     # @channels: Struct containing list of migration channel types, with
->>     #     all the information regarding destination interfaces required
->>     #     for initiating a migration stream.
->>
->> to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
->> to conform to current conventions).
->
-> Ack. Will change that in the previous patch and will take care in future patches too. Thanks for informing regarding qapi documentation changes!
+The virtio-blk-vhost-vdpa driver in libblkio 1.3.0 supports the new
+'fd' property. Let's expose this to the user, so the management layer
+can pass the file descriptor of an already opened vhost-vdpa character
+device. This is useful especially when the device can only be accessed
+with certain privileges.
 
-Gladly!  It's the only way to make the nicer formatting stick :)
+Stefano Garzarella (2):
+  block/blkio: use qemu_open() to support fd passing for virtio-blk
+  qapi: add '@fdset' feature for BlockdevOptionsVirtioBlkVhostVdpa
 
->>>   #
->>>   # @blk: do block migration (full disk copy)
->>>   #
->>> @@ -1479,14 +1514,44 @@
->>>   # 3. The user Monitor's "detach" argument is invalid in QMP and should
->>>   #    not be used
->>>   #
->>> +# 4. The uri argument should have the Uniform Resource Identifier of default
->>> +#    destination VM. This connection will be bound to default network
->>> +#
->>> +# 5. The 'uri' and 'channel' arguments are mutually exclusive; exactly one
->>> +#    of the two should be present.
->>> +#
->> Long lines.  Better:
->>
->>     # 4. The uri argument should have the Uniform Resource Identifier of
->>     #    default destination VM.  This connection will be bound to default
->>     #    network
->>     #
->>     # 5. The 'uri' and 'channel' arguments are mutually exclusive; exactly
->>     #    one of the two should be present.
-> Ack.
->>>   # Example:
->>>   #
->>>   # -> { "execute": "migrate", "arguments": { "uri": "tcp:0:4446" } }
->>>   # <- { "return": {} }
->>> +# -> { "execute": "migrate",
->>> +#      "arguments": {
->>> +#          "channels": [ { "channeltype": "main",
->>> +#                          "addr": { "transport": "socket", "type": "inet",
->>> +#                                    "host": "10.12.34.9",
->>> +#                                    "port": "1050" } } ] } }
->>> +# <- { "return": {} }
->>> +#
->>> +# -> { "execute": "migrate",
->>> +#      "arguments": {
->>> +#          "channels": [ { "channeltype": "main",
->>> +#                          "addr": { "transport": "exec",
->>> +#                                    "args": [ "/bin/nc", "-p", "6000",
->>> +#                                              "/some/sock" ] } } ] } }
->>> +# <- { "return": {} }
->>> +#
->>> +# -> { "execute": "migrate",
->>> +#      "arguments": {
->>> +#          "channels": [ { "channeltype": "main",
->>> +#                          "addr": { "transport": "rdma",
->>> +#                                    "host": "10.12.34.9",
->>> +#                                    "port": "1050" } } ] } }
->>> +# <- { "return": {} }
->>> +#
->>>   ##
->>>   { 'command': 'migrate',
->>> -  'data': {'uri': 'str', '*blk': 'bool', '*inc': 'bool',
->>> -           '*detach': 'bool', '*resume': 'bool' } }
->>> +  'data': {'*uri': 'str', '*channels': [ 'MigrateChannel' ], '*blk': 'bool',
->>> +           '*inc': 'bool', '*detach': 'bool', '*resume': 'bool' } }
->>>     ##
->>>   # @migrate-incoming:
->>> @@ -1497,6 +1562,10 @@
->>>   # @uri: The Uniform Resource Identifier identifying the source or
->>>   #     address to listen on
->>>   #
->>> +# @channels: Struct containing list of migration channel types, with all
->>> +#            the information regarding destination interfaces required for
->>> +#            initiating a migration stream.
->>> +#
->>
->> The list doesn't contain migration channel types, it contains migration
->> channels.
->
-> Yes, my bad. Will update it.
+ meson.build          |  4 ++++
+ qapi/block-core.json |  6 +++++
+ block/blkio.c        | 53 ++++++++++++++++++++++++++++++++++++--------
+ 3 files changed, 54 insertions(+), 9 deletions(-)
 
-Writing good documentation is hard!
-
->> I'm not sure what you're trying to say by "with all the information ..."
->>
->> What does it mean to have multiple channels?
->
-> In future patchset series, we will be introducing channels over different interfaces (src-dest pair), with each channel having multiple multifd channels. For now we will restrict the size of the list to 1.
-
-Please document this restriction right here.
-
-When you add support for multiple channels, will each channel have a
-unique channel type?
-
-[...]
+-- 
+2.40.1
 
 
