@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA74716C71
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:28:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC17716C77
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 20:28:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q442j-0001a0-2u; Tue, 30 May 2023 14:26:01 -0400
+	id 1q4431-0002AM-41; Tue, 30 May 2023 14:26:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q442f-0001ZL-EC
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q442x-0001rx-Ng
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:26:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q442d-0000lE-QY
- for qemu-devel@nongnu.org; Tue, 30 May 2023 14:25:57 -0400
+ id 1q442h-0000nf-Um
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 14:26:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685471155;
+ s=mimecast20190719; t=1685471158;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6yusL7CMhLDnGapYlqGQSNFa7qKwrUdftv22tiX0Nmk=;
- b=YtOzC4DoCw2Ez3+OqzO1GKII5KBo/kk1CgyjPocu4atQcMjZ97ggyE2HqRarEgQ+np7Ej3
- LqTylZM0M52JzleOTNCd9xYpDj/dvpdMPh0LmkmULJpz58w6V0q0P+2mhHTWJOgXtGS1v5
- Qy04N5NogSUnrpr/HB45DYDx3Jz557I=
+ bh=juMTlFq6aztO1zifJvTk7H6W25YhECxOmC1Oq0eWK90=;
+ b=ZEn5B/w+6RS1Ci8Wv5QH7UOJ7NDiOGBkPypRt2hWgte8YKM80It3N9eBKTSSTRQuELSyjg
+ kUTO/jmqThPdcBLAGVLhmouv7NSOzbLNSmIj9STaTU0S5MLCY3keKHPW84v24Jr5qdtX8A
+ P+GXeG69tTQlH0lcF8uWyHcPLm0oLRk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-246-Dx15F4KOPSesB2VcO1QjoQ-1; Tue, 30 May 2023 14:25:53 -0400
-X-MC-Unique: Dx15F4KOPSesB2VcO1QjoQ-1
+ us-mta-329-QmP6QF-AMDCRbJv-S891pA-1; Tue, 30 May 2023 14:25:54 -0400
+X-MC-Unique: QmP6QF-AMDCRbJv-S891pA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5FB0A85A5BA
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 18:25:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 936A385A5BA
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 18:25:54 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6F254420A8;
- Tue, 30 May 2023 18:25:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A443B17103;
+ Tue, 30 May 2023 18:25:53 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>
-Subject: [PULL 15/21] migration/rdma: Remove all uses of RAM_CONTROL_HOOK
-Date: Tue, 30 May 2023 20:25:25 +0200
-Message-Id: <20230530182531.6371-16-quintela@redhat.com>
+Subject: [PULL 16/21] migration/rdma: Unfold hook_ram_load()
+Date: Tue, 30 May 2023 20:25:26 +0200
+Message-Id: <20230530182531.6371-17-quintela@redhat.com>
 In-Reply-To: <20230530182531.6371-1-quintela@redhat.com>
 References: <20230530182531.6371-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,81 +78,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of going trhough ram_control_load_hook(), call
-qemu_rdma_registration_handle() directly.
+There is only one flag called with: RAM_CONTROL_BLOCK_REG.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
-Message-Id: <20230509120700.78359-5-quintela@redhat.com>
+Message-Id: <20230509120700.78359-6-quintela@redhat.com>
 ---
- migration/qemu-file.h | 1 -
- migration/rdma.h      | 3 +++
- migration/ram.c       | 5 ++++-
- migration/rdma.c      | 9 +++++----
- 4 files changed, 12 insertions(+), 6 deletions(-)
+ migration/qemu-file.h | 11 -----------
+ migration/rdma.h      |  3 +++
+ migration/qemu-file.c | 10 ----------
+ migration/ram.c       |  6 ++++--
+ migration/rdma.c      | 29 +++++++++--------------------
+ 5 files changed, 16 insertions(+), 43 deletions(-)
 
 diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-index 323af5682f..7cfc20825e 100644
+index 7cfc20825e..6791db6b08 100644
 --- a/migration/qemu-file.h
 +++ b/migration/qemu-file.h
-@@ -41,7 +41,6 @@ typedef int (QEMURamHookFunc)(QEMUFile *f, uint64_t flags, void *data);
+@@ -29,20 +29,12 @@
+ #include "exec/cpu-common.h"
+ #include "io/channel.h"
+ 
+-/*
+- * This function provides hooks around different
+- * stages of RAM migration.
+- * 'data' is call specific data associated with the 'flags' value
+- */
+-typedef int (QEMURamHookFunc)(QEMUFile *f, uint64_t flags, void *data);
+-
+ /*
+  * Constants used by ram_control_* hooks
   */
  #define RAM_CONTROL_SETUP     0
  #define RAM_CONTROL_ROUND     1
--#define RAM_CONTROL_HOOK      2
  #define RAM_CONTROL_FINISH    3
- #define RAM_CONTROL_BLOCK_REG 4
+-#define RAM_CONTROL_BLOCK_REG 4
  
+ /*
+  * This function allows override of where the RAM page
+@@ -54,7 +46,6 @@ typedef int (QEMURamSaveFunc)(QEMUFile *f,
+                               size_t size);
+ 
+ typedef struct QEMUFileHooks {
+-    QEMURamHookFunc *hook_ram_load;
+     QEMURamSaveFunc *save_page;
+ } QEMUFileHooks;
+ 
+@@ -128,8 +119,6 @@ void qemu_fflush(QEMUFile *f);
+ void qemu_file_set_blocking(QEMUFile *f, bool block);
+ int qemu_file_get_to_fd(QEMUFile *f, int fd, size_t size);
+ 
+-void ram_control_load_hook(QEMUFile *f, uint64_t flags, void *data);
+-
+ /* Whenever this is found in the data stream, the flags
+  * will be passed to ram_control_load_hook in the incoming-migration
+  * side. This lets before_ram_iterate/after_ram_iterate add
 diff --git a/migration/rdma.h b/migration/rdma.h
-index c13b94c782..8bd277efb9 100644
+index 8bd277efb9..8df8b4089a 100644
 --- a/migration/rdma.h
 +++ b/migration/rdma.h
-@@ -24,10 +24,13 @@ void rdma_start_incoming_migration(const char *host_port, Error **errp);
- 
- 
- #ifdef CONFIG_RDMA
-+int qemu_rdma_registration_handle(QEMUFile *f);
+@@ -27,6 +27,7 @@ void rdma_start_incoming_migration(const char *host_port, Error **errp);
+ int qemu_rdma_registration_handle(QEMUFile *f);
  int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags);
  int qemu_rdma_registration_stop(QEMUFile *f, uint64_t flags);
++int rdma_block_notification_handle(QEMUFile *f, const char *name);
  #else
  static inline
-+int qemu_rdma_registration_handle(QEMUFile *f) { return 0; }
-+static inline
+ int qemu_rdma_registration_handle(QEMUFile *f) { return 0; }
+@@ -34,5 +35,7 @@ static inline
  int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags) { return 0; }
  static inline
  int qemu_rdma_registration_stop(QEMUFile *f, uint64_t flags) { return 0; }
++static inline
++int rdma_block_notification_handle(QEMUFile *f, const char *name) { return 0; }
+ #endif
+ #endif
+diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+index 918df83035..08bbc29e64 100644
+--- a/migration/qemu-file.c
++++ b/migration/qemu-file.c
+@@ -303,16 +303,6 @@ void qemu_fflush(QEMUFile *f)
+     f->iovcnt = 0;
+ }
+ 
+-void ram_control_load_hook(QEMUFile *f, uint64_t flags, void *data)
+-{
+-    if (f->hooks && f->hooks->hook_ram_load) {
+-        int ret = f->hooks->hook_ram_load(f, flags, data);
+-        if (ret < 0) {
+-            qemu_file_set_error(f, ret);
+-        }
+-    }
+-}
+-
+ int ram_control_save_page(QEMUFile *f, ram_addr_t block_offset,
+                           ram_addr_t offset, size_t size)
+ {
 diff --git a/migration/ram.c b/migration/ram.c
-index c6fad7b0b3..6f0597814c 100644
+index 6f0597814c..67d0f20368 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -4024,7 +4024,10 @@ static int ram_load_precopy(QEMUFile *f)
-             }
-             break;
-         case RAM_SAVE_FLAG_HOOK:
--            ram_control_load_hook(f, RAM_CONTROL_HOOK, NULL);
-+            ret = qemu_rdma_registration_handle(f);
-+            if (ret < 0) {
-+                qemu_file_set_error(f, ret);
-+            }
-             break;
-         default:
-             error_report("Unknown combination of migration flags: 0x%x", flags);
+@@ -3975,8 +3975,10 @@ static int ram_load_precopy(QEMUFile *f)
+                             ret = -EINVAL;
+                         }
+                     }
+-                    ram_control_load_hook(f, RAM_CONTROL_BLOCK_REG,
+-                                          block->idstr);
++                    ret = rdma_block_notification_handle(f, block->idstr);
++                    if (ret < 0) {
++                        qemu_file_set_error(f, ret);
++                    }
+                 } else {
+                     error_report("Unknown ramblock \"%s\", cannot "
+                                  "accept migration", id);
 diff --git a/migration/rdma.c b/migration/rdma.c
-index 8001dcb960..a477985c6d 100644
+index a477985c6d..948e93256d 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -3530,7 +3530,7 @@ static int dest_ram_sort_func(const void *a, const void *b)
-  *
-  * Keep doing this until the source tells us to stop.
+@@ -3811,20 +3811,22 @@ out:
+ }
+ 
+ /* Destination:
+- * Called via a ram_control_load_hook during the initial RAM load section which
+- * lists the RAMBlocks by name.  This lets us know the order of the RAMBlocks
+- * on the source.
+- * We've already built our local RAMBlock list, but not yet sent the list to
+- * the source.
++ * Called during the initial RAM load section which lists the
++ * RAMBlocks by name.  This lets us know the order of the RAMBlocks on
++ * the source.  We've already built our local RAMBlock list, but not
++ * yet sent the list to the source.
   */
--static int qemu_rdma_registration_handle(QEMUFile *f)
-+int qemu_rdma_registration_handle(QEMUFile *f)
+-static int
+-rdma_block_notification_handle(QEMUFile *f, const char *name)
++int rdma_block_notification_handle(QEMUFile *f, const char *name)
  {
-     RDMAControlHeader reg_resp = { .len = sizeof(RDMARegisterResult),
-                                .type = RDMA_CONTROL_REGISTER_RESULT,
-@@ -3557,6 +3557,10 @@ static int qemu_rdma_registration_handle(QEMUFile *f)
-     int count = 0;
-     int i = 0;
+     RDMAContext *rdma;
+     QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(qemu_file_get_ioc(f));
+     int curr;
+     int found = -1;
  
 +    if (!migrate_rdma()) {
 +        return 0;
@@ -161,16 +225,33 @@ index 8001dcb960..a477985c6d 100644
      RCU_READ_LOCK_GUARD();
      rdma = qatomic_rcu_read(&rioc->rdmain);
  
-@@ -3854,9 +3858,6 @@ static int rdma_load_hook(QEMUFile *f, uint64_t flags, void *data)
-     case RAM_CONTROL_BLOCK_REG:
-         return rdma_block_notification_handle(f, data);
+@@ -3852,18 +3854,6 @@ rdma_block_notification_handle(QEMUFile *f, const char *name)
+     return 0;
+ }
  
--    case RAM_CONTROL_HOOK:
--        return qemu_rdma_registration_handle(f);
+-static int rdma_load_hook(QEMUFile *f, uint64_t flags, void *data)
+-{
+-    switch (flags) {
+-    case RAM_CONTROL_BLOCK_REG:
+-        return rdma_block_notification_handle(f, data);
 -
-     default:
-         /* Shouldn't be called with any other values */
-         abort();
+-    default:
+-        /* Shouldn't be called with any other values */
+-        abort();
+-    }
+-}
+-
+ int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags)
+ {
+     QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(qemu_file_get_ioc(f));
+@@ -4002,7 +3992,6 @@ err:
+ }
+ 
+ static const QEMUFileHooks rdma_read_hooks = {
+-    .hook_ram_load = rdma_load_hook,
+ };
+ 
+ static const QEMUFileHooks rdma_write_hooks = {
 -- 
 2.40.1
 
