@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EED7715831
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44EE6715885
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:29:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3uXr-0006a8-Pc; Tue, 30 May 2023 04:17:31 -0400
+	id 1q3uiS-0008Sl-I6; Tue, 30 May 2023 04:28:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3uXn-0006Zf-Mh
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:17:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
+ id 1q3uiJ-0008SE-NY; Tue, 30 May 2023 04:28:20 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3uXk-0001Et-SO
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:17:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685434643;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4NG0efD2OUSaqogSuIVbE0tOXonEvTUyP5lIfJd4VjM=;
- b=W5RHpUtaIpdUIydxhUXvXCbpzN4T1Ge9sJPVS1+75w64t9T+XKuv6wA2v1nVjQpwD/9vUi
- fwMQUhhm+ITauOxS7/hnc0bOIJS8NcNJKBzu9omVeAyTNX8qj5VHs3lwjlmNxZqVcIrfH+
- f37XXURN+Z21Zgt80YixCDrEDA14Yso=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-7J6SsdaWNC-xh1yuXFicjg-1; Tue, 30 May 2023 04:17:22 -0400
-X-MC-Unique: 7J6SsdaWNC-xh1yuXFicjg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6260d4a9802so21966006d6.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 01:17:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685434641; x=1688026641;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4NG0efD2OUSaqogSuIVbE0tOXonEvTUyP5lIfJd4VjM=;
- b=YCOQCmkr10/2rVLMUFcCbOLj7SmXOQtFTW0JM2duKrXZ2z880hKcYDOafoHyrvWLMf
- JJqolvj7Cs0JWuJGb/Hm6eknBplM9O7f8xUgV2pahYyerPvSG6Kq+djeRn4C8Hx1chxb
- 3I9a6dClnAp4DPP/Zz9q5z0fDGhDosF0rRofml455T1b7B13yQwCfY5Y0iQXMwQcUh1e
- ST+XBO0H8kUhhCLZ1MNo6BP9Zgk39o96msZv+6AA7LwUEByGBnEc5fWVRLA7TErErGez
- 4iPi6BI2sNamQuWq+e4QYEnLHN0iyom0p8Rc8EN2zzjILCUmHGRJgiPJUNCrCmFPg+3o
- YIlg==
-X-Gm-Message-State: AC+VfDw0PkH2yVXurnCPPaqRJ7sr/DGVkG01BUs+2i//9fav2XLCfSt6
- Lpky61Ci2x/46kqchKrfhaIctjqQl6sJswqAgdGJZMFlqm7meQQ/qahTNhkTCd8SajwZYR0j1JJ
- r2UViV6Klkf9cZhg=
-X-Received: by 2002:a05:6214:c4a:b0:623:9218:58e5 with SMTP id
- r10-20020a0562140c4a00b00623921858e5mr1418958qvj.39.1685434641558; 
- Tue, 30 May 2023 01:17:21 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5FmxydCLYdHYNFN7Dn42tudcsIQ3tSjGqm+v/o3d8C83ptBbfN9r7BVEQqrm91wQ3N3X4xgA==
-X-Received: by 2002:a05:6214:c4a:b0:623:9218:58e5 with SMTP id
- r10-20020a0562140c4a00b00623921858e5mr1418944qvj.39.1685434641137; 
- Tue, 30 May 2023 01:17:21 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0?
- ([2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0])
- by smtp.gmail.com with ESMTPSA id
- m12-20020a0cf18c000000b0062612555850sm2820952qvl.70.2023.05.30.01.17.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 01:17:20 -0700 (PDT)
-Message-ID: <e50227ec-0d10-0d02-0760-c1ef1fd6749e@redhat.com>
-Date: Tue, 30 May 2023 10:17:17 +0200
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
+ id 1q3uiH-0004Gr-Py; Tue, 30 May 2023 04:28:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1685435288; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=E56fY2+AFYx0Upi+wZYlf5XeaBOXiySBscaLvU3GbAW0bcejpF/YICbSAU1T2UNeyo
+ ldTXNTDtAZFA2o00cum0sUVcwi49kR+FUj69bhhBB1OVlGePEnZ4rrEpn67O92d/Mrmt
+ JZyGThCtebloRdDhofyGLTbzKTYeNnWXBXX+bDUj3pucNYZSmcqfGBLWm+nAPqxsEDrg
+ gbf76XvxxR3cxPnOdoTMB2IZjQFlJQueKlrt1g2I4DjvP8NxL35NMKhbEnNiuaS3rV4F
+ cbApsOKvamuDgPRK8qCI9tmu9jbEpUgowbwKQ/UA4MyBtPkYtrGWCNnIEaN0eAFowlCM
+ Y7dQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1685435288;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=RWHZ3/oO8Cq7wEbT4NjxIPDBwvI8D+xDhqpiDnOHjFM=;
+ b=VvZ2xppYHAvI8VVC1+ivMrJfhu79EcI7YchtQ+vRXnKXEuXOI9vNYa3v1/88IVbxAy
+ gO569Lb8wkXBADoI8AOzUc3gO5G3+ajFCkXayasY/0MaJHGEwwyQZELusdpuMf9VRfF+
+ mkDdBBXzhTa6nkbB500vpK0E3Q7mYz6SS7VVOJHGTya7tEb6T4r9PkrVdW0DJ9eaVp1e
+ 94k0ibdf3Jc12XSlvO91pdo+tAM0sKMTmheh2c/Zgfgz1e/pfS2ZIPGpOFLlBhMOuQQg
+ TE93DjjfHedq0YIhC/yQ62TSvN5LVBz8BLpdDAYPN5PFHCcYYjXNO+0uYKfv2pBmwkek
+ M43g==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1685435288;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=RWHZ3/oO8Cq7wEbT4NjxIPDBwvI8D+xDhqpiDnOHjFM=;
+ b=Ah3fD3JNAqjPMBHnSuWLEL5nMK88LyXNX/EZJtY04pZ9yzHlpWT7SjI/gSEeHnOFiD
+ 8De3LskDi4ARdibG009gKgTzBXskFnPtzLRz9Tg+4NkPMhxcnH6Bpf2JaY1GELReOnfw
+ EkRCIXCulBQvqEGbhLdUP2vRFE902B+1PDU1hq9sNz90nd3Ks/xFrSXbimMeyfIyEPts
+ uYBW6DIXLoIhs7F2/whuZwU3kbjqrBuxozIhQM1OZ+yaOUgo5Cp+b0LfFk1OdwM1hOxM
+ Gq2i9ylFQSSANjJ0POXpciRQgcetGYOsBrk8Kg4IHo9wO/3qF/tM8ZYGXckLxg2Xppyj
+ 3qyw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1685435288;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=RWHZ3/oO8Cq7wEbT4NjxIPDBwvI8D+xDhqpiDnOHjFM=;
+ b=WA3DuQtUOEiUeeHWRYAbyQIwEavxVH7t7qIGvZfqUsueXZ6j/My3ClIuOZghurQqeR
+ hlOvWwh4ZP6ngm0VXkBA==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4BhOIaRvsld/sN75OpaIeOWAiVTRkMz6wPlUdSg=="
+Received: from sender by smtp.strato.de (RZmta 49.4.0 AUTH)
+ with ESMTPSA id x6987cz4U8S7Gh2
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Tue, 30 May 2023 10:28:07 +0200 (CEST)
+Date: Tue, 30 May 2023 10:28:00 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-stable
+ <qemu-stable@nongnu.org>, Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi
+ <stefanha@redhat.com>, Michael Roth <michael.roth@amd.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Peter Maydell
+ <peter.maydell@linaro.org>
+Subject: Re: stable-8.0.1 re-tagging?
+Message-ID: <20230530102800.4e71a968.olaf@aepfle.de>
+In-Reply-To: <4aa77e25-c224-c2aa-d17d-54d3d04f763e@tls.msk.ru>
+References: <4aa77e25-c224-c2aa-d17d-54d3d04f763e@tls.msk.ru>
+X-Mailer: Claws Mail 20230504T161344.b05adb60 hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3 2/2] hw/vfio: Add nr of dirty pages to
- vfio_get_dirty_bitmap tracepoint
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>, Avihai Horon <avihaih@nvidia.com>
-References: <20230529121114.5038-1-joao.m.martins@oracle.com>
- <20230529121114.5038-3-joao.m.martins@oracle.com>
-Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230529121114.5038-3-joao.m.martins@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: multipart/signed; boundary="Sig_/iRc+ilI.hDXEhB+6470wSTz";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=85.215.255.53; envelope-from=olaf@aepfle.de;
+ helo=mo4-p01-ob.smtp.rzone.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,64 +105,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/29/23 14:11, Joao Martins wrote:
-> Include the number of dirty pages on the vfio_get_dirty_bitmap tracepoint.
-> These are fetched from the newly added return value in
-> cpu_physical_memory_set_lebitmap().
-> 
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+--Sig_/iRc+ilI.hDXEhB+6470wSTz
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Tue, 30 May 2023 11:15:31 +0300 Michael Tokarev <mjt@tls.msk.ru>:
 
-Thanks,
+> I'm for creating new v8.0.1 tag for the new commit.  But I'd like to
+> hear opinions of others on this matter, since this is an important
+> process which definitely should be public.
 
-C.
+The man page of git-tag is very clear on this topic IMO. Go for v8.0.2.
 
+Olaf
 
-> ---
->   hw/vfio/common.c     | 7 ++++---
->   hw/vfio/trace-events | 2 +-
->   2 files changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 78358ede2764..fa8fd949b1cf 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -1747,6 +1747,7 @@ static int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
->   {
->       bool all_device_dirty_tracking =
->           vfio_devices_all_device_dirty_tracking(container);
-> +    uint64_t dirty_pages;
->       VFIOBitmap vbmap;
->       int ret;
->   
-> @@ -1772,11 +1773,11 @@ static int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
->           goto out;
->       }
->   
-> -    cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
-> -                                           vbmap.pages);
-> +    dirty_pages = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
-> +                                                         vbmap.pages);
->   
->       trace_vfio_get_dirty_bitmap(container->fd, iova, size, vbmap.size,
-> -                                ram_addr);
-> +                                ram_addr, dirty_pages);
->   out:
->       g_free(vbmap.bitmap);
->   
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index 646e42fd27f9..cfb60c354de3 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -120,7 +120,7 @@ vfio_region_sparse_mmap_header(const char *name, int index, int nr_areas) "Devic
->   vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long end) "sparse entry %d [0x%lx - 0x%lx]"
->   vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
->   vfio_dma_unmap_overflow_workaround(void) ""
-> -vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64
-> +vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "container fd=%d, iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
->   vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
->   
->   # platform.c
+--Sig_/iRc+ilI.hDXEhB+6470wSTz
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmR1s5AACgkQ86SN7mm1
+DoBsphAAkY5mJR5ilo/rHvY5oLZsUV9cPZ80js64gj/gnZOWIiwTr//baUy+Clrx
+loA3JUHf6g8ynQw3BYKTNXVfTV5mblg+D80Du/0yrhJ4fjTBHjgkkCYzYUvxzMDf
+Un8qSTweVqqlOYRSlJanqIJdWrpNXITMsCOytsl24LoT9cdKmdzSaHtnX9UwCBxr
+wUV/bvkqwf11Qa7huXB6R4OoZmwsCxtl/3GNjUpBDHVL6WFURc5GNa+DT53+SVtB
+bjQMDO6uWi5eDDrpkxFBZyC/nSyTIP/87pyzfck3Tvcl7GT+RxFAH0wXtcPMWko2
+YjZ9Agt1qND4mLpQt1TlMjpTC+RNVHo54uxdqFpWnIz+4z7qlbZMuZ5fy9gxKfI7
+130v/PzKxbvZ0O9zQbrRrNJq2T7T9qqTJLAOcrgKNfc/x/D13FxrlYjydGI3oFXy
+E8rHdwVVidUIRK9F6z9oodGYPH6ylI69SvIfv6ivYqlWsVS//lKKCEmEVORymsEc
+nlfTA54BudlLvDcSzqXXOgKqpteQQpG/8HI8HrwVvvf8f1Vsb8LjGfQ5u+kvqjrE
+iH0VgsLXF53lJHSeBL0+6ONGgtxfc1aCbQ0/qBGA/YRVdftJdHmC59KlnWCoV70b
+gmaAfDgmoXhw98DOkzGHs9hHWfRZ4qJIS5PXpC6oQ5Er7l5obpM=
+=HILH
+-----END PGP SIGNATURE-----
+
+--Sig_/iRc+ilI.hDXEhB+6470wSTz--
 
