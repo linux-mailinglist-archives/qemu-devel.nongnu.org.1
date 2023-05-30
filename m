@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1F27161EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4137B7161E0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:30:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zNN-0006k9-DB; Tue, 30 May 2023 09:27:01 -0400
+	id 1q3zOk-000192-0K; Tue, 30 May 2023 09:28:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMy-0005hj-Ae
+ id 1q3zMy-0005hh-AS
  for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:38 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMq-0001Q6-SK
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:32 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f6e68cc738so31199665e9.1
+ id 1q3zMr-0001QF-C2
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:33 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3f6e1393f13so30781065e9.0
  for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:26:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685453187; x=1688045187;
+ d=linaro.org; s=google; t=1685453188; x=1688045188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=A1BzkyhjkfAk5+6QncofdiSD1aROdKYpR7qbv2MfVY0=;
- b=qdx/wheEHnSn7lo3Uqo8scPqoGw9bHZDQfnDZ9951+q8Gn2g4ldlItdqnt4/hNvNIi
- sag8pnlFWYL4cQdb5u0IdSw7rr7WJsXBkt92Ong9pujD2zO9VTmhYbVfw7TpRaJP+VUt
- 4GStoLskVO0f9MkyCofaph1efaqNrPUcWBowOH8P3EvZAU4MzKcwERUOm+vf8Zi/Wcm0
- unKsEtu9is2E15/QiOdquTDn+5CwlW1usWEISbyUMyki+JrOcyf1efXCtLHWTMiROfAq
- tL0G3w2l1l83UF+nMlwu1nNnMDHgHU9G0r0RJhwD2ch40AJSzjkCAx64/lbpi4MfQdcy
- ObHA==
+ :reply-to; bh=wHGJTqnWnJZeP8ddXaC5XrHOdzJhFhTnUrSm1b3ujFA=;
+ b=hrrlmmutANBkVOrC18nFaM1oCZ7ykvTYKLmU/o1OSch8cZJNM+dVCrQxsQ1DdsaNm6
+ Y3GqfW5CsuRfootSNndjF6I1vYWGG9Oo3GU6DWLm/tZdeBpWE7000O7k1LWM+zZ9AeWj
+ 5B02W8KvMLWvpKGOlcuE3Ad7HDcxIEG3EZRClQlbjdsWCEA74HPoP7sSAe9LaGVAZ5Zk
+ r3oLkGkhQOaoKRgG2ggR8J6NpfA/pjvAgcTb5oIUUA1Ppw/zttVl+V2KnmBSsGRy8CD1
+ qAD2dUELW5GjEO5+JVtJOFoCa9H8Ez8Lw2v+IVUG0DeZgIHfqERCWUJr0rF1iIoALbzZ
+ iRMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685453187; x=1688045187;
+ d=1e100.net; s=20221208; t=1685453188; x=1688045188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A1BzkyhjkfAk5+6QncofdiSD1aROdKYpR7qbv2MfVY0=;
- b=OvUOdbcAP1jymyzXwO34TwULopqx8nC+rW8b5cCVx0BsPLyz4oaqwq/tN5U+d04w4U
- eI9J7jb2fzEmRBtN+7CB7XW/hxDcqeIws2NN+NPAmjYe6cXM+RF6MaYU8ni1813U1yBq
- Cs0B66/wxMcQS9CKsx22Y44dq2y693Vq1LD0rMOJNUsZ/oi1tPw0DDaOm7HvOgO4E1yy
- zlfAXDpdxqstopvUAThIreuC+x5VVMqffPNJb9uJISmWayPDbHdJUCwFCOXfhGHaSBqi
- c5DvlNN4mOB7QkOtjElaAZnbSRoaJ0uebKMuERrKCVWVCGXis2h4W8FdaPq/7YYWVUJT
- r9zg==
-X-Gm-Message-State: AC+VfDxhJJKJZDAX8B54crTN5dqxKk8BgHn6vlQvGSvkNtCC2fDn8zhw
- Oge/qg9WYKM5iAOs5EoKsQiB3HycKMTfVjlOr38=
-X-Google-Smtp-Source: ACHHUZ5+iTYHDHPEuxVEAp2snB5NwENhl0ktBT29zgyZrkNMiEoTAsXq5fOpcTG+c0JOaHeRTWQIAg==
-X-Received: by 2002:a1c:6a11:0:b0:3f6:4f1:cfbf with SMTP id
- f17-20020a1c6a11000000b003f604f1cfbfmr1735002wmc.20.1685453187504; 
+ bh=wHGJTqnWnJZeP8ddXaC5XrHOdzJhFhTnUrSm1b3ujFA=;
+ b=SQzcd8Q0jSrTISc2z7gzweqpHxW3+7VHldhiwtGNCu4///JV3iYO8SyxUftNAVO06g
+ I+CoBTgD7OblcLptXPWXT2pI/2A9NXYevgx2o/qBHyUR+T0r6MQPsF74HnogGoGqvaov
+ oIJq7LNhsltXGnAzawXWqT0WsqzbVM0eWZ0NSc/UIEYQgxcPBxDSEqS6yd5aKDdKmc74
+ 1XG96ZtRtNZhrRd5ln9Iaspy6O3/Rv4VVeAnPFvtkM7Dwwu+UGRoFIQrbugBeBDJNDbp
+ 90DCS1/9lWY84CbzLWn6KhCF45CkFIgMOkWXvcGGJbKj3m+LBjgoDpKgppCk8j/aSehU
+ qKNA==
+X-Gm-Message-State: AC+VfDzU6UKmn16RVUEf5qF71iRr4IsteOqqZEX8emADfrPZi5shIBqI
+ GZp9nhpG7EyHyuMO1UbwBVSJ8mA7Eox1vBt3bxg=
+X-Google-Smtp-Source: ACHHUZ7KFoBvatXl25CnbBc2MnP3Xv0Cs0GRFhGpoBByf6cixlf48o+F1AeCtCO12qrVg6wenlFdrg==
+X-Received: by 2002:a05:600c:2296:b0:3f4:bb58:d174 with SMTP id
+ 22-20020a05600c229600b003f4bb58d174mr1695974wmf.22.1685453187903; 
  Tue, 30 May 2023 06:26:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,18 +58,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 30 May 2023 06:26:27 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/21] hw/dma/xilinx_axidma: Check DMASR.HALTED to prevent
- infinite loop.
-Date: Tue, 30 May 2023 14:26:11 +0100
-Message-Id: <20230530132620.1583658-13-peter.maydell@linaro.org>
+Subject: [PULL 13/21] hw/arm/xlnx-zynqmp: fix unsigned error when checking the
+ RPUs number
+Date: Tue, 30 May 2023 14:26:12 +0100
+Message-Id: <20230530132620.1583658-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230530132620.1583658-1-peter.maydell@linaro.org>
 References: <20230530132620.1583658-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,70 +92,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tommy Wu <tommy.wu@sifive.com>
+From: Clément Chigot <chigot@adacore.com>
 
-When we receive a packet from the xilinx_axienet and then try to s2mem
-through the xilinx_axidma, if the descriptor ring buffer is full in the
-xilinx axidma driver, we’ll assert the DMASR.HALTED in the
-function : stream_process_s2mem and return 0. In the end, we’ll be stuck in
-an infinite loop in axienet_eth_rx_notify.
+When passing --smp with a number lower than XLNX_ZYNQMP_NUM_APU_CPUS,
+the expression (ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS) will result
+in a positive number as ms->smp.cpus is a unsigned int.
+This will raise the following error afterwards, as Qemu will try to
+instantiate some additional RPUs.
+  | $ qemu-system-aarch64 --smp 1 -M xlnx-zcu102
+  | **
+  | ERROR:../src/tcg/tcg.c:777:tcg_register_thread:
+  |   assertion failed: (n < tcg_max_ctxs)
 
-This patch checks the DMASR.HALTED state when we try to push data
-from xilinx axi-enet to xilinx axi-dma. When the DMASR.HALTED is asserted,
-we will not keep pushing the data and then prevent the infinte loop.
-
-Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-Reviewed-by: Edgar E. Iglesias <edgar@zeroasic.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Message-id: 20230519062137.1251741-1-tommy.wu@sifive.com
+Signed-off-by: Clément Chigot <chigot@adacore.com>
+Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
+Tested-by: Francisco Iglesias <frasse.iglesias@gmail.com>
+Message-id: 20230524143714.565792-1-chigot@adacore.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/dma/xilinx_axidma.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ hw/arm/xlnx-zynqmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/dma/xilinx_axidma.c b/hw/dma/xilinx_axidma.c
-index 6030c764352..12c90267df6 100644
---- a/hw/dma/xilinx_axidma.c
-+++ b/hw/dma/xilinx_axidma.c
-@@ -168,6 +168,11 @@ static inline int stream_idle(struct Stream *s)
-     return !!(s->regs[R_DMASR] & DMASR_IDLE);
- }
- 
-+static inline int stream_halted(struct Stream *s)
-+{
-+    return !!(s->regs[R_DMASR] & DMASR_HALTED);
-+}
-+
- static void stream_reset(struct Stream *s)
+diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
+index 335cfc417d7..5905a330151 100644
+--- a/hw/arm/xlnx-zynqmp.c
++++ b/hw/arm/xlnx-zynqmp.c
+@@ -213,7 +213,7 @@ static void xlnx_zynqmp_create_rpu(MachineState *ms, XlnxZynqMPState *s,
+                                    const char *boot_cpu, Error **errp)
  {
-     s->regs[R_DMASR] = DMASR_HALTED;  /* starts up halted.  */
-@@ -269,7 +274,7 @@ static void stream_process_mem2s(struct Stream *s, StreamSink *tx_data_dev,
-     uint64_t addr;
-     bool eop;
+     int i;
+-    int num_rpus = MIN(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS,
++    int num_rpus = MIN((int)(ms->smp.cpus - XLNX_ZYNQMP_NUM_APU_CPUS),
+                        XLNX_ZYNQMP_NUM_RPU_CPUS);
  
--    if (!stream_running(s) || stream_idle(s)) {
-+    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
-         return;
-     }
- 
-@@ -326,7 +331,7 @@ static size_t stream_process_s2mem(struct Stream *s, unsigned char *buf,
-     unsigned int rxlen;
-     size_t pos = 0;
- 
--    if (!stream_running(s) || stream_idle(s)) {
-+    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
-         return 0;
-     }
- 
-@@ -407,7 +412,7 @@ xilinx_axidma_data_stream_can_push(StreamSink *obj,
-     XilinxAXIDMAStreamSink *ds = XILINX_AXI_DMA_DATA_STREAM(obj);
-     struct Stream *s = &ds->dma->streams[1];
- 
--    if (!stream_running(s) || stream_idle(s)) {
-+    if (!stream_running(s) || stream_idle(s) || stream_halted(s)) {
-         ds->dma->notify = notify;
-         ds->dma->notify_opaque = notify_opaque;
-         return false;
+     if (num_rpus <= 0) {
 -- 
 2.34.1
 
