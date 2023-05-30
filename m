@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602A6716782
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 17:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 156257168F0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 18:13:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q41Yu-0007sk-7q; Tue, 30 May 2023 11:47:04 -0400
+	id 1q41x1-0004n4-QC; Tue, 30 May 2023 12:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q41Yo-0007ru-Rd
- for qemu-devel@nongnu.org; Tue, 30 May 2023 11:46:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1q41wx-0004la-FL; Tue, 30 May 2023 12:11:55 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q41Yn-0005cT-9z
- for qemu-devel@nongnu.org; Tue, 30 May 2023 11:46:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685461615;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pmr6MD2p6Nq9Ny0Ab+yP9Ypp4NmhZaUR0mTkVbcsKHA=;
- b=ZgNksqnFyRkDPl3YK+29mVgeGK6QsWTnKe5kl9c7hnGTdjcudcA7ipJpnH43d+MEJAvAmS
- 5QGVX0ndMw/ABTNRlOID0oTA24zpinJKW3383U3i2GcArPjt/RRczRsbw62a+vPYzRyAnr
- dCruIhhFfaem8GDE9MP4Jbsw0uBedS8=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-K8oxzWrQMUGQV2Aj-fdZ3g-1; Tue, 30 May 2023 11:46:53 -0400
-X-MC-Unique: K8oxzWrQMUGQV2Aj-fdZ3g-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-3f6c58d57adso9667051cf.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 08:46:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685461612; x=1688053612;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pmr6MD2p6Nq9Ny0Ab+yP9Ypp4NmhZaUR0mTkVbcsKHA=;
- b=FnucSBoQJKGWgt2He+am6OePsma+l7FCiyD2Fk2em+HL8BQkjo9e7GF1sQzgOiKmVO
- HSAF0fqXsN2HBB/6TSeJTyNDiUv0m9DQo4vUD+fPnEB1Etb/1P9mi6uBJslHRhx1bVUC
- IC2jl39cQej/6E+PkOTuGqPh0MTN4qevaN0gISkd6xHSLRygZAgW6wYuTmNckH5b9OlI
- na32Q2G9Q1LrKTwohAUTf5hqv4KszN0xRkLouNIo/0gAdXNCpYzlWaMEt5aWLY349+fh
- 0SAu5JUev0aP786CBALmS8Gap8ZYL0wgijNWYrHwL1V0ECga8crFsMvDhtyB4PYxsMnu
- 0s+w==
-X-Gm-Message-State: AC+VfDw+6K11hXd+wPgCdqlQ+UDkxKlBViqbpCJu90vaoJP8jJqy/jv4
- U7YWNHWppl1ybhe7uLFwwji2msqmB8RlQfOHvNChAuVAVqWN077e+fkUImUiQ4UQtO8dLhGx6ge
- aNEIUA1cK5l3hHTE=
-X-Received: by 2002:a05:622a:4e:b0:3f7:df68:7b09 with SMTP id
- y14-20020a05622a004e00b003f7df687b09mr3124867qtw.6.1685461612282; 
- Tue, 30 May 2023 08:46:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6SU1+X/IIWU3jmJ3PxRL2ZjCyba+WaLwuYKrz+lWsmUAEeyFWmc4lt0A5qsWh8aD7E5Xe0NA==
-X-Received: by 2002:a05:622a:4e:b0:3f7:df68:7b09 with SMTP id
- y14-20020a05622a004e00b003f7df687b09mr3124842qtw.6.1685461612008; 
- Tue, 30 May 2023 08:46:52 -0700 (PDT)
-Received: from x1n (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca.
- [70.24.86.62]) by smtp.gmail.com with ESMTPSA id
- d4-20020ac851c4000000b003e4d9c91106sm4746365qtn.57.2023.05.30.08.46.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 08:46:51 -0700 (PDT)
-Date: Tue, 30 May 2023 11:46:50 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Andrei Gudkov <gudkov.andrei@huawei.com>
-Cc: qemu-devel@nongnu.org, quintela@redhat.com, eblake@redhat.com,
- armbru@redhat.com, berrange@redhat.com, zhengchuan@huawei.com
-Subject: Re: [PATCH v2 0/4] Migration time prediction using calc-dirty-rate
-Message-ID: <ZHYaajucX3WbO5oW@x1n>
-References: <cover.1682598010.git.gudkov.andrei@huawei.com>
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1q41wj-00032b-WF; Tue, 30 May 2023 12:11:55 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34UFdRh6018406; Tue, 30 May 2023 16:11:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : subject :
+ date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Ywr+GlMm6RKIkNpELPdKQ4DfUEwy5wUwd0oFoyC6qw0=;
+ b=kq8HjXuxPi4zxBRtZDvokihRMeS2VIl/yrDv70H6137arK1dRfOJZpdj8Rduzvrsxn/C
+ JTNy+BohozRj3BdaAyVc/QpCyXZkH+ME+mYrKnuXcU3/cTXrFnWJG/+w4AtYvQ18QQws
+ b5X02kUMV1x7oXJNR9H9/UfEfIeq9YrN2j7/3poAcGqu9c1sSI8rax760imEs9hCPAxA
+ yzvf+qahMvheeVRi4G9jTzv+/38ak0FrwNh5eldHPp233ekHsW2jNcrq3GY7LJwY8+Pa
+ tLsMDPiEoEmEah2GQqJD7P5d/Uhh95MuosJ1oeNDqkbbFDst3u+6i74RSjYHGkvpCUT4 CA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwbst8rk8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 16:11:35 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34UFdiLx020651;
+ Tue, 30 May 2023 16:11:34 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwbst8rj3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 16:11:34 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34U2RSiM028970;
+ Tue, 30 May 2023 16:11:32 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qu9g59jjy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 16:11:32 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34UGBUq637749226
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 30 May 2023 16:11:30 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 18A6220043;
+ Tue, 30 May 2023 16:11:30 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C07142004B;
+ Tue, 30 May 2023 16:11:29 +0000 (GMT)
+Received: from borneo.ibmuc.com (unknown [9.171.3.249])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 30 May 2023 16:11:29 +0000 (GMT)
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+To: clg@kaod.org, danielhb413@gmail.com, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH 0/4] Various xive fixes
+Date: Tue, 30 May 2023 18:11:25 +0200
+Message-Id: <20230530161129.313258-1-fbarrat@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1682598010.git.gudkov.andrei@huawei.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: UoOhffbEETF6E9WOn68lfF3UmaXve0aW
+X-Proofpoint-GUID: uaY_93n3eZsjS0UWhf1O_D6o2zTFMj6i
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-30_12,2023-05-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 mlxscore=0 clxscore=1015 impostorscore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 malwarescore=0
+ mlxlogscore=577 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305300127
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,22 +107,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Andrei,
+A set of small fixes for the interrupt controller (xive2) on P10.
 
-On Thu, Apr 27, 2023 at 03:42:56PM +0300, Andrei Gudkov via wrote:
-> Afterwards we tried to migrate VM after randomly selecting max downtime
-> and bandwidth limit. Typical prediction error is 6-7%, with only 180 out
-> of 5779 experiments failing badly: prediction error >=25% or incorrectly
-> predicting migration success when in fact it didn't converge.
+Frederic Barrat (4):
+  pnv/xive2: Add definition for TCTXT Config register
+  pnv/xive2: Add definition for the ESB cache configuration register
+  pnv/xive2: Allow writes to the Physical Thread Enable registers
+  pnv/xive2: Handle TIMA access through all ports
 
-What's the normal size of the VMs when you did the measurements?
-
-A major challenge of convergence issues come from huge VMs and I'm
-wondering whether those are covered in the prediction verifications.
-
-Thanks,
+ hw/intc/pnv_xive2.c      | 20 +++++++++++++++++++-
+ hw/intc/pnv_xive2_regs.h |  8 ++++++++
+ hw/intc/xive.c           | 18 ++++++++++++++++++
+ 3 files changed, 45 insertions(+), 1 deletion(-)
 
 -- 
-Peter Xu
+2.40.1
 
 
