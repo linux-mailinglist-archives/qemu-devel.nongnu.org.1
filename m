@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E749716D0B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3964716D47
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:16:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q44aP-00013K-Ey; Tue, 30 May 2023 15:00:49 -0400
+	id 1q44o2-0006JX-EF; Tue, 30 May 2023 15:14:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44Zu-0000uF-Pq
- for qemu-devel@nongnu.org; Tue, 30 May 2023 15:00:18 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1q44nq-0005vd-Mk
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:44 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44Zs-0000sb-QW
- for qemu-devel@nongnu.org; Tue, 30 May 2023 15:00:18 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-64fd7723836so2037979b3a.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:00:14 -0700 (PDT)
+ id 1q44no-0004b7-U1
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 15:14:42 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-64fbfe0d037so120756b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 12:14:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685473214; x=1688065214;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mpuLQvPVxoSrCp/Ta2mdl/Aq9ROqTlZL3minDuEWys8=;
- b=UkGjlJZDCQAacmofgnkrm8SCQ7iCfo0nfQqSrl+yiFIgiHK0g1ahz0NSe438PCoxeh
- ZWsMH0FHbA1YNACW3FyXmoROmsOYpccTnopfwWz62N3/wS6+ZoZfHwgeWPMuAoJLi9Dl
- NTTE+FNf0NgojzC7qQe4Od2NCh6A8M5bO7XlbAobrWlzed/r8IEph2hKpE9RKE/EqieE
- okgomLoOEphbJzEgHtG15rYpzbeNg7KH2g1SdiR5TxtMOeeA91ADoGa4DDQ5lpVRd7QC
- oAhlJM+7x42EP+iqmN5sKV/w1YtY4lMEl9Wu6zMQyAPNzGVfTCAU11Qb0CWgZNa2lRI1
- 0A6A==
+ d=linaro.org; s=google; t=1685474079; x=1688066079;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=j8DFII/Utn3dXL/8Iq9AplYqonrV9FdyNAmYCoypIto=;
+ b=KRfuYxHgpXd/9YtJG6gOew0ToRT+0hPkFoTgxaeik3t2+NOsfN15ECTzgCxqU6vPNY
+ c4ynNjbhF8uOTUPW2IGQ+xvPvWS6KeDm7PMHoW2brhTn9stg2ywGCN0h3X1OIv8kxKez
+ CMtBNtzqBsbfg3Y2Bv4JTARESOiq0ss+UrCWc9QhcdejmrY7NJDDXJAWamcZ7WG5F30V
+ qglLYQWAftsrIzWvuMv2GzbIw6+H5wSqmk5hDp9YdFOiM+znvbBH4k/xZ2BCM09zRLPI
+ NXwIqfU1r/hZfoBJkeNTrMIYLDLbltFsEMxeSmZk6PsTgmH7wmiU9nEhf1/zWrH6m5eH
+ ArLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685473214; x=1688065214;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mpuLQvPVxoSrCp/Ta2mdl/Aq9ROqTlZL3minDuEWys8=;
- b=EIkkK8NuSyd5/Ng5d0egi2PsesDptLQdybieE4WgsTPuY3hVGMlAcXLkyQtLjEWc3Z
- tuqWNQg9q/D5yh25vOLUyMGUeQgoGcPuWpVqtxLhTCbQnhpTw4kHeUv5jOTpKsNnWHzK
- zGKT/zKOQIBX4qNvA/3vdhCGs9RJd0KIocC9sHeE97tlAp6iHVZNSnQrfWjuzD1i9gU6
- encqfC6HoxaS9ixgoR44aqRI8z/kuXReOlxQqq2Vi/U7k4KeJYrkX9KsMV0qZoJsKuxS
- 79N/bVPjAKY5B9eY2RtXRu4cU5ZBsn1mpBTDUspDVztomjdbdDzGdWxNFFj5ADXCjPPk
- thmQ==
-X-Gm-Message-State: AC+VfDyhfXUF2cRH3kCHmbt3w0vLlDU9LYTPWHEtjypcpSQj9M1Z7ror
- z0K2KuuITFi+0+b50f4WK4HV2kqe9JabUXtUNsk=
-X-Google-Smtp-Source: ACHHUZ7xbh/Z2lam1U2MSWNDplLpFgv4UCHv0N4NwA+Tb6GQiE7PDbO8F14A8FTte3bTD3L3i4S8Aw==
-X-Received: by 2002:a05:6a20:9c8f:b0:110:9210:f6af with SMTP id
- mj15-20020a056a209c8f00b001109210f6afmr3303734pzb.27.1685473214574; 
- Tue, 30 May 2023 12:00:14 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685474079; x=1688066079;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=j8DFII/Utn3dXL/8Iq9AplYqonrV9FdyNAmYCoypIto=;
+ b=SCevgg5ioXKox6CsqKvBtiSh79AuPb0ukt6bdWShVCNku9GycqQIMyb1Tl0+ikGjVN
+ kLOgne6LTmkFdI89Jbxli0m37O0knPB0GMsrtHtMKBYJDzDsruqyMxYo7ywuOwYpyNlD
+ pUZlrrOTN2ipA1LLZpL4n4SJtIExpi2UwGCbKBlsoFMrgcWQUYTfh2Cs0HBkzOk5l0EK
+ 7woyUgIG1NcLlsTbfTeb5Mr41fqNYJbW8rEkYdS/dzI3o7zYZJWHAxLpiPg0JL1bEpxj
+ bn+sdIIu8vfDAHK9PpFsYKsGBlOXZdj//3NJEZdZds2JnSyDZNFy7Teh7giZveAa7Fj0
+ oEfg==
+X-Gm-Message-State: AC+VfDyRS+FP2b1OyooEDphB3cnetXbZtLdW3wQ0WVfakR4bLltQB0B1
+ psroHDXAIi+a77deYR8IAGTB5wWOKJObHK+pgdU=
+X-Google-Smtp-Source: ACHHUZ7FYnEE2m9fZB7pXEJfwtnWoQcFx6Ghnl2czK8z/Idxk0UhRJYUMCNBqHwY4FqyqA08q2vXcw==
+X-Received: by 2002:a05:6a20:7d84:b0:10e:96a4:e31d with SMTP id
+ v4-20020a056a207d8400b0010e96a4e31dmr13636326pzj.22.1685474079407; 
+ Tue, 30 May 2023 12:14:39 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
  by smtp.gmail.com with ESMTPSA id
- g18-20020a63fa52000000b0051f14839bf3sm9128496pgk.34.2023.05.30.12.00.13
+ 10-20020a63104a000000b0051806da5cd6sm8926757pgq.60.2023.05.30.12.14.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 12:00:14 -0700 (PDT)
+ Tue, 30 May 2023 12:14:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 27/27] tests/decode: Add tests for various named-field cases
-Date: Tue, 30 May 2023 11:59:49 -0700
-Message-Id: <20230530185949.410208-28-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH v3 00/20] target/arm: Implement FEAT_LSE2
+Date: Tue, 30 May 2023 12:14:18 -0700
+Message-Id: <20230530191438.411344-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230530185949.410208-1-richard.henderson@linaro.org>
-References: <20230530185949.410208-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,136 +89,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+All prerequisites are upstream.  There are still outstanding patches
+to improve the atomic16 support, but those are all optimizations.
 
-Add some tests for various cases of named-field use, both ones that
-should work and ones that should be diagnosed as errors.
+Patches needing r-b:
+  16-target-arm-Relax-ordered-atomic-alignment-checks-.patch
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230523120447.728365-7-peter.maydell@linaro.org>
----
- tests/decode/err_field10.decode      |  7 +++++++
- tests/decode/err_field7.decode       |  7 +++++++
- tests/decode/err_field8.decode       |  8 ++++++++
- tests/decode/err_field9.decode       | 14 ++++++++++++++
- tests/decode/succ_named_field.decode | 19 +++++++++++++++++++
- tests/decode/meson.build             |  5 +++++
- 6 files changed, 60 insertions(+)
- create mode 100644 tests/decode/err_field10.decode
- create mode 100644 tests/decode/err_field7.decode
- create mode 100644 tests/decode/err_field8.decode
- create mode 100644 tests/decode/err_field9.decode
- create mode 100644 tests/decode/succ_named_field.decode
 
-diff --git a/tests/decode/err_field10.decode b/tests/decode/err_field10.decode
-new file mode 100644
-index 0000000000..3e672b7459
---- /dev/null
-+++ b/tests/decode/err_field10.decode
-@@ -0,0 +1,7 @@
-+# This work is licensed under the terms of the GNU LGPL, version 2 or later.
-+# See the COPYING.LIB file in the top-level directory.
-+
-+# Diagnose formats which refer to undefined fields
-+%field1        field2:3
-+@fmt ........ ........ ........ ........ %field1
-+insn 00000000 00000000 00000000 00000000 @fmt
-diff --git a/tests/decode/err_field7.decode b/tests/decode/err_field7.decode
-new file mode 100644
-index 0000000000..51fad7ccea
---- /dev/null
-+++ b/tests/decode/err_field7.decode
-@@ -0,0 +1,7 @@
-+# This work is licensed under the terms of the GNU LGPL, version 2 or later.
-+# See the COPYING.LIB file in the top-level directory.
-+
-+# Diagnose fields whose definitions form a loop
-+%field1        field2:3
-+%field2        field1:4
-+insn 00000000 00000000 00000000 00000000 %field1 %field2
-diff --git a/tests/decode/err_field8.decode b/tests/decode/err_field8.decode
-new file mode 100644
-index 0000000000..cc47c08a45
---- /dev/null
-+++ b/tests/decode/err_field8.decode
-@@ -0,0 +1,8 @@
-+# This work is licensed under the terms of the GNU LGPL, version 2 or later.
-+# See the COPYING.LIB file in the top-level directory.
-+
-+# Diagnose patterns which refer to undefined fields
-+&f1 f1 a
-+%field1        field2:3
-+@fmt ........ ........ ........ .... a:4 &f1
-+insn 00000000 00000000 00000000 0000 .... @fmt f1=%field1
-diff --git a/tests/decode/err_field9.decode b/tests/decode/err_field9.decode
-new file mode 100644
-index 0000000000..e7361d521b
---- /dev/null
-+++ b/tests/decode/err_field9.decode
-@@ -0,0 +1,14 @@
-+# This work is licensed under the terms of the GNU LGPL, version 2 or later.
-+# See the COPYING.LIB file in the top-level directory.
-+
-+# Diagnose fields where the format refers to a field defined in the
-+# pattern and the pattern refers to a field defined in the format.
-+# This is theoretically not impossible to implement, but is not
-+# supported by the script at this time.
-+&abcd a b c d
-+%refa        a:3
-+%refc        c:4
-+# Format defines 'c' and sets 'b' to an indirect ref to 'a'
-+@fmt ........ ........ ........ c:8 &abcd b=%refa
-+# Pattern defines 'a' and sets 'd' to an indirect ref to 'c'
-+insn 00000000 00000000 00000000 ........ @fmt d=%refc a=6
-diff --git a/tests/decode/succ_named_field.decode b/tests/decode/succ_named_field.decode
-new file mode 100644
-index 0000000000..e64b3f9356
---- /dev/null
-+++ b/tests/decode/succ_named_field.decode
-@@ -0,0 +1,19 @@
-+# This work is licensed under the terms of the GNU LGPL, version 2 or later.
-+# See the COPYING.LIB file in the top-level directory.
-+
-+# field using a named_field
-+%imm_sz	8:8 sz:3
-+insn 00000000 00000000 ........ 00000000 imm_sz=%imm_sz sz=1
-+
-+# Ditto, via a format. Here a field in the format
-+# references a named field defined in the insn pattern:
-+&imm_a imm alpha
-+%foo 0:16 alpha:4
-+@foo 00000001 ........ ........ ........ &imm_a imm=%foo
-+i1   ........ 00000000 ........ ........ @foo alpha=1
-+i2   ........ 00000001 ........ ........ @foo alpha=2
-+
-+# Here the named field is defined in the format and referenced
-+# from the insn pattern:
-+@bar 00000010 ........ ........ ........ &imm_a alpha=4
-+i3   ........ 00000000 ........ ........ @bar imm=%foo
-diff --git a/tests/decode/meson.build b/tests/decode/meson.build
-index b4850562f9..38a0629d67 100644
---- a/tests/decode/meson.build
-+++ b/tests/decode/meson.build
-@@ -7,6 +7,10 @@ err_tests = [
-     'err_field4.decode',
-     'err_field5.decode',
-     'err_field6.decode',
-+    'err_field7.decode',
-+    'err_field8.decode',
-+    'err_field9.decode',
-+    'err_field10.decode',
-     'err_init1.decode',
-     'err_init2.decode',
-     'err_init3.decode',
-@@ -37,6 +41,7 @@ succ_tests = [
-     'succ_argset_type1.decode',
-     'succ_function.decode',
-     'succ_ident1.decode',
-+    'succ_named_field.decode',
-     'succ_pattern_group_nest1.decode',
-     'succ_pattern_group_nest2.decode',
-     'succ_pattern_group_nest3.decode',
+r~
+
+
+Richard Henderson (20):
+  target/arm: Add commentary for CPUARMState.exclusive_high
+  target/arm: Add feature test for FEAT_LSE2
+  target/arm: Introduce finalize_memop_{atom,pair}
+  target/arm: Use tcg_gen_qemu_ld_i128 for LDXP
+  target/arm: Use tcg_gen_qemu_{st,ld}_i128 for do_fp_{st,ld}
+  target/arm: Use tcg_gen_qemu_st_i128 for STZG, STZ2G
+  target/arm: Use tcg_gen_qemu_{ld,st}_i128 in gen_sve_{ld,st}r
+  target/arm: Sink gen_mte_check1 into load/store_exclusive
+  target/arm: Load/store integer pair with one tcg operation
+  target/arm: Hoist finalize_memop out of do_gpr_{ld,st}
+  target/arm: Hoist finalize_memop out of do_fp_{ld,st}
+  target/arm: Pass memop to gen_mte_check1*
+  target/arm: Pass single_memop to gen_mte_checkN
+  target/arm: Check alignment in helper_mte_check
+  target/arm: Add SCTLR.nAA to TBFLAG_A64
+  target/arm: Relax ordered/atomic alignment checks for LSE2
+  target/arm: Move mte check for store-exclusive
+  tests/tcg/aarch64: Use stz2g in mte-7.c
+  tests/tcg/multiarch: Adjust sigbus.c
+  target/arm: Enable FEAT_LSE2 for -cpu max
+
+ docs/system/arm/emulation.rst  |   1 +
+ target/arm/cpu.h               |  16 +-
+ target/arm/internals.h         |   3 +-
+ target/arm/tcg/helper-a64.h    |   3 +
+ target/arm/tcg/translate-a64.h |   4 +-
+ target/arm/tcg/translate.h     |  65 ++++-
+ target/arm/tcg/cpu64.c         |   1 +
+ target/arm/tcg/helper-a64.c    |   7 +
+ target/arm/tcg/hflags.c        |   6 +
+ target/arm/tcg/mte_helper.c    |  18 ++
+ target/arm/tcg/translate-a64.c | 477 ++++++++++++++++++++++-----------
+ target/arm/tcg/translate-sve.c | 106 +++++---
+ target/arm/tcg/translate.c     |   1 +
+ tests/tcg/aarch64/mte-7.c      |   3 +-
+ tests/tcg/multiarch/sigbus.c   |  13 +-
+ 15 files changed, 523 insertions(+), 201 deletions(-)
+
 -- 
 2.34.1
 
