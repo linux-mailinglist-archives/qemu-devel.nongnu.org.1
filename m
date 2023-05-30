@@ -2,62 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BF57158A2
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676967158F1
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:43:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3unN-0001zL-Od; Tue, 30 May 2023 04:33:33 -0400
+	id 1q3uwS-00032q-Ia; Tue, 30 May 2023 04:42:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q3unM-0001vo-5X
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:33:32 -0400
-Received: from mga17.intel.com ([192.55.52.151])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1q3uwQ-00032Y-Gv
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 04:42:54 -0400
+Received: from mail-bn8nam11on2040.outbound.protection.outlook.com
+ ([40.107.236.40] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q3unK-0001e6-Ap
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:33:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1685435610; x=1716971610;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GxUbS8UIGU9fRc7ViV5mnBxcf9bwR8+T1stIrLTct80=;
- b=F/RHHzWnEOCceKIKin4insjhdIYD2hsWfaA+M79po+ENxWQyd4isi504
- r0eLGiCXF4kssn1DyvXnlajyD5Qdm/lbJKN7mbeRAYW4INGKbdoMfjNhO
- lcKYrjLz+VkW/bqm8Hb1B9JE3RbQXMWWST8qmkED5zZFLbHqFONnaOgTf
- OptgxMYXgQ64UJdPPapjZZ4tAKAgP4Ds1Pfw4oO3Pz6R4uOhOyeDb5sg3
- QzI0X7VkWVENLmn2iEvm28+AB5plWHzTZs+4QCrunJ+EKUpd/vWNfZztB
- mQZccLX7w8+YWtvdT3ph73LfMzRByqa74WRj1yGe1A10Ovc4sxK2ZMWPW w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="335202154"
-X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; d="scan'208";a="335202154"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2023 01:33:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="796188309"
-X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; d="scan'208";a="796188309"
-Received: from wufei-optiplex-7090.sh.intel.com ([10.238.200.247])
- by FMSMGA003.fm.intel.com with ESMTP; 30 May 2023 01:33:08 -0700
-From: Fei Wu <fei2.wu@intel.com>
-To: richard.henderson@linaro.org, alex.bennee@linaro.org, qemu-devel@nongnu.org
-Cc: Fei Wu <fei2.wu@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v14 10/10] docs: add tb-stats how to
-Date: Tue, 30 May 2023 16:35:26 +0800
-Message-Id: <20230530083526.2174430-11-fei2.wu@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230530083526.2174430-1-fei2.wu@intel.com>
-References: <20230530083526.2174430-1-fei2.wu@intel.com>
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1q3uwN-00031w-MO
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 04:42:54 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HHHQhkwr3SACpE+U8YdlgOpM1B0qbqQZdyKDggqCqZj6CGzfotxWid4952p4XX0OLHRHAP9EucHcFF5ngSij2d4HCD7UACOfCo4qg7GPJrszNXNHnAYt2fyDB9SxgH3DCfjXYMxtKN2iDpVN0+5DAjFoEZKhIHw2tSYvna3b8FCSr0kqeO5phURZdNr0PQY+Bevz83Ft04YFSFNsc8+3fm+MX3qXPlJ6nEj6XnwNquIvt8xFTJSTf+ch3cASc3q27J6Lb+QQUAybds4sYQndYBPV+T6oRdSvFf37QWO7HWm/XLfeo8qkkwh6HqC8FgjKpYQ+1ZcmRbQRTMdttoMtdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oTXUJiHMlqKFwFSxtqaCK/CQ8hjSPtqJZz4lUqPVuTU=;
+ b=YN7MJQI9xGB2P4AhvyNp4GWngcCNMcPJAQR3R9gX5jiZWko+M9R3BexKeINZKb2ASTnUf9FfYBD0dlKYRL6jiTcdHL50xcQcj9sUWIlC8rcQ7JBHiyt4Fp5eNnlRr34ILGye3U1hWkYPtwAWN8RgFYtKFlFwKG73OtqAKojp/AbhX5RAPx2dodRRu5qtHoONpd/sx41HAPsGjwE3X3uhRSYXRGPxRi944b0oyhDJNFgPxB934cGxUk+S+XJLlLlnzFkJSw8lpf6CrJI82ur4vvPPOmBnW8NC054wXp6wYFZIXOwNMRLEynAZ6s+kqiwVnM390RlZNxOfsYm74IH2rQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oTXUJiHMlqKFwFSxtqaCK/CQ8hjSPtqJZz4lUqPVuTU=;
+ b=OYYdQehMFVOIaw2+UdLFvLbUlmFrB3PrpF5xK42snzuWBRpoWvfD3NzmwDG9WlIcElNaFm9JKhEBFq3d7Rt6B6ZzDz7yAbvdYPfawdwRYpP70UOrG2a/9IC0nTaj3V7999EG5iC29v8s7qx3KHN9h813281MWHOX47ydjBx6C7QvBFO0VtH+xzrXQKfTcgwbfBR5PPdTxo9MguTkMPHq3sbHDnLI/5flwkJ6wZiOemrhr7aIRyUxEXnYT5fY3QdDOhkuXQuNM6AiGY7Nxp4X95JOo1XeC+pM8Tal+3Y4ngFzhTvgxVOEyi6i7Ra8UxQ7ykDkX0UvpUDwcOwskkBsww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by IA1PR12MB7590.namprd12.prod.outlook.com (2603:10b6:208:42a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Tue, 30 May
+ 2023 08:37:48 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::c887:8186:c2f0:d7e6]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::c887:8186:c2f0:d7e6%5]) with mapi id 15.20.6433.022; Tue, 30 May 2023
+ 08:37:47 +0000
+Message-ID: <dd66848d-d1c0-e428-7a49-97751f7f62b3@nvidia.com>
+Date: Tue, 30 May 2023 11:37:40 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v3 1/2] exec/ram_addr: return nr of dirty pages in
+ cpu_physical_memory_set_dirty_lebitmap()
+Content-Language: en-US
+To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>
+References: <20230529121114.5038-1-joao.m.martins@oracle.com>
+ <20230529121114.5038-2-joao.m.martins@oracle.com>
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <20230529121114.5038-2-joao.m.martins@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PR1P264CA0185.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:344::13) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.151; envelope-from=fei2.wu@intel.com;
- helo=mga17.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|IA1PR12MB7590:EE_
+X-MS-Office365-Filtering-Correlation-Id: 352a638f-ed0d-4bc6-d31d-08db60e9256d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sHYwCHtBh5J39LwibB1dKw4R72MzfN1MP9CPXrb+13s105ByvoP+kheDLWy/tj5rB/20UwF8vrtt0q6/EYGuHNkk9bGbRoTYXuG0Vdkj3vLo21xxom/07AzVtWa0CwstqV/J9rUn0Oxo4ACrGcrhtFI7/mqtZNhRtPNfaSrqXxQal0DWHpM4/nnZ0Ayh3XNQqnC9rr+rn+Ix1yUlaxrMzdlzGs4jlv4rbW7tiRLG6e6orCRy1o4fi8gEHkJIfrJO+weKhMoIQiObj562ZQ37CIlnO613TE/p/ztfzAhtmCAP3OffNSwFjFZlPUD048TJ7jFTSWU1W+KQnoUb+BamFAg9mM3gQhXDk7HdB7rV0/f3Xmw042yGpLHPcj9t9fBdHLGbid8u7OUbqR/1D/LSNfv87H54nGlcsAz90s7omiTn2p3hGv+Mwa3ZPpJBvZUl/8wCzjsMai9pZEWAflRBx8zPx3QkpiviGo277IeFw4pSm9mMn7zd+D0uQnhpKhYO2jAmP2OpeOeSlAbeDgNkIrF+LFUpd14+l2LCs1AYGK4xbaQOf0Tt3nLKA8tXXs4v+XcUTmjakfxBRrL10cb7clHjN1CkWO8c30QUZSUYUAMj8X4rcHSfptNQl6pvvZkw1PorHAymRuQU6wr2I7O6dfTlz/9cgeezzNmdK6t/jxQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(39860400002)(346002)(136003)(376002)(366004)(396003)(451199021)(83380400001)(86362001)(36756003)(66946007)(5660300002)(6666004)(316002)(66476007)(66556008)(4326008)(31696002)(8676002)(8936002)(6486002)(38100700002)(41300700001)(53546011)(54906003)(2616005)(2906002)(6512007)(6506007)(186003)(31686004)(478600001)(26005)(14143004)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RnBJTGZ3dVhEN0ZCMk5pR3BwMGlPeFAyTWMrOGdpcWJmVFlCdTI5U2plV0pp?=
+ =?utf-8?B?WHNWd1daWFI5ZmRnOE5Rdy9iOGcvWXNnTnRma1hRTDkvdG12eHBaVUxFN2dp?=
+ =?utf-8?B?Z0NrNmZoNy9qWkk5NFpHNTNZNVdwbE9YRTR5V0x4TjRyZzg2UXhyZEtYK3lz?=
+ =?utf-8?B?Y1hMZmVVSGE4MVJhRlphSG1Wa0t5c3l6cFVDYVdQMHUxQ2E2ZDlod3BtcXVx?=
+ =?utf-8?B?RW9jRm5HQ3ArbVd0Z0FFckp3dXZ0VzdmWTQwRE5uM1pSTS9Bd0F1OVpJQXlB?=
+ =?utf-8?B?OUNabUd2TDYrL0k1Y200Sk16S2w5cWEzbHhYRHpEc1lpeDcwajdnK245SSty?=
+ =?utf-8?B?aVZ2ZTk4WXp5OWNyUEhGUjBTWUVmSmlhalljQzNxSnoxaGtNeHgrZVFuVlZO?=
+ =?utf-8?B?THZDS2M1Q20rUzdzZDd2M0VNRERCQ3haR3gyWXppeC8xVVhWYmVPYUZlRjhI?=
+ =?utf-8?B?MFI0TVMzelNYd1BzUTErZmZwN0N0bTN2dFAyWXpTbUd3N1NRUDN5U3huOW85?=
+ =?utf-8?B?SkN1TDdSZ0JHSmpETHdPWkZVUmN5bEN5azNZd1doUVlCRUNBcGMyam5YcUpu?=
+ =?utf-8?B?aDg5bVJ5T1pnV3JralZIRXV0QTVLUTZkUm9uN3BtOHczUFRQc24vNHdjRzVh?=
+ =?utf-8?B?anUrS2xYM090MDB5Umh5aUl5d1dSUFU0WEFxRU1uMkJnWWFNSEJXaVdaS2lG?=
+ =?utf-8?B?UUxEZzJqSWNobDdlVXF3WmszMVhYdW1INzdZWTZ6RzU0UXJnSklKTnFjOERj?=
+ =?utf-8?B?djloL3c5WkpIOXc5TllCT3E0ZkJ4cFdWa3Vob0UvUVN6cXZHMmRtQWNJNWZD?=
+ =?utf-8?B?OFFDcnF3Ykl3anhhc09zbEdUb3RBM2NCK1h4eHJUUlRzQ1lvUklCUzlxNXd1?=
+ =?utf-8?B?SkI0ajltVWJNZ3RSUmxZNFN5NmZpdW05QitIb29DbFV0d2pPOHRWcDVLUWxJ?=
+ =?utf-8?B?blNjOUhHK0Rtb0dRODYwQTMzdUxPdW9QTGgzVDZidHZnZndEY0p6ZFpVeFhB?=
+ =?utf-8?B?Zloxc0xSNmhnVWc5a0g1dmlzanBtbWEvOWRrK3dVOFNWTnhBUVRnUlYzazNR?=
+ =?utf-8?B?Nk0zNUJJK1VYbk1FZXRQMEJrbzZZRENTdnNUUlRRaTlZUTdYSmlVVm53R1dM?=
+ =?utf-8?B?R2IzQ2VHbjJHNU1lNCs2VUVLQlUxTDgxQVFISFh5QXh4MkFhL2poZVNtL3Ji?=
+ =?utf-8?B?SVhTQUFDT0RSMzZnUlpQSVNqT1BjUUFBZE80TUdxNzNleW5lOGFnTkxIRUI0?=
+ =?utf-8?B?YzBTUVQ5MGVSMUJzTHFic0NYZ0M1T1JuQzUxMmZtVDNwZldrU0tmZmdna1Vk?=
+ =?utf-8?B?WUhSMlNhNlFCYWJQYzRkZWk5Q1U2V2JGRzdERzE0VmVhWmpsNzVSSVNsWWY1?=
+ =?utf-8?B?dGFUUHgwQjI0SmxNSHhmQjNQbkFnTXRMU2hkZWtGUyswdGtKd3ZVc1JjMDU1?=
+ =?utf-8?B?SE1Uc1pwamQvS1pDcTVJVnE4SndlamhJWUFxZjN4TGxSSHdvNmVIVStvaGNa?=
+ =?utf-8?B?eVlwcDd6N2FOeDYyY2dkaEYwcllOaTN3eERHZVYwSVRoWjBmNWh6eXVXTEF4?=
+ =?utf-8?B?M1JpQWd1QWJ0Y29SckNtOG1QQ2RYNTFPd1BsOXM2dHZqa0pLQzI1OW1FbjB3?=
+ =?utf-8?B?WnFpenBVazJPUE8xRE1IUXk4S3B5YnpydjFIenkyZjllTDI2ODk3b3h3R290?=
+ =?utf-8?B?QlllTzdhS1M3N3JJbCtIcXNuMUtrU3Y1Q05HS3A0aWVEUTlaYy8rSkxBT0lW?=
+ =?utf-8?B?Q0lKZi9zaGY5NzJkTFZSNWpNdUdaSnFYcXkzSDlaSjNRREFwajJhWGNGZW9y?=
+ =?utf-8?B?VXJJMENwZjBHUUdNRUkzbFQ5elVWZUJUVk4wOFFjck05Y1N1WkNSNW9vTWFH?=
+ =?utf-8?B?eFRmQnJVVkpEQncreWNGbDZDUlVkSXY5aXNPT0IwMHc1cnpBU1hXQW1FczJJ?=
+ =?utf-8?B?ckhxTUFJdmZMN1NWZ2lnQWptQWEreG5ESDFWUEk5NUgzZnQxbXBJYW54Z1VU?=
+ =?utf-8?B?R2dielc4eGlKTjVqNWNOeDBVOCtyWWhCalJCanJCUUpnUGNUYW1xYmo0Y3BW?=
+ =?utf-8?B?VG1TeUxsdzVxcHEwM2tNWEdISGVmYVE0R0ZBekgxRVV2MFFkS05CMjFCZGY3?=
+ =?utf-8?Q?v19gIazkweia1kf4WMTcTEj2o?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 352a638f-ed0d-4bc6-d31d-08db60e9256d
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 08:37:47.7826 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IxkvycuRE+xy2j3a0O2YC4Y1+0T/+94l/IObvvwzH+8PeFsJS08DyMH0fxcq6PXcGowZZEK4GQjDNOgrrbSrzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7590
+Received-SPF: softfail client-ip=40.107.236.40;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,148 +151,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Fei Wu <fei2.wu@intel.com>
----
- docs/devel/tcg-tbstats.rst | 129 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 129 insertions(+)
- create mode 100644 docs/devel/tcg-tbstats.rst
 
-diff --git a/docs/devel/tcg-tbstats.rst b/docs/devel/tcg-tbstats.rst
-new file mode 100644
-index 0000000000..bfba222e96
---- /dev/null
-+++ b/docs/devel/tcg-tbstats.rst
-@@ -0,0 +1,129 @@
-+============
-+TBStatistics
-+============
-+
-+What is TBStatistics
-+====================
-+
-+TBStatistics (tb_stats) is a tool to gather various internal information of TCG
-+during binary translation, this allows us to identify such as hottest TBs,
-+guest to host instruction translation ratio, number of spills during register
-+allocation and more.
-+
-+
-+How to use TBStatistics
-+=======================
-+
-+1. HMP interface
-+----------------
-+
-+TBStatistics provides HMP interface, you can try the following examples after
-+connecting to the monitor.
-+
-+* First check the help info::
-+
-+    (qemu) help tb_stats
-+    tb_stats command [stats_level] -- Control tb statistics collection:tb_stats (start|pause|stop|filter) [all|jit_stats|exec_stats]
-+
-+    (qemu) help info tb-list
-+    info tb-list [number sortedby] -- show a [number] translated blocks sorted by [sortedby]sortedby opts: hotness hg spills
-+
-+    (qemu) help info tb
-+    info tb id [flag1,flag2,...] -- show information about one translated block by id.dump flags can be used to set dump code level: out_asm in_asm op
-+
-+* Enable TBStatistics::
-+
-+    (qemu) tb_stats start all
-+    (qemu)
-+
-+* Get interested TB list::
-+
-+    (qemu) info tb-list 2
-+    TB id:1 | phys:0x79bca0 virt:0xffffffff8059bca0 flags:0x01024001 0 inv/1
-+            | exec:1464084/0 guest inst cov:0.15%
-+            | trans:1 ints: g:3 op:16 op_opt:15 spills:0
-+            | h/g (host bytes / guest insts): 64.000000
-+            | time to gen at 2.4GHz => code:607.08(ns) IR:250.83(ns)
-+
-+    TB id:2 | phys:0x2adf0c virt:0xffffffff800adf0c flags:0x01024001 0 inv/1
-+            | exec:1033298/0 guest inst cov:0.28%
-+            | trans:1 ints: g:8 op:35 op_opt:33 spills:0
-+            | h/g (host bytes / guest insts): 86.000000
-+            | time to gen at 2.4GHz => code:1429.58(ns) IR:545.42(ns)
-+
-+* Dive into the specific TB::
-+
-+    (qemu) info tb 1 op
-+    ------------------------------
-+
-+    TB id:1 | phys:0x79bca0 virt:0xffffffff8059bca0 flags:0x01024001 7 inv/19
-+            | exec:2038349/0 guest inst cov:0.15%
-+            | trans:19 ints: g:3 op:16 op_opt:15 spills:0
-+            | h/g (host bytes / guest insts): 64.000000
-+            | time to gen at 2.4GHz => code:133434.17(ns) IR:176988.33(ns)
-+
-+    OP:
-+     ld_i32 loc1,env,$0xfffffffffffffff0
-+     brcond_i32 loc1,$0x0,lt,$L0
-+     mov_i64 loc3,$0x7f3c70b3a4e0
-+     call inc_exec_freq,$0x1,$0,loc3
-+
-+     ---- ffffffff8059bca0 0000000000006422
-+     add_i64 loc5,x2/sp,$0x8
-+     qemu_ld_i64 x8/s0,loc5,un+leq,1
-+
-+     ---- ffffffff8059bca2 0000000000000000
-+     add_i64 x2/sp,x2/sp,$0x10
-+
-+     ---- ffffffff8059bca4 0000000000000000
-+     mov_i64 pc,x1/ra
-+     and_i64 pc,pc,$0xfffffffffffffffe
-+     call lookup_tb_ptr,$0x6,$1,tmp9,env
-+     goto_ptr tmp9
-+     set_label $L0
-+     exit_tb $0x7f3e887a8043
-+
-+    ------------------------------
-+
-+* Stop TBStatistics after investigation, this will disable TBStatistics completely.::
-+
-+    (qemu) tb_stats stop
-+    (qemu)
-+
-+* Alternatively, TBStatistics can be paused, the previous collected TBStatistics
-+  are not cleared but there is no TBStatistics recorded for new TBs.::
-+
-+    (qemu) tb_stats pause
-+    (qemu)
-+
-+* Definitely, TBStatistics can be restarted for another round of investigation.::
-+
-+    (qemu) tb_stats start all
-+    (qemu)
-+
-+
-+2. Dump at exit
-+---------------
-+
-+New command line options have been added to enable dump TB information at exit:::
-+
-+    -d tb_stats[[,level=(+all+jit+exec+time)][,dump_limit=<number>]]
-+
-+e.g. starting qemu like this:::
-+
-+    -d tb_stats,dump_limit=2
-+
-+Qemu prints the following at exit:::
-+
-+    QEMU: Terminated
-+    TB id:1 | phys:0x61be02 virt:0xffffffff8041be02 flags:0x01024001 0 inv/1
-+            | exec:72739176/0 guest inst cov:20.22%
-+            | trans:1 ints: g:9 op:35 op_opt:33 spills:0
-+            | h/g (host bytes / guest insts): 51.555557
-+            | time to gen at 2.4GHz => code:1065.42(ns) IR:554.17(ns)
-+
-+    TB id:2 | phys:0x61bc66 virt:0xffffffff8041bc66 flags:0x01024001 0 inv/1
-+            | exec:25069507/0 guest inst cov:0.77%
-+            | trans:1 ints: g:1 op:15 op_opt:14 spills:0
-+            | h/g (host bytes / guest insts): 128.000000
-+            | time to gen at 2.4GHz => code:312.50(ns) IR:152.08(ns)
--- 
-2.25.1
+On 29/05/2023 15:11, Joao Martins wrote:
+> External email: Use caution opening links or attachments
+>
+Nit, s/nr/number in the subject.
 
+> In preparation for including the number of dirty pages in the
+> vfio_get_dirty_bitmap() tracepoint, return the number of dirty pages in
+> cpu_physical_memory_set_dirty_lebitmap() similar to
+> cpu_physical_memory_sync_dirty_bitmap().
+>
+> To avoid counting twice when GLOBAL_DIRTY_RATE is enabled, stash the
+> number of bits set per bitmap quad in a variable (@nbits) and reuse it
+> there.
+>
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> ---
+>   include/exec/ram_addr.h | 28 ++++++++++++++++++++++------
+>   1 file changed, 22 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+> index 90a82692904f..9f2e3893f562 100644
+> --- a/include/exec/ram_addr.h
+> +++ b/include/exec/ram_addr.h
+> @@ -334,14 +334,23 @@ static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
+>   }
+>
+>   #if !defined(_WIN32)
+> -static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+> -                                                          ram_addr_t start,
+> -                                                          ram_addr_t pages)
+> +
+> +/*
+> + * Contrary to cpu_physical_memory_sync_dirty_bitmap() this function returns
+> + * the number of dirty pages in @bitmap passed as argument. On the other hand,
+> + * cpu_physical_memory_sync_dirty_bitmap() returns newly dirtied pages that
+> + * weren't set in the global migration bitmap.
+> + */
+> +static inline
+> +uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+> +                                                ram_addr_t start,
+> +                                                ram_addr_t pages)
+>   {
+>       unsigned long i, j;
+> -    unsigned long page_number, c;
+> +    unsigned long page_number, c, nbits;
+>       hwaddr addr;
+>       ram_addr_t ram_addr;
+> +    uint64_t num_dirty = 0;
+>       unsigned long len = (pages + HOST_LONG_BITS - 1) / HOST_LONG_BITS;
+>       unsigned long hpratio = qemu_real_host_page_size() / TARGET_PAGE_SIZE;
+>       unsigned long page = BIT_WORD(start >> TARGET_PAGE_BITS);
+> @@ -369,6 +378,7 @@ static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+>                   if (bitmap[k]) {
+>                       unsigned long temp = leul_to_cpu(bitmap[k]);
+>
+> +                    nbits = ctpopl(temp);
+>                       qatomic_or(&blocks[DIRTY_MEMORY_VGA][idx][offset], temp);
+>
+>                       if (global_dirty_tracking) {
+> @@ -377,10 +387,12 @@ static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+>                                   temp);
+>                           if (unlikely(
+>                               global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
+> -                            total_dirty_pages += ctpopl(temp);
+> +                            total_dirty_pages += nbits;
+>                           }
+>                       }
+>
+> +                    num_dirty += nbits;
+> +
+>                       if (tcg_enabled()) {
+>                           qatomic_or(&blocks[DIRTY_MEMORY_CODE][idx][offset],
+>                                      temp);
+> @@ -409,9 +421,11 @@ static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+>           for (i = 0; i < len; i++) {
+>               if (bitmap[i] != 0) {
+>                   c = leul_to_cpu(bitmap[i]);
+> +                nbits = ctpopl(c);
+>                   if (unlikely(global_dirty_tracking & GLOBAL_DIRTY_DIRTY_RATE)) {
+> -                    total_dirty_pages += ctpopl(c);
+> +                    total_dirty_pages += nbits;
+>                   }
+> +                num_dirty += nbits;
+>                   do {
+>                       j = ctzl(c);
+>                       c &= ~(1ul << j);
+> @@ -424,6 +438,8 @@ static inline void cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+>               }
+>           }
+>       }
+> +
+> +    return num_dirty;
+>   }
+>   #endif /* not _WIN32 */
+>
+> --
+> 2.39.3
+>
 
