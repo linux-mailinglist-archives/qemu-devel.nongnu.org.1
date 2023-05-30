@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE08715D27
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B232E715D2C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:28:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3xUY-0001nA-SL; Tue, 30 May 2023 07:26:18 -0400
+	id 1q3xVx-0002yd-9E; Tue, 30 May 2023 07:27:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q3xUV-0001lX-Ny
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:26:16 -0400
-Received: from mout.kundenserver.de ([217.72.192.74])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q3xVv-0002yT-5C
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:27:43 -0400
+Received: from mout.kundenserver.de ([217.72.192.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q3xUF-00077S-JI
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:26:14 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q3xVs-0008Rl-6T
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:27:42 -0400
 Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue106 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1N7hrw-1q8io53wH4-014h6m; Tue, 30 May 2023 13:25:56 +0200
-Message-ID: <44c06980-c8c6-a114-7507-555ee43bdc56@vivier.eu>
-Date: Tue, 30 May 2023 13:25:55 +0200
+ (mreue107 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1MfZDK-1qanEA0drc-00fyHF; Tue, 30 May 2023 13:27:38 +0200
+Message-ID: <681d9b58-d08b-c541-3337-14d50b9c187c@vivier.eu>
+Date: Tue, 30 May 2023 13:27:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 13/30] q800: allow accesses to RAM area even if less
- memory is available
+Subject: Re: [PATCH 15/30] asc: generate silence if FIFO empty but engine
+ still running
 Content-Language: fr
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
 References: <20230524211104.686087-1-mark.cave-ayland@ilande.co.uk>
- <20230524211104.686087-14-mark.cave-ayland@ilande.co.uk>
+ <20230524211104.686087-16-mark.cave-ayland@ilande.co.uk>
 From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230524211104.686087-14-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230524211104.686087-16-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:jh4ZZ5AJMe9m8+LX4KYvaSx8wZEj0FuGXTvf15FrvyYYLq2ieI7
- pK8n62TPn8bkWw86lKewT+2iUdY86Z8XIN/mr9RBfG7TkNVQTpJ6ImWNK++bYHdIuPBnyw6
- 6oXJP6zz9hUitCkpDvSIO22J4UddkLu3EfByX/R9KVwkhf38T4iDVcmwQUfmrGkpP6dXDQR
- yMI1T+P7X0x9YS5RyhVbw==
-UI-OutboundReport: notjunk:1;M01:P0:Fl0mylS3cis=;fd7UGLK2Bh6mraLSJJO79UiKrwZ
- ioP1RVR06mMZ5eOMroewyTEXNbFE4w4kfHnT+Gx/EPK4X+FnnYzofnZWpFeB+VhM9rWL0OuZi
- Y9GDV/31IHcJjvRFABaWvEl3Jyi7KC03LpsfCZnW78k997l/iL7pWzfpMexihipBOJAbTa88T
- q9nr1ppVAxTJtGWYHvj56UhKilh/HsFuceCTiai8wN0KK1ZhpyHMmhiAptw6cV57wU6hn4QVl
- 2thh20w5FhyD5wxWKVZyoX5EMp5SiFNOEQazLO7ks6o+JwKF3280kdh+YQZMi/N7x0dgDn0IC
- H+QEsM+NmmaZhy4SFNp7qIe38qbMgROmrQ5PRZPSzNt/kbL47xmcK/R0Tr6DxbvMGl0B4SBwL
- IGEq77cOBRt/rnrF0ZNP9EbTXTqNoqOKd1dWJbSVL6H19lVp/dI2rnnlczLbnr6oBJO4h72i/
- eufrTeLxdC1HZpeyquvVlcBMW8XpgfedyNtLjbc7uRwCtYOaneFYUlcv8VX2XFVN6FcpMVBhr
- 6LcU+B3DQ13EJc3Jsd+0HgPOlQgUEaD4Q9kXxXN7Ng3I2lqAyhy6swj17UvqUDyfAnk6j7NsA
- qdLXS80gzMZEs2nEIESw89GW5dxzHLv/mAiG2phcAFdRfHyNUUuRDTxHK/bdjd6LY9KuaiswQ
- 8a/KUiq/ukjJNYe7qaYOCcxe47CLzexbOuox+3IDTQ==
-Received-SPF: none client-ip=217.72.192.74; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:NWCZsdHhSYBTpdlzeKjR1PuExonxBSK80uUNtdiu3tc4agWqB/M
+ xPOKspfBb3wG07wpL3ADoiw0zpLDDi0C63jQttGQR2BORW8KUYoZgjbnPvAVP8GyJZtKVaX
+ /0DfahQkNQp6SAzKNg5ovLV8l3OA5xSPVApFKQv8N8sSX7wXz9544fiJ6bUeutrZnovb7XZ
+ yyV4Dgz60dvrEHSQw5YRw==
+UI-OutboundReport: notjunk:1;M01:P0:ZrHOqETTl8I=;h0+KbTa+U7vUVtF7eB+0phRsTDk
+ 1P/Vk5qfnTeu4nsYWnhOETbr4hVoC5quSRRri7E4VtLKnUq3bRK/52ku1xL6mFCnII4kxJPyg
+ 4Qr1vM/Ky6AYDNRour/VPvTVgXtPPpanO92hOgylwv++FYEjPPnxXEVL40RJqJKhIARRcn6jg
+ ePLH0r+9Ypo0Ct7dWrnjjRkLwAud2Myc3wpnxMGgQk9md92QkkL1rWq4kIEtC1yVvHUw0+rdr
+ bPnItnqblEEBjiVYXDmIMh92k6o/mTSoYrUxisCf6aXYX76qOVvJsRknEPiKq+O8bN2B/dBus
+ xFVPVY1FGItfVxquq17MKry2latevCB2onQpkQeokWo3H8zkwzMgYl+XuWLGgRW6CueDkkPdS
+ nR/B/L96rDkrko62BJh3bh6zhudJwaNrgauVG807sKoD6lChlkPJdiFJ0JtRIJN3Vk6t3V0Yl
+ D0XS7dtFbkXGgl/6cjM0DO5Ev0K7D4stSS3SSIqS4KbOPlrN2H7cUA8b0es4UaqeZJIynyWLO
+ M/9JJDEHjmoBjAaUAPEzFz2hHMj1ujEgqQlxN9pVvKYOwUwkJyJxni2KM4vGDYJBfs8CkQNhW
+ Qk+UT2IpSK0xcJ7SK8qmfTfVFPFVE6BgQ3ni3t7XBqtye4RPLh6l/6tZTbLTULaud33I18HhZ
+ lhDBsbaSAK/NroxxOeMsxA9w0Y608COEnYlZL2s3wg==
+Received-SPF: none client-ip=217.72.192.75; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
 X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,85 +73,48 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Le 24/05/2023 à 23:10, Mark Cave-Ayland a écrit :
-> MacOS attempts a series of writes and reads over the entire RAM area in order
-> to determine the amount of RAM within the machine. Allow accesses to the
-> entire RAM area ignoring writes and always reading zero for areas where there
-> is no physical RAM installed to allow MacOS to detect the memory size without
-> faulting.
+> MacOS (un)helpfully leaves the FIFO engine running even when all the samples have
+> been written to the hardware, and expects the FIFO status flags and IRQ to be
+> updated continuously.
+> 
+> Since not all audio backends guarantee an all-zero output when no data is
+> provided, explicitly generate an all-zero output when this condition occurs to
+> avoid the audio backends re-using their internal buffers and looping audio once
+> the FIFOs are empty.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->   hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
->   include/hw/m68k/q800.h |  1 +
->   2 files changed, 30 insertions(+), 1 deletion(-)
+>   hw/audio/asc.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index 8310670ec2..d12aeaa20e 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -86,6 +86,9 @@
->   
->   #define MAC_CLOCK  3686418
->   
-> +/* Size of whole RAM area */
-> +#define RAM_SIZE              0x40000000
-> +
->   /*
->    * Slot 0x9 is reserved for use by the in-built framebuffer whilst only
->    * slots 0xc, 0xd and 0xe physically exist on the Quadra 800
-> @@ -452,6 +455,27 @@ static const MemoryRegionOps machine_id_ops = {
->       },
->   };
->   
-> +static uint64_t ramio_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    return 0x0;
-> +}
-> +
-> +static void ramio_write(void *opaque, hwaddr addr, uint64_t val,
-> +                        unsigned size)
-> +{
-> +    return;
-> +}
-> +
-> +static const MemoryRegionOps ramio_ops = {
-> +    .read = ramio_read,
-> +    .write = ramio_write,
-> +    .endianness = DEVICE_BIG_ENDIAN,
-> +    .valid = {
-> +        .min_access_size = 1,
-> +        .max_access_size = 4,
-> +    },
-> +};
-> +
->   static void q800_machine_init(MachineState *machine)
->   {
->       Q800MachineState *m = Q800_MACHINE(machine);
-> @@ -497,7 +521,11 @@ static void q800_machine_init(MachineState *machine)
->       qemu_register_reset(main_cpu_reset, m->cpu);
->   
->       /* RAM */
-> -    memory_region_add_subregion(get_system_memory(), 0, machine->ram);
-> +    memory_region_init_io(&m->ramio, NULL, &ramio_ops, &m->ramio,
-> +                          "ram", RAM_SIZE);
-> +    memory_region_add_subregion(get_system_memory(), 0x0, &m->ramio);
-> +
-> +    memory_region_add_subregion(&m->ramio, 0, machine->ram);
+> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+> index 04194b1e43..c5173a8d35 100644
+> --- a/hw/audio/asc.c
+> +++ b/hw/audio/asc.c
+> @@ -158,8 +158,10 @@ static int generate_fifo(ASCState *s, int maxsamples)
+>       limit = MIN(MAX(s->fifos[0].cnt, s->fifos[1].cnt), maxsamples);
 >   
 >       /*
->        * Create container for all IO devices
-> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-> index e57aec849a..0602d07d3d 100644
-> --- a/include/hw/m68k/q800.h
-> +++ b/include/hw/m68k/q800.h
-> @@ -34,6 +34,7 @@ struct Q800MachineState {
->       MemoryRegion rom;
->       DeviceState *glue;
->       DeviceState *djmemc;
-> +    MemoryRegion ramio;
+> -     * If starting a new run with no FIFO data present, update the IRQ and
+> -     * continue
+> +     * MacOS (un)helpfully leaves the FIFO engine running even when it has
+> +     * finished writing out samples. Since not all audio backends guarantee an
+> +     * all-zero output when no data is provided, zero out the sample buffer
+> +     * and then update the FIFO flags and IRQ as normal and continue
+>        */
+>       if (limit == 0 && s->fifos[0].int_status == 0 &&
+>               s->fifos[1].int_status == 0) {
+> @@ -168,8 +170,9 @@ static int generate_fifo(ASCState *s, int maxsamples)
+>           s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+>                                     ASC_FIFO_STATUS_FULL_EMPTY;
 >   
->       MemoryRegion macio;
->       MemoryRegion macio_alias;
+> +        memset(buf, 0x80, maxsamples << s->shift);
+>           asc_raise_irq(s);
+> -        return 0;
+> +        return maxsamples;
+>       }
+>   
+>       while (count < limit) {
 
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
