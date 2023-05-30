@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AC7716E9A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 22:24:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65625716E9E
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 22:26:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q45sn-0007ax-Ks; Tue, 30 May 2023 16:23:53 -0400
+	id 1q45uO-0000T4-7n; Tue, 30 May 2023 16:25:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q45sm-0007aZ-5K
- for qemu-devel@nongnu.org; Tue, 30 May 2023 16:23:52 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ id 1q45uN-0000Sg-80
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 16:25:31 -0400
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1q45sj-0002QD-FR
- for qemu-devel@nongnu.org; Tue, 30 May 2023 16:23:51 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-39831cb47fbso3362154b6e.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:23:48 -0700 (PDT)
+ id 1q45uL-0002me-Pi
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 16:25:31 -0400
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6af6b5cf489so3716794a34.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 13:25:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1685478227; x=1688070227;
+ d=ventanamicro.com; s=google; t=1685478328; x=1688070328;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=bPZ1sL08TRDARHq1zn8jbqmSeksoNXB191fPK+0m1mA=;
- b=aQ5FMuWcBUI+rupJUxIHxrqwyiTo6D3Dit/N/JMUDNkVSoTbfHXDj3ixDwdClli94a
- CpgB5K6SNgnH3UIGeGw1VeaMljP3ruZC+ZPVV5G5xOnuCBhgFwCtDByWk3F+IYODyvjP
- DMFF3F5QHGr8cAtdkSIyoqfGjhqmAGRTKb3VxUshUSx8yD9XrwxX1ymgwt2vuPnAAxK6
- /ZvxHb489naLIYyjTALPFpzxxEYaLnYy1ab0IHBw3DapFX+ZstwQO0XxYNit00c3CtKY
- s148GMG0jweKI3YEC/vZxKc5FKzdnyF0Zi0NahNrqWozXC6ap1dw/DTBiT+b3uvIy08p
- kJyQ==
+ bh=GgLztPHIJUTPUNEKEmJf2nNCR0AjirBb0oiqqsg8yoQ=;
+ b=Flk+53hSSN/+vIOezqyZXlWFMO/vFGfKkklNKeHNRYMJoL8zTDyZ4Zg449UC/YtyRt
+ wEs7PVyviRiDeONMYYW7h7Yy3GxmAy+YBFm2EyG3dTaSLFsgcyDcsxJKbSxbTRv32FWY
+ ifngXB3UKjcp2MTHIV35T0I77X9YbCsUzI6vqJOgxIz3cv8oe0cljFRa8r5YcjOSrXJ5
+ runyXcvubXfQOqMkBkdgXr/waEzrYcFNri+E4NirtpjzZMWAefAW2NX+JybbFDGDlX3y
+ A8xy02c5cIPhDEUWVkBdgTnxBYTEALMrkck+/aORX5BHyAP4WZm8BMoJVzJtf+bbyD3Y
+ mzIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685478227; x=1688070227;
+ d=1e100.net; s=20221208; t=1685478328; x=1688070328;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bPZ1sL08TRDARHq1zn8jbqmSeksoNXB191fPK+0m1mA=;
- b=f7F3+DcYauKgQFpNr78tQ2TAaeOYpNgIQBOx4MwHqgv3yQ0KsMAidTBWwYftbZwiZ7
- h2vmArzfMNKd+vFeod3B25FQ6fD+zNd2CZqMQNFA6X6XMoaHLxnk7U+GIJ0/o73TRKkq
- gYbeM6QUd+m628QgZIFpz87Fk6Mv9IxKRBo+180xivVGvKy0tsLOmfxxuUYPkgr+6nNx
- 7xqxHkT5MR7Ij5Zf9zrLSda2bJcsZGSODuUsaBsjEWa6psJ1EBsSQyGYSeFusuRD8i8o
- 1q71USz26/YuZfBHV63LB6qW58YEG1kD2TycqdVCd2/tL7WNwIaXrOZIpj3d2M3cnNbQ
- Ba3Q==
-X-Gm-Message-State: AC+VfDzLTf7EXy967XZc303Ps1W1vmkAPxTBwiUO96XHs6/atky3SmUy
- zMg/sw79BukUlj9YC2IJ38LOpw==
-X-Google-Smtp-Source: ACHHUZ61/QJnzqaNT/+O41fqHcgzLAXrJ/HcpWBaau2FU/z3bDodyubCIAFAPInDkL1jN1d6YreW6Q==
-X-Received: by 2002:aca:dbd7:0:b0:398:523a:f1ee with SMTP id
- s206-20020acadbd7000000b00398523af1eemr1472212oig.21.1685478227581; 
- Tue, 30 May 2023 13:23:47 -0700 (PDT)
+ bh=GgLztPHIJUTPUNEKEmJf2nNCR0AjirBb0oiqqsg8yoQ=;
+ b=bag7FuTUR2hRs6RYnanlg65wkE7U0ve2gZtm0E9E54DnQhOdmoeO0HPxzGzVN42Qzp
+ rDSm9nuD1KEXlGhh2Y7zg3aGT01i3Gxfzch8xMDQRSFMUQrl3xES9B7zMH3Q7eMBH6Us
+ JfuHB8BlkOH3UEAkkBCSGvPBD1/8xwzJP3LY0IdYDkgmLm+5HHHoaUEZOqz9JzIthzsN
+ G1q3sM581hCuOrOBISTcAEJX+IOUCUQfxGE9SRRYO+4+DU7QUiOVD11anL9kGqM0Pual
+ EX/dQ73/D+mheLSnGIJ11RDpL4wC42cNmxlNXAd+bxYkrGkGMG/nvxyvEiwZrsYVqVQY
+ 1K/A==
+X-Gm-Message-State: AC+VfDyfqrHEsmxEPDpL1n9ixFq1ETYxQF+zI3Qs5V6BtgnxaJ6/uAuu
+ WYqFdITiLcjwkoLJVaBCu6t6dsYg4NID2MFDdRA=
+X-Google-Smtp-Source: ACHHUZ6TjopWS5BvAwXGA5tgxH7tr/OfVtfNY9vV1ys1pR/oyDg/uEwXc+ET8HptvFgIfRRwi805vA==
+X-Received: by 2002:a05:6830:1e79:b0:6af:6e7c:e7ad with SMTP id
+ m25-20020a0568301e7900b006af6e7ce7admr251721otr.4.1685478328627; 
+ Tue, 30 May 2023 13:25:28 -0700 (PDT)
 Received: from [192.168.68.107] (200-162-225-121.static-corp.ajato.com.br.
  [200.162.225.121]) by smtp.gmail.com with ESMTPSA id
- h1-20020a056870538100b0019e59515a0bsm6153479oan.33.2023.05.30.13.23.44
+ z24-20020a9d7a58000000b006adc6abf66dsm5920334otm.6.2023.05.30.13.25.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 13:23:47 -0700 (PDT)
-Message-ID: <d0a208a3-9973-b7e4-8fcf-d71ec0eab9b1@ventanamicro.com>
-Date: Tue, 30 May 2023 17:23:42 -0300
+ Tue, 30 May 2023 13:25:28 -0700 (PDT)
+Message-ID: <e9e7d900-e851-b640-1c8a-2594c21f6aa5@ventanamicro.com>
+Date: Tue, 30 May 2023 17:25:24 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 1/4] target/riscv: Make MPV only work when MPP != PRV_M
+Subject: Re: [PATCH 2/4] target/riscv: Remove check on mode for MPRV
 Content-Language: en-US
 To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
  qemu-devel@nongnu.org
 Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
 References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
- <20230529121719.179507-2-liweiwei@iscas.ac.cn>
+ <20230529121719.179507-3-liweiwei@iscas.ac.cn>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230529121719.179507-2-liweiwei@iscas.ac.cn>
+In-Reply-To: <20230529121719.179507-3-liweiwei@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x235.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,54 +100,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 5/29/23 09:17, Weiwei Li wrote:
-> Upon MRET or explicit memory access with MPRV=1, MPV should be ignored
-> when MPP=PRV_M.
+> Normally, MPRV can be set to 1 only in M mode (It will be cleared
+> when returning to lower-privilege mode by MRET/SRET).
 > 
 > Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 > Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 > ---
->   target/riscv/cpu_helper.c | 3 ++-
->   target/riscv/op_helper.c  | 3 ++-
->   2 files changed, 4 insertions(+), 2 deletions(-)
+>   target/riscv/cpu_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 09ea227ceb..bd892c05d4 100644
+> index bd892c05d4..45baf95c77 100644
 > --- a/target/riscv/cpu_helper.c
 > +++ b/target/riscv/cpu_helper.c
-> @@ -46,7 +46,8 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
+> @@ -44,7 +44,7 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
+>       if (!ifetch) {
+>           uint64_t status = env->mstatus;
 >   
->           if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
->               mode = get_field(env->mstatus, MSTATUS_MPP);
-> -            virt = get_field(env->mstatus, MSTATUS_MPV);
-> +            virt = get_field(env->mstatus, MSTATUS_MPV) &&
-> +                   (mode != PRV_M);
+> -        if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
+> +        if (get_field(status, MSTATUS_MPRV)) {
 
-This change makes more sense in patch 2 where you also removed the 'mode'
-check for MPRV. As it is now I read the code above and thought "but mode
-is guaranteed to be == PRV_M, so (mode !=  PRV_M) is guaranteed to be
-false every time".
+As I mentioned in patch 1 this is a good place to put this change:
 
-The change in helper_mret() below is fine.
+
+-            virt = get_field(env->mstatus, MSTATUS_MPV);
++            virt = get_field(env->mstatus, MSTATUS_MPV) &&
++                   (mode != PRV_M);
+              if (virt) {
+                  status = env->vsstatus;
+
+
 
 Thanks,
 
+
 Daniel
 
->               if (virt) {
->                   status = env->vsstatus;
->               }
-> diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-> index f563dc3981..9cdb9cdd06 100644
-> --- a/target/riscv/op_helper.c
-> +++ b/target/riscv/op_helper.c
-> @@ -335,7 +335,8 @@ target_ulong helper_mret(CPURISCVState *env)
->           riscv_raise_exception(env, RISCV_EXCP_INST_ACCESS_FAULT, GETPC());
->       }
->   
-> -    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV);
-> +    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV) &&
-> +                             (prev_priv != PRV_M);
->       mstatus = set_field(mstatus, MSTATUS_MIE,
->                           get_field(mstatus, MSTATUS_MPIE));
->       mstatus = set_field(mstatus, MSTATUS_MPIE, 1);
+
+>               mode = get_field(env->mstatus, MSTATUS_MPP);
+>               virt = get_field(env->mstatus, MSTATUS_MPV) &&
+>                      (mode != PRV_M);
 
