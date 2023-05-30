@@ -2,92 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9F1716185
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9921171619A
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:22:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zGh-0002WS-Lx; Tue, 30 May 2023 09:20:07 -0400
+	id 1q3zIM-00069d-6b; Tue, 30 May 2023 09:21:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3zG9-0002DW-8w
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:19:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3zG7-00075W-Dp
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:19:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685452770;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ynm0xO5MUan+kAinVWSc2/SnD9ILI51RCGZ1BB6iaZ4=;
- b=VNPVRcbi18KiMd/hlcHoUiLnCk+/QWfBlhwmYol9T0M/A2dQ5Wb9GN4vhEZa0sLlv3Nhdl
- 5f7Yllegm2F3f+11Shl2cQHVFGL5s/DKBpT/S4+7XlMN3xmrbqj1rPwYxDuGzM1FZGQV55
- yfNY1IHU4niJO4RqJ2/421RrkR+44TI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-GnYgHgARP8WlgeGg05Tnvw-1; Tue, 30 May 2023 09:19:28 -0400
-X-MC-Unique: GnYgHgARP8WlgeGg05Tnvw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30af222c5feso647411f8f.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:19:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q3zIC-0005oX-SH; Tue, 30 May 2023 09:21:41 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q3zI9-00081t-Ey; Tue, 30 May 2023 09:21:38 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1b02fcde49aso17837595ad.0; 
+ Tue, 30 May 2023 06:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685452895; x=1688044895;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7qF842y09Fzet4ZX9MB88Ilyd7JJ5xGKQbvtsPuslkI=;
+ b=mgFP31fDMhrVxAqnzU242RyEWjWvMFdQeDppz8MutUQRgdhY+H+Nu74u+D2hGNPZ3U
+ a3pgW+ZC7vW54clkaO9lBo94lXl1aJcr1JfDf9I7ISqTc99F/CZBLJP5YBP4GALLHAcB
+ MfP38eMzQ/HIIOw7ae2uBrmt8DeW0E57gH9n0D3N0XGRBWA2Qbqo9qBsi8Ceam8a1rrG
+ F1C7PnNWJAebUK4OF4AMEayxintRjGqoBd+gD5ZX4pTwZLljdNHdxLKrvrPm/01t7Xod
+ FJSj5ezcYWkZIoiRDZz4iGC6PmmHKIXFGDbuEjE83QL80rJnbYXfzcGKUBOafJbCwZxZ
+ JW3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685452767; x=1688044767;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ynm0xO5MUan+kAinVWSc2/SnD9ILI51RCGZ1BB6iaZ4=;
- b=bVExm26fYlAxu8n6hc3+WSb2Jdxm/3J70SSwudo6xonrw75izCjE6lZhT/8liM675/
- 8t28mOTo+gLwMPfeTi18Zh3Idq6LrssEF7jbts2rpxHbqUiuLs/LPKBJW1yME2ZMLxCa
- grbpVBROzOqjHVEAXeP5xvLxLIwUbnyYgWNnokOqwTWwbB4CnyONL55XVCi0g+AvSrEG
- QfGBmjlDb3cv6lTFv/4pP3dALeRx1IfkoAKzZ/3BaS+sQWfadk7Bmz8uP9mceYBr2Zmu
- bqRcXKib02AgDEYifRe4H9FSe5lNSv50LyK6fLGRdeHVGUHT003iCGbNY0AzrLisV1sN
- QB4g==
-X-Gm-Message-State: AC+VfDwJinyrGRq6WYLFBwUHI9sw8FA4p6RZE3VrcHjJZYU8dHXYvCiL
- hDmv8yqR539xs/w1v67beqg+ZDEDOnpyIhOAbx1nKjdgmPDvipZ5gqxEPmW5EQuxkwUOXhSINFN
- lOZ6yYsQ/KTngnUM=
-X-Received: by 2002:adf:fe88:0:b0:30a:e499:e5ff with SMTP id
- l8-20020adffe88000000b0030ae499e5ffmr1890262wrr.30.1685452767586; 
- Tue, 30 May 2023 06:19:27 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5qaGWHNCB7BLMEkACoBvQOQOlMyiboC1X3+WiNapKDFRa0zmvQuvj4tDku3Sql3eKM7METTQ==
-X-Received: by 2002:adf:fe88:0:b0:30a:e499:e5ff with SMTP id
- l8-20020adffe88000000b0030ae499e5ffmr1890253wrr.30.1685452767340; 
- Tue, 30 May 2023 06:19:27 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0?
- ([2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0])
+ d=1e100.net; s=20221208; t=1685452895; x=1688044895;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7qF842y09Fzet4ZX9MB88Ilyd7JJ5xGKQbvtsPuslkI=;
+ b=C/NDCCwGaaKqH3JFMfspYkrRt6te2JaEMiWN/YUcYxbF9BfGuJrwyuyt8SOOVnzA2p
+ GwZ0XT/JijrQyZh5P1yZV4bTDU5brlJDHqlAsD+c+xl9d6WC8Zqndi2sB7FuAHTcVPE3
+ +VJvn0XT7speJXcES39XHvVQiOnmWSs6p4DZbcR+nHGZurMGVSCKpiXnAeBmYdSuPRbn
+ NhsQl0wxXcZq4wpj08n1Tu8QO/UFhlsqjfr+zXZh22ez3uJG2pDPCQcbI8Lkh6p+rcLo
+ 8hWBOWvTyVkrtI2XkIOENr5OV1rnuqf2U3fFkR8nb5t4ihUi7UiKUw8t8jG7SVWjDfYs
+ ohUg==
+X-Gm-Message-State: AC+VfDwc9JqhAjlcnf5eYyIlztYMqsiuOybuqiuN62yVibn1cGxK8Wgd
+ 7/yH5vnHR96cxxEgt+zhf9T/g2W6O9Y=
+X-Google-Smtp-Source: ACHHUZ59FpBDqgxM5OsPMDWCC8MOfnLu80hY7C9ZwfMAbnBhsH79H/F2UB1LijoUIMCLsH3PPMqnFQ==
+X-Received: by 2002:a17:902:d482:b0:1ac:8cd4:a82d with SMTP id
+ c2-20020a170902d48200b001ac8cd4a82dmr2634746plg.27.1685452894933; 
+ Tue, 30 May 2023 06:21:34 -0700 (PDT)
+Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- b2-20020a5d4b82000000b0030aec5e020fsm3252687wrt.86.2023.05.30.06.19.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 06:19:26 -0700 (PDT)
-Message-ID: <40005787-04e6-c4a0-20d4-ddb14d6de0b2@redhat.com>
-Date: Tue, 30 May 2023 15:19:25 +0200
+ jb18-20020a170903259200b001ac2c3e54adsm2978124plb.118.2023.05.30.06.21.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 06:21:34 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, balaton@eik.bme.hu,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v2] target/ppc: Fix nested-hv HEAI delivery
+Date: Tue, 30 May 2023 23:21:27 +1000
+Message-Id: <20230530132127.385001-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [RFC PATCH v2 1/4] linux-headers: Update for vfio capability
- reporting AtomicOps
-Content-Language: en-US
-To: Alex Williamson <alex.williamson@redhat.com>, robin@streamhpc.com,
- mst@redhat.com, marcel.apfelbaum@gmail.com
-Cc: qemu-devel@nongnu.org
-References: <20230526231558.1660396-1-alex.williamson@redhat.com>
- <20230526231558.1660396-2-alex.williamson@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230526231558.1660396-2-alex.williamson@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,46 +88,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/27/23 01:15, Alex Williamson wrote:
-> This is a partial linux-headers update for illustrative and testing
-> purposes only, NOT FOR COMMIT.
+ppc hypervisors turn HEAI interrupts into program interrupts injected
+into the guest that executed the illegal instruction, if the hypervisor
+doesn't handle it some other way.
 
-Are you planing such an update for v6.5 ?
+The nested-hv implementation failed to account for this HEAI->program
+conversion. The virtual hypervisor wants to see the HEAI when running
+a nested guest, so that interrupt type can be returned to its KVM
+caller.
 
-Thanks,
+Fixes: 7cebc5db2eba6 ("target/ppc: Introduce a vhyp framework for nested HV support")
+Cc: balaton@eik.bme.hu
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+Since v1:
+- Address review comments style and typo fixes
 
-C.
+ target/ppc/excp_helper.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-> 
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-> ---
->   linux-headers/linux/vfio.h | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
-> index 4a534edbdcba..443a8851e156 100644
-> --- a/linux-headers/linux/vfio.h
-> +++ b/linux-headers/linux/vfio.h
-> @@ -240,6 +240,20 @@ struct vfio_device_info {
->   #define VFIO_DEVICE_INFO_CAP_ZPCI_UTIL		3
->   #define VFIO_DEVICE_INFO_CAP_ZPCI_PFIP		4
->   
-> +/*
-> + * The following VFIO_DEVICE_INFO capability reports support for PCIe AtomicOp
-> + * completion to the root bus with supported widths provided via flags.
-> + */
-> +#define VFIO_DEVICE_INFO_CAP_PCI_ATOMIC_COMP	5
-> +struct vfio_device_info_cap_pci_atomic_comp {
-> +	struct vfio_info_cap_header header;
-> +	__u32 flags;
-> +#define VFIO_PCI_ATOMIC_COMP32	(1 << 0)
-> +#define VFIO_PCI_ATOMIC_COMP64	(1 << 1)
-> +#define VFIO_PCI_ATOMIC_COMP128	(1 << 2)
-> +	__u32 reserved;
-> +};
-> +
->   /**
->    * VFIO_DEVICE_GET_REGION_INFO - _IOWR(VFIO_TYPE, VFIO_BASE + 8,
->    *				       struct vfio_region_info)
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index d69bd0033a..0f7ed58673 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -1387,9 +1387,12 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * We don't want to generate a Hypervisor Emulation Assistance
+-     * Interrupt if we don't have HVB in msr_mask (PAPR mode).
++     * Interrupt if we don't have HVB in msr_mask (PAPR mode),
++     * unless running a nested-hv guest, in which case the L1
++     * kernel wants the interrupt.
+      */
+-    if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB)) {
++    if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB) &&
++            !books_vhyp_handles_hv_excp(cpu)) {
+         excp = POWERPC_EXCP_PROGRAM;
+     }
+ 
+-- 
+2.40.1
 
 
