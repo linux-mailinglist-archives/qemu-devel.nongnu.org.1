@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E9E715D6E
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C5F715D6F
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 13:40:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3xgs-0007rV-Qf; Tue, 30 May 2023 07:39:02 -0400
+	id 1q3xgv-0007t8-F3; Tue, 30 May 2023 07:39:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xgi-0007qL-Gx
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:38:52 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xgo-0007rc-5j
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:38:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xgg-0003xn-D7
- for qemu-devel@nongnu.org; Tue, 30 May 2023 07:38:52 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3xgk-0003zH-Qp
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 07:38:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685446729;
+ s=mimecast20190719; t=1685446734;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=W8vQx4/9Or5NihRj56D/+Pk8eevcGnxAnsAvxtdm8kE=;
- b=HO+SeeEvWBb23EnKAFhpy/Ds7O0WLmGnVgtabiM27CmYnBTOoTf7tR6oPWq/JhIVqz4PCJ
- hNMQd2xDWvPxAfjP+9Kw595ATef5a2mEu0DotqQVoecDi91IoA78NTqUieX8jfg7np/3vl
- p2j2RROKKqwCIOhPec7mqb0TH/aOWSo=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LO6y5tkfgNged57O731G9ECwYnoNXu48Izp7SYxqk34=;
+ b=C9vy/1wkGxWQaP7PerVuoMpbKWzoe+2b2zKXCj2tOKP14WR6g5Rk7iDod+uvF3TuEHQWMV
+ 82Q+Uq/DTZyvjiS0mOQcMmAR/KlJoIbzL05O6Gin+nVIpI/MqEc4qlr8CvgjUU4AI51kcw
+ okW/TbkKX7Ha/n/L4eD0eSaerWW5Npo=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-367-G8hdHSg8P_-8I8U0Hx2npg-1; Tue, 30 May 2023 07:38:44 -0400
-X-MC-Unique: G8hdHSg8P_-8I8U0Hx2npg-1
+ us-mta-103-rjPf2xe3Oo6cI8Z-FOWwzA-1; Tue, 30 May 2023 07:38:49 -0400
+X-MC-Unique: rjPf2xe3Oo6cI8Z-FOWwzA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A50A828237C0;
- Tue, 30 May 2023 11:38:43 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 496ED1C03DA3;
+ Tue, 30 May 2023 11:38:48 +0000 (UTC)
 Received: from t480s.redhat.com (unknown [10.39.194.167])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4280640CFD45;
- Tue, 30 May 2023 11:38:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F0D0F40CFD45;
+ Tue, 30 May 2023 11:38:43 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
@@ -56,11 +57,13 @@ Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Subject: [PATCH 00/10] memory-device: Some cleanups
-Date: Tue, 30 May 2023 13:38:28 +0200
-Message-Id: <20230530113838.257755-1-david@redhat.com>
+Subject: [PATCH 01/10] memory-device: Unify enabled vs. supported error
+ messages
+Date: Tue, 30 May 2023 13:38:29 +0200
+Message-Id: <20230530113838.257755-2-david@redhat.com>
+In-Reply-To: <20230530113838.257755-1-david@redhat.com>
+References: <20230530113838.257755-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
@@ -87,39 +90,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Working on adding multi-memslot support for virtio-mem (teaching memory
-device code about memory devices that can consume multiple memslots), I
-have some preparatory cleanups in my queue that make sense independent of
-the actual memory-device/virtio-mem extensions.
+Let's unify the error messages, such that we can simply stop allocating
+ms->device_memory if the size would be 0 (and there are no memory
+devices ever).
 
-v1 -> v2:
-- Allocate ms->device_memory only if the size > 0.
-- Split it up and include more cleanups
+The case of "not supported by the machine" should barely pop up either
+way: if the machine doesn't support memory devices, it usually doesn't
+call the pre_plug handler ...
 
-David Hildenbrand (10):
-  memory-device: Unify enabled vs. supported error messages
-  memory-device: Introduce memory_devices_init()
-  hw/arm/virt: Use memory_devices_init()
-  hw/ppc/spapr: Use memory_devices_init()
-  hw/loongarch/virt: Use memory_devices_init()
-  hw/i386/pc: Use memory_devices_init()
-  hw/i386/acpi-build: Rely on machine->device_memory when building SRAT
-  hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZE
-  memory-device: Refactor memory_device_pre_plug()
-  memory-device: Track used region size in DeviceMemoryState
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ hw/mem/memory-device.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
- hw/arm/virt.c                  |  9 +----
- hw/i386/acpi-build.c           |  9 ++---
- hw/i386/pc.c                   | 36 +++---------------
- hw/loongarch/virt.c            | 14 ++-----
- hw/mem/memory-device.c         | 69 +++++++++++++++-------------------
- hw/ppc/spapr.c                 | 37 +++++++++---------
- hw/ppc/spapr_hcall.c           |  2 +-
- include/hw/boards.h            |  2 +
- include/hw/i386/pc.h           |  1 -
- include/hw/mem/memory-device.h |  2 +
- 10 files changed, 68 insertions(+), 113 deletions(-)
-
+diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
+index 1636db9679..49f86ec8a8 100644
+--- a/hw/mem/memory-device.c
++++ b/hw/mem/memory-device.c
+@@ -104,15 +104,10 @@ static uint64_t memory_device_get_free_addr(MachineState *ms,
+     GSList *list = NULL, *item;
+     Range as, new = range_empty;
+ 
+-    if (!ms->device_memory) {
+-        error_setg(errp, "memory devices (e.g. for memory hotplug) are not "
+-                         "supported by the machine");
+-        return 0;
+-    }
+-
+-    if (!memory_region_size(&ms->device_memory->mr)) {
+-        error_setg(errp, "memory devices (e.g. for memory hotplug) are not "
+-                         "enabled, please specify the maxmem option");
++    if (!ms->device_memory || !memory_region_size(&ms->device_memory->mr)) {
++        error_setg(errp, "the configuration is not prepared for memory devices"
++                         " (e.g., for memory hotplug), consider specifying the"
++                         " maxmem option");
+         return 0;
+     }
+     range_init_nofail(&as, ms->device_memory->base,
 -- 
 2.40.1
 
