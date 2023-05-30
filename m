@@ -2,69 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE642715FBB
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCB6715F9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:31:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3yT5-0001ZR-Pm; Tue, 30 May 2023 08:28:51 -0400
+	id 1q3yTn-00025d-5f; Tue, 30 May 2023 08:29:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3yT3-0001Yt-KC
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:28:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3yT1-0000pl-Ap
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:28:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685449726;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XCAlv2PGkZ7dCIZOlUMqkzGTILQq1mWFxmvnqrzO9UI=;
- b=FLgZBmy8UTxH4jIgFDJMgKIAccmvVhrOrQEskLiaE36ZLAfmyKiAWs6dN+0dhbFc9BUfQO
- GU/EvIGJeH/IN+u3qwZJ/7cM4yclKUHGOedOcP3PUxE9DCc5OYB9PnDXf9oBSyV7mWsL4V
- KXj+4pCHqUZv8ak7RZIvt07MoQxSQ/8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-518-4WZVDHeoOPux-tSo-owM5g-1; Tue, 30 May 2023 08:28:45 -0400
-X-MC-Unique: 4WZVDHeoOPux-tSo-owM5g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7539381B48F;
- Tue, 30 May 2023 12:28:44 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.195.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E053340CFD4C;
- Tue, 30 May 2023 12:28:42 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Leonardo Bras <leobras@redhat.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>, Peter Xu <peterx@redhat.com>,
- Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 16/16] qemu-file: Make qemu_fflush() return errors
-Date: Tue, 30 May 2023 14:28:13 +0200
-Message-Id: <20230530122813.2674-17-quintela@redhat.com>
-In-Reply-To: <20230530122813.2674-1-quintela@redhat.com>
-References: <20230530122813.2674-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q3yTL-0001j8-RN
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:29:12 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q3yTE-0000tO-3Y
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:29:05 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-51492ae66a4so4515689a12.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 05:28:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685449735; x=1688041735;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=IJHjy7EvRW6rB6ywYV3fseC3hbDe3gWjmarVrItmGRA=;
+ b=El2JljDqMB1II2GsN6qpdoC3QEhXbNbRx23gH0cIo7SMxiwbnswkBsoB6XTgtl+THH
+ gEAzjC+ecm6sMN/DvI3A420l6KOuyJ8MxTQeRuwFKfM3sAlgZGQWEZ/oyEBT22XT+zLI
+ g1xhCb0ERIAum+nz67Qq94O4S2BQZvgHzBl8uiJrgHTJHuGLl/K6weHe6rdvivF+VLnY
+ gIKoslutbG1cIDZgppWP7wwhMgaPSonvEkVjLsSFB0b1G2DK8Z2B8CHhBSCYWf9aLXhL
+ c+V3PTp+h5R2be5bxQN2Y2yfvqHn44x+9xROf0WiD30vZwH0pFa499XCdYDfi1yZuzAo
+ dnQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685449735; x=1688041735;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IJHjy7EvRW6rB6ywYV3fseC3hbDe3gWjmarVrItmGRA=;
+ b=WhOnYyjF+63qanVTFmAFABsPrtOJerHiKfZeQKNrOEAMpsycRL54SQhxYjZMtLA/00
+ neBHBJuaKW8TivLracuFN8LBCkZVpt/kst5bIJvI5YKmoAzHQSUijmkCiE8zbeCo7Omb
+ X8ZWvFLJdl39ARjR0qS12OUvK9AVMfN/UtT+919IBBpVpnpBuWWWe0Y1oZVDstL/a3OV
+ Y9j+uGAAFY7bh8oJHMB0i1eCXN+4YnGMgKJpEdoEVyr52GnpPLIg7SJcCVy3WrptDeSY
+ 8hQ5nbJZUT0L1ajXuGbw/isav6oas2GURKYtl12jIo/EX/pj6LmnrNStIZYzKu69//Hl
+ j0CQ==
+X-Gm-Message-State: AC+VfDydZsVRs+cDF6fAHG+/9NhdjcCBhWilqjK90dhMekpgycRzpY82
+ 6Ps7dwlrCquhbtrHdwN+rg2wFVbDeaDJsz8ro3qm5g==
+X-Google-Smtp-Source: ACHHUZ5GfJqSCtuCV+iDZNafaCMlhDM95xr92uwV29MRmrx8oJBzRfgagAMehI8IXMdA6ATXN8Nvth1g2f0XwhPwX9g=
+X-Received: by 2002:aa7:ce04:0:b0:514:75ff:6a86 with SMTP id
+ d4-20020aa7ce04000000b0051475ff6a86mr1504796edv.29.1685449735573; Tue, 30 May
+ 2023 05:28:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+References: <DS7PR12MB63096EDD683DE70EBC472E97AC7C9@DS7PR12MB6309.namprd12.prod.outlook.com>
+ <DS7PR12MB6309A170F8BC7D7C956D6C97AC7C9@DS7PR12MB6309.namprd12.prod.outlook.com>
+In-Reply-To: <DS7PR12MB6309A170F8BC7D7C956D6C97AC7C9@DS7PR12MB6309.namprd12.prod.outlook.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 30 May 2023 13:28:44 +0100
+Message-ID: <CAFEAcA8+hq3zvnowmxN+7FKv0FFu56VbA1WUTnDukGExpFS0Nw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] tests/tcg/aarch64: add DC CVA[D]P tests
+To: Zhuojia Shen <chaosdefinition@hotmail.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,219 +86,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This let us simplify code of this shape.
+On Fri, 19 May 2023 at 23:12, Zhuojia Shen <chaosdefinition@hotmail.com> wrote:
+>
+> Test execution of DC CVAP and DC CVADP instructions under user mode
+> emulation.
+>
+> Signed-off-by: Zhuojia Shen <chaosdefinition@hotmail.com>
+> ---
+>  tests/tcg/aarch64/Makefile.target | 11 ++++++
+>  tests/tcg/aarch64/dcpodp.c        | 58 +++++++++++++++++++++++++++++++
+>  tests/tcg/aarch64/dcpop.c         | 58 +++++++++++++++++++++++++++++++
+>  3 files changed, 127 insertions(+)
+>  create mode 100644 tests/tcg/aarch64/dcpodp.c
+>  create mode 100644 tests/tcg/aarch64/dcpop.c
 
-   qemu_fflush(f);
-   int ret = qemu_file_get_error(f);
-   if (ret) {
-      return ret;
-   }
+> diff --git a/tests/tcg/aarch64/dcpodp.c b/tests/tcg/aarch64/dcpodp.c
+> new file mode 100644
+> index 0000000000..6f6301ac86
+> --- /dev/null
+> +++ b/tests/tcg/aarch64/dcpodp.c
+> @@ -0,0 +1,58 @@
+> +/* Test execution of DC CVADP instruction */
 
-into:
+All new files should start with the standard brief
+comment stating the copyright and license.
 
-   int ret = qemu_fflush(f);
-   if (ret) {
-      return ret;
-   }
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-I updated all callers where there is any error check.
-
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- migration/qemu-file.h |  2 +-
- migration/colo.c      | 11 +++--------
- migration/migration.c |  7 +------
- migration/qemu-file.c |  7 ++++---
- migration/ram.c       | 22 +++++++---------------
- migration/rdma.c      |  4 +---
- migration/savevm.c    |  3 +--
- 7 files changed, 18 insertions(+), 38 deletions(-)
-
-diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-index 3575dfa5ff..bc9128d333 100644
---- a/migration/qemu-file.h
-+++ b/migration/qemu-file.h
-@@ -75,7 +75,7 @@ void qemu_file_set_error_obj(QEMUFile *f, int ret, Error *err);
- void qemu_file_set_error(QEMUFile *f, int ret);
- int qemu_file_shutdown(QEMUFile *f);
- QEMUFile *qemu_file_get_return_path(QEMUFile *f);
--void qemu_fflush(QEMUFile *f);
-+int qemu_fflush(QEMUFile *f);
- void qemu_file_set_blocking(QEMUFile *f, bool block);
- int qemu_file_get_to_fd(QEMUFile *f, int fd, size_t size);
- 
-diff --git a/migration/colo.c b/migration/colo.c
-index 72f4f7b37e..4447e34914 100644
---- a/migration/colo.c
-+++ b/migration/colo.c
-@@ -314,9 +314,7 @@ static void colo_send_message(QEMUFile *f, COLOMessage msg,
-         return;
-     }
-     qemu_put_be32(f, msg);
--    qemu_fflush(f);
--
--    ret = qemu_file_get_error(f);
-+    ret = qemu_fflush(f);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Can't send COLO message");
-     }
-@@ -335,9 +333,7 @@ static void colo_send_message_value(QEMUFile *f, COLOMessage msg,
-         return;
-     }
-     qemu_put_be64(f, value);
--    qemu_fflush(f);
--
--    ret = qemu_file_get_error(f);
-+    ret = qemu_fflush(f);
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Failed to send value for message:%s",
-                          COLOMessage_str(msg));
-@@ -483,8 +479,7 @@ static int colo_do_checkpoint_transaction(MigrationState *s,
-     }
- 
-     qemu_put_buffer(s->to_dst_file, bioc->data, bioc->usage);
--    qemu_fflush(s->to_dst_file);
--    ret = qemu_file_get_error(s->to_dst_file);
-+    ret = qemu_fflush(s->to_dst_file);
-     if (ret < 0) {
-         goto out;
-     }
-diff --git a/migration/migration.c b/migration/migration.c
-index 6ed55d618a..0195105c59 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -297,12 +297,7 @@ static int migrate_send_rp_message(MigrationIncomingState *mis,
-     qemu_put_be16(mis->to_src_file, (unsigned int)message_type);
-     qemu_put_be16(mis->to_src_file, len);
-     qemu_put_buffer(mis->to_src_file, data, len);
--    qemu_fflush(mis->to_src_file);
--
--    /* It's possible that qemu file got error during sending */
--    ret = qemu_file_get_error(mis->to_src_file);
--
--    return ret;
-+    return qemu_fflush(mis->to_src_file);
- }
- 
- /* Request one page from the source VM at the given start address.
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 7cf457a981..3e8df20c55 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -267,12 +267,12 @@ static void qemu_iovec_release_ram(QEMUFile *f)
-  * This will flush all pending data. If data was only partially flushed, it
-  * will set an error state.
-  */
--void qemu_fflush(QEMUFile *f)
-+int qemu_fflush(QEMUFile *f)
- {
-     g_assert(qemu_file_is_writable(f));
- 
--    if (qemu_file_get_error(f)) {
--        return;
-+    if (f->last_error) {
-+        return f->last_error;
-     }
-     if (f->iovcnt > 0) {
-         Error *local_error = NULL;
-@@ -290,6 +290,7 @@ void qemu_fflush(QEMUFile *f)
- 
-     f->buf_index = 0;
-     f->iovcnt = 0;
-+    return f->last_error;
- }
- 
- /*
-diff --git a/migration/ram.c b/migration/ram.c
-index cdf7783d65..26baa54d98 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -301,17 +301,15 @@ int64_t ramblock_recv_bitmap_send(QEMUFile *file,
- 
-     qemu_put_be64(file, size);
-     qemu_put_buffer(file, (const uint8_t *)le_bitmap, size);
-+    g_free(le_bitmap);
-     /*
-      * Mark as an end, in case the middle part is screwed up due to
-      * some "mysterious" reason.
-      */
-     qemu_put_be64(file, RAMBLOCK_RECV_BITMAP_ENDING);
--    qemu_fflush(file);
--
--    g_free(le_bitmap);
--
--    if (qemu_file_get_error(file)) {
--        return qemu_file_get_error(file);
-+    int ret = qemu_fflush(file);
-+    if (ret) {
-+        return ret;
-     }
- 
-     return size + sizeof(size);
-@@ -3034,9 +3032,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
-     }
- 
-     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
--    qemu_fflush(f);
--
--    return 0;
-+    return qemu_fflush(f);
- }
- 
- /**
-@@ -3155,10 +3151,8 @@ out:
-         }
- 
-         qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
--        qemu_fflush(f);
-         ram_transferred_add(8);
--
--        ret = qemu_file_get_error(f);
-+        ret = qemu_fflush(f);
-     }
-     if (ret < 0) {
-         return ret;
-@@ -3235,9 +3229,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
-         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
-     }
-     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
--    qemu_fflush(f);
--
--    return 0;
-+    return qemu_fflush(f);
- }
- 
- static void ram_state_pending_estimate(void *opaque, uint64_t *must_precopy,
-diff --git a/migration/rdma.c b/migration/rdma.c
-index f912a31b45..3ef35fc635 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -3886,9 +3886,7 @@ int rdma_registration_start(QEMUFile *f, uint64_t flags)
- 
-     trace_rdma_registration_start(flags);
-     qemu_put_be64(f, RAM_SAVE_FLAG_HOOK);
--    qemu_fflush(f);
--
--    return 0;
-+    return qemu_fflush(f);
- }
- 
- /*
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 751b4a1e31..1dc46b0967 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1536,8 +1536,7 @@ int qemu_savevm_state_complete_precopy(QEMUFile *f, bool iterable_only,
-     }
- 
- flush:
--    qemu_fflush(f);
--    return 0;
-+    return qemu_fflush(f);
- }
- 
- /* Give an estimate of the amount left to be transferred,
--- 
-2.40.1
-
+thanks
+-- PMM
 
