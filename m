@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8087169AE
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 18:34:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBFF7169D4
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 18:38:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q42In-0001aC-45; Tue, 30 May 2023 12:34:29 -0400
+	id 1q42IH-0008TN-LJ; Tue, 30 May 2023 12:33:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42Hf-0006uN-0P
- for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42HW-0006bM-65
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42HO-0008HL-37
- for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:18 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1q42HQ-0008IV-4L
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 12:33:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685464380;
+ s=mimecast20190719; t=1685464382;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Utb8Qts7FnCWvljH/Yw5u3NOCaP8JIwHs0mkMHUX4m8=;
- b=GzND/ua1yRjqDA15Vy2vEA7GZl51JvqVSth7NlDfYHqQqqThnZcELB8XRtbv+NZU1v+rHR
- 6iMyZ+60JqsngBxUuiiUrpGWRqYEbMuh3uT1neahUFPDCBHw4hWM/eCWw4lYCj/5jJn0uy
- sdpCz0YJuMUjv6q6pujJ5kj3D22XlwA=
+ bh=lpCFbHWdjzq3JNcz+bykK+POyiyhMHaTFyA2nD/Q4P0=;
+ b=b6+6NfjQ6zsybOAen6P+FZ0j3LVpGTr71z0fwSByzq7I5+daApYOdSBs3HSZx1dXHcicJ9
+ HJ+j59gfgQjoGexx5O9qIevH2pBGqV3e6Z1hHgp+NCxZKkUXdp2GdvT0IBNwSwa1O4nvlj
+ wpEaZW4N+HY2pa9SkG3I3B/CbJLePFY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-137-OC7sYsA2NZmPddvFTi_jYg-1; Tue, 30 May 2023 12:32:58 -0400
-X-MC-Unique: OC7sYsA2NZmPddvFTi_jYg-1
+ us-mta-48-xA8i8r69P_GSkRxC47NH3w-1; Tue, 30 May 2023 12:32:59 -0400
+X-MC-Unique: xA8i8r69P_GSkRxC47NH3w-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84B37101A52C;
- Tue, 30 May 2023 16:32:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A31685A5AA;
+ Tue, 30 May 2023 16:32:59 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.4])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CAC5FC154D2;
- Tue, 30 May 2023 16:32:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BDC40C0448F;
+ Tue, 30 May 2023 16:32:58 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 12/32] iotests: Test blockdev-create in iothread
-Date: Tue, 30 May 2023 18:32:19 +0200
-Message-Id: <20230530163239.576632-13-kwolf@redhat.com>
+Subject: [PULL 13/32] block-backend: split blk_do_set_aio_context()
+Date: Tue, 30 May 2023 18:32:20 +0200
+Message-Id: <20230530163239.576632-14-kwolf@redhat.com>
 In-Reply-To: <20230530163239.576632-1-kwolf@redhat.com>
 References: <20230530163239.576632-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,104 +77,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If blockdev-create references an existing node in an iothread (e.g. as
-it's 'file' child), then suddenly all of the image creation code must
-run in that AioContext, too. Test that this actually works.
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-Id: <20230525124713.401149-13-kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+blk_set_aio_context() is not fully transactional because
+blk_do_set_aio_context() updates blk->ctx outside the transaction. Most
+of the time this goes unnoticed but a BlockDevOps.drained_end() callback
+that invokes blk_get_aio_context() fails assert(ctx == blk->ctx). This
+happens because blk->ctx is only assigned after
+BlockDevOps.drained_end() is called and we're in an intermediate state
+where BlockDrvierState nodes already have the new context and the
+BlockBackend still has the old context.
+
+Making blk_set_aio_context() fully transactional solves this assertion
+failure because the BlockBackend's context is updated as part of the
+transaction (before BlockDevOps.drained_end() is called).
+
+Split blk_do_set_aio_context() in order to solve this assertion failure.
+This helper function actually serves two different purposes:
+1. It drives blk_set_aio_context().
+2. It responds to BdrvChildClass->change_aio_ctx().
+
+Get rid of the helper function. Do #1 inside blk_set_aio_context() and
+do #2 inside blk_root_set_aio_ctx_commit(). This simplifies the code.
+
+The only drawback of the fully transactional approach is that
+blk_set_aio_context() must contend with blk_root_set_aio_ctx_commit()
+being invoked as part of the AioContext change propagation. This can be
+solved by temporarily setting blk->allow_aio_context_change to true.
+
+Future patches call blk_get_aio_context() from
+BlockDevOps->drained_end(), so this patch will become necessary.
+
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Message-Id: <20230516190238.8401-2-stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- tests/qemu-iotests/tests/iothreads-create     | 67 +++++++++++++++++++
- tests/qemu-iotests/tests/iothreads-create.out |  4 ++
- 2 files changed, 71 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/iothreads-create
- create mode 100644 tests/qemu-iotests/tests/iothreads-create.out
+ block/block-backend.c | 61 ++++++++++++++++---------------------------
+ 1 file changed, 23 insertions(+), 38 deletions(-)
 
-diff --git a/tests/qemu-iotests/tests/iothreads-create b/tests/qemu-iotests/tests/iothreads-create
-new file mode 100755
-index 0000000000..0c862d73f2
---- /dev/null
-+++ b/tests/qemu-iotests/tests/iothreads-create
-@@ -0,0 +1,67 @@
-+#!/usr/bin/env python3
-+# group: rw quick
-+#
-+# Copyright (C) 2023 Red Hat, Inc.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+# Creator/Owner: Kevin Wolf <kwolf@redhat.com>
+diff --git a/block/block-backend.c b/block/block-backend.c
+index dde60e0f71..2074ac6760 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -2433,52 +2433,31 @@ static AioContext *blk_aiocb_get_aio_context(BlockAIOCB *acb)
+     return blk_get_aio_context(blk_acb->blk);
+ }
+ 
+-static int blk_do_set_aio_context(BlockBackend *blk, AioContext *new_context,
+-                                  bool update_root_node, Error **errp)
++int blk_set_aio_context(BlockBackend *blk, AioContext *new_context,
++                        Error **errp)
+ {
++    bool old_allow_change;
+     BlockDriverState *bs = blk_bs(blk);
+-    ThrottleGroupMember *tgm = &blk->public.throttle_group_member;
+     int ret;
+ 
+-    if (bs) {
+-        bdrv_ref(bs);
+-
+-        if (update_root_node) {
+-            /*
+-             * update_root_node MUST be false for blk_root_set_aio_ctx_commit(),
+-             * as we are already in the commit function of a transaction.
+-             */
+-            ret = bdrv_try_change_aio_context(bs, new_context, blk->root, errp);
+-            if (ret < 0) {
+-                bdrv_unref(bs);
+-                return ret;
+-            }
+-        }
+-        /*
+-         * Make blk->ctx consistent with the root node before we invoke any
+-         * other operations like drain that might inquire blk->ctx
+-         */
+-        blk->ctx = new_context;
+-        if (tgm->throttle_state) {
+-            bdrv_drained_begin(bs);
+-            throttle_group_detach_aio_context(tgm);
+-            throttle_group_attach_aio_context(tgm, new_context);
+-            bdrv_drained_end(bs);
+-        }
++    GLOBAL_STATE_CODE();
+ 
+-        bdrv_unref(bs);
+-    } else {
++    if (!bs) {
+         blk->ctx = new_context;
++        return 0;
+     }
+ 
+-    return 0;
+-}
++    bdrv_ref(bs);
+ 
+-int blk_set_aio_context(BlockBackend *blk, AioContext *new_context,
+-                        Error **errp)
+-{
+-    GLOBAL_STATE_CODE();
+-    return blk_do_set_aio_context(blk, new_context, true, errp);
++    old_allow_change = blk->allow_aio_context_change;
++    blk->allow_aio_context_change = true;
 +
-+import asyncio
-+import iotests
++    ret = bdrv_try_change_aio_context(bs, new_context, NULL, errp);
 +
-+iotests.script_initialize(supported_fmts=['qcow2', 'qcow', 'qed', 'vdi',
-+                                          'vmdk', 'parallels'])
-+iotests.verify_virtio_scsi_pci_or_ccw()
++    blk->allow_aio_context_change = old_allow_change;
 +
-+with iotests.FilePath('disk.img') as img_path, \
-+     iotests.VM() as vm:
-+
-+    iotests.qemu_img_create('-f', 'raw', img_path, '0')
-+
-+    vm.add_object('iothread,id=iothread0')
-+    vm.add_blockdev(f'file,node-name=img-file,read-only=on,'
-+                    f'filename={img_path}')
-+    vm.add_device('virtio-scsi,iothread=iothread0')
-+    vm.add_device('scsi-hd,drive=img-file,share-rw=on')
-+
-+    vm.launch()
-+
-+    iotests.log(vm.qmp(
-+        'blockdev-reopen',
-+        options=[{
-+            'driver': 'file',
-+            'filename': img_path,
-+            'node-name': 'img-file',
-+            'read-only': False,
-+        }],
-+    ))
-+    iotests.log(vm.qmp(
-+        'blockdev-create',
-+        job_id='job0',
-+        options={
-+            'driver': iotests.imgfmt,
-+            'file': 'img-file',
-+            'size': 1024 * 1024,
-+        },
-+    ))
-+
-+    # Should succeed and not time out
-+    try:
-+        vm.run_job('job0', wait=5.0)
-+        vm.shutdown()
-+    except asyncio.TimeoutError:
-+        # VM may be stuck, kill it
-+        vm.kill()
-+        raise
-diff --git a/tests/qemu-iotests/tests/iothreads-create.out b/tests/qemu-iotests/tests/iothreads-create.out
-new file mode 100644
-index 0000000000..5c974ff77e
---- /dev/null
-+++ b/tests/qemu-iotests/tests/iothreads-create.out
-@@ -0,0 +1,4 @@
-+{"return": {}}
-+{"return": {}}
-+{"execute": "job-dismiss", "arguments": {"id": "job0"}}
-+{"return": {}}
++    bdrv_unref(bs);
++    return ret;
+ }
+ 
+ typedef struct BdrvStateBlkRootContext {
+@@ -2490,8 +2469,14 @@ static void blk_root_set_aio_ctx_commit(void *opaque)
+ {
+     BdrvStateBlkRootContext *s = opaque;
+     BlockBackend *blk = s->blk;
++    AioContext *new_context = s->new_ctx;
++    ThrottleGroupMember *tgm = &blk->public.throttle_group_member;
+ 
+-    blk_do_set_aio_context(blk, s->new_ctx, false, &error_abort);
++    blk->ctx = new_context;
++    if (tgm->throttle_state) {
++        throttle_group_detach_aio_context(tgm);
++        throttle_group_attach_aio_context(tgm, new_context);
++    }
+ }
+ 
+ static TransactionActionDrv set_blk_root_context = {
 -- 
 2.40.1
 
