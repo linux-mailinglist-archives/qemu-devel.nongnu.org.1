@@ -2,108 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4CD7161B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9EE27161BB
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zLp-0004aP-4Y; Tue, 30 May 2023 09:25:32 -0400
+	id 1q3zNJ-00066T-6R; Tue, 30 May 2023 09:26:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3zLM-0004WG-Gs
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:24:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1q3zLH-0000bw-OP
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:24:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685453090;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=AsWvSWDFZhMk6DBVlQagesaEKcw2j5MUn28Zz407PQs=;
- b=QW3IDyjfdQ9oE0/JcJFYuJfkAia5Ahg0C4/09IpsG8biA1A2T9QFcwXKu8wuRSiqdF1CFq
- W+JwCi9GJCtngdLBLnmyTATUGJe+tDKJzvqS4RtfJ6asaJh/d3g44TxKrYQc+CgXOPNZBu
- t98Dee/VCndzWpenfeEAocLqMicpCC0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-vOSMxXGoMKSsOPeNRERkIA-1; Tue, 30 May 2023 09:24:19 -0400
-X-MC-Unique: vOSMxXGoMKSsOPeNRERkIA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30932d15a30so2687847f8f.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:24:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q3zMS-0005Tz-IS; Tue, 30 May 2023 09:26:06 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1q3zMQ-0001GE-O3; Tue, 30 May 2023 09:26:04 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-64d30ab1f89so2966408b3a.3; 
+ Tue, 30 May 2023 06:26:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1685453159; x=1688045159;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=edByqPNtj0G84FjebXqqbNkz4aqPwbfefgrWnY29Uf8=;
+ b=KzBUtKCYG4cA4mYsJZg2W8Qn/QcbtbLwIRyczlgTIfE8mkAhLy3z1JbQaCrNcysZvj
+ JHakH4/4VvraTk9XQCA2TscVOvIHSJtVWhNX+VUfZXXQFvpPfAVQF+VRB1Axpcv2bguF
+ LfgeSevBEh3yOrp5gr0kS5AyGyjCmssQz3g8o5nv/S9WqYOs+c9puLAma6yRnTfLzWwN
+ mQumwNkFZYSdi/e6VNRhawF9drCgEk6tNO4fw23W2MNzigwv7i/IshRVOPw7bwwI6gwV
+ XnxcGbKyUVX+kXhm77vd3dI1eP+tq+vmHalUijlDls16k+ioPgE+jlf1eXiwtJQ3URUd
+ BWmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685453058; x=1688045058;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1685453159; x=1688045159;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=AsWvSWDFZhMk6DBVlQagesaEKcw2j5MUn28Zz407PQs=;
- b=lQdI5mjz09BTKjgt8FxmgcFWn48pnTL2+3HNH9HkjSDk4RJ1etHDtVll/jdwtXfjt1
- 9AS7/wLML7xZA5raK2n1k0IID4ZoO0/GjhHULThsl7swzdPBBImc/uN30G34tm7Hopb4
- H/YmCfJPfXPcTePwL/f1PnCq7OeYyV6YogkFR4lC+R4KpvNcqKUo8K58piZw2nD7pR3V
- xfZgRJ5pGqpQM2dtkTSM51A5y9CY3jZeHPnkd9dXyvw+ccU5MB4a/JVKj/Jq6Fozz+Mt
- tn4nIPEbOnmibnWty6Obx0Z2wghV4l6CmdYemsuBcoeUfIlstMiiSNM5PImqbl6MJbY1
- qMVQ==
-X-Gm-Message-State: AC+VfDwa9nTQz4Hcqg3cj880hfTHkW4mKv87WGDD6gUGXT45Yfbcifjr
- dRHy+lIW4t+KFsENG4QKMmBEyMkzyxSSSbRT/QOQDMBcTBjTWrFAb15sgD8PWAe+pQ2iWlVfpOf
- Lms+vD7QCHACfHRc=
-X-Received: by 2002:adf:dd92:0:b0:30a:b46a:a443 with SMTP id
- x18-20020adfdd92000000b0030ab46aa443mr1522355wrl.51.1685453058129; 
- Tue, 30 May 2023 06:24:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5EBa/rby5zNM8aBHYkcHgcV2QBVaEcvgu+2WxhtRHcBwxQVJ7q2rv5WF0b5bAoRbzhtOAkqw==
-X-Received: by 2002:adf:dd92:0:b0:30a:b46a:a443 with SMTP id
- x18-20020adfdd92000000b0030ab46aa443mr1522339wrl.51.1685453057798; 
- Tue, 30 May 2023 06:24:17 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c73c:d500:78e5:f448:8bef:a30?
- (p200300cbc73cd50078e5f4488bef0a30.dip0.t-ipconnect.de.
- [2003:cb:c73c:d500:78e5:f448:8bef:a30])
+ bh=edByqPNtj0G84FjebXqqbNkz4aqPwbfefgrWnY29Uf8=;
+ b=cjcq0FvrrdSW+VTK0Z800krfH2pB/OZcIL068UCXR8+u8B3vkEUP/aao/KcNYrMUG1
+ Pr4fjiyak1Q9Fwbo6VkXSbYh8l35Jjrcx5ya7F4r9Og8+LJHq+oGGaSI2S2m3Mpm0RlX
+ YLXmrLN6HJPlmYU14Knj1+9Y29Mb+2uHKxj8YTzB3AK3gd+PsZ0v9UWQgdJ5kyq4LCwx
+ pl6DwQE+tsXYt8tVF5/OUNCAD9bDYdWZlS6nk9OZXLiv+gxZ+9g24wdv7XyXKqYKgtTE
+ g3acZH47JQFoDYogRTkYeC/MBBSbB+R2RhVsVK/xeP6Cr4BAvupi1nGvO9l1EBrmM26Q
+ ypQw==
+X-Gm-Message-State: AC+VfDyV3dvXGcwZmbh2iIUItLSlRwYHNNFANDcuDXmbgycoDTPEr0No
+ 6SnH1DfOHXMs0yGqTtThLWa2OHFBagU=
+X-Google-Smtp-Source: ACHHUZ71kAZqSNdDM56UdT6IWjnO6gUXWgPta+vFLX1T7QDLLNV5JSXJArVx4PUssFFBEeoC5pbnAw==
+X-Received: by 2002:a05:6a21:398b:b0:10e:e1f9:d197 with SMTP id
+ ad11-20020a056a21398b00b0010ee1f9d197mr2430044pzc.38.1685453158957; 
+ Tue, 30 May 2023 06:25:58 -0700 (PDT)
+Received: from wheely.local0.net ([203.221.142.9])
  by smtp.gmail.com with ESMTPSA id
- o11-20020a5d670b000000b0030ada01ca78sm3297976wru.10.2023.05.30.06.24.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 06:24:17 -0700 (PDT)
-Message-ID: <ab0b1cf4-b4a7-8ebe-81f9-d85317d16c35@redhat.com>
-Date: Tue, 30 May 2023 15:24:16 +0200
+ w32-20020a634920000000b0050927cb606asm8601514pga.13.2023.05.30.06.25.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 06:25:58 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v4 0/6] target/ppc: Assorted ppc target fixes
+Date: Tue, 30 May 2023 23:25:37 +1000
+Message-Id: <20230530132543.385138-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 02/10] memory-device: Introduce memory_devices_init()
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230530113838.257755-1-david@redhat.com>
- <20230530113838.257755-3-david@redhat.com>
- <7ff1f897-7244-258e-34a5-a4a781f679dc@linaro.org>
- <2e51c9e4-3716-5f55-b006-30a40b0ea0da@redhat.com>
-Organization: Red Hat
-In-Reply-To: <2e51c9e4-3716-5f55-b006-30a40b0ea0da@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,62 +87,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.05.23 15:04, David Hildenbrand wrote:
-> On 30.05.23 14:29, Philippe Mathieu-Daudé wrote:
->> Hi David,
->>
->> On 30/5/23 13:38, David Hildenbrand wrote:
->>> Let's intrduce a new helper that we will use to replace existing memory
->>> device setup code during machine initialization. We'll enforce that the
->>> size has to be > 0.
->>>
->>> Once all machines were converted, we'll only allocate ms->device_memory
->>> if the size > 0.
->>>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>     hw/mem/memory-device.c         | 14 ++++++++++++++
->>>     include/hw/mem/memory-device.h |  2 ++
->>>     2 files changed, 16 insertions(+)
->>
->>
->>> diff --git a/include/hw/mem/memory-device.h b/include/hw/mem/memory-device.h
->>> index 48d2611fc5..6e8a10e2f5 100644
->>> --- a/include/hw/mem/memory-device.h
->>> +++ b/include/hw/mem/memory-device.h
->>> @@ -16,6 +16,7 @@
->>>     #include "hw/qdev-core.h"
->>>     #include "qapi/qapi-types-machine.h"
->>>     #include "qom/object.h"
->>> +#include "exec/hwaddr.h"
->>>     
->>>     #define TYPE_MEMORY_DEVICE "memory-device"
->>>     
->>> @@ -113,5 +114,6 @@ void memory_device_plug(MemoryDeviceState *md, MachineState *ms);
->>>     void memory_device_unplug(MemoryDeviceState *md, MachineState *ms);
->>>     uint64_t memory_device_get_region_size(const MemoryDeviceState *md,
->>>                                            Error **errp);
->>> +void memory_devices_init(MachineState *ms, hwaddr base, uint64_t size);
->>
->>
->> While hw/mem/memory-device.c contains the implementation, all callers
->> are expected to be around Machine object, right? Thus maybe this _init()
->> could be declared in "hw/boards.h", already included by machines
->> (eventually renaming as machine_init_memory_devices() ). Then machines
->> implementation don't have to all include "hw/mem/memory-device.h".
-> 
-> Some (arm, i386) want to call the hotplug handle functions either way,
-> so they'll still have to include that header.
-> 
-> But sure, we can rename to machine_init_memory_devices() and declare it
-> include/hw/boards.h!
+Reposting these since two were merged, and I moved the PMU fix out
+of the series since that's a crash fix. Should be no real change
+other than rebase and kvm-only build fix.
 
-FWIW, I went with "machine_memory_devices_init()", to mach the style of 
-"machine_run_board_init()".
+Thanks,
+Nick
+
+Nicholas Piggin (6):
+  target/ppc: Fix instruction loading endianness in alignment interrupt
+  target/ppc: Change partition-scope translate interface
+  target/ppc: Add SRR1 prefix indication to interrupt handlers
+  target/ppc: Implement HEIR SPR
+  target/ppc: Add ISA v3.1 LEV indication in SRR1 for system call
+    interrupts
+  target/ppc: Better CTRL SPR implementation
+
+ target/ppc/cpu.h         |  1 +
+ target/ppc/cpu_init.c    | 23 +++++++++++
+ target/ppc/excp_helper.c | 83 +++++++++++++++++++++++++++++++++++++++-
+ target/ppc/mmu-radix64.c | 38 ++++++++++++------
+ target/ppc/translate.c   |  9 ++++-
+ 5 files changed, 140 insertions(+), 14 deletions(-)
 
 -- 
-Thanks,
-
-David / dhildenb
+2.40.1
 
 
