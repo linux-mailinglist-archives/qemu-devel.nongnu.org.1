@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6985D715F64
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:30:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 755F5715F65
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:30:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3yTT-0001ih-6p; Tue, 30 May 2023 08:29:20 -0400
+	id 1q3yTK-0001gu-5G; Tue, 30 May 2023 08:29:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3ySy-0001Tv-Tx
+ id 1q3ySy-0001T6-93
  for qemu-devel@nongnu.org; Tue, 30 May 2023 08:28:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3ySv-0000kO-F8
+ id 1q3ySv-0000kx-Eo
  for qemu-devel@nongnu.org; Tue, 30 May 2023 08:28:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685449718;
+ s=mimecast20190719; t=1685449719;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=K1WSwWaMSTduaL5zhG+ggnr7CY5C1uzMgTqkV4rCW64=;
- b=Qy7G3n3bsdwsPLN6Sv+cuShh3h9b5bhUSmbMT6JSTnr0XYjkj423I4M5Sbb7+bTwG1gMbo
- UEajZ9XSHvisYwL6+52pvl16iaHhjiCMHkwudcvYzBikGBB35JwqNcUdAKXo9WpD0q0DqI
- iogxBIimclJbRD3+HBOW4tMZs3FrJEY=
+ bh=cL/0U57kkRIgivtOFW7jOzbBjF+YL+aWLufgO6oHXKQ=;
+ b=hLWtnmbqkcLh4lIF2ZlW7iuh95tKaEH2flQWi3yzCVKJ54ZIeau0hB7IFdqmztKKzGzSdM
+ Z3ejANA1Ru70CvY9YG79ccxQVGUVDJ2RpqiCD6l/mS6UwlCtiP98Rp06MuwnnmSlObZBzT
+ Ky6ceenPu4GRvdgJoJtyKYXNGrLUKkI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-100-bJ9ybFKZMPqZfuPvvHUNLg-1; Tue, 30 May 2023 08:28:34 -0400
-X-MC-Unique: bJ9ybFKZMPqZfuPvvHUNLg-1
+ us-mta-542-2p9NOXE_N42jYYln0v0P1w-1; Tue, 30 May 2023 08:28:36 -0400
+X-MC-Unique: 2p9NOXE_N42jYYln0v0P1w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 01A5E8032F5;
- Tue, 30 May 2023 12:28:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AEA27800969;
+ Tue, 30 May 2023 12:28:35 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9354240CFD45;
- Tue, 30 May 2023 12:28:32 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4912740CFD45;
+ Tue, 30 May 2023 12:28:34 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Leonardo Bras <leobras@redhat.com>,
  Hailiang Zhang <zhanghailiang@xfusion.com>, Peter Xu <peterx@redhat.com>,
  Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 10/16] qemu-file: Remove _noflush from
- qemu_file_transferred_noflush()
-Date: Tue, 30 May 2023 14:28:07 +0200
-Message-Id: <20230530122813.2674-11-quintela@redhat.com>
+Subject: [PATCH 11/16] migration: migration_transferred_bytes() don't need the
+ QEMUFile
+Date: Tue, 30 May 2023 14:28:08 +0200
+Message-Id: <20230530122813.2674-12-quintela@redhat.com>
 In-Reply-To: <20230530122813.2674-1-quintela@redhat.com>
 References: <20230530122813.2674-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -81,121 +81,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_file_transferred() don't exist anymore, so we can reuse the name.
-
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/qemu-file.h | 4 ++--
- migration/block.c     | 4 ++--
- migration/qemu-file.c | 2 +-
- migration/savevm.c    | 6 +++---
- migration/vmstate.c   | 4 ++--
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ migration/migration-stats.h | 4 +---
+ migration/migration-stats.c | 6 +++---
+ migration/migration.c       | 6 +++---
+ 3 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-index b4fb872018..3575dfa5ff 100644
---- a/migration/qemu-file.h
-+++ b/migration/qemu-file.h
-@@ -34,7 +34,7 @@ QEMUFile *qemu_file_new_output(QIOChannel *ioc);
- int qemu_fclose(QEMUFile *f);
- 
- /*
-- * qemu_file_transferred_noflush:
-+ * qemu_file_transferred:
+diff --git a/migration/migration-stats.h b/migration/migration-stats.h
+index b7795e7914..e3863bf9bb 100644
+--- a/migration/migration-stats.h
++++ b/migration/migration-stats.h
+@@ -137,11 +137,9 @@ void migration_rate_set(uint64_t new_rate);
+ /**
+  * migration_transferred_bytes: Return number of bytes transferred
   *
-  * As qemu_file_transferred except for writable files, where no flush
-  * is performed and the reported amount will include the size of any
-@@ -42,7 +42,7 @@ int qemu_fclose(QEMUFile *f);
-  *
-  * Returns: the total bytes transferred and queued
+- * @f: QEMUFile used for main migration channel
+- *
+  * Returns how many bytes have we transferred since the beginning of
+  * the migration.  It accounts for bytes sent through any migration
+  * channel, multifd, qemu_file, rdma, ....
   */
--uint64_t qemu_file_transferred_noflush(QEMUFile *f);
-+uint64_t qemu_file_transferred(QEMUFile *f);
- 
- /*
-  * put_buffer without copying the buffer.
-diff --git a/migration/block.c b/migration/block.c
-index b29e80bdc4..b9580a6c7e 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -748,7 +748,7 @@ static int block_save_setup(QEMUFile *f, void *opaque)
- static int block_save_iterate(QEMUFile *f, void *opaque)
- {
-     int ret;
--    uint64_t last_bytes = qemu_file_transferred_noflush(f);
-+    uint64_t last_bytes = qemu_file_transferred(f);
- 
-     trace_migration_block_save("iterate", block_mig_state.submitted,
-                                block_mig_state.transferred);
-@@ -800,7 +800,7 @@ static int block_save_iterate(QEMUFile *f, void *opaque)
+-uint64_t migration_transferred_bytes(QEMUFile *f);
++uint64_t migration_transferred_bytes(void);
+ #endif
+diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+index 1696185694..a5f3fcc5ae 100644
+--- a/migration/migration-stats.c
++++ b/migration/migration-stats.c
+@@ -25,7 +25,7 @@ bool migration_rate_exceeded(QEMUFile *f)
      }
  
-     qemu_put_be64(f, BLK_MIG_FLAG_EOS);
--    uint64_t delta_bytes = qemu_file_transferred_noflush(f) - last_bytes;
-+    uint64_t delta_bytes = qemu_file_transferred(f) - last_bytes;
-     return (delta_bytes > 0);
+     uint64_t rate_limit_start = stat64_get(&mig_stats.rate_limit_start);
+-    uint64_t rate_limit_current = migration_transferred_bytes(f);
++    uint64_t rate_limit_current = migration_transferred_bytes();
+     uint64_t rate_limit_used = rate_limit_current - rate_limit_start;
+     uint64_t rate_limit_max = stat64_get(&mig_stats.rate_limit_max);
+ 
+@@ -55,10 +55,10 @@ void migration_rate_set(uint64_t limit)
+ 
+ void migration_rate_reset(QEMUFile *f)
+ {
+-    stat64_set(&mig_stats.rate_limit_start, migration_transferred_bytes(f));
++    stat64_set(&mig_stats.rate_limit_start, migration_transferred_bytes());
  }
  
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 2da092ab77..a3d0412b5f 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -623,7 +623,7 @@ int coroutine_mixed_fn qemu_get_byte(QEMUFile *f)
-     return result;
+-uint64_t migration_transferred_bytes(QEMUFile *f)
++uint64_t migration_transferred_bytes(void)
+ {
+     uint64_t multifd = stat64_get(&mig_stats.multifd_bytes);
+     uint64_t rdma = stat64_get(&mig_stats.rdma_bytes);
+diff --git a/migration/migration.c b/migration/migration.c
+index 31d30a2ac5..24e55c5bf3 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2628,7 +2628,7 @@ static MigThrError migration_detect_error(MigrationState *s)
+ 
+ static void migration_calculate_complete(MigrationState *s)
+ {
+-    uint64_t bytes = migration_transferred_bytes(s->to_dst_file);
++    uint64_t bytes = migration_transferred_bytes();
+     int64_t end_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+     int64_t transfer_time;
+ 
+@@ -2654,7 +2654,7 @@ static void update_iteration_initial_status(MigrationState *s)
+      * wrong speed calculation.
+      */
+     s->iteration_start_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+-    s->iteration_initial_bytes = migration_transferred_bytes(s->to_dst_file);
++    s->iteration_initial_bytes = migration_transferred_bytes();
+     s->iteration_initial_pages = ram_get_total_transferred_pages();
  }
  
--uint64_t qemu_file_transferred_noflush(QEMUFile *f)
-+uint64_t qemu_file_transferred(QEMUFile *f)
- {
-     uint64_t ret = stat64_get(&mig_stats.qemu_file_transferred);
-     int i;
-diff --git a/migration/savevm.c b/migration/savevm.c
-index b2199d1039..751b4a1e31 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -927,9 +927,9 @@ static int vmstate_load(QEMUFile *f, SaveStateEntry *se)
- static void vmstate_save_old_style(QEMUFile *f, SaveStateEntry *se,
-                                    JSONWriter *vmdesc)
- {
--    uint64_t old_offset = qemu_file_transferred_noflush(f);
-+    uint64_t old_offset = qemu_file_transferred(f);
-     se->ops->save_state(f, se->opaque);
--    uint64_t size = qemu_file_transferred_noflush(f) - old_offset;
-+    uint64_t size = qemu_file_transferred(f) - old_offset;
- 
-     if (vmdesc) {
-         json_writer_int64(vmdesc, "size", size);
-@@ -2952,7 +2952,7 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
-         goto the_end;
+@@ -2669,7 +2669,7 @@ static void migration_update_counters(MigrationState *s,
+         return;
      }
-     ret = qemu_savevm_state(f, errp);
--    vm_state_size = qemu_file_transferred_noflush(f);
-+    vm_state_size = qemu_file_transferred(f);
-     ret2 = qemu_fclose(f);
-     if (ret < 0) {
-         goto the_end;
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index 31842c3afb..fd8035ea32 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -361,7 +361,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                 void *curr_elem = first_elem + size * i;
  
-                 vmsd_desc_field_start(vmsd, vmdesc_loop, field, i, n_elems);
--                old_offset = qemu_file_transferred_noflush(f);
-+                old_offset = qemu_file_transferred(f);
-                 if (field->flags & VMS_ARRAY_OF_POINTER) {
-                     assert(curr_elem);
-                     curr_elem = *(void **)curr_elem;
-@@ -391,7 +391,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
-                     return ret;
-                 }
- 
--                written_bytes = qemu_file_transferred_noflush(f) - old_offset;
-+                written_bytes = qemu_file_transferred(f) - old_offset;
-                 vmsd_desc_field_end(vmsd, vmdesc_loop, field, written_bytes, i);
- 
-                 /* Compressed arrays only care about the first element */
+-    current_bytes = migration_transferred_bytes(s->to_dst_file);
++    current_bytes = migration_transferred_bytes();
+     transferred = current_bytes - s->iteration_initial_bytes;
+     time_spent = current_time - s->iteration_start_time;
+     bandwidth = (double)transferred / time_spent;
 -- 
 2.40.1
 
