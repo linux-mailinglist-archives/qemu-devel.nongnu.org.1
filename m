@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55571715F50
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4409C715FB6
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:32:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3yT9-0001bi-Jk; Tue, 30 May 2023 08:28:55 -0400
+	id 1q3yT4-0001ZD-Kq; Tue, 30 May 2023 08:28:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3yT8-0001bP-8x
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:28:54 -0400
+ id 1q3yT2-0001Wb-3Z
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:28:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3yT6-0000sS-HQ
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:28:54 -0400
+ id 1q3yT0-0000p6-G0
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:28:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685449731;
+ s=mimecast20190719; t=1685449725;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oyifBfvyqk2KlS8dEBK3QaQlzwx6IL0Wp3YOHipJHSI=;
- b=OxiRS3QpIpsT1JmUfeklA4FV/L7ZuOSn0fU9H7GKcViiUc2g+LtAor8kmv4qJ7psxVP9Yz
- iqEKX+/WLr//kjWSF7+TON/3dGepe+zXhmo2CzxX/QypTcQHzgV0Zno1+UJQ6JByGBsRMa
- WM6R0FdwDG4GN2FQ8VxB2F2GwtuY3kg=
+ bh=lBy7DnnRDOpRwmwUlyk+/SRtpjv5VyW95uTcUoEaF7I=;
+ b=ZYE4HvL7RYWh8J8maKMzIeMF87WDhMch3/v0gPz5g1Wd2qJ4VvJ1S6aIQrurH3Rm6Cj38l
+ HFPdNIosXK7LC9bcWMWeau0k26SWWfQQun93VwFnZKr6e7E1aGy45F7me6KslElloKre7F
+ GpC1LCaaJtkxbxl/bdBYRFPIjNswohI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-629-2TbfHbJCMEGG4SdnakwzXQ-1; Tue, 30 May 2023 08:28:48 -0400
-X-MC-Unique: 2TbfHbJCMEGG4SdnakwzXQ-1
+ us-mta-249-me0H1BM7NfmCJ5V74Jkd4w-1; Tue, 30 May 2023 08:28:42 -0400
+X-MC-Unique: me0H1BM7NfmCJ5V74Jkd4w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20939801182;
- Tue, 30 May 2023 12:28:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C86C7858F1D;
+ Tue, 30 May 2023 12:28:40 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.195.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B53C940CFD46;
- Tue, 30 May 2023 12:28:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 66E6C40CFD45;
+ Tue, 30 May 2023 12:28:39 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Leonardo Bras <leobras@redhat.com>,
  Hailiang Zhang <zhanghailiang@xfusion.com>, Peter Xu <peterx@redhat.com>,
  Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 13/16] qemu-file: Simplify qemu_file_get_error()
-Date: Tue, 30 May 2023 14:28:10 +0200
-Message-Id: <20230530122813.2674-14-quintela@redhat.com>
+Subject: [PATCH 14/16] migration: Use migration_transferred_bytes()
+Date: Tue, 30 May 2023 14:28:11 +0200
+Message-Id: <20230530122813.2674-15-quintela@redhat.com>
 In-Reply-To: <20230530122813.2674-1-quintela@redhat.com>
 References: <20230530122813.2674-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -64,7 +64,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,26 +80,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we pass a NULL error is the same that returning dirrectly the value.
+There are only two differnces with the old value:
+
+- the amount of QEMUFile that hasn't yet been flushed.  It can be
+  discussed what is more exact, the new or the old one.
+- the amount of transferred bytes that we forgot to account for (the
+  newer is better, i.e. exact).
+
+Notice that this two values are used to:
+a - present to the user
+b - calculate the rate_limit
+
+So a few KB here and there is not going to make a difference.
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/qemu-file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/migration.c | 2 +-
+ migration/ram.c       | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index a3d0412b5f..7cf457a981 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -209,7 +209,7 @@ void qemu_file_set_error_obj(QEMUFile *f, int ret, Error *err)
-  */
- int qemu_file_get_error(QEMUFile *f)
- {
--    return qemu_file_get_error_obj(f, NULL);
-+    return f->last_error;
+diff --git a/migration/migration.c b/migration/migration.c
+index ab8254e433..6ed55d618a 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -912,7 +912,7 @@ static void populate_ram_info(MigrationInfo *info, MigrationState *s)
+     size_t page_size = qemu_target_page_size();
+ 
+     info->ram = g_malloc0(sizeof(*info->ram));
+-    info->ram->transferred = stat64_get(&mig_stats.transferred);
++    info->ram->transferred = migration_transferred_bytes();
+     info->ram->total = ram_bytes_total();
+     info->ram->duplicate = stat64_get(&mig_stats.zero_pages);
+     /* legacy value.  It is not used anymore */
+diff --git a/migration/ram.c b/migration/ram.c
+index 87fc504674..0675421f4e 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -552,7 +552,7 @@ void mig_throttle_counter_reset(void)
+ 
+     rs->time_last_bitmap_sync = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+     rs->num_dirty_pages_period = 0;
+-    rs->bytes_xfer_prev = stat64_get(&mig_stats.transferred);
++    rs->bytes_xfer_prev = migration_transferred_bytes();
  }
  
- /*
+ /**
+@@ -988,7 +988,7 @@ static void migration_trigger_throttle(RAMState *rs)
+ {
+     uint64_t threshold = migrate_throttle_trigger_threshold();
+     uint64_t bytes_xfer_period =
+-        stat64_get(&mig_stats.transferred) - rs->bytes_xfer_prev;
++        migration_transferred_bytes() - rs->bytes_xfer_prev;
+     uint64_t bytes_dirty_period = rs->num_dirty_pages_period * TARGET_PAGE_SIZE;
+     uint64_t bytes_dirty_threshold = bytes_xfer_period * threshold / 100;
+ 
+@@ -1051,7 +1051,7 @@ static void migration_bitmap_sync(RAMState *rs, bool last_stage)
+         /* reset period counters */
+         rs->time_last_bitmap_sync = end_time;
+         rs->num_dirty_pages_period = 0;
+-        rs->bytes_xfer_prev = stat64_get(&mig_stats.transferred);
++        rs->bytes_xfer_prev = migration_transferred_bytes();
+     }
+     if (migrate_events()) {
+         uint64_t generation = stat64_get(&mig_stats.dirty_sync_count);
 -- 
 2.40.1
 
