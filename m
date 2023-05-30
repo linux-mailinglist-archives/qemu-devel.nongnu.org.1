@@ -2,155 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F97C715A09
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 11:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D3C715A25
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 11:29:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3vcM-0001Tt-WF; Tue, 30 May 2023 05:26:15 -0400
+	id 1q3vet-0002J9-8w; Tue, 30 May 2023 05:28:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1q3vcL-0001Tk-45
- for qemu-devel@nongnu.org; Tue, 30 May 2023 05:26:13 -0400
-Received: from mga11.intel.com ([192.55.52.93])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3ver-0002IW-Nh
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 05:28:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1q3vcJ-0005Se-6N
- for qemu-devel@nongnu.org; Tue, 30 May 2023 05:26:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1685438771; x=1716974771;
- h=from:to:cc:subject:date:message-id:
- content-transfer-encoding:mime-version;
- bh=IC+6pVFSUMpOlhCixhAP6zyVHwDMZVuvn3KYtpUCISE=;
- b=TBVQVctHLTPnYF5e9rAuG061N8a3avC89yg836q0XE97nG2w5I/u9QEn
- aEGg+KHbb/upU9F85mxuh3S0Yfnz9yq1SFTdVDQ2c5KA4x4hHcCF6Qlje
- RWC76jggh4kpDsYmRpzgcUmNHwiYBDGguqwGdY1CdJD3YX3Lya1joVWwa
- 7JWT9Tz4FHVcjlZMOu+Z/NGaKl31CKA7WQRjBmOpwf29X4xjLXeXETDkO
- 6vBe6OGB+2z9gKasUeDRRN83NUj9/5rEtPJxP0CUTwRdmAFutqZXG6Nld
- /uQlqvUeY+mKnmJbxOwFvghX6PGtqxZpqNGugFhVo6Zbb+lfx8izuR291 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="352364337"
-X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; d="scan'208";a="352364337"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2023 02:26:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="796203807"
-X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; d="scan'208";a="796203807"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by FMSMGA003.fm.intel.com with ESMTP; 30 May 2023 02:26:03 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 30 May 2023 02:26:03 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 30 May 2023 02:26:02 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Tue, 30 May 2023 02:26:02 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.177)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Tue, 30 May 2023 02:26:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bSYZ9FV7/2FYT76Ero3Hs4hiBeA7Pz/wb0fNDR/adp6cCehmO8lKikDSkyCpLP8Cvm9fcnOE4vjS8EKG2XxCPUXcbjPfr2LxrisW6Qb35/DgEEY/nBXdEp009AFGpTbmSccU1u/IiMfhRH9eYmTyI2PHdNN5N/aZqDciK19yl6phuEjdmqSe9jO/S3PxwwwEw/H29pJ7yTLQXU2gjAyxPl2VxvhnGLqGCqs2QyEByhIfBYXvdifmGkc8ifyvx5xtBDXju9Tm39+loMgNLIgx6sYw9d+2d454zUzOkFabxYFVL/0njSqrVO5N1m+nL8oGgDSp9cMQofWntc9MTKueZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qMGYZJeUrJKRtah78ohzDtPVqFy4VamCURn6yMbLuSw=;
- b=fzTTWNoJlIVfCTAWfKcrEuZUBxYwxMl3VhaHjH1bpXy9x5iAcYxmVJYCo+xvGeDKJ4nALAEcK2WWWbAsWf8AsKiu2rf/zL/R+lsqssyCPta1lVdnMMN/O15J3OT6NBfObPeOyidWiyFqzd0/f2ijtJg/JjXbj+UmPy7JA6O3cbmQFqDRhjnmHtfqvLdBygoYjlRDan+XEGb/tpgWuJSBmrU2NVEFb5B0YxIEa0r4MS0OMieXhyYeassDcUhQT6Ws2st8xiuolPZXQSwTKHtDHSt+hY2TdrZmOs0YmF3UX1TMul6e8mdZbgXNMRkDab78RkOxr+NF5rReq3X6+/WpNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by SA0PR11MB4767.namprd11.prod.outlook.com (2603:10b6:806:97::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Tue, 30 May
- 2023 09:26:01 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::da0a:8aab:d75b:55f1]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::da0a:8aab:d75b:55f1%7]) with mapi id 15.20.6433.022; Tue, 30 May 2023
- 09:26:00 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: "hao.xiang@bytedance.com" <hao.xiang@bytedance.com>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "quintela@redhat.com"
- <quintela@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 3/4] Implement zero page checking using DSA.
-Thread-Topic: Re: [PATCH 3/4] Implement zero page checking using DSA.
-Thread-Index: AdmS147xDPIGeUJbRt2KIZJGERZFlw==
-Date: Tue, 30 May 2023 09:26:00 +0000
-Message-ID: <SJ0PR11MB6744115555A361C057C82C30924B9@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|SA0PR11MB4767:EE_
-x-ms-office365-filtering-correlation-id: 102a60e4-75c4-4483-d814-08db60efe1ec
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hgKOV0jzefjv9apRlKtuKx2rYdaZtN5NPuJVlkJjgwKRnbb9UuB+ijTVECfwOSv8M+q97jUhZC38C3jqMU4K2Muo11aVMwN801wxykGzGAtmVSyjkjd3NL8xttSkh8T+i4I2o/Pf7TMrbDlAQawg8qNHmiZKYCDvTThHGFn7/dMTXkodmR1oUW8Gs8v5xsZJOwRZZa536D2rSuY/HPCv8fAiebyYymDusWDqYFKNcUsGEGpZ0xJojiPC/CBcnugDKJVWv9cSVUMIKEOUAJs53WxigMdsS8wyg+rTeNHppjWg9FlDsld/xzNZGy5qipKbB8fnpoYW7l+Mx31snkP5ECCrX2RjxcalPEu+CfI9HSZIkfV0hlqftYPIlrV+WLI1I3WMyWo0nuEWAtq/WrcaEkTdRG/WO6K4scQLd2mjCS38cNEMu0zXyMZRmEjnVN1iiWo4XILtSxR/GPc5AMDtGkasZ92wUGoVCRDAluyap1VU0+H+TUdRkIm9mCuTO7X09q+xN/hfWxchnLNmOULvtwiEdJIbGhhRUxKgBopK6e+85I9xu39ExkmgVCAR2HDUVsnwFzzWK8vmsiBp4cQRBeuj2DrnuNtv6u3A6uaQD+W7tJD6rLml9V5y7nl5Ts2u
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(376002)(346002)(366004)(39860400002)(136003)(451199021)(186003)(6506007)(9686003)(2906002)(55016003)(38070700005)(6916009)(4326008)(316002)(71200400001)(76116006)(64756008)(66446008)(66476007)(66946007)(66556008)(41300700001)(7696005)(558084003)(478600001)(38100700002)(54906003)(122000001)(82960400001)(33656002)(26005)(8676002)(5660300002)(86362001)(8936002)(52536014);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?AZ1AozyxdE66cITzdYOtwolLcODHNJKuZZWgJ9lEJi9cE9heaGyulrHc4DEA?=
- =?us-ascii?Q?d0Npliy4P2yeA3LFbPI4vqW5B0h4FqxHbOivlS4rk4HJi3srgnMVoJUqRfOO?=
- =?us-ascii?Q?vG3gHZpxmOtRXiK6os5pO2ygrFZfeB9bgpL8oKJ36lRH2BWg0XN1B9gT+G/r?=
- =?us-ascii?Q?oyjU+8nG+bI7DANTTABJqLN2fEBDoyvxFLohwaM0Y8xx/k/Z6G6JIVNyboQx?=
- =?us-ascii?Q?MyCgASvbcwZkT4Efr7KRoK9yx2CyF1X+mEqsYpB6ZxxgPwLw1p8C64njpILm?=
- =?us-ascii?Q?0VxRDB3Xngn7NxtMQBOFm9jNPe2YpiUcS6qE0+iXQFdb5/SYOjBb0DvPUSv9?=
- =?us-ascii?Q?a6Xs37U8Q7V5MRAi+kb2yPo56k2+iPF8fq76/zBES+HBxhRGl1PgvntPxvJ/?=
- =?us-ascii?Q?Q6JYWXJ39jRt3Gh33/QcHNZFZTO9yzL3zkPAwVi61+iKZfMFw3e6wIAm/5yz?=
- =?us-ascii?Q?+1LCRRTgpyaaGUiXKKyLeZ5A4l+6eAdIDlY7f5SA3NfPQIfSm1DWanZ34RHS?=
- =?us-ascii?Q?50cYag6UTPT3U+4ZqLGvQLz4nxZ6MChjZ7Us5BEsccURAmpSbFs5nXj1EGpZ?=
- =?us-ascii?Q?58aOUTsY2uJb626c1uTNzhqJvWLe0hzSa28tGV2vZ0J4hh6vlfFeNVtrFdTl?=
- =?us-ascii?Q?TxGZBjJTbgofCy8LnbrO/fm5o2DE6UipoDOcShnyPH9u7+VD3i0mgoXtiXyf?=
- =?us-ascii?Q?RuPj4Ro5howaaCFHNkp6tcEvQVgQQzB7VmXhLmrZHnV8EkHV6cRhvznUWx0c?=
- =?us-ascii?Q?T8LntxTP2igT0mDrHB7hzaEQPUO28emAn7nQskr7hukXbKoSzepL7+ib0xrh?=
- =?us-ascii?Q?8iDgpLBc6sQfUj00ZA+FEfZVVlbwj3XNFuNjXPA5F/TSUsR7VX2sje4KqYiR?=
- =?us-ascii?Q?E2DNgKbs8JJpP5+jEWSsEVQlTTdYz7iNo1OMEh3QmVeSMeAKSxOH0q8rwlDE?=
- =?us-ascii?Q?PrLOrXXDoDgy+4NavoGhCw8Uo9DmG3D5/nOgjowDGr01yb4pn8+Bh07CcsEQ?=
- =?us-ascii?Q?3mi5xZOx8am1bqB5PJ6td4pmfFZ5zvxrtG55sLjDQtywWVSCR5skozpU9HJj?=
- =?us-ascii?Q?21TJhmwqE11Vhv9iBNzKu5iHPb34Rh/ysOxBlaUgJrvufdXgApVD8XLPE62F?=
- =?us-ascii?Q?3Bam0pv6ftdsHQl74PxExcQYPtAuff0TtYmEMnVUn01U6HOm/pJ7vi6ToA5k?=
- =?us-ascii?Q?jsHNowgEEFvcuF/uw3djqlfdV9ZlncPjaZesMjs3NYiMkj2LP/lStuVDJaLE?=
- =?us-ascii?Q?OY76rGebizSEAKJHh83UXhv2mbZC1ItqbobveQChXpTQW1TKDsdQucANO/67?=
- =?us-ascii?Q?WwfBlnFG0cmazyZFJt15sywugiQNFidSmhjUvWTy3s5WFOTVguneBDy8Sa8c?=
- =?us-ascii?Q?5UKUKzkY0DrcqvlCj6Acl173nub9QV+F8vjGaYIcXPfC9jt/NYlgFnGYHOBW?=
- =?us-ascii?Q?Ukcj+iHS1mvD3GaYS7HqcimJfGzfizWAeRklVyVX2gyWRY0gRhDU3dGWkSUD?=
- =?us-ascii?Q?/RQaabnfnCalwmPVLdUqWU/j/WwJFnaXBB6cHcHyTfxDU/xO1w7nRibu9o15?=
- =?us-ascii?Q?8Xc5j8XRps91zCpUhnGtXRC1HrS2KPcsJA4MShgD?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3vep-0006vE-DO
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 05:28:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685438926;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rTpb8Xq/JfVKOWB7ZfD4rHuvVvaEDz5SbTpGP1fCtVI=;
+ b=DTJX5QgCql3ZbZ6qyJ4fKLJQcA1Mh4jj8p2SjPfdm0W/p4R9TQ39MoaqcEyLaEqGnGm9oD
+ VHEWitdB1AbVobVff/lskvM4G2Z9U2awA4mNQKsdltbUxGRRSHM4EnUKX+bfSvn60wOtxh
+ 3SsVRhvV4G5fWYCit+52O6jVwDWbNGo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-475-Fnr_z1MdNiO6k1LmSv3Nng-1; Tue, 30 May 2023 05:28:45 -0400
+X-MC-Unique: Fnr_z1MdNiO6k1LmSv3Nng-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f70f9995aeso1500845e9.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 02:28:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685438924; x=1688030924;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rTpb8Xq/JfVKOWB7ZfD4rHuvVvaEDz5SbTpGP1fCtVI=;
+ b=BI41LoJYn4LJZcSNfsU0bwDaYrQvxrMfluGCggoYR4/yz2KRjPFg44G0tr593lS0Dt
+ JT7PXfy9nypFVrmH1IcF3GAWgPGbXqhcfDO0thPWkj7m5h2kAs65xZuwmuSHrpigKMJ2
+ BD2SfgBR8NJQwZ5R8wkwtG1XBK/3CoDTgwGGATEGh4A5lom0SGxn6hZf60tPsb9bbDBb
+ lUDrCXMYRxd9+aE/1WYIsRJZwumjnLXnPH80bprro6nCyuLj8P87s8jGYRx/tKz4YM1q
+ IdvIqLNDqGyQUXzlzCe4i+8zJ8Mg3+KA8x2xPQaVk5XCelbRgMszFEdfyIKV9cC1KQPs
+ mBsg==
+X-Gm-Message-State: AC+VfDwx6xFG/SiylysbFvc8NHfQzd3g4CE9lJ2UnarvaJHzOxMHtK0H
+ UF/EC+DB5PNNbptQCy0JP62t2/5wzpwaFl1xoeyfFPjF4vpszlWcisTXIg4Sp15mul1+sgeq5Vy
+ XcqQLu/ELxUu7EOE=
+X-Received: by 2002:adf:e6cd:0:b0:2cb:2775:6e6 with SMTP id
+ y13-20020adfe6cd000000b002cb277506e6mr1163129wrm.45.1685438923817; 
+ Tue, 30 May 2023 02:28:43 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4vmIGFbq0J3CKV7tr9sZjyvlyReUEiDvoHkUANbhDo63b+ZsS/cP4zxNsal3CkoXJWrzpMuw==
+X-Received: by 2002:adf:e6cd:0:b0:2cb:2775:6e6 with SMTP id
+ y13-20020adfe6cd000000b002cb277506e6mr1163096wrm.45.1685438923454; 
+ Tue, 30 May 2023 02:28:43 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0?
+ ([2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0])
+ by smtp.gmail.com with ESMTPSA id
+ v11-20020adfedcb000000b0030ae87bd3e3sm2603854wro.18.2023.05.30.02.28.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 May 2023 02:28:42 -0700 (PDT)
+Message-ID: <f18c4598-a1c7-ba45-5885-e14b833f2fde@redhat.com>
+Date: Tue, 30 May 2023 11:28:41 +0200
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 102a60e4-75c4-4483-d814-08db60efe1ec
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 May 2023 09:26:00.6306 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LywhdHoP6XGLlF/hJKAtcEK6jhT3ZENAFNBbatOFOwmeGhXT4TgQ7hPyuRfufQO0ZlJve/HtVNSNBEr5eAhkD7myi/XLWqeSSrOAtE1sV60=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4767
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.93;
- envelope-from=zhenzhong.duan@intel.com; helo=mga11.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v4 7/9] vfio/migration: Add VFIO migration pre-copy support
+Content-Language: en-US
+To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+References: <20230528140652.8693-1-avihaih@nvidia.com>
+ <20230528140652.8693-8-avihaih@nvidia.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230528140652.8693-8-avihaih@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,16 +112,427 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Hao,
+On 5/28/23 16:06, Avihai Horon wrote:
+> Pre-copy support allows the VFIO device data to be transferred while the
+> VM is running. This helps to accommodate VFIO devices that have a large
+> amount of data that needs to be transferred, and it can reduce migration
+> downtime.
+> 
+> Pre-copy support is optional in VFIO migration protocol v2.
+> Implement pre-copy of VFIO migration protocol v2 and use it for devices
+> that support it. Full description of it can be found in the following
+> Linux commit: 4db52602a607 ("vfio: Extend the device migration protocol
+> with PRE_COPY").
+> 
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 
-> +    memset(&descriptor, 0, sizeof(descriptor));
+LGTM,
+  
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+one minor issue below,
+
+> ---
+>   docs/devel/vfio-migration.rst |  35 +++++---
+>   include/hw/vfio/vfio-common.h |   2 +
+>   hw/vfio/common.c              |   6 +-
+>   hw/vfio/migration.c           | 165 ++++++++++++++++++++++++++++++++--
+>   hw/vfio/trace-events          |   4 +-
+>   5 files changed, 190 insertions(+), 22 deletions(-)
+> 
+> diff --git a/docs/devel/vfio-migration.rst b/docs/devel/vfio-migration.rst
+> index 1b68ccf115..e896b2a673 100644
+> --- a/docs/devel/vfio-migration.rst
+> +++ b/docs/devel/vfio-migration.rst
+> @@ -7,12 +7,14 @@ the guest is running on source host and restoring this saved state on the
+>   destination host. This document details how saving and restoring of VFIO
+>   devices is done in QEMU.
+>   
+> -Migration of VFIO devices currently consists of a single stop-and-copy phase.
+> -During the stop-and-copy phase the guest is stopped and the entire VFIO device
+> -data is transferred to the destination.
+> -
+> -The pre-copy phase of migration is currently not supported for VFIO devices.
+> -Support for VFIO pre-copy will be added later on.
+> +Migration of VFIO devices consists of two phases: the optional pre-copy phase,
+> +and the stop-and-copy phase. The pre-copy phase is iterative and allows to
+> +accommodate VFIO devices that have a large amount of data that needs to be
+> +transferred. The iterative pre-copy phase of migration allows for the guest to
+> +continue whilst the VFIO device state is transferred to the destination, this
+> +helps to reduce the total downtime of the VM. VFIO devices opt-in to pre-copy
+> +support by reporting the VFIO_MIGRATION_PRE_COPY flag in the
+> +VFIO_DEVICE_FEATURE_MIGRATION ioctl.
+>   
+>   Note that currently VFIO migration is supported only for a single device. This
+>   is due to VFIO migration's lack of P2P support. However, P2P support is planned
+> @@ -29,10 +31,20 @@ VFIO implements the device hooks for the iterative approach as follows:
+>   * A ``load_setup`` function that sets the VFIO device on the destination in
+>     _RESUMING state.
+>   
+> +* A ``state_pending_estimate`` function that reports an estimate of the
+> +  remaining pre-copy data that the vendor driver has yet to save for the VFIO
+> +  device.
 > +
-> +    descriptor.opcode =3D DSA_OPCODE_COMPARE;
+>   * A ``state_pending_exact`` function that reads pending_bytes from the vendor
+>     driver, which indicates the amount of data that the vendor driver has yet to
+>     save for the VFIO device.
+>   
+> +* An ``is_active_iterate`` function that indicates ``save_live_iterate`` is
+> +  active only when the VFIO device is in pre-copy states.
+> +
+> +* A ``save_live_iterate`` function that reads the VFIO device's data from the
+> +  vendor driver during iterative pre-copy phase.
+> +
+>   * A ``save_state`` function to save the device config space if it is present.
+>   
+>   * A ``save_live_complete_precopy`` function that sets the VFIO device in
+> @@ -111,8 +123,10 @@ Flow of state changes during Live migration
+>   ===========================================
+>   
+>   Below is the flow of state change during live migration.
+> -The values in the brackets represent the VM state, the migration state, and
+> +The values in the parentheses represent the VM state, the migration state, and
+>   the VFIO device state, respectively.
+> +The text in the square brackets represents the flow if the VFIO device supports
+> +pre-copy.
+>   
+>   Live migration save path
+>   ------------------------
+> @@ -124,11 +138,12 @@ Live migration save path
+>                                     |
+>                        migrate_init spawns migration_thread
+>                   Migration thread then calls each device's .save_setup()
+> -                       (RUNNING, _SETUP, _RUNNING)
+> +                  (RUNNING, _SETUP, _RUNNING [_PRE_COPY])
+>                                     |
+> -                      (RUNNING, _ACTIVE, _RUNNING)
+> -             If device is active, get pending_bytes by .state_pending_exact()
+> +                  (RUNNING, _ACTIVE, _RUNNING [_PRE_COPY])
+> +      If device is active, get pending_bytes by .state_pending_{estimate,exact}()
+>             If total pending_bytes >= threshold_size, call .save_live_iterate()
+> +                  [Data of VFIO device for pre-copy phase is copied]
+>           Iterate till total pending bytes converge and are less than threshold
+>                                     |
+>     On migration completion, vCPU stops and calls .save_live_complete_precopy for
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 5f29dab839..1db901c194 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -67,6 +67,8 @@ typedef struct VFIOMigration {
+>       void *data_buffer;
+>       size_t data_buffer_size;
+>       uint64_t mig_flags;
+> +    uint64_t precopy_init_size;
+> +    uint64_t precopy_dirty_size;
+>   } VFIOMigration;
+>   
+>   typedef struct VFIOAddressSpace {
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 78358ede27..b73086e17a 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -492,7 +492,8 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
+>               }
+>   
+>               if (vbasedev->pre_copy_dirty_page_tracking == ON_OFF_AUTO_OFF &&
+> -                migration->device_state == VFIO_DEVICE_STATE_RUNNING) {
+> +                (migration->device_state == VFIO_DEVICE_STATE_RUNNING ||
+> +                 migration->device_state == VFIO_DEVICE_STATE_PRE_COPY)) {
+>                   return false;
+>               }
+>           }
+> @@ -537,7 +538,8 @@ static bool vfio_devices_all_running_and_mig_active(VFIOContainer *container)
+>                   return false;
+>               }
+>   
+> -            if (migration->device_state == VFIO_DEVICE_STATE_RUNNING) {
+> +            if (migration->device_state == VFIO_DEVICE_STATE_RUNNING ||
+> +                migration->device_state == VFIO_DEVICE_STATE_PRE_COPY) {
+>                   continue;
+>               } else {
+>                   return false;
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index 8d33414379..d8f6a22ae1 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -68,6 +68,8 @@ static const char *mig_state_to_str(enum vfio_device_mig_state state)
+>           return "STOP_COPY";
+>       case VFIO_DEVICE_STATE_RESUMING:
+>           return "RESUMING";
+> +    case VFIO_DEVICE_STATE_PRE_COPY:
+> +        return "PRE_COPY";
+>       default:
+>           return "UNKNOWN STATE";
+>       }
+> @@ -241,6 +243,25 @@ static int vfio_query_stop_copy_size(VFIODevice *vbasedev,
+>       return 0;
+>   }
+>   
+> +static int vfio_query_precopy_size(VFIOMigration *migration)
+> +{
+> +    struct vfio_precopy_info precopy = {
+> +        .argsz = sizeof(precopy),
+> +    };
+> +
+> +    migration->precopy_init_size = 0;
+> +    migration->precopy_dirty_size = 0;
+> +
+> +    if (ioctl(migration->data_fd, VFIO_MIG_GET_PRECOPY_INFO, &precopy)) {
+> +        return -errno;
+> +    }
+> +
+> +    migration->precopy_init_size = precopy.initial_bytes;
+> +    migration->precopy_dirty_size = precopy.dirty_bytes;
+> +
+> +    return 0;
+> +}
+> +
+>   /* Returns the size of saved data on success and -errno on error */
+>   static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
+>   {
+> @@ -249,6 +270,14 @@ static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
+>       data_size = read(migration->data_fd, migration->data_buffer,
+>                        migration->data_buffer_size);
+>       if (data_size < 0) {
+> +        /*
+> +         * Pre-copy emptied all the device state for now. For more information,
+> +         * please refer to the Linux kernel VFIO uAPI.
+> +         */
+> +        if (errno == ENOMSG) {
+> +            return 0;
+> +        }
+> +
+>           return -errno;
+>       }
+>       if (data_size == 0) {
+> @@ -265,6 +294,38 @@ static ssize_t vfio_save_block(QEMUFile *f, VFIOMigration *migration)
+>       return qemu_file_get_error(f) ?: data_size;
+>   }
+>   
+> +static void vfio_update_estimated_pending_data(VFIOMigration *migration,
+> +                                               uint64_t data_size)
+> +{
+> +    if (!data_size) {
+> +        /*
+> +         * Pre-copy emptied all the device state for now, update estimated sizes
+> +         * accordingly.
+> +         */
+> +        migration->precopy_init_size = 0;
+> +        migration->precopy_dirty_size = 0;
+> +
+> +        return;
+> +    }
+> +
+> +    if (migration->precopy_init_size) {
+> +        uint64_t init_size = MIN(migration->precopy_init_size, data_size);
+> +
+> +        migration->precopy_init_size -= init_size;
+> +        data_size -= init_size;
+> +    }
+> +
+> +    migration->precopy_dirty_size -= MIN(migration->precopy_dirty_size,
+> +                                         data_size);
+> +}
+> +
+> +static bool vfio_precopy_supported(VFIODevice *vbasedev)
+> +{
+> +    VFIOMigration *migration = vbasedev->migration;
+> +
+> +    return migration->mig_flags & VFIO_MIGRATION_PRE_COPY;
+> +}
+> +
+>   /* ---------------------------------------------------------------------- */
+>   
+>   static int vfio_save_setup(QEMUFile *f, void *opaque)
+> @@ -285,6 +346,28 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
+>           return -ENOMEM;
+>       }
+>   
+> +    if (vfio_precopy_supported(vbasedev)) {
+> +        int ret;
+> +
+> +        switch (migration->device_state) {
+> +        case VFIO_DEVICE_STATE_RUNNING:
+> +            ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_PRE_COPY,
+> +                                           VFIO_DEVICE_STATE_RUNNING);
+> +            if (ret) {
+> +                return ret;
+> +            }
+> +
+> +            vfio_query_precopy_size(migration);
+> +
+> +            break;
+> +        case VFIO_DEVICE_STATE_STOP:
+> +            /* vfio_save_complete_precopy() will go to STOP_COPY */
+> +            break;
+> +        default:
+> +            return -EINVAL;
+> +        }
+> +    }
+> +
+>       trace_vfio_save_setup(vbasedev->name, migration->data_buffer_size);
+>   
+>       qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
+> @@ -299,26 +382,42 @@ static void vfio_save_cleanup(void *opaque)
+>   
+>       g_free(migration->data_buffer);
+>       migration->data_buffer = NULL;
+> +    migration->precopy_init_size = 0;
+> +    migration->precopy_dirty_size = 0;
+>       vfio_migration_cleanup(vbasedev);
+>       trace_vfio_save_cleanup(vbasedev->name);
+>   }
+>   
+> +static void vfio_state_pending_estimate(void *opaque, uint64_t *must_precopy,
+> +                                        uint64_t *can_postcopy)
+> +{
+> +    VFIODevice *vbasedev = opaque;
+> +    VFIOMigration *migration = vbasedev->migration;
+> +
+> +    if (migration->device_state != VFIO_DEVICE_STATE_PRE_COPY) {
+> +        return;
+> +    }
+> +
+> +    *must_precopy +=
+> +        migration->precopy_init_size + migration->precopy_dirty_size;
+> +
+> +    trace_vfio_state_pending_estimate(vbasedev->name, *must_precopy,
+> +                                      *can_postcopy,
+> +                                      migration->precopy_init_size,
+> +                                      migration->precopy_dirty_size);
+> +}
+> +
+>   /*
+>    * Migration size of VFIO devices can be as little as a few KBs or as big as
+>    * many GBs. This value should be big enough to cover the worst case.
+>    */
+>   #define VFIO_MIG_STOP_COPY_SIZE (100 * GiB)
+>   
+> -/*
+> - * Only exact function is implemented and not estimate function. The reason is
+> - * that during pre-copy phase of migration the estimate function is called
+> - * repeatedly while pending RAM size is over the threshold, thus migration
+> - * can't converge and querying the VFIO device pending data size is useless.
+> - */
+>   static void vfio_state_pending_exact(void *opaque, uint64_t *must_precopy,
+>                                        uint64_t *can_postcopy)
+>   {
+>       VFIODevice *vbasedev = opaque;
+> +    VFIOMigration *migration = vbasedev->migration;
+>       uint64_t stop_copy_size = VFIO_MIG_STOP_COPY_SIZE;
+>   
+>       /*
+> @@ -328,8 +427,48 @@ static void vfio_state_pending_exact(void *opaque, uint64_t *must_precopy,
+>       vfio_query_stop_copy_size(vbasedev, &stop_copy_size);
+>       *must_precopy += stop_copy_size;
+>   
+> +    if (migration->device_state == VFIO_DEVICE_STATE_PRE_COPY) {
+> +        vfio_query_precopy_size(migration);
+> +
+> +        *must_precopy +=
+> +            migration->precopy_init_size + migration->precopy_dirty_size;
+> +    }
+> +
+>       trace_vfio_state_pending_exact(vbasedev->name, *must_precopy, *can_postcopy,
+> -                                   stop_copy_size);
+> +                                   stop_copy_size, migration->precopy_init_size,
+> +                                   migration->precopy_dirty_size);
+> +}
+> +
+> +static bool vfio_is_active_iterate(void *opaque)
+> +{
+> +    VFIODevice *vbasedev = opaque;
+> +    VFIOMigration *migration = vbasedev->migration;
+> +
+> +    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY;
+> +}
+> +
+> +static int vfio_save_iterate(QEMUFile *f, void *opaque)
+> +{
+> +    VFIODevice *vbasedev = opaque;
+> +    VFIOMigration *migration = vbasedev->migration;
+> +    ssize_t data_size;
+> +
+> +    data_size = vfio_save_block(f, migration);
+> +    if (data_size < 0) {
+> +        return data_size;
+> +    }
+> +    qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
+> +
+> +    vfio_update_estimated_pending_data(migration, data_size);
+> +
+> +    trace_vfio_save_iterate(vbasedev->name, migration->precopy_init_size,
+> +                            migration->precopy_dirty_size);
+> +
+> +    /*
+> +     * A VFIO device's pre-copy dirty_bytes is not guaranteed to reach zero.
+> +     * Return 1 so following handlers will not be potentially blocked.
+> +     */
+> +    return 1;
+>   }
+>   
+>   static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+> @@ -338,7 +477,7 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+>       ssize_t data_size;
+>       int ret;
+>   
+> -    /* We reach here with device state STOP only */
+> +    /* We reach here with device state STOP or STOP_COPY only */
+>       ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
+>                                      VFIO_DEVICE_STATE_STOP);
+>       if (ret) {
+> @@ -457,7 +596,10 @@ static int vfio_load_state(QEMUFile *f, void *opaque, int version_id)
+>   static const SaveVMHandlers savevm_vfio_handlers = {
+>       .save_setup = vfio_save_setup,
+>       .save_cleanup = vfio_save_cleanup,
+> +    .state_pending_estimate = vfio_state_pending_estimate,
+>       .state_pending_exact = vfio_state_pending_exact,
+> +    .is_active_iterate = vfio_is_active_iterate,
+> +    .save_live_iterate = vfio_save_iterate,
+>       .save_live_complete_precopy = vfio_save_complete_precopy,
+>       .save_state = vfio_save_state,
+>       .load_setup = vfio_load_setup,
+> @@ -470,13 +612,18 @@ static const SaveVMHandlers savevm_vfio_handlers = {
+>   static void vfio_vmstate_change(void *opaque, bool running, RunState state)
+>   {
+>       VFIODevice *vbasedev = opaque;
+> +    VFIOMigration *migration = vbasedev->migration;
+>       enum vfio_device_mig_state new_state;
+>       int ret;
+>   
+>       if (running) {
+>           new_state = VFIO_DEVICE_STATE_RUNNING;
+>       } else {
+> -        new_state = VFIO_DEVICE_STATE_STOP;
+> +        new_state =
+> +            (migration->device_state == VFIO_DEVICE_STATE_PRE_COPY &&
+> +             (state == RUN_STATE_FINISH_MIGRATE || state == RUN_STATE_PAUSED)) ?
+> +                VFIO_DEVICE_STATE_STOP_COPY :
+> +                VFIO_DEVICE_STATE_STOP;
+>       }
+>   
+>       /*
+> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+> index 646e42fd27..548f9488a7 100644
+> --- a/hw/vfio/trace-events
+> +++ b/hw/vfio/trace-events
+> @@ -162,6 +162,8 @@ vfio_save_block(const char *name, int data_size) " (%s) data_size %d"
+>   vfio_save_cleanup(const char *name) " (%s)"
+>   vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
+>   vfio_save_device_config_state(const char *name) " (%s)"
+> +vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64"
 
-What about using DSA_OPCODE_COMPVAL with zero?
-DSA_OPCODE_COMPARE consumes double bandwidth by reading
-from both src and dest address.
+the extra '"' at the end breaks compile. No need to resend just for that.
+It can be fixed.
 
-Thanks
-Zhenzhong
+Thanks,
+
+C.
+
+>   vfio_save_setup(const char *name, uint64_t data_buffer_size) " (%s) data buffer size 0x%"PRIx64
+> -vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64
+> +vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+> +vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+>   vfio_vmstate_change(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
+
 
