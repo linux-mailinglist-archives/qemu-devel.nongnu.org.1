@@ -2,59 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7788A716246
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F3C71621F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:36:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zZu-0007CT-Gl; Tue, 30 May 2023 09:39:58 -0400
+	id 1q3zWb-0008L2-5M; Tue, 30 May 2023 09:36:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q3zZd-0006wK-JE
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:39:45 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3zWJ-0008Ct-Aj
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:36:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q3zZb-0005vR-4m
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:39:41 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QVtkY4Ggxz67pnp;
- Tue, 30 May 2023 21:37:57 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 30 May 2023 14:39:35 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>
-CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
- <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Dave Jiang
- <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>, Eric
- Blake <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>, Thomas
- Huth <thuth@redhat.com>
-Subject: [PATCH v9 7/7] hw/cxl/events: Add injection of Memory Module Events
-Date: Tue, 30 May 2023 14:36:03 +0100
-Message-ID: <20230530133603.16934-8-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230530133603.16934-1-Jonathan.Cameron@huawei.com>
-References: <20230530133603.16934-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1q3zWH-00054m-Jd
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:36:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685453772;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f1bUupBl8EumGSv1kNcTiR6Awa1XiV+FCORTfFxe7wU=;
+ b=ZJiLUD34w8fBikOL65HbOdt0sIXIA2j69tfTEdlqTlw3rvUc1HCAYkxLaO/hETkL9NklkY
+ XNHoCxO/tH25Wn771P3akvC4MrO7uqwdF2Vhn//Kqi3jrmojADkbFFT4LjgIVwIgaH2W1I
+ j3Snlw0cvIgCklvEdnq921z3OIjXJpE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-178-DvF1hi0nMK-RKtRry0XvNw-1; Tue, 30 May 2023 09:36:11 -0400
+X-MC-Unique: DvF1hi0nMK-RKtRry0XvNw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3078b9943d6so1575458f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:36:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685453770; x=1688045770;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=f1bUupBl8EumGSv1kNcTiR6Awa1XiV+FCORTfFxe7wU=;
+ b=LLN3v/IwkIogdu6AZJKJycN4bZsIs1tp7wyNJwrFy3x2kJPozXazbOe5AZ5I4TUrdV
+ eePBTSxTwwTXkGr3Xb1LUr2N++DtyUZgpqiSuUb9HF9LpaiTfHGjVnr4Uqqx/bHaPAEj
+ Ql+wA0T+tTQT+rWmn7MOVj4t7lEWuvn7mVPGZmSH9HJWCliiDrkYZMbcr0883kK5Q0Sv
+ rMPZH2FMD0oeI/+Fur6F3oKusl4me/5UZe0PZy31j7TOz14Fkh0s6vNNizzW3gjnvgwu
+ EfL+qeC9rqGmI293SrICMikqL4vkLGyj5ElHMqFV5mKdZh1VGAwqlDfcj64N0v4f7J0q
+ g3Wg==
+X-Gm-Message-State: AC+VfDxnuo37x5K7sd+H8+Rw5d3Za8d0G/9As3S7EKOkSgrdKwLREU2y
+ 9GRjaiyQoHb50mdGScV0jgnqV5aRuAzWOmBehQA0LkO3/LJ6GOiLO8GDy39ooV+yqnF05S34mDu
+ 2Eai63VsdRt6LKuo=
+X-Received: by 2002:adf:e94f:0:b0:30a:e165:e68e with SMTP id
+ m15-20020adfe94f000000b0030ae165e68emr1652284wrn.27.1685453769881; 
+ Tue, 30 May 2023 06:36:09 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6OSVs6Zr1XTgxJYMVs4yzQo/jALcyStXObwfn926j5U1b157qGGNTeQiP0Fnyqsr085sPYzg==
+X-Received: by 2002:adf:e94f:0:b0:30a:e165:e68e with SMTP id
+ m15-20020adfe94f000000b0030ae165e68emr1652272wrn.27.1685453769574; 
+ Tue, 30 May 2023 06:36:09 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0?
+ ([2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0])
+ by smtp.gmail.com with ESMTPSA id
+ l19-20020a5d5273000000b0030ae09c5efdsm3375755wrc.42.2023.05.30.06.36.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 May 2023 06:36:09 -0700 (PDT)
+Message-ID: <d541e95a-3436-b794-d49b-c5053c8f23e9@redhat.com>
+Date: Tue, 30 May 2023 15:36:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH v2 4/4] vfio/pci: Enable AtomicOps completers on root
+ ports
+Content-Language: en-US
+To: Alex Williamson <alex.williamson@redhat.com>, robin@streamhpc.com,
+ mst@redhat.com, marcel.apfelbaum@gmail.com
+Cc: qemu-devel@nongnu.org
+References: <20230526231558.1660396-1-alex.williamson@redhat.com>
+ <20230526231558.1660396-5-alex.williamson@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230526231558.1660396-5-alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,234 +100,147 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These events include a copy of the device health information at the
-time of the event. Actually using the emulated device health would
-require a lot of controls to manipulate that state.  Given the aim
-of this injection code is to just test the flows when events occur,
-inject the contents of the device health state as well.
+On 5/27/23 01:15, Alex Williamson wrote:
+> Dynamically enable Atomic Ops completer support around realize/exit of
+> vfio-pci devices reporting host support for these accesses and adhering
+> to a minimal configuration standard.  While the Atomic Ops completer
+> bits in the root port device capabilities2 register are read-only, the
+> PCIe spec does allow RO bits to change to reflect hardware state.  We
+> take advantage of that here around the realize and exit functions of
+> the vfio-pci device.
+> 
+> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 
-Future work may add more sophisticate device health emulation
-including direct generation of these records when events occur
-(such as a temperature threshold being crossed).  That does not
-reduce the usefulness of this more basic generation of the events.
+LGTM. I am not sure about the single function restriction, may be that's
+worth a warning ?
 
-Acked-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Thanks,
 
----
-v9:
-- Double space after . for consistency.
-- Missing 'of'
----
- qapi/cxl.json               | 53 +++++++++++++++++++++++++++++++
- include/hw/cxl/cxl_events.h | 19 ++++++++++++
- hw/mem/cxl_type3.c          | 62 +++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3_stubs.c    | 12 +++++++
- 4 files changed, 146 insertions(+)
+C.
 
-diff --git a/qapi/cxl.json b/qapi/cxl.json
-index 2ad310387c..d5b5293eb5 100644
---- a/qapi/cxl.json
-+++ b/qapi/cxl.json
-@@ -140,6 +140,59 @@
-             '*column': 'uint16', '*correction-mask': [ 'uint64' ]
-            }}
- 
-+##
-+# @cxl-inject-memory-module-event:
-+#
-+# Inject an event record for a Memory Module Event (CXL r3.0
-+# 8.2.9.2.1.3).  This event includes a copy of the Device Health
-+# info at the time of the event.
-+#
-+# @path: CXL type 3 device canonical QOM path
-+#
-+# @log: Event Log to add the event to
-+#
-+# @flags: Event Record Flags.  See CXL r3.0 Table 8-42 Common Event
-+#     Record Format, Event Record Flags for subfield definitions.
-+#
-+# @type: Device Event Type.  See CXL r3.0 Table 8-45 Memory Module
-+#     Event Record for bit definitions for bit definiions.
-+#
-+# @health-status: Overall health summary bitmap.  See CXL r3.0 Table
-+#     8-100 Get Health Info Output Payload, Health Status for bit
-+#     definitions.
-+#
-+# @media-status: Overall media health summary.  See CXL r3.0 Table
-+#     8-100 Get Health Info Output Payload, Media Status for bit
-+#     definitions.
-+#
-+# @additional-status: See CXL r3.0 Table 8-100 Get Health Info Output
-+#     Payload, Additional Status for subfield definitions.
-+#
-+# @life-used: Percentage (0-100) of factory expected life span.
-+#
-+# @temperature: Device temperature in degrees Celsius.
-+#
-+# @dirty-shutdown-count: Number of times the device has been unable
-+#     to determine whether data loss may have occurred.
-+#
-+# @corrected-volatile-error-count: Total number of correctable errors
-+#     in volatile memory.
-+#
-+# @corrected-persistent-error-count: Total number of correctable
-+#     errors in persistent memory
-+#
-+# Since: 8.1
-+##
-+{ 'command': 'cxl-inject-memory-module-event',
-+  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags' : 'uint8',
-+            'type': 'uint8', 'health-status': 'uint8',
-+            'media-status': 'uint8', 'additional-status': 'uint8',
-+            'life-used': 'uint8', 'temperature' : 'int16',
-+            'dirty-shutdown-count': 'uint32',
-+            'corrected-volatile-error-count': 'uint32',
-+            'corrected-persistent-error-count': 'uint32'
-+            }}
-+
- ##
- # @cxl-inject-poison:
- #
-diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index a39e30d973..089ba2091f 100644
---- a/include/hw/cxl/cxl_events.h
-+++ b/include/hw/cxl/cxl_events.h
-@@ -146,4 +146,23 @@ typedef struct CXLEventDram {
-     uint8_t reserved[0x17];
- } QEMU_PACKED CXLEventDram;
- 
-+/*
-+ * Memory Module Event Record
-+ * CXL Rev 3.0 Section 8.2.9.2.1.3: Table 8-45
-+ * All fields little endian.
-+ */
-+typedef struct CXLEventMemoryModule {
-+    CXLEventRecordHdr hdr;
-+    uint8_t type;
-+    uint8_t health_status;
-+    uint8_t media_status;
-+    uint8_t additional_status;
-+    uint8_t life_used;
-+    int16_t temperature;
-+    uint32_t dirty_shutdown_count;
-+    uint32_t corrected_volatile_error_count;
-+    uint32_t corrected_persistent_error_count;
-+    uint8_t reserved[0x3d];
-+} QEMU_PACKED CXLEventMemoryModule;
-+
- #endif /* CXL_EVENTS_H */
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 3c07b1b7a3..4e314748d3 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1201,6 +1201,11 @@ static const QemuUUID dram_uuid = {
-                  0x4e, 0x9b, 0xfb, 0x5c, 0x96, 0x24),
- };
- 
-+static const QemuUUID memory_module_uuid = {
-+    .data = UUID(0xfe927475, 0xdd59, 0x4339, 0xa5, 0x86,
-+                 0x79, 0xba, 0xb1, 0x13, 0xb7, 0x74),
-+};
-+
- #define CXL_GMER_VALID_CHANNEL                          BIT(0)
- #define CXL_GMER_VALID_RANK                             BIT(1)
- #define CXL_GMER_VALID_DEVICE                           BIT(2)
-@@ -1408,6 +1413,63 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-     return;
- }
- 
-+void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-+                                        uint8_t flags, uint8_t type,
-+                                        uint8_t health_status,
-+                                        uint8_t media_status,
-+                                        uint8_t additional_status,
-+                                        uint8_t life_used,
-+                                        int16_t temperature,
-+                                        uint32_t dirty_shutdown_count,
-+                                        uint32_t corrected_volatile_error_count,
-+                                        uint32_t corrected_persistent_error_count,
-+                                        Error **errp)
-+{
-+    Object *obj = object_resolve_path(path, NULL);
-+    CXLEventMemoryModule module;
-+    CXLEventRecordHdr *hdr = &module.hdr;
-+    CXLDeviceState *cxlds;
-+    CXLType3Dev *ct3d;
-+    uint8_t enc_log;
-+    int rc;
-+
-+    if (!obj) {
-+        error_setg(errp, "Unable to resolve path");
-+        return;
-+    }
-+    if (!object_dynamic_cast(obj, TYPE_CXL_TYPE3)) {
-+        error_setg(errp, "Path does not point to a CXL type 3 device");
-+        return;
-+    }
-+    ct3d = CXL_TYPE3(obj);
-+    cxlds = &ct3d->cxl_dstate;
-+
-+    rc = ct3d_qmp_cxl_event_log_enc(log);
-+    if (rc < 0) {
-+        error_setg(errp, "Unhandled error log type");
-+        return;
-+    }
-+    enc_log = rc;
-+
-+    memset(&module, 0, sizeof(module));
-+    cxl_assign_event_header(hdr, &memory_module_uuid, flags, sizeof(module),
-+                            cxl_device_get_timestamp(&ct3d->cxl_dstate));
-+
-+    module.type = type;
-+    module.health_status = health_status;
-+    module.media_status = media_status;
-+    module.additional_status = additional_status;
-+    module.life_used = life_used;
-+    stw_le_p(&module.temperature, temperature);
-+    stl_le_p(&module.dirty_shutdown_count, dirty_shutdown_count);
-+    stl_le_p(&module.corrected_volatile_error_count, corrected_volatile_error_count);
-+    stl_le_p(&module.corrected_persistent_error_count, corrected_persistent_error_count);
-+
-+    if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&module)) {
-+        cxl_event_irq_assert(ct3d);
-+    }
-+}
-+
- static void ct3_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-index e904c5d089..f3e4a9fa72 100644
---- a/hw/mem/cxl_type3_stubs.c
-+++ b/hw/mem/cxl_type3_stubs.c
-@@ -26,6 +26,18 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-                                bool has_correction_mask, uint64List *correction_mask,
-                                Error **errp) {}
- 
-+void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
-+                                        uint8_t flags, uint8_t type,
-+                                        uint8_t health_status,
-+                                        uint8_t media_status,
-+                                        uint8_t additional_status,
-+                                        uint8_t life_used,
-+                                        int16_t temperature,
-+                                        uint32_t dirty_shutdown_count,
-+                                        uint32_t corrected_volatile_error_count,
-+                                        uint32_t corrected_persistent_error_count,
-+                                        Error **errp) {}
-+
- void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
-                            Error **errp)
- {
--- 
-2.39.2
+
+> ---
+>   hw/vfio/pci.c | 78 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>   hw/vfio/pci.h |  1 +
+>   2 files changed, 79 insertions(+)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index bf27a3990564..d8a0fd595560 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -1826,6 +1826,81 @@ static void vfio_add_emulated_long(VFIOPCIDevice *vdev, int pos,
+>       vfio_set_long_bits(vdev->emulated_config_bits + pos, mask, mask);
+>   }
+>   
+> +static void vfio_pci_enable_rp_atomics(VFIOPCIDevice *vdev)
+> +{
+> +    struct vfio_device_info_cap_pci_atomic_comp *cap;
+> +    g_autofree struct vfio_device_info *info = NULL;
+> +    PCIBus *bus = pci_get_bus(&vdev->pdev);
+> +    PCIDevice *parent = bus->parent_dev;
+> +    struct vfio_info_cap_header *hdr;
+> +    uint32_t mask = 0;
+> +    uint8_t *pos;
+> +
+> +    /*
+> +     * PCIe Atomic Ops completer support is only added automatically for single
+> +     * function devices downstream of a root port supporting DEVCAP2.  Support
+> +     * is added during realize and, if added, removed during device exit.  The
+> +     * single function requirement avoids conflicting requirements should a
+> +     * slot be composed of multiple devices with differing capabilities.
+> +     */
+> +    if (pci_bus_is_root(bus) || !parent || !parent->exp.exp_cap ||
+> +        pcie_cap_get_type(parent) != PCI_EXP_TYPE_ROOT_PORT ||
+> +        pcie_cap_get_version(parent) != PCI_EXP_FLAGS_VER2 ||
+> +        vdev->pdev.devfn ||
+> +        vdev->pdev.cap_present & QEMU_PCI_CAP_MULTIFUNCTION) {
+> +        return;
+> +    }
+> +
+> +    pos = parent->config + parent->exp.exp_cap + PCI_EXP_DEVCAP2;
+> +
+> +    /* Abort if there'a already an Atomic Ops configuration on the root port */
+> +    if (pci_get_long(pos) & (PCI_EXP_DEVCAP2_ATOMIC_COMP32 |
+> +                             PCI_EXP_DEVCAP2_ATOMIC_COMP64 |
+> +                             PCI_EXP_DEVCAP2_ATOMIC_COMP128)) {
+> +        return;
+> +    }
+> +
+> +    info = vfio_get_device_info(vdev->vbasedev.fd);
+> +    if (!info) {
+> +        return;
+> +    }
+> +
+> +    hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_PCI_ATOMIC_COMP);
+> +    if (!hdr) {
+> +        return;
+> +    }
+> +
+> +    cap = (void *)hdr;
+> +    if (cap->flags & VFIO_PCI_ATOMIC_COMP32) {
+> +        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP32;
+> +    }
+> +    if (cap->flags & VFIO_PCI_ATOMIC_COMP64) {
+> +        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP64;
+> +    }
+> +    if (cap->flags & VFIO_PCI_ATOMIC_COMP128) {
+> +        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP128;
+> +    }
+> +
+> +    if (!mask) {
+> +        return;
+> +    }
+> +
+> +    pci_long_test_and_set_mask(pos, mask);
+> +    vdev->clear_parent_atomics_on_exit = true;
+> +}
+> +
+> +static void vfio_pci_disable_rp_atomics(VFIOPCIDevice *vdev)
+> +{
+> +    if (vdev->clear_parent_atomics_on_exit) {
+> +        PCIDevice *parent = pci_get_bus(&vdev->pdev)->parent_dev;
+> +        uint8_t *pos = parent->config + parent->exp.exp_cap + PCI_EXP_DEVCAP2;
+> +
+> +        pci_long_test_and_clear_mask(pos, PCI_EXP_DEVCAP2_ATOMIC_COMP32 |
+> +                                          PCI_EXP_DEVCAP2_ATOMIC_COMP64 |
+> +                                          PCI_EXP_DEVCAP2_ATOMIC_COMP128);
+> +    }
+> +}
+> +
+>   static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
+>                                  Error **errp)
+>   {
+> @@ -1929,6 +2004,8 @@ static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
+>                              QEMU_PCI_EXP_LNKCAP_MLS(QEMU_PCI_EXP_LNK_2_5GT), ~0);
+>               vfio_add_emulated_word(vdev, pos + PCI_EXP_LNKCTL, 0, ~0);
+>           }
+> +
+> +        vfio_pci_enable_rp_atomics(vdev);
+>       }
+>   
+>       /*
+> @@ -3265,6 +3342,7 @@ static void vfio_exitfn(PCIDevice *pdev)
+>           timer_free(vdev->intx.mmap_timer);
+>       }
+>       vfio_teardown_msi(vdev);
+> +    vfio_pci_disable_rp_atomics(vdev);
+>       vfio_bars_exit(vdev);
+>       vfio_migration_exit(&vdev->vbasedev);
+>   }
+> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> index 2674476d6c77..a2771b9ff3cc 100644
+> --- a/hw/vfio/pci.h
+> +++ b/hw/vfio/pci.h
+> @@ -174,6 +174,7 @@ struct VFIOPCIDevice {
+>       bool no_vfio_ioeventfd;
+>       bool enable_ramfb;
+>       bool defer_kvm_irq_routing;
+> +    bool clear_parent_atomics_on_exit;
+>       VFIODisplay *dpy;
+>       Notifier irqchip_change_notifier;
+>   };
 
 
