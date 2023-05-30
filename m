@@ -2,71 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420D7716A6B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 19:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D8A716A6F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 19:08:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q42kg-0005IJ-83; Tue, 30 May 2023 13:03:18 -0400
+	id 1q42og-0007Vl-J0; Tue, 30 May 2023 13:07:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q42kN-00052C-8E; Tue, 30 May 2023 13:03:05 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q42oQ-0007Sp-M7
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 13:07:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q42kI-00078p-S3; Tue, 30 May 2023 13:02:58 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 820A36111C;
- Tue, 30 May 2023 17:02:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61ADC433A0;
- Tue, 30 May 2023 17:02:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1685466170;
- bh=bZixs7nkFVC8ORerRLmRoiL6KtRrGjYzvtjjGE4ZH0E=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=MMoJVDWMjFoDHhVqgzj5lQBTF+bwW3UpchbmOwQcb9PT9fjXNE1CMQUBAHImhe4n9
- GPgJPNZEpyiw1yaEgEHy5L6gClYuIO8ODBHDyAZQrElv3JExRswFV7F4v4l7F8h6S3
- H5eLhzCp4HL59b+jzcyI/XexyTIXRZSAtQDSPmGtyzrFuw632NN5Qu3Hc12llsPJTl
- agfU9c7bTXuDKFcbG7yutgqGqpirN4sDRrZzkJJtcy80bXzRWIJ54gRmn3SDZFefGK
- +FrUy591JmRzZdZ4Up5bmUHcae4y7sl4y8ToRJWQGWdgtkf/cm3shRWk+kLrUR1de6
- kgOmAb8dSpyLg==
-Received: by mail-lj1-f179.google.com with SMTP id
- 38308e7fff4ca-2af29e51722so51697701fa.1; 
- Tue, 30 May 2023 10:02:50 -0700 (PDT)
-X-Gm-Message-State: AC+VfDzxowDm/Undrg/aImXwBsZh65Dm0/ErlLHGNxcJyYBYiHqp2oyn
- kvGLtac7lGdGYEwzDHG9Jl8hQe6raxCitZRuqFk=
-X-Google-Smtp-Source: ACHHUZ7UzWymoWGffUas/RiF+LF6NZl5JZAtdTFvXzmooNX2mwc21/xi8tRIWIqSaDl4I/egh6Hy5l7Fsmz2pSuoXpE=
-X-Received: by 2002:a2e:9f0d:0:b0:2ac:7889:3aa3 with SMTP id
- u13-20020a2e9f0d000000b002ac78893aa3mr1253687ljk.18.1685466168935; Tue, 30
- May 2023 10:02:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q42oL-000837-Ib
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 13:07:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685466423;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=bH2OK/zPtkZX2JnSuR7bPuOS5C/HaAszzfq18lhJzDA=;
+ b=eqo0AnH7OVll6rBGT8ZotcVxXN5H39+BjxZEIKu+6j2GznUTCAneQHlC3UyxiQDl9CTAJI
+ zuP8IqVsD8Vb8UjiAFrRkqNKrH0G59FZ7sTJMueetQc+xksNNw8vREhV+LZvK2JP+ONSNH
+ xktMUbaMrWziPK+8tbvTahn7gR9dBR0=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-192-Q2otuK_SPRimng6At2TnMw-1; Tue, 30 May 2023 13:07:02 -0400
+X-MC-Unique: Q2otuK_SPRimng6At2TnMw-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-4f3a9670ae0so2402978e87.2
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 10:07:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685466420; x=1688058420;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bH2OK/zPtkZX2JnSuR7bPuOS5C/HaAszzfq18lhJzDA=;
+ b=Php+B/OskLUVF+yh2mEMEnbK5Vc72nnhzHtGnxm4KI7BjZja6KyrpfVJDVRW1eDuvT
+ SBU6n3fz3UfyyK8aNrvXps1pRrHOOjRRnImU0dXTfgpEGqVG0gqGZ7KUqMYH15jXgKTI
+ Tt1Vwx08E6l2+otr4kXqzHp0jo9MHZFm2DWMYDcDGt3lAFsLd0t9VuFaSrj2rq3GRQtb
+ v/z3SRXlZjAugkfMiw26p7VdYDREcvzcBRB6eYQ2OswrVXPu7xTVpQ+mNkOu/aIbYOcQ
+ 3f17WBFmulP0mkgh68upVJPJjR7KPNE3+upE+ereX601dqRgOLVwG0N7usTfMtgJZ3kr
+ 89WA==
+X-Gm-Message-State: AC+VfDxvSbUsvcrDruzqSxtBttsIjVIZOUenkVsQ3ZMJ5+k/IoFaAPBO
+ gvmpUDE4HULniec0jGaMJhkG6yUrwEgS3HehQRvkTY97OoWmPKH/g+QntabPfCXY2GElM3mvUxu
+ YORuESQjHAOHwYQw=
+X-Received: by 2002:ac2:59c4:0:b0:4ec:a18e:f989 with SMTP id
+ x4-20020ac259c4000000b004eca18ef989mr1366668lfn.17.1685466420697; 
+ Tue, 30 May 2023 10:07:00 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5wBmGknCGYYlo3pNnQVS+LG8N6qHmxMfNYI7lXGTCfgr+INzDhjbtRhn1UqqwHSvXx+5VY7Q==
+X-Received: by 2002:ac2:59c4:0:b0:4ec:a18e:f989 with SMTP id
+ x4-20020ac259c4000000b004eca18ef989mr1366642lfn.17.1685466420352; 
+ Tue, 30 May 2023 10:07:00 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ k15-20020a05600c0b4f00b003f611b2aedesm18015784wmr.38.2023.05.30.10.06.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 10:06:59 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  Leonardo Bras
+ <leobras@redhat.com>,  Hailiang Zhang <zhanghailiang@xfusion.com>,  Peter
+ Xu <peterx@redhat.com>,  Fam Zheng <fam@euphon.net>,  Stefan Hajnoczi
+ <stefanha@redhat.com>
+Subject: Re: [PATCH 04/16] qemu-file: Don't call qemu_fflush() for read only
+ files
+In-Reply-To: <60036a5c-920e-8407-e030-1dbc1008418b@linaro.org> (Richard
+ Henderson's message of "Tue, 30 May 2023 10:01:43 -0700")
+References: <20230530122813.2674-1-quintela@redhat.com>
+ <20230530122813.2674-5-quintela@redhat.com>
+ <60036a5c-920e-8407-e030-1dbc1008418b@linaro.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Tue, 30 May 2023 19:06:58 +0200
+Message-ID: <877cspwxxp.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <20230530135204.2903761-1-ardb@kernel.org>
- <CAFEAcA-RwXQWx4RhMhWk_xQLsJ0a1+MDKDXyKHdCmguqsuNKzQ@mail.gmail.com>
-In-Reply-To: <CAFEAcA-RwXQWx4RhMhWk_xQLsJ0a1+MDKDXyKHdCmguqsuNKzQ@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 30 May 2023 19:02:37 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFMnsAnXcUgnZjncwa8h0eHeJfR2F1dxMn=-sHrErQr-Q@mail.gmail.com>
-Message-ID: <CAMj1kXFMnsAnXcUgnZjncwa8h0eHeJfR2F1dxMn=-sHrErQr-Q@mail.gmail.com>
-Subject: Re: [RFC PATCH] target/arm: use x86 intrinsics to implement AES
- instructions
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <f4bug@amsat.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,32 +101,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 30 May 2023 at 18:45, Peter Maydell <peter.maydell@linaro.org> wrote:
+Richard Henderson <richard.henderson@linaro.org> wrote:
+> On 5/30/23 05:28, Juan Quintela wrote:
+>> This was the only caller for read only files.  So change the test for
+>> an assert in qemu_fflush().
 >
-> On Tue, 30 May 2023 at 14:52, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > ARM intrinsics for AES deviate from the x86 ones in the way they cover
-> > the different stages of each round, and so mapping one to the other is
-> > not entirely straight-forward. However, with a bit of care, we can still
-> > use the x86 ones to emulate the ARM ones, which makes them constant time
-> > (which is an important property in crypto) and substantially more
-> > efficient.
 >
-> Do you have examples of workloads and speedups obtained,
-> by the way?
->
+> Not a fan, as fflush(stdin) is well-defined.
 
-I don't have any actual numbers to share, unfortunately.
+I guess you mean this:
 
-I implemented this when i was experimenting with TPM based measured
-boot and disk encryption in the guest. I'd say that running an OS
-under emulation that uses disk encryption would be the most relevant
-use case here.
+       For input streams associated with seekable files (e.g., disk files, but
+       not pipes or terminals), fflush() discards any buffered data  that  has
+       been fetched from the underlying file, but has not been consumed by the
+       application.
 
-Accelerated AES is typically at least an order of magnitude faster
-than a table based C implementation, and does not stress the D-cache
-as much (the tables involved are not tiny).
+Two things:
+- Current code just do nothing for imput streams
+- We only call it from qemu_fclose()
+- If we drop anything from the input stream, migration get broken.
+
+If it makes you feel better, I can rename the function to
+qemu_file_write_buffer() or whatever name your preffer.
+
+Later, Juan.
+
 
