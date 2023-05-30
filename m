@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9921171619A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D117161A2
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:24:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zIM-00069d-6b; Tue, 30 May 2023 09:21:50 -0400
+	id 1q3zKK-0002py-TJ; Tue, 30 May 2023 09:23:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3zIC-0005oX-SH; Tue, 30 May 2023 09:21:41 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1q3zI9-00081t-Ey; Tue, 30 May 2023 09:21:38 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1b02fcde49aso17837595ad.0; 
- Tue, 30 May 2023 06:21:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685452895; x=1688044895;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7qF842y09Fzet4ZX9MB88Ilyd7JJ5xGKQbvtsPuslkI=;
- b=mgFP31fDMhrVxAqnzU242RyEWjWvMFdQeDppz8MutUQRgdhY+H+Nu74u+D2hGNPZ3U
- a3pgW+ZC7vW54clkaO9lBo94lXl1aJcr1JfDf9I7ISqTc99F/CZBLJP5YBP4GALLHAcB
- MfP38eMzQ/HIIOw7ae2uBrmt8DeW0E57gH9n0D3N0XGRBWA2Qbqo9qBsi8Ceam8a1rrG
- F1C7PnNWJAebUK4OF4AMEayxintRjGqoBd+gD5ZX4pTwZLljdNHdxLKrvrPm/01t7Xod
- FJSj5ezcYWkZIoiRDZz4iGC6PmmHKIXFGDbuEjE83QL80rJnbYXfzcGKUBOafJbCwZxZ
- JW3g==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q3zJh-0000kF-0u
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:23:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1q3zJd-000072-IF
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:23:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685452988;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=paoOWoRp/3otlgIAgpwRBL/dAxaz2g8vyLl/NfCWtiM=;
+ b=E9SmRDSJYpPd/mmdAoIT4nwsQwl2pSRJwMZprfzblSNjaKTNwkhTmpiNB6F5ozM8/esilU
+ LWaYUhBBgf62mgM9qquml93IfYQPtpW1Z3JgC50pZOjan27t4FL85gKQkgv5wI0+cO24Nr
+ p0Fds4d19zNrgq6Q+janqAy4znaCEqI=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-342-lk0knFg4P0i88VtGOrCMbA-1; Tue, 30 May 2023 09:23:06 -0400
+X-MC-Unique: lk0knFg4P0i88VtGOrCMbA-1
+Received: by mail-ua1-f71.google.com with SMTP id
+ a1e0cc1a2514c-7837dfe3b00so3710359241.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:23:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685452895; x=1688044895;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7qF842y09Fzet4ZX9MB88Ilyd7JJ5xGKQbvtsPuslkI=;
- b=C/NDCCwGaaKqH3JFMfspYkrRt6te2JaEMiWN/YUcYxbF9BfGuJrwyuyt8SOOVnzA2p
- GwZ0XT/JijrQyZh5P1yZV4bTDU5brlJDHqlAsD+c+xl9d6WC8Zqndi2sB7FuAHTcVPE3
- +VJvn0XT7speJXcES39XHvVQiOnmWSs6p4DZbcR+nHGZurMGVSCKpiXnAeBmYdSuPRbn
- NhsQl0wxXcZq4wpj08n1Tu8QO/UFhlsqjfr+zXZh22ez3uJG2pDPCQcbI8Lkh6p+rcLo
- 8hWBOWvTyVkrtI2XkIOENr5OV1rnuqf2U3fFkR8nb5t4ihUi7UiKUw8t8jG7SVWjDfYs
- ohUg==
-X-Gm-Message-State: AC+VfDwc9JqhAjlcnf5eYyIlztYMqsiuOybuqiuN62yVibn1cGxK8Wgd
- 7/yH5vnHR96cxxEgt+zhf9T/g2W6O9Y=
-X-Google-Smtp-Source: ACHHUZ59FpBDqgxM5OsPMDWCC8MOfnLu80hY7C9ZwfMAbnBhsH79H/F2UB1LijoUIMCLsH3PPMqnFQ==
-X-Received: by 2002:a17:902:d482:b0:1ac:8cd4:a82d with SMTP id
- c2-20020a170902d48200b001ac8cd4a82dmr2634746plg.27.1685452894933; 
- Tue, 30 May 2023 06:21:34 -0700 (PDT)
-Received: from wheely.local0.net ([203.221.142.9])
- by smtp.gmail.com with ESMTPSA id
- jb18-20020a170903259200b001ac2c3e54adsm2978124plb.118.2023.05.30.06.21.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 06:21:34 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, balaton@eik.bme.hu,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH v2] target/ppc: Fix nested-hv HEAI delivery
-Date: Tue, 30 May 2023 23:21:27 +1000
-Message-Id: <20230530132127.385001-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
+ d=1e100.net; s=20221208; t=1685452986; x=1688044986;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=paoOWoRp/3otlgIAgpwRBL/dAxaz2g8vyLl/NfCWtiM=;
+ b=DKKnt+AUE/ygu0OBjm8o1MpCIvvmfkRrH5JL9YHJuc8lbte/DyultqzLVH2DXBJxZs
+ R1O19nJ1oLlWvKSkIp9jaWOXrGYD9uQdn3+V6Fzl1vEmtu3bOL1nF4JNk30GQ/0K+mEl
+ wGPGSWl0nxaH+n+JuwRm1vleQkr3X/geAk79TO7s4KEQoGsJdPIWLYdq7I7trzj6Tvps
+ cGorY0DIxVb0NAZKbr8zxYGz5u0wSQv6X6ntFdOMYSBAcIP1y084IVqu8OTYzfXseAzo
+ ULQAytJCoUhQO3q1D4UHyGsK64abc0eYyQOZuqk8V9OMarbaUi+7Pre1S0iJfs/cfLFQ
+ Kvdg==
+X-Gm-Message-State: AC+VfDzW0PMYpMSdEEbcIIfWZrfJsvau/uyjUjk5pGbAtX7uuW98Zqm2
+ vZMTIxOD9BCwiGocwo12CHX0K3OUKjKfXyELclNNff+vpcqoKjUv5Q1fOHrLDLVjoFyLWZFIL99
+ NQVlN/kWii79yeveuouI0hNnWOG9UXuw=
+X-Received: by 2002:a05:6102:3e29:b0:439:3e26:990e with SMTP id
+ j41-20020a0561023e2900b004393e26990emr3954608vsv.6.1685452986461; 
+ Tue, 30 May 2023 06:23:06 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4r+uowCxIUYO1xYKRpN6tqB+DqZ/qUgNPtszf1iaGQP+YRewnNEqqwRC0hZ7Gp8E14ayfhFlmVD/24xDtKdf4=
+X-Received: by 2002:a05:6102:3e29:b0:439:3e26:990e with SMTP id
+ j41-20020a0561023e2900b004393e26990emr3954604vsv.6.1685452986264; Tue, 30 May
+ 2023 06:23:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20230527092851.705884-1-pbonzini@redhat.com>
+ <3188708d-f7ae-27c2-7bb2-0ac50b08c79a@redhat.com>
+ <ZHXyqdwAW38ZWk7Y@redhat.com>
+In-Reply-To: <ZHXyqdwAW38ZWk7Y@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 30 May 2023 15:22:55 +0200
+Message-ID: <CABgObfagAp_L6w+fkA8=9TRs_=ZKHp24TYZgQLxom7-o=SY7bQ@mail.gmail.com>
+Subject: Re: [PATCH 0/5] meson: replace submodules with wrap files
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, qemu-s390x <qemu-s390x@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,46 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ppc hypervisors turn HEAI interrupts into program interrupts injected
-into the guest that executed the illegal instruction, if the hypervisor
-doesn't handle it some other way.
+On Tue, May 30, 2023 at 2:57=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+> > > I'm not sure what's the best way to proceed for roms/SLOF.  Some
+> > > possibilities, in no particular order, include:
+> > >
+> > > * doing nothing
+> > >
+> > > * merging --with-git-submodules with --enable-download, and
+> > >    moving the git-submodule.sh rules from the main Makefile to
+> > >    pc-bios/s390-ccw/ (my favorite option)
+> > >
+> > > * copying the relevant SLOF files into pc-bios/
+> >
+> > Considering that SLOF is also rather on life support already (there is =
+now
+> > VOF for the sPAPR machine instead, Alexey left IBM, ...), I also wouldn=
+'t
+> > mind the third option, I think.
+> >
+> > But of course we can also start with option 2 and go for option 3 later=
+.
+>
+> My inclination would be for option 3 too, just copy the relevant files
+> into s390-ccw dir, so the two distinct ROMs are fully separated from
+> each other.
 
-The nested-hv implementation failed to account for this HEAI->program
-conversion. The virtual hypervisor wants to see the HEAI when running
-a nested guest, so that interrupt type can be returned to its KVM
-caller.
+Note that the amount of code is not small (7.000 lines of source for the
+network stack and 1.000 for libc); but yeah, that can be done.
 
-Fixes: 7cebc5db2eba6 ("target/ppc: Introduce a vhyp framework for nested HV support")
-Cc: balaton@eik.bme.hu
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Since v1:
-- Address review comments style and typo fixes
-
- target/ppc/excp_helper.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index d69bd0033a..0f7ed58673 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -1387,9 +1387,12 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- 
-     /*
-      * We don't want to generate a Hypervisor Emulation Assistance
--     * Interrupt if we don't have HVB in msr_mask (PAPR mode).
-+     * Interrupt if we don't have HVB in msr_mask (PAPR mode),
-+     * unless running a nested-hv guest, in which case the L1
-+     * kernel wants the interrupt.
-      */
--    if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB)) {
-+    if (excp == POWERPC_EXCP_HV_EMU && !(env->msr_mask & MSR_HVB) &&
-+            !books_vhyp_handles_hv_excp(cpu)) {
-         excp = POWERPC_EXCP_PROGRAM;
-     }
- 
--- 
-2.40.1
+Paolo
 
 
