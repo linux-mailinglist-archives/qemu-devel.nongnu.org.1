@@ -2,53 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A607156E9
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 09:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8246A7157BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 09:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3tuZ-00079x-4r; Tue, 30 May 2023 03:36:55 -0400
+	id 1q3uDN-0001Oe-NW; Tue, 30 May 2023 03:56:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q3tuM-00079K-QO
- for qemu-devel@nongnu.org; Tue, 30 May 2023 03:36:44 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q3uDH-0001OT-AZ
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 03:56:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1q3tuK-0001EW-Po
- for qemu-devel@nongnu.org; Tue, 30 May 2023 03:36:42 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 51F33945B;
- Tue, 30 May 2023 10:36:37 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C47EB8566;
- Tue, 30 May 2023 10:36:36 +0300 (MSK)
-Message-ID: <e10a91a7-a3e3-79d0-f413-4e5a6f8f325b@tls.msk.ru>
-Date: Tue, 30 May 2023 10:36:36 +0300
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q3uDE-00043U-0v
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 03:56:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685433370;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eCzA3naR0xjphXPwyKjaBf7yrKHIVk3sTeexl0+087I=;
+ b=e1tnfu3owFsIeWeu8qWkzUyindfZEim4NsEJ/T4THdsVM6xKcUtNPNUBLLLWREu4I4asA7
+ KkJnCludTpXP0Qo1pTsdHjUXQHAPutBOK7TCB5Aqml7Gq7nHSCIRxb/IZH91N5dx5O/lUf
+ AEWuDxp6Crm0CCYDy3W5/YN7TgSFFaU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-650-b8NF-_sQP_qkIfJCuDIIZA-1; Tue, 30 May 2023 03:56:07 -0400
+X-MC-Unique: b8NF-_sQP_qkIfJCuDIIZA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 18A9A101B047;
+ Tue, 30 May 2023 07:56:07 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E96682166B25;
+ Tue, 30 May 2023 07:56:06 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id D93CD21E692E; Tue, 30 May 2023 09:56:05 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
+ dgilbert@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
+ eblake@redhat.com,  manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v5 1/9] migration: introduced 'MigrateAddress' in QAPI
+ for migration wire protocol.
+References: <20230519094617.7078-1-het.gala@nutanix.com>
+ <20230519094617.7078-2-het.gala@nutanix.com>
+ <87sfbkjow3.fsf@pond.sub.org>
+ <af2e5fbe-75f5-d6dd-df8c-8894cc5b0056@nutanix.com>
+ <87edmyuwzc.fsf@pond.sub.org>
+ <99b3e516-2a4a-aa48-8bc2-7bb886b8db52@nutanix.com>
+Date: Tue, 30 May 2023 09:56:05 +0200
+In-Reply-To: <99b3e516-2a4a-aa48-8bc2-7bb886b8db52@nutanix.com> (Het Gala's
+ message of "Tue, 30 May 2023 13:02:27 +0530")
+Message-ID: <878rd6tfqi.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 0/5] gitlab: improvements to handling of stable staging
- branches
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <20230526101934.935969-1-berrange@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230526101934.935969-1-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,57 +87,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-26.05.2023 13:19, Daniel P. Berrangé wrote:
-> We just (re)discovered that our gitlab rules don't work nicely with
-> pipelines running from stable staging branches. Every pipeline gets
-> published with the 'latest' tag, whether its the main staging branch
-> or one of the stable staging branches. If pipelines for multiple
-> staging branches run concurrently they'll get very confused and end
-> up using the wrong container content. eg a 8.0 stable job will get
-> run with a container from the development branch, or vica-verca.
-> 
-> With this series we dynamically change the tag so that the 'staging'
-> branch still uses 'latest', but the stable 'staging-X.Y' branaches
-> use a 'staging-X-Y' container tag.
-> 
-> We also let the container tag be set explicitly via the new variable
-> 
->    QEMU_CI_CONTAINER_TAG
-> 
-> to facilitate CI testing, the new variable
-> 
->    QEMU_CI_UPSTREAM
-> 
-> can be set to the fork namespace, to allow contributors to run a
-> pipeline as if their fork were upstream.
+Het Gala <het.gala@nutanix.com> writes:
 
-Daniel, can you describe in a bit more detail (or refer to some text
-to read) about how this whole thing works, aka the "big picture"?
+> On 30/05/23 12:28 pm, Markus Armbruster wrote:
+>> Het Gala<het.gala@nutanix.com>  writes:
+>>
+>>> On 25/05/23 11:04 pm, Markus Armbruster wrote:
 
-It smells like we're doing huge wasteful job here, but it might be
-just because I don't understand how it works.
+[...]
 
-Can't we prepare all containers separately and independently of regular
-qemu commits, and just use the prepared container images every time
-we run tests?
+>>>> Aside: a more powerful type system would let us extend SocketAddress
+>>>> with additional variants instead of wrapping it in a union.
+>>>
+>>> Markus, what do you mean by additional variants here in context of socket? Can you give a small example.
+>>
+>> As is, we have a nest of two unions:
+>>
+>> * The outer union has branches @socket, @exec, @rdma.
+>>
+>> * Branch @socket is the inner union, it has branches @inet, @unix, ...
+>>
+>> A more powerful type system would let us extend SocketAddress instead,
+>> so MigrateAddress has everything SocketAddress has, plus additional
+>> branches @exec, @rdma.  Naturally, the type of the discriminator also
+>> needs to be extended, so that it has everything SocketAddress's
+>> discriminator type has, plus additional members @exec, @rdma.
+>
+> Okay, so you mean something like :
+>
+> +# Since 8.1
+> +##
+> +{ 'union': 'MigrateAddress',
+> +  'base': { 'transport' : 'MigrateTransport'},
+> +  'discriminator': 'transport',
+> +  'data': {
+> +    'inet': 'InetSocketAddress',
+> +    'unix': 'UnixSocketAddress',
+> +    'vsock': 'VsockSocketAddress',
+> +    'fd': 'str',
+> +    'exec': 'MigrateExecCommand',
+> +    'rdma': 'InetSocketAddress' } }
+>
+> Even I agree that directly leveraging this is the best option, but then wouldn't it introduce redundancy ? we would not be able to leverage socket union right in that case or am I missing something.
 
-Also, why can't several tests (from several different pipelines, maybe
-run for different branches) use the same images (if we don't re-prepare
-them on each and every test run)?
+Yes, there's redundancy, due to QAPI's insufficient expressive power.
 
-I understand different branches might have different requirements for
-containers, like using older version of some OS, etc, - this is done
-by naming the container images appropriately, like debian-latest (for
-master) vs debian-bullseye (for stable-7.2) etc.
+Is the cleaner external interface worth the (internal) redundancy, and
+possibly coding complications that go with it?
 
-Still, preparing container images might be done separately from regular
-commits, like when ci config changes or when new version of something
-(fedora/redhat/etc) is released.
-
-How does it all works, why we need to couple container creation to
-regular commits and re-create containers on every test run?
-
-Thank you!
-
-/mjt
 
