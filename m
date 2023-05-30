@@ -2,175 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA7F7158FF
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C768715935
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:57:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3v1z-00052c-F4; Tue, 30 May 2023 04:48:39 -0400
+	id 1q3v9n-00073n-8Y; Tue, 30 May 2023 04:56:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1q3v1w-00051a-9d
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:48:36 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1q3v9k-00073R-L8
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 04:56:40 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1q3v1u-0000hG-C0
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:48:36 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34U5lLpX013599; Tue, 30 May 2023 08:48:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1q3v9i-0000E1-LI
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 04:56:40 -0400
+Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34U1bcVN020114; Tue, 30 May 2023 01:56:36 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  h=message-id : date :
  subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=Lt7EW7W9ihB4ndaASi1XH5PQTCIxzhVvtQ5dIR12/SA=;
- b=qVsrvnKgSgIPKR4ekPogncSc6g3AhLyIcOG5IAMbYLCH0orSn8B2qnmejb6F3ynfCl+V
- SnMaPach22vbd0w6gRE8TvdR0EMv5qI6IR/ayjamwJ+riwMw7oFTy1gWcD8KdIpOPBZw
- hzS/plm3XnGE4l7czxM++xrWxe8PeWrULYQKh6QyXDKVUQAhJRz/y3lb9kzdRyZ4XxRk
- 2sxGbyPa06WRX0V4guGlhhor4Q8sYdQIEOyko/WX3fh0171zLZAyc5LVJiL86nu/Pj10
- yMVCjU0uA2i81GmS6lnY2jZur932AeoAJJaqKllJvWuaUXRI9klOTboRlPpD3ju1Hcgk WQ== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qvhjh264v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 May 2023 08:48:31 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 34U8GL0U014639; Tue, 30 May 2023 08:48:30 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam12lp2176.outbound.protection.outlook.com [104.47.59.176])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3qu8a3g51p-2
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 May 2023 08:48:30 +0000
+ content-transfer-encoding : mime-version; s=proofpoint20171006;
+ bh=Ng4GG1eUausDrLFwy2pi+lFz/b1OtteeZlQPvjBhXjs=;
+ b=yL5zEZu8U46dSvjiW5JswyjikGJvOjRkrG15rvUCx0wbxprkLv2LvRmb2x3jA+0+RUmk
+ Zkqk5JSnUn/iN/UtOsWCClwmXa8vOYf78oQBNcr7CbwVhC27FgIZw+Xlo7fstsbOquDY
+ ghegfhMkHdKvdvdFn1HS4iZ0qctkKzi6i3SN2ua4qcvZtE9iHSEStBIojB9uN8xbS58M
+ +WqmMcxSqjywmzOsoSQcsaMoCYSGuz9W2raIQ3npid9YpGOFGA7riRRKcEiaxQdkDUv1
+ E9Uu8cTXFPD/ibEsuH9QoZPRzd5fokbAzb3CwAUEvv6AEJkInXXwMdTzsUtEPck/XtW3 hw== 
+Received: from nam04-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam04lp2049.outbound.protection.outlook.com [104.47.73.49])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3quhcxpmr7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 May 2023 01:56:36 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NQ0TMP27hqZ3pXTW5hSCDyYoi27P3RPWckbe79B2pqYj+7mZT3b22ljLYIfsMJbMEYG42IqN7skFtAgS4KOzEel8ymBQovNR9Z5fMhqHANGLEQ9rL9jxcXYkmXawiYe1O4UrMojkzXev7PRX2AZNo/mUZxOiDtW3FzllnMSFaTETEYHk4icLvqhd9h7OUbvGWsdE4VpKCiQEwuX5+G5s+/g3qn6p6im+DpJBg8VDNqlZL5jtZfnnQvZpNi6ulT6E4Dw2rtZHcUy/aPQZxBpyxPO6UA8UrJf9mpv9mAt2p5G+Crv9P7JDyLnSH5W92atEvQJekFoCSLARNj0SrEV5/g==
+ b=GJ7Ptzp1Je3MLA0NmkclaPwKgJJkSi6UCV8axS1IYXTwNPBMbAp9OnaOceIrvs/tU7vbZAtecQ5uD5oX4RTuJy8I5BtRb5KHUZpgrIUwTDMMqS1gWMkc6c7VLwNjDVzcs7p+a8XnVBdxvXbe/QGYYsT0cvlvQISbz/h/oYbQCjlAvO6rT4qffeum9ORjHJKDiE/Shp+bg6Kf8jD1eT+FyDygn/s6Ynk1PcH/h77oYGfR4pO51R0W9uHxxCJhv/524mYBQXv5hDQdxDhw/oJX2cEmN0YpSksa8DOZhCpfWfH1xhqrkFsItNDjRGg2sXxYPWDNGMIYXW+U0vodUitoDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lt7EW7W9ihB4ndaASi1XH5PQTCIxzhVvtQ5dIR12/SA=;
- b=NIP4BTXwh6jx9zH4VFiifY6oGOd3IMtnBbh/fn4zoG5kSiqjswYgtaATI12s2Zf3ti75Js7XtpUg/f7KgAzJ7E4DLU0jOqx0qb2vUoxyB+p5NQRvAlOQEl9weAyUUPpL6u7xpwZWTE3euolm2PNsf9WWg6yzeOSbLC9r653eZkTkzBE4vuFX3ZHKXsGDaVghJRjsXJ+VHjgugF8cemaFGebvksUZqO3tG1BTYuHEuZjcC0SyaOZCOJ7Q2MF4kvRJjvZhzqhSrE4fEugmMDv4KiK6ubp0wnCBCLq14ZrrgaMcxIeiW/mR+KTqJwU+Mpd3IbSVUlTZva5t2+RXFIF2hw==
+ bh=Ng4GG1eUausDrLFwy2pi+lFz/b1OtteeZlQPvjBhXjs=;
+ b=ee9KpfVehAXcCHAUVd3nFnIADxidykqfmV+ipxCMjlDoCHBfq8o4kAr4z1gZHDNdY50z5st14RUC3vNKhQ0GcZeJqv/bwrAFqa+jD8n2GutZHL0SAy5Mj9GK7udU+D3uqWsKl1E1LPmf1Vn4lFMMh54NR61e1deoL23G1kfQ6eCmrmuTo/myNhSq+ObJAlenaeGLyCneFILEONZoxY7LZ/RbQo6WIimsLlhdrWQzhL+hOuJnICypgeqF1TG0We7PdUwpOWAfAR+D362wCT9mVE6lsYJLYorrSH1P1a13PsvkHvRTjkdiwoao16XWeOhTCxzwVl7jVrv5iE14pOg+GA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lt7EW7W9ihB4ndaASi1XH5PQTCIxzhVvtQ5dIR12/SA=;
- b=sJnCcsz+shuoJFK/rWGOlgezZ3SN7/z5ZrY2zK28N4NivAyT1N9nj44yIZpHTAOvLWx539LMu14Au4j/dIyTVO1W3uhRfdWokWpvPpuL+f9eqYJ4+YtrEibuOEtcudC2I5+VJGXiCxsCWzf6rb6g8Z8qI+bTIKXR95wB5gQzuq4=
-Received: from DS7PR10MB4846.namprd10.prod.outlook.com (2603:10b6:5:38c::24)
- by PH0PR10MB4742.namprd10.prod.outlook.com (2603:10b6:510:3f::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.22; Tue, 30 May
- 2023 08:48:28 +0000
-Received: from DS7PR10MB4846.namprd10.prod.outlook.com
- ([fe80::df3:10ce:b3a0:c597]) by DS7PR10MB4846.namprd10.prod.outlook.com
- ([fe80::df3:10ce:b3a0:c597%3]) with mapi id 15.20.6433.022; Tue, 30 May 2023
- 08:48:28 +0000
-Message-ID: <2aa582b9-2b37-e96c-1dc4-4c0dbcaebf23@oracle.com>
-Date: Tue, 30 May 2023 09:48:20 +0100
-Subject: Re: [PATCH v3 2/2] hw/vfio: Add nr of dirty pages to
- vfio_get_dirty_bitmap tracepoint
-Content-Language: en-US
-To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>
-References: <20230529121114.5038-1-joao.m.martins@oracle.com>
- <20230529121114.5038-3-joao.m.martins@oracle.com>
- <33c0d0b3-fbe5-9f1a-b3ff-f3e1f25d09a8@nvidia.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <33c0d0b3-fbe5-9f1a-b3ff-f3e1f25d09a8@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0005.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:150::10) To DS7PR10MB4846.namprd10.prod.outlook.com
- (2603:10b6:5:38c::24)
+ bh=Ng4GG1eUausDrLFwy2pi+lFz/b1OtteeZlQPvjBhXjs=;
+ b=QCqsZwQrkLEl8R4gpn1hakqyqyqrpM6ShrWn+OZUnLx3nu5qFwG/koeOfMLy0NRyGhiIV3bJkQhRvHZNovb+epYaGmrCNV+aIM+l2554YbXlaW62vR+TgDBeNnnym8qiBJ2wOsCZecM0Im/f0K3/4W/2kaq0lCSeHMnqQS00nbpNm70xEOWgqlO3x3TWxIeoC6Qsd7EZ59ME0luFP3u9moKNBwz/mPmNxYQrV1NySqA4NRYe0GoxFT+nyCSUQstLGXGiHtGQXxszOFUS2jEOF1AB/eRnTJ/M7A/e730NkhH3xs+fWj1jIqkw4C/+qe2Zp3zD2bAZMC/C0iCVx4k2NA==
+Received: from BYAPR02MB4343.namprd02.prod.outlook.com (2603:10b6:a03:57::18)
+ by SA0PR02MB7147.namprd02.prod.outlook.com (2603:10b6:806:e0::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.23; Tue, 30 May
+ 2023 08:56:34 +0000
+Received: from BYAPR02MB4343.namprd02.prod.outlook.com
+ ([fe80::1a4c:7e55:b776:43cb]) by BYAPR02MB4343.namprd02.prod.outlook.com
+ ([fe80::1a4c:7e55:b776:43cb%6]) with mapi id 15.20.6433.022; Tue, 30 May 2023
+ 08:56:34 +0000
+Message-ID: <fde7d182-0744-d907-5c1d-3f60f9a5d19c@nutanix.com>
+Date: Tue, 30 May 2023 14:26:23 +0530
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v5 1/9] migration: introduced 'MigrateAddress' in QAPI for
+ migration wire protocol.
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
+ dgilbert@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+References: <20230519094617.7078-1-het.gala@nutanix.com>
+ <20230519094617.7078-2-het.gala@nutanix.com> <87sfbkjow3.fsf@pond.sub.org>
+ <af2e5fbe-75f5-d6dd-df8c-8894cc5b0056@nutanix.com>
+ <87edmyuwzc.fsf@pond.sub.org>
+ <99b3e516-2a4a-aa48-8bc2-7bb886b8db52@nutanix.com>
+ <878rd6tfqi.fsf@pond.sub.org>
+From: Het Gala <het.gala@nutanix.com>
+In-Reply-To: <878rd6tfqi.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0020.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:b8::8) To BYAPR02MB4343.namprd02.prod.outlook.com
+ (2603:10b6:a03:57::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR10MB4846:EE_|PH0PR10MB4742:EE_
-X-MS-Office365-Filtering-Correlation-Id: a2c64ec8-fd59-402c-5d14-08db60eaa2d8
+X-MS-TrafficTypeDiagnostic: BYAPR02MB4343:EE_|SA0PR02MB7147:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ebecb26-4b8e-47c9-3e63-08db60ebc4e3
+x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rut/EZ9lbbYnWbjWFz5zZOMBNqikB++576eduau7kbgFpVbMjxqPEGiuZ6bj38t6t/YL88V8pjZOVa7oYds5G2eWJDwWL1WTr6VFanNjjhoJ5v9+mfRku8bxKQaV0nq2EZWmu49kJCr0iZE0C0F3vJZvrwTB6Tq0lJKc0wlP+YwcF76ewOYDY3AInzB9S4NGSD9idWqwrJvUf/6JsdmH6iITXbFak1EyIjjGolnpJ1YWuiULbIoMPhTRFPtDtET18UsFL1zdcRkOIqlM9agBws47goZzIOIGKMfU7u6DJt7XkpYZqmzQb6jaxbKVYIk7fGV4sOnAZZBpqTfQYvCORImVH5Ytwz0kwIpE4tLeELxMb3cZkGcbvhdckL9AxcP7pAHeKYXApMiO+2ybz8IsZsGUsnv2OolhUqKFdrejzEQHeAPcn8OG7D22SUCBnN5R9BckGtGeUDky74cEd/PkYlWaPRtZn/5xJlfnOME3p5o6tYh0XcTCcxhQBl9e/QSz1KEtt4NUplRfQn4jqhu2HjQ4PIsHXpPMMfJpx6x1OF1ASP2ykjDSUbXqInG3Bd3sHQ6+cA1O04+xTgcxeqlhcR5evlUg4T/TvO6H2P2ixbqbQ/DgkAFHHv63FY1FtgAhY6XQKCQetVO67fGLYuLbrw==
+X-Microsoft-Antispam-Message-Info: ZIgmzDzOKj87O9xDMDaESDE33kz2AQHKozhuuB+kFd5lPKPD3Qgu0a1DB8PhGcAIy9EaK4TdLaDV0P5zefP7RjgadQoMXBE+hY4VQCRT8Zkd2kGwDJP8QTG6NMi2/B1pRUtm4fqg8pysdRDtBqrTkkBHUVGQkXXKcPml2kk27vzkCUCIZTGdIfl6+zhzADbCPBN6dYIKrVmSJvZAw6wLTniQDGREL5t+hhZTMXAOJZv+3rIeW04mAZcx5BA6KYoSh+9Rz7KAUB/L+8NpCePGIV7d7lDI1gVSmdIrUUWdH+r6/MAAzjegkWJ0ISYggnurSC0BYl1nc+QZbuUwsIl76KJxR8m1go8636PfwGzHLRriLPLmqHIuDWYWXQaCFGPpJ5nT16fgIfZ4kO2SptQCwT8YsL2rAe/GtwHQs+Hbsxei1ml4LpkfMrQCz3EfNhEUrV5+3a0y3pDdp5NI9ZJMnR0oslQZrIV0RLQfdhDYxU+TrLpP3lgO1hxxjftuYBu5Xmuyd4VlAyvpK7cvkLdsX7q5SHfs+M4m2qxBDo8s7ph+vCED/TIcGDZI9JpWJsSRmyhhCoEFqF70aITwasWzOeT9LuSv3BdWU387ami4WC58WYO19TDfe4E8FEEoEwsXLdj9w2e6Q0lyffA9hsQ9vw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS7PR10MB4846.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(136003)(346002)(376002)(39860400002)(396003)(366004)(451199021)(86362001)(83380400001)(316002)(5660300002)(6666004)(66946007)(66476007)(66556008)(4326008)(36756003)(31696002)(41300700001)(8676002)(8936002)(38100700002)(6486002)(54906003)(2616005)(2906002)(53546011)(6506007)(6512007)(186003)(31686004)(478600001)(26005)(14143004)(45980500001);
- DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:BYAPR02MB4343.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(346002)(136003)(366004)(396003)(39860400002)(376002)(451199021)(186003)(107886003)(2616005)(38100700002)(41300700001)(31686004)(6506007)(6512007)(53546011)(26005)(6486002)(6666004)(478600001)(4326008)(66556008)(66476007)(66946007)(6916009)(316002)(8936002)(8676002)(5660300002)(44832011)(2906002)(31696002)(86362001)(36756003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZzBGcU5aQUx2ZmtSNzB3NVZURDZOTU9ua3d3WDZ5ZFBUOGlDQ0o2YVNxK0Nz?=
- =?utf-8?B?VFdTTEpQbWJoRG90K0JZVGw4c0dBN2c4UStvS0lGV2ZteXlrRE1kZmtOSll5?=
- =?utf-8?B?S0wrNE05YjF5bE5LVWJHYTFOL3RWRVJqOVhEZ2N4dmNDTzVLVHJxZGJaRTlw?=
- =?utf-8?B?NnBBQkFrSklLYnNGdWRBcW1nTFUrdnlIT1hMbmxjMzdRY2JlTE5iNGRjRmJi?=
- =?utf-8?B?bEdZeGI4N3VZbmZKVnIrZktQcnF4TEhJZjFGYVpsK1ZiT2Y5SG1NdzRiOWF6?=
- =?utf-8?B?cVQya0djTVlVNXllTTlKVjkveEJOWnRmc3ZBR2QvaE93REdJTXpuU2haK3c3?=
- =?utf-8?B?bjAxT2lyN2pBRmphNkthcCt5SStUN05nNU1FeEFiSVBjWUljTU9seUMzWDdv?=
- =?utf-8?B?WVJkcHdsdnI5MHhkSXpvZGh1SnBNdWFTaG1ITHZ0dHZQdnVNRUs2RjdTWnJv?=
- =?utf-8?B?TTJySG9oVFFXTmpaNGc1Z3FTUDlMSExCditmS29tS2lTTUg3YjlRNHRVOHNm?=
- =?utf-8?B?WHFEMFdXenFQbmFCbElDdE41Ni9NOVR5MTB6cncwak9IWjlTd2hOaGhlOHQ4?=
- =?utf-8?B?cFNVbnJYWFJoYzNVRmFLUzBLOE9YRm1PSmNKUDFlOWJnSUJ6WGV4TUpoVmdz?=
- =?utf-8?B?ZUhtWmlaS1Bxa3NsUUk3c3orM2xEVE9FZ1RNY1RuN3VJVzJNOHJwa3IraHZw?=
- =?utf-8?B?RkV1WnpsTWJzWjI1b0VPNm9KUVVFT1NxNnN2bnZoMW5wZVp2YmVJbkNHWEIz?=
- =?utf-8?B?ZnljWWJMaXViREdaRWxhYjVScmNld3RjVGhhcCs4ZlhESFVCM2luMHQzV1JH?=
- =?utf-8?B?dWxCRlZjYW9jbW9LSUlidFZJdjg1cmJsQmc3dFJuOVRJVEVuazVmaGNIRnps?=
- =?utf-8?B?aHpiRWhKT1hDaU0ybm9BdngzcmVKL3VvN1hQNE9iSE9mMm8yMEdWY3l0NjZn?=
- =?utf-8?B?aVVxSXliL0dYSUdFcDF0ZkpPcGhtUUhwWE00dXlRMnJtSVdEeXVYaGJNbGVJ?=
- =?utf-8?B?dHlLdWlhNXNienluLy9TR1ZCdS9jSFJ3MFFGRGo3SVB5ZWVmVGp4aEhyeHdF?=
- =?utf-8?B?UHhhVHo0SllZNjZvYkFad21sOWc3YUxPS0NidlRabVcrTGV6blNlakF1Mmlx?=
- =?utf-8?B?K093S0tsWURVRzJYYjVqM3o4TEJCUmZTV1FqZlhhbm9uWkpjZ0RYZlhiTC9M?=
- =?utf-8?B?Y3Bodjc1eUhjRjJTMks1SG9ZZWhLbWNxNUtFTE5LU3BWQ2luc0xTMnlLQUw4?=
- =?utf-8?B?OHcvbUFOMzF2TlBsakwwY05ibS9ka0VPQ3NIdW1icmo5RXZUWnlhc05QQTNY?=
- =?utf-8?B?TDdaeGdWOXdaTU51cWtqZTBTelNtSEtaZFlpOFUzSHVGd25sVE9kMlB5S2hQ?=
- =?utf-8?B?dFNzNHJ0TjJaeFJqNmtUQVNlejhEaTgwTlNtYU1ITHNXRHI4L0NnSFBXNEdR?=
- =?utf-8?B?NkxNekZsa3VKcW1MbHhSMW5rY1pmQnJwUWhpcEhnUTVDNWhFQ2hVeFdWcmt6?=
- =?utf-8?B?TnI5Z1c2c1E3U2grV1I3Q0lua3BPcU1sbXZ5OWJhN1hRSUJNQUVEb0pHaEox?=
- =?utf-8?B?SDNJTzlrdmY3Z0Ruc0tnWXJGRnVuY2FrdFBkZ1kxYjFYUERhc2hRQTNyRlhk?=
- =?utf-8?B?WmdESGJ1dHZnNlg3WXNEVnIzdCtmc3pEdlRVcFhNOWtybWdwanBMUFN0WVNZ?=
- =?utf-8?B?Z2sxVHlNbXN5SDgrZkxwdi9pVC9QeVZQc0JoN1JtVkZCM3dkNlZGMTExUlBK?=
- =?utf-8?B?OStXVzJzZlVZbk1WNC80Y21QU2ZidmQyZ2dXanF6UXlVYW9RSE9ja3l1Um9V?=
- =?utf-8?B?WHdoVTJnb1k4OXlyZGRpSUxUK3YwcTdvZWwyQnBCdDdJbmtVRkUrNjRSRXVv?=
- =?utf-8?B?RDhtOFBWOEQ4aE5QSXNISUFvM2JONERxV0lXVWE3bUE5dW1sdDJQd1VzVDBE?=
- =?utf-8?B?Wk13UHh0aGJrOXNYYTl5NE1yWjZ2czlta2ZJM3FhVlZrSHk1M1AvM2lHVFBW?=
- =?utf-8?B?RzNwSjUxc3RnR0I0RWVFcFlwcjNTY2hxTXh2OElLVTMyRTFOY3RHcE9jVlVS?=
- =?utf-8?B?N1lLYlBEMnZCb1Z5WEN4alJKaGRLL3JEVXlibVp2OVpKdDFLMW1MS2N3VTg4?=
- =?utf-8?B?RkhBREFKampScEtYTGhQa1VWa2JJQ3Nzb0l0VTl2U09LY09Zd2JHemhjSDJZ?=
- =?utf-8?B?UkE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: OL13NGv99swRxZlG5H6KMLTEt4qOVe+qa3j4UevgLJo2SckMMPEvjxKJ51Cmmjt2JGL5moVcx+b6LIfmO8nIhu5qLd/AxDkXhIzXZwDfrIYv3Wg8OC9ap8qtSVjDbDQylCzY0DJ16slfNKg+U8RuZPdow1BMBhJ/4W2m09db5jonDQwp3LZOSxtAoJZsw0umK6DIXddDQDIxxQqfyN6d4ffleFK8tVBgwXTncgig081KrDcQXr3Lel1GfrU+rozrusdLZp8iGIHw4sHzfx04emKxKJivzie4Uz2Pjh01jQKtIHXzg+YhcKBNWlmT042sItVk8XT5qa6mCqrnf89RFkwh7hqRwe8ptHMnxfC9hgWnN5DWuSXfGTv8AqUp8YgfnTXl1F23DFJLcc6Lgexl9m9Hp9yDBc9O7nDMfp3DS+Ebuz8lF5Zp/uvC8JxVq93SPfEXxPX8q8lWMLqpFP5M94Rtt9kCr/pzpoIEYkFk61XiUKQhsTuZJM0C3oufV+RWxNET7QC+T4MeJrd+TjXWTczfVa4ZiPYfT17/+xs/txkEnMUpLXL7MgZwrzjHFsxoKOVVqkivGdVoW12+TkoV92n6Y3gRaRu58DIIv5KAdZuIFepjHhbdPYo+n06hmQ5IX+se2pwiRCIIuy6TUH6jMwdpDGl5aZ2v5yTvQtI6QCbUIGTGNyQytQZTg1QMk8MB2tAFU6VJlUiIIZaqctRt/+r61VzDrW39snpUy1it9NaR9+Y0iOJOW5jXf2KH/hTqk6M/6G+xi5CPGYts5zpTjS9rELUciG1dL0i3ylnGjg8YqSLp8p4vG+yz6VXPh8SQByqM74Y7Xdq/hKC+AZkBLw==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2c64ec8-fd59-402c-5d14-08db60eaa2d8
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR10MB4846.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?amI5MkNCS2M0SWdDYWhGS1BGcFdoZkszQ2JLOEM3MjZsa2F3NVJ0MDEydC9H?=
+ =?utf-8?B?ZWVDR3F0alJVSFRWQm1tZmZIUlJZbnlkQ25HVXRhaUlTVWdpYVJTck9FYVBX?=
+ =?utf-8?B?VWxzZ1lKeHI0R0t6QWpDK1NyWHFLdVRPdFJpZ0xHeEJVU0NWTytFd3lIU1Qz?=
+ =?utf-8?B?VC8yeHlkRDYveXJ3cUJWUGVBSVhuR3BTOHhLTDk5ampRZ2NwUFdhQ2E1OTBk?=
+ =?utf-8?B?N3dzRGhMc2R6Y0hlaHBXZzZEMGhqbmtsbTFWcXdJNGovZWdQaVEzOGl3YUwv?=
+ =?utf-8?B?Mm9PVmhJbzBvc1pEcUhFL0NrRUFjNFUramhxbW9kNyt3RmtVZ05GbjFRanVI?=
+ =?utf-8?B?MGpheDZqQ3ZWZUhiUkJGNHRQNEhjbCtBbzgyV2t1RjdOTlpOMGh6dXBDcE0v?=
+ =?utf-8?B?Y1FTWWl3aGpwTG5YMmQ2WlFXN1BGMml6SlR4L21EcVNDOW42MGxKejBwNkEr?=
+ =?utf-8?B?akRFdGduSUduUHhOc0I4TXpuZ0dwVklYK1BzNjMzVWVndlZhNmdpb2Z1N0ZG?=
+ =?utf-8?B?b2NYSFdiYkNadzZPYzYrQ051dksxRDJYbktCc0hlU0lTMWIwYUFEaTRKWkhs?=
+ =?utf-8?B?c1RwZGRkdzFZcGxDRER0Rit0TllsMFdpQ1VPU1ZwQ2RsS1QxOE0zRjBnQ1Ju?=
+ =?utf-8?B?SkU2RmxlOHRTUzRoOGE4UWFWMHFiWG01b3FYb2wzTDI0d3huQ0UySS9aRjky?=
+ =?utf-8?B?NmkyMVpRalV3LzJ5d0tsODRhUUV3NWFOcHdIdEkrTjBhcXRuVlBaZTFlcHY1?=
+ =?utf-8?B?ZDg5UG1XRG5ReEVwRlhyKzJPeUl6OFFBZXllZ0ZSOTlLVkdYUGVQeW1RbFNH?=
+ =?utf-8?B?M1lzRVBHL0Y3RHZEVmlRZVgzc1FXMURNNjRmaE5YN3pzUklKa29mcGpKUjBs?=
+ =?utf-8?B?ZE9TN3JTQWxqcWgvOGFQVUhUenVkQ09tRUd3N2JVcjJONSticDUzS2pNS0hN?=
+ =?utf-8?B?RTFtanIycEFZUkk0b2RSMXY0QmdOZXF1U2RVZ0p2N3BST1pLWjhoWUFTSXI2?=
+ =?utf-8?B?N01PVkF6WUJjRkk1czNrREpBdXFQeEFDL3U3RitndVJKQVZQMkVyQW9YSGlI?=
+ =?utf-8?B?ODRnVWE4Ti9HTjNXWFpwSnhMWFlLZVpXOU9IR1F6cE9XdXhRTjFIR3B1VnM2?=
+ =?utf-8?B?SXd1VkFpV1VOVDlGclhaMnpJcjhraUN2SExLQW13b05OQTA3QjlESFFwRGFp?=
+ =?utf-8?B?KzhwOGsxUit0YWRqSTJOQmNrSW4zS1VFUnpRZHlEb2tVNkpPWjdadlVrcjE2?=
+ =?utf-8?B?TVpNa1pWd2xTWFVRRWJDTDRVQ2JhVzBjSDZCZUxxUzhmSnV1dFVqcWs0aFRs?=
+ =?utf-8?B?RFRiM2JLT1d5c1cyRVJaaXBESmJScCtXeEVxVktJeElDR0FQSWRYMThTOG9i?=
+ =?utf-8?B?TWZETE1KSXlhNy9tVXY5dVJZRm11S0tPdGxCY1JaTXdoM0ZmQkVNV2YyUmVu?=
+ =?utf-8?B?QkdETkRZczNFeko3VXhPV1czYmdZRVFPeGJKbnovbEpkU01DSHFmdUk3VDN4?=
+ =?utf-8?B?anI0RFgyWjEraWx6OG4zaXJ5RmFwZ2xhN3Fud01oTW8ybDVtSUhqYW5uTHRa?=
+ =?utf-8?B?TUdrM0RHaFhLOXJ4Qi93YzJSdEFzcnQ1VmIrYzM3R0ZjUXJjZ0ZTaFpFTlhv?=
+ =?utf-8?B?ZEVvdGxORHYyamU5WFZ1RXlGN0JkVjRrdklZdGJrUEw1Y0pKMTZ1cWVGbVJV?=
+ =?utf-8?B?ZjNzcDVic1NVLzdZOVROSkE2eFM4WGRmbDYxcUdRTlRxODRJQjZkaTY4TFls?=
+ =?utf-8?B?dUxUdEJtRDdNSmxERDRlbVMvSzNYaWhqM1ByNVJneEl6TmE4WlNoWUd4alJN?=
+ =?utf-8?B?VC9JVEVEYjJ4L21YZnI2VGo3bnpITVcwWlJUS1dTUWVNL09TemwyeWFFblN1?=
+ =?utf-8?B?MldYVEVvRUVnbng5NHdlcXBvUGNEQkdMK1kreUphdExtOWRxelVNWEkvOHAy?=
+ =?utf-8?B?S2RtNWczbkQzdEE0T0VhcGp3YjlDRy9WTDVWODhlWnNzWW10aTlpVUV4NjAy?=
+ =?utf-8?B?djllMWp3ckh1RXQwL2NXdG45amZ1RTl0VExOSzhKZDRFWFhCdUJUMzhmRGEw?=
+ =?utf-8?B?Tkl3cUhvUTFnc1JxcGV6Z2xKT243NXJvdGdhR3NxWWN6T2pKTzFDM1kxVHkv?=
+ =?utf-8?Q?xuzqNLBTmrD6tCCZXt1shBvdV?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ebecb26-4b8e-47c9-3e63-08db60ebc4e3
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4343.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 08:48:27.9143 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2023 08:56:34.3700 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JFzXBy6ADva2lHRJFvSSkE9xuHqjoR8oKZaw4wzdRDpgTAVr5MsFTSmpGga5vwFuZfBjtej4dSnMe47RK1qYLetl0bfyGOKRtAOtK0p3vRQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4742
+X-MS-Exchange-CrossTenant-UserPrincipalName: j4M4i581puYj5rqR8FeokBzPOqaJcjAZIuySG8B8DD6qlb1Cs9unZiyzFaJNp7nP2M5gFeZGezzmf6GjPRIuww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR02MB7147
+X-Proofpoint-ORIG-GUID: aZbUJyPQGxHy5kc4U_vTQuaXUjBdYkUJ
+X-Proofpoint-GUID: aZbUJyPQGxHy5kc4U_vTQuaXUjBdYkUJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-05-30_06,2023-05-29_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 spamscore=0
- phishscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
- definitions=main-2305300073
-X-Proofpoint-GUID: 0d_PDFEIzTHmaOq636RY3y3NsQMn6SHf
-X-Proofpoint-ORIG-GUID: 0d_PDFEIzTHmaOq636RY3y3NsQMn6SHf
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
+ helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -188,85 +175,63 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-
-On 30/05/2023 09:39, Avihai Horon wrote:
-> 
-> On 29/05/2023 15:11, Joao Martins wrote:
->> External email: Use caution opening links or attachments
->>
-> Just a nit, maybe subject should be "vfio/common: Add number of dirty pages to
-> vfio_get_dirty_bitmap tracepoint".
-> 
-
-Fixed
-
->> Include the number of dirty pages on the vfio_get_dirty_bitmap tracepoint.
->> These are fetched from the newly added return value in
->> cpu_physical_memory_set_lebitmap().
-> 
-> s/cpu_physical_memory_set_lebitmap()/cpu_physical_memory_set_dirty_lebitmap()
+On 30/05/23 1:26 pm, Markus Armbruster wrote:
+> Het Gala <het.gala@nutanix.com> writes:
 >
-Fixed
+>> On 30/05/23 12:28 pm, Markus Armbruster wrote:
+>>> Het Gala<het.gala@nutanix.com>  writes:
+>>>
+>>>> On 25/05/23 11:04 pm, Markus Armbruster wrote:
+> [...]
+>
+>>>>> Aside: a more powerful type system would let us extend SocketAddress
+>>>>> with additional variants instead of wrapping it in a union.
+>>>> Markus, what do you mean by additional variants here in context of socket? Can you give a small example.
+>>> As is, we have a nest of two unions:
+>>>
+>>> * The outer union has branches @socket, @exec, @rdma.
+>>>
+>>> * Branch @socket is the inner union, it has branches @inet, @unix, ...
+>>>
+>>> A more powerful type system would let us extend SocketAddress instead,
+>>> so MigrateAddress has everything SocketAddress has, plus additional
+>>> branches @exec, @rdma.  Naturally, the type of the discriminator also
+>>> needs to be extended, so that it has everything SocketAddress's
+>>> discriminator type has, plus additional members @exec, @rdma.
+>> Okay, so you mean something like :
+>>
+>> +# Since 8.1
+>> +##
+>> +{ 'union': 'MigrateAddress',
+>> +  'base': { 'transport' : 'MigrateTransport'},
+>> +  'discriminator': 'transport',
+>> +  'data': {
+>> +    'inet': 'InetSocketAddress',
+>> +    'unix': 'UnixSocketAddress',
+>> +    'vsock': 'VsockSocketAddress',
+>> +    'fd': 'str',
+>> +    'exec': 'MigrateExecCommand',
+>> +    'rdma': 'InetSocketAddress' } }
+>>
+>> Even I agree that directly leveraging this is the best option, but then wouldn't it introduce redundancy ? we would not be able to leverage socket union right in that case or am I missing something.
+> Yes, there's redundancy, due to QAPI's insufficient expressive power.
+>
+> Is the cleaner external interface worth the (internal) redundancy, and
+> possibly coding complications that go with it?
 
->>
->> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->> ---
->>   hw/vfio/common.c     | 7 ++++---
->>   hw/vfio/trace-events | 2 +-
->>   2 files changed, 5 insertions(+), 4 deletions(-)
->>
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 78358ede2764..fa8fd949b1cf 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -1747,6 +1747,7 @@ static int vfio_get_dirty_bitmap(VFIOContainer
->> *container, uint64_t iova,
->>   {
->>       bool all_device_dirty_tracking =
->>           vfio_devices_all_device_dirty_tracking(container);
->> +    uint64_t dirty_pages;
->>       VFIOBitmap vbmap;
->>       int ret;
->>
->> @@ -1772,11 +1773,11 @@ static int vfio_get_dirty_bitmap(VFIOContainer
->> *container, uint64_t iova,
->>           goto out;
->>       }
->>
->> -    cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
->> -                                           vbmap.pages);
->> +    dirty_pages = cpu_physical_memory_set_dirty_lebitmap(vbmap.bitmap, ram_addr,
->> +                                                         vbmap.pages);
->>
->>       trace_vfio_get_dirty_bitmap(container->fd, iova, size, vbmap.size,
->> -                                ram_addr);
->> +                                ram_addr, dirty_pages);
->>   out:
->>       g_free(vbmap.bitmap);
->>
->> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
->> index 646e42fd27f9..cfb60c354de3 100644
->> --- a/hw/vfio/trace-events
->> +++ b/hw/vfio/trace-events
->> @@ -120,7 +120,7 @@ vfio_region_sparse_mmap_header(const char *name, int
->> index, int nr_areas) "Devic
->>   vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long end)
->> "sparse entry %d [0x%lx - 0x%lx]"
->>   vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t
->> subtype) "%s index %d, %08x/%08x"
->>   vfio_dma_unmap_overflow_workaround(void) ""
->> -vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t
->> bitmap_size, uint64_t start) "container fd=%d, iova=0x%"PRIx64" size=
->> 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64
->> +vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t
->> bitmap_size, uint64_t start, uint64_t dirty_pages) "container fd=%d,
->> iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64"
->> dirty_pages=%"PRIu64
->>   vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu
->> dirty @ 0x%"PRIx64" - 0x%"PRIx64
->>
->>   # platform.c
->> -- 
->> 2.39.3
->>
+Honestly, I would like to have it this way, where the user is aware of 
+all the transport mechanisms available. But I guess for external 
+interface problem statement, the migration code flow has similar path 
+for SocketAddress and non-socketAddress (exec and rdma). So even if on 
+the QAPI side we express explicitly all the transport mechanisms, while 
+implementing it we either would need to brinf them under a single 
+umbrella. For now, I would keep the implementation as it is (union 
+inside a union) but would want to have a more powerful and better 
+appraoch out there if possible.
+
+I would like to have Migration maintainers - Juan, Peter Xu and others 
+to comment on what approach from the above two is a better one.
+
+Regards,
+Het Gala
 
