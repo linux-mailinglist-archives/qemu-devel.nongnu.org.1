@@ -2,105 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45FF716B27
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 19:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 622D4716B3C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 19:38:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q43Bb-0003LJ-2r; Tue, 30 May 2023 13:31:07 -0400
+	id 1q43Gy-0007Ax-0J; Tue, 30 May 2023 13:36:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1q43BY-0003Km-Q2; Tue, 30 May 2023 13:31:04 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q43Gw-0007Ap-VA
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 13:36:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1q43BX-0004Ng-4E; Tue, 30 May 2023 13:31:04 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34UGlXv9014383; Tue, 30 May 2023 17:30:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=CVDXMS51QvHyr8mnDWodcSzkoGw1DV/HfYyx1qTq4Pg=;
- b=S9tNUcHX9Ka4THIdVTkC6ySfZzGyNWw0Z5fijrXEZ3eKzwgGL8zW9eqB2JH3dW8mK7g5
- qEPX6g/EDwbaH1lukJFVKiYVJPBYohraccuskzxFGVoFy2M7fJTLLY327X/gb+cuTVbw
- WaOEBYrT6/fLgkf9KmnXQVEAITUuni5+ZK32VI0xUrEFqIesxajyhSsX+wp9es2+0S+N
- Lja8T8EufQTlKZ8DncMf3VYe5U8QVLqDQpFZoAn/Jqbg/zThwmCz1n4tjtaBiYyrq1kI
- WmqRmZ+Yzv8DMn4mmmb2fZCniL9tkCHXN7VQ44qrnb5Dyakbf/mR+zWxgCKsF3bthrTl /g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwmf2224a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 May 2023 17:30:53 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34UHTf99028354;
- Tue, 30 May 2023 17:30:52 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qwmf2223p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 May 2023 17:30:52 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34U3UTcQ029244;
- Tue, 30 May 2023 17:30:50 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3qu9g51kmf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 May 2023 17:30:50 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 34UHUlnD14615154
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 May 2023 17:30:48 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D96B320040;
- Tue, 30 May 2023 17:30:47 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E5C620043;
- Tue, 30 May 2023 17:30:47 +0000 (GMT)
-Received: from [9.171.3.249] (unknown [9.171.3.249])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 30 May 2023 17:30:47 +0000 (GMT)
-Message-ID: <38fdc4d6-ab1d-c305-c42f-0efab30c23a5@linux.ibm.com>
-Date: Tue, 30 May 2023 19:30:46 +0200
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q43Gv-0005qM-Mn
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 13:36:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685468197;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=Xy5vAbhJrft/dP28QxlH4WxYA05FQPiHb1+gQJ/veA8=;
+ b=XwyoaBg1q/VDQRBOTb71zCRlrUDcrkp9oxCb1KXoMTXR/dnO4OMigTUbe6rn/r67FUnEls
+ Ssid/Jg6/ONwXMkDMhfPrR8pcb1Yt75FFJWhFjfxqfdwTEaIUuG9ImxL1idHv5qbFkJatO
+ utjJHcwy+I5CAWTOqbxI3PMQm+4uZGA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-249-bVgXUtpNNWSnCKqYZBci8w-1; Tue, 30 May 2023 13:36:28 -0400
+X-MC-Unique: bVgXUtpNNWSnCKqYZBci8w-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30ae4ed92eeso1369869f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 10:36:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685468186; x=1688060186;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Xy5vAbhJrft/dP28QxlH4WxYA05FQPiHb1+gQJ/veA8=;
+ b=CPMt3YWW95vr91S5mfX0F7FA1qKJVtcJHxqYF2pzgmmoDgj53eQAuuRnfWDoMKL5r/
+ tSr9XKMy72n0g8R0G5Gnw+7UZvGyRnjwDcU10PmJwS017Atrvml1xrw4e8dlQkjpxB3l
+ xdPcYIYkvqRzJOLdgjSosfergT/0WHyauA5VOyJeHUU230oAy78BBGi66ae9Nv/O4fTj
+ H0FQ30OtDEeAms/j6r7XVV73fMyTlXdw6CccGnUx1dSHv/Gx97fIcTQnunjuexRLKKx2
+ Hwy1XCbpe6C5aATyE+hJqBKCZ9i1TJAp77lJstxfcRARLz1UqXJwfGHuySb+1INHPZXc
+ hP4g==
+X-Gm-Message-State: AC+VfDwK4DtVzvuOO8gmGh38NwgYeecILcocWM25mYpqC16nEab0/e+1
+ aGGlJ5Y008OkPEV+67XUrnTSJ10MuC86GNp/iC9XqNLeQ1hq6ngoBxu4eWq2UEP1xjehwkLbqd2
+ XijlnOvsOD4jYiYoj6q2YueZGGpVCTUULJnQ8BRed8ozjpv/4gC2nBhSanMesg5OxUX3jyNEiv+
+ LfTg==
+X-Received: by 2002:a05:6000:1374:b0:309:5029:b071 with SMTP id
+ q20-20020a056000137400b003095029b071mr2417864wrz.45.1685468186804; 
+ Tue, 30 May 2023 10:36:26 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4VfOY1cTDWmFhJS0XFiLJs+bip5EX6OwiClhx1FRhpwTpQt/goB98kfI0DEzLM2C4haJdmbQ==
+X-Received: by 2002:a05:6000:1374:b0:309:5029:b071 with SMTP id
+ q20-20020a056000137400b003095029b071mr2417842wrz.45.1685468186453; 
+ Tue, 30 May 2023 10:36:26 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ w8-20020a1cf608000000b003f18b942338sm18125404wmc.3.2023.05.30.10.36.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 May 2023 10:36:26 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,  Leonardo Bras <leobras@redhat.com>,  Hailiang
+ Zhang <zhanghailiang@xfusion.com>,  Peter Xu <peterx@redhat.com>,  Fam
+ Zheng <fam@euphon.net>,  Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: [PATCH 04/16] qemu-file: Don't call qemu_fflush() for read only
+ files
+In-Reply-To: <20230530122813.2674-5-quintela@redhat.com> (Juan Quintela's
+ message of "Tue, 30 May 2023 14:28:01 +0200")
+References: <20230530122813.2674-1-quintela@redhat.com>
+ <20230530122813.2674-5-quintela@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Tue, 30 May 2023 19:36:25 +0200
+Message-ID: <87y1l5vi06.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 4/4] pnv/xive2: Handle TIMA access through all ports
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, danielhb413@gmail.com,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230530161129.313258-1-fbarrat@linux.ibm.com>
- <20230530161129.313258-5-fbarrat@linux.ibm.com>
- <be9a5a3a-a46a-6317-dd2b-cd442f019158@kaod.org>
- <b731ee69-0e1f-6eef-4c44-e6711ea39c12@kaod.org>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <b731ee69-0e1f-6eef-4c44-e6711ea39c12@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Qg3hjRzLOObAlCAkRL3qhqA43YpIzjdU
-X-Proofpoint-ORIG-GUID: 3vDikFwXOlB0DzX5V3FZP5snx0Kuvnbp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-30_12,2023-05-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- lowpriorityscore=0 phishscore=0 priorityscore=1501 mlxlogscore=780
- adultscore=0 malwarescore=0 impostorscore=0 spamscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305300135
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,58 +100,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Juan Quintela <quintela@redhat.com> wrote:
+> This was the only caller for read only files.  So change the test for
+> an assert in qemu_fflush().
+>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
 
+Drop this patch.
 
-On 30/05/2023 18:49, Cédric Le Goater wrote:
-> On 5/30/23 18:40, Cédric Le Goater wrote:
->> On 5/30/23 18:11, Frederic Barrat wrote:
->>> The Thread Interrupt Management Area (TIMA) can be accessed through 4
->>> ports/snoop buses, targeted by the address. The base address of a TIMA
->>> is using port 0 and the other ports are 0x80 apart. Using one port or
->>> another can be useful to balance the load on the snoop buses.
->>
->> and can we have some nice examples of how these ports are used ? only for
->> snooping or also for balancing operations ? which ones ?
->>
->>> The TIMA registers are in the 0x0 -> 0x3F range and there are 2
->>> indication bits for special operations (bits 10 and 11; everything
->>> fits on a 4k page). So the port address bits fall in between and are
->>> "don't care" for the hardware when processing the TIMA operation. So
->>> this patch filters out those port address bits so that a TIMA
->>> operation can be triggered using any port.
->>>
->>> It is also true for indirect access (through the IC BAR) and it's
->>> actually nothing new, it was already the case on P9. Which helps here,
->>> as the TIMA handling code is common between P9 (xive) and P10 (xive2).
->>>
->>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->>
->> Reviewed-by: Cédric Le Goater <clg@kaod.org>
-> 
-> one extra comment, since we already have one mask for the tima offsets :
-> 
->      /*
->       * First, check for special operations in the 2K region
->       */
->      if (offset & 0x800) {
-> 
-> I think it would be cleaner to add some defines in the reg definition file.
+As Richard has strong opinions about calling fflush() on input streams.
+I still think that it makes zero sense to call it on a migration input
+stream.
 
+But I don't care enough to fight this battle O:-)
 
-Yeah, you're right, I should respin it with some proper defines. And 
-I'll add one for the special op bit(s).
+Later, Juan.
 
-   Fred
-
-
-> 
-> Can come later.
-> 
-> Thanks,
-> 
-> C.
-> 
 
