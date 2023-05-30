@@ -2,77 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12B07160A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:53:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B297160A2
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:55:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3yqv-00016v-Je; Tue, 30 May 2023 08:53:29 -0400
+	id 1q3yrz-0002HH-Up; Tue, 30 May 2023 08:54:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q3yqp-00015w-9g
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:53:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q3yro-00027m-Dn
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:54:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1q3yqj-0007Ps-PP
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:53:22 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1q3yrm-0007ai-3f
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:54:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685451196;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1685451261;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9uGpwsbXMH0Oq3sB35Oip0o3UHK9xVQhVFPdSwssEiA=;
- b=O8CgFRS7PfURmpnnXCnpkjgExnW6uOdVymHXwK6va6wCDubf8GUxsi6/dvKP3htXNnqn/O
- 5OdrmW/osIYPHeiNe7AmbyWYHS2g2h4lJgitEid0R1ChpcgB7DnBMux7SaJ1INcwxrQ4oU
- tKIypyWb560MiJywDBKhp9xP/MFHJFQ=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-PlhKuUXHN9OtdCpos4C9GQ-1; Tue, 30 May 2023 08:53:15 -0400
-X-MC-Unique: PlhKuUXHN9OtdCpos4C9GQ-1
-Received: by mail-ua1-f71.google.com with SMTP id
- a1e0cc1a2514c-78369c2c6d9so1264584241.1
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 05:53:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685451194; x=1688043194;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9uGpwsbXMH0Oq3sB35Oip0o3UHK9xVQhVFPdSwssEiA=;
- b=KR377PBLaiR2S9/bFG170jlVk9gUwl1um6UTNNTjqRZJAwcHqFb/NAZpyBcmVfODqW
- fp3I/WURjXQ0UafXUyRt0L7pfRdwS0sbfu2HcLL7pehmxcXl4xGKE5Wu+LVjlmdS3Ykt
- Jg7rGO4ABsBOTyNUlcJtSfPZiyipFQ7x4Tf2uxtNDhG/PXMNqLfA/i98LzrhP/aoXYNb
- ztw37peD1QW/JmDsfP3zlSiVIwlgSeWaw5SvLagYgjSwmLRcPMytyv/da4VRfyiiKHEn
- ZxFlKL6v5Q+GmDb7CCQm2FVryd9i25bjsYybv/c2ZrdJaP9LrhQc94wwyR5r0fi3Gbcv
- PrAA==
-X-Gm-Message-State: AC+VfDy/LpiyWSaFzzY9E7+rcoQb5Wv2mh44jl41I8Go3Y360lV3xV9u
- 8Lh+hxF1FdO4dqBYwfM1Sah6lng7sa/IAuikNLJBOVzCktxRPrDnn34izBGctRHqu/vh3opoG/o
- xuqcI4IFxo7FtBRkmiO9WRHWAEIILOg/6CHtcQOSHaA==
-X-Received: by 2002:a67:be16:0:b0:439:5db0:c6ef with SMTP id
- x22-20020a67be16000000b004395db0c6efmr610030vsq.6.1685451194425; 
- Tue, 30 May 2023 05:53:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7B3a+/mJtOSiC9S9rdgkcIsc5ESnpmlYsWqFwaydpdIMc2nzQ9L1S/C0ZThOyaBzMfziFz0s8JZ8tQlDoI9D0=
-X-Received: by 2002:a67:be16:0:b0:439:5db0:c6ef with SMTP id
- x22-20020a67be16000000b004395db0c6efmr610022vsq.6.1685451194184; Tue, 30 May
- 2023 05:53:14 -0700 (PDT)
-MIME-Version: 1.0
+ bh=1Wt4c4Z1BLWYRe0HHVMVcCe8NSz9H+YZr8nf4xNXzO0=;
+ b=fF7BVCwPfJh9jzpwiF2ilw1JitazAKPhuplbTp21UEQAE4NZYuirPyy2l9KNv4ZJlxeER/
+ 1F+b6bdUgRFMSEIyZxu3Jz4sQpaEI+ClolesgtbpGEKHrpsV7s3TtDAg+B6bFE6q4KtlZt
+ xUT8A077LMR2HsiuICesmkWkCh3ikBs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-247-qPcorMEnMgGKkZNnlEOwUA-1; Tue, 30 May 2023 08:54:19 -0400
+X-MC-Unique: qPcorMEnMgGKkZNnlEOwUA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 52E5E85A5BE;
+ Tue, 30 May 2023 12:54:19 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.167])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6F1B548205E;
+ Tue, 30 May 2023 12:54:18 +0000 (UTC)
+Date: Tue, 30 May 2023 13:54:15 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, thuth@redhat.com
+Subject: Re: [PATCH 3/5] meson: subprojects: replace submodules with wrap files
+Message-ID: <ZHXx92WrSIoYMQtl@redhat.com>
 References: <20230527092851.705884-1-pbonzini@redhat.com>
- <20230527092851.705884-5-pbonzini@redhat.com>
- <1981c8e3-9109-7562-0d64-1fa091a28e3c@redhat.com>
-In-Reply-To: <1981c8e3-9109-7562-0d64-1fa091a28e3c@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 30 May 2023 14:53:03 +0200
-Message-ID: <CABgObfaKt36_iOTw-EOkoEDJz_Br=15PRMJm9xd6YBu2k99i3A@mail.gmail.com>
-Subject: Re: [PATCH 4/5] configure: check for SLOF submodule before building
- pc-bios/s390-ccw
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, berrange@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ <20230527092851.705884-4-pbonzini@redhat.com>
+ <ZHXq3fDd14O9yIcA@redhat.com>
+ <CABgObfYkohfVakNq377LF8ZXmNhYEm69_ad48Ew6rmsiVo=Okw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfYkohfVakNq377LF8ZXmNhYEm69_ad48Ew6rmsiVo=Okw@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -93,53 +81,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 30, 2023 at 2:04=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrot=
-e:
-> On 27/05/2023 11.28, Paolo Bonzini wrote:
-> > SLOF is required for building the s390-ccw firmware on s390x,
-> > since it is using the libnet code from SLOF for network booting.
+On Tue, May 30, 2023 at 02:51:07PM +0200, Paolo Bonzini wrote:
+> On Tue, May 30, 2023 at 2:24 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
+> > > +    if test -e "$source_path/.git"; then
+> > > +        echo "--disable-download specified but subprojects were not"
+> > > +        echo "checked out.  Please download subprojects."
 > >
-> > If SLOF is absent and submodules are not updated, pc-bios/s390-ccw
-> > cannot be built.
-> >
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > ---
-> >   configure | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/configure b/configure
-> > index 1d1b8736c0eb..c92a3b30b9a4 100755
-> > --- a/configure
-> > +++ b/configure
-> > @@ -1662,7 +1662,8 @@ fi
-> >
-> >   # Only build s390-ccw bios if the compiler has -march=3Dz900 or -marc=
-h=3Dz10
-> >   # (which is the lowest architecture level that Clang supports)
-> > -if have_target s390x-softmmu && probe_target_compiler s390x-softmmu; t=
-hen
-> > +if have_target s390x-softmmu && probe_target_compiler s390x-softmmu &&=
- \
-> > +    ( test "$git_submodules_action" !=3D ignore || test -f roms/SLOF/V=
-ERSION ); then
-> >     write_c_skeleton
-> >     do_compiler "$target_cc" $target_cc_cflags -march=3Dz900 -o $TMPO -=
-c $TMPC
-> >     has_z900=3D$?
->
-> Not sure if we really need this. Only the networking part of the s390-ccw
-> bios cannot be build without SLOF, but the main binary still builds fine
-> also without it.
+> > Building from tarball will be ok as we bundle everything affected. This
+> > errror will hit anyone building from git with --disable-download though.
+> 
+> Right, just like it hits people doing --with-git-submodule=ignore; but
+> you're right that --disable-download is more generic and therefore
+> this error is more likely to happen.
+> 
+> > How should developers/users download the subprojects ? Can we tell them
+> > what command is needed ?
+> 
+> For those that want to use --disable-download, I can include "meson
+> subprojects download" in the error message, e.g "Please invoke "meson
+> subprojects download" before configuring QEMU, or remove
+> --disable-download from the command line."
 
-Thinking more about it---considering we have prebuilt s390-ccw
-binaries, why would someone want to rebuild only one of the ROMs and
-risk breaking the other? Should we keep this patch, and also include
-$(SRC_PATH)/netboot.mak unconditionally from
-pc-bios/s390-ccw/Makefile?
+Ok, that sounds reasonable to add to the message.
 
-Paolo
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
