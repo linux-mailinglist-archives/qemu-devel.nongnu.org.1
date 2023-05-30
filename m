@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B5B716A97
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 19:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A710716ACB
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 19:23:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q42vc-0002Vp-DQ; Tue, 30 May 2023 13:14:36 -0400
+	id 1q432h-00018D-SF; Tue, 30 May 2023 13:21:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q42vV-0002U9-Ll
- for qemu-devel@nongnu.org; Tue, 30 May 2023 13:14:29 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1q432f-00010N-6v
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 13:21:53 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q42vT-0000ld-Vl
- for qemu-devel@nongnu.org; Tue, 30 May 2023 13:14:29 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1b024e29657so25316915ad.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 10:14:27 -0700 (PDT)
+ id 1q432d-0002WS-HP
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 13:21:52 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-53fbf2c42bfso603160a12.3
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 10:21:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685466866; x=1688058866;
+ d=linaro.org; s=google; t=1685467310; x=1688059310;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=19xUmwucjlPlCbCbCkRgWpnQzK/vAbAewK+zBqhGe7Q=;
- b=umZL5zfBoWHxC58bly+zyP8bXYGy4/L8tUnD/6bTDVFNAl7zLbNI/QVEbJvafuEtT1
- 44YMGsT/w/snNAs59V6L1EknsEhXZaSiadx/q6tmcenf03fB8VI8fFjKO8TYX9UuL+g0
- bDeQ2w5csi+76EgTFGeFnNgHDHVUzI3yP9r60p7CQWkCRpF6r14XU+gV4uI+UShECHwo
- jEs5uEvn/uj9ky/T1vrYMcWZQazC9blyX83KxCFND59f7njTjgG92DNIsSg9P5QS/NR3
- bBgHbpiIKu6VjFoiwiV43GD4fAfOzcHGV6yS2ArAVKkNWLPN543FgaO9U2pWLNnsrkTL
- 1rxw==
+ bh=50B0/Lj2G2z68eOzMBX+iLv4/VTkFzw+BlWgQOL3hnw=;
+ b=bns5VUQPdQJnhAQvEB6VCo+9rpT2JrTwC6z0CjXDA0yORvYa9oglK8b8W4YOIDZNVb
+ EsLZueLeT0te7olH1FInTk2IW9euC9HSTqvPRs2W1quq+71hGcD+cszyL6nN3e0ahg74
+ quZMcq4kkbWmVTwC9ZhJVTYdwQkzie37Mvt/TIZIw8m+GwwF/y0063ZdHQeHgQLBsqM0
+ cAJ0AilDr5MmUJXaEUOodPSSnHSuk2+A0/Js9k+B8nkR0inJElY3D1XbzBfq7WBJ5vki
+ msQ65D68+5JlkURVTbWWIvtW4d2csDT2ExdLK5KQss5HKIT3p+gZSb2PPE1E9YO5YrBR
+ xVsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685466866; x=1688058866;
+ d=1e100.net; s=20221208; t=1685467310; x=1688059310;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=19xUmwucjlPlCbCbCkRgWpnQzK/vAbAewK+zBqhGe7Q=;
- b=OPNlX92IgSZ+3uRSh5c+Og5bC+tSjRQOMAlhe1k3zWge1wsXGWuet9ZBNNWf4Kv3aW
- lym5WtGjBT5MDfVDOh1hfqV6ffP+9Ar5UVwO7bY9GhekWEg9L1UU13jOPxy4Y2QlSj4I
- BgPa9C1aqEQlMebRYCH6/4iDMVjsgKNoF2Uo4g0nhn+G5IYS5JSSEFEzQWyoKjO77dpv
- nyGySJ/SVmoJgtRqXmjweNHp/xZohZvUhW6VvWtuO1yh76MOW4VvlbJTj70qGkPsrF0r
- pmATr6HpdAltRLg9WBvZlYaF3RaMxB5EEBBeylCzWVbw1DT2GhCni9ih8nMmzuX+ockk
- 7d5A==
-X-Gm-Message-State: AC+VfDz5qaNJ4Dtap20p2LoD51Q3gU1UYxsyEXSdQfO22IKFgt8jwjz4
- OFHgynsxrP+8vJY2wfOZoMkRQQ==
-X-Google-Smtp-Source: ACHHUZ7IiuRkmTQ9iFVEn5ZkRx2TUJzRMGJIicqnOcK8dO2LlR28OcN/5+rynlZ8t1XZ8ZD3o3LwjA==
-X-Received: by 2002:a17:902:bb87:b0:1b0:26f0:4c8e with SMTP id
- m7-20020a170902bb8700b001b026f04c8emr2123392pls.69.1685466866386; 
- Tue, 30 May 2023 10:14:26 -0700 (PDT)
+ bh=50B0/Lj2G2z68eOzMBX+iLv4/VTkFzw+BlWgQOL3hnw=;
+ b=bL3d4DrcFdZE87xsyMLeZEXEhlFBY4AZAr+uNOWf4rnx/6C9mGniUHY3Foh2zmJ2Fm
+ A+7G/Ihj56GUYTL2pOqmWKDpjtKF3HNE8guvtdcxEx9cLJUkaWoNNd7+VkfIcNrwhueE
+ MejM0RcX+Cgr5iI7jtGQxyOzCY08Nm++jMDUBoRZAYEJXw19HNGeiC29pTmP4T3cXPRE
+ 7l/IdSr/obyqLXhpQne1f62kwf0VIQV+uk/46Np9fV0XHPeGanlwfCMxNSjwhspvFU58
+ s7reEvOYbt4wa1Tl+sBF+8RaDhWBPCF682mimCiqob1viqTfVRWFtK08zKQRCbK/i7oG
+ k6SQ==
+X-Gm-Message-State: AC+VfDy8Wc4koYy99GfaaYPYD9xUCosLDZROguDnQUm1MOkr8cvFKKWS
+ HBxrSUlJQS6amxvBenMrDE8bfirO4QXXB22fVls=
+X-Google-Smtp-Source: ACHHUZ6jlD0WtVyUADgjVQ7Hwm5EuaNx1ptUws3lqCtJN9oO7cstkYw2tA1lkVL5SaTBLJ1X8kG1JA==
+X-Received: by 2002:a17:902:e811:b0:1b0:61dc:db67 with SMTP id
+ u17-20020a170902e81100b001b061dcdb67mr3204680plg.30.1685467309851; 
+ Tue, 30 May 2023 10:21:49 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:35a2:c45d:7485:f488?
  ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
  by smtp.gmail.com with ESMTPSA id
- j7-20020a17090276c700b0019c13d032d8sm10536038plt.253.2023.05.30.10.14.25
+ i12-20020a170902eb4c00b0019a773419a6sm5478538pli.170.2023.05.30.10.21.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 10:14:25 -0700 (PDT)
-Message-ID: <733e16a5-39a3-3807-d951-9029e2be7298@linaro.org>
-Date: Tue, 30 May 2023 10:14:24 -0700
+ Tue, 30 May 2023 10:21:49 -0700 (PDT)
+Message-ID: <44d4f3e3-2c3e-f3a3-8917-72399a084356@linaro.org>
+Date: Tue, 30 May 2023 10:21:47 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 04/16] qemu-file: Don't call qemu_fflush() for read only
- files
+Subject: Re: [RFC PATCH] target/arm: use x86 intrinsics to implement AES
+ instructions
 Content-Language: en-US
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Leonardo Bras <leobras@redhat.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>, Peter Xu <peterx@redhat.com>,
- Fam Zheng <fam@euphon.net>, Stefan Hajnoczi <stefanha@redhat.com>
-References: <20230530122813.2674-1-quintela@redhat.com>
- <20230530122813.2674-5-quintela@redhat.com>
- <60036a5c-920e-8407-e030-1dbc1008418b@linaro.org>
- <877cspwxxp.fsf@secure.mitica>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
+References: <20230530135204.2903761-1-ardb@kernel.org>
+ <666b4b6c-380e-142e-9348-823006b35312@linaro.org>
+ <CAMj1kXEE3X=m9X9DkMu885w=Vperp100NWcJ33XOTDm0O+1sWQ@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <877cspwxxp.fsf@secure.mitica>
+In-Reply-To: <CAMj1kXEE3X=m9X9DkMu885w=Vperp100NWcJ33XOTDm0O+1sWQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -102,36 +101,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 10:06, Juan Quintela wrote:
-> Richard Henderson <richard.henderson@linaro.org> wrote:
->> On 5/30/23 05:28, Juan Quintela wrote:
->>> This was the only caller for read only files.  So change the test for
->>> an assert in qemu_fflush().
+On 5/30/23 09:58, Ard Biesheuvel wrote:
+> On Tue, 30 May 2023 at 18:43, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
 >>
+>> On 5/30/23 06:52, Ard Biesheuvel wrote:
+>>> +#ifdef __x86_64__
+>>> +    if (have_aes()) {
+>>> +        __m128i *d = (__m128i *)rd;
+>>> +
+>>> +        *d = decrypt ? _mm_aesdeclast_si128(rk.vec ^ st.vec, (__m128i){})
+>>> +                     : _mm_aesenclast_si128(rk.vec ^ st.vec, (__m128i){});
 >>
->> Not a fan, as fflush(stdin) is well-defined.
+>> Do I correctly understand that the ARM xor is pre-shift
+>>
+>>> +        return;
+>>> +    }
+>>> +#endif
+>>> +
+>>>        /* xor state vector with round key */
+>>>        rk.l[0] ^= st.l[0];
+>>>        rk.l[1] ^= st.l[1];
+>>
+>> (like so)
+>>
+>> whereas the x86 xor is post-shift
+>>
+>>> void glue(helper_aesenclast, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+>>> {
+>>>      int i;
+>>>      Reg st = *v;
+>>>      Reg rk = *s;
+>>>
+>>>      for (i = 0; i < 8 << SHIFT; i++) {
+>>>          d->B(i) = rk.B(i) ^ (AES_sbox[st.B(AES_shifts[i & 15] + (i & ~15))]);
+>>>      }
+>>
+>> (like so, from target/i386/ops_sse.h)?
+>>
 > 
-> I guess you mean this:
+> Indeed. Using the primitive operations defined in the AES paper, we
+> basically have the following for n rounds of AES (for n in {10, 12,
+> 14})
 > 
->         For input streams associated with seekable files (e.g., disk files, but
->         not pipes or terminals), fflush() discards any buffered data  that  has
->         been fetched from the underlying file, but has not been consumed by the
->         application.
-
-Yes, in that, importantly, it does not assert.
-
+> for (n-1 rounds) {
+>    AddRoundKey
+>    ShiftRows
+>    SubBytes
+>    MixColumns
+> }
+> AddRoundKey
+> ShiftRows
+> SubBytes
+> AddRoundKey
 > 
-> Two things:
-> - Current code just do nothing for imput streams
-> - We only call it from qemu_fclose()
+> AddRoundKey is just XOR, but it is incorporated into the instructions
+> that combine a couple of these steps.
+> 
+> So on x86, we have
+> 
+> aesenc:
+>    ShiftRows
+>    SubBytes
+>    MixColumns
+>    AddRoundKey
+> 
+> aesenclast:
+>    ShiftRows
+>    SubBytes
+>    AddRoundKey
+> 
+> and on ARM we have
+> 
+> aese:
+>    AddRoundKey
+>    ShiftRows
+>    SubBytes
+> 
+> aesmc:
+>    MixColumns
+> 
+> 
+>> What might help: could we do the reverse -- emulate the x86 aesdeclast instruction with
+>> the aarch64 aesd instruction?
+>>
+> 
+> Help in what sense? To emulate the x86 instructions on a ARM host?
 
-Pardon?  There are nearly 30 calls to qemu_fflush.
+Well that too.  I meant help me understand the two primitives.
 
-> - If we drop anything from the input stream, migration get broken.
+> But yes, aesenclast can be implement using aese in a similar way,
+> i.e., by passing a {0} vector as the round key into the instruction,
+> and performing the XOR explicitly using the real round key afterwards.
 
-I'm not talking about dropping anything.  Obviously QEMUFile works different from stdio, 
-and therefore resetting the file state to that of the unbuffered data is not relevant.
-
+Excellent, thanks.
 
 
 r~
