@@ -2,94 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381B6715EE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D867F715EF6
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 14:22:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3yKQ-0008HJ-AI; Tue, 30 May 2023 08:19:54 -0400
+	id 1q3yLs-0001dC-Go; Tue, 30 May 2023 08:21:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3yKG-0007l3-MM
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:19:44 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q3yKF-00073b-5W
- for qemu-devel@nongnu.org; Tue, 30 May 2023 08:19:44 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-30ae95c4e75so2416242f8f.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 05:19:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685449182; x=1688041182;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Hte6Z3s2OOCCifRBIc/cUlFXu9Wprm67pz6esrvZtPE=;
- b=oTsudeT8nhTIX6m8A9/y7IjzoN8+KmMdBK5XAbGpBav0C66pJiKUZ7XEMELQWe5nI9
- 09tVitaFQZoDlGdhMRlqf4jfAgRMIPqsuxu0ptM+x58NPTOezlD7DOyOR36xCYePSKLg
- TY9Aq5NWgJkQ8Q80vTe3E/zuDIBfmrwKURHJKBdhr/r51t2z7tphgdVBTcf7jInqAnhe
- y5UOEMfrX+80u/RNylyJ5KWRjXOAOHKfbBrFP9Dw0EjooCYUHICWt55YQ1vBYWgrHtDa
- oAbbCko3XIASLTH7IFo5HDSS4kkWtJDdAeVKfPamWxIkIdGCQuMGlaPYE2RO26SlcgVC
- 8HUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685449182; x=1688041182;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Hte6Z3s2OOCCifRBIc/cUlFXu9Wprm67pz6esrvZtPE=;
- b=IjU+j8hqdES6ANvzKVJST/ddrH0QG5RXyIfUK4h237hfTYPKGUeW+Tzpl78WiyXAwH
- 5HEhixBhRb+7lxUSMnYquaFwzTRVtDW/TgUlRRFnQdskbgtayeQRuZubnUc5p2nag640
- Oy5qWbx15Su1Ir2vuPrBPZ/wN9a1AxzyjCSdebzLQW0weKI5iUKdJMioWA5vnyBgLYks
- AwOvHfeEMyBxdgPdNfG5oRl9sIaJNFf4hMJzGytfPtwX6yE7w+Cwek6Kl6l9ngbszznC
- ipKNXR+OF2mizn4B5d5GTkzQ7SNa0wAD1dP/c2pGDaSr/+MSffw8Nl3qylbrHBpaGbbd
- bcDg==
-X-Gm-Message-State: AC+VfDyDZBs4sPS1hkmYkfUKz2FBT3I0qEXFzzvXNbL3l5xZSjPYl7a4
- Bvo7DbyibrFfenTMd4zZqauqOw==
-X-Google-Smtp-Source: ACHHUZ5R8Qihy8gxJfL7NqGn6r8RooQQkQXeCL2uxvfBX/mm7LU2myNUpLJa2YCEVBBGSu6vq1F/GA==
-X-Received: by 2002:adf:fe0f:0:b0:30a:eda0:71c5 with SMTP id
- n15-20020adffe0f000000b0030aeda071c5mr1425974wrr.16.1685449181788; 
- Tue, 30 May 2023 05:19:41 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.180.1])
- by smtp.gmail.com with ESMTPSA id
- t4-20020a5d5344000000b00307acec258esm3180259wrv.3.2023.05.30.05.19.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 05:19:41 -0700 (PDT)
-Message-ID: <f8b1a6b2-6b54-85d6-98ed-2015c6e4aaf2@linaro.org>
-Date: Tue, 30 May 2023 14:19:38 +0200
+ (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
+ id 1q3yLC-0001Wi-5q
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:20:42 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <zhaotianrui@loongson.cn>) id 1q3yL8-0007Tq-Tm
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 08:20:41 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8Cx7+sS6nVk_ZUCAA--.5590S3;
+ Tue, 30 May 2023 20:20:34 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxQbQS6nVk5ZeAAA--.13145S2; 
+ Tue, 30 May 2023 20:20:34 +0800 (CST)
+From: Tianrui Zhao <zhaotianrui@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ maobibo@loongson.cn, zhaotianrui@loongson.cn, gaosong@loongson.cn
+Subject: [PATCH] hw/smbios: fix thead count field in type 4 table
+Date: Tue, 30 May 2023 20:20:34 +0800
+Message-Id: <20230530122034.547109-1-zhaotianrui@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 03/10] hw/arm/virt: Use memory_devices_init()
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230530113838.257755-1-david@redhat.com>
- <20230530113838.257755-4-david@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230530113838.257755-4-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8AxQbQS6nVk5ZeAAA--.13145S2
+X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
+X-Coremail-Antispam: 1Uk129KBjvJXoW7WFy7uFW7Gw1kurWfJF1kZrb_yoW8CF4rpr
+ yDArWkWr1fCr1I9w47Za4UWFyrJwsYgayUJ39Fq3yFywsxKw45Xa4kKay7tF92yF1vqa42
+ qrs8uF4SvFWkZr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+ qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
+ bn8Fc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4
+ AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF
+ 7I0E14v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+ 0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xAC
+ xx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VWrMcvjeVCFs4IE7xkEbV
+ WUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx2
+ 6rWl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+ xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+ cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+ AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7Cj
+ xVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvj4RC_MaUUUUU
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,17 +74,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/5/23 13:38, David Hildenbrand wrote:
-> Let's use our new helper. We'll add the subregion to system RAM now
-> earlier. That shouldn't matter, because the system RAM memory region should
-> already be alive at that point.
-> 
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->   hw/arm/virt.c | 9 +--------
->   1 file changed, 1 insertion(+), 8 deletions(-)
+The thread_count value in smbios type_4 table should be
+(ms->smp.cores * ms->smp.threads). As according to smbios spec 7.5
+Processor Information (Type 4), the field "Thread Count" means the
+"Number of threads per processor socket" rather than number of
+threads per core.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+When apply this patch, use "-smp 4,sockets=1,cores=2,threads=2" to
+boot VM, the dmidecode -t 4 shows like:
+
+Handle 0x0400, DMI type 4, 48 bytes
+Processor Information
+        Socket Designation: CPU 0
+        ...
+        Core Count: 2
+        Core Enabled: 2
+        Thread Count: 4
+        Characteristics: None
+
+Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+---
+ hw/smbios/smbios.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index d2007e70fb..56aeaa069d 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+ {
+     char sock_str[128];
+     size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
++    int count;
+ 
+     if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+         tbl_len = SMBIOS_TYPE_4_LEN_V30;
+@@ -749,15 +750,15 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+ 
+     t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
+     t->core_enabled = t->core_count;
+-
+-    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
++    count = ms->smp.cores * ms->smp.threads;
++    t->thread_count = (count > 255) ? 0xFF : count;
+ 
+     t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
+     t->processor_family2 = cpu_to_le16(0x01); /* Other */
+ 
+     if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+         t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
+-        t->thread_count2 = cpu_to_le16(ms->smp.threads);
++        t->thread_count2 = cpu_to_le16(count);
+     }
+ 
+     SMBIOS_BUILD_TABLE_POST;
+-- 
+2.39.1
 
 
