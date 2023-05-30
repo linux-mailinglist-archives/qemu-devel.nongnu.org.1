@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADEF7161BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F137161FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:32:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zNM-0006cl-AI; Tue, 30 May 2023 09:27:00 -0400
+	id 1q3zNr-00085a-MM; Tue, 30 May 2023 09:27:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMq-0005cD-Hm
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:30 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1q3zMs-0005e8-3S
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:32 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3zMo-0001Nt-1R
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:28 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3f60dfc6028so46587525e9.1
+ id 1q3zMo-0001OF-NS
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:26:29 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3f6d38a140bso32310855e9.1
  for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:26:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1685453182; x=1688045182;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=TclIhye/wZJNtsgGG5Szlu+i/oS5v/vZCReK2fB+ZZ8=;
- b=xauBe/p9ng6uoRcSTVKDOIsgayW1aC+H1ZZul7KpOrXESaUara7XmnlU/EzNy1mZ1K
- nG2C6L3wwzGAo5R8tU7eRp5bZCsMmpi8pIfiG96p+Nrf41NEfeAgKVS7dL9ZWRPPG1gU
- rujJpQzvcTtrnQNyW2RAQsaqLvww1wKUwm46zTZ3LcHgYFJVVPpZC7S3FZ5wHk8IJY9w
- jP6skm20axLL2g7zZTQAQZZtV7nKcLiqnrYrZm3IsPp8o7FCiRJP3nx+Ddeqky8xPuxv
- JND3v3f3oi8m82t1DUI+xPyutdIkZYkjNT7Pltgsn5Hd+HrXpLWKZnyR9qdfJbxXXViF
- 68FA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=cb7tW0OrRUlLGsWKm9Wt1qUNMT77CsNBwWCPAxZNsz8=;
+ b=F99oshoIb0a4BpGIsKNj/qvwufmntZ1c4KVtKoiG66ExFG5FY7RCGwQDWG1Ii8QdRp
+ jXNx+1cvzgZFNHrAmFFcnUSZPlldObt0XKhO7R7/XnosIVvAQsObVYju03jXhxG3cTit
+ 74jfO5lGqer8P2xnznqtCmnaTnQSO3Ax6zX8ll8WQniI4imGnscFmhKEDW2mKx1Oj/he
+ RQByEqMAI5N22yGhb22uGNcgKl+YbgBYbuDGIHLxbkeQoWEm9To1uaAhm1sWwqWSiV0Q
+ fUr+s6LAhlWri+o4EPW5g0Iz6QeL+1ErRtYq1UHTZNn0oVS7EAg46CpsSMZa1mN1HXTr
+ OP/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1685453182; x=1688045182;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TclIhye/wZJNtsgGG5Szlu+i/oS5v/vZCReK2fB+ZZ8=;
- b=lEr7blXVrSHBK9Fqr8N72KCRgINIpoJS50Z3qcBm5ZP2wuoSKc/bqm8HhnpTa+vUYj
- 7+lEiHO+Mo5MQxnvJbqpaL6yyLCj4wncGbqdcmgG2x0I5xtTPdOvfd0ymwsplKEGsMaS
- 1jr0UaOvLOSe3hbeQ0xxZ7r9MjPD+9k2KSWXWXx18v5P6a7JwDFFhDm7++RYNflyhJWm
- SEikMUsoDpPC+g8GrNq+tbw0glhqpZ4482+qo2pAtbGHprJni+PP+gRTsq0NaD944Cff
- gDgEBpbwN3Ey8SbKR2WKoJn8tyyw87VRvehRGUqhXEySiu47avmQItuBbP62iFyKtwS6
- c1rQ==
-X-Gm-Message-State: AC+VfDy9mhvMVmQFFwMfMJ/0eaafHA5Ar9NuPOQHe2ZSBuGomeqg5e4N
- EsiyJy7VPsUtqJFpoDKyWJmDr8qwZjBff492qKM=
-X-Google-Smtp-Source: ACHHUZ7yikD22iK9b6BXA+abToSpfDaW0A6evVvhqFhoG/FwkjJlDg/juukuwZDZnK8DLoJhGUalpA==
-X-Received: by 2002:a05:600c:215:b0:3f6:3bd:77dc with SMTP id
- 21-20020a05600c021500b003f603bd77dcmr1830179wmi.23.1685453182071; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cb7tW0OrRUlLGsWKm9Wt1qUNMT77CsNBwWCPAxZNsz8=;
+ b=SiBNls27eYmDus0X9Rm8ZCea3xNucQ/V3VRDqOEugJRgzmMTUAfFipRPiuA0yrXAbD
+ 42mOMWC1sfnif+SHVtsO5CfJLA7j/XIQBBXKB3Xof1TFqi0bvIwP5+19VzoQhsWGlDeq
+ IuM/2wiBlugfyoPQkNRSFp9aVD2wdfKPIaRPrQ4RabaLcmuYoemXhSihv7b879GGZMaU
+ +dm1mbhvWlqxGqQ1q52g7O8nu81OZmmDSsY+0hrY7n2Jb1awzt+fip3J1QZy7S0JoouO
+ voNVDBSdH5QPJULSBhfTLQDwYXSPHxSrBcrhidm4mlCRFiAroeAvDc+mgNiHvgZUbBrr
+ Bm5Q==
+X-Gm-Message-State: AC+VfDzOXJ3LtoY2mDmn8spl5yArgjjxWC3quD89Ttgr1kKHsUzruaQD
+ 5bWToopzCfrHE6gU+mC6x0rq2Sfk5AshMdI11nI=
+X-Google-Smtp-Source: ACHHUZ53D5dvCw/qDf9Pyk+HKZeNwsL0PfLtbSkxN71MwQKv1i0r0sZ5YgpNuYUR3/iwg+f5vIF1HQ==
+X-Received: by 2002:a05:600c:3b27:b0:3f7:a7c:b039 with SMTP id
+ m39-20020a05600c3b2700b003f70a7cb039mr2482938wms.2.1685453182472; 
  Tue, 30 May 2023 06:26:22 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- p19-20020a1c7413000000b003f60e143d38sm17463615wmc.11.2023.05.30.06.26.21
+ p19-20020a1c7413000000b003f60e143d38sm17463615wmc.11.2023.05.30.06.26.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 06:26:21 -0700 (PDT)
+ Tue, 30 May 2023 06:26:22 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/21] target-arm queue
-Date: Tue, 30 May 2023 14:25:59 +0100
-Message-Id: <20230530132620.1583658-1-peter.maydell@linaro.org>
+Subject: [PULL 01/21] fsl-imx6: Add SNVS support for i.MX6 boards
+Date: Tue, 30 May 2023 14:26:00 +0100
+Message-Id: <20230530132620.1583658-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230530132620.1583658-1-peter.maydell@linaro.org>
+References: <20230530132620.1583658-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,97 +90,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here's the latest batch of arm changes. The big thing
-in here is the SMMUv3 changes to add stage-2 translation support.
+From: Vitaly Cheptsov <cheptsov@ispras.ru>
 
-thanks
--- PMM
+SNVS is supported on both i.MX6 and i.MX6UL and is needed
+to support shutdown on the board.
 
-The following changes since commit aa9bbd865502ed517624ab6fe7d4b5d89ca95e43:
+Cc: Peter Maydell <peter.maydell@linaro.org> (odd fixer:SABRELITE / i.MX6)
+Cc: Jean-Christophe Dubois <jcd@tribudubois.net> (reviewer:SABRELITE / i.MX6)
+Cc: qemu-arm@nongnu.org (open list:SABRELITE / i.MX6)
+Cc: qemu-devel@nongnu.org (open list:All patches CC here)
+Signed-off-by: Vitaly Cheptsov <cheptsov@ispras.ru>
+Message-id: 20230515095015.66860-1-cheptsov@ispras.ru
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ include/hw/arm/fsl-imx6.h | 2 ++
+ hw/arm/fsl-imx6.c         | 8 ++++++++
+ 2 files changed, 10 insertions(+)
 
-  Merge tag 'pull-ppc-20230528' of https://gitlab.com/danielhb/qemu into staging (2023-05-29 14:31:52 -0700)
+diff --git a/include/hw/arm/fsl-imx6.h b/include/hw/arm/fsl-imx6.h
+index 83291457cf2..5b4d48da084 100644
+--- a/include/hw/arm/fsl-imx6.h
++++ b/include/hw/arm/fsl-imx6.h
+@@ -21,6 +21,7 @@
+ #include "hw/cpu/a9mpcore.h"
+ #include "hw/misc/imx6_ccm.h"
+ #include "hw/misc/imx6_src.h"
++#include "hw/misc/imx7_snvs.h"
+ #include "hw/watchdog/wdt_imx2.h"
+ #include "hw/char/imx_serial.h"
+ #include "hw/timer/imx_gpt.h"
+@@ -59,6 +60,7 @@ struct FslIMX6State {
+     A9MPPrivState  a9mpcore;
+     IMX6CCMState   ccm;
+     IMX6SRCState   src;
++    IMX7SNVSState  snvs;
+     IMXSerialState uart[FSL_IMX6_NUM_UARTS];
+     IMXGPTState    gpt;
+     IMXEPITState   epit[FSL_IMX6_NUM_EPITS];
+diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
+index 00dafe3f62d..4fa7f0b95ed 100644
+--- a/hw/arm/fsl-imx6.c
++++ b/hw/arm/fsl-imx6.c
+@@ -53,6 +53,8 @@ static void fsl_imx6_init(Object *obj)
+ 
+     object_initialize_child(obj, "src", &s->src, TYPE_IMX6_SRC);
+ 
++    object_initialize_child(obj, "snvs", &s->snvs, TYPE_IMX7_SNVS);
++
+     for (i = 0; i < FSL_IMX6_NUM_UARTS; i++) {
+         snprintf(name, NAME_SIZE, "uart%d", i + 1);
+         object_initialize_child(obj, name, &s->uart[i], TYPE_IMX_SERIAL);
+@@ -390,6 +392,12 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+                        qdev_get_gpio_in(DEVICE(&s->a9mpcore),
+                                         FSL_IMX6_ENET_MAC_1588_IRQ));
+ 
++    /*
++     * SNVS
++     */
++    sysbus_realize(SYS_BUS_DEVICE(&s->snvs), &error_abort);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->snvs), 0, FSL_IMX6_SNVSHP_ADDR);
++
+     /*
+      * Watchdog
+      */
+-- 
+2.34.1
 
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20230530
-
-for you to fetch changes up to b03d0d4f531a8b867e0aac1fab0b876903015680:
-
-  docs: sbsa: correct graphics card name (2023-05-30 13:32:46 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * fsl-imx6: Add SNVS support for i.MX6 boards
- * smmuv3: Add support for stage 2 translations
- * hw/dma/xilinx_axidma: Check DMASR.HALTED to prevent infinite loop
- * hw/arm/xlnx-zynqmp: fix unsigned error when checking the RPUs number
- * cleanups for recent Kconfig changes
- * target/arm: Explicitly select short-format FSR for M-profile
- * tests/qtest: Run arm-specific tests only if the required machine is available
- * hw/arm/sbsa-ref: add GIC node into DT
- * docs: sbsa: correct graphics card name
- * Update copyright dates to 2023
-
-----------------------------------------------------------------
-Clément Chigot (1):
-      hw/arm/xlnx-zynqmp: fix unsigned error when checking the RPUs number
-
-Enze Li (1):
-      Update copyright dates to 2023
-
-Fabiano Rosas (3):
-      target/arm: Explain why we need to select ARM_V7M
-      arm/Kconfig: Keep Kconfig default entries in default.mak as documentation
-      arm/Kconfig: Make TCG dependence explicit
-
-Marcin Juszkiewicz (2):
-      hw/arm/sbsa-ref: add GIC node into DT
-      docs: sbsa: correct graphics card name
-
-Mostafa Saleh (10):
-      hw/arm/smmuv3: Add missing fields for IDR0
-      hw/arm/smmuv3: Update translation config to hold stage-2
-      hw/arm/smmuv3: Refactor stage-1 PTW
-      hw/arm/smmuv3: Add page table walk for stage-2
-      hw/arm/smmuv3: Parse STE config for stage-2
-      hw/arm/smmuv3: Make TLB lookup work for stage-2
-      hw/arm/smmuv3: Add VMID to TLB tagging
-      hw/arm/smmuv3: Add CMDs related to stage-2
-      hw/arm/smmuv3: Add stage-2 support in iova notifier
-      hw/arm/smmuv3: Add knob to choose translation stage and enable stage-2
-
-Peter Maydell (1):
-      target/arm: Explicitly select short-format FSR for M-profile
-
-Thomas Huth (1):
-      tests/qtest: Run arm-specific tests only if the required machine is available
-
-Tommy Wu (1):
-      hw/dma/xilinx_axidma: Check DMASR.HALTED to prevent infinite loop.
-
-Vitaly Cheptsov (1):
-      fsl-imx6: Add SNVS support for i.MX6 boards
-
- docs/conf.py                                |   2 +-
- docs/system/arm/sbsa.rst                    |   2 +-
- configs/devices/aarch64-softmmu/default.mak |   6 +
- configs/devices/arm-softmmu/default.mak     |  40 ++++
- hw/arm/smmu-internal.h                      |  37 +++
- hw/arm/smmuv3-internal.h                    |  12 +-
- include/hw/arm/fsl-imx6.h                   |   2 +
- include/hw/arm/smmu-common.h                |  45 +++-
- include/hw/arm/smmuv3.h                     |   4 +
- include/qemu/help-texts.h                   |   2 +-
- hw/arm/fsl-imx6.c                           |   8 +
- hw/arm/sbsa-ref.c                           |  19 +-
- hw/arm/smmu-common.c                        | 209 ++++++++++++++--
- hw/arm/smmuv3.c                             | 357 ++++++++++++++++++++++++----
- hw/arm/xlnx-zynqmp.c                        |   2 +-
- hw/dma/xilinx_axidma.c                      |  11 +-
- target/arm/tcg/tlb_helper.c                 |  13 +-
- hw/arm/Kconfig                              | 123 ++++++----
- hw/arm/trace-events                         |  14 +-
- target/arm/Kconfig                          |   3 +
- tests/qtest/meson.build                     |   7 +-
- 21 files changed, 773 insertions(+), 145 deletions(-)
 
