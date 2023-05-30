@@ -2,55 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C44C71589F
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52BF57158A2
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 10:34:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3unL-0001sC-OO; Tue, 30 May 2023 04:33:31 -0400
+	id 1q3unN-0001zL-Od; Tue, 30 May 2023 04:33:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q3unJ-0001mP-Qt
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:33:29 -0400
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q3unM-0001vo-5X
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 04:33:32 -0400
 Received: from mga17.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q3unH-0001bK-PR
- for qemu-devel@nongnu.org; Tue, 30 May 2023 04:33:29 -0400
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1q3unK-0001e6-Ap
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 04:33:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1685435607; x=1716971607;
+ t=1685435610; x=1716971610;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+ITREj1vVGPNThztVZaxpq0j8lNeCjKqaFFJBxm6Bn0=;
- b=PpF3MLkDXy3OQc9KL4cgN/Z0N/o5tU7v1hOHQt3/s50yXkuvynokZbEM
- h/lbrfyS/GZXGURjZnavPAXJz+palZ0h24vCo7zCHynV6F/74XKr4lA2g
- LhqOwgAi9l0Ff9u/lAxDUlxMP0GhZf05kxPi/WUYPEGliE/CTQiUe1CPf
- BRwV4IxafdJL7UFoQe5gW5JMxAlfDOl3mHCOTdEhGygY+EfjvBxvzDE5B
- 0wlabRCgtr894w/3NPymKIdIgsBnPiQRgcFdrG2bsQCxkXbz14t4vggdO
- 65NAPOIsCPwqWNW6xHH+xgl3NLyTNPZqS2bWiVAP/S8fQqpMUnOzD1j5B w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="335202147"
-X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; d="scan'208";a="335202147"
+ bh=GxUbS8UIGU9fRc7ViV5mnBxcf9bwR8+T1stIrLTct80=;
+ b=F/RHHzWnEOCceKIKin4insjhdIYD2hsWfaA+M79po+ENxWQyd4isi504
+ r0eLGiCXF4kssn1DyvXnlajyD5Qdm/lbJKN7mbeRAYW4INGKbdoMfjNhO
+ lcKYrjLz+VkW/bqm8Hb1B9JE3RbQXMWWST8qmkED5zZFLbHqFONnaOgTf
+ OptgxMYXgQ64UJdPPapjZZ4tAKAgP4Ds1Pfw4oO3Pz6R4uOhOyeDb5sg3
+ QzI0X7VkWVENLmn2iEvm28+AB5plWHzTZs+4QCrunJ+EKUpd/vWNfZztB
+ mQZccLX7w8+YWtvdT3ph73LfMzRByqa74WRj1yGe1A10Ovc4sxK2ZMWPW w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="335202154"
+X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; d="scan'208";a="335202154"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2023 01:33:08 -0700
+ 30 May 2023 01:33:09 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="796188278"
-X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; d="scan'208";a="796188278"
+X-IronPort-AV: E=McAfee;i="6600,9927,10725"; a="796188309"
+X-IronPort-AV: E=Sophos;i="6.00,203,1681196400"; d="scan'208";a="796188309"
 Received: from wufei-optiplex-7090.sh.intel.com ([10.238.200.247])
- by FMSMGA003.fm.intel.com with ESMTP; 30 May 2023 01:33:06 -0700
+ by FMSMGA003.fm.intel.com with ESMTP; 30 May 2023 01:33:08 -0700
 From: Fei Wu <fei2.wu@intel.com>
 To: richard.henderson@linaro.org, alex.bennee@linaro.org, qemu-devel@nongnu.org
-Cc: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
- Fei Wu <fei2.wu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v14 09/10] tb-stats: dump hot TBs at the end of the execution
-Date: Tue, 30 May 2023 16:35:25 +0800
-Message-Id: <20230530083526.2174430-10-fei2.wu@intel.com>
+Cc: Fei Wu <fei2.wu@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v14 10/10] docs: add tb-stats how to
+Date: Tue, 30 May 2023 16:35:26 +0800
+Message-Id: <20230530083526.2174430-11-fei2.wu@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230530083526.2174430-1-fei2.wu@intel.com>
 References: <20230530083526.2174430-1-fei2.wu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.55.52.151; envelope-from=fei2.wu@intel.com;
  helo=mga17.intel.com
@@ -76,214 +74,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>
-
-Dump the hottest TBs if -d tb_stats,dump_limit=N is used.
-
-Example of output for the 3 hottest TBs:
-
-TB id:1 | phys:0x34d54 virt:0x0000000000034d54 flags:0x0000f0
-        | exec:4828932/0 guest inst cov:16.38%
-        | trans:1 ints: g:3 op:82 op_opt:34 spills:3
-        | h/g (host bytes / guest insts): 90.666664
-        | time to gen at 2.4GHz => code:3150.83(ns) IR:712.08(ns)
-        | targets: 0x0000000000034d5e (id:11), 0x0000000000034d0d (id:2)
-
-TB id:2 | phys:0x34d0d virt:0x0000000000034d0d flags:0x0000f0
-        | exec:4825842/0 guest inst cov:21.82%
-        | trans:1 ints: g:4 op:80 op_opt:38 spills:2
-        | h/g (host bytes / guest insts): 84.000000
-        | time to gen at 2.4GHz => code:3362.92(ns) IR:793.75(ns)
-        | targets: 0x0000000000034d19 (id:12), 0x0000000000034d54 (id:1)
-
-TB id:3 | phys:0xec1c1 virt:0x00000000000ec1c1 flags:0x0000b0
-        | exec:872032/0 guest inst cov:1.97%
-        | trans:1 ints: g:2 op:56 op_opt:26 spills:1
-        | h/g (host bytes / guest insts): 68.000000
-        | time to gen at 2.4GHz => code:1692.08(ns) IR:473.75(ns)
-        | targets: 0x00000000000ec1c5 (id:4), 0x00000000000ec1cb (id:13)
-
-Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
-Message-Id: <20190829173437.5926-12-vandersonmr2@gmail.com>
-[AJB: fix authorship, ad softmmu support]
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Fei Wu <fei2.wu@intel.com>
 ---
- accel/tcg/tb-stats.c          | 21 +++++++++++++++++++++
- include/exec/tb-stats-dump.h  | 21 +++++++++++++++++++++
- include/exec/tb-stats-flags.h |  1 +
- linux-user/exit.c             |  2 ++
- softmmu/runstate.c            |  2 ++
- stubs/tb-stats.c              |  5 +++++
- util/log.c                    |  4 ++--
- 7 files changed, 54 insertions(+), 2 deletions(-)
- create mode 100644 include/exec/tb-stats-dump.h
+ docs/devel/tcg-tbstats.rst | 129 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 129 insertions(+)
+ create mode 100644 docs/devel/tcg-tbstats.rst
 
-diff --git a/accel/tcg/tb-stats.c b/accel/tcg/tb-stats.c
-index 4b358cb421..d77891492a 100644
---- a/accel/tcg/tb-stats.c
-+++ b/accel/tcg/tb-stats.c
-@@ -19,6 +19,7 @@
- 
- #include "exec/tb-stats.h"
- #include "exec/tb-flush.h"
-+#include "exec/tb-stats-dump.h"
- #include "tb-context.h"
- 
- #include "internal.h"
-@@ -32,6 +33,7 @@ enum TBStatsStatus {
- 
- static enum TBStatsStatus tcg_collect_tb_stats;
- static uint32_t default_tbstats_flag;
-+static int max_dump_tbs;
- /* only accessed in safe work */
- static GList *last_search;
- 
-@@ -616,6 +618,20 @@ void dump_tb_info(int id, int log_mask, bool use_monitor)
- }
- 
- 
-+/*
-+ * Dump the final stats
-+ */
-+void tb_stats_dump(void)
-+{
-+    if (!tb_stats_collection_enabled()) {
-+        return;
-+    }
-+
-+    dump_tbs_info(max_dump_tbs, SORT_BY_HOTNESS, false);
-+}
-+
-+/* TBStatistic collection controls */
-+
- void enable_collect_tb_stats(void)
- {
-     tcg_collect_tb_stats = TB_STATS_RUNNING;
-@@ -669,3 +685,8 @@ void set_default_tbstats_flag(uint32_t flags)
- {
-     default_tbstats_flag = flags;
- }
-+
-+void set_tbstats_max_tbs(int max)
-+{
-+    max_dump_tbs = max;
-+}
-diff --git a/include/exec/tb-stats-dump.h b/include/exec/tb-stats-dump.h
+diff --git a/docs/devel/tcg-tbstats.rst b/docs/devel/tcg-tbstats.rst
 new file mode 100644
-index 0000000000..197c6148e9
+index 0000000000..bfba222e96
 --- /dev/null
-+++ b/include/exec/tb-stats-dump.h
-@@ -0,0 +1,21 @@
-+/*
-+ * TB Stats common dump functions across sysemu/linux-user
-+ *
-+ * Copyright (c) 2019 Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-3.0-or-later
-+ */
++++ b/docs/devel/tcg-tbstats.rst
+@@ -0,0 +1,129 @@
++============
++TBStatistics
++============
 +
-+#ifndef _TB_STATS_DUMP_H_
-+#define _TB_STATS_DUMP_H_
++What is TBStatistics
++====================
 +
-+/**
-+ * tb_stats_dump: dump final tb_stats at end of execution
-+ */
-+#ifdef CONFIG_TCG
-+void tb_stats_dump(void);
-+#else
-+static inline void tb_stats_dump(void) { /* do nothing */ };
-+#endif
++TBStatistics (tb_stats) is a tool to gather various internal information of TCG
++during binary translation, this allows us to identify such as hottest TBs,
++guest to host instruction translation ratio, number of spills during register
++allocation and more.
 +
-+#endif /* _TB_STATS_DUMP_H_ */
-diff --git a/include/exec/tb-stats-flags.h b/include/exec/tb-stats-flags.h
-index a3897c99b1..484a4c9c68 100644
---- a/include/exec/tb-stats-flags.h
-+++ b/include/exec/tb-stats-flags.h
-@@ -26,6 +26,7 @@ bool tb_stats_collection_enabled(void);
- bool tb_stats_collection_disabled(void);
- bool tb_stats_collection_paused(void);
- 
-+void set_tbstats_max_tbs(int max);
- uint32_t get_default_tbstats_flag(void);
- void set_default_tbstats_flag(uint32_t);
- void set_tbstats_flags(uint32_t flags);
-diff --git a/linux-user/exit.c b/linux-user/exit.c
-index 3017d28a3c..4fd23bcf60 100644
---- a/linux-user/exit.c
-+++ b/linux-user/exit.c
-@@ -25,6 +25,7 @@
- #ifdef CONFIG_GPROF
- #include <sys/gmon.h>
- #endif
-+#include "exec/tb-stats-dump.h"
- 
- #ifdef CONFIG_GCOV
- extern void __gcov_dump(void);
-@@ -41,4 +42,5 @@ void preexit_cleanup(CPUArchState *env, int code)
-         gdb_exit(code);
-         qemu_plugin_user_exit();
-         perf_exit();
-+        tb_stats_dump();
- }
-diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-index 37390799f1..b5ceb55ffd 100644
---- a/softmmu/runstate.c
-+++ b/softmmu/runstate.c
-@@ -30,6 +30,7 @@
- #include "crypto/cipher.h"
- #include "crypto/init.h"
- #include "exec/cpu-common.h"
-+#include "exec/tb-stats-dump.h"
- #include "gdbstub/syscalls.h"
- #include "hw/boards.h"
- #include "migration/misc.h"
-@@ -827,6 +828,7 @@ void qemu_cleanup(void)
-     vm_shutdown();
-     replay_finish();
- 
-+    tb_stats_dump();
-     job_cancel_sync_all();
-     bdrv_close_all();
- 
-diff --git a/stubs/tb-stats.c b/stubs/tb-stats.c
-index d212c2a1fa..a3e1406b88 100644
---- a/stubs/tb-stats.c
-+++ b/stubs/tb-stats.c
-@@ -21,6 +21,11 @@ bool tb_stats_collection_enabled(void)
-     return false;
- }
- 
-+void set_tbstats_max_tbs(int max)
-+{
-+    return;
-+}
 +
- void set_default_tbstats_flag(uint32_t flags)
- {
-     return;
-diff --git a/util/log.c b/util/log.c
-index 6477eb5a5f..d159ca6916 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -49,7 +49,6 @@ static __thread Notifier qemu_log_thread_cleanup_notifier;
- int qemu_loglevel;
- static bool log_per_thread;
- static GArray *debug_regions;
--int32_t max_num_hot_tbs_to_dump;
- static bool to_monitor;
- bool to_string;
- 
-@@ -568,7 +567,8 @@ int qemu_str_to_log_mask(const char *str)
-             enable_collect_tb_stats();
-         } else if (tb_stats_collection_enabled() &&
-                    g_str_has_prefix(*tmp, "dump_limit=")) {
--            max_num_hot_tbs_to_dump = atoi((*tmp) + 11);
-+            int hot_tbs = atoi((*tmp) + 11);
-+            set_tbstats_max_tbs(hot_tbs);
-         } else if (tb_stats_collection_enabled() &&
-                    g_str_has_prefix(*tmp, "level=")) {
-             uint32_t flags = 0;
++How to use TBStatistics
++=======================
++
++1. HMP interface
++----------------
++
++TBStatistics provides HMP interface, you can try the following examples after
++connecting to the monitor.
++
++* First check the help info::
++
++    (qemu) help tb_stats
++    tb_stats command [stats_level] -- Control tb statistics collection:tb_stats (start|pause|stop|filter) [all|jit_stats|exec_stats]
++
++    (qemu) help info tb-list
++    info tb-list [number sortedby] -- show a [number] translated blocks sorted by [sortedby]sortedby opts: hotness hg spills
++
++    (qemu) help info tb
++    info tb id [flag1,flag2,...] -- show information about one translated block by id.dump flags can be used to set dump code level: out_asm in_asm op
++
++* Enable TBStatistics::
++
++    (qemu) tb_stats start all
++    (qemu)
++
++* Get interested TB list::
++
++    (qemu) info tb-list 2
++    TB id:1 | phys:0x79bca0 virt:0xffffffff8059bca0 flags:0x01024001 0 inv/1
++            | exec:1464084/0 guest inst cov:0.15%
++            | trans:1 ints: g:3 op:16 op_opt:15 spills:0
++            | h/g (host bytes / guest insts): 64.000000
++            | time to gen at 2.4GHz => code:607.08(ns) IR:250.83(ns)
++
++    TB id:2 | phys:0x2adf0c virt:0xffffffff800adf0c flags:0x01024001 0 inv/1
++            | exec:1033298/0 guest inst cov:0.28%
++            | trans:1 ints: g:8 op:35 op_opt:33 spills:0
++            | h/g (host bytes / guest insts): 86.000000
++            | time to gen at 2.4GHz => code:1429.58(ns) IR:545.42(ns)
++
++* Dive into the specific TB::
++
++    (qemu) info tb 1 op
++    ------------------------------
++
++    TB id:1 | phys:0x79bca0 virt:0xffffffff8059bca0 flags:0x01024001 7 inv/19
++            | exec:2038349/0 guest inst cov:0.15%
++            | trans:19 ints: g:3 op:16 op_opt:15 spills:0
++            | h/g (host bytes / guest insts): 64.000000
++            | time to gen at 2.4GHz => code:133434.17(ns) IR:176988.33(ns)
++
++    OP:
++     ld_i32 loc1,env,$0xfffffffffffffff0
++     brcond_i32 loc1,$0x0,lt,$L0
++     mov_i64 loc3,$0x7f3c70b3a4e0
++     call inc_exec_freq,$0x1,$0,loc3
++
++     ---- ffffffff8059bca0 0000000000006422
++     add_i64 loc5,x2/sp,$0x8
++     qemu_ld_i64 x8/s0,loc5,un+leq,1
++
++     ---- ffffffff8059bca2 0000000000000000
++     add_i64 x2/sp,x2/sp,$0x10
++
++     ---- ffffffff8059bca4 0000000000000000
++     mov_i64 pc,x1/ra
++     and_i64 pc,pc,$0xfffffffffffffffe
++     call lookup_tb_ptr,$0x6,$1,tmp9,env
++     goto_ptr tmp9
++     set_label $L0
++     exit_tb $0x7f3e887a8043
++
++    ------------------------------
++
++* Stop TBStatistics after investigation, this will disable TBStatistics completely.::
++
++    (qemu) tb_stats stop
++    (qemu)
++
++* Alternatively, TBStatistics can be paused, the previous collected TBStatistics
++  are not cleared but there is no TBStatistics recorded for new TBs.::
++
++    (qemu) tb_stats pause
++    (qemu)
++
++* Definitely, TBStatistics can be restarted for another round of investigation.::
++
++    (qemu) tb_stats start all
++    (qemu)
++
++
++2. Dump at exit
++---------------
++
++New command line options have been added to enable dump TB information at exit:::
++
++    -d tb_stats[[,level=(+all+jit+exec+time)][,dump_limit=<number>]]
++
++e.g. starting qemu like this:::
++
++    -d tb_stats,dump_limit=2
++
++Qemu prints the following at exit:::
++
++    QEMU: Terminated
++    TB id:1 | phys:0x61be02 virt:0xffffffff8041be02 flags:0x01024001 0 inv/1
++            | exec:72739176/0 guest inst cov:20.22%
++            | trans:1 ints: g:9 op:35 op_opt:33 spills:0
++            | h/g (host bytes / guest insts): 51.555557
++            | time to gen at 2.4GHz => code:1065.42(ns) IR:554.17(ns)
++
++    TB id:2 | phys:0x61bc66 virt:0xffffffff8041bc66 flags:0x01024001 0 inv/1
++            | exec:25069507/0 guest inst cov:0.77%
++            | trans:1 ints: g:1 op:15 op_opt:14 spills:0
++            | h/g (host bytes / guest insts): 128.000000
++            | time to gen at 2.4GHz => code:312.50(ns) IR:152.08(ns)
 -- 
 2.25.1
 
