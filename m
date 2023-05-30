@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F5E715A32
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 11:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F78715A51
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 11:38:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3vgf-0004Dj-Gr; Tue, 30 May 2023 05:30:41 -0400
+	id 1q3vna-00067m-I1; Tue, 30 May 2023 05:37:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3vgd-0004Cy-Ai
- for qemu-devel@nongnu.org; Tue, 30 May 2023 05:30:39 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1q3vgZ-0007eb-8v
- for qemu-devel@nongnu.org; Tue, 30 May 2023 05:30:38 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5147e441c33so7630098a12.0
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 02:30:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685439033; x=1688031033;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=flu7ynJ4CwZw6LBxawBqz02hS0I10U2l3UAbTQm7uYA=;
- b=UUSn6KfBykFYFxbMvPFxZ6bJn9hUgXHnWMJ8+DmCqPLvb+8pWQ4M/lwwU9P6SepbWv
- w6RjEoPvLBB62dQLKH+jhQgXF26uZL/HFOB6u2kKNmImARiD43TVY66Hidh+HPqWEbAd
- ykd0XREK7Go03b2Wmu6kb30oVkFLOosuGxgPV7d1TkLwkXn1BCU4k+6Sd7+I8f1AfhEX
- iTpAr0Tpyo3emMl5q1Um/DCDGEgm/AUS/1GAvHkQAF0PicVxvyrU5+t0XeAODlMNgLel
- arptPpj05Ssq/K4vSQVxSuGaElonQPOhA97hnbZ1zANF+w9cumEOe1iiDDU6EviAPxtd
- 4jzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685439033; x=1688031033;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=flu7ynJ4CwZw6LBxawBqz02hS0I10U2l3UAbTQm7uYA=;
- b=NyW5BCzEURcUn1xjhX9PW4kYOgcaVxBYVOfuz72in6+sgu6RB8+8O96BRCr00r6CxD
- ICKQan2NEUiJnn5GnnzGGF7pSzoSLYKYs6vOyXaieBxVAilpLJ7573yCo4O6ErCVI2GK
- +cucklI+VsltzF9+kbhFSNHUX399dU2MaqJMPYEqDAjSVyNcbbjSGO+RoTUjBSEX0OuG
- ta2HruTIKa8EOKCvMWIuCWgpni+wy9LvopJrKHHD8+XId732hlhPWhrG79uI//y2OOBe
- NcUqhU48IQUj5g/SOP+tYzrwmKQzm0XI76SBdNPcgv+wNRbR+M91SXOlhjtYl4ByVdYj
- GVNg==
-X-Gm-Message-State: AC+VfDzysdCsSaoM1wKEWyuaOAVpphvhvgEMGg4HuT+fARHzWCym7gF5
- /pjz5q2AHFEoMEjwinr4VF5JIhweFYa/6GdwhzuPL5NazbHwrmK9
-X-Google-Smtp-Source: ACHHUZ7UvjVHOyRZNCXcTPhMZ5nsrCE5mamJGhGXTxOLzvem53MHGM4muvP3HlxWtweyyScjDafOD/D5DSZGXca7TYY=
-X-Received: by 2002:a05:6402:5107:b0:514:9311:e83a with SMTP id
- m7-20020a056402510700b005149311e83amr2163092edd.8.1685439033495; Tue, 30 May
- 2023 02:30:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q3vnY-00067a-AT
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 05:37:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q3vnW-00010M-Kf
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 05:37:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685439465;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=a2rsULGqXANf3umzD0Jm6rAqiGCqTw5JI5ad14SVX/0=;
+ b=fnb2vTREMptOPi0OgeuVrSL1aRdi7UJg6Mot5a4fJUNdoKfjo9HjoeDgaeia1KUJXzdQZB
+ Cp1ke/FsHmACZF54J//kIeSQIp7wA3EDSfDqBk8JL5NvkqlyGO+2cEcivk3fHf/vVHg2TI
+ gC5yMgKVUOPWtxN3dc0u0O27MhKjkbQ=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-650-Agvbpfh4N16nAwPTvtJoCg-1; Tue, 30 May 2023 05:37:42 -0400
+X-MC-Unique: Agvbpfh4N16nAwPTvtJoCg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D65D33C0F423;
+ Tue, 30 May 2023 09:37:41 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B4423112132C;
+ Tue, 30 May 2023 09:37:41 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A548D21E692E; Tue, 30 May 2023 11:37:40 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Fei Wu <fei2.wu@intel.com>
+Cc: richard.henderson@linaro.org,  alex.bennee@linaro.org,
+ qemu-devel@nongnu.org,  "Vanderson M . do Rosario"
+ <vandersonmr2@gmail.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Thomas
+ Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>
+Subject: Re: [PATCH v14 04/10] accel/tcg: add jit stats and time to
+ TBStatistics
+References: <20230530083526.2174430-1-fei2.wu@intel.com>
+ <20230530083526.2174430-5-fei2.wu@intel.com>
+Date: Tue, 30 May 2023 11:37:40 +0200
+In-Reply-To: <20230530083526.2174430-5-fei2.wu@intel.com> (Fei Wu's message of
+ "Tue, 30 May 2023 16:35:20 +0800")
+Message-ID: <87sfbeqhwb.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <bc49e796220153190019f5010b8e090e09441158.1685369482.git.mprivozn@redhat.com>
-In-Reply-To: <bc49e796220153190019f5010b8e090e09441158.1685369482.git.mprivozn@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 30 May 2023 10:30:22 +0100
-Message-ID: <CAFEAcA-UxVP3Wgei3MQUTNuZSZfwmKm41ektXHDBDK90ZPAoMA@mail.gmail.com>
-Subject: Re: [PATCH v2] meson: Avoid implicit declaration of functions
-To: Michal Privoznik <mprivozn@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.16,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,22 +85,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 29 May 2023 at 15:13, Michal Privoznik <mprivozn@redhat.com> wrote:
->
-> While detecting a presence of a function via 'cc.links()'
-> gives desired result (i.e. detects whether function is present),
-> it also produces a warning on systems where the function is not
-> present (into meson-log.txt), e.g.:
->
->   qemu.git/build/meson-private/tmph74x3p38/testfile.c:2:34: \
->   warning: implicit declaration of function 'malloc_trim' [-Wimplicit-function-declaration]
+Fei Wu <fei2.wu@intel.com> writes:
 
-You should say why this matters, because in general warnings
-in meson-log.txt are normal and expected. The only reason
-we care about these particular warnings is because some
-downstream distros are parsing logs for 'implicit declaration
-of function' warnings as part of the "modern C" transition.
+> This collects all the statistics for TBStatistics, not only for the
+> whole emulation but for each TB.
+>
+> Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Signed-off-by: Fei Wu <fei2.wu@intel.com>
+> ---
+>  accel/tcg/monitor.c           |  20 ++++-
+>  accel/tcg/tb-stats.c          | 146 ++++++++++++++++++++++++++++++++++
+>  accel/tcg/tcg-accel-ops.c     |   7 ++
+>  accel/tcg/translate-all.c     |  70 +++++++++++++++-
+>  accel/tcg/translator.c        |   7 +-
+>  include/exec/tb-stats-flags.h |   2 +
+>  include/exec/tb-stats.h       |  46 +++++++++++
+>  include/qemu/timer.h          |   6 ++
+>  include/tcg/tcg.h             |  28 ++++++-
+>  softmmu/runstate.c            |   9 +++
+>  tcg/tcg.c                     |  88 ++++++++++++++++++--
+>  tests/qtest/qmp-cmd-test.c    |   3 +
+>  12 files changed, 417 insertions(+), 15 deletions(-)
+>
+> diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
+> index e903dd1d2e..2bc87f2642 100644
+> --- a/accel/tcg/monitor.c
+> +++ b/accel/tcg/monitor.c
+> @@ -15,6 +15,7 @@
+>  #include "sysemu/cpus.h"
+>  #include "sysemu/cpu-timers.h"
+>  #include "sysemu/tcg.h"
+> +#include "exec/tb-stats.h"
+>  #include "internal.h"
+>=20=20
+>=20=20
+> @@ -69,6 +70,11 @@ HumanReadableText *qmp_x_query_opcount(Error **errp)
+>  {
+>      g_autoptr(GString) buf =3D g_string_new("");
+>=20=20
+> +    if (!tb_stats_collection_enabled()) {
+> +        error_setg(errp, "TB information not being recorded.");
 
-thanks
--- PMM
+From error_setg()'s contract in include/qapi/error.h:
+
+     * The resulting message should be a single phrase, with no newline or
+     * trailing punctuation.
+
+Please drop the period.  Same elsewhere, not flagging it again there.
+
+> +        return NULL;
+> +    }
+> +
+>      if (!tcg_enabled()) {
+>          error_setg(errp,
+>                     "Opcode count information is only available with acce=
+l=3Dtcg");
+> @@ -80,11 +86,23 @@ HumanReadableText *qmp_x_query_opcount(Error **errp)
+>      return human_readable_text_from_str(buf);
+>  }
+>=20=20
+> +#ifdef CONFIG_TCG
+> +HumanReadableText *qmp_x_query_profile(Error **errp)
+> +{
+> +    g_autoptr(GString) buf =3D g_string_new("");
+> +
+> +    dump_jit_exec_time_info(dev_time, buf);
+> +    dev_time =3D 0;
+> +
+> +    return human_readable_text_from_str(buf);
+> +}
+> +#else
+>  HumanReadableText *qmp_x_query_profile(Error **errp)
+>  {
+> -    error_setg(errp, "Internal profiler not compiled");
+> +    error_setg(errp, "TCG should be enabled!");
+>      return NULL;
+>  }
+> +#endif
+
+machine.json has
+
+   ##
+   # @x-query-profile:
+   #
+   # Query TCG profiling information
+   #
+   # Features:
+   #
+   # @unstable: This command is meant for debugging.
+   #
+   # Returns: profile information
+   #
+   # Since: 6.2
+   ##
+   { 'command': 'x-query-profile',
+     'returns': 'HumanReadableText',
+     'if': 'CONFIG_TCG',
+     'features': [ 'unstable' ] }
+
+Not changed in this series.
+
+Note the command is conditional on CONFIG_TCG, i.e. code generated for
+it is #if defined(CONFIG_TCG).
+
+The only other use is in hmp-commands-info.hx, and it is also guarded by
+CONFIG_TCG.
+
+Therefore, your #else is unreachable.  You can delete it along with...
+
+>=20=20
+>  static void hmp_tcg_register(void)
+>  {
+
+[...]
+
+> diff --git a/tests/qtest/qmp-cmd-test.c b/tests/qtest/qmp-cmd-test.c
+> index 73a670e8fa..749aafe4da 100644
+> --- a/tests/qtest/qmp-cmd-test.c
+> +++ b/tests/qtest/qmp-cmd-test.c
+> @@ -46,6 +46,9 @@ static int query_error_class(const char *cmd)
+>          { "query-balloon", ERROR_CLASS_DEVICE_NOT_ACTIVE },
+>          { "query-hotpluggable-cpus", ERROR_CLASS_GENERIC_ERROR },
+>          { "query-vm-generation-id", ERROR_CLASS_GENERIC_ERROR },
+> +#ifndef CONFIG_TCG
+> +        { "x-query-profile", ERROR_CLASS_GENERIC_ERROR },
+> +#endif
+
+... this entry.
+
+>          /* Only valid with a USB bus added */
+>          { "x-query-usb", ERROR_CLASS_GENERIC_ERROR },
+>          /* Only valid with accel=3Dtcg */
+
 
