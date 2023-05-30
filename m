@@ -2,84 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28457161A6
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF9D7161B1
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:25:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zKM-00030f-8V; Tue, 30 May 2023 09:23:54 -0400
+	id 1q3zLR-0004Sx-UL; Tue, 30 May 2023 09:25:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q3zKB-0002Xd-Fn
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:23:43 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q3zK9-0000F4-Io
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:23:43 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1b0218c979cso23938915ad.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685453019; x=1688045019;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QDniFCtCQLQYPB+SGNK0cHL1b7LpRhk4J2XXXt5kUWo=;
- b=QupazzSCROyrfLdfQob/aWW7ykoMAFjU0lgtol1WDH5rI8l+7hRx6lCaO6bLkPtP8e
- EdvAPgZrWII3YT7yuF9Z+9RRFWz1nAa1S+PcVS1+A+t83lVhnxkToPssJczLEvP9nYEH
- cBGPLzZDYan93Wjn3Z4vovjo6LEE3HRwu+onT8dy5z5OTpObcKw9cWkV/JDrfGSBEKaH
- TB3cHE1jIfEfpcjwHUh3RKpJIzSDgqR55q6g28Kq/Q7G42wizsiJqzTUXeoFY/fTUccF
- Ml5ZOtMQOJTOkcEDb1pnbxHxoqvl97cY4AhLectMI0CkSM/UjsBQyaKUy4Hvll/y/7/Z
- az1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685453019; x=1688045019;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QDniFCtCQLQYPB+SGNK0cHL1b7LpRhk4J2XXXt5kUWo=;
- b=iJYonjn64By6JGPVFNfIGj4vd/YOapn42oZkjVe4onqpvkyHSpsghJs4BZ4aqJ1Mjs
- MMgtWxbrYpfrNJmalb3dvy0wLNPWiLtrXt/OwXE+r53oXiAoQHju09SPvDlW2SRHUzj+
- Q8n4C8EJH015OrXbBQZcTTScnuJkjZ7uvWvXo6SiKWU/u5MiqZ8VdXArnAx3LeffzcNp
- +Okhwo/H3bVFt78ZeNpfH/A6TY/OmAX0D4wrrF5hsqMNMre2IP2Ra9WayVCKteZQU+tB
- zhyVBAPjsR7dQ3Bo/BiSQnMB3drWIfmr13M+8YbgoLI1k9YtUHTB5b6iR5IggK5yaxk2
- zreQ==
-X-Gm-Message-State: AC+VfDz1WqIlFc0P7tU/AUsTg8kFUopeyPfspRFYZYy6p8rEf7Z/LW7F
- kuAafv8xPg3KO37lNQ+2RjAhDQ==
-X-Google-Smtp-Source: ACHHUZ64hvutss+xEWXHV/m26jTzx/pm8CSYsEbT3pxSwx4gO7aAIj/9uwRzuKgwh2prCZCgxBg49Q==
-X-Received: by 2002:a17:902:f391:b0:1ae:8bd9:e015 with SMTP id
- f17-20020a170902f39100b001ae8bd9e015mr1573922ple.5.1685453019599; 
- Tue, 30 May 2023 06:23:39 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:35a2:c45d:7485:f488?
- ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
- by smtp.gmail.com with ESMTPSA id
- p23-20020a170902a41700b001afd6647a77sm10228666plq.155.2023.05.30.06.23.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 06:23:39 -0700 (PDT)
-Message-ID: <a0fa954e-9903-841d-9c00-c035a6ddc8db@linaro.org>
-Date: Tue, 30 May 2023 06:23:37 -0700
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q3zKS-00044t-Po; Tue, 30 May 2023 09:24:12 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1q3zKP-0000J3-R5; Tue, 30 May 2023 09:24:00 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:1421:0:640:53a0:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id D8F5D61C01;
+ Tue, 30 May 2023 16:23:47 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:a508::1:1d] (unknown
+ [2a02:6b8:b081:a508::1:1d])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id kNM0gP6OnuQ0-3GI0NVKU; Tue, 30 May 2023 16:23:47 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1685453027; bh=ERci0jwtCFRZjOHWdX38smSRp6vlvyIGGEnjCzKr7gU=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=HjPH0RB10kkhsb5Di7JkwXV4p2GGnpVPeaDm7p189R8+hDNjfQgjiLRHw8aKIed7t
+ 6G3BieVYGP5fIpL6qY08ImBH4GmhqVyP5mr4Oe/qKDHPxXmlzRZfbIZy9j/Lv54eua
+ 27m0BYQUGQXCoAem8T8FvZXUR3XV/PZgccLtlqrw=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <b81e6f07-7c1c-f1e2-10bc-5c0ea436b5cf@yandex-team.ru>
+Date: Tue, 30 May 2023 16:23:46 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/21] Migration 20230530 patches
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 05/14] nbd: Add types for extended headers
 Content-Language: en-US
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-References: <20230530115429.1998-1-quintela@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230530115429.1998-1-quintela@redhat.com>
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+References: <20230515195343.1915857-1-eblake@redhat.com>
+ <20230515195343.1915857-6-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230515195343.1915857-6-eblake@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,57 +77,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 04:54, Juan Quintela wrote:
-> The following changes since commit aa9bbd865502ed517624ab6fe7d4b5d89ca95e43:
+On 15.05.23 22:53, Eric Blake wrote:
+> Add the constants and structs necessary for later patches to start
+> implementing the NBD_OPT_EXTENDED_HEADERS extension in both the client
+> and server, matching recent commit e6f3b94a934] in the upstream nbd
+> project.  This patch does not change any existing behavior, but merely
+> sets the stage.
 > 
->    Merge tag 'pull-ppc-20230528' ofhttps://gitlab.com/danielhb/qemu  into staging (2023-05-29 14:31:52 -0700)
+> This patch does not change the status quo that neither the client nor
+> server use a packed-struct representation for the request header.
 > 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/juan.quintela/qemu.git  tags/migration-20230530-pull-request
-> 
-> for you to fetch changes up to d83da4626ebc1462e8f0065d446f97aece681d90:
-> 
->    migration/rdma: Check sooner if we are in postcopy for save_page() (2023-05-30 13:27:54 +0200)
-> 
-> ----------------------------------------------------------------
-> Migration 20230530 Pull request
-> 
-> Hi
-> 
-> On this PULL request:
-> 
-> - Set vmstate migration failure right (vladimir)
-> - Migration QEMUFileHook removal (juan)
-> - Migration Atomic counters (juan)
-> 
-> Please apply.
-
-Fails immediately:
-
-In file included from ../src/migration/ram.c:61:
-../src/migration/rdma.h:52:5: error: no previous prototype for ‘rdma_registration_handle’ 
-[-Werror=missing-prototypes]
-    52 | int rdma_registration_handle(QEMUFile *f) { return 0; }
-       |     ^~~~~~~~~~~~~~~~~~~~~~~~
-../src/migration/rdma.h:53:5: error: no previous prototype for ‘rdma_registration_start’ 
-[-Werror=missing-prototypes]
-    53 | int rdma_registration_start(QEMUFile *f, uint64_t flags) { return 0; }
-       |     ^~~~~~~~~~~~~~~~~~~~~~~
-../src/migration/rdma.h:54:5: error: no previous prototype for ‘rdma_registration_stop’ 
-[-Werror=missing-prototypes]
-    54 | int rdma_registration_stop(QEMUFile *f, uint64_t flags) { return 0; }
-       |     ^~~~~~~~~~~~~~~~~~~~~~
-../src/migration/rdma.h:55:5: error: no previous prototype for 
-‘rdma_block_notification_handle’ [-Werror=missing-prototypes]
-    55 | int rdma_block_notification_handle(QEMUFile *f, const char *name) { return 0; }
-       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../src/migration/rdma.h:56:5: error: no previous prototype for ‘rdma_control_save_page’ 
-[-Werror=missing-prototypes]
-    56 | int rdma_control_save_page(QEMUFile *f, ram_addr_t block_offset,
-       |     ^~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 
 
-r~
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+> ---
+>   docs/interop/nbd.txt |  1 +
+>   include/block/nbd.h  | 74 ++++++++++++++++++++++++++++++++------------
+>   nbd/common.c         | 10 +++++-
+>   3 files changed, 65 insertions(+), 20 deletions(-)
+> 
+> diff --git a/docs/interop/nbd.txt b/docs/interop/nbd.txt
+> index f5ca25174a6..abaf4c28a96 100644
+> --- a/docs/interop/nbd.txt
+> +++ b/docs/interop/nbd.txt
+> @@ -69,3 +69,4 @@ NBD_CMD_BLOCK_STATUS for "qemu:dirty-bitmap:", NBD_CMD_CACHE
+>   NBD_CMD_FLAG_FAST_ZERO
+>   * 5.2: NBD_CMD_BLOCK_STATUS for "qemu:allocation-depth"
+>   * 7.1: NBD_FLAG_CAN_MULTI_CONN for shareable writable exports
+> +* 8.1: NBD_OPT_EXTENDED_HEADERS
+> diff --git a/include/block/nbd.h b/include/block/nbd.h
+> index 50626ab2744..d753fb8006f 100644
+> --- a/include/block/nbd.h
+> +++ b/include/block/nbd.h
+> @@ -87,13 +87,24 @@ typedef struct NBDStructuredReplyChunk {
+>       uint32_t length; /* length of payload */
+>   } QEMU_PACKED NBDStructuredReplyChunk;
+> 
+
+[..]
+
+> -/* Extent chunk for NBD_REPLY_TYPE_BLOCK_STATUS */
+> +/* Extent array for NBD_REPLY_TYPE_BLOCK_STATUS */
+
+Why? NBDExtent is one extent, not extent array.
+
+>   typedef struct NBDExtent {
+>       uint32_t length;
+>       uint32_t flags; /* NBD_STATE_* */
+>   } QEMU_PACKED NBDExtent;
+> 
+> +/* Header of NBD_REPLY_TYPE_BLOCK_STATUS_EXT */
+
+
+
+-- 
+Best regards,
+Vladimir
+
 
