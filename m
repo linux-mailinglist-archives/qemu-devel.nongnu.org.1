@@ -2,28 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA3A7161FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BE17161ED
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:31:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zOs-0001U2-CC; Tue, 30 May 2023 09:28:34 -0400
+	id 1q3zOy-0001sU-49; Tue, 30 May 2023 09:28:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q3zOZ-00015I-0x; Tue, 30 May 2023 09:28:16 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1q3zOY-00015H-W0; Tue, 30 May 2023 09:28:16 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1q3zOU-0002AR-TO; Tue, 30 May 2023 09:28:14 -0400
+ id 1q3zOU-0002Ai-VO; Tue, 30 May 2023 09:28:14 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 31709746377;
+ by localhost (Postfix) with SMTP id 5F062746E5A;
  Tue, 30 May 2023 15:28:07 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3B8AA746335; Tue, 30 May 2023 15:28:06 +0200 (CEST)
-Message-Id: <cover.1685448535.git.balaton@eik.bme.hu>
+ id 43A64746335; Tue, 30 May 2023 15:28:07 +0200 (CEST)
+Message-Id: <302697d63d26caebefaeee1e45352145ebd0318a.1685448535.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1685448535.git.balaton@eik.bme.hu>
+References: <cover.1685448535.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 0/7] Embedded PPC misc clean up and optimisation
+Subject: [PATCH 1/7] target/ppc: Remove single use function
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -31,10 +33,10 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Tue, 30 May 2023 15:28:06 +0200 (CEST)
+Date: Tue, 30 May 2023 15:28:07 +0200 (CEST)
 X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -55,73 +57,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+The get_physical_address() function is a trivial wrapper of
+get_physical_address_wtlb() that is only used once. Remove it and call
+get_physical_address_wtlb() directly instead.
 
-This series improves embedded PPC TLB emulation a bit and contains
-some misc clean up I've found along the way. Before this patch
-ppcemb_tlb_check() shows up in a memory access intensive profile
-(running RageMem speed test in AmigaOS on sam460ex) at 11.91%
-children, 10.77% self. After this series it does not show up at all.
-This is not the biggest bottleneck, that is calling tlb_flush() from
-helper_440_tlbwe() excessively but this was simpler to clean up and
-still makes a small improvement.
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ target/ppc/mmu_helper.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-RageMem results on master:
----> RAM <---
-READ32:  593 MB/Sec
-READ64:  616 MB/Sec
-WRITE32: 589 MB/Sec
-WRITE64: 621 MB/Sec
-WRITE: 518 MB/Sec (Tricky)
-
----> VIDEO BUS <---
-READ:  588 MB/Sec
-WRITE: 571 MB/Sec
-
-with this series:
----> RAM <---
-READ32:  674 MB/Sec
-READ64:  707 MB/Sec
-WRITE32: 665 MB/Sec
-WRITE64: 714 MB/Sec
-WRITE: 580 MB/Sec (Tricky)
-
----> VIDEO BUS <---
-READ:  691 MB/Sec
-WRITE: 662 MB/Sec
-
-The results have some jitter but both the higher values and that the
-function is gone from the profile can prove the series has an effect.
-If nothing else then simplifying the code a bit. For comparison this
-is faster than a real sam460ex but much slower than running the same
-with -M pegasos2 so embedded PPC TLB emulation still might need some
-improvement. I know these are different and PPC440 has software
-assisted TLB but the problem with it seems to be too much tlb_flushes
-not that it needs more exceptions.
-
-(If somebody is interested to reproduce and experiment with it the
-benchmarks and some results are available from here:
-https://www.amigans.net/modules/newbb/viewtopic.php?topic_id=9226
-some of the tests also have MorphOS versions that's easier to get than
-AmigaOS or sources that could be compiled under Linux.)
-
-Regards,
-BALATON Zoltan
-
-BALATON Zoltan (7):
-  target/ppc: Remove single use function
-  target/ppc: Remove "ext" parameter of ppcemb_tlb_check()
-  target/ppc: Move ppcemb_tlb_search() to mmu_common.c
-  target/ppc: Remove some unneded line breaks
-  target/ppc: Simplify ppcemb_tlb_search()
-  target/ppc: Change ppcemb_tlb_check() to return bool
-  target/ppc: Eliminate goto in mmubooke_check_tlb()
-
- target/ppc/cpu.h        | 13 ++----
- target/ppc/mmu_common.c | 91 +++++++++++++++++++++++------------------
- target/ppc/mmu_helper.c | 32 +--------------
- 3 files changed, 57 insertions(+), 79 deletions(-)
-
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index 64e30435f5..c0c71a68ff 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -168,15 +168,6 @@ static void booke206_flush_tlb(CPUPPCState *env, int flags,
+     tlb_flush(env_cpu(env));
+ }
+ 
+-static int get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+-                                target_ulong eaddr, MMUAccessType access_type,
+-                                int type)
+-{
+-    return get_physical_address_wtlb(env, ctx, eaddr, access_type, type, 0);
+-}
+-
+-
+-
+ /*****************************************************************************/
+ /* BATs management */
+ #if !defined(FLUSH_ALL_TLBS)
+@@ -643,7 +634,7 @@ target_ulong helper_rac(CPUPPCState *env, target_ulong addr)
+      */
+     nb_BATs = env->nb_BATs;
+     env->nb_BATs = 0;
+-    if (get_physical_address(env, &ctx, addr, 0, ACCESS_INT) == 0) {
++    if (get_physical_address_wtlb(env, &ctx, addr, 0, ACCESS_INT, 0) == 0) {
+         ret = ctx.raddr;
+     }
+     env->nb_BATs = nb_BATs;
 -- 
 2.30.9
 
