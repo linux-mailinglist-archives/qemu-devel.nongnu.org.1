@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78ABB716D01
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 124CF716D26
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 21:06:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q44Zo-0000nk-Gs; Tue, 30 May 2023 15:00:13 -0400
+	id 1q44Zt-0000s2-Dm; Tue, 30 May 2023 15:00:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44ZW-0000ke-O9
+ id 1q44ZW-0000kf-RM
  for qemu-devel@nongnu.org; Tue, 30 May 2023 14:59:54 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q44ZU-0000sD-NP
+ id 1q44ZV-0000sH-D9
  for qemu-devel@nongnu.org; Tue, 30 May 2023 14:59:54 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-64d1a0d640cso3665484b3a.1
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-64d577071a6so5632288b3a.1
  for <qemu-devel@nongnu.org>; Tue, 30 May 2023 11:59:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685473191; x=1688065191;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=mUjnTj+/HEdql/nR/Y88wioWASWtay8KmAmlQm3wBtk=;
- b=MUfIpRgCxmg7YTeaKMqlmMRe0N1WRzjaiEin98mfcQljoVNLMMiCSOhWwGTuiih9gl
- zOiHn+mq+wXPaKBwZFQET1yHtbTgmNgSxLtmaH+fKP9ExbM02VB1D2M6eMnMPF5mjkwv
- iDXPuTqDxiqIplw5sML131qqXGCaFl+mg0uAguOPMAF3uh/SB2XHcli8KEW6Clk9hWKd
- ZCkZpVSnYFQoMWjyH87EJw/AT5ALz0qGt/jY3vTTfTMJ75Z6A93wZORwV0GuKylOG99C
- thkeOKW+ufEKL4apqb7xV00vo+nxHiAc4mDrXzwd2QMY0vyL0I+RPmTXKEndKj8MZDLf
- OGOw==
+ d=linaro.org; s=google; t=1685473192; x=1688065192;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cRUS/B+lej6ghv4TKHMjTIjQnBzjJiFZ+pCmPDNBTdA=;
+ b=mjhx9WFjfV5cNMTRqD6D84+JeNCnrRWJa9x5TCjd+UIXpM9XHWMsDuT87YDk7JOEhd
+ DTfVI5KMBRJxzyXi6qRlLqkK+3e5VF4W2i/sKo6LOZ3u2Jl3/0Zcw8JfMPRrpbrU+n/o
+ ao/qSv4hDiNV29fkQVqMCLQdi695tgZsd0iyDcMz0Q05NS0Pju8OF+kb+qEVUxusfJHV
+ L2VIOmOeZlnWflkgEX6D1W3kNX+bPoYK2W4iHPoQSV2t1ptKjAg1ZCiIIP55kcK3ptFq
+ bFFq7bY+k+bvZivW6WiVRg4ZM2uMKyClqeMDZcP2H38sad9XdohyiUwqJwTnlUJErkKm
+ x5YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685473191; x=1688065191;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mUjnTj+/HEdql/nR/Y88wioWASWtay8KmAmlQm3wBtk=;
- b=FBNwQ51MPUZi2Y9em5wHxIyhCtUIKiAcwdFC1kVb8XvQmH6404JQjT16i0YG/b1131
- Ioywt2qDyZ7gF7+92Ip6UA3jHaIZkQZNxKiYBoJk/5bwzQaZFuaUuXhzvBRIlZ3dA6+O
- BDDvld8TO9AshSD6cFIEZWCiycmT71RMeW2Yiu7KcV6Ov/ODHlmfAKiO7LLtWolUeIBg
- 6j1Pg2IwLnas/qe2xd/Vs3KyX1TCOconPwshTe2+mk8tp2x5bPXP/z0vRga8bgIGJp8z
- k8UTKlZRuk6vRbQE8dGij0Rwoh01no/OQWtw4fMwSLBos5wLSg9EHDQqEOeywA5d0R5f
- P/lg==
-X-Gm-Message-State: AC+VfDyBN7grI8hmhyYv8lB8q5b/NCinEltqVVI580Eym4mFxdFdbU25
- bfbTTZzRJ+hYGbbmLXvQOVYoIeT16WkD8M2Zjbo=
-X-Google-Smtp-Source: ACHHUZ7WtPFkcVq6NpKVfDHGNJcqIya+BAGpIz1jFtbaIm8bMFEJCP7w7PoP9sQlvZPSmuUPxjn+Jg==
-X-Received: by 2002:a05:6a20:160b:b0:104:35ec:c25c with SMTP id
- l11-20020a056a20160b00b0010435ecc25cmr4154406pzj.41.1685473191099; 
+ d=1e100.net; s=20221208; t=1685473192; x=1688065192;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cRUS/B+lej6ghv4TKHMjTIjQnBzjJiFZ+pCmPDNBTdA=;
+ b=I3Xe/rYtc7czTzQqV3+Ef4+9gEj9iCZGN5j6I7LIrPBSl7toR3/c4TLW8Dq+NY3bOt
+ lTLZbXnTw7hwT0Xy4KQwyKZXAc2FFOhFAk9HIAOaib+96oFKW81V5lXf2Y7oZUgHNqj6
+ pgDBh7Jcziag2EdWwZMQTJicpwbHMaByRf0XGMhm6nxnAybamnx0jmIdJe4AL9AEdlhO
+ 5QM3T63R3iXZx/4fgyRZyIrsJyKjOQoiSjFFMR986JJmTeivQLh158xZkbNRLfLzkwpz
+ enj/KQe/Z63rV2XtNrUSOmk7uxqHjdCGEetSEJSe1+kuPQWjSHs+ekx881hgKGHWThnv
+ T++g==
+X-Gm-Message-State: AC+VfDzrOJFB/H+wWf+k1yWraLysN44IMCvOPLFmXbF+wjrcFUmMekkE
+ 3jRWPqyNDNHKu86xVmLFFFXEgyR6UMHPUq16e20=
+X-Google-Smtp-Source: ACHHUZ7isF+VEONPFPQBpDT9P2OK+0soHN66yE2kXi7H8gfr77HQI3y3Th9D5iJefTQDJzFrUGjgZQ==
+X-Received: by 2002:a05:6a20:a386:b0:10c:dd4f:faa9 with SMTP id
+ w6-20020a056a20a38600b0010cdd4ffaa9mr2750980pzk.14.1685473191835; 
  Tue, 30 May 2023 11:59:51 -0700 (PDT)
 Received: from stoup.. ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
  by smtp.gmail.com with ESMTPSA id
- g18-20020a63fa52000000b0051f14839bf3sm9128496pgk.34.2023.05.30.11.59.50
- for <qemu-devel@nongnu.org>
+ g18-20020a63fa52000000b0051f14839bf3sm9128496pgk.34.2023.05.30.11.59.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 11:59:50 -0700 (PDT)
+ Tue, 30 May 2023 11:59:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/27] tcg patch queue
-Date: Tue, 30 May 2023 11:59:22 -0700
-Message-Id: <20230530185949.410208-1-richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 01/27] tcg: Fix register move type in tcg_out_ld_helper_ret
+Date: Tue, 30 May 2023 11:59:23 -0700
+Message-Id: <20230530185949.410208-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230530185949.410208-1-richard.henderson@linaro.org>
+References: <20230530185949.410208-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,109 +91,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 7fe6cb68117ac856e03c93d18aca09de015392b0:
+The first move was incorrectly using TCG_TYPE_I32 while the second
+move was correctly using TCG_TYPE_REG.  This prevents a 64-bit host
+from moving all 128-bits of the return value.
 
-  Merge tag 'pull-target-arm-20230530-1' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-05-30 08:02:05 -0700)
+Fixes: ebebea53ef8 ("tcg: Support TCG_TYPE_I128 in tcg_out_{ld,st}_helper_{args,ret}")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ tcg/tcg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-are available in the Git repository at:
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index ac30d484f5..2352ca4ade 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -5736,8 +5736,8 @@ static void tcg_out_ld_helper_ret(TCGContext *s, const TCGLabelQemuLdst *ldst,
+     mov[0].dst = ldst->datalo_reg;
+     mov[0].src =
+         tcg_target_call_oarg_reg(TCG_CALL_RET_NORMAL, HOST_BIG_ENDIAN);
+-    mov[0].dst_type = TCG_TYPE_I32;
+-    mov[0].src_type = TCG_TYPE_I32;
++    mov[0].dst_type = TCG_TYPE_REG;
++    mov[0].src_type = TCG_TYPE_REG;
+     mov[0].src_ext = TCG_TARGET_REG_BITS == 32 ? MO_32 : MO_64;
+ 
+     mov[1].dst = ldst->datahi_reg;
+-- 
+2.34.1
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230530
-
-for you to fetch changes up to 276d77de503e8f5f5cbd3f7d94302ca12d1d982e:
-
-  tests/decode: Add tests for various named-field cases (2023-05-30 10:55:39 -0700)
-
-----------------------------------------------------------------
-Improvements to 128-bit atomics:
-  - Separate __int128_t type and arithmetic detection
-  - Support 128-bit load/store in backend for i386, aarch64, ppc64, s390x
-  - Accelerate atomics via host/include/
-Decodetree:
-  - Add named field syntax
-  - Move tests to meson
-
-----------------------------------------------------------------
-Peter Maydell (5):
-      docs: Document decodetree named field syntax
-      scripts/decodetree: Pass lvalue-formatter function to str_extract()
-      scripts/decodetree: Implement a topological sort
-      scripts/decodetree: Implement named field support
-      tests/decode: Add tests for various named-field cases
-
-Richard Henderson (22):
-      tcg: Fix register move type in tcg_out_ld_helper_ret
-      accel/tcg: Fix check for page writeability in load_atomic16_or_exit
-      meson: Split test for __int128_t type from __int128_t arithmetic
-      qemu/atomic128: Add x86_64 atomic128-ldst.h
-      tcg/i386: Support 128-bit load/store
-      tcg/aarch64: Rename temporaries
-      tcg/aarch64: Reserve TCG_REG_TMP1, TCG_REG_TMP2
-      tcg/aarch64: Simplify constraints on qemu_ld/st
-      tcg/aarch64: Support 128-bit load/store
-      tcg/ppc: Support 128-bit load/store
-      tcg/s390x: Support 128-bit load/store
-      accel/tcg: Extract load_atom_extract_al16_or_al8 to host header
-      accel/tcg: Extract store_atom_insert_al16 to host header
-      accel/tcg: Add x86_64 load_atom_extract_al16_or_al8
-      accel/tcg: Add aarch64 lse2 load_atom_extract_al16_or_al8
-      accel/tcg: Add aarch64 store_atom_insert_al16
-      tcg: Remove TCG_TARGET_TLB_DISPLACEMENT_BITS
-      decodetree: Add --test-for-error
-      decodetree: Fix recursion in prop_format and build_tree
-      decodetree: Diagnose empty pattern group
-      decodetree: Do not remove output_file from /dev
-      tests/decode: Convert tests to meson
-
- docs/devel/decodetree.rst                         |  33 ++-
- meson.build                                       |  15 +-
- host/include/aarch64/host/load-extract-al16-al8.h |  40 ++++
- host/include/aarch64/host/store-insert-al16.h     |  47 ++++
- host/include/generic/host/load-extract-al16-al8.h |  45 ++++
- host/include/generic/host/store-insert-al16.h     |  50 ++++
- host/include/x86_64/host/atomic128-ldst.h         |  68 ++++++
- host/include/x86_64/host/load-extract-al16-al8.h  |  50 ++++
- include/qemu/int128.h                             |   4 +-
- tcg/aarch64/tcg-target-con-set.h                  |   4 +-
- tcg/aarch64/tcg-target-con-str.h                  |   1 -
- tcg/aarch64/tcg-target.h                          |  12 +-
- tcg/arm/tcg-target.h                              |   1 -
- tcg/i386/tcg-target.h                             |   5 +-
- tcg/mips/tcg-target.h                             |   1 -
- tcg/ppc/tcg-target-con-set.h                      |   2 +
- tcg/ppc/tcg-target-con-str.h                      |   1 +
- tcg/ppc/tcg-target.h                              |   4 +-
- tcg/riscv/tcg-target.h                            |   1 -
- tcg/s390x/tcg-target-con-set.h                    |   2 +
- tcg/s390x/tcg-target.h                            |   3 +-
- tcg/sparc64/tcg-target.h                          |   1 -
- tcg/tci/tcg-target.h                              |   1 -
- tests/decode/err_field10.decode                   |   7 +
- tests/decode/err_field7.decode                    |   7 +
- tests/decode/err_field8.decode                    |   8 +
- tests/decode/err_field9.decode                    |  14 ++
- tests/decode/succ_named_field.decode              |  19 ++
- tcg/tcg.c                                         |   4 +-
- accel/tcg/ldst_atomicity.c.inc                    |  80 +------
- tcg/aarch64/tcg-target.c.inc                      | 243 +++++++++++++++-----
- tcg/i386/tcg-target.c.inc                         | 191 +++++++++++++++-
- tcg/ppc/tcg-target.c.inc                          | 108 ++++++++-
- tcg/s390x/tcg-target.c.inc                        | 107 ++++++++-
- scripts/decodetree.py                             | 265 ++++++++++++++++++++--
- tests/decode/check.sh                             |  24 --
- tests/decode/meson.build                          |  64 ++++++
- tests/meson.build                                 |   5 +-
- 38 files changed, 1312 insertions(+), 225 deletions(-)
- create mode 100644 host/include/aarch64/host/load-extract-al16-al8.h
- create mode 100644 host/include/aarch64/host/store-insert-al16.h
- create mode 100644 host/include/generic/host/load-extract-al16-al8.h
- create mode 100644 host/include/generic/host/store-insert-al16.h
- create mode 100644 host/include/x86_64/host/atomic128-ldst.h
- create mode 100644 host/include/x86_64/host/load-extract-al16-al8.h
- create mode 100644 tests/decode/err_field10.decode
- create mode 100644 tests/decode/err_field7.decode
- create mode 100644 tests/decode/err_field8.decode
- create mode 100644 tests/decode/err_field9.decode
- create mode 100644 tests/decode/succ_named_field.decode
- delete mode 100755 tests/decode/check.sh
- create mode 100644 tests/decode/meson.build
 
