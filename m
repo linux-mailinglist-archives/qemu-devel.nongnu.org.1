@@ -2,100 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC3D715BD2
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 12:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF4D715BD3
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 12:32:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3wcs-0002uT-Ry; Tue, 30 May 2023 06:30:50 -0400
+	id 1q3wde-00038a-G7; Tue, 30 May 2023 06:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3wcq-0002tv-VK
- for qemu-devel@nongnu.org; Tue, 30 May 2023 06:30:48 -0400
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1q3wdX-00037C-5C
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 06:31:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1q3wcp-00059I-7K
- for qemu-devel@nongnu.org; Tue, 30 May 2023 06:30:48 -0400
+ (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
+ id 1q3wdV-0005PE-ID
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 06:31:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685442646;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=11LHMJpje45c7UNHt+x3s5P5Bd0fl3HEeGnN2w8Bv8Q=;
- b=iRgnrNilnZp0LR4xH+dMmLKb+KOOSae1ToYfKTKHjUhr6wRbcWDTGJijGVg/1FbAkCAqNn
- BgdfBo+3LEvGWEgMew3w6aGUY9kyQn53TJUX3WGUnV+pK8RvshsK9tO8PnPmHjMmSHlRHQ
- jEi1p7FqHUOdghoPlHFOS0ooZALXh5w=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-396-xIBAYPzQOIWQdQ-l-3sSJA-1; Tue, 30 May 2023 06:30:44 -0400
-X-MC-Unique: xIBAYPzQOIWQdQ-l-3sSJA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3062e5d0cd3so1633872f8f.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 03:30:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685442643; x=1688034643;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=11LHMJpje45c7UNHt+x3s5P5Bd0fl3HEeGnN2w8Bv8Q=;
- b=GFKf1hPpadvklV/uI0zpNdZbS3UqsjnOIDsLYRsW+eMOYYvD4B2vMquCctyikizQkC
- XsaVNdg6q9/0z9hGfLB94Qy2a2D6En2ZXAq22XftyfbFvTmLb56FK1Q5oWn1t5PKDbfb
- erRWgqdFmbZaptS/XnSj2v3eMdjtne4l9JbQskIOYSFs34xJNhsb1hoedJ9o3J8QrGbS
- FaualBwopXX64VsEW9cEZQFaoQDiuAkqt23BjS8pVva9ZnR5zqU3eZrPf0xoVst6/aXM
- 2dEX1O+N0cOiR/jiftuRxI3TAkFzl9PZWvFsc2KwgzUJdI9s8z1kRrwa10fky+zBvaXB
- vZFw==
-X-Gm-Message-State: AC+VfDwGL8Z4+530KbOw1Xe43b/fbEA4weR11dH5+Y3YbOfj38X4vsHK
- Qwtlge4R9rIUW8moIM9eUwa1JzD9hc8FT0mU5ZjvDHS/znJFjWHo+h6xUPIySHzmxUuSInlaQWh
- 3ETeCAZm35AUmC2k=
-X-Received: by 2002:a5d:568d:0:b0:2f0:e287:1fbc with SMTP id
- f13-20020a5d568d000000b002f0e2871fbcmr1307039wrv.11.1685442643493; 
- Tue, 30 May 2023 03:30:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5TDMMGpfp8eQIPdUiWQnsTnBawTjP6s4i5AnVpu7ncLmCzKIsrpo6QuZ8IbJvX9rwHRX9s+A==
-X-Received: by 2002:a5d:568d:0:b0:2f0:e287:1fbc with SMTP id
- f13-20020a5d568d000000b002f0e2871fbcmr1307011wrv.11.1685442643229; 
- Tue, 30 May 2023 03:30:43 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- o11-20020a5d670b000000b0030ada01ca78sm2815029wru.10.2023.05.30.03.30.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 03:30:42 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Leonardo Bras Soares Passos <leobras@redhat.com>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Greg Kurz
- <groug@kaod.org>,  qemu-s390x@nongnu.org,  Fam Zheng <fam@euphon.net>,
- Ilya Leoshkevich <iii@linux.ibm.com>,  Halil Pasic <pasic@linux.ibm.com>,
- John Snow <jsnow@redhat.com>,  qemu-ppc@nongnu.org,  Daniel Henrique
- Barboza <danielhb413@gmail.com>,  Harsh Prateek Bora
- <harshpb@linux.ibm.com>,  Christian Borntraeger
- <borntraeger@linux.ibm.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  David Gibson
- <david@gibson.dropbear.id.au>,  David Hildenbrand <david@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,  Eric Farman
- <farman@linux.ibm.com>,  qemu-block@nongnu.org,  =?utf-8?Q?C=C3=A9dric?= Le
- Goater <clg@kaod.org>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Vladimir Sementsov-Ogievskiy
- <vsementsov@yandex-team.ru>
-Subject: Re: [PATCH v2 02/16] migration: Correct transferred bytes value
-In-Reply-To: <CAJ6HWG7N_YGNxU4dd4DMumFjqWWhQRqP=RngkAUYQ52E-29G5g@mail.gmail.com>
- (Leonardo Bras Soares Passos's message of "Fri, 26 May 2023 15:50:52
- -0300")
-References: <20230515195709.63843-1-quintela@redhat.com>
- <20230515195709.63843-3-quintela@redhat.com>
- <1e3a3735a5ba81abb562e8f6c21ab33f38992af5.camel@redhat.com>
- <87a5xr4iy8.fsf@secure.mitica>
- <CAJ6HWG7N_YGNxU4dd4DMumFjqWWhQRqP=RngkAUYQ52E-29G5g@mail.gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Tue, 30 May 2023 12:30:41 +0200
-Message-ID: <87jzwqw1pq.fsf@secure.mitica>
+ s=mimecast20190719; t=1685442688;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=HGnsKT/BoLxlgtGEWcpQLPM840S7huGV4UWXiK6XqWA=;
+ b=fTnEM2RViwVEULVaYA0a2BsqfkW39LJ0SwELEpFLLRBlShFVhMvI0CIVayoGn1713lcR+I
+ TKQFd3EHqhuNC6LF+dLUUR6Xqg6byMZepKcqI6caZYdW8QhWCuydANl9Q/QCuLUMRF3RQd
+ 05p6zVzcr5rOkD5o1iowsH8/UlCXGpw=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-142-YssouvvfOGuOhZbV5R0L2w-1; Tue, 30 May 2023 06:31:26 -0400
+X-MC-Unique: YssouvvfOGuOhZbV5R0L2w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CFE1C381D4C5
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 10:31:25 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.43.2.39])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7A7EAC154D1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 10:31:25 +0000 (UTC)
+From: Michal Privoznik <mprivozn@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v3] meson: Avoid implicit declaration of functions
+Date: Tue, 30 May 2023 12:31:23 +0200
+Message-Id: <8e02776d18595a1c575c90a189ff65f1785f76ca.1685442612.git.mprivozn@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mprivozn@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -116,65 +70,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Leonardo Bras Soares Passos <leobras@redhat.com> wrote:
-> On Fri, May 26, 2023 at 5:04=E2=80=AFAM Juan Quintela <quintela@redhat.co=
-m> wrote:
->> > Maybe too much?
->>
->> I dropped this patch for two reasons:
->>
->> - reviewers gave me a bad time with it O:-)
->> - it was there only so if anyone was meassuring that new counters are
->>   the same that old counters.
->>
->> But as I have already checked that, we don't need it.
->>
->> I drop it on the next round that I send.
->> > Maybe, it would be nice to have qemu_put_* to return the value, and in=
- this
->> > case:
->> >
->> > size +=3D qemu_put_be64(...)
->> >
->> > What do you think?
->>
->> Even more important than that is to return an error value, but that
->> is a very long project.
->>
->> See on my next series that qemu_fflush() return errors, so code gets
->> simplifed:
->>
->> qemu_fflush(file);
->> if (qemu_file_get_error(file)) {
->>     handle error;
->> }
->>
->> to:
->>
->> qemu_fflush(file);
->> if (qemu_file_get_error(file)) {
->>     handle error;
->> }
->>
->
-> They look the same to me, what changed?
+While detecting a presence of a function via 'cc.links()'
+gives desired result (i.e. detects whether function is present),
+it also produces a warning on systems where the function is not
+present (into meson-log.txt), e.g.:
 
-I did copy paste without changing:
+  qemu.git/build/meson-private/tmph74x3p38/testfile.c:2:34: \
+  warning: implicit declaration of function 'malloc_trim' [-Wimplicit-function-declaration]
 
-if (qemu_fflush(file)) {
-    handle error;
-}
+And some distributions (e.g. Gentoo) parse the meson log and
+consider these erroneous because it can lead to feature
+misdetection (see [1]).
 
+We can check whether given function exists via
+'cc.has_function()' or whether STATX_* macros exist via
+'cc.has_header_symbol()'.
 
+1: https://wiki.gentoo.org/wiki/Modern_C_porting
+Resolves: https://bugs.gentoo.org/898810
+Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+---
 
->> We need to do basically all qemu_put_*() and qemu_get_*() functions, but
->> it is a step on the right direction.
->>
->> Later, Juan.
->>
+v3 of
+
+https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07210.html
+
+diff to v2:
+- Expanded commit message to explain why we need this.
+
+ meson.build | 26 +++++---------------------
+ 1 file changed, 5 insertions(+), 21 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 2d48aa1e2e..21061b19d4 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1797,8 +1797,7 @@ malloc = []
+ if get_option('malloc') == 'system'
+   has_malloc_trim = \
+     get_option('malloc_trim').allowed() and \
+-    cc.links('''#include <malloc.h>
+-                int main(void) { malloc_trim(0); return 0; }''')
++    cc.has_function('malloc_trim', prefix: '#include <malloc.h>')
+ else
+   has_malloc_trim = false
+   malloc = cc.find_library(get_option('malloc'), required: true)
+@@ -1811,34 +1810,19 @@ if not has_malloc_trim and get_option('malloc_trim').enabled()
+   endif
+ endif
+ 
+-# Check whether the glibc provides statx()
+-
+ gnu_source_prefix = '''
+   #ifndef _GNU_SOURCE
+   #define _GNU_SOURCE
+   #endif
+ '''
+-statx_test = gnu_source_prefix + '''
+-  #include <sys/stat.h>
+-  int main(void) {
+-    struct statx statxbuf;
+-    statx(0, "", 0, STATX_BASIC_STATS, &statxbuf);
+-    return 0;
+-  }'''
+ 
+-has_statx = cc.links(statx_test)
++# Check whether the glibc provides STATX_BASIC_STATS
++
++has_statx = cc.has_header_symbol('sys/stat.h', 'STATX_BASIC_STATS', prefix: gnu_source_prefix)
+ 
+ # Check whether statx() provides mount ID information
+ 
+-statx_mnt_id_test = gnu_source_prefix + '''
+-  #include <sys/stat.h>
+-  int main(void) {
+-    struct statx statxbuf;
+-    statx(0, "", 0, STATX_BASIC_STATS | STATX_MNT_ID, &statxbuf);
+-    return statxbuf.stx_mnt_id;
+-  }'''
+-
+-has_statx_mnt_id = cc.links(statx_mnt_id_test)
++has_statx_mnt_id = cc.has_header_symbol('sys/stat.h', 'STATX_MNT_ID', prefix: gnu_source_prefix)
+ 
+ have_vhost_user_blk_server = get_option('vhost_user_blk_server') \
+   .require(targetos == 'linux',
+-- 
+2.39.3
 
 
