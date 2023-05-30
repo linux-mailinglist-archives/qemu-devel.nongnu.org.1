@@ -2,85 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2DB7162D4
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 15:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 103BB7162E0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 May 2023 16:00:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q3zrx-000195-OS; Tue, 30 May 2023 09:58:37 -0400
+	id 1q3zsq-0001vT-C7; Tue, 30 May 2023 09:59:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q3zrr-000188-Jy
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:58:33 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q3zsF-0001ab-HR
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:58:55 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1q3zrq-0002xH-3D
- for qemu-devel@nongnu.org; Tue, 30 May 2023 09:58:31 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-5346d150972so3990107a12.3
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:58:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1q3zsC-00033B-6d
+ for qemu-devel@nongnu.org; Tue, 30 May 2023 09:58:53 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5149429c944so5467189a12.0
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 06:58:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685455108; x=1688047108;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=c6gxx3XYEw1R0UESSFgF/8EhaZtTdOhlN1lo4gAPxoU=;
- b=eg2hJhBl8n+rbpf7O6JXNsgsFGRmSHDb2NJPJR9npgSLDfUx0JdC577UjKFoRftLki
- VmW6o4f9z3QTjKgsnvwZJHP9VNcZ6gwwDbx3A7J0zUmO4z5LZPFLsZ/UcX0sQtUVMyCR
- zxlxfUfHPN5nyLCLSpHvaV9cgwa6Ul+c5aoltCiXJDHjak+Wg+MW9il9sBnIG7YfxbyZ
- YpgLlWsSlbOLb2S6KiQmH7638w7QsIM4eLi4zwTI2jvyHjKm/5dp49fVWIQTbDNAtVUa
- L0JvMVVdMg8zTVPNxjg+8ciMhyAQa9eN7u5R9g4IK1TreBsRleDm5Ln8SmeWXX2XWgID
- wQdQ==
+ d=linaro.org; s=google; t=1685455130; x=1688047130;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=0DpdQlAz0cb9SoWMpce1jvoE8z2VnSLG/dl85u0yh8w=;
+ b=g7Dxa3m1npiPNdNAXIwl9eWdoMV0TfbrHwNApLO+XUXG3+bLiATH/QYnpRLUeO7Hcg
+ 23Bd7rXkP1jHkJjh/4h9BgzHu9C/6X59SDkRis6WtyGQBUrmzdZDsZ8ZTrHhnQYNc3uT
+ oO9IzHD+OmfJso8G9wooeBBviEPGm096Id93D670fnZRW9NtPHe43h+J237u6zWUNMpX
+ bK23gheAFYkERs5Y9eJPeszCdimwYqtQBzC+AJ9rinf5Q9+NhcZBeWqf6pbB0BqNQwqX
+ j9eMTfUt5L00hBa+wL9E/Bd/p5NsolHZYIiPfvVhvUIpGWx70p4W5Awux9OrMH4Q2623
+ +PYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685455108; x=1688047108;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c6gxx3XYEw1R0UESSFgF/8EhaZtTdOhlN1lo4gAPxoU=;
- b=b4B6fflDWcdD6clhFmLf8thy6fS+DoZhmb90xuwAoMl5NWlyqpkv0NPGx4uLew3Vp2
- 33EGWCIB0iN6TE4qFwjzJACNBrBQpo/xEmurM6BodG7Pr/jTHT7DZO0PgnSGqheDpCdA
- lspbtejDs6/AWmJZDVuT4OkpxJOigSSED8jegAi3kHiTEIBjKZ1RoVu53RjIGpRghx4z
- 7K/X2nx8pEeI9FhZtN/SvzrTlNvj585S+tgtLpFO9aMsISv1GfJ1R0u1GXR8cfeNtbA3
- 8Q9DKS+CFk4/KKCyErjHY6doBfzRUWQQ5xxtf/OuUb8cH42ETzlftkPf0gAzWpYgki4h
- 2M2g==
-X-Gm-Message-State: AC+VfDy8jHzXtXNv+sHOOsJr3tRerPyDnOwe2Iim2oK1rJPw2QLm4pbL
- ckF4WgT4ws0ThU4Qnw4PmLgH3g==
-X-Google-Smtp-Source: ACHHUZ6WZgEh0c27yvE/yjFmeN2F/hwzRnCGGLIEUQfDbhYefplySw+cHcf6LXutKb722jSHXVP4TQ==
-X-Received: by 2002:a17:902:d48d:b0:1ae:87d8:a0c3 with SMTP id
- c13-20020a170902d48d00b001ae87d8a0c3mr2618891plg.10.1685455108178; 
- Tue, 30 May 2023 06:58:28 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:35a2:c45d:7485:f488?
- ([2602:ae:1598:4c01:35a2:c45d:7485:f488])
- by smtp.gmail.com with ESMTPSA id
- p24-20020a170903249800b001b016313b1dsm8172430plw.86.2023.05.30.06.58.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 06:58:27 -0700 (PDT)
-Message-ID: <5192c74b-38fb-7f2e-7b27-58d210c1b087@linaro.org>
-Date: Tue, 30 May 2023 06:58:26 -0700
+ d=1e100.net; s=20221208; t=1685455130; x=1688047130;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0DpdQlAz0cb9SoWMpce1jvoE8z2VnSLG/dl85u0yh8w=;
+ b=eKJRr9+w4SUrsyk0/DBGlwrlXkub2Qkyva1Bv4qQDls65iapVFy41+hQZJ+nR/BkOO
+ nZnv4H3tDae9KNPXnicQVwKNY0EIrF1bEZPPNpWmjIU3oqHg98QQ6kkwVYGV/s9Q4Ol9
+ 6upB2Y+rBMOeKRH4RROuoCMCKVA80YnXxJD2pPrejLkr8uFzCQKKZPrwmvqDqxHEVwCW
+ 5j0TYmL6nnIK84RF9Y3dWXDAevzKP0nVbdbf+5azEO6tAhYruEyy8LiR2t64O8KBdN/k
+ IfJpVFYcU80n3M5n4hA8yR98HwNal77/idi0dPA/RTGdapxJ7X7yDzds8lDZtV91LxTu
+ +IAQ==
+X-Gm-Message-State: AC+VfDyC5303ECA4pcpEl3bT27cmQZohDfqCgsb1FC1HxgezzzIOg8MJ
+ /GI6n4NrqM4IeTtjkWWKbOYr8U29Nu/xtv0V+U565Q==
+X-Google-Smtp-Source: ACHHUZ7oTgZPjKSKSFXPU4pS+zcZOPg9MtBz7DNfsCJALMqoY1ZT2QLSdLWnDIMT/EdRmdhWnEav5/sQv77Ebe4QUQY=
+X-Received: by 2002:aa7:c61a:0:b0:514:9c74:4cdc with SMTP id
+ h26-20020aa7c61a000000b005149c744cdcmr1870374edq.15.1685455130595; Tue, 30
+ May 2023 06:58:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v4 02/16] accel/tcg: Fix check for page writeability in
- load_atomic16_or_exit
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 References: <20230526002334.1760495-1-richard.henderson@linaro.org>
- <20230526002334.1760495-3-richard.henderson@linaro.org>
- <CAFEAcA8E_wbiL=xxc=qzfbhBjTsGVxpMGYex_Ezsn_=47DJP3w@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8E_wbiL=xxc=qzfbhBjTsGVxpMGYex_Ezsn_=47DJP3w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ <20230526002334.1760495-13-richard.henderson@linaro.org>
+In-Reply-To: <20230526002334.1760495-13-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 30 May 2023 14:58:39 +0100
+Message-ID: <CAFEAcA9YoR4WegRiHSTOjx+cPtYUV8gL3z692so2oADGeEWpEw@mail.gmail.com>
+Subject: Re: [PATCH v4 12/16] accel/tcg: Extract load_atom_extract_al16_or_al8
+ to host header
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -98,51 +86,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/30/23 06:44, Peter Maydell wrote:
-> On Fri, 26 May 2023 at 01:24, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> PAGE_WRITE is current writability, as modified by TB protection;
->> PAGE_WRITE_ORG is the original page writability.
->>
->> Fixes: cdfac37be0d ("accel/tcg: Honor atomicity of loads")
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   accel/tcg/ldst_atomicity.c.inc | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
->> index 0f6b3f8ab6..57163f5ca2 100644
->> --- a/accel/tcg/ldst_atomicity.c.inc
->> +++ b/accel/tcg/ldst_atomicity.c.inc
->> @@ -191,7 +191,7 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
->>        * another process, because the fallback start_exclusive solution
->>        * provides no protection across processes.
->>        */
->> -    if (!page_check_range(h2g(p), 16, PAGE_WRITE)) {
->> +    if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
->>           return *p;
->>       }
->>   #endif
->> --
->> 2.34.1
-> 
-> load_atomic8_or_exit() has a similar condition, so
-> we should change either both or neither.
-> 
-> So, if I understand this correctly, !PAGE_WRITE_ORG is a
-> stricter test than !PAGE_WRITE, so we're saying "don't
-> do a simple non-atomic load if the page was only read-only
-> because we've translated code out of it". Why is it
-> not OK to do the non-atomic load in that case? I guess
-> because we don't have the mmap lock, so some other thread
-> might nip in and do an access that causes us to invalidate
-> the TBs and move the page back to writeable?
+On Fri, 26 May 2023 at 01:24, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  .../generic/host/load-extract-al16-al8.h      | 45 +++++++++++++++++++
+>  accel/tcg/ldst_atomicity.c.inc                | 36 +--------------
+>  2 files changed, 47 insertions(+), 34 deletions(-)
+>  create mode 100644 host/include/generic/host/load-extract-al16-al8.h
 
-This is about falling through to the cmpxchg below: if !PAGE_WRITE_ORG, then the page is 
-really not writable, we will SIGSEGV, and handle_sigsegv_accerr_write will kill the process.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-
-r~
-
+thanks
+-- PMM
 
