@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E208A71874D
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 18:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E7F718778
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 18:34:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4OcF-0002F5-Ua; Wed, 31 May 2023 12:24:03 -0400
+	id 1q4Ol5-00050o-Ci; Wed, 31 May 2023 12:33:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q4OcD-0002EP-GQ
- for qemu-devel@nongnu.org; Wed, 31 May 2023 12:24:01 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q4Ol3-00050C-4q
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 12:33:09 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q4OcA-0005FB-Gw
- for qemu-devel@nongnu.org; Wed, 31 May 2023 12:24:01 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-973bf581759so1043438566b.0
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 09:23:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1q4Ol1-00073q-HE
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 12:33:08 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-256c8bed212so1162354a91.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 09:33:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685550236; x=1688142236;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=vF7sPOsntDWs5/vTre97Ae3Il0a62eehpy54WdpXTFU=;
- b=gpuz1bDbl2NUCvKs8A7Wyk1a09wkWaEXT6Px7SCzm0jKVVjjzZU26yIZ8ApwhDMuJK
- nPQmtbxmTUQTrB2/c7xqQmjr1oScJF5BwcHMz1eK4v5eTDNopz1qLXH/wrpoaGeK+Qgs
- r4pb5FQ1c8Rnn0lOVT2b4RPGJMbdXssV8x0ll7JFtVAatoa+bjP7L6wvxe38nUi6AAHi
- 8L6+Ta/ngDw3yarRUomIBTiCEK/6H6MRlEiozwqS/BA3LLlMv4ShXd4IdCQr8lEhM1on
- 9+FlHzLgNXa/lq3s9QaSTRYdb8zZeyBCPgdEvU7If4mxftZe4OSqz9wJBzLTlsLlLBOt
- 2GnQ==
+ d=linaro.org; s=google; t=1685550785; x=1688142785;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=E9XdHN4DR4rz/qIpPKcoMHbODMY2jSHgCvZ+yzeKQIg=;
+ b=H5PRwFMLmxOq2+z0A1V3HP9uVsS/wm1F5igR+3xg1e//smln5Bdw8FMYxPAwYgjRDj
+ SUYYxQueob14ehRT8M6eMlTPqbbLtYwQOoW1Kjsucc2Ecraj43YbfuKyngFrNxRhS0vP
+ VDxv0PDu9HkSmPlq+f9JYDWqhuDYlYLhN5XXcU9bp/2GdJXNpkiC4guEcRpJtGxfniLM
+ Y99cILqlo9jgmhX2gpY7F0ByWT8EPtRApCkrO5kILr+9CrkET1yPFbUN+iOP+9fpaRsp
+ 2gQR1S/EOr7u7pXVAgtxzulw0/pb6pRFA/MZI7xt3QAWVAbV1Lj1/Vtkimx9C0oW7KnE
+ JOEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685550236; x=1688142236;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vF7sPOsntDWs5/vTre97Ae3Il0a62eehpy54WdpXTFU=;
- b=i5snalOKzHgU4BvU6UlBn97MI1BLqtNr983y2junK/ariOQyhBCLh9KEF4lWkMq1rV
- yEXIJovr+LLFwpGUOf7iFASljwcsYiFxVr/TLeUQDxN818uR7xYJXFzwCmCBHBTrVcfX
- c7uyxw8cAmo+hfO0dm5wHZLugnaPv3HJsCNc384LJ1JpoagrCe2nQTRn+l4DHpIGoAHv
- NtmuS/FUj52lj/uUaDCbOy+T0ZLHSW3WlNzV/lkDbf+CfvWrM2pRZb0Qjkxsk/CF07jx
- rUMOVZZUNCpGcy0QuVHRz+ilCxSjQ4OeTbPm+JhqZ8QgbMRk8VyWw6PvDff2KtM62SfT
- GS/A==
-X-Gm-Message-State: AC+VfDzdaNKeC82HcG+5kXnv12REZTjMsyXg8t+dCru9Q9+LYfDjcW9U
- 69wPht+u2zcOidBVP7Cy2IxQRvD2h+L0a+EPIUiCSsa7
-X-Google-Smtp-Source: ACHHUZ77Y47k2jEIrXIph3wB6ugFMTuhIHfuCOH82TsuEfA+y4hRo5ZnmNc/gZcv+WFg5hXBOp0HKA==
-X-Received: by 2002:a17:907:3e8b:b0:971:5a46:8ab4 with SMTP id
- hs11-20020a1709073e8b00b009715a468ab4mr6501133ejc.66.1685550236401; 
- Wed, 31 May 2023 09:23:56 -0700 (PDT)
-Received: from [192.168.200.206] (83.21.93.182.ipv4.supernova.orange.pl.
- [83.21.93.182]) by smtp.gmail.com with ESMTPSA id
- f16-20020a17090624d000b0096b20c968afsm9075964ejb.124.2023.05.31.09.23.55
+ d=1e100.net; s=20221208; t=1685550785; x=1688142785;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=E9XdHN4DR4rz/qIpPKcoMHbODMY2jSHgCvZ+yzeKQIg=;
+ b=drjKQv0MXTGcLRUZYd5Y46mS9a7UZkoAKMOgsFJjgAb1foGH4agp7VWi++IXDfPG+r
+ ZH8Scc9VsTYnxn8rlgn6OlzbtpU5ScsgGdrjneDMSs6kYAnbwbM/RNUj08Dm4twaBhwc
+ 9JiCFQlPrdVvMHkJCG0Db4YJnG+biQ7/rfFE7V7vj7onwPZpX73X5ly/UoBIXb5ria3x
+ DxJNcrO1ykmtYJGVy5gZzkx/Yx/1jnQCELj8ucE0xiLDWXCQFztJKHFqN1Dlfy0Qx8vM
+ LYiNvIcPvbBi7Qgkqne/2HylM7VhDxeTH/Wxqp0p7SFuOXQDzLPVbQ5lvsjxaQSgzHoH
+ pGRg==
+X-Gm-Message-State: AC+VfDxw06PaqurPbxr+bR/Y8Z3ULPtPMlk98MwIPobLTvZ0qb5Ex9ZC
+ eU3HnUYV9Fk0mCqg99tz/BI1ow==
+X-Google-Smtp-Source: ACHHUZ4HRGKYn93Fv0m5ktmypcweIU0KhfCXWhKiuQ3X1OL5VgTUi9Z6/4Ukjolt4c2kZFIYqXAB2A==
+X-Received: by 2002:a17:90a:a00d:b0:256:2c8e:3008 with SMTP id
+ q13-20020a17090aa00d00b002562c8e3008mr4422940pjp.48.1685550785334; 
+ Wed, 31 May 2023 09:33:05 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:3019:d9fa:8bb1:50d7?
+ ([2602:ae:1598:4c01:3019:d9fa:8bb1:50d7])
+ by smtp.gmail.com with ESMTPSA id
+ gp18-20020a17090adf1200b00250ad795d72sm1439921pjb.44.2023.05.31.09.33.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 09:23:55 -0700 (PDT)
-Message-ID: <22b7f290-6372-4525-926e-463ab9337f29@linaro.org>
-Date: Wed, 31 May 2023 18:23:54 +0200
+ Wed, 31 May 2023 09:33:04 -0700 (PDT)
+Message-ID: <722d7683-80b4-bb23-3ca2-77f8de23b801@linaro.org>
+Date: Wed, 31 May 2023 09:33:03 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-Content-Language: pl-PL, en-GB, en-HK
-To: Peter Maydell <peter.maydell@linaro.org>,
- Graeme Gregory <graeme@xora.org.uk>
-Cc: wangyuquan1236@phytium.com.cn, quic_llindhol@quicinc.com,
- chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20230531070229.334124-1-wangyuquan1236@phytium.com.cn>
- <20230531070229.334124-2-wangyuquan1236@phytium.com.cn>
- <lfcmvvqjp64wngrdk33bvkb3k7op53l24lcoslah2evsyh3esc@at7jnsnrto7h>
- <CAFEAcA8h9-YWUYsvuERttmsEK3xi+K+xasFdoWmnFm26S6npNw@mail.gmail.com>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <CAFEAcA8h9-YWUYsvuERttmsEK3xi+K+xasFdoWmnFm26S6npNw@mail.gmail.com>
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 0/2] Implement AES on ARM using x86 instructions and vv
+Content-Language: en-US
+To: Ard Biesheuvel <ardb@kernel.org>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
+References: <20230531112239.3164777-1-ardb@kernel.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230531112239.3164777-1-ardb@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ej1-x62c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -101,37 +97,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 31.05.2023 o 17:27, Peter Maydell pisze:
-> On Wed, 31 May 2023 at 15:58, Graeme Gregory <graeme@xora.org.uk> wrote:
->> On Wed, May 31, 2023 at 03:02:29PM +0800, wangyuquan1236@phytium.com.cn wrote:
->>> From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
->>>
->>> The current sbsa-ref cannot use EHCI controller which is only
->>> able to do 32-bit DMA, since sbsa-ref doesn't have RAM above 4GB.
->>> Hence, this uses XHCI to provide a usb controller with 64-bit
->>> DMA capablity instead of EHCI.
+On 5/31/23 04:22, Ard Biesheuvel wrote:
+> Use the host native instructions to implement the AES instructions
+> exposed by the emulated target. The mapping is not 1:1, so it requires a
+> bit of fiddling to get the right result.
+> 
+> This is still RFC material - the current approach feels too ad-hoc, but
+> given the non-1:1 correspondence, doing a proper abstraction is rather
+> difficult.
+> 
+> Changes since v1/RFC:
+> - add second patch to implement x86 AES instructions on ARM hosts - this
+>    helps illustrate what an abstraction should cover.
+> - use cpuinfo framework to detect host support for AES instructions.
+> - implement ARM aesimc using x86 aesimc directly
+> 
+> Patch #1 produces a 1.5-2x speedup in tests using the Linux kernel's
+> tcrypt benchmark (mode=500)
+> 
+> Patch #2 produces a 2-3x speedup. The discrepancy is most likely due to
+> the fact that ARM uses two instructions to implement a single AES round,
+> whereas x86 only uses one.
 
->> Should this be below 4G?
+Thanks.  I spent some time yesterday looking at this, with an encrypted disk test case and 
+could only measure 0.6% and 0.5% for total overhead of decrypt and encrypt respectively.
 
-> It would be pretty disruptive to try to rearrange the memory
-> map to put RAM below 4GB at this point, though in theory it's
-> possible I guess. (I have a vague recollection that there was
-> some reason the RAM was all put above 4GB, but can't find
-> anything about that in my email archives. Perhaps Leif remembers?)
+> As for the design of an abstraction: I imagine we could introduce a
+> host/aes.h API that implements some building blocks that the TCG helper
+> implementation could use.
 
-I thought that memory starts at 40bit was to not use Cortex-A53 cpu with 
-sbsa-ref. Nowadays it also removed Cortex-A76.
+Indeed.  I was considering interfaces like
 
-> Looking back at the archives, it seems we discussed XHCI vs
-> EHCI when the sbsa-ref board went in, and the conclusion was
-> that XHCI would be better. But there wasn't a sysbus XHCI device
-> at that point, so we ended up committing the sbsa-ref board
-> with EHCI and a plan to switch to XHCI when the sysbus-xhci
-> device was done, which we then forgot about:
-> https://mail.gnu.org/archive/html/qemu-arm/2018-11/msg00638.html
+/* Perform SubBytes + ShiftRows on state. */
+Int128 aesenc_SB_SR(Int128 state);
 
-Moving from EHCI to XHCI on sysbus requires also firmware changes.
+/* Perform MixColumns on state. */
+Int128 aesenc_MC(Int128 state);
 
-Or we can just add "qemu-xhci" pcie card and have USB running.
+/* Perform SubBytes + ShiftRows + MixColumns on state. */
+Int128 aesenc_SB_SR_MC(Int128 state);
 
+/* Perform SubBytes + ShiftRows + MixColumns + AddRoundKey. */
+Int128 aesenc_SB_SR_MC_AK(Int128 state, Int128 roundkey);
+
+and so forth for aesdec as well.  All but aesenc_MC should be implementable on x86 and 
+Power7, and all of them on aarch64.
+
+> I suppose it really depends on whether there is a third host
+> architecture that could make use of this, and how its AES instructions
+> map onto the primitive AES ops above.
+
+There is Power6 (v{,n}cipher{,last}) and RISC-V Zkn (aes64{es,esm,ds,dsm,im})
+
+I got hung up yesterday was understanding the different endian requirements of x86 vs Power.
+
+ppc64:
+
+     asm("lxvd2x 32,0,%1;"
+         "lxvd2x 33,0,%2;"
+         "vcipher 0,0,1;"
+         "stxvd2x 32,0,%0"
+         : : "r"(o), "r"(i), "r"(k), : "memory", "v0", "v1", "v2");
+
+ppc64le:
+
+     unsigned char le[16] = {8,9,10,11,12,13,14,15,0,1,2,3,4,5,6,7};
+     asm("lxvd2x 32,0,%1;"
+         "lxvd2x 33,0,%2;"
+         "lxvd2x 34,0,%3;"
+         "vperm 0,0,0,2;"
+         "vperm 1,1,1,2;"
+         "vcipher 0,0,1;"
+         "vperm 0,0,0,2;"
+         "stxvd2x 32,0,%0"
+         : : "r"(o), "r"(i), "r"(k), "r"(le) : "memory", "v0", "v1", "v2");
+
+There are also differences in their AES_Te* based C routines as well, which made me wonder 
+if we are handling host endianness differences correctly in emulation right now.  I think 
+I should most definitely add some generic-ish tests for this...
+
+
+r~
 
