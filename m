@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8571717D11
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 12:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE525717D2E
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 12:23:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Iua-0003hV-N0; Wed, 31 May 2023 06:18:36 -0400
+	id 1q4Iyn-0004h1-83; Wed, 31 May 2023 06:22:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <robin@streamhpc.com>)
- id 1q4IuS-0003fX-RP
- for qemu-devel@nongnu.org; Wed, 31 May 2023 06:18:28 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <robin@streamhpc.com>)
- id 1q4IuI-0000mv-Pi
- for qemu-devel@nongnu.org; Wed, 31 May 2023 06:18:24 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-51456392cbbso1636974a12.0
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 03:18:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=streamhpc-com.20221208.gappssmtp.com; s=20221208; t=1685528295; x=1688120295;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yQPZApZUHrlURH76WVE7QejAYbuKboH7gX2ZgMPEfio=;
- b=OugAHWzKouzv80a5PCoFG2jvTOT1NcRxQic6TD/LXMDYqPPywPKpQ6V/aLnElgStfb
- yHb31uGPBnbxU8DLnqp5uxeMhY7DwfB1eux0gEZ/cUmXK7UqXjGXmPS75SEzfezxhsdV
- wjrRpipxwujQsRcpnk3Ccw3dadlEWhoStOfVruxFGiFGLYFqSZou5hKJP5zaDpikm8cf
- yv895evHTjh6H76MbNzaprZmPdfJuZqcB5zTLJJgH3gPc+4rTEWhwsbUG913YI0HC6yE
- NR61aEcv+2XE1JvhS7VJy4/LtQWUbIO7nX4WlXnhGy5rfhvzz4TrT77iYspeP1JfZggB
- XSBg==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4Iyh-0004gV-DJ
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 06:22:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1q4Iyf-0001Y4-RX
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 06:22:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685528569;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=wF4jJo8/36J/PvaypR9reMAnpMIGxkD0QdtdLPap6E0=;
+ b=imU12lKE0CCixjfggDbnhd0PY8BZdMBsiAyQz6boU3udBBu23XMFClyslHHqIKvXFbRWQu
+ XTX5MdJRlMy0c3Y1FpV2jWPCoq9w4maN8GwMvVnXiqlhFA0efNHiTXNTCTmN2tR2ZllMCK
+ GOhEYeAuKA0MkGIT4ObO90a6GhVImCw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-146-kmRHXb6SMZKgJTsug97Ekg-1; Wed, 31 May 2023 06:22:45 -0400
+X-MC-Unique: kmRHXb6SMZKgJTsug97Ekg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3079c6648e3so3400132f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 03:22:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685528295; x=1688120295;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yQPZApZUHrlURH76WVE7QejAYbuKboH7gX2ZgMPEfio=;
- b=eOGwB6nMEtl/b+7GJHIYMiEnm+gua8Q5/UXoiq7qDsdS5WG6WDzo0pf4YbBPCrlACK
- JOQxm5Yn3me0W5FAUi0fb78wiZyVbsXSnrQptpnn3cVrIGZQYDCmSL5IVv3s+NNbiPIl
- Br6YhPDxm167UaNPzX+eod841md1kXQpCZwDGK6TGGAo750rrakB+pjlJgdVDJG6Z3Dz
- FzLMnAQj+IjzZkn6bdbts+Di14c/W24QDocEOTB0EM+QkkAto+mcH26I+6XkwuJd9pyW
- Yo+YD5hypbFp9RSi+YkU5TBvaTgM943ggUqYSQhqPPlOoxrVXV3E+i56hD++8h1neOBi
- JeNw==
-X-Gm-Message-State: AC+VfDzGjkCowmsbtDYC/yT8iF+2IE77MC9aXVIkMlMXAtXIeioJJKLl
- VU3dEZ07dzlhIs3Cwzo3ay/soQ==
-X-Google-Smtp-Source: ACHHUZ56NWUQ/xDP3ocCHTdfawKAUiyeemofsLgAOADVMpbaWNjiusJ3yWjBG5+7ilDKJTwRMrroAA==
-X-Received: by 2002:a17:907:3dab:b0:96f:7b8b:df9c with SMTP id
- he43-20020a1709073dab00b0096f7b8bdf9cmr4618851ejc.14.1685528294801; 
- Wed, 31 May 2023 03:18:14 -0700 (PDT)
-Received: from [192.168.178.121] (dhcp-077-251-030-138.chello.nl.
- [77.251.30.138]) by smtp.gmail.com with ESMTPSA id
- d12-20020a1709067f0c00b0093313f4fc3csm8723760ejr.70.2023.05.31.03.18.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 03:18:14 -0700 (PDT)
-Message-ID: <f64b3a82-a5b6-2f3f-74a1-062db2112224@streamhpc.com>
-Date: Wed, 31 May 2023 12:18:08 +0200
+ d=1e100.net; s=20221208; t=1685528564; x=1688120564;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wF4jJo8/36J/PvaypR9reMAnpMIGxkD0QdtdLPap6E0=;
+ b=koNbNDjTpI7fPdYxcP0hZUOYFnPIVCwepkF8QljX/ekHU1TgC/y1hiPq4LC15gse4k
+ lAWbrDNusDikvAlvCsq0Nms7fCghFIw8nJTiiW/Sje3LaLmfOuUJHCePqVSFyYyBTP/P
+ fW9NRIDQhdeIWrVsjQuVStrsHynxAJBlT+WkAa95JlV8l13+wK08AR1tEt8cLc7sqyk6
+ /BXg/xf6/rNgdRIeCLzlpKb5u8Qdhf66ffxEqqKziZPpo3k5Dt7YSSWlSgRhck+Wb29N
+ gei9N3uZt2N4z5k0NXa+GJiCp1ivZtOA74EU4Y/AThCW6pRdBoHH7OOZZgeMMDRvAhgO
+ NYnw==
+X-Gm-Message-State: AC+VfDy10MuOkA3s+aTAv2CF21V1M0nuLG978AXz1o319fPlBud8s/eH
+ sd3mt6btd4gKuJzdhCCRFxUMOCpc+uJN6wvzLowyruMpNlNGCbsuWWulcfdLuGQsdME8F+1Gyeb
+ WFjheGNf73au5Ny8=
+X-Received: by 2002:adf:f050:0:b0:30a:c625:8028 with SMTP id
+ t16-20020adff050000000b0030ac6258028mr3829562wro.35.1685528564717; 
+ Wed, 31 May 2023 03:22:44 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7xDjeJI4hobO2OqYhrHMnphCn49giquaPz+1wa5BJE4JvbP7ZEdt7FqZaloaegzFKJm99wWA==
+X-Received: by 2002:adf:f050:0:b0:30a:c625:8028 with SMTP id
+ t16-20020adff050000000b0030ac6258028mr3829539wro.35.1685528564295; 
+ Wed, 31 May 2023 03:22:44 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ b7-20020a5d4d87000000b0030af8da022dsm3363624wru.44.2023.05.31.03.22.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 03:22:43 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org,  Leonardo Bras <leobras@redhat.com>,  Hailiang
+ Zhang <zhanghailiang@xfusion.com>,  Peter Xu <peterx@redhat.com>,  Stefan
+ Hajnoczi <stefanha@redhat.com>,  qemu-block@nongnu.org,  Fam Zheng
+ <fam@euphon.net>
+Subject: Re: [PATCH v2 00/20] Next round of migration atomic counters
+In-Reply-To: <7acf22e1-6687-a633-2639-bae88f516354@proxmox.com> (Fiona Ebner's
+ message of "Wed, 31 May 2023 11:10:04 +0200")
+References: <20230530183941.7223-1-quintela@redhat.com>
+ <7acf22e1-6687-a633-2639-bae88f516354@proxmox.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Wed, 31 May 2023 12:22:42 +0200
+Message-ID: <87zg5ku7f1.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [RFC PATCH v2 2/4] vfio: Implement a common device info helper
-To: Alex Williamson <alex.williamson@redhat.com>, mst@redhat.com,
- marcel.apfelbaum@gmail.com
-Cc: qemu-devel@nongnu.org, clg@redhat.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230526231558.1660396-1-alex.williamson@redhat.com>
- <20230526231558.1660396-3-alex.williamson@redhat.com>
-Content-Language: en-US
-From: Robin Voetter <robin@streamhpc.com>
-In-Reply-To: <20230526231558.1660396-3-alex.williamson@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=robin@streamhpc.com; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,19 +99,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/27/23 01:15, Alex Williamson wrote:
-> -static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev,
-> -                                                uint32_t argsz)
-> +static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev);
->  {
+Fiona Ebner <f.ebner@proxmox.com> wrote:
+> Am 30.05.23 um 20:39 schrieb Juan Quintela:
+>> Hi
+>> 
+>> On this v2:
+>> 
+>> - dropped qemu_fflush() assert for read only files (make Richard
+>>   happy)
+>> 
+>> - Update documentation for qemu_file_transferred (make Fabiano happy)
+>> 
+>> - migration/rdma: Remove qemu_fopen_rdma() and make it look like
+>>   everything else
+>> 
+>> - Simplify a couple of qemu-file functions, and unexport the ones that
+>>   are not used outside of qemu-file.c
+>> 
+>> - Added Reviewed-by comments.
+>> 
+>> Please review.
+>> 
+> Hi,
+> I don't notice any performance regression with snapshots anymore with
+> this series :)
+>
+> Note that I had to apply your PULL patches from yesterday too, to be
+> able to apply this series:
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg07361.html
 
-There is an extraneous semicolon here behind the function declaration
-that should be removed.
+I know, thanks.
 
-Kind regards,
+Later, Juan.
 
-Robin Voetter, Stream HPC
 
