@@ -2,91 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189C17180D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 14:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECA0718112
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:09:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4LPz-0003lj-4x; Wed, 31 May 2023 08:59:11 -0400
+	id 1q4LYK-0003Fx-24; Wed, 31 May 2023 09:07:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4LPL-0003Ri-RB
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:58:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1q4LYH-0003Fa-Cr; Wed, 31 May 2023 09:07:45 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1q4LPG-0007ej-0h
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:58:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685537903;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vM5CSWqbBFYoxvr0g16PeCuNkkOuAU9HB2k5GIoHBqc=;
- b=immFXTVe+BOID+2HTtrwQBpRDXgTgAEw6ZhZxhsI8U6LKeCEPhMH86JN/zsJ85mljVFccf
- m4IH+hGKvu6pasqb/gD9ENjsv+jjsLxoiIk69NQwHq8vVEEYdsFwwZnuHoufsL3/4CKHYs
- BtguncPamqeDw/VSFA+gkMW4YxeSUOE=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-zHh5Eg01OdWTQY0-zbEgIQ-1; Wed, 31 May 2023 08:58:22 -0400
-X-MC-Unique: zHh5Eg01OdWTQY0-zbEgIQ-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-62829b2aa10so856206d6.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 05:58:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685537902; x=1688129902;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vM5CSWqbBFYoxvr0g16PeCuNkkOuAU9HB2k5GIoHBqc=;
- b=cfpPMqe6xhbn/GgXuCQvBnLMs6MLFClREBHjkSjccuUMHQcJ9gDBepk58HlONkAanB
- RfR7XFEPWB71DKYk5oplbC5bJzIc+9pUYb45hrrJkKwqdqw6HY/yqHNFk4XagVuaFhJ8
- k9lgGE8Lmy6Eh1fTX4iWx8CwZXsnGJhbaIk3upO+68h28y0FXS9PRnXGfURa5UUId9+N
- RyMSaDE71NNMJO8oWFD3ZERnRsCtXtiZ+vKngy+S5xx/Z4NWTLJ2VhUIL70ityo3pbaW
- GIkcHr7LadCBL3USJiedEv/46LDAha7E9YIGJS0M3b35A7XhWO6GwCvJnwSeSSs3pGXj
- yYAA==
-X-Gm-Message-State: AC+VfDx+aYA+Xc+etffwuyP0h30RsUvCe/lj/7xGP+fmK+gx3wry+hM1
- pqMiUgqJNALpH9rJikPnATm7digO6u/1s6xUsSxY2kkYjHp94PGAk1IEyCHN71AcKP8/VngvaIw
- 5r6+AenboDcY9La4=
-X-Received: by 2002:a05:6214:2526:b0:625:8684:3406 with SMTP id
- gg6-20020a056214252600b0062586843406mr5916166qvb.0.1685537902143; 
- Wed, 31 May 2023 05:58:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7PiGZBPPh3IAZzId9kkcFDy0YbEpaPtQAEo7AgvSQdEFZjB1dO4hU/aNS3aJIx0QUwKfLHeA==
-X-Received: by 2002:a05:6214:2526:b0:625:8684:3406 with SMTP id
- gg6-20020a056214252600b0062586843406mr5916154qvb.0.1685537901884; 
- Wed, 31 May 2023 05:58:21 -0700 (PDT)
-Received: from xz-m1.local
- (bras-base-aurron9127w-grc-62-70-24-86-62.dsl.bell.ca. [70.24.86.62])
- by smtp.gmail.com with ESMTPSA id
- ph9-20020a0562144a4900b00605f796d30esm5761492qvb.51.2023.05.31.05.58.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 May 2023 05:58:21 -0700 (PDT)
-Date: Wed, 31 May 2023 08:58:19 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Wang, Wei W" <wei.w.wang@intel.com>
-Cc: "quintela@redhat.com" <quintela@redhat.com>,
- "Wang, Lei4" <lei4.wang@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v2 2/2] qtest/migration-tests.c: use "-incoming defer"
- for postcopy tests
-Message-ID: <ZHdEa0jQJTAvg3RM@xz-m1.local>
-References: <20230530090259.189462-1-wei.w.wang@intel.com>
- <20230530090259.189462-3-wei.w.wang@intel.com>
- <ZHYLDSZiP+BQXv6K@x1n>
- <DS0PR11MB6373797A00F0A4E6B22EF639DC489@DS0PR11MB6373.namprd11.prod.outlook.com>
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1q4LYE-000199-Ad; Wed, 31 May 2023 09:07:44 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 34VCrF71020783; Wed, 31 May 2023 13:07:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=LeedKiQHOWUIy6PU3ntotvU36ELsgNtAd847Xcikx/E=;
+ b=b/bQbRlFlluuvQoXTKXWC7CfpSP0l/4dNpQ2+0KnKX7MnZiYV1UI/RSdaMG2jIb9Qjx6
+ nAdtHaD4Op7/OM+ijpPdvKCXEaLxoBFlPFs7esdzEulkZ06XAFCoD+v2uV/uhrFlBcRD
+ pi4AFrBqFZuc7yAXIoXwKwRw527Pn82U0UdVBp3I2fHuY2LozCRI0STA9yvctRa5pyGe
+ Sl3RMyedGP6YATXlmXFRgckyiCuh6OZehXak7d6JMnkOSlK1jYc5JjOEl2M/xo5VoXHf
+ zQK99YgoTA79lJ5OeYx7OVrNTfwy5R//kbAyM0u+PmIbXQOg5S4c5d1DX2zpTSRKw/no xw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qx6mx0bk4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 May 2023 13:07:39 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34VD5v8e024426;
+ Wed, 31 May 2023 13:07:39 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qx6mx0bj8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 May 2023 13:07:39 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34V50k5W017380;
+ Wed, 31 May 2023 13:07:38 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([9.208.129.118])
+ by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3qu9g5709v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 May 2023 13:07:38 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 34VD7ate66060790
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 31 May 2023 13:07:36 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D29558059;
+ Wed, 31 May 2023 13:07:36 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1FF5A58043;
+ Wed, 31 May 2023 13:07:35 +0000 (GMT)
+Received: from [9.61.34.174] (unknown [9.61.34.174])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 31 May 2023 13:07:34 +0000 (GMT)
+Message-ID: <7f5589ad-3062-4087-6272-a55ffa05f10b@linux.ibm.com>
+Date: Wed, 31 May 2023 09:07:34 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/2] linux-headers: Update with vfio_ap IRQ index mapping
+Content-Language: en-US
+To: Anthony Krowiak <akrowiak@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, jjherne@linux.ibm.com, pasic@linux.ibm.com,
+ fiuczy@linux.ibm.com, thuth@redhat.com, farman@linux.ibm.com,
+ borntraeger@linux.ibm.com
+References: <20230530225544.280031-1-akrowiak@linux.ibm.com>
+ <20230530225544.280031-2-akrowiak@linux.ibm.com>
+ <06630472-57c8-89dd-ad80-75fb4d0d7de9@linux.ibm.com>
+ <76dd7f44-56a5-91fd-13c2-fb1579c588ab@linux.ibm.com>
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <76dd7f44-56a5-91fd-13c2-fb1579c588ab@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: YEwTOyBpdQdLJmwI4-iMeb2oO8z75uEf
+X-Proofpoint-GUID: VHwfUTNjp_Mc4cA8QKijBSkC3R-VkC10
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DS0PR11MB6373797A00F0A4E6B22EF639DC489@DS0PR11MB6373.namprd11.prod.outlook.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-31_08,2023-05-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ mlxlogscore=999 clxscore=1015 impostorscore=0 phishscore=0 bulkscore=0
+ adultscore=0 malwarescore=0 mlxscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305310112
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,39 +119,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 10:41:37AM +0000, Wang, Wei W wrote:
-> On Tuesday, May 30, 2023 10:41 PM, Peter Xu wrote:
-> > On Tue, May 30, 2023 at 05:02:59PM +0800, Wei Wang wrote:
-> > > The Postcopy preempt capability requires to be set before incoming
-> > > starts, so change the postcopy tests to start with deferred incoming
-> > > and call migrate-incoming after the cap has been set.
-> > >
-> > > Signed-off-by: Wei Wang <wei.w.wang@intel.com>
-> > 
-> > Hmm.. so we used to do socket_start_incoming_migration_internal() before
-> > setting the right num for the preempt test, then I'm curious why it wasn't
-> > failing before this patch when trying to connect with the preempt channel..
-> > 
-> > Wei, do you know?
+On 5/31/23 8:52 AM, Anthony Krowiak wrote:
 > 
-> I think there are two reasons:
-> #1 "backlog" specifies the number of pending connections. As long as the server
-> accepts the connections faster than the clients side connecting, connection
-> will succeed. For the preempt test, it uses only 2 channels, so very likely to not have
-> pending connections. (This is easier to trigger for the multifd case, e.g. use a much
-> larger number like 16).
-> #2 per my tests (on kernel 6.2), the number of pending connections allowed is actually
-> "backlog + 1", which is 2 in this case. Adding more pending connections will then be
-> dropped. I'm not sure if " backlog + 1" is true for older versions of kernel, though.
+> 
+> On 5/30/23 8:56 PM, Matthew Rosato wrote:
+>> On 5/30/23 6:55 PM, Tony Krowiak wrote:
+>>> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+>>> ---
+>>>   linux-headers/linux/vfio.h | 9 +++++++++
+>>>   1 file changed, 9 insertions(+)
+>>
+>> Worth nothing here that linux-headers patches should be generated using scripts/update-linux-headers.sh.
+>>
+>> Since this linux-headers update includes changes that aren't merged into the kernel yet, I would still use update-linux-headers.sh -- but also include in the commit message that this is a placeholder patch that includes unmerged uapi changes.  Then once the kernel changes merge you can just have a proper linux-headers update patch in a subsequent qemu series.
+> 
+> I guess I do not understand the procedure here. I first determined the latest kernel release in which the vfio.h file was updated with the following command:
+> git log --oneline origin/master -- linux-headers/linux/vfio.h
+> 
+> According to the git log, the vfio.h file was last updated in kernel v6.3-rc5. I cloned that kernel from git.kernel.org/pub/scm/linux/kernel/git/stable and checked out kernel 6.3-rc5. I then made the changes to the linux-headers/linux/vfio.h file and ran the update-linux-headers.sh script and created this patch from that. Where did I go wrong?
 
-Interesting to know, thanks.
+Presumably your kernel series that you just posted was built on top of 6.4-rc4, not v6.3-rc5 (if it's not, you should rebase onto a recent kernel like 6.4-rc4).  Then, you want to point update-linux-headers.sh at that source repository which includes your changes.  This will pull in all of the changes to the uapi up to kernel 6.4-rc* + your additional unmerged changes.  FWIW, I just pointed update-linux-headers.sh at kernel master from today and I got the following:
 
-If there'll be a new version, please consider adding some of those into the
-commit message.
+---
+ include/standard-headers/linux/const.h        |  2 +-
+ include/standard-headers/linux/virtio_blk.h   | 18 +++----
+ .../standard-headers/linux/virtio_config.h    |  6 +++
+ include/standard-headers/linux/virtio_net.h   |  1 +
+ linux-headers/asm-arm64/kvm.h                 | 33 ++++++++++++
+ linux-headers/asm-riscv/kvm.h                 | 53 ++++++++++++++++++-
+ linux-headers/asm-riscv/unistd.h              |  9 ++++
+ linux-headers/asm-s390/unistd_32.h            |  1 +
+ linux-headers/asm-s390/unistd_64.h            |  1 +
+ linux-headers/asm-x86/kvm.h                   |  3 ++
+ linux-headers/linux/const.h                   |  2 +-
+ linux-headers/linux/kvm.h                     | 12 +++--
+ linux-headers/linux/psp-sev.h                 |  7 +++
+ linux-headers/linux/userfaultfd.h             | 17 +++++-
+ 14 files changed, 149 insertions(+), 16 deletions(-)
+---
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+In your case you would also see an additional line for linux-headers/linux/vfio.h, which would be your unmerged kernel uapi changes.
 
--- 
-Peter Xu
+Then you can include a cover letter something like:
+
+This is a placeholder that pulls in 6.4-rc4 + unmerged kernel changes
+required by this series.  A proper header sync can be done once the
+associated kernel code merges.
+
+Here's an example from an old series where I did this before:
+
+https://lore.kernel.org/qemu-devel/20220606203614.110928-2-mjrosato@linux.ibm.com/
+
+One of the main advantages of doing it this way is that if there are any uapi breakages unrelated to your patch we catch them now.  That helps whoever might take your series (e.g. Thomas) avoid having to deal with the fallout later when sending a pull request.
+
+> 
+>>
+>>>
+>>> diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
+>>> index 4a534edbdcba..2658fda219e8 100644
+>>> --- a/linux-headers/linux/vfio.h
+>>> +++ b/linux-headers/linux/vfio.h
+>>> @@ -646,6 +646,15 @@ enum {
+>>>       VFIO_CCW_NUM_IRQS
+>>>   };
+>>>   +/*
+>>> + * The vfio-ap bus driver makes use of the following IRQ index mapping.
+>>> + * Unimplemented IRQ types return a count of zero.
+>>> + */
+>>> +enum {
+>>> +    VFIO_AP_REQ_IRQ_INDEX,
+>>> +    VFIO_AP_NUM_IRQS
+>>> +};
+>>> +
+>>>   /**
+>>>    * VFIO_DEVICE_GET_PCI_HOT_RESET_INFO - _IOWR(VFIO_TYPE, VFIO_BASE + 12,
+>>>    *                          struct vfio_pci_hot_reset_info)
+>>
 
 
