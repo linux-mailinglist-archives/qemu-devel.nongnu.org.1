@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35817185BE
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB1B7185BC
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:09:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NRe-0000zu-8z; Wed, 31 May 2023 11:09:02 -0400
+	id 1q4NRb-0000xD-Rz; Wed, 31 May 2023 11:08:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NRY-0000rp-5b
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:08:56 -0400
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NRX-0000ri-Op
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:08:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NRW-0004DF-BO
+ (Exim 4.90_1) (envelope-from <cconte@redhat.com>) id 1q4NRW-0004DM-4t
  for qemu-devel@nongnu.org; Wed, 31 May 2023 11:08:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685545730;
+ s=mimecast20190719; t=1685545731;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=isVeXj2ZRSeKcqWYbUBK8rUm96hsmSNFmyK+1e5/1HY=;
- b=Kq3T97SKHsEmmrfTh9GfDPU4rnk9WTpGVq/U4CCTUlhZ0CNDuZppY/Y0N9qcD63VpTplD2
- 4o76XpAL5d4KuKoTlRih2wC08NljHjRVaA2SkAlybyEKfOjLRGtINYeuJofyWO9XuAmVE5
- CIHjZuJTpZJbKvVUEMQVJjGMU17xm0o=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OBfSt4Me5C/XPY7LY682rlFuKztjSBtY5pm75ZUXSxM=;
+ b=Bf5Fho7DYGqnR49ObLtCNnkKWMsjv7Ndt1238qU/tPkcjxAKGijXPwJVi4ebyx9kyyoE+N
+ l2KrIDNEgaEKzzqvXcltnilKrgFZtFGzSjAdY+xXjSLPjKQCViagqFnLHAgTo/SoJcyoa0
+ qFgC7Od8Lte2cDbsHHmKv/T5/tq/70A=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-ljzrm8w4NA6cdvQpUXCmCw-1; Wed, 31 May 2023 11:08:49 -0400
-X-MC-Unique: ljzrm8w4NA6cdvQpUXCmCw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f612a1b0fdso34142405e9.2
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:08:48 -0700 (PDT)
+ us-mta-547-3SVYcAdXOVaSzUKm9BLrrA-1; Wed, 31 May 2023 11:08:50 -0400
+X-MC-Unique: 3SVYcAdXOVaSzUKm9BLrrA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30ab548ba06so7954029f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:08:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685545727; x=1688137727;
+ d=1e100.net; s=20221208; t=1685545728; x=1688137728;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=isVeXj2ZRSeKcqWYbUBK8rUm96hsmSNFmyK+1e5/1HY=;
- b=mH0OTJHtSI4lWonlmaY0F7BvYmPwNe0qfKhDumSpPCH3u0YoU4Ldhs/WpSH5PPEGRo
- uzeRoj77XzOLUvpz1+4QwKm518XbLe10tXExSMNbDiYQ1V41dKHK1m1PZZeTPDQVb3p3
- 9fV6iJFo6beZaIXZxTnrQvlRKwVQFGeHpKkQu3eCv0K2Jf8DbCjDCHApjgoPrV8BLsHz
- xmBe1ld2MnxNkAaYM3lTUuBRAkfhnzbhPRsgbqZKr8xy/B4fYyWRAMp91Zh2PeKD3Fxe
- HPOpAxnG9BupK2yCBFJA1Vke5ukxmVDGg3fsozSO4IbPe8RrWYBn8MfezG5M852fb/s8
- KvjQ==
-X-Gm-Message-State: AC+VfDy5mpFwJ1hcNMj/uCZZCGs1TRsEAfU63ESH/oIUOolGmIjPB7kg
- PpJDCAFmjhIPDAIdezoxObmOL45sRI/HYsxV6DEc5UHXmSUnq2Wsk1mol2B9/cuohVWSpmdiNXZ
- U1Yc7L9vdOXSd8npJCV46HKsIy6eGBY/HvST2IrN/hSxV/HGYUclsFQtguM+BEkP0uoUNpMeo
-X-Received: by 2002:adf:ec12:0:b0:30a:d867:da29 with SMTP id
- x18-20020adfec12000000b0030ad867da29mr4853297wrn.33.1685545727760; 
- Wed, 31 May 2023 08:08:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4Gn6zSJMIXGi4dyrgQnEO4lLGc5QDobkGrETyYXTXHEqVA4f0aJv3m25CCiJH1B1KYWMjRbQ==
-X-Received: by 2002:adf:ec12:0:b0:30a:d867:da29 with SMTP id
- x18-20020adfec12000000b0030ad867da29mr4853280wrn.33.1685545727578; 
- Wed, 31 May 2023 08:08:47 -0700 (PDT)
+ bh=OBfSt4Me5C/XPY7LY682rlFuKztjSBtY5pm75ZUXSxM=;
+ b=FHjJqgv0Hp/OOt/DT6K8WWylfR4/+eBLDdcQ+41st3EBqEZMBsOGRjAn557I968Z3i
+ j7mtjlXk2SeqxiUELKp8V93MPkBxkgVAFbtAClgabJMA7MpA8+GWb+eUb40NNGN99ljV
+ M6y6hWkv0Hjq1v0HW9bFOXca3nSgSmtJD3xBvgCXWW3AqEyCra3/mffjFinISBNDc4lx
+ hPDKMXzkOFETnThvMBLsnjvrE8Z4Z6MmV/VlTU+sJl3r+MbTZ+yeojC1eBijEGraucrn
+ 0ukL94RojAVRd6Cp3o+bC9LeJD17MlamOOuXBUQsUxmawTDuqnrcbZLtHObByLEpFe+m
+ zhSg==
+X-Gm-Message-State: AC+VfDx/C8XCBmtCuUEP+BsU8n8kmdY8IrbKDCZIHLLORS+V7IyAzXpF
+ DgE33+KtYas/Jg0x862qgxCHAFwVrl3GzPCmsK+OxwuPAaZcPoHjvjgfXTqZv76uXQr8KUOHR1o
+ CHyML6BC5PBvxQaIUlgrZr6y8EL39NzeSpEi/niiJhjfkGeE7MZ5owuDPTlsfXbmLzkc3NfI6
+X-Received: by 2002:a5d:474b:0:b0:306:4031:63c5 with SMTP id
+ o11-20020a5d474b000000b00306403163c5mr4640419wrs.51.1685545728718; 
+ Wed, 31 May 2023 08:08:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ66QlsAqhDlleChZ4z4P2K3hAWGyvhj29ECEsZbU4FAeghqZvbcSmc+WcoleWozS4MBdA9gmg==
+X-Received: by 2002:a5d:474b:0:b0:306:4031:63c5 with SMTP id
+ o11-20020a5d474b000000b00306403163c5mr4640391wrs.51.1685545728393; 
+ Wed, 31 May 2023 08:08:48 -0700 (PDT)
 Received: from localhost.localdomain ([2001:b07:ad4:d988:c2cd:bd04:c2d7:61e3])
  by smtp.gmail.com with ESMTPSA id
- g15-20020adff40f000000b00307972e46fasm7090499wro.107.2023.05.31.08.08.46
+ g15-20020adff40f000000b00307972e46fasm7090499wro.107.2023.05.31.08.08.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 May 2023 08:08:47 -0700 (PDT)
+ Wed, 31 May 2023 08:08:48 -0700 (PDT)
 From: Camilla Conte <cconte@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, richard.henderson@linaro.org, alex.bennee@linaro.org,
  Camilla Conte <cconte@redhat.com>
-Subject: [PATCH 2/5] gitlab-ci: Reference rules instead of extends
-Date: Wed, 31 May 2023 16:08:21 +0100
-Message-Id: <20230531150824.32349-3-cconte@redhat.com>
+Subject: [PATCH 3/5] gitlab-ci: Move variables outside script
+Date: Wed, 31 May 2023 16:08:22 +0100
+Message-Id: <20230531150824.32349-4-cconte@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230531150824.32349-1-cconte@redhat.com>
 References: <20230531150824.32349-1-cconte@redhat.com>
@@ -97,40 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows for the jobs to extend different templates while
-having a shared template for rules.
+Also split long line for clarity.
 
 Docs:
-https://docs.gitlab.com/ee/ci/jobs/job_control.html#reuse-rules-in-different-jobs
+https://docs.gitlab.com/ee/ci/variables/#use-cicd-variables-in-other-variables
 Signed-off-by: Camilla Conte <cconte@redhat.com>
 ---
- .gitlab-ci.d/opensbi.yml | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .gitlab-ci.d/container-template.yml | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
-index 2e9d51764e..d0221632f6 100644
---- a/.gitlab-ci.d/opensbi.yml
-+++ b/.gitlab-ci.d/opensbi.yml
-@@ -40,7 +40,8 @@
-       when: on_success
- 
- docker-opensbi:
--  extends: .opensbi_job_rules
-+  rules:
-+    - !reference [.opensbi_job_rules, rules]
+diff --git a/.gitlab-ci.d/container-template.yml b/.gitlab-ci.d/container-template.yml
+index fd7deb1c29..d146d1d197 100644
+--- a/.gitlab-ci.d/container-template.yml
++++ b/.gitlab-ci.d/container-template.yml
+@@ -1,20 +1,27 @@
+ .container_job_template:
+   extends: .base_job_template
+-  image: docker:stable
    stage: containers
-   image: docker:stable
++  image: docker:stable
    services:
-@@ -59,7 +60,8 @@ docker-opensbi:
-     - docker push $IMAGE_TAG
- 
- build-opensbi:
--  extends: .opensbi_job_rules
-+  rules:
-+    - !reference [.opensbi_job_rules, rules]
-   stage: build
-   needs: ['docker-opensbi']
-   artifacts:
+     - docker:stable-dind
++  variables:
++    TAG: "$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
++    COMMON_TAG: "$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
++    DOCKERFILE: "$CI_PROJECT_DIR/tests/docker/dockerfiles/$NAME.docker"
++    BUILD_CONTEXT: "$CI_PROJECT_DIR"
+   before_script:
+-    - export TAG="$CI_REGISTRY_IMAGE/qemu/$NAME:latest"
+-    - export COMMON_TAG="$CI_REGISTRY/qemu-project/qemu/qemu/$NAME:latest"
+     - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+     - until docker info; do sleep 1; done
+   script:
+     - echo "TAG:$TAG"
+     - echo "COMMON_TAG:$COMMON_TAG"
+-    - docker build --tag "$TAG" --cache-from "$TAG" --cache-from "$COMMON_TAG"
++    - >
++      docker build
++      --tag "$TAG"
++      --cache-from "$TAG"
++      --cache-from "$COMMON_TAG"
+       --build-arg BUILDKIT_INLINE_CACHE=1
+-      -f "tests/docker/dockerfiles/$NAME.docker" "."
++      -f "$DOCKERFILE" "$BUILD_CONTEXT"
+     - docker push "$TAG"
+   after_script:
+     - docker logout
 -- 
 2.40.1
 
