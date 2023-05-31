@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71054718470
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 16:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D7A718471
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 16:13:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4MZw-0007cT-Cb; Wed, 31 May 2023 10:13:32 -0400
+	id 1q4Ma9-0007vg-5C; Wed, 31 May 2023 10:13:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MZu-0007cL-Kv
- for qemu-devel@nongnu.org; Wed, 31 May 2023 10:13:30 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Ma7-0007sH-7q
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 10:13:43 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4MZs-0000Hb-Uw
- for qemu-devel@nongnu.org; Wed, 31 May 2023 10:13:30 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3f6e13940daso61826865e9.0
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 07:13:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Ma5-0000Ko-P1
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 10:13:43 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3f60804faf4so43239465e9.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 07:13:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685542407; x=1688134407;
+ d=linaro.org; s=google; t=1685542420; x=1688134420;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KNq9eXK/3VhQXX6J+rmXyE2T1QXRN8k68DN6UuqCVdQ=;
- b=jDPA/Y/V4cb8ZoXcisaZjsv7dhq4hslQvXMwLkHrXVxskGIVP5wkX1MSHqkHTpf6rh
- 430MCo9wfYHhjAjbB0fgxemSoFn7fsTozPkcXqKiYJ8olNeVGNZs4KncyOxG4f9yPi3B
- IJSNNbBDtoCcXgdDjBQY/WDvYeN8gpTvjbNFcjM474xFL1fpzryZ2+g+r+4166Vx5tY1
- FBmrlR22fiQAyNEy/6GRW8no/GaluZCeYz9cS89qHPt5ee55pU7OKx8e8WjHCn11tYw1
- BDI8A0owBLWVKhQM8CmbCTJLcmCvAnbfkpdpXp/IeajGvaeOIbsA40Ma0CLOsHCePIAU
- /aJg==
+ bh=/GFc07CBmY8wM0zBnA0LrLPixgK04Au1iZn+mWgzTJ0=;
+ b=iT3vn8yOZq9PTJjEPWc0McIjeFpiaaMyZgpu4DJHt4qrZNacBfSMxKK2wp15MIkhN2
+ SLHHXYPngsV1CHt6rD4xLUl6mdaB8rEIoPrTdY66q1UmM1VQdiSBArrhNl0woOVSTki4
+ I5Loj+Mn5WxrJ46unO2J8vCDtHx+8p98h+rEl7L5MJVeC5cZZxbdHp/R0lsumnFh7K4h
+ VPgU2gY7qWcF3zCNtKmC/zwAxpOojLGQBcn+l916TIYvdvcdXXCqT4FpZ6c5ULMnU73X
+ lAQWnpVZVvDMZW5ShvN/cPq66rNLoDKVyekLQSKQAhsAvvv95+Oe5vEiWYmSXjU1ZDVQ
+ Midg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685542407; x=1688134407;
+ d=1e100.net; s=20221208; t=1685542420; x=1688134420;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KNq9eXK/3VhQXX6J+rmXyE2T1QXRN8k68DN6UuqCVdQ=;
- b=MkDCtfUEUyRNq8qFzr+QZ2wm56UkQpNUrJrWTGZ6jMNdQSvzsIkTYZHeSPMtg7Z5c6
- TuDyq9LaOvLXO91D9Gah7WBc5MlZKcTAeFXu9hIVan/6zbVswmjGUHvBx6aIeSKZ3V8u
- 8Z+dueBrpBIEyx3VlTiJAXX6jhREzUMztCy0OqyRJV9Cj5hgvnEYpBUtl7YN6rYdasWI
- 1UCbs+RbC6v06GVEwUOjCOD4tc3VIAKlZwP/394gTWqzRr1oN7XFFTNJdlIQr8W95oFr
- ajmZaTJQhrG+kcE7vCgqjJ7rABB2cOg/pO1nCCZtGkysTXRIWCZjvqYkN9X2i4ozrMQP
- YLqA==
-X-Gm-Message-State: AC+VfDxvMTKvFb/N2pQrhkKsrg2FVaBlWWIQASYnIHvr4xBnNAqY/qRu
- ybXFzIB5OcTJ80dNAmdJvOpbUQ==
-X-Google-Smtp-Source: ACHHUZ6s+ARIO9+WOtD5Rr1lX3SA5mR1kF5t27RNfx/SrqwVMSXAbJOcfOkcCvwitbpg4oaE1pyJvw==
-X-Received: by 2002:a05:600c:2208:b0:3f6:a66:a36d with SMTP id
- z8-20020a05600c220800b003f60a66a36dmr4343845wml.10.1685542407268; 
- Wed, 31 May 2023 07:13:27 -0700 (PDT)
+ bh=/GFc07CBmY8wM0zBnA0LrLPixgK04Au1iZn+mWgzTJ0=;
+ b=QtpuD5B5BCpTXQc4Vcwb8yhBsoFy8DaFV73FylSI033BD1zCZnE5pZHGxJ2m9WI+5/
+ Z8mxl+DzrctJ9SLXeSkfM2sr9kulG/T1Ai4mtvd/cwN+NifndwyOQ0valSmXSEihK8w6
+ wR+4zW0xcOXHrxBmfJ7b6dAikW1I5mT6gq5fIYDXyXpKKqk4NmnD4o4w90hlhoJ725q4
+ 04YMgvIlhhroZXiZIWVqOe1ixe4YDqpMZo2hYz6vX57lL/cmQHDZEPc7Ok3hXlJCLwPY
+ B42fzFkusdcEmx7/zbRyTAjd33eTladN4YFx58OhbHGEWc8y/DBKXyLxvXxAAEbLqv1g
+ ikHg==
+X-Gm-Message-State: AC+VfDznLHR4Dr2O11RLiP7kSs8lzXrfkYVqpGp1YYm4/inf1ZCo/0/7
+ qlGWkrfTcuttqmGrzZuePNA9NFbwQYGNUPFjf4A=
+X-Google-Smtp-Source: ACHHUZ6qcH9aWxux0RGY62kJXNU5gr7VulnORS5JI3PwS980BuMgMiAX0s9hrATQhB34HsuAy++uHg==
+X-Received: by 2002:adf:e4cf:0:b0:30a:b4e1:a89c with SMTP id
+ v15-20020adfe4cf000000b0030ab4e1a89cmr3950832wrm.66.1685542420260; 
+ Wed, 31 May 2023 07:13:40 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- n11-20020a05600c294b00b003f6129d2e30sm24559454wmd.1.2023.05.31.07.13.26
+ s5-20020adff805000000b00307d58b3da9sm7056795wrp.25.2023.05.31.07.13.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 07:13:26 -0700 (PDT)
-Message-ID: <77703afd-3396-a7a4-ad58-f49afcdd28b8@linaro.org>
-Date: Wed, 31 May 2023 16:13:25 +0200
+ Wed, 31 May 2023 07:13:39 -0700 (PDT)
+Message-ID: <14049f9c-7e37-7ba9-85ff-94a9306337a5@linaro.org>
+Date: Wed, 31 May 2023 16:13:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v3 16/48] target/arm: Include helper-gen.h in translator.h
+Subject: Re: [PATCH v3 17/48] target/hexagon: Include helper-gen.h where needed
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20230531040330.8950-1-richard.henderson@linaro.org>
- <20230531040330.8950-17-richard.henderson@linaro.org>
+ <20230531040330.8950-18-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531040330.8950-17-richard.henderson@linaro.org>
+In-Reply-To: <20230531040330.8950-18-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,19 +94,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 31/5/23 06:02, Richard Henderson wrote:
 > This had been included via tcg-op-common.h via tcg-op.h,
-> but that is going away.
-> 
-> It is needed for inlines within translator.h, so we might as well
-> do it there and not individually in each translator c file.
+> but that is going away.  In idef-parser.y, shuffle some
+> tcg related includes into a more logical order.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/arm/tcg/translate.h     | 1 +
->   target/arm/tcg/translate-a64.c | 2 --
->   target/arm/tcg/translate-sme.c | 1 -
->   target/arm/tcg/translate-sve.c | 2 --
->   target/arm/tcg/translate.c     | 2 --
->   5 files changed, 1 insertion(+), 7 deletions(-)
+>   target/hexagon/genptr.c                  | 1 +
+>   target/hexagon/translate.c               | 1 +
+>   target/hexagon/idef-parser/idef-parser.y | 3 ++-
+>   3 files changed, 4 insertions(+), 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
