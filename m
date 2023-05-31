@@ -2,103 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EF371717B
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 01:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 225DE71726A
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 02:29:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q48Zc-0002Ad-Ko; Tue, 30 May 2023 19:16:16 -0400
+	id 1q49gy-0006IZ-HZ; Tue, 30 May 2023 20:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keescook@chromium.org>)
- id 1q48Za-0002AO-Ls
- for qemu-devel@nongnu.org; Tue, 30 May 2023 19:16:14 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <keescook@chromium.org>)
- id 1q48ZY-00022t-Q3
- for qemu-devel@nongnu.org; Tue, 30 May 2023 19:16:14 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-64d30ab1ef2so3838544b3a.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 16:16:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1685488571; x=1688080571;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=q6wOdCsvPcfL1AGuKhq7si1i+l1tB9VGHRhgBuI4hFQ=;
- b=A6P9MRUqWxltKJ9Zgwok7DSDRoOxoww2FWlF6WQO1tYgoM5+Hi0Ez2oEaQQjsD1m8R
- d4fRiNfemEoHsLbKtPfU643qi1eTaIaRbZTrXG8PIKxDT7zOE/fxQqSHWBsVd7zxgsD9
- 9LmT/yPeVeEdIlXyQ0jganlgblNgnS7PESvrk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685488571; x=1688080571;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=q6wOdCsvPcfL1AGuKhq7si1i+l1tB9VGHRhgBuI4hFQ=;
- b=knVzQskMH/5faINvU6NCCYccw8ty+0yY/k3d0ZS3NBk6FJIt8f4eeL7P1Sx+EeEvhA
- bCFAYgR1MT+HANJ6a6ig1uV+5J4+t/JxJ7D9cBENXrXPdHDnFFWBtVM1p6xqQSpOfUO4
- WXdv6s8rSGCEARTbozCrqImvhbV5atYObLru5PIKAUVbGT+0nCgKx6V4PzSWxDJy22MY
- yKGv8sTveXXwPTuL2YcfziE4nIv7RvwRg6Lsl02RkQUnRykxyDyae2AUTsEtBUOiWKb9
- 2neE/hTDyVQYXBoNS8m+O868Nxs8S7VfP5egYXEFXXkG07shgDdPRbJrcsHOwc747XXu
- ef6g==
-X-Gm-Message-State: AC+VfDy9rJ6z0X16IU87UacF8h73XZMkEE9bq5M55J5N1jldohUu9Diy
- IAU4vgFK8NyUfwppy1GAGCOxjA==
-X-Google-Smtp-Source: ACHHUZ5vUXK2I/pfuTav0TBfWy3DDrvFJsd+7uESTSUanu+Vl50RByVZpLds9PiU8F5GGbjiErQYOQ==
-X-Received: by 2002:a05:6a00:10c4:b0:646:663a:9d60 with SMTP id
- d4-20020a056a0010c400b00646663a9d60mr4308038pfu.10.1685488570875; 
- Tue, 30 May 2023 16:16:10 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net.
- [198.0.35.241]) by smtp.gmail.com with ESMTPSA id
- v22-20020aa78516000000b0063d3d776910sm2123773pfn.138.2023.05.30.16.16.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 May 2023 16:16:10 -0700 (PDT)
-Date: Tue, 30 May 2023 16:16:09 -0700
-From: Kees Cook <keescook@chromium.org>
-To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc: Wei Liu <wei.liu@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Graf <graf@amazon.com>, Forrest Yuan Yu <yuanyu@google.com>,
- James Morris <jamorris@linux.microsoft.com>,
- John Andersen <john.s.andersen@intel.com>,
- "Madhavan T . Venkataraman" <madvenka@linux.microsoft.com>,
- Marian Rotariu <marian.c.rotariu@gmail.com>,
- Mihai =?utf-8?B?RG9uyJt1?= <mdontu@bitdefender.com>,
- =?utf-8?B?TmljdciZb3IgQ8OuyJt1?= <nicu.citu@icloud.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Thara Gopinath <tgopinath@microsoft.com>, Will Deacon <will@kernel.org>,
- Zahra Tarkhani <ztarkhani@microsoft.com>,
- =?utf-8?Q?=C8=98tefan_=C8=98icleru?= <ssicleru@bitdefender.com>,
- dev@lists.cloudhypervisor.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
- x86@kernel.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v1 5/9] KVM: x86: Add new hypercall to lock control
- registers
-Message-ID: <202305301614.BF8D80D3D5@keescook>
-References: <20230505152046.6575-1-mic@digikod.net>
- <20230505152046.6575-6-mic@digikod.net>
- <ZFlllHjntehpthma@liuwe-devbox-debian-v2>
- <901ff104-215c-8e81-fbae-5ecd8fa94449@digikod.net>
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q49gw-0006I6-1Q; Tue, 30 May 2023 20:27:54 -0400
+Received: from smtp25.cstnet.cn ([159.226.251.25] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1q49gt-0004fw-50; Tue, 30 May 2023 20:27:53 -0400
+Received: from [192.168.0.120] (unknown [61.165.37.98])
+ by APP-05 (Coremail) with SMTP id zQCowADHzHB2lHZk0sNiCA--.10358S2;
+ Wed, 31 May 2023 08:27:35 +0800 (CST)
+Message-ID: <a669092a-8ef1-a70b-9896-5e7b6c78bb4a@iscas.ac.cn>
+Date: Wed, 31 May 2023 08:27:34 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/4] target/riscv: Make MPV only work when MPP != PRV_M
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230529121719.179507-1-liweiwei@iscas.ac.cn>
+ <20230529121719.179507-2-liweiwei@iscas.ac.cn>
+ <d0a208a3-9973-b7e4-8fcf-d71ec0eab9b1@ventanamicro.com>
+Content-Language: en-US
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <d0a208a3-9973-b7e4-8fcf-d71ec0eab9b1@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <901ff104-215c-8e81-fbae-5ecd8fa94449@digikod.net>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=keescook@chromium.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-CM-TRANSID: zQCowADHzHB2lHZk0sNiCA--.10358S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxuryDGw1ktF1rtryUCFykZrb_yoW5Gry5pr
+ 1kGrW7KFWDCrWkG3Wftr1UGry5Jr1UGw1UJr1kAF1UJr45Jr4q9F4UXr1jgr1UJr48Jr1j
+ vF1UZryDZF47XF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+ 4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+ c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkIecxEwVAFwVWDMxAIw28IcxkI7VAKI48JMx
+ C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+ wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+ vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v2
+ 0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
+ WUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUn5rcUUUUU
+X-Originating-IP: [61.165.37.98]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.25; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,57 +80,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 29, 2023 at 06:48:03PM +0200, Micka�l Sala�n wrote:
-> 
-> On 08/05/2023 23:11, Wei Liu wrote:
-> > On Fri, May 05, 2023 at 05:20:42PM +0200, Micka�l Sala�n wrote:
-> > > This enables guests to lock their CR0 and CR4 registers with a subset of
-> > > X86_CR0_WP, X86_CR4_SMEP, X86_CR4_SMAP, X86_CR4_UMIP, X86_CR4_FSGSBASE
-> > > and X86_CR4_CET flags.
-> > > 
-> > > The new KVM_HC_LOCK_CR_UPDATE hypercall takes two arguments.  The first
-> > > is to identify the control register, and the second is a bit mask to
-> > > pin (i.e. mark as read-only).
-> > > 
-> > > These register flags should already be pinned by Linux guests, but once
-> > > compromised, this self-protection mechanism could be disabled, which is
-> > > not the case with this dedicated hypercall.
-> > > 
-> > > Cc: Borislav Petkov <bp@alien8.de>
-> > > Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Cc: H. Peter Anvin <hpa@zytor.com>
-> > > Cc: Ingo Molnar <mingo@redhat.com>
-> > > Cc: Kees Cook <keescook@chromium.org>
-> > > Cc: Madhavan T. Venkataraman <madvenka@linux.microsoft.com>
-> > > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > > Cc: Sean Christopherson <seanjc@google.com>
-> > > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > > Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-> > > Cc: Wanpeng Li <wanpengli@tencent.com>
-> > > Signed-off-by: Micka�l Sala�n <mic@digikod.net>
-> > > Link: https://lore.kernel.org/r/20230505152046.6575-6-mic@digikod.net
-> > [...]
-> > >   	hw_cr4 = (cr4_read_shadow() & X86_CR4_MCE) | (cr4 & ~X86_CR4_MCE);
-> > >   	if (is_unrestricted_guest(vcpu))
-> > > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > > index ffab64d08de3..a529455359ac 100644
-> > > --- a/arch/x86/kvm/x86.c
-> > > +++ b/arch/x86/kvm/x86.c
-> > > @@ -7927,11 +7927,77 @@ static unsigned long emulator_get_cr(struct x86_emulate_ctxt *ctxt, int cr)
-> > >   	return value;
-> > >   }
-> > > +#ifdef CONFIG_HEKI
-> > > +
-> > > +extern unsigned long cr4_pinned_mask;
-> > > +
-> > 
-> > Can this be moved to a header file?
-> 
-> Yep, but I'm not sure which one. Any preference Kees?
 
-Uh, er, I was never expecting that mask to be non-static. ;) To that
-end, how about putting it in arch/x86/kvm/x86.h ?
+On 2023/5/31 04:23, Daniel Henrique Barboza wrote:
+>
+>
+> On 5/29/23 09:17, Weiwei Li wrote:
+>> Upon MRET or explicit memory access with MPRV=1, MPV should be ignored
+>> when MPP=PRV_M.
+>>
+>> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+>> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+>> ---
+>>   target/riscv/cpu_helper.c | 3 ++-
+>>   target/riscv/op_helper.c  | 3 ++-
+>>   2 files changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+>> index 09ea227ceb..bd892c05d4 100644
+>> --- a/target/riscv/cpu_helper.c
+>> +++ b/target/riscv/cpu_helper.c
+>> @@ -46,7 +46,8 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool 
+>> ifetch)
+>>             if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
+>>               mode = get_field(env->mstatus, MSTATUS_MPP);
+>> -            virt = get_field(env->mstatus, MSTATUS_MPV);
+>> +            virt = get_field(env->mstatus, MSTATUS_MPV) &&
+>> +                   (mode != PRV_M);
+>
+> This change makes more sense in patch 2 where you also removed the 'mode'
+> check for MPRV. As it is now I read the code above and thought "but mode
+> is guaranteed to be == PRV_M, so (mode !=  PRV_M) is guaranteed to be
+> false every time".
 
--- 
-Kees Cook
+No, this 'mode' (get from MPP) is not the previous 'mode'(the current 
+privilege mode).
+
+Regards,
+
+Weiwei Li
+
+>
+> The change in helper_mret() below is fine.
+>
+> Thanks,
+>
+> Daniel
+>
+>>               if (virt) {
+>>                   status = env->vsstatus;
+>>               }
+>> diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+>> index f563dc3981..9cdb9cdd06 100644
+>> --- a/target/riscv/op_helper.c
+>> +++ b/target/riscv/op_helper.c
+>> @@ -335,7 +335,8 @@ target_ulong helper_mret(CPURISCVState *env)
+>>           riscv_raise_exception(env, RISCV_EXCP_INST_ACCESS_FAULT, 
+>> GETPC());
+>>       }
+>>   -    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV);
+>> +    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV) &&
+>> +                             (prev_priv != PRV_M);
+>>       mstatus = set_field(mstatus, MSTATUS_MIE,
+>>                           get_field(mstatus, MSTATUS_MPIE));
+>>       mstatus = set_field(mstatus, MSTATUS_MPIE, 1);
+
 
