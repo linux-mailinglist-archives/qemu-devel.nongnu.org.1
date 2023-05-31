@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7CB571816F
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C33A718113
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 15:09:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Lmw-0001cO-AO; Wed, 31 May 2023 09:22:54 -0400
+	id 1q4LZ5-0003Tf-00; Wed, 31 May 2023 09:08:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vincent.guittot@linaro.org>)
- id 1q4LFm-0004Xw-UM
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:48:39 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <vincent.guittot@linaro.org>)
- id 1q4LFk-0005d0-Sy
- for qemu-devel@nongnu.org; Wed, 31 May 2023 08:48:38 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-5346d150972so5074940a12.3
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 05:48:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685537313; x=1688129313;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=x/MnoC95jVY7JUwLeYUzQX1bQ2/paihg1ZFHf4gLHqE=;
- b=Uuwsr0pE4aRUYnz95zQBDbglzCKEOMSMxmfrkvaB3cPq20S8eeUXUCNdkxP3ogMqN8
- /Lghsa1GO6E0yNuw752B2yAumOhF5JKJdtAA28H7f2pQHbRel2RfliKl/ANaTgmIEVvg
- HqeI9aF4H1gj/BxXXsmI0lZiqBH0FgrZfQge4jT/HXQXRvEO1gZB5uOTMY4W1gVDRI3a
- hjHXqT5uR0JnE31zg499Qncdbaw5u8vnVycrCppKuWuW2O3DlLeX27aHhORY4E2W4u/N
- /6WRkX/Vs3Av5b4P/xk2bCEyE+RTIEOOvZiBwdSTnE1Y0yYvYcFOSJU1oBEmJPHX7QIC
- i8gQ==
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1q4LYz-0003Sp-VT
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 09:08:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1q4LYr-0001Jl-Mi
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 09:08:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685538501;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=vuSQkbmc0r+0jBk3EaFQ0xOSSghfs2n8WXIjwIvy8bo=;
+ b=TnQyMS9aYHofEGHbb36lNfHZfSjhJZsWQvrIYCABL2gRaESn+AkVwvIo6kPCafFoCTIM46
+ gGQ+exUaEnJwvzLbm1ZPm2f6ff5HxRl9K2js0m5jCCHT1rI7BRi5/1kQalsdX08MqOS0IN
+ nWd0X/wBdDsjLNk43ndz2SLrcUOiBqI=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-139-qfoY9XKvPOuO5ELtpSi4cQ-1; Wed, 31 May 2023 09:08:19 -0400
+X-MC-Unique: qfoY9XKvPOuO5ELtpSi4cQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-4f4e06b3c6aso3474953e87.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 06:08:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685537313; x=1688129313;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=x/MnoC95jVY7JUwLeYUzQX1bQ2/paihg1ZFHf4gLHqE=;
- b=dNSTVnopIanqYbDV6ZL/Dap3UcFtSEWmEVNih6IgN5h+ysX0usXpZisHQ3qTK/7v8K
- 8kkZSRjpZxch8DyB+TVeS7Vk/BJFTb4pGDu4Pmj876CypqiyeIhg+jENhLAg/Yo+3e59
- j+LMVJcFAgW5y5BjJCVUIroLiBHghacptiGfIJ+uNMSEWTVl6YU+1gnJoxjaUuXaRDVK
- cAHs3pIt+QwLNm8sWM/YrSYxSPqW8FwdG3eOruZcP+/zrW5J3N5snpBrARgxbNhQbjeG
- WZRWmN5emhCyLaU+BV/8gSMk1p7rtU3F5JnKUBMAoWHQieGFBtN/x22jtAz8Dmat9ms0
- x01Q==
-X-Gm-Message-State: AC+VfDxKoLT/mr5JUZh/71wgTJx1SfVImux9HhtKrJOwHJ7aVf7qH/bq
- uygpHpiVf2O5jEUA8axEOv3RlIO3+nGBE3Hq14+qjg==
-X-Google-Smtp-Source: ACHHUZ4YCc1RmcOVbbw/ub5CWEhay8XtOEb2s7T83+NEEszp4MlaRirM3BiieyLUThFmrwZrnnSjR2i5BuT+e/KseI0=
-X-Received: by 2002:a17:90a:86ca:b0:253:30f9:1849 with SMTP id
- y10-20020a17090a86ca00b0025330f91849mr5628001pjv.12.1685537312850; Wed, 31
- May 2023 05:48:32 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1685538497; x=1688130497;
+ h=mime-version:user-agent:message-id:date:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vuSQkbmc0r+0jBk3EaFQ0xOSSghfs2n8WXIjwIvy8bo=;
+ b=AIqQPRUZxkRbaAvgOjs2t/IbZuTSbuhkDWoUk6chBM8L7uATR9BKjsx+l+f2XxAvOV
+ taxwsm/zuiccQDSgJdHjsw+jxsOGbXmDHJ8NKP4+kRkxhzFmSWQbgpnwU3P84Ke0NjFH
+ PdvaPvf98E78uBKXlHwbISyaDuylcLhCL6yofLLAeFB9MVa9QIghoO9Dz9qv+HL1sRZJ
+ ZdgZgeTjoLbajeWg0QPBw1Z/A5iImyb8SMdp+8B6D4emw/CTmmMmVQR5BLtQO8SNmy3k
+ FUh0yp0TM27rjxti2ZUcbobvko3TKRkh4yWqz9KoRL23ta9EJ8NNSSqu5O02FXfwfW8b
+ gbwg==
+X-Gm-Message-State: AC+VfDxwDU410TXyBKcqj3JdHBnQpku4gi+nEoG+rKWUlHBbR4ATcQax
+ JXVvCMTsHxVD1+z2bGLxYf0wnOx8/yPrqOwUH2247BowjiHZuDRkNCE+pGO8foxgyhpEr2qDQ1S
+ LesEQxaTqraf5jVQ2YgJDgNs=
+X-Received: by 2002:a05:6512:11e7:b0:4f3:b4ab:d0ee with SMTP id
+ p7-20020a05651211e700b004f3b4abd0eemr2359344lfs.42.1685538497315; 
+ Wed, 31 May 2023 06:08:17 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4HtwO/77fwqYa8+9V7Q2/h+TU6u8LCEJdAVRLTfJBrBK/hoXlHHOneLP7FJTbe0qR81W1lOw==
+X-Received: by 2002:a05:6512:11e7:b0:4f3:b4ab:d0ee with SMTP id
+ p7-20020a05651211e700b004f3b4abd0eemr2359329lfs.42.1685538496786; 
+ Wed, 31 May 2023 06:08:16 -0700 (PDT)
+Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
+ by smtp.gmail.com with ESMTPSA id
+ 13-20020a05600c24cd00b003f4dde07956sm24348287wmu.42.2023.05.31.06.08.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 06:08:16 -0700 (PDT)
+From: Milan Zamazal <mzamazal@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org
+Subject: [PATCH] docs: Fix trivial typos in vhost-user.rst
+Date: Wed, 31 May 2023 14:48:31 +0200
+Message-ID: <87a5xk7io3.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <cover.1685476786.git.mzamazal@redhat.com>
- <871qiwd9uq.fsf@linaro.org> <87edmw7lxm.fsf@redhat.com>
-In-Reply-To: <87edmw7lxm.fsf@redhat.com>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Wed, 31 May 2023 14:48:21 +0200
-Message-ID: <CAKfTPtAL-7JdWjvBzY7foR_DJ2sykJ80esEc7AH-N-_AJGOS=w@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Add SCMI vhost-user VIRTIO device
-To: Milan Zamazal <mzamazal@redhat.com>
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- qemu-devel@nongnu.org, mst@redhat.com, stefanha@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=vincent.guittot@linaro.org; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mzamazal@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 31 May 2023 09:22:47 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,81 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 at 13:57, Milan Zamazal <mzamazal@redhat.com> wrote:
->
-> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
->
-> > Milan Zamazal <mzamazal@redhat.com> writes:
-> >
-> >> This patch series adds a vhost-user VIRTIO device for SCMI.
-> >> It's similar to other similar vhost-user VIRTIO devices.
-> >>
-> >> I'm aware of the work in progress by Alex Benn=C3=A9e to simplify simi=
-lar devices
-> >> and avoid excessive code duplication.  I think the SCMI device support
-> >> doesn't bring anything special and it can be rebased on the given work
-> >> if/once it is merged.
-> >
-> > \o/ - I'll try and get the next iteration done in the next few weeks.
->
-> Great, looking forward.
->
-> > Out of interest have you tested your scmi backend with those patches? O=
-h
-> > and also which backend are you using?
->
-> I have tested the patches with my proof-of-concept SCMI backend
-> (emulating a fake sensor) based on rust-vmm and a Linux guest OS.  I
-> plan to change the prototype into something publishable in the next
-> weeks and to post patches to rust-vmm/vhost-device.
->
-> > Vincent did a bunch of work over the last year or so on SCMI although i=
-n
-> > his case the backend was a RTOS running in a separate domain using some
-> > shared memory between the SCMI domain and a couple of guests.
->
-> I have seen recordings of some related presentations.  The work is
-> primarily based on crosvm, right?  I'd be interested in what kind of
+Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
+---
+ docs/system/devices/vhost-user.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I have used qemu for my tests
+diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
+index 86128114fa..a80e95a48a 100644
+--- a/docs/system/devices/vhost-user.rst
++++ b/docs/system/devices/vhost-user.rst
+@@ -38,13 +38,13 @@ system memory as defined by the ``-m`` argument.
+ Example
+ =======
+ 
+-First start you daemon.
++First start your daemon.
+ 
+ .. parsed-literal::
+ 
+   $ virtio-foo --socket-path=/var/run/foo.sock $OTHER_ARGS
+ 
+-The you start your QEMU instance specifying the device, chardev and
++Then you start your QEMU instance specifying the device, chardev and
+ memory objects.
+ 
+ .. parsed-literal::
+-- 
+2.38.5
 
-> SCMI interface the domain provides and whether it would make sense to be
-> able to connect it with the QEMU SCMI device via some vhost-user daemon,
-> an already existing one, if any, and/or the one I work on.
-
-My PoC is based on the SCP-firmware that is usually running on a
-dedicated power coprocessor. We have extended it to run in several
-env. The PoC runs the SCP firmware in a VM and uses a vhost user scmi
-bridge to connect the guest vm with this virtual power coprocessor.
-One reason for using SCP-firmware is that It follows SCMI specs and
-its updates so I don't have to re-implement it myself and can leverage
-on their devs
-
-For test purpose I also have enabled it as a simple linux vhost user daemon
-
->
-> >> Milan Zamazal (4):
-> >>   hw/virtio: Add boilerplate for vhost-user-scmi device
-> >>   hw/virtio: Add vhost-user-scmi-pci boilerplate
-> >>   tests/qtest: Fix a comment typo in vhost-user-test.c
-> >>   tests/qtest: enable tests for virtio-scmi
-> >>
-> >>  MAINTAINERS                         |   7 +
-> >>  hw/virtio/Kconfig                   |   5 +
-> >>  hw/virtio/meson.build               |   2 +
-> >>  hw/virtio/vhost-user-scmi-pci.c     |  68 +++++++
-> >>  hw/virtio/vhost-user-scmi.c         | 306 +++++++++++++++++++++++++++=
-+
-> >>  include/hw/virtio/vhost-user-scmi.h |  30 +++
-> >>  tests/qtest/libqos/meson.build      |   1 +
-> >>  tests/qtest/libqos/virtio-scmi.c    | 174 ++++++++++++++++
-> >>  tests/qtest/libqos/virtio-scmi.h    |  34 ++++
-> >>  tests/qtest/vhost-user-test.c       |  46 ++++-
-> >>  10 files changed, 672 insertions(+), 1 deletion(-)
-> >>  create mode 100644 hw/virtio/vhost-user-scmi-pci.c
-> >>  create mode 100644 hw/virtio/vhost-user-scmi.c
-> >>  create mode 100644 include/hw/virtio/vhost-user-scmi.h
-> >>  create mode 100644 tests/qtest/libqos/virtio-scmi.c
-> >>  create mode 100644 tests/qtest/libqos/virtio-scmi.h
->
 
