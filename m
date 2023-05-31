@@ -2,67 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979CE71896F
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 20:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA167189AE
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 20:59:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Qdd-0006Sb-E2; Wed, 31 May 2023 14:33:37 -0400
+	id 1q4R0r-0001jh-Ss; Wed, 31 May 2023 14:57:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q4Qdb-0006Ly-4P; Wed, 31 May 2023 14:33:35 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q4QdY-0001W6-7F; Wed, 31 May 2023 14:33:34 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 032A6609ED;
- Wed, 31 May 2023 21:33:22 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:a512::1:34] (unknown
- [2a02:6b8:b081:a512::1:34])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id KXS9r06OjOs0-pF9tvjKA; Wed, 31 May 2023 21:33:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1685558001; bh=fenoJo3SjYSTpz90sLfZEyiKlbA6Ywfz4NDJtse8TwA=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=d0Op4xryxHzzrL+PXHeJusaZvsShocv4QLS6hgh7fWMURHlQHv4V98NauGS7O4AID
- 8Z7uWKXsxoUXmLwZunH/okqaYoG6uj1Qm0BoOuZUjdi2G1RVgrEYm25GQYBAr/cFEr
- ia+I3Z2PbWSmxiisR/hV8Gw8W8HEjQLeyk8wUIMs=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <cd83b0bc-0e6b-fc94-1cc2-9bf00d516140@yandex-team.ru>
-Date: Wed, 31 May 2023 21:33:20 +0300
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q4R0q-0001jX-BM
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 14:57:36 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1q4R0n-0008Gm-WA
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 14:57:36 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3078a3f3b5fso6105069f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 11:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1685559452; x=1688151452;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Hc0ldhMcHbZlwinCi6h7a2UdabyftUe1BQKSbXNRUCg=;
+ b=oItgdaeJMvgp9Vj5SPSwOABtgRPgEnS1Us6ZeIrR4KhwoEA6XkVjL3S0y5jMXCzSe3
+ 4GGbnelmjKOcEIO2MyLEaqxNrjLFL037K7rhwUtxgWc3XO1jdPgOVx3XXVM19LqKUbSS
+ FVTZrj4/lAaH/ZpxLI1RCyRfvePO2AQ7h3MaTvZfbMZ3gUkWniVdbNmSCMWjr+NQPS4N
+ m2FvZ6PNSzEaBFwB6pTBgmnLWFP2DDL5kJaTLW63Yb6OMVQ8fsWNpF8ftGQLcLE9EUx1
+ Dv/npDvnykgvqkgqQM1fnGubmUlssqLf6lcfbRNniccgOPfesd6nuOxpbZ1vbOlprrER
+ HUNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685559452; x=1688151452;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Hc0ldhMcHbZlwinCi6h7a2UdabyftUe1BQKSbXNRUCg=;
+ b=DDEBIR5hlBXr10bf8PsNElE7xtCAKWzkbBKDlv2ZwgWVF89v5RL1RXAgIPlisZC3o2
+ P6n1bOXcTaflFfG779qzPDb/6f4ONfn5quxVLnY5P9dahB5fGyfBkQcEqiHtcIljvr7d
+ HSyv+w6ejATj0MZobOOP59LkevODDpzQD/VFSU1Z+PgISx5gI1EiVcaHMfVjkQ4bRSLY
+ MheMSVVafjcuhtvTzuE1zA5S3//JldnY4WtlKONgknp/h7PJN5jsHUEcmQEOxCeoL7+3
+ S8VVYRprl5jFPSj4GkDG/QCaBO5R7uC+LT+9h6ZgXPFp2VQgJXTfj+5kokJ7nqQdruyV
+ 9pCg==
+X-Gm-Message-State: AC+VfDzlSCjPHn4qV1g2ul4A7m7122Q8qK3o+MGW7pNAtx3bAVZQiN+H
+ B67W4o7vVpNc0XeMj/uNPkfk1g==
+X-Google-Smtp-Source: ACHHUZ4UKnD6j+TsbhBvTalp73tfPX+gLjeNmbCn5K2pCPJiyU0J4xOBtT7zFRKteC4T9CSJxjaYxg==
+X-Received: by 2002:a5d:58d9:0:b0:309:3ddc:1c8d with SMTP id
+ o25-20020a5d58d9000000b003093ddc1c8dmr4867372wrf.70.1685559452205; 
+ Wed, 31 May 2023 11:57:32 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n2-20020a5d6602000000b0030903d44dbcsm7511028wru.33.2023.05.31.11.57.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 11:57:31 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 6147C1FFBB;
+ Wed, 31 May 2023 19:57:31 +0100 (BST)
+References: <87wn0obuk6.fsf@linaro.org>
+ <SN6PR02MB4205D202EFB6D6A256ECB93FB8489@SN6PR02MB4205.namprd02.prod.outlook.com>
+User-agent: mu4e 1.11.6; emacs 29.0.91
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Brian Cain <bcain@quicinc.com>
+Cc: =?utf-8?Q?Daniel_P=2EBerrang=C3=A9?= <berrange@redhat.com>, qemu-devel
+ <qemu-devel@nongnu.org>, Michael Tokarev <mjt@tls.msk.ru>, Erik  Skultety
+ <eskultet@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Alistair
+ Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ "Matheus Bernardino (QUIC)" <quic_mathbern@quicinc.com>, "Marco Liebel
+ (QUIC)" <quic_mliebel@quicinc.com>
+Subject: Re: How do you represent a host gcc and a cross gcc in lcitool?
+Date: Wed, 31 May 2023 19:57:20 +0100
+In-reply-to: <SN6PR02MB4205D202EFB6D6A256ECB93FB8489@SN6PR02MB4205.namprd02.prod.outlook.com>
+Message-ID: <87jzwoba78.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 12/14] nbd/client: Request extended headers during
- negotiation
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, libguestfs@redhat.com,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>
-References: <20230515195343.1915857-1-eblake@redhat.com>
- <20230515195343.1915857-13-eblake@redhat.com>
- <1af7f692-b5de-c767-2568-1fc024a57133@yandex-team.ru>
- <cqb3yww5ceeinh2pb5nqaljrsllu3ejkjsdueuw32cwcocumsn@okgujto2lzmn>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <cqb3yww5ceeinh2pb5nqaljrsllu3ejkjsdueuw32cwcocumsn@okgujto2lzmn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,26 +101,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31.05.23 20:54, Eric Blake wrote:
-> On Wed, May 31, 2023 at 08:39:53PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> On 15.05.23 22:53, Eric Blake wrote:
->>> All the pieces are in place for a client to finally request extended
->>> headers.  Note that we must not request extended headers when qemu-nbd
->>
->> why must not? It should gracefully report ENOTSUP? Or not?
-> 
-> The kernel code does not yet know how to send extended requests; once
-> extended mode is negotiated, sending a simple request requires the
 
-but how it could be negotiated if kernel doesn't support it?
+Brian Cain <bcain@quicinc.com> writes:
 
-I mean if we request extended headers during negotiation with kernel, the kernel will just say "unsupported option", isn't it?
+>> -----Original Message-----
+>> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Sent: Wednesday, May 31, 2023 6:24 AM
+>> To: Daniel P.Berrang=C3=A9 <berrange@redhat.com>
+>> Cc: qemu-devel <qemu-devel@nongnu.org>; Michael Tokarev
+>> <mjt@tls.msk.ru>; Erik Skultety <eskultet@redhat.com>; Brian Cain
+>> <bcain@quicinc.com>; Palmer Dabbelt <palmer@dabbelt.com>; Alistair Franc=
+is
+>> <alistair.francis@wdc.com>; Bin Meng <bin.meng@windriver.com>
+>> Subject: How do you represent a host gcc and a cross gcc in lcitool?
+>>=20
+>> WARNING: This email originated from outside of Qualcomm. Please be wary =
+of
+>> any links or attachments, and do not enable macros.
+>>=20
+>> Hi,
+>>=20
+>> While trying to convert the debian-riscv64-cross docker container to an
+>> lcitool based one I ran into a problem building QEMU. The configure step
+>> fails because despite cross compiling we still need a host compiler to
+>> build the hexagon codegen tooling.
+>
+> I thought we'd fixed this container definition so that we only
+> downloaded the hexagon toolchain instead? Do we really need a host
+> compiler for that container build?
+>
+> Or am I misunderstanding and you're referring to features required to
+> support idef parser? Does "hexagon codegen" refer to hexagon's TCG
+> generation or hexagon code itself (required by tests/tcg)?
 
-Or, in other words, I understand that kernel doesn't support it, I don't understand why you note it here. Is kernel different from other NBD server implementations which doesn't support extended requests at the moment?
+I think so:
+
+#
+#  Step 1
+#  We use a C program to create semantics_generated.pyinc
+#
+gen_semantics =3D executable(
+    'gen_semantics',
+    'gen_semantics.c',
+    native: true, build_by_default: false)
+
+semantics_generated =3D custom_target(
+    'semantics_generated.pyinc',
+    output: 'semantics_generated.pyinc',
+    command: [gen_semantics, '@OUTPUT@'],
+)
+hexagon_ss.add(semantics_generated)
 
 
--- 
-Best regards,
-Vladimir
+>
+>> After scratching my head for a while I discovered we did have host GCC's
+>> in our cross images despite there being no explicit request for them in
+>> the docker description. It turned out that the gcovr requirement pulled
+>> in lcov which itself had a dependency on gcc. However this is a bug:
+>>=20
+>>   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D987818
+>>=20
+>> which has been fixed in bookworm (and of course sid which is the only
+>> way we can get a riscv64 build of QEMU at the moment). Hence my hacky
+>> attempts to get gcc via side effect of another package failed.
+>>=20
+>> Hence the question in $SUBJECT. I tried to add a mapping to lcitool for
+>> a pseudo hostgcc package:
+>>=20
+>> +  hostgcc:
+>> +    default: gcc
+>> +    pkg:
+>> +    MacOS:
+>> +    cross-policy-default: skip
+>>=20
+>> however this didn't work. Do we need a new mechanism for this or am I
+>> missing a way to do this?
+>>=20
+>> RiscV guys,
+>>=20
+>> It's clear that relying on Debian Sid for the QEMU cross build for RiscV
+>> is pretty flakey. Are you guys aware of any other distros that better
+>> support cross compiling to a riscv64 target or is Debian still the best
+>> bet? Could you be persuaded to build a binary docker image with the
+>> cross compilers and libraries required for a decent cross build as an
+>> alternative?
+>>=20
+>> Thanks,
+>>=20
+>> --
+>> Alex Benn=C3=A9e
+>> Virtualisation Tech Lead @ Linaro
 
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
