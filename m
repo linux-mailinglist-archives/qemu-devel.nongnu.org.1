@@ -2,93 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CB6718B58
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F67E718B68
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:45:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4ScP-0001Vo-KO; Wed, 31 May 2023 16:40:29 -0400
+	id 1q4Sff-0005qY-J5; Wed, 31 May 2023 16:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4ScH-0001HU-7I
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:40:25 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Sbq-0003mi-2d
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:40:13 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3f61530506aso1095475e9.1
- for <qemu-devel@nongnu.org>; Wed, 31 May 2023 13:39:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685565592; x=1688157592;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AO6SLfobAhRU8wjQdcOM77CoB8S2Q0x1N8/B5RDXYO8=;
- b=VWbgn57lIfRNNcZwBKffUB1IOwR7WopI1wF2llz/Uh9LeHbP0hKlGOyaqX1R6kpAcf
- nqNraTydHYKkeSia+vvd5ex2W8Jx44v6Tvb1CeTNhMMrdvnWr0kdL2CrtGaGqSv9QYkH
- 8wScjUCVio3u2ZN4b8AT3q07JIznrNMXH8v4/ZElUsYAPdjsefyKsZJ3Wga+a8kJfngy
- K+zevVALre04LqdnFm4NPfa5tIRmcrJhzwCajOToP03+WJvHCH1Grtf1bbWU8w3vHJXx
- wlwy6DJEecr9FiZJK/2FdUvutT6YexSrNlpcmqT+MZnGNLhHgPFlF4lu1HW2VGRx6mAW
- 94HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685565592; x=1688157592;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AO6SLfobAhRU8wjQdcOM77CoB8S2Q0x1N8/B5RDXYO8=;
- b=BJCiMhQ10qWY3Ioh6or/2vjGClUzWJZNVQtL8XXGeNwmlmCZsL0H6v1zSKC9P8vQzi
- 6w4lyENgiau1wvqT8cNYvXEEJJ8vQfeq/PmFyGtcflduUO65ckWGKJNmM6wWVwNT2hc9
- UIMAFg/HAN5d5aSRqzjnmRUJuPPcqwq1CpMDelcCBBbZkjlzdFXRXUnnav+cX4MHwU3F
- g/lOsx4ADHWZTghsyEuk7ADjZwuJomneBLVydikHC9H9T52Z6DprCsUgJeKt8mKPLMi9
- tRbSUUG/xqqAJL/KbYFClPrXtO79binGnKvkA5s1d29vQOUKNk7Ltb0hmKlma2pbOPte
- RkVA==
-X-Gm-Message-State: AC+VfDwJAq+KirZjej1qj+CV6I5EY4/jL708pKXK+lINY8SlohPakPij
- 2eBcDrjZBHUYEm9jVBYi3IcM1YAy4mrUbFougnc=
-X-Google-Smtp-Source: ACHHUZ4E+kHHY92qaLVFHe+SIyFxk1qpGkv0N24t6GYn3ojtsSeBIUEQWm6r+ev38ezK7J8vSeY1fA==
-X-Received: by 2002:a1c:7301:0:b0:3f4:2267:10c0 with SMTP id
- d1-20020a1c7301000000b003f4226710c0mr391325wmb.28.1685565591719; 
- Wed, 31 May 2023 13:39:51 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.146.12])
- by smtp.gmail.com with ESMTPSA id
- n11-20020a05600c294b00b003f6129d2e30sm25507481wmd.1.2023.05.31.13.39.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 May 2023 13:39:51 -0700 (PDT)
-Message-ID: <816d1209-09ba-7d28-95c7-5381be0b2c06@linaro.org>
-Date: Wed, 31 May 2023 22:39:48 +0200
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4Sfd-0005pA-If
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:43:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1q4SfY-0004tc-UK
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:43:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685565823;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=q6LtvR1dm0dEbGy//NpEggfZC2HfPkGEeilpSRyqNNE=;
+ b=Q3Jw1AVEEHMXi8vVKBGwKeBEmi6I9cAMrGNxSXJMdMuIcIHmwTRtmZ2zVYw2D9TC+F87iw
+ Xz3YCKUY3+NOs+uBGsW9wAr25diW0WyIg1aJd1sVaNng5rSiyqgekvFgeXgHKfE9jg0Ace
+ ej+BIVeX5CEgcDbuQH+pmGaLiOG5uvo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-459-BvCNrmmxMremeMNU0YPoDQ-1; Wed, 31 May 2023 16:43:40 -0400
+X-MC-Unique: BvCNrmmxMremeMNU0YPoDQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A67A5185A78E;
+ Wed, 31 May 2023 20:43:39 +0000 (UTC)
+Received: from scv.redhat.com (unknown [10.22.9.159])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 023A2202696C;
+ Wed, 31 May 2023 20:43:38 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: [PULL 0/5] Python patches
+Date: Wed, 31 May 2023 16:43:33 -0400
+Message-Id: <20230531204338.1656158-1-jsnow@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 00/10] hw/virtio: Build various target-agnostic objects
- just once
-Content-Language: en-US
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- Peter Xu <peterx@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Auger <eric.auger@redhat.com>, "Gonglei (Arei)"
- <arei.gonglei@huawei.com>, David Hildenbrand <david@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-s390x@nongnu.org,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>
-References: <20230524093744.88442-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230524093744.88442-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,36 +82,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
-
-On 24/5/23 11:37, Philippe Mathieu-Daudé wrote:
-> All patches reviewed.
-
-Could you take this series via your virtio tree?
-
-Thanks!
-
-Phil.
-
-> Less controvertial than my first approach [*] which caches
-> the access_is_big_endian value in VirtIODevice state, this
-> series just remove a unnecessary / pointless dependency on
-> "virtio-access.h", allowing to build various virtio objects
-> once for all targets.
-> 
-> [*] https://lore.kernel.org/qemu-devel/20221212230517.28872-11-philmd@linaro.org/
-> 
-> Philippe Mathieu-Daudé (10):
->    softmmu: Introduce qemu_target_page_mask() helper
->    hw/scsi: Introduce VHOST_SCSI_COMMON symbol in Kconfig
->    hw/scsi: Rearrange meson.build
->    hw/scsi: Rename target-specific source set as
->      'specific_virtio_scsi_ss'
->    hw/virtio: Introduce VHOST_VSOCK_COMMON symbol in Kconfig
->    hw/virtio/virtio-mem: Use qemu_ram_get_fd() helper
->    hw/virtio/vhost-vsock: Include missing 'virtio/virtio-bus.h' header
->    hw/virtio/virtio-iommu: Use target-agnostic qemu_target_page_mask()
->    hw/virtio: Remove unnecessary 'virtio-access.h' header
->    hw/virtio: Build various target-agnostic objects just once
+The following changes since commit ab7252279727da51c01cdaf41c5fe563bbded3a6=
+:=0D
+=0D
+  gitlab: switch from 'stable' to 'latest' docker container tags (2023-05-3=
+1 10:29:14 -0700)=0D
+=0D
+are available in the Git repository at:=0D
+=0D
+  https://gitlab.com/jsnow/qemu.git tags/python-pull-request=0D
+=0D
+for you to fetch changes up to c76e7652c786683edcc846ee0a7a65b587787792:=0D
+=0D
+  Revert "python/qmp/protocol: add open_with_socket()" (2023-05-31 16:25:35=
+ -0400)=0D
+=0D
+----------------------------------------------------------------=0D
+Python: synchronize python-qemu-qmp=0D
+=0D
+----------------------------------------------------------------=0D
+=0D
+John Snow (5):=0D
+  python/qmp: allow sockets to be passed to connect()=0D
+  python/qmp/legacy: allow using sockets for connect()=0D
+  python/machine: use connect-based interface for existing sockets=0D
+  python/qmp/legacy: remove open_with_socket() calls=0D
+  Revert "python/qmp/protocol: add open_with_socket()"=0D
+=0D
+ python/qemu/machine/machine.py | 17 +++++++------=0D
+ python/qemu/qmp/legacy.py      | 26 +++++++++-----------=0D
+ python/qemu/qmp/protocol.py    | 45 +++++++++++++++-------------------=0D
+ 3 files changed, 41 insertions(+), 47 deletions(-)=0D
+=0D
+-- =0D
+2.40.1=0D
+=0D
 
 
