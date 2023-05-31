@@ -2,59 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3C971859A
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC197185A1
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:06:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NNL-0005qs-CT; Wed, 31 May 2023 11:04:35 -0400
+	id 1q4NON-00078a-FG; Wed, 31 May 2023 11:05:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q4NN8-0005eA-Cj; Wed, 31 May 2023 11:04:24 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q4NOH-00074S-C5
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:05:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q4NN4-0002ss-Mc; Wed, 31 May 2023 11:04:20 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QWXYd6LQhz67fDB;
- Wed, 31 May 2023 23:02:29 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 31 May
- 2023 16:04:11 +0100
-Date: Wed, 31 May 2023 16:04:10 +0100
-To: Klaus Jensen <its@irrelevant.dk>
-CC: <qemu-devel@nongnu.org>, Corey Minyard <cminyard@mvista.com>, "Keith
- Busch" <kbusch@kernel.org>, Jason Wang <jasowang@redhat.com>, Lior Weintraub
- <liorw@pliops.com>, Paolo Bonzini <pbonzini@redhat.com>, Jeremy Kerr
- <jk@codeconstruct.com.au>, <qemu-arm@nongnu.org>, Matt Johnston
- <matt@codeconstruct.com.au>, Peter Delevoryas <peter@pjd.dev>,
- <qemu-block@nongnu.org>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Klaus Jensen <k.jensen@samsung.com>, Peter Maydell
- <peter.maydell@linaro.org>, <gost.dev@samsung.com>
-Subject: Re: [PATCH v3 2/3] hw/i2c: add mctp core
-Message-ID: <20230531160410.0000305b@Huawei.com>
-In-Reply-To: <20230531155944.00006309@Huawei.com>
-References: <20230531114744.9946-1-its@irrelevant.dk>
- <20230531114744.9946-3-its@irrelevant.dk>
- <20230531155944.00006309@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1q4NOF-0003Rs-9r
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:05:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685545530;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KEErr3GKWWM6h+m6wiDq37JsteP0W3+C/n1ijrL+oe4=;
+ b=DZn9WIsD014xQEpaRN0ttMYd/2kE11AVc6wHfptqjnPX39obyQlWLoOjmfWMmI2saR7aV0
+ X0ZjhEpZV3Qe7J6yn++lBWrRog3DWGAQrYtYXBI5mMR6Xs1kYNhfMOjpBHFfACmoa1wzTL
+ yfIo1m5N0kjlfjOR/Iu73I6WTWCMZ0I=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-519-pghgFGSwMYmVmWT5mKypkA-1; Wed, 31 May 2023 11:05:06 -0400
+X-MC-Unique: pghgFGSwMYmVmWT5mKypkA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-96f83033b48so615054666b.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 08:05:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685545502; x=1688137502;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KEErr3GKWWM6h+m6wiDq37JsteP0W3+C/n1ijrL+oe4=;
+ b=IsWdSPl/rThhwxi+tNmX30Eu8juwjyMdYiDEpdc47xZHxLPpUFVee58SE4VEDXLQvE
+ 1OWBbNbE+eKc9ZIhReJpOt9Eyr482zwTRPRjwxwQ7hGUnbm1oZ1R6AUhFM8Qt9zS134T
+ 15lS/efLiEgjgRNo5vsq8SZqu0mDgN2c2fvBie9zpe/LvaEwbEHW8+41aLx3EbMjObSM
+ A/P9M08axBXJE3IqDRsPEOjqYSPpt8fFGXj2E/DOZgw7jb5tmD+ruyROFWSwzr4yNwvA
+ Rf2uMc8ZC6Bo4hkH6ed4A3ax/ldydP5iUSGevGZd29asHyPHMPZes4itlzPGkeGCrzBk
+ mUkQ==
+X-Gm-Message-State: AC+VfDyp8y+FkQu3zChv5hN+Bpvtu+JUUMn0+ZMvPBwXfiGAo5y6lIem
+ 3UnJINPePLi0L2fxuz0+D4N7XAtRR0ZqrbFYyDndXcjjqy/IlJW+rHzvTX1rNGaZmQSezVvc3Eb
+ QlsUoaKabIzU4FWQ=
+X-Received: by 2002:a17:907:961d:b0:96a:138:c1a0 with SMTP id
+ gb29-20020a170907961d00b0096a0138c1a0mr6238497ejc.9.1685545502352; 
+ Wed, 31 May 2023 08:05:02 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4zkSd9pRo/h0x5b6MaAr5HOv9GpUCI4/XjUxeFz/8eVyhXkAdhTUVPLFDP2oDB0kM/kQ2Dbg==
+X-Received: by 2002:a17:907:961d:b0:96a:138:c1a0 with SMTP id
+ gb29-20020a170907961d00b0096a0138c1a0mr6238481ejc.9.1685545502028; 
+ Wed, 31 May 2023 08:05:02 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d72e:f7e0:1010:46a4:2212:92f9?
+ (p200300cfd72ef7e0101046a4221292f9.dip0.t-ipconnect.de.
+ [2003:cf:d72e:f7e0:1010:46a4:2212:92f9])
+ by smtp.gmail.com with ESMTPSA id
+ lf4-20020a170907174400b0096f7500502csm9159110ejc.199.2023.05.31.08.05.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 31 May 2023 08:05:01 -0700 (PDT)
+Message-ID: <5cc0ec56-8a13-c651-0b4e-da644c9f6900@redhat.com>
+Date: Wed, 31 May 2023 17:05:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] qcow2: add discard-no-unref option
+Content-Language: en-US
+To: Jean-Louis Dupond <jean-louis@dupond.be>, qemu-devel@nongnu.org,
+ kwolf@redhat.com
+References: <20230515073644.166677-1-jean-louis@dupond.be>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230515073644.166677-1-jean-louis@dupond.be>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,193 +98,212 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 15:59:44 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On 15.05.23 09:36, Jean-Louis Dupond wrote:
+> When we for example have a sparse qcow2 image and discard: unmap is enabled,
+> there can be a lot of fragmentation in the image after some time. Surely on VM's
 
-> On Wed, 31 May 2023 13:47:43 +0200
-> Klaus Jensen <its@irrelevant.dk> wrote:
-> 
-> > From: Klaus Jensen <k.jensen@samsung.com>
-> > 
-> > Add an abstract MCTP over I2C endpoint model. This implements MCTP
-> > control message handling as well as handling the actual I2C transport
-> > (packetization).
-> > 
-> > Devices are intended to derive from this and implement the class
-> > methods.
-> > 
-> > Parts of this implementation is inspired by code[1] previously posted by
-> > Jonathan Cameron.
-> > 
-> > Squashed a fix[2] from Matt Johnston.
-> > 
-> >   [1]: https://lore.kernel.org/qemu-devel/20220520170128.4436-1-Jonathan.Cameron@huawei.com/
-> >   [2]: https://lore.kernel.org/qemu-devel/20221121080445.GA29062@codeconstruct.com.au/
-> > 
-> > Signed-off-by: Klaus Jensen <k.jensen@samsung.com>  
-> Hi Klaus,
-> 
-> A few minor comments inline.
-> 
-> With those tidied up feel free to add
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> 
-> 
-> > +
-> > +        if (pkt->mctp.hdr.flags & MCTP_H_FLAGS_SOM) {
-> > +            mctp->tx.is_control = false;
-> > +
-> > +            if (mctp->state == I2C_MCTP_STATE_RX) {
-> > +                mc->reset(mctp);
-> > +            }
-> > +
-> > +            mctp->state = I2C_MCTP_STATE_RX;
-> > +
-> > +            mctp->tx.addr = pkt->i2c.source;
-> > +            mctp->tx.eid = pkt->mctp.hdr.eid.source;
-> > +            mctp->tx.flags = pkt->mctp.hdr.flags & 0x7;  
-> 
-> Maybe worth either defining that mask, or adding a comment that this
-> is copying the msg tag.  Or rename flags...
-> 
-> 
-> > +            mctp->tx.pktseq = (pkt->mctp.hdr.flags >> 4) & 0x3;
-> > +
-> > +            if ((pkt->mctp.payload[0] & 0x7f) == MCTP_MESSAGE_TYPE_CONTROL) {
-> > +                mctp->tx.is_control = true;
-> > +
-> > +                i2c_mctp_handle_control(mctp);
-> > +
-> > +                return 0;
-> > +            }
-> > +        } else if (mctp->state == I2C_MCTP_STATE_RX_STARTED) {
-> > +            trace_i2c_mctp_drop_expected_som();
-> > +            goto drop;
-> > +        } else if (((pkt->mctp.hdr.flags >> 4) & 0x3) != (++mctp->tx.pktseq & 0x3)) {
-> > +            trace_i2c_mctp_drop_invalid_pktseq((pkt->mctp.hdr.flags >> 4) & 0x3,
-> > +                                               mctp->tx.pktseq & 0x3);
-> > +            goto drop;
-> > +        }
-> > +
-> > +        mc->put_buf(mctp, i2c_mctp_payload(mctp->buffer), payload_len);
-> > +
-> > +        if (pkt->mctp.hdr.flags & MCTP_H_FLAGS_EOM) {
-> > +            mc->handle(mctp);
-> > +            mctp->state = I2C_MCTP_STATE_WAIT_TX;
-> > +        }
-> > +
-> > +        return 0;
-> > +
-> > +    default:
-> > +        return -1;
-> > +    }
-> > +
-> > +drop:
-> > +    mc->reset(mctp);
-> > +
-> > +    mctp->state = I2C_MCTP_STATE_IDLE;
-> > +
-> > +    return 0;
-> > +}  
-> 
-> 
-> > diff --git a/include/hw/i2c/mctp.h b/include/hw/i2c/mctp.h
-> > new file mode 100644
-> > index 000000000000..ea97792e8d43
-> > --- /dev/null
-> > +++ b/include/hw/i2c/mctp.h  
-> 
-> ...
-> > +struct MCTPI2CEndpointClass {
-> > +    I2CSlaveClass parent_class;
-> > +
-> > +    /**
-> > +     *
-> > +     * put_buf() - receive incoming message fragment
-> > +     *
-> > +     * Must returns 0 for succes or -1 for error.
-> > +     */
-> > +    int (*put_buf)(MCTPI2CEndpoint *mctp, uint8_t *buf, size_t len);
-> > +
-> > +    /**
-> > +     * get_buf() - provide pointer to message fragment
-> > +     *
-> > +     * Called by the mctp subsystem to request a pointer to the next message
-> > +     * fragment. The implementation must advance its internal position such
-> > +     * that successive calls returns the next fragments.
-> > +     *
-> > +     * Must return the number of bytes available.
-> > +     */
-> > +    size_t (*get_buf)(MCTPI2CEndpoint *mctp, const uint8_t **buf,
-> > +                      size_t maxlen, uint8_t *mctp_flags);
-> > +
-> > +    /**
-> > +     * handle() - handle an MCTP message
-> > +     *
-> > +     * Called by the mctp subsystem when a full message has been delivered and
-> > +     * may be parsed and processed.
-> > +     */
-> > +    void (*handle)(MCTPI2CEndpoint *mctp);
-> > +
-> > +    /**
-> > +     * reset() - reset internal state
-> > +     *
-> > +     * Called by the mctp subsystem in the event of some transport error.
-> > +     * Implementation must reset its internal state and drop any fragments
-> > +     * previously receieved.
-> > +     */
-> > +    void (*reset)(MCTPI2CEndpoint *mctp);
-> > +
-> > +    /**
-> > +     * get_types() - provide supported mctp message types
-> > +     *
-> > +     * Must provide a buffer with a full MCTP supported message types payload
-> > +     * (i.e. `0x0(SUCCESS),0x1(ONE),0x4(NMI)`).  
-> 
-> ONE?  Looks to be PLDM
-> Good to reference DSP0239 Management Component Transport Protocol (MCTP) IDs and Codes
-> which has the list.
-Ah.  0x1 is the length. Call it "type count" instead of ONE and make it obvious.
-> 
-> > +     *
-> > +     * Returns the size of the response.
-> > +     */
-> > +    size_t (*get_types)(MCTPI2CEndpoint *mctp, const uint8_t **data);
-> > +};  
-> 
-> > diff --git a/include/net/mctp.h b/include/net/mctp.h
-> > new file mode 100644
-> > index 000000000000..70b49235ddb2
-> > --- /dev/null
-> > +++ b/include/net/mctp.h
-> > @@ -0,0 +1,28 @@
-> > +#ifndef QEMU_MCTP_H
-> > +#define QEMU_MCTP_H
-> > +
-> > +#define MCTP_BASELINE_MTU 64  
-> 
-> Ideally add a reference for this as well.
-> 
-> 8.3.1 Baseline transmission unit in DSP0236 1.3.0
-> > +
-> > +enum {
-> > +    MCTP_H_FLAGS_EOM = 1 << 6,
-> > +    MCTP_H_FLAGS_SOM = 1 << 7,  
-> 
-> Trivial: I'm not really seeing the enum here as useful vs
-> a pair of defines.
-> 
-> > +};
-> > +
-> > +#define MCTP_MESSAGE_IC (1 << 7)
-> > +  
-> 
-> 
+s/. Surely/, especially/
+
+> that do a lot of writes/deletes.
+> This causes the qcow2 image to grow even over 110% of its virtual size,
+> because the free gaps in the image get to small to allocate new
+
+s/to small/too small/
+
+> continuous clusters. So it allocates new space as the end of the image.
+
+s/as/at/
+
+> Disabling discard is not an option, as discard is needed to keep the
+> incremental backup size as low as possible. Without discard, the
+> incremental backups would become large, as qemu thinks it's just dirty
+> blocks but it doesn't know the blocks are empty/useless.
+> So we need to avoid fragmentation but also 'empty' the useless blocks in
+
+s/useless/unneeded/ in both lines?
+
+> the image to have a small incremental backup.
+>
+> Next to that we also want to send the discards futher down the stack, so
+
+s/Next to that/In addition/, s/futher/further/
+
+> the underlying blocks are still discarded.
+>
+> Therefor we introduce a new qcow2 option "discard-no-unref". When
+> setting this option to true (defaults to false), the discard requests
+> will still be executed, but it will keep the offset of the cluster. And
+> it will also pass the discard request further down the stack (if
+> discard:unmap is enabled).
+
+I think this could be more explicit, e.g. “When setting this option to 
+true, discards will no longer have the qcow2 driver relinquish cluster 
+allocations. Other than that, the request is handled as normal: All 
+clusters in range are marked as zero, and, if pass-discard-request is 
+true, it is passed further down the stack. The only difference is that 
+the now-zero clusters are preallocated instead of being unallocated.”
+
+> This will avoid fragmentation and for example on a fully preallocated
+> qcow2 image, this will make sure the image is perfectly continuous.
+
+Well, on the qcow2 layer, yes.
+
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
+> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+> ---
+>   block/qcow2-cluster.c  |  16 ++++-
+>   block/qcow2-refcount.c | 136 ++++++++++++++++++++++++-----------------
+>   block/qcow2.c          |  12 ++++
+>   block/qcow2.h          |   3 +
+>   qapi/block-core.json   |   4 ++
+>   qemu-options.hx        |   6 ++
+>   6 files changed, 120 insertions(+), 57 deletions(-)
+>
+> diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
+> index 39cda7f907..88da70db5e 100644
+> --- a/block/qcow2-cluster.c
+> +++ b/block/qcow2-cluster.c
+> @@ -1943,10 +1943,22 @@ static int discard_in_l2_slice(BlockDriverState *bs, uint64_t offset,
+>               new_l2_entry = new_l2_bitmap = 0;
+>           } else if (bs->backing || qcow2_cluster_is_allocated(cluster_type)) {
+>               if (has_subclusters(s)) {
+> -                new_l2_entry = 0;
+> +                if (s->discard_no_unref && (type & QCOW2_DISCARD_REQUEST)) {
+
+As far as I understand the discard type is just a plain enum, not a bit 
+field.  So I think this should be `type == QCOW2_DISCARD_REQUEST`, not 
+an `&`.  (Same below.)
+
+> +                    new_l2_entry = old_l2_entry;
+> +                } else {
+> +                    new_l2_entry = 0;
+> +                }
+>                   new_l2_bitmap = QCOW_L2_BITMAP_ALL_ZEROES;
+>               } else {
+> -                new_l2_entry = s->qcow_version >= 3 ? QCOW_OFLAG_ZERO : 0;
+> +                if (s->qcow_version >= 3) {
+> +                    if (s->discard_no_unref && (type & QCOW2_DISCARD_REQUEST)) {
+> +                        new_l2_entry |= QCOW_OFLAG_ZERO;
+> +                    } else {
+> +                        new_l2_entry = QCOW_OFLAG_ZERO;
+> +                    }
+> +                } else {
+> +                    new_l2_entry = 0;
+> +                }
+>               }
+>           }
+>   
+
+Context below:
+
+         if (old_l2_entry == new_l2_entry && old_l2_bitmap == 
+new_l2_bitmap) {
+             continue;
+         }
+
+         /* First remove L2 entries */
+         qcow2_cache_entry_mark_dirty(s->l2_table_cache, l2_slice);
+         set_l2_entry(s, l2_slice, l2_index + i, new_l2_entry);
+         if (has_subclusters(s)) {
+             set_l2_bitmap(s, l2_slice, l2_index + i, new_l2_bitmap);
+         }
+         /* Then decrease the refcount */
+         qcow2_free_any_cluster(bs, old_l2_entry, type);
+
+If we keep the allocation, I don’t see why we would call 
+qcow2_free_any_cluster().  If we simply skip the call (if 
+`qcow2_is_allocated(qcow2_get_cluster_type(bs, new_l2_entry))`), I think 
+you could drop the modification to update_refcount().
+
+[...]
+
+> diff --git a/block/qcow2.c b/block/qcow2.c
+> index 5bde3b8401..9dde2ac1a5 100644
+> --- a/block/qcow2.c
+> +++ b/block/qcow2.c
+
+[...]
+
+> @@ -725,6 +726,11 @@ static QemuOptsList qcow2_runtime_opts = {
+>               .type = QEMU_OPT_BOOL,
+>               .help = "Generate discard requests when other clusters are freed",
+>           },
+> +        {
+> +            .name = QCOW2_OPT_DISCARD_NO_UNREF,
+> +            .type = QEMU_OPT_BOOL,
+> +            .help = "Do not dereference discarded clusters",
+
+I wouldn’t call it “dereference” because of the overloaded meaning in C, 
+but “unreference” instead.
+
+> +        },
+>           {
+>               .name = QCOW2_OPT_OVERLAP,
+>               .type = QEMU_OPT_STRING,
+
+[...]
+
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index 187e35d473..63aa792e9c 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
+> @@ -3432,6 +3432,9 @@
+>   # @pass-discard-other: whether discard requests for the data source
+>   #     should be issued on other occasions where a cluster gets freed
+>   #
+> +# @discard-no-unref: don't dereference the cluster when we do a discard
+> +#     this to avoid fragmentation of the qcow2 image (since 8.1)
+
+Because this comment is used to build different documentation than 
+qemu-options.hx is, I would duplicate the full comment you put into 
+qemu-options.hx here (to provide the best documentation possible).
+
+> +#
+>   # @overlap-check: which overlap checks to perform for writes to the
+>   #     image, defaults to 'cached' (since 2.2)
+>   #
+> @@ -3470,6 +3473,7 @@
+>               '*pass-discard-request': 'bool',
+>               '*pass-discard-snapshot': 'bool',
+>               '*pass-discard-other': 'bool',
+> +            '*discard-no-unref': 'bool',
+>               '*overlap-check': 'Qcow2OverlapChecks',
+>               '*cache-size': 'int',
+>               '*l2-cache-size': 'int',
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index 42b9094c10..17ac701d0d 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -1431,6 +1431,12 @@ SRST
+>               issued on other occasions where a cluster gets freed
+>               (on/off; default: off)
+>   
+> +        ``discard-no-unref``
+> +            When enabled, a discard in the guest does not cause the
+> +            cluster inside the qcow2 image to be dereferenced. This
+
+Like above, I’d prefer “unreferenced”, or “the cluster’s allocation […] 
+to be relinquished”.
+
+> +            was added to avoid qcow2 fragmentation whithin the image.
+> +            (on/off; default: off)
+
+I wouldn’t describe history here, but instead what this is for. E.g.: 
+“When enabled, discards from the guest will not cause cluster 
+allocations to be relinquished. This prevents qcow2 fragmentation that 
+would be caused by such discards. Besides potential performance 
+degradation, such fragmentation can lead to increased allocation of 
+clusters past the end of the image file, resulting in image files whose 
+file length can grow much larger than their guest disk size would 
+suggest. If image file length is of concern (e.g. when storing qcow2 
+images directly on block devices), you should consider enabling this 
+option.”
+
+What do you think?
+
+Hanna
 
 
