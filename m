@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78222717DEE
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 13:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B9E717DEF
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 13:24:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Jv1-0008W4-VR; Wed, 31 May 2023 07:23:08 -0400
+	id 1q4Jv1-0008Vg-A2; Wed, 31 May 2023 07:23:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q4Jum-0008U6-AY; Wed, 31 May 2023 07:22:54 -0400
+ id 1q4Jun-0008U7-Om; Wed, 31 May 2023 07:22:54 -0400
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1q4Juj-0006OZ-Bc; Wed, 31 May 2023 07:22:52 -0400
+ id 1q4Jul-0006Or-5Q; Wed, 31 May 2023 07:22:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 3751C62B8D;
- Wed, 31 May 2023 11:22:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B4CC4339E;
- Wed, 31 May 2023 11:22:44 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 26BDD632BA;
+ Wed, 31 May 2023 11:22:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FD5C433EF;
+ Wed, 31 May 2023 11:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1685532166;
- bh=CmgtESpaAov4b9gatdrn0WcbuhDN0cK8PVQan2txeW0=;
+ s=k20201202; t=1685532168;
+ bh=8xiqqVg7tiHXOk5GpmDCi/SEGuHbChkOD4tRdQxDAVM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SIUwjkDX9OGkU0v93WA+tIL71oUUWu0MLM+ab0uSmeLhAv+KHtHqNhxcPtWF0jVjL
- F1C8f9Q20l4U8Q1hgrcYUV0DHPoHyndQDQiwJG6ca5kO82JGDKiQDHHbi/Rt3hFbvY
- BNvMcql2Vz6qnnoYQfot7pgKdQgLRbCapFA+koW9OFj7H5AyCi9w+oy8ojyhGqhoL4
- owGEfz7Pmy6w+AXc1UfRMLBUNBUQckxSYNdOuJy8A6nhEwmiTalxKLr4mHmumHloav
- 6ouP5k4ROFPJm46vEyMrQHU2tX3nrxK5uz6meMOhMaIFxofPt4dhkkHqFmkee6KjJY
- FqDNyFN+/oHUQ==
+ b=mDccMu92PiRP89OacNslpfsJo8P5d8KeklD+n+730OcCoNufGY081JLC9dTGsUxd3
+ OHWAdBfCxiOUDeWq0D3zBzgZL8k5SevPup0awbJp1M0Mv2nDHBsG/JC8nGfsX/Ksda
+ WJT5ZmfJzkVv1SIoDS+0XQgeIc6YVlEbkuYOmLdjK5eYo0mGukA8OVCMqmENGMNHZe
+ 2e1d5qV9JzFLuvSG0aFIII/iS2VHy2B6yOHHmf9zu8pNVcjA4KIJkhgL3UTmcDOYPg
+ SYZvLky9KYZjpqSyAW5Ooi0hm/Hi9QqSWvungIdmt9cRO48lArgvyxn/fZeXPx95ow
+ 0vRtgxF7LcDiA==
 From: Ard Biesheuvel <ardb@kernel.org>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
@@ -40,20 +40,20 @@ Cc: qemu-devel@nongnu.org, Ard Biesheuvel <ardb@kernel.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-Subject: [PATCH v2 1/2] target/arm: use x86 intrinsics to implement AES
- instructions
-Date: Wed, 31 May 2023 13:22:38 +0200
-Message-Id: <20230531112239.3164777-2-ardb@kernel.org>
+Subject: [PATCH v2 2/2] target/i386: Implement AES instructions using AArch64
+ counterparts
+Date: Wed, 31 May 2023 13:22:39 +0200
+Message-Id: <20230531112239.3164777-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230531112239.3164777-1-ardb@kernel.org>
 References: <20230531112239.3164777-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4305; i=ardb@kernel.org;
- h=from:subject; bh=CmgtESpaAov4b9gatdrn0WcbuhDN0cK8PVQan2txeW0=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaVc99el322rmW4wnLFa8efPkmwxt/I9kXoCfyfl7o5Pl
- a2eY72so5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExk9gGG/2UiixvzEltk2X+8
- cDNoVdlz94GsZl/Ajv1HtZI77DQNhRkZrnHM4TPtOSw+pbnqxudj3Z+e8f6YcqNWtl6b4YLH/Zx
- wbgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5479; i=ardb@kernel.org;
+ h=from:subject; bh=8xiqqVg7tiHXOk5GpmDCi/SEGuHbChkOD4tRdQxDAVM=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIaVc94+dwX+2p6lmybXLFGTly/dwtKW47zGex8qadis1w
+ 4W1SbejlIVBjINBVkyRRWD233c7T0+UqnWeJQszh5UJZAgDF6cATCR/JSPDdovAS+dWTtarydm7
+ eanSiYyyfxfiNOdoRa694Mx4favvc4b/eWfsj/qd05x9eeF9kZR5jZ+OCUqz2/4XDHzNE7j7CEM
+ uPwA=
 X-Developer-Key: i=ardb@kernel.org; a=openpgp;
  fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
@@ -81,124 +81,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ARM intrinsics for AES deviate from the x86 ones in the way they cover
-the different stages of each round, and so mapping one to the other is
-not entirely straight-forward. However, with a bit of care, we can still
-use the x86 ones to emulate the ARM ones, which makes them constant time
-(which is an important property in crypto) and substantially more
-efficient.
+When available, use the AArch64 AES instructions to implement the x86
+ones. These are not a 1:1 fit, but considerably more efficient, and
+without data dependent timing.
+
+For a typical benchmark (linux tcrypt mode=500), this gives a 2-3x
+speedup when running on ThunderX2.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- host/include/i386/host/cpuinfo.h |  1 +
- target/arm/tcg/crypto_helper.c   | 37 ++++++++++++++++++--
- util/cpuinfo-i386.c              |  1 +
- 3 files changed, 36 insertions(+), 3 deletions(-)
+ host/include/aarch64/host/cpuinfo.h |  1 +
+ target/i386/ops_sse.h               | 69 ++++++++++++++++++++
+ util/cpuinfo-aarch64.c              |  1 +
+ 3 files changed, 71 insertions(+)
 
-diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index a6537123cf80ec5b..073d0a426f31487d 100644
---- a/host/include/i386/host/cpuinfo.h
-+++ b/host/include/i386/host/cpuinfo.h
-@@ -26,6 +26,7 @@
- #define CPUINFO_AVX512VBMI2     (1u << 15)
- #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
- #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
-+#define CPUINFO_AES             (1u << 18)
+diff --git a/host/include/aarch64/host/cpuinfo.h b/host/include/aarch64/host/cpuinfo.h
+index 82227890b4b4db03..05feeb4f4369fc19 100644
+--- a/host/include/aarch64/host/cpuinfo.h
++++ b/host/include/aarch64/host/cpuinfo.h
+@@ -9,6 +9,7 @@
+ #define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
+ #define CPUINFO_LSE             (1u << 1)
+ #define CPUINFO_LSE2            (1u << 2)
++#define CPUINFO_AES             (1u << 3)
  
  /* Initialized with a constructor. */
  extern unsigned cpuinfo;
-diff --git a/target/arm/tcg/crypto_helper.c b/target/arm/tcg/crypto_helper.c
-index d28690321f0b86ea..747c061b5a1b0e5e 100644
---- a/target/arm/tcg/crypto_helper.c
-+++ b/target/arm/tcg/crypto_helper.c
-@@ -18,10 +18,21 @@
- #include "crypto/sm4.h"
- #include "vec_internal.h"
+diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
+index fb63af7afa21588d..db79132778efd211 100644
+--- a/target/i386/ops_sse.h
++++ b/target/i386/ops_sse.h
+@@ -20,6 +20,11 @@
  
-+#ifdef __x86_64__
+ #include "crypto/aes.h"
+ 
++#ifdef __aarch64__
 +#include "host/cpuinfo.h"
-+#include <wmmintrin.h>
-+#define TARGET_AES  __attribute__((__target__("aes")))
-+#else
-+#define TARGET_AES
++typedef uint8_t aes_vec_t __attribute__((vector_size(16)));
 +#endif
 +
- union CRYPTO_STATE {
-     uint8_t    bytes[16];
-     uint32_t   words[4];
-     uint64_t   l[2];
-+#ifdef __x86_64__
-+    __m128i    vec;
-+#endif
- };
+ #if SHIFT == 0
+ #define Reg MMXReg
+ #define XMM_ONLY(...)
+@@ -2165,6 +2170,20 @@ void glue(helper_aesdec, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+     Reg st = *v;
+     Reg rk = *s;
  
- #if HOST_BIG_ENDIAN
-@@ -45,8 +56,8 @@ static void clear_tail_16(void *vd, uint32_t desc)
-     clear_tail(vd, opr_sz, max_sz);
- }
- 
--static void do_crypto_aese(uint64_t *rd, uint64_t *rn,
--                           uint64_t *rm, bool decrypt)
-+static void TARGET_AES do_crypto_aese(uint64_t *rd, uint64_t *rn,
-+                                      uint64_t *rm, bool decrypt)
- {
-     static uint8_t const * const sbox[2] = { AES_sbox, AES_isbox };
-     static uint8_t const * const shift[2] = { AES_shifts, AES_ishifts };
-@@ -54,6 +65,16 @@ static void do_crypto_aese(uint64_t *rd, uint64_t *rn,
-     union CRYPTO_STATE st = { .l = { rn[0], rn[1] } };
-     int i;
- 
-+#ifdef __x86_64__
++#ifdef __aarch64__
 +    if (cpuinfo & CPUINFO_AES) {
-+        __m128i *d = (__m128i *)rd, z = {};
-+
-+        *d = decrypt ? _mm_aesdeclast_si128(rk.vec ^ st.vec, z)
-+                     : _mm_aesenclast_si128(rk.vec ^ st.vec, z);
++        asm("   .arch_extension aes             \n"
++            "   aesd    %0.16b, %1.16b          \n"
++            "   aesimc  %0.16b, %0.16b          \n"
++            "   eor     %0.16b, %0.16b, %2.16b  \n"
++            :   "=w"(*(aes_vec_t *)d)
++            :   "w"((aes_vec_t){}),
++                "w"(*(aes_vec_t *)s),
++                "0"(*(aes_vec_t *)v));
 +        return;
 +    }
 +#endif
 +
-     /* xor state vector with round key */
-     rk.l[0] ^= st.l[0];
-     rk.l[1] ^= st.l[1];
-@@ -78,7 +99,7 @@ void HELPER(crypto_aese)(void *vd, void *vn, void *vm, uint32_t desc)
-     clear_tail(vd, opr_sz, simd_maxsz(desc));
- }
+     for (i = 0 ; i < 2 << SHIFT ; i++) {
+         int j = i & 3;
+         d->L(i) = rk.L(i) ^ bswap32(AES_Td0[st.B(AES_ishifts[4 * j + 0])] ^
+@@ -2180,6 +2199,19 @@ void glue(helper_aesdeclast, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+     Reg st = *v;
+     Reg rk = *s;
  
--static void do_crypto_aesmc(uint64_t *rd, uint64_t *rm, bool decrypt)
-+static void TARGET_AES do_crypto_aesmc(uint64_t *rd, uint64_t *rm, bool decrypt)
- {
-     static uint32_t const mc[][256] = { {
-         /* MixColumns lookup table */
-@@ -217,6 +238,16 @@ static void do_crypto_aesmc(uint64_t *rd, uint64_t *rm, bool decrypt)
-     union CRYPTO_STATE st = { .l = { rm[0], rm[1] } };
-     int i;
- 
-+#ifdef __x86_64__
++#ifdef __aarch64__
 +    if (cpuinfo & CPUINFO_AES) {
-+        __m128i *d = (__m128i *)rd, z = {};
-+
-+        *d = decrypt ? _mm_aesimc_si128(st.vec)
-+                     : _mm_aesenc_si128(_mm_aesdeclast_si128(st.vec, z), z);
++        asm("   .arch_extension aes             \n"
++            "   aesd    %0.16b, %1.16b          \n"
++            "   eor     %0.16b, %0.16b, %2.16b  \n"
++            :   "=w"(*(aes_vec_t *)d)
++            :   "w"((aes_vec_t){}),
++                "w"(*(aes_vec_t *)s),
++                "0"(*(aes_vec_t *)v));
 +        return;
 +    }
 +#endif
 +
-     for (i = 0; i < 16; i += 4) {
-         CR_ST_WORD(st, i >> 2) =
-             mc[decrypt][CR_ST_BYTE(st, i)] ^
-diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-index ab6143d9e77291f1..3043f066c0182dc8 100644
---- a/util/cpuinfo-i386.c
-+++ b/util/cpuinfo-i386.c
-@@ -39,6 +39,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-         info |= (c & bit_SSE4_1 ? CPUINFO_SSE4 : 0);
-         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
-         info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
-+        info |= (c & bit_AES ? CPUINFO_AES : 0);
+     for (i = 0; i < 8 << SHIFT; i++) {
+         d->B(i) = rk.B(i) ^ (AES_isbox[st.B(AES_ishifts[i & 15] + (i & ~15))]);
+     }
+@@ -2191,6 +2223,20 @@ void glue(helper_aesenc, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+     Reg st = *v;
+     Reg rk = *s;
  
-         /* For AVX features, we must check available and usable. */
-         if ((c & bit_AVX) && (c & bit_OSXSAVE)) {
++#ifdef __aarch64__
++    if (cpuinfo & CPUINFO_AES) {
++        asm("   .arch_extension aes             \n"
++            "   aese    %0.16b, %1.16b          \n"
++            "   aesmc   %0.16b, %0.16b          \n"
++            "   eor     %0.16b, %0.16b, %2.16b  \n"
++            :   "=w"(*(aes_vec_t *)d)
++            :   "w"((aes_vec_t){}),
++                "w"(*(aes_vec_t *)s),
++                "0"(*(aes_vec_t *)v));
++        return;
++    }
++#endif
++
+     for (i = 0 ; i < 2 << SHIFT ; i++) {
+         int j = i & 3;
+         d->L(i) = rk.L(i) ^ bswap32(AES_Te0[st.B(AES_shifts[4 * j + 0])] ^
+@@ -2206,6 +2252,19 @@ void glue(helper_aesenclast, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+     Reg st = *v;
+     Reg rk = *s;
+ 
++#ifdef __aarch64__
++    if (cpuinfo & CPUINFO_AES) {
++        asm("   .arch_extension aes             \n"
++            "   aese    %0.16b, %1.16b          \n"
++            "   eor     %0.16b, %0.16b, %2.16b  \n"
++            :   "=w"(*(aes_vec_t *)d)
++            :   "w"((aes_vec_t){}),
++                "w"(*(aes_vec_t *)s),
++                "0"(*(aes_vec_t *)v));
++        return;
++    }
++#endif
++
+     for (i = 0; i < 8 << SHIFT; i++) {
+         d->B(i) = rk.B(i) ^ (AES_sbox[st.B(AES_shifts[i & 15] + (i & ~15))]);
+     }
+@@ -2217,6 +2276,16 @@ void glue(helper_aesimc, SUFFIX)(CPUX86State *env, Reg *d, Reg *s)
+     int i;
+     Reg tmp = *s;
+ 
++#ifdef __aarch64__
++    if (cpuinfo & CPUINFO_AES) {
++        asm("   .arch_extension aes             \n"
++            "   aesimc  %0.16b, %1.16b          \n"
++            :   "=w"(*(aes_vec_t *)d)
++            :   "w"(*(aes_vec_t *)s));
++        return;
++    }
++#endif
++
+     for (i = 0 ; i < 4 ; i++) {
+         d->L(i) = bswap32(AES_imc[tmp.B(4 * i + 0)][0] ^
+                           AES_imc[tmp.B(4 * i + 1)][1] ^
+diff --git a/util/cpuinfo-aarch64.c b/util/cpuinfo-aarch64.c
+index f99acb788454e5ab..769cdfeb2fc32d5e 100644
+--- a/util/cpuinfo-aarch64.c
++++ b/util/cpuinfo-aarch64.c
+@@ -56,6 +56,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+     unsigned long hwcap = qemu_getauxval(AT_HWCAP);
+     info |= (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
+     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
++    info |= (hwcap & HWCAP_AES ? CPUINFO_AES : 0);
+ #endif
+ #ifdef CONFIG_DARWIN
+     info |= sysctl_for_bool("hw.optional.arm.FEAT_LSE") * CPUINFO_LSE;
 -- 
 2.39.2
 
