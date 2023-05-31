@@ -2,59 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0D0718571
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 956B0718575
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:01:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NJ2-0002hC-73; Wed, 31 May 2023 11:00:08 -0400
+	id 1q4NK9-0003DA-28; Wed, 31 May 2023 11:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q4NIx-0002gC-5G; Wed, 31 May 2023 11:00:03 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q4NJp-00035P-KM
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:01:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1q4NIt-0001v9-LI; Wed, 31 May 2023 11:00:02 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QWXNl4bFJz6J7TC;
- Wed, 31 May 2023 22:54:47 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 31 May
- 2023 15:59:45 +0100
-Date: Wed, 31 May 2023 15:59:44 +0100
-To: Klaus Jensen <its@irrelevant.dk>
-CC: <qemu-devel@nongnu.org>, Corey Minyard <cminyard@mvista.com>, Keith Busch
- <kbusch@kernel.org>, Jason Wang <jasowang@redhat.com>, Lior Weintraub
- <liorw@pliops.com>, Paolo Bonzini <pbonzini@redhat.com>, Jeremy Kerr
- <jk@codeconstruct.com.au>, <qemu-arm@nongnu.org>, Matt Johnston
- <matt@codeconstruct.com.au>, Peter Delevoryas <peter@pjd.dev>,
- <qemu-block@nongnu.org>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Klaus Jensen <k.jensen@samsung.com>, Peter Maydell
- <peter.maydell@linaro.org>, <gost.dev@samsung.com>
-Subject: Re: [PATCH v3 2/3] hw/i2c: add mctp core
-Message-ID: <20230531155944.00006309@Huawei.com>
-In-Reply-To: <20230531114744.9946-3-its@irrelevant.dk>
-References: <20230531114744.9946-1-its@irrelevant.dk>
- <20230531114744.9946-3-its@irrelevant.dk>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1q4NJn-0002IE-ES
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:00:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685545252;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1AVHRPSdXGr7Tc6c1oEet1V9TPbcI8MoRqSD/MDMrlM=;
+ b=dbwpshQ9v8WgqLUg5sv6u0gboVuahd/WyDrekD/MGn6QQWEGUN/ONlJBq6wWU/mKeMqIEA
+ aW8kG+5x5zhWunvBX0umrDJoSQWxg4HX2jFkhrXYuvJPQECGLxUd7uWym0msu0VUrzaFk8
+ kJwVdPuMHKMz2oqPLtygyW+d+C+hRuc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-611-GuoawuakMU2j-pPOlBzW_Q-1; Wed, 31 May 2023 11:00:50 -0400
+X-MC-Unique: GuoawuakMU2j-pPOlBzW_Q-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A01B3C397CC;
+ Wed, 31 May 2023 15:00:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.91])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2BDBF2166B25;
+ Wed, 31 May 2023 15:00:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1377E21E692E; Wed, 31 May 2023 17:00:49 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,  laurent@vivier.eu,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 05/23] q800: move CPU object into Q800MachineState
+References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-6-mark.cave-ayland@ilande.co.uk>
+ <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org>
+Date: Wed, 31 May 2023 17:00:49 +0200
+In-Reply-To: <92959cb6-5539-17ef-4fbf-f54cefe7d0cb@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 31 May 2023 15:40:21
+ +0200")
+Message-ID: <87jzwoczq6.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,188 +81,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 31 May 2023 13:47:43 +0200
-Klaus Jensen <its@irrelevant.dk> wrote:
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> From: Klaus Jensen <k.jensen@samsung.com>
-> 
-> Add an abstract MCTP over I2C endpoint model. This implements MCTP
-> control message handling as well as handling the actual I2C transport
-> (packetization).
-> 
-> Devices are intended to derive from this and implement the class
-> methods.
-> 
-> Parts of this implementation is inspired by code[1] previously posted by
-> Jonathan Cameron.
-> 
-> Squashed a fix[2] from Matt Johnston.
-> 
->   [1]: https://lore.kernel.org/qemu-devel/20220520170128.4436-1-Jonathan.Cameron@huawei.com/
->   [2]: https://lore.kernel.org/qemu-devel/20221121080445.GA29062@codeconstruct.com.au/
-> 
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-Hi Klaus,
+> On 31/5/23 14:53, Mark Cave-Ayland wrote:
+>> Also change the instantiation of the CPU to use object_initialize_child()
+>> followed by a separate realisation.
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>>   hw/m68k/q800.c         | 13 ++++++++-----
+>>   include/hw/m68k/q800.h |  2 ++
+>>   2 files changed, 10 insertions(+), 5 deletions(-)
+>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+>> index 3730b30dd1..c34b2548ca 100644
+>> --- a/hw/m68k/q800.c
+>> +++ b/hw/m68k/q800.c
+>> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] =3D {
+>>     static void q800_machine_init(MachineState *machine)
+>>   {
+>> -    M68kCPU *cpu =3D NULL;
+>> +    Q800MachineState *m =3D Q800_MACHINE(machine);
+>>       int linux_boot;
+>>       int32_t kernel_size;
+>>       uint64_t elf_entry;
+>> @@ -407,8 +407,10 @@ static void q800_machine_init(MachineState *machine)
+>>       }
+>>         /* init CPUs */
+>> -    cpu =3D M68K_CPU(cpu_create(machine->cpu_type));
+>> -    qemu_register_reset(main_cpu_reset, cpu);
+>> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu,
+>> +                            M68K_CPU_TYPE_NAME("m68040"));
+>> +    object_property_set_bool(OBJECT(&m->cpu), "realized", true, &error_=
+fatal);
+>
+> CPUs are QDev-based, shouldn't we use qdev_realize()?
 
-A few minor comments inline.
+Yes, we should.
 
-With those tidied up feel free to add
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-
-
-> +
-> +        if (pkt->mctp.hdr.flags & MCTP_H_FLAGS_SOM) {
-> +            mctp->tx.is_control = false;
-> +
-> +            if (mctp->state == I2C_MCTP_STATE_RX) {
-> +                mc->reset(mctp);
-> +            }
-> +
-> +            mctp->state = I2C_MCTP_STATE_RX;
-> +
-> +            mctp->tx.addr = pkt->i2c.source;
-> +            mctp->tx.eid = pkt->mctp.hdr.eid.source;
-> +            mctp->tx.flags = pkt->mctp.hdr.flags & 0x7;
-
-Maybe worth either defining that mask, or adding a comment that this
-is copying the msg tag.  Or rename flags...
-
-
-> +            mctp->tx.pktseq = (pkt->mctp.hdr.flags >> 4) & 0x3;
-> +
-> +            if ((pkt->mctp.payload[0] & 0x7f) == MCTP_MESSAGE_TYPE_CONTROL) {
-> +                mctp->tx.is_control = true;
-> +
-> +                i2c_mctp_handle_control(mctp);
-> +
-> +                return 0;
-> +            }
-> +        } else if (mctp->state == I2C_MCTP_STATE_RX_STARTED) {
-> +            trace_i2c_mctp_drop_expected_som();
-> +            goto drop;
-> +        } else if (((pkt->mctp.hdr.flags >> 4) & 0x3) != (++mctp->tx.pktseq & 0x3)) {
-> +            trace_i2c_mctp_drop_invalid_pktseq((pkt->mctp.hdr.flags >> 4) & 0x3,
-> +                                               mctp->tx.pktseq & 0x3);
-> +            goto drop;
-> +        }
-> +
-> +        mc->put_buf(mctp, i2c_mctp_payload(mctp->buffer), payload_len);
-> +
-> +        if (pkt->mctp.hdr.flags & MCTP_H_FLAGS_EOM) {
-> +            mc->handle(mctp);
-> +            mctp->state = I2C_MCTP_STATE_WAIT_TX;
-> +        }
-> +
-> +        return 0;
-> +
-> +    default:
-> +        return -1;
-> +    }
-> +
-> +drop:
-> +    mc->reset(mctp);
-> +
-> +    mctp->state = I2C_MCTP_STATE_IDLE;
-> +
-> +    return 0;
-> +}
-
-
-> diff --git a/include/hw/i2c/mctp.h b/include/hw/i2c/mctp.h
-> new file mode 100644
-> index 000000000000..ea97792e8d43
-> --- /dev/null
-> +++ b/include/hw/i2c/mctp.h
-
-...
-> +struct MCTPI2CEndpointClass {
-> +    I2CSlaveClass parent_class;
-> +
-> +    /**
-> +     *
-> +     * put_buf() - receive incoming message fragment
-> +     *
-> +     * Must returns 0 for succes or -1 for error.
-> +     */
-> +    int (*put_buf)(MCTPI2CEndpoint *mctp, uint8_t *buf, size_t len);
-> +
-> +    /**
-> +     * get_buf() - provide pointer to message fragment
-> +     *
-> +     * Called by the mctp subsystem to request a pointer to the next message
-> +     * fragment. The implementation must advance its internal position such
-> +     * that successive calls returns the next fragments.
-> +     *
-> +     * Must return the number of bytes available.
-> +     */
-> +    size_t (*get_buf)(MCTPI2CEndpoint *mctp, const uint8_t **buf,
-> +                      size_t maxlen, uint8_t *mctp_flags);
-> +
-> +    /**
-> +     * handle() - handle an MCTP message
-> +     *
-> +     * Called by the mctp subsystem when a full message has been delivered and
-> +     * may be parsed and processed.
-> +     */
-> +    void (*handle)(MCTPI2CEndpoint *mctp);
-> +
-> +    /**
-> +     * reset() - reset internal state
-> +     *
-> +     * Called by the mctp subsystem in the event of some transport error.
-> +     * Implementation must reset its internal state and drop any fragments
-> +     * previously receieved.
-> +     */
-> +    void (*reset)(MCTPI2CEndpoint *mctp);
-> +
-> +    /**
-> +     * get_types() - provide supported mctp message types
-> +     *
-> +     * Must provide a buffer with a full MCTP supported message types payload
-> +     * (i.e. `0x0(SUCCESS),0x1(ONE),0x4(NMI)`).
-
-ONE?  Looks to be PLDM
-Good to reference DSP0239 Management Component Transport Protocol (MCTP) IDs and Codes
-which has the list.
-
-> +     *
-> +     * Returns the size of the response.
-> +     */
-> +    size_t (*get_types)(MCTPI2CEndpoint *mctp, const uint8_t **data);
-> +};
-
-> diff --git a/include/net/mctp.h b/include/net/mctp.h
-> new file mode 100644
-> index 000000000000..70b49235ddb2
-> --- /dev/null
-> +++ b/include/net/mctp.h
-> @@ -0,0 +1,28 @@
-> +#ifndef QEMU_MCTP_H
-> +#define QEMU_MCTP_H
-> +
-> +#define MCTP_BASELINE_MTU 64
-
-Ideally add a reference for this as well.
-
-8.3.1 Baseline transmission unit in DSP0236 1.3.0
-> +
-> +enum {
-> +    MCTP_H_FLAGS_EOM = 1 << 6,
-> +    MCTP_H_FLAGS_SOM = 1 << 7,
-
-Trivial: I'm not really seeing the enum here as useful vs
-a pair of defines.
-
-> +};
-> +
-> +#define MCTP_MESSAGE_IC (1 << 7)
-> +
-
+[...]
 
 
