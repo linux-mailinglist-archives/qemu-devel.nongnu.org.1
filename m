@@ -2,90 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC6E718799
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 18:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 142F77187AE
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 18:45:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Ooy-0006ZV-Uv; Wed, 31 May 2023 12:37:12 -0400
+	id 1q4OvO-0000pk-LK; Wed, 31 May 2023 12:43:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1q4Oow-0006ZF-Qk; Wed, 31 May 2023 12:37:10 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1q4OvM-0000pZ-NV
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 12:43:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1q4Oos-0007Yd-9R; Wed, 31 May 2023 12:37:10 -0400
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 34VADKYV013999; Wed, 31 May 2023 16:37:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=19EwZCRqjqWnnqqHwEDlsu+AEj34DaE4EnF6WSEdfPg=;
- b=FU8ih7uDEuHziIVHXDRRrNoZuCmI8Sv3H8BvubSEGlNbQggmfwqYD6S0ucko+0PS3c3c
- BzaCCs7VPhHgV91tb36y4SBXZEyFOyTRS2TU3He0+JryYqyls6bVX3UfYZs/GYQ2Lt2L
- o3Lm2zoBvQ3m18jEsbGa280Uewf7BhNzKUDLyVpDI7wUCMkGZaj6HZ/BOuJsn/9MFt+o
- BALt5rGCaJwLLw5Z6pdDUY8GrBcOznA9NigiToBDFqUbOWU7GZvn8abT2fqzGmw+MGqe
- Sa0huzAOUj5FkYfzffy6Ukk7XdkmhI86pZMnhRcUmNQ6WHcmcoV1iJ6CPiT4hZeVoJSx tw== 
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qwnhf2r2t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 May 2023 16:37:01 +0000
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
- [10.45.79.139])
- by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34VGb0eO000366
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 May 2023 16:37:00 GMT
-Received: from [10.111.140.164] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 31 May
- 2023 09:36:58 -0700
-Message-ID: <b663fb55-dc8e-9fd8-9d82-7e693c3c4ad3@quicinc.com>
-Date: Wed, 31 May 2023 17:36:56 +0100
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1q4OvI-0000JI-2w
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 12:43:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685551423;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JYyLvEzVByz1RyfIk9DaT0kLC4Vk06AkQA/4oUlvF5c=;
+ b=TIpqYxdLszVrsHRQS3+I1EtkSaMKckRj5upex4/LY6S+LFXkCAvawmM5uNxCSiKdhpkgjF
+ DUuSiKxcX5pcpZAgvXjSbOlhGEeUtV2hZ4swgw0DURzY2nCRjew2hmUUp7RYlrNT37Xp5p
+ 1Vd4FVGu1dJ495b+lZ7oF+EpDE1oOQg=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-10-B0ncBpPuOeuQw5cRKTwzyg-1; Wed, 31 May 2023 12:43:41 -0400
+X-MC-Unique: B0ncBpPuOeuQw5cRKTwzyg-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1b043b9ad2bso19027515ad.1
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 09:43:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685551420; x=1688143420;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JYyLvEzVByz1RyfIk9DaT0kLC4Vk06AkQA/4oUlvF5c=;
+ b=JtYejjoOpu43AKcXmd9RjzTrDHTHjdZM1VsZq42MapXMNUzZJ7n7mdORqd2lpm3Cq+
+ 46Jf8HwBwi8rO15XpE23Q1KnIFqIR8Fkac4SZp1vc+M8ERvyKXCUXtIi1PFKIGEv+KEq
+ 7/ZtCQNj7M0XwLc5fDVq03cLe3H48Sy2wsVYH5Kjx77N/3DKbndcf4m7mZ2fh9XcuAUi
+ y2i5XVGuWSEBCOEZ8VjcI2Qy5eGeOPQBhJelvn/uSyDlbDAq65/ODECzew744HnNule0
+ ckehyT6ZDxtflsvN1dYXBcLu7iiR6LrLHFPlBon4a1HUYUVjWPdZ0K1IN4bYds3+EM81
+ GzNg==
+X-Gm-Message-State: AC+VfDx35Mv5blXLC2chKw0vR4PF1ab61wNe/9zqt5qjv1m175zueVoW
+ fFAuWFYw2HYDo8a5WI7ZuNh5vLu8MWUvYG1BQp01QKkyio43loPWplzBarJatCTQb8Y0DeI/Lzn
+ /NPg3VHJrDfczq9SRdWNE1DJ0eSyYOxQrEBvJu74=
+X-Received: by 2002:a17:902:d4d1:b0:1b1:8471:341 with SMTP id
+ o17-20020a170902d4d100b001b184710341mr776986plg.21.1685551420628; 
+ Wed, 31 May 2023 09:43:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ63FyylmtN2ATX4m3DSO0HzlDKeHFTv3r4/drawpFiq5v1j5qyKE4wkIlqov0zIyl9ucwhJnWaKTtPwsT+qpRw=
+X-Received: by 2002:a17:902:d4d1:b0:1b1:8471:341 with SMTP id
+ o17-20020a170902d4d100b001b184710341mr776970plg.21.1685551420296; Wed, 31 May
+ 2023 09:43:40 -0700 (PDT)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 31 May 2023 09:43:39 -0700
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20230531142300.9114-1-sunilvl@ventanamicro.com>
+ <20230531142300.9114-4-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-To: Peter Maydell <peter.maydell@linaro.org>, Graeme Gregory
- <graeme@xora.org.uk>
-CC: <wangyuquan1236@phytium.com.cn>, <chenbaozi@phytium.com.cn>,
- <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
-References: <20230531070229.334124-1-wangyuquan1236@phytium.com.cn>
- <20230531070229.334124-2-wangyuquan1236@phytium.com.cn>
- <lfcmvvqjp64wngrdk33bvkb3k7op53l24lcoslah2evsyh3esc@at7jnsnrto7h>
- <CAFEAcA8h9-YWUYsvuERttmsEK3xi+K+xasFdoWmnFm26S6npNw@mail.gmail.com>
-From: Leif Lindholm <quic_llindhol@quicinc.com>
-In-Reply-To: <CAFEAcA8h9-YWUYsvuERttmsEK3xi+K+xasFdoWmnFm26S6npNw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: T-Tqo_L0GCOO1YiiMObq_dlYz79yKUIf
-X-Proofpoint-GUID: T-Tqo_L0GCOO1YiiMObq_dlYz79yKUIf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-31_11,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 malwarescore=0 mlxlogscore=652 mlxscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 spamscore=0 clxscore=1011
- phishscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2304280000 definitions=main-2305310141
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_llindhol@quicinc.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <20230531142300.9114-4-sunilvl@ventanamicro.com>
+Date: Wed, 31 May 2023 09:43:39 -0700
+Message-ID: <CABJz62PgmMQp6qcOnME-=G2h84GtW2w0M4OaLpW=Xn6+g1BxjA@mail.gmail.com>
+Subject: Re: [PATCH v6 3/3] docs/system: riscv: Add pflash usage details
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,52 +99,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023-05-31 16:27, Peter Maydell wrote:
-> On Wed, 31 May 2023 at 15:58, Graeme Gregory <graeme@xora.org.uk> wrote:
->>> The current sbsa-ref cannot use EHCI controller which is only
->>> able to do 32-bit DMA, since sbsa-ref doesn't have RAM above 4GB.
->>> Hence, this uses XHCI to provide a usb controller with 64-bit
->>> DMA capablity instead of EHCI.
->>
->> Should this be below 4G?
-> 
-> It would be pretty disruptive to try to rearrange the memory
-> map to put RAM below 4GB at this point, though in theory it's
-> possible I guess. (I have a vague recollection that there was
-> some reason the RAM was all put above 4GB, but can't find
-> anything about that in my email archives. Perhaps Leif remembers?)
+On Wed, May 31, 2023 at 07:53:00PM +0530, Sunil V L wrote:
+> +Using flash devices
+> +-------------------
+> +
+> +When KVM is not enabled, the first flash device (pflash0) can contain either
+> +the ROM code or S-mode payload firmware code. If the pflash0 contains the
+> +ROM code, -bios should be set to none. If -bios is not set to
+> +none, pflash0 is assumed to contain S-mode payload code.
+> +
+> +When KVM is enabled, pflash0 is always assumed to contain the S-mode payload
+> +firmware.
+> +
+> +Firmware images used for pflash should be of size 32 MiB.
+> +
+> +To boot as ROM code:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-riscv64 -bios none \
+> +     -blockdev node-name=pflash0,driver=file,read-only=on,filename=<rom_code> \
+> +     -M virt,pflash0=pflash0 \
+> +     ... other args ....
+> +
+> +To boot as read-only S-mode payload:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-riscv64 \
+> +     -blockdev node-name=pflash0,driver=file,read-only=on,filename=<s-mode_fw_code> \
+> +     -blockdev node-name=pflash1,driver=file,filename=<s-mode_fw_vars> \
+> +     -M virt,pflash0=pflash0,pflash1=pflash1 \
+> +     ... other args ....
+> +
+> +To boot as read-only S-mode payload in KVM guest:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-riscv64 \
+> +     -blockdev node-name=pflash0,driver=file,read-only=on,filename=<s-mode_fw_code> \
+> +     -blockdev node-name=pflash1,driver=file,filename=<s-mode_fw_vars> \
+> +     -M virt,pflash0=pflash0,pflash1=pflash1 \
+> +     --enable-kvm \
+> +     ... other args ....
 
-I think Graeme was just pointing out a typo in Marcin's email.
+I feel that this, while accurate, has gotten more complicated than it
+needs to be. We're also putting the least common scenario front and
+center instead of opening with the one that most people are going to
+be using.
 
-Yeah, we're not changing the DRAM base at this stage.
-I think the reason we put no RAM below 4GB was simply that we had 
-several real-world platforms where that was true, and given the intended 
-use-case for the platform, we explicitly wanted to trigger issues those 
-platforms might encounter.
+Below is how I suggest reworking it. What do you think?
 
->> Also has EHCI never worked, or has it worked in some modes and so this
->> change should be versioned?
-> 
-> AIUI, EHCI has never worked and can never have worked, because
-> this board's RAM is all above 4G and the QEMU EHCI controller
-> implementation only allows DMA descriptors with 32-bit addresses.
-> 
-> Looking back at the archives, it seems we discussed XHCI vs
-> EHCI when the sbsa-ref board went in, and the conclusion was
-> that XHCI would be better. But there wasn't a sysbus XHCI device
-> at that point, so we ended up committing the sbsa-ref board
-> with EHCI and a plan to switch to XHCI when the sysbus-xhci
-> device was done, which we then forgot about:
-> https://mail.gnu.org/archive/html/qemu-arm/2018-11/msg00638.html
 
-Ah, thanks! That explains why we did the thing that made no sense :)
 
-To skip the migration hazard, my prefernece is we just leave the EHCI 
-device in for now, and add a separate XHCI on PCIe. We can drop the
-EHCI device at some point in the future.
+Using flash devices
+-------------------
 
-/
-     Leif
+By default, the first flash device (pflash0) is expected to contain
+S-mode firmware code. It can be configured as read-only, with the
+second flash device (pflash1) available to store configuration data.
 
+For example, booting edk2 looks like
+
+..code-block:: bash
+
+  $ qemu-system-riscv64 \
+     -blockdev node-name=pflash0,driver=file,read-only=on,filename=<edk2_code> \
+     -blockdev node-name=pflash1,driver=file,filename=<edk2_vars> \
+     -M virt,pflash0=pflash0,pflash1=pflash1 \
+     ... other args ....
+
+For TCG guests only, it is also possible to boot M-mode firmware from
+the first flash device (pflash0) by additionally passing ``-bios
+none``, as in
+
+..code-block:: bash
+
+  $ qemu-system-riscv64 \
+     -bios none \
+     -blockdev node-name=pflash0,driver=file,read-only=on,filename=<m_mode_code>
+\
+     -M virt,pflash0=pflash0 \
+     ... other args ....
+
+Firmware images used for pflash must be exactly 32 MiB in size.
+
+-- 
+Andrea Bolognani / Red Hat / Virtualization
 
 
