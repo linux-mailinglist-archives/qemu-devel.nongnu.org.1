@@ -2,51 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98F9718850
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 824B0718853
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 19:20:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4PTM-0007g1-4v; Wed, 31 May 2023 13:18:56 -0400
+	id 1q4PUd-0000BE-8a; Wed, 31 May 2023 13:20:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q4PTJ-0007ez-7a; Wed, 31 May 2023 13:18:53 -0400
-Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1q4PTG-0006we-LO; Wed, 31 May 2023 13:18:52 -0400
-Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id B892A260B95;
- Wed, 31 May 2023 19:18:46 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at juszkiewicz.com.pl
-Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
- by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id wpi0D7Bo9RB0; Wed, 31 May 2023 19:18:44 +0200 (CEST)
-Received: from applejack.lan (83.21.93.182.ipv4.supernova.orange.pl
- [83.21.93.182])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 949E7260078;
- Wed, 31 May 2023 19:18:43 +0200 (CEST)
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH 1/1] docs: sbsa: document board to firmware interface
-Date: Wed, 31 May 2023 19:18:34 +0200
-Message-Id: <20230531171834.236569-1-marcin.juszkiewicz@linaro.org>
-X-Mailer: git-send-email 2.40.1
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1q4PUX-0000AG-N7
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 13:20:09 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1q4PUV-00076z-JC
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 13:20:09 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-52867360efcso3762034a12.2
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 10:20:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1685553606; x=1688145606;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=9nGxzvslDYlf3UwjVBdG6FxLyJ/GlfSeA3aKKGtaJXI=;
+ b=nEzrNiu63k1zfOgZ3tGd2SFXb5d+QLM0ImCKoCb2jaXC2B/0LM3dCyWqbnDsXjK39E
+ SjyYefZ8mwtK4xPx/OA4+Ypu+IlMI6VqykYtOahHvYGbkdN6ZO2TSFasQv/dOGYtYzKq
+ dmxBoG+NkXXqsBhn5ihilbN1uaWckX0WISUD+Fv3/OeENFYwup8WCXoQ0/AkcvlT+o3l
+ rJEWOXG6FV6hSBlWuAOoGsgC1f6xgVU2deVYmbd7i/8eUQq05rQYmyjkMZt3u6Q4qq2K
+ Oj3pCiO2gR3bMme7T5Rolsy/cXnpM1UYTqtLzFC0Ee2TInfyCPjxe/M6jb9dUGX5eo+7
+ 58xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685553606; x=1688145606;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9nGxzvslDYlf3UwjVBdG6FxLyJ/GlfSeA3aKKGtaJXI=;
+ b=JAhGTXIK1cImQFBdZCeuyK9B0MUukHGwYSFggibenjopl8lY8cz3RX/CXWMZ3K886E
+ 1V8sPGR8FD60Fhg2dbeGajOcQwnVD20Cj8ZxR6fwW+kxPa5iwEPiHve2FICpnU3r1KZB
+ QDwG89waU4OAgDHR1uYMcoPhXrJ842F5ddwZtAmviORDnbaG43yUNhsfV8HLvzMJoHpJ
+ Y9mW2P1SD4qntFG/6TSmX+6sUGA4xAVoOl4obHwvwDBPkXpJUHr5EL9RPhl2DoKJlH4Q
+ L4MkyXWoicEwSvUTqATJGcwdUuzu8r1Mgdud7R0RuMIcvkIMPqlD47VYDZnZT1K8fHWm
+ 8hZg==
+X-Gm-Message-State: AC+VfDyFDtQTNiZtncTxOTovLJuVLqBca9HgeFDZWy7K2rmNH4Xz3n16
+ pdpRfPfDcG/cJEnWn6UXi27JMw==
+X-Google-Smtp-Source: ACHHUZ7GkOwJWtWF4pZoH4FUPvA7Wsb9piQa8loEQKJjvHXyb7/J7Tw5tBgOvX9YMNSrqGiYQvThoQ==
+X-Received: by 2002:a17:902:e74e:b0:1b0:3f89:9843 with SMTP id
+ p14-20020a170902e74e00b001b03f899843mr5731178plf.18.1685553606185; 
+ Wed, 31 May 2023 10:20:06 -0700 (PDT)
+Received: from sunil-laptop ([106.51.186.3]) by smtp.gmail.com with ESMTPSA id
+ s1-20020a170902988100b001b04949e0acsm1637231plp.232.2023.05.31.10.20.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 10:20:05 -0700 (PDT)
+Date: Wed, 31 May 2023 22:49:58 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Andrea Bolognani <abologna@redhat.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v6 3/3] docs/system: riscv: Add pflash usage details
+Message-ID: <ZHeBvhsLQ93bw+t3@sunil-laptop>
+References: <20230531142300.9114-1-sunilvl@ventanamicro.com>
+ <20230531142300.9114-4-sunilvl@ventanamicro.com>
+ <CABJz62PgmMQp6qcOnME-=G2h84GtW2w0M4OaLpW=Xn6+g1BxjA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: softfail client-ip=213.251.184.221;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
-X-Spam_score_int: -11
-X-Spam_score: -1.2
-X-Spam_bar: -
-X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_SOFTFAIL=0.665, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_QUOTING=0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABJz62PgmMQp6qcOnME-=G2h84GtW2w0M4OaLpW=Xn6+g1BxjA@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pg1-x532.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,65 +97,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We plan to add more hardware information into DeviceTree to limit amount
-of hardcoded values in firmware.
+On Wed, May 31, 2023 at 09:43:39AM -0700, Andrea Bolognani wrote:
+> On Wed, May 31, 2023 at 07:53:00PM +0530, Sunil V L wrote:
+> > +Using flash devices
+> > +-------------------
+> > +
+> > +When KVM is not enabled, the first flash device (pflash0) can contain either
+> > +the ROM code or S-mode payload firmware code. If the pflash0 contains the
+> > +ROM code, -bios should be set to none. If -bios is not set to
+> > +none, pflash0 is assumed to contain S-mode payload code.
+> > +
+> > +When KVM is enabled, pflash0 is always assumed to contain the S-mode payload
+> > +firmware.
+> > +
+> > +Firmware images used for pflash should be of size 32 MiB.
+> > +
+> > +To boot as ROM code:
+> > +
+> > +.. code-block:: bash
+> > +
+> > +  $ qemu-system-riscv64 -bios none \
+> > +     -blockdev node-name=pflash0,driver=file,read-only=on,filename=<rom_code> \
+> > +     -M virt,pflash0=pflash0 \
+> > +     ... other args ....
+> > +
+> > +To boot as read-only S-mode payload:
+> > +
+> > +.. code-block:: bash
+> > +
+> > +  $ qemu-system-riscv64 \
+> > +     -blockdev node-name=pflash0,driver=file,read-only=on,filename=<s-mode_fw_code> \
+> > +     -blockdev node-name=pflash1,driver=file,filename=<s-mode_fw_vars> \
+> > +     -M virt,pflash0=pflash0,pflash1=pflash1 \
+> > +     ... other args ....
+> > +
+> > +To boot as read-only S-mode payload in KVM guest:
+> > +
+> > +.. code-block:: bash
+> > +
+> > +  $ qemu-system-riscv64 \
+> > +     -blockdev node-name=pflash0,driver=file,read-only=on,filename=<s-mode_fw_code> \
+> > +     -blockdev node-name=pflash1,driver=file,filename=<s-mode_fw_vars> \
+> > +     -M virt,pflash0=pflash0,pflash1=pflash1 \
+> > +     --enable-kvm \
+> > +     ... other args ....
+> 
+> I feel that this, while accurate, has gotten more complicated than it
+> needs to be. We're also putting the least common scenario front and
+> center instead of opening with the one that most people are going to
+> be using.
+> 
+> Below is how I suggest reworking it. What do you think?
+> 
+> 
+> 
+> Using flash devices
+> -------------------
+> 
+> By default, the first flash device (pflash0) is expected to contain
+> S-mode firmware code. It can be configured as read-only, with the
+> second flash device (pflash1) available to store configuration data.
+> 
+> For example, booting edk2 looks like
+> 
+> ..code-block:: bash
+> 
+>   $ qemu-system-riscv64 \
+>      -blockdev node-name=pflash0,driver=file,read-only=on,filename=<edk2_code> \
+>      -blockdev node-name=pflash1,driver=file,filename=<edk2_vars> \
+>      -M virt,pflash0=pflash0,pflash1=pflash1 \
+>      ... other args ....
+> 
+> For TCG guests only, it is also possible to boot M-mode firmware from
+> the first flash device (pflash0) by additionally passing ``-bios
+> none``, as in
+> 
+> ..code-block:: bash
+> 
+>   $ qemu-system-riscv64 \
+>      -bios none \
+>      -blockdev node-name=pflash0,driver=file,read-only=on,filename=<m_mode_code>
+> \
+>      -M virt,pflash0=pflash0 \
+>      ... other args ....
+> 
+> Firmware images used for pflash must be exactly 32 MiB in size.
+> 
+Hi Andrea,
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
----
- docs/system/arm/sbsa.rst | 28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+This looks great! Thank you very much. Unless I see an objection, I will
+use this text in the next revision of the series tomorrow.
 
-diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
-index 016776aed8..c5b3342b52 100644
---- a/docs/system/arm/sbsa.rst
-+++ b/docs/system/arm/sbsa.rst
-@@ -6,12 +6,7 @@ any real hardware the ``sbsa-ref`` board intends to look like real
- hardware. The `Server Base System Architecture
- <https://developer.arm.com/documentation/den0029/latest>`_ defines a
- minimum base line of hardware support and importantly how the firmware
--reports that to any operating system. It is a static system that
--reports a very minimal DT to the firmware for non-discoverable
--information about components affected by the qemu command line (i.e.
--cpus and memory). As a result it must have a firmware specifically
--built to expect a certain hardware layout (as you would in a real
--machine).
-+reports that to any operating system.
- 
- It is intended to be a machine for developing firmware and testing
- standards compliance with operating systems.
-@@ -19,7 +14,7 @@ standards compliance with operating systems.
- Supported devices
- """""""""""""""""
- 
--The sbsa-ref board supports:
-+The ``sbsa-ref`` board supports:
- 
-   - A configurable number of AArch64 CPUs
-   - GIC version 3
-@@ -30,3 +25,22 @@ The sbsa-ref board supports:
-   - Bochs display adapter on PCIe bus
-   - A generic SBSA watchdog device
- 
-+
-+Board to firmware interface
-+"""""""""""""""""""""""""""
-+``sbsa-ref`` is a static system that reports a very minimal DeviceTree to the
-+firmware for non-discoverable information about system components. This
-+includes both internal hardware and parts affected by the qemu command line
-+(i.e. cpus and memory). As a result it must have a firmware specifically built
-+to expect a certain hardware layout (as you would in a real machine).
-+
-+DeviceTree information
-+'''''''''''''''''''''''
-+
-+Provided DeviceTree is not intended to be a complete compliant DT. Only
-+minimal subset is provided:
-+
-+   - cpus
-+   - memory
-+   - platform version
-+   - GIC addresses
--- 
-2.40.1
-
+Thanks!
+Sunil
 
