@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BC17185DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4667185E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 17:16:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4NXE-00034F-A3; Wed, 31 May 2023 11:14:48 -0400
+	id 1q4NXx-0003bY-6M; Wed, 31 May 2023 11:15:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4NX4-00033w-GX
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:14:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1q4NXu-0003XM-Vx
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:15:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1q4NX0-0005RI-Qn
- for qemu-devel@nongnu.org; Wed, 31 May 2023 11:14:38 -0400
+ id 1q4NXn-0005jl-Da
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 11:15:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1685546071;
+ s=mimecast20190719; t=1685546120;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ycwGwFbU1kWvmw+Qxhqwg5aykPbGPHLOts9+1nXtdpk=;
- b=U7jAMdJeZKylK300G1UPZL8TSnqNmYgDuRygBxJJw1z0ByWkmGC8NkbGlCWecj3Ru2dAlg
- J6xBqgW1q7ULcrdi6T7ANRl8edIdk33RsDdu/6l2JW2yu54SX5WDhT7+YeQy0/h+tKlTqQ
- qy1dmymRqIuMZ0xSxyxAtEj8OTIc5Pk=
+ bh=tbDCvAfWAYoh0rijZy4oMK2pumfb+M1jhsFxn4X7m7I=;
+ b=hFykydxqttcrt7z+AxPDRcQjERhy8zbv0EFoc/a5LQBX7szQyu7kHZRAp5wmY0Pge8s+xe
+ JF7bRbN2+QOjEjEh4TD0X2mfUB0vYPZP++hLsJbGEoE04aWIxUNwdrBKWLw3/0j+q0VLYe
+ 5L4/0bchjJGTMeBG6NfGPm5AjcsY9l8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-38-_mmAbzqyN-eAnvTdpC9h7A-1; Wed, 31 May 2023 11:14:27 -0400
-X-MC-Unique: _mmAbzqyN-eAnvTdpC9h7A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-267-_fd4Aw99MZmQ598c1PXZfw-1; Wed, 31 May 2023 11:15:04 -0400
+X-MC-Unique: _fd4Aw99MZmQ598c1PXZfw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 75A4585A5BE;
- Wed, 31 May 2023 15:14:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D7AA6801182;
+ Wed, 31 May 2023 15:14:44 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.177])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 56AA040C6EC4;
- Wed, 31 May 2023 15:14:26 +0000 (UTC)
-Date: Wed, 31 May 2023 16:14:24 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 052E8C154D7;
+ Wed, 31 May 2023 15:14:43 +0000 (UTC)
+Date: Wed, 31 May 2023 16:14:41 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Camilla Conte <cconte@redhat.com>
 Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org
-Subject: Re: [PATCH 2/5] gitlab-ci: Reference rules instead of extends
-Message-ID: <ZHdkUOkn/LIrB04R@redhat.com>
+Subject: Re: [PATCH 4/5] gitlab-ci: Use container template for opensbi
+Message-ID: <ZHdkYVcdsfLWgd1X@redhat.com>
 References: <20230531150824.32349-1-cconte@redhat.com>
- <20230531150824.32349-3-cconte@redhat.com>
+ <20230531150824.32349-5-cconte@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230531150824.32349-3-cconte@redhat.com>
+In-Reply-To: <20230531150824.32349-5-cconte@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -83,16 +83,26 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 04:08:21PM +0100, Camilla Conte wrote:
-> This allows for the jobs to extend different templates while
-> having a shared template for rules.
+On Wed, May 31, 2023 at 04:08:23PM +0100, Camilla Conte wrote:
+> Use the same template for all the jobs in the "container" stage.
 > 
-> Docs:
-> https://docs.gitlab.com/ee/ci/jobs/job_control.html#reuse-rules-in-different-jobs
+> Changes the URL of the "opensbi-cross-build" images by
+> using the same URL pattern as the other images.
+> 
+> Removes pushing the image to the additional CI_COMMIT_SHA tag.
+> It seems unnecessary.
+> 
+> Example of the old URLs:
+> - registry.gitlab.com/qemu-project/qemu:00a0bdc...
+> - registry.gitlab.com/qemu-project/qemu:opensbi-cross-build
+> 
+> Example of the new URL:
+> - registry.gitlab.com/qemu-project/qemu/qemu/opensbi-cross-build
+> 
 > Signed-off-by: Camilla Conte <cconte@redhat.com>
 > ---
->  .gitlab-ci.d/opensbi.yml | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  .gitlab-ci.d/opensbi.yml | 23 ++++++++---------------
+>  1 file changed, 8 insertions(+), 15 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
