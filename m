@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B1D718BA4
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 23:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D96718B9E
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 23:12:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4T5y-0006Ut-AG; Wed, 31 May 2023 17:11:02 -0400
+	id 1q4T5z-0006VY-0e; Wed, 31 May 2023 17:11:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q4T5v-0006T2-W5; Wed, 31 May 2023 17:11:00 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ id 1q4T5x-0006U3-14; Wed, 31 May 2023 17:11:01 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1q4T5u-0001EY-5T; Wed, 31 May 2023 17:10:59 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2af20198f20so1864211fa.0; 
+ id 1q4T5u-0001Eg-IT; Wed, 31 May 2023 17:11:00 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-96f99222e80so43480566b.1; 
  Wed, 31 May 2023 14:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1685567455; x=1688159455;
+ d=gmail.com; s=20221208; t=1685567456; x=1688159456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+NXyLFwm2rmn2QeCZVS6ECm/FY96EsHB3qjSmeztqjk=;
- b=iRvq7Y/B4CX+K24nKnKjBHcR0TeA/irqcEzJs7GKl3OO0A1+R57QGq/fZQI4r5HVN6
- hmc3L9q4EM5D3lJ5IUzcxTrCnXTI/jxCL6GsuCuEZ9qRrojjuWcXOTj62HpcR83wDOov
- 1zUZfRBNm4UIIboXczCfwC6cmhy24UWCGD87OawIewyeIqLWql4h6KUkHZTPU2zjjcvV
- 72DVMPWGUEjCLFiQt/QVfNzzXGIcNCwSlAxj9YJYCssAB0p/4Sljmvr32o/LHBiREHvg
- 9ZSnmbvTwidZHUaZFT3u9DttF+7vlSaNSX6lrQ+UN0vRQv1MDb3J+fjc6Pb4xFFpvWPn
- 6QXg==
+ bh=gAoL9Xwljn85Sw7ICNUech4c35BoMKkS8qS/rd79d7s=;
+ b=qLBiPq4yTp5j4RT1+Azdo6XTkYo/DMQ3Jl5OL4RsjgvFmMU28DR7HDHCevpXphifhr
+ ejX6DEkTpr3AWF6BJjdLFM9RemeYprI74IPARU0pzl4ckW6dSu+Uz4yhVg8xNNue3wE5
+ c1ur09Ia/by1mbfJ2CCcp47v+aWMrtRYFtktkH+Q9pyi9zfFhtwgAarmKHKA4vRhuflb
+ QcOS76XpZEtMRSjoBSON50zkA4cJ+tcPYntkLQEV4uMruOUlCNtcmbf2FPYQcOG7WyX+
+ nYwnP3Yzlq/Te9cJuLIBLD22GBvsVDeHIiQJDiV94+iri1tZNofLlHeQnKWkG8679esB
+ +J0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685567455; x=1688159455;
+ d=1e100.net; s=20221208; t=1685567456; x=1688159456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+NXyLFwm2rmn2QeCZVS6ECm/FY96EsHB3qjSmeztqjk=;
- b=Zak48c+WfuOZLxA9QoXXTiUt6TISKaENA3Q8m1rKMV971m0K+6GJibHtjZRchg244h
- 6h6kUzJSDswtWe0JrCjV7EyL7BJjFRKDnoL4SEznUdWGRpS/bEn/LCZoh1XFfLK6CJY8
- LZVscpxRObJyEHC6LKLs2I5xd0DmmTMjRd8H5waLhabmAJMGzHSrm8l8/nkAdrFUoVFv
- U1+Cnh6nhpQLWDRf3EoOMISoZkc4PT8QYVL+SmSQwD9popZblxSrilmjhMkbDlW9lHJL
- yxjgqJOU0d8cTF8LEiUZMT81mpCQnwlnVuDCPyoSrxImCQpux32XsqzgxQHRDavd4F2/
- HtBQ==
-X-Gm-Message-State: AC+VfDzbCsXEYuN9h1wIDtmIGUuj3XKcuVeoHo9TieqfdVYHCbsqXM8y
- G+YP+nybcCWZ4Phnckh+JDeUhBC13FU=
-X-Google-Smtp-Source: ACHHUZ7fj6Pxb3N7FrxTaWD02WJL7tO3MDHrlh5gl92yPOQa+wEdro+Oec5n260KXvdqGH3fjtRSPQ==
-X-Received: by 2002:a2e:83d5:0:b0:2a8:bf74:61cc with SMTP id
- s21-20020a2e83d5000000b002a8bf7461ccmr3109063ljh.26.1685567455053; 
- Wed, 31 May 2023 14:10:55 -0700 (PDT)
+ bh=gAoL9Xwljn85Sw7ICNUech4c35BoMKkS8qS/rd79d7s=;
+ b=PmkXKpAguXTtm4rYv9wXHribWhp/9rl8iQS3fZqIC0+XYAWYB+Z4ODVVvPqgwFrKYO
+ XHMfnfnoKetezp9eBJfBkLS3103u0oMoJ3IuC/gVTjIturn/oQL9zmrFtKSkw+VfAIgm
+ ek7dVxhZ1DCchUBhdCNi56bh9MJcxcfdHo4I7TEJQJ9N5BQvGbsWcHoR5zP9EYk9+PQQ
+ pu9/GH5fR7PWjf7BteLo/vJoKSTiNSP1eXD+oZoOXhtkgi6TFAtVolCekaQ2MkmfsEa1
+ tstqz8ZKwW/KhpCo/sc1lrpjQZQKwCZOM2OOIMh2wAWKOmd7i55TGsd/3kgrrZC8Q1S7
+ HsOQ==
+X-Gm-Message-State: AC+VfDwJgkK6heeRnM0ZzrTuriQXo9G/iOzaz4q/fVtQ+dTuxgRSg1/j
+ x/8apMLa8Gw9Zi5laGb8PYh+PVUVn0w=
+X-Google-Smtp-Source: ACHHUZ6HrPL2CpTUyb9PXhkve7HhN2mByx4q7BoaZxBgEQzmip9JP+YK8yBxDbB4GAaaF6qkn5UuUA==
+X-Received: by 2002:a17:907:980c:b0:966:5fac:2e52 with SMTP id
+ ji12-20020a170907980c00b009665fac2e52mr12848785ejc.9.1685567456110; 
+ Wed, 31 May 2023 14:10:56 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-078-054-159-078.78.54.pool.telefonica.de. [78.54.159.78])
  by smtp.gmail.com with ESMTPSA id
- b8-20020a1709064d4800b00965f31ff894sm9463054ejv.137.2023.05.31.14.10.53
+ b8-20020a1709064d4800b00965f31ff894sm9463054ejv.137.2023.05.31.14.10.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 May 2023 14:10:54 -0700 (PDT)
+ Wed, 31 May 2023 14:10:55 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
@@ -63,17 +63,16 @@ Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Huacai Chen <chenhuacai@kernel.org>, BALATON Zoltan <balaton@eik.bme.hu>,
  Bernhard Beschow <shentey@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH v3 2/7] hw/ide/via: Wire up IDE legacy interrupts in host
- device
-Date: Wed, 31 May 2023 23:10:38 +0200
-Message-Id: <20230531211043.41724-3-shentey@gmail.com>
+Subject: [PATCH v3 3/7] hw/isa/vt82c686: Remove via_isa_set_irq()
+Date: Wed, 31 May 2023 23:10:39 +0200
+Message-Id: <20230531211043.41724-4-shentey@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230531211043.41724-1-shentey@gmail.com>
 References: <20230531211043.41724-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=shentey@gmail.com; helo=mail-lj1-x22b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,69 +95,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resolves circular depencency between IDE function and south bridge.
+Now that via_isa_set_irq() is unused it can be removed.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/ide/via.c      | 6 ++++--
- hw/isa/vt82c686.c | 5 +++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ include/hw/isa/vt82c686.h | 2 --
+ hw/isa/vt82c686.c         | 6 ------
+ 2 files changed, 8 deletions(-)
 
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 177baea9a7..0caae52276 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -31,6 +31,7 @@
- #include "sysemu/dma.h"
- #include "hw/isa/vt82c686.h"
- #include "hw/ide/pci.h"
-+#include "hw/irq.h"
- #include "trace.h"
+diff --git a/include/hw/isa/vt82c686.h b/include/hw/isa/vt82c686.h
+index da1722daf2..b6e95b2851 100644
+--- a/include/hw/isa/vt82c686.h
++++ b/include/hw/isa/vt82c686.h
+@@ -34,6 +34,4 @@ struct ViaAC97State {
+     uint32_t ac97_cmd;
+ };
  
- static uint64_t bmdma_read(void *opaque, hwaddr addr,
-@@ -104,7 +105,8 @@ static void bmdma_setup_bar(PCIIDEState *d)
- 
- static void via_ide_set_irq(void *opaque, int n, int level)
- {
--    PCIDevice *d = PCI_DEVICE(opaque);
-+    PCIIDEState *s = opaque;
-+    PCIDevice *d = PCI_DEVICE(s);
- 
-     if (level) {
-         d->config[0x70 + n * 8] |= 0x80;
-@@ -112,7 +114,7 @@ static void via_ide_set_irq(void *opaque, int n, int level)
-         d->config[0x70 + n * 8] &= ~0x80;
-     }
- 
--    via_isa_set_irq(pci_get_function_0(d), 14 + n, level);
-+    qemu_set_irq(s->isa_irq[n], level);
- }
- 
- static void via_ide_reset(DeviceState *dev)
+-void via_isa_set_irq(PCIDevice *d, int n, int level);
+-
+ #endif
 diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index ca89119ce0..8016c71315 100644
+index 8016c71315..57bdfb4e78 100644
 --- a/hw/isa/vt82c686.c
 +++ b/hw/isa/vt82c686.c
-@@ -692,6 +692,10 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
-     if (!qdev_realize(DEVICE(&s->ide), BUS(pci_bus), errp)) {
-         return;
-     }
-+    for (i = 0; i < 2; i++) {
-+        qdev_connect_gpio_out_named(DEVICE(&s->ide), "isa-irq", i,
-+                                    s->isa_irqs_in[14 + i]);
-+    }
+@@ -592,12 +592,6 @@ static const TypeInfo via_isa_info = {
+     },
+ };
  
-     /* Functions 2-3: USB Ports */
-     for (i = 0; i < ARRAY_SIZE(s->uhci); i++) {
-@@ -814,6 +818,7 @@ static void vt8231_isa_reset(DeviceState *dev)
-                  PCI_COMMAND_MASTER | PCI_COMMAND_SPECIAL);
-     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_DEVSEL_MEDIUM);
- 
-+    pci_conf[0x4c] = 0x04; /* IDE interrupt Routing */
-     pci_conf[0x58] = 0x40; /* Miscellaneous Control 0 */
-     pci_conf[0x67] = 0x08; /* Fast IR Config */
-     pci_conf[0x6b] = 0x01; /* Fast IR I/O Base */
+-void via_isa_set_irq(PCIDevice *d, int n, int level)
+-{
+-    ViaISAState *s = VIA_ISA(d);
+-    qemu_set_irq(s->isa_irqs_in[n], level);
+-}
+-
+ static void via_isa_request_i8259_irq(void *opaque, int irq, int level)
+ {
+     ViaISAState *s = opaque;
 -- 
 2.40.1
 
