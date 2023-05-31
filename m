@@ -2,52 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252B6718B2B
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B58718B34
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:31:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4SRq-0007gq-HP; Wed, 31 May 2023 16:29:34 -0400
+	id 1q4ST1-0000Fr-00; Wed, 31 May 2023 16:30:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4SRm-0007en-BC
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:29:30 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4SSw-0000Do-2a
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:30:44 -0400
 Received: from mout.kundenserver.de ([217.72.192.74])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4SRi-0001ow-6M
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:29:29 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4SSt-00026b-Vo
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:30:41 -0400
 Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue107 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MJEpp-1poIF51spX-00KkTg; Wed, 31 May 2023 22:29:24 +0200
-Message-ID: <366e497e-fc99-07b9-7095-c2428bc6c8e6@vivier.eu>
-Date: Wed, 31 May 2023 22:29:23 +0200
+ (mreue108 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1MiJdI-1qXTpL1UwQ-00fU6M; Wed, 31 May 2023 22:30:37 +0200
+Message-ID: <918c98c4-9a2a-54ee-bcaf-501b51881d36@vivier.eu>
+Date: Wed, 31 May 2023 22:30:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH v2 12/23] q800: move VIA2 device to Q800MachineState
+Subject: Re: [PATCH v2 13/23] hw/net/dp8393x.c: move TYPE_DP8393X and
+ dp8393xState into dp8393x.h
 Content-Language: fr
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>
 References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
- <20230531125400.288917-13-mark.cave-ayland@ilande.co.uk>
+ <20230531125400.288917-14-mark.cave-ayland@ilande.co.uk>
 From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230531125400.288917-13-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230531125400.288917-14-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:5itiprl43VrI+KlWmDauFfRLFsdgnAI7O1psCvb0tSAyqxMaq+1
- hP4CZ5tO2bPuiLgvUCNhyvVrfToVlhb+dEUdz1zI1gqDbVubGk5Vb54Qh0md+dGXjPLnKDb
- x2swCN05m7phYmgYpBLaPT02JAYHOQnNF61yLze9nOhT86QoS8TgsHTa92tMzJkuV2/ZOq6
- SdkuIsbWGP3GhcoFAJ/Hw==
-UI-OutboundReport: notjunk:1;M01:P0:jgZN9wOgVSs=;3wlG9/AlcF6BjZC2icbt6OylOgJ
- x0/Om/pqoYfbEZyEnQzi+Crt6TTaPUj826RAn8goUCI3HCeAjxTmy6b3xDO/nCU1ZCCTMI+sv
- 7+7PENr+wGPNFUtzp0yTIWVUZIkjfdEx6wqKB47Z3Q/cZ8heakCawHk7eaRi9PP885SuMRkCz
- PhXcIHsie9aQdSyuzcuJ5TZqncaeyp4+Ow+ZG19R+ItRiDLN/IwsQfuqa9aGicIdfEL8V49WS
- n6z4S8i35kJSJTOcLQXsmzIlnv7ulZKhiO2GNdTUqVPd05p68PmfSVSLxtmwMmy+WbsWR39sb
- AeRPk8/3ydEx2z/JBtcjeO4JZmUg9etHJsto6lEXMvocXjLbgkZlcI0P21tqRB7B2hDX/9Owc
- 9GpJ9+TDTghBJCaC7cDKlZEeCmdjevpLdJ93g2kJcPT5jB5wsgZvrPQZ/ZCNyz27m025pcc3j
- /LE9ODLLGsy5UjyPY71Z5dnCwmyowx71BP29nnvp1fwsEUVzNr7UnQBUHdZVlzKEy5RP8E1Ju
- KZWqMsaF8pMux24aR/g8t20emme/JG7GKnvEtWw8ivzBgcz6JuJxFu9wNjnRwm27aifTG1L1W
- Ed7jNykFPZkqcHymlYcj12wqBjN3si0CsoB99qGmj+2wypV8Ygq8TUHHVt9xXA3RZDflMhRx8
- ZY9kOoHvPfwA+a7znBRrmolMn4jkUcvYPKR58uq4dQ==
+X-Provags-ID: V03:K1:+HYSUASibkPRzap2nWmKYp2/uF6mhGUSHz8YQU0u52it8zsXwss
+ nrJ2X0nLzwnfNrntV8f4LrxaZAMWVEcji1JLRROfdWj1cPAWK2Fv/7cUR01knZYJH5E8x7x
+ GvW6OKZlWvEYt1pg3pqC8+kOlF77tYjhAgVF03QhHTJTWEHFTOoSMVsg7thSOVc5bjno9Vv
+ zcGr8yyGN18IrW/wIIS7w==
+UI-OutboundReport: notjunk:1;M01:P0:38PUvpau064=;wL0XIzIdUWVYs1Z0RJGPGqzi0fL
+ bYIfsZLMrks2K/ISnwy0meF7nu2adzAFuuT+XzZ+QaT3NsexOW5XSjL2xmuiPFb9hK+41AEFk
+ e3E+m2yFGx1Ey9ll11ldYwvO8Ss15Pyx473h33MJyrwTSKZxdSSFEZSuCT1WjEoaasxSN9Xb6
+ hLv81sLCmEMCiNVEiEBZUhabxj+NlvNGJoJpDX7LCv8ryX9ggyekakyBDY6youLBkKkvJROy7
+ Pva3cI1Yht/eZnC/PTkkDdD/RxSEe+wpoUXyzcpY1uxLhp3pvqCwYhQxvpVKEjAC2vFoXBqKo
+ 5uz9cRZoi8YSL8sHsuHK0A4zUXc5wP8JkXgda1viiChgmpaknUb4wQOg/s6D+6VjNvevRY1J4
+ E4KS+K8lRa8QujnaP2ztkw1KNcrVQ0+B9z+1lJ5xXAgYkL6TDT4jrGYnAWpokW7HQCTYuHI0p
+ xZ/0ilJx0CSTGG1/1UC68LnzouiEzxqxdE2LRRdx2lbAQPKD2FGiZYHIliJqxHopzJvl7xp39
+ 7jjUGvjISRdwiv5XcgdTJnZ7Gwr5A4+hDRVgybEsbqYhAEQ7/HnGwglTcRyDL7ZHABY+sC64I
+ i4GCKQCwexMfGW3kEvFxB031EUrLlu1E3B4KXY80P7Q+VPSR1wQ7lwJVCFHhNzbkE8CMr6Goe
+ TFHdEpMh/I2AZKTu6xTQ2PBX18lhPsp2aCT/tIZyog==
 Received-SPF: none client-ip=217.72.192.74; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -19
@@ -73,95 +75,139 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Le 31/05/2023 à 14:53, Mark Cave-Ayland a écrit :
-> Also change the instantiation of the VIA2 device to use object_initialize_child().
+> This is to enable them to be used outside of dp8393x.c.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> CC: Jason Wang <jasowang@redhat.com>
 > ---
->   hw/m68k/q800.c         | 27 ++++++++++++++++-----------
->   include/hw/m68k/q800.h |  1 +
->   2 files changed, 17 insertions(+), 11 deletions(-)
+>   hw/net/dp8393x.c         | 32 +--------------------
+>   include/hw/net/dp8393x.h | 60 ++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 61 insertions(+), 31 deletions(-)
+>   create mode 100644 include/hw/net/dp8393x.h
 > 
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index 65947ba580..53d6308a7a 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -212,7 +212,6 @@ static void q800_machine_init(MachineState *machine)
->       hwaddr parameters_base;
->       CPUState *cs;
->       DeviceState *dev;
-> -    DeviceState *via2_dev;
->       DeviceState *escc_orgate;
->       SysBusESPState *sysbus_esp;
->       ESPState *esp;
-> @@ -286,9 +285,10 @@ static void q800_machine_init(MachineState *machine)
->       qdev_realize_and_unref(dev, adb_bus, &error_fatal);
+> diff --git a/hw/net/dp8393x.c b/hw/net/dp8393x.c
+> index 45b954e46c..a596f7fbc6 100644
+> --- a/hw/net/dp8393x.c
+> +++ b/hw/net/dp8393x.c
+> @@ -20,6 +20,7 @@
+>   #include "qemu/osdep.h"
+>   #include "hw/irq.h"
+>   #include "hw/qdev-properties.h"
+> +#include "hw/net/dp8393x.h"
+>   #include "hw/sysbus.h"
+>   #include "migration/vmstate.h"
+>   #include "net/net.h"
+> @@ -85,7 +86,6 @@ static const char *reg_names[] = {
+>   #define SONIC_MPT    0x2e
+>   #define SONIC_MDT    0x2f
+>   #define SONIC_DCR2   0x3f
+> -#define SONIC_REG_COUNT  0x40
 >   
->       /* VIA 2 */
-> -    via2_dev = qdev_new(TYPE_MOS6522_Q800_VIA2);
-> -    sysbus = SYS_BUS_DEVICE(via2_dev);
-> -    sysbus_realize_and_unref(sysbus, &error_fatal);
-> +    object_initialize_child(OBJECT(machine), "via2", &m->via2,
-> +                            TYPE_MOS6522_Q800_VIA2);
-> +    sysbus = SYS_BUS_DEVICE(&m->via2);
-> +    sysbus_realize(sysbus, &error_fatal);
->       memory_region_add_subregion(&m->macio, VIA_BASE - IO_BASE + VIA_SIZE,
->                                   sysbus_mmio_get_region(sysbus, 1));
->       sysbus_connect_irq(sysbus, 0,
-> @@ -383,10 +383,14 @@ static void q800_machine_init(MachineState *machine)
->       sysbus = SYS_BUS_DEVICE(dev);
->       sysbus_realize_and_unref(sysbus, &error_fatal);
->       /* SCSI and SCSI data IRQs are negative edge triggered */
-> -    sysbus_connect_irq(sysbus, 0, qemu_irq_invert(qdev_get_gpio_in(via2_dev,
-> -                                                  VIA2_IRQ_SCSI_BIT)));
-> -    sysbus_connect_irq(sysbus, 1, qemu_irq_invert(qdev_get_gpio_in(via2_dev,
-> -                                                  VIA2_IRQ_SCSI_DATA_BIT)));
-> +    sysbus_connect_irq(sysbus, 0,
-> +                       qemu_irq_invert(
-> +                           qdev_get_gpio_in(DEVICE(&m->via2),
-> +                                                   VIA2_IRQ_SCSI_BIT)));
-> +    sysbus_connect_irq(sysbus, 1,
-> +                       qemu_irq_invert(
-> +                           qdev_get_gpio_in(DEVICE(&m->via2),
-> +                                                   VIA2_IRQ_SCSI_DATA_BIT)));
->       memory_region_add_subregion(&m->macio, ESP_BASE - IO_BASE,
->                                   sysbus_mmio_get_region(sysbus, 0));
->       memory_region_add_subregion(&m->macio, ESP_PDMA - IO_BASE,
-> @@ -412,11 +416,12 @@ static void q800_machine_init(MachineState *machine)
->       sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, NUBUS_SLOT_BASE +
->                       MAC_NUBUS_FIRST_SLOT * NUBUS_SLOT_SIZE);
->       qdev_connect_gpio_out(dev, 9,
-> -                          qdev_get_gpio_in_named(via2_dev, "nubus-irq",
-> +                          qdev_get_gpio_in_named(DEVICE(&m->via2), "nubus-irq",
->                             VIA2_NUBUS_IRQ_INTVIDEO));
->       for (i = 1; i < VIA2_NUBUS_IRQ_NB; i++) {
->           qdev_connect_gpio_out(dev, 9 + i,
-> -                              qdev_get_gpio_in_named(via2_dev, "nubus-irq",
-> +                              qdev_get_gpio_in_named(DEVICE(&m->via2),
-> +                                                     "nubus-irq",
->                                                        VIA2_NUBUS_IRQ_9 + i));
->       }
+>   #define SONIC_CR_HTX     0x0001
+>   #define SONIC_CR_TXP     0x0002
+> @@ -139,36 +139,6 @@ static const char *reg_names[] = {
+>   #define SONIC_DESC_EOL   0x0001
+>   #define SONIC_DESC_ADDR  0xFFFE
 >   
-> @@ -425,7 +430,7 @@ static void q800_machine_init(MachineState *machine)
->        * IRQ via GLUE for use by SONIC Ethernet in classic mode
->        */
->       qdev_connect_gpio_out(DEVICE(&m->glue), GLUE_IRQ_NUBUS_9,
-> -                          qdev_get_gpio_in_named(via2_dev, "nubus-irq",
-> +                          qdev_get_gpio_in_named(DEVICE(&m->via2), "nubus-irq",
->                                                    VIA2_NUBUS_IRQ_9));
+> -#define TYPE_DP8393X "dp8393x"
+> -OBJECT_DECLARE_SIMPLE_TYPE(dp8393xState, DP8393X)
+> -
+> -struct dp8393xState {
+> -    SysBusDevice parent_obj;
+> -
+> -    /* Hardware */
+> -    uint8_t it_shift;
+> -    bool big_endian;
+> -    bool last_rba_is_full;
+> -    qemu_irq irq;
+> -    int irq_level;
+> -    QEMUTimer *watchdog;
+> -    int64_t wt_last_update;
+> -    NICConf conf;
+> -    NICState *nic;
+> -    MemoryRegion mmio;
+> -
+> -    /* Registers */
+> -    uint16_t cam[16][3];
+> -    uint16_t regs[SONIC_REG_COUNT];
+> -
+> -    /* Temporaries */
+> -    uint8_t tx_buffer[0x10000];
+> -    int loopback_packet;
+> -
+> -    /* Memory access */
+> -    MemoryRegion *dma_mr;
+> -    AddressSpace as;
+> -};
 >   
->       nubus = &NUBUS_BRIDGE(dev)->bus;
-> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-> index a7e03b3d28..ba3aa45513 100644
-> --- a/include/hw/m68k/q800.h
-> +++ b/include/hw/m68k/q800.h
-> @@ -37,6 +37,7 @@ struct Q800MachineState {
->       MemoryRegion rom;
->       GLUEState glue;
->       MOS6522Q800VIA1State via1;
-> +    MOS6522Q800VIA2State via2;
->       MemoryRegion macio;
->       MemoryRegion macio_alias;
->   };
+>   /*
+>    * Accessor functions for values which are formed by
+> diff --git a/include/hw/net/dp8393x.h b/include/hw/net/dp8393x.h
+> new file mode 100644
+> index 0000000000..bb5f0ced5a
+> --- /dev/null
+> +++ b/include/hw/net/dp8393x.h
+> @@ -0,0 +1,60 @@
+> +/*
+> + * QEMU NS SONIC DP8393x netcard
+> + *
+> + * Copyright (c) 2008-2009 Herve Poussineau
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License along
+> + * with this program; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef HW_NET_DP8393X_H
+> +#define HW_NET_DP8393X_H
+> +
+> +#include "qemu/osdep.h"
+> +#include "hw/sysbus.h"
+> +#include "net/net.h"
+> +
+> +#define SONIC_REG_COUNT  0x40
+> +
+> +#define TYPE_DP8393X "dp8393x"
+> +OBJECT_DECLARE_SIMPLE_TYPE(dp8393xState, DP8393X)
+> +
+> +struct dp8393xState {
+> +    SysBusDevice parent_obj;
+> +
+> +    /* Hardware */
+> +    uint8_t it_shift;
+> +    bool big_endian;
+> +    bool last_rba_is_full;
+> +    qemu_irq irq;
+> +    int irq_level;
+> +    QEMUTimer *watchdog;
+> +    int64_t wt_last_update;
+> +    NICConf conf;
+> +    NICState *nic;
+> +    MemoryRegion mmio;
+> +
+> +    /* Registers */
+> +    uint16_t cam[16][3];
+> +    uint16_t regs[SONIC_REG_COUNT];
+> +
+> +    /* Temporaries */
+> +    uint8_t tx_buffer[0x10000];
+> +    int loopback_packet;
+> +
+> +    /* Memory access */
+> +    MemoryRegion *dma_mr;
+> +    AddressSpace as;
+> +};
+> +
+> +#endif
 
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
