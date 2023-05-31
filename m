@@ -2,69 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FE171784B
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 09:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D54E9717858
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 09:34:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4GIo-0000nr-Pb; Wed, 31 May 2023 03:31:26 -0400
+	id 1q4GLi-0002kc-Ci; Wed, 31 May 2023 03:34:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q4GIU-0000kv-PI; Wed, 31 May 2023 03:31:07 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1q4GLA-0002gi-Bm
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 03:33:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1q4GIS-0006TP-Qz; Wed, 31 May 2023 03:31:06 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c0d:3786:0:640:7c97:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 6968361C84;
- Wed, 31 May 2023 10:30:54 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:a512::1:34] (unknown
- [2a02:6b8:b081:a512::1:34])
- by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id rUHkiV5MkSw0-PGBRxraV; Wed, 31 May 2023 10:30:53 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1685518253; bh=NyTc55f9PORSYW6ocAcngia7QARqkd5R8eLA3AXzPq8=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=p4WJLfvt+rE3Etsf/ir/p8uUv4IpQRF/qQOKtwVNcGYbJADYZBD0gRlxOaAWwFxRh
- X9jrbPPfk5eHmbLIG7/CP0h0aL8OjYRgntB/XXtwjMW3DH4oNdUoGpRM+Qb9tbEXZF
- IWOVPibwntIGZ2AgoDQmdJFSpWV2DwTj7YqQsFNo=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <e3f6de00-275d-8286-faae-8a6a35098f86@yandex-team.ru>
-Date: Wed, 31 May 2023 10:30:53 +0300
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1q4GL8-00075D-JV
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 03:33:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685518429;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8jvYQlhKuHyKtL4mNj/znMLADcf3tcavTDhI4smE8dw=;
+ b=XsNxPhP/8MBxxQyXBXzhG681qCuVcjMEiE5HzTG4zJ3zQVnHZfq4wr4G3Y5EpRi/4kHdlO
+ z8iT9E/Dh9LpWsn2YTjU5Fg54tydZBrvg43qGtE/bk7u5xjhdZSEHYgFa3hrPIMNgv+Akh
+ y2byYSKQPMeew0R+A/UJlI9r3ikeq4U=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-450-JAfCi0K0NOyTZtYm2XdOcg-1; Wed, 31 May 2023 03:33:45 -0400
+X-MC-Unique: JAfCi0K0NOyTZtYm2XdOcg-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2af32c170c8so29372121fa.3
+ for <qemu-devel@nongnu.org>; Wed, 31 May 2023 00:33:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1685518424; x=1688110424;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8jvYQlhKuHyKtL4mNj/znMLADcf3tcavTDhI4smE8dw=;
+ b=Shg3Vk9UfpZo5psPmP3UK1uVKHKwId8pvpc9meZ4sVTCcO4Lj2jgvkJYfb4LohmBS0
+ hCcdYS0s8XtUji1A9qqkMIqdglULja+dtOu1j2/U69qW/pfLHwh9J5hLI22f4OZhFLok
+ EtYrkFK1PvnNwuUXa6bixkwH7EGOlUDKtuI38IzTzkXKzHtRVE75lGEs6+T9mV3ex1X/
+ OFES5giWiLA6MFDFsLQ1v18MiOwDgrF5JYlFNaMXhFZoUg1I5O85FKB39NJAJxxhQXCr
+ 9FIpKd0Ispemsg9iz1NNsNJgWz7B5d/i7qcbXdoEKESRyI7JQ9CHFb4drE+CNj709SUq
+ +sow==
+X-Gm-Message-State: AC+VfDxwu5m+ArdQ/ITZi9bExXuU8dfVXQyiVsHv9iV8DUeB/b72agNC
+ Q1HGK4aTdHOzAAkiTlWfR0n+QzmEvSvOKLeDKOTvbE2AWKsM0Tc18YoQGBhVQjsnqD2o3vujdZg
+ gjKHQ8xwohzOSNNM=
+X-Received: by 2002:a2e:9e47:0:b0:2af:a696:3691 with SMTP id
+ g7-20020a2e9e47000000b002afa6963691mr2125454ljk.40.1685518424310; 
+ Wed, 31 May 2023 00:33:44 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ551RIeF9bnzkTrz/lia8+/hteNl9cJtKk1XRyhXQesUA8vv9D1oOPKoklfR2VDrpxdBxuWZw==
+X-Received: by 2002:a2e:9e47:0:b0:2af:a696:3691 with SMTP id
+ g7-20020a2e9e47000000b002afa6963691mr2125438ljk.40.1685518423940; 
+ Wed, 31 May 2023 00:33:43 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-25-16.business.telecomitalia.it.
+ [87.12.25.16]) by smtp.gmail.com with ESMTPSA id
+ i13-20020a17090685cd00b0096f83b16ab1sm8499433ejy.136.2023.05.31.00.33.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 May 2023 00:33:43 -0700 (PDT)
+Date: Wed, 31 May 2023 09:33:41 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ eblake@redhat.com, Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
+ qemu-block@nongnu.org, xen-devel@lists.xenproject.org, 
+ Julia Suvorova <jusual@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paul Durrant <paul@xen.org>, Kevin Wolf <kwolf@redhat.com>, 
+ Anthony Perard <anthony.perard@citrix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Aarushi Mehta <mehta.aaru20@gmail.com>
+Subject: Re: [PATCH v3 5/6] block/linux-aio: convert to blk_io_plug_call() API
+Message-ID: <olpmomsccllt6s5yuzzznwoaf6mpx3vmcex5bt477uviettgra@owpdleplwg36>
+References: <20230530180959.1108766-1-stefanha@redhat.com>
+ <20230530180959.1108766-6-stefanha@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [Libguestfs] [PATCH v3 05/14] nbd: Add types for extended headers
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>,
- libguestfs@redhat.com
-References: <20230515195343.1915857-1-eblake@redhat.com>
- <20230515195343.1915857-6-eblake@redhat.com>
- <b81e6f07-7c1c-f1e2-10bc-5c0ea436b5cf@yandex-team.ru>
- <xbf2ds5njx76p2sfv47dvq6p376gcoc437ezq667awgbm4nji4@x3fxx7ub4a7m>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <xbf2ds5njx76p2sfv47dvq6p376gcoc437ezq667awgbm4nji4@x3fxx7ub4a7m>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230530180959.1108766-6-stefanha@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.167,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,76 +106,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.05.23 21:22, Eric Blake wrote:
-> On Tue, May 30, 2023 at 04:23:46PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> On 15.05.23 22:53, Eric Blake wrote:
->>> Add the constants and structs necessary for later patches to start
->>> implementing the NBD_OPT_EXTENDED_HEADERS extension in both the client
->>> and server, matching recent commit e6f3b94a934] in the upstream nbd
->>> project.  This patch does not change any existing behavior, but merely
->>> sets the stage.
->>>
->>> This patch does not change the status quo that neither the client nor
->>> server use a packed-struct representation for the request header.
->>>
->>> Signed-off-by: Eric Blake <eblake@redhat.com>
->>
->>
->> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>
->>> ---
->>>    docs/interop/nbd.txt |  1 +
->>>    include/block/nbd.h  | 74 ++++++++++++++++++++++++++++++++------------
->>>    nbd/common.c         | 10 +++++-
->>>    3 files changed, 65 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/docs/interop/nbd.txt b/docs/interop/nbd.txt
->>> index f5ca25174a6..abaf4c28a96 100644
->>> --- a/docs/interop/nbd.txt
->>> +++ b/docs/interop/nbd.txt
->>> @@ -69,3 +69,4 @@ NBD_CMD_BLOCK_STATUS for "qemu:dirty-bitmap:", NBD_CMD_CACHE
->>>    NBD_CMD_FLAG_FAST_ZERO
->>>    * 5.2: NBD_CMD_BLOCK_STATUS for "qemu:allocation-depth"
->>>    * 7.1: NBD_FLAG_CAN_MULTI_CONN for shareable writable exports
->>> +* 8.1: NBD_OPT_EXTENDED_HEADERS
->>> diff --git a/include/block/nbd.h b/include/block/nbd.h
->>> index 50626ab2744..d753fb8006f 100644
->>> --- a/include/block/nbd.h
->>> +++ b/include/block/nbd.h
->>> @@ -87,13 +87,24 @@ typedef struct NBDStructuredReplyChunk {
->>>        uint32_t length; /* length of payload */
->>>    } QEMU_PACKED NBDStructuredReplyChunk;
->>>
->>
->> [..]
->>
->>> -/* Extent chunk for NBD_REPLY_TYPE_BLOCK_STATUS */
->>> +/* Extent array for NBD_REPLY_TYPE_BLOCK_STATUS */
->>
->> Why? NBDExtent is one extent, not extent array.
-> 
-> It's not the entire chunk either, because that also includes the
-> header and the metacontext id that are not part of the extent array.
-> Maybe 'Extent array element', which matches our wire layout of:
+On Tue, May 30, 2023 at 02:09:58PM -0400, Stefan Hajnoczi wrote:
+>Stop using the .bdrv_co_io_plug() API because it is not multi-queue
+>block layer friendly. Use the new blk_io_plug_call() API to batch I/O
+>submission instead.
+>
+>Note that a dev_max_batch check is dropped in laio_io_unplug() because
+>the semantics of unplug_fn() are different from .bdrv_co_unplug():
+>1. unplug_fn() is only called when the last blk_io_unplug() call occurs,
+>   not every time blk_io_unplug() is called.
+>2. unplug_fn() is per-thread, not per-BlockDriverState, so there is no
+>   way to get per-BlockDriverState fields like dev_max_batch.
+>
+>Therefore this condition cannot be moved to laio_unplug_fn(). It is not
+>obvious that this condition affects performance in practice, so I am
+>removing it instead of trying to come up with a more complex mechanism
+>to preserve the condition.
+>
+>Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+>Reviewed-by: Eric Blake <eblake@redhat.com>
+>---
+> include/block/raw-aio.h |  7 -------
+> block/file-posix.c      | 28 ----------------------------
+> block/linux-aio.c       | 41 +++++++++++------------------------------
+> 3 files changed, 11 insertions(+), 65 deletions(-)
 
-Yes, sounds good
+LGTM!
 
-> 
-> <-  chunk                  ->
-> <- hdr -><- payload        ->
->   ...     id  <- array      ->
->               ext[0] ext[1]...
-> 
->>
->>>    typedef struct NBDExtent {
->>>        uint32_t length;
->>>        uint32_t flags; /* NBD_STATE_* */
->>>    } QEMU_PACKED NBDExtent;
->>>
-> 
-
--- 
-Best regards,
-Vladimir
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
 
