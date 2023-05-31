@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860D871765A
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BB6717660
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 07:51:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4Eeh-0001CK-PL; Wed, 31 May 2023 01:45:55 -0400
+	id 1q4EjG-0002Pc-Sl; Wed, 31 May 2023 01:50:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4EeQ-0001BF-FL
- for qemu-devel@nongnu.org; Wed, 31 May 2023 01:45:41 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Ehu-0002C7-KZ
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:49:14 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4EeN-0001VO-9C
- for qemu-devel@nongnu.org; Wed, 31 May 2023 01:45:36 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f3bb395e69so6286732e87.2
- for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:45:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1q4Ehr-0001yM-BM
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 01:49:14 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-30aef0b8837so2197476f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 30 May 2023 22:49:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1685511933; x=1688103933;
+ d=linaro.org; s=google; t=1685512149; x=1688104149;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=E1Fjff68RLbel21L6+5YmbzWPyCaYKjf/Kdwx6m8I3o=;
- b=EFmKx+tBz7eFOEtM+fqXfusI1VQ1RpKcy+DwYCCnQRAthj+fspzD10U69chRPMU6fl
- me5vuZ2/QRBzYXpPeki07cvQethG0ZczsNhlY+4PF8Gxoecz1WMUWo3nwBp6Iy7B399q
- DvthdOQMXMgMnHT5I9TBLA18gOjrxm6xXnEsP5a3CtFd7HAfR27Yq3s9lcwEjV3TpBgK
- 6137IHwbuVGv2hwwPiNqIwdbxFxyIUTZpricrLcqQ8+o0Hm70zGsGanGJD9Ikt/fyr7y
- DLwoRgzYmgrJpnaMxjWZfhpF6jfiOoGDmCoBEIyZItY3wz9vukLLX8ctTm9irGeQX8b0
- xL8Q==
+ bh=rBI9hBuG/hf9zfvHVQ5J84vkTGt/9ZLJ83giy3VSzuI=;
+ b=qRpuLaHx80vNWjSrJkFWnHXLTKjA6/LDpKGkYBK0no6fcxE9jktJ/W/DINpNHkUEVM
+ FS+8vCgFWX4sewSKhGX4/TKejHFlW2RHKMkldT5zUIDcP21PfqReX3utQoFbOSIPe4qi
+ kJlwzedcEF/1lL0SdThDOWCkvTQQ5hRbl3jiOn8gtt6EKiG9LQumgkpdDXtfLgvk6cZ7
+ 5S/AzyPip7dPBl7s4DJcf1qp1FMFVx4QGzxNVY8wN6dZyduQGOVn9Fk1+UtqYXnZkql8
+ iGfb2ai/bkpLVlxZrOyU2gxNBpAV4PFchRpQfFyVk4N3Jdiwq/qvAvQwsEYYp8twX/2T
+ Ztiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1685511933; x=1688103933;
+ d=1e100.net; s=20221208; t=1685512149; x=1688104149;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=E1Fjff68RLbel21L6+5YmbzWPyCaYKjf/Kdwx6m8I3o=;
- b=lzLL4k1WcJr1mdnFPheAeD/IJvLQS+pygjTdE4RsKD9wAjp9n0b2msRY0l/nJJuiCu
- 665IRZta1qKnMiVubaW0YUgd0tkbWQFAup3XTJs0ubX233L0/rKG33J0qFO9SVLK9GGS
- +LiEA8kyoICuozQ0eYXufxx9a9bMjabi3ZZOi5VPtwUBV+6q/U/k6YY0kTTHNf67UEBL
- Su0p6pf3cWuZiRR9ZkyY+xgfrcB7MIJeBET9Rc2YsQbVupVIt5PeDnjTxNBqgfiVFfp7
- oh37fcwUad/fKFzsrUPRto+48+45e2MhzIrhal4jJkn49PqIz7OC6YjDHHmh4gE6LKSX
- lAvA==
-X-Gm-Message-State: AC+VfDwQxppTJMioCyA6HJ3al9cNa5GqOYan7HTbNyc+Wwoq4ac+m5/N
- DXd3izqsC0abfwwX4LJaCibthQ==
-X-Google-Smtp-Source: ACHHUZ6WmxcukSwr3LHS4YGu/VUVE5dNkZeUF6QHsTFF93IBbFREDBs8sei3n8vvszlfFmes8ba8Lg==
-X-Received: by 2002:a05:6512:70:b0:4f4:d710:12d4 with SMTP id
- i16-20020a056512007000b004f4d71012d4mr1860679lfo.17.1685511933448; 
- Tue, 30 May 2023 22:45:33 -0700 (PDT)
+ bh=rBI9hBuG/hf9zfvHVQ5J84vkTGt/9ZLJ83giy3VSzuI=;
+ b=i9s4J9QaHoTR9V61cjmJzvgZlhje8NO3wd/0vaXavbxmjR7bN3O1/BEy2r/9/AmmQb
+ UlUIHUZ+bdNU3FXvYbnAYSCtuETauigtSeMtzZpV+6a5cJz3xmWWs4Cc0R+BvmnF0n0d
+ PJbhoqVhkxBBAsf/7eW9GHrTebOofs0tSNWgpT3pCdVCcbwe2oarE4HcvZ+wtf3H1Fnl
+ oflUy8mX/QrfgqTTTzXiBQl2ogBysDl4lg8ffxRubWOKC2qx+pHGCMzRSi2XVR6BvUvp
+ CX1vyuOe/5XHDonDe/+HyKjG+MtmrajJTuX8/agX0mCS4eEqrnziPNF53DO2b3DP5mdr
+ PmSw==
+X-Gm-Message-State: AC+VfDxWt99fkrPDIzKVWrQboqtjMQkrb6caBYukXMVfwqC92yv2TEr0
+ 42YVgHNnrNOYQkKmML/clVYaJA==
+X-Google-Smtp-Source: ACHHUZ6fTRaQ1mJrc92C79+6uIFB5p9NDYxQAp2j5TA2ojx8vpFU4AIw0+Dl8Mb+p8UchmfmJ7Hy8Q==
+X-Received: by 2002:a5d:65d0:0:b0:309:4988:7f83 with SMTP id
+ e16-20020a5d65d0000000b0030949887f83mr2991128wrw.20.1685512149271; 
+ Tue, 30 May 2023 22:49:09 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.146.12])
  by smtp.gmail.com with ESMTPSA id
- c7-20020a05600c0ac700b003f4fb5532a1sm19223663wmr.43.2023.05.30.22.45.32
+ j18-20020a5d4492000000b002ffbf2213d4sm5394665wrq.75.2023.05.30.22.49.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 May 2023 22:45:33 -0700 (PDT)
-Message-ID: <7edefdfa-04ca-dbf9-8292-e38f96c28c5b@linaro.org>
-Date: Wed, 31 May 2023 07:45:31 +0200
+ Tue, 30 May 2023 22:49:08 -0700 (PDT)
+Message-ID: <19c434db-b1ac-656d-474f-938cdbf96fcd@linaro.org>
+Date: Wed, 31 May 2023 07:49:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2] hw/cxl: Fix CFMW config memory leak
+Subject: Re: [RFC PATCH 1/5] target/ppc: gdbstub init spr gdb_id for all CPUs
 Content-Language: en-US
-To: Li Zhijian <lizhijian@cn.fujitsu.com>, jonathan.cameron@huawei.com,
- fan.ni@samsung.com
-Cc: qemu-devel@nongnu.org
-References: <20230531023433.8732-1-lizhijian@cn.fujitsu.com>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>, Fabiano Rosas <farosas@suse.de>
+References: <20230531012313.19891-1-npiggin@gmail.com>
+ <20230531012313.19891-2-npiggin@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230531023433.8732-1-lizhijian@cn.fujitsu.com>
+In-Reply-To: <20230531012313.19891-2-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,91 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Li,
+On 31/5/23 03:23, Nicholas Piggin wrote:
+> Make sure each CPU gets its state set up for gdb, not just the ones
+> before PowerPCCPUClass has had its gdb state set up.
+> 
 
-On 31/5/23 04:34, Li Zhijian wrote:
-> Only 'fw' pointer is marked as g_autofree, so we shoud free other
-> resource manually in error path.
-> 
-> Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
+Cc: qemu-stable@nongnu.org
+Fixes: 707c7c2ee1 ("target/ppc: Enable reporting of SPRs to GDB")
+
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
-> V2: Delete unnecesarry check
-> ---
->   hw/cxl/cxl-host.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
+>   target/ppc/gdbstub.c | 30 +++++++++++++++++++-----------
+>   1 file changed, 19 insertions(+), 11 deletions(-)
 > 
-> diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-> index 034c7805b3e..787a2e779d2 100644
-> --- a/hw/cxl/cxl-host.c
-> +++ b/hw/cxl/cxl-host.c
-> @@ -48,7 +48,7 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
->       if (object->size % (256 * MiB)) {
->           error_setg(errp,
->                      "Size of a CXL fixed memory window must be a multiple of 256MiB");
-> -        return;
-> +        goto err_free;
->       }
->       fw->size = object->size;
+> diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+> index 63c9abe4f1..ca39efdc35 100644
+> --- a/target/ppc/gdbstub.c
+> +++ b/target/ppc/gdbstub.c
+> @@ -327,6 +327,25 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
+>       unsigned int num_regs = 0;
+>       int i;
 >   
-> @@ -57,7 +57,7 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
->               cxl_interleave_granularity_enc(object->interleave_granularity,
->                                              errp);
->           if (*errp) {
-> -            return;
-> +            goto err_free;
->           }
->       } else {
->           /* Default to 256 byte interleave */
-> @@ -68,6 +68,12 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
->                                                g_steal_pointer(&fw));
->   
->       return;
+> +    for (i = 0; i < ARRAY_SIZE(env->spr_cb); i++) {
+> +        ppc_spr_t *spr = &env->spr_cb[i];
 > +
-> +err_free:
-> +    for (i = 0; i < fw->num_targets; i++) {
-> +        g_free(fw->targets[i]);
+> +        if (!spr->name) {
+> +            continue;
+> +        }
+> +
+> +        /*
+> +         * GDB identifies registers based on the order they are
+> +         * presented in the XML. These ids will not match QEMU's
+> +         * representation (which follows the PowerISA).
+> +         *
+> +         * Store the position of the current register description so
+> +         * we can make the correspondence later.
+> +         */
+> +        spr->gdb_id = num_regs;
+> +        num_regs++;
 > +    }
-> +    g_free(fw->targets);
->   }
+> +
+>       if (pcc->gdb_spr_xml) {
+>           return;
+>       }
+> @@ -348,17 +367,6 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
+>   
+>           g_string_append_printf(xml, " bitsize=\"%d\"", TARGET_LONG_BITS);
+>           g_string_append(xml, " group=\"spr\"/>");
+> -
+> -        /*
+> -         * GDB identifies registers based on the order they are
+> -         * presented in the XML. These ids will not match QEMU's
+> -         * representation (which follows the PowerISA).
+> -         *
+> -         * Store the position of the current register description so
+> -         * we can make the correspondence later.
+> -         */
+> -        spr->gdb_id = num_regs;
+> -        num_regs++;
+>       }
+>   
+>       g_string_append(xml, "</feature>");
 
-IIUC we don't need targets[] before checking errors. What about simply
-allocate when we can't fail?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
--- >8 --
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index 034c7805b3..f0920da956 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -39,12 +39,6 @@ static void cxl_fixed_memory_window_config(CXLState 
-*cxl_state,
-          return;
-      }
-
--    fw->targets = g_malloc0_n(fw->num_targets, sizeof(*fw->targets));
--    for (i = 0, target = object->targets; target; i++, target = 
-target->next) {
--        /* This link cannot be resolved yet, so stash the name for now */
--        fw->targets[i] = g_strdup(target->value);
--    }
--
-      if (object->size % (256 * MiB)) {
-          error_setg(errp,
-                     "Size of a CXL fixed memory window must be a 
-multiple of 256MiB");
-@@ -64,6 +58,12 @@ static void cxl_fixed_memory_window_config(CXLState 
-*cxl_state,
-          fw->enc_int_gran = 0;
-      }
-
-+    fw->targets = g_malloc0_n(fw->num_targets, sizeof(*fw->targets));
-+    for (i = 0, target = object->targets; target; i++, target = 
-target->next) {
-+        /* This link cannot be resolved yet, so stash the name for now */
-+        fw->targets[i] = g_strdup(target->value);
-+    }
-+
-      cxl_state->fixed_windows = g_list_append(cxl_state->fixed_windows,
-                                               g_steal_pointer(&fw));
-
----
 
