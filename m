@@ -2,59 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECE9718B25
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20979718B26
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 May 2023 22:27:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1q4SPJ-0001s4-IZ; Wed, 31 May 2023 16:26:57 -0400
+	id 1q4SPP-0001wA-Us; Wed, 31 May 2023 16:27:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4SPG-0001o5-Qn
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:26:54 -0400
-Received: from mout.kundenserver.de ([212.227.17.24])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4SPK-0001v6-8G
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:26:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1q4SPF-0001OW-2v
- for qemu-devel@nongnu.org; Wed, 31 May 2023 16:26:54 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue108 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MnJZ4-1qTZxW0HMC-00jLrz; Wed, 31 May 2023 22:26:50 +0200
-Message-ID: <d979be57-bb54-881c-875d-ba8d54a84550@vivier.eu>
-Date: Wed, 31 May 2023 22:26:49 +0200
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1q4SPI-0001S1-Ll
+ for qemu-devel@nongnu.org; Wed, 31 May 2023 16:26:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1685564816;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=q8hKTWT1fHe/hM1DfttyKajGJZs036JyEbAyIJZUHJU=;
+ b=WpcNBTc04Ff1OLUTrlDy/s3AelhCMAx3D7angIFQn2sD+JGNhI/wE5AuliVH8k5JH7skzw
+ N4H+LQeLNvGQSyhUbL1nIeMnkwgwwLoMPg31gvywpl4Kn27mYU8Pvi6FJMbFvj5AsLXr6h
+ f8njii1t17tGRaWh1ro/RPxCBRaB0SI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-634-5ZYp884zOmmeLVxsDV0AgQ-1; Wed, 31 May 2023 16:26:54 -0400
+X-MC-Unique: 5ZYp884zOmmeLVxsDV0AgQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F0F1B38149AD;
+ Wed, 31 May 2023 20:26:53 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.76])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B834B140E95D;
+ Wed, 31 May 2023 20:26:52 +0000 (UTC)
+Date: Wed, 31 May 2023 15:26:50 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, libguestfs@redhat.com, 
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+Subject: Re: [PATCH v3 12/14] nbd/client: Request extended headers during
+ negotiation
+Message-ID: <hbjtjovry4e5kb6oyii4g2hncetfo2uic67r5ipufcikvgyb5x@idenexfxits4>
+References: <20230515195343.1915857-1-eblake@redhat.com>
+ <20230515195343.1915857-13-eblake@redhat.com>
+ <1af7f692-b5de-c767-2568-1fc024a57133@yandex-team.ru>
+ <cqb3yww5ceeinh2pb5nqaljrsllu3ejkjsdueuw32cwcocumsn@okgujto2lzmn>
+ <cd83b0bc-0e6b-fc94-1cc2-9bf00d516140@yandex-team.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 08/23] q800: move GLUE device to Q800MachineState
-Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20230531125400.288917-1-mark.cave-ayland@ilande.co.uk>
- <20230531125400.288917-9-mark.cave-ayland@ilande.co.uk>
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230531125400.288917-9-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:Z7y0bYmYFK19eh5WND92NP/fIx6wYeIWE0qmkj+sRWAnTChpIGM
- Ce0nOO9sDUiXkpWPtAv8hVKzGFKqOVkJZGQiPBfPyCcKPyEK6QoYpm9OT7m6kqIOYiI/184
- SiCviiSJdMvVBvKAxaHUxktJ47qYgoXJRBT66dDvDfHF7nXyA9Z5J/ZCBibDeO7BgvE6EWm
- YpPxJEMJGy6JrMYWeEnIg==
-UI-OutboundReport: notjunk:1;M01:P0:s0wV6RZnkVk=;QTmqxOaJ9QbIjG+A03zSnGEjE/K
- /D5Va+ILbrLSMwBI1EzcKIJ6oyyPZPgRAkBTDWqzz/EHOtj6xRYMh145m51I/7Ry5I+x9JbtR
- yS9NwqRwIo+BWx5rH4dHAqNHuULLQcD+JRZiogK1MnkyJuA+fpwLCDdxjk1aTg6KNLwPDvDix
- hQ5FfZMFZdU/yNEhxb+UAeJga/Rr3qVYML0NfbcBAKE6p7C8ArAnkVIubtjdkKFaNfQatfRDG
- WbJBiCY6O3QAi3n7CXx31IhPKcBf2wqqWZL3M7fbUmav2XC0ZLqf6RhzC+yTySf9F8dm5tBcv
- EfE6lfZwJ7kRmzff1gnBiBt01jcb/xrH5e7OrrbnuHLHJr4nTE+PRazHT+OKGk5QFiLg4+I7Q
- 0vPpFRN8/vpP4tmK72TPcJRsQGEodMjYNSKAbXycsLQx3WySJMCcmiDJ7IZ6Mcz094xM6LQkh
- iwgiWzdOv8WBrvISCRNw4IwOeJsOs369iT6lOVCrNSOcAT2/rp8kE7DUIKaPR/B2bnzRFL3Rx
- nq3inATjvcLtHExgQEamEUwgRWRHyPd79131U9+0FqFDYc0OQIBZsxo2FGrKHPu7MePA4n00M
- ZzvP5gkQTr4EtIKY+HsliHm+VWNe3FH0M5w70AqsrcdGnp1u/lWg+SlBvSQlhHodqY/G2EIRb
- Y5WOaf5Jn3Skbmv4SxUGlwZxgKV3QK4UvcKvBnQ22g==
-Received-SPF: none client-ip=212.227.17.24; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cd83b0bc-0e6b-fc94-1cc2-9bf00d516140@yandex-team.ru>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.163,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,117 +83,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 31/05/2023 à 14:53, Mark Cave-Ayland a écrit :
-> Also change the instantiation of the GLUE device to use object_initialize_child().
+On Wed, May 31, 2023 at 09:33:20PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 31.05.23 20:54, Eric Blake wrote:
+> > On Wed, May 31, 2023 at 08:39:53PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> > > On 15.05.23 22:53, Eric Blake wrote:
+> > > > All the pieces are in place for a client to finally request extended
+> > > > headers.  Note that we must not request extended headers when qemu-nbd
+> > > 
+> > > why must not? It should gracefully report ENOTSUP? Or not?
+> > 
+> > The kernel code does not yet know how to send extended requests; once
+> > extended mode is negotiated, sending a simple request requires the
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/m68k/q800.c         | 24 ++++++++++++++----------
->   include/hw/m68k/q800.h |  3 +++
->   2 files changed, 17 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-> index 1d9dad60b3..7bd8e795d2 100644
-> --- a/hw/m68k/q800.c
-> +++ b/hw/m68k/q800.c
-> @@ -158,7 +158,6 @@ static void q800_machine_init(MachineState *machine)
->       SysBusDevice *sysbus;
->       BusState *adb_bus;
->       NubusBus *nubus;
-> -    DeviceState *glue;
->       DriveInfo *dinfo;
->       uint8_t rng_seed[32];
->   
-> @@ -195,10 +194,10 @@ static void q800_machine_init(MachineState *machine)
->       }
->   
->       /* IRQ Glue */
-> -    glue = qdev_new(TYPE_GLUE);
-> -    object_property_set_link(OBJECT(glue), "cpu", OBJECT(&m->cpu),
-> +    object_initialize_child(OBJECT(machine), "glue", &m->glue, TYPE_GLUE);
-> +    object_property_set_link(OBJECT(&m->glue), "cpu", OBJECT(&m->cpu),
->                                &error_abort);
-> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(glue), &error_fatal);
-> +    sysbus_realize(SYS_BUS_DEVICE(&m->glue), &error_fatal);
->   
->       /* VIA 1 */
->       via1_dev = qdev_new(TYPE_MOS6522_Q800_VIA1);
-> @@ -209,10 +208,12 @@ static void q800_machine_init(MachineState *machine)
->       sysbus = SYS_BUS_DEVICE(via1_dev);
->       sysbus_realize_and_unref(sysbus, &error_fatal);
->       sysbus_mmio_map(sysbus, 1, VIA_BASE);
-> -    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(glue, GLUE_IRQ_IN_VIA1));
-> +    sysbus_connect_irq(sysbus, 0,
-> +                       qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_VIA1));
->       /* A/UX mode */
->       qdev_connect_gpio_out(via1_dev, 0,
-> -                          qdev_get_gpio_in_named(glue, "auxmode", 0));
-> +                          qdev_get_gpio_in_named(DEVICE(&m->glue),
-> +                                                 "auxmode", 0));
->   
->       adb_bus = qdev_get_child_bus(via1_dev, "adb.0");
->       dev = qdev_new(TYPE_ADB_KEYBOARD);
-> @@ -225,7 +226,8 @@ static void q800_machine_init(MachineState *machine)
->       sysbus = SYS_BUS_DEVICE(via2_dev);
->       sysbus_realize_and_unref(sysbus, &error_fatal);
->       sysbus_mmio_map(sysbus, 1, VIA_BASE + VIA_SIZE);
-> -    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(glue, GLUE_IRQ_IN_VIA2));
-> +    sysbus_connect_irq(sysbus, 0,
-> +                       qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_VIA2));
->   
->       /* MACSONIC */
->   
-> @@ -258,7 +260,8 @@ static void q800_machine_init(MachineState *machine)
->       sysbus = SYS_BUS_DEVICE(dev);
->       sysbus_realize_and_unref(sysbus, &error_fatal);
->       sysbus_mmio_map(sysbus, 0, SONIC_BASE);
-> -    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(glue, GLUE_IRQ_IN_SONIC));
-> +    sysbus_connect_irq(sysbus, 0,
-> +                       qdev_get_gpio_in(DEVICE(&m->glue), GLUE_IRQ_IN_SONIC));
->   
->       memory_region_init_rom(dp8393x_prom, NULL, "dp8393x-q800.prom",
->                              SONIC_PROM_SIZE, &error_fatal);
-> @@ -295,7 +298,8 @@ static void q800_machine_init(MachineState *machine)
->       sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(escc_orgate, 0));
->       sysbus_connect_irq(sysbus, 1, qdev_get_gpio_in(escc_orgate, 1));
->       qdev_connect_gpio_out(DEVICE(escc_orgate), 0,
-> -                          qdev_get_gpio_in(glue, GLUE_IRQ_IN_ESCC));
-> +                          qdev_get_gpio_in(DEVICE(&m->glue),
-> +                                           GLUE_IRQ_IN_ESCC));
->       sysbus_mmio_map(sysbus, 0, SCC_BASE);
->   
->       /* SCSI */
-> @@ -350,7 +354,7 @@ static void q800_machine_init(MachineState *machine)
->        * Since the framebuffer in slot 0x9 uses a separate IRQ, wire the unused
->        * IRQ via GLUE for use by SONIC Ethernet in classic mode
->        */
-> -    qdev_connect_gpio_out(glue, GLUE_IRQ_NUBUS_9,
-> +    qdev_connect_gpio_out(DEVICE(&m->glue), GLUE_IRQ_NUBUS_9,
->                             qdev_get_gpio_in_named(via2_dev, "nubus-irq",
->                                                    VIA2_NUBUS_IRQ_9));
->   
-> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-> index 3e41f0e297..8e1bb0735d 100644
-> --- a/include/hw/m68k/q800.h
-> +++ b/include/hw/m68k/q800.h
-> @@ -23,6 +23,8 @@
->   #ifndef HW_Q800_H
->   #define HW_Q800_H
->   
-> +#include "hw/m68k/q800-glue.h"
-> +
->   /*
->    * The main Q800 machine
->    */
-> @@ -32,6 +34,7 @@ struct Q800MachineState {
->   
->       M68kCPU cpu;
->       MemoryRegion rom;
-> +    GLUEState glue;
->   };
->   
->   #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
+> but how it could be negotiated if kernel doesn't support it?
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+That's the problem.  The kernel doesn't do the negotiation, userspace
+does.  There is an ioctl for the userspace to tell the kernel what
+flags were advertised as part of the negotiation, but that does not
+include a flag for extended operation.  The kernel ONLY takes care of
+NBD_CMD_ operations, it does not do NBD_OPT_ operations.  So when
+qemu-nbd is preparing to connect to /dev/nbdN, it first has to
+negotiate in userspace, avoiding any attempt to use extended headers,
+then call the right ioctls for the kernel to take over command phase
+using the older compact headers.
+
+> 
+> I mean if we request extended headers during negotiation with kernel, the kernel will just say "unsupported option", isn't it?
+
+If we request extended headers in userspace before calling the ioctl
+to tell the kernel to start transmission, then the kernel's first
+command will use the compact style, which the server is not expecting,
+and while we can hope the server will hang up on the kernel, I didn't
+test what actually happens.
+
+
+> 
+> Or, in other words, I understand that kernel doesn't support it, I don't understand why you note it here. Is kernel different from other NBD server implementations which doesn't support extended requests at the moment?
+
+The kernel is an NBD client, not a server.  But if we are about to
+connect an NBD server over to the kernel for /dev/nbdN, we better make
+sure the server is not using any features the kernel doesn't support.
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
 
 
